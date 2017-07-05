@@ -44,7 +44,7 @@ TVirtualDecay* TDecayFit::GetDecay() const
 
 TFitResultPtr TDecayFit::Fit(TH1* hist, Option_t* opt)
 {
-   if(!hist) {
+   if(hist == nullptr) {
       return 0;
    }
    TFitResultPtr tmpres = hist->Fit(this, opt);
@@ -109,7 +109,7 @@ void TDecayFit::UpdateResiduals(TH1* hist)
 
 void TDecayFit::DrawResiduals()
 {
-   if(fResiduals.GetN()) {
+   if(fResiduals.GetN() != 0) {
       new GCanvas;
       fResiduals.Draw("AP");
    } else {
@@ -137,13 +137,13 @@ TSingleDecay::TSingleDecay(TSingleDecay* parent, Double_t tlow, Double_t thigh)
    : fDetectionEfficiency(1.0), fDecayFunc(nullptr), fTotalDecayFunc(nullptr), fParent(nullptr), fDaughter(nullptr),
      fFirstParent(nullptr), fChainId(-1)
 {
-   if(parent) {
+   if(parent != nullptr) {
       fParent = parent;
       fParent->SetDaughterDecay(this);
       // See if the decay chain makes sense.
       TSingleDecay* curParent  = parent;
       UInt_t        gencounter = 1;
-      while(curParent) {
+      while(curParent != nullptr) {
          ++gencounter;
          fFirstParent = curParent;
          curParent    = curParent->GetParentDecay();
@@ -180,14 +180,14 @@ TSingleDecay::TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlo
    : fDetectionEfficiency(1.0), fDecayFunc(nullptr), fTotalDecayFunc(nullptr), fParent(nullptr), fDaughter(nullptr),
      fFirstParent(nullptr), fChainId(-1)
 {
-   if(parent) {
+   if(parent != nullptr) {
       fParent = parent;
       fParent->SetDaughterDecay(this);
       // See if the decay chain makes sense.
       TSingleDecay* curParent  = parent;
       UInt_t        gencounter = 2;
       for(UInt_t i = 0; i < generation; ++i) {
-         if(curParent->GetParentDecay()) {
+         if(curParent->GetParentDecay() != nullptr) {
             curParent = parent->GetParentDecay();
             ++gencounter;
          } else {
@@ -253,7 +253,7 @@ void TSingleDecay::SetTotalDecayParameters()
    // Now we need to get the parameters for each of the parents
    Int_t         parCounter = 1;
    TSingleDecay* curDecay   = fFirstParent;
-   while(curDecay) {
+   while(curDecay != nullptr) {
       fTotalDecayFunc->SetParameter(parCounter, curDecay->GetDecayRate());
       fTotalDecayFunc->SetParName(parCounter, Form("DecayRate%d", parCounter));
       curDecay->GetDecayFunc()->GetParLimits(1, low_limit, high_limit);
@@ -275,7 +275,7 @@ void TSingleDecay::UpdateDecays()
 
    // Now update the halflives of all the total decay functions.
    TSingleDecay* curDecay = fFirstParent;
-   while(curDecay) {
+   while(curDecay != nullptr) {
       GetDecayFunc()->GetParLimits(0, low_limit, high_limit);
       curDecay->fTotalDecayFunc->SetParameter(0, GetIntensity());
       curDecay->fTotalDecayFunc->SetParLimits(0, low_limit, high_limit);
@@ -383,7 +383,7 @@ Double_t TSingleDecay::ActivityFunc(Double_t* dim, Double_t* par)
    Double_t      t        = dim[0] - tlow;
    TSingleDecay* curDecay = this;
    // Compute the first multiplication
-   while(curDecay) {
+   while(curDecay != nullptr) {
       ++gencounter;
       // par[Generation] gets the decay rate for that decay since the parameters are stored
       // as [intensity, decayrate1,decayrate2,...]
@@ -400,10 +400,10 @@ Double_t TSingleDecay::ActivityFunc(Double_t* dim, Double_t* par)
    // Now we need to deal with the second term
    Double_t sum = 0.0;
    curDecay     = this;
-   while(curDecay) {
+   while(curDecay != nullptr) {
       Double_t      denom      = 1.0;
       TSingleDecay* denomDecay = this;
-      while(denomDecay) {
+      while(denomDecay != nullptr) {
          if(denomDecay != curDecay) {
             // This term has problems if two or more rates are very similar. Will have to put a taylor expansion in here
             // if this problem comes up. I believe the solution to this also depends on the number of nuclei in the
@@ -442,7 +442,7 @@ TFitResultPtr TSingleDecay::Fit(TH1* fithist, Option_t* opt)
    fFirstParent->SetIntensity(fTotalDecayFunc->GetParameter(0));
    fFirstParent->SetIntensityError(fTotalDecayFunc->GetParError(0));
    // Now we need to set the parameters for each of the parents
-   while(curDecay) {
+   while(curDecay != nullptr) {
       curDecay->SetDecayRate(fTotalDecayFunc->GetParameter(parCounter));
       curDecay->SetDecayRateError(fTotalDecayFunc->GetParError(parCounter));
       curDecay = curDecay->GetDaughterDecay();
@@ -478,10 +478,10 @@ void TSingleDecay::Print(Option_t*) const
    printf("  HalfLife: %lf +/- %lf s\n", GetHalfLife(), GetHalfLifeError());
    printf("Efficiency: %lf\n", GetEfficiency());
    printf("My Address: %p\n", static_cast<const void*>(this));
-   if(fParent) {
+   if(fParent != nullptr) {
       printf("Parent Address: %p\n", static_cast<void*>(fParent));
    }
-   if(fDaughter) {
+   if(fDaughter != nullptr) {
       printf("Daughter Address: %p\n", static_cast<void*>(fDaughter));
    }
    printf("First Parent: %p\n", static_cast<void*>(fFirstParent));
@@ -493,7 +493,7 @@ TDecayChain::TDecayChain() : fChainFunc(nullptr)
 
 TDecayChain::TDecayChain(UInt_t generations) : fChainFunc(nullptr)
 {
-   if(!generations) {
+   if(generations == 0u) {
       generations = 1;
    }
    fDecayChain.clear();
@@ -578,7 +578,7 @@ void TDecayChain::DrawComponents(Option_t* opt, Bool_t color_flag)
 
 void TDecayChain::AddToChain(TSingleDecay* decay)
 {
-   if(decay) {
+   if(decay != nullptr) {
       fDecayChain.push_back(decay);
    }
 }
@@ -623,7 +623,7 @@ TFitResultPtr TDecayChain::Fit(TH1* fithist, Option_t* opt)
    curDecay->SetIntensity(fChainFunc->GetParameter(0));
    curDecay->SetIntensityError(fChainFunc->GetParError(0));
    // Now we need to set the parameters for each of the parents
-   while(curDecay) {
+   while(curDecay != nullptr) {
       curDecay->SetDecayRate(fChainFunc->GetParameter(parCounter));
       curDecay->SetDecayRateError(fChainFunc->GetParError(parCounter));
       curDecay = curDecay->GetDaughterDecay();
@@ -707,7 +707,7 @@ TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt)
    ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2", "Combination");
    TVirtualFitter::SetPrecision(1.0e-10);
    TVirtualFitter::SetMaxIterations(10000);
-   if(!fithist->GetSumw2N()) {
+   if(fithist->GetSumw2N() == 0) {
       fithist->Sumw2();
    }
    // Int_t parCounter = 1;
@@ -763,7 +763,7 @@ void TDecay::SetParameters()
    Double_t tmpbglow, tmpbghigh;
    fFitFunc->GetParLimits(0, tmpbglow, tmpbghigh);
    Double_t tmpbgerr = fFitFunc->GetParError(0);
-   if(fFitFunc) {
+   if(fFitFunc != nullptr) {
       delete fFitFunc;
       fFitFunc = nullptr;
    }
@@ -799,7 +799,7 @@ Double_t TDecay::ComponentFunc(Double_t* dim, Double_t* par)
    /// Function for drawing summed components.
    Double_t result = 0;
    /// This function takes 1 parameter, the decay Id.
-   Int_t id = (Int_t)(par[0]);
+   Int_t id = static_cast<Int_t>(par[0]);
    auto  it = fDecayMap.find(id);
 
    for(auto& i : it->second) {
@@ -914,7 +914,7 @@ void TDecay::RemakeMap()
    for(auto& i : fChainList) {
       for(int j = 0; j < i->Size(); ++j) {
          UInt_t id = i->GetDecay(j)->GetDecayId();
-         if(!fDecayMap.count(id)) {
+         if(fDecayMap.count(id) == 0u) {
             fDecayMap.insert(std::make_pair(id, std::vector<TSingleDecay*>()));
          }
          fDecayMap.find(id)->second.push_back(i->GetDecay(j));

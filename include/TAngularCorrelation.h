@@ -105,7 +105,7 @@ public:
 
    //----------------- functions that do most of the work
    TH2D* Create2DSlice(THnSparse* hst, Double_t min, Double_t max, Bool_t fold, Bool_t group);
-   TH2D* Create2DSlice(TObjArray* hst, Double_t min, Double_t max, Bool_t fold, Bool_t group);
+   TH2D* Create2DSlice(TObjArray* hstarray, Double_t min, Double_t max, Bool_t fold, Bool_t group);
    TH2D* Modify2DSlice(TH2* hst, Bool_t fold, Bool_t group);
    TH1D* IntegralSlices(TH2* hst, Double_t min, Double_t max);
    TH1D* FitSlices(TH2* hst, TPeak* peak, Bool_t visualization);
@@ -156,7 +156,7 @@ public:
    Int_t GenerateModifiedMaps(Bool_t fold, Bool_t group);
    std::vector<Int_t> GenerateModifiedIndices(Bool_t fold, Bool_t group);
    std::vector<Double_t> GenerateModifiedAngles(Bool_t fold, Bool_t group);
-   std::vector<Int_t> GenerateModifiedWeights(std::vector<Int_t>& index, std::vector<Int_t>& weights);
+   std::vector<Int_t> GenerateModifiedWeights(std::vector<Int_t>& modindices, std::vector<Int_t>& weights);
    static std::vector<Int_t> GenerateFoldedIndices(std::vector<Double_t>& folds, std::vector<Double_t>& anglemap);
    static std::vector<Double_t> GenerateFoldedAngles(std::vector<Double_t>& anglemap);
    void ClearModifiedMaps();

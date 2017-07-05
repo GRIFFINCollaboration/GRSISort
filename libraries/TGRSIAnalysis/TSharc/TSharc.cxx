@@ -182,7 +182,7 @@ void TSharc::Clear(Option_t* option)
    fBackFragments.clear();  //!
    fPadFragments.clear();   //!
 
-   if(!strcmp(option, "ALL")) {
+   if(strcmp(option, "ALL") == 0) {
       fXoffset = 0.00;
       fYoffset = 0.00;
       fZoffset = 0.00;
@@ -193,7 +193,6 @@ void TSharc::Clear(Option_t* option)
 void TSharc::Print(Option_t*) const
 {
    printf("not yet written...\n");
-   return;
 }
 
 void TSharc::Copy(TObject& rhs) const
@@ -283,9 +282,8 @@ double TSharc::GetDetectorThickness(TSharcHit& hit, double dist)
 
    if(hit.GetDetector() >= 5 && hit.GetDetector() <= 12) {
       return dist / (TMath::Sin(hit.GetPosition().Theta()) * TMath::Cos(phi_45));
-   } else {
-      return std::fabs(dist / (TMath::Cos(hit.GetPosition().Theta())));
    }
+   return std::fabs(dist / (TMath::Cos(hit.GetPosition().Theta())));
 }
 
 double TSharc::GetDeadLayerThickness(TSharcHit& hit)

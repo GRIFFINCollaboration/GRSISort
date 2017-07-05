@@ -14,7 +14,7 @@ ClassImp(TTimeCal)
 
 void TTimeCal::WriteToChannel() const
 {
-   if(!GetChannel()) {
+   if(GetChannel() == nullptr) {
       Error("WriteToChannel", "No Channel Set");
       return;
    }
@@ -42,7 +42,7 @@ void TTimeCal::SetParameter(Int_t, Double_t)
 
 void TTimeCal::ReadFromChannel()
 {
-   if(!GetChannel()) {
+   if(GetChannel() == nullptr) {
       Error("ReadFromChannel", "No Channel Set");
       return;
    }
@@ -51,7 +51,7 @@ void TTimeCal::ReadFromChannel()
 
 void TTimeCal::Print(Option_t*) const
 {
-   if(GetChannel()) {
+   if(GetChannel() != nullptr) {
       printf("Channel Number: %u\n", GetChannel()->GetNumber());
    } else {
       printf("Channel Number: NOT SET\n");
@@ -64,7 +64,7 @@ void TTimeCal::Print(Option_t*) const
 
 std::vector<Double_t> TTimeCal::GetParameters() const
 {
-   if(!fParameters.size()) {
+   if(fParameters.empty()) {
       Error("GetParameters", "No Parameters Set");
    }
 
@@ -75,8 +75,7 @@ Double_t TTimeCal::GetParameter(size_t parameter) const
 {
    if(parameter < fParameters.size()) {
       return fParameters[parameter];
-   } else {
-      Error("Get Parameter", "Parameter Does not exist");
-      return 0;
    }
+   Error("Get Parameter", "Parameter Does not exist");
+   return 0;
 }

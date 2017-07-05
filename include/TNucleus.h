@@ -24,11 +24,11 @@ private:
    // static std::string masspath;
 
 public:
-   TNucleus(){};                 // Should not be use, here so we can write things to a root file.
-   TNucleus(const char* symbol); // Creates a nucleus based on symbol and sets all parameters from mass.dat
-   TNucleus(int Z, int N, double mass, const char* symbol); // Creates a nucleus with Z, N, mass, and symbol
+   TNucleus(){};               // Should not be use, here so we can write things to a root file.
+   TNucleus(const char* name); // Creates a nucleus based on symbol and sets all parameters from mass.dat
+   TNucleus(int charge, int neutrons, double mass, const char* symbol); // Creates a nucleus with Z, N, mass, and symbol
    TNucleus(
-      int Z, int N,
+      int charge, int neutrons,
       const char* MassFile = nullptr); // Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
 
    ~TNucleus() override;

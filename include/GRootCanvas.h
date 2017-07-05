@@ -99,13 +99,13 @@ private:
    void CreateCanvas(const char* name);
    void CreateEditor();
 
-   Bool_t HandleContainerButton(Event_t* ev);
-   Bool_t HandleContainerDoubleClick(Event_t* ev);
+   Bool_t HandleContainerButton(Event_t* event);
+   Bool_t HandleContainerDoubleClick(Event_t* event);
    Bool_t HandleContainerConfigure(Event_t* ev);
-   Bool_t HandleContainerKey(Event_t* ev);
-   Bool_t HandleContainerMotion(Event_t* ev);
-   Bool_t HandleContainerExpose(Event_t* ev);
-   Bool_t HandleContainerCrossing(Event_t* ev);
+   Bool_t HandleContainerKey(Event_t* event);
+   Bool_t HandleContainerMotion(Event_t* event);
+   Bool_t HandleContainerExpose(Event_t* event);
+   Bool_t HandleContainerCrossing(Event_t* event);
 
    Bool_t HandleDNDDrop(TDNDData* data) override;
    Atom_t HandleDNDPosition(Int_t x, Int_t y, Atom_t action, Int_t xroot, Int_t yroot) override;
@@ -131,7 +131,7 @@ public:
    void   RaiseWindow() override;
    void SetWindowPosition(Int_t x, Int_t y) override;
    void SetWindowSize(UInt_t w, UInt_t h) override;
-   void SetWindowTitle(const char* newTitle) override;
+   void SetWindowTitle(const char* title) override;
    void SetCanvasSize(UInt_t w, UInt_t h) override;
    void SetStatusText(const char* txt = nullptr, Int_t partidx = 0) override;
 

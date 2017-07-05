@@ -94,11 +94,7 @@ static bool StayUp(int milliSec)
    }
    ctv.tv_sec = tv.tv_sec - dtv.tv_sec;
 
-   if(ctv.tv_sec < 0) {
-      return false;
-   }
-
-   return true;
+   return ctv.tv_sec >= 0;
 }
 
 static void Sleep(int milliSec)
@@ -121,7 +117,7 @@ static Pixmap GetRootLogo()
 
    Pixmap  logo    = 0;
    Screen* xscreen = XDefaultScreenOfDisplay(gDisplay);
-   if(!xscreen) {
+   if(xscreen == nullptr) {
       return logo;
    }
 
@@ -165,7 +161,7 @@ static Pixmap GetRootLogo()
 // snprintf(file, sizeof(file), "%s/icons/Splash.xpm", getenv("ROOTSYS"));
 #endif
    // printf("test 3\n");
-   int ret = XpmReadFileToPixmap(gDisplay, gLogoWindow, (char*)file.c_str(), &logo, nullptr, &attr);
+   int ret = XpmReadFileToPixmap(gDisplay, gLogoWindow, const_cast<char*>(file.c_str()), &logo, nullptr, &attr);
    // printf("test 4\n");
    XpmFreeAttributes(&attr);
    // printf("test 5\n");
@@ -178,7 +174,7 @@ static Pixmap GetRootLogo()
 
    printf("rootx xpm error: %s\n", XpmGetErrorString(ret));
 
-   if(logo) {
+   if(logo != 0u) {
       XFreePixmap(gDisplay, logo);
    }
    logo = 0;
@@ -201,13 +197,13 @@ static void ReadContributors()
    gContributors = nullptr;
 
    FILE* f = fopen(buf, "r");
-   if(!f) {
+   if(f == nullptr) {
       return;
    }
 
    int cnt = 0;
-   while(fgets(buf, sizeof(buf), f)) {
-      if(!strncmp(buf, "N: ", 3)) {
+   while(fgets(buf, sizeof(buf), f) != nullptr) {
+      if(strncmp(buf, "N: ", 3) == 0) {
          cnt++;
       }
    }
@@ -215,8 +211,8 @@ static void ReadContributors()
 
    cnt = 0;
    rewind(f);
-   while(fgets(buf, sizeof(buf), f)) {
-      if(!strncmp(buf, "N: ", 3)) {
+   while(fgets(buf, sizeof(buf), f) != nullptr) {
+      if(strncmp(buf, "N: ", 3) == 0) {
          int len      = strlen(buf);
          buf[len - 1] = 0; // remove \n
          len -= 3;         // remove "N: "
@@ -259,12 +255,12 @@ static int DrawCreditItem(const char* creditItem, const char** members, int y, b
    int  lineSpacing = gFont->max_bounds.ascent + gFont->max_bounds.descent;
 
    strlcpy(credit, creditItem, sizeof(credit));
-   for(i = 0; members && members[i]; i++) {
+   for(i = 0; (members != nullptr) && (members[i] != nullptr); i++) {
       if(i != 0) {
          strlcat(credit, ", ", sizeof(credit));
       }
       if(XTextWidth(gFont, credit, strlen(credit)) + XTextWidth(gFont, members[i], strlen(members[i])) >
-         (int)gCreditsWidth) {
+         static_cast<int>(gCreditsWidth)) {
          if(draw) {
             XDrawString(gDisplay, gCreditsPixmap, gGC, 0, y, credit, strlen(credit));
          }
@@ -287,7 +283,7 @@ static int DrawCredits(bool draw, bool)
 
    // printf("here 1 \n");
 
-   if(!gFont) {
+   if(gFont == nullptr) {
       return 150; // size not important no text will be drawn anyway
    }
 
@@ -329,7 +325,7 @@ void PopupLogo(bool about)
    // Popup logo, waiting till ROOT is ready to run.
    // printf("here 8\n");
    gDisplay = XOpenDisplay("");
-   if(!gDisplay) {
+   if(gDisplay == nullptr) {
       return;
    }
 
@@ -347,7 +343,7 @@ void PopupLogo(bool about)
    gLogoPixmap = GetRootLogo();
    // printf("here 9.5    gLogoPixmap = %i\n",gLogoPixmap);
 
-   if(!gLogoPixmap) {
+   if(gLogoPixmap == 0u) {
       XCloseDisplay(gDisplay);
       gDisplay = nullptr;
       return;
@@ -361,7 +357,7 @@ void PopupLogo(bool about)
 
    Screen* xscreen = XDefaultScreenOfDisplay(gDisplay);
 
-   if(!xscreen) {
+   if(xscreen == nullptr) {
       XCloseDisplay(gDisplay);
       gDisplay = nullptr;
       return;
@@ -381,17 +377,17 @@ void PopupLogo(bool about)
 
    gGC   = XCreateGC(gDisplay, gLogoWindow, 0, nullptr);
    gFont = XLoadQueryFont(gDisplay, "-adobe-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-1");
-   if(!gFont) {
+   if(gFont == nullptr) {
       printf("Couldn't find font \"-adobe-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-1\",\n"
              "trying \"fixed\". Please fix your system so helvetica can be found, \n"
              "this font typically is in the rpm (or pkg equivalent) package \n"
              "XFree86-[75,100]dpi-fonts or fonts-xorg-[75,100]dpi.\n");
       gFont = XLoadQueryFont(gDisplay, "fixed");
-      if(!gFont) {
+      if(gFont == nullptr) {
          printf("Also couln't find font \"fixed\", your system is terminally misconfigured.\n");
       }
    }
-   if(gFont) {
+   if(gFont != nullptr) {
       XSetFont(gDisplay, gGC, gFont->fid);
    }
    XSetForeground(gDisplay, gGC, fore);
@@ -420,7 +416,7 @@ void WaitLogo()
    // Main event loop waiting till time arrives to pop down logo
    // or when forced by button press event.
 
-   if(!gDisplay) {
+   if(gDisplay == nullptr) {
       return;
    }
 
@@ -437,7 +433,7 @@ void WaitLogo()
       break;
 
       XEvent event{};
-      if(XCheckMaskEvent(gDisplay, ButtonPressMask | ExposureMask, &event)) {
+      if(XCheckMaskEvent(gDisplay, ButtonPressMask | ExposureMask, &event) != 0) {
          switch(event.type) {
          case Expose:
             if(event.xexpose.count == 0) {
@@ -447,7 +443,7 @@ void WaitLogo()
             break;
          case ButtonPress:
             if(gAbout && event.xbutton.button == 3) {
-               stopScroll = stopScroll ? false : true;
+               stopScroll = !stopScroll;
             } else {
                gDone = true;
             }
@@ -467,7 +463,7 @@ void WaitLogo()
             Sleep(2000);
          }
          ypos++;
-         if(ypos > (int)(gCreditsHeight - gCreditsRect.height - 50)) {
+         if(ypos > static_cast<int>(gCreditsHeight - gCreditsRect.height - 50)) {
             ypos = -int(gCreditsRect.height);
          }
          ScrollCredits(ypos);
@@ -475,28 +471,28 @@ void WaitLogo()
       }
    }
 
-   if(gLogoWindow) {
+   if(gLogoWindow != 0u) {
       XUnmapWindow(gDisplay, gLogoWindow);
       XDestroyWindow(gDisplay, gLogoWindow);
       gLogoWindow = 0;
    }
-   if(gLogoPixmap) {
+   if(gLogoPixmap != 0u) {
       XFreePixmap(gDisplay, gLogoPixmap);
       gLogoPixmap = 0;
    }
-   if(gCreditsPixmap) {
+   if(gCreditsPixmap != 0u) {
       XFreePixmap(gDisplay, gCreditsPixmap);
       gCreditsPixmap = 0;
    }
-   if(gFont) {
+   if(gFont != nullptr) {
       XFreeFont(gDisplay, gFont);
       gFont = nullptr;
    }
-   if(gGC) {
+   if(gGC != nullptr) {
       XFreeGC(gDisplay, gGC);
       gGC = nullptr;
    }
-   if(gDisplay) {
+   if(gDisplay != nullptr) {
       XSync(gDisplay, False);
       XCloseDisplay(gDisplay);
       gDisplay = nullptr;
@@ -514,7 +510,7 @@ void CloseDisplay()
 {
    // Close connection to X server (called by child).
 
-   if(gDisplay) {
+   if(gDisplay != nullptr) {
       close(ConnectionNumber(gDisplay));
    }
 }

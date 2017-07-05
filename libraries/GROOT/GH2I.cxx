@@ -56,7 +56,7 @@ void GH2I::Copy(TObject& obj) const
 TObject* GH2I::Clone(const char* newname) const
 {
    std::string name = newname;
-   if(!name.length()) {
+   if(name.length() == 0u) {
       name = Form("%s_clone", GetName());
    }
    return TH2::Clone(name.c_str());

@@ -31,8 +31,8 @@ void TGRSIFit::Copy(TObject& obj) const
 void TGRSIFit::Print(Option_t* opt) const
 {
    if(strchr(opt, '+') != nullptr) {
-      printf("Params Init: %d\n", fInitFlag);
-      printf("Good Fit:    %d\n", fGoodFitFlag);
+      printf("Params Init: %d\n", static_cast<int>(fInitFlag));
+      printf("Good Fit:    %d\n", static_cast<int>(fGoodFitFlag));
       TNamed::Print(opt);
    }
 }
@@ -53,7 +53,7 @@ void TGRSIFit::ClearParameters(Option_t*)
 
 void TGRSIFit::CopyParameters(TF1* copy) const
 {
-   if(!copy) {
+   if(copy == nullptr) {
       return;
    }
    for(int i = 0; i < GetNpar(); ++i) {
@@ -80,16 +80,16 @@ Bool_t TGRSIFit::AddToGlobalList(Bool_t on)
       // TF1*  old = static_cast<TF1*>( gROOT->GetListOfFunctions()->FindObject(GetName()) );
       // if (old) gROOT->GetListOfFunctions()->Remove(old);
       return false;
-   } else {
-      // if previous status was on and now is off
-      TF1* old = static_cast<TF1*>(gROOT->GetListOfFunctions()->FindObject(this));
-      if(!old) {
-         // Warning("AddToGlobalList","Function is supposed to be in the global list but it is not present");
-         return false;
-      }
-      gROOT->GetListOfFunctions()->Remove(this);
-      return true;
    }
+   // if previous status was on and now is off
+   TF1* old = static_cast<TF1*>(gROOT->GetListOfFunctions()->FindObject(this));
+   if(old == nullptr) {
+      // Warning("AddToGlobalList","Function is supposed to be in the global list but it is not present");
+      return false;
+   }
+   gROOT->GetListOfFunctions()->Remove(this);
+   return true;
+
    return true;
 }
 
@@ -111,15 +111,15 @@ Bool_t TGRSIFit::AddToGlobalList(TF1* func, Bool_t on)
       // TF1*  old = static_cast<TF1*>( gROOT->GetListOfFunctions()->FindObject(GetName()) );
       // if(old) gROOT->GetListOfFunctions()->Remove(old);
       return false;
-   } else {
-      // if previous status was on and now is off
-      TF1* old = static_cast<TF1*>(gROOT->GetListOfFunctions()->FindObject(func));
-      if(!old) {
-         // func->Warning("AddToGlobalList","Function is supposed to be in the global list but it is not present");
-         return false;
-      }
-      gROOT->GetListOfFunctions()->Remove(func);
-      return true;
    }
+   // if previous status was on and now is off
+   TF1* old = static_cast<TF1*>(gROOT->GetListOfFunctions()->FindObject(func));
+   if(old == nullptr) {
+      // func->Warning("AddToGlobalList","Function is supposed to be in the global list but it is not present");
+      return false;
+   }
+   gROOT->GetListOfFunctions()->Remove(func);
+   return true;
+
    return true;
 }

@@ -23,7 +23,7 @@ public:
    ~TGRSISortList() override = default;
 
    Bool_t AddSortInfo(TGRSISortInfo* info, Option_t* opt = "");
-   Bool_t AddSortList(TGRSISortList* rhsList, Option_t* opt = "");
+   Bool_t AddSortList(TGRSISortList* rhslist, Option_t* opt = "");
    TGRSISortInfo* GetSortInfo(Int_t RunNumber, Int_t SubRunNumber);
    Long64_t Merge(TCollection* list);
 

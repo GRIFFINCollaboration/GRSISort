@@ -77,7 +77,7 @@ TPPG::~TPPG()
    PPGMap_t::iterator ppgit;
    if(fPPGStatusMap != nullptr) {
       for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
-         if(ppgit->second) {
+         if(ppgit->second != nullptr) {
             delete(ppgit->second);
          }
          ppgit->second = nullptr;
@@ -109,9 +109,9 @@ void TPPG::Copy(TObject& obj) const
 
    // We want to provide a copy of each of the data in the PPG rather than a copy of the pointer
    if(static_cast<TPPG&>(obj).fPPGStatusMap != nullptr && fPPGStatusMap != nullptr) {
-      for(auto ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
-         if(ppgit->second != nullptr) {
-            static_cast<TPPG&>(obj).AddData(ppgit->second);
+      for(auto& ppgit : *fPPGStatusMap) {
+         if(ppgit.second != nullptr) {
+            static_cast<TPPG&>(obj).AddData(ppgit.second);
          }
       }
       static_cast<TPPG&>(obj).fCurrIterator = static_cast<TPPG&>(obj).fPPGStatusMap->begin();
@@ -125,9 +125,8 @@ Bool_t TPPG::MapIsEmpty() const
    /// is empty when only the default is there, which it essentially is.
    if(fPPGStatusMap->size() == 1) { // We check for size 1 because we always start with a Junk event at time 0.
       return true;
-   } else {
-      return false;
    }
+   return false;
 }
 
 void TPPG::AddData(TPPGData* pat)
@@ -167,7 +166,7 @@ ULong64_t TPPG::GetLastStatusTime(ULong64_t time, ppg_pattern pat, bool exact_fl
          } else {
             //	printf("pat %x, ppg_it->first %lu, ppg_it->second->GetNewPPG()
             //%x\n",pat,ppg_it->first,ppg_it->second->GetNewPPG());
-            if(pat & ppg_it->second->GetNewPPG()) {
+            if((pat & ppg_it->second->GetNewPPG()) != 0) {
                return ppg_it->first;
             }
          }
@@ -185,7 +184,7 @@ uint16_t TPPG::GetStatus(ULong64_t time) const
    }
    // The upper_bound and lower_bound functions always return an iterator to the NEXT map element. We back off by one
    // because we want to know what the last PPG event was.
-   return (uint16_t)((--(fPPGStatusMap->upper_bound(time)))->second->GetNewPPG());
+   return ((--(fPPGStatusMap->upper_bound(time)))->second->GetNewPPG());
 }
 
 void TPPG::Print(Option_t* opt) const
@@ -317,7 +316,7 @@ void TPPG::Clear(Option_t*)
    if(fPPGStatusMap != nullptr) {
       PPGMap_t::iterator ppgit;
       for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
-         if(ppgit->second) {
+         if(ppgit->second != nullptr) {
             delete(ppgit->second);
          }
          ppgit->second = nullptr;
@@ -352,7 +351,7 @@ void TPPG::Setup()
          new TFile(Form("fragment%05d_%03d.root", TGRSIRunInfo::RunNumber(), TGRSIRunInfo::SubRunNumber() - 1));
       if(prevSubRun->IsOpen()) {
          TPPG* prev_ppg = static_cast<TPPG*>(prevSubRun->Get("TPPG"));
-         if(prev_ppg) {
+         if(prev_ppg != nullptr) {
             prev_ppg->Copy(*this);
             printf("Found previous PPG data from run %s\n", prevSubRun->GetName());
          } else {
@@ -467,20 +466,18 @@ const TPPGData* TPPG::Next()
 {
    if(++fCurrIterator != MapEnd()) {
       return fCurrIterator->second;
-   } else {
-      printf("Already at last PPG\n");
-      return nullptr;
    }
+   printf("Already at last PPG\n");
+   return nullptr;
 }
 
 const TPPGData* TPPG::Previous()
 {
    if(fCurrIterator != MapBegin()) {
       return (--fCurrIterator)->second;
-   } else {
-      printf("Already at first PPG\n");
-      return nullptr;
    }
+   printf("Already at first PPG\n");
+   return nullptr;
 }
 
 const TPPGData* TPPG::Last()
@@ -548,7 +545,7 @@ Long64_t TPPG::Merge(TCollection* list)
    TIter it(list);
    TPPG* ppg = nullptr;
 
-   while((ppg = static_cast<TPPG*>(it.Next()))) {
+   while((ppg = static_cast<TPPG*>(it.Next())) != nullptr) {
       *this += *ppg;
    }
 
@@ -570,7 +567,7 @@ void TPPG::Add(const TPPG* ppg)
 {
    PPGMap_t::iterator ppgit;
    for(ppgit = ppg->MapBegin(); ppgit != ppg->MapEnd(); ++ppgit) {
-      if(ppgit->second) {
+      if(ppgit->second != nullptr) {
          AddData(ppgit->second);
       }
    }

@@ -144,7 +144,7 @@ Int_t TTigress::GetAddbackMultiplicity()
 {
    // Automatically builds the addback hits using the addback_criterion
    // (if the size of the addback_hits vector is zero) and return the number of addback hits.
-   if(fTigressHits.size() == 0) {
+   if(fTigressHits.empty()) {
       return 0;
    }
    // if the addback has been reset, clear the addback hits
@@ -189,11 +189,10 @@ TTigressHit* TTigress::GetAddbackHit(const int& i)
    /// This automatically calculates all addback hits if they haven't been calculated before.
    if(i < GetAddbackMultiplicity()) {
       return &fAddbackHits.at(i);
-   } else {
-      std::cerr<<"Addback hits are out of range"<<std::endl;
-      throw grsi::exit_exception(1);
-      return nullptr;
    }
+   std::cerr<<"Addback hits are out of range"<<std::endl;
+   throw grsi::exit_exception(1);
+   return nullptr;
 }
 
 void TTigress::BuildHits()
@@ -265,20 +264,18 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
             if(chan->GetMnemonic()->OutputSensor() == TMnemonic::kB) {
                if(hit->GetName()[9] == 'a') {
                   return;
-               } else {
-                  hit->CopyFragment(*frag);
-                  if(TestGlobalBit(kSetCoreWave)) {
-                     frag->CopyWave(*hit);
-                  }
-                  return;
                }
-            } else {
                hit->CopyFragment(*frag);
                if(TestGlobalBit(kSetCoreWave)) {
                   frag->CopyWave(*hit);
                }
                return;
             }
+            hit->CopyFragment(*frag);
+            if(TestGlobalBit(kSetCoreWave)) {
+               frag->CopyWave(*hit);
+            }
+            return;
          }
       }
       corehit.CopyFragment(*frag);
@@ -288,7 +285,8 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
       fTigressHits.push_back(corehit);
       return;
       //} else if(chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) { // its ge but its not a core...
-   } else if(chan->GetMnemonic()->SubSystem() == TMnemonic::kG) { // its ge but its not a core...
+   }
+   if(chan->GetMnemonic()->SubSystem() == TMnemonic::kG) { // its ge but its not a core...
       TGRSIDetectorHit temp(*frag);
       for(size_t i = 0; i < fTigressHits.size(); ++i) {
          TTigressHit* hit = GetTigressHit(i);
@@ -315,7 +313,8 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
       //}
       return;
       // } else if(chan->GetMnemonic()->subsystem.compare(0,1,"S")==0) {
-   } else if(chan->GetMnemonic()->SubSystem() == TMnemonic::kS) {
+   }
+   if(chan->GetMnemonic()->SubSystem() == TMnemonic::kS) {
       TBgoHit temp(*frag);
       fBgos.push_back(temp);
       return;
@@ -323,7 +322,6 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
    // if not suprress errors;
    printf(ALERTTEXT "failed to build!" RESET_COLOR "\n");
    frag->Print();
-   return;
 }
 
 void TTigress::ResetAddback()
@@ -343,9 +341,8 @@ UShort_t TTigress::GetNAddbackFrags(size_t idx) const
    // with index idx.
    if(idx < fAddbackFrags.size()) {
       return fAddbackFrags.at(idx);
-   } else {
-      return 0;
    }
+   return 0;
 }
 
 // void TTigress::DopplerCorrect(TTigressHit *hit)  {

@@ -48,7 +48,7 @@ public:
    Short_t GetHighGainMultiplicity() const { return fGriffinHighGainHits.size(); }
    Int_t   GetMultiplicity() const { return GetMultiplicity(GetDefaultGainType()); }
 
-   static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
+   static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double dist = 110.0); //!<!
    static const char* GetColorFromNumber(Int_t number);
 #ifndef __CINT__
    void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
@@ -134,7 +134,7 @@ public:
    //		static const Double_t gStrongCT[2];   //!<!
    //		static const Double_t gWeakCT[2]; //!<!
    //		static const Double_t gCrossTalkPar[2][4][4]; //!<!
-   static Double_t CTCorrectedEnergy(const TGriffinHit* const energy_to_correct, const TGriffinHit* const other_energy,
+   static Double_t CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, const TGriffinHit* const other_hit,
                                      Bool_t time_constraint = true);
    Bool_t IsCrossTalkSet(const Int_t& gain_type) const;
    void FixLowGainCrossTalk();

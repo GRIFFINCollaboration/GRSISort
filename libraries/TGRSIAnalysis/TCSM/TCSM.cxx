@@ -141,11 +141,12 @@ TVector3 TCSM::GetPosition(int detector, char pos, int horizontalstrip, int vert
 void TCSM::BuildVH(std::vector<std::vector<std::pair<TFragment, TMnemonic>>>& strips, std::vector<TCSMHit>& hitVector)
 {
    /// Build hits from horizontal (index = 0) and vertical (index = 1) strips into the hitVector
-   if(strips[0].size() == 0 && strips[1].size() == 0) {
+   if(strips[0].empty() && strips[1].empty()) {
       return;
-   } else if(strips[0].size() == 1 && strips[1].size() == 0) {
+   }
+   if(strips[0].size() == 1 && strips[1].empty()) {
       RecoverHit('H', strips[0][0], hitVector);
-   } else if(strips[0].size() == 0 && strips[1].size() == 1) {
+   } else if(strips[0].empty() && strips[1].size() == 1) {
       RecoverHit('V', strips[1][0], hitVector);
    } else if(strips[0].size() == 1 && strips[1].size() == 1) {
       hitVector.push_back(MakeHit(strips[0][0], strips[1][0]));
@@ -252,7 +253,7 @@ TCSMHit TCSM::MakeHit(std::vector<std::pair<TFragment, TMnemonic>>& hhV,
 {
    TCSMHit csmHit;
 
-   if(hhV.size() == 0 || vvV.size() == 0) {
+   if(hhV.empty() || vvV.empty()) {
       std::cerr<<"\tSomething is wrong, empty vector in MakeHit"<<std::endl;
    }
 
@@ -384,18 +385,19 @@ void TCSM::BuilddEE(std::vector<std::vector<TCSMHit>>& hitVec, std::vector<TCSMH
 
 void TCSM::MakedEE(std::vector<TCSMHit>& DHitVec, std::vector<TCSMHit>& EHitVec, std::vector<TCSMHit>& BuiltHits)
 {
-   if(DHitVec.size() == 0 && EHitVec.size() == 0) {
+   if(DHitVec.empty() && EHitVec.empty()) {
       return;
-   } else if(DHitVec.size() == 1 && EHitVec.size() == 0) {
+   }
+   if(DHitVec.size() == 1 && EHitVec.empty()) {
       BuiltHits.push_back(DHitVec.at(0));
-   } else if(DHitVec.size() == 0 && EHitVec.size() == 1) {
+   } else if(DHitVec.empty() && EHitVec.size() == 1) {
       BuiltHits.push_back(EHitVec.at(0));
    } else if(DHitVec.size() == 1 && EHitVec.size() == 1) {
       BuiltHits.push_back(CombineHits(DHitVec.at(0), EHitVec.at(0)));
-   } else if(DHitVec.size() == 2 && EHitVec.size() == 0) {
+   } else if(DHitVec.size() == 2 && EHitVec.empty()) {
       BuiltHits.push_back(DHitVec.at(0));
       BuiltHits.push_back(DHitVec.at(1));
-   } else if(DHitVec.size() == 0 && EHitVec.size() == 2) {
+   } else if(DHitVec.empty() && EHitVec.size() == 2) {
       BuiltHits.push_back(EHitVec.at(0));
       BuiltHits.push_back(EHitVec.at(1));
    } else if(DHitVec.size() == 2 && EHitVec.size() == 1) {
@@ -455,7 +457,7 @@ void TCSM::MakedEE(std::vector<TCSMHit>& DHitVec, std::vector<TCSMHit>& EHitVec,
 void TCSM::OldBuilddEE(std::vector<TCSMHit>& DHitVec, std::vector<TCSMHit>& EHitVec, std::vector<TCSMHit>& BuiltHits)
 {
    bool printbit = false;
-   if(DHitVec.size() == 0 && EHitVec.size() == 0) { // Why am I even here?!
+   if(DHitVec.empty() && EHitVec.empty()) { // Why am I even here?!
       return;
    }
 

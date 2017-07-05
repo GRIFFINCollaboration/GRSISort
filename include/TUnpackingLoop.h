@@ -40,7 +40,7 @@ public:
    {
       return fParser.AddGoodOutputQueue(maxSize);
    }
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& BadOutputQueue()
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>& BadOutputQueue()
    {
       return fParser.BadOutputQueue();
    }

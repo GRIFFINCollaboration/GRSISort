@@ -30,7 +30,6 @@ void TPacesHit::Copy(TObject& rhs) const
 {
    TGRSIDetectorHit::Copy(rhs);
    static_cast<TPacesHit&>(rhs).fFilter = fFilter;
-   return;
 }
 
 bool TPacesHit::InFilter(Int_t)

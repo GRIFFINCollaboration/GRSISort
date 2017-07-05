@@ -166,10 +166,9 @@ TVector3 TDescant::GetPosition(int DetNbr, double dist)
       TVector3 temp_pos(gAncillaryPosition[DetNbr]);
       temp_pos.SetMag(dist);
       return temp_pos;
-   } else {
-      if(DetNbr > 70) {
-         return TVector3(0, 0, 1);
-      }
-      return gPosition[DetNbr];
    }
+   if(DetNbr > 70) {
+      return TVector3(0, 0, 1);
+   }
+   return gPosition[DetNbr];
 }

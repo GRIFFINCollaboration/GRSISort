@@ -37,7 +37,7 @@ GPeak::GPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t*)
    fBGFit.SetLineStyle(2);
    fBGFit.SetLineColor(kBlack);
 
-   SetName(Form("Chan%d_%d_to_%d", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh)));
+   SetName(Form("Chan%d_%d_to_%d", static_cast<Int_t>(cent), static_cast<Int_t>(xlow), static_cast<Int_t>(xhigh)));
    InitNames();
    TF1::SetParameter("centroid", cent);
 
@@ -65,11 +65,11 @@ GPeak::GPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* bg, Option_t*)
       }
    }
    TF1::SetRange(xlow, xhigh);
-   SetName(Form("Chan%d_%d_to_%d", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh)));
+   SetName(Form("Chan%d_%d_to_%d", static_cast<Int_t>(cent), static_cast<Int_t>(xlow), static_cast<Int_t>(xhigh)));
    InitNames();
    TF1::SetParameter("centroid", cent);
 
-   if(bg) {
+   if(bg != nullptr) {
       fBGFit.Clear();
       fBGFit.Copy(*bg);
    } else {
@@ -171,7 +171,7 @@ void GPeak::Copy(TObject& obj) const
 
 bool GPeak::InitParams(TH1* fithist)
 {
-   if(!fithist) {
+   if(fithist == nullptr) {
       printf("No histogram is associated yet, no initial guesses made\n");
       return false;
    }
@@ -261,7 +261,7 @@ bool GPeak::InitParams(TH1* fithist)
 
 Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
 {
-   if(!fithist) {
+   if(fithist == nullptr) {
       return false;
    }
    TString options = opt;
@@ -283,7 +283,7 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    TFitResultPtr fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
 
    // fitres.Get()->Print();
-   printf("chi^2/NDF = %.02f\n", GetChisquare() / (double)GetNDF());
+   printf("chi^2/NDF = %.02f\n", GetChisquare() / static_cast<double>(GetNDF()));
 
    if(!fitres.Get()->IsValid()) {
       printf(RED "fit has failed, trying refit... " RESET_COLOR);

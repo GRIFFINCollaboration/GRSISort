@@ -42,7 +42,7 @@ public:
    TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
    Int_t GetMultiplicity() const;
 
-   static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
+   static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double dist = 110.0); //!<!
 #ifndef __CINT__
    void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
@@ -98,7 +98,7 @@ public:
    static const Double_t gStrongCT[2];           //!<!
    static const Double_t gWeakCT[2];             //!<!
    static const Double_t gCrossTalkPar[2][4][4]; //!<!
-   static Double_t CTCorrectedEnergy(const TFippsHit* const energy_to_correct, const TFippsHit* const other_energy,
+   static Double_t CTCorrectedEnergy(const TFippsHit* const hit_to_correct, const TFippsHit* const other_hit,
                                      Bool_t time_constraint = true);
    Bool_t IsCrossTalkSet() const;
    void   FixCrossTalk();

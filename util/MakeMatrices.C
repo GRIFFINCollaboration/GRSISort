@@ -816,11 +816,11 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
 
 
       if(entry%25000 == 0) {
-         std::cout << "\t" << entry << " / " << entries << " = "<< (float)entry/entries*100.0 << "%. " << w->RealTime() << " seconds" << "\r" << std::flush;
+         std::cout<<"\t"<<entry<<" / "<<entries<<" = "<< (float)entry/entries*100.0<<"%. "<<w->RealTime()<<" seconds"<<"\r"<<std::flush;
          w->Continue();
       }
    }
-   std::cout << "\t" << entry << " / " << entries << " = "<< (float)entry/entries*100.0 << "%. " << w->RealTime() << " seconds" << std::endl;
+   std::cout<<"\t"<<entry<<" / "<<entries<<" = "<< (float)entry/entries*100.0<<"%. "<<w->RealTime()<<" seconds"<<std::endl;
    w->Continue();
 
    //create all background corrected matrices
@@ -931,7 +931,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
 #endif
 
    list->Sort();
-   std::cout << "creating histograms done after " << w->RealTime() << " seconds" << std::endl;
+   std::cout<<"creating histograms done after "<<w->RealTime()<<" seconds"<<std::endl;
    w->Continue();
    return list;
 }
@@ -977,7 +977,7 @@ int main(int argc, char **argv) {
       return 1;
    }
    
-   std::cout << argv[0] << ": starting MakeMatrices after " << w.RealTime() << " seconds" << std::endl;
+   std::cout<<argv[0]<<": starting MakeMatrices after "<<w.RealTime()<<" seconds"<<std::endl;
    w.Continue();
 
    //coinc window = 0-20, bg window 40-60, 6000 bins from 0. to 6000. (default is 4000)
@@ -994,7 +994,7 @@ int main(int argc, char **argv) {
    list->Write();
    outfile->Close();
 
-   std::cout << argv[0] << " done after " << w.RealTime() << " seconds" << std::endl;
+   std::cout<<argv[0]<<" done after "<<w.RealTime()<<" seconds"<<std::endl;
 
    return 0;
 }

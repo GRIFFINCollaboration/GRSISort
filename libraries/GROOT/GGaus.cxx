@@ -41,7 +41,7 @@ GGaus::GGaus(Double_t xlow, Double_t xhigh, TF1* bg, Option_t*) : TF1("gausbg", 
    // SetName(Form("gaus_%d_to_%d",(Int_t)(xlow),(Int_t)(xhigh)));
    InitNames();
 
-   if(bg) {
+   if(bg != nullptr) {
       fBGFit.Clear();
       fBGFit.Copy(*bg);
    } else {
@@ -117,7 +117,7 @@ void GGaus::Copy(TObject& obj) const
 
 bool GGaus::InitParams(TH1* fithist)
 {
-   if(!fithist) {
+   if(fithist == nullptr) {
       printf("No histogram is associated yet, no initial guesses made\n");
       return false;
    }
@@ -186,7 +186,7 @@ bool GGaus::InitParams(TH1* fithist)
 
 Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
 {
-   if(!fithist) {
+   if(fithist == nullptr) {
       return false;
    }
    TString options = opt;

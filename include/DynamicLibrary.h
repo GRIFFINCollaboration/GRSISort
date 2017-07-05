@@ -23,7 +23,7 @@ public:
         then this caching works against us.
       In this case, "unique_name" should be set to true.
     */
-   DynamicLibrary(std::string libname, bool unique_name = false);
+   DynamicLibrary(std::string libname_param, bool unique_name = false);
 
    /// Destructs the shared object library
    /**

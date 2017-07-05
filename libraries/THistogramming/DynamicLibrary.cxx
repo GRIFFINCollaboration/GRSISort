@@ -39,7 +39,7 @@ DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name) : fL
       fLibName = full_path(fLibName);
 
       int error = symlink(fLibName.c_str(), fTempName.c_str());
-      if(error) {
+      if(error != 0) {
          return;
          // throw RuntimeSymlinkCreation("Could not make temp symlink");
       }
@@ -48,7 +48,7 @@ DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name) : fL
       fLibrary = dlopen(fLibName.c_str(), RTLD_NOW);
    }
 
-   if(!fLibrary) {
+   if(fLibrary == nullptr) {
       return;
       // throw RuntimeFileNotFound(dlerror());
    }
@@ -56,9 +56,9 @@ DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name) : fL
 
 DynamicLibrary::~DynamicLibrary()
 {
-   if(fLibrary) {
+   if(fLibrary != nullptr) {
       dlclose(fLibrary);
-      if(fTempName.length()) {
+      if(fTempName.length() != 0u) {
          unlink(fTempName.c_str());
       }
    }

@@ -96,7 +96,7 @@ void TFippsHit::Add(const TFippsHit* hit)
 Double_t TFippsHit::GetNoCTEnergy(Option_t*) const
 {
    TChannel* chan = GetChannel();
-   if(!chan) {
+   if(chan == nullptr) {
       Error("GetEnergy", "No TChannel exists for address 0x%08x", GetAddress());
       return 0.;
    }

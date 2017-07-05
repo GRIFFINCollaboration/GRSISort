@@ -208,124 +208,124 @@ NRMat<T>::NRMat(const T& a, int n, int m) : nn(n), mm(m), v(new T*[n]())
 template <class T>
 NRMat<T>::NRMat(const T* a, int n, int m) : nn(n), mm(m), v(new T*[n]())
 {
-	int i, j;
-	v[0] = new T[m * n]();
-	for(i = 1; i < n; i++) {
-		v[i] = v[i - 1] + m;
-	}
-	for(i = 0; i < n; i++) {
-		for(j = 0; j < m; j++) {
-			v[i][j] = *a++;
-		}
-	}
+   int i, j;
+   v[0] = new T[m * n]();
+   for(i = 1; i < n; i++) {
+      v[i] = v[i - 1] + m;
+   }
+   for(i = 0; i < n; i++) {
+      for(j = 0; j < m; j++) {
+         v[i][j] = *a++;
+      }
+   }
 }
 
 template <class T>
 NRMat<T>::NRMat(const NRMat& rhs) : nn(rhs.nn), mm(rhs.mm), v(new T*[nn]())
 {
-	int i, j;
-	v[0] = new T[mm * nn]();
-	for(i = 1; i < nn; i++) {
-		v[i] = v[i - 1] + mm;
-	}
-	for(i = 0; i < nn; i++) {
-		for(j = 0; j < mm; j++) {
-			v[i][j] = rhs[i][j];
-		}
-	}
+   int i, j;
+   v[0] = new T[mm * nn]();
+   for(i = 1; i < nn; i++) {
+      v[i] = v[i - 1] + mm;
+   }
+   for(i = 0; i < nn; i++) {
+      for(j = 0; j < mm; j++) {
+         v[i][j] = rhs[i][j];
+      }
+   }
 }
 
 template <class T>
 NRMat<T>& NRMat<T>::operator=(const NRMat<T>& rhs)
-	// postcondition: normal assignment via copying has been performed;
-	//		if matrix and rhs were different sizes, matrix
-	//		has been resized to match the size of rhs
+// postcondition: normal assignment via copying has been performed;
+//		if matrix and rhs were different sizes, matrix
+//		has been resized to match the size of rhs
 {
-	if(this != &rhs) {
-		int i, j;
-		if(nn != rhs.nn || mm != rhs.mm) {
-			if(v != 0) {
-				delete[](v[0]);
-				delete[](v);
-			}
-			nn   = rhs.nn;
-			mm   = rhs.mm;
-			v    = new T*[nn];
-			v[0] = new T[mm * nn];
-		}
-		for(i = 1; i < nn; i++) {
-			v[i] = v[i - 1] + mm;
-		}
-		for(i = 0; i < nn; i++) {
-			for(j = 0; j < mm; j++) {
-				v[i][j] = rhs[i][j];
-			}
-		}
-	}
-	return *this;
+   if(this != &rhs) {
+      int i, j;
+      if(nn != rhs.nn || mm != rhs.mm) {
+         if(v != 0) {
+            delete[](v[0]);
+            delete[](v);
+         }
+         nn   = rhs.nn;
+         mm   = rhs.mm;
+         v    = new T*[nn];
+         v[0] = new T[mm * nn];
+      }
+      for(i = 1; i < nn; i++) {
+         v[i] = v[i - 1] + mm;
+      }
+      for(i = 0; i < nn; i++) {
+         for(j = 0; j < mm; j++) {
+            v[i][j] = rhs[i][j];
+         }
+      }
+   }
+   return *this;
 }
 
 template <class T>
 NRMat<T>& NRMat<T>::operator=(const T& a) // assign a to every element
 {
-	for(int i = 0; i < nn; i++) {
-		for(int j = 0; j < mm; j++) {
-			v[i][j] = a;
-		}
-	}
-	return *this;
+   for(int i = 0; i < nn; i++) {
+      for(int j = 0; j < mm; j++) {
+         v[i][j] = a;
+      }
+   }
+   return *this;
 }
 
 template <class T>
 inline T* NRMat<T>::operator[](const int i) // subscripting: pointer to row i
 {
-	return v[i];
+   return v[i];
 }
 
 template <class T>
 inline const T* NRMat<T>::operator[](const int i) const
 {
-	return v[i];
+   return v[i];
 }
 
 template <class T>
 inline int NRMat<T>::nrows() const
 {
-	return nn;
+   return nn;
 }
 
 template <class T>
 inline int NRMat<T>::ncols() const
 {
-	return mm;
+   return mm;
 }
 
 template <class T>
 NRMat<T>::~NRMat()
 {
-	if(v != nullptr) {
-		delete[](v[0]);
-		delete[](v);
-	}
+   if(v != nullptr) {
+      delete[](v[0]);
+      delete[](v);
+   }
 }
 
 template <class T>
 class NRMat3d {
 private:
-	int  nn;
-	int  mm;
-	int  kk;
-	T*** v;
+   int  nn;
+   int  mm;
+   int  kk;
+   T*** v;
 
 public:
-	NRMat3d();
-	NRMat3d(int n, int m, int k);
-	inline T** operator[](const int i); // subscripting: pointer to row i
-	inline const T* const* operator[](const int i) const;
-	inline int dim1() const;
-	inline int dim2() const;
-	inline int dim3() const;
-	~NRMat3d();
+   NRMat3d();
+   NRMat3d(int n, int m, int k);
+   inline T** operator[](const int i); // subscripting: pointer to row i
+   inline const T* const* operator[](const int i) const;
+   inline int dim1() const;
+   inline int dim2() const;
+   inline int dim3() const;
+   ~NRMat3d();
 };
 
 template <class T>
@@ -336,59 +336,59 @@ NRMat3d<T>::NRMat3d() : nn(0), mm(0), kk(0), v(0)
 template <class T>
 NRMat3d<T>::NRMat3d(int n, int m, int k) : nn(n), mm(m), kk(k), v(new T**[n])
 {
-	int i, j;
-	v[0]    = new T*[n * m];
-	v[0][0] = new T[n * m * k];
-	for(j = 1; j < m; j++) {
-		v[0][j] = v[0][j - 1] + k;
-	}
-	for(i = 1; i < n; i++) {
-		v[i]    = v[i - 1] + m;
-		v[i][0] = v[i - 1][0] + m * k;
-		for(j = 1; j < m; j++) {
-			v[i][j] = v[i][j - 1] + k;
-		}
-	}
+   int i, j;
+   v[0]    = new T*[n * m];
+   v[0][0] = new T[n * m * k];
+   for(j = 1; j < m; j++) {
+      v[0][j] = v[0][j - 1] + k;
+   }
+   for(i = 1; i < n; i++) {
+      v[i]    = v[i - 1] + m;
+      v[i][0] = v[i - 1][0] + m * k;
+      for(j = 1; j < m; j++) {
+         v[i][j] = v[i][j - 1] + k;
+      }
+   }
 }
 
 template <class T>
 inline T** NRMat3d<T>::operator[](const int i) // subscripting: pointer to row i
 {
-	return v[i];
+   return v[i];
 }
 
 template <class T>
 inline const T* const* NRMat3d<T>::operator[](const int i) const
 {
-	return v[i];
+   return v[i];
 }
 
 template <class T>
 inline int NRMat3d<T>::dim1() const
 {
-	return nn;
+   return nn;
 }
 
 template <class T>
 inline int NRMat3d<T>::dim2() const
 {
-	return mm;
+   return mm;
 }
 
 template <class T>
 inline int NRMat3d<T>::dim3() const
 {
-	return kk;
+   return kk;
 }
 
 template <class T>
 NRMat3d<T>::~NRMat3d()
 {
-	if(v != 0) {
-		delete[](v[0][0]);
-		delete[](v[0]);
-		delete[](v);
-	}
+   if(v != 0) {
+      delete[](v[0][0]);
+      delete[](v[0]);
+      delete[](v);
+   }
 }
 
 using Vec_I_BOOL = const NRVec<bool>;
@@ -473,138 +473,142 @@ using Vec_FSTREAM_p    = NRVec<std::fstream*>;
 template <class T>
 inline const T SQR(const T a)
 {
-	return a * a;
+   return a * a;
 }
 
 template <class T>
 inline const T MAX(const T& a, const T& b)
 {
-	return b > a ? (b) : (a);
+   return b > a ? (b) : (a);
 }
 
-inline float MAX(const double& a, const float& b) { return b > a ? (b) : float(a); }
+inline float MAX(const double& a, const float& b)
+{
+   return b > a ? (b) : float(a);
+}
 
-inline float MAX(const float& a, const double& b) { return b > a ? float(b) : (a); }
+inline float MAX(const float& a, const double& b)
+{
+   return b > a ? float(b) : (a);
+}
 
 template <class T>
 inline const T SIGN(const T& a, const T& b)
 {
-	return b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a);
+   return b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a);
 }
 
 inline float SIGN(const float& a, const double& b)
 {
-	return b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a);
+   return b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a);
 }
 
 inline float SIGN(const double& a, const float& b)
 {
-	return b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a);
+   return b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a);
 }
 
 template <class T>
-inline void SWAP(T & a, T & b)
+inline void SWAP(T& a, T& b)
 {
-	T dum = a;
-	a     = b;
-	b     = dum;
+   T dum = a;
+   a     = b;
+   b     = dum;
 }
 
 inline const std::complex<float> operator+(const double& a, const std::complex<float>& b)
 {
-	return float(a) + b;
+   return float(a) + b;
 }
 
 inline const std::complex<float> operator+(const std::complex<float>& a, const double& b)
 {
-	return a + float(b);
+   return a + float(b);
 }
 
 inline const std::complex<float> operator-(const double& a, const std::complex<float>& b)
 {
-	return float(a) - b;
+   return float(a) - b;
 }
 
 inline const std::complex<float> operator-(const std::complex<float>& a, const double& b)
 {
-	return a - float(b);
+   return a - float(b);
 }
 
 inline const std::complex<float> operator*(const double& a, const std::complex<float>& b)
 {
-	return float(a) * b;
+   return float(a) * b;
 }
 
 inline const std::complex<float> operator*(const std::complex<float>& a, const double& b)
 {
-	return a * float(b);
+   return a * float(b);
 }
 
 inline const std::complex<float> operator/(const double& a, const std::complex<float>& b)
 {
-	return float(a) / b;
+   return float(a) / b;
 }
 
 inline const std::complex<float> operator/(const std::complex<float>& a, const double& b)
 {
-	return a / float(b);
+   return a / float(b);
 }
 
 class TLMFitter : public TObject {
 public:
-	TLMFitter() : fIntegrationSteps(100), fInitChi2Number(3){};
-	~TLMFitter() override = default;
+   TLMFitter() : fIntegrationSteps(100), fInitChi2Number(3){};
+   ~TLMFitter() override = default;
 
 private:
-	int  fIntegrationSteps;
-	TH1* fHist{};
-	TF1* fFunction{};
-	int  fInitChi2Number;
-	int  fRangeMin{};
-	int  fRangeMax{};
+   int  fIntegrationSteps;
+   TH1* fHist{};
+   TF1* fFunction{};
+   int  fInitChi2Number;
+   int  fRangeMin{};
+   int  fRangeMax{};
 
 public:
-	template <class T>
-		class NRVec;
-	template <class T>
-		class NRMat;
-	template <class T>
-		class NRMat3d;
+   template <class T>
+   class NRVec;
+   template <class T>
+   class NRMat;
+   template <class T>
+   class NRMat3d;
 
 public:
-	void Fit(TH1* hist, TF1* function);
+   void Fit(TH1* hist, TF1* func);
 
 protected:
-	void SetFitterRange(int min, int max)
-	{
-		fRangeMin = min;
-		fRangeMax = max;
-	}
+   void SetFitterRange(int min, int max)
+   {
+      fRangeMin = min;
+      fRangeMax = max;
+   }
 
-	inline void nrerror(const std::string& error_text)
-		// Numerical Recipes standard error handler
-	{
-		std::cerr<<"Numerical Recipes run-time error..."<<std::endl;
-		std::cerr<<error_text<<std::endl;
-		std::cerr<<"...now exiting to system..."<<std::endl;
-		exit(1);
-	}
+   inline void nrerror(const std::string& error_text)
+   // Numerical Recipes standard error handler
+   {
+      std::cerr<<"Numerical Recipes run-time error..."<<std::endl;
+      std::cerr<<error_text<<std::endl;
+      std::cerr<<"...now exiting to system..."<<std::endl;
+      exit(1);
+   }
 
-	void funcs(const double& x, Vec_IO_double& a, double& y, Vec_O_double& dyda);
-	void mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO_double& a, Vec_I_BOOL& ia,
-			Mat_O_double& covar, Mat_O_double& alpha, double& chisq, Vec_I_double& W, double& alamda);
+   void funcs(const double& x, Vec_IO_double& a, double& y, Vec_O_double& dyda);
+   void mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO_double& a, Vec_I_BOOL& ia, Mat_O_double& covar,
+               Mat_O_double& alpha, double& chisq, Vec_I_double& W, double& alamda);
 
-	void mrqcof(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO_double& a, Vec_I_BOOL& ia,
-			Mat_O_double& alpha, Vec_O_double& beta, double& chisq, Vec_I_double& W,
-			double& chisqexp);
-	void gaussj(Mat_IO_double& a, Mat_IO_double& b);
-	void covsrt(Mat_IO_double& covar, Vec_I_BOOL& ia, const int mfit);
-	int integrator(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_I_double& W, Vec_IO_double& a,
-			Vec_double& dyda, int chisqnumber, const double& bin_width, Vec_double& yfit,
-			const int& bin);
+   void mrqcof(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO_double& a, Vec_I_BOOL& ia, Mat_O_double& alpha,
+               Vec_O_double& beta, double& chisq, Vec_I_double& W, double& chisqexp);
+   void gaussj(Mat_IO_double& a, Mat_IO_double& b);
+   void covsrt(Mat_IO_double& covar, Vec_I_BOOL& ia, const int mfit);
+   int integrator(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_I_double& W, Vec_IO_double& a,
+                  Vec_double& dyda, int chisqnumber, const double& bin_width, Vec_double& yfit, const int& bin);
 
 public:
-	ClassDefOverride(TLMFitter, 1);
+   ClassDefOverride(TLMFitter, 1);
 };
 /*! @} */
 #endif // TLMFitter_H

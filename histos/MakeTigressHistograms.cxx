@@ -15,7 +15,7 @@ extern "C" void MakeFragmentHistograms(TRuntimeObjects& obj)
    std::shared_ptr<const TFragment> frag = obj.GetFragment();
    TChannel*                        chan = frag->GetChannel();
 
-   if(!prot) {
+   if(prot == nullptr) {
       TDirectory* current = gDirectory;
       TFile       f("cuts.root");
       prot = dynamic_cast<TCutG*>(f.Get("p"));
@@ -27,7 +27,7 @@ extern "C" void MakeFragmentHistograms(TRuntimeObjects& obj)
       fflush(stdout);
    }
    // static long first_timestamp = 0;
-   if(frag && chan) {
+   if(frag != nullptr && chan != nullptr) {
       /*   if(!first_timestamp) {
            first_timestamp = frag->GetMidasTimeStamp();
          }

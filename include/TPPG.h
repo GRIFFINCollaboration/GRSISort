@@ -100,7 +100,7 @@ public:
    TPPG(const TPPG&);
    ~TPPG() override;
 
-   void Copy(TObject& rhs) const override;
+   void Copy(TObject& obj) const override;
    void  Setup();
    Int_t Write(const char* name = nullptr, Int_t option = 0, Int_t bufsize = 0) override
    {

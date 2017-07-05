@@ -161,7 +161,7 @@ lib/lib%.so: .build/histos/%.o | lib include/GVersion.h
 lib/lib%.so: .build/filters/%.o | lib include/GVersion.h
 	$(call run_and_test,$(CPP) -fPIC $^ $(SHAREDSWITCH)lib$*.so $(ROOT_LIBFLAGS) -o $@,$@,$(BLD_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
 
-config:
+config: bin
 	@cp util/grsi-config bin/
 
 # Functions for determining the files included in a library.

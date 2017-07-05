@@ -79,7 +79,7 @@ void TAnalysisOptions::ReadFromFile(const std::string& file)
       TIter  iter(list);
       std::cout<<"Reading Options from file:"<<CYAN<<f<<RESET_COLOR<<std::endl;
       while(TKey* key = static_cast<TKey*>(iter.Next())) {
-         if(!key || strcmp(key->GetClassName(), "TAnalysisOptions")) {
+         if((key == nullptr) || (strcmp(key->GetClassName(), "TAnalysisOptions") != 0)) {
             continue;
          }
 

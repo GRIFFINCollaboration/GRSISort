@@ -98,13 +98,13 @@ Int_t TCalGraph::AddLists(const TCalList& cal_list, const TSourceList& src_list)
       }
    }
 
-   if(missing_cal_values_vec.size()) {
+   if(static_cast<unsigned int>(!missing_cal_values_vec.empty()) != 0u) {
       std::cout<<DRED<<"Couldn't find matching cal points for: "<<std::endl;
       for(auto mit : missing_cal_values_vec) {
          std::cout<<mit.first<<" Centroid = "<<mit.second<<std::endl;
       }
    }
-   if(missing_src_values_vec.size()) {
+   if(static_cast<unsigned int>(!missing_src_values_vec.empty()) != 0u) {
       std::cout<<DGREEN<<"Couldn't find matching source points for: "<<std::endl;
       for(auto mit : missing_src_values_vec) {
          std::cout<<mit.first<<" Centroid = "<<mit.second<<std::endl;

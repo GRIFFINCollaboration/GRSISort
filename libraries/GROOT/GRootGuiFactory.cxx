@@ -56,7 +56,7 @@ TApplicationImp* GRootGuiFactory::CreateApplicationImp(const char* classname, In
    // Create a ROOT native GUI version of TApplicationImp
 
    auto* app = new TRootApplication(classname, argc, argv);
-   if(!app->Client()) {
+   if(app->Client() == nullptr) {
       delete app;
       app = nullptr;
    }
@@ -103,7 +103,7 @@ TBrowserImp* GRootGuiFactory::CreateBrowserImp(TBrowser* b, const char* title, U
 
    TString browserOptions(gEnv->GetValue("Browser.Options", "FECI"));
    // TString browserOptions(gEnv->GetValue("Browser.Options", "FEI"));
-   if(opt && strlen(opt)) {
+   if((opt != nullptr) && (strlen(opt) != 0u)) {
       browserOptions = opt;
    }
 
@@ -113,10 +113,10 @@ TBrowserImp* GRootGuiFactory::CreateBrowserImp(TBrowser* b, const char* title, U
    if(browserOptions.Contains("LITE")) {
       return new TRootBrowserLite(b, title, width, height);
    }
-   if(ph && ph->LoadPlugin() != -1) {
+   if((ph != nullptr) && ph->LoadPlugin() != -1) {
       // printf("i am here now 1.\t %s \n",browserOptions.Data());
       TBrowserImp* imp = (TBrowserImp*)ph->ExecPlugin(5, b, title, width, height, browserOptions.Data());
-      if(imp) {
+      if(imp != nullptr) {
 
          return imp;
       }
@@ -134,16 +134,16 @@ TBrowserImp* GRootGuiFactory::CreateBrowserImp(TBrowser* b, const char* title, I
    TString         browserVersion(gEnv->GetValue("Browser.Name", "TRootBrowserLite"));
    TPluginHandler* ph = gROOT->GetPluginManager()->FindHandler("TBrowserImp", browserVersion);
    TString         browserOptions(gEnv->GetValue("Browser.Options", "FECI"));
-   if(opt && strlen(opt)) {
+   if((opt != nullptr) && (strlen(opt) != 0u)) {
       browserOptions = opt;
    }
    browserOptions.ToUpper();
    if(browserOptions.Contains("LITE")) {
       return new TRootBrowserLite(b, title, width, height);
    }
-   if(ph && ph->LoadPlugin() != -1) {
+   if((ph != nullptr) && ph->LoadPlugin() != -1) {
       TBrowserImp* imp = (TBrowserImp*)ph->ExecPlugin(7, b, title, x, y, width, height, browserOptions.Data());
-      if(imp) {
+      if(imp != nullptr) {
          return imp;
       }
    }

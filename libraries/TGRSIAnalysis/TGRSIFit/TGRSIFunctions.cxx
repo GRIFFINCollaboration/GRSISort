@@ -25,13 +25,12 @@ NamespaceImp(TGRSIFunctions)
    e = exp(-x / p[1]);
    if(x <= 0) {
       return p[5];
-   } else {
-      s = p[5];
-      s += p[6] * (1 - exp(-x / p[2])) * e;
-      s += p[7] * (1 - exp(-x / p[3])) * e;
-      s += p[8] * (1 - exp(-x / p[4])) * e;
-      return s;
    }
+   s = p[5];
+   s += p[6] * (1 - exp(-x / p[2])) * e;
+   s += p[7] * (1 - exp(-x / p[3])) * e;
+   s += p[8] * (1 - exp(-x / p[4])) * e;
+   return s;
 }
 
 Double_t TGRSIFunctions::PolyBg(Double_t* x, Double_t* par, Int_t order)
@@ -97,7 +96,7 @@ Double_t TGRSIFunctions::MultiPhotoPeakBG(Double_t* dim, Double_t* par)
    // Limits need to be imposed or error states may occour.
    //
    // General background.
-   int    nPeaks = (int)(par[0] + 0.5);
+   int    nPeaks = static_cast<int>(par[0] + 0.5);
    double result = PolyBg(dim, &par[1], 2); // polynomial background. uses par[1->4]
    for(int i = 0; i < nPeaks; i++) {        // par[0] is number of peaks
       Double_t tmp_par[6];
@@ -197,8 +196,8 @@ Double_t TGRSIFunctions::MultiSkewedGausWithBG2(Double_t* dim, Double_t* par)
    //
    // Limits need to be impossed or error states may occour.
    //
-   double result = par[1] + dim[0] * par[2];      // background.
-   for(int i = 0; i < (int)(par[0] + 0.5); i++) { // par[0] is number of peaks
+   double result = par[1] + dim[0] * par[2];                 // background.
+   for(int i = 0; i < static_cast<int>(par[0] + 0.5); i++) { // par[0] is number of peaks
       Double_t tmp_par[4];
       tmp_par[0] = par[4 * i + 3]; // height of photopeak
       tmp_par[1] = par[4 * i + 4]; // Peak Centroid of non skew gaus
@@ -222,7 +221,7 @@ Double_t TGRSIFunctions::LanGaus(Double_t* x, Double_t* pars)
 
       spec = pars[1] +
              pars[2] * y; // define background SHOULD THIS BE CONVOLUTED ????? *************************************
-      for(int n = 0; n < (int)(pars[0] + 0.5);
+      for(int n = 0; n < static_cast<int>(pars[0] + 0.5);
           n++) { // the implementation of landau function should be done using the landau function
          spec += pars[3 * n + 4] * TMath::Landau(-y, -pars[3 * n + 5], pars[3 * n + 6]) /
                  TMath::Landau(0, 0, 100); // add peaks, dividing by max height of landau
@@ -246,7 +245,7 @@ Double_t TGRSIFunctions::LanGausHighRes(Double_t* x, Double_t* pars)
       y  = x[0] - 4 * pars[3] + dy * i;
 
       spec = pars[1] + pars[2] * y;
-      for(int n = 0; n < (int)(pars[0] + 0.5); n++) {
+      for(int n = 0; n < static_cast<int>(pars[0] + 0.5); n++) {
          spec += pars[3 * n + 4] * TMath::Landau(-y, -pars[3 * n + 5], pars[3 * n + 6]) / TMath::Landau(0, 0, 100);
       }
 
@@ -264,7 +263,7 @@ Double_t TGRSIFunctions::MultiGausWithBG(Double_t* dim, Double_t* par)
    //
    double amp, mean, sigma;
    double result = par[1] + dim[0] * par[2]; // background.
-   for(int i = 0; i < (int)(par[0] + 0.5); i++) {
+   for(int i = 0; i < static_cast<int>(par[0] + 0.5); i++) {
       amp   = par[3 * i + 3];
       mean  = par[3 * i + 4];
       sigma = par[3 * i + 5];

@@ -34,8 +34,6 @@ void TSiLi::Copy(TObject& rhs) const
    static_cast<TSiLi&>(rhs).fSiLiHits    = fSiLiHits;
    static_cast<TSiLi&>(rhs).fAddbackHits = fAddbackHits;
    static_cast<TSiLi&>(rhs).fSiLiBits    = 0;
-
-   return;
 }
 
 TSiLi::TSiLi(const TSiLi& rhs) : TGRSIDetector()
@@ -127,11 +125,10 @@ TSiLiHit* TSiLi::GetAddbackHit(const int& i)
    /// This automatically calculates all addback hits if they haven't been calculated before.
    if(i < GetAddbackMultiplicity()) {
       return &fAddbackHits.at(i);
-   } else {
-      std::cerr<<"Addback hits are out of range"<<std::endl;
-      throw grsi::exit_exception(1);
-      return nullptr;
    }
+   std::cerr<<"Addback hits are out of range"<<std::endl;
+   throw grsi::exit_exception(1);
+   return nullptr;
 }
 
 // How the make addback currently works
@@ -180,7 +177,7 @@ Int_t TSiLi::GetAddbackMultiplicity()
       fAddbackHits.clear();
    }
 
-   if(fAddbackHits.size() == 0) {
+   if(fAddbackHits.empty()) {
 
       // Create a matrix of "pairs"
       std::vector<std::vector<bool>> pairs;
@@ -222,7 +219,7 @@ Int_t TSiLi::GetAddbackMultiplicity()
 
          TSiLi::SortCluster(
             Cluster); // Energy sort the clusters also deletes any invalid hit numbers//Not an efficient function
-         if(Cluster.size() > 0) {
+         if(!Cluster.empty()) {
             uint s = fAddbackHits.size();
             // We have to add it and THEN do the SumHit because the push_back copies the charge but not the energy,
             // which is the bit we sum

@@ -44,7 +44,7 @@ protected:
 
 public:
    Bool_t Fit(TH1* fithist, Option_t* opt = "");
-   bool InitParams(TH1* hist) override;
+   bool InitParams(TH1* fithist) override;
    void   SortPeaks(Bool_t (*SortFunction)(const TPeak*, const TPeak*) = TPeak::CompareEnergy);
    TPeak* GetPeak(UInt_t idx);
    TPeak* GetPeakClosestTo(Double_t energy);

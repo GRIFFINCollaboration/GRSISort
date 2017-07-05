@@ -22,7 +22,7 @@ TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string output
    }
 
    TAnalysisWriteLoop* loop = static_cast<TAnalysisWriteLoop*>(StoppableThread::Get(name));
-   if(!loop) {
+   if(loop == nullptr) {
       if(output_filename.length() == 0) {
          output_filename = "temp.root";
       }
@@ -61,7 +61,7 @@ TAnalysisWriteLoop::~TAnalysisWriteLoop()
 
 void TAnalysisWriteLoop::ClearQueue()
 {
-   while(fInputQueue->Size()) {
+   while(fInputQueue->Size() != 0u) {
       std::shared_ptr<TUnpackedEvent> event;
       fInputQueue->Pop(event);
    }
@@ -103,18 +103,18 @@ bool TAnalysisWriteLoop::Iteration()
    if(event) {
       WriteEvent(*event);
       return true;
-   } else if(fInputQueue->IsFinished()) {
-      return false;
-   } else {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-      return true;
    }
+   if(fInputQueue->IsFinished()) {
+      return false;
+   }
+   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+   return true;
 }
 
 void TAnalysisWriteLoop::Write()
 {
 
-   if(fOutputFile) {
+   if(fOutputFile != nullptr) {
       fOutputFile->cd();
 
       fEventTree->Write(fEventTree->GetName(), TObject::kOverwrite);
@@ -123,10 +123,10 @@ void TAnalysisWriteLoop::Write()
          fOutOfOrderTree->Write(fOutOfOrderTree->GetName(), TObject::kOverwrite);
       }
 
-      if(GValue::Size()) {
+      if(GValue::Size() != 0) {
          GValue::Get()->Write();
       }
-      if(TChannel::GetNumberOfChannels()) {
+      if(TChannel::GetNumberOfChannels() != 0) {
          TChannel::WriteToRoot();
       }
       TGRSIRunInfo::Get()->WriteToRoot(fOutputFile);
@@ -144,12 +144,12 @@ void TAnalysisWriteLoop::Write()
 
 void TAnalysisWriteLoop::AddBranch(TClass* cls)
 {
-   if(!fDetMap.count(cls)) {
+   if(fDetMap.count(cls) == 0u) {
       // This uses the ROOT dictionaries, so we need to lock the threads.
       TThread::Lock();
 
       // Make a default detector of that type.
-      TDetector* det_p  = (TDetector*)cls->New();
+      TDetector* det_p  = reinterpret_cast<TDetector*>(cls->New());
       fDefaultDets[cls] = det_p;
 
       // Make the TDetector**
@@ -185,7 +185,7 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls)
 
 void TAnalysisWriteLoop::WriteEvent(TUnpackedEvent& event)
 {
-   if(fEventTree) {
+   if(fEventTree != nullptr) {
       // Clear pointers from previous writes.
       // Note that we cannot just set this equal to nullptr,
       //   because ROOT would then construct a new object.

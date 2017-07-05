@@ -35,7 +35,7 @@ void TSortingDiagnostics::OutOfOrder(long newFragTS, long oldFragTS, long newEnt
    fFragmentsOutOfOrder[oldFragTS] = std::make_pair(oldFragTS - newFragTS, newEntry);
    // try and find a timestamp before newFragTS
    size_t entry = 0;
-   if(fPreviousTimeStamps.size() > 0) {
+   if(!fPreviousTimeStamps.empty()) {
       for(entry = fPreviousTimeStamps.size() - 1; entry > 0; --entry) {
          if(fPreviousTimeStamps[entry] < newFragTS) {
             break;
@@ -53,7 +53,7 @@ void TSortingDiagnostics::Print(Option_t* opt) const
    TString option = opt;
    option.ToUpper();
    std::string color;
-   if(fFragmentsOutOfOrder.size() == 0) {
+   if(fFragmentsOutOfOrder.empty()) {
       if(option.EqualTo("ERROR")) {
          color = DGREEN;
       }

@@ -60,7 +60,6 @@ void TPaces::Print(Option_t*) const
 {
    // Prints out TPaces members, currently does nothing.
    printf("%lu fPacesHits\n", fPacesHits.size());
-   return;
 }
 
 TPaces& TPaces::operator=(const TPaces& rhs)

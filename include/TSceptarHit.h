@@ -43,9 +43,9 @@ public:
    inline Int_t GetFilterPattern() const { return fFilter; } //!<!
 
    Int_t CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow,
-                      unsigned int interpolation_steps); //!<!
+                      unsigned int interpolationSteps); //!<!
    Int_t CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow,
-                                unsigned int interpolation_steps, std::vector<Short_t>& monitor);    //!<!
+                                unsigned int interpolationSteps, std::vector<Short_t>& monitor);     //!<!
    std::vector<Short_t> CalculateCfdMonitor(double attenuation, int delay, int halfsmoothingwindow); //!<!
    std::vector<Short_t> CalculateSmoothedWaveform(unsigned int halfsmoothingwindow);                 //!<!
 

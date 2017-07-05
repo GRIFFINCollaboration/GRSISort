@@ -48,7 +48,7 @@ protected:
    bool Iteration() override;
 
 private:
-   TAnalysisWriteLoop(std::string name, std::string output_file);
+   TAnalysisWriteLoop(std::string name, std::string output_filename);
    void AddBranch(TClass* cls);
 
    void WriteEvent(TUnpackedEvent& event);

@@ -50,9 +50,9 @@ public:
 
    Short_t           GetMultiplicity() const { return fSiLiHits.size(); }
    TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
-   TSiLiHit* GetSiLiHit(const Int_t& idx = 0);
+   TSiLiHit* GetSiLiHit(const Int_t& i = 0);
 
-   TSiLiHit* GetAddbackHit(const Int_t& idx = 0);
+   TSiLiHit* GetAddbackHit(const Int_t& i = 0);
    Int_t GetAddbackMultiplicity();
 
    void ResetAddback()

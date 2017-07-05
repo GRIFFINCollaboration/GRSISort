@@ -55,7 +55,7 @@
 
 class TReaction : public TNamed {
 public:
-   TReaction(const char* beam, const char* targ, const char* ejec, const char* reco, double ebeam = 0.0,
+   TReaction(const char* beam, const char* targ, const char* ejec, const char* reco, double beame = 0.0,
              double ex3 = 0.0, bool inverse = false);
 
    void InitReaction();
@@ -150,7 +150,7 @@ public:
    TGraph* OmegaVsTheta(double thmin = 0.0, double thmax = 180.0, int part = 2, bool Frame_Lab = true);
    // Frame_Lab -> dSigma/dThetaLab[ThetaLab] 	and 	Frame_Cm -> dSigma/dThetaCm[ThetaCm]
    TGraph* RutherfordVsTheta(double thmin = 1.0, double thmax = 179.0, int part = 2, bool Frame_Lab = true,
-                             bool Units_mbSr = true);
+                             bool Units_mb = true);
 
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;

@@ -254,14 +254,14 @@ Int_t TFipps::GetAddbackMultiplicity()
    auto hit_vec  = GetHitVector();
    auto ab_vec   = GetAddbackVector();
    auto frag_vec = GetAddbackFragVector();
-   if(hit_vec->size() == 0) {
+   if(hit_vec->empty()) {
       return 0;
    }
    // if the addback has been reset, clear the addback hits
    if(!IsAddbackSet()) {
       ab_vec->clear();
    }
-   if(ab_vec->size() == 0) {
+   if(ab_vec->empty()) {
       // use the first fipps hit as starting point for the addback hits
       ab_vec->push_back(hit_vec->at(0));
       frag_vec->push_back(1);
@@ -292,11 +292,10 @@ TFippsHit* TFipps::GetAddbackHit(const int& i)
 {
    if(i < GetAddbackMultiplicity()) {
       return &GetAddbackVector()->at(i);
-   } else {
-      std::cerr<<"Addback hits are out of range"<<std::endl;
-      throw grsi::exit_exception(1);
-      return nullptr;
    }
+   std::cerr<<"Addback hits are out of range"<<std::endl;
+   throw grsi::exit_exception(1);
+   return nullptr;
 }
 
 void TFipps::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
@@ -364,9 +363,8 @@ UShort_t TFipps::GetNAddbackFrags(const size_t& idx)
    // with index idx.
    if(idx < GetAddbackFragVector()->size()) {
       return GetAddbackFragVector()->at(idx);
-   } else {
-      return 0;
    }
+   return 0;
 }
 
 void TFipps::SetBitNumber(enum EFippsBits bit, Bool_t set) const
@@ -382,7 +380,7 @@ void TFipps::SetBitNumber(enum EFippsBits bit, Bool_t set) const
 Double_t TFipps::CTCorrectedEnergy(const TFippsHit* const hit_to_correct, const TFippsHit* const other_hit,
                                    Bool_t time_constraint)
 {
-   if(!hit_to_correct || !other_hit) {
+   if((hit_to_correct == nullptr) || (other_hit == nullptr)) {
       printf("One of the hits is invalid in TFipps::CTCorrectedEnergy\n");
       return 0;
    }

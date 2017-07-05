@@ -142,36 +142,34 @@ TH1* GH1D::DrawNormalized(Option_t* opt, Double_t norm) const
 
 GH1D* GH1D::GetPrevious(bool DrawEmpty) const
 {
-   if(parent.GetObject() && parent.GetObject()->InheritsFrom(GH2Base::Class())) {
+   if((parent.GetObject() != nullptr) && parent.GetObject()->InheritsFrom(GH2Base::Class())) {
       GH2D* gpar  = static_cast<GH2D*>(parent.GetObject());
       int   first = GetXaxis()->GetFirst();
       int   last  = GetXaxis()->GetLast();
       GH1D* prev  = gpar->GetPrevious(this, DrawEmpty);
       prev->GetXaxis()->SetRange(first, last);
       return prev; // gpar->GetPrevious(this,DrawEmpty);
-   } else {
-      return nullptr;
    }
+   return nullptr;
 }
 
 GH1D* GH1D::GetNext(bool DrawEmpty) const
 {
-   if(parent.GetObject() && parent.GetObject()->InheritsFrom(GH2Base::Class())) {
+   if((parent.GetObject() != nullptr) && parent.GetObject()->InheritsFrom(GH2Base::Class())) {
       GH2D* gpar  = static_cast<GH2D*>(parent.GetObject());
       int   first = GetXaxis()->GetFirst();
       int   last  = GetXaxis()->GetLast();
       GH1D* next  = gpar->GetNext(this, DrawEmpty);
       next->GetXaxis()->SetRange(first, last);
       return next; // gpar->GetNext(this,DrawEmpty);
-   } else {
-      return nullptr;
    }
+   return nullptr;
 }
 
 GH1D* GH1D::Project(double value_low, double value_high) const
 {
 
-   if(parent.GetObject() && parent.GetObject()->InheritsFrom(GH2Base::Class()) && projection_axis != -1) {
+   if((parent.GetObject() != nullptr) && parent.GetObject()->InheritsFrom(GH2Base::Class()) && projection_axis != -1) {
       if(value_low > value_high) {
          std::swap(value_low, value_high);
       }
@@ -180,20 +178,18 @@ GH1D* GH1D::Project(double value_low, double value_high) const
          int bin_low  = gpar->GetXaxis()->FindBin(value_low);
          int bin_high = gpar->GetXaxis()->FindBin(value_high);
          return gpar->ProjectionY("_py", bin_low, bin_high);
-      } else {
-         int bin_low  = gpar->GetYaxis()->FindBin(value_low);
-         int bin_high = gpar->GetYaxis()->FindBin(value_high);
-         return gpar->ProjectionX("_px", bin_low, bin_high);
       }
-   } else {
-      return nullptr;
+      int bin_low  = gpar->GetYaxis()->FindBin(value_low);
+      int bin_high = gpar->GetYaxis()->FindBin(value_high);
+      return gpar->ProjectionX("_px", bin_low, bin_high);
    }
+   return nullptr;
 }
 
 GH1D* GH1D::Project_Background(double value_low, double value_high, double bg_value_low, double bg_value_high,
                                kBackgroundSubtraction mode) const
 {
-   if(parent.GetObject() && parent.GetObject()->InheritsFrom(GH2Base::Class()) && projection_axis != -1) {
+   if((parent.GetObject() != nullptr) && parent.GetObject()->InheritsFrom(GH2Base::Class()) && projection_axis != -1) {
       if(value_low > value_high) {
          std::swap(value_low, value_high);
       }
@@ -209,17 +205,15 @@ GH1D* GH1D::Project_Background(double value_low, double value_high, double bg_va
          int bg_bin_high = gpar->GetXaxis()->FindBin(bg_value_high);
 
          return gpar->ProjectionY_Background(bin_low, bin_high, bg_bin_low, bg_bin_high, mode);
-      } else {
-         int bin_low     = gpar->GetYaxis()->FindBin(value_low);
-         int bin_high    = gpar->GetYaxis()->FindBin(value_high);
-         int bg_bin_low  = gpar->GetYaxis()->FindBin(bg_value_low);
-         int bg_bin_high = gpar->GetYaxis()->FindBin(bg_value_high);
-
-         return gpar->ProjectionX_Background(bin_low, bin_high, bg_bin_low, bg_bin_high, mode);
       }
-   } else {
-      return nullptr;
+      int bin_low     = gpar->GetYaxis()->FindBin(value_low);
+      int bin_high    = gpar->GetYaxis()->FindBin(value_high);
+      int bg_bin_low  = gpar->GetYaxis()->FindBin(bg_value_low);
+      int bg_bin_high = gpar->GetYaxis()->FindBin(bg_value_high);
+
+      return gpar->ProjectionX_Background(bin_low, bin_high, bg_bin_low, bg_bin_high, mode);
    }
+   return nullptr;
 }
 
 GH1D* GH1D::Project(int bins)
@@ -228,7 +222,7 @@ GH1D* GH1D::Project(int bins)
    double ymax = GetMinimum();
    double ymin = GetMaximum();
    if(bins == -1) {
-      bins = (int)(std::abs(ymax - ymin));
+      bins = static_cast<int>(std::abs(ymax - ymin));
       if(bins < 1) {
          bins = 100;
       }

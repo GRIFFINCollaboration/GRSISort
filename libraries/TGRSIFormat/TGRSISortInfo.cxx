@@ -14,7 +14,8 @@ ClassImp(TGRSISortInfo)
    TString opt1 = opt;
    opt1.ToUpper();
 
-   if(fSortInfoList.count(info->RunNumber()) && fSortInfoList[info->RunNumber()].count(info->SubRunNumber())) {
+   if((fSortInfoList.count(info->RunNumber()) != 0u) &&
+      (fSortInfoList[info->RunNumber()].count(info->SubRunNumber()) != 0u)) {
       if(opt1 == "SAFE") {
          std::cout<<"Can't add Run: "<<info->RunNumber()<<"\tSubRun "<<info->SubRunNumber()<<std::endl;
          std::cout<<"Already in Sort Info List"<<std::endl;
@@ -74,7 +75,7 @@ Long64_t TGRSISortList::Merge(TCollection* list)
    // An individual file that was submitted to hadd.
    TGRSISortList* sortlist = nullptr;
 
-   while((sortlist = static_cast<TGRSISortList*>(it.Next()))) {
+   while((sortlist = static_cast<TGRSISortList*>(it.Next())) != nullptr) {
       // Now we want to loop through each TGRSISortList and find the TGRSISortInfo's stored in there.
       AddSortList(sortlist);
    }
@@ -107,7 +108,7 @@ void TGRSISortInfo::Print(Option_t*) const
    std::cout<<"Run Number:\t "<<RunNumber();
    std::cout<<"\tSub Run:\t "<<SubRunNumber();
    std::cout<<"\tComment:\t "<<Comment();
-   if(fDuplicates) {
+   if(fDuplicates != 0u) {
       std::cout<<"\tDuplicates:\t"<<fDuplicates;
    }
    std::cout<<std::endl;

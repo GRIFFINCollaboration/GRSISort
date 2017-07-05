@@ -83,11 +83,12 @@ Float_t TGRSIDetectorHit::GetCharge() const
       return Charge();
    }
    if(fKValue > 0) {
-      return Charge() / ((Float_t)fKValue); // this will use the integration value
-   } else if(channel->UseCalFileIntegration()) {
-      return Charge() / ((Float_t)channel->GetIntegration()); // this will use the integration value
-   }                                                          // in the TChannel if it exists.
-   return Charge();                                           // this will use no integration value
+      return Charge() / (static_cast<Float_t>(fKValue)); // this will use the integration value
+   }
+   if(channel->UseCalFileIntegration()) {
+      return Charge() / (static_cast<Float_t>(channel->GetIntegration())); // this will use the integration value
+   }                                                                       // in the TChannel if it exists.
+   return Charge();                                                        // this will use no integration value
 }
 
 double TGRSIDetectorHit::GetEnergy(Option_t*) const
@@ -98,12 +99,13 @@ double TGRSIDetectorHit::GetEnergy(Option_t*) const
    TChannel* channel = GetChannel();
    if(channel == nullptr) {
       // Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
-      return SetEnergy((Double_t)(Charge()));
+      return SetEnergy(static_cast<Double_t>(Charge()));
    }
    if(fKValue > 0) {
-      double energy = channel->CalibrateENG(Charge(), (int)fKValue);
+      double energy = channel->CalibrateENG(Charge(), static_cast<int>(fKValue));
       return SetEnergy(energy + GetEnergyNonlinearity(energy));
-   } else if(channel->UseCalFileIntegration()) {
+   }
+   if(channel->UseCalFileIntegration()) {
       double energy = channel->CalibrateENG(Charge(), 0);
       return SetEnergy(channel->CalibrateENG(energy) +
                        GetEnergyNonlinearity(energy)); // this will use the integration value
@@ -156,9 +158,8 @@ const char* TGRSIDetectorHit::GetName() const
    TChannel* channel = GetChannel();
    if(channel == nullptr) {
       return Class()->ClassName();
-   } else {
-      return channel->GetName();
    }
+   return channel->GetName();
 }
 
 void TGRSIDetectorHit::Clear(Option_t*)
@@ -204,7 +205,7 @@ Int_t TGRSIDetectorHit::GetSegment() const
 Int_t TGRSIDetectorHit::GetCrystal() const
 {
    TChannel* channel = GetChannel();
-   if(channel) {
+   if(channel != nullptr) {
       return channel->GetCrystalNumber();
    }
    return -1;
@@ -213,7 +214,7 @@ Int_t TGRSIDetectorHit::GetCrystal() const
 UShort_t TGRSIDetectorHit::GetArrayNumber() const
 {
    TChannel* channel = GetChannel();
-   if(channel) {
+   if(channel != nullptr) {
       return (GetDetector() - 1) * 4 + GetCrystal();
    }
    return -1;
@@ -227,7 +228,7 @@ bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit* lhs, TGRSIDetectorHit* rh
 Long64_t TGRSIDetectorHit::GetTimeStamp(Option_t*) const
 {
    TChannel* tmpChan = GetChannel();
-   if(!tmpChan) {
+   if(tmpChan == nullptr) {
       return fTimeStamp;
    }
    return fTimeStamp - tmpChan->GetTimeOffset();
@@ -239,7 +240,7 @@ uint16_t TGRSIDetectorHit::GetPPGStatus() const
       return fPPGStatus;
    }
 
-   if(!TPPG::Get()) {
+   if(TPPG::Get() == nullptr) {
       return TPPG::kJunk;
    }
 
@@ -255,7 +256,7 @@ Long64_t TGRSIDetectorHit::GetCycleTimeStamp() const
       return fCycleTimeStamp;
    }
 
-   if(!TPPG::Get()) {
+   if(TPPG::Get() == nullptr) {
       return 0;
    }
 

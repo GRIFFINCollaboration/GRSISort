@@ -37,10 +37,10 @@ ClassImp(TCalibrator)
 
 TCalibrator::~TCalibrator()
 {
-   if(linfit) {
+   if(linfit != nullptr) {
       delete linfit;
    }
-   if(efffit) {
+   if(efffit != nullptr) {
       delete efffit;
    }
 }
@@ -86,7 +86,7 @@ std::string TCalibrator::PrintEfficency(const char* filename)
    }
    toprint.append("--------------------------------------\n");
 
-   if(file.length()) {
+   if(file.length() != 0u) {
       std::ofstream ofile;
       ofile.open(file.c_str());
       ofile<<toprint;
@@ -121,7 +121,7 @@ TGraphErrors& TCalibrator::MakeEffGraph(double seconds, double bq, Option_t* opt
    eff_graph.Clear();
    eff_graph = TGraphErrors(fPeaks.size(), energy.data(), observed.data(), error_e.data(), error_o.data());
 
-   if(efffit) {
+   if(efffit != nullptr) {
       efffit->Delete();
    }
    static int counter = 0;
@@ -132,7 +132,7 @@ TGraphErrors& TCalibrator::MakeEffGraph(double seconds, double bq, Option_t* opt
       TVirtualPad* current = gPad;
       new GCanvas;
       eff_graph.Draw("AP");
-      if(current) {
+      if(current != nullptr) {
          current->cd();
       }
    }
@@ -200,7 +200,7 @@ void TCalibrator::Fit(int order)
 
 double TCalibrator::GetParameter(int i) const
 {
-   if(linfit) {
+   if(linfit != nullptr) {
       return linfit->GetParameter(i);
    }
    return sqrt(-1);
@@ -208,7 +208,7 @@ double TCalibrator::GetParameter(int i) const
 
 double TCalibrator::GetEffParameter(int i) const
 {
-   if(efffit) {
+   if(efffit != nullptr) {
       return efffit->GetParameter(i);
    }
    return sqrt(-1);
@@ -239,7 +239,7 @@ std::vector<double> TCalibrator::Calibrate(double)
 
 int TCalibrator::AddData(TH1* data, const std::string& source, double sigma, double threshold, double error)
 {
-   if(!data || !source.length()) {
+   if((data == nullptr) || (source.length() == 0u)) {
       printf("data not added. data = %p \t source = %s\n", (void*)data, source.c_str());
       return 0;
    }
@@ -249,7 +249,7 @@ int TCalibrator::AddData(TH1* data, const std::string& source, double sigma, dou
 
 int TCalibrator::AddData(TH1* data, TNucleus* source, double sigma, double threshold, double)
 {
-   if(!data || !source) {
+   if((data == nullptr) || (source == nullptr)) {
       printf("data not added. data = %p \t source = %p\n", (void*)data, (void*)source);
       return 0;
    }
@@ -405,7 +405,7 @@ std::map<double, double> TCalibrator::Match(std::vector<double> peaks, std::vect
          }
       }
 
-      if(map.size()) {
+      if(static_cast<unsigned int>(!map.empty()) != 0u) {
          return map;
       }
    }
@@ -560,5 +560,4 @@ void TCalibrator::AddPeak(double cent, double eng, std::string nuc, double a, do
    p.area      = a;
    p.intensity = inten;
    fPeaks.push_back(p);
-   return;
 }

@@ -54,12 +54,12 @@ public:
 
    // Dont know why these were changes to return by reference rather than pointer
    // The tigress group prefer them the old way
-   const TTigressHit* GetTigressHit(int i) const { return &fTigressHits.at(i); }                              //!<!
-   TTigressHit* GetTigressHit(int i) { return &fTigressHits.at(i); }                                          //!<!
-   const TGRSIDetectorHit* GetHit(int i) const { return GetTigressHit(i); }                                   //!<!
-   size_t                             GetMultiplicity() const { return fTigressHits.size(); }                 //!<!
-   static TVector3 GetPosition(int DetNbr, int CryNbr, int SegNbr, double distance = 0., bool smear = false); //!<!
-   static TVector3 GetPosition(const TTigressHit&, double distance = 0., bool smear = false);                 //!<!
+   const TTigressHit* GetTigressHit(int i) const { return &fTigressHits.at(i); }                          //!<!
+   TTigressHit* GetTigressHit(int i) { return &fTigressHits.at(i); }                                      //!<!
+   const TGRSIDetectorHit* GetHit(int i) const { return GetTigressHit(i); }                               //!<!
+   size_t                             GetMultiplicity() const { return fTigressHits.size(); }             //!<!
+   static TVector3 GetPosition(int DetNbr, int CryNbr, int SegNbr, double dist = 0., bool smear = false); //!<!
+   static TVector3 GetPosition(const TTigressHit&, double dist = 0., bool smear = false);                 //!<!
 
    std::vector<TBgoHit> fBgos;
    void AddBGO(TBgoHit& bgo) { fBgos.push_back(bgo); }                      //!<!

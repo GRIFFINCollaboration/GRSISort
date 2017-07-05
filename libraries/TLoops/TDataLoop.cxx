@@ -40,7 +40,7 @@ TDataLoop* TDataLoop::Get(std::string name, TRawFile* source)
       name = "input_loop";
    }
    TDataLoop* loop = static_cast<TDataLoop*>(StoppableThread::Get(name));
-   if(!loop && source) {
+   if((loop == nullptr) && (source != nullptr)) {
       loop = new TDataLoop(name, source);
    }
    return loop;
@@ -51,7 +51,7 @@ void TDataLoop::SetFileOdb(char* data, int size)
 #ifdef HAS_XML
    // check if we have already set the TChannels....
    //
-   if(fOdb) {
+   if(fOdb != nullptr) {
       delete fOdb;
       fOdb = nullptr;
    }
@@ -102,17 +102,17 @@ void TDataLoop::SetRunInfo()
 #ifdef HAS_XML
    TGRSIRunInfo* run_info = TGRSIRunInfo::Get();
    TXMLNode*     node     = fOdb->FindPath("/Runinfo/Start time binary");
-   if(node) {
+   if(node != nullptr) {
       run_info->SetRunStart(atof(node->GetText()));
    }
 
    node = fOdb->FindPath("/Experiment/Run parameters/Run Title");
-   if(node) {
+   if(node != nullptr) {
       run_info->SetRunTitle(node->GetText());
       std::cout<<DBLUE<<"Title: "<<node->GetText()<<RESET_COLOR<<std::endl;
    }
 
-   if(node) {
+   if(node != nullptr) {
       node = fOdb->FindPath("/Experiment/Run parameters/Comment");
       run_info->SetRunComment(node->GetText());
       std::cout<<DBLUE<<"Comment: "<<node->GetText()<<RESET_COLOR<<std::endl;
@@ -166,7 +166,7 @@ void TDataLoop::SetGRIFFOdb()
       // all good.
       for(size_t x = 0; x < address.size(); x++) {
          TChannel* tempChan = TChannel::GetChannel(address.at(x)); // names.at(x).c_str());
-         if(!tempChan) {
+         if(tempChan == nullptr) {
             tempChan = new TChannel();
          }
          tempChan->SetName(names.at(x).c_str());
@@ -229,8 +229,6 @@ void TDataLoop::SetGRIFFOdb()
    std::vector<int> durations = fOdb->ReadIntArray(node);
 
    TPPG::Get()->SetOdbCycle(ppgCodes, durations);
-
-   return;
 #endif
 }
 
@@ -270,7 +268,7 @@ void TDataLoop::SetTIGOdb()
 
    std::string path = "/Analyzer/Shared Parameters/Config";
    TXMLNode*   test = fOdb->FindPath(path.c_str());
-   if(!test) {
+   if(test == nullptr) {
       path.assign("/Analyzer/Parameters/Cathode/Config"); // the old path to the useful odb info.
    }
    printf("using TIGRESS path to analyzer info: %s...\n", path.c_str());
@@ -316,7 +314,7 @@ void TDataLoop::SetTIGOdb()
 
    for(size_t x = 0; x < address.size(); x++) {
       TChannel* tempChan = TChannel::GetChannel(address.at(x)); // names.at(x).c_str());
-      if(!tempChan) {
+      if(tempChan == nullptr) {
          tempChan = new TChannel();
       }
       if(x < names.size()) {
@@ -343,14 +341,13 @@ void TDataLoop::SetTIGOdb()
       TChannel::AddChannel(tempChan, "overwrite");
    }
    printf("\t%i TChannels created.\n", TChannel::GetNumberOfChannels());
-   return;
 #endif
 }
 
 void TDataLoop::ClearQueue()
 {
    std::shared_ptr<TRawEvent> event;
-   while(fOutputQueue->Size()) {
+   while(fOutputQueue->Size() != 0u) {
       fOutputQueue->Pop(event);
    }
 }
@@ -388,15 +385,15 @@ bool TDataLoop::Iteration()
    if(bytes_read <= 0 && fSelfStopping) {
       // Error, and no point in trying again.
       return false;
-   } else if(bytes_read > 0) {
+   }
+   if(bytes_read > 0) {
       // A good event was returned
       fOutputQueue->Push(evt);
       return true;
-   } else {
-      // Nothing returned this time, but I might get something next time.
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-      return true;
    }
+   // Nothing returned this time, but I might get something next time.
+   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+   return true;
 }
 
 // std::string TDataLoop::Status() {

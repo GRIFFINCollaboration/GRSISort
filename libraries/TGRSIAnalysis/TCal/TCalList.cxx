@@ -83,7 +83,7 @@ void TCalList::FillGraph(TGraph* graph) const
 
    for(auto it : fCalList) {
       graph->SetPoint(i, it.second.Centroid(), it.second.Area());
-      if(ge) {
+      if(ge != nullptr) {
          ge->SetPointError(i++, it.second.CentroidErr(), it.second.AreaErr());
       }
    }

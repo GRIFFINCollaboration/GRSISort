@@ -28,7 +28,6 @@ void TTriFoil::Copy(TObject& rhs) const
    static_cast<TTriFoil&>(rhs).fTimestamp = fTimestamp;
    static_cast<TTriFoil&>(rhs).fBeam      = fBeam;
    static_cast<TTriFoil&>(rhs).fTBeam     = fTBeam;
-   return;
 }
 
 TTriFoil::TTriFoil(const TTriFoil& rhs) : TDetector()

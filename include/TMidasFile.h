@@ -45,13 +45,14 @@ public:
    using TObject::Read;
    using TObject::Write;
 #ifndef __CINT__
-   int Read(std::shared_ptr<TRawEvent> event) override;                       ///< Read one event from the file
-   bool Write(const std::shared_ptr<TMidasEvent>& event, Option_t* opt = ""); ///< Write one event to the output file
+   int Read(std::shared_ptr<TRawEvent> event) override; ///< Read one event from the file
+   bool Write(const std::shared_ptr<TMidasEvent>& midasEvent,
+              Option_t*                           opt = ""); ///< Write one event to the output file
 #endif
    std::string Status(bool long_file_description = true) override;
 
 #ifndef __CINT__
-   void FillBuffer(const std::shared_ptr<TMidasEvent>& event,
+   void FillBuffer(const std::shared_ptr<TMidasEvent>& midasEvent,
                    Option_t*                           opt = ""); // Fill buffer to write out chunks of data
 #endif
    bool WriteBuffer();

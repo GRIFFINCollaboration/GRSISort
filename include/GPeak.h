@@ -9,7 +9,7 @@
 class GPeak : public TF1 {
 public:
    GPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* opt = "gsc");
-   GPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background, Option_t* opt = "gsc");
+   GPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* bg, Option_t* opt = "gsc");
    GPeak(const GPeak&);
    GPeak();
    ~GPeak() override;

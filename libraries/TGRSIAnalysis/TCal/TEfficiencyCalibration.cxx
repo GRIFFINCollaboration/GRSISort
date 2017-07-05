@@ -13,10 +13,10 @@ ClassImp(TEfficiencyCalibration)
    : TNamed(), fRelativeEffGraph(nullptr), fAbsEffGraph(nullptr), fFitting(false), fRelativeFit(nullptr),
      fAbsoluteFunc(nullptr)
 {
-   if(!fRelativeEffGraph) {
+   if(fRelativeEffGraph == nullptr) {
       fRelativeEffGraph = new TMultiGraph;
    }
-   if(!fAbsEffGraph) {
+   if(fAbsEffGraph == nullptr) {
       fAbsEffGraph = new TMultiGraph;
    }
    Clear();
@@ -26,26 +26,26 @@ TEfficiencyCalibration::TEfficiencyCalibration(const char* name, const char* tit
    : TNamed(name, title), fRelativeEffGraph(nullptr), fAbsEffGraph(nullptr), fFitting(false), fRelativeFit(nullptr),
      fAbsoluteFunc(nullptr)
 {
-   if(!fRelativeEffGraph) {
+   if(fRelativeEffGraph == nullptr) {
       fRelativeEffGraph = new TMultiGraph;
    }
-   if(!fAbsEffGraph) {
+   if(fAbsEffGraph == nullptr) {
       fAbsEffGraph = new TMultiGraph;
    }
 }
 
 TEfficiencyCalibration::~TEfficiencyCalibration()
 {
-   if(fRelativeEffGraph) {
+   if(fRelativeEffGraph != nullptr) {
       delete fRelativeEffGraph;
    }
-   if(fAbsEffGraph) {
+   if(fAbsEffGraph != nullptr) {
       delete fAbsEffGraph;
    }
-   if(fRelativeFit) {
+   if(fRelativeFit != nullptr) {
       delete fRelativeFit;
    }
-   if(fAbsoluteFunc) {
+   if(fAbsoluteFunc != nullptr) {
       delete fAbsoluteFunc;
    }
 
@@ -81,11 +81,11 @@ void TEfficiencyCalibration::Print(Option_t*) const
       }
       std::cout<<std::endl;
    }
-   if(fRelativeFit) {
+   if(fRelativeFit != nullptr) {
       std::cout<<"Relative Fit: "<<std::endl;
       fRelativeFit->Print();
    }
-   if(fAbsoluteFunc) {
+   if(fAbsoluteFunc != nullptr) {
       std::cout<<"Absolute Fit: "<<std::endl;
       fAbsoluteFunc->Print();
    }
@@ -94,7 +94,7 @@ void TEfficiencyCalibration::Print(Option_t*) const
 void TEfficiencyCalibration::Clear(Option_t*)
 {
    fGraphMap.clear();
-   if(fRelativeFit) {
+   if(fRelativeFit != nullptr) {
       fRelativeFit->Clear();
    }
    fFitting = false;
@@ -113,7 +113,7 @@ void TEfficiencyCalibration::AddEfficiencyGraph(const TEfficiencyGraph& graph, c
    } else {
       fRelativeEffGraph->Add(&(it.first->second)); // fill the multigraph with an actual pointer to the graph
    }
-   if(fRelativeFit) {
+   if(fRelativeFit != nullptr) {
       delete fRelativeFit;
       fRelativeFit = nullptr; // Clear this because it is nonsense now.
    }
@@ -127,11 +127,11 @@ void TEfficiencyCalibration::AddEfficiencyGraph(const TEfficiencyGraph& graph)
 void TEfficiencyCalibration::Draw(Option_t* opt)
 {
    fRelativeEffGraph->Draw(opt);
-   if(fAbsoluteFunc) {
+   if(fAbsoluteFunc != nullptr) {
       fAbsEffGraph->Draw("P");
       //	fAbsEffGraph->Draw(Form("%ssame",opt));
       fAbsoluteFunc->Draw("same");
-   } else if(fRelativeFit) {
+   } else if(fRelativeFit != nullptr) {
       fRelativeFit->Draw("same");
    }
 }
@@ -139,7 +139,7 @@ void TEfficiencyCalibration::Draw(Option_t* opt)
 void TEfficiencyCalibration::DrawRelative(Option_t* opt)
 {
    fRelativeEffGraph->Draw(opt);
-   if(fRelativeFit) {
+   if(fRelativeFit != nullptr) {
       fRelativeFit->Draw("same");
    }
 }
@@ -147,7 +147,7 @@ void TEfficiencyCalibration::DrawRelative(Option_t* opt)
 void TEfficiencyCalibration::DrawAbsolute(Option_t* opt)
 {
    fAbsEffGraph->Draw(opt);
-   if(fAbsoluteFunc) {
+   if(fAbsoluteFunc != nullptr) {
       fAbsoluteFunc->Draw("same");
    }
 }
@@ -188,7 +188,7 @@ TFitResultPtr TEfficiencyCalibration::Fit(Option_t*)
 {
    // This fits the relative efficiency curve
    UInt_t n_rel_graphs = fRelativeEffGraph->GetListOfGraphs()->GetSize();
-   if(fRelativeFit) {
+   if(fRelativeFit != nullptr) {
       delete fRelativeFit;
    }
    fRelativeFit = new TF1("fRelativeFit", this, &TEfficiencyCalibration::PhotoPeakEfficiency, 0, 8000, 8 + n_rel_graphs,
@@ -310,9 +310,8 @@ Double_t TEfficiencyCalibration::PhotoPeakEfficiency(Double_t* x, Double_t* par)
    }
    if(fFitting) {
       return TMath::Exp(sum) / par[closest_graph];
-   } else {
-      return TMath::Exp(sum);
    }
+   return TMath::Exp(sum);
 }
 
 Double_t TEfficiencyCalibration::AbsoluteEfficiency(Double_t* x, Double_t* par)
@@ -327,8 +326,8 @@ Double_t TEfficiencyCalibration::AbsoluteEfficiency(Double_t* x, Double_t* par)
 
 bool TEfficiencyCalibration::ScaleToAbsolute()
 {
-   if(fAbsEffGraph->GetListOfGraphs()->GetSize() && fRelativeFit) {
-      if(!fAbsoluteFunc) {
+   if((fAbsEffGraph->GetListOfGraphs()->GetSize() != 0) && (fRelativeFit != nullptr)) {
+      if(fAbsoluteFunc == nullptr) {
          fAbsoluteFunc = new TF1("fAbsoluteFunc", this, &TEfficiencyCalibration::AbsoluteEfficiency, 0, 8000, 9,
                                  "TEfficiencyCalibration", "AbsoluteEfficiency");
       }
@@ -378,7 +377,7 @@ bool TEfficiencyCalibration::ScaleToAbsolute()
 
 Double_t TEfficiencyCalibration::GetEfficiency(const Double_t& eng)
 {
-   if(fAbsoluteFunc) {
+   if(fAbsoluteFunc != nullptr) {
       return fAbsoluteFunc->Eval(eng);
    }
 
@@ -387,7 +386,7 @@ Double_t TEfficiencyCalibration::GetEfficiency(const Double_t& eng)
 
 Double_t TEfficiencyCalibration::GetEfficiencyErr(const Double_t& eng)
 {
-   if(fAbsoluteFunc) {
+   if(fAbsoluteFunc != nullptr) {
       // partial derivative * error all squared for each parameter
       // Function looks like Const*exp^(a0 + a1*lnE + a2*(lnE)^2 +....)
       // so exp term shows up in every derivative

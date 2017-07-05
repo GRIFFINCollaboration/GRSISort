@@ -149,7 +149,7 @@ void StoppableThread::StopAll()
       thread->Join();
    }
 
-   while(fThreadMap.size()) {
+   while(static_cast<unsigned int>(!fThreadMap.empty()) != 0u) {
       StoppableThread* thread = fThreadMap.begin()->second;
       std::cout<<"Deleting thread "<<fThreadMap.begin()->first<<std::endl;
       delete thread;
@@ -168,7 +168,7 @@ void StoppableThread::ClearAllQueues()
 StoppableThread* StoppableThread::Get(const std::string& name)
 {
    StoppableThread* mythread = nullptr;
-   if(fThreadMap.count(name)) {
+   if(fThreadMap.count(name) != 0u) {
       mythread = fThreadMap.at(name);
    }
    return mythread;
@@ -176,10 +176,10 @@ StoppableThread* StoppableThread::Get(const std::string& name)
 
 StoppableThread::~StoppableThread()
 {
-   if(fThreadMap.count(fName)) {
+   if(fThreadMap.count(fName) != 0u) {
       fThreadMap.erase(fName);
    }
-   if(fThreadMap.size() == 0) {
+   if(fThreadMap.empty()) {
       status_thread_on = false;
       status_thread.join();
    }

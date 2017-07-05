@@ -55,14 +55,14 @@ void TEnergyCal::SetNucleus(TNucleus* nuc, Option_t* opt)
    // of the TEnergyCal automatically with the provided nucleus
    TString optstr = opt;
    optstr.ToUpper();
-   if(!GetNucleus() || optstr.Contains("F")) {
+   if((GetNucleus() == nullptr) || optstr.Contains("F")) {
       TGraphErrors::Clear();
       TCal::SetNucleus(nuc);
       for(int i = 0; i < GetNucleus()->NTransitions(); i++) {
          TGraphErrors::SetPoint(i, 0.0, GetNucleus()->GetTransition(i)->GetEnergy());
          TGraphErrors::SetPointError(i, 0.0, GetNucleus()->GetTransition(i)->GetEnergyUncertainty());
       }
-   } else if(GetNucleus()) {
+   } else if(GetNucleus() != nullptr) {
       printf("Nucleus already exists. Use \"F\" option to overwrite\n");
    }
 
@@ -83,7 +83,7 @@ void TEnergyCal::AddPoint(Double_t measured, Double_t accepted, Double_t measure
 Bool_t TEnergyCal::SetPoint(Int_t idx, Double_t measured)
 {
    // Sets the data point at index idx.
-   if(!GetNucleus()) {
+   if(GetNucleus() == nullptr) {
       printf("No nucleus set yet...\n");
       return false;
    }
@@ -103,7 +103,7 @@ Bool_t TEnergyCal::SetPoint(Int_t idx, Double_t measured)
 Bool_t TEnergyCal::SetPoint(Int_t idx, TPeak* peak)
 {
    // Sets the data point at index idx using the centroid, and sigma of a fitted TPeak.
-   if(!peak) {
+   if(peak == nullptr) {
       printf("No Peak, pointer is null\n");
       return false;
    }
@@ -117,7 +117,7 @@ Bool_t TEnergyCal::SetPoint(Int_t idx, TPeak* peak)
 Bool_t TEnergyCal::SetPointError(Int_t idx, Double_t measuredUncertainty)
 {
    // Sets the measured Error of the data point at index idx.
-   if(!GetNucleus()) {
+   if(GetNucleus() == nullptr) {
       printf("No nucleus set yet...\n");
       return false;
    }
@@ -131,7 +131,7 @@ Bool_t TEnergyCal::SetPointError(Int_t idx, Double_t measuredUncertainty)
 void TEnergyCal::WriteToChannel() const
 {
    // Write the energy calibration information to the current TChannel.
-   if(!GetChannel()) {
+   if(GetChannel() == nullptr) {
       Error("WriteToChannel", "No Channel Set");
       return;
    }

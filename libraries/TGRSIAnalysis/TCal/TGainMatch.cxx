@@ -57,7 +57,7 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
    // source by default. This makes gain matching over a wide range much easier to do afterwards
    // This might have to be changed slightly if someone wants a different type of gaussian fitted
    // for gain matching purposes.
-   if(!hist) {
+   if(hist == nullptr) {
       return false;
    }
 
@@ -73,7 +73,7 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
 
    // See if the channel exists. There is no point in finding the gains if we don't have anywhere to write it
    TChannel* chan = TChannel::GetChannelByNumber(chanNum);
-   if(!chan) {
+   if(chan == nullptr) {
       if(chanNum != 9999) {
          Warning("CoarseMatch", "Channel Number %d does not exist in current memory.", chanNum);
       }
@@ -105,7 +105,7 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
    std::vector<Double_t> foundBin;
    for(int x = 0; x < 2;
        x++) { // I have hard-coded this to 2 because I'm assuming the rough match peaks will be by far the largest.
-      foundBin.push_back((Double_t)(s->GetPositionX()[x]));
+      foundBin.push_back((s->GetPositionX()[x]));
       printf("Found peak at bin %lf\n", foundBin[x]);
    }
    std::sort(foundBin.begin(), foundBin.end());
@@ -149,7 +149,7 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* pe
    // You need to pass a TPeak with the centroid and range set to the real energy centroid and ranges.
    // The function uses the coarse gain parameters to find the peak and gain matches the raw spectrum.
    // This is more useful as it allows a script to find all of the peaks.
-   if(!hist1 || !hist2) {
+   if((hist1 == nullptr) || (hist2 == nullptr)) {
       Error("FineMatchFast", "No histogram being pointed to");
       return false;
    }
@@ -163,11 +163,11 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* pe
    // See if the channel exists. There is no point in finding the gains if we don't have anywhere to write it
    Double_t  gain, offset;
    TChannel* chan = TChannel::GetChannelByNumber(channelNum);
-   if(!chan) {
+   if(chan == nullptr) {
       if(channelNum != 9999) {
          Warning("FineMatchFast", "Channel Number %d does not exist in current memory.", channelNum);
       }
-      if(GetFitFunction()) {
+      if(GetFitFunction() != nullptr) {
          gain   = GetParameter(1);
          offset = GetParameter(0);
       } else {
@@ -187,7 +187,7 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* pe
 
    // The reason I'm using TPeak here is we might want to gain match "TPhotopeaks", or "TElectronPeaks", or
    //"TCrazyNonGaussian" Peak. All we care about is that it has a centroid.
-   if(!peak1 || !peak2) {
+   if((peak1 == nullptr) || (peak2 == nullptr)) {
       Error("FineMatchFast", "No TPeak being pointed to");
       return false;
    }
@@ -320,7 +320,7 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, Double_t energy1, TH1* hist2, Doubl
 
 void TGainMatch::WriteToChannel() const
 {
-   if(!GetChannel()) {
+   if(GetChannel() == nullptr) {
       Error("WriteToChannel", "No Channel Set");
       return;
    }
@@ -360,11 +360,11 @@ Bool_t TGainMatch::CoarseMatchAll(TCalManager* cm, TH2* mat, Double_t, Double_t)
    // and figure out the coarse gains. I might add a channel range option later
    std::vector<Int_t> badlist;
    auto*              gm = new TGainMatch;
-   if(!cm) {
+   if(cm == nullptr) {
       gm->Error("CoarseMatchAll", "CalManager Pointer is nullptr");
       return false;
    }
-   if(!mat) {
+   if(mat == nullptr) {
       gm->Error("CoarseMatchAll", "TH2 Pointer is nullptr");
       return false;
    }
@@ -389,7 +389,7 @@ Bool_t TGainMatch::CoarseMatchAll(TCalManager* cm, TH2* mat, Double_t, Double_t)
       gm->SetName(Form("gm_chan_%d", chan - 1));
       cm->AddToManager(gm, chan - 1);
    }
-   if(badlist.size()) {
+   if(static_cast<unsigned int>(!badlist.empty()) != 0u) {
       printf("The following channels did not gain match properly: ");
    }
    for(int i : badlist) {
@@ -427,15 +427,15 @@ Bool_t TGainMatch::FineMatchFastAll(TCalManager* cm, TH2* mat1, TPeak* peak1, TH
    // and figure out the fine gains. I might add a channel range option later
    std::vector<Int_t> badlist;
    auto*              gm = new TGainMatch;
-   if(!cm) {
+   if(cm == nullptr) {
       gm->Error("FineMatchFastAll", "CalManager Pointer is nullptr");
       return false;
    }
-   if(!mat1 || !mat2) {
+   if((mat1 == nullptr) || (mat2 == nullptr)) {
       gm->Error("FineMatchFastAll", "TH2 Pointer is nullptr");
       return false;
    }
-   if(!peak1 || !peak2) {
+   if((peak1 == nullptr) || (peak2 == nullptr)) {
       gm->Error("FineMatchFastAll", "No TPeak being pointed to");
       return false;
    }
@@ -475,7 +475,7 @@ Bool_t TGainMatch::FineMatchFastAll(TCalManager* cm, TH2* mat1, TPeak* peak1, TH
       delete copyPeak1;
       delete copyPeak2;
    }
-   if(badlist.size()) {
+   if(static_cast<unsigned int>(!badlist.empty()) != 0u) {
       printf("The following channels did not gain match properly: ");
    }
    for(int i : badlist) {
@@ -507,7 +507,7 @@ Bool_t TGainMatch::Align(TH1* test, TH1* hist, Int_t low_range, Int_t high_range
 {
    // Minimizes the chi^2 between the bin contents of the test histogram and the bin contents of the histogram to be
    // matched'
-   if(!(test && hist)) {
+   if(!((test != nullptr) && (hist != nullptr))) {
       printf("Unassigned histogram\n");
       return false;
    }
@@ -572,15 +572,15 @@ Bool_t TGainMatch::AlignAll(TCalManager* cm, TH1* hist, TH2* mat, Int_t low_rang
 {
    std::vector<Int_t> badlist;
    auto*              gm = new TGainMatch;
-   if(!cm) {
+   if(cm == nullptr) {
       gm->Error("AlignAll", "CalManager Pointer is nullptr");
       return false;
    }
-   if(!mat) {
+   if(mat == nullptr) {
       gm->Error("AlignAll", "TH2 Pointer is nullptr");
       return false;
    }
-   if(!hist) {
+   if(hist == nullptr) {
       gm->Error("AlignAll", "TH1 Pointer is nullptr");
       return false;
    }
@@ -605,7 +605,7 @@ Bool_t TGainMatch::AlignAll(TCalManager* cm, TH1* hist, TH2* mat, Int_t low_rang
       }
       cm->AddToManager(gm);
    }
-   if(badlist.size()) {
+   if(static_cast<unsigned int>(!badlist.empty()) != 0u) {
       printf("The following channels did not gain match properly: ");
    }
    for(int i : badlist) {
@@ -624,11 +624,11 @@ Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2* charge_mat, TH2* eng_mat, 
    // calibrated matrix
 
    auto* gm = new TGainMatch;
-   if(!cm) {
+   if(cm == nullptr) {
       gm->Error("FineMatchAll", "CalManager Pointer is nullptr");
       return false;
    }
-   if(!charge_mat || !eng_mat) {
+   if((charge_mat == nullptr) || (eng_mat == nullptr)) {
       gm->Error("FineMatchAll", "TH2 Pointer is nullptr");
       return false;
    }
@@ -637,7 +637,7 @@ Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2* charge_mat, TH2* eng_mat, 
       return false;
       }*/
    Double_t binwidth;
-   binwidth = (Int_t)(0.5 + 1. / eng_mat->GetYaxis()->GetBinWidth(100));
+   binwidth = static_cast<Int_t>(0.5 + 1. / eng_mat->GetYaxis()->GetBinWidth(100));
    eng_mat->RebinY(binwidth);
 
    std::vector<Int_t> badlist;
@@ -666,7 +666,7 @@ Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2* charge_mat, TH2* eng_mat, 
       }
       cm->AddToManager(gm);
    }
-   if(badlist.size()) {
+   if(static_cast<unsigned int>(!badlist.empty()) != 0u) {
       printf("The following channels did not gain match properly: ");
    }
    for(int i : badlist) {
@@ -688,7 +688,7 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
       return false;
    }
    TH1* hist2 = chargeHist; // Cheating for easier modification later
-   if(!chargeHist || !testhist || !energyHist) {
+   if((chargeHist == nullptr) || (testhist == nullptr) || (energyHist == nullptr)) {
       Error("FineMatch", "No histogram being pointed to");
       return false;
    }
@@ -702,11 +702,11 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    // See if the channel exists. There is no point in finding the gains if we don't have anywhere to write it
    Double_t  gain, offset;
    TChannel* chan = TChannel::GetChannelByNumber(channelNum);
-   if(!chan) {
+   if(chan == nullptr) {
       if(channelNum != 9999) {
          Warning("FineMatch", "Channel Number %d does not exist in current memory.", channelNum);
       }
-      if(GetFitFunction()) {
+      if(GetFitFunction() != nullptr) {
          gain   = GetParameter(1);
          offset = GetParameter(0);
       } else {

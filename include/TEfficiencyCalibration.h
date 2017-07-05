@@ -27,7 +27,7 @@ public:
    void ScaleGuess();
 
 public:
-   void Copy(TObject& obj) const override;
+   void Copy(TObject& copy) const override;
 
    void Clear(Option_t* opt = "") override;
    void Print(Option_t* opt = "") const override;

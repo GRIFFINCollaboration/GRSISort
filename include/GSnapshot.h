@@ -14,7 +14,7 @@ public:
    GSnapshot(const char* snapshot_dir = nullptr);
    ~GSnapshot()                       = default;
 
-   void Snapshot(TCanvas* canvas = nullptr);
+   void Snapshot(TCanvas* can = nullptr);
 
 private:
    std::string fSnapshotDir;

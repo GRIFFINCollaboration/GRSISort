@@ -15,8 +15,8 @@ TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t
 {
    Clear();
    // We make the background first so we can send it to the TPeaks.
-   fBackground = new TF1(Form("MPbackground_%d_to_%d", (Int_t)(xlow), (Int_t)(xhigh)), MultiStepBG, xlow, xhigh,
-                         centroids.size() * 6 + 5);
+   fBackground = new TF1(Form("MPbackground_%d_to_%d", static_cast<Int_t>(xlow), static_cast<Int_t>(xhigh)),
+                         MultiStepBG, xlow, xhigh, centroids.size() * 6 + 5);
    fBackground->SetNpx(1000);
    fBackground->SetLineStyle(2);
    fBackground->SetLineColor(kBlack);
@@ -41,8 +41,9 @@ TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t
    }
    SetRange(xlow, xhigh);
 
-   SetName(Form("MultiPeak_%d_to_%d", (Int_t)(xlow), (Int_t)(xhigh))); // Gives a default name to the peak
-   SortPeaks(); // Defaults to sorting by TPeak::CompareEnergy
+   SetName(Form("MultiPeak_%d_to_%d", static_cast<Int_t>(xlow),
+                static_cast<Int_t>(xhigh))); // Gives a default name to the peak
+   SortPeaks();                              // Defaults to sorting by TPeak::CompareEnergy
    InitNames();
 }
 
@@ -59,12 +60,12 @@ TMultiPeak::TMultiPeak() : TGRSIFit("multipeakbg", MultiPhotoPeakBG, 0, 1000, 10
 
 TMultiPeak::~TMultiPeak()
 {
-   if(fBackground) {
+   if(fBackground != nullptr) {
       delete fBackground;
    }
 
    for(auto& i : fPeakVec) {
-      if(i) {
+      if(i != nullptr) {
          delete i;
       }
    }
@@ -83,7 +84,7 @@ void TMultiPeak::InitNames()
    SetParName(3, "C");
    SetParName(4, "bg_offset");
 
-   for(int i = 0; i < (int)fPeakVec.size(); ++i) {
+   for(int i = 0; i < static_cast<int>(fPeakVec.size()); ++i) {
       SetParName(6 * i + 5, Form("Height_%i", i));
       SetParName(6 * i + 6, Form("Centroid_%i", i));
       SetParName(6 * i + 7, Form("Sigma_%i", i));
@@ -103,7 +104,7 @@ void TMultiPeak::Copy(TObject& obj) const
 {
    TGRSIFit::Copy(obj);
    TMultiPeak* mpobj = static_cast<TMultiPeak*>(&obj);
-   if(!(mpobj->fBackground)) {
+   if((mpobj->fBackground) == nullptr) {
       mpobj->fBackground = new TF1(*(fBackground));
    } else {
       *(mpobj->fBackground) = *fBackground;
@@ -122,11 +123,11 @@ void TMultiPeak::Copy(TObject& obj) const
 Bool_t TMultiPeak::InitParams(TH1* fithist)
 {
    // Makes initial guesses at parameters for the fit. Uses the histogram to make the initial guesses
-   if(!fithist && GetHist()) {
+   if((fithist == nullptr) && (GetHist() != nullptr)) {
       fithist = GetHist();
    }
 
-   if(!fithist) {
+   if(fithist == nullptr) {
       printf("No histogram is associated yet, no initial guesses made\n");
       return false;
    }
@@ -148,7 +149,7 @@ Bool_t TMultiPeak::InitParams(TH1* fithist)
    FixParameter(3, 0);
 
    // We need to initialize parameters for every peak in the fit
-   for(int i = 0; i < (int)fPeakVec.size(); ++i) {
+   for(int i = 0; i < static_cast<int>(fPeakVec.size()); ++i) {
       Double_t centroid = fPeakVec.at(i)->GetCentroid();
       Int_t    bin      = fithist->GetXaxis()->FindBin(centroid);
       SetParLimits(6 * i + 5, 0, fithist->GetBinContent(bin) * 5.);
@@ -182,11 +183,11 @@ Bool_t TMultiPeak::InitParams(TH1* fithist)
 Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
 {
    TString optstr = opt;
-   if(!fithist && !GetHist()) {
+   if((fithist == nullptr) && (GetHist() == nullptr)) {
       printf("No hist passed, trying something...");
       fithist = fHistogram;
    }
-   if(!fithist) {
+   if(fithist == nullptr) {
       printf("No histogram associated with Peak\n");
       return false;
    }
@@ -273,7 +274,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
       printf("Chi^2/NDF = %lf\n", fitres->Chi2() / fitres->Ndf());
    }
    // We will now set the parameters of each of the peaks based on the fits.
-   for(int i = 0; i < (int)fPeakVec.size(); ++i) {
+   for(int i = 0; i < static_cast<int>(fPeakVec.size()); ++i) {
       auto* tmpMp = new TMultiPeak(*this);
       tmpMp->ClearParameters(); // We need to clear all of the parameters so that we can add the ones we want back in
       Double_t    binWidth  = fithist->GetBinWidth(GetParameter(Form("Centroid_%i", i)));
@@ -349,7 +350,7 @@ void TMultiPeak::Clear(Option_t* opt)
 {
    TGRSIFit::Clear(opt);
    for(auto& i : fPeakVec) {
-      if(i) {
+      if(i != nullptr) {
          delete i;
          i = nullptr;
       }
@@ -363,7 +364,7 @@ void TMultiPeak::Print(Option_t* opt) const
    printf("Name:        %s \n", GetName());
    printf("Number of Peaks: %lu\n", fPeakVec.size());
    TF1::Print();
-   for(int i = 0; i < (int)fPeakVec.size(); ++i) {
+   for(int i = 0; i < static_cast<int>(fPeakVec.size()); ++i) {
       printf("Peak: %i\n", i);
       fPeakVec.at(i)->Print(opt);
       printf("\n");
@@ -381,7 +382,7 @@ Double_t TMultiPeak::MultiPhotoPeakBG(Double_t* dim, Double_t* par)
    // Limits need to be imposed or error states may occour.
    //
    // General background.
-   int    npeaks = (int)(par[0] + 0.5);
+   int    npeaks = static_cast<int>(par[0] + 0.5);
    double result = TGRSIFunctions::PolyBg(dim, &par[1], 2); // polynomial background. uses par[1->4]
    for(int i = 0; i < npeaks; i++) {                        // par[0] is number of peaks
       Double_t tmp_par[6];
@@ -401,7 +402,7 @@ Double_t TMultiPeak::MultiStepBG(Double_t* dim, Double_t* par)
    // Limits need to be imposed or error states may occour.
    //
    // General background.
-   int    npeaks = (int)(par[0] + 0.5);
+   int    npeaks = static_cast<int>(par[0] + 0.5);
    double result = TGRSIFunctions::PolyBg(dim, &par[1], 2); // polynomial background. uses par[1->4]
    for(int i = 0; i < npeaks; i++) {                        // par[0] is number of peaks
       Double_t tmp_par[6];
@@ -422,7 +423,7 @@ Double_t TMultiPeak::SinglePeakBG(Double_t* dim, Double_t* par)
    //
    // General background.
 
-   int    npeaks = (int)(par[0] + 0.5);
+   int    npeaks = static_cast<int>(par[0] + 0.5);
    double result = TGRSIFunctions::PolyBg(dim, &par[1], 2); // polynomial background. uses par[1->4]
    for(int i = 0; i < npeaks; i++) {                        // par[0] is number of peaks
       Double_t tmp_par[6];
@@ -442,9 +443,8 @@ TPeak* TMultiPeak::GetPeak(UInt_t idx)
 {
    if(idx < fPeakVec.size()) {
       return fPeakVec.at(idx);
-   } else {
-      printf("No matching peak at index %u\n", idx);
    }
+   printf("No matching peak at index %u\n", idx);
 
    return nullptr;
 }

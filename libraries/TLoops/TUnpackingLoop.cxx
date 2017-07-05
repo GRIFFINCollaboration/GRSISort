@@ -18,7 +18,7 @@ TUnpackingLoop* TUnpackingLoop::Get(std::string name)
    }
 
    TUnpackingLoop* loop = static_cast<TUnpackingLoop*>(StoppableThread::Get(name));
-   if(!loop) {
+   if(loop == nullptr) {
       loop = new TUnpackingLoop(name);
    }
    return loop;
@@ -35,7 +35,7 @@ TUnpackingLoop::~TUnpackingLoop() = default;
 void TUnpackingLoop::ClearQueue()
 {
    std::shared_ptr<TRawEvent> singleEvent;
-   while(fInputQueue->Size()) {
+   while(fInputQueue->Size() != 0u) {
       fInputQueue->Pop(singleEvent);
    }
 
@@ -58,11 +58,10 @@ bool TUnpackingLoop::Iteration()
          BadOutputQueue()->SetFinished();
          ScalerOutputQueue()->SetFinished();
          return false;
-      } else {
-         // Wait for the source to give more data.
-         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-         return true;
       }
+      // Wait for the source to give more data.
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
+      return true;
    }
    if(fEvaluateDataType) {
       fDataType         = (event->IsA() == TLstEvent::Class()) ? kLst : kMidas;

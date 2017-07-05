@@ -10,7 +10,7 @@ double bgHigh = 2000.; // max. time difference gamma-gamma background
 
 void AngularCorrelationSelector::CreateHistograms()
 {
-   std::cout << "creating histograms ..." << std::endl;
+   std::cout<<"creating histograms ..."<<std::endl;
    // for each angle (and the sum) we want
    // for single crystal and addback
    // with and without coincident betas
@@ -156,7 +156,7 @@ void AngularCorrelationSelector::CreateHistograms()
    for(auto it : fHSparse) {
       GetOutputList()->Add(it.second);
    }
-   std::cout << "done" << std::endl;
+   std::cout<<"done"<<std::endl;
 }
 
 void AngularCorrelationSelector::FillHistograms()

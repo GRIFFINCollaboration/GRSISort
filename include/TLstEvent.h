@@ -38,7 +38,7 @@ public:
 
    char* GetData() override; ///< return pointer to the data buffer
 
-   void SetData(std::vector<char>& dataBuffer); ///< set an externally allocated data buffer
+   void SetData(std::vector<char>& buffer); ///< set an externally allocated data buffer
 
    int SwapBytes(bool) override; ///< convert event data between little-endian (Linux-x86) and big endian (MacOS-PPC)
 

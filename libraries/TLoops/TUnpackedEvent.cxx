@@ -14,12 +14,12 @@ void TUnpackedEvent::Build()
 {
    for(const auto& frag : fFragments) {
       TChannel* channel = TChannel::GetChannel(frag->GetAddress());
-      if(!channel) {
+      if(channel == nullptr) {
          continue;
       }
 
       TClass* detClass = channel->GetClassType();
-      if(!detClass) {
+      if(detClass == nullptr) {
          continue;
       }
 
@@ -60,7 +60,6 @@ std::shared_ptr<TDetector> TUnpackedEvent::GetDetector(TClass* cls, bool make_if
       std::shared_ptr<TDetector> output(static_cast<TDetector*>(cls->New()));
       fDetectors.push_back(output);
       return output;
-   } else {
-      return nullptr;
    }
+   return nullptr;
 }

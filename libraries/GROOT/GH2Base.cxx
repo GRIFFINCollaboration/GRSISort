@@ -201,21 +201,20 @@ GH1D* GH2Base::GetPrevious(const GH1D* curr, bool)
    }
 
    TObjLink* link = fProjections->FirstLink();
-   while(link) {
+   while(link != nullptr) {
       if(link->GetObject() == curr) {
          break;
       }
       link = link->Next();
    }
-   if(!link) {
+   if(link == nullptr) {
       return nullptr;
    }
 
-   if(link->Prev()) {
+   if(link->Prev() != nullptr) {
       return static_cast<GH1D*>(link->Prev()->GetObject());
-   } else {
-      return static_cast<GH1D*>(fProjections->Last());
    }
+   return static_cast<GH1D*>(fProjections->Last());
 }
 
 GH1D* GH2Base::GetNext(const GH1D* curr, bool)
@@ -225,28 +224,27 @@ GH1D* GH2Base::GetNext(const GH1D* curr, bool)
    }
 
    TObjLink* link = fProjections->FirstLink();
-   while(link) {
+   while(link != nullptr) {
       if(link->GetObject() == curr) {
          break;
       }
       link = link->Next();
    }
-   if(!link) {
+   if(link == nullptr) {
       return nullptr;
    }
 
-   if(link->Next()) {
+   if(link->Next() != nullptr) {
       return static_cast<GH1D*>(link->Next()->GetObject());
-   } else {
-      return static_cast<GH1D*>(fProjections->First());
    }
+   return static_cast<GH1D*>(fProjections->First());
 }
 
 GH1D* GH2Base::GetNextSummary(const GH1D* curr, bool DrawEmpty)
 {
    int         binnum = 1;
    std::string name;
-   if(curr) {
+   if(curr != nullptr) {
       name                  = curr->GetName();
       size_t underscore_pos = name.rfind('_');
       binnum                = std::atoi(name.c_str() + underscore_pos + 1);
@@ -270,12 +268,12 @@ GH1D* GH2Base::GetNextSummary(const GH1D* curr, bool DrawEmpty)
       while(true) {
          std::string hist_name = Form("%s_%d", GetTH2()->GetName(), binnum);
          g                     = static_cast<GH1D*>(fSummaryProjections->FindObject(hist_name.c_str()));
-         if(g && g->Integral() > 0) {
+         if((g != nullptr) && g->Integral() > 0) {
             return g;
          }
 
          g = GH2ProjectionY(hist_name.c_str(), binnum, binnum, "", DrawEmpty);
-         if(g && g->Integral() > 0) {
+         if((g != nullptr) && g->Integral() > 0) {
             return g;
          }
          binnum++;
@@ -291,12 +289,12 @@ GH1D* GH2Base::GetNextSummary(const GH1D* curr, bool DrawEmpty)
          std::string hist_name = Form("%s_%d", GetTH2()->GetName(), binnum);
 
          g = static_cast<GH1D*>(fSummaryProjections->FindObject(hist_name.c_str()));
-         if(g && g->Integral() > 0) {
+         if((g != nullptr) && g->Integral() > 0) {
             return g;
          }
 
          g = GH2ProjectionX(hist_name.c_str(), binnum, binnum, "", DrawEmpty);
-         if(g && g->Integral() > 0) {
+         if((g != nullptr) && g->Integral() > 0) {
             return g;
          }
          binnum++;
@@ -316,7 +314,7 @@ GH1D* GH2Base::GetPrevSummary(const GH1D* curr, bool DrawEmpty)
 {
    int         binnum = 1;
    std::string name;
-   if(curr) {
+   if(curr != nullptr) {
       name                  = curr->GetName();
       size_t underscore_pos = name.rfind('_');
       binnum                = std::atoi(name.c_str() + underscore_pos + 1);
@@ -336,7 +334,7 @@ GH1D* GH2Base::GetPrevSummary(const GH1D* curr, bool DrawEmpty)
 
    std::string hist_name = Form("%s_%d", GetTH2()->GetName(), binnum);
    TObject*    obj       = fSummaryProjections->FindObject(hist_name.c_str());
-   if(obj) {
+   if(obj != nullptr) {
       return static_cast<GH1D*>(obj);
    }
 
@@ -347,7 +345,7 @@ GH1D* GH2Base::GetPrevSummary(const GH1D* curr, bool DrawEmpty)
          // std::string hist_name = Form("%s_%d",GetTH2()->GetName(),binnum);
          std::string hist_name2 = Form("%s_%d", GetTH2()->GetName(), binnum);
          GH1D*       g          = GH2ProjectionY(hist_name2.c_str(), binnum, binnum, "", DrawEmpty);
-         if(g && g->Integral() > 0) {
+         if((g != nullptr) && g->Integral() > 0) {
             return g;
          }
          binnum--;
@@ -363,7 +361,7 @@ GH1D* GH2Base::GetPrevSummary(const GH1D* curr, bool DrawEmpty)
          // std::string hist_name = Form("%s_%d",GetTH2()->GetName(),binnum);
          std::string hist_name2 = Form("%s_%d", GetTH2()->GetName(), binnum);
          GH1D*       g          = GH2ProjectionX(hist_name2.c_str(), binnum, binnum, "", DrawEmpty);
-         if(g && g->Integral() > 0) {
+         if((g != nullptr) && g->Integral() > 0) {
             return g;
          }
          binnum--;

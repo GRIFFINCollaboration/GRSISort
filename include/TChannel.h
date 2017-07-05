@@ -45,8 +45,8 @@
 class TChannel : public TNamed {
 public:
    static TChannel* GetChannel(unsigned int temp_address);
-   static TChannel* GetChannelByNumber(int temp_numebr);
-   static TChannel* FindChannelByName(const char* name);
+   static TChannel* GetChannelByNumber(int temp_num);
+   static TChannel* FindChannelByName(const char* ccName);
 
    TChannel();
    TChannel(const char*);
@@ -218,8 +218,8 @@ public:
    WaveFormShapePar GetWaveParam() const { return WaveFormShape; }
 
    double CalibrateENG(double);
-   double CalibrateENG(double, int integration);
-   double CalibrateENG(int, int integration = 0);
+   double CalibrateENG(double, int temp_int);
+   double CalibrateENG(int, int temp_int = 0);
 
    double CalibrateCFD(double);
    double CalibrateCFD(int);

@@ -1,21 +1,19 @@
 
 
-
-
-TH1D *hist = (TH1D*)(GetOutputList()->FindObject(Form("Charge_0x%04x",fragment->ChannelAddress)));
+TH1D* hist = (TH1D*)(GetOutputList()->FindObject(Form("Charge_0x%04x", fragment->ChannelAddress)));
 if(hist) hist->Fill(fragment->GetCharge());
 
-hist = (TH1D*)(GetOutputList()->FindObject(Form("Energy_0x%04x",fragment->ChannelAddress)));
+hist = (TH1D*)(GetOutputList()->FindObject(Form("Energy_0x%04x", fragment->ChannelAddress)));
 if(hist) hist->Fill(fragment->GetEnergy());
 
-TH1D *histcfd = (TH1D*)(GetOutputList()->FindObject(Form("Cfd_0x%04x",fragment->ChannelAddress)));
+TH1D* histcfd = (TH1D*)(GetOutputList()->FindObject(Form("Cfd_0x%04x", fragment->ChannelAddress)));
 if(histcfd) histcfd->Fill(fragment->Cfd);
 
-TH2D *mat = (TH2D*)(GetOutputList()->FindObject("hp_charge"));
-if(mat && fragment->DetectorType <= 1 ) mat->Fill(channel->GetNumber(),fragment->GetCharge(0));
+TH2D* mat = (TH2D*)(GetOutputList()->FindObject("hp_charge"));
+if(mat && fragment->DetectorType <= 1) mat->Fill(channel->GetNumber(), fragment->GetCharge(0));
 
 mat = (TH2D*)(GetOutputList()->FindObject("hp_energy"));
-if(mat && fragment->DetectorType <= 1) mat->Fill(channel->GetNumber(),fragment->GetEnergy());
+if(mat && fragment->DetectorType <= 1) mat->Fill(channel->GetNumber(), fragment->GetEnergy());
 
 hist = (TH1D*)(GetOutputList()->FindObject("test"));
 if(hist) hist->Fill(channel->GetNumber());
@@ -42,9 +40,7 @@ hist = (TH1D*)(GetOutputList()->FindObject("Charge_nofilter"));
 if(hist && fragment->TriggerId < 0) hist->Fill(fragment->GetCharge(0));
 
 hist = (TH1D*)(GetOutputList()->FindObject("Charge_filter"));
-if(hist && fragment->TriggerId > 0) hist->Fill(fragment->GetCharge(0)); 
+if(hist && fragment->TriggerId > 0) hist->Fill(fragment->GetCharge(0));
 
 hist = (TH1D*)(GetOutputList()->FindObject("TriggerPattern"));
-if(hist && fragment->TriggerBitPattern>-1) hist->Fill(fragment->TriggerBitPattern);
-
-
+if(hist && fragment->TriggerBitPattern > -1) hist->Fill(fragment->TriggerBitPattern);

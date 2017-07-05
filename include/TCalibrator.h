@@ -19,20 +19,19 @@ public:
    void Copy(TObject& obj) const override;
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
-   void Draw(Option_t* option = "") override;
+   void Draw(Option_t* opt = "") override;
    UInt_t Size() const { return fPeaks.size(); }
 
    int  GetFitOrder() const { return fit_order; }
    void SetFitOrder(int order) { fit_order = order; }
 
    TGraph& MakeCalibrationGraph(double min_figure_of_merit = 0.001);
-   TGraphErrors& MakeEffGraph(double secondsi = 3600., double bq = 100000., Option_t* opt = "draw");
+   TGraphErrors& MakeEffGraph(double seconds = 3600., double bq = 100000., Option_t* opt = "draw");
    std::vector<double> Calibrate(double min_figure_of_merit = 0.001);
 
-   int AddData(TH1* source_data, const std::string& source, double sigma = 2.0, double threshold = 0.05,
-               double error = 0.001);
+   int AddData(TH1* data, const std::string& source, double sigma = 2.0, double threshold = 0.05, double error = 0.001);
 
-   int AddData(TH1* source_data, TNucleus* source, double sigma = 2.0, double threshold = 0.05, double error = 0.001);
+   int AddData(TH1* data, TNucleus* source, double sigma = 2.0, double threshold = 0.05, double error = 0.001);
 
    void UpdateTChannel(TChannel* channel);
 
@@ -56,7 +55,7 @@ public:
    TF1*    LinFit() { return linfit; }
    TF1*    EffFit() { return efffit; }
 
-   std::string PrintEfficency(const char* filenamei = "");
+   std::string PrintEfficency(const char* filename = "");
 
 #ifndef __CINT__
 // struct SingleFit {

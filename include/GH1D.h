@@ -57,8 +57,8 @@ public:
    GH1D* GetPrevious(bool DrawEmpty = false) const;
    GH1D* GetNext(bool DrawEmpty = false) const;
 
-   GH1D* Project(double bin_low, double bin_high) const;
-   GH1D* Project_Background(double bin_low, double bin_high, double bg_bin_low, double bg_bin_high,
+   GH1D* Project(double value_low, double value_high) const;
+   GH1D* Project_Background(double value_low, double value_high, double bg_value_low, double bg_value_high,
                             kBackgroundSubtraction mode = kRegionBackground) const;
 
 private:

@@ -10,7 +10,7 @@ class GGaus : public TF1 {
 public:
    GGaus(Double_t xlow, Double_t xhigh, Option_t* opt = "gsc");
    // GGaus(Double_t xlow,Double_t xhigh,int bg_order=1,Option_t *opt="gsc");  make this a thing.  pcb.
-   GGaus(Double_t xlow, Double_t xhigh, TF1* background, Option_t* opt = "gsc");
+   GGaus(Double_t xlow, Double_t xhigh, TF1* bg, Option_t* opt = "gsc");
    GGaus(const GGaus&);
    GGaus();
    ~GGaus() override;

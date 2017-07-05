@@ -10,7 +10,7 @@ extern "C" void MakeFragmentHistograms(TRuntimeObjects& obj)
    std::shared_ptr<const TFragment> frag = obj.GetFragment();
    TChannel*                        chan = frag->GetChannel();
 
-   if(frag && chan) {
+   if(frag != nullptr && chan != nullptr) {
       obj.FillHistogram("channel", 2000, 0, 2000, frag->GetChannelNumber());
 
       if(chan->GetClassType() == TSceptar::Class()) {

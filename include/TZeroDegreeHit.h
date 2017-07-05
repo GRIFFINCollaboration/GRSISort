@@ -53,9 +53,9 @@ public:
       const; ///< Returns a time value using the CFD with 1/256 ns intrinsic binning, corrected using GValue
 
    Int_t CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow,
-                      unsigned int interpolation_steps); //!<!
+                      unsigned int interpolationSteps); //!<!
    Int_t CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow,
-                                unsigned int interpolation_steps, std::vector<Short_t>& monitor);    //!<!
+                                unsigned int interpolationSteps, std::vector<Short_t>& monitor);     //!<!
    std::vector<Short_t> CalculateCfdMonitor(double attenuation, int delay, int halfsmoothingwindow); //!<!
    std::vector<Short_t> CalculateSmoothedWaveform(unsigned int halfsmoothingwindow);                 //!<!
    std::vector<Int_t> CalculatePartialSum();                                                         //!<!

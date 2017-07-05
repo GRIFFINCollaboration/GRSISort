@@ -24,7 +24,7 @@ public:
    Int_t BufferEmpty(Int_t action = 0) override;
    Int_t         BufferFill(Double_t, Double_t) override { return -2; } // MayNotUse
    virtual Int_t BufferFill(Double_t x, Double_t y, Double_t w);
-   void Copy(TObject& hnew) const override;
+   void Copy(TObject& obj) const override;
    Int_t Fill(Double_t) override;                                 // MayNotUse
    Int_t Fill(const char*, Double_t) override { return Fill(0); } // MayNotUse
    Int_t Fill(Double_t x, Double_t y) override;
@@ -62,12 +62,13 @@ public:
    Long64_t Merge(TCollection* list) override;
    virtual TProfile* Profile(const char* name = "_pf", Int_t firstbin = 1, Int_t lastbin = -1,
                              Option_t* option = "") const;
-   virtual TH1D* Projection(const char* name = "_pr", Int_t firstBin = 0, Int_t lastBin = -1, Option_t* opt = "") const;
+   virtual TH1D* Projection(const char* name = "_pr", Int_t firstBin = 0, Int_t lastBin = -1,
+                            Option_t* option = "") const;
    void PutStats(Double_t* stats) override;
    virtual GHSym* Rebin2D(Int_t ngroup = 2, const char* newname = "");
    void Reset(Option_t* option = "") override;
    void SetCellContent(Int_t binx, Int_t biny, Double_t content) override;
-   void SetCellError(Int_t binx, Int_t biny, Double_t error) override;
+   void SetCellError(Int_t binx, Int_t biny, Double_t content) override;
    virtual void SetShowProjectionX(Int_t nbins = 1); // *MENU*
    virtual void SetShowProjectionY(Int_t nbins = 1); // *MENU*
    TH1* ShowBackground(Int_t niter = 20, Option_t* option = "same") override;
@@ -76,8 +77,8 @@ public:
 
 protected:
    using TH1::DoIntegral;
-   virtual Double_t DoIntegral(Int_t ix1, Int_t ix2, Int_t iy1, Int_t iy2, Double_t& err, Option_t* opt,
-                               Bool_t doerr = kFALSE) const;
+   virtual Double_t DoIntegral(Int_t binx1, Int_t binx2, Int_t biny1, Int_t biny2, Double_t& error, Option_t* option,
+                               Bool_t doError = kFALSE) const;
    Double_t fTsumwy{};  // Total Sum of weight*Y
    Double_t fTsumwy2{}; // Total Sum of weight*Y*Y
    Double_t fTsumwxy{}; // Total Sum of weight*X*Y
@@ -103,7 +104,7 @@ public:
 
    void AddBinContent(Int_t bin) override { ++fArray[bin]; }
    void AddBinContent(Int_t bin, Double_t w) override { fArray[bin] += Float_t(w); }
-   void Copy(TObject& hnew) const override;
+   void Copy(TObject& rh) const override;
    void Draw(Option_t* option = "") override { GetMatrix()->Draw(option); }
 #if MAJOR_ROOT_VERSION < 6
    virtual TH1* DrawCopy(Option_t* option = "") const;
@@ -149,7 +150,7 @@ public:
 
    void AddBinContent(Int_t bin) override { ++fArray[bin]; }
    void AddBinContent(Int_t bin, Double_t w) override { fArray[bin] += w; }
-   void Copy(TObject& hnew) const override;
+   void Copy(TObject& rh) const override;
 #if MAJOR_ROOT_VERSION < 6
    virtual TH1* DrawCopy(Option_t* option = "") const;
 #else

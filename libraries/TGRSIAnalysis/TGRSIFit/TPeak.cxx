@@ -40,7 +40,8 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
          std::swap(cent, xhigh);
       }
       printf("Something about your range was wrong. Assuming:\n");
-      printf("centroid: %d \t range: %d to %d\n", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh));
+      printf("centroid: %d \t range: %d to %d\n", static_cast<Int_t>(cent), static_cast<Int_t>(xlow),
+             static_cast<Int_t>(xhigh));
    }
 
    SetRange(xlow, xhigh);
@@ -50,20 +51,22 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
 
    // Set the fit function to be a radware style photo peak.
    // This function might be unnecessary. Will revist this later. rd.
-   SetName(Form("Chan%d_%d_to_%d", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh))); // Gives a default name to the peak
+   SetName(Form("Chan%d_%d_to_%d", static_cast<Int_t>(cent), static_cast<Int_t>(xlow),
+                static_cast<Int_t>(xhigh))); // Gives a default name to the peak
 
    // We need to set parameter names now.
    InitNames();
    SetParameter("centroid", cent);
 
    // Check to see if background is good.
-   if(background) {
+   if(background != nullptr) {
       fBackground = background;
       fOwnBgFlag  = false;
    } else {
       printf("Bad background pointer. Creating basic background.\n");
-      fBackground = new TF1(Form("background%d_%d_to_%d", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh)),
-                            TGRSIFunctions::StepBG, xlow, xhigh, 10);
+      fBackground = new TF1(
+         Form("background%d_%d_to_%d", static_cast<Int_t>(cent), static_cast<Int_t>(xlow), static_cast<Int_t>(xhigh)),
+         TGRSIFunctions::StepBG, xlow, xhigh, 10);
       TGRSIFit::AddToGlobalList(fBackground, kFALSE);
       fOwnBgFlag = true;
    }
@@ -105,7 +108,8 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh)
          std::swap(cent, xhigh);
       }
       printf("Something about your range was wrong. Assuming:\n");
-      printf("centroid: %d \t range: %d to %d\n", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh));
+      printf("centroid: %d \t range: %d to %d\n", static_cast<Int_t>(cent), static_cast<Int_t>(xlow),
+             static_cast<Int_t>(xhigh));
    }
 
    SetRange(xlow, xhigh);
@@ -115,14 +119,16 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh)
 
    // Set the fit function to be a radware style photo peak.
    // This function might be unnecessary. Will revist this later. rd.
-   SetName(Form("Chan%d_%d_to_%d", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh))); // Gives a default name to the peak
+   SetName(Form("Chan%d_%d_to_%d", static_cast<Int_t>(cent), static_cast<Int_t>(xlow),
+                static_cast<Int_t>(xhigh))); // Gives a default name to the peak
 
    // We need to set parameter names now.
    InitNames();
    SetParameter("centroid", cent);
 
-   fBackground = new TF1(Form("background%d_%d_to_%d", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh)),
-                         TGRSIFunctions::StepBG, xlow, xhigh, 10);
+   fBackground = new TF1(
+      Form("background%d_%d_to_%d", static_cast<Int_t>(cent), static_cast<Int_t>(xlow), static_cast<Int_t>(xhigh)),
+      TGRSIFunctions::StepBG, xlow, xhigh, 10);
 
    fBackground->SetNpx(1000);
    fBackground->SetLineStyle(2);
@@ -149,10 +155,10 @@ TPeak::TPeak() : TGRSIFit("photopeakbg", TGRSIFunctions::PhotoPeakBG, 0, 1000, 1
 
 TPeak::~TPeak()
 {
-   if(fBackground && fOwnBgFlag) {
+   if((fBackground != nullptr) && fOwnBgFlag) {
       delete fBackground;
    }
-   if(fResiduals) {
+   if(fResiduals != nullptr) {
       delete fResiduals;
    }
 }
@@ -182,10 +188,10 @@ void TPeak::Copy(TObject& obj) const
 {
    TGRSIFit::Copy(obj);
 
-   if(!static_cast<TPeak&>(obj).fBackground) {
+   if(static_cast<TPeak&>(obj).fBackground == nullptr) {
       static_cast<TPeak&>(obj).fBackground = new TF1(*fBackground);
    }
-   if(!static_cast<TPeak&>(obj).fResiduals) {
+   if(static_cast<TPeak&>(obj).fResiduals == nullptr) {
       static_cast<TPeak&>(obj).fResiduals = new TGraph(*fResiduals);
    }
 
@@ -231,11 +237,11 @@ Bool_t TPeak::InitParams(TH1* fitHist)
    SetParLimits(6, 0.0, fitHist->GetBinContent(bin) * 100.);
    SetParLimits(9, xlow, xhigh);
 
-   if(!fitHist && GetHist()) {
+   if((fitHist == nullptr) && (GetHist() != nullptr)) {
       fitHist = GetHist();
    }
 
-   if(!fitHist) {
+   if(fitHist == nullptr) {
       printf("No histogram is associated yet, no initial guesses made\n");
       return false;
    }
@@ -266,11 +272,11 @@ Bool_t TPeak::InitParams(TH1* fitHist)
 Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
 {
    TString optstr = opt;
-   if(!fitHist && !GetHist()) {
+   if((fitHist == nullptr) && (GetHist() == nullptr)) {
       printf("No hist passed, trying something...");
       fitHist = fHistogram;
    }
-   if(!fitHist) {
+   if(fitHist == nullptr) {
       printf("No histogram associated with Peak\n");
       return false;
    }
@@ -470,7 +476,7 @@ void TPeak::DrawBackground(Option_t* opt) const
 
 void TPeak::DrawResiduals()
 {
-   if(!GetHist()) {
+   if(GetHist() == nullptr) {
       printf("No hist set\n");
       return;
    }
@@ -507,7 +513,7 @@ void TPeak::DrawResiduals()
 
 Double_t TPeak::GetIntegralArea()
 {
-   if(!GetHist()) {
+   if(GetHist() == nullptr) {
       printf("No hist set\n");
       return 0;
    }
@@ -527,7 +533,7 @@ Double_t TPeak::GetIntegralArea()
 
 Double_t TPeak::GetIntegralArea(Double_t int_low, Double_t int_high)
 {
-   if(!GetHist()) {
+   if(GetHist() == nullptr) {
       printf("No hist set\n");
       return 0;
    }
@@ -558,7 +564,7 @@ Double_t TPeak::GetIntegralArea(Double_t int_low, Double_t int_high)
 
 Double_t TPeak::GetIntegralAreaErr(Double_t int_low, Double_t int_high)
 {
-   if(!GetHist()) {
+   if(GetHist() == nullptr) {
       printf("No hist set\n");
       return 0;
    }
@@ -589,7 +595,7 @@ Double_t TPeak::GetIntegralAreaErr(Double_t int_low, Double_t int_high)
 
 Double_t TPeak::GetIntegralAreaErr()
 {
-   if(!GetHist()) {
+   if(GetHist() == nullptr) {
       printf("No hist set\n");
       return 0;
    }
@@ -609,7 +615,7 @@ Double_t TPeak::GetIntegralAreaErr()
 
 void TPeak::CheckArea(Double_t int_low, Double_t int_high)
 {
-   if(!GetHist()) {
+   if(GetHist() == nullptr) {
       printf("No hist set\n");
       return;
    }
@@ -638,7 +644,7 @@ void TPeak::CheckArea(Double_t int_low, Double_t int_high)
 
 void TPeak::CheckArea()
 {
-   if(!GetHist()) {
+   if(GetHist() == nullptr) {
       printf("No hist set\n");
       return;
    }

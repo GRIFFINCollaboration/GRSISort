@@ -22,13 +22,14 @@
 #include <memory>
 #endif
 #include "TFragment.h"
+#include "TBadFragment.h"
 #include "ThreadsafeQueue.h"
 
 class TFragmentMap {
 public:
 #ifndef __CINT__
-   TFragmentMap(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& goodOutputQueue,
-                std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>&              badOutputQueue);
+   TFragmentMap(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& good_output_queue,
+                std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>&           bad_output_queue);
 #endif
 
    ~TFragmentMap() = default;
@@ -47,7 +48,7 @@ private:
 
    std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>>> fMap;
    std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& fGoodOutputQueue;
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>&              fBadOutputQueue;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>&           fBadOutputQueue;
 #endif
 };
 /*! @} */

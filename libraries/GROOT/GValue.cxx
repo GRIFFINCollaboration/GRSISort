@@ -40,7 +40,7 @@ void GValue::Copy(TObject& obj) const
 
 double GValue::Value(const std::string& name)
 {
-   if(!fValueVector.count(name)) {
+   if(fValueVector.count(name) == 0u) {
       return sqrt(-1);
    }
    return fValueVector.at(name)->GetValue();
@@ -49,7 +49,7 @@ double GValue::Value(const std::string& name)
 void GValue::SetReplaceValue(const std::string& name, double value, EPriority priority)
 {
    GValue* gvalue = FindValue(name);
-   if(!gvalue) {
+   if(gvalue == nullptr) {
       gvalue = new GValue(name.c_str(), value, priority);
       AddValue(gvalue);
    } else if(priority <= gvalue->fPriority) {
@@ -61,10 +61,10 @@ void GValue::SetReplaceValue(const std::string& name, double value, EPriority pr
 GValue* GValue::FindValue(const std::string& name)
 {
    GValue* value = nullptr;
-   if(!name.length()) {
+   if(name.length() == 0u) {
       return GetDefaultValue();
    }
-   if(fValueVector.count(name)) {
+   if(fValueVector.count(name) != 0u) {
       value = fValueVector[name];
    }
    return value;
@@ -73,7 +73,7 @@ GValue* GValue::FindValue(const std::string& name)
 bool GValue::AppendValue(GValue* oldvalue)
 {
    if(fPriority <= oldvalue->fPriority) {
-      if(strlen(GetName())) {
+      if(strlen(GetName()) != 0u) {
          oldvalue->SetName(GetName());
       }
 
@@ -82,7 +82,7 @@ bool GValue::AppendValue(GValue* oldvalue)
          oldvalue->fPriority = fPriority;
       }
 
-      if(strlen(GetInfo())) {
+      if(strlen(GetInfo()) != 0u) {
          oldvalue->SetInfo(GetInfo());
       }
       return true;
@@ -96,14 +96,13 @@ bool GValue::ReplaceValue(GValue* oldvalue)
    if(fPriority <= oldvalue->fPriority) {
       Copy(*oldvalue);
       return true;
-   } else {
-      return false;
    }
+   return false;
 }
 
 bool GValue::AddValue(GValue* value, Option_t* opt)
 {
-   if(!value) {
+   if(value == nullptr) {
       return false;
    }
    TString option(opt);
@@ -111,19 +110,19 @@ bool GValue::AddValue(GValue* value, Option_t* opt)
    std::string temp_string = value->GetName();
 
    GValue* oldvalue = GValue::FindValue(value->GetName());
-   if(oldvalue) {
+   if(oldvalue != nullptr) {
       value->ReplaceValue(oldvalue);
       delete value;
       return true;
-   } else if(temp_string.compare("") == 0) {
+   }
+   if(temp_string.compare("") == 0) {
       // default value, get rid of it and ignore;
       delete value;
       value = nullptr;
       return false;
-   } else {
-      fValueVector[temp_string] = value; //.push_back(value);
-      return true;
    }
+   fValueVector[temp_string] = value; //.push_back(value);
+   return true;
 }
 
 std::string GValue::PrintToString() const
@@ -147,7 +146,7 @@ int GValue::WriteValFile(const std::string& filename, Option_t*)
 {
    std::map<std::string, GValue*>::iterator it;
    // std::string filebuffer;
-   if(filename.length()) {
+   if(filename.length() != 0u) {
       std::ofstream outfile;
       outfile.open(filename.c_str());
       if(!outfile.is_open()) {
@@ -167,8 +166,8 @@ int GValue::WriteValFile(const std::string& filename, Option_t*)
 
 std::string GValue::WriteToBuffer(Option_t*)
 {
-   std::string buffer = "";
-   if(!GValue::Size()) {
+   std::string buffer;
+   if(GValue::Size() == 0) {
       return buffer;
    }
    std::map<std::string, GValue*>::iterator it;
@@ -202,12 +201,12 @@ int GValue::ReadValFile(const char* filename, Option_t* opt)
    std::string       sbuffer;
    std::vector<char> buffer(length);
    infile.seekg(0, std::ios::beg);
-   infile.read(buffer.data(), (int)length);
+   infile.read(buffer.data(), static_cast<int>(length));
    sbuffer.assign(buffer.data());
 
    int values_found = ParseInputData(sbuffer, kValFile, opt);
    // if(values_found) {
-   //  //fFileNames.push_back(std::string(filename);;
+   //  //fFileNames.push_back(std::string(filename);
    //  fValueData = sbuffer; //.push_back(std::string((const char*)buffer);
    //}
    return values_found;
@@ -230,7 +229,7 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
    bool        brace_open = false;
    std::string name;
 
-   while(std::getline(infile, line)) {
+   while(std::getline(infile, line) != nullptr) {
       linenumber++;
       trim(&line);
       size_t comment = line.find("//");
@@ -251,7 +250,7 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
       //=============================================//
       if(openbrace != std::string::npos) {
          brace_open = true;
-         name       = line.substr(0, openbrace).c_str();
+         name       = line.substr(0, openbrace);
          trim(&name);
          value = new GValue(name.c_str());
       }
@@ -269,7 +268,7 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
             trim(&type);
             // std::istringstream ss(line); //this is not used anywhere? VB
             int j = 0;
-            while(type[j]) {
+            while(type[j] != 0) {
                char c    = *(type.c_str() + j);
                c         = toupper(c);
                type[j++] = c;
@@ -287,10 +286,10 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
       //=============================================//
       if(closebrace != std::string::npos) {
          brace_open = false;
-         if(value) {
+         if(value != nullptr) {
             // Check whether value is in vector. If it isn't add it.
             GValue* cur_value = FindValue(value->GetName());
-            if(!cur_value) {
+            if(cur_value == nullptr) {
                AddValue(value);
                newvalues++;
             } else {
@@ -303,7 +302,7 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
          name.clear();
       }
    }
-   if(!strcmp(opt, "debug")) {
+   if(strcmp(opt, "debug") == 0) {
       printf("parsed %i lines,\n", linenumber);
    }
    return newvalues;

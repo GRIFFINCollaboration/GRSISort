@@ -43,7 +43,7 @@ public:
    using TObject::Read;
    using TObject::Write;
 #ifndef __CINT__
-   int Read(std::shared_ptr<TRawEvent> event) override; ///< Read one event from the file
+   int Read(std::shared_ptr<TRawEvent> lstEvent) override; ///< Read one event from the file
 #endif
    std::string Status(bool long_file_description = true) override;
 

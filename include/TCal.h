@@ -62,7 +62,7 @@ public:
 
    TChannel* GetChannel() const;
    Bool_t SetChannel(const TChannel* chan);
-   Bool_t SetChannel(UInt_t channum);
+   Bool_t SetChannel(UInt_t chanNum);
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
    // virtual void Draw(Option_t* chopt = "");

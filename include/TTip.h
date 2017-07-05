@@ -35,7 +35,7 @@ public:
    TTip(const TTip& rhs);
 
    TTipHit* GetTipHit(const int& i); //!<!
-   TGRSIDetectorHit* GetHit(const int& i);
+   TGRSIDetectorHit* GetHit(const int& idx);
    Short_t GetMultiplicity() const { return fTipHits.size(); } //!<!
 
 #ifndef __CINT__

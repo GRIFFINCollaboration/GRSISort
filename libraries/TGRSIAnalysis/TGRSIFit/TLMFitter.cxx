@@ -154,16 +154,16 @@ int TLMFitter::integrator(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec
    for(int k = 0; k < fIntegrationSteps; ++k) {
       // Find the y value at different integration stpes along the bin
       // z[k] = xstart + (double)(k)*bin_width/(double)fIntegrationSteps;
-      z[k] = xstart + (double)(k) / (double)fIntegrationSteps;
+      z[k] = xstart + static_cast<double>(k) / static_cast<double>(fIntegrationSteps);
       funcs(z[k], a, ymod, dyda);
       for(int i = 0; i < ma; ++i) {
          // Integrates the gradient of the functon within the bin
-         temp[i] += 1. / (double)fIntegrationSteps * dyda[i];
+         temp[i] += 1. / static_cast<double>(fIntegrationSteps) * dyda[i];
          // temp[i] += bin_width/(double)fIntegrationSteps*dyda[i];
       }
       // integrates the y of the function
       // ynew += bin_width/(double)fIntegrationSteps*ymod;
-      ynew += 1. / (double)fIntegrationSteps * ymod;
+      ynew += 1. / static_cast<double>(fIntegrationSteps) * ymod;
    }
    // Sets the actual variables to the "temporary" variables used for integration
    for(int i = 0; i < ma; ++i) {
@@ -234,256 +234,255 @@ void TLMFitter::mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
             (*atry_p)[j] = a[j];
          }
       }
-	}
-	Mat_double& oneda = *oneda_p;
-	Vec_double &atry = *atry_p, &beta = *beta_p, &da = *da_p;
-	Mat_double  temp(mfit, mfit);
-	// After linearized fitting matrix, by augmenting diagonal elements
-	for(j = 0; j < mfit; j++) {
-		for(k = 0; k < mfit; k++) {
-			covar[j][k] = alpha[j][k];
-		}
-		covar[j][j] = alpha[j][j] * (1.0 + alamda);
-		for(k = 0; k < mfit; k++) {
-			temp[j][k] = covar[j][k];
-		}
-		oneda[j][0] = beta[j];
-	}
-	gaussj(temp, oneda); // Matrix solution
-	for(j = 0; j < mfit; j++) {
-		for(k = 0; k < mfit; k++) {
-			covar[j][k] = temp[j][k];
-		}
-		da[j] = oneda[j][0];
-	}
-	if(alamda == 0.0) { // Once converged, evaluate covariance matrix
-		covsrt(covar, ia, mfit);
-		covsrt(alpha, ia, mfit); // Spread out alpha to its full size too
-		chisqexp -= mfit;
-		chisq /= chisqexp;
-		delete oneda_p;
-		delete da_p;
-		delete beta_p;
-		delete atry_p;
-		return;
-	}
-	for(j = 0, l = 0; l < ma; l++) { // Did the trial succeed?
-		if(ia[l]) {
-			atry[l] = a[l] + da[j++];
-		}
-	}
-	mrqcof(x, y, sig, atry, ia, covar, da, chisq, W, chisqexp);
-	if(chisq < ochisq) { // Success, accept the new solution
-		alamda *= 0.1;
-		ochisq = chisq;
-		for(j = 0; j < mfit; j++) {
-			for(k = 0; k < mfit; k++) {
-				alpha[j][k] = covar[j][k];
-			}
-			beta[j] = da[j];
-		}
-		for(l = 0; l < ma; l++) {
-			a[l] = atry[l];
-		}
-	} else { // Failure, increase alamda and return
-		alamda *= 10.0;
-		chisq = ochisq;
-	}
+   }
+   Mat_double& oneda = *oneda_p;
+   Vec_double &atry = *atry_p, &beta = *beta_p, &da = *da_p;
+   Mat_double  temp(mfit, mfit);
+   // After linearized fitting matrix, by augmenting diagonal elements
+   for(j = 0; j < mfit; j++) {
+      for(k = 0; k < mfit; k++) {
+         covar[j][k] = alpha[j][k];
+      }
+      covar[j][j] = alpha[j][j] * (1.0 + alamda);
+      for(k = 0; k < mfit; k++) {
+         temp[j][k] = covar[j][k];
+      }
+      oneda[j][0] = beta[j];
+   }
+   gaussj(temp, oneda); // Matrix solution
+   for(j = 0; j < mfit; j++) {
+      for(k = 0; k < mfit; k++) {
+         covar[j][k] = temp[j][k];
+      }
+      da[j] = oneda[j][0];
+   }
+   if(alamda == 0.0) { // Once converged, evaluate covariance matrix
+      covsrt(covar, ia, mfit);
+      covsrt(alpha, ia, mfit); // Spread out alpha to its full size too
+      chisqexp -= mfit;
+      chisq /= chisqexp;
+      delete oneda_p;
+      delete da_p;
+      delete beta_p;
+      delete atry_p;
+      return;
+   }
+   for(j = 0, l = 0; l < ma; l++) { // Did the trial succeed?
+      if(ia[l]) {
+         atry[l] = a[l] + da[j++];
+      }
+   }
+   mrqcof(x, y, sig, atry, ia, covar, da, chisq, W, chisqexp);
+   if(chisq < ochisq) { // Success, accept the new solution
+      alamda *= 0.1;
+      ochisq = chisq;
+      for(j = 0; j < mfit; j++) {
+         for(k = 0; k < mfit; k++) {
+            alpha[j][k] = covar[j][k];
+         }
+         beta[j] = da[j];
+      }
+      for(l = 0; l < ma; l++) {
+         a[l] = atry[l];
+      }
+   } else { // Failure, increase alamda and return
+      alamda *= 10.0;
+      chisq = ochisq;
+   }
 }
 
 /*******************************************************************/
 /*  mrqcof                                                         */
 /*******************************************************************/
 
-void TLMFitter::mrqcof(Vec_I_double & x, Vec_I_double & y, Vec_double & sig, Vec_IO_double & a, Vec_I_BOOL & ia,
-		Mat_O_double & alpha, Vec_O_double & beta, double& chisq, Vec_I_double& W, double& chisqexp)
+void TLMFitter::mrqcof(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO_double& a, Vec_I_BOOL& ia,
+                       Mat_O_double& alpha, Vec_O_double& beta, double& chisq, Vec_I_double& W, double& chisqexp)
 {
-	int    i = 0, j, k, l, m, mfit = 0;
-	double wt, sig2i, dy;
+   int    i = 0, j, k, l, m, mfit = 0;
+   double wt, sig2i, dy;
 
-	chisqexp = 0.0;
+   chisqexp = 0.0;
 
-	int        ndata = x.size();
-	int        ma    = a.size();
-	Vec_double dyda(ma);
-	Vec_double yfit(ndata);
-	for(j = 0; j < ma; j++) {
-		if(ia[j]) {
-			mfit++;
-		}
-	}
-	for(j = 0; j < mfit; j++) { // Initialize (symmetric) alpha, beta.
-		for(k = 0; k <= j; k++) {
-			alpha[j][k] = 0.0;
-		}
-		beta[j] = 0.0;
-	}
-	chisq = 0.0;
-	for(i = fRangeMin; i < fRangeMax; ++i) { // Summation loop over all data.
-		int chisqnumber =
-			integrator(x, y, sig, W, a, dyda, fInitChi2Number, fHist->GetXaxis()->GetBinWidth(1), yfit, i);
-		// funcs(x[i],a,ymod,dyda); Integrator does this instead
-		sig2i = 1.0 / (sig[i] * sig[i]);
-		dy    = y[i] - yfit[i];
-		for(j = 0, l = 0; l < ma; l++) {
-			if(ia[l]) {
-				// sigs are different for different chisqnumbers
-				// This is done in integrator
-				wt = dyda[l] * sig2i;
-				for(k = 0, m = 0; m < l + 1; m++) {
-					if(ia[m]) {
-						if(chisqnumber == 0) { // least squares
-							alpha[j][k++] += wt * dyda[m] * (1.0 + dy / yfit[i]) * (1.0 + dy / yfit[i]) * W[i];
-						} else {
-							alpha[j][k++] += wt * dyda[m] * W[i];
-						}
-					}
-				}
-				if(chisqnumber == 0) { // Least squares
-					beta[j++] += dy * wt * (1.0 + dy / (2.0 * yfit[i])) * W[i];
-				} else {
-					beta[j++] += dy * wt * W[i];
-				}
-			}
-			// Now find the correct chi^2 based on the different versions of chisquared
-			if((chisqnumber == 0) || (chisqnumber == 1) || (chisqnumber == 2)) {
-				chisq += dy * dy * sig2i * W[i];
-				chisqexp += 1;
-			}
-			if(chisqnumber == 3) {
-				if(y[i] < 1.0) {
-					chisq += 2.0 * (yfit[i] - y[i]) * W[i];
-				} else {
-					chisq += 2.0 * (yfit[i] - y[i] + y[i] * log(y[i] / yfit[i])) * W[i];
-				}
+   int        ndata = x.size();
+   int        ma    = a.size();
+   Vec_double dyda(ma);
+   Vec_double yfit(ndata);
+   for(j = 0; j < ma; j++) {
+      if(ia[j]) {
+         mfit++;
+      }
+   }
+   for(j = 0; j < mfit; j++) { // Initialize (symmetric) alpha, beta.
+      for(k = 0; k <= j; k++) {
+         alpha[j][k] = 0.0;
+      }
+      beta[j] = 0.0;
+   }
+   chisq = 0.0;
+   for(i = fRangeMin; i < fRangeMax; ++i) { // Summation loop over all data.
+      int chisqnumber = integrator(x, y, sig, W, a, dyda, fInitChi2Number, fHist->GetXaxis()->GetBinWidth(1), yfit, i);
+      // funcs(x[i],a,ymod,dyda); Integrator does this instead
+      sig2i = 1.0 / (sig[i] * sig[i]);
+      dy    = y[i] - yfit[i];
+      for(j = 0, l = 0; l < ma; l++) {
+         if(ia[l]) {
+            // sigs are different for different chisqnumbers
+            // This is done in integrator
+            wt = dyda[l] * sig2i;
+            for(k = 0, m = 0; m < l + 1; m++) {
+               if(ia[m]) {
+                  if(chisqnumber == 0) { // least squares
+                     alpha[j][k++] += wt * dyda[m] * (1.0 + dy / yfit[i]) * (1.0 + dy / yfit[i]) * W[i];
+                  } else {
+                     alpha[j][k++] += wt * dyda[m] * W[i];
+                  }
+               }
+            }
+            if(chisqnumber == 0) { // Least squares
+               beta[j++] += dy * wt * (1.0 + dy / (2.0 * yfit[i])) * W[i];
+            } else {
+               beta[j++] += dy * wt * W[i];
+            }
+         }
+         // Now find the correct chi^2 based on the different versions of chisquared
+         if((chisqnumber == 0) || (chisqnumber == 1) || (chisqnumber == 2)) {
+            chisq += dy * dy * sig2i * W[i];
+            chisqexp += 1;
+         }
+         if(chisqnumber == 3) {
+            if(y[i] < 1.0) {
+               chisq += 2.0 * (yfit[i] - y[i]) * W[i];
+            } else {
+               chisq += 2.0 * (yfit[i] - y[i] + y[i] * log(y[i] / yfit[i])) * W[i];
+            }
 
-				// approximation to expectation value of ml chi squared
-				if(yfit[i] < 4.2) {
-					chisqexp += -2.0 * yfit[i] * std::log(yfit[i]) + std::pow(yfit[i], 2.0) * std::log(4.0) -
-						std::pow(yfit[i], 3.0) * std::log(4.0 / 3.0) +
-						(1.0 / 3.0) * std::pow(yfit[i], 4.0) * std::log(32.0 / 27.0) -
-						(1.0 / 12.0) * std::pow(yfit[i], 5.0) * std::log(4096.0 / 3645.0) +
-						1442.633448 * std::pow(yfit[i], 6.0) / std::pow(10.0, 6.0) -
-						1782.46047 * std::pow(yfit[i], 7.0) / std::pow(10.0, 7.0) +
-						1588.98494 * std::pow(yfit[i], 8.0) / std::pow(10.0, 8.0) -
-						716.19428 * std::pow(yfit[i], 9.0) / std::pow(10.0, 9.0);
-				} else {
-					chisqexp += 1.0 + 1.0 / (6.0 * yfit[i]) + 1.0 / (6.0 * std::pow(yfit[i], 2.0)) +
-						19.0 / (60.0 * std::pow(yfit[i], 3.0)) + 9.0 / (10.0 * std::pow(yfit[i], 4.0)) -
-						31.9385 / std::pow(yfit[i], 5.0) + 741.3189 / std::pow(yfit[i], 6.0) -
-						3928.1260 / std::pow(yfit[i], 7.0) + 6158.3381 / std::pow(yfit[i], 8.0);
-				}
-			} // end of chi2 3
-		}
-	} // end of loop over data
+            // approximation to expectation value of ml chi squared
+            if(yfit[i] < 4.2) {
+               chisqexp += -2.0 * yfit[i] * std::log(yfit[i]) + std::pow(yfit[i], 2.0) * std::log(4.0) -
+                           std::pow(yfit[i], 3.0) * std::log(4.0 / 3.0) +
+                           (1.0 / 3.0) * std::pow(yfit[i], 4.0) * std::log(32.0 / 27.0) -
+                           (1.0 / 12.0) * std::pow(yfit[i], 5.0) * std::log(4096.0 / 3645.0) +
+                           1442.633448 * std::pow(yfit[i], 6.0) / std::pow(10.0, 6.0) -
+                           1782.46047 * std::pow(yfit[i], 7.0) / std::pow(10.0, 7.0) +
+                           1588.98494 * std::pow(yfit[i], 8.0) / std::pow(10.0, 8.0) -
+                           716.19428 * std::pow(yfit[i], 9.0) / std::pow(10.0, 9.0);
+            } else {
+               chisqexp += 1.0 + 1.0 / (6.0 * yfit[i]) + 1.0 / (6.0 * std::pow(yfit[i], 2.0)) +
+                           19.0 / (60.0 * std::pow(yfit[i], 3.0)) + 9.0 / (10.0 * std::pow(yfit[i], 4.0)) -
+                           31.9385 / std::pow(yfit[i], 5.0) + 741.3189 / std::pow(yfit[i], 6.0) -
+                           3928.1260 / std::pow(yfit[i], 7.0) + 6158.3381 / std::pow(yfit[i], 8.0);
+            }
+         } // end of chi2 3
+      }
+   } // end of loop over data
 
-	for(j = 1; j < mfit; j++) { // Fill in the symmetric side.
-		for(k = 0; k < j; k++) {
-			alpha[k][j] = alpha[j][k];
-		}
-	}
+   for(j = 1; j < mfit; j++) { // Fill in the symmetric side.
+      for(k = 0; k < j; k++) {
+         alpha[k][j] = alpha[j][k];
+      }
+   }
 }
 
 /*******************************************************************/
 /*  covsrt                                                         */
 /*******************************************************************/
-void TLMFitter::covsrt(Mat_IO_double & covar, Vec_I_BOOL & ia, const int mfit)
+void TLMFitter::covsrt(Mat_IO_double& covar, Vec_I_BOOL& ia, const int mfit)
 {
-	// Rearranges the covariance matrix covar in the order of all ma parameters
-	int i, j, k;
+   // Rearranges the covariance matrix covar in the order of all ma parameters
+   int i, j, k;
 
-	int ma = ia.size();
-	for(i = mfit; i < ma; i++) {
-		for(j = 0; j < i + 1; j++) {
-			covar[i][j] = covar[j][i] = 0.0;
-		}
-	}
-	k = mfit - 1;
-	for(j = ma - 1; j >= 0; j--) {
-		if(ia[j]) {
-			for(i = 0; i < ma; i++) {
-				SWAP(covar[i][k], covar[i][j]);
-			}
-			for(i = 0; i < ma; i++) {
-				SWAP(covar[k][i], covar[j][i]);
-			}
-			k--;
-		}
-	}
+   int ma = ia.size();
+   for(i = mfit; i < ma; i++) {
+      for(j = 0; j < i + 1; j++) {
+         covar[i][j] = covar[j][i] = 0.0;
+      }
+   }
+   k = mfit - 1;
+   for(j = ma - 1; j >= 0; j--) {
+      if(ia[j]) {
+         for(i = 0; i < ma; i++) {
+            SWAP(covar[i][k], covar[i][j]);
+         }
+         for(i = 0; i < ma; i++) {
+            SWAP(covar[k][i], covar[j][i]);
+         }
+         k--;
+      }
+   }
 }
 
 /*******************************************************************/
 /*  gaussj                                                         */
 /*******************************************************************/
 
-void TLMFitter::gaussj(Mat_IO_double & a, Mat_IO_double & b)
+void TLMFitter::gaussj(Mat_IO_double& a, Mat_IO_double& b)
 {
-	// Matrix solver
-	int    i = 0, icol = 0, irow = 0, j = 0, k = 0, l = 0, ll = 0;
-	double big, dum, pivinv;
+   // Matrix solver
+   int    i = 0, icol = 0, irow = 0, j = 0, k = 0, l = 0, ll = 0;
+   double big, dum, pivinv;
 
-	int n = a.nrows();
-	int m = b.ncols();
+   int n = a.nrows();
+   int m = b.ncols();
 
-	Vec_INT indxc(n), indxr(n), ipiv(n);
-	for(j = 0; j < n; j++) {
-		ipiv[j] = 0;
-	}
-	for(i = 0; i < n; i++) {
-		big = 0.0;
-		for(j = 0; j < n; j++) {
-			if(ipiv[j] != 1) {
-				for(k = 0; k < n; k++) {
-					if(ipiv[k] == 0) {
-						if(std::fabs(a[j][k]) >= big) {
-							big  = std::fabs(a[j][k]);
-							irow = j;
-							icol = k;
-						}
-					}
-				}
-			}
-		}
-		++(ipiv[icol]);
-		if(irow != icol) {
-			for(l = 0; l < n; l++) {
-				SWAP(a[irow][l], a[icol][l]);
-			}
-			for(l = 0; l < m; l++) {
-				SWAP(b[irow][l], b[icol][l]);
-			}
-		}
-		indxr[i] = irow;
-		indxc[i] = icol;
-		if(a[icol][icol] == 0.0) {
-			nrerror("gaussj: Singular Matrix");
-		}
-		pivinv        = 1.0 / a[icol][icol];
-		a[icol][icol] = 1.0;
-		for(l = 0; l < n; l++) {
-			a[icol][l] *= pivinv;
-		}
-		for(l = 0; l < m; l++) {
-			b[icol][l] *= pivinv;
-		}
-		for(ll = 0; ll < n; ll++) {
-			if(ll != icol) {
-				dum         = a[ll][icol];
-				a[ll][icol] = 0.0;
-				for(l = 0; l < n; l++) {
-					a[ll][l] -= a[icol][l] * dum;
-				}
-				for(l = 0; l < m; l++) {
-					b[ll][l] -= b[icol][l] * dum;
-				}
-			}
-		}
-	}
-	for(l = n - 1; l >= 0; l--) {
-		if(indxr[l] != indxc[l]) {
-			for(k = 0; k < n; k++) {
-				SWAP(a[k][indxr[l]], a[k][indxc[l]]);
-			}
-		}
-	}
+   Vec_INT indxc(n), indxr(n), ipiv(n);
+   for(j = 0; j < n; j++) {
+      ipiv[j] = 0;
+   }
+   for(i = 0; i < n; i++) {
+      big = 0.0;
+      for(j = 0; j < n; j++) {
+         if(ipiv[j] != 1) {
+            for(k = 0; k < n; k++) {
+               if(ipiv[k] == 0) {
+                  if(std::fabs(a[j][k]) >= big) {
+                     big  = std::fabs(a[j][k]);
+                     irow = j;
+                     icol = k;
+                  }
+               }
+            }
+         }
+      }
+      ++(ipiv[icol]);
+      if(irow != icol) {
+         for(l = 0; l < n; l++) {
+            SWAP(a[irow][l], a[icol][l]);
+         }
+         for(l = 0; l < m; l++) {
+            SWAP(b[irow][l], b[icol][l]);
+         }
+      }
+      indxr[i] = irow;
+      indxc[i] = icol;
+      if(a[icol][icol] == 0.0) {
+         nrerror("gaussj: Singular Matrix");
+      }
+      pivinv        = 1.0 / a[icol][icol];
+      a[icol][icol] = 1.0;
+      for(l = 0; l < n; l++) {
+         a[icol][l] *= pivinv;
+      }
+      for(l = 0; l < m; l++) {
+         b[icol][l] *= pivinv;
+      }
+      for(ll = 0; ll < n; ll++) {
+         if(ll != icol) {
+            dum         = a[ll][icol];
+            a[ll][icol] = 0.0;
+            for(l = 0; l < n; l++) {
+               a[ll][l] -= a[icol][l] * dum;
+            }
+            for(l = 0; l < m; l++) {
+               b[ll][l] -= b[icol][l] * dum;
+            }
+         }
+      }
+   }
+   for(l = n - 1; l >= 0; l--) {
+      if(indxr[l] != indxc[l]) {
+         for(k = 0; k < n; k++) {
+            SWAP(a[k][indxr[l]], a[k][indxc[l]]);
+         }
+      }
+   }
 }

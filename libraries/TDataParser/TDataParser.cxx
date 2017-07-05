@@ -5,7 +5,6 @@
 #include "Globals.h"
 
 #include "TScalerQueue.h"
-#include "TGRSIOptions.h"
 
 #include "TEpicsFrag.h"
 #include "TParsingDiagnostics.h"
@@ -19,8 +18,10 @@
 // ClassImp(TDataParser)
 /// \endcond
 
+TGRSIOptions* TDataParser::fOptions = nullptr;
+
 TDataParser::TDataParser()
-   : fBadOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>("bad_frag_queue")),
+   : fBadOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>("bad_frag_queue")),
      fScalerOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>("scaler_queue")),
      fNoWaveforms(false), fRecordDiag(true), fMaxTriggerId(1024 * 1024 * 16), fLastMidasId(0), fLastTriggerId(0),
      fLastNetworkPacket(0), fFragmentHasWaveform(false), fFragmentMap(fGoodOutputQueues, fBadOutputQueue),
@@ -38,15 +39,16 @@ void TDataParser::ClearQueue()
 {
    std::shared_ptr<const TFragment> frag;
    for(const auto& outQueue : fGoodOutputQueues) {
-      while(outQueue->Size()) {
+      while(outQueue->Size() != 0u) {
          outQueue->Pop(frag);
       }
    }
-   while(fBadOutputQueue->Size()) {
-      fBadOutputQueue->Pop(frag);
+   std::shared_ptr<const TBadFragment> badFrag;
+   while(fBadOutputQueue->Size() != 0u) {
+      fBadOutputQueue->Pop(badFrag);
    }
    std::shared_ptr<TEpicsFrag> epicsFrag;
-   while(fScalerOutputQueue->Size()) {
+   while(fScalerOutputQueue->Size() != 0u) {
       fScalerOutputQueue->Pop(epicsFrag);
    }
 }
@@ -100,9 +102,9 @@ int TDataParser::TigressDataToFragment(uint32_t* data, int size, unsigned int mi
          if(!fNoWaveforms) {
             SetTIGWave(value, eventFrag);
          }
-         if(chan && strncmp("Tr", chan->GetName(), 2) == 0) {
+         if((chan != nullptr) && strncmp("Tr", chan->GetName(), 2) == 0) {
             SetTIGWave(value, eventFrag);
-         } else if(chan && strncmp("RF", chan->GetName(), 2) == 0) {
+         } else if((chan != nullptr) && strncmp("RF", chan->GetName(), 2) == 0) {
             SetTIGWave(value, eventFrag);
          }
       } break;
@@ -161,8 +163,7 @@ int TDataParser::TigressDataToFragment(uint32_t* data, int size, unsigned int mi
 void TDataParser::SetTIGAddress(uint32_t value, const std::shared_ptr<TFragment>& currentFrag)
 {
    /// Sets the digitizer address of the 'currentFrag' TFragment
-   currentFrag->SetAddress((int32_t)(0x00ffffff & value)); /// the front end number is not in the tig odb!
-   return;
+   currentFrag->SetAddress(static_cast<int32_t>(0x00ffffff & value));
 }
 
 void TDataParser::SetTIGWave(uint32_t value, const std::shared_ptr<TFragment>& currentFrag)
@@ -174,7 +175,7 @@ void TDataParser::SetTIGWave(uint32_t value, const std::shared_ptr<TFragment>& c
       return;
    }
 
-   if(value & 0x00002000) {
+   if((value & 0x00002000) != 0u) {
       int temp = value & 0x00003fff;
       temp     = ~temp;
       temp     = (temp & 0x00001fff) + 1;
@@ -182,7 +183,7 @@ void TDataParser::SetTIGWave(uint32_t value, const std::shared_ptr<TFragment>& c
    } else {
       currentFrag->AddWaveformSample(static_cast<Short_t>(value & 0x00001fff));
    }
-   if((value >> 14) & 0x00002000) {
+   if(((value >> 14) & 0x00002000) != 0u) {
       int temp = (value >> 14) & 0x00003fff;
       temp     = ~temp;
       temp     = (temp & 0x00001fff) + 1;
@@ -201,7 +202,7 @@ void TDataParser::SetTIGCfd(uint32_t value, const std::shared_ptr<TFragment>& cu
    currentFrag->SetCfd(int32_t(value & 0x07ffffff));
    // std::string dig_type = "";//"Tig64";
    TChannel* chan = TChannel::GetChannel(currentFrag->GetAddress());
-   if(!chan) {
+   if(chan == nullptr) {
       chan = gChannel;
    }
    std::string dig_type = (chan)->GetDigitizerTypeString();
@@ -240,36 +241,35 @@ void TDataParser::SetTIGLed(uint32_t, const std::shared_ptr<TFragment>&)
    /// Sets the LED of a Tigress event.
    // No longer used anywhere
    //  currentFrag->SetLed( int32_t(value & 0x07ffffff) );
-   return;
 }
 
 void TDataParser::SetTIGCharge(uint32_t value, const std::shared_ptr<TFragment>& currentFragment)
 {
    /// Sets the integrated charge of a Tigress event.
    TChannel* chan = currentFragment->GetChannel();
-   if(!chan) {
+   if(chan == nullptr) {
       chan = gChannel;
    }
    std::string dig_type = chan->GetDigitizerTypeString();
 
    int charge;
    if((dig_type.compare(0, 5, "Tig10") == 0) || (dig_type.compare(0, 5, "TIG10") == 0)) {
-      if(value & 0x02000000) {
-         charge = (-((~((int32_t)value & 0x01ffffff)) & 0x01ffffff) + 1);
+      if((value & 0x02000000) != 0u) {
+         charge = (-((~(static_cast<int32_t>(value) & 0x01ffffff)) & 0x01ffffff) + 1);
       } else {
          charge = (value & 0x03ffffff);
       }
    } else if((dig_type.compare(0, 5, "Tig64") == 0) || (dig_type.compare(0, 5, "TIG64") == 0)) {
-      if(value & 0x00200000) {
-         charge = (-((~((int32_t)value & 0x001fffff)) & 0x001fffff) + 1);
+      if((value & 0x00200000) != 0u) {
+         charge = (-((~(static_cast<int32_t>(value) & 0x001fffff)) & 0x001fffff) + 1);
       } else {
          charge = ((value & 0x003fffff));
       }
    } else {
-      if(value & 0x02000000) {
-         charge = (-((~((int32_t)value & 0x01ffffff)) & 0x01ffffff) + 1);
+      if((value & 0x02000000) != 0u) {
+         charge = (-((~(static_cast<int32_t>(value) & 0x01ffffff)) & 0x01ffffff) + 1);
       } else {
-         charge = (((int32_t)value & 0x03ffffff));
+         charge = ((static_cast<int32_t>(value) & 0x03ffffff));
       }
    }
    currentFragment->SetCharge(charge);
@@ -291,10 +291,10 @@ bool TDataParser::SetTIGTriggerID(uint32_t value, const std::shared_ptr<TFragmen
                       " last trigger lo bits = %d, value = %d,             midas = %d" RESET_COLOR "\n",
                 currentFrag->GetTriggerId(), LastTriggerIdHiBits, LastTriggerIdLoBits, value, 0); // midasSerialNumber);
       } else {
-         currentFrag->SetTriggerId((uint64_t)(LastTriggerIdHiBits + value));
+         currentFrag->SetTriggerId(static_cast<uint64_t>(LastTriggerIdHiBits + value));
       }
    } else if(value < fMaxTriggerId * 9 / 10) {
-      currentFrag->SetTriggerId((uint64_t)(LastTriggerIdHiBits + value));
+      currentFrag->SetTriggerId(static_cast<uint64_t>(LastTriggerIdHiBits + value));
    } else {
       if(LastTriggerIdLoBits < fMaxTriggerId / 10) {
          currentFrag->SetTriggerId((uint64_t)(LastTriggerIdHiBits + value - fMaxTriggerId));
@@ -302,12 +302,12 @@ bool TDataParser::SetTIGTriggerID(uint32_t value, const std::shared_ptr<TFragmen
                      " last trigger lo bits = %d, value = %d, midas = %d" RESET_COLOR "\n",
                 currentFrag->GetTriggerId(), LastTriggerIdHiBits, LastTriggerIdLoBits, value, 0); // midasSerialNumber);
       } else {
-         currentFrag->SetTriggerId((uint64_t)(LastTriggerIdHiBits + value));
+         currentFrag->SetTriggerId(static_cast<uint64_t>(LastTriggerIdHiBits + value));
       }
    }
    // fragment_id_map[value]++;
    // currentFrag->FragmentId = fragment_id_map[value];
-   fLastTriggerId = (unsigned long)currentFrag->GetTriggerId();
+   fLastTriggerId = static_cast<unsigned long>(currentFrag->GetTriggerId());
    return true;
 }
 
@@ -419,7 +419,10 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                         // to fState, but makes things easier to track.
    bool multipleErrors = false; // Variable to store if multiple errors occured parsing one fragment
 
-   TGRSIOptions* opt = TGRSIOptions::Get();
+   if(fOptions == nullptr) {
+		fOptions = TGRSIOptions::Get();
+	}
+
    int           x   = 0;
    if(!SetGRIFHeader(data[x++], eventFrag, bank)) {
       printf(DYELLOW "data[0] = 0x%08x" RESET_COLOR "\n", data[0]);
@@ -546,7 +549,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
          // changed on 21 Apr 2015 by JKS, when signal processing code from Chris changed the trailer.
          // change should be backward-compatible
          if((value & 0x3fff) == (eventFrag->GetChannelId() & 0x3fff)) {
-            if(!opt->SuppressErrors() && (eventFrag->GetModuleType() == 2) && (bank < kGRF3)) {
+            if(!fOptions->SuppressErrors() && (eventFrag->GetModuleType() == 2) && (bank < kGRF3)) {
                // check whether the nios finished and if so whether it finished with an error
                if(((value >> 14) & 0x1) == 0x1) {
                   if(((value >> 16) & 0xff) != 0) {
@@ -566,8 +569,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
             // the number of words is only set for bank >= GRF3
             // if the fragment has a waveform, we can't compare the number of words
             // the headers number of words includes the header (word 0) itself, so we need to compare to x plus one
-            if(opt->CheckWordCount() && eventFrag->GetNumberOfWords() > 0 && !eventFrag->HasWave() &&
-               eventFrag->GetNumberOfWords() != x + 1) {
+            if(eventFrag->GetNumberOfWords() > 0 && !eventFrag->HasWave() && eventFrag->GetNumberOfWords() != x + fOptions->WordOffset()) {
                if(fState == EDataParserState::kGood) {
                   fState     = EDataParserState::kWrongNofWords;
                   failedWord = x;
@@ -610,59 +612,58 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                }
                fFragmentMap.Add(eventFrag, tmpCharge, tmpIntLength);
                return x;
-            } else {
-               if(tmpCharge.size() != tmpIntLength.size() || tmpCharge.size() != tmpCfd.size()) {
-                  if(fRecordDiag) {
-                     TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-                  }
-                  if(fState == EDataParserState::kGood) {
-                     fState     = EDataParserState::kSizeMismatch;
-                     failedWord = x;
-                  } else {
-                     multipleErrors = true;
-                  }
-                  Push(*fBadOutputQueue,
-                       std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-                  throw TDataParserException(fState, failedWord, multipleErrors);
+            }
+            if(tmpCharge.size() != tmpIntLength.size() || tmpCharge.size() != tmpCfd.size()) {
+               if(fRecordDiag) {
+                  TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
                }
-               for(size_t h = 0; h < tmpCharge.size(); ++h) {
-                  eventFrag->SetCharge(tmpCharge[h]);
-                  eventFrag->SetKValue(tmpIntLength[h]);
-                  eventFrag->SetCfd(tmpCfd[h]);
-                  if(fRecordDiag) {
-                     TParsingDiagnostics::Get()->GoodFragment(eventFrag);
+               if(fState == EDataParserState::kGood) {
+                  fState     = EDataParserState::kSizeMismatch;
+                  failedWord = x;
+               } else {
+                  multipleErrors = true;
+               }
+               Push(*fBadOutputQueue,
+                    std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+               throw TDataParserException(fState, failedWord, multipleErrors);
+            }
+            for(size_t h = 0; h < tmpCharge.size(); ++h) {
+               eventFrag->SetCharge(tmpCharge[h]);
+               eventFrag->SetKValue(tmpIntLength[h]);
+               eventFrag->SetCfd(tmpCfd[h]);
+               if(fRecordDiag) {
+                  TParsingDiagnostics::Get()->GoodFragment(eventFrag);
+               }
+               if(fState == EDataParserState::kGood) {
+                  if(fOptions->ReconstructTimeStamp()) {
+                     fLastTimeStampMap[eventFrag->GetAddress()] = eventFrag->GetTimeStamp();
                   }
-                  if(fState == EDataParserState::kGood) {
-                     if(opt->ReconstructTimeStamp()) {
-                        fLastTimeStampMap[eventFrag->GetAddress()] = eventFrag->GetTimeStamp();
+                  Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));
+               } else {
+                  if(fOptions->ReconstructTimeStamp() && fState == EDataParserState::kBadHighTS && !multipleErrors) {
+                     // std::cout<<"reconstructing timestamp from 0x"<<std::hex<<eventFrag->GetTimeStamp()<<" using
+                     // 0x"<<fLastTimeStampMap[eventFrag->GetAddress()];
+                     // reconstruct the high bits of the timestamp from the high bits of the last time stamp of the
+                     // same address
+                     if((eventFrag->GetTimeStamp() & 0x0fffffff) <
+                        (fLastTimeStampMap[eventFrag->GetAddress()] & 0x0fffffff)) {
+                        // we had a wrap-around of the low time stamp, so we need to set the high bits to the old
+                        // high bits plus one
+                        eventFrag->AppendTimeStamp(((fLastTimeStampMap[eventFrag->GetAddress()] >> 28) + 1)<<28);
+                     } else {
+                        eventFrag->AppendTimeStamp(fLastTimeStampMap[eventFrag->GetAddress()] & 0x3fff0000000);
                      }
+                     // std::cout<<" => 0x"<<eventFrag->GetTimeStamp()<<std::dec<<std::endl;
                      Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));
                   } else {
-                     if(opt->ReconstructTimeStamp() && fState == EDataParserState::kBadHighTS && !multipleErrors) {
-                        // std::cout<<"reconstructing timestamp from 0x"<<std::hex<<eventFrag->GetTimeStamp()<<" using
-                        // 0x"<<fLastTimeStampMap[eventFrag->GetAddress()];
-                        // reconstruct the high bits of the timestamp from the high bits of the last time stamp of the
-                        // same address
-                        if((eventFrag->GetTimeStamp() & 0x0fffffff) <
-                           (fLastTimeStampMap[eventFrag->GetAddress()] & 0x0fffffff)) {
-                           // we had a wrap-around of the low time stamp, so we need to set the high bits to the old
-                           // high bits plus one
-                           eventFrag->AppendTimeStamp(((fLastTimeStampMap[eventFrag->GetAddress()] >> 28) + 1)<<28);
-                        } else {
-                           eventFrag->AppendTimeStamp(fLastTimeStampMap[eventFrag->GetAddress()] & 0x3fff0000000);
-                        }
-                        // std::cout<<" => 0x"<<eventFrag->GetTimeStamp()<<std::dec<<std::endl;
-                        Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));
-                     } else {
-                        // std::cout<<"Can't reconstruct time stamp, "<<opt->ReconstructTimeStamp()<<",
-                        // state "<<fState<<" = "<<EDataParserState::kBadHighTS<<", "<<multipleErrors<<std::endl;
-                        Push(*fBadOutputQueue,
-                             std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-                     }
+                     // std::cout<<"Can't reconstruct time stamp, "<<fOptions->ReconstructTimeStamp()<<",
+                     // state "<<fState<<" = "<<EDataParserState::kBadHighTS<<", "<<multipleErrors<<std::endl;
+                     Push(*fBadOutputQueue,
+                          std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
                   }
                }
-               return x;
             }
+            return x;
          } else {
             if(fRecordDiag) {
                TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
@@ -872,7 +873,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                }
                break;
             default:
-               if(!opt->SuppressErrors()) {
+               if(!fOptions->SuppressErrors()) {
                   printf(DRED "Error, bank type %d not implemented yet" RESET_COLOR "\n", bank);
                }
                TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
@@ -935,7 +936,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
             }
             break;
          default:
-            if(!opt->SuppressErrors()) {
+            if(!fOptions->SuppressErrors()) {
                printf(DRED "Error, module type %d not implemented yet" RESET_COLOR "\n", eventFrag->GetModuleType());
             }
             TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
@@ -1097,11 +1098,11 @@ bool TDataParser::SetGRIFWaveForm(uint32_t value, const std::shared_ptr<TFragmen
 
    // to go from a 14-bit signed number to a 16-bit signed number, we simply set the two highest bits if the sign bit is
    // set
-   frag->AddWaveformSample((value & 0x2000) ? static_cast<Short_t>((value & 0x3fff) | 0xc000)
-                                            : static_cast<Short_t>(value & 0x3fff));
+   frag->AddWaveformSample((value & 0x2000) != 0u ? static_cast<Short_t>((value & 0x3fff) | 0xc000)
+                                                  : static_cast<Short_t>(value & 0x3fff));
    value = value >> 14;
-   frag->AddWaveformSample((value & 0x2000) ? static_cast<Short_t>((value & 0x3fff) | 0xc000)
-                                            : static_cast<Short_t>(value & 0x3fff));
+   frag->AddWaveformSample((value & 0x2000) != 0u ? static_cast<Short_t>((value & 0x3fff) | 0xc000)
+                                                  : static_cast<Short_t>(value & 0x3fff));
 
    return true;
 }
@@ -1209,10 +1210,10 @@ bool TDataParser::SetPPGNetworkPacket(uint32_t value, TPPGData* ppgevent)
    //   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
    if((value & 0xf0000000) != 0xd0000000) {
       return false;
-   } else {
-      ppgevent->SetNetworkPacketId(value & 0x00ffffff);
-      //   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
    }
+   ppgevent->SetNetworkPacketId(value & 0x00ffffff);
+   //   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
+
    return true;
 }
 
@@ -1528,7 +1529,7 @@ void TDataParser::Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_p
    }
 }
 
-void TDataParser::Push(ThreadsafeQueue<std::shared_ptr<const TFragment>>& queue, const std::shared_ptr<TFragment>& frag)
+void TDataParser::Push(ThreadsafeQueue<std::shared_ptr<const TBadFragment>>& queue, const std::shared_ptr<TBadFragment>& frag)
 {
    frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
    fFragmentIdMap[frag->GetTriggerId()]++;

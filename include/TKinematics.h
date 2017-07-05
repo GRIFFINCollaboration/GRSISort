@@ -23,14 +23,14 @@
 
 class TKinematics : public TNamed {
 public:
-   TKinematics(double beame, const char* projectile, const char* target, const char* ejectile = nullptr,
-               const char* recoil = nullptr, const char* name = "");
-   TKinematics(const char* beam, const char* targ, const char* ejec, const char* reco, double eBeam, double ex3 = 0.0,
+   TKinematics(double beame, const char* beam, const char* targ, const char* ejec = nullptr, const char* reco = nullptr,
                const char* name = "");
-   TKinematics(TNucleus* projectile, TNucleus* target, double eBeam, const char* name = "");
-   TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double eBeam,
+   TKinematics(const char* beam, const char* targ, const char* ejec, const char* reco, double ebeam, double ex3 = 0.0,
                const char* name = "");
-   TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double eBeam, double ex3,
+   TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, const char* name = "");
+   TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam,
+               const char* name = "");
+   TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam, double ex3,
                const char* name = "");
 
    void Initial();
@@ -47,7 +47,7 @@ public:
 
    TGraph* Evslab_graph(double thmin, double thmax, double size, int part = 2);
 
-   double GetCmEnergy(double eBeam);
+   double GetCmEnergy(double ebeam);
    double GetCmEnergy();
    double GetBeamEnergy(double LabAngle, double LabEnergy);
    double GetMaxAngle(double vcm);
@@ -94,8 +94,8 @@ public:
    TSpline3* Ruthvslab(double thmin, double thmax, double size, int part);
    double Angle_lab2cm(double vcm, double angle_lab);
    double Angle_lab2cminverse(double vcm, double angle_lab, bool upper = true);
-   double Steffen_cm2labinverse(double theta_lab, int part = 2); // NEW FUNCTIN+
-   double Steffen_lab2cminverse(double theta_lab);               // assumes part = 2;
+   double Steffen_cm2labinverse(double theta_cm, int part = 2); // NEW FUNCTIN+
+   double Steffen_lab2cminverse(double theta_lab);              // assumes part = 2;
    double Angle_cm2lab(double vcm, double angle_cm);
    double Sigma_cm2lab(double angle_cm, double sigma_cm);
    double Sigma_lab2cm(double angle_cm, double sigma_lab);

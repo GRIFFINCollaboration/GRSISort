@@ -53,7 +53,7 @@ public:
    void Print(Option_t* opt = "") const override; //!<!
 
    static void AddEpicsVariable(const char* name);
-   static void SetEpicsNameList(const std::vector<std::string>& name_list);
+   static void SetEpicsNameList(const std::vector<std::string>& name_vec);
    static std::string GetEpicsVariableName(const int& i);
    static void PrintVariableNames();
 

@@ -137,12 +137,14 @@ Double_t TCSMHit::GetDEnergy() const
    if(trustVertical && trustHoriztonal) {
       // if(debug) std::cout<<"  Returning: "<<(GetDVerticalEnergy() + GetDHorizontalEnergy())/2.<<std::endl;
       return ((GetDVerticalEnergy() + GetDHorizontalEnergy()) / 2.);
-   } else if(trustVertical && !trustHoriztonal) {
+   }
+   if(trustVertical && !trustHoriztonal) {
       if(debug) {
          std::cout<<"**Returning: "<<GetDVerticalEnergy()<<std::endl;
       }
       return (GetDVerticalEnergy());
-   } else if(!trustVertical && trustHoriztonal) {
+   }
+   if(!trustVertical && trustHoriztonal) {
       if(debug) {
          std::cout<<"**Returning: "<<GetDHorizontalEnergy()<<std::endl;
       }
@@ -189,9 +191,11 @@ Double_t TCSMHit::GetEEnergy() const
 
    if(trustVertical && trustHoriztonal) {
       return ((GetEVerticalEnergy() + GetEHorizontalEnergy()) / 2.);
-   } else if(trustVertical && !trustHoriztonal) {
+   }
+   if(trustVertical && !trustHoriztonal) {
       return (GetEVerticalEnergy());
-   } else if(!trustVertical && trustHoriztonal) {
+   }
+   if(!trustVertical && trustHoriztonal) {
       return (GetEHorizontalEnergy());
    } else if(!trustVertical && !trustVertical) { // Are these correct? RD
       return (0.);

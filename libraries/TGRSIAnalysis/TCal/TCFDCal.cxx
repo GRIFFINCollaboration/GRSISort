@@ -14,7 +14,7 @@ ClassImp(TCFDCal)
 
 void TCFDCal::WriteToChannel() const
 {
-   if(!GetChannel()) {
+   if(GetChannel() == nullptr) {
       Error("WriteToChannel", "No Channel Set");
       return;
    }
@@ -42,7 +42,7 @@ void TCFDCal::SetParameter(Int_t, Double_t)
 
 void TCFDCal::ReadFromChannel()
 {
-   if(!GetChannel()) {
+   if(GetChannel() == nullptr) {
       Error("ReadFromChannel", "No Channel Set");
       return;
    }
@@ -51,7 +51,7 @@ void TCFDCal::ReadFromChannel()
 
 void TCFDCal::Print(Option_t*) const
 {
-   if(GetChannel()) {
+   if(GetChannel() != nullptr) {
       printf("Channel Number: %u\n", GetChannel()->GetNumber());
    } else {
       printf("Channel Number: NOT SET\n");
@@ -64,7 +64,7 @@ void TCFDCal::Print(Option_t*) const
 
 std::vector<Double_t> TCFDCal::GetParameters() const
 {
-   if(fParameters.size() == 0) {
+   if(fParameters.empty()) {
       Error("GetParameters", "No Parameters Set");
    }
 
@@ -75,8 +75,7 @@ Double_t TCFDCal::GetParameter(size_t parameter) const
 {
    if(parameter < fParameters.size()) {
       return fParameters[parameter];
-   } else {
-      Error("Get Parameter", "Parameter Does not exist");
-      return 0.;
    }
+   Error("Get Parameter", "Parameter Does not exist");
+   return 0.;
 }

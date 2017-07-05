@@ -64,7 +64,7 @@ Int_t TSourceList::SetNucleus(const TNucleus& nuc)
    TIter        next(transition_list);
    TObject*     transition = nullptr;
    std::cout<<"Adding Transitions..."<<std::endl;
-   while((transition = next())) {
+   while((transition = next()) != nullptr) {
       transition->Print();
       if(AddTransition(static_cast<TTransition*>(transition))) {
          good_counter++;
@@ -75,7 +75,7 @@ Int_t TSourceList::SetNucleus(const TNucleus& nuc)
 
 bool TSourceList::AddTransition(TTransition* tran)
 {
-   if(!tran) {
+   if(tran == nullptr) {
       std::cout<<"Trying to add a bad transition"<<std::endl;
       return false;
    }

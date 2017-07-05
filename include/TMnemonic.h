@@ -76,7 +76,7 @@ public:
    void Parse(std::string* name);
    void Parse(const char* name);
 
-   static int EnumerateDigitizer(std::string& mnemonic_word);
+   static int EnumerateDigitizer(std::string& name);
 
    void SetRFMNEMONIC(std::string* name);
 

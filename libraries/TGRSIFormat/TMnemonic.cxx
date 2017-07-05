@@ -135,7 +135,7 @@ int TMnemonic::EnumerateDigitizer(std::string& name)
 
 void TMnemonic::Parse(std::string* name)
 {
-   if(!name || name->length() < 9) {
+   if((name == nullptr) || name->length() < 9) {
       if((name->length() < 1) && (name->compare(0, 2, "RF") == 0)) {
          SetRFMNEMONIC(name);
       }
@@ -147,14 +147,14 @@ void TMnemonic::Parse(std::string* name)
    EnumerateMnemonic(fSubSystemString, fSubSystem);
    buf.clear();
    buf.assign(*name, 3, 2);
-   fArrayPosition = (uint16_t)atoi(buf.c_str());
+   fArrayPosition = static_cast<uint16_t>(atoi(buf.c_str()));
    fArraySubPositionString.assign(*name, 5, 1);
    EnumerateMnemonic(fArraySubPositionString, fArraySubPosition);
    fCollectedChargeString.assign(*name, 6, 1);
    EnumerateMnemonic(fCollectedChargeString, fCollectedCharge);
    buf.clear();
    buf.assign(*name, 7, 2);
-   fSegment = (uint16_t)atoi(buf.c_str());
+   fSegment = static_cast<uint16_t>(atoi(buf.c_str()));
    fOutputSensorString.assign(*name, 9, 1);
    EnumerateMnemonic(fOutputSensorString, fOutputSensor);
    // Enumerating the fSystemString must come last as the details of other parts of
@@ -164,7 +164,7 @@ void TMnemonic::Parse(std::string* name)
    if(fSystem == kSiLi) {
       buf.clear();
       buf.assign(*name, 7, 2);
-      fSegment = (uint16_t)strtol(buf.c_str(), nullptr, 16);
+      fSegment = static_cast<uint16_t>(strtol(buf.c_str(), nullptr, 16));
    }
 
    return;
@@ -174,7 +174,6 @@ void TMnemonic::Parse(const char* name)
 {
    std::string sname = name;
    Parse(&sname);
-   return;
 }
 
 void TMnemonic::SetRFMNEMONIC(std::string* name)
@@ -203,7 +202,6 @@ void TMnemonic::Print(Option_t*) const
    printf("fCollectedChargeString   = %s\n", fCollectedChargeString.c_str());
    printf("fOutputSensorString      = %s\n", fOutputSensorString.c_str());
    printf("===============================\n");
-   return;
 }
 
 TClass* TMnemonic::GetClassType() const

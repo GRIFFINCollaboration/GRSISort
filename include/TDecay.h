@@ -270,7 +270,7 @@ public:
 
    TSingleDecay* GetDecay(UInt_t generation);
    Double_t Eval(Double_t t) const;
-   void Draw(Option_t* option = "") override;
+   void Draw(Option_t* opt = "") override;
    Int_t Size() const { return fDecayChain.size(); }
 
    void Print(Option_t* option = "") const override;
@@ -331,7 +331,7 @@ private:
 class TDecay : public TVirtualDecay {
 public:
    TDecay() : fFitFunc(nullptr) {}
-   TDecay(std::vector<TDecayChain*> chain);
+   TDecay(std::vector<TDecayChain*> chainlist);
    ~TDecay() override;
 
    void AddChain(TDecayChain* chain) { fChainList.push_back(chain); }

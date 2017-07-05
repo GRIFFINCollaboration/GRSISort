@@ -38,6 +38,7 @@
 #include "TFragmentMap.h"
 #include "ThreadsafeQueue.h"
 #include "TEpicsFrag.h"
+#include "TGRSIOptions.h"
 
 class TDataParser {
 public:
@@ -85,7 +86,7 @@ public:
       return fGoodOutputQueues.back();
    }
 
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& BadOutputQueue() { return fBadOutputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>& BadOutputQueue() { return fBadOutputQueue; }
 
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>& ScalerOutputQueue() { return fScalerOutputQueue; }
 #endif
@@ -110,7 +111,7 @@ public:
 private:
 #ifndef __CINT__
    std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>> fGoodOutputQueues;
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>              fBadOutputQueue;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>           fBadOutputQueue;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>                   fScalerOutputQueue;
 #endif
 
@@ -126,10 +127,12 @@ private:
    std::map<int, int> fFragmentIdMap;
    bool fFragmentHasWaveform;
 
-   TFragmentMap fFragmentMap;
+   TFragmentMap fFragmentMap;              ///< Class that holds a map of fragments per address, takes care of calculating charges for GRF4 banks
 
    EDataParserState fState;
    std::map<UInt_t, Long64_t> fLastTimeStampMap;
+
+	static TGRSIOptions* fOptions; ///< Static pointer to TGRSIOptions, gets set on the first call of GriffinDataToFragment
 
 #ifndef __CINT__
    std::atomic_size_t* fItemsPopped;
@@ -138,9 +141,9 @@ private:
 
 public:
 #ifndef __CINT__
-   void Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& queue,
+   void Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& queues,
              const std::shared_ptr<TFragment>&                                                frag);
-   void Push(ThreadsafeQueue<std::shared_ptr<const TFragment>>& queue, const std::shared_ptr<TFragment>& frag);
+   void Push(ThreadsafeQueue<std::shared_ptr<const TBadFragment>>& queue, const std::shared_ptr<TBadFragment>& frag);
 #endif
 
    int TigressDataToFragment(uint32_t* data, int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);

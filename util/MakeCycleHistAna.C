@@ -78,9 +78,9 @@ TList* MakeCycleHist(TChain *chain,
          }
       }
       if(x%50000==0) 
-         std::cout << "\t" << x << " / " << entries << "\r" << std::flush;
+         std::cout<<"\t"<<x<<" / "<<entries<<"\r"<<std::flush;
    }
-   std::cout << "\t" << entries << " / " << entries << "\r" << std::endl;
+   std::cout<<"\t"<<entries<<" / "<<entries<<"\r"<<std::endl;
 
    TCanvas *c = new TCanvas;
    c->Divide(2,2);

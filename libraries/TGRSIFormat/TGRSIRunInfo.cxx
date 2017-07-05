@@ -22,7 +22,7 @@ TGRSIRunInfo* TGRSIRunInfo::Get()
    // so there is only even one instance of the run info during
    // a session and it can be accessed from anywhere during that
    // session.
-   if(!fGRSIRunInfo) {
+   if(fGRSIRunInfo == nullptr) {
       fGRSIRunInfo = new TGRSIRunInfo();
    }
    return fGRSIRunInfo;
@@ -31,7 +31,7 @@ TGRSIRunInfo* TGRSIRunInfo::Get()
 void TGRSIRunInfo::SetRunInfo(TGRSIRunInfo* tmp)
 {
    // Sets the TGRSIRunInfo to the info passes as tmp.
-   if(fGRSIRunInfo && (tmp != fGRSIRunInfo)) {
+   if((fGRSIRunInfo != nullptr) && (tmp != fGRSIRunInfo)) {
       delete fGRSIRunInfo;
    }
    fGRSIRunInfo = tmp;
@@ -41,11 +41,11 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile* tempf)
 {
 
    TDirectory* savdir = gDirectory;
-   if(tempf) {
+   if(tempf != nullptr) {
       tempf->cd();
    }
 
-   if(!(gDirectory->GetFile())) {
+   if((gDirectory->GetFile()) == nullptr) {
       printf("File does not exist\n");
       savdir->cd();
       return false;
@@ -57,7 +57,7 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile* tempf)
    TIter  iter(list);
    printf("Reading Info from file:" CYAN " %s" RESET_COLOR "\n", tempf->GetName());
    while(TKey* key = static_cast<TKey*>(iter.Next())) {
-      if(!key || strcmp(key->GetClassName(), "TGRSIRunInfo")) {
+      if((key == nullptr) || (strcmp(key->GetClassName(), "TGRSIRunInfo") != 0)) {
          continue;
       }
 
@@ -297,7 +297,7 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum)
       Get()->fMajorIndex.assign("TimeStamp");
    }
 
-   if(Get()->fRunInfoFile.length()) {
+   if(Get()->fRunInfoFile.length() != 0u) {
       ParseInputData(Get()->fRunInfoFile.c_str());
    }
 
@@ -352,14 +352,14 @@ Bool_t TGRSIRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
    int                linenumber = 0;
 
    // Parse the info file.
-   while(std::getline(infile, line)) {
+   while(std::getline(infile, line) != nullptr) {
       linenumber++;
       trim(&line);
       size_t comment = line.find("//");
       if(comment != std::string::npos) {
          line = line.substr(0, comment);
       }
-      if(!line.length()) {
+      if(line.length() == 0u) {
          continue;
       }
 
@@ -372,7 +372,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
       line             = line.substr(ntype + 1, line.length());
       trim(&line);
       int j = 0;
-      while(type[j]) {
+      while(type[j] != 0) {
          char c    = *(type.c_str() + j);
          c         = toupper(c);
          type[j++] = c;
@@ -392,17 +392,17 @@ Bool_t TGRSIRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
          std::istringstream ss(line);
          int                temp_int;
          ss >> temp_int;
-         Get()->SetDescantAncillary(temp_int);
+         Get()->SetDescantAncillary(temp_int != 0);
       } else if(type.compare("BADCYCLE") == 0) {
          std::istringstream ss(line);
          int                tmp_int;
-         while(ss >> tmp_int) {
+         while((ss >> tmp_int) != nullptr) {
             Get()->AddBadCycle(tmp_int);
          }
       }
    }
 
-   if(strcmp(opt, "q")) {
+   if(strcmp(opt, "q") != 0) {
       printf("parsed %i lines.\n", linenumber);
       printf(DBLUE "\tArray Position (mm) = " DRED "%lf" RESET_COLOR "\n", TGRSIRunInfo::HPGeArrayPosition());
    }
@@ -444,7 +444,7 @@ Long64_t TGRSIRunInfo::Merge(TCollection* list)
 void TGRSIRunInfo::PrintBadCycles() const
 {
    std::cout<<"Bad Cycles:\t";
-   if(!fBadCycleList.size()) {
+   if(fBadCycleList.empty()) {
       std::cout<<"NONE"<<std::endl;
    } else {
       for(int it : fBadCycleList) {
@@ -487,7 +487,7 @@ bool TGRSIRunInfo::WriteToRoot(TFile* fileptr)
    bool        bool2return = true;
    TDirectory* savdir      = gDirectory;
 
-   if(!fileptr) {
+   if(fileptr == nullptr) {
       fileptr = gDirectory->GetFile();
    }
    fileptr->cd();
@@ -542,7 +542,7 @@ std::string TGRSIRunInfo::PrintToString(Option_t*)
       buffer.append(Form("DescantAncillary: %d\n", 1));
       buffer.append("\n\n");
    }
-   if(fBadCycleList.size()) {
+   if(static_cast<unsigned int>(!fBadCycleList.empty()) != 0u) {
       buffer.append("//A List of bad cycles.\n");
       buffer.append("BadCycle:");
       for(int& it : fBadCycleList) {

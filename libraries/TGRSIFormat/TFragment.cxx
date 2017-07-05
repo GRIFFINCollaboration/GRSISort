@@ -91,7 +91,7 @@ TObject* TFragment::Clone(const char*) const
 double TFragment::GetTZero() const
 {
    TChannel* chan = GetChannel();
-   if(!chan) {
+   if(chan == nullptr) {
       return 0.000;
    }
    return chan->GetTZero(GetEnergy());
@@ -137,7 +137,7 @@ ULong64_t TFragment::GetCycleNumber()
 Short_t TFragment::GetChannelNumber() const
 {
    TChannel* chan = TChannel::GetChannel(fAddress);
-   if(!chan) {
+   if(chan == nullptr) {
       return 0;
    }
    return chan->GetNumber();
@@ -170,7 +170,7 @@ void TFragment::Print(Option_t*) const
    printf("FragmentId:   %i\n", fFragmentId);
    printf("TriggerBit:  0x%08x\n", fTriggerBitPattern);
    printf("NetworkPacketNumber: %i\n", fNetworkPacketNumber);
-   if(chan) {
+   if(chan != nullptr) {
       printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetName());
       printf("\tChannel Num:      %i\n", GetChannelNumber());
    }
@@ -210,20 +210,22 @@ bool TFragment::IsDetector(const char* prefix, Option_t* opt) const
    // Because it returns false after every potential failure while the mnemonic class sets all of the strings, and then
    // checks
    // for conditions.
-   if(!channame.compare(0, pre.length(), pre)) { // channame.BeginsWith(pre)){
-      if(option.Length() < 1) {                  // no option.
+   if(channame.compare(0, pre.length(), pre) == 0) { // channame.BeginsWith(pre)){
+      if(option.Length() < 1) {                      // no option.
          return true;
       }
       if(channame.length() > 8) {
          if(option.Contains("B") && (std::toupper(channame[9]) == std::toupper('B'))) {
             return true;
-         } else if(option.Contains("A") && (std::toupper(channame[9]) == std::toupper('A'))) {
+         }
+         if(option.Contains("A") && (std::toupper(channame[9]) == std::toupper('A'))) {
             return true;
          }
       }
-      if(option.Contains("C") && !channame.compare(7, 2, "00")) {
+      if(option.Contains("C") && (channame.compare(7, 2, "00") == 0)) {
          return true;
-      } else if(option.Contains("S") && channame.compare(7, 2, "00")) {
+      }
+      if(option.Contains("S") && (channame.compare(7, 2, "00") != 0)) {
          return true;
       }
    } else {
@@ -246,7 +248,8 @@ Int_t TFragment::GetSharcMesyBoard() const
    }
    if(channel == 0x1f) {
       return (slave - 1) * 16 + (port - 1) * 2 + 1;
-   } else if(channel == 0x3f) {
+   }
+   if(channel == 0x3f) {
       return (slave - 1) * 16 + (port - 1) * 2 + 2;
    }
    return -1;

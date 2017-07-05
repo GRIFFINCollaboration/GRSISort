@@ -2,7 +2,7 @@
 
 TBadFragment::TBadFragment() : TFragment()
 {
-/// Default constructor
+	/// Default constructor
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -15,18 +15,30 @@ TBadFragment::TBadFragment(TFragment& fragment, uint32_t* data, int size, int fa
    /// Construct a bad fragment from a fragment, the data it was created from, the size of that data, and the word the
    /// parser failed on.
    /// The data is only copied up to and including the next header word (high nibble 0x8).
-   fData.clear();
+	
    // skipping the first word, we search for the next header
    int numWords;
    for(numWords = 1; numWords < size; ++numWords) {
       if((data[numWords] & 0xf0000000) == 0x80000000) {
+			++numWords; // to include this header
          break;
       }
    }
    // only copy data up to the next header (including that header)
-   fData.insert(fData.begin(), data, data + numWords + 1);
+	// if the above loop ended w/o finding a header numWords == size,
+	// i.e. we copy all the data
+   fData.insert(fData.begin(), data, data + numWords);
    fFailedWord     = failedWord;
    fMultipleErrors = multipleErrors;
+}
+
+TBadFragment::TBadFragment(TFragment& fragment) : TFragment(fragment)
+{
+   /// Construct a bad fragment from a fragment.
+   /// The data is left empty, failed word set to -1, and multiple errors set to false.
+	
+   fFailedWord     = -1;
+   fMultipleErrors = false;
 }
 
 TBadFragment::TBadFragment(const TBadFragment& rhs) : TFragment(rhs)
@@ -39,6 +51,16 @@ TBadFragment::TBadFragment(const TBadFragment& rhs) : TFragment(rhs)
 TBadFragment::~TBadFragment()
 {
    /// Destructor, does nothing for now.
+}
+
+TBadFragment& TBadFragment::operator=(const TBadFragment& rhs)
+{
+	/// Assignment operator
+	TFragment::operator=(rhs);
+   fData       = rhs.fData;
+   fFailedWord = rhs.fFailedWord;
+
+	return *this;
 }
 
 void TBadFragment::Print(Option_t*) const

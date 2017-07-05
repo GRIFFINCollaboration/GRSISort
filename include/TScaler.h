@@ -102,7 +102,7 @@ public:
    TScaler(const TScaler&);
    ~TScaler() override;
 
-   void Copy(TObject& rhs) const override;
+   void Copy(TObject& obj) const override;
 
 public:
    std::vector<UInt_t> GetScaler(UInt_t address, ULong64_t time) const;
@@ -117,9 +117,9 @@ public:
 
    void Clear(Option_t* opt = "") override;
    using TObject::Draw; // This is to remove hidden overload
-   TH1D* Draw(UInt_t address, size_t index = 0, Option_t* opt = "");
-   TH1D* Draw(UInt_t lowAddress, UInt_t highAddress, size_t index = 0, Option_t* opt = "");
-   TH1D* DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime, size_t index = 0, Option_t* opt = "");
+   TH1D* Draw(UInt_t address, size_t index = 0, Option_t* option = "");
+   TH1D* Draw(UInt_t lowAddress, UInt_t highAddress, size_t index = 0, Option_t* option = "");
+   TH1D* DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime, size_t index = 0, Option_t* option = "");
 
    void ListHistograms();
 

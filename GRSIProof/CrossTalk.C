@@ -40,9 +40,9 @@ void CrossTalk::CreateHistograms()
          for(int crys_2 = crys_1 + 1; crys_2 < 4; ++crys_2) {
             std::string name_str  = Form("det_%d_%d_%d", det_num, crys_1, crys_2);
             const char* hist_name = name_str.c_str();
-            std::cout << "Creating histogram: " << hist_name;
+            std::cout<<"Creating histogram: "<<hist_name;
             fH2[name_str] = new TH2F(hist_name, hist_name, 2000, 0, 2000, 2000, 0, 2000);
-            std::cout << " at address: " << fH2[hist_name] << std::endl;
+            std::cout<<" at address: "<<fH2[hist_name]<<std::endl;
          }
       }
    }

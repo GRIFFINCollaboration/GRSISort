@@ -10,7 +10,7 @@ GNotifier* GNotifier::fGNotifier = nullptr;
 
 GNotifier* GNotifier::Get()
 {
-   if(!fGNotifier) {
+   if(fGNotifier == nullptr) {
       fGNotifier = new GNotifier;
    }
    return fGNotifier;

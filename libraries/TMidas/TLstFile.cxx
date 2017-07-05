@@ -84,13 +84,13 @@ bool TLstFile::Open(const char* filename)
       if(in.tellg() < 0) {
          std::cout<<R"(Failed to open ")"<<GetFilename()<<"/"<<fFilename<<R"("!)"<<std::endl;
          return false;
-      } else {
-         fFileSize = in.tellg();
-         fReadBuffer.resize(fFileSize - headerSize);
-         in.seekg(headerSize, std::ifstream::beg);
-         in.read(fReadBuffer.data(), fFileSize);
-         in.close();
       }
+      fFileSize = in.tellg();
+      fReadBuffer.resize(fFileSize - headerSize);
+      in.seekg(headerSize, std::ifstream::beg);
+      in.read(fReadBuffer.data(), fFileSize);
+      in.close();
+
    } catch(std::exception& e) {
       std::cout<<"Caught "<<e.what()<<std::endl;
    }

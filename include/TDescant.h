@@ -32,7 +32,7 @@ public:
 
 public:
    TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
-   TDescantHit* GetDescantHit(const Int_t& idx = 0);
+   TDescantHit* GetDescantHit(const Int_t& i = 0);
 
    Short_t GetMultiplicity() const { return fDescantHits.size(); } //!<!
 

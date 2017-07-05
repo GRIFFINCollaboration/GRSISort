@@ -23,7 +23,7 @@ TSiLiHit::~TSiLiHit() = default;
 TSiLiHit::TSiLiHit(const TSiLiHit& rhs) : TGRSIDetectorHit(rhs)
 {
    Clear();
-   ((TSiLiHit&)rhs).Copy(*this);
+   (const_cast<TSiLiHit&>(rhs)).Copy(*this);
 }
 
 void TSiLiHit::Copy(TObject& rhs, bool suppress) const
@@ -63,7 +63,7 @@ void TSiLiHit::Clear(Option_t* opt)
 void TSiLiHit::SetWavefit(const TFragment& frag)
 {
    TPulseAnalyzer* pulse = FitFrag(frag, TSiLi::FitSiLiShape, GetChannel());
-   if(pulse) {
+   if(pulse != nullptr) {
       fTimeFit   = pulse->Get_wpar_T0();
       fFitBase   = pulse->Get_wpar_baselinefin();
       fFitCharge = pulse->Get_wpar_amplitude();
@@ -82,7 +82,7 @@ TPulseAnalyzer* TSiLiHit::FitFrag(const TFragment& frag, int ShapeFit, int segme
 TPulseAnalyzer* TSiLiHit::FitFrag(const TFragment& frag, int ShapeFit, TChannel* channel)
 {
    auto* pulse = new TPulseAnalyzer(frag, TSiLi::sili_noise_fac);
-   if(FitPulseAnalyzer(pulse, ShapeFit, channel)) {
+   if(FitPulseAnalyzer(pulse, ShapeFit, channel) != 0) {
       return pulse;
    }
    delete pulse;
@@ -104,13 +104,13 @@ int TSiLiHit::FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit, int segment)
 
 int TSiLiHit::FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit, TChannel* channel)
 {
-   if(!pulse) {
+   if(pulse == nullptr) {
       return 0;
    }
    if(pulse->IsSet()) {
       double Decay = 0, Rise = 0, Base = 0;
 
-      if(channel) {
+      if(channel != nullptr) {
          if(channel->UseWaveParam()) {
             Rise  = channel->GetWaveRise();
             Decay = channel->GetWaveDecay();
@@ -119,13 +119,13 @@ int TSiLiHit::FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit, TChannel* ch
       }
       // 		std::cout<<std::endl<<Decay<<" "<<Rise<<" "<<Base;
 
-      if(!Decay) {
+      if(Decay == 0.0) {
          Decay = TSiLi::sili_default_decay;
       }
-      if(!Rise) {
+      if(Rise == 0.0) {
          Rise = TSiLi::sili_default_rise;
       }
-      if(!Base) {
+      if(Base == 0.0) {
          Base = TSiLi::sili_default_baseline;
       }
 
@@ -169,7 +169,7 @@ void TSiLiHit::SumHit(TSiLiHit* hit)
       return;
    }
 
-   if(fAddBackSegments.size() == 0) {
+   if(fAddBackSegments.empty()) {
       hit->Copy(*this, true); // suppresses copying of addback
       fAddBackSegments.clear();
       fAddBackEnergy.clear();
@@ -201,7 +201,7 @@ double TSiLiHit::GetFitEnergy() const
       return TGRSIDetectorHit::GetEnergy();
    }
    TChannel* chan = GetChannel();
-   if(!chan) {
+   if(chan == nullptr) {
       return fFitCharge;
    }
    return chan->CalibrateENG(fFitCharge, 0);
@@ -213,7 +213,7 @@ double TSiLiHit::GetEnergy(Option_t*) const
       return TGRSIDetectorHit::GetEnergy(); // If not fitting waveforms, be normal.
    }
    TChannel* chan = GetChannel();
-   if(!chan) {
+   if(chan == nullptr) {
       return SetEnergy(fFitCharge);
    }
 

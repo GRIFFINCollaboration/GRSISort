@@ -80,9 +80,8 @@ double TReaction::GetTBeam(bool inverse)
 {
    if(fInverse || inverse) {
       return (fGLab[0] - 1) * fM[1];
-   } else {
-      return fTLab[0];
    }
+   return fTLab[0];
 }
 
 void TReaction::SetCmFrame(double exc)
@@ -277,8 +276,6 @@ void TReaction::ConvertLabToCm(double theta_lab, double omega_lab, double& theta
 {
    theta_cm = ConvertThetaLabToCm(theta_lab, part);
    omega_cm = ConvertOmegaLabToCm(omega_lab, part);
-
-   return;
 }
 
 // Conversion from CM frame to LAB frame
@@ -293,9 +290,8 @@ double TReaction::ConvertThetaCmToLab(double theta_cm, int part)
 
    if(theta_lab > fThetaMax[part]) {
       return fThetaMax[part];
-   } else {
-      return theta_lab;
    }
+   return theta_lab;
 }
 
 double TReaction::ConvertOmegaCmToLab(double theta_cm, int part)
@@ -316,8 +312,6 @@ void TReaction::ConvertCmToLab(double theta_cm, double omega_cm, double& theta_l
 {
    theta_lab = ConvertThetaCmToLab(theta_cm, part);
    omega_lab = ConvertOmegaCmToLab(omega_cm, part);
-
-   return;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -337,7 +331,7 @@ TGraph* TReaction::KinVsTheta(double thmin, double thmax, int part, bool Frame_L
    double theta, T;
 
    for(int i = 0; i <= 180; i++) {
-      theta = (double)i; // always in CM frame since function is continuous
+      theta = static_cast<double>(i); // always in CM frame since function is continuous
 
       T = GetTLabFromThetaCm(theta * D2R, part);
       if(Units_keV) {
@@ -372,7 +366,7 @@ TGraph* TReaction::ThetaVsTheta(double thmin, double thmax, int part, bool Frame
    double theta_cm, theta_lab;
 
    for(int i = 0; i <= 180; i++) {
-      theta_cm  = (double)i; // always in CM frame
+      theta_cm  = static_cast<double>(i); // always in CM frame
       theta_lab = ConvertThetaCmToLab(theta_cm * D2R, part) * R2D;
 
       if((Frame_Lab && (theta_lab < thmin || theta_lab > thmax))) {
@@ -406,7 +400,7 @@ TGraph* TReaction::OmegaVsTheta(double thmin, double thmax, int part, bool Frame
    double theta, Om;
    for(int i = 0; i <= 180; i++) {
 
-      theta = (double)i; // always in CM frame
+      theta = static_cast<double>(i); // always in CM frame
       Om    = 1 / ConvertOmegaCmToLab(theta * D2R, part);
 
       if(Frame_Lab) { // this is now converted to specified frame (from Frame_Lab)
@@ -437,7 +431,7 @@ TGraph* TReaction::RutherfordVsTheta(double thmin, double thmax, int part, bool 
    double theta, R;
 
    for(int i = 1; i <= 180; i++) {
-      theta = (double)i; // always in CM frame
+      theta = static_cast<double>(i); // always in CM frame
 
       R = GetRutherfordCm(theta * D2R, part, Units_mb); //*ConvertOmega?
 
@@ -499,8 +493,6 @@ void TReaction::Print(Option_t* opt) const
       }
    }
    printf("\n\n * * * * * * * * * * * * * * * * * * * * * * * * *\n\n");
-
-   return;
 }
 
 void TReaction::Clear(Option_t*)

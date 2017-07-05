@@ -60,7 +60,7 @@ void Version()
 
 bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg_high)
 {
-   if(!hist) {
+   if(hist == nullptr) {
       return false;
    }
    GCanvas* C_projections = nullptr;
@@ -152,12 +152,12 @@ int LabelPeaks(TH1* hist, double sigma, double thresh, Option_t*)
 {
    TSpectrum::StaticSearch(hist, sigma, "Qnodraw", thresh);
    TPolyMarker* pm = static_cast<TPolyMarker*>(hist->GetListOfFunctions()->FindObject("TPolyMarker"));
-   if(!pm) {
+   if(pm == nullptr) {
       // something has gone wrong....
       return 0;
    }
    TObjArray* array = static_cast<TObjArray*>(hist->GetListOfFunctions()->FindObject("PeakLabels"));
-   if(array) {
+   if(array != nullptr) {
       hist->GetListOfFunctions()->Remove((TObject*)array);
       array->Delete();
    }
@@ -203,10 +203,7 @@ bool ShowPeaks(TH1** hists, unsigned int nhists, double sigma, double thresh)
       }
       num_found += LabelPeaks(hists[i], sigma, thresh, "");
    }
-   if(num_found) {
-      return true;
-   }
-   return false;
+   return num_found != 0;
 }
 
 bool RemovePeaks(TH1** hists, unsigned int nhists)
@@ -231,7 +228,7 @@ bool RemovePeaks(TH1** hists, unsigned int nhists)
 GGaus* GausFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 {
    // bool edit = false;
-   if(!hist) {
+   if(hist == nullptr) {
       return nullptr;
    }
    if(xlow > xhigh) {
@@ -254,7 +251,7 @@ GGaus* GausFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 
 TF1* DoubleGausFit(TH1* hist, double, double, double xlow, double xhigh, Option_t* opt)
 {
-   if(!hist) {
+   if(hist == nullptr) {
       return nullptr;
    }
    if(xlow > xhigh) {
@@ -278,7 +275,7 @@ TF1* DoubleGausFit(TH1* hist, double, double, double xlow, double xhigh, Option_
 GPeak* PhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 {
    // bool edit = 0;
-   if(!hist) {
+   if(hist == nullptr) {
       return nullptr;
    }
    if(xlow > xhigh) {
@@ -302,7 +299,7 @@ GPeak* PhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 TPeak* AltPhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 {
    // bool edit = 0;
-   if(!hist) {
+   if(hist == nullptr) {
       return nullptr;
    }
    if(xlow > xhigh) {
@@ -424,7 +421,7 @@ void AddFileToGUI(TFile* file)
 {
 #ifdef HAS_CORRECT_PYTHON_VERSION
    // Pass the TFile to the python GUI.
-   if(file && GUIIsRunning()) {
+   if((file != nullptr) && GUIIsRunning()) {
       TPython::Bind(file, "tdir");
       gROOT->ProcessLine(R"lit(TPython::Exec("window.AddDirectory(tdir)");)lit");
    }
@@ -434,7 +431,7 @@ void AddFileToGUI(TFile* file)
 TH2* AddOffset(TH2* mat, double offset, EAxis axis)
 {
    TH2* toreturn = nullptr;
-   if(!mat) {
+   if(mat == nullptr) {
       return toreturn;
    }
    // int dim = mat->GetDimension();
@@ -475,10 +472,10 @@ TH2* AddOffset(TH2* mat, double offset, EAxis axis)
          double newy = mat->GetYaxis()->GetBinCenter(y);
          ;
          double bcont = mat->GetBinContent(x, y);
-         if(axis & kXAxis) {
+         if((axis & kXAxis) != 0) {
             newx += offset;
          }
-         if(axis & kYAxis) {
+         if((axis & kYAxis) != 0) {
             newy += offset;
          }
          toreturn->Fill(newx, newy, bcont);

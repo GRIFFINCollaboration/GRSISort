@@ -37,12 +37,11 @@ void TGriffinHit::Copy(TObject& rhs) const
 {
    TGRSIDetectorHit::Copy(rhs);
    static_cast<TGriffinHit&>(rhs).fFilter = fFilter;
-	// We should copy over a 0 and let the hit recalculate, this is safest
+   // We should copy over a 0 and let the hit recalculate, this is safest
    static_cast<TGriffinHit&>(rhs).fGriffinHitBits      = 0;
    static_cast<TGriffinHit&>(rhs).fCrystal             = fCrystal;
    static_cast<TGriffinHit&>(rhs).fPPG                 = fPPG;
-   static_cast<TGriffinHit&>(rhs).fBremSuppressed_flag = fBremSuppressed_flag; // Bremsstrahlung Suppression flag.
-   return;
+   static_cast<TGriffinHit&>(rhs).fBremSuppressed_flag = fBremSuppressed_flag;
 }
 
 void TGriffinHit::Copy(TObject& obj, bool waveform) const
@@ -149,8 +148,8 @@ UShort_t TGriffinHit::PUHit() const
 
 void TGriffinHit::SetNPileUps(UChar_t npileups)
 {
-   SetGriffinFlag(kTotalPU1, (npileups & kTotalPU1));
-   SetGriffinFlag(kTotalPU2, (npileups & kTotalPU2));
+   SetGriffinFlag(kTotalPU1, (npileups & kTotalPU1) != 0);
+   SetGriffinFlag(kTotalPU2, (npileups & kTotalPU2) != 0);
 }
 
 void TGriffinHit::SetPUHit(UChar_t puhit)
@@ -160,14 +159,14 @@ void TGriffinHit::SetPUHit(UChar_t puhit)
    }
    // The pluralized test bits returns the actual value of the fBits masked. Not just a bool.
 
-   SetGriffinFlag(kPUHit1, (puhit<<kPUHitOffset) & kPUHit1);
-   SetGriffinFlag(kPUHit2, (puhit<<kPUHitOffset) & kPUHit2);
+   SetGriffinFlag(kPUHit1, ((puhit<<kPUHitOffset) & kPUHit1) != 0);
+   SetGriffinFlag(kPUHit2, ((puhit<<kPUHitOffset) & kPUHit2) != 0);
 }
 
 Double_t TGriffinHit::GetNoCTEnergy(Option_t*) const
 {
    TChannel* chan = GetChannel();
-   if(!chan) {
+   if(chan == nullptr) {
       Error("GetEnergy", "No TChannel exists for address 0x%08x", GetAddress());
       return 0.;
    }

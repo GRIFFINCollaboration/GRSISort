@@ -15,7 +15,7 @@ ClassImp(TEventBuildingLoop)
    }
 
    TEventBuildingLoop* loop = static_cast<TEventBuildingLoop*>(StoppableThread::Get(name));
-   if(!loop) {
+   if(loop == nullptr) {
       loop = new TEventBuildingLoop(name, mode);
    }
    return loop;
@@ -48,12 +48,12 @@ TEventBuildingLoop::~TEventBuildingLoop() = default;
 void TEventBuildingLoop::ClearQueue()
 {
    std::shared_ptr<const TFragment> single_event;
-   while(fInputQueue->Size()) {
+   while(fInputQueue->Size() != 0u) {
       fInputQueue->Pop(single_event);
    }
 
    std::vector<std::shared_ptr<const TFragment>> event;
-   while(fOutputQueue->Size()) {
+   while(fOutputQueue->Size() != 0u) {
       fOutputQueue->Pop(event);
    }
 }
@@ -73,25 +73,25 @@ bool TEventBuildingLoop::Iteration()
       if(fOrdered.size() < fSortingDepth) {
          // Got a new event, but we want to have more to sort
          return true;
-      } else {
-         // Got a new event, and we have enough to sort.
       }
+      // Got a new event, and we have enough to sort.
+
    } else {
       if(!fInputQueue->IsFinished()) {
          // If the parent is live, wait for it
          std::this_thread::sleep_for(std::chrono::milliseconds(1000));
          return true;
-      } else if(fOrdered.size() == 0) {
+      }
+      if(fOrdered.empty()) {
          // Parent is dead, and we have passed on all events
-         if(fNextEvent.size()) {
+         if(static_cast<unsigned int>(!fNextEvent.empty()) != 0u) {
             fOutputQueue->Push(fNextEvent);
          }
          fOutputQueue->SetFinished();
          return false;
-      } else {
-         // Parent is dead, but we still have items.
-         // Continue through the function to process them.
       }
+      // Parent is dead, but we still have items.
+      // Continue through the function to process them.
    }
 
    // We have data, and we want to add it to the next fragment;
@@ -116,11 +116,11 @@ bool TEventBuildingLoop::CheckBuildCondition(const std::shared_ptr<const TFragme
 
 bool TEventBuildingLoop::CheckTimestampCondition(const std::shared_ptr<const TFragment>& frag)
 {
-   long timestamp = frag->GetTimeStamp();
-   long event_start =
-      (fNextEvent.size() ? (TGRSIOptions::Get()->AnalysisOptions()->StaticWindow() ? fNextEvent[0]->GetTimeStamp()
-                                                                                   : fNextEvent.back()->GetTimeStamp())
-                         : timestamp);
+   long timestamp   = frag->GetTimeStamp();
+   long event_start = (static_cast<unsigned int>(!fNextEvent.empty()) != 0u
+                          ? (TGRSIOptions::Get()->AnalysisOptions()->StaticWindow() ? fNextEvent[0]->GetTimeStamp()
+                                                                                    : fNextEvent.back()->GetTimeStamp())
+                          : timestamp);
 
    // save timestamp every <BuildWindow> fragments
    if(frag->GetEntryNumber() % (TGRSIOptions::Get()->SortDepth()) == 0) {
@@ -152,8 +152,9 @@ bool TEventBuildingLoop::CheckTimestampCondition(const std::shared_ptr<const TFr
 
 bool TEventBuildingLoop::CheckTriggerIdCondition(const std::shared_ptr<const TFragment>& frag)
 {
-   long trigger_id         = frag->GetTriggerId();
-   long current_trigger_id = (fNextEvent.size() ? fNextEvent[0]->GetTriggerId() : trigger_id);
+   long trigger_id = frag->GetTriggerId();
+   long current_trigger_id =
+      (static_cast<unsigned int>(!fNextEvent.empty()) != 0u ? fNextEvent[0]->GetTriggerId() : trigger_id);
 
    // save trigger id every <BuildWindow> fragments
    if(frag->GetEntryNumber() % (TGRSIOptions::Get()->SortDepth()) == 0) {

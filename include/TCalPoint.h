@@ -12,7 +12,7 @@ class TCalPoint : public TObject {
 public:
    TCalPoint();
    TCalPoint(const Double_t& centroid, const Double_t& area, const Double_t& dcentroid = 0.0,
-             const Double_t& dArea = 0.0);
+             const Double_t& darea = 0.0);
    TCalPoint(const TPeak& peak);
    ~TCalPoint() override;
 
@@ -21,7 +21,7 @@ public:
 public:
    void Copy(TObject& obj) const override;
    void SetPoint(const Double_t& centroid, const Double_t& area, const Double_t& dcentroid = 0.0,
-                 const Double_t& dArea = 0.0);
+                 const Double_t& darea = 0.0);
    void SetPoint(const TPeak* peak);
    void SetCentroid(const Double_t& centroid, const Double_t& dcentroid = 0.0);
    void SetArea(const Double_t& area, const Double_t& darea = 0.0);

@@ -57,8 +57,8 @@ public:
    // get data banks
 
    const char* GetBankList() const; ///< return a list of data banks
-   int FindBank(const char* bankName, int* bankLength, int* bankType, void** bankPtr) const;
-   int LocateBank(const void* unused, const char* bankName, void** bankPtr) const;
+   int FindBank(const char* name, int* bklen, int* bktype, void** pdata) const;
+   int LocateBank(const void* unused, const char* name, void** pdata) const;
 
    bool IsBank32() const;                                  ///< returns "true" if event uses 32-bit banks
    int IterateBank(TMidas_BANK**, char** pdata) const;     ///< iterate through 16-bit data banks
@@ -69,8 +69,8 @@ public:
    TMidas_EVENT_HEADER* GetEventHeader();   ///< return pointer to the event header
    char*                GetData() override; ///< return pointer to the data buffer
 
-   void AllocateData();                               ///< allocate data buffer using the existing event header
-   void SetData(uint32_t dataSize, char* dataBuffer); ///< set an externally allocated data buffer
+   void AllocateData();                     ///< allocate data buffer using the existing event header
+   void SetData(uint32_t size, char* data); ///< set an externally allocated data buffer
 
    int  SetBankList();      ///< create the list of data banks, return number of banks
    bool IsGoodSize() const; ///< validate the event length

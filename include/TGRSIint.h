@@ -63,7 +63,7 @@ public:
    TLstFile* OpenLstFile(const std::string& filename);
    void RunMacroFile(const std::string& filename);
 
-   void Terminate(Int_t exit_status = 0) override;
+   void Terminate(Int_t status = 0) override;
 
    static TEnv* GetEnv() { return fGRSIEnv; }
 
@@ -81,7 +81,7 @@ private:
    void LoadGROOTGraphics();
    void LoadExtraClasses();
 
-   Long_t DelayedProcessLine(std::string message);
+   Long_t DelayedProcessLine(std::string command);
 
    TTimer* fKeepAliveTimer; ///< Time of process
 #ifndef __CINT__

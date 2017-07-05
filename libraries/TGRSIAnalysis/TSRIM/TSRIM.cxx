@@ -60,16 +60,16 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
    std::vector<double>      number_input, dEdX_temp;
    std::vector<std::string> string_input;
 
-   while(std::getline(infile, line)) {
-      if(!line.length()) {
+   while(std::getline(infile, line) != nullptr) {
+      if(line.length() == 0u) {
          continue;
       }
       std::stringstream linestream(line);
       number_input.clear();
       string_input.clear();
-      while(linestream >> word) {
+      while((linestream >> word) != nullptr) {
          std::stringstream ss(word);
-         if(ss >> temp) { // if it's a number
+         if((ss >> temp) != nullptr) { // if it's a number
             number_input.push_back(temp);
          } else {
             string_input.push_back(ss.str());
@@ -99,7 +99,7 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
       dEdX_temp.push_back((number_input[1] + number_input[2]));
    }
 
-   if(dEdX_temp.size() > 0) {
+   if(!dEdX_temp.empty()) {
       if(density_scale == 0.) {
          printf("WARNING: stopping power remains in original units, unable to find scale factor.\n");
          density_scale = 1.;

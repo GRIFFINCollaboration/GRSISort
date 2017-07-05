@@ -24,10 +24,10 @@
 
 /// \cond CLASSIMP
 ClassImp(TChannel)
-   /// \endcond
+/// \endcond
 
-   std::map<unsigned int, TChannel*>* TChannel::fChannelMap =
-      new std::map<unsigned int, TChannel*>; // global maps of channels
+std::map<unsigned int, TChannel*>* TChannel::fChannelMap =
+	new std::map<unsigned int, TChannel*>; // global maps of channels
 std::map<int, TChannel*>* TChannel::fChannelNumberMap = new std::map<int, TChannel*>;
 
 std::string TChannel::fFileName;
@@ -90,7 +90,6 @@ void TChannel::InitChannelInput()
 {
    int channels_found = ParseInputData(fFileData.c_str(), "q");
    printf("Successfully read %i TChannels from" CYAN " %s" RESET_COLOR "\n", channels_found, gFile->GetName());
-   return;
 }
 
 bool TChannel::CompareChannels(const TChannel& chana, const TChannel& chanb)
@@ -100,11 +99,7 @@ bool TChannel::CompareChannels(const TChannel& chana, const TChannel& chanb)
    std::string namea;
    namea.assign(static_cast<TChannel>(chana).GetName());
 
-   if(namea.compare(static_cast<TChannel>(chanb).GetName()) < 0) {
-      return true;
-   } else {
-      return false;
-   }
+   return namea.compare(static_cast<TChannel>(chanb).GetName()) < 0;
 }
 
 void TChannel::DeleteAllChannels()
@@ -112,7 +107,7 @@ void TChannel::DeleteAllChannels()
    /// Safely deletes fChannelMap and fChannelNumberMap
    std::map<unsigned int, TChannel*>::iterator iter;
    for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++) {
-      if(iter->second) {
+      if(iter->second != nullptr) {
          delete iter->second;
       }
       // These maps should point to the same pointers, so this should clear out both
@@ -120,7 +115,6 @@ void TChannel::DeleteAllChannels()
    }
    fChannelMap->clear();
    fChannelNumberMap->clear();
-   return;
 }
 
 void TChannel::AddChannel(TChannel* chan, Option_t* opt)
@@ -131,7 +125,7 @@ void TChannel::AddChannel(TChannel* chan, Option_t* opt)
    ///                       If this option is not specified, an Error is returned if the TChannel already
    ///                       exists in the fChannelMap.
    ///        "save"      -  The temporary channel is not deleted after being placed in the map.
-   if(!chan) {
+   if(chan == nullptr) {
       return;
    }
    if(fChannelMap->count(chan->GetAddress()) == 1) { // if this channel exists
@@ -141,11 +135,11 @@ void TChannel::AddChannel(TChannel* chan, Option_t* opt)
          // Need to also update the channel number map RD
          UpdateChannelNumberMap();
          return;
-      } else {
-         printf("Trying to add a channel that already exists!\n");
-         return;
       }
-   } else if((chan->GetAddress() & 0x00ffffff) == 0x00ffffff) {
+      printf("Trying to add a channel that already exists!\n");
+      return;
+   }
+   if((chan->GetAddress() & 0x00ffffff) == 0x00ffffff) {
       // this is the default tigress value for i am not there.
       // we should not imclude it in the map.
       delete chan;
@@ -220,22 +214,22 @@ void TChannel::AppendChannel(TChannel* chan)
       SetTimeOffset(chan->GetTimeOffset());
    }
 
-   if(chan->GetENGCoeff().size() > 0) {
+   if(!chan->GetENGCoeff().empty()) {
       SetENGCoefficients(chan->GetENGCoeff());
    }
-   if(chan->GetCFDCoeff().size() > 0) {
+   if(!chan->GetCFDCoeff().empty()) {
       SetCFDCoefficients(chan->GetCFDCoeff());
    }
-   if(chan->GetLEDCoeff().size() > 0) {
+   if(!chan->GetLEDCoeff().empty()) {
       SetLEDCoefficients(chan->GetLEDCoeff());
    }
-   if(chan->GetTIMECoeff().size() > 0) {
+   if(!chan->GetTIMECoeff().empty()) {
       SetTIMECoefficients(chan->GetTIMECoeff());
    }
-   if(chan->GetEFFCoeff().size() > 0) {
+   if(!chan->GetEFFCoeff().empty()) {
       SetEFFCoefficients(chan->GetEFFCoeff());
    }
-   if(chan->GetCTCoeff().size() > 0) {
+   if(!chan->GetCTCoeff().empty()) {
       SetCTCoefficients(chan->GetCTCoeff());
    }
 
@@ -272,8 +266,6 @@ void TChannel::AppendChannel(TChannel* chan)
    }
 
    SetClassType(chan->GetClassType());
-
-   return;
 }
 
 int TChannel::UpdateChannel(TChannel* chan, Option_t*)
@@ -293,7 +285,7 @@ int TChannel::UpdateChannel(TChannel* chan, Option_t*)
 
 TChannel* TChannel::GetDefaultChannel()
 {
-   if(fChannelMap->size() > 0) {
+   if(!fChannelMap->empty()) {
       return fChannelMap->begin()->second;
    }
    return nullptr;
@@ -361,7 +353,7 @@ TChannel* TChannel::FindChannelByName(const char* ccName)
 {
    /// Finds the TChannel by the name of the channel
    TChannel* chan = nullptr;
-   if(!ccName) {
+   if(ccName == nullptr) {
       return chan;
    }
 
@@ -481,7 +473,7 @@ double TChannel::CalibrateENG(int charge, int temp_int)
    // int temp_int = 1; //125.0;
    if(temp_int == 0) {
       if(fIntegration != 0) {
-         temp_int = (int)fIntegration; // the 4 is the dis.
+         temp_int = fIntegration; // the 4 is the dis.
       } else {
          temp_int = 1;
       }
@@ -489,7 +481,7 @@ double TChannel::CalibrateENG(int charge, int temp_int)
 
    // We need to add a random number between 0 and 1 before calibrating to avoid
    // binning issues.
-   return CalibrateENG(((double)charge + gRandom->Uniform()) / (double)temp_int);
+   return CalibrateENG((static_cast<double>(charge) + gRandom->Uniform()) / static_cast<double>(temp_int));
 }
 
 double TChannel::CalibrateENG(double charge, int temp_int)
@@ -505,13 +497,13 @@ double TChannel::CalibrateENG(double charge, int temp_int)
    // int temp_int = 1; //125.0;
    if(temp_int == 0) {
       if(fIntegration != 0) {
-         temp_int = (int)fIntegration; // the 4 is the dis.
+         temp_int = fIntegration; // the 4 is the dis.
       } else {
          temp_int = 1;
       }
    }
 
-   return CalibrateENG(((double)charge) / (double)temp_int);
+   return CalibrateENG((charge) / static_cast<double>(temp_int));
 }
 
 double TChannel::CalibrateENG(double charge)
@@ -519,7 +511,7 @@ double TChannel::CalibrateENG(double charge)
    /// Returns the calibrated energy. The polynomial energy calibration formula is
    /// applied to get the calibrated energy. This function does not use the
    /// integration parameter.
-   if(fENGCoefficients.size() == 0) {
+   if(fENGCoefficients.empty()) {
       return charge;
    }
    double cal_chg = fENGCoefficients[0];
@@ -532,14 +524,14 @@ double TChannel::CalibrateENG(double charge)
 double TChannel::CalibrateCFD(int cfd)
 {
    /// Calibrates the CFD properly.
-   return CalibrateCFD((double)cfd + gRandom->Uniform());
+   return CalibrateCFD(static_cast<double>(cfd) + gRandom->Uniform());
 }
 
 double TChannel::CalibrateCFD(double cfd)
 {
    /// Returns the calibrated CFD. The polynomial CFD calibration formula is
    /// applied to get the calibrated CFD.
-   if(fCFDCoefficients.size() == 0) {
+   if(fCFDCoefficients.empty()) {
       return cfd;
    }
 
@@ -554,14 +546,14 @@ double TChannel::CalibrateCFD(double cfd)
 double TChannel::CalibrateLED(int led)
 {
    /// Calibrates the LED
-   return CalibrateLED((double)led + gRandom->Uniform());
+   return CalibrateLED(static_cast<double>(led) + gRandom->Uniform());
 }
 
 double TChannel::CalibrateLED(double led)
 {
    /// Returns the calibrated LED. The polynomial LED calibration formula is
    /// applied to get the calibrated LED.
-   if(fLEDCoefficients.size() == 0) {
+   if(fLEDCoefficients.empty()) {
       return led;
    }
 
@@ -578,7 +570,7 @@ double TChannel::CalibrateTIME(int chg)
    if(fTIMECoefficients.size() != 3 || (chg < 1)) {
       return 0.0000;
    }
-   return CalibrateTIME((double)(CalibrateENG(chg)));
+   return CalibrateTIME((CalibrateENG(chg)));
 }
 
 double TChannel::CalibrateTIME(double energy)
@@ -611,7 +603,7 @@ void TChannel::SetUseCalFileIntegration(const std::string& mnemonic, bool flag)
    std::map<unsigned int, TChannel*>::iterator mapit;
    std::map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
    for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++) {
-      if(!mnemonic.size() || !strncmp(mapit->second->GetName(), mnemonic.c_str(), mnemonic.size())) {
+      if(mnemonic.empty() || (strncmp(mapit->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
          mapit->second->SetUseCalFileIntegration(flag);
       }
    }
@@ -625,7 +617,7 @@ void TChannel::SetIntegration(const std::string& mnemonic, int tmpint)
    std::map<unsigned int, TChannel*>::iterator mapit;
    std::map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
    for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++) {
-      if(!mnemonic.size() || !strncmp(mapit->second->GetName(), mnemonic.c_str(), mnemonic.size())) {
+      if(mnemonic.empty() || (strncmp(mapit->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
          mapit->second->SetIntegration(tmpint);
       }
    }
@@ -639,7 +631,7 @@ void TChannel::SetDigitizerType(const std::string& mnemonic, const char* tmpstr)
    std::map<unsigned int, TChannel*>::iterator mapit;
    std::map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
    for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++) {
-      if(!mnemonic.size() || !strncmp(mapit->second->GetName(), mnemonic.c_str(), mnemonic.size())) {
+      if(mnemonic.empty() || (strncmp(mapit->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
          mapit->second->SetDigitizerType(tmpstr);
       }
    }
@@ -666,7 +658,7 @@ void TChannel::Print(Option_t*) const
    /// Prints out the current TChannel.
    std::cout<<GetName()<<"\t{\n"; //,channelname.c_str();
    std::cout<<"Type:      ";
-   if(GetClassType()) {
+   if(GetClassType() != nullptr) {
       std::cout<<GetClassType()->GetName()<<std::endl;
    } else {
       std::cout<<"None"<<std::endl;
@@ -692,14 +684,14 @@ void TChannel::Print(Option_t*) const
    }
    std::cout<<"\n";
    std::cout<<"EFFChi2:   "<<fEFFChi2<<"\n";
-   if(fCTCoefficients.size()) {
+   if(static_cast<unsigned int>(!fCTCoefficients.empty()) != 0u) {
       std::cout<<"CTCoeff:  ";
       for(double fCTCoefficient : fCTCoefficients) {
          std::cout<<fCTCoefficient<<"\t";
       }
       std::cout<<"\n";
    }
-   if(fTIMECoefficients.size() > 0) {
+   if(!fTIMECoefficients.empty()) {
       std::cout<<"TIMECoeff: ";
       for(double fTIMECoefficient : fTIMECoefficients) {
          std::cout<<fTIMECoefficient<<"\t";
@@ -729,7 +721,7 @@ std::string TChannel::PrintCTToString(Option_t*)
    buffer.append("\n");
    buffer.append(Form("Number:    %d\n", fNumber));
    buffer.append(Form("Address:   0x%08x\n", fAddress));
-   if(fCTCoefficients.size() > 0) {
+   if(!fCTCoefficients.empty()) {
       buffer.append("CTCoeff:  ");
       for(double fCTCoefficient : fCTCoefficients) {
          buffer.append(Form("%f\t", fCTCoefficient));
@@ -750,7 +742,7 @@ std::string TChannel::PrintToString(Option_t*)
    buffer.append(GetName());
    buffer.append("\t{\n"); //,channelname.c_str();
    buffer.append("Type:      ");
-   if(GetClassType()) {
+   if(GetClassType() != nullptr) {
       buffer.append(Form("%s\n", GetClassType()->GetName()));
    } else {
       buffer.append("None\n");
@@ -776,14 +768,14 @@ std::string TChannel::PrintToString(Option_t*)
    }
    buffer.append("\n");
    buffer.append(Form("EFFChi2:   %f\n", fEFFChi2));
-   if(fCTCoefficients.size() > 0) {
+   if(!fCTCoefficients.empty()) {
       buffer.append("CTCoeff:  ");
       for(double fCTCoefficient : fCTCoefficients) {
          buffer.append(Form("%f\t", fCTCoefficient));
       }
       buffer.append("\n");
    }
-   if(fTIMECoefficients.size() > 0) {
+   if(!fTIMECoefficients.empty()) {
       buffer.append("TIMECoeff:  ");
       for(double fTIMECoefficient : fTIMECoefficients) {
          buffer.append(Form("%f\t", fTIMECoefficient));
@@ -791,7 +783,7 @@ std::string TChannel::PrintToString(Option_t*)
       buffer.append("\n");
    }
    if(fUseCalFileInt) {
-      buffer.append(Form("FileInt: %d\n", (int)fUseCalFileInt));
+      buffer.append(Form("FileInt: %d\n", static_cast<int>(fUseCalFileInt)));
    }
    if(UseWaveParam()) {
       buffer.append(Form("RiseTime: %f\n", WaveFormShape.TauRise));
@@ -817,7 +809,7 @@ void TChannel::WriteCalFile(const std::string& outfilename)
    std::vector<TChannel>           chanVec;
    std::vector<TChannel>::iterator iter_vec;
    for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++) {
-      if(iter->second) {
+      if(iter->second != nullptr) {
          chanVec.push_back(*iter->second);
       }
    }
@@ -872,7 +864,7 @@ void TChannel::WriteCTCorrections(const std::string& outfilename)
    std::vector<TChannel>           chanVec;
    std::vector<TChannel>::iterator iter_vec;
    for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++) {
-      if(iter->second) {
+      if(iter->second != nullptr) {
          chanVec.push_back(*iter->second);
       }
    }
@@ -908,7 +900,7 @@ void TChannel::WriteCalBuffer(Option_t*)
    std::vector<TChannel>           chanVec;
    std::vector<TChannel>::iterator iter_vec;
    for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++) {
-      if(iter->second) {
+      if(iter->second != nullptr) {
          chanVec.push_back(*iter->second);
       }
    }
@@ -930,7 +922,6 @@ void TChannel::WriteCalBuffer(Option_t*)
    }
    fFileData.clear();
    fFileData = data;
-   return;
 }
 
 Int_t TChannel::ReadCalFromCurrentFile(Option_t*)
@@ -946,7 +937,7 @@ Int_t TChannel::ReadCalFromCurrentFile(Option_t*)
 
    // while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
    while(TKey* key = static_cast<TKey*>(iter.Next())) {
-      if(!key || strcmp(key->GetClassName(), "TChannel")) {
+      if((key == nullptr) || (strcmp(key->GetClassName(), "TChannel") != 0)) {
          continue;
       }
       // TObject *  obj = key->ReadObj();
@@ -963,7 +954,7 @@ Int_t TChannel::ReadCalFromCurrentFile(Option_t*)
 Int_t TChannel::ReadCalFromFile(TFile* tempf, Option_t*)
 {
    /// Reads the TChannel information from a TFile if it has already been written to that File.
-   if(!tempf) {
+   if(tempf == nullptr) {
       return 0;
    }
 
@@ -972,7 +963,7 @@ Int_t TChannel::ReadCalFromFile(TFile* tempf, Option_t*)
 
    // while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
    while(TKey* key = static_cast<TKey*>(iter.Next())) {
-      if(!key || strcmp(key->GetClassName(), "TChannel")) {
+      if((key == nullptr) || (strcmp(key->GetClassName(), "TChannel") != 0)) {
          continue;
       }
       key->ReadObj();
@@ -984,7 +975,7 @@ Int_t TChannel::ReadCalFromFile(TFile* tempf, Option_t*)
 Int_t TChannel::ReadCalFromTree(TTree* tree, Option_t*)
 {
    /// Reads the TChannel information from a Tree if it has already been written to that Tree.
-   if(!tree) {
+   if(tree == nullptr) {
       return 0;
    }
 
@@ -994,7 +985,7 @@ Int_t TChannel::ReadCalFromTree(TTree* tree, Option_t*)
 
    // while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
    while(TKey* key = static_cast<TKey*>(iter.Next())) {
-      if(!key || strcmp(key->GetClassName(), "TChannel")) {
+      if((key == nullptr) || (strcmp(key->GetClassName(), "TChannel") != 0)) {
          continue;
       }
       // TObject *  obj = key->ReadObj();
@@ -1022,7 +1013,7 @@ Int_t TChannel::ReadCalFile(const char* filename)
    printf("Reading from calibration file:" CYAN " %s" RESET_COLOR ".....", filename);
    std::ifstream infile;
    infile.open(infilename.c_str());
-   if(!infile) {
+   if(!infile.is_open()) {
       printf(DRED "could not open file." RESET_COLOR "\n");
       return -2;
    }
@@ -1056,8 +1047,6 @@ void TChannel::SaveToSelf(const char* fname)
    WriteCalFile();
    fFileData.assign(buffer.str());
    std::cout.rdbuf(std_out);
-   // printf("%s\n",fFileData.c_str());
-   return;
 }
 
 Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt)
@@ -1077,14 +1066,14 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt)
 
    // Parse the cal file. This is useful because if the cal file contains something that
    // the parser does not recognize, it just skips it!
-   while(std::getline(infile, line)) {
+   while(std::getline(infile, line).good()) {
       linenumber++;
       trim(&line);
       size_t comment = line.find("//");
       if(comment != std::string::npos) {
          line = line.substr(0, comment);
       }
-      if(!line.length()) {
+      if(line.length() == 0u) {
          continue;
       }
       size_t openbrace  = line.find('{');
@@ -1101,7 +1090,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt)
          // printf("brace closed.\n");
          // channel->Print();
          brace_open = false;
-         if(channel) { // && (channel->GetAddress()!=0) )
+         if(channel != nullptr) { // && (channel->GetAddress()!=0) )
             TChannel* currentchan = GetChannel(channel->GetAddress());
             if(currentchan == nullptr) {
                AddChannel(channel); // consider using a default option here
@@ -1122,7 +1111,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt)
       //*************************************//
       if(openbrace != std::string::npos) {
          brace_open = true;
-         name       = line.substr(0, openbrace).c_str();
+         name       = line.substr(0, openbrace);
          channel    = new TChannel(""); // GetChannel(0);
          channel->SetName(name.c_str());
       }
@@ -1135,7 +1124,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt)
             trim(&line);
             std::istringstream ss(line);
             int                j = 0;
-            while(type[j]) {
+            while(type[j] != 0) {
                char c    = *(type.c_str() + j);
                c         = toupper(c);
                type[j++] = c;
@@ -1171,7 +1160,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt)
                channel->SetStream(tempstream);
             } else if(type.compare("DIGITIZER") == 0) {
                int k = 0;
-               while(type[k]) {
+               while(type[k] != 0) {
                   char c    = *(type.c_str() + j);
                   c         = toupper(c);
                   type[k++] = c;
@@ -1200,43 +1189,43 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt)
             } else if(type.compare("ENGCOEFF") == 0) {
                channel->DestroyENGCal();
                double value;
-               while(ss >> value) {
+               while((ss >> value) != nullptr) {
                   channel->AddENGCoefficient(value);
                }
             } else if(type.compare("LEDCOEFF") == 0) {
                channel->DestroyLEDCal();
                double value;
-               while(ss >> value) {
+               while((ss >> value) != nullptr) {
                   channel->AddLEDCoefficient(value);
                }
             } else if(type.compare("CFDCOEFF") == 0) {
                channel->DestroyCFDCal();
                double value;
-               while(ss >> value) {
+               while((ss >> value) != nullptr) {
                   channel->AddCFDCoefficient(value);
                }
             } else if(type.compare("TIMECOEFF") == 0) {
                channel->DestroyTIMECal();
                double value;
-               while(ss >> value) {
+               while((ss >> value) != nullptr) {
                   channel->AddTIMECoefficient(value);
                }
             } else if(type.compare("CTCOEFF") == 0) {
                channel->DestroyCTCal();
                double value;
-               while(ss >> value) {
+               while((ss >> value) != nullptr) {
                   channel->AddCTCoefficient(value);
                }
             } else if(type.compare("WALK") == 0) {
                channel->DestroyTIMECal();
                double value;
-               while(ss >> value) {
+               while((ss >> value) != nullptr) {
                   channel->AddTIMECoefficient(value);
                }
             } else if(type.compare("EFFCOEFF") == 0) {
                channel->DestroyEFFCal();
                double value;
-               while(ss >> value) {
+               while((ss >> value) != nullptr) {
                   channel->AddEFFCoefficient(value);
                }
             } else if(type.compare("FILEINT") == 0) {
@@ -1264,7 +1253,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt)
          }
       }
    }
-   if(strcmp(opt, "q")) {
+   if(strcmp(opt, "q") != 0) {
       printf("parsed %i lines.\n", linenumber);
    }
 
@@ -1294,7 +1283,7 @@ void TChannel::Streamer(TBuffer& R__b)
    UInt_t R__s, R__c;
    if(R__b.IsReading()) { // reading from file
       Version_t R__v = R__b.ReadVersion(&R__s, &R__c);
-      if(R__v) {
+      if(R__v != 0) {
       }
       TNamed::Streamer(R__b);
       {
@@ -1331,10 +1320,10 @@ int TChannel::WriteToRoot(TFile* fileptr)
    // Maintain old gDirectory info
    TDirectory* savdir = gDirectory;
 
-   if(!c) {
+   if(c == nullptr) {
       printf("No TChannels found to write.\n");
    }
-   if(!fileptr) {
+   if(fileptr == nullptr) {
       fileptr = gDirectory->GetFile();
    }
 
@@ -1364,7 +1353,7 @@ int TChannel::WriteToRoot(TFile* fileptr)
    stdout               = fdopen(fd, "w");
 
    while(TKey* key = static_cast<TKey*>(iter.Next())) {
-      if(!key || strcmp(key->GetClassName(), "TChannel")) {
+      if((key == nullptr) || (strcmp(key->GetClassName(), "TChannel") != 0)) {
          continue;
       }
       if(!found) {
@@ -1417,7 +1406,7 @@ int TChannel::GetDetectorNumber() const
       return fDetectorNumber;
    }
 
-   fDetectorNumber = (int32_t)fMnemonic.ArrayPosition();
+   fDetectorNumber = static_cast<int32_t>(fMnemonic.ArrayPosition());
    return fDetectorNumber;
 }
 
@@ -1438,7 +1427,7 @@ int TChannel::GetSegmentNumber() const
          buf.assign(name, 7, 3);
          fSegmentNumber = (int32_t)atoi(buf.c_str());
       } else {
-         fSegmentNumber = (int32_t)fMnemonic.Segment();
+         fSegmentNumber = static_cast<int32_t>(fMnemonic.Segment());
       }
    }
 

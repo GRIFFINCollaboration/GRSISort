@@ -113,11 +113,11 @@ private:
 
 public:
    TPulseAnalyzer();
-   TPulseAnalyzer(const TFragment& frag, double = 0);
+   TPulseAnalyzer(const TFragment& fragment, double = 0);
    TPulseAnalyzer(const std::vector<Short_t>& wave, double = 0, std::string name = "");
    virtual ~TPulseAnalyzer();
 
-   void SetData(const TFragment& frag, double = 0);
+   void SetData(const TFragment& fragment, double = 0);
    void SetData(const std::vector<Short_t>& wave, double = 0);
    void Clear(Option_t* opt = "");
    bool IsSet() { return set; }

@@ -44,7 +44,7 @@ protected:
    TGRSIFit(const TGRSIFit& copy);
 
 public:
-   void Copy(TObject& copy) const override;
+   void Copy(TObject& obj) const override;
    // Every fit object should have to initialize parameters and have a fit method defined.
    virtual Bool_t InitParams(TH1*) = 0;
    Bool_t         IsGoodFit() const { return fGoodFitFlag; }

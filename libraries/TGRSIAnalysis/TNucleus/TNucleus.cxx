@@ -88,13 +88,13 @@ TNucleus::TNucleus(const char* name)
          Number = atoi(Name.substr(first_digit, first_letter - first_digit).c_str());
          symbol.append(Name.substr(first_letter));
       }
-      element.append(std::to_string((long long)Number));
+      element.append(std::to_string(static_cast<long long>(Number)));
       element.append(symbol);
       MassFile = massfile();
       // MassFile.append(massfile);
       infile.open(MassFile.c_str());
       // printf("MassFile.c_str()
-      while(getline(infile, line)) {
+      while(getline(infile, line) != nullptr) {
          if(line.length() < 1) {
             continue;
          }
@@ -149,7 +149,7 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile)
 {
    // Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
    // SetMassFile();
-   if(!MassFile) {
+   if(MassFile == nullptr) {
       MassFile = massfile().c_str();
    }
    fZ              = charge;
@@ -250,7 +250,7 @@ const char* TNucleus::SortName(const char* name)
    }
    std::transform(symbol.begin(), symbol.end(), symbol.begin(), ::tolower);
    symbol[0] = toupper(symbol[0]);
-   element.append(std::to_string((long long)Number));
+   element.append(std::to_string(static_cast<long long>(Number)));
    element.append(symbol);
 
    return element.c_str();
@@ -438,7 +438,7 @@ void TNucleus::AddTransition(TTransition* tran)
 TTransition* TNucleus::GetTransition(Int_t idx)
 {
    TTransition* tran = static_cast<TTransition*>(TransitionList.At(idx));
-   if(!tran) {
+   if(tran == nullptr) {
       printf("Out of Range\n");
    }
 
@@ -474,14 +474,14 @@ void TNucleus::WriteSourceFile(const std::string& outfilename)
 
 bool TNucleus::LoadTransitionFile()
 {
-   if(TransitionList.GetSize()) {
+   if(TransitionList.GetSize() != 0) {
       return false;
    }
    std::string filename;
    filename           = std::string(getenv("GRSISYS")) + "/libraries/TGRSIAnalysis/SourceData/";
    std::string symbol = GetSymbol();
    std::transform(symbol.begin(), symbol.end(), symbol.begin(), ::tolower);
-   filename.append(symbol.c_str());
+   filename.append(symbol);
    filename.append(std::to_string(GetA()));
    filename.append(".sou");
    std::ifstream transfile;
@@ -494,19 +494,19 @@ bool TNucleus::LoadTransitionFile()
 
    std::string line;
 
-   while(getline(transfile, line)) {
+   while(getline(transfile, line) != nullptr) {
       // printf("%i\t%s\n",counter++,line.c_str());
-      if(!line.compare(0, 2, "//")) {
+      if(line.compare(0, 2, "//") == 0) {
          continue;
       }
-      if(!line.compare(0, 1, "#")) {
+      if(line.compare(0, 1, "#") == 0) {
          continue;
       }
       double            temp;
       auto*             tran = new TTransition;
       std::stringstream ss(line);
       int               counter = 0;
-      while(ss >> temp) {
+      while((ss >> temp) != nullptr) {
          counter++;
          if(counter == 1) {
             tran->SetEnergy(temp);

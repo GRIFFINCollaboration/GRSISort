@@ -183,9 +183,8 @@ Double_t TGriffin::GetEnergyNonlinearity(int chan, double energy)
    counter++;
    if(fEnergyResiduals.find(chan) != fEnergyResiduals.end()) {
       return fEnergyResiduals[chan]->Eval(energy);
-   } else {
-      return 0.0;
    }
+   return 0.0;
 }
 
 void TGriffin::Print(Option_t*) const
@@ -351,7 +350,7 @@ Int_t TGriffin::GetAddbackMultiplicity(const Int_t& gain_type)
    auto hit_vec  = GetHitVector(gain_type);
    auto ab_vec   = GetAddbackVector(gain_type);
    auto frag_vec = GetAddbackFragVector(gain_type);
-   if(hit_vec->size() == 0) {
+   if(hit_vec->empty()) {
       return 0;
    }
    // if the addback has been reset, clear the addback hits
@@ -359,7 +358,7 @@ Int_t TGriffin::GetAddbackMultiplicity(const Int_t& gain_type)
       ab_vec->clear();
       frag_vec->clear();
    }
-   if(ab_vec->size() == 0) {
+   if(ab_vec->empty()) {
       // use the first griffin hit as starting point for the addback hits
       ab_vec->push_back(hit_vec->at(0));
       frag_vec->push_back(1);
@@ -402,11 +401,10 @@ TGriffinHit* TGriffin::GetAddbackHit(const int& i, const Int_t& gain_type)
 {
    if(i < GetAddbackMultiplicity(gain_type)) {
       return &GetAddbackVector(gain_type)->at(i);
-   } else {
-      std::cerr<<"Addback hits are out of range"<<std::endl;
-      throw grsi::exit_exception(1);
-      return nullptr;
    }
+   std::cerr<<"Addback hits are out of range"<<std::endl;
+   throw grsi::exit_exception(1);
+   return nullptr;
 }
 
 void TGriffin::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
@@ -504,9 +502,8 @@ UShort_t TGriffin::GetNAddbackFrags(const size_t& idx, const Int_t& gain_type)
    // with index idx.
    if(idx < GetAddbackFragVector(gain_type)->size()) {
       return GetAddbackFragVector(gain_type)->at(idx);
-   } else {
-      return 0;
    }
+   return 0;
 }
 
 void TGriffin::SetBitNumber(enum EGriffinBits bit, Bool_t set) const
@@ -522,7 +519,7 @@ void TGriffin::SetBitNumber(enum EGriffinBits bit, Bool_t set) const
 Double_t TGriffin::CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, const TGriffinHit* const other_hit,
                                      Bool_t time_constraint)
 {
-   if(!hit_to_correct || !other_hit) {
+   if((hit_to_correct == nullptr) || (other_hit == nullptr)) {
       printf("One of the hits is invalid in TGriffin::CTCorrectedEnergy\n");
       return 0;
    }

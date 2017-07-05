@@ -214,9 +214,9 @@ class GRootContainer : public TGCompositeFrame {
 private:
    GRootCanvas* fCanvas; // pointer back to canvas imp
 public:
-   GRootContainer(GRootCanvas* c, Window_t id, const TGWindow* parent);
+   GRootContainer(GRootCanvas* c, Window_t id, const TGWindow* p);
 
-   Bool_t HandleButton(Event_t* ev) override;
+   Bool_t HandleButton(Event_t* event) override;
    Bool_t HandleDoubleClick(Event_t* ev) override { return fCanvas->HandleContainerDoubleClick(ev); }
    Bool_t HandleConfigureNotify(Event_t* ev) override
    {
@@ -324,10 +324,10 @@ void GRootCanvas::CreateCanvas(const char* name)
 
    static Int_t img = 0;
 
-   if(!img) {
+   if(img == 0) {
       Int_t sav         = gErrorIgnoreLevel;
       gErrorIgnoreLevel = kFatal;
-      img               = TImage::Create() ? 1 : -1;
+      img               = TImage::Create() != nullptr ? 1 : -1;
       gErrorIgnoreLevel = sav;
    }
    if(img > 0) {
@@ -410,13 +410,13 @@ void GRootCanvas::CreateCanvas(const char* name)
 
    // Opaque options initialized in InitWindow()
    fOptionMenu->CheckEntry(kOptionAutoResize);
-   if(gStyle->GetOptStat()) {
+   if(gStyle->GetOptStat() != 0) {
       fOptionMenu->CheckEntry(kOptionStatistics);
    }
-   if(gStyle->GetOptTitle()) {
+   if(gStyle->GetOptTitle() != 0) {
       fOptionMenu->CheckEntry(kOptionHistTitle);
    }
-   if(gStyle->GetOptFit()) {
+   if(gStyle->GetOptFit() != 0) {
       fOptionMenu->CheckEntry(kOptionFitParams);
    }
    if(gROOT->GetEditHistograms()) {
@@ -516,8 +516,8 @@ void GRootCanvas::CreateCanvas(const char* name)
          }
          TPluginHandler* ph = gROOT->GetPluginManager()->FindHandler("TGLManager", x);
 
-         if(ph && ph->LoadPlugin() != -1) {
-            if(!ph->ExecPlugin(0)) {
+         if((ph != nullptr) && ph->LoadPlugin() != -1) {
+            if(ph->ExecPlugin(0) == 0) {
                Error("CreateCanvas", "GL manager plugin failed");
             }
          }
@@ -599,20 +599,20 @@ GRootCanvas::~GRootCanvas()
    // order of creation.
 
    delete fToolTip;
-   if(fIconPic) {
+   if(fIconPic != nullptr) {
       gClient->FreePicture(fIconPic);
    }
-   if(fEditor && !fEmbedded) {
+   if((fEditor != nullptr) && !fEmbedded) {
       delete fEditor;
    }
-   if(fToolBar) {
+   if(fToolBar != nullptr) {
       Disconnect(fToolDock, "Docked()", this, "AdjustSize()");
       Disconnect(fToolDock, "Undocked()", this, "AdjustSize()");
       fToolBar->Cleanup();
       delete fToolBar;
    }
 
-   if(!MustCleanup()) {
+   if(MustCleanup() == 0) {
       delete fStatusBar;
       delete fStatusBarLayout;
       delete fCanvasContainer;
@@ -665,7 +665,7 @@ void GRootCanvas::Close()
    // printf("Closing canvas 0x%08x\n",((TCanvasImp*)this)->Canvas());
    // GRootObjcetManager::CanvasClosed(((TCanvasImp*)this)->Canvas());
    TVirtualPadEditor* gged = TVirtualPadEditor::GetPadEditor(kFALSE);
-   if(gged && gged->GetCanvas() == fCanvas) {
+   if((gged != nullptr) && gged->GetCanvas() == fCanvas) {
       if(fEmbedded) {
          static_cast<TGedEditor*>(gged)->SetModel(nullptr, nullptr, kButton1Down);
          static_cast<TGedEditor*>(gged)->SetCanvas(nullptr);
@@ -683,7 +683,7 @@ void GRootCanvas::ReallyDelete()
    // Really delete the canvas and this GUI.
 
    TVirtualPadEditor* gged = TVirtualPadEditor::GetPadEditor(kFALSE);
-   if(gged && gged->GetCanvas() == fCanvas) {
+   if((gged != nullptr) && gged->GetCanvas() == fCanvas) {
       if(fEmbedded) {
          static_cast<TGedEditor*>(gged)->SetModel(nullptr, nullptr, kButton1Down);
          static_cast<TGedEditor*>(gged)->SetCanvas(nullptr);
@@ -801,7 +801,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             fi.fFileTypes = gOpenTypes;
             fi.fIniDir    = StrDup(dir);
             new TGFileDialog(fClient->GetDefaultRoot(), this, kFDOpen, &fi);
-            if(!fi.fFilename) {
+            if(fi.fFilename == nullptr) {
                return kTRUE;
             }
             dir = fi.fIniDir;
@@ -815,7 +815,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             TGFileInfo     fi;
             TString        defaultType = gEnv->GetValue("Canvas.SaveAsDefaultType", ".pdf");
             if(typeidx == 0) {
-               for(int i = 1; gSaveAsTypes[i]; i += 2) {
+               for(int i = 1; gSaveAsTypes[i] != nullptr; i += 2) {
                   TString ftype = gSaveAsTypes[i];
                   if(ftype.EndsWith(defaultType.Data())) {
                      typeidx = i - 1;
@@ -829,7 +829,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             fi.fOverwrite   = overwr;
             new TGFileDialog(fClient->GetDefaultRoot(), this, kFDSave, &fi);
             gSystem->ChangeDirectory(workdir.Data());
-            if(!fi.fFilename) {
+            if(fi.fFilename == nullptr) {
                return kTRUE;
             }
             Bool_t  appendedType = kFALSE;
@@ -856,7 +856,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
                }
                Warning("ProcessMessage", "file %s cannot be saved with this extension", fi.fFilename);
             }
-            for(int i = 1; gSaveAsTypes[i]; i += 2) {
+            for(int i = 1; gSaveAsTypes[i] != nullptr; i += 2) {
                TString ftype = gSaveAsTypes[i];
                ftype.ReplaceAll("*.", ".");
                if(fn.EndsWith(ftype.Data())) {
@@ -885,7 +885,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             if(TVirtualPadEditor::GetPadEditor(kFALSE) != nullptr) {
                TVirtualPadEditor::Terminate();
             }
-            if(TClass::GetClass("TStyleManager")) {
+            if(TClass::GetClass("TStyleManager") != nullptr) {
                gROOT->ProcessLine("TStyleManager::Terminate()");
             }
             gApplication->Terminate(0);
@@ -893,7 +893,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
 
          // Handle Edit menu items...
          case kEditStyle:
-            if(!TClass::GetClass("TStyleManager")) {
+            if(TClass::GetClass("TStyleManager") == nullptr) {
                gSystem->Load("libGed");
             }
             gROOT->ProcessLine("TStyleManager::Show()");
@@ -943,7 +943,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             // canvas.
             gPad->Update();
             //
-            if(padsav) {
+            if(padsav != nullptr) {
                padsav->cd();
             }
          } break;
@@ -955,7 +955,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             auto*        m      = new GCanvas("markers", "Marker Types", 600, 200);
             TMarker::DisplayMarkerTypes();
             m->Update();
-            if(padsav) {
+            if(padsav != nullptr) {
                padsav->cd();
             }
          } break;
@@ -1017,7 +1017,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             fCanvas->Update();
             break;
          case kOptionStatistics:
-            if(gStyle->GetOptStat()) {
+            if(gStyle->GetOptStat() != 0) {
                gStyle->SetOptStat(0);
                delete gPad->FindObject("stats");
                fOptionMenu->UnCheckEntry(kOptionStatistics);
@@ -1029,7 +1029,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             fCanvas->Update();
             break;
          case kOptionHistTitle:
-            if(gStyle->GetOptTitle()) {
+            if(gStyle->GetOptTitle() != 0) {
                gStyle->SetOptTitle(0);
                delete gPad->FindObject("title");
                fOptionMenu->UnCheckEntry(kOptionHistTitle);
@@ -1041,7 +1041,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             fCanvas->Update();
             break;
          case kOptionFitParams:
-            if(gStyle->GetOptFit()) {
+            if(gStyle->GetOptFit() != 0) {
                gStyle->SetOptFit(0);
                fOptionMenu->UnCheckEntry(kOptionFitParams);
             } else {
@@ -1077,7 +1077,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
          case kClassesTree: {
             TString cdef;
             lc = static_cast<TList*>(gROOT->GetListOfCanvases());
-            if(lc->FindObject("ClassTree")) {
+            if(lc->FindObject("ClassTree") != nullptr) {
                cdef = TString::Format("ClassTree_%d", lc->GetSize() + 1);
             } else {
                cdef = "ClassTree";
@@ -1089,7 +1089,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
          case kFitPanel: {
             // use plugin manager to create instance of TFitEditor
             TPluginHandler* handler = gROOT->GetPluginManager()->FindHandler("TFitEditor");
-            if(handler && handler->LoadPlugin() != -1) {
+            if((handler != nullptr) && handler->LoadPlugin() != -1) {
                if(handler->ExecPlugin(2, fCanvas, 0) == 0) {
                   Error("FitPanel", "Unable to crate the FitPanel");
                }
@@ -1109,10 +1109,10 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             if(!rootx.IsNull()) {
                rootx += "/bin";
             }
-#endif //ROOTBINDIR
-				rootx += "/root -a &";
+#endif // ROOTBINDIR
+            rootx += "/root -a &";
             gSystem->Exec(rootx);
-#else //R__UNIX
+#else // R__UNIX
 #ifdef WIN32
             new TWin32SplashThread(kTRUE);
 #else
@@ -1122,8 +1122,8 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             hd = new GRootHelpDialog(this, str, 600, 400);
             hd->SetText(gHelpAbout);
             hd->Popup();
-#endif //WIN32
-#endif //R__UNIX
+#endif // WIN32
+#endif // R__UNIX
          } break;
          case kHelpOnCanvas:
             hd = new TRootHelpDialog(this, "Help on Canvas...", 600, 400);
@@ -1212,7 +1212,7 @@ void GRootCanvas::SetWindowSize(UInt_t w, UInt_t h)
    Resize(w, h);
 
    // Make sure the change of size is really done.
-   if(!gThreadXAR) {
+   if(gThreadXAR == nullptr) {
       gSystem->ProcessEvents();
       gSystem->Sleep(10);
       gSystem->ProcessEvents();
@@ -1280,7 +1280,7 @@ void GRootCanvas::PrintCanvas()
    }
 
    new TGPrintDialog(fClient->GetDefaultRoot(), this, 400, 150, &printer, &printCmd, &ret);
-   if(ret) {
+   if(ret != 0) {
       sprinter  = printer;
       sprintCmd = printCmd;
 
@@ -1290,7 +1290,7 @@ void GRootCanvas::PrintCanvas()
 
       TString fn = "rootprint";
       FILE*   f  = gSystem->TempFileName(fn, gEnv->GetValue("Print.Directory", gSystem->TempDirectory()));
-      if(f) {
+      if(f != nullptr) {
          fclose(f);
       }
       fn += TString::Format(".%s", gEnv->GetValue("Print.FileType", "pdf"));
@@ -1340,7 +1340,7 @@ void GRootCanvas::EventInfo(Int_t event, Int_t px, Int_t py, TObject* selected)
    } else {
       const char* title = selected->GetTitle();
       tipInfo += TString::Format("%s::%s", selected->ClassName(), selected->GetName());
-      if(title && strlen(title)) {
+      if((title != nullptr) && (strlen(title) != 0u)) {
          tipInfo += TString::Format("\n%s", selected->GetTitle());
       }
       tipInfo += TString::Format("\n%d, %d", px, py);
@@ -1402,7 +1402,7 @@ void GRootCanvas::ShowEditor(Bool_t show)
    // Show or hide side frame.
 
    TVirtualPad* savedPad = nullptr;
-   savedPad              = (TVirtualPad*)gPad;
+   savedPad              = gPad;
    gPad                  = Canvas();
 
    UInt_t w = GetWidth();
@@ -1410,21 +1410,21 @@ void GRootCanvas::ShowEditor(Bool_t show)
    UInt_t h = GetHeight();
    UInt_t s = fHorizontal1->GetHeight();
 
-   if(fParent && fParent != fClient->GetDefaultRoot()) {
+   if((fParent != nullptr) && fParent != fClient->GetDefaultRoot()) {
       const TGMainFrame* main = static_cast<const TGMainFrame*>(fParent->GetMainFrame());
       fMainFrame->HideFrame(fEditorFrame);
-      if(main && main->InheritsFrom("TRootBrowser")) {
+      if((main != nullptr) && main->InheritsFrom("TRootBrowser")) {
          printf("I am here GRootCanvas 1469.\n");
          TRootBrowser* browser = const_cast<TRootBrowser*>(static_cast<const TRootBrowser*>(main));
          if(!fEmbedded) {
             browser->GetTabRight()->Connect("Selected(Int_t)", "GRootCanvas", this, "Activated(Int_t)");
          }
          fEmbedded = kTRUE;
-         if(show && (!fEditor || !static_cast<TGedEditor*>(fEditor)->IsMapped())) {
+         if(show && ((fEditor == nullptr) || !static_cast<TGedEditor*>(fEditor)->IsMapped())) {
             printf("I am here GRootCanvas 1476.\n");
-            if(!browser->GetTabLeft()->GetTabTab("Pad Editor")) {
+            if(browser->GetTabLeft()->GetTabTab("Pad Editor") == nullptr) {
                browser->StartEmbedding(TRootBrowser::kLeft);
-               if(!fEditor) {
+               if(fEditor == nullptr) {
                   fEditor = TVirtualPadEditor::GetPadEditor(kTRUE);
                } else {
                   static_cast<TGedEditor*>(fEditor)->ReparentWindow(fClient->GetRoot());
@@ -1433,7 +1433,7 @@ void GRootCanvas::ShowEditor(Bool_t show)
                browser->StopEmbedding("Pad Editor");
                fEditor->SetGlobal(kFALSE);
                gROOT->GetListOfCleanups()->Remove(static_cast<TGedEditor*>(fEditor));
-               if(fEditor) {
+               if(fEditor != nullptr) {
                   static_cast<TGedEditor*>(fEditor)->SetCanvas(fCanvas);
                   static_cast<TGedEditor*>(fEditor)->SetModel(fCanvas, fCanvas, kButton1Down);
                }
@@ -1448,11 +1448,11 @@ void GRootCanvas::ShowEditor(Bool_t show)
       }
    } else {
       if(show) {
-         if(!fEditor) {
+         if(fEditor == nullptr) {
             CreateEditor();
          }
          TVirtualPadEditor* gged = TVirtualPadEditor::GetPadEditor(kFALSE);
-         if(gged && gged->GetCanvas() == fCanvas) {
+         if((gged != nullptr) && gged->GetCanvas() == fCanvas) {
             gged->Hide();
          }
          if(!fViewMenu->IsEntryChecked(kViewToolbar) || fToolDock->IsUndocked()) {
@@ -1468,7 +1468,7 @@ void GRootCanvas::ShowEditor(Bool_t show)
             HideFrame(fHorizontal1);
             h = h - s;
          }
-         if(fEditor) {
+         if(fEditor != nullptr) {
             fEditor->Hide();
          }
          fMainFrame->HideFrame(fEditorFrame);
@@ -1477,7 +1477,7 @@ void GRootCanvas::ShowEditor(Bool_t show)
       }
       Resize(w, h);
    }
-   if(savedPad) {
+   if(savedPad != nullptr) {
       gPad = savedPad;
    }
 }
@@ -1494,10 +1494,10 @@ void GRootCanvas::CreateEditor()
    Int_t show = gEnv->GetValue("Canvas.ShowEditor", 0);
    gEnv->SetValue("Canvas.ShowEditor", "true");
    fEditor = TVirtualPadEditor::LoadEditor();
-   if(fEditor) {
+   if(fEditor != nullptr) {
       fEditor->SetGlobal(kFALSE);
    }
-   fEditorFrame->SetEditable(kEditDisable);
+   fEditorFrame->SetEditable(kEditDisable != 0u);
    fEditorFrame->SetEditable(kFALSE);
 
    // next line is related to the old editor
@@ -1511,13 +1511,13 @@ void GRootCanvas::ShowToolBar(Bool_t show)
 {
    // Show or hide toolbar.
 
-   if(show && !fToolBar) {
+   if(show && (fToolBar == nullptr)) {
 
       fToolBar = new TGToolBar(fToolDock, 60, 20, kHorizontalFrame);
       fToolDock->AddFrame(fToolBar, fHorizontal1Layout);
 
       Int_t spacing = 6, i;
-      for(i = 0; gToolBarData[i].fPixmap; i++) {
+      for(i = 0; gToolBarData[i].fPixmap != nullptr; i++) {
          if(strlen(gToolBarData[i].fPixmap) == 0) {
             spacing = 6;
             continue;
@@ -1533,7 +1533,7 @@ void GRootCanvas::ShowToolBar(Bool_t show)
       fToolBar->AddFrame(fVertical2, fVertical2Layout);
 
       spacing = 6;
-      for(i = 0; gToolBarData1[i].fPixmap; i++) {
+      for(i = 0; gToolBarData1[i].fPixmap != nullptr; i++) {
          if(strlen(gToolBarData1[i].fPixmap) == 0) {
             spacing = 6;
             continue;
@@ -1548,7 +1548,7 @@ void GRootCanvas::ShowToolBar(Bool_t show)
       fToolDock->Connect("Undocked()", "GRootCanvas", this, "AdjustSize()");
    }
 
-   if(!fToolBar) {
+   if(fToolBar == nullptr) {
       return;
    }
 
@@ -1602,7 +1602,7 @@ Bool_t GRootCanvas::HasEditor() const
 {
    // Returns kTRUE if the editor is shown.
 
-   return (fEditor) && fViewMenu->IsEntryChecked(kViewEditor);
+   return ((fEditor) != nullptr) && fViewMenu->IsEntryChecked(kViewEditor);
 }
 
 //______________________________________________________________________________
@@ -1610,7 +1610,7 @@ Bool_t GRootCanvas::HasMenuBar() const
 {
    // Returns kTRUE if the menu bar is shown.
 
-   return (fMenuBar) && fMenuBar->IsMapped();
+   return ((fMenuBar) != nullptr) && fMenuBar->IsMapped();
 }
 
 //______________________________________________________________________________
@@ -1618,7 +1618,7 @@ Bool_t GRootCanvas::HasStatusBar() const
 {
    // Returns kTRUE if the status bar is shown.
 
-   return (fStatusBar) && fStatusBar->IsMapped();
+   return ((fStatusBar) != nullptr) && fStatusBar->IsMapped();
 }
 
 //______________________________________________________________________________
@@ -1626,7 +1626,7 @@ Bool_t GRootCanvas::HasToolBar() const
 {
    // Returns kTRUE if the tool bar is shown.
 
-   return (fToolBar) && fToolBar->IsMapped();
+   return ((fToolBar) != nullptr) && fToolBar->IsMapped();
 }
 
 //______________________________________________________________________________
@@ -1634,7 +1634,7 @@ Bool_t GRootCanvas::HasToolTips() const
 {
    // Returns kTRUE if the tooltips are enabled.
 
-   return (fCanvas) && fCanvas->GetShowToolTips();
+   return ((fCanvas) != nullptr) && fCanvas->GetShowToolTips();
 }
 
 //______________________________________________________________________________
@@ -1674,7 +1674,7 @@ Bool_t GRootCanvas::HandleContainerButton(Event_t* event)
    Int_t y      = event->fY;
 
    if(event->fType == kButtonPress) {
-      if(fToolTip && fCanvas->GetShowToolTips()) {
+      if((fToolTip != nullptr) && fCanvas->GetShowToolTips()) {
          fToolTip->Hide();
          gVirtualX->UpdateWindow(0);
          gSystem->ProcessEvents();
@@ -1682,9 +1682,9 @@ Bool_t GRootCanvas::HandleContainerButton(Event_t* event)
       fButton = button;
       // printf("Event_t::State = 0x%08x\n",event->fState);
       if(button == kButton1) {
-         if(event->fState & kKeyShiftMask) {
+         if((event->fState & kKeyShiftMask) != 0u) {
             (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Shift, x, y);
-         } else if(event->fState & kKeyControlMask) {
+         } else if((event->fState & kKeyControlMask) != 0u) {
             (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Ctrl, x, y);
          } else {
             (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Down, x, y);
@@ -1755,7 +1755,7 @@ Bool_t GRootCanvas::HandleContainerConfigure(Event_t*)
    if(fCanvas->HasFixedAspectRatio()) {
       // get menu height
       static Int_t dh = 0;
-      if(!dh) {
+      if(dh == 0) {
          dh = GetHeight() - fCanvasContainer->GetHeight();
       }
       UInt_t h = TMath::Nint(fCanvasContainer->GetWidth() / fCanvas->GetAspectRatio()) + dh;
@@ -1810,7 +1810,7 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
                                          dum1);
 
          //((GCanvas*)fCanvas)->HandleInput(kArrowKeyPress, tx, ty);
-         (static_cast<GCanvas*>(fCanvas))->HandleInput((EEventType)kArrowKeyPress, tx, keysym);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput(static_cast<EEventType>(kArrowKeyPress), tx, keysym);
          // handle case where we got consecutive same keypressed events coming
          // from auto-repeat on Windows (as it fires only successive keydown events)
          if((previous_keysym == keysym) && (previous_event == kGKeyPress)) {
@@ -1833,7 +1833,7 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
                break;
             default: break;
             }
-            (static_cast<GCanvas*>(fCanvas))->HandleInput((EEventType)kArrowKeyRelease, tx, ty);
+            (static_cast<GCanvas*>(fCanvas))->HandleInput(static_cast<EEventType>(kArrowKeyRelease), tx, ty);
          }
          previous_keysym = keysym;
       } else {
@@ -1878,7 +1878,7 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
          */
          gVirtualX->TranslateCoordinates(gClient->GetDefaultRoot()->GetId(), fCanvasContainer->GetId(), mx, my, tx, ty,
                                          dum1);
-         (static_cast<GCanvas*>(fCanvas))->HandleInput((EEventType)kArrowKeyRelease, tx, ty);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput(static_cast<EEventType>(kArrowKeyRelease), tx, ty);
          previous_keysym = keysym;
       } else {
          GCanvas* gCanvas = static_cast<GCanvas*>(gPad->GetCanvas());
@@ -1903,7 +1903,7 @@ Bool_t GRootCanvas::HandleContainerMotion(Event_t* event)
       (static_cast<GCanvas*>(fCanvas))->HandleInput(kMouseMotion, x, y);
    }
    if(fButton == kButton1) {
-      if(event->fState & kKeyShiftMask) {
+      if((event->fState & kKeyShiftMask) != 0u) {
          (static_cast<GCanvas*>(fCanvas))->HandleInput(EEventType(8), x, y);
       } else {
          (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Motion, x, y);
@@ -1954,35 +1954,36 @@ Bool_t GRootCanvas::HandleDNDDrop(TDNDData* data)
    static Atom_t uriObj  = gVirtualX->InternAtom("text/uri-list", kFALSE);
 
    if(data->fDataType == rootObj) {
-      TBufferFile buf(TBuffer::kRead, data->fDataLength, (void*)data->fData);
+      TBufferFile buf(TBuffer::kRead, data->fDataLength, data->fData);
       buf.SetReadMode();
-      TObject* obj = (TObject*)buf.ReadObjectAny(TObject::Class());
-      if(!obj) {
+      TObject* obj = reinterpret_cast<TObject*>(buf.ReadObjectAny(TObject::Class()));
+      if(obj == nullptr) {
          return kTRUE;
       }
       gPad->Clear();
       if(obj->InheritsFrom("TKey")) {
          TObject* object = (TObject*)gROOT->ProcessLine(Form("((TKey *)0x%lx)->ReadObj();", (ULong_t)obj));
-         if(!object) {
+         if(object == nullptr) {
             return kTRUE;
          }
          if(object->InheritsFrom("TGraph")) {
             object->Draw("ALP");
          } else if(object->InheritsFrom("TImage")) {
             object->Draw("x");
-         } else if(object->IsA()->GetMethodAllAny("Draw")) {
+         } else if(object->IsA()->GetMethodAllAny("Draw") != nullptr) {
             object->Draw();
          }
       } else if(obj->InheritsFrom("TGraph")) {
          obj->Draw("ALP");
-      } else if(obj->IsA()->GetMethodAllAny("Draw")) {
+      } else if(obj->IsA()->GetMethodAllAny("Draw") != nullptr) {
          obj->Draw();
       }
       gPad->Modified();
       gPad->Update();
       return kTRUE;
-   } else if(data->fDataType == uriObj) {
-      TString sfname((char*)data->fData);
+   }
+   if(data->fDataType == uriObj) {
+      TString sfname(reinterpret_cast<char*>(data->fData));
       if(sfname.Length() > 7) {
          sfname.ReplaceAll("\r\n", "");
          TUrl uri(sfname.Data());
@@ -1990,7 +1991,7 @@ Bool_t GRootCanvas::HandleDNDDrop(TDNDData* data)
             sfname.EndsWith(".ps") || sfname.EndsWith(".eps") || sfname.EndsWith(".pdf") || sfname.EndsWith(".tiff") ||
             sfname.EndsWith(".xpm")) {
             TImage* img = TImage::Open(uri.GetFile());
-            if(img) {
+            if(img != nullptr) {
                img->Draw("x");
                img->SetEditable(kTRUE);
             }
@@ -2008,7 +2009,7 @@ Atom_t GRootCanvas::HandleDNDPosition(Int_t x, Int_t y, Atom_t action, Int_t /*x
    // Handle dragging position events.
 
    TPad* pad = fCanvas->Pick(x, y, nullptr);
-   if(pad) {
+   if(pad != nullptr) {
       pad->cd();
       gROOT->SetSelectedPad(pad);
       // make sure the pad is highlighted (on Windows)
@@ -2051,14 +2052,14 @@ void GRootCanvas::Activated(Int_t id)
    // and the model to the editor.
 
    if(fEmbedded) {
-      TGTab* sender = (TGTab*)gTQSender;
-      if(sender) {
+      TGTab* sender = reinterpret_cast<TGTab*>(gTQSender);
+      if(sender != nullptr) {
          TGCompositeFrame* cont = sender->GetTabContainer(id);
          if(cont == fParent) {
-            if(!fEditor) {
+            if(fEditor == nullptr) {
                fEditor = TVirtualPadEditor::GetPadEditor(kFALSE);
             }
-            if(fEditor && static_cast<TGedEditor*>(fEditor)->IsMapped()) {
+            if((fEditor != nullptr) && static_cast<TGedEditor*>(fEditor)->IsMapped()) {
                static_cast<TGedEditor*>(fEditor)->SetCanvas(fCanvas);
                static_cast<TGedEditor*>(fEditor)->SetModel(fCanvas, fCanvas, kButton1Down);
             }

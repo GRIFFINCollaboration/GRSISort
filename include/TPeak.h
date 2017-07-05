@@ -45,7 +45,7 @@ public:
    void Copy(TObject& obj) const override;
    void SetCentroid(Double_t cent) { SetParameter("centroid", cent); }
 
-   Bool_t Fit(TH1* fithist, Option_t* opt = ""); // Might switch this to TFitResultPtr
+   Bool_t Fit(TH1* fitHist, Option_t* opt = ""); // Might switch this to TFitResultPtr
    // Bool_t Fit(TH1* fithist = 0);
 
    Double_t GetCentroid() const { return GetParameter("centroid"); }
@@ -80,7 +80,7 @@ protected:
    void SetNdf(Double_t Ndf) { fNdf = Ndf; }
 
 public:
-   Bool_t InitParams(TH1* fithist = nullptr) override;
+   Bool_t InitParams(TH1* fitHist = nullptr) override;
    TF1* Background() const { return fBackground; }
    void DrawBackground(Option_t* opt = "SAME") const; // *MENU*
    void DrawResiduals();                              // *MENU*

@@ -66,11 +66,12 @@ int TGRSITransition::Compare(const TObject* obj) const
    // 1 if  this <  obj
    if(fIntensity > static_cast<const TGRSITransition*>(obj)->fIntensity) {
       return -1;
-   } else if(fIntensity == static_cast<const TGRSITransition*>(obj)->fIntensity) {
-      return 0;
-   } else { //(fIntensity < static_cast<const TGRSITransition*>(obj)->fIntensity)
-      return 1;
    }
+   if(fIntensity == static_cast<const TGRSITransition*>(obj)->fIntensity) {
+      return 0;
+   } //(fIntensity < static_cast<const TGRSITransition*>(obj)->fIntensity)
+   return 1;
+
    printf("%s: Error, intensity neither greater, nor equal, nor smaller than provided intensity!\n",
           __PRETTY_FUNCTION__);
    return -9;

@@ -6,7 +6,7 @@ bool TFragmentMap::fDebug = false;
 
 TFragmentMap::TFragmentMap(
    std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& good_output_queue,
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>&              bad_output_queue)
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>&           bad_output_queue)
    : fGoodOutputQueue(good_output_queue), fBadOutputQueue(bad_output_queue)
 {
 }
@@ -441,9 +441,9 @@ void TFragmentMap::DropFragments(
 {
    /// put the fragments within the range of the two iterators into the bad output queue
    for(auto it = range.first; it != range.second; ++it) {
-      //for(const auto& outputQueue : fGoodOutputQueue) {
-		fBadOutputQueue->Push(std::get<0>((*it).second));
-      //}
+		//(*it).second is a tuple, with the first element being a shared_ptr<TFragment>
+		//we need to conver this to a shared_ptr<TBadFragment>
+      fBadOutputQueue->Push(std::make_shared<TBadFragment>(*(std::get<0>((*it).second).get())));
       if(fDebug) {
          std::cout<<"Added bad fragment "<<std::get<0>((*it).second)<<std::endl;
       }

@@ -23,8 +23,11 @@ class TBadFragment : public TFragment {
 public:
    TBadFragment();
    TBadFragment(TFragment& fragment, uint32_t* data, int size, int failedWord, bool multipleErrors);
+   TBadFragment(TFragment& fragment);
    TBadFragment(const TBadFragment&);
    ~TBadFragment() override;
+
+	TBadFragment& operator=(const TBadFragment&);
 
    std::vector<uint32_t> GetData() const { return fData; }
    int                   GetFailedWord() const { return fFailedWord; }

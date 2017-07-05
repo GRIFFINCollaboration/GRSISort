@@ -25,7 +25,7 @@ public:
    Int_t BufferEmpty(Int_t action = 0) override;
    Int_t         BufferFill(Double_t, Double_t) override { return -2; } // MayNotUse
    virtual Int_t BufferFill(Double_t x, Double_t y, Double_t z, Double_t w);
-   void Copy(TObject& hnew) const override;
+   void Copy(TObject& obj) const override;
    Int_t         Fill(Double_t) override;                                     // MayNotUse
    Int_t         Fill(Double_t, Double_t) override { return Fill(0.); }       // MayNotUse
    Int_t         Fill(const char*, Double_t) override { return Fill(0); }     // MayNotUse
@@ -39,7 +39,7 @@ public:
    void FillRandom(TH1* h, Int_t ntimes = 5000) override;
    Int_t FindFirstBinAbove(Double_t threshold = 0, Int_t axis = 1) const override;
    Int_t FindLastBinAbove(Double_t threshold = 0, Int_t axis = 1) const override;
-   virtual void FitSlicesZ(TF1* f1 = nullptr, Int_t binminx = 0, Int_t binmaxx = -1, Int_t binmiy = 0,
+   virtual void FitSlicesZ(TF1* f1 = nullptr, Int_t binminx = 0, Int_t binmaxx = -1, Int_t binminy = 0,
                            Int_t binmaxy = -1, Int_t cut = 0, Option_t* option = "QNR");
    Int_t GetBin(Int_t binx, Int_t biny = 0, Int_t binz = 0) const override;
    virtual Double_t GetBinWithContent2(Double_t c, Int_t& binx, Int_t& biny, Int_t& binz, Int_t firstxbin = 1,
@@ -62,7 +62,7 @@ public:
    Double_t KolmogorovTest(const TH1* h2, Option_t* option = "") const override;
    Long64_t Merge(TCollection* list) override;
    virtual TH1D* Projection(const char* name = "_pr", Int_t firstBiny = 0, Int_t lastBiny = -1, Int_t firstBinz = 0,
-                            Int_t lastBinz = -1, Option_t* opt = "") const;
+                            Int_t lastBinz = -1, Option_t* option = "") const;
    void PutStats(Double_t* stats) override;
    virtual GCube* Rebin3D(Int_t ngroup = 2, const char* newname = "");
    void Reset(Option_t* option = "") override;
@@ -73,8 +73,8 @@ public:
 
 protected:
    using TH1::DoIntegral;
-   Double_t DoIntegral(Int_t ix1, Int_t ix2, Int_t iy1, Int_t iy2, Int_t iz1, Int_t iz2, Double_t& err, Option_t* opt,
-                       Bool_t doerr = kFALSE) const override;
+   Double_t DoIntegral(Int_t binx1, Int_t binx2, Int_t biny1, Int_t biny2, Int_t binz1, Int_t binz2, Double_t& error,
+                       Option_t* option, Bool_t doError = kFALSE) const override;
    Double_t fTsumwy{};  // Total Sum of weight*Y
    Double_t fTsumwy2{}; // Total Sum of weight*Y*Y
    Double_t fTsumwxy{}; // Total Sum of weight*X*Y
@@ -104,7 +104,7 @@ public:
 
    void AddBinContent(Int_t bin) override { ++fArray[bin]; }
    void AddBinContent(Int_t bin, Double_t w) override { fArray[bin] += Float_t(w); }
-   void Copy(TObject& hnew) const override;
+   void Copy(TObject& rh) const override;
    void Draw(Option_t* option = "") override { GetMatrix()->Draw(option); }
 #if MAJOR_ROOT_VERSION < 6
    virtual TH1* DrawCopy(Option_t* option = "") const;
@@ -151,7 +151,7 @@ public:
 
    void AddBinContent(Int_t bin) override { ++fArray[bin]; }
    void AddBinContent(Int_t bin, Double_t w) override { fArray[bin] += w; }
-   void Copy(TObject& hnew) const override;
+   void Copy(TObject& rh) const override;
 #if MAJOR_ROOT_VERSION < 6
    virtual TH1* DrawCopy(Option_t* option = "") const;
 #else

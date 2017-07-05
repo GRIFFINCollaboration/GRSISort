@@ -70,7 +70,7 @@ public:
    // order to write this class to a tree.
    // pcb.
 
-   static void SetRunInfo(TGRSIRunInfo* temp);
+   static void SetRunInfo(TGRSIRunInfo* tmp);
    static Bool_t ReadInfoFromFile(TFile* tempf = nullptr);
 
    static const char* GetGRSIVersion() { return fGRSIVersion.c_str(); }
@@ -184,7 +184,7 @@ public:
    }
 
    void PrintBadCycles() const;
-   void AddBadCycle(int cycle_num);
+   void AddBadCycle(int bad_cycle);
    void RemoveBadCycle(int cycle);
    bool IsBadCycle(int cycle) const;
 

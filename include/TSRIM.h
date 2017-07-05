@@ -23,9 +23,8 @@ public:
    virtual ~TSRIM() = default;
 
    TSRIM();
-	// looks like the emax-min inputs don't work right now for 94Sr and maybe other high mass nuclei
-   TSRIM(const char* infilename, double emax = -1.0, double emin = 0.0,
-         bool printfile = true);
+   // looks like the emax-min inputs don't work right now for 94Sr and maybe other high mass nuclei
+   TSRIM(const char* infilename, double emax = -1.0, double emin = 0.0, bool printfile = true);
 
 private:
    std::vector<double> IonEnergy;
@@ -46,7 +45,7 @@ private:
 public:
    void ReadEnergyLossFile(const char* filename, double emax = -1.0, double emin = 0.0, bool printfile = true);
 
-   double GetAdjustedEnergy(double energy, double distance, double stepsize = dx);
+   double GetAdjustedEnergy(double energy, double thickness, double stepsize = dx);
    double GetEnergyLost(double energy, double distance, double stepsize = dx)
    {
       return energy - GetAdjustedEnergy(energy, distance, stepsize);

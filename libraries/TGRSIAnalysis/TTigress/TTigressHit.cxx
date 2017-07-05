@@ -99,9 +99,8 @@ bool TTigressHit::Compare(const TTigressHit& lhs, const TTigressHit& rhs)
 {
    if(lhs.GetDetector() == rhs.GetDetector()) {
       return (lhs.GetCrystal() < rhs.GetCrystal());
-   } else {
-      return (lhs.GetDetector() < rhs.GetDetector());
    }
+   return (lhs.GetDetector() < rhs.GetDetector());
 }
 
 bool TTigressHit::CompareEnergy(const TTigressHit& lhs, const TTigressHit& rhs)
@@ -123,7 +122,7 @@ void TTigressHit::SumHit(TTigressHit* hit)
       // Should always be true when called by addback construction due to energy ordering during detector construction
       if(GetEnergy() > hit->GetEnergy()) {
          SetTime(GetTime()); // Needs to be call before energy sum to ensure and kIsTimeSet using original energy
-                                   // for any adjustment
+                             // for any adjustment
          for(int x = 0; x < hit->GetNSegments(); x++) {
             AddSegment((hit->fSegments[x]));
          }

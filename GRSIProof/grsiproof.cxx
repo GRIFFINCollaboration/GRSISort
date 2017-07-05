@@ -26,8 +26,8 @@ void Analyze(const char* tree_type, TProof* proof)
    // Loop over all of the file names, find all the files with the tree type in them and are "openable"
    for(const auto& i : opt->RootInputFiles()) {
       TFile* in_file = TFile::Open(i.c_str());
-      if(in_file && in_file->IsOpen()) {
-         if(in_file->FindObjectAny(tree_type)) {
+      if((in_file != nullptr) && in_file->IsOpen()) {
+         if(in_file->FindObjectAny(tree_type) != nullptr) {
             tree_list.push_back(i);
 
             // TODO: A smarter way of finding run info for run number and sub run number naming
@@ -53,7 +53,7 @@ void Analyze(const char* tree_type, TProof* proof)
    }
 
    for(const auto& macro_it : opt->MacroInputFiles()) {
-      std::cout << "Currently Running: " << (Form("%s", macro_it.c_str())) << std::endl;
+      std::cout<<"Currently Running: "<<(Form("%s", macro_it.c_str()))<<std::endl;
       proof_chain->Process(Form("%s+", macro_it.c_str()));
    }
 
@@ -69,12 +69,12 @@ void Analyze(const char* tree_type, TProof* proof)
          proof_chain->SetProof();
 
       for(auto macro_it = opt->MacroInputFiles().begin(); macro_it != opt->MacroInputFiles().end(); ++macro_it){
-         std::cout <<"Currently Running: " << (Form("%s",macro_it->c_str()))<<std::endl;
+         std::cout <<"Currently Running: "<<(Form("%s",macro_it->c_str()))<<std::endl;
          proof_chain->Process(Form("%s+",macro_it->c_str()));
       }
    }*/
    // Delete the proof chain now that we are done with it.
-   if(proof_chain) {
+   if(proof_chain != nullptr) {
       delete proof_chain;
       proof_chain = nullptr;
    }
@@ -91,45 +91,45 @@ int main(int argc, char** argv)
    gROOT->SetMacroPath(Form("%s/myAnalysis", pPath));
    gInterpreter->AddIncludePath(Form("%s/include", pPath));
    // The first thing we want to do is see if we can compile the macros that are passed to us
-   if(!opt->MacroInputFiles().size()) {
-      std::cout << DRED << "Can't PROOF if there is no MACRO" << RESET_COLOR << std::endl;
+   if(opt->MacroInputFiles().empty()) {
+      std::cout<<DRED<<"Can't PROOF if there is no MACRO"<<RESET_COLOR<<std::endl;
       return 0;
    }
-   std::cout << DCYAN << "************************* MACRO COMPILATION ****************************" << RESET_COLOR
-             << std::endl;
+   std::cout<<DCYAN<<"************************* MACRO COMPILATION ****************************"<<RESET_COLOR
+            <<std::endl;
    for(const auto& i : opt->MacroInputFiles()) {
       // Int_t error_code = gROOT->LoadMacro(Form("%s+",i->c_str()));
       Int_t error_code = gSystem->CompileMacro(i.c_str(), "kO");
-      if(!error_code) { // TODO: Fix this check
-         std::cout << DRED << i << " failed to compile properly.. ABORT!" << RESET_COLOR << std::endl;
+      if(error_code == 0) { // TODO: Fix this check
+         std::cout<<DRED<<i<<" failed to compile properly.. ABORT!"<<RESET_COLOR<<std::endl;
          return 0;
       }
    }
-   std::cout << DCYAN << "************************* END COMPILATION ******************************" << RESET_COLOR
-             << std::endl;
+   std::cout<<DCYAN<<"************************* END COMPILATION ******************************"<<RESET_COLOR
+            <<std::endl;
 
-   if(opt->CalInputFiles().size()) {
-      std::cout << DRED << "Cal Files are currently ignored in GRSIProof, please write calibration to tree"
-                << RESET_COLOR << std::endl;
+   if(!opt->CalInputFiles().empty()) {
+      std::cout<<DRED<<"Cal Files are currently ignored in GRSIProof, please write calibration to tree"
+               <<RESET_COLOR<<std::endl;
    }
 
-   if(opt->InputMidasFiles().size()) {
-      std::cout << DRED << "Can't Proof a Midas file..." << RESET_COLOR << std::endl;
+   if(!opt->InputMidasFiles().empty()) {
+      std::cout<<DRED<<"Can't Proof a Midas file..."<<RESET_COLOR<<std::endl;
    }
 
    // The first thing we do is get the PROOF Lite instance to run
    TGRSIProof* proof = nullptr;
    if(opt->GetMaxWorkers() >= 0) {
-      std::cout << "Opening proof with '" << Form("workers=%d", opt->GetMaxWorkers()) << "'" << std::endl;
+      std::cout<<"Opening proof with '"<<Form("workers=%d", opt->GetMaxWorkers())<<"'"<<std::endl;
       proof = TGRSIProof::Open(Form("workers=%d", opt->GetMaxWorkers()));
    } else if(opt->SelectorOnly()) {
-      std::cout << "Opening proof with one worker (selector-only)" << std::endl;
+      std::cout<<"Opening proof with one worker (selector-only)"<<std::endl;
       proof = TGRSIProof::Open("workers=1");
    } else {
       proof = TGRSIProof::Open("");
    }
-   if(!proof) {
-      std::cout << "Can't connect to proof" << std::endl;
+   if(proof == nullptr) {
+      std::cout<<"Can't connect to proof"<<std::endl;
       return 0;
    }
    proof->SetBit(TProof::kUsingSessionGui);
@@ -157,6 +157,6 @@ int main(int argc, char** argv)
    if(pl != nullptr) {
       pl->Save("*", opt->LogFile().c_str());
    } else {
-      std::cout << "Failed to get logs!" << std::endl;
+      std::cout<<"Failed to get logs!"<<std::endl;
    }
 }

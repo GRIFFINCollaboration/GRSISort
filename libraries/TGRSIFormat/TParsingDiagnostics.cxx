@@ -218,7 +218,7 @@ void TParsingDiagnostics::WriteToFile(const char* fileName) const
 
    for(auto it : fDeadTime) {
       TChannel* chan = TChannel::GetChannel(it.first);
-      if(!chan) {
+      if(chan == nullptr) {
          continue;
       }
       statsOut<<"0x"<<std::hex<<it.first<<std::dec<<":\t"<<chan->GetName()

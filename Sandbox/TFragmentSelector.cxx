@@ -29,34 +29,24 @@
 
 #include <TProof.h>
 
-
-void TFragmentSelector::Begin(TTree * /*tree*/)
+void TFragmentSelector::Begin(TTree* /*tree*/)
 {
    // The Begin() function is called at the start of the query.
    // When running with PROOF Begin() is only called on the client.
    // The tree argument is deprecated (on PROOF 0 is passed).
 
-
-
-
-
    TString option = GetOption();
-
 }
 
-void TFragmentSelector::SlaveBegin(TTree * /*tree*/)
+void TFragmentSelector::SlaveBegin(TTree* /*tree*/)
 {
-   // The SlaveBegin() function is called after the Begin() function.
-   // When running with PROOF SlaveBegin() is called on each slave server.
-   // The tree argument is deprecated (on PROOF 0 is passed).
-  
+// The SlaveBegin() function is called after the Begin() function.
+// When running with PROOF SlaveBegin() is called on each slave server.
+// The tree argument is deprecated (on PROOF 0 is passed).
 
-
-
-   #include "UserInitObj.h"
+#include "UserInitObj.h"
 
    TString option = GetOption();
-
 }
 
 Bool_t TFragmentSelector::Process(Long64_t entry)
@@ -80,14 +70,10 @@ Bool_t TFragmentSelector::Process(Long64_t entry)
    // The return value is currently not used.
 
    fChain->GetEntry(entry);
-   TChannel *channel = TChannel::GetChannel(fragment->ChannelAddress);
+   TChannel* channel = TChannel::GetChannel(fragment->ChannelAddress);
 
-
-
-
-   //if(TChannel::GetNumberOfChannels() != 0 ) 
-	   #include "UserFillObj.h"
-
+// if(TChannel::GetNumberOfChannels() != 0 )
+#include "UserFillObj.h"
 
    return kTRUE;
 }
@@ -97,7 +83,6 @@ void TFragmentSelector::SlaveTerminate()
    // The SlaveTerminate() function is called after all entries or objects
    // have been processed. When running with PROOF SlaveTerminate() is called
    // on each slave server.
-
 }
 
 void TFragmentSelector::Terminate()
@@ -105,11 +90,9 @@ void TFragmentSelector::Terminate()
    // The Terminate() function is the last function to be called during
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
-   TFile f("junk.root","recreate");
+   TFile f("junk.root", "recreate");
    TIter iter(this->GetOutputList());
-   while(TObject *obj =iter.Next()) {
-	if(obj->InheritsFrom("TH1"))
-		obj->Write();
+   while(TObject* obj = iter.Next()) {
+      if(obj->InheritsFrom("TH1")) obj->Write();
    }
-
 }

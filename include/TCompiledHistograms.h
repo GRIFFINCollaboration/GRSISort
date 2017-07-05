@@ -21,12 +21,12 @@ class TFile;
 class TCompiledHistograms : public TObject {
 public:
    TCompiledHistograms();
-   TCompiledHistograms(std::string libname, std::string func_name);
+   TCompiledHistograms(std::string input_lib, std::string func_name);
 
    void Load(std::string libname, std::string func_name);
 #ifndef __CINT__
-   void Fill(std::shared_ptr<const TFragment> fragment);
-   void Fill(std::shared_ptr<TUnpackedEvent> unpacked);
+   void Fill(std::shared_ptr<const TFragment> frag);
+   void Fill(std::shared_ptr<TUnpackedEvent> detectors);
 #endif
    void Reload();
 

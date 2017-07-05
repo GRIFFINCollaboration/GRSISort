@@ -610,7 +610,7 @@ Int_t GCube::BufferEmpty(Int_t action)
       fBuffer     = nullptr;
       fBufferSize = 0;
    } else {
-      if(nbEntries == (Int_t)fEntries) {
+      if(nbEntries == static_cast<Int_t>(fEntries)) {
          fBuffer[0] = -nbEntries;
       } else {
          fBuffer[0] = 0;
@@ -756,7 +756,7 @@ Int_t GCube::Fill(Double_t)
 Int_t GCube::Fill(Double_t x, Double_t y, Double_t z)
 {
    /// Increment cell defined by x,y,z by 1.
-   if(fBuffer) {
+   if(fBuffer != nullptr) {
       return BufferFill(x, y, z, 1);
    }
 
@@ -807,7 +807,7 @@ Int_t GCube::Fill(Double_t x, Double_t y, Double_t z)
                  10. / 3.);
    std::cout<<"binx,y,z = "<<binx<<","<<biny<<","<<binz<<" => bin = "<<bin<<std::endl;
    AddBinContent(bin);
-   if(fSumw2.fN) {
+   if(fSumw2.fN != 0) {
       ++fSumw2.fArray[bin];
    }
    if(binx == 0 || binx > fXaxis.GetNbins()) {
@@ -845,7 +845,7 @@ Int_t GCube::Fill(Double_t x, Double_t y, Double_t z)
 Int_t GCube::Fill(Double_t x, Double_t y, Double_t z, Double_t w)
 {
    /// Increment cell defined by x,y,z by w.
-   if(fBuffer) {
+   if(fBuffer != nullptr) {
       return BufferFill(x, y, z, 1);
    }
 
@@ -891,7 +891,7 @@ Int_t GCube::Fill(Double_t x, Double_t y, Double_t z, Double_t w)
          binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
                  10. / 3.);
    AddBinContent(bin, w);
-   if(fSumw2.fN) {
+   if(fSumw2.fN != 0) {
       fSumw2.fArray[bin] += w * w;
    }
    if(binx == 0 || binx > fXaxis.GetNbins()) {
@@ -963,7 +963,7 @@ Int_t GCube::Fill(const char* namex, const char* namey, const char* namez, Doubl
          binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
                  10. / 3.);
    AddBinContent(bin, w);
-   if(fSumw2.fN) {
+   if(fSumw2.fN != 0) {
       fSumw2.fArray[bin] += w * w;
    }
    if(binx == 0 || binx > fXaxis.GetNbins()) {
@@ -1523,7 +1523,7 @@ void GCube::GetRandom3(Double_t& x, Double_t& y, Double_t& z)
    Int_t    nbins  = nxy * nbinsz;
    Double_t integral;
    // compute integral checking that all bins have positive content (see ROOT-5894)
-   if(fIntegral) {
+   if(fIntegral != nullptr) {
       if(fIntegral[nbins + 1] != fEntries) {
          integral = ComputeIntegral(true);
       } else {
@@ -1547,7 +1547,7 @@ void GCube::GetRandom3(Double_t& x, Double_t& y, Double_t& z)
    }
 
    Double_t r1   = gRandom->Rndm();
-   Int_t    ibin = TMath::BinarySearch(nbins, fIntegral, (Double_t)r1);
+   Int_t    ibin = TMath::BinarySearch(nbins, fIntegral, r1);
    Int_t    binz = ibin / nxy;
    Int_t    biny = (ibin - nxy * binz) / nbinsx;
    Int_t    binx = ibin - nbinsx * (biny + nbinsy * binz);
@@ -2011,7 +2011,7 @@ Long64_t GCube::Merge(TCollection* list)
       return 0;
    }
    if(list->IsEmpty()) {
-      return (Long64_t)GetEntries();
+      return static_cast<Long64_t>(GetEntries());
    }
 
    TList inlist;
@@ -2097,7 +2097,7 @@ Long64_t GCube::Merge(TCollection* list)
          }
       }
    } while((h = static_cast<GCube*>(next())) != nullptr);
-   if(h == nullptr && (*next)) {
+   if(h == nullptr && ((*next) != nullptr)) {
       Error("Merge", "Attempt to merge object of class: %s to a %s", (*next)->ClassName(), ClassName());
       return -1;
    }
@@ -2135,9 +2135,9 @@ Long64_t GCube::Merge(TCollection* list)
    if(!allHaveLimits) {
       // fill this histogram with all the data from buffers of histograms without limits
       while((h = static_cast<GCube*>(next())) != nullptr) {
-         if(h->GetXaxis()->GetXmin() >= h->GetXaxis()->GetXmax() && h->fBuffer) {
+         if(h->GetXaxis()->GetXmin() >= h->GetXaxis()->GetXmax() && (h->fBuffer != nullptr)) {
             // no limits
-            Int_t nbentries = (Int_t)h->fBuffer[0];
+            Int_t nbentries = static_cast<Int_t>(h->fBuffer[0]);
             for(Int_t i = 0; i < nbentries; i++) {
                Fill(h->fBuffer[4 * i + 2], h->fBuffer[4 * i + 3], h->fBuffer[4 * i + 4], h->fBuffer[4 * i + 1]);
             }
@@ -2150,7 +2150,7 @@ Long64_t GCube::Merge(TCollection* list)
             inlist.Remove(hclone);
             delete hclone;
          }
-         return (Long64_t)GetEntries(); // all histograms have been processed
+         return static_cast<Long64_t>(GetEntries()); // all histograms have been processed
       }
       next.Reset();
    }
@@ -2224,7 +2224,7 @@ Long64_t GCube::Merge(TCollection* list)
                      continue;
                   }
                   AddBinContent(ibin, cu);
-                  if(fSumw2.fN) {
+                  if(fSumw2.fN != 0) {
                      Double_t error1 = h->GetBinError(bin);
                      fSumw2.fArray[ibin] += error1 * error1;
                   }
@@ -2237,7 +2237,7 @@ Long64_t GCube::Merge(TCollection* list)
    if(canRebin) SetBit(kCanRebin);
 #else
    if(canExtend) {
-      SetCanExtend(canExtend);
+      SetCanExtend(static_cast<UInt_t>(canExtend));
    }
 #endif
 
@@ -2248,7 +2248,7 @@ Long64_t GCube::Merge(TCollection* list)
       inlist.Remove(hclone);
       delete hclone;
    }
-   return (Long64_t)nentries;
+   return static_cast<Long64_t>(nentries);
 }
 
 TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t firstBinz, Int_t lastBinz,
@@ -2329,7 +2329,7 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
    // if compatible reset and re-use previous histogram
    // (see https://savannah.cern.ch/bugs/?54340)
    TObject* h1obj = gROOT->FindObject(pname);
-   if(h1obj && h1obj->InheritsFrom(TH1::Class())) {
+   if((h1obj != nullptr) && h1obj->InheritsFrom(TH1::Class())) {
       if(h1obj->IsA() != TH1D::Class()) {
          Error("DoProjection", "Histogram with name %s must be a TH1D and is a %s", name, h1obj->ClassName());
          return nullptr;
@@ -2373,7 +2373,7 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
             h1 = new TH1D(pname, GetTitle(), lastXBin - firstXBin + 1, &(bins->fArray[firstXBin - 1]));
          }
       }
-      if(opt.Contains("e") || GetSumw2N()) {
+      if(opt.Contains("e") || (GetSumw2N() != 0)) {
          h1->Sumw2();
       }
    }
@@ -2388,7 +2388,7 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
       TIter       iL(labels);
       TObjString* lb;
       Int_t       i = 1;
-      while((lb = static_cast<TObjString*>(iL()))) {
+      while((lb = static_cast<TObjString*>(iL())) != nullptr) {
          h1->GetXaxis()->SetBinLabel(i, lb->String().Data());
          i++;
       }
@@ -2402,7 +2402,7 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
    // Fill the projected histogram
    Double_t cont, err2;
    Double_t totcont       = 0;
-   Bool_t   computeErrors = h1->GetSumw2N();
+   Bool_t   computeErrors = h1->GetSumw2N() != 0;
 
    // implement filling of projected histogram
    // xbin is bin number of xAxis (the projected axis). Loop is done on all bin of TH2 histograms
@@ -2436,10 +2436,10 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
 
    // check if we can re-use the original statistics from  the previous histogram
    bool reuseStats = false;
-   if(((fgStatOverflows == false && firstBiny == 1 && lastBiny == fYaxis.GetLast()) ||
-       (fgStatOverflows == true && firstBiny == 0 && lastBiny == fYaxis.GetLast() + 1)) &&
-      ((fgStatOverflows == false && firstBinz == 1 && lastBinz == fZaxis.GetLast()) ||
-       (fgStatOverflows == true && firstBinz == 0 && lastBinz == fZaxis.GetLast() + 1))) {
+   if(((!fgStatOverflows && firstBiny == 1 && lastBiny == fYaxis.GetLast()) ||
+       (fgStatOverflows && firstBiny == 0 && lastBiny == fYaxis.GetLast() + 1)) &&
+      ((!fgStatOverflows && firstBinz == 1 && lastBinz == fZaxis.GetLast()) ||
+       (fgStatOverflows && firstBinz == 0 && lastBinz == fZaxis.GetLast() + 1))) {
       reuseStats = true;
    } else {
       // also if total content match we can re-use
@@ -2454,8 +2454,8 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
    // retrieve  the statistics and set in projected histogram if we can re-use it
    bool reuseEntries = reuseStats;
    // can re-use entries if underflow/overflow are included
-   reuseEntries &=
-      (firstBiny == 0 && lastBiny == fYaxis.GetLast() + 1 && firstBinz == 0 && lastBinz == fYaxis.GetLast() + 1);
+   reuseEntries &= static_cast<int>(firstBiny == 0 && lastBiny == fYaxis.GetLast() + 1 && firstBinz == 0 &&
+                                    lastBinz == fYaxis.GetLast() + 1);
    if(reuseStats) {
       Double_t stats[kNstat];
       GetStats(stats);
@@ -2474,7 +2474,7 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
       // use the effective entries for the entries
       // since this  is the only way to estimate them
       Double_t entries = TMath::Floor(totcont + 0.5); // to avoid numerical rounding
-      if(h1->GetSumw2N()) {
+      if(h1->GetSumw2N() != 0) {
          entries = h1->GetEffectiveEntries();
       }
       h1->SetEntries(entries);
@@ -2483,7 +2483,7 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
    if(opt.Contains("d")) {
       TVirtualPad* padsav = gPad;
       TVirtualPad* pad    = gROOT->GetSelectedPad();
-      if(pad) {
+      if(pad != nullptr) {
          pad->cd();
       }
       opt.Remove(opt.First("d"), 1);
@@ -2496,7 +2496,7 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
       } else {
          h1->Paint(opt);
       }
-      if(padsav) {
+      if(padsav != nullptr) {
          padsav->cd();
       }
    }
@@ -2579,7 +2579,7 @@ GCube* GCube::Rebin3D(Int_t ngroup, const char* newname)
 
    // create a clone of the old histogram if newname is specified
    GCube* hnew = this;
-   if(newname != nullptr && strlen(newname)) {
+   if(newname != nullptr && (strlen(newname) != 0u)) {
       hnew = static_cast<GCube*>(Clone());
       hnew->SetName(newname);
    }
@@ -2915,7 +2915,7 @@ void GCube::SetShowProjection(const char* option, Int_t nbins)
    /// NB: the notation "a vs b" means "a" vertical and "b" horizontal
 
    GetPainter();
-   if(fPainter) {
+   if(fPainter != nullptr) {
       fPainter->SetShowProjection(option, nbins);
    }
 }
@@ -2939,8 +2939,8 @@ Int_t GCube::ShowPeaks(Double_t sigma, Option_t* option, Double_t threshold)
    // note the difference in the default value for option compared to TSpectrum2::Search
    // option="" by default (instead of "goff")
 
-   return (Int_t)gROOT->ProcessLineFast(
-      Form(R"(TSpectrum2::StaticSearch((TH1*)0x%lx,%g,"%s",%g))", (ULong_t)this, sigma, option, threshold));
+   return static_cast<Int_t>(gROOT->ProcessLineFast(
+      Form(R"(TSpectrum2::StaticSearch((TH1*)0x%lx,%g,"%s",%g))", (ULong_t)this, sigma, option, threshold)));
 }
 
 void GCube::Smooth(Int_t ntimes, Option_t* option)
@@ -2999,7 +2999,7 @@ void GCube::Smooth(Int_t ntimes, Option_t* option)
    Int_t     bufSize  = (nx + 2) * (ny + 2);
    auto*     buf      = new Double_t[bufSize];
    Double_t* ebuf     = nullptr;
-   if(fSumw2.fN) {
+   if(fSumw2.fN != 0) {
       ebuf = new Double_t[bufSize];
    }
 
@@ -3009,7 +3009,7 @@ void GCube::Smooth(Int_t ntimes, Option_t* option)
       for(j = jfirst; j <= jlast; ++j) {
          bin      = GetBin(i, j);
          buf[bin] = GetBinContent(bin);
-         if(ebuf) {
+         if(ebuf != nullptr) {
             ebuf[bin] = GetBinError(bin);
          }
       }
@@ -3161,7 +3161,7 @@ TH1* GCubeF::DrawCopy(Option_t* option, const char* name_postfix) const
    if(gPad != nullptr && !opt.Contains("same")) {
       gPad->Clear();
    }
-   TString newName = (name_postfix) ? TString::Format("%s%s", GetName(), name_postfix) : "";
+   TString newName = (name_postfix) != nullptr ? TString::Format("%s%s", GetName(), name_postfix) : "";
    TH1*    newth1  = static_cast<TH1*>(Clone(newName));
    newth1->SetDirectory(nullptr);
    newth1->SetBit(kCanDelete);
@@ -3174,7 +3174,7 @@ Double_t GCubeF::GetBinContent(Int_t bin) const
 {
    // Get bin content.
 
-   if(fBuffer) {
+   if(fBuffer != nullptr) {
       const_cast<GCubeF*>(this)->BufferEmpty();
    }
    if(bin < 0) {
@@ -3183,7 +3183,7 @@ Double_t GCubeF::GetBinContent(Int_t bin) const
    if(bin >= fNcells) {
       bin = fNcells - 1;
    }
-   if(!fArray) {
+   if(fArray == nullptr) {
       return 0;
    }
    return Double_t(fArray[bin]);
@@ -3387,7 +3387,7 @@ TH1* GCubeD::DrawCopy(Option_t* option, const char* name_postfix) const
    if(gPad != nullptr && !opt.Contains("same")) {
       gPad->Clear();
    }
-   TString newName = (name_postfix) ? TString::Format("%s%s", GetName(), name_postfix) : "";
+   TString newName = (name_postfix) != nullptr ? TString::Format("%s%s", GetName(), name_postfix) : "";
    TH1*    newth1  = static_cast<TH1*>(Clone(newName));
    newth1->SetDirectory(nullptr);
    newth1->SetBit(kCanDelete);
@@ -3399,7 +3399,7 @@ TH1* GCubeD::DrawCopy(Option_t* option, const char* name_postfix) const
 Double_t GCubeD::GetBinContent(Int_t bin) const
 {
    // Get bin content.
-   if(fBuffer) {
+   if(fBuffer != nullptr) {
       const_cast<GCubeD*>(this)->BufferEmpty();
    }
    if(bin < 0) {
@@ -3408,7 +3408,7 @@ Double_t GCubeD::GetBinContent(Int_t bin) const
    if(bin >= fNcells) {
       bin = fNcells - 1;
    }
-   if(!fArray) {
+   if(fArray == nullptr) {
       return 0;
    }
    return Double_t(fArray[bin]);

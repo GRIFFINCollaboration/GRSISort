@@ -157,10 +157,10 @@ public:
    void StopEmbedding(const char* name, TGLayoutHints* layout);
    void SwitchMenus(TGCompositeFrame* from);
 
-   void BrowseObj(TObject* obj) override;            //*SIGNAL*
-   void ExecuteDefaultAction(TObject* obj) override; //*SIGNAL*
-   virtual void DoubleClicked(TObject* obj);         //*SIGNAL*
-   virtual void Checked(TObject* obj, Bool_t check); //*SIGNAL*
+   void BrowseObj(TObject* obj) override;              //*SIGNAL*
+   void ExecuteDefaultAction(TObject* obj) override;   //*SIGNAL*
+   virtual void DoubleClicked(TObject* obj);           //*SIGNAL*
+   virtual void Checked(TObject* obj, Bool_t checked); //*SIGNAL*
 
    void Add(TObject* obj, const char* name = nullptr, Int_t check = -1) override;
    void RecursiveRemove(TObject* obj) override;

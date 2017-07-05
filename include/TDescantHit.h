@@ -62,15 +62,15 @@ public:
 
    Int_t CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow,
                       unsigned int interpolation_steps); //!<!
-   Int_t CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow,
-                                unsigned int interpolation_steps, std::vector<Short_t>& monitor); //!<!
+   Int_t CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfSmoothingWindow,
+                                unsigned int interpolationSteps, std::vector<Short_t>& monitor); //!<!
    std::vector<Short_t> CalculateCfdMonitor(double attenuation, unsigned int delay,
                                             unsigned int halfSmoothingWindow);       //!<!
-   std::vector<Short_t> CalculateSmoothedWaveform(unsigned int halfsmoothingwindow); //!<!
+   std::vector<Short_t> CalculateSmoothedWaveform(unsigned int halfSmoothingWindow); //!<!
    std::vector<Int_t> CalculatePartialSum();                                         //!<!
-   Int_t CalculatePsd(double fraction, unsigned int interpolation_steps);            //!<!
-   Int_t CalculatePsdAndPartialSums(double fraction, unsigned int interpolation_steps,
-                                    std::vector<Int_t>& partialsums); //!<!
+   Int_t CalculatePsd(double fraction, unsigned int interpolationSteps);             //!<!
+   Int_t CalculatePsdAndPartialSums(double fraction, unsigned int interpolationSteps,
+                                    std::vector<Int_t>& partialSums); //!<!
 
    bool InFilter(Int_t); //!<!
 

@@ -18,10 +18,11 @@ TFragmentChainLoop* TFragmentChainLoop::Get(std::string name, TChain* chain)
    }
 
    TFragmentChainLoop* loop = static_cast<TFragmentChainLoop*>(StoppableThread::Get(name));
-   if(!loop) {
-      if(!chain && !gFragment) {
+   if(loop == nullptr) {
+      if((chain == nullptr) && (gFragment == nullptr)) {
          return nullptr;
-      } else if(!chain) {
+      }
+      if(chain == nullptr) {
          chain = gFragment;
       }
       loop = new TFragmentChainLoop(name, chain);
@@ -41,7 +42,7 @@ TFragmentChainLoop::~TFragmentChainLoop() = default;
 void TFragmentChainLoop::ClearQueue()
 {
    for(const auto& outQueue : fOutputQueues) {
-      while(outQueue->Size()) {
+      while(outQueue->Size() != 0u) {
          std::shared_ptr<const TFragment> event;
          outQueue->Pop(event);
       }
@@ -50,7 +51,7 @@ void TFragmentChainLoop::ClearQueue()
 
 int TFragmentChainLoop::SetupChain()
 {
-   if(!fInputChain) {
+   if(fInputChain == nullptr) {
       return 0;
    }
 
@@ -75,10 +76,9 @@ bool TFragmentChainLoop::Iteration()
    if(static_cast<long>(fItemsPopped) >= fEntriesTotal) {
       if(fSelfStopping) {
          return false;
-      } else {
-         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-         return true;
       }
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+      return true;
    }
 
    std::shared_ptr<TFragment> frag = std::make_shared<TFragment>();
