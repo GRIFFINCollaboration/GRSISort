@@ -68,12 +68,12 @@ public:
    void Clear(Option_t* opt = "") override;
 
 private:
-   ULong64_t fTimeStamp{};
-   UInt_t    fOldPpg{};
-   UInt_t    fNewPpg{};
-   UInt_t    fNetworkPacketId{};
-   UInt_t    fLowTimeStamp{};
-   UInt_t    fHighTimeStamp{};
+   ULong64_t fTimeStamp;
+   UInt_t    fOldPpg;
+   UInt_t    fNewPpg;
+   UInt_t    fNetworkPacketId;
+   UInt_t    fLowTimeStamp;
+   UInt_t    fHighTimeStamp;
 
    /// \cond CLASSIMP
    ClassDefOverride(TPPGData, 2) // Contains PPG data information
@@ -150,7 +150,7 @@ private:
    PPGMap_t::iterator fCurrIterator; //!<!
 
    PPGMap_t* fPPGStatusMap;
-   ULong64_t fCycleLength{};
+   ULong64_t fCycleLength;
    std::map<ULong64_t, int> fNumberOfCycleLengths;
 
    std::vector<short> fOdbPPGCodes;  ///< ppg state codes read from odb

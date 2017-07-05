@@ -61,17 +61,17 @@ public:
    static Bool_t CompareArea(const GGaus& lhs, const GGaus& rhs) { return lhs.GetArea() < rhs.GetArea(); }
 
 private:
-   double fArea{};
-   double fDArea{};
-   double fChi2{};
-   double fNdf{};
+   double fArea{0.};
+   double fDArea{0.};
+   double fChi2{0.};
+   double fNdf{0.};
 
-   double fSum{};
-   double fDSum{};
+   double fSum{0.};
+   double fDSum{0.};
 
    Bool_t IsInitialized() const { return init_flag; }
    void SetInitialized(Bool_t flag = true) { init_flag = flag; }
-   bool                       init_flag{};
+   bool                       init_flag{false};
 
    TF1 fBGFit;
    TF1 fBGHist;

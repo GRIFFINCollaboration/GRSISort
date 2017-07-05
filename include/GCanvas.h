@@ -45,13 +45,16 @@ public:
    }
 
    // Pixel space
-   int x{}, y{};
+   int x{0};
+	int y{0};
    // Coordinate space (SetRangeUser() units)
-   double localx{}, localy{};
+   double localx{0.};
+	double localy{0.};
    // Bin space
-   int    binx{}, biny{};
-   TLine* linex{};
-   TLine* liney{};
+   int    binx{0};
+	int    biny{0};
+   TLine* linex{nullptr};
+   TLine* liney{nullptr};
    void Copy(TObject& object) const override;
    bool operator<(const GMarker& rhs) const { return x < rhs.x; }
    ClassDefOverride(GMarker, 0)
@@ -105,10 +108,10 @@ private:
    static int lastx;
    static int lasty;
 
-   bool fGuiEnabled{};
+   bool fGuiEnabled{false};
 
    // bool fStatsDisplayed;
-   bool                   fMarkerMode{};
+   bool                   fMarkerMode{false};
    std::vector<GMarker*>  fMarkers;
    std::vector<GMarker*>  fBackgroundMarkers;
    kBackgroundSubtraction fBackgroundMode;
@@ -145,24 +148,11 @@ private:
    bool Process2DKeyboardPress(Event_t* event, UInt_t* keysym);
    bool Process2DMousePress(Int_t event, Int_t x, Int_t y);
 
-   // bool SetBackGround(GMarker *m1=0,GMarker *m2=0,GMarker *m3=0,GMarker *m4=0);
-   // bool SetLinearBG(GMarker *m1=0,GMarker *m2=0);
-   // bool SetConstantBG(); //GMarker *m1=0,GMarker *m2=0);
-   // bool SetBGGate(GMarker *m1,GMarker *m2,GMarker *m3=0,GMarker *m4=0);
-
-   // TH1 *GetBackGroundHist(GMarker *addlow,GMarker *addhigh);
-
-   // bool GausFit(GMarker *m1=0,GMarker *m2=0);
-   // bool GausBGFit(GMarker *m1=0,GMarker *m2=0);
-   // bool PeakFit(GMarker *m1=0,GMarker *m2=0);
-   // bool PeakFitQ(GMarker *m1=0,GMarker *m2=0);
-
-   // static int fBGSubtraction_type;
 private:
-   Window_t     fCanvasWindowID{};
-   TRootCanvas* fRootCanvas{};
+   //Window_t     fCanvasWindowID{};
+   TRootCanvas* fRootCanvas{nullptr};
 
-   bool control_key{};
+   bool control_key{false};
 
    bool toggle_control()
    {

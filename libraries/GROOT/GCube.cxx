@@ -30,7 +30,7 @@ class DifferentLabels : public std::exception {
 
 ClassImp(GCube)
 
-   GCube::GCube()
+GCube::GCube()
 {
    fDimension = 3;
    fTsumwy    = 0;

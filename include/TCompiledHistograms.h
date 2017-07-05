@@ -53,7 +53,7 @@ private:
    std::string fFunc_name;
 #ifndef __CINT__
    std::shared_ptr<DynamicLibrary> fLibrary;
-   std::mutex                      fMutex{};
+   std::mutex                      fMutex;
 #endif
    void (*fFunc)(TRuntimeObjects&);
    time_t fLast_modified;

@@ -9,8 +9,8 @@
 
 class TCFDCal : public TCal {
 public:
-   TCFDCal(){};
-   TCFDCal(const char* name, const char* title) : TCal(name, title){};
+   TCFDCal() {};
+   TCFDCal(const char* name, const char* title) : TCal(name, title) {};
    ~TCFDCal() override = default;
 
    // pure virtual functions

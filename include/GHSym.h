@@ -79,10 +79,10 @@ protected:
    using TH1::DoIntegral;
    virtual Double_t DoIntegral(Int_t binx1, Int_t binx2, Int_t biny1, Int_t biny2, Double_t& error, Option_t* option,
                                Bool_t doError = kFALSE) const;
-   Double_t fTsumwy{};  // Total Sum of weight*Y
-   Double_t fTsumwy2{}; // Total Sum of weight*Y*Y
-   Double_t fTsumwxy{}; // Total Sum of weight*X*Y
-   TH2*     fMatrix{};  //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
+   Double_t fTsumwy{0.};  ///< Total Sum of weight*Y
+   Double_t fTsumwy2{0.}; ///< Total Sum of weight*Y*Y
+   Double_t fTsumwxy{0.}; ///< Total Sum of weight*X*Y
+   TH2*     fMatrix{nullptr};  //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
 
 private:
    GHSym(const GHSym&);

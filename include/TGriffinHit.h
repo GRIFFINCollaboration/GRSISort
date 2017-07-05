@@ -37,10 +37,10 @@ public:
    ~TGriffinHit() override;
 
 private:
-   Int_t                   fFilter{};              //  The Filter Word
-   TTransientBits<UChar_t> fGriffinHitBits;        //  Transient Member Flags
-   UInt_t                  fCrystal{};             //!<! Crystal Number
-   Bool_t                  fBremSuppressed_flag{}; //!<! Bremsstrahlung Suppression flag.
+   Int_t                   fFilter{0};                  ///<  The Filter Word
+   TTransientBits<UChar_t> fGriffinHitBits;             ///<  Transient Member Flags
+   UInt_t                  fCrystal{0};                 //!<! Crystal Number
+   Bool_t                  fBremSuppressed_flag{false}; //!<! Bremsstrahlung Suppression flag.
 
 public:
    /////////////////////////  Setters	/////////////////////////////////////

@@ -32,11 +32,11 @@ void TScalerData::Copy(TObject& rhs) const
 void TScalerData::Clear(Option_t*)
 {
    /// Clears the TScalerData.
+   fNetworkPacketId = -1;
    fAddress         = 0;
+   fScaler.clear();
    fLowTimeStamp    = 0;
    fHighTimeStamp   = 0;
-   fNetworkPacketId = -1;
-   fScaler.clear();
 }
 
 void TScalerData::Print(Option_t*) const

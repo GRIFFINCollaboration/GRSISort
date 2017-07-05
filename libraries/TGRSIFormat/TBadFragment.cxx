@@ -1,5 +1,7 @@
 #include "TBadFragment.h"
 
+ClassImp(TBadFragment)
+
 TBadFragment::TBadFragment() : TFragment()
 {
 	/// Default constructor
@@ -46,6 +48,7 @@ TBadFragment::TBadFragment(const TBadFragment& rhs) : TFragment(rhs)
    /// Copy constructor
    fData       = rhs.fData;
    fFailedWord = rhs.fFailedWord;
+   fMultipleErrors = rhs.fMultipleErrors;
 }
 
 TBadFragment::~TBadFragment()
@@ -59,8 +62,17 @@ TBadFragment& TBadFragment::operator=(const TBadFragment& rhs)
 	TFragment::operator=(rhs);
    fData       = rhs.fData;
    fFailedWord = rhs.fFailedWord;
+   fMultipleErrors = rhs.fMultipleErrors;
 
 	return *this;
+}
+
+void TBadFragment::Clear(Option_t* opt)
+{
+	TFragment::Clear(opt);
+	fData.clear();
+	fFailedWord = -1;
+	fMultipleErrors = false;
 }
 
 void TBadFragment::Print(Option_t*) const

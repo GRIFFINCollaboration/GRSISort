@@ -51,9 +51,9 @@ public:
    void Print(Option_t* opt = "") const override; //!<!
 
 private:
-   time_t fMidasTime{};
-   Long_t fTimeStamp{};
-   double fTime{};
+   time_t fMidasTime;
+   Long_t fTimeStamp;
+   double fTime;
 
    static Double_t fPeriod;
 

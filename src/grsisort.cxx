@@ -103,8 +103,7 @@ void SetGRSIPluginHandlers()
 static int ReadUtmp()
 {
    FILE*       utmp;
-   struct stat file_stats {
-   };
+   struct stat file_stats;
    size_t n_read, size;
 
    gUtmpContents = nullptr;

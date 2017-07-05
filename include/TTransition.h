@@ -47,10 +47,10 @@ public:
    std::string PrintToString();
 
 private:
-   double fEnergy{};         // Energy of the transition
-   double fEngUncertainty{}; // Uncertainty in the energy of the transition
-   double fIntensity{};      // Intensity of the transition
-   double fIntUncertainty{}; // Uncertainty in the intensity
+   double fEnergy{0.};         // Energy of the transition
+   double fEngUncertainty{0.}; // Uncertainty in the energy of the transition
+   double fIntensity{0.};      // Intensity of the transition
+   double fIntUncertainty{0.}; // Uncertainty in the intensity
 
    /// \cond CLASSIMP
    ClassDefOverride(TTransition, 0) // Information about a TNucleus transition

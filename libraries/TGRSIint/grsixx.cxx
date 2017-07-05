@@ -75,8 +75,7 @@ static bool StayUp(int milliSec)
    // Returns false if milliSec milliseconds have passed since logo
    // was popped up, true otherwise.
 
-   struct timeval ctv {
-   }, dtv{}, tv{}, ptv = gPopupTime;
+   struct timeval ctv, dtv, tv, ptv = gPopupTime;
 
    tv.tv_sec  = milliSec / 1000;
    tv.tv_usec = (milliSec % 1000) * 1000;
@@ -102,8 +101,7 @@ static void Sleep(int milliSec)
    // Sleep for specified amount of milli seconds.
 
    // get current time
-   struct timeval tv {
-   };
+   struct timeval tv;
 
    tv.tv_sec  = milliSec / 1000;
    tv.tv_usec = (milliSec % 1000) * 1000;
@@ -123,10 +121,10 @@ static Pixmap GetRootLogo()
 
    int depth = PlanesOfScreen(xscreen);
 
-   XWindowAttributes win_attr{};
+   XWindowAttributes win_attr;
    XGetWindowAttributes(gDisplay, gLogoWindow, &win_attr);
 
-   XpmAttributes attr{};
+   XpmAttributes attr;
    attr.valuemask = XpmVisual | XpmColormap | XpmDepth;
    attr.visual    = win_attr.visual;
    attr.colormap  = win_attr.colormap;
@@ -369,7 +367,7 @@ void PopupLogo(bool about)
    XSync(gDisplay, False); // make sure move & resize is done before mapping
 
    unsigned long        valmask;
-   XSetWindowAttributes xswa{};
+   XSetWindowAttributes xswa;
    valmask                = CWBackPixmap | CWOverrideRedirect;
    xswa.background_pixmap = gLogoPixmap;
    xswa.override_redirect = True;
@@ -432,7 +430,7 @@ void WaitLogo()
       gSystem->Sleep(3500);
       break;
 
-      XEvent event{};
+      XEvent event;
       if(XCheckMaskEvent(gDisplay, ButtonPressMask | ExposureMask, &event) != 0) {
          switch(event.type) {
          case Expose:

@@ -48,7 +48,7 @@ public:
    virtual int GoodFrags() { return fGoodFrags; } ///< returns number of good fragments parsed
 
 protected:
-   int fGoodFrags{}; ///< number of good fragments parsed
+   int fGoodFrags{0}; ///< number of good fragments parsed
    /// \cond CLASSIMP
    ClassDefOverride(TRawEvent, 0) // All of the data contained in a Midas Event
    /// \endcond

@@ -55,12 +55,12 @@ public:
       SetPixels(false);
    } // Set absolute allow time difference
 
-   TGRSIDetectorHit* GetHit(const int& idx = 0);
+   TGRSIDetectorHit* GetHit(const int& idx = 0) override;
    TS3Hit* GetS3Hit(const int& i);
    TS3Hit* GetRingHit(const int& i);
    TS3Hit* GetSectorHit(const int& i);
 
-   Short_t GetMultiplicity() const { return fS3Hits.size(); }
+   Short_t GetMultiplicity() const override { return fS3Hits.size(); }
 
    static bool PreferenceSector(bool set = true)
    {

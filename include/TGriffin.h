@@ -43,10 +43,10 @@ public:
    TGriffinHit* GetGriffinLowGainHit(const int& i);                                              //!<!
    TGriffinHit* GetGriffinHighGainHit(const int& i);                                             //!<!
    TGriffinHit* GetGriffinHit(const Int_t& i) { return GetGriffinHit(i, GetDefaultGainType()); } //!<!
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
    Short_t GetLowGainMultiplicity() const { return fGriffinLowGainHits.size(); }
    Short_t GetHighGainMultiplicity() const { return fGriffinHighGainHits.size(); }
-   Int_t   GetMultiplicity() const { return GetMultiplicity(GetDefaultGainType()); }
+   Short_t   GetMultiplicity() const override { return GetMultiplicity(GetDefaultGainType()); }
 
    static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double dist = 110.0); //!<!
    static const char* GetColorFromNumber(Int_t number);
@@ -101,7 +101,7 @@ private:
    static bool fSetCoreWave; //!<!  Flag for Waveforms ON/OFF
    // static bool fSetBGOWave;                //!<!  Flag for BGO Waveforms ON/OFF
 
-   long                            fCycleStart{}; //!<!  The start of the cycle
+   long                            fCycleStart; //!<!  The start of the cycle
    mutable TTransientBits<UChar_t> fGriffinBits;  // Transient member flags
 
    mutable std::vector<TGriffinHit> fAddbackLowGainHits;  //!<! Used to create addback hits on the fly

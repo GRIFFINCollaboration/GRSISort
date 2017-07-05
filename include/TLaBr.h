@@ -31,10 +31,10 @@ public:
    TLaBr(const TLaBr& rhs);
 
 public:
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
    void Copy(TObject& rhs) const override;
    TLaBrHit* GetLaBrHit(const int& i);                          //!<!
-   Short_t GetMultiplicity() const { return fLaBrHits.size(); } //!<!
+   Short_t GetMultiplicity() const override { return fLaBrHits.size(); } //!<!
 #ifndef __CINT__
    void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif

@@ -45,12 +45,12 @@ public:
 
 private:
    std::string             fName;
-   mutable std::mutex      mutex{};
+   mutable std::mutex      mutex;
    std::queue<T>           queue;
    std::condition_variable can_push;
    std::condition_variable can_pop;
 
-   std::atomic_int num_writers{};
+   std::atomic_int num_writers{0};
 
    size_t max_queue_size;
 

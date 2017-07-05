@@ -16,9 +16,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TMidasEvent)
-   /// \endcond
+/// \endcond
 
-   TMidasEvent::TMidasEvent()
+TMidasEvent::TMidasEvent()
 {
    // Default constructor
    fData          = nullptr;

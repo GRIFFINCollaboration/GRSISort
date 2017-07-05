@@ -12,17 +12,15 @@
 
 /// \cond CLASSIMP
 ClassImp(TDescantHit)
-   /// \endcond
+/// \endcond
 
-   TDescantHit::TDescantHit()
+TDescantHit::TDescantHit()
 {
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
    Clear();
 }
-
-TDescantHit::~TDescantHit() = default;
 
 TDescantHit::TDescantHit(const TDescantHit& rhs) : TGRSIDetectorHit()
 {
@@ -80,6 +78,8 @@ TDescantHit::TDescantHit(const TFragment& frag) : TGRSIDetectorHit(frag)
       }
    }
 }
+
+TDescantHit::~TDescantHit() = default;
 
 void TDescantHit::Copy(TObject& rhs) const
 {

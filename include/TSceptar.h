@@ -31,10 +31,10 @@ public:
    TSceptar(const TSceptar& rhs);
 
 public:
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
    void Copy(TObject& rhs) const override;
    TSceptarHit* GetSceptarHit(const int& i);                       //!<!
-   Short_t GetMultiplicity() const { return fSceptarHits.size(); } //!<!
+   Short_t GetMultiplicity() const override { return fSceptarHits.size(); } //!<!
 #ifndef __CINT__
    void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif

@@ -350,7 +350,7 @@ int TPulseAnalyzer::fit_line(int low, int high, LinePar* lp)
 
 double TPulseAnalyzer::get_linear_T0()
 {
-   LinePar lp{}, lpl{};
+   LinePar lp, lpl;
    int     k;
    double  chit, chitmin;
    double  b, c, t;
@@ -394,7 +394,7 @@ double TPulseAnalyzer::get_linear_T0()
 /*================================================================*/
 double TPulseAnalyzer::get_smooth_T0()
 {
-   ParPar pp{}, ppmin{};
+   ParPar pp, ppmin;
    int    k, kmin;
    double chit, chitmin;
    double c, t;
@@ -450,8 +450,8 @@ double TPulseAnalyzer::get_smooth_T0()
 double TPulseAnalyzer::get_parabolic_T0()
 {
 
-   LinePar lp{};
-   ParPar  pp{};
+   LinePar lp;
+   ParPar  pp;
    int     k;
    double  chit, chitmin;
    double  a, b, c, d, t;

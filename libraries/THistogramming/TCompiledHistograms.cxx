@@ -70,8 +70,7 @@ void TCompiledHistograms::ClearHistograms()
 
 time_t TCompiledHistograms::get_timestamp()
 {
-   struct stat buf {
-   };
+   struct stat buf;
    stat(fLibname.c_str(), &buf);
    return buf.st_mtime;
 }

@@ -31,10 +31,10 @@ public:
    TTAC(const TTAC& rhs);
 
 public:
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
    void Copy(TObject& rhs) const override;
    TTACHit* GetTACHit(const int& i);                           //!<!
-   Short_t GetMultiplicity() const { return fTACHits.size(); } //!<!
+   Short_t GetMultiplicity() const override { return fTACHits.size(); } //!<!
 
 #ifndef __CINT__
    void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!

@@ -24,7 +24,7 @@ class TDecayChain;
 
 class TDecayFit : public TF1 {
 public:
-   TDecayFit() : TF1(), fDecay(nullptr){};
+   TDecayFit() : TF1(), fDecay(nullptr) {};
    TDecayFit(const char* name, const char* formula, Double_t xmin = 0, Double_t xmax = 1)
       : TF1(name, formula, xmin, xmax), fDecay(nullptr)
    {
@@ -246,14 +246,14 @@ private:
    }
 
 private:
-   UInt_t        fGeneration{};        // Generation from the primary
+   UInt_t        fGeneration{0};       // Generation from the primary
    Double_t      fDetectionEfficiency; // The probability that this decay can be detected
    TDecayFit*    fDecayFunc;           // Function describing decay
    TDecayFit*    fTotalDecayFunc;      // Function used to access other fits
    TSingleDecay* fParent;              // Parent Decay
    TSingleDecay* fDaughter;            // Daughter Decay
    TSingleDecay* fFirstParent;         // FirstParent in the decay
-   Int_t         fUnId{};              // The Unique ID of the Decay
+   Int_t         fUnId{0};             // The Unique ID of the Decay
    static UInt_t fCounter;             // Helps set unique Id's
    Int_t         fChainId;             // The chain that the single decay belongs to
 
@@ -301,7 +301,7 @@ private:
 private:
    std::vector<TSingleDecay*> fDecayChain; // The Decays in the Decay Chain
    TDecayFit*                 fChainFunc;  // Function describing the total chain activity
-   Int_t                      fChainId{};
+   Int_t                      fChainId{0};
 
    /// \cond CLASSIMP
    ClassDefOverride(TDecayChain, 1) // Class representing a decay chain

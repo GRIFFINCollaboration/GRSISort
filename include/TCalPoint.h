@@ -35,10 +35,10 @@ public:
    Double_t AreaErr() const { return fAreaErr; }
 
 private:
-   Double_t fCentroid{};
-   Double_t fCentroidErr{};
-   Double_t fArea{};
-   Double_t fAreaErr{};
+   Double_t fCentroid{0.};
+   Double_t fCentroidErr{0.};
+   Double_t fArea{0.};
+   Double_t fAreaErr{0.};
 
    /// \cond CLASSIMP
    ClassDefOverride(TCalPoint, 1);

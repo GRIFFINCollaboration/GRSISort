@@ -33,12 +33,13 @@ public:
    int                   GetFailedWord() const { return fFailedWord; }
    bool                  GetMultipleErrors() const { return fMultipleErrors; }
 
+   void Clear(Option_t* opt = "") override;
    void Print(Option_t* opt = "") const override;
 
 private:
    std::vector<uint32_t> fData;
-   int                   fFailedWord{};
-   bool                  fMultipleErrors{};
+   int                   fFailedWord;
+   bool                  fMultipleErrors;
 
    /// \cond CLASSIMP
    ClassDefOverride(TBadFragment, 1);

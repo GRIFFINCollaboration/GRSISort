@@ -11,9 +11,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TTigress)
-   /// \endcond
+/// \endcond
 
-   double TTigress::fTargetOffset = 0.;
+double TTigress::fTargetOffset = 0.;
 
 // Default tigress unpacking settings
 TTransientBits<UShort_t> TTigress::fgTigressBits(TTigress::kSetCoreWave | TTigress::kSetBGOHits);
@@ -114,11 +114,9 @@ void TTigress::Clear(Option_t* opt)
 void TTigress::Print(Option_t* opt) const
 {
    printf("%lu tigress hits\n", fTigressHits.size());
-   for(unsigned int i = 0; i < GetMultiplicity(); i++) {
+   for(Short_t i = 0; i < GetMultiplicity(); i++) {
       fTigressHits.at(i).Print(opt);
    }
-
-   return;
 }
 
 TTigress& TTigress::operator=(const TTigress& rhs)
@@ -126,19 +124,6 @@ TTigress& TTigress::operator=(const TTigress& rhs)
    rhs.Copy(*this);
    return *this;
 }
-
-// TTigressHit &TTigress::GetTigressHit(int i) {
-/*
-try {
-  return &(fTigressHits.at(i));
-} catch(const std::out_of_range& oor) {
-  std::cerr<<ClassName()<<"Hits are out of range: "<<oor.what()<<std::endl;
-  if(!gInterpreter)
-    throw grsi::exit_exception(1);
-}
-return nullptr;
-*/
-//}
 
 Int_t TTigress::GetAddbackMultiplicity()
 {
@@ -237,13 +222,6 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
    if(frag == nullptr || chan == nullptr) {
       return;
    }
-   /*  if(GetMidasTimestamp()==-1) {
-       SetMidasTimestamp(frag->GetMidasTimeStamp());
-       }
-       */
-   // printf("%s %s called.\n",__PRETTY_FUNCTION__,channel->GetChannelName());
-   // fflush(stdout);
-   /// frag->Print("all");
 
    // if((chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) &&
    if((chan->GetMnemonic()->SubSystem() == TMnemonic::kG) &&
@@ -284,7 +262,6 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
       }
       fTigressHits.push_back(corehit);
       return;
-      //} else if(chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) { // its ge but its not a core...
    }
    if(chan->GetMnemonic()->SubSystem() == TMnemonic::kG) { // its ge but its not a core...
       TGRSIDetectorHit temp(*frag);
@@ -296,7 +273,6 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
                frag->CopyWave(temp);
             }
             hit->AddSegment(temp);
-            // printf(" I found a core !\t%i\n",hit->GetNSegments()); fflush(stdout);
             return;
          }
       }
@@ -307,12 +283,7 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
       }
       corehit.AddSegment(temp);
       fTigressHits.push_back(corehit);
-      // if(fTigressHits.size()>100) {
-      //   printf("size is large!\t%i\n",fTigressHits.size());
-      //   fflush(stdout);
-      //}
       return;
-      // } else if(chan->GetMnemonic()->subsystem.compare(0,1,"S")==0) {
    }
    if(chan->GetMnemonic()->SubSystem() == TMnemonic::kS) {
       TBgoHit temp(*frag);
@@ -345,18 +316,6 @@ UShort_t TTigress::GetNAddbackFrags(size_t idx) const
    return 0;
 }
 
-// void TTigress::DopplerCorrect(TTigressHit *hit)  {
-//  if(beta != 0.00)  {
-//    double gamma = 1/(sqrt(1-pow(beta,2)));
-//    double tmp = hit.GetEnergy()*gamma *(1 - beta*hit.GetPosition().CosTheta());
-
-//    hit.SetDoppler(tmp);
-//  }
-//  else {
-//    printf(DRED "\n\tWARNING!  Try to Doppler correct before setting beta!" RESET_COLOR "\n");
-//  }
-//}
-
 TVector3 TTigress::GetPosition(const TTigressHit& hit, double dist, bool smear)
 {
    return TTigress::GetPosition(hit.GetDetector(), hit.GetCrystal(), hit.GetFirstSeg(), dist, smear);
@@ -368,11 +327,6 @@ TVector3 TTigress::GetPosition(int DetNbr, int CryNbr, int SegNbr, double dist, 
    double   xx = 0;
    double   yy = 0;
    double   zz = 0;
-
-   // printf("xx = %f\nyy = %f\n zz =
-   // %f\n",GeBluePosition[DetNbr][SegNbr][0],GeBluePosition[DetNbr][SegNbr][1],GeBluePosition[DetNbr][SegNbr][2]);
-
-   // if(!(dist>0))dist=TGRSIRunInfo::HPGeArrayPosition();
 
    if(dist > 140. || (GetArrayBackPos() && dist < 100.)) { // 145.0
 
@@ -399,10 +353,8 @@ TVector3 TTigress::GetPosition(int DetNbr, int CryNbr, int SegNbr, double dist, 
          zz = GeWhitePositionBack[DetNbr][SegNbr][2];
          break;
       };
-      // printf("xx = %f\nyy = %f\n zz = %f\n",xx,yy,zz);
       det_pos.SetXYZ(xx, yy, zz);
    } else {
-
       switch(CryNbr) {
       case -1: break;
       case 0:
@@ -426,7 +378,6 @@ TVector3 TTigress::GetPosition(int DetNbr, int CryNbr, int SegNbr, double dist, 
          zz = GeWhitePosition[DetNbr][SegNbr][2];
          break;
       };
-      // printf("xx = %f\nyy = %f\n zz = %f\n",xx,yy,zz);
    }
 
    det_pos.SetXYZ(xx, yy, zz - fTargetOffset);

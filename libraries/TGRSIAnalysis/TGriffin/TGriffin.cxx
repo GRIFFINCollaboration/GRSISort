@@ -23,9 +23,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TGriffin)
-   /// \endcond
+/// \endcond
 
-   bool DefaultAddback(TGriffinHit& one, TGriffinHit& two)
+bool DefaultAddback(TGriffinHit& one, TGriffinHit& two)
 {
    return ((one.GetDetector() == two.GetDetector()) &&
            (std::fabs(one.GetTime() - two.GetTime()) < TGRSIOptions::AnalysisOptions()->AddbackWindow()));
@@ -106,15 +106,6 @@ TVector3 TGriffin::gCloverPosition[17] = {
 
 std::map<int, TSpline*> TGriffin::fEnergyResiduals;
 
-// Cross Talk stuff
-/*const Double_t TGriffin::gStrongCT[2] = { -0.02674, -0.000977 }; //This is for the 0-1 and 2-3 combination
-const Double_t TGriffin::gWeakCT[2]   = { 0.005663, - 0.00028014};
-const Double_t TGriffin::gCrossTalkPar[2][4][4] = {
-   { {0.0, gStrongCT[0], gWeakCT[0], gWeakCT[0]}, {gStrongCT[0], 0.0, gWeakCT[0], gWeakCT[0]}, {gWeakCT[0], gWeakCT[0],
-0.0, gStrongCT[0]}, {gWeakCT[0], gWeakCT[0], gStrongCT[0], 0.0}},
-   { {0.0, gStrongCT[1], gWeakCT[1], gWeakCT[1]}, {gStrongCT[1], 0.0, gWeakCT[1], gWeakCT[1]}, {gWeakCT[1], gWeakCT[1],
-0.0, gStrongCT[1]}, {gWeakCT[1], gWeakCT[1], gStrongCT[1], 0.0}}};*/
-
 TGriffin::TGriffin() : TGRSIDetector()
 {
 // Default ctor. Ignores TObjectStreamer in ROOT < 6
@@ -157,9 +148,7 @@ TGriffin::~TGriffin()
 void TGriffin::Clear(Option_t* opt)
 {
    // Clears the mother, and all of the hits
-   //  if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
    ClearStatus();
-   //  }
    TGRSIDetector::Clear(opt);
    fGriffinLowGainHits.clear();
    fGriffinHighGainHits.clear();
@@ -168,7 +157,6 @@ void TGriffin::Clear(Option_t* opt)
    fAddbackLowGainFrags.clear();
    fAddbackHighGainFrags.clear();
    fCycleStart = 0;
-   // fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
 }
 
 void TGriffin::LoadEnergyResidual(int chan, TSpline* residual)

@@ -23,8 +23,8 @@ public:
    Short_t GetSector() const { return fSector; }
    Bool_t  GetIsDownstream() const { return fIsDownstream; }
 
-   Double_t fTimeFit{};
-   Double_t fSig2Noise{};
+   Double_t fTimeFit{0.};
+   Double_t fSig2Noise{0.};
 
 public:
    void Copy(TObject&) const override; //!
@@ -68,9 +68,9 @@ private:
    Double_t GetDefaultPhiOffset() const; //!
    Double_t GetDefaultDistance() const;  //!
 
-   Bool_t  fIsDownstream{}; // Downstream check
-   Short_t fRing{};         // front
-   Short_t fSector{};       // back
+   Bool_t  fIsDownstream{false}; // Downstream check
+   Short_t fRing{0};         // front
+   Short_t fSector{0};       // back
 
    /// \cond CLASSIMP
    ClassDefOverride(TS3Hit, 4);

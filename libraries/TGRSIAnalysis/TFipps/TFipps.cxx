@@ -182,7 +182,8 @@ TFipps& TFipps::operator=(const TFipps& rhs)
    return *this;
 }
 
-Int_t TFipps::GetMultiplicity() const
+
+Short_t TFipps::GetMultiplicity() const
 {
    return fFippsHits.size();
 }

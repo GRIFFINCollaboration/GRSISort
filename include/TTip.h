@@ -35,8 +35,8 @@ public:
    TTip(const TTip& rhs);
 
    TTipHit* GetTipHit(const int& i); //!<!
-   TGRSIDetectorHit* GetHit(const int& idx);
-   Short_t GetMultiplicity() const { return fTipHits.size(); } //!<!
+   TGRSIDetectorHit* GetHit(const int& idx) override;
+   Short_t GetMultiplicity() const override { return fTipHits.size(); } //!<!
 
 #ifndef __CINT__
    void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!

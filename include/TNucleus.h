@@ -24,7 +24,7 @@ private:
    // static std::string masspath;
 
 public:
-   TNucleus(){};               // Should not be use, here so we can write things to a root file.
+   TNucleus() {};               // Should not be use, here so we can write things to a root file.
    TNucleus(const char* name); // Creates a nucleus based on symbol and sets all parameters from mass.dat
    TNucleus(int charge, int neutrons, double mass, const char* symbol); // Creates a nucleus with Z, N, mass, and symbol
    TNucleus(
@@ -80,13 +80,12 @@ public:
 private:
    void SetName(const char* c = "") override;
 
-   int         fA{};          // Number of nucleons (Z + N)
-   int         fN{};          // Number of neutrons (N)
-   int         fZ{};          // Number of protons (Z)
-   double      fMass{};       // Mass (in MeV)
-   double      fMassExcess{}; // Mass excess (in MeV)
-   std::string fSymbol;       // Atomic symbol (ex. Ba, C, O, N)
-   // std::string fName;                                    // Name, whatever user inputs (ex. 9C, 9c);
+   int         fA{0};          // Number of nucleons (Z + N)
+   int         fN{0};          // Number of neutrons (N)
+   int         fZ{0};          // Number of protons (Z)
+   double      fMass{0.};      // Mass (in MeV)
+   double      fMassExcess{0.};// Mass excess (in MeV)
+   std::string fSymbol;        // Atomic symbol (ex. Ba, C, O, N)
 
    TList TransitionList;
    bool  LoadTransitionFile();

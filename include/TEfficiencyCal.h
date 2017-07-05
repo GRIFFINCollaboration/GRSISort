@@ -30,7 +30,7 @@ public:
    void ScaleGraph(Double_t scaleFactor);
 
 private:
-   Double_t fScaleFactor{};
+   Double_t fScaleFactor{1.};
 
    /// \cond CLASSIMP
    ClassDefOverride(TEfficiencyCal, 1);

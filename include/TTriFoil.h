@@ -44,8 +44,8 @@ public:
 
 private:
    std::vector<Short_t> fTfWave;
-   Long_t               fTimestamp{};
-   bool                 fBeam{};
+   Long_t               fTimestamp{0};
+   bool                 fBeam{false};
    std::vector<int>     fTBeam;
 
    /// \cond CLASSIMP

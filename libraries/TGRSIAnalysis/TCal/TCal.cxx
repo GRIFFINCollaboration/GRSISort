@@ -2,9 +2,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TCal)
-   /// \endcond
+/// \endcond
 
-   TCal::TCal()
+TCal::TCal()
 {
    /// Default constructor
    InitTCal();
@@ -21,9 +21,6 @@ TCal::TCal(const char* name, const char* title)
 TCal::~TCal()
 {
    /// Default dtor
-   fNuc = nullptr;
-   // fgraph = nullptr;
-   fHist = nullptr;
 }
 
 TCal::TCal(const TCal& copy) : TGraphErrors(copy)

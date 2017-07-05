@@ -42,7 +42,7 @@ class TBGSubtraction : public TGMainFrame {
 
    //  RQ_OBJECT("TBGSubtraction")
 private:
-   TGMainFrame*         fMain{};
+   TGMainFrame*         fMain{nullptr};
    TRootEmbeddedCanvas* fProjectionCanvas;
    TRootEmbeddedCanvas* fGateCanvas;
    TH2*                 fMatrix;
@@ -53,34 +53,34 @@ private:
    TGDoubleHSlider*     fGateSlider;
    TGDoubleHSlider*     fBGSlider;
    TGNumberEntry*       fBGParamEntry;
-   TGNumberEntry*       fBGEntryLow{};
-   TGNumberEntry*       fBGEntryHigh{};
-   TGNumberEntry*       fGateEntryLow{};
-   TGNumberEntry*       fGateEntryHigh{};
-   TGLabel*             fBGParamLabel{};
+   TGNumberEntry*       fBGEntryLow{nullptr};
+   TGNumberEntry*       fBGEntryHigh{nullptr};
+   TGNumberEntry*       fGateEntryLow{nullptr};
+   TGNumberEntry*       fGateEntryHigh{nullptr};
+   TGLabel*             fBGParamLabel{nullptr};
    TGCheckButton*       fBGCheckButton;
 
    TGLayoutHints* fBly;
    TGLayoutHints* fBly1;
-   TGLayoutHints* fLayoutCanvases{};
-   TGLayoutHints* fLayoutParam{};
+   TGLayoutHints* fLayoutCanvases{nullptr};
+   TGLayoutHints* fLayoutParam{nullptr};
 
-   TGTextEntry* fWrite2FileName{};
-   TGTextEntry* fHistogramDescription{};
+   TGTextEntry* fWrite2FileName{nullptr};
+   TGTextEntry* fHistogramDescription{nullptr};
    //      TGTextButton         *fDrawCanvasButton;
-   TGTextButton* fWrite2FileButton{};
+   TGTextButton* fWrite2FileButton{nullptr};
 
    // Status Bars
-   TGStatusBar* fProjectionStatus{};
+   TGStatusBar* fProjectionStatus{nullptr};
 
    // Frames
    TGVerticalFrame*   fGateFrame;
    TGVerticalFrame*   fProjectionFrame;
-   TGHorizontalFrame* fBGParamFrame{};
-   TGHorizontalFrame* fGateEntryFrame{};
-   TGHorizontalFrame* fBGEntryFrame{};
-   TGHorizontalFrame* fDescriptionFrame{};
-   TGHorizontalFrame* fButtonFrame{};
+   TGHorizontalFrame* fBGParamFrame{nullptr};
+   TGHorizontalFrame* fGateEntryFrame{nullptr};
+   TGHorizontalFrame* fBGEntryFrame{nullptr};
+   TGHorizontalFrame* fDescriptionFrame{nullptr};
+   TGHorizontalFrame* fButtonFrame{nullptr};
 
    // Combo box
    TGComboBox* fAxisCombo;

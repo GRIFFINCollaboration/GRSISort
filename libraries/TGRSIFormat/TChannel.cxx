@@ -296,27 +296,35 @@ void TChannel::Clear(Option_t*)
    /// Clears all fields of a TChannel. There are currently no options to be specified.
    fAddress        = 0xffffffff;
    fIntegration    = 0;
+	fTypeName.clear();
+	fDigitizerTypeString.clear();
+	fDigitizerType  = 0;
    fNumber         = 0;
    fStream         = 0;
-   fENGChi2        = 0.0;
-   fEFFChi2        = 0.0;
    fUserInfoNumber = 0xffffffff;
    fUseCalFileInt  = false;
-   WaveFormShape   = WaveFormShapePar();
-
-   SetName("DefaultTChannel");
 
    fDetectorNumber = -1;
    fSegmentNumber  = -1;
    fCrystalNumber  = -1;
    fTimeOffset     = 0.0;
 
+   WaveFormShape   = WaveFormShapePar();
+
+   SetName("DefaultTChannel");
+
    fENGCoefficients.clear();
+   fENGChi2        = 0.0;
    fCFDCoefficients.clear();
+   fCFDChi2        = 0.0;
    fLEDCoefficients.clear();
+   fLEDChi2        = 0.0;
    fTIMECoefficients.clear();
+   fTIMEChi2        = 0.0;
    fEFFCoefficients.clear();
+   fEFFChi2        = 0.0;
    fCTCoefficients.clear();
+   fENGChi2        = 0.0;
 }
 
 TChannel* TChannel::GetChannel(unsigned int temp_address)

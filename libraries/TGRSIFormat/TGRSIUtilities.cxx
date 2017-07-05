@@ -13,8 +13,7 @@
 bool file_exists(const char* filename)
 {
    // std::ifstream(filename);
-   struct stat buffer {
-   };
+   struct stat buffer;
    return (stat(filename, &buffer) == 0);
 }
 

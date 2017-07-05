@@ -22,11 +22,12 @@
 
 ClassImp(TMnemonic)
 
-   void TMnemonic::Clear(Option_t*)
+void TMnemonic::Clear(Option_t*)
 {
    fArrayPosition = -1;
    fSegment       = -1;
    fSystemString.clear();
+   fSystem = kClear;
    fSubSystemString.clear();
    fSubSystem = kClear;
    fArraySubPositionString.clear();

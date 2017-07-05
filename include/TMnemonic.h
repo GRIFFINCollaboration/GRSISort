@@ -8,24 +8,24 @@
 
 class TMnemonic : public TObject {
 public:
-   TMnemonic() : fClassType(nullptr) {}
+   TMnemonic() : fClassType(nullptr) { Clear(); }
    TMnemonic(const char* name) : TMnemonic() { Parse(name); }
    ~TMnemonic() override = default;
 
 private:
-   int16_t     fArrayPosition{};
-   int16_t     fSegment{};
+   int16_t     fArrayPosition;
+   int16_t     fSegment;
    std::string fSystemString;
    std::string fSubSystemString;
    std::string fArraySubPositionString;
    std::string fCollectedChargeString;
    std::string fOutputSensorString;
 
-   int fSystem{};
-   int fSubSystem{};
-   int fArraySubPosition{};
-   int fCollectedCharge{};
-   int fOutputSensor{};
+   int fSystem;
+   int fSubSystem;
+   int fArraySubPosition;
+   int fCollectedCharge;
+   int fOutputSensor;
 
    mutable TClass* fClassType; //!<! TGRSIDetector Type that this mnemonic represents
 

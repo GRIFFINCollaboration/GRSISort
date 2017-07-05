@@ -303,7 +303,7 @@ void WriteM4b(TH2* mat, std::fstream* outfile)
 
 void WriteHist(TH1* hist, std::fstream* outfile)
 {
-   SpeHeader spehead{};
+   SpeHeader spehead;
    spehead.buffsize = 24;
    strncpy(spehead.label, hist->GetName(), 8);
 

@@ -52,7 +52,7 @@ public:
    virtual void CreateHistograms()              = 0;
    virtual void FillHistograms()                = 0;
    virtual void InitializeBranches(TTree* tree) = 0;
-   virtual void EndOfSort(){};
+   virtual void EndOfSort() {};
    void SetOutputPrefix(const char* prefix) { fOutputPrefix = prefix; }
 
 protected:
@@ -64,7 +64,7 @@ protected:
 
 private:
    std::string       fOutputPrefix;
-   TAnalysisOptions* fAnalysisOptions{};
+   TAnalysisOptions* fAnalysisOptions{nullptr};
 
    ClassDefOverride(TGRSISelector, 2);
 };

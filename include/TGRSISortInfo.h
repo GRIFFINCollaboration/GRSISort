@@ -19,7 +19,7 @@ class TGRSISortList : public TObject {
    typedef std::map<Int_t, std::map<Int_t, TGRSISortInfo*>> info_map;
 
 public:
-   TGRSISortList(){};
+   TGRSISortList() {};
    ~TGRSISortList() override = default;
 
    Bool_t AddSortInfo(TGRSISortInfo* info, Option_t* opt = "");
@@ -61,9 +61,9 @@ public:
    Int_t AddDuplicate() { return ++fDuplicates; }
 
 private:
-   Int_t   fRunNumber{};
-   Int_t   fSubRunNumber{};
-   UInt_t  fDuplicates{};
+   Int_t   fRunNumber;
+   Int_t   fSubRunNumber;
+   UInt_t  fDuplicates;
    TString fComment;
 
    /// \cond CLASSIMP

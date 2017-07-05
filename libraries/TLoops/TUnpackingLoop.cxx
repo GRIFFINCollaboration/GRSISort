@@ -26,7 +26,7 @@ TUnpackingLoop* TUnpackingLoop::Get(std::string name)
 
 TUnpackingLoop::TUnpackingLoop(std::string name)
    : StoppableThread(name), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>()),
-     fFragsReadFromRaw(0), fGoodFragsRead(0), fEvaluateDataType(true)
+     fFragsReadFromRaw(0), fGoodFragsRead(0), fEvaluateDataType(true), fDataType(kMidas)
 {
 }
 

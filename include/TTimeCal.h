@@ -9,8 +9,8 @@
 
 class TTimeCal : public TCal {
 public:
-   TTimeCal(){};
-   TTimeCal(const char* name, const char* title) : TCal(name, title){};
+   TTimeCal() {};
+   TTimeCal(const char* name, const char* title) : TCal(name, title) {};
    ~TTimeCal() override = default;
 
    // pure virtual functions

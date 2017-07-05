@@ -31,10 +31,10 @@ public:
    ~TDescant() override;
 
 public:
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
    TDescantHit* GetDescantHit(const Int_t& i = 0);
 
-   Short_t GetMultiplicity() const { return fDescantHits.size(); } //!<!
+   Short_t GetMultiplicity() const override { return fDescantHits.size(); } //!<!
 
    static TVector3 GetPosition(int DetNbr, double dist = 222); //!<!
 
@@ -58,7 +58,7 @@ public:
 private:
    std::vector<TDescantHit> fDescantHits; ///<  The set of crystal hits
    static bool              fSetWave;     ///<  Flag for Waveforms ON/OFF
-   bool                     fHitFlag{};   ///<   Is there a Descant hit?
+   bool                     fHitFlag;   ///<   Is there a Descant hit?
 
 public:
    static bool SetWave() { return fSetWave; }         //!<!

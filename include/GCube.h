@@ -75,14 +75,14 @@ protected:
    using TH1::DoIntegral;
    Double_t DoIntegral(Int_t binx1, Int_t binx2, Int_t biny1, Int_t biny2, Int_t binz1, Int_t binz2, Double_t& error,
                        Option_t* option, Bool_t doError = kFALSE) const override;
-   Double_t fTsumwy{};  // Total Sum of weight*Y
-   Double_t fTsumwy2{}; // Total Sum of weight*Y*Y
-   Double_t fTsumwxy{}; // Total Sum of weight*X*Y
-   Double_t fTsumwz{};  // Total Sum of weight*Z
-   Double_t fTsumwz2{}; // Total Sum of weight*Z*Z
-   Double_t fTsumwxz{}; // Total Sum of weight*X*Z
-   Double_t fTsumwyz{}; // Total Sum of weight*Y*Z
-   TH2*     fMatrix{};  //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
+   Double_t fTsumwy{0};  // Total Sum of weight*Y
+   Double_t fTsumwy2{0}; // Total Sum of weight*Y*Y
+   Double_t fTsumwxy{0}; // Total Sum of weight*X*Y
+   Double_t fTsumwz{0};  // Total Sum of weight*Z
+   Double_t fTsumwz2{0}; // Total Sum of weight*Z*Z
+   Double_t fTsumwxz{0}; // Total Sum of weight*X*Z
+   Double_t fTsumwyz{0}; // Total Sum of weight*Y*Z
+   TH2*     fMatrix{0};  //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
 
 private:
    GCube(const GCube&);

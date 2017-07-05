@@ -65,8 +65,8 @@ protected:
 
    std::vector<char> fReadBuffer;
 
-   size_t fBytesRead{};
-   size_t fFileSize{};
+   size_t fBytesRead{0};
+   size_t fFileSize{0};
 
    /// \cond CLASSIMP
    ClassDefOverride(TRawFile, 0) // Used to open and write Midas Files

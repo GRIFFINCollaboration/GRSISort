@@ -25,7 +25,7 @@ public:
 
 public:
    TSharcHit* GetSharcHit(const int& i);
-   TGRSIDetectorHit* GetHit(const int& idx);
+   TGRSIDetectorHit* GetHit(const int& idx) override;
    static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X = 0.00, double Y = 0.00,
                                double Z = 0.00); //!<!
    static double   GetXOffset() { return fXoffset; }
@@ -40,7 +40,7 @@ public:
    }
 
    int     GetSize() const { return fSharcHits.size(); } //!<!
-   Short_t GetMultiplicity() const { return fSharcHits.size(); }
+   Short_t GetMultiplicity() const override { return fSharcHits.size(); }
 
    void Copy(TObject&) const override;        //!<!
    void Clear(Option_t* = "") override;       //!<!

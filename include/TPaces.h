@@ -24,8 +24,8 @@ public:
 
 public:
    TPacesHit* GetPacesHit(const int& i); //!<!
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
-   Short_t GetMultiplicity() const { return fPacesHits.size(); }
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
+   Short_t GetMultiplicity() const override { return fPacesHits.size(); }
 
 #ifndef __CINT__
    void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override;

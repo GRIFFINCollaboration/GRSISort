@@ -8,9 +8,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TFragment)
-   /// \endcond
+/// \endcond
 
-   Long64_t TFragment::fNumberOfFragments = 0;
+Long64_t TFragment::fNumberOfFragments = 0;
 
 TFragment::TFragment() : TGRSIDetectorHit()
 {
@@ -74,6 +74,7 @@ void TFragment::Clear(Option_t* opt)
    fTriggerId.clear();
 
    fPPG           = nullptr;
+	fEntryNumber   = 0;
    fZc            = 0;
    fCcShort       = 0;
    fCcLong        = 0;

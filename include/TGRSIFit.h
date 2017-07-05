@@ -67,8 +67,8 @@ protected:
    void GoodFit(Bool_t flag = true) { fGoodFitFlag = flag; }
 
 private:
-   Bool_t         fInitFlag{};
-   Bool_t         fGoodFitFlag{}; // This doesn't do anything yet
+   Bool_t         fInitFlag{false};
+   Bool_t         fGoodFitFlag{false}; // This doesn't do anything yet
    TRef           fHist;
    static TString fDefaultFitType;
 

@@ -1,4 +1,3 @@
-
 #include "Globals.h"
 #include "GCanvas.h"
 
@@ -54,7 +53,7 @@ enum MyArrowPress { kMyArrowLeft = 0x1012, kMyArrowUp = 0x1013, kMyArrowRight = 
 
 ClassImp(GMarker)
 
-   void GMarker::Copy(TObject& object) const
+void GMarker::Copy(TObject& object) const
 {
    TObject::Copy(object);
    (static_cast<GMarker&>(object)).x      = x;
@@ -66,46 +65,6 @@ ClassImp(GMarker)
    (static_cast<GMarker&>(object)).binx   = binx;
    (static_cast<GMarker&>(object)).biny   = biny;
 }
-/*
-   ClassImp(GPopup)
-
-   GPopup::GPopup(const TGWindow *p,const TGWindow *m)
-   : TGTransientFrame(p,m,200,200,kVerticalFrame) {
-   SetCleanup(kDeepCleanup);
-   Connect("CloseWindow()","GPopup",this,"CloseWindow()");
-   DontCallClose();
-   if(!p&&!m) {
-   MakeZombie();
-   return;
-   }
-   TGHorizontalFrame *fHtop = new TGHorizontalFrame(this,200,200);
-
-   fButton1 = new TGTextButton(fHtop,"&ok",1);
-   fButton1->SetCommand("printf(\"you pressed ok.\\n\")");
-   fButton1 = new TGTextButton(fHtop,"&cancel",2);
-   fButton1->SetCommand("printf(\"you pressed cancel.\\n\")");
-
-   fHtop->AddFrame(fButton1,0);//new TGLayoutHints);//(kLHintsCenterX|kLHintsCenterY));
-   fHtop->AddFrame(fButton2,0);//new TGLayoutHints);//(kLHintsCenterX|kLHintsCenterY));
-   AddFrame(fHtop,0);//new TGLayoutHints);//(kLHintsExpandX|kLHintsExpandY));
-
-   SetEditDisabled(kEditDisable);
-   MapSubwindows();
-   TGDimension size = GetDefaultSize();
-   Resize(size);
-   CenterOnParent();
-   MapWindow();
-   }
-
-   GPopup::~GPopup() {
-   if(IsZombie()) return;
-//cleanup?
-}
-
-void GPopup::CloseWindow() {
-DeleteWindow();
-}
-*/
 
 int GCanvas::lastx = 0;
 int GCanvas::lasty = 0;
@@ -336,11 +295,6 @@ bool GCanvas::CycleBackgroundSubtraction()
    return true;
 }
 
-// void GCanvas::AddBGMarker(GMarker *mark) {
-//  GMarker *bg_mark = new GMarker(*mark);
-//  fBG_Markers.push_back(bg_mark);
-//}
-
 GCanvas* GCanvas::MakeDefCanvas()
 {
    // Static function to build a default canvas.
@@ -358,29 +312,15 @@ GCanvas* GCanvas::MakeDefCanvas()
       cdef = StrDup(Form("%s", defcanvas));
    }
    auto* c = new GCanvas(cdef, cdef, 1);
-   // printf("GCanvas::MakeDefCanvas"," created default GCanvas with name %s",cdef);
    delete[] cdef;
    return c;
 }
-
-// void GCanvas::ProcessEvent(Int_t event,Int_t x,Int_t y,TObject *obj) {
-//   printf("{GCanvas} ProcessEvent:\n");
-//   printf("\tevent: \t0x%08x\n",event);
-//   printf("\tobject:\t0x%08x\n",obj);
-//   printf("\tx:     \t0x%i\n",x);
-//   printf("\ty:     \t0x%i\n",y);
-//}
-
-// void GCanvas::ExecuteEvent(Int_t event,Int_t x,Int_t y) {
-//  printf("exc event called.\n");
-//}
 
 void GCanvas::HandleInput(int event, Int_t x, Int_t y)
 {
    // If the below switch breaks. You need to upgrade your version of ROOT
    // Version 5.34.24 works. //older version should work now too pcb (8/2015)
    bool used = false;
-   // printf("event = 0x%08x\t x = 0x%08x\t y = 0x%08x \n",event,x,y);
    switch(event) {
    case kButton1Down:   // single click
    case kButton1Double: // double click
@@ -583,11 +523,6 @@ TF1* GCanvas::GetLastFit()
    }
    if(hist->GetListOfFunctions()->GetSize() > 0) {
       TF1* tmpfit = static_cast<TF1*>(hist->GetListOfFunctions()->Last());
-      // std::string tmpname = tmpfit->GetName();
-      // while(tmpname.find("background") != std::string::npos ){
-      //    tmpfit = (TF1*)(hist->GetListOfFunctions()->Before(tmpfit));
-      //    tmpname = tmpfit->GetName();
-      //}
       return tmpfit;
    }
    return nullptr;
@@ -600,9 +535,6 @@ bool GCanvas::Process1DArrowKeyPress(Event_t*, UInt_t* keysym)
 
    int first = hists.at(0)->GetXaxis()->GetFirst();
    int last  = hists.at(0)->GetXaxis()->GetLast();
-   // TAxis* axis = hists.at(0)->GetXaxis();
-   // int first = axis->GetFirst();
-   // int last = axis->GetLast();
 
    int min = std::min(first, 0);
    int max = std::max(last, hists.at(0)->GetXaxis()->GetNbins() + 1);
@@ -627,11 +559,6 @@ bool GCanvas::Process1DArrowKeyPress(Event_t*, UInt_t* keysym)
       for(auto& hist : hists) {
          hist->GetXaxis()->SetRange(first, last);
       }
-      // double begin = axis->GetBinLowEdge(first);
-      // double end = axis->GetBinUpEdge(last);
-      // for(unsigned int i=0;i<hists.size();i++) {
-      //  hists.at(i)->GetXaxis()->SetRangeUser(begin,end);
-      //}
 
       edited = true;
    } break;
@@ -650,11 +577,6 @@ bool GCanvas::Process1DArrowKeyPress(Event_t*, UInt_t* keysym)
       for(auto& hist : hists) {
          hist->GetXaxis()->SetRange(first, last);
       }
-      // double begin = axis->GetBinLowEdge(first);
-      // double end = axis->GetBinUpEdge(last);
-      // for(unsigned int i=0;i<hists.size();i++) {
-      //  hists.at(i)->GetXaxis()->SetRangeUser(begin,end);
-      //}
 
       edited = true;
    } break;
@@ -672,8 +594,6 @@ bool GCanvas::Process1DArrowKeyPress(Event_t*, UInt_t* keysym)
          TH1* prev = ghist->GetNext();
          if(prev != nullptr) {
             prev->GetXaxis()->SetRange(first, last);
-            // prev->GetXaxis()->SetRange(axis->GetBinLowEdge(first),
-            //                           axis->GetBinUpEdge(last));
             prev->Draw("");
             RedrawMarkers();
             edited = true;
@@ -694,8 +614,6 @@ bool GCanvas::Process1DArrowKeyPress(Event_t*, UInt_t* keysym)
          TH1* prev = ghist->GetPrevious();
          if(prev != nullptr) {
             prev->GetXaxis()->SetRange(first, last);
-            // prev->GetXaxis()->SetRange(axis->GetBinLowEdge(first),
-            //                           axis->GetBinUpEdge(last));
             prev->Draw("");
             RedrawMarkers();
             edited = true;
@@ -743,11 +661,6 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
    case kKey_d: {
       printf("i am here.\n");
       new GPopup(gClient->GetDefaultRoot(), gClient->GetDefaultRoot(), 500, 200);
-      // new GPopup(0,0);
-      // this);
-      // TGFileInfo fi;
-      // new TGFileDialog(gClient->GetDefaultRoot(),gClient->GetDefaultRoot(),
-      //                 kFDOpen, &fi);
 
    } break;
 

@@ -48,8 +48,8 @@ public:
    void Clear(Option_t* opt = "") override;
    void Print(Option_t* opt = "") const override;
 
-   Short_t           GetMultiplicity() const { return fSiLiHits.size(); }
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
+   Short_t           GetMultiplicity() const override { return fSiLiHits.size(); }
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
    TSiLiHit* GetSiLiHit(const Int_t& i = 0);
 
    TSiLiHit* GetAddbackHit(const Int_t& i = 0);

@@ -7,10 +7,10 @@
 
 /// \cond CLASSIMP
 ClassImp(TReaction)
-   /// \endcond
+/// \endcond
 
-   TReaction::TReaction(const char* beam, const char* targ, const char* ejec, const char* reco, double beame,
-                        double ex3, bool inverse)
+TReaction::TReaction(const char* beam, const char* targ, const char* ejec, const char* reco, double beame,
+							double ex3, bool inverse)
 {
 
    Clear();
@@ -497,38 +497,37 @@ void TReaction::Print(Option_t* opt) const
 
 void TReaction::Clear(Option_t*)
 {
-
-   fQVal          = 0;
-   fS             = 0;
-   fInvariantMass = 0;
-   fTBeam         = 0;
+   fQVal          = 0.;
+   fS             = 0.;
+   fInvariantMass = 0.;
+   fTBeam         = 0.;
    fInverse       = false;
 
-   fCmTi = 0;
-   fCmTf = 0;
-   fCmE  = 0;
-   fCmV  = 0;
-   fCmP  = 0;
-   fCmG  = 0;
+   fCmTi = 0.;
+   fCmTf = 0.;
+   fCmE  = 0.;
+   fCmV  = 0.;
+   fCmP  = 0.;
+   fCmG  = 0.;
 
    for(int i = 0; i < 4; i++) {
-
       fNuc[i] = nullptr;
-      fM[i]   = 0;
+      fM[i]   = 0.;
 
-      fTCm[i] = 0;
-      fECm[i] = 0;
-      fVCm[i] = 0;
-      fPCm[i] = 0;
-      fGCm[i] = 0;
+      fTCm[i] = 0.;
+      fECm[i] = 0.;
+      fVCm[i] = 0.;
+      fPCm[i] = 0.;
+      fGCm[i] = 0.;
+
+		fThetaMax[i] = 0.;
 
       if(i < 2) {
-         fTLab[i] = 0;
-         fELab[i] = 0;
-         fVLab[i] = 0;
-         fPLab[i] = 0;
-         fGLab[i] = 0;
+         fTLab[i] = 0.;
+         fELab[i] = 0.;
+         fVLab[i] = 0.;
+         fPLab[i] = 0.;
+         fGLab[i] = 0.;
       }
    }
-   return;
 }

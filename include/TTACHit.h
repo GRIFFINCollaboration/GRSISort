@@ -19,6 +19,7 @@
 
 #include "TFragment.h"
 #include "TChannel.h"
+#include "TGraph.h"
 
 #include "TVector3.h"
 
@@ -32,7 +33,7 @@ public:
    TTACHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
 
 private:
-   Int_t fFilter{};
+   Int_t fFilter{0};
 
 public:
    /////////////////////////		/////////////////////////////////////
@@ -42,6 +43,10 @@ public:
    inline Int_t GetFilterPattern() const { return fFilter; } //!<!
 
    bool InFilter(Int_t); //!<!
+
+   Double_t GetTempCorrectedCharge(TGraph* correction_graph) const;
+   Double_t TempCorrectedCharge(TGraph* correction_graph) const;
+   Double_t GetTempCorrectedEnergy(TGraph* correction_graph) const;
 
 public:
    void Clear(Option_t* opt = "") override;       //!<!

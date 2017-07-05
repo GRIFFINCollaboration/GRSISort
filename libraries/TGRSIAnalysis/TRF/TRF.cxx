@@ -2,9 +2,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TRF)
-   /// \endcond
+/// \endcond
 
-   Double_t TRF::fPeriod;
+Double_t TRF::fPeriod;
 
 TRF::TRF()
 {

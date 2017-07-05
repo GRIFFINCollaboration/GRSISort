@@ -31,10 +31,10 @@ public:
    TZeroDegree(const TZeroDegree& rhs);
 
 public:
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
    void Copy(TObject& rhs) const override;
    TZeroDegreeHit* GetZeroDegreeHit(const int& i);                    //!<!
-   Short_t GetMultiplicity() const { return fZeroDegreeHits.size(); } //!<!
+   Short_t GetMultiplicity() const override { return fZeroDegreeHits.size(); } //!<!
 
    static TVector3 GetPosition(double dist) { return TVector3(0, 0, dist); } //!<!
 

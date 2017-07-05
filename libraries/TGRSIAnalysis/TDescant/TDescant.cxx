@@ -10,9 +10,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TDescant)
-   /// \endcond
+/// \endcond
 
-   bool TDescant::fSetWave = false;
+bool TDescant::fSetWave = false;
 
 TVector3 TDescant::gPosition[71] = {
    // Descant positions from James' Thesis
@@ -107,10 +107,9 @@ TDescant::TDescant(const TDescant& rhs) : TGRSIDetector()
 void TDescant::Clear(Option_t* opt)
 {
    /// Clears all of the hits
-   // if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
    TGRSIDetector::Clear(opt);
-   //}
    fDescantHits.clear();
+	fHitFlag = false;
 }
 
 TDescant& TDescant::operator=(const TDescant& rhs)

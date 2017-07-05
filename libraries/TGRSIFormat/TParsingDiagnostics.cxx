@@ -8,21 +8,17 @@ TParsingDiagnostics* TParsingDiagnostics::fParsingDiagnostics = nullptr;
 
 TParsingDiagnostics::TParsingDiagnostics() : TObject()
 {
-   fIdHist = nullptr;
    Clear();
 }
 
 TParsingDiagnostics::TParsingDiagnostics(const TParsingDiagnostics&) : TObject()
 {
-   fIdHist = nullptr;
    Clear();
 }
 
 TParsingDiagnostics::~TParsingDiagnostics()
 {
-   if(fIdHist != nullptr) {
-      delete fIdHist;
-   }
+	delete fIdHist;
 }
 
 void TParsingDiagnostics::Copy(TObject& obj) const
@@ -45,9 +41,7 @@ void TParsingDiagnostics::Copy(TObject& obj) const
 
 void TParsingDiagnostics::Clear(Option_t*)
 {
-   if(fIdHist != nullptr) {
-      delete fIdHist;
-   }
+	delete fIdHist;
    fIdHist         = nullptr;
    fPPGCycleLength = 0;
    fNumberOfGoodFragments.clear();
