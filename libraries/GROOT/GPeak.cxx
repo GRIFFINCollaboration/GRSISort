@@ -340,6 +340,32 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    fSum -= bgArea;
    printf("sum after subtraction: %02f\n", fSum);
 
+   // Make a function that does not include the background
+   // Intgrate the background.
+   // TPeak* tmppeak = new TPeak(*this);
+
+   Double_t range_low, range_high;
+   GetRange(range_low,range_high);
+
+   GPeak* tmppeak = new GPeak(*this);
+   tmppeak->SetParameter("step", 0.0);
+   tmppeak->SetParameter("A", 0.0);
+   tmppeak->SetParameter("B", 0.0);
+   tmppeak->SetParameter("C", 0.0);
+   tmppeak->SetParameter("bg_offset", 0.0);
+   tmppeak->SetRange(range_low, range_high); // This will help get the true area of the gaussian 200 ~ infinity in a gaus
+   tmppeak->SetName("tmppeak");
+
+   // This is where we will do integrals and stuff.
+   TMatrixDSym CovMat = fitres->GetCovarianceMatrix();
+   CovMat(5, 5) = 0.0;
+   CovMat(6, 6) = 0.0;
+   fDArea = (tmppeak->IntegralError(xlow, xhigh, tmppeak->GetParameters(), CovMat.GetMatrixArray())) / fithist->GetBinWidth(1);
+
+   delete tmppeak;
+
+
+
    if(!verbose) {
       Print(); /*
        printf("BG Area:         %.02f\n",bgArea);

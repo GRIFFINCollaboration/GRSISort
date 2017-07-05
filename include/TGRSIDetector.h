@@ -35,7 +35,6 @@ public:
    ~TGRSIDetector() override;
 
 public:
-// virtual TGRSIDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
 #ifndef __CINT__
    void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override { AbstractMethod("AddFragment()"); } //!<!
 #endif
@@ -44,6 +43,9 @@ public:
    void Copy(TObject&) const override;            //!<!
    void Clear(Option_t* opt = "") override;       //!<!
    void Print(Option_t* opt = "") const override; //!<!
+
+   virtual Short_t GetMultiplicity() const { AbstractMethod("GetMultiplicity()"); return 0; }
+   virtual TGRSIDetectorHit* GetHit(const Int_t& idx = 0) { Int_t warning_removal; warning_removal = idx; AbstractMethod("GetHit()"); return nullptr;}
 
 protected:
 #ifndef __CINT__

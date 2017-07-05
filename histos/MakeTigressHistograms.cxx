@@ -93,7 +93,7 @@ void MakeAnalysisHistograms(TRuntimeObjects& obj) {
 /*    if(!first_ana_timestamp) {
       first_ana_timestamp = tigress->GetMidasTimestamp();
     }*/
-    for(UInt_t i=0; i<tigress->GetMultiplicity(); i++){
+    for(Short_t i=0; i<tigress->GetMultiplicity(); i++){
       obj.FillHistogram("gamma_energy",
 			4000, 1, 2001, tigress->GetTigressHit(i)->GetEnergy());
 
@@ -281,7 +281,7 @@ void MakeAnalysisHistograms(TRuntimeObjects& obj) {
 
 
       if(tigress){
-        for(UInt_t t=0; t<tigress->GetMultiplicity(); t++){
+        for(Short_t t=0; t<tigress->GetMultiplicity(); t++){
           TTigressHit *thit = tigress->GetTigressHit(t);
           obj.FillHistogram("tigress","gamma_sharc_energies",
 			    2000, 0, 10000, shit->GetEnergy(),

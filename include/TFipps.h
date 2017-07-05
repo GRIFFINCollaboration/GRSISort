@@ -39,7 +39,7 @@ public:
 public:
    TFippsHit* GetFippsHit(const Int_t& i);
    TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
-   Int_t GetMultiplicity() const;
+   Short_t GetMultiplicity() const;
 
    static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
 #ifndef __CINT__

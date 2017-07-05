@@ -160,108 +160,120 @@ void TEfficiencyCalibration::ScaleGuess()
    }
 }
 
-TFitResultPtr TEfficiencyCalibration::Fit(Option_t*)
-{
-   // This fits the relative efficiency curve
-   UInt_t n_rel_graphs = fRelativeEffGraph->GetListOfGraphs()->GetSize();
-   if(fRelativeFit) delete fRelativeFit;
-   fRelativeFit = new TF1("fRelativeFit", this, &TEfficiencyCalibration::PhotoPeakEfficiency, 0, 8000, 8 + n_rel_graphs,
-                          "TEfficiencyCalibration", "PhotoPeakEfficiency");
+TFitResultPtr TEfficiencyCalibration::Fit(Option_t *opt){
+	//This fits the relative efficiency curve
+	UInt_t n_rel_graphs = fRelativeEffGraph->GetListOfGraphs()->GetSize();
+	if(fRelativeFit) delete fRelativeFit;
+	fRelativeFit = new TF1("fRelativeFit",this,&TEfficiencyCalibration::PhotoPeakEfficiency,0,8000,8+n_rel_graphs,"TEfficiencyCalibration","PhotoPeakEfficiency");	
+	
+	//Start by naming the parameters of the fit
+	int mapIdx = 0;
+	for(auto it : fGraphMap){
+		fRelativeFit->SetParName(mapIdx,Form("Scale_%d",mapIdx));
+		if(mapIdx == 0){
+			fRelativeFit->FixParameter(mapIdx++,1.0);
+		}
+		else{
+			fRelativeFit->SetParameter(mapIdx,1.0);
+			fRelativeFit->SetParLimits(mapIdx++,0.1,10.);
 
-   // Start by naming the parameters of the fit
-   int mapIdx = 0;
-   for(auto it : fGraphMap) {
-      fRelativeFit->SetParName(mapIdx, Form("Scale_%d", mapIdx));
-      if(mapIdx == 0) {
-         fRelativeFit->FixParameter(mapIdx++, 1.0);
-      } else {
-         fRelativeFit->SetParameter(mapIdx, 1.0);
-         fRelativeFit->SetParLimits(mapIdx++, 0.1, 10.);
-      }
-   }
+		}
+	}
 
-   void ScaleGuess();
+	void ScaleGuess();
 
-   // Make initial guesses for the fit parameters
-   for(size_t i = 0; i < 8; ++i) {
-      fRelativeFit->SetParName(i + n_rel_graphs, Form("a_%lu", i));
-      fRelativeFit->SetParameter(i + n_rel_graphs, 0.00001);
-   }
-   fRelativeFit->SetParameter(n_rel_graphs, 5.0);
-   // We fix the higher order parameters to get to the real minimum more easily
-   fRelativeFit->FixParameter(n_rel_graphs + 4, 0.0);
-   fRelativeFit->FixParameter(n_rel_graphs + 5, 0.0);
-   fRelativeFit->FixParameter(n_rel_graphs + 6, 0.0);
-   fRelativeFit->FixParameter(n_rel_graphs + 7, 0.0);
-   fRelativeFit->Print();
+	//Make initial guesses for the fit parameters
+	for(size_t i=0; i< 8; ++i){
+		fRelativeFit->SetParName(i+n_rel_graphs,Form("a_%lu",i));
+		fRelativeFit->SetParameter(i+n_rel_graphs,0.00001);
+	}
+	fRelativeFit->SetParameter(n_rel_graphs,5.0);
+	//We fix the higher order parameters to get to the real minimum more easily
+	fRelativeFit->FixParameter(n_rel_graphs+4,0.0);
+	fRelativeFit->FixParameter(n_rel_graphs+5,0.0);
+	fRelativeFit->FixParameter(n_rel_graphs+6,0.0);
+	fRelativeFit->FixParameter(n_rel_graphs+7,0.0);
+	fRelativeFit->Print();
+	
+	//Turn the fitting flag on so that we scale graphs properly.
+	fFitting = true;
 
-   // Turn the fitting flag on so that we scale graphs properly.
-   fFitting = true;
+	//Fix scaling
+	for(size_t i=1; i<n_rel_graphs; ++i){
+		fRelativeFit->FixParameter(i,fRelativeFit->GetParameter(i));
+	}
+	
+	//Slowly Add parameters back
+	fRelativeEffGraph->Fit(fRelativeFit,"R0");
+	fRelativeFit->ReleaseParameter(n_rel_graphs+5);
+	fRelativeEffGraph->Fit(fRelativeFit,"R0");
+	fRelativeFit->ReleaseParameter(n_rel_graphs+6);
+	fRelativeEffGraph->Fit(fRelativeFit,"R0");
+	fRelativeFit->ReleaseParameter(n_rel_graphs+7);
 
-   // Fix scaling
-   for(size_t i = 1; i < n_rel_graphs; ++i) {
-      fRelativeFit->FixParameter(i, fRelativeFit->GetParameter(i));
-   }
+	//Fit only the very last parameter
+	for(size_t i=0; i< 7 + n_rel_graphs; ++i){
+		fRelativeFit->FixParameter(i,fRelativeFit->GetParameter(i));
+	}
+	fRelativeEffGraph->Fit(fRelativeFit,"R0");
 
-   // Slowly Add parameters back
-   fRelativeEffGraph->Fit(fRelativeFit, "R0");
-   fRelativeFit->ReleaseParameter(n_rel_graphs + 5);
-   fRelativeEffGraph->Fit(fRelativeFit, "R0");
-   fRelativeFit->ReleaseParameter(n_rel_graphs + 6);
-   fRelativeEffGraph->Fit(fRelativeFit, "R0");
-   fRelativeFit->ReleaseParameter(n_rel_graphs + 7);
+	fRelativeFit->SetRange(200,8000);
+	//Fit the scaling factor again, fix everything else
+	for(size_t i=n_rel_graphs; i<n_rel_graphs+7; ++i){
+		fRelativeFit->FixParameter(i,fRelativeFit->GetParameter(i));
+	}
+/*	for(size_t i=1; i<n_rel_graphs; ++i){
+		fRelativeFit->ReleaseParameter(i);
+	}*/
+	fRelativeEffGraph->Fit(fRelativeFit,"R0");
+	
+	fRelativeFit->SetRange(0,8000);
+	//Fix Scale factors and redo fit of other parameters
+/*	for(size_t i=1; i<n_rel_graphs; ++i){
+		fRelativeFit->FixParameter(i,fRelativeFit->GetParameter(i));
+	}*/
+	for(size_t i=n_rel_graphs; i< 7 + n_rel_graphs; ++i){
+		fRelativeFit->ReleaseParameter(i);
+	}
+	
+	fRelativeEffGraph->Fit(fRelativeFit,"R0");
+	
+	//Fix Scale factors and redo fit of other parameters
+/*	for(size_t i=1; i<n_rel_graphs; ++i){
+		fRelativeFit->ReleaseParameter(i);
+	}
+	for(size_t i=n_rel_graphs; i< 7 + n_rel_graphs; ++i){
+		fRelativeFit->ReleaseParameter(i);
+	}
+*/
+   /*ADDED TO MAKE WORK*/
+	//We fix the higher order parameters to get to the real minimum more easily
+	//fRelativeFit->FixParameter(n_rel_graphs+0,-4.16);
+	fRelativeFit->FixParameter(n_rel_graphs+0,-4.25);
+	fRelativeFit->FixParameter(n_rel_graphs+1,4.92);
+	fRelativeFit->FixParameter(n_rel_graphs+2,-6.56E-1);
+	fRelativeFit->FixParameter(n_rel_graphs+3,1.33E-2);
+	fRelativeFit->FixParameter(n_rel_graphs+4,-1.54E-3);
+	fRelativeFit->FixParameter(n_rel_graphs+5,2.01E-4);
+	fRelativeFit->FixParameter(n_rel_graphs+6,8.36E-5);
+	fRelativeFit->FixParameter(n_rel_graphs+7,-8.30E-6);
+	//Do the real fit with all of the parameters
+	TFitResultPtr res = fRelativeEffGraph->Fit(fRelativeFit,"SR");
 
-   // Fit only the very last parameter
-   for(size_t i = 0; i < 7 + n_rel_graphs; ++i) {
-      fRelativeFit->FixParameter(i, fRelativeFit->GetParameter(i));
-   }
-   fRelativeEffGraph->Fit(fRelativeFit, "R0");
+	
+	//Turn fitting flag off for drawing
+	fFitting = false;
 
-   fRelativeFit->SetRange(200, 8000);
-   // Fit the scaling factor again, fix everything else
-   for(size_t i = n_rel_graphs; i < n_rel_graphs + 7; ++i) {
-      fRelativeFit->FixParameter(i, fRelativeFit->GetParameter(i));
-   }
-   for(size_t i = 1; i < n_rel_graphs; ++i) {
-      fRelativeFit->ReleaseParameter(i);
-   }
-   fRelativeEffGraph->Fit(fRelativeFit, "R0");
+	//Draw The TF1
+	fRelativeFit->Draw("same");
+	
+	//Update the graphs
+	for(int i =0; i<fRelativeEffGraph->GetListOfGraphs()->GetSize(); ++i){
+		(static_cast<TEfficiencyGraph*>(fRelativeEffGraph->GetListOfGraphs()->At(i)))->Scale(fRelativeFit->GetParameter(i));
+	}
 
-   fRelativeFit->SetRange(0, 8000);
-   // Fix Scale factors and redo fit of other parameters
-   for(size_t i = 1; i < n_rel_graphs; ++i) {
-      fRelativeFit->FixParameter(i, fRelativeFit->GetParameter(i));
-   }
-   for(size_t i = n_rel_graphs; i < 7 + n_rel_graphs; ++i) {
-      fRelativeFit->ReleaseParameter(i);
-   }
+	return res;
 
-   fRelativeEffGraph->Fit(fRelativeFit, "R0");
-
-   // Fix Scale factors and redo fit of other parameters
-   for(size_t i = 1; i < n_rel_graphs; ++i) {
-      fRelativeFit->ReleaseParameter(i);
-   }
-   for(size_t i = n_rel_graphs; i < 7 + n_rel_graphs; ++i) {
-      fRelativeFit->ReleaseParameter(i);
-   }
-
-   // Do the real fit with all of the parameters
-   TFitResultPtr res = fRelativeEffGraph->Fit(fRelativeFit, "SR");
-
-   // Turn fitting flag off for drawing
-   fFitting = false;
-
-   // Draw The TF1
-   fRelativeFit->Draw("same");
-
-   // Update the graphs
-   for(int i = 0; i < fRelativeEffGraph->GetListOfGraphs()->GetSize(); ++i) {
-      (static_cast<TEfficiencyGraph*>(fRelativeEffGraph->GetListOfGraphs()->At(i)))
-         ->Scale(fRelativeFit->GetParameter(i));
-   }
-
-   return res;
 }
 
 Double_t TEfficiencyCalibration::PhotoPeakEfficiency(Double_t* x, Double_t* par)

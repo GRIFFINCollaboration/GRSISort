@@ -111,7 +111,7 @@ void TTigress::Clear(Option_t* opt)
 void TTigress::Print(Option_t* opt) const
 {
    printf("%lu tigress hits\n", fTigressHits.size());
-   for(unsigned int i = 0; i < GetMultiplicity(); i++) fTigressHits.at(i).Print(opt);
+   for(Short_t i = 0; i < GetMultiplicity(); i++) fTigressHits.at(i).Print(opt);
 
    return;
 }
