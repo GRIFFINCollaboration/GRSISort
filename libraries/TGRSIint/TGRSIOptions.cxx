@@ -274,6 +274,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 		.description("Turns off PROOF to run a selector on the main thread");
 
    parser.option("h help ?", &fHelp, true).description("Show this help message");
+   parser.option("v version", &fShowedVersion, true).description("Show the version of GRSISort");
 
 	// analysis options, these options are to be parsed on the second pass, so firstPass is set to false
    parser.option("build-window", &fAnalysisOptions->fBuildWindow, false).description("Build window, timestamp units");

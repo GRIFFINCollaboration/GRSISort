@@ -181,7 +181,7 @@ private:
 
 	bool fBatch; ///< Flag to use batch mode (-b)
 
-	bool fShowedVersion;
+	bool fShowedVersion;///< Flag to show version
 	bool fShowLogo;     ///< Flag to show logo (suppress with -l)
 	bool fSortRaw;      ///< Flag to sort Midas file
 	bool fSortRoot;     ///< Flag to sort root files
