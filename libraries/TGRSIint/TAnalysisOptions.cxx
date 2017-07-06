@@ -77,7 +77,7 @@ void TAnalysisOptions::ReadFromFile(const std::string& file)
    if(f->IsOpen()) {
       TList* list = f->GetListOfKeys();
       TIter  iter(list);
-      std::cout<<"Reading Options from file:"<<CYAN<<f<<RESET_COLOR<<std::endl;
+      std::cout<<R"(Reading analysis options from file: ")"<<CYAN<<f->GetName()<<RESET_COLOR<<R"(":)"<<std::endl;
       while(TKey* key = static_cast<TKey*>(iter.Next())) {
          if((key == nullptr) || (strcmp(key->GetClassName(), "TAnalysisOptions") != 0)) {
             continue;

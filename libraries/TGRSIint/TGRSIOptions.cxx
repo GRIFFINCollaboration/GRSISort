@@ -332,7 +332,6 @@ void TGRSIOptions::Load(int argc, char** argv)
 
 	// read analysis options from input file(s)
 	for(const std::string& file : fInputRootFiles) {
-		std::cout<<R"(Reading options from ")"<<file<<R"(":)"<<std::endl;
 		fAnalysisOptions->ReadFromFile(file);
 		fAnalysisOptions->Print();
 	}
@@ -526,7 +525,7 @@ Bool_t TGRSIOptions::ReadFromFile(TFile* file)
 
    TList* list = file->GetListOfKeys();
    TIter  iter(list);
-   printf("Reading Options from file:" CYAN " %s" RESET_COLOR "\n", file->GetName());
+	std::cout<<"Reading options from file: "<<CYAN<<file->GetName()<<RESET_COLOR<<std::endl;
    while(TKey* key = static_cast<TKey*>(iter.Next())) {
       if((key == nullptr) || (strcmp(key->GetClassName(), "TGRSIOptions") != 0)) {
 			continue;
