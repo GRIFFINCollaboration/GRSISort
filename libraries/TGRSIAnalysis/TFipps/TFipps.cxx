@@ -11,21 +11,11 @@
 
 #include "TGRSIOptions.h"
 
-////////////////////////////////////////////////////////////
-//
-// TFipps
-//
-// The TFipps class defines the observables and algorithms used
-// when analyzing FIPPS data. It includes detector positions,
-// add-back methods, etc.
-//
-////////////////////////////////////////////////////////////
-
 /// \cond CLASSIMP
 ClassImp(TFipps)
-   /// \endcond
+/// \endcond
 
-   bool DefaultAddback(TFippsHit& one, TFippsHit& two)
+bool DefaultAddback(TFippsHit& one, TFippsHit& two)
 {
    return ((one.GetDetector() == two.GetDetector()) &&
            (std::fabs(one.GetTime() - two.GetTime()) < TGRSIOptions::AnalysisOptions()->AddbackWindow()));

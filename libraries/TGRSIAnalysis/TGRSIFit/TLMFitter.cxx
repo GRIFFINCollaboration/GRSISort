@@ -2,27 +2,29 @@
 #include <iomanip>
 #include <iostream>
 
+/// \cond CLASSIMP
 ClassImp(TLMFitter)
+/// \endcond
 
-   /* DEFINITIONS */
-   /*******************************************************************/
-   /* alamda = parameter switches between curve and gradient method   */
-   /*          must begin negative to initialize fit routine          */
-   /* x[DIM] = x values of the data                                   */
-   /* y[DIM] = y values of the data (Number of counts)                */
-   /* sig[i] = sigma in the y value                                   */
-   /* chisq  = chi-squared definitions defined in mrqcof subroutine   */
-   /* sig2i  = 1 over sigma squared (Used in computing the chisq)     */
-   /* a[i]   = fit parameters of the fitting function                 */
-   /* ia[i]  = set to '1' to free a[i] or '0' for fixed               */
-   /* beta[j]= extremum vector                                        */
-   /* alpha[k][k] = curvature matrix                                  */
-   /* dy     = yfit - ydata                                           */
-   /* ma     = number of fit parameters in fit function               */
-   /*******************************************************************/
+/* DEFINITIONS */
+/*******************************************************************/
+/* alamda = parameter switches between curve and gradient method   */
+/*          must begin negative to initialize fit routine          */
+/* x[DIM] = x values of the data                                   */
+/* y[DIM] = y values of the data (Number of counts)                */
+/* sig[i] = sigma in the y value                                   */
+/* chisq  = chi-squared definitions defined in mrqcof subroutine   */
+/* sig2i  = 1 over sigma squared (Used in computing the chisq)     */
+/* a[i]   = fit parameters of the fitting function                 */
+/* ia[i]  = set to '1' to free a[i] or '0' for fixed               */
+/* beta[j]= extremum vector                                        */
+/* alpha[k][k] = curvature matrix                                  */
+/* dy     = yfit - ydata                                           */
+/* ma     = number of fit parameters in fit function               */
+/*******************************************************************/
 
-   /* Function Subroutine-***Put fitting function here***-------------*/
-   void TLMFitter::funcs(const double& x, Vec_IO_double& a, double& y, Vec_O_double& dyda)
+/* Function Subroutine-***Put fitting function here***-------------*/
+void TLMFitter::funcs(const double& x, Vec_IO_double& a, double& y, Vec_O_double& dyda)
 {
    for(int i = 0; i < a.size(); ++i) {
       fFunction->SetParameter(i, a[i]);

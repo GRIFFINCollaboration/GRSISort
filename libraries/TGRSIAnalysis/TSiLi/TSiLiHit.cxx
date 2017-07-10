@@ -3,9 +3,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TSiLiHit)
-   /// \endcond
+/// \endcond
 
-   TSiLiHit::TSiLiHit()
+TSiLiHit::TSiLiHit()
 {
    Clear();
 }

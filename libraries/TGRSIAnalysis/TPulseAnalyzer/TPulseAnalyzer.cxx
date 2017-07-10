@@ -4,9 +4,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TPulseAnalyzer)
-   /// \endcond
+/// \endcond
 
-   TPulseAnalyzer::TPulseAnalyzer()
+TPulseAnalyzer::TPulseAnalyzer()
    : cWpar(nullptr), spar(nullptr), shpar(nullptr)
 {
    Clear();

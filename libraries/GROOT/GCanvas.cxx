@@ -47,7 +47,9 @@
 
 enum MyArrowPress { kMyArrowLeft = 0x1012, kMyArrowUp = 0x1013, kMyArrowRight = 0x1014, kMyArrowDown = 0x1015 };
 
+/// \cond CLASSIMP
 ClassImp(GMarker)
+/// \endcond
 
 void GMarker::Copy(TObject& object) const
 {

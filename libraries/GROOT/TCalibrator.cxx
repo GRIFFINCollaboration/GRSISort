@@ -26,9 +26,11 @@
 
 #include "combinations.h"
 
+/// \cond CLASSIMP
 ClassImp(TCalibrator)
+/// \endcond
 
-   TCalibrator::TCalibrator()
+TCalibrator::TCalibrator()
 {
    linfit = nullptr;
    efffit = nullptr;

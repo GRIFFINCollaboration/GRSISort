@@ -7,9 +7,11 @@
 #include "GH1D.h"
 #include "SuppressTH1GDirectory.h"
 
-ClassImp(GH2Base)
+/// \cond CLASSIMP
+ClassImp(GHSym)
+/// \endcond
 
-   GH2Base::~GH2Base()
+GH2Base::~GH2Base()
 {
    fProjections->Delete();
    fSummaryProjections->Delete();

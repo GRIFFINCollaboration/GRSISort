@@ -6,9 +6,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TGRSIDetectorHit)
-   /// \endcond
+/// \endcond
 
-   TPPG* TGRSIDetectorHit::fPPG = nullptr;
+TPPG* TGRSIDetectorHit::fPPG = nullptr;
 
 TVector3 TGRSIDetectorHit::fBeamDirection(0, 0, 1);
 

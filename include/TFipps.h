@@ -20,6 +20,16 @@
 #include "TGRSIRunInfo.h"
 #include "TTransientBits.h"
 
+////////////////////////////////////////////////////////////
+///
+/// \class TFipps
+///
+/// The TFipps class defines the observables and algorithms used
+/// when analyzing FIPPS data. It includes detector positions,
+/// add-back methods, etc.
+///
+////////////////////////////////////////////////////////////
+
 class TFipps : public TGRSIDetector {
 public:
    enum EFippsBits {

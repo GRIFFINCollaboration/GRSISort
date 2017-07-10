@@ -8,9 +8,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TS3)
-   /// \endcond
+/// \endcond
 
-   int TS3::fRingNumber = 24;
+int TS3::fRingNumber = 24;
 int TS3::fSectorNumber  = 32;
 
 double TS3::fOffsetPhiCon = 0.5 * TMath::Pi(); // Offset between connector and sector 0 (viewed from sector side)

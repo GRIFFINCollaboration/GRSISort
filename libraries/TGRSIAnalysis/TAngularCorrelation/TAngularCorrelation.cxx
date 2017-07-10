@@ -12,12 +12,12 @@
 
 /// \cond CLASSIMP
 ClassImp(TAngularCorrelation)
-   /// \endcond
+/// \endcond
 
-   ////////////////////////////////////////////////////////////////////////////////
-   /// Angular correlation default constructor
-   ///
-   TAngularCorrelation::TAngularCorrelation()
+////////////////////////////////////////////////////////////////////////////////
+/// Angular correlation default constructor
+///
+TAngularCorrelation::TAngularCorrelation()
 {
    fIndexCorrelation = nullptr; // used the 1D histograms for a specific energy ranged used for FitSlices
    fIndexMapSize     = 0;       // number of indexes, never called in making the histograms

@@ -4,9 +4,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TCFDCal)
-   /// \endcond
+/// \endcond
 
-   void TCFDCal::Clear(Option_t* opt)
+void TCFDCal::Clear(Option_t* opt)
 {
    fParameters.clear();
    TCal::Clear(opt);

@@ -14,9 +14,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TLstEvent)
-   /// \endcond
+/// \endcond
 
-   TLstEvent::TLstEvent()
+TLstEvent::TLstEvent()
 {
    // Default constructor
    fData.resize(0);

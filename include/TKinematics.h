@@ -21,6 +21,15 @@
 #define PI (TMath::Pi())
 #endif
 
+/////////////////////////////////////////////////////////////////
+///
+/// \class TKinematics
+///
+/// This class calculates 2 body kinematics from a beam, target,
+/// recoil, ejectile, and beam energy.
+///
+/////////////////////////////////////////////////////////////////
+
 class TKinematics : public TNamed {
 public:
    TKinematics(double beame, const char* beam, const char* targ, const char* ejec = nullptr, const char* reco = nullptr,
