@@ -1,46 +1,42 @@
 #include "Globals.h"
 #include "GCanvas.h"
 
-#include <TClass.h>
-#include <TPaveStats.h>
-#include <TList.h>
-#include <TText.h>
-#include <TLatex.h>
-#include <TH1.h>
-#include <TH2.h>
-#include <TGraphErrors.h>
-#include <Buttons.h>
-#include <KeySymbols.h>
-#include <TVirtualX.h>
-#include <TROOT.h>
-#include <TFrame.h>
-#include <TF1.h>
-#include <TGraph.h>
-#include <TPolyMarker.h>
-#include <TSpectrum.h>
-#include <TPython.h>
-#include <TCutG.h>
+#include "TClass.h"
+#include "TPaveStats.h"
+#include "TList.h"
+#include "TText.h"
+#include "TLatex.h"
+#include "TH1.h"
+#include "TH2.h"
+#include "TGraphErrors.h"
+#include "Buttons.h"
+#include "KeySymbols.h"
+#include "TVirtualX.h"
+#include "TROOT.h"
+#include "TFrame.h"
+#include "TF1.h"
+#include "TGraph.h"
+#include "TPolyMarker.h"
+#include "TSpectrum.h"
+#include "TPython.h"
+#include "TCutG.h"
 
-#include <TApplication.h>
-#include <TContextMenu.h>
-#include <TGButton.h>
+#include "TApplication.h"
+#include "TContextMenu.h"
+#include "TGButton.h"
 
-//#include <TGFileDialog.h>
-#include <GPopup.h>
+#include "GPopup.h"
 
-//#include "GROOTGuiFactory.h"
 #include "GRootCommands.h"
 #include "GH2I.h"
 #include "GH2D.h"
 #include "GH1D.h"
 
-//#include "TRuntimeObjects.h"
-
 #include <iostream>
 #include <fstream>
 #include <string>
 
-#include <TMath.h>
+#include "TMath.h"
 
 #include "TGRSIint.h"
 

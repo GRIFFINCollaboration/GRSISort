@@ -424,10 +424,10 @@ void TGRSIRunInfo::trim(std::string* line, const std::string& trimChars)
 
 Long64_t TGRSIRunInfo::Merge(TCollection* list)
 {
-   // Loop through the TCollection of TGRSISortLists, and add each entry to the original TGRSISort List
+   // Loop through the TCollection of TGRSIRunInfos, and add each entry to the original TGRSIRunInfo List
    TIter it(list);
-   // The TCollection will be filled by something like hadd. Each element in the list will be a TGRSISortList from
-   // An individual file that was submitted to hadd.
+   // The TCollection will be filled by something like hadd. Each element in the list will be a TGRSIRunInfo from
+   // an individual file that was submitted to hadd.
    TGRSIRunInfo* runinfo = nullptr;
 
    while((runinfo = static_cast<TGRSIRunInfo*>(it.Next())) != nullptr) {

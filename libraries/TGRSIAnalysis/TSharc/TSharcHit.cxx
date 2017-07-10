@@ -21,7 +21,9 @@ TSharcHit::~TSharcHit() = default;
 
 TSharcHit::TSharcHit(const TSharcHit& rhs) : TGRSIDetectorHit()
 {
+#if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
    rhs.Copy(*this);
 }

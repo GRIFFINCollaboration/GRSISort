@@ -18,7 +18,9 @@ TGRSIDetectorHit::TGRSIDetectorHit(const int& Address) : TObject()
    Clear();
    fAddress = Address;
 
+#if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
 }
 
 TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs, bool copywave) : TObject(rhs)
@@ -30,7 +32,9 @@ TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs, bool copywave) :
    }
    ClearTransients();
 
+#if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
 }
 
 TGRSIDetectorHit::~TGRSIDetectorHit()

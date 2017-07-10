@@ -11,13 +11,17 @@ ClassImp(TDetector)
    : TObject()
 {
    /// Default constructor.
+#if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
 }
 
 TDetector::TDetector(const TDetector& rhs) : TObject()
 {
    /// Default Copy constructor.
+#if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    rhs.Copy(*this);
 }
 
