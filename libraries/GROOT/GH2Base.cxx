@@ -8,7 +8,7 @@
 #include "SuppressTH1GDirectory.h"
 
 /// \cond CLASSIMP
-ClassImp(GHSym)
+ClassImp(GH2Base)
 /// \endcond
 
 GH2Base::~GH2Base()
