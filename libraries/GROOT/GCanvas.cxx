@@ -376,11 +376,9 @@ std::vector<TH1*> GCanvas::FindAllHists()
 bool GCanvas::HandleArrowKeyPress(Event_t* event, UInt_t* keysym)
 {
 
-   bool edited = false;
-
-   std::vector<TH1*> hists = FindHists();
-   if(!hists.empty()) {
-      edited = Process1DArrowKeyPress(event, keysym);
+   bool edited = Process1DArrowKeyPress(event, keysym);
+   if(!edited) {
+      edited = Process2DArrowKeyPress(event, keysym);
    }
 
    if(edited) {
@@ -396,12 +394,10 @@ bool GCanvas::HandleKeyboardPress(Event_t* event, UInt_t* keysym)
 
    edited = ProcessNonHistKeyboardPress(event, keysym);
 
-   std::vector<TH1*> hists = FindHists(1);
-   if(!hists.empty() && !edited) {
+   if(!edited) {
       edited = Process1DKeyboardPress(event, keysym);
    }
-   hists = FindHists(2);
-   if(!hists.empty() && !edited) {
+   if(!edited) {
       edited = Process2DKeyboardPress(event, keysym);
    }
 
@@ -530,6 +526,9 @@ bool GCanvas::Process1DArrowKeyPress(Event_t*, UInt_t* keysym)
 {
    bool              edited = false;
    std::vector<TH1*> hists  = FindHists();
+   if(hists.empty()) {
+      return edited;
+   }
 
    int first = hists.at(0)->GetXaxis()->GetFirst();
    int last  = hists.at(0)->GetXaxis()->GetLast();
@@ -640,9 +639,6 @@ bool GCanvas::ProcessNonHistKeyboardPress(Event_t*, UInt_t* keysym)
 
 bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
 {
-
-   // printf("keysym:   0x%08x\n",*keysym);
-
    bool              edited = false;
    std::vector<TH1*> hists  = FindHists();
    if(hists.empty()) {
@@ -1044,9 +1040,108 @@ bool GCanvas::Process1DMousePress(Int_t, Int_t, Int_t)
    return edited;
 }
 
-bool GCanvas::Process2DArrowKeyPress(Event_t*, UInt_t*)
+bool GCanvas::Process2DArrowKeyPress(Event_t*, UInt_t* keysym)
 {
-   bool edited = false;
+	/// Moves displayed 2D histograms by 50% of the visible range left, right, up, or down
+	
+   bool              edited = false;
+   std::vector<TH1*> hists  = FindHists(2);
+   if(hists.empty()) {
+      return edited;
+   }
+
+   int firstX = hists.at(0)->GetXaxis()->GetFirst();
+   int lastX  = hists.at(0)->GetXaxis()->GetLast();
+   int firstY = hists.at(0)->GetYaxis()->GetFirst();
+   int lastY  = hists.at(0)->GetYaxis()->GetLast();
+
+   int minX = std::min(firstX, 0);
+   int maxX = std::max(lastX, hists.at(0)->GetXaxis()->GetNbins() + 1);
+   int minY = std::min(firstY, 0);
+   int maxY = std::max(lastY, hists.at(0)->GetYaxis()->GetNbins() + 1);
+
+   int xdiff = lastX - firstX;
+   int mxdiff = maxX - minX - 2;
+   int ydiff = lastY - firstY;
+   int mydiff = maxY - minY - 2;
+
+	switch(*keysym) {
+   case kMyArrowLeft: {
+      if(mxdiff > xdiff) {
+         if(firstX == (minX + 1)) {
+            //
+         } else if((firstX - (xdiff / 2)) < minX) {
+            firstX = minX + 1;
+            lastX  = minX + (xdiff) + 1;
+         } else {
+            firstX = firstX - (xdiff / 2);
+            lastX  = lastX  - (xdiff / 2);
+         }
+      }
+      for(auto& hist : hists) {
+         hist->GetXaxis()->SetRange(firstX, lastX);
+      }
+
+      edited = true;
+   } break;
+   case kMyArrowRight: {
+      if(mxdiff > xdiff) {
+         if(lastX == (maxX - 1)) {
+            //
+         } else if((lastX + (xdiff / 2)) > maxX) {
+            firstX = maxX - 1 - (xdiff);
+            lastX  = maxX - 1;
+         } else {
+            lastX  = lastX  + (xdiff / 2);
+            firstX = firstX + (xdiff / 2);
+         }
+      }
+      for(auto& hist : hists) {
+         hist->GetXaxis()->SetRange(firstX, lastX);
+      }
+
+      edited = true;
+   } break;
+
+   case kMyArrowUp: {
+      if(mydiff > ydiff) {
+         if(lastY == (maxY - 1)) {
+            //
+         } else if((lastY + (ydiff / 2)) > maxY) {
+            firstY = maxY - 1 - ydiff;
+            lastY  = maxY - 1;
+         } else {
+            firstY = firstY + (ydiff / 2);
+            lastY  = lastY  + (ydiff / 2);
+         }
+      }
+      for(auto& hist : hists) {
+         hist->GetYaxis()->SetRange(firstY, lastY);
+      }
+
+      edited = true;
+   } break;
+
+   case kMyArrowDown: {
+      if(mydiff > ydiff) {
+         if(firstY == (minY + 1)) {
+            //
+         } else if((firstY - (ydiff / 2)) < minY) {
+            firstY = minY + 1;
+            lastY  = minY + (ydiff) + 1;
+         } else {
+            firstY = firstY - (ydiff / 2);
+            lastY  = lastY  - (ydiff / 2);
+         }
+      }
+      for(auto& hist : hists) {
+         hist->GetYaxis()->SetRange(firstY, lastY);
+      }
+
+      edited = true;
+   } break;
+   default: printf("keysym = %i\n", *keysym); break;
+   }
    return edited;
 }
 
