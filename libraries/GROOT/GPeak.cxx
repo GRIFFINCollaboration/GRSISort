@@ -347,7 +347,8 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    Double_t range_low, range_high;
    GetRange(range_low,range_high);
 
-   GPeak* tmppeak = new GPeak(*this);
+   GPeak* tmppeak = new GPeak;
+   Copy(*tmppeak);
    tmppeak->SetParameter("step", 0.0);
    tmppeak->SetParameter("A", 0.0);
    tmppeak->SetParameter("B", 0.0);
