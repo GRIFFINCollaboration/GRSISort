@@ -12,6 +12,15 @@
 #include "TNamed.h"
 #include "TNucleus.h"
 
+//////////////////////////////////////////////////////////////////
+///
+/// \class TBetaDecay
+///
+/// This class contains information about beta decays to be used
+/// in analyses.
+///
+///////////////////////////////////////////////////////////////////
+
 class TBetaDecay : public TNamed {
 public:
    TBetaDecay();

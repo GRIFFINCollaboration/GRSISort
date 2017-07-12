@@ -4,15 +4,6 @@
 ClassImp(TBetaDecay)
 /// \endcond
 
-//////////////////////////////////////////////////////////////////
-///
-/// \class TBetaDecay
-///
-/// This class contains information about beta decays to be used
-/// in analyses.
-///
-///////////////////////////////////////////////////////////////////
-
 TBetaDecay::TBetaDecay()
 {
 	fParentAllocated = false;

@@ -8,9 +8,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TZeroDegree)
-   /// \endcond
+/// \endcond
 
-   bool TZeroDegree::fSetWave = false;
+bool TZeroDegree::fSetWave = false;
 
 TZeroDegree::TZeroDegree()
 {

@@ -2,9 +2,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TCSMHit)
-   /// \endcond
+/// \endcond
 
-   TCSMHit::TCSMHit()
+TCSMHit::TCSMHit()
 {
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);

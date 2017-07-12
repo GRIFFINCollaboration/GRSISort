@@ -6,9 +6,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TMultiPeak)
-   /// \endcond
+/// \endcond
 
-   Bool_t TMultiPeak::fLogLikelihoodFlag = false;
+Bool_t TMultiPeak::fLogLikelihoodFlag = false;
 
 TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t>& centroids, Option_t*)
    : TGRSIFit("multipeakbg", MultiPhotoPeakBG, xlow, xhigh, centroids.size() * 6 + 5)

@@ -6,9 +6,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TBgoHit)
-   /// \endcond
+/// \endcond
 
-   TBgoHit::TBgoHit()
+TBgoHit::TBgoHit()
 {
    Clear();
 }

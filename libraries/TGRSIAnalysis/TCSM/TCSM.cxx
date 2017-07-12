@@ -5,9 +5,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TCSM)
-   /// \endcond
+/// \endcond
 
-   int TCSM::fCfdBuildDiff = 5;
+int TCSM::fCfdBuildDiff = 5;
 
 TCSM::TCSM()
 {

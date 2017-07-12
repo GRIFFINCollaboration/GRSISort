@@ -6,9 +6,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TTigressHit)
-   /// \endcond
+/// \endcond
 
-   TTigressHit::TTigressHit()
+TTigressHit::TTigressHit()
 {
    Clear();
 }

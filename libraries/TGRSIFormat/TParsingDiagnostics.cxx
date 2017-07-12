@@ -8,11 +8,13 @@ TParsingDiagnostics* TParsingDiagnostics::fParsingDiagnostics = nullptr;
 
 TParsingDiagnostics::TParsingDiagnostics() : TObject()
 {
+   fIdHist         = nullptr;
    Clear();
 }
 
 TParsingDiagnostics::TParsingDiagnostics(const TParsingDiagnostics&) : TObject()
 {
+   fIdHist         = nullptr;
    Clear();
 }
 

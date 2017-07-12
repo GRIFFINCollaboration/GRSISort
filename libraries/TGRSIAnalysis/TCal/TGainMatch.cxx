@@ -11,9 +11,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TGainMatch)
-   /// \endcond
+/// \endcond
 
-   Double_t TGainMatch::gDefaultCoarseRange = 40.;
+Double_t TGainMatch::gDefaultCoarseRange = 40.;
 
 TGainMatch::TGainMatch(const TGainMatch& copy) : TCal(copy), fCoarseRange(gDefaultCoarseRange)
 {

@@ -5,9 +5,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TPeak)
-   /// \endcond
+/// \endcond
 
-   Bool_t TPeak::fLogLikelihoodFlag = true;
+Bool_t TPeak::fLogLikelihoodFlag = true;
 TPeak* TPeak::fLastFit              = nullptr;
 
 // We need c++ 11 for constructor delegation....

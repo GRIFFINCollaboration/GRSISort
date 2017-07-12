@@ -7,9 +7,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TGriffinHit)
-   /// \endcond
+/// \endcond
 
-   TGriffinHit::TGriffinHit()
+TGriffinHit::TGriffinHit()
    : TGRSIDetectorHit()
 {
 // Default Ctor. Ignores TObject Streamer in ROOT < 6.

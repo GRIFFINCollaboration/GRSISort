@@ -13,6 +13,8 @@
 #include "TMidasEvent.h"
 #include "TGRSIOptions.h"
 #include "TDataParserException.h"
+#include "TGRSIRunInfo.h"
+#include "TXMLOdb.h"
 
 /// \cond CLASSIMP
 ClassImp(TMidasEvent)
@@ -702,6 +704,19 @@ int TMidasEvent::Process(TDataParser& parser)
             frags = ProcessEPICS(reinterpret_cast<float*>(ptr), banksize, parser);
          }
          break;
+		case 0x8001:
+			// end of file ODB
+#ifdef HAS_XML
+			TXMLOdb* odb = new TXMLOdb(GetData(), GetDataSize());
+			TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
+			TXMLNode*     node     = odb->FindPath("/Runinfo/Stop time binary");
+			if(node != nullptr) {
+				runInfo->SetRunStop(atof(node->GetText()));
+			}
+			runInfo->SetRunLength();
+			delete odb;
+#endif
+			break;
       };
    } catch(const std::bad_alloc&) {
    }

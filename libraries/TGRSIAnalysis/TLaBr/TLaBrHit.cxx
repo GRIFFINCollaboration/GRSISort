@@ -9,9 +9,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TLaBrHit)
-   /// \endcond
+/// \endcond
 
-   TLaBrHit::TLaBrHit()
+TLaBrHit::TLaBrHit()
 {
 // Default Constructor
 #if MAJOR_ROOT_VERSION < 6

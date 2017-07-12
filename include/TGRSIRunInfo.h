@@ -99,6 +99,7 @@ public:
    static inline void SetRunStart(double tmp) { fGRSIRunInfo->fRunStart = tmp; }
    static inline void SetRunStop(double tmp) { fGRSIRunInfo->fRunStop = tmp; }
    static inline void SetRunLength(double tmp) { fGRSIRunInfo->fRunLength = tmp; }
+   static inline void SetRunLength() { fGRSIRunInfo->fRunLength = fGRSIRunInfo->fRunStop - fGRSIRunInfo->fRunStart; }
 
    static inline double RunStart() { return fGRSIRunInfo->fRunStart; }
    static inline double RunStop() { return fGRSIRunInfo->fRunStop; }
@@ -180,7 +181,13 @@ public:
    {
       fRunStart = 0.;
       fRunStop  = 0.;
-      fRunLength += runinfo->RunLength();
+      if(runinfo->RunLength() > 0) {
+			if(fRunLength > 0) {
+				fRunLength += runinfo->RunLength();
+			} else {
+				fRunLength = runinfo->RunLength();
+			}
+		}
    }
 
    void PrintBadCycles() const;

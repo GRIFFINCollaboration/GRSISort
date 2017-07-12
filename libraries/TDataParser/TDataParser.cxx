@@ -14,10 +14,6 @@
 #include "TFragment.h"
 #include "TBadFragment.h"
 
-/// \cond CLASSIMP
-// ClassImp(TDataParser)
-/// \endcond
-
 TGRSIOptions* TDataParser::fOptions = nullptr;
 
 TDataParser::TDataParser()

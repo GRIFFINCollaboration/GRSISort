@@ -10,9 +10,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TTip)
-   /// \endcond
+/// \endcond
 
-   TTip::TTip()
+TTip::TTip()
 {
 }
 
@@ -23,7 +23,9 @@ TTip::~TTip()
 
 TTip::TTip(const TTip& rhs) : TGRSIDetector()
 {
+#if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    rhs.Copy(*this);
 }
 

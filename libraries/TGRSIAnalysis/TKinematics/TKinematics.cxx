@@ -5,19 +5,10 @@
 
 /// \cond CLASSIMP
 ClassImp(TKinematics)
-   /// \endcond
+/// \endcond
 
-   //////////////////////////////////////////////////////////////////
-   //
-   // TKinematics
-   //
-   // This class calculates 2 body kinematics from a beam, target,
-   // recoil, ejectile, and beam energy
-   //
-   //////////////////////////////////////////////////////////////////
-
-   TKinematics::TKinematics(double beame, const char* beam, const char* targ, const char* ejec, const char* reco,
-                            const char* name)
+TKinematics::TKinematics(double beame, const char* beam, const char* targ, const char* ejec, const char* reco,
+								 const char* name)
 {
    InitKin();
 

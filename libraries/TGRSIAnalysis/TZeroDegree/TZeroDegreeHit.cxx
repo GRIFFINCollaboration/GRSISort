@@ -12,9 +12,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TZeroDegreeHit)
-   /// \endcond
+/// \endcond
 
-   TZeroDegreeHit::TZeroDegreeHit()
+TZeroDegreeHit::TZeroDegreeHit()
 {
 // Default Constructor
 #if MAJOR_ROOT_VERSION < 6
