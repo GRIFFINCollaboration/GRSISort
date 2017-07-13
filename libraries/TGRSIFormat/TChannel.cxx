@@ -1197,43 +1197,43 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt)
             } else if(type.compare("ENGCOEFF") == 0) {
                channel->DestroyENGCal();
                double value;
-               while((ss >> value) != nullptr) {
+               while((ss >> value)) {
                   channel->AddENGCoefficient(value);
                }
             } else if(type.compare("LEDCOEFF") == 0) {
                channel->DestroyLEDCal();
                double value;
-               while((ss >> value) != nullptr) {
+               while((ss >> value)) {
                   channel->AddLEDCoefficient(value);
                }
             } else if(type.compare("CFDCOEFF") == 0) {
                channel->DestroyCFDCal();
                double value;
-               while((ss >> value) != nullptr) {
+               while((ss >> value)) {
                   channel->AddCFDCoefficient(value);
                }
             } else if(type.compare("TIMECOEFF") == 0) {
                channel->DestroyTIMECal();
                double value;
-               while((ss >> value) != nullptr) {
+               while((ss >> value)) {
                   channel->AddTIMECoefficient(value);
                }
             } else if(type.compare("CTCOEFF") == 0) {
                channel->DestroyCTCal();
                double value;
-               while((ss >> value) != nullptr) {
+               while((ss >> value)) {
                   channel->AddCTCoefficient(value);
                }
             } else if(type.compare("WALK") == 0) {
                channel->DestroyTIMECal();
                double value;
-               while((ss >> value) != nullptr) {
+               while((ss >> value)) {
                   channel->AddTIMECoefficient(value);
                }
             } else if(type.compare("EFFCOEFF") == 0) {
                channel->DestroyEFFCal();
                double value;
-               while((ss >> value) != nullptr) {
+               while((ss >> value)) {
                   channel->AddEFFCoefficient(value);
                }
             } else if(type.compare("FILEINT") == 0) {

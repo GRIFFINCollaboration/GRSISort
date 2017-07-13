@@ -219,9 +219,9 @@ int main(int argc, char** argv)
             std::cerr<<"gadd could not open indirect file "<<(argv[i] + 1)<<std::endl;
             return 1;
          }
-         while(indirect_file != nullptr) {
+         while(indirect_file) {
             std::string line;
-            if((std::getline(indirect_file, line) != nullptr) && (line.length() != 0u) &&
+            if((std::getline(indirect_file, line)) && (line.length() != 0u) &&
                !merger.AddFile(line.c_str())) {
                return 1;
             }

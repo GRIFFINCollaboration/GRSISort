@@ -228,8 +228,8 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
 
    bool        brace_open = false;
    std::string name;
-
-   while(std::getline(infile, line) != nullptr) {
+   
+   while(std::getline(infile, line)) { //This line was giving me a comilation problem (RD)
       linenumber++;
       trim(&line);
       size_t comment = line.find("//");
