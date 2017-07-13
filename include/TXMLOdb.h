@@ -38,8 +38,8 @@ public:
    TXMLNode*     fOdb;
 
    const char* GetNodeName(TXMLNode*);
-   TXMLNode* FindNode(const char* name, TXMLNode* node = 0);
-   TXMLNode* FindPath(const char* path, TXMLNode* node = 0);
+   TXMLNode* FindNode(const char* name, TXMLNode* node = nullptr);
+   TXMLNode* FindPath(const char* path, TXMLNode* node = nullptr);
 
    int ReadInt(const char* path, int index = 0, int defaultValue = 0xffffffff);
    std::vector<int> ReadIntArray(TXMLNode* node);

@@ -20,24 +20,24 @@ class TTipHit : public TGRSIDetectorHit {
 public:
    TTipHit();
    TTipHit(const TFragment&);
-   virtual ~TTipHit();
+   ~TTipHit() override;
    TTipHit(const TTipHit&);
 
 private:
-   Int_t    fFilter; //
-   Double_t fPID;    //
-   Int_t    fChiSq;
+   Int_t    fFilter{0}; //
+   Double_t fPID{0.};    //
+   Int_t    fChiSq{0};
 
    // Double_t fFastAmplitude;
    // Double_t fSlowAmplitude;
    // Double_t fGammaAmplitude;
 
-   bool csi_flag;
+   bool csi_flag{false};
 
-   Int_t fTipChannel;
+   Int_t fTipChannel{0};
 
-   Double_t fTimeFit;
-   Double_t fSig2Noise;
+   Double_t fTimeFit{0.};
+   Double_t fSig2Noise{0.};
 
 public:
    /////////////////////////    /////////////////////////////////////
@@ -66,13 +66,15 @@ public:
    void SetUpNumbering(TChannel*)
    {
       TChannel* channel = GetChannel();
-      if (!channel) {
+      if(!channel) {
          Error("SetDetector", "No TChannel exists for address %u", GetAddress());
          return;
       }
       Int_t tmp = atoi(channel->GetMnemonic()->ArraySubPositionString().c_str());
       SetTipChannel(10 * channel->GetMnemonic()->ArrayPosition() + tmp);
-      if (channel->GetMnemonic()->SubSystemString().compare(0, 1, "W") == 0) SetCsI();
+      if(channel->GetMnemonic()->SubSystemString().compare(0, 1, "W") == 0) {
+         SetCsI();
+      }
    }
 
    void SetWavefit(const TFragment&);
@@ -80,12 +82,12 @@ public:
    void SetPID(const TFragment&);
 
 public:
-   void Clear(Option_t* opt = "");       //!<!
-   void Print(Option_t* opt = "") const; //!<!
-   virtual void Copy(TObject&) const;    //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
+   void Copy(TObject&) const override;            //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TTipHit, 1);
+   ClassDefOverride(TTipHit, 1);
    /// \endcond
 };
 /*! @} */

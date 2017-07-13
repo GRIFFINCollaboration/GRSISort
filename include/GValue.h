@@ -2,6 +2,7 @@
 #define TGRUTVARIABLE_H
 
 #include <map>
+#include <utility>
 
 #include "TList.h"
 #include "TNamed.h"
@@ -22,19 +23,19 @@ public:
    void SetInfo(const char* temp) { info.assign(temp); }
 
    static int ReadValFile(const char* filename = "", Option_t* opt = "replace");
-   static int WriteValFile(std::string filename = "", Option_t* opt = "");
+   static int WriteValFile(const std::string& filename = "", Option_t* opt = "");
 
    static GValue* GetDefaultValue() { return fDefaultValue; }
    // Search fValueVector for GValue with name given by string
-   static GValue* FindValue(std::string = "");
-   static void SetReplaceValue(std::string name, double value, GValue::EPriority priority = kUser);
-   static GValue* Get(std::string name = "") { return FindValue(name); }
-   static double                  Value(std::string);
+   static GValue* FindValue(const std::string& = "");
+   static void SetReplaceValue(const std::string& name, double value, GValue::EPriority priority = kUser);
+   static GValue* Get(std::string name = "") { return FindValue(std::move(name)); }
+   static double                  Value(const std::string&);
    static TList*                  AllValues()
    {
-      TList* output = new TList;
+      auto* output = new TList;
       output->SetOwner(false);
-      for (auto& item : fValueVector) {
+      for(auto& item : fValueVector) {
          output->Add(item.second);
       }
       return output;
@@ -47,8 +48,8 @@ public:
    bool ReplaceValue(GValue*);
 
    // virtual void Clear(Option_t *opt="");
-   virtual void Print(Option_t* opt = "") const;
-   virtual void Copy(TObject& obj) const;
+   void Print(Option_t* opt = "") const override;
+   void Copy(TObject& obj) const override;
    // virtual bool Notify();
 
    static int         Size() { return fValueVector.size(); }
@@ -56,15 +57,15 @@ public:
    static std::string WriteToBuffer(Option_t* opt = "");
 
 private:
-   double         fValue;
+   double         fValue{0.};
    EPriority      fPriority;
    std::string    info;
    static GValue* fDefaultValue;
    static std::map<std::string, GValue*> fValueVector;
-   static int ParseInputData(const std::string input, EPriority priority, Option_t* opt = "");
+   static int ParseInputData(const std::string& input, EPriority priority, Option_t* opt = "");
    static void trim(std::string*, const std::string& trimChars = " \f\n\r\t\v");
 
-   ClassDef(GValue, 1);
+   ClassDefOverride(GValue, 1);
 };
 
 #endif

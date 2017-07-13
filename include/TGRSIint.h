@@ -40,34 +40,34 @@
 
 class TGRSIint : public TRint {
 private:
-   TGRSIint(int argc, char** argv, void* options = 0, int numOptions = 0, bool noLogo = false,
+   TGRSIint(int argc, char** argv, void* options = nullptr, int numOptions = 0, bool noLogo = false,
             const char* appClassName = "grsisort");
 
    static TEnv* fGRSIEnv; ///< GRSI environment
 
 public:
    static TGRSIint* fTGRSIint; ///< Static pointer (singleton)
-   static TGRSIint* instance(int argc = 0, char** argv = 0, void* options = 0, int numOptions = -1, bool noLogo = false,
-                             const char* appClassName = "grsisort");
+   static TGRSIint* instance(int argc = 0, char** argv = nullptr, void* options = nullptr, int numOptions = -1,
+                             bool noLogo = false, const char* appClassName = "grsisort");
 
-   virtual ~TGRSIint();
+   ~TGRSIint() override;
 
    // void GetOptions(int* argc,char** argv);
    void PrintHelp(bool);
-   void PrintLogo(bool);
-   bool HandleTermInput();
-   int  TabCompletionHook(char*, int*, std::ostream&);
+   void PrintLogo(bool) override;
+   bool HandleTermInput() override;
+   int  TabCompletionHook(char*, int*, std::ostream&) override;
 
    TFile* OpenRootFile(const std::string& filename, Option_t* opt = "read");
    TMidasFile* OpenMidasFile(const std::string& filename);
    TLstFile* OpenLstFile(const std::string& filename);
    void RunMacroFile(const std::string& filename);
 
-   void Terminate(Int_t exit_status = 0);
+   void Terminate(Int_t status = 0) override;
 
    static TEnv* GetEnv() { return fGRSIEnv; }
 
-   Long_t ProcessLine(const char* line, Bool_t sync = kFALSE, Int_t* error = 0);
+   Long_t ProcessLine(const char* line, Bool_t sync = kFALSE, Int_t* error = nullptr) override;
 
    void DelayedProcessLine_Action();
 
@@ -81,7 +81,7 @@ private:
    void LoadGROOTGraphics();
    void LoadExtraClasses();
 
-   Long_t DelayedProcessLine(std::string message);
+   Long_t DelayedProcessLine(std::string command);
 
    TTimer* fKeepAliveTimer; ///< Time of process
 #ifndef __CINT__
@@ -103,10 +103,8 @@ private:
 
    std::vector<TRawFile*> fRawFiles; ///< List of Raw files opened
 
-  TStopwatch* fStopwatch;
-
    /// \cond CLASSIMP
-   ClassDef(TGRSIint, 0); // Interpreter for GRSISort
+   ClassDefOverride(TGRSIint, 0); // Interpreter for GRSISort
    /// \endcond
 };
 
@@ -121,7 +119,7 @@ private:
 class TGRSIInterruptHandler : public TSignalHandler {
 public:
    TGRSIInterruptHandler() : TSignalHandler(kSigInterrupt, false) {}
-   bool Notify();
+   bool Notify() override;
 };
 /*! @} */
 #endif

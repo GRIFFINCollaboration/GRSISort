@@ -5,6 +5,7 @@
  *  @{
  */
 
+#include <utility>
 #include <vector>
 #include <cstdio>
 #include <functional>
@@ -23,40 +24,44 @@
 class TGriffin : public TGRSIDetector {
 public:
    enum EGriffinBits {
-      kIsLowGainAddbackSet    = 1 << 0,
-      kIsHighGainAddbackSet   = 1 << 1,
-      kIsLowGainCrossTalkSet  = 1 << 2,
-      kIsHighGainCrossTalkSet = 1 << 3,
-      kBit4                   = 1 << 4,
-      kBit5                   = 1 << 5,
-      kBit6                   = 1 << 6,
-      kBit7                   = 1 << 7
+      kIsLowGainAddbackSet    = 1<<0,
+      kIsHighGainAddbackSet   = 1<<1,
+      kIsLowGainCrossTalkSet  = 1<<2,
+      kIsHighGainCrossTalkSet = 1<<3,
+      kBit4                   = 1<<4,
+      kBit5                   = 1<<5,
+      kBit6                   = 1<<6,
+      kBit7                   = 1<<7
    };
    enum EGainBits { kLowGain, kHighGain };
 
    TGriffin();
    TGriffin(const TGriffin&);
-   virtual ~TGriffin();
+   ~TGriffin() override;
 
 public:
    TGriffinHit* GetGriffinLowGainHit(const int& i);                                              //!<!
    TGriffinHit* GetGriffinHighGainHit(const int& i);                                             //!<!
    TGriffinHit* GetGriffinHit(const Int_t& i) { return GetGriffinHit(i, GetDefaultGainType()); } //!<!
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
    Short_t GetLowGainMultiplicity() const { return fGriffinLowGainHits.size(); }
    Short_t GetHighGainMultiplicity() const { return fGriffinHighGainHits.size(); }
-   Short_t   GetMultiplicity() const { return GetMultiplicity(GetDefaultGainType()); }
+   Short_t   GetMultiplicity() const override { return GetMultiplicity(GetDefaultGainType()); }
 
-   static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
+   static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double dist = 110.0); //!<!
    static const char* GetColorFromNumber(Int_t number);
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan); //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
-   void ClearTransients()
+   void ClearTransients() override
    {
       fGriffinBits = 0;
-      for (auto hit : fGriffinLowGainHits) hit.ClearTransients();
-      for (auto hit : fGriffinHighGainHits) hit.ClearTransients();
+      for(const auto& hit : fGriffinLowGainHits) {
+         hit.ClearTransients();
+      }
+      for(const auto& hit : fGriffinHighGainHits) {
+         hit.ClearTransients();
+      }
    }
    void ResetFlags() const;
 
@@ -65,7 +70,7 @@ public:
 #if !defined(__CINT__) && !defined(__CLING__)
    void SetAddbackCriterion(std::function<bool(TGriffinHit&, TGriffinHit&)> criterion)
    {
-      fAddbackCriterion = criterion;
+      fAddbackCriterion = std::move(criterion);
    }
    std::function<bool(TGriffinHit&, TGriffinHit&)> GetAddbackCriterion() const { return fAddbackCriterion; }
 #endif
@@ -96,8 +101,8 @@ private:
    static bool fSetCoreWave; //!<!  Flag for Waveforms ON/OFF
    // static bool fSetBGOWave;                //!<!  Flag for BGO Waveforms ON/OFF
 
-   long                            fCycleStart;  //!<!  The start of the cycle
-   mutable TTransientBits<UChar_t> fGriffinBits; // Transient member flags
+   long                            fCycleStart; //!<!  The start of the cycle
+   mutable TTransientBits<UChar_t> fGriffinBits;  // Transient member flags
 
    mutable std::vector<TGriffinHit> fAddbackLowGainHits;  //!<! Used to create addback hits on the fly
    mutable std::vector<TGriffinHit> fAddbackHighGainHits; //!<! Used to create addback hits on the fly
@@ -129,7 +134,7 @@ public:
    //		static const Double_t gStrongCT[2];   //!<!
    //		static const Double_t gWeakCT[2]; //!<!
    //		static const Double_t gCrossTalkPar[2][4][4]; //!<!
-   static Double_t CTCorrectedEnergy(const TGriffinHit* const energy_to_correct, const TGriffinHit* const other_energy,
+   static Double_t CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, const TGriffinHit* const other_hit,
                                      Bool_t time_constraint = true);
    Bool_t IsCrossTalkSet(const Int_t& gain_type) const;
    void FixLowGainCrossTalk();
@@ -154,12 +159,12 @@ private:
    void SetCrossTalk(const Int_t& gain_type, bool flag = true) const;
 
 public:
-   virtual void Copy(TObject&) const;            //!<!
-   virtual void Clear(Option_t* opt = "all");    //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Clear(Option_t* opt = "all") override;    //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TGriffin, 5) // Griffin Physics structure
+   ClassDefOverride(TGriffin, 5) // Griffin Physics structure
    /// \endcond
 };
 /*! @} */

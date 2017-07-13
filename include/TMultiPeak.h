@@ -8,7 +8,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
-#include <stdarg.h>
+#include <cstdarg>
 
 #include "TF1.h"
 #include "TFitResultPtr.h"
@@ -32,7 +32,7 @@ class TPeak;
 class TMultiPeak : public TGRSIFit {
 public:
    // ctors and dtors
-   virtual ~TMultiPeak();
+   ~TMultiPeak() override;
    // TMultiPeak(int n, ...);
    // TMultiPeak(double xlow, double xhigh, int n, ...);
    TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t>& centroids, Option_t* type = "gsc");
@@ -45,7 +45,7 @@ protected:
 
 public:
    Bool_t Fit(TH1* fithist, Option_t* opt = "");
-   bool InitParams(TH1* hist);
+   bool InitParams(TH1* fithist) override;
    void   SortPeaks(Bool_t (*SortFunction)(const TPeak*, const TPeak*) = TPeak::CompareEnergy);
    TPeak* GetPeak(UInt_t idx);
    TPeak* GetPeakClosestTo(Double_t energy);
@@ -55,9 +55,9 @@ public:
    static void SetLogLikelihoodFlag(bool flag) { fLogLikelihoodFlag = flag; }
    static bool                           GetLogLikelihoodFlag() { return fLogLikelihoodFlag; }
 
-   virtual void Copy(TObject& obj) const;
-   virtual void Print(Option_t* opt = "") const;
-   virtual void Clear(Option_t* opt = "");
+   void Copy(TObject& obj) const override;
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
    virtual const char* PrintString(Option_t* opt = "") const;
 
 private:
@@ -71,7 +71,7 @@ private:
    Double_t SinglePeakBG(Double_t* dim, Double_t* par);
 
    /// \cond CLASSIMP
-   ClassDef(TMultiPeak, 2);
+   ClassDefOverride(TMultiPeak, 2);
    /// \endcond
 };
 /*! @} */

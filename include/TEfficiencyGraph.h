@@ -30,27 +30,27 @@
 class TEfficiencyGraph : public TCalGraph {
 public:
    TEfficiencyGraph();
-   TEfficiencyGraph(const char* name, const char* title) : TCalGraph(name, title), fIsAbsolute(false){};
-   virtual ~TEfficiencyGraph();
+   TEfficiencyGraph(const char* name, const char* title) : TCalGraph(name, title), fIsAbsolute(false) {};
+   ~TEfficiencyGraph() override;
 
    TEfficiencyGraph(const TEfficiencyGraph& copy);
 
 public:
-   virtual void Print(Option_t* opt = "") const;
-   virtual void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
    void Scale(const Double_t& scale);
    void SetAbsolute(const bool& flag) { fIsAbsolute = flag; }
    bool                         IsAbsolute() const { return fIsAbsolute; }
 
 protected:
-   void BuildGraph();
+   void BuildGraph() override;
 
 private:
    bool fIsAbsolute;
 
    /// \cond CLASSIMP
-   ClassDef(TEfficiencyGraph, 1); // Graph Class for Calibrations
+   ClassDefOverride(TEfficiencyGraph, 1); // Graph Class for Calibrations
    /// \endcond
 };
 /*! @} */

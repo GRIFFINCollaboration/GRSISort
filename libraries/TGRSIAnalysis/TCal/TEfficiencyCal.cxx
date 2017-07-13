@@ -2,15 +2,13 @@
 
 /// \cond CLASSIMP
 ClassImp(TEfficiencyCal)
-   /// \endcond
+/// \endcond
 
-   TEfficiencyCal::TEfficiencyCal()
+TEfficiencyCal::TEfficiencyCal()
 {
 }
 
-TEfficiencyCal::~TEfficiencyCal()
-{
-}
+TEfficiencyCal::~TEfficiencyCal() = default;
 
 TEfficiencyCal::TEfficiencyCal(const TEfficiencyCal& copy) : TCal(copy)
 {
@@ -25,7 +23,7 @@ void TEfficiencyCal::Copy(TObject& obj) const
 
 void TEfficiencyCal::ScaleGraph(Double_t scaleFactor)
 {
-   if(!GetN()) {
+   if(GetN() == 0) {
       Error("ScaleGraph", "Graph does not exist");
       return;
    }
@@ -40,7 +38,7 @@ void TEfficiencyCal::ScaleGraph(Double_t scaleFactor)
 
 void TEfficiencyCal::AddPoint(TPeak* peak)
 {
-   if(!peak) {
+   if(peak == nullptr) {
       Error("AddPoint", "Peak is empty");
       return;
    }
@@ -49,7 +47,7 @@ void TEfficiencyCal::AddPoint(TPeak* peak)
 
 void TEfficiencyCal::AddPoint(Double_t energy, Double_t area, Double_t dEnergy, Double_t dArea)
 {
-   if(!GetNucleus()) {
+   if(GetNucleus() == nullptr) {
       Error("AddPoint", "No nucleus set");
       return;
    }

@@ -1,6 +1,6 @@
 #include "TTip.h"
 #include "TTipHit.h"
-#include "TGRSIRunInfo.h"
+#include "TGRSIOptions.h"
 
 ////////////////////////////////////////////////////////////
 //
@@ -13,30 +13,33 @@
 
 /// \cond CLASSIMP
 ClassImp(TTipHit)
-   /// \endcond
+/// \endcond
 
-   TTipHit::TTipHit()
+TTipHit::TTipHit()
 {
-   Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
 }
 
 TTipHit::TTipHit(const TFragment& frag) : TGRSIDetectorHit(frag)
 {
    // SetVariables(frag);
-   if(TGRSIRunInfo::IsWaveformFitting() && !IsCsI())
+   if(TGRSIOptions::AnalysisOptions()->IsWaveformFitting() && !IsCsI()) {
       SetWavefit(frag);
-   else if(TGRSIRunInfo::IsWaveformFitting() && IsCsI())
+   } else if(TGRSIOptions::AnalysisOptions()->IsWaveformFitting() && IsCsI()) {
       SetPID(frag);
+   }
 }
 
-TTipHit::~TTipHit()
-{
-}
+TTipHit::~TTipHit() = default;
 
 TTipHit::TTipHit(const TTipHit& rhs) : TGRSIDetectorHit()
 {
+#if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
    rhs.Copy(*this);
 }

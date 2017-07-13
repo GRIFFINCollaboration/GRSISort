@@ -5,6 +5,7 @@
  *  @{
  */
 
+#include <utility>
 #include <vector>
 #include <cstdio>
 #include <functional>
@@ -19,43 +20,58 @@
 #include "TGRSIRunInfo.h"
 #include "TTransientBits.h"
 
+////////////////////////////////////////////////////////////
+///
+/// \class TFipps
+///
+/// The TFipps class defines the observables and algorithms used
+/// when analyzing FIPPS data. It includes detector positions,
+/// add-back methods, etc.
+///
+////////////////////////////////////////////////////////////
+
 class TFipps : public TGRSIDetector {
 public:
    enum EFippsBits {
-      kIsAddbackSet   = 1 << 0,
-      kIsCrossTalkSet = 1 << 1,
-      kBit2           = 1 << 2,
-      kBit3           = 1 << 3,
-      kBit4           = 1 << 4,
-      kBit5           = 1 << 5,
-      kBit6           = 1 << 6,
-      kBit7           = 1 << 7
+      kIsAddbackSet   = 1<<0,
+      kIsCrossTalkSet = 1<<1,
+      kBit2           = 1<<2,
+      kBit3           = 1<<3,
+      kBit4           = 1<<4,
+      kBit5           = 1<<5,
+      kBit6           = 1<<6,
+      kBit7           = 1<<7
    };
 
    TFipps();
    TFipps(const TFipps&);
-   virtual ~TFipps();
+   ~TFipps() override;
 
 public:
    TFippsHit* GetFippsHit(const Int_t& i);
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
-   Short_t GetMultiplicity() const;
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
+   Short_t GetMultiplicity() const override;
 
-   static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
+   static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double dist = 110.0); //!<!
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan); //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
-   void ClearTransients()
+   void ClearTransients() override
    {
       fFippsBits = 0;
-      for (auto hit : fFippsHits) hit.ClearTransients();
+      for(const auto& hit : fFippsHits) {
+         hit.ClearTransients();
+      }
    }
    void ResetFlags() const;
 
    TFipps& operator=(const TFipps&); //!<!
 
 #if !defined(__CINT__) && !defined(__CLING__)
-   void SetAddbackCriterion(std::function<bool(TFippsHit&, TFippsHit&)> criterion) { fAddbackCriterion = criterion; }
+   void SetAddbackCriterion(std::function<bool(TFippsHit&, TFippsHit&)> criterion)
+   {
+      fAddbackCriterion = std::move(criterion);
+   }
    std::function<bool(TFippsHit&, TFippsHit&)> GetAddbackCriterion() const { return fAddbackCriterion; }
 #endif
 
@@ -92,7 +108,7 @@ public:
    static const Double_t gStrongCT[2];           //!<!
    static const Double_t gWeakCT[2];             //!<!
    static const Double_t gCrossTalkPar[2][4][4]; //!<!
-   static Double_t CTCorrectedEnergy(const TFippsHit* const energy_to_correct, const TFippsHit* const other_energy,
+   static Double_t CTCorrectedEnergy(const TFippsHit* const hit_to_correct, const TFippsHit* const other_hit,
                                      Bool_t time_constraint = true);
    Bool_t IsCrossTalkSet() const;
    void   FixCrossTalk();
@@ -106,12 +122,12 @@ private:
    void SetCrossTalk(bool flag = true) const;
 
 public:
-   virtual void Copy(TObject&) const;            //!<!
-   virtual void Clear(Option_t* opt = "all");    //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Clear(Option_t* opt = "all") override;    //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TFipps, 5) // Fipps Physics structure
+   ClassDefOverride(TFipps, 5) // Fipps Physics structure
    /// \endcond
 };
 /*! @} */

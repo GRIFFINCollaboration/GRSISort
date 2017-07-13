@@ -37,9 +37,7 @@ TDeadtimeScalerQueue::TDeadtimeScalerQueue()
    Clear();
 }
 
-TDeadtimeScalerQueue::~TDeadtimeScalerQueue()
-{
-}
+TDeadtimeScalerQueue::~TDeadtimeScalerQueue() = default;
 
 void TDeadtimeScalerQueue::Print(Option_t*) const
 {
@@ -74,7 +72,9 @@ void TDeadtimeScalerQueue::Clear(Option_t*)
 
    fStopwatch->Reset();
 
-   if(locked) TDeadtimeScalerQueue::All.unlock();
+   if(locked) {
+      TDeadtimeScalerQueue::All.unlock();
+   }
    return;
 }
 
@@ -111,8 +111,6 @@ void TDeadtimeScalerQueue::Add(TScalerData* scalerData)
    fScalersIn++;
 
    TDeadtimeScalerQueue::Sorted.unlock();
-
-   return;
 }
 
 void TDeadtimeScalerQueue::Pop()
@@ -135,7 +133,7 @@ TScalerData* TDeadtimeScalerQueue::PopScaler()
    }
    if(Size() > 0) {
       TScalerData* scaler = fDeadtimeScalerQueue.front();
-      if(scaler) {
+      if(scaler != nullptr) {
          fDeadtimeScalerQueue.pop();
          fScalersInQueue--;
          fScalersOut++;
@@ -143,10 +141,9 @@ TScalerData* TDeadtimeScalerQueue::PopScaler()
       }
       TDeadtimeScalerQueue::Sorted.unlock();
       return scaler;
-   } else {
-      TDeadtimeScalerQueue::Sorted.unlock();
-      return 0;
    }
+   TDeadtimeScalerQueue::Sorted.unlock();
+   return nullptr;
 }
 
 int TDeadtimeScalerQueue::Size() const
@@ -167,7 +164,6 @@ void TDeadtimeScalerQueue::CheckStatus() const
    printf(DGREEN "# Total Scalers taken from Q = %d" RESET_COLOR "\n", fTotalScalersOut);
 
    TDeadtimeScalerQueue::All.unlock();
-   return;
 }
 
 void TDeadtimeScalerQueue::StatusUpdate()
@@ -242,9 +238,7 @@ TRateScalerQueue::TRateScalerQueue()
    Clear();
 }
 
-TRateScalerQueue::~TRateScalerQueue()
-{
-}
+TRateScalerQueue::~TRateScalerQueue() = default;
 
 void TRateScalerQueue::Print(Option_t*) const
 {
@@ -279,7 +273,9 @@ void TRateScalerQueue::Clear(Option_t*)
 
    fStopwatch->Reset();
 
-   if(locked) TRateScalerQueue::All.unlock();
+   if(locked) {
+      TRateScalerQueue::All.unlock();
+   }
    return;
 }
 
@@ -316,8 +312,6 @@ void TRateScalerQueue::Add(TScalerData* scalerData)
    fScalersIn++;
 
    TRateScalerQueue::Sorted.unlock();
-
-   return;
 }
 
 void TRateScalerQueue::Pop()
@@ -340,7 +334,7 @@ TScalerData* TRateScalerQueue::PopScaler()
    }
    if(Size() > 0) {
       TScalerData* scaler = fRateScalerQueue.front();
-      if(scaler) {
+      if(scaler != nullptr) {
          fRateScalerQueue.pop();
          fScalersInQueue--;
          fScalersOut++;
@@ -348,10 +342,9 @@ TScalerData* TRateScalerQueue::PopScaler()
       }
       TRateScalerQueue::Sorted.unlock();
       return scaler;
-   } else {
-      TRateScalerQueue::Sorted.unlock();
-      return 0;
    }
+   TRateScalerQueue::Sorted.unlock();
+   return nullptr;
 }
 
 int TRateScalerQueue::Size() const
@@ -372,7 +365,6 @@ void TRateScalerQueue::CheckStatus() const
    printf(DGREEN "# Total Scalers taken from Q = %d" RESET_COLOR "\n", fTotalScalersOut);
 
    TRateScalerQueue::All.unlock();
-   return;
 }
 
 void TRateScalerQueue::StatusUpdate()

@@ -11,13 +11,13 @@ class GChain : public TChain {
 public:
    GChain();
    GChain(const char* name, const char* title = "");
-   virtual ~GChain();
+   ~GChain() override;
 
 private:
    void InitGChain();
 
    /// \cond CLASSIMP
-   ClassDef(GChain, 1)
+   ClassDefOverride(GChain, 1)
    /// \endcond
 };
 /*! @} */

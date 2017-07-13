@@ -28,12 +28,12 @@
 class TTACHit : public TGRSIDetectorHit {
 public:
    TTACHit();
-   virtual ~TTACHit();
+   ~TTACHit() override;
    TTACHit(const TTACHit&);
    TTACHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
 
 private:
-   Int_t fFilter;
+   Int_t fFilter{0};
 
 public:
    /////////////////////////		/////////////////////////////////////
@@ -49,12 +49,12 @@ public:
    Double_t GetTempCorrectedEnergy(TGraph* correction_graph) const;
 
 public:
-   void Clear(Option_t* opt = "");       //!<!
-   void Print(Option_t* opt = "") const; //!<!
-   virtual void Copy(TObject&) const;    //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
+   void Copy(TObject&) const override;            //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TTACHit, 1) // Stores the information for a TACrHit
+   ClassDefOverride(TTACHit, 1) // Stores the information for a TACrHit
    /// \endcond
 };
 /*! @} */

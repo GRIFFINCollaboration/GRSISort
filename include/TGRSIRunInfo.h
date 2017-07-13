@@ -63,24 +63,25 @@
 class TGRSIRunInfo : public TObject {
 public:
    static TGRSIRunInfo* Get();
-   virtual ~TGRSIRunInfo();
+   ~TGRSIRunInfo() override;
    TGRSIRunInfo(); // This should not be used.
    // root forces me have this here instead
    // of a private class member in
    // order to write this class to a tree.
    // pcb.
 
-   static void SetRunInfo(TGRSIRunInfo* temp);
-   static Bool_t ReadInfoFromFile(TFile* tempf = 0);
+   static void SetRunInfo(TGRSIRunInfo* tmp);
+   static Bool_t ReadInfoFromFile(TFile* tempf = nullptr);
 
    static const char* GetGRSIVersion() { return fGRSIVersion.c_str(); }
    static void        ClearGRSIVersion() { fGRSIVersion.clear(); }
    static void SetGRSIVersion(const char* ver)
    {
-      if (fGRSIVersion.length() != 0)
+      if(fGRSIVersion.length() != 0) {
          printf(ALERTTEXT "WARNING; VERSION ALREADY SET TO %s!!" RESET_COLOR "\n", fGRSIVersion.c_str());
-      else
+      } else {
          fGRSIVersion.assign(ver);
+      }
    }
 
    static void SetRunInfo(int runnum = 0, int subrunnum = -1);
@@ -98,6 +99,7 @@ public:
    static inline void SetRunStart(double tmp) { fGRSIRunInfo->fRunStart = tmp; }
    static inline void SetRunStop(double tmp) { fGRSIRunInfo->fRunStop = tmp; }
    static inline void SetRunLength(double tmp) { fGRSIRunInfo->fRunLength = tmp; }
+   static inline void SetRunLength() { fGRSIRunInfo->fRunLength = fGRSIRunInfo->fRunStop - fGRSIRunInfo->fRunStart; }
 
    static inline double RunStart() { return fGRSIRunInfo->fRunStart; }
    static inline double RunStop() { return fGRSIRunInfo->fRunStop; }
@@ -168,29 +170,6 @@ public:
    inline void SetRunInfoFileName(const char* fname) { fRunInfoFileName.assign(fname); }
    inline void SetRunInfoFile(const char* ffile) { fRunInfoFile.assign(ffile); }
 
-   inline void SetBuildWindow(const long int t_bw) { fBuildWindow = t_bw; }
-   inline void SetAddBackWindow(const double t_abw) { fAddBackWindow = t_abw; }
-   inline void SetBufferDuration(const long int t_bd) { fBufferDuration = t_bd; }
-   inline void SetBufferSize(const size_t t_bs) { fBufferSize = t_bs; }
-
-   inline void SetWaveformFitting(const bool flag) { fWaveformFitting = flag; }
-   static inline bool                        IsWaveformFitting() { return Get()->fWaveformFitting; }
-
-   inline void SetMovingWindow(const bool flag) { fIsMovingWindow = flag; }
-   static inline bool                     IsMovingWindow() { return Get()->fIsMovingWindow; }
-
-   void SetCorrectCrossTalk(const bool flag, Option_t* opt = "");
-   static inline bool IsCorrectingCrossTalk() { return Get()->fIsCorrectingCrossTalk; }
-
-   static inline long int BuildWindow() { return Get()->fBuildWindow / 10; }
-   static inline double   AddBackWindow()
-   {
-      if (Get()->fAddBackWindow < 1) return 15.0;
-      return Get()->fAddBackWindow;
-   }
-   static inline long int BufferDuration() { return Get()->fBufferDuration; }
-   static inline size_t   BufferSize() { return Get()->fBufferSize; }
-
    inline void SetHPGeArrayPosition(const double arr_pos) { fHPGeArrayPosition = arr_pos; }
    static inline double                          HPGeArrayPosition() { return Get()->fHPGeArrayPosition; }
 
@@ -202,11 +181,17 @@ public:
    {
       fRunStart = 0.;
       fRunStop  = 0.;
-      fRunLength += runinfo->RunLength();
+      if(runinfo->RunLength() > 0) {
+			if(fRunLength > 0) {
+				fRunLength += runinfo->RunLength();
+			} else {
+				fRunLength = runinfo->RunLength();
+			}
+		}
    }
 
    void PrintBadCycles() const;
-   void AddBadCycle(int cycle_num);
+   void AddBadCycle(int bad_cycle);
    void RemoveBadCycle(int cycle);
    bool IsBadCycle(int cycle) const;
 
@@ -218,11 +203,11 @@ private:
    int         fRunNumber;    // The current run number
    int         fSubRunNumber; // The current sub run number
 
-   double fRunStart;  // The start  of the current run in seconds
-   double fRunStop;   // The stop   of the current run in seconds
-   double fRunLength; // The length of the current run in seconds
+   double fRunStart{0.};  // The start  of the current run in seconds
+   double fRunStop{0.};   // The stop   of the current run in seconds
+   double fRunLength{0.}; // The length of the current run in seconds
 
-   int fNumberOfTrueSystems; // The number of detection systems in the array
+   int fNumberOfTrueSystems{0}; // The number of detection systems in the array
 
    static std::string fGRSIVersion; // The version of GRSISort that generated the file
 
@@ -243,23 +228,23 @@ private:
    //                "DS"  // DESCANT
    //               };
 
-   bool fTigress; // flag for Tigress on/off
-   bool fSharc;   // flag for Sharc on/off
-   bool fTriFoil; // flag for TriFoil on/off
-   bool fRf;      // flag for RF on/off
-   bool fCSM;     // flag for CSM on/off
-   bool fSpice;   // flag for Spice on/off
-   bool fTip;     // flag for Tip on/off
-   bool fS3;      // flag for S3 on/off
-   bool fBambino; // flag for Bambino on/off
+   bool fTigress{false}; // flag for Tigress on/off
+   bool fSharc{false};   // flag for Sharc on/off
+   bool fTriFoil{false}; // flag for TriFoil on/off
+   bool fRf{false};      // flag for RF on/off
+   bool fCSM{false};     // flag for CSM on/off
+   bool fSpice{false};   // flag for Spice on/off
+   bool fTip{false};     // flag for Tip on/off
+   bool fS3{false};      // flag for S3 on/off
+   bool fBambino{false}; // flag for Bambino on/off
 
-   bool fGriffin;    // flag for Griffin on/off
-   bool fSceptar;    // flag for Sceptar on/off
-   bool fPaces;      // flag for Paces on/off
-   bool fDante;      // flag for LaBr on/off
-   bool fZeroDegree; // flag for Zero Degree Scintillator on/off
-   bool fDescant;    // flag for Descant on/off
-   bool fFipps;      // flag for Fipps on/off
+   bool fGriffin{false};    // flag for Griffin on/off
+   bool fSceptar{false};    // flag for Sceptar on/off
+   bool fPaces{false};      // flag for Paces on/off
+   bool fDante{false};      // flag for LaBr on/off
+   bool fZeroDegree{false}; // flag for Zero Degree Scintillator on/off
+   bool fDescant{false};    // flag for Descant on/off
+   bool fFipps{false};      // flag for Fipps on/off
 
    std::string fCalFileName; // Name of calfile that generated cal
    std::string fCalFile;     // Cal File to load into Cal of tree
@@ -278,16 +263,6 @@ private:
    std::string fRunInfoFile;     // The contents of the run info file
    static void trim(std::string*, const std::string& trimChars = " \f\n\r\t\v");
 
-   long int fBuildWindow;    // if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
-   double   fAddBackWindow;  // Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default =150 ns (15.0))
-   bool     fIsMovingWindow; // if set to true the event building window moves. Static otherwise.
-   bool     fIsCorrectingCrossTalk; // True if we are correcting for cross-talk in GRIFFIN at analysis-level
-
-   long int fBufferDuration; // GRIFFIN: the minimum length of the sorting buffer (default = 600s (60000000000))
-   size_t   fBufferSize;     // GRIFFIN: the minimum size of the sorting buffer (default = 1 000 000)
-
-   bool fWaveformFitting; // If true, waveform fitting with SFU algorithm will be performed
-
    double fHPGeArrayPosition; // Position of the HPGe Array (default = 110.0 mm );
    bool   fDescantAncillary;  // Descant is in the ancillary detector locations
 
@@ -295,15 +270,15 @@ private:
    std::vector<int> fBadCycleList; //!<!List of bad cycles to be used for cycle rejection
 
 public:
-   void Print(Option_t* opt = "") const;
-   void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
-   static bool WriteToRoot(TFile* fileptr = 0);
-   static bool WriteInfoFile(std::string filename);
+   static bool WriteToRoot(TFile* fileptr = nullptr);
+   static bool WriteInfoFile(const std::string& filename);
    std::string PrintToString(Option_t* opt = "");
 
    /// \cond CLASSIMP
-   ClassDef(TGRSIRunInfo, 11); // Contains the run-dependent information.
+   ClassDefOverride(TGRSIRunInfo, 12); // Contains the run-dependent information.
    /// \endcond
 };
 /*! @} */

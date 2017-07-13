@@ -9,17 +9,17 @@
 class GPeak : public TF1 {
 public:
    GPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* opt = "gsc");
-   GPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background, Option_t* opt = "gsc");
+   GPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* bg, Option_t* opt = "gsc");
    GPeak(const GPeak&);
    GPeak();
-   virtual ~GPeak();
+   ~GPeak() override;
 
-   void Copy(TObject&) const;
-   void Print(Option_t* opt = "") const;
-   void Clear(Option_t* opt = "");
+   void Copy(TObject&) const override;
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
    void InitNames();
-   bool InitParams(TH1* fithist = 0);
+   bool InitParams(TH1* fithist = nullptr);
    bool Fit(TH1*, Option_t* opt = "");
    void DrawResiduals(TH1*) const;
    // void DrawResiduals(); // *MENU*
@@ -62,23 +62,23 @@ public:
    static GPeak* GetLastFit() { return fLastFit; }
 
 private:
-   double fArea;
-   double fDArea;
-   double fSum;
-   double fDSum;
-   double fChi2;
-   double fNdf;
+   double fArea{0.};
+   double fDArea{0.};
+   double fSum{0.};
+   double fDSum{0.};
+   double fChi2{0.};
+   double fNdf{0.};
 
    Bool_t IsInitialized() const { return init_flag; }
    void SetInitialized(Bool_t flag = true) { init_flag = flag; }
-   bool                       init_flag;
+   bool                       init_flag{false};
 
    static GPeak* fLastFit;
 
    TF1 fBGFit;
    //    TF1 fBGHist;
 
-   ClassDef(GPeak, 3)
+   ClassDefOverride(GPeak, 3)
 };
 
 #endif

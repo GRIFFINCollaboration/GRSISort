@@ -12,7 +12,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <time.h>
+#include <ctime>
 #include <fstream>
 #include <streambuf>
 
@@ -34,7 +34,7 @@ class TObjectWrapper : public TObject {
 public:
    TObjectWrapper(T* ptr) : pT(ptr) {}
    T* operator->() { return pT; }
-   ClassDef(TObjectWrapper, 1);
+   ClassDefOverride(TObjectWrapper, 1);
 };
 
 #endif // TOBJECTWRAPPER_H

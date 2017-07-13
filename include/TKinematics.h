@@ -21,16 +21,25 @@
 #define PI (TMath::Pi())
 #endif
 
+/////////////////////////////////////////////////////////////////
+///
+/// \class TKinematics
+///
+/// This class calculates 2 body kinematics from a beam, target,
+/// recoil, ejectile, and beam energy.
+///
+/////////////////////////////////////////////////////////////////
+
 class TKinematics : public TNamed {
 public:
-   TKinematics(double beame, const char* projectile, const char* target, const char* ejectile = nullptr,
-               const char* recoil = nullptr, const char* name = "");
-   TKinematics(const char* beam, const char* targ, const char* ejec, const char* reco, double eBeam, double ex3 = 0.0,
+   TKinematics(double beame, const char* beam, const char* targ, const char* ejec = nullptr, const char* reco = nullptr,
                const char* name = "");
-   TKinematics(TNucleus* projectile, TNucleus* target, double eBeam, const char* name = "");
-   TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double eBeam,
+   TKinematics(const char* beam, const char* targ, const char* ejec, const char* reco, double ebeam, double ex3 = 0.0,
                const char* name = "");
-   TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double eBeam, double ex3,
+   TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, const char* name = "");
+   TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam,
+               const char* name = "");
+   TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam, double ex3,
                const char* name = "");
 
    void Initial();
@@ -47,7 +56,7 @@ public:
 
    TGraph* Evslab_graph(double thmin, double thmax, double size, int part = 2);
 
-   double GetCmEnergy(double eBeam);
+   double GetCmEnergy(double ebeam);
    double GetCmEnergy();
    double GetBeamEnergy(double LabAngle, double LabEnergy);
    double GetMaxAngle(double vcm);
@@ -69,17 +78,19 @@ public:
 
    double GetThetalab(int i)
    {
-      if (fTheta[i] < 1e-5)
+      if(fTheta[i] < 1e-5) {
          return 0;
-      else
+      } else {
          return fTheta[i];
+      }
    }
    double GetThetacm(int i)
    {
-      if (fThetacm[i] < 1e-5)
+      if(fThetacm[i] < 1e-5) {
          return 0;
-      else
+      } else {
          return fThetacm[i];
+      }
    }
 
    double GetBetacm() { return fBeta_cm; }
@@ -92,8 +103,8 @@ public:
    TSpline3* Ruthvslab(double thmin, double thmax, double size, int part);
    double Angle_lab2cm(double vcm, double angle_lab);
    double Angle_lab2cminverse(double vcm, double angle_lab, bool upper = true);
-   double Steffen_cm2labinverse(double theta_lab, int part = 2); // NEW FUNCTIN+
-   double Steffen_lab2cminverse(double theta_lab);               // assumes part = 2;
+   double Steffen_cm2labinverse(double theta_cm, int part = 2); // NEW FUNCTIN+
+   double Steffen_lab2cminverse(double theta_lab);              // assumes part = 2;
    double Angle_cm2lab(double vcm, double angle_cm);
    double Sigma_cm2lab(double angle_cm, double sigma_cm);
    double Sigma_lab2cm(double angle_cm, double sigma_lab);
@@ -108,28 +119,28 @@ public:
    // void Clear(Option_t* opt="") { }
 
 private:
-   double fTCm_i;
-   double fTCm_f;
+   double fTCm_i{0.};
+   double fTCm_f{0.};
 
-   TNucleus* fParticle[4];
-   double    fM[4];
+   TNucleus* fParticle[4]{nullptr};
+   double    fM[4]{0.};
    double    fQValue;
    double    fEBeam;
-   double    fT[4];
-   double    fE[4];
-   double    fP[4];
-   double    fV[4];
-   double    fTheta[4];
+   double    fT[4]{0.};
+   double    fE[4]{0.};
+   double    fP[4]{0.};
+   double    fV[4]{0.};
+   double    fTheta[4]{0.};
 
-   double fTcm[4];
-   double fEcm[4];
-   double fPcm[4];
-   double fVcm[4];
-   double fBetacm[4];
-   double fThetacm[4];
+   double fTcm[4]{0.};
+   double fEcm[4]{0.};
+   double fPcm[4]{0.};
+   double fVcm[4]{0.};
+   double fBetacm[4]{0.};
+   double fThetacm[4]{0.};
 
-   double fBeta_cm;
-   double fGamma_cm;
+   double fBeta_cm{0.};
+   double fGamma_cm{0.};
 
    double Pcm_em(double, double);
    double P_tm(double, double);
@@ -144,7 +155,8 @@ private:
    void      InitKin();
 
    /// \cond CLASSIMP
-   ClassDef(TKinematics, 1); // Calculates kinematics parameters (both normal and inverse) for scattering experiments
+   ClassDefOverride(TKinematics,
+                    1); // Calculates kinematics parameters (both normal and inverse) for scattering experiments
    /// \endcond
 };
 /*! @} */

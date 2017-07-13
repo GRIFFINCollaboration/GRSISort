@@ -5,10 +5,11 @@
  *  @{
  */
 
+#include <utility>
 #include <vector>
 #include <iostream>
 #include <set>
-#include <stdio.h>
+#include <cstdio>
 #include <functional>
 
 #include "TMath.h"
@@ -49,16 +50,16 @@ public:
 
    TTigress();
    TTigress(const TTigress&);
-   virtual ~TTigress();
+   ~TTigress() override;
 
    // Dont know why these were changes to return by reference rather than pointer
    // The tigress group prefer them the old way
-   const TTigressHit* GetTigressHit(int i) const { return &fTigressHits.at(i); }                              //!<!
-   TTigressHit* GetTigressHit(int i) { return &fTigressHits.at(i); }                                          //!<!
-   TGRSIDetectorHit* GetHit(const int &i=0) { return GetTigressHit(i); }                                   //!<!
-   Short_t                             GetMultiplicity() const { return fTigressHits.size(); }                 //!<!
-   static TVector3 GetPosition(int DetNbr, int CryNbr, int SegNbr, double distance = 0., bool smear = false); //!<!
-   static TVector3 GetPosition(const TTigressHit&, double distance = 0., bool smear = false);                 //!<!
+   const TTigressHit*      GetTigressHit(int i) const { return &fTigressHits.at(i); }                             //!<!
+   TTigressHit*            GetTigressHit(int i) { return &fTigressHits.at(i); }                                   //!<!
+   TGRSIDetectorHit*       GetHit(const int& i = 0) override { return GetTigressHit(i); }                            //!<!
+   Short_t                 GetMultiplicity() const override { return fTigressHits.size(); }                                //!<!
+   static TVector3         GetPosition(int DetNbr, int CryNbr, int SegNbr, double dist = 0., bool smear = false); //!<!
+   static TVector3         GetPosition(const TTigressHit&, double dist = 0., bool smear = false);                 //!<!
 
    std::vector<TBgoHit> fBgos;
    void AddBGO(TBgoHit& bgo) { fBgos.push_back(bgo); }                      //!<!
@@ -76,14 +77,16 @@ public:
    UShort_t GetNAddbackFrags(size_t idx) const;
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
-   void BuildHits();
+   void BuildHits() override;
 
-   void ClearTransients()
+   void ClearTransients() override
    {
       fTigressBits = 0;
-      for (auto hit : fTigressHits) hit.ClearTransients();
+      for(const auto& hit : fTigressHits) {
+         hit.ClearTransients();
+      }
    }
 
    TTigress& operator=(const TTigress&); //!<!
@@ -91,13 +94,13 @@ public:
 #if !defined(__CINT__) && !defined(__CLING__)
    void SetAddbackCriterion(std::function<bool(TTigressHit&, TTigressHit&)> criterion)
    {
-      fAddbackCriterion = criterion;
+      fAddbackCriterion = std::move(criterion);
    }
 
    std::function<bool(TTigressHit&, TTigressHit&)> GetAddbackCriterion() const { return fAddbackCriterion; }
    void SetSuppressionCriterion(std::function<bool(TTigressHit&, TBgoHit&)> criterion)
    {
-      fSuppressionCriterion = criterion;
+      fSuppressionCriterion = std::move(criterion);
    }
    std::function<bool(TTigressHit&, TBgoHit&)> GetSuppressionCriterion() const { return fSuppressionCriterion; }
 #endif
@@ -172,17 +175,19 @@ public:
 
    static double GetFaceDistance()
    {
-      if (GetArrayBackPos()) return 145;
+      if(GetArrayBackPos()) {
+         return 145;
+      }
       return 110;
    }
 
 public:
-   virtual void Clear(Option_t* opt = "");       //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
-   virtual void Copy(TObject&) const;            //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
+   void Copy(TObject&) const override;            //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TTigress, 7) // Tigress Physics structure
+   ClassDefOverride(TTigress, 7) // Tigress Physics structure
    /// \endcond
 };
 /*! @} */

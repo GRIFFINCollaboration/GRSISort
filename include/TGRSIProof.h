@@ -12,7 +12,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <time.h>
+#include <ctime>
 #include <fstream>
 #include <streambuf>
 
@@ -43,7 +43,7 @@ class TGRSIProof : public TProof {
 public:
    TGRSIProof() : TProof() {}
    // TGRSIProof(const TObject& rhs) : TProof(rhs) {}
-   virtual ~TGRSIProof() {}
+   ~TGRSIProof() override = default;
 
    static TGRSIProof* Open(const char* worker = "")
    {
@@ -60,13 +60,13 @@ public:
       const char* pPath = getenv("GRSISYS");
 
       // First set the include path on each slave
-      Exec(Form("gInterpreter->AddIncludePath(\"%s/include\")", pPath));
-      std::cout << "Loading Libraries" << std::endl;
-      Exec(Form("gSystem->Load(\"%s/lib/libGRSI.so\");", pPath));
+      Exec(Form(R"(gInterpreter->AddIncludePath("%s/include"))", pPath));
+      std::cout<<"Loading Libraries"<<std::endl;
+      Exec(Form(R"(gSystem->Load("%s/lib/libGRSI.so");)", pPath));
    }
 
    /// \cond CLASSIMP
-   ClassDef(TGRSIProof, 1); // Event Fragments
+   ClassDefOverride(TGRSIProof, 1); // Event Fragments
    /// \endcond
 };
 /*! @} */

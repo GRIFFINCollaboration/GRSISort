@@ -3,9 +3,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TSiLiHit)
-   /// \endcond
+/// \endcond
 
-   TSiLiHit::TSiLiHit()
+TSiLiHit::TSiLiHit()
 {
    Clear();
 }
@@ -18,14 +18,12 @@ TSiLiHit::TSiLiHit(const TFragment& frag) : TGRSIDetectorHit(frag)
    SetWavefit(frag);
 }
 
-TSiLiHit::~TSiLiHit()
-{
-}
+TSiLiHit::~TSiLiHit() = default;
 
 TSiLiHit::TSiLiHit(const TSiLiHit& rhs) : TGRSIDetectorHit(rhs)
 {
    Clear();
-   ((TSiLiHit&)rhs).Copy(*this);
+   (const_cast<TSiLiHit&>(rhs)).Copy(*this);
 }
 
 void TSiLiHit::Copy(TObject& rhs, bool suppress) const
@@ -65,7 +63,7 @@ void TSiLiHit::Clear(Option_t* opt)
 void TSiLiHit::SetWavefit(const TFragment& frag)
 {
    TPulseAnalyzer* pulse = FitFrag(frag, TSiLi::FitSiLiShape, GetChannel());
-   if(pulse) {
+   if(pulse != nullptr) {
       fTimeFit   = pulse->Get_wpar_T0();
       fFitBase   = pulse->Get_wpar_baselinefin();
       fFitCharge = pulse->Get_wpar_amplitude();
@@ -83,16 +81,18 @@ TPulseAnalyzer* TSiLiHit::FitFrag(const TFragment& frag, int ShapeFit, int segme
 
 TPulseAnalyzer* TSiLiHit::FitFrag(const TFragment& frag, int ShapeFit, TChannel* channel)
 {
-   TPulseAnalyzer* pulse = new TPulseAnalyzer(frag, TSiLi::sili_noise_fac);
-   if(FitPulseAnalyzer(pulse, ShapeFit, channel)) return pulse;
+   auto* pulse = new TPulseAnalyzer(frag, TSiLi::sili_noise_fac);
+   if(FitPulseAnalyzer(pulse, ShapeFit, channel) != 0) {
+      return pulse;
+   }
    delete pulse;
-   return 0;
+   return nullptr;
 }
 
 TChannel* TSiLiHit::GetSiLiHitChannel(int segment)
 {
    std::stringstream ss;
-   ss << "SPI00XN" << std::uppercase << std::hex << segment;
+   ss<<"SPI00XN"<<std::uppercase<<std::hex<<segment;
    // 	std::cout<<std::endl<<ss.str().c_str();
    return TChannel::FindChannelByName(ss.str().c_str());
 }
@@ -104,11 +104,13 @@ int TSiLiHit::FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit, int segment)
 
 int TSiLiHit::FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit, TChannel* channel)
 {
-   if(!pulse) return 0;
+   if(pulse == nullptr) {
+      return 0;
+   }
    if(pulse->IsSet()) {
       double Decay = 0, Rise = 0, Base = 0;
 
-      if(channel) {
+      if(channel != nullptr) {
          if(channel->UseWaveParam()) {
             Rise  = channel->GetWaveRise();
             Decay = channel->GetWaveDecay();
@@ -117,15 +119,29 @@ int TSiLiHit::FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit, TChannel* ch
       }
       // 		std::cout<<std::endl<<Decay<<" "<<Rise<<" "<<Base;
 
-      if(!Decay) Decay = TSiLi::sili_default_decay;
-      if(!Rise) Rise   = TSiLi::sili_default_rise;
-      if(!Base) Base   = TSiLi::sili_default_baseline;
+      if(Decay == 0.0) {
+         Decay = TSiLi::sili_default_decay;
+      }
+      if(Rise == 0.0) {
+         Rise = TSiLi::sili_default_rise;
+      }
+      if(Base == 0.0) {
+         Base = TSiLi::sili_default_baseline;
+      }
 
-      bool goodfit             = false;
-      if(ShapeFit < 2) goodfit = pulse->GetSiliShape(Decay, Rise);
-      if(ShapeFit == 1 && !goodfit) ShapeFit++;
-      if(ShapeFit == 2) goodfit = pulse->GetSiliShapeTF1(Decay, Rise, Base);
-      if(goodfit) return 1 + ShapeFit;
+      bool goodfit = false;
+      if(ShapeFit < 2) {
+         goodfit = pulse->GetSiliShape(Decay, Rise);
+      }
+      if(ShapeFit == 1 && !goodfit) {
+         ShapeFit++;
+      }
+      if(ShapeFit == 2) {
+         goodfit = pulse->GetSiliShapeTF1(Decay, Rise, Base);
+      }
+      if(goodfit) {
+         return 1 + ShapeFit;
+      }
    }
    return 0;
 }
@@ -153,7 +169,7 @@ void TSiLiHit::SumHit(TSiLiHit* hit)
       return;
    }
 
-   if(fAddBackSegments.size() == 0) {
+   if(fAddBackSegments.empty()) {
       hit->Copy(*this, true); // suppresses copying of addback
       fAddBackSegments.clear();
       fAddBackEnergy.clear();
@@ -181,18 +197,25 @@ Int_t TSiLiHit::GetPreamp() const
 
 double TSiLiHit::GetFitEnergy() const
 {
-   if(fSiLiHitBits.TestBit(kUseFitCharge)) return TGRSIDetectorHit::GetEnergy();
+   if(fSiLiHitBits.TestBit(kUseFitCharge)) {
+      return TGRSIDetectorHit::GetEnergy();
+   }
    TChannel* chan = GetChannel();
-   if(!chan) return fFitCharge;
+   if(chan == nullptr) {
+      return fFitCharge;
+   }
    return chan->CalibrateENG(fFitCharge, 0);
 }
 
 double TSiLiHit::GetEnergy(Option_t*) const
 {
-   if(TestHitBit(kIsEnergySet) || !fSiLiHitBits.TestBit(kUseFitCharge))
+   if(TestHitBit(kIsEnergySet) || !fSiLiHitBits.TestBit(kUseFitCharge)) {
       return TGRSIDetectorHit::GetEnergy(); // If not fitting waveforms, be normal.
+   }
    TChannel* chan = GetChannel();
-   if(!chan) return SetEnergy(fFitCharge);
+   if(chan == nullptr) {
+      return SetEnergy(fFitCharge);
+   }
 
    return SetEnergy(chan->CalibrateENG(fFitCharge, 0)); // this will use the integration value
 } // in the TChannel if it exists.

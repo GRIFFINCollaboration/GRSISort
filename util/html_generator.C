@@ -64,7 +64,7 @@ public:
 
       std::string inclpath = "$(GRSISYS)/grsisort/";
       std::stringstream totpath;
-      totpath << inclpath << fpath.str();
+      totpath<<inclpath<<fpath.str();
       std::string incldirs = totpath.str(); 
       GetHtml()->SetSourceDir(incldirs.c_str());
       GetHtml()->SetOutputDir("$GRSISYS/htmldoc");
@@ -87,16 +87,16 @@ public:
    {
       gSystem->PrependPathName(getenv("GRSISYS"), name);
       GetHtml()->SetEtcDir(name);
-      std::cout << "ETC " << GetHtml()->GetEtcDir() << std::endl;
+      std::cout<<"ETC "<<GetHtml()->GetEtcDir()<<std::endl;
    }
 
    void AddSourcePath(std::string newpath)
    {   
-       fpath << ":$(GRSISYS)/libraries/" << newpath;
+       fpath<<":$(GRSISYS)/libraries/"<<newpath;
    }
 
    void AddRootSourcePath(){
-      fpath << ":$(ROOTSYS)/";
+      fpath<<":$(ROOTSYS)/";
    }
 
 protected:

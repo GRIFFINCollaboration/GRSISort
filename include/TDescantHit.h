@@ -19,7 +19,7 @@
 class TDescantHit : public TGRSIDetectorHit {
 public:
    TDescantHit();
-   virtual ~TDescantHit();
+   ~TDescantHit() override;
    TDescantHit(const TDescantHit&);
    TDescantHit(const TFragment& frag);
 
@@ -52,43 +52,44 @@ public:
    inline std::vector<short>& GetCfdMonitor() { return fCfdMonitor; }
    inline std::vector<int>&   GetPartialSum() { return fPartialSum; }
 
-   Int_t    GetCfd() const;
+   Int_t    GetCfd() const override;
    Int_t    GetRemainder() const;
-   Double_t GetTime(const UInt_t& correction_flag = ETimeFlag::kAll,
-                    Option_t* opt = "") const; ///< Returns a time value using the CFD with 1/256 ns intrinsic binning
+   Double_t GetTime(
+      const UInt_t& correction_flag = ETimeFlag::kAll,
+      Option_t*     opt = "") const override; ///< Returns a time value using the CFD with 1/256 ns intrinsic binning
    Double_t GetCorrectedTime()
       const; ///< Returns a time value using the CFD with 1/256 ns intrinsic binning, corrected using GValue
 
    Int_t CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow,
                       unsigned int interpolation_steps); //!<!
-   Int_t CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow,
-                                unsigned int interpolation_steps, std::vector<Short_t>& monitor); //!<!
+   Int_t CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfSmoothingWindow,
+                                unsigned int interpolationSteps, std::vector<Short_t>& monitor); //!<!
    std::vector<Short_t> CalculateCfdMonitor(double attenuation, unsigned int delay,
                                             unsigned int halfSmoothingWindow);       //!<!
-   std::vector<Short_t> CalculateSmoothedWaveform(unsigned int halfsmoothingwindow); //!<!
+   std::vector<Short_t> CalculateSmoothedWaveform(unsigned int halfSmoothingWindow); //!<!
    std::vector<Int_t> CalculatePartialSum();                                         //!<!
-   Int_t CalculatePsd(double fraction, unsigned int interpolation_steps);            //!<!
-   Int_t CalculatePsdAndPartialSums(double fraction, unsigned int interpolation_steps,
-                                    std::vector<Int_t>& partialsums); //!<!
+   Int_t CalculatePsd(double fraction, unsigned int interpolationSteps);             //!<!
+   Int_t CalculatePsdAndPartialSums(double fraction, unsigned int interpolationSteps,
+                                    std::vector<Int_t>& partialSums); //!<!
 
    bool InFilter(Int_t); //!<!
 
    bool AnalyzeWaveform(); //!<!
 
-   TVector3 GetPosition(Double_t dist) const; //!<!
-   TVector3 GetPosition() const;              //!<!
+   TVector3 GetPosition(Double_t dist) const override; //!<!
+   TVector3 GetPosition() const override;              //!<!
 
 public:
-   void Copy(TObject&) const;            //!<!
-   void Copy(TObject&, bool) const;      //!<!
-   void Clear(Option_t* opt = "");       //!<!
-   void Print(Option_t* opt = "") const; //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Copy(TObject&, bool) const override;      //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
 private:
    Double_t GetDefaultDistance() const { return 222.; }
 
    /// \cond CLASSIMP
-   ClassDef(TDescantHit, 5)
+   ClassDefOverride(TDescantHit, 5)
    /// \endcond
 };
 /*! @} */

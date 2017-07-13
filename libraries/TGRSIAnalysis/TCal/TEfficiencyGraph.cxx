@@ -5,17 +5,15 @@
 
 /// \cond CLASSIMP
 ClassImp(TEfficiencyGraph)
-   /// \endcond
+/// \endcond
 
-   TEfficiencyGraph::TEfficiencyGraph()
+TEfficiencyGraph::TEfficiencyGraph()
    : TCalGraph(), fIsAbsolute(false)
 {
    Clear();
 }
 
-TEfficiencyGraph::~TEfficiencyGraph()
-{
-}
+TEfficiencyGraph::~TEfficiencyGraph() = default;
 
 TEfficiencyGraph::TEfficiencyGraph(const TEfficiencyGraph& copy) : TCalGraph(copy)
 {

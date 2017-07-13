@@ -86,7 +86,7 @@ void CheckHighTimeStamp(TTree *tree,  int64_t *correction){
    for(int i =0; i<4;i++){
       printf("%d:\t %d\n",i,low_hightime[i]);
       //Calculate the shift to 0 all digitizers
-      correction[i] = ((low_hightime[i] - low_hightime[lowest_dig]) & 0x00003fff) << 28;
+      correction[i] = ((low_hightime[i] - low_hightime[lowest_dig]) & 0x00003fff)<<28;
    }
    printf("********************\n");
 

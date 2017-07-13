@@ -9,10 +9,10 @@
 #include "TGRSIFunctions.h"
 
 #include <vector>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
 
 #include "TNamed.h"
 #include "Rtypes.h"
@@ -32,7 +32,7 @@
 
 class TPulseAnalyzer {
 private:
-   typedef struct WaveFormPar {
+   struct WaveFormPar {
       // parameters for baseline
       int    baseline_range;
       double baseline;         // baseline
@@ -73,30 +73,30 @@ private:
       double      amplitude; // amplitude from sili fits
       double      tauDecay;
       double      tauRise;
-   } WaveFormPar;
+   };
 
-   typedef struct LinePar {
+   struct LinePar {
       double slope;
       double intercept;
       double chisq;
       double ndf;
-   } LinePar;
+   };
 
-   typedef struct ParPar {
+   struct ParPar {
       double constant;
       double linear;
       double quadratic;
       double chisq;
       double ndf;
-   } ParPar;
+   };
 
-   typedef struct SinPar {
+   struct SinPar {
       double A;
       double t0;
       double C;
-   } SinPar;
+   };
 
-   typedef struct {
+   struct ShapePar {
       double      chisq;
       int         ndf;
       int         type;
@@ -109,16 +109,15 @@ private:
       long double chisq_f;
       int         ndf_ex;
       int         ndf_f;
-
-   } ShapePar;
+   };
 
 public:
    TPulseAnalyzer();
-   TPulseAnalyzer(const TFragment& frag, double = 0);
+   TPulseAnalyzer(const TFragment& fragment, double = 0);
    TPulseAnalyzer(const std::vector<Short_t>& wave, double = 0, std::string name = "");
    virtual ~TPulseAnalyzer();
 
-   void SetData(const TFragment& frag, double = 0);
+   void SetData(const TFragment& fragment, double = 0);
    void SetData(const std::vector<Short_t>& wave, double = 0);
    void Clear(Option_t* opt = "");
    bool IsSet() { return set; }
@@ -172,7 +171,7 @@ private:
    std::string fName;
 
    // pulse fitting parameters
-   int FILTER;     // integration region for noise reduction (in samples)
+   int    FILTER;  // integration region for noise reduction (in samples)
    int    T0RANGE; // tick range over which baseline is calulated
    double LARGECHISQ;
 
@@ -190,7 +189,7 @@ private:
    int    GetCsIShape();
 
    bool   CsISet;
-   double EPS;
+	double EPS;
 
    void SetCsI(bool option = "true") { CsISet = option; }
    bool             CsIIsSet() { return CsISet; }

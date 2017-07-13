@@ -17,7 +17,7 @@ class TEfficiencyCalibration : public TNamed {
 public:
    TEfficiencyCalibration();
    TEfficiencyCalibration(const char* name, const char* title);
-   virtual ~TEfficiencyCalibration();
+   ~TEfficiencyCalibration() override;
 
    TEfficiencyCalibration(const TEfficiencyCalibration& copy);
 
@@ -27,13 +27,13 @@ public:
    void ScaleGuess();
 
 public:
-   void Copy(TObject& obj) const;
+   void Copy(TObject& copy) const override;
 
-   void Clear(Option_t* opt = "");
-   void Print(Option_t* opt = "") const;
+   void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
    TFitResultPtr Fit(Option_t* opt = "");
 
-   void Draw(Option_t* opt = "");
+   void Draw(Option_t* opt = "") override;
    void DrawRelative(Option_t* opt = "");
    void DrawAbsolute(Option_t* opt = "");
 
@@ -57,7 +57,7 @@ private:
    TF1*         fAbsoluteFunc;
 
    /// \cond CLASSIMP
-   ClassDef(TEfficiencyCalibration, 1);
+   ClassDefOverride(TEfficiencyCalibration, 1);
    /// \endcond
 };
 /*! @} */

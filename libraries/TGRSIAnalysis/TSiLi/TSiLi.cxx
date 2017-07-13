@@ -1,13 +1,13 @@
 
 #include "TSiLi.h"
-#include <TGRSIRunInfo.h>
+#include "TGRSIOptions.h"
 
 /// \cond CLASSIMP
 ClassImp(TSiLi)
-   /// \endcond
+/// \endcond
 
-   // Having these in Clear() caused issues as functions can be called abstract with out initialising a TSiLi
-   int TSiLi::fRingNumber     = 10;
+// Having these in Clear() caused issues as functions can be called abstract with out initialising a TSiLi
+int TSiLi::fRingNumber     = 10;
 int    TSiLi::fSectorNumber   = 12;
 double TSiLi::fOffsetPhi      = -165. * TMath::Pi() / 180.; // For SPICE. Sectors upstream.
 double TSiLi::fOuterDiameter  = 94.;
@@ -26,9 +26,7 @@ TSiLi::TSiLi()
    Clear();
 }
 
-TSiLi::~TSiLi()
-{
-}
+TSiLi::~TSiLi() = default;
 
 void TSiLi::Copy(TObject& rhs) const
 {
@@ -36,8 +34,6 @@ void TSiLi::Copy(TObject& rhs) const
    static_cast<TSiLi&>(rhs).fSiLiHits    = fSiLiHits;
    static_cast<TSiLi&>(rhs).fAddbackHits = fAddbackHits;
    static_cast<TSiLi&>(rhs).fSiLiBits    = 0;
-
-   return;
 }
 
 TSiLi::TSiLi(const TSiLi& rhs) : TGRSIDetector()
@@ -74,13 +70,13 @@ TSiLiHit* TSiLi::GetSiLiHit(const int& i)
    try {
       return &fSiLiHits.at(i);
    } catch(const std::out_of_range& oor) {
-      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+      std::cerr<<ClassName()<<" is out of range: "<<oor.what()<<std::endl;
       throw grsi::exit_exception(1);
    }
-   return 0;
+   return nullptr;
 }
 
-void TSiLi::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
+void TSiLi::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
 {
    if(frag == nullptr || chan == nullptr) {
       return;
@@ -129,11 +125,10 @@ TSiLiHit* TSiLi::GetAddbackHit(const int& i)
    /// This automatically calculates all addback hits if they haven't been calculated before.
    if(i < GetAddbackMultiplicity()) {
       return &fAddbackHits.at(i);
-   } else {
-      std::cerr << "Addback hits are out of range" << std::endl;
-      throw grsi::exit_exception(1);
-      return nullptr;
    }
+   std::cerr<<"Addback hits are out of range"<<std::endl;
+   throw grsi::exit_exception(1);
+   return nullptr;
 }
 
 // How the make addback currently works
@@ -144,14 +139,14 @@ TSiLiHit* TSiLi::GetAddbackHit(const int& i)
 // If they are acceptable neighbours the second hit is also added to the cluster
 //
 // fAddbackCriterion checks if hits are flat surface contact (no corners) neighbours
-// and compares time to the global TGRSIRunInfo::AddBackWindow()
+// and compares time to the global TGRSIOptions::AddBackWindow()
 // some limited energy constraints are also added
 //
 // Clusters are then ordered by energy and summed
 // All base information is taken from the highest energy hit
 
 // Things to implement:
-// -maybe dont use global TGRSIRunInfo::AddBackWindow() time
+// -maybe dont use global TGRSIOptions::AddBackWindow() time
 // -better energy restrictions could be placed on what is a pair to suppress crosstalk issues
 // -instead of blindly summing entire clusters a decision could be made based on geometry of the pixels
 // eg if an event claims to go through a row of 3 the middle one must have sufficient energy for an electron to have
@@ -182,11 +177,13 @@ Int_t TSiLi::GetAddbackMultiplicity()
       fAddbackHits.clear();
    }
 
-   if(fAddbackHits.size() == 0) {
+   if(fAddbackHits.empty()) {
 
       // Create a matrix of "pairs"
       std::vector<std::vector<bool>> pairs;
-      for(int i = 0; i < basehits; i++) pairs.push_back(std::vector<bool>(basehits, false));
+      for(int i = 0; i < basehits; i++) {
+         pairs.emplace_back(basehits, false);
+      }
 
       std::vector<unsigned>              clusters_id(basehits, 0);
       std::vector<std::vector<unsigned>> Clusters;
@@ -218,19 +215,19 @@ Int_t TSiLi::GetAddbackMultiplicity()
       // Clusters are lists of hits that have been identified as coincident neighbours
       // Will be length 1 if no neighbours
 
-      for(unsigned i = 0; i < Clusters.size(); i++) {
+      for(auto& Cluster : Clusters) {
 
          TSiLi::SortCluster(
-            Clusters[i]); // Energy sort the clusters also deletes any invalid hit numbers//Not an efficient function
-         if(Clusters[i].size() > 0) {
+            Cluster); // Energy sort the clusters also deletes any invalid hit numbers//Not an efficient function
+         if(!Cluster.empty()) {
             uint s = fAddbackHits.size();
             // We have to add it and THEN do the SumHit because the push_back copies the charge but not the energy,
             // which is the bit we sum
             // This is desired behaviour of TGRSIDetectorHit for speed of sorts, but messy for the addback, which should
             // only be done "on the fly" not stored to TSiLi on disk
-            fAddbackHits.push_back(TSiLiHit());
-            for(unsigned j = 0; j < Clusters[i].size(); j++) {
-               fAddbackHits[s].SumHit(GetSiLiHit(Clusters[i][j]));
+            fAddbackHits.emplace_back();
+            for(unsigned int j : Cluster) {
+               fAddbackHits[s].SumHit(GetSiLiHit(j));
             }
          }
       }
@@ -253,17 +250,21 @@ bool TSiLi::fAddbackCriterion(TSiLiHit* one, TSiLiHit* two)
 
    double e = one->GetEnergy() / two->GetEnergy();
    if(e > 0.1 && e < 10) { // very basic energy gate to suppress crosstalk noise issues
-      if(std::abs(T) < (TGRSIRunInfo::AddBackWindow() * 10.0)) {
+      if(std::abs(T) < (TGRSIOptions::AnalysisOptions()->AddbackWindow() * 10.0)) {
          int dring   = std::abs(one->GetRing() - two->GetRing());
          int dsector = std::abs(one->GetSector() - two->GetSector());
-         if(dring == 1 && dsector == 0) return true;
-         if(dring == 0 && (dsector == 1 || dsector == 11)) return true;
+         if(dring == 1 && dsector == 0) {
+            return true;
+         }
+         if(dring == 0 && (dsector == 1 || dsector == 11)) {
+            return true;
+         }
       }
    }
 
    // 	  TVector3 res = one.GetPosition() - two.GetPosition();
    //                         // GetTime is in ns;  AddbackWindow is in 10's of ns.
-   //   return ((std::abs(one.GetTime() - two.GetTime()) < (TGRSIRunInfo::AddBackWindow()*10.0)) &&
+   //   return ((std::abs(one.GetTime() - two.GetTime()) < (TGRSIOptions::AddBackWindow()*10.0)) &&
    //       ((((one.GetInitialHit() < 5 && two.GetInitialHit() < 5) || (one.GetInitialHit() > 4 && two.GetInitialHit() >
    //       4)) && res.Mag() < 54) ||  //not front to back
    //        (((one.GetInitialHit() < 5 && two.GetInitialHit() > 4) || (one.GetInitialHit() > 4 && two.GetInitialHit() <
@@ -302,8 +303,10 @@ void TSiLi::SortCluster(std::vector<unsigned>& cluster)
 
       while(Imax >= 0) {
          ordered.push_back(Imax); // At start of loop because we want to do the previously determind max here
-         if(cs == ordered.size()) break;
-         Imax = -1; // Will stay -1 unless there is a next highest
+         if(cs == ordered.size()) {
+            break;
+         }
+         Imax            = -1; // Will stay -1 unless there is a next highest
          double Emaxloop = 0;
          for(unsigned i = 0; i < cs; i++) {
             if(energy[i] > Emaxloop && energy[i] < Emax) {
@@ -316,7 +319,9 @@ void TSiLi::SortCluster(std::vector<unsigned>& cluster)
 
       cluster = ordered;
    }
-   if(!(cluster[0] < fSiLiHits.size())) cluster.clear();
+   if(!(cluster[0] < fSiLiHits.size())) {
+      cluster.clear();
+   }
 }
 
 // Just a useful function for some dynamic tools

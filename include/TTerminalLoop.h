@@ -21,47 +21,47 @@ class TTerminalLoop : public StoppableThread {
 public:
    static TTerminalLoop* Get(std::string name = "")
    {
-      if (name.length() == 0) {
+      if(name.length() == 0) {
          name = "terminal_loop";
       }
 
       StoppableThread* thread = StoppableThread::Get(name);
-      if (!thread) {
+      if(!thread) {
          thread = new TTerminalLoop(name);
       }
 
       return dynamic_cast<TTerminalLoop*>(thread);
    }
 
-   ~TTerminalLoop() {}
+   ~TTerminalLoop() override = default;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<T>>>& InputQueue() { return fInputQueue; }
 
-   virtual void ClearQueue()
+   void ClearQueue() override
    {
-      while (fInputQueue->Size()) {
+      while(fInputQueue->Size()) {
          std::shared_ptr<T> event;
          fInputQueue->Pop(event);
       }
    }
 #endif
 
-   virtual size_t GetItemsPopped() { return 0; }
-   virtual size_t GetItemsPushed() { return 0; }
-   virtual size_t GetItemsCurrent() { return 0; }
-   virtual size_t GetRate() { return 0; }
+   size_t GetItemsPopped() override { return 0; }
+   size_t GetItemsPushed() override { return 0; }
+   size_t GetItemsCurrent() override { return 0; }
+   size_t GetRate() override { return 0; }
 
 protected:
 #ifndef __CINT__
-   bool Iteration()
+   bool Iteration() override
    {
       std::shared_ptr<T> event;
       fInputQueue->Pop(event);
 
-      if (event) {
+      if(event) {
          return true;
-      } else if (fInputQueue->IsFinished()) {
+      } else if(fInputQueue->IsFinished()) {
          return false;
       } else {
          std::this_thread::sleep_for(std::chrono::milliseconds(1000));

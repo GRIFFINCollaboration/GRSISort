@@ -12,9 +12,9 @@ public:
    static GSnapshot& Get();
 
    GSnapshot(const char* snapshot_dir = nullptr);
-   ~GSnapshot() {}
+   ~GSnapshot()                       = default;
 
-   void Snapshot(TCanvas* canvas = nullptr);
+   void Snapshot(TCanvas* can = nullptr);
 
 private:
    std::string fSnapshotDir;

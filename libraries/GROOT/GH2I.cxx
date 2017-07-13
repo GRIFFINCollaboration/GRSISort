@@ -8,8 +8,8 @@
 
 ClassImp(GH2I)
 
-   GH2I::GH2I(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins, Int_t nbinsy,
-              const Double_t* ybins)
+GH2I::GH2I(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins, Int_t nbinsy,
+			  const Double_t* ybins)
    : TH2I(name, title, nbinsx, xbins, nbinsy, ybins), GH2Base()
 {
 }
@@ -44,9 +44,7 @@ GH2I::GH2I(const TObject& obj)
    }
 }
 
-GH2I::~GH2I()
-{
-}
+GH2I::~GH2I() = default;
 
 void GH2I::Copy(TObject& obj) const
 {
@@ -57,8 +55,10 @@ void GH2I::Copy(TObject& obj) const
 
 TObject* GH2I::Clone(const char* newname) const
 {
-   std::string name        = newname;
-   if(!name.length()) name = Form("%s_clone", GetName());
+   std::string name = newname;
+   if(name.length() == 0u) {
+      name = Form("%s_clone", GetName());
+   }
    return TH2::Clone(name.c_str());
 }
 
@@ -130,7 +130,7 @@ void GH2I::Streamer(TBuffer &b) {
     Version_t v = b.ReadVersion();
     TH2I::Streamer(b);
     TDirectory *current = gDirectory;
-    if(TDirectory::Cd(Form("%s_projections",this->GetName()))) {
+    if(TDirectory::Cd(Form("%s_projections",GetName()))) {
       TList *list = gDirectory->GetList();
       TIter iter(list);
       while(TObject *obj = iter.Next()) {
@@ -147,7 +147,7 @@ void GH2I::Streamer(TBuffer &b) {
     TH2I::Streamer(b);
     if(fProjections.GetEntries()) {
       TDirectory *current = gDirectory;
-      TDirectory *newdir  =  current->mkdir(Form("%s_projections",this->GetName());
+      TDirectory *newdir  =  current->mkdir(Form("%s_projections",GetName());
       newdir->cd();
       fProjections->Write();
       current->cd();

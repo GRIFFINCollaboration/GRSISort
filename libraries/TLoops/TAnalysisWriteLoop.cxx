@@ -9,8 +9,9 @@
 #include "GValue.h"
 #include "TChannel.h"
 #include "TGRSIRunInfo.h"
-#include "TTreeFillMutex.h"
 #include "TGRSIOptions.h"
+#include "TTreeFillMutex.h"
+#include "TAnalysisOptions.h"
 #include "TSortingDiagnostics.h"
 #include "TDescant.h"
 
@@ -20,15 +21,15 @@ TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string output
       name = "write_loop";
    }
 
-   StoppableThread* thread = StoppableThread::Get(name);
-   if(!thread) {
+   TAnalysisWriteLoop* loop = static_cast<TAnalysisWriteLoop*>(StoppableThread::Get(name));
+   if(loop == nullptr) {
       if(output_filename.length() == 0) {
          output_filename = "temp.root";
       }
-      thread = new TAnalysisWriteLoop(name, output_filename);
+      loop = new TAnalysisWriteLoop(name, output_filename);
    }
 
-   return dynamic_cast<TAnalysisWriteLoop*>(thread);
+   return loop;
 }
 
 TAnalysisWriteLoop::TAnalysisWriteLoop(std::string name, std::string output_filename)
@@ -60,7 +61,7 @@ TAnalysisWriteLoop::~TAnalysisWriteLoop()
 
 void TAnalysisWriteLoop::ClearQueue()
 {
-   while(fInputQueue->Size()) {
+   while(fInputQueue->Size() != 0u) {
       std::shared_ptr<TUnpackedEvent> event;
       fInputQueue->Pop(event);
    }
@@ -69,12 +70,12 @@ void TAnalysisWriteLoop::ClearQueue()
 std::string TAnalysisWriteLoop::EndStatus()
 {
    std::stringstream ss;
-   ss << Name() << ":\t" << std::setw(8) << fItemsPopped << "/" << fInputSize + fItemsPopped << ", "
-      << fEventTree->GetEntries() << " good events";
+   ss<<Name()<<":\t"<<std::setw(8)<<fItemsPopped<<"/"<<fInputSize + fItemsPopped<<", "
+     <<fEventTree->GetEntries()<<" good events";
    if(fOutOfOrderTree != nullptr) {
-      ss << ", " << fOutOfOrderTree->GetEntries() << " separate fragments out-of-order" << std::endl;
+      ss<<", "<<fOutOfOrderTree->GetEntries()<<" separate fragments out-of-order"<<std::endl;
    } else {
-      ss << std::endl;
+      ss<<std::endl;
    }
    return ss.str();
 }
@@ -82,8 +83,10 @@ std::string TAnalysisWriteLoop::EndStatus()
 bool TAnalysisWriteLoop::Iteration()
 {
    std::shared_ptr<TUnpackedEvent> event;
-   fInputSize                    = fInputQueue->Pop(event);
-   if(fInputSize < 0) fInputSize = 0;
+   fInputSize = fInputQueue->Pop(event);
+   if(fInputSize < 0) {
+      fInputSize = 0;
+   }
    ++fItemsPopped;
 
    if(fOutOfOrderTree != nullptr && fOutOfOrderQueue->Size() > 0) {
@@ -100,18 +103,18 @@ bool TAnalysisWriteLoop::Iteration()
    if(event) {
       WriteEvent(*event);
       return true;
-   } else if(fInputQueue->IsFinished()) {
-      return false;
-   } else {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-      return true;
    }
+   if(fInputQueue->IsFinished()) {
+      return false;
+   }
+   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+   return true;
 }
 
 void TAnalysisWriteLoop::Write()
 {
 
-   if(fOutputFile) {
+   if(fOutputFile != nullptr) {
       fOutputFile->cd();
 
       fEventTree->Write(fEventTree->GetName(), TObject::kOverwrite);
@@ -120,13 +123,14 @@ void TAnalysisWriteLoop::Write()
          fOutOfOrderTree->Write(fOutOfOrderTree->GetName(), TObject::kOverwrite);
       }
 
-      if(GValue::Size()) {
+      if(GValue::Size() != 0) {
          GValue::Get()->Write();
       }
-      if(TChannel::GetNumberOfChannels()) {
+      if(TChannel::GetNumberOfChannels() != 0) {
          TChannel::WriteToRoot();
       }
       TGRSIRunInfo::Get()->WriteToRoot(fOutputFile);
+      TGRSIOptions::Get()->AnalysisOptions()->WriteToFile(fOutputFile);
       TPPG::Get()->Write();
 
       if(TGRSIOptions::Get()->WriteDiagnostics()) {
@@ -140,18 +144,18 @@ void TAnalysisWriteLoop::Write()
 
 void TAnalysisWriteLoop::AddBranch(TClass* cls)
 {
-   if(!fDetMap.count(cls)) {
+   if(fDetMap.count(cls) == 0u) {
       // This uses the ROOT dictionaries, so we need to lock the threads.
       TThread::Lock();
 
       // Make a default detector of that type.
-      TDetector* det_p  = (TDetector*)cls->New();
+      TDetector* det_p  = reinterpret_cast<TDetector*>(cls->New());
       fDefaultDets[cls] = det_p;
 
       // Make the TDetector**
-      TDetector** det_pp = new TDetector*;
-      *det_pp            = det_p;
-      fDetMap[cls]       = det_pp;
+      auto** det_pp = new TDetector*;
+      *det_pp       = det_p;
+      fDetMap[cls]  = det_pp;
 
       // Make a new branch.
       TBranch* new_branch = fEventTree->Branch(cls->GetName(), cls->GetName(), det_pp);
@@ -172,7 +176,7 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls)
          new_branch->Fill();
       }
 
-      std::cout << "\r" << std::string(30, ' ') << "\rAdded \"" << cls->GetName() << "\" branch" << std::endl;
+      std::cout<<"\r"<<std::string(30, ' ')<<"\rAdded \""<<cls->GetName()<<R"(" branch)"<<std::endl;
 
       // Unlock after we are done.
       TThread::UnLock();
@@ -181,7 +185,7 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls)
 
 void TAnalysisWriteLoop::WriteEvent(TUnpackedEvent& event)
 {
-   if(fEventTree) {
+   if(fEventTree != nullptr) {
       // Clear pointers from previous writes.
       // Note that we cannot just set this equal to nullptr,
       //   because ROOT would then construct a new object.
@@ -194,7 +198,7 @@ void TAnalysisWriteLoop::WriteEvent(TUnpackedEvent& event)
       }
 
       // Load current events
-      for(auto det : event.GetDetectors()) {
+      for(const auto& det : event.GetDetectors()) {
          TClass* cls = det->IsA();
          try {
             **fDetMap.at(cls) = *(det.get());
@@ -205,8 +209,9 @@ void TAnalysisWriteLoop::WriteEvent(TUnpackedEvent& event)
          (*fDetMap.at(cls))->ClearTransients();
          // if(cls == TDescant::Class()) {
          //	for(int i = 0; i < static_cast<TDescant*>(det)->GetMultiplicity(); ++i) {
-         //		std::cout<<"Descant hit "<<i<<(static_cast<TDescant*>(det)->GetDescantHit(i)->GetDebugData() == nullptr ? "
-         //has no debug data": " has debug data")<<std::endl;
+         //		std::cout<<"Descant hit "<<i<<(static_cast<TDescant*>(det)->GetDescantHit(i)->GetDebugData() == nullptr ?
+         //"
+         // has no debug data": " has debug data")<<std::endl;
          //	}
          //}
       }

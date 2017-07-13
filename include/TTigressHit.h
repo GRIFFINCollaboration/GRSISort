@@ -26,7 +26,7 @@ public:
    TTigressHit(const TTigressHit&);
    TTigressHit(const TFragment& frag);
    void CopyFragment(const TFragment& frag);
-   virtual ~TTigressHit();
+   ~TTigressHit() override;
 
 private:
    // UShort_t fFirstSegment;
@@ -34,9 +34,9 @@ private:
 
    std::vector<TGRSIDetectorHit> fSegments;
 
-   bool    fBgoFired;
-   Float_t fTimeFit;
-   Float_t fSig2Noise;
+   bool    fBgoFired{false};
+   Float_t fTimeFit{0.};
+   Float_t fSig2Noise{0.};
 
    // need to do sudo tracking to build addback. do not remove.  pcb. */
    // TVector3 fLastHit;                //!   <! */
@@ -58,15 +58,15 @@ public:
    Double_t GetSignalToNoise() const { return fSig2Noise; } //!<!
    Double_t GetFitTime() const { return fTimeFit; }         //!<!
 
-   UShort_t GetArrayNumber() const
+   UShort_t GetArrayNumber() const override
    {
       int number = 4 * (GetDetector() - 1) + GetCrystal();
       return number;
    }
 
-   inline double GetDoppler(double beta, TVector3* vec = 0)
+   inline double GetDoppler(double beta, TVector3* vec = nullptr)
    {
-      if (vec == 0) {
+      if(vec == nullptr) {
          vec = GetBeamDirection();
       }
       double tmp   = 0;
@@ -97,32 +97,36 @@ public:
    /* int GetLastSeg()  const { if(fSegments.size()>0) return fSegments.back().GetSegment(); return -1; } */
    int GetFirstSeg() const
    {
-      if (fSegments.size() > 0) return fSegments.front().GetSegment();
+      if(fSegments.size() > 0) {
+         return fSegments.front().GetSegment();
+      }
       return 0;
    }
    int GetLastSeg() const
    {
-      if (fSegments.size() > 0) return fSegments.back().GetSegment();
+      if(fSegments.size() > 0) {
+         return fSegments.back().GetSegment();
+      }
       return 0;
    }
 
-   static bool Compare(TTigressHit lhs, TTigressHit rhs);       //!<!
-   static bool CompareEnergy(TTigressHit lhs, TTigressHit rhs); //!<!
+   static bool Compare(const TTigressHit& lhs, const TTigressHit& rhs);       //!<!
+   static bool CompareEnergy(const TTigressHit& lhs, const TTigressHit& rhs); //!<!
 
    void SumHit(TTigressHit*); //!<!
 
-   TVector3 GetPosition(Double_t dist = 0.) const;
+   TVector3 GetPosition(Double_t dist = 0.) const override;
    TVector3 GetLastPosition(Double_t dist = 0.) const;
 
 public:
-   virtual void Clear(Option_t* opt = "");       //!<!
-   virtual void Copy(TObject&) const;            //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
    void SortSegments() { std::sort(fSegments.begin(), fSegments.end()); } //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TTigressHit, 4)
+   ClassDefOverride(TTigressHit, 4)
    /// \endcond
 };
 /*! @} */

@@ -30,11 +30,11 @@
 class TCSM : public TDetector {
 public:
    TCSM();
-   virtual ~TCSM();
+   ~TCSM() override;
 
 public:
-   virtual void Clear(Option_t* = "");
-   virtual void Print(Option_t* = "") const;
+   void Clear(Option_t* = "") override;
+   void Print(Option_t* = "") const override;
 
    TCSMHit* GetCSMHit(const int& i);                           //->
    Short_t GetMultiplicity() const { return fCsmHits.size(); } //->
@@ -43,13 +43,15 @@ public:
                                double Y = 0.00, double Z = 0.00);
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
-   void BuildHits();
+   void BuildHits() override;
 
-   void ClearTransients()
+   void ClearTransients() override
    {
-      for (auto hit : fCsmHits) hit.ClearTransients();
+      for(const auto& hit : fCsmHits) {
+         hit.ClearTransients();
+      }
    }
 
 private:
@@ -65,7 +67,7 @@ private:
    void MakedEE(std::vector<TCSMHit>& DHitVec, std::vector<TCSMHit>& EHitVec, std::vector<TCSMHit>& BuiltHits);
    TCSMHit MakeHit(std::pair<TFragment, TMnemonic>&, std::pair<TFragment, TMnemonic>&);
    TCSMHit MakeHit(std::vector<std::pair<TFragment, TMnemonic>>&, std::vector<std::pair<TFragment, TMnemonic>>&);
-   TCSMHit CombineHits(TCSMHit, TCSMHit);
+   TCSMHit CombineHits(TCSMHit, const TCSMHit&);
    void    RecoverHit(char, std::pair<TFragment, TMnemonic>&, std::vector<TCSMHit>&);
    bool    AlmostEqual(int, int);
    bool    AlmostEqual(double, double);
@@ -74,7 +76,7 @@ private:
    // void RemoveHits(std::vector<TCSMHit>*,std::set<int>*);	//!<!
 
    /// \cond CLASSIMP
-   ClassDef(TCSM, 5) // CSM Analysis structure
+   ClassDefOverride(TCSM, 5) // CSM Analysis structure
    /// \endcond
 };
 /*! @} */

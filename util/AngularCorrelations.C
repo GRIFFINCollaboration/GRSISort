@@ -220,8 +220,8 @@ TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Doub
    TVirtualFitter::SetMaxIterations(10000);
    Int_t xp = par[1];
    Int_t yp = par[0];
-  // std::cout << "Now yp is: "<<yp << std::endl;
-  // std::cout << "A is: " << par[6] <<std::endl;
+  // std::cout<<"Now yp is: "<<yp<<std::endl;
+  // std::cout<<"A is: "<<par[6] <<std::endl;
    Int_t A = par[6];
    //Define the fit function and the range of the fit
    TF1 *pp = new TF1("photopeak",fitFunction,xp-rw,xp+rw,10);
@@ -265,7 +265,7 @@ TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Doub
       if(fitres->Parameter(3) < 1){
          pp->FixParameter(4,0);
          pp->FixParameter(3,1);
-    //     std::cout << "Beta may have broken the fit, retrying with R=0" << std::endl;
+    //     std::cout<<"Beta may have broken the fit, retrying with R=0"<<std::endl;
          fitres = h->Fit("photopeak",options);
          pp->ReleaseParameter(4);
          pp->SetParLimits(4,0,500);
@@ -284,11 +284,11 @@ TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Doub
    Double_t integral = photopeak->Integral(xp-rw,xp+rw)/binWidth;
 
    if(verbosity){
-      std::cout << "FIT RESULT CHI2 " << fitres->Chi2() << std::endl;
-      std::cout << "FWHM = " << 2.35482*fitres->Parameter(2) <<"(" << fitres->ParError(2) << ")" << std::endl;
-      std::cout << "NDF: " << fitres->Ndf() << std::endl;
+      std::cout<<"FIT RESULT CHI2 "<<fitres->Chi2()<<std::endl;
+      std::cout<<"FWHM = "<<2.35482*fitres->Parameter(2) <<"("<<fitres->ParError(2)<<")"<<std::endl;
+      std::cout<<"NDF: "<<fitres->Ndf()<<std::endl;
    }
-  // std::cout << "X sq./v = " << fitres->Chi2()/fitres->Ndf() << std::endl;
+  // std::cout<<"X sq./v = "<<fitres->Chi2()/fitres->Ndf()<<std::endl;
 
    TVirtualFitter *fitter = TVirtualFitter::GetFitter();
 
@@ -302,7 +302,7 @@ TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Doub
 
    Double_t sigma_integral = photopeak->IntegralError(xp-rw,xp+rw)/binWidth;
 
-   //std::cout << "Integral = " << integral << " +/- " << sigma_integral << std::endl;
+   //std::cout<<"Integral = "<<integral<<" +/- "<<sigma_integral<<std::endl;
 
    area = integral;
    darea = sigma_integral;

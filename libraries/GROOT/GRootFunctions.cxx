@@ -137,10 +137,10 @@ Double_t GRootFunctions::Efficiency(Double_t* dim, Double_t* par)
    Double_t p2 = par[2];
    Double_t p3 = par[3];
 
-   if(x != 0)
+   if(x != 0) {
       return pow(10.0, (p0 + p1 * TMath::Log10(x) + p2 * std::pow(TMath::Log10(x), 2.0) + p3 / (std::pow(x, 2.0))));
-   else
-      return 0;
+   }
+   return 0;
 }
 
 Double_t GRootFunctions::GausExpo(Double_t* x, Double_t* pars)
@@ -155,7 +155,8 @@ Double_t GRootFunctions::GausExpo(Double_t* x, Double_t* pars)
    // par[2] = sigma
    // par[3] = decay parameter
 
-   result = TMath::Gaus(pars[0], pars[1], pars[2]) + (double)(x[0] > pars[1]) * pars[0] * TMath::Exp(-pars[3]);
+   result =
+      TMath::Gaus(pars[0], pars[1], pars[2]) + static_cast<double>(x[0] > pars[1]) * pars[0] * TMath::Exp(-pars[3]);
    return result;
 }
 
