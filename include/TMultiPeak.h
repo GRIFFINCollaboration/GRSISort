@@ -27,6 +27,7 @@
 /// Gaussian like in nature (ie centroid and area).
 ///
 /////////////////////////////////////////////////////////////////
+class TPeak;
 
 class TMultiPeak : public TGRSIFit {
 public:
@@ -48,7 +49,7 @@ public:
    void   SortPeaks(Bool_t (*SortFunction)(const TPeak*, const TPeak*) = TPeak::CompareEnergy);
    TPeak* GetPeak(UInt_t idx);
    TPeak* GetPeakClosestTo(Double_t energy);
-   void DrawPeaks() const;
+   void DrawPeaks();
    TF1* Background() const { return fBackground; }
 
    static void SetLogLikelihoodFlag(bool flag) { fLogLikelihoodFlag = flag; }
@@ -63,10 +64,11 @@ private:
    static bool         fLogLikelihoodFlag; //!<!
    std::vector<TPeak*> fPeakVec;
    TF1*                fBackground;
+   bool                fConstrainWidths;
 
-   static Double_t MultiPhotoPeakBG(Double_t* dim, Double_t* par);
-   static Double_t MultiStepBG(Double_t* dim, Double_t* par);
-   static Double_t SinglePeakBG(Double_t* dim, Double_t* par);
+   Double_t MultiPhotoPeakBG(Double_t* dim, Double_t* par);
+   Double_t MultiStepBG(Double_t* dim, Double_t* par);
+   Double_t SinglePeakBG(Double_t* dim, Double_t* par);
 
    /// \cond CLASSIMP
    ClassDef(TMultiPeak, 2);
