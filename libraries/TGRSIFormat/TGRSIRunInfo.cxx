@@ -352,7 +352,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
    int                linenumber = 0;
 
    // Parse the info file.
-   while(std::getline(infile, line) != nullptr) {
+   while(std::getline(infile, line).good() ) {
       linenumber++;
       trim(&line);
       size_t comment = line.find("//");
@@ -396,7 +396,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
       } else if(type.compare("BADCYCLE") == 0) {
          std::istringstream ss(line);
          int                tmp_int;
-         while((ss >> tmp_int) != nullptr) {
+         while((ss >> tmp_int).good() ) {
             Get()->AddBadCycle(tmp_int);
          }
       }

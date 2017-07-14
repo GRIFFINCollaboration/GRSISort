@@ -94,7 +94,7 @@ TNucleus::TNucleus(const char* name)
       // MassFile.append(massfile);
       infile.open(MassFile.c_str());
       // printf("MassFile.c_str()
-      while(getline(infile, line) != nullptr) {
+      while( getline(infile, line).good() ) {
          if(line.length() < 1) {
             continue;
          }
@@ -494,7 +494,7 @@ bool TNucleus::LoadTransitionFile()
 
    std::string line;
 
-   while(getline(transfile, line) != nullptr) {
+   while( getline(transfile, line).good() ) {
       // printf("%i\t%s\n",counter++,line.c_str());
       if(line.compare(0, 2, "//") == 0) {
          continue;
@@ -506,7 +506,7 @@ bool TNucleus::LoadTransitionFile()
       auto*             tran = new TTransition;
       std::stringstream ss(line);
       int               counter = 0;
-      while((ss >> temp) != nullptr) {
+      while( (ss >> temp).good() ) {
          counter++;
          if(counter == 1) {
             tran->SetEnergy(temp);
