@@ -4,9 +4,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TCalManager)
-   /// \endcond
+/// \endcond
 
-   TCalManager::TCalManager()
+TCalManager::TCalManager()
 {
    fClass = nullptr; // fClass will point to a TClass which is made persistant through a root session within gROOT.
    // So we don't need to worry about allocating it.

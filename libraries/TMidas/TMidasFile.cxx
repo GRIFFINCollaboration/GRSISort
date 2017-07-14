@@ -22,9 +22,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TMidasFile)
-   /// \endcond
+/// \endcond
 
-   TMidasFile::TMidasFile()
+TMidasFile::TMidasFile()
 {
    // Default Constructor
    uint32_t endian = 0x12345678;

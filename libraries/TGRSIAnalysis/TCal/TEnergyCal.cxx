@@ -2,17 +2,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TEnergyCal)
-   /// \endcond
-   ////////////////////////////////////////////////////////////////
-   //                                                            //
-   // TEnergyCal                                                 //
-   //
-   // Class for performing energy calibrations using a single
-   // nucleus.
-   //                                                            //
-   ////////////////////////////////////////////////////////////////
+/// \endcond
 
-   TEnergyCal::TEnergyCal()
+TEnergyCal::TEnergyCal()
 {
    // Default Constructor
    SetDefaultTitles();

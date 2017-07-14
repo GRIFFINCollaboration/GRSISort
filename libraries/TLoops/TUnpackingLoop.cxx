@@ -9,8 +9,6 @@
 #include "TLstEvent.h"
 #include "TMidasEvent.h"
 
-// ClassImp(TUnpackingLoop)
-
 TUnpackingLoop* TUnpackingLoop::Get(std::string name)
 {
    if(name.length() == 0) {
@@ -40,10 +38,6 @@ void TUnpackingLoop::ClearQueue()
    }
 
    fParser.ClearQueue();
-   // while(fParser.GoodOutputQueue()->Size()){
-   //	fParser.GoodOutputQueue()->Pop(frag);
-   //	delete frag;
-   //}
 }
 
 bool TUnpackingLoop::Iteration()

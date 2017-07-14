@@ -34,6 +34,7 @@ void Analyze(const char* tree_type, TProof* proof)
             static bool info_set = false;
             if(!info_set) {
                TGRSIRunInfo::Get()->ReadInfoFromFile(in_file);
+					TGRSIRunInfo::Get()->Print();
                info_set = true;
             }
          }

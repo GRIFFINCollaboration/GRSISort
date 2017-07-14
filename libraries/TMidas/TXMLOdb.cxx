@@ -7,9 +7,11 @@
 #include "TList.h"
 #include "TXMLAttr.h"
 
+/// \cond CLASSIMP
 ClassImp(TXMLOdb)
+/// \endcond
 
-   char TXMLOdb::fTextBuffer[256];
+char TXMLOdb::fTextBuffer[256];
 
 TXMLOdb::TXMLOdb(char* buffer, int size)
 {

@@ -16,8 +16,7 @@ TDataLoop::TDataLoop(std::string name, TRawFile* source)
    : StoppableThread(name), fSource(source), fSelfStopping(true),
      fOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>("midas_queue"))
 #ifdef HAS_XML
-     ,
-     fOdb(nullptr)
+     , fOdb(nullptr)
 #endif
 {
    TMidasFile* midasFile = dynamic_cast<TMidasFile*>(source);
@@ -51,10 +50,8 @@ void TDataLoop::SetFileOdb(char* data, int size)
 #ifdef HAS_XML
    // check if we have already set the TChannels....
    //
-   if(fOdb != nullptr) {
-      delete fOdb;
-      fOdb = nullptr;
-   }
+	delete fOdb;
+	fOdb = nullptr;
 
    if(TGRSIOptions::Get()->IgnoreFileOdb()) {
       printf(DYELLOW "\tskipping odb information stored in file.\n" RESET_COLOR);
@@ -374,19 +371,19 @@ void TDataLoop::OnEnd()
 bool TDataLoop::Iteration()
 {
    std::shared_ptr<TRawEvent> evt = fSource->NewEvent();
-   int                        bytes_read;
+   int                        bytesRead;
    {
       std::lock_guard<std::mutex> lock(fSourceMutex);
-      bytes_read   = fSource->Read(evt);
+      bytesRead   = fSource->Read(evt);
       fItemsPopped = fSource->GetBytesRead() / 1000;
       fInputSize = fSource->GetFileSize() / 1000 - fItemsPopped; // this way fInputSize+fItemsPopped give the file size
    }
 
-   if(bytes_read <= 0 && fSelfStopping) {
+   if(bytesRead <= 0 && fSelfStopping) {
       // Error, and no point in trying again.
       return false;
    }
-   if(bytes_read > 0) {
+   if(bytesRead > 0) {
       // A good event was returned
       fOutputQueue->Push(evt);
       return true;
@@ -396,6 +393,3 @@ bool TDataLoop::Iteration()
    return true;
 }
 
-// std::string TDataLoop::Status() {
-//  //return fSource->Status(TGRSIOptions::Get()->LongFileDescription());
-//}

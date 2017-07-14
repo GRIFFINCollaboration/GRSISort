@@ -4,10 +4,10 @@
 
 /// \cond CLASSIMP
 ClassImp(TSiLi)
-   /// \endcond
+/// \endcond
 
-   // Having these in Clear() caused issues as functions can be called abstract with out initialising a TSiLi
-   int TSiLi::fRingNumber     = 10;
+// Having these in Clear() caused issues as functions can be called abstract with out initialising a TSiLi
+int TSiLi::fRingNumber     = 10;
 int    TSiLi::fSectorNumber   = 12;
 double TSiLi::fOffsetPhi      = -165. * TMath::Pi() / 180.; // For SPICE. Sectors upstream.
 double TSiLi::fOuterDiameter  = 94.;

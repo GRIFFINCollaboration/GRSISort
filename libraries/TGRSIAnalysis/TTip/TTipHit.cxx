@@ -13,11 +13,13 @@
 
 /// \cond CLASSIMP
 ClassImp(TTipHit)
-   /// \endcond
+/// \endcond
 
-   TTipHit::TTipHit()
+TTipHit::TTipHit()
 {
-   Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
 }
 
@@ -35,7 +37,9 @@ TTipHit::~TTipHit() = default;
 
 TTipHit::TTipHit(const TTipHit& rhs) : TGRSIDetectorHit()
 {
+#if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
    rhs.Copy(*this);
 }

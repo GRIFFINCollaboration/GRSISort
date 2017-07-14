@@ -3,9 +3,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TS3Hit)
-   /// \endcond
+/// \endcond
 
-   TS3Hit::TS3Hit()
+TS3Hit::TS3Hit()
 {
    Clear();
 }

@@ -4,9 +4,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TPacesHit)
-   /// \endcond
+/// \endcond
 
-   TPacesHit::TPacesHit()
+TPacesHit::TPacesHit()
    : TGRSIDetectorHit()
 {
 #if MAJOR_ROOT_VERSION < 6

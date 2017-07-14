@@ -2,9 +2,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TGRSIFit)
-   /// \endcond
+/// \endcond
 
-   TString TGRSIFit::fDefaultFitType("");
+TString TGRSIFit::fDefaultFitType("");
 
 TGRSIFit::TGRSIFit()
 {

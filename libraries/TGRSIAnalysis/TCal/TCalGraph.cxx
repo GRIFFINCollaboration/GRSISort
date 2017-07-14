@@ -5,9 +5,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TCalGraph)
-   /// \endcond
+/// \endcond
 
-   TCalGraph::TCalGraph()
+TCalGraph::TCalGraph()
    : TGraphErrors()
 {
    Clear();

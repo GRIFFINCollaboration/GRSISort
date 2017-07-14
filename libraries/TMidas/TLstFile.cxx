@@ -22,9 +22,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TLstFile)
-   /// \endcond
+/// \endcond
 
-   TLstFile::TLstFile()
+TLstFile::TLstFile()
 {
    // Default Constructor
    fBytesRead = 0;

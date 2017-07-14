@@ -10,9 +10,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TGRSIRunInfo)
-   /// \endcond
+/// \endcond
 
-   TGRSIRunInfo* TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();
+TGRSIRunInfo* TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();
 
 std::string TGRSIRunInfo::fGRSIVersion;
 
@@ -55,7 +55,7 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile* tempf)
 
    TList* list = tempf->GetListOfKeys();
    TIter  iter(list);
-   printf("Reading Info from file:" CYAN " %s" RESET_COLOR "\n", tempf->GetName());
+	std::cout<<R"(Reading run info from file ")"<<CYAN<<tempf->GetName()<<RESET_COLOR<<R"(")"<<std::endl;
    while(TKey* key = static_cast<TKey*>(iter.Next())) {
       if((key == nullptr) || (strcmp(key->GetClassName(), "TGRSIRunInfo") != 0)) {
          continue;
@@ -75,14 +75,6 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0), fSubRunNumber(-1)
    /// Default ctor for TGRSIRunInfo. The default values are:
    ///
    /// fHPGeArrayPosition = 110.0;
-
-   fHPGeArrayPosition = 110.0;
-
-   fDescantAncillary = false;
-   fBadCycleList.clear();
-   fBadCycleListSize = 0;
-
-   // printf("run info created.\n");
 
    Clear();
 }
@@ -135,6 +127,8 @@ void TGRSIRunInfo::Clear(Option_t*)
    // Clears the TGRSIRunInfo. Currently, there are no available
    // options.
 
+   fHPGeArrayPosition = 110.0;
+
    fTigress = false;
    fSharc   = false;
    fTriFoil = false;
@@ -152,6 +146,8 @@ void TGRSIRunInfo::Clear(Option_t*)
    fZeroDegree = false;
    fDescant    = false;
    fFipps      = false;
+
+   fDescantAncillary = false;
 
    fMajorIndex.assign("");
    fMinorIndex.assign("");
@@ -428,10 +424,10 @@ void TGRSIRunInfo::trim(std::string* line, const std::string& trimChars)
 
 Long64_t TGRSIRunInfo::Merge(TCollection* list)
 {
-   // Loop through the TCollection of TGRSISortLists, and add each entry to the original TGRSISort List
+   // Loop through the TCollection of TGRSIRunInfos, and add each entry to the original TGRSIRunInfo List
    TIter it(list);
-   // The TCollection will be filled by something like hadd. Each element in the list will be a TGRSISortList from
-   // An individual file that was submitted to hadd.
+   // The TCollection will be filled by something like hadd. Each element in the list will be a TGRSIRunInfo from
+   // an individual file that was submitted to hadd.
    TGRSIRunInfo* runinfo = nullptr;
 
    while((runinfo = static_cast<TGRSIRunInfo*>(it.Next())) != nullptr) {

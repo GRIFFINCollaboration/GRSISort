@@ -259,9 +259,9 @@ void ReadTheNews()
 {
 /// Opens a random wikipedia page for your enjoyment
 #ifdef __APPLE__
-   gROOT->ProcessLine(".! open http://en.wikipedia.org/wiki/Special:Random > /dev/null 2>&1");
+   gROOT->ProcessLine(".! open http://en.wikipedia.org/wiki/Special:Random > /dev/null 2>&1;");
 #else
-   gROOT->ProcessLine(".! xdg-open http://en.wikipedia.org/wiki/Special:Random > /dev/null 2>&1");
+   gROOT->ProcessLine(".! xdg-open http://en.wikipedia.org/wiki/Special:Random > /dev/null 2>&1;");
 #endif
 }
 
@@ -308,7 +308,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
       file = new TFile(filename.c_str(), "RECREATE");
       if(file != nullptr) {
          // Give access to the file inside the interpreter.
-         const char* command = Form("TFile* _file%i = (TFile*)%luL", fRootFilesOpened, (unsigned long)file);
+         const char* command = Form("TFile* _file%i = (TFile*)%luL;", fRootFilesOpened, (unsigned long)file);
          TRint::ProcessLine(command);
          fRootFilesOpened++;
       } else {
@@ -319,7 +319,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
       file = new TFile(filename.c_str(), opt);
       if(file != nullptr) {
          // Give access to the file inside the interpreter.
-         const char* command = Form("TFile* _file%i = (TFile*)%luL", fRootFilesOpened, (unsigned long)file);
+         const char* command = Form("TFile* _file%i = (TFile*)%luL;", fRootFilesOpened, (unsigned long)file);
          TRint::ProcessLine(command);
          std::cout<<"\tfile "<<BLUE<<file->GetName()<<RESET_COLOR<<" opened as "<<BLUE<<"_file"
                   <<fRootFilesOpened<<RESET_COLOR<<std::endl;
@@ -388,7 +388,7 @@ TMidasFile* TGRSIint::OpenMidasFile(const std::string& filename)
    auto* file = new TMidasFile(filename.c_str());
    fRawFiles.push_back(file);
 
-   const char* command = Form("TMidasFile* _midas%i = (TMidasFile*)%luL", fMidasFilesOpened, (unsigned long)file);
+   const char* command = Form("TMidasFile* _midas%i = (TMidasFile*)%luL;", fMidasFilesOpened, (unsigned long)file);
    ProcessLine(command);
 
    if(file != nullptr) {
@@ -679,7 +679,7 @@ void TGRSIint::RunMacroFile(const std::string& filename)
 {
    /// Runs a macro file. This happens when --work-harder is used with a .C file
    if(file_exists(filename.c_str())) {
-      const char* command = Form(".x %s", filename.c_str());
+      const char* command = Form(".x %s;", filename.c_str());
       ProcessLine(command);
    } else {
       std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
