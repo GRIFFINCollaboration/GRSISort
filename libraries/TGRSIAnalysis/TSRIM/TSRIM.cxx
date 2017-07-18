@@ -60,18 +60,16 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
    std::vector<double>      number_input, dEdX_temp;
    std::vector<std::string> string_input;
 
-   //while(std::getline(infile, line) != nullptr) { //This line was giving me compile problems RD
-   while(std::getline(infile, line)) {
+   while(std::getline(infile, line).good() ) {
       if(line.length() == 0u) {
          continue;
       }
       std::stringstream linestream(line);
       number_input.clear();
       string_input.clear();
-      //while((linestream >> word) != nullptr) { This line was giving me compile problems RD
-      while((linestream >> word)) {
+      while((linestream >> word).good()) {
          std::stringstream ss(word);
-         if((ss >> temp)) { // if it's a number (compile probs RD)
+         if( (ss >> temp).good() ) { // if it's a number
             number_input.push_back(temp);
          } else {
             string_input.push_back(ss.str());
