@@ -1074,7 +1074,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt)
 
    // Parse the cal file. This is useful because if the cal file contains something that
    // the parser does not recognize, it just skips it!
-   while(std::getline(infile, line).good()) {
+   while(std::getline(infile, line)) {
       linenumber++;
       trim(&line);
       size_t comment = line.find("//");
@@ -1197,43 +1197,43 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt)
             } else if(type.compare("ENGCOEFF") == 0) {
                channel->DestroyENGCal();
                double value;
-               while((ss >> value).good()) {
+               while(!(ss >> value).fail()) {
                   channel->AddENGCoefficient(value);
                }
             } else if(type.compare("LEDCOEFF") == 0) {
                channel->DestroyLEDCal();
                double value;
-               while((ss >> value).good()) {
+               while(!(ss >> value).fail()) {
                   channel->AddLEDCoefficient(value);
                }
             } else if(type.compare("CFDCOEFF") == 0) {
                channel->DestroyCFDCal();
                double value;
-               while((ss >> value).good()) {
+               while(!(ss >> value).fail()) {
                   channel->AddCFDCoefficient(value);
                }
             } else if(type.compare("TIMECOEFF") == 0) {
                channel->DestroyTIMECal();
                double value;
-               while((ss >> value).good()) {
+               while(!(ss >> value).fail()) {
                   channel->AddTIMECoefficient(value);
                }
             } else if(type.compare("CTCOEFF") == 0) {
                channel->DestroyCTCal();
                double value;
-               while((ss >> value).good()) {
+               while(!(ss >> value).fail()) {
                   channel->AddCTCoefficient(value);
                }
             } else if(type.compare("WALK") == 0) {
                channel->DestroyTIMECal();
                double value;
-               while((ss >> value).good()) {
+               while(!(ss >> value).fail()) {
                   channel->AddTIMECoefficient(value);
                }
             } else if(type.compare("EFFCOEFF") == 0) {
                channel->DestroyEFFCal();
                double value;
-               while((ss >> value).good()) {
+               while(!(ss >> value).fail()) {
                   channel->AddEFFCoefficient(value);
                }
             } else if(type.compare("FILEINT") == 0) {
