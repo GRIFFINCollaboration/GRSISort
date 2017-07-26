@@ -52,11 +52,6 @@ private:
    void AddBranch(TClass* cls);
 
    void WriteEvent(TUnpackedEvent& event);
-   TFile* fOutputFile;
-   TTree* fEventTree;
-
-   TTree*     fOutOfOrderTree;
-   TFragment* fOutOfOrderFrag;
 #ifndef __CINT__
    std::map<TClass*, TDetector**> fDetMap;
    std::map<TClass*, TDetector*>  fDefaultDets;
