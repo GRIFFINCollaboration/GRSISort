@@ -43,7 +43,8 @@ class TBGSubtraction : public TGMainFrame {
       kWrite2FileNameEntry,
       kHistogramDescriptionEntry,
       kComboAxisEntry,
-      kBGCheckButton
+      kBGCheckButton,
+      kPeakSkewCheckButton
    };
 
    //  RQ_OBJECT("TBGSubtraction")
@@ -66,6 +67,7 @@ private:
    TGNumberEntry*       fGateEntryHigh{nullptr};
    TGLabel*             fBGParamLabel{nullptr};
    TGCheckButton*       fBGCheckButton;
+   TGCheckButton*       fPeakSkewCheckButton;
 
    TGLayoutHints* fBly;
    TGLayoutHints* fBly1;

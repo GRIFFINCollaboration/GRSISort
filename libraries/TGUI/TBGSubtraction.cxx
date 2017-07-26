@@ -12,7 +12,7 @@ ClassImp(TBGSubtraction)
    TBGSubtraction::TBGSubtraction(TH2* mat, const char* gate_axis)
    : TGMainFrame(nullptr, 10, 10, kHorizontalFrame), fProjectionCanvas(nullptr), fGateCanvas(nullptr), fMatrix(mat),
      fProjection(nullptr), fGateHist(nullptr), fBGHist(nullptr), fSubtractedHist(nullptr), fGateSlider(nullptr),
-     fBGSlider(nullptr), fPeakSlider(nullptr), fBGParamEntry(nullptr), fBGCheckButton(nullptr), fBly(nullptr), 
+     fBGSlider(nullptr), fPeakSlider(nullptr), fBGParamEntry(nullptr), fBGCheckButton(nullptr), fPeakSkewCheckButton(nullptr), fBly(nullptr), 
      fBly1(nullptr), fGateFrame(nullptr), fProjectionFrame(nullptr), fAxisCombo(nullptr), fLowGateMarker(nullptr),
      fHighGateMarker(nullptr), fLowBGMarker(nullptr),  fHighBGMarker(nullptr), fLowPeakMarker(nullptr), fHighPeakMarker(nullptr),
      fPeakMarker(nullptr), fGateAxis(0), fForceUpdate(true), fPeakFit(nullptr)
@@ -84,6 +84,7 @@ void TBGSubtraction::MakeConnections(){
 
    fBGCheckButton->Connect("Clicked()","TBGSubtraction",this,"UpdateBackground()");
    fBGCheckButton->Connect("Clicked()","TBGSubtraction",this,"DoGating()");
+
    fWrite2FileButton->Connect("Clicked()", "TBGSubtraction", this, "WriteHistograms()");
 
    //Connect the axis combo box
@@ -216,6 +217,8 @@ void TBGSubtraction::BuildInterface()
 
    fPeakFitFrame  = new TGHorizontalFrame(fGateFrame, 200, 200);
    fPeakFitButton = new TGTextButton(fPeakFitFrame, "&Fit Peak");
+   fPeakSkewCheckButton = new TGCheckButton(fPeakFitFrame, "Skew", kPeakSkewCheckButton);
+   fPeakSkewCheckButton->SetState(kButtonUp);
 
    fBGParamFrame = new TGHorizontalFrame(fGateFrame, 200, 200);
    fBGParamLabel = new TGLabel(fBGParamFrame, "Background:");
@@ -251,6 +254,7 @@ void TBGSubtraction::BuildInterface()
    fGateEntryFrame->AddFrame(fGateEntryLow, fBly);
    fGateEntryFrame->AddFrame(fGateEntryHigh, fBly);
 
+   fPeakFitFrame->AddFrame(fPeakSkewCheckButton,fBly);
    fPeakFitFrame->AddFrame(fPeakFitButton,fBly);
 
    fBGEntryFrame->AddFrame(fBGEntryLow, fBly);
@@ -340,10 +344,15 @@ void TBGSubtraction::DoPeakFit()
 {
    if(fPeakFit) fPeakFit->Delete(); fPeakFit = nullptr;
    
-      fPeakFit = new TPeak(fPeakValue, fPeakLowValue, fPeakHighValue);
-      fGateCanvas->GetCanvas()->cd();
-      fPeakFit->Fit(fSubtractedHist);
-      fGateCanvas->GetCanvas()->Update();
+   fPeakFit = new TPeak(fPeakValue, fPeakLowValue, fPeakHighValue);
+   fGateCanvas->GetCanvas()->cd();
+   if((fPeakSkewCheckButton != nullptr) && fPeakSkewCheckButton->IsDown()) {
+      fPeakFit->Fit(fSubtractedHist,"Q");
+      fPeakFit->ReleaseParameter(3);
+      fPeakFit->ReleaseParameter(4);
+   }
+   fPeakFit->Fit(fSubtractedHist);
+   fGateCanvas->GetCanvas()->Update();
 }
 
 void TBGSubtraction::DrawPeak(){
