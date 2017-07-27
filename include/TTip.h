@@ -19,7 +19,7 @@
 #include <cstdio>
 #include <iostream>
 #include <set>
-#include <stdio.h>
+#include <cstdio>
 
 #include "TObject.h"
 #include "TVector3.h"
@@ -30,35 +30,37 @@
 
 class TTip : public TGRSIDetector {
 public:
-   virtual ~TTip();
+   ~TTip() override;
    TTip();
    TTip(const TTip& rhs);
 
    TTipHit* GetTipHit(const int& i); //!<!
-   TGRSIDetectorHit* GetHit(const int& i);
-   Short_t GetMultiplicity() const { return fTipHits.size(); } //!<!
+   TGRSIDetectorHit* GetHit(const int& idx) override;
+   Short_t GetMultiplicity() const override { return fTipHits.size(); } //!<!
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
-   void Copy(TObject& rhs) const;
+   void Copy(TObject& rhs) const override;
 
-   void ClearTransients()
+   void ClearTransients() override
    {
-      for (auto hit : fTipHits) hit.ClearTransients();
+      for(const auto& hit : fTipHits) {
+         hit.ClearTransients();
+      }
    }
 
    TTip& operator=(const TTip&); //!<!
 
-   void Clear(Option_t* opt = "");
-   void Print(Option_t* opt = "") const;
+   void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
 
 private:
    std::vector<TTipHit> fTipHits; //   The set of detector hits
 
 public:
    /// \cond CLASSIMP
-   ClassDef(TTip, 2);
+   ClassDefOverride(TTip, 2);
    /// \endcond
 };
 /*! @} */

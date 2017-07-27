@@ -6,25 +6,23 @@
 
 bool pileup_reject = true;
 
-const double gg_time_low = -200.;
+const double gg_time_low  = -200.;
 const double gg_time_high = 300.;
 
-//Beta gamma histograms
-const double gb_time_low = -250.;
+// Beta gamma histograms
+const double gb_time_low  = -250.;
 const double gb_time_high = 350.;
 
-
-bool Addback(TGriffinHit& one, TGriffinHit& two) {
-		return ((one.GetDetector() == two.GetDetector()) &&
-		(std::fabs(one.GetTime() - two.GetTime()) < 300.));
+bool Addback(TGriffinHit& one, TGriffinHit& two)
+{
+   return ((one.GetDetector() == two.GetDetector()) && (std::fabs(one.GetTime() - two.GetTime()) < 300.));
 }
 
-bool PromptCoincidence(TGriffinHit* one, TGriffinHit *two){
-   
+bool PromptCoincidence(TGriffinHit* one, TGriffinHit* two)
+{
+
    return ((two->GetTime() - one->GetTime()) >= gg_time_low) && ((two->GetTime() - one->GetTime()) <= gg_time_high);
-
 }
-
 
 void CrossTalk::CreateHistograms() {
 	fH2.clear();
@@ -90,17 +88,17 @@ void CrossTalk::FillHistograms() {
 				if(low_crys_hit->GetCrystal() != high_crys_hit->GetCrystal()){
 					fH2[Form("det_%d_%d_%d",low_crys_hit->GetDetector(),low_crys_hit->GetCrystal(),high_crys_hit->GetCrystal())]->Fill(low_crys_hit->GetNoCTEnergy(),high_crys_hit->GetNoCTEnergy());
 				}
-
 			}
 		}
-   }
-	
-	for(auto gr1 = 0; gr1 < fGrif->GetAddbackMultiplicity(); ++gr1){
-		if(pileup_reject && (fGrif->GetAddbackHit(gr1)->GetKValue() != 700)) continue; //This pileup number might have to change for other expmnts
-		fH1["aE"]->Fill(fGrif->GetAddbackHit(gr1)->GetEnergy());
-		fH1[Form("aEdet%d",fGrif->GetAddbackHit(gr1)->GetDetector())]->Fill(fGrif->GetAddbackHit(gr1)->GetEnergy());
-		fH1["aMult"]->Fill(fGrif->GetNAddbackFrags(gr1));
-		if(fGrif->GetNAddbackFrags(gr1) == 2)
-			fH1[Form("aE2det%d",fGrif->GetAddbackHit(gr1)->GetDetector())]->Fill(fGrif->GetAddbackHit(gr1)->GetEnergy());
 	}
+
+   for(auto gr1 = 0; gr1 < fGrif->GetAddbackMultiplicity(); ++gr1) {
+      if(pileup_reject && (fGrif->GetAddbackHit(gr1)->GetKValue() != 700))
+         continue; // This pileup number might have to change for other expmnts
+      fH1["aE"]->Fill(fGrif->GetAddbackHit(gr1)->GetEnergy());
+      fH1[Form("aEdet%d", fGrif->GetAddbackHit(gr1)->GetDetector())]->Fill(fGrif->GetAddbackHit(gr1)->GetEnergy());
+      fH1["aMult"]->Fill(fGrif->GetNAddbackFrags(gr1));
+      if(fGrif->GetNAddbackFrags(gr1) == 2)
+         fH1[Form("aE2det%d", fGrif->GetAddbackHit(gr1)->GetDetector())]->Fill(fGrif->GetAddbackHit(gr1)->GetEnergy());
+   }
 }

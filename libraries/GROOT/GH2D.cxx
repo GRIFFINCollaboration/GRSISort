@@ -44,9 +44,7 @@ GH2D::GH2D(const TObject& obj)
    }
 }
 
-GH2D::~GH2D()
-{
-}
+GH2D::~GH2D() = default;
 
 void GH2D::Copy(TObject& obj) const
 {
@@ -57,8 +55,10 @@ void GH2D::Copy(TObject& obj) const
 
 TObject* GH2D::Clone(const char* newname) const
 {
-   std::string name        = newname;
-   if(!name.length()) name = Form("%s_clone", GetName());
+   std::string name = newname;
+   if(name.length() == 0u) {
+      name = Form("%s_clone", GetName());
+   }
    return TH2::Clone(name.c_str());
 }
 
@@ -90,7 +90,9 @@ void GH2D::Draw(Option_t* opt)
 
 void GH2D::Draw(TCutG* cut)
 {
-   if(!cut) return;
+   if(cut == nullptr) {
+      return;
+   }
    std::string option = Form("colz [%s]", cut->GetName());
    TH2D::Draw(option.c_str());
 }
@@ -137,7 +139,7 @@ void GH2D::Streamer(TBuffer &b) {
     Version_t v = b.ReadVersion();
     TH2D::Streamer(b);
     TDirectory *current = gDirectory;
-    if(TDirectory::Cd(Form("%s_projections",this->GetName()))) {
+    if(TDirectory::Cd(Form("%s_projections",GetName()))) {
       TList *list = gDirectory->GetList();
       TIter iter(list);
       while(TObject *obj = iter.Next()) {
@@ -154,7 +156,7 @@ void GH2D::Streamer(TBuffer &b) {
     TH2D::Streamer(b);
     if(fProjections.GetEntries()) {
       TDirectory *current = gDirectory;
-      TDirectory *newdir  =  current->mkdir(Form("%s_projections",this->GetName());
+      TDirectory *newdir  =  current->mkdir(Form("%s_projections",GetName());
       newdir->cd();
       fProjections->Write();
       current->cd();

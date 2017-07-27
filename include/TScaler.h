@@ -38,9 +38,9 @@ class TScalerData : public TObject {
 public:
    TScalerData();
    TScalerData(const TScalerData&);
-   ~TScalerData(){};
+   ~TScalerData() override = default;
 
-   void Copy(TObject& rhs) const;
+   void Copy(TObject& rhs) const override;
 
    void SetAddress(UInt_t address) { fAddress = address; }
    void SetNetworkPacketId(UInt_t networkId) { fNetworkPacketId = networkId; }
@@ -48,11 +48,12 @@ public:
    void SetHighTimeStamp(UInt_t highTime) { fHighTimeStamp = highTime; }
    void SetScaler(size_t index, UInt_t scaler)
    {
-      if (index < fScaler.size())
+      if(index < fScaler.size()) {
          fScaler[index] = scaler;
-      else
-         std::cout << "Failed to set scaler " << scaler << ", index " << index << " is out of range 0 - "
-                   << fScaler.size() << std::endl;
+      } else {
+         std::cout<<"Failed to set scaler "<<scaler<<", index "<<index<<" is out of range 0 - "
+                  <<fScaler.size()<<std::endl;
+      }
    }
 
    UInt_t              GetAddress() const { return fAddress; }
@@ -62,24 +63,25 @@ public:
    std::vector<UInt_t> GetScaler() const { return fScaler; }
    UInt_t GetScaler(size_t index) const
    {
-      if (index < fScaler.size())
+      if(index < fScaler.size()) {
          return fScaler[index];
-      else
+      } else {
          return 0;
+      }
    }
 
    ULong64_t GetTimeStamp() const
    {
       ULong64_t time = GetHighTimeStamp();
-      time           = time << 28;
+      time           = time<<28;
       time |= GetLowTimeStamp() & 0x0fffffff;
       return time;
    }
 
    void ResizeScaler(size_t newSize = 1) { fScaler.resize(newSize); }
 
-   void Print(Option_t* opt = "") const;
-   void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
 private:
    UInt_t              fNetworkPacketId;
@@ -89,7 +91,7 @@ private:
    UInt_t              fHighTimeStamp;
 
    /// \cond CLASSIMP
-   ClassDef(TScalerData, 2) // Contains scaler data information
+   ClassDefOverride(TScalerData, 2) // Contains scaler data information
    /// \endcond
 };
 
@@ -98,9 +100,9 @@ public:
    TScaler(bool loadIntoMap = false);
    TScaler(TTree*, bool loadIntoMap = false);
    TScaler(const TScaler&);
-   virtual ~TScaler();
+   ~TScaler() override;
 
-   void Copy(TObject& rhs) const;
+   void Copy(TObject& obj) const override;
 
 public:
    std::vector<UInt_t> GetScaler(UInt_t address, ULong64_t time) const;
@@ -113,11 +115,11 @@ public:
    std::map<UInt_t, ULong64_t> GetTimePeriodMap() { return fTimePeriod; }
    std::map<UInt_t, std::map<ULong64_t, int>> GetNumberOfTimePeriods() { return fNumberOfTimePeriods; }
 
-   virtual void Clear(Option_t* opt = "");
+   void Clear(Option_t* opt = "") override;
    using TObject::Draw; // This is to remove hidden overload
-   TH1D* Draw(UInt_t address, size_t index = 0, Option_t* opt = "");
-   TH1D* Draw(UInt_t lowAddress, UInt_t highAddress, size_t index = 0, Option_t* opt = "");
-   TH1D* DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime, size_t index = 0, Option_t* opt = "");
+   TH1D* Draw(UInt_t address, size_t index = 0, Option_t* option = "");
+   TH1D* Draw(UInt_t lowAddress, UInt_t highAddress, size_t index = 0, Option_t* option = "");
+   TH1D* DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime, size_t index = 0, Option_t* option = "");
 
    void ListHistograms();
 
@@ -137,7 +139,7 @@ private:
    std::map<std::pair<UInt_t, UInt_t>, TH1D*> fHistRange; //!<! map to store histograms for address-ranges
 
    /// \cond CLASSIMP
-   ClassDef(TScaler, 2) // Contains scaler information
+   ClassDefOverride(TScaler, 2) // Contains scaler information
    /// \endcond
 };
 /*! @} */

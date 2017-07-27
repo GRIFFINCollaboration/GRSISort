@@ -34,26 +34,31 @@ class TDetector : public TObject {
 public:
    TDetector();
    TDetector(const TDetector&);
-   virtual ~TDetector();
+   ~TDetector() override;
    TDetector& operator=(const TDetector& other)
    {
-      if (this != &other) other.Copy(*this);
+      if(this != &other) {
+         other.Copy(*this);
+      }
       return *this;
    }
 
 public:
    virtual void BuildHits() { AbstractMethod("BuildHits()"); } //!<!
 #ifndef __CINT__
-   virtual void AddFragment(std::shared_ptr<const TFragment>, TChannel*) { AbstractMethod("AddFragment()"); } //!<!
+   virtual void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*)
+   {
+      AbstractMethod("AddFragment()");
+   } //!<!
 #endif
 
-   virtual void Copy(TObject&) const;            //!<!
-   virtual void Clear(Option_t* opt = "");       //!<!
-   virtual void ClearTransients() {}             //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   virtual void ClearTransients() {}              //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TDetector, 1) // Abstract class for detector systems
+   ClassDefOverride(TDetector, 1) // Abstract class for detector systems
    /// \endcond
 };
 /*! @} */

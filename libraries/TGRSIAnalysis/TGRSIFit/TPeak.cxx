@@ -5,17 +5,17 @@
 
 /// \cond CLASSIMP
 ClassImp(TPeak)
-   /// \endcond
+/// \endcond
 
-   Bool_t TPeak::fLogLikelihoodFlag = true;
+Bool_t TPeak::fLogLikelihoodFlag = true;
 TPeak* TPeak::fLastFit              = nullptr;
 
 // We need c++ 11 for constructor delegation....
 TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
    : TGRSIFit("photopeakbg", TGRSIFunctions::PhotoPeakBG, xlow, xhigh, 10)
 {
-   fResiduals  = 0;
-   fBackground = 0;
+   fResiduals  = nullptr;
+   fBackground = nullptr;
    Clear();
    fOwnBgFlag            = false;
    Bool_t outOfRangeFlag = false;
@@ -30,11 +30,18 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
 
    // This fixes things if your user is like me and screws up a lot.
    if(outOfRangeFlag) {
-      if(xlow > cent) std::swap(xlow, cent);
-      if(xlow > xhigh) std::swap(xlow, xhigh);
-      if(cent > xhigh) std::swap(cent, xhigh);
+      if(xlow > cent) {
+         std::swap(xlow, cent);
+      }
+      if(xlow > xhigh) {
+         std::swap(xlow, xhigh);
+      }
+      if(cent > xhigh) {
+         std::swap(cent, xhigh);
+      }
       printf("Something about your range was wrong. Assuming:\n");
-      printf("centroid: %d \t range: %d to %d\n", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh));
+      printf("centroid: %d \t range: %d to %d\n", static_cast<Int_t>(cent), static_cast<Int_t>(xlow),
+             static_cast<Int_t>(xhigh));
    }
 
    SetRange(xlow, xhigh);
@@ -44,20 +51,22 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
 
    // Set the fit function to be a radware style photo peak.
    // This function might be unnecessary. Will revist this later. rd.
-   SetName(Form("Chan%d_%d_to_%d", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh))); // Gives a default name to the peak
+   SetName(Form("Chan%d_%d_to_%d", static_cast<Int_t>(cent), static_cast<Int_t>(xlow),
+                static_cast<Int_t>(xhigh))); // Gives a default name to the peak
 
    // We need to set parameter names now.
    InitNames();
    SetParameter("centroid", cent);
 
    // Check to see if background is good.
-   if(background) {
+   if(background != nullptr) {
       fBackground = background;
       fOwnBgFlag  = false;
    } else {
       printf("Bad background pointer. Creating basic background.\n");
-      fBackground = new TF1(Form("background%d_%d_to_%d", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh)),
-                            TGRSIFunctions::StepBG, xlow, xhigh, 10);
+      fBackground = new TF1(
+         Form("background%d_%d_to_%d", static_cast<Int_t>(cent), static_cast<Int_t>(xlow), static_cast<Int_t>(xhigh)),
+         TGRSIFunctions::StepBG, xlow, xhigh, 10);
       TGRSIFit::AddToGlobalList(fBackground, kFALSE);
       fOwnBgFlag = true;
    }
@@ -73,8 +82,8 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
 TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh)
    : TGRSIFit("photopeakbg", TGRSIFunctions::PhotoPeakBG, xlow, xhigh, 10)
 {
-   fResiduals  = 0;
-   fBackground = 0;
+   fResiduals  = nullptr;
+   fBackground = nullptr;
    Clear();
    fOwnBgFlag            = true;
    Bool_t outOfRangeFlag = false;
@@ -89,11 +98,18 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh)
 
    // This fixes things if your user is like me and screws up a lot.
    if(outOfRangeFlag) {
-      if(xlow > cent) std::swap(xlow, cent);
-      if(xlow > xhigh) std::swap(xlow, xhigh);
-      if(cent > xhigh) std::swap(cent, xhigh);
+      if(xlow > cent) {
+         std::swap(xlow, cent);
+      }
+      if(xlow > xhigh) {
+         std::swap(xlow, xhigh);
+      }
+      if(cent > xhigh) {
+         std::swap(cent, xhigh);
+      }
       printf("Something about your range was wrong. Assuming:\n");
-      printf("centroid: %d \t range: %d to %d\n", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh));
+      printf("centroid: %d \t range: %d to %d\n", static_cast<Int_t>(cent), static_cast<Int_t>(xlow),
+             static_cast<Int_t>(xhigh));
    }
 
    SetRange(xlow, xhigh);
@@ -103,14 +119,16 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh)
 
    // Set the fit function to be a radware style photo peak.
    // This function might be unnecessary. Will revist this later. rd.
-   SetName(Form("Chan%d_%d_to_%d", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh))); // Gives a default name to the peak
+   SetName(Form("Chan%d_%d_to_%d", static_cast<Int_t>(cent), static_cast<Int_t>(xlow),
+                static_cast<Int_t>(xhigh))); // Gives a default name to the peak
 
    // We need to set parameter names now.
    InitNames();
    SetParameter("centroid", cent);
 
-   fBackground = new TF1(Form("background%d_%d_to_%d", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh)),
-                         TGRSIFunctions::StepBG, xlow, xhigh, 10);
+   fBackground = new TF1(
+      Form("background%d_%d_to_%d", static_cast<Int_t>(cent), static_cast<Int_t>(xlow), static_cast<Int_t>(xhigh)),
+      TGRSIFunctions::StepBG, xlow, xhigh, 10);
 
    fBackground->SetNpx(1000);
    fBackground->SetLineStyle(2);
@@ -122,8 +140,8 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh)
 
 TPeak::TPeak() : TGRSIFit("photopeakbg", TGRSIFunctions::PhotoPeakBG, 0, 1000, 10)
 {
-   fResiduals  = 0;
-   fBackground = 0;
+   fResiduals  = nullptr;
+   fBackground = nullptr;
    InitNames();
    fOwnBgFlag  = true;
    fBackground = new TF1("background", TGRSIFunctions::StepBG, 0, 1000, 10);
@@ -137,16 +155,18 @@ TPeak::TPeak() : TGRSIFit("photopeakbg", TGRSIFunctions::PhotoPeakBG, 0, 1000, 1
 
 TPeak::~TPeak()
 {
-   if(fBackground && fOwnBgFlag) {
+   if((fBackground != nullptr) && fOwnBgFlag) {
       delete fBackground;
    }
-   if(fResiduals) delete fResiduals;
+   if(fResiduals != nullptr) {
+      delete fResiduals;
+   }
 }
 
-TPeak::TPeak(const TPeak& copy) : TGRSIFit(), fBackground(0), fResiduals(0)
+TPeak::TPeak(const TPeak& copy) : TGRSIFit(), fBackground(nullptr), fResiduals(nullptr)
 {
-   fBackground = 0;
-   fResiduals  = 0;
+   fBackground = nullptr;
+   fResiduals  = nullptr;
    copy.Copy(*this);
 }
 
@@ -168,10 +188,12 @@ void TPeak::Copy(TObject& obj) const
 {
    TGRSIFit::Copy(obj);
 
-   if(!static_cast<TPeak&>(obj).fBackground) {
+   if(static_cast<TPeak&>(obj).fBackground == nullptr) {
       static_cast<TPeak&>(obj).fBackground = new TF1(*fBackground);
    }
-   if(!static_cast<TPeak&>(obj).fResiduals) static_cast<TPeak&>(obj).fResiduals = new TGraph(*fResiduals);
+   if(static_cast<TPeak&>(obj).fResiduals == nullptr) {
+      static_cast<TPeak&>(obj).fResiduals = new TGraph(*fResiduals);
+   }
 
    static_cast<TPeak&>(obj).fArea  = fArea;
    static_cast<TPeak&>(obj).fDArea = fDArea;
@@ -201,10 +223,13 @@ Bool_t TPeak::InitParams(TH1* fitHist)
    // Double_t binWidth = fitHist->GetBinWidth(bin);
    SetParLimits(0, 0, fitHist->GetMaximum());
    GetParLimits(1, low, high);
-   if(low == high && low == 0.) SetParLimits(1, xlow, xhigh);
+   if(low == high && low == 0.) {
+      SetParLimits(1, xlow, xhigh);
+   }
    GetParLimits(2, low, high);
-   if(low == high && low == 0.)
+   if(low == high && low == 0.) {
       SetParLimits(2, 0.5, (xhigh - xlow)); // sigma should be less than the window width - JKS
+   }
    SetParLimits(3, 0.000001, 10);
    SetParLimits(4, 0.000001, 100); // this is a percentage. no reason for it to go to 500% - JKS
    // Step size is allow to vary to anything. If it goes below 0, the code will fix it to 0
@@ -212,9 +237,11 @@ Bool_t TPeak::InitParams(TH1* fitHist)
    SetParLimits(6, 0.0, fitHist->GetBinContent(bin) * 100.);
    SetParLimits(9, xlow, xhigh);
 
-   if(!fitHist && GetHist()) fitHist = GetHist();
+   if((fitHist == nullptr) && (GetHist() != nullptr)) {
+      fitHist = GetHist();
+   }
 
-   if(!fitHist) {
+   if(fitHist == nullptr) {
       printf("No histogram is associated yet, no initial guesses made\n");
       return false;
    }
@@ -245,15 +272,17 @@ Bool_t TPeak::InitParams(TH1* fitHist)
 Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
 {
    TString optstr = opt;
-   if(!fitHist && !GetHist()) {
+   if((fitHist == nullptr) && (GetHist() == nullptr)) {
       printf("No hist passed, trying something...");
       fitHist = fHistogram;
    }
-   if(!fitHist) {
+   if(fitHist == nullptr) {
       printf("No histogram associated with Peak\n");
       return false;
    }
-   if(!IsInitialized()) InitParams(fitHist);
+   if(!IsInitialized()) {
+      InitParams(fitHist);
+   }
    ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2", "Combination");
    TVirtualFitter::SetMaxIterations(100000);
    TVirtualFitter::SetPrecision(1e-3);
@@ -261,8 +290,10 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    SetHist(fitHist);
 
    TString options(opt);
-   bool    print_flag                   = true;
-   if(options.Contains("Q")) print_flag = false;
+   bool    print_flag = true;
+   if(options.Contains("Q")) {
+      print_flag = false;
+   }
 
    // Now that it is initialized, let's fit it.
    // Just in case the range changed, we should reset the centroid and bg energy limits
@@ -315,7 +346,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
          InitParams(fitHist);
          FixParameter(4, 0);
          FixParameter(3, 1);
-         std::cout << "Beta may have broken the fit, retrying with R=0" << std::endl;
+         std::cout<<"Beta may have broken the fit, retrying with R=0"<<std::endl;
          // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
          fitHist->GetListOfFunctions()->Last()->Delete();
          if(GetLogLikelihoodFlag()) {
@@ -327,13 +358,15 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    }
    /*   if(fitres->Parameter(5) < 0.0) {
          FixParameter(5,0);
-         std::cout << "Step < 0. Retrying fit with stp = 0" << std::endl;
+         std::cout<<"Step < 0. Retrying fit with stp = 0"<<std::endl;
          fitres = fitHist->Fit(this,Form("%sRSML",opt));
       }
    */
    Double_t binWidth = fitHist->GetBinWidth(GetParameter("centroid"));
    Double_t width    = GetParameter("sigma");
-   if(print_flag) printf("Chi^2/NDF = %lf\n", fitres->Chi2() / fitres->Ndf());
+   if(print_flag) {
+      printf("Chi^2/NDF = %lf\n", fitres->Chi2() / fitres->Ndf());
+   }
    fChi2 = fitres->Chi2();
    fNdf  = fitres->Ndf();
    Double_t xlow, xhigh;
@@ -345,7 +378,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    // Make a function that does not include the background
    // Intgrate the background.
    // TPeak* tmppeak = new TPeak(*this);
-   TPeak* tmppeak = new TPeak;
+   auto* tmppeak = new TPeak;
    Copy(*tmppeak);
    tmppeak->SetParameter("step", 0.0);
    tmppeak->SetParameter("A", 0.0);
@@ -367,7 +400,9 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    CovMat(9, 9) = 0.0;
    fDArea = (tmppeak->IntegralError(int_low, int_high, tmppeak->GetParameters(), CovMat.GetMatrixArray())) / binWidth;
 
-   if(print_flag) printf("Integral: %lf +/- %lf\n", fArea, fDArea);
+   if(print_flag) {
+      printf("Integral: %lf +/- %lf\n", fArea, fDArea);
+   }
    // Set the background for drawing later
    fBackground->SetParameters(GetParameters());
    // To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
@@ -441,7 +476,7 @@ void TPeak::DrawBackground(Option_t* opt) const
 
 void TPeak::DrawResiduals()
 {
-   if(!GetHist()) {
+   if(GetHist() == nullptr) {
       printf("No hist set\n");
       return;
    }
@@ -452,14 +487,16 @@ void TPeak::DrawResiduals()
 
    Double_t xlow, xhigh;
    GetRange(xlow, xhigh);
-   Int_t     nbins  = GetHist()->GetXaxis()->GetNbins();
-   Double_t* res    = new Double_t[nbins];
-   Double_t* bin    = new Double_t[nbins];
-   Int_t     points = 0;
+   Int_t nbins  = GetHist()->GetXaxis()->GetNbins();
+   auto* res    = new Double_t[nbins];
+   auto* bin    = new Double_t[nbins];
+   Int_t points = 0;
    fResiduals->Clear();
 
    for(int i = 1; i <= nbins; i++) {
-      if(GetHist()->GetBinCenter(i) <= xlow || GetHist()->GetBinCenter(i) >= xhigh) continue;
+      if(GetHist()->GetBinCenter(i) <= xlow || GetHist()->GetBinCenter(i) >= xhigh) {
+         continue;
+      }
       res[points] = (GetHist()->GetBinContent(i) - Eval(GetHist()->GetBinCenter(i))) +
                     GetParameter("Height") / 2; /// GetHist()->GetBinError(i));// + GetParameter("Height") + 10.;
       bin[points] = GetHist()->GetBinCenter(i);
@@ -476,7 +513,7 @@ void TPeak::DrawResiduals()
 
 Double_t TPeak::GetIntegralArea()
 {
-   if(!GetHist()) {
+   if(GetHist() == nullptr) {
       printf("No hist set\n");
       return 0;
    }
@@ -496,7 +533,7 @@ Double_t TPeak::GetIntegralArea()
 
 Double_t TPeak::GetIntegralArea(Double_t int_low, Double_t int_high)
 {
-   if(!GetHist()) {
+   if(GetHist() == nullptr) {
       printf("No hist set\n");
       return 0;
    }
@@ -517,7 +554,7 @@ Double_t TPeak::GetIntegralArea(Double_t int_low, Double_t int_high)
    Double_t xhigh         = hist->GetXaxis()->GetBinUpEdge(binhigh);
 
    // ... and then integrate the background
-   Double_t bg_area = (this->Background()->Integral(xlow, xhigh)) / binWidth;
+   Double_t bg_area = (Background()->Integral(xlow, xhigh)) / binWidth;
 
    // calculate the peak area and error
    Double_t peakarea = hist_integral - bg_area;
@@ -527,7 +564,7 @@ Double_t TPeak::GetIntegralArea(Double_t int_low, Double_t int_high)
 
 Double_t TPeak::GetIntegralAreaErr(Double_t int_low, Double_t int_high)
 {
-   if(!GetHist()) {
+   if(GetHist() == nullptr) {
       printf("No hist set\n");
       return 0;
    }
@@ -548,7 +585,7 @@ Double_t TPeak::GetIntegralAreaErr(Double_t int_low, Double_t int_high)
    Double_t xhigh         = hist->GetXaxis()->GetBinUpEdge(binhigh);
 
    // ... and then integrate the background
-   Double_t bg_area = (this->Background()->Integral(xlow, xhigh)) / binWidth;
+   Double_t bg_area = (Background()->Integral(xlow, xhigh)) / binWidth;
 
    // calculate the peak error
    Double_t peakerr = sqrt(hist_integral + bg_area);
@@ -558,7 +595,7 @@ Double_t TPeak::GetIntegralAreaErr(Double_t int_low, Double_t int_high)
 
 Double_t TPeak::GetIntegralAreaErr()
 {
-   if(!GetHist()) {
+   if(GetHist() == nullptr) {
       printf("No hist set\n");
       return 0;
    }
@@ -578,7 +615,7 @@ Double_t TPeak::GetIntegralAreaErr()
 
 void TPeak::CheckArea(Double_t int_low, Double_t int_high)
 {
-   if(!GetHist()) {
+   if(GetHist() == nullptr) {
       printf("No hist set\n");
       return;
    }
@@ -594,19 +631,20 @@ void TPeak::CheckArea(Double_t int_low, Double_t int_high)
    // now print properties
    printf("TPeak integral: 	      %lf +/- %lf \n", fArea, fDArea);
    printf("Histogram - BG integral:        %lf +/- %lf \n", peakarea, peakerr);
-   if(std::abs(peakarea - fArea) < (fDArea + peakerr))
+   if(std::abs(peakarea - fArea) < (fDArea + peakerr)) {
       printf(DGREEN "Areas are consistent.\n" RESET_COLOR);
-   else if(std::abs(peakarea - fArea) < 2 * (fDArea + peakerr))
+   } else if(std::abs(peakarea - fArea) < 2 * (fDArea + peakerr)) {
       printf(DYELLOW "Areas are consistent within 2 sigma.\n" RESET_COLOR);
-   else
+   } else {
       printf(DRED "Areas are inconsistent.\n" RESET_COLOR);
+   }
 
    return;
 }
 
 void TPeak::CheckArea()
 {
-   if(!GetHist()) {
+   if(GetHist() == nullptr) {
       printf("No hist set\n");
       return;
    }
@@ -622,12 +660,13 @@ void TPeak::CheckArea()
    // now print properties
    printf("TPeak integral: 	      %lf +/- %lf \n", fArea, fDArea);
    printf("Histogram - BG integral:        %lf +/- %lf \n", peakarea, peakerr);
-   if(std::abs(peakarea - fArea) < (fDArea + peakerr))
+   if(std::abs(peakarea - fArea) < (fDArea + peakerr)) {
       printf(DGREEN "Areas are consistent.\n" RESET_COLOR);
-   else if(std::abs(peakarea - fArea) < 2 * (fDArea + peakerr))
+   } else if(std::abs(peakarea - fArea) < 2 * (fDArea + peakerr)) {
       printf(DYELLOW "Areas are consistent within 2 sigma.\n" RESET_COLOR);
-   else
+   } else {
       printf(DRED "Areas are inconsistent.\n" RESET_COLOR);
+   }
 
    return;
 }

@@ -8,9 +8,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TS3)
-   /// \endcond
+/// \endcond
 
-   int TS3::fRingNumber = 24;
+int TS3::fRingNumber = 24;
 int TS3::fSectorNumber  = 32;
 
 double TS3::fOffsetPhiCon = 0.5 * TMath::Pi(); // Offset between connector and sector 0 (viewed from sector side)
@@ -31,9 +31,7 @@ TS3::TS3()
    Clear();
 }
 
-TS3::~TS3()
-{
-}
+TS3::~TS3() = default;
 
 TS3& TS3::operator=(const TS3& rhs)
 {
@@ -51,10 +49,9 @@ void TS3::Copy(TObject& rhs) const
    TGRSIDetector::Copy(rhs);
    static_cast<TS3&>(rhs).fS3RingHits   = fS3RingHits;
    static_cast<TS3&>(rhs).fS3SectorHits = fS3SectorHits;
-   return;
 }
 
-void TS3::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
+void TS3::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
 {
    /// This function creates TS3Hits for each fragment and stores them in separate front and back vectors
    if(frag == nullptr || chan == nullptr) {
@@ -67,14 +64,18 @@ void TS3::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
       dethit.SetRingNumber(frag->GetSegment());
       dethit.SetSectorNumber(0);
 
-      if(TGRSIOptions::AnalysisOptions()->IsWaveformFitting()) dethit.SetWavefit(*frag);
+      if(TGRSIOptions::AnalysisOptions()->IsWaveformFitting()) {
+         dethit.SetWavefit(*frag);
+      }
 
       fS3RingHits.push_back(std::move(dethit));
    } else {
       dethit.SetRingNumber(0);
       dethit.SetSectorNumber(frag->GetSegment());
 
-      if(TGRSIOptions::AnalysisOptions()->IsWaveformFitting()) dethit.SetWavefit(*frag);
+      if(TGRSIOptions::AnalysisOptions()->IsWaveformFitting()) {
+         dethit.SetWavefit(*frag);
+      }
 
       fS3SectorHits.push_back(std::move(dethit));
    }
@@ -103,21 +104,25 @@ void TS3::BuildPixels()
    // Shared rings and sectors can be constructed, by default they are not.
    // To enable shared hits, use SetMultiHit function
 
-   if(fS3RingHits.size() == 0 || fS3SectorHits.size() == 0) return;
+   if(fS3RingHits.empty() || fS3SectorHits.empty()) {
+      return;
+   }
    // if the pixels have been reset, clear the pixel hits
-   if(fS3Bits.TestBit(kPixelsSet) == false) fS3Hits.clear();
-   if(fS3Hits.size() == 0) {
+   if(!fS3Bits.TestBit(kPixelsSet)) {
+      fS3Hits.clear();
+   }
+   if(fS3Hits.empty()) {
 
       // We are going to want energies several times
       // So build a quick vector
       std::vector<double> EneR, EneS;
       std::vector<bool>   UsedRing, UsedSector;
-      for(size_t i = 0; i < fS3RingHits.size(); ++i) {
-         EneR.push_back(fS3RingHits[i].GetEnergy());
+      for(auto& fS3RingHit : fS3RingHits) {
+         EneR.push_back(fS3RingHit.GetEnergy());
          UsedRing.push_back(false);
       }
-      for(size_t j = 0; j < fS3SectorHits.size(); ++j) {
-         EneS.push_back(fS3SectorHits[j].GetEnergy());
+      for(auto& fS3SectorHit : fS3SectorHits) {
+         EneS.push_back(fS3SectorHit.GetEnergy());
          UsedSector.push_back(false);
       }
 
@@ -155,22 +160,34 @@ void TS3::BuildPixels()
 
          int ringcount   = 0;
          int sectorcount = 0;
-         for(unsigned int i = 0; i < UsedRing.size(); ++i)
-            if(!UsedRing.at(i)) ringcount++;
+         for(auto&& i : UsedRing) {
+            if(!i) {
+               ringcount++;
+            }
+         }
 
-         for(unsigned int i = 0; i < UsedSector.size(); ++i)
-            if(!UsedSector.at(i)) sectorcount++;
+         for(auto&& i : UsedSector) {
+            if(!i) {
+               sectorcount++;
+            }
+         }
 
          /// If we have parts of hit left here they are possibly a shared strip hit not easy singles
          if(ringcount > 1 || sectorcount > 1) {
 
             // Shared Ring loop
             for(size_t i = 0; i < fS3RingHits.size(); ++i) {
-               if(UsedRing.at(i)) continue;
+               if(UsedRing.at(i)) {
+                  continue;
+               }
                for(size_t j = 0; j < fS3SectorHits.size(); ++j) {
-                  if(UsedSector.at(j)) continue;
+                  if(UsedSector.at(j)) {
+                     continue;
+                  }
                   for(size_t k = j + 1; k < fS3SectorHits.size(); ++k) {
-                     if(UsedSector.at(k)) continue;
+                     if(UsedSector.at(k)) {
+                        continue;
+                     }
 
                      if(abs(fS3RingHits[i].GetCfd() - fS3SectorHits[j].GetCfd()) < fFrontBackTime &&
                         abs(fS3RingHits[i].GetCfd() - fS3SectorHits[k].GetCfd()) < fFrontBackTime) { // check time
@@ -180,17 +197,19 @@ void TS3::BuildPixels()
                            int SectorSep = fS3SectorHits[j].GetSector() - fS3SectorHits[k].GetSector();
                            if(abs(SectorSep) == 1 || abs(SectorSep) == fSectorNumber) {
                               // Same ring and neighbour sectors, almost certainly charge sharing
-                              // Experiments with breakup might get real mult2 events like this but most will be charge
+                              // Experiments with breakup might get real mult2 events like this but most will be
+                              // charge
                               // sharing
 
                               if(KeepShared()) {
                                  TS3Hit dethit = fS3RingHits[i]; // Ring defines all data sector just gives position
                                  // Selecting one of the sectors is currently the best class allows, some loss of
                                  // position information
-                                 if(fS3SectorHits[k].GetEnergy() < fS3SectorHits[j].GetEnergy())
+                                 if(fS3SectorHits[k].GetEnergy() < fS3SectorHits[j].GetEnergy()) {
                                     dethit.SetSectorNumber(fS3SectorHits[j].GetSector());
-                                 else
+                                 } else {
                                     dethit.SetSectorNumber(fS3SectorHits[k].GetSector());
+                                 }
                                  fS3Hits.push_back(dethit);
                               }
                            } else {
@@ -219,21 +238,32 @@ void TS3::BuildPixels()
 
          ringcount   = 0;
          sectorcount = 0;
-         for(unsigned int i = 0; i < UsedRing.size(); ++i)
-            if(!UsedRing.at(i)) ringcount++;
+         for(auto&& i : UsedRing) {
+            if(!i) {
+               ringcount++;
+            }
+         }
 
-         for(unsigned int i = 0; i < UsedSector.size(); ++i)
-            if(!UsedSector.at(i)) sectorcount++;
+         for(auto&& i : UsedSector) {
+            if(!i) {
+               sectorcount++;
+            }
+         }
 
          if(ringcount > 1 || sectorcount > 1) {
-
             // Shared Sector loop
             for(size_t i = 0; i < fS3SectorHits.size(); ++i) {
-               if(UsedSector.at(i)) continue;
+               if(UsedSector.at(i)) {
+                  continue;
+               }
                for(size_t j = 0; j < fS3RingHits.size(); ++j) {
-                  if(UsedRing.at(j)) continue;
+                  if(UsedRing.at(j)) {
+                     continue;
+                  }
                   for(size_t k = j + 1; k < fS3RingHits.size(); ++k) {
-                     if(UsedRing.at(k)) continue;
+                     if(UsedRing.at(k)) {
+                        continue;
+                     }
 
                      if(abs(fS3SectorHits[i].GetCfd() - fS3RingHits[j].GetCfd()) < fFrontBackTime &&
                         abs(fS3SectorHits[i].GetCfd() - fS3RingHits[k].GetCfd()) < fFrontBackTime) { // first check time
@@ -242,17 +272,20 @@ void TS3::BuildPixels()
 
                            if(abs(fS3RingHits[j].GetRing() - fS3RingHits[k].GetRing()) == 1) {
                               // Same sector and neighbour rings, almost certainly charge sharing
-                              // Experiments with breakup might get real mult2 events like this but most will be charge
+                              // Experiments with breakup might get real mult2 events like this but most
+                              // will be charge
                               // sharing
 
                               if(KeepShared()) {
                                  TS3Hit dethit = fS3SectorHits[i]; // Sector defines all data ring just gives position
-                                 // Selecting one of the sectors is currently the best class allows, some loss of
+                                 // Selecting one of the sectors is currently the best class allows, some
+                                 // loss of
                                  // position information
-                                 if(fS3RingHits[k].GetEnergy() < fS3RingHits[j].GetEnergy())
+                                 if(fS3RingHits[k].GetEnergy() < fS3RingHits[j].GetEnergy()) {
                                     dethit.SetRingNumber(fS3RingHits[j].GetRing());
-                                 else
+                                 } else {
                                     dethit.SetRingNumber(fS3RingHits[k].GetRing());
+                                 }
                                  fS3Hits.push_back(dethit);
                               }
                            } else {
@@ -301,7 +334,9 @@ TVector3 TS3::GetPosition(int ring, int sector, double offsetphi, double offsetZ
    // The above calculates the position on the S3
 
    // This orients the detector relative to the beam
-   if(sectorsdownstream) phi = -phi;
+   if(sectorsdownstream) {
+      phi = -phi;
+   }
    phi += offsetphi;
 
    if(smear) {
@@ -324,40 +359,37 @@ TS3Hit* TS3::GetS3Hit(const int& i)
 {
    if(i < GetPixelMultiplicity()) {
       return &fS3Hits.at(i);
-   } else {
-      std::cerr << "S3 pixel hits are out of range" << std::endl;
-      throw grsi::exit_exception(1);
-      return nullptr;
    }
+   std::cerr<<"S3 pixel hits are out of range"<<std::endl;
+   throw grsi::exit_exception(1);
+   return nullptr;
 }
 
 TS3Hit* TS3::GetRingHit(const int& i)
 {
    if(i < GetRingMultiplicity()) {
       return &fS3RingHits.at(i);
-   } else {
-      std::cerr << "S3 ring hits are out of range" << std::endl;
-      throw grsi::exit_exception(1);
-      return nullptr;
    }
+   std::cerr<<"S3 ring hits are out of range"<<std::endl;
+   throw grsi::exit_exception(1);
+   return nullptr;
 }
 
 TS3Hit* TS3::GetSectorHit(const int& i)
 {
    if(i < GetSectorMultiplicity()) {
       return &fS3SectorHits.at(i);
-   } else {
-      std::cerr << "S3 sector hits are out of range" << std::endl;
-      throw grsi::exit_exception(1);
-      return nullptr;
    }
+   std::cerr<<"S3 sector hits are out of range"<<std::endl;
+   throw grsi::exit_exception(1);
+   return nullptr;
 }
 
 /*void TS3::PushBackHit(TGRSIDetectorHit *deshit) {
   fS3Hits.push_back(*((TS3Hit*)deshit));
   return;
-}
-*/
+  }
+  */
 
 void TS3::Print(Option_t*) const
 {

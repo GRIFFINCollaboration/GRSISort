@@ -24,6 +24,7 @@
 
 class ExampleEventSelector : public TGRSISelector { //Must be same name as .C and .h
 
+<<<<<<< HEAD
  public :
    TGriffin * fGrif; //Pointers to spot that events will be
    TSceptar * fScep;
@@ -44,8 +45,9 @@ class ExampleEventSelector : public TGRSISelector { //Must be same name as .C an
 #endif
 
 #ifdef ExampleEventSelector_cxx
-void ExampleEventSelector::InitializeBranches(TTree* tree) {
-   if (!tree) return;
+void ExampleEventSelector::InitializeBranches(TTree* tree)
+{
+   if(!tree) return;
    tree->SetBranchAddress("TGriffin", &fGrif);
    tree->SetBranchAddress("TSceptar", &fScep);
 }

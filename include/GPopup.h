@@ -9,14 +9,14 @@ class GPopup : public TGTransientFrame {
 private:
 public:
    GPopup(const TGWindow* p, const TGWindow* main, UInt_t w, UInt_t h, UInt_t options = kVerticalFrame);
-   virtual ~GPopup();
+   ~GPopup() override;
 
-   virtual void   CloseWindow();
-   virtual Bool_t ProcessMessage(Long_t msg, Long_t parm1, Long_t parm2);
+   void   CloseWindow() override;
+   Bool_t ProcessMessage(Long_t msg, Long_t parm1, Long_t parm2) override;
 
-   virtual void Print(Option_t* opt = "") const;
+   void Print(Option_t* opt = "") const override;
 
-   ClassDef(GPopup, 0)
+   ClassDefOverride(GPopup, 0)
 };
 
 #endif

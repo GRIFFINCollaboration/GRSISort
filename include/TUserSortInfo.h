@@ -17,15 +17,15 @@
 
 class TUserSortInfo : public TGRSISortInfo {
 public:
-   TUserSortInfo(){};
-   TUserSortInfo(const TGRSIRunInfo* info) : TGRSISortInfo(info){};
-   virtual ~TUserSortInfo(){};
+   TUserSortInfo() {};
+   TUserSortInfo(const TGRSIRunInfo* info) : TGRSISortInfo(info) {};
+   ~TUserSortInfo() override = default;
 
-   void Print(Option_t* opt = "") const;
-   void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
    /// \cond CLASSIMP
-   ClassDef(TUserSortInfo, 1);
+   ClassDefOverride(TUserSortInfo, 1);
    /// \endcond
 };
 /*! @} */

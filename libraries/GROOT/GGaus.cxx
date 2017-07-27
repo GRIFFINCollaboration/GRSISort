@@ -14,7 +14,9 @@ ClassImp(GGaus)
    : TF1("gausbg", "gaus(0)+pol1(3)", xlow, xhigh), fBGFit("background", "pol1", xlow, xhigh)
 {
    Clear("");
-   if(xlow > xhigh) std::swap(xlow, xhigh);
+   if(xlow > xhigh) {
+      std::swap(xlow, xhigh);
+   }
 
    TF1::SetRange(xlow, xhigh);
 
@@ -31,13 +33,15 @@ ClassImp(GGaus)
 GGaus::GGaus(Double_t xlow, Double_t xhigh, TF1* bg, Option_t*) : TF1("gausbg", "gaus(0)+pol1(3)", xlow, xhigh)
 {
    Clear("");
-   if(xlow > xhigh) std::swap(xlow, xhigh);
+   if(xlow > xhigh) {
+      std::swap(xlow, xhigh);
+   }
    TF1::SetRange(xlow, xhigh);
    // Changing the name here causes an infinite loop when starting the FitEditor
    // SetName(Form("gaus_%d_to_%d",(Int_t)(xlow),(Int_t)(xhigh)));
    InitNames();
 
-   if(bg) {
+   if(bg != nullptr) {
       fBGFit.Clear();
       fBGFit.Copy(*bg);
    } else {
@@ -100,20 +104,20 @@ void GGaus::Copy(TObject& obj) const
    // fflush(stdout);
 
    TF1::Copy(obj);
-   ((GGaus&)obj).init_flag = init_flag;
-   ((GGaus&)obj).fArea     = fArea;
-   ((GGaus&)obj).fDArea    = fDArea;
-   ((GGaus&)obj).fSum      = fSum;
-   ((GGaus&)obj).fDSum     = fDSum;
-   ((GGaus&)obj).fChi2     = fChi2;
-   ((GGaus&)obj).fNdf      = fNdf;
+   (static_cast<GGaus&>(obj)).init_flag = init_flag;
+   (static_cast<GGaus&>(obj)).fArea     = fArea;
+   (static_cast<GGaus&>(obj)).fDArea    = fDArea;
+   (static_cast<GGaus&>(obj)).fSum      = fSum;
+   (static_cast<GGaus&>(obj)).fDSum     = fDSum;
+   (static_cast<GGaus&>(obj)).fChi2     = fChi2;
+   (static_cast<GGaus&>(obj)).fNdf      = fNdf;
 
-   fBGFit.Copy((((GGaus&)obj).fBGFit));
+   fBGFit.Copy(((static_cast<GGaus&>(obj)).fBGFit));
 }
 
 bool GGaus::InitParams(TH1* fithist)
 {
-   if(!fithist) {
+   if(fithist == nullptr) {
       printf("No histogram is associated yet, no initial guesses made\n");
       return false;
    }
@@ -134,7 +138,9 @@ bool GGaus::InitParams(TH1* fithist)
    highy = highy / 5.0;
    lowy  = lowy / 5.0;
 
-   if(lowy > highy) std::swap(lowy, highy);
+   if(lowy > highy) {
+      std::swap(lowy, highy);
+   }
 
    double largestx = 0.0;
    double largesty = 0.0;
@@ -180,9 +186,13 @@ bool GGaus::InitParams(TH1* fithist)
 
 Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
 {
-   if(!fithist) return false;
+   if(fithist == nullptr) {
+      return false;
+   }
    TString options = opt;
-   if(!IsInitialized()) InitParams(fithist);
+   if(!IsInitialized()) {
+      InitParams(fithist);
+   }
    TVirtualFitter::SetMaxIterations(100000);
 
    bool verbose = !options.Contains("Q");
@@ -191,22 +201,30 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
       options.ReplaceAll("no-print", "");
    }
 
-   if(fithist->GetSumw2()->fN != fithist->GetNbinsX() + 2) fithist->Sumw2();
+   if(fithist->GetSumw2()->fN != fithist->GetNbinsX() + 2) {
+      fithist->Sumw2();
+   }
 
    TFitResultPtr fitres = fithist->Fit(this, Form("%sRSME", options.Data()));
 
    // fitres.Get()->Print();
    if(!fitres.Get()->IsValid()) {
-      if(!verbose) printf(RED "fit has failed, trying refit... " RESET_COLOR);
+      if(!verbose) {
+         printf(RED "fit has failed, trying refit... " RESET_COLOR);
+      }
       // SetParameter(3,0.1);
       // SetParameter(4,0.01);
       // SetParameter(5,0.0);
       fithist->GetListOfFunctions()->Last()->Delete();
       fitres = fithist->Fit(this, Form("%sRSME", options.Data())); //,Form("%sRSM",options.Data()))
       if(fitres.Get()->IsValid()) {
-         if(!verbose && !noprint) printf(DGREEN " refit passed!" RESET_COLOR "\n");
+         if(!verbose && !noprint) {
+            printf(DGREEN " refit passed!" RESET_COLOR "\n");
+         }
       } else {
-         if(!verbose && !noprint) printf(DRED " refit also failed :( " RESET_COLOR "\n");
+         if(!verbose && !noprint) {
+            printf(DRED " refit also failed :( " RESET_COLOR "\n");
+         }
       }
    }
 
@@ -233,7 +251,7 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
    // Make a function that does not include the background
    // Intgrate the background.
    // GGaus *tmppeak = new GGaus;
-   // this->Copy(*tmppeak);
+   // Copy(*tmppeak);
 
    // tmppeak->SetParameter("bg_offset",0.0);
    // tmppeak->SetRange(int_low,int_high);//This will help get the true area of the gaussian 200 ~ infinity in a gaus
@@ -256,12 +274,14 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
    fBGFit.SetParameters(bgpars);
    // fithist->GetListOfFunctions()->Print();
 
-   fArea         = this->Integral(xlow, xhigh) / fithist->GetBinWidth(1);
+   fArea         = Integral(xlow, xhigh) / fithist->GetBinWidth(1);
    double bgArea = fBGFit.Integral(xlow, xhigh) / fithist->GetBinWidth(1);
    ;
    fArea -= bgArea;
 
-   if(xlow > xhigh) std::swap(xlow, xhigh);
+   if(xlow > xhigh) {
+      std::swap(xlow, xhigh);
+   }
    fSum = fithist->Integral(fithist->GetXaxis()->FindBin(xlow),
                             fithist->GetXaxis()->FindBin(xhigh)); //* fithist->GetBinWidth(1);
    printf("sum between markers: %02f\n", fSum);
@@ -289,7 +309,9 @@ void GGaus::Clear(Option_t* opt)
 {
    TString options = opt;
    // Clear the GGaus including functions and histogram
-   if(options.Contains("all")) TF1::Clear();
+   if(options.Contains("all")) {
+      TF1::Clear();
+   }
    init_flag = false;
    fArea     = 0.0;
    fDArea    = 0.0;
@@ -303,12 +325,12 @@ void GGaus::Print(Option_t* opt) const
 {
    TString options = opt;
    printf(GREEN);
-   printf("Name: %s \n", this->GetName());
-   printf("Centroid:  %1f +/- %1f \n", this->GetParameter("centroid"), this->GetParError(GetParNumber("centroid")));
+   printf("Name: %s \n", GetName());
+   printf("Centroid:  %1f +/- %1f \n", GetParameter("centroid"), GetParError(GetParNumber("centroid")));
    printf("Area:      %1f +/- %1f \n", fArea, fDArea);
    printf("Sum:       %1f +/- %1f \n", fSum, fDSum);
-   printf("FWHM:      %1f +/- %1f \n", this->GetFWHM(), this->GetFWHMErr());
-   printf("Reso:      %1f%%  \n", this->GetFWHM() / this->GetParameter("centroid") * 100.);
+   printf("FWHM:      %1f +/- %1f \n", GetFWHM(), GetFWHMErr());
+   printf("Reso:      %1f%%  \n", GetFWHM() / GetParameter("centroid") * 100.);
    printf("Chi^2/NDF: %1f\n", fChi2 / fNdf);
    if(options.Contains("all")) {
       TF1::Print(opt);
@@ -319,7 +341,7 @@ void GGaus::Print(Option_t* opt) const
 
 void GGaus::DrawResiduals(TH1* hist) const
 {
-   if(hist) {
+   if(hist == nullptr) {
       return;
    }
    if(fChi2 < 0.000000001) {
@@ -328,18 +350,20 @@ void GGaus::DrawResiduals(TH1* hist) const
    }
    Double_t xlow, xhigh;
    GetRange(xlow, xhigh);
-   Int_t     nbins  = hist->GetXaxis()->GetNbins();
-   Double_t* res    = new Double_t[nbins];
-   Double_t* bin    = new Double_t[nbins];
-   Int_t     points = 0;
+   Int_t nbins  = hist->GetXaxis()->GetNbins();
+   auto* res    = new Double_t[nbins];
+   auto* bin    = new Double_t[nbins];
+   Int_t points = 0;
    for(int i = 1; i <= nbins; i++) {
-      if(hist->GetBinCenter(i) <= xlow || hist->GetBinCenter(i) >= xhigh) continue;
-      res[points] = (hist->GetBinContent(i) - this->Eval(hist->GetBinCenter(i))) + this->GetParameter("Height") / 2;
+      if(hist->GetBinCenter(i) <= xlow || hist->GetBinCenter(i) >= xhigh) {
+         continue;
+      }
+      res[points] = (hist->GetBinContent(i) - Eval(hist->GetBinCenter(i))) + GetParameter("Height") / 2;
       bin[points] = hist->GetBinCenter(i);
       points++;
    }
    new GCanvas();
-   TGraph* residuals = new TGraph(points, bin, res);
+   auto* residuals = new TGraph(points, bin, res);
    residuals->Draw("*AC");
    delete[] res;
    delete[] bin;

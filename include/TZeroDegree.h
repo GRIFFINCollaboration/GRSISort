@@ -27,24 +27,26 @@
 class TZeroDegree : public TGRSIDetector {
 public:
    TZeroDegree();
-   virtual ~TZeroDegree();
+   ~TZeroDegree() override;
    TZeroDegree(const TZeroDegree& rhs);
 
 public:
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
-   void Copy(TObject& rhs) const;
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
+   void Copy(TObject& rhs) const override;
    TZeroDegreeHit* GetZeroDegreeHit(const int& i);                    //!<!
-   Short_t GetMultiplicity() const { return fZeroDegreeHits.size(); } //!<!
+   Short_t GetMultiplicity() const override { return fZeroDegreeHits.size(); } //!<!
 
    static TVector3 GetPosition(double dist) { return TVector3(0, 0, dist); } //!<!
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
 
-   void ClearTransients()
+   void ClearTransients() override
    {
-      for (auto hit : fZeroDegreeHits) hit.ClearTransients();
+      for(const auto& hit : fZeroDegreeHits) {
+         hit.ClearTransients();
+      }
    }
 
    TZeroDegree& operator=(const TZeroDegree&); //!<!
@@ -58,12 +60,12 @@ public:
    static bool SetWave() { return fSetWave; } //!<!
 
 public:
-   void Clear(Option_t* opt = "");       //!<!
-   void Print(Option_t* opt = "") const; //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TZeroDegree, 2) // ZeroDegree Physics structure
-                            /// \endcond
+   ClassDefOverride(TZeroDegree, 2) // ZeroDegree Physics structure
+                                    /// \endcond
 };
 /*! @} */
 #endif

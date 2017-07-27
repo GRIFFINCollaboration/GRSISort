@@ -8,7 +8,7 @@
 #include "Globals.h"
 
 #include <vector>
-#include <time.h>
+#include <ctime>
 #include <map>
 
 #include "Rtypes.h"
@@ -31,7 +31,7 @@
 class TEpicsFrag : public TObject {
 public:
    TEpicsFrag();
-   virtual ~TEpicsFrag();
+   ~TEpicsFrag() override;
 
    time_t fMidasTimeStamp; //->  Timestamp of the MIDAS event
    Int_t  fMidasId;        //->  MIDAS ID
@@ -42,17 +42,18 @@ public:
    int          GetSize() { return fData.size(); }
    inline float GetData(const unsigned int& i)
    {
-      if (i >= fData.size())
+      if(i >= fData.size()) {
          return fData.back();
-      else
+      } else {
          return fData[i];
+      }
    }
 
-   virtual void Clear(Option_t* opt = "");       //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
    static void AddEpicsVariable(const char* name);
-   static void SetEpicsNameList(const std::vector<std::string>& name_list);
+   static void SetEpicsNameList(const std::vector<std::string>& name_vec);
    static std::string GetEpicsVariableName(const int& i);
    static void PrintVariableNames();
 
@@ -68,7 +69,7 @@ private:
    static Long64_t fSmallestTime;
 
    /// \cond CLASSIMP
-   ClassDef(TEpicsFrag, 1); // Scaler Fragments
+   ClassDefOverride(TEpicsFrag, 1); // Scaler Fragments
    /// \endcond
 };
 /*! @} */

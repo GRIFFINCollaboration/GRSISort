@@ -10,17 +10,17 @@ class GGaus : public TF1 {
 public:
    GGaus(Double_t xlow, Double_t xhigh, Option_t* opt = "gsc");
    // GGaus(Double_t xlow,Double_t xhigh,int bg_order=1,Option_t *opt="gsc");  make this a thing.  pcb.
-   GGaus(Double_t xlow, Double_t xhigh, TF1* background, Option_t* opt = "gsc");
+   GGaus(Double_t xlow, Double_t xhigh, TF1* bg, Option_t* opt = "gsc");
    GGaus(const GGaus&);
    GGaus();
-   virtual ~GGaus();
+   ~GGaus() override;
 
-   void Copy(TObject&) const;
-   void Print(Option_t* opt = "") const;
-   void Clear(Option_t* opt = "");
+   void Copy(TObject&) const override;
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
    void InitNames();
-   bool InitParams(TH1* fithist = 0);
+   bool InitParams(TH1* fithist = nullptr);
    bool Fit(TH1*, Option_t* opt = "");
    void DrawResiduals(TH1*) const;
    // void DrawResiduals(); // *MENU*
@@ -61,22 +61,22 @@ public:
    static Bool_t CompareArea(const GGaus& lhs, const GGaus& rhs) { return lhs.GetArea() < rhs.GetArea(); }
 
 private:
-   double fArea;
-   double fDArea;
-   double fChi2;
-   double fNdf;
+   double fArea{0.};
+   double fDArea{0.};
+   double fChi2{0.};
+   double fNdf{0.};
 
-   double fSum;
-   double fDSum;
+   double fSum{0.};
+   double fDSum{0.};
 
    Bool_t IsInitialized() const { return init_flag; }
    void SetInitialized(Bool_t flag = true) { init_flag = flag; }
-   bool                       init_flag;
+   bool                       init_flag{false};
 
    TF1 fBGFit;
    TF1 fBGHist;
 
-   ClassDef(GGaus, 2)
+   ClassDefOverride(GGaus, 2)
 };
 
 #endif

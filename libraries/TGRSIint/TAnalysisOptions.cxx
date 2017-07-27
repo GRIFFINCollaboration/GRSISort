@@ -14,7 +14,7 @@
 
 TAnalysisOptions::TAnalysisOptions()
 {
-	Clear();
+   Clear();
 }
 
 void TAnalysisOptions::Clear(Option_t*)
@@ -30,11 +30,11 @@ void TAnalysisOptions::Clear(Option_t*)
 void TAnalysisOptions::Print(Option_t*) const
 {
    /// Print the current status of TAnalysisOptions, includes all names, lists and flags
-   std::cout<<BLUE<<"fBuildWindow: "          <<DCYAN<<fBuildWindow<<std::endl
-            <<BLUE<<"fAddbackWindow: "        <<DCYAN<<fAddbackWindow<<std::endl
-            <<BLUE<<"fStaticWindow: "         <<DCYAN<<fStaticWindow<<std::endl
-				<<BLUE<<"fWaveformFitting: "      <<DCYAN<<fWaveformFitting<<std::endl
-   			<<BLUE<<"fIsCorrectingCrossTalk: "<<DCYAN<<fIsCorrectingCrossTalk<<std::endl
+   std::cout<<BLUE<<"fBuildWindow: "<<DCYAN<<fBuildWindow<<std::endl
+            <<BLUE<<"fAddbackWindow: "<<DCYAN<<fAddbackWindow<<std::endl
+            <<BLUE<<"fStaticWindow: "<<DCYAN<<fStaticWindow<<std::endl
+            <<BLUE<<"fWaveformFitting: "<<DCYAN<<fWaveformFitting<<std::endl
+            <<BLUE<<"fIsCorrectingCrossTalk: "<<DCYAN<<fIsCorrectingCrossTalk<<std::endl
             <<RESET_COLOR<<std::endl;
 }
 
@@ -46,8 +46,8 @@ bool TAnalysisOptions::WriteToFile(TFile* file)
    TDirectory* oldDir  = gDirectory;
 
    if(file == nullptr) {
-		file = gDirectory->GetFile();
-	}
+      file = gDirectory->GetFile();
+   }
    file->cd();
    std::string oldoption = std::string(file->GetOption());
    if(oldoption == "READ") {
@@ -70,25 +70,27 @@ bool TAnalysisOptions::WriteToFile(TFile* file)
    return success;
 }
 
-void TAnalysisOptions::ReadFromFile(std::string file)
+void TAnalysisOptions::ReadFromFile(const std::string& file)
 {
    TDirectory* oldDir = gDirectory;
-	auto f = new TFile(file.c_str());
-	if(f->IsOpen()) {
-		TList* list = f->GetListOfKeys();
-		TIter  iter(list);
-		std::cout<<"Reading Options from file:"<<CYAN<<f<<RESET_COLOR<<std::endl;
-		while(TKey* key = static_cast<TKey*>(iter.Next())) {
-			if(!key || strcmp(key->GetClassName(), "TAnalysisOptions")) continue;
+   auto        f      = new TFile(file.c_str());
+   if(f->IsOpen()) {
+      TList* list = f->GetListOfKeys();
+      TIter  iter(list);
+      std::cout<<R"(Reading analysis options from file ")"<<CYAN<<f->GetName()<<RESET_COLOR<<R"(":)"<<std::endl;
+      while(TKey* key = static_cast<TKey*>(iter.Next())) {
+         if((key == nullptr) || (strcmp(key->GetClassName(), "TAnalysisOptions") != 0)) {
+            continue;
+         }
 
-			*this = *static_cast<TAnalysisOptions*>(key->ReadObj());
-			f->Close();
-			oldDir->cd();
-			return;
-		}
-	} else {
-		std::cout<<"Failed to open file \""<<file<<"\""<<std::endl;
-	}
+         *this = *static_cast<TAnalysisOptions*>(key->ReadObj());
+         f->Close();
+         oldDir->cd();
+         return;
+      }
+   } else {
+      std::cout<<R"(Failed to open file ")"<<file<<R"(")"<<std::endl;
+   }
    oldDir->cd();
 }
 
@@ -103,4 +105,3 @@ void TAnalysisOptions::SetCorrectCrossTalk(const bool flag, Option_t* opt)
 
    printf("Please call TGriffin::ResetFlags() on current event to avoid bugs\n");
 }
-

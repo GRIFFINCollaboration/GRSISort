@@ -34,8 +34,8 @@
 
 class TDataLoop : public StoppableThread {
 public:
-   static TDataLoop* Get(std::string name = "", TRawFile* source = 0);
-   virtual ~TDataLoop();
+   static TDataLoop* Get(std::string name = "", TRawFile* source = nullptr);
+   ~TDataLoop() override;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>& OutputQueue() { return fOutputQueue; }
@@ -43,15 +43,15 @@ public:
 
    const TRawFile& GetSource() const { return *fSource; }
 
-   virtual void ClearQueue();
+   void ClearQueue() override;
 
-   virtual bool Iteration();
-   virtual void OnEnd();
+   bool Iteration() override;
+   void OnEnd() override;
 
-   size_t GetItemsPushed() { return fOutputQueue->ItemsPushed(); }
-   size_t GetItemsPopped() { return fOutputQueue->ItemsPopped(); }
-   size_t GetItemsCurrent() { return fOutputQueue->Size(); }
-   size_t GetRate() { return 0; }
+   size_t GetItemsPushed() override { return fOutputQueue->ItemsPushed(); }
+   size_t GetItemsPopped() override { return fOutputQueue->ItemsPopped(); }
+   size_t GetItemsCurrent() override { return fOutputQueue->Size(); }
+   size_t GetRate() override { return 0; }
 
    void ReplaceSource(TRawFile* new_source);
    void ResetSource();
@@ -83,7 +83,7 @@ private:
    void SetTIGOdb();
    void SetGRIFFOdb();
 
-   ClassDef(TDataLoop, 0);
+   ClassDefOverride(TDataLoop, 0);
 };
 
 /*! @} */

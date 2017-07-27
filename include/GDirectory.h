@@ -10,21 +10,21 @@
 class GDirectory : public TDirectory {
 public:
    GDirectory() : TDirectory() {}
-   GDirectory(const char* name, const char* title, Option_t* option = "", TDirectory* motherDir = 0)
+   GDirectory(const char* name, const char* title, Option_t* option = "", TDirectory* motherDir = nullptr)
       : TDirectory(name, title, option, motherDir)
    {
    }
-   virtual ~GDirectory();
+   ~GDirectory() override;
 
-   virtual void Build(TFile* motherFile = 0, TDirectory* motherDir = 0);
-   virtual void Append(TObject* obj, Bool_t replace = false);
+   void Build(TFile* motherFile = nullptr, TDirectory* motherDir = nullptr) override;
+   void Append(TObject* obj, Bool_t replace = false) override;
 
    // void ResetRootDirectory();
 
    // private:
 
    /// \cond CLASSIMP
-   ClassDef(GDirectory, 1);
+   ClassDefOverride(GDirectory, 1);
    /// \endcond
 };
 /*! @} */

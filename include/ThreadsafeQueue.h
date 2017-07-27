@@ -18,6 +18,7 @@
 #include <condition_variable>
 #include <mutex>
 #include <queue>
+#include <utility>
 #endif
 
 class TDetector;
@@ -49,7 +50,7 @@ private:
    std::condition_variable can_push;
    std::condition_variable can_pop;
 
-   std::atomic_int num_writers;
+   std::atomic_int num_writers{0};
 
    size_t max_queue_size;
 
@@ -64,20 +65,19 @@ private:
 #ifndef __CINT__
 template <typename T>
 ThreadsafeQueue<T>::ThreadsafeQueue(std::string name, size_t maxSize)
-   : fName(name), max_queue_size(maxSize), items_in_queue(0), items_pushed(0), items_popped(0), is_finished(false)
+   : fName(std::move(name)), max_queue_size(maxSize), items_in_queue(0), items_pushed(0), items_popped(0),
+     is_finished(false)
 {
 }
 
 template <typename T>
-ThreadsafeQueue<T>::~ThreadsafeQueue()
-{
-}
+ThreadsafeQueue<T>::~ThreadsafeQueue() = default;
 
 template <typename T>
 int ThreadsafeQueue<T>::Push(T obj)
 {
    std::unique_lock<std::mutex> lock(mutex);
-   if (queue.size() > max_queue_size) {
+   if(queue.size() > max_queue_size) {
       can_push.wait(lock);
    }
 
@@ -93,11 +93,11 @@ template <typename T>
 long ThreadsafeQueue<T>::Pop(T& output, int millisecond_wait)
 {
    std::unique_lock<std::mutex> lock(mutex);
-   if (!queue.size() && millisecond_wait) {
+   if(!queue.size() && millisecond_wait) {
       can_pop.wait_for(lock, std::chrono::milliseconds(millisecond_wait));
    }
 
-   if (!queue.size()) {
+   if(!queue.size()) {
       return -1;
    }
 

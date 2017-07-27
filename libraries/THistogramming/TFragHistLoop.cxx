@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "TFragHistLoop.h"
 
 #include "TFile.h"
@@ -10,9 +12,13 @@
 
 TFragHistLoop* TFragHistLoop::Get(std::string name)
 {
-   if(name.length() == 0) name = "histo_loop";
-   TFragHistLoop* loop         = static_cast<TFragHistLoop*>(StoppableThread::Get(name));
-   if(!loop) loop              = new TFragHistLoop(name);
+   if(name.length() == 0) {
+      name = "histo_loop";
+   }
+   TFragHistLoop* loop = static_cast<TFragHistLoop*>(StoppableThread::Get(name));
+   if(loop == nullptr) {
+      loop = new TFragHistLoop(name);
+   }
    return loop;
 }
 
@@ -30,7 +36,7 @@ TFragHistLoop::~TFragHistLoop()
 
 void TFragHistLoop::ClearQueue()
 {
-   while(fInputQueue->Size()) {
+   while(fInputQueue->Size() != 0u) {
       std::shared_ptr<const TFragment> event;
       fInputQueue->Pop(event);
    }
@@ -42,21 +48,19 @@ bool TFragHistLoop::Iteration()
    fInputSize = fInputQueue->Pop(event);
 
    if(event) {
-      if(!fOutputFile) {
+      if(fOutputFile == nullptr) {
          OpenFile();
       }
 
       fCompiledHistograms.Fill(event);
       ++fItemsPopped;
       return true;
-
-   } else if(fInputQueue->IsFinished()) {
-      return false;
-
-   } else {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-      return true;
    }
+   if(fInputQueue->IsFinished()) {
+      return false;
+   }
+   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+   return true;
 }
 
 void TFragHistLoop::ClearHistograms()
@@ -76,9 +80,9 @@ void TFragHistLoop::CloseFile()
 {
    Write();
 
-   if(fOutputFile) {
+   if(fOutputFile != nullptr) {
       fOutputFile->Close();
-      fOutputFile     = 0;
+      fOutputFile     = nullptr;
       fOutputFilename = "last.root";
    }
 }
@@ -90,14 +94,14 @@ void TFragHistLoop::Write()
    }
 
    TPreserveGDirectory preserve;
-   if(fOutputFile) {
+   if(fOutputFile != nullptr) {
       fOutputFile->cd();
       fCompiledHistograms.Write();
-      if(GValue::Size()) {
+      if(GValue::Size() != 0) {
          GValue::Get()->Write();
          printf(BLUE "\t%i GValues written to file %s" RESET_COLOR "\n", GValue::Size(), gDirectory->GetName());
       }
-      if(TChannel::GetNumberOfChannels()) {
+      if(TChannel::GetNumberOfChannels() != 0) {
          TChannel::GetDefaultChannel()->Write();
          printf(BLUE "\t%i TChannels written to file %s" RESET_COLOR "\n", TChannel::GetNumberOfChannels(),
                 gDirectory->GetName());
@@ -107,7 +111,7 @@ void TFragHistLoop::Write()
 
 void TFragHistLoop::LoadLibrary(std::string library)
 {
-   fCompiledHistograms.Load(library, "MakeFragmentHistograms");
+   fCompiledHistograms.Load(std::move(library), "MakeFragmentHistograms");
 }
 
 std::string TFragHistLoop::GetLibraryName() const

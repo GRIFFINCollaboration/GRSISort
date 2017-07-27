@@ -29,28 +29,30 @@ public:
 public:
    TSiLi();
    TSiLi(const TSiLi&);
-   virtual ~TSiLi();
+   ~TSiLi() override;
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
 
-   void ClearTransients()
+   void ClearTransients() override
    {
-      for (auto hit : fSiLiHits) hit.ClearTransients();
+      for(const auto& hit : fSiLiHits) {
+         hit.ClearTransients();
+      }
    }
 
    TSiLi& operator=(const TSiLi&); //
 
-   void Copy(TObject&) const;
-   void Clear(Option_t* opt = "");
-   void Print(Option_t* opt = "") const;
+   void Copy(TObject&) const override;
+   void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
 
-   Short_t           GetMultiplicity() const { return fSiLiHits.size(); }
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
-   TSiLiHit* GetSiLiHit(const Int_t& idx = 0);
+   Short_t           GetMultiplicity() const override { return fSiLiHits.size(); }
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
+   TSiLiHit* GetSiLiHit(const Int_t& i = 0);
 
-   TSiLiHit* GetAddbackHit(const Int_t& idx = 0);
+   TSiLiHit* GetAddbackHit(const Int_t& i = 0);
    Int_t GetAddbackMultiplicity();
 
    void ResetAddback()
@@ -61,7 +63,9 @@ public:
 
    void UseFitCharge()
    {
-      for (unsigned int s = 0; s < fSiLiHits.size(); s++) fSiLiHits[s].UseFitCharge();
+      for(auto& fSiLiHit : fSiLiHits) {
+         fSiLiHit.UseFitCharge();
+      }
    }
 
    static TVector3 GetPosition(int ring, int sector, bool smear = false);
@@ -110,7 +114,7 @@ private:
    static double fTargetDistance; //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TSiLi, 5);
+   ClassDefOverride(TSiLi, 5);
    /// \endcond
 };
 /*! @} */

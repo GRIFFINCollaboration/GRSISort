@@ -20,9 +20,15 @@ GPeak::GPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t*)
    Clear("");
    if(cent > xhigh || cent < xlow) {
       // out of range...
-      if(xlow > cent) std::swap(xlow, cent);
-      if(xlow > xhigh) std::swap(xlow, xhigh);
-      if(cent > xhigh) std::swap(cent, xhigh);
+      if(xlow > cent) {
+         std::swap(xlow, cent);
+      }
+      if(xlow > xhigh) {
+         std::swap(xlow, xhigh);
+      }
+      if(cent > xhigh) {
+         std::swap(cent, xhigh);
+      }
    }
 
    TF1::SetRange(xlow, xhigh);
@@ -31,13 +37,13 @@ GPeak::GPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t*)
    fBGFit.SetLineStyle(2);
    fBGFit.SetLineColor(kBlack);
 
-   SetName(Form("Chan%d_%d_to_%d", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh)));
+   SetName(Form("Chan%d_%d_to_%d", static_cast<Int_t>(cent), static_cast<Int_t>(xlow), static_cast<Int_t>(xhigh)));
    InitNames();
    TF1::SetParameter("centroid", cent);
 
-   SetParent(0);
+   SetParent(nullptr);
    // TF1::SetDirectory(0);
-   fBGFit.SetParent(0);
+   fBGFit.SetParent(nullptr);
    fBGFit.SetBit(TObject::kCanDelete, false);
    // fBGFit.SetDirectory(0);
 }
@@ -48,16 +54,22 @@ GPeak::GPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* bg, Option_t*)
    Clear("");
    if(cent > xhigh || cent < xlow) {
       // out of range...
-      if(xlow > cent) std::swap(xlow, cent);
-      if(xlow > xhigh) std::swap(xlow, xhigh);
-      if(cent > xhigh) std::swap(cent, xhigh);
+      if(xlow > cent) {
+         std::swap(xlow, cent);
+      }
+      if(xlow > xhigh) {
+         std::swap(xlow, xhigh);
+      }
+      if(cent > xhigh) {
+         std::swap(cent, xhigh);
+      }
    }
    TF1::SetRange(xlow, xhigh);
-   SetName(Form("Chan%d_%d_to_%d", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh)));
+   SetName(Form("Chan%d_%d_to_%d", static_cast<Int_t>(cent), static_cast<Int_t>(xlow), static_cast<Int_t>(xhigh)));
    InitNames();
    TF1::SetParameter("centroid", cent);
 
-   if(bg) {
+   if(bg != nullptr) {
       fBGFit.Clear();
       fBGFit.Copy(*bg);
    } else {
@@ -68,9 +80,9 @@ GPeak::GPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* bg, Option_t*)
    fBGFit.SetLineStyle(2);
    fBGFit.SetLineColor(kBlack);
 
-   SetParent(0);
+   SetParent(nullptr);
    // SetDirectory(0);
-   fBGFit.SetParent(0);
+   fBGFit.SetParent(nullptr);
    // fBGFit.SetDirectory(0);
 }
 
@@ -85,18 +97,18 @@ GPeak::GPeak()
    fBGFit.SetLineStyle(2);
    fBGFit.SetLineColor(kBlack);
 
-   SetParent(0);
+   SetParent(nullptr);
    // SetDirectory(0);
-   fBGFit.SetParent(0);
+   fBGFit.SetParent(nullptr);
    // fBGFit.SetDirectory(0);
 }
 
 GPeak::GPeak(const GPeak& peak) : TF1(peak)
 {
 
-   SetParent(0);
+   SetParent(nullptr);
    // SetDirectory(0);
-   fBGFit.SetParent(0);
+   fBGFit.SetParent(nullptr);
    // fBGFit.SetDirectory(0);
    peak.Copy(*this);
 }
@@ -146,20 +158,20 @@ void GPeak::Copy(TObject& obj) const
    // fflush(stdout);
 
    TF1::Copy(obj);
-   ((GPeak&)obj).init_flag = init_flag;
-   ((GPeak&)obj).fArea     = fArea;
-   ((GPeak&)obj).fDArea    = fDArea;
-   ((GPeak&)obj).fSum      = fSum;
-   ((GPeak&)obj).fDSum     = fDSum;
-   ((GPeak&)obj).fChi2     = fChi2;
-   ((GPeak&)obj).fNdf      = fNdf;
+   (static_cast<GPeak&>(obj)).init_flag = init_flag;
+   (static_cast<GPeak&>(obj)).fArea     = fArea;
+   (static_cast<GPeak&>(obj)).fDArea    = fDArea;
+   (static_cast<GPeak&>(obj)).fSum      = fSum;
+   (static_cast<GPeak&>(obj)).fDSum     = fDSum;
+   (static_cast<GPeak&>(obj)).fChi2     = fChi2;
+   (static_cast<GPeak&>(obj)).fNdf      = fNdf;
 
-   fBGFit.Copy((((GPeak&)obj).fBGFit));
+   fBGFit.Copy(((static_cast<GPeak&>(obj)).fBGFit));
 }
 
 bool GPeak::InitParams(TH1* fithist)
 {
-   if(!fithist) {
+   if(fithist == nullptr) {
       printf("No histogram is associated yet, no initial guesses made\n");
       return false;
    }
@@ -183,7 +195,9 @@ bool GPeak::InitParams(TH1* fithist)
 
    //  Double_t yhigh  = fithist->GetBinContent(binhigh);
    //  Double_t ylow   = fithist->GetBinContent(binlow);
-   if(lowy > highy) std::swap(lowy, highy);
+   if(lowy > highy) {
+      std::swap(lowy, highy);
+   }
 
    double largestx = 0.0;
    double largesty = 0.0;
@@ -247,9 +261,13 @@ bool GPeak::InitParams(TH1* fithist)
 
 Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
 {
-   if(!fithist) return false;
+   if(fithist == nullptr) {
+      return false;
+   }
    TString options = opt;
-   if(!IsInitialized()) InitParams(fithist);
+   if(!IsInitialized()) {
+      InitParams(fithist);
+   }
    TVirtualFitter::SetMaxIterations(100000);
 
    bool verbose = !options.Contains("Q");
@@ -258,12 +276,14 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
       options.ReplaceAll("no-print", "");
    }
 
-   if(fithist->GetSumw2()->fN != fithist->GetNbinsX() + 2) fithist->Sumw2();
+   if(fithist->GetSumw2()->fN != fithist->GetNbinsX() + 2) {
+      fithist->Sumw2();
+   }
 
-   TFitResultPtr fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
+   TFitResultPtr fitres = fithist->Fit(this, Form("%sLRSM", options.Data()));
 
    // fitres.Get()->Print();
-   printf("chi^2/NDF = %.02f\n", this->GetChisquare() / (double)this->GetNDF());
+   printf("chi^2/NDF = %.02f\n", GetChisquare() / static_cast<double>(GetNDF()));
 
    if(!fitres.Get()->IsValid()) {
       printf(RED "fit has failed, trying refit... " RESET_COLOR);
@@ -302,7 +322,7 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    // Make a function that does not include the background
    // Intgrate the background.
    // GPeak *tmppeak = new GPeak;
-   // this->Copy(*tmppeak);
+   // Copy(*tmppeak);
 
    // tmppeak->SetParameter("bg_offset",0.0);
    // tmppeak->SetRange(int_low,int_high);//This will help get the true area of the gaussian 200 ~ infinity in a gaus
@@ -328,17 +348,46 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    fBGFit.SetParameters(bgpars);
    // fithist->GetListOfFunctions()->Print();
 
-   fArea         = this->Integral(xlow, xhigh) / fithist->GetBinWidth(1);
+   fArea         = Integral(xlow, xhigh) / fithist->GetBinWidth(1);
    double bgArea = fBGFit.Integral(xlow, xhigh) / fithist->GetBinWidth(1);
    fArea -= bgArea;
 
-   if(xlow > xhigh) std::swap(xlow, xhigh);
+   if(xlow > xhigh) {
+      std::swap(xlow, xhigh);
+   }
    fSum = fithist->Integral(fithist->GetXaxis()->FindBin(xlow),
                             fithist->GetXaxis()->FindBin(xhigh)); //* fithist->GetBinWidth(1);
    printf("sum between markers: %02f\n", fSum);
    fDSum = TMath::Sqrt(fSum);
    fSum -= bgArea;
    printf("sum after subtraction: %02f\n", fSum);
+
+   // Make a function that does not include the background
+   // Intgrate the background.
+   // TPeak* tmppeak = new TPeak(*this);
+
+   Double_t range_low, range_high;
+   GetRange(range_low,range_high);
+
+   GPeak* tmppeak = new GPeak;
+   Copy(*tmppeak);
+   tmppeak->SetParameter("step", 0.0);
+   tmppeak->SetParameter("A", 0.0);
+   tmppeak->SetParameter("B", 0.0);
+   tmppeak->SetParameter("C", 0.0);
+   tmppeak->SetParameter("bg_offset", 0.0);
+   tmppeak->SetRange(range_low, range_high); // This will help get the true area of the gaussian 200 ~ infinity in a gaus
+   tmppeak->SetName("tmppeak");
+
+   // This is where we will do integrals and stuff.
+   TMatrixDSym CovMat = fitres->GetCovarianceMatrix();
+   CovMat(5, 5) = 0.0;
+   CovMat(6, 6) = 0.0;
+   fDArea = (tmppeak->IntegralError(xlow, xhigh, tmppeak->GetParameters(), CovMat.GetMatrixArray())) / fithist->GetBinWidth(1);
+
+   delete tmppeak;
+
+
 
    if(!verbose) {
       Print(); /*
@@ -357,7 +406,7 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    fithist->GetListOfFunctions()->Add(fBGFit.Clone()); // use to be a clone.
    fLastFit = this;
 
-   SetParent(0); // fithist);
+   SetParent(nullptr); // fithist);
 
    // delete tmppeak;
    return true;
@@ -367,7 +416,9 @@ void GPeak::Clear(Option_t* opt)
 {
    TString options = opt;
    // Clear the GPeak including functions and histogram
-   if(options.Contains("all")) TF1::Clear();
+   if(options.Contains("all")) {
+      TF1::Clear();
+   }
    init_flag = false;
    fArea     = 0.0;
    fDArea    = 0.0;
@@ -381,12 +432,12 @@ void GPeak::Print(Option_t* opt) const
 {
    TString options = opt;
    printf(GREEN);
-   printf("Name: %s \n", this->GetName());
-   printf("Centroid:  %1f +/- %1f \n", this->GetParameter("centroid"), this->GetParError(GetParNumber("centroid")));
+   printf("Name: %s \n", GetName());
+   printf("Centroid:  %1f +/- %1f \n", GetParameter("centroid"), GetParError(GetParNumber("centroid")));
    printf("Area:      %1f +/- %1f \n", fArea, fDArea);
    printf("Sum:       %1f +/- %1f \n", fSum, fDSum);
-   printf("FWHM:      %1f +/- %1f \n", this->GetFWHM(), this->GetFWHMErr());
-   printf("Reso:      %1f%%  \n", this->GetFWHM() / this->GetParameter("centroid") * 100.);
+   printf("FWHM:      %1f +/- %1f \n", GetFWHM(), GetFWHMErr());
+   printf("Reso:      %1f%%  \n", GetFWHM() / GetParameter("centroid") * 100.);
    printf("Chi^2/NDF: %1f\n", fChi2 / fNdf);
    if(options.Contains("all")) {
       TF1::Print(opt);
@@ -397,7 +448,7 @@ void GPeak::Print(Option_t* opt) const
 
 void GPeak::DrawResiduals(TH1* hist) const
 {
-   if(hist) {
+   if(hist == nullptr) {
       return;
    }
    if(fChi2 < 0.000000001) {
@@ -406,18 +457,20 @@ void GPeak::DrawResiduals(TH1* hist) const
    }
    Double_t xlow, xhigh;
    GetRange(xlow, xhigh);
-   Int_t     nbins  = hist->GetXaxis()->GetNbins();
-   Double_t* res    = new Double_t[nbins];
-   Double_t* bin    = new Double_t[nbins];
-   Int_t     points = 0;
+   Int_t nbins  = hist->GetXaxis()->GetNbins();
+   auto* res    = new Double_t[nbins];
+   auto* bin    = new Double_t[nbins];
+   Int_t points = 0;
    for(int i = 1; i <= nbins; i++) {
-      if(hist->GetBinCenter(i) <= xlow || hist->GetBinCenter(i) >= xhigh) continue;
-      res[points] = (hist->GetBinContent(i) - this->Eval(hist->GetBinCenter(i))) + this->GetParameter("Height") / 2;
+      if(hist->GetBinCenter(i) <= xlow || hist->GetBinCenter(i) >= xhigh) {
+         continue;
+      }
+      res[points] = (hist->GetBinContent(i) - Eval(hist->GetBinCenter(i))) + GetParameter("Height") / 2;
       bin[points] = hist->GetBinCenter(i);
       points++;
    }
    new GCanvas();
-   TGraph* residuals = new TGraph(points, bin, res);
+   auto* residuals = new TGraph(points, bin, res);
    residuals->Draw("*AC");
    delete[] res;
    delete[] bin;

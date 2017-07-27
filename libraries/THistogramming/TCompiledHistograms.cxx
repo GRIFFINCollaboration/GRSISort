@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <utility>
 
 #include <sys/stat.h>
 
@@ -17,11 +18,11 @@
 #include "GRootCommands.h"
 #include "TPreserveGDirectory.h"
 
-typedef void* __attribute__((__may_alias__)) void_alias;
+using void_alias = void*;
 
 TCompiledHistograms::TCompiledHistograms()
    : fLibname(""), fFunc_name(""), fLibrary(nullptr), fFunc(nullptr), fLast_modified(0), fLast_checked(0),
-     fCheck_every(5), fDefault_directory(0), fObj(&fObjects, &fGates, fCut_files)
+     fCheck_every(5), fDefault_directory(nullptr), fObj(&fObjects, &fGates, fCut_files)
 {
 }
 
@@ -32,11 +33,11 @@ TCompiledHistograms::TCompiledHistograms(std::string input_lib, std::string func
    fLibname   = input_lib;
    fLibrary   = std::make_shared<DynamicLibrary>(fLibname.c_str(), true);
    // Casting required to keep gcc from complaining.
-   *(void_alias*)(&fFunc) = fLibrary->GetSymbol(fFunc_name.c_str());
+   *reinterpret_cast<void_alias*>(&fFunc) = fLibrary->GetSymbol(fFunc_name.c_str());
 
-   if(!fFunc) {
-      std::cout << "Could not find " << fFunc_name << "() inside "
-                << "\"" << input_lib << "\"" << std::endl;
+   if(fFunc == nullptr) {
+      std::cout<<"Could not find "<<fFunc_name<<"() inside "
+               <<R"(")"<<input_lib<<R"(")"<<std::endl;
    }
    fLast_modified = get_timestamp();
    fLast_checked  = time(nullptr);
@@ -48,23 +49,23 @@ void TCompiledHistograms::ClearHistograms()
 
    TIter    next(&fObjects);
    TObject* obj;
-   while((obj = next())) {
+   while((obj = next()) != nullptr) {
       if(obj->InheritsFrom(TH1::Class())) {
-         TH1* hist = (TH1*)obj;
+         TH1* hist = static_cast<TH1*>(obj);
          hist->Reset();
       } else if(obj->InheritsFrom(TDirectory::Class())) {
-         TDirectory* dir = (TDirectory*)obj;
+         TDirectory* dir = static_cast<TDirectory*>(obj);
          TIter       dirnext(dir->GetList());
          TObject*    dirobj;
-         while((dirobj = dirnext())) {
+         while((dirobj = dirnext()) != nullptr) {
             if(dirobj->InheritsFrom(TH1::Class())) {
-               TH1* hist = (TH1*)dirobj;
+               TH1* hist = static_cast<TH1*>(dirobj);
                hist->Reset();
             }
          }
       }
    }
-   std::cout << "ended " << std::endl;
+   std::cout<<"ended "<<std::endl;
 }
 
 time_t TCompiledHistograms::get_timestamp()
@@ -86,18 +87,19 @@ Int_t TCompiledHistograms::Write(const char*, Int_t, Int_t)
 
    TIter    next(&fObjects);
    TObject* obj;
-   while((obj = next())) {
+   while((obj = next()) != nullptr) {
       if(obj->InheritsFrom(TDirectory::Class())) {
          TPreserveGDirectory preserve;
-         TDirectory*         dir = (TDirectory*)obj;
+         TDirectory*         dir = static_cast<TDirectory*>(obj);
          gDirectory->mkdir(dir->GetName())->cd();
          TIter    dir_next(dir->GetList());
          TObject* dir_obj;
-         while((dir_obj = dir_next())) {
+         while((dir_obj = dir_next()) != nullptr) {
             dir_obj->Write();
          }
-      } else
+      } else {
          obj->Write();
+      }
    }
 
    //  objects.Write();
@@ -109,7 +111,7 @@ Int_t TCompiledHistograms::Write(const char*, Int_t, Int_t)
 
 void TCompiledHistograms::Load(std::string libname, std::string func_name)
 {
-   TCompiledHistograms other(libname, func_name);
+   TCompiledHistograms other(std::move(libname), std::move(func_name));
    swap_lib(other);
 }
 
@@ -140,7 +142,7 @@ void TCompiledHistograms::Fill(std::shared_ptr<const TFragment> frag)
       Reload();
    }
 
-   if(!fLibrary || !fFunc || !fDefault_directory) {
+   if(!fLibrary || (fFunc == nullptr) || (fDefault_directory == nullptr)) {
       return;
    }
 
@@ -148,7 +150,7 @@ void TCompiledHistograms::Fill(std::shared_ptr<const TFragment> frag)
    fDefault_directory->cd();
    fObj.SetDirectory(fDefault_directory);
 
-   fObj.SetFragment(frag);
+   fObj.SetFragment(std::move(frag));
    fFunc(fObj);
    fObj.SetFragment(nullptr);
 }
@@ -160,7 +162,7 @@ void TCompiledHistograms::Fill(std::shared_ptr<TUnpackedEvent> detectors)
       Reload();
    }
 
-   if(!fLibrary || !fFunc || !fDefault_directory) {
+   if(!fLibrary || (fFunc == nullptr) || (fDefault_directory == nullptr)) {
       return;
    }
 
@@ -168,14 +170,14 @@ void TCompiledHistograms::Fill(std::shared_ptr<TUnpackedEvent> detectors)
    fDefault_directory->cd();
    fObj.SetDirectory(fDefault_directory);
 
-   fObj.SetDetectors(detectors);
+   fObj.SetDetectors(std::move(detectors));
    fFunc(fObj);
    fObj.SetDetectors(nullptr);
 }
 
 void TCompiledHistograms::AddCutFile(TFile* cut_file)
 {
-   if(cut_file) {
+   if(cut_file != nullptr) {
       fCut_files.push_back(cut_file);
    }
 }
@@ -186,9 +188,9 @@ void TCompiledHistograms::SetDefaultDirectory(TDirectory* dir)
 
    TObject* obj = nullptr;
    TIter    next(&fObjects);
-   while((obj = next())) {
-      TH1* hist = dynamic_cast<TH1*>(obj);
-      if(hist) {
+   while((obj = next()) != nullptr) {
+      TH1* hist = static_cast<TH1*>(obj);
+      if(hist != nullptr) {
          hist->SetDirectory(dir);
       }
    }

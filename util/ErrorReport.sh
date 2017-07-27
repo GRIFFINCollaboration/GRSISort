@@ -5,18 +5,18 @@ echo GRSISYS      = $GRSISYS
 echo ROOTSYS      = $ROOTSYS
 
 echo ROOT Version = `root-config --version`
-echo '\nComputer and Path to File that failed: \n'
+printf "\nComputer and Path to File that failed: \n"
 
 LASTDIR=$PWD
 cd $GRSISYS
 echo GRSISort Branch = `git rev-parse --abbrev-ref HEAD`
-echo '\nLast Commit: ' 
+printf "\nLast Commit: " 
 
 git log -1
 
-echo '\nPut Error Here:\n\n\n\n'
+printf "\nPut Error Here:\n\n\n\n"
 
-echo 'Last Working Commit: Put commit here\n\n'
+printf "Last Working Commit: Put commit here\n\n"
 
-echo 'What I have tried so far\n\n\n'
+printf "What I have tried so far\n\n\n"
 cd $LASTDIR

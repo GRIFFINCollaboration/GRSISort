@@ -11,13 +11,13 @@ class GTree : public TTree {
 public:
    GTree();
    GTree(const char* name, const char* title, Int_t splitlevel = 99);
-   virtual ~GTree();
+   ~GTree() override;
 
 private:
    void InitGTree();
 
    /// \cond CLASSIMP
-   ClassDef(GTree, 1)
+   ClassDefOverride(GTree, 1)
    /// \endcond
 };
 /*! @} */

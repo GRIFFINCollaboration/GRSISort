@@ -26,20 +26,20 @@ public:
    TBgoHit();
    TBgoHit(const TBgoHit&);
    TBgoHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
-   virtual ~TBgoHit();
+   ~TBgoHit() override;
 
 public:
    /////////////////////////		/////////////////////////////////////
-   int GetCrystal() const;
+   int GetCrystal() const override;
 
 private:
 public:
-   virtual void Clear(Option_t* opt = "");       //!<!
-   virtual void Copy(TObject&) const;            //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TBgoHit, 1)
+   ClassDefOverride(TBgoHit, 1)
    /// \endcond
 };
 /*! @} */

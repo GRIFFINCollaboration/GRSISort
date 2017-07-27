@@ -22,11 +22,12 @@
 
 ClassImp(TMnemonic)
 
-   void TMnemonic::Clear(Option_t*)
+void TMnemonic::Clear(Option_t*)
 {
    fArrayPosition = -1;
    fSegment       = -1;
    fSystemString.clear();
+   fSystem = kClear;
    fSubSystemString.clear();
    fSubSystem = kClear;
    fArraySubPositionString.clear();
@@ -115,18 +116,30 @@ void TMnemonic::EnumerateSystem()
 int TMnemonic::EnumerateDigitizer(std::string& name)
 {
    std::transform(name.begin(), name.end(), name.begin(), ::toupper);
-   if(name.compare("GRF16") == 0) return kGRF16;
-   if(name.compare("GRF4G") == 0) return kGRF4G;
-   if(name.compare("TIG10") == 0) return kTIG10;
-   if(name.compare("TIG64") == 0) return kTIG64;
-   if(name.compare("CAEN8") == 0) return kCAEN8;
+   if(name.compare("GRF16") == 0) {
+      return kGRF16;
+   }
+   if(name.compare("GRF4G") == 0) {
+      return kGRF4G;
+   }
+   if(name.compare("TIG10") == 0) {
+      return kTIG10;
+   }
+   if(name.compare("TIG64") == 0) {
+      return kTIG64;
+   }
+   if(name.compare("CAEN8") == 0) {
+      return kCAEN8;
+   }
    return kDefault;
 }
 
 void TMnemonic::Parse(std::string* name)
 {
-   if(!name || name->length() < 9) {
-      if((name->length() < 1) && (name->compare(0, 2, "RF") == 0)) SetRFMNEMONIC(name);
+   if((name == nullptr) || name->length() < 9) {
+      if((name->length() < 1) && (name->compare(0, 2, "RF") == 0)) {
+         SetRFMNEMONIC(name);
+      }
       return;
    }
    std::string buf;
@@ -135,14 +148,14 @@ void TMnemonic::Parse(std::string* name)
    EnumerateMnemonic(fSubSystemString, fSubSystem);
    buf.clear();
    buf.assign(*name, 3, 2);
-   fArrayPosition = (uint16_t)atoi(buf.c_str());
+   fArrayPosition = static_cast<uint16_t>(atoi(buf.c_str()));
    fArraySubPositionString.assign(*name, 5, 1);
    EnumerateMnemonic(fArraySubPositionString, fArraySubPosition);
    fCollectedChargeString.assign(*name, 6, 1);
    EnumerateMnemonic(fCollectedChargeString, fCollectedCharge);
    buf.clear();
    buf.assign(*name, 7, 2);
-   fSegment = (uint16_t)atoi(buf.c_str());
+   fSegment = static_cast<uint16_t>(atoi(buf.c_str()));
    fOutputSensorString.assign(*name, 9, 1);
    EnumerateMnemonic(fOutputSensorString, fOutputSensor);
    // Enumerating the fSystemString must come last as the details of other parts of
@@ -152,7 +165,7 @@ void TMnemonic::Parse(std::string* name)
    if(fSystem == kSiLi) {
       buf.clear();
       buf.assign(*name, 7, 2);
-      fSegment = (uint16_t)strtol(buf.c_str(), nullptr, 16);
+      fSegment = static_cast<uint16_t>(strtol(buf.c_str(), nullptr, 16));
    }
 
    return;
@@ -162,7 +175,6 @@ void TMnemonic::Parse(const char* name)
 {
    std::string sname = name;
    Parse(&sname);
-   return;
 }
 
 void TMnemonic::SetRFMNEMONIC(std::string* name)
@@ -191,12 +203,13 @@ void TMnemonic::Print(Option_t*) const
    printf("fCollectedChargeString   = %s\n", fCollectedChargeString.c_str());
    printf("fOutputSensorString      = %s\n", fOutputSensorString.c_str());
    printf("===============================\n");
-   return;
 }
 
 TClass* TMnemonic::GetClassType() const
 {
-   if(fClassType != nullptr) return fClassType;
+   if(fClassType != nullptr) {
+      return fClassType;
+   }
 
    switch(System()) {
    case TMnemonic::kTigress: fClassType    = TTigress::Class(); break;

@@ -21,22 +21,23 @@
 /////////////////////////////////////////////////////////////////
 
 class TAnalysisOptions : public TObject {
-	friend class TGRSIOptions;
+   friend class TGRSIOptions;
+
 public:
    TAnalysisOptions();
 
-   void Clear(Option_t* opt = "");
-   void Print(Option_t* opt = "") const;
+   void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
 
    bool WriteToFile(TFile* file = nullptr);
-   void ReadFromFile(std::string file);
+   void ReadFromFile(const std::string& file);
 
-	//sorting options
+   // sorting options
    inline void SetBuildWindow(const long int t_bw) { fBuildWindow = t_bw; }
    inline void SetAddbackWindow(const double t_abw) { fAddbackWindow = t_abw; }
 
    inline void SetWaveformFitting(const bool flag) { fWaveformFitting = flag; }
-   inline bool IsWaveformFitting() { return fWaveformFitting; }
+   inline bool                               IsWaveformFitting() { return fWaveformFitting; }
 
    void SetCorrectCrossTalk(const bool flag, Option_t* opt = "");
    inline bool IsCorrectingCrossTalk() { return fIsCorrectingCrossTalk; }
@@ -44,24 +45,26 @@ public:
    inline long int BuildWindow() { return fBuildWindow; }
    inline double   AddbackWindow()
    {
-      if (fAddbackWindow < 1) return 15.0;
+      if(fAddbackWindow < 1) {
+         return 15.0;
+      }
       return fAddbackWindow;
    }
 
    bool StaticWindow() const { return fStaticWindow; }
 
 private:
-	//sorting options
-   long int fBuildWindow;    ///< if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
-   int      fAddbackWindow;  ///< Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default = 150 ns (150))
-   bool     fIsCorrectingCrossTalk; ///< True if we are correcting for cross-talk in GRIFFIN at analysis-level
-   bool fWaveformFitting; ///< If true, waveform fitting with SFU algorithm will be performed
-   bool fStaticWindow;       ///< Flag to use static window (default moving)
+   // sorting options
+   long int
+        fBuildWindow;   ///< if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
+   int  fAddbackWindow; ///< Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default = 150 ns (150))
+   bool fIsCorrectingCrossTalk; ///< True if we are correcting for cross-talk in GRIFFIN at analysis-level
+   bool fWaveformFitting;       ///< If true, waveform fitting with SFU algorithm will be performed
+   bool fStaticWindow;          ///< Flag to use static window (default moving)
 
    /// \cond CLASSIMP
-   ClassDef(TAnalysisOptions, 2); ///< Class for storing options in GRSISort
-	/// \endcond
+   ClassDefOverride(TAnalysisOptions, 2); ///< Class for storing options in GRSISort
+                                          /// \endcond
 };
 /*! @} */
 #endif /* TANALYSISOPTIONS_H */
-

@@ -25,10 +25,10 @@ class TTransition : public TObject {
 
 public:
    TTransition();
-   virtual ~TTransition();
+   ~TTransition() override;
 
-   bool IsSortable() const { return true; }
-   int Compare(const TObject* obj) const;
+   bool IsSortable() const override { return true; }
+   int Compare(const TObject* obj) const override;
    int CompareIntensity(const TObject* obj) const;
 
    void SetEnergy(double& tmpenergy) { fEnergy = tmpenergy; }
@@ -41,19 +41,19 @@ public:
    double GetIntensity() const { return fIntensity; }
    double GetIntensityUncertainty() const { return fIntUncertainty; }
 
-   void Clear(Option_t* opt = "");
-   void Print(Option_t* opt = "") const;
+   void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
 
    std::string PrintToString();
 
 private:
-   double fEnergy;         // Energy of the transition
-   double fEngUncertainty; // Uncertainty in the energy of the transition
-   double fIntensity;      // Intensity of the transition
-   double fIntUncertainty; // Uncertainty in the intensity
+   double fEnergy{0.};         // Energy of the transition
+   double fEngUncertainty{0.}; // Uncertainty in the energy of the transition
+   double fIntensity{0.};      // Intensity of the transition
+   double fIntUncertainty{0.}; // Uncertainty in the intensity
 
    /// \cond CLASSIMP
-   ClassDef(TTransition, 0) // Information about a TNucleus transition
+   ClassDefOverride(TTransition, 0) // Information about a TNucleus transition
    /// \endcond
 };
 /*! @} */

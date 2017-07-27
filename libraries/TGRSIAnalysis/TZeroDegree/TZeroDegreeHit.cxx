@@ -12,9 +12,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TZeroDegreeHit)
-   /// \endcond
+/// \endcond
 
-   TZeroDegreeHit::TZeroDegreeHit()
+TZeroDegreeHit::TZeroDegreeHit()
 {
 // Default Constructor
 #if MAJOR_ROOT_VERSION < 6
@@ -23,19 +23,17 @@ ClassImp(TZeroDegreeHit)
    Clear();
 }
 
-TZeroDegreeHit::~TZeroDegreeHit()
-{
-}
+TZeroDegreeHit::~TZeroDegreeHit() = default;
 
 TZeroDegreeHit::TZeroDegreeHit(const TFragment& frag) : TGRSIDetectorHit(frag)
 {
    if(TGRSIOptions::Get()->ExtractWaves()) {
-      if(frag.GetWaveform()->size() == 0) {
+      if(frag.GetWaveform()->empty()) {
          printf("Warning, TZeroDegree::SetWave() set, but data waveform size is zero!\n");
       } else {
          frag.CopyWave(*this);
       }
-      if(GetWaveform()->size() > 0) {
+      if(!GetWaveform()->empty()) {
          AnalyzeWaveform();
       }
    }
@@ -66,7 +64,9 @@ void TZeroDegreeHit::Copy(TObject& rhs) const
 void TZeroDegreeHit::Copy(TObject& obj, bool waveform) const
 {
    Copy(obj);
-   if(waveform) CopyWave(obj);
+   if(waveform) {
+      CopyWave(obj);
+   }
 }
 
 bool TZeroDegreeHit::InFilter(Int_t)
@@ -93,7 +93,7 @@ Double_t TZeroDegreeHit::GetTime(const UInt_t&, Option_t*) const
 {
    Double_t  dTime = GetTimeStamp() * 10. + GetRemainder() + (GetCfd() + gRandom->Uniform()) / 256.;
    TChannel* chan  = GetChannel();
-   if(!chan) {
+   if(chan == nullptr) {
       Error("GetTime", "No TChannel exists for address 0x%08x", GetAddress());
       return dTime;
    }
@@ -193,7 +193,7 @@ Int_t TZeroDegreeHit::CalculateCfdAndMonitor(double attenuation, unsigned int de
       return INT_MAX; // Error!
    }
 
-   if((unsigned int)fWaveform.size() > delay + 1) {
+   if(static_cast<unsigned int>(fWaveform.size()) > delay + 1) {
 
       if(halfsmoothingwindow > 0) {
          smoothedWaveform = TZeroDegreeHit::CalculateSmoothedWaveform(halfsmoothingwindow);
@@ -214,7 +214,7 @@ Int_t TZeroDegreeHit::CalculateCfdAndMonitor(double attenuation, unsigned int de
             armed      = true;
             monitormax = monitor[i - delay];
          } else {
-            if(armed == true && monitor[i - delay] < 0) {
+            if(armed && monitor[i - delay] < 0) {
                armed = false;
                if(monitor[i - delay - 1] - monitor[i - delay] != 0) {
                   // Linear interpolation.
@@ -250,10 +250,11 @@ std::vector<Short_t> TZeroDegreeHit::CalculateSmoothedWaveform(unsigned int half
       return std::vector<Short_t>(); // Error!
    }
 
-   std::vector<Short_t> smoothedWaveform(std::max((size_t)0, fWaveform.size() - 2 * halfsmoothingwindow), 0);
+   std::vector<Short_t> smoothedWaveform(std::max(static_cast<size_t>(0), fWaveform.size() - 2 * halfsmoothingwindow),
+                                         0);
 
    for(size_t i = halfsmoothingwindow; i < fWaveform.size() - halfsmoothingwindow; ++i) {
-      for(int j = -(int)halfsmoothingwindow; j <= (int)halfsmoothingwindow; ++j) {
+      for(int j = -static_cast<int>(halfsmoothingwindow); j <= static_cast<int>(halfsmoothingwindow); ++j) {
          smoothedWaveform[i - halfsmoothingwindow] += fWaveform[i + j];
       }
    }
@@ -277,7 +278,7 @@ std::vector<Short_t> TZeroDegreeHit::CalculateCfdMonitor(double attenuation, int
       smoothedWaveform = fWaveform;
    }
 
-   std::vector<Short_t> monitor(std::max((size_t)0, smoothedWaveform.size() - delay), 0);
+   std::vector<Short_t> monitor(std::max(static_cast<size_t>(0), smoothedWaveform.size() - delay), 0);
 
    for(size_t i = delay; i < smoothedWaveform.size(); ++i) {
       monitor[i - delay] = attenuation * smoothedWaveform[i] - smoothedWaveform[i - delay];
@@ -295,7 +296,7 @@ std::vector<Int_t> TZeroDegreeHit::CalculatePartialSum()
 
    std::vector<Int_t> partialSums(fWaveform.size(), 0);
 
-   if(fWaveform.size() > 0) {
+   if(!fWaveform.empty()) {
       partialSums[0] = fWaveform.at(0);
       for(size_t i = 1; i < fWaveform.size(); ++i) {
          partialSums[i] = partialSums[i - 1] + fWaveform[i];

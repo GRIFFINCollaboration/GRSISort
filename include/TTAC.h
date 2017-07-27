@@ -27,22 +27,24 @@
 class TTAC : public TGRSIDetector {
 public:
    TTAC();
-   virtual ~TTAC();
+   ~TTAC() override;
    TTAC(const TTAC& rhs);
 
 public:
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
-   void Copy(TObject& rhs) const;
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
+   void Copy(TObject& rhs) const override;
    TTACHit* GetTACHit(const int& i);                           //!<!
-   Short_t GetMultiplicity() const { return fTACHits.size(); } //!<!
+   Short_t GetMultiplicity() const override { return fTACHits.size(); } //!<!
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
 
-   void ClearTransients()
+   void ClearTransients() override
    {
-      for (auto hit : fTACHits) hit.ClearTransients();
+      for(const auto& hit : fTACHits) {
+         hit.ClearTransients();
+      }
    }
 
    TTAC& operator=(const TTAC&); //!<!
@@ -51,12 +53,12 @@ private:
    std::vector<TTACHit> fTACHits; //   The set of TAC hits
 
 public:
-   void Clear(Option_t* opt = "");       //!<!
-   void Print(Option_t* opt = "") const; //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TTAC, 1) // TAC Physics structure
-                     /// \endcond
+   ClassDefOverride(TTAC, 1) // TAC Physics structure
+                             /// \endcond
 };
 /*! @} */
 #endif

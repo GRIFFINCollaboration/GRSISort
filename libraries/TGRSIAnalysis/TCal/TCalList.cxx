@@ -5,17 +5,15 @@
 
 /// \cond CLASSIMP
 ClassImp(TCalList)
-   /// \endcond
+/// \endcond
 
-   TCalList::TCalList()
+TCalList::TCalList()
    : TNamed()
 {
    Clear();
 }
 
-TCalList::~TCalList()
-{
-}
+TCalList::~TCalList() = default;
 
 TCalList::TCalList(const char* name, const char* title) : TNamed(name, title)
 {
@@ -65,9 +63,9 @@ bool TCalList::SetPointIndex(const UInt_t& old_idx, const UInt_t& new_idx)
 void TCalList::Print(Option_t*) const
 {
    int idx = 0;
-   std::cout << GetName() << "   " << GetTitle() << std::endl;
+   std::cout<<GetName()<<"   "<<GetTitle()<<std::endl;
    for(auto it : fCalList) {
-      std::cout << idx++ << "    " << it.first << std::endl;
+      std::cout<<idx++<<"    "<<it.first<<std::endl;
       it.second.Print();
    }
 }
@@ -81,10 +79,12 @@ void TCalList::FillGraph(TGraph* graph) const
 {
    graph->Clear();
    Int_t         i  = 0;
-   TGraphErrors* ge = dynamic_cast<TGraphErrors*>(graph);
+   TGraphErrors* ge = static_cast<TGraphErrors*>(graph);
 
    for(auto it : fCalList) {
       graph->SetPoint(i, it.second.Centroid(), it.second.Area());
-      if(ge) ge->SetPointError(i++, it.second.CentroidErr(), it.second.AreaErr());
+      if(ge != nullptr) {
+         ge->SetPointError(i++, it.second.CentroidErr(), it.second.AreaErr());
+      }
    }
 }

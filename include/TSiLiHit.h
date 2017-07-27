@@ -16,19 +16,16 @@
 
 class TSiLiHit : public TGRSIDetectorHit {
 public:
-	enum ESiLiHitBits { 
-		kUseFitCharge	= BIT(0),
-		kSiLiHitBit1	= BIT(1)
-	};
+   enum ESiLiHitBits { kUseFitCharge = BIT(0), kSiLiHitBit1 = BIT(1) };
 
    TSiLiHit();
    TSiLiHit(const TFragment&);
-   virtual ~TSiLiHit();
+   ~TSiLiHit() override;
    TSiLiHit(const TSiLiHit&);
 
-   void Copy(TObject&, bool = false) const; //!
-   void Clear(Option_t* opt = "");
-   void Print(Option_t* opt = "") const;
+   void Copy(TObject&, bool = false) const override; //!
+   void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
 
    Int_t    GetRing() const;
    Int_t    GetSector() const;
@@ -40,8 +37,8 @@ public:
    Int_t    GetTimeStampLow() { return GetTimeStamp() & 0x0fffffff; }
    Double_t GetTimeFitCfd() const
    {
-      if (fTimeFit != 0 && fTimeFit < 1000 && fTimeFit > -1000) {
-         long ts = GetTimeStamp() << 4 &
+      if(fTimeFit != 0 && fTimeFit < 1000 && fTimeFit > -1000) {
+         long ts = GetTimeStamp()<<4 &
                    0x07ffffff; // bit shift by 4 (x16) then knock off the highest bit which is absent from cfd
          return ts + fTimeFit * 16;
       }
@@ -53,9 +50,9 @@ public:
    void             SetWavefit(const TFragment&);
    static TChannel* GetSiLiHitChannel(int segment);
    static TPulseAnalyzer* FitFrag(const TFragment& frag, int ShapeFit, int segment);
-   static TPulseAnalyzer* FitFrag(const TFragment& frag, int ShapeFit = 0, TChannel* = 0);
+   static TPulseAnalyzer* FitFrag(const TFragment& frag, int ShapeFit = 0, TChannel* = nullptr);
    static int FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit, int segment);
-   static int FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit = 0, TChannel* = 0);
+   static int FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit = 0, TChannel* = nullptr);
    TVector3 GetPosition(Double_t dist, bool = false) const; //!
    TVector3 GetPosition(bool = false) const;                //!
 
@@ -70,12 +67,12 @@ public:
    double GetWaveformEnergy() const { return GetFitEnergy(); }
    double GetFitEnergy() const;
    double GetFitCharge() const { return fFitCharge; }
-   double GetEnergy(Option_t* opt = 0) const;
+   double GetEnergy(Option_t* opt = nullptr) const override;
 
    // Not strictly "doppler" but consistent
-   inline double GetDoppler(double beta, TVector3* vec = 0)
+   inline double GetDoppler(double beta, TVector3* vec = nullptr)
    {
-      if (vec == 0) {
+      if(vec == nullptr) {
          vec = GetBeamDirection();
       }
       TVector3 pos = GetPosition();
@@ -90,36 +87,42 @@ public:
 
    unsigned int GetAddbackSize()
    {
-      if (fAddBackSegments.size() == fAddBackEnergy.size()) return fAddBackEnergy.size();
+      if(fAddBackSegments.size() == fAddBackEnergy.size()) {
+         return fAddBackEnergy.size();
+      }
       return 0;
    }
 
    double GetAddbackEnergy(unsigned int i)
    {
-      if (i < GetAddbackSize()) return fAddBackEnergy[i];
+      if(i < GetAddbackSize()) {
+         return fAddBackEnergy[i];
+      }
       return 0;
    }
    short GetAddbackSegment(unsigned int i)
    {
-      if (i < GetAddbackSize()) return fAddBackSegments[i];
+      if(i < GetAddbackSize()) {
+         return fAddBackSegments[i];
+      }
       return 0;
    }
 
 private:
    Double_t GetDefaultDistance() const { return 0.0; }
 
-   std::vector<short> fAddBackSegments;
-   std::vector<double> fAddBackEnergy; // probably not needed after development finished
+   std::vector<short>      fAddBackSegments;
+   std::vector<double>     fAddBackEnergy; // probably not needed after development finished
    TTransientBits<UChar_t> fSiLiHitBits;
 
-   Double_t fTimeFit;
-   Double_t fSig2Noise;
-   Double_t fSmirnov;
-   Double_t fFitCharge;
-   Double_t fFitBase;
+   Double_t fTimeFit{0.};
+   Double_t fSig2Noise{0.};
+   Double_t fSmirnov{0.};
+   Double_t fFitCharge{0.};
+   Double_t fFitBase{0.};
 
    /// \cond CLASSIMP
-   ClassDef(TSiLiHit, 9);
+   ClassDefOverride(TSiLiHit, 9);
    /// \endcond
 };
 /*! @} */

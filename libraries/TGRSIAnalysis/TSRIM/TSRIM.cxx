@@ -14,18 +14,18 @@
 
 /// \cond CLASSIMP
 ClassImp(TSRIM)
-   /// \endcond
+/// \endcond
 
-   const double TSRIM::dx = 1.0; // um [sets accuracy of energy loss E vs X functions]
+const double TSRIM::dx = 1.0; // um [sets accuracy of energy loss E vs X functions]
 
 TSRIM::TSRIM()
 {
-   fEnergyLoss = 0;
+   fEnergyLoss = nullptr;
 }
 
 TSRIM::TSRIM(const char* infilename, double emax, double emin, bool printfile)
 {
-   fEnergyLoss = 0;
+   fEnergyLoss = nullptr;
    ReadEnergyLossFile(infilename, emax, emin, printfile);
 }
 
@@ -36,12 +36,16 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
    std::ifstream infile;
 
    std::string fname = filename;
-   if(fname.find(".txt") == std::string::npos) fname.append(".txt");
+   if(fname.find(".txt") == std::string::npos) {
+      fname.append(".txt");
+   }
 
    char        buf[256];
    std::string grsipath = getenv("GRSISYS");
    sprintf(buf, "%s/libraries/TGRSIAnalysis/SRIMData/%s", grsipath.c_str(), fname.c_str());
-   if(printfile) printf("\nSearching for %s..\n", buf);
+   if(printfile) {
+      printf("\nSearching for %s..\n", buf);
+   }
 
    infile.open(buf);
    if(!infile.good()) {
@@ -56,48 +60,53 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
    std::vector<double>      number_input, dEdX_temp;
    std::vector<std::string> string_input;
 
-   while(std::getline(infile, line)) {
-      if(!line.length()) continue;
+   while(!std::getline(infile, line).fail() ) {
+      if(line.length() == 0u) {
+         continue;
+      }
       std::stringstream linestream(line);
       number_input.clear();
       string_input.clear();
-      while(linestream >> word) {
+      while(!(linestream >> word).fail()) {
          std::stringstream ss(word);
-         if(ss >> temp) // if it's a number
+         if( !(ss >> temp).fail() ) { // if it's a number
             number_input.push_back(temp);
-         else
+         } else {
             string_input.push_back(ss.str());
+         }
       }
 
       if((string_input[0].compare(0, 3, "keV") == 0) && (string_input[1].compare(0, 1, "/") == 0) &&
          (string_input[2].compare(0, 6, "micron") == 0)) {
          density_scale = number_input[0];
-         //			cout << "dEdX will be scaled by " << density_scale << " so that stopping power is in keV/um \n";
-      } else if(number_input.size() != 6)
+         //			cout<<"dEdX will be scaled by "<<density_scale<<" so that stopping power is in keV/um \n";
+      } else if(number_input.size() != 6) {
          continue;
+      }
 
-      if(string_input[0].compare(0, 3, "eV") == 0 && string_input[1].compare(0, 1, "/") != 0)
+      if(string_input[0].compare(0, 3, "eV") == 0 && string_input[1].compare(0, 1, "/") != 0) {
          IonEnergy.push_back(number_input[0] * 1e-3); // convert eV to keV.
-      else if(string_input[0].compare(0, 3, "keV") == 0 && string_input[1].compare(0, 1, "/") != 0)
+      } else if(string_input[0].compare(0, 3, "keV") == 0 && string_input[1].compare(0, 1, "/") != 0) {
          IonEnergy.push_back(number_input[0]); // already in keV.
-      else if(string_input[0].compare(0, 3, "MeV") == 0 && string_input[1].compare(0, 1, "/") != 0)
+      } else if(string_input[0].compare(0, 3, "MeV") == 0 && string_input[1].compare(0, 1, "/") != 0) {
          IonEnergy.push_back(number_input[0] * 1e3); // convert MeV to keV.
-      else if(string_input[0].compare(0, 3, "GeV") == 0 && string_input[1].compare(0, 1, "/") != 0)
+      } else if(string_input[0].compare(0, 3, "GeV") == 0 && string_input[1].compare(0, 1, "/") != 0) {
          IonEnergy.push_back(number_input[0] * 1e6); // convert GeV to keV.
-      else
+      } else {
          continue;
+      }
 
       dEdX_temp.push_back((number_input[1] + number_input[2]));
    }
 
-   if(dEdX_temp.size() > 0) {
+   if(!dEdX_temp.empty()) {
       if(density_scale == 0.) {
          printf("WARNING: stopping power remains in original units, unable to find scale factor.\n");
          density_scale = 1.;
       }
 
-      for(size_t i = 0; i < dEdX_temp.size(); i++) {
-         dEdX.push_back(dEdX_temp[i] * density_scale);
+      for(double i : dEdX_temp) {
+         dEdX.push_back(i * density_scale);
       }
 
       fEnergyLoss = new TGraph(IonEnergy.size(), &IonEnergy[0], &dEdX[0]);
@@ -108,15 +117,15 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
       double dataEmax = TMath::MaxElement(IonEnergy.size(), &IonEnergy[0]);
       double dataEmin = TMath::MinElement(IonEnergy.size(), &IonEnergy[0]);
 
-      if(emax == -1.0)
+      if(emax == -1.0) {
          emax = dataEmax; // default to highest available energy in data table
-      else if(emax > dataEmax || emax < dataEmin) {
+      } else if(emax > dataEmax || emax < dataEmin) {
          printf("\n{TSRIM} WARNING: specified emax is out of range. Setting emax to default value (%.02f)\n", dataEmax);
          emax = dataEmax; // default to highest available energy in data table
       }
-      if(emin == 0.0)
+      if(emin == 0.0) {
          emin = dataEmin; // default to lowest available energy in data table
-      else if(emin < dataEmin || emin > dataEmax) {
+      } else if(emin < dataEmin || emin > dataEmax) {
          printf("\n{TSRIM} WARNING: specified emin is out of range. Setting emin to default value (%.02f)\n", dataEmin);
          emin = dataEmin; // default to lowest available energy in data table
       }
@@ -199,8 +208,9 @@ double TSRIM::GetEnergy(double energy, double dist)
              "\t\tenergy = %.03f keV \txbegin = %.02f um\t dist = %.02f um\t xend = %.02f um\n" DYELLOW
              "\t\tErange = [%.03f , %.03f] keV \t\t Xrange = [0 , %.1f] um\n" RESET_COLOR,
              energy, xbegin, dist, xbegin + dist, Emin, Emax, Xmax);
-   } else if(xbegin > Xmax || xbegin + dist > Xmax)
+   } else if(xbegin > Xmax || xbegin + dist > Xmax) {
       return 0.0;
+   }
 
    return sXgetE->Eval(xbegin + dist);
 }
@@ -208,7 +218,7 @@ double TSRIM::GetEnergy(double energy, double dist)
 // THIS FUNCTION DOES A MORE ACCURATE ENERGY LOSS CALCULATION BASED ON SMALL EXTRAPOLATIONS
 double TSRIM::GetAdjustedEnergy(double energy, double thickness, double stepsize)
 {
-   if(fEnergyLoss == 0) {
+   if(fEnergyLoss == nullptr) {
       printf("energy loss file has not yet been read in.\n");
       return 0.0;
    }
@@ -227,7 +237,9 @@ double TSRIM::GetAdjustedEnergy(double energy, double thickness, double stepsize
          energy_temp -=
             xstep * sEnergyLoss->Eval(energy_temp); // update energy recursively so that it decreases each step
          xtot += xstep;
-         if(energy_temp <= 0.0) return 0.0; // if no energy is remaining then final energy is zero
+         if(energy_temp <= 0.0) {
+            return 0.0; // if no energy is remaining then final energy is zero
+         }
       }
    }
 

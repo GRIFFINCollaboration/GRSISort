@@ -29,7 +29,7 @@ public:
    enum EDataType { kMidas, kLst };
 
    static TUnpackingLoop* Get(std::string name = "");
-   virtual ~TUnpackingLoop();
+   ~TUnpackingLoop() override;
 
    void SetNoWaveForms(bool temp = true) { fParser.SetNoWaveForms(temp); }
    void SetRecordDiag(bool temp = true) { fParser.SetRecordDiag(temp); }
@@ -40,7 +40,7 @@ public:
    {
       return fParser.AddGoodOutputQueue(maxSize);
    }
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& BadOutputQueue()
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>& BadOutputQueue()
    {
       return fParser.BadOutputQueue();
    }
@@ -50,16 +50,16 @@ public:
    }
 #endif
 
-   bool Iteration();
+   bool Iteration() override;
 
-   virtual void ClearQueue();
+   void ClearQueue() override;
 
-   size_t GetItemsPushed() { return fParser.ItemsPushed(); }
-   size_t GetItemsPopped() { return 0; }  // fParser.GoodOutputQueue()->ItemsPopped(); }
-   size_t GetItemsCurrent() { return 0; } // fParser.GoodOutputQueue()->Size();        }
-   size_t GetRate() { return 0; }
+   size_t GetItemsPushed() override { return fParser.ItemsPushed(); }
+   size_t GetItemsPopped() override { return 0; }  // fParser.GoodOutputQueue()->ItemsPopped(); }
+   size_t GetItemsCurrent() override { return 0; } // fParser.GoodOutputQueue()->Size();        }
+   size_t GetRate() override { return 0; }
 
-   std::string EndStatus();
+   std::string EndStatus() override;
 
 private:
 #ifndef __CINT__
@@ -77,7 +77,7 @@ private:
    TUnpackingLoop(const TUnpackingLoop& other);
    TUnpackingLoop& operator=(const TUnpackingLoop& other);
 
-   // ClassDef(TUnpackingLoop, 0);
+   // ClassDefOverride(TUnpackingLoop, 0);
 };
 
 /*! @} */

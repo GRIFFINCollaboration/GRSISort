@@ -23,9 +23,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TGriffin)
-   /// \endcond
+/// \endcond
 
-   bool DefaultAddback(TGriffinHit& one, TGriffinHit& two)
+bool DefaultAddback(TGriffinHit& one, TGriffinHit& two)
 {
    return ((one.GetDetector() == two.GetDetector()) &&
            (std::fabs(one.GetTime() - two.GetTime()) < TGRSIOptions::AnalysisOptions()->AddbackWindow()));
@@ -106,15 +106,6 @@ TVector3 TGriffin::gCloverPosition[17] = {
 
 std::map<int, TSpline*> TGriffin::fEnergyResiduals;
 
-// Cross Talk stuff
-/*const Double_t TGriffin::gStrongCT[2] = { -0.02674, -0.000977 }; //This is for the 0-1 and 2-3 combination
-const Double_t TGriffin::gWeakCT[2]   = { 0.005663, - 0.00028014};
-const Double_t TGriffin::gCrossTalkPar[2][4][4] = {
-   { {0.0, gStrongCT[0], gWeakCT[0], gWeakCT[0]}, {gStrongCT[0], 0.0, gWeakCT[0], gWeakCT[0]}, {gWeakCT[0], gWeakCT[0],
-0.0, gStrongCT[0]}, {gWeakCT[0], gWeakCT[0], gStrongCT[0], 0.0}},
-   { {0.0, gStrongCT[1], gWeakCT[1], gWeakCT[1]}, {gStrongCT[1], 0.0, gWeakCT[1], gWeakCT[1]}, {gWeakCT[1], gWeakCT[1],
-0.0, gStrongCT[1]}, {gWeakCT[1], gWeakCT[1], gStrongCT[1], 0.0}}};*/
-
 TGriffin::TGriffin() : TGRSIDetector()
 {
 // Default ctor. Ignores TObjectStreamer in ROOT < 6
@@ -157,9 +148,7 @@ TGriffin::~TGriffin()
 void TGriffin::Clear(Option_t* opt)
 {
    // Clears the mother, and all of the hits
-   //  if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
    ClearStatus();
-   //  }
    TGRSIDetector::Clear(opt);
    fGriffinLowGainHits.clear();
    fGriffinHighGainHits.clear();
@@ -168,12 +157,11 @@ void TGriffin::Clear(Option_t* opt)
    fAddbackLowGainFrags.clear();
    fAddbackHighGainFrags.clear();
    fCycleStart = 0;
-   // fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
 }
 
 void TGriffin::LoadEnergyResidual(int chan, TSpline* residual)
 {
-   std::cout << "Adding: " << chan << std::endl;
+   std::cout<<"Adding: "<<chan<<std::endl;
    fEnergyResiduals[chan] = residual;
 }
 
@@ -183,33 +171,34 @@ Double_t TGriffin::GetEnergyNonlinearity(int chan, double energy)
    counter++;
    if(fEnergyResiduals.find(chan) != fEnergyResiduals.end()) {
       return fEnergyResiduals[chan]->Eval(energy);
-   } else {
-      return 0.0;
    }
+   return 0.0;
 }
 
 void TGriffin::Print(Option_t*) const
 {
-   std::cout << "Griffin Contains: " << std::endl;
-   std::cout << std::setw(6) << GetLowGainMultiplicity() << " Low gain hits" << std::endl;
-   std::cout << std::setw(6) << GetHighGainMultiplicity() << " High gain hits" << std::endl;
+   std::cout<<"Griffin Contains: "<<std::endl;
+   std::cout<<std::setw(6)<<GetLowGainMultiplicity()<<" Low gain hits"<<std::endl;
+   std::cout<<std::setw(6)<<GetHighGainMultiplicity()<<" High gain hits"<<std::endl;
 
-   if(IsAddbackSet(kLowGain))
-      std::cout << std::setw(6) << fAddbackLowGainHits.size() << " Low gain addback hits" << std::endl;
-   else
-      std::cout << std::setw(6) << " "
-                << " Low Gain Addback not set" << std::endl;
+   if(IsAddbackSet(kLowGain)) {
+      std::cout<<std::setw(6)<<fAddbackLowGainHits.size()<<" Low gain addback hits"<<std::endl;
+   } else {
+      std::cout<<std::setw(6)<<" "
+               <<" Low Gain Addback not set"<<std::endl;
+   }
 
-   if(IsAddbackSet(kHighGain))
-      std::cout << std::setw(6) << fAddbackHighGainHits.size() << " High gain addback hits" << std::endl;
-   else
-      std::cout << std::setw(6) << " "
-                << " High Gain Addback not set" << std::endl;
+   if(IsAddbackSet(kHighGain)) {
+      std::cout<<std::setw(6)<<fAddbackHighGainHits.size()<<" High gain addback hits"<<std::endl;
+   } else {
+      std::cout<<std::setw(6)<<" "
+               <<" High Gain Addback not set"<<std::endl;
+   }
 
-   std::cout << std::setw(6) << " "
-             << " Cross-talk Set?  Low gain: " << IsCrossTalkSet(kLowGain)
-             << "   High gain: " << IsCrossTalkSet(kHighGain) << std::endl;
-   std::cout << std::setw(6) << fCycleStart << " cycle start" << std::endl;
+   std::cout<<std::setw(6)<<" "
+            <<" Cross-talk Set?  Low gain: "<<IsCrossTalkSet(kLowGain)
+            <<"   High gain: "<<IsCrossTalkSet(kHighGain)<<std::endl;
+   std::cout<<std::setw(6)<<fCycleStart<<" cycle start"<<std::endl;
 }
 
 TGriffin& TGriffin::operator=(const TGriffin& rhs)
@@ -223,7 +212,7 @@ void TGriffin::SetDefaultGainType(const Int_t& gain_type)
    if((gain_type == kLowGain) || (gain_type == kHighGain)) {
       fDefaultGainType = gain_type;
    } else {
-      std::cout << gain_type << " is not a known gain type. Please use kLowGain or kHighGain" << std::endl;
+      std::cout<<gain_type<<" is not a known gain type. Please use kLowGain or kHighGain"<<std::endl;
    }
 }
 
@@ -320,8 +309,10 @@ TGriffinHit* TGriffin::GetGriffinHit(const int& i, const Int_t& gain_type)
       }
       return &(GetHitVector(gain_type)->at(i));
    } catch(const std::out_of_range& oor) {
-      std::cerr << ClassName() << " Hits are out of range: " << oor.what() << std::endl;
-      if(!gInterpreter) throw grsi::exit_exception(1);
+      std::cerr<<ClassName()<<" Hits are out of range: "<<oor.what()<<std::endl;
+      if(!gInterpreter) {
+         throw grsi::exit_exception(1);
+      }
    }
    return nullptr;
 }
@@ -347,7 +338,7 @@ Int_t TGriffin::GetAddbackMultiplicity(const Int_t& gain_type)
    auto hit_vec  = GetHitVector(gain_type);
    auto ab_vec   = GetAddbackVector(gain_type);
    auto frag_vec = GetAddbackFragVector(gain_type);
-   if(hit_vec->size() == 0) {
+   if(hit_vec->empty()) {
       return 0;
    }
    // if the addback has been reset, clear the addback hits
@@ -355,7 +346,7 @@ Int_t TGriffin::GetAddbackMultiplicity(const Int_t& gain_type)
       ab_vec->clear();
       frag_vec->clear();
    }
-   if(ab_vec->size() == 0) {
+   if(ab_vec->empty()) {
       // use the first griffin hit as starting point for the addback hits
       ab_vec->push_back(hit_vec->at(0));
       frag_vec->push_back(1);
@@ -398,14 +389,13 @@ TGriffinHit* TGriffin::GetAddbackHit(const int& i, const Int_t& gain_type)
 {
    if(i < GetAddbackMultiplicity(gain_type)) {
       return &GetAddbackVector(gain_type)->at(i);
-   } else {
-      std::cerr << "Addback hits are out of range" << std::endl;
-      throw grsi::exit_exception(1);
-      return nullptr;
    }
+   std::cerr<<"Addback hits are out of range"<<std::endl;
+   throw grsi::exit_exception(1);
+   return nullptr;
 }
 
-void TGriffin::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
+void TGriffin::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
 {
    // Builds the GRIFFIN Hits directly from the TFragment. Basically, loops through the hits for an event and sets
    // observables.
@@ -433,7 +423,9 @@ TVector3 TGriffin::GetPosition(int DetNbr, int CryNbr, double dist)
 {
    // Gets the position vector for a crystal specified by CryNbr within Clover DetNbr at a distance of dist mm away.
    // This is calculated to the most likely interaction point within the crystal.
-   if(DetNbr > 16) return TVector3(0, 0, 1);
+   if(DetNbr > 16) {
+      return TVector3(0, 0, 1);
+   }
 
    TVector3 temp_pos(gCloverPosition[DetNbr]);
 
@@ -496,10 +488,10 @@ UShort_t TGriffin::GetNAddbackFrags(const size_t& idx, const Int_t& gain_type)
 {
    // Get the number of addback "fragments" contributing to the total addback hit
    // with index idx.
-   if(idx < GetAddbackFragVector(gain_type)->size())
+   if(idx < GetAddbackFragVector(gain_type)->size()) {
       return GetAddbackFragVector(gain_type)->at(idx);
-   else
-      return 0;
+   }
+   return 0;
 }
 
 void TGriffin::SetBitNumber(enum EGriffinBits bit, Bool_t set) const
@@ -515,15 +507,17 @@ void TGriffin::SetBitNumber(enum EGriffinBits bit, Bool_t set) const
 Double_t TGriffin::CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, const TGriffinHit* const other_hit,
                                      Bool_t time_constraint)
 {
-   if(!hit_to_correct || !other_hit) {
+   if((hit_to_correct == nullptr) || (other_hit == nullptr)) {
       printf("One of the hits is invalid in TGriffin::CTCorrectedEnergy\n");
       return 0;
    }
 
    if(time_constraint) {
       // Figure out if this passes the selected window
-      if(TMath::Abs(other_hit->GetTime() - hit_to_correct->GetTime()) > TGRSIOptions::AnalysisOptions()->AddbackWindow()) // placeholder
+      if(TMath::Abs(other_hit->GetTime() - hit_to_correct->GetTime()) >
+         TGRSIOptions::AnalysisOptions()->AddbackWindow()) { // placeholder
          return hit_to_correct->GetEnergy();
+      }
    }
 
    if(hit_to_correct->GetDetector() != other_hit->GetDetector()) {
@@ -539,8 +533,8 @@ Double_t TGriffin::CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, co
                       other_hit->GetCrystal()]) {
          been_warned[16 * hit_to_correct->GetDetector() + 4 * hit_to_correct->GetCrystal() + other_hit->GetCrystal()] =
             true;
-         std::cout << DRED << "Missing CT correction for Det: " << hit_to_correct->GetDetector()
-                   << " Crystals: " << hit_to_correct->GetCrystal() << " " << other_hit->GetCrystal() << std::endl;
+         std::cout<<DRED<<"Missing CT correction for Det: "<<hit_to_correct->GetDetector()
+                  <<" Crystals: "<<hit_to_correct->GetCrystal()<<" "<<other_hit->GetCrystal()<<std::endl;
       }
       return hit_to_correct->GetEnergy();
    }
@@ -568,7 +562,9 @@ void TGriffin::FixCrossTalk(const Int_t& gain_type)
       SetCrossTalk(gain_type, true);
       return;
    }
-   for(size_t i = 0; i < hit_vec->size(); ++i) hit_vec->at(i).ClearEnergy();
+   for(auto& i : *hit_vec) {
+      i.ClearEnergy();
+   }
 
    if(TGRSIOptions::AnalysisOptions()->IsCorrectingCrossTalk()) {
       size_t i, j;

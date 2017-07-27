@@ -28,24 +28,29 @@ class TDescant : public TGRSIDetector {
 public:
    TDescant();
    TDescant(const TDescant&);
-   virtual ~TDescant();
+   ~TDescant() override;
 
 public:
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
-   TDescantHit* GetDescantHit(const Int_t& idx = 0);
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
+   TDescantHit* GetDescantHit(const Int_t& i = 0);
 
-   Short_t GetMultiplicity() const { return fDescantHits.size(); } //!<!
+   Short_t GetMultiplicity() const override { return fDescantHits.size(); } //!<!
 
    static TVector3 GetPosition(int DetNbr, double dist = 222); //!<!
 
 #ifndef __CINT__
-   void              AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
-   TGRSIDetectorHit* CreateHit(std::shared_ptr<const TFragment> frag, TChannel*) { return new TDescantHit(*frag); }
+   void              AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
+   TGRSIDetectorHit* CreateHit(const std::shared_ptr<const TFragment>& frag, TChannel*)
+   {
+      return new TDescantHit(*frag);
+   }
 #endif
 
-   void ClearTransients()
+   void ClearTransients() override
    {
-      for (auto hit : fDescantHits) hit.ClearTransients();
+      for(const auto& hit : fDescantHits) {
+         hit.ClearTransients();
+      }
    }
 
    TDescant& operator=(const TDescant&); //
@@ -53,7 +58,7 @@ public:
 private:
    std::vector<TDescantHit> fDescantHits; ///<  The set of crystal hits
    static bool              fSetWave;     ///<  Flag for Waveforms ON/OFF
-   bool                     fHitFlag;     ///<   Is there a Descant hit?
+   bool                     fHitFlag;   ///<   Is there a Descant hit?
 
 public:
    static bool SetWave() { return fSetWave; }         //!<!
@@ -64,13 +69,13 @@ private:
    static TVector3 gPosition[71];         //!<!
    static TVector3 gAncillaryPosition[9]; //!<!
 public:
-   void Copy(TObject&) const;            //!<!
-   void Clear(Option_t* opt = "");       //!<!
-   void Print(Option_t* opt = "") const; //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TDescant, 1) // Descant Physics structure
-                         /// \endcond
+   ClassDefOverride(TDescant, 1) // Descant Physics structure
+                                 /// \endcond
 };
 /*! @} */
 #endif

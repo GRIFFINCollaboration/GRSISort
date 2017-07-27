@@ -19,7 +19,7 @@
 #ifdef __APPLE__
 #include <_types/_uint32_t.h>
 #else
-#include <stdint.h>
+#include <cstdint>
 #endif
 
 #include "TRawFile.h"
@@ -34,43 +34,45 @@ public:
 
    TMidasFile(); ///< default constructor
    TMidasFile(const char* filename, EOpenType open_type = kRead);
-   virtual ~TMidasFile(); ///< destructor
+   ~TMidasFile() override; ///< destructor
 
-   bool Open(const char* filename);    ///< Open input file
-   bool OutOpen(const char* filename); ///< Open output file
+   bool Open(const char* filename) override; ///< Open input file
+   bool OutOpen(const char* filename);       ///< Open output file
 
-   void Close();    ///< Close input file
-   void OutClose(); ///< Close output file
+   void Close() override; ///< Close input file
+   void OutClose();       ///< Close output file
 
    using TObject::Read;
    using TObject::Write;
 #ifndef __CINT__
-   int Read(std::shared_ptr<TRawEvent> event);                         ///< Read one event from the file
-   bool Write(std::shared_ptr<TMidasEvent> event, Option_t* opt = ""); ///< Write one event to the output file
+   int Read(std::shared_ptr<TRawEvent> event) override; ///< Read one event from the file
+   bool Write(const std::shared_ptr<TMidasEvent>& midasEvent,
+              Option_t*                           opt = ""); ///< Write one event to the output file
 #endif
-   std::string Status(bool long_file_description = true);
+   std::string Status(bool long_file_description = true) override;
 
 #ifndef __CINT__
-   void FillBuffer(std::shared_ptr<TMidasEvent> event, Option_t* opt = ""); // Fill buffer to write out chunks of data
+   void FillBuffer(const std::shared_ptr<TMidasEvent>& midasEvent,
+                   Option_t*                           opt = ""); // Fill buffer to write out chunks of data
 #endif
    bool WriteBuffer();
    // int GetBufferSize() const { return fWriteBuffer.size(); }
 
-   const char* GetFilename() const { return fFilename.c_str(); }   ///< Get the name of this file
-   int         GetLastErrno() const { return fLastErrno; }         ///< Get error value for the last file error
-   const char* GetLastError() const { return fLastError.c_str(); } ///< Get error text for the last file error
+   const char* GetFilename() const override { return fFilename.c_str(); } ///< Get the name of this file
+   int         GetLastErrno() const { return fLastErrno; }                ///< Get error value for the last file error
+   const char* GetLastError() const { return fLastError.c_str(); }        ///< Get error text for the last file error
 
 #ifndef __CINT__
    std::shared_ptr<TMidasEvent> GetFirstEvent() { return fFirstEvent; }
 #endif
 
-   int GetRunNumber();
-   int GetSubRunNumber();
+   int GetRunNumber() override;
+   int GetSubRunNumber() override;
 
    void SetMaxBufferSize(int maxsize);
 
 #ifndef __CINT__
-   std::shared_ptr<TRawEvent> NewEvent() { return std::make_shared<TMidasEvent>(); }
+   std::shared_ptr<TRawEvent> NewEvent() override { return std::make_shared<TMidasEvent>(); }
 #endif
 
 protected:
@@ -100,7 +102,7 @@ protected:
    void* fOutGzFile; ///< zlib compressed output file reader
 
    /// \cond CLASSIMP
-   ClassDef(TMidasFile, 0) // Used to open and write Midas Files
+   ClassDefOverride(TMidasFile, 0) // Used to open and write Midas Files
    /// \endcond
 };
 /*! @} */

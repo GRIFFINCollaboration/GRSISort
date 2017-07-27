@@ -15,9 +15,9 @@
 class TDataParserException : public std::exception {
 public:
    TDataParserException(TDataParser::EDataParserState state, int failedWord, bool multipleErrors);
-   ~TDataParserException();
+   ~TDataParserException() override;
 
-   const char* what() const noexcept;
+   const char* what() const noexcept override;
 
    int                           GetFailedWord() { return fFailedWord; }
    TDataParser::EDataParserState GetParserState() { return fParserState; }

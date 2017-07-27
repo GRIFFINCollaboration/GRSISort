@@ -36,13 +36,13 @@ class TBGSubtraction : public TGMainFrame {
       kBGHighEntry,
       kWrite2FileNameEntry,
       kHistogramDescriptionEntry,
-		kComboAxisEntry,
-		kBGCheckButton
+      kComboAxisEntry,
+      kBGCheckButton
    };
 
    //  RQ_OBJECT("TBGSubtraction")
 private:
-   TGMainFrame*         fMain;
+   TGMainFrame*         fMain{nullptr};
    TRootEmbeddedCanvas* fProjectionCanvas;
    TRootEmbeddedCanvas* fGateCanvas;
    TH2*                 fMatrix;
@@ -53,37 +53,37 @@ private:
    TGDoubleHSlider*     fGateSlider;
    TGDoubleHSlider*     fBGSlider;
    TGNumberEntry*       fBGParamEntry;
-   TGNumberEntry*       fBGEntryLow;
-   TGNumberEntry*       fBGEntryHigh;
-   TGNumberEntry*       fGateEntryLow;
-   TGNumberEntry*       fGateEntryHigh;
-   TGLabel*             fBGParamLabel;
-	TGCheckButton*			fBGCheckButton;
+   TGNumberEntry*       fBGEntryLow{nullptr};
+   TGNumberEntry*       fBGEntryHigh{nullptr};
+   TGNumberEntry*       fGateEntryLow{nullptr};
+   TGNumberEntry*       fGateEntryHigh{nullptr};
+   TGLabel*             fBGParamLabel{nullptr};
+   TGCheckButton*       fBGCheckButton;
 
    TGLayoutHints* fBly;
    TGLayoutHints* fBly1;
-   TGLayoutHints* fLayoutCanvases;
-   TGLayoutHints* fLayoutParam;
+   TGLayoutHints* fLayoutCanvases{nullptr};
+   TGLayoutHints* fLayoutParam{nullptr};
 
-   TGTextEntry* fWrite2FileName;
-   TGTextEntry* fHistogramDescription;
+   TGTextEntry* fWrite2FileName{nullptr};
+   TGTextEntry* fHistogramDescription{nullptr};
    //      TGTextButton         *fDrawCanvasButton;
-   TGTextButton* fWrite2FileButton;
+   TGTextButton* fWrite2FileButton{nullptr};
 
    // Status Bars
-   TGStatusBar* fProjectionStatus;
+   TGStatusBar* fProjectionStatus{nullptr};
 
    // Frames
    TGVerticalFrame*   fGateFrame;
    TGVerticalFrame*   fProjectionFrame;
-   TGHorizontalFrame* fBGParamFrame;
-   TGHorizontalFrame* fGateEntryFrame;
-   TGHorizontalFrame* fBGEntryFrame;
-   TGHorizontalFrame* fDescriptionFrame;
-   TGHorizontalFrame* fButtonFrame;
+   TGHorizontalFrame* fBGParamFrame{nullptr};
+   TGHorizontalFrame* fGateEntryFrame{nullptr};
+   TGHorizontalFrame* fBGEntryFrame{nullptr};
+   TGHorizontalFrame* fDescriptionFrame{nullptr};
+   TGHorizontalFrame* fButtonFrame{nullptr};
 
-	//Combo box
-	TGComboBox * fAxisCombo;
+   // Combo box
+   TGComboBox* fAxisCombo;
 
    // Markers
    GMarker* fLowGateMarker;
@@ -93,16 +93,16 @@ private:
 
    TFile* fCurrentFile;
 
-	Int_t fGateAxis;
+   Int_t fGateAxis;
 
-	Bool_t fForceUpdate;
+   Bool_t fForceUpdate;
 
 public:
-   TBGSubtraction(TH2* mat, const char * gate_axis = "x");
-   virtual ~TBGSubtraction();
+   TBGSubtraction(TH2* mat, const char* gate_axis = "x");
+   ~TBGSubtraction() override;
    void AxisComboSelected();
    void ClickedBGButton();
-	void DoDraw();
+   void DoDraw();
    void DoFit();
    void DoSlider(Int_t pos = 0);
    void DoEntry(Long_t);
@@ -119,7 +119,7 @@ private:
    void StatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected);
 
    /// \cond CLASSIMP
-   ClassDef(TBGSubtraction, 6); // Background subtractor GUI
+   ClassDefOverride(TBGSubtraction, 6); // Background subtractor GUI
    /// \endcond
 };
 /*! @} */

@@ -20,12 +20,12 @@
 class TSharc : public TGRSIDetector {
 public:
    TSharc();
-   virtual ~TSharc();
+   ~TSharc() override;
    TSharc(const TSharc& rhs);
 
 public:
    TSharcHit* GetSharcHit(const int& i);
-   TGRSIDetectorHit* GetHit(const int& i);
+   TGRSIDetectorHit* GetHit(const int& idx) override;
    static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X = 0.00, double Y = 0.00,
                                double Z = 0.00); //!<!
    static double   GetXOffset() { return fXoffset; }
@@ -40,22 +40,24 @@ public:
    }
 
    int     GetSize() const { return fSharcHits.size(); } //!<!
-   Short_t GetMultiplicity() const { return fSharcHits.size(); }
+   Short_t GetMultiplicity() const override { return fSharcHits.size(); }
 
-   virtual void Copy(TObject&) const;        //!<!
-   virtual void Clear(Option_t* = "");       //!<!
-   virtual void Print(Option_t* = "") const; //!<!
+   void Copy(TObject&) const override;        //!<!
+   void Clear(Option_t* = "") override;       //!<!
+   void Print(Option_t* = "") const override; //!<!
 
    TSharc& operator=(const TSharc& rhs)
    {
-      if (this != &rhs) rhs.Copy(*this);
+      if(this != &rhs) {
+         rhs.Copy(*this);
+      }
       return *this;
    } //!<!
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
-   void BuildHits();
+   void BuildHits() override;
 
 private:
    std::vector<TSharcHit> fSharcHits;
@@ -122,7 +124,7 @@ private:
    static double fSegmentPitch; //! angular pitch, degrees
 
    /// \cond CLASSIMP
-   ClassDef(TSharc, 7)
+   ClassDefOverride(TSharc, 7)
    /// \endcond
 };
 /*! @} */

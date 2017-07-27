@@ -4,9 +4,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TPacesHit)
-   /// \endcond
+/// \endcond
 
-   TPacesHit::TPacesHit()
+TPacesHit::TPacesHit()
    : TGRSIDetectorHit()
 {
 #if MAJOR_ROOT_VERSION < 6
@@ -24,15 +24,12 @@ TPacesHit::TPacesHit(const TPacesHit& rhs) : TGRSIDetectorHit()
    rhs.Copy(*this);
 }
 
-TPacesHit::~TPacesHit()
-{
-}
+TPacesHit::~TPacesHit() = default;
 
 void TPacesHit::Copy(TObject& rhs) const
 {
    TGRSIDetectorHit::Copy(rhs);
    static_cast<TPacesHit&>(rhs).fFilter = fFilter;
-   return;
 }
 
 bool TPacesHit::InFilter(Int_t)
