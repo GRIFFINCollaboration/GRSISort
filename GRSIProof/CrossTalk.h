@@ -46,7 +46,7 @@ class CrossTalk : public TGRSISelector {
 void CrossTalk::InitializeBranches(TTree* tree) {
    if (!tree) return;
    tree->SetBranchAddress("TGriffin", &fGrif);
-   tree->SetBranchAddress("TSceptar", &fScep);
+  // tree->SetBranchAddress("TSceptar", &fScep);
 }
 
 #endif // #ifdef CrossTalk_cxx
