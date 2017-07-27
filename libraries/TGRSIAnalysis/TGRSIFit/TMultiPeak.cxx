@@ -4,6 +4,8 @@
 #include "Math/Factory.h"
 #include "Math/Functor.h"
 
+#include <algorithm>
+
 /// \cond CLASSIMP
 ClassImp(TMultiPeak)
 /// \endcond
@@ -11,12 +13,11 @@ ClassImp(TMultiPeak)
 Bool_t TMultiPeak::fLogLikelihoodFlag = false;
 
 TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t>& centroids, Option_t*)
-   : TGRSIFit("multipeakbg", MultiPhotoPeakBG, xlow, xhigh, centroids.size() * 6 + 5)
+   : TGRSIFit("multipeakbg",this, &TMultiPeak::MultiPhotoPeakBG, xlow, xhigh, centroids.size() * 6 + 5,"TMultiPeak","MultiPhotoPeakBG")
 {
    Clear();
    // We make the background first so we can send it to the TPeaks.
-   fBackground = new TF1(Form("MPbackground_%d_to_%d", static_cast<Int_t>(xlow), static_cast<Int_t>(xhigh)),
-                         MultiStepBG, xlow, xhigh, centroids.size() * 6 + 5);
+   fBackground = new TF1(Form("MPbackground_%d_to_%d", static_cast<Int_t>(xlow), static_cast<Int_t>(xhigh)),this,&TMultiPeak::MultiStepBG, xlow, xhigh, centroids.size() * 6 + 5,"TMuliPeak","MultiStepBG");
    fBackground->SetNpx(1000);
    fBackground->SetLineStyle(2);
    fBackground->SetLineColor(kBlack);
@@ -47,11 +48,11 @@ TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t
    InitNames();
 }
 
-TMultiPeak::TMultiPeak() : TGRSIFit("multipeakbg", MultiPhotoPeakBG, 0, 1000, 10)
+TMultiPeak::TMultiPeak() : TGRSIFit("multipeakbg", this, &TMultiPeak::MultiPhotoPeakBG, 0, 1000, 10, "TMultiPeak","MultiPhotoPeakBG")
 {
    // I don't think this constructor should be used, RD.
    InitNames();
-   fBackground = new TF1("background", MultiStepBG, 1000, 10); // This is a weird nonsense line.
+   fBackground = new TF1("background",this, &TMultiPeak::MultiStepBG, 1000, 10,10,"TMultiPeak","MultiStepBG"); // This is a weird nonsense line.
    fBackground->SetNpx(1000);
    fBackground->SetLineStyle(2);
    fBackground->SetLineColor(kBlack);
@@ -209,6 +210,29 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
 
    TFitResultPtr fitres;
    // Log likelihood is the proper fitting technique UNLESS the data is a result of an addition or subtraction.
+   if(GetLogLikelihoodFlag()) {
+      fitres = fithist->Fit(this, Form("%sLRSQ", opt)); // The RS needs to always be there
+   } else {
+      fitres = fithist->Fit(this, Form("%sRSQ", opt)); // The RS needs to always be there
+   }
+
+   std::vector<Double_t> sigma_list;
+   for(int i = 0; i<static_cast<int>(GetParameter(0)+0.5); ++i){
+      //Get Median sigma
+      sigma_list.push_back(GetParameter(6*i + 7));
+   }
+   std::sort(sigma_list.begin(), sigma_list.end(), std::greater<Double_t>() );
+   Double_t median = sigma_list.at(static_cast<int>(sigma_list.size()/2.));
+   
+   Double_t range_low,range_high;
+   for(int i = 0; i<static_cast<int>(GetParameter(0)+0.5); ++i){
+      GetParLimits(6*i+7,range_low,range_high);
+      if(range_low != range_high){
+         SetParLimits(6 *i + 7,median*.95,median*1.05);
+      }
+   }
+
+   //Refit
    if(GetLogLikelihoodFlag()) {
       fitres = fithist->Fit(this, Form("%sLRS", opt)); // The RS needs to always be there
    } else {
@@ -384,11 +408,14 @@ Double_t TMultiPeak::MultiPhotoPeakBG(Double_t* dim, Double_t* par)
    // General background.
    int    npeaks = static_cast<int>(par[0] + 0.5);
    double result = TGRSIFunctions::PolyBg(dim, &par[1], 2); // polynomial background. uses par[1->4]
-   for(int i = 0; i < npeaks; i++) {                        // par[0] is number of peaks
+   for(int i = 0; i < npeaks; ++i) {                        // par[0] is number of peaks
       Double_t tmp_par[6];
       tmp_par[0] = par[6 * i + 5];  // height of photopeak
       tmp_par[1] = par[6 * i + 6];  // Peak Centroid of non skew gaus
       tmp_par[2] = par[6 * i + 7];  // standard deviation  of gaussian
+      //This is where I link up the widths of the gaussians if they are within 5 keV. 
+   //  for(int j = 0; j < npeaks; ++j){
+      //}
       tmp_par[3] = par[6 * i + 8];  //"skewedness" of the skewed gaussian
       tmp_par[4] = par[6 * i + 9];  // relative height of skewed gaussian
       tmp_par[5] = par[6 * i + 10]; // Size of step in background
@@ -463,7 +490,7 @@ TPeak* TMultiPeak::GetPeakClosestTo(Double_t energy)
    return GetPeak(closest_idx);
 }
 
-void TMultiPeak::DrawPeaks() const
+void TMultiPeak::DrawPeaks()
 {
    // Draws the individual TPeaks that make up the TMultiPeak. ROOT makes this a complicated process. The result on the
    // histogram might have memory issues.
@@ -476,8 +503,8 @@ void TMultiPeak::DrawPeaks() const
       Double_t centroid = peak->GetCentroid();
       Double_t range    = 2. * peak->GetFWHM();
 
-      auto* sum = new TF1(Form("tmp%s", peak->GetName()), SinglePeakBG, centroid - range, centroid + range,
-                          fPeakVec.size() * 6 + 11);
+      auto* sum = new TF1(Form("tmp%s", peak->GetName()), this, &TMultiPeak::SinglePeakBG, centroid - range, centroid + range,
+                         fPeakVec.size() * 6 + 11, "TMultiPeak","SinglePeakBG");
 
       for(int j = 0; j < GetNpar(); ++j) {
          sum->SetParameter(j, GetParameter(j));

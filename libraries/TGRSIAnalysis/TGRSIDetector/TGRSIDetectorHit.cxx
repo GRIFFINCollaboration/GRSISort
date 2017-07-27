@@ -105,15 +105,15 @@ double TGRSIDetectorHit::GetEnergy(Option_t*) const
       // Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
       return SetEnergy(static_cast<Double_t>(Charge()));
    }
+   if(channel->UseCalFileIntegration()) {
+      double energy = channel->CalibrateENG(Charge(), 0);
+      return SetEnergy(energy +
+                       GetEnergyNonlinearity(energy)); // this will use the integration value
+                                                       // in the TChannel if it exists.
+   }
    if(fKValue > 0) {
       double energy = channel->CalibrateENG(Charge(), static_cast<int>(fKValue));
       return SetEnergy(energy + GetEnergyNonlinearity(energy));
-   }
-   if(channel->UseCalFileIntegration()) {
-      double energy = channel->CalibrateENG(Charge(), 0);
-      return SetEnergy(channel->CalibrateENG(energy) +
-                       GetEnergyNonlinearity(energy)); // this will use the integration value
-                                                       // in the TChannel if it exists.
    }
    double energy = channel->CalibrateENG(Charge());
    return SetEnergy(energy + GetEnergyNonlinearity(energy));
