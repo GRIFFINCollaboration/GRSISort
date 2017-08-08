@@ -790,9 +790,7 @@ std::string TChannel::PrintToString(Option_t*)
       }
       buffer.append("\n");
    }
-   if(fUseCalFileInt) {
-      buffer.append(Form("FileInt: %d\n", static_cast<int>(fUseCalFileInt)));
-   }
+   buffer.append(Form("FileInt: %d\n", static_cast<int>(fUseCalFileInt)));
    if(UseWaveParam()) {
       buffer.append(Form("RiseTime: %f\n", WaveFormShape.TauRise));
       buffer.append(Form("DecayTime: %f\n", WaveFormShape.TauDecay));

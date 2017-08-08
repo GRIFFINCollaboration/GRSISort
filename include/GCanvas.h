@@ -44,6 +44,16 @@ public:
       }
    }
 
+   void SetStyle(Style_t style)
+   {
+      if(linex) {
+         linex->SetLineStyle(style);
+      }
+      if(liney) {
+         liney->SetLineStyle(style);
+      }
+   }
+
    // Pixel space
    int x{0};
 	int y{0};

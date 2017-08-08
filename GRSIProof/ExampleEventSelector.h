@@ -22,20 +22,24 @@
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-class ExampleEventSelector : public TGRSISelector {
+class ExampleEventSelector : public TGRSISelector { //Must be same name as .C and .h
 
-public:
-   TGriffin* fGrif;
-   TSceptar* fScep;
+<<<<<<< HEAD
+ public :
+   TGriffin * fGrif; //Pointers to spot that events will be
+   TSceptar * fScep;
 
-   ExampleEventSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(0), fScep(0) { SetOutputPrefix("ExampleEvent"); }
-   virtual ~ExampleEventSelector() {}
-   virtual Int_t Version() const { return 2; }
-   void          CreateHistograms();
-   void          FillHistograms();
-   void InitializeBranches(TTree* tree);
+   ExampleEventSelector(TTree * /*tree*/ =0) : TGRSISelector(), fGrif(0), fScep(0) {
+      SetOutputPrefix("ExampleEvent"); //Changes prefix of output file
+   }
+	//These functions are expected to exist
+   virtual ~ExampleEventSelector() { }
+   virtual Int_t   Version() const { return 2; }
+   void CreateHistograms();
+   void FillHistograms();
+   void InitializeBranches(TTree *tree);
 
-   ClassDef(ExampleEventSelector, 2);
+   ClassDef(ExampleEventSelector,2); //Makes ROOT happier
 };
 
 #endif

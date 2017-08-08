@@ -87,6 +87,7 @@ GCanvas::GCanvas(const char* name, Int_t ww, Int_t wh, Int_t winid) : TCanvas(na
    // this constructor is used to create an embedded canvas
    // I see no reason for us to support this here.  pcb.
    GCanvasInit();
+   fGuiEnabled = true;
 }
 
 GCanvas::GCanvas(const char* name, const char* title, Int_t wtopx, Int_t wtopy, Int_t ww, Int_t wh, bool gui)
