@@ -2,7 +2,6 @@
 // The class definition in ExampleEventSelector.h has been generated automatically
 #include "ExampleEventSelector.h"
 
-<<<<<<< HEAD
 void ExampleEventSelector::CreateHistograms() {
 	//Define Histograms
    fH1["gE"] 	= new TH1D("gE","#gamma Singles",12000,0,3000);
@@ -35,11 +34,11 @@ bool PromptCoincidence(TGriffinHit *g1, TGriffinHit *g2){
 void ExampleEventSelector::FillHistograms() {
 	//Loop over all Griffin Hits
    for(auto i = 0; i < fGrif->GetMultiplicity(); ++i){
-      fH1["gE"]->Fill(fGrif->GetGriffinHit(i)->GetEnergy());
+      fH1.at("gE")->Fill(fGrif->GetGriffinHit(i)->GetEnergy());
 		//Loop over all sceptar hits
 		for(auto j = 0; j < fScep->GetMultiplicity(); ++j){
 			if(PromptCoincidence(fGrif->GetGriffinHit(i),fScep->GetSceptarHit(j))){
-         	fH1["gE_b"]->Fill(fGrif->GetGriffinHit(i)->GetEnergy());
+         	fH1.at("gE_b")->Fill(fGrif->GetGriffinHit(i)->GetEnergy());
 			}
 		}
    }
