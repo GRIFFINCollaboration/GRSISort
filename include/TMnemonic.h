@@ -86,7 +86,9 @@ public:
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
 
-   ClassDefOverride(TMnemonic, 1);
+   /// \cond CLASSIMP
+   ClassDefOverride(TMnemonic, 1)
+   /// \endcond
 };
 
 #endif
