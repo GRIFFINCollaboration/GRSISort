@@ -77,8 +77,8 @@ private:
    TXMLOdb* fOdb;
 #endif
 
-   void SetFileOdb(char* data, int size);
-   void SetRunInfo();
+   void SetFileOdb(uint32_t time, char* data, int size);
+   void SetRunInfo(uint32_t time);
    void SetEPICSOdb();
    void SetTIGOdb();
    void SetGRIFFOdb();

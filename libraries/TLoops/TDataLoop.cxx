@@ -4,6 +4,7 @@
 #include <thread>
 #include <utility>
 #include <cstdio>
+#include <sstream>
 
 #include "TGRSIOptions.h"
 #include "TString.h"
@@ -21,7 +22,7 @@ TDataLoop::TDataLoop(std::string name, TRawFile* source)
 {
    TMidasFile* midasFile = dynamic_cast<TMidasFile*>(source);
    if(midasFile != nullptr) {
-      SetFileOdb(midasFile->GetFirstEvent()->GetData(), midasFile->GetFirstEvent()->GetDataSize());
+      SetFileOdb(midasFile->GetFirstEvent()->GetTimeStamp(), midasFile->GetFirstEvent()->GetData(), midasFile->GetFirstEvent()->GetDataSize());
    }
    for(const auto& cal_filename : TGRSIOptions::Get()->CalInputFiles()) {
       TChannel::ReadCalFile(cal_filename.c_str());
@@ -45,7 +46,7 @@ TDataLoop* TDataLoop::Get(std::string name, TRawFile* source)
    return loop;
 }
 
-void TDataLoop::SetFileOdb(char* data, int size)
+void TDataLoop::SetFileOdb(uint32_t time, char* data, int size)
 {
 #ifdef HAS_XML
    // check if we have already set the TChannels....
@@ -87,31 +88,37 @@ void TDataLoop::SetFileOdb(char* data, int size)
       SetGRIFFOdb();
    }
 
-   SetRunInfo();
+   SetRunInfo(time);
 
    // Check for EPICS variables
    SetEPICSOdb();
 #endif
 }
 
-void TDataLoop::SetRunInfo()
+void TDataLoop::SetRunInfo(uint32_t time)
 {
 #ifdef HAS_XML
-   TGRSIRunInfo* run_info = TGRSIRunInfo::Get();
-   TXMLNode*     node     = fOdb->FindPath("/Runinfo/Start time binary");
+   TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
+   TXMLNode*     node    = fOdb->FindPath("/Runinfo/Start time binary");
    if(node != nullptr) {
-      run_info->SetRunStart(atof(node->GetText()));
+		std::stringstream str(node->GetText());
+		unsigned int odbTime;
+		str>>odbTime;
+		if(runInfo->SubRunNumber() == 0 && time != odbTime) {
+			std::cout<<"Warning, ODB start time of first subrun ("<<odbTime<<") does not match midas time of first event in this subrun ("<<time<<")!"<<std::endl;
+		}
+      runInfo->SetRunStart(time);
    }
 
    node = fOdb->FindPath("/Experiment/Run parameters/Run Title");
    if(node != nullptr) {
-      run_info->SetRunTitle(node->GetText());
+      runInfo->SetRunTitle(node->GetText());
       std::cout<<DBLUE<<"Title: "<<node->GetText()<<RESET_COLOR<<std::endl;
    }
 
    if(node != nullptr) {
       node = fOdb->FindPath("/Experiment/Run parameters/Comment");
-      run_info->SetRunComment(node->GetText());
+      runInfo->SetRunComment(node->GetText());
       std::cout<<DBLUE<<"Comment: "<<node->GetText()<<RESET_COLOR<<std::endl;
    }
 #endif
