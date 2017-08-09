@@ -16,71 +16,94 @@
 
 #include <string>
 
-#ifdef __APPLE__ 
-	#include <_types/_uint32_t.h> 
-#else 
-	#include <stdint.h> 
+#ifdef __APPLE__
+#include <_types/_uint32_t.h>
+#else
+#include <cstdint>
 #endif
 
-#include "TObject.h"
+#include "TRawFile.h"
 
-class TMidasEvent;
+#include "TMidasEvent.h"
 
 /// Reader for MIDAS .mid files
 
-class TMidasFile : public TObject {
+class TMidasFile : public TRawFile {
 public:
-  TMidasFile(); ///< default constructor
-  virtual ~TMidasFile(); ///< destructor
+   enum EOpenType { kRead, kWrite };
 
-  bool Open(const char* filename); ///< Open input file
-  bool OutOpen(const char* filename); ///< Open output file
+   TMidasFile(); ///< default constructor
+   TMidasFile(const char* filename, EOpenType open_type = kRead);
+   ~TMidasFile() override; ///< destructor
 
-  void Close(); ///< Close input file
-  void OutClose(); ///< Close output file
+   bool Open(const char* filename) override; ///< Open input file
+   bool OutOpen(const char* filename);       ///< Open output file
 
-  using TObject::Read;
-  using TObject::Write;
-  int  Read(TMidasEvent* event); ///< Read one event from the file
-  bool Write(TMidasEvent* event,Option_t* opt =""); ///< Write one event to the output file
+   void Close() override; ///< Close input file
+   void OutClose();       ///< Close output file
 
-  void FillBuffer(TMidasEvent* event, Option_t* opt=""); //Fill buffer to write out chunks of data
-  bool WriteBuffer();
-  //int GetBufferSize() const { return fWriteBuffer.size(); }
+   using TObject::Read;
+   using TObject::Write;
+#ifndef __CINT__
+   int Read(std::shared_ptr<TRawEvent> event) override; ///< Read one event from the file
+   bool Write(const std::shared_ptr<TMidasEvent>& midasEvent,
+              Option_t*                           opt = ""); ///< Write one event to the output file
+#endif
+   std::string Status(bool long_file_description = true) override;
 
-  const char* GetFilename()  const { return fFilename.c_str();  } ///< Get the name of this file
-  int         GetLastErrno() const { return fLastErrno; }         ///< Get error value for the last file error
-  const char* GetLastError() const { return fLastError.c_str(); } ///< Get error text for the last file error
+#ifndef __CINT__
+   void FillBuffer(const std::shared_ptr<TMidasEvent>& midasEvent,
+                   Option_t*                           opt = ""); // Fill buffer to write out chunks of data
+#endif
+   bool WriteBuffer();
+   // int GetBufferSize() const { return fWriteBuffer.size(); }
 
-  int	GetRunNumber();
-  int	GetSubRunNumber();
+   const char* GetFilename() const override { return fFilename.c_str(); } ///< Get the name of this file
+   int         GetLastErrno() const { return fLastErrno; }                ///< Get error value for the last file error
+   const char* GetLastError() const { return fLastError.c_str(); }        ///< Get error text for the last file error
 
-  void SetMaxBufferSize(int maxsize);
+#ifndef __CINT__
+   std::shared_ptr<TMidasEvent> GetFirstEvent() { return fFirstEvent; }
+#endif
+
+   int GetRunNumber() override;
+   int GetSubRunNumber() override;
+
+   void SetMaxBufferSize(int maxsize);
+
+#ifndef __CINT__
+   std::shared_ptr<TRawEvent> NewEvent() override { return std::make_shared<TMidasEvent>(); }
+#endif
 
 protected:
+   void ReadMoreBytes(size_t bytes);
 
-  std::string fFilename; ///< name of the currently open file
-  std::string fOutFilename; ///< name of the currently open file
+#ifndef __CINT__
+   std::shared_ptr<TMidasEvent> fFirstEvent;
+#endif
 
-  std::vector<char> fWriteBuffer;
-  uint32_t fCurrentBufferSize;
-  uint32_t fMaxBufferSize;
+   std::string fOutFilename; ///< name of the currently open file
 
-  int         fLastErrno; ///< errno from the last operation
-  std::string fLastError; ///< error string from last errno
+   std::vector<char> fWriteBuffer;
+   uint32_t          fCurrentBufferSize;
+   uint32_t          fMaxBufferSize;
+
+   int         fLastErrno; ///< errno from the last operation
+   std::string fLastError; ///< error string from last errno
 protected:
+   int currentEventNumber;
 
-  bool fDoByteSwap; ///< "true" if file has to be byteswapped
+   bool fDoByteSwap; ///< "true" if file has to be byteswapped
 
-  int         fFile; ///< open input file descriptor
-  void*       fGzFile; ///< zlib compressed input file reader
-  void*       fPoFile; ///< popen() input file reader
-  int         fOutFile; ///< open output file descriptor
-  void*       fOutGzFile; ///< zlib compressed output file reader
+   int   fFile;      ///< open input file descriptor
+   void* fGzFile;    ///< zlib compressed input file reader
+   void* fPoFile;    ///< popen() input file reader
+   int   fOutFile;   ///< open output file descriptor
+   void* fOutGzFile; ///< zlib compressed output file reader
 
-/// \cond CLASSIMP
-	ClassDef(TMidasFile,0) //Used to open and write Midas Files
-/// \endcond
+   /// \cond CLASSIMP
+   ClassDefOverride(TMidasFile, 0) // Used to open and write Midas Files
+   /// \endcond
 };
 /*! @} */
 #endif // TMidasFile.h

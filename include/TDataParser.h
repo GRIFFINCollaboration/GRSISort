@@ -20,81 +20,187 @@
 
 #include "Globals.h"
 #include <ctime>
+#include <sstream>
 #include <vector>
 #include <map>
+#include <limits>
+
+#ifndef __CINT__
+#include <memory>
+#endif
+
+//#include <enum_string.h>
 
 #include "TChannel.h"
 #include "TFragment.h"
 #include "TPPG.h"
 #include "TScaler.h"
+#include "TFragmentMap.h"
+#include "ThreadsafeQueue.h"
+#include "TEpicsFrag.h"
+#include "TGRSIOptions.h"
 
 class TDataParser {
-  private:
-    static TDataParser* fDataParser;  ///< A pointer to the global DataParser Class
-    static bool fNoWaveforms;         ///< The flag to turn wave_forms on or off
-    static bool fRecordDiag;         ///< The flag to turn on diagnostics recording
-	 static TChannel* gChannel;
-    TDataParser();
-	
-  public:
-    ~TDataParser();
-    static TDataParser* instance();    //returns the global TDataParser Object
-    static void SetNoWaveForms(bool temp = true) { fNoWaveforms = temp; }
-    static void SetRecordDiag(bool temp = true) { fRecordDiag = temp; }
+public:
+   TDataParser();
+   ~TDataParser();
+   void SetNoWaveForms(bool temp = true) { fNoWaveforms = temp; }
+   void SetRecordDiag(bool temp = true) { fRecordDiag = temp; }
 
-  private:
-    static const unsigned long fMaxTriggerId; ///< The last trigger ID Called
-    static unsigned long fLastMidasId;        ///< The last MIDAS ID in the midas file
-    static unsigned long fLastTriggerId;      ///< The last Trigged ID in the MIDAS File
-    static unsigned long fLastNetworkPacket;  ///< The last network packet recieved.
+   // ENUM(EBank, char, kWFDN,kGRF1,kGRF2,kGRF3,kFME0,kFME1,kFME2,kFME3);
+   enum EBank { kWFDN = 0, kGRF1 = 1, kGRF2 = 2, kGRF3 = 3, kGRF4 = 4, kFME0 = 5, kFME1 = 6, kFME2 = 7, kFME3 = 8 };
 
-    static std::map<int,int> fFragmentIdMap;
+   enum EDataParserState {
+      kGood,
+      kBadHeader,
+      kMissingWords,
+      kBadScalerLowTS,
+      kBadScalerValue,
+      kBadScalerHighTS,
+      kBadScalerType,
+      kBadTriggerId,
+      kBadLowTS,
+      kBadHighTS,
+      kSecondHeader,
+      kWrongNofWords,
+      kNotSingleCfd,
+      kSizeMismatch,
+      kBadFooter,
+      kFault,
+      kMissingPsd,
+      kMissingCfd,
+      kMissingCharge,
+      kBadBank,
+      kBadModuleType,
+      kEndOfData,
+      kUndefined
+   };
 
-  public:
-    static int TigressDataToFragment(uint32_t *data, int size,unsigned int midasSerialNumber = 0, time_t midasTime = 0);
-    static int GriffinDataToFragment(uint32_t *data, int size, int bank, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
-    static int GriffinDataToPPGEvent(uint32_t *data, int size, int bank, unsigned int midasSerialNumber=0, time_t midasTime=0); 
-	 static int GriffinDataToScalerEvent(uint32_t *data, int address);
-   
-    static int EPIXToScalar(float *data,int size,unsigned int midasSerialNumber = 0,time_t midasTime = 0);
-    static int SCLRToScalar(uint32_t *data,int size,unsigned int midasSerialNumber = 0,time_t midasTime = 0);
-	 static int EightPIDataToFragment(uint32_t stream,uint32_t* data,
-                                     int size,unsigned int midasSerialNumber = 0, time_t midasTime = 0);
-    static int FifoToFragment(unsigned short *data,int size,bool zerobuffer=false,
-                              unsigned int midasSerialNumber=0, time_t midasTime=0); 
+#ifndef __CINT__
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& AddGoodOutputQueue(size_t maxSize = 50000)
+   {
+      std::stringstream name;
+      name<<"good_frag_queue_"<<fGoodOutputQueues.size();
+      fGoodOutputQueues.push_back(
+         std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>(name.str(), maxSize));
+      return fGoodOutputQueues.back();
+   }
 
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>& BadOutputQueue() { return fBadOutputQueue; }
 
-  private:
-    static void SetTIGWave(uint32_t, TFragment*);
-    static void SetTIGAddress(uint32_t, TFragment*);
-    static void SetTIGCfd(uint32_t, TFragment*);
-    static void SetTIGCharge(uint32_t, TFragment*);
-    static void SetTIGLed(uint32_t, TFragment*);
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>& ScalerOutputQueue() { return fScalerOutputQueue; }
+#endif
+   void   ClearQueue();
+   size_t ItemsPushed()
+   {
+      if(fGoodOutputQueues.size() > 0) {
+         return fGoodOutputQueues.back()->ItemsPushed();
+      }
+      return std::numeric_limits<std::size_t>::max();
+   }
+   void        SetFinished();
+   std::string OutputQueueStatus();
 
-    static bool SetTIGTriggerID(uint32_t, TFragment*);
-    static bool SetTIGTimeStamp(uint32_t*, TFragment*);
+#ifndef __CINT__
+   void SetStatusVariables(std::atomic_size_t* itemsPopped, std::atomic_long* inputSize)
+   {
+      fItemsPopped = itemsPopped;
+      fInputSize   = inputSize;
+   }
+#endif
+private:
+#ifndef __CINT__
+   std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>> fGoodOutputQueues;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>           fBadOutputQueue;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>                   fScalerOutputQueue;
+#endif
 
-    static bool SetGRIFHeader(uint32_t,TFragment*,int);
-    static bool SetGRIFMasterFilterId(uint32_t,TFragment*);
-    static bool SetGRIFMasterFilterPattern(uint32_t,TFragment*,int);
-    static bool SetGRIFChannelTriggerId(uint32_t,TFragment*);  
-    static bool SetGRIFTimeStampLow(uint32_t,TFragment*);
-    static bool SetGRIFNetworkPacket(uint32_t,TFragment*);
-    static bool SetGRIFCc(uint32_t, TFragment*);
-    static bool SetGRIFPsd(uint32_t, TFragment*);
+   bool      fNoWaveforms; ///< The flag to turn wave_forms on or off
+   bool      fRecordDiag;  ///< The flag to turn on diagnostics recording
+   TChannel* gChannel;
 
-    static bool SetGRIFWaveForm(uint32_t,TFragment*);
-    static bool SetGRIFDeadTime(uint32_t,TFragment*);
+   const unsigned long fMaxTriggerId;      ///< The last trigger ID Called
+   unsigned long       fLastMidasId;       ///< The last MIDAS ID in the midas file
+   unsigned long       fLastTriggerId;     ///< The last Trigged ID in the MIDAS File
+   unsigned long       fLastNetworkPacket; ///< The last network packet recieved.
 
-    static bool SetNewPPGPattern(uint32_t,TPPGData*);
-    static bool SetOldPPGPattern(uint32_t,TPPGData*);
-    static bool SetPPGNetworkPacket(uint32_t,TPPGData*);
-    static bool SetPPGLowTimeStamp(uint32_t,TPPGData*);
-    static bool SetPPGHighTimeStamp(uint32_t,TPPGData*);
-	 static bool SetScalerNetworkPacket(uint32_t, TScalerData*);
-	 static bool SetScalerLowTimeStamp(uint32_t, TScalerData*);
-	 static bool SetScalerHighTimeStamp(uint32_t, TScalerData*, int&);
-	 static bool SetScalerValue(int, uint32_t, TScalerData*);
+   std::map<int, int> fFragmentIdMap;
+   bool fFragmentHasWaveform;
+
+   TFragmentMap fFragmentMap;              ///< Class that holds a map of fragments per address, takes care of calculating charges for GRF4 banks
+
+   EDataParserState fState;
+   std::map<UInt_t, Long64_t> fLastTimeStampMap;
+
+	static TGRSIOptions* fOptions; ///< Static pointer to TGRSIOptions, gets set on the first call of GriffinDataToFragment
+
+#ifndef __CINT__
+   std::atomic_size_t* fItemsPopped;
+   std::atomic_long*   fInputSize;
+#endif
+
+public:
+#ifndef __CINT__
+   void Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& queues,
+             const std::shared_ptr<TFragment>&                                                frag);
+   void Push(ThreadsafeQueue<std::shared_ptr<const TBadFragment>>& queue, const std::shared_ptr<TBadFragment>& frag);
+#endif
+
+   int TigressDataToFragment(uint32_t* data, int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
+   int GriffinDataToFragment(uint32_t* data, int size, EBank bank, unsigned int midasSerialNumber = 0,
+                             time_t midasTime = 0);
+   int GriffinDataToPPGEvent(uint32_t* data, int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
+   int GriffinDataToScalerEvent(uint32_t* data, int address);
+
+   int EPIXToScalar(float* data, int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
+   int SCLRToScalar(uint32_t* data, int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
+   int EightPIDataToFragment(uint32_t stream, uint32_t* data, int size, unsigned int midasSerialNumber = 0,
+                             time_t midasTime = 0);
+   int FifoToFragment(unsigned short* data, int size, bool zerobuffer = false, unsigned int midasSerialNumber = 0,
+                      time_t midasTime = 0);
+   int FippsToFragment(std::vector<char> data);
+
+private:
+// utility
+#ifndef __CINT__
+   void DeleteAll(std::vector<std::shared_ptr<const TFragment>>*);
+   void GRIFNormalizeFrags(std::vector<std::shared_ptr<const TFragment>>* Frags);
+#endif
+
+private:
+#ifndef __CINT__
+   void SetTIGWave(uint32_t, const std::shared_ptr<TFragment>&);
+   void SetTIGAddress(uint32_t, const std::shared_ptr<TFragment>&);
+   void SetTIGCfd(uint32_t, const std::shared_ptr<TFragment>&);
+   void SetTIGCharge(uint32_t, const std::shared_ptr<TFragment>&);
+   void SetTIGLed(uint32_t, const std::shared_ptr<TFragment>&);
+
+   bool SetTIGTriggerID(uint32_t, const std::shared_ptr<TFragment>&);
+   bool SetTIGTimeStamp(uint32_t*, const std::shared_ptr<TFragment>&);
+
+   bool SetGRIFHeader(uint32_t, const std::shared_ptr<TFragment>&, EBank);
+   bool SetGRIFMasterFilterPattern(uint32_t, const std::shared_ptr<TFragment>&, EBank);
+   bool SetGRIFMasterFilterId(uint32_t, const std::shared_ptr<TFragment>&);
+   bool SetGRIFChannelTriggerId(uint32_t, const std::shared_ptr<TFragment>&);
+   bool SetGRIFTimeStampLow(uint32_t, const std::shared_ptr<TFragment>&);
+   bool SetGRIFNetworkPacket(uint32_t, const std::shared_ptr<TFragment>&);
+
+   bool SetGRIFPsd(uint32_t, const std::shared_ptr<TFragment>&);
+   bool SetGRIFCc(uint32_t, const std::shared_ptr<TFragment>&);
+
+   bool SetGRIFWaveForm(uint32_t, const std::shared_ptr<TFragment>&);
+   bool SetGRIFDeadTime(uint32_t, const std::shared_ptr<TFragment>&);
+#endif
+
+   bool SetNewPPGPattern(uint32_t, TPPGData*);
+   bool SetOldPPGPattern(uint32_t, TPPGData*);
+   bool SetPPGNetworkPacket(uint32_t, TPPGData*);
+   bool SetPPGLowTimeStamp(uint32_t, TPPGData*);
+   bool SetPPGHighTimeStamp(uint32_t, TPPGData*);
+   bool SetScalerNetworkPacket(uint32_t, TScalerData*);
+   bool SetScalerLowTimeStamp(uint32_t, TScalerData*);
+   bool SetScalerHighTimeStamp(uint32_t, TScalerData*, int&);
+   bool SetScalerValue(int, uint32_t, TScalerData*);
 };
 /*! @} */
 #endif

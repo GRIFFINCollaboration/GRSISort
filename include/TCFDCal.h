@@ -8,33 +8,33 @@
 #include "TCal.h"
 
 class TCFDCal : public TCal {
- public: 
-   TCFDCal(){};
-   TCFDCal(const char* name, const char* title) : TCal(name,title) {};
-   virtual ~TCFDCal() {}; 
+public:
+   TCFDCal() {};
+   TCFDCal(const char* name, const char* title) : TCal(name, title) {};
+   ~TCFDCal() override = default;
 
-	//pure virtual functions  
-   virtual Bool_t IsGroupable() const {return false;}
+   // pure virtual functions
+   Bool_t IsGroupable() const override { return false; }
 
- public:
-   virtual void WriteToChannel() const;
-   virtual void ReadFromChannel();
-   virtual std::vector<Double_t> GetParameters() const;
-   virtual Double_t GetParameter(size_t parameter) const ;
+public:
+   void                  WriteToChannel() const override;
+   virtual void          ReadFromChannel();
+   std::vector<Double_t> GetParameters() const override;
+   Double_t GetParameter(size_t parameter) const override;
 
    void AddParameter(Double_t param);
    void SetParameters(std::vector<Double_t> paramvec);
    void SetParameter(Int_t idx, Double_t param);
 
-   virtual void Print(Option_t *opt = "") const;
-   virtual void Clear(Option_t *opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
- private:
+private:
    std::vector<Double_t> fParameters;
 
-/// \cond CLASSIMP
-   ClassDef(TCFDCal,1);
-/// \endcond
+   /// \cond CLASSIMP
+   ClassDefOverride(TCFDCal, 1);
+   /// \endcond
 };
 /*! @} */
 #endif

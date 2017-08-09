@@ -1,4 +1,4 @@
-//TCal.h TCalManager.h TCFDCal.h TEfficiencyCal.h TEnergyCal.h TGainMatch.h TTimeCal.h 
+//TCal.h TCalManager.h TCFDCal.h TEfficiencyCal.h TEnergyCal.h TGainMatch.h TTimeCal.h TCalPoint.h TCalList.h TSourceList.h TCalGraph.h TEfficiencyGraph.h TEfficiencyCalibration.h
 
 #ifdef __CINT__
 
@@ -14,6 +14,14 @@
 #pragma link C++ class TEnergyCal+;
 #pragma link C++ class TTimeCal+;
 #pragma link C++ class TEfficiencyCal+;
+#pragma link C++ class TCalPoint+;
+#pragma link C++ class TCalList+;
+#pragma link C++ class TSourceList+;
+
+#pragma link C++ class TCalGraph+;
+#pragma link C++ class TEfficiencyGraph+;
+
+#pragma link C++ class TEfficiencyCalibration+;
 
 #endif
 

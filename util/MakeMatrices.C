@@ -130,8 +130,8 @@ std::vector<std::pair<double,int> > AngleCombinations(double distance = 110., bo
    return result;
 }
    
-TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 100, int nofBins = 4000, double low = 0., double high = 4000., long maxEntries = 0, TStopwatch* w = NULL) {
-   if(w == NULL) {
+TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 100, int nofBins = 4000, double low = 0., double high = 4000., long maxEntries = 0, TStopwatch* w = nullptr) {
+   if(w == nullptr) {
       w = new TStopwatch;
       w->Start();
    }
@@ -816,11 +816,11 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
 
 
       if(entry%25000 == 0) {
-         std::cout << "\t" << entry << " / " << entries << " = "<< (float)entry/entries*100.0 << "%. " << w->RealTime() << " seconds" << "\r" << std::flush;
+         std::cout<<"\t"<<entry<<" / "<<entries<<" = "<< (float)entry/entries*100.0<<"%. "<<w->RealTime()<<" seconds"<<"\r"<<std::flush;
          w->Continue();
       }
    }
-   std::cout << "\t" << entry << " / " << entries << " = "<< (float)entry/entries*100.0 << "%. " << w->RealTime() << " seconds" << std::endl;
+   std::cout<<"\t"<<entry<<" / "<<entries<<" = "<< (float)entry/entries*100.0<<"%. "<<w->RealTime()<<" seconds"<<std::endl;
    w->Continue();
 
    //create all background corrected matrices
@@ -931,7 +931,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
 #endif
 
    list->Sort();
-   std::cout << "creating histograms done after " << w->RealTime() << " seconds" << std::endl;
+   std::cout<<"creating histograms done after "<<w->RealTime()<<" seconds"<<std::endl;
    w->Continue();
    return list;
 }
@@ -961,7 +961,7 @@ int main(int argc, char **argv) {
    }
 
    TFile* file = new TFile(argv[1]);
-   if(file == NULL) {
+   if(file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
    }
@@ -972,12 +972,12 @@ int main(int argc, char **argv) {
 
    TTree* tree = (TTree*) file->Get("AnalysisTree");
 
-   if(tree == NULL) {
+   if(tree == nullptr) {
       printf("Failed to find analysis tree in file '%s'!\n",argv[1]);
       return 1;
    }
    
-   std::cout << argv[0] << ": starting MakeMatrices after " << w.RealTime() << " seconds" << std::endl;
+   std::cout<<argv[0]<<": starting MakeMatrices after "<<w.RealTime()<<" seconds"<<std::endl;
    w.Continue();
 
    //coinc window = 0-20, bg window 40-60, 6000 bins from 0. to 6000. (default is 4000)
@@ -994,7 +994,7 @@ int main(int argc, char **argv) {
    list->Write();
    outfile->Close();
 
-   std::cout << argv[0] << " done after " << w.RealTime() << " seconds" << std::endl;
+   std::cout<<argv[0]<<" done after "<<w.RealTime()<<" seconds"<<std::endl;
 
    return 0;
 }

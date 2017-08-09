@@ -39,17 +39,15 @@ fi
 
 
 bindir=$GRSISYS/bin
-libdir=$GRSISYS/libraries
+libdir=$GRSISYS/lib
 incdir=$GRSISYS/include
 utildir=$GRSISYS/etc
 
-grsilibs="-lTGRSIDetector -lTDetector -lTGRSIFormat -lTNucleus -lTKinematics -lTSRIM -lTBetaDecay -lTGRSIFit -lTCal -lGROOT -lTReaction"
-detlibs="-lTTigress -lTGriffin -lTSharc -lTTriFoil -lTSceptar -lTPaces -lTDescant -lTTip -lTCSM -lTS3 -lTSiLi -lTRF -lTPulseAnalyzer -lTZeroDegree"
-grsimore="-lTMidas -lTDataParser -lTGRSILoop -lTGRSIint -lTGRSIRootIO -lTAnalysisTreeBuilder"
+grsilibs="-lTGRSIDetector -lTDetector -lTGRSIFormat -lTNucleus -lTKinematics -lTSRIM -lTBetaDecay -lTGRSIFit -lTCal -lGROOT -lTReaction -lTAngularCorrelation"
+detlibs="-lTFipps -lTTigress -lTGriffin -lTSharc -lTTriFoil -lTSceptar -lTPaces -lTDescant -lTTip -lTCSM -lTS3 -lTSiLi -lTRF -lTPulseAnalyzer -lTTAC -lTLaBr -lTZeroDegree"
+grsimore="-lTMidas -lTDataParser -lTGRSIint -lTLoops -lTHistogramming -lMakeAnalysisHistograms -lMakeGriffinFragmentHistograms -lMakeTigressHistograms"
 
 cflags="-std=c++0x -I$incdir"
-
-
 
 usage="\
 Usage: grsi-config [--version] [--cflags] [--libs] [--all-libs] [--help]"
@@ -74,11 +72,11 @@ while test $# -gt 0; do
 
   case $1 in
     --version)
-      ### Output the version number.  If GRSIVersion.h can not be found, give up.
-      if test -r ${incdir}/GRSIVersion.h; then
-        out="$out `sed -n 's,.*GRSI_RELEASE *\"\(.*\)\".*,\1,p' < ${incdir}/GRSIVersion.h`"
+      ### Output the version number.  If GVersion.h can not be found, give up.
+      if test -r ${incdir}/GVersion.h; then
+        out="$out `sed -n 's,.*GRSI_RELEASE *\"\(.*\)\".*,\1,p' < ${incdir}/GVersion.h`"
       else
-        echo "cannot read ${incdir}/GRSIVersion.h"
+        echo "cannot read ${incdir}/GVersion.h"
         exit 1
       fi
       ;;
@@ -111,7 +109,7 @@ while test $# -gt 0; do
       if test "x$libsout" = "xyes" ; then
         out=$"$out $grsimore "
       else
-        out=$"$out -L${libdir} $grsilibs $detlibs $grsimore -lXMLParser -lXMLIO -lX11 -lXpm -lProof -lGuiHtml "
+        out=$"$out -L${libdir} $grsilibs $detlibs $grsimore -lXMLParser -lXMLIO -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lPyROOT -lSpectrum -lMathMore "
       fi
       ;;
     --root)

@@ -8,6 +8,9 @@
 #include <stdexcept>
 #include <cstdio>
 #include <vector>
+#ifndef __CINT__
+#include <memory>
+#endif
 
 #include "TVector3.h"
 #include "TObject.h"
@@ -27,29 +30,36 @@
 ///
 /////////////////////////////////////////////////////////////////
 
+class TDetector : public TObject {
+public:
+   TDetector();
+   TDetector(const TDetector&);
+   ~TDetector() override;
+   TDetector& operator=(const TDetector& other)
+   {
+      if(this != &other) {
+         other.Copy(*this);
+      }
+      return *this;
+   }
 
-class TDetector : public TObject	{
-	public:
-		TDetector();
-		TDetector(const TDetector&);
-		virtual ~TDetector();
-		TDetector &operator= (const TDetector& other) {
-			if(this != &other) 
-				other.Copy(*this);
-			return *this;
-		}
+public:
+   virtual void BuildHits() { AbstractMethod("BuildHits()"); } //!<!
+#ifndef __CINT__
+   virtual void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*)
+   {
+      AbstractMethod("AddFragment()");
+   } //!<!
+#endif
 
-	public: 
-		virtual void BuildHits()                                   { AbstractMethod("BuildHits()"); } //!<!
-		virtual void AddFragment(TFragment*, MNEMONIC*)            { AbstractMethod("AddFragment()"); } //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   virtual void ClearTransients() {}              //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
-		virtual void Copy(TObject&) const;              //!<!
-		virtual void Clear(Option_t* opt = "");         //!<!
-		virtual void Print(Option_t* opt = "") const;   //!<!
-
-/// \cond CLASSIMP
-		ClassDef(TDetector,1) //Abstract class for detector systems 
-/// \endcond
+   /// \cond CLASSIMP
+   ClassDefOverride(TDetector, 1) // Abstract class for detector systems
+   /// \endcond
 };
 /*! @} */
 #endif

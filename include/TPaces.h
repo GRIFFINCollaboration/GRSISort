@@ -9,51 +9,53 @@
 #include <cstdio>
 
 #include "TBits.h"
-#include "TVector3.h" 
+#include "TVector3.h"
 
 #include "Globals.h"
-#include "TGRSIDetector.h" 
+#include "TGRSIDetector.h"
 #include "TPacesHit.h"
 
 class TPaces : public TGRSIDetector {
 
-	public:
-		TPaces();
-		TPaces(const TPaces&);
-		virtual ~TPaces();
+public:
+   TPaces();
+   TPaces(const TPaces&);
+   ~TPaces() override;
 
-	public: 
-		TPacesHit* GetPacesHit(const int& i); //!<!
-		TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
-		Short_t GetMultiplicity() const { return fPacesHits.size(); }
+public:
+   TPacesHit* GetPacesHit(const int& i); //!<!
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
+   Short_t GetMultiplicity() const override { return fPacesHits.size(); }
 
-		static TVector3 GetPosition(int DetNbr);		//!<!
-		void AddFragment(TFragment*, MNEMONIC*); //!<!
-		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
+#ifndef __CINT__
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override;
+#endif
+   static TVector3 GetPosition(int DetNbr); //!<!
 
-		TPaces& operator=(const TPaces&);  //!<! 
+   void ClearTransients() override
+   {
+      for(const auto& hit : fPacesHits) {
+         hit.ClearTransients();
+      }
+   }
 
+   TPaces& operator=(const TPaces&); //!<!
 
-	private: 
-		std::vector<TPacesHit> fPacesHits; //  The set of crystal hits
+private:
+   std::vector<TPacesHit> fPacesHits; //  The set of crystal hits
 
-		static bool fSetCoreWave;		         //!<!  Flag for Waveforms ON/OFF
+   static bool fSetCoreWave; //!<!  Flag for Waveforms ON/OFF
 
-	public:
-		static bool SetCoreWave()        { return fSetCoreWave;  }	//!<!
+public:
+   static bool SetCoreWave() { return fSetCoreWave; } //!<!
 
-		virtual void Copy(TObject&) const;                //!<!
-		virtual void Clear(Option_t* opt = "all");		     //!<!
-		virtual void Print(Option_t* opt = "") const;		  //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Clear(Option_t* opt = "all") override;    //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
-	protected:
-		void PushBackHit(TGRSIDetectorHit* phit);
-
-/// \cond CLASSIMP
-		ClassDef(TPaces,4)  // Paces Physics structure
-/// \endcond
+   /// \cond CLASSIMP
+   ClassDefOverride(TPaces, 4) // Paces Physics structure
+   /// \endcond
 };
 /*! @} */
 #endif
-
-

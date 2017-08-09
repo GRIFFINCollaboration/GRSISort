@@ -91,7 +91,7 @@ void GetCal(TH1* hist, TGraphErrors* ge, bool abs_flag){
 
       Double_t peak_pos = s.GetPositionX()[0];
       hist->GetXaxis()->UnZoom();
-      std::cout << "PEAK POS " << peak_pos <<  std::endl;
+      std::cout<<"PEAK POS "<<peak_pos<< std::endl;
       TPeak *peak = new TPeak(peak_pos,peak_pos-rangelow,peak_pos+rangehigh);
  //     peak->Clear();
       peak->InitParams(hist);
@@ -124,7 +124,7 @@ int main(int argc, char **argv) {
    abs_flag = atoi(argv[2]);
 
    TFile* file = new TFile(argv[1]);
-   if(file == NULL) {
+   if(file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
    }

@@ -9,7 +9,7 @@
 #include <TTree.h>
 
 // almost any quick analysis will end up using the tree and a fragment
-TTree *tree = NULL;
+TTree *tree = nullptr;
 TFragment *frag = new TFragment;
 
 // construct a TGraph from an arbitrary STL vector, useful for ROOT plotting
@@ -98,7 +98,7 @@ void DrawNext(void)
 {
   static Int_t evno=0;
 
-  if (tree == NULL) {
+  if (tree == nullptr) {
     tree = (TTree*)gROOT->FindObject("FragmentTree");
   }
   tree->SetBranchAddress("TFragment", &frag);
@@ -107,7 +107,7 @@ void DrawNext(void)
     tree->GetEntry(evno++);
   } while (frag->wavebuffer.empty());
   
-  cout << "Event number " << evno << endl;
+  cout<<"Event number "<<evno<<endl;
   frag->Print();
 
   //printf("wavebuffer.size() = %i\n",wavebuffer.size()); 
@@ -126,7 +126,7 @@ void DrawNextDescant(void)
 {
   static Int_t evno=0;
 
-  if (tree == NULL) {
+  if (tree == nullptr) {
     tree = (TTree*)gROOT->FindObject("FragmentTree");
   }
   tree->SetBranchAddress("TFragment", &frag);
@@ -135,7 +135,7 @@ void DrawNextDescant(void)
     tree->GetEntry(evno++);
   } while (frag->wavebuffer.empty());
   
-  cout << "Event number " << evno << endl;
+  cout<<"Event number "<<evno<<endl;
   frag->Print();
 
   //printf("wavebuffer.size() = %i\n",wavebuffer.size()); 

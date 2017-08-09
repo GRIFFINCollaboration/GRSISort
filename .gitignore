@@ -14,9 +14,16 @@ htmldoc
 ./bin*
 bin
 myAnalysis
+Sandbox
 examples
 *User*
 .deps
 .nfs*
 G__auto*
 *.log
+include/GVersion.h
+GRSIProof/*.?
+.grsi_thread
+*.pyc
+__pycache__
+grsi_logon.C

@@ -7,13 +7,12 @@
 
 #include <cstdio>
 #include <cmath>
-#if !defined (__CINT__) && !defined (__CLING__)
+#if !defined(__CINT__) && !defined(__CLING__)
 #include <tuple>
 #endif
 
 #include "TMath.h"
 #include "TVector3.h"
-#include "TClonesArray.h"
 
 #include "TFragment.h"
 #include "TChannel.h"
@@ -22,103 +21,113 @@
 #include "TGRSIDetectorHit.h"
 
 class TTigressHit : public TGRSIDetectorHit {
-  public:
-    TTigressHit();
-    TTigressHit(const TTigressHit&);
-    TTigressHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
-    virtual ~TTigressHit();
+public:
+   TTigressHit();
+   TTigressHit(const TTigressHit&);
+   TTigressHit(const TFragment& frag);
+   void CopyFragment(const TFragment& frag);
+   ~TTigressHit() override;
 
-  private:
-	 UInt_t   fCrystal;              //!<!
-	 UShort_t fFirstSegment;        
-	 Float_t  fFirstSegmentCharge; //!<!
+private:
+   // UShort_t fFirstSegment;
+   // Float_t  fFirstSegmentCharge; //!<!
 
-    std::vector<TGRSIDetectorHit> fSegments;
-    std::vector<TGRSIDetectorHit> fBgos;
+   std::vector<TGRSIDetectorHit> fSegments;
 
-    Double_t fTimeFit;
-    Double_t fSig2Noise;
+   bool    fBgoFired{false};
+   Float_t fTimeFit{0.};
+   Float_t fSig2Noise{0.};
 
-	//need to do sudo tracking to build addback.
-	TVector3 fLastHit;                //!<!
-#if !defined (__CINT__) && !defined (__CLING__)
-	std::tuple<int,int,int> fLastPos; //!<!
-#endif
+   // need to do sudo tracking to build addback. do not remove.  pcb. */
+   // TVector3 fLastHit;                //!   <! */
 
-  public:
-	void SetHit() {}
-	/////////////////////////		/////////////////////////////////////
-	void SetCore(TGRSIDetectorHit& core)		  { Copy(core);	} 					//!<!
-	void AddSegment(TGRSIDetectorHit& seg) 	  { fSegments.push_back(seg);	}	//!<!
-	void AddBGO(TGRSIDetectorHit& bgo) 		    { fBgos.push_back(bgo);	}	   //!<!
+public:
+   void SetHit() {}
+   /////////////////////////    /////////////////////////////////////
+   void SetCore(const TTigressHit& core) { core.Copy(*this); }                //!<!
+   void AddSegment(const TGRSIDetectorHit& seg) { fSegments.push_back(seg); } //!<!
+   //    void AddBGO(const TGRSIDetectorHit& bgo)        { fBgos.push_back(bgo);  }     //!<!
+   // void SetInitalHit(const int &i)     { fFirstSegment = i; }        //!<!
 
-  //int SetCrystal(char color);
-  //int SetCrystal(int crynum);
-	void SetInitalHit(const int &i)		 { fFirstSegment = i; }				//!<!
-	//Bool_t IsCrystalSet() const          { return IsSubDetSet();}
+   /////////////////////////    /////////////////////////////////////
+   // int GetCrystal()   const;           //{  return crystal;      }    //!<!
+   // int GetInitialHit() const           {  return fFirstSegment;  }      //!<!
 
-	/////////////////////////		/////////////////////////////////////
-	int GetCrystal() const;	          //{	return crystal;			}		//!<!
-	//int GetCrystal();
-	int GetInitialHit() const           {	return fFirstSegment;	}			//!<!
-	
-	void SetWavefit(TFragment&);
-	void SetWavefit();
-	inline Double_t GetSignalToNoise()	  { return fSig2Noise;	} //!<!
-	inline Double_t GetFitTime()			  { return fTimeFit;	} //!<!
+   void     SetWavefit(const TFragment&);
+   void     SetWavefit();
+   Double_t GetSignalToNoise() const { return fSig2Noise; } //!<!
+   Double_t GetFitTime() const { return fTimeFit; }         //!<!
 
-	int GetArrayNumber()	{	
-														int number = 4*(GetDetector()-1) + GetCrystal(); 
-														return number;
-													}
+   UShort_t GetArrayNumber() const override
+   {
+      int number = 4 * (GetDetector() - 1) + GetCrystal();
+      return number;
+   }
 
-	inline double GetDoppler(double beta, TVector3 *vec=0) { 
-		if(vec==0) {
-			vec = GetBeamDirection();
-		}
-		double tmp = 0;
-		double gamma = 1/(sqrt(1-pow(beta,2)));
-		tmp = this->GetEnergy()*gamma *(1 - beta*TMath::Cos(this->GetPosition().Angle(*vec)));
-		return tmp;
-	}
+   inline double GetDoppler(double beta, TVector3* vec = nullptr)
+   {
+      if(vec == nullptr) {
+         vec = GetBeamDirection();
+      }
+      double tmp   = 0;
+      double gamma = 1 / (sqrt(1 - pow(beta, 2)));
+      tmp          = this->GetEnergy() * gamma * (1 - beta * TMath::Cos(GetPosition().Angle(*vec)));
+      return tmp;
+   }
 
+   bool BGOFired() const { return fBgoFired; }
+   void SetBGOFired(bool fired) { fBgoFired = fired; }
 
+   int GetTimeToTrigger() { return (fTimeStamp & 0x7fffff) - (fCfd >> 4); }
 
-	int GetSegmentMultiplicity()		  const      { return fSegments.size(); }	//!<!
-	int GetNSegments()		            const      { return fSegments.size(); }	//!<!
-	int GetBGOMultiplicity()			    const      { return fBgos.size();     }   //!<!
-	int GetNBGOs()			              const      { return fBgos.size();     }   //!<!
-	using TGRSIDetectorHit::GetSegment;
-	TGRSIDetectorHit& GetSegment(int &i)       { return fSegments.at(i);  }   //!<!
-	TGRSIDetectorHit& GetBGO( int &i)	         { return fBgos.at(i);	     }   //!<!
-	TGRSIDetectorHit& GetCore()                { return *this;	           }   //!<!
-	
-  TGRSIDetectorHit GetSegment(int &i) const { return fSegments.at(i);  }   //!<!
-	TGRSIDetectorHit GetBGO( int &i)	   const { return fBgos.at(i);	     }   //!<!
-	TGRSIDetectorHit GetCore()          const { return *this;	           }   //!<!
+   int GetSegmentMultiplicity() const { return fSegments.size(); } //!<!
+   int GetNSegments() const { return fSegments.size(); }           //!<!
+   /* int GetBGOMultiplicity()            const { return fBgos.size();     }  //!<! */
+   /* int GetNBGOs()                      const { return fBgos.size();     }  //!<! */
 
-	void CheckFirstHit(int charge,int segment);								               //!<!
+   const TGRSIDetectorHit& GetSegmentHit(int i) const { return fSegments.at(i); } //!<!
+   /* const TGRSIDetectorHit& GetBGO(int i)     const { return fBgos.at(i);      }  //!<! */
+   const TGRSIDetectorHit& GetCore() const { return *this; } //!<!
 
-	static bool Compare(TTigressHit lhs, TTigressHit rhs);	      //!<!
-	static bool CompareEnergy(TTigressHit lhs, TTigressHit rhs);	//!<!
-		
-	void SumHit(TTigressHit*);                                      //!<!
-	TVector3 GetLastHit() { return fLastHit; }                      //!<!
-#if !defined (__CINT__) && !defined (__CLING__)
-	inline std::tuple<int,int,int> GetLastPosition() {return fLastPos;} //!<!
-#endif                         
+   const std::vector<TGRSIDetectorHit>& GetSegmentVec() const { return fSegments; }
+   /* const std::vector<TGRSIDetectorHit>& GetBGOVec()     const { return fBgos; } */
 
-  private:
-    TVector3 GetChannelPosition(Double_t dist=110.0) const;
+   /* modified by Momiyama and Niikura on Aug. 23, 2016 */
+   /* int GetFirstSeg() const { if(fSegments.size()>0) return fSegments.front().GetSegment(); return -1; } */
+   /* int GetLastSeg()  const { if(fSegments.size()>0) return fSegments.back().GetSegment(); return -1; } */
+   int GetFirstSeg() const
+   {
+      if(fSegments.size() > 0) {
+         return fSegments.front().GetSegment();
+      }
+      return 0;
+   }
+   int GetLastSeg() const
+   {
+      if(fSegments.size() > 0) {
+         return fSegments.back().GetSegment();
+      }
+      return 0;
+   }
 
-  public:
-	virtual void Clear(Option_t *opt = "");		                      //!<!
-	virtual void Copy(TObject&) const;                             //!<!
-	virtual void Print(Option_t *opt = "") const;       		                //!<!
+   static bool Compare(const TTigressHit& lhs, const TTigressHit& rhs);       //!<!
+   static bool CompareEnergy(const TTigressHit& lhs, const TTigressHit& rhs); //!<!
 
-/// \cond CLASSIMP
-	ClassDef(TTigressHit,1)
-/// \endcond
+   void SumHit(TTigressHit*); //!<!
+
+   TVector3 GetPosition(Double_t dist = 0.) const override;
+   TVector3 GetLastPosition(Double_t dist = 0.) const;
+
+public:
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Print(Option_t* opt = "") const override; //!<!
+
+   void SortSegments() { std::sort(fSegments.begin(), fSegments.end()); } //!<!
+
+   /// \cond CLASSIMP
+   ClassDefOverride(TTigressHit, 4)
+   /// \endcond
 };
 /*! @} */
 #endif

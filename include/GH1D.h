@@ -1,49 +1,71 @@
-#ifndef TGRUTH1D_H
-#define TGRUTH1D_H
+#ifndef GH1D_H
+#define GH1D_H
 
-/** \addtogroup GROOT
- *  @{
- */
+#include "TH1.h"
+#include "TRef.h"
 
-//  rootcint -f GH1DDict.cxx -c GH1D.h 
-//  g++ -fPIC -c GH1DDict.cxx `root-config --cflags`
-//  g++ -fPIC -c GH1D.cxx `root-config --cflags`
-//  g++ -shared -Wl,-soname,libGRUTHist.so -olibGRUTHist.so GH1D.o GH1DDict.o `root-config --cflags --glibs` 
+#include "GH2I.h"
 
-#include <map>
-#include <string>
-
-#include "TH1D.h"
+class TF1;
 
 class GH1D : public TH1D {
-   public:
-      GH1D(); 
-      virtual ~GH1D(); 
-      GH1D(const TVectorD& v); 
-      //GH1D(const GH1D& h1d); 
-      GH1D(const char *name, const char *title,Int_t nbinsx,const Float_t *xbins); 
-      GH1D(const char *name, const char *title,Int_t nbinsx,const Double_t *xbins); 
-      GH1D(const char *name, const char *title,Int_t nbinsx,Double_t xlow, Double_t xup); 
+public:
+   GH1D() : TH1D(), parent(nullptr), projection_axis(-1) {}
+   GH1D(const TVectorD& v) : TH1D(v), parent(nullptr), projection_axis(-1) {}
+   GH1D(const char* name, const char* title, Int_t nbinsx, const Float_t* xbins)
+      : TH1D(name, title, nbinsx, xbins), parent(nullptr), projection_axis(-1)
+   {
+   }
+   GH1D(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins)
+      : TH1D(name, title, nbinsx, xbins), parent(nullptr), projection_axis(-1)
+   {
+   }
+   GH1D(const char* name, const char* title, Int_t nbinsx, Double_t xlow, Double_t xup)
+      : TH1D(name, title, nbinsx, xlow, xup), parent(nullptr), projection_axis(-1)
+   {
+   }
 
-      //virtual void ExecuteEvent(Int_t,Int_t,Int_t);
+   GH1D(const TF1& function, Int_t nbinsx, Double_t xlow, Double_t xup);
 
-      virtual void Draw(Option_t *opt);
+   GH1D(const TH1& source);
+   // GH1D(const TH1 *source);
+   // virtual void SetOption(Option_t* option=" ");
 
-      static void CheckMapStats();
+   TObject* GetParent() const { return parent.GetObject(); }
+   void SetParent(TObject* obj) { parent = obj; }
 
-      void ExecuteEvent(Int_t evnet,Int_t x,Int_t y);
+   int  GetProjectionAxis() const { return projection_axis; }
+   void SetProjectionAxis(int axis) { projection_axis = axis; }
 
-   private:
-      void InitGH1D();
+   void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
+   void Copy(TObject& obj) const override;
+   void Draw(Option_t* opt = "") override;
 
-      static int fUniqueId;
-      static std::map <GH1D*,int> fCurrentHistMap;
-      static void AddToMap(GH1D*);
-      static void RemoveFromMap(GH1D*);
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
+   TH1* DrawCopy(Option_t* opt = "") const;
+#else
+   TH1* DrawCopy(Option_t* opt = "", const char* name_postfix = "copy") const override;
+#endif
 
-/// \cond CLASSIMP
-      ClassDef(GH1D,1);
-/// \endcond
+   TH1* DrawNormalized(Option_t* opt = "", Double_t norm = 1) const override;
+
+   bool WriteDatFile(const char* outFile);
+
+   GH1D* Project(int bins = -1);
+
+   GH1D* GetPrevious(bool DrawEmpty = false) const;
+   GH1D* GetNext(bool DrawEmpty = false) const;
+
+   GH1D* Project(double value_low, double value_high) const;
+   GH1D* Project_Background(double value_low, double value_high, double bg_value_low, double bg_value_high,
+                            kBackgroundSubtraction mode = kRegionBackground) const;
+
+private:
+   TRef parent;
+   int  projection_axis;
+
+   ClassDefOverride(GH1D, 1)
 };
-/*! @} */
-#endif 
+
+#endif /* GH1D_H */

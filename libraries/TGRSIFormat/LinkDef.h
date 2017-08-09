@@ -1,4 +1,5 @@
-// TFragment.h TChannel.h TGRSIRunInfo.h TGRSISortInfo.h TFragmentQueue.h TFragmentSelector.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TDiagnostics.h
+// TFragment.h TBadFragment.h TChannel.h TGRSIRunInfo.h TGRSISortInfo.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TParsingDiagnostics.h TGRSIUtilities.h TMnemonic.h TSortingDiagnostics.h TTransientBits.h
+
 
 #ifdef __CINT__
 
@@ -12,15 +13,14 @@
 //#pragma link C++ class std::vector<UShort_t>+;
 
 #pragma link C++ class TFragment+;
+#pragma link C++ class TBadFragment+;
 
 #pragma link C++ class TEpicsFrag+;
 #pragma link C++ class TChannel-;
-#pragma link C++ class TGRSIRunInfo-;
+#pragma link C++ class TGRSIRunInfo+;
 #pragma link C++ class TGRSISortInfo+;
 #pragma link C++ class TGRSISortList+;
 
-#pragma link C++ class TFragmentQueue+;
-#pragma link C++ class TFragmentSelector+;
 #pragma link C++ class TPPG-;
 #pragma link C++ class TPPGData+;
 #pragma link C++ class std::map<ULong64_t,TPPGData*>;
@@ -28,7 +28,17 @@
 #pragma link C++ class TScalerData+;
 #pragma link C++ class std::map<UInt_t, std::map<ULong64_t, TScalerData*> >;
 #pragma link C++ class std::map<ULong64_t, TScalerData*>;
-#pragma link C++ class TDiagnostics+;
+#pragma link C++ class TParsingDiagnostics+;
+#pragma link C++ class TSortingDiagnostics+;
+#pragma link C++ class TMnemonic+;
+
+#pragma link C++ class TTransientBits<UChar_t>+;
+#pragma link C++ class TTransientBits<UShort_t>+;
+#pragma link C++ class TTransientBits<UInt_t>+;
+#pragma link C++ class TTransientBits<ULong_t>+;
+
+#pragma link C++ function GetRunNumber;
+#pragma link C++ function GetSubRunNumber;
 
 #endif
 

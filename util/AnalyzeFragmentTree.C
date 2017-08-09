@@ -23,9 +23,9 @@
 
 #include "TFragment.h"
 
-TList *AnalyzeFragmentTree(TTree *tree, long entries = 0, TStopwatch* w = NULL) {
+TList *AnalyzeFragmentTree(TTree *tree, long entries = 0, TStopwatch* w = nullptr) {
   
-  if(w == NULL) {
+  if(w == nullptr) {
     w = new TStopwatch;
     w->Start();
   }
@@ -154,11 +154,11 @@ TList *AnalyzeFragmentTree(TTree *tree, long entries = 0, TStopwatch* w = NULL) 
       }
 
       if(entry%25000 == 0) {
-         std::cout << "\t" << entry << " / " << entries << " = "<< (float)entry/entries*100.0 << "%. " << w->RealTime() << " seconds" << "\r" << std::flush;
+         std::cout<<"\t"<<entry<<" / "<<entries<<" = "<< (float)entry/entries*100.0<<"%. "<<w->RealTime()<<" seconds"<<"\r"<<std::flush;
          w->Continue();
       }
    }
-   std::cout << "\t" << entry << " / " << entries << " = "<< (float)entry/entries*100.0 << "%. " << w->RealTime() << " seconds" << std::endl << std::endl;
+   std::cout<<"\t"<<entry<<" / "<<entries<<" = "<< (float)entry/entries*100.0<<"%. "<<w->RealTime()<<" seconds"<<std::endl<<std::endl;
    w->Continue();
   
    return list;
@@ -191,7 +191,7 @@ int main(int argc, char **argv) {
    }
 
    TFile* file = new TFile(argv[1]);
-   if(file == NULL) {
+   if(file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
    }
@@ -202,12 +202,12 @@ int main(int argc, char **argv) {
 
    TTree* tree = (TTree*) file->Get("FragmentTree");
 
-   if(tree == NULL) {
+   if(tree == nullptr) {
       printf("Failed to find fragment tree in file '%s'!\n",argv[1]);
       return 1;
    }
    
-   std::cout << argv[0] << ": starting AnalyzeFragmentTree after " << w.RealTime() << " seconds" << std::endl;
+   std::cout<<argv[0]<<": starting AnalyzeFragmentTree after "<<w.RealTime()<<" seconds"<<std::endl;
    w.Continue();
 
    TList *list;
@@ -222,7 +222,7 @@ int main(int argc, char **argv) {
    list->Write();
    outfile->Close();
 
-   std::cout << argv[0] << " done after " << w.RealTime() << " seconds" << std::endl;
+   std::cout<<argv[0]<<" done after "<<w.RealTime()<<" seconds"<<std::endl;
 
    return 0;
 }
