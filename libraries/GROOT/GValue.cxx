@@ -229,7 +229,7 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
    bool        brace_open = false;
    std::string name;
 
-   while(std::getline(infile, line) != nullptr) {
+   while( !std::getline(infile, line).fail() ) {
       linenumber++;
       trim(&line);
       size_t comment = line.find("//");
