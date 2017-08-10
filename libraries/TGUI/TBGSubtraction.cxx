@@ -182,7 +182,6 @@ void TBGSubtraction::BuildInterface()
 
    Double_t xmin, ymin, xmax, ymax;
    fProjectionCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
-   Double_t x_width = xmax - xmin;
 
    // We are going to start the limits off at a specific ratio of the frame
 
@@ -456,19 +455,12 @@ void TBGSubtraction::DrawPeakMarkers(){
       fPeakMarker = new GMarker();
    }
    if(fSubtractedHist){
-      Float_t slider_x_max, slider_x_min, slider_x;
-      fPeakSlider->GetPosition(slider_x_min,slider_x_max);
-      slider_x = fPeakSlider->GetPointerPosition();
       fLowPeakMarker->localx  = fPeakLowValue;
       fHighPeakMarker->localx = fPeakHighValue;
       fPeakMarker->localx     = fPeakValue;
- /*     fLowPeakMarker->localx  = static_cast<Double_t>(slider_x_min);
-      fHighPeakMarker->localx = static_cast<Double_t>(slider_x_max);
-      fPeakMarker->localx     = static_cast<Double_t>(slider_x);
-*/      fLowPeakMarker->binx    = fSubtractedHist->GetXaxis()->FindBin(fLowPeakMarker->localx);
+      fLowPeakMarker->binx    = fSubtractedHist->GetXaxis()->FindBin(fLowPeakMarker->localx);
       fHighPeakMarker->binx   = fSubtractedHist->GetXaxis()->FindBin(fHighPeakMarker->localx);
       fPeakMarker->binx       = fSubtractedHist->GetXaxis()->FindBin(fPeakMarker->localx);
-
    
       double low_peak_bin_edge  = fSubtractedHist->GetXaxis()->GetBinLowEdge(fLowPeakMarker->binx);
       double high_peak_bin_edge = fSubtractedHist->GetXaxis()->GetBinLowEdge(fHighPeakMarker->binx);

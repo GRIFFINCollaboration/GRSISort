@@ -163,6 +163,7 @@ lib/lib%.so: .build/filters/%.o | lib include/GVersion.h
 
 config: bin
 	@cp util/grsi-config bin/
+	@cp util/ErrorReport.sh bin/
 
 # Functions for determining the files included in a library.
 # All src files in the library directory are included.
