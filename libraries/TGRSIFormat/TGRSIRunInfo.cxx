@@ -149,9 +149,6 @@ void TGRSIRunInfo::Clear(Option_t*)
 
    fDescantAncillary = false;
 
-   fMajorIndex.assign("");
-   fMinorIndex.assign("");
-
    fNumberOfTrueSystems = 0;
    fBadCycleList.clear();
    fBadCycleListSize = 0;
@@ -282,15 +279,6 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum)
             SetBambino();
          }
       };
-   }
-   if(Tigress()) {
-      Get()->fMajorIndex.assign("TriggerId");
-      Get()->fMinorIndex.assign("FragmentId");
-   } else if(Griffin()) {
-      Get()->fMajorIndex.assign("TimeStampHigh");
-      Get()->fMinorIndex.assign("TimeStampLow");
-   } else if(Fipps()) {
-      Get()->fMajorIndex.assign("TimeStamp");
    }
 
    if(Get()->fRunInfoFile.length() != 0u) {
@@ -498,7 +486,7 @@ bool TGRSIRunInfo::WriteToRoot(TFile* fileptr)
       Get()->Write();
    }
 
-   printf("Writing Run Information to %s\n", gDirectory->GetFile()->GetName());
+   printf("Writing TGRSIRunInfo to %s\n", gDirectory->GetFile()->GetName());
    if(oldoption == "READ") {
       printf("  Returning %s to \"%s\" mode.\n", gDirectory->GetFile()->GetName(), oldoption.c_str());
       fileptr->ReOpen("READ");
@@ -538,7 +526,7 @@ std::string TGRSIRunInfo::PrintToString(Option_t*)
       buffer.append(Form("DescantAncillary: %d\n", 1));
       buffer.append("\n\n");
    }
-   if(static_cast<unsigned int>(!fBadCycleList.empty()) != 0u) {
+   if(!fBadCycleList.empty()) {
       buffer.append("//A List of bad cycles.\n");
       buffer.append("BadCycle:");
       for(int& it : fBadCycleList) {

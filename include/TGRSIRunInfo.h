@@ -105,12 +105,6 @@ public:
    static inline double RunStop() { return fGRSIRunInfo->fRunStop; }
    static inline double RunLength() { return fGRSIRunInfo->fRunLength; }
 
-   static inline void SetMajorIndex(const char* tmpstr) { fGRSIRunInfo->fMajorIndex.assign(tmpstr); }
-   static inline void SetMinorIndex(const char* tmpstr) { fGRSIRunInfo->fMinorIndex.assign(tmpstr); }
-
-   static inline std::string MajorIndex() { return fGRSIRunInfo->fMajorIndex; }
-   static inline std::string MinorIndex() { return fGRSIRunInfo->fMinorIndex; }
-
    static inline void SetTigress(bool flag = true) { fGRSIRunInfo->fTigress = flag; }
    static inline void SetSharc(bool flag = true) { fGRSIRunInfo->fSharc = flag; }
    static inline void SetTriFoil(bool flag = true) { fGRSIRunInfo->fTriFoil = flag; }
@@ -251,9 +245,6 @@ private:
 
    std::string fXMLODBFileName; // Name of XML Odb file
    std::string fXMLODBFile;     // The odb
-
-   std::string fMajorIndex; // The Major index to order events during building
-   std::string fMinorIndex; // The Minor index to order events during building
 
    /////////////////////////////////////////////////
    //////////////// Building Options ///////////////
