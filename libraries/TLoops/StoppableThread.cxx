@@ -149,7 +149,7 @@ void StoppableThread::StopAll()
       thread->Join();
    }
 
-   while(static_cast<unsigned int>(!fThreadMap.empty()) != 0u) {
+   while(!fThreadMap.empty()) {
       StoppableThread* thread = fThreadMap.begin()->second;
       std::cout<<"Deleting thread "<<fThreadMap.begin()->first<<std::endl;
       delete thread;

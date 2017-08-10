@@ -489,7 +489,7 @@ bool TGRSIOptions::WriteToRoot(TFile* file)
       Get()->Write();
    }
 
-   printf("Writing Run Information to %s\n", gDirectory->GetFile()->GetName());
+   printf("Writing TGRSIOptions to %s\n", gDirectory->GetFile()->GetName());
    if(oldoption == "READ") {
       printf("  Returning %s to \"%s\" mode.\n", gDirectory->GetFile()->GetName(), oldoption.c_str());
       file->ReOpen("READ");
