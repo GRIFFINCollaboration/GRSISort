@@ -161,7 +161,6 @@ int main(int argc, char** argv) {
       gm->SetChannel(j+first_TAC_channel);//TAC channel, this may need a better implamentation
 
       gm->GetFitFunction()->SetParameter(0,0);
-      //gm->GetFitFunction()->SetParameter(1,(gm->GetFitFunction()->GetParameter(1)*ps_per_chan));   
 
       gm->WriteToChannel();
 
