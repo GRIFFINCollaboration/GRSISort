@@ -126,7 +126,8 @@ int main(int argc, char** argv) {
   double_t sec_per_bin = 30.;//"calibration" of the number of seconds per bin (sec/chan). The tipical temperature cycle is ~300 secs, so adjust accordingly
   double_t file_length = 7000.;//time length of the file, in secs. Doesn't need to be precise
   double_t ps_per_bin = 1.;//TAC bining, in picoseconds per bin.
-  int TAC_bins =static_cast<int>(50000/ps_per_bin);//number of bins for the TAC axis
+  int TAC_range = 50000;
+  int TAC_bins =static_cast<int>(TAC_range/ps_per_bin);//number of bins for the TAC axis
   
 //subsequent subruns won't start at 0, so I need to stablish the start and final time of each file
   double_t time_max,time_min;
@@ -157,11 +158,11 @@ int main(int argc, char** argv) {
   //Histograms to be filled
   TH2D* TAC_vs_time[8];
   for(int i = 0; i < 8; ++i){
-    TAC_vs_time[i] = new TH2D(Form("TAC_vs_time_%d",i), Form("TAC_vs_time_%d; time (s); TAC (ps)",i),time_bins,time_min,time_max,TAC_bins,0.,50000.); list.Add(TAC_vs_time[i]);//Notice that the TAC has 10 ps/chan
+    TAC_vs_time[i] = new TH2D(Form("TAC_vs_time_%d",i), Form("TAC_vs_time_%d; time (s); TAC (ps)",i),time_bins,time_min,time_max,TAC_bins,0.,TAC_range); list.Add(TAC_vs_time[i]);//Notice that the TAC has 10 ps/chan
   }
   TH2D* TAC_vs_time_noconditions[8];
   for(int i = 0; i < 8; ++i){
-    TAC_vs_time_noconditions[i] = new TH2D(Form("TAC_vs_time_noconditions_%d",i), Form("TAC_vs_time_%d; time (s); TAC (ps)",i),time_bins,time_min,time_max,TAC_bins,0.,50000.); list.Add(TAC_vs_time_noconditions[i]); 
+    TAC_vs_time_noconditions[i] = new TH2D(Form("TAC_vs_time_noconditions_%d",i), Form("TAC_vs_time_%d; time (s); TAC (ps)",i),time_bins,time_min,time_max,TAC_bins,0.,TAC_range); list.Add(TAC_vs_time_noconditions[i]); 
   }
 
    

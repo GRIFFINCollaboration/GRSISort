@@ -1,6 +1,6 @@
 //Written by:  B. Olaizola
 
-//Date: 2017-06-12
+//Date: 2017-08-11
 
 //Root version: 6.08/02
 
@@ -15,6 +15,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <iomanip>//to control the number of decimals when printing to scree
 using namespace std;
 
 #include "TFile.h"
@@ -24,13 +25,6 @@ using namespace std;
 
 using namespace std;
 
-//Gaussian function
-  Double_t gauss(Double_t *t, Double_t *par)
-  {
-    Double_t fillval ;
-    fillval = par[0] * (TMath::Exp(-1/2*pow((t[0]-par[1])/par[2],2)));
-    return fillval;
-  }
 
 //main program
 int main ( int argc, char *argv[] )
@@ -40,14 +34,12 @@ int main ( int argc, char *argv[] )
   const char* datafile_path;
   double central_chan=25000.; //This is the channel to which all the LaBr-LaBr-TAC combinations will be gainshifted. I recomend using the middle of the TAC range (25 ns in most cases).
   double_t gainmatch[8][8];
-  double fit_min=0.;
-  double fit_max=50000.;
+  int fit_min=0;
+  int fit_max=50000;
   double  ps_per_chan=10.;//Assuming the original histograms have 1 ps/chan, this is the compression factor. 10 is a reasonable number
   //Get Histogram from rootfile
   TH1D *histo;
-  //fitting function
-  TF1 *fitfunc;
-
+  //TF1 *fitfunc = histo->GetFunction("gaus");
 
   if ( argc != 2 ){ // argc should be 2 for correct execution
     // We print argv[0] assuming it is the program name
@@ -62,28 +54,33 @@ int main ( int argc, char *argv[] )
 
   TFile *datafile = TFile::Open(datafile_path);
 
-  fitfunc = new TF1("fitfunc",gauss,fit_min,fit_max,3);//edit number of parameters (last number)
+
+  std::cout << std::fixed;//This is to fix the number of decimals printed to screen
 
   datafile->cd();  
   for(int i = 0; i < 8; ++i){
     for(int j = i+1; j < 8; ++j){
       histo = (TH1D*)datafile->Get(Form("TAC_gated_%d_%d",i,j));//Edit this line so the script gets the right histogram
       histo->Rebin(ps_per_chan);//10 ps/chan is more reasonable
-      //Fitting parameters
-      fit_min=(histo->GetMean()-5*histo->GetRMS())/ps_per_chan;//fitting range min, set to -3 times the "sigma" of the distribtuion
-      fit_max=(histo->GetMean()+5*histo->GetRMS())/ps_per_chan;//fitting range max, set to +3 times the "sigma" of the distribtuion
-      histo->GetXaxis()->SetRange(fit_min,fit_max);
-      fitfunc->SetParameters(50,histo->GetMean(),histo->GetRMS());
-      //fitting paramenters-end
-      //histo->Fit("fitfunc","LLRQ","",fit_min,fit_max);
-      //gainmatch[i][j] = fitfunc->GetParameter(1);
-      gainmatch[i][j] = histo->GetMean();
+      //Fitting range
+      fit_min=(histo->GetMean()-5*histo->GetRMS());//fitting range min, set to -3 times the "sigma" of the distribtuion
+      fit_max=(histo->GetMean()+5*histo->GetRMS());//fitting range max, set to +3 times the "sigma" of the distribtuion
+      //If there is something in the histogram, we fit it
+      if(histo->Integral(fit_min/ps_per_chan,fit_max/ps_per_chan)>1.){
+	histo->Fit("gaus","Q","",fit_min,fit_max);
+	TF1 *fit = histo->GetFunction("gaus");
+	gainmatch[i][j] = fit->GetParameter(1);
+	//Printing to screen the useful information
+	std::cout<<"   TAC_offset["<<i<<"]["<<j<<"] = ("<<setprecision(0)<<central_chan<<".-"<<setprecision(2)<<gainmatch[i][j]<<");"<<std::endl;
+      }
       //This checks if the result is a number (if we do not have a LaBr, one of the TAC combinations will be missed and there will be no histogram)
-      if ((gainmatch[i][j] != gainmatch[i][j]) | (gainmatch[i][j] == 0.)){//This is based that the compiler should not considered a NaN a number, so it isn't equalt to any float, including itself.
+      if ((gainmatch[i][j] != gainmatch[i][j]) | (gainmatch[i][j] < 1.)){//This is based that the compiler should not considered a NaN a number, so it isn't equalt to any float, including itself.
 		gainmatch[i][j]=central_chan;
+		std::cout<<"   TAC_offset["<<i<<"]["<<j<<"] = ("<<setprecision(0)<<central_chan<<".-"<<setprecision(0)<<gainmatch[i][j]<<".);"<<std::endl;
 	}
-      //Printing to screen the useful information
-      std::cout<<"   TAC_offset["<<i<<"]["<<j<<"] = ("<<central_chan<<".-"<<setprecision(7)<<gainmatch[i][j]<<");"<<std::endl;
     }
   }
+
+  return 0;
+
 }
