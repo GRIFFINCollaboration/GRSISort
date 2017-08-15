@@ -407,7 +407,7 @@ std::map<double, double> TCalibrator::Match(std::vector<double> peaks, std::vect
          }
       }
 
-      if(static_cast<unsigned int>(!map.empty()) != 0u) {
+      if(!map.empty()) {
          return map;
       }
    }

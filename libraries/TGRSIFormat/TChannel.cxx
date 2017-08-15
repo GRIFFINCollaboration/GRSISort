@@ -692,7 +692,7 @@ void TChannel::Print(Option_t*) const
    }
    std::cout<<"\n";
    std::cout<<"EFFChi2:   "<<fEFFChi2<<"\n";
-   if(static_cast<unsigned int>(!fCTCoefficients.empty()) != 0u) {
+   if(!fCTCoefficients.empty()) {
       std::cout<<"CTCoeff:  ";
       for(double fCTCoefficient : fCTCoefficients) {
          std::cout<<fCTCoefficient<<"\t";

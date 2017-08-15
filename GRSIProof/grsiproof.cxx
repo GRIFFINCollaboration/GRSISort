@@ -17,14 +17,17 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <signal.h>
 
-void Analyze(const char* tree_type, TProof* proof)
+TGRSIProof* gGRSIProof;
+TGRSIOptions* gGRSIOpt;
+
+void Analyze(const char* tree_type)
 {
-   TGRSIOptions*            opt = TGRSIOptions::Get();
    std::vector<std::string> tree_list;
 
    // Loop over all of the file names, find all the files with the tree type in them and are "openable"
-   for(const auto& i : opt->RootInputFiles()) {
+   for(const auto& i : gGRSIOpt->RootInputFiles()) {
       TFile* in_file = TFile::Open(i.c_str());
       if((in_file != nullptr) && in_file->IsOpen()) {
          if(in_file->FindObjectAny(tree_type) != nullptr) {
@@ -48,32 +51,16 @@ void Analyze(const char* tree_type, TProof* proof)
       proof_chain->Add(i.c_str()); // First add the file to the chain.
    }
    // Start getting ready to run proof
-   proof->ClearCache();
-   if(!(opt->SelectorOnly())) {
+   gGRSIProof->ClearCache();
+   if(!(gGRSIOpt->SelectorOnly())) {
       proof_chain->SetProof();
    }
 
-   for(const auto& macro_it : opt->MacroInputFiles()) {
+   for(const auto& macro_it : gGRSIOpt->MacroInputFiles()) {
       std::cout<<"Currently Running: "<<(Form("%s", macro_it.c_str()))<<std::endl;
       proof_chain->Process(Form("%s+", macro_it.c_str()));
    }
 
-   /*
-   TChain *proof_chain = new TChain(tree_type);
-   //loop over the list of files that belong to this tree type and add them to the chain
-   for(auto i = tree_list.begin(); i!= tree_list.end(); ++i){
-      proof_chain->Add(i->c_str()); //First add the file to the chain.
-
-      //Start getting ready to run proof
-      proof->ClearCache();
-      if(!(opt->SelectorOnly()))
-         proof_chain->SetProof();
-
-      for(auto macro_it = opt->MacroInputFiles().begin(); macro_it != opt->MacroInputFiles().end(); ++macro_it){
-         std::cout <<"Currently Running: "<<(Form("%s",macro_it->c_str()))<<std::endl;
-         proof_chain->Process(Form("%s+",macro_it->c_str()));
-      }
-   }*/
    // Delete the proof chain now that we are done with it.
    if(proof_chain != nullptr) {
       delete proof_chain;
@@ -81,9 +68,45 @@ void Analyze(const char* tree_type, TProof* proof)
    }
 }
 
+void AtExitHandler()
+{
+	// this function is called on normal exits (via std::atexit) or
+	// if the programm is killed with ctrl-c (via sigaction and HandleSignal)
+	std::cout<<"getting session logs ..."<<std::endl;
+   TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
+   if(pl != nullptr) {
+      pl->Save("*", gGRSIOpt->LogFile().c_str());
+   } else {
+      std::cout<<"Failed to get logs!"<<std::endl;
+   }
+
+	std::cout<<"stopping all workers ..."<<std::endl;
+	gGRSIProof->StopProcess(true);
+}
+
+void HandleSignal(int)
+{
+	// sigaction requires a function that takes an integer as argument
+	// since we don't care what the signal was, we just call AtExitHandler
+	AtExitHandler();
+}
+
+static void CatchSignals()
+{
+	struct sigaction action;
+	action.sa_handler = HandleSignal;
+	action.sa_flags = 0;
+	sigemptyset(&action.sa_mask);
+	sigaction(SIGINT, &action, NULL);
+	sigaction(SIGTERM, &action, NULL);
+}
+
 int main(int argc, char** argv)
 {
-   TGRSIOptions* opt = TGRSIOptions::Get(argc, argv);
+	gGRSIOpt = TGRSIOptions::Get(argc, argv);
+
+	std::atexit(AtExitHandler);
+	CatchSignals();
 
    // Add the path were we store headers for GRSIProof macros to see
    const char* pPath = getenv("GRSISYS");
@@ -92,13 +115,13 @@ int main(int argc, char** argv)
    gROOT->SetMacroPath(Form("%s/myAnalysis", pPath));
    gInterpreter->AddIncludePath(Form("%s/include", pPath));
    // The first thing we want to do is see if we can compile the macros that are passed to us
-   if(opt->MacroInputFiles().empty()) {
+   if(gGRSIOpt->MacroInputFiles().empty()) {
       std::cout<<DRED<<"Can't PROOF if there is no MACRO"<<RESET_COLOR<<std::endl;
       return 0;
    }
    std::cout<<DCYAN<<"************************* MACRO COMPILATION ****************************"<<RESET_COLOR
             <<std::endl;
-   for(const auto& i : opt->MacroInputFiles()) {
+   for(const auto& i : gGRSIOpt->MacroInputFiles()) {
       // Int_t error_code = gROOT->LoadMacro(Form("%s+",i->c_str()));
       Int_t error_code = gSystem->CompileMacro(i.c_str(), "kO");
       if(error_code == 0) { // TODO: Fix this check
@@ -109,55 +132,48 @@ int main(int argc, char** argv)
    std::cout<<DCYAN<<"************************* END COMPILATION ******************************"<<RESET_COLOR
             <<std::endl;
 
-   if(!opt->CalInputFiles().empty()) {
+   if(!gGRSIOpt->CalInputFiles().empty()) {
       std::cout<<DRED<<"Cal Files are currently ignored in GRSIProof, please write calibration to tree"
                <<RESET_COLOR<<std::endl;
    }
 
-   if(!opt->InputMidasFiles().empty()) {
+   if(!gGRSIOpt->InputMidasFiles().empty()) {
       std::cout<<DRED<<"Can't Proof a Midas file..."<<RESET_COLOR<<std::endl;
    }
 
    // The first thing we do is get the PROOF Lite instance to run
-   TGRSIProof* proof = nullptr;
-   if(opt->GetMaxWorkers() >= 0) {
-      std::cout<<"Opening proof with '"<<Form("workers=%d", opt->GetMaxWorkers())<<"'"<<std::endl;
-      proof = TGRSIProof::Open(Form("workers=%d", opt->GetMaxWorkers()));
-   } else if(opt->SelectorOnly()) {
+   if(gGRSIOpt->GetMaxWorkers() >= 0) {
+      std::cout<<"Opening proof with '"<<Form("workers=%d", gGRSIOpt->GetMaxWorkers())<<"'"<<std::endl;
+      gGRSIProof = TGRSIProof::Open(Form("workers=%d", gGRSIOpt->GetMaxWorkers()));
+   } else if(gGRSIOpt->SelectorOnly()) {
       std::cout<<"Opening proof with one worker (selector-only)"<<std::endl;
-      proof = TGRSIProof::Open("workers=1");
+      gGRSIProof = TGRSIProof::Open("workers=1");
    } else {
-      proof = TGRSIProof::Open("");
+      gGRSIProof = TGRSIProof::Open("");
    }
-   if(proof == nullptr) {
+
+   if(gGRSIProof == nullptr) {
       std::cout<<"Can't connect to proof"<<std::endl;
       return 0;
    }
-   proof->SetBit(TProof::kUsingSessionGui);
-   proof->AddEnvVar("GRSISYS", pPath);
+   gGRSIProof->SetBit(TProof::kUsingSessionGui);
+   gGRSIProof->AddEnvVar("GRSISYS", pPath);
    gInterpreter->AddIncludePath(Form("%s/include", pPath));
-   proof->AddIncludePath(Form("%s/include", pPath));
-   proof->AddDynamicPath(Form("%s/lib", pPath));
+   gGRSIProof->AddIncludePath(Form("%s/include", pPath));
+   gGRSIProof->AddDynamicPath(Form("%s/lib", pPath));
 
-   proof->AddInput(opt->AnalysisOptions());
-   proof->AddInput(new TNamed("pwd", getenv("PWD")));
+   gGRSIProof->AddInput(gGRSIOpt->AnalysisOptions());
+   gGRSIProof->AddInput(new TNamed("pwd", getenv("PWD")));
    int i = 0;
-   for(const auto& valFile : opt->ValInputFiles()) {
-      proof->AddInput(new TNamed(Form("valFile%d", i++), valFile.c_str()));
+   for(const auto& valFile : gGRSIOpt->ValInputFiles()) {
+      gGRSIProof->AddInput(new TNamed(Form("valFile%d", i++), valFile.c_str()));
    }
    i = 0;
-   for(const auto& calFile : opt->CalInputFiles()) {
-      proof->AddInput(new TNamed(Form("calFile%d", i++), calFile.c_str()));
+   for(const auto& calFile : gGRSIOpt->CalInputFiles()) {
+      gGRSIProof->AddInput(new TNamed(Form("calFile%d", i++), calFile.c_str()));
    }
 
-   Analyze("FragmentTree", proof);
-   Analyze("AnalysisTree", proof);
-   Analyze("Lst2RootTree", proof);
-
-   TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
-   if(pl != nullptr) {
-      pl->Save("*", opt->LogFile().c_str());
-   } else {
-      std::cout<<"Failed to get logs!"<<std::endl;
-   }
+   Analyze("FragmentTree");
+   Analyze("AnalysisTree");
+   Analyze("Lst2RootTree");
 }

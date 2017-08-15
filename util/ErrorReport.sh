@@ -1,11 +1,12 @@
 # Run this script to help report Errors in GRSISort
 # Author by Ryan Dunlop, 22/10/2015
+echo HOSTNAME     = `hostname`
 echo SYSTEM       = `uname`
 echo GRSISYS      = $GRSISYS
 echo ROOTSYS      = $ROOTSYS
 
 echo ROOT Version = `root-config --version`
-printf "\nComputer and Path to File that failed: \n"
+printf "\nComputer and Path to File that failed: \n\n"
 
 LASTDIR=$PWD
 cd $GRSISYS

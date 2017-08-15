@@ -557,13 +557,6 @@ void TGRSIint::SetupPipeline()
    TEventBuildingLoop* eventBuildingLoop = nullptr;
    TDetBuildingLoop*   detBuildingLoop   = nullptr;
 
-	// Set the run number and sub-run number
-   if(!fRawFiles.empty()) {
-      TGRSIRunInfo::Get()->SetRunInfo(fRawFiles[0]->GetRunNumber(), fRawFiles[0]->GetSubRunNumber());
-   } else {
-      TGRSIRunInfo::Get()->SetRunInfo(0, -1);
-   }
-
    // If needed, read from the raw file
    if(read_from_raw) {
       if(fRawFiles.size() > 1) {
@@ -588,6 +581,13 @@ void TGRSIint::SetupPipeline()
    for(const auto& cal_filename : opt->CalInputFiles()) {
       TChannel::ReadCalFile(cal_filename.c_str());
    }
+	// Set the run number and sub-run number
+   if(!fRawFiles.empty()) {
+      TGRSIRunInfo::Get()->SetRunInfo(fRawFiles[0]->GetRunNumber(), fRawFiles[0]->GetSubRunNumber());
+   } else {
+      TGRSIRunInfo::Get()->SetRunInfo(0, -1);
+   }
+
    TPPG::Get()->Setup();
    for(const auto& val_filename : opt->ValInputFiles()) {
       GValue::ReadValFile(val_filename.c_str());

@@ -420,7 +420,7 @@ bool GCanvas::HandleMousePress(Int_t event, Int_t x, Int_t y)
       hist = static_cast<TH1*>(GetSelected());
    } else if(GetSelected()->IsA() == TFrame::Class()) {
       std::vector<TH1*> hists = FindAllHists();
-      if(static_cast<unsigned int>(!hists.empty()) != 0u) {
+      if(!hists.empty()) {
          hist = hists.front();
 
          // Let everybody know that the histogram is selected

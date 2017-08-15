@@ -60,7 +60,7 @@ bool TAnalysisOptions::WriteToFile(TFile* file)
       Write();
    }
 
-   printf("Writing Run Information to %s\n", gDirectory->GetFile()->GetName());
+   printf("Writing TAnalysisOptions to %s\n", gDirectory->GetFile()->GetName());
    if(oldoption == "READ") {
       printf("  Returning %s to \"%s\" mode.\n", gDirectory->GetFile()->GetName(), oldoption.c_str());
       file->ReOpen("READ");
