@@ -16,11 +16,6 @@ public:
    GHSym(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    ~GHSym() override;
 
-#if MAJOR_ROOT_VERSION < 6
-   Bool_t Add(TF1* h1, Double_t c1 = 1., Option_t* option = "") override;
-   Bool_t Add(const TH1* h1, Double_t c1 = 1.) override;
-   Bool_t Add(const TH1* h1, const TH1* h2, Double_t c1 = 1., Double_t c2 = 1.) override;
-#endif
    Int_t BufferEmpty(Int_t action = 0) override;
    Int_t         BufferFill(Double_t, Double_t) override { return -2; } // MayNotUse
    virtual Int_t BufferFill(Double_t x, Double_t y, Double_t w);
@@ -106,18 +101,12 @@ public:
    void AddBinContent(Int_t bin, Double_t w) override { fArray[bin] += Float_t(w); }
    void Copy(TObject& rh) const override;
    void Draw(Option_t* option = "") override { GetMatrix()->Draw(option); }
-#if MAJOR_ROOT_VERSION < 6
-   virtual TH1* DrawCopy(Option_t* option = "") const;
-#else
    TH1* DrawCopy(Option_t* option = "", const char* name_postfix = "_copy") const override;
-#endif
    Double_t GetBinContent(Int_t bin) const override;
    Double_t GetBinContent(Int_t binx, Int_t biny) const override { return GetBinContent(GetBin(binx, biny)); }
    Double_t GetBinContent(Int_t binx, Int_t biny, Int_t) const override { return GetBinContent(GetBin(binx, biny)); }
    void Reset(Option_t* option = "") override;
-#if MAJOR_ROOT_VERSION >= 6
    Double_t RetrieveBinContent(Int_t bin) const override { return Double_t(fArray[bin]); }
-#endif
    void SetBinContent(Int_t bin, Double_t content) override;
    void SetBinContent(Int_t binx, Int_t biny, Double_t content) override { SetBinContent(GetBin(binx, biny), content); }
    void SetBinContent(Int_t binx, Int_t biny, Int_t, Double_t content) override
@@ -151,19 +140,13 @@ public:
    void AddBinContent(Int_t bin) override { ++fArray[bin]; }
    void AddBinContent(Int_t bin, Double_t w) override { fArray[bin] += w; }
    void Copy(TObject& rh) const override;
-#if MAJOR_ROOT_VERSION < 6
-   virtual TH1* DrawCopy(Option_t* option = "") const;
-#else
    TH1* DrawCopy(Option_t* option = "", const char* name_postfix = "_copy") const override;
-#endif
    void Draw(Option_t* option = "") override { GetMatrix()->Draw(option); }
    Double_t GetBinContent(Int_t bin) const override;
    Double_t GetBinContent(Int_t binx, Int_t biny) const override { return GetBinContent(GetBin(binx, biny)); }
    Double_t GetBinContent(Int_t binx, Int_t biny, Int_t) const override { return GetBinContent(GetBin(binx, biny)); }
    void Reset(Option_t* option = "") override;
-#if MAJOR_ROOT_VERSION >= 6
    Double_t RetrieveBinContent(Int_t bin) const override { return Double_t(fArray[bin]); }
-#endif
    void SetBinContent(Int_t bin, Double_t content) override;
    void SetBinContent(Int_t binx, Int_t biny, Double_t content) override { SetBinContent(GetBin(binx, biny), content); }
    void SetBinContent(Int_t binx, Int_t biny, Int_t, Double_t content) override
