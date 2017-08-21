@@ -175,11 +175,11 @@ public:
    {
       fRunStart = 0.;
       fRunStop  = 0.;
-      if(runinfo->RunLength() > 0) {
+      if(runinfo->fRunLength > 0) {
 			if(fRunLength > 0) {
-				fRunLength += runinfo->RunLength();
+				fRunLength += runinfo->fRunLength;
 			} else {
-				fRunLength = runinfo->RunLength();
+				fRunLength = runinfo->fRunLength;
 			}
 		}
    }

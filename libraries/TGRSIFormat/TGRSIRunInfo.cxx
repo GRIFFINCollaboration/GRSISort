@@ -39,7 +39,6 @@ void TGRSIRunInfo::SetRunInfo(TGRSIRunInfo* tmp)
 
 Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile* tempf)
 {
-
    TDirectory* savdir = gDirectory;
    if(tempf != nullptr) {
       tempf->cd();
@@ -87,38 +86,42 @@ void TGRSIRunInfo::Print(Option_t* opt) const
    // a: Print out more details.
    std::cout<<"Title: "<<fRunTitle<<std::endl;
    std::cout<<"Comment: "<<fRunComment<<std::endl;
+	time_t tmpStart = static_cast<time_t>(fRunStart);
+	time_t tmpStop  = static_cast<time_t>(fRunStop);
+	struct tm runStart = *localtime(const_cast<const time_t*>(&tmpStart));
+	struct tm runStop  = *localtime(const_cast<const time_t*>(&tmpStop));
+	printf("\t\tRunNumber:          %05i\n", fRunNumber);
+	printf("\t\tSubRunNumber:       %03i\n", fSubRunNumber);
+	if(fRunStart != 0 && fRunStop != 0) {
+		printf("\t\tRunStart:           %s", asctime(&runStart));
+		printf("\t\tRunStop:            %s", asctime(&runStop));
+		printf("\t\tRunLength:          %.0f\n", fRunLength);
+	} else {
+		printf("\t\tCombined RunLength: %.0f\n", fRunLength);
+	}
    if(strchr(opt, 'a') != nullptr) {
-      printf("\tTGRSIRunInfo Status:\n");
-      printf("\t\tRunNumber:    %05i\n", TGRSIRunInfo::Get()->fRunNumber);
-      printf("\t\tSubRunNumber: %03i\n", TGRSIRunInfo::Get()->fSubRunNumber);
-      printf("\t\tRunStart:     %.0f\n", TGRSIRunInfo::Get()->fRunStart);
-      printf("\t\tRunStop:      %.0f\n", TGRSIRunInfo::Get()->fRunStop);
-      printf("\t\tRunLength:    %.0f\n", TGRSIRunInfo::Get()->fRunLength);
-      printf("\t\tTIGRESS:      %s\n", Tigress() ? "true" : "false");
-      printf("\t\tSHARC:        %s\n", Sharc() ? "true" : "false");
-      printf("\t\tTRIFOIL:      %s\n", TriFoil() ? "true" : "false");
-      printf("\t\tTIP:          %s\n", Tip() ? "true" : "false");
-      printf("\t\tCSM:          %s\n", CSM() ? "true" : "false");
-      printf("\t\tSPICE:        %s\n", Spice() ? "true" : "false");
-      printf("\t\tS3:           %s\n", S3() ? "true" : "false");
-      printf("\t\tBAMBINO:      %s\n", Bambino() ? "true" : "false");
-      printf("\t\tRF:           %s\n", RF() ? "true" : "false");
-      printf("\t\tGRIFFIN:      %s\n", Griffin() ? "true" : "false");
-      printf("\t\tSCEPTAR:      %s\n", Sceptar() ? "true" : "false");
-      printf("\t\tPACES:        %s\n", Paces() ? "true" : "false");
-      printf("\t\tDESCANT:      %s\n", Descant() ? "true" : "false");
-      printf("\t\tZDS:          %s\n", ZeroDegree() ? "true" : "false");
-      printf("\t\tDANTE:        %s\n", Dante() ? "true" : "false");
-      printf("\t\tFIPPS:        %s\n", Fipps() ? "true" : "false");
+      printf("\t\tTIGRESS:            %s\n", Tigress() ? "true" : "false");
+      printf("\t\tSHARC:              %s\n", Sharc() ? "true" : "false");
+      printf("\t\tTRIFOIL:            %s\n", TriFoil() ? "true" : "false");
+      printf("\t\tTIP:                %s\n", Tip() ? "true" : "false");
+      printf("\t\tCSM:                %s\n", CSM() ? "true" : "false");
+      printf("\t\tSPICE:              %s\n", Spice() ? "true" : "false");
+      printf("\t\tS3:                 %s\n", S3() ? "true" : "false");
+      printf("\t\tBAMBINO:            %s\n", Bambino() ? "true" : "false");
+      printf("\t\tRF:                 %s\n", RF() ? "true" : "false");
+      printf("\t\tGRIFFIN:            %s\n", Griffin() ? "true" : "false");
+      printf("\t\tSCEPTAR:            %s\n", Sceptar() ? "true" : "false");
+      printf("\t\tPACES:              %s\n", Paces() ? "true" : "false");
+      printf("\t\tDESCANT:            %s\n", Descant() ? "true" : "false");
+      printf("\t\tZDS:                %s\n", ZeroDegree() ? "true" : "false");
+      printf("\t\tDANTE:              %s\n", Dante() ? "true" : "false");
+      printf("\t\tFIPPS:              %s\n", Fipps() ? "true" : "false");
       printf("\n");
       printf(DBLUE "\tArray Position (mm) = " DRED "%.01f" RESET_COLOR "\n", TGRSIRunInfo::HPGeArrayPosition());
       printf(DBLUE "\tDESCANT in ancillary positions = " DRED "%s" RESET_COLOR "\n",
              TGRSIRunInfo::DescantAncillary() ? "TRUE" : "FALSE");
       printf("\n");
       printf("\t==============================\n");
-   } else {
-      printf("\t\tRunNumber:    %05i\t", TGRSIRunInfo::Get()->fRunNumber);
-      printf("\t\tSubRunNumber: %03i\n", TGRSIRunInfo::Get()->fSubRunNumber);
    }
 }
 
