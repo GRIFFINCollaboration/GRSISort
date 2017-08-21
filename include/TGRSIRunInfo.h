@@ -173,14 +173,29 @@ public:
    Long64_t Merge(TCollection* list);
    void Add(TGRSIRunInfo* runinfo)
    {
-      fRunStart = 0.;
-      fRunStop  = 0.;
+		// add the run length together
       if(runinfo->fRunLength > 0) {
 			if(fRunLength > 0) {
 				fRunLength += runinfo->fRunLength;
 			} else {
 				fRunLength = runinfo->fRunLength;
 			}
+		}
+		if(runinfo->fRunNumber != fRunNumber) {
+			// the run number is meaningful only when the run numbers are the same
+			fRunNumber = 0;
+			fSubRunNumber = -1;
+			fRunStart = 0.;
+			fRunStop  = 0.;
+		} else if(runinfo->fSubRunNumber == fSubRunNumber + 1) {
+			// if the run numbers are the same and we have subsequent sub runs we can update the run stop
+			fRunStop = runinfo->fRunStop;
+			fSubRunNumber = runinfo->fSubRunNumber; // so we can check the next subrun as well
+		} else {
+			// with multiple files added, the sub run number has no meaning anymore
+			fSubRunNumber = -1;
+			fRunStart = 0.;
+			fRunStop  = 0.;
 		}
    }
 
