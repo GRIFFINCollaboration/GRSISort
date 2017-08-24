@@ -89,408 +89,6 @@ GHSym::GHSym(const GHSym& rhs) : TH1()
 
 GHSym::~GHSym() = default;
 
-#if MAJOR_ROOT_VERSION < 6
-Bool_t GHSym::Add(TF1* f1, Double_t c1, Option_t* option)
-{
-   // Performs the operation: this = this + c1*f1
-   // if errors are defined (see TH1::Sumw2), errors are also recalculated.
-   //
-   // By default, the function is computed at the centre of the bin.
-   // if option "I" is specified (1-d histogram only), the integral of the
-   // function in each bin is used instead of the value of the function at
-   // the centre of the bin.
-   // Only bins inside the function range are recomputed.
-   // IMPORTANT NOTE: If you intend to use the errors of this histogram later
-   // you should call Sumw2 before making this operation.
-   // This is particularly important if you fit the histogram after TH1::Add
-   //
-   // The function return kFALSE if the Add operation failed
-
-   if(!f1) {
-      Error("Add", "Attempt to add a non-existing function");
-      return kFALSE;
-   }
-
-   TString opt = option;
-   opt.ToLower();
-   Bool_t integral                                   = kFALSE;
-   if(opt.Contains("i") && fDimension == 1) integral = kTRUE;
-
-   Int_t nbinsx = GetNbinsX();
-   Int_t nbinsy = GetNbinsY();
-
-   // delete buffer if it is there since it will become invalid
-   if(fBuffer) BufferEmpty(1);
-
-   //   - Add statistics
-   Double_t s1[10];
-   Int_t    i;
-   for(i = 0; i < 10; i++) {
-      s1[i] = 0;
-   }
-   PutStats(s1);
-   SetMinimum();
-   SetMaximum();
-
-   //   - Loop on bins (including underflows/overflows)
-   Int_t     bin, binx, biny;
-   Double_t  cu = 0.;
-   Double_t  xx[2];
-   Double_t* params = nullptr;
-   f1->InitArgs(xx, params);
-   for(biny = 0; biny <= nbinsy + 1; ++biny) {
-      xx[1] = fYaxis.GetBinCenter(biny);
-      for(binx = 0; binx <= nbinsx + 1; ++binx) {
-         xx[0] = fXaxis.GetBinCenter(binx);
-         if(!f1->IsInside(xx)) continue;
-         TF1::RejectPoint(kFALSE);
-         bin = GetBin(binx, biny);
-         if(integral) {
-            xx[0] = fXaxis.GetBinLowEdge(binx);
-            cu    = c1 * f1->EvalPar(xx);
-            cu += c1 * f1->Integral(fXaxis.GetBinLowEdge(binx), fXaxis.GetBinUpEdge(binx)) * fXaxis.GetBinWidth(binx);
-         } else {
-            cu = c1 * f1->EvalPar(xx);
-         }
-         if(TF1::RejectedPoint()) continue;
-         Double_t error1 = GetBinError(bin);
-         AddBinContent(bin, cu);
-         if(fSumw2.fN) {
-            // errors are unchanged: error on f1 assumed 0
-            fSumw2.fArray[bin] = error1 * error1;
-         }
-      }
-   }
-
-   return kTRUE;
-}
-
-Bool_t GHSym::Add(const TH1* h1, Double_t c1)
-{
-   // Performs the operation: this = this + c1*h1
-   // if errors are defined (see TH1::Sumw2), errors are also recalculated.
-   // Note that if h1 has Sumw2 set, Sumw2 is automatically called for this
-   // if not already set.
-   // Note also that adding histogram with labels is not supported, histogram will be
-   // added merging them by bin number independently of the labels.
-   // For adding histogram with labels one should use TH1::Merge
-   //
-   // SPECIAL CASE (Average/Efficiency histograms)
-   // For histograms representing averages or efficiencies, one should compute the average
-   // of the two histograms and not the sum. One can mark a histogram to be an average
-   // histogram by setting its bit kIsAverage with
-   //    myhist.SetBit(TH1::kIsAverage);
-   // Note that the two histograms must have their kIsAverage bit set
-   //
-   // IMPORTANT NOTE1: If you intend to use the errors of this histogram later
-   // you should call Sumw2 before making this operation.
-   // This is particularly important if you fit the histogram after TH1::Add
-   //
-   // IMPORTANT NOTE2: if h1 has a normalisation factor, the normalisation factor
-   // is used , ie  this = this + c1*factor*h1
-   // Use the other TH1::Add function if you do not want this feature
-   //
-   // The function return kFALSE if the Add operation failed
-
-   if(h1 == nullptr) {
-      Error("Add", "Attempt to add a non-existing histogram");
-      return kFALSE;
-   }
-
-   // delete buffer if it is there since it will become invalid
-   if(fBuffer) BufferEmpty(1);
-
-   Int_t nbinsx = GetNbinsX();
-   Int_t nbinsy = GetNbinsY();
-
-   try {
-      CheckConsistency(this, h1);
-   } catch(DifferentNumberOfBins&) {
-      Error("Add", "Attempt to add histograms with different number of bins");
-      return kFALSE;
-   } catch(DifferentAxisLimits&) {
-      Warning("Add", "Attempt to add histograms with different axis limits");
-   } catch(DifferentBinLimits&) {
-      Warning("Add", "Attempt to add histograms with different bin limits");
-   } catch(DifferentLabels&) {
-      Warning("Add", "Attempt to add histograms with different labels");
-   }
-
-   //    Create Sumw2 if h1 has Sumw2 set
-   if(fSumw2.fN == 0 && h1->GetSumw2N() != 0) Sumw2();
-
-   //   - Add statistics
-   Double_t entries = TMath::Abs(GetEntries() + c1 * h1->GetEntries());
-
-   // statistics can be preserved only in case of positive coefficients
-   // otherwise with negative c1 (histogram subtraction) one risks to get negative variances
-   Bool_t   resetStats = (c1 < 0);
-   Double_t s1[kNstat] = {0};
-   Double_t s2[kNstat] = {0};
-   if(!resetStats) {
-      // need to initialize to zero s1 and s2 since
-      // GetStats fills only used elements depending on dimension and type
-      GetStats(s1);
-      h1->GetStats(s2);
-   }
-
-   SetMinimum();
-   SetMaximum();
-
-   //   - Loop on bins (including underflows/overflows)
-   Int_t    bin, binx, biny;
-   Double_t cu;
-   Double_t factor                     = 1.;
-   if(h1->GetNormFactor() != 0) factor = h1->GetNormFactor() / h1->GetSumOfWeights();
-   ;
-   for(biny = 0; biny <= nbinsy + 1; ++biny) {
-      for(binx = 0; binx <= nbinsx + 1; ++binx) {
-         bin = GetBin(binx, biny);
-         // special case where histograms have the kIsAverage bit set
-         if(TestBit(kIsAverage) && h1->TestBit(kIsAverage)) {
-            Double_t y1 = h1->GetBinContent(bin);
-            Double_t y2 = GetBinContent(bin);
-            Double_t e1 = h1->GetBinError(bin);
-            Double_t e2 = GetBinError(bin);
-            Double_t w1 = 1., w2 = 1.;
-            // consider all special cases  when bin errors are zero
-            // see http://root.cern.ch/phpBB3//viewtopic.php?f=3&t=13299
-            if(e1 > 0) {
-               w1 = 1. / (e1 * e1);
-            } else if(h1->GetSumw2N()) {
-               w1 = 1.E200; // use an arbitrary huge value
-               if(y1 == 0) {
-                  // use an estimated error from the global histogram scale
-                  double sf = (s2[0] != 0) ? s2[1] / s2[0] : 1;
-                  w1        = 1. / (sf * sf);
-               }
-            }
-            if(e2 > 0) {
-               w2 = 1. / (e2 * e2);
-            } else if(fSumw2.fN) {
-               w2 = 1.E200; // use an arbitrary huge value
-               if(y2 == 0) {
-                  // use an estimated error from the global histogram scale
-                  double sf = (s1[0] != 0) ? s1[1] / s1[0] : 1;
-                  w2        = 1. / (sf * sf);
-               }
-            }
-            double y = (w1 * y1 + w2 * y2) / (w1 + w2);
-            SetBinContent(bin, y);
-            if(fSumw2.fN) {
-               double err2             = 1. / (w1 + w2);
-               if(err2 < 1.E-200) err2 = 0; // to remove arbitrary value when e1=0 AND e2=0
-               fSumw2.fArray[bin]      = err2;
-            }
-         } else { // normal case of addition between histograms
-            cu = c1 * factor * h1->GetBinContent(bin);
-            AddBinContent(bin, cu);
-            if(fSumw2.fN) {
-               Double_t e1 = factor * h1->GetBinError(bin);
-               fSumw2.fArray[bin] += c1 * c1 * e1 * e1;
-            }
-         }
-      }
-   }
-
-   // update statistics (do here to avoid changes by SetBinContent)
-   if(resetStats) {
-      // statistics need to be reset in case coefficient are negative
-      ResetStats();
-   } else {
-      for(Int_t i = 0; i < kNstat; i++) {
-         if(i == 1)
-            s1[i] += c1 * c1 * s2[i];
-         else
-            s1[i] += c1 * s2[i];
-      }
-      PutStats(s1);
-      SetEntries(entries);
-   }
-
-   return kTRUE;
-}
-
-Bool_t GHSym::Add(const TH1* h1, const TH1* h2, Double_t c1, Double_t c2)
-{
-   //   -*-*-*Replace contents of this histogram by the addition of h1 and h2*-*-*
-   //         ===============================================================
-   //
-   //   this = c1*h1 + c2*h2
-   //   if errors are defined (see TH1::Sumw2), errors are also recalculated
-   //   Note that if h1 or h2 have Sumw2 set, Sumw2 is automatically called for this
-   //   if not already set.
-   //   Note also that adding histogram with labels is not supported, histogram will be
-   //   added merging them by bin number independently of the labels.
-   //   For adding histogram ith labels one should use TH1::Merge
-   //
-   // SPECIAL CASE (Average/Efficiency histograms)
-   // For histograms representing averages or efficiencies, one should compute the average
-   // of the two histograms and not the sum. One can mark a histogram to be an average
-   // histogram by setting its bit kIsAverage with
-   //    myhist.SetBit(TH1::kIsAverage);
-   // Note that the two histograms must have their kIsAverage bit set
-   //
-   // IMPORTANT NOTE: If you intend to use the errors of this histogram later
-   // you should call Sumw2 before making this operation.
-   // This is particularly important if you fit the histogram after TH1::Add
-   //
-   // ANOTHER SPECIAL CASE : h1 = h2 and c2 < 0
-   // do a scaling   this = c1 * h1 / (bin Volume)
-   //
-   // The function returns kFALSE if the Add operation failed
-
-   if(h1 == nullptr || h2 == nullptr) {
-      Error("Add", "Attempt to add a non-existing histogram");
-      return kFALSE;
-   }
-
-   // delete buffer if it is there since it will become invalid
-   if(fBuffer) BufferEmpty(1);
-
-   Bool_t normWidth = kFALSE;
-   if(h1 == h2 && c2 < 0) {
-      c2        = 0;
-      normWidth = kTRUE;
-   }
-   Int_t nbinsx = GetNbinsX();
-   Int_t nbinsy = GetNbinsY();
-
-   if(h1 != h2) {
-      try {
-         CheckConsistency(h1, h2);
-         CheckConsistency(this, h1);
-      } catch(DifferentNumberOfBins&) {
-         Error("Add", "Attempt to add histograms with different number of bins");
-         return kFALSE;
-      } catch(DifferentAxisLimits&) {
-         Warning("Add", "Attempt to add histograms with different axis limits");
-      } catch(DifferentBinLimits&) {
-         Warning("Add", "Attempt to add histograms with different bin limits");
-      } catch(DifferentLabels&) {
-         Warning("Add", "Attempt to add histograms with different labels");
-      }
-   }
-
-   //    Create Sumw2 if h1 or h2 have Sumw2 set
-   if(fSumw2.fN == 0 && (h1->GetSumw2N() != 0 || h2->GetSumw2N() != 0)) Sumw2();
-
-   //   - Add statistics
-   Double_t nEntries = TMath::Abs(c1 * h1->GetEntries() + c2 * h2->GetEntries());
-
-   // statistics can be preserved only in case of positive coefficients
-   // otherwise with negative c1 (histogram subtraction) one risks to get negative variances
-   // also in case of scaling with the width we cannot preserve the statistics
-   Double_t s1[kNstat] = {0};
-   Double_t s2[kNstat] = {0};
-   Double_t s3[kNstat];
-   Bool_t   resetStats = (c1 * c2 < 0) || normWidth;
-   if(!resetStats) {
-      // need to initialize to zero s1 and s2 since
-      // GetStats fills only used elements depending on dimension and type
-      h1->GetStats(s1);
-      h2->GetStats(s2);
-      for(Int_t i = 0; i < kNstat; i++) {
-         if(i == 1) s3[i] = c1 * c1 * s1[i] + c2 * c2 * s2[i];
-         // else        s3[i] = TMath::Abs(c1)*s1[i] + TMath::Abs(c2)*s2[i];
-         else
-            s3[i] = c1 * s1[i] + c2 * s2[i];
-      }
-   }
-
-   SetMinimum();
-   SetMaximum();
-
-   //    Reset the kCanRebin and time display option. Otherwise SetBinContent on the overflow bin
-   //    would resize the axis limits!
-   // we need to do for only X axis since only TH1x::SetBinContent resize the axis
-   Bool_t canRebin = TestBit(kCanRebin);
-   if(canRebin) ResetBit(kCanRebin);
-
-   Bool_t timeDisplayX = fXaxis.GetTimeDisplay();
-   if(timeDisplayX) fXaxis.SetTimeDisplay(0);
-
-   //   - Loop on bins (including underflows/overflows)
-   Int_t    bin, binx, biny;
-   Double_t cu;
-   for(biny = 0; biny <= nbinsy + 1; ++biny) {
-      Double_t wy = h1->GetYaxis()->GetBinWidth(biny);
-      for(binx = 0; binx <= nbinsx + 1; ++binx) {
-         Double_t wx = h1->GetXaxis()->GetBinWidth(binx);
-         bin         = GetBin(binx, biny);
-         // special case where histograms have the kIsAverage bit set
-         if(h1->TestBit(kIsAverage) && h2->TestBit(kIsAverage)) {
-            Double_t y1 = h1->GetBinContent(bin);
-            Double_t y2 = h2->GetBinContent(bin);
-            Double_t e1 = h1->GetBinError(bin);
-            Double_t e2 = h2->GetBinError(bin);
-            Double_t w1 = 1., w2 = 1.;
-            // consider all special cases  when bin errors are zero
-            // see http://root.cern.ch/phpBB3//viewtopic.php?f=3&t=13299
-            if(e1 > 0) {
-               w1 = 1. / (e1 * e1);
-            } else if(h1->GetSumw2N()) {
-               w1 = 1.E200; // use an arbitrary huge value
-               if(y1 == 0) {
-                  // use an estimated error from the global histogram scale
-                  double sf = (s1[0] != 0) ? s1[1] / s1[0] : 1;
-                  w1        = 1. / (sf * sf);
-               }
-            }
-            if(e2 > 0) {
-               w2 = 1. / (e2 * e2);
-            } else if(h2->GetSumw2N()) {
-               w2 = 1.E200; // use an arbitrary huge value
-               if(y2 == 0) {
-                  // use an estimated error from the global histogram scale
-                  double sf = (s2[0] != 0) ? s2[1] / s2[0] : 1;
-                  w2        = 1. / (sf * sf);
-               }
-            }
-            double y = (w1 * y1 + w2 * y2) / (w1 + w2);
-            SetBinContent(bin, y);
-            if(fSumw2.fN) {
-               double err2             = 1. / (w1 + w2);
-               if(err2 < 1.E-200) err2 = 0; // to remove arbitrary value when e1=0 AND e2=0
-               fSumw2.fArray[bin]      = err2;
-            }
-         } else { // case of histogram Addition
-            if(normWidth) {
-               Double_t w = wx * wy;
-               cu         = c1 * h1->GetBinContent(bin) / w;
-               SetBinContent(bin, cu);
-               if(fSumw2.fN) {
-                  Double_t e1        = h1->GetBinError(bin) / w;
-                  fSumw2.fArray[bin] = c1 * c1 * e1 * e1;
-               }
-            } else {
-               cu = c1 * h1->GetBinContent(bin) + c2 * h2->GetBinContent(bin);
-               SetBinContent(bin, cu);
-               if(fSumw2.fN) {
-                  Double_t e1        = h1->GetBinError(bin);
-                  Double_t e2        = h2->GetBinError(bin);
-                  fSumw2.fArray[bin] = c1 * c1 * e1 * e1 + c2 * c2 * e2 * e2;
-               }
-            }
-         }
-      }
-   }
-   if(resetStats) {
-      // statistics need to be reset in case coefficient are negative
-      ResetStats();
-   } else {
-      // update statistics (do here to avoid changes by SetBinContent)
-      PutStats(s3);
-      SetEntries(nEntries);
-   }
-
-   if(canRebin) SetBit(kCanRebin);
-   if(timeDisplayX) fXaxis.SetTimeDisplay(1);
-
-   return kTRUE;
-}
-#endif
-
 Int_t GHSym::BufferEmpty(Int_t action)
 {
    /// Fill histogram with all entries in the buffer.
@@ -518,11 +116,7 @@ Int_t GHSym::BufferEmpty(Int_t action)
       fBuffer = buffer;
    }
 
-#if MAJOR_ROOT_VERSION < 6
-   if(TestBit(kCanRebin) || fXaxis.GetXmax() <= fXaxis.GetXmin() || fYaxis.GetXmax() <= fYaxis.GetXmin()) {
-#else
    if(CanExtendAllAxes() || fXaxis.GetXmax() <= fXaxis.GetXmin() || fYaxis.GetXmax() <= fYaxis.GetXmin()) {
-#endif
       // find min, max of entries in buffer
       // for the symmetric matrix x- and y-range are the same
       Double_t min = fBuffer[2];
@@ -2050,13 +1644,8 @@ Long64_t GHSym::Merge(TCollection* list)
    Double_t nentries = GetEntries();
    Int_t    binx, biny, ix, iy, nx, ny, ibin;
    Double_t cu;
-#if MAJOR_ROOT_VERSION < 6
-   Bool_t canRebin = TestBit(kCanRebin);
-   ResetBit(kCanRebin); // reset, otherwise setting the under/overflow will rebin
-#else
    Bool_t canExtend = CanExtendAllAxes();
    SetCanExtend(TH1::kNoAxis); // reset, otherwise setting the under/overflow will extend the axis
-#endif
 
    while((h = static_cast<GHSym*>(next())) != nullptr) {
       // skip empty histograms
@@ -2112,11 +1701,7 @@ Long64_t GHSym::Merge(TCollection* list)
          }
       }
    }
-#if MAJOR_ROOT_VERSION < 6
-   if(canRebin) SetBit(kCanRebin);
-#else
    SetCanExtend(static_cast<UInt_t>(canExtend));
-#endif
 
    // copy merged stats
    PutStats(totstats);
@@ -2683,12 +2268,6 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
       hnew->SetName(newname);
    }
 
-#if MAJOR_ROOT_VERSION < 6
-   // reset kCanRebin bit to avoid a rebinning in SetBinContent
-   Int_t bitRebin = hnew->TestBit(kCanRebin);
-   hnew->SetBit(kCanRebin, 0);
-#endif
-
    // save original statistics
    Double_t stat[kNstat];
    GetStats(stat);
@@ -2931,9 +2510,6 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
    if(!resetStat) {
       hnew->PutStats(stat);
    }
-#if MAJOR_ROOT_VERSION < 6
-   hnew->SetBit(kCanRebin, bitRebin);
-#endif
 
    delete[] oldBins;
    if(oldErrors != nullptr) {
@@ -3220,21 +2796,6 @@ void GHSymF::Copy(TObject& rh) const
    GHSym::Copy(static_cast<GHSymF&>(rh));
 }
 
-#if MAJOR_ROOT_VERSION < 6
-TH1* GHSymF::DrawCopy(Option_t* option) const
-{
-   // Draw copy.
-
-   TString opt = option;
-   opt.ToLower();
-   if(gPad != nullptr && !opt.Contains("same")) gPad->Clear();
-   TH1* newth1 = static_cast<TH1*>(Clone());
-   newth1->SetDirectory(nullptr);
-   newth1->SetBit(kCanDelete);
-   newth1->AppendPad(option);
-   return newth1;
-}
-#else
 TH1* GHSymF::DrawCopy(Option_t* option, const char* name_postfix) const
 {
    // Draw copy.
@@ -3251,7 +2812,6 @@ TH1* GHSymF::DrawCopy(Option_t* option, const char* name_postfix) const
    newth1->AppendPad(option);
    return newth1;
 }
-#endif
 
 Double_t GHSymF::GetBinContent(Int_t bin) const
 {
@@ -3444,21 +3004,6 @@ void GHSymD::Copy(TObject& rh) const
    GHSym::Copy(static_cast<GHSymD&>(rh));
 }
 
-#if MAJOR_ROOT_VERSION < 6
-TH1* GHSymD::DrawCopy(Option_t* option) const
-{
-   // Draw copy.
-
-   TString opt = option;
-   opt.ToLower();
-   if(gPad != nullptr && !opt.Contains("same")) gPad->Clear();
-   TH1* newth1 = static_cast<TH1*>(Clone());
-   newth1->SetDirectory(nullptr);
-   newth1->SetBit(kCanDelete);
-   newth1->AppendPad(option);
-   return newth1;
-}
-#else
 TH1* GHSymD::DrawCopy(Option_t* option, const char* name_postfix) const
 {
    // Draw copy.
@@ -3475,7 +3020,6 @@ TH1* GHSymD::DrawCopy(Option_t* option, const char* name_postfix) const
    newth1->AppendPad(option);
    return newth1;
 }
-#endif
 
 Double_t GHSymD::GetBinContent(Int_t bin) const
 {
