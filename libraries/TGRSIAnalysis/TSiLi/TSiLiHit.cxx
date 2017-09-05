@@ -67,16 +67,17 @@ void TSiLiHit::SetWavefit(const TFragment &frag)   {
 	}
 }
 
-//Broken up for external analysis script use
-TPulseAnalyzer* TSiLiHit::FitFrag(const TFragment &frag,int ShapeFit,int segment){
-	return FitFrag(frag,ShapeFit,GetSiLiHitChannel(segment));
-}
 
 TPulseAnalyzer* TSiLiHit::FitFrag(const TFragment &frag,int ShapeFit,TChannel* channel){
 	TPulseAnalyzer* pulse=new TPulseAnalyzer(frag,TSiLi::sili_noise_fac);
 	if(FitPulseAnalyzer(pulse,ShapeFit,channel))return pulse;
 	delete pulse;
 	return 0;
+}
+
+//Broken up for external analysis script use
+TPulseAnalyzer* TSiLiHit::FitFrag(const TFragment &frag,int ShapeFit,int segment){
+	return FitFrag(frag,ShapeFit,GetSiLiHitChannel(segment));
 }
 
 TChannel* TSiLiHit::GetSiLiHitChannel(int segment){
@@ -110,8 +111,9 @@ int TSiLiHit::FitPulseAnalyzer(TPulseAnalyzer* pulse,int ShapeFit,TChannel* chan
 		
 		bool goodfit=false;
 		if(ShapeFit<2)goodfit=pulse->GetSiliShape(Decay,Rise);
-		if(ShapeFit==1&&!goodfit)ShapeFit++;
+		if(ShapeFit==1&&!goodfit)ShapeFit++;//So currently it does a TF1 fit if initial fit fails, this might be a bad idea
 		if(ShapeFit==2)goodfit=pulse->GetSiliShapeTF1(Decay,Rise,Base);
+		if(ShapeFit==3)goodfit=pulse->GetSiliShapeTF1(Decay,Rise,Base,TSiLi::BaseFreq);
 		if(goodfit)return 1+ShapeFit;
 	}
 	return 0;

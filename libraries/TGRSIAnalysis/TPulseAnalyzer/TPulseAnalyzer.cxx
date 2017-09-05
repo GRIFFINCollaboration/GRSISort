@@ -1345,6 +1345,10 @@ bool TPulseAnalyzer::SiliShapePrepare(double tauDecay,double tauRise){if(IsSet()
 	cWpar->tauDecay=tauDecay;
 	cWpar->tauRise=tauRise;
 	cWpar->bflag=0;//baseline
+	cWpar->baseamp=0;
+	cWpar->basefreq=0;
+	cWpar->basephase=0;
+	cWpar->osciflag=0;
 	
 	if(!(cWpar->t10_flag))return 0;
 	
@@ -1443,11 +1447,13 @@ bool TPulseAnalyzer::GetSiliShape(double tauDecay,double tauRise){if(IsSet()){
 
 //Significantly slower and should only be used in non-sorting analysis of poor waveform
 //Needs initial estimates even if fitting those parameters
-bool TPulseAnalyzer::GetSiliShapeTF1(double tauDecay,double tauRise,double baseline){
+//Setting basefreq>0 opens a very experimental/bad mode
+bool TPulseAnalyzer::GetSiliShapeTF1(double tauDecay,double tauRise,double baseline,double basefreq){
 TGraph* h=GetWaveGraph();if(h){//Graph better than hist for stats and simplicity 
 	
 	SiliShapePrepare(tauDecay,tauRise);
 	TF1 g=Getsilifit();
+	
 // 	g.SetParameter(0,cWpar->t0);
 // 	g.SetParameter(1,cWpar->tauDecay);
 // 	g.SetParameter(2,cWpar->tauRise);
@@ -1474,6 +1480,19 @@ TGraph* h=GetWaveGraph();if(h){//Graph better than hist for stats and simplicity
 		g.SetParLimits(4,r*0.1,r*10.0);
 	}
 
+	if(basefreq>0){
+		cWpar->osciflag=1;
+		g.ReleaseParameter(5);
+		g.ReleaseParameter(6);
+		g.ReleaseParameter(7);
+		g.SetParameter(5,basefreq);
+		g.SetParameter(6,0.5);
+		g.SetParameter(7,r*0.1);
+		g.SetParLimits(5,basefreq*0.5,basefreq*2.0);
+		g.SetParLimits(6,0,1);
+		g.SetParLimits(7,0,r*10.0);
+	}
+	
 	int res=h->Fit(&g,"QN");
 	delete h;
 	
@@ -1483,6 +1502,10 @@ TGraph* h=GetWaveGraph();if(h){//Graph better than hist for stats and simplicity
 		cWpar->tauRise=g.GetParameter(2);
 		cWpar->baselinefin=g.GetParameter(3);
 		cWpar->amplitude=g.GetParameter(4);
+		cWpar->basefreq=g.GetParameter(5);
+		cWpar->basephase=g.GetParameter(6);
+		cWpar->baseamp=g.GetParameter(7);
+		
 		return 1;
 	}
 	
@@ -1491,27 +1514,31 @@ TGraph* h=GetWaveGraph();if(h){//Graph better than hist for stats and simplicity
 double TPulseAnalyzer::SiLiFitFunction(double *i,double *p){
   // p[0]-p[2] are t0, RC, Tau  
   // p[3]-p[4] are baseline, A0
-
+  // p[5]-p[7] are osci freq,phase,amp
+	
   double x=i[0]-p[0];
-  if(x<=0){ 
-    return p[3];
-  }else{   
-      double s=p[3];
-      s+=p[4]*(1-exp(-x/p[2]))*exp(-x/p[1]);
-      return s;
-  }
+  
+  double s=p[3];
+  if(x>0)s+=p[4]*(1-exp(-x/p[2]))*exp(-x/p[1]);
+  if(p[7]>0)s+=p[7]*sin((p[6]+i[0]/p[5])*2*TMath::Pi()); 
+
+  return s;
 }
 
 TF1  TPulseAnalyzer::Getsilifit(){
 	if(set&&cWpar){
 		std::stringstream ss;ss<<"Fit"<<nameiter;++nameiter;
-		TF1 g(ss.str().c_str(),SiLiFitFunction,0,cN,5);
+		TF1 g(ss.str().c_str(),SiLiFitFunction,0,cN,8);
 		
 		g.SetParameter(0,cWpar->t0);
 		g.SetParameter(1,cWpar->tauDecay);
 		g.SetParameter(2,cWpar->tauRise);
 		g.SetParameter(3,cWpar->baselinefin);
 		g.SetParameter(4,cWpar->amplitude);
+		g.FixParameter(5,cWpar->basefreq);
+		g.FixParameter(6,cWpar->basephase);
+		g.FixParameter(7,cWpar->baseamp);
+		
 		g.SetLineColor(kRed);
 
 		return g;
@@ -1525,14 +1552,13 @@ double TPulseAnalyzer::GetsiliSmirnov(){
 	if(set&&cWpar){
 		double gsum=0,wsum=0;
 		TF1 g=Getsilifit();
-		
 		for(Int_t i=0;i<cN;i++){
 			wsum+=abs(cWavebuffer[i]);
 			gsum+=abs(g.Eval(i+0.5));
-			Smirnov+=(wsum-gsum);
+			Smirnov+=abs(wsum-gsum);
 		}
 	}
-	return abs(Smirnov);
+	return (Smirnov);
 }
 
 void  TPulseAnalyzer::Drawsilifit(){

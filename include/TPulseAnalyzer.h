@@ -39,7 +39,12 @@ class TPulseAnalyzer {
 		double baselineStDev; //baseline variance
 		double baselinefin; //baseline
 		double baselineStDevfin; //baseline variance
-		int    bflag; //flag for baseline determiniation
+		int    bflag; //flag for baseline determination
+		//paramaters for oscillation
+		double baseamp;//amplitude of baseline oscillations
+		double basefreq;//tick frequency of baseline oscillations
+		double basephase; //flag for baseline determination
+		int osciflag; //flag for baseline determination
 		//paremeters for exclusion zone
 		double max; //max value of the filtered waveform 
 		double tmax; //x position of the max value of the filtered waveform
@@ -132,7 +137,7 @@ class TPulseAnalyzer {
 	
 	bool SiliShapePrepare(double tauDecay,double tauRise);
 	bool GetSiliShape(double tauDecay, double tauRise); // Added for Spice, parameters to be found : t0 and Amplitude
-	bool GetSiliShapeTF1(double tauDecay, double tauRise,double baseline); // Added for Spice, full slow fit to establish parameters, needs initial estimates
+	bool GetSiliShapeTF1(double tauDecay, double tauRise,double baseline,double basefreq=0); // Added for Spice, full slow fit to establish parameters, needs initial estimates
 	inline bool Get_bflag(){return cWpar->bflag;}
 	TF1       Getsilifit();
 	double	  GetsiliSmirnov();

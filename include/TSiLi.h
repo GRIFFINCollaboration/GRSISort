@@ -71,6 +71,17 @@ class TSiLi: public TGRSIDetector  {
 		static Int_t GetRing(Int_t seg) {  return seg/12; }
 		static Int_t GetSector(Int_t seg) {  return seg%12; }
 		static Int_t GetPreamp(Int_t seg) {  return  ((GetSector(seg)/3)*2)+(((GetSector(seg)%3)+GetRing(seg))%2); }
+		static Int_t GetPin(Int_t seg) {//stupid chequerboard pattern that inverts
+			int ring=GetRing(seg);
+			int sec=GetSector(seg)%3;
+			int inv=(GetSector(seg)/3)%2;
+			int ret=10*(2-sec);
+			if((sec==1)^!(inv))ret+=9-ring;
+			else ret+=ring;
+			return  (ret/2)+1;
+		}
+		
+		
 		
 		static double GetSegmentArea(Int_t seg);
 		
@@ -80,12 +91,17 @@ class TSiLi: public TGRSIDetector  {
 		// 0 quick linear eq. method, requires good baseline
 		// 1 use slow TF1 fit if quick linear eq. method fails
 		// 2 use slow TF1 method exclusively
+		// 3 use slow TF1 with experimental oscillation
 		static int FitSiLiShape;
+		
+		static double BaseFreq;
 		
 		static double SiLiBaseLine[120];
 		static double SiLiRiseTime[120];
 		static double SiLiDecayTime[120];
 		
+		
+		static std::string fPreAmpName[8];        //!<!
 	private:
 		std::vector<TSiLiHit> fSiLiHits;
 		std::vector<TSiLiHit> fAddbackHits;
