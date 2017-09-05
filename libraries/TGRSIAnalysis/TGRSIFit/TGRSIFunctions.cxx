@@ -359,3 +359,18 @@ Double_t TGRSIFunctions::PhotoEfficiency(Double_t* dim, Double_t* par)
 
    return TMath::Exp(sum);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Double_t TGRSIFunctions::ConvolutedDecay(Double_t *x, Double_t *par){
+//This function is derived from the convolution of a gaussian with an exponential decay, to fit TAC spectra of long half-lives (above 100 ps)
+//Requires the following parameters:
+//   - par[0]:  Normalization factor
+//   - par[1]:  Centroid of gaussian
+//   - par[2]:  Width of gaussian 
+//   - par[3]:  Lambda of the level
+
+  Double_t val;
+  val = TMath::Sqrt(3.1415)*par[0]*par[3]/2*TMath::Exp(par[3]/2*(2*par[1]+par[3]*pow(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[3]*pow(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]));
+  return val;
+
+}
