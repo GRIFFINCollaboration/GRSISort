@@ -68,6 +68,7 @@ private:
    Double_t fRangeHigh;
    
    Double_t FitFunction(Double_t *dim, Double_t *par);
+   Double_t BackgroundFunction(Double_t *dim, Double_t *par);
 
    /// \cond CLASSIMP
    ClassDefOverride(TPeakFitter, 1);

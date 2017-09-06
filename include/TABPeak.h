@@ -40,7 +40,8 @@ public:
    void Print(Option_t *opt = "") const override;
 
 protected:
-   Double_t FitFunction(Double_t *dim, Double_t *par) override;
+   Double_t PeakFunction(Double_t *dim, Double_t *par) override;
+   Double_t BackgroundFunction(Double_t *dim, Double_t *par) override;
 
 public:
    /// \cond CLASSIMP

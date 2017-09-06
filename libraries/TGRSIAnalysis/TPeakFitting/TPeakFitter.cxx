@@ -67,9 +67,11 @@ void TPeakFitter::Fit(TH1* fit_hist){
    }
    //We need to initialize all of the parameters based on the peak parameters
    if(last_hist_fit != fit_hist){
+      std::cout << "Initializing Fit...." << std::endl;
       InitializeBackgroundParameters(fit_hist);
       InitializeParameters(fit_hist);
    }
+   last_hist_fit = fit_hist;
    UpdateFitterParameters();
    TFitResultPtr fit_res = fit_hist->Fit(fTotalFitFunction,"SRL");
    fTotalFitFunction->SetFitResult(*fit_res); //Not sure if this is needed
@@ -88,8 +90,8 @@ void TPeakFitter::UpdatePeakParameters(TFitResultPtr fit_res, TH1* fit_hist) {
    //what their new parameters should be.
    Int_t peak_counter = 0;
    Int_t param_counter = 0;
-   TF1* global_bg = new TF1;
-   fTotalFitFunction->Copy(*global_bg);
+   TF1* global_bg = new TF1("global_bg",this,&TPeakFitter::BackgroundFunction,fRangeLow,fRangeHigh,fTotalFitFunction->GetNpar(),"TPeakFitter","BackgroundFunction");
+   global_bg->SetParameters(fTotalFitFunction->GetParameters());
 
    //Start by looping through all of the peaks in the fitter.
    for(auto p_it : fPeaksToFit){
@@ -117,9 +119,6 @@ void TPeakFitter::UpdatePeakParameters(TFitResultPtr fit_res, TH1* fit_hist) {
                if(p_it->IsBackgroundParameter(i)){
                   covariance_matrix(param_to_zero_counter,param_to_zero_counter) = 0.0;
                   total_function_copy->SetParameter(param_to_zero_counter,0.0);
-               }
-               else{
-                  global_bg->SetParameter(param_to_zero_counter,0.0);
                }
                peak_func->SetParameter(i,fTotalFitFunction->GetParameter(param_to_zero_counter));
                peak_func->SetParError(i,fTotalFitFunction->GetParError(param_to_zero_counter));
@@ -211,6 +210,20 @@ Double_t TPeakFitter::FitFunction(Double_t *dim, Double_t *par){
    Int_t params_so_far = 0;
    for(auto p_it : fPeaksToFit){
       TF1* peak_func = p_it->GetFitFunction();
+      sum+=peak_func->EvalPar(dim,&par[params_so_far]);
+      params_so_far += peak_func->GetNpar();
+   }
+   sum += fBGToFit->EvalPar(dim,&par[params_so_far]);
+
+   return sum;
+
+}
+
+Double_t TPeakFitter::BackgroundFunction(Double_t *dim, Double_t *par){
+   Double_t sum = 0;
+   Int_t params_so_far = 0;
+   for(auto p_it : fPeaksToFit){
+      TF1* peak_func = p_it->GetBackgroundFunction();
       sum+=peak_func->EvalPar(dim,&par[params_so_far]);
       params_so_far += peak_func->GetNpar();
    }

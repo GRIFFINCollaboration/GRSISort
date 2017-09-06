@@ -52,17 +52,23 @@ public:
    virtual Double_t CentroidErr() const = 0;
 
    virtual void Print(Option_t * opt = "" ) const override;
-   virtual void Draw(Option_t * opt = "") override { fFitFunction->Draw(opt);}
+   virtual void Draw(Option_t * opt = "") override { fTotalFunction->Draw(opt);}
    virtual void DrawBackground(Option_t * opt = "") { if(fGlobalBackground) fGlobalBackground->Draw("same");}
 
-   TF1* GetFitFunction() { return fFitFunction; }
+   TF1* GetFitFunction() { return fTotalFunction; }
+   TF1* GetBackgroundFunction();
    void SetGlobalBackground(TF1* bg) { fGlobalBackground = bg; }
 
-protected:
-   virtual Double_t FitFunction(Double_t*, Double_t *) {return 0.0;}
+   void UpdateBackgroundParameters();
 
 protected:
-   TF1* fFitFunction{nullptr};
+   Double_t TotalFunction(Double_t* dim, Double_t* par);
+   virtual Double_t BackgroundFunction(Double_t* dim, Double_t* par) { return 0.0; }
+   virtual Double_t PeakFunction(Double_t* dim, Double_t* par) {return 0.0; }
+
+protected:
+   TF1* fTotalFunction{nullptr};
+   TF1* fBackgroundFunction{nullptr};
    std::vector<bool> fListOfBGPars;
    Double_t fArea{-0.1};
    Double_t fAreaErr{0.0};

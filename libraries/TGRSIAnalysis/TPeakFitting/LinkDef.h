@@ -1,4 +1,4 @@
-//TSinglePeak.h TABPeak.h TRWPeak.h TPeakFitter.h 
+//TSinglePeak.h TRWPeak.h TPeakFitter.h TABPeak.h
 
 #ifdef __CINT__
 

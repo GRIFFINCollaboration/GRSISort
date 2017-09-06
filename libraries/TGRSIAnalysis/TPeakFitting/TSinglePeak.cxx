@@ -23,10 +23,17 @@ bool TSinglePeak::IsPeakParameter(const Int_t& par) const{
 }
 
 Int_t TSinglePeak::GetNParameters() const{
-   if(fFitFunction)
-      return fFitFunction->GetNpar();
+   if(fTotalFunction)
+      return fTotalFunction->GetNpar();
    else
       return 0;
+}
+
+TF1* TSinglePeak::GetBackgroundFunction(){
+   if(!fBackgroundFunction){
+      fBackgroundFunction = new TF1("peak_bg", this, &TSinglePeak::BackgroundFunction,0,1, fTotalFunction->GetNpar(), "TSinglePeak", "BackgroundFunction");
+   }
+   return fBackgroundFunction;
 }
 
 void TSinglePeak::Print(Option_t *opt) const{
@@ -41,5 +48,13 @@ void TSinglePeak::Print(Option_t *opt) const{
    }*/
    std::cout << std::endl;
 
+}
+
+Double_t TSinglePeak::TotalFunction(Double_t *dim, Double_t *par){
+   return PeakFunction(dim,par) + BackgroundFunction(dim,par);
+}
+
+void TSinglePeak::UpdateBackgroundParameters(){
+   fBackgroundFunction->SetParameters(fTotalFunction->GetParameters());
 }
 
