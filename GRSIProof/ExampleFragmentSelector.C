@@ -20,6 +20,6 @@ void ExampleFragmentSelector::CreateHistograms()
 
 void ExampleFragmentSelector::FillHistograms()
 {
-   fH2["hp_charge"]->Fill(fFragment->GetChannelNumber(), fFragment->GetCharge());
-   fH2["hp_energy"]->Fill(fFragment->GetChannelNumber(), fFragment->GetEnergy());
+   fH2.at("hp_charge")->Fill(fFragment->GetChannelNumber(), fFragment->GetCharge());
+   fH2.at("hp_energy")->Fill(fFragment->GetChannelNumber(), fFragment->GetEnergy());
 }
