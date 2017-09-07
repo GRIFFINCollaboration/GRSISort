@@ -66,10 +66,11 @@ void TPeakFitter::Fit(TH1* fit_hist){
       fTotalFitFunction = new TF1("total_fit",this,&TPeakFitter::FitFunction,fRangeLow,fRangeHigh,GetNParameters(),"TPeakFitter","FitFunction");
    }
    //We need to initialize all of the parameters based on the peak parameters
-   if(last_hist_fit != fit_hist){
+   if(!fInitFlag){
       std::cout << "Initializing Fit...." << std::endl;
       InitializeBackgroundParameters(fit_hist);
       InitializeParameters(fit_hist);
+      fInitFlag = true;
    }
    last_hist_fit = fit_hist;
    UpdateFitterParameters();

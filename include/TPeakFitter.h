@@ -70,6 +70,8 @@ private:
    Double_t FitFunction(Double_t *dim, Double_t *par);
    Double_t BackgroundFunction(Double_t *dim, Double_t *par);
 
+   bool fInitFlag{false};
+
    /// \cond CLASSIMP
    ClassDefOverride(TPeakFitter, 1);
    /// \endcond

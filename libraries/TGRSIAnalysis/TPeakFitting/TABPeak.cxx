@@ -61,6 +61,10 @@ Double_t TABPeak::CentroidErr() const{
 }
 
 Double_t TABPeak::PeakFunction(Double_t *dim, Double_t *par){
+   return OneHitPeakFunction(dim,par) + TwoHitPeakFunction(dim,par);
+}
+
+Double_t TABPeak::OneHitPeakFunction(Double_t *dim, Double_t *par){
    
    Double_t x           = dim[0]; // channel number used for fitting
    Double_t height      = par[0]; // height of photopeak
@@ -70,10 +74,28 @@ Double_t TABPeak::PeakFunction(Double_t *dim, Double_t *par){
    Double_t rel_sigma   = par[4]; // relative sigma of 2-hit peak
    Double_t step        = par[5]; // Size of the step function;
 
-   Double_t gauss1      = height * TMath::Gaus(x, c, sigma);
-   Double_t gauss2      = height * rel_height * TMath::Gaus(x,c,rel_sigma*sigma);
+   return height * TMath::Gaus(x, c, sigma);
+}
+
+Double_t TABPeak::TwoHitPeakFunction(Double_t *dim, Double_t *par){
    
-   return gauss1 + gauss2;
+   Double_t x           = dim[0]; // channel number used for fitting
+   Double_t height      = par[0]; // height of photopeak
+   Double_t c           = par[1]; // Peak Centroid of non skew gaus
+   Double_t sigma       = par[2]; // standard deviation of gaussian
+   Double_t rel_height  = par[3]; // relative height of 2-hit peak
+   Double_t rel_sigma   = par[4]; // relative sigma of 2-hit peak
+   Double_t step        = par[5]; // Size of the step function;
+   
+   return height * rel_height * TMath::Gaus(x,c,rel_sigma*sigma);
+}
+
+Double_t TABPeak::OneHitPeakOnGlobalFunction(Double_t *dim, Double_t *par){
+   return OneHitPeakFunction(dim,par) + fGlobalBackground->EvalPar(dim, &par[fTotalFunction->GetNpar()]);
+}
+
+Double_t TABPeak::TwoHitPeakOnGlobalFunction(Double_t *dim, Double_t *par){
+   return TwoHitPeakFunction(dim,par) + fGlobalBackground->EvalPar(dim, &par[fTotalFunction->GetNpar()]);
 }
 
 Double_t TABPeak::BackgroundFunction(Double_t *dim, Double_t *par){
@@ -91,11 +113,39 @@ Double_t TABPeak::BackgroundFunction(Double_t *dim, Double_t *par){
    return step_func;
 }
 
-
-
 void TABPeak::Print(Option_t * opt) const{
    std::cout << "Addback-like peak:" << std::endl;
    TSinglePeak::Print(opt);
+}
+
+void TABPeak::DrawComponents(Option_t * opt){
+   //We need to draw this on top of the global background. Probably easiest to make another temporary TF1?
+   if(!fGlobalBackground)
+      return;
+
+   Double_t low, high;
+   fGlobalBackground->GetRange(low,high);
+   if(fOneHitOnGlobal) fOneHitOnGlobal->Delete();
+   if(fTwoHitOnGlobal) fTwoHitOnGlobal->Delete();
+   //Make a copy of the total function, and then tack on the global background parameters.
+   fOneHitOnGlobal = new TF1("draw_component1", this, &TABPeak::OneHitPeakOnGlobalFunction,low,high,fTotalFunction->GetNpar()+fGlobalBackground->GetNpar(),"TABPeak","OneHitPeakOnGlobalFunction");
+   fTwoHitOnGlobal = new TF1("draw_component2", this, &TABPeak::TwoHitPeakOnGlobalFunction,low,high,fTotalFunction->GetNpar()+fGlobalBackground->GetNpar(),"TABPeak","TwoHitPeakOnGlobalFunction");
+   for(int i = 0; i < fTotalFunction->GetNpar(); ++i){
+      fOneHitOnGlobal->SetParameter(i,fTotalFunction->GetParameter(i));
+      fTwoHitOnGlobal->SetParameter(i,fTotalFunction->GetParameter(i));
+   }
+   for(int i = 0; i < fGlobalBackground->GetNpar(); ++i){
+      fOneHitOnGlobal->SetParameter(i+fTotalFunction->GetNpar(),fGlobalBackground->GetParameter(i));
+      fTwoHitOnGlobal->SetParameter(i+fTotalFunction->GetNpar(),fGlobalBackground->GetParameter(i));
+   }
+   //Draw a copy of this function
+   fOneHitOnGlobal->SetLineColor(fTotalFunction->GetLineColor());
+   fTwoHitOnGlobal->SetLineColor(fTotalFunction->GetLineColor());
+   fOneHitOnGlobal->SetLineStyle(8);
+   fTwoHitOnGlobal->SetLineStyle(3);
+   fOneHitOnGlobal->Draw(opt);
+   fTwoHitOnGlobal->Draw(opt);
+
 }
 
 

@@ -72,12 +72,12 @@ protected:
 protected:
    TF1* fTotalFunction{nullptr};
    TF1* fBackgroundFunction{nullptr};
+   TF1* fGlobalBackground{nullptr};
+   TF1* fPeakOnGlobal{nullptr};
+
    std::vector<bool> fListOfBGPars;
    Double_t fArea{-0.1};
    Double_t fAreaErr{0.0};
-
-private:
-   TF1* fGlobalBackground{nullptr};
 
 public:
    /// \cond CLASSIMP

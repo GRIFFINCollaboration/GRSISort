@@ -60,7 +60,8 @@ void TSinglePeak::UpdateBackgroundParameters(){
 }
 
 void TSinglePeak::DrawComponents(Option_t *opt){
-
+   //This behaves like the draw function except each daughter class decides how to break the draw into multiple components.
+   //This means that we should delegate this task to the daughted class.
 }
 
 Double_t TSinglePeak::PeakOnGlobalFunction(Double_t *dim, Double_t *par){
@@ -78,18 +79,18 @@ void TSinglePeak::Draw(Option_t *opt){
 
    Double_t low, high;
    fGlobalBackground->GetRange(low,high);
+   if(fPeakOnGlobal) fPeakOnGlobal->Delete();
    //Make a copy of the total function, and then tack on the global background parameters.
-   TF1* tmp_func = new TF1("draw_peak", this, &TSinglePeak::PeakOnGlobalFunction,low,high,fTotalFunction->GetNpar()+fGlobalBackground->GetNpar(),"TSinglePeak","PeakOnGlobalFunction");
+   fPeakOnGlobal = new TF1("draw_peak", this, &TSinglePeak::PeakOnGlobalFunction,low,high,fTotalFunction->GetNpar()+fGlobalBackground->GetNpar(),"TSinglePeak","PeakOnGlobalFunction");
    for(int i = 0; i < fTotalFunction->GetNpar(); ++i){
-      tmp_func->SetParameter(i,fTotalFunction->GetParameter(i));
+      fPeakOnGlobal->SetParameter(i,fTotalFunction->GetParameter(i));
    }
    for(int i = 0; i < fGlobalBackground->GetNpar(); ++i){
-      tmp_func->SetParameter(i+fTotalFunction->GetNpar(),fGlobalBackground->GetParameter(i));
+      fPeakOnGlobal->SetParameter(i+fTotalFunction->GetNpar(),fGlobalBackground->GetParameter(i));
    }
    //Draw a copy of this function
-   tmp_func->SetLineColor(fTotalFunction->GetLineColor());
-   tmp_func->SetLineStyle(fTotalFunction->GetLineStyle());
-   tmp_func->Draw(opt);
-   tmp_func->Delete();
+   fPeakOnGlobal->SetLineColor(fTotalFunction->GetLineColor());
+   fPeakOnGlobal->SetLineStyle(fTotalFunction->GetLineStyle());
+   fPeakOnGlobal->Draw(opt);
 }
 
