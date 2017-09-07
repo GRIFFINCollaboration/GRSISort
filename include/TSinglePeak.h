@@ -52,12 +52,14 @@ public:
    virtual Double_t CentroidErr() const = 0;
 
    virtual void Print(Option_t * opt = "" ) const override;
-   virtual void Draw(Option_t * opt = "") override { fTotalFunction->Draw(opt);}
+   virtual void Draw(Option_t * opt = "") override;
    virtual void DrawBackground(Option_t * opt = "") { if(fGlobalBackground) fGlobalBackground->Draw("same");}
+   virtual void DrawComponents(Option_t* opt = "");
 
    TF1* GetFitFunction() { return fTotalFunction; }
    TF1* GetBackgroundFunction();
-   void SetGlobalBackground(TF1* bg) { fGlobalBackground = bg; }
+   void SetGlobalBackground(TF1* bg) { fGlobalBackground = bg;
+      fGlobalBackground->SetLineStyle(kDashed);}
 
    void UpdateBackgroundParameters();
 
@@ -65,6 +67,7 @@ protected:
    Double_t TotalFunction(Double_t* dim, Double_t* par);
    virtual Double_t BackgroundFunction(Double_t* dim, Double_t* par) { return 0.0; }
    virtual Double_t PeakFunction(Double_t* dim, Double_t* par) {return 0.0; }
+   virtual Double_t PeakOnGlobalFunction(Double_t* dim, Double_t* par);
 
 protected:
    TF1* fTotalFunction{nullptr};

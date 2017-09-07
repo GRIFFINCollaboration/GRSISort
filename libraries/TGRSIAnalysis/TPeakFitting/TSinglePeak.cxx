@@ -32,6 +32,7 @@ Int_t TSinglePeak::GetNParameters() const{
 TF1* TSinglePeak::GetBackgroundFunction(){
    if(!fBackgroundFunction){
       fBackgroundFunction = new TF1("peak_bg", this, &TSinglePeak::BackgroundFunction,0,1, fTotalFunction->GetNpar(), "TSinglePeak", "BackgroundFunction");
+      fBackgroundFunction->SetLineStyle(9);
    }
    return fBackgroundFunction;
 }
@@ -56,5 +57,39 @@ Double_t TSinglePeak::TotalFunction(Double_t *dim, Double_t *par){
 
 void TSinglePeak::UpdateBackgroundParameters(){
    fBackgroundFunction->SetParameters(fTotalFunction->GetParameters());
+}
+
+void TSinglePeak::DrawComponents(Option_t *opt){
+
+}
+
+Double_t TSinglePeak::PeakOnGlobalFunction(Double_t *dim, Double_t *par){
+   if(!fGlobalBackground)
+      return 0.0;
+
+   return PeakFunction(dim,par) + fGlobalBackground->EvalPar(dim,&par[fTotalFunction->GetNpar()]);
+
+}
+
+void TSinglePeak::Draw(Option_t *opt){
+   //We need to draw this on top of the global background. Probably easiest to make another temporary TF1?
+   if(!fGlobalBackground)
+      return;
+
+   Double_t low, high;
+   fGlobalBackground->GetRange(low,high);
+   //Make a copy of the total function, and then tack on the global background parameters.
+   TF1* tmp_func = new TF1("draw_peak", this, &TSinglePeak::PeakOnGlobalFunction,low,high,fTotalFunction->GetNpar()+fGlobalBackground->GetNpar(),"TSinglePeak","PeakOnGlobalFunction");
+   for(int i = 0; i < fTotalFunction->GetNpar(); ++i){
+      tmp_func->SetParameter(i,fTotalFunction->GetParameter(i));
+   }
+   for(int i = 0; i < fGlobalBackground->GetNpar(); ++i){
+      tmp_func->SetParameter(i+fTotalFunction->GetNpar(),fGlobalBackground->GetParameter(i));
+   }
+   //Draw a copy of this function
+   tmp_func->SetLineColor(fTotalFunction->GetLineColor());
+   tmp_func->SetLineStyle(fTotalFunction->GetLineStyle());
+   tmp_func->Draw(opt);
+   tmp_func->Delete();
 }
 
