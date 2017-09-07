@@ -38,8 +38,6 @@ void TPeakFitter::Print(Option_t * opt) const{
    else{
       std::cout << "Could not find a BG to print" << std::endl;
    }
-   std::cout << "Myself " << std::endl;
-   fTotalFitFunction->Print(opt);
 }
 
 Int_t TPeakFitter::GetNParameters() const{
@@ -79,6 +77,7 @@ void TPeakFitter::Fit(TH1* fit_hist){
 
    //Once we do the fit, we want to update all of the Peak parameters.
    UpdatePeakParameters(fit_res,fit_hist);
+   fPeaksToFit.front()->DrawBackground("same");
 
    std::cout << "****************" <<std::endl;
    std::cout << "Summary of Fit: " << std::endl;
@@ -259,7 +258,7 @@ Double_t TPeakFitter::DefaultBackgroundFunction(Double_t *dim, Double_t *par){
 
 }
 
-void TPeakFitter::DrawPeaks(Option_t *opt) const{
+void TPeakFitter::DrawPeaks(Option_t *) const{
    //First we are going to draw the background
    TF1* bg_to_draw = new TF1;
    fTotalFitFunction->Copy(*bg_to_draw);

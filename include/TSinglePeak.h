@@ -36,7 +36,7 @@ public:
    TSinglePeak();
 
    virtual void InitParNames() {}
-   virtual void InitializeParameters(TH1* hist = nullptr) {}
+   virtual void InitializeParameters(TH1* = nullptr) {}
    bool IsBackgroundParameter(const Int_t& par) const;
    bool IsPeakParameter(const Int_t& par) const;
    void SetListOfBGPar(std::vector<bool> list_of_bg_par) { fListOfBGPars = list_of_bg_par; }
@@ -51,9 +51,9 @@ public:
    virtual Double_t Centroid() const = 0;
    virtual Double_t CentroidErr() const = 0;
 
-   virtual void Print(Option_t * opt = "" ) const override;
+   virtual void Print(Option_t * = "" ) const override;
    virtual void Draw(Option_t * opt = "") override;
-   virtual void DrawBackground(Option_t * opt = "") { if(fGlobalBackground) fGlobalBackground->Draw("same");}
+   virtual void DrawBackground(Option_t * opt = "") { if(fGlobalBackground) fGlobalBackground->Draw(opt);}
    virtual void DrawComponents(Option_t* opt = "");
 
    TF1* GetFitFunction() { return fTotalFunction; }
@@ -65,8 +65,8 @@ public:
 
 protected:
    Double_t TotalFunction(Double_t* dim, Double_t* par);
-   virtual Double_t BackgroundFunction(Double_t* dim, Double_t* par) { return 0.0; }
-   virtual Double_t PeakFunction(Double_t* dim, Double_t* par) {return 0.0; }
+   virtual Double_t BackgroundFunction(Double_t*, Double_t*) { return 0.0; }
+   virtual Double_t PeakFunction(Double_t*, Double_t*) {return 0.0; }
    virtual Double_t PeakOnGlobalFunction(Double_t* dim, Double_t* par);
 
 protected:

@@ -37,9 +37,9 @@ TF1* TSinglePeak::GetBackgroundFunction(){
    return fBackgroundFunction;
 }
 
-void TSinglePeak::Print(Option_t *opt) const{
+void TSinglePeak::Print(Option_t *) const{
 
-   std::cout << "Centroid = " << Centroid() << " +/- " << CentroidErr() << std::endl;
+   std::cout << "Centroid = " << std::fixed << Centroid() << " +/- " << CentroidErr() << std::endl;
    std::cout << "Area = " << Area() << " +/- " << AreaErr() << std::endl;
 /*   std::cout << "BG params = ";
    for(int i = 0; i < 6; ++i){

@@ -39,7 +39,7 @@ public:
 
    void Print(Option_t *opt = "") const override;
 
-   void DrawComponents(Option_t *opt = "");
+   void DrawComponents(Option_t *opt = "") override;
 
 protected:
    Double_t PeakFunction(Double_t *dim, Double_t *par) override;

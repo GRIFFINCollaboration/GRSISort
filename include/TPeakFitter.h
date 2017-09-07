@@ -49,7 +49,7 @@ public:
    void SetRange(const Double_t &low, const Double_t &high);
    Int_t GetNParameters() const;
    void Fit(TH1* fit_hist);
-   void DrawPeaks(Option_t *opt = "") const;
+   void DrawPeaks(Option_t * = "") const;
 
 private:
    void UpdateFitterParameters();

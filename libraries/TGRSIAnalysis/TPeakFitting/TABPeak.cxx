@@ -70,9 +70,6 @@ Double_t TABPeak::OneHitPeakFunction(Double_t *dim, Double_t *par){
    Double_t height      = par[0]; // height of photopeak
    Double_t c           = par[1]; // Peak Centroid of non skew gaus
    Double_t sigma       = par[2]; // standard deviation of gaussian
-   Double_t rel_height  = par[3]; // relative height of 2-hit peak
-   Double_t rel_sigma   = par[4]; // relative sigma of 2-hit peak
-   Double_t step        = par[5]; // Size of the step function;
 
    return height * TMath::Gaus(x, c, sigma);
 }
@@ -85,7 +82,6 @@ Double_t TABPeak::TwoHitPeakFunction(Double_t *dim, Double_t *par){
    Double_t sigma       = par[2]; // standard deviation of gaussian
    Double_t rel_height  = par[3]; // relative height of 2-hit peak
    Double_t rel_sigma   = par[4]; // relative sigma of 2-hit peak
-   Double_t step        = par[5]; // Size of the step function;
    
    return height * rel_height * TMath::Gaus(x,c,rel_sigma*sigma);
 }
@@ -104,8 +100,6 @@ Double_t TABPeak::BackgroundFunction(Double_t *dim, Double_t *par){
    Double_t height      = par[0]; // height of photopeak
    Double_t c           = par[1]; // Peak Centroid of non skew gaus
    Double_t sigma       = par[2]; // standard deviation of gaussian
-   Double_t rel_height  = par[3]; // relative height of 2-hit peak
-   Double_t rel_sigma   = par[4]; // relative sigma of 2-hit peak
    Double_t step        = par[5]; // Size of the step function;
 
    Double_t step_func   = TMath::Abs(step) * height / 100.0 * TMath::Erfc((x - c) / (TMath::Sqrt(2.0) * sigma));
