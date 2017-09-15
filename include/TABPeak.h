@@ -36,6 +36,7 @@ public:
 
    Double_t Centroid() const override;
    Double_t CentroidErr() const override;
+   Double_t Width() const override;
 
    void Print(Option_t *opt = "") const override;
 

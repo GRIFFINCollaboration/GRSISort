@@ -46,9 +46,9 @@ void TABPeak::InitializeParameters(TH1* fit_hist){
    // The centroid should already be set by this point in the ctor
    fTotalFunction->SetParameter("Height", fit_hist->GetBinContent(bin));
    fTotalFunction->SetParameter("centroid", fTotalFunction->GetParameter(1));
-   fTotalFunction->SetParameter("sigma", TMath::Sqrt(2.25 + 1.33 * fTotalFunction->GetParameter("centroid") / 1000. +                                  0.9*TMath::Power(fTotalFunction->GetParameter("centroid")/1000.,2)) / 2.35);
-   fTotalFunction->SetParameter("rel_sigma", fTotalFunction->GetParameter(2)*2);
-   fTotalFunction->SetParameter("rel_height", fTotalFunction->GetParameter(0)/2.);
+   fTotalFunction->SetParameter("sigma", TMath::Sqrt(2.25 + 1.33 * fTotalFunction->GetParameter("centroid") / 1000. +0.9*TMath::Power(fTotalFunction->GetParameter("centroid")/1000.,2)) / 2.35);
+   fTotalFunction->SetParameter("rel_sigma", 2.);
+   fTotalFunction->SetParameter("rel_height", 0.25);
    fTotalFunction->SetParameter("step", 1.0);
 }
 
@@ -58,6 +58,10 @@ Double_t TABPeak::Centroid() const{
 
 Double_t TABPeak::CentroidErr() const{
    return fTotalFunction->GetParError(1);
+}
+
+Double_t TABPeak::Width() const{
+   return fTotalFunction->GetParameter("sigma")*fTotalFunction->GetParameter("rel_sigma");
 }
 
 Double_t TABPeak::PeakFunction(Double_t *dim, Double_t *par){

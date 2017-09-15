@@ -50,6 +50,7 @@ public:
 
    virtual Double_t Centroid() const = 0;
    virtual Double_t CentroidErr() const = 0;
+   virtual Double_t Width() const = 0;
 
    virtual void Print(Option_t * = "" ) const override;
    virtual void Draw(Option_t * opt = "") override;
@@ -63,11 +64,19 @@ public:
 
    void UpdateBackgroundParameters();
 
+   Double_t GetChi2() const { return fChi2; }
+   Double_t GetNDF() const { return fNDF; }
+   Double_t GetReducedChi2() const { return fChi2/fNDF; }
+
+
 protected:
    Double_t TotalFunction(Double_t* dim, Double_t* par);
    virtual Double_t BackgroundFunction(Double_t*, Double_t*) { return 0.0; }
    virtual Double_t PeakFunction(Double_t*, Double_t*) {return 0.0; }
    virtual Double_t PeakOnGlobalFunction(Double_t* dim, Double_t* par);
+
+   void SetChi2(const Double_t& chi2) { fChi2 = chi2; }
+   void SetNDF(const Int_t& ndf) { fNDF = ndf; } 
 
 protected:
    TF1* fTotalFunction{nullptr};
@@ -78,6 +87,8 @@ protected:
    std::vector<bool> fListOfBGPars;
    Double_t fArea{-0.1};
    Double_t fAreaErr{0.0};
+   Double_t fChi2{std::numeric_limits<Double_t>::quiet_NaN()};
+   Int_t fNDF{0};
 
 public:
    /// \cond CLASSIMP

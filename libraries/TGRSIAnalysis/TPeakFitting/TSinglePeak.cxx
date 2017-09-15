@@ -59,7 +59,7 @@ void TSinglePeak::UpdateBackgroundParameters(){
    fBackgroundFunction->SetParameters(fTotalFunction->GetParameters());
 }
 
-void TSinglePeak::DrawComponents(Option_t *opt){
+void TSinglePeak::DrawComponents(Option_t *){
    //This behaves like the draw function except each daughter class decides how to break the draw into multiple components.
    //This means that we should delegate this task to the daughted class.
 }

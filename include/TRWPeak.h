@@ -39,6 +39,7 @@ public:
 
    Double_t Centroid() const override;
    Double_t CentroidErr() const override;
+   Double_t Width() const override { return fTotalFunction->GetParameter("sigma"); }
 
    void Print(Option_t *opt = "") const override;
 

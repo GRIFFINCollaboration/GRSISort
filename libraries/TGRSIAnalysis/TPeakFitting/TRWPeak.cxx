@@ -29,10 +29,10 @@ void TRWPeak::InitializeParameters(TH1* fit_hist){
    Double_t xlow, xhigh, low, high;
    fTotalFunction->GetRange(xlow, xhigh);
    Int_t bin     = fit_hist->FindBin(fTotalFunction->GetParameter(1));
-   fTotalFunction->SetParLimits(0, 0, fit_hist->GetMaximum()*1.5);
+   fTotalFunction->SetParLimits(0, 0, fit_hist->GetMaximum()*2.);
    fTotalFunction->GetParLimits(1, low, high);
    fTotalFunction->GetParLimits(2, low, high);
-   fTotalFunction->SetParLimits(2, 0.1, 8); // sigma should be less than the window width - JKS
+   fTotalFunction->SetParLimits(2, 0.01, 10.); // sigma should be less than the window width - JKS
    fTotalFunction->SetParLimits(3, 0.000001, 10);
    fTotalFunction->SetParLimits(4, 0.000001, 100); // this is a percentage. no reason for it to go to 500% - JKS
    // Step size is allow to vary to anything. If it goes below 0, the code will fix it to 0
@@ -46,10 +46,10 @@ void TRWPeak::InitializeParameters(TH1* fit_hist){
    fTotalFunction->SetParameter("Height", fit_hist->GetBinContent(bin));
    fTotalFunction->SetParameter("centroid", fTotalFunction->GetParameter(1));
  //  fTotalFunction->SetParameter("sigma", TMath::Sqrt(9.0 + 2. * fTotalFunction->GetParameter("centroid") / 1000.) / 2.35);
-   fTotalFunction->SetParameter("sigma", TMath::Sqrt(2.25 + 1.33 * fTotalFunction->GetParameter("centroid") / 1000. +  0.9*TMath::Power(fTotalFunction->GetParameter("centroid")/1000.,2)) / 2.35);
+   fTotalFunction->SetParameter("sigma", TMath::Sqrt(5 + 1.33 * fTotalFunction->GetParameter("centroid") / 1000. +  0.9*TMath::Power(fTotalFunction->GetParameter("centroid")/1000.,2)) / 2.35);
    fTotalFunction->SetParameter("beta", fTotalFunction->GetParameter("sigma") / 2.0);
    fTotalFunction->SetParameter("R", 0.001);
-   fTotalFunction->SetParameter("step", 1.0);
+   fTotalFunction->SetParameter("step", 0.1);
    fTotalFunction->FixParameter(3, fTotalFunction->GetParameter("beta"));
    fTotalFunction->FixParameter(4, 0.00);
 }
