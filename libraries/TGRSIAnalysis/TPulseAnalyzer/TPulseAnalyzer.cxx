@@ -1466,8 +1466,8 @@ TGraph* h=GetWaveGraph();if(h){//Graph better than hist for stats and simplicity
 
 	if(cWpar->bflag){//Have reasonable T0 & base, fit the shape
 		g.SetParLimits(0,cWpar->t0*0.5,cWpar->t0*1.5);
-		g.SetParLimits(1,tauDecay-tauDecay*0.4,tauDecay+tauDecay*0.4);
-		g.SetParLimits(2,tauRise-tauRise*0.3,tauRise+tauRise*0.3);
+		g.SetParLimits(1,tauDecay*0.3,tauDecay*3.0);
+		g.SetParLimits(2,tauRise*0.3,tauRise*1.5);
 		g.FixParameter(3,cWpar->baselinefin);
 		g.SetParLimits(4,r*0.5,r*2.0);
 	}else{//Have no T0 or base, FIX the shape

@@ -98,11 +98,17 @@ void TS3::BuildPixels(){
 	// Shared rings and sectors can be constructed, by default they are not. 
 	// To enable shared hits, use SetMultiHit function
 
+  //if the pixels have been reset, clear the pixel hits
+  //IMPORTANT THIS IS HERE ELSE VECTOR ISNT CLEARED FROM PREVIOUS EVENT WHEN THERE ARE ZERO HITS 
+  if(fS3Bits.TestBit(kPixelsSet) == false)
+    fS3Hits.clear();	
+	
 	if(fS3RingHits.size()==0 || fS3SectorHits.size()==0)
 		return;
-  //if the pixels have been reset, clear the pixel hits
-  if(fS3Bits.TestBit(kPixelsSet) == false)
-    fS3Hits.clear();
+	
+// if(fS3Bits.TestBit(kPixelsSet) == false)
+//     fS3Hits.clear();	
+
   if(fS3Hits.size() == 0) {
 		
 

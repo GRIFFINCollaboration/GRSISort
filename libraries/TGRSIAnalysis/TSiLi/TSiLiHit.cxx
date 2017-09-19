@@ -82,7 +82,7 @@ TPulseAnalyzer* TSiLiHit::FitFrag(const TFragment &frag,int ShapeFit,int segment
 
 TChannel* TSiLiHit::GetSiLiHitChannel(int segment){
 	std::stringstream ss;
-	ss<<"SPI00XN"<< std::uppercase << std::hex << segment;
+	ss<<"SPI00XN"<< std::uppercase << std::uppercase << std::setfill('0') << std::setw(2)<< std::hex << segment;
 // 	std::cout<<std::endl<<ss.str().c_str();
 	return TChannel::FindChannelByName(ss.str().c_str());
 }
