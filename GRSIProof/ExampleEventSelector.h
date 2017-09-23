@@ -24,7 +24,6 @@
 
 class ExampleEventSelector : public TGRSISelector { //Must be same name as .C and .h
 
-<<<<<<< HEAD
  public :
    TGriffin * fGrif; //Pointers to spot that events will be
    TSceptar * fScep;
