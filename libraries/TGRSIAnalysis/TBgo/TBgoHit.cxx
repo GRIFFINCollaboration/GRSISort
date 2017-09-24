@@ -2,13 +2,11 @@
 
 #include "TClass.h"
 
-#include "TTigress.h"
-
 /// \cond CLASSIMP
 ClassImp(TBgoHit)
-   /// \endcond
+/// \endcond
 
-   TBgoHit::TBgoHit()
+TBgoHit::TBgoHit()
 {
    Clear();
 }
