@@ -137,7 +137,7 @@ TBgo& TBgo::operator=(const TBgo& rhs)
    return *this;
 }
 
-void TBgo::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
+void TBgo::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
 {
    // Builds the BGO Hits directly from the TFragment. Basically, loops through the hits for an event and sets
    // observables.

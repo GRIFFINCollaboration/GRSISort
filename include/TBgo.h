@@ -29,11 +29,11 @@ public:
 public:
    TBgoHit* GetBgoHit(const Int_t& i);
    TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
-   Int_t   GetMultiplicity() const;
+   Short_t   GetMultiplicity() const;
 
    static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan); //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan); //!<!
 #endif
    void ClearTransients()
    {
