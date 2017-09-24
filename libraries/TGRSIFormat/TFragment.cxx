@@ -8,9 +8,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TFragment)
-   /// \endcond
+/// \endcond
 
-   Long64_t TFragment::fNumberOfFragments = 0;
+Long64_t TFragment::fNumberOfFragments = 0;
 
 TFragment::TFragment() : TGRSIDetectorHit()
 {
@@ -74,6 +74,7 @@ void TFragment::Clear(Option_t* opt)
    fTriggerId.clear();
 
    fPPG           = nullptr;
+	fEntryNumber   = 0;
    fZc            = 0;
    fCcShort       = 0;
    fCcLong        = 0;
@@ -82,8 +83,8 @@ void TFragment::Clear(Option_t* opt)
 
 TObject* TFragment::Clone(const char*) const
 {
-   TFragment* result = new TFragment;
-   *result           = *this;
+   auto* result = new TFragment;
+   *result      = *this;
    result->ClearTransients();
    return result;
 }
@@ -91,7 +92,9 @@ TObject* TFragment::Clone(const char*) const
 double TFragment::GetTZero() const
 {
    TChannel* chan = GetChannel();
-   if(!chan) return 0.000;
+   if(chan == nullptr) {
+      return 0.000;
+   }
    return chan->GetTZero(GetEnergy());
 }
 
@@ -135,7 +138,9 @@ ULong64_t TFragment::GetCycleNumber()
 Short_t TFragment::GetChannelNumber() const
 {
    TChannel* chan = TChannel::GetChannel(fAddress);
-   if(!chan) return 0;
+   if(chan == nullptr) {
+      return 0;
+   }
    return chan->GetNumber();
 }
 
@@ -159,14 +164,14 @@ void TFragment::Print(Option_t*) const
    printf("MidasTimeStamp: %s\n", buff);
    printf("MidasId      %i\n", fMidasId);
    printf("\tTriggerId[%lu]	  ", fTriggerId.size());
-   for(size_t x = 0; x < fTriggerId.size(); x++) {
-      printf("     0x%08lx", fTriggerId[x]);
+   for(long x : fTriggerId) {
+      printf("     0x%08lx", x);
    }
    printf("\n");
    printf("FragmentId:   %i\n", fFragmentId);
    printf("TriggerBit:  0x%08x\n", fTriggerBitPattern);
    printf("NetworkPacketNumber: %i\n", fNetworkPacketNumber);
-   if(chan) {
+   if(chan != nullptr) {
       printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetName());
       printf("\tChannel Num:      %i\n", GetChannelNumber());
    }
@@ -175,10 +180,11 @@ void TFragment::Print(Option_t*) const
    printf("\tCFD:             0x%08x\n ", GetCfd());
    printf("\tZC:              0x%08x\n ", fZc);
    printf("\tTimeStamp:       %lld\n", GetTimeStamp());
-   if(HasWave())
+   if(HasWave()) {
       printf("Has a wave form stored.\n");
-   else
+   } else {
       printf("Does Not have a wave form stored.\n");
+   }
 }
 
 bool TFragment::IsDetector(const char* prefix, Option_t* opt) const
@@ -195,29 +201,37 @@ bool TFragment::IsDetector(const char* prefix, Option_t* opt) const
    // One should eventually add N,P,T options as well.
    std::string pre      = prefix;
    TString     option   = opt;
-   std::string channame = this->GetName();
-   if(channame.length() < 9) return false;
+   std::string channame = GetName();
+   if(channame.length() < 9) {
+      return false;
+   }
 
    option.ToUpper();
    // Could also do everything below with TMnemonic. This limits the amount of string processing that needs to be done
    // Because it returns false after every potential failure while the mnemonic class sets all of the strings, and then
    // checks
    // for conditions.
-   if(!channame.compare(0, pre.length(), pre)) { // channame.BeginsWith(pre)){
-      if(option.Length() < 1)                    // no option.
+   if(channame.compare(0, pre.length(), pre) == 0) { // channame.BeginsWith(pre)){
+      if(option.Length() < 1) {                      // no option.
          return true;
-      if(channame.length() > 8) {
-         if(option.Contains("B") && (std::toupper(channame[9]) == std::toupper('B')))
-            return true;
-         else if(option.Contains("A") && (std::toupper(channame[9]) == std::toupper('A')))
-            return true;
       }
-      if(option.Contains("C") && !channame.compare(7, 2, "00"))
+      if(channame.length() > 8) {
+         if(option.Contains("B") && (std::toupper(channame[9]) == std::toupper('B'))) {
+            return true;
+         }
+         if(option.Contains("A") && (std::toupper(channame[9]) == std::toupper('A'))) {
+            return true;
+         }
+      }
+      if(option.Contains("C") && (channame.compare(7, 2, "00") == 0)) {
          return true;
-      else if(option.Contains("S") && channame.compare(7, 2, "00"))
+      }
+      if(option.Contains("S") && (channame.compare(7, 2, "00") != 0)) {
          return true;
-   } else
+      }
+   } else {
       return false;
+   }
 
    return false;
 }
@@ -230,10 +244,13 @@ Int_t TFragment::GetSharcMesyBoard() const
 
    // printf("slave = 0x%08x    port = 0x%08x  channel = 0x%08x\n",slave,port,channel);
 
-   if(slave != 0x1 && slave != 0x2) return -1;
+   if(slave != 0x1 && slave != 0x2) {
+      return -1;
+   }
    if(channel == 0x1f) {
       return (slave - 1) * 16 + (port - 1) * 2 + 1;
-   } else if(channel == 0x3f) {
+   }
+   if(channel == 0x3f) {
       return (slave - 1) * 16 + (port - 1) * 2 + 2;
    }
    return -1;

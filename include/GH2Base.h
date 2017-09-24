@@ -26,14 +26,13 @@ public:
 
    virtual TH2* GetTH2() = 0;
 
-   GH1D* Projection_Background(int axis = 0, int firstbin = 0, int lastbin = -1, int firstbackground_bin = 0,
-                               int lastbackground_bin = -1, kBackgroundSubtraction mode = kRegionBackground);
+   GH1D* Projection_Background(int axis = 0, int firstbin = 0, int lastbin = -1, int first_bg_bin = 0,
+                               int last_bg_bin = -1, kBackgroundSubtraction mode = kRegionBackground);
 
    // GH1D* SummaryProject(int binnum);
 
-   GH1D* ProjectionX_Background(int firstbin = 0, int lastbin = -1, int firstbackground_bin = 0,
-                                int                    lastbackground_bin = -1,
-                                kBackgroundSubtraction mode               = kRegionBackground); // *MENU*
+   GH1D* ProjectionX_Background(int firstbin = 0, int lastbin = -1, int first_bg_bin = 0, int last_bg_bin = -1,
+                                kBackgroundSubtraction mode = kRegionBackground); // *MENU*
 
    GH1D* GH2ProjectionX(const char* name = "_px", int firstbin = 0, int lastbin = -1, Option_t* option = "",
                         bool KeepEmpty = false); // *MENU*
@@ -41,9 +40,8 @@ public:
    GH1D* GH2ProjectionY(const char* name = "_py", int firstbin = 0, int lastbin = -1, Option_t* option = "",
                         bool KeepEmpty = false); // *MENU*
 
-   GH1D* ProjectionY_Background(int firstbin = 0, int lastbin = -1, int firstbackground_bin = 0,
-                                int                    lastbackground_bin = -1,
-                                kBackgroundSubtraction mode               = kRegionBackground); // *MENU*
+   GH1D* ProjectionY_Background(int firstbin = 0, int lastbin = -1, int first_bg_bin = 0, int last_bg_bin = -1,
+                                kBackgroundSubtraction mode = kRegionBackground); // *MENU*
 
    GH1D* GetPrevious(const GH1D* curr, bool DrawEmpty = true);
    GH1D* GetPrevSummary(const GH1D* curr, bool DrawEmpty = false);
@@ -73,8 +71,8 @@ public:
       iterator& operator++()
       {
          fCurr = fMat->GetNext(fCurr);
-         if (fCurr == fFirst) {
-            fCurr = 0;
+         if(fCurr == fFirst) {
+            fCurr = nullptr;
          }
          return *this;
       }
@@ -101,10 +99,10 @@ public:
 
 private:
    void   Init();
-   TList* fProjections;
+   TList* fProjections{nullptr};
 
-   TList*     fSummaryProjections; //!
-   bool       fIsSummary;
+   TList*     fSummaryProjections{nullptr}; //!
+   bool       fIsSummary{false};
    kDirection fSummaryDirection;
 
    ClassDef(GH2Base, 1);

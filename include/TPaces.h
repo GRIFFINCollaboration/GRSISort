@@ -20,21 +20,23 @@ class TPaces : public TGRSIDetector {
 public:
    TPaces();
    TPaces(const TPaces&);
-   virtual ~TPaces();
+   ~TPaces() override;
 
 public:
    TPacesHit* GetPacesHit(const int& i); //!<!
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
-   Short_t GetMultiplicity() const { return fPacesHits.size(); }
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
+   Short_t GetMultiplicity() const override { return fPacesHits.size(); }
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan);
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override;
 #endif
    static TVector3 GetPosition(int DetNbr); //!<!
 
-   void ClearTransients()
+   void ClearTransients() override
    {
-      for (auto hit : fPacesHits) hit.ClearTransients();
+      for(const auto& hit : fPacesHits) {
+         hit.ClearTransients();
+      }
    }
 
    TPaces& operator=(const TPaces&); //!<!
@@ -47,12 +49,12 @@ private:
 public:
    static bool SetCoreWave() { return fSetCoreWave; } //!<!
 
-   virtual void Copy(TObject&) const;            //!<!
-   virtual void Clear(Option_t* opt = "all");    //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Clear(Option_t* opt = "all") override;    //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TPaces, 4) // Paces Physics structure
+   ClassDefOverride(TPaces, 4) // Paces Physics structure
    /// \endcond
 };
 /*! @} */

@@ -9,22 +9,22 @@
 
 class TGint : public TRint {
 private:
-   TGint(int argc, char** argv, void* options = 0, int numOptions = 0, bool noLogo = false,
+   TGint(int argc, char** argv, void* options = nullptr, int numOptions = 0, bool noLogo = false,
          const char* appClassName = "grsisort");
 
 public:
    static TGint* fTGint;
-   static TGint* instance(int argc = 0, char** argv = 0, void* options = 0, int numOptions = 0, bool noLogo = false,
-                          const char* appClassName = "grsisort");
+   static TGint* instance(int argc = 0, char** argv = nullptr, void* options = nullptr, int numOptions = 0,
+                          bool noLogo = false, const char* appClassName = "grsisort");
 
-   virtual ~TGint();
+   ~TGint() override;
 
-   void PrintLogo(bool);
-   bool HandleTermInput();
+   void PrintLogo(bool) override;
+   bool HandleTermInput() override;
    int  TabCompletionHook(char*, int*, ostream&);
 
    /// \cond CLASSIMP
-   ClassDef(TGint, 0);
+   ClassDefOverride(TGint, 0);
    /// \endcond
 };
 /*! @} */

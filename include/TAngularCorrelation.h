@@ -20,16 +20,16 @@ private:
    TH1D* fIndexCorrelation; /// 1D plot of counts vs. angular index
 
    // for diagnostics and re-fitting
-   TH1D* fChi2;                       /// 1D plot of chi^2 vs. angular index
-   TH1D* fCentroid;                   /// 1D plot of centroid vs. angular index
-   TH1D* fFWHM;                       /// 1D plot of FWHM vs. angular index
+   TH1D* fChi2{nullptr};              /// 1D plot of chi^2 vs. angular index
+   TH1D* fCentroid{nullptr};          /// 1D plot of centroid vs. angular index
+   TH1D* fFWHM{nullptr};              /// 1D plot of FWHM vs. angular index
    std::map<Int_t, TPeak*> fPeaks;    /// array of TPeaks used to create fIndexCorrelations
    std::map<Int_t, TH1D*>  f1DSlices; /// array of 1D histograms used to create fIndexCorrelations
 
    // mapping information
    std::map<Int_t, std::map<Int_t, Int_t>>
                          fIndexMap;     /// 2D square array correlating array number pairs with angular index
-   Int_t                 fNumIndices;   /// number of angular indices
+   Int_t                 fNumIndices{0};/// number of angular indices
    Int_t                 fIndexMapSize; /// size of fIndexMap
    std::vector<Double_t> fAngleMap;     /// array correlating angular index with opening angle
    std::vector<Int_t> fWeights; /// array correlating angular index with weight (number of detector pairs at that index)
@@ -46,7 +46,7 @@ private:
    std::vector<Double_t> fModifiedAngles;  // array correlating modified index with angles
 
 public:
-   virtual ~TAngularCorrelation();
+   ~TAngularCorrelation() override;
    TAngularCorrelation();
 
    //----------------- getters -----------------
@@ -105,7 +105,7 @@ public:
 
    //----------------- functions that do most of the work
    TH2D* Create2DSlice(THnSparse* hst, Double_t min, Double_t max, Bool_t fold, Bool_t group);
-   TH2D* Create2DSlice(TObjArray* hst, Double_t min, Double_t max, Bool_t fold, Bool_t group);
+   TH2D* Create2DSlice(TObjArray* hstarray, Double_t min, Double_t max, Bool_t fold, Bool_t group);
    TH2D* Modify2DSlice(TH2* hst, Bool_t fold, Bool_t group);
    TH1D* IntegralSlices(TH2* hst, Double_t min, Double_t max);
    TH1D* FitSlices(TH2* hst, TPeak* peak, Bool_t visualization);
@@ -156,13 +156,13 @@ public:
    Int_t GenerateModifiedMaps(Bool_t fold, Bool_t group);
    std::vector<Int_t> GenerateModifiedIndices(Bool_t fold, Bool_t group);
    std::vector<Double_t> GenerateModifiedAngles(Bool_t fold, Bool_t group);
-   std::vector<Int_t> GenerateModifiedWeights(std::vector<Int_t>& index, std::vector<Int_t>& weights);
+   std::vector<Int_t> GenerateModifiedWeights(std::vector<Int_t>& modindices, std::vector<Int_t>& weights);
    static std::vector<Int_t> GenerateFoldedIndices(std::vector<Double_t>& folds, std::vector<Double_t>& anglemap);
    static std::vector<Double_t> GenerateFoldedAngles(std::vector<Double_t>& anglemap);
    void ClearModifiedMaps();
 
    /// \cond CLASSIMP
-   ClassDef(TAngularCorrelation, 1)
+   ClassDefOverride(TAngularCorrelation, 1)
    /// \endcond
 };
 /*! @} */

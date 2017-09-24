@@ -27,12 +27,12 @@
 class TLaBrHit : public TGRSIDetectorHit {
 public:
    TLaBrHit();
-   virtual ~TLaBrHit();
+   ~TLaBrHit() override;
    TLaBrHit(const TLaBrHit&);
    TLaBrHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
 
 private:
-   Int_t fFilter;
+   Int_t fFilter{0};
 
 public:
    /////////////////////////		/////////////////////////////////////
@@ -44,17 +44,17 @@ public:
    bool InFilter(Int_t); //!<!
 
 public:
-   void Clear(Option_t* opt = "");       //!<!
-   void Print(Option_t* opt = "") const; //!<!
-   virtual void Copy(TObject&) const;    //!<!
-   TVector3 GetPosition(Double_t dist) const;
-   TVector3 GetPosition() const;
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
+   void     Copy(TObject&) const override;        //!<!
+   TVector3 GetPosition(Double_t dist) const override;
+   TVector3 GetPosition() const override;
 
 private:
    Double_t GetDefaultDistance() const { return 0.; } // This needs to be updated
 
    /// \cond CLASSIMP
-   ClassDef(TLaBrHit, 2) // Stores the information for a LaBrrHit
+   ClassDefOverride(TLaBrHit, 2) // Stores the information for a LaBrrHit
    /// \endcond
 };
 /*! @} */

@@ -13,7 +13,7 @@
 
 #include <iostream>
 #include <vector>
-#include <time.h>
+#include <ctime>
 
 #include "Rtypes.h"
 
@@ -30,7 +30,7 @@ class TFragment : public TGRSIDetectorHit {
 public:
    TFragment();
    TFragment(const TFragment&);
-   virtual ~TFragment();
+   ~TFragment() override;
 
    //////////////////// basic setter functions ////////////////////
 
@@ -46,7 +46,7 @@ public:
    void SetFragmentId(Int_t value) { fFragmentId = value; }
    void SetMidasTimeStamp(time_t value) { fMidasTimeStamp = value; }
    void SetNetworkPacketNumber(Int_t value) { fNetworkPacketNumber = value; }
-   void SetNumberOfFilters(UShort_t)
+   void                              SetNumberOfFilters(UShort_t)
    {
       std::cerr<<"Error, "<<__PRETTY_FUNCTION__<<" called, TFragment shouldn't have a number of filters."
                <<std::endl;
@@ -78,7 +78,9 @@ public:
    Int_t    GetTriggerBitPattern() const { return fTriggerBitPattern; }
    Long_t GetTriggerId(size_t iter = 0) const
    {
-      if (iter < fTriggerId.size()) return fTriggerId[iter];
+      if(iter < fTriggerId.size()) {
+         return fTriggerId[iter];
+      }
       return 0;
    }
    Int_t GetZc() const { return fZc; }
@@ -97,10 +99,10 @@ public:
    //////////////////// misc. functions ////////////////////
    bool IsDetector(const char* prefix, Option_t* opt = "CA") const;
 
-   void Clear(Option_t* opt = "");
-   void Print(Option_t* opt = "") const;
+   void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
 
-   TObject* Clone(const char* name = "") const;
+   TObject* Clone(const char* name = "") const override;
 
    bool operator<(const TFragment& rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
    bool operator>(const TFragment& rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
@@ -129,12 +131,11 @@ private:
    //////////////////// transient members ////////////////////
    TPPG* fPPG; //!<! Programmable pattern generator value
 
-   Long64_t fEntryNumber; //!<! Entry number in fragment tree
-   Int_t    fZc;          //!<! Zero-crossing value from 4G (saved in separate branch)
-   Int_t    fCcShort;     //!<! Short integration over waveform peak from 4G (saved in separate branch)
-   Int_t    fCcLong;      //!<! Long integration over waveform tail from 4G (saved in separate branch)
-   UShort_t
-      fNumberOfWords; //!<! Number of non-waveform words in fragment, only used for check while parsing the fragment
+   Long64_t fEntryNumber;   //!<! Entry number in fragment tree
+   Int_t    fZc;            //!<! Zero-crossing value from 4G (saved in separate branch)
+   Int_t    fCcShort;       //!<! Short integration over waveform peak from 4G (saved in separate branch)
+   Int_t    fCcLong;        //!<! Long integration over waveform tail from 4G (saved in separate branch)
+   UShort_t fNumberOfWords; //!<! Number of non-waveform words in fragment, only used for check while parsing the fragment
 
    static Long64_t fNumberOfFragments;
 
@@ -142,7 +143,7 @@ private:
    // int HitIndex;    //!<! transient member indicating which pile-up hit this is in the original fragment
 
    /// \cond CLASSIMP
-   ClassDef(TFragment, 6); // Event Fragments
+   ClassDefOverride(TFragment, 6); // Event Fragments
    /// \endcond
 };
 /*! @} */

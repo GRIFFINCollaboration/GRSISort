@@ -11,9 +11,7 @@ TBgoHit::TBgoHit()
    Clear();
 }
 
-TBgoHit::~TBgoHit()
-{
-}
+TBgoHit::~TBgoHit() = default;
 
 TBgoHit::TBgoHit(const TBgoHit& rhs) : TGRSIDetectorHit()
 {
@@ -37,13 +35,15 @@ void TBgoHit::Print(Option_t* opt) const
    printf("\t%s\n", GetName());
    printf("\tCharge: %.2f\n", Charge());
    printf("\tTime:   %.2f\n", GetTime());
-   std::cout << "\tTime:   " << GetTimeStamp() << "\n";
+   std::cout<<"\tTime:   "<<GetTimeStamp()<<"\n";
    printf("============================\n");
 }
 
 int TBgoHit::GetCrystal() const
 {
    TChannel* chan = GetChannel();
-   if(!chan) return -1;
+   if(chan == nullptr) {
+      return -1;
+   }
    return chan->GetCrystalNumber();
 }

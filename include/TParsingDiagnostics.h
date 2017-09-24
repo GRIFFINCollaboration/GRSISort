@@ -35,10 +35,10 @@ class TParsingDiagnostics : public TObject {
 public:
    TParsingDiagnostics();
    TParsingDiagnostics(const TParsingDiagnostics&);
-   ~TParsingDiagnostics();
+   ~TParsingDiagnostics() override;
    static TParsingDiagnostics* Get()
    {
-      if (fParsingDiagnostics == nullptr) {
+      if(fParsingDiagnostics == nullptr) {
          fParsingDiagnostics = new TParsingDiagnostics;
       }
       return fParsingDiagnostics;
@@ -77,7 +77,7 @@ private:
 public:
 //"setter" functions
 #ifndef __CINT__
-   void GoodFragment(std::shared_ptr<const TFragment>);
+   void GoodFragment(const std::shared_ptr<const TFragment>&);
 #endif
    void GoodFragment(Short_t detType) { fNumberOfGoodFragments[detType]++; }
    void BadFragment(Short_t detType) { fNumberOfBadFragments[detType]++; }
@@ -87,12 +87,16 @@ public:
    // getter functions
    Long_t NumberOfGoodFragments(Short_t detType)
    {
-      if (fNumberOfGoodFragments.find(detType) != fNumberOfGoodFragments.end()) return fNumberOfGoodFragments[detType];
+      if(fNumberOfGoodFragments.find(detType) != fNumberOfGoodFragments.end()) {
+         return fNumberOfGoodFragments[detType];
+      }
       return 0;
    }
    Long_t NumberOfBadFragments(Short_t detType)
    {
-      if (fNumberOfBadFragments.find(detType) != fNumberOfBadFragments.end()) return fNumberOfBadFragments[detType];
+      if(fNumberOfBadFragments.find(detType) != fNumberOfBadFragments.end()) {
+         return fNumberOfBadFragments[detType];
+      }
       return 0;
    }
 
@@ -101,13 +105,13 @@ public:
    // other functions
    void WriteToFile(const char*) const;
 
-   void Copy(TObject&) const;
-   void Clear(Option_t* opt = "all");
-   void Print(Option_t* opt = "") const;
-   void Draw(Option_t* opt = "");
+   void Copy(TObject&) const override;
+   void Clear(Option_t* opt = "all") override;
+   void Print(Option_t* opt = "") const override;
+   void Draw(Option_t* opt = "") override;
 
    /// \cond CLASSIMP
-   ClassDef(TParsingDiagnostics, 1);
+   ClassDefOverride(TParsingDiagnostics, 1);
    /// \endcond
 };
 /*! @} */

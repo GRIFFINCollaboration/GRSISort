@@ -2,9 +2,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TCal)
-   /// \endcond
+/// \endcond
 
-   TCal::TCal()
+TCal::TCal()
 {
    /// Default constructor
    InitTCal();
@@ -21,9 +21,6 @@ TCal::TCal(const char* name, const char* title)
 TCal::~TCal()
 {
    /// Default dtor
-   fNuc = nullptr;
-   // fgraph = nullptr;
-   fHist = nullptr;
 }
 
 TCal::TCal(const TCal& copy) : TGraphErrors(copy)
@@ -36,11 +33,13 @@ TCal::TCal(const TCal& copy) : TGraphErrors(copy)
 void TCal::SetNucleus(TNucleus* nuc, Option_t*)
 {
    /// Sets the nucleus to be calibrated against
-   if(!nuc) {
+   if(nuc == nullptr) {
       Error("SetNucleus", "Nucleus does not exist");
       return;
    }
-   if(fNuc) Warning("SetNucleus", "Overwriting nucleus: %s", fNuc->GetName());
+   if(fNuc != nullptr) {
+      Warning("SetNucleus", "Overwriting nucleus: %s", fNuc->GetName());
+   }
    fNuc = nuc;
 }
 
@@ -49,7 +48,9 @@ void TCal::Copy(TObject& obj) const
    /// Copies the TCal.
    static_cast<TCal&>(obj).fChan = fChan;
    // Things to make deep copies of
-   if(fFitFunc) *(static_cast<TCal&>(obj).fFitFunc) = *fFitFunc;
+   if(fFitFunc != nullptr) {
+      *(static_cast<TCal&>(obj).fFitFunc) = *fFitFunc;
+   }
 
    // Members to make shallow copies of
    static_cast<TCal&>(obj).fNuc = fNuc;
@@ -59,7 +60,7 @@ void TCal::Copy(TObject& obj) const
 Bool_t TCal::SetChannel(const TChannel* chan)
 {
    /// Sets the channel being calibrated
-   if(!chan) {
+   if(chan == nullptr) {
       Error("SetChannel", "TChannel does not exist");
       return false;
    }
@@ -68,34 +69,38 @@ Bool_t TCal::SetChannel(const TChannel* chan)
    return true;
 }
 
-void TCal::WriteToAllChannels(std::string mnemonic)
+void TCal::WriteToAllChannels(const std::string& mnemonic)
 {
    /// Writes this calibration to all channels in the current TChannel Map
    std::map<unsigned int, TChannel*>::iterator mapIt;
    std::map<unsigned int, TChannel*>*          chanMap = TChannel::GetChannelMap();
    TChannel* origChan = GetChannel();
    for(mapIt = chanMap->begin(); mapIt != chanMap->end(); mapIt++) {
-      if(!mnemonic.size() || !strncmp(mapIt->second->GetName(), mnemonic.c_str(), mnemonic.size())) {
+      if(mnemonic.empty() || (strncmp(mapIt->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
          SetChannel(mapIt->second);
          WriteToChannel();
       }
    }
    printf("\n");
-   if(origChan) SetChannel(origChan);
+   if(origChan != nullptr) {
+      SetChannel(origChan);
+   }
 }
 
 std::vector<Double_t> TCal::GetParameters() const
 {
    /// Returns all of the parameters in the current TCal.
    std::vector<Double_t> paramList;
-   if(!GetFitFunction()) {
+   if(GetFitFunction() == nullptr) {
       Error("GetParameters", "Function has not been fitted yet");
       return paramList;
    }
 
    Int_t nParams = GetFitFunction()->GetNpar();
 
-   for(int i = 0; i < nParams; i++) paramList.push_back(GetParameter(i));
+   for(int i = 0; i < nParams; i++) {
+      paramList.push_back(GetParameter(i));
+   }
 
    return paramList;
 }
@@ -103,7 +108,7 @@ std::vector<Double_t> TCal::GetParameters() const
 Double_t TCal::GetParameter(size_t parameter) const
 {
    /// Returns the parameter at the index parameter
-   if(!GetFitFunction()) {
+   if(GetFitFunction() == nullptr) {
       Error("GetParameter", "Function have not been fitted yet");
       return 0;
    }
@@ -115,12 +120,11 @@ Bool_t TCal::SetChannel(UInt_t chanNum)
    /// Sets the channel for the calibration to the channel number channum. Returns
    /// 0 if the channel does not exist
    TChannel* chan = TChannel::GetChannelByNumber(chanNum);
-   if(!chan) {
+   if(chan == nullptr) {
       Error("SetChannel", "Channel Number %d does not exist in current memory.", chanNum);
       return false;
-   } else {
-      return SetChannel(chan);
    }
+   return SetChannel(chan);
 }
 
 TChannel* TCal::GetChannel() const
@@ -150,12 +154,13 @@ void TCal::Clear(Option_t*)
 void TCal::Print(Option_t*) const
 {
    /// Prints calibration information
-   if(GetChannel())
+   if(GetChannel() != nullptr) {
       printf("Channel Number: %u\n", GetChannel()->GetNumber());
-   else
+   } else {
       printf("Channel Number: NOT SET\n");
+   }
 
-   if(fFitFunc) {
+   if(fFitFunc != nullptr) {
       printf("\n*******************************\n");
       printf(" Fit:\n");
       fFitFunc->Print();
@@ -165,10 +170,11 @@ void TCal::Print(Option_t*) const
    }
 
    printf("Nucleus: ");
-   if(GetNucleus())
+   if(GetNucleus() != nullptr) {
       printf("%s\n", GetNucleus()->GetName());
-   else
+   } else {
       printf("NOT SET\n");
+   }
 }
 
 void TCal::InitTCal()

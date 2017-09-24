@@ -25,7 +25,7 @@
 
 class TGRSIFit : public TF1 {
 public:
-   virtual ~TGRSIFit();
+   ~TGRSIFit() override;
 
 protected:
    TGRSIFit();
@@ -40,11 +40,15 @@ protected:
    {
       this->Clear();
    }
+   template <class PtrObj, typename MemFn>
+   TGRSIFit(const char *name, const  PtrObj &p, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar, const char *class_name, const char *fcn_name) : TF1(name,p,memFn, xmin, xmax, npar, class_name, fcn_name){
+      this->Clear();
+   }
 
    TGRSIFit(const TGRSIFit& copy);
 
 public:
-   virtual void Copy(TObject& copy) const;
+   void Copy(TObject& obj) const override;
    // Every fit object should have to initialize parameters and have a fit method defined.
    virtual Bool_t InitParams(TH1*) = 0;
    Bool_t         IsGoodFit() const { return fGoodFitFlag; }
@@ -52,13 +56,13 @@ public:
    {
       fHist = hist;
    } // fHistogram is a member of TF1. I'm not sure this does anything proper right now
-   virtual TH1*       GetHist() const { return static_cast<TH1*>(fHist.GetObject()); }
+   virtual TH1*       GetHist() const { return dynamic_cast<TH1*>(fHist.GetObject()); }
    static const char* GetDefaultFitType() { return fDefaultFitType.Data(); }
    static void SetDefaultFitType(const char* fitType) { fDefaultFitType = fitType; }
 
    // These are only to be called in the Dtor of classes to protect from ROOT's insane garbage collection system
    // They can be called anywhere though as long as new classes are carefully destructed.
-   Bool_t AddToGlobalList(Bool_t on = kTRUE);
+   Bool_t AddToGlobalList(Bool_t on = kTRUE) override;
    static Bool_t AddToGlobalList(TF1* func, Bool_t on = kTRUE);
 
 protected:
@@ -67,19 +71,19 @@ protected:
    void GoodFit(Bool_t flag = true) { fGoodFitFlag = flag; }
 
 private:
-   Bool_t         fInitFlag;
-   Bool_t         fGoodFitFlag; // This doesn't do anything yet
+   Bool_t         fInitFlag{false};
+   Bool_t         fGoodFitFlag{false}; // This doesn't do anything yet
    TRef           fHist;
    static TString fDefaultFitType;
 
 public:
-   virtual void Print(Option_t* opt = "") const;
-   virtual void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
    virtual void ClearParameters(Option_t* opt = "");
    virtual void CopyParameters(TF1* copy) const;
 
    /// \cond CLASSIMP
-   ClassDef(TGRSIFit, 0);
+   ClassDefOverride(TGRSIFit, 0);
    /// \endcond
 };
 /*! @} */

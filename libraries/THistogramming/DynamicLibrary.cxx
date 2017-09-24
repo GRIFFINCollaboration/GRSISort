@@ -8,6 +8,7 @@
 #include <mutex>
 #include <sstream>
 #include <string>
+#include <utility>
 
 #include <dlfcn.h>
 #include <unistd.h>
@@ -25,11 +26,11 @@ int incremental_id()
 }
 }
 
-DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name) : fLibName(libname_param)
+DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name) : fLibName(std::move(libname_param))
 {
    if(unique_name) {
       std::stringstream ss;
-      ss << "/tmp/temp_dynlib_" << getpid() << "_" << incremental_id() << ".so";
+      ss<<"/tmp/temp_dynlib_"<<getpid()<<"_"<<incremental_id()<<".so";
       fTempName = ss.str();
 
       // Need to symlink to full path, not a relative path.
@@ -38,7 +39,7 @@ DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name) : fL
       fLibName = full_path(fLibName);
 
       int error = symlink(fLibName.c_str(), fTempName.c_str());
-      if(error) {
+      if(error != 0) {
          return;
          // throw RuntimeSymlinkCreation("Could not make temp symlink");
       }
@@ -47,7 +48,7 @@ DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name) : fL
       fLibrary = dlopen(fLibName.c_str(), RTLD_NOW);
    }
 
-   if(!fLibrary) {
+   if(fLibrary == nullptr) {
       return;
       // throw RuntimeFileNotFound(dlerror());
    }
@@ -55,9 +56,9 @@ DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name) : fL
 
 DynamicLibrary::~DynamicLibrary()
 {
-   if(fLibrary) {
+   if(fLibrary != nullptr) {
       dlclose(fLibrary);
-      if(fTempName.length()) {
+      if(fTempName.length() != 0u) {
          unlink(fTempName.c_str());
       }
    }

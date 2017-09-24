@@ -18,12 +18,12 @@ Double_t Gaus(Double_t* dim, Double_t* par);
 Double_t SkewedGaus(Double_t* dim, Double_t* par);
 Double_t Efficiency(Double_t* dim, Double_t* par);
 
-Double_t GausExpo(Double_t* dim, Double_t* par);
+Double_t GausExpo(Double_t* x, Double_t* pars);
 
-Double_t LanGaus(Double_t* dim, Double_t* par);
-Double_t LanGausHighRes(Double_t* dim, Double_t* par);
+Double_t LanGaus(Double_t* x, Double_t* pars);
+Double_t LanGausHighRes(Double_t* x, Double_t* pars);
 
-Double_t GammaEff(Double_t* dim, Double_t* par);
+Double_t GammaEff(Double_t* x, Double_t* par);
 }
 
 #endif

@@ -25,13 +25,12 @@ NamespaceImp(TGRSIFunctions)
    e = exp(-x / p[1]);
    if(x <= 0) {
       return p[5];
-   } else {
-      s = p[5];
-      s += p[6] * (1 - exp(-x / p[2])) * e;
-      s += p[7] * (1 - exp(-x / p[3])) * e;
-      s += p[8] * (1 - exp(-x / p[4])) * e;
-      return s;
    }
+   s = p[5];
+   s += p[6] * (1 - exp(-x / p[2])) * e;
+   s += p[7] * (1 - exp(-x / p[3])) * e;
+   s += p[8] * (1 - exp(-x / p[4])) * e;
+   return s;
 }
 
 Double_t TGRSIFunctions::PolyBg(Double_t* x, Double_t* par, Int_t order)
@@ -41,9 +40,9 @@ Double_t TGRSIFunctions::PolyBg(Double_t* x, Double_t* par, Int_t order)
 
    /*   if((Double_t)(sizeof(par))/(Double_t)(sizeof(par[0])) < (order + 2)){ //This doesn't work with the current
       method
-        std::cout << "not enough parameters passed to function" << std::endl;
-        std::cout << "sizeof par = " << sizeof(par) << std::endl;
-        std::cout << "size of par[0] = " << sizeof(par[0]) << std::endl;
+        std::cout<<"not enough parameters passed to function"<<std::endl;
+        std::cout<<"sizeof par = "<<sizeof(par)<<std::endl;
+        std::cout<<"size of par[0] = "<<sizeof(par[0])<<std::endl;
         return 0;
         }   */
 
@@ -97,7 +96,7 @@ Double_t TGRSIFunctions::MultiPhotoPeakBG(Double_t* dim, Double_t* par)
    // Limits need to be imposed or error states may occour.
    //
    // General background.
-   int    nPeaks = (int)(par[0] + 0.5);
+   int    nPeaks = static_cast<int>(par[0] + 0.5);
    double result = PolyBg(dim, &par[1], 2); // polynomial background. uses par[1->4]
    for(int i = 0; i < nPeaks; i++) {        // par[0] is number of peaks
       Double_t tmp_par[6];
@@ -197,8 +196,8 @@ Double_t TGRSIFunctions::MultiSkewedGausWithBG2(Double_t* dim, Double_t* par)
    //
    // Limits need to be impossed or error states may occour.
    //
-   double result = par[1] + dim[0] * par[2];      // background.
-   for(int i = 0; i < (int)(par[0] + 0.5); i++) { // par[0] is number of peaks
+   double result = par[1] + dim[0] * par[2];                 // background.
+   for(int i = 0; i < static_cast<int>(par[0] + 0.5); i++) { // par[0] is number of peaks
       Double_t tmp_par[4];
       tmp_par[0] = par[4 * i + 3]; // height of photopeak
       tmp_par[1] = par[4 * i + 4]; // Peak Centroid of non skew gaus
@@ -222,10 +221,11 @@ Double_t TGRSIFunctions::LanGaus(Double_t* x, Double_t* pars)
 
       spec = pars[1] +
              pars[2] * y; // define background SHOULD THIS BE CONVOLUTED ????? *************************************
-      for(int n = 0; n < (int)(pars[0] + 0.5);
-          n++) // the implementation of landau function should be done using the landau function
+      for(int n = 0; n < static_cast<int>(pars[0] + 0.5);
+          n++) { // the implementation of landau function should be done using the landau function
          spec += pars[3 * n + 4] * TMath::Landau(-y, -pars[3 * n + 5], pars[3 * n + 6]) /
                  TMath::Landau(0, 0, 100); // add peaks, dividing by max height of landau
+      }
 
       gaus = TMath::Gaus(-x[0], -y, pars[3]) /
              sqrt(2 * TMath::Pi() * pars[3] * pars[3]); // gaus must be normalisd so there is no sigma weighting
@@ -245,8 +245,9 @@ Double_t TGRSIFunctions::LanGausHighRes(Double_t* x, Double_t* pars)
       y  = x[0] - 4 * pars[3] + dy * i;
 
       spec = pars[1] + pars[2] * y;
-      for(int n = 0; n < (int)(pars[0] + 0.5); n++)
+      for(int n = 0; n < static_cast<int>(pars[0] + 0.5); n++) {
          spec += pars[3 * n + 4] * TMath::Landau(-y, -pars[3 * n + 5], pars[3 * n + 6]) / TMath::Landau(0, 0, 100);
+      }
 
       gaus = TMath::Gaus(-x[0], -y, pars[3]) / sqrt(2 * TMath::Pi() * pars[3] * pars[3]);
       conv += gaus * spec * dy;
@@ -262,7 +263,7 @@ Double_t TGRSIFunctions::MultiGausWithBG(Double_t* dim, Double_t* par)
    //
    double amp, mean, sigma;
    double result = par[1] + dim[0] * par[2]; // background.
-   for(int i = 0; i < (int)(par[0] + 0.5); i++) {
+   for(int i = 0; i < static_cast<int>(par[0] + 0.5); i++) {
       amp   = par[3 * i + 3];
       mean  = par[3 * i + 4];
       sigma = par[3 * i + 5];
@@ -276,7 +277,7 @@ Double_t TGRSIFunctions::MultiGausWithBG(Double_t* dim, Double_t* par)
 Double_t TGRSIFunctions::Bateman(Double_t* dim, Double_t* par, UInt_t nChain, Double_t)
 {
    //****NOT TESTED****The Bateman equation is the general closed form for a decay chain of nuclei. This functions
-   //returns
+   // returns
    // the total activity from a given chain of nuclei.
    // Requires the following parameters:
    //   - dim[0]:  channels being fit
@@ -286,7 +287,7 @@ Double_t TGRSIFunctions::Bateman(Double_t* dim, Double_t* par, UInt_t nChain, Do
    // NOTE: The lowest paramters correspond to the most 'senior' nuclei
 
    if(sizeof(par) / sizeof(par[0]) < (nChain * 3)) {
-      std::cout << "not enough parameters passed to function" << std::endl;
+      std::cout<<"not enough parameters passed to function"<<std::endl;
       return 0;
    }
 
@@ -357,4 +358,19 @@ Double_t TGRSIFunctions::PhotoEfficiency(Double_t* dim, Double_t* par)
    }
 
    return TMath::Exp(sum);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Double_t TGRSIFunctions::ConvolutedDecay(Double_t *x, Double_t *par){
+//This function is derived from the convolution of a gaussian with an exponential decay, to fit TAC spectra of long half-lives (above 100 ps)
+//Requires the following parameters:
+//   - par[0]:  Normalization factor
+//   - par[1]:  Centroid of gaussian
+//   - par[2]:  Width of gaussian 
+//   - par[3]:  Lambda of the level
+
+  Double_t val;
+  val = TMath::Sqrt(3.1415)*par[0]*par[3]/2*TMath::Exp(par[3]/2*(2*par[1]+par[3]*pow(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[3]*pow(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]));
+  return val;
+
 }

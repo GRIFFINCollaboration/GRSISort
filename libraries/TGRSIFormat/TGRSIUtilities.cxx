@@ -27,7 +27,7 @@ bool all_files_exist(const std::vector<std::string>& filenames)
    return true;
 }
 
-int GetRunNumber(std::string fileName)
+int GetRunNumber(const std::string& fileName)
 {
    if(fileName.length() == 0) {
       return 0;
@@ -39,7 +39,9 @@ int GetRunNumber(std::string fileName)
    std::size_t found2 = fileName.rfind('-');
    // printf("found 2 = %i\n",found2);
 
-   if(found2 == std::string::npos) found2 = fileName.rfind('_');
+   if(found2 == std::string::npos) {
+      found2 = fileName.rfind('_');
+   }
    std::string temp;
    if(found2 == std::string::npos || fileName.compare(found2 + 4, 5, ".root") != 0) {
       temp = fileName.substr(found - 5, 5);
@@ -49,16 +51,18 @@ int GetRunNumber(std::string fileName)
    return atoi(temp.c_str());
 }
 
-int GetSubRunNumber(std::string fileName)
+int GetSubRunNumber(const std::string& fileName)
 {
-   if(fileName.length() == 0) return -1;
+   if(fileName.length() == 0) {
+      return -1;
+   }
 
-   std::size_t found = fileName.rfind("-");
+   std::size_t found = fileName.rfind('-');
    if(found != std::string::npos) {
       std::string temp = fileName.substr(found + 1, 3);
       return atoi(temp.c_str());
    }
-   found = fileName.rfind("_");
+   found = fileName.rfind('_');
    if(found != std::string::npos) {
       std::string temp = fileName.substr(found + 1, 3);
       return atoi(temp.c_str());

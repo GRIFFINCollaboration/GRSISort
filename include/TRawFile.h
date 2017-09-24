@@ -19,7 +19,7 @@
 #ifdef __APPLE__
 #include <_types/_uint32_t.h>
 #else
-#include <stdint.h>
+#include <cstdint>
 #endif
 
 #include "TObject.h"
@@ -35,7 +35,7 @@ public:
 
    TRawFile() {} ///< default constructor
    TRawFile(const char*, EOpenType = kRead) {}
-   virtual ~TRawFile() {} ///< destructor
+   ~TRawFile() override = default; ///< destructor
 
    virtual bool Open(const char* filename) = 0; ///< Open input file
 
@@ -65,11 +65,11 @@ protected:
 
    std::vector<char> fReadBuffer;
 
-   size_t fBytesRead;
-   size_t fFileSize;
+   size_t fBytesRead{0};
+   size_t fFileSize{0};
 
    /// \cond CLASSIMP
-   ClassDef(TRawFile, 0) // Used to open and write Midas Files
+   ClassDefOverride(TRawFile, 0) // Used to open and write Midas Files
    /// \endcond
 };
 /*! @} */

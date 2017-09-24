@@ -26,39 +26,39 @@
 
 class TFragWriteLoop : public StoppableThread {
 public:
-   static TFragWriteLoop* Get(std::string name = "", std::string outputFilename = "");
+   static TFragWriteLoop* Get(std::string name = "", std::string fOutputFilename = "");
 
-   virtual ~TFragWriteLoop();
+   ~TFragWriteLoop() override;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& InputQueue() { return fInputQueue; }
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& BadInputQueue() { return fBadInputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>& BadInputQueue() { return fBadInputQueue; }
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>&      ScalerInputQueue() { return fScalerInputQueue; }
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& OutputQueue() { return fOutputQueue; }
 #endif
 
-   virtual void ClearQueue();
+   void ClearQueue() override;
 
    void Write();
 
    // there is no output queue for this loop, so we assume that all items handled (= all good fragments written)
    // are also the number of items popped and that we have no current items
-   size_t GetItemsPushed() { return fItemsPopped; }
-   size_t GetItemsPopped() { return fItemsPopped; }
-   size_t GetItemsCurrent() { return 0; }
-   size_t GetRate() { return 0; }
+   size_t GetItemsPushed() override { return fItemsPopped; }
+   size_t GetItemsPopped() override { return fItemsPopped; }
+   size_t GetItemsCurrent() override { return 0; }
+   size_t GetRate() override { return 0; }
 
-   std::string EndStatus();
+   std::string EndStatus() override;
 
 protected:
-   bool Iteration();
+   bool Iteration() override;
 
 private:
-   TFragWriteLoop(std::string name, std::string outputFile);
+   TFragWriteLoop(std::string name, std::string fOutputFilename);
 #ifndef __CINT__
-   void WriteEvent(std::shared_ptr<const TFragment> event);
-   void WriteBadEvent(std::shared_ptr<const TFragment> event);
-   void WriteScaler(std::shared_ptr<TEpicsFrag> scaler);
+   void WriteEvent(const std::shared_ptr<const TFragment>& event);
+   void WriteBadEvent(const std::shared_ptr<const TBadFragment>& event);
+   void WriteScaler(const std::shared_ptr<TEpicsFrag>& scaler);
 #endif
 
    TFile* fOutputFile;
@@ -73,12 +73,12 @@ private:
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fInputQueue;
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fBadInputQueue;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>> fBadInputQueue;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>      fScalerInputQueue;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fOutputQueue;
 #endif
 
-   ClassDef(TFragWriteLoop, 0);
+   ClassDefOverride(TFragWriteLoop, 0);
 };
 
 /*! @} */

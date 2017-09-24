@@ -9,8 +9,6 @@
 #include "TLstEvent.h"
 #include "TMidasEvent.h"
 
-// ClassImp(TUnpackingLoop)
-
 TUnpackingLoop* TUnpackingLoop::Get(std::string name)
 {
    if(name.length() == 0) {
@@ -18,7 +16,7 @@ TUnpackingLoop* TUnpackingLoop::Get(std::string name)
    }
 
    TUnpackingLoop* loop = static_cast<TUnpackingLoop*>(StoppableThread::Get(name));
-   if(!loop) {
+   if(loop == nullptr) {
       loop = new TUnpackingLoop(name);
    }
    return loop;
@@ -26,26 +24,20 @@ TUnpackingLoop* TUnpackingLoop::Get(std::string name)
 
 TUnpackingLoop::TUnpackingLoop(std::string name)
    : StoppableThread(name), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>()),
-     fFragsReadFromRaw(0), fGoodFragsRead(0), fEvaluateDataType(true)
+     fFragsReadFromRaw(0), fGoodFragsRead(0), fEvaluateDataType(true), fDataType(kMidas)
 {
 }
 
-TUnpackingLoop::~TUnpackingLoop()
-{
-}
+TUnpackingLoop::~TUnpackingLoop() = default;
 
 void TUnpackingLoop::ClearQueue()
 {
    std::shared_ptr<TRawEvent> singleEvent;
-   while(fInputQueue->Size()) {
+   while(fInputQueue->Size() != 0u) {
       fInputQueue->Pop(singleEvent);
    }
 
    fParser.ClearQueue();
-   // while(fParser.GoodOutputQueue()->Size()){
-   //	fParser.GoodOutputQueue()->Pop(frag);
-   //	delete frag;
-   //}
 }
 
 bool TUnpackingLoop::Iteration()
@@ -60,11 +52,10 @@ bool TUnpackingLoop::Iteration()
          BadOutputQueue()->SetFinished();
          ScalerOutputQueue()->SetFinished();
          return false;
-      } else {
-         // Wait for the source to give more data.
-         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-         return true;
       }
+      // Wait for the source to give more data.
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
+      return true;
    }
    if(fEvaluateDataType) {
       fDataType         = (event->IsA() == TLstEvent::Class()) ? kLst : kMidas;
@@ -87,11 +78,11 @@ std::string TUnpackingLoop::EndStatus()
 {
    std::stringstream ss;
    if(fFragsReadFromRaw > 0) {
-      ss << "\r" << Name() << ":\t" << fGoodFragsRead << " good fragments out of " << fFragsReadFromRaw
-         << " fragments => " << (100. * fGoodFragsRead) / fFragsReadFromRaw << "% passed" << std::endl;
+      ss<<"\r"<<Name()<<":\t"<<fGoodFragsRead<<" good fragments out of "<<fFragsReadFromRaw
+        <<" fragments => "<<(100. * fGoodFragsRead) / fFragsReadFromRaw<<"% passed"<<std::endl;
    } else {
-      ss << "\rno fragments read from midas => none parsed!" << std::endl;
+      ss<<"\rno fragments read from midas => none parsed!"<<std::endl;
    }
-   ss << fParser.OutputQueueStatus();
+   ss<<fParser.OutputQueueStatus();
    return ss.str();
 }

@@ -26,18 +26,18 @@ public:
    };
 
    enum ES3GlobalBits {
-      kPreSector = BIT(0),  // Preference sector energy when building pixels
-      kMultHit = BIT(1),    // Attempt to reconstruct multi strip-hit events
+      kPreSector  = BIT(0), // Preference sector energy when building pixels
+      kMultHit    = BIT(1), // Attempt to reconstruct multi strip-hit events
       kKeepShared = BIT(2), // When kMultHit, reconstruct rather than discard charge sharing
       kGBit3      = BIT(3)
    };
 
    TS3();
    TS3(const TS3&);
-   virtual ~TS3();
+   ~TS3() override;
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
 
    Short_t GetRingMultiplicity() const { return fS3RingHits.size(); }
@@ -55,12 +55,12 @@ public:
       SetPixels(false);
    } // Set absolute allow time difference
 
-   TGRSIDetectorHit* GetHit(const int& idx = 0);
+   TGRSIDetectorHit* GetHit(const int& idx = 0) override;
    TS3Hit* GetS3Hit(const int& i);
    TS3Hit* GetRingHit(const int& i);
    TS3Hit* GetSectorHit(const int& i);
 
-   Short_t GetMultiplicity() const { return fS3Hits.size(); }
+   Short_t GetMultiplicity() const override { return fS3Hits.size(); }
 
    static bool PreferenceSector(bool set = true)
    {
@@ -91,18 +91,24 @@ public:
 
    void SetTargetDistance(double dist) { fTargetDistance = dist; }
 
-   void ClearTransients()
+   void ClearTransients() override
    {
       fS3Bits = 0;
-      for (auto hit : fS3Hits) hit.ClearTransients();
-      for (auto hit : fS3RingHits) hit.ClearTransients();
-      for (auto hit : fS3SectorHits) hit.ClearTransients();
+      for(const auto& hit : fS3Hits) {
+         hit.ClearTransients();
+      }
+      for(const auto& hit : fS3RingHits) {
+         hit.ClearTransients();
+      }
+      for(const auto& hit : fS3SectorHits) {
+         hit.ClearTransients();
+      }
    }
 
-   void         Copy(TObject&) const;
-   TS3&         operator=(const TS3&);           //
-   virtual void Clear(Option_t* opt = "all");    //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
+   void Copy(TObject&) const override;
+   TS3& operator=(const TS3&);                    //
+   void Clear(Option_t* opt = "all") override;    //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
 private:
    std::vector<TS3Hit> fS3Hits; //!<!
@@ -132,7 +138,7 @@ private:
    static double fFrontBackEnergy; //!
 
    /// \cond CLASSIMP
-   ClassDef(TS3, 4)
+   ClassDefOverride(TS3, 4)
    /// \endcond
 };
 /*! @} */

@@ -16,20 +16,20 @@ class TS3Hit : public TGRSIDetectorHit {
 public:
    TS3Hit();
    TS3Hit(const TFragment&);
-   virtual ~TS3Hit();
+   ~TS3Hit() override;
    TS3Hit(const TS3Hit&);
 
    Short_t GetRing() const { return fRing; }
    Short_t GetSector() const { return fSector; }
    Bool_t  GetIsDownstream() const { return fIsDownstream; }
 
-   Double_t fTimeFit;
-   Double_t fSig2Noise;
+   Double_t fTimeFit{0.};
+   Double_t fSig2Noise{0.};
 
 public:
-   void Copy(TObject&) const; //!
-   void Print(Option_t* opt = "") const;
-   void Clear(Option_t* opt = "");
+   void Copy(TObject&) const override; //!
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
    inline Double_t GetFitTime() { return fTimeFit; }         //!<!
    inline Double_t GetSignalToNoise() { return fSig2Noise; } //!<!
@@ -49,9 +49,9 @@ public:
 
    Double_t GetPhi(double offset = 0) { return GetPosition(offset).Phi(); }
 
-   Double_t GetTheta(double offset = 0, TVector3* vec = 0)
+   Double_t GetTheta(double offset = 0, TVector3* vec = nullptr)
    {
-      if (vec == 0) {
+      if(vec == nullptr) {
          vec = new TVector3();
          vec->SetXYZ(0, 0, 1);
       }
@@ -59,21 +59,21 @@ public:
    }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Woverloaded-virtual"
-	TVector3 GetPosition(Double_t phioffset, Double_t dist, bool smear = false) const; //!
-	TVector3 GetPosition(Double_t phioffset, bool smear = false) const; //!
-	TVector3 GetPosition(bool smear = false) const; //!
+   TVector3 GetPosition(Double_t phioffset, Double_t dist, bool smear = false) const; //!
+   TVector3 GetPosition(Double_t phioffset, bool smear = false) const;                //!
+   TVector3 GetPosition(bool smear = false) const;                                    //!
 #pragma clang diagnostic pop
 
 private:
    Double_t GetDefaultPhiOffset() const; //!
    Double_t GetDefaultDistance() const;  //!
 
-   Bool_t  fIsDownstream; // Downstream check
-   Short_t fRing;         // front
-   Short_t fSector;       // back
+   Bool_t  fIsDownstream{false}; // Downstream check
+   Short_t fRing{0};         // front
+   Short_t fSector{0};       // back
 
    /// \cond CLASSIMP
-   ClassDef(TS3Hit, 4);
+   ClassDefOverride(TS3Hit, 4);
    /// \endcond
 };
 /*! @} */

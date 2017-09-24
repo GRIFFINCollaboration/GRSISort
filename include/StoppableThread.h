@@ -40,7 +40,7 @@ public:
    static void ResumeAll();
 
    StoppableThread(std::string name);
-   static StoppableThread* Get(std::string name);
+   static StoppableThread* Get(const std::string& name);
    static std::vector<StoppableThread*> GetAll();
    virtual ~StoppableThread();
 
@@ -58,7 +58,7 @@ public:
    std::string         Name() const { return fName; }
 
    virtual void ClearQueue() {}
-	static void ClearAllQueues();
+   static void  ClearAllQueues();
 
    // protected:
    virtual bool Iteration() = 0;
@@ -91,9 +91,9 @@ protected:
    static std::map<std::string, StoppableThread*> fThreadMap;
 
 #ifndef __CINT__
-   std::atomic_size_t fItemsPopped; ///< number of items popped from input queue
-   std::atomic_long   fInputSize;   ///< number of items in the input (queue), only updated within Iteration(), so not
-                                    ///< always fully up-to-date (signed to hold error from queue::pop)
+   std::atomic_size_t fItemsPopped{0}; ///< number of items popped from input queue
+   std::atomic_long   fInputSize{0};   ///< number of items in the input (queue), only updated within Iteration(), so not
+                                       ///< always fully up-to-date (signed to hold error from queue::pop)
 #endif
 
 private:
@@ -108,9 +108,9 @@ private:
 
 #ifndef __CINT__
    std::thread             thread;
-   std::atomic_bool        running;
-   std::atomic_bool        force_stop;
-   std::atomic_bool        paused;
+   std::atomic_bool        running{false};
+   std::atomic_bool        force_stop{false};
+   std::atomic_bool        paused{false};
    std::condition_variable paused_wait;
    std::mutex              pause_mutex;
 #endif

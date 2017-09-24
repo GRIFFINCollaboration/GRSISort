@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <iostream>
-#include <stdio.h>
+#include <cstdio>
 
 #include "TDetector.h"
 #include "TFragment.h"
@@ -15,7 +15,7 @@
 class TTriFoil : public TDetector {
 public:
    TTriFoil();
-   virtual ~TTriFoil();
+   ~TTriFoil() override;
    TTriFoil(const TTriFoil& rhs);
 
    std::vector<Short_t> GetWave() { return fTfWave; }
@@ -24,31 +24,32 @@ public:
    // int TBeam() const { return TBeam(0); }
    int TBeam(unsigned int n = 0) const
    {
-      if (n < fTBeam.size())
+      if(n < fTBeam.size()) {
          return fTBeam.at(n);
-      else
+      } else {
          return -1;
+      }
    }
 
    bool   HasWave() const { return !fTfWave.empty(); }
    time_t GetTimeStamp() const { return fTimestamp; }
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
 
-   void Clear(Option_t* opt = "");       //!<!
-   void Print(Option_t* opt = "") const; //!<!
-   void Copy(TObject& rhs) const;
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
+   void Copy(TObject& rhs) const override;
 
 private:
    std::vector<Short_t> fTfWave;
-   Long_t               fTimestamp;
-   bool                 fBeam;
+   Long_t               fTimestamp{0};
+   bool                 fBeam{false};
    std::vector<int>     fTBeam;
 
    /// \cond CLASSIMP
-   ClassDef(TTriFoil, 2)
+   ClassDefOverride(TTriFoil, 2)
    /// \endcond
 };
 /*! @} */

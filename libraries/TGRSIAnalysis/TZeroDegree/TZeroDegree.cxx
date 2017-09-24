@@ -8,9 +8,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TZeroDegree)
-   /// \endcond
+/// \endcond
 
-   bool TZeroDegree::fSetWave = false;
+bool TZeroDegree::fSetWave = false;
 
 TZeroDegree::TZeroDegree()
 {
@@ -65,7 +65,7 @@ void TZeroDegree::Print(Option_t*) const
    printf("%lu fZeroDegreeHits\n", fZeroDegreeHits.size());
 }
 
-void TZeroDegree::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
+void TZeroDegree::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
 {
    /// Builds the ZDS Hits directly from the TFragment. Basically, loops through the data for an event and sets
    /// observables.
@@ -88,7 +88,7 @@ TZeroDegreeHit* TZeroDegree::GetZeroDegreeHit(const int& i)
    try {
       return &fZeroDegreeHits.at(i);
    } catch(const std::out_of_range& oor) {
-      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+      std::cerr<<ClassName()<<" is out of range: "<<oor.what()<<std::endl;
       throw grsi::exit_exception(1);
    }
    return nullptr;

@@ -31,11 +31,11 @@
 class TGRSIServer : public TServerSocket {
 public:
    static TGRSIServer* instance(int port = 9099);
-   virtual ~TGRSIServer();
+   ~TGRSIServer() override;
 
    void StopServer()
    {
-      if (fRunning) fRunning = false;
+      if(fRunning) fRunning = false;
    }
 
 private:
@@ -49,7 +49,7 @@ private:
    void MonitorConnectionsThread();
 
    /// \cond CLASSIMP
-   ClassDef(TGRSIServer, 0)
+   ClassDefOverride(TGRSIServer, 0)
    /// \endcond
 };
 /*! @} */

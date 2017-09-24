@@ -2,19 +2,18 @@
 
 //#ifdef __linux__
 
-#include <stdlib.h>
-#include <limits.h>
+#include <cstdlib>
+#include <climits>
 
 std::string full_path(const std::string& path)
 {
    char  buff[PATH_MAX + 1];
    char* success = realpath(path.c_str(), buff);
-   if(success) {
+   if(success != nullptr) {
       return buff;
-   } else {
-      // TODO: Give some sort of error message.
-      return "";
    }
+   // TODO: Give some sort of error message.
+   return "";
 }
 //#endif
 

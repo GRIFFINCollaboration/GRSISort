@@ -14,18 +14,18 @@ void ODBGains(char *fname, char *outname = "odbgains.sh") {
    ofstream myfile;
    myfile.open(outname,ios::out);
 
-   myfile << "#!/bin/bash\n";
-   myfile << "#\n";
-   myfile << "# Set the correct gain and offset parameters\n";
-   myfile << "# Generated automatically by ODBGains in the GRSISort package\n";
-   myfile << "# using " << fname << "\n\n";
+   myfile<<"#!/bin/bash\n";
+   myfile<<"#\n";
+   myfile<<"# Set the correct gain and offset parameters\n";
+   myfile<<"# Generated automatically by ODBGains in the GRSISort package\n";
+   myfile<<"# using "<<fname<<"\n\n";
 
    for(int i = 0; i<64;i++){ //make this smarter
       TChannel *chan = TChannel::GetChannelByNumber(i);
       if(!chan) continue;
 
-      myfile << "odbedit -c \"set /DAQ/MSC/offset["<<i<<"] "<< chan->GetENGCoeff().at(0) << "\"\n";
-      myfile << "odbedit -c \"set /DAQ/MSC/gain["<<i<<"] "<< chan->GetENGCoeff().at(1) << "\"\n\n";
+      myfile<<"odbedit -c \"set /DAQ/MSC/offset["<<i<<"] "<< chan->GetENGCoeff().at(0)<<"\"\n";
+      myfile<<"odbedit -c \"set /DAQ/MSC/gain["<<i<<"] "<< chan->GetENGCoeff().at(1)<<"\"\n\n";
 
    }
 

@@ -12,18 +12,14 @@
 
 /// \cond CLASSIMP
 ClassImp(TDescantHit)
-   /// \endcond
+/// \endcond
 
-   TDescantHit::TDescantHit()
+TDescantHit::TDescantHit()
 {
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
    Clear();
-}
-
-TDescantHit::~TDescantHit()
-{
 }
 
 TDescantHit::TDescantHit(const TDescantHit& rhs) : TGRSIDetectorHit()
@@ -40,10 +36,10 @@ TDescantHit::TDescantHit(const TFragment& frag) : TGRSIDetectorHit(frag)
 
    // if(TDescant::SetWave()) {
    if(TGRSIOptions::Get()->ExtractWaves()) {
-      if(frag.GetWaveform()->size() == 0) {
+      if(frag.GetWaveform()->empty()) {
          // printf("Warning, TDescant::SetWave() set, but data waveform size is zero!\n");
       }
-      if(0) {
+      if(false) {
          std::vector<Short_t> x;
          // Need to reorder waveform data for S1507 data from December 2014
          // All pairs of samples are swapped.
@@ -73,7 +69,7 @@ TDescantHit::TDescantHit(const TFragment& frag) : TGRSIDetectorHit(frag)
       } else {
          frag.CopyWave(*this);
       }
-      if(GetWaveform()->size() > 0) {
+      if(!GetWaveform()->empty()) {
          // printf("Analyzing waveform, current cfd = %d, psd = %d\n",hit.GetCfd(),hit.GetPsd());
          AnalyzeWaveform();
          //          bool analyzed = hit.AnalyzeWaveform();
@@ -82,6 +78,8 @@ TDescantHit::TDescantHit(const TFragment& frag) : TGRSIDetectorHit(frag)
       }
    }
 }
+
+TDescantHit::~TDescantHit() = default;
 
 void TDescantHit::Copy(TObject& rhs) const
 {
@@ -104,7 +102,9 @@ void TDescantHit::Copy(TObject& rhs) const
 void TDescantHit::Copy(TObject& obj, bool waveform) const
 {
    Copy(obj);
-   if(waveform) CopyWave(obj);
+   if(waveform) {
+      CopyWave(obj);
+   }
 }
 
 TVector3 TDescantHit::GetPosition(Double_t dist) const
@@ -142,7 +142,7 @@ Double_t TDescantHit::GetTime(const UInt_t&, Option_t*) const
 {
    Double_t  dTime = GetTimeStamp() * 10. + GetRemainder() + (GetCfd() + gRandom->Uniform()) / 256.;
    TChannel* chan  = GetChannel();
-   if(!chan) {
+   if(chan == nullptr) {
       Error("GetTime", "No TChannel exists for address 0x%08x", GetAddress());
       return dTime;
    }
@@ -267,7 +267,7 @@ Int_t TDescantHit::CalculateCfdAndMonitor(double attenuation, unsigned int delay
             armed      = true;
             monitormax = monitor[i - delay];
          } else {
-            if(armed == true && monitor[i - delay] < 0) {
+            if(armed && monitor[i - delay] < 0) {
                armed = false;
                if(monitor[i - delay - 1] - monitor[i - delay] != 0) {
                   // Linear interpolation.
@@ -347,7 +347,7 @@ std::vector<Int_t> TDescantHit::CalculatePartialSum()
 
    std::vector<Int_t> partialSums(fWaveform.size(), 0);
 
-   if(fWaveform.size() > 0) {
+   if(!fWaveform.empty()) {
       partialSums[0] = fWaveform.at(0);
       for(size_t i = 1; i < fWaveform.size(); ++i) {
          partialSums[i] = partialSums[i - 1] + fWaveform[i];

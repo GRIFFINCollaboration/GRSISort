@@ -4,19 +4,19 @@
 //  $Id: TLstEvent.cxx 91 2012-04-12 18:36:17Z olchansk $
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <assert.h>
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
+#include <cstring>
+#include <cassert>
 
 #include "TLstEvent.h"
 
 /// \cond CLASSIMP
 ClassImp(TLstEvent)
-   /// \endcond
+/// \endcond
 
-   TLstEvent::TLstEvent()
+TLstEvent::TLstEvent()
 {
    // Default constructor
    fData.resize(0);
@@ -41,7 +41,9 @@ TLstEvent::~TLstEvent()
 
 TLstEvent& TLstEvent::operator=(const TLstEvent& rhs)
 {
-   if(&rhs != this) Clear();
+   if(&rhs != this) {
+      Clear();
+   }
 
    rhs.Copy(*this);
    return *this;
@@ -92,7 +94,7 @@ void TLstEvent::Print(const char* option) const
    }
 }
 
-typedef uint8_t BYTE;
+using BYTE = uint8_t;
 
 /// Byte swapping routine.
 ///

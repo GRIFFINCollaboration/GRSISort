@@ -1,12 +1,12 @@
 #include <iostream>
 #include <fstream>
-#include <stdio.h>
+#include <cstdio>
 #include <cstring>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <errno.h>
-#include <assert.h>
+#include <cerrno>
+#include <cassert>
 #include <cstdlib>
 
 #ifdef HAVE_ZLIB
@@ -22,9 +22,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TMidasFile)
-   /// \endcond
+/// \endcond
 
-   TMidasFile::TMidasFile()
+TMidasFile::TMidasFile()
 {
    // Default Constructor
    uint32_t endian = 0x12345678;
@@ -50,7 +50,7 @@ ClassImp(TMidasFile)
    fBytesRead         = 0;
    fFileSize          = 0;
 
-   fDoByteSwap = *(char*)(&endian) != 0x78;
+   fDoByteSwap = *reinterpret_cast<char*>(&endian) != 0x78;
 
    fFirstEvent = std::make_shared<TMidasEvent>();
 }
@@ -81,9 +81,11 @@ static int hasSuffix(const char* name, const char* suffix)
 {
    // Checks to see if midas file has suffix.
    const char* s = strstr(name, suffix);
-   if(s == nullptr) return 0;
+   if(s == nullptr) {
+      return 0;
+   }
 
-   return (s - name) + strlen(suffix) == strlen(name);
+   return static_cast<int>((s - name) + strlen(suffix) == strlen(name));
 }
 
 /// Open a midas .mid file with given file name.
@@ -109,7 +111,9 @@ static int hasSuffix(const char* name, const char* suffix)
 /// \returns "true" for succes, "false" for error, use GetLastError() to see why
 bool TMidasFile::Open(const char* filename)
 {
-   if(fFile > 0) Close();
+   if(fFile > 0) {
+      Close();
+   }
 
    fFilename = filename;
 
@@ -147,9 +151,9 @@ bool TMidasFile::Open(const char* filename)
       pipe += remoteFile;
       pipe += " bs=1024k";
 
-      if(hasSuffix(remoteFile, ".gz")) {
+      if(hasSuffix(remoteFile, ".gz") != 0) {
          pipe += " | gzip -dc";
-      } else if(hasSuffix(remoteFile, ".bz2")) {
+      } else if(hasSuffix(remoteFile, ".bz2") != 0) {
          pipe += " | bzip2 -dc";
       }
    } else if(strncmp(filename, "dccp://", 7) == 0) {
@@ -159,10 +163,11 @@ bool TMidasFile::Open(const char* filename)
       pipe += name;
       pipe += " /dev/fd/1";
 
-      if(hasSuffix(filename, ".gz"))
+      if(hasSuffix(filename, ".gz") != 0) {
          pipe += " | gzip -dc";
-      else if(hasSuffix(filename, ".bz2"))
+      } else if(hasSuffix(filename, ".bz2") != 0) {
          pipe += " | bzip2 -dc";
+      }
    } else if(strncmp(filename, "pipein://", 9) == 0) {
       pipe = filename + 9;
 #if 0 // read compressed files using the zlib library
@@ -170,7 +175,7 @@ bool TMidasFile::Open(const char* filename)
 		pipe = "gzip -dc ";
 		pipe += filename;
 #endif
-   } else if(hasSuffix(filename, ".bz2")) {
+   } else if(hasSuffix(filename, ".bz2") != 0) {
       pipe = "bzip2 -dc ";
       pipe += filename;
    }
@@ -188,7 +193,7 @@ bool TMidasFile::Open(const char* filename)
          return false;
       }
 
-      fFile = fileno((FILE*)fPoFile);
+      fFile = fileno(reinterpret_cast<FILE*>(fPoFile));
    } else {
 #ifndef O_LARGEFILE
 #define O_LARGEFILE 0
@@ -202,7 +207,7 @@ bool TMidasFile::Open(const char* filename)
          return false;
       }
 
-      if(hasSuffix(filename, ".gz")) {
+      if(hasSuffix(filename, ".gz") != 0) {
 // this is a compressed file
 #ifdef HAVE_ZLIB
          fGzFile             = new gzFile;
@@ -236,7 +241,9 @@ bool TMidasFile::OutOpen(const char* filename)
    /// \param [in] filename The file to open.
    /// \returns "true" for succes, "false" for error, use GetLastError() to see why
 
-   if(fOutFile > 0) OutClose();
+   if(fOutFile > 0) {
+      OutClose();
+   }
 
    fOutFilename = filename;
 
@@ -253,7 +260,7 @@ bool TMidasFile::OutOpen(const char* filename)
 
    printf("Opened output file %s ; return fOutFile is %i\n", filename, fOutFile);
 
-   if(hasSuffix(filename, ".gz")) {
+   if(hasSuffix(filename, ".gz") != 0) {
 // (hasSuffix(filename, ".dummy"))
 // this is a compressed file
 #ifdef HAVE_ZLIB
@@ -265,7 +272,7 @@ bool TMidasFile::OutOpen(const char* filename)
          return false;
       }
       printf("Opened gz file successfully\n");
-      if(1) {
+      if(true) {
          if(gzsetparams(*(gzFile*)fOutGzFile, 1, Z_DEFAULT_STRATEGY) != Z_OK) {
             printf("Cannot set gzparams\n");
             fLastErrno = -1;
@@ -321,7 +328,7 @@ int TMidasFile::Read(std::shared_ptr<TRawEvent> event)
    }
 
    midasEvent->Clear();
-   memcpy((char*)midasEvent->GetEventHeader(), fReadBuffer.data(), sizeof(TMidas_EVENT_HEADER));
+   memcpy(reinterpret_cast<char*>(midasEvent->GetEventHeader()), fReadBuffer.data(), sizeof(TMidas_EVENT_HEADER));
    if(fDoByteSwap) {
       printf("Swapping bytes\n");
       midasEvent->SwapBytesEventHeader();
@@ -359,7 +366,7 @@ void TMidasFile::ReadMoreBytes(size_t bytes)
    size_t initial_size = fReadBuffer.size();
    fReadBuffer.resize(initial_size + bytes);
    size_t rd = 0;
-   if(fGzFile) {
+   if(fGzFile != nullptr) {
 #ifdef HAVE_ZLIB
       rd = gzread(*(gzFile*)fGzFile, fReadBuffer.data() + initial_size, bytes);
 #else
@@ -380,7 +387,7 @@ void TMidasFile::ReadMoreBytes(size_t bytes)
    }
 }
 
-void TMidasFile::FillBuffer(std::shared_ptr<TMidasEvent> midasEvent, Option_t*)
+void TMidasFile::FillBuffer(const std::shared_ptr<TMidasEvent>& midasEvent, Option_t*)
 {
    // Fills a buffer to be written to a midas file.
 
@@ -388,26 +395,26 @@ void TMidasFile::FillBuffer(std::shared_ptr<TMidasEvent> midasEvent, Option_t*)
    // It seems to be filling in the wrong order of bits, but this does it correctly
    // There is a byte swap happening at some point in this process. Might have to put something
    // in here that protects against "Endian-ness"
-   fWriteBuffer.push_back((char)(midasEvent->GetEventId() & 0xFF));
-   fWriteBuffer.push_back((char)(midasEvent->GetEventId() >> 8));
+   fWriteBuffer.push_back(static_cast<char>(midasEvent->GetEventId() & 0xFF));
+   fWriteBuffer.push_back(static_cast<char>(midasEvent->GetEventId() >> 8));
 
-   fWriteBuffer.push_back((char)(midasEvent->GetTriggerMask() & 0xFF));
-   fWriteBuffer.push_back((char)(midasEvent->GetTriggerMask() >> 8));
+   fWriteBuffer.push_back(static_cast<char>(midasEvent->GetTriggerMask() & 0xFF));
+   fWriteBuffer.push_back(static_cast<char>(midasEvent->GetTriggerMask() >> 8));
 
-   fWriteBuffer.push_back((char)(midasEvent->GetSerialNumber() & 0xFF));
-   fWriteBuffer.push_back((char)((midasEvent->GetSerialNumber() >> 8) & 0xFF));
-   fWriteBuffer.push_back((char)((midasEvent->GetSerialNumber() >> 16) & 0xFF));
-   fWriteBuffer.push_back((char)(midasEvent->GetSerialNumber() >> 24));
+   fWriteBuffer.push_back(static_cast<char>(midasEvent->GetSerialNumber() & 0xFF));
+   fWriteBuffer.push_back(static_cast<char>((midasEvent->GetSerialNumber() >> 8) & 0xFF));
+   fWriteBuffer.push_back(static_cast<char>((midasEvent->GetSerialNumber() >> 16) & 0xFF));
+   fWriteBuffer.push_back(static_cast<char>(midasEvent->GetSerialNumber() >> 24));
 
-   fWriteBuffer.push_back((char)(midasEvent->GetTimeStamp() & 0xFF));
-   fWriteBuffer.push_back((char)((midasEvent->GetTimeStamp() >> 8) & 0xFF));
-   fWriteBuffer.push_back((char)((midasEvent->GetTimeStamp() >> 16) & 0xFF));
-   fWriteBuffer.push_back((char)(midasEvent->GetTimeStamp() >> 24));
+   fWriteBuffer.push_back(static_cast<char>(midasEvent->GetTimeStamp() & 0xFF));
+   fWriteBuffer.push_back(static_cast<char>((midasEvent->GetTimeStamp() >> 8) & 0xFF));
+   fWriteBuffer.push_back(static_cast<char>((midasEvent->GetTimeStamp() >> 16) & 0xFF));
+   fWriteBuffer.push_back(static_cast<char>(midasEvent->GetTimeStamp() >> 24));
 
-   fWriteBuffer.push_back((char)(midasEvent->GetDataSize() & 0xFF));
-   fWriteBuffer.push_back((char)((midasEvent->GetDataSize() >> 8) & 0xFF));
-   fWriteBuffer.push_back((char)((midasEvent->GetDataSize() >> 16) & 0xFF));
-   fWriteBuffer.push_back((char)(midasEvent->GetDataSize() >> 24));
+   fWriteBuffer.push_back(static_cast<char>(midasEvent->GetDataSize() & 0xFF));
+   fWriteBuffer.push_back(static_cast<char>((midasEvent->GetDataSize() >> 8) & 0xFF));
+   fWriteBuffer.push_back(static_cast<char>((midasEvent->GetDataSize() >> 16) & 0xFF));
+   fWriteBuffer.push_back(static_cast<char>(midasEvent->GetDataSize() >> 24));
 
    for(size_t i = 0; i < midasEvent->GetDataSize(); i++) {
       fWriteBuffer.push_back(midasEvent->GetData()[i]);
@@ -415,7 +422,9 @@ void TMidasFile::FillBuffer(std::shared_ptr<TMidasEvent> midasEvent, Option_t*)
 
    fCurrentBufferSize += midasEvent->GetDataSize() + sizeof(TMidas_EVENT_HEADER);
 
-   if(fWriteBuffer.size() > fMaxBufferSize) WriteBuffer();
+   if(fWriteBuffer.size() > fMaxBufferSize) {
+      WriteBuffer();
+   }
 }
 
 bool TMidasFile::WriteBuffer()
@@ -423,7 +432,7 @@ bool TMidasFile::WriteBuffer()
    // Writes a buffer of TMidasEvents to the output file.
    int wr = -2;
 
-   if(fOutGzFile) {
+   if(fOutGzFile != nullptr) {
 #ifdef HAVE_ZLIB
       wr = gzwrite(*(gzFile*)fOutGzFile, fWriteBuffer.data(), fCurrentBufferSize);
 #else
@@ -435,23 +444,23 @@ bool TMidasFile::WriteBuffer()
    fCurrentBufferSize = 0;
    fWriteBuffer.clear();
 
-   return wr;
+   return wr != 0;
 }
 
-bool TMidasFile::Write(std::shared_ptr<TMidasEvent> midasEvent, Option_t* opt)
+bool TMidasFile::Write(const std::shared_ptr<TMidasEvent>& midasEvent, Option_t* opt)
 {
    // Writes an individual TMidasEvent to the output TMidasFile. This will
    // write to a zipped file if the output file is defined as a zipped file.
    int wr = -2;
 
-   if(fOutGzFile) {
+   if(fOutGzFile != nullptr) {
 #ifdef HAVE_ZLIB
       wr = gzwrite(*(gzFile*)fOutGzFile, (char*)midasEvent->GetEventHeader(), sizeof(TMidas_EVENT_HEADER));
 #else
       assert(!"Cannot get here");
 #endif
    } else {
-      wr = write(fOutFile, (char*)midasEvent->GetEventHeader(), sizeof(TMidas_EVENT_HEADER));
+      wr = write(fOutFile, reinterpret_cast<char*>(midasEvent->GetEventHeader()), sizeof(TMidas_EVENT_HEADER));
    }
 
    if(wr != sizeof(TMidas_EVENT_HEADER)) {
@@ -464,21 +473,21 @@ bool TMidasFile::Write(std::shared_ptr<TMidasEvent> midasEvent, Option_t* opt)
       printf("Written event header to outfile , return is %i\n", wr);
    }
 
-   if(fOutGzFile) {
+   if(fOutGzFile != nullptr) {
 #ifdef HAVE_ZLIB
       wr = gzwrite(*(gzFile*)fOutGzFile, (char*)midasEvent->GetData(), midasEvent->GetDataSize());
 #else
       assert(!"Cannot get here");
 #endif
    } else {
-      wr = write(fOutFile, (char*)midasEvent->GetData(), midasEvent->GetDataSize());
+      wr = write(fOutFile, midasEvent->GetData(), midasEvent->GetDataSize());
    }
 
    if(strncmp(opt, "q", 1) != 0) {
       printf("Written event to outfile , return is %d\n", wr);
    }
 
-   return wr;
+   return wr != 0;
 }
 
 void TMidasFile::SetMaxBufferSize(int maxsize)
@@ -492,13 +501,17 @@ void TMidasFile::Close()
 {
    // Closes the input midas file. Use OutClose() to close the output
    // Midas File.
-   if(fPoFile) pclose((FILE*)fPoFile);
+   if(fPoFile != nullptr) {
+      pclose(reinterpret_cast<FILE*>(fPoFile));
+   }
    fPoFile = nullptr;
 #ifdef HAVE_ZLIB
    if(fGzFile) gzclose(*(gzFile*)fGzFile);
    fGzFile = nullptr;
 #endif
-   if(fFile > 0) close(fFile);
+   if(fFile > 0) {
+      close(fFile);
+   }
 
    fFile     = -1;
    fFilename = "";
@@ -508,7 +521,7 @@ void TMidasFile::OutClose()
 {
    // Closes the output midas file. Use Close() to close the read-in midas file
 
-   if(fWriteBuffer.size()) {
+   if(static_cast<unsigned int>(!fWriteBuffer.empty()) != 0u) {
       WriteBuffer();
    }
 #ifdef HAVE_ZLIB
@@ -518,7 +531,9 @@ void TMidasFile::OutClose()
    }
    fOutGzFile = nullptr;
 #endif
-   if(fOutFile > 0) close(fOutFile);
+   if(fOutFile > 0) {
+      close(fOutFile);
+   }
    fOutFile     = -1;
    fOutFilename = "";
 }
@@ -557,9 +572,11 @@ int TMidasFile::GetSubRunNumber()
 {
    // Parse the sub run number from the current TMidasFile. This assumes a format of
    // run#####_###.mid or run#####.mid.
-   if(fFilename.length() == 0) return -1;
+   if(fFilename.length() == 0) {
+      return -1;
+   }
    std::size_t foundslash = fFilename.rfind('/');
-   std::size_t found      = fFilename.rfind("-");
+   std::size_t found      = fFilename.rfind('-');
    if((found < foundslash && foundslash != std::string::npos) || found == std::string::npos) {
       found = fFilename.rfind('_');
    }

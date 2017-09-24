@@ -26,7 +26,7 @@ class TFragHistLoop : public StoppableThread {
 public:
    static TFragHistLoop* Get(std::string name = "");
 
-   ~TFragHistLoop();
+   ~TFragHistLoop() override;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& InputQueue() { return fInputQueue; }
@@ -43,18 +43,18 @@ public:
 
    void Write();
 
-   virtual void ClearQueue();
+   void ClearQueue() override;
 
    TList* GetObjects();
    TList* GetGates();
 
-   size_t GetItemsPopped() { return 0; }
-   size_t GetItemsPushed() { return 0; }
-   size_t GetItemsCurrent() { return 0; }
-   size_t GetRate() { return 0; }
+   size_t GetItemsPopped() override { return 0; }
+   size_t GetItemsPushed() override { return 0; }
+   size_t GetItemsCurrent() override { return 0; }
+   size_t GetRate() override { return 0; }
 
 protected:
-   bool Iteration();
+   bool Iteration() override;
 
 private:
    TFragHistLoop(std::string name);
@@ -71,7 +71,7 @@ private:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fInputQueue;
 #endif
 
-   ClassDef(TFragHistLoop, 0);
+   ClassDefOverride(TFragHistLoop, 0);
 };
 
 /*! @} */

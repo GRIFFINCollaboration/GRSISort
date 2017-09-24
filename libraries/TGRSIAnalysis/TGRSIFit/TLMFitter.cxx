@@ -2,27 +2,29 @@
 #include <iomanip>
 #include <iostream>
 
+/// \cond CLASSIMP
 ClassImp(TLMFitter)
+/// \endcond
 
-   /* DEFINITIONS */
-   /*******************************************************************/
-   /* alamda = parameter switches between curve and gradient method   */
-   /*          must begin negative to initialize fit routine          */
-   /* x[DIM] = x values of the data                                   */
-   /* y[DIM] = y values of the data (Number of counts)                */
-   /* sig[i] = sigma in the y value                                   */
-   /* chisq  = chi-squared definitions defined in mrqcof subroutine   */
-   /* sig2i  = 1 over sigma squared (Used in computing the chisq)     */
-   /* a[i]   = fit parameters of the fitting function                 */
-   /* ia[i]  = set to '1' to free a[i] or '0' for fixed               */
-   /* beta[j]= extremum vector                                        */
-   /* alpha[k][k] = curvature matrix                                  */
-   /* dy     = yfit - ydata                                           */
-   /* ma     = number of fit parameters in fit function               */
-   /*******************************************************************/
+/* DEFINITIONS */
+/*******************************************************************/
+/* alamda = parameter switches between curve and gradient method   */
+/*          must begin negative to initialize fit routine          */
+/* x[DIM] = x values of the data                                   */
+/* y[DIM] = y values of the data (Number of counts)                */
+/* sig[i] = sigma in the y value                                   */
+/* chisq  = chi-squared definitions defined in mrqcof subroutine   */
+/* sig2i  = 1 over sigma squared (Used in computing the chisq)     */
+/* a[i]   = fit parameters of the fitting function                 */
+/* ia[i]  = set to '1' to free a[i] or '0' for fixed               */
+/* beta[j]= extremum vector                                        */
+/* alpha[k][k] = curvature matrix                                  */
+/* dy     = yfit - ydata                                           */
+/* ma     = number of fit parameters in fit function               */
+/*******************************************************************/
 
-   /* Function Subroutine-***Put fitting function here***-------------*/
-   void TLMFitter::funcs(const double& x, Vec_IO_double& a, double& y, Vec_O_double& dyda)
+/* Function Subroutine-***Put fitting function here***-------------*/
+void TLMFitter::funcs(const double& x, Vec_IO_double& a, double& y, Vec_O_double& dyda)
 {
    for(int i = 0; i < a.size(); ++i) {
       fFunction->SetParameter(i, a[i]);
@@ -31,7 +33,7 @@ ClassImp(TLMFitter)
       dyda[i] = fFunction->GradientPar(i, &x);
    }
    y = fFunction->Eval(x);
-   // std::cout << "y: " << y << " x: " << x << std::endl;
+   // std::cout<<"y: "<<y<<" x: "<<x<<std::endl;
 }
 
 void TLMFitter::Fit(TH1* hist, TF1* func)
@@ -47,7 +49,7 @@ void TLMFitter::Fit(TH1* hist, TF1* func)
    fHist     = hist;
 
    // Sets whether parameters are fixed or free.
-   std::cout << "Setting the parameters..." << std::endl;
+   std::cout<<"Setting the parameters..."<<std::endl;
    for(int i = 0; i < func->GetNpar(); ++i) {
       Double_t min, max;
       a[i] = func->GetParameter(i);
@@ -62,11 +64,13 @@ void TLMFitter::Fit(TH1* hist, TF1* func)
       }
       ia[i] = true;
    }
-   for(int i = 0; i < ma; ++i) std::cout << "par[" << i << "] = " << fFunction->GetParameter(i) << std::endl;
-   double  func_range_min, func_range_max;
-   int     bin_min, bin_max, nBins;
+   for(int i = 0; i < ma; ++i) {
+      std::cout<<"par["<<i<<"] = "<<fFunction->GetParameter(i)<<std::endl;
+   }
+   double func_range_min, func_range_max;
+   int    bin_min, bin_max, nBins;
    func->GetRange(func_range_min, func_range_max);
-   std::cout << "function range: " << func_range_min << " to " << func_range_max << std::endl;
+   std::cout<<"function range: "<<func_range_min<<" to "<<func_range_max<<std::endl;
    SetFitterRange(func_range_min, func_range_max);
    bin_min = hist->FindBin(func_range_min);
    bin_max = hist->FindBin(func_range_max);
@@ -75,42 +79,49 @@ void TLMFitter::Fit(TH1* hist, TF1* func)
    // nBins = bin_max - bin_min;
    Vec_double x(nBins), y(nBins), sig(nBins), yfit(nBins), W(nBins), v(nBins);
 
-   std::cout << "Setting bin values..." << std::endl;
-   std::cout << "Range is " << bin_min << " to " << bin_max << std::endl;
+   std::cout<<"Setting bin values..."<<std::endl;
+   std::cout<<"Range is "<<bin_min<<" to "<<bin_max<<std::endl;
    for(int i = 0; i < hist->GetNbinsX(); ++i) {
       x[i] = hist->GetXaxis()->GetBinUpEdge(i + 1) * hist->GetXaxis()->GetBinWidth(1);
       y[i] = hist->GetBinContent(i + 1);
       v[i] = hist->GetBinError(i + 1) * hist->GetBinError(i + 1);
-      if(v[i] == 0)
+      if(v[i] == 0) {
          W[i] = 1.0;
-      else
+      } else {
          W[i] = y[i] / v[i];
+      }
    }
 
    alamda = -1;
    mrqmin(x, y, sig, a, ia, covar, alpha, chisq, W, alamda);
-   std::cout << "out of mrqmin" << std::endl;
+   std::cout<<"out of mrqmin"<<std::endl;
    int k    = 1;
    int itst = 0;
    while(true) {
-      std::cout << std::endl << "Iteration #" << std::setw(3) << k;
-      std::cout << std::setw(18) << "chi-squared:" << std::setw(13) << chisq;
-      std::cout << std::setw(11) << "alamda:" << std::setw(10) << alamda << std::endl;
-      for(int i = 0; i < ma; ++i) std::cout << "par[" << i << "] = " << fFunction->GetParameter(i) << std::endl;
-      std::cout << std::endl;
+      std::cout<<std::endl<<"Iteration #"<<std::setw(3)<<k;
+      std::cout<<std::setw(18)<<"chi-squared:"<<std::setw(13)<<chisq;
+      std::cout<<std::setw(11)<<"alamda:"<<std::setw(10)<<alamda<<std::endl;
+      for(int i = 0; i < ma; ++i) {
+         std::cout<<"par["<<i<<"] = "<<fFunction->GetParameter(i)<<std::endl;
+      }
+      std::cout<<std::endl;
       ++k;
       ochisq = chisq;
       mrqmin(x, y, sig, a, ia, covar, alpha, chisq, W, alamda);
       std::fabs(ochisq - chisq) < 0.0001 ? itst++ : itst = 0;
-      if(itst < 10) continue;
+      if(itst < 10) {
+         continue;
+      }
       alamda = 0.0;
       mrqmin(x, y, sig, a, ia, covar, alpha, chisq, W, alamda);
-      std::cout << "Uncertainties:" << std::endl;
-      for(int i = 0; i < ma; ++i) std::cout << " " << std::sqrt(covar[i][i]);
-      std::cout << std::endl;
+      std::cout<<"Uncertainties:"<<std::endl;
+      for(int i = 0; i < ma; ++i) {
+         std::cout<<" "<<std::sqrt(covar[i][i]);
+      }
+      std::cout<<std::endl;
       break;
    }
-   std::cout << "Chis2/ndf: " << chisq << std::endl;
+   std::cout<<"Chis2/ndf: "<<chisq<<std::endl;
 
    // Feed the parameters back into the function.
    for(int i = 0; i < ma; ++i) {
@@ -145,16 +156,16 @@ int TLMFitter::integrator(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec
    for(int k = 0; k < fIntegrationSteps; ++k) {
       // Find the y value at different integration stpes along the bin
       // z[k] = xstart + (double)(k)*bin_width/(double)fIntegrationSteps;
-      z[k] = xstart + (double)(k) / (double)fIntegrationSteps;
+      z[k] = xstart + static_cast<double>(k) / static_cast<double>(fIntegrationSteps);
       funcs(z[k], a, ymod, dyda);
       for(int i = 0; i < ma; ++i) {
          // Integrates the gradient of the functon within the bin
-         temp[i] += 1. / (double)fIntegrationSteps * dyda[i];
+         temp[i] += 1. / static_cast<double>(fIntegrationSteps) * dyda[i];
          // temp[i] += bin_width/(double)fIntegrationSteps*dyda[i];
       }
       // integrates the y of the function
       // ynew += bin_width/(double)fIntegrationSteps*ymod;
-      ynew += 1. / (double)fIntegrationSteps * ymod;
+      ynew += 1. / static_cast<double>(fIntegrationSteps) * ymod;
    }
    // Sets the actual variables to the "temporary" variables used for integration
    for(int i = 0; i < ma; ++i) {
@@ -201,7 +212,11 @@ void TLMFitter::mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
    int           j, k, l;
    static double chisqexp;
 
-   int                ma = a.size();
+   int ma = a.size();
+   if(ma <= 0) {
+      std::cerr<<__PRETTY_FUNCTION__<<": vector a is empty, not doing anything!"<<std::endl;
+      return;
+   }
    static Mat_double* oneda_p;
    static Vec_double *atry_p, *beta_p, *da_p;
    if(alamda < 0.0) { // Initialization
@@ -209,28 +224,39 @@ void TLMFitter::mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
       beta_p = new Vec_double(ma);
       da_p   = new Vec_double(ma);
       mfit   = 0;
-      for(j = 0; j < ma; j++)
-         if(ia[j]) mfit++;
-      oneda_p = new Mat_double(mfit, 1);
-      alamda  = 0.001;
-      mrqcof(x, y, sig, a, ia, alpha, *beta_p, chisq, W, chisqexp);
-      ochisq = chisq;
-      for(j = 0; j < ma; j++) (*atry_p)[j] = a[j];
+      for(j = 0; j < ma; j++) {
+         if(ia[j]) {
+            mfit++;
+         }
+         oneda_p = new Mat_double(mfit, 1);
+         alamda  = 0.001;
+         mrqcof(x, y, sig, a, ia, alpha, *beta_p, chisq, W, chisqexp);
+         ochisq = chisq;
+         for(j = 0; j < ma; j++) {
+            (*atry_p)[j] = a[j];
+         }
+      }
    }
    Mat_double& oneda = *oneda_p;
    Vec_double &atry = *atry_p, &beta = *beta_p, &da = *da_p;
    Mat_double  temp(mfit, mfit);
    // After linearized fitting matrix, by augmenting diagonal elements
    for(j = 0; j < mfit; j++) {
-      for(k = 0; k < mfit; k++) covar[j][k] = alpha[j][k];
-      covar[j][j]                           = alpha[j][j] * (1.0 + alamda);
-      for(k = 0; k < mfit; k++) temp[j][k] = covar[j][k];
-      oneda[j][0]                          = beta[j];
+      for(k = 0; k < mfit; k++) {
+         covar[j][k] = alpha[j][k];
+      }
+      covar[j][j] = alpha[j][j] * (1.0 + alamda);
+      for(k = 0; k < mfit; k++) {
+         temp[j][k] = covar[j][k];
+      }
+      oneda[j][0] = beta[j];
    }
    gaussj(temp, oneda); // Matrix solution
    for(j = 0; j < mfit; j++) {
-      for(k = 0; k < mfit; k++) covar[j][k] = temp[j][k];
-      da[j]                                 = oneda[j][0];
+      for(k = 0; k < mfit; k++) {
+         covar[j][k] = temp[j][k];
+      }
+      da[j] = oneda[j][0];
    }
    if(alamda == 0.0) { // Once converged, evaluate covariance matrix
       covsrt(covar, ia, mfit);
@@ -244,17 +270,23 @@ void TLMFitter::mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
       return;
    }
    for(j = 0, l = 0; l < ma; l++) { // Did the trial succeed?
-      if(ia[l]) atry[l] = a[l] + da[j++];
+      if(ia[l]) {
+         atry[l] = a[l] + da[j++];
+      }
    }
    mrqcof(x, y, sig, atry, ia, covar, da, chisq, W, chisqexp);
    if(chisq < ochisq) { // Success, accept the new solution
       alamda *= 0.1;
       ochisq = chisq;
       for(j = 0; j < mfit; j++) {
-         for(k = 0; k < mfit; k++) alpha[j][k] = covar[j][k];
-         beta[j]                               = da[j];
+         for(k = 0; k < mfit; k++) {
+            alpha[j][k] = covar[j][k];
+         }
+         beta[j] = da[j];
       }
-      for(l = 0; l < ma; l++) a[l] = atry[l];
+      for(l = 0; l < ma; l++) {
+         a[l] = atry[l];
+      }
    } else { // Failure, increase alamda and return
       alamda *= 10.0;
       chisq = ochisq;
@@ -277,11 +309,16 @@ void TLMFitter::mrqcof(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
    int        ma    = a.size();
    Vec_double dyda(ma);
    Vec_double yfit(ndata);
-   for(j = 0; j < ma; j++)
-      if(ia[j]) mfit++;
+   for(j = 0; j < ma; j++) {
+      if(ia[j]) {
+         mfit++;
+      }
+   }
    for(j = 0; j < mfit; j++) { // Initialize (symmetric) alpha, beta.
-      for(k = 0; k <= j; k++) alpha[j][k] = 0.0;
-      beta[j]                             = 0.0;
+      for(k = 0; k <= j; k++) {
+         alpha[j][k] = 0.0;
+      }
+      beta[j] = 0.0;
    }
    chisq = 0.0;
    for(i = fRangeMin; i < fRangeMax; ++i) { // Summation loop over all data.
@@ -341,8 +378,11 @@ void TLMFitter::mrqcof(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
       }
    } // end of loop over data
 
-   for(j = 1; j < mfit; j++) // Fill in the symmetric side.
-      for(k = 0; k < j; k++) alpha[k][j] = alpha[j][k];
+   for(j = 1; j < mfit; j++) { // Fill in the symmetric side.
+      for(k = 0; k < j; k++) {
+         alpha[k][j] = alpha[j][k];
+      }
+   }
 }
 
 /*******************************************************************/
@@ -354,13 +394,20 @@ void TLMFitter::covsrt(Mat_IO_double& covar, Vec_I_BOOL& ia, const int mfit)
    int i, j, k;
 
    int ma = ia.size();
-   for(i = mfit; i < ma; i++)
-      for(j = 0; j < i + 1; j++) covar[i][j] = covar[j][i] = 0.0;
-   k                                                       = mfit - 1;
+   for(i = mfit; i < ma; i++) {
+      for(j = 0; j < i + 1; j++) {
+         covar[i][j] = covar[j][i] = 0.0;
+      }
+   }
+   k = mfit - 1;
    for(j = ma - 1; j >= 0; j--) {
       if(ia[j]) {
-         for(i = 0; i < ma; i++) SWAP(covar[i][k], covar[i][j]);
-         for(i = 0; i < ma; i++) SWAP(covar[k][i], covar[j][i]);
+         for(i = 0; i < ma; i++) {
+            SWAP(covar[i][k], covar[i][j]);
+         }
+         for(i = 0; i < ma; i++) {
+            SWAP(covar[k][i], covar[j][i]);
+         }
          k--;
       }
    }
@@ -380,11 +427,13 @@ void TLMFitter::gaussj(Mat_IO_double& a, Mat_IO_double& b)
    int m = b.ncols();
 
    Vec_INT indxc(n), indxr(n), ipiv(n);
-   for(j = 0; j < n; j++) ipiv[j] = 0;
+   for(j = 0; j < n; j++) {
+      ipiv[j] = 0;
+   }
    for(i = 0; i < n; i++) {
       big = 0.0;
-      for(j = 0; j < n; j++)
-         if(ipiv[j] != 1)
+      for(j = 0; j < n; j++) {
+         if(ipiv[j] != 1) {
             for(k = 0; k < n; k++) {
                if(ipiv[k] == 0) {
                   if(std::fabs(a[j][k]) >= big) {
@@ -394,10 +443,16 @@ void TLMFitter::gaussj(Mat_IO_double& a, Mat_IO_double& b)
                   }
                }
             }
+         }
+      }
       ++(ipiv[icol]);
       if(irow != icol) {
-         for(l = 0; l < n; l++) SWAP(a[irow][l], a[icol][l]);
-         for(l = 0; l < m; l++) SWAP(b[irow][l], b[icol][l]);
+         for(l = 0; l < n; l++) {
+            SWAP(a[irow][l], a[icol][l]);
+         }
+         for(l = 0; l < m; l++) {
+            SWAP(b[irow][l], b[icol][l]);
+         }
       }
       indxr[i] = irow;
       indxc[i] = icol;
@@ -406,18 +461,30 @@ void TLMFitter::gaussj(Mat_IO_double& a, Mat_IO_double& b)
       }
       pivinv        = 1.0 / a[icol][icol];
       a[icol][icol] = 1.0;
-      for(l = 0; l < n; l++) a[icol][l] *= pivinv;
-      for(l = 0; l < m; l++) b[icol][l] *= pivinv;
-      for(ll = 0; ll < n; ll++)
+      for(l = 0; l < n; l++) {
+         a[icol][l] *= pivinv;
+      }
+      for(l = 0; l < m; l++) {
+         b[icol][l] *= pivinv;
+      }
+      for(ll = 0; ll < n; ll++) {
          if(ll != icol) {
             dum         = a[ll][icol];
             a[ll][icol] = 0.0;
-            for(l = 0; l < n; l++) a[ll][l] -= a[icol][l] * dum;
-            for(l = 0; l < m; l++) b[ll][l] -= b[icol][l] * dum;
+            for(l = 0; l < n; l++) {
+               a[ll][l] -= a[icol][l] * dum;
+            }
+            for(l = 0; l < m; l++) {
+               b[ll][l] -= b[icol][l] * dum;
+            }
          }
+      }
    }
    for(l = n - 1; l >= 0; l--) {
-      if(indxr[l] != indxc[l])
-         for(k = 0; k < n; k++) SWAP(a[k][indxr[l]], a[k][indxc[l]]);
+      if(indxr[l] != indxc[l]) {
+         for(k = 0; k < n; k++) {
+            SWAP(a[k][indxr[l]], a[k][indxc[l]]);
+         }
+      }
    }
 }

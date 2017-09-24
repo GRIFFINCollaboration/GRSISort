@@ -5,17 +5,15 @@
 
 /// \cond CLASSIMP
 ClassImp(TSourceList)
-   /// \endcond
+/// \endcond
 
-   TSourceList::TSourceList()
+TSourceList::TSourceList()
    : TCalList()
 {
    Clear();
 }
 
-TSourceList::~TSourceList()
-{
-}
+TSourceList::~TSourceList() = default;
 
 TSourceList::TSourceList(const char* name, const char* title) : TCalList(name, title)
 {
@@ -47,7 +45,7 @@ void TSourceList::Copy(TObject& obj) const
 
 void TSourceList::Print(Option_t*) const
 {
-   std::cout << "Nucleus: " << fNucleusName << std::endl;
+   std::cout<<"Nucleus: "<<fNucleusName<<std::endl;
    TCalList::Print();
 }
 
@@ -64,19 +62,21 @@ Int_t TSourceList::SetNucleus(const TNucleus& nuc)
    Int_t        good_counter    = 0;
    const TList* transition_list = nuc.GetTransitionList();
    TIter        next(transition_list);
-   TObject*     transition = 0;
-   std::cout << "Adding Transitions..." << std::endl;
-   while((transition = next())) {
+   TObject*     transition = nullptr;
+   std::cout<<"Adding Transitions..."<<std::endl;
+   while((transition = next()) != nullptr) {
       transition->Print();
-      if(AddTransition(dynamic_cast<TTransition*>(transition))) good_counter++;
+      if(AddTransition(static_cast<TTransition*>(transition))) {
+         good_counter++;
+      }
    }
    return good_counter;
 }
 
 bool TSourceList::AddTransition(TTransition* tran)
 {
-   if(!tran) {
-      std::cout << "Trying to add a bad transition" << std::endl;
+   if(tran == nullptr) {
+      std::cout<<"Trying to add a bad transition"<<std::endl;
       return false;
    }
 

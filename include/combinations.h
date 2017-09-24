@@ -8,7 +8,7 @@ public:
       iterator(std::vector<double>& points, size_t n, bool at_beginning)
          : fPoints(points), fPoints_used(fPoints.size()), fPast_end(false)
       {
-         if (at_beginning) {
+         if(at_beginning) {
             std::fill(fPoints_used.begin(), fPoints_used.begin() + n, true);
          } else {
             fPast_end = true;
@@ -18,8 +18,8 @@ public:
       std::vector<double> operator*() const
       {
          std::vector<double> values;
-         for (size_t i = 0; i < fPoints_used.size(); i++) {
-            if (fPoints_used[i]) {
+         for(size_t i = 0; i < fPoints_used.size(); i++) {
+            if(fPoints_used[i]) {
                values.push_back(fPoints[i]);
             }
          }
@@ -41,15 +41,15 @@ public:
 
       bool operator==(const iterator& other) const
       {
-         if (&fPoints != &other.fPoints || fPoints_used.size() != other.fPoints_used.size()) {
+         if(&fPoints != &other.fPoints || fPoints_used.size() != other.fPoints_used.size()) {
             return false;
          }
-         if (fPast_end && other.fPast_end) {
+         if(fPast_end && other.fPast_end) {
             return true;
          }
 
-         for (size_t i = 0; i < fPoints_used.size(); i++) {
-            if (fPoints_used[i] != other.fPoints_used[i]) {
+         for(size_t i = 0; i < fPoints_used.size(); i++) {
+            if(fPoints_used[i] != other.fPoints_used[i]) {
                return false;
             }
          }

@@ -10,9 +10,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TDescant)
-   /// \endcond
+/// \endcond
 
-   bool TDescant::fSetWave = false;
+bool TDescant::fSetWave = false;
 
 TVector3 TDescant::gPosition[71] = {
    // Descant positions from James' Thesis
@@ -107,10 +107,9 @@ TDescant::TDescant(const TDescant& rhs) : TGRSIDetector()
 void TDescant::Clear(Option_t* opt)
 {
    /// Clears all of the hits
-   // if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
    TGRSIDetector::Clear(opt);
-   //}
    fDescantHits.clear();
+	fHitFlag = false;
 }
 
 TDescant& TDescant::operator=(const TDescant& rhs)
@@ -135,13 +134,13 @@ TDescantHit* TDescant::GetDescantHit(const Int_t& i)
    try {
       return &fDescantHits.at(i);
    } catch(const std::out_of_range& oor) {
-      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+      std::cerr<<ClassName()<<" is out of range: "<<oor.what()<<std::endl;
       throw grsi::exit_exception(1);
    }
    return nullptr;
 }
 
-void TDescant::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
+void TDescant::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
 {
    /// Builds the DESCANT Hits directly from the TFragment. Basically, loops through the data for an event and sets
    /// observables.
@@ -166,10 +165,9 @@ TVector3 TDescant::GetPosition(int DetNbr, double dist)
       TVector3 temp_pos(gAncillaryPosition[DetNbr]);
       temp_pos.SetMag(dist);
       return temp_pos;
-   } else {
-      if(DetNbr > 70) {
-         return TVector3(0, 0, 1);
-      }
-      return gPosition[DetNbr];
    }
+   if(DetNbr > 70) {
+      return TVector3(0, 0, 1);
+   }
+   return gPosition[DetNbr];
 }

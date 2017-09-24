@@ -2,9 +2,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TCSMHit)
-   /// \endcond
+/// \endcond
 
-   TCSMHit::TCSMHit()
+TCSMHit::TCSMHit()
 {
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
@@ -12,9 +12,7 @@ ClassImp(TCSMHit)
    Clear();
 }
 
-TCSMHit::~TCSMHit()
-{
-}
+TCSMHit::~TCSMHit() = default;
 
 void TCSMHit::Clear(Option_t*)
 {
@@ -93,15 +91,15 @@ Double_t TCSMHit::GetDthickness() const
 
 Double_t TCSMHit::GetDEnergy() const
 {
-   bool debug           = 0;
-   bool trustVertical   = 1;
-   bool trustHoriztonal = 1;
+   bool debug           = false;
+   bool trustVertical   = true;
+   bool trustHoriztonal = true;
 
    switch(GetDetectorNumber()) {
    case 1:
       switch(GetDHorizontalStrip()) {
       case 6:
-      case 9: trustHoriztonal = 0; break;
+      case 9: trustHoriztonal = false; break;
       }
       break;
 
@@ -109,54 +107,60 @@ Double_t TCSMHit::GetDEnergy() const
       switch(GetDHorizontalStrip()) {
       // case 8:
       case 9:
-      case 10: trustHoriztonal = 0; break;
+      case 10: trustHoriztonal = false; break;
       }
       switch(GetDVerticalStrip()) {
-      case 5: trustVertical = 0; break;
+      case 5: trustVertical = false; break;
       }
       break;
 
    case 3:
       switch(GetDHorizontalStrip()) {
       case 12:
-      case 15: trustHoriztonal = 0; break;
+      case 15: trustHoriztonal = false; break;
       }
       break;
 
    case 4: break;
 
-   default: std::cerr << "  ERROR, Trying to get energy from a D detector that doesn't exist!" << std::endl;
+   default: std::cerr<<"  ERROR, Trying to get energy from a D detector that doesn't exist!"<<std::endl;
    }
 
    if((!trustVertical || !trustHoriztonal) && debug) {
-      std::cout << std::endl << "  GetDEnergy() output: (V,H)" << std::endl;
-      std::cout << "  Detector: " << GetDetectorNumber() << std::endl;
-      std::cout << "  Strip: " << GetDVerticalStrip() << " " << GetDHorizontalStrip() << std::endl;
-      std::cout << "  Trustworthy: " << trustVertical << " " << trustHoriztonal << std::endl;
-      std::cout << "  Energy: " << GetDVerticalEnergy() << " " << GetDHorizontalEnergy() << std::endl;
+      std::cout<<std::endl<<"  GetDEnergy() output: (V,H)"<<std::endl;
+      std::cout<<"  Detector: "<<GetDetectorNumber()<<std::endl;
+      std::cout<<"  Strip: "<<GetDVerticalStrip()<<" "<<GetDHorizontalStrip()<<std::endl;
+      std::cout<<"  Trustworthy: "<<trustVertical<<" "<<trustHoriztonal<<std::endl;
+      std::cout<<"  Energy: "<<GetDVerticalEnergy()<<" "<<GetDHorizontalEnergy()<<std::endl;
    }
 
    if(trustVertical && trustHoriztonal) {
       // if(debug) std::cout<<"  Returning: "<<(GetDVerticalEnergy() + GetDHorizontalEnergy())/2.<<std::endl;
       return ((GetDVerticalEnergy() + GetDHorizontalEnergy()) / 2.);
-   } else if(trustVertical && !trustHoriztonal) {
-      if(debug) std::cout << "**Returning: " << GetDVerticalEnergy() << std::endl;
+   }
+   if(trustVertical && !trustHoriztonal) {
+      if(debug) {
+         std::cout<<"**Returning: "<<GetDVerticalEnergy()<<std::endl;
+      }
       return (GetDVerticalEnergy());
-   } else if(!trustVertical && trustHoriztonal) {
-      if(debug) std::cout << "**Returning: " << GetDHorizontalEnergy() << std::endl;
+   }
+   if(!trustVertical && trustHoriztonal) {
+      if(debug) {
+         std::cout<<"**Returning: "<<GetDHorizontalEnergy()<<std::endl;
+      }
       return (GetDHorizontalEnergy());
-   } else if(!trustVertical && !trustVertical) // Are these correct??? RD
+   } else if(!trustVertical && !trustVertical) { // Are these correct??? RD
       return (0.);
-   else {
-      std::cerr << "  ERROR, I don't know who to trust in GetDEnergy()" << std::endl;
+   } else {
+      std::cerr<<"  ERROR, I don't know who to trust in GetDEnergy()"<<std::endl;
       return -1; // I added this here so that there is guaranteed a return at the end of the function RD
    }
 }
 
 Double_t TCSMHit::GetEEnergy() const
 {
-   bool trustVertical   = 1;
-   bool trustHoriztonal = 1;
+   bool trustVertical   = true;
+   bool trustHoriztonal = true;
 
    switch(GetDetectorNumber()) {
    case 1: break;
@@ -170,11 +174,11 @@ Double_t TCSMHit::GetEEnergy() const
       // case 8:
       case 12:
          // case 15:
-         trustHoriztonal = 0;
+         trustHoriztonal = false;
          break;
       }
       switch(GetEVerticalStrip()) {
-      case 0: trustVertical = 0; break;
+      case 0: trustVertical = false; break;
       }
       break;
 
@@ -182,53 +186,55 @@ Double_t TCSMHit::GetEEnergy() const
 
    case 4: break;
 
-   default: std::cerr << "  ERROR, Trying to get energy from a E detector that doesn't exist!" << std::endl;
+   default: std::cerr<<"  ERROR, Trying to get energy from a E detector that doesn't exist!"<<std::endl;
    }
 
-   if(trustVertical && trustHoriztonal)
+   if(trustVertical && trustHoriztonal) {
       return ((GetEVerticalEnergy() + GetEHorizontalEnergy()) / 2.);
-   else if(trustVertical && !trustHoriztonal)
+   }
+   if(trustVertical && !trustHoriztonal) {
       return (GetEVerticalEnergy());
-   else if(!trustVertical && trustHoriztonal)
+   }
+   if(!trustVertical && trustHoriztonal) {
       return (GetEHorizontalEnergy());
-   else if(!trustVertical && !trustVertical) // Are these correct? RD
+   } else if(!trustVertical && !trustVertical) { // Are these correct? RD
       return (0.);
-   else {
+   } else {
       return -1; // I added this here so that there is guaranteed a return at the end of the function RD
-      std::cerr << "  ERROR, I don't know who to trust in GetEEnergy()" << std::endl;
+      std::cerr<<"  ERROR, I don't know who to trust in GetEEnergy()"<<std::endl;
    }
 }
 
 void TCSMHit::Print(Option_t*) const
 {
-   std::cout << "Printing TCSMHit:  Horizontal    Vertical" << std::endl;
-   std::cout << "Detector number: " << GetDetectorNumber() << std::endl;
+   std::cout<<"Printing TCSMHit:  Horizontal    Vertical"<<std::endl;
+   std::cout<<"Detector number: "<<GetDetectorNumber()<<std::endl;
    // std::cout<<"Detector position: "<<GetDetectorPosition()<<std::endl;
-   std::cout << "D" << std::endl;
-   std::cout << "Strip: " << GetDHorizontalStrip() << " " << GetDVerticalStrip() << std::endl;
+   std::cout<<"D"<<std::endl;
+   std::cout<<"Strip: "<<GetDHorizontalStrip()<<" "<<GetDVerticalStrip()<<std::endl;
 
-   std::cout << "Charge: " << GetDHorizontalCharge() << " " << GetDVerticalCharge() << std::endl;
+   std::cout<<"Charge: "<<GetDHorizontalCharge()<<" "<<GetDVerticalCharge()<<std::endl;
 
-   std::cout << "CFD: " << GetDHorizontalCFD() << " " << GetDVerticalCFD() << std::endl;
+   std::cout<<"CFD: "<<GetDHorizontalCFD()<<" "<<GetDVerticalCFD()<<std::endl;
 
-   std::cout << "Energy: " << GetDHorizontalEnergy() << " " << GetDVerticalEnergy() << std::endl;
+   std::cout<<"Energy: "<<GetDHorizontalEnergy()<<" "<<GetDVerticalEnergy()<<std::endl;
 
-   std::cout << "Theta: " << GetDPosition().Theta() * 180. / 3.14159
-             << " Phi: " << GetDPosition().Phi() * 180. / 3.14159 << std::endl;
+   std::cout<<"Theta: "<<GetDPosition().Theta() * 180. / 3.14159
+            <<" Phi: "<<GetDPosition().Phi() * 180. / 3.14159<<std::endl;
 
-   std::cout << "E" << std::endl;
-   std::cout << "Strip: " << GetEHorizontalStrip() << " " << GetEVerticalStrip() << std::endl;
+   std::cout<<"E"<<std::endl;
+   std::cout<<"Strip: "<<GetEHorizontalStrip()<<" "<<GetEVerticalStrip()<<std::endl;
 
-   std::cout << "Charge: " << GetEHorizontalCharge() << " " << GetEVerticalCharge() << std::endl;
+   std::cout<<"Charge: "<<GetEHorizontalCharge()<<" "<<GetEVerticalCharge()<<std::endl;
 
-   std::cout << "CFD: " << GetEHorizontalCFD() << " " << GetEVerticalCFD() << std::endl;
+   std::cout<<"CFD: "<<GetEHorizontalCFD()<<" "<<GetEVerticalCFD()<<std::endl;
 
-   std::cout << "Energy: " << GetEHorizontalEnergy() << " " << GetEVerticalEnergy() << std::endl;
+   std::cout<<"Energy: "<<GetEHorizontalEnergy()<<" "<<GetEVerticalEnergy()<<std::endl;
 
-   std::cout << "Theta: " << GetEPosition().Theta() * 180. / 3.14159
-             << " Phi: " << GetEPosition().Phi() * 180. / 3.14159 << std::endl;
+   std::cout<<"Theta: "<<GetEPosition().Theta() * 180. / 3.14159
+            <<" Phi: "<<GetEPosition().Phi() * 180. / 3.14159<<std::endl;
 
-   std::cout << std::endl;
+   std::cout<<std::endl;
 }
 
 bool TCSMHit::IsEmpty()

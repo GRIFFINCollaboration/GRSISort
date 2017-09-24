@@ -4,6 +4,7 @@
 #include <thread>
 #include <utility>
 #include <cstdio>
+#include <sstream>
 
 #include "TGRSIOptions.h"
 #include "TString.h"
@@ -16,15 +17,14 @@ TDataLoop::TDataLoop(std::string name, TRawFile* source)
    : StoppableThread(name), fSource(source), fSelfStopping(true),
      fOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>("midas_queue"))
 #ifdef HAS_XML
-     ,
-     fOdb(0)
+     , fOdb(nullptr)
 #endif
 {
    TMidasFile* midasFile = dynamic_cast<TMidasFile*>(source);
    if(midasFile != nullptr) {
-      SetFileOdb(midasFile->GetFirstEvent()->GetData(), midasFile->GetFirstEvent()->GetDataSize());
+      SetFileOdb(midasFile->GetFirstEvent()->GetTimeStamp(), midasFile->GetFirstEvent()->GetData(), midasFile->GetFirstEvent()->GetDataSize());
    }
-   for(auto cal_filename : TGRSIOptions::Get()->CalInputFiles()) {
+   for(const auto& cal_filename : TGRSIOptions::Get()->CalInputFiles()) {
       TChannel::ReadCalFile(cal_filename.c_str());
    }
 }
@@ -36,24 +36,23 @@ TDataLoop::~TDataLoop()
 
 TDataLoop* TDataLoop::Get(std::string name, TRawFile* source)
 {
-   if(name.length() == 0) name = "input_loop";
-
-   TDataLoop* loop = dynamic_cast<TDataLoop*>(StoppableThread::Get(name));
-   if(!loop && source) {
+   if(name.length() == 0) {
+      name = "input_loop";
+   }
+   TDataLoop* loop = static_cast<TDataLoop*>(StoppableThread::Get(name));
+   if((loop == nullptr) && (source != nullptr)) {
       loop = new TDataLoop(name, source);
    }
    return loop;
 }
 
-void TDataLoop::SetFileOdb(char* data, int size)
+void TDataLoop::SetFileOdb(uint32_t time, char* data, int size)
 {
 #ifdef HAS_XML
    // check if we have already set the TChannels....
    //
-   if(fOdb) {
-      delete fOdb;
-      fOdb = 0;
-   }
+	delete fOdb;
+	fOdb = nullptr;
 
    if(TGRSIOptions::Get()->IgnoreFileOdb()) {
       printf(DYELLOW "\tskipping odb information stored in file.\n" RESET_COLOR);
@@ -76,7 +75,9 @@ void TDataLoop::SetFileOdb(char* data, int size)
          expt = node->GetText();
          break;
       }
-      if(!node->HasNextNode()) break;
+      if(!node->HasNextNode()) {
+         break;
+      }
       node = node->GetNextNode();
    }
    if(expt.compare("tigress") == 0) {
@@ -87,30 +88,38 @@ void TDataLoop::SetFileOdb(char* data, int size)
       SetGRIFFOdb();
    }
 
-   SetRunInfo();
+   SetRunInfo(time);
 
    // Check for EPICS variables
    SetEPICSOdb();
 #endif
 }
 
-void TDataLoop::SetRunInfo()
+void TDataLoop::SetRunInfo(uint32_t time)
 {
 #ifdef HAS_XML
-   TGRSIRunInfo* run_info = TGRSIRunInfo::Get();
-   TXMLNode*     node     = fOdb->FindPath("/Runinfo/Start time binary");
-   if(node) run_info->SetRunStart(atof(node->GetText()));
-
-   node = fOdb->FindPath("/Experiment/Run parameters/Run Title");
-   if(node) {
-      run_info->SetRunTitle(node->GetText());
-      std::cout << DBLUE << "Title: " << node->GetText() << RESET_COLOR << std::endl;
+   TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
+   TXMLNode*     node    = fOdb->FindPath("/Runinfo/Start time binary");
+   if(node != nullptr) {
+		std::stringstream str(node->GetText());
+		unsigned int odbTime;
+		str>>odbTime;
+		if(runInfo->SubRunNumber() == 0 && time != odbTime) {
+			std::cout<<"Warning, ODB start time of first subrun ("<<odbTime<<") does not match midas time of first event in this subrun ("<<time<<")!"<<std::endl;
+		}
+      runInfo->SetRunStart(time);
    }
 
-   if(node) {
+   node = fOdb->FindPath("/Experiment/Run parameters/Run Title");
+   if(node != nullptr) {
+      runInfo->SetRunTitle(node->GetText());
+      std::cout<<DBLUE<<"Title: "<<node->GetText()<<RESET_COLOR<<std::endl;
+   }
+
+   if(node != nullptr) {
       node = fOdb->FindPath("/Experiment/Run parameters/Comment");
-      run_info->SetRunComment(node->GetText());
-      std::cout << DBLUE << "Comment: " << node->GetText() << RESET_COLOR << std::endl;
+      runInfo->SetRunComment(node->GetText());
+      std::cout<<DBLUE<<"Comment: "<<node->GetText()<<RESET_COLOR<<std::endl;
    }
 #endif
 }
@@ -161,7 +170,7 @@ void TDataLoop::SetGRIFFOdb()
       // all good.
       for(size_t x = 0; x < address.size(); x++) {
          TChannel* tempChan = TChannel::GetChannel(address.at(x)); // names.at(x).c_str());
-         if(!tempChan) {
+         if(tempChan == nullptr) {
             tempChan = new TChannel();
          }
          tempChan->SetName(names.at(x).c_str());
@@ -186,12 +195,12 @@ void TDataLoop::SetGRIFFOdb()
    // "/PPG/Cycles/146Cs_S1468" then has four PPGcodes and four durations
    node = fOdb->FindPath("/PPG/Current");
    if(node == nullptr) {
-      std::cerr << "Failed to find \"/PPG/Current\" in ODB!" << std::endl;
+      std::cerr<<R"(Failed to find "/PPG/Current" in ODB!)"<<std::endl;
       return;
    }
 
    if(!node->HasChildren()) {
-      std::cout << "Node has no children, can't read ODB cycle" << std::endl;
+      std::cout<<"Node has no children, can't read ODB cycle"<<std::endl;
       return;
    }
    std::string currentCycle = "/PPG/Cycles/";
@@ -200,7 +209,7 @@ void TDataLoop::SetGRIFFOdb()
    temp.append("/PPGcodes");
    node = fOdb->FindPath(temp.c_str());
    if(node == nullptr) {
-      std::cerr << "Failed to find \"" << temp << "\" in ODB!" << std::endl;
+      std::cerr<<R"(Failed to find ")"<<temp<<R"(" in ODB!)"<<std::endl;
       return;
    }
    std::vector<int> tmpCodes = fOdb->ReadIntArray(node);
@@ -209,8 +218,8 @@ void TDataLoop::SetGRIFFOdb()
    std::vector<short> ppgCodes;
    for(auto code : tmpCodes) {
       if(((code >> 16) & 0xffff) != (code & 0xffff)) {
-         std::cout << DRED << "Found ppg code in the ODB with high bits (0x" << std::hex << (code >> 16)
-                   << ") != low bits (" << (code & 0xffff) << std::dec << ")" << RESET_COLOR << std::endl;
+         std::cout<<DRED<<"Found ppg code in the ODB with high bits (0x"<<std::hex<<(code >> 16)
+                  <<") != low bits ("<<(code & 0xffff)<<std::dec<<")"<<RESET_COLOR<<std::endl;
       }
       ppgCodes.push_back(code & 0xffff);
    }
@@ -218,14 +227,12 @@ void TDataLoop::SetGRIFFOdb()
    temp.append("/durations");
    node = fOdb->FindPath(temp.c_str());
    if(node == nullptr) {
-      std::cerr << "Failed to find \"" << temp << "\" in ODB!" << std::endl;
+      std::cerr<<R"(Failed to find ")"<<temp<<R"(" in ODB!)"<<std::endl;
       return;
    }
    std::vector<int> durations = fOdb->ReadIntArray(node);
 
    TPPG::Get()->SetOdbCycle(ppgCodes, durations);
-
-   return;
 #endif
 }
 
@@ -238,30 +245,36 @@ void TDataLoop::SetTIGOdb()
    int       typecounter = 0;
    if(typenode->HasChildren()) {
       TXMLNode* typechild = typenode->GetChildren();
-      while(1) {
+      while(true) {
          std::string tname = fOdb->GetNodeName(typechild);
          if(tname.length() > 0 && typechild->HasChildren()) {
             typecounter++;
             TXMLNode* grandchild = typechild->GetChildren();
-            while(1) {
+            while(true) {
                std::string grandchildname = fOdb->GetNodeName(grandchild);
                if(grandchildname.compare(0, 7, "Digitis") == 0) {
                   std::string dname    = grandchild->GetText();
                   typemap[typecounter] = std::make_pair(tname, dname);
                   break;
                }
-               if(!grandchild->HasNextNode()) break;
+               if(!grandchild->HasNextNode()) {
+                  break;
+               }
                grandchild = grandchild->GetNextNode();
             }
          }
-         if(!typechild->HasNextNode()) break;
+         if(!typechild->HasNextNode()) {
+            break;
+         }
          typechild = typechild->GetNextNode();
       }
    }
 
    std::string path = "/Analyzer/Shared Parameters/Config";
    TXMLNode*   test = fOdb->FindPath(path.c_str());
-   if(!test) path.assign("/Analyzer/Parameters/Cathode/Config"); // the old path to the useful odb info.
+   if(test == nullptr) {
+      path.assign("/Analyzer/Parameters/Cathode/Config"); // the old path to the useful odb info.
+   }
    printf("using TIGRESS path to analyzer info: %s...\n", path.c_str());
 
    std::string temp = path;
@@ -304,8 +317,10 @@ void TDataLoop::SetTIGOdb()
    }
 
    for(size_t x = 0; x < address.size(); x++) {
-      TChannel* tempChan     = TChannel::GetChannel(address.at(x)); // names.at(x).c_str());
-      if(!tempChan) tempChan = new TChannel();
+      TChannel* tempChan = TChannel::GetChannel(address.at(x)); // names.at(x).c_str());
+      if(tempChan == nullptr) {
+         tempChan = new TChannel();
+      }
       if(x < names.size()) {
          tempChan->SetName(names.at(x).c_str());
       }
@@ -316,10 +331,11 @@ void TDataLoop::SetTIGOdb()
          tempChan->SetTypeName(typemap[type.at(x)].first);
          tempChan->SetDigitizerType(typemap[type.at(x)].second.c_str());
          if(strcmp(tempChan->GetDigitizerTypeString(), "Tig64") ==
-            0) // TODO: maybe use enumerations via GetDigitizerType()
+            0) { // TODO: maybe use enumerations via GetDigitizerType()
             temp_integration = 25;
-         else if(strcmp(tempChan->GetDigitizerTypeString(), "Tig10") == 0)
+         } else if(strcmp(tempChan->GetDigitizerTypeString(), "Tig10") == 0) {
             temp_integration = 125;
+         }
       }
       tempChan->SetIntegration(temp_integration);
       tempChan->SetUserInfoNumber(x);
@@ -329,14 +345,13 @@ void TDataLoop::SetTIGOdb()
       TChannel::AddChannel(tempChan, "overwrite");
    }
    printf("\t%i TChannels created.\n", TChannel::GetNumberOfChannels());
-   return;
 #endif
 }
 
 void TDataLoop::ClearQueue()
 {
    std::shared_ptr<TRawEvent> event;
-   while(fOutputQueue->Size()) {
+   while(fOutputQueue->Size() != 0u) {
       fOutputQueue->Pop(event);
    }
 }
@@ -350,7 +365,7 @@ void TDataLoop::ReplaceSource(TRawFile* new_source)
 
 void TDataLoop::ResetSource()
 {
-   std::cerr << "Reset not implemented for TRawFile" << std::endl;
+   std::cerr<<"Reset not implemented for TRawFile"<<std::endl;
    // std::lock_guard<std::mutex> lock(fSourceMutex);
    // source->Reset();
 }
@@ -363,28 +378,25 @@ void TDataLoop::OnEnd()
 bool TDataLoop::Iteration()
 {
    std::shared_ptr<TRawEvent> evt = fSource->NewEvent();
-   int                        bytes_read;
+   int                        bytesRead;
    {
       std::lock_guard<std::mutex> lock(fSourceMutex);
-      bytes_read   = fSource->Read(evt);
+      bytesRead   = fSource->Read(evt);
       fItemsPopped = fSource->GetBytesRead() / 1000;
-      fInputSize   = fSource->GetFileSize() / 1000 - fItemsPopped; // this way fInputSize+fItemsPopped give the file size
+      fInputSize = fSource->GetFileSize() / 1000 - fItemsPopped; // this way fInputSize+fItemsPopped give the file size
    }
 
-   if(bytes_read <= 0 && fSelfStopping) {
+   if(bytesRead <= 0 && fSelfStopping) {
       // Error, and no point in trying again.
       return false;
-   } else if(bytes_read > 0) {
+   }
+   if(bytesRead > 0) {
       // A good event was returned
       fOutputQueue->Push(evt);
       return true;
-   } else {
-      // Nothing returned this time, but I might get something next time.
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-      return true;
    }
+   // Nothing returned this time, but I might get something next time.
+   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+   return true;
 }
 
-// std::string TDataLoop::Status() {
-//  //return fSource->Status(TGRSIOptions::Get()->LongFileDescription());
-//}

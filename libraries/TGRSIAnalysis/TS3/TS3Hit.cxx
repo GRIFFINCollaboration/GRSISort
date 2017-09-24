@@ -3,29 +3,28 @@
 
 /// \cond CLASSIMP
 ClassImp(TS3Hit)
-   /// \endcond
+/// \endcond
 
-   TS3Hit::TS3Hit()
+TS3Hit::TS3Hit()
 {
    Clear();
 }
 
 TS3Hit::TS3Hit(const TFragment& frag) : TGRSIDetectorHit(frag)
 {
-   if(frag.GetChannel()->GetMnemonic()->ArrayPosition() == 1)
+   if(frag.GetChannel()->GetMnemonic()->ArrayPosition() == 1) {
       SetIsDownstream(false);
-   else if(frag.GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLiS3 &&
-           frag.GetChannel()->GetMnemonic()->ArrayPosition() == 2)
+   } else if(frag.GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLiS3 &&
+             frag.GetChannel()->GetMnemonic()->ArrayPosition() == 2) {
       SetIsDownstream(false);
-   else
+   } else {
       SetIsDownstream(true);
+   }
    // Bambino 0=not set,1=Upstream,2=Downstream.
    // SPICE  0=Downstream,1=Upstream,2=Upstream+phi rotation.
 }
 
-TS3Hit::~TS3Hit()
-{
-}
+TS3Hit::~TS3Hit() = default;
 
 TS3Hit::TS3Hit(const TS3Hit& rhs) : TGRSIDetectorHit(rhs)
 {
@@ -90,7 +89,9 @@ Double_t TS3Hit::GetDefaultPhiOffset() const
    double deg = -90;
    if(GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLiS3) {
       deg = -22.5;
-      if(GetChannel()->GetMnemonic()->ArrayPosition() == 2) deg += 90;
+      if(GetChannel()->GetMnemonic()->ArrayPosition() == 2) {
+         deg += 90;
+      }
    }
    return deg * TMath::Pi() / 180.;
 }
@@ -100,22 +101,26 @@ Double_t TS3Hit::GetDefaultDistance() const
    double z = 0;
    if(GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLiS3) {
       std::string str = GetChannel()->GetMnemonic()->ArraySubPositionString();
-      if(str.find("D") < str.size())
+      if(str.find('D') < str.size()) {
          z = 22.5;
-      else if(str.find("E") < str.size())
+      } else if(str.find('E') < str.size()) {
          z = 28.35;
-      else
+      } else {
          z = 42.1;
+      }
    } else {
       std::string str = GetChannel()->GetMnemonic()->ArraySubPositionString();
-      if(str.find("D") < str.size())
+      if(str.find('D') < str.size()) {
          z = 20;
-      else if(str.find("E") < str.size())
+      } else if(str.find('E') < str.size()) {
          z = 31;
-      else
+      } else {
          z = 40;
+      }
 
-      if(!GetIsDownstream()) z = -z;
+      if(!GetIsDownstream()) {
+         z = -z;
+      }
    }
 
    return z;

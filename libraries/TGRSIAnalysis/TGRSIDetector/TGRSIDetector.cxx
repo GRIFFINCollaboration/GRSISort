@@ -4,19 +4,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TGRSIDetector)
-   /// \endcond
+/// \endcond
 
-   ////////////////////////////////////////////////////////////////
-   //                                                            //
-   // TGRSIDetector                                              //
-   //                                                            //
-   // This is an abstract class that contains the basic info     //
-   // about a detector. This is where the hits are built and
-   // the data is filled.
-   //                                                            //
-   ////////////////////////////////////////////////////////////////
-
-   TGRSIDetector::TGRSIDetector()
+TGRSIDetector::TGRSIDetector()
    : TDetector()
 {
 // Default constructor.

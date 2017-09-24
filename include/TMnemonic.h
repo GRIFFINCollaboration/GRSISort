@@ -8,9 +8,9 @@
 
 class TMnemonic : public TObject {
 public:
-   TMnemonic() : fClassType(nullptr) {}
+   TMnemonic() : fClassType(nullptr) { Clear(); }
    TMnemonic(const char* name) : TMnemonic() { Parse(name); }
-   ~TMnemonic() {}
+   ~TMnemonic() override = default;
 
 private:
    int16_t     fArrayPosition;
@@ -76,17 +76,19 @@ public:
    void Parse(std::string* name);
    void Parse(const char* name);
 
-   static int EnumerateDigitizer(std::string& mnemonic_word);
+   static int EnumerateDigitizer(std::string& name);
 
    void SetRFMNEMONIC(std::string* name);
 
    void SetClassType(TClass* classType) { fClassType = classType; }
    TClass*                   GetClassType() const;
 
-   void Print(Option_t* opt = "") const;
-   void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
-   ClassDef(TMnemonic, 1);
+   /// \cond CLASSIMP
+   ClassDefOverride(TMnemonic, 1)
+   /// \endcond
 };
 
 #endif

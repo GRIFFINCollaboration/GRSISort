@@ -103,9 +103,9 @@ int MakeCycleHist(TFile *file, long cycleLength = 2950000000, double lowEnergy =
          }
       }
       if(x%50000==0) 
-         cout << "\t" << x << " / " << entries << "\r" << flush;
+         cout<<"\t"<<x<<" / "<<entries<<"\r"<<flush;
    }
-   cout << "\t" << entries << " / " << entries << "\r" << endl;
+   cout<<"\t"<<entries<<" / "<<entries<<"\r"<<endl;
 
    TCanvas *c = new TCanvas;
    c->Divide(2,2);

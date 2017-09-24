@@ -24,29 +24,28 @@
 
 class CrossTalk : public TGRSISelector {
 
- public :
-   TGriffin * fGrif;
-   TSceptar * fScep;
+public:
+   TGriffin* fGrif;
+   TSceptar* fScep;
 
-   CrossTalk(TTree * /*tree*/ =0) : TGRSISelector(), fGrif(0), fScep(0) {
-      SetOutputPrefix("Crosstalk");
-   }
-   virtual ~CrossTalk() { }
-   virtual Int_t   Version() const { return 2; }
-   void CreateHistograms();
-   void FillHistograms();
-   void InitializeBranches(TTree *tree);
+   CrossTalk(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(0), fScep(0) { SetOutputPrefix("Crosstalk"); }
+   virtual ~CrossTalk() {}
+   virtual Int_t Version() const { return 2; }
+   void          CreateHistograms();
+   void          FillHistograms();
+   void InitializeBranches(TTree* tree);
 
-   ClassDef(CrossTalk,2);
+   ClassDef(CrossTalk, 2);
 };
 
 #endif
 
 #ifdef CrossTalk_cxx
-void CrossTalk::InitializeBranches(TTree* tree) {
-   if (!tree) return;
+void CrossTalk::InitializeBranches(TTree* tree)
+{
+   if(!tree) return;
    tree->SetBranchAddress("TGriffin", &fGrif);
-   tree->SetBranchAddress("TSceptar", &fScep);
+  // tree->SetBranchAddress("TSceptar", &fScep);
 }
 
 #endif // #ifdef CrossTalk_cxx

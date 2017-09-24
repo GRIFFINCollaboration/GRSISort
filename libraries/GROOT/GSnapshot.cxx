@@ -15,7 +15,7 @@ GSnapshot& GSnapshot::Get()
 
 GSnapshot::GSnapshot(const char* snapshot_dir)
 {
-   if(snapshot_dir) {
+   if(snapshot_dir != nullptr) {
       fSnapshotDir = snapshot_dir;
    } else if(gEnv->Defined("GRUT.SnapshotDir")) {
       fSnapshotDir = gEnv->GetValue("GRUT.SnapshotDir", "");
@@ -29,7 +29,7 @@ GSnapshot::GSnapshot(const char* snapshot_dir)
    if(dir_exists) {
       long id, size, flags, modtime;
       gSystem->GetPathInfo(fSnapshotDir.c_str(), &id, &size, &flags, &modtime);
-      bool output_dir_is_dir = flags & 2;
+      bool output_dir_is_dir = (flags & 2) != 0;
       fCanWriteHere          = output_dir_is_dir;
    } else {
       gSystem->mkdir(fSnapshotDir.c_str(), true);
@@ -39,8 +39,10 @@ GSnapshot::GSnapshot(const char* snapshot_dir)
 
 void GSnapshot::Snapshot(TCanvas* can)
 {
-   if(!can && gPad) can = gPad->GetCanvas();
-   if(!fCanWriteHere || !can) {
+   if((can == nullptr) && gPad) {
+      can = gPad->GetCanvas();
+   }
+   if(!fCanWriteHere || (can == nullptr)) {
       return;
    }
 

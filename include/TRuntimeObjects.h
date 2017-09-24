@@ -5,6 +5,7 @@
 #include <map>
 #ifndef __CINT__
 #include <memory>
+#include <utility>
 #endif
 
 #include "TCutG.h"
@@ -113,15 +114,17 @@ public:
 
    double GetVariable(const char* name);
 
-   static TRuntimeObjects* Get(std::string name = "default")
+   static TRuntimeObjects* Get(const std::string& name = "default")
    {
-      if (fRuntimeMap.count(name)) return fRuntimeMap.at(name);
-      return 0;
+      if(fRuntimeMap.count(name)) {
+         return fRuntimeMap.at(name);
+      }
+      return nullptr;
    }
 
 #ifndef __CINT__
-   void SetFragment(std::shared_ptr<const TFragment> frag) { fFrag = frag; }
-   void SetDetectors(std::shared_ptr<TUnpackedEvent> det) { fDetectors = det; }
+   void SetFragment(std::shared_ptr<const TFragment> frag) { fFrag = std::move(frag); }
+   void SetDetectors(std::shared_ptr<TUnpackedEvent> det) { fDetectors = std::move(det); }
 #endif
 
    void SetDirectory(TDirectory* dir) { fDirectory = dir; }
@@ -139,7 +142,7 @@ private:
 
    TDirectory* fDirectory;
 
-   ClassDef(TRuntimeObjects, 0);
+   ClassDefOverride(TRuntimeObjects, 0);
 };
 
 #endif /* _RUNTIMEOBJECTS_H_ */
