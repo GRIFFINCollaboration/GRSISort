@@ -2,8 +2,6 @@
 
 #include "TClass.h"
 
-#include "TTigress.h"
-
 /// \cond CLASSIMP
 ClassImp(TBgoHit)
 /// \endcond

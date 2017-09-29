@@ -1,4 +1,4 @@
-//TTigress.h TTigressHit.h
+//TBgo.h TBgoHit.h
 #ifdef __CINT__
 
 #pragma link off all globals;
@@ -6,8 +6,8 @@
 #pragma link off all functions;
 #pragma link C++ nestedclasses;
 
-#pragma link C++ class TTigressHit+;
-#pragma link C++ class TTigress+;
+#pragma link C++ class TBgoHit+;
+#pragma link C++ class TBgo+;
 
 #endif
 
