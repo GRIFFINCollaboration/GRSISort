@@ -179,3 +179,15 @@ TVector3 TBgo::GetPosition(int DetNbr, int CryNbr, double dist)
 	return (temp_pos + shift);
 }
 
+TBgoHit* TBgo::GetBgoHit(const Int_t& i)
+{
+	try {
+		return &(fBgoHits.at(i));
+	} catch(const std::out_of_range& oor) {
+		std::cerr<<ClassName()<<" Hits are out of range: "<<oor.what()<<std::endl;
+		if(!gInterpreter) {
+			throw grsi::exit_exception(1);
+		}
+	}
+	return nullptr;
+}
