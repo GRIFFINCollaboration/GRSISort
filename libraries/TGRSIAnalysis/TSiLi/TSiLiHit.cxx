@@ -170,6 +170,6 @@ double TSiLiHit::GetEnergy(Option_t* opt) const {
 	TChannel* chan = GetChannel();
 	if(!chan) return SetEnergy(fFitCharge);
 		
-	return SetEnergy(chan->CalibrateENG(fFitCharge,0));  // this will use the integration value
-}	                                              			// in the TChannel if it exists.
+	return SetEnergy(chan->CalibrateENG(fFitCharge,0));  // this will use the integration value in the TChannel if it exists.
+}
 
