@@ -1,195 +1,223 @@
 #ifndef _TGRSIOPTIONS_H_
 #define _TGRSIOPTIONS_H_
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #include <map>
 
 #include "TObject.h"
+#include "TFile.h"
 
 #include "TGRSITypes.h"
+#include "TAnalysisOptions.h"
+
+/////////////////////////////////////////////////////////////////
+///
+/// \class TGRSIOptions
+///
+/// This class stores the command line arguments that are passed to GRSISort.
+/// This includes file names (root, mid, cal, etc.) as well as command line
+/// arguments. This is a singleton class that can be accessed with
+/// TGRSIOptions::Get() in order to determine any options that have been passed
+/// on the command line.
+///
+/////////////////////////////////////////////////////////////////
 
 class TGRSIOptions : public TObject {
-	public:
-		static TGRSIOptions* Get(int argc = 0, char** argv = nullptr);
+public:
+	TGRSIOptions() {}; /// Do not use!
+	static TGRSIOptions* Get(int argc = 0, char** argv = nullptr);
 
-		void Clear(Option_t* opt = "");
-		void Load(int argc, char** argv);
-		void Print(Option_t* opt = "") const;
-		void PrintSortingOptions() const;
+	void Clear(Option_t* opt = "") override;
+	void Load(int argc, char** argv);
+	void Print(Option_t* opt = "") const override;
 
-		bool ShouldExit() { return fShouldExit; }
-		const std::vector<std::string>& InputMidasFiles() { return fInputMidasFiles; }
-		const std::vector<std::string>& InputLstFiles()   { return fInputLstFiles; }
-		const std::vector<std::string>& RootInputFiles()  { return fInputRootFiles; }
-		const std::vector<std::string>& CalInputFiles()   { return fInputCalFiles;  }
-		const std::vector<std::string>& ValInputFiles()   { return fInputValFiles;  }
-		const std::vector<std::string>& InputOdbFiles()   { return fInputOdbFiles;  }
-		const std::vector<std::string>& ExternalRunInfo() { return fExternalRunInfo;}
-		const std::vector<std::string>& InputCutFiles()   { return fInputCutsFiles;}
-		const std::vector<std::string>& WinInputFiles()   { return fInputWinFiles;   }
-		const std::vector<std::string>& MacroInputFiles() { return fMacroFiles;      }
+	static bool WriteToRoot(TFile* file = nullptr);
+	static void SetOptions(TGRSIOptions* tmp);
+	static Bool_t ReadFromFile(TFile* file = nullptr);
 
-		const std::string& OutputFragmentFile() { return fOutputFragmentFile; }
-		const std::string& OutputAnalysisFile() { return fOutputAnalysisFile; }
+	bool                            ShouldExit() { return fShouldExit; }
+	const std::vector<std::string>& InputMidasFiles() { return fInputMidasFiles; }
+	const std::vector<std::string>& InputLstFiles() { return fInputLstFiles; }
+	const std::vector<std::string>& RootInputFiles() { return fInputRootFiles; }
+	const std::vector<std::string>& CalInputFiles() { return fInputCalFiles; }
+	const std::vector<std::string>& ValInputFiles() { return fInputValFiles; }
+	const std::vector<std::string>& InputOdbFiles() { return fInputOdbFiles; }
+	const std::vector<std::string>& ExternalRunInfo() { return fExternalRunInfo; }
+	const std::vector<std::string>& InputCutFiles() { return fInputCutsFiles; }
+	const std::vector<std::string>& WinInputFiles() { return fInputWinFiles; }
+	const std::vector<std::string>& MacroInputFiles() { return fMacroFiles; }
 
+	const std::string& OutputFragmentFile() { return fOutputFragmentFile; }
+	const std::string& OutputAnalysisFile() { return fOutputAnalysisFile; }
 
-		const std::string& OutputFilteredFile()        { return fOutputFilteredFile; }
-		const std::string& OutputFragmentHistogramFile(){ return fOutputFragmentHistogramFile; }
-		const std::string& OutputAnalysisHistogramFile(){ return fOutputAnalysisHistogramFile; }
-		std::string InputRing() { return fInputRing; }
-		std::string FragmentHistogramLib() { return fFragmentHistogramLib; }
-		std::string AnalysisHistogramLib() { return fAnalysisHistogramLib; }
-		std::string CompiledFilterFile() { return fCompiledFilterFile; }
+	const std::string& OutputFilteredFile() { return fOutputFilteredFile; }
+	const std::string& OutputFragmentHistogramFile() { return fOutputFragmentHistogramFile; }
+	const std::string& OutputAnalysisHistogramFile() { return fOutputAnalysisHistogramFile; }
+	std::string        InputRing() { return fInputRing; }
+	std::string        FragmentHistogramLib() { return fFragmentHistogramLib; }
+	std::string        AnalysisHistogramLib() { return fAnalysisHistogramLib; }
+	std::string        CompiledFilterFile() { return fCompiledFilterFile; }
 
-		const std::vector<std::string>& OptionFiles() { return fOptionsFile; }
+	const std::vector<std::string>& OptionFiles() { return fOptionsFile; }
 
-		std::string LogFile() { return fLogFile; }
+	std::string LogFile() { return fLogFile; }
 
-		int BuildWindow() const { return fBuildWindow; }
-		int AddbackWindow() const { return fAddbackWindow; }
-		bool StaticWindow() const { return fStaticWindow; }
-		bool SeparateOutOfOrder() const { return fSeparateOutOfOrder; }
-		bool RecordDialog() const { return fRecordDialog; }
-		bool StartGui() const { return fStartGui; }
+	static TAnalysisOptions* AnalysisOptions() { return fAnalysisOptions; }
 
-		bool SuppressErrors() const { return fSuppressErrors; }
+	bool SeparateOutOfOrder() const { return fSeparateOutOfOrder; }
+	bool RecordDialog() const { return fRecordDialog; }
+	bool StartGui() const { return fStartGui; }
 
-		bool CloseAfterSort()     const { return fCloseAfterSort; }
+	bool SuppressErrors() const { return fSuppressErrors; }
+	bool ReconstructTimeStamp() const { return fReconstructTimeStamp; }
 
-		bool LogErrors()          const { return fLogErrors;        }
-		bool UseMidFileOdb()      const { return fUseMidFileOdb;    }
+	bool CloseAfterSort() const { return fCloseAfterSort; }
 
-		bool MakeAnalysisTree()   const { return fMakeAnalysisTree; }
-		bool ProgressDialog()     const { return fProgressDialog;   }
-		bool ReadingMaterial()    const { return fReadingMaterial;  }
-		bool IgnoreFileOdb()      const { return fIgnoreFileOdb;    }
+	bool LogErrors() const { return fLogErrors; }
+	bool UseMidFileOdb() const { return fUseMidFileOdb; }
 
-		bool IgnoreScaler()       const { return fIgnoreScaler;     }
-		bool IgnoreEpics()        const { return fIgnoreEpics;      }
-		bool WriteBadFrags()      const { return fWriteBadFrags;    }
-		bool WriteDiagnostics()   const { return fWriteDiagnostics; }
+	bool MakeAnalysisTree() const { return fMakeAnalysisTree; }
+	bool ProgressDialog() const { return fProgressDialog; }
+	bool ReadingMaterial() const { return fReadingMaterial; }
+	bool IgnoreFileOdb() const { return fIgnoreFileOdb; }
 
-		bool Batch()              const { return fBatch; }
+	bool IgnoreScaler() const { return fIgnoreScaler; }
+	bool IgnoreEpics() const { return fIgnoreEpics; }
+	bool WriteBadFrags() const { return fWriteBadFrags; }
+	bool WriteDiagnostics() const { return fWriteDiagnostics; }
+	int  WordOffset() const { return fWordOffset; }
 
-		bool ShowedHelp()         const { return fHelp; }
-		bool ShowedVersion()      const { return fShowedVersion; }
-		bool ShowLogo()           const { return fShowLogo; }
-		bool SortRaw()            const { return fSortRaw; }
-		bool SortRoot()           const { return fSortRoot; }
-		bool ExtractWaves()       const { return fExtractWaves;  }
-		bool MakeHistos()         const { return fMakeHistos; }
-		bool SortMultiple()       const { return fSortMultiple; }
+	bool Batch() const { return fBatch; }
 
-		bool Debug()              const { return fDebug; }
+	bool ShowedVersion() const { return fShowedVersion; }
+	bool ShowLogo() const { return fShowLogo; }
+	bool SortRaw() const { return fSortRaw; }
+	bool SortRoot() const { return fSortRoot; }
+	bool ExtractWaves() const { return fExtractWaves; }
+	bool MakeHistos() const { return fMakeHistos; }
+	bool SortMultiple() const { return fSortMultiple; }
 
-		bool IsOnline()           const { return fIsOnline; }
+	bool Debug() const { return fDebug; }
 
-		size_t FragmentWriteQueueSize() const { return fFragmentWriteQueueSize; }
-		size_t AnalysisWriteQueueSize() const { return fAnalysisWriteQueueSize; }
+	bool IsOnline() const { return fIsOnline; }
 
-		bool TimeSortInput()      const { return fTimeSortInput; }
-		int SortDepth()           const { return fSortDepth; }
+	size_t FragmentWriteQueueSize() const { return fFragmentWriteQueueSize; }
+	size_t AnalysisWriteQueueSize() const { return fAnalysisWriteQueueSize; }
 
-		bool ShouldExitImmediately() const { return fShouldExit; }
+	bool TimeSortInput() const { return fTimeSortInput; }
+	int  SortDepth() const { return fSortDepth; }
 
-		kFileType   DetermineFileType(const std::string& filename) const;
+	bool ShouldExitImmediately() const { return fShouldExit; }
 
-		std::string GenerateOutputFilename(const std::string& filename);
-		std::string GenerateOutputFilename(const std::vector<std::string>& filename);
+	kFileType DetermineFileType(const std::string& filename) const;
 
-		size_t ColumnWidth() const { return fColumnWidth; }
-		size_t StatusWidth() const { return fStatusWidth; }
-		unsigned int StatusInterval() const { return fStatusInterval; }
-		bool LongFileDescription() const { return fLongFileDescription; }
+	std::string GenerateOutputFilename(const std::string& filename);
+	std::string GenerateOutputFilename(const std::vector<std::string>& filename);
 
-		//Proof only
-		int GetMaxWorkers() const { return fMaxWorkers; }
-		bool SelectorOnly() const { return fSelectorOnly; } 
+	size_t       ColumnWidth() const { return fColumnWidth; }
+	size_t       StatusWidth() const { return fStatusWidth; }
+	unsigned int StatusInterval() const { return fStatusInterval; }
+	bool         LongFileDescription() const { return fLongFileDescription; }
 
-	private:
-		TGRSIOptions(int argc, char** argv);
+	// Proof only
+	int  GetMaxWorkers() const { return fMaxWorkers; }
+	bool SelectorOnly() const { return fSelectorOnly; }
 
-		bool FileAutoDetect(const std::string& filename);
+	void SuppressErrors(bool suppress) { fSuppressErrors = suppress; }
 
-		std::vector<std::string> fInputMidasFiles;
-		std::vector<std::string> fInputLstFiles;
-		std::vector<std::string> fInputRootFiles;
-		std::vector<std::string> fInputCalFiles;
-		std::vector<std::string> fInputOdbFiles;
-		std::vector<std::string> fExternalRunInfo;
-		std::vector<std::string> fMacroFiles;
+private:
+	TGRSIOptions(int argc, char** argv);
+	static TGRSIOptions* fGRSIOptions;
 
-		std::vector<std::string> fInputCutsFiles;
-		std::vector<std::string> fInputValFiles;
-		std::vector<std::string> fInputWinFiles;
-		std::string fInputRing;
+	bool FileAutoDetect(const std::string& filename);
 
-		std::string fOutputFragmentFile;
-		std::string fOutputAnalysisFile;
-		std::string fOutputFilteredFile;
-		std::string fOutputFragmentHistogramFile;
-		std::string fOutputAnalysisHistogramFile;
+	std::vector<std::string> fInputMidasFiles; ///< A list of the input Midas files
+	std::vector<std::string> fInputLstFiles;   ///< A list of the input Lst files
+	std::vector<std::string> fInputRootFiles;  ///< A list of the input root files
+	std::vector<std::string> fInputCalFiles;   ///< A list of the input cal files
+	std::vector<std::string> fInputOdbFiles;   ///< A list of the input odb files
+	std::vector<std::string> fExternalRunInfo; ///< A list of the input run info files
+	std::vector<std::string> fMacroFiles;      ///< A list of the input macro (.C) files
 
-		std::string fFragmentHistogramLib;
-		std::string fAnalysisHistogramLib;
-		std::string fCompiledFilterFile;
+	std::vector<std::string> fInputCutsFiles; ///< A list of input cut files
+	std::vector<std::string> fInputValFiles;  ///< A list of the input GValue files
+	std::vector<std::string> fInputWinFiles;  ///< A list of the input window files
+	std::string              fInputRing;      ///< The name of hte input ring
 
-		std::vector<std::string> fOptionsFile;
+	std::string fOutputFragmentFile; ///< The name of the fragment file to write to
+	std::string fOutputAnalysisFile; ///< The name of the analysis file to write to
+	std::string fOutputFilteredFile;
+	std::string fOutputFragmentHistogramFile; ///< The name of the fragment histogram file
+	std::string fOutputAnalysisHistogramFile; ///< The name of the analysis histogram file
 
-		std::string fLogFile;
+	std::string fFragmentHistogramLib; ///< The name of the script for histogramming fragments
+	std::string fAnalysisHistogramLib; ///< The name of the script for histogramming events
+	std::string fCompiledFilterFile;
 
-		bool fCloseAfterSort;
-		bool fLogErrors;
-		bool fUseMidFileOdb;
-		bool fSuppressErrors;
+	std::vector<std::string> fOptionsFile; ///< A list of the input .info files
 
-		bool fMakeAnalysisTree;
-		bool fProgressDialog;
-		bool fReadingMaterial;
-		bool fIgnoreFileOdb;
-		bool fRecordDialog;
+	std::string fLogFile; ///< The name of the output log file
 
-		bool fIgnoreScaler;
-		bool fIgnoreEpics;
-		bool fWriteBadFrags;
-		bool fWriteDiagnostics;
+	bool fCloseAfterSort;       ///< Flag to close after sorting (-q)
+	bool fLogErrors;            ///< Flag to log errors (--log-errors)
+	bool fUseMidFileOdb;        ///< Flag to read odb from midas
+	bool fSuppressErrors;       ///< Flag to suppress errors (--suppress-errors)
+	bool fReconstructTimeStamp; ///< Flag to reconstruct missing high bits of time stamps (--reconstruct-timestamp)
 
-		bool fBatch;
+	bool fMakeAnalysisTree; ///< Flag to make analysis tree (-a)
+	bool fProgressDialog;   ///< Flag to show progress in proof (not used)
+	bool fReadingMaterial;  ///< Flag to show reading material (--reading-material)
+	bool fIgnoreFileOdb;    ///< Flag to ignore midas file odb
+	bool fRecordDialog;
 
-		bool fShowedVersion;
-		bool fHelp;
-		bool fShowLogo;
-		bool fSortRaw;
-		bool fSortRoot;
-		bool fExtractWaves;
-		bool fIsOnline;
-		bool fStartGui;
-		bool fMakeHistos;
-		bool fSortMultiple;
-		bool fDebug;
+	bool fIgnoreScaler;     ///< Flag to ignore scalers in GRIFFIN
+	bool fIgnoreEpics;      ///< Flag to ignore epics
+	bool fWriteBadFrags;    ///< Flag to write bad fragments
+	bool fWriteDiagnostics; ///< Flag to write diagnostics
+	int  fWordOffset;       ///< Offset for word count in GRIFFIN header (default 1)
 
-		size_t fFragmentWriteQueueSize;
-		size_t fAnalysisWriteQueueSize;
+	bool fBatch; ///< Flag to use batch mode (-b)
 
-		bool fTimeSortInput;
-		int fSortDepth;
+	bool fShowedVersion;///< Flag to show version
+	bool fShowLogo;     ///< Flag to show logo (suppress with -l)
+	bool fSortRaw;      ///< Flag to sort Midas file
+	bool fSortRoot;     ///< Flag to sort root files
+	bool fExtractWaves; ///< Flag to keep waveforms (suppress with --no-waveforms)
+	bool fIsOnline;     ///< Flag to sort online data
+	bool fStartGui;     ///< Flag to start GUI (-g)
+	bool fMakeHistos;   ///< Flag to make histograms (-H)
+	bool fSortMultiple; ///< Flag to sort multiple files
+	bool fDebug;        ///< Flag for debug mode
 
-		int fBuildWindow;
-		int fAddbackWindow;
-		bool fStaticWindow;
-		bool fSeparateOutOfOrder;
+	size_t fFragmentWriteQueueSize; ///< Size of the Fragment write Q
+	size_t fAnalysisWriteQueueSize; ///< Size of the analysis write Q
 
-		bool fShouldExit;
+	bool fTimeSortInput; ///< Flag to sort on time or triggers
+	int  fSortDepth;     ///< Size of Q that stores fragments to be built into events
 
-		size_t fColumnWidth;
-		size_t fStatusWidth;
-		unsigned int fStatusInterval;
-		bool fLongFileDescription;
+	static TAnalysisOptions* fAnalysisOptions; ///< contains all options for analysis
 
-		//Proof only
-		int fMaxWorkers;
-		bool fSelectorOnly;
+	bool fSeparateOutOfOrder; ///< Flag to build out of order into seperate event tree
 
-		ClassDef(TGRSIOptions,1);
+	bool fShouldExit; ///< Flag to exit sorting
+
+	bool fHelp; ///< help requested?
+
+	size_t       fColumnWidth;    ///< Size of verbose columns
+	size_t       fStatusWidth;    ///< Size of total verbose status
+	unsigned int fStatusInterval; ///< Time between status updates
+	bool         fLongFileDescription;
+
+	// Proof only
+	int  fMaxWorkers;   ///< Max workers used in grsiproof
+	bool fSelectorOnly; ///< Flag to turn PROOF off in grsiproof
+
+	/// \cond CLASSIMP
+	ClassDefOverride(TGRSIOptions, 3); ///< Class for storing options in GRSISort
+	/// \endcond
 };
-
+/*! @} */
 #endif /* _TGRSIOPTIONS_H_ */

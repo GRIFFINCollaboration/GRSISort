@@ -7,18 +7,18 @@
 
 #include "TChain.h"
 
-class GChain : public TChain { 
-   public:
-      GChain();
-      GChain(const char* name, const char* title="");
-      virtual ~GChain();
+class GChain : public TChain {
+public:
+   GChain();
+   GChain(const char* name, const char* title = "");
+   ~GChain() override;
 
-   private:
-      void InitGChain();
+private:
+   void InitGChain();
 
-/// \cond CLASSIMP
-      ClassDef(GChain,1)
-/// \endcond
+   /// \cond CLASSIMP
+   ClassDefOverride(GChain, 1)
+   /// \endcond
 };
 /*! @} */
 #endif

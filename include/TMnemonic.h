@@ -7,70 +7,88 @@
 #include "TClass.h"
 
 class TMnemonic : public TObject {
-   public:
-		TMnemonic() :fClassType(nullptr) {}
-		TMnemonic(const char* name) : TMnemonic() { Parse(name); }
-		~TMnemonic() {}
+public:
+   TMnemonic() : fClassType(nullptr) { Clear(); }
+   TMnemonic(const char* name) : TMnemonic() { Parse(name); }
+   ~TMnemonic() override = default;
 
-	private:
-		int16_t fArrayPosition;
-		int16_t fSegment;
-		std::string fSystemString;
-		std::string fSubSystemString;
-		std::string fArraySubPositionString;
-		std::string fCollectedChargeString;
-		std::string fOutputSensorString;
+private:
+   int16_t     fArrayPosition;
+   int16_t     fSegment;
+   std::string fSystemString;
+   std::string fSubSystemString;
+   std::string fArraySubPositionString;
+   std::string fCollectedChargeString;
+   std::string fOutputSensorString;
 
-		int fSystem;
-		int fSubSystem;
-		int fArraySubPosition;
-		int fCollectedCharge;
-		int fOutputSensor;
+   int fSystem;
+   int fSubSystem;
+   int fArraySubPosition;
+   int fCollectedCharge;
+   int fOutputSensor;
 
-      mutable TClass*   fClassType;          //!<! TGRSIDetector Type that this mnemonic represents
-	
-		void EnumerateSystem();
-		void EnumerateMnemonic(std::string mnemonic_word, int &mnemonic_enum);
+   mutable TClass* fClassType; //!<! TGRSIDetector Type that this mnemonic represents
 
-	public:
-	//standard C++ makes these enumerations global to the class. ie, the name of the enumeration
-	//EMnemonic or ESystem has no effect on the clashing of enumerated variable names.
-	//These separations exist only to easily see the difference when looking at the code here.
-		enum EMnemonic { kA, kB, kC, kD, kE, kF, kG, kI, kL, kM, kN, kP, kQ, kR, kS, kW, kX, kZ, kClear };
-		enum ESystem   { kTigress, kSharc, kTriFoil, kRF, kCSM, kSiLi, kSiLiS3, kS3, kBambino, kTip, kGriffin, kSceptar, kPaces, kLaBr, kTAC, kZeroDegree, kDescant, kFipps};
-		enum EDigitizer{ kDefault, kGRF16, kGRF4G, kTIG10, kTIG64, kCAEN8 };
+   void EnumerateSystem();
+   void EnumerateMnemonic(std::string mnemonic_word, int& mnemonic_enum);
 
-		int System() const { return fSystem; }
-		int SubSystem() const { return fSubSystem; }
-		int ArraySubPosition() const { return fArraySubPosition; }
-		int CollectedCharge() const { return fCollectedCharge; }
-		int OutputSensor() const { return fOutputSensor; } 
-		int16_t ArrayPosition() const {return fArrayPosition; }
-		int16_t Segment() const { return fSegment; }
+public:
+   // standard C++ makes these enumerations global to the class. ie, the name of the enumeration
+   // EMnemonic or ESystem has no effect on the clashing of enumerated variable names.
+   // These separations exist only to easily see the difference when looking at the code here.
+   enum EMnemonic { kA, kB, kC, kD, kE, kF, kG, kI, kL, kM, kN, kP, kQ, kR, kS, kW, kX, kZ, kClear };
+   enum ESystem {
+      kTigress,
+      kSharc,
+      kTriFoil,
+      kRF,
+      kCSM,
+      kSiLi,
+      kSiLiS3,
+      kS3,
+      kBambino,
+      kTip,
+      kGriffin,
+      kSceptar,
+      kPaces,
+      kLaBr,
+      kTAC,
+      kZeroDegree,
+      kDescant,
+      kFipps
+   };
+   enum EDigitizer { kDefault, kGRF16, kGRF4G, kTIG10, kTIG64, kCAEN8 };
 
-		std::string SystemString() const { return fSystemString; }
-		std::string SubSystemString() const { return fSubSystemString; }
-		std::string ArraySubPositionString() const { return fArraySubPositionString; }
-		std::string CollectedChargeString() const { return fCollectedChargeString; }
-		std::string OutputSensorString() const { return fOutputSensorString; } 
+   int     System() const { return fSystem; }
+   int     SubSystem() const { return fSubSystem; }
+   int     ArraySubPosition() const { return fArraySubPosition; }
+   int     CollectedCharge() const { return fCollectedCharge; }
+   int     OutputSensor() const { return fOutputSensor; }
+   int16_t ArrayPosition() const { return fArrayPosition; }
+   int16_t Segment() const { return fSegment; }
 
-		void Parse(std::string *name);
-		void Parse(const char *name);
+   std::string SystemString() const { return fSystemString; }
+   std::string SubSystemString() const { return fSubSystemString; }
+   std::string ArraySubPositionString() const { return fArraySubPositionString; }
+   std::string CollectedChargeString() const { return fCollectedChargeString; }
+   std::string OutputSensorString() const { return fOutputSensorString; }
 
-		static int  EnumerateDigitizer(std::string& mnemonic_word);
+   void Parse(std::string* name);
+   void Parse(const char* name);
 
-		void SetRFMNEMONIC(std::string *name);
+   static int EnumerateDigitizer(std::string& name);
 
-      void SetClassType(TClass* classType)               { fClassType = classType; }
-      TClass* GetClassType() const;
+   void SetRFMNEMONIC(std::string* name);
 
+   void SetClassType(TClass* classType) { fClassType = classType; }
+   TClass*                   GetClassType() const;
 
-		void Print(Option_t *opt="") const;
-		void Clear(Option_t *opt=""); 
-		
-		ClassDef(TMnemonic,1);
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
+   /// \cond CLASSIMP
+   ClassDefOverride(TMnemonic, 1)
+   /// \endcond
 };
-
 
 #endif

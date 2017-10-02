@@ -9,7 +9,7 @@
 #include <cstdio>
 #include <map>
 #include <iostream>
-#if !defined (__CINT__) && !defined (__CLING__)
+#if !defined(__CINT__) && !defined(__CLING__)
 #include <tuple>
 #include <iterator>
 #include <algorithm>
@@ -28,50 +28,56 @@
 #include "TMnemonic.h"
 
 class TCSM : public TDetector {
-	public:
-		TCSM();
-		virtual ~TCSM();
+public:
+   TCSM();
+   ~TCSM() override;
 
-	public: 
-		virtual void Clear(Option_t * = "");
-		virtual void Print(Option_t * = "") const;
+public:
+   void Clear(Option_t* = "") override;
+   void Print(Option_t* = "") const override;
 
-		TCSMHit *GetCSMHit(const int& i);	//->
-		Short_t GetMultiplicity() const	{return fCsmHits.size();}	//->
+   TCSMHit* GetCSMHit(const int& i);                           //->
+   Short_t GetMultiplicity() const { return fCsmHits.size(); } //->
 
-		static TVector3 GetPosition(int detector, char pos, int horizontalstrip, int verticalstrip, double X=0.00, double Y=0.00, double Z=0.00);
+   static TVector3 GetPosition(int detector, char pos, int horizontalstrip, int verticalstrip, double X = 0.00,
+                               double Y = 0.00, double Z = 0.00);
 
 #ifndef __CINT__
-      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
-		void BuildHits();
+   void BuildHits() override;
 
-		void ClearTransients() { for(auto hit : fCsmHits) hit.ClearTransients(); }
+   void ClearTransients() override
+   {
+      for(const auto& hit : fCsmHits) {
+         hit.ClearTransients();
+      }
+   }
 
-	private: 
-		std::map<int16_t, std::vector<std::vector<std::vector<std::pair<TFragment, TMnemonic> > > > > fFragments; //!<!
-		std::vector<TCSMHit> fCsmHits;
-		double fAlmostEqualWindow;
+private:
+   std::map<int16_t, std::vector<std::vector<std::vector<std::pair<TFragment, TMnemonic>>>>> fFragments; //!<!
+   std::vector<TCSMHit> fCsmHits;
+   double               fAlmostEqualWindow;
 
-		static int fCfdBuildDiff; //!<! largest acceptable time difference between events (clock ticks)  (50 ns)
+   static int fCfdBuildDiff; //!<! largest acceptable time difference between events (clock ticks)  (50 ns)
 
-		void BuildVH(std::vector<std::vector<std::pair<TFragment, TMnemonic> > >&, std::vector<TCSMHit>&);
-		void BuilddEE(std::vector<std::vector<TCSMHit> >&,std::vector<TCSMHit>&);
-		void OldBuilddEE(std::vector<TCSMHit> &,std::vector<TCSMHit> &,std::vector<TCSMHit> &);
-		void MakedEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitVec,std::vector<TCSMHit> &BuiltHits);
-		TCSMHit MakeHit(std::pair<TFragment, TMnemonic>&, std::pair<TFragment, TMnemonic>&);
-		TCSMHit MakeHit(std::vector<std::pair<TFragment, TMnemonic> >&,std::vector<std::pair<TFragment, TMnemonic> >&);
-		TCSMHit CombineHits(TCSMHit, TCSMHit);
-		void RecoverHit(char, std::pair<TFragment, TMnemonic>&, std::vector<TCSMHit>&);
-		bool AlmostEqual(int, int);
-		bool AlmostEqual(double,double);
+   void BuildVH(std::vector<std::vector<std::pair<TFragment, TMnemonic>>>&, std::vector<TCSMHit>&);
+   void BuilddEE(std::vector<std::vector<TCSMHit>>&, std::vector<TCSMHit>&);
+   void OldBuilddEE(std::vector<TCSMHit>&, std::vector<TCSMHit>&, std::vector<TCSMHit>&);
+   void MakedEE(std::vector<TCSMHit>& DHitVec, std::vector<TCSMHit>& EHitVec, std::vector<TCSMHit>& BuiltHits);
+   TCSMHit MakeHit(std::pair<TFragment, TMnemonic>&, std::pair<TFragment, TMnemonic>&);
+   TCSMHit MakeHit(std::vector<std::pair<TFragment, TMnemonic>>&, std::vector<std::pair<TFragment, TMnemonic>>&);
+   TCSMHit CombineHits(TCSMHit, const TCSMHit&);
+   void    RecoverHit(char, std::pair<TFragment, TMnemonic>&, std::vector<TCSMHit>&);
+   bool    AlmostEqual(int, int);
+   bool    AlmostEqual(double, double);
 
-		//int CombineHits(TCSMHit*,TCSMHit*,int,int);				//!<!
-		//void RemoveHits(std::vector<TCSMHit>*,std::set<int>*);	//!<!
+   // int CombineHits(TCSMHit*,TCSMHit*,int,int);				//!<!
+   // void RemoveHits(std::vector<TCSMHit>*,std::set<int>*);	//!<!
 
-/// \cond CLASSIMP
-		ClassDef(TCSM,5)  // CSM Analysis structure
-/// \endcond
+   /// \cond CLASSIMP
+   ClassDefOverride(TCSM, 5) // CSM Analysis structure
+   /// \endcond
 };
 /*! @} */
 #endif

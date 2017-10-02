@@ -11,130 +11,101 @@
 
 class GH1D;
 
-enum kBackgroundSubtraction {
-  kNoBackground,
-  kRegionBackground,
-  kMatchedLowerMarker,
-  kSplitTwoMarker,
-  kTotalFraction
-};
+enum kBackgroundSubtraction { kNoBackground, kRegionBackground, kMatchedLowerMarker, kSplitTwoMarker, kTotalFraction };
 
-enum kDirection{
-  kXDirection,
-  kYDirection
-};
+enum kDirection { kXDirection, kYDirection };
 
 class GH2Base {
 
 public:
-  GH2Base() { Init(); }
-  
-  virtual ~GH2Base();
- 
-  virtual void GH2Clear(Option_t *opt="");
+   GH2Base() { Init(); }
 
-  virtual TH2 *GetTH2() = 0;
+   virtual ~GH2Base();
 
-  GH1D* Projection_Background(int axis=0,
-                              int firstbin = 0,
-                              int lastbin = -1,
-                              int firstbackground_bin = 0,
-                              int lastbackground_bin = -1,
-                              kBackgroundSubtraction mode = kRegionBackground);
+   virtual void GH2Clear(Option_t* opt = "");
 
-  //GH1D* SummaryProject(int binnum);
+   virtual TH2* GetTH2() = 0;
 
-  GH1D* ProjectionX_Background(int firstbin = 0,
-                               int lastbin = -1,
-                               int firstbackground_bin = 0,
-                               int lastbackground_bin = -1,
-                               kBackgroundSubtraction mode = kRegionBackground); // *MENU*
-  
-  GH1D* GH2ProjectionX(const char* name="_px",
-                    int firstbin = 0,
-                    int lastbin = -1,
-                    Option_t* option="",bool KeepEmpty=false); // *MENU*
+   GH1D* Projection_Background(int axis = 0, int firstbin = 0, int lastbin = -1, int first_bg_bin = 0,
+                               int last_bg_bin = -1, kBackgroundSubtraction mode = kRegionBackground);
 
-  GH1D* GH2ProjectionY(const char* name="_py",
-                    int firstbin = 0,
-                    int lastbin = -1,
-                    Option_t* option="",bool KeepEmpty=false); // *MENU*
-  
-  GH1D* ProjectionY_Background(int firstbin = 0,
-                               int lastbin = -1,
-                               int firstbackground_bin = 0,
-                               int lastbackground_bin = -1,
-                               kBackgroundSubtraction mode = kRegionBackground); // *MENU*
+   // GH1D* SummaryProject(int binnum);
 
-  GH1D* GetPrevious(const GH1D* curr,bool DrawEmpty=true);
-  GH1D* GetPrevSummary(const GH1D* curr,bool DrawEmpty=false);
-  GH1D* GetNext(const GH1D* curr,bool DrawEmpty=true);
-  GH1D* GetNextSummary(const GH1D* curr,bool DrawEmpty=false);
+   GH1D* ProjectionX_Background(int firstbin = 0, int lastbin = -1, int first_bg_bin = 0, int last_bg_bin = -1,
+                                kBackgroundSubtraction mode = kRegionBackground); // *MENU*
 
-  TList* GetProjections() { return fProjections; }
-  TList* GetSummaryProjections() { return fSummaryProjections; }
+   GH1D* GH2ProjectionX(const char* name = "_px", int firstbin = 0, int lastbin = -1, Option_t* option = "",
+                        bool KeepEmpty = false); // *MENU*
 
-  void SetSummary(bool is_summary = true) { fIsSummary = is_summary; }
-  bool GetSummary() const { return fIsSummary; }
+   GH1D* GH2ProjectionY(const char* name = "_py", int firstbin = 0, int lastbin = -1, Option_t* option = "",
+                        bool KeepEmpty = false); // *MENU*
 
-  void SetSummaryDirection(kDirection dir) { fSummaryDirection = dir; }
-  kDirection GetSummaryDirection() const { return fSummaryDirection; }
+   GH1D* ProjectionY_Background(int firstbin = 0, int lastbin = -1, int first_bg_bin = 0, int last_bg_bin = -1,
+                                kBackgroundSubtraction mode = kRegionBackground); // *MENU*
 
+   GH1D* GetPrevious(const GH1D* curr, bool DrawEmpty = true);
+   GH1D* GetPrevSummary(const GH1D* curr, bool DrawEmpty = false);
+   GH1D* GetNext(const GH1D* curr, bool DrawEmpty = true);
+   GH1D* GetNextSummary(const GH1D* curr, bool DrawEmpty = false);
 
-  class iterator {
-  public:
-  iterator(GH2Base* mat, bool at_end = false)
-    : fMat(mat), fFirst(mat->GetNext(nullptr)), fCurr(at_end ? nullptr : fFirst) { }
+   TList* GetProjections() { return fProjections; }
+   TList* GetSummaryProjections() { return fSummaryProjections; }
 
-    GH1D& operator*() const {
-      return *fCurr;
-    }
-    GH1D* operator->() const {
-      return fCurr;
-    }
+   void SetSummary(bool is_summary = true) { fIsSummary = is_summary; }
+   bool                 GetSummary() const { return fIsSummary; }
 
-    // prefix increment
-    iterator& operator++() {
-      fCurr = fMat->GetNext(fCurr);
-      if(fCurr==fFirst) { fCurr = 0; }
-     return *this;
-    }
+   void SetSummaryDirection(kDirection dir) { fSummaryDirection = dir; }
+   kDirection                          GetSummaryDirection() const { return fSummaryDirection; }
 
-    // postfix increment
-    iterator operator++(int) {
-      iterator current = *this;
-      ++(*this);
-      return current;
-    }
+   class iterator {
+   public:
+      iterator(GH2Base* mat, bool at_end = false)
+         : fMat(mat), fFirst(mat->GetNext(nullptr)), fCurr(at_end ? nullptr : fFirst)
+      {
+      }
 
-    bool operator==(const iterator& b) const {
-      return (fMat==b.fMat &&
-  	      fFirst==b.fFirst &&
-  	      fCurr==b.fCurr);
-    }
-    bool operator!=(const iterator& b) const {
-      return !(*this == b);
-    }
+      GH1D& operator*() const { return *fCurr; }
+      GH1D* operator->() const { return fCurr; }
 
-  private:
-    GH2Base* fMat;
-    GH1D* fFirst;
-    GH1D* fCurr;
-  };
+      // prefix increment
+      iterator& operator++()
+      {
+         fCurr = fMat->GetNext(fCurr);
+         if(fCurr == fFirst) {
+            fCurr = nullptr;
+         }
+         return *this;
+      }
 
-  iterator begin() { return iterator(this, false); }
-  iterator end() { return iterator(this, true); }
+      // postfix increment
+      iterator operator++(int)
+      {
+         iterator current = *this;
+         ++(*this);
+         return current;
+      }
 
+      bool operator==(const iterator& b) const { return (fMat == b.fMat && fFirst == b.fFirst && fCurr == b.fCurr); }
+      bool operator!=(const iterator& b) const { return !(*this == b); }
+
+   private:
+      GH2Base* fMat;
+      GH1D*    fFirst;
+      GH1D*    fCurr;
+   };
+
+   iterator begin() { return iterator(this, false); }
+   iterator end() { return iterator(this, true); }
 
 private:
-  void Init();
-  TList* fProjections;
+   void   Init();
+   TList* fProjections{nullptr};
 
-  TList* fSummaryProjections; //!
-  bool fIsSummary;
-  kDirection fSummaryDirection;
+   TList*     fSummaryProjections{nullptr}; //!
+   bool       fIsSummary{false};
+   kDirection fSummaryDirection;
 
-  ClassDef(GH2Base,1);
+   ClassDef(GH2Base, 1);
 };
 
 #endif

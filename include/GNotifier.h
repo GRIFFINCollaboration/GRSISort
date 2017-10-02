@@ -10,38 +10,36 @@
 #include "GRootCommands.h"
 
 class GNotifier : public TNamed {
-  public:
-    static GNotifier *Get();
-    virtual ~GNotifier();
+public:
+   static GNotifier* Get();
+   ~GNotifier() override;
 
-    virtual void Print(Option_t *opt="") const { }
-    virtual void Clear(Option_t *opt="") { }
-    virtual bool Notify();
+   void Print(Option_t* = "") const override {}
+   void Clear(Option_t* = "") override {}
+   bool Notify() override;
 
-    #ifdef __CINT__
-    static void AddCallback(void (*func)());
-    #else
-    template<typename T>
-      static void AddCallback(T callback) {
+#ifdef __CINT__
+   static void AddCallback(void (*func)());
+#else
+   template <typename T>
+   static void AddCallback(T callback)
+   {
       Get()->callbacks.push_back(callback);
-    }
+   }
 
-    static void AddCallback(void (*func)()) {
-      Get()->callbacks.push_back(func);
-    }
-    #endif
+   static void AddCallback(void (*func)()) { Get()->callbacks.emplace_back(func); }
+#endif
 
-  private:
-    GNotifier();
+private:
+   GNotifier();
 
-    #ifndef __CINT__
-    std::vector<std::function<void()> > callbacks;
-    #endif
+#ifndef __CINT__
+   std::vector<std::function<void()>> callbacks;
+#endif
 
-    static GNotifier *fGNotifier;
+   static GNotifier* fGNotifier;
 
-  ClassDef(GNotifier,0)
+   ClassDefOverride(GNotifier, 0)
 };
 
 #endif
-

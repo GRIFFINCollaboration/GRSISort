@@ -19,7 +19,7 @@ BremSuppress(TH2 * hp_mat, Double_t threshold){
    }
    for(int sc=firstScDet; sc<=lastScDet;++sc){
       for(int gr=firstGrDet; gr<=lastGrDet;++gr){
-    //     cout << sc << " " << gr << ": " << threshold << " " << hp_mat->GetBinContent(sc,gr) << " " << (hp_mat->GetBinContent(sc,gr)>threshold) << endl;
+    //     cout<<sc<<" "<<gr<<": "<<threshold<<" "<<hp_mat->GetBinContent(sc,gr)<<" "<<(hp_mat->GetBinContent(sc,gr)>threshold)<<endl;
          if(hp_mat->GetBinContent(sc,gr) > threshold)
             supp_flag[sc][gr] = true;
          else
@@ -29,7 +29,7 @@ BremSuppress(TH2 * hp_mat, Double_t threshold){
 /*
    for(int sc=0; sc<=lastScDet;++sc){
       for(int gr=0; gr<=lastGrDet;++gr){
-         cout << sc << " " << gr << ": " << supp_flag[sc][gr] << endl;
+         cout<<sc<<" "<<gr<<": "<<supp_flag[sc][gr]<<endl;
       }
    }
 */

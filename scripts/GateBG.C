@@ -4,12 +4,12 @@ TH1* NewProjectionXBGP(TH2* matrix, Double_t gate_low, Double_t gate_high, Doubl
 	Int_t bg_low_bin = matrix->GetYaxis()->FindBin(bg_low);
 	Int_t bg_high_bin = matrix->GetYaxis()->FindBin(bg_high);
 	
-   std::cout << "Gating from bin: " << gate_low_bin << " to " << gate_high_bin << std::endl;
+   std::cout<<"Gating from bin: "<<gate_low_bin<<" to "<<gate_high_bin<<std::endl;
 
    //Tre to get the background under the peak if this has been done already
    TH1* background_hist = (TH1*)(gDirectory->Get(Form("%s_px_background",matrix->GetName())));
    if(!background_hist){
-      std::cout << "Missing a background " << (Form("%s_px_background",matrix->GetName())) << " to use, not performing BG correction!!!" << std::endl;
+      std::cout<<"Missing a background "<<(Form("%s_px_background",matrix->GetName()))<<" to use, not performing BG correction!!!"<<std::endl;
       return matrix->ProjectionX(Form("gated_%s_%.0f_to_%.0f_px",matrix->GetName(),gate_low,gate_high),gate_low_bin,gate_high_bin); ;
    }
 
@@ -24,8 +24,8 @@ TH1* NewProjectionXBGP(TH2* matrix, Double_t gate_low, Double_t gate_high, Doubl
 
    
    Double_t scale_factor = bg_counts_under_peak/bg_counts_in_bg_gate;
-   std::cout << "Background counts = " << bg_counts_under_peak << std::endl;
-   std::cout << "Scale factor      = " << scale_factor << std::endl;
+   std::cout<<"Background counts = "<<bg_counts_under_peak<<std::endl;
+   std::cout<<"Scale factor      = "<<scale_factor<<std::endl;
    //Use Get Axis and low edge, high edge etc.
    //First thing we need to do is project out the matrix using the gate.
    TH1* gated_histogram = matrix->ProjectionX(Form("gated_%s_%.0f_to_%.0f_px",matrix->GetName(),gate_low,gate_high),gate_low_bin,gate_high_bin);
@@ -47,15 +47,15 @@ TH1* ProjectionXBGP(TH2* matrix, Double_t gate_low, Double_t gate_high, Double_t
 	Int_t bg_low_bin = matrix->GetYaxis()->FindBin(bg_low);
 	Int_t bg_high_bin = matrix->GetYaxis()->FindBin(bg_high);
 
-	std::cout << "Gating from bin: " << gate_low_bin << " to " << gate_high_bin << std::endl;
+	std::cout<<"Gating from bin: "<<gate_low_bin<<" to "<<gate_high_bin<<std::endl;
 	
-   std::cout << "Gating from bin: " << gate_low_bin << " to " << gate_high_bin << std::endl;
+   std::cout<<"Gating from bin: "<<gate_low_bin<<" to "<<gate_high_bin<<std::endl;
 
    //The Projection functions are inclusive on the bins, we need to take this into account when coming up with our scale factor.
    //Find the counts in the background of the GPeak.
    //Get the background of the last peak fit
    if(!GPeak::GetLastFit()){
-      std::cout << "Missing a Fit to use, not performing BG correction!!!" << std::endl;
+      std::cout<<"Missing a Fit to use, not performing BG correction!!!"<<std::endl;
       return matrix->ProjectionX(Form("gated_%s_%.0f_to_%.0f_px",matrix->GetName(),gate_low,gate_high),gate_low_bin,gate_high_bin); ;
    }
 
@@ -72,8 +72,8 @@ TH1* ProjectionXBGP(TH2* matrix, Double_t gate_low, Double_t gate_high, Double_t
 
    
    Double_t scale_factor = bg_counts_under_peak/bg_counts_in_bg_gate;
-   std::cout << "Background counts = " << bg_counts_under_peak << std::endl;
-   std::cout << "Scale factor      = " << scale_factor << std::endl;
+   std::cout<<"Background counts = "<<bg_counts_under_peak<<std::endl;
+   std::cout<<"Scale factor      = "<<scale_factor<<std::endl;
    //Use Get Axis and low edge, high edge etc.
    //First thing we need to do is project out the matrix using the gate.
    TH1* gated_histogram = matrix->ProjectionX(Form("gated_%s_%.0f_to_%.0f_px",matrix->GetName(),gate_low,gate_high),gate_low_bin,gate_high_bin);
@@ -94,13 +94,13 @@ TH1* ProjectionYBGP(TH2* matrix, Double_t gate_low, Double_t gate_high, Double_t
 	Int_t bg_low_bin = matrix->GetYaxis()->FindBin(bg_low);
 	Int_t bg_high_bin = matrix->GetYaxis()->FindBin(bg_high);
 
-	std::cout << "Gating from bin: " << gate_low_bin << " to " << gate_high_bin << std::endl;
+	std::cout<<"Gating from bin: "<<gate_low_bin<<" to "<<gate_high_bin<<std::endl;
 
    //The Projection functions are inclusive on the bins, we need to take this into account when coming up with our scale factor.
    //Find the counts in the background of the GPeak.
    //Get the background of the last peak fit
    if(!GPeak::GetLastFit()){
-      std::cout << "Missing a Fit to use, not performing BG correction!!!" << std::endl;
+      std::cout<<"Missing a Fit to use, not performing BG correction!!!"<<std::endl;
       return matrix->ProjectionY(Form("gated_%s_%.0f_to_%.0f_py",matrix->GetName(),gate_low,gate_high),gate_low_bin,gate_high_bin); ;
    }
 
@@ -117,8 +117,8 @@ TH1* ProjectionYBGP(TH2* matrix, Double_t gate_low, Double_t gate_high, Double_t
 
    
    Double_t scale_factor = bg_counts_under_peak/bg_counts_in_bg_gate;
-   std::cout << "Background counts = " << bg_counts_under_peak << std::endl;
-   std::cout << "Scale factor      = " << scale_factor << std::endl;
+   std::cout<<"Background counts = "<<bg_counts_under_peak<<std::endl;
+   std::cout<<"Scale factor      = "<<scale_factor<<std::endl;
    //Use Get Axis and low edge, high edge etc.
    //First thing we need to do is project out the matrix using the gate.
    TH1* gated_histogram = matrix->ProjectionY(Form("gated_%s_%.0f_to_%.0f_py",matrix->GetName(),gate_low,gate_high),gate_low_bin,gate_high_bin);

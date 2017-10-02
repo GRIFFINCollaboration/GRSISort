@@ -1,4 +1,4 @@
-// GRootGuiFactory.h GRootFunctions.h GRootCommands.h GRootCanvas.h GRootBrowser.h GCanvas.h GH2Base.h  GH2I.h GH2D.h  GPeak.h GGaus.h GValue.h GH1D.h GNotifier.h GPopup.h GSnapshot.h TCalibrator.h GHSym.h
+// GRootGuiFactory.h GRootFunctions.h GRootCommands.h GRootCanvas.h GRootBrowser.h GCanvas.h GH2Base.h  GH2I.h GH2D.h  GPeak.h GGaus.h GValue.h GH1D.h GNotifier.h GPopup.h GSnapshot.h TCalibrator.h GHSym.h GCube.h
 
 
 #ifdef __CINT__
@@ -64,6 +64,9 @@
 #pragma link C++ class GHSym+;
 #pragma link C++ class GHSymF+;
 #pragma link C++ class GHSymD+;
+#pragma link C++ class GCube+;
+#pragma link C++ class GCubeF+;
+#pragma link C++ class GCubeD+;
 
 #pragma link C++ class GPeak+;
 #pragma link C++ class GGaus+;

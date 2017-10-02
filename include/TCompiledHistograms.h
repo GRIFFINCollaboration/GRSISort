@@ -20,57 +20,56 @@ class TFile;
 
 class TCompiledHistograms : public TObject {
 public:
-  TCompiledHistograms();
-  TCompiledHistograms(std::string libname, std::string func_name);
+   TCompiledHistograms();
+   TCompiledHistograms(std::string input_lib, std::string func_name);
 
-  void Load(std::string libname, std::string func_name);
+   void Load(std::string libname, std::string func_name);
 #ifndef __CINT__
-  void Fill(std::shared_ptr<const TFragment> fragment);
-  void Fill(std::shared_ptr<TUnpackedEvent> unpacked);
+   void Fill(std::shared_ptr<const TFragment> frag);
+   void Fill(std::shared_ptr<TUnpackedEvent> detectors);
 #endif
-  void Reload();
+   void Reload();
 
-  std::string GetLibraryName() const { return fLibname; }
+   std::string GetLibraryName() const { return fLibname; }
 
-  void SetDefaultDirectory(TDirectory* dir);
-  TDirectory* GetDefaultDirectory() { return fDefault_directory; }
+   void SetDefaultDirectory(TDirectory* dir);
+   TDirectory* GetDefaultDirectory() { return fDefault_directory; }
 
-  void ClearHistograms();
+   void ClearHistograms();
 
-  TList* GetObjects()   { return &fObjects; }
-  TList* GetGates()     { return &fGates;   }
+   TList* GetObjects() { return &fObjects; }
+   TList* GetGates() { return &fGates; }
 
-  void AddCutFile(TFile* cut_file);
+   void AddCutFile(TFile* cut_file);
 
-  Int_t Write(const char* name=0, Int_t option=0, Int_t bufsize=0);
-
+   Int_t Write(const char* name = nullptr, Int_t option = 0, Int_t bufsize = 0) override;
 
 private:
-  void swap_lib(TCompiledHistograms& other);
-  time_t get_timestamp();
-  bool file_exists();
+   void swap_lib(TCompiledHistograms& other);
+   time_t get_timestamp();
+   bool   file_exists();
 
-  std::string fLibname;
-  std::string fFunc_name;
+   std::string fLibname;
+   std::string fFunc_name;
 #ifndef __CINT__
-  std::shared_ptr<DynamicLibrary> fLibrary;
-  std::mutex fMutex;
+   std::shared_ptr<DynamicLibrary> fLibrary;
+   std::mutex                      fMutex;
 #endif
-  void (*fFunc)(TRuntimeObjects&);
-  time_t fLast_modified;
-  time_t fLast_checked;
+   void (*fFunc)(TRuntimeObjects&);
+   time_t fLast_modified;
+   time_t fLast_checked;
 
-  int fCheck_every;
+   int fCheck_every;
 
-  TList fObjects;
-  TList fGates;
-  std::vector<TFile*> fCut_files;
+   TList               fObjects;
+   TList               fGates;
+   std::vector<TFile*> fCut_files;
 
-  TDirectory* fDefault_directory;
+   TDirectory* fDefault_directory;
 
-  TRuntimeObjects fObj;
+   TRuntimeObjects fObj;
 
-  ClassDef(TCompiledHistograms, 0);
+   ClassDefOverride(TCompiledHistograms, 0);
 };
 
 #endif /* _TCOMPILEDHISTOGRAMS_H_ */

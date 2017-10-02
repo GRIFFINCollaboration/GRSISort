@@ -12,32 +12,29 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <time.h>
+#include <ctime>
 #include <fstream>
 #include <streambuf>
 
 #include "TFragment.h"
-
 
 /////////////////////////////////////////////////////////////////
 ///
 /// \class TObjectWrapper
 ///
 /// This Class allows proof to work with GRSI
-/// 
+///
 ///
 /////////////////////////////////////////////////////////////////
 
-
-template<typename T>
+template <typename T>
 class TObjectWrapper : public TObject {
    T* pT;
 
 public:
    TObjectWrapper(T* ptr) : pT(ptr) {}
    T* operator->() { return pT; }
-   ClassDef(TObjectWrapper,1);
+   ClassDefOverride(TObjectWrapper, 1);
 };
-
 
 #endif // TOBJECTWRAPPER_H

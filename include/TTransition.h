@@ -14,7 +14,7 @@
 ///
 /// \class TTransition
 ///
-/// This Class contains the information about a nuclear 
+/// This Class contains the information about a nuclear
 /// transition. These transitions are a part of a TNucleus
 /// and are typically set within the TNucleus framework
 ///
@@ -22,38 +22,39 @@
 
 class TTransition : public TObject {
    friend class TNucleus;
-   public:
-      TTransition();
-      virtual ~TTransition();
 
-      bool IsSortable() const { return true; }
-      int Compare(const TObject* obj) const;
-      int CompareIntensity(const TObject* obj) const;
+public:
+   TTransition();
+   ~TTransition() override;
 
-      void SetEnergy(double &tmpenergy) {fEnergy = tmpenergy;}
-      void SetEnergyUncertainty(double &tmperror){ fEngUncertainty = tmperror;}
-      void SetIntensity(double &tmpintens){fIntensity = tmpintens;}
-      void SetIntensityUncertainty(double &tmpinterror){ fIntUncertainty = tmpinterror;}
+   bool IsSortable() const override { return true; }
+   int Compare(const TObject* obj) const override;
+   int CompareIntensity(const TObject* obj) const;
 
-      double GetEnergy() const {return fEnergy;}
-      double GetEnergyUncertainty() const {return fEngUncertainty;}
-      double GetIntensity() const {return fIntensity;}
-      double GetIntensityUncertainty() const {return fIntUncertainty;}
+   void SetEnergy(double& tmpenergy) { fEnergy = tmpenergy; }
+   void SetEnergyUncertainty(double& tmperror) { fEngUncertainty = tmperror; }
+   void SetIntensity(double& tmpintens) { fIntensity = tmpintens; }
+   void SetIntensityUncertainty(double& tmpinterror) { fIntUncertainty = tmpinterror; }
 
-      void Clear(Option_t* opt = "");
-      void Print(Option_t* opt = "") const;
+   double GetEnergy() const { return fEnergy; }
+   double GetEnergyUncertainty() const { return fEngUncertainty; }
+   double GetIntensity() const { return fIntensity; }
+   double GetIntensityUncertainty() const { return fIntUncertainty; }
 
-      std::string PrintToString();
+   void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
 
-   private:
-      double fEnergy;           //Energy of the transition
-      double fEngUncertainty;   //Uncertainty in the energy of the transition
-      double fIntensity;        //Intensity of the transition
-      double fIntUncertainty;   //Uncertainty in the intensity
+   std::string PrintToString();
 
-/// \cond CLASSIMP
-   ClassDef(TTransition,0) //Information about a TNucleus transition
-/// \endcond
+private:
+   double fEnergy{0.};         // Energy of the transition
+   double fEngUncertainty{0.}; // Uncertainty in the energy of the transition
+   double fIntensity{0.};      // Intensity of the transition
+   double fIntUncertainty{0.}; // Uncertainty in the intensity
+
+   /// \cond CLASSIMP
+   ClassDefOverride(TTransition, 0) // Information about a TNucleus transition
+   /// \endcond
 };
 /*! @} */
 #endif
