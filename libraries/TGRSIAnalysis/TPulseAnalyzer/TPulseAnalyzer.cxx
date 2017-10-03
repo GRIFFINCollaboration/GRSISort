@@ -1330,337 +1330,316 @@ intersection of f'(t) and 0 by linear interpolation from these endpoints.
    return tc;
 }
 
-void TPulseAnalyzer::GetQuickPara()
-{
-   if(!IsSet()) {
-      return;
-   }
-   if(cWpar != nullptr) {
-      delete cWpar;
-   }
-   cWpar = new WaveFormPar;
-   cWpar->baseline_range =
-      T0RANGE; // default only 8 samples! but can be increased with a multiplier in TPulseAnalyzer constructor
-   cWpar->t90_flag    = 0;
-   cWpar->t50_flag    = 0;
-   cWpar->t10_flag    = 0;
-   cWpar->mflag       = 0;
-   cWpar->bflag       = 0;
-   cWpar->t0          = 0;
-   cWpar->baselinefin = 0;
 
-   get_baseline(); // Takes a small sample baseline
-   get_tmax();     // Does a filtered max search
-
-   if(!((cWpar->mflag != 0) && (cWpar->bflag != 0))) {
-      return;
-   }
-
-   if(cWpar->tmax > cN) {
-      cWpar->tmax = cN - 1;
-   }
-
-   double amp = cWpar->max - cWpar->baseline;
-   double y9  = cWpar->baseline + amp * .9;
-   double y5  = cWpar->baseline + amp * .5;
-   double y1  = cWpar->baseline + amp * .1;
-
-   for(int t = cWpar->tmax; t > 0; t--) {
-      if(cWavebuffer[t] < y5) {
-         cWpar->t50_flag = 1;
-         cWpar->t50      = t + 0.5;
-         break;
-      }
-   }
-
-   if(cWpar->t50_flag == 0) {
-      return;
-   }
-
-   for(int t = cWpar->t50; t < cWpar->tmax; t++) {
-      if(cWavebuffer[t] > y9) {
-         cWpar->t90_flag = 1;
-         cWpar->t90      = t - 0.5;
-         break;
-      }
-   }
-
-   for(int t = cWpar->t50; t > 0; t--) {
-      if(cWavebuffer[t] < y1) {
-         cWpar->t10_flag = 1;
-         cWpar->t10      = t + 0.5;
-         break;
-      }
-   }
-
-   if(cWpar->t10_flag == 0) {
-      return;
-   }
-
-   double t0 = cWpar->t50 - ((cWpar->t50 - cWpar->t10) * 1.2);
-   if(cWpar->t90_flag != 0) {
-      t0 += cWpar->t90 - ((cWpar->t90 - cWpar->t10) * 1.125);
-      t0 *= 0.5;
-   }
-   if(t0 < 0) {
-      t0 = 0;
-   }
-
-   // 	std::cout<<std::endl<<t0<<std::flush;
-   cWpar->t0 = t0;
-   get_baseline_fin(); // baseline all the way up to t0
+void TPulseAnalyzer::GetQuickPara(){if(!IsSet())return;
+	if(cWpar) delete cWpar;
+	cWpar=new WaveFormPar;
+	cWpar->baseline_range=T0RANGE; //default only 8 samples! but can be increased with a multiplier in TPulseAnalyzer constructor
+	cWpar->t90_flag=0;
+	cWpar->t50_flag=0;
+	cWpar->t10_flag=0;
+	cWpar->mflag=0;
+	cWpar->bflag=0;
+	cWpar->t0=0;
+	cWpar->baselinefin=0;
+	
+	get_baseline();//Takes a small sample baseline
+	get_tmax();//Does a filtered max search
+	
+	if(!(cWpar->mflag&&cWpar->bflag))return;
+	
+	if(cWpar->tmax>cN)cWpar->tmax=cN-1;
+	
+	double amp=cWpar->max-cWpar->baseline;
+	double y9=cWpar->baseline+amp*.9;
+	double y5=cWpar->baseline+amp*.5;
+	double y1=cWpar->baseline+amp*.1;
+	
+	for(int t=cWpar->tmax;t>0;t--){
+		if(cWavebuffer[t]<y5){
+			cWpar->t50_flag=1;
+			cWpar->t50=t+0.5;
+			break;
+		}
+	}
+	
+	if(!cWpar->t50_flag)return;
+	
+	for(int t=cWpar->t50;t<cWpar->tmax;t++){
+		if(cWavebuffer[t]>y9){
+			cWpar->t90_flag=1;
+			cWpar->t90=t-0.5;
+			break;
+		}
+	}
+	
+	for(int t=cWpar->t50;t>0;t--){
+		if(cWavebuffer[t]<y1){
+			cWpar->t10_flag=1;
+			cWpar->t10=t+0.5;
+			break;
+		}
+	}
+	
+	if(!cWpar->t10_flag)return;
+	
+	double t0=cWpar->t50-((cWpar->t50-cWpar->t10)*1.2);
+	if(cWpar->t90_flag){
+		t0+=cWpar->t90-((cWpar->t90-cWpar->t10)*1.125);
+		t0*=0.5;
+	}
+	if(t0<0)t0=0;
+	
+// 	std::cout<<std::endl<<t0<<std::flush;
+	cWpar->t0=t0;
+	get_baseline_fin();//baseline all the way up to t0
 }
 
-bool TPulseAnalyzer::SiliShapePrepare(double tauDecay, double tauRise)
-{
-   if(IsSet()) {
-      // double t0=fit_newT0();//fits the T0 in the SFU way with my added bit at the end for a nice baseline calc
-      // double t0=cWpar->t0;
-      // int exclusion=t0+3;
-      // 	if(t0<1){//if the fit_newT0() failed
-      // 		exclusion=10;
-      // 		if(std::abs(baseline-cWavebuffer[0])>100)baseline=cWavebuffer[0];
-      // 	}
 
-      // New simplified guesses because fit_newT0 was taking 1000% longer
-      GetQuickPara();
-      cWpar->amplitude = 0;
-      cWpar->tauDecay  = tauDecay;
-      cWpar->tauRise   = tauRise;
-      cWpar->bflag     = 0; // baseline
 
-      if((cWpar->t10_flag) == 0) {
-         return false;
-      }
+bool TPulseAnalyzer::SiliShapePrepare(double tauDecay,double tauRise){if(IsSet()){
+	//double t0=fit_newT0();//fits the T0 in the SFU way with my added bit at the end for a nice baseline calc
+	//double t0=cWpar->t0;	
+	//int exclusion=t0+3;
+// 	if(t0<1){//if the fit_newT0() failed
+// 		exclusion=10;
+// 		if(abs(baseline-cWavebuffer[0])>100)baseline=cWavebuffer[0];
+// 	}
+	
+	// New simplified guesses because fit_newT0 was taking 1000% longer
+	GetQuickPara();
+	cWpar->amplitude=0;
+	cWpar->tauDecay=tauDecay;
+	cWpar->tauRise=tauRise;
+	cWpar->bflag=0;//baseline
+	cWpar->baseamp=0;
+	cWpar->basefreq=0;
+	cWpar->basephase=0;
+	cWpar->osciflag=0;
+	
+	if(!(cWpar->t10_flag))return 0;
+	
+	//GetQuickPara() Returns values that are spurious if the baseline is missing or <<T0RANGE
+	if(cWpar->t0<cWpar->baseline_range){//Is there is no clear baseline baseline
+		if(!(cWpar->baselineStDevfin/(cWpar->max-cWpar->baselinefin)<0.035)){//Strict (previously 0.05) limit determined from data
+			return 0;
+		}
+	}
+	cWpar->bflag=1;
+	return 1;
+}return 0;}
 
-      // GetQuickPara() Returns values that are spurious if the baseline is missing or <<T0RANGE
-      if(cWpar->t0 < cWpar->baseline_range) { // Is there is no clear baseline baseline
-         if(!(cWpar->baselineStDevfin / (cWpar->max - cWpar->baselinefin) <
-              0.035)) { // Strict (previously 0.05) limit determined from data
-            return false;
-         }
-      }
-      cWpar->bflag = 1;
-      return true;
-   }
-   return false;
+bool TPulseAnalyzer::GetSiliShape(double tauDecay,double tauRise){if(IsSet()){
+	
+	if(!SiliShapePrepare(tauDecay,tauRise))return 0;
+
+	int exclusion=cWpar->t10;
+	double baseline=cWpar->baselinefin;
+
+
+	/**************************************************************************
+	// Parametes for this function  
+	//fShpar->t0 t0         (time where signal starts, calculated)
+	//fShpar->tau[0]) decay     (provided)
+	//fShpar->tau[1]) rise      (provided)
+	//fShpar->tau[2]) slow      (not used)
+	//fShpar->tau[3]) diode     (not used)
+	//fShpar->am[0]) baseline (provided)
+	//fShpar->am[1]) fast     (amplitude, calculated )
+	//fShpar->am[2]) slow     (not used)
+	//fShpar->am[3]) diode    (not used)
+
+	linearized chi square fit is Mu = v where M is a data matrix 
+	u, v are vectors; u is the parameter vector (solution)
+	note that in this formulation, chisq_min = y_i^2-sum(u_iv_i)
+	**************************************************************************/
+
+	//cout << baseline << "  " << exclusion  <<  endl ;// ResetShapeAmplitudes();/ fShpar->am[0] = baseline ; 
+	
+	lineq_dim=2;
+	memset(lineq_matrix,0,sizeof(lineq_matrix));
+	memset(lineq_vector,0,sizeof(lineq_vector));
+	memset(lineq_solution,0,sizeof(lineq_solution));
+
+	if(exclusion >= cN ) return 0;
+	if(lineq_dim >= cN) return 0;
+
+	//setting  M[0,0] V[0] V[1]
+	for(int j=exclusion;j<cN;j++){ 
+		//vector
+		if ( (cWavebuffer[j]-baseline) < 0) { exclusion++; continue;  }   // this is crucial for oscillations    
+			//if (j%10==0) cout << j << " "<<  cWavebuffer[j] << " " << cWavebuffer[j]-baseline << endl ;
+			double signal = log(cWavebuffer[j]-baseline) + j/tauDecay ; // sum of Y_i where  Y_i = (y_i - baseline)*exp(-t_i/tauDecay)  
+			lineq_vector[0]+=exp(signal);
+			lineq_vector[1]-=exp(signal-j/tauRise);  // sum of Y_i*X_i
+			//Matrix 
+			lineq_matrix[0][0]+=1;
+	}
+
+	//create matrix for linearized fit
+	//setting elements M[0,1] M[1,0] M[1,1]
+	long double sum ;
+	sum=-((double)exclusion)/tauRise + log(1.-exp(-((double)(cN-exclusion))/tauRise));
+	sum-=log(1.-exp(-1./tauRise));  // finishing the geometric sequence sum 
+	lineq_matrix[1][0]=-exp(sum);
+	lineq_matrix[0][1]=-exp(sum);
+	
+	double tauRise_2 = tauRise/2.;
+	sum=-((double)exclusion)/tauRise_2 + log(1.-exp(-((double)(cN-exclusion))/ tauRise_2 ));
+	sum-=log(1.-exp( -1./ tauRise_2 ));
+	lineq_matrix[1][1]=exp(sum);    
+     
+	//cout << lineq_matrix[0][0] << "  " << lineq_matrix[0][1] << " ---------- " << lineq_vector[0]  << endl ;
+	//cout << lineq_matrix[1][0] << "  " << lineq_matrix[1][1] << " ---------- " << lineq_vector[1]  << endl ;
+
+	//solve the matrix equation Mu = v -> u = M^(-1)v where M^(-1) is the inverse
+	//of M. note this has no solution if M is not invertable! 
+
+	//error if the matrix cannot be inverted
+	if(solve_lin_eq()==0) {
+		return 0;
+	}else{//else calculate amplitudes
+		//calculate amplitudes
+		double beta = lineq_solution[0] ; 
+		double alpha = lineq_solution[1] ; 
+
+		double dom=exp( ((log(alpha)-log(beta)) * tauRise) / tauDecay ) ; 
+		if(dom>0||dom<0)cWpar->amplitude=beta / dom;
+
+		double tt=(log(alpha)-log(beta)) * tauRise;
+		if(tt>0)cWpar->t0=tt;	
+	}
+	return 1;
+}return 0;}
+
+//Significantly slower and should only be used in non-sorting analysis of poor waveform
+//Needs initial estimates even if fitting those parameters
+//Setting basefreq>0 opens a very experimental/bad mode
+bool TPulseAnalyzer::GetSiliShapeTF1(double tauDecay,double tauRise,double baseline,double basefreq){
+TGraph* h=GetWaveGraph();if(h){//Graph better than hist for stats and simplicity 
+	
+	SiliShapePrepare(tauDecay,tauRise);
+	TF1 g=Getsilifit();
+	
+// 	g.SetParameter(0,cWpar->t0);
+// 	g.SetParameter(1,cWpar->tauDecay);
+// 	g.SetParameter(2,cWpar->tauRise);
+// 	g.SetParameter(3,cWpar->baselinefin);
+// 	g.SetParameter(4,cWpar->amplitude);
+	
+	//Currently constrained for positive waveforms
+	double r=cWpar->max-cWavebuffer[0];
+	g.SetParameter(4,r*1.05);
+
+	if(cWpar->bflag){//Have reasonable T0 & base, fit the shape
+		g.SetParLimits(0,cWpar->t0*0.5,cWpar->t0*1.5);
+		g.SetParLimits(1,tauDecay*0.3,tauDecay*3.0);
+		g.SetParLimits(2,tauRise*0.3,tauRise*1.5);
+		g.FixParameter(3,cWpar->baselinefin);
+		g.SetParLimits(4,r*0.5,r*2.0);
+	}else{//Have no T0 or base, FIX the shape
+		g.SetParLimits(0,-cN,cWpar->baseline_range);
+		g.FixParameter(1,tauDecay);
+		g.FixParameter(2,tauRise);
+		g.FixParameter(3,baseline);
+// 		g.SetParameter(3,baseline);
+// 		g.SetParLimits(3,baseline-300,baseline+300);
+		g.SetParLimits(4,r*0.1,r*10.0);
+	}
+
+	if(basefreq>0){
+		cWpar->osciflag=1;
+		g.ReleaseParameter(5);
+		g.ReleaseParameter(6);
+		g.ReleaseParameter(7);
+		g.SetParameter(5,basefreq);
+		g.SetParameter(6,0.5);
+		g.SetParameter(7,r*0.1);
+		g.SetParLimits(5,basefreq*0.5,basefreq*2.0);
+		g.SetParLimits(6,0,1);
+		g.SetParLimits(7,0,r*10.0);
+	}
+	
+	int res=h->Fit(&g,"QN");
+	delete h;
+	
+	if(!res){
+		cWpar->t0=g.GetParameter(0);
+		cWpar->tauDecay=g.GetParameter(1);
+		cWpar->tauRise=g.GetParameter(2);
+		cWpar->baselinefin=g.GetParameter(3);
+		cWpar->amplitude=g.GetParameter(4);
+		cWpar->basefreq=g.GetParameter(5);
+		cWpar->basephase=g.GetParameter(6);
+		cWpar->baseamp=g.GetParameter(7);
+		
+		return 1;
+	}
+	
+}return 0;}
+
+double TPulseAnalyzer::SiLiFitFunction(double *i,double *p){
+  // p[0]-p[2] are t0, RC, Tau  
+  // p[3]-p[4] are baseline, A0
+  // p[5]-p[7] are osci freq,phase,amp
+	
+  double x=i[0]-p[0];
+  
+  double s=p[3];
+  if(x>0)s+=p[4]*(1-exp(-x/p[2]))*exp(-x/p[1]);
+  if(p[7]>0)s+=p[7]*sin((p[6]+i[0]/p[5])*2*TMath::Pi()); 
+
+  return s;
 }
 
-bool TPulseAnalyzer::GetSiliShape(double tauDecay, double tauRise)
-{
-   if(IsSet()) {
+TF1  TPulseAnalyzer::Getsilifit(){
+	if(set&&cWpar){
+		std::stringstream ss;ss<<"Fit"<<nameiter;++nameiter;
+		TF1 g(ss.str().c_str(),SiLiFitFunction,0,cN,8);
+		
+		g.SetParameter(0,cWpar->t0);
+		g.SetParameter(1,cWpar->tauDecay);
+		g.SetParameter(2,cWpar->tauRise);
+		g.SetParameter(3,cWpar->baselinefin);
+		g.SetParameter(4,cWpar->amplitude);
+		g.FixParameter(5,cWpar->basefreq);
+		g.FixParameter(6,cWpar->basephase);
+		g.FixParameter(7,cWpar->baseamp);
+		
+		g.SetLineColor(kRed);
 
-      if(!SiliShapePrepare(tauDecay, tauRise)) {
-         return false;
-      }
-
-      int    exclusion = cWpar->t10;
-      double baseline  = cWpar->baselinefin;
-
-      /**************************************************************************
-      // Parametes for this function
-      //fShpar->t0 t0         (time where signal starts, calculated)
-      //fShpar->tau[0]) decay     (provided)
-      //fShpar->tau[1]) rise      (provided)
-      //fShpar->tau[2]) slow      (not used)
-      //fShpar->tau[3]) diode     (not used)
-      //fShpar->am[0]) baseline (provided)
-      //fShpar->am[1]) fast     (amplitude, calculated )
-      //fShpar->am[2]) slow     (not used)
-      //fShpar->am[3]) diode    (not used)
-
-      linearized chi square fit is Mu = v where M is a data matrix
-      u, v are vectors; u is the parameter vector (solution)
-      note that in this formulation, chisq_min = y_i^2-sum(u_iv_i)
-       **************************************************************************/
-
-      // cout<<baseline<<"  "<<exclusion<<endl ;// ResetShapeAmplitudes();/ fShpar->am[0] = baseline ;
-
-      lineq_dim = 2;
-      memset(lineq_matrix, 0, sizeof(lineq_matrix));
-      memset(lineq_vector, 0, sizeof(lineq_vector));
-      memset(lineq_solution, 0, sizeof(lineq_solution));
-
-      if(exclusion >= cN) {
-         return false;
-      }
-      if(lineq_dim >= cN) {
-         return false;
-      }
-
-      // setting  M[0,0] V[0] V[1]
-      for(int j = exclusion; j < cN; j++) {
-         // vector
-         if((cWavebuffer[j] - baseline) < 0) {
-            exclusion++;
-            continue;
-         } // this is crucial for oscillations
-         // if (j%10==0) cout<<j<<" "<<  cWavebuffer[j]<<" "<<cWavebuffer[j]-baseline<<endl ;
-         double signal = log(cWavebuffer[j] - baseline) +
-                         j / tauDecay; // sum of Y_i where  Y_i = (y_i - baseline)*exp(-t_i/tauDecay)
-         lineq_vector[0] += exp(signal);
-         lineq_vector[1] -= exp(signal - j / tauRise); // sum of Y_i*X_i
-         // Matrix
-         lineq_matrix[0][0] += 1;
-      }
-
-      // create matrix for linearized fit
-      // setting elements M[0,1] M[1,0] M[1,1]
-      long double sum;
-      sum =
-         -(static_cast<double>(exclusion)) / tauRise + log(1. - exp(-(static_cast<double>(cN - exclusion)) / tauRise));
-      sum -= log(1. - exp(-1. / tauRise)); // finishing the geometric sequence sum
-      lineq_matrix[1][0] = -exp(sum);
-      lineq_matrix[0][1] = -exp(sum);
-
-      double tauRise_2 = tauRise / 2.;
-      sum              = -(static_cast<double>(exclusion)) / tauRise_2 +
-            log(1. - exp(-(static_cast<double>(cN - exclusion)) / tauRise_2));
-      sum -= log(1. - exp(-1. / tauRise_2));
-      lineq_matrix[1][1] = exp(sum);
-
-      // cout<<lineq_matrix[0][0]<<"  "<<lineq_matrix[0][1]<<" ---------- "<<lineq_vector[0] <<endl ;
-      // cout<<lineq_matrix[1][0]<<"  "<<lineq_matrix[1][1]<<" ---------- "<<lineq_vector[1] <<endl ;
-
-      // solve the matrix equation Mu = v -> u = M^(-1)v where M^(-1) is the inverse
-      // of M. note this has no solution if M is not invertable!
-
-      // error if the matrix cannot be inverted
-      if(solve_lin_eq() == 0) {
-         return false;
-      } // else calculate amplitudes
-      // calculate amplitudes
-      double beta  = lineq_solution[0];
-      double alpha = lineq_solution[1];
-
-      double dom = exp(((log(alpha) - log(beta)) * tauRise) / tauDecay);
-      if(dom > 0 || dom < 0) {
-         cWpar->amplitude = beta / dom;
-      }
-
-      double tt = (log(alpha) - log(beta)) * tauRise;
-      if(tt > 0) {
-         cWpar->t0 = tt;
-      }
-
-      return true;
-   }
-   return false;
+		return g;
+	}
+	
+	return TF1();
 }
 
-// Significantly slower and should only be used in non-sorting analysis of poor waveform
-// Needs initial estimates even if fitting those parameters
-bool TPulseAnalyzer::GetSiliShapeTF1(double tauDecay, double tauRise, double baseline)
-{
-   TGraph* h = GetWaveGraph();
-   if(h != nullptr) { // Graph better than hist for stats and simplicity
-
-      SiliShapePrepare(tauDecay, tauRise);
-      TF1 g = Getsilifit();
-      // 	g.SetParameter(0,cWpar->t0);
-      // 	g.SetParameter(1,cWpar->tauDecay);
-      // 	g.SetParameter(2,cWpar->tauRise);
-      // 	g.SetParameter(3,cWpar->baselinefin);
-      // 	g.SetParameter(4,cWpar->amplitude);
-
-      // Currently constrained for positive waveforms
-      double r = cWpar->max - cWavebuffer[0];
-      g.SetParameter(4, r * 1.05);
-
-      if(cWpar->bflag != 0) { // Have reasonable T0 & base, fit the shape
-         g.SetParLimits(0, cWpar->t0 * 0.5, cWpar->t0 * 1.5);
-         g.SetParLimits(1, tauDecay - tauDecay * 0.4, tauDecay + tauDecay * 0.4);
-         g.SetParLimits(2, tauRise - tauRise * 0.3, tauRise + tauRise * 0.3);
-         g.FixParameter(3, cWpar->baselinefin);
-         g.SetParLimits(4, r * 0.5, r * 2.0);
-      } else { // Have no T0 or base, FIX the shape
-         g.SetParLimits(0, -cN, cWpar->baseline_range);
-         g.FixParameter(1, tauDecay);
-         g.FixParameter(2, tauRise);
-         g.FixParameter(3, baseline);
-         // 		g.SetParameter(3,baseline);
-         // 		g.SetParLimits(3,baseline-300,baseline+300);
-         g.SetParLimits(4, r * 0.1, r * 10.0);
-      }
-
-      int res = h->Fit(&g, "QN");
-      delete h;
-
-      if(res == 0) {
-         cWpar->t0          = g.GetParameter(0);
-         cWpar->tauDecay    = g.GetParameter(1);
-         cWpar->tauRise     = g.GetParameter(2);
-         cWpar->baselinefin = g.GetParameter(3);
-         cWpar->amplitude   = g.GetParameter(4);
-         return true;
-      }
-   }
-   return false;
+double TPulseAnalyzer::GetsiliSmirnov(){
+	double Smirnov=0;
+	if(set&&cWpar){
+		double gsum=0,wsum=0;
+		TF1 g=Getsilifit();
+		for(Int_t i=0;i<cN;i++){
+			wsum+=abs(cWavebuffer[i]);
+			gsum+=abs(g.Eval(i+0.5));
+			Smirnov+=abs(wsum-gsum);
+		}
+	}
+	return (Smirnov);
 }
 
-double TPulseAnalyzer::SiLiFitFunction(double* i, double* p)
-{
-   // p[0]-p[2] are t0, RC, Tau
-   // p[3]-p[4] are baseline, A0
-
-   double x = i[0] - p[0];
-   if(x <= 0) {
-      return p[3];
-   }
-   double s = p[3];
-   s += p[4] * (1 - exp(-x / p[2])) * exp(-x / p[1]);
-   return s;
+void  TPulseAnalyzer::Drawsilifit(){
+	if(!set) return;
+	DrawWave();
+	if(cWpar){
+		Getsilifit().DrawCopy("same");
+		printf("t0:\t%2.2f, A:\t%2.2f\n",cWpar->t0,cWpar->amplitude);
+	}
+	return;
 }
 
-TF1 TPulseAnalyzer::Getsilifit()
-{
-   if(set && (cWpar != nullptr)) {
-      std::stringstream ss;
-      ss<<"Fit"<<nameiter;
-      ++nameiter;
-      TF1 g(ss.str().c_str(), SiLiFitFunction, 0, cN, 5);
 
-      g.SetParameter(0, cWpar->t0);
-      g.SetParameter(1, cWpar->tauDecay);
-      g.SetParameter(2, cWpar->tauRise);
-      g.SetParameter(3, cWpar->baselinefin);
-      g.SetParameter(4, cWpar->amplitude);
-      g.SetLineColor(kRed);
 
-      return g;
-   }
-
-   return TF1();
-}
-
-double TPulseAnalyzer::GetsiliSmirnov()
-{
-   double Smirnov = 0;
-   if(set && (cWpar != nullptr)) {
-      double gsum = 0, wsum = 0;
-      TF1    g = Getsilifit();
-
-      for(Int_t i = 0; i < cN; i++) {
-         wsum += std::abs(cWavebuffer[i]);
-         gsum += std::abs(g.Eval(i + 0.5));
-         Smirnov += (wsum - gsum);
-      }
-   }
-   return std::abs(Smirnov);
-}
-
-void TPulseAnalyzer::Drawsilifit()
-{
-   if(!set) {
-      return;
-   }
-   DrawWave();
-   if(cWpar != nullptr) {
-      Getsilifit().DrawCopy("same");
-      printf("t0:\t%2.2f, A:\t%2.2f\n", cWpar->t0, cWpar->amplitude);
-   }
-   return;
-}
 
 void TPulseAnalyzer::DrawWave()
 {

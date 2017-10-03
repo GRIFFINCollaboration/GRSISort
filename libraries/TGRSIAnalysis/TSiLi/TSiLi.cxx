@@ -18,6 +18,9 @@ double TSiLi::sili_noise_fac        = 4;
 double TSiLi::sili_default_decay    = 4616.18;
 double TSiLi::sili_default_rise     = 20.90;
 double TSiLi::sili_default_baseline = -4300;
+double TSiLi::BaseFreq=4;
+
+std::string TSiLi::fPreAmpName[8]={"RG","RB","LG","LB","LW","LR","RW","RR"};
 
 int TSiLi::FitSiLiShape = 0; // 0 no. 1 try if normal fit fail. 2 yes
 
