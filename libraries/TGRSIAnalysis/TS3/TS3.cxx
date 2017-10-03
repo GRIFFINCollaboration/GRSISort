@@ -132,6 +132,7 @@ void TS3::BuildPixels()
       /// Loop over two vectors and build energy+time matching hits
       for(size_t i = 0; i < fS3RingHits.size(); ++i) {
          for(size_t j = 0; j < fS3SectorHits.size(); ++j) {
+	    if(fS3RingHits[i].GetArrayPosition()!=fS3SectorHits[j].GetArrayPosition())continue;
 
             if(abs(fS3RingHits[i].GetCfd() - fS3SectorHits[j].GetCfd()) < fFrontBackTime) { // check time
                if(EneR[i] * fFrontBackEnergy < EneS[j] &&
@@ -186,10 +187,13 @@ void TS3::BuildPixels()
                   if(UsedSector.at(j)) {
                      continue;
                   }
+                  if(fS3RingHits[i].GetArrayPosition()!=fS3SectorHits[j].GetArrayPosition())continue;
+                  
                   for(size_t k = j + 1; k < fS3SectorHits.size(); ++k) {
                      if(UsedSector.at(k)) {
                         continue;
                      }
+                     if(fS3SectorHits[j].GetArrayPosition()!=fS3SectorHits[k].GetArrayPosition())continue;
 
                      if(abs(fS3RingHits[i].GetCfd() - fS3SectorHits[j].GetCfd()) < fFrontBackTime &&
                         abs(fS3RingHits[i].GetCfd() - fS3SectorHits[k].GetCfd()) < fFrontBackTime) { // check time
@@ -262,10 +266,13 @@ void TS3::BuildPixels()
                   if(UsedRing.at(j)) {
                      continue;
                   }
+                  if(fS3SectorHits[i].GetArrayPosition()!=fS3RingHits[j].GetArrayPosition())continue;
+		  
                   for(size_t k = j + 1; k < fS3RingHits.size(); ++k) {
                      if(UsedRing.at(k)) {
                         continue;
                      }
+                     if(fS3RingHits[j].GetArrayPosition()!=fS3RingHits[k].GetArrayPosition())continue;
 
                      if(abs(fS3SectorHits[i].GetCfd() - fS3RingHits[j].GetCfd()) < fFrontBackTime &&
                         abs(fS3SectorHits[i].GetCfd() - fS3RingHits[k].GetCfd()) < fFrontBackTime) { // first check time
