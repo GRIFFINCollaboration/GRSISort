@@ -47,8 +47,12 @@ class ExampleEventSelector : public TGRSISelector { //Must be same name as .C an
 void ExampleEventSelector::InitializeBranches(TTree* tree)
 {
    if(!tree) return;
-   tree->SetBranchAddress("TGriffin", &fGrif);
-   tree->SetBranchAddress("TSceptar", &fScep);
+   if(tree->SetBranchAddress("TGriffin", &fGrif) == TTree::kMissingBranch) {
+		fGrif = new TGriffin;
+	}
+   if(tree->SetBranchAddress("TSceptar", &fScep) == TTree::kMissingBranch) {
+		fScep = new TSceptar;
+	}
 }
 
 #endif // #ifdef ExampleEventSelector_cxx
