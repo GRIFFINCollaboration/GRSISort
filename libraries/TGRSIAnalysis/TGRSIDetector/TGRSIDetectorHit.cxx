@@ -86,7 +86,7 @@ Float_t TGRSIDetectorHit::GetCharge() const
    if(channel == nullptr) {
       return Charge();
    }
-   if(fKValue > 0) {
+   if(fKValue > 0 && !channel->UseCalFileIntegration()) {
       return Charge() / (static_cast<Float_t>(fKValue)); // this will use the integration value
    }
    if(channel->UseCalFileIntegration()) {
