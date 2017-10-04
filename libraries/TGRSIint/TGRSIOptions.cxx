@@ -102,7 +102,7 @@ void TGRSIOptions::Clear(Option_t*)
    fShouldExit = false;
 
    fColumnWidth         = 20;
-   fStatusWidth         = 80;
+   fStatusWidth         = 120;
    fStatusInterval      = 10;
    fLongFileDescription = false;
 
@@ -259,7 +259,7 @@ void TGRSIOptions::Load(int argc, char** argv)
    parser.option("column-width", &fColumnWidth, true).description("width of one column of status").default_value(20);
    parser.option("status-width", &fStatusWidth, true)
       .description("number of characters to be used for status output")
-      .default_value(80);
+      .default_value(120);
    parser.option("status-interval", &fStatusInterval, true)
       .description(
          "seconds between each detailed status output (each a new line), non-positive numbers mean no detailed status")

@@ -91,10 +91,10 @@ TPulseAnalyzer* TSiLiHit::FitFrag(const TFragment& frag, int ShapeFit, TChannel*
 
 TChannel* TSiLiHit::GetSiLiHitChannel(int segment)
 {
-   std::stringstream ss;
-   ss<<"SPI00XN"<<std::uppercase<<std::hex<<segment;
-   // 	std::cout<<std::endl<<ss.str().c_str();
-   return TChannel::FindChannelByName(ss.str().c_str());
+	std::stringstream ss;
+	ss<<"SPI00XN"<< std::uppercase << std::uppercase << std::setfill('0') << std::setw(2)<< std::hex << segment;
+//	std::cout<<std::endl<<ss.str().c_str();
+	return TChannel::FindChannelByName(ss.str().c_str());
 }
 
 int TSiLiHit::FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit, int segment)
@@ -104,46 +104,31 @@ int TSiLiHit::FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit, int segment)
 
 int TSiLiHit::FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit, TChannel* channel)
 {
-   if(pulse == nullptr) {
-      return 0;
-   }
-   if(pulse->IsSet()) {
-      double Decay = 0, Rise = 0, Base = 0;
+  	if(!pulse)return 0;
+	if(pulse->IsSet()){
+		double Decay=0,Rise=0,Base=0;
+		
+		if(channel){
+			if(channel->UseWaveParam()){
+				Rise=channel->GetWaveRise();
+				Decay=channel->GetWaveDecay();
+				Base=channel->GetWaveBaseLine();
+			}
+		}
+// 		std::cout<<std::endl<<Decay<<" "<<Rise<<" "<<Base;
 
-      if(channel != nullptr) {
-         if(channel->UseWaveParam()) {
-            Rise  = channel->GetWaveRise();
-            Decay = channel->GetWaveDecay();
-            Base  = channel->GetWaveBaseLine();
-         }
-      }
-      // 		std::cout<<std::endl<<Decay<<" "<<Rise<<" "<<Base;
-
-      if(Decay == 0.0) {
-         Decay = TSiLi::sili_default_decay;
-      }
-      if(Rise == 0.0) {
-         Rise = TSiLi::sili_default_rise;
-      }
-      if(Base == 0.0) {
-         Base = TSiLi::sili_default_baseline;
-      }
-
-      bool goodfit = false;
-      if(ShapeFit < 2) {
-         goodfit = pulse->GetSiliShape(Decay, Rise);
-      }
-      if(ShapeFit == 1 && !goodfit) {
-         ShapeFit++;
-      }
-      if(ShapeFit == 2) {
-         goodfit = pulse->GetSiliShapeTF1(Decay, Rise, Base);
-      }
-      if(goodfit) {
-         return 1 + ShapeFit;
-      }
-   }
-   return 0;
+		if(!Decay)Decay=TSiLi::sili_default_decay;
+		if(!Rise)Rise=TSiLi::sili_default_rise;
+		if(!Base)Base=TSiLi::sili_default_baseline;
+		
+		bool goodfit=false;
+		if(ShapeFit<2)goodfit=pulse->GetSiliShape(Decay,Rise);
+		if(ShapeFit==1&&!goodfit)ShapeFit++;//So currently it does a TF1 fit if initial fit fails, this might be a bad idea
+		if(ShapeFit==2)goodfit=pulse->GetSiliShapeTF1(Decay,Rise,Base);
+		if(ShapeFit==3)goodfit=pulse->GetSiliShapeTF1(Decay,Rise,Base,TSiLi::BaseFreq);
+		if(goodfit)return 1+ShapeFit;
+	}
+	return 0;
 }
 
 TVector3 TSiLiHit::GetPosition(Double_t, bool smear) const

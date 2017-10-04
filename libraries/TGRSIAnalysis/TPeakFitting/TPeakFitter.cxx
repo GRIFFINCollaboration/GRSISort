@@ -57,7 +57,6 @@ void TPeakFitter::SetRange(const Double_t &low, const Double_t &high){
 }
 
 void TPeakFitter::Fit(TH1* fit_hist,Option_t *opt){
-   static TH1* last_hist_fit = nullptr;
    ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2", "Combination");
    TVirtualFitter::SetMaxIterations(100000);
    TVirtualFitter::SetPrecision(1e-4);
@@ -71,7 +70,6 @@ void TPeakFitter::Fit(TH1* fit_hist,Option_t *opt){
       InitializeParameters(fit_hist);
       fInitFlag = true;
    }
-   last_hist_fit = fit_hist;
    UpdateFitterParameters();
    //Do a first fit to get closer on the parameters
    fit_hist->Fit(fTotalFitFunction,"RNQ0");
