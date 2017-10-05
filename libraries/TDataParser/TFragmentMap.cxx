@@ -443,7 +443,7 @@ void TFragmentMap::DropFragments(
    for(auto it = range.first; it != range.second; ++it) {
 		//(*it).second is a tuple, with the first element being a shared_ptr<TFragment>
 		//we need to conver this to a shared_ptr<TBadFragment>
-      fBadOutputQueue->Push(std::make_shared<TBadFragment>(*(std::get<0>((*it).second).get())));
+      //fBadOutputQueue->Push(std::make_shared<TBadFragment>(*(std::get<0>((*it).second).get())));
       if(fDebug) {
          std::cout<<"Added bad fragment "<<std::get<0>((*it).second)<<std::endl;
       }

@@ -422,11 +422,11 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
    int           x   = 0;
    if(!SetGRIFHeader(data[x++], eventFrag, bank)) {
       printf(DYELLOW "data[0] = 0x%08x" RESET_COLOR "\n", data[0]);
-      TParsingDiagnostics::Get()->BadFragment(
-         -1); // we failed to get a good header, so we don't know which detector type this fragment would've belonged to
+		// we failed to get a good header, so we don't know which detector type this fragment would've belonged to
+      TParsingDiagnostics::Get()->BadFragment(-1); 
       // this is the first word, so no need to check is the state/failed word has been set before
       fState     = EDataParserState::kBadHeader;
-      failedWord = x;
+      failedWord = 0;
    }
 
    eventFrag->SetMidasTimeStamp(midasTime);
@@ -572,8 +572,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                } else {
                   multipleErrors = true;
                }
-               Push(*fBadOutputQueue,
-                    std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+               Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
                throw TDataParserException(fState, failedWord, multipleErrors);
             }
 
@@ -598,8 +597,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   } else {
                      multipleErrors = true;
                   }
-                  Push(*fBadOutputQueue,
-                       std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+                  Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
                   throw TDataParserException(fState, failedWord, multipleErrors);
                }
                eventFrag->SetCfd(tmpCfd[0]);
@@ -619,8 +617,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                } else {
                   multipleErrors = true;
                }
-               Push(*fBadOutputQueue,
-                    std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+               Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
                throw TDataParserException(fState, failedWord, multipleErrors);
             }
             for(size_t h = 0; h < tmpCharge.size(); ++h) {
@@ -654,8 +651,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   } else {
                      // std::cout<<"Can't reconstruct time stamp, "<<fOptions->ReconstructTimeStamp()<<",
                      // state "<<fState<<" = "<<EDataParserState::kBadHighTS<<", "<<multipleErrors<<std::endl;
-                     Push(*fBadOutputQueue,
-                          std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+                     Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
                   }
                }
             }
@@ -701,8 +697,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                } else {
                   multipleErrors = true;
                }
-               Push(*fBadOutputQueue,
-                    std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+               Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
                throw TDataParserException(fState, failedWord, multipleErrors);
             }
             break;
@@ -747,8 +742,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   } else {
                      multipleErrors = true;
                   }
-                  Push(*fBadOutputQueue,
-                       std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+                  Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
                   throw TDataParserException(fState, failedWord, multipleErrors);
                }
                break;
@@ -771,8 +765,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   } else {
                      multipleErrors = true;
                   }
-                  Push(*fBadOutputQueue,
-                       std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+                  Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
                   throw TDataParserException(fState, failedWord, multipleErrors);
                }
                break;
@@ -863,8 +856,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   } else {
                      multipleErrors = true;
                   }
-                  Push(*fBadOutputQueue,
-                       std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+                  Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
                   throw TDataParserException(fState, failedWord, multipleErrors);
                }
                break;
@@ -879,8 +871,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                } else {
                   multipleErrors = true;
                }
-               Push(*fBadOutputQueue,
-                    std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+               Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
                throw TDataParserException(fState, failedWord, multipleErrors);
                break;
             }
@@ -903,8 +894,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                } else {
                   multipleErrors = true;
                }
-               Push(*fBadOutputQueue,
-                    std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+               Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
                throw TDataParserException(fState, failedWord, multipleErrors);
             }
             // for descant types (6,10,11) there are two more words for banks > GRF2 (bank GRF2 used 0xf packet and bank
@@ -925,8 +915,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   } else {
                      multipleErrors = true;
                   }
-                  Push(*fBadOutputQueue,
-                       std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+                  Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
                   throw TDataParserException(fState, failedWord, multipleErrors);
                }
             }
