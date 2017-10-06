@@ -248,9 +248,7 @@ void TChannel::AppendChannel(TChannel* chan)
    if(chan->GetEFFChi2() != 0.0) {
       SetEFFChi2(chan->GetEFFChi2());
    }
-   if(chan->UseCalFileIntegration()) {
-      SetUseCalFileIntegration(chan->UseCalFileIntegration());
-   }
+	SetUseCalFileIntegration(chan->UseCalFileIntegration());
    if(chan->UseWaveParam()) {
       SetWaveParam(chan->GetWaveParam());
    }
