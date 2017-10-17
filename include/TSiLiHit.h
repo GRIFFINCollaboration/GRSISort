@@ -30,6 +30,7 @@ public:
    Int_t    GetRing() const;
    Int_t    GetSector() const;
    Int_t    GetPreamp() const;
+   bool     MagnetShadow() const;
    Double_t GetTimeFit() { return fTimeFit; }
    Double_t GetSig2Noise() const { return fSig2Noise; }
    Double_t GetSmirnov() const { return fSmirnov; }
@@ -70,7 +71,7 @@ public:
    double GetEnergy(Option_t* opt = nullptr) const override;
 
    // Not strictly "doppler" but consistent
-   inline double GetDoppler(double beta, TVector3* vec = nullptr)
+   inline double GetDoppler(double beta, TVector3* vec = nullptr,double E=0)
    {
       if(vec == nullptr) {
          vec = GetBeamDirection();
@@ -78,7 +79,9 @@ public:
       TVector3 pos = GetPosition();
       pos.SetTheta(130. * TMath::Pi() / 180.);
       double costhe = TMath::Cos(pos.Angle(*vec));
-      double e      = this->GetEnergy();
+      double e;
+      if(E>0)e=E;
+      else e = this->GetEnergy();
       double gamma  = 1 / (sqrt(1 - pow(beta, 2)));
 
       return ((e + 511 - beta * costhe * sqrt(e * (e + 1022))) * gamma) - 511;
