@@ -112,6 +112,7 @@ public:
    static inline void SetCSM(bool flag = true) { fGRSIRunInfo->fCSM = flag; }
    static inline void SetSpice(bool flag = true) { fGRSIRunInfo->fSpice = flag; }
    static inline void SetS3(bool flag = true) { fGRSIRunInfo->fS3 = flag; }
+   static inline void SetGeneric(bool flag = true) { fGRSIRunInfo->fGeneric = flag; }
    static inline void SetTip(bool flag = true) { fGRSIRunInfo->fTip = flag; }
    static inline void SetBambino(bool flag = true) { fGRSIRunInfo->fBambino = flag; }
 
@@ -152,6 +153,7 @@ public:
    static inline bool Bambino() { return fGRSIRunInfo->fBambino; }
    static inline bool Tip() { return fGRSIRunInfo->fTip; }
    static inline bool S3() { return fGRSIRunInfo->fS3; }
+   static inline bool Generic() { return fGRSIRunInfo->fGeneric; }
 
    static inline bool Griffin() { return fGRSIRunInfo->fGriffin; }
    static inline bool Sceptar() { return fGRSIRunInfo->fSceptar; }
@@ -245,6 +247,7 @@ private:
    bool fSpice{false};   // flag for Spice on/off
    bool fTip{false};     // flag for Tip on/off
    bool fS3{false};      // flag for S3 on/off
+   bool fGeneric{false}; // flag for Generic on/off
    bool fBambino{false}; // flag for Bambino on/off
 
    bool fGriffin{false};    // flag for Griffin on/off
