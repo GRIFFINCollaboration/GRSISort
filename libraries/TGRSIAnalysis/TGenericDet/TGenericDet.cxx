@@ -33,12 +33,7 @@ TGenericDet::TGenericDet(const TGenericDet& rhs) : TGRSIDetector()
 void TGenericDet::Copy(TObject& rhs) const
 {
    TGRSIDetector::Copy(rhs);
-   static_cast<TGenericDet&>(rhs).fGenericHits   = fGenericHits;
-   static_cast<TGenericDet&>(rhs).fTimeStamp = fTimeStamp;
-   static_cast<TGenericDet&>(rhs).fEnergies = fEnergies;
-   static_cast<TGenericDet&>(rhs).fEnergy = fEnergy;
-   
- // if(fEnergies.size())std::cout<<std::endl<<"COPY "<<fGenericHits[0].GetEnergy();
+   static_cast<TGenericDet&>(rhs).fGenericHits   = fGenericHits;   
 }
 
 void TGenericDet::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
@@ -50,14 +45,7 @@ void TGenericDet::AddFragment(const std::shared_ptr<const TFragment>& frag, TCha
    }
 
    TGRSIDetectorHit dethit(*frag);
-   fTimeStamp = frag->GetTimeStamp();
-
    fGenericHits.push_back(std::move(dethit));
-   
-   fEnergy=frag->GetEnergy();
-   fEnergies.push_back(frag->GetEnergy());
-   
-   //std::cout<<std::endl<<fGenericHits[0].GetEnergy();
 }
 
 TGRSIDetectorHit* TGenericDet::GetHit(const int& idx)
@@ -84,5 +72,4 @@ void TGenericDet::Clear(Option_t* opt)
 {
    TGRSIDetector::Clear(opt);
    fGenericHits.clear();
-   fEnergies.clear();
 }

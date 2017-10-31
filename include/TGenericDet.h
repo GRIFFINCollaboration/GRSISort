@@ -40,11 +40,7 @@ public:
    void Print(Option_t* opt = "") const override; //!<!
 
 private:
-   std::vector<TGRSIDetectorHit> fGenericHits; //!<!
-   std::vector<double> fEnergies; //!<!
-   double fEnergy;
-   Long_t fTimeStamp;
-
+   std::vector<TGRSIDetectorHit> fGenericHits;
    void  ClearStatus() {  }
 
    /// \cond CLASSIMP
