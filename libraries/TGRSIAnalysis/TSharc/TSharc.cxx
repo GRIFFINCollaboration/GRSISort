@@ -102,14 +102,18 @@ void TSharc::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel*
 		 }
 		 */
 	switch(chan->GetMnemonic()->ArraySubPosition()) {
-		case TMnemonic::kD:
-			if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::kP) {
+		case TMnemonic::EMnemonic::kD:
+			if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::EMnemonic::kP) {
 				fFrontFragments.push_back(*frag);
 			} else {
 				fBackFragments.push_back(*frag);
 			}
 			break;
-		case TMnemonic::kE: fPadFragments.push_back(*frag); break;
+		case TMnemonic::EMnemonic::kE:
+			fPadFragments.push_back(*frag);
+			break;
+		default:
+			break;
 	};
 
 	// if(frag->GetDetector()==11 && frag->GetSegment()==16)

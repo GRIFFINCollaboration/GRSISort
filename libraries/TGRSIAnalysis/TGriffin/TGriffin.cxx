@@ -403,20 +403,31 @@ void TGriffin::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
    if(frag == nullptr || chan == nullptr) {
       return;
    }
-   if(chan->GetMnemonic()->OutputSensor() == TMnemonic::kA) {
+   if(chan->GetMnemonic()->OutputSensor() == TMnemonic::EMnemonic::kA) {
    }
 
    switch(chan->GetMnemonic()->SubSystem()) {
-   case TMnemonic::kG:
-      TGriffinHit geHit(*frag);
-      switch(chan->GetMnemonic()->OutputSensor()) {
-      case TMnemonic::kA: GetHitVector(kLowGain)->push_back(std::move(geHit)); break;
-      case TMnemonic::kB: GetHitVector(kHighGain)->push_back(std::move(geHit)); break;
-      };
-      //     case TMnemonic::kS :
-      // do supressor stuff in the future
-      //      break;
-   };
+		case TMnemonic::EMnemonic::kG:
+			{
+				TGriffinHit geHit(*frag);
+				switch(chan->GetMnemonic()->OutputSensor()) {
+					case TMnemonic::EMnemonic::kA:
+						GetHitVector(kLowGain)->push_back(std::move(geHit));
+						break;
+					case TMnemonic::EMnemonic::kB:
+						GetHitVector(kHighGain)->push_back(std::move(geHit));
+						break;
+					default:
+						break;
+				};
+			}
+			break;
+			//     case TMnemonic::EMnemonic::kS :
+			// do supressor stuff in the future
+			//      break;
+		default:
+			break;
+	};
 }
 
 TVector3 TGriffin::GetPosition(int DetNbr, int CryNbr, double dist)

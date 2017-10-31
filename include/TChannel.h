@@ -70,7 +70,7 @@ private:
    int          fIntegration; // The charge integration setting
    std::string  fTypeName;
    std::string  fDigitizerTypeString;
-   int          fDigitizerType;
+	TMnemonic::EDigitizer fDigitizerType;
    int          fNumber;
    int          fStream;
    int          fUserInfoNumber;
@@ -158,7 +158,7 @@ public:
    int          GetStream() const { return fStream; }
    int          GetUserInfoNumber() const { return fUserInfoNumber; }
    const char*  GetDigitizerTypeString() const { return fDigitizerTypeString.c_str(); }
-   int          GetDigitizerType() const { return fDigitizerType; }
+	TMnemonic::EDigitizer GetDigitizerType() const { return fDigitizerType; }
    double       GetTimeOffset() const { return fTimeOffset; }
    // write the rest of the gettters/setters...
 

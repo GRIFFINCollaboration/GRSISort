@@ -13,7 +13,7 @@ TS3Hit::TS3Hit()
 TS3Hit::TS3Hit(const TFragment& frag) : TGRSIDetectorHit(frag)
 {
 	
-   if(GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLiS3){
+   if(GetChannel()->GetMnemonic()->System() == TMnemonic::ESystem::kSiLiS3){
 	SetIsDownstream(false);   
    }else{
 	if(GetArrayPosition()<2)
@@ -64,7 +64,7 @@ void TS3Hit::SetWavefit(const TFragment& frag)
 
 Bool_t TS3Hit::SectorsDownstream() const
 {
-	if(GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLiS3){
+	if(GetChannel()->GetMnemonic()->System() == TMnemonic::ESystem::kSiLiS3){
 		if(GetArrayPosition() == 0) return true;
 		return false;
 	}
@@ -98,7 +98,7 @@ void TS3Hit::Print(Option_t*) const
 Double_t TS3Hit::GetDefaultPhiOffset() const
 {
    double deg = -90;
-   if(GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLiS3) {
+   if(GetChannel()->GetMnemonic()->System() == TMnemonic::ESystem::kSiLiS3) {
       deg = -22.5;
       if(GetChannel()->GetMnemonic()->ArrayPosition() == 2) {
          deg += 90;
@@ -111,7 +111,7 @@ Double_t TS3Hit::GetDefaultDistance() const
 { // relative to target (SPICE target not at Z=0)
    double z = 0;
    std::string str = GetDistanceStr();
-   if(GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLiS3) {
+   if(GetChannel()->GetMnemonic()->System() == TMnemonic::ESystem::kSiLiS3) {
       if(str.find('D') < str.size()) {
          z = 22.5;
       } else if(str.find('E') < str.size()) {

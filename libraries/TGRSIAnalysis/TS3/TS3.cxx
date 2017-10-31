@@ -60,7 +60,7 @@ void TS3::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* ch
 
    TS3Hit dethit(*frag); // Moved upstream/downstream switch into hit ctor
 
-   if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::kN) {
+   if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::EMnemonic::kN) {
       dethit.SetRingNumber(frag->GetSegment());
       dethit.SetSectorNumber(0);
 
