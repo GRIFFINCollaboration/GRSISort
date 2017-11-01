@@ -48,7 +48,8 @@ class TBGSubtraction : public TGMainFrame {
       kComboAxisEntry,
       kBGCheckButton1,
       kBGCheckButton2,
-      kPeakSkewCheckButton
+      kPeakSkewCheckButton,
+      kAutoUpdateCheckButton
    };
 
    //  RQ_OBJECT("TBGSubtraction")
@@ -77,6 +78,7 @@ private:
    TGCheckButton*       fBGCheckButton1;
    TGCheckButton*       fBGCheckButton2;
    TGCheckButton*       fPeakSkewCheckButton;
+   TGCheckButton*       fAutoUpdateCheckButton;
 
    TGLayoutHints* fBly;
    TGLayoutHints* fBly1;
@@ -163,6 +165,7 @@ public:
    void DoAllGates();
 
    void DoGateProjection();
+   void SetStatusFromUpdateCheckButton();
 
 private:
    void BuildInterface();

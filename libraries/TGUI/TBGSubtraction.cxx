@@ -13,10 +13,10 @@ ClassImp(TBGSubtraction)
    : TGMainFrame(nullptr, 10, 10, kHorizontalFrame), fProjectionCanvas(nullptr), fGateCanvas(nullptr), fMatrix(mat),
      fProjection(nullptr), fGateHist(nullptr), fBGHist1(nullptr), fBGHist2(nullptr), fSubtractedHist(nullptr), fGateSlider(nullptr),
      fBGSlider1(nullptr), fBGSlider2(nullptr), fPeakSlider(nullptr), fBGParamEntry(nullptr), fBGCheckButton1(nullptr), fBGCheckButton2(nullptr), 
-     fPeakSkewCheckButton(nullptr), fBly(nullptr), fBly1(nullptr), fGateFrame(nullptr), fProjectionFrame(nullptr), fAxisCombo(nullptr), 
-     fLowGateMarker(nullptr), fHighGateMarker(nullptr), fLowBGMarker1(nullptr),  fHighBGMarker1(nullptr), fLowBGMarker2(nullptr), 
-     fHighBGMarker2(nullptr), fLowPeakMarker(nullptr), fHighPeakMarker(nullptr), fPeakMarker(nullptr), fGateAxis(0), 
-     fForceUpdate(true), fPeakFit(nullptr) {
+     fPeakSkewCheckButton(nullptr), fAutoUpdateCheckButton(nullptr), fBly(nullptr), fBly1(nullptr), fGateFrame(nullptr), 
+     fProjectionFrame(nullptr), fAxisCombo(nullptr), fLowGateMarker(nullptr), fHighGateMarker(nullptr), fLowBGMarker1(nullptr),  
+     fHighBGMarker1(nullptr), fLowBGMarker2(nullptr), fHighBGMarker2(nullptr), fLowPeakMarker(nullptr), fHighPeakMarker(nullptr), 
+     fPeakMarker(nullptr), fGateAxis(0), fForceUpdate(true), fPeakFit(nullptr) {
 
    TString tmp_gate_word(gate_axis);
    tmp_gate_word.ToUpper();
@@ -96,6 +96,10 @@ void TBGSubtraction::MakeConnections(){
 
    //Connect the bg paramater entry to do the proper thing
    fBGParamEntry->Connect("ValueSet(Long_t)","TBGSubtraction",this,"UpdateBackground()");
+
+   //We want to connect the fit peak, and write histogram buttons with the update check box.
+   //We don't want someone writing a histo, or fitting a peak when the gate isn't as expected.
+   fAutoUpdateCheckButton->Connect("Clicked()","TBGSubtraction",this,"SetStatusFromUpdateCheckButton()");
 }
 
 void TBGSubtraction::ResetInterface(){
@@ -168,6 +172,8 @@ void TBGSubtraction::InitializeInterface(){
    ResetInterface();
    DoGateCanvasZoomed();
    DoProjectionCanvasZoomed();
+
+   SetStatusFromUpdateCheckButton();
    
 }
 
@@ -244,6 +250,8 @@ void TBGSubtraction::BuildInterface(){
    fBGCheckButton2->SetState(kButtonUp);
 
    fDescriptionFrame     = new TGHorizontalFrame(fGateFrame, 200, 200);
+   fAutoUpdateCheckButton = new TGCheckButton(fDescriptionFrame, "Auto Update", kAutoUpdateCheckButton);
+   fAutoUpdateCheckButton->SetState(kButtonUp);
    fHistogramDescription = new TGTextEntry(fDescriptionFrame, "gated #gamma-#gamma", kHistogramDescriptionEntry);
 
    fButtonFrame    = new TGHorizontalFrame(fGateFrame, 200, 200);
@@ -275,6 +283,7 @@ void TBGSubtraction::BuildInterface(){
    fBGEntryFrame2->AddFrame(fBGEntryLow2, fBly);
    fBGEntryFrame2->AddFrame(fBGEntryHigh2, fBly);
 
+   fDescriptionFrame->AddFrame(fAutoUpdateCheckButton, fBly);
    fDescriptionFrame->AddFrame(fHistogramDescription, fBly);
 
    fButtonFrame->AddFrame(fWrite2FileName, fBly);
@@ -352,7 +361,12 @@ void TBGSubtraction::UpdateBackground(){
    fCanvas->cd();
    fProjection->Draw();
    DrawAllMarkers();
-   DoGateProjection();
+   if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()){ 
+      DoGateProjection();
+   }
+   if(((fBGCheckButton1 != nullptr) && fBGCheckButton1->IsDown()) || ((fBGCheckButton2 != nullptr) && fBGCheckButton2->IsDown())) {
+      fProjection->ShowBackground(fBGParamEntry->GetNumberEntry()->GetIntNumber());
+   }
    fCanvas->Update();
    fGateCanvas->GetCanvas()->cd();
 }
@@ -440,22 +454,28 @@ void TBGSubtraction::DoSlider(Int_t pos)
          fGateEntryLow->SetNumber(fGateSlider->GetMinPosition());
          fGateEntryHigh->SetNumber(fGateSlider->GetMaxPosition());
          DrawGateMarkers();
-         MakeGateHisto();
-         DoGateProjection();
+         if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()){ 
+            MakeGateHisto();
+            DoGateProjection();
+         }
          break;
       case kBGSlider1:
          fBGEntryLow1->SetNumber(fBGSlider1->GetMinPosition());
          fBGEntryHigh1->SetNumber(fBGSlider1->GetMaxPosition());
          DrawBGMarkers1();
-         MakeBGHisto1();
-         DoGateProjection();
+         if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()){ 
+            MakeBGHisto1();
+            DoGateProjection();
+         }
          break;    
       case kBGSlider2:
          fBGEntryLow2->SetNumber(fBGSlider2->GetMinPosition());
          fBGEntryHigh2->SetNumber(fBGSlider2->GetMaxPosition());
          DrawBGMarkers2();
-         MakeBGHisto2();
-         DoGateProjection();
+         if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()){ 
+            MakeBGHisto2();
+            DoGateProjection();
+         }
          break;    
       case kPeakSlider:
          fPeakLowValue  = fPeakSlider->GetMinPosition();
@@ -467,9 +487,7 @@ void TBGSubtraction::DoSlider(Int_t pos)
    };
 }
 
-void TBGSubtraction::AxisComboSelected()
-{
-   std::cout << "selected" << std::endl;
+void TBGSubtraction::AxisComboSelected() {
    static int old_selection = -1;
    fGateAxis                = fAxisCombo->GetSelected();
 
@@ -775,11 +793,14 @@ void TBGSubtraction::DoProjectionCanvasZoomed(){
    UpdateProjectionSliders();
    DrawAllMarkers();
 
-   DoAllGates(); //Figure out how to make this happen on histo zooms and not scaling canvas
+
+   if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()){ 
+      DoAllGates(); //Figure out how to make this happen on histo zooms and not scaling canvas
+   }
    //DoGateProjection();
 }
 
-void TBGSubtraction::DoAllGates(){
+void TBGSubtraction::DoAllGates(){ 
    MakeGateHisto();
    MakeBGHisto1();
    MakeBGHisto2();
@@ -1064,4 +1085,23 @@ void TBGSubtraction::StatusInfo(Int_t, Int_t px, Int_t py, TObject* selected)
 {
    fProjectionStatus->SetText(selected->GetName(), 0);
    fProjectionStatus->SetText(selected->GetObjectInfo(px, py), 1);
+}
+
+void TBGSubtraction::SetStatusFromUpdateCheckButton(){
+   //Here we want to check the status of the update checkbox, and then do the following:
+   if((fAutoUpdateCheckButton == nullptr) || !fAutoUpdateCheckButton->IsDown()){
+      //1. the checkbox has been turned off, this means we want to disable anything that can
+      //mess with the user.
+      fPeakFitButton->SetEnabled(false);
+      fWrite2FileButton->SetEnabled(false);
+   }
+   else{
+      //2. the checkbox has been turned on, this means we want to enable features as well as take all
+      //of the current gates
+      fPeakFitButton->SetEnabled(true);
+      fWrite2FileButton->SetEnabled(true);
+      DoAllGates();
+      DoGateProjection();
+   }
+
 }
