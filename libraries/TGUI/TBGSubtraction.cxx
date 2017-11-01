@@ -914,7 +914,7 @@ void TBGSubtraction::DoGateProjection(){
       fSubtractedHist->GetXaxis()->SetRange(first_bin, last_bin);
       fSubtractedHist->Draw("hist");
    }
- //  DrawPeakMarkers();
+   DrawPeakMarkers();
    fGateCanvas->GetCanvas()->Update();
 
 
