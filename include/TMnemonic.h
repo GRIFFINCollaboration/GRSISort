@@ -45,6 +45,7 @@ public:
       kCSM,
       kSiLi,
       kSiLiS3,
+      kGeneric,
       kS3,
       kBambino,
       kTip,
