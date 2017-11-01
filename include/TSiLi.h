@@ -89,7 +89,7 @@ public:
 		else ret+=ring;
 		return  (ret/2)+1;
 	}
-	static bool MagnetShadow(Int_t seg) { return (((seg%12)%3)==1); }
+	static bool MagnetShadow(Int_t seg) { return ((seg%3)==1); }
 	
    static double GetSegmentArea(Int_t seg);
 

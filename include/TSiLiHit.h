@@ -79,12 +79,10 @@ public:
       TVector3 pos = GetPosition();
       pos.SetTheta(130. * TMath::Pi() / 180.);
       double costhe = TMath::Cos(pos.Angle(*vec));
-      double e;
-      if(E>0)e=E;
-      else e = this->GetEnergy();
+      if(E>0) E= this->GetEnergy();
       double gamma  = 1 / (sqrt(1 - pow(beta, 2)));
 
-      return ((e + 511 - beta * costhe * sqrt(e * (e + 1022))) * gamma) - 511;
+      return ((E + 511 - beta * costhe * sqrt(E * (E + 1022))) * gamma) - 511;
       ;
    }
 

@@ -6,24 +6,23 @@
  */
 
 #include <iostream>
-#include <TRandom2.h>
 
 #include "TGRSIDetector.h"
 #include "TChannel.h"
 
-class TGenericDet : public TGRSIDetector {
+class TGenericDetector : public TGRSIDetector {
 public:
 
-   TGenericDet();
-   TGenericDet(const TGenericDet&);
-   ~TGenericDet() override;
+   TGenericDetector();
+   TGenericDetector(const TGenericDetector&);
+   ~TGenericDetector() override;
 
 #ifndef __CINT__
    void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
 
    TGRSIDetectorHit* GetHit(const int& idx = 0) override;
-   TGRSIDetectorHit* GetGenericDetHit(const int& i);
+   TGRSIDetectorHit* GeTGenericDetectorHit(const int& i);
 
    Short_t GetMultiplicity() const override { return fGenericHits.size(); }
 
@@ -35,7 +34,7 @@ public:
    }
 
    void Copy(TObject&) const override;
-   TGenericDet& operator=(const TGenericDet&);                    //
+   TGenericDetector& operator=(const TGenericDetector&);                    //
    void Clear(Option_t* opt = "all") override;    //!<!
    void Print(Option_t* opt = "") const override; //!<!
 
@@ -44,7 +43,7 @@ private:
    void  ClearStatus() {  }
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGenericDet, 1)
+   ClassDefOverride(TGenericDetector, 1)
    /// \endcond
 };
 /*! @} */

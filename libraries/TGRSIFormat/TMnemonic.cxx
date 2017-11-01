@@ -18,7 +18,7 @@
 #include "TDescant.h"
 #include "TZeroDegree.h"
 #include "TSiLi.h"
-#include "TGenericDet.h"
+#include "TGenericDetector.h"
 #include "TFipps.h"
 
 ClassImp(TMnemonic)
@@ -220,7 +220,7 @@ TClass* TMnemonic::GetClassType() const
    case TMnemonic::kTriFoil: fClassType    = TTriFoil::Class(); break;
    case TMnemonic::kRF: fClassType         = TRF::Class(); break;
    case TMnemonic::kSiLi: fClassType       = TSiLi::Class(); break;
-   case TMnemonic::kGeneric: fClassType    = TGenericDet::Class(); break;
+   case TMnemonic::kGeneric: fClassType    = TGenericDetector::Class(); break;
    case TMnemonic::kS3: fClassType         = TS3::Class(); break;
    case TMnemonic::kSiLiS3: fClassType     = TS3::Class(); break;
    case TMnemonic::kCSM: fClassType        = TCSM::Class(); break;
