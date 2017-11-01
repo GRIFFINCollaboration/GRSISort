@@ -49,9 +49,9 @@ void TBGSubtraction::MakeConnections(){
 
    //Connect Canvases to recognize that they have been zoomed
    //This function includes setting the slider, and drawing the gate markers.
-   fProjectionCanvas->GetCanvas()->Connect("RangeAxisChanged()", "TBGSubtraction", this, "DoProjectionCanvasZoomed()");
+   fProjectionCanvas->GetCanvas()->Connect("RangeChanged()", "TBGSubtraction", this, "DoProjectionCanvasZoomed()");
 
-   fGateCanvas->GetCanvas()->Connect("RangeAxisChanged()", "TBGSubtraction", this, "DoGateCanvasZoomed()");
+   fGateCanvas->GetCanvas()->Connect("RangeChanged()", "TBGSubtraction", this, "DoGateCanvasZoomed()");
 
    //Connect Status Info to canvases
    fProjectionCanvas->GetCanvas()->Connect("ProcessedEvent(Int_t,Int_t,Int_t,TObject*)", "TBGSubtraction", this,
@@ -251,7 +251,7 @@ void TBGSubtraction::BuildInterface(){
 
    fDescriptionFrame     = new TGHorizontalFrame(fGateFrame, 200, 200);
    fAutoUpdateCheckButton = new TGCheckButton(fDescriptionFrame, "Auto Update", kAutoUpdateCheckButton);
-   fAutoUpdateCheckButton->SetState(kButtonUp);
+   fAutoUpdateCheckButton->SetState(kButtonDown);
    fHistogramDescription = new TGTextEntry(fDescriptionFrame, "gated #gamma-#gamma", kHistogramDescriptionEntry);
 
    fButtonFrame    = new TGHorizontalFrame(fGateFrame, 200, 200);
