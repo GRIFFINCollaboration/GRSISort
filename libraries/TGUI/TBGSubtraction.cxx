@@ -16,10 +16,7 @@ ClassImp(TBGSubtraction)
      fPeakSkewCheckButton(nullptr), fBly(nullptr), fBly1(nullptr), fGateFrame(nullptr), fProjectionFrame(nullptr), fAxisCombo(nullptr), 
      fLowGateMarker(nullptr), fHighGateMarker(nullptr), fLowBGMarker1(nullptr),  fHighBGMarker1(nullptr), fLowBGMarker2(nullptr), 
      fHighBGMarker2(nullptr), fLowPeakMarker(nullptr), fHighPeakMarker(nullptr), fPeakMarker(nullptr), fGateAxis(0), 
-     fForceUpdate(true), fPeakFit(nullptr)
-{
-
-   // fProjection = (TH1*)(fMatrix->ProjectionX()->Clone());
+     fForceUpdate(true), fPeakFit(nullptr) {
 
    TString tmp_gate_word(gate_axis);
    tmp_gate_word.ToUpper();
@@ -40,24 +37,21 @@ ClassImp(TBGSubtraction)
       return;
    }
    gInterpreter->SaveContext();
+   //First we build the interface based on how it looks
    BuildInterface();
-   MakeConnections();
+   //Now we initialize pieces of the interface to create the initial projections etc.
    InitializeInterface();
-   //DoDraw();
-   // SetTreeName(treeName);
+   MakeConnections();
    fCurrentFile = TFile::CurrentFile();
 }
 
 void TBGSubtraction::MakeConnections(){
 
    //Connect Canvases to recognize that they have been zoomed
+   //This function includes setting the slider, and drawing the gate markers.
    fProjectionCanvas->GetCanvas()->Connect("RangeAxisChanged()", "TBGSubtraction", this, "DoProjectionCanvasZoomed()");
 
    fGateCanvas->GetCanvas()->Connect("RangeAxisChanged()", "TBGSubtraction", this, "DoGateCanvasZoomed()");
-   fGateCanvas->GetCanvas()->Connect("RangeAxisChanged()", "TBGSubtraction", this, "UpdatePeakSliders()");
-   fGateCanvas->GetCanvas()->Connect("RangeAxisChanged()", "TBGSubtraction", this, "DrawPeakMarkers()");
-   fGateCanvas->GetCanvas()->Connect("RangeAxisChanged()", "TBGSubtraction", this, "DrawPeak()");
-
 
    //Connect Status Info to canvases
    fProjectionCanvas->GetCanvas()->Connect("ProcessedEvent(Int_t,Int_t,Int_t,TObject*)", "TBGSubtraction", this,
@@ -68,28 +62,22 @@ void TBGSubtraction::MakeConnections(){
    //Connect the sliding of sliders
    //I'm storing the "true" information in the entry boxes. This is what we refer back to for
    //the actual value of the sliders, etc.
-   fGateSlider->Connect("PositionChanged()", "TBGSubtraction", this, "DoSlider()");
-   fGateSlider->Connect("PositionChanged()", "TBGSubtraction", this, "DrawGateMarkers()");
-   fGateSlider->Connect("PositionChanged()", "TBGSubtraction", this, "DoGating()");
-   fBGSlider1->Connect("PositionChanged()", "TBGSubtraction", this, "DoSlider()");
-   fBGSlider1->Connect("PositionChanged()", "TBGSubtraction", this, "DrawBGMarkers1()");
-   fBGSlider1->Connect("PositionChanged()", "TBGSubtraction", this, "DoGating()");
-   fBGSlider2->Connect("PositionChanged()", "TBGSubtraction", this, "DoSlider()");
-   fBGSlider2->Connect("PositionChanged()", "TBGSubtraction", this, "DrawBGMarkers2()");
-   fBGSlider2->Connect("PositionChanged()", "TBGSubtraction", this, "DoGating()");
+   //However, there are two number entries, so we will send out two signals per change. We want to connect the gating to 
+   //the slider instead.
 
+   fGateSlider->Connect("PositionChanged()", "TBGSubtraction", this, "DoSlider()");
+
+   fBGSlider1->Connect("PositionChanged()", "TBGSubtraction", this, "DoSlider()");
+   fBGSlider2->Connect("PositionChanged()", "TBGSubtraction", this, "DoSlider()");
+   
    fPeakSlider->Connect("PointerPositionChanged()", "TBGSubtraction", this, "DoSlider()");
    fPeakSlider->Connect("PositionChanged()", "TBGSubtraction", this, "DoSlider()");
-   fPeakSlider->Connect("PositionChanged()", "TBGSubtraction", this, "DrawPeakMarkers()");
-   fPeakSlider->Connect("PointerPositionChanged()", "TBGSubtraction", this, "DrawPeakMarkers()");
 
    //Connect the clicking of buttons
    fPeakFitButton->Connect("Clicked()", "TBGSubtraction", this, "DoPeakFit()");
 
    fBGCheckButton1->Connect("Clicked()","TBGSubtraction",this,"UpdateBackground()");
-   fBGCheckButton1->Connect("Clicked()","TBGSubtraction",this,"DoGating()");
    fBGCheckButton2->Connect("Clicked()","TBGSubtraction",this,"UpdateBackground()");
-   fBGCheckButton2->Connect("Clicked()","TBGSubtraction",this,"DoGating()");
 
    fWrite2FileButton->Connect("Clicked()", "TBGSubtraction", this, "WriteHistograms()");
 
@@ -99,28 +87,15 @@ void TBGSubtraction::MakeConnections(){
    //Connect the Gate entries so that if you type a value in they do the proper things
    //Everyhting that is updated sets the value of these entries, which trickles down and fixes everything else
    fGateEntryLow->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DoEntry(Long_t)");
-   fGateEntryLow->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "UpdateProjectionSliders()");
-   fGateEntryLow->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DrawGateMarkers()");
    fGateEntryHigh->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DoEntry(Long_t)");
-   fGateEntryHigh->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "UpdateProjectionSliders()");
-   fGateEntryHigh->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DrawGateMarkers()");
    fBGEntryLow1->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DoEntry(Long_t)");
-   fBGEntryLow1->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "UpdateProjectionSliders()");
-   fBGEntryLow1->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DrawBGMarkers1()");
    fBGEntryHigh1->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DoEntry(Long_t)");
-   fBGEntryHigh1->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "UpdateProjectionSliders()");
-   fBGEntryHigh1->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DrawBGMarkers1()");
    fBGEntryLow2->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DoEntry(Long_t)");
-   fBGEntryLow2->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "UpdateProjectionSliders()");
-   fBGEntryLow2->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DrawBGMarkers2()");
    fBGEntryHigh2->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DoEntry(Long_t)");
    fBGEntryHigh2->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "UpdateProjectionSliders()");
-   fBGEntryHigh2->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DrawBGMarkers2()");
 
    //Connect the bg paramater entry to do the proper thing
    fBGParamEntry->Connect("ValueSet(Long_t)","TBGSubtraction",this,"UpdateBackground()");
-   fBGParamEntry->Connect("ValueSet(Long_t)","TBGSubtraction",this,"DoGating()");
-
 }
 
 void TBGSubtraction::ResetInterface(){
@@ -135,6 +110,9 @@ void TBGSubtraction::ResetInterface(){
       fPeakFit->Delete();
       fPeakFit = nullptr;
    }
+   
+   //Lets Project out the matrix
+
 
    //Set Up entry and sliders for doing gating.
    Double_t xmin, ymin, xmax, ymax;
@@ -157,7 +135,9 @@ void TBGSubtraction::ResetInterface(){
    fBGEntryHigh2->SetLimitValues(xmin,xmax);
 
    UpdateProjectionSliders();
-   DoGating();
+   DrawAllMarkers();
+   DoAllGates();
+   DoGateProjection();
 
    //Set up peak fitting bars
    fSubtractedHist->GetXaxis()->UnZoom();
@@ -183,12 +163,15 @@ void TBGSubtraction::InitializeInterface(){
    fAxisCombo->AddEntry("y", 1);
    fAxisCombo->SetEnabled();
    fAxisCombo->Select(fGateAxis);
+   AxisComboSelected();
 
    ResetInterface();
+   DoGateCanvasZoomed();
+   DoProjectionCanvasZoomed();
+   
 }
 
-void TBGSubtraction::BuildInterface()
-{
+void TBGSubtraction::BuildInterface(){
    // Create a main frame
    fProjectionFrame = new TGVerticalFrame(this, 400, 400);
    // Create canvas widget
@@ -199,10 +182,8 @@ void TBGSubtraction::BuildInterface()
 
    Double_t xmin, ymin, xmax, ymax;
    fProjectionCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
-   Double_t x_width = xmax - xmin;
 
    // We are going to start the limits off at a specific ratio of the frame
-
    fGateEntryLow = new TGNumberEntry(fGateEntryFrame, 0, 3, kGateLowEntry, TGNumberFormat::kNESReal,
                                      TGNumberFormat::kNEAAnyNumber, TGNumberFormat::kNELLimitMinMax, xmin, xmax);
 
@@ -260,7 +241,7 @@ void TBGSubtraction::BuildInterface()
    fBGCheckButton1->SetState(kButtonDown);
 
    fBGCheckButton2 = new TGCheckButton(fBGParamFrame, "BG 2", kBGCheckButton2);
-   fBGCheckButton2->SetState(kButtonDown);
+   fBGCheckButton2->SetState(kButtonUp);
 
    fDescriptionFrame     = new TGHorizontalFrame(fGateFrame, 200, 200);
    fHistogramDescription = new TGTextEntry(fDescriptionFrame, "gated #gamma-#gamma", kHistogramDescriptionEntry);
@@ -319,9 +300,6 @@ void TBGSubtraction::BuildInterface()
    AddFrame(fProjectionFrame, fBly1);
    AddFrame(fGateFrame, fBly1);
 
-   // (fNumber->GetNumberEntry())->Connect("ReturnPressed()", "MyMainFrame", this,
-   //                                             "DoSetlabel()");
-
    // Set a name to the main frame
    SetWindowName("Gater and Subtractor");
 
@@ -372,19 +350,15 @@ void TBGSubtraction::UpdateBackground(){
    // Draws function graphics in randomly chosen interval
    TCanvas* fCanvas = fProjectionCanvas->GetCanvas();
    fCanvas->cd();
-   //Make sure one of the backgrounds are checked in order to draw background
-   if(((fBGCheckButton1 != nullptr) && fBGCheckButton1->IsDown()) || ((fBGCheckButton2 != nullptr) && fBGCheckButton2->IsDown())) {
-      fProjection->ShowBackground(fBGParamEntry->GetNumberEntry()->GetIntNumber())->Draw("same");
-   }
-   else if((fBGCheckButton1 != nullptr) && !fBGCheckButton1->IsDown() && (fBGCheckButton2 != nullptr) && !fBGCheckButton2->IsDown() ){
-      fProjection->Draw();
-   }
+   fProjection->Draw();
+   DrawAllMarkers();
+   DoGateProjection();
    fCanvas->Update();
    fGateCanvas->GetCanvas()->cd();
 }
 
-void TBGSubtraction::DoPeakFit()
-{
+void TBGSubtraction::DoPeakFit(){
+
    if(fPeakFit) fPeakFit->Delete(); fPeakFit = nullptr;
    
    fPeakFit = new TPeak(fPeakValue, fPeakLowValue, fPeakHighValue);
@@ -395,6 +369,7 @@ void TBGSubtraction::DoPeakFit()
       fPeakFit->ReleaseParameter(4);
    }
    fPeakFit->Fit(fSubtractedHist);
+   DrawPeak();
    fGateCanvas->GetCanvas()->Update();
 }
 
@@ -412,18 +387,27 @@ void TBGSubtraction::ClickedBGButton1()
    }
 }
 
+void TBGSubtraction::UpdateGateSlider(){
+   fGateSlider->SetPosition(fGateEntryLow->GetNumber(),fGateEntryHigh->GetNumber());
+   fGateSlider->SetRange(fGateEntryLow->GetNumMin(), fGateEntryHigh->GetNumMax());
+}
+
+void TBGSubtraction::UpdateBGSlider1(){
+   fBGSlider1->SetPosition(fBGEntryLow1->GetNumber(), fBGEntryHigh1->GetNumber());
+   fBGSlider1->SetRange(fBGEntryLow1->GetNumMin(), fBGEntryHigh1->GetNumMax());
+}
+
+void TBGSubtraction::UpdateBGSlider2(){
+   fBGSlider2->SetPosition(fBGEntryLow2->GetNumber(), fBGEntryHigh2->GetNumber());
+   fBGSlider2->SetRange(fBGEntryLow2->GetNumMin(), fBGEntryHigh2->GetNumMax());
+}
+
 void TBGSubtraction::UpdateProjectionSliders(){
    //Something has happened, so we have to let the sliders know about it
    //This is as simple as checking the status of the "master" entry boxes
-   fGateSlider->SetPosition(fGateEntryLow->GetNumber(),fGateEntryHigh->GetNumber());
-   fGateSlider->SetRange(fGateEntryLow->GetNumMin(), fGateEntryHigh->GetNumMax());
-
-   fBGSlider1->SetPosition(fBGEntryLow1->GetNumber(), fBGEntryHigh1->GetNumber());
-   fBGSlider1->SetRange(fBGEntryLow1->GetNumMin(), fBGEntryHigh1->GetNumMax());
-
-   fBGSlider2->SetPosition(fBGEntryLow2->GetNumber(), fBGEntryHigh2->GetNumber());
-   fBGSlider2->SetRange(fBGEntryLow2->GetNumMin(), fBGEntryHigh2->GetNumMax());
-
+   UpdateGateSlider();
+   UpdateBGSlider1();
+   UpdateBGSlider2();
 }
 
 void TBGSubtraction::UpdatePeakSliders(){
@@ -455,19 +439,29 @@ void TBGSubtraction::DoSlider(Int_t pos)
       case kGateSlider: 
          fGateEntryLow->SetNumber(fGateSlider->GetMinPosition());
          fGateEntryHigh->SetNumber(fGateSlider->GetMaxPosition());
+         DrawGateMarkers();
+         MakeGateHisto();
+         DoGateProjection();
          break;
       case kBGSlider1:
          fBGEntryLow1->SetNumber(fBGSlider1->GetMinPosition());
          fBGEntryHigh1->SetNumber(fBGSlider1->GetMaxPosition());
+         DrawBGMarkers1();
+         MakeBGHisto1();
+         DoGateProjection();
          break;    
       case kBGSlider2:
          fBGEntryLow2->SetNumber(fBGSlider2->GetMinPosition());
          fBGEntryHigh2->SetNumber(fBGSlider2->GetMaxPosition());
+         DrawBGMarkers2();
+         MakeBGHisto2();
+         DoGateProjection();
          break;    
       case kPeakSlider:
          fPeakLowValue  = fPeakSlider->GetMinPosition();
          fPeakHighValue = fPeakSlider->GetMaxPosition();
          fPeakValue     = fPeakSlider->GetPointerPosition();
+         DrawPeakMarkers();
          return;
          break;
    };
@@ -475,6 +469,7 @@ void TBGSubtraction::DoSlider(Int_t pos)
 
 void TBGSubtraction::AxisComboSelected()
 {
+   std::cout << "selected" << std::endl;
    static int old_selection = -1;
    fGateAxis                = fAxisCombo->GetSelected();
 
@@ -488,6 +483,7 @@ void TBGSubtraction::AxisComboSelected()
          std::cout << "Selecting the y axis" << std::endl;
          fProjection = fMatrix->ProjectionX();
       }
+      
       fProjectionCanvas->GetCanvas()->cd();
       fProjection->Draw();
       ResetInterface();
@@ -512,10 +508,7 @@ void TBGSubtraction::DrawPeakMarkers(){
       fLowPeakMarker->localx  = fPeakLowValue;
       fHighPeakMarker->localx = fPeakHighValue;
       fPeakMarker->localx     = fPeakValue;
- /*     fLowPeakMarker->localx  = static_cast<Double_t>(slider_x_min);
-      fHighPeakMarker->localx = static_cast<Double_t>(slider_x_max);
-      fPeakMarker->localx     = static_cast<Double_t>(slider_x);
-*/      fLowPeakMarker->binx    = fSubtractedHist->GetXaxis()->FindBin(fLowPeakMarker->localx);
+      fLowPeakMarker->binx    = fSubtractedHist->GetXaxis()->FindBin(fLowPeakMarker->localx);
       fHighPeakMarker->binx   = fSubtractedHist->GetXaxis()->FindBin(fHighPeakMarker->localx);
       fPeakMarker->binx       = fSubtractedHist->GetXaxis()->FindBin(fPeakMarker->localx);
 
@@ -620,8 +613,13 @@ void TBGSubtraction::DrawBGMarkers2(){
    DrawBGMarkers(fBGCheckButton2, fLowBGMarker2, fHighBGMarker2, fBGEntryLow2, fBGEntryHigh2,kMagenta);
 }
 
-void TBGSubtraction::DrawGateMarkers()
-{
+void TBGSubtraction::DrawAllMarkers(){
+   DrawGateMarkers();
+   DrawBGMarkers1();
+   DrawBGMarkers2();
+}
+
+void TBGSubtraction::DrawGateMarkers(){
    if(fLowGateMarker == nullptr) {
       fLowGateMarker = new GMarker();
    }
@@ -671,30 +669,38 @@ void TBGSubtraction::DoEntry(Long_t){
    TGNumberEntry* te = reinterpret_cast<TGNumberEntry*>(gTQSender);
    int            id = te->WidgetId();
 
+   //When we do an entry, update the corresponding slider...this then performs the gating.
    switch(id) {
    case kGateLowEntry:
       if(fGateEntryLow->GetNumber() > fGateEntryHigh->GetNumber())
          fGateEntryLow->SetNumber(fGateEntryHigh->GetNumber());
+         UpdateGateSlider();
+         fGateSlider->PositionChanged();
       break;
    case kGateHighEntry:
       if(fGateEntryHigh->GetNumber() < fGateEntryLow->GetNumber())
          fGateEntryHigh->SetNumber(fGateEntryLow->GetNumber());
+         UpdateGateSlider();
       break;
    case kBGLowEntry1:
       if(fBGEntryLow1->GetNumber() > fBGEntryHigh1->GetNumber())
          fBGEntryLow1->SetNumber(fBGEntryHigh1->GetNumber());
+         UpdateBGSlider1();
       break;
    case kBGHighEntry1:
       if(fBGEntryHigh1->GetNumber() < fBGEntryLow1->GetNumber())
          fBGEntryHigh1->SetNumber(fBGEntryLow1->GetNumber());
+         UpdateBGSlider1();
       break;
    case kBGLowEntry2:
       if(fBGEntryLow2->GetNumber() > fBGEntryHigh2->GetNumber())
          fBGEntryLow2->SetNumber(fBGEntryHigh2->GetNumber());
+         UpdateBGSlider2();
       break;
    case kBGHighEntry2:
       if(fBGEntryHigh2->GetNumber() < fBGEntryLow2->GetNumber())
          fBGEntryHigh2->SetNumber(fBGEntryLow2->GetNumber());
+         UpdateBGSlider2();
       break;
    };
 }
@@ -723,6 +729,9 @@ void TBGSubtraction::DoGateCanvasZoomed(){
    // Set the new limits
    fPeakLowLimit = xmin;
    fPeakHighLimit = xmax;
+   
+   UpdatePeakSliders();
+   DrawPeakMarkers();
 }
 
 void TBGSubtraction::DoProjectionCanvasZoomed(){
@@ -762,22 +771,26 @@ void TBGSubtraction::DoProjectionCanvasZoomed(){
    fBGEntryHigh1->SetLimitValues(xmin, xmax);
    fBGEntryLow2->SetLimitValues(xmin, xmax);
    fBGEntryHigh2->SetLimitValues(xmin, xmax);
+   
+   UpdateProjectionSliders();
+   DrawAllMarkers();
 
-   fGateEntryLow->ValueSet(1);
-   fGateEntryHigh->ValueSet(1);
-   fBGEntryLow1->ValueSet(1);
-   fBGEntryHigh1->ValueSet(1);
-   fBGEntryLow2->ValueSet(1);
-   fBGEntryHigh2->ValueSet(1);
+   DoAllGates(); //Figure out how to make this happen on histo zooms and not scaling canvas
+   //DoGateProjection();
 }
 
-void TBGSubtraction::DoGating(){
-   Double_t xmin, ymin, xmax, ymax;
+void TBGSubtraction::DoAllGates(){
+   MakeGateHisto();
+   MakeBGHisto1();
+   MakeBGHisto2();
+}
+
+
+void TBGSubtraction::MakeGateHisto(){
    if(fGateHist != nullptr) {
       delete fGateHist;
    }
    
-   fProjectionCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
    const char* proj_name = Form("gate_%d_%d", static_cast<Int_t>(fGateEntryLow->GetNumber()),
                                 static_cast<Int_t>(fGateEntryHigh->GetNumber()));
 
@@ -791,32 +804,50 @@ void TBGSubtraction::DoGating(){
                                        fMatrix->GetXaxis()->FindBin(fGateSlider->GetMaxPosition()));
    }
    fGateHist->Sumw2();
+}
 
+void TBGSubtraction::MakeBGHisto1(){
+   Double_t xmin, ymin, xmax, ymax;
+   fProjectionCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
+   
    if(fBGHist1 != nullptr) {
       delete fBGHist1;
    }
-   if(fBGHist2 != nullptr) {
-      delete fBGHist2;
-   }
+
    const char* bg_name1 =
       Form("bg1_%d_%d", static_cast<Int_t>(fBGEntryLow1->GetNumber()), static_cast<Int_t>(fBGEntryHigh1->GetNumber()));
-   const char* bg_name2 =
-      Form("bg2_%d_%d", static_cast<Int_t>(fBGEntryLow2->GetNumber()), static_cast<Int_t>(fBGEntryHigh2->GetNumber()));
-
+   
    if(fGateAxis == 0) {
       fBGHist1 = fMatrix->ProjectionX(bg_name1, fMatrix->GetYaxis()->FindBin(fBGSlider1->GetMinPosition()),
                                      fMatrix->GetYaxis()->FindBin(fBGSlider1->GetMaxPosition()));
-      fBGHist2 = fMatrix->ProjectionX(bg_name2, fMatrix->GetYaxis()->FindBin(fBGSlider2->GetMinPosition()),
-                                     fMatrix->GetYaxis()->FindBin(fBGSlider2->GetMaxPosition()));
    } else {
       fBGHist1 = fMatrix->ProjectionY(bg_name1, fMatrix->GetXaxis()->FindBin(fBGSlider1->GetMinPosition()),
                                      fMatrix->GetXaxis()->FindBin(fBGSlider1->GetMaxPosition()));
+   }
+
+   fBGHist1->Sumw2();
+}
+
+void TBGSubtraction::MakeBGHisto2(){
+   if(fBGHist2 != nullptr) {
+      delete fBGHist2;
+   }
+
+   const char* bg_name2 =
+      Form("bg2_%d_%d", static_cast<Int_t>(fBGEntryLow2->GetNumber()), static_cast<Int_t>(fBGEntryHigh2->GetNumber()));
+   
+   if(fGateAxis == 0) {
+      fBGHist2 = fMatrix->ProjectionX(bg_name2, fMatrix->GetYaxis()->FindBin(fBGSlider2->GetMinPosition()),
+                                     fMatrix->GetYaxis()->FindBin(fBGSlider2->GetMaxPosition()));
+   } else {
       fBGHist2 = fMatrix->ProjectionY(bg_name2, fMatrix->GetXaxis()->FindBin(fBGSlider2->GetMinPosition()),
                                      fMatrix->GetXaxis()->FindBin(fBGSlider2->GetMaxPosition()));
    }
 
-   fBGHist1->Sumw2();
    fBGHist2->Sumw2();
+}
+
+void TBGSubtraction::DoGateProjection(){
    TH1*     bg_hist       = nullptr;
    Double_t under_peak_bg = 0.0;
    //Make sure one of the two buttons are checked
@@ -865,15 +896,14 @@ void TBGSubtraction::DoGating(){
  //  DrawPeakMarkers();
    fGateCanvas->GetCanvas()->Update();
 
+
 }
 
 void TBGSubtraction::DoProjection(){
-   Double_t xmin, ymin, xmax, ymax;
    if(fGateHist != nullptr) {
       delete fGateHist;
    }
    
-   fProjectionCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
    const char* proj_name = Form("gate_%d_%d", static_cast<Int_t>(fGateEntryLow->GetNumber()),
                                 static_cast<Int_t>(fGateEntryHigh->GetNumber()));
 

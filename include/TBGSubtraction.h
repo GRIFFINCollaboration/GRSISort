@@ -146,17 +146,23 @@ public:
    void UpdateBackground();
    void UpdatePeakSliders();
    void DoProjection();
-   void DoGating();
    void DrawOnNewCanvas();
+   void DrawAllMarkers();
    void DrawGateMarkers();
    void DrawBGMarkers1();
    void DrawBGMarkers2();
- //  void DrawBG2Markers();
    void DrawPeakMarkers();
    void DrawPeak();
    void WriteHistograms();
    void GateStatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected);
    void ProjectionStatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected);
+
+   void MakeGateHisto();
+   void MakeBGHisto1();
+   void MakeBGHisto2();
+   void DoAllGates();
+
+   void DoGateProjection();
 
 private:
    void BuildInterface();
@@ -165,6 +171,9 @@ private:
    void InitializeInterface();
    void StatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected);
    void DrawBGMarkers(TGCheckButton *&check_button, GMarker *&low_marker, GMarker *&high_marker, TGNumberEntry *&low_entry, TGNumberEntry *&high_entry, Int_t color = kBlue);
+   void UpdateGateSlider();
+   void UpdateBGSlider1();
+   void UpdateBGSlider2();
 
    /// \cond CLASSIMP
    ClassDefOverride(TBGSubtraction, 6); // Background subtractor GUI
