@@ -21,6 +21,7 @@
 
 TGRSIProof* gGRSIProof;
 TGRSIOptions* gGRSIOpt;
+bool controlC = false;
 
 void Analyze(const char* tree_type)
 {
@@ -72,6 +73,8 @@ void AtExitHandler()
 {
 	// this function is called on normal exits (via std::atexit) or
 	// if the programm is killed with ctrl-c (via sigaction and HandleSignal)
+	if(controlC) return;
+	controlC = true;
 	std::cout<<"getting session logs ..."<<std::endl;
    TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
    if(pl != nullptr) {

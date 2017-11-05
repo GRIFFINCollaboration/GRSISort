@@ -238,14 +238,9 @@ Long_t TGRSIint::ProcessLine(const char* line, Bool_t sync, Int_t* error)
       return res;
    }
 
-   TString sline(line);
-   ;
-   if(sline.Contains("TCanvas")) {
-      std::string s = line;
-      size_t      f = s.find("TCanvas");
-      s.replace(f, std::string("TCanvas").length(), "GCanvas");
-      s.replace(f, std::string("TCanvas").length(), "GCanvas");
-      line = s.c_str();
+	const char* canvas = strstr(line, "TCanvas");
+   if(canvas != nullptr) {
+		const_cast<char*>(canvas)[0] = 'G';
    }
 
    if(std::this_thread::get_id() != main_thread_id) {

@@ -299,7 +299,14 @@ void TFipps::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel*
    }
 
    switch(chan->GetMnemonic()->SubSystem()) {
-   case TMnemonic::kG: TFippsHit geHit(*frag); GetHitVector()->push_back(std::move(geHit));
+		case TMnemonic::EMnemonic::kG: 
+			{
+				TFippsHit geHit(*frag);
+				GetHitVector()->push_back(std::move(geHit));
+			}
+			break;
+		default:
+			break;
    };
 }
 

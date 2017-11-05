@@ -224,7 +224,7 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
    }
 
    // if((chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) &&
-   if((chan->GetMnemonic()->SubSystem() == TMnemonic::kG) &&
+   if((chan->GetMnemonic()->SubSystem() == TMnemonic::EMnemonic::kG) &&
       (chan->GetSegmentNumber() == 0 || chan->GetSegmentNumber() == 9)) { // it is a core
       // if(frag->Charge.size() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a
       // good energy and time (cfd or led).
@@ -239,7 +239,7 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
             // if(hit->Charge() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a
             // good energy and time (cfd or led).
             // if(chan->GetMnemonic()->outputsensor.compare(0,1,"b")==0) {
-            if(chan->GetMnemonic()->OutputSensor() == TMnemonic::kB) {
+            if(chan->GetMnemonic()->OutputSensor() == TMnemonic::EMnemonic::kB) {
                if(hit->GetName()[9] == 'a') {
                   return;
                }
@@ -263,7 +263,7 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
       fTigressHits.push_back(corehit);
       return;
    }
-   if(chan->GetMnemonic()->SubSystem() == TMnemonic::kG) { // its ge but its not a core...
+   if(chan->GetMnemonic()->SubSystem() == TMnemonic::EMnemonic::kG) { // its ge but its not a core...
       TGRSIDetectorHit temp(*frag);
       for(size_t i = 0; i < fTigressHits.size(); ++i) {
          TTigressHit* hit = GetTigressHit(i);
@@ -285,7 +285,7 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
       fTigressHits.push_back(corehit);
       return;
    }
-   if(chan->GetMnemonic()->SubSystem() == TMnemonic::kS) {
+   if(chan->GetMnemonic()->SubSystem() == TMnemonic::EMnemonic::kS) {
       TBgoHit temp(*frag);
       fBgos.push_back(temp);
       return;

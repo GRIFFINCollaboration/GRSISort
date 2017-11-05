@@ -66,17 +66,17 @@ Double_t TGRSIDetectorHit::GetTime(const UInt_t&, Option_t*) const
    }
    switch(channel->GetDigitizerType()) {
       Double_t dTime;
-   case TMnemonic::kGRF16:
-      dTime = (GetTimeStamp() & (~0x3ffff)) * 10. +
+		case TMnemonic::EDigitizer::kGRF16:
+		dTime = (GetTimeStamp() & (~0x3ffff)) * 10. +
               (GetCfd() + gRandom->Uniform()) / 1.6; // CFD is in 10/16th of a nanosecond
-      return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
-   case TMnemonic::kGRF4G:
+		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
+		case TMnemonic::EDigitizer::kGRF4G:
       dTime = GetTimeStamp() * 10. + (fCfd >> 22) + ((fCfd & 0x3fffff) + gRandom->Uniform()) / 256.;
       return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
-   default:
-      dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
-      return SetTime(10. * (dTime - channel->GetTZero(GetEnergy())));
-   }
+		default:
+		dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
+		return SetTime(10. * (dTime - channel->GetTZero(GetEnergy())));
+	}
    return 0.;
 }
 

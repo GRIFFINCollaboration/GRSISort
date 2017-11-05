@@ -296,7 +296,7 @@ void TChannel::Clear(Option_t*)
    fIntegration    = 0;
 	fTypeName.clear();
 	fDigitizerTypeString.clear();
-	fDigitizerType  = 0;
+	fDigitizerType  = TMnemonic::EDigitizer::kDefault;
    fNumber         = 0;
    fStream         = 0;
    fUserInfoNumber = 0xffffffff;
@@ -1445,11 +1445,21 @@ int TChannel::GetCrystalNumber() const
    }
 
    switch(fMnemonic.ArraySubPosition()) {
-   case TMnemonic::kB: fCrystalNumber = 0; break;
-   case TMnemonic::kG: fCrystalNumber = 1; break;
-   case TMnemonic::kR: fCrystalNumber = 2; break;
-   case TMnemonic::kW: fCrystalNumber = 3; break;
-   default: fCrystalNumber            = 5; break;
+		case TMnemonic::EMnemonic::kB:
+			fCrystalNumber = 0;
+			break;
+		case TMnemonic::EMnemonic::kG:
+			fCrystalNumber = 1;
+			break;
+		case TMnemonic::EMnemonic::kR:
+			fCrystalNumber = 2;
+			break;
+		case TMnemonic::EMnemonic::kW:
+			fCrystalNumber = 3;
+			break;
+		default:
+			fCrystalNumber = 5;
+			break;
    };
 
    // printf("%s: %c\t%i\n",__PRETTY_FUNCTION__,color,fCrystalNumber);

@@ -28,43 +28,43 @@ void TMnemonic::Clear(Option_t*)
    fArrayPosition = -1;
    fSegment       = -1;
    fSystemString.clear();
-   fSystem = kClear;
+   fSystem = ESystem::kClear;
    fSubSystemString.clear();
-   fSubSystem = kClear;
+   fSubSystem = EMnemonic::kClear;
    fArraySubPositionString.clear();
-   fArraySubPosition = kClear;
+   fArraySubPosition = EMnemonic::kClear;
    fCollectedChargeString.clear();
-   fCollectedCharge = kClear;
+   fCollectedCharge = EMnemonic::kClear;
    fOutputSensorString.clear();
-   fOutputSensor = kClear;
+   fOutputSensor = EMnemonic::kClear;
 }
 
-void TMnemonic::EnumerateMnemonic(std::string mnemonic_word, int& mnemonic_enum)
+void TMnemonic::EnumerateMnemonic(std::string mnemonic_word, EMnemonic& mnemonic_enum)
 {
 
    char mnemonic_char = mnemonic_word[0];
 
    switch(mnemonic_char) {
-   case 'A': mnemonic_enum = kA; break;
-   case 'B': mnemonic_enum = kB; break;
-   case 'C': mnemonic_enum = kC; break;
-   case 'D': mnemonic_enum = kD; break;
-   case 'E': mnemonic_enum = kE; break;
-   case 'F': mnemonic_enum = kF; break;
-   case 'G': mnemonic_enum = kG; break;
-   case 'I': mnemonic_enum = kI; break;
-   case 'L': mnemonic_enum = kL; break;
-   case 'M': mnemonic_enum = kM; break;
-   case 'N': mnemonic_enum = kN; break;
-   case 'P': mnemonic_enum = kP; break;
-   case 'Q': mnemonic_enum = kQ; break;
-   case 'R': mnemonic_enum = kR; break;
-   case 'S': mnemonic_enum = kS; break;
-   case 'W': mnemonic_enum = kW; break;
-   case 'X': mnemonic_enum = kX; break;
-   case 'Z': mnemonic_enum = kZ; break;
-   default: mnemonic_enum  = kClear;
-   };
+		case 'A': mnemonic_enum = EMnemonic::kA; break;
+		case 'B': mnemonic_enum = EMnemonic::kB; break;
+		case 'C': mnemonic_enum = EMnemonic::kC; break;
+		case 'D': mnemonic_enum = EMnemonic::kD; break;
+		case 'E': mnemonic_enum = EMnemonic::kE; break;
+		case 'F': mnemonic_enum = EMnemonic::kF; break;
+		case 'G': mnemonic_enum = EMnemonic::kG; break;
+		case 'I': mnemonic_enum = EMnemonic::kI; break;
+		case 'L': mnemonic_enum = EMnemonic::kL; break;
+		case 'M': mnemonic_enum = EMnemonic::kM; break;
+		case 'N': mnemonic_enum = EMnemonic::kN; break;
+		case 'P': mnemonic_enum = EMnemonic::kP; break;
+		case 'Q': mnemonic_enum = EMnemonic::kQ; break;
+		case 'R': mnemonic_enum = EMnemonic::kR; break;
+		case 'S': mnemonic_enum = EMnemonic::kS; break;
+		case 'W': mnemonic_enum = EMnemonic::kW; break;
+		case 'X': mnemonic_enum = EMnemonic::kX; break;
+		case 'Z': mnemonic_enum = EMnemonic::kZ; break;
+		default: mnemonic_enum  = EMnemonic::kClear;
+	};
 }
 
 void TMnemonic::EnumerateSystem()
@@ -72,69 +72,69 @@ void TMnemonic::EnumerateSystem()
    // Enumerating the fSystemString must come after the total mnemonic has been parsed as the details of other parts of
    // the mnemonic must be known
    if(fSystemString.compare("TI") == 0) {
-      fSystem = kTigress;
+      fSystem = ESystem::kTigress;
    } else if(fSystemString.compare("SH") == 0) {
-      fSystem = kSharc;
+      fSystem = ESystem::kSharc;
    } else if(fSystemString.compare("TR") == 0) {
-      fSystem = kTriFoil;
+      fSystem = ESystem::kTriFoil;
    } else if(fSystemString.compare("RF") == 0) {
-      fSystem = kRF;
+      fSystem = ESystem::kRF;
    } else if(fSystemString.compare("SP") == 0) {
-      if(SubSystem() == kI) {
-         fSystem = kSiLi;
+      if(SubSystem() == EMnemonic::kI) {
+         fSystem = ESystem::kSiLi;
       } else {
-         fSystem = kSiLiS3;
+         fSystem = ESystem::kSiLiS3;
       }
    } else if(fSystemString.compare("GD") == 0) {
          fSystem = kGeneric;
    } else if(fSystemString.compare("CS") == 0) {
-      fSystem = kCSM;
+      fSystem = ESystem::kCSM;
    } else if(fSystemString.compare("GR") == 0) {
-      fSystem = kGriffin;
+      fSystem = ESystem::kGriffin;
    } else if(fSystemString.compare("SE") == 0) {
-      fSystem = kSceptar;
+      fSystem = ESystem::kSceptar;
    } else if(fSystemString.compare("PA") == 0) {
-      fSystem = kPaces;
+      fSystem = ESystem::kPaces;
    } else if(fSystemString.compare("DS") == 0) {
-      fSystem = kDescant;
+      fSystem = ESystem::kDescant;
    } else if(fSystemString.compare("DA") == 0) {
-      if(CollectedCharge() == kN) {
-         fSystem = kLaBr;
+      if(CollectedCharge() == EMnemonic::kN) {
+         fSystem = ESystem::kLaBr;
       } else {
-         fSystem = kTAC;
+         fSystem = ESystem::kTAC;
       }
    } else if(fSystemString.compare("BA") == 0) {
-      fSystem = kS3;
+      fSystem = ESystem::kS3;
    } else if(fSystemString.compare("ZD") == 0) {
-      fSystem = kZeroDegree;
+      fSystem = ESystem::kZeroDegree;
    } else if(fSystemString.compare("TP") == 0) {
-      fSystem = kTip;
+      fSystem = ESystem::kTip;
    } else if(fSystemString.compare("FI") == 0) {
-      fSystem = kFipps;
+      fSystem = ESystem::kFipps;
    } else {
-      fSystem = kClear;
+      fSystem = ESystem::kClear;
    }
 }
 
-int TMnemonic::EnumerateDigitizer(std::string& name)
+TMnemonic::EDigitizer TMnemonic::EnumerateDigitizer(std::string& name)
 {
    std::transform(name.begin(), name.end(), name.begin(), ::toupper);
    if(name.compare("GRF16") == 0) {
-      return kGRF16;
+      return EDigitizer::kGRF16;
    }
    if(name.compare("GRF4G") == 0) {
-      return kGRF4G;
+      return EDigitizer::kGRF4G;
    }
    if(name.compare("TIG10") == 0) {
-      return kTIG10;
+      return EDigitizer::kTIG10;
    }
    if(name.compare("TIG64") == 0) {
-      return kTIG64;
+      return EDigitizer::kTIG64;
    }
    if(name.compare("CAEN8") == 0) {
-      return kCAEN8;
+      return EDigitizer::kCAEN8;
    }
-   return kDefault;
+   return EDigitizer::kDefault;
 }
 
 void TMnemonic::Parse(std::string* name)
@@ -165,7 +165,7 @@ void TMnemonic::Parse(std::string* name)
    // the mnemonic must be known
    EnumerateSystem();
 
-   if(fSystem == kSiLi) {
+   if(fSystem == ESystem::kSiLi) {
       buf.clear();
       buf.assign(*name, 7, 2);
       fSegment = static_cast<uint16_t>(strtol(buf.c_str(), nullptr, 16));
@@ -215,25 +215,25 @@ TClass* TMnemonic::GetClassType() const
    }
 
    switch(System()) {
-   case TMnemonic::kTigress: fClassType    = TTigress::Class(); break;
-   case TMnemonic::kSharc: fClassType      = TSharc::Class(); break;
-   case TMnemonic::kTriFoil: fClassType    = TTriFoil::Class(); break;
-   case TMnemonic::kRF: fClassType         = TRF::Class(); break;
-   case TMnemonic::kSiLi: fClassType       = TSiLi::Class(); break;
-   case TMnemonic::kGeneric: fClassType    = TGenericDetector::Class(); break;
-   case TMnemonic::kS3: fClassType         = TS3::Class(); break;
-   case TMnemonic::kSiLiS3: fClassType     = TS3::Class(); break;
-   case TMnemonic::kCSM: fClassType        = TCSM::Class(); break;
-   case TMnemonic::kGriffin: fClassType    = TGriffin::Class(); break;
-   case TMnemonic::kSceptar: fClassType    = TSceptar::Class(); break;
-   case TMnemonic::kPaces: fClassType      = TPaces::Class(); break;
-   case TMnemonic::kDescant: fClassType    = TDescant::Class(); break;
-   case TMnemonic::kLaBr: fClassType       = TLaBr::Class(); break;
-   case TMnemonic::kTAC: fClassType        = TTAC::Class(); break;
-   case TMnemonic::kZeroDegree: fClassType = TZeroDegree::Class(); break;
-   case TMnemonic::kTip: fClassType        = TTip::Class(); break;
-   case TMnemonic::kFipps: fClassType      = TFipps::Class(); break;
-   default: fClassType                     = nullptr;
+		case TMnemonic::ESystem::kTigress:    fClassType = TTigress::Class(); break;
+		case TMnemonic::ESystem::kSharc:      fClassType = TSharc::Class(); break;
+		case TMnemonic::ESystem::kTriFoil:    fClassType = TTriFoil::Class(); break;
+		case TMnemonic::ESystem::kRF:         fClassType = TRF::Class(); break;
+		case TMnemonic::ESystem::kSiLi:       fClassType = TSiLi::Class(); break;
+    case TMnemonic::ESystem::kGeneric:    fClassType = TGenericDetector::Class(); break;
+		case TMnemonic::ESystem::kS3:         fClassType = TS3::Class(); break;
+		case TMnemonic::ESystem::kSiLiS3:     fClassType = TS3::Class(); break;
+		case TMnemonic::ESystem::kCSM:        fClassType = TCSM::Class(); break;
+		case TMnemonic::ESystem::kGriffin:    fClassType = TGriffin::Class(); break;
+		case TMnemonic::ESystem::kSceptar:    fClassType = TSceptar::Class(); break;
+		case TMnemonic::ESystem::kPaces:      fClassType = TPaces::Class(); break;
+		case TMnemonic::ESystem::kDescant:    fClassType = TDescant::Class(); break;
+		case TMnemonic::ESystem::kLaBr:       fClassType = TLaBr::Class(); break;
+		case TMnemonic::ESystem::kTAC:        fClassType = TTAC::Class(); break;
+		case TMnemonic::ESystem::kZeroDegree: fClassType = TZeroDegree::Class(); break;
+		case TMnemonic::ESystem::kTip:        fClassType = TTip::Class(); break;
+		case TMnemonic::ESystem::kFipps:      fClassType = TFipps::Class(); break;
+		default:                              fClassType = nullptr;
    };
 
    return fClassType;
