@@ -97,7 +97,7 @@ void TS3Hit::Print(Option_t*) const
 
 Double_t TS3Hit::GetDefaultPhiOffset() const
 {
-   double deg = -90;
+   double deg = -90-21;//~22.5 should be bambino rotation
    if(GetChannel()->GetMnemonic()->System() == TMnemonic::ESystem::kSiLiS3) {
       deg = -22.5;
       if(GetChannel()->GetMnemonic()->ArrayPosition() == 2) {

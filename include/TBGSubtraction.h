@@ -28,7 +28,8 @@
 class TBGSubtraction : public TGMainFrame {
    enum ESliders {
       kGateSlider,
-      kBGSlider,
+      kBGSlider1,
+      kBGSlider2,
       kPeakSlider
    };
    enum EEntries {
@@ -38,13 +39,17 @@ class TBGSubtraction : public TGMainFrame {
       kPeakLowEntry,
       kPeakHighEntry,
       kPeakEntry,
-      kBGLowEntry,
-      kBGHighEntry,
+      kBGLowEntry1,
+      kBGHighEntry1,
+      kBGLowEntry2,
+      kBGHighEntry2,
       kWrite2FileNameEntry,
       kHistogramDescriptionEntry,
       kComboAxisEntry,
-      kBGCheckButton,
-      kPeakSkewCheckButton
+      kBGCheckButton1,
+      kBGCheckButton2,
+      kPeakSkewCheckButton,
+      kAutoUpdateCheckButton
    };
 
    //  RQ_OBJECT("TBGSubtraction")
@@ -55,19 +60,25 @@ private:
    TH2*                 fMatrix;
    TH1*                 fProjection;
    TH1*                 fGateHist;
-   TH1*                 fBGHist;
+   TH1*                 fBGHist1;
+   TH1*                 fBGHist2;
    TH1*                 fSubtractedHist;
    TGDoubleHSlider*     fGateSlider;
-   TGDoubleHSlider*     fBGSlider;
+   TGDoubleHSlider*     fBGSlider1;
+   TGDoubleHSlider*     fBGSlider2;
    TGTripleHSlider*     fPeakSlider;
    TGNumberEntry*       fBGParamEntry;
-   TGNumberEntry*       fBGEntryLow{nullptr};
-   TGNumberEntry*       fBGEntryHigh{nullptr};
+   TGNumberEntry*       fBGEntryLow1{nullptr};
+   TGNumberEntry*       fBGEntryHigh1{nullptr};
+   TGNumberEntry*       fBGEntryLow2{nullptr};
+   TGNumberEntry*       fBGEntryHigh2{nullptr};
    TGNumberEntry*       fGateEntryLow{nullptr};
    TGNumberEntry*       fGateEntryHigh{nullptr};
    TGLabel*             fBGParamLabel{nullptr};
-   TGCheckButton*       fBGCheckButton;
+   TGCheckButton*       fBGCheckButton1;
+   TGCheckButton*       fBGCheckButton2;
    TGCheckButton*       fPeakSkewCheckButton;
+   TGCheckButton*       fAutoUpdateCheckButton;
 
    TGLayoutHints* fBly;
    TGLayoutHints* fBly1;
@@ -89,7 +100,8 @@ private:
    TGHorizontalFrame* fPeakFitFrame{nullptr};
    TGHorizontalFrame* fBGParamFrame{nullptr};
    TGHorizontalFrame* fGateEntryFrame{nullptr};
-   TGHorizontalFrame* fBGEntryFrame{nullptr};
+   TGHorizontalFrame* fBGEntryFrame1{nullptr};
+   TGHorizontalFrame* fBGEntryFrame2{nullptr};
    TGHorizontalFrame* fDescriptionFrame{nullptr};
    TGHorizontalFrame* fButtonFrame{nullptr};
 
@@ -99,8 +111,10 @@ private:
    // Markers
    GMarker* fLowGateMarker;
    GMarker* fHighGateMarker;
-   GMarker* fLowBGMarker;
-   GMarker* fHighBGMarker;
+   GMarker* fLowBGMarker1;
+   GMarker* fHighBGMarker1;
+   GMarker* fLowBGMarker2;
+   GMarker* fHighBGMarker2;
    GMarker* fLowPeakMarker;
    GMarker* fHighPeakMarker;
    GMarker* fPeakMarker;
@@ -122,25 +136,36 @@ public:
    TBGSubtraction(TH2* mat, const char* gate_axis = "x");
    ~TBGSubtraction() override;
    void AxisComboSelected();
-   void ClickedBGButton();
+   void ClickedBGButton1();
+   void ClickedBGButton2();
+ //  void ClickedBG2Button();
    void DoPeakFit();
    void DoSlider(Int_t pos = 0);
    void DoEntry(Long_t);
    void DoProjectionCanvasZoomed();
    void DoGateCanvasZoomed();
    void UpdateProjectionSliders();
-   void UpdatePeakSliders();
    void UpdateBackground();
+   void UpdatePeakSliders();
    void DoProjection();
-   void DoGating();
    void DrawOnNewCanvas();
+   void DrawAllMarkers();
    void DrawGateMarkers();
-   void DrawBGMarkers();
+   void DrawBGMarkers1();
+   void DrawBGMarkers2();
    void DrawPeakMarkers();
    void DrawPeak();
    void WriteHistograms();
    void GateStatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected);
    void ProjectionStatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected);
+
+   void MakeGateHisto();
+   void MakeBGHisto1();
+   void MakeBGHisto2();
+   void DoAllGates();
+
+   void DoGateProjection();
+   void SetStatusFromUpdateCheckButton();
 
 private:
    void BuildInterface();
@@ -148,6 +173,10 @@ private:
    void MakeConnections();
    void InitializeInterface();
    void StatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected);
+   void DrawBGMarkers(TGCheckButton *&check_button, GMarker *&low_marker, GMarker *&high_marker, TGNumberEntry *&low_entry, TGNumberEntry *&high_entry, Int_t color = kBlue);
+   void UpdateGateSlider();
+   void UpdateBGSlider1();
+   void UpdateBGSlider2();
 
    /// \cond CLASSIMP
    ClassDefOverride(TBGSubtraction, 6); // Background subtractor GUI
