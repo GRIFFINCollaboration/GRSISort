@@ -86,7 +86,7 @@ void TMnemonic::EnumerateSystem()
          fSystem = ESystem::kSiLiS3;
       }
    } else if(fSystemString.compare("GD") == 0) {
-         fSystem = kGeneric;
+         fSystem = ESystem::kGeneric;
    } else if(fSystemString.compare("CS") == 0) {
       fSystem = ESystem::kCSM;
    } else if(fSystemString.compare("GR") == 0) {
@@ -215,24 +215,24 @@ TClass* TMnemonic::GetClassType() const
    }
 
    switch(System()) {
-		case TMnemonic::ESystem::kTigress:    fClassType = TTigress::Class(); break;
-		case TMnemonic::ESystem::kSharc:      fClassType = TSharc::Class(); break;
-		case TMnemonic::ESystem::kTriFoil:    fClassType = TTriFoil::Class(); break;
-		case TMnemonic::ESystem::kRF:         fClassType = TRF::Class(); break;
-		case TMnemonic::ESystem::kSiLi:       fClassType = TSiLi::Class(); break;
-		case TMnemonic::ESystem::kS3:         fClassType = TS3::Class(); break;
-		case TMnemonic::ESystem::kSiLiS3:     fClassType = TS3::Class(); break;
-		case TMnemonic::ESystem::kCSM:        fClassType = TCSM::Class(); break;
-		case TMnemonic::ESystem::kGriffin:    fClassType = TGriffin::Class(); break;
-		case TMnemonic::ESystem::kSceptar:    fClassType = TSceptar::Class(); break;
-		case TMnemonic::ESystem::kPaces:      fClassType = TPaces::Class(); break;
-		case TMnemonic::ESystem::kDescant:    fClassType = TDescant::Class(); break;
-		case TMnemonic::ESystem::kLaBr:       fClassType = TLaBr::Class(); break;
-		case TMnemonic::ESystem::kTAC:        fClassType = TTAC::Class(); break;
-		case TMnemonic::ESystem::kZeroDegree: fClassType = TZeroDegree::Class(); break;
-		case TMnemonic::ESystem::kTip:        fClassType = TTip::Class(); break;
-		case TMnemonic::ESystem::kFipps:      fClassType = TFipps::Class(); break;
-		case TMnemonic::ESystem::kGeneric:    fClassType = TGenericDetector::Class(); break;
+		case ESystem::kTigress:    fClassType = TTigress::Class(); break;
+		case ESystem::kSharc:      fClassType = TSharc::Class(); break;
+		case ESystem::kTriFoil:    fClassType = TTriFoil::Class(); break;
+		case ESystem::kRF:         fClassType = TRF::Class(); break;
+		case ESystem::kSiLi:       fClassType = TSiLi::Class(); break;
+		case ESystem::kS3:         fClassType = TS3::Class(); break;
+		case ESystem::kSiLiS3:     fClassType = TS3::Class(); break;
+		case ESystem::kCSM:        fClassType = TCSM::Class(); break;
+		case ESystem::kGriffin:    fClassType = TGriffin::Class(); break;
+		case ESystem::kSceptar:    fClassType = TSceptar::Class(); break;
+		case ESystem::kPaces:      fClassType = TPaces::Class(); break;
+		case ESystem::kDescant:    fClassType = TDescant::Class(); break;
+		case ESystem::kLaBr:       fClassType = TLaBr::Class(); break;
+		case ESystem::kTAC:        fClassType = TTAC::Class(); break;
+		case ESystem::kZeroDegree: fClassType = TZeroDegree::Class(); break;
+		case ESystem::kTip:        fClassType = TTip::Class(); break;
+		case ESystem::kFipps:      fClassType = TFipps::Class(); break;
+		case ESystem::kGeneric:    fClassType = TGenericDetector::Class(); break;
 		default:                              fClassType = nullptr;
    };
 
