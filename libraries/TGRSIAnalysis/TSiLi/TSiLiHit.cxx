@@ -179,6 +179,11 @@ Int_t TSiLiHit::GetPreamp() const
 {
    return TSiLi::GetPreamp(GetSegment());
 }
+bool TSiLiHit::MagnetShadow() const
+{
+   return TSiLi::MagnetShadow(GetSegment());
+}
+
 
 double TSiLiHit::GetFitEnergy() const
 {

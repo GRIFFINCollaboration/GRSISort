@@ -18,6 +18,7 @@
 #include "TDescant.h"
 #include "TZeroDegree.h"
 #include "TSiLi.h"
+#include "TGenericDetector.h"
 #include "TFipps.h"
 
 ClassImp(TMnemonic)
@@ -84,6 +85,8 @@ void TMnemonic::EnumerateSystem()
       } else {
          fSystem = ESystem::kSiLiS3;
       }
+   } else if(fSystemString.compare("GD") == 0) {
+         fSystem = kGeneric;
    } else if(fSystemString.compare("CS") == 0) {
       fSystem = ESystem::kCSM;
    } else if(fSystemString.compare("GR") == 0) {
@@ -229,6 +232,7 @@ TClass* TMnemonic::GetClassType() const
 		case TMnemonic::ESystem::kZeroDegree: fClassType = TZeroDegree::Class(); break;
 		case TMnemonic::ESystem::kTip:        fClassType = TTip::Class(); break;
 		case TMnemonic::ESystem::kFipps:      fClassType = TFipps::Class(); break;
+		case TMnemonic::ESystem::kGeneric:    fClassType = TGenericDetector::Class(); break;
 		default:                              fClassType = nullptr;
    };
 

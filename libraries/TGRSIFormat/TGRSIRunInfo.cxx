@@ -106,6 +106,7 @@ void TGRSIRunInfo::Print(Option_t* opt) const
       printf("\t\tTIP:                %s\n", Tip() ? "true" : "false");
       printf("\t\tCSM:                %s\n", CSM() ? "true" : "false");
       printf("\t\tSPICE:              %s\n", Spice() ? "true" : "false");
+      printf("\t\tGENERIC:            %s\n", Generic() ? "true" : "false");
       printf("\t\tS3:                 %s\n", S3() ? "true" : "false");
       printf("\t\tBAMBINO:            %s\n", Bambino() ? "true" : "false");
       printf("\t\tRF:                 %s\n", RF() ? "true" : "false");
@@ -140,6 +141,7 @@ void TGRSIRunInfo::Clear(Option_t*)
    fSpice   = false;
    fTip     = false;
    fS3      = false;
+   fGeneric = false;
    fBambino = false;
 
    fGriffin    = false;
@@ -261,6 +263,12 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum)
 					TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
 				}
 				SetFipps();
+				break;
+			case TMnemonic::ESystem::kGeneric:
+				if(!Generic()) {
+					TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
+				}
+				SetGeneric();
 				break;
 			default:
 				std::string system = iter->second->GetMnemonic()->SystemString();
