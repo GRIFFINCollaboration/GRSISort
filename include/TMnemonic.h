@@ -56,7 +56,7 @@ public:
    void Parse(std::string* name);
    void Parse(const char* name);
 
-   static EDigitizer EnumerateDigitizer(std::string& name);
+   static EDigitizer EnumerateDigitizer(std::string name);
 
    void SetRFMNEMONIC(std::string* name);
 

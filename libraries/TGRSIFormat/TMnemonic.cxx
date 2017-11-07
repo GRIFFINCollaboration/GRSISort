@@ -113,7 +113,7 @@ void TMnemonic::EnumerateSystem()
    }
 }
 
-TMnemonic::EDigitizer TMnemonic::EnumerateDigitizer(std::string& name)
+TMnemonic::EDigitizer TMnemonic::EnumerateDigitizer(std::string name)
 {
    std::transform(name.begin(), name.end(), name.begin(), ::toupper);
    if(name.compare("GRF16") == 0) {

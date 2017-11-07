@@ -1,8 +1,6 @@
 #ifndef TPRIORITYVALUE_H
 #define TPRIORITYVALUE_H
 
-#include "TObject.h"
-
 /** \addtogroup Sorting
  *  @{
  */
@@ -18,31 +16,79 @@
 ///
 /////////////////////////////////////////////////////////////
 
+enum class EPriority { kDefault, kRootFile, kInputFile, kUser, kForce };
+
 template<class T>
-class TPriorityValue : public TObject {
+class TPriorityValue {
 public:
-	enum class EPriority { kDefault, kRootFile, kInputFile, kUser };
+	TPriorityValue() {
+		fPriority = EPriority::kDefault;
+	}
 
-	TPriorityValue();
-	TPriorityValue(T, EPriority);
-	TPriorityValue(const TPriorityValue&);
-	~TPriorityValue();
+	TPriorityValue(T value, EPriority priority) {
+		fValue = value;
+		fPriority = priority;
+	}
 
-	T         Value()    { return fValue; }
-	EPriority Priority() { return fPriority; }
+	TPriorityValue(const TPriorityValue& rhs) {
+		fPriority = EPriority::kDefault;
+		*this = rhs;
+	}
 
-	TPriorityValue<T>& operator =(const TPriorityValue<T>&);
+	TPriorityValue(TPriorityValue&& rhs) {
+		fPriority = EPriority::kDefault;
+		*this = rhs;
+	}
+
+	~TPriorityValue() {
+	}
+
+
+	// setter
+	void Set(T val, EPriority priority) {
+		if(priority >= fPriority) {
+			fValue = val;
+		}
+	}
+
+
+	// getters
+	T         Value() const    { return fValue; }
+	EPriority Priority() const { return fPriority; }
+	T*        Address()        { return &fValue; }
+	const T*  Address() const  { return &fValue; }
+
+	// assignment and move assignment operators
+	TPriorityValue<T>& operator =(const TPriorityValue<T>& rhs) {
+		if(rhs.fPriority >= fPriority) {
+			fValue = rhs.fValue;
+			fPriority = rhs.fPriority;
+		}
+		return *this;
+	}
+
+	TPriorityValue<T>& operator =(TPriorityValue<T>&& rhs) {
+		if(rhs.fPriority >= fPriority) {
+			fValue = std::move(rhs.fValue);
+			fPriority = std::move(rhs.fPriority);
+		}
+		return *this;
+	}
+
+	template<class U>
+	friend std::ostream& operator<<(std::ostream&, const TPriorityValue<U>&);
+
 private:
 	T fValue;
 	EPriority fPriority;
-
-   /// \cond CLASSIMP
-   ClassDefOverride(TPriorityValue, 1) // Descant Physics structure
-	/// \endcond
 };
 
 template<class T>
-std::ostream& operator<<(std::ostream&, const TPriorityValue<T>&);
+std::ostream& operator<<(std::ostream& out, const TPriorityValue<T>& val)
+{
+	out<<val.fValue;
+	return out;
+}
 
 /*! @} */
 #endif
