@@ -9,11 +9,11 @@
 
 class GValue : public TNamed {
 public:
-   enum EPriority { kUser = 0, kValFile = 1, kRootFile = 2, kUnset = 999999 };
+   enum class EPriority { kUser = 0, kValFile = 1, kRootFile = 2, kUnset = 999999 };
 
    GValue();
    GValue(const char* name);
-   GValue(const char* name, double value, GValue::EPriority priority = kUser);
+   GValue(const char* name, double value, EPriority priority = EPriority::kUser);
    GValue(const GValue& val);
 
    double      GetValue() { return fValue; }
@@ -28,7 +28,7 @@ public:
    static GValue* GetDefaultValue() { return fDefaultValue; }
    // Search fValueVector for GValue with name given by string
    static GValue* FindValue(const std::string& = "");
-   static void SetReplaceValue(const std::string& name, double value, GValue::EPriority priority = kUser);
+   static void SetReplaceValue(const std::string& name, double value, EPriority priority = EPriority::kUser);
    static GValue* Get(std::string name = "") { return FindValue(std::move(name)); }
    static double                  Value(const std::string&);
    static TList*                  AllValues()
