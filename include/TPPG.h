@@ -27,6 +27,7 @@
 #include <map>
 #include <utility>
 
+#include "TFile.h"
 #include "TObject.h"
 #include "TCollection.h"
 
@@ -94,7 +95,7 @@ public:
    typedef std::map<ULong_t, TPPGData*> PPGMap_t;
 
 public:
-   static TPPG* Get();
+   static TPPG* Get(TFile* fileWithPPg = nullptr);
 
    TPPG();
    TPPG(const TPPG&);

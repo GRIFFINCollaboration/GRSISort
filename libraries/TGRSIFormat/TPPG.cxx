@@ -87,13 +87,20 @@ TPPG::~TPPG()
    // std::cout<<"destructor called on "<<this<<std::endl;
 }
 
-TPPG* TPPG::Get()
+TPPG* TPPG::Get(TFile* fileWithPPg)
 {
-   // The getter for the singleton TPPG. Unfortunately ROOT doesn't allow true
-   // singletons, so one should take care to always use this method and not
-   // the constructor.
-   if(fPPG == nullptr) {
-      fPPG = static_cast<TPPG*>(gDirectory->Get("TPPG"));
+   /// The getter for the singleton TPPG. Unfortunately ROOT doesn't allow true
+   /// singletons, so one should take care to always use this method and not
+   /// the constructor.
+	TDirectory* fileToGetPpgFrom = gDirectory;
+
+	if(fileWithPpg != nullptr) {
+		fileToGetPpgFrom = static_cast<TDirectory*>(fileWithPpg);
+	}
+
+	// we want to get the ppg if we haven't done so yet, or if a file was provided
+   if(fPPG == nullptr || fileWithPpg != nullptr) {
+      fPPG = static_cast<TPPG*>(fileToGetPpgFrom->Get("TPPG"));
       if(fPPG == nullptr) {
          fPPG = new TPPG();
       }
