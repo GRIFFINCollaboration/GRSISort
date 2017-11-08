@@ -545,7 +545,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
          // changed on 21 Apr 2015 by JKS, when signal processing code from Chris changed the trailer.
          // change should be backward-compatible
          if((value & 0x3fff) == (eventFrag->GetChannelId() & 0x3fff)) {
-            if(!fOptions->SuppressErrors() && (eventFrag->GetModuleType() == 2) && (bank < kGRF3)) {
+            if(!fOptions->SuppressErrors() && (eventFrag->GetModuleType() == 2) && (bank < EBank::kGRF3)) {
                // check whether the nios finished and if so whether it finished with an error
                if(((value >> 14) & 0x1) == 0x1) {
                   if(((value >> 16) & 0xff) != 0) {
@@ -555,7 +555,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                }
             }
 
-            if((eventFrag->GetModuleType() == 1) || (bank > kGRF2)) { // 4Gs have this only for banks newer than GRF2
+            if((eventFrag->GetModuleType() == 1) || (bank > EBank::kGRF2)) { // 4Gs have this only for banks newer than GRF2
                eventFrag->SetAcceptedChannelId((value >> 14) & 0x3fff);
             } else {
                eventFrag->SetAcceptedChannelId(0);
@@ -586,7 +586,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
             // cfd, and IntLengths
 
             // the first two cases can be treated the same way, so we only need to check for the third case
-            if(eventFrag->GetModuleType() == 1 && bank == kGRF4) {
+            if(eventFrag->GetModuleType() == 1 && bank == EBank::kGRF4) {
                if(tmpCfd.size() != 1) {
                   if(fRecordDiag) {
                      TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
@@ -672,7 +672,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
          break;
       case 0xf:
          switch(bank) {
-         case kGRF1: // format from before May 2015 experiments
+			case EBank::kGRF1: // format from before May 2015 experiments
             TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
             if(fState == EDataParserState::kGood) {
                fState     = EDataParserState::kFault;
@@ -683,7 +683,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
             Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
             throw TDataParserException(fState, failedWord, multipleErrors);
             break;
-         case kGRF2: // from May 2015 to the end of 2015 0xf denoted a psd-word from a 4G
+			case EBank::kGRF2: // from May 2015 to the end of 2015 0xf denoted a psd-word from a 4G
             if(x + 1 < size) {
                SetGRIFCc(value, eventFrag);
                ++x;
@@ -701,8 +701,8 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                throw TDataParserException(fState, failedWord, multipleErrors);
             }
             break;
-         case kGRF3: // from 2016 on we're back to reserving 0xf for faults
-         case kGRF4:
+			case EBank::kGRF3: // from 2016 on we're back to reserving 0xf for faults
+			case EBank::kGRF4:
             TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
             if(fState == EDataParserState::kGood) {
                fState     = EDataParserState::kFault;
@@ -722,9 +722,9 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
          switch(eventFrag->GetModuleType()) {
          case 1:
             switch(bank) { // the GRIF-16 data format depends on the bank number
-            case kGRF1:    // bank's 1&2 have n*2 words with (5 high bits IntLength, 26 Charge)(5 low bits IntLength, 26
+				case EBank::kGRF1:    // bank's 1&2 have n*2 words with (5 high bits IntLength, 26 Charge)(5 low bits IntLength, 26
                            // Cfd)
-            case kGRF2:
+				case EBank::kGRF2:
                // read this pair of charge/cfd words, check if the next word is also a charge/cfd word
                if(((data[x] & 0x80000000) == 0x0) && x + 1 < size && (data[x + 1] & 0x80000000) == 0x0) {
                   Short_t tmp = (data[x] & 0x7c000000) >> 21; // 21 = 26 minus space for 5 low bits
@@ -746,7 +746,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   throw TDataParserException(fState, failedWord, multipleErrors);
                }
                break;
-            case kGRF3: // bank 3 has 2 words with (5 high bits IntLength, 26 Charge)(9 low bits IntLength, 22 Cfd)
+				case EBank::kGRF3: // bank 3 has 2 words with (5 high bits IntLength, 26 Charge)(9 low bits IntLength, 22 Cfd)
                if(x + 1 < size &&
                   (data[x + 1] & 0x80000000) == 0x0) {        // check if the next word is also a charge/cfd word
                   Short_t tmp = (data[x] & 0x7c000000) >> 17; // 17 = 26 minus space for 9 low bits
@@ -769,7 +769,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   throw TDataParserException(fState, failedWord, multipleErrors);
                }
                break;
-            case kGRF4: // bank 4 can have more than one integration (up to four), but these have to be combined with
+				case EBank::kGRF4: // bank 4 can have more than one integration (up to four), but these have to be combined with
                         // other fragments/hits!
                // we always have 2 words with (5 high bits IntLength, 26 Charge)(9 low bits IntLength, 22 Cfd)
                if(x + 1 < size &&
@@ -899,7 +899,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
             }
             // for descant types (6,10,11) there are two more words for banks > GRF2 (bank GRF2 used 0xf packet and bank
             // GRF1 never had descant)
-            if(bank > kGRF2 && (eventFrag->GetDetectorType() == 6 || eventFrag->GetDetectorType() == 10 ||
+            if(bank > EBank::kGRF2 && (eventFrag->GetDetectorType() == 6 || eventFrag->GetDetectorType() == 10 ||
                                 eventFrag->GetDetectorType() == 11)) {
                ++x;
                if(x + 1 < size && (data[x + 1] & 0x80000000) == 0x0) {
@@ -956,7 +956,7 @@ bool TDataParser::SetGRIFHeader(uint32_t value, const std::shared_ptr<TFragment>
       return false;
    }
    switch(bank) {
-   case kGRF1: // header format from before May 2015 experiments
+	case EBank::kGRF1: // header format from before May 2015 experiments
       // Sets:
       //     The number of filters
       //     The Data Type
@@ -972,7 +972,7 @@ bool TDataParser::SetGRIFHeader(uint32_t value, const std::shared_ptr<TFragment>
       // if(frag-DetectorType==2)
       //    frag->ChannelAddress += 0x8000;
       break;
-   case kGRF2:
+	case EBank::kGRF2:
       // Sets:
       //     The number of filters
       //     The Data Type
@@ -986,8 +986,8 @@ bool TDataParser::SetGRIFHeader(uint32_t value, const std::shared_ptr<TFragment>
       frag->SetDetectorType((value & 0x0000000f));
 
       break;
-   case kGRF3:
-   case kGRF4:
+	case EBank::kGRF3:
+	case EBank::kGRF4:
       frag->SetModuleType((value & 0x0e000000) >> 25);
       frag->SetNumberOfWords((value & 0x01f00000) >> 20);
       frag->SetAddress((value & 0x000ffff0) >> 4);
@@ -1007,13 +1007,13 @@ bool TDataParser::SetGRIFMasterFilterPattern(uint32_t value, const std::shared_p
       return false;
    }
    switch(bank) {
-   case kGRF1:
-   case kGRF2:
+	case EBank::kGRF1:
+	case EBank::kGRF2:
       frag->SetTriggerBitPattern(value >> 16);
       // frag->SetPPGWord(value & 0x0000ffff);//This is due to new GRIFFIN data format
       break;
-   case kGRF3:
-   case kGRF4:
+	case EBank::kGRF3:
+	case EBank::kGRF4:
       frag->SetTriggerBitPattern(value >> 16);
       frag->SetNumberOfPileups(value & 0x1f);
       fFragmentHasWaveform = ((value & 0x8000) == 0x8000);
