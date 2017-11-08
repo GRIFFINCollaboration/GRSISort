@@ -113,7 +113,7 @@ void GCanvas::GCanvasInit()
    fMarkerMode     = true;
    control_key     = false;
    fGuiEnabled     = false;
-   fBackgroundMode = kNoBackground;
+   fBackgroundMode = EBackgroundSubtraction::kNoBackground;
    // if(gVirtualX->InheritsFrom("TGX11")) {
    //    printf("\tusing x11-like graphical interface.\n");
    //}
@@ -249,7 +249,7 @@ bool GCanvas::SetBackgroundMarkers()
       marker->SetColor(kBlue);
    }
 
-   fBackgroundMode = kRegionBackground;
+   fBackgroundMode = EBackgroundSubtraction::kRegionBackground;
 
    return true;
 }
@@ -263,28 +263,28 @@ bool GCanvas::CycleBackgroundSubtraction()
    Color_t color = 0;
 
    switch(fBackgroundMode) {
-   case kNoBackground:
-      fBackgroundMode = kRegionBackground;
-      printf("hello??\n");
-      Prompt();
-      color = kBlue;
-      break;
-   case kRegionBackground:
-      fBackgroundMode = kTotalFraction;
-      color           = kGreen;
-      break;
-   case kTotalFraction:
-      fBackgroundMode = kMatchedLowerMarker;
-      color           = kOrange;
-      break;
-   case kMatchedLowerMarker:
-      fBackgroundMode = kSplitTwoMarker;
-      color           = kMagenta;
-      break;
-   case kSplitTwoMarker:
-      fBackgroundMode = kNoBackground;
-      color           = 0;
-      break;
+		case EBackgroundSubtraction::kNoBackground:
+			fBackgroundMode = EBackgroundSubtraction::kRegionBackground;
+			printf("hello??\n");
+			Prompt();
+			color = kBlue;
+			break;
+		case EBackgroundSubtraction::kRegionBackground:
+			fBackgroundMode = EBackgroundSubtraction::kTotalFraction;
+			color           = kGreen;
+			break;
+		case EBackgroundSubtraction::kTotalFraction:
+			fBackgroundMode = EBackgroundSubtraction::kMatchedLowerMarker;
+			color           = kOrange;
+			break;
+		case EBackgroundSubtraction::kMatchedLowerMarker:
+			fBackgroundMode = EBackgroundSubtraction::kSplitTwoMarker;
+			color           = kMagenta;
+			break;
+		case EBackgroundSubtraction::kSplitTwoMarker:
+			fBackgroundMode = EBackgroundSubtraction::kNoBackground;
+			color           = 0;
+			break;
    };
 
    for(auto marker : fBackgroundMarkers) {
@@ -860,7 +860,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
             value_high -= epsilon;
          }
 
-         if(fBackgroundMarkers.size() >= 2 && fBackgroundMode != kNoBackground) {
+			if(fBackgroundMarkers.size() >= 2 && fBackgroundMode != EBackgroundSubtraction::kNoBackground) {
             int bg_binlow  = fBackgroundMarkers.at(0)->binx;
             int bg_binhigh = fBackgroundMarkers.at(1)->binx;
             if(bg_binlow > bg_binhigh) {
@@ -1370,7 +1370,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 
       if(ghist != nullptr) {
          ghist->SetSummary(true);
-         ghist->SetSummaryDirection(kYDirection);
+         ghist->SetSummaryDirection(EDirection::kYDirection);
          TH1* phist = ghist->GetNextSummary(nullptr, false);
          if(phist != nullptr) {
             new GCanvas();
@@ -1414,7 +1414,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 
       if(ghist != nullptr) {
          ghist->SetSummary(true);
-         ghist->SetSummaryDirection(kXDirection);
+         ghist->SetSummaryDirection(EDirection::kXDirection);
          // TH1* phist = ghist->SummaryProject(1);
          TH1* phist = ghist->GetNextSummary(nullptr, false);
          if(phist != nullptr) {

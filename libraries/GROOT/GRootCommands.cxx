@@ -130,7 +130,7 @@ bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg
    if(bg_low > 0 && bg_high > 0) {
       BGHigh->Draw("same");
       BGLow->Draw("same");
-      Proj_gated = Proj_x_Clone->Project_Background(low, high, bg_low, bg_high, kRegionBackground);
+      Proj_gated = Proj_x_Clone->Project_Background(low, high, bg_low, bg_high, EBackgroundSubtraction::kRegionBackground);
    } else {
       Proj_gated = Proj_x_Clone->Project(low, high);
    }

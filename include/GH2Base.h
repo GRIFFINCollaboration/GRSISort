@@ -11,9 +11,9 @@
 
 class GH1D;
 
-enum kBackgroundSubtraction { kNoBackground, kRegionBackground, kMatchedLowerMarker, kSplitTwoMarker, kTotalFraction };
+enum class EBackgroundSubtraction { kNoBackground, kRegionBackground, kMatchedLowerMarker, kSplitTwoMarker, kTotalFraction };
 
-enum kDirection { kXDirection, kYDirection };
+enum class EDirection { kXDirection, kYDirection };
 
 class GH2Base {
 
@@ -27,12 +27,12 @@ public:
    virtual TH2* GetTH2() = 0;
 
    GH1D* Projection_Background(int axis = 0, int firstbin = 0, int lastbin = -1, int first_bg_bin = 0,
-                               int last_bg_bin = -1, kBackgroundSubtraction mode = kRegionBackground);
+                               int last_bg_bin = -1, EBackgroundSubtraction mode = EBackgroundSubtraction::kRegionBackground);
 
    // GH1D* SummaryProject(int binnum);
 
    GH1D* ProjectionX_Background(int firstbin = 0, int lastbin = -1, int first_bg_bin = 0, int last_bg_bin = -1,
-                                kBackgroundSubtraction mode = kRegionBackground); // *MENU*
+                                EBackgroundSubtraction mode = EBackgroundSubtraction::kRegionBackground); // *MENU*
 
    GH1D* GH2ProjectionX(const char* name = "_px", int firstbin = 0, int lastbin = -1, Option_t* option = "",
                         bool KeepEmpty = false); // *MENU*
@@ -41,7 +41,7 @@ public:
                         bool KeepEmpty = false); // *MENU*
 
    GH1D* ProjectionY_Background(int firstbin = 0, int lastbin = -1, int first_bg_bin = 0, int last_bg_bin = -1,
-                                kBackgroundSubtraction mode = kRegionBackground); // *MENU*
+                                EBackgroundSubtraction mode = EBackgroundSubtraction::kRegionBackground); // *MENU*
 
    GH1D* GetPrevious(const GH1D* curr, bool DrawEmpty = true);
    GH1D* GetPrevSummary(const GH1D* curr, bool DrawEmpty = false);
@@ -54,8 +54,8 @@ public:
    void SetSummary(bool is_summary = true) { fIsSummary = is_summary; }
    bool                 GetSummary() const { return fIsSummary; }
 
-   void SetSummaryDirection(kDirection dir) { fSummaryDirection = dir; }
-   kDirection                          GetSummaryDirection() const { return fSummaryDirection; }
+   void SetSummaryDirection(EDirection dir) { fSummaryDirection = dir; }
+   EDirection                          GetSummaryDirection() const { return fSummaryDirection; }
 
    class iterator {
    public:
@@ -103,7 +103,7 @@ private:
 
    TList*     fSummaryProjections{nullptr}; //!
    bool       fIsSummary{false};
-   kDirection fSummaryDirection;
+   EDirection fSummaryDirection;
 
    ClassDef(GH2Base, 1);
 };
