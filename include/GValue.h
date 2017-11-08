@@ -9,7 +9,7 @@
 
 class GValue : public TNamed {
 public:
-   enum class EPriority { kUser = 0, kValFile = 1, kRootFile = 2, kUnset = 999999 };
+   enum class EPriority { kUser = 0, kValFile = 1, kRootFile = 2, kDefault = 999999 };
 
    GValue();
    GValue(const char* name);
