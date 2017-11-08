@@ -87,7 +87,7 @@ TPPG::~TPPG()
    // std::cout<<"destructor called on "<<this<<std::endl;
 }
 
-TPPG* TPPG::Get(TFile* fileWithPPg)
+TPPG* TPPG::Get(TFile* fileWithPpg)
 {
    /// The getter for the singleton TPPG. Unfortunately ROOT doesn't allow true
    /// singletons, so one should take care to always use this method and not
