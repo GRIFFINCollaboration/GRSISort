@@ -472,14 +472,22 @@ TH2* AddOffset(TH2* mat, double offset, EAxis axis)
          double newy = mat->GetYaxis()->GetBinCenter(y);
          ;
          double bcont = mat->GetBinContent(x, y);
-         if((axis & kXAxis) != 0) {
+         if((axis & EAxis::kXAxis) != static_cast<EAxis>(0)) {
             newx += offset;
          }
-         if((axis & kYAxis) != 0) {
+         if((axis & EAxis::kYAxis) != static_cast<EAxis>(0)) {
             newy += offset;
          }
          toreturn->Fill(newx, newy, bcont);
       }
    }
    return toreturn;
+}
+
+EAxis operator &(EAxis lhs, EAxis rhs)
+{
+	return static_cast<EAxis> (
+			static_cast<std::underlying_type<EAxis>::type>(lhs) &
+			static_cast<std::underlying_type<EAxis>::type>(rhs)
+			);
 }
