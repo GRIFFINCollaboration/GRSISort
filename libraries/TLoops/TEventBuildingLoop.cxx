@@ -29,13 +29,13 @@ TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode)
 {
 
    switch(fBuildMode) {
-   case kTimestamp:
+	case EBuildMode::kTimestamp:
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
          return a->GetTimeStamp() < b->GetTimeStamp();
       });
       break;
 
-   case kTriggerId:
+	case EBuildMode::kTriggerId:
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
          return a->GetTriggerId() < b->GetTriggerId();
       });
@@ -107,9 +107,9 @@ bool TEventBuildingLoop::Iteration()
 bool TEventBuildingLoop::CheckBuildCondition(const std::shared_ptr<const TFragment>& frag)
 {
    switch(fBuildMode) {
-   case kTimestamp: return CheckTimestampCondition(frag); break;
+	case EBuildMode::kTimestamp: return CheckTimestampCondition(frag); break;
 
-   case kTriggerId: return CheckTriggerIdCondition(frag); break;
+	case EBuildMode::kTriggerId: return CheckTriggerIdCondition(frag); break;
    }
    return false; // we should never reach this statement!
 }

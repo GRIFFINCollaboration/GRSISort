@@ -592,9 +592,9 @@ void TGRSIint::SetupPipeline()
    }
 
    // this happens here, because the TDataLoop constructor is where we read the midas file ODB
-   TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::kTriggerId;
+   TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::EBuildMode::kTriggerId;
    if(TGRSIRunInfo::Get()->Griffin() || TGRSIRunInfo::Get()->Fipps()) {
-      event_build_mode = TEventBuildingLoop::kTimestamp;
+      event_build_mode = TEventBuildingLoop::EBuildMode::kTimestamp;
    }
 
    // If requested, write the fragment histograms
