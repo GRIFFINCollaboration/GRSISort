@@ -31,12 +31,12 @@ TLstFile::TLstFile()
    fFileSize  = 0;
 }
 
-TLstFile::TLstFile(const char* filename, EOpenType open_type) : TLstFile()
+TLstFile::TLstFile(const char* filename, TRawFile::EOpenType open_type) : TLstFile()
 {
    switch(open_type) {
-   case kRead: Open(filename); break;
+	case TRawFile::EOpenType::kRead: Open(filename); break;
 
-   case kWrite: break;
+	case TRawFile::EOpenType::kWrite: break;
    }
 }
 
