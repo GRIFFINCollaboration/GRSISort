@@ -26,12 +26,22 @@
 
 #include <map>
 #include <utility>
+#include <iostream>
 
 #include "TFile.h"
 #include "TObject.h"
 #include "TCollection.h"
 
 #include "Globals.h"
+
+enum class EPpgPattern {
+	kBeamOn     = 0x0001,
+	kDecay      = 0x0004,
+	kTapeMove   = 0x0008,
+	kBackground = 0x0002,
+	kSync       = 0xc000,
+	kJunk       = 0xFFFF
+};
 
 class TPPGData : public TObject {
 public:
@@ -51,17 +61,41 @@ public:
       fHighTimeStamp = highTime;
       SetTimeStamp();
    }
-   void SetNewPPG(UInt_t newPpg) { fNewPpg = newPpg; }
-   void SetOldPPG(UInt_t oldPpg) { fOldPpg = oldPpg; }
+   void SetNewPPG(EPpgPattern newPpg) { fNewPpg = newPpg; }
+   void SetNewPPG(UInt_t newPpg)
+	{ 
+		fNewPpg = static_cast<EPpgPattern>(newPpg);
+		switch(fNewPpg) {
+			case EPpgPattern::kBeamOn: case EPpgPattern::kDecay: case EPpgPattern::kTapeMove:
+			case EPpgPattern::kBackground: case EPpgPattern::kSync: case EPpgPattern::kJunk:
+				break;
+			default:
+				std::cout<<"Warning, unkown ppg pattern 0x"<<std::hex<<newPpg<<std::dec<<", setting new pattern to kJunk!"<<std::endl;
+				fNewPpg = EPpgPattern::kJunk;
+		}
+	}
+   void SetOldPPG(EPpgPattern oldPpg) { fOldPpg = oldPpg; }
+   void SetOldPPG(UInt_t oldPpg)
+	{
+		fOldPpg = static_cast<EPpgPattern>(oldPpg);
+		switch(fOldPpg) {
+			case EPpgPattern::kBeamOn: case EPpgPattern::kDecay: case EPpgPattern::kTapeMove:
+			case EPpgPattern::kBackground: case EPpgPattern::kSync: case EPpgPattern::kJunk:
+				break;
+			default:
+				std::cout<<"Warning, unkown ppg pattern 0x"<<std::hex<<oldPpg<<std::dec<<", setting old pattern to kJunk!"<<std::endl;
+				fOldPpg = EPpgPattern::kJunk;
+		}
+	}
    void SetNetworkPacketId(UInt_t packet) { fNetworkPacketId = packet; }
 
    void SetTimeStamp();
 
-   UInt_t   GetLowTimeStamp() const { return fLowTimeStamp; }
-   UInt_t   GetHighTimeStamp() const { return fHighTimeStamp; }
-   uint16_t GetNewPPG() const { return static_cast<uint16_t>(fNewPpg); }
-   uint16_t GetOldPPG() const { return static_cast<uint16_t>(fOldPpg); }
-   UInt_t   GetNetworkPacketId() const { return fNetworkPacketId; }
+   UInt_t      GetLowTimeStamp() const { return fLowTimeStamp; }
+   UInt_t      GetHighTimeStamp() const { return fHighTimeStamp; }
+   EPpgPattern GetNewPPG() const { return fNewPpg; }
+   EPpgPattern GetOldPPG() const { return fOldPpg; }
+   UInt_t      GetNetworkPacketId() const { return fNetworkPacketId; }
 
    Long64_t GetTimeStamp() const { return fTimeStamp; }
 
@@ -69,12 +103,12 @@ public:
    void Clear(Option_t* opt = "") override;
 
 private:
-   ULong64_t fTimeStamp;
-   UInt_t    fOldPpg;
-   UInt_t    fNewPpg;
-   UInt_t    fNetworkPacketId;
-   UInt_t    fLowTimeStamp;
-   UInt_t    fHighTimeStamp;
+   ULong64_t   fTimeStamp;
+   EPpgPattern fOldPpg;
+   EPpgPattern fNewPpg;
+   UInt_t      fNetworkPacketId;
+   UInt_t      fLowTimeStamp;
+   UInt_t      fHighTimeStamp;
 
    /// \cond CLASSIMP
    ClassDefOverride(TPPGData, 2) // Contains PPG data information
@@ -83,15 +117,6 @@ private:
 
 class TPPG : public TObject {
 public:
-   enum ppg_pattern {
-      kBeamOn     = 0x0001,
-      kDecay      = 0x0004,
-      kTapeMove   = 0x0008,
-      kBackground = 0x0002,
-      kSync       = 0xc000,
-      kJunk       = 0xFFFF
-   };
-
    typedef std::map<ULong_t, TPPGData*> PPGMap_t;
 
 public:
@@ -111,8 +136,8 @@ public:
 
 public:
    void AddData(TPPGData* pat);
-   uint16_t GetStatus(ULong64_t time) const;
-   ULong64_t GetLastStatusTime(ULong64_t time, ppg_pattern pat = kJunk, bool exact_flag = false) const;
+   EPpgPattern GetStatus(ULong64_t time) const;
+   ULong64_t GetLastStatusTime(ULong64_t time, EPpgPattern pat = EPpgPattern::kJunk) const;
    Bool_t      MapIsEmpty() const;
    std::size_t PPGSize() const { return fPPGStatusMap->size() - 1; }
    std::size_t OdbPPGSize() const { return fOdbPPGCodes.size(); }
@@ -128,7 +153,7 @@ public:
    ULong64_t GetTimeInCycle(ULong64_t real_time);
    ULong64_t GetCycleNumber(ULong64_t real_time);
 
-   ULong64_t GetStatusStart(ppg_pattern);
+   ULong64_t GetStatusStart(EPpgPattern);
 
    const TPPGData* Next();
    const TPPGData* Previous();

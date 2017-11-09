@@ -180,7 +180,7 @@ void TGRSIDetectorHit::Clear(Option_t*)
    // fSegment        = -1;
    fEnergy         = 0.;
    fBitflags       = 0;
-   fPPGStatus      = TPPG::kJunk;
+   fPPGStatus      = EPpgPattern::kJunk;
    fCycleTimeStamp = 0;
    fChannel        = nullptr;
 }
@@ -238,14 +238,14 @@ Long64_t TGRSIDetectorHit::GetTimeStamp(Option_t*) const
    return fTimeStamp - tmpChan->GetTimeOffset();
 }
 
-uint16_t TGRSIDetectorHit::GetPPGStatus() const
+EPpgPattern TGRSIDetectorHit::GetPPGStatus() const
 {
    if(IsPPGSet()) {
       return fPPGStatus;
    }
 
    if(TPPG::Get() == nullptr) {
-      return TPPG::kJunk;
+      return EPpgPattern::kJunk;
    }
 
    fPPGStatus      = TPPG::Get()->GetStatus(GetTimeStamp());

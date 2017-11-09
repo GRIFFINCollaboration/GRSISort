@@ -45,8 +45,8 @@ void TPPGData::Clear(Option_t*)
    /// Clears the TPPGData and leaves it a "junk" state. By junk, I just mean default
    /// so that we can tell that this PPG is no good.
    fTimeStamp       = 0;
-   fOldPpg          = 0xFFFF;
-   fNewPpg          = 0xFFFF;
+   fOldPpg          = EPpgPattern::kJunk;
+   fNewPpg          = EPpgPattern::kJunk;
    fNetworkPacketId = -1;
    fLowTimeStamp    = 0;
    fHighTimeStamp   = 0;
@@ -145,12 +145,10 @@ void TPPG::AddData(TPPGData* pat)
    fNumberOfCycleLengths.clear();
 }
 
-ULong64_t TPPG::GetLastStatusTime(ULong64_t time, ppg_pattern pat, bool exact_flag) const
+ULong64_t TPPG::GetLastStatusTime(ULong64_t time, EPpgPattern pat) const
 {
-   /// Gets the last time that a status was given. If the ppg_pattern kJunk is passed, the
-   /// current status at the time "time" is looked for. If exact_flag is false, the bits of "pat"
-   /// are looked for and the rest of the bits in the sorted statuses ignored. If "exact_flag"
-   /// is true, the entire ppg pattern "pat" must be met.
+   /// Gets the last time that a status was given. If the EPpgPattern kJunk is passed, the
+   /// current status at the time "time" is looked for. 
    if(MapIsEmpty()) {
       printf("Empty\n");
       return 0;
@@ -158,7 +156,7 @@ ULong64_t TPPG::GetLastStatusTime(ULong64_t time, ppg_pattern pat, bool exact_fl
 
    auto               curppg_it = --(fPPGStatusMap->upper_bound(time));
    PPGMap_t::iterator ppg_it;
-   if(pat == kJunk) {
+   if(pat == EPpgPattern::kJunk) {
       for(ppg_it = curppg_it; ppg_it != fPPGStatusMap->begin(); --ppg_it) {
          if(curppg_it->second->GetNewPPG() == ppg_it->second->GetNewPPG() && curppg_it != ppg_it) {
             return ppg_it->first;
@@ -166,24 +164,16 @@ ULong64_t TPPG::GetLastStatusTime(ULong64_t time, ppg_pattern pat, bool exact_fl
       }
    } else {
       for(ppg_it = curppg_it; ppg_it != fPPGStatusMap->begin(); --ppg_it) {
-         if(exact_flag) {
-            if(pat == ppg_it->second->GetNewPPG()) {
-               return ppg_it->first;
-            }
-         } else {
-            //	printf("pat %x, ppg_it->first %lu, ppg_it->second->GetNewPPG()
-            //%x\n",pat,ppg_it->first,ppg_it->second->GetNewPPG());
-            if((pat & ppg_it->second->GetNewPPG()) != 0) {
-               return ppg_it->first;
-            }
-         }
+			if(pat == ppg_it->second->GetNewPPG()) {
+				return ppg_it->first;
+			}
       }
    }
    // printf("No previous status\n");
    return 0;
 }
 
-uint16_t TPPG::GetStatus(ULong64_t time) const
+EPpgPattern TPPG::GetStatus(ULong64_t time) const
 {
    /// Returns the current status of the PPG at the time "time".
    if(MapIsEmpty()) {
@@ -224,7 +214,7 @@ void TPPG::Print(Option_t* opt) const
    // print only an overview of the ppg
    // can't call non-const GetCycleLength here, so we do the calculation with local variables here
    PPGMap_t::iterator ppgIt;
-   std::map<uint16_t, int>  status;               // to calculate how often each different status occured
+   std::map<EPpgPattern, int>  status;               // to calculate how often each different status occured
    std::map<ULong64_t, int> numberOfCycleLengths; // to calculate the length of the whole cycle
    std::map<ULong64_t, int>
       numberOfStateLengths[4]; // to calculate the length of each state (tape move, background, beam on, and decay)
@@ -234,21 +224,21 @@ void TPPG::Print(Option_t* opt) const
       ULong64_t diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp());
       numberOfCycleLengths[diff]++;
       numberOfOffsets[(ppgIt->second->GetTimeStamp()) % 1000]++; // let's assume our offset is less than 10 us
-      switch(ppgIt->second->GetNewPPG() & 0xf) {
-      case kBackground:
-         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), kTapeMove);
+      switch(ppgIt->second->GetNewPPG()) {
+		case EPpgPattern::kBackground:
+         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kTapeMove);
          numberOfStateLengths[0][diff]++;
          break;
-      case kBeamOn:
-         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), kBackground);
+		case EPpgPattern::kBeamOn:
+         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kBackground);
          numberOfStateLengths[1][diff]++;
          break;
-      case kDecay:
-         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), kBeamOn);
+		case EPpgPattern::kDecay:
+         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kBeamOn);
          numberOfStateLengths[2][diff]++;
          break;
-      case kTapeMove:
-         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), kDecay);
+		case EPpgPattern::kTapeMove:
+         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kDecay);
          numberOfStateLengths[3][diff]++;
          break;
       default: break;
@@ -297,22 +287,22 @@ void TPPG::Print(Option_t* opt) const
    --it;
    ULong64_t lastTimeStamp = it->second->GetTimeStamp();
    for(int cycle = 1; time < lastTimeStamp; ++cycle) {
-      if(GetLastStatusTime(time, kTapeMove) != time) {
+      if(GetLastStatusTime(time, EPpgPattern::kTapeMove) != time) {
          printf("Missing tape move status at %12lld in %d. cycle, last tape move status came at %lld.\n", time, cycle,
-                GetLastStatusTime(time, kTapeMove));
+                GetLastStatusTime(time, EPpgPattern::kTapeMove));
       }
-      if(GetLastStatusTime(time + cycleLength, kBackground) != time + stateLength[0]) {
+      if(GetLastStatusTime(time + cycleLength, EPpgPattern::kBackground) != time + stateLength[0]) {
          printf("Missing background status at %12lld in %d. cycle, last background status came at %lld.\n",
-                time + stateLength[0], cycle, GetLastStatusTime(time + cycleLength, kBackground));
+                time + stateLength[0], cycle, GetLastStatusTime(time + cycleLength, EPpgPattern::kBackground));
       }
-      if(GetLastStatusTime(time + cycleLength, kBeamOn) != time + stateLength[0] + stateLength[1]) {
+      if(GetLastStatusTime(time + cycleLength, EPpgPattern::kBeamOn) != time + stateLength[0] + stateLength[1]) {
          printf("Missing beam on status at %12lld in %d. cycle, last beam on status came at %lld.\n",
-                time + stateLength[0] + stateLength[1], cycle, GetLastStatusTime(time + cycleLength, kBeamOn));
+                time + stateLength[0] + stateLength[1], cycle, GetLastStatusTime(time + cycleLength, EPpgPattern::kBeamOn));
       }
-      if(GetLastStatusTime(time + cycleLength, kDecay) != time + stateLength[0] + stateLength[1] + stateLength[2]) {
+      if(GetLastStatusTime(time + cycleLength, EPpgPattern::kDecay) != time + stateLength[0] + stateLength[1] + stateLength[2]) {
          printf("Missing decay status at %12lld in %d. cycle, last decay status came at %lld.\n",
                 time + stateLength[0] + stateLength[1] + stateLength[2], cycle,
-                GetLastStatusTime(time + cycleLength, kDecay));
+                GetLastStatusTime(time + cycleLength, EPpgPattern::kDecay));
       }
       time += cycleLength;
    }
@@ -559,7 +549,7 @@ Long64_t TPPG::Merge(TCollection* list)
    return 0;
 }
 
-ULong64_t TPPG::GetStatusStart(ppg_pattern pat)
+ULong64_t TPPG::GetStatusStart(EPpgPattern pat)
 {
    /// return the time in the cycle when pat starts
    return GetTimeInCycle(GetLastStatusTime(Last()->GetTimeStamp(), pat));

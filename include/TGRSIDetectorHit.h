@@ -156,7 +156,7 @@ public:
    virtual Double_t GetEnergyNonlinearity(double) const { return 0.0; }
 
    // The PPG is only stored in events that come out of the GRIFFIN DAQ
-   uint16_t GetPPGStatus() const;
+	EPpgPattern GetPPGStatus() const;
    Long64_t GetCycleTimeStamp() const;
 
    void ClearEnergy()
@@ -197,7 +197,7 @@ protected:
 private:
    mutable Double_t fTime{0.}; //!<! Calibrated Time of the hit
    mutable Double_t fEnergy{0.};    //!<! Energy of the Hit.
-   mutable uint16_t fPPGStatus{0}; //!<!
+   mutable EPpgPattern fPPGStatus{EPpgPattern::kJunk}; //!<!
 
    mutable Long64_t  fCycleTimeStamp{0}; //!<!
    mutable TChannel* fChannel{nullptr};        //!<!
