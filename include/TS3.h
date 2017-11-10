@@ -14,7 +14,7 @@
 
 class TS3 : public TGRSIDetector {
 public:
-   enum ES3Bits {
+   enum class ES3Bits {
       kPixelsSet = BIT(0),
       kBit1      = BIT(1),
       kBit2      = BIT(2),
@@ -25,7 +25,7 @@ public:
       kBit7      = BIT(7)
    };
 
-   enum ES3GlobalBits {
+   enum class ES3GlobalBits {
       kPreSector  = BIT(0), // Preference sector energy when building pixels
       kMultHit    = BIT(1), // Attempt to reconstruct multi strip-hit events
       kKeepShared = BIT(2), // When kMultHit, reconstruct rather than discard charge sharing
@@ -64,25 +64,25 @@ public:
 
    static bool PreferenceSector(bool set = true)
    {
-      SetGlobalBit(kPreSector, set);
+      SetGlobalBit(ES3GlobalBits::kPreSector, set);
       return set;
    }                                                                    //!<!
-   static bool SectorPreference() { return TestGlobalBit(kPreSector); } //!<!
+   static bool SectorPreference() { return TestGlobalBit(ES3GlobalBits::kPreSector); } //!<!
    static bool SetMultiHit(bool set = true)
    {
-      SetGlobalBit(kMultHit, set);
+      SetGlobalBit(ES3GlobalBits::kMultHit, set);
       return set;
    }                                                          //!<!
-   static bool MultiHit() { return TestGlobalBit(kMultHit); } //!<!
+   static bool MultiHit() { return TestGlobalBit(ES3GlobalBits::kMultHit); } //!<!
    static bool SetKeepShared(bool set = true)
    {
-      SetGlobalBit(kKeepShared, set);
+      SetGlobalBit(ES3GlobalBits::kKeepShared, set);
       return set;
    }                                                               //!<!
-   static bool KeepShared() { return TestGlobalBit(kKeepShared); } //!<!
+   static bool KeepShared() { return TestGlobalBit(ES3GlobalBits::kKeepShared); } //!<!
 
-   bool PixelsSet() const { return TestBitNumber(kPixelsSet); }
-   void SetPixels(bool flag = true) { SetBitNumber(kPixelsSet, flag); }
+   bool PixelsSet() const { return TestBitNumber(ES3Bits::kPixelsSet); }
+   void SetPixels(bool flag = true) { SetBitNumber(ES3Bits::kPixelsSet, flag); }
    void                BuildPixels();
 
    static TVector3 GetPosition(int ring, int sector, bool smear = false);
