@@ -188,8 +188,8 @@ protected:
    Bool_t IsPPGSet() const { return (fBitflags.TestBit(EBitFlag::kIsPPGSet)); }
 
 public:
-   void SetHitBit(enum EBitFlag, Bool_t set = true) const; // const here is dirty
-   bool TestHitBit(enum EBitFlag flag) const { return fBitflags.TestBit(flag); }
+   void SetHitBit(EBitFlag, Bool_t set = true) const; // const here is dirty
+   bool TestHitBit(EBitFlag flag) const { return fBitflags.TestBit(flag); }
 
 protected:
    UInt_t               fAddress{0};   ///< address of the the channel in the DAQ.

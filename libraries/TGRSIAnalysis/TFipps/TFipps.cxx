@@ -195,22 +195,22 @@ std::vector<UShort_t>* TFipps::GetAddbackFragVector()
 
 bool TFipps::IsAddbackSet() const
 {
-   return TestBitNumber(kIsAddbackSet);
+   return TestBitNumber(EFippsBits::kIsAddbackSet);
 }
 
 bool TFipps::IsCrossTalkSet() const
 {
-   return TestBitNumber(kIsCrossTalkSet);
+   return TestBitNumber(EFippsBits::kIsCrossTalkSet);
 }
 
 void TFipps::SetAddback(const Bool_t flag) const
 {
-   return SetBitNumber(kIsAddbackSet, flag);
+   return SetBitNumber(EFippsBits::kIsAddbackSet, flag);
 }
 
 void TFipps::SetCrossTalk(const Bool_t flag) const
 {
-   return SetBitNumber(kIsCrossTalkSet, flag);
+   return SetBitNumber(EFippsBits::kIsCrossTalkSet, flag);
 }
 
 TGRSIDetectorHit* TFipps::GetHit(const Int_t& idx)

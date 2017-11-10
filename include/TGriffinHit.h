@@ -89,7 +89,7 @@ public:
    TVector3 GetPosition() const override;
 
 private:
-   void SetGriffinFlag(enum EGriffinHitBits, Bool_t set);
+   void SetGriffinFlag(EGriffinHitBits, Bool_t set);
    Double_t GetDefaultDistance() const { return 110.; }
 
    /// \cond CLASSIMP
