@@ -116,12 +116,12 @@ private:
 
    TTransientBits<UChar_t> fS3Bits; // flags for transient members
    void                    ClearStatus() { fS3Bits = 0; }
-   void SetBitNumber(enum ES3Bits bit, Bool_t set = true);
-   Bool_t TestBitNumber(enum ES3Bits bit) const { return (fS3Bits.TestBit(bit)); }
+   void SetBitNumber(ES3Bits bit, Bool_t set = true);
+   Bool_t TestBitNumber(ES3Bits bit) const { return (fS3Bits.TestBit(bit)); }
 
    static TTransientBits<UShort_t> fgS3Bits; // Global Bit
-   static void SetGlobalBit(enum ES3GlobalBits bit, Bool_t set = true) { fgS3Bits.SetBit(bit, set); }
-   static Bool_t TestGlobalBit(enum ES3GlobalBits bit) { return (fgS3Bits.TestBit(bit)); }
+   static void SetGlobalBit(ES3GlobalBits bit, Bool_t set = true) { fgS3Bits.SetBit(bit, set); }
+   static Bool_t TestGlobalBit(ES3GlobalBits bit) { return (fgS3Bits.TestBit(bit)); }
 
    /// for geometery
    static int fRingNumber;   //!<!
