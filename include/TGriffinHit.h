@@ -18,7 +18,7 @@
 
 class TGriffinHit : public TGRSIDetectorHit {
 public:
-   enum EGriffinHitBits {
+   enum class EGriffinHitBits {
       kTotalPU1    = 1<<0,
       kTotalPU2    = 1<<1,
       kPUHitOffset = kTotalPU2,
