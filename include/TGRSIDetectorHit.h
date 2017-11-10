@@ -49,7 +49,7 @@ class TGRSIDetectorHit : public TObject {
 
    //
 public:
-   enum EBitFlag {
+   enum class EBitFlag {
       kIsEnergySet  = BIT(0), // same as BIT(0);
       kIsChannelSet = BIT(1),
       kBit2         = BIT(2),
@@ -70,8 +70,13 @@ public:
       kBase       = BIT(9),
       kIsAllSet   = 0xFFFF
    };
+	//EBitFlag operator &(EBitFlag lhs, EBitFlag rhs)
+	//{
+	//	return static_cast<EBitFlag>(static_cast<std::underlying_type<EBitFlag>::type>(lhs) &
+	//		                          static_cast<std::underlying_type<EBitFlag>::type>(rhs));
+	//}
 
-   enum ETimeFlag { kNone = BIT(0), kCFD = BIT(1), kWalk = BIT(2), kOffset = BIT(3), kAll = 0xFFFF };
+   enum class ETimeFlag { kNone = BIT(0), kCFD = BIT(1), kWalk = BIT(2), kOffset = BIT(3), kAll = 0xFFFF };
 
 public:
    TGRSIDetectorHit(const int& Address = 0xffffffff);
@@ -111,13 +116,13 @@ public:
    Double_t SetEnergy(const double& en) const
    {
       fEnergy = en;
-      SetHitBit(kIsEnergySet, true);
+      SetHitBit(EBitFlag::kIsEnergySet, true);
       return fEnergy;
    }
    Double_t SetTime(const Double_t& time) const
    {
       fTime = time;
-      SetHitBit(kIsTimeSet, true);
+      SetHitBit(EBitFlag::kIsTimeSet, true);
       return fTime;
    }
 
@@ -126,7 +131,7 @@ public:
    virtual double GetEnergy(Option_t* opt = "") const;
    virtual Long64_t GetTimeStamp(Option_t* opt = "") const;
    Long64_t         GetRawTimeStamp(Option_t* = "") const { return fTimeStamp; }
-   virtual Double_t GetTime(const UInt_t& correct_flag = kAll,
+   virtual Double_t GetTime(const ETimeFlag& correct_flag = ETimeFlag::kAll,
                             Option_t*     opt          = "") const; ///< Returns a time value to the nearest nanosecond!
    // TODO: Fix Getters to have non-const types
    virtual Int_t               GetCfd() const { return fCfd; }            //!<!
@@ -139,7 +144,7 @@ public:
    {
       if(!IsChannelSet()) {
          fChannel = TChannel::GetChannel(fAddress);
-         SetHitBit(kIsChannelSet, true);
+         SetHitBit(EBitFlag::kIsChannelSet, true);
       }
       return fChannel;
    } //!<!
@@ -162,12 +167,12 @@ public:
    void ClearEnergy()
    {
       fEnergy = 0.0;
-      SetHitBit(kIsEnergySet, false);
+      SetHitBit(EBitFlag::kIsEnergySet, false);
    }
    void ClearChannel()
    {
       fChannel = nullptr;
-      SetHitBit(kIsChannelSet, false);
+      SetHitBit(EBitFlag::kIsChannelSet, false);
    }
 
    static TVector3* GetBeamDirection() { return &fBeamDirection; }
@@ -177,10 +182,10 @@ private:
    //     TVector3(0., 0., 0.); }
 
 protected:
-   Bool_t IsEnergySet() const { return (fBitflags.TestBit(kIsEnergySet)); }
-   Bool_t IsChannelSet() const { return (fBitflags.TestBit(kIsChannelSet)); }
-   Bool_t IsTimeSet() const { return (fBitflags.TestBit(kIsTimeSet)); }
-   Bool_t IsPPGSet() const { return (fBitflags.TestBit(kIsPPGSet)); }
+   Bool_t IsEnergySet() const { return (fBitflags.TestBit(EBitFlag::kIsEnergySet)); }
+   Bool_t IsChannelSet() const { return (fBitflags.TestBit(EBitFlag::kIsChannelSet)); }
+   Bool_t IsTimeSet() const { return (fBitflags.TestBit(EBitFlag::kIsTimeSet)); }
+   Bool_t IsPPGSet() const { return (fBitflags.TestBit(EBitFlag::kIsPPGSet)); }
 
 public:
    void SetHitBit(enum EBitFlag, Bool_t set = true) const; // const here is dirty

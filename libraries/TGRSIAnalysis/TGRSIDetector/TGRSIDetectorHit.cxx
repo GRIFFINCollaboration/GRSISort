@@ -53,7 +53,7 @@ void TGRSIDetectorHit::Streamer(TBuffer& R__b)
    }
 }
 
-Double_t TGRSIDetectorHit::GetTime(const UInt_t&, Option_t*) const
+Double_t TGRSIDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
 {
    if(IsTimeSet()) {
       return fTime;
@@ -97,7 +97,7 @@ Float_t TGRSIDetectorHit::GetCharge() const
 
 double TGRSIDetectorHit::GetEnergy(Option_t*) const
 {
-   if(TestHitBit(kIsEnergySet)) {
+   if(TestHitBit(EBitFlag::kIsEnergySet)) {
       return fEnergy;
    }
    TChannel* channel = GetChannel();
@@ -250,7 +250,7 @@ EPpgPattern TGRSIDetectorHit::GetPPGStatus() const
 
    fPPGStatus      = TPPG::Get()->GetStatus(GetTimeStamp());
    fCycleTimeStamp = GetTimeStamp() - TPPG::Get()->GetLastStatusTime(GetTimeStamp());
-   SetHitBit(kIsPPGSet, true);
+   SetHitBit(EBitFlag::kIsPPGSet, true);
    return fPPGStatus;
 }
 
@@ -266,7 +266,7 @@ Long64_t TGRSIDetectorHit::GetCycleTimeStamp() const
 
    fPPGStatus      = TPPG::Get()->GetStatus(GetTimeStamp());
    fCycleTimeStamp = GetTimeStamp() - TPPG::Get()->GetLastStatusTime(GetTimeStamp());
-   SetHitBit(kIsPPGSet, true);
+   SetHitBit(EBitFlag::kIsPPGSet, true);
    return fCycleTimeStamp;
 }
 

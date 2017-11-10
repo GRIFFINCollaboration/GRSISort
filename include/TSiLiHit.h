@@ -61,7 +61,7 @@ public:
 
    void UseFitCharge(bool set = true)
    {
-      SetHitBit(kIsEnergySet, false);
+      SetHitBit(EBitFlag::kIsEnergySet, false);
       fSiLiHitBits.SetBit(kUseFitCharge, set);
    }
 
