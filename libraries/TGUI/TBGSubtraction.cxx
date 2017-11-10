@@ -7,17 +7,17 @@
 
 /// \cond CLASSIMP
 ClassImp(TBGSubtraction)
-   /// \endcond
+/// \endcond
 
-   TBGSubtraction::TBGSubtraction(TH2* mat, const char* gate_axis)
+TBGSubtraction::TBGSubtraction(TH2* mat, const char* gate_axis)
    : TGMainFrame(nullptr, 10, 10, kHorizontalFrame), fProjectionCanvas(nullptr), fGateCanvas(nullptr), fMatrix(mat),
      fProjection(nullptr), fGateHist(nullptr), fBGHist1(nullptr), fBGHist2(nullptr), fSubtractedHist(nullptr), fGateSlider(nullptr),
      fBGSlider1(nullptr), fBGSlider2(nullptr), fPeakSlider(nullptr), fBGParamEntry(nullptr), fBGCheckButton1(nullptr), fBGCheckButton2(nullptr), 
      fPeakSkewCheckButton(nullptr), fAutoUpdateCheckButton(nullptr), fBly(nullptr), fBly1(nullptr), fGateFrame(nullptr), 
      fProjectionFrame(nullptr), fAxisCombo(nullptr), fLowGateMarker(nullptr), fHighGateMarker(nullptr), fLowBGMarker1(nullptr),  
      fHighBGMarker1(nullptr), fLowBGMarker2(nullptr), fHighBGMarker2(nullptr), fLowPeakMarker(nullptr), fHighPeakMarker(nullptr), 
-     fPeakMarker(nullptr), fGateAxis(0), fForceUpdate(true), fPeakFit(nullptr) {
-
+     fPeakMarker(nullptr), fGateAxis(0), fForceUpdate(true), fPeakFit(nullptr)
+{
    TString tmp_gate_word(gate_axis);
    tmp_gate_word.ToUpper();
    if(tmp_gate_word.EqualTo("X")) {
@@ -45,10 +45,10 @@ ClassImp(TBGSubtraction)
    fCurrentFile = TFile::CurrentFile();
 }
 
-void TBGSubtraction::MakeConnections(){
-
-   //Connect Canvases to recognize that they have been zoomed
-   //This function includes setting the slider, and drawing the gate markers.
+void TBGSubtraction::MakeConnections()
+{
+   ///Connect Canvases to recognize that they have been zoomed
+   ///This function includes setting the slider, and drawing the gate markers.
    fProjectionCanvas->GetCanvas()->Connect("RangeChanged()", "TBGSubtraction", this, "DoProjectionCanvasZoomed()");
 
    fGateCanvas->GetCanvas()->Connect("RangeChanged()", "TBGSubtraction", this, "DoGateCanvasZoomed()");
@@ -102,7 +102,8 @@ void TBGSubtraction::MakeConnections(){
    fAutoUpdateCheckButton->Connect("Clicked()","TBGSubtraction",this,"SetStatusFromUpdateCheckButton()");
 }
 
-void TBGSubtraction::ResetInterface(){
+void TBGSubtraction::ResetInterface()
+{
    Double_t def_gate_low  = 0.3;
    Double_t def_gate_high = 0.4; 
    Double_t def_bg_low    = 0.7; 
@@ -159,7 +160,8 @@ void TBGSubtraction::ResetInterface(){
    DrawPeakMarkers();
 }
 
-void TBGSubtraction::InitializeInterface(){
+void TBGSubtraction::InitializeInterface()
+{
    //Set up axis combo box for selecting x or y axis
    //This has to happen at the start to create the projection
    fAxisCombo->Resize(150, 20);
@@ -174,10 +176,10 @@ void TBGSubtraction::InitializeInterface(){
    DoProjectionCanvasZoomed();
 
    SetStatusFromUpdateCheckButton();
-   
 }
 
-void TBGSubtraction::BuildInterface(){
+void TBGSubtraction::BuildInterface()
+{
    // Create a main frame
    fProjectionFrame = new TGVerticalFrame(this, 400, 400);
    // Create canvas widget
@@ -355,7 +357,8 @@ TBGSubtraction::~TBGSubtraction()
    }
 }
 
-void TBGSubtraction::UpdateBackground(){
+void TBGSubtraction::UpdateBackground()
+{
    // Draws function graphics in randomly chosen interval
    TCanvas* fCanvas = fProjectionCanvas->GetCanvas();
    fCanvas->cd();
@@ -371,7 +374,8 @@ void TBGSubtraction::UpdateBackground(){
    fGateCanvas->GetCanvas()->cd();
 }
 
-void TBGSubtraction::DoPeakFit(){
+void TBGSubtraction::DoPeakFit()
+{
 
    if(fPeakFit) fPeakFit->Delete(); fPeakFit = nullptr;
    
@@ -387,7 +391,8 @@ void TBGSubtraction::DoPeakFit(){
    fGateCanvas->GetCanvas()->Update();
 }
 
-void TBGSubtraction::DrawPeak(){
+void TBGSubtraction::DrawPeak()
+{
    if(fPeakFit)
       fPeakFit->Draw("same");
 }
@@ -401,22 +406,26 @@ void TBGSubtraction::ClickedBGButton1()
    }
 }
 
-void TBGSubtraction::UpdateGateSlider(){
+void TBGSubtraction::UpdateGateSlider()
+{
    fGateSlider->SetPosition(fGateEntryLow->GetNumber(),fGateEntryHigh->GetNumber());
    fGateSlider->SetRange(fGateEntryLow->GetNumMin(), fGateEntryHigh->GetNumMax());
 }
 
-void TBGSubtraction::UpdateBGSlider1(){
+void TBGSubtraction::UpdateBGSlider1()
+{
    fBGSlider1->SetPosition(fBGEntryLow1->GetNumber(), fBGEntryHigh1->GetNumber());
    fBGSlider1->SetRange(fBGEntryLow1->GetNumMin(), fBGEntryHigh1->GetNumMax());
 }
 
-void TBGSubtraction::UpdateBGSlider2(){
+void TBGSubtraction::UpdateBGSlider2()
+{
    fBGSlider2->SetPosition(fBGEntryLow2->GetNumber(), fBGEntryHigh2->GetNumber());
    fBGSlider2->SetRange(fBGEntryLow2->GetNumMin(), fBGEntryHigh2->GetNumMax());
 }
 
-void TBGSubtraction::UpdateProjectionSliders(){
+void TBGSubtraction::UpdateProjectionSliders()
+{
    //Something has happened, so we have to let the sliders know about it
    //This is as simple as checking the status of the "master" entry boxes
    UpdateGateSlider();
@@ -424,7 +433,8 @@ void TBGSubtraction::UpdateProjectionSliders(){
    UpdateBGSlider2();
 }
 
-void TBGSubtraction::UpdatePeakSliders(){
+void TBGSubtraction::UpdatePeakSliders()
+{
    //Something has happened, so we have to let the sliders know about it
    //This is as simple as checking the status of the "master" entry boxes
    //The range has to be set first so that the other slider pieces don't get confused.
@@ -487,7 +497,8 @@ void TBGSubtraction::DoSlider(Int_t pos)
    };
 }
 
-void TBGSubtraction::AxisComboSelected() {
+void TBGSubtraction::AxisComboSelected()
+{
    static int old_selection = -1;
    fGateAxis                = fAxisCombo->GetSelected();
 
@@ -509,7 +520,8 @@ void TBGSubtraction::AxisComboSelected() {
    }
 }
 
-void TBGSubtraction::DrawPeakMarkers(){
+void TBGSubtraction::DrawPeakMarkers()
+{
    if(fLowPeakMarker == nullptr){
       fLowPeakMarker = new GMarker();
    }
@@ -573,9 +585,9 @@ void TBGSubtraction::DrawPeakMarkers(){
    }
 }
 
-void TBGSubtraction::DrawBGMarkers(TGCheckButton *&check_button, GMarker *&low_marker, GMarker *&high_marker, TGNumberEntry *&low_entry, TGNumberEntry *&high_entry, Int_t color){
-
-      //Only Draw the BG Markers if BG is applied.
+void TBGSubtraction::DrawBGMarkers(TGCheckButton *&check_button, GMarker *&low_marker, GMarker *&high_marker, TGNumberEntry *&low_entry, TGNumberEntry *&high_entry, Int_t color)
+{
+	//Only Draw the BG Markers if BG is applied.
    if((check_button != nullptr) && check_button->IsDown()) {
       if(low_marker == nullptr) {
          low_marker = new GMarker();
@@ -619,21 +631,25 @@ void TBGSubtraction::DrawBGMarkers(TGCheckButton *&check_button, GMarker *&low_m
    
 }
 
-void TBGSubtraction::DrawBGMarkers1(){
+void TBGSubtraction::DrawBGMarkers1()
+{
    DrawBGMarkers(fBGCheckButton1, fLowBGMarker1, fHighBGMarker1, fBGEntryLow1, fBGEntryHigh1);
 }
 
-void TBGSubtraction::DrawBGMarkers2(){
+void TBGSubtraction::DrawBGMarkers2()
+{
    DrawBGMarkers(fBGCheckButton2, fLowBGMarker2, fHighBGMarker2, fBGEntryLow2, fBGEntryHigh2,kMagenta);
 }
 
-void TBGSubtraction::DrawAllMarkers(){
+void TBGSubtraction::DrawAllMarkers()
+{
    DrawGateMarkers();
    DrawBGMarkers1();
    DrawBGMarkers2();
 }
 
-void TBGSubtraction::DrawGateMarkers(){
+void TBGSubtraction::DrawGateMarkers()
+{
    if(fLowGateMarker == nullptr) {
       fLowGateMarker = new GMarker();
    }
@@ -678,7 +694,8 @@ void TBGSubtraction::DrawGateMarkers(){
 
 }
 
-void TBGSubtraction::DoEntry(Long_t){
+void TBGSubtraction::DoEntry(Long_t)
+{
 
    TGNumberEntry* te = reinterpret_cast<TGNumberEntry*>(gTQSender);
    int            id = te->WidgetId();
@@ -719,7 +736,8 @@ void TBGSubtraction::DoEntry(Long_t){
    };
 }
 
-void TBGSubtraction::DoGateCanvasZoomed(){
+void TBGSubtraction::DoGateCanvasZoomed()
+{
    //If we zoom in on this canvas, we need to update the sliders and Number boxes appropriately.
    Double_t xmin, ymin, xmax, ymax;
    fGateCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
@@ -748,7 +766,8 @@ void TBGSubtraction::DoGateCanvasZoomed(){
    DrawPeakMarkers();
 }
 
-void TBGSubtraction::DoProjectionCanvasZoomed(){
+void TBGSubtraction::DoProjectionCanvasZoomed()
+{
    //If we zoom in on this canvas, we need to update the sliders and Number boxes appropriately.
    Double_t xmin, ymin, xmax, ymax;
    fProjectionCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
@@ -796,14 +815,16 @@ void TBGSubtraction::DoProjectionCanvasZoomed(){
    //DoGateProjection();
 }
 
-void TBGSubtraction::DoAllGates(){ 
+void TBGSubtraction::DoAllGates()
+{ 
    MakeGateHisto();
    MakeBGHisto1();
    MakeBGHisto2();
 }
 
 
-void TBGSubtraction::MakeGateHisto(){
+void TBGSubtraction::MakeGateHisto()
+{
    if(fGateHist != nullptr) {
       delete fGateHist;
    }
@@ -823,7 +844,8 @@ void TBGSubtraction::MakeGateHisto(){
    fGateHist->Sumw2();
 }
 
-void TBGSubtraction::MakeBGHisto1(){
+void TBGSubtraction::MakeBGHisto1()
+{
    Double_t xmin, ymin, xmax, ymax;
    fProjectionCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
    
@@ -845,7 +867,8 @@ void TBGSubtraction::MakeBGHisto1(){
    fBGHist1->Sumw2();
 }
 
-void TBGSubtraction::MakeBGHisto2(){
+void TBGSubtraction::MakeBGHisto2()
+{
    if(fBGHist2 != nullptr) {
       delete fBGHist2;
    }
@@ -864,7 +887,8 @@ void TBGSubtraction::MakeBGHisto2(){
    fBGHist2->Sumw2();
 }
 
-void TBGSubtraction::DoGateProjection(){
+void TBGSubtraction::DoGateProjection()
+{
    TH1*     bg_hist       = nullptr;
    Double_t under_peak_bg = 0.0;
    //Make sure one of the two buttons are checked
@@ -916,7 +940,8 @@ void TBGSubtraction::DoGateProjection(){
 
 }
 
-void TBGSubtraction::DoProjection(){
+void TBGSubtraction::DoProjection()
+{
    if(fGateHist != nullptr) {
       delete fGateHist;
    }
