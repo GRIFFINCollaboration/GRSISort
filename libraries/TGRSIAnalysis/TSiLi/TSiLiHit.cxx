@@ -187,7 +187,7 @@ bool TSiLiHit::MagnetShadow() const
 
 double TSiLiHit::GetFitEnergy() const
 {
-   if(fSiLiHitBits.TestBit(kUseFitCharge)) {
+   if(fSiLiHitBits.TestBit(ESiLiHitBits::kUseFitCharge)) {
       return TGRSIDetectorHit::GetEnergy();
    }
    TChannel* chan = GetChannel();
@@ -199,7 +199,7 @@ double TSiLiHit::GetFitEnergy() const
 
 double TSiLiHit::GetEnergy(Option_t*) const
 {
-   if(TestHitBit(EBitFlag::kIsEnergySet) || !fSiLiHitBits.TestBit(kUseFitCharge)) {
+   if(TestHitBit(EBitFlag::kIsEnergySet) || !fSiLiHitBits.TestBit(ESiLiHitBits::kUseFitCharge)) {
       return TGRSIDetectorHit::GetEnergy(); // If not fitting waveforms, be normal.
    }
    TChannel* chan = GetChannel();
