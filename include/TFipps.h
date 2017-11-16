@@ -32,7 +32,7 @@
 
 class TFipps : public TGRSIDetector {
 public:
-   enum EFippsBits {
+   enum class EFippsBits {
       kIsAddbackSet   = 1<<0,
       kIsCrossTalkSet = 1<<1,
       kBit2           = 1<<2,
@@ -100,8 +100,8 @@ public:
 private:
    static TVector3 gCloverPosition[17];                    //!<! Position of each HPGe Clover
    void            ClearStatus() const { fFippsBits = 0; } //!<!
-   void SetBitNumber(enum EFippsBits bit, Bool_t set) const;
-   Bool_t TestBitNumber(enum EFippsBits bit) const { return fFippsBits.TestBit(bit); }
+   void SetBitNumber(EFippsBits bit, Bool_t set) const;
+   Bool_t TestBitNumber(EFippsBits bit) const { return fFippsBits.TestBit(bit); }
 
    // Cross-Talk stuff
 public:

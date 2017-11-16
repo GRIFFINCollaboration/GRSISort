@@ -30,10 +30,8 @@
 
 class TMidasFile : public TRawFile {
 public:
-   enum EOpenType { kRead, kWrite };
-
    TMidasFile(); ///< default constructor
-   TMidasFile(const char* filename, EOpenType open_type = kRead);
+   TMidasFile(const char* filename, TRawFile::EOpenType open_type = TRawFile::EOpenType::kRead);
    ~TMidasFile() override; ///< destructor
 
    bool Open(const char* filename) override; ///< Open input file

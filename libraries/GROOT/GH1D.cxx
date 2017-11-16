@@ -187,7 +187,7 @@ GH1D* GH1D::Project(double value_low, double value_high) const
 }
 
 GH1D* GH1D::Project_Background(double value_low, double value_high, double bg_value_low, double bg_value_high,
-                               kBackgroundSubtraction mode) const
+                               EBackgroundSubtraction mode) const
 {
    if((parent.GetObject() != nullptr) && parent.GetObject()->InheritsFrom(GH2Base::Class()) && projection_axis != -1) {
       if(value_low > value_high) {

@@ -253,7 +253,7 @@ int QueueEvents(TMidasFile* infile, std::vector<TEventTime*>* eventQ)
          if(banksize > 0) {
             int frags;
             try {
-               frags = parser.GriffinDataToFragment(reinterpret_cast<uint32_t*>(ptr), banksize, TDataParser::kGRF2,
+               frags = parser.GriffinDataToFragment(reinterpret_cast<uint32_t*>(ptr), banksize, TDataParser::EBank::kGRF2,
                                                     mserial, mtime);
             } catch(TDataParserException& e) {
                frags = -e.GetFailedWord();

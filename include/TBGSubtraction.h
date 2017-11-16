@@ -26,6 +26,9 @@
 #include "TFile.h"
 
 class TBGSubtraction : public TGMainFrame {
+	// these enums are used to communicate with ROOT classes
+	// since those classes take ints as arguments there isn't
+	// much gained by changing them to enum classes
    enum ESliders {
       kGateSlider,
       kBGSlider1,

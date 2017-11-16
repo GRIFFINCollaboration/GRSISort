@@ -26,9 +26,9 @@
 
 class TEventBuildingLoop : public StoppableThread {
 public:
-   enum EBuildMode { kTimestamp, kTriggerId };
+   enum class EBuildMode { kTimestamp, kTriggerId };
 
-   static TEventBuildingLoop* Get(std::string name = "", EBuildMode mode = kTimestamp);
+   static TEventBuildingLoop* Get(std::string name = "", EBuildMode mode = EBuildMode::kTimestamp);
    ~TEventBuildingLoop() override;
 
 #ifndef __CINT__

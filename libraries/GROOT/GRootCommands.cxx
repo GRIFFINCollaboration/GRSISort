@@ -130,7 +130,7 @@ bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg
    if(bg_low > 0 && bg_high > 0) {
       BGHigh->Draw("same");
       BGLow->Draw("same");
-      Proj_gated = Proj_x_Clone->Project_Background(low, high, bg_low, bg_high, kRegionBackground);
+      Proj_gated = Proj_x_Clone->Project_Background(low, high, bg_low, bg_high, EBackgroundSubtraction::kRegionBackground);
    } else {
       Proj_gated = Proj_x_Clone->Project(low, high);
    }
@@ -472,14 +472,22 @@ TH2* AddOffset(TH2* mat, double offset, EAxis axis)
          double newy = mat->GetYaxis()->GetBinCenter(y);
          ;
          double bcont = mat->GetBinContent(x, y);
-         if((axis & kXAxis) != 0) {
+         if((axis & EAxis::kXAxis) != static_cast<EAxis>(0)) {
             newx += offset;
          }
-         if((axis & kYAxis) != 0) {
+         if((axis & EAxis::kYAxis) != static_cast<EAxis>(0)) {
             newy += offset;
          }
          toreturn->Fill(newx, newy, bcont);
       }
    }
    return toreturn;
+}
+
+EAxis operator &(EAxis lhs, EAxis rhs)
+{
+	return static_cast<EAxis> (
+			static_cast<std::underlying_type<EAxis>::type>(lhs) &
+			static_cast<std::underlying_type<EAxis>::type>(rhs)
+			);
 }

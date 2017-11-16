@@ -136,20 +136,20 @@ void TGriffinHit::SetGriffinFlag(enum EGriffinHitBits flag, Bool_t set)
 UShort_t TGriffinHit::NPileUps() const
 {
    // The pluralized test bits returns the actual value of the fBits masked. Not just a bool.
-   return static_cast<UShort_t>(fGriffinHitBits.TestBits(kTotalPU1) + fGriffinHitBits.TestBits(kTotalPU2));
+   return static_cast<UShort_t>(fGriffinHitBits.TestBits(EGriffinHitBits::kTotalPU1) + fGriffinHitBits.TestBits(EGriffinHitBits::kTotalPU2));
 }
 
 UShort_t TGriffinHit::PUHit() const
 {
    // The pluralized test bits returns the actual value of the fBits masked. Not just a bool.
-   return static_cast<UShort_t>(fGriffinHitBits.TestBits(kPUHit1) +
-                                (fGriffinHitBits.TestBits(kPUHit2) >> kPUHitOffset));
+   return static_cast<UShort_t>(fGriffinHitBits.TestBits(EGriffinHitBits::kPUHit1) +
+                               (fGriffinHitBits.TestBits(EGriffinHitBits::kPUHit2) >> static_cast<std::underlying_type<EGriffinHitBits>::type>(EGriffinHitBits::kPUHitOffset)));
 }
 
 void TGriffinHit::SetNPileUps(UChar_t npileups)
 {
-   SetGriffinFlag(kTotalPU1, (npileups & kTotalPU1) != 0);
-   SetGriffinFlag(kTotalPU2, (npileups & kTotalPU2) != 0);
+   SetGriffinFlag(EGriffinHitBits::kTotalPU1, (npileups & static_cast<std::underlying_type<EGriffinHitBits>::type>(EGriffinHitBits::kTotalPU1)) != 0);
+   SetGriffinFlag(EGriffinHitBits::kTotalPU2, (npileups & static_cast<std::underlying_type<EGriffinHitBits>::type>(EGriffinHitBits::kTotalPU2)) != 0);
 }
 
 void TGriffinHit::SetPUHit(UChar_t puhit)
@@ -159,8 +159,8 @@ void TGriffinHit::SetPUHit(UChar_t puhit)
    }
    // The pluralized test bits returns the actual value of the fBits masked. Not just a bool.
 
-   SetGriffinFlag(kPUHit1, ((puhit<<kPUHitOffset) & kPUHit1) != 0);
-   SetGriffinFlag(kPUHit2, ((puhit<<kPUHitOffset) & kPUHit2) != 0);
+   SetGriffinFlag(EGriffinHitBits::kPUHit1, ((puhit<<static_cast<std::underlying_type<EGriffinHitBits>::type>(EGriffinHitBits::kPUHitOffset)) & static_cast<std::underlying_type<EGriffinHitBits>::type>(EGriffinHitBits::kPUHit1)) != 0);
+   SetGriffinFlag(EGriffinHitBits::kPUHit2, ((puhit<<static_cast<std::underlying_type<EGriffinHitBits>::type>(EGriffinHitBits::kPUHitOffset)) & static_cast<std::underlying_type<EGriffinHitBits>::type>(EGriffinHitBits::kPUHit2)) != 0);
 }
 
 Double_t TGriffinHit::GetNoCTEnergy(Option_t*) const

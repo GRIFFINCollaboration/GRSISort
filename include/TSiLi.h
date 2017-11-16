@@ -15,7 +15,7 @@
 
 class TSiLi : public TGRSIDetector {
 public:
-   enum ESiLiBits {
+   enum class ESiLiBits {
       kAddbackSet = BIT(0),
       kSiLiBit1   = BIT(1),
       kSiLiBit2   = BIT(2),
@@ -57,7 +57,7 @@ public:
 
    void ResetAddback()
    {
-      fSiLiBits.SetBit(kAddbackSet, false);
+      fSiLiBits.SetBit(ESiLiBits::kAddbackSet, false);
       fAddbackHits.clear();
    }
 
@@ -108,7 +108,6 @@ public:
    static double SiLiDecayTime[120];
 
    static std::string fPreAmpName[8];
-   
 	
 private:
    std::vector<TSiLiHit> fSiLiHits;
