@@ -35,12 +35,12 @@
 #include "Globals.h"
 
 enum class EPpgPattern {
-	kBeamOn     = 0x0001,
-	kDecay      = 0x0004,
-	kTapeMove   = 0x0008,
-	kBackground = 0x0002,
-	kSync       = 0xc000,
-	kJunk       = 0xFFFF
+	kBeamOn     = 0x01,
+	kDecay      = 0x04,
+	kTapeMove   = 0x08,
+	kBackground = 0x02,
+	//kSync       = 0xc000,
+	kJunk       = 0xFF
 };
 
 class TPPGData : public TObject {
@@ -64,7 +64,7 @@ public:
    void SetNewPPG(EPpgPattern newPpg) { fNewPpg = newPpg; }
    void SetNewPPG(UInt_t newPpg)
 	{ 
-		fNewPpg = static_cast<EPpgPattern>(newPpg&0xffff);
+		fNewPpg = static_cast<EPpgPattern>(newPpg&0xff);
 		switch(fNewPpg) {
 			case EPpgPattern::kBeamOn: case EPpgPattern::kDecay: case EPpgPattern::kTapeMove:
 			case EPpgPattern::kBackground: case EPpgPattern::kSync: case EPpgPattern::kJunk:
@@ -77,7 +77,7 @@ public:
    void SetOldPPG(EPpgPattern oldPpg) { fOldPpg = oldPpg; }
    void SetOldPPG(UInt_t oldPpg)
 	{
-		fOldPpg = static_cast<EPpgPattern>(oldPpg&0xffff);
+		fOldPpg = static_cast<EPpgPattern>(oldPpg&0xff);
 		switch(fOldPpg) {
 			case EPpgPattern::kBeamOn: case EPpgPattern::kDecay: case EPpgPattern::kTapeMove:
 			case EPpgPattern::kBackground: case EPpgPattern::kSync: case EPpgPattern::kJunk:
