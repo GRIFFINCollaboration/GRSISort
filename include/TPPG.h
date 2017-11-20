@@ -64,26 +64,26 @@ public:
    void SetNewPPG(EPpgPattern newPpg) { fNewPpg = newPpg; }
    void SetNewPPG(UInt_t newPpg)
 	{ 
-		fNewPpg = static_cast<EPpgPattern>(newPpg);
+		fNewPpg = static_cast<EPpgPattern>(newPpg&0xffff);
 		switch(fNewPpg) {
 			case EPpgPattern::kBeamOn: case EPpgPattern::kDecay: case EPpgPattern::kTapeMove:
 			case EPpgPattern::kBackground: case EPpgPattern::kSync: case EPpgPattern::kJunk:
 				break;
 			default:
-				std::cout<<"Warning, unkown ppg pattern 0x"<<std::hex<<newPpg<<std::dec<<", setting new pattern to kJunk!"<<std::endl;
+				std::cout<<"Warning, unknown ppg pattern 0x"<<std::hex<<newPpg<<std::dec<<", setting new pattern to kJunk!"<<std::endl;
 				fNewPpg = EPpgPattern::kJunk;
 		}
 	}
    void SetOldPPG(EPpgPattern oldPpg) { fOldPpg = oldPpg; }
    void SetOldPPG(UInt_t oldPpg)
 	{
-		fOldPpg = static_cast<EPpgPattern>(oldPpg);
+		fOldPpg = static_cast<EPpgPattern>(oldPpg&0xffff);
 		switch(fOldPpg) {
 			case EPpgPattern::kBeamOn: case EPpgPattern::kDecay: case EPpgPattern::kTapeMove:
 			case EPpgPattern::kBackground: case EPpgPattern::kSync: case EPpgPattern::kJunk:
 				break;
 			default:
-				std::cout<<"Warning, unkown ppg pattern 0x"<<std::hex<<oldPpg<<std::dec<<", setting old pattern to kJunk!"<<std::endl;
+				std::cout<<"Warning, unknown ppg pattern 0x"<<std::hex<<oldPpg<<std::dec<<", setting old pattern to kJunk!"<<std::endl;
 				fOldPpg = EPpgPattern::kJunk;
 		}
 	}
