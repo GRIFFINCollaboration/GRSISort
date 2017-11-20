@@ -24,6 +24,7 @@ TGRSIProof* gGRSIProof;
 TGRSIOptions* gGRSIOpt;
 TStopwatch* gStopwatch;
 
+bool startedProof = false;
 bool controlC = false;
 
 void Analyze(const char* tree_type)
@@ -78,16 +79,18 @@ void AtExitHandler()
 	// if the programm is killed with ctrl-c (via sigaction and HandleSignal)
 	if(controlC) return;
 	controlC = true;
-	std::cout<<"getting session logs ..."<<std::endl;
-   TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
-   if(pl != nullptr) {
-      pl->Save("*", gGRSIOpt->LogFile().c_str());
-   } else {
-      std::cout<<"Failed to get logs!"<<std::endl;
-   }
+	if(startedProof) {
+		std::cout<<"getting session logs ..."<<std::endl;
+		TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
+		if(pl != nullptr) {
+			pl->Save("*", gGRSIOpt->LogFile().c_str());
+		} else {
+			std::cout<<"Failed to get logs!"<<std::endl;
+		}
 
-	std::cout<<"stopping all workers ..."<<std::endl;
-	gGRSIProof->StopProcess(true);
+		std::cout<<"stopping all workers ..."<<std::endl;
+		gGRSIProof->StopProcess(true);
+	}
 	
 	// print time it took to run grsiproof
    double realTime = gStopwatch->RealTime();
@@ -96,8 +99,9 @@ void AtExitHandler()
    int min = static_cast<int>(realTime / 60);
    realTime -= min * 60;
    std::cout<<DMAGENTA<<std::endl
-            <<"Done after "<<hour<<":"<<std::setfill('0')<<std::setw(2)<<min<<":"<<std::setprecision(3)<<std::fixed<<realTime
-            <<" h:m:s"<<std::endl;
+            <<"Done after "<<hour<<":"<<std::setfill('0')<<std::setw(2)<<min<<":"
+				<<std::setprecision(3)<<std::fixed<<realTime<<" h:m:s"
+				<<RESET_COLOR<<std::endl;
 }
 
 void HandleSignal(int)
@@ -120,7 +124,14 @@ static void CatchSignals()
 int main(int argc, char** argv)
 {
 	gStopwatch = new TStopwatch;
-	gGRSIOpt = TGRSIOptions::Get(argc, argv);
+	try {
+		gGRSIOpt = TGRSIOptions::Get(argc, argv);
+		if(gGRSIOpt->ShouldExit()) {
+			return 0;
+		}
+	} catch(ParseError& e) {
+		return 1;
+	}
 
 	std::atexit(AtExitHandler);
 	CatchSignals();
@@ -173,6 +184,9 @@ int main(int argc, char** argv)
       std::cout<<"Can't connect to proof"<<std::endl;
       return 0;
    }
+
+	startedProof = true;
+
    gGRSIProof->SetBit(TProof::kUsingSessionGui);
    gGRSIProof->AddEnvVar("GRSISYS", pPath);
    gInterpreter->AddIncludePath(Form("%s/include", pPath));
