@@ -151,7 +151,7 @@ public:
    int              GetCrystalNumber() const;
    const TMnemonic* GetMnemonic() const { return fMnemonic.Address(); }
    TClass*          GetClassType() const { return fMnemonic.Value().GetClassType(); }
-   void SetClassType(TClass* cl_type) { fMnemonic.Value().SetClassType(cl_type); }
+   void SetClassType(TClass* cl_type) { fMnemonic.Address()->SetClassType(cl_type); }
 
    int          GetNumber() const { return fNumber.Value(); }
    unsigned int GetAddress() const { return fAddress; }
@@ -180,12 +180,12 @@ public:
    std::vector<double>  GetEFFCoeff() const { return fEFFCoefficients.Value(); }
    std::vector<double>  GetCTCoeff() const { return fCTCoefficients.Value(); }
 
-   inline void AddENGCoefficient(Float_t temp) { fENGCoefficients.Value().push_back(temp); }
-   inline void AddCFDCoefficient(double temp) { fCFDCoefficients.Value().push_back(temp); }
-   inline void AddLEDCoefficient(double temp) { fLEDCoefficients.Value().push_back(temp); }
-   inline void AddTIMECoefficient(double temp) { fTIMECoefficients.Value().push_back(temp); }
-   inline void AddEFFCoefficient(double temp) { fEFFCoefficients.Value().push_back(temp); }
-   inline void AddCTCoefficient(double temp) { fCTCoefficients.Value().push_back(temp); }
+   inline void AddENGCoefficient(Float_t temp) { fENGCoefficients.Address()->push_back(temp); }
+   inline void AddCFDCoefficient(double temp) { fCFDCoefficients.Address()->push_back(temp); }
+   inline void AddLEDCoefficient(double temp) { fLEDCoefficients.Address()->push_back(temp); }
+   inline void AddTIMECoefficient(double temp) { fTIMECoefficients.Address()->push_back(temp); }
+   inline void AddEFFCoefficient(double temp) { fEFFCoefficients.Address()->push_back(temp); }
+   inline void AddCTCoefficient(double temp) { fCTCoefficients.Address()->push_back(temp); }
 
    inline void SetENGChi2(double temp, EPriority pr) { fENGChi2.Set(temp, pr); }
    inline void SetCFDChi2(double temp, EPriority pr) { fCFDChi2.Set(temp, pr); }
