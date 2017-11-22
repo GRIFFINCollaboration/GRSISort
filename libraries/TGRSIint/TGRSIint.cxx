@@ -238,14 +238,9 @@ Long_t TGRSIint::ProcessLine(const char* line, Bool_t sync, Int_t* error)
       return res;
    }
 
-   TString sline(line);
-   ;
-   if(sline.Contains("TCanvas")) {
-      std::string s = line;
-      size_t      f = s.find("TCanvas");
-      s.replace(f, std::string("TCanvas").length(), "GCanvas");
-      s.replace(f, std::string("TCanvas").length(), "GCanvas");
-      line = s.c_str();
+	const char* canvas = strstr(line, "TCanvas");
+   if(canvas != nullptr) {
+		const_cast<char*>(canvas)[0] = 'G';
    }
 
    if(std::this_thread::get_id() != main_thread_id) {
@@ -597,9 +592,9 @@ void TGRSIint::SetupPipeline()
    }
 
    // this happens here, because the TDataLoop constructor is where we read the midas file ODB
-   TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::kTriggerId;
+   TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::EBuildMode::kTriggerId;
    if(TGRSIRunInfo::Get()->Griffin() || TGRSIRunInfo::Get()->Fipps()) {
-      event_build_mode = TEventBuildingLoop::kTimestamp;
+      event_build_mode = TEventBuildingLoop::EBuildMode::kTimestamp;
    }
 
    // If requested, write the fragment histograms

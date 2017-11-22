@@ -176,7 +176,7 @@ Int_t TSiLi::GetAddbackMultiplicity()
    }
 
    // if the addback has been reset, clear the addback hits
-   if(!(fSiLiBits.TestBit(kAddbackSet))) {
+   if(!(fSiLiBits.TestBit(ESiLiBits::kAddbackSet))) {
       fAddbackHits.clear();
    }
 
@@ -235,7 +235,7 @@ Int_t TSiLi::GetAddbackMultiplicity()
          }
       }
 
-      fSiLiBits.SetBit(kAddbackSet, true);
+      fSiLiBits.SetBit(ESiLiBits::kAddbackSet, true);
    }
 
    return fAddbackHits.size();

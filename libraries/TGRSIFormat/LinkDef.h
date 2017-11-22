@@ -1,4 +1,4 @@
-// TFragment.h TBadFragment.h TChannel.h TGRSIRunInfo.h TGRSISortInfo.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TParsingDiagnostics.h TGRSIUtilities.h TMnemonic.h TSortingDiagnostics.h TTransientBits.h
+// TFragment.h TBadFragment.h TChannel.h TGRSIRunInfo.h TGRSISortInfo.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TParsingDiagnostics.h TGRSIUtilities.h TMnemonic.h TSortingDiagnostics.h TTransientBits.h TPriorityValue.h
 
 
 #ifdef __CINT__
@@ -9,8 +9,6 @@
 #pragma link C++ nestedclasses;
 
 #pragma link C++ class std::vector<Int_t>+;
-//#pragma link C++ class std::vector<Short_t>+;
-//#pragma link C++ class std::vector<UShort_t>+;
 
 #pragma link C++ class TFragment+;
 #pragma link C++ class TBadFragment+;

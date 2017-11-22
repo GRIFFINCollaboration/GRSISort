@@ -55,12 +55,12 @@ TMidasFile::TMidasFile()
    fFirstEvent = std::make_shared<TMidasEvent>();
 }
 
-TMidasFile::TMidasFile(const char* filename, EOpenType open_type) : TMidasFile()
+TMidasFile::TMidasFile(const char* filename, TRawFile::EOpenType open_type) : TMidasFile()
 {
    switch(open_type) {
-   case kRead: Open(filename); break;
+	case TRawFile::EOpenType::kRead: Open(filename); break;
 
-   case kWrite: OutOpen(filename); break;
+	case TRawFile::EOpenType::kWrite: OutOpen(filename); break;
    }
 }
 

@@ -24,7 +24,7 @@ TUnpackingLoop* TUnpackingLoop::Get(std::string name)
 
 TUnpackingLoop::TUnpackingLoop(std::string name)
    : StoppableThread(name), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>()),
-     fFragsReadFromRaw(0), fGoodFragsRead(0), fEvaluateDataType(true), fDataType(kMidas)
+     fFragsReadFromRaw(0), fGoodFragsRead(0), fEvaluateDataType(true), fDataType(EDataType::kMidas)
 {
 }
 
@@ -58,10 +58,10 @@ bool TUnpackingLoop::Iteration()
       return true;
    }
    if(fEvaluateDataType) {
-      fDataType         = (event->IsA() == TLstEvent::Class()) ? kLst : kMidas;
+      fDataType         = (event->IsA() == TLstEvent::Class()) ? EDataType::kLst : EDataType::kMidas;
       fEvaluateDataType = false;
    }
-   if(fDataType == kLst) {
+   if(fDataType == EDataType::kLst) {
       fParser.SetStatusVariables(&fItemsPopped, &fInputSize);
    } else {
       fInputSize = error;

@@ -283,7 +283,7 @@ void TGRSIOptions::Load(int argc, char** argv)
       .description("use static window for event building");
    parser.option("waveform-fitting", &fAnalysisOptions->fWaveformFitting, false)
       .description("fit waveforms using SFU algorithms");
-   parser.option("is-correcting-cross-talk", &fAnalysisOptions->fIsCorrectingCrossTalk, false)
+   parser.option("is-correcting-cross-talk", &fAnalysisOptions->fIsCorrectingCrossTalk, false).takes_argument()
       .description("Correct cross-talk");
 
    // look for any arguments ending with .info, pass to parser.

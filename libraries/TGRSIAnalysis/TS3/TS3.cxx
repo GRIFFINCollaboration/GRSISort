@@ -21,7 +21,7 @@ double TS3::fInnerDiameter  = 22.;
 double TS3::fTargetDistance = 31.;
 
 // Default tigress unpacking settings
-TTransientBits<UShort_t> TS3::fgS3Bits(TS3::kMultHit);
+TTransientBits<UShort_t> TS3::fgS3Bits = static_cast<std::underlying_type<TS3::ES3GlobalBits>::type>(TS3::ES3GlobalBits::kMultHit);
 
 Int_t  TS3::fFrontBackTime;
 double TS3::fFrontBackEnergy;
@@ -60,7 +60,7 @@ void TS3::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* ch
 
    TS3Hit dethit(*frag); // Moved upstream/downstream switch into hit ctor
 
-   if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::kN) {
+   if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::EMnemonic::kN) {
       dethit.SetRingNumber(frag->GetSegment());
       dethit.SetSectorNumber(0);
 
@@ -105,7 +105,7 @@ void TS3::BuildPixels()
    // To enable shared hits, use SetMultiHit function
 
    // if the pixels have been reset (or never set), clear the pixel hits //MUST BE FIRST
-   if(!fS3Bits.TestBit(kPixelsSet)) {
+   if(!fS3Bits.TestBit(ES3Bits::kPixelsSet)) {
       fS3Hits.clear();
    }
 	
@@ -322,7 +322,7 @@ void TS3::BuildPixels()
          }
       }
 
-      SetBitNumber(kPixelsSet, true);
+      SetBitNumber(ES3Bits::kPixelsSet, true);
    }
 }
 

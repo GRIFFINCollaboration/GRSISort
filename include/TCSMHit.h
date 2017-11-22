@@ -106,7 +106,7 @@ public:
    TVector3 GetPosition(Double_t = 0) const override { return fDPosition; }                  //!<!
    Double_t GetEnergy(Option_t* = "") const override { return GetDEnergy() + GetEEnergy(); } //!<!
 
-   Double_t GetTime(const UInt_t& = ETimeFlag::kAll, Option_t* = "") const override
+   Double_t GetTime(const ETimeFlag& = ETimeFlag::kAll, Option_t* = "") const override
    {
       return fVerDTime;
    } ///< Returns fVerDTime

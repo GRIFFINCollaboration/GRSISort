@@ -16,7 +16,7 @@
 
 class TSiLiHit : public TGRSIDetectorHit {
 public:
-   enum ESiLiHitBits { kUseFitCharge = BIT(0), kSiLiHitBit1 = BIT(1) };
+   enum class ESiLiHitBits { kUseFitCharge = BIT(0), kSiLiHitBit1 = BIT(1) };
 
    TSiLiHit();
    TSiLiHit(const TFragment&);
@@ -71,8 +71,8 @@ public:
 
    void UseFitCharge(bool set = true)
    {
-      SetHitBit(kIsEnergySet, false);
-      fSiLiHitBits.SetBit(kUseFitCharge, set);
+      SetHitBit(EBitFlag::kIsEnergySet, false);
+      fSiLiHitBits.SetBit(ESiLiHitBits::kUseFitCharge, set);
    }
 
    double GetWaveformEnergy() const { return GetFitEnergy(); }

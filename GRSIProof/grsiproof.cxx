@@ -13,6 +13,7 @@
 #include "TChannel.h"
 #include "TGRSIRunInfo.h"
 #include "TObjectWrapper.h"
+#include "TStopwatch.h"
 
 #include <iostream>
 #include <vector>
@@ -21,6 +22,9 @@
 
 TGRSIProof* gGRSIProof;
 TGRSIOptions* gGRSIOpt;
+TStopwatch* gStopwatch;
+
+bool controlC = false;
 
 void Analyze(const char* tree_type)
 {
@@ -72,6 +76,8 @@ void AtExitHandler()
 {
 	// this function is called on normal exits (via std::atexit) or
 	// if the programm is killed with ctrl-c (via sigaction and HandleSignal)
+	if(controlC) return;
+	controlC = true;
 	std::cout<<"getting session logs ..."<<std::endl;
    TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
    if(pl != nullptr) {
@@ -82,6 +88,16 @@ void AtExitHandler()
 
 	std::cout<<"stopping all workers ..."<<std::endl;
 	gGRSIProof->StopProcess(true);
+	
+	// print time it took to run grsiproof
+   double realTime = gStopwatch->RealTime();
+   int    hour     = static_cast<int>(realTime / 3600);
+   realTime -= hour * 3600;
+   int min = static_cast<int>(realTime / 60);
+   realTime -= min * 60;
+   std::cout<<DMAGENTA<<std::endl
+            <<"Done after "<<hour<<":"<<std::setfill('0')<<std::setw(2)<<min<<":"<<std::setprecision(3)<<std::fixed<<realTime
+            <<" h:m:s"<<std::endl;
 }
 
 void HandleSignal(int)
@@ -103,6 +119,7 @@ static void CatchSignals()
 
 int main(int argc, char** argv)
 {
+	gStopwatch = new TStopwatch;
 	gGRSIOpt = TGRSIOptions::Get(argc, argv);
 
 	std::atexit(AtExitHandler);

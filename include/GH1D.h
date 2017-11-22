@@ -59,7 +59,7 @@ public:
 
    GH1D* Project(double value_low, double value_high) const;
    GH1D* Project_Background(double value_low, double value_high, double bg_value_low, double bg_value_high,
-                            kBackgroundSubtraction mode = kRegionBackground) const;
+                            EBackgroundSubtraction mode = EBackgroundSubtraction::kRegionBackground) const;
 
 private:
    TRef parent;
