@@ -134,6 +134,7 @@ private:
    static double fInnerDiameter;  //!<!
    static double fTargetDistance; //!<!
 
+   //In cfd units for historic reasons
    static Int_t  fFrontBackTime;   //!
    static double fFrontBackEnergy; //!
 

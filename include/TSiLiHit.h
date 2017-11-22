@@ -31,17 +31,27 @@ public:
    Int_t    GetSector() const;
    Int_t    GetPreamp() const;
    bool     MagnetShadow() const;
-   Double_t GetTimeFit() { return fTimeFit; }
+   Double_t GetTimeFit() const {// In 10ns tstamp units
+      TChannel* channel = GetChannel();
+      if(channel != nullptr) return fTimeFit+channel->GetTZero(GetEnergy());
+      return fTimeFit;
+   }
+   
    Double_t GetSig2Noise() const { return fSig2Noise; }
    Double_t GetSmirnov() const { return fSmirnov; }
 
    Int_t    GetTimeStampLow() { return GetTimeStamp() & 0x0fffffff; }
+   Double_t GetTimeFitns() const
+   {
+      return (GetTimeStamp()+GetTimeFit())*10.;
+   }   
    Double_t GetTimeFitCfd() const
    {
-      if(fTimeFit != 0 && fTimeFit < 1000 && fTimeFit > -1000) {
+	   double fitt=GetTimeFit();
+      if(fitt != 0 && fitt < 1000 && fitt > -1000) {
          long ts = GetTimeStamp()<<4 &
                    0x07ffffff; // bit shift by 4 (x16) then knock off the highest bit which is absent from cfd
-         return ts + fTimeFit * 16;
+         return ts + fitt * 16;
       }
       return 0;
    }
