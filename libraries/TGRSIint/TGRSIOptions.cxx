@@ -197,6 +197,13 @@ void TGRSIOptions::Load(int argc, char** argv)
       }
    }
 
+	// Get name of the program calling this function (removing any path from the name)
+	std::string program = argv[0];
+	size_t lastSlash = program.rfind('/');
+	if(lastSlash != std::string::npos) {
+		program.erase(0, lastSlash+1);
+	}
+
    ArgParser parser;
 
    std::vector<std::string> input_files;
@@ -204,87 +211,92 @@ void TGRSIOptions::Load(int argc, char** argv)
 
    // parser.option() will initialize boolean values to false.
 
+	// general options
 	// these options are all to be set directly on the first parsing pass, so we set the firstPass flag to true
-   parser.default_option(&input_files, true).description("Input file(s)");
-   parser.option("output-fragment-tree", &fOutputFragmentFile, true).description("Filename of output fragment tree");
-   parser.option("output-analysis-tree", &fOutputAnalysisFile, true).description("Filename of output analysis tree");
-   parser.option("output-fragment-hists", &fOutputFragmentHistogramFile, true)
-      .description("Filename of output fragment hists");
-   parser.option("output-analysis-hists", &fOutputAnalysisHistogramFile, true)
-      .description("Filename of output analysis hists");
-
-   parser.option("a", &fMakeAnalysisTree, true).description("Make the analysis tree");
-   parser.option("H histos", &fMakeHistos, true).description("attempt to run events through MakeHisto lib.");
-   parser.option("g start-gui", &fStartGui, true).description("Start the gui at program start");
-   parser.option("b batch", &fBatch, true).description("Run in batch mode");
-
-   parser.option("sort-depth", &fSortDepth, true)
-      .description("Number of events to hold when sorting by time/trigger_id")
-      .default_value(200000);
-   parser.option("s sort", &fSortRoot, true).description("Attempt to loop through root files.");
-
-   parser.option("q quit", &fCloseAfterSort, true).description("Run in batch mode");
-   parser.option("l no-logo", &fShowLogo, true).description("Inhibit the startup logo").default_value(true);
-   parser.option("w extract-waves", &fExtractWaves, true)
-      .description("Extract wave forms to data class when available.")
-      .default_value(false);
-   parser.option("d debug", &fDebug, true)
-      .description("Write debug information to output/file, e.g. enables writing of TDescantDebug at analysis stage.")
-      .default_value(false);
-   parser.option("no-record-dialog", &fRecordDialog, true).description("Dump stuff to screen");
-   parser.option("write-diagnostics", &fWriteDiagnostics, true);
-   parser.option("word-count-offset", &fWordOffset, true)
-		.description("Offset to the word count in the GRIFFIN header word, default is 1.")
-		.default_value(1);
-   parser.option("log-errors", &fLogErrors, true);
-   parser.option("log-file", &fLogFile, true).description("File logs from grsiproof are written to.");
-   parser.option("reading-material", &fReadingMaterial, true);
-   parser.option("bad-frags write-bad-frags bad-fragments write-bad-fragments", &fWriteBadFrags, true);
-   parser.option("separate-out-of-order", &fSeparateOutOfOrder, true)
-      .description("Write out-of-order fragments to a separate tree at the sorting stage")
-      .default_value(false);
-   parser.option("ignore-odb", &fIgnoreFileOdb, true);
-   parser.option("ignore-epics", &fIgnoreEpics, true);
-   parser.option("ignore-scaler", &fIgnoreScaler, true);
-   parser.option("suppress-error suppress-errors suppress_error suppress_errors", &fSuppressErrors, true);
-   parser.option("reconstruct-timestamp reconstruct-time-stamp", &fReconstructTimeStamp, true);
-
-   parser.option("fragment-size", &fFragmentWriteQueueSize, true)
-      .description("size of fragment write queue")
-      .default_value(10000000);
-   parser.option("analysis-size", &fAnalysisWriteQueueSize, true)
-      .description("size of analysis write queue")
-      .default_value(1000000);
-
-   parser.option("column-width", &fColumnWidth, true).description("width of one column of status").default_value(20);
-   parser.option("status-width", &fStatusWidth, true)
-      .description("number of characters to be used for status output")
-      .default_value(120);
-   parser.option("status-interval", &fStatusInterval, true)
-      .description(
-         "seconds between each detailed status output (each a new line), non-positive numbers mean no detailed status")
-      .default_value(10);
-
-   // Proof only parser options
-   parser.option("max-workers", &fMaxWorkers, true)
-      .description("Max number of nodes to use when running a grsiproof session")
-      .default_value(-1);
-
-   parser.option("selector-only", &fSelectorOnly, true)
-		.description("Turns off PROOF to run a selector on the main thread");
-
+	parser.default_option(&input_files, true).description("Input file(s)");
    parser.option("h help ?", &fHelp, true).description("Show this help message");
    parser.option("v version", &fShowedVersion, true).description("Show the version of GRSISort");
 
 	// analysis options, these options are to be parsed on the second pass, so firstPass is set to false
-   parser.option("build-window", &fAnalysisOptions->fBuildWindow, false).description("Build window, timestamp units");
-   parser.option("addback-window", &fAnalysisOptions->fAddbackWindow, false).description("Addback window, time in ns");
-   parser.option("static-window", &fAnalysisOptions->fStaticWindow, false)
-      .description("use static window for event building");
-   parser.option("waveform-fitting", &fAnalysisOptions->fWaveformFitting, false)
-      .description("fit waveforms using SFU algorithms");
-   parser.option("is-correcting-cross-talk", &fAnalysisOptions->fIsCorrectingCrossTalk, false).takes_argument()
-      .description("Correct cross-talk");
+	parser.option("build-window", &fAnalysisOptions->fBuildWindow, false).description("Build window, timestamp units");
+	parser.option("addback-window", &fAnalysisOptions->fAddbackWindow, false).description("Addback window, time in ns");
+	parser.option("static-window", &fAnalysisOptions->fStaticWindow, false)
+		.description("use static window for event building");
+	parser.option("waveform-fitting", &fAnalysisOptions->fWaveformFitting, false)
+		.description("fit waveforms using SFU algorithms");
+	parser.option("is-correcting-cross-talk", &fAnalysisOptions->fIsCorrectingCrossTalk, false).takes_argument()
+		.description("Correct cross-talk");
+
+	// program specific options
+	if(program.compare("grsisort") == 0) {
+		// grsisort options
+		parser.option("output-fragment-tree", &fOutputFragmentFile, true).description("Filename of output fragment tree");
+		parser.option("output-analysis-tree", &fOutputAnalysisFile, true).description("Filename of output analysis tree");
+		parser.option("output-fragment-hists", &fOutputFragmentHistogramFile, true)
+			.description("Filename of output fragment hists");
+		parser.option("output-analysis-hists", &fOutputAnalysisHistogramFile, true)
+			.description("Filename of output analysis hists");
+
+		parser.option("a", &fMakeAnalysisTree, true).description("Make the analysis tree");
+		parser.option("H histos", &fMakeHistos, true).description("attempt to run events through MakeHisto lib.");
+		parser.option("g start-gui", &fStartGui, true).description("Start the gui at program start");
+		parser.option("b batch", &fBatch, true).description("Run in batch mode");
+
+		parser.option("sort-depth", &fSortDepth, true)
+			.description("Number of events to hold when sorting by time/trigger_id")
+			.default_value(200000);
+		parser.option("s sort", &fSortRoot, true).description("Attempt to loop through root files.");
+
+		parser.option("q quit", &fCloseAfterSort, true).description("Run in batch mode");
+		parser.option("l no-logo", &fShowLogo, true).description("Inhibit the startup logo").default_value(true);
+		parser.option("w extract-waves", &fExtractWaves, true)
+			.description("Extract wave forms to data class when available.")
+			.default_value(false);
+		parser.option("d debug", &fDebug, true)
+			.description("Write debug information to output/file, e.g. enables writing of TDescantDebug at analysis stage.")
+			.default_value(false);
+		parser.option("no-record-dialog", &fRecordDialog, true).description("Dump stuff to screen");
+		parser.option("write-diagnostics", &fWriteDiagnostics, true);
+		parser.option("word-count-offset", &fWordOffset, true)
+			.description("Offset to the word count in the GRIFFIN header word, default is 1.")
+			.default_value(1);
+		parser.option("log-errors", &fLogErrors, true);
+		parser.option("reading-material", &fReadingMaterial, true);
+		parser.option("bad-frags write-bad-frags bad-fragments write-bad-fragments", &fWriteBadFrags, true);
+		parser.option("separate-out-of-order", &fSeparateOutOfOrder, true)
+			.description("Write out-of-order fragments to a separate tree at the sorting stage")
+			.default_value(false);
+		parser.option("ignore-odb", &fIgnoreFileOdb, true);
+		parser.option("ignore-epics", &fIgnoreEpics, true);
+		parser.option("ignore-scaler", &fIgnoreScaler, true);
+		parser.option("suppress-error suppress-errors suppress_error suppress_errors", &fSuppressErrors, true);
+		parser.option("reconstruct-timestamp reconstruct-time-stamp", &fReconstructTimeStamp, true);
+
+		parser.option("fragment-size", &fFragmentWriteQueueSize, true)
+			.description("size of fragment write queue")
+			.default_value(10000000);
+		parser.option("analysis-size", &fAnalysisWriteQueueSize, true)
+			.description("size of analysis write queue")
+			.default_value(1000000);
+
+		parser.option("column-width", &fColumnWidth, true).description("width of one column of status").default_value(20);
+		parser.option("status-width", &fStatusWidth, true)
+			.description("number of characters to be used for status output")
+			.default_value(120);
+		parser.option("status-interval", &fStatusInterval, true)
+			.description(
+					"seconds between each detailed status output (each a new line), non-positive numbers mean no detailed status")
+			.default_value(10);
+	} else if(program.compare("grsiproof") == 0) {
+		// Proof only parser options
+		parser.option("max-workers", &fMaxWorkers, true)
+			.description("Max number of nodes to use when running a grsiproof session")
+			.default_value(-1);
+
+		parser.option("selector-only", &fSelectorOnly, true)
+			.description("Turns off PROOF to run a selector on the main thread");
+		parser.option("log-file", &fLogFile, true).description("File logs from grsiproof are written to.");
+	}
 
    // look for any arguments ending with .info, pass to parser.
    for(int i = 0; i < argc; i++) {
