@@ -76,7 +76,7 @@ public:
 	//		                          static_cast<std::underlying_type<EBitFlag>::type>(rhs));
 	//}
 
-   enum class ETimeFlag { kNone = BIT(0), kCFD = BIT(1), kWalk = BIT(2), kOffset = BIT(3), kAll = 0xFFFF };
+   enum class ETimeFlag { kNoneSet = BIT(0), kCFD = BIT(1), kWalk = BIT(2), kOffset = BIT(3), kAll = 0xFFFF };
 
 public:
    TGRSIDetectorHit(const int& Address = 0xffffffff);
