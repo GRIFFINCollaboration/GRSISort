@@ -67,7 +67,7 @@ public:
 		fNewPpg = static_cast<EPpgPattern>(newPpg&0xff);
 		switch(fNewPpg) {
 			case EPpgPattern::kBeamOn: case EPpgPattern::kDecay: case EPpgPattern::kTapeMove:
-			case EPpgPattern::kBackground: case EPpgPattern::kSync: case EPpgPattern::kJunk:
+			case EPpgPattern::kBackground: case EPpgPattern::kJunk:
 				break;
 			default:
 				std::cout<<"Warning, unknown ppg pattern 0x"<<std::hex<<newPpg<<std::dec<<", setting new pattern to kJunk!"<<std::endl;
@@ -80,7 +80,7 @@ public:
 		fOldPpg = static_cast<EPpgPattern>(oldPpg&0xff);
 		switch(fOldPpg) {
 			case EPpgPattern::kBeamOn: case EPpgPattern::kDecay: case EPpgPattern::kTapeMove:
-			case EPpgPattern::kBackground: case EPpgPattern::kSync: case EPpgPattern::kJunk:
+			case EPpgPattern::kBackground: case EPpgPattern::kJunk:
 				break;
 			default:
 				std::cout<<"Warning, unknown ppg pattern 0x"<<std::hex<<oldPpg<<std::dec<<", setting old pattern to kJunk!"<<std::endl;
