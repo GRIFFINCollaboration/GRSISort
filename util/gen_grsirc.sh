@@ -11,7 +11,7 @@ fi
 
 if [ $MAJOR_ROOT_VERSION -eq 6 ] && [ $MINOR_ROOT_VERSION -le 8 ]
 then
-	sed -i 's/\(Rint.PromptColor:[[:space:]]*\)\(%\)\([0-9A-Fa-f]\{6\}\)/\1#\3/g' .grsirc 
+	sed -i -e 's/\(Rint.PromptColor:[[:space:]]*\)\(%\)\([0-9A-Fa-f]\{6\}\)/\1#\3/g' .grsirc 
 else
-	sed -i 's/\(Rint.PromptColor:[[:space:]]*\)\(#\)\([0-9A-Fa-f]\{6\}\)/\1%\3/g' .grsirc 
+	sed -i -e 's/\(Rint.PromptColor:[[:space:]]*\)\(#\)\([0-9A-Fa-f]\{6\}\)/\1%\3/g' .grsirc 
 fi
