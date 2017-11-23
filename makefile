@@ -1,4 +1,4 @@
-.PHONY: clean all extras docs doxygen
+.PHONY: clean all extras docs doxygen grsirc
 .SECONDARY:
 .SECONDEXPANSION:
 
@@ -16,6 +16,7 @@ SRC_SUFFIX = cxx
 # EVERYTHING PAST HERE SHOULD WORK AUTOMATICALLY
 
 MAJOR_ROOT_VERSION:=$(shell root-config --version | cut -d '.' -f1)
+MINOR_ROOT_VERSION:=$(shell root-config --version | cut -d '.' -f2 | cut -d '/' -f1)
 ROOT_PYTHON_VERSION=$(shell root-config --python-version)
 
 MATHMORE_INSTALLED:=$(shell root-config --has-mathmore)
@@ -120,7 +121,7 @@ run_and_test =@printf "%b%b%b" " $(3)$(4)$(5)" $(notdir $(2)) "$(NO_COLOR)\r";  
                 rm -f $(2).log $(2).error
 endif
 
-all: include/GVersion.h $(EXECUTABLES) $(LIBRARY_OUTPUT) lib/libGRSI.so config $(HISTOGRAM_SO) $(FILTER_SO)
+all: include/GVersion.h grsirc $(EXECUTABLES) $(LIBRARY_OUTPUT) lib/libGRSI.so config $(HISTOGRAM_SO) $(FILTER_SO)
 	@$(FIND) .build users -name "*.pcm" -exec cp {} lib/ \;
 	@printf "$(OK_COLOR)Compilation successful, $(WARN_COLOR)woohoo!$(NO_COLOR)\n"
 
@@ -154,6 +155,9 @@ include/GVersion.h:
 	$(call run_and_test,util/gen_version.sh,$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
 #include/GVersion.h: .git/HEAD .git/index util/gen_version.sh
+
+grsirc:
+	$(call run_and_test,util/gen_grsirc.sh,$@,$(COM_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
 
 lib/lib%.so: .build/histos/%.o | lib include/GVersion.h
 	$(call run_and_test,$(CPP) -fPIC $^ $(SHAREDSWITCH)lib$*.so $(ROOT_LIBFLAGS) -o $@,$@,$(BLD_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
