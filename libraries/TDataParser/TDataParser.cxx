@@ -862,7 +862,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                break;
             default:
                if(!fOptions->SuppressErrors()) {
-                  printf(DRED "Error, bank type %d not implemented yet" RESET_COLOR "\n", bank);
+                  printf(DRED "Error, bank type %d not implemented yet" RESET_COLOR "\n", static_cast<std::underlying_type<EBank>::type>(bank));
                }
                TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
                if(fState == EDataParserState::kGood) {
@@ -994,7 +994,7 @@ bool TDataParser::SetGRIFHeader(uint32_t value, const std::shared_ptr<TFragment>
       frag->SetDetectorType((value & 0x0000000f));
 
       break;
-   default: printf("This bank not yet defined.\n"); return false;
+   default: printf("This bank is not yet defined.\n"); return false;
    }
 
    return true;
