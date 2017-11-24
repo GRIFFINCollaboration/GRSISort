@@ -248,7 +248,7 @@ bool TSiLi::fAddbackCriterion(TSiLiHit* one, TSiLiHit* two)
    if(one->GetTimeFit() > 0 && two->GetTimeFit() > 0) {
       T = (one->GetTimeFit() - two->GetTimeFit()) * 16;
    } else {
-      T = one->GetCfd() - two->GetCfd();
+      T = one->GetTime() - two->GetTime();T*=1.6;
    }
 
    double e = one->GetEnergy() / two->GetEnergy();
