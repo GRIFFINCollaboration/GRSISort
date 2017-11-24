@@ -55,7 +55,10 @@ void Prompt()
 
 void Version()
 {
-   system(Form("%s/bin/grsi-config --version", getenv("GRSISYS")));
+   int ret = system(Form("%s/bin/grsi-config --version", getenv("GRSISYS")));
+	if(ret == -1) {
+		std::cout<<"Failed to call grsi-config!"<<std::endl;
+	}
 }
 
 bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg_high)
