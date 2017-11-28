@@ -49,6 +49,11 @@ public:
       fFrontBackEnergy = de;
       SetPixels(false);
    } // Set fractional allowed energy difference
+   void SetFrontBackEOffset(double de)
+   {
+      fFrontBackOffset = de;
+      SetPixels(false);
+   } // Set fractional allowed energy difference
    void SetFrontBackTime(int time)
    {
       fFrontBackTime = time;
@@ -135,8 +140,10 @@ private:
    static double fTargetDistance; //!<!
 
    //In cfd units for historic reasons
-   static Int_t  fFrontBackTime;   //!
-   static double fFrontBackEnergy; //!
+   static Int_t  fFrontBackTime;   //!<!
+   static double fFrontBackEnergy; //!<!
+   static double fFrontBackOffset; //!<!
+
 
    /// \cond CLASSIMP
    ClassDefOverride(TS3, 4)

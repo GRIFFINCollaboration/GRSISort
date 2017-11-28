@@ -30,6 +30,7 @@ public:
    Int_t    GetRing() const;
    Int_t    GetSector() const;
    Int_t    GetPreamp() const;
+   Int_t    GetPin() const;
    bool     MagnetShadow() const;
    Double_t GetTimeFit() const {// In 10ns tstamp units
       TChannel* channel = GetChannel();
@@ -122,8 +123,9 @@ public:
 private:
    Double_t GetDefaultDistance() const { return 0.0; }
 
-   std::vector<short>      fAddBackSegments;
-   std::vector<double>     fAddBackEnergy; // probably not needed after development finished
+   std::vector<short>      fAddBackSegments;   //!<!
+   std::vector<double>     fAddBackEnergy;     //!<!
+   // probably not needed after development finished
    TTransientBits<UChar_t> fSiLiHitBits;
 
    Double_t fTimeFit{0.};
