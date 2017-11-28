@@ -51,9 +51,11 @@ public:
    Short_t           GetMultiplicity() const override { return fSiLiHits.size(); }
    TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override;
    TSiLiHit* GetSiLiHit(const Int_t& i = 0);
-
+   
    TSiLiHit* GetAddbackHit(const Int_t& i = 0);
+   TSiLiHit* GetRejectHit(const Int_t& i = 0);
    Int_t GetAddbackMultiplicity();
+   Int_t GetRejectMultiplicity();
 
    void ResetAddback()
    {
@@ -67,6 +69,19 @@ public:
          fSiLiHit.UseFitCharge();
       }
    }
+   
+   void CoincidenceTime(double time)
+   {   
+      fSiLiCoincidenceTime = time;
+      ResetAddback();
+   } 
+   
+   void RejectCrosstalk(bool reject=true)
+   {
+      fRejectPossibleCrosstalk=reject;
+      ResetAddback();
+   }
+   
 
    static TVector3 GetPosition(int ring, int sector, bool smear = false);
 
@@ -94,28 +109,26 @@ public:
    static double GetSegmentArea(Int_t seg);
 
    bool fAddbackCriterion(TSiLiHit*, TSiLiHit*);
+   bool fRejectCriterion(TSiLiHit*, TSiLiHit*);
+   bool fCoincidenceTime(TSiLiHit*, TSiLiHit*);
 
-	// This value defines what scheme is used when fitting sili waveforms
-	// 0 quick linear eq. method, requires good baseline
-	// 1 use slow TF1 fit if quick linear eq. method fails
-	// 2 use slow TF1 method exclusively
-	// 3 use slow TF1 with experimental oscillation
-   static int FitSiLiShape;
-   static double BaseFreq;
-
-   static double SiLiBaseLine[120];
-   static double SiLiRiseTime[120];
-   static double SiLiDecayTime[120];
-
-   static std::string fPreAmpName[8];
+// This value defines what scheme is used when fitting sili waveforms
+// 0 quick linear eq. method, requires good baseline
+// 1 use slow TF1 fit if quick linear eq. method fails
+// 2 use slow TF1 method exclusively
+// 3 use slow TF1 with experimental oscillation
+   static int FitSiLiShape;     //!<!
+   static double BaseFreq;     //!<!
+   static std::string fPreAmpName[8];     //!<!
 	
 private:
    std::vector<TSiLiHit> fSiLiHits;
-   std::vector<TSiLiHit> fAddbackHits;
+   std::vector<TSiLiHit> fAddbackHits;     //!<!
+   std::vector<unsigned int> fRejectHits;     //!<!
 
    TTransientBits<UChar_t> fSiLiBits;
 
-   void SortCluster(std::vector<unsigned>&);
+   void AddCluster(std::vector<unsigned>&,bool=false);
 
    /// for geometery
    static int    fRingNumber;     //!<!
@@ -125,8 +138,12 @@ private:
    static double fInnerDiameter;  //!<!
    static double fTargetDistance; //!<!
 
+public:
+   static double  fSiLiCoincidenceTime; //!<!
+   static bool  fRejectPossibleCrosstalk; //!<!
+   
    /// \cond CLASSIMP
-   ClassDefOverride(TSiLi, 5);
+   ClassDefOverride(TSiLi, 6);
    /// \endcond
 };
 /*! @} */
