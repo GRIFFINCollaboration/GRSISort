@@ -135,7 +135,7 @@ private:
    Double_t fFitBase{0.};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TSiLiHit, 9);
+   ClassDefOverride(TSiLiHit, 10);
    /// \endcond
 };
 /*! @} */

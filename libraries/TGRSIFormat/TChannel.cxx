@@ -715,7 +715,8 @@ std::string TChannel::PrintToString(Option_t*)
    buffer.append(Form("Digitizer: %s\n", fDigitizerTypeString.Value().c_str()));
    buffer.append("EngCoeff:  ");
    for(float fENGCoefficient : fENGCoefficients.Value()) {
-      buffer.append(Form("%f\t", fENGCoefficient));
+      if(fENGCoefficient<0.001)buffer.append(Form("%e\t", fENGCoefficient));
+      else buffer.append(Form("%f\t", fENGCoefficient));
    }
    buffer.append("\n");
    buffer.append(Form("Integration: %d\n", fIntegration.Value()));
