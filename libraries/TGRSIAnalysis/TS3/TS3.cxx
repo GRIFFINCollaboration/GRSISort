@@ -360,6 +360,16 @@ TVector3 TS3::GetPosition(int ring, int sector, double offsetphi, double offsetZ
    return TVector3(cos(phi) * radius, sin(phi) * radius, offsetZ);
 }
 
+void TS3::ResetRingsSectors(){
+	for(size_t i = 0; i < fS3SectorHits.size(); ++i) {
+		fS3SectorHits.at(i).SetSectorNumber();
+	}
+	for(size_t i = 0; i < fS3RingHits.size(); ++i) {
+		fS3RingHits.at(i).SetRingNumber();
+	}
+}
+
+
 TGRSIDetectorHit* TS3::GetHit(const int& idx)
 {
    return GetS3Hit(idx);
