@@ -68,11 +68,16 @@ Double_t TGRSIDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
 		Double_t dTime;
 		case TMnemonic::EDigitizer::kGRF16:
 		dTime = (GetTimeStamp() & (~0x3ffff)) * 10. +
-              channel->CalibrateCFD((GetCfd() + gRandom->Uniform()) / 1.6); // CFD is in 10/16th of a nanosecond
+		channel->CalibrateCFD((GetCfd() + gRandom->Uniform()) / 1.6); // CFD is in 10/16th of a nanosecond
 		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
 		case TMnemonic::EDigitizer::kGRF4G:
-      dTime = GetTimeStamp() * 10. + channel->CalibrateCFD((fCfd >> 22) + ((fCfd & 0x3fffff) + gRandom->Uniform()) / 256.);
-      return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
+		dTime = GetTimeStamp() * 10. + channel->CalibrateCFD((fCfd >> 22) + ((fCfd & 0x3fffff) + gRandom->Uniform()) / 256.);
+		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
+		case TMnemonic::EDigitizer::kTIG10:
+		dTime = (GetTimeStamp() & (~0x7fffff)) * 10. +
+		channel->CalibrateCFD((GetCfd() + gRandom->Uniform()) / 1.6); // CFD is in 10/16th of a nanosecond
+		//channel->CalibrateCFD((GetCfd() & (~0xf) + gRandom->Uniform()) / 1.6); // PBender suggests this.
+		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
 		default:
 		dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
 		return SetTime(10. * (dTime - channel->GetTZero(GetEnergy())));

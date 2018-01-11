@@ -23,8 +23,9 @@ double TS3::fTargetDistance = 31.;
 // Default tigress unpacking settings
 TTransientBits<UShort_t> TS3::fgS3Bits = static_cast<std::underlying_type<TS3::ES3GlobalBits>::type>(TS3::ES3GlobalBits::kMultHit);
 
-Int_t  TS3::fFrontBackTime;
-double TS3::fFrontBackEnergy;
+Int_t  TS3::fFrontBackTime = 75;
+double TS3::fFrontBackEnergy = 0.9;
+double TS3::fFrontBackOffset = 0;
 
 TS3::TS3()
 {
@@ -134,9 +135,9 @@ void TS3::BuildPixels()
          for(size_t j = 0; j < fS3SectorHits.size(); ++j) {
 	    if(fS3RingHits[i].GetArrayPosition()!=fS3SectorHits[j].GetArrayPosition())continue;
 
-            if(abs(fS3RingHits[i].GetCfd() - fS3SectorHits[j].GetCfd()) < fFrontBackTime) { // check time
-               if(EneR[i] * fFrontBackEnergy < EneS[j] &&
-                  EneS[j] * fFrontBackEnergy < EneR[i]) { // if time is good check energy
+            if(abs(fS3RingHits[i].GetTime() - fS3SectorHits[j].GetTime())*1.6 < fFrontBackTime) { // check time
+               if((EneR[i] - fFrontBackOffset) * fFrontBackEnergy < EneS[j] &&
+                  (EneS[j] - fFrontBackOffset) * fFrontBackEnergy < EneR[i]) { // if time is good check energy
 
                   // Now we have accepted a good event, build it
                   if(SectorPreference()) {
@@ -195,10 +196,10 @@ void TS3::BuildPixels()
                      }
                      if(fS3SectorHits[j].GetArrayPosition()!=fS3SectorHits[k].GetArrayPosition())continue;
 
-                     if(abs(fS3RingHits[i].GetCfd() - fS3SectorHits[j].GetCfd()) < fFrontBackTime &&
-                        abs(fS3RingHits[i].GetCfd() - fS3SectorHits[k].GetCfd()) < fFrontBackTime) { // check time
-                        if(EneR[i] * fFrontBackEnergy < (EneS[j] + EneS[k]) &&
-                           (EneS[j] + EneS[k]) * fFrontBackEnergy < EneR[i]) { // if time is good check energy
+                     if(abs(fS3RingHits[i].GetTime() - fS3SectorHits[j].GetTime())*1.6 < fFrontBackTime &&
+                        abs(fS3RingHits[i].GetTime() - fS3SectorHits[k].GetTime())*1.6 < fFrontBackTime) { // check time
+                        if((EneR[i] - fFrontBackOffset) * fFrontBackEnergy < (EneS[j] + EneS[k]) &&
+                           (EneS[j] + EneS[k] - fFrontBackOffset) * fFrontBackEnergy < EneR[i]) { // if time is good check energy
 
                            int SectorSep = fS3SectorHits[j].GetSector() - fS3SectorHits[k].GetSector();
                            if(abs(SectorSep) == 1 || abs(SectorSep) == fSectorNumber) {
@@ -274,10 +275,10 @@ void TS3::BuildPixels()
                      }
                      if(fS3RingHits[j].GetArrayPosition()!=fS3RingHits[k].GetArrayPosition())continue;
 
-                     if(abs(fS3SectorHits[i].GetCfd() - fS3RingHits[j].GetCfd()) < fFrontBackTime &&
-                        abs(fS3SectorHits[i].GetCfd() - fS3RingHits[k].GetCfd()) < fFrontBackTime) { // first check time
-                        if(EneS[i] * fFrontBackEnergy < (EneR[j] + EneR[k]) &&
-                           (EneR[j] + EneR[k]) * fFrontBackEnergy < EneS[i]) { // if time is good check energy
+                     if(abs(fS3SectorHits[i].GetTime() - fS3RingHits[j].GetTime())*1.6 < fFrontBackTime &&
+                        abs(fS3SectorHits[i].GetTime() - fS3RingHits[k].GetTime())*1.6 < fFrontBackTime) { // first check time
+                        if((EneS[i] - fFrontBackOffset) * fFrontBackEnergy < (EneR[j] + EneR[k]) &&
+                           (EneR[j] + EneR[k] - fFrontBackOffset) * fFrontBackEnergy < EneS[i]) { // if time is good check energy
 
                            if(abs(fS3RingHits[j].GetRing() - fS3RingHits[k].GetRing()) == 1) {
                               // Same sector and neighbour rings, almost certainly charge sharing
@@ -412,8 +413,6 @@ void TS3::Clear(Option_t* opt)
    fS3RingHits.clear();
    fS3SectorHits.clear();
 
-   fFrontBackTime   = 75;
-   fFrontBackEnergy = 0.9;
    SetPixels(false);
    SetMultiHit(false);
 }
