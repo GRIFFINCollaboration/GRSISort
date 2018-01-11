@@ -51,6 +51,12 @@ public:
 		}
 	}
 
+	void SetPriority(EPriority priority) {
+		// only allow the priority to be increased, not decreased
+		if(priority > fPriority) {
+			fPriority = priority;
+		}
+	}
 
 	// getters
 	T         Value() const    { return fValue; }
@@ -60,7 +66,7 @@ public:
 
 	// assignment and move assignment operators
 	TPriorityValue<T>& operator =(const TPriorityValue<T>& rhs) {
-		if(rhs.fPriority >= fPriority) {
+		if(rhs.fPriority != EPriority::kDefault && rhs.fPriority >= fPriority) {
 			fValue = rhs.fValue;
 			fPriority = rhs.fPriority;
 		}
@@ -68,7 +74,7 @@ public:
 	}
 
 	TPriorityValue<T>& operator =(TPriorityValue<T>&& rhs) {
-		if(rhs.fPriority >= fPriority) {
+		if(rhs.fPriority != EPriority::kDefault && rhs.fPriority >= fPriority) {
 			fValue = std::move(rhs.fValue);
 			fPriority = std::move(rhs.fPriority);
 		}

@@ -50,32 +50,30 @@ TChannel::TChannel(TChannel* chan)
 {
    /// Makes a copy of a the TChannel.
    SetAddress(chan->GetAddress());
-   SetIntegration(chan->GetIntegration(), EPriority::kDefault);
-   SetNumber(chan->GetNumber(), EPriority::kDefault);
-   SetStream(chan->GetStream(), EPriority::kDefault);
-   SetUserInfoNumber(chan->GetUserInfoNumber(), EPriority::kDefault);
-   SetName(chan->GetName()); // SetName also sets the mnemonic
-   SetDigitizerType(chan->GetDigitizerTypeString(), EPriority::kDefault);
+	SetIntegration(chan->fIntegration);
+	SetNumber(chan->fNumber);
+	SetStream(chan->fStream);
+	SetUserInfoNumber(chan->fUserInfoNumber);
+	SetName(chan->GetName());
+	SetDigitizerType(chan->fDigitizerTypeString);
+	SetTimeOffset(chan->fTimeOffset);
+	SetENGCoefficients(chan->fENGCoefficients);
+	SetCFDCoefficients(chan->fCFDCoefficients);
+	SetLEDCoefficients(chan->fLEDCoefficients);
+	SetTIMECoefficients(chan->fTIMECoefficients);
+	SetEFFCoefficients(chan->fEFFCoefficients);
+	SetCTCoefficients(chan->fCTCoefficients);
+	SetENGChi2(chan->fENGChi2);
+	SetCFDChi2(chan->fCFDChi2);
+	SetLEDChi2(chan->fLEDChi2);
+	SetTIMEChi2(chan->fTIMEChi2);
+	SetEFFChi2(chan->fEFFChi2);
+	SetUseCalFileIntegration(chan->fUseCalFileInt);
+	SetWaveParam(chan->GetWaveParam());
+	SetDetectorNumber(chan->GetDetectorNumber());
+	SetSegmentNumber(chan->GetSegmentNumber());
+	SetCrystalNumber(chan->GetCrystalNumber());
 
-   SetENGCoefficients(chan->GetENGCoeff(), EPriority::kDefault);
-   SetCFDCoefficients(chan->GetCFDCoeff(), EPriority::kDefault);
-   SetLEDCoefficients(chan->GetLEDCoeff(), EPriority::kDefault);
-   SetTIMECoefficients(chan->GetTIMECoeff(), EPriority::kDefault);
-   SetEFFCoefficients(chan->GetEFFCoeff(), EPriority::kDefault);
-   SetCTCoefficients(chan->GetCTCoeff(), EPriority::kDefault);
-
-   SetENGChi2(chan->GetENGChi2(), EPriority::kDefault);
-   SetCFDChi2(chan->GetCFDChi2(), EPriority::kDefault);
-   SetLEDChi2(chan->GetLEDChi2(), EPriority::kDefault);
-   SetTIMEChi2(chan->GetTIMEChi2(), EPriority::kDefault);
-   SetEFFChi2(chan->GetEFFChi2(), EPriority::kDefault);
-   SetUseCalFileIntegration(chan->UseCalFileIntegration(), EPriority::kDefault);
-   SetWaveParam(chan->GetWaveParam());
-
-   SetDetectorNumber(chan->GetDetectorNumber());
-   SetSegmentNumber(chan->GetSegmentNumber());
-   SetCrystalNumber(chan->GetCrystalNumber());
-   SetTimeOffset(chan->GetTimeOffset(), EPriority::kDefault);
    SetClassType(chan->GetClassType());
 }
 
@@ -158,59 +156,59 @@ void TChannel::OverWriteChannel(TChannel* chan)
 {
    /// Overwrites the current TChannel with chan.
    SetAddress(chan->GetAddress());
-   SetIntegration(chan->GetIntegration(), EPriority::kForce);
-   SetNumber(chan->GetNumber(), EPriority::kForce);
-   SetStream(chan->GetStream(), EPriority::kForce);
-   SetUserInfoNumber(chan->GetUserInfoNumber(), EPriority::kForce);
-   SetDigitizerType(chan->GetDigitizerTypeString(), EPriority::kForce);
+   SetIntegration(TPriorityValue<int>(chan->GetIntegration(), EPriority::kForce));
+   SetNumber(TPriorityValue<int>(chan->GetNumber(), EPriority::kForce));
+   SetStream(TPriorityValue<int>(chan->GetStream(), EPriority::kForce));
+   SetUserInfoNumber(TPriorityValue<int>(chan->GetUserInfoNumber(), EPriority::kForce));
+   SetDigitizerType(TPriorityValue<std::string>(chan->GetDigitizerTypeString(), EPriority::kForce));
    SetName(chan->GetName());
 
-   SetENGCoefficients(chan->GetENGCoeff(), EPriority::kForce);
-   SetCFDCoefficients(chan->GetCFDCoeff(), EPriority::kForce);
-   SetLEDCoefficients(chan->GetLEDCoeff(), EPriority::kForce);
-   SetTIMECoefficients(chan->GetTIMECoeff(), EPriority::kForce);
-   SetEFFCoefficients(chan->GetEFFCoeff(), EPriority::kForce);
-   SetCTCoefficients(chan->GetCTCoeff(), EPriority::kForce);
+   SetENGCoefficients(TPriorityValue<std::vector<Float_t> >(chan->GetENGCoeff(), EPriority::kForce));
+   SetCFDCoefficients(TPriorityValue<std::vector<double> >(chan->GetCFDCoeff(), EPriority::kForce));
+   SetLEDCoefficients(TPriorityValue<std::vector<double> >(chan->GetLEDCoeff(), EPriority::kForce));
+   SetTIMECoefficients(TPriorityValue<std::vector<double> >(chan->GetTIMECoeff(), EPriority::kForce));
+   SetEFFCoefficients(TPriorityValue<std::vector<double> >(chan->GetEFFCoeff(), EPriority::kForce));
+   SetCTCoefficients(TPriorityValue<std::vector<double> >(chan->GetCTCoeff(), EPriority::kForce));
 
-   SetENGChi2(chan->GetENGChi2(), EPriority::kForce);
-   SetCFDChi2(chan->GetCFDChi2(), EPriority::kForce);
-   SetLEDChi2(chan->GetLEDChi2(), EPriority::kForce);
-   SetTIMEChi2(chan->GetTIMEChi2(), EPriority::kForce);
-   SetEFFChi2(chan->GetEFFChi2(), EPriority::kForce);
+   SetENGChi2(TPriorityValue<double>(chan->GetENGChi2(), EPriority::kForce));
+   SetCFDChi2(TPriorityValue<double>(chan->GetCFDChi2(), EPriority::kForce));
+   SetLEDChi2(TPriorityValue<double>(chan->GetLEDChi2(), EPriority::kForce));
+   SetTIMEChi2(TPriorityValue<double>(chan->GetTIMEChi2(), EPriority::kForce));
+   SetEFFChi2(TPriorityValue<double>(chan->GetEFFChi2(), EPriority::kForce));
 
-   SetUseCalFileIntegration(chan->UseCalFileIntegration(), EPriority::kForce);
+   SetUseCalFileIntegration(TPriorityValue<bool>(chan->UseCalFileIntegration(), EPriority::kForce));
 
    SetWaveParam(chan->GetWaveParam());
 
    SetDetectorNumber(chan->GetDetectorNumber());
    SetSegmentNumber(chan->GetSegmentNumber());
    SetCrystalNumber(chan->GetCrystalNumber());
-   SetTimeOffset(chan->GetTimeOffset(), EPriority::kForce);
+   SetTimeOffset(TPriorityValue<Long64_t>(chan->GetTimeOffset(), EPriority::kForce));
    SetClassType(chan->GetClassType());
 }
 
-void TChannel::AppendChannel(TChannel* chan, EPriority pr)
+void TChannel::AppendChannel(TChannel* chan)
 {
    /// Sets the current TChannel to chan
-	SetIntegration(chan->GetIntegration(), pr);
-	SetNumber(chan->GetNumber(), pr);
-	SetStream(chan->GetStream(), pr);
-	SetUserInfoNumber(chan->GetUserInfoNumber(), pr);
+	SetIntegration(chan->fIntegration);
+	SetNumber(chan->fNumber);
+	SetStream(chan->fStream);
+	SetUserInfoNumber(chan->fUserInfoNumber);
 	SetName(chan->GetName());
-	SetDigitizerType(chan->GetDigitizerTypeString(), pr);
-	SetTimeOffset(chan->GetTimeOffset(), pr);
-	SetENGCoefficients(chan->GetENGCoeff(), pr);
-	SetCFDCoefficients(chan->GetCFDCoeff(), pr);
-	SetLEDCoefficients(chan->GetLEDCoeff(), pr);
-	SetTIMECoefficients(chan->GetTIMECoeff(), pr);
-	SetEFFCoefficients(chan->GetEFFCoeff(), pr);
-	SetCTCoefficients(chan->GetCTCoeff(), pr);
-	SetENGChi2(chan->GetENGChi2(), pr);
-	SetCFDChi2(chan->GetCFDChi2(), pr);
-	SetLEDChi2(chan->GetLEDChi2(), pr);
-	SetTIMEChi2(chan->GetTIMEChi2(), pr);
-	SetEFFChi2(chan->GetEFFChi2(), pr);
-	SetUseCalFileIntegration(chan->UseCalFileIntegration(), pr);
+	SetDigitizerType(chan->fDigitizerTypeString);
+	SetTimeOffset(chan->fTimeOffset);
+	SetENGCoefficients(chan->fENGCoefficients);
+	SetCFDCoefficients(chan->fCFDCoefficients);
+	SetLEDCoefficients(chan->fLEDCoefficients);
+	SetTIMECoefficients(chan->fTIMECoefficients);
+	SetEFFCoefficients(chan->fEFFCoefficients);
+	SetCTCoefficients(chan->fCTCoefficients);
+	SetENGChi2(chan->fENGChi2);
+	SetCFDChi2(chan->fCFDChi2);
+	SetLEDChi2(chan->fLEDChi2);
+	SetTIMEChi2(chan->fTIMEChi2);
+	SetEFFChi2(chan->fEFFChi2);
+	SetUseCalFileIntegration(chan->fUseCalFileInt);
 	SetWaveParam(chan->GetWaveParam());
 	SetDetectorNumber(chan->GetDetectorNumber());
 	SetSegmentNumber(chan->GetSegmentNumber());
@@ -219,7 +217,7 @@ void TChannel::AppendChannel(TChannel* chan, EPriority pr)
    SetClassType(chan->GetClassType());
 }
 
-int TChannel::UpdateChannel(TChannel* chan, Option_t*, EPriority pr)
+int TChannel::UpdateChannel(TChannel* chan, Option_t*)
 {
    /// If there is information in the chan, the current TChannel with the same address is updated with that information.
    if(chan == nullptr) {
@@ -229,7 +227,7 @@ int TChannel::UpdateChannel(TChannel* chan, Option_t*, EPriority pr)
    if(oldchan == nullptr) {
       return 0;
    }
-   oldchan->AppendChannel(chan, pr);
+   oldchan->AppendChannel(chan);
 
    return 0;
 }
@@ -247,7 +245,6 @@ void TChannel::Clear(Option_t*)
    /// Clears all fields of a TChannel. There are currently no options to be specified.
 	fAddress = 0xffffffff;
    fIntegration.Set(0, EPriority::kForce);
-	fTypeName = TPriorityValue<std::string>();
 	fDigitizerTypeString = TPriorityValue<std::string>();
 	fDigitizerType.Set(TMnemonic::EDigitizer::kDefault, EPriority::kForce);
    fNumber.Set(0, EPriority::kForce);
@@ -258,7 +255,7 @@ void TChannel::Clear(Option_t*)
    fDetectorNumber = -1;
    fSegmentNumber = -1;
    fCrystalNumber = -1;
-   fTimeOffset.Set(0.0, EPriority::kForce);
+   fTimeOffset.Set(0, EPriority::kForce);
 
    WaveFormShape = WaveFormShapePar();
 
@@ -563,7 +560,7 @@ void TChannel::SetUseCalFileIntegration(const std::string& mnemonic, bool flag, 
    std::map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
    for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++) {
       if(mnemonic.empty() || (strncmp(mapit->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
-         mapit->second->SetUseCalFileIntegration(flag, pr);
+         mapit->second->SetUseCalFileIntegration(TPriorityValue<bool>(flag, pr));
       }
    }
 }
@@ -577,7 +574,7 @@ void TChannel::SetIntegration(const std::string& mnemonic, int tmpint, EPriority
    std::map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
    for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++) {
       if(mnemonic.empty() || (strncmp(mapit->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
-         mapit->second->SetIntegration(tmpint, pr);
+         mapit->second->SetIntegration(TPriorityValue<int>(tmpint, pr));
       }
    }
 }
@@ -591,7 +588,7 @@ void TChannel::SetDigitizerType(const std::string& mnemonic, const char* tmpstr,
    std::map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
    for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++) {
       if(mnemonic.empty() || (strncmp(mapit->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
-         mapit->second->SetDigitizerType(tmpstr, pr);
+         mapit->second->SetDigitizerType(TPriorityValue<std::string>(tmpstr, pr));
       }
    }
 }
@@ -600,14 +597,14 @@ void TChannel::PrintCTCoeffs(Option_t*) const
 {
    /// Prints out the current TChannel.
    std::cout<<GetName()<<"\t{\n"; //,channelname.c_str();
-   std::cout<<"Name:      "<<GetName()<<"\n";
-   std::cout<<"Number:    "<<fNumber<<"\n";
+   std::cout<<"Name:      "<<GetName()<<std::endl;
+   std::cout<<"Number:    "<<fNumber<<std::endl;
    std::cout<<std::setfill('0');
-   std::cout<<"Address:   0x"<<std::hex<<std::setw(8)<<fAddress<<std::dec<<"\n";
+   std::cout<<"Address:   0x"<<std::hex<<std::setw(8)<<fAddress<<std::dec<<std::endl;
    for(double fCTCoefficient : fCTCoefficients.Value()) {
       std::cout<<fCTCoefficient<<"\t";
    }
-   std::cout<<"\n";
+   std::cout<<std::endl;
    std::cout<<"}\n";
    std::cout<<"//====================================//\n";
 }
@@ -623,47 +620,49 @@ void TChannel::Print(Option_t*) const
       std::cout<<"None"<<std::endl;
    }
 
-   std::cout<<"Name:      "<<GetName()<<"\n";
-   std::cout<<"Number:    "<<fNumber<<"\n";
+   std::cout<<"Name:      "<<GetName()<<std::endl;
+   std::cout<<"Number:    "<<fNumber<<std::endl;
    std::cout<<std::setfill('0');
-   std::cout<<"Address:   0x"<<std::hex<<std::setw(8)<<fAddress<<std::dec<<"\n";
+   std::cout<<"Address:   0x"<<std::hex<<std::setw(8)<<fAddress<<std::dec<<std::endl;
    std::cout<<std::setfill(' ');
-   std::cout<<"Digitizer: "<<fDigitizerTypeString<<"\n";
-   std::cout<<"TimeOffset: "<<fTimeOffset<<"\n";
+   std::cout<<"Digitizer: "<<fDigitizerTypeString<<std::endl;
+   std::cout<<"TimeOffset: "<<fTimeOffset<<std::endl;
    std::cout<<"EngCoeff:  ";
    for(float fENGCoefficient : fENGCoefficients.Value()) {
       std::cout<<fENGCoefficient<<"\t";
    }
-   std::cout<<"\n";
-   std::cout<<"Integration: "<<fIntegration<<"\n";
-   std::cout<<"ENGChi2:   "<<fENGChi2<<"\n";
+   std::cout<<std::endl;
+   std::cout<<"Integration: "<<fIntegration<<std::endl;
+   std::cout<<"ENGChi2:   "<<fENGChi2<<std::endl;
    std::cout<<"EffCoeff:  ";
    for(double fEFFCoefficient : fEFFCoefficients.Value()) {
       std::cout<<fEFFCoefficient<<"\t";
    }
-   std::cout<<"\n";
-   std::cout<<"EFFChi2:   "<<fEFFChi2<<"\n";
+   std::cout<<std::endl;
+   std::cout<<"EFFChi2:   "<<fEFFChi2<<std::endl;
    if(!fCTCoefficients.Value().empty()) {
-      std::cout<<"CTCoeff:  ";
+      std::cout<<"CTCoeff (priority "<<static_cast<std::underlying_type<EPriority>::type>(fCTCoefficients.Priority())<<"):  ";
       for(double fCTCoefficient : fCTCoefficients.Value()) {
          std::cout<<fCTCoefficient<<"\t";
       }
-      std::cout<<"\n";
-   }
+      std::cout<<std::endl;
+   } else {
+		std::cout<<"no CTCoeff (priority "<<static_cast<std::underlying_type<EPriority>::type>(fCTCoefficients.Priority())<<")"<<std::endl;
+	}
    if(!fTIMECoefficients.Value().empty()) {
       std::cout<<"TIMECoeff: ";
       for(double fTIMECoefficient : fTIMECoefficients.Value()) {
          std::cout<<fTIMECoefficient<<"\t";
       }
-      std::cout<<"\n";
+      std::cout<<std::endl;
    }
    if(fUseCalFileInt.Value()) {
-      std::cout<<"FileInt: "<<fUseCalFileInt<<"\n";
+      std::cout<<"FileInt: "<<fUseCalFileInt<<std::endl;
    }
    if(UseWaveParam()) {
-      std::cout<<"RiseTime: "<<WaveFormShape.TauRise<<"\n";
-      std::cout<<"DecayTime: "<<WaveFormShape.TauDecay<<"\n";
-      std::cout<<"BaseLine: "<<WaveFormShape.BaseLine<<"\n";
+      std::cout<<"RiseTime: "<<WaveFormShape.TauRise<<std::endl;
+      std::cout<<"DecayTime: "<<WaveFormShape.TauDecay<<std::endl;
+      std::cout<<"BaseLine: "<<WaveFormShape.BaseLine<<std::endl;
    }
    std::cout<<"}\n";
    std::cout<<"//====================================//\n";
@@ -719,7 +718,7 @@ std::string TChannel::PrintToString(Option_t*)
    }
    buffer.append("\n");
    buffer.append(Form("Integration: %d\n", fIntegration.Value()));
-   buffer.append(Form("TimeOffset: %lf\n", fTimeOffset.Value()));
+   buffer.append(Form("TimeOffset: %lld\n", fTimeOffset.Value()));
    buffer.append(Form("ENGChi2:     %f\n", fENGChi2.Value()));
    buffer.append("EffCoeff:  ");
    for(double fEFFCoefficient : fEFFCoefficients.Value()) {
@@ -1080,6 +1079,9 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
             line             = line.substr(ntype + 1, line.length());
             trim(&line);
             std::istringstream ss(line);
+				// this can all be replace by using:
+				// std::transform(type.begin(), type.end(), type.begin(), ::toupper);
+				// size_t j = type.length();
             int                j = 0;
             while(type[j] != 0) {
                char c    = *(type.c_str() + j);
@@ -1102,85 +1104,88 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
             } else if(type.compare("INTEGRATION") == 0) {
                int tempint;
                ss >> tempint;
-               channel->SetIntegration(tempint, pr);
+               channel->SetIntegration(TPriorityValue<int>(tempint, pr));
             } else if(type.compare("NUMBER") == 0) {
                int tempnum;
                ss >> tempnum;
-               channel->SetNumber(tempnum, pr);
+               channel->SetNumber(TPriorityValue<int>(tempnum, pr));
             } else if(type.compare("TIMEOFFSET") == 0) {
-               int tempoff;
+               Long64_t tempoff;
                ss >> tempoff;
-               channel->SetTimeOffset(tempoff, pr);
+               channel->SetTimeOffset(TPriorityValue<Long64_t>(tempoff, pr));
             } else if(type.compare("STREAM") == 0) {
                int tempstream;
                ss >> tempstream;
-               channel->SetStream(tempstream, pr);
+               channel->SetStream(TPriorityValue<int>(tempstream, pr));
             } else if(type.compare("DIGITIZER") == 0) {
+					// what is this doing??? we're looping over type with j being the end of the above loop 'while(type[j] != 0)'
+					// so all characters of type are set to touppper(0) and then type isn't used at all
+					// was this meant to convert the remaining line (the argument to DIGITIZER) to upper case?
                int k = 0;
                while(type[k] != 0) {
                   char c    = *(type.c_str() + j);
                   c         = toupper(c);
                   type[k++] = c;
                }
-               channel->SetDigitizerType(line.c_str(), pr);
+               channel->SetDigitizerType(TPriorityValue<std::string>(line, pr));
             } else if(type.compare("ENGCHI2") == 0) {
                double tempdbl;
                ss >> tempdbl;
-               channel->SetENGChi2(tempdbl, pr);
+               channel->SetENGChi2(TPriorityValue<double>(tempdbl, pr));
             } else if(type.compare("CFDCHI2") == 0) {
                double tempdbl;
                ss >> tempdbl;
-               channel->SetCFDChi2(tempdbl, pr);
+               channel->SetCFDChi2(TPriorityValue<double>(tempdbl, pr));
             } else if(type.compare("LEDCHI2") == 0) {
                double tempdbl;
                ss >> tempdbl;
-               channel->SetLEDChi2(tempdbl, pr);
+               channel->SetLEDChi2(TPriorityValue<double>(tempdbl, pr));
             } else if(type.compare("TIMECHI2") == 0) {
                double tempdbl;
                ss >> tempdbl;
-               channel->SetTIMEChi2(tempdbl, pr);
+               channel->SetTIMEChi2(TPriorityValue<double>(tempdbl, pr));
             } else if(type.compare("EFFCHI2") == 0) {
                double tempdbl;
                ss >> tempdbl;
-               channel->SetEFFChi2(tempdbl, pr);
+               channel->SetEFFChi2(TPriorityValue<double>(tempdbl, pr));
             } else if(type.compare("ENGCOEFF") == 0) {
                channel->DestroyENGCal();
+					channel->fENGCoefficients.SetPriority(pr);
                double value;
                while(!(ss >> value).fail()) {
                   channel->AddENGCoefficient(value);
                }
             } else if(type.compare("LEDCOEFF") == 0) {
                channel->DestroyLEDCal();
+					channel->fLEDCoefficients.SetPriority(pr);
                double value;
                while(!(ss >> value).fail()) {
                   channel->AddLEDCoefficient(value);
                }
             } else if(type.compare("CFDCOEFF") == 0) {
                channel->DestroyCFDCal();
+					channel->fCFDCoefficients.SetPriority(pr);
                double value;
                while(!(ss >> value).fail()) {
                   channel->AddCFDCoefficient(value);
                }
-            } else if(type.compare("TIMECOEFF") == 0) {
+            } else if((type.compare("TIMECOEFF") == 0) || (type.compare("WALK") == 0)) {
                channel->DestroyTIMECal();
+					channel->fTIMECoefficients.SetPriority(pr);
                double value;
                while(!(ss >> value).fail()) {
                   channel->AddTIMECoefficient(value);
                }
             } else if(type.compare("CTCOEFF") == 0) {
                channel->DestroyCTCal();
+					channel->fCTCoefficients.SetPriority(pr);
                double value;
                while(!(ss >> value).fail()) {
                   channel->AddCTCoefficient(value);
                }
-            } else if(type.compare("WALK") == 0) {
-               channel->DestroyTIMECal();
-               double value;
-               while(!(ss >> value).fail()) {
-                  channel->AddTIMECoefficient(value);
-               }
             } else if(type.compare("EFFCOEFF") == 0) {
                channel->DestroyEFFCal();
+					channel->fEFFCoefficients.SetPriority(pr);
                double value;
                while(!(ss >> value).fail()) {
                   channel->AddEFFCoefficient(value);
@@ -1189,9 +1194,9 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                int tempstream;
                ss >> tempstream;
                if(tempstream > 0) {
-                  channel->SetUseCalFileIntegration(true, pr);
+                  channel->SetUseCalFileIntegration(TPriorityValue<bool>(true, pr));
                } else {
-                  channel->SetUseCalFileIntegration(false, pr);
+                  channel->SetUseCalFileIntegration(TPriorityValue<bool>(false, pr));
                }
             } else if(type.compare("RISETIME") == 0) {
                double tempdbl;
