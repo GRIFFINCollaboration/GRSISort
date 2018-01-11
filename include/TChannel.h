@@ -57,7 +57,7 @@ public:
 
    static int  GetNumberOfChannels() { return fChannelMap->size(); }
    static void AddChannel(TChannel*, Option_t* opt = "");
-   static int UpdateChannel(TChannel*, Option_t* opt = "", EPriority = EPriority::kUser);
+   static int UpdateChannel(TChannel*, Option_t* opt = "");
 
    static std::map<unsigned int, TChannel*>* GetChannelMap() { return fChannelMap; }
    static void DeleteAllChannels();
@@ -69,7 +69,6 @@ public:
 private:
    unsigned int fAddress;     // The address of the digitizer
    TPriorityValue<int>          fIntegration; // The charge integration setting
-   TPriorityValue<std::string>  fTypeName;
    TPriorityValue<std::string>  fDigitizerTypeString;
 	TPriorityValue<TMnemonic::EDigitizer> fDigitizerType;
    TPriorityValue<int>          fNumber;
@@ -81,7 +80,7 @@ private:
    mutable int fSegmentNumber;
    mutable int fCrystalNumber;
 
-   TPriorityValue<double>      fTimeOffset;
+   TPriorityValue<Long64_t>    fTimeOffset;
    TPriorityValue<TMnemonic>   fMnemonic;
 
    TPriorityValue<std::vector<Float_t> > fENGCoefficients;  // Energy calibration coeffs (low to high order)
@@ -110,37 +109,36 @@ private:
    static void UpdateChannelNumberMap();
    static void UpdateChannelMap();
    void        OverWriteChannel(TChannel*);
-   void        AppendChannel(TChannel*, EPriority);
+   void        AppendChannel(TChannel*);
 
-   void SetENGCoefficients(std::vector<Float_t> tmp, EPriority pr) { fENGCoefficients.Set(tmp, pr); }
-   void SetCFDCoefficients(std::vector<double> tmp, EPriority pr) { fCFDCoefficients.Set(tmp, pr); }
-   void SetLEDCoefficients(std::vector<double> tmp, EPriority pr) { fLEDCoefficients.Set(tmp, pr); }
-   void SetTIMECoefficients(std::vector<double> tmp, EPriority pr) { fTIMECoefficients.Set(tmp, pr); }
-   void SetEFFCoefficients(std::vector<double> tmp, EPriority pr) { fEFFCoefficients.Set(tmp, pr); }
-   void SetCTCoefficients(std::vector<double> tmp, EPriority pr) { fCTCoefficients.Set(tmp, pr); }
+   void SetENGCoefficients(TPriorityValue<std::vector<Float_t> > tmp) { fENGCoefficients = tmp; }
+   void SetCFDCoefficients(TPriorityValue<std::vector<double> > tmp) { fCFDCoefficients = tmp; }
+   void SetLEDCoefficients(TPriorityValue<std::vector<double> > tmp) { fLEDCoefficients = tmp; }
+   void SetTIMECoefficients(TPriorityValue<std::vector<double> > tmp) { fTIMECoefficients = tmp; }
+   void SetEFFCoefficients(TPriorityValue<std::vector<double> > tmp) { fEFFCoefficients = tmp; }
+   void SetCTCoefficients(TPriorityValue<std::vector<double> > tmp) { fCTCoefficients = tmp; }
 
    static void trim(std::string*, const std::string& trimChars = " \f\n\r\t\v");
 
 public:
    void SetName(const char* tmpName) override;
    void SetAddress(unsigned int tmpadd);
-   inline void SetNumber(int tmpnum, EPriority pr)
+   inline void SetNumber(TPriorityValue<int> tmp)
    {
-      fNumber.Set(tmpnum, pr);
+      fNumber = tmp;
       UpdateChannelNumberMap();
    }
-   inline void SetIntegration(int tmpint, EPriority pr) { fIntegration.Set(tmpint, pr); }
+   inline void SetIntegration(TPriorityValue<int> tmp) { fIntegration = tmp; }
    static void SetIntegration(const std::string& mnemonic, int tmpint, EPriority pr);
-   inline void SetStream(int tmpstream, EPriority pr) { fStream.Set(tmpstream, pr); }
-   inline void SetUserInfoNumber(int tempinfo, EPriority pr) { fUserInfoNumber.Set(tempinfo, pr); }
-   inline void SetDigitizerType(std::string tmpstr, EPriority pr)
+   inline void SetStream(TPriorityValue<int> tmp) { fStream = tmp; }
+   inline void SetUserInfoNumber(TPriorityValue<int> tmp) { fUserInfoNumber = tmp; }
+   inline void SetDigitizerType(TPriorityValue<std::string> tmp)
    {
-      fDigitizerTypeString.Set(tmpstr, pr);
-      fDigitizerType.Set(TMnemonic::EnumerateDigitizer(fDigitizerTypeString.Value()), pr);
+      fDigitizerTypeString = tmp;
+      fDigitizerType.Set(TMnemonic::EnumerateDigitizer(fDigitizerTypeString.Value()), fDigitizerTypeString.Priority());
    }
    static void SetDigitizerType(const std::string& mnemonic, const char* tmpstr, EPriority pr);
-   inline void SetTypeName(std::string tmpstr, EPriority pr) { fTypeName.Set(std::move(tmpstr), pr); }
-   inline void SetTimeOffset(double tmpto, EPriority pr) { fTimeOffset.Set(tmpto, pr); }
+   inline void SetTimeOffset(TPriorityValue<Long64_t> tmp) { fTimeOffset = tmp; }
 
    void SetDetectorNumber(int tempint) { fDetectorNumber = tempint; }
    void SetSegmentNumber(int tempint) { fSegmentNumber = tempint; }
@@ -160,7 +158,7 @@ public:
    int          GetUserInfoNumber() const { return fUserInfoNumber.Value(); }
    const char*  GetDigitizerTypeString() const { return fDigitizerTypeString.Value().c_str(); }
 	TMnemonic::EDigitizer GetDigitizerType() const { return fDigitizerType.Value(); }
-   double       GetTimeOffset() const { return fTimeOffset.Value(); }
+   Long64_t     GetTimeOffset() const { return fTimeOffset.Value(); }
    // write the rest of the gettters/setters...
 
    double GetENGChi2() const { return fENGChi2.Value(); }
@@ -169,7 +167,7 @@ public:
    double GetTIMEChi2() const { return fTIMEChi2.Value(); }
    double GetEFFChi2() const { return fEFFChi2.Value(); }
 
-   void SetUseCalFileIntegration(bool flag = true, EPriority pr = EPriority::kUser) { fUseCalFileInt.Set(flag, pr); }
+   void SetUseCalFileIntegration(TPriorityValue<bool> tmp = TPriorityValue<bool>(true, EPriority::kUser)) { fUseCalFileInt = tmp; }
    static void SetUseCalFileIntegration(const std::string& mnemonic, bool flag, EPriority pr);
    bool UseCalFileIntegration() { return fUseCalFileInt.Value(); }
 
@@ -187,11 +185,11 @@ public:
    inline void AddEFFCoefficient(double temp) { fEFFCoefficients.Address()->push_back(temp); }
    inline void AddCTCoefficient(double temp) { fCTCoefficients.Address()->push_back(temp); }
 
-   inline void SetENGChi2(double temp, EPriority pr) { fENGChi2.Set(temp, pr); }
-   inline void SetCFDChi2(double temp, EPriority pr) { fCFDChi2.Set(temp, pr); }
-   inline void SetLEDChi2(double temp, EPriority pr) { fLEDChi2.Set(temp, pr); }
-   inline void SetTIMEChi2(double temp, EPriority pr) { fTIMEChi2.Set(temp, pr); }
-   inline void SetEFFChi2(double temp, EPriority pr) { fEFFChi2.Set(temp, pr); }
+   inline void SetENGChi2(TPriorityValue<double> tmp) { fENGChi2 = tmp; }
+   inline void SetCFDChi2(TPriorityValue<double> tmp) { fCFDChi2 = tmp; }
+   inline void SetLEDChi2(TPriorityValue<double> tmp) { fLEDChi2 = tmp; }
+   inline void SetTIMEChi2(TPriorityValue<double> tmp) { fTIMEChi2 = tmp; }
+   inline void SetEFFChi2(TPriorityValue<double> tmp) { fEFFChi2 = tmp; }
 
 	inline void SetWaveRise(double temp)
 	{
