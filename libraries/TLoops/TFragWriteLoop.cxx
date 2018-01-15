@@ -45,6 +45,9 @@ TFragWriteLoop::TFragWriteLoop(std::string name, std::string fOutputFilename)
       TThread::Lock();
 
       fOutputFile = new TFile(fOutputFilename.c_str(), "RECREATE");
+		if(fOutputFile == nullptr || !fOutputFile->IsOpen()) {
+			throw std::runtime_error(Form("Failed to open \"%s\"\n", fOutputFilename.c_str()));
+		}
 
       fEventTree    = new TTree("FragmentTree", "FragmentTree");
       fEventAddress = new TFragment;
@@ -143,7 +146,7 @@ void TFragWriteLoop::Write()
          TChannel::WriteToRoot();
       }
 
-      TGRSIRunInfo::Get()->WriteToRoot(fOutputFile);
+      TGRSIRunInfo::Get().WriteToRoot(fOutputFile);
       TGRSIOptions::Get()->AnalysisOptions()->WriteToFile(fOutputFile);
       TPPG::Get()->Write();
 

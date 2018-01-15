@@ -301,7 +301,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
    if(sopt.Contains("recreate") || sopt.Contains("new")) {
       // We are being asked to make a new file.
       file = new TFile(filename.c_str(), "RECREATE");
-      if(file != nullptr) {
+      if(file != nullptr && file->IsOpen()) {
          // Give access to the file inside the interpreter.
          const char* command = Form("TFile* _file%i = (TFile*)%luL;", fRootFilesOpened, (unsigned long)file);
          TRint::ProcessLine(command);
@@ -312,7 +312,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
    } else {
       // Open an already existing file.
       file = new TFile(filename.c_str(), opt);
-      if(file != nullptr) {
+      if(file != nullptr && file->IsOpen()) {
          // Give access to the file inside the interpreter.
          const char* command = Form("TFile* _file%i = (TFile*)%luL;", fRootFilesOpened, (unsigned long)file);
          TRint::ProcessLine(command);
@@ -350,7 +350,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
          }
 
          if(file->FindObjectAny("TChannel") != nullptr) {
-            file->Get("TChannel");
+            file->Get("TChannel"); // this calls TChannel::Streamer
          }
          if(file->FindObjectAny("GValue") != nullptr) {
             file->Get("GValue");
@@ -578,9 +578,9 @@ void TGRSIint::SetupPipeline()
    }
 	// Set the run number and sub-run number
    if(!fRawFiles.empty()) {
-      TGRSIRunInfo::Get()->SetRunInfo(fRawFiles[0]->GetRunNumber(), fRawFiles[0]->GetSubRunNumber());
+      TGRSIRunInfo::Get().SetRunInfo(fRawFiles[0]->GetRunNumber(), fRawFiles[0]->GetSubRunNumber());
    } else {
-      TGRSIRunInfo::Get()->SetRunInfo(0, -1);
+      TGRSIRunInfo::Get().SetRunInfo(0, -1);
    }
 
    TPPG::Get()->Setup();
@@ -588,12 +588,12 @@ void TGRSIint::SetupPipeline()
       GValue::ReadValFile(val_filename.c_str());
    }
    for(const auto& info_filename : opt->ExternalRunInfo()) {
-      TGRSIRunInfo::Get()->ReadInfoFile(info_filename.c_str());
+      TGRSIRunInfo::Get().ReadInfoFile(info_filename.c_str());
    }
 
    // this happens here, because the TDataLoop constructor is where we read the midas file ODB
    TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::EBuildMode::kTriggerId;
-   if(TGRSIRunInfo::Get()->Griffin() || TGRSIRunInfo::Get()->Fipps()) {
+   if(TGRSIRunInfo::Get().Griffin() || TGRSIRunInfo::Get().Fipps()) {
       event_build_mode = TEventBuildingLoop::EBuildMode::kTimestamp;
    }
 

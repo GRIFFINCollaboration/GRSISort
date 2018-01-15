@@ -61,14 +61,14 @@ TPPG::TPPG()
 {
    fPPGStatusMap = new PPGMap_t;
    Clear();
-   // std::cout<<"default constructor called on "<<this<<std::endl;
+   //std::cout<<"default constructor called on "<<this<<std::endl;
 }
 
 TPPG::TPPG(const TPPG& rhs) : TObject()
 {
    fPPGStatusMap = new PPGMap_t;
    rhs.Copy(*this);
-   // std::cout<<"copy constructor called on "<<this<<" from "<<&rhs<<std::endl;
+   //std::cout<<"copy constructor called on "<<this<<" from "<<&rhs<<std::endl;
 }
 
 TPPG::~TPPG()
@@ -84,7 +84,7 @@ TPPG::~TPPG()
       }
       delete fPPGStatusMap;
    }
-   // std::cout<<"destructor called on "<<this<<std::endl;
+   //std::cout<<"destructor called on "<<this<<std::endl;
 }
 
 TPPG* TPPG::Get(TFile* fileWithPpg)
@@ -123,6 +123,9 @@ void TPPG::Copy(TObject& obj) const
       }
       static_cast<TPPG&>(obj).fCurrIterator = static_cast<TPPG&>(obj).fPPGStatusMap->begin();
    }
+
+   static_cast<TPPG&>(obj).fOdbPPGCodes     = fOdbPPGCodes;
+   static_cast<TPPG&>(obj).fOdbDurations    = fOdbDurations;
 }
 
 Bool_t TPPG::MapIsEmpty() const
@@ -325,6 +328,8 @@ void TPPG::Clear(Option_t*)
    fCurrIterator = fPPGStatusMap->begin();
    fCycleLength  = 0;
    fNumberOfCycleLengths.clear();
+   fOdbPPGCodes.clear();
+   fOdbDurations.clear();
 }
 
 Int_t TPPG::Write(const char*, Int_t, Int_t) const

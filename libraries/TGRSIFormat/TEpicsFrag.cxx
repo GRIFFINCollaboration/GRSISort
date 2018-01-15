@@ -111,13 +111,13 @@ void TEpicsFrag::BuildScalerMap(TTree* tree)
    if(tree->SetBranchAddress("TEpicsFrag", &my_frag) == 0) {
       for(int i = 0; i < tree->GetEntries(); ++i) {
          tree->GetEntry(i);
-         if((static_cast<Long64_t>(my_frag->fMidasTimeStamp) - static_cast<Long64_t>(TGRSIRunInfo::Get()->RunStart())) <
+         if((static_cast<Long64_t>(my_frag->fMidasTimeStamp) - static_cast<Long64_t>(TGRSIRunInfo::Get().RunStart())) <
             fSmallestTime) {
             fSmallestTime =
-               static_cast<Long64_t>(my_frag->fMidasTimeStamp) - static_cast<Long64_t>(TGRSIRunInfo::Get()->RunStart());
+               static_cast<Long64_t>(my_frag->fMidasTimeStamp) - static_cast<Long64_t>(TGRSIRunInfo::Get().RunStart());
          }
          fScalerMap[static_cast<Long64_t>(my_frag->fMidasTimeStamp) -
-                    static_cast<Long64_t>(TGRSIRunInfo::Get()->RunStart())] = *my_frag;
+                    static_cast<Long64_t>(TGRSIRunInfo::Get().RunStart())] = *my_frag;
       }
    } else {
       std::cout<<DRED<<"Could not build map from tree"<<RESET_COLOR<<std::endl;

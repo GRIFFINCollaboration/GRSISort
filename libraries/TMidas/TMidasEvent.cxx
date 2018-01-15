@@ -709,8 +709,8 @@ int TMidasEvent::Process(TDataParser& parser)
 			// end of file ODB
 #ifdef HAS_XML
 			TXMLOdb* odb = new TXMLOdb(GetData(), GetDataSize());
-			TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
-			TXMLNode*     node     = odb->FindPath("/Runinfo/Stop time binary");
+			TGRSIRunInfo* runInfo = &(TGRSIRunInfo::Get());
+			TXMLNode*     node    = odb->FindPath("/Runinfo/Stop time binary");
 			if(node != nullptr) {
 				std::stringstream str(node->GetText());
 				unsigned int odbTime;

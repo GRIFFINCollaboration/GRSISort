@@ -198,7 +198,9 @@ void TGRSIOptions::Load(int argc, char** argv)
    }
 
 	// Get name of the program calling this function (removing any path from the name)
-	std::string program = argv[0];
+	std::string program;
+	if(argc > 0) program = argv[0];
+	else program = "unknown";
 	size_t lastSlash = program.rfind('/');
 	if(lastSlash != std::string::npos) {
 		program.erase(0, lastSlash+1);
