@@ -48,6 +48,10 @@ TChannel::TChannel(const char* tempName)
 
 TChannel::TChannel(TChannel* chan)
 {
+	std::cout<<"copying channel "<<chan<<"/"<<chan->GetName()<<std::endl;
+	chan->Print();
+	std::cout<<"to channel "<<this<<"/"<<GetName()<<std::endl;
+	Print();
    /// Makes a copy of a the TChannel.
    SetAddress(chan->GetAddress());
 	SetIntegration(chan->fIntegration);
@@ -75,6 +79,8 @@ TChannel::TChannel(TChannel* chan)
 	SetCrystalNumber(chan->GetCrystalNumber());
 
    SetClassType(chan->GetClassType());
+	std::cout<<"=> "<<this<<"/"<<GetName()<<std::endl;
+	Print();
 }
 
 void TChannel::SetName(const char* tmpName)

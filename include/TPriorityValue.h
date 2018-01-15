@@ -74,7 +74,7 @@ public:
 	}
 
 	TPriorityValue<T>& operator =(TPriorityValue<T>&& rhs) {
-		if(rhs.fPriority != EPriority::kDefault && rhs.fPriority >= fPriority) {
+		if(rhs.fPriority >= fPriority) {
 			fValue = std::move(rhs.fValue);
 			fPriority = std::move(rhs.fPriority);
 		}
