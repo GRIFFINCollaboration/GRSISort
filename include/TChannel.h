@@ -52,6 +52,7 @@ public:
    TChannel();
    TChannel(const char*);
    TChannel(TChannel*);
+	TChannel(const TChannel&);
 
    ~TChannel() override;
 
