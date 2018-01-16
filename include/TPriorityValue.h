@@ -48,6 +48,9 @@ public:
 	void Set(T val, EPriority priority) {
 		if(priority >= fPriority) {
 			fValue = val;
+			if(priority != EPriority::kForce) {
+				fPriority = priority;
+			}
 		}
 	}
 
@@ -56,6 +59,16 @@ public:
 		if(priority > fPriority) {
 			fPriority = priority;
 		}
+	}
+	
+	// reset functions
+	void Reset(T val) {
+		fValue = val;
+		ResetPriority();
+	}
+
+	void ResetPriority() {
+		fPriority = EPriority::kDefault;
 	}
 
 	// getters
