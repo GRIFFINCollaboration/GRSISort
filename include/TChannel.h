@@ -94,7 +94,7 @@ private:
    TPriorityValue<double>                fTIMEChi2;         // Chi2 of the Time calibration
    TPriorityValue<std::vector<double> >  fEFFCoefficients;  // Efficiency calibration coeffs (low to high order)
    TPriorityValue<double>                fEFFChi2;          // Chi2 of Efficiency calibration
-   TPriorityValue<std::vector<double> > fCTCoefficients; // Cross talk coefficients
+   TPriorityValue<std::vector<double> >  fCTCoefficients;   // Cross talk coefficients
 
    struct WaveFormShapePar {
       bool   InUse;

@@ -291,17 +291,17 @@ void TChannel::Clear(Option_t*)
 
    SetName("DefaultTChannel");
 
-   fENGCoefficients = TPriorityValue<std::vector<Float_t> >();
+   fENGCoefficients.Reset(std::vector<Float_t>());
    fENGChi2.Reset(0.0);
-   fCFDCoefficients = TPriorityValue<std::vector<double> >();
+   fCFDCoefficients.Reset(std::vector<double>());
    fCFDChi2.Reset(0.0);
-   fLEDCoefficients = TPriorityValue<std::vector<double> >();
+   fLEDCoefficients.Reset(std::vector<double>());
    fLEDChi2.Reset(0.0);
-   fTIMECoefficients = TPriorityValue<std::vector<double> >();
+   fTIMECoefficients.Reset(std::vector<double>());
    fTIMEChi2.Reset(0.0);
-   fEFFCoefficients = TPriorityValue<std::vector<double> >();
+   fEFFCoefficients.Reset(std::vector<double>());
    fEFFChi2.Reset(0.0);
-   fCTCoefficients = TPriorityValue<std::vector<double> >();
+   fCTCoefficients.Reset(std::vector<double>());
    fENGChi2.Reset(0.0);
 }
 
@@ -659,13 +659,11 @@ void TChannel::Print(Option_t*) const
    std::cout<<std::endl;
    std::cout<<"EFFChi2:   "<<fEFFChi2<<std::endl;
    if(!fCTCoefficients.Value().empty()) {
-      std::cout<<"CTCoeff (priority "<<static_cast<std::underlying_type<EPriority>::type>(fCTCoefficients.Priority())<<"):  ";
+      std::cout<<"CTCoeff:  ";
       for(double fCTCoefficient : fCTCoefficients.Value()) {
          std::cout<<fCTCoefficient<<"\t";
       }
       std::cout<<std::endl;
-   } else {
-		std::cout<<"no CTCoeff (priority "<<static_cast<std::underlying_type<EPriority>::type>(fCTCoefficients.Priority())<<")"<<std::endl;
 	}
    if(!fTIMECoefficients.Value().empty()) {
       std::cout<<"TIMECoeff: ";
@@ -1274,20 +1272,16 @@ int TChannel::WriteToRoot(TFile* fileptr)
    if(oldoption == "READ") {
       fileptr->ReOpen("UPDATE");
    }
-   if(!gDirectory) {
+   if(gDirectory == nullptr) {
       printf("No file opened to write to.\n");
    }
    TIter iter(gDirectory->GetListOfKeys());
 
-   // printf("1 Number of Channels: %i\n",GetNumberOfChannels());
-   // gDirectory->ls();
-
    bool        found         = false;
    std::string mastername    = "TChannel";
    std::string mastertitle   = "TChannel";
-   std::string channelbuffer = fFileData;
-   // std::map<std::string,int> indexmap;
-   WriteCalBuffer();
+   std::string channelbuffer = fFileData; //fFileData is the old TChannel information read from file
+   WriteCalBuffer(); //replaces fFileData with the current channels
    std::string savedata = fFileData;
 
    FILE* originalstdout = stdout;
@@ -1305,13 +1299,8 @@ int TChannel::WriteToRoot(TFile* fileptr)
          mastertitle.assign(ch->GetTitle());
       }
       std::string cname = key->ReadObj()->GetName();
-      // TFile* f = gDirectory->GetFile();
       cname.append(";*");
       gDirectory->Delete(cname.c_str());
-      // indexmap[cname]++;
-      // std::string cnamei = cname; cnamei.append(Form(";%i",indexmap[cname]));
-      // printf("cnamei = %s\n",cnamei.c_str());
-      // gDirectory->Delete(cnamei.c_str());
       TChannel::DeleteAllChannels();
    }
 
@@ -1319,8 +1308,6 @@ int TChannel::WriteToRoot(TFile* fileptr)
 
    ParseInputData(savedata.c_str(), "q", EPriority::kRootFile);
    SaveToSelf(savedata.c_str());
-   // printf("1 Number of Channels: %i\n",GetNumberOfChannels());
-   // gDirectory->ls();
    TChannel::ParseInputData(channelbuffer.c_str(), "q", EPriority::kRootFile);
    c = TChannel::GetDefaultChannel();
    c->SetNameTitle(mastername.c_str(), mastertitle.c_str());
@@ -1329,10 +1316,6 @@ int TChannel::WriteToRoot(TFile* fileptr)
    ParseInputData(savedata.c_str(), "q", EPriority::kRootFile);
    SaveToSelf(savedata.c_str());
 
-   // printf("1 Number of Channels: %i\n",GetNumberOfChannels());
-   // gDirectory->ls();
-   // TChannel::DeleteAllChannels();
-   // gDirectory->GetFile()->Get("c->GetName()");
    printf("  %i TChannels saved to %s.\n", GetNumberOfChannels(), gDirectory->GetFile()->GetName());
    if(oldoption == "READ") {
       printf("  Returning %s to \"%s\" mode.\n", gDirectory->GetFile()->GetName(), oldoption.c_str());
