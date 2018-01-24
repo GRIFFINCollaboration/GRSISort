@@ -41,6 +41,9 @@ TAnalysisWriteLoop::TAnalysisWriteLoop(std::string name, std::string output_file
    if(output_filename != "/dev/null") {
       // TPreserveGDirectory preserve;
       fOutputFile = new TFile(output_filename.c_str(), "RECREATE");
+		if(fOutputFile == nullptr || !fOutputFile->IsOpen()) {
+			throw std::runtime_error(Form("Failed to open \"%s\"\n", output_filename.c_str()));
+		}
       fEventTree  = new TTree("AnalysisTree", "AnalysisTree");
       if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
          fOutOfOrderTree = new TTree("OutOfOrderTree", "OutOfOrderTree");
