@@ -46,9 +46,11 @@ public:
 
 private:
    // fragment tree diagnostics (should these all be static?)
+	// detector type maps
    std::map<Short_t, Long_t> fNumberOfGoodFragments; ///< map of number of good fragments per detector type
    std::map<Short_t, Long_t> fNumberOfBadFragments;  ///< map of number of bad fragments per detector type
 
+	// channel address maps
    std::map<UInt_t, UInt_t> fMinChannelId; ///< map of minimum channel id per channel address
    std::map<UInt_t, UInt_t> fMaxChannelId; ///< map of maximum channel id per channel address
 

@@ -87,9 +87,13 @@ void TParsingDiagnostics::Print(Option_t*) const
       if(fMinTimeStamp.find(it.first) == fMinTimeStamp.end() || fMaxTimeStamp.find(it.first) == fMaxTimeStamp.end()) {
          std::cout<<"nonexisting channel???"<<std::endl;
       } else {
-         std::cout<<std::setw(12)<<(fMaxTimeStamp.at(it.first) - fMinTimeStamp.at(it.first)) / 1e5
-                  <<" ms = "<<(100. * it.second) / (fMaxTimeStamp.at(it.first) - fMinTimeStamp.at(it.first))<<" %"
-                  <<std::endl;
+			if(fMaxTimeStamp.at(it.first) == fMinTimeStamp.at(it.first) && fMaxChannelId.at(it.first) == fMinChannelId.at(it.first)) {
+				std::cout<<"empty channel"<<std::endl;
+			} else {
+				std::cout<<std::setw(12)<<(fMaxTimeStamp.at(it.first) - fMinTimeStamp.at(it.first)) / 1e5
+					      <<"ms = "<<(100. * it.second) / (fMaxTimeStamp.at(it.first) - fMinTimeStamp.at(it.first))<<" %"
+							<<std::endl;
+			}
       }
    }
 }
@@ -102,7 +106,7 @@ void TParsingDiagnostics::GoodFragment(const std::shared_ptr<const TFragment>& f
    UInt_t channelAddress = frag->GetAddress();
    UInt_t channelId      = frag->GetChannelId();
    long   timeStamp      = frag->GetTimeStamp();
-   // Long_t triggerId = frag->TriggerId;
+	
    // check if this is a new minimum/maximum of the channel id
    if(fMinChannelId.find(channelAddress) == fMinChannelId.end()) { // check if this channel has been found before
       fMinChannelId[channelAddress] = channelId;
@@ -132,6 +136,7 @@ void TParsingDiagnostics::GoodFragment(const std::shared_ptr<const TFragment>& f
          fMaxNetworkPacketNumber = frag->GetNetworkPacketNumber();
       }
    }
+
    // increment the dead time and set per channel min/max timestamps
    if(fDeadTime.find(channelAddress) == fDeadTime.end()) {
       fDeadTime[channelAddress]     = frag->GetDeadTime();
