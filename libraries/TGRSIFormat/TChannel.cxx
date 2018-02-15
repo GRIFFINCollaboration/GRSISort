@@ -389,37 +389,37 @@ void TChannel::SetAddress(unsigned int tmpadd)
 void TChannel::DestroyENGCal()
 {
    /// Erases the ENGCoefficients vector
-   fENGCoefficients = TPriorityValue<std::vector<Float_t> >();
+   fENGCoefficients.Address()->clear();
 }
 
 void TChannel::DestroyCFDCal()
 {
    /// Erases the CFDCoefficients vector
-   fCFDCoefficients = TPriorityValue<std::vector<double> >();
+   fCFDCoefficients.Address()->clear();
 }
 
 void TChannel::DestroyLEDCal()
 {
    /// Erases the LEDCoefficients vector
-   fLEDCoefficients = TPriorityValue<std::vector<double> >();
+   fLEDCoefficients.Address()->clear();
 }
 
 void TChannel::DestroyTIMECal()
 {
    /// Erases the TimeCal vector
-   fTIMECoefficients = TPriorityValue<std::vector<double> >();
+   fTIMECoefficients.Address()->clear();
 }
 
 void TChannel::DestroyEFFCal()
 {
    /// Erases the EffCal vector
-   fEFFCoefficients = TPriorityValue<std::vector<double> >();
+   fEFFCoefficients.Address()->clear();
 }
 
 void TChannel::DestroyCTCal()
 {
    // Erases the CTCal vector
-   fCTCoefficients = TPriorityValue<std::vector<double> >();
+   fCTCoefficients.Address()->clear();
 }
 
 void TChannel::DestroyCalibrations()
