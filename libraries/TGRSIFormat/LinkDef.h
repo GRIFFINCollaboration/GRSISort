@@ -12,7 +12,7 @@
 
 #pragma link C++ class std::string+;
 #pragma link C++ class TSingleton+;
-#pragma link C++ class TGRSIRunInfo-;
+#pragma link C++ class TGRSIRunInfo+;
 #pragma link C++ class TSingleton<TGRSIRunInfo>-;
 
 #pragma link C++ class TFragment+;

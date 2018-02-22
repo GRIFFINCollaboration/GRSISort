@@ -61,6 +61,8 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile* tempf)
       }
 
       Set(*static_cast<TGRSIRunInfo*>(key->ReadObj()));
+		std::cout<<"read from file "<<&Get()<<":"<<std::endl;
+		Get().Print();
       savdir->cd();
       return true;
    }
@@ -549,14 +551,26 @@ std::string TGRSIRunInfo::PrintToString(Option_t*)
    return buffer;
 }
 
-void TGRSIRunInfo::Streamer(TBuffer& R__b)
-{
-	std::cout<<__PRETTY_FUNCTION__<<std::endl;
-	if(R__b.IsReading()) {
-      R__b.ReadClassBuffer(TGRSIRunInfo::Class(),this);
-		std::cout<<"ReadClassBuffer("<<Class()->GetName()<<", "<<&(Get())<<"/"<<this<<")"<<std::endl;
-	} else {
-      R__b.WriteClassBuffer(TGRSIRunInfo::Class(),this);
-		std::cout<<"WriteClassBuffer("<<Class()->GetName()<<", "<<&(Get())<<"/"<<this<<")"<<std::endl;
-	}
-}
+//void TGRSIRunInfo::Streamer(TBuffer& R__b)
+//{
+//	std::cout<<__PRETTY_FUNCTION__<<std::endl;
+//	std::cout<<this<<".Print():"<<std::endl;
+//	Print();
+//	std::cout<<&Get()<<".Print():"<<std::endl;
+//	Get().Print();
+//	if(R__b.IsReading()) {
+//		std::cout<<"Reading TBuffer size "<<R__b.BufferSize()<<", "<<Class()->GetName()<<", "<<&(Get())<<"/"<<this<<std::endl;
+//      R__b.ReadClassBuffer(TGRSIRunInfo::Class(),this);
+//		//Set(*this);
+//		std::cout<<"ReadClassBuffer("<<Class()->GetName()<<", "<<&(Get())<<"/"<<this<<"), TBuffer size "<<R__b.BufferSize()<<std::endl;
+//	} else {
+//		std::cout<<"Writing TBuffer size "<<R__b.BufferSize()<<std::endl;
+//      R__b.WriteClassBuffer(TGRSIRunInfo::Class(),this);
+//		std::cout<<"WriteClassBuffer("<<Class()->GetName()<<", "<<&(Get())<<"/"<<this<<"), TBuffer size "<<R__b.BufferSize()<<std::endl;
+//	}
+//	std::cout<<this<<".Print():"<<std::endl;
+//	Print();
+//	std::cout<<&Get()<<".Print():"<<std::endl;
+//	Get().Print();
+//	std::cout<<"----------------------------------------"<<std::endl;
+//}

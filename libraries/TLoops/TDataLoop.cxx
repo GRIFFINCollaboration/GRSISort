@@ -99,7 +99,7 @@ void TDataLoop::SetFileOdb(uint32_t time, char* data, int size)
 void TDataLoop::SetRunInfo(uint32_t time)
 {
 #ifdef HAS_XML
-   TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
+   TGRSIRunInfo* runInfo = &(TGRSIRunInfo::Get());
    TXMLNode*     node    = fOdb->FindPath("/Runinfo/Start time binary");
    if(node != nullptr) {
 		std::stringstream str(node->GetText());
