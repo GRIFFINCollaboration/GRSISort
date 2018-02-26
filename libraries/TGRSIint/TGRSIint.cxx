@@ -676,7 +676,7 @@ void TGRSIint::RunMacroFile(const std::string& filename)
 {
    /// Runs a macro file. This happens when --work-harder is used with a .C file
    if(file_exists(filename.c_str())) {
-      const char* command = Form(".x %s;", filename.c_str());
+      const char* command = Form(".x %s", filename.c_str());
       ProcessLine(command);
    } else {
       std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
