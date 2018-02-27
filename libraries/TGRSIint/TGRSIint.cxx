@@ -137,12 +137,12 @@ void TGRSIint::ApplyOptions()
 
    SetupPipeline();
 
-   for(auto& filename : opt->MacroInputFiles()) {
-      RunMacroFile(filename);
-   }
-
    if(opt->StartGui()) {
       StartGUI();
+   }
+
+   for(auto& filename : opt->MacroInputFiles()) {
+      RunMacroFile(filename);
    }
 
    std::cout<<StoppableThread::AllThreadHeader()<<std::endl;
@@ -578,9 +578,9 @@ void TGRSIint::SetupPipeline()
    }
 	// Set the run number and sub-run number
    if(!fRawFiles.empty()) {
-      TGRSIRunInfo::Get().SetRunInfo(fRawFiles[0]->GetRunNumber(), fRawFiles[0]->GetSubRunNumber());
+      TGRSIRunInfo::Get()->SetRunInfo(fRawFiles[0]->GetRunNumber(), fRawFiles[0]->GetSubRunNumber());
    } else {
-      TGRSIRunInfo::Get().SetRunInfo(0, -1);
+      TGRSIRunInfo::Get()->SetRunInfo(0, -1);
    }
 
    TPPG::Get()->Setup();
@@ -588,12 +588,12 @@ void TGRSIint::SetupPipeline()
       GValue::ReadValFile(val_filename.c_str());
    }
    for(const auto& info_filename : opt->ExternalRunInfo()) {
-      TGRSIRunInfo::Get().ReadInfoFile(info_filename.c_str());
+      TGRSIRunInfo::Get()->ReadInfoFile(info_filename.c_str());
    }
 
    // this happens here, because the TDataLoop constructor is where we read the midas file ODB
    TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::EBuildMode::kTriggerId;
-   if(TGRSIRunInfo::Get().Griffin() || TGRSIRunInfo::Get().Fipps()) {
+   if(TGRSIRunInfo::Get()->Griffin() || TGRSIRunInfo::Get()->Fipps()) {
       event_build_mode = TEventBuildingLoop::EBuildMode::kTimestamp;
    }
 
@@ -674,9 +674,10 @@ void TGRSIint::SetupPipeline()
 
 void TGRSIint::RunMacroFile(const std::string& filename)
 {
-   /// Runs a macro file. This happens when --work-harder is used with a .C file
+   /// Runs a macro file. This happens when a .C file is provided on the command line
    if(file_exists(filename.c_str())) {
-      const char* command = Form(".x %s;", filename.c_str());
+      const char* command = Form(".x %s", filename.c_str());
+		std::cout<<"trying to run '"<<command<<"'"<<std::endl;
       ProcessLine(command);
    } else {
       std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;

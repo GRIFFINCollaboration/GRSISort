@@ -62,24 +62,6 @@ public:
    // order to write this class to a tree.
    // pcb.
 
-	//TGRSIRunInfo& operator=(TGRSIRunInfo const& rhs)
-	//{
-	//	std::cout<<__PRETTY_FUNCTION__<<std::endl;
-	//	std::cout<<fRunTitle<<"/"<<rhs.fRunTitle<<" => ";
-	//	fRunTitle = rhs.fRunTitle;
-	//	std::cout<<fRunTitle<<std::endl;
-	//	fRunComment = rhs.fRunComment;
-
-	//	std::cout<<fRunNumber<<"/"<<rhs.fRunNumber<<" => ";
-	//	fRunNumber = rhs.fRunNumber;
-	//	std::cout<<fRunNumber<<std::endl;
-	//	std::cout<<fSubRunNumber<<"/"<<rhs.fSubRunNumber<<" => ";
-	//	fSubRunNumber = rhs.fSubRunNumber;
-	//	std::cout<<fSubRunNumber<<std::endl;
-
-	//	return *this;
-	//}
-   //static void Set(TSingleton* tmp) override;
    static Bool_t ReadInfoFromFile(TFile* tempf = nullptr);
 
    static const char* GetGRSIVersion() { return fGRSIVersion.c_str(); }
@@ -96,120 +78,120 @@ public:
    static void SetRunInfo(int runnum = 0, int subrunnum = -1);
    static void SetAnalysisTreeBranches(TTree*);
 
-   static inline void SetRunNumber(int tmp) { Get().fRunNumber = tmp; }
-   static inline void SetSubRunNumber(int tmp) { Get().fSubRunNumber = tmp; }
+   static inline void SetRunNumber(int tmp) { Get()->fRunNumber = tmp; }
+   static inline void SetSubRunNumber(int tmp) { Get()->fSubRunNumber = tmp; }
 
-   static inline int RunNumber() { return Get().fRunNumber; }
-   static inline int SubRunNumber() { return Get().fSubRunNumber; }
+   static inline int RunNumber() { return Get()->fRunNumber; }
+   static inline int SubRunNumber() { return Get()->fSubRunNumber; }
 
-   inline void SetRunTitle(const char* run_title) { Get().fRunTitle.assign(run_title); }
-   inline void SetRunComment(const char* run_comment) { Get().fRunComment.assign(run_comment); }
+   inline void SetRunTitle(const char* run_title) { Get()->fRunTitle.assign(run_title); }
+   inline void SetRunComment(const char* run_comment) { Get()->fRunComment.assign(run_comment); }
 
-	static inline std::string RunTitle() { return Get().fRunTitle; }
-	static inline std::string RunComment() { return Get().fRunComment; }
+	static inline std::string RunTitle() { return Get()->fRunTitle; }
+	static inline std::string RunComment() { return Get()->fRunComment; }
 
-   static inline void SetRunStart(double tmp) { Get().fRunStart = tmp; }
-   static inline void SetRunStop(double tmp) { Get().fRunStop = tmp; }
-   static inline void SetRunLength(double tmp) { Get().fRunLength = tmp; }
-   static inline void SetRunLength() { Get().fRunLength = Get().fRunStop - Get().fRunStart; }
+   static inline void SetRunStart(double tmp) { Get()->fRunStart = tmp; }
+   static inline void SetRunStop(double tmp) { Get()->fRunStop = tmp; }
+   static inline void SetRunLength(double tmp) { Get()->fRunLength = tmp; }
+   static inline void SetRunLength() { Get()->fRunLength = Get()->fRunStop - Get()->fRunStart; }
 
-   static inline double RunStart() { return Get().fRunStart; }
-   static inline double RunStop() { return Get().fRunStop; }
-   static inline double RunLength() { return Get().fRunLength; }
+   static inline double RunStart() { return Get()->fRunStart; }
+   static inline double RunStop() { return Get()->fRunStop; }
+   static inline double RunLength() { return Get()->fRunLength; }
 
-   static inline void SetTigress(bool flag = true) { Get().fTigress = flag; }
-   static inline void SetSharc(bool flag = true) { Get().fSharc = flag; }
-   static inline void SetTriFoil(bool flag = true) { Get().fTriFoil = flag; }
-   static inline void SetRF(bool flag = true) { Get().fRf = flag; }
-   static inline void SetCSM(bool flag = true) { Get().fCSM = flag; }
-   static inline void SetSpice(bool flag = true) { Get().fSpice = flag; }
-   static inline void SetS3(bool flag = true) { Get().fS3 = flag; }
-   static inline void SetGeneric(bool flag = true) { Get().fGeneric = flag; }
-   static inline void SetTip(bool flag = true) { Get().fTip = flag; }
-   static inline void SetBambino(bool flag = true) { Get().fBambino = flag; }
+   static inline void SetTigress(bool flag = true) { Get()->fTigress = flag; }
+   static inline void SetSharc(bool flag = true) { Get()->fSharc = flag; }
+   static inline void SetTriFoil(bool flag = true) { Get()->fTriFoil = flag; }
+   static inline void SetRF(bool flag = true) { Get()->fRf = flag; }
+   static inline void SetCSM(bool flag = true) { Get()->fCSM = flag; }
+   static inline void SetSpice(bool flag = true) { Get()->fSpice = flag; }
+   static inline void SetS3(bool flag = true) { Get()->fS3 = flag; }
+   static inline void SetGeneric(bool flag = true) { Get()->fGeneric = flag; }
+   static inline void SetTip(bool flag = true) { Get()->fTip = flag; }
+   static inline void SetBambino(bool flag = true) { Get()->fBambino = flag; }
 
-   static inline void SetGriffin(bool flag = true) { Get().fGriffin = flag; }
-   static inline void SetSceptar(bool flag = true) { Get().fSceptar = flag; }
-   static inline void SetPaces(bool flag = true) { Get().fPaces = flag; }
-   static inline void SetDante(bool flag = true) { Get().fDante = flag; }
-   static inline void SetZeroDegree(bool flag = true) { Get().fZeroDegree = flag; }
-   static inline void SetDescant(bool flag = true) { Get().fDescant = flag; }
-   static inline void SetFipps(bool flag = true) { Get().fFipps = flag; }
+   static inline void SetGriffin(bool flag = true) { Get()->fGriffin = flag; }
+   static inline void SetSceptar(bool flag = true) { Get()->fSceptar = flag; }
+   static inline void SetPaces(bool flag = true) { Get()->fPaces = flag; }
+   static inline void SetDante(bool flag = true) { Get()->fDante = flag; }
+   static inline void SetZeroDegree(bool flag = true) { Get()->fZeroDegree = flag; }
+   static inline void SetDescant(bool flag = true) { Get()->fDescant = flag; }
+   static inline void SetFipps(bool flag = true) { Get()->fFipps = flag; }
 
-   static inline void SetCalFileName(const char* name) { Get().fCalFileName.assign(name); }
-   static inline void SetCalFileData(const char* data) { Get().fCalFile.assign(data); }
+   static inline void SetCalFileName(const char* name) { Get()->fCalFileName.assign(name); }
+   static inline void SetCalFileData(const char* data) { Get()->fCalFile.assign(data); }
 
-   static inline void SetXMLODBFileName(const char* name) { Get().fXMLODBFileName.assign(name); }
-   static inline void SetXMLODBFileData(const char* data) { Get().fXMLODBFile.assign(data); }
+   static inline void SetXMLODBFileName(const char* name) { Get()->fXMLODBFileName.assign(name); }
+   static inline void SetXMLODBFileData(const char* data) { Get()->fXMLODBFile.assign(data); }
 
-   static const char* GetCalFileName() { return Get().fCalFileName.c_str(); }
-   static const char* GetCalFileData() { return Get().fCalFile.c_str(); }
+   static const char* GetCalFileName() { return Get()->fCalFileName.c_str(); }
+   static const char* GetCalFileData() { return Get()->fCalFile.c_str(); }
 
-   static const char* GetXMLODBFileName() { return Get().fXMLODBFileName.c_str(); }
-   static const char* GetXMLODBFileData() { return Get().fXMLODBFile.c_str(); }
+   static const char* GetXMLODBFileName() { return Get()->fXMLODBFileName.c_str(); }
+   static const char* GetXMLODBFileData() { return Get()->fXMLODBFile.c_str(); }
 
-   static const char* GetRunInfoFileName() { return Get().fRunInfoFileName.c_str(); }
-   static const char* GetRunInfoFileData() { return Get().fRunInfoFile.c_str(); }
+   static const char* GetRunInfoFileName() { return Get()->fRunInfoFileName.c_str(); }
+   static const char* GetRunInfoFileData() { return Get()->fRunInfoFile.c_str(); }
 
    static Bool_t ReadInfoFile(const char* filename = "");
    static Bool_t ParseInputData(const char* inputdata = "", Option_t* opt = "q");
 
-   static inline int GetNumberOfSystems() { return Get().fNumberOfTrueSystems; }
+   static inline int GetNumberOfSystems() { return Get()->fNumberOfTrueSystems; }
 
-   static inline bool Tigress() { return Get().fTigress; }
-   static inline bool Sharc() { return Get().fSharc; }
-   static inline bool TriFoil() { return Get().fTriFoil; }
-   static inline bool RF() { return Get().fRf; }
-   static inline bool CSM() { return Get().fCSM; }
-   static inline bool Spice() { return Get().fSpice; }
-   static inline bool Bambino() { return Get().fBambino; }
-   static inline bool Tip() { return Get().fTip; }
-   static inline bool S3() { return Get().fS3; }
-   static inline bool Generic() { return Get().fGeneric; }
+   static inline bool Tigress() { return Get()->fTigress; }
+   static inline bool Sharc() { return Get()->fSharc; }
+   static inline bool TriFoil() { return Get()->fTriFoil; }
+   static inline bool RF() { return Get()->fRf; }
+   static inline bool CSM() { return Get()->fCSM; }
+   static inline bool Spice() { return Get()->fSpice; }
+   static inline bool Bambino() { return Get()->fBambino; }
+   static inline bool Tip() { return Get()->fTip; }
+   static inline bool S3() { return Get()->fS3; }
+   static inline bool Generic() { return Get()->fGeneric; }
 
-   static inline bool Griffin() { return Get().fGriffin; }
-   static inline bool Sceptar() { return Get().fSceptar; }
-   static inline bool Paces() { return Get().fPaces; }
-   static inline bool Dante() { return Get().fDante; }
-   static inline bool ZeroDegree() { return Get().fZeroDegree; }
-   static inline bool Descant() { return Get().fDescant; }
-   static inline bool Fipps() { return Get().fFipps; }
+   static inline bool Griffin() { return Get()->fGriffin; }
+   static inline bool Sceptar() { return Get()->fSceptar; }
+   static inline bool Paces() { return Get()->fPaces; }
+   static inline bool Dante() { return Get()->fDante; }
+   static inline bool ZeroDegree() { return Get()->fZeroDegree; }
+   static inline bool Descant() { return Get()->fDescant; }
+   static inline bool Fipps() { return Get()->fFipps; }
 
-   inline void SetRunInfoFileName(const char* fname) { Get().fRunInfoFileName.assign(fname); }
-   inline void SetRunInfoFile(const char* ffile) { Get().fRunInfoFile.assign(ffile); }
+   inline void SetRunInfoFileName(const char* fname) { Get()->fRunInfoFileName.assign(fname); }
+   inline void SetRunInfoFile(const char* ffile) { Get()->fRunInfoFile.assign(ffile); }
 
-   inline void SetHPGeArrayPosition(const double arr_pos) { Get().fHPGeArrayPosition = arr_pos; }
-   static inline double                          HPGeArrayPosition() { return Get().fHPGeArrayPosition; }
+   inline void SetHPGeArrayPosition(const double arr_pos) { Get()->fHPGeArrayPosition = arr_pos; }
+   static inline double                          HPGeArrayPosition() { return Get()->fHPGeArrayPosition; }
 
-   static inline void SetDescantAncillary(bool flag = true) { Get().fDescantAncillary = flag; }
-   static inline bool                          DescantAncillary() { return Get().fDescantAncillary; }
+   static inline void SetDescantAncillary(bool flag = true) { Get()->fDescantAncillary = flag; }
+   static inline bool                          DescantAncillary() { return Get()->fDescantAncillary; }
 
    Long64_t Merge(TCollection* list);
    void Add(TGRSIRunInfo* runinfo)
    {
 		// add the run length together
       if(runinfo->fRunLength > 0) {
-			if(Get().fRunLength > 0) {
-				Get().fRunLength += runinfo->fRunLength;
+			if(Get()->fRunLength > 0) {
+				Get()->fRunLength += runinfo->fRunLength;
 			} else {
-				Get().fRunLength = runinfo->fRunLength;
+				Get()->fRunLength = runinfo->fRunLength;
 			}
 		}
-		if(runinfo->fRunNumber != Get().fRunNumber) {
+		if(runinfo->fRunNumber != Get()->fRunNumber) {
 			// the run number is meaningful only when the run numbers are the same
-			Get().fRunNumber = 0;
-			Get().fSubRunNumber = -1;
-			Get().fRunStart = 0.;
-			Get().fRunStop  = 0.;
-		} else if(runinfo->fSubRunNumber == Get().fSubRunNumber + 1) {
+			Get()->fRunNumber = 0;
+			Get()->fSubRunNumber = -1;
+			Get()->fRunStart = 0.;
+			Get()->fRunStop  = 0.;
+		} else if(runinfo->fSubRunNumber == Get()->fSubRunNumber + 1) {
 			// if the run numbers are the same and we have subsequent sub runs we can update the run stop
-			Get().fRunStop = runinfo->fRunStop;
-			Get().fSubRunNumber = runinfo->fSubRunNumber; // so we can check the next subrun as well
+			Get()->fRunStop = runinfo->fRunStop;
+			Get()->fSubRunNumber = runinfo->fSubRunNumber; // so we can check the next subrun as well
 		} else {
 			// with multiple files added, the sub run number has no meaning anymore
-			Get().fSubRunNumber = -1;
-			Get().fRunStart = 0.;
-			Get().fRunStop  = 0.;
+			Get()->fSubRunNumber = -1;
+			Get()->fRunStart = 0.;
+			Get()->fRunStop  = 0.;
 		}
    }
 

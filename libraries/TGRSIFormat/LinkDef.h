@@ -12,7 +12,7 @@
 
 #pragma link C++ class std::string+;
 #pragma link C++ class TSingleton+;
-#pragma link C++ class TGRSIRunInfo-;
+#pragma link C++ class TGRSIRunInfo+;
 #pragma link C++ class TSingleton<TGRSIRunInfo>-;
 
 #pragma link C++ class TFragment+;
@@ -25,6 +25,7 @@
 #pragma link C++ class TGRSISortList+;
 
 #pragma link C++ class TPPG-;
+#pragma link C++ class TSingleton<TPPG>-;
 #pragma link C++ class TPPGData+;
 #pragma link C++ class std::map<ULong64_t,TPPGData*>;
 #pragma link C++ class TScaler+;
@@ -32,7 +33,9 @@
 #pragma link C++ class std::map<UInt_t, std::map<ULong64_t, TScalerData*> >;
 #pragma link C++ class std::map<ULong64_t, TScalerData*>;
 #pragma link C++ class TParsingDiagnostics+;
+#pragma link C++ class TSingleton<TParsingDiagnostics>-;
 #pragma link C++ class TSortingDiagnostics+;
+#pragma link C++ class TSingleton<TSortingDiagnostics>-;
 #pragma link C++ class TMnemonic+;
 
 #pragma link C++ class TTransientBits<UChar_t>+;

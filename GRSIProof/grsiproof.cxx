@@ -41,8 +41,8 @@ void Analyze(const char* tree_type)
             // TODO: A smarter way of finding run info for run number and sub run number naming
             static bool info_set = false;
             if(!info_set) {
-               TGRSIRunInfo::Get().ReadInfoFromFile(in_file);
-					TGRSIRunInfo::Get().Print();
+               TGRSIRunInfo::Get()->ReadInfoFromFile(in_file);
+					TGRSIRunInfo::Get()->Print();
                info_set = true;
             }
          }

@@ -128,7 +128,7 @@ Bool_t TGRSISelector::Process(Long64_t entry)
       current_file = fChain->GetCurrentFile();
       std::cout<<"Starting to sort: "<<current_file<<std::endl;
       TChannel::ReadCalFromFile(current_file);
-      TGRSIRunInfo::Get().ReadInfoFromFile(current_file);
+      TGRSIRunInfo::Get()->ReadInfoFromFile(current_file);
       //   TChannel::WriteCalFile();
    }
 
@@ -152,14 +152,16 @@ void TGRSISelector::Terminate()
    /// The Terminate() function is the last function to be called during
    /// a query. It always runs on the client, it can be used to present
    /// the results graphically or save the results to file.
-   Int_t runnumber    = TGRSIRunInfo::Get().RunNumber();
-   Int_t subrunnumber = TGRSIRunInfo::Get().SubRunNumber();
+	TGRSIOptions* options = TGRSIOptions::Get();
+	TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
+   Int_t runnumber    = runInfo->RunNumber();
+   Int_t subrunnumber = runInfo->SubRunNumber();
 
    std::cout<<runnumber<<" "<<subrunnumber<<std::endl;
    TFile outputFile(Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runnumber, subrunnumber), "RECREATE");
    fOutput->Write();
-   TGRSIRunInfo::Get().Write();
-   TGRSIOptions::Get()->AnalysisOptions()->WriteToFile(&outputFile);
+   runInfo->Write();
+   options->AnalysisOptions()->WriteToFile(&outputFile);
    outputFile.Close();
 }
 

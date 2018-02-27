@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <utility>
 
-#include <TString.h>
+#include "TString.h"
 
 #include "TDataLoop.h"
 #include "TFragmentChainLoop.h"

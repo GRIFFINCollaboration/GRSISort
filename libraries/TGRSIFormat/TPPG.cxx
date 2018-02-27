@@ -64,7 +64,7 @@ TPPG::TPPG()
    //std::cout<<"default constructor called on "<<this<<std::endl;
 }
 
-TPPG::TPPG(const TPPG& rhs) : TObject()
+TPPG::TPPG(const TPPG& rhs) : TSingleton<TPPG>()
 {
    fPPGStatusMap = new PPGMap_t;
    rhs.Copy(*this);
@@ -85,27 +85,6 @@ TPPG::~TPPG()
       delete fPPGStatusMap;
    }
    //std::cout<<"destructor called on "<<this<<std::endl;
-}
-
-TPPG* TPPG::Get(TFile* fileWithPpg)
-{
-   /// The getter for the singleton TPPG. Unfortunately ROOT doesn't allow true
-   /// singletons, so one should take care to always use this method and not
-   /// the constructor.
-	TDirectory* fileToGetPpgFrom = gDirectory;
-
-	if(fileWithPpg != nullptr) {
-		fileToGetPpgFrom = static_cast<TDirectory*>(fileWithPpg);
-	}
-
-	// we want to get the ppg if we haven't done so yet, or if a file was provided
-   if(fPPG == nullptr || fileWithPpg != nullptr) {
-      fPPG = static_cast<TPPG*>(fileToGetPpgFrom->Get("TPPG"));
-      if(fPPG == nullptr) {
-         fPPG = new TPPG();
-      }
-   }
-   return fPPG;
 }
 
 void TPPG::Copy(TObject& obj) const
@@ -276,9 +255,9 @@ void TPPG::Print(Option_t* opt) const
 
    // the print statement itself
    printf("Cycle length is %lld in 10 ns units = %.3lf seconds.\n", cycleLength, cycleLength / 1e8);
-   printf("Cycle: %.3lf s tape move, %.3lf background, %.3lf beam on, and %.3lf decay\n", stateLength[0] / 1e8,
+   printf("Cycle: %.3lf s tape move, %.3lf s background, %.3lf s beam on, and %.3lf s decay\n", stateLength[0] / 1e8,
           stateLength[1] / 1e8, stateLength[2] / 1e8, stateLength[3] / 1e8);
-   printf("Offset is %d\n", offset);
+   printf("Offset is %d [10 ns]\n", offset);
    printf("Got %ld PPG words:\n", fPPGStatusMap->size() - 1);
    for(auto& statu : status) {
       printf("\tfound status 0x%04x %d times\n", static_cast<std::underlying_type<EPpgPattern>::type>(statu.first), statu.second);

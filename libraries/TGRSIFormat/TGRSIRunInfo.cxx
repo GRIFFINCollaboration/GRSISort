@@ -6,7 +6,9 @@
 #include <algorithm>
 #include <iostream>
 
-#include <TGRSIOptions.h>
+#include "TROOT.h"
+
+#include "TGRSIOptions.h"
 
 /// \cond CLASSIMP
 ClassImp(TGRSIRunInfo)
@@ -54,13 +56,12 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile* tempf)
 
    TList* list = tempf->GetListOfKeys();
    TIter  iter(list);
-	std::cout<<R"(Reading run info from file ")"<<CYAN<<tempf->GetName()<<RESET_COLOR<<R"(")"<<std::endl;
    while(TKey* key = static_cast<TKey*>(iter.Next())) {
       if((key == nullptr) || (strcmp(key->GetClassName(), "TGRSIRunInfo") != 0)) {
          continue;
       }
 
-      Set(*static_cast<TGRSIRunInfo*>(key->ReadObj()));
+      Set(static_cast<TGRSIRunInfo*>(key->ReadObj()));
       savdir->cd();
       return true;
    }
@@ -92,7 +93,7 @@ void TGRSIRunInfo::Print(Option_t* opt) const
 	struct tm runStop  = *localtime(const_cast<const time_t*>(&tmpStop));
 	printf("\t\tRunNumber:          %05i\n", RunNumber());
 	printf("\t\tSubRunNumber:       %03i\n", SubRunNumber());
-	if(Get().RunStart != 0 && Get().RunStop != 0) {
+	if(Get()->RunStart != 0 && Get()->RunStop != 0) {
 		printf("\t\tRunStart:           %s", asctime(&runStart));
 		printf("\t\tRunStop:            %s", asctime(&runStop));
 		printf("\t\tRunLength:          %.0f s\n", RunLength());
@@ -188,85 +189,85 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum)
       switch(iter->second->GetMnemonic()->System()) {
 			case TMnemonic::ESystem::kTigress:
 				if(!Tigress()) {
-					Get().fNumberOfTrueSystems++;
+					Get()->fNumberOfTrueSystems++;
 				}
 				SetTigress();
 				break;
 			case TMnemonic::ESystem::kSharc:
 				if(!Sharc()) {
-					Get().fNumberOfTrueSystems++;
+					Get()->fNumberOfTrueSystems++;
 				}
 				SetSharc();
 				break;
 			case TMnemonic::ESystem::kTriFoil:
 				if(!TriFoil()) {
-					Get().fNumberOfTrueSystems++;
+					Get()->fNumberOfTrueSystems++;
 				}
 				SetTriFoil();
 				break;
 			case TMnemonic::ESystem::kRF:
 				if(!RF()) {
-					Get().fNumberOfTrueSystems++;
+					Get()->fNumberOfTrueSystems++;
 				}
 				SetRF();
 				break;
 			case TMnemonic::ESystem::kCSM:
 				if(!CSM()) {
-					Get().fNumberOfTrueSystems++;
+					Get()->fNumberOfTrueSystems++;
 				}
 				SetCSM();
 				break;
 			case TMnemonic::ESystem::kTip:
 				if(!Tip()) {
-					Get().fNumberOfTrueSystems++;
+					Get()->fNumberOfTrueSystems++;
 				}
 				SetTip();
 				break;
 			case TMnemonic::ESystem::kGriffin:
 				if(!Griffin()) {
-					Get().fNumberOfTrueSystems++;
+					Get()->fNumberOfTrueSystems++;
 				}
 				SetGriffin();
 				break;
 			case TMnemonic::ESystem::kSceptar:
 				if(!Sceptar()) {
-					Get().fNumberOfTrueSystems++;
+					Get()->fNumberOfTrueSystems++;
 				}
 				SetSceptar();
 				break;
 			case TMnemonic::ESystem::kPaces:
 				if(!Paces()) {
-					Get().fNumberOfTrueSystems++;
+					Get()->fNumberOfTrueSystems++;
 				}
 				SetPaces();
 				break;
 			case TMnemonic::ESystem::kLaBr:
 				if(!Dante()) {
-					Get().fNumberOfTrueSystems++;
+					Get()->fNumberOfTrueSystems++;
 				}
 				SetDante();
 				break;
 			case TMnemonic::ESystem::kZeroDegree:
 				if(!ZeroDegree()) {
-					Get().fNumberOfTrueSystems++;
+					Get()->fNumberOfTrueSystems++;
 				}
 				SetZeroDegree();
 				break;
 			case TMnemonic::ESystem::kDescant:
 				if(!Descant()) {
-					Get().fNumberOfTrueSystems++;
+					Get()->fNumberOfTrueSystems++;
 				}
 				SetDescant();
 				break;
 			case TMnemonic::ESystem::kFipps:
 				if(!Fipps()) {
-					Get().fNumberOfTrueSystems++;
+					Get()->fNumberOfTrueSystems++;
 				}
 				SetFipps();
 				break;
 			case TMnemonic::ESystem::kGeneric:
 				if(!Generic()) {
-					Get().fNumberOfTrueSystems++;
+					Get()->fNumberOfTrueSystems++;
 				}
 				SetGeneric();
 				break;
@@ -275,28 +276,28 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum)
 				if(!Spice() && !S3()) {
 					if(system.compare("SP") == 0) {
 						if(!Spice()) {
-							Get().fNumberOfTrueSystems++;
+							Get()->fNumberOfTrueSystems++;
 						}
 						SetSpice();
 						if(!S3()) {
-							Get().fNumberOfTrueSystems++;
+							Get()->fNumberOfTrueSystems++;
 						}
 						SetS3();
 					}
 				} else if(!Bambino()) {
 					if(system.compare("BA") == 0) {
-						Get().fNumberOfTrueSystems++;
+						Get()->fNumberOfTrueSystems++;
 					}
 					SetBambino();
 				}
 		};
 	}
 
-	if(Get().fRunInfoFile.length() != 0u) {
-		ParseInputData(Get().fRunInfoFile.c_str());
+	if(Get()->fRunInfoFile.length() != 0u) {
+		ParseInputData(Get()->fRunInfoFile.c_str());
 	}
 
-   // Get().Print("a");
+   // Get()->Print("a");
 }
 
 void TGRSIRunInfo::SetAnalysisTreeBranches(TTree*)
@@ -332,8 +333,8 @@ Bool_t TGRSIRunInfo::ReadInfoFile(const char* filename)
    infile.seekg(0, std::ios::beg);
    infile.read(buffer, length);
 
-   Get().SetRunInfoFileName(filename);
-   Get().SetRunInfoFile(buffer);
+   Get()->SetRunInfoFileName(filename);
+   Get()->SetRunInfoFile(buffer);
 
    return ParseInputData(const_cast<const char*>(buffer));
 }
@@ -382,17 +383,17 @@ Bool_t TGRSIRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
          std::istringstream ss(line);
          double             temp_double;
          ss >> temp_double;
-         Get().SetHPGeArrayPosition(temp_double);
+         Get()->SetHPGeArrayPosition(temp_double);
       } else if(type.compare("DESCANTANCILLARY") == 0) {
          std::istringstream ss(line);
          int                temp_int;
          ss >> temp_int;
-         Get().SetDescantAncillary(temp_int != 0);
+         Get()->SetDescantAncillary(temp_int != 0);
       } else if(type.compare("BADCYCLE") == 0) {
          std::istringstream ss(line);
          int                tmp_int;
          while(!(ss >> tmp_int).fail() ) {
-            Get().AddBadCycle(tmp_int);
+            Get()->AddBadCycle(tmp_int);
          }
       }
    }
@@ -439,10 +440,10 @@ Long64_t TGRSIRunInfo::Merge(TCollection* list)
 void TGRSIRunInfo::PrintBadCycles() const
 {
    std::cout<<"Bad Cycles:\t";
-   if(Get().fBadCycleList.empty()) {
+   if(Get()->fBadCycleList.empty()) {
       std::cout<<"NONE"<<std::endl;
    } else {
-      for(int it : Get().fBadCycleList) {
+      for(int it : Get()->fBadCycleList) {
          std::cout<<" "<<it;
       }
       std::cout<<std::endl;
@@ -456,23 +457,23 @@ void TGRSIRunInfo::AddBadCycle(int bad_cycle)
         fBadCycleList.push_back(bad_cycle);
         std::sort(fBadCycleList.begin(), fBadCycleList.end());
      }*/
-   if(!(std::binary_search(Get().fBadCycleList.begin(), Get().fBadCycleList.end(), bad_cycle))) {
-      Get().fBadCycleList.push_back(bad_cycle);
-      std::sort(Get().fBadCycleList.begin(), Get().fBadCycleList.end());
+   if(!(std::binary_search(Get()->fBadCycleList.begin(), Get()->fBadCycleList.end(), bad_cycle))) {
+      Get()->fBadCycleList.push_back(bad_cycle);
+      std::sort(Get()->fBadCycleList.begin(), Get()->fBadCycleList.end());
    }
-   Get().fBadCycleListSize = Get().fBadCycleList.size();
+   Get()->fBadCycleListSize = Get()->fBadCycleList.size();
 }
 
 void TGRSIRunInfo::RemoveBadCycle(int cycle)
 {
-   Get().fBadCycleList.erase(std::remove(Get().fBadCycleList.begin(), Get().fBadCycleList.end(), cycle), Get().fBadCycleList.end());
-   std::sort(Get().fBadCycleList.begin(), Get().fBadCycleList.end());
-   Get().fBadCycleListSize = Get().fBadCycleList.size();
+   Get()->fBadCycleList.erase(std::remove(Get()->fBadCycleList.begin(), Get()->fBadCycleList.end(), cycle), Get()->fBadCycleList.end());
+   std::sort(Get()->fBadCycleList.begin(), Get()->fBadCycleList.end());
+   Get()->fBadCycleListSize = Get()->fBadCycleList.size();
 }
 
 bool TGRSIRunInfo::IsBadCycle(int cycle) const
 {
-   return std::binary_search(Get().fBadCycleList.begin(), Get().fBadCycleList.end(), cycle);
+   return std::binary_search(Get()->fBadCycleList.begin(), Get()->fBadCycleList.end(), cycle);
 }
 
 bool TGRSIRunInfo::WriteToRoot(TFile* fileptr)
@@ -481,6 +482,8 @@ bool TGRSIRunInfo::WriteToRoot(TFile* fileptr)
    // Maintain old gDirectory info
    bool        bool2return = true;
    TDirectory* savdir      = gDirectory;
+	gROOT->cd();
+	TGRSIRunInfo* runInfo   = Get();
 
    if(fileptr == nullptr) {
       fileptr = gDirectory->GetFile();
@@ -494,7 +497,7 @@ bool TGRSIRunInfo::WriteToRoot(TFile* fileptr)
       printf("No file opened to write to.\n");
       bool2return = false;
    } else {
-      Get().Write();
+      runInfo->Write();
    }
 
    printf("Writing TGRSIRunInfo to %s\n", gDirectory->GetFile()->GetName());
@@ -513,7 +516,7 @@ bool TGRSIRunInfo::WriteInfoFile(const std::string& filename)
    if(filename.length() > 0) {
       std::ofstream infoout;
       infoout.open(filename.c_str());
-      std::string infostr = Get().PrintToString();
+      std::string infostr = Get()->PrintToString();
       infoout<<infostr.c_str();
       infoout<<std::endl;
       infoout<<std::endl;
@@ -530,17 +533,17 @@ std::string TGRSIRunInfo::PrintToString(Option_t*)
 {
    std::string buffer;
    buffer.append("//The Array Position in mm.\n");
-   buffer.append(Form("HPGePos: %lf\n", Get().HPGeArrayPosition()));
+   buffer.append(Form("HPGePos: %lf\n", Get()->HPGeArrayPosition()));
    buffer.append("\n\n");
-   if(Get().DescantAncillary()) {
+   if(Get()->DescantAncillary()) {
       buffer.append("//Is DESCANT in Ancillary positions?.\n");
       buffer.append(Form("DescantAncillary: %d\n", 1));
       buffer.append("\n\n");
    }
-   if(!Get().fBadCycleList.empty()) {
+   if(!Get()->fBadCycleList.empty()) {
       buffer.append("//A List of bad cycles.\n");
       buffer.append("BadCycle:");
-      for(int& it : Get().fBadCycleList) {
+      for(int& it : Get()->fBadCycleList) {
          buffer.append(Form(" %d", it));
       }
       buffer.append("\n\n");
@@ -549,14 +552,3 @@ std::string TGRSIRunInfo::PrintToString(Option_t*)
    return buffer;
 }
 
-void TGRSIRunInfo::Streamer(TBuffer& R__b)
-{
-	std::cout<<__PRETTY_FUNCTION__<<std::endl;
-	if(R__b.IsReading()) {
-      R__b.ReadClassBuffer(TGRSIRunInfo::Class(),this);
-		std::cout<<"ReadClassBuffer("<<Class()->GetName()<<", "<<&(Get())<<"/"<<this<<")"<<std::endl;
-	} else {
-      R__b.WriteClassBuffer(TGRSIRunInfo::Class(),this);
-		std::cout<<"WriteClassBuffer("<<Class()->GetName()<<", "<<&(Get())<<"/"<<this<<")"<<std::endl;
-	}
-}
