@@ -4,15 +4,13 @@
 
 #include "TChannel.h"
 
-TParsingDiagnostics* TParsingDiagnostics::fParsingDiagnostics = nullptr;
-
-TParsingDiagnostics::TParsingDiagnostics() : TObject()
+TParsingDiagnostics::TParsingDiagnostics() : TSingleton<TParsingDiagnostics>()
 {
    fIdHist         = nullptr;
    Clear();
 }
 
-TParsingDiagnostics::TParsingDiagnostics(const TParsingDiagnostics&) : TObject()
+TParsingDiagnostics::TParsingDiagnostics(const TParsingDiagnostics&) : TSingleton<TParsingDiagnostics>()
 {
    fIdHist         = nullptr;
    Clear();

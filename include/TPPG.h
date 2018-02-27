@@ -33,6 +33,7 @@
 #include "TCollection.h"
 
 #include "Globals.h"
+#include "TSingleton.h"
 
 enum class EPpgPattern {
 	kBeamOn     = 0x01,
@@ -117,11 +118,11 @@ private:
    /// \endcond
 };
 
-class TPPG : public TObject {
+class TPPG : public TSingleton<TPPG> {
 public:
-   typedef std::map<ULong_t, TPPGData*> PPGMap_t;
+	friend class TSingleton<TPPG>;
 
-   static TPPG* Get(TFile* fileWithPPg = nullptr);
+   typedef std::map<ULong_t, TPPGData*> PPGMap_t;
 
    TPPG();
    TPPG(const TPPG&);
@@ -187,7 +188,7 @@ private:
    std::vector<int>   fOdbDurations; ///< duration of ppg state as read from odb
 
    /// \cond CLASSIMP
-   ClassDefOverride(TPPG, 3) // Contains PPG information
+   ClassDefOverride(TPPG, 4) // Contains PPG information
    /// \endcond
 };
 /*! @} */
