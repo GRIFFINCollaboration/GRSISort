@@ -42,17 +42,19 @@ public:
 
 private:
    // fragment tree diagnostics (should these all be static?)
+	// detector type maps
    std::map<Short_t, Long_t> fNumberOfGoodFragments; ///< map of number of good fragments per detector type
    std::map<Short_t, Long_t> fNumberOfBadFragments;  ///< map of number of bad fragments per detector type
 
-   std::map<Short_t, UInt_t> fMinChannelId; ///< map of minimum channel id per channel number
-   std::map<Short_t, UInt_t> fMaxChannelId; ///< map of maximum channel id per channel number
+	// channel address maps
+   std::map<UInt_t, UInt_t> fMinChannelId; ///< map of minimum channel id per channel address
+   std::map<UInt_t, UInt_t> fMaxChannelId; ///< map of maximum channel id per channel address
 
-   std::map<Short_t, Long_t> fNumberOfHits; ///< map of number of hits per channel number
+   std::map<UInt_t, Long_t> fNumberOfHits; ///< map of number of hits per channel address
 
-   std::map<Short_t, long> fDeadTime;     ///< map of deadtime per channel number
-   std::map<Short_t, long> fMinTimeStamp; ///< map of minimum timestamp per channel number
-   std::map<Short_t, long> fMaxTimeStamp; ///< map of maximum timestamp per channel number
+   std::map<UInt_t, long> fDeadTime;     ///< map of deadtime per channel address
+   std::map<UInt_t, long> fMinTimeStamp; ///< map of minimum timestamp per channel address
+   std::map<UInt_t, long> fMaxTimeStamp; ///< map of maximum timestamp per channel address
 
    time_t fMinMidasTimeStamp; ///< minimum midas timestamp
    time_t fMaxMidasTimeStamp; ///< maximum midas timestamp

@@ -677,7 +677,6 @@ void TGRSIint::RunMacroFile(const std::string& filename)
    /// Runs a macro file. This happens when a .C file is provided on the command line
    if(file_exists(filename.c_str())) {
       const char* command = Form(".x %s", filename.c_str());
-		std::cout<<"trying to run '"<<command<<"'"<<std::endl;
       ProcessLine(command);
    } else {
       std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;

@@ -330,7 +330,7 @@ void TPPG::Setup()
    if(TGRSIRunInfo::SubRunNumber() > 0) {
       auto* prevSubRun =
          new TFile(Form("fragment%05d_%03d.root", TGRSIRunInfo::RunNumber(), TGRSIRunInfo::SubRunNumber() - 1));
-      if(prevSubRun->IsOpen()) {
+      if(prevSubRun != nullptr && prevSubRun->IsOpen()) {
          TPPG* prev_ppg = static_cast<TPPG*>(prevSubRun->Get("TPPG"));
          if(prev_ppg != nullptr) {
             prev_ppg->Copy(*this);
