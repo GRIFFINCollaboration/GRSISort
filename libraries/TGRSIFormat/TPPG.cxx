@@ -54,7 +54,7 @@ void TPPGData::Clear(Option_t*)
 
 void TPPGData::Print(Option_t*) const
 {
-   printf("time: %7lld\t PPG Status: 0x%07x\t Old: 0x%07x\n", GetTimeStamp(), fNewPpg, fOldPpg);
+   printf("time: %7lld\t PPG Status: 0x%07x\t Old: 0x%07x\n", GetTimeStamp(), static_cast<std::underlying_type<EPpgPattern>::type>(fNewPpg), static_cast<std::underlying_type<EPpgPattern>::type>(fOldPpg));
 }
 
 TPPG::TPPG()
@@ -278,7 +278,7 @@ void TPPG::Print(Option_t* opt) const
    printf("Offset is %d\n", offset);
    printf("Got %ld PPG words:\n", fPPGStatusMap->size() - 1);
    for(auto& statu : status) {
-      printf("\tfound status 0x%04x %d times\n", statu.first, statu.second);
+      printf("\tfound status 0x%04x %d times\n", static_cast<std::underlying_type<EPpgPattern>::type>(statu.first), statu.second);
    }
 
    // go through all expected ppg words
@@ -346,7 +346,7 @@ void TPPG::Setup()
    if(TGRSIRunInfo::SubRunNumber() > 0) {
       auto* prevSubRun =
          new TFile(Form("fragment%05d_%03d.root", TGRSIRunInfo::RunNumber(), TGRSIRunInfo::SubRunNumber() - 1));
-      if(prevSubRun->IsOpen()) {
+      if(prevSubRun != nullptr && prevSubRun->IsOpen()) {
          TPPG* prev_ppg = static_cast<TPPG*>(prevSubRun->Get("TPPG"));
          if(prev_ppg != nullptr) {
             prev_ppg->Copy(*this);
@@ -421,7 +421,8 @@ bool TPPG::Correct(bool verbose)
                (--prev)->second->SetNewPPG(it->second->GetNewPPG());
             } else if(verbose) {
                printf(DBLUE "PPG at %lld already exist with status 0x%x (current status is 0x%x)." RESET_COLOR "\n",
-                      (*it).first - fCycleLength, prev->second->GetNewPPG(), it->second->GetNewPPG());
+                      (*it).first - fCycleLength, static_cast<std::underlying_type<EPpgPattern>::type>(prev->second->GetNewPPG()),
+							 static_cast<std::underlying_type<EPpgPattern>::type>(it->second->GetNewPPG()));
             }
             continue;
          }

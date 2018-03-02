@@ -74,7 +74,7 @@ void TAnalysisOptions::ReadFromFile(const std::string& file)
 {
    TDirectory* oldDir = gDirectory;
    auto        f      = new TFile(file.c_str());
-   if(f->IsOpen()) {
+   if(f != nullptr && f->IsOpen()) {
       TList* list = f->GetListOfKeys();
       TIter  iter(list);
       std::cout<<R"(Reading analysis options from file ")"<<CYAN<<f->GetName()<<RESET_COLOR<<R"(":)"<<std::endl;

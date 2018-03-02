@@ -114,13 +114,13 @@ void TDataLoop::SetRunInfo(uint32_t time)
    node = fOdb->FindPath("/Experiment/Run parameters/Run Title");
    if(node != nullptr) {
       runInfo->SetRunTitle(node->GetText());
-      std::cout<<DBLUE<<"Title: "<<node->GetText()<<RESET_COLOR<<std::endl;
+      std::cout<<"Title: "<<DBLUE<<node->GetText()<<RESET_COLOR<<std::endl;
    }
 
    if(node != nullptr) {
       node = fOdb->FindPath("/Experiment/Run parameters/Comment");
       runInfo->SetRunComment(node->GetText());
-      std::cout<<DBLUE<<"Comment: "<<node->GetText()<<RESET_COLOR<<std::endl;
+      std::cout<<"Comment: "<<DBLUE<<node->GetText()<<RESET_COLOR<<std::endl;
    }
 #endif
 }
@@ -176,10 +176,10 @@ void TDataLoop::SetGRIFFOdb()
          }
          tempChan->SetName(names.at(x).c_str());
          tempChan->SetAddress(address.at(x));
-         tempChan->SetNumber(x, EPriority::kDefault);
+         tempChan->SetNumber(TPriorityValue<int>(x, EPriority::kDefault));
          // printf("temp chan(%s) number set to: %i\n",tempChan->GetChannelName(),tempChan->GetNumber());
 
-         tempChan->SetUserInfoNumber(x, EPriority::kDefault);
+         tempChan->SetUserInfoNumber(TPriorityValue<int>(x, EPriority::kDefault));
          tempChan->AddENGCoefficient(offsets.at(x));
          tempChan->AddENGCoefficient(gains.at(x));
          // TChannel::UpdateChannel(tempChan);
@@ -326,11 +326,10 @@ void TDataLoop::SetTIGOdb()
          tempChan->SetName(names.at(x).c_str());
       }
       tempChan->SetAddress(address.at(x));
-      tempChan->SetNumber(x, EPriority::kDefault);
+      tempChan->SetNumber(TPriorityValue<int>(x, EPriority::kDefault));
       int temp_integration = 0;
       if(type.at(x) != 0) {
-         tempChan->SetTypeName(typemap[type.at(x)].first, EPriority::kDefault);
-         tempChan->SetDigitizerType(typemap[type.at(x)].second.c_str(), EPriority::kDefault);
+         tempChan->SetDigitizerType(TPriorityValue<std::string>(typemap[type.at(x)].second.c_str(), EPriority::kDefault));
          if(strcmp(tempChan->GetDigitizerTypeString(), "Tig64") ==
             0) { // TODO: maybe use enumerations via GetDigitizerType()
             temp_integration = 25;
@@ -338,8 +337,8 @@ void TDataLoop::SetTIGOdb()
             temp_integration = 125;
          }
       }
-      tempChan->SetIntegration(temp_integration, EPriority::kDefault);
-      tempChan->SetUserInfoNumber(x, EPriority::kDefault);
+      tempChan->SetIntegration(TPriorityValue<int>(temp_integration, EPriority::kDefault));
+      tempChan->SetUserInfoNumber(TPriorityValue<int>(x, EPriority::kDefault));
       tempChan->AddENGCoefficient(offsets.at(x));
       tempChan->AddENGCoefficient(gains.at(x));
 

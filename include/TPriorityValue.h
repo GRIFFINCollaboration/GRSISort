@@ -48,9 +48,28 @@ public:
 	void Set(T val, EPriority priority) {
 		if(priority >= fPriority) {
 			fValue = val;
+			if(priority != EPriority::kForce) {
+				fPriority = priority;
+			}
 		}
 	}
 
+	void SetPriority(EPriority priority) {
+		// only allow the priority to be increased, not decreased
+		if(priority > fPriority) {
+			fPriority = priority;
+		}
+	}
+	
+	// reset functions
+	void Reset(T val) {
+		fValue = val;
+		ResetPriority();
+	}
+
+	void ResetPriority() {
+		fPriority = EPriority::kDefault;
+	}
 
 	// getters
 	T         Value() const    { return fValue; }
@@ -60,7 +79,7 @@ public:
 
 	// assignment and move assignment operators
 	TPriorityValue<T>& operator =(const TPriorityValue<T>& rhs) {
-		if(rhs.fPriority >= fPriority) {
+		if(rhs.fPriority != EPriority::kDefault && rhs.fPriority >= fPriority) {
 			fValue = rhs.fValue;
 			fPriority = rhs.fPriority;
 		}

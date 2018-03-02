@@ -301,7 +301,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
    if(sopt.Contains("recreate") || sopt.Contains("new")) {
       // We are being asked to make a new file.
       file = new TFile(filename.c_str(), "RECREATE");
-      if(file != nullptr) {
+      if(file != nullptr && file->IsOpen()) {
          // Give access to the file inside the interpreter.
          const char* command = Form("TFile* _file%i = (TFile*)%luL;", fRootFilesOpened, (unsigned long)file);
          TRint::ProcessLine(command);
@@ -312,7 +312,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
    } else {
       // Open an already existing file.
       file = new TFile(filename.c_str(), opt);
-      if(file != nullptr) {
+      if(file != nullptr && file->IsOpen()) {
          // Give access to the file inside the interpreter.
          const char* command = Form("TFile* _file%i = (TFile*)%luL;", fRootFilesOpened, (unsigned long)file);
          TRint::ProcessLine(command);
@@ -350,7 +350,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
          }
 
          if(file->FindObjectAny("TChannel") != nullptr) {
-            file->Get("TChannel");
+            file->Get("TChannel"); // this calls TChannel::Streamer
          }
          if(file->FindObjectAny("GValue") != nullptr) {
             file->Get("GValue");
@@ -676,7 +676,7 @@ void TGRSIint::RunMacroFile(const std::string& filename)
 {
    /// Runs a macro file. This happens when --work-harder is used with a .C file
    if(file_exists(filename.c_str())) {
-      const char* command = Form(".x %s;", filename.c_str());
+      const char* command = Form(".x %s", filename.c_str());
       ProcessLine(command);
    } else {
       std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;

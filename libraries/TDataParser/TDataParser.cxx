@@ -577,15 +577,15 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
             }
 
             // the way we insert the fragment(s) depends on the module type and bank:
-            // for module type 1 & bank GRF4, we can't insert the fragments yet, we need to put them in a separate queue
-            // for module type 2 (4G, all banks) and module type 1 & bank GRF3 we set the single charge, cfd, and
-            // IntLength, and insert the fragment
-            // for module type 1 & banks GRF1/GRF2 we loop over the charge, cfd, and IntLengths, and insert the
-            // (multiple) fragment(s)
+            // 1 - for module type 1 & bank GRF4, we can't insert the fragments yet, we need to put them in a separate queue
+            // 2 - for module type 2 (4G, all banks) and module type 1 & bank GRF3 we set the single charge, cfd, and
+            //     IntLength, and insert the fragment
+            // 3 - for module type 1 & banks GRF1/GRF2 we loop over the charge, cfd, and IntLengths, and insert the
+            //     (multiple) fragment(s)
             // the last two cases can be treated the same since the second case will just have a single length charge,
             // cfd, and IntLengths
 
-            // the first two cases can be treated the same way, so we only need to check for the third case
+            // so we only need to check for the first case
             if(eventFrag->GetModuleType() == 1 && bank == EBank::kGRF4) {
                if(tmpCfd.size() != 1) {
                   if(fRecordDiag) {
@@ -862,7 +862,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                break;
             default:
                if(!fOptions->SuppressErrors()) {
-                  printf(DRED "Error, bank type %d not implemented yet" RESET_COLOR "\n", bank);
+                  printf(DRED "Error, bank type %d not implemented yet" RESET_COLOR "\n", static_cast<std::underlying_type<EBank>::type>(bank));
                }
                TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
                if(fState == EDataParserState::kGood) {
@@ -994,7 +994,7 @@ bool TDataParser::SetGRIFHeader(uint32_t value, const std::shared_ptr<TFragment>
       frag->SetDetectorType((value & 0x0000000f));
 
       break;
-   default: printf("This bank not yet defined.\n"); return false;
+   default: printf("This bank is not yet defined.\n"); return false;
    }
 
    return true;
