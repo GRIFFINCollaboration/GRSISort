@@ -361,6 +361,7 @@ TVector3 TS3::GetPosition(int ring, int sector, double offsetphi, double offsetZ
 }
 
 void TS3::ResetRingsSectors(){
+	// This is necessary if you want mnemonics in a cal file to override those used during frag sort.
 	for(size_t i = 0; i < fS3SectorHits.size(); ++i) {
 		fS3SectorHits.at(i).SetSectorNumber();
 	}
