@@ -34,7 +34,7 @@ public:
 	void Load(int argc, char** argv);
 	void Print(Option_t* opt = "") const override;
 
-	static bool WriteToRoot(TFile* file = nullptr);
+	static bool WriteToFile(TFile* file = nullptr);
 	static void SetOptions(TGRSIOptions* tmp);
 	static Bool_t ReadFromFile(TFile* file = nullptr);
 
