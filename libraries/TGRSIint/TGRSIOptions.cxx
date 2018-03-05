@@ -95,6 +95,8 @@ void TGRSIOptions::Clear(Option_t*)
    fFragmentWriteQueueSize = 10000000;
    fAnalysisWriteQueueSize = 1000000;
 
+	fNumberOfClients = 2;
+
    fTimeSortInput = false;
 
    fSeparateOutOfOrder    = false;
