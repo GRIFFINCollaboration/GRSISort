@@ -137,12 +137,12 @@ void TGRSIint::ApplyOptions()
 
    SetupPipeline();
 
-   for(auto& filename : opt->MacroInputFiles()) {
-      RunMacroFile(filename);
-   }
-
    if(opt->StartGui()) {
       StartGUI();
+   }
+
+   for(auto& filename : opt->MacroInputFiles()) {
+      RunMacroFile(filename);
    }
 
    std::cout<<StoppableThread::AllThreadHeader()<<std::endl;
@@ -674,7 +674,7 @@ void TGRSIint::SetupPipeline()
 
 void TGRSIint::RunMacroFile(const std::string& filename)
 {
-   /// Runs a macro file. This happens when --work-harder is used with a .C file
+   /// Runs a macro file. This happens when a .C file is provided on the command line
    if(file_exists(filename.c_str())) {
       const char* command = Form(".x %s", filename.c_str());
       ProcessLine(command);

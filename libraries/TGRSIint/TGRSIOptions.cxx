@@ -198,7 +198,9 @@ void TGRSIOptions::Load(int argc, char** argv)
    }
 
 	// Get name of the program calling this function (removing any path from the name)
-	std::string program = argv[0];
+	std::string program;
+	if(argc > 0) program = argv[0];
+	else program = "unknown";
 	size_t lastSlash = program.rfind('/');
 	if(lastSlash != std::string::npos) {
 		program.erase(0, lastSlash+1);
@@ -479,7 +481,7 @@ std::string TGRSIOptions::GenerateOutputFilename(const std::vector<std::string>&
    return "temp_from_multi.root";
 }
 
-bool TGRSIOptions::WriteToRoot(TFile* file)
+bool TGRSIOptions::WriteToFile(TFile* file)
 {
    /// Writes options information to the tree
    // Maintain old gDirectory info
@@ -499,6 +501,7 @@ bool TGRSIOptions::WriteToRoot(TFile* file)
       success = false;
    } else {
       Get()->Write();
+		fAnalysisOptions->Write();
    }
 
    printf("Writing TGRSIOptions to %s\n", gDirectory->GetFile()->GetName());

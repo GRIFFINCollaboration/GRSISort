@@ -33,6 +33,7 @@
 #include "TCollection.h"
 
 #include "Globals.h"
+#include "TSingleton.h"
 
 enum class EPpgPattern {
 	kBeamOn     = 0x01,
@@ -51,6 +52,10 @@ public:
 
    void Copy(TObject& rhs) const override;
 
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
+
+	// -------------------- setter functions
    void SetLowTimeStamp(UInt_t lowTime)
    {
       fLowTimeStamp = lowTime;
@@ -70,7 +75,7 @@ public:
 			case EPpgPattern::kBackground: case EPpgPattern::kJunk:
 				break;
 			default:
-				std::cout<<"Warning, unknown ppg pattern 0x"<<std::hex<<newPpg<<std::dec<<", setting new pattern to kJunk!"<<std::endl;
+				if(newPpg != 0) std::cout<<"Warning, unknown ppg pattern 0x"<<std::hex<<newPpg<<std::dec<<", setting new pattern to kJunk!"<<std::endl;
 				fNewPpg = EPpgPattern::kJunk;
 		}
 	}
@@ -83,7 +88,7 @@ public:
 			case EPpgPattern::kBackground: case EPpgPattern::kJunk:
 				break;
 			default:
-				std::cout<<"Warning, unknown ppg pattern 0x"<<std::hex<<oldPpg<<std::dec<<", setting old pattern to kJunk!"<<std::endl;
+				if(oldPpg != 0) std::cout<<"Warning, unknown ppg pattern 0x"<<std::hex<<oldPpg<<std::dec<<", setting old pattern to kJunk!"<<std::endl;
 				fOldPpg = EPpgPattern::kJunk;
 		}
 	}
@@ -91,6 +96,7 @@ public:
 
    void SetTimeStamp();
 
+	// -------------------- getter functions
    UInt_t      GetLowTimeStamp() const { return fLowTimeStamp; }
    UInt_t      GetHighTimeStamp() const { return fHighTimeStamp; }
    EPpgPattern GetNewPPG() const { return fNewPpg; }
@@ -98,9 +104,6 @@ public:
    UInt_t      GetNetworkPacketId() const { return fNetworkPacketId; }
 
    Long64_t GetTimeStamp() const { return fTimeStamp; }
-
-   void Print(Option_t* opt = "") const override;
-   void Clear(Option_t* opt = "") override;
 
 private:
    ULong64_t   fTimeStamp;
@@ -111,30 +114,33 @@ private:
    UInt_t      fHighTimeStamp;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TPPGData, 2) // Contains PPG data information
+   ClassDefOverride(TPPGData, 3) // Contains PPG data information
    /// \endcond
 };
 
-class TPPG : public TObject {
+class TPPG : public TSingleton<TPPG> {
 public:
-   typedef std::map<ULong_t, TPPGData*> PPGMap_t;
+	friend class TSingleton<TPPG>;
 
-public:
-   static TPPG* Get(TFile* fileWithPPg = nullptr);
+   typedef std::map<ULong_t, TPPGData*> PPGMap_t;
 
    TPPG();
    TPPG(const TPPG&);
    ~TPPG() override;
 
    void Copy(TObject& obj) const override;
-   void  Setup();
    Int_t Write(const char* name = nullptr, Int_t option = 0, Int_t bufsize = 0) override
    {
-      return ((const TPPG*)this)->Write(name, option, bufsize);
+      return static_cast<const TPPG*>(this)->Write(name, option, bufsize);
    }
    Int_t Write(const char* name = nullptr, Int_t option = 0, Int_t bufsize = 0) const override;
 
-public:
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
+
+   void  Setup();
+   bool Correct(bool verbose = false);
+
    void AddData(TPPGData* pat);
    EPpgPattern GetStatus(ULong64_t time) const;
    ULong64_t GetLastStatusTime(ULong64_t time, EPpgPattern pat = EPpgPattern::kJunk) const;
@@ -147,7 +153,7 @@ public:
 
    void SetCycleLength(ULong64_t length) { fCycleLength = length; }
 
-   bool Correct(bool verbose = false);
+	// -------------------- getter functions
    ULong64_t GetCycleLength();
    ULong64_t GetNumberOfCycles();
    ULong64_t GetTimeInCycle(ULong64_t real_time);
@@ -166,11 +172,8 @@ public:
       fOdbDurations = std::move(durations);
    }
 
-   void Print(Option_t* opt = "") const override;
-   void Clear(Option_t* opt = "") override;
-
 private:
-   static TPPG*       fPPG; //< static pointer to TPPG
+   static TPPG*       fPPG; ///< static pointer to TPPG
    PPGMap_t::iterator MapBegin() const { return ++(fPPGStatusMap->begin()); }
    PPGMap_t::iterator MapEnd() const { return fPPGStatusMap->end(); }
    PPGMap_t::iterator fCurrIterator; //!<!
@@ -179,11 +182,13 @@ private:
    ULong64_t fCycleLength;
    std::map<ULong64_t, int> fNumberOfCycleLengths;
 
+	//bool               fUseOdb;
+	//uint16_t           fCycleOffset;  ///< offset of cycle
    std::vector<short> fOdbPPGCodes;  ///< ppg state codes read from odb
    std::vector<int>   fOdbDurations; ///< duration of ppg state as read from odb
 
    /// \cond CLASSIMP
-   ClassDefOverride(TPPG, 3) // Contains PPG information
+   ClassDefOverride(TPPG, 4) // Contains PPG information
    /// \endcond
 };
 /*! @} */

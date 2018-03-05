@@ -7,6 +7,7 @@
 
 #include "TFile.h"
 #include "TThread.h"
+#include "TROOT.h"
 
 #include "GValue.h"
 #include "TChannel.h"
@@ -14,7 +15,6 @@
 #include "TGRSIOptions.h"
 #include "TThread.h"
 #include "TTreeFillMutex.h"
-#include "TAnalysisOptions.h"
 #include "TParsingDiagnostics.h"
 
 #include "TBadFragment.h"
@@ -133,12 +133,20 @@ bool TFragWriteLoop::Iteration()
 void TFragWriteLoop::Write()
 {
    if(fOutputFile != nullptr) {
+		// get all singletons before switching to the output file
+		gROOT->cd();
+		TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
+		TGRSIOptions* options = TGRSIOptions::Get();
+		TPPG* ppg = TPPG::Get();
+		TParsingDiagnostics* parsingDiagnostics = TParsingDiagnostics::Get();
+		GValue* gValues = GValue::Get();
+
       fOutputFile->cd();
       fEventTree->Write(fEventTree->GetName(), TObject::kOverwrite);
       fBadEventTree->Write(fBadEventTree->GetName(), TObject::kOverwrite);
       fScalerTree->Write(fScalerTree->GetName(), TObject::kOverwrite);
       if(GValue::Size() != 0) {
-         GValue::Get()->Write();
+         gValues->Write();
       }
 
       if(TChannel::GetNumberOfChannels() != 0) {
@@ -146,17 +154,18 @@ void TFragWriteLoop::Write()
          TChannel::WriteToRoot();
       }
 
-      TGRSIRunInfo::Get()->WriteToRoot(fOutputFile);
-      TGRSIOptions::Get()->AnalysisOptions()->WriteToFile(fOutputFile);
-      TPPG::Get()->Write();
+      runInfo->WriteToRoot(fOutputFile);
+      options->WriteToFile(fOutputFile);
+      ppg->Write();
 
-      if(TGRSIOptions::Get()->WriteDiagnostics()) {
-         TParsingDiagnostics::Get()->ReadPPG(TPPG::Get());
-         TParsingDiagnostics::Get()->Write();
+      if(options->WriteDiagnostics()) {
+         parsingDiagnostics->ReadPPG(ppg);
+         parsingDiagnostics->Write();
       }
 
       fOutputFile->Close();
       fOutputFile->Delete();
+		gROOT->cd();
    }
 }
 

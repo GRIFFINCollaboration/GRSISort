@@ -77,17 +77,19 @@ void TAnalysisOptions::ReadFromFile(const std::string& file)
    if(f != nullptr && f->IsOpen()) {
       TList* list = f->GetListOfKeys();
       TIter  iter(list);
-      std::cout<<R"(Reading analysis options from file ")"<<CYAN<<f->GetName()<<RESET_COLOR<<R"(":)"<<std::endl;
       while(TKey* key = static_cast<TKey*>(iter.Next())) {
          if((key == nullptr) || (strcmp(key->GetClassName(), "TAnalysisOptions") != 0)) {
             continue;
          }
 
+			std::cout<<R"(Reading analysis options from file ")"<<CYAN<<f->GetName()<<RESET_COLOR<<R"(":)"<<std::endl;
          *this = *static_cast<TAnalysisOptions*>(key->ReadObj());
          f->Close();
          oldDir->cd();
          return;
       }
+		std::cout<<R"(Failed to find analysis options in file ")"<<CYAN<<f->GetName()<<RESET_COLOR<<R"(":)"<<std::endl;
+		f->Close();
    } else {
       std::cout<<R"(Failed to open file ")"<<file<<R"(")"<<std::endl;
    }

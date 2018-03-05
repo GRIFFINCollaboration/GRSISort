@@ -28,21 +28,17 @@
 #include "TObject.h"
 #include "TH1F.h"
 
+#include "TSingleton.h"
 #include "TPPG.h"
 #include "TFragment.h"
 
-class TParsingDiagnostics : public TObject {
+class TParsingDiagnostics : public TSingleton<TParsingDiagnostics> {
 public:
+	friend class TSingleton<TParsingDiagnostics>;
+
    TParsingDiagnostics();
    TParsingDiagnostics(const TParsingDiagnostics&);
    ~TParsingDiagnostics() override;
-   static TParsingDiagnostics* Get()
-   {
-      if(fParsingDiagnostics == nullptr) {
-         fParsingDiagnostics = new TParsingDiagnostics;
-      }
-      return fParsingDiagnostics;
-   }
 
 private:
    // fragment tree diagnostics (should these all be static?)
@@ -73,8 +69,6 @@ private:
 
    //
    TH1F* fIdHist; ///< histogram of event survival
-
-   static TParsingDiagnostics* fParsingDiagnostics;
 
 public:
 //"setter" functions
@@ -113,7 +107,7 @@ public:
    void Draw(Option_t* opt = "") override;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TParsingDiagnostics, 1);
+   ClassDefOverride(TParsingDiagnostics, 2);
    /// \endcond
 };
 /*! @} */
