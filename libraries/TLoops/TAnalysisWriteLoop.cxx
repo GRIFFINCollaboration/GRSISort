@@ -12,13 +12,13 @@
 #include "TServerSocket.h"
 #include "TMonitor.h"
 #include "TFileCacheWrite.h"
+#include "TROOT.h"
 
 #include "GValue.h"
 #include "TChannel.h"
 #include "TGRSIRunInfo.h"
 #include "TGRSIOptions.h"
 #include "TTreeFillMutex.h"
-#include "TAnalysisOptions.h"
 #include "TSortingDiagnostics.h"
 #include "TDescant.h"
 

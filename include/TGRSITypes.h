@@ -6,7 +6,7 @@
 
 #include <Rtypes.h>
 
-enum kFileType {
+enum class kFileType {
    UNKNOWN_FILETYPE,
    NSCL_EVT,
    GRETINA_MODE2,

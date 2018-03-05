@@ -214,7 +214,7 @@ template <>
 class ArgParseConfigT<bool> : public ArgParseConfig<bool> {
 public:
    ArgParseConfigT(std::string flag, bool* output_location, bool firstPass)
-      : ArgParseConfig<bool>(flag, firstPass), fOutput_location(output_location), fStored_default_value(false)
+      : ArgParseConfig<bool>(flag, firstPass), fOutput_location(output_location), fStored_default_value(false), fNum_arguments_expected(0)
    {
       *fOutput_location = fStored_default_value;
    }
@@ -226,21 +226,28 @@ public:
       return *this;
    }
 
+   ArgParseConfig<bool>& takes_argument()
+	{
+		fNum_arguments_expected = 1;
+		return *this;
+	}
+
    void parse_item(const std::vector<std::string>& arguments) override
    {
       if(arguments.size() == 0) {
          *fOutput_location = !fStored_default_value;
       } else {
          std::stringstream ss(arguments[0]);
-         ss >> *fOutput_location;
+         ss>>std::boolalpha>>*fOutput_location;
       }
    }
 
-   int num_arguments() const override { return 0; }
+   int num_arguments() const override { return fNum_arguments_expected; }
 
 private:
    bool* fOutput_location;
    bool  fStored_default_value;
+	int   fNum_arguments_expected;
 };
 
 template <typename T>

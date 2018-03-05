@@ -22,6 +22,9 @@ public:
    Short_t GetRing() const { return fRing; }
    Short_t GetSector() const { return fSector; }
    Bool_t  GetIsDownstream() const { return fIsDownstream; }
+   Int_t   GetArrayPosition() const { return GetChannel()->GetMnemonic()->ArrayPosition(); }
+   std::string GetDistanceStr() const { return GetChannel()->GetMnemonic()->ArraySubPositionString(); }
+   
 
    Double_t fTimeFit{0.};
    Double_t fSig2Noise{0.};
@@ -47,6 +50,8 @@ public:
    void SetTimeFit(Double_t time) { fTimeFit = time; }
    void SetSig2Noise(Double_t sig2noise) { fSig2Noise = sig2noise; }
 
+   Bool_t SectorsDownstream() const;
+   
    Double_t GetPhi(double offset = 0) { return GetPosition(offset).Phi(); }
 
    Double_t GetTheta(double offset = 0, TVector3* vec = nullptr)

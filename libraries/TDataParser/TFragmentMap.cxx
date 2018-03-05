@@ -50,6 +50,10 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
    // check if this is the last fragment needed
    int  nofFrags   = 1;
    int  nofCharges = charge.size();
+	// equal_range returns a pair of iterators:
+	// the first points to the first fragment with this address,
+	// the second to the first fragment of the next address
+	// if no fragment with this address exists, both point to the first fragment of the next address
    auto range      = fMap.equal_range(frag->GetAddress());
    for(auto it = range.first; it != range.second; ++it) {
       ++nofFrags;
@@ -277,6 +281,9 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
       case 1: // dropped one
          // don't know how to handle these right now
          DropFragments(range);
+         if(fDebug) {
+            std::cout<<"3, single drop"<<std::endl;
+         }
          return false;
          break;
       case 2: // dropped two => as many left as there are fragments
@@ -311,6 +318,9 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
       // std::cerr<<"address "<<frag->GetAddress()<<": deconvolution of "<<nofCharges<<" charges for "<<nofFrags<<"
       // fragments not implemented yet!"<<std::endl;
       DropFragments(range);
+		if(fDebug) {
+			std::cout<<"unknown number of fragments "<<nofFrags<<std::endl;
+		}
       return false;
       break;
    } // switch(nofFrags)
@@ -436,16 +446,16 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
 void TFragmentMap::DropFragments(
    std::pair<
       std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>>>::iterator,
-      std::multimap<UInt_t,
-                    std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>>>::iterator>& range)
+      std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>>>::iterator>& range)
 {
    /// put the fragments within the range of the two iterators into the bad output queue
    for(auto it = range.first; it != range.second; ++it) {
 		//(*it).second is a tuple, with the first element being a shared_ptr<TFragment>
-		//we need to conver this to a shared_ptr<TBadFragment>
+		//we need to convert this to a shared_ptr<TBadFragment>
       fBadOutputQueue->Push(std::make_shared<TBadFragment>(*(std::get<0>((*it).second).get())));
       if(fDebug) {
          std::cout<<"Added bad fragment "<<std::get<0>((*it).second)<<std::endl;
       }
    }
+	fMap.erase(range.first, range.second);
 }

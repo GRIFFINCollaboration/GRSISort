@@ -6,14 +6,12 @@
 #include "TChannel.h"
 #include "TGRSIOptions.h"
 
-TSortingDiagnostics* TSortingDiagnostics::fSortingDiagnostics = nullptr;
-
-TSortingDiagnostics::TSortingDiagnostics() : TObject()
+TSortingDiagnostics::TSortingDiagnostics() : TSingleton<TSortingDiagnostics>()
 {
    Clear();
 }
 
-TSortingDiagnostics::TSortingDiagnostics(const TSortingDiagnostics&) : TObject()
+TSortingDiagnostics::TSortingDiagnostics(const TSortingDiagnostics&) : TSingleton<TSortingDiagnostics>()
 {
    Clear();
 }

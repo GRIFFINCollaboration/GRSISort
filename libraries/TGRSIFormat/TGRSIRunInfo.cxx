@@ -6,40 +6,41 @@
 #include <algorithm>
 #include <iostream>
 
-#include <TGRSIOptions.h>
+#include "TROOT.h"
+
+#include "TGRSIOptions.h"
 
 /// \cond CLASSIMP
 ClassImp(TGRSIRunInfo)
 /// \endcond
 
-TGRSIRunInfo* TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();
+//TGRSIRunInfo* TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();
 
 std::string TGRSIRunInfo::fGRSIVersion;
 
-TGRSIRunInfo* TGRSIRunInfo::Get()
-{
-   // The Getter for the singleton TGRSIRunInfo. This makes it
-   // so there is only even one instance of the run info during
-   // a session and it can be accessed from anywhere during that
-   // session.
-   if(fGRSIRunInfo == nullptr) {
-      fGRSIRunInfo = new TGRSIRunInfo();
-   }
-   return fGRSIRunInfo;
-}
+//TGRSIRunInfo* TGRSIRunInfo::Get()
+//{
+//   // The Getter for the singleton TGRSIRunInfo. This makes it
+//   // so there is only even one instance of the run info during
+//   // a session and it can be accessed from anywhere during that
+//   // session.
+//   if(fGRSIRunInfo == nullptr) {
+//      fGRSIRunInfo = new TGRSIRunInfo();
+//   }
+//   return fGRSIRunInfo;
+//}
 
-void TGRSIRunInfo::SetRunInfo(TGRSIRunInfo* tmp)
-{
-   // Sets the TGRSIRunInfo to the info passes as tmp.
-   if((fGRSIRunInfo != nullptr) && (tmp != fGRSIRunInfo)) {
-      delete fGRSIRunInfo;
-   }
-   fGRSIRunInfo = tmp;
-}
+//void TGRSIRunInfo::Set(TSingleton* tmp)
+//{
+//   // Sets the TGRSIRunInfo to the info passes as tmp.
+//   if((fGRSIRunInfo != nullptr) && (tmp != fGRSIRunInfo)) {
+//      delete fGRSIRunInfo;
+//   }
+//   fGRSIRunInfo = tmp;
+//}
 
 Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile* tempf)
 {
-
    TDirectory* savdir = gDirectory;
    if(tempf != nullptr) {
       tempf->cd();
@@ -55,13 +56,12 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile* tempf)
 
    TList* list = tempf->GetListOfKeys();
    TIter  iter(list);
-	std::cout<<R"(Reading run info from file ")"<<CYAN<<tempf->GetName()<<RESET_COLOR<<R"(")"<<std::endl;
    while(TKey* key = static_cast<TKey*>(iter.Next())) {
       if((key == nullptr) || (strcmp(key->GetClassName(), "TGRSIRunInfo") != 0)) {
          continue;
       }
 
-      TGRSIRunInfo::SetRunInfo(static_cast<TGRSIRunInfo*>(key->ReadObj()));
+      Set(static_cast<TGRSIRunInfo*>(key->ReadObj()));
       savdir->cd();
       return true;
    }
@@ -85,40 +85,45 @@ void TGRSIRunInfo::Print(Option_t* opt) const
 {
    // Prints the TGRSIRunInfo. Options:
    // a: Print out more details.
-   std::cout<<"Title: "<<fRunTitle<<std::endl;
-   std::cout<<"Comment: "<<fRunComment<<std::endl;
+   std::cout<<"Title: "<<RunTitle()<<std::endl;
+   std::cout<<"Comment: "<<RunComment()<<std::endl;
+	time_t tmpStart = static_cast<time_t>(RunStart());
+	time_t tmpStop  = static_cast<time_t>(RunStop());
+	struct tm runStart = *localtime(const_cast<const time_t*>(&tmpStart));
+	struct tm runStop  = *localtime(const_cast<const time_t*>(&tmpStop));
+	printf("\t\tRunNumber:          %05i\n", RunNumber());
+	printf("\t\tSubRunNumber:       %03i\n", SubRunNumber());
+	if(Get()->RunStart != 0 && Get()->RunStop != 0) {
+		printf("\t\tRunStart:           %s", asctime(&runStart));
+		printf("\t\tRunStop:            %s", asctime(&runStop));
+		printf("\t\tRunLength:          %.0f s\n", RunLength());
+	} else {
+		printf("\t\tCombined RunLength: %.0f s\n", RunLength());
+	}
    if(strchr(opt, 'a') != nullptr) {
-      printf("\tTGRSIRunInfo Status:\n");
-      printf("\t\tRunNumber:    %05i\n", TGRSIRunInfo::Get()->fRunNumber);
-      printf("\t\tSubRunNumber: %03i\n", TGRSIRunInfo::Get()->fSubRunNumber);
-      printf("\t\tRunStart:     %.0f\n", TGRSIRunInfo::Get()->fRunStart);
-      printf("\t\tRunStop:      %.0f\n", TGRSIRunInfo::Get()->fRunStop);
-      printf("\t\tRunLength:    %.0f\n", TGRSIRunInfo::Get()->fRunLength);
-      printf("\t\tTIGRESS:      %s\n", Tigress() ? "true" : "false");
-      printf("\t\tSHARC:        %s\n", Sharc() ? "true" : "false");
-      printf("\t\tTRIFOIL:      %s\n", TriFoil() ? "true" : "false");
-      printf("\t\tTIP:          %s\n", Tip() ? "true" : "false");
-      printf("\t\tCSM:          %s\n", CSM() ? "true" : "false");
-      printf("\t\tSPICE:        %s\n", Spice() ? "true" : "false");
-      printf("\t\tS3:           %s\n", S3() ? "true" : "false");
-      printf("\t\tBAMBINO:      %s\n", Bambino() ? "true" : "false");
-      printf("\t\tRF:           %s\n", RF() ? "true" : "false");
-      printf("\t\tGRIFFIN:      %s\n", Griffin() ? "true" : "false");
-      printf("\t\tSCEPTAR:      %s\n", Sceptar() ? "true" : "false");
-      printf("\t\tPACES:        %s\n", Paces() ? "true" : "false");
-      printf("\t\tDESCANT:      %s\n", Descant() ? "true" : "false");
-      printf("\t\tZDS:          %s\n", ZeroDegree() ? "true" : "false");
-      printf("\t\tDANTE:        %s\n", Dante() ? "true" : "false");
-      printf("\t\tFIPPS:        %s\n", Fipps() ? "true" : "false");
+      printf("\t\tTIGRESS:            %s\n", Tigress() ? "true" : "false");
+      printf("\t\tSHARC:              %s\n", Sharc() ? "true" : "false");
+      printf("\t\tTRIFOIL:            %s\n", TriFoil() ? "true" : "false");
+      printf("\t\tTIP:                %s\n", Tip() ? "true" : "false");
+      printf("\t\tCSM:                %s\n", CSM() ? "true" : "false");
+      printf("\t\tSPICE:              %s\n", Spice() ? "true" : "false");
+      printf("\t\tGENERIC:            %s\n", Generic() ? "true" : "false");
+      printf("\t\tS3:                 %s\n", S3() ? "true" : "false");
+      printf("\t\tBAMBINO:            %s\n", Bambino() ? "true" : "false");
+      printf("\t\tRF:                 %s\n", RF() ? "true" : "false");
+      printf("\t\tGRIFFIN:            %s\n", Griffin() ? "true" : "false");
+      printf("\t\tSCEPTAR:            %s\n", Sceptar() ? "true" : "false");
+      printf("\t\tPACES:              %s\n", Paces() ? "true" : "false");
+      printf("\t\tDESCANT:            %s\n", Descant() ? "true" : "false");
+      printf("\t\tZDS:                %s\n", ZeroDegree() ? "true" : "false");
+      printf("\t\tDANTE:              %s\n", Dante() ? "true" : "false");
+      printf("\t\tFIPPS:              %s\n", Fipps() ? "true" : "false");
       printf("\n");
       printf(DBLUE "\tArray Position (mm) = " DRED "%.01f" RESET_COLOR "\n", TGRSIRunInfo::HPGeArrayPosition());
       printf(DBLUE "\tDESCANT in ancillary positions = " DRED "%s" RESET_COLOR "\n",
              TGRSIRunInfo::DescantAncillary() ? "TRUE" : "FALSE");
       printf("\n");
       printf("\t==============================\n");
-   } else {
-      printf("\t\tRunNumber:    %05i\t", TGRSIRunInfo::Get()->fRunNumber);
-      printf("\t\tSubRunNumber: %03i\n", TGRSIRunInfo::Get()->fSubRunNumber);
    }
 }
 
@@ -137,6 +142,7 @@ void TGRSIRunInfo::Clear(Option_t*)
    fSpice   = false;
    fTip     = false;
    fS3      = false;
+   fGeneric = false;
    fBambino = false;
 
    fGriffin    = false;
@@ -148,9 +154,6 @@ void TGRSIRunInfo::Clear(Option_t*)
    fFipps      = false;
 
    fDescantAncillary = false;
-
-   fMajorIndex.assign("");
-   fMinorIndex.assign("");
 
    fNumberOfTrueSystems = 0;
    fBadCycleList.clear();
@@ -184,120 +187,117 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum)
       //  detector system type.
       //  for more info, see: https://www.triumf.info/wiki/tigwiki/index.php/Detector_Nomenclature
       switch(iter->second->GetMnemonic()->System()) {
-      case TMnemonic::kTigress:
-         if(!Tigress()) {
-            TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-         }
-         SetTigress();
-         break;
-      case TMnemonic::kSharc:
-         if(!Sharc()) {
-            TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-         }
-         SetSharc();
-         break;
-      case TMnemonic::kTriFoil:
-         if(!TriFoil()) {
-            TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-         }
-         SetTriFoil();
-         break;
-      case TMnemonic::kRF:
-         if(!RF()) {
-            TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-         }
-         SetRF();
-         break;
-      case TMnemonic::kCSM:
-         if(!CSM()) {
-            TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-         }
-         SetCSM();
-         break;
-      case TMnemonic::kTip:
-         if(!Tip()) {
-            TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-         }
-         SetTip();
-         break;
-      case TMnemonic::kGriffin:
-         if(!Griffin()) {
-            TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-         }
-         SetGriffin();
-         break;
-      case TMnemonic::kSceptar:
-         if(!Sceptar()) {
-            TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-         }
-         SetSceptar();
-         break;
-      case TMnemonic::kPaces:
-         if(!Paces()) {
-            TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-         }
-         SetPaces();
-         break;
-      case TMnemonic::kLaBr:
-         if(!Dante()) {
-            TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-         }
-         SetDante();
-         break;
-      case TMnemonic::kZeroDegree:
-         if(!ZeroDegree()) {
-            TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-         }
-         SetZeroDegree();
-         break;
-      case TMnemonic::kDescant:
-         if(!Descant()) {
-            TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-         }
-         SetDescant();
-         break;
-      case TMnemonic::kFipps:
-         if(!Fipps()) {
-            TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-         }
-         SetFipps();
-         break;
-      default:
-         std::string system = iter->second->GetMnemonic()->SystemString();
-         if(!Spice() && !S3()) {
-            if(system.compare("SP") == 0) {
-               if(!Spice()) {
-                  TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-               }
-               SetSpice();
-               if(!S3()) {
-                  TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-               }
-               SetS3();
-            }
-         } else if(!Bambino()) {
-            if(system.compare("BA") == 0) {
-               TGRSIRunInfo::Get()->fNumberOfTrueSystems++;
-            }
-            SetBambino();
-         }
-      };
-   }
-   if(Tigress()) {
-      Get()->fMajorIndex.assign("TriggerId");
-      Get()->fMinorIndex.assign("FragmentId");
-   } else if(Griffin()) {
-      Get()->fMajorIndex.assign("TimeStampHigh");
-      Get()->fMinorIndex.assign("TimeStampLow");
-   } else if(Fipps()) {
-      Get()->fMajorIndex.assign("TimeStamp");
-   }
+			case TMnemonic::ESystem::kTigress:
+				if(!Tigress()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetTigress();
+				break;
+			case TMnemonic::ESystem::kSharc:
+				if(!Sharc()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetSharc();
+				break;
+			case TMnemonic::ESystem::kTriFoil:
+				if(!TriFoil()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetTriFoil();
+				break;
+			case TMnemonic::ESystem::kRF:
+				if(!RF()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetRF();
+				break;
+			case TMnemonic::ESystem::kCSM:
+				if(!CSM()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetCSM();
+				break;
+			case TMnemonic::ESystem::kTip:
+				if(!Tip()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetTip();
+				break;
+			case TMnemonic::ESystem::kGriffin:
+				if(!Griffin()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetGriffin();
+				break;
+			case TMnemonic::ESystem::kSceptar:
+				if(!Sceptar()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetSceptar();
+				break;
+			case TMnemonic::ESystem::kPaces:
+				if(!Paces()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetPaces();
+				break;
+			case TMnemonic::ESystem::kLaBr:
+				if(!Dante()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetDante();
+				break;
+			case TMnemonic::ESystem::kZeroDegree:
+				if(!ZeroDegree()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetZeroDegree();
+				break;
+			case TMnemonic::ESystem::kDescant:
+				if(!Descant()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetDescant();
+				break;
+			case TMnemonic::ESystem::kFipps:
+				if(!Fipps()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetFipps();
+				break;
+			case TMnemonic::ESystem::kGeneric:
+				if(!Generic()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetGeneric();
+				break;
+			default:
+				std::string system = iter->second->GetMnemonic()->SystemString();
+				if(!Spice() && !S3()) {
+					if(system.compare("SP") == 0) {
+						if(!Spice()) {
+							Get()->fNumberOfTrueSystems++;
+						}
+						SetSpice();
+						if(!S3()) {
+							Get()->fNumberOfTrueSystems++;
+						}
+						SetS3();
+					}
+				} else if(!Bambino()) {
+					if(system.compare("BA") == 0) {
+						Get()->fNumberOfTrueSystems++;
+					}
+					SetBambino();
+				}
+		};
+	}
 
-   if(Get()->fRunInfoFile.length() != 0u) {
-      ParseInputData(Get()->fRunInfoFile.c_str());
-   }
+	if(Get()->fRunInfoFile.length() != 0u) {
+		ParseInputData(Get()->fRunInfoFile.c_str());
+	}
 
-   // TGRSIRunInfo::Get()->Print("a");
+   // Get()->Print("a");
 }
 
 void TGRSIRunInfo::SetAnalysisTreeBranches(TTree*)
@@ -440,10 +440,10 @@ Long64_t TGRSIRunInfo::Merge(TCollection* list)
 void TGRSIRunInfo::PrintBadCycles() const
 {
    std::cout<<"Bad Cycles:\t";
-   if(fBadCycleList.empty()) {
+   if(Get()->fBadCycleList.empty()) {
       std::cout<<"NONE"<<std::endl;
    } else {
-      for(int it : fBadCycleList) {
+      for(int it : Get()->fBadCycleList) {
          std::cout<<" "<<it;
       }
       std::cout<<std::endl;
@@ -457,23 +457,23 @@ void TGRSIRunInfo::AddBadCycle(int bad_cycle)
         fBadCycleList.push_back(bad_cycle);
         std::sort(fBadCycleList.begin(), fBadCycleList.end());
      }*/
-   if(!(std::binary_search(fBadCycleList.begin(), fBadCycleList.end(), bad_cycle))) {
-      fBadCycleList.push_back(bad_cycle);
-      std::sort(fBadCycleList.begin(), fBadCycleList.end());
+   if(!(std::binary_search(Get()->fBadCycleList.begin(), Get()->fBadCycleList.end(), bad_cycle))) {
+      Get()->fBadCycleList.push_back(bad_cycle);
+      std::sort(Get()->fBadCycleList.begin(), Get()->fBadCycleList.end());
    }
-   fBadCycleListSize = fBadCycleList.size();
+   Get()->fBadCycleListSize = Get()->fBadCycleList.size();
 }
 
 void TGRSIRunInfo::RemoveBadCycle(int cycle)
 {
-   fBadCycleList.erase(std::remove(fBadCycleList.begin(), fBadCycleList.end(), cycle), fBadCycleList.end());
-   std::sort(fBadCycleList.begin(), fBadCycleList.end());
-   fBadCycleListSize = fBadCycleList.size();
+   Get()->fBadCycleList.erase(std::remove(Get()->fBadCycleList.begin(), Get()->fBadCycleList.end(), cycle), Get()->fBadCycleList.end());
+   std::sort(Get()->fBadCycleList.begin(), Get()->fBadCycleList.end());
+   Get()->fBadCycleListSize = Get()->fBadCycleList.size();
 }
 
 bool TGRSIRunInfo::IsBadCycle(int cycle) const
 {
-   return std::binary_search(fBadCycleList.begin(), fBadCycleList.end(), cycle);
+   return std::binary_search(Get()->fBadCycleList.begin(), Get()->fBadCycleList.end(), cycle);
 }
 
 bool TGRSIRunInfo::WriteToRoot(TFile* fileptr)
@@ -482,6 +482,8 @@ bool TGRSIRunInfo::WriteToRoot(TFile* fileptr)
    // Maintain old gDirectory info
    bool        bool2return = true;
    TDirectory* savdir      = gDirectory;
+	gROOT->cd();
+	TGRSIRunInfo* runInfo   = Get();
 
    if(fileptr == nullptr) {
       fileptr = gDirectory->GetFile();
@@ -495,10 +497,10 @@ bool TGRSIRunInfo::WriteToRoot(TFile* fileptr)
       printf("No file opened to write to.\n");
       bool2return = false;
    } else {
-      Get()->Write();
+      runInfo->Write();
    }
 
-   printf("Writing Run Information to %s\n", gDirectory->GetFile()->GetName());
+   printf("Writing TGRSIRunInfo to %s\n", gDirectory->GetFile()->GetName());
    if(oldoption == "READ") {
       printf("  Returning %s to \"%s\" mode.\n", gDirectory->GetFile()->GetName(), oldoption.c_str());
       fileptr->ReOpen("READ");
@@ -538,10 +540,10 @@ std::string TGRSIRunInfo::PrintToString(Option_t*)
       buffer.append(Form("DescantAncillary: %d\n", 1));
       buffer.append("\n\n");
    }
-   if(static_cast<unsigned int>(!fBadCycleList.empty()) != 0u) {
+   if(!Get()->fBadCycleList.empty()) {
       buffer.append("//A List of bad cycles.\n");
       buffer.append("BadCycle:");
-      for(int& it : fBadCycleList) {
+      for(int& it : Get()->fBadCycleList) {
          buffer.append(Form(" %d", it));
       }
       buffer.append("\n\n");
@@ -549,3 +551,4 @@ std::string TGRSIRunInfo::PrintToString(Option_t*)
 
    return buffer;
 }
+

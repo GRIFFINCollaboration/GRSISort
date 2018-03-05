@@ -16,7 +16,7 @@ ClassImp(TTigress)
 double TTigress::fTargetOffset = 0.;
 
 // Default tigress unpacking settings
-TTransientBits<UShort_t> TTigress::fgTigressBits(TTigress::kSetCoreWave | TTigress::kSetBGOHits);
+TTransientBits<UShort_t> TTigress::fgTigressBits(ETigressGlobalBits::kSetCoreWave | ETigressGlobalBits::kSetBGOHits);
 
 // Why arent these TTigress class functions?
 bool DefaultAddback(TTigressHit& one, TTigressHit& two)
@@ -72,6 +72,17 @@ bool DefaultSuppression(TTigressHit& tig, TBgoHit& bgo)
 
 std::function<bool(TTigressHit&, TBgoHit&)> TTigress::fSuppressionCriterion = DefaultSuppression;
 
+std::underlying_type<TTigress::ETigressGlobalBits>::type operator |(TTigress::ETigressGlobalBits lhs, TTigress::ETigressGlobalBits rhs)  
+{
+	return static_cast<std::underlying_type<TTigress::ETigressGlobalBits>::type>(lhs) |
+		    static_cast<std::underlying_type<TTigress::ETigressGlobalBits>::type>(rhs);
+}
+
+//TTigress::ETigressGlobalBits& operator |(TTigress::ETigressGlobalBits& lhs, TTigress::ETigressGlobalBits rhs)
+//{
+//	return static_cast<TTigress::ETigressGlobalBits>(static_cast<std::underlying_type<TTigress::ETigressGlobalBits>::type>(lhs), static_cast<std::underlying_type<TTigress::ETigressGlobalBits>::type>(rhs));
+//}
+
 TTigress::TTigress() : TGRSIDetector()
 {
    // Class()->IgnoreTObjectStreamer(true);
@@ -107,7 +118,7 @@ void TTigress::Clear(Option_t* opt)
    fAddbackHits.clear();
    fAddbackFrags.clear();
    fBgos.clear();
-   // fTigressBits.SetBit(TTigress::kAddbackSet,false);
+   // fTigressBits.SetBit(ETigressBits::kAddbackSet,false);
    fTigressBits = 0;
 }
 
@@ -133,7 +144,7 @@ Int_t TTigress::GetAddbackMultiplicity()
       return 0;
    }
    // if the addback has been reset, clear the addback hits
-   if(!fTigressBits.TestBit(kAddbackSet)) {
+   if(!fTigressBits.TestBit(ETigressBits::kAddbackSet)) {
       fAddbackHits.clear();
    } else {
       return fAddbackHits.size();
@@ -163,7 +174,7 @@ Int_t TTigress::GetAddbackMultiplicity()
          fAddbackFrags.push_back(1);
       }
    }
-   fTigressBits.SetBit(kAddbackSet, true);
+   fTigressBits.SetBit(ETigressBits::kAddbackSet, true);
 
    return fAddbackHits.size();
 }
@@ -224,7 +235,7 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
    }
 
    // if((chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) &&
-   if((chan->GetMnemonic()->SubSystem() == TMnemonic::kG) &&
+   if((chan->GetMnemonic()->SubSystem() == TMnemonic::EMnemonic::kG) &&
       (chan->GetSegmentNumber() == 0 || chan->GetSegmentNumber() == 9)) { // it is a core
       // if(frag->Charge.size() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a
       // good energy and time (cfd or led).
@@ -239,37 +250,37 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
             // if(hit->Charge() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a
             // good energy and time (cfd or led).
             // if(chan->GetMnemonic()->outputsensor.compare(0,1,"b")==0) {
-            if(chan->GetMnemonic()->OutputSensor() == TMnemonic::kB) {
+            if(chan->GetMnemonic()->OutputSensor() == TMnemonic::EMnemonic::kB) {
                if(hit->GetName()[9] == 'a') {
                   return;
                }
                hit->CopyFragment(*frag);
-               if(TestGlobalBit(kSetCoreWave)) {
+               if(TestGlobalBit(ETigressGlobalBits::kSetCoreWave)) {
                   frag->CopyWave(*hit);
                }
                return;
             }
             hit->CopyFragment(*frag);
-            if(TestGlobalBit(kSetCoreWave)) {
+            if(TestGlobalBit(ETigressGlobalBits::kSetCoreWave)) {
                frag->CopyWave(*hit);
             }
             return;
          }
       }
       corehit.CopyFragment(*frag);
-      if(TestGlobalBit(kSetCoreWave)) {
+      if(TestGlobalBit(ETigressGlobalBits::kSetCoreWave)) {
          frag->CopyWave(corehit);
       }
       fTigressHits.push_back(corehit);
       return;
    }
-   if(chan->GetMnemonic()->SubSystem() == TMnemonic::kG) { // its ge but its not a core...
+   if(chan->GetMnemonic()->SubSystem() == TMnemonic::EMnemonic::kG) { // its ge but its not a core...
       TGRSIDetectorHit temp(*frag);
       for(size_t i = 0; i < fTigressHits.size(); ++i) {
          TTigressHit* hit = GetTigressHit(i);
          if((hit->GetDetector() == chan->GetDetectorNumber()) &&
             (hit->GetCrystal() == chan->GetCrystalNumber())) { // we have a match;
-            if(TestGlobalBit(kSetSegWave)) {
+            if(TestGlobalBit(ETigressGlobalBits::kSetSegWave)) {
                frag->CopyWave(temp);
             }
             hit->AddSegment(temp);
@@ -278,14 +289,14 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
       }
       TTigressHit corehit;
       corehit.SetAddress((frag->GetAddress())); // fake it till you make it
-      if(TestGlobalBit(kSetSegWave)) {
+      if(TestGlobalBit(ETigressGlobalBits::kSetSegWave)) {
          frag->CopyWave(temp);
       }
       corehit.AddSegment(temp);
       fTigressHits.push_back(corehit);
       return;
    }
-   if(chan->GetMnemonic()->SubSystem() == TMnemonic::kS) {
+   if(chan->GetMnemonic()->SubSystem() == TMnemonic::EMnemonic::kS) {
       TBgoHit temp(*frag);
       fBgos.push_back(temp);
       return;
@@ -301,7 +312,7 @@ void TTigress::ResetAddback()
    /// be called before building the new addback hits, otherwise, a copy of
    /// the old addback hits will be stored instead.
    /// This should have changed now, we're using the stored tigress bits to reset the addback
-   fTigressBits.SetBit(kAddbackSet, false);
+   fTigressBits.SetBit(ETigressBits::kAddbackSet, false);
    fAddbackHits.clear();
    fAddbackFrags.clear();
 }

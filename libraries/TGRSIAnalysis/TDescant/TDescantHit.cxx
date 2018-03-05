@@ -138,7 +138,7 @@ Int_t TDescantHit::GetRemainder() const
    return fCfd >> 22;
 }
 
-Double_t TDescantHit::GetTime(const UInt_t&, Option_t*) const
+Double_t TDescantHit::GetTime(const ETimeFlag&, Option_t*) const
 {
    Double_t  dTime = GetTimeStamp() * 10. + GetRemainder() + (GetCfd() + gRandom->Uniform()) / 256.;
    TChannel* chan  = GetChannel();

@@ -389,7 +389,7 @@ Bool_t TGainMatch::CoarseMatchAll(TCalManager* cm, TH2* mat, Double_t, Double_t)
       gm->SetName(Form("gm_chan_%d", chan - 1));
       cm->AddToManager(gm, chan - 1);
    }
-   if(static_cast<unsigned int>(!badlist.empty()) != 0u) {
+   if(!badlist.empty()) {
       printf("The following channels did not gain match properly: ");
    }
    for(int i : badlist) {
@@ -475,7 +475,7 @@ Bool_t TGainMatch::FineMatchFastAll(TCalManager* cm, TH2* mat1, TPeak* peak1, TH
       delete copyPeak1;
       delete copyPeak2;
    }
-   if(static_cast<unsigned int>(!badlist.empty()) != 0u) {
+   if(!badlist.empty()) {
       printf("The following channels did not gain match properly: ");
    }
    for(int i : badlist) {
@@ -605,7 +605,7 @@ Bool_t TGainMatch::AlignAll(TCalManager* cm, TH1* hist, TH2* mat, Int_t low_rang
       }
       cm->AddToManager(gm);
    }
-   if(static_cast<unsigned int>(!badlist.empty()) != 0u) {
+   if(!badlist.empty()) {
       printf("The following channels did not gain match properly: ");
    }
    for(int i : badlist) {
@@ -666,7 +666,7 @@ Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2* charge_mat, TH2* eng_mat, 
       }
       cm->AddToManager(gm);
    }
-   if(static_cast<unsigned int>(!badlist.empty()) != 0u) {
+   if(!badlist.empty()) {
       printf("The following channels did not gain match properly: ");
    }
    for(int i : badlist) {

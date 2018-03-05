@@ -29,13 +29,13 @@ TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode)
 {
 
    switch(fBuildMode) {
-   case kTimestamp:
+	case EBuildMode::kTimestamp:
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
          return a->GetTimeStamp() < b->GetTimeStamp();
       });
       break;
 
-   case kTriggerId:
+	case EBuildMode::kTriggerId:
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
          return a->GetTriggerId() < b->GetTriggerId();
       });
@@ -84,7 +84,7 @@ bool TEventBuildingLoop::Iteration()
       }
       if(fOrdered.empty()) {
          // Parent is dead, and we have passed on all events
-         if(static_cast<unsigned int>(!fNextEvent.empty()) != 0u) {
+         if(!fNextEvent.empty()) {
             fOutputQueue->Push(fNextEvent);
          }
          fOutputQueue->SetFinished();
@@ -107,9 +107,9 @@ bool TEventBuildingLoop::Iteration()
 bool TEventBuildingLoop::CheckBuildCondition(const std::shared_ptr<const TFragment>& frag)
 {
    switch(fBuildMode) {
-   case kTimestamp: return CheckTimestampCondition(frag); break;
+	case EBuildMode::kTimestamp: return CheckTimestampCondition(frag); break;
 
-   case kTriggerId: return CheckTriggerIdCondition(frag); break;
+	case EBuildMode::kTriggerId: return CheckTriggerIdCondition(frag); break;
    }
    return false; // we should never reach this statement!
 }
@@ -117,10 +117,9 @@ bool TEventBuildingLoop::CheckBuildCondition(const std::shared_ptr<const TFragme
 bool TEventBuildingLoop::CheckTimestampCondition(const std::shared_ptr<const TFragment>& frag)
 {
    long timestamp   = frag->GetTimeStamp();
-   long event_start = (static_cast<unsigned int>(!fNextEvent.empty()) != 0u
-                          ? (TGRSIOptions::Get()->AnalysisOptions()->StaticWindow() ? fNextEvent[0]->GetTimeStamp()
-                                                                                    : fNextEvent.back()->GetTimeStamp())
-                          : timestamp);
+   long event_start = (!fNextEvent.empty() ? (TGRSIOptions::Get()->AnalysisOptions()->StaticWindow() ? fNextEvent[0]->GetTimeStamp()
+                                                                                                      : fNextEvent.back()->GetTimeStamp())
+                                           : timestamp);
 
    // save timestamp every <BuildWindow> fragments
    if(frag->GetEntryNumber() % (TGRSIOptions::Get()->SortDepth()) == 0) {
@@ -154,7 +153,7 @@ bool TEventBuildingLoop::CheckTriggerIdCondition(const std::shared_ptr<const TFr
 {
    long trigger_id = frag->GetTriggerId();
    long current_trigger_id =
-      (static_cast<unsigned int>(!fNextEvent.empty()) != 0u ? fNextEvent[0]->GetTriggerId() : trigger_id);
+      (!fNextEvent.empty() ? fNextEvent[0]->GetTriggerId() : trigger_id);
 
    // save trigger id every <BuildWindow> fragments
    if(frag->GetEntryNumber() % (TGRSIOptions::Get()->SortDepth()) == 0) {

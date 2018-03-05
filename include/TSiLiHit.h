@@ -16,7 +16,7 @@
 
 class TSiLiHit : public TGRSIDetectorHit {
 public:
-   enum ESiLiHitBits { kUseFitCharge = BIT(0), kSiLiHitBit1 = BIT(1) };
+   enum class ESiLiHitBits { kUseFitCharge = BIT(0), kSiLiHitBit1 = BIT(1) };
 
    TSiLiHit();
    TSiLiHit(const TFragment&);
@@ -30,17 +30,29 @@ public:
    Int_t    GetRing() const;
    Int_t    GetSector() const;
    Int_t    GetPreamp() const;
-   Double_t GetTimeFit() { return fTimeFit; }
+   Int_t    GetPin() const;
+   bool     MagnetShadow() const;
+   Double_t GetTimeFit() const {// In 10ns tstamp units
+      TChannel* channel = GetChannel();
+      if(channel != nullptr) return fTimeFit+channel->GetTZero(GetEnergy());
+      return fTimeFit;
+   }
+   
    Double_t GetSig2Noise() const { return fSig2Noise; }
    Double_t GetSmirnov() const { return fSmirnov; }
 
    Int_t    GetTimeStampLow() { return GetTimeStamp() & 0x0fffffff; }
+   Double_t GetTimeFitns() const
+   {
+      return (GetTimeStamp()+GetTimeFit())*10.;
+   }   
    Double_t GetTimeFitCfd() const
    {
-      if(fTimeFit != 0 && fTimeFit < 1000 && fTimeFit > -1000) {
+	   double fitt=GetTimeFit();
+      if(fitt != 0 && fitt < 1000 && fitt > -1000) {
          long ts = GetTimeStamp()<<4 &
                    0x07ffffff; // bit shift by 4 (x16) then knock off the highest bit which is absent from cfd
-         return ts + fTimeFit * 16;
+         return ts + fitt * 16;
       }
       return 0;
    }
@@ -60,8 +72,8 @@ public:
 
    void UseFitCharge(bool set = true)
    {
-      SetHitBit(kIsEnergySet, false);
-      fSiLiHitBits.SetBit(kUseFitCharge, set);
+      SetHitBit(EBitFlag::kIsEnergySet, false);
+      fSiLiHitBits.SetBit(ESiLiHitBits::kUseFitCharge, set);
    }
 
    double GetWaveformEnergy() const { return GetFitEnergy(); }
@@ -70,7 +82,7 @@ public:
    double GetEnergy(Option_t* opt = nullptr) const override;
 
    // Not strictly "doppler" but consistent
-   inline double GetDoppler(double beta, TVector3* vec = nullptr)
+   inline double GetDoppler(double beta, TVector3* vec = nullptr,double E=0)
    {
       if(vec == nullptr) {
          vec = GetBeamDirection();
@@ -78,10 +90,10 @@ public:
       TVector3 pos = GetPosition();
       pos.SetTheta(130. * TMath::Pi() / 180.);
       double costhe = TMath::Cos(pos.Angle(*vec));
-      double e      = this->GetEnergy();
+      if(E>0) E= this->GetEnergy();
       double gamma  = 1 / (sqrt(1 - pow(beta, 2)));
 
-      return ((e + 511 - beta * costhe * sqrt(e * (e + 1022))) * gamma) - 511;
+      return ((E + 511 - beta * costhe * sqrt(E * (E + 1022))) * gamma) - 511;
       ;
    }
 
@@ -111,8 +123,9 @@ public:
 private:
    Double_t GetDefaultDistance() const { return 0.0; }
 
-   std::vector<short>      fAddBackSegments;
-   std::vector<double>     fAddBackEnergy; // probably not needed after development finished
+   std::vector<short>      fAddBackSegments;   //!<!
+   std::vector<double>     fAddBackEnergy;     //!<!
+   // probably not needed after development finished
    TTransientBits<UChar_t> fSiLiHitBits;
 
    Double_t fTimeFit{0.};
@@ -122,7 +135,7 @@ private:
    Double_t fFitBase{0.};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TSiLiHit, 9);
+   ClassDefOverride(TSiLiHit, 10);
    /// \endcond
 };
 /*! @} */

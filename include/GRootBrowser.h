@@ -99,7 +99,7 @@ protected:
    const TGPicture*   fIconPic;                  ///< icon picture
 
 public:
-   enum ENewBrowserMessages {
+   enum class ENewBrowserMessages {
       kBrowse = 11011,
       kOpenFile,
       kClone,
@@ -121,7 +121,7 @@ public:
       kQuitRoot
    };
 
-   enum EInsertPosition { kLeft, kRight, kBottom };
+   enum class EInsertPosition { kLeft, kRight, kBottom };
 
    GRootBrowser(TBrowser* b = nullptr, const char* name = "ROOT Browser", UInt_t width = 800, UInt_t height = 500,
                 Option_t* opt = "", Bool_t initshow = kTRUE);
@@ -145,14 +145,14 @@ public:
    TGTab*       GetTabRight() const { return fTabRight; }
    TGTab*       GetTabBottom() const { return fTabBottom; }
    TGTab* GetTab(Int_t pos) const;
-   void SetTab(Int_t pos = kRight, Int_t subpos = -1);
-   void SetTabTitle(const char* title, Int_t pos = kRight, Int_t subpos = -1);
+   void SetTab(Int_t pos = static_cast<Int_t>(EInsertPosition::kRight), Int_t subpos = -1);
+   void SetTabTitle(const char* title, Int_t pos = static_cast<Int_t>(EInsertPosition::kRight), Int_t subpos = -1);
    void HandleMenu(Int_t id);
    void RecursiveReparent(TGPopupMenu* popup);
    void RemoveTab(Int_t pos, Int_t subpos);
    void SetActBrowser(TBrowserImp* b) { fActBrowser = b; }
    void ShowMenu(TGCompositeFrame* menu);
-   void StartEmbedding(Int_t pos = kRight, Int_t subpos = -1) override;
+   void StartEmbedding(Int_t pos = static_cast<Int_t>(EInsertPosition::kRight), Int_t subpos = -1) override;
    void StopEmbedding(const char* name = nullptr) override { StopEmbedding(name, nullptr); }
    void StopEmbedding(const char* name, TGLayoutHints* layout);
    void SwitchMenus(TGCompositeFrame* from);
@@ -170,7 +170,7 @@ public:
    TGMainFrame* GetMainFrame() const override { return (TGMainFrame*)this; }
 
    Long_t ExecPlugin(const char* name = nullptr, const char* fname = nullptr, const char* cmd = nullptr,
-                     Int_t pos = kRight, Int_t subpos = -1) override;
+                     Int_t pos = static_cast<Int_t>(EInsertPosition::kRight), Int_t subpos = -1) override;
    void SetStatusText(const char* txt, Int_t col) override;
    Bool_t HandleKey(Event_t* event) override;
 

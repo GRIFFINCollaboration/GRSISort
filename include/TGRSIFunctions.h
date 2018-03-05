@@ -47,6 +47,9 @@ Double_t CsIFitFunction(Double_t* i, Double_t* p);
 Double_t DeadTimeCorrect(Double_t* dim, Double_t deadtime, Double_t binWidth = 1.0);
 Double_t DeadTimeAffect(Double_t function, Double_t deadtime, Double_t binWidth = 1.0);
 
+// Timing functions
+ Double_t ConvolutedDecay(Double_t *x, Double_t *par);
+
 #ifdef HAS_MATHMORE
 // Angular correlation fitting
 Double_t LegendrePolynomial(Double_t* x, Double_t* p);

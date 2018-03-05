@@ -1,4 +1,4 @@
-.PHONY: clean all extras docs doxygen
+.PHONY: clean all extras docs doxygen grsirc
 .SECONDARY:
 .SECONDEXPANSION:
 
@@ -16,6 +16,7 @@ SRC_SUFFIX = cxx
 # EVERYTHING PAST HERE SHOULD WORK AUTOMATICALLY
 
 MAJOR_ROOT_VERSION:=$(shell root-config --version | cut -d '.' -f1)
+MINOR_ROOT_VERSION:=$(shell root-config --version | cut -d '.' -f2 | cut -d '/' -f1)
 ROOT_PYTHON_VERSION=$(shell root-config --python-version)
 
 MATHMORE_INSTALLED:=$(shell root-config --has-mathmore)
@@ -44,6 +45,13 @@ SHAREDSWITCH = -shared -Wl,-soname,# NO ENDING SPACE
 HEAD=head
 FIND=find
 LIBRARY_DIRS   := $(shell $(FIND) libraries/* -type d -links 2 2> /dev/null | grep -v SourceData | grep -v SRIMData)
+endif
+
+ROOTCINT=$(shell command -v rootcint 2> /dev/null)
+ifndef $(ROOTCINT)
+	ROOTCINT=rootcling
+else
+	ROOTCINT=rootcint
 endif
 
 COM_COLOR=\033[0;34m
@@ -120,7 +128,7 @@ run_and_test =@printf "%b%b%b" " $(3)$(4)$(5)" $(notdir $(2)) "$(NO_COLOR)\r";  
                 rm -f $(2).log $(2).error
 endif
 
-all: include/GVersion.h $(EXECUTABLES) $(LIBRARY_OUTPUT) lib/libGRSI.so config $(HISTOGRAM_SO) $(FILTER_SO)
+all: include/GVersion.h grsirc $(EXECUTABLES) $(LIBRARY_OUTPUT) lib/libGRSI.so config $(HISTOGRAM_SO) $(FILTER_SO)
 	@$(FIND) .build users -name "*.pcm" -exec cp {} lib/ \;
 	@printf "$(OK_COLOR)Compilation successful, $(WARN_COLOR)woohoo!$(NO_COLOR)\n"
 
@@ -155,6 +163,9 @@ include/GVersion.h:
 
 #include/GVersion.h: .git/HEAD .git/index util/gen_version.sh
 
+grsirc:
+	$(call run_and_test,util/gen_grsirc.sh,$@,$(COM_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
+
 lib/lib%.so: .build/histos/%.o | lib include/GVersion.h
 	$(call run_and_test,$(CPP) -fPIC $^ $(SHAREDSWITCH)lib$*.so $(ROOT_LIBFLAGS) -o $@,$@,$(BLD_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
 
@@ -163,6 +174,7 @@ lib/lib%.so: .build/filters/%.o | lib include/GVersion.h
 
 config: bin
 	@cp util/grsi-config bin/
+	@cp util/ErrorReport.sh bin/
 
 # Functions for determining the files included in a library.
 # All src files in the library directory are included.
@@ -193,7 +205,7 @@ find_linkdef = $(shell $(FIND) $(1) -name "*LinkDef.h")
 define library_template
 .build/$(1)/$(notdir $(1))Dict.cxx: $(1)/LinkDef.h $$(call dict_header_files,$(1)/LinkDef.h) 
 	@mkdir -p $$(dir $$@)
-	$$(call run_and_test,rootcint -f $$@ -c $$(INCLUDES) $$(RCFLAGS) -p $$(notdir $$(filter-out $$<,$$^)) $$<,$$@,$$(COM_COLOR),$$(BLD_STRING) ,$$(OBJ_COLOR))
+	$$(call run_and_test,$$(ROOTCINT) -f $$@ -c $$(INCLUDES) $$(RCFLAGS) -p $$(notdir $$(filter-out $$<,$$^)) $$<,$$@,$$(COM_COLOR),$$(BLD_STRING) ,$$(OBJ_COLOR))
 
 .build/$(1)/LibDictionary.o: .build/$(1)/$(notdir $(1))Dict.cxx
 	$$(call run_and_test,$$(CPP) -fPIC -c $$< -o $$@ $$(CFLAGS),$$@,$$(COM_COLOR),$$(COM_STRING),$$(OBJ_COLOR) )

@@ -28,7 +28,7 @@ int main(int argc, char** argv)
       TChannel* chan    = it->second;
       auto*     newchan = new TChannel(chan);
       chanlist.push_back(newchan);
-      newchan->SetNumber(newchan->GetNumber() + num_to_add);
+      newchan->SetNumber(TPriorityValue<int>(newchan->GetNumber() + num_to_add, EPriority::kUser));
    }
 
    TChannel::DeleteAllChannels();
