@@ -84,7 +84,6 @@ void TGRSIOptions::Clear(Option_t*)
    fShowedVersion = false;
    fShowLogo      = false;
    fSortRaw       = true;
-   fSortRoot      = false;
    fExtractWaves  = false;
    fIsOnline      = false;
    fStartGui      = false;
@@ -141,7 +140,6 @@ void TGRSIOptions::Print(Option_t*) const
             <<"fShowedVersion: "<<fShowedVersion<<std::endl
             <<"fShowLogo: "<<fShowLogo<<std::endl
             <<"fSortRaw: "<<fSortRaw<<std::endl
-            <<"fSortRoot: "<<fSortRoot<<std::endl
             <<"fExtractWaves;: "<<fExtractWaves<<std::endl
             <<"fIsOnline: "<<fIsOnline<<std::endl
             <<"fStartGui: "<<fStartGui<<std::endl
@@ -207,6 +205,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 	}
 
    ArgParser parser;
+	bool useRecommendedFlags = false;
 
    std::vector<std::string> input_files;
    std::string              default_file_format;
@@ -220,18 +219,21 @@ void TGRSIOptions::Load(int argc, char** argv)
    parser.option("v version", &fShowedVersion, true).description("Show the version of GRSISort");
 
 	// analysis options, these options are to be parsed on the second pass, so firstPass is set to false
-	parser.option("build-window", &fAnalysisOptions->fBuildWindow, false).description("Build window, timestamp units");
-	parser.option("addback-window", &fAnalysisOptions->fAddbackWindow, false).description("Addback window, time in ns");
+	parser.option("build-window", &fAnalysisOptions->fBuildWindow, false)
+		.description("Build window, timestamp units").colour(DCYAN);
+	parser.option("addback-window", &fAnalysisOptions->fAddbackWindow, false)
+		.description("Addback window, time in ns").colour(DCYAN);
 	parser.option("static-window", &fAnalysisOptions->fStaticWindow, false)
-		.description("use static window for event building");
+		.description("Use static window for event building").colour(DCYAN);
 	parser.option("waveform-fitting", &fAnalysisOptions->fWaveformFitting, false)
-		.description("fit waveforms using SFU algorithms");
-	parser.option("is-correcting-cross-talk", &fAnalysisOptions->fIsCorrectingCrossTalk, false).takes_argument()
-		.description("Correct cross-talk");
+		.description("Fit waveforms using SFU algorithms").colour(DCYAN);
+	parser.option("is-correcting-cross-talk", &fAnalysisOptions->fIsCorrectingCrossTalk, false)
+		.takes_argument().description("Correct cross-talk").colour(DCYAN);
 
 	// program specific options
 	if(program.compare("grsisort") == 0) {
 		// grsisort options
+		parser.option("recommended", &useRecommendedFlags, true).description("Use recommended flags (those in " DGREEN "dark green" GREEN ")").colour(GREEN);
 		parser.option("output-fragment-tree", &fOutputFragmentFile, true).description("Filename of output fragment tree");
 		parser.option("output-analysis-tree", &fOutputAnalysisFile, true).description("Filename of output analysis tree");
 		parser.option("output-fragment-hists", &fOutputFragmentHistogramFile, true)
@@ -239,55 +241,59 @@ void TGRSIOptions::Load(int argc, char** argv)
 		parser.option("output-analysis-hists", &fOutputAnalysisHistogramFile, true)
 			.description("Filename of output analysis hists");
 
-		parser.option("a", &fMakeAnalysisTree, true).description("Make the analysis tree");
-		parser.option("H histos", &fMakeHistos, true).description("attempt to run events through MakeHisto lib.");
+		parser.option("a", &fMakeAnalysisTree, true).description("Make the analysis tree").colour(DGREEN);
+		parser.option("H histos", &fMakeHistos, true).description("Attempt to run events through MakeHisto lib");
 		parser.option("g start-gui", &fStartGui, true).description("Start the gui at program start");
 		parser.option("b batch", &fBatch, true).description("Run in batch mode");
 
 		parser.option("sort-depth", &fSortDepth, true)
 			.description("Number of events to hold when sorting by time/trigger_id")
 			.default_value(200000);
-		parser.option("s sort", &fSortRoot, true).description("Attempt to loop through root files.");
 
 		parser.option("q quit", &fCloseAfterSort, true).description("Run in batch mode");
-		parser.option("l no-logo", &fShowLogo, true).description("Inhibit the startup logo").default_value(true);
+		parser.option("l no-logo", &fShowLogo, true).description("Inhibit the startup logo")
+			.default_value(true).colour(DGREEN);
 		parser.option("w extract-waves", &fExtractWaves, true)
 			.description("Extract wave forms to data class when available.")
 			.default_value(false);
 		parser.option("d debug", &fDebug, true)
-			.description("Write debug information to output/file, e.g. enables writing of TDescantDebug at analysis stage.")
+			.description("Write debug information to output/file, e.g. enables writing of TDescantDebug at analysis stage")
 			.default_value(false);
 		parser.option("no-record-dialog", &fRecordDialog, true).description("Dump stuff to screen");
-		parser.option("write-diagnostics", &fWriteDiagnostics, true);
+		parser.option("write-diagnostics", &fWriteDiagnostics, true).description("Write Parsing/SortingDiagnostics to root-file")
+			.colour(DGREEN);
 		parser.option("word-count-offset", &fWordOffset, true)
 			.description("Offset to the word count in the GRIFFIN header word, default is 1.")
 			.default_value(1);
 		parser.option("log-errors", &fLogErrors, true);
 		parser.option("reading-material", &fReadingMaterial, true);
-		parser.option("bad-frags write-bad-frags bad-fragments write-bad-fragments", &fWriteBadFrags, true);
+		parser.option("bad-frags write-bad-frags bad-fragments write-bad-fragments", &fWriteBadFrags, true)
+			.description("Write fragments that failed parsing to BadFragmentTree").colour(DGREEN);
 		parser.option("separate-out-of-order", &fSeparateOutOfOrder, true)
 			.description("Write out-of-order fragments to a separate tree at the sorting stage")
-			.default_value(false);
+			.default_value(false).colour(DGREEN);
 		parser.option("ignore-odb", &fIgnoreFileOdb, true);
 		parser.option("ignore-epics", &fIgnoreEpics, true);
 		parser.option("ignore-scaler", &fIgnoreScaler, true);
-		parser.option("suppress-error suppress-errors suppress_error suppress_errors", &fSuppressErrors, true);
-		parser.option("reconstruct-timestamp reconstruct-time-stamp", &fReconstructTimeStamp, true);
+		parser.option("suppress-error suppress-errors suppress_error suppress_errors", &fSuppressErrors, true)
+			.description("Suppress error output from parsing").colour(DGREEN);
+		parser.option("reconstruct-timestamp reconstruct-time-stamp", &fReconstructTimeStamp, true)
+			.description("Reconstruct missing high bits of timestamp").colour(DGREEN);
 
 		parser.option("fragment-size", &fFragmentWriteQueueSize, true)
-			.description("size of fragment write queue")
+			.description("Size of fragment write queue")
 			.default_value(10000000);
 		parser.option("analysis-size", &fAnalysisWriteQueueSize, true)
-			.description("size of analysis write queue")
+			.description("Size of analysis write queue")
 			.default_value(1000000);
 
-		parser.option("column-width", &fColumnWidth, true).description("width of one column of status").default_value(20);
+		parser.option("column-width", &fColumnWidth, true).description("Width of one column of status").default_value(20);
 		parser.option("status-width", &fStatusWidth, true)
-			.description("number of characters to be used for status output")
+			.description("Number of characters to be used for status output")
 			.default_value(120);
 		parser.option("status-interval", &fStatusInterval, true)
 			.description(
-					"seconds between each detailed status output (each a new line), non-positive numbers mean no detailed status")
+					"Seconds between each detailed status output (each a new line), non-positive numbers mean no detailed status")
 			.default_value(10);
 	} else if(program.compare("grsiproof") == 0) {
 		// Proof only parser options
@@ -297,7 +303,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 
 		parser.option("selector-only", &fSelectorOnly, true)
 			.description("Turns off PROOF to run a selector on the main thread");
-		parser.option("log-file", &fLogFile, true).description("File logs from grsiproof are written to.");
+		parser.option("log-file", &fLogFile, true).description("File logs from grsiproof are written to");
 	}
 
    // look for any arguments ending with .info, pass to parser.
@@ -356,6 +362,15 @@ void TGRSIOptions::Load(int argc, char** argv)
       std::cerr<<"ERROR: "<<e.what()<<"\n"<<parser<<std::endl;
 		throw;
    }
+	if(useRecommendedFlags) {
+		fMakeAnalysisTree = true;
+		fShowLogo = false;
+		fWriteDiagnostics = true;
+		fWriteBadFrags = true;
+		fSeparateOutOfOrder = true;
+		fSuppressErrors = true;
+		fReconstructTimeStamp = true;
+	}
 }
 
 kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const
