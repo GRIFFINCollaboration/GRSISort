@@ -496,7 +496,7 @@ std::string TGRSIOptions::GenerateOutputFilename(const std::vector<std::string>&
    return "temp_from_multi.root";
 }
 
-bool TGRSIOptions::WriteToRoot(TFile* file)
+bool TGRSIOptions::WriteToFile(TFile* file)
 {
    /// Writes options information to the tree
    // Maintain old gDirectory info
@@ -516,6 +516,7 @@ bool TGRSIOptions::WriteToRoot(TFile* file)
       success = false;
    } else {
       Get()->Write();
+		fAnalysisOptions->Write();
    }
 
    printf("Writing TGRSIOptions to %s\n", gDirectory->GetFile()->GetName());

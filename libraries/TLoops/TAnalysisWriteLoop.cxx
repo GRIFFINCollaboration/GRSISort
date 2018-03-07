@@ -12,7 +12,6 @@
 #include "TGRSIRunInfo.h"
 #include "TGRSIOptions.h"
 #include "TTreeFillMutex.h"
-#include "TAnalysisOptions.h"
 #include "TSortingDiagnostics.h"
 #include "TDescant.h"
 
@@ -118,7 +117,6 @@ bool TAnalysisWriteLoop::Iteration()
 
 void TAnalysisWriteLoop::Write()
 {
-
    if(fOutputFile != nullptr) {
 		// get all singletons before switching to the output file
 		gROOT->cd();
@@ -143,7 +141,7 @@ void TAnalysisWriteLoop::Write()
 			TChannel::WriteToRoot();
 		}
 		runInfo->WriteToRoot(fOutputFile);
-		options->AnalysisOptions()->WriteToFile(fOutputFile);
+		options->WriteToFile(fOutputFile);
 		ppg->Write();
 
 		if(options->WriteDiagnostics()) {

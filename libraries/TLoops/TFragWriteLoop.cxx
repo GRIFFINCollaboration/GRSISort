@@ -15,7 +15,6 @@
 #include "TGRSIOptions.h"
 #include "TThread.h"
 #include "TTreeFillMutex.h"
-#include "TAnalysisOptions.h"
 #include "TParsingDiagnostics.h"
 
 #include "TBadFragment.h"
@@ -156,7 +155,7 @@ void TFragWriteLoop::Write()
       }
 
       runInfo->WriteToRoot(fOutputFile);
-      options->AnalysisOptions()->WriteToFile(fOutputFile);
+      options->WriteToFile(fOutputFile);
       ppg->Write();
 
       if(options->WriteDiagnostics()) {
