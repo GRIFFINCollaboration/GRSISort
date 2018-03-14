@@ -43,6 +43,8 @@ public:
 
    void SetRingNumber(TFragment& frag) { fRing = frag.GetSegment(); }
    void SetSectorNumber(TFragment& frag) { fSector = frag.GetSegment(); }
+   void SetRingNumber() { fRing = GetSegment(); }
+   void SetSectorNumber() { fSector = GetSegment(); }
    void SetSectorNumber(int n) { fSector = n; }
    void SetRingNumber(int n) { fRing = n; }
 
