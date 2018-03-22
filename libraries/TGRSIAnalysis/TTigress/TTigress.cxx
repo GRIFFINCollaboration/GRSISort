@@ -107,6 +107,7 @@ void TTigress::Copy(TObject& rhs) const
    static_cast<TTigress&>(rhs).fTigressHits  = fTigressHits;
    static_cast<TTigress&>(rhs).fAddbackHits  = fAddbackHits;
    static_cast<TTigress&>(rhs).fAddbackFrags = fAddbackFrags;
+   static_cast<TTigress&>(rhs).fBgos = fBgos;
    static_cast<TTigress&>(rhs).fTigressBits  = 0;
 }
 

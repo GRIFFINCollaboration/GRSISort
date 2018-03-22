@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+#include "Globals.h"
+
 struct ParseError : public std::runtime_error {
    ParseError(const char* msg) : std::runtime_error(msg) {}
    ParseError(const std::string& msg) : std::runtime_error(msg) {}
@@ -67,17 +69,18 @@ class ArgParseConfig : public ArgParseItem {
 public:
    ArgParseConfig(std::string flag_list, bool firstPass) : ArgParseItem(firstPass)
    {
-      desc      = "";
-      required_ = false;
+      fDescription = "";
+		fColour      = "";
+      fRequired    = false;
       std::stringstream ss(flag_list);
       while(!ss.eof()) {
          std::string temp;
          ss >> temp;
-         raw_flags.push_back(temp);
+         fRawFlags.push_back(temp);
          if(temp.length() == 1) {
-            flags.push_back("-" + temp);
+            fFlags.push_back("-" + temp);
          } else if(temp.length() > 1) {
-            flags.push_back("--" + temp);
+            fFlags.push_back("--" + temp);
          }
       }
    }
@@ -86,7 +89,7 @@ public:
    std::string flag_name() const override
    {
       std::string output;
-      for(const auto& flag : flags) {
+      for(const auto& flag : fFlags) {
          if(flag.length() > output.length()) {
             output = flag;
          }
@@ -97,11 +100,11 @@ public:
    bool matches(const std::string& flag) const override
    {
       // This is the default option, and something not a flag was passed.
-      if(flag.at(0) != '-' && flags.size() == 0) {
+      if(flag.at(0) != '-' && fFlags.size() == 0) {
          return true;
       }
 
-      for(auto& f : flags) {
+      for(auto& f : fFlags) {
          if(f == flag) {
             return true;
          }
@@ -111,17 +114,23 @@ public:
 
    virtual ArgParseConfig& description(const std::string& d)
    {
-      desc = d;
+      fDescription = d;
+      return *this;
+   }
+
+   virtual ArgParseConfig& colour(const std::string& c)
+   {
+      fColour = c;
       return *this;
    }
 
    virtual ArgParseConfig& required()
    {
-      required_ = true;
+      fRequired = true;
       return *this;
    }
 
-   bool is_required() const override { return required_; }
+   bool is_required() const override { return fRequired; }
 
    virtual ArgParseConfig& default_value(T value) = 0;
 
@@ -129,16 +138,16 @@ public:
    {
       std::stringstream ss;
 
-      ss<<"  ";
+      ss<<"  "<<fColour;
 
       bool has_singlechar_flag = false;
-      for(const auto& flag : flags) {
+      for(const auto& flag : fFlags) {
          if(flag.length() == 2) {
             ss<<flag<<" ";
             has_singlechar_flag = true;
          }
       }
-      for(const auto& flag : flags) {
+      for(const auto& flag : fFlags) {
          if(flag.length() != 2) {
             if(has_singlechar_flag) {
                ss<<"[ ";
@@ -155,7 +164,8 @@ public:
       }
 
       auto chars = ss.tellp();
-      if(chars_before_desc) {
+		chars -= fColour.length();
+      if(chars_before_desc != nullptr) {
          *chars_before_desc = chars;
       }
 
@@ -165,23 +175,26 @@ public:
          }
       }
 
-      ss<<desc;
+      ss<<fDescription<<RESET_COLOR;
 
       return ss.str();
    }
 
 protected:
    /// A description for display on the terminal.
-   std::string desc;
+   std::string fDescription;
+
+	/// Colour string to be use for display
+	std::string fColour;
 
    /// The literal flag that is searched for, including leading dashes.
-   std::vector<std::string> flags;
+   std::vector<std::string> fFlags;
 
    /// The flags without the leading dashes.
-   std::vector<std::string> raw_flags;
+   std::vector<std::string> fRawFlags;
 
    /// Whether the flag must be supplied.
-   bool required_;
+   bool fRequired;
 };
 
 template <typename T>

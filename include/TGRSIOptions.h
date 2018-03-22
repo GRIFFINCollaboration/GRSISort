@@ -95,7 +95,6 @@ public:
 	bool ShowedVersion() const { return fShowedVersion; }
 	bool ShowLogo() const { return fShowLogo; }
 	bool SortRaw() const { return fSortRaw; }
-	bool SortRoot() const { return fSortRoot; }
 	bool ExtractWaves() const { return fExtractWaves; }
 	bool MakeHistos() const { return fMakeHistos; }
 	bool SortMultiple() const { return fSortMultiple; }
@@ -186,7 +185,6 @@ private:
 	bool fShowedVersion;///< Flag to show version
 	bool fShowLogo;     ///< Flag to show logo (suppress with -l)
 	bool fSortRaw;      ///< Flag to sort Midas file
-	bool fSortRoot;     ///< Flag to sort root files
 	bool fExtractWaves; ///< Flag to keep waveforms (suppress with --no-waveforms)
 	bool fIsOnline;     ///< Flag to sort online data
 	bool fStartGui;     ///< Flag to start GUI (-g)
