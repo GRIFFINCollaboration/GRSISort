@@ -1,4 +1,4 @@
-// TDataLoop.h StoppableThread.h TFragWriteLoop.h TTerminalLoop.h TFragment.h TEventBuildingLoop.h TDetBuildingLoop.h TAnalysisWriteLoop.h TAnalysisWriteLoopClient.h
+// TDataLoop.h StoppableThread.h TFragWriteLoop.h TTerminalLoop.h TFragment.h TEventBuildingLoop.h TDetBuildingLoop.h TAnalysisWriteLoop.h TAnalysisWriteLoopClient.h TParallelFileMerger.h
 
 #ifdef __CINT__
 

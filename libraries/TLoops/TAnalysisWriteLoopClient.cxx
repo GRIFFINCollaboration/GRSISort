@@ -14,11 +14,12 @@ TAnalysisWriteLoopClient::TAnalysisWriteLoopClient(std::string name, std::string
 {
    fOutputFile = static_cast<TParallelMergingFile*>(TFile::Open(Form("%s?pmerge=localhost:9090", outputFilename.c_str()), "RECREATE"));
 	if(fOutputFile == nullptr) {
-		std::cerr<<"client: Could not establish a connection with server 'localhost':9090"<<std::endl;
+		std::cerr<<"client: Could not establish a connection with server 'localhost:9090'"<<std::endl;
 		throw;
 	}
    fOutputFile->Write();
-   fOutputFile->UploadAndReset();       // We do this early to get assigned an index.
+   fOutputFile->UploadAndReset(); // We do this early to get assigned an index. Why (might have been for script only)?
+	std::cout<<"opened output file "<<fOutputFile<<": "<<fOutputFile->GetName()<<std::endl;
 
 	fEventTree  = new TTree("AnalysisTree", "AnalysisTree");
 	if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
@@ -185,5 +186,10 @@ void TAnalysisWriteLoopClient::WriteEvent(std::shared_ptr<TUnpackedEvent>& event
 		// Fill
 		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
 		fEventTree->Fill();
+
+		// write file every 100000 popped events (this sends the events to the server)
+		if(fItemsPopped%100000 == 0) {
+			fOutputFile->Write();
+		}
 	}
 }

@@ -21,6 +21,7 @@
 #include "TTreeFillMutex.h"
 #include "TSortingDiagnostics.h"
 #include "TDescant.h"
+#include "TParallelFileMerger.h"
 
 TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string outputFilename)
 {
@@ -125,6 +126,12 @@ bool TAnalysisWriteLoop::Iteration()
 void TAnalysisWriteLoop::Write()
 {
 	if(fOutputFilename != "/dev/null") {
+		gROOT->cd();
+		TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
+		TGRSIOptions* options = TGRSIOptions::Get();
+		TPPG* ppg = TPPG::Get();
+		TSortingDiagnostics* diag = TSortingDiagnostics::Get();
+
 		TFile* outputFile = new TFile(fOutputFilename.c_str(), "update");
 		outputFile->cd();
 
@@ -140,12 +147,12 @@ void TAnalysisWriteLoop::Write()
 		if(TChannel::GetNumberOfChannels() != 0) {
 			TChannel::WriteToRoot();
 		}
-		TGRSIRunInfo::Get()->WriteToRoot(outputFile);
-		TGRSIOptions::Get()->AnalysisOptions()->WriteToFile(outputFile);
-		TPPG::Get()->Write();
+		runInfo->WriteToRoot(outputFile);
+		options->AnalysisOptions()->WriteToFile(outputFile);
+		ppg->Write();
 
-		if(TGRSIOptions::Get()->WriteDiagnostics()) {
-			TSortingDiagnostics::Get()->Write();
+		if(options->WriteDiagnostics()) {
+			diag->Write();
 		}
 
 		outputFile->Close();
@@ -155,16 +162,19 @@ void TAnalysisWriteLoop::Write()
 
 bool TAnalysisWriteLoop::Server()
 {
-	TServerSocket* socketServer = new TServerSocket(9090, true);//true = reuse socket
-	if(socketServer == nullptr) return false;
+	/// Open a server socket looking for connections on a named service or on a specific port.
+	TServerSocket* socketServer = new TServerSocket(9090, true, 100); // true = reuse socket, 100 = backlog (queue length for pending connections)
+	if(socketServer == nullptr || !socketServer->IsValid()) return false;
 	TMonitor* monitor = new TMonitor;
 	monitor->Add(socketServer);
 
-	unsigned int clientCount = 0;
+	unsigned int clientIndex = 0; //only counts up
+	unsigned int clientCount = 0; //number of connections
 	TMemFile* transient = nullptr;
 
-	TFileMerger merger(false, false);//false, false = isn't local, not 'histOneGo'
-	merger.SetPrintLevel(0);
+	//TFileMerger merger(false, false);//false, false = isn't local, not 'histOneGo', ParallelFileMerger from parallelMergeServer.C uses false, true
+	//merger.SetPrintLevel(1);
+	THashTable mergers;
 
 	while(true) {
 		TMessage* message;
@@ -179,9 +189,10 @@ bool TAnalysisWriteLoop::Server()
 				socketServer->Close();
 			} else {
 				TSocket* client = static_cast<TServerSocket*>(socket)->Accept();
-				client->Send(clientCount, 0); //0 = kStartConnection
+				client->Send(clientIndex, 0); //0 = kStartConnection
 				client->Send(1, 1); //1 = kProtocol, 1 = kProtocolVersion
 				++clientCount;
+				++clientIndex;
 				monitor->Add(client);
 				std::cout<<"Accepted "<<clientCount<<" connections"<<std::endl;
 			}
@@ -212,23 +223,24 @@ bool TAnalysisWriteLoop::Server()
 			message->ReadTString(filename);
 			message->ReadLong64(length);
 
-			std::cout<<"server: Received input from client "<<clientId<<" for '"<<filename.Data()<<"'"<<std::endl;
+			//std::cout<<"server: Received input from client "<<clientId<<" for '"<<filename.Data()<<"'"<<std::endl;
 
-			delete transient;
 			transient = new TMemFile(filename, message->Buffer() + message->Length(), length);
 			message->SetBufferOffset(message->Length()+length);
-			if(!merger.OutputFile(filename,"update")) {
-				std::cout<<"server: failed to open output-file!"<<std::endl;
-				return false;
-			}
-			if(!merger.AddAdoptFile(transient)) {
-				std::cout<<"server: failed to adopt file!"<<std::endl;
-				return false;
-			}
 
-			if(!merger.PartialMerge(TFileMerger::kAllIncremental)) {
-				std::cout<<"server: failed to partial merge!"<<std::endl;
-				return false;
+			const Float_t clientThreshold = 0.75; // control how often the histogram are merged.  Here as soon as half the clients have reported.
+
+			TParallelFileMerger* info = static_cast<TParallelFileMerger*>(mergers.FindObject(filename));
+			if(info == nullptr) {
+				info = new TParallelFileMerger(filename, true); // true = use TFileCacheWrite
+				mergers.Add(info);
+			}
+			if(NeedInitialMerge(transient)) {
+				info->InitialMerge(transient);
+			}
+			info->RegisterClient(clientId, transient);
+			if(info->NeedMerge(clientThreshold)) {
+				info->Merge();
 			}
 			transient = nullptr;
 		} else if(message->What() == kMESS_OBJECT) {
@@ -239,7 +251,20 @@ bool TAnalysisWriteLoop::Server()
 
 		delete message;
 	}
-	std::cout<<"stopping server"<<std::endl;
+
+	std::cout<<"final merging ..."<<std::endl;
+	TIter next(&mergers);
+	TParallelFileMerger* info;
+	while((info = static_cast<TParallelFileMerger*>(next())) != nullptr) {
+		if(info->NeedFinalMerge()) {
+			info->Merge();
+		}
+	}
+	mergers.Delete();
+	delete monitor;
+	delete socketServer;
+
+	std::cout<<"server stopped"<<std::endl;
 
 	return true;
 }
