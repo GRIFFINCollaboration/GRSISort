@@ -5,6 +5,13 @@
 
 #include "TFile.h"
 #include "TThread.h"
+#include "TMessage.h"
+#include "TSocket.h"
+#include "TMemFile.h"
+#include "TFileMerger.h"
+#include "TServerSocket.h"
+#include "TMonitor.h"
+#include "TFileCacheWrite.h"
 #include "TROOT.h"
 
 #include "GValue.h"
@@ -14,8 +21,9 @@
 #include "TTreeFillMutex.h"
 #include "TSortingDiagnostics.h"
 #include "TDescant.h"
+#include "TParallelFileMerger.h"
 
-TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string output_filename)
+TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string outputFilename)
 {
    if(name.length() == 0) {
       name = "write_loop";
@@ -23,43 +31,35 @@ TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string output
 
    TAnalysisWriteLoop* loop = static_cast<TAnalysisWriteLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
-      if(output_filename.length() == 0) {
-         output_filename = "temp.root";
+      if(outputFilename.length() == 0) {
+         outputFilename = "temp.root";
       }
-      loop = new TAnalysisWriteLoop(name, output_filename);
+      loop = new TAnalysisWriteLoop(name, outputFilename);
    }
 
    return loop;
 }
 
-TAnalysisWriteLoop::TAnalysisWriteLoop(std::string name, std::string output_filename)
-   : StoppableThread(name), fOutputFile(nullptr), fEventTree(nullptr), fOutOfOrderTree(nullptr),
-     fOutOfOrderFrag(nullptr), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>()),
+TAnalysisWriteLoop::TAnalysisWriteLoop(std::string name, std::string outputFilename)
+   : StoppableThread(name), fOutputFilename(outputFilename),
+     fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>()),
      fOutOfOrderQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>())
 {
-
-   if(output_filename != "/dev/null") {
-      // TPreserveGDirectory preserve;
-		TGRSIOptions* options = TGRSIOptions::Get(); // get the pointer before we switch to the new file
-      fOutputFile = new TFile(output_filename.c_str(), "RECREATE");
-		if(fOutputFile == nullptr || !fOutputFile->IsOpen()) {
-			throw std::runtime_error(Form("Failed to open \"%s\"\n", output_filename.c_str()));
+	fServerFuture = std::async(std::launch::async, &TAnalysisWriteLoop::Server, this);
+   if(fOutputFilename != "/dev/null") {
+		fClients.resize(TGRSIOptions::Get()->NumberOfClients());
+		for(size_t i = 0; i < fClients.size(); ++i) {
+			fClients[i] = new TAnalysisWriteLoopClient(Form("write_client_%lu", i), fOutputFilename);
 		}
-      fEventTree  = new TTree("AnalysisTree", "AnalysisTree");
-      if(options->SeparateOutOfOrder()) {
-         fOutOfOrderTree = new TTree("OutOfOrderTree", "OutOfOrderTree");
-         fOutOfOrderFrag = new TFragment;
-         fOutOfOrderTree->Branch("Fragment", &fOutOfOrderFrag);
-      }
    }
+	fOutOfOrder = TGRSIOptions::Get()->SeparateOutOfOrder();
 }
 
 TAnalysisWriteLoop::~TAnalysisWriteLoop()
 {
-   for(auto& elem : fDetMap) {
-      delete elem.second;
-   }
-
+	if(!fServerFuture.get()) {
+		std::cout<<"Server failed!"<<std::endl;
+	}
    Write();
 }
 
@@ -69,167 +69,203 @@ void TAnalysisWriteLoop::ClearQueue()
       std::shared_ptr<TUnpackedEvent> event;
       fInputQueue->Pop(event);
    }
+	for(auto client : fClients) {
+		client->ClearQueue();
+	}
 }
 
 std::string TAnalysisWriteLoop::EndStatus()
 {
    std::stringstream ss;
    ss<<Name()<<":\t"<<std::setw(8)<<fItemsPopped<<"/"<<fInputSize + fItemsPopped<<", "
-     <<fEventTree->GetEntries()<<" good events";
-   if(fOutOfOrderTree != nullptr) {
-      ss<<", "<<fOutOfOrderTree->GetEntries()<<" separate fragments out-of-order"<<std::endl;
-   } else {
-      ss<<std::endl;
-   }
+     <<"??? good events"<<std::endl;
    return ss.str();
+}
+
+void TAnalysisWriteLoop::OnEnd()
+{
+	for(const auto& client : fClients) {
+		client->InputQueue()->SetFinished();
+	}
 }
 
 bool TAnalysisWriteLoop::Iteration()
 {
-   std::shared_ptr<TUnpackedEvent> event;
-   fInputSize = fInputQueue->Pop(event);
-   if(fInputSize < 0) {
-      fInputSize = 0;
-   }
-   ++fItemsPopped;
+	std::shared_ptr<TUnpackedEvent> event;
+	fInputSize = fInputQueue->Pop(event);
+	if(fInputSize < 0) {
+		fInputSize = 0;
+	}
+	++fItemsPopped;
 
-   if(fOutOfOrderTree != nullptr && fOutOfOrderQueue->Size() > 0) {
-      std::shared_ptr<const TFragment> frag;
-      fOutOfOrderQueue->Pop(frag, 0);
-      if(frag != nullptr) {
-         *fOutOfOrderFrag = *frag;
-         fOutOfOrderFrag->ClearTransients();
-         std::lock_guard<std::mutex> lock(ttree_fill_mutex);
-         fOutOfOrderTree->Fill();
-      }
-   }
+	if(fOutOfOrder) {
+		std::shared_ptr<const TFragment> frag;
+		fOutOfOrderQueue->Pop(frag, 0);
+		if(frag != nullptr) {
+			fClients[fCurrentClient]->OutOfOrderQueue()->Push(std::move(frag));
+		}
+	}
 
-   if(event) {
-      WriteEvent(*event);
-      return true;
-   }
-   if(fInputQueue->IsFinished()) {
-      return false;
-   }
-   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-   return true;
+	if(event != nullptr) {
+		fClients[fCurrentClient]->InputQueue()->Push(std::move(event));
+
+		++fCurrentClient;
+		if(fCurrentClient == fClients.size()) {
+			fCurrentClient = 0;
+		}
+		return true;
+	}
+
+	if(fInputQueue->IsFinished()) {
+		return false;
+	}
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	return true;
 }
 
 void TAnalysisWriteLoop::Write()
 {
-   if(fOutputFile != nullptr) {
-		// get all singletons before switching to the output file
+	if(fOutputFilename != "/dev/null") {
 		gROOT->cd();
 		TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
 		TGRSIOptions* options = TGRSIOptions::Get();
 		TPPG* ppg = TPPG::Get();
-		TSortingDiagnostics* sortingDiagnostics = TSortingDiagnostics::Get();
-		GValue* gValues = GValue::Get();
+		TSortingDiagnostics* diag = TSortingDiagnostics::Get();
 
-		fOutputFile->cd();
+		TFile* outputFile = new TFile(fOutputFilename.c_str(), "update");
+		outputFile->cd();
 
-		fEventTree->Write(fEventTree->GetName(), TObject::kOverwrite);
+		//fEventTree->Write(fEventTree->GetName(), TObject::kOverwrite);
 
-		if(fOutOfOrderTree != nullptr) {
-			fOutOfOrderTree->Write(fOutOfOrderTree->GetName(), TObject::kOverwrite);
-		}
+		//if(fOutOfOrderTree != nullptr) {
+		//fOutOfOrderTree->Write(fOutOfOrderTree->GetName(), TObject::kOverwrite);
+		//}
 
 		if(GValue::Size() != 0) {
-			gValues->Write();
+			GValue::Get()->Write();
 		}
 		if(TChannel::GetNumberOfChannels() != 0) {
 			TChannel::WriteToRoot();
 		}
-		runInfo->WriteToRoot(fOutputFile);
-		options->WriteToFile(fOutputFile);
+		runInfo->WriteToRoot(outputFile);
+		options->AnalysisOptions()->WriteToFile(outputFile);
 		ppg->Write();
 
 		if(options->WriteDiagnostics()) {
-			sortingDiagnostics->Write();
+			diag->Write();
 		}
 
-		fOutputFile->Close();
-		fOutputFile->Delete();
-		gROOT->cd();
+		outputFile->Close();
+		outputFile->Delete();
 	}
 }
 
-void TAnalysisWriteLoop::AddBranch(TClass* cls)
+bool TAnalysisWriteLoop::Server()
 {
-	if(fDetMap.count(cls) == 0u) {
-		// This uses the ROOT dictionaries, so we need to lock the threads.
-		TThread::Lock();
+	/// Open a server socket looking for connections on a named service or on a specific port.
+	TServerSocket* socketServer = new TServerSocket(9090, true, 100); // true = reuse socket, 100 = backlog (queue length for pending connections)
+	if(socketServer == nullptr || !socketServer->IsValid()) return false;
+	TMonitor* monitor = new TMonitor;
+	monitor->Add(socketServer);
 
-		// Make a default detector of that type.
-		TDetector* det_p  = reinterpret_cast<TDetector*>(cls->New());
-		fDefaultDets[cls] = det_p;
+	unsigned int clientIndex = 0; //only counts up
+	unsigned int clientCount = 0; //number of connections
+	TMemFile* transient = nullptr;
 
-		// Make the TDetector**
-		auto** det_pp = new TDetector*;
-		*det_pp       = det_p;
-		fDetMap[cls]  = det_pp;
+	//TFileMerger merger(false, false);//false, false = isn't local, not 'histOneGo', ParallelFileMerger from parallelMergeServer.C uses false, true
+	//merger.SetPrintLevel(1);
+	THashTable mergers;
 
-		// Make a new branch.
-		TBranch* new_branch = fEventTree->Branch(cls->GetName(), cls->GetName(), det_pp);
+	while(true) {
+		TMessage* message;
+		TSocket* socket;
 
-		// Fill the new branch up to the point where the tree is filled.
-		// Explanation:
-		//   When TTree::Fill is called, it calls TBranch::Fill for each
-		// branch, then increments the number of entries.  We may be
-		// adding branches after other branches have already been filled.
-		// If the S800 branch has been filled 100 times before the Gretina
-		// branch is created, then the next call to TTree::Fill will fill
-		// entry 101 of S800, but entry 1 of Gretina, rather than entry
-		// 101 of both.
-		//   Therefore, we need to fill the new branch as many times as
-		// TTree::Fill has been called before.
-		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
-		for(int i = 0; i < fEventTree->GetEntries(); i++) {
-			new_branch->Fill();
-		}
+		socket = monitor->Select();
 
-		std::cout<<"\r"<<std::string(30, ' ')<<"\rAdded \""<<cls->GetName()<<R"(" branch)"<<std::endl;
-
-		// Unlock after we are done.
-		TThread::UnLock();
-	}
-}
-
-void TAnalysisWriteLoop::WriteEvent(TUnpackedEvent& event)
-{
-	if(fEventTree != nullptr) {
-		// Clear pointers from previous writes.
-		// Note that we cannot just set this equal to nullptr,
-		//   because ROOT would then construct a new object.
-		// This contradicts the ROOT documentation for TBranchElement::SetAddress,
-		//   which suggests that a new object would be constructed only when setting the address,
-		//   not when filling the TTree.
-		for(auto& elem : fDetMap) {
-			//*elem.second = fDefaultDets[elem.first];
-			(*elem.second)->Clear();
-		}
-
-		// Load current events
-		for(const auto& det : event.GetDetectors()) {
-			TClass* cls = det->IsA();
-			try {
-				**fDetMap.at(cls) = *(det.get());
-			} catch(std::out_of_range& e) {
-				AddBranch(cls);
-				**fDetMap.at(cls) = *(det.get());
+		if(socket->IsA() == TServerSocket::Class()) {
+			if(clientCount > 100) {
+				std::cerr<<"accepting only 100 client connections"<<std::endl;
+				monitor->Remove(socketServer);
+				socketServer->Close();
+			} else {
+				TSocket* client = static_cast<TServerSocket*>(socket)->Accept();
+				client->Send(clientIndex, 0); //0 = kStartConnection
+				client->Send(1, 1); //1 = kProtocol, 1 = kProtocolVersion
+				++clientCount;
+				++clientIndex;
+				monitor->Add(client);
+				std::cout<<"Accepted "<<clientCount<<" connections"<<std::endl;
 			}
-			(*fDetMap.at(cls))->ClearTransients();
-			// if(cls == TDescant::Class()) {
-			//	for(int i = 0; i < static_cast<TDescant*>(det)->GetMultiplicity(); ++i) {
-			//		std::cout<<"Descant hit "<<i<<(static_cast<TDescant*>(det)->GetDescantHit(i)->GetDebugData() == nullptr ?
-			//"
-			// has no debug data": " has debug data")<<std::endl;
-			//	}
-			//}
+			continue;
 		}
 
-		// Fill
-		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
-		fEventTree->Fill();
+		socket->Recv(message);
+
+		if(message == nullptr) {
+			std::cerr<<"server: The client did not send a message"<<std::endl;
+		} else if(message->What() == kMESS_STRING) {
+			char str[64];
+			message->ReadString(str,64);
+			std::cout<<"Client "<<clientCount-1<<": '"<<str<<"'"<<std::endl;
+			monitor->Remove(socket);
+			std::cout<<"Client "<<clientCount-1<<": received "<<socket->GetBytesRecv()<<" bytes, sent "<<socket->GetBytesSent()<<" bytes"<<std::endl;
+			socket->Close();
+			--clientCount;
+			if(monitor->GetActive() == 0 || clientCount == 0) {
+				std::cout<<"No more active clients => stopping"<<std::endl;
+				break;
+			}
+		} else if(message->What() == kMESS_ANY) {
+			Long64_t length;
+			TString filename;
+			int clientId;
+			message->ReadInt(clientId);
+			message->ReadTString(filename);
+			message->ReadLong64(length);
+
+			//std::cout<<"server: Received input from client "<<clientId<<" for '"<<filename.Data()<<"'"<<std::endl;
+
+			transient = new TMemFile(filename, message->Buffer() + message->Length(), length);
+			message->SetBufferOffset(message->Length()+length);
+
+			const Float_t clientThreshold = 0.75; // control how often the histogram are merged.  Here as soon as half the clients have reported.
+
+			TParallelFileMerger* info = static_cast<TParallelFileMerger*>(mergers.FindObject(filename));
+			if(info == nullptr) {
+				info = new TParallelFileMerger(filename, true); // true = use TFileCacheWrite
+				mergers.Add(info);
+			}
+			if(NeedInitialMerge(transient)) {
+				info->InitialMerge(transient);
+			}
+			info->RegisterClient(clientId, transient);
+			if(info->NeedMerge(clientThreshold)) {
+				info->Merge();
+			}
+			transient = nullptr;
+		} else if(message->What() == kMESS_OBJECT) {
+			std::cout<<"Got object of class '"<<message->GetClass()->GetName()<<"'"<<std::endl;
+		} else {
+			std::cout<<"Unexpected message!"<<std::endl;
+		}
+
+		delete message;
 	}
+
+	std::cout<<"final merging ..."<<std::endl;
+	TIter next(&mergers);
+	TParallelFileMerger* info;
+	while((info = static_cast<TParallelFileMerger*>(next())) != nullptr) {
+		if(info->NeedFinalMerge()) {
+			info->Merge();
+		}
+	}
+	mergers.Delete();
+	delete monitor;
+	delete socketServer;
+
+	std::cout<<"server stopped"<<std::endl;
+
+	return true;
 }
+
