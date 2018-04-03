@@ -43,9 +43,6 @@ public:
 			if((gDirectory->GetFile()) != nullptr) {
 				TList* list = gDirectory->GetFile()->GetListOfKeys();
 				TIter  iter(list);
-				if(fDir != nullptr && fDir != gDirectory) {
-					std::cout<<"Switched from '"<<fDir->GetName()<<"' to '"<<gDirectory->GetName()<<"' => ";
-				}
 				std::cout<<"Reading "<<T::Class()->GetName()<<R"( from file ")"<<CYAN<<gDirectory->GetFile()->GetName()<<RESET_COLOR<<R"(")"<<std::endl;
 				while(TKey* key = static_cast<TKey*>(iter.Next())) {
 					if(strcmp(key->GetClassName(), T::Class()->GetName()) != 0) {
