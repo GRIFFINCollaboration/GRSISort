@@ -35,7 +35,7 @@
 
 class TAnalysisWriteLoopClient : public StoppableThread {
 public:
-	TAnalysisWriteLoopClient(std::string name, std::string outputFilename);
+	TAnalysisWriteLoopClient(std::string name, std::string outputFilename, Int_t localPort);
 	~TAnalysisWriteLoopClient() override;
 
 #ifndef __CINT__
@@ -66,6 +66,7 @@ private:
 	TTree* fOutOfOrderTree;
 	TFragment* fOutOfOrderFrag;
 	bool fOutOfOrder;
+	bool fFirstClient;
 #ifndef __CINT__
 	//static std::mutex fGlobalMapMutex;
 	static std::map<TClass*, TDetector**> fGlobalDetMap;

@@ -41,17 +41,21 @@ TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string output
 }
 
 TAnalysisWriteLoop::TAnalysisWriteLoop(std::string name, std::string outputFilename)
-   : StoppableThread(name), fOutputFilename(outputFilename),
+   : StoppableThread(name), fOutputFilename(outputFilename), fCurrentClient(0),
      fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>()),
      fOutOfOrderQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>())
 {
-	fServerFuture = std::async(std::launch::async, &TAnalysisWriteLoop::Server, this);
-   if(fOutputFilename != "/dev/null") {
+	if(fOutputFilename != "/dev/null") {
+		/// Open a server socket looking for connections on a named service or on a specific port.
+		fServerSocket = new TServerSocket(0, false, 100); // 0 = scan ports to find free one, false = don't reuse socket, 100 = backlog (queue length for pending connections)
+		if(fServerSocket == nullptr || !fServerSocket->IsValid()) throw;
+		fServerFuture = std::async(std::launch::async, &TAnalysisWriteLoop::Server, this);
 		fClients.resize(TGRSIOptions::Get()->NumberOfClients());
 		for(size_t i = 0; i < fClients.size(); ++i) {
-			fClients[i] = new TAnalysisWriteLoopClient(Form("write_client_%lu", i), fOutputFilename);
+			fClients[i] = new TAnalysisWriteLoopClient(Form("write_client_%lu", i), fOutputFilename, fServerSocket->GetLocalPort());
 		}
-   }
+		std::cout<<"created server with "<<fClients.size()<<" clients on port "<<fServerSocket->GetLocalPort()<<std::endl;
+	}
 	fOutOfOrder = TGRSIOptions::Get()->SeparateOutOfOrder();
 }
 
@@ -60,15 +64,16 @@ TAnalysisWriteLoop::~TAnalysisWriteLoop()
 	if(!fServerFuture.get()) {
 		std::cout<<"Server failed!"<<std::endl;
 	}
-   Write();
+	Write();
+	delete fServerSocket;
 }
 
 void TAnalysisWriteLoop::ClearQueue()
 {
-   while(fInputQueue->Size() != 0u) {
-      std::shared_ptr<TUnpackedEvent> event;
-      fInputQueue->Pop(event);
-   }
+	while(fInputQueue->Size() != 0u) {
+		std::shared_ptr<TUnpackedEvent> event;
+		fInputQueue->Pop(event);
+	}
 	for(auto client : fClients) {
 		client->ClearQueue();
 	}
@@ -76,10 +81,10 @@ void TAnalysisWriteLoop::ClearQueue()
 
 std::string TAnalysisWriteLoop::EndStatus()
 {
-   std::stringstream ss;
-   ss<<Name()<<":\t"<<std::setw(8)<<fItemsPopped<<"/"<<fInputSize + fItemsPopped<<", "
-     <<"??? good events"<<std::endl;
-   return ss.str();
+	std::stringstream ss;
+	ss<<Name()<<":\t"<<std::setw(8)<<fItemsPopped<<"/"<<fInputSize + fItemsPopped<<", "
+		<<"??? good events"<<std::endl;
+	return ss.str();
 }
 
 void TAnalysisWriteLoop::OnEnd()
@@ -162,11 +167,8 @@ void TAnalysisWriteLoop::Write()
 
 bool TAnalysisWriteLoop::Server()
 {
-	/// Open a server socket looking for connections on a named service or on a specific port.
-	TServerSocket* socketServer = new TServerSocket(9090, true, 100); // true = reuse socket, 100 = backlog (queue length for pending connections)
-	if(socketServer == nullptr || !socketServer->IsValid()) return false;
 	TMonitor* monitor = new TMonitor;
-	monitor->Add(socketServer);
+	monitor->Add(fServerSocket);
 
 	unsigned int clientIndex = 0; //only counts up
 	unsigned int clientCount = 0; //number of connections
@@ -175,6 +177,8 @@ bool TAnalysisWriteLoop::Server()
 	//TFileMerger merger(false, false);//false, false = isn't local, not 'histOneGo', ParallelFileMerger from parallelMergeServer.C uses false, true
 	//merger.SetPrintLevel(1);
 	THashTable mergers;
+
+	gErrorIgnoreLevel = kFatal;
 
 	while(true) {
 		TMessage* message;
@@ -185,8 +189,8 @@ bool TAnalysisWriteLoop::Server()
 		if(socket->IsA() == TServerSocket::Class()) {
 			if(clientCount > 100) {
 				std::cerr<<"accepting only 100 client connections"<<std::endl;
-				monitor->Remove(socketServer);
-				socketServer->Close();
+				monitor->Remove(fServerSocket);
+				fServerSocket->Close();
 			} else {
 				TSocket* client = static_cast<TServerSocket*>(socket)->Accept();
 				client->Send(clientIndex, 0); //0 = kStartConnection
@@ -194,7 +198,6 @@ bool TAnalysisWriteLoop::Server()
 				++clientCount;
 				++clientIndex;
 				monitor->Add(client);
-				std::cout<<"Accepted "<<clientCount<<" connections"<<std::endl;
 			}
 			continue;
 		}
@@ -206,13 +209,11 @@ bool TAnalysisWriteLoop::Server()
 		} else if(message->What() == kMESS_STRING) {
 			char str[64];
 			message->ReadString(str,64);
-			std::cout<<"Client "<<clientCount-1<<": '"<<str<<"'"<<std::endl;
 			monitor->Remove(socket);
 			std::cout<<"Client "<<clientCount-1<<": received "<<socket->GetBytesRecv()<<" bytes, sent "<<socket->GetBytesSent()<<" bytes"<<std::endl;
 			socket->Close();
 			--clientCount;
 			if(monitor->GetActive() == 0 || clientCount == 0) {
-				std::cout<<"No more active clients => stopping"<<std::endl;
 				break;
 			}
 		} else if(message->What() == kMESS_ANY) {
@@ -262,7 +263,6 @@ bool TAnalysisWriteLoop::Server()
 	}
 	mergers.Delete();
 	delete monitor;
-	delete socketServer;
 
 	std::cout<<"server stopped"<<std::endl;
 
