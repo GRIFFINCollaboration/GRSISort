@@ -59,6 +59,7 @@ private:
 	std::string fOutputFilename;
 	size_t fCurrentClient;
 	bool fOutOfOrder;
+	TServerSocket* fServerSocket;
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>  fInputQueue;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fOutOfOrderQueue;

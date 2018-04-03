@@ -110,11 +110,7 @@ TParallelFileMerger::TParallelFileMerger(const char* filename, bool writeCache) 
 TParallelFileMerger::~TParallelFileMerger()
 {
 	// Destructor.
-	for(unsigned int f = 0 ; f < fClients.size(); ++f) {
-		std::cerr<<"Client "<<f<<" reported "<<fClients[f].fContactsCount<<" times"<<std::endl;
-	}
-	for(auto iter = fClients.begin(); iter != fClients.end(); ++iter)
-	{
+	for(auto iter = fClients.begin(); iter != fClients.end(); ++iter) {
 		delete iter->fFile;
 	}
 }

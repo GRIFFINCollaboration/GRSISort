@@ -7,19 +7,18 @@
 std::map<TClass*, TDetector**> TAnalysisWriteLoopClient::fGlobalDetMap;
 //std::mutex TAnalysisWriteLoopClient::fGlobalMapMutex;
 
-TAnalysisWriteLoopClient::TAnalysisWriteLoopClient(std::string name, std::string outputFilename)
+TAnalysisWriteLoopClient::TAnalysisWriteLoopClient(std::string name, std::string outputFilename, Int_t localPort)
    : StoppableThread(name),fOutputFile(nullptr), fEventTree(nullptr), fOutOfOrderTree(nullptr), fOutOfOrderFrag(nullptr),
 	  fOutOfOrder(false), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>()),
      fOutOfOrderQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>())
 {
-   fOutputFile = static_cast<TParallelMergingFile*>(TFile::Open(Form("%s?pmerge=localhost:9090", outputFilename.c_str()), "RECREATE"));
+	fFirstClient = (name.compare("write_client_0") == 0);
+   fOutputFile = static_cast<TParallelMergingFile*>(TFile::Open(Form("%s?pmerge=localhost:%d", outputFilename.c_str(), localPort), "RECREATE"));
 	if(fOutputFile == nullptr) {
-		std::cerr<<"client: Could not establish a connection with server 'localhost:9090'"<<std::endl;
+		std::cerr<<"client: Could not establish a connection with server 'localhost:"<<localPort<<"'"<<std::endl;
 		throw;
 	}
    fOutputFile->Write();
-   fOutputFile->UploadAndReset(); // We do this early to get assigned an index. Why (might have been for script only)?
-	std::cout<<"opened output file "<<fOutputFile<<": "<<fOutputFile->GetName()<<std::endl;
 
 	fEventTree  = new TTree("AnalysisTree", "AnalysisTree");
 	if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
@@ -135,7 +134,9 @@ void TAnalysisWriteLoopClient::AddBranch(TClass* cls)
 			newBranch->Fill();
 		}
 
-		std::cout<<"\r"<<std::string(30, ' ')<<"\r"<<Name()<<": added \""<<cls->GetName()<<R"(" branch)"<<std::endl;
+		if(fFirstClient) {
+			std::cout<<"\r"<<std::string(30, ' ')<<"\r"<<Name()<<": added \""<<cls->GetName()<<R"(" branch)"<<std::endl;
+		}
 
 		// Unlock after we are done.
 		TThread::UnLock();
