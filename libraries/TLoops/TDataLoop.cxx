@@ -25,9 +25,6 @@ TDataLoop::TDataLoop(std::string name, TRawFile* source)
    if(midasFile != nullptr) {
       SetFileOdb(midasFile->GetFirstEvent()->GetTimeStamp(), midasFile->GetFirstEvent()->GetData(), midasFile->GetFirstEvent()->GetDataSize());
    }
-   for(const auto& cal_filename : TGRSIOptions::Get()->CalInputFiles()) {
-      TChannel::ReadCalFile(cal_filename.c_str());
-   }
 }
 
 TDataLoop::~TDataLoop()
