@@ -219,25 +219,14 @@ void SetupFragmentTree()
    InitChannels();
    TChannel::ReadCalFromTree(fCurrentFragTree);
 
-   // Set the sorting to be done on the timestamps if the fragment contains Griffin fragments
-   if(fCurrentRunInfo->Griffin()) {
-      fCurrentRunInfo->SetMajorIndex("fTimeStamp");
-      fCurrentRunInfo->SetMinorIndex("");
-   }
-
    // Check to see if the fragment tree already has an index set. If not build the index based on timestamps if it is a
    // Griffin
    // fragment. If it is not Griffin build based on the trigger Id.
    if(fCurrentFragTree->GetTreeIndex() == nullptr) {
-      if(fCurrentRunInfo->MajorIndex().length() > 0) {
-         printf(DBLUE "Tree Index not found, building index on %s/%s..." RESET_COLOR,
-                fCurrentRunInfo->MajorIndex().c_str(), fCurrentRunInfo->MinorIndex().c_str());
+      if(fCurrentRunInfo->Griffin()) {
+         printf(DBLUE "Tree Index not found, building index on fTimeStamp ..." RESET_COLOR);
          fflush(stdout);
-         if(fCurrentRunInfo->MinorIndex().length() > 0) {
-            fCurrentFragTree->BuildIndex(fCurrentRunInfo->MajorIndex().c_str(), fCurrentRunInfo->MinorIndex().c_str());
-         } else {
-            fCurrentFragTree->BuildIndex(fCurrentRunInfo->MajorIndex().c_str());
-         }
+			fCurrentFragTree->BuildIndex("fTimeStamp");
       } else {
          printf(DBLUE "Tree Index not found, building index on TriggerId/FragmentId..." RESET_COLOR);
          fflush(stdout);

@@ -64,7 +64,9 @@ void AngularCorrelationSelector::InitializeBranches(TTree* tree)
 {
    if(tree == nullptr) return;
    tree->SetBranchAddress("TGriffin", &fGrif);
-   tree->SetBranchAddress("TSceptar", &fScep);
+   if(tree->SetBranchAddress("TSceptar", &fScep) == TTree::kMissingBranch) {
+		fScep = new TSceptar;
+	}
 }
 
 #endif // #ifdef AngularCorrelationSelector_cxx

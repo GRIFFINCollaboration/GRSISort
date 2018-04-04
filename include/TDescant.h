@@ -75,7 +75,7 @@ public:
 
    /// \cond CLASSIMP
    ClassDefOverride(TDescant, 1) // Descant Physics structure
-                                 /// \endcond
+	/// \endcond
 };
 /*! @} */
 #endif

@@ -53,7 +53,7 @@ void TGRSIDetectorHit::Streamer(TBuffer& R__b)
    }
 }
 
-Double_t TGRSIDetectorHit::GetTime(const UInt_t&, Option_t*) const
+Double_t TGRSIDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
 {
    if(IsTimeSet()) {
       return fTime;
@@ -65,18 +65,23 @@ Double_t TGRSIDetectorHit::GetTime(const UInt_t&, Option_t*) const
       return SetTime(10. * (static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform())));
    }
    switch(channel->GetDigitizerType()) {
-      Double_t dTime;
-   case TMnemonic::kGRF16:
-      dTime = (GetTimeStamp() & (~0x3ffff)) * 10. +
-              (GetCfd() + gRandom->Uniform()) / 1.6; // CFD is in 10/16th of a nanosecond
-      return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
-   case TMnemonic::kGRF4G:
-      dTime = GetTimeStamp() * 10. + (fCfd >> 22) + ((fCfd & 0x3fffff) + gRandom->Uniform()) / 256.;
-      return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
-   default:
-      dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
-      return SetTime(10. * (dTime - channel->GetTZero(GetEnergy())));
-   }
+		Double_t dTime;
+		case TMnemonic::EDigitizer::kGRF16:
+		dTime = (GetTimeStamp() & (~0x3ffff)) * 10. +
+		channel->CalibrateCFD((GetCfd() + gRandom->Uniform()) / 1.6); // CFD is in 10/16th of a nanosecond
+		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
+		case TMnemonic::EDigitizer::kGRF4G:
+		dTime = GetTimeStamp() * 10. + channel->CalibrateCFD((fCfd >> 22) + ((fCfd & 0x3fffff) + gRandom->Uniform()) / 256.);
+		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
+		case TMnemonic::EDigitizer::kTIG10:
+		dTime = (GetTimeStamp() & (~0x7fffff)) * 10. +
+		channel->CalibrateCFD((GetCfd() + gRandom->Uniform()) / 1.6); // CFD is in 10/16th of a nanosecond
+		//channel->CalibrateCFD((GetCfd() & (~0xf) + gRandom->Uniform()) / 1.6); // PBender suggests this.
+		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
+		default:
+		dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
+		return SetTime(10. * (dTime - channel->GetTZero(GetEnergy())));
+	}
    return 0.;
 }
 
@@ -86,7 +91,7 @@ Float_t TGRSIDetectorHit::GetCharge() const
    if(channel == nullptr) {
       return Charge();
    }
-   if(fKValue > 0) {
+   if(fKValue > 0 && !channel->UseCalFileIntegration()) {
       return Charge() / (static_cast<Float_t>(fKValue)); // this will use the integration value
    }
    if(channel->UseCalFileIntegration()) {
@@ -97,7 +102,7 @@ Float_t TGRSIDetectorHit::GetCharge() const
 
 double TGRSIDetectorHit::GetEnergy(Option_t*) const
 {
-   if(TestHitBit(kIsEnergySet)) {
+   if(TestHitBit(EBitFlag::kIsEnergySet)) {
       return fEnergy;
    }
    TChannel* channel = GetChannel();
@@ -105,15 +110,15 @@ double TGRSIDetectorHit::GetEnergy(Option_t*) const
       // Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
       return SetEnergy(static_cast<Double_t>(Charge()));
    }
+   if(channel->UseCalFileIntegration()) {
+      double energy = channel->CalibrateENG(Charge(), 0);
+      return SetEnergy(energy +
+                       GetEnergyNonlinearity(energy)); // this will use the integration value
+                                                       // in the TChannel if it exists.
+   }
    if(fKValue > 0) {
       double energy = channel->CalibrateENG(Charge(), static_cast<int>(fKValue));
       return SetEnergy(energy + GetEnergyNonlinearity(energy));
-   }
-   if(channel->UseCalFileIntegration()) {
-      double energy = channel->CalibrateENG(Charge(), 0);
-      return SetEnergy(channel->CalibrateENG(energy) +
-                       GetEnergyNonlinearity(energy)); // this will use the integration value
-                                                       // in the TChannel if it exists.
    }
    double energy = channel->CalibrateENG(Charge());
    return SetEnergy(energy + GetEnergyNonlinearity(energy));
@@ -180,7 +185,7 @@ void TGRSIDetectorHit::Clear(Option_t*)
    // fSegment        = -1;
    fEnergy         = 0.;
    fBitflags       = 0;
-   fPPGStatus      = TPPG::kJunk;
+   fPPGStatus      = EPpgPattern::kJunk;
    fCycleTimeStamp = 0;
    fChannel        = nullptr;
 }
@@ -238,19 +243,19 @@ Long64_t TGRSIDetectorHit::GetTimeStamp(Option_t*) const
    return fTimeStamp - tmpChan->GetTimeOffset();
 }
 
-uint16_t TGRSIDetectorHit::GetPPGStatus() const
+EPpgPattern TGRSIDetectorHit::GetPPGStatus() const
 {
    if(IsPPGSet()) {
       return fPPGStatus;
    }
 
    if(TPPG::Get() == nullptr) {
-      return TPPG::kJunk;
+      return EPpgPattern::kJunk;
    }
 
    fPPGStatus      = TPPG::Get()->GetStatus(GetTimeStamp());
    fCycleTimeStamp = GetTimeStamp() - TPPG::Get()->GetLastStatusTime(GetTimeStamp());
-   SetHitBit(kIsPPGSet, true);
+   SetHitBit(EBitFlag::kIsPPGSet, true);
    return fPPGStatus;
 }
 
@@ -266,7 +271,7 @@ Long64_t TGRSIDetectorHit::GetCycleTimeStamp() const
 
    fPPGStatus      = TPPG::Get()->GetStatus(GetTimeStamp());
    fCycleTimeStamp = GetTimeStamp() - TPPG::Get()->GetLastStatusTime(GetTimeStamp());
-   SetHitBit(kIsPPGSet, true);
+   SetHitBit(EBitFlag::kIsPPGSet, true);
    return fCycleTimeStamp;
 }
 

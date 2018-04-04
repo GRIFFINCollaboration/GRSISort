@@ -350,7 +350,7 @@ public:
 
    void Print(Option_t* opt = "") const override;
    void             PrintMap() const;
-   const TDecayFit* GetFitFunc() { return fFitFunc; }
+   TDecayFit*       GetFitFunc() { return fFitFunc; }
    void SetBackground(Double_t background) { fFitFunc->SetParameter(0, background); }
    Double_t                    GetBackground() const { return fFitFunc->GetParameter(0); }
    Double_t                    GetBackgroundError() const { return fFitFunc->GetParError(0); }

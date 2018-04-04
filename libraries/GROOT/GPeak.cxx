@@ -11,7 +11,7 @@
 
 ClassImp(GPeak)
 
-   GPeak* GPeak::fLastFit = nullptr;
+GPeak* GPeak::fLastFit = nullptr;
 
 GPeak::GPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t*)
    : TF1("photopeakbg", GRootFunctions::PhotoPeakBG, xlow, xhigh, 7),
@@ -280,7 +280,7 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
       fithist->Sumw2();
    }
 
-   TFitResultPtr fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
+   TFitResultPtr fitres = fithist->Fit(this, Form("%sLRSM", options.Data()));
 
    // fitres.Get()->Print();
    printf("chi^2/NDF = %.02f\n", GetChisquare() / static_cast<double>(GetNDF()));

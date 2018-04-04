@@ -24,7 +24,7 @@
 
 class TTigress : public TGRSIDetector {
 public:
-   enum ETigressBits {
+   enum class ETigressBits {
       kAddbackSet  = BIT(0),
       kSuppression = BIT(1),
       kBit2        = BIT(2),
@@ -35,7 +35,7 @@ public:
       kBit7        = BIT(7)
    };
 
-   enum ETigressGlobalBits {
+   enum class ETigressGlobalBits {
       kSetBGOWave   = BIT(0),
       kSetCoreWave  = BIT(1),
       kSetSegWave   = BIT(2),
@@ -43,6 +43,15 @@ public:
       kForceCrystal = BIT(4),
       kArrayBackPos = BIT(5) // 110 or 145
    };
+
+//std::underlying_type<ETigressGlobalBits>::type operator |(ETigressGlobalBits lhs, ETigressGlobalBits rhs)  
+//	{
+//		return 
+//				static_cast<std::underlying_type<ETigressGlobalBits>::type>(lhs) |
+//				static_cast<std::underlying_type<ETigressGlobalBits>::type>(rhs)
+//				;
+//	}
+	//ETigressGlobalBits& operator |(ETigressGlobalBits& lhs, ETigressGlobalBits rhs);
 
 #ifndef __CINT__
    std::vector<std::vector<std::shared_ptr<const TFragment>>> SegmentFragments;
@@ -128,8 +137,8 @@ private:
 
    //    void ClearStatus();                      // WARNING: this will change the building behavior!
    //		void ClearGlobalStatus() { fTigressBits = 0; }
-   static void SetGlobalBit(enum ETigressGlobalBits bit, Bool_t set = true) { fgTigressBits.SetBit(bit, set); }
-   static Bool_t TestGlobalBit(enum ETigressGlobalBits bit) { return (fgTigressBits.TestBit(bit)); }
+   static void SetGlobalBit(ETigressGlobalBits bit, Bool_t set = true) { fgTigressBits.SetBit(bit, set); }
+   static Bool_t TestGlobalBit(ETigressGlobalBits bit) { return (fgTigressBits.TestBit(bit)); }
 
    std::vector<TTigressHit> fAddbackHits;  //!<! Used to create addback hits on the fly
    std::vector<UShort_t>    fAddbackFrags; //!<! Number of crystals involved in creating in the addback hit
@@ -139,35 +148,35 @@ public:
    // Left them as return bool to not break external code
    static bool SetCoreWave(bool set = true)
    {
-      SetGlobalBit(kSetCoreWave, set);
+      SetGlobalBit(ETigressGlobalBits::kSetCoreWave, set);
       return set;
    } //!<!
    static bool SetSegmentWave(bool set = true)
    {
-      SetGlobalBit(kSetSegWave, set);
+      SetGlobalBit(ETigressGlobalBits::kSetSegWave, set);
       return set;
    } //!<!
    static bool SetBGOWave(bool set = true)
    {
-      SetGlobalBit(kSetBGOWave, set);
+      SetGlobalBit(ETigressGlobalBits::kSetBGOWave, set);
       return set;
    } //!<!
    static bool SetForceCrystal(bool set = true)
    {
-      SetGlobalBit(kForceCrystal, set);
+      SetGlobalBit(ETigressGlobalBits::kForceCrystal, set);
       return set;
    } //!<!
    static bool SetArrayBackPos(bool set = true)
    {
-      SetGlobalBit(kArrayBackPos, set);
+      SetGlobalBit(ETigressGlobalBits::kArrayBackPos, set);
       return set;
    } //!<!
 
-   static bool GetCoreWave() { return TestGlobalBit(kSetCoreWave); }      //!<!
-   static bool GetSegmentWave() { return TestGlobalBit(kSetSegWave); }    //!<!
-   static bool GetBGOWave() { return TestGlobalBit(kSetBGOWave); }        //!<!
-   static bool GetForceCrystal() { return TestGlobalBit(kForceCrystal); } //!<!
-   static bool GetArrayBackPos() { return TestGlobalBit(kArrayBackPos); } //!<!
+   static bool GetCoreWave() { return TestGlobalBit(ETigressGlobalBits::kSetCoreWave); }      //!<!
+   static bool GetSegmentWave() { return TestGlobalBit(ETigressGlobalBits::kSetSegWave); }    //!<!
+   static bool GetBGOWave() { return TestGlobalBit(ETigressGlobalBits::kSetBGOWave); }        //!<!
+   static bool GetForceCrystal() { return TestGlobalBit(ETigressGlobalBits::kForceCrystal); } //!<!
+   static bool GetArrayBackPos() { return TestGlobalBit(ETigressGlobalBits::kArrayBackPos); } //!<!
 
    static bool BGOSuppression[4][4][5]; //!<!
 
@@ -190,5 +199,8 @@ public:
    ClassDefOverride(TTigress, 7) // Tigress Physics structure
    /// \endcond
 };
+
+std::underlying_type<TTigress::ETigressGlobalBits>::type operator |(TTigress::ETigressGlobalBits lhs, TTigress::ETigressGlobalBits rhs);
+
 /*! @} */
 #endif

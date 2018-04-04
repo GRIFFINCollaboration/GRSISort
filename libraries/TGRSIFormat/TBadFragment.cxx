@@ -37,9 +37,9 @@ TBadFragment::TBadFragment(TFragment& fragment, uint32_t* data, int size, int fa
 TBadFragment::TBadFragment(TFragment& fragment) : TFragment(fragment)
 {
    /// Construct a bad fragment from a fragment.
-   /// The data is left empty, failed word set to -1, and multiple errors set to false.
+   /// The data is left empty, failed word set to -2, and multiple errors set to false.
 	
-   fFailedWord     = -1;
+   fFailedWord     = -2;
    fMultipleErrors = false;
 }
 
@@ -81,13 +81,13 @@ void TBadFragment::Print(Option_t*) const
    /// highlighted/
    TFragment::Print();
 
-   std::cout<<"Raw data with "<<(fMultipleErrors ? "multiple errors" : "single error")<<":"<<std::endl;
+   std::cout<<"Raw data with "<<(fMultipleErrors ? "multiple errors" : "single error")<<" failed on word "<<fFailedWord<<":"<<std::endl;
    size_t i;
    for(i = 0; i < fData.size(); ++i) {
       if(i == static_cast<size_t>(fFailedWord)) {
          std::cout<<ALERTTEXT;
       }
-      std::cout<<"0x"<<std::setw(8)<<std::setfill('0')<<std::hex<<fData[i]<<std::dec;
+      std::cout<<"0x"<<std::setw(8)<<std::setfill('0')<<std::hex<<fData[i]<<std::dec<<std::setfill(' ');
       if(i == static_cast<size_t>(fFailedWord)) {
          std::cout<<RESET_COLOR;
       }

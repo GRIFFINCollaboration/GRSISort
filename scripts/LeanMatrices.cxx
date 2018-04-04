@@ -334,7 +334,7 @@ TList* LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
             }
       */
       grif->ResetAddback();
-      grif->SetDefaultGainType(TGriffin::kLowGain);
+      grif->SetDefaultGainType(TGriffin::EGainBits::kLowGain);
 
       // loop over the gammas in the event packet
       // grif is the variable which points to the current TGriffin

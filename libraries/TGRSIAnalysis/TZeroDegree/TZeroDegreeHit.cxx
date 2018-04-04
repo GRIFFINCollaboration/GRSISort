@@ -89,7 +89,7 @@ Int_t TZeroDegreeHit::GetRemainder() const
    return fCfd >> 22;
 }
 
-Double_t TZeroDegreeHit::GetTime(const UInt_t&, Option_t*) const
+Double_t TZeroDegreeHit::GetTime(const ETimeFlag&, Option_t*) const
 {
    Double_t  dTime = GetTimeStamp() * 10. + GetRemainder() + (GetCfd() + gRandom->Uniform()) / 256.;
    TChannel* chan  = GetChannel();

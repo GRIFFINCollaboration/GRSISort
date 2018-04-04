@@ -44,6 +44,16 @@ public:
       }
    }
 
+   void SetStyle(Style_t style)
+   {
+      if(linex) {
+         linex->SetLineStyle(style);
+      }
+      if(liney) {
+         liney->SetLineStyle(style);
+      }
+   }
+
    // Pixel space
    int x{0};
 	int y{0};
@@ -114,7 +124,7 @@ private:
    bool                   fMarkerMode{false};
    std::vector<GMarker*>  fMarkers;
    std::vector<GMarker*>  fBackgroundMarkers;
-   kBackgroundSubtraction fBackgroundMode;
+   EBackgroundSubtraction fBackgroundMode;
    void AddMarker(int, int, int dim = 1);
    void RemoveMarker(Option_t* opt = "");
    void OrderMarkers();

@@ -6,22 +6,33 @@
 
 int main(int argc, char** argv)
 {
-   if(argc < 3) {
-      printf("Usage: WriteCalToRoot <calfile.cal> <root file 1> <root file 2> ...\n");
-      return 0;
+   if(argc < 4) {
+      printf("Usage: WriteCalToRoot <update/replace> <calfile.cal> <root file 1> <root file 2> ...\n");
+      return 1;
    }
 
    std::vector<const char*> bad_file;
    std::vector<const char*> bad_tree;
 
    // See if we can open the cal file
-   if(TChannel::ReadCalFile(argv[1]) < 1) {
+   if(TChannel::ReadCalFile(argv[2]) < 1) {
       printf("Bad Cal File: %s\n", argv[1]);
       exit(1);
    }
 
+	//check if the should update or replace the existing calibration
+	bool update = false;
+	std::string option = argv[1];
+	std::transform(option.begin(), option.end(), option.begin(), ::tolower);
+	if(option.compare("update") == 0) {
+		update = true;
+	} else if(option.compare("replace") != 0) {
+		std::cout<<R"(Wrong option ")"<<option<<R"(", should be either "update" or "replace")"<<std::endl;
+		return 1;
+	}
+
    // Loop over the files in the argv list
-   for(int i = 2; i < argc; ++i) {
+   for(int i = 3; i < argc; ++i) {
       if(gSystem->AccessPathName(argv[i])) {
          printf(DRED "No file %s found.\n" RESET_COLOR, argv[i]);
          bad_file.push_back(argv[i]);
@@ -41,7 +52,11 @@ int main(int argc, char** argv)
          continue;
       }
 
-      TChannel::ReadCalFile(argv[1]);
+		TChannel::DeleteAllChannels();
+		if(update) {
+			TChannel::ReadCalFromCurrentFile();
+		}
+      TChannel::ReadCalFile(argv[2]);
       TChannel::WriteToRoot();
    }
 
@@ -59,5 +74,5 @@ int main(int argc, char** argv)
 
    printf("\n");
 
-   return 1;
+   return 0;
 }

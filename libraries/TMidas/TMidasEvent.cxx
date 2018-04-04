@@ -9,6 +9,7 @@
 #include <ctime>
 #include <cstring>
 #include <cassert>
+#include <sstream>
 
 #include "TMidasEvent.h"
 #include "TGRSIOptions.h"
@@ -709,108 +710,114 @@ int TMidasEvent::Process(TDataParser& parser)
 #ifdef HAS_XML
 			TXMLOdb* odb = new TXMLOdb(GetData(), GetDataSize());
 			TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
-			TXMLNode*     node     = odb->FindPath("/Runinfo/Stop time binary");
+			TXMLNode*     node    = odb->FindPath("/Runinfo/Stop time binary");
 			if(node != nullptr) {
-				runInfo->SetRunStop(atof(node->GetText()));
+				std::stringstream str(node->GetText());
+				unsigned int odbTime;
+				str>>odbTime;
+				if(atoi(node->GetText()) != 0 && odbTime != GetTimeStamp()) {
+					std::cout<<"Warning, ODB stop time of last subrun ("<<odbTime<<") does not match midas time of last event in this subrun ("<<GetTimeStamp()<<")!"<<std::endl;
+				}
+				runInfo->SetRunStop(GetTimeStamp());
 			}
 			runInfo->SetRunLength();
 			delete odb;
 #endif
 			break;
-      };
-   } catch(const std::bad_alloc&) {
-   }
+		};
+	} catch(const std::bad_alloc&) {
+	}
 
-   // if we failed to get any fragments and this is not a start-of-run or end-of-run event
-   // we print an error message (unless these are suppressed)
-   if(frags <= 0 && GetEventId() < 0x8000 && !TGRSIOptions::Get()->SuppressErrors()) {
-      SetBankList();
-      Print(Form("a%i", (-1 * frags) - 1));
-   }
+	// if we failed to get any fragments and this is not a start-of-run or end-of-run event
+	// we print an error message (unless these are suppressed)
+	if(frags <= 0 && GetEventId() < 0x8000 && !TGRSIOptions::Get()->SuppressErrors()) {
+		SetBankList();
+		Print(Form("a%i", (-1 * frags) - 1));
+	}
 
-   if(frags < 0) {
-      frags = 0;
-   }
+	if(frags < 0) {
+		frags = 0;
+	}
 
-   return frags;
+	return frags;
 }
 
 int TMidasEvent::ProcessEPICS(float* ptr, int& dSize, TDataParser& parser)
 {
-   parser.EPIXToScalar(ptr, dSize, GetSerialNumber(), GetTimeStamp());
+	parser.EPIXToScalar(ptr, dSize, GetSerialNumber(), GetTimeStamp());
 
-   return 0;
+	return 0;
 }
 
 int TMidasEvent::ProcessTIGRESS(uint32_t* ptr, int& dSize, TDataParser& parser)
 {
-   return parser.TigressDataToFragment(ptr, dSize, GetSerialNumber(), GetTimeStamp());
+	return parser.TigressDataToFragment(ptr, dSize, GetSerialNumber(), GetTimeStamp());
 }
 
 int TMidasEvent::ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBank bank, TDataParser& parser)
 {
-   // loop over words in event to find fragment header
-   int totalFrags = 0;
-   for(int index = 0; index < dSize;) {
-      if(((ptr[index]) & 0xf0000000) == 0x80000000) {
-         // if we found a fragment header we pass the data to the data parser which returns the number of words read
-         int words;
-         try {
-            words = parser.GriffinDataToFragment(&ptr[index], dSize - index, bank, GetSerialNumber(), GetTimeStamp());
-         } catch(TDataParserException& e) {
-            words = -e.GetFailedWord();
-            if(!TGRSIOptions::Get()->SuppressErrors()) {
-               if(!TGRSIOptions::Get()->LogErrors()) {
-                  std::cout<<std::endl<<e.what();
-               }
-            }
-         }
-         if(words > 0) {
-            // we successfully read one event with <words> words, so we advance the index by words
-            ++fGoodFrags;
-            ++totalFrags;
-            index += words;
-         } else {
-            // we failed to read the fragment on word <-words>, so advance the index by -words and we create an error
-            // message
-            ++totalFrags; // if the midas bank fails, we assume it only had one frag in it... this is just used for a
-                          // print statement.
-            index -= words;
+	// loop over words in event to find fragment header
+	int totalFrags = 0;
+	for(int index = 0; index < dSize;) {
+		if(((ptr[index]) & 0xf0000000) == 0x80000000) {
+			// if we found a fragment header we pass the data to the data parser which returns the number of words read
+			int words;
+			try {
+				words = parser.GriffinDataToFragment(&ptr[index], dSize - index, bank, GetSerialNumber(), GetTimeStamp());
+			} catch(TDataParserException& e) {
+				words = -e.GetFailedWord();
+				if(!TGRSIOptions::Get()->SuppressErrors()) {
+					if(!TGRSIOptions::Get()->LogErrors()) {
+						std::cout<<std::endl<<e.what();
+					}
+				}
+			}
+			if(words > 0) {
+				// we successfully read one event with <words> words, so we advance the index by words
+				++fGoodFrags;
+				++totalFrags;
+				index += words;
+			} else {
+				// we failed to read the fragment on word <-words>, so advance the index by -words and we create an error
+				// message
+				++totalFrags; // if the midas bank fails, we assume it only had one frag in it... this is just used for a
+				// print statement.
+				index -= words;
 
-            if(!TGRSIOptions::Get()->SuppressErrors()) {
-               if(!TGRSIOptions::Get()->LogErrors()) {
-                  printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
-                  printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", index);
-                  Print(Form("a%i", index));
-                  printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
-               } else {
-                  std::string errfilename = "error.log";
-                  // if(mFile) {
-                  //   if(mFile->GetSubRunNumber() != -1) {
-                  //     errfilename.append(Form("error%05i_%03i.log",mFile->GetRunNumber(),mFile->GetSubRunNumber()));
-                  //   } else {
-                  //     errfilename.append(Form("error%05i.log",mFile->GetRunNumber()));
-                  //   }
-                  // } else {
-                  //   errfilename.append("error_log.log");
-                  // }
-                  FILE* originalstdout = stdout;
-                  FILE* errfileptr     = freopen(errfilename.c_str(), "a", stdout);
-                  printf("\n//**********************************************//\n");
-                  Print("a");
-                  printf("\n//**********************************************//\n");
-                  fclose(errfileptr);
-                  stdout = originalstdout;
-               }
-            }
-         }
-      } else {
-         // this is not a fragment header, so we advance the index
-         ++index;
-      }
-   }
+				if(!TGRSIOptions::Get()->SuppressErrors()) {
+					if(!TGRSIOptions::Get()->LogErrors()) {
+						printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
+						printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", index);
+						Print(Form("a%i", index));
+						printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
+					} else {
+						std::string errfilename = "error.log";
+						// if(mFile) {
+						//   if(mFile->GetSubRunNumber() != -1) {
+						//     errfilename.append(Form("error%05i_%03i.log",mFile->GetRunNumber(),mFile->GetSubRunNumber()));
+						//   } else {
+						//     errfilename.append(Form("error%05i.log",mFile->GetRunNumber()));
+						//   }
+						// } else {
+						//   errfilename.append("error_log.log");
+						// }
+						FILE* originalstdout = stdout;
+						FILE* errfileptr     = freopen(errfilename.c_str(), "a", stdout);
+						printf("\n//**********************************************//\n");
+						Print("a");
+						printf("\n//**********************************************//\n");
+						fclose(errfileptr);
+						stdout = originalstdout;
+					}
+				}
+			}
+		} else {
+			// this is not a fragment header, so we advance the index
+			++index;
+		}
+	}
 
-   return totalFrags;
+	return totalFrags;
 }
 
 // end

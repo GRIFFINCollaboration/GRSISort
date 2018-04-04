@@ -43,9 +43,10 @@ libdir=$GRSISYS/lib
 incdir=$GRSISYS/include
 utildir=$GRSISYS/etc
 
-grsilibs="-lTGRSIDetector -lTDetector -lTGRSIFormat -lTNucleus -lTKinematics -lTSRIM -lTBetaDecay -lTGRSIFit -lTCal -lGROOT -lTReaction -lTAngularCorrelation"
-detlibs="-lTFipps -lTTigress -lTGriffin -lTSharc -lTTriFoil -lTSceptar -lTPaces -lTDescant -lTTip -lTCSM -lTS3 -lTSiLi -lTRF -lTPulseAnalyzer -lTTAC -lTLaBr -lTZeroDegree"
-grsimore="-lTMidas -lTDataParser -lTGRSIint -lTLoops -lTHistogramming -lMakeAnalysisHistograms -lMakeGriffinFragmentHistograms -lMakeTigressHistograms"
+# the repitition of '-lTGRSIint -lTGRSIFormat' is needed for debian-style OSes like ubuntu (see issue #979)
+grsilibs="-lTGRSIDetector -lTDetector -lTGRSIint -lTGRSIFormat -lTGRSIint -lTGRSIFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction -lTAngularCorrelation"
+detlibs="-lTFipps -lTTigress -lTGriffin -lTBgo -lTSharc -lTTriFoil -lTSceptar -lTPaces -lTDescant -lTTip -lTCSM -lTS3 -lTGenericDetector -lTSiLi -lTRF -lTPulseAnalyzer -lTTAC -lTLaBr -lTZeroDegree -lGROOT -lTGRSIFit -lTNucleus"
+grsimore="-lTMidas -lTDataParser -lTHistogramming -lMakeAnalysisHistograms -lMakeGriffinFragmentHistograms -lMakeTigressHistograms"
 
 cflags="-std=c++0x -I$incdir"
 

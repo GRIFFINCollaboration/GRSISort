@@ -43,9 +43,27 @@ static int          ReadUtmp();
 static STRUCT_UTMP* SearchEntry(int /*n*/, const char* /*tty*/);
 static void         SetDisplay();
 
+TStopwatch* gStopwatch;
+
+void atexitHandler()
+{
+   // Be polite when you leave.
+   double realTime = gStopwatch->RealTime();
+   int    hour     = static_cast<int>(realTime / 3600);
+   realTime -= hour * 3600;
+   int min = static_cast<int>(realTime / 60);
+   realTime -= min * 60;
+   std::cout<<DMAGENTA<<std::endl
+            <<"bye,bye\t"<<DCYAN<<getpwuid(getuid())->pw_name<<RESET_COLOR<<" after "<<hour<<":"
+            <<std::setfill('0')<<std::setw(2)<<min<<":"<<std::setprecision(3)<<std::fixed<<realTime
+            <<" h:m:s"<<std::endl;
+}
+
 int main(int argc, char** argv)
 {
-   auto stopwatch = new TStopwatch;
+   gStopwatch = new TStopwatch;
+	std::atexit(atexitHandler);
+
    try {
       TThread::Initialize();
       TObject::SetObjectStat(false);
@@ -58,23 +76,13 @@ int main(int argc, char** argv)
 
       // Create an instance of the grsi interpreter so that we can run root-like interpretive mode
       input = TGRSIint::instance(argc, argv);
+		input->SetReturnFromRun(true);
       // Run the code!
       input->Run(true);
    } catch(grsi::exit_exception& e) {
       std::cerr<<e.message<<std::endl;
       // Close files and clean up properly here
    }
-
-   // Be polite when you leave.
-   double realTime = stopwatch->RealTime();
-   int    hour     = static_cast<int>(realTime / 3600);
-   realTime -= hour * 3600;
-   int min = static_cast<int>(realTime / 60);
-   realTime -= min * 60;
-   std::cout<<DMAGENTA<<std::endl
-            <<"bye,bye\t"<<DCYAN<<getpwuid(getuid())->pw_name<<RESET_COLOR<<" after "<<hour<<":"
-            <<std::setfill('0')<<std::setw(2)<<min<<":"<<std::setprecision(3)<<std::fixed<<realTime
-            <<" h:m:s"<<std::endl;
 
    return 0;
 }

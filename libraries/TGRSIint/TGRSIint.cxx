@@ -137,12 +137,12 @@ void TGRSIint::ApplyOptions()
 
    SetupPipeline();
 
-   for(auto& filename : opt->MacroInputFiles()) {
-      RunMacroFile(filename);
-   }
-
    if(opt->StartGui()) {
       StartGUI();
+   }
+
+   for(auto& filename : opt->MacroInputFiles()) {
+      RunMacroFile(filename);
    }
 
    std::cout<<StoppableThread::AllThreadHeader()<<std::endl;
@@ -238,14 +238,9 @@ Long_t TGRSIint::ProcessLine(const char* line, Bool_t sync, Int_t* error)
       return res;
    }
 
-   TString sline(line);
-   ;
-   if(sline.Contains("TCanvas")) {
-      std::string s = line;
-      size_t      f = s.find("TCanvas");
-      s.replace(f, std::string("TCanvas").length(), "GCanvas");
-      s.replace(f, std::string("TCanvas").length(), "GCanvas");
-      line = s.c_str();
+	const char* canvas = strstr(line, "TCanvas");
+   if(canvas != nullptr) {
+		const_cast<char*>(canvas)[0] = 'G';
    }
 
    if(std::this_thread::get_id() != main_thread_id) {
@@ -306,7 +301,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
    if(sopt.Contains("recreate") || sopt.Contains("new")) {
       // We are being asked to make a new file.
       file = new TFile(filename.c_str(), "RECREATE");
-      if(file != nullptr) {
+      if(file != nullptr && file->IsOpen()) {
          // Give access to the file inside the interpreter.
          const char* command = Form("TFile* _file%i = (TFile*)%luL;", fRootFilesOpened, (unsigned long)file);
          TRint::ProcessLine(command);
@@ -317,7 +312,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
    } else {
       // Open an already existing file.
       file = new TFile(filename.c_str(), opt);
-      if(file != nullptr) {
+      if(file != nullptr && file->IsOpen()) {
          // Give access to the file inside the interpreter.
          const char* command = Form("TFile* _file%i = (TFile*)%luL;", fRootFilesOpened, (unsigned long)file);
          TRint::ProcessLine(command);
@@ -355,7 +350,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
          }
 
          if(file->FindObjectAny("TChannel") != nullptr) {
-            file->Get("TChannel");
+            file->Get("TChannel"); // this calls TChannel::Streamer
          }
          if(file->FindObjectAny("GValue") != nullptr) {
             file->Get("GValue");
@@ -581,11 +576,13 @@ void TGRSIint::SetupPipeline()
    for(const auto& cal_filename : opt->CalInputFiles()) {
       TChannel::ReadCalFile(cal_filename.c_str());
    }
-   if(!fRawFiles.empty() != 0u) {
+	// Set the run number and sub-run number
+   if(!fRawFiles.empty()) {
       TGRSIRunInfo::Get()->SetRunInfo(fRawFiles[0]->GetRunNumber(), fRawFiles[0]->GetSubRunNumber());
    } else {
       TGRSIRunInfo::Get()->SetRunInfo(0, -1);
    }
+
    TPPG::Get()->Setup();
    for(const auto& val_filename : opt->ValInputFiles()) {
       GValue::ReadValFile(val_filename.c_str());
@@ -595,9 +592,9 @@ void TGRSIint::SetupPipeline()
    }
 
    // this happens here, because the TDataLoop constructor is where we read the midas file ODB
-   TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::kTriggerId;
+   TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::EBuildMode::kTriggerId;
    if(TGRSIRunInfo::Get()->Griffin() || TGRSIRunInfo::Get()->Fipps()) {
-      event_build_mode = TEventBuildingLoop::kTimestamp;
+      event_build_mode = TEventBuildingLoop::EBuildMode::kTimestamp;
    }
 
    // If requested, write the fragment histograms
@@ -677,9 +674,9 @@ void TGRSIint::SetupPipeline()
 
 void TGRSIint::RunMacroFile(const std::string& filename)
 {
-   /// Runs a macro file. This happens when --work-harder is used with a .C file
+   /// Runs a macro file. This happens when a .C file is provided on the command line
    if(file_exists(filename.c_str())) {
-      const char* command = Form(".x %s;", filename.c_str());
+      const char* command = Form(".x %s", filename.c_str());
       ProcessLine(command);
    } else {
       std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
