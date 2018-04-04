@@ -2,42 +2,30 @@
 
 #include "TGRSIOptions.h"
 #include "TFragment.h"
+#include "TTreeFillMutex.h"
 
-TAnalysisWriteLoopClient* TAnalysisWriteLoopClient::Get(std::string name, std::string outputFilename)
-{
-   if(name.length() == 0) {
-      name = "write_loop";
-   }
+std::map<TClass*, TDetector**> TAnalysisWriteLoopClient::fGlobalDetMap;
+//std::mutex TAnalysisWriteLoopClient::fGlobalMapMutex;
 
-   TAnalysisWriteLoopClient* loop = static_cast<TAnalysisWriteLoopClient*>(StoppableThread::Get(name));
-   if(loop == nullptr) {
-      if(outputFilename.length() == 0) {
-         outputFilename = "temp.root";
-      }
-      loop = new TAnalysisWriteLoopClient(name, outputFilename);
-   }
-
-   return loop;
-}
-
-TAnalysisWriteLoopClient::TAnalysisWriteLoopClient(std::string name, std::string outputFilename)
+TAnalysisWriteLoopClient::TAnalysisWriteLoopClient(std::string name, std::string outputFilename, Int_t localPort)
    : StoppableThread(name),fOutputFile(nullptr), fEventTree(nullptr), fOutOfOrderTree(nullptr), fOutOfOrderFrag(nullptr),
-     fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>()),
+	  fOutOfOrder(false), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>()),
      fOutOfOrderQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>())
 {
-   fOutputFile = static_cast<TParallelMergingFile*>(TFile::Open(Form("%s?pmerge=localhost:9090", outputFilename.c_str()), "RECREATE"));
+	fFirstClient = (name.compare("write_client_0") == 0);
+   fOutputFile = static_cast<TParallelMergingFile*>(TFile::Open(Form("%s?pmerge=localhost:%d", outputFilename.c_str(), localPort), "RECREATE"));
 	if(fOutputFile == nullptr) {
-		std::cerr<<"client: Could not establish a connection with server 'localhost':9090"<<std::endl;
+		std::cerr<<"client: Could not establish a connection with server 'localhost:"<<localPort<<"'"<<std::endl;
 		throw;
 	}
    fOutputFile->Write();
-   fOutputFile->UploadAndReset();       // We do this early to get assigned an index.
 
 	fEventTree  = new TTree("AnalysisTree", "AnalysisTree");
 	if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
 		fOutOfOrderTree = new TTree("OutOfOrderTree", "OutOfOrderTree");
 		fOutOfOrderFrag = new TFragment;
 		fOutOfOrderTree->Branch("Fragment", &fOutOfOrderFrag);
+		fOutOfOrder = true;
 	}
 }
 
@@ -46,8 +34,6 @@ TAnalysisWriteLoopClient::~TAnalysisWriteLoopClient()
    for(auto& elem : fDetMap) {
       delete elem.second;
    }
-
-   Write();
 }
 
 void TAnalysisWriteLoopClient::ClearQueue()
@@ -58,21 +44,11 @@ void TAnalysisWriteLoopClient::ClearQueue()
    }
 }
 
-std::string TAnalysisWriteLoopClient::EndStatus()
-{
-   std::stringstream ss;
-   ss<<Name()<<":\t"<<std::setw(8)<<fItemsPopped<<"/"<<fInputSize + fItemsPopped<<", "
-     <<fEventTree->GetEntries()<<" good events";
-   if(fOutOfOrderTree != nullptr) {
-      ss<<", "<<fOutOfOrderTree->GetEntries()<<" separate fragments out-of-order"<<std::endl;
-   } else {
-      ss<<std::endl;
-   }
-   return ss.str();
-}
-
 bool TAnalysisWriteLoopClient::Iteration()
 {
+	std::ofstream outfile;
+	outfile.open("debug.txt", std::ios_base::app);
+
    std::shared_ptr<TUnpackedEvent> event;
    fInputSize = fInputQueue->Pop(event);
    if(fInputSize < 0) {
@@ -91,54 +67,27 @@ bool TAnalysisWriteLoopClient::Iteration()
       }
    }
 
+	outfile<<Name()<<" "<<fInputSize<<" "<<fItemsPopped<<" "<<event.get();
+
    if(event != nullptr) {
 		WriteEvent(event);
+		outfile<<" got event"<<std::endl;
       return true;
    }
 
    if(fInputQueue->IsFinished()) {
+		outfile<<" done?"<<std::endl;
       return false;
    }
    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	outfile<<" waiting"<<std::endl;
    return true;
-}
-
-void TAnalysisWriteLoopClient::Write()
-{
-   if(fOutputFile != nullptr) {
-      fOutputFile->cd();
-
-      fEventTree->Write(fEventTree->GetName(), TObject::kOverwrite);
-
-      if(fOutOfOrderTree != nullptr) {
-         fOutOfOrderTree->Write(fOutOfOrderTree->GetName(), TObject::kOverwrite);
-      }
-
-      if(GValue::Size() != 0) {
-         GValue::Get()->Write();
-      }
-      if(TChannel::GetNumberOfChannels() != 0) {
-         TChannel::WriteToRoot();
-      }
-      TGRSIRunInfo::Get()->WriteToRoot(fOutputFile);
-      TGRSIOptions::Get()->AnalysisOptions()->WriteToFile(fOutputFile);
-      TPPG::Get()->Write();
-
-      if(TGRSIOptions::Get()->WriteDiagnostics()) {
-         TSortingDiagnostics::Get()->Write();
-      }
-
-      fOutputFile->Close();
-      fOutputFile->Delete();
-   }
 }
 
 void TAnalysisWriteLoopClient::OnEnd()
 {
-	fFile->Write();
-	delete fFile;
-
-	return true;
+	fOutputFile->Write();
+	delete fOutputFile;
 }
 
 void TAnalysisWriteLoopClient::AddBranch(TClass* cls)
@@ -152,9 +101,19 @@ void TAnalysisWriteLoopClient::AddBranch(TClass* cls)
 		fDefaultDets[cls] = det_p;
 
 		// Make the TDetector**
-		auto** det_pp = new TDetector*;
+		auto det_pp   = new TDetector*;
 		*det_pp       = det_p;
 		fDetMap[cls]  = det_pp;
+
+		// check if this detector class exists in the global map
+		{
+			//std::cout<<std::endl<<Name()<<" locking"<<std::endl;
+			//std::lock_guard<std::mutex> lock(fGlobalMapMutex);
+			if(fGlobalDetMap.count(cls) == 0u) {
+				fGlobalDetMap[cls] = det_pp;
+			}
+			//std::cout<<std::endl<<Name()<<" done"<<std::endl;
+		}
 
 		// Make a new branch.
 		TBranch* newBranch = fEventTree->Branch(cls->GetName(), cls->GetName(), det_pp);
@@ -175,14 +134,16 @@ void TAnalysisWriteLoopClient::AddBranch(TClass* cls)
 			newBranch->Fill();
 		}
 
-		std::cout<<"\r"<<std::string(30, ' ')<<"\rAdded \""<<cls->GetName()<<R"(" branch)"<<std::endl;
+		if(fFirstClient) {
+			std::cout<<"\r"<<std::string(30, ' ')<<"\r"<<Name()<<": added \""<<cls->GetName()<<R"(" branch)"<<std::endl;
+		}
 
 		// Unlock after we are done.
 		TThread::UnLock();
 	}
 }
 
-void TAnalysisWriteLoopClient::WriteEvent(TUnpackedEvent& event)
+void TAnalysisWriteLoopClient::WriteEvent(std::shared_ptr<TUnpackedEvent>& event)
 {
 	if(fEventTree != nullptr) {
 		// Clear pointers from previous writes.
@@ -197,7 +158,7 @@ void TAnalysisWriteLoopClient::WriteEvent(TUnpackedEvent& event)
 		}
 
 		// Load current events
-		for(const auto& det : event.GetDetectors()) {
+		for(const auto& det : event->GetDetectors()) {
 			TClass* cls = det->IsA();
 			try {
 				**fDetMap.at(cls) = *(det.get());
@@ -206,45 +167,30 @@ void TAnalysisWriteLoopClient::WriteEvent(TUnpackedEvent& event)
 				**fDetMap.at(cls) = *(det.get());
 			}
 			(*fDetMap.at(cls))->ClearTransients();
-			// if(cls == TDescant::Class()) {
-			//	for(int i = 0; i < static_cast<TDescant*>(det)->GetMultiplicity(); ++i) {
-			//		std::cout<<"Descant hit "<<i<<(static_cast<TDescant*>(det)->GetDescantHit(i)->GetDebugData() == nullptr ?
-			//"
-			// has no debug data": " has debug data")<<std::endl;
-			//	}
-			//}
+		}
+
+		// Check if other clients found new detectors
+		{
+			//std::cout<<std::endl<<Name()<<" locking for AddBranch"<<std::endl;
+			//std::lock_guard<std::mutex> lock(fGlobalMapMutex);
+			if(fDetMap.size() != fGlobalDetMap.size()) {
+				// loop over global map of detectors and add those we don't have in our list
+				for(auto const& det : fGlobalDetMap) {
+					// AddBranch checks if detector exists
+					//std::cout<<std::endl<<Name()<<" Adding branch "<<det.first->GetName()<<std::endl;
+					AddBranch(det.first);
+				}
+			}
+			//std::cout<<std::endl<<Name()<<" done with AddBranch"<<std::endl;
 		}
 
 		// Fill
 		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
 		fEventTree->Fill();
-	}
-}
 
-int main(int argc, char** argv) {
-	TThread::Initialize();
-
-	std::future<bool> serverFuture = std::async(std::launch::async, server);
-
-	std::vector<std::future<bool> > clientFutures;
-	clientFutures.push_back(std::async(std::launch::async, client));
-	clientFutures.push_back(std::async(std::launch::async, client));
-	clientFutures.push_back(std::async(std::launch::async, client));
-	clientFutures.push_back(std::async(std::launch::async, client));
-
-	if(!serverFuture.get()) {
-		std::cout<<"Server failed!"<<std::endl;
-	} else {
-		std::cout<<"Server finished successful!"<<std::endl;
-	}
-
-	for(size_t i = 0; i < clientFutures.size(); ++i) {
-		if(!clientFutures[i].get()) {
-			std::cout<<"Client "<<i<<" failed!"<<std::endl;
-		} else {
-			std::cout<<"Client "<<i<<" finished successful!"<<std::endl;
+		// write file every 100000 popped events (this sends the events to the server)
+		if(fItemsPopped%100000 == 0) {
+			fOutputFile->Write();
 		}
 	}
-
-	return 0;
 }
