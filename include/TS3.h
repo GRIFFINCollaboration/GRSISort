@@ -88,13 +88,15 @@ public:
 
    bool PixelsSet() const { return TestBitNumber(ES3Bits::kPixelsSet); }
    void SetPixels(bool flag = true) { SetBitNumber(ES3Bits::kPixelsSet, flag); }
-   void                BuildPixels();
+   void BuildPixels();
 
    static TVector3 GetPosition(int ring, int sector, bool smear = false);
    static TVector3 GetPosition(int ring, int sector, double offsetphi, double offsetZ, bool sectorsdownstream,
                                bool smear = false);
 
    void SetTargetDistance(double dist) { fTargetDistance = dist; }
+   
+   void ResetRingsSectors();
 
    void ClearTransients() override
    {
