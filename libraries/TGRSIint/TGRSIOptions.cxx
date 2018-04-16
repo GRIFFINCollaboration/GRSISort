@@ -94,6 +94,8 @@ void TGRSIOptions::Clear(Option_t*)
    fFragmentWriteQueueSize = 10000000;
    fAnalysisWriteQueueSize = 1000000;
 
+	fNumberOfClients = 2;
+
    fTimeSortInput = false;
 
    fSeparateOutOfOrder    = false;
@@ -295,6 +297,9 @@ void TGRSIOptions::Load(int argc, char** argv)
 			.description(
 					"Seconds between each detailed status output (each a new line), non-positive numbers mean no detailed status")
 			.default_value(10);
+
+		parser.option("write-clients", &fNumberOfClients, true)
+			.description("Number of clients used to write analysis tree").default_value(2);
 	} else if(program.compare("grsiproof") == 0) {
 		// Proof only parser options
 		parser.option("max-workers", &fMaxWorkers, true)
