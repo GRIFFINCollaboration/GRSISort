@@ -7,6 +7,7 @@
 
 #include "TGRSIOptions.h"
 #include "TLstEvent.h"
+#include "TTdrEvent.h"
 #include "TMidasEvent.h"
 
 TUnpackingLoop* TUnpackingLoop::Get(std::string name)
@@ -58,13 +59,19 @@ bool TUnpackingLoop::Iteration()
       return true;
    }
    if(fEvaluateDataType) {
-      fDataType         = (event->IsA() == TLstEvent::Class()) ? EDataType::kLst : EDataType::kMidas;
+		if(event->IsA() == TLstEvent::Class()) {
+			fDataType         = EDataType::kLst;
+		} else if(event->IsA() == TTdrEvent::Class()) {
+			fDataType = EDataType::kTdr;
+		} else {
+			fDataType = EDataType::kMidas;
+		}
       fEvaluateDataType = false;
    }
-   if(fDataType == EDataType::kLst) {
+   if(fDataType == EDataType::kLst) {// || fDataType == EDataType::kTdr) {
       fParser.SetStatusVariables(&fItemsPopped, &fInputSize);
    } else {
-      fInputSize = error;
+      fInputSize = error;//"error" is the return value of popping an event from the input queue (which returns the number of events left)
       ++fItemsPopped;
    }
 

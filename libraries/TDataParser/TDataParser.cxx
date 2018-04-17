@@ -1471,9 +1471,10 @@ int TDataParser::FippsToFragment(std::vector<char> data)
    Long64_t                   tmpTimestamp;
    if(fItemsPopped != nullptr && fInputSize != nullptr) {
       *fItemsPopped = 0;
-      *fInputSize   = data.size() / 16;
+      *fInputSize   = data.size()/16; //4 words of 4 bytes for each event
    }
 
+	// we read 4 words for each event, and data.size() is in bytes, so we need to divide it by 4 (size of uint32_t)
    for(size_t i = 0; i + 3 < data.size() / 4; i += 4) {
       if(fItemsPopped != nullptr && fInputSize != nullptr) {
          ++(*fItemsPopped);
@@ -1503,35 +1504,158 @@ int TDataParser::FippsToFragment(std::vector<char> data)
    return totalEventsRead;
 }
 
-void TDataParser::Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& queues,
-                       const std::shared_ptr<TFragment>&                                                frag)
+int TDataParser::TdrToFragment(std::vector<char> data)
 {
-   frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
-   fFragmentIdMap[frag->GetTriggerId()]++;
-   frag->SetEntryNumber();
-   for(const auto& queue : queues) {
-      queue->Push(frag);
+	uint64_t* ptr = reinterpret_cast<uint64_t*>(data.data());
+
+	int totalEventsRead = 0;
+	static uint64_t timeStampHighBits = 0;
+   std::shared_ptr<TFragment> eventFrag       = std::make_shared<TFragment>();
+   if(fItemsPopped != nullptr && fInputSize != nullptr) {
+      *fInputSize   += data.size()/8; // words of 8 bytes each
    }
+
+	for(size_t i = 0; i < data.size()/8; ++i) {
+		eventFrag->Clear();
+		if(fItemsPopped != nullptr && fInputSize != nullptr) {
+			++(*fItemsPopped);
+			--(*fInputSize);
+		}
+		//std::cout<<"0x"<<std::setw(16)<<ptr[i]<<std::endl;
+		switch(ptr[i]>>62) {
+			case 0:
+				std::cout<<"unknown word"<<std::endl;
+				break;
+			case 1:
+				std::cout<<"trace word"<<std::endl;
+				break;
+			case 2:
+				// this word gives us the extended timestamp (and a moduleNumber and channelNumber)
+				// the only thing we really care about is the high timestamp bits
+				{
+					//short moduleNumber = (ptr[i]>>56)&0x3f;
+					short infoCode = (ptr[i]>>52)&0xf;
+					if(((ptr[i]>>28)&0xf) != 0x0) {
+						std::cout<<"not a proper word!"<<std::endl;
+					}
+					//uint64_t timeStamp = ptr[i]&0xfffffff;
+					//uint32_t channelNumber = 0;
+					switch(infoCode) {
+						case 0:
+							std::cout<<"undefined infoCode "<<infoCode<<std::endl;
+							break;
+						case 1:
+							//channelNumber = (ptr[i]>>32)&0xfffff;
+							break;
+						case 2:
+						case 3:
+						case 4:
+						case 7:
+							//timeStamp |= ptr[i]&0xfffff00000000>>4;
+							timeStampHighBits = (ptr[i]>>32)&0xfffff;
+							break;
+						case 5:
+							//timeStamp |= (ptr[i]&0xfffff00000000)<<20;
+							timeStampHighBits = (ptr[i]>>12)&0xfffff00000;
+							break;
+						default:
+							std::cout<<"infoCode "<<infoCode<<std::endl;
+							break;
+					}
+					//std::cout<<"moduleNumber "<<moduleNumber<<", channelNumber "<<channelNumber<<", timeStamp "<<timeStamp<<std::endl;
+					break;
+				}
+			case 3:
+				{
+					// data word with channelNumber, adcData, and 28 low bits of timestamp
+					eventFrag->SetAddress((ptr[i]>>48)&0xfff);
+					eventFrag->SetTimeStamp((ptr[i]&0xfffffff) | (timeStampHighBits<<28));
+					++totalEventsRead;
+					// charge is a 14bit signed integer (despite being reported as 16 bits) so we extend the sign bit for an Int_t (4 bytes)
+					eventFrag->SetCharge(static_cast<Int_t>(((ptr[i]>>32)&0xffff) | ((((ptr[i]>>32)&0x2000) == 0x2000) ? 0xffffc000 : 0x0)));
+					//std::cout<<std::hex<<std::setfill('0');
+					//std::cout<<std::setw(16)<<ptr[i]<<": addr "<<eventFrag->GetAddress()<<", ts "<<eventFrag->GetTimeStamp()<<", charge "<<eventFrag->Charge()<<std::endl;
+					//std::cout<<std::dec<<std::setfill(' ');
+					// we expect a second word from the channel+16 with the same timestamp
+					++i;
+					if(i >= data.size()/8) {
+						if(fRecordDiag) {
+							TParsingDiagnostics::Get()->BadFragment(66);
+						}
+						Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, reinterpret_cast<uint32_t*>(data.data()), data.size()/4, i, false));
+						continue;
+					}
+					// check address
+					if(((ptr[i]>>48)&0xfff) != eventFrag->GetAddress() + 16) {
+						//std::cout<<"Address mismatch "<<((ptr[i]>>48)&0xfff)<<" != "<<eventFrag->GetAddress()<<std::endl;
+						if(fRecordDiag) {
+							TParsingDiagnostics::Get()->BadFragment(67);
+						}
+						Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, reinterpret_cast<uint32_t*>(data.data()), data.size()/4, i, false));
+						// re-try this word
+						--i;
+						continue;
+					}
+					// check timestamp
+					if(static_cast<Long64_t>((ptr[i]&0xfffffff) | (timeStampHighBits<<28)) != eventFrag->GetTimeStamp()) {
+						//std::cout<<"Timestamp mismatch "<<((ptr[i]&0xfffffff) | (timeStampHighBits<<28))<<" != "<<eventFrag->GetTimeStamp()<<std::endl;
+						if(fRecordDiag) {
+							TParsingDiagnostics::Get()->BadFragment(68);
+						}
+						Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, reinterpret_cast<uint32_t*>(data.data()), data.size()/4, i, false));
+						// re-try this word
+						--i;
+						continue;
+					}
+					if(fItemsPopped != nullptr && fInputSize != nullptr) {
+						--(*fInputSize); // we just read another word from the input
+					}
+					// set Cfd ???
+					eventFrag->SetCfd(static_cast<Int_t>((ptr[i]>>32)&0xffff));
+					//std::cout<<std::hex<<std::setfill('0');
+					//std::cout<<std::setw(16)<<ptr[i]<<": addr "<<eventFrag->GetAddress()<<", ts "<<eventFrag->GetTimeStamp()<<", cfd "<<eventFrag->GetCfd()<<std::endl;
+					//std::cout<<std::dec<<std::setfill(' ');
+					if(fRecordDiag) {
+						TParsingDiagnostics::Get()->GoodFragment(eventFrag);
+					}
+					Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));
+					break;
+				}
+		}
+	}
+
+	return totalEventsRead;
+}
+
+void TDataParser::Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& queues,
+		const std::shared_ptr<TFragment>&                                                frag)
+{
+	frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
+	fFragmentIdMap[frag->GetTriggerId()]++;
+	frag->SetEntryNumber();
+	for(const auto& queue : queues) {
+		queue->Push(frag);
+	}
 }
 
 void TDataParser::Push(ThreadsafeQueue<std::shared_ptr<const TBadFragment>>& queue, const std::shared_ptr<TBadFragment>& frag)
 {
-   frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
-   fFragmentIdMap[frag->GetTriggerId()]++;
-   frag->SetEntryNumber();
-   queue.Push(frag);
+	frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
+	fFragmentIdMap[frag->GetTriggerId()]++;
+	frag->SetEntryNumber();
+	queue.Push(frag);
 }
 
 std::string TDataParser::OutputQueueStatus()
 {
-   std::stringstream ss;
-   ss<<"********************************************************************************"<<std::endl;
-   for(const auto& queue : fGoodOutputQueues) {
-      ss<<queue->Name()<<": "<<queue->ItemsPushed()<<" pushed, "<<queue->ItemsPopped()<<" popped, "
-        <<queue->Size()<<" left"<<std::endl;
-   }
-   ss<<"********************************************************************************"<<std::endl;
-   return ss.str();
+	std::stringstream ss;
+	ss<<"********************************************************************************"<<std::endl;
+	for(const auto& queue : fGoodOutputQueues) {
+		ss<<queue->Name()<<": "<<queue->ItemsPushed()<<" pushed, "<<queue->ItemsPopped()<<" popped, "
+			<<queue->Size()<<" left"<<std::endl;
+	}
+	ss<<"********************************************************************************"<<std::endl;
+	return ss.str();
 }
 
 /////////////***************************************************************/////////////
@@ -1543,17 +1667,17 @@ std::string TDataParser::OutputQueueStatus()
 
 int TDataParser::EPIXToScalar(float* data, int size, unsigned int midasSerialNumber, time_t midasTime)
 {
-   int                         NumFragsFound = 1;
-   std::shared_ptr<TEpicsFrag> EXfrag        = std::make_shared<TEpicsFrag>();
+	int                         NumFragsFound = 1;
+	std::shared_ptr<TEpicsFrag> EXfrag        = std::make_shared<TEpicsFrag>();
 
-   EXfrag->fMidasTimeStamp = midasTime;
-   EXfrag->fMidasId        = midasSerialNumber;
+	EXfrag->fMidasTimeStamp = midasTime;
+	EXfrag->fMidasId        = midasSerialNumber;
 
-   for(int x = 0; x < size; x++) {
-      EXfrag->fData.push_back(data[x]);
-      EXfrag->fName.push_back(TEpicsFrag::GetEpicsVariableName(x));
-   }
+	for(int x = 0; x < size; x++) {
+		EXfrag->fData.push_back(data[x]);
+		EXfrag->fName.push_back(TEpicsFrag::GetEpicsVariableName(x));
+	}
 
-   fScalerOutputQueue->Push(EXfrag);
-   return NumFragsFound;
+	fScalerOutputQueue->Push(EXfrag);
+	return NumFragsFound;
 }

@@ -1,4 +1,4 @@
-// TXMLOdb.h TRawEvent.h TRawFile.h TMidasEvent.h TMidasFile.h TLstEvent.h TLstFile.h
+// TXMLOdb.h TRawEvent.h TRawFile.h TMidasEvent.h TMidasFile.h TLstEvent.h TLstFile.h TTdrEvent.h TTdrFile.h
 
 
 #ifdef __CINT__
@@ -19,6 +19,8 @@
 #pragma link C++ class TMidasFile+;
 #pragma link C++ class TLstEvent+;
 #pragma link C++ class TLstFile+;
+#pragma link C++ class TTdrEvent+;
+#pragma link C++ class TTdrFile+;
 
 #endif
 

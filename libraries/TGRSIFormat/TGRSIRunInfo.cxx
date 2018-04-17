@@ -93,7 +93,7 @@ void TGRSIRunInfo::Print(Option_t* opt) const
 	struct tm runStop  = *localtime(const_cast<const time_t*>(&tmpStop));
 	printf("\t\tRunNumber:          %05i\n", RunNumber());
 	printf("\t\tSubRunNumber:       %03i\n", SubRunNumber());
-	if(Get()->RunStart != 0 && Get()->RunStop != 0) {
+	if(Get()->RunStart() != 0 && Get()->RunStop() != 0) {
 		printf("\t\tRunStart:           %s", asctime(&runStart));
 		printf("\t\tRunStop:            %s", asctime(&runStop));
 		printf("\t\tRunLength:          %.0f s\n", RunLength());
@@ -117,7 +117,12 @@ void TGRSIRunInfo::Print(Option_t* opt) const
       printf("\t\tDESCANT:            %s\n", Descant() ? "true" : "false");
       printf("\t\tZDS:                %s\n", ZeroDegree() ? "true" : "false");
       printf("\t\tDANTE:              %s\n", Dante() ? "true" : "false");
+      printf("\t\tBGO:                %s\n", Bgo() ? "true" : "false");
       printf("\t\tFIPPS:              %s\n", Fipps() ? "true" : "false");
+      printf("\t\tTDRCLOVER:          %s\n", TdrClover() ? "true" : "false");
+      printf("\t\tTDRTIGRESS:         %s\n", TdrTigress() ? "true" : "false");
+      printf("\t\tTDRSILI:            %s\n", TdrSiLi() ? "true" : "false");
+      printf("\t\tTDRPLASTIC:         %s\n", TdrPlastic() ? "true" : "false");
       printf("\n");
       printf(DBLUE "\tArray Position (mm) = " DRED "%.01f" RESET_COLOR "\n", TGRSIRunInfo::HPGeArrayPosition());
       printf(DBLUE "\tDESCANT in ancillary positions = " DRED "%s" RESET_COLOR "\n",
@@ -151,7 +156,12 @@ void TGRSIRunInfo::Clear(Option_t*)
    fDante      = false;
    fZeroDegree = false;
    fDescant    = false;
+   fBgo        = false;
    fFipps      = false;
+   fTdrClover  = false;
+   fTdrTigress = false;
+   fTdrSiLi    = false;
+   fTdrPlastic = false;
 
    fDescantAncillary = false;
 
@@ -259,11 +269,41 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum)
 				}
 				SetDescant();
 				break;
+			case TMnemonic::ESystem::kBgo:
+				if(!Bgo()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetBgo();
+				break;
 			case TMnemonic::ESystem::kFipps:
 				if(!Fipps()) {
 					Get()->fNumberOfTrueSystems++;
 				}
 				SetFipps();
+				break;
+			case TMnemonic::ESystem::kTdrClover:
+				if(!TdrClover()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetTdrClover();
+				break;
+			case TMnemonic::ESystem::kTdrTigress:
+				if(!TdrTigress()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetTdrTigress();
+				break;
+			case TMnemonic::ESystem::kTdrSiLi:
+				if(!TdrSiLi()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetTdrSiLi();
+				break;
+			case TMnemonic::ESystem::kTdrPlastic:
+				if(!TdrPlastic()) {
+					Get()->fNumberOfTrueSystems++;
+				}
+				SetTdrPlastic();
 				break;
 			case TMnemonic::ESystem::kGeneric:
 				if(!Generic()) {

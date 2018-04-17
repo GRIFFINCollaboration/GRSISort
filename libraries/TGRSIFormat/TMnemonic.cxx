@@ -19,7 +19,12 @@
 #include "TZeroDegree.h"
 #include "TSiLi.h"
 #include "TGenericDetector.h"
+#include "TBgo.h"
 #include "TFipps.h"
+#include "TTdrClover.h"
+#include "TTdrTigress.h"
+#include "TTdrSiLi.h"
+#include "TTdrPlastic.h"
 
 ClassImp(TMnemonic)
 
@@ -109,8 +114,18 @@ void TMnemonic::EnumerateSystem()
       fSystem = ESystem::kZeroDegree;
    } else if(fSystemString.compare("TP") == 0) {
       fSystem = ESystem::kTip;
+   } else if(fSystemString.compare("BG") == 0) {
+      fSystem = ESystem::kBgo;
    } else if(fSystemString.compare("FI") == 0) {
       fSystem = ESystem::kFipps;
+   } else if(fSystemString.compare("TC") == 0) {
+      fSystem = ESystem::kTdrClover;
+   } else if(fSystemString.compare("TT") == 0) {
+      fSystem = ESystem::kTdrTigress;
+   } else if(fSystemString.compare("TS") == 0) {
+      fSystem = ESystem::kTdrSiLi;
+   } else if(fSystemString.compare("TP") == 0) {
+      fSystem = ESystem::kTdrPlastic;
    } else {
       fSystem = ESystem::kClear;
    }
@@ -133,6 +148,9 @@ TMnemonic::EDigitizer TMnemonic::EnumerateDigitizer(std::string name)
    }
    if(name.compare("CAEN8") == 0) {
       return EDigitizer::kCAEN8;
+   }
+   if(name.compare("PIXIE") == 0) {
+      return EDigitizer::kPixie;
    }
    return EDigitizer::kDefault;
 }
@@ -231,7 +249,12 @@ TClass* TMnemonic::GetClassType() const
 		case ESystem::kTAC:        fClassType = TTAC::Class(); break;
 		case ESystem::kZeroDegree: fClassType = TZeroDegree::Class(); break;
 		case ESystem::kTip:        fClassType = TTip::Class(); break;
+		case ESystem::kBgo:        fClassType = TBgo::Class(); break;
 		case ESystem::kFipps:      fClassType = TFipps::Class(); break;
+		case ESystem::kTdrClover:  fClassType = TTdrClover::Class(); break;
+		case ESystem::kTdrTigress: fClassType = TTdrTigress::Class(); break;
+		case ESystem::kTdrSiLi:    fClassType = TTdrSiLi::Class(); break;
+		case ESystem::kTdrPlastic: fClassType = TTdrPlastic::Class(); break;
 		case ESystem::kGeneric:    fClassType = TGenericDetector::Class(); break;
 		default:                              fClassType = nullptr;
    };

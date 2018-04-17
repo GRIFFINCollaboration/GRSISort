@@ -157,6 +157,7 @@ public:
    int FifoToFragment(unsigned short* data, int size, bool zerobuffer = false, unsigned int midasSerialNumber = 0,
                       time_t midasTime = 0);
    int FippsToFragment(std::vector<char> data);
+   int TdrToFragment(std::vector<char> data);
 
 private:
 // utility

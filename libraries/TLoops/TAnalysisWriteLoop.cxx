@@ -90,8 +90,9 @@ bool TAnalysisWriteLoop::Iteration()
    fInputSize = fInputQueue->Pop(event);
    if(fInputSize < 0) {
       fInputSize = 0;
-   }
-   ++fItemsPopped;
+   } else {
+		++fItemsPopped;
+	}
 
    if(fOutOfOrderTree != nullptr && fOutOfOrderQueue->Size() > 0) {
       std::shared_ptr<const TFragment> frag;
