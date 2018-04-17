@@ -118,13 +118,13 @@ void TMnemonic::EnumerateSystem()
       fSystem = ESystem::kBgo;
    } else if(fSystemString.compare("FI") == 0) {
       fSystem = ESystem::kFipps;
-   } else if(fSystemString.compare("TC") == 0) {
+   } else if(fSystemString.compare("CL") == 0) {
       fSystem = ESystem::kTdrClover;
    } else if(fSystemString.compare("TT") == 0) {
       fSystem = ESystem::kTdrTigress;
-   } else if(fSystemString.compare("TS") == 0) {
+   } else if(fSystemString.compare("SI") == 0) {
       fSystem = ESystem::kTdrSiLi;
-   } else if(fSystemString.compare("TP") == 0) {
+   } else if(fSystemString.compare("PL") == 0) {
       fSystem = ESystem::kTdrPlastic;
    } else {
       fSystem = ESystem::kClear;

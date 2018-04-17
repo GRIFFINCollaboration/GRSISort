@@ -31,6 +31,7 @@ public:
 public:
    /////////////////////////		/////////////////////////////////////
    int GetCrystal() const override;
+   Double_t GetCorrectedTime() const; ///< Returns a time value using the CFD, corrected using GValue
 
 private:
 public:
