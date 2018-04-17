@@ -33,6 +33,15 @@ bool DefaultAddback(TTdrTigressHit& one, TTdrTigressHit& two)
 
 std::function<bool(TTdrTigressHit&, TTdrTigressHit&)> TTdrTigress::fAddbackCriterion = DefaultAddback;
 
+bool DefaultSuppression(TTdrTigressHit& clo, TBgoHit& bgo)
+{
+   return ((clo.GetDetector() == bgo.GetDetector()) &&
+           (std::fabs(clo.GetTime() - bgo.GetCorrectedTime()) < TGRSIOptions::AnalysisOptions()->SuppressionWindow()) &&
+			  (bgo.GetEnergy() > TGRSIOptions::AnalysisOptions()->SuppressionEnergy()));
+}
+
+std::function<bool(TTdrTigressHit&, TBgoHit&)> TTdrTigress::fSuppressionCriterion = DefaultSuppression;
+
 bool  TTdrTigress::fSetCoreWave     = false;
 
 // This seems unnecessary, and why 17?;//  they are static members, and need
@@ -131,6 +140,9 @@ void TTdrTigress::Copy(TObject& rhs) const
    static_cast<TTdrTigress&>(rhs).fTdrTigressHits   = fTdrTigressHits;
    static_cast<TTdrTigress&>(rhs).fAddbackHits   = fAddbackHits;
    static_cast<TTdrTigress&>(rhs).fAddbackFrags  = fAddbackFrags;
+   static_cast<TTdrTigress&>(rhs).fSuppressedHits   = fSuppressedHits;
+   static_cast<TTdrTigress&>(rhs).fSuppressedAddbackHits   = fSuppressedAddbackHits;
+   static_cast<TTdrTigress&>(rhs).fSuppressedAddbackFrags  = fSuppressedAddbackFrags;
    static_cast<TTdrTigress&>(rhs).fSetCoreWave          = fSetCoreWave;
    static_cast<TTdrTigress&>(rhs).fCycleStart           = fCycleStart;
    static_cast<TTdrTigress&>(rhs).fTdrTigressBits          = 0;
@@ -149,6 +161,9 @@ void TTdrTigress::Clear(Option_t* opt)
    fTdrTigressHits.clear();
    fAddbackHits.clear();
    fAddbackFrags.clear();
+   fSuppressedHits.clear();
+   fSuppressedAddbackHits.clear();
+   fSuppressedAddbackFrags.clear();
    fCycleStart = 0;
 }
 
@@ -162,6 +177,18 @@ void TTdrTigress::Print(Option_t*) const
    } else {
       std::cout<<std::setw(6)<<" "
                <<" Addback not set"<<std::endl;
+   }
+
+   if(IsSuppressedSet()) {
+      std::cout<<std::setw(6)<<fSuppressedHits.size()<<" suppressed hits"<<std::endl;
+   } else {
+      std::cout<<std::setw(6)<<" "<<" suppressed not set"<<std::endl;
+   }
+
+   if(IsSuppressedAddbackSet()) {
+      std::cout<<std::setw(6)<<fSuppressedAddbackHits.size()<<" suppressed addback hits"<<std::endl;
+   } else {
+      std::cout<<std::setw(6)<<" "<<" suppressed Addback not set"<<std::endl;
    }
 
    std::cout<<std::setw(6)<<fCycleStart<<" cycle start"<<std::endl;
@@ -201,6 +228,41 @@ bool TTdrTigress::IsAddbackSet() const
 void TTdrTigress::SetAddback(const Bool_t flag) const
 {
 	return SetBitNumber(ETdrTigressBits::kIsAddbackSet, flag);
+}
+
+std::vector<TTdrTigressHit>* TTdrTigress::GetSuppressedVector()
+{
+	return &fSuppressedHits;
+}
+
+bool TTdrTigress::IsSuppressedSet() const
+{
+	return TestBitNumber(ETdrTigressBits::kIsSuppressedSet);
+}
+
+void TTdrTigress::SetSuppressed(const Bool_t flag) const
+{
+	return SetBitNumber(ETdrTigressBits::kIsSuppressedSet, flag);
+}
+
+std::vector<TTdrTigressHit>* TTdrTigress::GetSuppressedAddbackVector()
+{
+	return &fSuppressedAddbackHits;
+}
+
+std::vector<UShort_t>* TTdrTigress::GetSuppressedAddbackFragVector()
+{
+	return &fSuppressedAddbackFrags;
+}
+
+bool TTdrTigress::IsSuppressedAddbackSet() const
+{
+	return TestBitNumber(ETdrTigressBits::kIsSupprAddbSet);
+}
+
+void TTdrTigress::SetSuppressedAddback(const Bool_t flag) const
+{
+	return SetBitNumber(ETdrTigressBits::kIsSupprAddbSet, flag);
 }
 
 TGRSIDetectorHit* TTdrTigress::GetHit(const Int_t& idx)
@@ -275,6 +337,101 @@ TTdrTigressHit* TTdrTigress::GetAddbackHit(const int& i)
 	return nullptr;
 }
 
+Int_t TTdrTigress::GetSuppressedMultiplicity(TBgo* bgo)
+{
+	// Automatically builds the suppressed hits using the fSuppressedCriterion (if the size of the fSuppressedHits vector is zero)
+	// and return the number of suppressed hits.
+	if(fTdrTigressHits.empty()) {
+		return 0;
+	}
+	// if the addback has been reset, clear the addback hits
+	if(!IsSuppressedSet()) {
+		fSuppressedHits.clear();
+	}
+	if(fSuppressedHits.empty()) {
+		// loop over unsuppressed hits
+		for(auto hit : fTdrTigressHits) {
+			bool suppress = false;
+			for(auto b : bgo->GetHitVector()) {
+				if(fSuppressionCriterion(hit, b)) {
+					suppress = true;
+					break;
+				}
+			}
+			if(!suppress) fSuppressedHits.push_back(hit);
+		}
+	}
+
+	SetSuppressed(true);
+
+	return fSuppressedHits.size();
+}
+
+TTdrTigressHit* TTdrTigress::GetSuppressedHit(TBgo* bgo, const int& i)
+{
+	if(i < GetSuppressedMultiplicity(bgo)) {
+		return &GetSuppressedVector()->at(i);
+	}
+	std::cerr<<"Suppressed hits are out of range"<<std::endl;
+	throw grsi::exit_exception(1);
+	return nullptr;
+}
+
+Int_t TTdrTigress::GetSuppressedAddbackMultiplicity(TBgo* bgo)
+{
+	// Automatically builds the addback hits using the fAddbackCriterion (if the size of the fSuppressedAddbackHits vector is zero)
+	// and return the number of addback hits.
+	GetSuppressedMultiplicity(bgo); // this forces the population of the suppressed vector
+	auto hit_vec  = GetSuppressedVector();
+	auto ab_vec   = GetSuppressedAddbackVector();
+	auto frag_vec = GetSuppressedAddbackFragVector();
+	if(hit_vec->empty()) {
+		return 0;
+	}
+	// if the addback has been reset, clear the addback hits
+	if(!IsSuppressedAddbackSet()) {
+		ab_vec->clear();
+		frag_vec->clear();
+	}
+	if(ab_vec->empty()) {
+		// use the first griffin hit as starting point for the addback hits
+		ab_vec->push_back(hit_vec->at(0));
+		frag_vec->push_back(1);
+
+		// loop over remaining griffin hits
+		size_t i, j;
+		for(i = 1; i < hit_vec->size(); ++i) {
+			// check for each existing addback hit if this griffin hit should be added
+			for(j = 0; j < ab_vec->size(); ++j) {
+				if(fAddbackCriterion(ab_vec->at(j), hit_vec->at(i))) {
+					ab_vec->at(j).Add(&(hit_vec->at(i))); // copy constructor does not copy the bit field, so we set it.
+					ab_vec->at(j).SetHitBit(TGRSIDetectorHit::EBitFlag::kIsEnergySet); // this must be set for summed hits.
+					ab_vec->at(j).SetHitBit(TGRSIDetectorHit::EBitFlag::kIsTimeSet);   // this must be set for summed hits. pcb.
+					(frag_vec->at(j))++;
+					break;
+				}
+			}
+			if(j == ab_vec->size()) {
+				ab_vec->push_back(hit_vec->at(i));
+				frag_vec->push_back(1);
+			}
+		}
+		SetSuppressedAddback(true);
+	}
+
+	return ab_vec->size();
+}
+
+TTdrTigressHit* TTdrTigress::GetSuppressedAddbackHit(TBgo* bgo, const int& i)
+{
+	if(i < GetSuppressedAddbackMultiplicity(bgo)) {
+		return &GetSuppressedAddbackVector()->at(i);
+	}
+	std::cerr<<"Suppressed addback hits are out of range"<<std::endl;
+	throw grsi::exit_exception(1);
+	return nullptr;
+}
+
 void TTdrTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
 {
 	// Builds the TdrTigress Hits directly from the TFragment. Basically, loops through the hits for an event and sets
@@ -337,6 +494,29 @@ UShort_t TTdrTigress::GetNAddbackFrags(const size_t& idx)
 	// with index idx.
 	if(idx < GetAddbackFragVector()->size()) {
 		return GetAddbackFragVector()->at(idx);
+	}
+	return 0;
+}
+
+void TTdrTigress::ResetSuppressed()
+{
+	SetSuppressed(false);
+	GetSuppressedVector()->clear();
+}
+
+void TTdrTigress::ResetSuppressedAddback()
+{
+	SetSuppressedAddback(false);
+	GetSuppressedAddbackVector()->clear();
+	GetSuppressedAddbackFragVector()->clear();
+}
+
+UShort_t TTdrTigress::GetNSuppressedAddbackFrags(const size_t& idx)
+{
+	// Get the number of addback "fragments" contributing to the total addback hit
+	// with index idx.
+	if(idx < GetSuppressedAddbackFragVector()->size()) {
+		return GetSuppressedAddbackFragVector()->at(idx);
 	}
 	return 0;
 }

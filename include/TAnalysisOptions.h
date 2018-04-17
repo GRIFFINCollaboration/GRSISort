@@ -35,6 +35,8 @@ public:
    // sorting options
    inline void SetBuildWindow(const long int t_bw) { fBuildWindow = t_bw; }
    inline void SetAddbackWindow(const double t_abw) { fAddbackWindow = t_abw; }
+   inline void SetSuppressionWindow(const double t_sup) { fSuppressionWindow = t_sup; }
+   inline void SetSuppressionEnergy(const double e_sup) { fSuppressionEnergy = e_sup; }
 
    inline void SetWaveformFitting(const bool flag) { fWaveformFitting = flag; }
    inline bool                               IsWaveformFitting() { return fWaveformFitting; }
@@ -51,6 +53,16 @@ public:
       return fAddbackWindow;
    }
 
+   inline double   SuppressionWindow()
+   {
+      return fSuppressionWindow;
+   }
+
+   inline double   SuppressionEnergy()
+   {
+      return fSuppressionEnergy;
+   }
+
    bool StaticWindow() const { return fStaticWindow; }
 
 private:
@@ -58,12 +70,14 @@ private:
    long int
         fBuildWindow;   ///< if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
    int  fAddbackWindow; ///< Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default = 150 ns (150))
+   double fSuppressionWindow; ///< Time used to suppress Ge-Events.   (default = 150 ns (150))
+   double fSuppressionEnergy; ///< Minimum energy used to suppress Ge-Events.   (default = 0 keV)
    bool fIsCorrectingCrossTalk; ///< True if we are correcting for cross-talk in GRIFFIN at analysis-level
    bool fWaveformFitting;       ///< If true, waveform fitting with SFU algorithm will be performed
    bool fStaticWindow;          ///< Flag to use static window (default moving)
 
    /// \cond CLASSIMP
-   ClassDefOverride(TAnalysisOptions, 2); ///< Class for storing options in GRSISort
+   ClassDefOverride(TAnalysisOptions, 3); ///< Class for storing options in GRSISort
                                           /// \endcond
 };
 /*! @} */

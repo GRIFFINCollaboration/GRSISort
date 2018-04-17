@@ -1572,7 +1572,8 @@ int TDataParser::TdrToFragment(std::vector<char> data)
 					eventFrag->SetTimeStamp((ptr[i]&0xfffffff) | (timeStampHighBits<<28));
 					++totalEventsRead;
 					// charge is a 14bit signed integer (despite being reported as 16 bits) so we extend the sign bit for an Int_t (4 bytes)
-					eventFrag->SetCharge(static_cast<Int_t>(((ptr[i]>>32)&0xffff) | ((((ptr[i]>>32)&0x2000) == 0x2000) ? 0xffffc000 : 0x0)));
+					//eventFrag->SetCharge(static_cast<Int_t>(((ptr[i]>>32)&0xffff) | ((((ptr[i]>>32)&0x2000) == 0x2000) ? 0xffffc000 : 0x0)));
+					eventFrag->SetCharge(static_cast<Int_t>((ptr[i]>>32)&0xffff));
 					//std::cout<<std::hex<<std::setfill('0');
 					//std::cout<<std::setw(16)<<ptr[i]<<": addr "<<eventFrag->GetAddress()<<", ts "<<eventFrag->GetTimeStamp()<<", charge "<<eventFrag->Charge()<<std::endl;
 					//std::cout<<std::dec<<std::setfill(' ');
