@@ -49,6 +49,9 @@ void Analyze(const char* tree_type)
          in_file->Close(); // Close the files when you are done with them
       }
    }
+	if(tree_list.empty()) {
+		return;
+	}
 
    auto* proof_chain = new TChain(tree_type);
    // loop over the list of files that belong to this tree type and add them to the chain
@@ -207,4 +210,6 @@ int main(int argc, char** argv)
    Analyze("FragmentTree");
    Analyze("AnalysisTree");
    Analyze("Lst2RootTree");
+
+	return 0;
 }
