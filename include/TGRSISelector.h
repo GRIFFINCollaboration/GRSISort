@@ -65,6 +65,8 @@ protected:
 private:
    std::string       fOutputPrefix;
    TAnalysisOptions* fAnalysisOptions{nullptr};
+	Int_t             fFirstRunNumber;
+	Int_t             fFirstSubRunNumber;
 
    ClassDefOverride(TGRSISelector, 2);
 };
