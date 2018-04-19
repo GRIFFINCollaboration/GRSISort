@@ -35,7 +35,8 @@ std::function<bool(TTdrTigressHit&, TTdrTigressHit&)> TTdrTigress::fAddbackCrite
 
 bool DefaultSuppression(TTdrTigressHit& clo, TBgoHit& bgo)
 {
-   return ((clo.GetDetector() == bgo.GetDetector()) &&
+	// the tigress detector is the 4th detector after the three clovers
+   return ((4 == bgo.GetDetector()) &&
            (std::fabs(clo.GetTime() - bgo.GetCorrectedTime()) < TGRSIOptions::AnalysisOptions()->SuppressionWindow()) &&
 			  (bgo.GetEnergy() > TGRSIOptions::AnalysisOptions()->SuppressionEnergy()));
 }
