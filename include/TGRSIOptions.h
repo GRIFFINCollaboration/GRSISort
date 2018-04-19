@@ -107,6 +107,8 @@ public:
 	size_t FragmentWriteQueueSize() const { return fFragmentWriteQueueSize; }
 	size_t AnalysisWriteQueueSize() const { return fAnalysisWriteQueueSize; }
 
+	size_t NumberOfClients() const { return fNumberOfClients; }
+
 	bool TimeSortInput() const { return fTimeSortInput; }
 	int  SortDepth() const { return fSortDepth; }
 
@@ -194,6 +196,8 @@ private:
 
 	size_t fFragmentWriteQueueSize; ///< Size of the Fragment write Q
 	size_t fAnalysisWriteQueueSize; ///< Size of the analysis write Q
+
+	size_t fNumberOfClients;        ///< Number of analysis write loop clients
 
 	bool fTimeSortInput; ///< Flag to sort on time or triggers
 	int  fSortDepth;     ///< Size of Q that stores fragments to be built into events

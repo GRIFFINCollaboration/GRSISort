@@ -126,7 +126,7 @@ Bool_t TGRSISelector::Process(Long64_t entry)
    static TFile* current_file = nullptr;
    if(current_file != fChain->GetCurrentFile()) {
       current_file = fChain->GetCurrentFile();
-      std::cout<<"Starting to sort: "<<current_file<<std::endl;
+      std::cout<<"Starting to sort: "<<current_file->GetName()<<std::endl;
       TChannel::ReadCalFromFile(current_file);
       TGRSIRunInfo::Get()->ReadInfoFromFile(current_file);
       //   TChannel::WriteCalFile();
@@ -157,7 +157,7 @@ void TGRSISelector::Terminate()
    Int_t runnumber    = runInfo->RunNumber();
    Int_t subrunnumber = runInfo->SubRunNumber();
 
-   std::cout<<runnumber<<" "<<subrunnumber<<std::endl;
+   std::cout<<"Using run "<<runnumber<<" subrun "<<subrunnumber<<std::endl;
    TFile outputFile(Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runnumber, subrunnumber), "RECREATE");
    fOutput->Write();
    runInfo->Write();
