@@ -1568,11 +1568,23 @@ int TDataParser::TdrToFragment(std::vector<char> data)
 			case 3:
 				{
 					// data word with channelNumber, adcData, and 28 low bits of timestamp
+					// check if this is the tape-move event
+					if(TChannel::GetChannel((ptr[i]>>48)&0xfff) != nullptr && TChannel::GetChannel((ptr[i]>>48)&0xfff)->GetDigitizerType() == TMnemonic::EDigitizer::kPixieTapeMove) {
+						//PPG
+						auto* ppgEvent = new TPPGData;
+						ppgEvent->SetNewPPG(EPpgPattern::kTapeMove);
+						ppgEvent->SetLowTimeStamp(ptr[i]&0xfffffff);
+						ppgEvent->SetHighTimeStamp(timeStampHighBits);
+						ppgEvent->SetNetworkPacketId(static_cast<Int_t>((ptr[i]>>32)&0xffff));
+						TPPG::Get()->AddData(ppgEvent);
+						continue;
+					}
 					eventFrag->SetAddress((ptr[i]>>48)&0xfff);
 					eventFrag->SetTimeStamp((ptr[i]&0xfffffff) | (timeStampHighBits<<28));
 					++totalEventsRead;
 					// charge is a 14bit signed integer (despite being reported as 16 bits) so we extend the sign bit for an Int_t (4 bytes)
-					eventFrag->SetCharge(static_cast<Int_t>(((ptr[i]>>32)&0xffff) | ((((ptr[i]>>32)&0x2000) == 0x2000) ? 0xffffc000 : 0x0)));
+					//eventFrag->SetCharge(static_cast<Int_t>(((ptr[i]>>32)&0xffff) | ((((ptr[i]>>32)&0x2000) == 0x2000) ? 0xffffc000 : 0x0)));
+					eventFrag->SetCharge(static_cast<Int_t>((ptr[i]>>32)&0xffff));
 					//std::cout<<std::hex<<std::setfill('0');
 					//std::cout<<std::setw(16)<<ptr[i]<<": addr "<<eventFrag->GetAddress()<<", ts "<<eventFrag->GetTimeStamp()<<", charge "<<eventFrag->Charge()<<std::endl;
 					//std::cout<<std::dec<<std::setfill(' ');
