@@ -85,6 +85,7 @@ void TGRSIRunInfo::Print(Option_t* opt) const
 {
    // Prints the TGRSIRunInfo. Options:
    // a: Print out more details.
+	TSingleton<TGRSIRunInfo>::PrintDirectory();
    std::cout<<"Title: "<<RunTitle()<<std::endl;
    std::cout<<"Comment: "<<RunComment()<<std::endl;
 	time_t tmpStart = static_cast<time_t>(RunStart());
