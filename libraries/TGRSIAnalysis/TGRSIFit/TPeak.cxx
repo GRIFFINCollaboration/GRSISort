@@ -324,6 +324,10 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    } else {
       fitres = fitHist->Fit(this, Form("%sRSN", opt)); // The RS needs to always be there
    }
+   if((int) fitres == -1) {
+      printf("No data error.");
+      return false;
+   }
 
    for(int i = 0; i < GetNpar(); ++i) {
       SetParLimits(i, lowerLimit[i], upperLimit[i]);
@@ -334,6 +338,10 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
       fitres = fitHist->Fit(this, Form("%sRLS", opt)); // The RS needs to always be there
    } else {
       fitres = fitHist->Fit(this, Form("%sRS", opt)); // The RS needs to always be there
+   }
+   if((int) fitres == -1) {
+      printf("No data error.");
+      return false;
    }
 
    // After performing this fit I want to put something here that takes the fit result (good,bad,etc)
