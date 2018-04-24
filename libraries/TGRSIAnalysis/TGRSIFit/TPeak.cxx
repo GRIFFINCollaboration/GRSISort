@@ -324,6 +324,8 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    } else {
       fitres = fitHist->Fit(this, Form("%sRSN", opt)); // The RS needs to always be there
    }
+   
+   // Check fit exited successfully before continuing
    if((int) fitres == -1) {
       printf("No data error.");
       return false;
@@ -339,6 +341,8 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    } else {
       fitres = fitHist->Fit(this, Form("%sRS", opt)); // The RS needs to always be there
    }
+   
+   // Check fit exited successfully before continuing
    if((int) fitres == -1) {
       printf("No data error.");
       return false;
