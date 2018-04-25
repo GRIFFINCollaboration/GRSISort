@@ -324,6 +324,9 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    } else {
       fitres = fitHist->Fit(this, Form("%sRSN", opt)); // The RS needs to always be there
    }
+   
+   // Check fit exited successfully before continuing
+   if(static_cast<int>(fitres) == -1) return false;
 
    for(int i = 0; i < GetNpar(); ++i) {
       SetParLimits(i, lowerLimit[i], upperLimit[i]);
@@ -335,6 +338,9 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    } else {
       fitres = fitHist->Fit(this, Form("%sRS", opt)); // The RS needs to always be there
    }
+   
+   // Check fit exited successfully before continuing
+   if(static_cast<int>(fitres) == -1) return false;
 
    // After performing this fit I want to put something here that takes the fit result (good,bad,etc)
    // for printing out. RD
