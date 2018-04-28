@@ -158,6 +158,8 @@ public:
                       time_t midasTime = 0);
    int FippsToFragment(std::vector<char> data);
 
+	int CaenToFragment(uint32_t* data, int size);
+
 private:
 // utility
 #ifndef __CINT__
