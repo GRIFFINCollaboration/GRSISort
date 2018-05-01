@@ -1516,18 +1516,18 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 				while(w < size) {
 					if(data[w++] != 0x0) {
 						std::cerr<<board<<". board - failed on first word, found empty word, but not all following words were empty: "<<w-1<<" 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w-1]<<std::dec<<std::setfill(' ')<<std::endl;
-						return nofFragments;
+						return -w;
 					}
 				}
 				return nofFragments;
 			}
 			std::cerr<<board<<". board - failed on first word 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w]<<std::dec<<std::setfill(' ')<<", highest nibble should have been 0xa!"<<std::endl;
-			return nofFragments;
+			return -w;
 		}
 		int32_t numWordsBoard = data[w++]&0xfffffff; // this is the number of 32-bit words from this board
 		if(w - 1 + numWordsBoard > size) { 
 			std::cerr<<"0 - Missing words, at word "<<w-1<<", expecting "<<numWordsBoard<<" more words for board "<<board<<" (bank size "<<size<<")"<<std::endl;
-			return nofFragments;
+			return -w;
 		}
 		uint8_t boardId = data[w]>>27; // GEO address of board (can be set via register 0xef08 for VME)
 		uint16_t pattern = (data[w]>>8) & 0x7fff; // value read from LVDS I/O (VME only)
@@ -1547,16 +1547,16 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 			// read channel aggregate header
 			if(data[w]>>31 != 0x1) {
 				std::cerr<<"Failed on first word 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w]<<std::dec<<std::setfill(' ')<<", highest bit should have been set!"<<std::endl;
-				return nofFragments;
+				return -w;
 			}
 			int32_t numWords = data[w++]&0x3fffff;//per channel
 			if(w >= size) {
 				std::cerr<<"1 - Missing words, got only "<<w-1<<" words for channel "<<channel<<" (bank size "<<size<<")"<<std::endl;
-				return nofFragments;
+				return -w;
 			}
 			if(((data[w]>>29) & 0x3) != 0x3) {
 				std::cerr<<"Failed on second word 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w]<<std::dec<<std::setfill(' ')<<", bits 29 and 30 should have been set!"<<std::endl;
-				return nofFragments;
+				return -w;
 			}
 			bool dualTrace = ((data[w]>>31) == 0x1);
 			bool extras    = (((data[w]>>28) & 0x1) == 0x1);
@@ -1570,13 +1570,13 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 			int numSampleWords = 4*(data[w++]&0xffff);// this is actually the number of samples divided by eight, 2 sample per word => 4*
 			if(w >= size) {
 				std::cerr<<"2 - Missing words, got only "<<w-1<<" words for channel "<<channel<<" (bank size "<<size<<")"<<std::endl;
-				return nofFragments;
+				return -w;
 			}
 			int eventSize = numSampleWords+2; // +2 = trigger time words and charge word
 			if(extras) ++eventSize;
 			if(numWords%eventSize != 2) {
 				std::cerr<<numWords<<" words in channel aggregate, event size is "<<eventSize<<" => "<<static_cast<double>(numWords-2.)/static_cast<double>(eventSize)<<" events?"<<std::endl;
-				return nofFragments;
+				return -w;
 			}
 
 			// read channel data
@@ -1587,7 +1587,7 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 				if(waveform) {
 					if(w + numSampleWords >= size) { // need to read at least the sample words plus the charge/extra word
 						std::cerr<<"3 - Missing "<<numSampleWords<<" waveform words, got only "<<w-1<<" words for channel "<<channel<<" (bank size "<<size<<")"<<std::endl;
-						return nofFragments;
+						return -w;
 					}
 					for(int s = 0; s < numSampleWords && w < size; ++s, ++w) {
 						//eventFrag->AddDigitalWaveformSample(0, (data[w]>>14)&0x1);
@@ -1607,7 +1607,7 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 				} else {
 					if(w >= size) { // need to read at least the sample words plus the charge/extra word
 						std::cerr<<"3 - Missing words, got only "<<w-1<<" words for channel "<<channel<<" (bank size "<<size<<")"<<std::endl;
-						return nofFragments;
+						return -w;
 					}
 				}
 				if(extras) {
