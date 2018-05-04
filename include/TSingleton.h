@@ -38,8 +38,6 @@ public:
 		// if we don't have an instance yet or changed into another directory
 		// we want to read from the current directory
 		if(fSingleton == nullptr || fDir != gDirectory) {
-			delete fSingleton; // in case we just changed directories
-			fSingleton = nullptr;
 			if((gDirectory->GetFile()) != nullptr) {
 				TList* list = gDirectory->GetFile()->GetListOfKeys();
 				TIter  iter(list);
@@ -48,13 +46,16 @@ public:
 					if(strcmp(key->GetClassName(), T::Class()->GetName()) != 0) {
 						continue;
 					}
+					// we found the object in the file, so we use it as our singleton
+					// this automatically deletes the old singleton if we just switched files
 					Set(static_cast<T*>(key->ReadObj()));
+					fDir = gDirectory; // in either case (read from file or created new), gDirectory is the current directory
 				}
 			}
 			if(fSingleton == nullptr) {
 				fSingleton = new T;
+				fDir = gDirectory; // in either case (read from file or created new), gDirectory is the current directory
 			}
-			fDir = gDirectory; // in either case (read from file or created new), gDirectory is the current directory
 		}
 		return fSingleton;
 	}
@@ -64,6 +65,10 @@ public:
 			delete fSingleton;
 			fSingleton = val;
 		}
+	}
+	static void PrintDirectory()
+	{
+		std::cout<<"Read singleton "<<fSingleton<<" from "<<(fDir!=nullptr?fDir->GetName():"N/A")<<std::endl;
 	}
 
 protected:
