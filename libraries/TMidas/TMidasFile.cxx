@@ -227,6 +227,7 @@ bool TMidasFile::Open(const char* filename)
 
    Read(fFirstEvent);
    TGRSIRunInfo::SetRunInfo(GetRunNumber(), GetSubRunNumber());
+	TGRSIRunInfo::ClearGRSIVersion();
    TGRSIRunInfo::SetGRSIVersion(GRSI_RELEASE);
 
    return true;
