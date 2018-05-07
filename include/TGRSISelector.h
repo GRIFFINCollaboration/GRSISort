@@ -58,6 +58,7 @@ public:
 protected:
    std::map<std::string, TH1*>        fH1;
    std::map<std::string, TH2*>        fH2;
+   std::map<std::string, TH3*>        fH3;
    std::map<std::string, GHSym*>      fSym;
    std::map<std::string, GCube*>      fCube;
    std::map<std::string, THnSparseF*> fHSparse;
