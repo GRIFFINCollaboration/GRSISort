@@ -138,17 +138,17 @@ Int_t TDescantHit::GetRemainder() const
    return fCfd >> 22;
 }
 
-Double_t TDescantHit::GetTime(const ETimeFlag&, Option_t*) const
-{
-   Double_t  dTime = GetTimeStamp() * 10. + GetRemainder() + (GetCfd() + gRandom->Uniform()) / 256.;
-   TChannel* chan  = GetChannel();
-   if(chan == nullptr) {
-      Error("GetTime", "No TChannel exists for address 0x%08x", GetAddress());
-      return dTime;
-   }
-
-   return dTime - 10. * (chan->GetTZero(GetEnergy()));
-}
+//Double_t TDescantHit::GetTime(const ETimeFlag&, Option_t*) const
+//{
+//   Double_t  dTime = GetTimeStamp() * 10. + GetRemainder() + (GetCfd() + gRandom->Uniform()) / 256.;
+//   TChannel* chan  = GetChannel();
+//   if(chan == nullptr) {
+//      Error("GetTime", "No TChannel exists for address 0x%08x", GetAddress());
+//      return dTime;
+//   }
+//
+//   return dTime - 10. * (chan->GetTZero(GetEnergy()));
+//}
 
 Double_t TDescantHit::GetCorrectedTime() const
 {

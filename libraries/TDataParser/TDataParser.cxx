@@ -1529,11 +1529,15 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 			std::cerr<<"0 - Missing words, at word "<<w-1<<", expecting "<<numWordsBoard<<" more words for board "<<board<<" (bank size "<<size<<")"<<std::endl;
 			return -w;
 		}
+      //std::cout<<w-1<<": 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w-1]<<std::dec<<std::setfill(' ')<<" - "<<numWordsBoard<<" words"<<std::endl;
 		uint8_t boardId = data[w]>>27; // GEO address of board (can be set via register 0xef08 for VME)
 		uint16_t pattern = (data[w]>>8) & 0x7fff; // value read from LVDS I/O (VME only)
 		uint8_t channelMask = data[w++]&0xff; // which channels are in this board aggregate
-		//uint32_t boardCounter = data[w++]&0x7fffff; // ??? "counts the board aggregate"
+      //std::cout<<w-1<<": 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w-1]<<std::dec<<std::setfill(' ')<<" - boardId "<<boardId<<", pattern "<<pattern<<", channelMask "<<channelMask<<std::endl;
+		uint32_t boardCounter = data[w++]&0x7fffff; // ??? "counts the board aggregate"
+      //std::cout<<w-1<<": 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w-1]<<std::dec<<std::setfill(' ')<<" - boardCounter "<<boardCounter<<std::endl;
 		uint32_t boardTime = data[w++]; // time of creation of aggregate (does not correspond to a physical quantity)
+      //std::cout<<w-1<<": 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w-1]<<std::dec<<std::setfill(' ')<<" - boardTime "<<boardTime<<std::endl;
 		//if(boardCounter < gBoardCounter) {
 		//	std::cerr<<"current board counter "<<boardCounter<<" is less than previous one "<<gBoardCounter<<", skipping this data"<<std::endl;
 		//	return nofFragments;
@@ -1594,12 +1598,16 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 						//eventFrag->AddDigitalWaveformSample(1, (data[w]>>15)&0x1);
 						if(dualTrace) {
 							// all even samples are from the first trace, all odd ones from the second trace
-							eventFrag->AddWaveformSample(data[w]&0x3fff);
-							eventFrag->AddWaveformSample((data[w]>>16)&0x3fff);
+							//eventFrag->AddWaveformSample(data[w]&0x3fff);
+							//eventFrag->AddWaveformSample((data[w]>>16)&0x3fff);
+							eventFrag->AddWaveformSample(data[w]&0xffff);
+							eventFrag->AddWaveformSample((data[w]>>16)&0xffff);
 						} else {
 							// both samples are from the first trace
-							eventFrag->AddWaveformSample(data[w]&0x3fff);
-							eventFrag->AddWaveformSample((data[w]>>16)&0x3fff);
+							//eventFrag->AddWaveformSample(data[w]&0x3fff);
+							//eventFrag->AddWaveformSample((data[w]>>16)&0x3fff);
+							eventFrag->AddWaveformSample(data[w]&0xffff);
+							eventFrag->AddWaveformSample((data[w]>>16)&0xffff);
 						}
 						//eventFrag->AddDigitalWaveformSample(0, (data[w]>>30)&0x1);
 						//eventFrag->AddDigitalWaveformSample(1, (data[w]>>31)&0x1);
@@ -1611,6 +1619,7 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 					}
 				}
 				if(extras) {
+               //std::cout<<"extra word format "<<static_cast<int>(extraFormat)<<": 0x"<<std::hex<<data[w]<<std::dec<<std::endl;
 					switch(extraFormat) {
 						case 0: // [31:16] extended time stamp, [15:0] baseline*4
 							//eventFrag->Baseline(data[w]&0xffff);
@@ -1631,7 +1640,9 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 							//eventFrag->KiloCount(((data[w]>>13)&0x1) == 0x1);
 							//eventFrag->OverRange(((data[w]>>14)&0x1) == 0x1);
 							//eventFrag->LostTrigger(((data[w]>>15)&0x1) == 0x1);
-							eventFrag->SetTimeStamp(eventFrag->GetTimeStamp() | static_cast<uint64_t>(data[w++])<<15);
+                     //std::cout<<"changing timestamp from "<<std::hex<<eventFrag->GetTimeStamp()<<std::dec<<" to ";
+							eventFrag->SetTimeStamp(eventFrag->GetTimeStamp() | static_cast<uint64_t>(data[w++]&0xffff0000)<<15);
+                     //std::cout<<std::hex<<eventFrag->GetTimeStamp()<<std::dec<<std::endl;
 							break;
 						case 4: // [31:16] lost trigger counter, [15:0] total trigger counter
 							eventFrag->SetAcceptedChannelId(data[w]&0xffff); // this is actually the lost trigger counter!
@@ -1659,6 +1670,8 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 				eventFrag->SetCcLong((data[w]>>15) & 0x1);//this is actually the over-range bit!
 				eventFrag->SetCharge(static_cast<Int_t>(data[w++]>>16));
 				Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));
+            eventFrag->Clear();
+            ++nofFragments;
 			} // while(w < size)
 		} // for(uint8_t channel = 0; channel < 16; channel += 2)
 	} // for(int board = 0; w < size; ++board)

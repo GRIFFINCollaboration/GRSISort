@@ -688,7 +688,7 @@ int TMidasEvent::Process(TDataParser& parser)
             frags = ProcessGRIFFIN(reinterpret_cast<uint32_t*>(ptr), banksize, TDataParser::EBank::kGRF3, parser);
          } else if((banksize = LocateBank(nullptr, "GRF4", &ptr)) > 0) {
             frags = ProcessGRIFFIN(reinterpret_cast<uint32_t*>(ptr), banksize, TDataParser::EBank::kGRF4, parser);
-         } else if((banksize = LocateBank(nullptr, "DT57", &ptr)) > 0) {
+         } else if((banksize = LocateBank(nullptr, "CAEN", &ptr)) > 0) {
             frags = parser.CaenToFragment(reinterpret_cast<uint32_t*>(ptr), banksize);
          } else if(!TGRSIOptions::Get()->SuppressErrors()) {
             printf(DRED "\nUnknown bank in midas event #%d" RESET_COLOR "\n", GetSerialNumber());
@@ -699,6 +699,11 @@ int TMidasEvent::Process(TDataParser& parser)
          //   break;
          // }
          SetBankList();
+         break;
+      case 3:
+         if((banksize = LocateBank(nullptr, "CAEN", &ptr)) > 0) {
+            frags = parser.CaenToFragment(reinterpret_cast<uint32_t*>(ptr), banksize);
+         }
          break;
       case 4:
       case 5:
