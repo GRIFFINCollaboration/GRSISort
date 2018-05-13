@@ -284,6 +284,8 @@ void TMidasEvent::Print(const char* option) const
       printf("Begin of run %d\n", fEventHeader.fSerialNumber);
    } else if((fEventHeader.fEventId & 0xffff) == 0x8001) {
       printf("End of run %d\n", fEventHeader.fSerialNumber);
+   } else if((fEventHeader.fEventId & 0xffff) == 0x8002) {
+      printf("Message event \"%s\"\n", fData);
    } else if(fBanksN <= 0) {
       printf("TMidasEvent::Print: Use SetBankList() before Print() to print bank data\n");
    } else {
