@@ -658,6 +658,13 @@ void TChannel::Print(Option_t*) const
    }
    std::cout<<std::endl;
    std::cout<<"EFFChi2:   "<<fEFFChi2<<std::endl;
+   if(!fCFDCoefficients.Value().empty()) {
+      std::cout<<"CFDCoeff:  ";
+      for(double fCFDCoefficient : fCFDCoefficients.Value()) {
+         std::cout<<fCFDCoefficient<<"\t";
+      }
+      std::cout<<std::endl;
+	}
    if(!fCTCoefficients.Value().empty()) {
       std::cout<<"CTCoeff:  ";
       for(double fCTCoefficient : fCTCoefficients.Value()) {
@@ -757,6 +764,13 @@ std::string TChannel::PrintToString(Option_t*)
       }
       buffer.append("\n");
    }
+   if(!fCFDCoefficients.Value().empty()) {
+      buffer.append("CFDCoeff:  ");
+      for(double fCFDCoefficient : fCFDCoefficients.Value()) {
+         buffer.append(Form("%f\t", fCFDCoefficient));
+      }
+      buffer.append("\n");
+	}
    buffer.append(Form("FileInt: %d\n", static_cast<int>(fUseCalFileInt.Value())));
    if(UseWaveParam()) {
       buffer.append(Form("RiseTime: %f\n", WaveFormShape.TauRise));
