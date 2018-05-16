@@ -85,6 +85,7 @@ void TGRSIRunInfo::Print(Option_t* opt) const
 {
    // Prints the TGRSIRunInfo. Options:
    // a: Print out more details.
+	TSingleton<TGRSIRunInfo>::PrintDirectory();
    std::cout<<"Title: "<<RunTitle()<<std::endl;
    std::cout<<"Comment: "<<RunComment()<<std::endl;
 	time_t tmpStart = static_cast<time_t>(RunStart());
@@ -93,7 +94,7 @@ void TGRSIRunInfo::Print(Option_t* opt) const
 	struct tm runStop  = *localtime(const_cast<const time_t*>(&tmpStop));
 	printf("\t\tRunNumber:          %05i\n", RunNumber());
 	printf("\t\tSubRunNumber:       %03i\n", SubRunNumber());
-	if(Get()->RunStart != 0 && Get()->RunStop != 0) {
+	if(Get()->RunStart() != 0 && Get()->RunStop() != 0) {
 		printf("\t\tRunStart:           %s", asctime(&runStart));
 		printf("\t\tRunStop:            %s", asctime(&runStop));
 		printf("\t\tRunLength:          %.0f s\n", RunLength());
@@ -164,7 +165,7 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum)
 {
    /// Sets the run info. This figures out what systems are available.
 
-   printf("In runinfo, found %i channels.\n", TChannel::GetNumberOfChannels());
+   std::cout<<__PRETTY_FUNCTION__<<": found "<<TChannel::GetNumberOfChannels()<<" channels."<<std::endl;
    if(runnum != 0) {
       if(RunNumber() != 0 && RunNumber() != runnum) {
          std::cout<<"Warning, overwriting non-default run-number "<<RunNumber()<<" with "<<runnum<<std::endl;
