@@ -80,7 +80,7 @@ Double_t TGRSIDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
 		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
       case TMnemonic::EDigitizer::kCaen:
       //10 bit CFD for 0-2ns => divide by 512
-      dTime = GetTimeStamp() * 2. + channel->CalibrateCFD((GetCfd() + gRandom->Uniform()) / 512.);
+      dTime = GetTimeStamp() * 10. + channel->CalibrateCFD((GetCfd() + gRandom->Uniform()) / 512.);
 		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
 		default:
 		dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
