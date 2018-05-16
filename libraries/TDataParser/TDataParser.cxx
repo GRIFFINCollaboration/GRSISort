@@ -1509,31 +1509,43 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
    std::shared_ptr<TFragment> eventFrag = std::make_shared<TFragment>();
 	int w = 0;
 	int nofFragments = 0;
+   short timestampRemainder;
+   uint64_t timestamp;
 	for(int board = 0; w < size; ++board) {
 		// read board aggregate header
 		if(data[w]>>28 != 0xa) {
 			if(data[w] == 0x0) {
 				while(w < size) {
 					if(data[w++] != 0x0) {
-						std::cerr<<board<<". board - failed on first word, found empty word, but not all following words were empty: "<<w-1<<" 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w-1]<<std::dec<<std::setfill(' ')<<std::endl;
+                  if(!fOptions->SuppressErrors()) {
+                     std::cerr<<board<<". board - failed on first word, found empty word, but not all following words were empty: "<<w-1<<" 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w-1]<<std::dec<<std::setfill(' ')<<std::endl;
+                  }
 						return -w;
 					}
 				}
 				return nofFragments;
 			}
-			std::cerr<<board<<". board - failed on first word 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w]<<std::dec<<std::setfill(' ')<<", highest nibble should have been 0xa!"<<std::endl;
+         if(!fOptions->SuppressErrors()) {
+            std::cerr<<board<<". board - failed on first word 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w]<<std::dec<<std::setfill(' ')<<", highest nibble should have been 0xa!"<<std::endl;
+         }
 			return -w;
 		}
 		int32_t numWordsBoard = data[w++]&0xfffffff; // this is the number of 32-bit words from this board
 		if(w - 1 + numWordsBoard > size) { 
-			std::cerr<<"0 - Missing words, at word "<<w-1<<", expecting "<<numWordsBoard<<" more words for board "<<board<<" (bank size "<<size<<")"<<std::endl;
+         if(!fOptions->SuppressErrors()) {
+            std::cerr<<"0 - Missing words, at word "<<w-1<<", expecting "<<numWordsBoard<<" more words for board "<<board<<" (bank size "<<size<<")"<<std::endl;
+         }
 			return -w;
 		}
+      //std::cout<<w-1<<": 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w-1]<<std::dec<<std::setfill(' ')<<" - "<<numWordsBoard<<" words"<<std::endl;
 		uint8_t boardId = data[w]>>27; // GEO address of board (can be set via register 0xef08 for VME)
 		uint16_t pattern = (data[w]>>8) & 0x7fff; // value read from LVDS I/O (VME only)
 		uint8_t channelMask = data[w++]&0xff; // which channels are in this board aggregate
-		//uint32_t boardCounter = data[w++]&0x7fffff; // ??? "counts the board aggregate"
+      //std::cout<<w-1<<": 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w-1]<<std::dec<<std::setfill(' ')<<" - boardId "<<boardId<<", pattern "<<pattern<<", channelMask "<<channelMask<<std::endl;
+		uint32_t boardCounter = data[w++]&0x7fffff; // ??? "counts the board aggregate"
+      //std::cout<<w-1<<": 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w-1]<<std::dec<<std::setfill(' ')<<" - boardCounter "<<boardCounter<<std::endl;
 		uint32_t boardTime = data[w++]; // time of creation of aggregate (does not correspond to a physical quantity)
+      //std::cout<<w-1<<": 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w-1]<<std::dec<<std::setfill(' ')<<" - boardTime "<<boardTime<<std::endl;
 		//if(boardCounter < gBoardCounter) {
 		//	std::cerr<<"current board counter "<<boardCounter<<" is less than previous one "<<gBoardCounter<<", skipping this data"<<std::endl;
 		//	return nofFragments;
@@ -1546,16 +1558,22 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 			}
 			// read channel aggregate header
 			if(data[w]>>31 != 0x1) {
-				std::cerr<<"Failed on first word 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w]<<std::dec<<std::setfill(' ')<<", highest bit should have been set!"<<std::endl;
+            if(!fOptions->SuppressErrors()) {
+               std::cerr<<"Failed on first word 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w]<<std::dec<<std::setfill(' ')<<", highest bit should have been set!"<<std::endl;
+            }
 				return -w;
 			}
 			int32_t numWords = data[w++]&0x3fffff;//per channel
 			if(w >= size) {
-				std::cerr<<"1 - Missing words, got only "<<w-1<<" words for channel "<<channel<<" (bank size "<<size<<")"<<std::endl;
+            if(!fOptions->SuppressErrors()) {
+               std::cerr<<"1 - Missing words, got only "<<w-1<<" words for channel "<<channel<<" (bank size "<<size<<")"<<std::endl;
+            }
 				return -w;
 			}
 			if(((data[w]>>29) & 0x3) != 0x3) {
-				std::cerr<<"Failed on second word 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w]<<std::dec<<std::setfill(' ')<<", bits 29 and 30 should have been set!"<<std::endl;
+            if(!fOptions->SuppressErrors()) {
+               std::cerr<<"Failed on second word 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w]<<std::dec<<std::setfill(' ')<<", bits 29 and 30 should have been set!"<<std::endl;
+            }
 				return -w;
 			}
 			bool dualTrace = ((data[w]>>31) == 0x1);
@@ -1569,13 +1587,17 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 			//bits 16,17,18: 000 = "Short gate", 001 = "over thres.", 010 = "TRG valid.", 011 = "TRG HoldOff",           100 = "Pile Up", 101 = "Coincidence", 110 = reserved, 111 = "Trigger"
 			int numSampleWords = 4*(data[w++]&0xffff);// this is actually the number of samples divided by eight, 2 sample per word => 4*
 			if(w >= size) {
-				std::cerr<<"2 - Missing words, got only "<<w-1<<" words for channel "<<channel<<" (bank size "<<size<<")"<<std::endl;
+            if(!fOptions->SuppressErrors()) {
+               std::cerr<<"2 - Missing words, got only "<<w-1<<" words for channel "<<channel<<" (bank size "<<size<<")"<<std::endl;
+            }
 				return -w;
 			}
 			int eventSize = numSampleWords+2; // +2 = trigger time words and charge word
 			if(extras) ++eventSize;
 			if(numWords%eventSize != 2) {
-				std::cerr<<numWords<<" words in channel aggregate, event size is "<<eventSize<<" => "<<static_cast<double>(numWords-2.)/static_cast<double>(eventSize)<<" events?"<<std::endl;
+            if(!fOptions->SuppressErrors()) {
+               std::cerr<<numWords<<" words in channel aggregate, event size is "<<eventSize<<" => "<<static_cast<double>(numWords-2.)/static_cast<double>(eventSize)<<" events?"<<std::endl;
+            }
 				return -w;
 			}
 
@@ -1583,10 +1605,21 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 			for(int ev = 0; ev < (numWords-2)/eventSize; ++ev) { // -2 = 2 header words for channel aggregate
 				eventFrag->SetMidasTimeStamp(boardTime);
 				eventFrag->SetAddress(0x8000 + channel + (data[w]>>31)); // highest bit indicates odd channel
-				eventFrag->SetTimeStamp(data[w++] & 0x7fffffff);
+            if(eventFrag->GetAddress() == 0x8000) eventFrag->SetDetectorType(9); //ZDS will always be in channel 0
+            else                                  eventFrag->SetDetectorType(6);
+            // these timestamps are in 2ns units, but the "normal" timestamps are in 10ns units
+            // so we store the remainder and set our timestamp in 10ns units
+            // the remainder will later be used to modify the CFD value to automatically correct for it
+            timestamp = data[w] & 0x7fffffff;
+            timestampRemainder = timestamp%5;
+				eventFrag->SetTimeStamp(timestamp/5);
+            eventFrag->SetCfd(timestampRemainder<<10); //this is in case we do not get a CFD word
+            ++w;
 				if(waveform) {
 					if(w + numSampleWords >= size) { // need to read at least the sample words plus the charge/extra word
-						std::cerr<<"3 - Missing "<<numSampleWords<<" waveform words, got only "<<w-1<<" words for channel "<<channel<<" (bank size "<<size<<")"<<std::endl;
+                  if(!fOptions->SuppressErrors()) {
+                     std::cerr<<"3 - Missing "<<numSampleWords<<" waveform words, got only "<<w-1<<" words for channel "<<channel<<" (bank size "<<size<<")"<<std::endl;
+                  }
 						return -w;
 					}
 					for(int s = 0; s < numSampleWords && w < size; ++s, ++w) {
@@ -1594,27 +1627,34 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 						//eventFrag->AddDigitalWaveformSample(1, (data[w]>>15)&0x1);
 						if(dualTrace) {
 							// all even samples are from the first trace, all odd ones from the second trace
-							eventFrag->AddWaveformSample(data[w]&0x3fff);
-							eventFrag->AddWaveformSample((data[w]>>16)&0x3fff);
+							//eventFrag->AddWaveformSample(data[w]&0x3fff);
+							//eventFrag->AddWaveformSample((data[w]>>16)&0x3fff);
+							eventFrag->AddWaveformSample(data[w]&0xffff);
+							eventFrag->AddWaveformSample((data[w]>>16)&0xffff);
 						} else {
 							// both samples are from the first trace
-							eventFrag->AddWaveformSample(data[w]&0x3fff);
-							eventFrag->AddWaveformSample((data[w]>>16)&0x3fff);
+							//eventFrag->AddWaveformSample(data[w]&0x3fff);
+							//eventFrag->AddWaveformSample((data[w]>>16)&0x3fff);
+							eventFrag->AddWaveformSample(data[w]&0xffff);
+							eventFrag->AddWaveformSample((data[w]>>16)&0xffff);
 						}
 						//eventFrag->AddDigitalWaveformSample(0, (data[w]>>30)&0x1);
 						//eventFrag->AddDigitalWaveformSample(1, (data[w]>>31)&0x1);
 					}
 				} else {
 					if(w >= size) { // need to read at least the sample words plus the charge/extra word
-						std::cerr<<"3 - Missing words, got only "<<w-1<<" words for channel "<<channel<<" (bank size "<<size<<")"<<std::endl;
+                  if(!fOptions->SuppressErrors()) {
+                     std::cerr<<"3 - Missing words, got only "<<w-1<<" words for channel "<<channel<<" (bank size "<<size<<")"<<std::endl;
+                  }
 						return -w;
 					}
 				}
 				if(extras) {
+               //std::cout<<eventFrag->GetAddress()<<" - extra word format "<<static_cast<int>(extraFormat)<<": 0x"<<std::hex<<data[w]<<std::dec<<std::endl;
 					switch(extraFormat) {
 						case 0: // [31:16] extended time stamp, [15:0] baseline*4
 							//eventFrag->Baseline(data[w]&0xffff);
-							eventFrag->SetTimeStamp(eventFrag->GetTimeStamp() | static_cast<uint64_t>(data[w++])<<15);
+							eventFrag->SetTimeStamp(eventFrag->GetTimeStamp() | static_cast<uint64_t>(data[w])<<15);
 							break;
 						case 1: // [31:16] extended time stamp, 15 trigger lost, 14 over range, 13 1024 triggers, 12 n lost triggers
 							eventFrag->SetNetworkPacketNumber((data[w]>>12)&0xf);
@@ -1622,35 +1662,43 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 							//eventFrag->KiloCount(((data[w]>>13)&0x1) == 0x1);
 							//eventFrag->OverRange(((data[w]>>14)&0x1) == 0x1);
 							//eventFrag->LostTrigger(((data[w]>>15)&0x1) == 0x1);
-							eventFrag->SetTimeStamp(eventFrag->GetTimeStamp() | static_cast<uint64_t>(data[w++])<<15);
+							eventFrag->SetTimeStamp(eventFrag->GetTimeStamp() | static_cast<uint64_t>(data[w])<<15);
 							break;
 						case 2: // [31:16] extended time stamp,  15 trigger lost, 14 over range, 13 1024 triggers, 12 n lost triggers, [9:0] fine time stamp
-							eventFrag->SetCfd(data[w]&0x3ff);
+                     //std::cout<<"timestamp "<<timestamp<<" (0x"<<std::hex<<timestamp<<" | 0x"<<(static_cast<uint64_t>(data[w]&0xffff0000)<<15)<<" => 0x";
+                     timestamp |= static_cast<uint64_t>(data[w]&0xffff0000)<<15;
+                     //std::cout<<timestamp<<std::dec<<"), "<<timestamp<<", setting to ";
+                     timestampRemainder = timestamp%5;
+                     eventFrag->SetTimeStamp(timestamp/5);
+                     //std::cout<<eventFrag->GetTimeStamp()<<std::endl;
+							eventFrag->SetCfd((timestampRemainder<<10) | (data[w]&0x3ff));
 							eventFrag->SetNetworkPacketNumber((data[w]>>12)&0xf);
 							//eventFrag->NLostCount(((data[w]>>12)&0x1) == 0x1);
 							//eventFrag->KiloCount(((data[w]>>13)&0x1) == 0x1);
 							//eventFrag->OverRange(((data[w]>>14)&0x1) == 0x1);
 							//eventFrag->LostTrigger(((data[w]>>15)&0x1) == 0x1);
-							eventFrag->SetTimeStamp(eventFrag->GetTimeStamp() | static_cast<uint64_t>(data[w++])<<15);
 							break;
 						case 4: // [31:16] lost trigger counter, [15:0] total trigger counter
 							eventFrag->SetAcceptedChannelId(data[w]&0xffff); // this is actually the lost trigger counter!
-							eventFrag->SetChannelId(data[w++]>>16);
+							eventFrag->SetChannelId(data[w]>>16);
 							break;
 						case 5: // [31:16] CFD sample after zero cross., [15:0] CFD sample before zero cross.
 							//eventFrag->CfdAfterZC(data[w]&0xffff);
-							//eventFrag->CfdBeforeZC(data[w++]>>16);
+							//eventFrag->CfdBeforeZC(data[w]>>16);
 							w++;
 							break;
 						case 7: // fixed value of 0x12345678
-							if(data[w++] != 0x12345678) {
-								std::cerr<<"Failed to get debug data word 0x12345678, got "<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w]<<std::dec<<std::setfill(' ')<<std::endl;
+							if(data[w] != 0x12345678) {
+                        if(!fOptions->SuppressErrors()) {
+                           std::cerr<<"Failed to get debug data word 0x12345678, got "<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w]<<std::dec<<std::setfill(' ')<<std::endl;
+                        }
 								break;
 							}
 							break;
 						default:
 							break;
 					}
+               ++w;
 				}
 				//if(w >= size) {
 				//	std::cerr<<"4 - Missing words, got only "<<w-1<<" words for channel "<<channel<<" (bank size "<<size<<")"<<std::endl;
@@ -1659,6 +1707,8 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 				eventFrag->SetCcLong((data[w]>>15) & 0x1);//this is actually the over-range bit!
 				eventFrag->SetCharge(static_cast<Int_t>(data[w++]>>16));
 				Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));
+            eventFrag->Clear();
+            ++nofFragments;
 			} // while(w < size)
 		} // for(uint8_t channel = 0; channel < 16; channel += 2)
 	} // for(int board = 0; w < size; ++board)
