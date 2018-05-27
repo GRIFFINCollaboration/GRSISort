@@ -133,7 +133,12 @@ Bool_t TGRSISelector::Process(Long64_t entry)
    }
 
    fChain->GetEntry(entry);
-   FillHistograms();
+	try {
+		FillHistograms();
+	} catch(TGRSIMapException<std::string>& e) {
+		std::cout<<DRED<<"Exception in "<<__PRETTY_FUNCTION__<<": "<<e.detail()<<RESET_COLOR<<std::endl;
+		throw e;
+	}
 
    return kTRUE;
 }
