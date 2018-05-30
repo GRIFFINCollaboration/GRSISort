@@ -235,12 +235,9 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
       return;
    }
 
-   // if((chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) &&
    if((chan->GetMnemonic()->SubSystem() == TMnemonic::EMnemonic::kG) &&
       (chan->GetSegmentNumber() == 0 || chan->GetSegmentNumber() == 9)) { // it is a core
-      // if(frag->Charge.size() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a
-      // good energy and time (cfd or led).
-      //  return;
+
       TTigressHit corehit; //(*frag);
       // loop over existing hits to see if this core was already created by a previously found segment
       // of course this means if we have a core in "coincidence" with itself we will overwrite the first hit
@@ -248,19 +245,18 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
          TTigressHit* hit = GetTigressHit(i);
          if((hit->GetDetector() == chan->GetDetectorNumber()) &&
             (hit->GetCrystal() == chan->GetCrystalNumber())) { // we have a match;
-            // if(hit->Charge() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a
-            // good energy and time (cfd or led).
-            // if(chan->GetMnemonic()->outputsensor.compare(0,1,"b")==0) {
+
+	    // B cores will not replace A cores,
+	    // but they will replace no-core hits created if segments are processed first.
             if(chan->GetMnemonic()->OutputSensor() == TMnemonic::EMnemonic::kB) {
-               if(hit->GetName()[9] == 'a') {
-                  return;
-               }
-               hit->CopyFragment(*frag);
-               if(TestGlobalBit(ETigressGlobalBits::kSetCoreWave)) {
-                  frag->CopyWave(*hit);
-               }
-               return;
+		 TChannel* hitchan = hit->GetChannel();
+		 if(hitchan != nullptr) {  
+			if(hitchan->GetMnemonic()->OutputSensor() == TMnemonic::EMnemonic::kA) {
+				return;
+			}
+		 }
             }
+            
             hit->CopyFragment(*frag);
             if(TestGlobalBit(ETigressGlobalBits::kSetCoreWave)) {
                frag->CopyWave(*hit);
