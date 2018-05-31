@@ -23,12 +23,17 @@ public:
    Short_t GetSector() const { return fSector; }
    Bool_t  GetIsDownstream() const { return fIsDownstream; }
    Int_t   GetArrayPosition() const {
-	   if(GetChannel()){
+	   if(GetChannel()!= nullptr){
 		   return GetChannel()->GetMnemonic()->ArrayPosition(); 
 	   }
 	   return -1;
-}
-   std::string GetDistanceStr() const { if(GetChannel())return GetChannel()->GetMnemonic()->ArraySubPositionString(); return "0";}
+   }
+   std::string GetDistanceStr() const {
+	   if(GetChannel()!= nullptr){
+		   return GetChannel()->GetMnemonic()->ArraySubPositionString();
+	   }
+	   return "0";
+   }
    
 
    Double_t fTimeFit{0.};
