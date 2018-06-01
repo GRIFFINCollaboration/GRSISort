@@ -41,7 +41,8 @@ public:
       kSetSegWave   = BIT(2),
       kSetBGOHits   = BIT(3),
       kForceCrystal = BIT(4),
-      kArrayBackPos = BIT(5) // 110 or 145
+      kArrayBackPos = BIT(5),
+      kVectorsBuilt = BIT(6) // 110 or 145
    };
 
 //std::underlying_type<ETigressGlobalBits>::type operator |(ETigressGlobalBits lhs, ETigressGlobalBits rhs)  
@@ -125,7 +126,15 @@ private:
    std::vector<TTigressHit> fTigressHits;
 
    static double fTargetOffset; //!<!
+   static double fRadialOffset; //!<!
+   
+   // Vectors constructed from segment array and manual adjustments once at start of sort
+   static TVector3 PostionVectors[2][17][4][9];     //!<!
+   
+   static TVector3 CloverRadial[17];      	//!<!  clover direction vectors
+   static TVector3 CloverCross[17][2];      	//!<!  clover perpendicular vectors, for smearing
 
+   // These array contain the original data that is used
    static double GeBluePosition[17][9][3];      //!<!  detector segment XYZ
    static double GeGreenPosition[17][9][3];     //!<!
    static double GeRedPosition[17][9][3];       //!<!
@@ -143,6 +152,8 @@ private:
    std::vector<TTigressHit> fAddbackHits;  //!<! Used to create addback hits on the fly
    std::vector<UShort_t>    fAddbackFrags; //!<! Number of crystals involved in creating in the addback hit
 
+   static void BuildVectors();  //!<!
+   
 public:
    // Naming convention was off, couldnt find anything that used them in grsisort
    // Left them as return bool to not break external code
@@ -169,6 +180,7 @@ public:
    static bool SetArrayBackPos(bool set = true)
    {
       SetGlobalBit(ETigressGlobalBits::kArrayBackPos, set);
+      BuildVectors();
       return set;
    } //!<!
 
@@ -177,10 +189,18 @@ public:
    static bool GetBGOWave() { return TestGlobalBit(ETigressGlobalBits::kSetBGOWave); }        //!<!
    static bool GetForceCrystal() { return TestGlobalBit(ETigressGlobalBits::kForceCrystal); } //!<!
    static bool GetArrayBackPos() { return TestGlobalBit(ETigressGlobalBits::kArrayBackPos); } //!<!
+   static bool GetVectorsBuilt() { return TestGlobalBit(ETigressGlobalBits::kVectorsBuilt); } //!<!
 
    static bool BGOSuppression[4][4][5]; //!<!
 
-   static void SetTargetOffset(double offset) { fTargetOffset = offset; } //!<!
+   static void SetTargetOffset(double offset) {
+	   fTargetOffset = offset; 
+	   BuildVectors();
+   } //!<!
+   static void SetRadialOffset(double offset) { 
+	   fRadialOffset = offset;
+	   BuildVectors();
+   } //!<!
 
    static double GetFaceDistance()
    {
