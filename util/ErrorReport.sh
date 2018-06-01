@@ -51,9 +51,4 @@ printf "\nLast Commit: "
 
 git log -1
 
-printf "\nPut Error Here:\n\n\n\n"
-
-printf "Last Working Commit: Put commit here\n\n"
-
-printf "What I have tried so far\n\n\n"
 cd $LASTDIR
