@@ -650,6 +650,13 @@ void TChannel::Print(Option_t*) const
       std::cout<<fENGCoefficient<<"\t";
    }
    std::cout<<std::endl;
+	if(!fCFDCoefficients.Value().empty()) {
+		std::cout<<"CfdCoeff:  ";
+		for(float fCFDCoefficient : fCFDCoefficients.Value()) {
+			std::cout<<fCFDCoefficient<<"\t";
+		}
+		std::cout<<std::endl;
+	}
    std::cout<<"Integration: "<<fIntegration<<std::endl;
    std::cout<<"ENGChi2:   "<<fENGChi2<<std::endl;
    std::cout<<"EffCoeff:  ";
@@ -734,6 +741,14 @@ std::string TChannel::PrintToString(Option_t*)
       else buffer.append(Form("%f\t", fENGCoefficient));
    }
    buffer.append("\n");
+	if(!fCFDCoefficients.Value().empty()) {
+		buffer.append("CfdCoeff:  ");
+		for(float fCFDCoefficient : fCFDCoefficients.Value()) {
+			if(fCFDCoefficient<0.001)buffer.append(Form("%e\t", fCFDCoefficient));
+			else buffer.append(Form("%f\t", fCFDCoefficient));
+		}
+		buffer.append("\n");
+	}
    buffer.append(Form("Integration: %d\n", fIntegration.Value()));
    buffer.append(Form("TimeOffset: %lld\n", fTimeOffset.Value()));
    buffer.append(Form("ENGChi2:     %f\n", fENGChi2.Value()));

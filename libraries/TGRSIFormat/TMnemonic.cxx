@@ -152,6 +152,9 @@ TMnemonic::EDigitizer TMnemonic::EnumerateDigitizer(std::string name)
    if(name.compare("PIXIE") == 0) {
       return EDigitizer::kPixie;
    }
+   if(name.compare("FASTPIXIE") == 0) {
+      return EDigitizer::kFastPixie;
+   }
    if(name.compare("PIXIETAPEMOVE") == 0) {
       return EDigitizer::kPixieTapeMove;
    }
