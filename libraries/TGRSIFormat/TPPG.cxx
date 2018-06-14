@@ -263,31 +263,33 @@ void TPPG::Print(Option_t* opt) const
       printf("\tfound status 0x%04x %d times\n", static_cast<std::underlying_type<EPpgPattern>::type>(statu.first), statu.second);
    }
 
-   // go through all expected ppg words
-   ULong64_t time = offset;
-   auto      it   = MapEnd();
-   --it;
-   ULong64_t lastTimeStamp = it->second->GetTimeStamp();
-   for(int cycle = 1; time < lastTimeStamp; ++cycle) {
-      if(GetLastStatusTime(time, EPpgPattern::kTapeMove) != time) {
-         printf("Missing tape move status at %12lld in %d. cycle, last tape move status came at %lld.\n", time, cycle,
-                GetLastStatusTime(time, EPpgPattern::kTapeMove));
-      }
-      if(GetLastStatusTime(time + cycleLength, EPpgPattern::kBackground) != time + stateLength[0]) {
-         printf("Missing background status at %12lld in %d. cycle, last background status came at %lld.\n",
-                time + stateLength[0], cycle, GetLastStatusTime(time + cycleLength, EPpgPattern::kBackground));
-      }
-      if(GetLastStatusTime(time + cycleLength, EPpgPattern::kBeamOn) != time + stateLength[0] + stateLength[1]) {
-         printf("Missing beam on status at %12lld in %d. cycle, last beam on status came at %lld.\n",
-                time + stateLength[0] + stateLength[1], cycle, GetLastStatusTime(time + cycleLength, EPpgPattern::kBeamOn));
-      }
-      if(GetLastStatusTime(time + cycleLength, EPpgPattern::kDecay) != time + stateLength[0] + stateLength[1] + stateLength[2]) {
-         printf("Missing decay status at %12lld in %d. cycle, last decay status came at %lld.\n",
-                time + stateLength[0] + stateLength[1] + stateLength[2], cycle,
-                GetLastStatusTime(time + cycleLength, EPpgPattern::kDecay));
-      }
-      time += cycleLength;
-   }
+   if(TString(opt).Contains("missing", TString::ECaseCompare::kIgnoreCase)) {
+		// go through all expected ppg words
+		ULong64_t time = offset;
+		auto      it   = MapEnd();
+		--it;
+		ULong64_t lastTimeStamp = it->second->GetTimeStamp();
+		for(int cycle = 1; time < lastTimeStamp; ++cycle) {
+			if(GetLastStatusTime(time, EPpgPattern::kTapeMove) != time) {
+				printf("Missing tape move status at %12lld in %d. cycle, last tape move status came at %lld.\n", time, cycle,
+						GetLastStatusTime(time, EPpgPattern::kTapeMove));
+			}
+			if(GetLastStatusTime(time + cycleLength, EPpgPattern::kBackground) != time + stateLength[0]) {
+				printf("Missing background status at %12lld in %d. cycle, last background status came at %lld.\n",
+						time + stateLength[0], cycle, GetLastStatusTime(time + cycleLength, EPpgPattern::kBackground));
+			}
+			if(GetLastStatusTime(time + cycleLength, EPpgPattern::kBeamOn) != time + stateLength[0] + stateLength[1]) {
+				printf("Missing beam on status at %12lld in %d. cycle, last beam on status came at %lld.\n",
+						time + stateLength[0] + stateLength[1], cycle, GetLastStatusTime(time + cycleLength, EPpgPattern::kBeamOn));
+			}
+			if(GetLastStatusTime(time + cycleLength, EPpgPattern::kDecay) != time + stateLength[0] + stateLength[1] + stateLength[2]) {
+				printf("Missing decay status at %12lld in %d. cycle, last decay status came at %lld.\n",
+						time + stateLength[0] + stateLength[1] + stateLength[2], cycle,
+						GetLastStatusTime(time + cycleLength, EPpgPattern::kDecay));
+			}
+			time += cycleLength;
+		}
+	}
 }
 
 void TPPG::Clear(Option_t*)
