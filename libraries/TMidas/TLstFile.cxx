@@ -103,6 +103,7 @@ bool TLstFile::Open(const char* filename)
 #endif
 
    TGRSIRunInfo::SetRunInfo(GetRunNumber(), GetSubRunNumber());
+	TGRSIRunInfo::ClearGRSIVersion();
    TGRSIRunInfo::SetGRSIVersion(GRSI_RELEASE);
 
    std::cout<<"Successfully read "<<fFileSize - headerSize<<" bytes into buffer!"<<std::endl;

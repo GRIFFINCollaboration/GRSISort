@@ -14,6 +14,7 @@
 #include "TGRSIRunInfo.h"
 #include "TObjectWrapper.h"
 #include "TStopwatch.h"
+#include "TGRSIMap.h"
 
 #include <iostream>
 #include <vector>
@@ -66,7 +67,12 @@ void Analyze(const char* tree_type)
 
    for(const auto& macro_it : gGRSIOpt->MacroInputFiles()) {
       std::cout<<"Currently Running: "<<(Form("%s", macro_it.c_str()))<<std::endl;
-      proof_chain->Process(Form("%s+", macro_it.c_str()));
+		try {
+			proof_chain->Process(Form("%s+", macro_it.c_str()));
+		} catch(TGRSIMapException<std::string>& e) {
+			std::cout<<DRED<<"Exception when processing chain: "<<e.detail()<<RESET_COLOR<<std::endl;
+			throw e;
+		}
    }
 
    // Delete the proof chain now that we are done with it.

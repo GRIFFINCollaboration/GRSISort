@@ -22,8 +22,18 @@ public:
    Short_t GetRing() const { return fRing; }
    Short_t GetSector() const { return fSector; }
    Bool_t  GetIsDownstream() const { return fIsDownstream; }
-   Int_t   GetArrayPosition() const { return GetChannel()->GetMnemonic()->ArrayPosition(); }
-   std::string GetDistanceStr() const { return GetChannel()->GetMnemonic()->ArraySubPositionString(); }
+   Int_t   GetArrayPosition() const {
+	   if(GetChannel()!= nullptr){
+		   return GetChannel()->GetMnemonic()->ArrayPosition(); 
+	   }
+	   return -1;
+   }
+   std::string GetDistanceStr() const {
+	   if(GetChannel()!= nullptr){
+		   return GetChannel()->GetMnemonic()->ArraySubPositionString();
+	   }
+	   return "0";
+   }
    
 
    Double_t fTimeFit{0.};

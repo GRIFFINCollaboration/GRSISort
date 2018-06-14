@@ -253,7 +253,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 			.description("Number of events to hold when sorting by time/trigger_id")
 			.default_value(200000);
 
-		parser.option("q quit", &fCloseAfterSort, true).description("Run in batch mode").colour(DGREEN);
+		parser.option("q quit", &fCloseAfterSort, true).description("Quit after completing the sort").colour(DGREEN);
 		parser.option("l no-logo", &fShowLogo, true).description("Inhibit the startup logo")
 			.default_value(true).colour(DGREEN);
 		parser.option("w extract-waves", &fExtractWaves, true)
