@@ -163,6 +163,7 @@ public:
    // The PPG is only stored in events that come out of the GRIFFIN DAQ
 	EPpgPattern GetPPGStatus() const;
    Long64_t GetCycleTimeStamp() const;
+	double GetTimeSinceTapeMove() const;
 
    void ClearEnergy()
    {

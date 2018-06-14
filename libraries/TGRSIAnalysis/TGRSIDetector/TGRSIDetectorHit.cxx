@@ -281,6 +281,12 @@ Long64_t TGRSIDetectorHit::GetCycleTimeStamp() const
    return fCycleTimeStamp;
 }
 
+double TGRSIDetectorHit::GetTimeSinceTapeMove() const
+{
+	/// returns time in ns, minus the time of the last tape move
+	return GetTime() - 10.*TPPG::Get()->GetLastStatusTime(GetTimeStamp(), EPpgPattern::kTapeMove);
+}
+
 // const here is rather dirty
 void TGRSIDetectorHit::SetHitBit(enum EBitFlag flag, Bool_t set) const
 {
