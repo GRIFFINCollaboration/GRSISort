@@ -121,15 +121,15 @@ private:
    static std::map<int, TSpline*> fEnergyResiduals; //!<!
 
    // This is where the general untouchable functions live.
-   std::vector<TTdrTigressHit>* GetHitVector();      //!<!
-   std::vector<TTdrTigressHit>* GetAddbackVector();  //!<!
-   std::vector<UShort_t>* GetAddbackFragVector(); //!<!
+   std::vector<TTdrTigressHit>& GetHitVector();      //!<!
+   std::vector<TTdrTigressHit>& GetAddbackVector();  //!<!
+   std::vector<UShort_t>& GetAddbackFragVector(); //!<!
    void SetAddback(bool flag = true) const;
 
-   std::vector<TTdrTigressHit>* GetSuppressedVector();  //!<!
+   std::vector<TTdrTigressHit>& GetSuppressedVector();  //!<!
    void SetSuppressed(bool flag = true) const;
-   std::vector<TTdrTigressHit>* GetSuppressedAddbackVector();  //!<!
-   std::vector<UShort_t>* GetSuppressedAddbackFragVector(); //!<!
+   std::vector<TTdrTigressHit>& GetSuppressedAddbackVector();  //!<!
+   std::vector<UShort_t>& GetSuppressedAddbackFragVector(); //!<!
    void SetSuppressedAddback(bool flag = true) const;
 
 public:
