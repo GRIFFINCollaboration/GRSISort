@@ -10,13 +10,11 @@
 #include <iostream>
 #include <functional>
 #include <iomanip>
-#include <vector>
 #include <string>
 #include <cmath>
 #include <cstdio>
 #include <cmath> /* round, floor, ceil, trunc */
 #include <ctime>
-using namespace std;
 
 #include "TF1.h"
 #include "TMath.h"
@@ -109,7 +107,7 @@ int main(int argc, char* argv[])
    int         tend      = 0;
    int         runtime   = 0;
    int         nppg      = 0;
-   string      odbline;
+   std::string      odbline;
    //*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
    int line_count = std::count( // read in number of lines(files)
       std::istreambuf_iterator<char>(filelist), std::istreambuf_iterator<char>(), '\n');
@@ -127,7 +125,7 @@ int main(int argc, char* argv[])
    printf(DBLUE "Working, be patient .. " RESET_COLOR "\n");
    printf("\n");
    filelist.clear();
-   filelist.seekg(0, ios::beg);
+   filelist.seekg(0, std::ios::beg);
    //*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
    Printaddress(p); // Credit to to E.Kwan for this part
    p = &addr[0];
@@ -141,10 +139,10 @@ int main(int argc, char* argv[])
          getline(InFile, odbline);
          posa = odbline.find(starttime);
          posb = odbline.find(stoptime);
-         if(posa != string::npos && odbline.size() > static_cast<size_t>(sub)) {
+         if(posa != std::string::npos && odbline.size() > static_cast<size_t>(sub)) {
             odbline = odbline.substr(sub);
             tstart  = std::stoi(odbline, nullptr, 10);
-         } else if(posb != string::npos && odbline.size() > static_cast<size_t>(sub - 1)) {
+         } else if(posb != std::string::npos && odbline.size() > static_cast<size_t>(sub - 1)) {
             odbline = odbline.substr((sub - 1));
             tend    = std::stoi(odbline, nullptr, 10);
          }
@@ -300,7 +298,7 @@ void DoAnalysis(const char*& fname, int& nfile, double* rate, int& nsclr, int& p
 {
 
    auto*    vs = new TFile(fname, "read");
-   ofstream ofile;
+   std::ofstream ofile;
    ofile.open("diagnostic.txt");
    FILE* random    = fopen(hname, "w");
    FILE* combine   = fopen(iname, "w");
@@ -509,7 +507,7 @@ void DoAnalysis(const char*& fname, int& nfile, double* rate, int& nsclr, int& p
             dlim = (2 * ((rmax / double(fbin)) + (double(j) * (rmax / double(fbin)))));
          }
       }
-      // std::cout<<"PPG transitions assumed above "<<(dlim*100.)<<" % change in rate.."<<endl;
+      // std::cout<<"PPG transitions assumed above "<<(dlim*100.)<<" % change in rate.."<<std::endl;
       for(int i = 0; i <= xbins; i++) {
          if(abs(trans[i][1]) > dlim) {
             nt += 1;
@@ -517,7 +515,7 @@ void DoAnalysis(const char*& fname, int& nfile, double* rate, int& nsclr, int& p
                printf(DRED "Warning: Found more PPG transition(s) than expected in spectrum %s (%i/%i)" RESET_COLOR
                            "\n",
                       sname, nt, numpat);
-               // std::cout<<"(see bin number "<<i<<" in spectrum "<<sname<<")"<<endl;
+               // std::cout<<"(see bin number "<<i<<" in spectrum "<<sname<<")"<<std::endl;
                ppgstat[1] += 1;
                break;
             } else {
@@ -552,9 +550,9 @@ void DoAnalysis(const char*& fname, int& nfile, double* rate, int& nsclr, int& p
       // diagnostic only
       if(cnt % nsc == 0) {
          for(int i = 0; i < numpat; i++) {
-            ofile<<ppg[i][0]<<"\t"<<ppg[i][1]<<endl;
+            ofile<<ppg[i][0]<<"\t"<<ppg[i][1]<<std::endl;
          }
-         ofile<<"/"<<endl;
+         ofile<<"/"<<std::endl;
       }
       //*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~**~*~*~*~*~*~*
       // SOURCE ONLY
@@ -606,7 +604,7 @@ void DoAnalysis(const char*& fname, int& nfile, double* rate, int& nsclr, int& p
          fprintf(random, "/");
          fprintf(random, "\n");
       }
-      // std::cout<<"Mean = "<<rrand<<", standard deviation = "<<sdrand<<endl;
+      // std::cout<<"Mean = "<<rrand<<", standard deviation = "<<sdrand<<std::endl;
       //*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~**~*~*~*~*~*~*
       // SOURCE+PULSER
       for(int i = pref; i < numpat; i += 2) {
@@ -645,7 +643,7 @@ void DoAnalysis(const char*& fname, int& nfile, double* rate, int& nsclr, int& p
             x = spec[cnt]->GetBinContent(j);
             if(x != 0) {
                maxl = (0.5 * (pow((x - rcmin), 2))) / x;
-               // ofile<<j<<"\t"<<x<<"\t"<<maxl<<endl;
+               // ofile<<j<<"\t"<<x<<"\t"<<maxl<<std::endl;
                if(maxl <= (minl + 0.5) && x < rcmin && x < lbd) { // fixed
                   lbd = x;
                }
@@ -660,7 +658,7 @@ void DoAnalysis(const char*& fname, int& nfile, double* rate, int& nsclr, int& p
       // diagnostic spectrum (dspec) parameters (re-define for source+pulser)
       lim1 = lbd - (2.0 * abs(rcmin - lbd));
       lim2 = ubd + (2.0 * abs(rcmin - ubd));
-      // std::cout<<lim1<<"\t"<<lim2<<"\t"<<rcmin<<endl;
+      // std::cout<<lim1<<"\t"<<lim2<<"\t"<<rcmin<<std::endl;
       dsbin = (lim2 - lim1) / 20; // dspec[dsbin][2]; What was this statement supposed to do? It has no effect; VB
       for(int i = 0; i < dsbin; i++) {
          dspec[i][0] = lim1 + (i * ((lim2 - lim1) / dsbin));
