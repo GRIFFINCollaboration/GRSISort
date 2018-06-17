@@ -39,7 +39,7 @@ TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode)
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
          return a->GetTriggerId() < b->GetTriggerId();
       });
-		td::cout<<DYELLOW<<"sorting by trigger ID!"<<RESET_COLOR<<std::endl;
+		std::cout<<DYELLOW<<"sorting by trigger ID!"<<RESET_COLOR<<std::endl;
       break;
    }
 }
