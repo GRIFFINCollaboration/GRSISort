@@ -97,7 +97,7 @@ void TMnemonic::EnumerateSystem()
       fSystem = ESystem::kPaces;
    } else if(fSystemString.compare("DS") == 0) {
       fSystem = ESystem::kDescant;
-   } else if(fSystemString.compare("DA") == 0) {
+   } else if((fSystemString.compare("DA") == 0) || (fSystemString.compare("LB") == 0) ) {
       if(CollectedCharge() == EMnemonic::kN) {
          fSystem = ESystem::kLaBr;
       } else {
