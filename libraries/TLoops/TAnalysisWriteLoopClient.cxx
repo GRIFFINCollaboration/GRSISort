@@ -46,9 +46,6 @@ void TAnalysisWriteLoopClient::ClearQueue()
 
 bool TAnalysisWriteLoopClient::Iteration()
 {
-	std::ofstream outfile;
-	outfile.open("debug.txt", std::ios_base::app);
-
    std::shared_ptr<TUnpackedEvent> event;
    fInputSize = fInputQueue->Pop(event);
    if(fInputSize < 0) {
@@ -67,20 +64,15 @@ bool TAnalysisWriteLoopClient::Iteration()
       }
    }
 
-	outfile<<Name()<<" "<<fInputSize<<" "<<fItemsPopped<<" "<<event.get();
-
    if(event != nullptr) {
 		WriteEvent(event);
-		outfile<<" got event"<<std::endl;
       return true;
    }
 
    if(fInputQueue->IsFinished()) {
-		outfile<<" done?"<<std::endl;
       return false;
    }
    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-	outfile<<" waiting"<<std::endl;
    return true;
 }
 
