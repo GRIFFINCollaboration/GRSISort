@@ -288,9 +288,9 @@ Int_t TTdrTigress::GetAddbackMultiplicity()
 {
 	// Automatically builds the addback hits using the fAddbackCriterion (if the size of the fAddbackHits vector is zero)
 	// and return the number of addback hits.
-	auto hit_vec  = GetHitVector();
-	auto ab_vec   = GetAddbackVector();
-	auto frag_vec = GetAddbackFragVector();
+	auto& hit_vec  = GetHitVector();
+	auto& ab_vec   = GetAddbackVector();
+	auto& frag_vec = GetAddbackFragVector();
 	if(hit_vec.empty()) {
 		return 0;
 	}
@@ -380,9 +380,9 @@ Int_t TTdrTigress::GetSuppressedAddbackMultiplicity(TBgo* bgo)
 {
 	// Automatically builds the addback hits using the fAddbackCriterion (if the size of the fSuppressedAddbackHits vector is zero)
 	// and return the number of addback hits.
-	auto hit_vec  = GetHitVector();
-	auto ab_vec   = GetSuppressedAddbackVector();
-	auto frag_vec = GetSuppressedAddbackFragVector();
+	auto& hit_vec  = GetHitVector();
+	auto& ab_vec   = GetSuppressedAddbackVector();
+	auto& frag_vec = GetSuppressedAddbackFragVector();
 	if(hit_vec.empty()) {
 		return 0;
 	}

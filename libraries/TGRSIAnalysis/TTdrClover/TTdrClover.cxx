@@ -286,9 +286,9 @@ Int_t TTdrClover::GetAddbackMultiplicity()
 {
 	/// Automatically builds the addback hits using the fAddbackCriterion (if the size of the fAddbackHits vector is zero)
 	/// and returns the number of addback hits.
-	auto hit_vec  = GetHitVector();
-	auto ab_vec   = GetAddbackVector();
-	auto frag_vec = GetAddbackFragVector();
+	auto& hit_vec  = GetHitVector();
+	auto& ab_vec   = GetAddbackVector();
+	auto& frag_vec = GetAddbackFragVector();
 	if(hit_vec.empty()) {
 		return 0;
 	}
@@ -327,7 +327,8 @@ Int_t TTdrClover::GetAddbackMultiplicity()
 TTdrCloverHit* TTdrClover::GetAddbackHit(const int& i)
 {
 	if(i < GetAddbackMultiplicity()) {
-		return &GetAddbackVector().at(i);
+		std::cout<<i<<" < "<<GetAddbackMultiplicity()<<", "<<GetAddbackVector().size()<<std::endl;
+		return &(GetAddbackVector().at(i));
 	}
 	std::cerr<<"Addback hits are out of range"<<std::endl;
 	throw grsi::exit_exception(1);
@@ -379,9 +380,9 @@ Int_t TTdrClover::GetSuppressedAddbackMultiplicity(TBgo* bgo)
 	/// Automatically builds the suppressed addback hits using the fAddbackCriterion and fSuppressionriterion
 	/// (if the size of the fSuppressedAddbackHits vector is zero)
 	/// and returns the number of suppressed addback hits.
-	auto hit_vec  = GetHitVector();
-	auto ab_vec   = GetSuppressedAddbackVector();
-	auto frag_vec = GetSuppressedAddbackFragVector();
+	auto& hit_vec  = GetHitVector();
+	auto& ab_vec   = GetSuppressedAddbackVector();
+	auto& frag_vec = GetSuppressedAddbackFragVector();
 	if(hit_vec.empty()) {
 		return 0;
 	}
