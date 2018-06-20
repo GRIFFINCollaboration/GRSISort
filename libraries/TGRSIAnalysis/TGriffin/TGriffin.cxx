@@ -341,9 +341,9 @@ Short_t TGriffin::GetAddbackMultiplicity(const EGainBits& gain_type)
       // Calculate Cross Talk on each hit
       FixCrossTalk(gain_type);
    }
-   auto hit_vec  = GetHitVector(gain_type);
-   auto ab_vec   = GetAddbackVector(gain_type);
-   auto frag_vec = GetAddbackFragVector(gain_type);
+   auto& hit_vec  = GetHitVector(gain_type);
+   auto& ab_vec   = GetAddbackVector(gain_type);
+   auto& frag_vec = GetAddbackFragVector(gain_type);
    if(hit_vec.empty()) {
       return 0;
    }
@@ -553,7 +553,7 @@ void TGriffin::FixHighGainCrossTalk()
 
 void TGriffin::FixCrossTalk(const EGainBits& gain_type)
 {
-   auto hit_vec = GetHitVector(gain_type);
+   auto& hit_vec = GetHitVector(gain_type);
    if(hit_vec.size() < 2) {
       SetCrossTalk(gain_type, true);
       return;
@@ -563,8 +563,8 @@ void TGriffin::FixCrossTalk(const EGainBits& gain_type)
    }
 
    if(TGRSIOptions::AnalysisOptions()->IsCorrectingCrossTalk()) {
-		for(auto one : hit_vec) {
-			for(auto two : hit_vec) {
+		for(auto& one : hit_vec) {
+			for(auto& two : hit_vec) {
 				one.SetEnergy(TGriffin::CTCorrectedEnergy(&one, &two));
 				two.SetEnergy(TGriffin::CTCorrectedEnergy(&two, &one));
 			}
@@ -719,8 +719,8 @@ Short_t TGriffin::GetSuppressedMultiplicity(const TBgo* bgo, const EGainBits& ga
       // Calculate Cross Talk on each hit
       FixCrossTalk(gain_type);
    }
-   auto hit_vec  = GetHitVector(gain_type);
-   auto sup_vec  = GetSuppressedVector(gain_type);
+   auto& hit_vec  = GetHitVector(gain_type);
+   auto& sup_vec  = GetSuppressedVector(gain_type);
 	if(hit_vec.empty()) {
 		return 0;
 	}
@@ -775,9 +775,9 @@ Short_t TGriffin::GetSuppressedAddbackMultiplicity(const TBgo* bgo, const EGainB
       // Calculate Cross Talk on each hit
       FixCrossTalk(gain_type);
    }
-   auto hit_vec  = GetHitVector(gain_type);
-   auto ab_vec   = GetAddbackVector(gain_type);
-   auto frag_vec = GetAddbackFragVector(gain_type);
+   auto& hit_vec  = GetHitVector(gain_type);
+   auto& ab_vec   = GetAddbackVector(gain_type);
+   auto& frag_vec = GetAddbackFragVector(gain_type);
    if(hit_vec.empty()) {
       return 0;
    }

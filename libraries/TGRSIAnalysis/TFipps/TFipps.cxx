@@ -242,9 +242,9 @@ Int_t TFipps::GetAddbackMultiplicity()
       // Calculate Cross Talk on each hit
       FixCrossTalk();
    }
-   auto hit_vec  = GetHitVector();
-   auto ab_vec   = GetAddbackVector();
-   auto frag_vec = GetAddbackFragVector();
+   auto& hit_vec  = GetHitVector();
+   auto& ab_vec   = GetAddbackVector();
+   auto& frag_vec = GetAddbackFragVector();
    if(hit_vec->empty()) {
       return 0;
    }
@@ -401,7 +401,7 @@ Double_t TFipps::CTCorrectedEnergy(const TFippsHit* const hit_to_correct, const 
 
 void TFipps::FixCrossTalk()
 {
-   auto hit_vec = GetHitVector();
+   auto& hit_vec = GetHitVector();
    if(hit_vec->size() < 2) {
       SetCrossTalk(true);
       return;
