@@ -1569,10 +1569,25 @@ int TDataParser::TdrToFragment(std::vector<char> data)
 				{
 					// data word with channelNumber, adcData, and 28 low bits of timestamp
 					// check if this is the tape-move event
-					if(TChannel::GetChannel((ptr[i]>>48)&0xfff) != nullptr && TChannel::GetChannel((ptr[i]>>48)&0xfff)->GetDigitizerType() == TMnemonic::EDigitizer::kPixieTapeMove) {
+					auto channel = TChannel::GetChannel((ptr[i]>>48)&0xfff);
+					if(channel != nullptr && channel->GetDigitizerType() == TMnemonic::EDigitizer::kPixieTapeMove) {
 						//PPG
 						auto* ppgEvent = new TPPGData;
-						ppgEvent->SetNewPPG(EPpgPattern::kTapeMove);
+						switch(channel->GetDetectorNumber()) {
+							case 1:
+								// tape move for "normal" experiments
+								// target finished moving in front of detector for PR294
+								ppgEvent->SetNewPPG(EPpgPattern::kTapeMove);
+								break;
+							case 2:
+								// unused for "normal" experiments
+								// target moving away from detector for PR294
+								ppgEvent->SetNewPPG(EPpgPattern::kBackground);
+								break;
+							default:
+								ppgEvent->SetNewPPG(EPpgPattern::kJunk);
+								break;
+						}
 						ppgEvent->SetLowTimeStamp(ptr[i]&0xfffffff);
 						ppgEvent->SetHighTimeStamp(timeStampHighBits);
 						ppgEvent->SetNetworkPacketId(static_cast<Int_t>((ptr[i]>>32)&0xffff));
