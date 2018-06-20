@@ -31,6 +31,7 @@ public:
 public:
    /////////////////////////		/////////////////////////////////////
    int GetCrystal() const override;
+   inline UShort_t GetArrayNumber() const override { return (4 * (GetDetector() - 1) + (GetCrystal() + 1)); } //!<!
    Double_t GetCorrectedTime() const; ///< Returns a time value using the CFD, corrected using GValue
 
 private:
