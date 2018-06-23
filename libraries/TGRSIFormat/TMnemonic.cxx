@@ -20,6 +20,7 @@
 #include "TSiLi.h"
 #include "TGenericDetector.h"
 #include "TFipps.h"
+#include "TBgo.h"
 
 ClassImp(TMnemonic)
 
@@ -60,6 +61,7 @@ void TMnemonic::EnumerateMnemonic(std::string mnemonic_word, EMnemonic& mnemonic
 		case 'Q': mnemonic_enum = EMnemonic::kQ; break;
 		case 'R': mnemonic_enum = EMnemonic::kR; break;
 		case 'S': mnemonic_enum = EMnemonic::kS; break;
+		case 'T': mnemonic_enum = EMnemonic::kT; break;
 		case 'W': mnemonic_enum = EMnemonic::kW; break;
 		case 'X': mnemonic_enum = EMnemonic::kX; break;
 		case 'Z': mnemonic_enum = EMnemonic::kZ; break;
@@ -90,7 +92,11 @@ void TMnemonic::EnumerateSystem()
    } else if(fSystemString.compare("CS") == 0) {
       fSystem = ESystem::kCSM;
    } else if(fSystemString.compare("GR") == 0) {
-      fSystem = ESystem::kGriffin;
+      if(SubSystem() == EMnemonic::kS) {
+			fSystem = ESystem::kBgo;
+		} else {
+			fSystem = ESystem::kGriffin;
+		}
    } else if(fSystemString.compare("SE") == 0) {
       fSystem = ESystem::kSceptar;
    } else if(fSystemString.compare("PA") == 0) {
@@ -98,11 +104,13 @@ void TMnemonic::EnumerateSystem()
    } else if(fSystemString.compare("DS") == 0) {
       fSystem = ESystem::kDescant;
    } else if((fSystemString.compare("DA") == 0) || (fSystemString.compare("LB") == 0) ) {
-      if(CollectedCharge() == EMnemonic::kN) {
-         fSystem = ESystem::kLaBr;
-      } else {
-         fSystem = ESystem::kTAC;
-      }
+      if(SubSystem() == EMnemonic::kS) {
+			fSystem = ESystem::kBgo;
+		} else if(SubSystem() == EMnemonic::kT) {
+			fSystem = ESystem::kTAC;
+		} else {
+			fSystem = ESystem::kLaBr;
+		}
    } else if(fSystemString.compare("BA") == 0) {
       fSystem = ESystem::kS3;
    } else if(fSystemString.compare("ZD") == 0) {
@@ -231,6 +239,7 @@ TClass* TMnemonic::GetClassType() const
 		case ESystem::kTAC:        fClassType = TTAC::Class(); break;
 		case ESystem::kZeroDegree: fClassType = TZeroDegree::Class(); break;
 		case ESystem::kTip:        fClassType = TTip::Class(); break;
+		case ESystem::kBgo:        fClassType = TBgo::Class(); break;
 		case ESystem::kFipps:      fClassType = TFipps::Class(); break;
 		case ESystem::kGeneric:    fClassType = TGenericDetector::Class(); break;
 		default:                              fClassType = nullptr;

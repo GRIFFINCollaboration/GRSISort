@@ -16,8 +16,6 @@
 #include "TGRSIFunctions.h"
 #include "TGRSIFit.h"
 
-using namespace TGRSIFunctions;
-
 /////////////////////////////////////////////////////////////////
 ///
 /// \class TPeak

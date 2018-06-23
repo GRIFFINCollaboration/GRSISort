@@ -177,6 +177,7 @@ public:
 
    static TVector3* GetBeamDirection() { return &fBeamDirection; }
 
+   virtual void Add(const TGRSIDetectorHit*) {} //!<!
 private:
    //     virtual TVector3 GetChannelPosition(Double_t dist) const { AbstractMethod("GetChannelPosition"); return
    //     TVector3(0., 0., 0.); }

@@ -30,6 +30,7 @@ public:
    TBgoHit* GetBgoHit(const Int_t& i);
    TGRSIDetectorHit* GetHit(const Int_t& idx = 0) { return GetBgoHit(idx); }
    Short_t   GetMultiplicity() const { return fBgoHits.size(); }
+	const std::vector<TBgoHit>& GetHitVector() const { return fBgoHits; }
 
    static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
 #ifndef __CINT__

@@ -96,35 +96,39 @@ bool TGriffinHit::CompareEnergy(const TGriffinHit* lhs, const TGriffinHit* rhs)
    return (lhs->GetEnergy() > rhs->GetEnergy());
 }
 
-void TGriffinHit::Add(const TGriffinHit* hit)
+void TGriffinHit::Add(const TGRSIDetectorHit* hit)
 {
+	const TGriffinHit* griffinHit = dynamic_cast<const TGriffinHit*>(hit);
+	if(griffinHit == nullptr) {
+		throw std::runtime_error("trying to add non-griffin hit to griffin hit!");
+	}
    // add another griffin hit to this one (for addback),
    // using the time and position information of the one with the higher energy
-   if(!CompareEnergy(this, hit)) {
-      SetCfd(hit->GetCfd());
-      SetTime(hit->GetTime());
-      // SetPosition(hit->GetPosition());
-      SetAddress(hit->GetAddress());
+   if(!CompareEnergy(this, griffinHit)) {
+      SetCfd(griffinHit->GetCfd());
+      SetTime(griffinHit->GetTime());
+      // SetPosition(griffinHit->GetPosition());
+      SetAddress(griffinHit->GetAddress());
    } else {
       SetTime(GetTime());
    }
-   SetEnergy(GetEnergy() + hit->GetEnergy());
+   SetEnergy(GetEnergy() + griffinHit->GetEnergy());
    // this has to be done at the very end, otherwise GetEnergy() might not work
    SetCharge(0);
    // Add all of the pileups.This should be changed when the max number of pileups changes
-   if((NPileUps() + hit->NPileUps()) < 4) {
-      SetNPileUps(NPileUps() + hit->NPileUps());
+   if((NPileUps() + griffinHit->NPileUps()) < 4) {
+      SetNPileUps(NPileUps() + griffinHit->NPileUps());
    } else {
       SetNPileUps(3);
    }
-   if((PUHit() + hit->PUHit()) < 4) {
-      SetPUHit(PUHit() + hit->PUHit());
+   if((PUHit() + griffinHit->PUHit()) < 4) {
+      SetPUHit(PUHit() + griffinHit->PUHit());
    } else {
       SetPUHit(3);
    }
-   // KValue is somewhate meaningless in addback, so I am using it as an indicator that a piledup hit was added-back RD
-   if(GetKValue() > hit->GetKValue()) {
-      SetKValue(hit->GetKValue());
+   // KValue is somewhate meaningless in addback, so I am using it as an indicator that a piledup griffinHit was added-back RD
+   if(GetKValue() > griffinHit->GetKValue()) {
+      SetKValue(griffinHit->GetKValue());
    }
 }
 

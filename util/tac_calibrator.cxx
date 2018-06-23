@@ -31,9 +31,6 @@
 #include <vector>
 #include <string>
 
-using namespace std;
-
-
 int main(int argc, char** argv) {
   if(argc == 1) {
     std::cout<<"Usage: "<<argv[0]<<" <analysis tree file(s)>"<<std::endl;
