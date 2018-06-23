@@ -772,8 +772,8 @@ Short_t TGriffin::GetSuppressedAddbackMultiplicity(const TBgo* bgo, const EGainB
       FixCrossTalk(gain_type);
    }
    auto& hit_vec  = GetHitVector(gain_type);
-   auto& ab_vec   = GetAddbackVector(gain_type);
-   auto& frag_vec = GetAddbackFragVector(gain_type);
+   auto& ab_vec   = GetSuppressedAddbackVector(gain_type);
+   auto& frag_vec = GetSuppressedAddbackFragVector(gain_type);
    if(hit_vec.empty()) {
       return 0;
    }
