@@ -84,8 +84,8 @@ public:
    static inline int RunNumber() { return Get()->fRunNumber; }
    static inline int SubRunNumber() { return Get()->fSubRunNumber; }
 
-   inline void SetRunTitle(const char* run_title) { Get()->fRunTitle.assign(run_title); }
-   inline void SetRunComment(const char* run_comment) { Get()->fRunComment.assign(run_comment); }
+   inline void SetRunTitle(const char* run_title) { if(run_title != nullptr) Get()->fRunTitle.assign(run_title); }
+   inline void SetRunComment(const char* run_comment) { if(run_comment != nullptr) Get()->fRunComment.assign(run_comment); }
 
 	static inline std::string RunTitle() { return Get()->fRunTitle; }
 	static inline std::string RunComment() { return Get()->fRunComment; }
