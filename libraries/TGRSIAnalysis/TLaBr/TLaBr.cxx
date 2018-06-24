@@ -34,7 +34,7 @@ TLaBr::~TLaBr()
 	// Default Destructor
 }
 
-TLaBr::TLaBr(const TLaBr& rhs) : TGRSIDetector()
+TLaBr::TLaBr(const TLaBr& rhs) : TSuppressed()
 {
 	// Copy Contructor
 #if MAJOR_ROOT_VERSION < 6
@@ -48,17 +48,21 @@ void TLaBr::Clear(Option_t* opt)
 	// Clears all of the hits
 	// The Option "all" clears the base class.
 	if(TString(opt).Contains("all", TString::ECaseCompare::kIgnoreCase)) {
-		TGRSIDetector::Clear(opt);
+		TSuppressed::Clear(opt);
 	}
 	fLaBrHits.clear();
+	fSuppressedHits.clear();
+	fLaBrBits = 0;
 }
 
 void TLaBr::Copy(TObject& rhs) const
 {
 	// Copies a TLaBr
-	TGRSIDetector::Copy(rhs);
+	TSuppressed::Copy(rhs);
 
-	static_cast<TLaBr&>(rhs).fLaBrHits = fLaBrHits;
+	static_cast<TLaBr&>(rhs).fLaBrHits       = fLaBrHits;
+	static_cast<TLaBr&>(rhs).fSuppressedHits = fSuppressedHits;
+   static_cast<TLaBr&>(rhs).fLaBrBits       = 0;
 }
 
 TLaBr& TLaBr::operator=(const TLaBr& rhs)
@@ -82,11 +86,56 @@ TGRSIDetectorHit* TLaBr::GetHit(const Int_t& idx)
 TLaBrHit* TLaBr::GetLaBrHit(const int& i)
 {
 	try {
-		return &fLaBrHits.at(i);
+		return &(fLaBrHits.at(i));
 	} catch(const std::out_of_range& oor) {
 		std::cerr<<ClassName()<<" is out of range: "<<oor.what()<<std::endl;
 		throw grsi::exit_exception(1);
 	}
+	return nullptr;
+}
+
+bool TLaBr::IsSuppressed() const
+{
+	return TestBitNumber(ELaBrBits::kIsSuppressed);
+}
+
+void TLaBr::SetSuppressed(const bool flag)
+{
+	return SetBitNumber(ELaBrBits::kIsSuppressed, flag);
+}
+
+void TLaBr::ResetSuppressed()
+{
+   SetSuppressed(false);
+   fSuppressedHits.clear();
+}
+
+Short_t TLaBr::GetSuppressedMultiplicity(const TBgo* bgo)
+{
+	/// Automatically builds the suppressed hits using the fSuppressionCriterion and returns the number of suppressed hits
+	if(fLaBrHits.empty()) {
+		return 0;
+	}
+   // if the suppressed has been reset, clear the suppressed hits
+   if(!IsSuppressed()) {
+      fSuppressedHits.clear();
+   }
+   if(fSuppressedHits.empty()) {
+		CreateSuppressed(bgo, fLaBrHits, fSuppressedHits);
+      SetSuppressed(true);
+   }
+
+   return fSuppressedHits.size();
+}
+
+TLaBrHit* TLaBr::GetSuppressedHit(const int& i)
+{
+	try {
+		return &(fSuppressedHits.at(i));
+	} catch(const std::out_of_range& oor) {
+		std::cerr<<ClassName()<<" is out of range: "<<oor.what()<<std::endl;
+      throw grsi::exit_exception(1);
+   }
 	return nullptr;
 }
 

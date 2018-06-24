@@ -494,10 +494,6 @@ void TGriffin::SetBitNumber(enum EGriffinBits bit, Bool_t set) const
 {
    // Used to set the flags that are stored in TGriffin.
    fGriffinBits.SetBit(bit, set);
-   /*	if(set)
-         fGriffinBits |= bit;
-      else
-         fGriffinBits &= (~bit);*/
 }
 
 Double_t TGriffin::CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, const TGriffinHit* const other_hit,

@@ -37,7 +37,7 @@ public:
 	template <class InputIterator>
 		TGRSIMap(InputIterator first, InputIterator last,
 				const key_compare& comp = key_compare(),
-				const allocator_type& alloc = allocator_type()) : std::map<key_type, mapped_type, key_compare, allocator_type>(first, comp, alloc) {}
+				const allocator_type& alloc = allocator_type()) : std::map<key_type, mapped_type, key_compare, allocator_type>(first, last, comp, alloc) {}
 	TGRSIMap(const TGRSIMap& x) : std::map<key_type, mapped_type, key_compare, allocator_type>(x) {}
 	TGRSIMap(const TGRSIMap& x, const allocator_type& alloc) : std::map<key_type, mapped_type, key_compare, allocator_type>(x, alloc) {}
 	TGRSIMap(TGRSIMap&& x) : std::map<key_type, mapped_type, key_compare, allocator_type>(x) {}
