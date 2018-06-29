@@ -25,22 +25,22 @@
 ClassImp(TGriffin)
 /// \endcond
 
-bool DefaultAddback(const TGRSIDetectorHit& one, const TGRSIDetectorHit& two)
+bool DefaultGriffinAddback(const TGRSIDetectorHit& one, const TGRSIDetectorHit& two)
 {
    return ((one.GetDetector() == two.GetDetector()) &&
            (std::fabs(one.GetTime() - two.GetTime()) < TGRSIOptions::AnalysisOptions()->AddbackWindow()));
 }
 
-std::function<bool(const TGRSIDetectorHit&, const TGRSIDetectorHit&)> TGriffin::fAddbackCriterion = DefaultAddback;
+std::function<bool(const TGRSIDetectorHit&, const TGRSIDetectorHit&)> TGriffin::fAddbackCriterion = DefaultGriffinAddback;
 
-bool DefaultSuppression(const TGRSIDetectorHit& hit, const TBgoHit& bgoHit)
+bool DefaultGriffinSuppression(const TGRSIDetectorHit& hit, const TBgoHit& bgoHit)
 {
 	return ((hit.GetDetector() == bgoHit.GetDetector() && hit.GetCrystal() == bgoHit.GetCrystal()) &&
 	(std::fabs(hit.GetTime() - bgoHit.GetTime()) < TGRSIOptions::AnalysisOptions()->SuppressionWindow()) &&
 	(bgoHit.GetEnergy() > TGRSIOptions::AnalysisOptions()->SuppressionEnergy()));
 }
 
-std::function<bool(const TGRSIDetectorHit&, const TBgoHit&)> TGriffin::fSuppressionCriterion = DefaultSuppression;
+std::function<bool(const TGRSIDetectorHit&, const TBgoHit&)> TGriffin::fSuppressionCriterion = DefaultGriffinSuppression;
 
 bool  TGriffin::fSetCoreWave     = false;
 TGriffin::EGainBits TGriffin::fDefaultGainType = TGriffin::EGainBits::kLowGain;
