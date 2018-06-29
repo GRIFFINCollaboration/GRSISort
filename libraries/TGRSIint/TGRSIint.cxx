@@ -9,6 +9,7 @@
 #include "TGRSIUtilities.h"
 #include "GValue.h"
 #include "TROOT.h"
+#include "GCanvas.h"
 
 #include "StoppableThread.h"
 #include "TAnalysisHistLoop.h"
@@ -30,8 +31,6 @@
 #include "TInterpreter.h"
 #include "TGHtmlBrowser.h"
 //#include <pstream.h>
-
-#include "GRootCommands.h"
 
 #include <thread>
 #include <utility>
@@ -215,6 +214,11 @@ void TGRSIint::Terminate(Int_t status)
       printf("\r              \r");
       fflush(stdout);
    }
+
+	TSeqCollection* canvases = gROOT->GetListOfCanvases();
+	while(canvases->GetEntries() > 0) {
+		static_cast<GCanvas*>(canvases->At(0))->Close();
+	}
 
    // TChannel::DeleteAllChannels();
    TRint::Terminate(status);
