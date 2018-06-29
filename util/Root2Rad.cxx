@@ -70,7 +70,7 @@ int main(int argc, char** argv)
    if(argc < 2 || (infile = TFile::Open(argv[1], "read")) == nullptr) {
       std::cout<<"problem opening file."<<std::endl
                <<"Usage: "<<argv[0]
-               <<" file.root (optional: -s to split large matrices, -c to compress large matrices)"<<std::endl;
+               <<" file.root (optional: -s to split large matrices, -c to compress large matrices, which need to go last!)"<<std::endl;
       return 1;
    }
 
@@ -213,7 +213,7 @@ void AddToList(TList* list, TH2* hist, bool split, bool compress)
       }
       list->Add(splitHist);
       int rebin = (hist->GetXaxis()->GetNbins() + 4095) / 4096;
-      std::cout<<"rebinning "<<hist->GetName()<<" by "<<rebin<<std::endl;
+		std::cout<<"rebinning "<<hist->GetName()<<" by "<<rebin<<std::endl;
       list->Add(hist->Rebin2D(rebin, rebin));
       return;
    } else if(split) {
