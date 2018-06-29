@@ -607,7 +607,6 @@ void TGRSIint::SetupPipeline()
       TGRSIRunInfo::Get()->SetRunInfo(0, -1);
    }
 
-   TPPG::Get()->Setup();
    for(const auto& val_filename : opt->ValInputFiles()) {
       GValue::ReadValFile(val_filename.c_str());
    }
