@@ -20,7 +20,8 @@
 #include "TSiLi.h"
 #include "TGenericDetector.h"
 #include "TFipps.h"
-#include "TBgo.h"
+#include "TGriffinBgo.h"
+#include "TLaBrBgo.h"
 
 ClassImp(TMnemonic)
 
@@ -93,7 +94,7 @@ void TMnemonic::EnumerateSystem()
       fSystem = ESystem::kCSM;
    } else if(fSystemString.compare("GR") == 0) {
       if(SubSystem() == EMnemonic::kS) {
-			fSystem = ESystem::kBgo;
+			fSystem = ESystem::kGriffinBgo;
 		} else {
 			fSystem = ESystem::kGriffin;
 		}
@@ -105,7 +106,7 @@ void TMnemonic::EnumerateSystem()
       fSystem = ESystem::kDescant;
    } else if((fSystemString.compare("DA") == 0) || (fSystemString.compare("LB") == 0) ) {
       if(SubSystem() == EMnemonic::kS) {
-			fSystem = ESystem::kBgo;
+			fSystem = ESystem::kLaBrBgo;
 		} else if(SubSystem() == EMnemonic::kT) {
 			fSystem = ESystem::kTAC;
 		} else {
@@ -239,7 +240,8 @@ TClass* TMnemonic::GetClassType() const
 		case ESystem::kTAC:        fClassType = TTAC::Class(); break;
 		case ESystem::kZeroDegree: fClassType = TZeroDegree::Class(); break;
 		case ESystem::kTip:        fClassType = TTip::Class(); break;
-		case ESystem::kBgo:        fClassType = TBgo::Class(); break;
+		case ESystem::kGriffinBgo: fClassType = TGriffinBgo::Class(); break;
+		case ESystem::kLaBrBgo:    fClassType = TLaBrBgo::Class(); break;
 		case ESystem::kFipps:      fClassType = TFipps::Class(); break;
 		case ESystem::kGeneric:    fClassType = TGenericDetector::Class(); break;
 		default:                              fClassType = nullptr;

@@ -35,7 +35,8 @@ public:
       kTAC,
       kZeroDegree,
       kDescant,
-		kBgo,
+		kGriffinBgo,
+		kLaBrBgo,
       kFipps,
 		kClear
    };
