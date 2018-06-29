@@ -45,12 +45,24 @@ public:
    void Copy(TObject& rhs) const override;
    TLaBrHit* GetLaBrHit(const int& i);                          //!<!
    Short_t GetMultiplicity() const override { return fLaBrHits.size(); } //!<!
+
+#if !defined(__CINT__) && !defined(__CLING__)
+   void SetSuppressionCriterion(std::function<bool(const TGRSIDetectorHit&, const TBgoHit&)> criterion)
+   {
+      fSuppressionCriterion = std::move(criterion);
+   }
+   std::function<bool(const TGRSIDetectorHit&, const TBgoHit&)> GetSuppressionCriterion() const { return fSuppressionCriterion; }
+
+   bool SuppressionCriterion(const TGRSIDetectorHit& hit, const TBgoHit& bgoHit) override { return fSuppressionCriterion(hit, bgoHit); }
+#endif
+
    TLaBrHit* GetSuppressedHit(const int& i);                          //!<!
    Short_t GetSuppressedMultiplicity(const TBgo* fBgo);
    bool IsSuppressed() const;
 	void SetSuppressed(const bool flag);
    void ResetSuppressed();
-#ifndef __CINT__
+
+#if !defined(__CINT__) && !defined(__CLING__)
    void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
 
@@ -66,6 +78,9 @@ public:
    TLaBr& operator=(const TLaBr&); //!<!
 
 private:
+#if !defined(__CINT__) && !defined(__CLING__)
+   static std::function<bool(const TGRSIDetectorHit&, const TBgoHit&)> fSuppressionCriterion;
+#endif
    std::vector<TLaBrHit> fLaBrHits; //   The set of LaBr hits
    std::vector<TLaBrHit> fSuppressedHits; //   The set of LaBr hits
 

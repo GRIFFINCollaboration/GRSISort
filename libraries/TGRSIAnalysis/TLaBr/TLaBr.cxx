@@ -3,9 +3,20 @@
 #include <TRandom.h>
 #include <TMath.h>
 
+#include "TGRSIOptions.h"
+
 /// \cond CLASSIMP
 ClassImp(TLaBr)
 /// \endcond
+
+bool DefaultLaBrSuppression(const TGRSIDetectorHit& hit, const TBgoHit& bgoHit)
+{
+	return ((hit.GetDetector() == bgoHit.GetDetector()) &&
+	(std::fabs(hit.GetTime() - bgoHit.GetTime()) < TGRSIOptions::AnalysisOptions()->SuppressionWindow()) &&
+	(bgoHit.GetEnergy() > TGRSIOptions::AnalysisOptions()->SuppressionEnergy()));
+}
+
+std::function<bool(const TGRSIDetectorHit&, const TBgoHit&)> TLaBr::fSuppressionCriterion = DefaultLaBrSuppression;
 
 TVector3 TLaBr::gPosition[9] = {
 	// These positions should be updated (they are currently SCEPTAR-ish)
