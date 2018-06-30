@@ -121,7 +121,7 @@ TVector3 TTdrClover::gCloverPosition[17] = {
 
 std::map<int, TSpline*> TTdrClover::fEnergyResiduals;
 
-TTdrClover::TTdrClover() : TGRSIDetector()
+TTdrClover::TTdrClover() : TSuppressed()
 {
 // Default ctor. Ignores TObjectStreamer in ROOT < 6
 #if MAJOR_ROOT_VERSION < 6
@@ -130,7 +130,7 @@ TTdrClover::TTdrClover() : TGRSIDetector()
    Clear();
 }
 
-TTdrClover::TTdrClover(const TTdrClover& rhs) : TGRSIDetector()
+TTdrClover::TTdrClover(const TTdrClover& rhs) : TSuppressed()
 {
 // Copy ctor. Ignores TObjectStreamer in ROOT < 6
 #if MAJOR_ROOT_VERSION < 6
@@ -142,7 +142,7 @@ TTdrClover::TTdrClover(const TTdrClover& rhs) : TGRSIDetector()
 void TTdrClover::Copy(TObject& rhs) const
 {
    // Copy function.
-   TGRSIDetector::Copy(rhs);
+   TSuppressed::Copy(rhs);
 
    static_cast<TTdrClover&>(rhs).fTdrCloverHits   = fTdrCloverHits;
    static_cast<TTdrClover&>(rhs).fAddbackHits   = fAddbackHits;
@@ -164,7 +164,7 @@ void TTdrClover::Clear(Option_t* opt)
 {
    // Clears the mother, and all of the hits
    ClearStatus();
-   TGRSIDetector::Clear(opt);
+   TSuppressed::Clear(opt);
    fTdrCloverHits.clear();
    fAddbackHits.clear();
    fAddbackFrags.clear();
@@ -354,31 +354,23 @@ Int_t TTdrClover::GetSuppressedMultiplicity(TBgo* bgo)
 		fSuppressedHits.clear();
 	}
 	if(fSuppressedHits.empty()) {
-		// loop over unsuppressed hits
-		for(auto hit : GetHitVector()) {
-			bool suppress = false;
-			for(auto b : bgo->GetHitVector()) {
-				if(fSuppressionCriterion(hit, b)) {
-					suppress = true;
-					break;
-				}
-			}
-			if(!suppress) fSuppressedHits.push_back(hit);
-		}
+		CreateSuppressed(bgo, fTdrCloverHits, fSuppressedHits);
+		SetSuppressed(true);
 	}
-
-	SetSuppressed(true);
 
 	return fSuppressedHits.size();
 }
 
-TTdrCloverHit* TTdrClover::GetSuppressedHit(TBgo* bgo, const int& i)
+TTdrCloverHit* TTdrClover::GetSuppressedHit(const int& i)
 {
-	if(i < GetSuppressedMultiplicity(bgo)) {
-		return &GetSuppressedVector().at(i);
+	try {
+		return &(GetSuppressedVector().at(i));
+	} catch(const std::out_of_range& oor) {
+		std::cerr<<ClassName()<<" Suppressed hits are out of range: "<<oor.what()<<std::endl;
+		if(!gInterpreter) {
+			throw grsi::exit_exception(1);
+		}
 	}
-	std::cerr<<"Suppressed hits are out of range"<<std::endl;
-	throw grsi::exit_exception(1);
 	return nullptr;
 }
 
@@ -399,55 +391,23 @@ Int_t TTdrClover::GetSuppressedAddbackMultiplicity(TBgo* bgo)
 		frag_vec.clear();
 	}
 	if(ab_vec.empty()) {
-		// loop over raw hits
-		size_t j;
-		for(auto hit : hit_vec) {
-			// check for each hit if it is suppressed
-			bool suppress = false;
-			for(auto b : bgo->GetHitVector()) {
-				if(fSuppressionCriterion(hit, b)) {
-					suppress = true;
-					break;
-				}
-			}
-			// check for each existing addback hit if this hit should be added
-			for(j = 0; j < ab_vec.size(); ++j) {
-				if(fAddbackCriterion(ab_vec.at(j), hit)) {
-					// if this hit is suppressed we need to suppress the whole addback event
-					if(suppress) {
-						ab_vec.erase(ab_vec.begin()+j);
-						frag_vec.erase(frag_vec.begin()+j);
-						break;
-					}
-					ab_vec.at(j).Add(&hit); // copy constructor does not copy the bit field, so we set it.
-					ab_vec.at(j).SetHitBit(TGRSIDetectorHit::EBitFlag::kIsEnergySet); // this must be set for summed hits.
-					ab_vec.at(j).SetHitBit(TGRSIDetectorHit::EBitFlag::kIsTimeSet);   // this must be set for summed hits. pcb.
-					(frag_vec.at(j))++;
-					break;
-				}
-			}
-			// if we haven't found an addback hit this belongs to or there were no addback hits
-			// we create a new one unless this hit is suppressed
-			// this also covers the case where the last addback hit was suppressed and removed
-			// because in this case suppress is true so we won't create a new addback hit
-			if(j == ab_vec.size() && !suppress) {
-				ab_vec.push_back(hit);
-				frag_vec.push_back(1);
-			}
-		}
-		SetSuppressedAddback(true);
+		CreateSuppressedAddback(bgo, hit_vec, ab_vec, frag_vec);
+      SetSuppressedAddback(true);
 	}
 
 	return ab_vec.size();
 }
 
-TTdrCloverHit* TTdrClover::GetSuppressedAddbackHit(TBgo* bgo, const int& i)
+TTdrCloverHit* TTdrClover::GetSuppressedAddbackHit(const int& i)
 {
-	if(i < GetSuppressedAddbackMultiplicity(bgo)) {
-		return &GetSuppressedAddbackVector().at(i);
+	try {
+		return &(GetSuppressedAddbackVector().at(i));
+	} catch(const std::out_of_range& oor) {
+		std::cerr<<ClassName()<<" Suppressed addback hits are out of range: "<<oor.what()<<std::endl;
+		if(!gInterpreter) {
+			throw grsi::exit_exception(1);
+		}
 	}
-	std::cerr<<"Suppressed addback hits are out of range"<<std::endl;
-	throw grsi::exit_exception(1);
 	return nullptr;
 }
 
