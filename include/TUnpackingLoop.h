@@ -26,7 +26,7 @@
 
 class TUnpackingLoop : public StoppableThread {
 public:
-   enum class EDataType { kMidas, kLst };
+   enum class EDataType { kMidas, kLst, kTdr };
 
    static TUnpackingLoop* Get(std::string name = "");
    ~TUnpackingLoop() override;

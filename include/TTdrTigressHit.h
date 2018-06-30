@@ -1,5 +1,5 @@
-#ifndef GRIFFINHIT_H
-#define GRIFFINHIT_H
+#ifndef TDRTIGRESSHIT_H
+#define TDRTIGRESSHIT_H
 
 /** \addtogroup Detectors
  *  @{
@@ -16,9 +16,9 @@
 #include "TGRSIDetectorHit.h"
 #include "TGRSIRunInfo.h"
 
-class TGriffinHit : public TGRSIDetectorHit {
+class TTdrTigressHit : public TGRSIDetectorHit {
 public:
-   enum class EGriffinHitBits {
+   enum class ETdrTigressHitBits {
       kTotalPU1    = 1<<0,
       kTotalPU2    = 1<<1,
       kPUHitOffset = kTotalPU2,
@@ -31,14 +31,15 @@ public:
    };
 
 public:
-   TGriffinHit();
-   TGriffinHit(const TGriffinHit&);
-   TGriffinHit(const TFragment&);
-   ~TGriffinHit() override;
+   TTdrTigressHit();
+   TTdrTigressHit(const TTdrTigressHit&);
+   TTdrTigressHit(const TFragment&);
+   ~TTdrTigressHit() override;
 
 private:
    Int_t                   fFilter{0};                  ///<  The Filter Word
-   TTransientBits<UChar_t> fGriffinHitBits;             ///<  Transient Member Flags
+   TTransientBits<UChar_t> fTdrTigressHitBits;             ///<  Transient Member Flags
+   UInt_t                  fCrystal{0};                 //!<! Crystal Number
    Bool_t                  fBremSuppressed_flag{false}; //!<! Bremsstrahlung Suppression flag.
 
 public:
@@ -47,8 +48,6 @@ public:
 
    /////////////////////////  Getters	/////////////////////////////////////
    inline Int_t GetFilterPattern() const { return fFilter; } //!<!
-   Double_t GetNoCTEnergy(Option_t* opt = "") const;
-   Double_t GetEnergyNonlinearity(double energy) const override;
 
    /////////////////////////  Recommended Functions/////////////////////////
 
@@ -68,8 +67,9 @@ public:
 
    bool InFilter(Int_t); //!<!
 
-   static bool CompareEnergy(const TGriffinHit*, const TGriffinHit*); //!<!
-   void        Add(const TGRSIDetectorHit*) override;                      //!<!
+   static bool CompareEnergy(const TTdrTigressHit*, const TTdrTigressHit*); //!<!
+   void        Add(const TGRSIDetectorHit*) override;                               //!<!
+                                                                      // Bool_t BremSuppressed(TSceptarHit*);
 
 public:
    void Clear(Option_t* opt = "") override;       //!<!
@@ -81,11 +81,11 @@ public:
    TVector3 GetPosition() const override;
 
 private:
-   void SetGriffinFlag(EGriffinHitBits, Bool_t set);
+   void SetTdrTigressFlag(ETdrTigressHitBits, Bool_t set);
    Double_t GetDefaultDistance() const { return 110.; }
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGriffinHit, 7); // Information about a GRIFFIN Hit
+   ClassDefOverride(TTdrTigressHit, 1); // Information about a TDRTIGRESS Hit
    /// \endcond
 };
 /*! @} */

@@ -18,6 +18,7 @@
 #include "GHSym.h"
 #include "GCube.h"
 #include "TAnalysisOptions.h"
+#include "TPPG.h"
 #include "TGRSIMap.h"
 
 #include <string>
@@ -63,6 +64,7 @@ protected:
    TGRSIMap<std::string, GHSym*>      fSym;
    TGRSIMap<std::string, GCube*>      fCube;
    TGRSIMap<std::string, THnSparseF*> fHSparse;
+	TPPG*             fPpg{nullptr};
 
 private:
    std::string       fOutputPrefix;

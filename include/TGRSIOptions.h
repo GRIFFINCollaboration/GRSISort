@@ -41,6 +41,7 @@ public:
 	bool                            ShouldExit() { return fShouldExit; }
 	const std::vector<std::string>& InputMidasFiles() { return fInputMidasFiles; }
 	const std::vector<std::string>& InputLstFiles() { return fInputLstFiles; }
+	const std::vector<std::string>& InputTdrFiles() { return fInputTdrFiles; }
 	const std::vector<std::string>& RootInputFiles() { return fInputRootFiles; }
 	const std::vector<std::string>& CalInputFiles() { return fInputCalFiles; }
 	const std::vector<std::string>& ValInputFiles() { return fInputValFiles; }
@@ -137,6 +138,7 @@ private:
 
 	std::vector<std::string> fInputMidasFiles; ///< A list of the input Midas files
 	std::vector<std::string> fInputLstFiles;   ///< A list of the input Lst files
+	std::vector<std::string> fInputTdrFiles;   ///< A list of the input Tdr files
 	std::vector<std::string> fInputRootFiles;  ///< A list of the input root files
 	std::vector<std::string> fInputCalFiles;   ///< A list of the input cal files
 	std::vector<std::string> fInputOdbFiles;   ///< A list of the input odb files

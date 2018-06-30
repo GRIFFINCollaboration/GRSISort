@@ -9,6 +9,7 @@
 #include "TGRSIUtilities.h"
 #include "GValue.h"
 #include "TROOT.h"
+#include "GCanvas.h"
 
 #include "StoppableThread.h"
 #include "TAnalysisHistLoop.h"
@@ -30,8 +31,6 @@
 #include "TInterpreter.h"
 #include "TGHtmlBrowser.h"
 //#include <pstream.h>
-
-#include "GRootCommands.h"
 
 #include <thread>
 #include <utility>
@@ -135,6 +134,10 @@ void TGRSIint::ApplyOptions()
       OpenLstFile(lst_file);
    }
 
+   for(auto& tdr_file : opt->InputTdrFiles()) {
+      OpenTdrFile(tdr_file);
+   }
+
    SetupPipeline();
 
    if(opt->StartGui()) {
@@ -211,6 +214,11 @@ void TGRSIint::Terminate(Int_t status)
       printf("\r              \r");
       fflush(stdout);
    }
+
+	TSeqCollection* canvases = gROOT->GetListOfCanvases();
+	while(canvases->GetEntries() > 0) {
+		static_cast<GCanvas*>(canvases->At(0))->Close();
+	}
 
    // TChannel::DeleteAllChannels();
    TRint::Terminate(status);
@@ -408,6 +416,20 @@ TLstFile* TGRSIint::OpenLstFile(const std::string& filename)
    return file;
 }
 
+TTdrFile* TGRSIint::OpenTdrFile(const std::string& filename)
+{
+   /// Opens Tdr Files.
+   if(!file_exists(filename.c_str())) {
+      std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
+      return nullptr;
+   }
+
+   auto* file = new TTdrFile(filename.c_str());
+   fRawFiles.push_back(file);
+
+   return file;
+}
+
 void TGRSIint::SetupPipeline()
 {
    /// Finds all of the files input as well as flags provided and makes all
@@ -431,10 +453,16 @@ void TGRSIint::SetupPipeline()
          std::cerr<<"File not found: "<<filename<<std::endl;
       }
    }
+   for(auto& filename : opt->InputTdrFiles()) {
+      if(!file_exists(filename.c_str())) {
+         missing_raw_file = true;
+         std::cerr<<"File not found: "<<filename<<std::endl;
+      }
+   }
 
    // Which input files do we have
    bool has_raw_file =
-      (!opt->InputMidasFiles().empty() || !opt->InputLstFiles().empty()) && opt->SortRaw() && !missing_raw_file;
+      (!opt->InputMidasFiles().empty() || !opt->InputLstFiles().empty() || !opt->InputTdrFiles().empty()) && opt->SortRaw() && !missing_raw_file;
    bool has_input_fragment_tree = gFragment != nullptr; // && opt->SortRoot();
    bool has_input_analysis_tree = gAnalysis != nullptr; // && opt->SortRoot();
 
@@ -583,7 +611,6 @@ void TGRSIint::SetupPipeline()
       TGRSIRunInfo::Get()->SetRunInfo(0, -1);
    }
 
-   TPPG::Get()->Setup();
    for(const auto& val_filename : opt->ValInputFiles()) {
       GValue::ReadValFile(val_filename.c_str());
    }
@@ -593,7 +620,7 @@ void TGRSIint::SetupPipeline()
 
    // this happens here, because the TDataLoop constructor is where we read the midas file ODB
    TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::EBuildMode::kTriggerId;
-   if(TGRSIRunInfo::Get()->Griffin() || TGRSIRunInfo::Get()->Fipps()) {
+   if(TGRSIRunInfo::Get()->Griffin() || TGRSIRunInfo::Get()->Fipps() || TGRSIRunInfo::Get()->TdrClover()) {
       event_build_mode = TEventBuildingLoop::EBuildMode::kTimestamp;
    }
 

@@ -57,8 +57,7 @@ public:
    Double_t GetTime(
       const ETimeFlag& correction_flag = ETimeFlag::kAll,
       Option_t*     opt = "") const override; ///< Returns a time value using the CFD with 1/256 ns intrinsic binning
-   Double_t GetCorrectedTime()
-      const; ///< Returns a time value using the CFD with 1/256 ns intrinsic binning, corrected using GValue
+   Double_t GetCorrectedTime() const; ///< Returns a time value using the CFD with 1/256 ns intrinsic binning, corrected using GValue
 
    Int_t CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow,
                       unsigned int interpolation_steps); //!<!

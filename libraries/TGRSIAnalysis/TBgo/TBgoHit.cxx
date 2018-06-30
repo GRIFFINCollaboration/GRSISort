@@ -2,6 +2,8 @@
 
 #include "TClass.h"
 
+#include "GValue.h"
+
 /// \cond CLASSIMP
 ClassImp(TBgoHit)
 /// \endcond
@@ -37,6 +39,14 @@ void TBgoHit::Print(Option_t* opt) const
    printf("\tTime:   %.2f\n", GetTime());
    std::cout<<"\tTime:   "<<GetTimeStamp()<<"\n";
    printf("============================\n");
+}
+
+Double_t TBgoHit::GetCorrectedTime() const
+{
+   if(GValue::Get(Form("GRSISort.Bgo.%d.TimeCorrection", GetDetector())) != nullptr) {
+      return GetTime() - GValue::Value(Form("GRSISort.Bgo.%d.TimeCorrection", GetDetector()));
+   }
+   return GetTime();
 }
 
 int TBgoHit::GetCrystal() const
