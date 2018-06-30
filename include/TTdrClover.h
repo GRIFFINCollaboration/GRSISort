@@ -18,12 +18,12 @@
 #include "TTdrCloverHit.h"
 #include "TBgo.h"
 #include "TBgoHit.h"
-#include "TGRSIDetector.h"
+#include "TSuppressed.h"
 #include "TGRSIRunInfo.h"
 #include "TTransientBits.h"
 #include "TSpline.h"
 
-class TTdrClover : public TGRSIDetector {
+class TTdrClover : public TSuppressed {
 public:
    enum class ETdrCloverBits {
       kIsAddbackSet    = 1<<0,
@@ -81,12 +81,12 @@ public:
    UShort_t GetNAddbackFrags(const size_t& idx);
 
    Int_t        GetSuppressedMultiplicity(TBgo*);
-   TTdrCloverHit* GetSuppressedHit(TBgo*, const int& i);
+   TTdrCloverHit* GetSuppressedHit(const int& i);
    bool IsSuppressedSet() const;
    void     ResetSuppressed();
 
    Int_t        GetSuppressedAddbackMultiplicity(TBgo*);
-   TTdrCloverHit* GetSuppressedAddbackHit(TBgo*, const int& i);
+   TTdrCloverHit* GetSuppressedAddbackHit(const int& i);
    bool IsSuppressedAddbackSet() const;
    void     ResetSuppressedAddback();
    UShort_t GetNSuppressedAddbackFrags(const size_t& idx);
