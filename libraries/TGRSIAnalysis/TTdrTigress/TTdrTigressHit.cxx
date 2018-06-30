@@ -94,35 +94,40 @@ bool TTdrTigressHit::CompareEnergy(const TTdrTigressHit* lhs, const TTdrTigressH
    return (lhs->GetEnergy() > rhs->GetEnergy());
 }
 
-void TTdrTigressHit::Add(const TTdrTigressHit* hit)
+void TTdrTigressHit::Add(const TGRSIDetectorHit* hit)
 {
-   // add another griffin hit to this one (for addback),
+   // add another TDR tigress hit to this one (for addback),
    // using the time and position information of the one with the higher energy
-   if(!CompareEnergy(this, hit)) {
-      SetCfd(hit->GetCfd());
-      SetTime(hit->GetTime());
-      // SetPosition(hit->GetPosition());
-      SetAddress(hit->GetAddress());
+	const TTdrTigressHit* tigressHit = dynamic_cast<const TTdrTigressHit*>(hit);
+   if(tigressHit == nullptr) {
+      throw std::runtime_error("trying to add non-tdr-tigress hit to tdr-tigress hit!");
+   }
+
+   if(!CompareEnergy(this, tigressHit)) {
+      SetCfd(tigressHit->GetCfd());
+      SetTime(tigressHit->GetTime());
+      // SetPosition(tigressHit->GetPosition());
+      SetAddress(tigressHit->GetAddress());
    } else {
       SetTime(GetTime());
    }
-   SetEnergy(GetEnergy() + hit->GetEnergy());
+   SetEnergy(GetEnergy() + tigressHit->GetEnergy());
    // this has to be done at the very end, otherwise GetEnergy() might not work
    SetCharge(0);
    // Add all of the pileups.This should be changed when the max number of pileups changes
-   if((NPileUps() + hit->NPileUps()) < 4) {
-      SetNPileUps(NPileUps() + hit->NPileUps());
+   if((NPileUps() + tigressHit->NPileUps()) < 4) {
+      SetNPileUps(NPileUps() + tigressHit->NPileUps());
    } else {
       SetNPileUps(3);
    }
-   if((PUHit() + hit->PUHit()) < 4) {
-      SetPUHit(PUHit() + hit->PUHit());
+   if((PUHit() + tigressHit->PUHit()) < 4) {
+      SetPUHit(PUHit() + tigressHit->PUHit());
    } else {
       SetPUHit(3);
    }
    // KValue is somewhate meaningless in addback, so I am using it as an indicator that a piledup hit was added-back RD
-   if(GetKValue() > hit->GetKValue()) {
-      SetKValue(hit->GetKValue());
+   if(GetKValue() > tigressHit->GetKValue()) {
+      SetKValue(tigressHit->GetKValue());
    }
 }
 

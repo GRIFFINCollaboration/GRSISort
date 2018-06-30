@@ -226,6 +226,10 @@ void TGRSIOptions::Load(int argc, char** argv)
 		.description("Build window, timestamp units").colour(DCYAN);
 	parser.option("addback-window", &fAnalysisOptions->fAddbackWindow, false)
 		.description("Addback window, time in ns").colour(DCYAN);
+	parser.option("suppression-window", &fAnalysisOptions->fSuppressionWindow, false)
+		.description("BGO suppression window, time in ns").colour(DCYAN);
+	parser.option("suppression-energy", &fAnalysisOptions->fSuppressionEnergy, false)
+		.description("Minimum BGO energy for suppression").colour(DCYAN);
 	parser.option("static-window", &fAnalysisOptions->fStaticWindow, false)
 		.description("Use static window for event building").colour(DCYAN);
 	parser.option("waveform-fitting", &fAnalysisOptions->fWaveformFitting, false)

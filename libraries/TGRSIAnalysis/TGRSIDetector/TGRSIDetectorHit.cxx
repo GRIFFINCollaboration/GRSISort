@@ -198,7 +198,6 @@ void TGRSIDetectorHit::Clear(Option_t*)
 
 Int_t TGRSIDetectorHit::GetDetector() const
 {
-
    TChannel* channel = GetChannel();
    if(channel == nullptr) {
       Error("GetDetector", "No TChannel exists for address 0x%08x", GetAddress());

@@ -1,4 +1,4 @@
-//TBgo.h TBgoHit.h
+//TBgo.h TBgoHit.h TGriffinBgo.h TLaBrBgo.h
 #ifdef __CINT__
 
 #pragma link off all globals;
@@ -8,6 +8,8 @@
 
 #pragma link C++ class TBgoHit+;
 #pragma link C++ class TBgo+;
+#pragma link C++ class TGriffinBgo+;
+#pragma link C++ class TLaBrBgo+;
 
 #endif
 

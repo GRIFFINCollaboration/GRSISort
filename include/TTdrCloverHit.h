@@ -68,7 +68,7 @@ public:
    bool InFilter(Int_t); //!<!
 
    static bool CompareEnergy(const TTdrCloverHit*, const TTdrCloverHit*); //!<!
-   void        Add(const TTdrCloverHit*);                               //!<!
+   void        Add(const TGRSIDetectorHit*) override;                               //!<!
                                                                       // Bool_t BremSuppressed(TSceptarHit*);
 
 public:

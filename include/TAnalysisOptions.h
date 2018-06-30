@@ -78,7 +78,7 @@ private:
 
    /// \cond CLASSIMP
    ClassDefOverride(TAnalysisOptions, 3); ///< Class for storing options in GRSISort
-                                          /// \endcond
+	/// \endcond
 };
 /*! @} */
 #endif /* TANALYSISOPTIONS_H */
