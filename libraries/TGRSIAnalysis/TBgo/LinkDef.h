@@ -10,6 +10,8 @@
 #pragma link C++ class TBgo+;
 #pragma link C++ class TGriffinBgo+;
 #pragma link C++ class TLaBrBgo+;
+#pragma link C++ class TTdrCloverBgo+;
+#pragma link C++ class TTdrTigressBgo+;
 
 #endif
 
