@@ -1,4 +1,4 @@
-//TBgo.h TBgoHit.h TGriffinBgo.h TLaBrBgo.h
+//TBgo.h TBgoHit.h TGriffinBgo.h TLaBrBgo.h TTdrCloverBgo.h TTdrTigressBgo.h
 #ifdef __CINT__
 
 #pragma link off all globals;
