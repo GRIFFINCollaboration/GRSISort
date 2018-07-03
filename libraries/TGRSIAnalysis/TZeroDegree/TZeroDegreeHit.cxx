@@ -89,26 +89,6 @@ Int_t TZeroDegreeHit::GetRemainder() const
    return fCfd >> 22;
 }
 
-Double_t TZeroDegreeHit::GetTime(const ETimeFlag&, Option_t*) const
-{
-   Double_t  dTime = GetTimeStamp() * 10. + GetRemainder() + (GetCfd() + gRandom->Uniform()) / 256.;
-   TChannel* chan  = GetChannel();
-   if(chan == nullptr) {
-      Error("GetTime", "No TChannel exists for address 0x%08x", GetAddress());
-      return dTime;
-   }
-
-   return dTime - 10. * (chan->GetTZero(GetEnergy()));
-}
-
-Double_t TZeroDegreeHit::GetCorrectedTime() const
-{
-   if(GValue::Get("GRSISort.ZeroDegree.TimeCorrection") != nullptr) {
-      return GetTime() + GValue::Value("GRSISort.ZeroDegree.TimeCorrection");
-   }
-   return GetTime();
-}
-
 void TZeroDegreeHit::Clear(Option_t*)
 {
    /// Clears the ZeroDegreeHit

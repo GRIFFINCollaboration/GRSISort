@@ -41,14 +41,6 @@ void TBgoHit::Print(Option_t* opt) const
    printf("============================\n");
 }
 
-Double_t TBgoHit::GetCorrectedTime() const
-{
-   if(GValue::Get(Form("GRSISort.Bgo.%d.TimeCorrection", GetDetector())) != nullptr) {
-      return GetTime() - GValue::Value(Form("GRSISort.Bgo.%d.TimeCorrection", GetDetector()));
-   }
-   return GetTime();
-}
-
 int TBgoHit::GetCrystal() const
 {
    TChannel* chan = GetChannel();
