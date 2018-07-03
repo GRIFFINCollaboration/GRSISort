@@ -45,7 +45,7 @@ utildir=$GRSISYS/etc
 
 # the repitition of '-lTGRSIint -lTGRSIFormat' is needed for debian-style OSes like ubuntu (see issue #979)
 grsilibs="-lTGRSIDetector -lTDetector -lTGRSIint -lTGRSIFormat -lTGRSIint -lTGRSIFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction -lTAngularCorrelation"
-detlibs="-lTFipps -lTTigress -lTGriffin -lTBgo -lTSharc -lTTriFoil -lTSceptar -lTPaces -lTDescant -lTTip -lTCSM -lTS3 -lTGenericDetector -lTSiLi -lTRF -lTPulseAnalyzer -lTTAC -lTLaBr -lTZeroDegree -lGROOT -lTGRSIFit -lTNucleus"
+detlibs="-lTSuppressed -lTFipps -lTTigress -lTGriffin -lTBgo -lTSharc -lTTriFoil -lTSceptar -lTPaces -lTDescant -lTTip -lTCSM -lTS3 -lTGenericDetector -lTSiLi -lTRF -lTPulseAnalyzer -lTTAC -lTLaBr -lTZeroDegree -lGROOT -lTGRSIFit -lTNucleus -lTTdrClover -lTTdrTigress -lTTdrSiLi -lTTdrPlastic"
 grsimore="-lTMidas -lTDataParser -lTHistogramming -lMakeAnalysisHistograms -lMakeGriffinFragmentHistograms -lMakeTigressHistograms"
 
 cflags="-std=c++0x -I$incdir"
