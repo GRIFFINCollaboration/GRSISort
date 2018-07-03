@@ -39,7 +39,6 @@ void TGriffinHit::Copy(TObject& rhs) const
    static_cast<TGriffinHit&>(rhs).fFilter = fFilter;
    // We should copy over a 0 and let the hit recalculate, this is safest
    static_cast<TGriffinHit&>(rhs).fGriffinHitBits      = 0;
-   static_cast<TGriffinHit&>(rhs).fCrystal             = fCrystal;
    static_cast<TGriffinHit&>(rhs).fPPG                 = fPPG;
    static_cast<TGriffinHit&>(rhs).fBremSuppressed_flag = fBremSuppressed_flag;
 }
@@ -65,7 +64,6 @@ void TGriffinHit::Clear(Option_t* opt)
    TGRSIDetectorHit::Clear(opt); // clears the base (address, position and waveform)
    fFilter              = 0;
    fGriffinHitBits      = 0;
-   fCrystal             = 0xFFFF;
    fPPG                 = nullptr;
    fBremSuppressed_flag = false;
 }
@@ -96,35 +94,39 @@ bool TGriffinHit::CompareEnergy(const TGriffinHit* lhs, const TGriffinHit* rhs)
    return (lhs->GetEnergy() > rhs->GetEnergy());
 }
 
-void TGriffinHit::Add(const TGriffinHit* hit)
+void TGriffinHit::Add(const TGRSIDetectorHit* hit)
 {
+	const TGriffinHit* griffinHit = dynamic_cast<const TGriffinHit*>(hit);
+	if(griffinHit == nullptr) {
+		throw std::runtime_error("trying to add non-griffin hit to griffin hit!");
+	}
    // add another griffin hit to this one (for addback),
    // using the time and position information of the one with the higher energy
-   if(!CompareEnergy(this, hit)) {
-      SetCfd(hit->GetCfd());
-      SetTime(hit->GetTime());
-      // SetPosition(hit->GetPosition());
-      SetAddress(hit->GetAddress());
+   if(!CompareEnergy(this, griffinHit)) {
+      SetCfd(griffinHit->GetCfd());
+      SetTime(griffinHit->GetTime());
+      // SetPosition(griffinHit->GetPosition());
+      SetAddress(griffinHit->GetAddress());
    } else {
       SetTime(GetTime());
    }
-   SetEnergy(GetEnergy() + hit->GetEnergy());
+   SetEnergy(GetEnergy() + griffinHit->GetEnergy());
    // this has to be done at the very end, otherwise GetEnergy() might not work
    SetCharge(0);
    // Add all of the pileups.This should be changed when the max number of pileups changes
-   if((NPileUps() + hit->NPileUps()) < 4) {
-      SetNPileUps(NPileUps() + hit->NPileUps());
+   if((NPileUps() + griffinHit->NPileUps()) < 4) {
+      SetNPileUps(NPileUps() + griffinHit->NPileUps());
    } else {
       SetNPileUps(3);
    }
-   if((PUHit() + hit->PUHit()) < 4) {
-      SetPUHit(PUHit() + hit->PUHit());
+   if((PUHit() + griffinHit->PUHit()) < 4) {
+      SetPUHit(PUHit() + griffinHit->PUHit());
    } else {
       SetPUHit(3);
    }
-   // KValue is somewhate meaningless in addback, so I am using it as an indicator that a piledup hit was added-back RD
-   if(GetKValue() > hit->GetKValue()) {
-      SetKValue(hit->GetKValue());
+   // KValue is somewhate meaningless in addback, so I am using it as an indicator that a piledup griffinHit was added-back RD
+   if(GetKValue() > griffinHit->GetKValue()) {
+      SetKValue(griffinHit->GetKValue());
    }
 }
 

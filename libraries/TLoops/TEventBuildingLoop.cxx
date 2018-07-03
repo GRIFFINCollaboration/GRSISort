@@ -27,18 +27,19 @@ TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode)
      fOutOfOrderQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>()), fBuildMode(mode),
      fSortingDepth(10000), fBuildWindow(200), fPreviousSortingDepthError(false)
 {
-
    switch(fBuildMode) {
 	case EBuildMode::kTimestamp:
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
          return a->GetTimeStamp() < b->GetTimeStamp();
       });
+		std::cout<<DYELLOW<<"sorting by timestamp!"<<RESET_COLOR<<std::endl;
       break;
 
 	case EBuildMode::kTriggerId:
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
          return a->GetTriggerId() < b->GetTriggerId();
       });
+		std::cout<<DYELLOW<<"sorting by trigger ID!"<<RESET_COLOR<<std::endl;
       break;
    }
 }

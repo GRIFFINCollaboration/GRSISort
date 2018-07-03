@@ -65,8 +65,11 @@ public:
    static TPulseAnalyzer* FitFrag(const TFragment& frag, int ShapeFit = 0, TChannel* = nullptr);
    static int FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit, int segment);
    static int FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit = 0, TChannel* = nullptr);
-   TVector3 GetPosition(Double_t dist, bool = false) const; //!
-   TVector3 GetPosition(bool = false) const;                //!
+   TVector3 GetPosition(Double_t dist, bool) const; //!
+   TVector3 GetPosition(bool) const;                //!
+
+	TVector3 GetPosition(Double_t dist) const override { return GetPosition(dist, false); }
+	TVector3 GetPosition() const override { return GetPosition(false); }
 
    void SumHit(TSiLiHit*);
 

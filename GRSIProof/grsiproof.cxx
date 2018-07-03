@@ -1,7 +1,6 @@
 #include "TFile.h"
 #include "TTree.h"
 #include "TChain.h"
-#include "TGRSIProof.h"
 #include "TProofLite.h"
 #include "TProofLog.h"
 #include "TSystemDirectory.h"
@@ -9,11 +8,15 @@
 #include "TChainElement.h"
 #include "TROOT.h"
 #include "TInterpreter.h"
+
+#include "TGRSIProof.h"
 #include "TGRSIOptions.h"
 #include "TChannel.h"
 #include "TGRSIRunInfo.h"
 #include "TObjectWrapper.h"
 #include "TStopwatch.h"
+#include "TGRSIMap.h"
+#include "TPPG.h"
 
 #include <iostream>
 #include <vector>
@@ -23,6 +26,7 @@
 TGRSIProof* gGRSIProof;
 TGRSIOptions* gGRSIOpt;
 TStopwatch* gStopwatch;
+TPPG* gPpg;
 
 bool startedProof = false;
 bool controlC = false;
@@ -45,10 +49,22 @@ void Analyze(const char* tree_type)
 					TGRSIRunInfo::Get()->Print();
                info_set = true;
             }
+
+				// try and add PPG from this file to global PPG
+				if(in_file->Get("TPPG") != nullptr) {
+					std::cout<<in_file->GetName()<<": adding ppg"<<std::endl;
+					gPpg->Add(static_cast<TPPG*>(in_file->Get("TPPG")));
+				}
          }
          in_file->Close(); // Close the files when you are done with them
       }
    }
+	if(tree_list.empty()) {
+		return;
+	}
+
+	//add the global PPG to the input list
+	gGRSIProof->AddInput(gPpg);
 
    auto* proof_chain = new TChain(tree_type);
    // loop over the list of files that belong to this tree type and add them to the chain
@@ -63,7 +79,12 @@ void Analyze(const char* tree_type)
 
    for(const auto& macro_it : gGRSIOpt->MacroInputFiles()) {
       std::cout<<"Currently Running: "<<(Form("%s", macro_it.c_str()))<<std::endl;
-      proof_chain->Process(Form("%s+", macro_it.c_str()));
+		try {
+			proof_chain->Process(Form("%s+", macro_it.c_str()));
+		} catch(TGRSIMapException<std::string>& e) {
+			std::cout<<DRED<<"Exception when processing chain: "<<e.detail()<<RESET_COLOR<<std::endl;
+			throw e;
+		}
    }
 
    // Delete the proof chain now that we are done with it.
@@ -81,7 +102,7 @@ void AtExitHandler()
 	controlC = true;
 	if(startedProof) {
 		std::cout<<"getting session logs ..."<<std::endl;
-		TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
+		TProofLog* pl = nullptr;//TProof::Mgr("proof://__lite__")->GetSessionLogs();
 		if(pl != nullptr) {
 			pl->Save("*", gGRSIOpt->LogFile().c_str());
 		} else {
@@ -132,6 +153,7 @@ int main(int argc, char** argv)
 	} catch(ParseError& e) {
 		return 1;
 	}
+	gPpg = new TPPG;
 
 	std::atexit(AtExitHandler);
 	CatchSignals();
@@ -207,4 +229,6 @@ int main(int argc, char** argv)
    Analyze("FragmentTree");
    Analyze("AnalysisTree");
    Analyze("Lst2RootTree");
+
+	return 0;
 }

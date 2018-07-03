@@ -39,6 +39,7 @@ void TGRSIOptions::Clear(Option_t*)
    /// Clears all of the variables in the TGRSIOptions
    fInputMidasFiles.clear();
    fInputLstFiles.clear();
+   fInputTdrFiles.clear();
    fInputRootFiles.clear();
    fInputCalFiles.clear();
    fInputOdbFiles.clear();
@@ -91,8 +92,8 @@ void TGRSIOptions::Clear(Option_t*)
    fSortMultiple  = false;
    fDebug         = false;
 
-   fFragmentWriteQueueSize = 10000000;
-   fAnalysisWriteQueueSize = 1000000;
+   fFragmentWriteQueueSize = 100000;
+   fAnalysisWriteQueueSize = 100000;
 
 	fNumberOfClients = 2;
 
@@ -225,6 +226,10 @@ void TGRSIOptions::Load(int argc, char** argv)
 		.description("Build window, timestamp units").colour(DCYAN);
 	parser.option("addback-window", &fAnalysisOptions->fAddbackWindow, false)
 		.description("Addback window, time in ns").colour(DCYAN);
+	parser.option("suppression-window", &fAnalysisOptions->fSuppressionWindow, false)
+		.description("BGO suppression window, time in ns").colour(DCYAN);
+	parser.option("suppression-energy", &fAnalysisOptions->fSuppressionEnergy, false)
+		.description("Minimum BGO energy for suppression").colour(DCYAN);
 	parser.option("static-window", &fAnalysisOptions->fStaticWindow, false)
 		.description("Use static window for event building").colour(DCYAN);
 	parser.option("waveform-fitting", &fAnalysisOptions->fWaveformFitting, false)
@@ -252,7 +257,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 			.description("Number of events to hold when sorting by time/trigger_id")
 			.default_value(200000);
 
-		parser.option("q quit", &fCloseAfterSort, true).description("Quit after completing the sort");
+		parser.option("q quit", &fCloseAfterSort, true).description("Quit after completing the sort").colour(DGREEN);
 		parser.option("l no-logo", &fShowLogo, true).description("Inhibit the startup logo")
 			.default_value(true).colour(DGREEN);
 		parser.option("w extract-waves", &fExtractWaves, true)
@@ -370,6 +375,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 	if(useRecommendedFlags) {
 		fMakeAnalysisTree = true;
 		fShowLogo = false;
+		fCloseAfterSort = true;
 		fWriteDiagnostics = true;
 		fWriteBadFrags = true;
 		fSeparateOutOfOrder = true;
@@ -381,6 +387,12 @@ void TGRSIOptions::Load(int argc, char** argv)
 kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const
 {
    size_t      dot_pos = filename.find_last_of('.');
+   size_t    slash_pos = filename.find_last_of('/');
+	// if we didn't find a . (or if it was before the last /) we don't have any extension
+	// => so it's a TDR file
+	if(dot_pos == std::string::npos || (dot_pos < slash_pos && slash_pos != std::string::npos)) {
+      return kFileType::TDR_FILE;
+   }
    std::string ext     = filename.substr(dot_pos + 1);
 
    bool isZipped = (ext == "gz") || (ext == "bz2") || (ext == "zip");
@@ -449,6 +461,8 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
    case kFileType::MIDAS_FILE: fInputMidasFiles.push_back(filename); return true;
 
    case kFileType::LST_FILE: fInputLstFiles.push_back(filename); return true;
+
+   case kFileType::TDR_FILE: fInputTdrFiles.push_back(filename); return true;
 
    case kFileType::ROOT_DATA: fInputRootFiles.push_back(filename); return true;
 

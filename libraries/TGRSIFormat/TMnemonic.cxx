@@ -19,7 +19,16 @@
 #include "TZeroDegree.h"
 #include "TSiLi.h"
 #include "TGenericDetector.h"
+#include "TBgo.h"
 #include "TFipps.h"
+#include "TTdrClover.h"
+#include "TTdrTigress.h"
+#include "TTdrSiLi.h"
+#include "TTdrPlastic.h"
+#include "TGriffinBgo.h"
+#include "TLaBrBgo.h"
+#include "TTdrCloverBgo.h"
+#include "TTdrTigressBgo.h"
 
 ClassImp(TMnemonic)
 
@@ -60,6 +69,7 @@ void TMnemonic::EnumerateMnemonic(std::string mnemonic_word, EMnemonic& mnemonic
 		case 'Q': mnemonic_enum = EMnemonic::kQ; break;
 		case 'R': mnemonic_enum = EMnemonic::kR; break;
 		case 'S': mnemonic_enum = EMnemonic::kS; break;
+		case 'T': mnemonic_enum = EMnemonic::kT; break;
 		case 'W': mnemonic_enum = EMnemonic::kW; break;
 		case 'X': mnemonic_enum = EMnemonic::kX; break;
 		case 'Z': mnemonic_enum = EMnemonic::kZ; break;
@@ -90,27 +100,51 @@ void TMnemonic::EnumerateSystem()
    } else if(fSystemString.compare("CS") == 0) {
       fSystem = ESystem::kCSM;
    } else if(fSystemString.compare("GR") == 0) {
-      fSystem = ESystem::kGriffin;
+      if(SubSystem() == EMnemonic::kS) {
+			fSystem = ESystem::kGriffinBgo;
+		} else {
+			fSystem = ESystem::kGriffin;
+		}
    } else if(fSystemString.compare("SE") == 0) {
       fSystem = ESystem::kSceptar;
    } else if(fSystemString.compare("PA") == 0) {
       fSystem = ESystem::kPaces;
    } else if(fSystemString.compare("DS") == 0) {
       fSystem = ESystem::kDescant;
-   } else if(fSystemString.compare("DA") == 0) {
-      if(CollectedCharge() == EMnemonic::kN) {
-         fSystem = ESystem::kLaBr;
-      } else {
-         fSystem = ESystem::kTAC;
-      }
+   } else if((fSystemString.compare("DA") == 0) || (fSystemString.compare("LB") == 0) ) {
+      if(SubSystem() == EMnemonic::kS) {
+			fSystem = ESystem::kLaBrBgo;
+		} else if(SubSystem() == EMnemonic::kT) {
+			fSystem = ESystem::kTAC;
+		} else {
+			fSystem = ESystem::kLaBr;
+		}
    } else if(fSystemString.compare("BA") == 0) {
       fSystem = ESystem::kS3;
    } else if(fSystemString.compare("ZD") == 0) {
       fSystem = ESystem::kZeroDegree;
    } else if(fSystemString.compare("TP") == 0) {
       fSystem = ESystem::kTip;
+   } else if(fSystemString.compare("BG") == 0) {
+      fSystem = ESystem::kBgo;
    } else if(fSystemString.compare("FI") == 0) {
       fSystem = ESystem::kFipps;
+   } else if(fSystemString.compare("CL") == 0) {
+      if(SubSystem() == EMnemonic::kS) {
+			fSystem = ESystem::kTdrCloverBgo;
+		} else {
+			fSystem = ESystem::kTdrClover;
+		}
+   } else if(fSystemString.compare("TT") == 0) {
+      if(SubSystem() == EMnemonic::kS) {
+			fSystem = ESystem::kTdrTigressBgo;
+		} else {
+			fSystem = ESystem::kTdrTigress;
+		}
+   } else if(fSystemString.compare("SI") == 0) {
+      fSystem = ESystem::kTdrSiLi;
+   } else if(fSystemString.compare("PL") == 0) {
+      fSystem = ESystem::kTdrPlastic;
    } else {
       fSystem = ESystem::kClear;
    }
@@ -136,6 +170,14 @@ TMnemonic::EDigitizer TMnemonic::EnumerateDigitizer(std::string name)
    }
    if(name.compare("CAEN") == 0) {
       return EDigitizer::kCaen;
+   if(name.compare("PIXIE") == 0) {
+      return EDigitizer::kPixie;
+   }
+   if(name.compare("FASTPIXIE") == 0) {
+      return EDigitizer::kFastPixie;
+   }
+   if(name.compare("PIXIETAPEMOVE") == 0) {
+      return EDigitizer::kPixieTapeMove;
    }
    return EDigitizer::kDefault;
 }
@@ -218,25 +260,33 @@ TClass* TMnemonic::GetClassType() const
    }
 
    switch(System()) {
-		case ESystem::kTigress:    fClassType = TTigress::Class(); break;
-		case ESystem::kSharc:      fClassType = TSharc::Class(); break;
-		case ESystem::kTriFoil:    fClassType = TTriFoil::Class(); break;
-		case ESystem::kRF:         fClassType = TRF::Class(); break;
-		case ESystem::kSiLi:       fClassType = TSiLi::Class(); break;
-		case ESystem::kS3:         fClassType = TS3::Class(); break;
-		case ESystem::kSiLiS3:     fClassType = TS3::Class(); break;
-		case ESystem::kCSM:        fClassType = TCSM::Class(); break;
-		case ESystem::kGriffin:    fClassType = TGriffin::Class(); break;
-		case ESystem::kSceptar:    fClassType = TSceptar::Class(); break;
-		case ESystem::kPaces:      fClassType = TPaces::Class(); break;
-		case ESystem::kDescant:    fClassType = TDescant::Class(); break;
-		case ESystem::kLaBr:       fClassType = TLaBr::Class(); break;
-		case ESystem::kTAC:        fClassType = TTAC::Class(); break;
-		case ESystem::kZeroDegree: fClassType = TZeroDegree::Class(); break;
-		case ESystem::kTip:        fClassType = TTip::Class(); break;
-		case ESystem::kFipps:      fClassType = TFipps::Class(); break;
-		case ESystem::kGeneric:    fClassType = TGenericDetector::Class(); break;
-		default:                              fClassType = nullptr;
+		case ESystem::kTigress:       fClassType = TTigress::Class(); break;
+		case ESystem::kSharc:         fClassType = TSharc::Class(); break;
+		case ESystem::kTriFoil:       fClassType = TTriFoil::Class(); break;
+		case ESystem::kRF:            fClassType = TRF::Class(); break;
+		case ESystem::kSiLi:          fClassType = TSiLi::Class(); break;
+		case ESystem::kS3:            fClassType = TS3::Class(); break;
+		case ESystem::kSiLiS3:        fClassType = TS3::Class(); break;
+		case ESystem::kCSM:           fClassType = TCSM::Class(); break;
+		case ESystem::kGriffin:       fClassType = TGriffin::Class(); break;
+		case ESystem::kSceptar:       fClassType = TSceptar::Class(); break;
+		case ESystem::kPaces:         fClassType = TPaces::Class(); break;
+		case ESystem::kDescant:       fClassType = TDescant::Class(); break;
+		case ESystem::kLaBr:          fClassType = TLaBr::Class(); break;
+		case ESystem::kTAC:           fClassType = TTAC::Class(); break;
+		case ESystem::kZeroDegree:    fClassType = TZeroDegree::Class(); break;
+		case ESystem::kTip:           fClassType = TTip::Class(); break;
+		case ESystem::kGriffinBgo:    fClassType = TGriffinBgo::Class(); break;
+		case ESystem::kLaBrBgo:       fClassType = TLaBrBgo::Class(); break;
+		case ESystem::kTdrCloverBgo:  fClassType = TTdrCloverBgo::Class(); break;
+		case ESystem::kTdrTigressBgo: fClassType = TTdrTigressBgo::Class(); break;
+		case ESystem::kFipps:         fClassType = TFipps::Class(); break;
+		case ESystem::kTdrClover:     fClassType = TTdrClover::Class(); break;
+		case ESystem::kTdrTigress:    fClassType = TTdrTigress::Class(); break;
+		case ESystem::kTdrSiLi:       fClassType = TTdrSiLi::Class(); break;
+		case ESystem::kTdrPlastic:    fClassType = TTdrPlastic::Class(); break;
+		case ESystem::kGeneric:       fClassType = TGenericDetector::Class(); break;
+		default:                      fClassType = nullptr;
    };
 
    return fClassType;

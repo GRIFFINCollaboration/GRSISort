@@ -58,6 +58,8 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    // read the analysis options that were passed along and copy them to the local TGRSIOptions
    fAnalysisOptions                   = static_cast<TAnalysisOptions*>(fInput->FindObject("TAnalysisOptions"));
    *(TGRSIOptions::AnalysisOptions()) = *fAnalysisOptions;
+	// read the TPPG that was passed along
+   fPpg = static_cast<TPPG*>(fInput->FindObject("TPPG"));
 
    const char* workingDirectory = "";
    if(fInput->FindObject("pwd") != nullptr) {
@@ -133,7 +135,12 @@ Bool_t TGRSISelector::Process(Long64_t entry)
    }
 
    fChain->GetEntry(entry);
-   FillHistograms();
+	try {
+		FillHistograms();
+	} catch(TGRSIMapException<std::string>& e) {
+		std::cout<<DRED<<"Exception in "<<__PRETTY_FUNCTION__<<": "<<e.detail()<<RESET_COLOR<<std::endl;
+		throw e;
+	}
 
    return kTRUE;
 }

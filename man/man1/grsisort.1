@@ -6,19 +6,37 @@
 grsisort \- sort data from GRIFFIN or TIGRESS experiments
 .SH SYNOPSIS
 .B grsisort 
-[\fB\-alqs\fR]
-[\fB\-\-no_waveforms\fR]
-[\fB\-\-record_stats\fR]
-[\fB\-\-suppress_error(s)\fR]
-[\fB\-\-log_errors\fR]
-[\fB\-\-work_harder\fR]
-[\fB\-\-reading_material\fR]
-[\fB\-\-bad_frags\fR | \fB\-\-bad_fragments\fR | \fB\-\-write_bad_frags\fR |
-\fB\-\-write_bad_fragments\fR]
-[\fB\-\-no_speed\fR]
-[\fB\-\-ignore_odb\fR]
-[\fB\-h\fR \fIhost\fR]
-[\fB\-e\fR \fIexpt. name\fR]
+[\fB\-abdghHlqvw?\fR]
+[\fB\-\-build-window\fR]
+[\fB\-\-addback-window\fR]
+[\fB\-\-static-window\fR]
+[\fB\-\-waveform-fitting\fR]
+[\fB\-\-is-correcting-cross-talk\fR]
+[\fB\-\-recommended\fR]
+[\fB\-\-output-fragment-tree\fR \fIarg\fR]
+[\fB\-\-output-analysis-tree\fR \fIarg\fR]
+[\fB\-\-output-fragment-hists\fR \fIarg\fR]
+[\fB\-\-output-analysis-hists\fR \fIarg\fR]
+[\fB\-\-sort-depth\fR]
+[\fB\-\-no-record-dialog\fR]
+[\fB\-\-write-diagnostics\fR]
+[\fB\-\-word-count-offset\fR \fIarg\fR]
+[\fB\-\-log-errors\fR]
+[\fB\-\-reading-material\fR]
+[\fB\-\-bad-frags\fR | \fB\-\-bad-fragments\fR | \fB\-\-write-bad-frags\fR |
+\fB\-\-write-bad-fragments\fR]
+[\fB\-\-separate-out-of-order\fR]
+[\fB\-\-ignore-odb\fR]
+[\fB\-\-ignore-epics\fR]
+[\fB\-\-ignore-scaler\fR]
+[\fB\-\-suppress-error(s)\fR | \fB\-\-suppress_error(s)\fR]
+[\fB\-\-reconstruct-timestamp\fR | \fB\-\-reconstruct-time-stamp\fR]
+[\fB\-\-fragment-size\fR \fIarg\fR]
+[\fB\-\-analysis-size\fR \fIarg\fR]
+[\fB\-\-column-width\fR \fIarg\fR]
+[\fB\-\-status-width\fR \fIarg\fR]
+[\fB\-\-status-interval\fR \fIarg\fR]
+[\fB\-\-write-clients\fR \fIarg\fR]
 [\fIfile\fR ...]
 .PP
 .B grsisort 
@@ -27,6 +45,7 @@ grsisort \- sort data from GRIFFIN or TIGRESS experiments
 .PP
 Options can be grouped behind a single - (minus character).
 File names with extensions .mid or .bz2 are treated as midas input files.
+File names with extension .lst are treated as LST input files (from ILL).
 File names with extension .root are treated as root input files.
 File names with extension .cal are treated as calibraton files.
 File names with extension .info are treated as run-info files.
@@ -39,64 +58,120 @@ File names with extension .C, .c, .C+, or .c+ are treated as root macro files.
 sorts data from GRIFFIN or TIGRESS experiments.
 .SH OPTIONS
 .TP
-.BR \-? ", " \-\-help
-Display README.html in a ROOT browser.
+.BR \-h ", " \-? ", " \-\-help
+Display all available command line options.
 .TP
 .B \-a
-Sort into analysis tree.
+Make the analysis tree.
 .TP
-.B \-l
+.B \-b ", " \-\-batch
+Run in batch mode.
+.TP
+.B \-d ", " \-\-debug
+Write debug information to output/file, e.g. enables writing of TDescantDebug at analysis stage.
+.TP
+.B \-g ", " \-\-start-gui
+Start the gui at program start.
+.TP
+.B \-H ", " \-\-histos
+Attempt to run events through MakeHisto lib.
+.TP
+.B \-l ", " \-\-no-logo
 Don't display splash screen at start.
 .TP
-.B \-q
+.B \-q ", " \-\-quit
 Quit after sorting, don't drop into interactive shell.
 .TP
-.B \-s
-Sort(?).
+.B \-v
+Show the version of GRSISort.
 .TP
-.B \-\-no_waveforms
-Don't include waveforms in the output tree.
+.B \-w ", " \-\-extract-waves
+Extract wave forms to data class when available.
 .TP
-.B \-\-record_stats
-Record run statistics to log-file.
+.B \-\-build\-window arg
+Build window, in timestamp units (10 ns). Need to re-sort into analysis tree if changing this one!
 .TP
-.B \-\-suppress_error(s)
-Suppress output for corrupt events.
+.B \-\-addback\-window  arg 
+Addback window, in ns.
 .TP
-.B \-\-log_errors
-Write parsing errors to log-file.
+.B \-\-static\-window
+Use static window for event building. Need to re-sort into analysis tree if changing this one!
 .TP
-.B \-\-work_harder
-Executes a macro with .x after the sorting is done. The macro has to be provided
-as one of the files.
+.B \-\-waveform\-fitting
+Fit waveforms using SFU algorithms.
 .TP
-.B \-\-reading_material
-Provides reading material while waiting.
+.B \-\-is\-correcting\-cross\-talk  arg
+Enable (arg = 1) or disable (arg = 0) cross-talk corrections.
 .TP
-.BR \-\-bad_frags | \-\-bad_fragments | \-\-write_bad_frags | \-\-write_bad_fragments
+.B \-\-recommended
+Use recommended flags, equivalent to -al --write-diagnostics --write-bad-fragments --separate-out-of-order --suppress-errors --reconstruct-timestamp.
+.TP
+.B \-\-output\-fragment\-tree  arg
+Filename of output fragment tree.
+.TP
+.B \-\-output\-analysis\-tree  arg
+Filename of output analysis tree.
+.TP
+.B \-\-output\-fragment\-hists  arg
+Filename of output fragment histograms.
+.TP
+.B \-\-output\-analysis\-hists  arg
+Filename of output analysis histograms.
+.TP
+.B \-\-no\-record\-dialog
+Dump stuf to screen.
+.TP
+.B \-\-write\-diagnostics
+Write Parsing/SortingDiagnostics to root-file.
+.TP
+.B \-\-word\-count\-offset  arg
+Offset to the word count in the GRIFFIN header word, default is 1.
+.TP
+.B \-\-log\-errors
+???
+.TP
+.B \-\-reading\-material
+???
+.TP
+.BR \-\-bad\-frags | \-\-bad\-fragments | \-\-write\-bad\-frags | \-\-write\-bad\-fragments
 Writes fragments with parsing errors to BadFragmentTree.
 .TP
-.B \-\-no_speed
-Doesn't open the PROOF speedometer.
+.B \-\-separate\-out\-of\-order
+Write out-of-order fragments to a separate tree at the sorting stage.
 .TP
-.B \-\-ignore_odb
+.B \-\-ignore\-odb
 Ignores the ODB stored in the midas file, useful if dealing with a corrupt ODB.
 .TP
-\fB\-h\fR \fIhost\fR
-Get data from \fIhost\fR instead of file.
+.B \-\-ignore\-epics
+Ignores EPICS events.
 .TP
-\fB\-e\fR \fIexpt. name\fR
-Use \fIexpt. name\fR as experiment name to connect to.
+.B \-\-ignore\-scaler
+Ignores scaler events.
+.TP
+.B \-\-suppress\-error \-\-suppress\-errors \-\-suppress_error \-\-suppress_errors
+Ignores scaler events.
+.TP
+.B \-\-reconstruct\-timestamp \-\-reconstruct\-time\-stamp
+Suppress error output from parsing.
+.TP
+.B \-\-fragment\-size  arg
+Size of fragment write queue.
+.TP
+.B \-\-analysis\-size  arg
+Size of analysis write queue.
+.TP
+.B \-\-column\-width  arg
+Width of one column of status.
+.TP
+.B \-\-status\-width  arg
+Number of characters to be used for status output.
+.TP
+.B \-\-status\-interval  arg
+Seconds between each detailed status output (each a new line), non-positive numbers mean no detailed status.
+.TP
+.B \-\-write\-clients  arg
+Number of clients used to write analysis tree.
 .SH EXAMPLES
-To sort a midas file into a fragment-tree, running a script called "Script.C" 
-afterwards before dropping into the interactive shell:
-.PP
-.nf
-.RS
-grsisort <midas file> --work_harder Script.C
-.RE
-.fi
-.PP
 To sort a midas file into an analysis-tree using a custom calibraton and 
 run-info file, without showing the splash screen and without the interactive
 shell:

@@ -15,7 +15,7 @@ public:
    // standard C++ makes these enumerations global to the class. ie, the name of the enumeration
    // EMnemonic or ESystem has no effect on the clashing of enumerated variable names.
    // These separations exist only to easily see the difference when looking at the code here.
-   enum class EMnemonic { kA, kB, kC, kD, kE, kF, kG, kI, kL, kM, kN, kP, kQ, kR, kS, kW, kX, kZ, kClear };
+   enum class EMnemonic { kA, kB, kC, kD, kE, kF, kG, kI, kL, kM, kN, kP, kQ, kR, kS, kT, kW, kX, kZ, kClear };
    enum class ESystem {
       kTigress,
       kSharc,
@@ -35,10 +35,19 @@ public:
       kTAC,
       kZeroDegree,
       kDescant,
+		kGriffinBgo,
+		kLaBrBgo,
       kFipps,
+		kBgo,
+		kTdrClover,
+		kTdrCloverBgo,
+		kTdrTigress,
+		kTdrTigressBgo,
+		kTdrSiLi,
+		kTdrPlastic,
 		kClear
    };
-   enum class EDigitizer { kDefault, kGRF16, kGRF4G, kTIG10, kTIG64, kCAEN8, kCaen };
+   enum class EDigitizer { kDefault, kGRF16, kGRF4G, kTIG10, kTIG64, kCAEN8, kCaen, kPixie, kFastPixie, kPixieTapeMove };
 
    ESystem   System() const { return fSystem; }
    EMnemonic SubSystem() const { return fSubSystem; }

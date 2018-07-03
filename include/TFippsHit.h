@@ -35,7 +35,7 @@ public:
    // returns a number 1-64 ( 1 = Detector 1 blue;  64 =  Detector 16 white; )
 
    static bool CompareEnergy(const TFippsHit*, const TFippsHit*); //!<!
-   void        Add(const TFippsHit*);                             //!<!
+   void        Add(const TGRSIDetectorHit*) override;             //!<!
 
 public:
    void Clear(Option_t* opt = "") override;       //!<!
