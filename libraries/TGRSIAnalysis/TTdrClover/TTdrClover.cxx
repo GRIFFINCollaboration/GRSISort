@@ -33,17 +33,10 @@ bool DefaultAddback(TTdrCloverHit& one, TTdrCloverHit& two)
 
 std::function<bool(TTdrCloverHit&, TTdrCloverHit&)> TTdrClover::fAddbackCriterion = DefaultAddback;
 
-//bool DefaultSuppression(TTdrCloverHit& clo, TBgoHit& bgo)
-//{
-//   return ((clo.GetDetector() == bgo.GetDetector() && clo.GetCrystal() == bgo.GetCrystal()) &&
-//           (std::fabs(clo.GetTime() - bgo.GetCorrectedTime()) < TGRSIOptions::AnalysisOptions()->SuppressionWindow()) &&
-//			  (bgo.GetEnergy() > TGRSIOptions::AnalysisOptions()->SuppressionEnergy()));
-//}
-
 bool DefaultSuppression(TTdrCloverHit& clo, TBgoHit& bgo)
 {
    return ((clo.GetDetector() == bgo.GetDetector()) &&
-           (std::fabs(clo.GetTime() - bgo.GetCorrectedTime()) < TGRSIOptions::AnalysisOptions()->SuppressionWindow()) &&
+           (std::fabs(clo.GetTime() - bgo.GetTime()) < TGRSIOptions::AnalysisOptions()->SuppressionWindow()) &&
 			  (bgo.GetEnergy() > TGRSIOptions::AnalysisOptions()->SuppressionEnergy()));
 }
 

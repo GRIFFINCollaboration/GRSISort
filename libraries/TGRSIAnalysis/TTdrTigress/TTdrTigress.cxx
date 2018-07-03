@@ -33,19 +33,11 @@ bool DefaultAddback(TTdrTigressHit& one, TTdrTigressHit& two)
 
 std::function<bool(TTdrTigressHit&, TTdrTigressHit&)> TTdrTigress::fAddbackCriterion = DefaultAddback;
 
-//bool DefaultSuppression(TTdrTigressHit& clo, TBgoHit& bgo)
-//{
-//	// the tigress detector is the 4th detector after the three clovers
-//   return ((4 == bgo.GetDetector() && clo.GetCrystal() == bgo.GetCrystal()) &&
-//           (std::fabs(clo.GetTime() - bgo.GetCorrectedTime()) < TGRSIOptions::AnalysisOptions()->SuppressionWindow()) &&
-//			  (bgo.GetEnergy() > TGRSIOptions::AnalysisOptions()->SuppressionEnergy()));
-//}
-
 bool DefaultSuppression(TTdrTigressHit& clo, TBgoHit& bgo)
 {
 	// the tigress detector is the 4th detector after the three clovers
    return ((4 == bgo.GetDetector()) &&
-           (std::fabs(clo.GetTime() - bgo.GetCorrectedTime()) < TGRSIOptions::AnalysisOptions()->SuppressionWindow()) &&
+           (std::fabs(clo.GetTime() - bgo.GetTime()) < TGRSIOptions::AnalysisOptions()->SuppressionWindow()) &&
 			  (bgo.GetEnergy() > TGRSIOptions::AnalysisOptions()->SuppressionEnergy()));
 }
 
