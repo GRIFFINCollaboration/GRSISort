@@ -63,7 +63,8 @@ void TS3Hit::SetWavefit(const TFragment& frag)
 
 
 Bool_t TS3Hit::SectorsDownstream() const
-{
+{	//Do not confuse with fIsDownstream which relates to detector position relative to target, NOT orientation.
+	
 	if(GetChannel()->GetMnemonic()->System() == TMnemonic::ESystem::kSiLiS3){
 		if(GetArrayPosition() == 0) return true;
 		return false;
@@ -96,8 +97,8 @@ void TS3Hit::Print(Option_t*) const
 }
 
 Double_t TS3Hit::GetDefaultPhiOffset() const
-{
-   double deg = -90-21;//~22.5 should be bambino rotation
+{	//Phi rotation of connector in setup
+   double deg = -90-21;// -22.5 should be bambino chamber rotation -90 rotation of detector in chamber
    if(GetChannel()->GetMnemonic()->System() == TMnemonic::ESystem::kSiLiS3) {
       deg = -22.5;
       if(GetChannel()->GetMnemonic()->ArrayPosition() == 2) {
