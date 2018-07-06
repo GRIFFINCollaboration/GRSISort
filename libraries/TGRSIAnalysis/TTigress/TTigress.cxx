@@ -348,10 +348,10 @@ TVector3 TTigress::GetPosition(int DetNbr, int CryNbr, int SegNbr, double dist, 
 	if(smear && SegNbr==0){
 		double   x, y, r = sqrt(gRandom->Uniform(0, 400));
 		gRandom->Circle(x, y, r);
-		return PostionVectors[BackPos][DetNbr][CryNbr][SegNbr] + CloverCross[DetNbr][0]*x + CloverCross[DetNbr][1]*y;
+		return fPositionVectors[BackPos][DetNbr][CryNbr][SegNbr] + fCloverCross[DetNbr][0]*x + fCloverCross[DetNbr][1]*y;
 	}
 
-	return PostionVectors[BackPos][DetNbr][CryNbr][SegNbr];
+	return fPositionVectors[BackPos][DetNbr][CryNbr][SegNbr];
 }	
 	
  
@@ -422,10 +422,10 @@ void TTigress::BuildVectors(){
 	det_pos.SetXYZ(xx, yy, zz - fTargetOffset);
 
 	if(fRadialOffset){
-		det_pos+=CloverRadial[DetNbr].Unit()*fRadialOffset;
+		det_pos+=fCloverRadial[DetNbr].Unit()*fRadialOffset;
 	}
 	
-	PostionVectors[Back][DetNbr][CryNbr][SegNbr]=det_pos;
+	fPositionVectors[Back][DetNbr][CryNbr][SegNbr]=det_pos;
     }
    }
   }
@@ -433,20 +433,20 @@ void TTigress::BuildVectors(){
 
 
   for(int DetNbr=0;DetNbr<17;DetNbr++){
-	TVector3 a(-CloverRadial[DetNbr].Y(),CloverRadial[DetNbr].X(), 0);
-	TVector3 b = CloverRadial[DetNbr].Cross(a);	  
-	CloverCross[DetNbr][0]=a.Unit();
-	CloverCross[DetNbr][1]=b.Unit();
+	TVector3 a(-fCloverRadial[DetNbr].Y(),fCloverRadial[DetNbr].X(), 0);
+	TVector3 b = fCloverRadial[DetNbr].Cross(a);	  
+	fCloverCross[DetNbr][0]=a.Unit();
+	fCloverCross[DetNbr][1]=b.Unit();
   }
 
   SetGlobalBit(ETigressGlobalBits::kVectorsBuilt, true);
 }
 
-TVector3 TTigress::PostionVectors[2][17][4][9];
-TVector3 TTigress::CloverCross[17][2];
+TVector3 TTigress::fPositionVectors[2][17][4][9];
+TVector3 TTigress::fCloverCross[17][2];
 
 
-TVector3 TTigress::CloverRadial[17]={TVector3(0., 0., 0.),
+TVector3 TTigress::fCloverRadial[17]={TVector3(0., 0., 0.),
 				     TVector3( 0.9239, 0.3827, 1.),
 				     TVector3(-0.3827, 0.9239, 1.),
 				     TVector3(-0.9239, -0.3827, 1.),

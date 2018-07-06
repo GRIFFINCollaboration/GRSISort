@@ -129,10 +129,10 @@ private:
    static double fRadialOffset; //!<!
    
    // Vectors constructed from segment array and manual adjustments once at start of sort
-   static TVector3 PostionVectors[2][17][4][9];     //!<!
+   static TVector3 fPositionVectors[2][17][4][9];     //!<!
    
-   static TVector3 CloverRadial[17];      	//!<!  clover direction vectors
-   static TVector3 CloverCross[17][2];      	//!<!  clover perpendicular vectors, for smearing
+   static TVector3 fCloverRadial[17];      	//!<!  clover direction vectors
+   static TVector3 fCloverCross[17][2];      	//!<!  clover perpendicular vectors, for smearing
 
    // These array contain the original data that is used
    static double GeBluePosition[17][9][3];      //!<!  detector segment XYZ
