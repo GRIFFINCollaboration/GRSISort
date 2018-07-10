@@ -89,11 +89,16 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
 
    // Sort these in case the peak is returned in the wrong order
    std::sort(engVec.begin(), engVec.end());
-
+   
+   //Change the histogram range so that the search ignores potential low energy noise.
+   Int_t high = hist->GetXaxis()->GetLast();
+   hist->GetXaxis()->SetRangeUser(100,hist->GetXaxis()->GetBinCenter(high));
    // Use a TSpectrum to find the two largest peaks in the spectrum
    auto* s      = new TSpectrum;                // This might not have to be allocated
    Int_t nFound = s->Search(hist, 2, "", 0.50); // This returns peaks in order of their height in the spectrum.
-
+   
+   //return histogram to proper range
+   hist->GetXaxis()->UnZoom(); 
    // If we didn't find two peaks, it is likely we gave it garbage
    if(nFound < 2) {
       Error("CoarseMatch", "Did not find enough peaks");
