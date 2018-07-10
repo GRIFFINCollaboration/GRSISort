@@ -81,6 +81,7 @@ Double_t TGRSIDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
       case TMnemonic::EDigitizer::kCaen:
       //10 bit CFD for 0-2ns => divide by 512
       dTime = GetTimeStamp() * 10. + channel->CalibrateCFD((GetCfd() + gRandom->Uniform()) / 512.);
+      return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
 		case TMnemonic::EDigitizer::kPixie:
 		dTime = GetTimeStamp() * 10. + channel->CalibrateCFD(fCfd/3276.8);// CFD is reported as 15bit interpolation of 10 ns
 		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
