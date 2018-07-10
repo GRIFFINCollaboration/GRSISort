@@ -35,7 +35,8 @@ std::function<bool(const TGRSIDetectorHit&, const TGRSIDetectorHit&)> TGriffin::
 
 bool DefaultGriffinSuppression(const TGRSIDetectorHit& hit, const TBgoHit& bgoHit)
 {
-	return ((hit.GetDetector() == bgoHit.GetDetector() && hit.GetCrystal() == bgoHit.GetCrystal()) &&
+	//return ((hit.GetDetector() == bgoHit.GetDetector() && hit.GetCrystal() == bgoHit.GetCrystal()) &&
+	return ((hit.GetDetector() == bgoHit.GetDetector()) &&
 	(std::fabs(hit.GetTime() - bgoHit.GetTime()) < TGRSIOptions::AnalysisOptions()->SuppressionWindow()) &&
 	(bgoHit.GetEnergy() > TGRSIOptions::AnalysisOptions()->SuppressionEnergy()));
 }
