@@ -65,8 +65,6 @@ void TGRSIOptions::Clear(Option_t*)
 
    fLogFile = "grsisort.log";
 
-   fWriteFragmentTree = false;
-
    fCloseAfterSort = false;
    fLogErrors      = false;
    fUseMidFileOdb  = false;
@@ -243,7 +241,6 @@ void TGRSIOptions::Load(int argc, char** argv)
 	if(program.compare("grsisort") == 0) {
 		// grsisort options
 		parser.option("recommended", &useRecommendedFlags, true).description("Use recommended flags (those in " DGREEN "dark green" GREEN ")").colour(GREEN);
-      parser.option("write-fragment-tree", &fWriteFragmentTree, true).description("Write fragment tree");
 		parser.option("output-fragment-tree", &fOutputFragmentFile, true).description("Filename of output fragment tree");
 		parser.option("output-analysis-tree", &fOutputAnalysisFile, true).description("Filename of output analysis tree");
 		parser.option("output-fragment-hists", &fOutputFragmentHistogramFile, true)

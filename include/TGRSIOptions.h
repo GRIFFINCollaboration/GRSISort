@@ -51,7 +51,6 @@ public:
 	const std::vector<std::string>& WinInputFiles() { return fInputWinFiles; }
 	const std::vector<std::string>& MacroInputFiles() { return fMacroFiles; }
 
-   const bool&        WriteFragmentTree()  { return fWriteFragmentTree; }
 	const std::string& OutputFragmentFile() { return fOutputFragmentFile; }
 	const std::string& OutputAnalysisFile() { return fOutputAnalysisFile; }
 
@@ -164,8 +163,6 @@ private:
 	std::vector<std::string> fOptionsFile; ///< A list of the input .info files
 
 	std::string fLogFile; ///< The name of the output log file
-
-   bool fWriteFragmentTree;    ///< Flag to write fragment tree
 
 	bool fCloseAfterSort;       ///< Flag to close after sorting (-q)
 	bool fLogErrors;            ///< Flag to log errors (--log-errors)

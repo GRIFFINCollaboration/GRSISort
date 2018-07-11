@@ -476,9 +476,9 @@ void TGRSIint::SetupPipeline()
 
    // Which output files will we make
    bool write_fragment_histograms = (able_to_write_fragment_histograms && opt->MakeHistos());
-   bool write_fragment_tree       = able_to_write_fragment_tree && opt->WriteFragmentTree();
+   bool write_fragment_tree       = able_to_write_fragment_tree;
    bool write_analysis_histograms =
-      (able_to_write_analysis_histograms  && opt->MakeHistos()); //TO DO: make it so we aren't always trying to generate both frag and analysis histograms
+      (able_to_write_analysis_histograms  && opt->MakeHistos()); //TODO: make it so we aren't always trying to generate both frag and analysis histograms
    bool write_analysis_tree = (able_to_write_analysis_tree && opt->MakeAnalysisTree());
 
    // Which steps need to be performed to get from the inputs to the outputs
