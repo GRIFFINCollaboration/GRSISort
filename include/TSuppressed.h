@@ -66,12 +66,14 @@ protected:
 		for(auto detHit : hits) {
 			TGRSIDetectorHit& hit = static_cast<TGRSIDetectorHit&>(detHit);
 			bool suppress = false;
-			for(auto b : bgo->GetHitVector()) {
-				if(SuppressionCriterion(hit, b)) {
-					suppress = true;
-					break;
-				}
-			}
+         if(bgo != nullptr) {
+            for(auto b : bgo->GetHitVector()) {
+               if(SuppressionCriterion(hit, b)) {
+                  suppress = true;
+                  break;
+               }
+            }
+         }
 			if(!suppress) suppressedHits.push_back(detHit);
 		}
 	}
@@ -87,12 +89,14 @@ protected:
 			TGRSIDetectorHit& hit = static_cast<TGRSIDetectorHit&>(detHit);
 			// check if this hit is suppressed
 			bool suppress = false;
-			for(auto b : bgo->GetHitVector()) {
-				if(SuppressionCriterion(hit, b)) {
-					suppress = true;
-					break;
-				}
-			}
+         if(bgo != nullptr){
+			   for(auto b : bgo->GetHitVector()) {
+				   if(SuppressionCriterion(hit, b)) {
+					   suppress = true;
+					   break;
+				   }
+			   }
+         }
 			//check for each existing addback hit if this hit should be added to it
 			for(j = 0; j < addbacks.size(); ++j) {
 				if(AddbackCriterion(addbacks[j], hit)) {

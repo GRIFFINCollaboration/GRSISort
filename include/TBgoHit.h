@@ -30,7 +30,7 @@ public:
 
    /////////////////////////		/////////////////////////////////////
    int GetCrystal() const override;
-   inline UShort_t GetArrayNumber() const override { return (4 * (GetDetector() - 1) + (GetCrystal() + 1)); } //!<!
+   inline UShort_t GetArrayNumber() const override { return (20 * (GetDetector() - 1) + 5 * GetCrystal() + GetSegment()); } //!<!
 
    void Clear(Option_t* opt = "") override;       //!<!
    void Copy(TObject&) const override;            //!<!

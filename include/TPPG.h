@@ -149,6 +149,9 @@ public:
    Bool_t      MapIsEmpty() const;
    std::size_t PPGSize() const { return fPPGStatusMap->size() - 1; }
    std::size_t OdbPPGSize() const { return fOdbPPGCodes.size(); }
+   short       OdbPPGCode(size_t index) const { return fOdbPPGCodes.at(index); }
+   int         OdbDuration(size_t index) const { return fOdbDurations.at(index); }
+   Long64_t    OdbCycleLength() const { Long64_t result = 0; for(auto dur : fOdbDurations) { result += dur; } return result; }
    Long64_t Merge(TCollection* list);
    void Add(const TPPG* ppg);
    void operator+=(const TPPG& rhs);

@@ -159,6 +159,8 @@ public:
    int FippsToFragment(std::vector<char> data);
    int TdrToFragment(std::vector<char> data);
 
+	int CaenToFragment(uint32_t* data, int size);
+
 private:
 // utility
 #ifndef __CINT__
