@@ -476,9 +476,9 @@ void TGRSIint::SetupPipeline()
 
    // Which output files will we make
    bool write_fragment_histograms = (able_to_write_fragment_histograms && opt->MakeHistos());
-   bool write_fragment_tree       = able_to_write_fragment_tree;
+   bool write_fragment_tree       = able_to_write_fragment_tree && opt->WriteFragmentTree();
    bool write_analysis_histograms =
-      (able_to_write_analysis_histograms && (opt->MakeAnalysisTree() || has_input_analysis_tree) && opt->MakeHistos());
+      (able_to_write_analysis_histograms  && opt->MakeHistos()); //TO DO: make it so we aren't always trying to generate both frag and analysis histograms
    bool write_analysis_tree = (able_to_write_analysis_tree && opt->MakeAnalysisTree());
 
    // Which steps need to be performed to get from the inputs to the outputs
@@ -675,7 +675,7 @@ void TGRSIint::SetupPipeline()
    if(write_analysis_histograms) {
       TAnalysisHistLoop* loop = TAnalysisHistLoop::Get("7_analysis_hist_loop");
       loop->SetOutputFilename(output_analysis_hist_filename);
-      if(detBuildingLoop != nullptr) {
+      if(detBuildingLoop != nullptr) {//TODO: This needs to be extended to being able to read from an analysis tree
          loop->InputQueue() = detBuildingLoop->AddOutputQueue();
       } else {
          std::cerr<<DRED<<"Error, writing analysis histograms is enabled, but no detector building loop was found!"

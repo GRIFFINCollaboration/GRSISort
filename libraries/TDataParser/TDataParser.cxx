@@ -772,14 +772,14 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 				case EBank::kGRF4: // bank 4 can have more than one integration (up to four), but these have to be combined with
                         // other fragments/hits!
                // we always have 2 words with (5 high bits IntLength, 26 Charge)(9 low bits IntLength, 22 Cfd)
-               if(x + 1 < size &&
+               if((data[x] & 0x80000000) == 0x0 && x + 1 < size &&
                   (data[x + 1] & 0x80000000) == 0x0) { // check if the next word is also a charge/cfd word
                   Short_t tmp = ((data[x] & 0x7c000000) >> 17) |
                                 (((data[x] & 0x40000000) == 0x40000000) ? 0xc000 : 0x0); // 17 = 26 minus space for 9
                                                                                          // low bits; signed, so we
                                                                                          // extend the sign bit from 14
                                                                                          // (31) to 16 bits
-                  if((data[x] & 0x02000000) == 0x02000000) {                             // overflow bit was set
+                  if((data[x] & 0x02000000) == 0x08000000) {                             // overflow bit was set - disabled VB
                      tmpCharge.push_back(std::numeric_limits<int>::max());
                   } else {
                      tmpCharge.push_back((data[x] & 0x01ffffff) |
