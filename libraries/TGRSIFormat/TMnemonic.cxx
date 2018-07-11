@@ -168,6 +168,9 @@ TMnemonic::EDigitizer TMnemonic::EnumerateDigitizer(std::string name)
    if(name.compare("CAEN8") == 0) {
       return EDigitizer::kCAEN8;
    }
+   if(name.compare("CAEN") == 0) {
+      return EDigitizer::kCaen;
+   }
    if(name.compare("PIXIE") == 0) {
       return EDigitizer::kPixie;
    }

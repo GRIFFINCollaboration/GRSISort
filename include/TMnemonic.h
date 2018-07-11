@@ -47,7 +47,7 @@ public:
 		kTdrPlastic,
 		kClear
    };
-   enum class EDigitizer { kDefault, kGRF16, kGRF4G, kTIG10, kTIG64, kCAEN8, kPixie, kFastPixie, kPixieTapeMove };
+   enum class EDigitizer { kDefault, kGRF16, kGRF4G, kTIG10, kTIG64, kCAEN8, kCaen, kPixie, kFastPixie, kPixieTapeMove };
 
    ESystem   System() const { return fSystem; }
    EMnemonic SubSystem() const { return fSubSystem; }
