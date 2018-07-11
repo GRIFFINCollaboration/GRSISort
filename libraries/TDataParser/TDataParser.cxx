@@ -779,7 +779,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                                                                                          // low bits; signed, so we
                                                                                          // extend the sign bit from 14
                                                                                          // (31) to 16 bits
-                  if((data[x] & 0x02000000) == 0x08000000) {                             // overflow bit was set - disabled VB
+                  if(false && (data[x] & 0x02000000) == 0x02000000) {                             // overflow bit was set - disabled VB
                      tmpCharge.push_back(std::numeric_limits<int>::max());
                   } else {
                      tmpCharge.push_back((data[x] & 0x01ffffff) |
