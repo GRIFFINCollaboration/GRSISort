@@ -78,6 +78,12 @@ Double_t TGRSIDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
 		channel->CalibrateCFD((GetCfd() + gRandom->Uniform()) / 1.6); // CFD is in 10/16th of a nanosecond
 		//channel->CalibrateCFD((GetCfd() & (~0xf) + gRandom->Uniform()) / 1.6); // PBender suggests this.
 		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
+		case TMnemonic::EDigitizer::kPixie:
+		dTime = GetTimeStamp() * 10. + channel->CalibrateCFD(fCfd/3276.8);// CFD is reported as 15bit interpolation of 10 ns
+		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
+		case TMnemonic::EDigitizer::kFastPixie:
+		dTime = GetTimeStamp() * 10. + channel->CalibrateCFD(fCfd/6553.6);// CFD is reported as 16bit interpolation of 10 ns
+		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
 		default:
 		dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
 		return SetTime(10. * (dTime - channel->GetTZero(GetEnergy())));
@@ -272,6 +278,12 @@ Long64_t TGRSIDetectorHit::GetCycleTimeStamp() const
    fCycleTimeStamp = GetTimeStamp() - TPPG::Get()->GetLastStatusTime(GetTimeStamp());
    SetHitBit(EBitFlag::kIsPPGSet, true);
    return fCycleTimeStamp;
+}
+
+double TGRSIDetectorHit::GetTimeSinceTapeMove() const
+{
+	/// returns time in ns, minus the time of the last tape move
+	return GetTime() - 10.*TPPG::Get()->GetLastStatusTime(GetTimeStamp(), EPpgPattern::kTapeMove);
 }
 
 // const here is rather dirty

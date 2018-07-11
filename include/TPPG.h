@@ -143,7 +143,9 @@ public:
 
    void AddData(TPPGData* pat);
    EPpgPattern GetStatus(ULong64_t time) const;
+   EPpgPattern GetNextStatus(ULong64_t time) const;
    ULong64_t GetLastStatusTime(ULong64_t time, EPpgPattern pat = EPpgPattern::kJunk) const;
+   ULong64_t GetNextStatusTime(ULong64_t time, EPpgPattern pat = EPpgPattern::kJunk) const;
    Bool_t      MapIsEmpty() const;
    std::size_t PPGSize() const { return fPPGStatusMap->size() - 1; }
    std::size_t OdbPPGSize() const { return fOdbPPGCodes.size(); }

@@ -96,17 +96,18 @@ void TAnalysisWriteLoop::OnEnd()
 
 bool TAnalysisWriteLoop::Iteration()
 {
-	std::shared_ptr<TUnpackedEvent> event;
-	fInputSize = fInputQueue->Pop(event);
-	if(fInputSize < 0) {
-		fInputSize = 0;
+   std::shared_ptr<TUnpackedEvent> event;
+   fInputSize = fInputQueue->Pop(event);
+   if(fInputSize < 0) {
+      fInputSize = 0;
+   } else {
+		++fItemsPopped;
 	}
-	++fItemsPopped;
 
 	if(fOutOfOrder) {
-		std::shared_ptr<const TFragment> frag;
-		fOutOfOrderQueue->Pop(frag, 0);
-		if(frag != nullptr) {
+      std::shared_ptr<const TFragment> frag;
+      fOutOfOrderQueue->Pop(frag, 0);
+      if(frag != nullptr) {
 			fClients[fCurrentClient]->OutOfOrderQueue()->Push(std::move(frag));
 		}
 	}

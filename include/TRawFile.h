@@ -24,8 +24,7 @@
 
 #include "TObject.h"
 
-#include "TMidasEvent.h"
-#include "TLstEvent.h"
+#include "TRawEvent.h"
 
 /// Reader for MIDAS .mid files
 

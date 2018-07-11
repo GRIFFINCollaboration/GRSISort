@@ -15,7 +15,7 @@ int TS3::fSectorNumber  = 32;
 
 double TS3::fOffsetPhiCon = 0.5 * TMath::Pi(); // Offset between connector and sector 0 (viewed from sector side)
 double TS3::fOffsetPhiSet =
-   -22.5 * TMath::Pi() / 180.; // Phi rotation of connector in setup // -90 for bambino -22.5 for SPICE
+   -22.5 * TMath::Pi() / 180.; // Phi rotation of connector in setup // -112.5 for bambino -22.5 for SPICE
 double TS3::fOuterDiameter  = 70.;
 double TS3::fInnerDiameter  = 22.;
 double TS3::fTargetDistance = 31.;
@@ -343,12 +343,15 @@ TVector3 TS3::GetPosition(int ring, int sector, double offsetphi, double offsetZ
    phi += fOffsetPhiCon;
    // The above calculates the position on the S3
 
-   // This orients the detector relative to the beam
+   // This sets orientation of the detector face relative to the beam
    if(sectorsdownstream) {
       phi = -phi;
    }
+   
+   //This rotates the detector around the beam-axis into the correct lab position
    phi += offsetphi;
 
+   //This produces a uniform distribution over the area of a pixel
    if(smear) {
       double sep = ring_width * 0.025;
       double r1 = radius - ring_width * 0.5 + sep, r2 = radius + ring_width * 0.5 - sep;

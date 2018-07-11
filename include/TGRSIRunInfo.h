@@ -116,7 +116,15 @@ public:
    static inline void SetDante(bool flag = true) { Get()->fDante = flag; }
    static inline void SetZeroDegree(bool flag = true) { Get()->fZeroDegree = flag; }
    static inline void SetDescant(bool flag = true) { Get()->fDescant = flag; }
+
+   static inline void SetBgo(bool flag = true) { Get()->fBgo = flag; }
+
    static inline void SetFipps(bool flag = true) { Get()->fFipps = flag; }
+
+   static inline void SetTdrClover(bool flag = true) { Get()->fTdrClover = flag; }
+   static inline void SetTdrTigress(bool flag = true) { Get()->fTdrTigress = flag; }
+   static inline void SetTdrSiLi(bool flag = true) { Get()->fTdrSiLi = flag; }
+   static inline void SetTdrPlastic(bool flag = true) { Get()->fTdrPlastic = flag; }
 
    static inline void SetCalFileName(const char* name) { Get()->fCalFileName.assign(name); }
    static inline void SetCalFileData(const char* data) { Get()->fCalFile.assign(data); }
@@ -155,7 +163,15 @@ public:
    static inline bool Dante() { return Get()->fDante; }
    static inline bool ZeroDegree() { return Get()->fZeroDegree; }
    static inline bool Descant() { return Get()->fDescant; }
+
+   static inline bool Bgo() { return Get()->fBgo; }
+
    static inline bool Fipps() { return Get()->fFipps; }
+
+   static inline bool TdrClover() { return Get()->fTdrClover; }
+   static inline bool TdrTigress() { return Get()->fTdrTigress; }
+   static inline bool TdrSiLi() { return Get()->fTdrSiLi; }
+   static inline bool TdrPlastic() { return Get()->fTdrPlastic; }
 
    inline void SetRunInfoFileName(const char* fname) { Get()->fRunInfoFileName.assign(fname); }
    inline void SetRunInfoFile(const char* ffile) { Get()->fRunInfoFile.assign(ffile); }
@@ -234,7 +250,15 @@ private:
    bool fDante{false};      // flag for LaBr on/off
    bool fZeroDegree{false}; // flag for Zero Degree Scintillator on/off
    bool fDescant{false};    // flag for Descant on/off
+
+   bool fBgo{false};        // flag for Bgo on/off
+
    bool fFipps{false};      // flag for Fipps on/off
+
+   bool fTdrClover{false};  // flag for TdrClover on/off
+   bool fTdrTigress{false}; // flag for TdrTigress on/off
+   bool fTdrSiLi{false};    // flag for TdrSiLi on/off
+   bool fTdrPlastic{false}; // flag for TdrPlastic on/off
 
    std::string fCalFileName; // Name of calfile that generated cal
    std::string fCalFile;     // Cal File to load into Cal of tree

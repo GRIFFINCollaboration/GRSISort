@@ -37,6 +37,7 @@
 #include "TRawFile.h"
 #include "TMidasFile.h"
 #include "TLstFile.h"
+#include "TTdrFile.h"
 
 class TGRSIint : public TRint {
 private:
@@ -61,6 +62,7 @@ public:
    TFile* OpenRootFile(const std::string& filename, Option_t* opt = "read");
    TMidasFile* OpenMidasFile(const std::string& filename);
    TLstFile* OpenLstFile(const std::string& filename);
+   TTdrFile* OpenTdrFile(const std::string& filename);
    void RunMacroFile(const std::string& filename);
 
    void Terminate(Int_t status = 0) override;

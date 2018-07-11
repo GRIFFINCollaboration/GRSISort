@@ -2,6 +2,8 @@
 
 #include "TClass.h"
 
+#include "GValue.h"
+
 /// \cond CLASSIMP
 ClassImp(TBgoHit)
 /// \endcond

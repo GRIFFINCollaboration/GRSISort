@@ -59,6 +59,64 @@ public:
 		}
 		return fSingleton;
 	}
+	static T* GetAll()
+	{
+		// get the singleton itself
+		Get();
+		// check if we can get the run number and sub-run number from the directory we read this from
+		std::string fileName = fDir->GetName();
+		std::string filebase;
+		// we expect the root-file name format to be (<dir>/)<base><5 digit run number>_<3 digit subrun number>.root
+		// so the length needs to be at least 9 (assuming single character for base, run, and subrun number)
+		if(fileName.length() < 9) {
+			return fSingleton;
+		}
+		size_t underscore = fileName.find_last_of('_');
+		size_t dot = fileName.find_last_of('.');
+		// check that the dot is length minus 5 (which also ensures it was found) and
+		// that the underscore is dot minus 4 (again ensuring it was found)
+		if(dot != fileName.length()-5 || underscore != dot-4) {
+			return fSingleton;
+		}
+		filebase = fileName.substr(0,underscore-5);
+		int runNumber = atoi(fileName.substr(underscore-5).c_str());
+		int subrunNumber = atoi(fileName.substr(dot-3).c_str());
+		if(runNumber > 0 || subrunNumber > 0) {
+			TFile* prevSubRun;
+			if(subrunNumber > 0) {
+				prevSubRun = new TFile(Form("%s%05d_%03d.root",filebase.c_str(),runNumber,subrunNumber-1));
+			} else {
+				// search for last subrun of previous run
+				int subrun = 0;
+				prevSubRun = new TFile(Form("%s%05d_%03d.root",filebase.c_str(),runNumber-1,subrun++));
+				TFile* tmpFile = nullptr;
+				while(prevSubRun != nullptr && prevSubRun->IsOpen()) {
+					if(tmpFile != nullptr) {
+						tmpFile->Close();
+						tmpFile = prevSubRun;
+					}
+					prevSubRun = new TFile(Form("%s%05d_%03d.root",filebase.c_str(),runNumber-1,subrun++));
+				}
+				// this works if we found a subrun (i.e. the last read is not good, but the one stored in tmp is)
+				// of if we didn't find one (i.e. tmpFile is a nullptr which we check for)
+				prevSubRun = tmpFile;
+			}
+			if(prevSubRun != nullptr && prevSubRun->IsOpen()) {
+				T* prevSingleton = static_cast<T*>(prevSubRun->Get(fSingleton->GetName()));
+				if(prevSingleton != nullptr) {
+					fSingleton->Add(prevSingleton);
+					std::cout<<"Found previous "<<fSingleton->GetName()<<" data from "<<prevSubRun->GetName()<<std::endl;
+				} else {
+					std::cout<<"Failed to find previous "<<fSingleton->GetName()<<" data from "<<prevSubRun->GetName()<<std::endl;
+				}
+				prevSubRun->Close();
+				fDir->cd();
+			} else {
+					std::cout<<"Failed to find previous file "<<prevSubRun->GetName()<<" not adding data to "<<fSingleton->GetName()<<std::endl;
+			}
+		}
+		return fSingleton;
+	}
 	static void Set(T* val)
 	{
 		if(fSingleton != val) {
