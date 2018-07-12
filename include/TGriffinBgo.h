@@ -10,15 +10,10 @@
 #include <functional>
 //#include <tuple>
 
-#include "TBits.h"
-#include "TVector3.h"
-
 #include "Globals.h"
+#include "TFragment.h"
+#include "TChannel.h"
 #include "TBgo.h"
-#include "TGRSIDetector.h"
-#include "TGRSIRunInfo.h"
-#include "TTransientBits.h"
-#include "TSpline.h"
 
 class TGriffinBgo : public TBgo {
 public:
@@ -26,10 +21,14 @@ public:
    TGriffinBgo(const TGriffinBgo&);
    virtual ~TGriffinBgo();
 
+#ifndef __CINT__
+   void AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan) override; //!<!
+#endif
+
    TGriffinBgo& operator=(const TGriffinBgo&); //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TGriffinBgo, 1) // GriffinBgo Physics structure
+   ClassDefOverride(TGriffinBgo, 1) // GriffinBgo Physics structure
    /// \endcond
 };
 /*! @} */

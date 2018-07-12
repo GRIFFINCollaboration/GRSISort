@@ -14,11 +14,9 @@
 #include "TVector3.h"
 
 #include "Globals.h"
+#include "TFragment.h"
+#include "TChannel.h"
 #include "TBgo.h"
-#include "TGRSIDetector.h"
-#include "TGRSIRunInfo.h"
-#include "TTransientBits.h"
-#include "TSpline.h"
 
 class TTdrCloverBgo : public TBgo {
 public:
@@ -26,10 +24,14 @@ public:
    TTdrCloverBgo(const TTdrCloverBgo&);
    virtual ~TTdrCloverBgo();
 
+#ifndef __CINT__
+   void AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan) override; //!<!
+#endif
+
    TTdrCloverBgo& operator=(const TTdrCloverBgo&); //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TTdrCloverBgo, 1) // TdrCloverBgo Physics structure
+   ClassDefOverride(TTdrCloverBgo, 1) // TdrCloverBgo Physics structure
    /// \endcond
 };
 /*! @} */
