@@ -241,6 +241,7 @@ std::vector<TGriffinHit>& TGriffin::GetHitVector(const EGainBits& gain_type)
 		case EGainBits::kLowGain:  return fGriffinLowGainHits;
 		case EGainBits::kHighGain: return fGriffinHighGainHits;
    };
+	return fGriffinLowGainHits;
 }
 
 std::vector<TGriffinHit>& TGriffin::GetAddbackVector(const EGainBits& gain_type)
@@ -249,6 +250,7 @@ std::vector<TGriffinHit>& TGriffin::GetAddbackVector(const EGainBits& gain_type)
 		case EGainBits::kLowGain:  return fAddbackLowGainHits;
 		case EGainBits::kHighGain: return fAddbackHighGainHits;
    };
+	return fAddbackLowGainHits;
 }
 
 std::vector<UShort_t>& TGriffin::GetAddbackFragVector(const EGainBits& gain_type)
@@ -257,6 +259,7 @@ std::vector<UShort_t>& TGriffin::GetAddbackFragVector(const EGainBits& gain_type
 		case EGainBits::kLowGain:  return fAddbackLowGainFrags;
 		case EGainBits::kHighGain: return fAddbackHighGainFrags;
    };
+	return fAddbackLowGainFrags;
 }
 
 bool TGriffin::IsAddbackSet(const EGainBits& gain_type) const
@@ -675,6 +678,7 @@ std::vector<TGriffinHit>& TGriffin::GetSuppressedVector(const EGainBits& gain_ty
 		case EGainBits::kLowGain:  return fSuppressedLowGainHits;
 		case EGainBits::kHighGain: return fSuppressedHighGainHits;
    };
+	return fSuppressedLowGainHits;
 }
 
 std::vector<TGriffinHit>& TGriffin::GetSuppressedAddbackVector(const EGainBits& gain_type)
@@ -683,6 +687,7 @@ std::vector<TGriffinHit>& TGriffin::GetSuppressedAddbackVector(const EGainBits& 
 		case EGainBits::kLowGain:  return fSuppressedAddbackLowGainHits;
 		case EGainBits::kHighGain: return fSuppressedAddbackHighGainHits;
    };
+	return fSuppressedAddbackLowGainHits;
 }
 
 std::vector<UShort_t>& TGriffin::GetSuppressedAddbackFragVector(const EGainBits& gain_type)
@@ -691,6 +696,7 @@ std::vector<UShort_t>& TGriffin::GetSuppressedAddbackFragVector(const EGainBits&
 		case EGainBits::kLowGain:  return fSuppressedAddbackLowGainFrags;
 		case EGainBits::kHighGain: return fSuppressedAddbackHighGainFrags;
    };
+	return fSuppressedAddbackLowGainFrags;
 }
 
 TGriffinHit* TGriffin::GetSuppressedHit(const int& i, const EGainBits& gain_type)

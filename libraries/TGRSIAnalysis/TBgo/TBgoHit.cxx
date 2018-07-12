@@ -41,11 +41,3 @@ void TBgoHit::Print(Option_t* opt) const
    printf("============================\n");
 }
 
-int TBgoHit::GetCrystal() const
-{
-   TChannel* chan = GetChannel();
-   if(chan == nullptr) {
-      return -1;
-   }
-   return chan->GetCrystalNumber();
-}

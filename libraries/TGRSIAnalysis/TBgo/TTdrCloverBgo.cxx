@@ -1,4 +1,5 @@
 #include "TTdrCloverBgo.h"
+#include "TTdrCloverBgoHit.h"
 
 #include <sstream>
 #include <iostream>
@@ -47,3 +48,16 @@ TTdrCloverBgo& TTdrCloverBgo::operator=(const TTdrCloverBgo& rhs)
    rhs.Copy(*this);
    return *this;
 }
+
+void TTdrCloverBgo::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
+{
+   // Builds the BGO Hits directly from the TFragment. Basically, loops through the hits for an event and sets
+   // observables.
+   if(frag == nullptr || chan == nullptr) {
+      return;
+   }
+
+	TTdrCloverBgoHit hit(*frag);
+	fBgoHits.push_back(std::move(hit));
+}
+
