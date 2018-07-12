@@ -1538,15 +1538,11 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
          }
 			return -w;
 		}
-      //std::cout<<w-1<<": 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w-1]<<std::dec<<std::setfill(' ')<<" - "<<numWordsBoard<<" words"<<std::endl;
-		uint8_t boardId = data[w]>>27; // GEO address of board (can be set via register 0xef08 for VME)
-		uint16_t pattern = (data[w]>>8) & 0x7fff; // value read from LVDS I/O (VME only)
+		//uint8_t boardId = data[w]>>27; // GEO address of board (can be set via register 0xef08 for VME)
+		//uint16_t pattern = (data[w]>>8) & 0x7fff; // value read from LVDS I/O (VME only)
 		uint8_t channelMask = data[w++]&0xff; // which channels are in this board aggregate
-      //std::cout<<w-1<<": 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w-1]<<std::dec<<std::setfill(' ')<<" - boardId "<<boardId<<", pattern "<<pattern<<", channelMask "<<channelMask<<std::endl;
-		uint32_t boardCounter = data[w++]&0x7fffff; // ??? "counts the board aggregate"
-      //std::cout<<w-1<<": 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w-1]<<std::dec<<std::setfill(' ')<<" - boardCounter "<<boardCounter<<std::endl;
+		++w;//uint32_t boardCounter = data[w++]&0x7fffff; // ??? "counts the board aggregate"
 		uint32_t boardTime = data[w++]; // time of creation of aggregate (does not correspond to a physical quantity)
-      //std::cout<<w-1<<": 0x"<<std::hex<<std::setw(8)<<std::setfill('0')<<data[w-1]<<std::dec<<std::setfill(' ')<<" - boardTime "<<boardTime<<std::endl;
 		//if(boardCounter < gBoardCounter) {
 		//	std::cerr<<"current board counter "<<boardCounter<<" is less than previous one "<<gBoardCounter<<", skipping this data"<<std::endl;
 		//	return nofFragments;
@@ -1701,9 +1697,6 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 					}
                ++w;
 				}
-				//if(w >= size) {
-				//	std::cerr<<"4 - Missing words, got only "<<w-1<<" words for channel "<<channel<<" (bank size "<<size<<")"<<std::endl;
-				//}
 				eventFrag->SetCcShort(data[w]&0x7fff);
 				eventFrag->SetCcLong((data[w]>>15) & 0x1);//this is actually the over-range bit!
 				eventFrag->SetCharge(static_cast<Int_t>(data[w++]>>16));
