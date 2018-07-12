@@ -497,13 +497,13 @@ int TMidasEvent::IterateBank32(TMidas_BANK32** pbk, char** pdata) const
       }
    }
 
-   *pdata = reinterpret_cast<char*>((*pbk) + 1);
-
    if(reinterpret_cast<char*>(*pbk) >= (char*)event + event->fDataSize + sizeof(TMidas_BANK_HEADER)) {
       *pbk   = nullptr;
       *pdata = nullptr;
       return 0;
    }
+
+   *pdata = reinterpret_cast<char*>((*pbk) + 1);
 
    return (*pbk)->fDataSize;
 }
