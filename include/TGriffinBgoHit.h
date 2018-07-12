@@ -1,5 +1,5 @@
-#ifndef TBGOHIT_H
-#define TBGOHIT_H
+#ifndef TGRIFFINBGOHIT_H
+#define TGRIFFINBGOHIT_H
 
 /** \addtogroup Detectors
  *  @{
@@ -19,24 +19,20 @@
 #include "TChannel.h"
 #include "TPulseAnalyzer.h"
 
-#include "TGRSIDetectorHit.h"
+#include "TBgoHit.h"
 
-class TBgoHit : public TGRSIDetectorHit {
+class TGriffinBgoHit : public TBgoHit {
 public:
-   TBgoHit();
-   TBgoHit(const TBgoHit&);
-   TBgoHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
-   ~TBgoHit() override;
+   TGriffinBgoHit();
+   TGriffinBgoHit(const TGriffinBgoHit& hit) : TBgoHit(static_cast<const TBgoHit&>(hit)) {}
+   TGriffinBgoHit(const TFragment& frag) : TBgoHit(frag) {}
+   ~TGriffinBgoHit() override;
 
    /////////////////////////		/////////////////////////////////////
    inline UShort_t GetArrayNumber() const override { return (20 * (GetDetector() - 1) + 5 * GetCrystal() + GetSegment()); } //!<!
 
-   void Clear(Option_t* opt = "") override;       //!<!
-   void Copy(TObject&) const override;            //!<!
-   void Print(Option_t* opt = "") const override; //!<!
-
    /// \cond CLASSIMP
-   ClassDefOverride(TBgoHit, 1)
+   ClassDefOverride(TGriffinBgoHit, 1)
    /// \endcond
 };
 /*! @} */
