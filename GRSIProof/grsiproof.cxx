@@ -102,7 +102,7 @@ void AtExitHandler()
 	controlC = true;
 	if(startedProof) {
 		std::cout<<"getting session logs ..."<<std::endl;
-		TProofLog* pl = nullptr;//TProof::Mgr("proof://__lite__")->GetSessionLogs();
+		TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
 		if(pl != nullptr) {
 			pl->Save("*", gGRSIOpt->LogFile().c_str());
 		} else {
