@@ -57,14 +57,14 @@ void TTdrTigressBgo::AddFragment(const std::shared_ptr<const TFragment>& frag, T
       return;
    }
 
-	TTdrTigressBgoHit hit(*frag);
+	TTdrTigressBgoHit* hit = new TTdrTigressBgoHit(*frag);
 	fBgoHits.push_back(std::move(hit));
 }
 
 TTdrTigressBgoHit* TTdrTigressBgo::GetTdrTigressBgoHit(const Int_t& i)
 {
 	try {
-		return static_cast<TTdrTigressBgoHit*>(&(fBgoHits.at(i)));
+		return static_cast<TTdrTigressBgoHit*>(fBgoHits.at(i));
 	} catch(const std::out_of_range& oor) {
 		std::cerr<<ClassName()<<" Hits are out of range: "<<oor.what()<<std::endl;
 		if(!gInterpreter) {

@@ -58,7 +58,7 @@ public:
    Double_t GetSignalToNoise() const { return fSig2Noise; } //!<!
    Double_t GetFitTime() const { return fTimeFit; }         //!<!
 
-   UShort_t GetArrayNumber() const 
+   UShort_t GetArrayNumber() const override
    {
       int number = 4 * (GetDetector() - 1) + GetCrystal();
       return number;

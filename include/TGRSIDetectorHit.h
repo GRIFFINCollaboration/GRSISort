@@ -154,7 +154,7 @@ public:
    virtual Int_t    GetSegment() const;       //!<!
    virtual Int_t    GetCrystal() const;       //!<!
    const char*      GetName() const override; //!<!
-   UShort_t GetArrayNumber() const;   //!<!
+   virtual UShort_t GetArrayNumber() const;   //!<!
 
    // virtual void GetSegment() const;
 

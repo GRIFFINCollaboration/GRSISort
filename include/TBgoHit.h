@@ -29,7 +29,7 @@ public:
    ~TBgoHit() override;
 
    /////////////////////////		/////////////////////////////////////
-   UShort_t GetArrayNumber() const { return -1; } //!<!
+   virtual UShort_t GetArrayNumber() const override { return -1; } //!<!
 
    void Clear(Option_t* opt = "") override;       //!<!
 	using TGRSIDetectorHit::Copy;

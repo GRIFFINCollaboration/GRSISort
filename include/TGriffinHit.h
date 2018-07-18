@@ -60,7 +60,7 @@ public:
 
    /////////////////////////		/////////////////////////////////////
 
-   inline UShort_t GetArrayNumber() const { return (4 * (GetDetector() - 1) + (GetCrystal() + 1)); } //!<!
+   inline UShort_t GetArrayNumber() const override { return (4 * (GetDetector() - 1) + (GetCrystal() + 1)); } //!<!
    // returns a number 1-64 ( 1 = Detector 1 blue;  64 =  Detector 16 white; )
    Bool_t GetIsBremSuppressed() const { return fBremSuppressed_flag; }
    void SetIsBremSuppressed(const Bool_t& supp_flag) { fBremSuppressed_flag = supp_flag; }
