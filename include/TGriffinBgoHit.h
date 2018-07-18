@@ -29,7 +29,7 @@ public:
    ~TGriffinBgoHit() override;
 
    /////////////////////////		/////////////////////////////////////
-   inline UShort_t GetArrayNumber() const override { return (20 * (GetDetector() - 1) + 5 * GetCrystal() + GetSegment()); } //!<!
+   UShort_t GetArrayNumber() const { return (20 * (GetDetector() - 1) + 5 * GetCrystal() + GetSegment()); } //!<!
 
    /// \cond CLASSIMP
    ClassDefOverride(TGriffinBgoHit, 1)

@@ -29,9 +29,10 @@ public:
    ~TBgoHit() override;
 
    /////////////////////////		/////////////////////////////////////
-   inline UShort_t GetArrayNumber() const override { return (20 * (GetDetector() - 1) + 5 * GetCrystal() + GetSegment()); } //!<!
+   UShort_t GetArrayNumber() const { return -1; } //!<!
 
    void Clear(Option_t* opt = "") override;       //!<!
+	using TGRSIDetectorHit::Copy;
    void Copy(TObject&) const override;            //!<!
    void Print(Option_t* opt = "") const override; //!<!
 

@@ -17,6 +17,7 @@
 #include "TFragment.h"
 #include "TChannel.h"
 #include "TBgo.h"
+#include "TLaBrBgoHit.h"
 
 class TLaBrBgo : public TBgo {
 public:
@@ -24,6 +25,8 @@ public:
    TLaBrBgo(const TLaBrBgo&);
    virtual ~TLaBrBgo();
 
+   TLaBrBgoHit* GetLaBrBgoHit(const Int_t& i);
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override { return GetLaBrBgoHit(idx); }
 #ifndef __CINT__
    void AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan) override; //!<!
 #endif

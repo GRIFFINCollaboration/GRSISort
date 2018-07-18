@@ -61,3 +61,16 @@ void TGriffinBgo::AddFragment(const std::shared_ptr<const TFragment>& frag, TCha
 	fBgoHits.push_back(std::move(hit));
 }
 
+TGriffinBgoHit* TGriffinBgo::GetGriffinBgoHit(const Int_t& i)
+{
+	try {
+		return static_cast<TGriffinBgoHit*>(&(fBgoHits.at(i)));
+	} catch(const std::out_of_range& oor) {
+		std::cerr<<ClassName()<<" Hits are out of range: "<<oor.what()<<std::endl;
+		if(!gInterpreter) {
+			throw grsi::exit_exception(1);
+		}
+	}
+	return nullptr;
+}
+

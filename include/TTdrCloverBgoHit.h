@@ -29,7 +29,7 @@ public:
    ~TTdrCloverBgoHit() override;
 
    /////////////////////////		/////////////////////////////////////
-   inline UShort_t GetArrayNumber() const override { return (4 * (GetDetector() - 1) + GetCrystal() + 1); } //!<! each crystal has one single signal (OR of all segments)
+   inline UShort_t GetArrayNumber() const { return (4 * (GetDetector() - 1) + GetCrystal() + 1); } //!<! each crystal has one single signal (OR of all segments)
 
    /// \cond CLASSIMP
    ClassDefOverride(TTdrCloverBgoHit, 1)
