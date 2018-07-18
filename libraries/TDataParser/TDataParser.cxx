@@ -196,24 +196,23 @@ void TDataParser::SetTIGCfd(uint32_t value, const std::shared_ptr<TFragment>& cu
 
    // currentFragment->SlowRiseTime = value & 0x08000000;
    currentFrag->SetCfd(int32_t(value & 0x07ffffff));
-   // std::string dig_type = "";//"Tig64";
-   TChannel* chan = TChannel::GetChannel(currentFrag->GetAddress());
-   if(chan == nullptr) {
-      chan = gChannel;
-   }
-   std::string dig_type = (chan)->GetDigitizerTypeString();
+   //TChannel* chan = TChannel::GetChannel(currentFrag->GetAddress());
+   //if(chan == nullptr) {
+   //   chan = gChannel;
+   //}
+	//TMnemonic::EDigitizer dig_type = (chan)->GetDigitizerType();
 
    // Zero-crossing now transient, why bother calculating it.
    // // remove vernier for now and calculate the time to the trigger
    // int32_t tsBits  = 0;
    // int32_t cfdBits = 0;
-   // if ( dig_type.compare(0,5,"Tig10")==0) {
+   // if (dig_type == TMnemonic::EDigitizer::kTIG10) {
    //   cfdBits = (currentFrag->GetCfd() >> 4);
    //   tsBits  = currentFrag->GetTimeStamp() & 0x007fffff;
    //   // probably should check that there hasn't been any wrap around here
    //   //currentFrag->TimeToTrig = tsBits - cfdBits;
    //   currentFrag->Zc.push_back(tsBits - cfdBits);
-   // } else if ( dig_type.compare(0,5,"Tig64")==0 ) {
+   // } else if (dig_type == TMnemonic::EDigitizer::kTIG64) {
    //   //currentFrag->TimeToTrig = (currentFrag->Cfd.back() >> 5);
    //   cfdBits	= (currentFrag->Cfd.back() >> 4) & 0x003fffff;
    //   //tsBits  = currentFrag->TimeStampLow & 0x0000ffff; //0x003fffff;
@@ -246,16 +245,16 @@ void TDataParser::SetTIGCharge(uint32_t value, const std::shared_ptr<TFragment>&
    if(chan == nullptr) {
       chan = gChannel;
    }
-   std::string dig_type = chan->GetDigitizerTypeString();
+	TMnemonic::EDigitizer dig_type = chan->GetDigitizerType();
 
    int charge;
-   if((dig_type.compare(0, 5, "Tig10") == 0) || (dig_type.compare(0, 5, "TIG10") == 0)) {
+   if(dig_type == TMnemonic::EDigitizer::kTIG10) {
       if((value & 0x02000000) != 0u) {
          charge = (-((~(static_cast<int32_t>(value) & 0x01ffffff)) & 0x01ffffff) + 1);
       } else {
          charge = (value & 0x03ffffff);
       }
-   } else if((dig_type.compare(0, 5, "Tig64") == 0) || (dig_type.compare(0, 5, "TIG64") == 0)) {
+   } else if(dig_type == TMnemonic::EDigitizer::kTIG64) {
       if((value & 0x00200000) != 0u) {
          charge = (-((~(static_cast<int32_t>(value) & 0x001fffff)) & 0x001fffff) + 1);
       } else {
