@@ -58,19 +58,19 @@ public:
    void SetOutputPrefix(const char* prefix) { fOutputPrefix = prefix; }
 
 protected:
-   TGRSIMap<std::string, TH1*>        fH1;
-   TGRSIMap<std::string, TH2*>        fH2;
-   TGRSIMap<std::string, TH3*>        fH3;
-   TGRSIMap<std::string, GHSym*>      fSym;
-   TGRSIMap<std::string, GCube*>      fCube;
-   TGRSIMap<std::string, THnSparseF*> fHSparse;
-	TPPG*             fPpg{nullptr};
+   TGRSIMap<std::string, TH1*>        fH1; //!<!
+   TGRSIMap<std::string, TH2*>        fH2; //!<!
+   TGRSIMap<std::string, TH3*>        fH3; //!<!
+   TGRSIMap<std::string, GHSym*>      fSym; //!<!
+   TGRSIMap<std::string, GCube*>      fCube; //!<!
+   TGRSIMap<std::string, THnSparseF*> fHSparse; //!<!
+	TPPG*             fPpg{nullptr}; //!<!
 
 private:
-   std::string       fOutputPrefix;
-   TAnalysisOptions* fAnalysisOptions{nullptr};
-	Int_t             fFirstRunNumber;
-	Int_t             fFirstSubRunNumber;
+   std::string       fOutputPrefix; //!<!
+   TAnalysisOptions* fAnalysisOptions{nullptr}; //!<!
+	Int_t             fFirstRunNumber; //!<!
+	Int_t             fFirstSubRunNumber; //!<!
 
    ClassDefOverride(TGRSISelector, 2);
 };

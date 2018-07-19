@@ -91,7 +91,7 @@ public:
    bool operator<(const TGRSIDetectorHit& rhs) const { return GetEnergy() > rhs.GetEnergy(); } // sorts large->small
 
 public:
-   void         Copy(TObject&) const override;       //!<!
+   virtual void Copy(TObject&) const override;       //!<!
    virtual void Copy(TObject&, bool copywave) const; //!<!
    virtual void CopyWave(TObject&) const;            //!<!
    void Clear(Option_t* opt = "") override;          //!<!
@@ -133,7 +133,7 @@ public:
    Long64_t         GetRawTimeStamp(Option_t* = "") const { return fTimeStamp; }
    virtual Double_t GetTime(const ETimeFlag& correct_flag = ETimeFlag::kAll,
                             Option_t*     opt          = "") const; ///< Returns a time value to the nearest nanosecond!
-   // TODO: Fix Getters to have non-const types
+   // TODO: Fix Getters to have non-const types (why?)
    virtual Int_t               GetCfd() const { return fCfd; }            //!<!
    virtual UInt_t              GetAddress() const { return fAddress; }    //!<!
    virtual Float_t             GetCharge() const;                         //!<!

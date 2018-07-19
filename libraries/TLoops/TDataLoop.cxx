@@ -327,10 +327,9 @@ void TDataLoop::SetTIGOdb()
       int temp_integration = 0;
       if(type.at(x) != 0) {
          tempChan->SetDigitizerType(TPriorityValue<std::string>(typemap[type.at(x)].second.c_str(), EPriority::kRootFile));
-         if(strcmp(tempChan->GetDigitizerTypeString(), "Tig64") ==
-            0) { // TODO: maybe use enumerations via GetDigitizerType()
+         if(tempChan->GetDigitizerType() == TMnemonic::EDigitizer::kTIG64) {
             temp_integration = 25;
-         } else if(strcmp(tempChan->GetDigitizerTypeString(), "Tig10") == 0) {
+			} else if(tempChan->GetDigitizerType() == TMnemonic::EDigitizer::kTIG10) {
             temp_integration = 125;
          }
       }

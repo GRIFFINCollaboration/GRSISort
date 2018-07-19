@@ -65,6 +65,9 @@ private:
    void                   RemoveHits(std::vector<TSharcHit>*, std::set<int>*); //!<!
 
    // TODO: I think this class could be sped up with a flag method on these transient vectors.
+	// Not sure what is supposed to get sped up here, the transient vectors are only used
+	// to store fragments in them before the hits are build.
+	// After that these vectors aren't used again.
    std::vector<TFragment> fFrontFragments; //!
    std::vector<TFragment> fBackFragments;  //!
    std::vector<TFragment> fPadFragments;   //!

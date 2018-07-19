@@ -392,6 +392,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
    while(!std::getline(infile, line).fail() ) {
       linenumber++;
       trim(&line);
+		std::transform(line.begin(), line.end(), line.begin(), ::toupper);
       size_t comment = line.find("//");
       if(comment != std::string::npos) {
          line = line.substr(0, comment);
@@ -408,12 +409,6 @@ Bool_t TGRSIRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
       std::string type = line.substr(0, ntype);
       line             = line.substr(ntype + 1, line.length());
       trim(&line);
-      int j = 0;
-      while(type[j] != 0) {
-         char c    = *(type.c_str() + j);
-         c         = toupper(c);
-         type[j++] = c;
-      }
       if(type.compare("CAL") == 0 || type.compare("CALFILE") == 0) {
          // TODO Make this work again, using priorities
          // TGRSIOptions::AddInputCalFile(line);

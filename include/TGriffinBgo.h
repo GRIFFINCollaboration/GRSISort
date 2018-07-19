@@ -14,6 +14,7 @@
 #include "TFragment.h"
 #include "TChannel.h"
 #include "TBgo.h"
+#include "TGriffinBgoHit.h"
 
 class TGriffinBgo : public TBgo {
 public:
@@ -21,6 +22,8 @@ public:
    TGriffinBgo(const TGriffinBgo&);
    virtual ~TGriffinBgo();
 
+   TGriffinBgoHit* GetGriffinBgoHit(const Int_t& i);
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override { return GetGriffinBgoHit(idx); }
 #ifndef __CINT__
    void AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan) override; //!<!
 #endif

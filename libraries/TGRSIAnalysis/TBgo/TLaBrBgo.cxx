@@ -57,7 +57,20 @@ void TLaBrBgo::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
       return;
    }
 
-	TLaBrBgoHit hit(*frag);
+	TLaBrBgoHit* hit = new TLaBrBgoHit(*frag);
 	fBgoHits.push_back(std::move(hit));
+}
+
+TLaBrBgoHit* TLaBrBgo::GetLaBrBgoHit(const Int_t& i)
+{
+	try {
+		return static_cast<TLaBrBgoHit*>(fBgoHits.at(i));
+	} catch(const std::out_of_range& oor) {
+		std::cerr<<ClassName()<<" Hits are out of range: "<<oor.what()<<std::endl;
+		if(!gInterpreter) {
+			throw grsi::exit_exception(1);
+		}
+	}
+	return nullptr;
 }
 

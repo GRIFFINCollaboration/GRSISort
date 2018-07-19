@@ -57,7 +57,20 @@ void TTdrCloverBgo::AddFragment(const std::shared_ptr<const TFragment>& frag, TC
       return;
    }
 
-	TTdrCloverBgoHit hit(*frag);
+	TTdrCloverBgoHit* hit = new TTdrCloverBgoHit(*frag);
 	fBgoHits.push_back(std::move(hit));
+}
+
+TTdrCloverBgoHit* TTdrCloverBgo::GetTdrCloverBgoHit(const Int_t& i)
+{
+	try {
+		return static_cast<TTdrCloverBgoHit*>(fBgoHits.at(i));
+	} catch(const std::out_of_range& oor) {
+		std::cerr<<ClassName()<<" Hits are out of range: "<<oor.what()<<std::endl;
+		if(!gInterpreter) {
+			throw grsi::exit_exception(1);
+		}
+	}
+	return nullptr;
 }
 
