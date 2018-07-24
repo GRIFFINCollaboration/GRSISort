@@ -41,6 +41,9 @@ TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode)
       });
 		std::cout<<DYELLOW<<"sorting by trigger ID!"<<RESET_COLOR<<std::endl;
       break;
+	case EBuildMode::kDefault:
+		throw std::runtime_error("Error in event building loop, no build mode selected. Maybe because no custom run info was loaded?");
+		break;
    }
 }
 
@@ -109,8 +112,8 @@ bool TEventBuildingLoop::CheckBuildCondition(const std::shared_ptr<const TFragme
 {
    switch(fBuildMode) {
 	case EBuildMode::kTimestamp: return CheckTimestampCondition(frag); break;
-
 	case EBuildMode::kTriggerId: return CheckTriggerIdCondition(frag); break;
+	default: return false;
    }
    return false; // we should never reach this statement!
 }

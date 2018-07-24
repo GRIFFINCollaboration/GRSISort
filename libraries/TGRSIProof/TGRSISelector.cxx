@@ -23,7 +23,7 @@
 //
 
 #include "TGRSIOptions.h"
-#include "TGRSIRunInfo.h"
+#include "TRunInfo.h"
 #include "TGRSISelector.h"
 #include "GValue.h"
 
@@ -130,7 +130,7 @@ Bool_t TGRSISelector::Process(Long64_t entry)
       current_file = fChain->GetCurrentFile();
       std::cout<<"Starting to sort: "<<current_file->GetName()<<std::endl;
       TChannel::ReadCalFromFile(current_file);
-      TGRSIRunInfo::Get()->ReadInfoFromFile(current_file);
+      TRunInfo::Get()->ReadInfoFromFile(current_file);
       //   TChannel::WriteCalFile();
    }
 
@@ -160,7 +160,7 @@ void TGRSISelector::Terminate()
    /// a query. It always runs on the client, it can be used to present
    /// the results graphically or save the results to file.
 	TGRSIOptions* options = TGRSIOptions::Get();
-	TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
+	TRunInfo* runInfo = TRunInfo::Get();
    Int_t runnumber    = runInfo->RunNumber();
    Int_t subrunnumber = runInfo->SubRunNumber();
 

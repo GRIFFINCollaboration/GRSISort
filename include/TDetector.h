@@ -57,6 +57,9 @@ public:
    virtual void ClearTransients() {}              //!<!
    void Print(Option_t* opt = "") const override; //!<!
 
+	virtual Short_t GetMultiplicity() const { AbstractMethod("GetMultiplicity()"); return 0; }
+	virtual TDetectorHit* GetHit(const Int_t&) const { AbstractMethod("GetHit()"); return nullptr; }
+
    /// \cond CLASSIMP
    ClassDefOverride(TDetector, 1) // Abstract class for detector systems
    /// \endcond

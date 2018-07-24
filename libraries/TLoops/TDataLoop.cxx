@@ -9,9 +9,8 @@
 #include "TGRSIOptions.h"
 #include "TString.h"
 #include "TRawFile.h"
-#include "TMidasFile.h"
 #include "TChannel.h"
-#include "TGRSIRunInfo.h"
+#include "TRunInfo.h"
 #include "TPriorityValue.h"
 
 TDataLoop::TDataLoop(std::string name, TRawFile* source)
@@ -21,9 +20,8 @@ TDataLoop::TDataLoop(std::string name, TRawFile* source)
      , fOdb(nullptr)
 #endif
 {
-   TMidasFile* midasFile = dynamic_cast<TMidasFile*>(source);
-   if(midasFile != nullptr) {
-      SetFileOdb(midasFile->GetFirstEvent()->GetTimeStamp(), midasFile->GetFirstEvent()->GetData(), midasFile->GetFirstEvent()->GetDataSize());
+   if(source->GetOdbEvent() != nullptr) {
+      SetFileOdb(source->GetOdbEvent()->GetTimeStamp(), source->GetOdbEvent()->GetData(), source->GetOdbEvent()->GetDataSize());
    }
 }
 
@@ -96,7 +94,7 @@ void TDataLoop::SetFileOdb(uint32_t time, char* data, int size)
 void TDataLoop::SetRunInfo(uint32_t time)
 {
 #ifdef HAS_XML
-   TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
+   TRunInfo* runInfo = TRunInfo::Get();
    TXMLNode*     node    = fOdb->FindPath("/Runinfo/Start time binary");
    if(node != nullptr) {
 		std::stringstream str(node->GetText());

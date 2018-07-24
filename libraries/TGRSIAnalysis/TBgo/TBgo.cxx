@@ -93,13 +93,13 @@ TVector3 TBgo::gScintPosition[17] = {
             TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Sin(TMath::DegToRad() * (337.5)),
             TMath::Cos(TMath::DegToRad() * (135.0)))};
 
-TBgo::TBgo() : TGRSIDetector()
+TBgo::TBgo() : TDetector()
 {
 	/// Default ctor.
    Clear();
 }
 
-TBgo::TBgo(const TBgo& rhs) : TGRSIDetector()
+TBgo::TBgo(const TBgo& rhs) : TDetector()
 {
 	/// Copy ctor.
    rhs.Copy(*this);
@@ -108,7 +108,7 @@ TBgo::TBgo(const TBgo& rhs) : TGRSIDetector()
 void TBgo::Copy(TObject& rhs) const
 {
    // Copy function.
-   TGRSIDetector::Copy(rhs);
+   TDetector::Copy(rhs);
 
    static_cast<TBgo&>(rhs).fBgoHits   = fBgoHits;
 }
@@ -121,7 +121,7 @@ TBgo::~TBgo()
 void TBgo::Clear(Option_t* opt)
 {
    /// Clears the mother, and all of the hits
-   TGRSIDetector::Clear(opt);
+   TDetector::Clear(opt);
    fBgoHits.clear();
 }
 

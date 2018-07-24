@@ -9,7 +9,7 @@
 ///
 /// \class TDataLoop
 ///
-/// This loop reads midas events from a midas file.
+/// This loop reads raw events from a raw file.
 ///
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -29,8 +29,6 @@
 #include "TRawFile.h"
 #include "TRawEvent.h"
 #include "TXMLOdb.h"
-
-// class TMidasFile;
 
 class TDataLoop : public StoppableThread {
 public:

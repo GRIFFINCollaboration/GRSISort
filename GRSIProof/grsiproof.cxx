@@ -12,7 +12,7 @@
 #include "TGRSIProof.h"
 #include "TGRSIOptions.h"
 #include "TChannel.h"
-#include "TGRSIRunInfo.h"
+#include "TRunInfo.h"
 #include "TObjectWrapper.h"
 #include "TStopwatch.h"
 #include "TGRSIMap.h"
@@ -45,8 +45,8 @@ void Analyze(const char* tree_type)
             // TODO: A smarter way of finding run info for run number and sub run number naming
             static bool info_set = false;
             if(!info_set) {
-               TGRSIRunInfo::Get()->ReadInfoFromFile(in_file);
-					TGRSIRunInfo::Get()->Print();
+               TRunInfo::Get()->ReadInfoFromFile(in_file);
+					TRunInfo::Get()->Print();
                info_set = true;
             }
 
@@ -187,7 +187,7 @@ int main(int argc, char** argv)
                <<RESET_COLOR<<std::endl;
    }
 
-   if(!gGRSIOpt->InputMidasFiles().empty()) {
+   if(!gGRSIOpt->InputFiles().empty()) {
       std::cout<<DRED<<"Can't Proof a Midas file..."<<RESET_COLOR<<std::endl;
    }
 

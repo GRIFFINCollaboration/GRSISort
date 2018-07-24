@@ -9,7 +9,7 @@
 ///
 /// \class TUnpackingLoop
 ///
-/// This loop parses Midas events into fragments.
+/// This loop parses raw events into fragments.
 ///
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -31,22 +31,22 @@ public:
    static TUnpackingLoop* Get(std::string name = "");
    ~TUnpackingLoop() override;
 
-   void SetNoWaveForms(bool temp = true) { fParser.SetNoWaveForms(temp); }
-   void SetRecordDiag(bool temp = true) { fParser.SetRecordDiag(temp); }
+   void SetNoWaveForms(bool temp = true) { fParser->SetNoWaveForms(temp); }
+   void SetRecordDiag(bool temp = true) { fParser->SetRecordDiag(temp); }
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>&       InputQueue() { return fInputQueue; }
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& AddGoodOutputQueue(size_t maxSize = 50000)
    {
-      return fParser.AddGoodOutputQueue(maxSize);
+      return fParser->AddGoodOutputQueue(maxSize);
    }
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>& BadOutputQueue()
    {
-      return fParser.BadOutputQueue();
+      return fParser->BadOutputQueue();
    }
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>& ScalerOutputQueue()
    {
-      return fParser.ScalerOutputQueue();
+      return fParser->ScalerOutputQueue();
    }
 #endif
 
@@ -54,7 +54,7 @@ public:
 
    void ClearQueue() override;
 
-   size_t GetItemsPushed() override { return fParser.ItemsPushed(); }
+   size_t GetItemsPushed() override { return fParser->ItemsPushed(); }
    size_t GetItemsPopped() override { return 0; }  // fParser.GoodOutputQueue()->ItemsPopped(); }
    size_t GetItemsCurrent() override { return 0; } // fParser.GoodOutputQueue()->Size();        }
    size_t GetRate() override { return 0; }
@@ -66,9 +66,11 @@ private:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>> fInputQueue;
 #endif
 
-   TDataParser fParser;
-   long        fFragsReadFromRaw;
-   long        fGoodFragsRead;
+   TDataParser* fParser;
+	TDataParser* (*fCreateDataParser)();
+	void         (*fDestroyDataParser)(TDataParser*);
+   long         fFragsReadFromRaw;
+   long         fGoodFragsRead;
 
    bool   fEvaluateDataType;
    EDataType fDataType;

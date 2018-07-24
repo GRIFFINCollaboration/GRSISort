@@ -10,7 +10,7 @@
 /// \class TSortingDiagnostics
 ///
 /// This class gathers various diagnostics calculated during the sorting from
-/// a midas file to a fragment tree and analysis tree and provides convenient
+/// a raw file to a fragment tree and analysis tree and provides convenient
 /// methods of printing and/or visualizing them.
 ///
 ////////////////////////////////////////////////////////////////////////////////

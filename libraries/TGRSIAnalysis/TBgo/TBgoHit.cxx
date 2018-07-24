@@ -15,19 +15,19 @@ TBgoHit::TBgoHit()
 
 TBgoHit::~TBgoHit() = default;
 
-TBgoHit::TBgoHit(const TBgoHit& rhs) : TGRSIDetectorHit()
+TBgoHit::TBgoHit(const TBgoHit& rhs) : TDetectorHit()
 {
    rhs.Copy(*this);
 }
 
 void TBgoHit::Clear(Option_t* opt)
 {
-   TGRSIDetectorHit::Clear(opt);
+   TDetectorHit::Clear(opt);
 }
 
 void TBgoHit::Copy(TObject& rhs) const
 {
-   TGRSIDetectorHit::Copy(rhs);
+   TDetectorHit::Copy(rhs);
 }
 
 void TBgoHit::Print(Option_t* opt) const

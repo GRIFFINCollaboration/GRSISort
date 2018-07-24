@@ -33,6 +33,7 @@ public:
 
    // get event information
 
+   virtual uint32_t GetTimeStamp() const { return 0; } ///< return the event size
    virtual uint32_t GetDataSize() const { return 0; } ///< return the event size
 
    // helpers for event creation
@@ -50,7 +51,7 @@ public:
 protected:
    int fGoodFrags{0}; ///< number of good fragments parsed
    /// \cond CLASSIMP
-   ClassDefOverride(TRawEvent, 0) // All of the data contained in a Midas Event
+   ClassDefOverride(TRawEvent, 0) // All of the data contained in a raw Event
    /// \endcond
 };
 /*! @} */

@@ -1,8 +1,8 @@
 #ifndef TSUPPRESSED_H
 #define TSUPPRESSED_H
 
-#include "TGRSIDetector.h"
-#include "TGRSIDetectorHit.h"
+#include "TDetector.h"
+#include "TDetectorHit.h"
 #include "TBgo.h"
 
 /** \addtogroup Detectors
@@ -18,13 +18,13 @@
 ///
 /////////////////////////////////////////////////////////////////
 
-class TSuppressed : public TGRSIDetector {
+class TSuppressed : public TDetector {
 public:
-	TSuppressed() : TGRSIDetector() {}
+	TSuppressed() : TDetector() {}
 	~TSuppressed() {}
 
-	virtual bool AddbackCriterion(const TGRSIDetectorHit&, const TGRSIDetectorHit&) { return false; }
-	virtual bool SuppressionCriterion(const TGRSIDetectorHit&, const TBgoHit&) { return false; }
+	virtual bool AddbackCriterion(const TDetectorHit&, const TDetectorHit&) { return false; }
+	virtual bool SuppressionCriterion(const TDetectorHit&, const TBgoHit&) { return false; }
 
    void Copy(TObject&) const override;            //!<!
    void Clear(Option_t* opt = "all") override;    //!<!
@@ -38,14 +38,14 @@ protected:
 		nofFragments.clear();
 		size_t j;
 		for(auto detHit : hits) {
-			TGRSIDetectorHit& hit = static_cast<TGRSIDetectorHit&>(detHit);
+			TDetectorHit& hit = static_cast<TDetectorHit&>(detHit);
 			//check for each existing addback hit if this hit should be added to it
 			for(j = 0; j < addbacks.size(); ++j) {
 				if(AddbackCriterion(addbacks[j], hit)) {
 					addbacks[j].Add(&hit);
 					// copy constructor does not copy the bit field, so we need to set it
-					addbacks[j].SetHitBit(TGRSIDetectorHit::EBitFlag::kIsEnergySet); // this must be set for summed hits
-					addbacks[j].SetHitBit(TGRSIDetectorHit::EBitFlag::kIsTimeSet);   // this must be set for summed hits
+					addbacks[j].SetHitBit(TDetectorHit::EBitFlag::kIsEnergySet); // this must be set for summed hits
+					addbacks[j].SetHitBit(TDetectorHit::EBitFlag::kIsTimeSet);   // this must be set for summed hits
 					++(nofFragments.at(j));
 					break;
 				}
@@ -64,7 +64,7 @@ protected:
 		/// This function always(!) re-creates the vector of suppressed hits based on the provided TBgo and vector of hits
 		suppressedHits.clear();
 		for(auto detHit : hits) {
-			TGRSIDetectorHit& hit = static_cast<TGRSIDetectorHit&>(detHit);
+			TDetectorHit& hit = static_cast<TDetectorHit&>(detHit);
 			bool suppress = false;
          if(bgo != nullptr) {
             for(auto b : bgo->GetHitVector()) {
@@ -86,7 +86,7 @@ protected:
 		nofFragments.clear();
 		size_t j;
 		for(auto detHit : hits) {
-			TGRSIDetectorHit& hit = static_cast<TGRSIDetectorHit&>(detHit);
+			TDetectorHit& hit = static_cast<TDetectorHit&>(detHit);
 			// check if this hit is suppressed
 			bool suppress = false;
          if(bgo != nullptr){
@@ -108,8 +108,8 @@ protected:
 					}
 					addbacks[j].Add(&hit);
 					// copy constructor does not copy the bit field, so we need to set it
-					addbacks[j].SetHitBit(TGRSIDetectorHit::EBitFlag::kIsEnergySet); // this must be set for summed hits
-					addbacks[j].SetHitBit(TGRSIDetectorHit::EBitFlag::kIsTimeSet);   // this must be set for summed hits
+					addbacks[j].SetHitBit(TDetectorHit::EBitFlag::kIsEnergySet); // this must be set for summed hits
+					addbacks[j].SetHitBit(TDetectorHit::EBitFlag::kIsTimeSet);   // this must be set for summed hits
 					++(nofFragments.at(j));
 					break;
 				}

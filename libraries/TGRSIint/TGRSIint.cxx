@@ -26,7 +26,7 @@
 #include "TSortingDiagnostics.h"
 
 #include "GRootCommands.h"
-#include "TGRSIRunInfo.h"
+#include "TRunInfo.h"
 
 #include "TInterpreter.h"
 #include "TGHtmlBrowser.h"
@@ -36,6 +36,7 @@
 #include <utility>
 
 #include <pwd.h>
+#include <dlfcn.h>
 
 /// \cond CLASSIMP
 ClassImp(TGRSIint)
@@ -47,10 +48,6 @@ extern void WaitLogo();
 TGRSIint* TGRSIint::fTGRSIint = nullptr;
 
 TEnv* TGRSIint::fGRSIEnv = nullptr;
-// std::vector<std::string> *TGRSIint::fInputRootFile  = new std::vector<std::string>;
-// std::vector<std::string> *TGRSIint::fInputMidasFile = new std::vector<std::string>;
-// std::vector<std::string> *TGRSIint::fInputCalFile   = new std::vector<std::string>;
-// std::vector<std::string> *TGRSIint::fInputOdbFile   = new std::vector<std::string>;
 
 void ReadTheNews();
 
@@ -67,7 +64,7 @@ TGRSIint* TGRSIint::instance(int argc, char** argv, void* options, int numOption
 TGRSIint::TGRSIint(int argc, char** argv, void* options, Int_t numOptions, Bool_t noLogo, const char* appClassName)
    : TRint(appClassName, &argc, argv, options, numOptions, noLogo), fKeepAliveTimer(nullptr),
      main_thread_id(std::this_thread::get_id()), fIsTabComplete(false), fAllowedToTerminate(true), fRootFilesOpened(0),
-     fMidasFilesOpened(0)
+     fRawFilesOpened(0)
 {
    /// Singleton constructor
    fGRSIEnv = gEnv;
@@ -102,7 +99,7 @@ void TGRSIint::ApplyOptions()
       MakeBatch();
    }
 
-   bool missing_raw_file = !all_files_exist(opt->InputMidasFiles());
+   bool missing_raw_file = !all_files_exist(opt->InputFiles());
 
    if(!false) { // this will be change to something like, if(!ClassicRoot)
       LoadGROOTGraphics();
@@ -126,16 +123,8 @@ void TGRSIint::ApplyOptions()
       OpenRootFile(filename);
    }
 
-   for(auto& midas_file : opt->InputMidasFiles()) {
-      OpenMidasFile(midas_file);
-   }
-
-   for(auto& lst_file : opt->InputLstFiles()) {
-      OpenLstFile(lst_file);
-   }
-
-   for(auto& tdr_file : opt->InputTdrFiles()) {
-      OpenTdrFile(tdr_file);
+   for(auto& rawFile : opt->InputFiles()) {
+      OpenRawFile(rawFile);
    }
 
    SetupPipeline();
@@ -364,8 +353,8 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
             file->Get("GValue");
          }
          // TODO: Once the run info can read itself from a string.
-         // if(file->FindObjectAny("TGRSIRunInfo")){
-         //  file->Get("TGRSIRunInfo");
+         // if(file->FindObjectAny("TRunInfo")){
+         //  file->Get("TRunInfo");
          // }
 
          fRootFilesOpened++;
@@ -375,58 +364,46 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
    }
 
    AddFileToGUI(file);
-   TGRSIRunInfo::ReadInfoFromFile();
+   TRunInfo::ReadInfoFromFile();
 
    return file;
 }
 
-TMidasFile* TGRSIint::OpenMidasFile(const std::string& filename)
+TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
 {
-   /// Opens MidasFiles and stores them in _midas if successfuly opened.
+   /// Opens Raw input file and stores them in _raw if successfuly opened.
    if(!file_exists(filename.c_str())) {
       std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
       return nullptr;
    }
 
-   auto* file = new TMidasFile(filename.c_str());
+   // try and open dynamic library
+   void* handle = dlopen(TGRSIOptions::Get()->FileLibrary().c_str(), RTLD_NOW);
+   if(handle == nullptr) {
+      std::ostringstream str;
+      str<<"Failed to open data parser library '"<<TGRSIOptions::Get()->FileLibrary()<<"'!"<<std::endl;
+      throw std::runtime_error(str.str());
+   }
+   // try and get constructor and destructor functions from opened library
+   fCreateRawFile  = (TRawFile* (*)(const std::string&)) dlsym(handle, "CreateFile");
+   fDestroyRawFile = (void (*)(TRawFile*))               dlsym(handle, "DestroyFile");
+   if(fCreateRawFile == nullptr || fDestroyRawFile == nullptr) {
+      std::ostringstream str;
+      str<<"Failed to find CreateRawFile and/or DestroyRawFile functions in library '"<<TGRSIOptions::Get()->FileLibrary()<<"'!"<<std::endl;
+      throw std::runtime_error(str.str());
+   }
+   // create new raw file
+   auto* file = fCreateRawFile(filename);
    fRawFiles.push_back(file);
-
-   const char* command = Form("TMidasFile* _midas%i = (TMidasFile*)%luL;", fMidasFilesOpened, (unsigned long)file);
-   ProcessLine(command);
 
    if(file != nullptr) {
-      std::cout<<"\tfile "<<BLUE<<filename<<RESET_COLOR<<" opened as "<<BLUE<<"_midas"
-               <<fMidasFilesOpened<<RESET_COLOR<<std::endl;
+		const char* command = Form("TRawFile* _raw%i = (TRawFile*)%luL;", fRawFilesOpened, (unsigned long)file);
+		ProcessLine(command);
+
+      std::cout<<"\tfile "<<BLUE<<filename<<RESET_COLOR<<" opened as "<<BLUE<<"_raw"
+               <<fRawFilesOpened<<RESET_COLOR<<std::endl;
    }
-   fMidasFilesOpened++;
-   return file;
-}
-
-TLstFile* TGRSIint::OpenLstFile(const std::string& filename)
-{
-   /// Opens Lst Files.
-   if(!file_exists(filename.c_str())) {
-      std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
-      return nullptr;
-   }
-
-   auto* file = new TLstFile(filename.c_str());
-   fRawFiles.push_back(file);
-
-   return file;
-}
-
-TTdrFile* TGRSIint::OpenTdrFile(const std::string& filename)
-{
-   /// Opens Tdr Files.
-   if(!file_exists(filename.c_str())) {
-      std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
-      return nullptr;
-   }
-
-   auto* file = new TTdrFile(filename.c_str());
-   fRawFiles.push_back(file);
-
+   fRawFilesOpened++;
    return file;
 }
 
@@ -441,19 +418,7 @@ void TGRSIint::SetupPipeline()
    // Determining which parts of the pipeline need to be set up.
 
    bool missing_raw_file = false;
-   for(auto& filename : opt->InputMidasFiles()) {
-      if(!file_exists(filename.c_str())) {
-         missing_raw_file = true;
-         std::cerr<<"File not found: "<<filename<<std::endl;
-      }
-   }
-   for(auto& filename : opt->InputLstFiles()) {
-      if(!file_exists(filename.c_str())) {
-         missing_raw_file = true;
-         std::cerr<<"File not found: "<<filename<<std::endl;
-      }
-   }
-   for(auto& filename : opt->InputTdrFiles()) {
+   for(auto& filename : opt->InputFiles()) {
       if(!file_exists(filename.c_str())) {
          missing_raw_file = true;
          std::cerr<<"File not found: "<<filename<<std::endl;
@@ -461,8 +426,7 @@ void TGRSIint::SetupPipeline()
    }
 
    // Which input files do we have
-   bool has_raw_file =
-      (!opt->InputMidasFiles().empty() || !opt->InputLstFiles().empty() || !opt->InputTdrFiles().empty()) && opt->SortRaw() && !missing_raw_file;
+   bool has_raw_file = !opt->InputFiles().empty() && opt->SortRaw() && !missing_raw_file;
    bool has_input_fragment_tree = gFragment != nullptr; // && opt->SortRoot();
    bool has_input_analysis_tree = gAnalysis != nullptr; // && opt->SortRoot();
 
@@ -606,23 +570,19 @@ void TGRSIint::SetupPipeline()
    }
 	// Set the run number and sub-run number
    if(!fRawFiles.empty()) {
-      TGRSIRunInfo::Get()->SetRunInfo(fRawFiles[0]->GetRunNumber(), fRawFiles[0]->GetSubRunNumber());
+      TRunInfo::Get()->SetRunInfo(fRawFiles[0]->GetRunNumber(), fRawFiles[0]->GetSubRunNumber());
    } else {
-      TGRSIRunInfo::Get()->SetRunInfo(0, -1);
+      TRunInfo::Get()->SetRunInfo(0, -1);
    }
 
    for(const auto& val_filename : opt->ValInputFiles()) {
       GValue::ReadValFile(val_filename.c_str());
    }
    for(const auto& info_filename : opt->ExternalRunInfo()) {
-      TGRSIRunInfo::Get()->ReadInfoFile(info_filename.c_str());
+      TRunInfo::Get()->ReadInfoFile(info_filename.c_str());
    }
 
-   // this happens here, because the TDataLoop constructor is where we read the midas file ODB
-   TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::EBuildMode::kTriggerId;
-   if(TGRSIRunInfo::Get()->Griffin() || TGRSIRunInfo::Get()->Fipps() || TGRSIRunInfo::Get()->TdrClover()) {
-      event_build_mode = TEventBuildingLoop::EBuildMode::kTimestamp;
-   }
+   TEventBuildingLoop::EBuildMode event_build_mode = TRunInfo::Get()->BuildMode();
 
    // If requested, write the fragment histograms
    if(write_fragment_histograms) {

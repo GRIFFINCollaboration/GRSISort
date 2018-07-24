@@ -15,43 +15,14 @@ public:
    // standard C++ makes these enumerations global to the class. ie, the name of the enumeration
    // EMnemonic or ESystem has no effect on the clashing of enumerated variable names.
    // These separations exist only to easily see the difference when looking at the code here.
-   enum class EMnemonic { kA, kB, kC, kD, kE, kF, kG, kI, kL, kM, kN, kP, kQ, kR, kS, kT, kW, kX, kZ, kClear };
-   enum class ESystem {
-      kTigress,
-      kSharc,
-      kTriFoil,
-      kRF,
-      kCSM,
-      kSiLi,
-      kSiLiS3,
-      kGeneric,
-      kS3,
-      kBambino,
-      kTip,
-      kGriffin,
-      kSceptar,
-      kPaces,
-      kLaBr,
-      kTAC,
-      kZeroDegree,
-      kDescant,
-		kGriffinBgo,
-		kLaBrBgo,
-      kFipps,
-		kBgo,
-		kTdrClover,
-		kTdrCloverBgo,
-		kTdrTigress,
-		kTdrTigressBgo,
-		kTdrSiLi,
-		kTdrPlastic,
-		kClear
-   };
-   enum class EDigitizer { kDefault, kGRF16, kGRF4G, kTIG10, kTIG64, kCAEN8, kCaen, kPixie, kFastPixie, kPixieTapeMove };
+   enum class EMnemonic { kA, kB, kC, kD, kE, kF, kG, kH, kI, kJ, kK, kL, kM, kN, kO, kP, kQ, kR, kS, kT, kU, kV, kW, kX, kY, kZ, kClear };
+   enum class ESystem { kClear };
+   enum class EDigitizer { kDefault };
 
    ESystem   System() const { return fSystem; }
    EMnemonic SubSystem() const { return fSubSystem; }
    EMnemonic ArraySubPosition() const { return fArraySubPosition; }
+	int       NumericArraySubPosition() const;
    EMnemonic CollectedCharge() const { return fCollectedCharge; }
    EMnemonic OutputSensor() const { return fOutputSensor; }
    int16_t   ArrayPosition() const { return fArrayPosition; }

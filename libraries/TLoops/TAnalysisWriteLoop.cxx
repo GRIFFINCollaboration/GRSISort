@@ -16,11 +16,10 @@
 
 #include "GValue.h"
 #include "TChannel.h"
-#include "TGRSIRunInfo.h"
+#include "TRunInfo.h"
 #include "TGRSIOptions.h"
 #include "TTreeFillMutex.h"
 #include "TSortingDiagnostics.h"
-#include "TDescant.h"
 #include "TParallelFileMerger.h"
 
 TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string outputFilename)
@@ -133,7 +132,7 @@ void TAnalysisWriteLoop::Write()
 {
 	if(fOutputFilename != "/dev/null") {
 		gROOT->cd();
-		TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
+		TRunInfo* runInfo = TRunInfo::Get();
 		TGRSIOptions* options = TGRSIOptions::Get();
 		TPPG* ppg = TPPG::Get();
 		TSortingDiagnostics* diag = TSortingDiagnostics::Get();

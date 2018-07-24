@@ -1395,24 +1395,7 @@ int TChannel::GetCrystalNumber() const
       return fCrystalNumber;
    }
 
-   switch(fMnemonic.Value().ArraySubPosition()) {
-		case TMnemonic::EMnemonic::kB:
-			fCrystalNumber = 0;
-			break;
-		case TMnemonic::EMnemonic::kG:
-			fCrystalNumber = 1;
-			break;
-		case TMnemonic::EMnemonic::kR:
-			fCrystalNumber = 2;
-			break;
-		case TMnemonic::EMnemonic::kW:
-			fCrystalNumber = 3;
-			break;
-		default:
-			fCrystalNumber = 5;
-			break;
-   };
+	fCrystalNumber = fMnemonic.Value().NumericArraySubPosition();
 
-   // printf("%s: %c\t%i\n",__PRETTY_FUNCTION__,color,fCrystalNumber);
    return fCrystalNumber;
 }

@@ -19,13 +19,13 @@
 #include "TChannel.h"
 #include "TPulseAnalyzer.h"
 
-#include "TGRSIDetectorHit.h"
+#include "TDetectorHit.h"
 
-class TBgoHit : public TGRSIDetectorHit {
+class TBgoHit : public TDetectorHit {
 public:
    TBgoHit();
    TBgoHit(const TBgoHit&);
-   TBgoHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
+   TBgoHit(const TFragment& frag) : TDetectorHit(frag) {}
    ~TBgoHit() override;
 
    /////////////////////////		/////////////////////////////////////

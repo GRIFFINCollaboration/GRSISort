@@ -15,12 +15,11 @@
 
 #include "Globals.h"
 #include "TBgoHit.h"
-#include "TGRSIDetector.h"
-#include "TGRSIRunInfo.h"
+#include "TDetector.h"
 #include "TTransientBits.h"
 #include "TSpline.h"
 
-class TBgo : public TGRSIDetector {
+class TBgo : public TDetector {
 public:
    TBgo();
    TBgo(const TBgo&);
@@ -28,7 +27,7 @@ public:
 
 public:
    TBgoHit* GetBgoHit(const Int_t& i);
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) { return GetBgoHit(idx); }
+   TDetectorHit* GetHit(const Int_t& idx = 0) { return GetBgoHit(idx); }
    Short_t   GetMultiplicity() const { return fBgoHits.size(); }
 	const std::vector<TBgoHit>& GetHitVector() const { return fBgoHits; }
 
