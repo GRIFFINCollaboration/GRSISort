@@ -130,7 +130,6 @@ public:
 
 	// shared object libraries
 	const std::string& ParserLibrary() const { return fParserLibrary; }
-	const std::string& FileLibrary() const { return fFileLibrary; }
 
 private:
 	TGRSIOptions(int argc, char** argv);
@@ -220,8 +219,7 @@ private:
 	bool fSelectorOnly; ///< Flag to turn PROOF off in grsiproof
 
 	// shared object libraries
-	std::string fParserLibrary; ///< location of shared object library for data parser
-	std::string fFileLibrary;   ///< location of shared object library for raw files
+	std::string fParserLibrary; ///< location of shared object library for data parser and files
 
 	/// \cond CLASSIMP
 	ClassDefOverride(TGRSIOptions, 3); ///< Class for storing options in GRSISort

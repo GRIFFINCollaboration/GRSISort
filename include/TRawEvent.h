@@ -44,9 +44,9 @@ public:
    {
       return 0;
    } ///< convert event data between little-endian (Linux-x86) and big endian (MacOS-PPC)
-   virtual int Process(TDataParser& parser) = 0;
 
    virtual int GoodFrags() { return fGoodFrags; } ///< returns number of good fragments parsed
+	virtual void IncrementGoodFrags() { ++fGoodFrags; } ///< increments the number of good fragments parsed
 
 protected:
    int fGoodFrags{0}; ///< number of good fragments parsed

@@ -86,6 +86,7 @@ TGRSIint::TGRSIint(int argc, char** argv, void* options, Int_t numOptions, Bool_
    SetPrompt("GRSI [%d] ");
    std::string grsipath = getenv("GRSISYS");
    gInterpreter->AddIncludePath(Form("%s/include", grsipath.c_str()));
+	fHandle = nullptr;
 }
 
 void TGRSIint::ApplyOptions()
@@ -116,15 +117,18 @@ void TGRSIint::ApplyOptions()
    ////////////////////////////////////////////////////////
    ////////////////////////////////////////////////////////
 
-   for(const auto& filename : opt->RootInputFiles()) {
+	TRunInfo::ClearVersion();
+	TRunInfo::SetVersion(GRSI_RELEASE);
+
+  for(auto& rawFile : opt->InputFiles()) {
+      OpenRawFile(rawFile);
+   }
+
+  for(const auto& filename : opt->RootInputFiles()) {
       // this will populate gChain if able.
       //   TChannels from the root file will be loaded as file is opened.
       //   GValues from the root file will be loaded as file is opened.
       OpenRootFile(filename);
-   }
-
-   for(auto& rawFile : opt->InputFiles()) {
-      OpenRawFile(rawFile);
    }
 
    SetupPipeline();
@@ -171,6 +175,9 @@ void TGRSIint::LoopUntilDone()
 TGRSIint::~TGRSIint()
 {
    /// Default dtor.
+	if(fHandle != nullptr) {
+		dlclose(fHandle);
+	}
 }
 
 bool TGRSIint::HandleTermInput()
@@ -352,11 +359,6 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
          if(file->FindObjectAny("GValue") != nullptr) {
             file->Get("GValue");
          }
-         // TODO: Once the run info can read itself from a string.
-         // if(file->FindObjectAny("TRunInfo")){
-         //  file->Get("TRunInfo");
-         // }
-
          fRootFilesOpened++;
       } else {
          std::cout<<"Could not open "<<filename<<std::endl;
@@ -378,18 +380,23 @@ TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
    }
 
    // try and open dynamic library
-   void* handle = dlopen(TGRSIOptions::Get()->FileLibrary().c_str(), RTLD_NOW);
-   if(handle == nullptr) {
+	if(TGRSIOptions::Get()->ParserLibrary().empty()) {
+      throw std::runtime_error("No data parser library supplied, can't open raw file!");
+	}
+
+   fHandle = dlopen(TGRSIOptions::Get()->ParserLibrary().c_str(), RTLD_LAZY);
+   if(fHandle == nullptr) {
       std::ostringstream str;
-      str<<"Failed to open data parser library '"<<TGRSIOptions::Get()->FileLibrary()<<"'!"<<std::endl;
+      str<<"Failed to open raw file library '"<<TGRSIOptions::Get()->ParserLibrary()<<"': "<<dlerror()<<"!";
+		std::cout<<"dlerror: '"<<dlerror()<<"'"<<std::endl;
       throw std::runtime_error(str.str());
    }
    // try and get constructor and destructor functions from opened library
-   fCreateRawFile  = (TRawFile* (*)(const std::string&)) dlsym(handle, "CreateFile");
-   fDestroyRawFile = (void (*)(TRawFile*))               dlsym(handle, "DestroyFile");
+   fCreateRawFile  = (TRawFile* (*)(const std::string&)) dlsym(fHandle, "CreateFile");
+   fDestroyRawFile = (void (*)(TRawFile*))               dlsym(fHandle, "DestroyFile");
    if(fCreateRawFile == nullptr || fDestroyRawFile == nullptr) {
       std::ostringstream str;
-      str<<"Failed to find CreateRawFile and/or DestroyRawFile functions in library '"<<TGRSIOptions::Get()->FileLibrary()<<"'!"<<std::endl;
+      str<<"Failed to find CreateFile and/or DestroyFile functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!";
       throw std::runtime_error(str.str());
    }
    // create new raw file
@@ -582,7 +589,10 @@ void TGRSIint::SetupPipeline()
       TRunInfo::Get()->ReadInfoFile(info_filename.c_str());
    }
 
-   TEventBuildingLoop::EBuildMode event_build_mode = TRunInfo::Get()->BuildMode();
+   TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::EBuildMode::kDefault;
+	if(TRunInfo::Get()->GetDetectorInformation() != nullptr) {
+		event_build_mode = TRunInfo::Get()->GetDetectorInformation()->BuildMode();
+	}
 
    // If requested, write the fragment histograms
    if(write_fragment_histograms) {

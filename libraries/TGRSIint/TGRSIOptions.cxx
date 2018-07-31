@@ -6,6 +6,7 @@
 
 #include "TEnv.h"
 #include "TKey.h"
+#include "TSystem.h"
 
 #include "Globals.h"
 #include "ArgParser.h"
@@ -115,7 +116,6 @@ void TGRSIOptions::Clear(Option_t*)
    fHelp          = false;
 
 	fParserLibrary.clear();
-	fFileLibrary.clear();
 }
 
 void TGRSIOptions::Print(Option_t*) const
@@ -172,8 +172,7 @@ void TGRSIOptions::Print(Option_t*) const
 				<<std::endl
 				<<"fHelp: "<<fHelp<<std::endl
 				<<std::endl
-				<<"fParserLibrary: "<<fParserLibrary<<std::endl
-				<<"fFileLibrary: "<<fFileLibrary<<std::endl;
+				<<"fParserLibrary: "<<fParserLibrary<<std::endl;
 
 				fAnalysisOptions->Print();
 }
@@ -187,7 +186,6 @@ void TGRSIOptions::Load(int argc, char** argv)
    fAnalysisHistogramLib = gEnv->GetValue("GRSI.AnalysisHistLib", "");
 
 	fParserLibrary = gEnv->GetValue("GRSI.ParserLibrary","");
-	fFileLibrary = gEnv->GetValue("GRSI.FileLibrary","");
 
    // Load default TChannels, if specified.
    {
@@ -367,6 +365,12 @@ void TGRSIOptions::Load(int argc, char** argv)
       FileAutoDetect(file);
    }
 
+	// load any additional parser library
+	if(!fParserLibrary.empty()) {
+		gSystem->Load(fParserLibrary.c_str());
+		std::cout<<"Loaded parser library "<<fParserLibrary<<std::endl;
+	}
+
 	// read analysis options from input file(s)
 	for(const std::string& file : fInputRootFiles) {
 		fAnalysisOptions->ReadFromFile(file);
@@ -489,12 +493,9 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
          fAnalysisHistogramLib = filename;
          used                  = true;
       }
-      if(lib.GetSymbol("CreateParser") != nullptr && lib.GetSymbol("DestroyParser") != nullptr) {
+      if(lib.GetSymbol("CreateParser") != nullptr && lib.GetSymbol("DestroyParser") != nullptr &&
+			lib.GetSymbol("CreateFile")   != nullptr && lib.GetSymbol("DestroyFile")   != nullptr) {
          fParserLibrary = filename;
-         used                  = true;
-      }
-      if(lib.GetSymbol("CreateFile") != nullptr && lib.GetSymbol("DestroyFile") != nullptr) {
-         fFileLibrary = filename;
          used                  = true;
       }
       if(!used) {

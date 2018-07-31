@@ -1,6 +1,7 @@
 #include "TMnemonic.h"
 
 #include <algorithm>
+#include <iostream>
 
 ClassImp(TMnemonic)
 
@@ -9,7 +10,6 @@ void TMnemonic::Clear(Option_t*)
    fArrayPosition = -1;
    fSegment       = -1;
    fSystemString.clear();
-   fSystem = ESystem::kClear;
    fSubSystemString.clear();
    fSubSystem = EMnemonic::kClear;
    fArraySubPositionString.clear();
@@ -56,13 +56,6 @@ void TMnemonic::EnumerateMnemonic(std::string mnemonic_word, EMnemonic& mnemonic
 	};
 }
 
-void TMnemonic::EnumerateSystem()
-{
-   // Enumerating the fSystemString must come after the total mnemonic has been parsed as the details of other parts of
-   // the mnemonic must be known
-	fSystem = ESystem::kClear;
-}
-
 TMnemonic::EDigitizer TMnemonic::EnumerateDigitizer(std::string)
 {
    return EDigitizer::kDefault;
@@ -92,9 +85,6 @@ void TMnemonic::Parse(std::string* name)
    fSegment = static_cast<uint16_t>(atoi(buf.c_str()));
    fOutputSensorString.assign(*name, 9, 1);
    EnumerateMnemonic(fOutputSensorString, fOutputSensor);
-   // Enumerating the fSystemString must come last as the details of other parts of
-   // the mnemonic must be known
-   EnumerateSystem();
 }
 
 void TMnemonic::Parse(const char* name)

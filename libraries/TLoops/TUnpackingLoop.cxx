@@ -27,18 +27,22 @@ TUnpackingLoop::TUnpackingLoop(std::string name)
      fFragsReadFromRaw(0), fGoodFragsRead(0), fEvaluateDataType(true), fDataType(EDataType::kMidas)
 {
 	// try and open dynamic library
-	void* handle = dlopen(TGRSIOptions::Get()->ParserLibrary().c_str(), RTLD_NOW);
-	if(handle == nullptr) {
+	if(TGRSIOptions::Get()->ParserLibrary().empty()) {
+      throw std::runtime_error("No data parser library supplied, can't open parser!");
+	}
+
+	fHandle = dlopen(TGRSIOptions::Get()->ParserLibrary().c_str(), RTLD_LAZY);
+	if(fHandle == nullptr) {
 		std::ostringstream str;
-		str<<"Failed to open data parser library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!"<<std::endl;
+		str<<"Failed to open data parser library '"<<TGRSIOptions::Get()->ParserLibrary()<<"': "<<dlerror()<<"!";
 		throw std::runtime_error(str.str());
 	}
 	// try and get constructor and destructor functions from opened library
-	fCreateDataParser  = (TDataParser* (*)())      dlsym(handle, "CreateParser");
-	fDestroyDataParser = (void (*)(TDataParser*)) dlsym(handle, "DestroyParser");
+	fCreateDataParser  = (TDataParser* (*)())      dlsym(fHandle, "CreateParser");
+	fDestroyDataParser = (void (*)(TDataParser*)) dlsym(fHandle, "DestroyParser");
 	if(fCreateDataParser == nullptr || fDestroyDataParser == nullptr) {
 		std::ostringstream str;
-		str<<"Failed to find CreateParser, and/or DestroyParser functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!"<<std::endl;
+		str<<"Failed to find CreateParser, and/or DestroyParser functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!";
 		throw std::runtime_error(str.str());
 	}
 	// create new data parser
@@ -47,6 +51,7 @@ TUnpackingLoop::TUnpackingLoop(std::string name)
 
 TUnpackingLoop::~TUnpackingLoop() {
 	fDestroyDataParser(fParser);
+	dlclose(fHandle);
 }
 
 void TUnpackingLoop::ClearQueue()

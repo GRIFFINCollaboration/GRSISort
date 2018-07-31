@@ -42,11 +42,13 @@ class TRawEvent;
 class TDataParser {
 public:
    TDataParser();
-   ~TDataParser();
+   virtual ~TDataParser();
    virtual void SetNoWaveForms(bool temp = true) { fNoWaveforms = temp; }
    virtual void SetRecordDiag(bool temp = true) { fRecordDiag = temp; }
 
-	enum class EDataParserState { };
+	// if you add anything to these enums, only add at the end!
+   enum class EBank { kWFDN, kGRF1, kGRF2, kGRF3, kGRF4, kFME0, kFME1, kFME2, kFME3 };
+
 #ifndef __CINT__
    virtual std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& AddGoodOutputQueue(size_t maxSize = 50000)
 	{
@@ -66,7 +68,9 @@ public:
 		fInputSize   = inputSize;
 	}
 
-	virtual long Process(std::shared_ptr<TRawEvent>) = 0;
+	virtual int Process(std::shared_ptr<TRawEvent>) = 0;
+	void Push(ThreadsafeQueue<std::shared_ptr<const TBadFragment>>& queue, const std::shared_ptr<TBadFragment>& frag);
+	void Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& queues, const std::shared_ptr<TFragment>& frag);
 #endif
 	virtual void        ClearQueue();
 	virtual size_t      ItemsPushed()
@@ -79,7 +83,7 @@ public:
 	virtual void        SetFinished();
 	virtual std::string OutputQueueStatus();
 
-private:
+protected:
 #ifndef __CINT__
 	std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>> fGoodOutputQueues;
 	std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>           fBadOutputQueue;
@@ -100,7 +104,6 @@ private:
 
 	TFragmentMap fFragmentMap;              ///< Class that holds a map of fragments per address, takes care of calculating charges for GRF4 banks
 
-	EDataParserState fState;
 	std::map<UInt_t, Long64_t> fLastTimeStampMap;
 
 	static TGRSIOptions* fOptions; ///< Static pointer to TGRSIOptions, gets set on the first call of GriffinDataToFragment

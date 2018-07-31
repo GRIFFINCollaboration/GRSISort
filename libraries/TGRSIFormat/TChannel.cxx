@@ -26,9 +26,10 @@
 ClassImp(TChannel)
 /// \endcond
 
-std::map<unsigned int, TChannel*>* TChannel::fChannelMap =
-	new std::map<unsigned int, TChannel*>; // global maps of channels
+std::map<unsigned int, TChannel*>* TChannel::fChannelMap = new std::map<unsigned int, TChannel*>; // global maps of channels
 std::map<int, TChannel*>* TChannel::fChannelNumberMap = new std::map<int, TChannel*>;
+
+TClass* TChannel::fMnemonicClass = TMnemonic::Class();
 
 std::string TChannel::fFileName;
 std::string TChannel::fFileData;
@@ -50,6 +51,7 @@ TChannel::TChannel(const TChannel& chan) : TNamed(chan)
 {
    /// Makes a copy of a the TChannel.
    Clear();
+	*(fMnemonic.Value()) = *(chan.fMnemonic.Value());
    SetAddress(chan.GetAddress());
 	SetIntegration(chan.fIntegration);
 	SetNumber(chan.fNumber);
@@ -82,6 +84,7 @@ TChannel::TChannel(TChannel* chan)
 {
    /// Makes a copy of a the TChannel.
    Clear();
+	*(fMnemonic.Value()) = *(chan->fMnemonic.Value());
    SetAddress(chan->GetAddress());
 	SetIntegration(chan->fIntegration);
 	SetNumber(chan->fNumber);
@@ -113,8 +116,7 @@ TChannel::TChannel(TChannel* chan)
 void TChannel::SetName(const char* tmpName)
 {
    TNamed::SetName(tmpName);
-   //fMnemonic.Address()->Clear();
-   fMnemonic.Address()->Parse(GetName());
+   fMnemonic.Value()->Parse(GetName());
 }
 
 void TChannel::InitChannelInput()
@@ -289,6 +291,7 @@ void TChannel::Clear(Option_t*)
 
    WaveFormShape = WaveFormShapePar();
 
+	fMnemonic = TPriorityValue<TMnemonic*>(static_cast<TMnemonic*>(fMnemonicClass->New()), EPriority::kForce);
    SetName("DefaultTChannel");
 
    fENGCoefficients.Reset(std::vector<Float_t>());
@@ -1361,7 +1364,7 @@ int TChannel::GetDetectorNumber() const
       return fDetectorNumber;
    }
 
-   fDetectorNumber = static_cast<int32_t>(fMnemonic.Value().ArrayPosition());
+   fDetectorNumber = static_cast<int32_t>(fMnemonic.Value()->ArrayPosition());
    return fDetectorNumber;
 }
 
@@ -1382,7 +1385,7 @@ int TChannel::GetSegmentNumber() const
          buf.assign(name, 7, 3);
          fSegmentNumber = (int32_t)atoi(buf.c_str());
       } else {
-         fSegmentNumber = static_cast<int32_t>(fMnemonic.Value().Segment());
+         fSegmentNumber = static_cast<int32_t>(fMnemonic.Value()->Segment());
       }
    }
 
@@ -1395,7 +1398,7 @@ int TChannel::GetCrystalNumber() const
       return fCrystalNumber;
    }
 
-	fCrystalNumber = fMnemonic.Value().NumericArraySubPosition();
+	fCrystalNumber = fMnemonic.Value()->NumericArraySubPosition();
 
    return fCrystalNumber;
 }

@@ -86,12 +86,8 @@ private:
 #endif
 
 private:
-   // bool fPrintLogo;
-   // bool fPrintHelp;
+	void* fHandle; ///< handle for shared object library
 
-   // bool fAutoSort;
-   // bool fFragmentSort;
-   // bool fMakeAnalysisTree;
    bool        fIsTabComplete;      ///< Flag for tab completion hook
    bool        fAllowedToTerminate; ///< Flag for shutting down GRSISort
    int         fRootFilesOpened;    ///< Number of ROOT files opened
