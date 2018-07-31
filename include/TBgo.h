@@ -26,26 +26,16 @@ public:
    virtual ~TBgo();
 
 public:
-   TBgoHit* GetBgoHit(const Int_t& i);
-   TDetectorHit* GetHit(const Int_t& idx = 0) { return GetBgoHit(idx); }
-   Short_t   GetMultiplicity() const { return fBgoHits.size(); }
-	const std::vector<TBgoHit>& GetHitVector() const { return fBgoHits; }
+   TBgoHit* GetBgoHit(const Int_t& i) { return static_cast<TBgoHit*>(GetHit(i)); }
 
    static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
 #ifndef __CINT__
    void AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan); //!<!
 #endif
-   void ClearTransients()
-   {
-      for(auto hit : fBgoHits) hit.ClearTransients();
-   }
-   void ResetFlags() const;
 
    TBgo& operator=(const TBgo&); //!<!
 
 private:
-   std::vector<TBgoHit> fBgoHits; //  The set of crystal hits
-
    static TVector3 gScintPosition[17];                      //!<! Position of each BGO scintillator
 
 public:
