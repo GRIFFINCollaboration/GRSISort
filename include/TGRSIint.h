@@ -95,8 +95,9 @@ private:
    std::string fNewFragmentFile;    ///< New fragment file name
 
    std::vector<TRawFile*> fRawFiles; ///< List of Raw files opened
-	TRawFile* (*fCreateRawFile)(const std::string&);
-	void      (*fDestroyRawFile)(TRawFile*);
+	TRawFile*   (*fCreateRawFile)(const std::string&);
+	void        (*fDestroyRawFile)(TRawFile*);
+	std::string (*fLibraryVersion)();
 
    /// \cond CLASSIMP
    ClassDefOverride(TGRSIint, 0); // Interpreter for GRSISort

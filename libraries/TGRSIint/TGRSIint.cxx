@@ -394,9 +394,10 @@ TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
    // try and get constructor and destructor functions from opened library
    fCreateRawFile  = (TRawFile* (*)(const std::string&)) dlsym(fHandle, "CreateFile");
    fDestroyRawFile = (void (*)(TRawFile*))               dlsym(fHandle, "DestroyFile");
-   if(fCreateRawFile == nullptr || fDestroyRawFile == nullptr) {
+	fLibraryVersion = (std::string (*)())                 dlsym(fHandle, "LibraryVersion");
+   if(fCreateRawFile == nullptr || fDestroyRawFile == nullptr || fLibraryVersion == nullptr) {
       std::ostringstream str;
-      str<<"Failed to find CreateFile and/or DestroyFile functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!";
+      str<<"Failed to find CreateFile, DestroyFile and/or LibraryVersion functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!";
       throw std::runtime_error(str.str());
    }
    // create new raw file
@@ -407,8 +408,9 @@ TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
 		const char* command = Form("TRawFile* _raw%i = (TRawFile*)%luL;", fRawFilesOpened, (unsigned long)file);
 		ProcessLine(command);
 
-      std::cout<<"\tfile "<<BLUE<<filename<<RESET_COLOR<<" opened as "<<BLUE<<"_raw"
-               <<fRawFilesOpened<<RESET_COLOR<<std::endl;
+      std::cout<<"\tUsing library "<<TGRSIOptions::Get()->ParserLibrary()<<" version "<<fLibraryVersion()<<std::endl
+			      <<"\tfile "<<BLUE<<filename<<RESET_COLOR<<" opened as "
+			      <<BLUE<<"_raw"<<fRawFilesOpened<<RESET_COLOR<<std::endl;
    }
    fRawFilesOpened++;
    return file;
