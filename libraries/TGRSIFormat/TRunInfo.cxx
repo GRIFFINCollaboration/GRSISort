@@ -9,6 +9,7 @@
 #include "TROOT.h"
 
 #include "TGRSIOptions.h"
+#include "GVersion.h"
 
 /// \cond CLASSIMP
 ClassImp(TRunInfo)
@@ -134,6 +135,10 @@ void TRunInfo::SetRunInfo(int runnum, int subrunnum)
 	if(Get()->fRunInfoFile.length() != 0u) {
 		ParseInputData(Get()->fRunInfoFile.c_str());
 	}
+
+	// set version of GRSISort
+	TRunInfo::ClearVersion();
+	TRunInfo::SetVersion(GRSI_RELEASE);
 }
 
 void TRunInfo::SetAnalysisTreeBranches(TTree*)

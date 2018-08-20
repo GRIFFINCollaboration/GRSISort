@@ -77,6 +77,17 @@ public:
       }
    }
 
+   static const char* GetLibraryVersion() { return fLibraryVersion.c_str(); }
+   static void        ClearLibraryVersion() { fLibraryVersion.clear(); }
+   static void SetLibraryVersion(const char* ver)
+   {
+      if(fLibraryVersion.length() != 0) {
+         printf(ALERTTEXT "WARNING; VERSION ALREADY SET TO %s!!" RESET_COLOR "\n", fLibraryVersion.c_str());
+      } else {
+         fLibraryVersion.assign(ver);
+      }
+   }
+
    static void SetRunInfo(int runnum = 0, int subrunnum = -1);
    static void SetAnalysisTreeBranches(TTree*);
 
@@ -174,7 +185,8 @@ private:
    double fRunStop{0.};   // The stop   of the current run in seconds
    double fRunLength{0.}; // The length of the current run in seconds
 
-   static std::string fVersion; // The version of GRSISort that generated the file
+   static std::string fVersion;        // The version of GRSISort that generated the file
+   static std::string fLibraryVersion; // The version of the parser/file library that generated the file
 
    std::string fCalFileName; // Name of calfile that generated cal
    std::string fCalFile;     // Cal File to load into Cal of tree
