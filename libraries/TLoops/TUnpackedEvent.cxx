@@ -3,6 +3,7 @@
 #include "TClass.h"
 #include "TDetector.h"
 #include "TChannel.h"
+#include "TSortingDiagnostics.h"
 
 TUnpackedEvent::TUnpackedEvent()
 {
@@ -22,7 +23,7 @@ void TUnpackedEvent::Build()
 
       TClass* detClass = channel->GetClassType();
       if(detClass == nullptr) {
-         std::cout<<"Failed to find detector class "<<channel->GetClassType()<<std::endl;
+			TSortingDiagnostics::Get()->AddDetectorClass(channel);
          continue;
       }
 
