@@ -38,11 +38,12 @@ TUnpackingLoop::TUnpackingLoop(std::string name)
 		throw std::runtime_error(str.str());
 	}
 	// try and get constructor and destructor functions from opened library
-	fCreateDataParser  = (TDataParser* (*)())      dlsym(fHandle, "CreateParser");
+	fCreateDataParser  = (TDataParser* (*)())     dlsym(fHandle, "CreateParser");
 	fDestroyDataParser = (void (*)(TDataParser*)) dlsym(fHandle, "DestroyParser");
-	if(fCreateDataParser == nullptr || fDestroyDataParser == nullptr) {
+	fLibraryVersion    = (std::string (*)())      dlsym(fHandle, "LibraryVersion");
+	if(fCreateDataParser == nullptr || fDestroyDataParser == nullptr || fLibraryVersion == nullptr) {
 		std::ostringstream str;
-		str<<"Failed to find CreateParser, and/or DestroyParser functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!";
+		str<<"Failed to find CreateParser, DestroyParser, and/or LibraryVersion functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!";
 		throw std::runtime_error(str.str());
 	}
 	// create new data parser

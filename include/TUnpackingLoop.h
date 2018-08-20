@@ -71,6 +71,7 @@ private:
    TDataParser* fParser;
 	TDataParser* (*fCreateDataParser)();
 	void         (*fDestroyDataParser)(TDataParser*);
+	std::string  (*fLibraryVersion)();
    long         fFragsReadFromRaw;
    long         fGoodFragsRead;
 
