@@ -45,7 +45,7 @@ public:
    virtual void Print(Option_t* opt = "") const override;
    virtual void Clear(Option_t* opt = "") override;
 
-private:
+protected:
    int16_t     fArrayPosition;
    int16_t     fSegment;
    std::string fSystemString;

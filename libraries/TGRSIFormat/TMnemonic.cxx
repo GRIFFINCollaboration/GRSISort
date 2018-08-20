@@ -22,9 +22,7 @@ void TMnemonic::Clear(Option_t*)
 
 void TMnemonic::EnumerateMnemonic(std::string mnemonic_word, EMnemonic& mnemonic_enum)
 {
-
    char mnemonic_char = mnemonic_word[0];
-
    switch(mnemonic_char) {
 		case 'A': mnemonic_enum = EMnemonic::kA; break;
 		case 'B': mnemonic_enum = EMnemonic::kB; break;
@@ -110,7 +108,7 @@ void TMnemonic::SetRFMNEMONIC(std::string* name)
 
 void TMnemonic::Print(Option_t*) const
 {
-	printf("======MNEMONIC ======\n");
+	printf("====== MNEMONIC ======\n");
 	printf("fArrayPosition           = %i\n", fArrayPosition);
 	printf("fSegment                 = %i\n", fSegment);
 	printf("fSystemString            = %s\n", fSystemString.c_str());
@@ -143,9 +141,5 @@ int TMnemonic::NumericArraySubPosition() const
 
 TClass* TMnemonic::GetClassType() const
 {
-	if(fClassType != nullptr) {
-		return fClassType;
-	}
-
-	return nullptr;
+	return fClassType;
 }
