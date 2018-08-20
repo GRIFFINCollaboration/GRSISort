@@ -16,6 +16,7 @@ ClassImp(TRunInfo)
 /// \endcond
 
 std::string TRunInfo::fVersion;
+std::string TRunInfo::fLibraryVersion;
 
 Bool_t TRunInfo::ReadInfoFromFile(TFile* tempf)
 {
