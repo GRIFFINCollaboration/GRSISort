@@ -67,6 +67,9 @@ public:
 
    static TChannel* GetDefaultChannel();
 
+	static void    SetMnemonicClass(TClass* cl) { fMnemonicClass = cl; }
+	static TClass* GetMnemonicClass()           { return fMnemonicClass; }
+
 private:
    unsigned int fAddress;     // The address of the digitizer
    TPriorityValue<int>          fIntegration; // The charge integration setting
@@ -82,7 +85,8 @@ private:
    mutable int fCrystalNumber;
 
    TPriorityValue<Long64_t>    fTimeOffset;
-   TPriorityValue<TMnemonic>   fMnemonic;
+   TPriorityValue<TMnemonic*>  fMnemonic;
+	static TClass*					 fMnemonicClass;
 
    TPriorityValue<std::vector<Float_t> > fENGCoefficients;  // Energy calibration coeffs (low to high order)
    TPriorityValue<double>                fENGChi2;          // Chi2 of the energy calibration
@@ -145,12 +149,12 @@ public:
    void SetSegmentNumber(int tempint) { fSegmentNumber = tempint; }
    void SetCrystalNumber(int tempint) { fCrystalNumber = tempint; }
 
-   int              GetDetectorNumber() const;
-   int              GetSegmentNumber() const;
-   int              GetCrystalNumber() const;
-   const TMnemonic* GetMnemonic() const { return fMnemonic.Address(); }
-   TClass*          GetClassType() const { return fMnemonic.Value().GetClassType(); }
-   void SetClassType(TClass* cl_type) { fMnemonic.Address()->SetClassType(cl_type); }
+   int               GetDetectorNumber() const;
+   int               GetSegmentNumber() const;
+   int               GetCrystalNumber() const;
+   const TMnemonic*  GetMnemonic() const { return fMnemonic.Value(); }
+   TClass*           GetClassType() const { return fMnemonic.Value()->GetClassType(); }
+   void              SetClassType(TClass* cl_type) { fMnemonic.Value()->SetClassType(cl_type); }
 
    int          GetNumber() const { return fNumber.Value(); }
    unsigned int GetAddress() const { return fAddress; }

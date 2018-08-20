@@ -28,7 +28,6 @@
 #include "ThreadsafeQueue.h"
 #include "TRawFile.h"
 #include "TRawEvent.h"
-#include "TXMLOdb.h"
 
 class TDataLoop : public StoppableThread {
 public:
@@ -70,16 +69,6 @@ private:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>> fOutputQueue;
    std::mutex                                                   fSourceMutex;
 #endif
-
-#ifdef HAS_XML
-   TXMLOdb* fOdb;
-#endif
-
-   void SetFileOdb(uint32_t time, char* data, int size);
-   void SetRunInfo(uint32_t time);
-   void SetEPICSOdb();
-   void SetTIGOdb();
-   void SetGRIFFOdb();
 
    ClassDefOverride(TDataLoop, 0);
 };

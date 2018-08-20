@@ -21,11 +21,13 @@ TSortingDiagnostics::~TSortingDiagnostics() = default;
 void TSortingDiagnostics::Copy(TObject& obj) const
 {
    static_cast<TSortingDiagnostics&>(obj).fFragmentsOutOfOrder = fFragmentsOutOfOrder;
+   static_cast<TSortingDiagnostics&>(obj).fMissingDetectorClasses = fMissingDetectorClasses;
 }
 
 void TSortingDiagnostics::Clear(Option_t*)
 {
    fFragmentsOutOfOrder.clear();
+   fMissingDetectorClasses.clear();
 }
 
 void TSortingDiagnostics::OutOfOrder(long newFragTS, long oldFragTS, long newEntry)
@@ -46,10 +48,27 @@ void TSortingDiagnostics::OutOfOrder(long newFragTS, long oldFragTS, long newEnt
    }
 }
 
+void TSortingDiagnostics::AddDetectorClass(TChannel* channel)
+{
+	if(fMissingDetectorClasses.find(channel->GetClassType()) != fMissingDetectorClasses.end()) {
+		++(fMissingDetectorClasses[channel->GetClassType()]);
+	} else {
+		fMissingDetectorClasses[channel->GetClassType()] = 0;
+		std::cout<<"Failed to find detector class "<<channel->GetClassType()<<" for channel:"<<std::endl;
+		channel->Print();
+	}
+}
+
 void TSortingDiagnostics::Print(Option_t* opt) const
 {
    TString option = opt;
    option.ToUpper();
+	if(!fMissingDetectorClasses.empty()) {
+		std::cout<<"Missing detector classes:"<<std::endl;
+		for(auto it : fMissingDetectorClasses) {
+			std::cout<<it.first<<": "<<it.second<<std::endl;
+		}
+	}
    std::string color;
    if(fFragmentsOutOfOrder.empty()) {
       if(option.EqualTo("ERROR")) {

@@ -1,5 +1,4 @@
 #include "TDataParser.h"
-#include "TDataParserException.h"
 
 #include "TChannel.h"
 #include "Globals.h"
@@ -57,6 +56,25 @@ void TDataParser::SetFinished()
    }
    fBadOutputQueue->SetFinished();
    fScalerOutputQueue->SetFinished();
+}
+
+void TDataParser::Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& queues,
+      const std::shared_ptr<TFragment>&                                                frag)
+{
+   frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
+   fFragmentIdMap[frag->GetTriggerId()]++;
+   frag->SetEntryNumber(); 
+   for(const auto& queue : queues) {
+      queue->Push(frag);
+   }
+}
+
+void TDataParser::Push(ThreadsafeQueue<std::shared_ptr<const TBadFragment>>& queue, const std::shared_ptr<TBadFragment>& frag)
+{
+   frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
+   fFragmentIdMap[frag->GetTriggerId()]++;
+   frag->SetEntryNumber();
+   queue.Push(frag);
 }
 
 std::string TDataParser::OutputQueueStatus()

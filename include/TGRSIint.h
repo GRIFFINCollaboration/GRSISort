@@ -86,12 +86,8 @@ private:
 #endif
 
 private:
-   // bool fPrintLogo;
-   // bool fPrintHelp;
+	void* fHandle; ///< handle for shared object library
 
-   // bool fAutoSort;
-   // bool fFragmentSort;
-   // bool fMakeAnalysisTree;
    bool        fIsTabComplete;      ///< Flag for tab completion hook
    bool        fAllowedToTerminate; ///< Flag for shutting down GRSISort
    int         fRootFilesOpened;    ///< Number of ROOT files opened
@@ -99,8 +95,9 @@ private:
    std::string fNewFragmentFile;    ///< New fragment file name
 
    std::vector<TRawFile*> fRawFiles; ///< List of Raw files opened
-	TRawFile* (*fCreateRawFile)(const std::string&);
-	void      (*fDestroyRawFile)(TRawFile*);
+	TRawFile*   (*fCreateRawFile)(const std::string&);
+	void        (*fDestroyRawFile)(TRawFile*);
+	std::string (*fLibraryVersion)();
 
    /// \cond CLASSIMP
    ClassDefOverride(TGRSIint, 0); // Interpreter for GRSISort

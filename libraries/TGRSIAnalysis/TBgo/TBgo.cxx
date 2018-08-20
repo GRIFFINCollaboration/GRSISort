@@ -109,8 +109,6 @@ void TBgo::Copy(TObject& rhs) const
 {
    // Copy function.
    TDetector::Copy(rhs);
-
-   static_cast<TBgo&>(rhs).fBgoHits   = fBgoHits;
 }
 
 TBgo::~TBgo()
@@ -122,7 +120,6 @@ void TBgo::Clear(Option_t* opt)
 {
    /// Clears the mother, and all of the hits
    TDetector::Clear(opt);
-   fBgoHits.clear();
 }
 
 void TBgo::Print(Option_t*) const
@@ -145,8 +142,8 @@ void TBgo::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* c
       return;
    }
 
-	TBgoHit hit(*frag);
-	fBgoHits.push_back(std::move(hit));
+	TBgoHit* hit = new TBgoHit(*frag);
+	fHits.push_back(std::move(hit));
 }
 
 TVector3 TBgo::GetPosition(int DetNbr, int CryNbr, double dist)
@@ -179,15 +176,3 @@ TVector3 TBgo::GetPosition(int DetNbr, int CryNbr, double dist)
 	return (temp_pos + shift);
 }
 
-TBgoHit* TBgo::GetBgoHit(const Int_t& i)
-{
-	try {
-		return &(fBgoHits.at(i));
-	} catch(const std::out_of_range& oor) {
-		std::cerr<<ClassName()<<" Hits are out of range: "<<oor.what()<<std::endl;
-		if(!gInterpreter) {
-			throw grsi::exit_exception(1);
-		}
-	}
-	return nullptr;
-}

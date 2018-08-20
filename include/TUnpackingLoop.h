@@ -38,7 +38,7 @@ public:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>&       InputQueue() { return fInputQueue; }
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& AddGoodOutputQueue(size_t maxSize = 50000)
    {
-      return fParser->AddGoodOutputQueue(maxSize);
+		return fParser->AddGoodOutputQueue(maxSize);
    }
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>& BadOutputQueue()
    {
@@ -66,9 +66,12 @@ private:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>> fInputQueue;
 #endif
 
+	void* fHandle; ///< handle for shared object library
+
    TDataParser* fParser;
 	TDataParser* (*fCreateDataParser)();
 	void         (*fDestroyDataParser)(TDataParser*);
+	std::string  (*fLibraryVersion)();
    long         fFragsReadFromRaw;
    long         fGoodFragsRead;
 

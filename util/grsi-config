@@ -44,14 +44,14 @@ incdir=$GRSISYS/include
 utildir=$GRSISYS/etc
 
 # the repitition of '-lTGRSIint -lTGRSIFormat' is needed for debian-style OSes like ubuntu (see issue #979)
-grsilibs="-lTGRSIDetector -lTDetector -lTGRSIint -lTGRSIFormat -lTGRSIint -lTGRSIFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction -lTAngularCorrelation"
-detlibs="-lTSuppressed -lTFipps -lTTigress -lTGriffin -lTBgo -lTSharc -lTTriFoil -lTSceptar -lTPaces -lTDescant -lTTip -lTCSM -lTS3 -lTGenericDetector -lTSiLi -lTRF -lTPulseAnalyzer -lTTAC -lTLaBr -lTZeroDegree -lGROOT -lTGRSIFit -lTNucleus -lTTdrClover -lTTdrTigress -lTTdrSiLi -lTTdrPlastic"
-grsimore="-lTMidas -lTDataParser -lTHistogramming -lMakeAnalysisHistograms -lMakeGriffinFragmentHistograms -lMakeTigressHistograms"
+grsilibs="-lTDetector -lTGRSIint -lTGRSIFormat -lTGRSIint -lTGRSIFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction"
+detlibs="-lTSuppressed -lTBgo -lTPulseAnalyzer -lGROOT -lTGRSIFit -lTNucleus"
+grsimore="-lTMidas -lTDataParser -lTHistogramming"
 
 cflags="-std=c++0x -I$incdir"
 
 usage="\
-Usage: grsi-config [--version] [--cflags] [--libs] [--all-libs] [--help]"
+Usage: grsi-config [--version] [--incdir] [--cflags] [--libs] [--all-libs] [--help]"
 
 if test $# -eq 0; then
   echo "${usage}" 1>&2
@@ -60,6 +60,7 @@ fi
 
 out=""
 
+incdirout=no
 cflagsout=no
 libsout=no
 alllibsout=no
@@ -80,6 +81,14 @@ while test $# -gt 0; do
         echo "cannot read ${incdir}/GVersion.h"
         exit 1
       fi
+      ;;
+    --incdir)
+      if test "x$incdirout" = "xyes" ; then
+        shift
+        continue
+      fi
+      incdirout="yes"
+      out="$out $incdir "
       ;;
     --cflags)
       if test "x$cflagsout" = "xyes" ; then
@@ -126,6 +135,7 @@ while test $# -gt 0; do
       echo "Usage: `basename $0` [options]"
       echo ""
       echo "  --version       Print the current GRSI Version number."
+      echo "  --incdir        Print header path."
       echo "  --cflags        Print compiler flags and header path."
       echo "  --libs          Print libdir + most used GRSI libraries ."
       echo "  --all-libs      Print libdir + all GRSI libraries ."

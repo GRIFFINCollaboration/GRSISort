@@ -1,6 +1,7 @@
 #include "TMnemonic.h"
 
 #include <algorithm>
+#include <iostream>
 
 ClassImp(TMnemonic)
 
@@ -9,7 +10,6 @@ void TMnemonic::Clear(Option_t*)
    fArrayPosition = -1;
    fSegment       = -1;
    fSystemString.clear();
-   fSystem = ESystem::kClear;
    fSubSystemString.clear();
    fSubSystem = EMnemonic::kClear;
    fArraySubPositionString.clear();
@@ -22,9 +22,7 @@ void TMnemonic::Clear(Option_t*)
 
 void TMnemonic::EnumerateMnemonic(std::string mnemonic_word, EMnemonic& mnemonic_enum)
 {
-
    char mnemonic_char = mnemonic_word[0];
-
    switch(mnemonic_char) {
 		case 'A': mnemonic_enum = EMnemonic::kA; break;
 		case 'B': mnemonic_enum = EMnemonic::kB; break;
@@ -56,13 +54,6 @@ void TMnemonic::EnumerateMnemonic(std::string mnemonic_word, EMnemonic& mnemonic
 	};
 }
 
-void TMnemonic::EnumerateSystem()
-{
-   // Enumerating the fSystemString must come after the total mnemonic has been parsed as the details of other parts of
-   // the mnemonic must be known
-	fSystem = ESystem::kClear;
-}
-
 TMnemonic::EDigitizer TMnemonic::EnumerateDigitizer(std::string)
 {
    return EDigitizer::kDefault;
@@ -92,9 +83,6 @@ void TMnemonic::Parse(std::string* name)
    fSegment = static_cast<uint16_t>(atoi(buf.c_str()));
    fOutputSensorString.assign(*name, 9, 1);
    EnumerateMnemonic(fOutputSensorString, fOutputSensor);
-   // Enumerating the fSystemString must come last as the details of other parts of
-   // the mnemonic must be known
-   EnumerateSystem();
 }
 
 void TMnemonic::Parse(const char* name)
@@ -120,7 +108,7 @@ void TMnemonic::SetRFMNEMONIC(std::string* name)
 
 void TMnemonic::Print(Option_t*) const
 {
-	printf("======MNEMONIC ======\n");
+	printf("====== MNEMONIC ======\n");
 	printf("fArrayPosition           = %i\n", fArrayPosition);
 	printf("fSegment                 = %i\n", fSegment);
 	printf("fSystemString            = %s\n", fSystemString.c_str());
@@ -153,9 +141,5 @@ int TMnemonic::NumericArraySubPosition() const
 
 TClass* TMnemonic::GetClassType() const
 {
-	if(fClassType != nullptr) {
-		return fClassType;
-	}
-
-	return nullptr;
+	return fClassType;
 }

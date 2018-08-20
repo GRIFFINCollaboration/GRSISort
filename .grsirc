@@ -25,3 +25,4 @@ Browser.Name: GRootBrowser
 Gui.IconPath:      $(GRSISYS)/icons:$(ROOTSYS)/icons
 Gui.MimeTypeFile:  $(GRSISYS)/.grsi.mimes
 
+GRSI.ParserLibrary: $(GRSISYS)/GRSIData/lib/libTriumf.so
