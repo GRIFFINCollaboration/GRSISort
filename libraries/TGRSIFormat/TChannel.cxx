@@ -44,7 +44,7 @@ TChannel::~TChannel() = default;
 TChannel::TChannel(const char* tempName)
 {
    Clear();
-   SetName(tempName);
+	SetName(tempName);
 }
 
 TChannel::TChannel(const TChannel& chan) : TNamed(chan)
@@ -116,7 +116,10 @@ TChannel::TChannel(TChannel* chan)
 void TChannel::SetName(const char* tmpName)
 {
    TNamed::SetName(tmpName);
-   fMnemonic.Value()->Parse(GetName());
+	// do not parse the default name
+	if(strcmp(tmpName, "DefaultTChannel") != 0) {
+		fMnemonic.Value()->Parse(GetName());
+	}
 }
 
 void TChannel::InitChannelInput()
@@ -292,7 +295,7 @@ void TChannel::Clear(Option_t*)
    WaveFormShape = WaveFormShapePar();
 
 	fMnemonic = TPriorityValue<TMnemonic*>(static_cast<TMnemonic*>(fMnemonicClass->New()), EPriority::kForce);
-   SetName("DefaultTChannel");
+	SetName("DefaultTChannel");
 
    fENGCoefficients.Reset(std::vector<Float_t>());
    fENGChi2.Reset(0.0);
@@ -891,7 +894,6 @@ void TChannel::WriteCalBuffer(Option_t*)
 
 Int_t TChannel::ReadCalFromCurrentFile(Option_t*)
 {
-
    if(!gFile) {
       return 0;
    }
@@ -900,16 +902,10 @@ Int_t TChannel::ReadCalFromCurrentFile(Option_t*)
    TList* list  = tempf->GetListOfKeys();
    TIter  iter(list);
 
-   // while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
    while(TKey* key = static_cast<TKey*>(iter.Next())) {
       if((key == nullptr) || (strcmp(key->GetClassName(), "TChannel") != 0)) {
          continue;
       }
-      // TObject *  obj = key->ReadObj();
-      // if(obj && !obj->InheritsFrom("TChannel"))
-      //   continue;
-      // TChannel *c = (TChannel*)obj;
-      // TChannel *c = (TChannel*)key->ReadObj();
       key->ReadObj();
       return GetNumberOfChannels();
    }
@@ -926,7 +922,6 @@ Int_t TChannel::ReadCalFromFile(TFile* tempf, Option_t*)
    TList* list = tempf->GetListOfKeys();
    TIter  iter(list);
 
-   // while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
    while(TKey* key = static_cast<TKey*>(iter.Next())) {
       if((key == nullptr) || (strcmp(key->GetClassName(), "TChannel") != 0)) {
          continue;
@@ -948,16 +943,10 @@ Int_t TChannel::ReadCalFromTree(TTree* tree, Option_t*)
    TList* list  = tempf->GetListOfKeys();
    TIter  iter(list);
 
-   // while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
    while(TKey* key = static_cast<TKey*>(iter.Next())) {
       if((key == nullptr) || (strcmp(key->GetClassName(), "TChannel") != 0)) {
          continue;
       }
-      // TObject *  obj = key->ReadObj();
-      // if(obj && !obj->InheritsFrom("TChannel"))
-      //   continue;
-      // TChannel *c = (TChannel*)obj;
-      // TChannel *c = (TChannel*)key->ReadObj();
       key->ReadObj();
       return GetNumberOfChannels();
    }
@@ -1048,20 +1037,16 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
       if(openbrace == std::string::npos && closebrace == std::string::npos && colon == std::string::npos) {
          continue;
       }
-      // printf("line : %s\n",line.c_str());
 
       //*************************************//
       if(closebrace != std::string::npos) {
-         // printf("brace closed.\n");
-         // channel->Print();
          brace_open = false;
-         if(channel != nullptr) { // && (channel->GetAddress()!=0) )
+         if(channel != nullptr) {
             TChannel* currentchan = GetChannel(channel->GetAddress());
             if(currentchan == nullptr) {
                AddChannel(channel); // consider using a default option here
                newchannels++;
             } else {
-               //				 currentchan->Print();
                currentchan->UpdateChannel(channel);
                delete channel;
                newchannels++;
@@ -1071,13 +1056,12 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
          }
          channel = nullptr;
          name.clear();
-         // detector = 0;
       }
       //*************************************//
       if(openbrace != std::string::npos) {
          brace_open = true;
          name       = line.substr(0, openbrace);
-         channel    = new TChannel(""); // GetChannel(0);
+         channel    = new TChannel("");
          channel->SetName(name.c_str());
       }
       //*************************************//
@@ -1097,7 +1081,6 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                c         = toupper(c);
                type[j++] = c;
             }
-            // printf("type = %s\n",type.c_str());
             if(type.compare("NAME") == 0) {
                channel->SetName(line.c_str());
             } else if(type.compare("ADDRESS") == 0) {
@@ -1258,6 +1241,9 @@ void TChannel::Streamer(TBuffer& R__b)
       }
       TNamed::Streamer(R__b);
       {
+         fMnemonicClass->Streamer(R__b);
+      }
+      {
          TString R__str;
          R__str.Streamer(R__b);
          fFileName.assign(R__str.Data());
@@ -1272,6 +1258,9 @@ void TChannel::Streamer(TBuffer& R__b)
    } else { // writing to file
       R__c = R__b.WriteVersion(TChannel::IsA(), true);
       TNamed::Streamer(R__b);
+      {
+         fMnemonicClass->Streamer(R__b);
+      }
       {
          TString R__str = fFileName.c_str();
          R__str.Streamer(R__b);

@@ -67,7 +67,8 @@ public:
 
    static TChannel* GetDefaultChannel();
 
-	static void SetMnemonicClass(TClass* cl) { fMnemonicClass = cl; }
+	static void    SetMnemonicClass(TClass* cl) { fMnemonicClass = cl; }
+	static TClass* GetMnemonicClass()           { return fMnemonicClass; }
 
 private:
    unsigned int fAddress;     // The address of the digitizer
