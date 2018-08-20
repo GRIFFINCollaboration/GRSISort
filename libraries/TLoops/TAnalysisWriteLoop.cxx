@@ -140,12 +140,6 @@ void TAnalysisWriteLoop::Write()
 		TFile* outputFile = new TFile(fOutputFilename.c_str(), "update");
 		outputFile->cd();
 
-		//fEventTree->Write(fEventTree->GetName(), TObject::kOverwrite);
-
-		//if(fOutOfOrderTree != nullptr) {
-		//fOutOfOrderTree->Write(fOutOfOrderTree->GetName(), TObject::kOverwrite);
-		//}
-
 		if(GValue::Size() != 0) {
 			GValue::Get()->Write();
 		}

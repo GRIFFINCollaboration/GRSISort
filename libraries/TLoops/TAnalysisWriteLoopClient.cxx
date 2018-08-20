@@ -70,6 +70,7 @@ bool TAnalysisWriteLoopClient::Iteration()
    }
 
    if(fInputQueue->IsFinished()) {
+		//fEventTree->GetUserInfo()->Add(TChannel::GetMnemonicClass());
       return false;
    }
    std::this_thread::sleep_for(std::chrono::milliseconds(1000));

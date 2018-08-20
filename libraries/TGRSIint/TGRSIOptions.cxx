@@ -368,13 +368,11 @@ void TGRSIOptions::Load(int argc, char** argv)
 	// load any additional parser library
 	if(!fParserLibrary.empty()) {
 		gSystem->Load(fParserLibrary.c_str());
-		std::cout<<"Loaded parser library "<<fParserLibrary<<std::endl;
 	}
 
 	// read analysis options from input file(s)
 	for(const std::string& file : fInputRootFiles) {
 		fAnalysisOptions->ReadFromFile(file);
-		fAnalysisOptions->Print();
 	}
 	// parse analysis options from command line options 
    try {
@@ -495,7 +493,7 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
       }
       if(lib.GetSymbol("CreateParser") != nullptr && lib.GetSymbol("DestroyParser") != nullptr &&
 			lib.GetSymbol("CreateFile")   != nullptr && lib.GetSymbol("DestroyFile")   != nullptr) {
-         fParserLibrary = filename;
+         fParserLibrary        = filename;
          used                  = true;
       }
       if(!used) {

@@ -86,7 +86,6 @@ void TAnalysisOptions::ReadFromFile(const std::string& file)
             continue;
          }
 
-			std::cout<<R"(Reading analysis options from file ")"<<CYAN<<f->GetName()<<RESET_COLOR<<R"(":)"<<std::endl;
          *this = *static_cast<TAnalysisOptions*>(key->ReadObj());
          f->Close();
          oldDir->cd();
