@@ -30,25 +30,25 @@ void CrossTalk::CreateHistograms() {
 		std::string aedet_str = Form("aEdet%d",det_num);
 		std::string gedet_str = Form("gEdet%d",det_num);
 		std::string ae2det_str = Form("aE2det%d",det_num);
-		fH1[aedet_str] = new TH1D(Form("aEdet%d",det_num),Form("Addback detector %d",det_num),7000,0,7000);
-		fH1[gedet_str] = new TH1D(Form("geEdet%d",det_num),Form("Singles detector %d",det_num),7000,0,7000);
-		fH1[ae2det_str] = new TH1D(Form("aE2det%d",det_num),Form("Addback with 2 hits, detector %d",det_num),7000,0,7000);
+		fH1[aedet_str] = new TH1D(Form("aEdet%d",det_num),Form("Addback detector %d",det_num),1500,0,1500);
+		fH1[gedet_str] = new TH1D(Form("geEdet%d",det_num),Form("Singles detector %d",det_num),1500,0,1500);
+		fH1[ae2det_str] = new TH1D(Form("aE2det%d",det_num),Form("Addback with 2 hits, detector %d",det_num),1500,0,1500);
 		for(int crys_1=0; crys_1 <4; ++crys_1){
 			for(int crys_2=crys_1+1;crys_2<4;++crys_2){
 				std::string name_str = Form("det_%d_%d_%d",det_num,crys_1,crys_2);
 			 	const char* hist_name = name_str.c_str();
 				std::cout << "Creating histogram: " << hist_name;
-				fH2[name_str] = new TH2F(hist_name,hist_name,7000,0,7000,7000,0,7000); 
+				fH2[name_str] = new TH2I(hist_name,hist_name,1500,0,1500,1500,0,1500); 
 				std::cout << " at address: " << fH2[hist_name] << std::endl;
 			}
 		}
 	}
 
 	fH1["aMult"] = new TH1D("aMult","addback multilpicity",20,0,20);
-	fH2["gE_chan"] = new TH2D("gE_chan","gE_chan",65,0,65,7000,0,7000); 
-	fH1["aE"] = new TH1D("aE", "Summed Addback", 7000,0,7000);
-	fH1["gE"] = new TH1D("gE", "Summed Singles", 7000,0,7000);
-	fH1["gEnoCT"] = new TH1D("gEnoCT", "Singles, no CT correction", 7000,0,7000);
+	fH2["gE_chan"] = new TH2D("gE_chan","gE_chan",65,0,65,1500,0,1500); 
+	fH1["aE"] = new TH1D("aE", "Summed Addback", 1500,0,1500);
+	fH1["gE"] = new TH1D("gE", "Summed Singles", 1500,0,1500);
+	fH1["gEnoCT"] = new TH1D("gEnoCT", "Singles, no CT correction", 1500,0,1500);
 	for(auto it : fH1) {
 		GetOutputList()->Add(it.second);
 	}
