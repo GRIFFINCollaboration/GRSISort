@@ -119,7 +119,7 @@ double* CrossTalkFix(int det, double energy, TFile* in_file)
       int        yind    = (dynamic_cast<TObjString*>(strings->At(strings->GetEntries() - 2)))->String().Atoi();
 
       // This fits the TGraph
-      auto* fpx = new TF1(Form("pxfit_%i_%i", yind, xind), CrossTalkFit, 6, 1167, 3);
+      auto* fpx = new TF1(Form("pxfit_%i_%i_%i", det, yind, xind), CrossTalkFit, 6, 1167, 3);
       fpx->SetParameter(0, 0.0001);
       fpx->SetParameter(1, 0.0001);
       fpx->SetParameter(2, energy);
@@ -138,7 +138,8 @@ double* CrossTalkFix(int det, double energy, TFile* in_file)
          residual_plot->SetBinError(i, px->GetBinError(i));
       }
       residual_plot->Write();
-
+      delete cmat;
+      
       std::cout<<"====================="<<std::endl;
       std::cout<<mat->GetName()<<std::endl;
       std::cout<<"d"<<xind<<yind<<" at zero   "<<(fpx->Eval(energy)) / energy<<std::endl;
