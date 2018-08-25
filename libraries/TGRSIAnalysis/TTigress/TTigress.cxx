@@ -332,7 +332,7 @@ TVector3 TTigress::GetPosition(const TTigressHit& hit, double dist, bool smear)
 
 TVector3 TTigress::GetPosition(int DetNbr, int CryNbr, int SegNbr, double dist, bool smear)
 {
-	if(!GetVectorsBuilt){
+	if(!GetVectorsBuilt()){
 		BuildVectors();
 	}
 	
