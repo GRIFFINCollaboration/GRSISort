@@ -48,7 +48,7 @@ void TDetectorHit::Streamer(TBuffer& R__b)
    if(R__b.IsReading()) {
       R__b.ReadClassBuffer(TDetectorHit::Class(), this);
    } else {
-      fBitflags = 0;
+      fBitFlags = 0;
       R__b.WriteClassBuffer(TDetectorHit::Class(), this);
    }
 }
@@ -147,7 +147,7 @@ void TDetectorHit::Copy(TObject& rhs) const
    static_cast<TDetectorHit&>(rhs).fTime      = fTime;
    static_cast<TDetectorHit&>(rhs).fChannel   = fChannel;
 
-   static_cast<TDetectorHit&>(rhs).fBitflags       = 0;
+   static_cast<TDetectorHit&>(rhs).fBitFlags       = 0;
    static_cast<TDetectorHit&>(rhs).fPPGStatus      = fPPGStatus;
    static_cast<TDetectorHit&>(rhs).fCycleTimeStamp = fCycleTimeStamp;
 }
@@ -199,7 +199,7 @@ void TDetectorHit::Clear(Option_t*)
 	// fDetector       = -1;
 	// fSegment        = -1;
 	fEnergy         = 0.;
-	fBitflags       = 0;
+	fBitFlags       = 0;
 	fPPGStatus      = EPpgPattern::kJunk;
 	fCycleTimeStamp = 0;
 	fChannel        = nullptr;
@@ -298,5 +298,5 @@ double TDetectorHit::GetTimeSinceTapeMove() const
 // const here is rather dirty
 void TDetectorHit::SetHitBit(enum EBitFlag flag, Bool_t set) const
 {
-	fBitflags.SetBit(flag, set);
+	fBitFlags.SetBit(flag, set);
 }

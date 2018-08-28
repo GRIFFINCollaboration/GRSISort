@@ -87,6 +87,7 @@ TGRSIint::TGRSIint(int argc, char** argv, void* options, Int_t numOptions, Bool_
    std::string grsipath = getenv("GRSISYS");
    gInterpreter->AddIncludePath(Form("%s/include", grsipath.c_str()));
 	fHandle = nullptr;
+	OpenLibrary();
 }
 
 void TGRSIint::ApplyOptions()
@@ -371,19 +372,12 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
    return file;
 }
 
-TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
+void TGRSIint::OpenLibrary()
 {
-   /// Opens Raw input file and stores them in _raw if successfuly opened.
-   if(!file_exists(filename.c_str())) {
-      std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
-      return nullptr;
-   }
-
-   // try and open dynamic library
-	if(TGRSIOptions::Get()->ParserLibrary().empty()) {
-      throw std::runtime_error("No data parser library supplied, can't open raw file!");
+	if(fHandle != nullptr && fCreateRawFile != nullptr && fDestroyRawFile != nullptr && fLibraryVersion != nullptr) {
+		std::cout<<"\tAlready loaded library "<<TGRSIOptions::Get()->ParserLibrary()<<" version "<<fLibraryVersion()<<std::endl;
+		return;
 	}
-
    fHandle = dlopen(TGRSIOptions::Get()->ParserLibrary().c_str(), RTLD_LAZY);
    if(fHandle == nullptr) {
       std::ostringstream str;
@@ -400,6 +394,21 @@ TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
       str<<"Failed to find CreateFile, DestroyFile and/or LibraryVersion functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!";
       throw std::runtime_error(str.str());
    }
+	std::cout<<"\tUsing library "<<TGRSIOptions::Get()->ParserLibrary()<<" version "<<fLibraryVersion()<<std::endl;
+}
+
+TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
+{
+   /// Opens Raw input file and stores them in _raw if successfuly opened.
+   if(!file_exists(filename.c_str())) {
+      std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
+      return nullptr;
+   }
+
+	if(fHandle == nullptr || fCreateRawFile == nullptr || fDestroyRawFile == nullptr || fLibraryVersion == nullptr) {
+		OpenLibrary();
+	}
+
    // create new raw file
    auto* file = fCreateRawFile(filename);
    fRawFiles.push_back(file);
@@ -408,8 +417,7 @@ TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
 		const char* command = Form("TRawFile* _raw%i = (TRawFile*)%luL;", fRawFilesOpened, (unsigned long)file);
 		ProcessLine(command);
 
-      std::cout<<"\tUsing library "<<TGRSIOptions::Get()->ParserLibrary()<<" version "<<fLibraryVersion()<<std::endl
-			      <<"\tfile "<<BLUE<<filename<<RESET_COLOR<<" opened as "
+      std::cout<<"\tfile "<<BLUE<<filename<<RESET_COLOR<<" opened as "
 			      <<BLUE<<"_raw"<<fRawFilesOpened<<RESET_COLOR<<std::endl;
    }
    fRawFilesOpened++;
