@@ -95,7 +95,7 @@ public:
    virtual void Copy(TObject&, bool copywave) const; //!<!
    virtual void CopyWave(TObject&) const;            //!<!
    void Clear(Option_t* opt = "") override;          //!<!
-   virtual void ClearTransients() const { fBitflags = 0; }
+   virtual void ClearTransients() const { fBitFlags = 0; }
    void Print(Option_t* opt = "") const override;                                 //!<!
    virtual bool HasWave() const { return (fWaveform.size() > 0) ? true : false; } //!<!
 
@@ -183,14 +183,14 @@ private:
    //     TVector3(0., 0., 0.); }
 
 protected:
-   Bool_t IsEnergySet() const { return (fBitflags.TestBit(EBitFlag::kIsEnergySet)); }
-   Bool_t IsChannelSet() const { return (fBitflags.TestBit(EBitFlag::kIsChannelSet)); }
-   Bool_t IsTimeSet() const { return (fBitflags.TestBit(EBitFlag::kIsTimeSet)); }
-   Bool_t IsPPGSet() const { return (fBitflags.TestBit(EBitFlag::kIsPPGSet)); }
+   Bool_t IsEnergySet() const { return (fBitFlags.TestBit(EBitFlag::kIsEnergySet)); }
+   Bool_t IsChannelSet() const { return (fBitFlags.TestBit(EBitFlag::kIsChannelSet)); }
+   Bool_t IsTimeSet() const { return (fBitFlags.TestBit(EBitFlag::kIsTimeSet)); }
+   Bool_t IsPPGSet() const { return (fBitFlags.TestBit(EBitFlag::kIsPPGSet)); }
 
 public:
    void SetHitBit(EBitFlag, Bool_t set = true) const; // const here is dirty
-   bool TestHitBit(EBitFlag flag) const { return fBitflags.TestBit(flag); }
+   bool TestHitBit(EBitFlag flag) const { return fBitFlags.TestBit(flag); }
 
 protected:
    UInt_t               fAddress{0};   ///< address of the the channel in the DAQ.
@@ -210,10 +210,8 @@ private:
 
 protected:
    static TPPG* fPPG;
-
-private:
    // flags
-   mutable TTransientBits<UChar_t> fBitflags;
+   mutable TTransientBits<UChar_t> fBitFlags;
    static TVector3                 fBeamDirection; //!
 
    /// \cond CLASSIMP

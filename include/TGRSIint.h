@@ -77,6 +77,7 @@ private:
    void DrawLogo();
    void LoadGROOTGraphics();
    void LoadExtraClasses();
+	void OpenLibrary();
 
    Long_t DelayedProcessLine(std::string command);
 
