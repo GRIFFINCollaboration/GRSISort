@@ -371,7 +371,6 @@ Double_t TGRSIFunctions::ConvolutedDecay(Double_t *x, Double_t *par)
 ///   - par[3]:  Lambda of the level
 
   Double_t val;
-<<<<<<< HEAD
   val = TMath::Sqrt(TMath::Pi())*par[0]*par[3]/2*TMath::Exp(par[3]/2*(2*par[1]+par[3]*pow(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[3]*pow(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]))+par[4];
   return val;
 }
@@ -389,8 +388,6 @@ Double_t TGRSIFunctions::ConvolutedDecay2(Double_t *x, Double_t *par){
   Double_t val;
   val = TMath::Sqrt(TMath::Pi())*par[0]*par[3]/2*TMath::Exp(par[3]/2*(2*par[1]+par[3]*pow(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[3]*pow(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]))   +  TMath::Sqrt(TMath::Pi())*par[4]*par[5]/2*TMath::Exp(par[5]/2*(2*par[1]+par[5]*pow(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[5]*pow(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]));
   return val;
-=======
   val = TMath::Sqrt(TMath::Pi())*par[0]*par[3]/2.*TMath::Exp(par[3]/2.*(2.*par[1]+par[3]*pow(par[2],2.)-2.*x[0]))*TMath::Erfc((par[1]+par[3]*pow(par[2],2.)-x[0])/(TMath::Sqrt(2)*par[2]));
   return val;
->>>>>>> eac87cd86fece320a8f994453688906bca5b0933
 }
