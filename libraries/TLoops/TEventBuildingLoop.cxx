@@ -27,18 +27,19 @@ TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode)
      fOutOfOrderQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>()), fBuildMode(mode),
      fSortingDepth(10000), fBuildWindow(200), fPreviousSortingDepthError(false)
 {
-
    switch(fBuildMode) {
-   case kTimestamp:
+	case EBuildMode::kTimestamp:
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
          return a->GetTimeStamp() < b->GetTimeStamp();
       });
+		std::cout<<DYELLOW<<"sorting by timestamp!"<<RESET_COLOR<<std::endl;
       break;
 
-   case kTriggerId:
+	case EBuildMode::kTriggerId:
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
          return a->GetTriggerId() < b->GetTriggerId();
       });
+		std::cout<<DYELLOW<<"sorting by trigger ID!"<<RESET_COLOR<<std::endl;
       break;
    }
 }
@@ -107,9 +108,9 @@ bool TEventBuildingLoop::Iteration()
 bool TEventBuildingLoop::CheckBuildCondition(const std::shared_ptr<const TFragment>& frag)
 {
    switch(fBuildMode) {
-   case kTimestamp: return CheckTimestampCondition(frag); break;
+	case EBuildMode::kTimestamp: return CheckTimestampCondition(frag); break;
 
-   case kTriggerId: return CheckTriggerIdCondition(frag); break;
+	case EBuildMode::kTriggerId: return CheckTriggerIdCondition(frag); break;
    }
    return false; // we should never reach this statement!
 }

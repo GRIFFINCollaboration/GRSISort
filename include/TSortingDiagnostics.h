@@ -24,29 +24,23 @@
 #include "TObject.h"
 #include "TH1F.h"
 
+#include "TSortingDiagnostics.h"
 #include "TPPG.h"
 #include "TFragment.h"
 
-class TSortingDiagnostics : public TObject {
+class TSortingDiagnostics : public TSingleton<TSortingDiagnostics> {
 public:
+	friend class TSingleton<TSortingDiagnostics>;
+
    TSortingDiagnostics();
    TSortingDiagnostics(const TSortingDiagnostics&);
    ~TSortingDiagnostics() override;
-   static TSortingDiagnostics* Get()
-   {
-      if(fSortingDiagnostics == nullptr) {
-         fSortingDiagnostics = new TSortingDiagnostics;
-      }
-      return fSortingDiagnostics;
-   }
 
 private:
-   // analysis tree diagnostics (should these all be static?)
+   // analysis tree diagnostics 
    std::map<long, std::pair<long, long>> fFragmentsOutOfOrder;
    std::vector<Long_t> fPreviousTimeStamps; ///< timestamps of previous fragments, saved every 'BuildWindow' entries
    long                fMaxEntryDiff{0};
-
-   static TSortingDiagnostics* fSortingDiagnostics;
 
 public:
    //"setter" functions
@@ -67,7 +61,7 @@ public:
    void Draw(Option_t* opt = "") override;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TSortingDiagnostics, 1);
+   ClassDefOverride(TSortingDiagnostics, 2);
    /// \endcond
 };
 /*! @} */

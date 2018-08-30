@@ -22,6 +22,8 @@ void TAnalysisOptions::Clear(Option_t*)
    /// Clears all of the variables in the TAnalysisOptions
    fBuildWindow           = 200;
    fAddbackWindow         = 300;
+   fSuppressionWindow     = 300.;
+   fSuppressionEnergy     = 0.;
    fStaticWindow          = false;
    fWaveformFitting       = false;
    fIsCorrectingCrossTalk = true;
@@ -32,6 +34,8 @@ void TAnalysisOptions::Print(Option_t*) const
    /// Print the current status of TAnalysisOptions, includes all names, lists and flags
    std::cout<<BLUE<<"fBuildWindow: "<<DCYAN<<fBuildWindow<<std::endl
             <<BLUE<<"fAddbackWindow: "<<DCYAN<<fAddbackWindow<<std::endl
+            <<BLUE<<"fSuppressionWindow: "<<DCYAN<<fSuppressionWindow<<std::endl
+            <<BLUE<<"fSuppressionEnergy: "<<DCYAN<<fSuppressionEnergy<<std::endl
             <<BLUE<<"fStaticWindow: "<<DCYAN<<fStaticWindow<<std::endl
             <<BLUE<<"fWaveformFitting: "<<DCYAN<<fWaveformFitting<<std::endl
             <<BLUE<<"fIsCorrectingCrossTalk: "<<DCYAN<<fIsCorrectingCrossTalk<<std::endl
@@ -74,20 +78,22 @@ void TAnalysisOptions::ReadFromFile(const std::string& file)
 {
    TDirectory* oldDir = gDirectory;
    auto        f      = new TFile(file.c_str());
-   if(f->IsOpen()) {
+   if(f != nullptr && f->IsOpen()) {
       TList* list = f->GetListOfKeys();
       TIter  iter(list);
-      std::cout<<R"(Reading analysis options from file ")"<<CYAN<<f->GetName()<<RESET_COLOR<<R"(":)"<<std::endl;
       while(TKey* key = static_cast<TKey*>(iter.Next())) {
          if((key == nullptr) || (strcmp(key->GetClassName(), "TAnalysisOptions") != 0)) {
             continue;
          }
 
+			std::cout<<R"(Reading analysis options from file ")"<<CYAN<<f->GetName()<<RESET_COLOR<<R"(":)"<<std::endl;
          *this = *static_cast<TAnalysisOptions*>(key->ReadObj());
          f->Close();
          oldDir->cd();
          return;
       }
+		std::cout<<R"(Failed to find analysis options in file ")"<<CYAN<<f->GetName()<<RESET_COLOR<<R"(":)"<<std::endl;
+		f->Close();
    } else {
       std::cout<<R"(Failed to open file ")"<<file<<R"(")"<<std::endl;
    }

@@ -15,11 +15,13 @@ void TUnpackedEvent::Build()
    for(const auto& frag : fFragments) {
       TChannel* channel = TChannel::GetChannel(frag->GetAddress());
       if(channel == nullptr) {
+         std::cout<<"Failed to find channel for address "<<frag->GetAddress()<<std::endl;
          continue;
       }
 
       TClass* detClass = channel->GetClassType();
       if(detClass == nullptr) {
+         std::cout<<"Failed to find detector class "<<channel->GetClassType()<<std::endl;
          continue;
       }
 

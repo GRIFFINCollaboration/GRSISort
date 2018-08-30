@@ -124,7 +124,7 @@ private:
    bool                   fMarkerMode{false};
    std::vector<GMarker*>  fMarkers;
    std::vector<GMarker*>  fBackgroundMarkers;
-   kBackgroundSubtraction fBackgroundMode;
+   EBackgroundSubtraction fBackgroundMode;
    void AddMarker(int, int, int dim = 1);
    void RemoveMarker(Option_t* opt = "");
    void OrderMarkers();

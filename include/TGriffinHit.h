@@ -18,7 +18,7 @@
 
 class TGriffinHit : public TGRSIDetectorHit {
 public:
-   enum EGriffinHitBits {
+   enum class EGriffinHitBits {
       kTotalPU1    = 1<<0,
       kTotalPU2    = 1<<1,
       kPUHitOffset = kTotalPU2,
@@ -39,7 +39,6 @@ public:
 private:
    Int_t                   fFilter{0};                  ///<  The Filter Word
    TTransientBits<UChar_t> fGriffinHitBits;             ///<  Transient Member Flags
-   UInt_t                  fCrystal{0};                 //!<! Crystal Number
    Bool_t                  fBremSuppressed_flag{false}; //!<! Bremsstrahlung Suppression flag.
 
 public:
@@ -54,12 +53,6 @@ public:
    /////////////////////////  Recommended Functions/////////////////////////
 
    /////////////////////////  TChannel Helpers /////////////////////////////////////
-   // UInt_t GetCrystal()  const;//!<!
-   // UInt_t GetCrystal();
-   // UInt_t SetCrystal(char color);
-   // UInt_t SetCrystal(UInt_t crynum);
-   // Bool_t IsCrystalSet() const {return IsSubDetSet();}
-
    UShort_t NPileUps() const;
    UShort_t PUHit() const;
    void SetNPileUps(UChar_t npileups);
@@ -76,8 +69,7 @@ public:
    bool InFilter(Int_t); //!<!
 
    static bool CompareEnergy(const TGriffinHit*, const TGriffinHit*); //!<!
-   void        Add(const TGriffinHit*);                               //!<!
-                                                                      // Bool_t BremSuppressed(TSceptarHit*);
+   void        Add(const TGRSIDetectorHit*) override;                      //!<!
 
 public:
    void Clear(Option_t* opt = "") override;       //!<!
@@ -89,7 +81,7 @@ public:
    TVector3 GetPosition() const override;
 
 private:
-   void SetGriffinFlag(enum EGriffinHitBits, Bool_t set);
+   void SetGriffinFlag(EGriffinHitBits, Bool_t set);
    Double_t GetDefaultDistance() const { return 110.; }
 
    /// \cond CLASSIMP

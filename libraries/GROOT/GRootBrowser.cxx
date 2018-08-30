@@ -162,38 +162,38 @@ void GRootBrowser::CreateBrowser(const char* name)
    fPreMenuFrame = new TGHorizontalFrame(fTopMenuFrame, 0, 20, kRaisedFrame);
    fMenuBar      = new TGMenuBar(fPreMenuFrame, 10, 10, kHorizontalFrame);
    fMenuFile     = new TGPopupMenu(gClient->GetDefaultRoot());
-   fMenuFile->AddEntry("&Browse...\tCtrl+B", kBrowse);
-   fMenuFile->AddEntry("&Open...\tCtrl+O", kOpenFile);
+   fMenuFile->AddEntry("&Browse...\tCtrl+B", static_cast<int>(ENewBrowserMessages::kBrowse));
+   fMenuFile->AddEntry("&Open...\tCtrl+O", static_cast<int>(ENewBrowserMessages::kOpenFile));
    fMenuFile->AddSeparator();
 
    fMenuHelp = new TGPopupMenu(fClient->GetRoot());
-   fMenuHelp->AddEntry("&About ROOT...", kHelpAbout);
+   fMenuHelp->AddEntry("&About ROOT...", static_cast<int>(ENewBrowserMessages::kHelpAbout));
    fMenuHelp->AddSeparator();
-   fMenuHelp->AddEntry("Help On Browser...", kHelpOnBrowser);
-   fMenuHelp->AddEntry("Help On Canvas...", kHelpOnCanvas);
-   fMenuHelp->AddEntry("Help On Menus...", kHelpOnMenus);
-   fMenuHelp->AddEntry("Help On Graphics Editor...", kHelpOnGraphicsEd);
-   fMenuHelp->AddEntry("Help On Objects...", kHelpOnObjects);
-   fMenuHelp->AddEntry("Help On PostScript...", kHelpOnPS);
-   fMenuHelp->AddEntry("Help On Remote Session...", kHelpOnRemote);
+   fMenuHelp->AddEntry("Help On Browser...", static_cast<int>(ENewBrowserMessages::kHelpOnBrowser));
+   fMenuHelp->AddEntry("Help On Canvas...", static_cast<int>(ENewBrowserMessages::kHelpOnCanvas));
+   fMenuHelp->AddEntry("Help On Menus...", static_cast<int>(ENewBrowserMessages::kHelpOnMenus));
+   fMenuHelp->AddEntry("Help On Graphics Editor...", static_cast<int>(ENewBrowserMessages::kHelpOnGraphicsEd));
+   fMenuHelp->AddEntry("Help On Objects...", static_cast<int>(ENewBrowserMessages::kHelpOnObjects));
+   fMenuHelp->AddEntry("Help On PostScript...", static_cast<int>(ENewBrowserMessages::kHelpOnPS));
+   fMenuHelp->AddEntry("Help On Remote Session...", static_cast<int>(ENewBrowserMessages::kHelpOnRemote));
    fMenuFile->AddPopup("Browser Help...", fMenuHelp);
 
    fMenuFile->AddSeparator();
-   fMenuFile->AddEntry("&Clone\tCtrl+N", kClone);
+   fMenuFile->AddEntry("&Clone\tCtrl+N", static_cast<int>(ENewBrowserMessages::kClone));
    fMenuFile->AddSeparator();
-   fMenuFile->AddEntry("New &Editor\tCtrl+E", kNewEditor);
-   fMenuFile->AddEntry("New &Canvas\tCtrl+C", kNewCanvas);
-   fMenuFile->AddEntry("New &HTML\tCtrl+H", kNewHtml);
+   fMenuFile->AddEntry("New &Editor\tCtrl+E", static_cast<int>(ENewBrowserMessages::kNewEditor));
+   fMenuFile->AddEntry("New &Canvas\tCtrl+C", static_cast<int>(ENewBrowserMessages::kNewCanvas));
+   fMenuFile->AddEntry("New &HTML\tCtrl+H", static_cast<int>(ENewBrowserMessages::kNewHtml));
    fMenuFile->AddSeparator();
    fMenuExecPlugin = new TGPopupMenu(fClient->GetRoot());
-   fMenuExecPlugin->AddEntry("&Macro...", kExecPluginMacro);
-   fMenuExecPlugin->AddEntry("&Command...", kExecPluginCmd);
+   fMenuExecPlugin->AddEntry("&Macro...", static_cast<int>(ENewBrowserMessages::kExecPluginMacro));
+   fMenuExecPlugin->AddEntry("&Command...", static_cast<int>(ENewBrowserMessages::kExecPluginCmd));
    fMenuFile->AddPopup("Execute &Plugin...", fMenuExecPlugin);
    fMenuFile->AddSeparator();
-   fMenuFile->AddEntry("Close &Tab\tCtrl+T", kCloseTab);
-   fMenuFile->AddEntry("Close &Window\tCtrl+W", kCloseWindow);
+   fMenuFile->AddEntry("Close &Tab\tCtrl+T", static_cast<int>(ENewBrowserMessages::kCloseTab));
+   fMenuFile->AddEntry("Close &Window\tCtrl+W", static_cast<int>(ENewBrowserMessages::kCloseWindow));
    fMenuFile->AddSeparator();
-   fMenuFile->AddEntry("&Quit Root\tCtrl+Q", kQuitRoot);
+   fMenuFile->AddEntry("&Quit Root\tCtrl+Q", static_cast<int>(ENewBrowserMessages::kQuitRoot));
    fMenuBar->AddPopup("&Browser", fMenuFile, fLH1);
    fMenuFile->Connect("Activated(Int_t)", "GRootBrowser", this, "HandleMenu(Int_t)");
    fPreMenuFrame->AddFrame(fMenuBar, fLH2);
@@ -385,7 +385,7 @@ void GRootBrowser::CloseTab(Int_t id)
 {
    /// Remove tab element id from right tab.
 
-   RemoveTab(kRight, id);
+   RemoveTab(static_cast<Int_t>(EInsertPosition::kRight), id);
 }
 
 //______________________________________________________________________________
@@ -590,10 +590,10 @@ TGTab* GRootBrowser::GetTab(Int_t pos) const
 {
    /// Returns the TGTab at position pos.
 
-   switch(pos) {
-   case kLeft: return fTabLeft;
-   case kRight: return fTabRight;
-   case kBottom: return fTabBottom;
+   switch(static_cast<EInsertPosition>(pos)) {
+		case EInsertPosition::kLeft: return fTabLeft;
+		case EInsertPosition::kRight: return fTabRight;
+		case EInsertPosition::kBottom: return fTabBottom;
    default: return nullptr;
    }
 }
@@ -625,15 +625,15 @@ Bool_t GRootBrowser::HandleKey(Event_t* event)
       }
       if((event->fState & kKeyControlMask) != 0u) {     // Cntrl key modifier pressed
          switch(static_cast<EKeySym>(keysym) & ~0x20) { // treat upper and lower the same
-         case kKey_B: fMenuFile->Activated(kBrowse); return kTRUE;
-         case kKey_O: fMenuFile->Activated(kOpenFile); return kTRUE;
-         case kKey_E: fMenuFile->Activated(kNewEditor); return kTRUE;
-         case kKey_C: fMenuFile->Activated(kNewCanvas); return kTRUE;
-         case kKey_H: fMenuFile->Activated(kNewHtml); return kTRUE;
-         case kKey_N: fMenuFile->Activated(kClone); return kTRUE;
-         case kKey_T: fMenuFile->Activated(kCloseTab); return kTRUE;
-         case kKey_W: fMenuFile->Activated(kCloseWindow); return kTRUE;
-         case kKey_Q: fMenuFile->Activated(kQuitRoot); return kTRUE;
+				case kKey_B: fMenuFile->Activated(static_cast<int>(ENewBrowserMessages::kBrowse)); return kTRUE;
+				case kKey_O: fMenuFile->Activated(static_cast<int>(ENewBrowserMessages::kOpenFile)); return kTRUE;
+				case kKey_E: fMenuFile->Activated(static_cast<int>(ENewBrowserMessages::kNewEditor)); return kTRUE;
+				case kKey_C: fMenuFile->Activated(static_cast<int>(ENewBrowserMessages::kNewCanvas)); return kTRUE;
+				case kKey_H: fMenuFile->Activated(static_cast<int>(ENewBrowserMessages::kNewHtml)); return kTRUE;
+				case kKey_N: fMenuFile->Activated(static_cast<int>(ENewBrowserMessages::kClone)); return kTRUE;
+				case kKey_T: fMenuFile->Activated(static_cast<int>(ENewBrowserMessages::kCloseTab)); return kTRUE;
+				case kKey_W: fMenuFile->Activated(static_cast<int>(ENewBrowserMessages::kCloseWindow)); return kTRUE;
+				case kKey_Q: fMenuFile->Activated(static_cast<int>(ENewBrowserMessages::kQuitRoot)); return kTRUE;
          default: break;
          }
       }
@@ -653,9 +653,9 @@ void GRootBrowser::HandleMenu(Int_t id)
    if(sender != fMenuFile) {
       return;
    }
-   switch(id) {
-   case kBrowse: new TBrowser(); break;
-   case kOpenFile: {
+   switch(static_cast<ENewBrowserMessages>(id)) {
+		case ENewBrowserMessages::kBrowse: new TBrowser(); break;
+		case ENewBrowserMessages::kOpenFile: {
       Bool_t         newfile = kFALSE;
       static TString dir(".");
       TGFileInfo     fi;
@@ -682,7 +682,7 @@ void GRootBrowser::HandleMenu(Int_t id)
       }
    } break;
    // Handle Help menu items...
-   case kHelpAbout: {
+		case ENewBrowserMessages::kHelpAbout: {
 #ifdef R__UNIX
       TString rootx;
 #ifdef ROOTBINDIR
@@ -707,54 +707,54 @@ void GRootBrowser::HandleMenu(Int_t id)
 #endif // WIN32
 #endif // R__UNIX
    } break;
-   case kHelpOnCanvas:
+		case ENewBrowserMessages::kHelpOnCanvas:
       hd = new TRootHelpDialog(this, "Help on Canvas...", 600, 400);
       hd->SetText(gHelpCanvas);
       hd->Popup();
       break;
-   case kHelpOnMenus:
+		case ENewBrowserMessages::kHelpOnMenus:
       hd = new TRootHelpDialog(this, "Help on Menus...", 600, 400);
       hd->SetText(gHelpPullDownMenus);
       hd->Popup();
       break;
-   case kHelpOnGraphicsEd:
+		case ENewBrowserMessages::kHelpOnGraphicsEd:
       hd = new TRootHelpDialog(this, "Help on Graphics Editor...", 600, 400);
       hd->SetText(gHelpGraphicsEditor);
       hd->Popup();
       break;
-   case kHelpOnBrowser:
+		case ENewBrowserMessages::kHelpOnBrowser:
       hd = new TRootHelpDialog(this, "Help on Browser...", 600, 400);
       hd->SetText(gHelpBrowser);
       hd->Popup();
       break;
-   case kHelpOnObjects:
+		case ENewBrowserMessages::kHelpOnObjects:
       hd = new TRootHelpDialog(this, "Help on Objects...", 600, 400);
       hd->SetText(gHelpObjects);
       hd->Popup();
       break;
-   case kHelpOnPS:
+		case ENewBrowserMessages::kHelpOnPS:
       hd = new TRootHelpDialog(this, "Help on PostScript...", 600, 400);
       hd->SetText(gHelpPostscript);
       hd->Popup();
       break;
-   case kHelpOnRemote:
+		case ENewBrowserMessages::kHelpOnRemote:
       hd = new TRootHelpDialog(this, "Help on Browser...", 600, 400);
       hd->SetText(gHelpRemote);
       hd->Popup();
       break;
-   case kClone: CloneBrowser(); break;
-   case kNewEditor:
+		case ENewBrowserMessages::kClone: CloneBrowser(); break;
+		case ENewBrowserMessages::kNewEditor:
       cmd.Form("new TGTextEditor((const char *)0, gClient->GetRoot())");
       ++eNr;
       ExecPlugin(Form("Editor %d", eNr), "", cmd.Data(), 1);
       break;
-   case kNewCanvas: ExecPlugin("", "", "new TCanvas()", 1); break;
-   case kNewHtml:
+		case ENewBrowserMessages::kNewCanvas: ExecPlugin("", "", "new TCanvas()", 1); break;
+		case ENewBrowserMessages::kNewHtml:
       cmd.Form(R"(new TGHtmlBrowser("%s", gClient->GetRoot()))",
                gEnv->GetValue("Browser.StartUrl", "http://root.cern.ch"));
       ExecPlugin("HTML", "", cmd.Data(), 1);
       break;
-   case kExecPluginMacro: {
+		case ENewBrowserMessages::kExecPluginMacro: {
       static TString dir(".");
       TGFileInfo     fi;
       fi.fFileTypes = gPluginFileTypes;
@@ -762,20 +762,20 @@ void GRootBrowser::HandleMenu(Int_t id)
       new TGFileDialog(gClient->GetDefaultRoot(), this, kFDOpen, &fi);
       dir = fi.fIniDir;
       if(fi.fFilename != nullptr) {
-         ExecPlugin(nullptr, fi.fFilename, nullptr, kRight);
+         ExecPlugin(nullptr, fi.fFilename, nullptr, static_cast<Int_t>(EInsertPosition::kRight));
       }
    } break;
-   case kExecPluginCmd: {
+		case ENewBrowserMessages::kExecPluginCmd: {
       char command[1024];
       strlcpy(command, "new TGLSAViewer(gClient->GetRoot(), 0);", sizeof(command));
       new TGInputDialog(gClient->GetRoot(), this, "Enter plugin command line:", command, command);
       if(strcmp(command, "") != 0) {
-         ExecPlugin("User", nullptr, command, kRight);
+         ExecPlugin("User", nullptr, command, static_cast<Int_t>(EInsertPosition::kRight));
       }
    } break;
-   case kCloseTab: CloseTab(fTabRight->GetCurrent()); break;
-   case kCloseWindow: CloseWindow(); break;
-   case kQuitRoot:
+		case ENewBrowserMessages::kCloseTab: CloseTab(fTabRight->GetCurrent()); break;
+		case ENewBrowserMessages::kCloseWindow: CloseWindow(); break;
+		case ENewBrowserMessages::kQuitRoot:
       CloseWindow();
       gApplication->Terminate(0);
       break;
@@ -920,17 +920,17 @@ void GRootBrowser::RemoveTab(Int_t pos, Int_t subpos)
    /// Remove tab element "subpos" from tab "pos".
 
    TGTab* edit = nullptr;
-   switch(pos) {
-   case kLeft: // left
+   switch(static_cast<EInsertPosition>(pos)) {
+		case EInsertPosition::kLeft: // left
       edit = fTabLeft;
       break;
-   case kRight: // right
+		case EInsertPosition::kRight: // right
       edit = fTabRight;
       fMenuFrame->HideFrame(fActMenuBar);
       fMenuFrame->GetList()->Remove(fActMenuBar);
       fActMenuBar = nullptr;
       break;
-   case kBottom: // bottom
+		case EInsertPosition::kBottom: // bottom
       edit = fTabBottom;
       break;
    }
@@ -985,7 +985,7 @@ void GRootBrowser::SetTab(Int_t pos, Int_t subpos)
    }
 
    if((tab != nullptr) && tab->SetTab(subpos, kFALSE)) { // Block signal emit
-      if(pos == kRight) {
+      if(static_cast<EInsertPosition>(pos) == EInsertPosition::kRight) {
          SwitchMenus(tab->GetTabContainer(subpos));
       }
       tab->Layout();

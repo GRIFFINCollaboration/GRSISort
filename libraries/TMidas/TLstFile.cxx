@@ -31,18 +31,18 @@ TLstFile::TLstFile()
    fFileSize  = 0;
 }
 
-TLstFile::TLstFile(const char* filename, EOpenType open_type) : TLstFile()
+TLstFile::TLstFile(const char* filename, TRawFile::EOpenType open_type) : TLstFile()
 {
    switch(open_type) {
-   case kRead: Open(filename); break;
+	case TRawFile::EOpenType::kRead: Open(filename); break;
 
-   case kWrite: break;
+	case TRawFile::EOpenType::kWrite: break;
    }
 }
 
 TLstFile::~TLstFile()
 {
-   // Default dtor. It closes the read in midas file as well as the output midas file.
+   // Default dtor. It closes the read in lst file as well as the output lst file.
    Close();
 }
 
@@ -52,7 +52,7 @@ std::string TLstFile::Status(bool)
                (fBytesRead / 1000000.0), (fFileSize / 1000000.0));
 }
 
-/// Open a midas .mid file with given file name.
+/// Open a lst .lst file with given file name.
 ///
 /// Remote files can be accessed using these special file names:
 /// - pipein://command - read data produced by given command, see examples below
@@ -103,6 +103,7 @@ bool TLstFile::Open(const char* filename)
 #endif
 
    TGRSIRunInfo::SetRunInfo(GetRunNumber(), GetSubRunNumber());
+	TGRSIRunInfo::ClearGRSIVersion();
    TGRSIRunInfo::SetGRSIVersion(GRSI_RELEASE);
 
    std::cout<<"Successfully read "<<fFileSize - headerSize<<" bytes into buffer!"<<std::endl;
@@ -114,7 +115,7 @@ void TLstFile::Close()
 {
 }
 
-/// \param [in] midasEvent Pointer to an empty TLstEvent
+/// \param [in] lstEvent Pointer to an empty TLstEvent
 /// \returns "true" for success, "false" for failure, see GetLastError() to see why
 ///
 ///  EDITED FROM THE ORIGINAL TO RETURN TOTAL SUCESSFULLY BYTES READ INSTEAD OF TRUE/FALSE,  PCB

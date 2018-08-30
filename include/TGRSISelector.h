@@ -18,6 +18,8 @@
 #include "GHSym.h"
 #include "GCube.h"
 #include "TAnalysisOptions.h"
+#include "TPPG.h"
+#include "TGRSIMap.h"
 
 #include <string>
 
@@ -56,15 +58,19 @@ public:
    void SetOutputPrefix(const char* prefix) { fOutputPrefix = prefix; }
 
 protected:
-   std::map<std::string, TH1*>        fH1;
-   std::map<std::string, TH2*>        fH2;
-   std::map<std::string, GHSym*>      fSym;
-   std::map<std::string, GCube*>      fCube;
-   std::map<std::string, THnSparseF*> fHSparse;
+   TGRSIMap<std::string, TH1*>        fH1; //!<!
+   TGRSIMap<std::string, TH2*>        fH2; //!<!
+   TGRSIMap<std::string, TH3*>        fH3; //!<!
+   TGRSIMap<std::string, GHSym*>      fSym; //!<!
+   TGRSIMap<std::string, GCube*>      fCube; //!<!
+   TGRSIMap<std::string, THnSparseF*> fHSparse; //!<!
+	TPPG*             fPpg{nullptr}; //!<!
 
 private:
-   std::string       fOutputPrefix;
-   TAnalysisOptions* fAnalysisOptions{nullptr};
+   std::string       fOutputPrefix; //!<!
+   TAnalysisOptions* fAnalysisOptions{nullptr}; //!<!
+	Int_t             fFirstRunNumber; //!<!
+	Int_t             fFirstSubRunNumber; //!<!
 
    ClassDefOverride(TGRSISelector, 2);
 };

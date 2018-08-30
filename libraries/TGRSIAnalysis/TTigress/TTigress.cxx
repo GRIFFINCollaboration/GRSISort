@@ -14,9 +14,10 @@ ClassImp(TTigress)
 /// \endcond
 
 double TTigress::fTargetOffset = 0.;
+double TTigress::fRadialOffset = 0.;
 
 // Default tigress unpacking settings
-TTransientBits<UShort_t> TTigress::fgTigressBits(TTigress::kSetCoreWave | TTigress::kSetBGOHits);
+TTransientBits<UShort_t> TTigress::fgTigressBits(ETigressGlobalBits::kSetCoreWave | ETigressGlobalBits::kSetBGOHits);
 
 // Why arent these TTigress class functions?
 bool DefaultAddback(TTigressHit& one, TTigressHit& two)
@@ -72,6 +73,17 @@ bool DefaultSuppression(TTigressHit& tig, TBgoHit& bgo)
 
 std::function<bool(TTigressHit&, TBgoHit&)> TTigress::fSuppressionCriterion = DefaultSuppression;
 
+std::underlying_type<TTigress::ETigressGlobalBits>::type operator |(TTigress::ETigressGlobalBits lhs, TTigress::ETigressGlobalBits rhs)  
+{
+	return static_cast<std::underlying_type<TTigress::ETigressGlobalBits>::type>(lhs) |
+		    static_cast<std::underlying_type<TTigress::ETigressGlobalBits>::type>(rhs);
+}
+
+//TTigress::ETigressGlobalBits& operator |(TTigress::ETigressGlobalBits& lhs, TTigress::ETigressGlobalBits rhs)
+//{
+//	return static_cast<TTigress::ETigressGlobalBits>(static_cast<std::underlying_type<TTigress::ETigressGlobalBits>::type>(lhs), static_cast<std::underlying_type<TTigress::ETigressGlobalBits>::type>(rhs));
+//}
+
 TTigress::TTigress() : TGRSIDetector()
 {
    // Class()->IgnoreTObjectStreamer(true);
@@ -96,6 +108,7 @@ void TTigress::Copy(TObject& rhs) const
    static_cast<TTigress&>(rhs).fTigressHits  = fTigressHits;
    static_cast<TTigress&>(rhs).fAddbackHits  = fAddbackHits;
    static_cast<TTigress&>(rhs).fAddbackFrags = fAddbackFrags;
+   static_cast<TTigress&>(rhs).fBgos = fBgos;
    static_cast<TTigress&>(rhs).fTigressBits  = 0;
 }
 
@@ -107,7 +120,7 @@ void TTigress::Clear(Option_t* opt)
    fAddbackHits.clear();
    fAddbackFrags.clear();
    fBgos.clear();
-   // fTigressBits.SetBit(TTigress::kAddbackSet,false);
+   // fTigressBits.SetBit(ETigressBits::kAddbackSet,false);
    fTigressBits = 0;
 }
 
@@ -133,7 +146,7 @@ Int_t TTigress::GetAddbackMultiplicity()
       return 0;
    }
    // if the addback has been reset, clear the addback hits
-   if(!fTigressBits.TestBit(kAddbackSet)) {
+   if(!fTigressBits.TestBit(ETigressBits::kAddbackSet)) {
       fAddbackHits.clear();
    } else {
       return fAddbackHits.size();
@@ -163,7 +176,7 @@ Int_t TTigress::GetAddbackMultiplicity()
          fAddbackFrags.push_back(1);
       }
    }
-   fTigressBits.SetBit(kAddbackSet, true);
+   fTigressBits.SetBit(ETigressBits::kAddbackSet, true);
 
    return fAddbackHits.size();
 }
@@ -223,12 +236,9 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
       return;
    }
 
-   // if((chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) &&
-   if((chan->GetMnemonic()->SubSystem() == TMnemonic::kG) &&
+   if((chan->GetMnemonic()->SubSystem() == TMnemonic::EMnemonic::kG) &&
       (chan->GetSegmentNumber() == 0 || chan->GetSegmentNumber() == 9)) { // it is a core
-      // if(frag->Charge.size() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a
-      // good energy and time (cfd or led).
-      //  return;
+
       TTigressHit corehit; //(*frag);
       // loop over existing hits to see if this core was already created by a previously found segment
       // of course this means if we have a core in "coincidence" with itself we will overwrite the first hit
@@ -236,40 +246,39 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
          TTigressHit* hit = GetTigressHit(i);
          if((hit->GetDetector() == chan->GetDetectorNumber()) &&
             (hit->GetCrystal() == chan->GetCrystalNumber())) { // we have a match;
-            // if(hit->Charge() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a
-            // good energy and time (cfd or led).
-            // if(chan->GetMnemonic()->outputsensor.compare(0,1,"b")==0) {
-            if(chan->GetMnemonic()->OutputSensor() == TMnemonic::kB) {
-               if(hit->GetName()[9] == 'a') {
-                  return;
-               }
-               hit->CopyFragment(*frag);
-               if(TestGlobalBit(kSetCoreWave)) {
-                  frag->CopyWave(*hit);
-               }
-               return;
+
+	    // B cores will not replace A cores,
+	    // but they will replace no-core hits created if segments are processed first.
+            if(chan->GetMnemonic()->OutputSensor() == TMnemonic::EMnemonic::kB) {
+		 TChannel* hitchan = hit->GetChannel();
+		 if(hitchan != nullptr) {  
+			if(hitchan->GetMnemonic()->OutputSensor() == TMnemonic::EMnemonic::kA) {
+				return;
+			}
+		 }
             }
+            
             hit->CopyFragment(*frag);
-            if(TestGlobalBit(kSetCoreWave)) {
+            if(TestGlobalBit(ETigressGlobalBits::kSetCoreWave)) {
                frag->CopyWave(*hit);
             }
             return;
          }
       }
       corehit.CopyFragment(*frag);
-      if(TestGlobalBit(kSetCoreWave)) {
+      if(TestGlobalBit(ETigressGlobalBits::kSetCoreWave)) {
          frag->CopyWave(corehit);
       }
       fTigressHits.push_back(corehit);
       return;
    }
-   if(chan->GetMnemonic()->SubSystem() == TMnemonic::kG) { // its ge but its not a core...
+   if(chan->GetMnemonic()->SubSystem() == TMnemonic::EMnemonic::kG) { // its ge but its not a core...
       TGRSIDetectorHit temp(*frag);
       for(size_t i = 0; i < fTigressHits.size(); ++i) {
          TTigressHit* hit = GetTigressHit(i);
          if((hit->GetDetector() == chan->GetDetectorNumber()) &&
             (hit->GetCrystal() == chan->GetCrystalNumber())) { // we have a match;
-            if(TestGlobalBit(kSetSegWave)) {
+            if(TestGlobalBit(ETigressGlobalBits::kSetSegWave)) {
                frag->CopyWave(temp);
             }
             hit->AddSegment(temp);
@@ -278,14 +287,14 @@ void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChanne
       }
       TTigressHit corehit;
       corehit.SetAddress((frag->GetAddress())); // fake it till you make it
-      if(TestGlobalBit(kSetSegWave)) {
+      if(TestGlobalBit(ETigressGlobalBits::kSetSegWave)) {
          frag->CopyWave(temp);
       }
       corehit.AddSegment(temp);
       fTigressHits.push_back(corehit);
       return;
    }
-   if(chan->GetMnemonic()->SubSystem() == TMnemonic::kS) {
+   if(chan->GetMnemonic()->SubSystem() == TMnemonic::EMnemonic::kS) {
       TBgoHit temp(*frag);
       fBgos.push_back(temp);
       return;
@@ -301,7 +310,7 @@ void TTigress::ResetAddback()
    /// be called before building the new addback hits, otherwise, a copy of
    /// the old addback hits will be stored instead.
    /// This should have changed now, we're using the stored tigress bits to reset the addback
-   fTigressBits.SetBit(kAddbackSet, false);
+   fTigressBits.SetBit(ETigressBits::kAddbackSet, false);
    fAddbackHits.clear();
    fAddbackFrags.clear();
 }
@@ -323,79 +332,137 @@ TVector3 TTigress::GetPosition(const TTigressHit& hit, double dist, bool smear)
 
 TVector3 TTigress::GetPosition(int DetNbr, int CryNbr, int SegNbr, double dist, bool smear)
 {
-   TVector3 det_pos;
-   double   xx = 0;
-   double   yy = 0;
-   double   zz = 0;
+	if(!GetVectorsBuilt){
+		BuildVectors();
+	}
+	
+	int BackPos=0;
+	
+	// Would be good to get rid of "dist" and just use SetArrayBackPos, but leaving in for old codes.
+	if(dist>0){
+		if(dist > 140.)BackPos=1;
+	}else if(GetArrayBackPos()){
+		BackPos=1;
+	}
+		
+	if(smear && SegNbr==0){
+		double   x, y, r = sqrt(gRandom->Uniform(0, 400));
+		gRandom->Circle(x, y, r);
+		return fPositionVectors[BackPos][DetNbr][CryNbr][SegNbr] + fCloverCross[DetNbr][0]*x + fCloverCross[DetNbr][1]*y;
+	}
 
-   if(dist > 140. || (GetArrayBackPos() && dist < 100.)) { // 145.0
+	return fPositionVectors[BackPos][DetNbr][CryNbr][SegNbr];
+}	
+	
+ 
 
-      switch(CryNbr) {
-      case -1: break;
-      case 0:
-         xx = GeBluePositionBack[DetNbr][SegNbr][0];
-         yy = GeBluePositionBack[DetNbr][SegNbr][1];
-         zz = GeBluePositionBack[DetNbr][SegNbr][2];
-         break;
-      case 1:
-         xx = GeGreenPositionBack[DetNbr][SegNbr][0];
-         yy = GeGreenPositionBack[DetNbr][SegNbr][1];
-         zz = GeGreenPositionBack[DetNbr][SegNbr][2];
-         break;
-      case 2:
-         xx = GeRedPositionBack[DetNbr][SegNbr][0];
-         yy = GeRedPositionBack[DetNbr][SegNbr][1];
-         zz = GeRedPositionBack[DetNbr][SegNbr][2];
-         break;
-      case 3:
-         xx = GeWhitePositionBack[DetNbr][SegNbr][0];
-         yy = GeWhitePositionBack[DetNbr][SegNbr][1];
-         zz = GeWhitePositionBack[DetNbr][SegNbr][2];
-         break;
-      };
-      det_pos.SetXYZ(xx, yy, zz);
-   } else {
-      switch(CryNbr) {
-      case -1: break;
-      case 0:
-         xx = GeBluePosition[DetNbr][SegNbr][0];
-         yy = GeBluePosition[DetNbr][SegNbr][1];
-         zz = GeBluePosition[DetNbr][SegNbr][2];
-         break;
-      case 1:
-         xx = GeGreenPosition[DetNbr][SegNbr][0];
-         yy = GeGreenPosition[DetNbr][SegNbr][1];
-         zz = GeGreenPosition[DetNbr][SegNbr][2];
-         break;
-      case 2:
-         xx = GeRedPosition[DetNbr][SegNbr][0];
-         yy = GeRedPosition[DetNbr][SegNbr][1];
-         zz = GeRedPosition[DetNbr][SegNbr][2];
-         break;
-      case 3:
-         xx = GeWhitePosition[DetNbr][SegNbr][0];
-         yy = GeWhitePosition[DetNbr][SegNbr][1];
-         zz = GeWhitePosition[DetNbr][SegNbr][2];
-         break;
-      };
+void TTigress::BuildVectors(){
+
+ for(int Back=0;Back<2;Back++){
+  for(int DetNbr=0;DetNbr<17;DetNbr++){
+   for(int CryNbr=0;CryNbr<4;CryNbr++){
+    for(int SegNbr=0;SegNbr<9;SegNbr++){
+
+	    
+	TVector3 det_pos;
+	double   xx = 0;
+	double   yy = 0;
+	double   zz = 0;
+   
+	if(Back==1) { // distance=145.0
+	switch(CryNbr) {
+		case -1: break;
+		case 0:
+			xx = GeBluePositionBack[DetNbr][SegNbr][0];
+			yy = GeBluePositionBack[DetNbr][SegNbr][1];
+			zz = GeBluePositionBack[DetNbr][SegNbr][2];
+			break;
+		case 1:
+			xx = GeGreenPositionBack[DetNbr][SegNbr][0];
+			yy = GeGreenPositionBack[DetNbr][SegNbr][1];
+			zz = GeGreenPositionBack[DetNbr][SegNbr][2];
+			break;
+		case 2:
+			xx = GeRedPositionBack[DetNbr][SegNbr][0];
+			yy = GeRedPositionBack[DetNbr][SegNbr][1];
+			zz = GeRedPositionBack[DetNbr][SegNbr][2];
+			break;
+		case 3:
+			xx = GeWhitePositionBack[DetNbr][SegNbr][0];
+			yy = GeWhitePositionBack[DetNbr][SegNbr][1];
+			zz = GeWhitePositionBack[DetNbr][SegNbr][2];
+			break;
+		};
+	} else {
+		switch(CryNbr) {
+		case -1: break;
+		case 0:
+			xx = GeBluePosition[DetNbr][SegNbr][0];
+			yy = GeBluePosition[DetNbr][SegNbr][1];
+			zz = GeBluePosition[DetNbr][SegNbr][2];
+			break;
+		case 1:
+			xx = GeGreenPosition[DetNbr][SegNbr][0];
+			yy = GeGreenPosition[DetNbr][SegNbr][1];
+			zz = GeGreenPosition[DetNbr][SegNbr][2];
+			break;
+		case 2:
+			xx = GeRedPosition[DetNbr][SegNbr][0];
+			yy = GeRedPosition[DetNbr][SegNbr][1];
+			zz = GeRedPosition[DetNbr][SegNbr][2];
+			break;
+		case 3:
+			xx = GeWhitePosition[DetNbr][SegNbr][0];
+			yy = GeWhitePosition[DetNbr][SegNbr][1];
+			zz = GeWhitePosition[DetNbr][SegNbr][2];
+			break;
+		};
+	}
+
+	det_pos.SetXYZ(xx, yy, zz - fTargetOffset);
+
+	if(fRadialOffset){
+		det_pos+=fCloverRadial[DetNbr].Unit()*fRadialOffset;
+	}
+	
+	fPositionVectors[Back][DetNbr][CryNbr][SegNbr]=det_pos;
+    }
    }
+  }
+ }
 
-   det_pos.SetXYZ(xx, yy, zz - fTargetOffset);
 
-   if(smear) {
-      if(SegNbr == 0) {
-         // Not perfect as it takes the perpendicular core vector, not the clover vector, but good enough for my
-         // purposes
-         TVector3 a(-yy, xx, 0);
-         TVector3 b = TVector3(xx, yy, zz).Cross(a);
-         double   x, y, r = sqrt(gRandom->Uniform(0, 400));
-         gRandom->Circle(x, y, r);
-         det_pos += a.Unit() * x + b.Unit() * y;
-      }
-   }
+  for(int DetNbr=0;DetNbr<17;DetNbr++){
+	TVector3 a(-fCloverRadial[DetNbr].Y(),fCloverRadial[DetNbr].X(), 0);
+	TVector3 b = fCloverRadial[DetNbr].Cross(a);	  
+	fCloverCross[DetNbr][0]=a.Unit();
+	fCloverCross[DetNbr][1]=b.Unit();
+  }
 
-   return det_pos;
+  SetGlobalBit(ETigressGlobalBits::kVectorsBuilt, true);
 }
+
+TVector3 TTigress::fPositionVectors[2][17][4][9];
+TVector3 TTigress::fCloverCross[17][2];
+
+
+TVector3 TTigress::fCloverRadial[17]={TVector3(0., 0., 0.),
+				     TVector3( 0.9239, 0.3827, 1.),
+				     TVector3(-0.3827, 0.9239, 1.),
+				     TVector3(-0.9239, -0.3827, 1.),
+				     TVector3(0.3827, -0.9239, 1.),
+				     TVector3( 0.9239, 0.3827, 0.),
+				     TVector3(0.3827, 0.9239, 0.),
+				     TVector3(-0.3827, 0.9239, 0.),
+				     TVector3(-0.9239, 0.3827, 0.),
+				     TVector3(-0.9239, -0.3827, 0.),
+				     TVector3(-0.3827, -0.9239, 0.),
+				     TVector3(0.3827, -0.9239, 0.),
+				     TVector3(0.9239, -0.3827, 0.),
+				     TVector3( 0.9239, 0.3827, -1.),
+				     TVector3(-0.3827, 0.9239, -1.),
+				     TVector3(-0.9239, -0.3827, -1.),
+				     TVector3(0.3827, -0.9239, -1.)};
 
 double TTigress::GeBluePosition[17][9][3] = {{{0., 0., 0.},
                                               {0., 0., 0.},

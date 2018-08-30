@@ -30,10 +30,8 @@
 
 class TLstFile : public TRawFile {
 public:
-   enum EOpenType { kRead, kWrite };
-
    TLstFile(); ///< default constructor
-   TLstFile(const char* filename, EOpenType open_type = kRead);
+   TLstFile(const char* filename, TRawFile::EOpenType open_type = TRawFile::EOpenType::kRead);
    ~TLstFile() override; ///< destructor
 
    bool Open(const char* filename) override; ///< Open input file

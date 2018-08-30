@@ -3,16 +3,16 @@
 // Without this macro the THtml doc for TGRSIFunctions can't be generated
 NamespaceImp(TGRSIFunctions)
 
-   //////////////////////////////////////////////////////////////////////
-   //
-   // TGRSIFunctions
-   //
-   // This namespace is where we store all of our commonly used functions.
-   // This makes it easier to create fits etc.
-   //
-   ///////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+//
+// TGRSIFunctions
+//
+// This namespace is where we store all of our commonly used functions.
+// This makes it easier to create fits etc.
+//
+///////////////////////////////////////////////////////////////////////
 
-   Double_t TGRSIFunctions::CsIFitFunction(Double_t* i, Double_t* p)
+Double_t TGRSIFunctions::CsIFitFunction(Double_t* i, Double_t* p)
 {
    Double_t x, s, e;
 
@@ -361,15 +361,17 @@ Double_t TGRSIFunctions::PhotoEfficiency(Double_t* dim, Double_t* par)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Double_t TGRSIFunctions::ConvolutedDecay(Double_t *x, Double_t *par){
-//This function is derived from the convolution of a gaussian with an exponential decay, to fit TAC spectra of long half-lives (above 100 ps)
-//Requires the following parameters:
-//   - par[0]:  Normalization factor
-//   - par[1]:  Centroid of gaussian
-//   - par[2]:  Width of gaussian 
-//   - par[3]:  Lambda of the level
+Double_t TGRSIFunctions::ConvolutedDecay(Double_t *x, Double_t *par)
+{
+///This function is derived from the convolution of a gaussian with an exponential decay, to fit TAC spectra of long half-lives (above 100 ps)
+///Requires the following parameters:
+///   - par[0]:  Normalization factor
+///   - par[1]:  Centroid of gaussian
+///   - par[2]:  Sigma of gaussian 
+///   - par[3]:  Lambda of the level
 
   Double_t val;
+<<<<<<< HEAD
   val = TMath::Sqrt(TMath::Pi())*par[0]*par[3]/2*TMath::Exp(par[3]/2*(2*par[1]+par[3]*pow(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[3]*pow(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]))+par[4];
   return val;
 }
@@ -387,4 +389,8 @@ Double_t TGRSIFunctions::ConvolutedDecay2(Double_t *x, Double_t *par){
   Double_t val;
   val = TMath::Sqrt(TMath::Pi())*par[0]*par[3]/2*TMath::Exp(par[3]/2*(2*par[1]+par[3]*pow(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[3]*pow(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]))   +  TMath::Sqrt(TMath::Pi())*par[4]*par[5]/2*TMath::Exp(par[5]/2*(2*par[1]+par[5]*pow(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[5]*pow(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]));
   return val;
+=======
+  val = TMath::Sqrt(TMath::Pi())*par[0]*par[3]/2.*TMath::Exp(par[3]/2.*(2.*par[1]+par[3]*pow(par[2],2.)-2.*x[0]))*TMath::Erfc((par[1]+par[3]*pow(par[2],2.)-x[0])/(TMath::Sqrt(2)*par[2]));
+  return val;
+>>>>>>> eac87cd86fece320a8f994453688906bca5b0933
 }

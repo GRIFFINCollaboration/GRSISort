@@ -49,7 +49,7 @@ class TGRSIDetectorHit : public TObject {
 
    //
 public:
-   enum EBitFlag {
+   enum class EBitFlag {
       kIsEnergySet  = BIT(0), // same as BIT(0);
       kIsChannelSet = BIT(1),
       kBit2         = BIT(2),
@@ -70,8 +70,13 @@ public:
       kBase       = BIT(9),
       kIsAllSet   = 0xFFFF
    };
+	//EBitFlag operator &(EBitFlag lhs, EBitFlag rhs)
+	//{
+	//	return static_cast<EBitFlag>(static_cast<std::underlying_type<EBitFlag>::type>(lhs) &
+	//		                          static_cast<std::underlying_type<EBitFlag>::type>(rhs));
+	//}
 
-   enum ETimeFlag { kNone = BIT(0), kCFD = BIT(1), kWalk = BIT(2), kOffset = BIT(3), kAll = 0xFFFF };
+   enum class ETimeFlag { kNoneSet = BIT(0), kCFD = BIT(1), kWalk = BIT(2), kOffset = BIT(3), kAll = 0xFFFF };
 
 public:
    TGRSIDetectorHit(const int& Address = 0xffffffff);
@@ -86,7 +91,7 @@ public:
    bool operator<(const TGRSIDetectorHit& rhs) const { return GetEnergy() > rhs.GetEnergy(); } // sorts large->small
 
 public:
-   void         Copy(TObject&) const override;       //!<!
+   virtual void Copy(TObject&) const override;       //!<!
    virtual void Copy(TObject&, bool copywave) const; //!<!
    virtual void CopyWave(TObject&) const;            //!<!
    void Clear(Option_t* opt = "") override;          //!<!
@@ -111,13 +116,13 @@ public:
    Double_t SetEnergy(const double& en) const
    {
       fEnergy = en;
-      SetHitBit(kIsEnergySet, true);
+      SetHitBit(EBitFlag::kIsEnergySet, true);
       return fEnergy;
    }
    Double_t SetTime(const Double_t& time) const
    {
       fTime = time;
-      SetHitBit(kIsTimeSet, true);
+      SetHitBit(EBitFlag::kIsTimeSet, true);
       return fTime;
    }
 
@@ -126,9 +131,9 @@ public:
    virtual double GetEnergy(Option_t* opt = "") const;
    virtual Long64_t GetTimeStamp(Option_t* opt = "") const;
    Long64_t         GetRawTimeStamp(Option_t* = "") const { return fTimeStamp; }
-   virtual Double_t GetTime(const UInt_t& correct_flag = kAll,
+   virtual Double_t GetTime(const ETimeFlag& correct_flag = ETimeFlag::kAll,
                             Option_t*     opt          = "") const; ///< Returns a time value to the nearest nanosecond!
-   // TODO: Fix Getters to have non-const types
+   // TODO: Fix Getters to have non-const types (why?)
    virtual Int_t               GetCfd() const { return fCfd; }            //!<!
    virtual UInt_t              GetAddress() const { return fAddress; }    //!<!
    virtual Float_t             GetCharge() const;                         //!<!
@@ -139,7 +144,7 @@ public:
    {
       if(!IsChannelSet()) {
          fChannel = TChannel::GetChannel(fAddress);
-         SetHitBit(kIsChannelSet, true);
+         SetHitBit(EBitFlag::kIsChannelSet, true);
       }
       return fChannel;
    } //!<!
@@ -156,35 +161,37 @@ public:
    virtual Double_t GetEnergyNonlinearity(double) const { return 0.0; }
 
    // The PPG is only stored in events that come out of the GRIFFIN DAQ
-   uint16_t GetPPGStatus() const;
+	EPpgPattern GetPPGStatus() const;
    Long64_t GetCycleTimeStamp() const;
+	double GetTimeSinceTapeMove() const;
 
    void ClearEnergy()
    {
       fEnergy = 0.0;
-      SetHitBit(kIsEnergySet, false);
+      SetHitBit(EBitFlag::kIsEnergySet, false);
    }
    void ClearChannel()
    {
       fChannel = nullptr;
-      SetHitBit(kIsChannelSet, false);
+      SetHitBit(EBitFlag::kIsChannelSet, false);
    }
 
    static TVector3* GetBeamDirection() { return &fBeamDirection; }
 
+   virtual void Add(const TGRSIDetectorHit*) {} //!<!
 private:
    //     virtual TVector3 GetChannelPosition(Double_t dist) const { AbstractMethod("GetChannelPosition"); return
    //     TVector3(0., 0., 0.); }
 
 protected:
-   Bool_t IsEnergySet() const { return (fBitflags.TestBit(kIsEnergySet)); }
-   Bool_t IsChannelSet() const { return (fBitflags.TestBit(kIsChannelSet)); }
-   Bool_t IsTimeSet() const { return (fBitflags.TestBit(kIsTimeSet)); }
-   Bool_t IsPPGSet() const { return (fBitflags.TestBit(kIsPPGSet)); }
+   Bool_t IsEnergySet() const { return (fBitflags.TestBit(EBitFlag::kIsEnergySet)); }
+   Bool_t IsChannelSet() const { return (fBitflags.TestBit(EBitFlag::kIsChannelSet)); }
+   Bool_t IsTimeSet() const { return (fBitflags.TestBit(EBitFlag::kIsTimeSet)); }
+   Bool_t IsPPGSet() const { return (fBitflags.TestBit(EBitFlag::kIsPPGSet)); }
 
 public:
-   void SetHitBit(enum EBitFlag, Bool_t set = true) const; // const here is dirty
-   bool TestHitBit(enum EBitFlag flag) const { return fBitflags.TestBit(flag); }
+   void SetHitBit(EBitFlag, Bool_t set = true) const; // const here is dirty
+   bool TestHitBit(EBitFlag flag) const { return fBitflags.TestBit(flag); }
 
 protected:
    UInt_t               fAddress{0};   ///< address of the the channel in the DAQ.
@@ -197,7 +204,7 @@ protected:
 private:
    mutable Double_t fTime{0.}; //!<! Calibrated Time of the hit
    mutable Double_t fEnergy{0.};    //!<! Energy of the Hit.
-   mutable uint16_t fPPGStatus{0}; //!<!
+   mutable EPpgPattern fPPGStatus{EPpgPattern::kJunk}; //!<!
 
    mutable Long64_t  fCycleTimeStamp{0}; //!<!
    mutable TChannel* fChannel{nullptr};        //!<!

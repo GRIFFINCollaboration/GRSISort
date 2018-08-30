@@ -53,7 +53,7 @@ void TGRSIDetectorHit::Streamer(TBuffer& R__b)
    }
 }
 
-Double_t TGRSIDetectorHit::GetTime(const UInt_t&, Option_t*) const
+Double_t TGRSIDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
 {
    if(IsTimeSet()) {
       return fTime;
@@ -65,18 +65,33 @@ Double_t TGRSIDetectorHit::GetTime(const UInt_t&, Option_t*) const
       return SetTime(10. * (static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform())));
    }
    switch(channel->GetDigitizerType()) {
-      Double_t dTime;
-   case TMnemonic::kGRF16:
-      dTime = (GetTimeStamp() & (~0x3ffff)) * 10. +
-              (GetCfd() + gRandom->Uniform()) / 1.6; // CFD is in 10/16th of a nanosecond
+		Double_t dTime;
+		case TMnemonic::EDigitizer::kGRF16:
+		dTime = (GetTimeStamp() & (~0x3ffff)) * 10. +
+		channel->CalibrateCFD((GetCfd() + gRandom->Uniform()) / 1.6); // CFD is in 10/16th of a nanosecond
+		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
+		case TMnemonic::EDigitizer::kGRF4G:
+		dTime = GetTimeStamp() * 10. + channel->CalibrateCFD((fCfd >> 22) + ((fCfd & 0x3fffff) + gRandom->Uniform()) / 256.);
+		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
+		case TMnemonic::EDigitizer::kTIG10:
+		dTime = (GetTimeStamp() & (~0x7fffff)) * 10. +
+		channel->CalibrateCFD((GetCfd() + gRandom->Uniform()) / 1.6); // CFD is in 10/16th of a nanosecond
+		//channel->CalibrateCFD((GetCfd() & (~0xf) + gRandom->Uniform()) / 1.6); // PBender suggests this.
+		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
+      case TMnemonic::EDigitizer::kCaen:
+      //10 bit CFD for 0-2ns => divide by 512
+      dTime = GetTimeStamp() * 10. + channel->CalibrateCFD((GetCfd() + gRandom->Uniform()) / 512.);
       return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
-   case TMnemonic::kGRF4G:
-      dTime = GetTimeStamp() * 10. + (fCfd >> 22) + ((fCfd & 0x3fffff) + gRandom->Uniform()) / 256.;
-      return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
-   default:
-      dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
-      return SetTime(10. * (dTime - channel->GetTZero(GetEnergy())));
-   }
+		case TMnemonic::EDigitizer::kPixie:
+		dTime = GetTimeStamp() * 10. + channel->CalibrateCFD(fCfd/3276.8);// CFD is reported as 15bit interpolation of 10 ns
+		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
+		case TMnemonic::EDigitizer::kFastPixie:
+		dTime = GetTimeStamp() * 10. + channel->CalibrateCFD(fCfd/6553.6);// CFD is reported as 16bit interpolation of 10 ns
+		return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
+		default:
+		dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
+		return SetTime(10. * (dTime - channel->GetTZero(GetEnergy())));
+	}
    return 0.;
 }
 
@@ -86,7 +101,7 @@ Float_t TGRSIDetectorHit::GetCharge() const
    if(channel == nullptr) {
       return Charge();
    }
-   if(fKValue > 0) {
+   if(fKValue > 0 && !channel->UseCalFileIntegration()) {
       return Charge() / (static_cast<Float_t>(fKValue)); // this will use the integration value
    }
    if(channel->UseCalFileIntegration()) {
@@ -97,7 +112,7 @@ Float_t TGRSIDetectorHit::GetCharge() const
 
 double TGRSIDetectorHit::GetEnergy(Option_t*) const
 {
-   if(TestHitBit(kIsEnergySet)) {
+   if(TestHitBit(EBitFlag::kIsEnergySet)) {
       return fEnergy;
    }
    TChannel* channel = GetChannel();
@@ -180,14 +195,13 @@ void TGRSIDetectorHit::Clear(Option_t*)
    // fSegment        = -1;
    fEnergy         = 0.;
    fBitflags       = 0;
-   fPPGStatus      = TPPG::kJunk;
+   fPPGStatus      = EPpgPattern::kJunk;
    fCycleTimeStamp = 0;
    fChannel        = nullptr;
 }
 
 Int_t TGRSIDetectorHit::GetDetector() const
 {
-
    TChannel* channel = GetChannel();
    if(channel == nullptr) {
       Error("GetDetector", "No TChannel exists for address 0x%08x", GetAddress());
@@ -238,19 +252,19 @@ Long64_t TGRSIDetectorHit::GetTimeStamp(Option_t*) const
    return fTimeStamp - tmpChan->GetTimeOffset();
 }
 
-uint16_t TGRSIDetectorHit::GetPPGStatus() const
+EPpgPattern TGRSIDetectorHit::GetPPGStatus() const
 {
    if(IsPPGSet()) {
       return fPPGStatus;
    }
 
    if(TPPG::Get() == nullptr) {
-      return TPPG::kJunk;
+      return EPpgPattern::kJunk;
    }
 
    fPPGStatus      = TPPG::Get()->GetStatus(GetTimeStamp());
    fCycleTimeStamp = GetTimeStamp() - TPPG::Get()->GetLastStatusTime(GetTimeStamp());
-   SetHitBit(kIsPPGSet, true);
+   SetHitBit(EBitFlag::kIsPPGSet, true);
    return fPPGStatus;
 }
 
@@ -266,8 +280,14 @@ Long64_t TGRSIDetectorHit::GetCycleTimeStamp() const
 
    fPPGStatus      = TPPG::Get()->GetStatus(GetTimeStamp());
    fCycleTimeStamp = GetTimeStamp() - TPPG::Get()->GetLastStatusTime(GetTimeStamp());
-   SetHitBit(kIsPPGSet, true);
+   SetHitBit(EBitFlag::kIsPPGSet, true);
    return fCycleTimeStamp;
+}
+
+double TGRSIDetectorHit::GetTimeSinceTapeMove() const
+{
+	/// returns time in ns, minus the time of the last tape move
+	return GetTime() - 10.*TPPG::Get()->GetLastStatusTime(GetTimeStamp(), EPpgPattern::kTapeMove);
 }
 
 // const here is rather dirty

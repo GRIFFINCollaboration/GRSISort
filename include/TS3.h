@@ -14,7 +14,7 @@
 
 class TS3 : public TGRSIDetector {
 public:
-   enum ES3Bits {
+   enum class ES3Bits {
       kPixelsSet = BIT(0),
       kBit1      = BIT(1),
       kBit2      = BIT(2),
@@ -25,7 +25,7 @@ public:
       kBit7      = BIT(7)
    };
 
-   enum ES3GlobalBits {
+   enum class ES3GlobalBits {
       kPreSector  = BIT(0), // Preference sector energy when building pixels
       kMultHit    = BIT(1), // Attempt to reconstruct multi strip-hit events
       kKeepShared = BIT(2), // When kMultHit, reconstruct rather than discard charge sharing
@@ -49,6 +49,11 @@ public:
       fFrontBackEnergy = de;
       SetPixels(false);
    } // Set fractional allowed energy difference
+   void SetFrontBackEOffset(double de)
+   {
+      fFrontBackOffset = de;
+      SetPixels(false);
+   } // Set fractional allowed energy difference
    void SetFrontBackTime(int time)
    {
       fFrontBackTime = time;
@@ -64,32 +69,34 @@ public:
 
    static bool PreferenceSector(bool set = true)
    {
-      SetGlobalBit(kPreSector, set);
+      SetGlobalBit(ES3GlobalBits::kPreSector, set);
       return set;
    }                                                                    //!<!
-   static bool SectorPreference() { return TestGlobalBit(kPreSector); } //!<!
+   static bool SectorPreference() { return TestGlobalBit(ES3GlobalBits::kPreSector); } //!<!
    static bool SetMultiHit(bool set = true)
    {
-      SetGlobalBit(kMultHit, set);
+      SetGlobalBit(ES3GlobalBits::kMultHit, set);
       return set;
    }                                                          //!<!
-   static bool MultiHit() { return TestGlobalBit(kMultHit); } //!<!
+   static bool MultiHit() { return TestGlobalBit(ES3GlobalBits::kMultHit); } //!<!
    static bool SetKeepShared(bool set = true)
    {
-      SetGlobalBit(kKeepShared, set);
+      SetGlobalBit(ES3GlobalBits::kKeepShared, set);
       return set;
    }                                                               //!<!
-   static bool KeepShared() { return TestGlobalBit(kKeepShared); } //!<!
+   static bool KeepShared() { return TestGlobalBit(ES3GlobalBits::kKeepShared); } //!<!
 
-   bool PixelsSet() const { return TestBitNumber(kPixelsSet); }
-   void SetPixels(bool flag = true) { SetBitNumber(kPixelsSet, flag); }
-   void                BuildPixels();
+   bool PixelsSet() const { return TestBitNumber(ES3Bits::kPixelsSet); }
+   void SetPixels(bool flag = true) { SetBitNumber(ES3Bits::kPixelsSet, flag); }
+   void BuildPixels();
 
    static TVector3 GetPosition(int ring, int sector, bool smear = false);
    static TVector3 GetPosition(int ring, int sector, double offsetphi, double offsetZ, bool sectorsdownstream,
                                bool smear = false);
 
    void SetTargetDistance(double dist) { fTargetDistance = dist; }
+   
+   void ResetRingsSectors();
 
    void ClearTransients() override
    {
@@ -116,12 +123,12 @@ private:
 
    TTransientBits<UChar_t> fS3Bits; // flags for transient members
    void                    ClearStatus() { fS3Bits = 0; }
-   void SetBitNumber(enum ES3Bits bit, Bool_t set = true);
-   Bool_t TestBitNumber(enum ES3Bits bit) const { return (fS3Bits.TestBit(bit)); }
+   void SetBitNumber(ES3Bits bit, Bool_t set = true);
+   Bool_t TestBitNumber(ES3Bits bit) const { return (fS3Bits.TestBit(bit)); }
 
    static TTransientBits<UShort_t> fgS3Bits; // Global Bit
-   static void SetGlobalBit(enum ES3GlobalBits bit, Bool_t set = true) { fgS3Bits.SetBit(bit, set); }
-   static Bool_t TestGlobalBit(enum ES3GlobalBits bit) { return (fgS3Bits.TestBit(bit)); }
+   static void SetGlobalBit(ES3GlobalBits bit, Bool_t set = true) { fgS3Bits.SetBit(bit, set); }
+   static Bool_t TestGlobalBit(ES3GlobalBits bit) { return (fgS3Bits.TestBit(bit)); }
 
    /// for geometery
    static int fRingNumber;   //!<!
@@ -134,8 +141,11 @@ private:
    static double fInnerDiameter;  //!<!
    static double fTargetDistance; //!<!
 
-   static Int_t  fFrontBackTime;   //!
-   static double fFrontBackEnergy; //!
+   //In cfd units for historic reasons
+   static Int_t  fFrontBackTime;   //!<!
+   static double fFrontBackEnergy; //!<!
+   static double fFrontBackOffset; //!<!
+
 
    /// \cond CLASSIMP
    ClassDefOverride(TS3, 4)

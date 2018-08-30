@@ -15,16 +15,17 @@ int TS3::fSectorNumber  = 32;
 
 double TS3::fOffsetPhiCon = 0.5 * TMath::Pi(); // Offset between connector and sector 0 (viewed from sector side)
 double TS3::fOffsetPhiSet =
-   -22.5 * TMath::Pi() / 180.; // Phi rotation of connector in setup // -90 for bambino -22.5 for SPICE
+   -22.5 * TMath::Pi() / 180.; // Phi rotation of connector in setup // -112.5 for bambino -22.5 for SPICE
 double TS3::fOuterDiameter  = 70.;
 double TS3::fInnerDiameter  = 22.;
 double TS3::fTargetDistance = 31.;
 
 // Default tigress unpacking settings
-TTransientBits<UShort_t> TS3::fgS3Bits(TS3::kMultHit);
+TTransientBits<UShort_t> TS3::fgS3Bits = static_cast<std::underlying_type<TS3::ES3GlobalBits>::type>(TS3::ES3GlobalBits::kMultHit);
 
-Int_t  TS3::fFrontBackTime;
-double TS3::fFrontBackEnergy;
+Int_t  TS3::fFrontBackTime = 75;
+double TS3::fFrontBackEnergy = 0.9;
+double TS3::fFrontBackOffset = 0;
 
 TS3::TS3()
 {
@@ -60,7 +61,7 @@ void TS3::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* ch
 
    TS3Hit dethit(*frag); // Moved upstream/downstream switch into hit ctor
 
-   if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::kN) {
+   if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::EMnemonic::kN) {
       dethit.SetRingNumber(frag->GetSegment());
       dethit.SetSectorNumber(0);
 
@@ -104,13 +105,15 @@ void TS3::BuildPixels()
    // Shared rings and sectors can be constructed, by default they are not.
    // To enable shared hits, use SetMultiHit function
 
+   // if the pixels have been reset (or never set), clear the pixel hits //MUST BE FIRST
+   if(!fS3Bits.TestBit(ES3Bits::kPixelsSet)) {
+      fS3Hits.clear();
+   }
+	
    if(fS3RingHits.empty() || fS3SectorHits.empty()) {
       return;
    }
-   // if the pixels have been reset, clear the pixel hits
-   if(!fS3Bits.TestBit(kPixelsSet)) {
-      fS3Hits.clear();
-   }
+
    if(fS3Hits.empty()) {
 
       // We are going to want energies several times
@@ -130,10 +133,11 @@ void TS3::BuildPixels()
       /// Loop over two vectors and build energy+time matching hits
       for(size_t i = 0; i < fS3RingHits.size(); ++i) {
          for(size_t j = 0; j < fS3SectorHits.size(); ++j) {
+	    if(fS3RingHits[i].GetArrayPosition()!=fS3SectorHits[j].GetArrayPosition())continue;
 
-            if(abs(fS3RingHits[i].GetCfd() - fS3SectorHits[j].GetCfd()) < fFrontBackTime) { // check time
-               if(EneR[i] * fFrontBackEnergy < EneS[j] &&
-                  EneS[j] * fFrontBackEnergy < EneR[i]) { // if time is good check energy
+            if(abs(fS3RingHits[i].GetTime() - fS3SectorHits[j].GetTime())*1.6 < fFrontBackTime) { // check time
+               if((EneR[i] - fFrontBackOffset) * fFrontBackEnergy < EneS[j] &&
+                  (EneS[j] - fFrontBackOffset) * fFrontBackEnergy < EneR[i]) { // if time is good check energy
 
                   // Now we have accepted a good event, build it
                   if(SectorPreference()) {
@@ -184,15 +188,18 @@ void TS3::BuildPixels()
                   if(UsedSector.at(j)) {
                      continue;
                   }
+                  if(fS3RingHits[i].GetArrayPosition()!=fS3SectorHits[j].GetArrayPosition())continue;
+                  
                   for(size_t k = j + 1; k < fS3SectorHits.size(); ++k) {
                      if(UsedSector.at(k)) {
                         continue;
                      }
+                     if(fS3SectorHits[j].GetArrayPosition()!=fS3SectorHits[k].GetArrayPosition())continue;
 
-                     if(abs(fS3RingHits[i].GetCfd() - fS3SectorHits[j].GetCfd()) < fFrontBackTime &&
-                        abs(fS3RingHits[i].GetCfd() - fS3SectorHits[k].GetCfd()) < fFrontBackTime) { // check time
-                        if(EneR[i] * fFrontBackEnergy < (EneS[j] + EneS[k]) &&
-                           (EneS[j] + EneS[k]) * fFrontBackEnergy < EneR[i]) { // if time is good check energy
+                     if(abs(fS3RingHits[i].GetTime() - fS3SectorHits[j].GetTime())*1.6 < fFrontBackTime &&
+                        abs(fS3RingHits[i].GetTime() - fS3SectorHits[k].GetTime())*1.6 < fFrontBackTime) { // check time
+                        if((EneR[i] - fFrontBackOffset) * fFrontBackEnergy < (EneS[j] + EneS[k]) &&
+                           (EneS[j] + EneS[k] - fFrontBackOffset) * fFrontBackEnergy < EneR[i]) { // if time is good check energy
 
                            int SectorSep = fS3SectorHits[j].GetSector() - fS3SectorHits[k].GetSector();
                            if(abs(SectorSep) == 1 || abs(SectorSep) == fSectorNumber) {
@@ -260,15 +267,18 @@ void TS3::BuildPixels()
                   if(UsedRing.at(j)) {
                      continue;
                   }
+                  if(fS3SectorHits[i].GetArrayPosition()!=fS3RingHits[j].GetArrayPosition())continue;
+		  
                   for(size_t k = j + 1; k < fS3RingHits.size(); ++k) {
                      if(UsedRing.at(k)) {
                         continue;
                      }
+                     if(fS3RingHits[j].GetArrayPosition()!=fS3RingHits[k].GetArrayPosition())continue;
 
-                     if(abs(fS3SectorHits[i].GetCfd() - fS3RingHits[j].GetCfd()) < fFrontBackTime &&
-                        abs(fS3SectorHits[i].GetCfd() - fS3RingHits[k].GetCfd()) < fFrontBackTime) { // first check time
-                        if(EneS[i] * fFrontBackEnergy < (EneR[j] + EneR[k]) &&
-                           (EneR[j] + EneR[k]) * fFrontBackEnergy < EneS[i]) { // if time is good check energy
+                     if(abs(fS3SectorHits[i].GetTime() - fS3RingHits[j].GetTime())*1.6 < fFrontBackTime &&
+                        abs(fS3SectorHits[i].GetTime() - fS3RingHits[k].GetTime())*1.6 < fFrontBackTime) { // first check time
+                        if((EneS[i] - fFrontBackOffset) * fFrontBackEnergy < (EneR[j] + EneR[k]) &&
+                           (EneR[j] + EneR[k] - fFrontBackOffset) * fFrontBackEnergy < EneS[i]) { // if time is good check energy
 
                            if(abs(fS3RingHits[j].GetRing() - fS3RingHits[k].GetRing()) == 1) {
                               // Same sector and neighbour rings, almost certainly charge sharing
@@ -313,7 +323,7 @@ void TS3::BuildPixels()
          }
       }
 
-      SetBitNumber(kPixelsSet, true);
+      SetBitNumber(ES3Bits::kPixelsSet, true);
    }
 }
 
@@ -333,12 +343,15 @@ TVector3 TS3::GetPosition(int ring, int sector, double offsetphi, double offsetZ
    phi += fOffsetPhiCon;
    // The above calculates the position on the S3
 
-   // This orients the detector relative to the beam
+   // This sets orientation of the detector face relative to the beam
    if(sectorsdownstream) {
       phi = -phi;
    }
+   
+   //This rotates the detector around the beam-axis into the correct lab position
    phi += offsetphi;
 
+   //This produces a uniform distribution over the area of a pixel
    if(smear) {
       double sep = ring_width * 0.025;
       double r1 = radius - ring_width * 0.5 + sep, r2 = radius + ring_width * 0.5 - sep;
@@ -349,6 +362,17 @@ TVector3 TS3::GetPosition(int ring, int sector, double offsetphi, double offsetZ
 
    return TVector3(cos(phi) * radius, sin(phi) * radius, offsetZ);
 }
+
+void TS3::ResetRingsSectors(){
+	// This is necessary if you want mnemonics in a cal file to override those used during frag sort.
+	for(size_t i = 0; i < fS3SectorHits.size(); ++i) {
+		fS3SectorHits.at(i).SetSectorNumber();
+	}
+	for(size_t i = 0; i < fS3RingHits.size(); ++i) {
+		fS3RingHits.at(i).SetRingNumber();
+	}
+}
+
 
 TGRSIDetectorHit* TS3::GetHit(const int& idx)
 {
@@ -403,8 +427,6 @@ void TS3::Clear(Option_t* opt)
    fS3RingHits.clear();
    fS3SectorHits.clear();
 
-   fFrontBackTime   = 75;
-   fFrontBackEnergy = 0.9;
    SetPixels(false);
    SetMultiHit(false);
 }

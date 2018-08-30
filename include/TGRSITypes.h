@@ -6,13 +6,14 @@
 
 #include <Rtypes.h>
 
-enum kFileType {
+enum class kFileType {
    UNKNOWN_FILETYPE,
    NSCL_EVT,
    GRETINA_MODE2,
    GRETINA_MODE3,
    MIDAS_FILE,
    LST_FILE,
+	TDR_FILE,
    ROOT_DATA,
    ROOT_MACRO,
    CALIBRATED,

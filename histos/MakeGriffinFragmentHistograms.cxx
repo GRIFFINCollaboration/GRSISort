@@ -17,7 +17,7 @@ extern "C" void MakeFragmentHistograms(TRuntimeObjects& obj)
          obj.FillHistogram("sceptar_charge", 4000, 0, 4000, frag->GetCharge());
       }
 
-      if((chan->GetClassType() == TGriffin::Class()) && (chan->GetMnemonic()->OutputSensor() == TMnemonic::kA)) {
+      if((chan->GetClassType() == TGriffin::Class()) && (chan->GetMnemonic()->OutputSensor() == TMnemonic::EMnemonic::kA)) {
          obj.FillHistogram("griffin_energy", 8000, 0, 8000, frag->GetEnergy());
 
          obj.FillHistogram("grif_channel_charge", 65, 0, 65, frag->GetArrayNumber(), 10000, 0, 10000,
