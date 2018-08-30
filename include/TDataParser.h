@@ -29,8 +29,6 @@
 #include <memory>
 #endif
 
-//#include <enum_string.h>
-
 #include "TChannel.h"
 #include "TFragment.h"
 #include "TPPG.h"
@@ -48,9 +46,9 @@ public:
    void SetRecordDiag(bool temp = true) { fRecordDiag = temp; }
 
    // ENUM(EBank, char, kWFDN,kGRF1,kGRF2,kGRF3,kFME0,kFME1,kFME2,kFME3);
-   enum EBank { kWFDN = 0, kGRF1 = 1, kGRF2 = 2, kGRF3 = 3, kGRF4 = 4, kFME0 = 5, kFME1 = 6, kFME2 = 7, kFME3 = 8 };
+   enum class EBank { kWFDN = 0, kGRF1 = 1, kGRF2 = 2, kGRF3 = 3, kGRF4 = 4, kFME0 = 5, kFME1 = 6, kFME2 = 7, kFME3 = 8 };
 
-   enum EDataParserState {
+   enum class EDataParserState {
       kGood,
       kBadHeader,
       kMissingWords,
@@ -159,6 +157,9 @@ public:
    int FifoToFragment(unsigned short* data, int size, bool zerobuffer = false, unsigned int midasSerialNumber = 0,
                       time_t midasTime = 0);
    int FippsToFragment(std::vector<char> data);
+   int TdrToFragment(std::vector<char> data);
+
+	int CaenToFragment(uint32_t* data, int size);
 
 private:
 // utility

@@ -74,22 +74,26 @@ bool TFippsHit::CompareEnergy(const TFippsHit* lhs, const TFippsHit* rhs)
 	return (lhs->GetEnergy() > rhs->GetEnergy());
 }
 
-void TFippsHit::Add(const TFippsHit* hit)
+void TFippsHit::Add(const TGRSIDetectorHit* hit)
 {
+	const TFippsHit* fippsHit = dynamic_cast<const TFippsHit*>(hit);
+	if(fippsHit == nullptr) {
+		throw std::runtime_error("trying to add non-fipps hit to fipps hit!");
+	}
 	// add another griffin hit to this one (for addback),
 	// using the time and position information of the one with the higher energy
-	if(!CompareEnergy(this, hit)) {
-		SetCfd(hit->GetCfd());
-		SetTime(hit->GetTime());
-		// SetPosition(hit->GetPosition());
-		SetAddress(hit->GetAddress());
+	if(!CompareEnergy(this, fippsHit)) {
+		SetCfd(fippsHit->GetCfd());
+		SetTime(fippsHit->GetTime());
+		// SetPosition(fippsHit->GetPosition());
+		SetAddress(fippsHit->GetAddress());
 	}
-	SetEnergy(GetEnergy() + hit->GetEnergy());
+	SetEnergy(GetEnergy() + fippsHit->GetEnergy());
 	// this has to be done at the very end, otherwise GetEnergy() might not work
 	SetCharge(0);
 	// KValue is somewhate meaningless in addback, so I am using it as an indicator that a piledup hit was added-back RD
-	if(GetKValue() > hit->GetKValue()) {
-		SetKValue(hit->GetKValue());
+	if(GetKValue() > fippsHit->GetKValue()) {
+		SetKValue(fippsHit->GetKValue());
 	}
 }
 

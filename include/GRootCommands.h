@@ -51,9 +51,10 @@ void StartGUI();
 bool GUIIsRunning();
 void AddFileToGUI(TFile* file);
 
-// enum EAxis {kXAxis = 1,kYAxis = 2,kXYaxis = 3,kZaxis = 4,kXZaxis = 5,kYZAxis = 6,kXYZAxis=7};
-enum EAxis { kXAxis = 1, kYAxis = 2 };
+enum class EAxis { kXAxis = 1, kYAxis = 2 };
+EAxis operator &(EAxis lhs, EAxis rhs);
 
-TH2* AddOffset(TH2* mat, double offset, EAxis axis = kXAxis);
+
+TH2* AddOffset(TH2* mat, double offset, EAxis axis = EAxis::kXAxis);
 
 #endif

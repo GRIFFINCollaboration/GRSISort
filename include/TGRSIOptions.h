@@ -34,13 +34,14 @@ public:
 	void Load(int argc, char** argv);
 	void Print(Option_t* opt = "") const override;
 
-	static bool WriteToRoot(TFile* file = nullptr);
+	static bool WriteToFile(TFile* file = nullptr);
 	static void SetOptions(TGRSIOptions* tmp);
 	static Bool_t ReadFromFile(TFile* file = nullptr);
 
 	bool                            ShouldExit() { return fShouldExit; }
 	const std::vector<std::string>& InputMidasFiles() { return fInputMidasFiles; }
 	const std::vector<std::string>& InputLstFiles() { return fInputLstFiles; }
+	const std::vector<std::string>& InputTdrFiles() { return fInputTdrFiles; }
 	const std::vector<std::string>& RootInputFiles() { return fInputRootFiles; }
 	const std::vector<std::string>& CalInputFiles() { return fInputCalFiles; }
 	const std::vector<std::string>& ValInputFiles() { return fInputValFiles; }
@@ -95,7 +96,6 @@ public:
 	bool ShowedVersion() const { return fShowedVersion; }
 	bool ShowLogo() const { return fShowLogo; }
 	bool SortRaw() const { return fSortRaw; }
-	bool SortRoot() const { return fSortRoot; }
 	bool ExtractWaves() const { return fExtractWaves; }
 	bool MakeHistos() const { return fMakeHistos; }
 	bool SortMultiple() const { return fSortMultiple; }
@@ -106,6 +106,8 @@ public:
 
 	size_t FragmentWriteQueueSize() const { return fFragmentWriteQueueSize; }
 	size_t AnalysisWriteQueueSize() const { return fAnalysisWriteQueueSize; }
+
+	size_t NumberOfClients() const { return fNumberOfClients; }
 
 	bool TimeSortInput() const { return fTimeSortInput; }
 	int  SortDepth() const { return fSortDepth; }
@@ -136,6 +138,7 @@ private:
 
 	std::vector<std::string> fInputMidasFiles; ///< A list of the input Midas files
 	std::vector<std::string> fInputLstFiles;   ///< A list of the input Lst files
+	std::vector<std::string> fInputTdrFiles;   ///< A list of the input Tdr files
 	std::vector<std::string> fInputRootFiles;  ///< A list of the input root files
 	std::vector<std::string> fInputCalFiles;   ///< A list of the input cal files
 	std::vector<std::string> fInputOdbFiles;   ///< A list of the input odb files
@@ -184,7 +187,6 @@ private:
 	bool fShowedVersion;///< Flag to show version
 	bool fShowLogo;     ///< Flag to show logo (suppress with -l)
 	bool fSortRaw;      ///< Flag to sort Midas file
-	bool fSortRoot;     ///< Flag to sort root files
 	bool fExtractWaves; ///< Flag to keep waveforms (suppress with --no-waveforms)
 	bool fIsOnline;     ///< Flag to sort online data
 	bool fStartGui;     ///< Flag to start GUI (-g)
@@ -194,6 +196,8 @@ private:
 
 	size_t fFragmentWriteQueueSize; ///< Size of the Fragment write Q
 	size_t fAnalysisWriteQueueSize; ///< Size of the analysis write Q
+
+	size_t fNumberOfClients;        ///< Number of analysis write loop clients
 
 	bool fTimeSortInput; ///< Flag to sort on time or triggers
 	int  fSortDepth;     ///< Size of Q that stores fragments to be built into events

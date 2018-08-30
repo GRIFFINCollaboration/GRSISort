@@ -58,6 +58,8 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    // read the analysis options that were passed along and copy them to the local TGRSIOptions
    fAnalysisOptions                   = static_cast<TAnalysisOptions*>(fInput->FindObject("TAnalysisOptions"));
    *(TGRSIOptions::AnalysisOptions()) = *fAnalysisOptions;
+	// read the TPPG that was passed along
+   fPpg = static_cast<TPPG*>(fInput->FindObject("TPPG"));
 
    const char* workingDirectory = "";
    if(fInput->FindObject("pwd") != nullptr) {
@@ -126,14 +128,19 @@ Bool_t TGRSISelector::Process(Long64_t entry)
    static TFile* current_file = nullptr;
    if(current_file != fChain->GetCurrentFile()) {
       current_file = fChain->GetCurrentFile();
-      std::cout<<"Starting to sort: "<<current_file<<std::endl;
+      std::cout<<"Starting to sort: "<<current_file->GetName()<<std::endl;
       TChannel::ReadCalFromFile(current_file);
-      TGRSIRunInfo::Get()->ReadInfoFromFile(current_file);
+      TGRSIRunInfo::ReadInfoFromFile(current_file);
       //   TChannel::WriteCalFile();
    }
 
    fChain->GetEntry(entry);
-   FillHistograms();
+	try {
+		FillHistograms();
+	} catch(TGRSIMapException<std::string>& e) {
+		std::cout<<DRED<<"Exception in "<<__PRETTY_FUNCTION__<<": "<<e.detail()<<RESET_COLOR<<std::endl;
+		throw e;
+	}
 
    return kTRUE;
 }
@@ -152,14 +159,16 @@ void TGRSISelector::Terminate()
    /// The Terminate() function is the last function to be called during
    /// a query. It always runs on the client, it can be used to present
    /// the results graphically or save the results to file.
-   Int_t runnumber    = TGRSIRunInfo::Get()->RunNumber();
-   Int_t subrunnumber = TGRSIRunInfo::Get()->SubRunNumber();
+	TGRSIOptions* options = TGRSIOptions::Get();
+	TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
+   Int_t runnumber    = runInfo->RunNumber();
+   Int_t subrunnumber = runInfo->SubRunNumber();
 
-   std::cout<<runnumber<<" "<<subrunnumber<<std::endl;
+   std::cout<<"Using run "<<runnumber<<" subrun "<<subrunnumber<<std::endl;
    TFile outputFile(Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runnumber, subrunnumber), "RECREATE");
    fOutput->Write();
-   TGRSIRunInfo::Get()->Write();
-   TGRSIOptions::Get()->AnalysisOptions()->WriteToFile(&outputFile);
+   runInfo->Write();
+   options->AnalysisOptions()->WriteToFile(&outputFile);
    outputFile.Close();
 }
 

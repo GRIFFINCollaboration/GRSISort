@@ -113,7 +113,7 @@ void GCanvas::GCanvasInit()
    fMarkerMode     = true;
    control_key     = false;
    fGuiEnabled     = false;
-   fBackgroundMode = kNoBackground;
+   fBackgroundMode = EBackgroundSubtraction::kNoBackground;
    // if(gVirtualX->InheritsFrom("TGX11")) {
    //    printf("\tusing x11-like graphical interface.\n");
    //}
@@ -141,7 +141,6 @@ void GCanvas::AddMarker(int x, int y, int dim)
       double bin_edge = hist->GetXaxis()->GetBinLowEdge(mark->binx);
       mark->linex     = new TLine(bin_edge, hist->GetMinimum(), bin_edge, hist->GetMaximum());
       mark->SetColor(kRed);
-      mark->Draw();
    } else if(dim == 2) {
       mark->localx     = gPad->AbsPixeltoX(x);
       mark->localy     = gPad->AbsPixeltoY(y);
@@ -154,7 +153,6 @@ void GCanvas::AddMarker(int x, int y, int dim)
       mark->liney = new TLine(hist->GetXaxis()->GetXmin(), biny_edge, hist->GetXaxis()->GetXmax(), biny_edge);
 
       mark->SetColor(kRed);
-      mark->Draw();
    }
 
    unsigned int max_number_of_markers = (dim == 1) ? 4 : 2;
@@ -165,6 +163,12 @@ void GCanvas::AddMarker(int x, int y, int dim)
       delete fMarkers.at(0);
       fMarkers.erase(fMarkers.begin());
    }
+
+	// this function gets the correct minimum and maximum values of the canvas (not the histogram)
+	// so instead of drawing them after they were created (using the histograms min/max)
+	// we draw them here
+	RedrawMarkers();
+
    return;
 }
 
@@ -203,12 +207,26 @@ void GCanvas::RedrawMarkers()
    gPad->Update();
    for(auto marker : fMarkers) {
       if(marker->linex != nullptr) {
-         marker->linex->SetY1(GetUymin());
-         marker->linex->SetY2(GetUymax());
+			if(gPad->GetLogy() == 0) {
+				//linear: GetU* functions return the value directly
+				marker->linex->SetY1(GetUymin());
+				marker->linex->SetY2(GetUymax());
+			} else {
+				//logarithmic: GetU* functions return decade
+				marker->linex->SetY1(TMath::Power(10., GetUymin()));
+				marker->linex->SetY2(TMath::Power(10., GetUymax()));
+			}
       }
       if(marker->liney != nullptr) {
-         marker->liney->SetX1(GetUxmin());
-         marker->liney->SetX2(GetUxmax());
+			if(gPad->GetLogx() == 0) {
+				//linear: GetU* functions return the value directly
+				marker->liney->SetX1(GetUxmin());
+				marker->liney->SetX2(GetUxmax());
+			} else {
+				//logarithmic: GetU* functions return decade
+				marker->liney->SetX1(TMath::Power(10., GetUxmin()));
+				marker->liney->SetX2(TMath::Power(10., GetUxmax()));
+			}
       }
       marker->Draw();
    }
@@ -249,7 +267,7 @@ bool GCanvas::SetBackgroundMarkers()
       marker->SetColor(kBlue);
    }
 
-   fBackgroundMode = kRegionBackground;
+   fBackgroundMode = EBackgroundSubtraction::kRegionBackground;
 
    return true;
 }
@@ -263,28 +281,28 @@ bool GCanvas::CycleBackgroundSubtraction()
    Color_t color = 0;
 
    switch(fBackgroundMode) {
-   case kNoBackground:
-      fBackgroundMode = kRegionBackground;
-      printf("hello??\n");
-      Prompt();
-      color = kBlue;
-      break;
-   case kRegionBackground:
-      fBackgroundMode = kTotalFraction;
-      color           = kGreen;
-      break;
-   case kTotalFraction:
-      fBackgroundMode = kMatchedLowerMarker;
-      color           = kOrange;
-      break;
-   case kMatchedLowerMarker:
-      fBackgroundMode = kSplitTwoMarker;
-      color           = kMagenta;
-      break;
-   case kSplitTwoMarker:
-      fBackgroundMode = kNoBackground;
-      color           = 0;
-      break;
+		case EBackgroundSubtraction::kNoBackground:
+			fBackgroundMode = EBackgroundSubtraction::kRegionBackground;
+			printf("hello??\n");
+			Prompt();
+			color = kBlue;
+			break;
+		case EBackgroundSubtraction::kRegionBackground:
+			fBackgroundMode = EBackgroundSubtraction::kTotalFraction;
+			color           = kGreen;
+			break;
+		case EBackgroundSubtraction::kTotalFraction:
+			fBackgroundMode = EBackgroundSubtraction::kMatchedLowerMarker;
+			color           = kOrange;
+			break;
+		case EBackgroundSubtraction::kMatchedLowerMarker:
+			fBackgroundMode = EBackgroundSubtraction::kSplitTwoMarker;
+			color           = kMagenta;
+			break;
+		case EBackgroundSubtraction::kSplitTwoMarker:
+			fBackgroundMode = EBackgroundSubtraction::kNoBackground;
+			color           = 0;
+			break;
    };
 
    for(auto marker : fBackgroundMarkers) {
@@ -770,22 +788,15 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
       break;
    case kKey_l:
       if(GetLogy() != 0) {
+         SetLogy(0);
          // Show full y range, not restricted to positive values.
          for(auto& hist : hists) {
             hist->GetYaxis()->UnZoom();
          }
-         SetLogy(0);
       } else {
-         // Only show plot from 0 up when in log scale.
-         for(auto& hist : hists) {
-            if(hist->GetYaxis()->GetXmin() < 0) {
-               hist->GetYaxis()->SetRangeUser(0, hist->GetYaxis()->GetXmax());
-            }
-         }
          SetLogy(1);
       }
-      // TODO: Make this work, instead of disappearing the markers in log mode.
-      // RedrawMarkers();
+      RedrawMarkers();
       edited = true;
       break;
 
@@ -860,7 +871,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
             value_high -= epsilon;
          }
 
-         if(fBackgroundMarkers.size() >= 2 && fBackgroundMode != kNoBackground) {
+			if(fBackgroundMarkers.size() >= 2 && fBackgroundMode != EBackgroundSubtraction::kNoBackground) {
             int bg_binlow  = fBackgroundMarkers.at(0)->binx;
             int bg_binhigh = fBackgroundMarkers.at(1)->binx;
             if(bg_binlow > bg_binhigh) {
@@ -1370,7 +1381,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 
       if(ghist != nullptr) {
          ghist->SetSummary(true);
-         ghist->SetSummaryDirection(kYDirection);
+         ghist->SetSummaryDirection(EDirection::kYDirection);
          TH1* phist = ghist->GetNextSummary(nullptr, false);
          if(phist != nullptr) {
             new GCanvas();
@@ -1414,7 +1425,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 
       if(ghist != nullptr) {
          ghist->SetSummary(true);
-         ghist->SetSummaryDirection(kXDirection);
+         ghist->SetSummaryDirection(EDirection::kXDirection);
          // TH1* phist = ghist->SummaryProject(1);
          TH1* phist = ghist->GetNextSummary(nullptr, false);
          if(phist != nullptr) {
@@ -1428,25 +1439,13 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
    case kKey_l:
    case kKey_z:
       if(GetLogz() != 0) {
+         gPad->SetLogz(0);
          // Show full y range, not restricted to positive values.
          for(auto& hist : hists) {
             hist->GetYaxis()->UnZoom();
          }
-         TVirtualPad* cpad = gPad;
-         cd();
-         gPad->SetLogz(0);
-         cpad->cd();
       } else {
-         // Only show plot from 0 up when in log scale.
-         for(auto& hist : hists) {
-            if(hist->GetYaxis()->GetXmin() < 0) {
-               hist->GetYaxis()->SetRangeUser(0, hist->GetYaxis()->GetXmax());
-            }
-         }
-         TVirtualPad* cpad = gPad;
-         cd();
          gPad->SetLogz(1);
-         cpad->cd();
       }
       edited = true;
       break;

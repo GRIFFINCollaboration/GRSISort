@@ -12,6 +12,7 @@
 #include "TMidasFile.h"
 #include "TChannel.h"
 #include "TGRSIRunInfo.h"
+#include "TPriorityValue.h"
 
 TDataLoop::TDataLoop(std::string name, TRawFile* source)
    : StoppableThread(name), fSource(source), fSelfStopping(true),
@@ -23,9 +24,6 @@ TDataLoop::TDataLoop(std::string name, TRawFile* source)
    TMidasFile* midasFile = dynamic_cast<TMidasFile*>(source);
    if(midasFile != nullptr) {
       SetFileOdb(midasFile->GetFirstEvent()->GetTimeStamp(), midasFile->GetFirstEvent()->GetData(), midasFile->GetFirstEvent()->GetDataSize());
-   }
-   for(const auto& cal_filename : TGRSIOptions::Get()->CalInputFiles()) {
-      TChannel::ReadCalFile(cal_filename.c_str());
    }
 }
 
@@ -113,13 +111,13 @@ void TDataLoop::SetRunInfo(uint32_t time)
    node = fOdb->FindPath("/Experiment/Run parameters/Run Title");
    if(node != nullptr) {
       runInfo->SetRunTitle(node->GetText());
-      std::cout<<DBLUE<<"Title: "<<node->GetText()<<RESET_COLOR<<std::endl;
+      std::cout<<"Title: "<<DBLUE<<node->GetText()<<RESET_COLOR<<std::endl;
    }
 
    if(node != nullptr) {
       node = fOdb->FindPath("/Experiment/Run parameters/Comment");
       runInfo->SetRunComment(node->GetText());
-      std::cout<<DBLUE<<"Comment: "<<node->GetText()<<RESET_COLOR<<std::endl;
+      std::cout<<"Comment: "<<DBLUE<<node->GetText()<<RESET_COLOR<<std::endl;
    }
 #endif
 }
@@ -175,10 +173,10 @@ void TDataLoop::SetGRIFFOdb()
          }
          tempChan->SetName(names.at(x).c_str());
          tempChan->SetAddress(address.at(x));
-         tempChan->SetNumber(x);
+         tempChan->SetNumber(TPriorityValue<int>(x, EPriority::kRootFile));
          // printf("temp chan(%s) number set to: %i\n",tempChan->GetChannelName(),tempChan->GetNumber());
 
-         tempChan->SetUserInfoNumber(x);
+         tempChan->SetUserInfoNumber(TPriorityValue<int>(x, EPriority::kRootFile));
          tempChan->AddENGCoefficient(offsets.at(x));
          tempChan->AddENGCoefficient(gains.at(x));
          // TChannel::UpdateChannel(tempChan);
@@ -325,20 +323,18 @@ void TDataLoop::SetTIGOdb()
          tempChan->SetName(names.at(x).c_str());
       }
       tempChan->SetAddress(address.at(x));
-      tempChan->SetNumber(x);
+      tempChan->SetNumber(TPriorityValue<int>(x, EPriority::kRootFile));
       int temp_integration = 0;
       if(type.at(x) != 0) {
-         tempChan->SetTypeName(typemap[type.at(x)].first);
-         tempChan->SetDigitizerType(typemap[type.at(x)].second.c_str());
-         if(strcmp(tempChan->GetDigitizerTypeString(), "Tig64") ==
-            0) { // TODO: maybe use enumerations via GetDigitizerType()
+         tempChan->SetDigitizerType(TPriorityValue<std::string>(typemap[type.at(x)].second.c_str(), EPriority::kRootFile));
+         if(tempChan->GetDigitizerType() == TMnemonic::EDigitizer::kTIG64) {
             temp_integration = 25;
-         } else if(strcmp(tempChan->GetDigitizerTypeString(), "Tig10") == 0) {
+			} else if(tempChan->GetDigitizerType() == TMnemonic::EDigitizer::kTIG10) {
             temp_integration = 125;
          }
       }
-      tempChan->SetIntegration(temp_integration);
-      tempChan->SetUserInfoNumber(x);
+      tempChan->SetIntegration(TPriorityValue<int>(temp_integration, EPriority::kRootFile));
+      tempChan->SetUserInfoNumber(TPriorityValue<int>(x, EPriority::kRootFile));
       tempChan->AddENGCoefficient(offsets.at(x));
       tempChan->AddENGCoefficient(gains.at(x));
 

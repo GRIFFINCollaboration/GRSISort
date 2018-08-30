@@ -284,6 +284,8 @@ void TMidasEvent::Print(const char* option) const
       printf("Begin of run %d\n", fEventHeader.fSerialNumber);
    } else if((fEventHeader.fEventId & 0xffff) == 0x8001) {
       printf("End of run %d\n", fEventHeader.fSerialNumber);
+   } else if((fEventHeader.fEventId & 0xffff) == 0x8002) {
+      printf("Message event \"%s\"\n", fData);
    } else if(fBanksN <= 0) {
       printf("TMidasEvent::Print: Use SetBankList() before Print() to print bank data\n");
    } else {
@@ -495,13 +497,13 @@ int TMidasEvent::IterateBank32(TMidas_BANK32** pbk, char** pdata) const
       }
    }
 
-   *pdata = reinterpret_cast<char*>((*pbk) + 1);
-
    if(reinterpret_cast<char*>(*pbk) >= (char*)event + event->fDataSize + sizeof(TMidas_BANK_HEADER)) {
       *pbk   = nullptr;
       *pdata = nullptr;
       return 0;
    }
+
+   *pdata = reinterpret_cast<char*>((*pbk) + 1);
 
    return (*pbk)->fDataSize;
 }
@@ -688,6 +690,8 @@ int TMidasEvent::Process(TDataParser& parser)
             frags = ProcessGRIFFIN(reinterpret_cast<uint32_t*>(ptr), banksize, TDataParser::EBank::kGRF3, parser);
          } else if((banksize = LocateBank(nullptr, "GRF4", &ptr)) > 0) {
             frags = ProcessGRIFFIN(reinterpret_cast<uint32_t*>(ptr), banksize, TDataParser::EBank::kGRF4, parser);
+         } else if((banksize = LocateBank(nullptr, "CAEN", &ptr)) > 0) {
+            frags = parser.CaenToFragment(reinterpret_cast<uint32_t*>(ptr), banksize);
          } else if(!TGRSIOptions::Get()->SuppressErrors()) {
             printf(DRED "\nUnknown bank in midas event #%d" RESET_COLOR "\n", GetSerialNumber());
          }
@@ -697,6 +701,11 @@ int TMidasEvent::Process(TDataParser& parser)
          //   break;
          // }
          SetBankList();
+         break;
+      case 3:
+         if((banksize = LocateBank(nullptr, "CAEN", &ptr)) > 0) {
+            frags = parser.CaenToFragment(reinterpret_cast<uint32_t*>(ptr), banksize);
+         }
          break;
       case 4:
       case 5:
@@ -710,7 +719,7 @@ int TMidasEvent::Process(TDataParser& parser)
 #ifdef HAS_XML
 			TXMLOdb* odb = new TXMLOdb(GetData(), GetDataSize());
 			TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
-			TXMLNode*     node     = odb->FindPath("/Runinfo/Stop time binary");
+			TXMLNode*     node    = odb->FindPath("/Runinfo/Stop time binary");
 			if(node != nullptr) {
 				std::stringstream str(node->GetText());
 				unsigned int odbTime;

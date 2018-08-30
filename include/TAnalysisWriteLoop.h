@@ -5,7 +5,8 @@
  *  @{
  */
 
-#include <map>
+#include <future>
+#include <vector>
 
 #include "TClass.h"
 #include "TTree.h"
@@ -13,6 +14,7 @@
 #include "StoppableThread.h"
 #include "ThreadsafeQueue.h"
 #include "TUnpackedEvent.h"
+#include "TAnalysisWriteLoopClient.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
@@ -43,6 +45,7 @@ public:
    size_t GetRate() override { return 0; }
 
    std::string EndStatus() override;
+	void OnEnd() override;
 
 protected:
    bool Iteration() override;
@@ -51,17 +54,17 @@ private:
    TAnalysisWriteLoop(std::string name, std::string output_filename);
    void AddBranch(TClass* cls);
 
-   void WriteEvent(TUnpackedEvent& event);
-   TFile* fOutputFile;
-   TTree* fEventTree;
+	bool Server();
 
-   TTree*     fOutOfOrderTree;
-   TFragment* fOutOfOrderFrag;
+	std::string fOutputFilename;
+	size_t fCurrentClient;
+	bool fOutOfOrder;
+	TServerSocket* fServerSocket;
 #ifndef __CINT__
-   std::map<TClass*, TDetector**> fDetMap;
-   std::map<TClass*, TDetector*>  fDefaultDets;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>  fInputQueue;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fOutOfOrderQueue;
+	std::vector<TAnalysisWriteLoopClient*> fClients;
+	std::future<bool> fServerFuture;
 #endif
 
    ClassDefOverride(TAnalysisWriteLoop, 0);

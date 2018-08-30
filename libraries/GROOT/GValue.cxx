@@ -13,7 +13,7 @@
 GValue* GValue::fDefaultValue = new GValue("GValue", sqrt(-1));
 std::map<std::string, GValue*> GValue::fValueVector;
 
-GValue::GValue() : fValue(0.00), fPriority(kUnset)
+GValue::GValue() : fValue(0.00), fPriority(EPriority::kDefault)
 {
 }
 
@@ -22,7 +22,7 @@ GValue::GValue(const char* name, double value, EPriority priority)
 {
 }
 
-GValue::GValue(const char* name) : TNamed(name, name), fValue(0.00), fPriority(kUnset)
+GValue::GValue(const char* name) : TNamed(name, name), fValue(0.00), fPriority(EPriority::kDefault)
 {
 }
 
@@ -204,7 +204,7 @@ int GValue::ReadValFile(const char* filename, Option_t* opt)
    infile.read(buffer.data(), static_cast<int>(length));
    sbuffer.assign(buffer.data());
 
-   int values_found = ParseInputData(sbuffer, kValFile, opt);
+   int values_found = ParseInputData(sbuffer, EPriority::kValFile, opt);
    // if(values_found) {
    //  //fFileNames.push_back(std::string(filename);
    //  fValueData = sbuffer; //.push_back(std::string((const char*)buffer);
@@ -337,7 +337,7 @@ void GValue::Streamer(TBuffer& R__b)
       {
          TString R__str;
          R__str.Streamer(R__b);
-         ParseInputData(R__str.Data(), kRootFile);
+         ParseInputData(R__str.Data(), EPriority::kRootFile);
       }
       R__b.CheckByteCount(R__s, R__c, GValue::IsA());
    } else {

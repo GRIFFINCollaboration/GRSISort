@@ -57,30 +57,6 @@ bool GH1D::WriteDatFile(const char* outFile)
    return true;
 }
 
-/*
-GH1D::GH1D(const TH1 *source)
-  : parent(nullptr), projection_axis(-1) {
-  if(source->GetDiminsion()>1) {
-    return;
-  }
-
-  // Can copy from any 1-d TH1, not just a TH1D
-  source->Copy(*this);
-
-  // Force a refresh of any parameters stored in the option string.
-  SetOption(GetOption());
-}
-
-void GH1D::SetOption(Option_t* opt) {
-  fOption = opt;
-
-  TString sopt = opt;
-  if(sopt.Index("axis:")) {
-    projection_axis = 0;// TODO
-  }
-}
-*/
-
 void GH1D::Clear(Option_t* opt)
 {
    TH1D::Clear(opt);
@@ -187,7 +163,7 @@ GH1D* GH1D::Project(double value_low, double value_high) const
 }
 
 GH1D* GH1D::Project_Background(double value_low, double value_high, double bg_value_low, double bg_value_high,
-                               kBackgroundSubtraction mode) const
+                               EBackgroundSubtraction mode) const
 {
    if((parent.GetObject() != nullptr) && parent.GetObject()->InheritsFrom(GH2Base::Class()) && projection_axis != -1) {
       if(value_low > value_high) {

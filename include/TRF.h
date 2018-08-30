@@ -22,7 +22,7 @@ public:
    ~TRF() override;
 
    Double_t Phase() const { return (fTime / fPeriod) * TMath::TwoPi(); }
-   Double_t Time() const { return fTime; }
+   Double_t Time() const { return fTime; }//in ns, not tstamp 10ns
    Long_t   TimeStamp() const { return fTimeStamp; }
    time_t   MidasTime() const { return fMidasTime; }
 
@@ -34,6 +34,14 @@ public:
       return 0;
    }
 
+   Double_t GetTimeFitns() const
+   {
+      if(fTime != 0 && fTime < 1000 && fTime > -1000) {
+         return TimeStamp()*10. + fTime; // 
+      }
+      return 0;
+   }
+   
    Double_t GetTimestampCfd() const
    { // ticks ->cfdunits
       long ts =

@@ -12,17 +12,17 @@ TS3Hit::TS3Hit()
 
 TS3Hit::TS3Hit(const TFragment& frag) : TGRSIDetectorHit(frag)
 {
-   if(frag.GetChannel()->GetMnemonic()->ArrayPosition() == 1) {
-      SetIsDownstream(false);
-   } else if(frag.GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLiS3 &&
-             frag.GetChannel()->GetMnemonic()->ArrayPosition() == 2) {
-      SetIsDownstream(false);
-   } else {
-      SetIsDownstream(true);
+	
+   if(GetChannel()->GetMnemonic()->System() == TMnemonic::ESystem::kSiLiS3){
+	SetIsDownstream(false);   
+   }else{
+	if(GetArrayPosition()<2)
+		SetIsDownstream(false);  
+	else
+		SetIsDownstream(true);  
    }
-   // Bambino 0=not set,1=Upstream,2=Downstream.
-   // SPICE  0=Downstream,1=Upstream,2=Upstream+phi rotation.
 }
+
 
 TS3Hit::~TS3Hit() = default;
 
@@ -61,20 +61,32 @@ void TS3Hit::SetWavefit(const TFragment& frag)
    }
 }
 
+
+Bool_t TS3Hit::SectorsDownstream() const
+{	//Do not confuse with fIsDownstream which relates to detector position relative to target, NOT orientation.
+	
+	if(GetChannel()->GetMnemonic()->System() == TMnemonic::ESystem::kSiLiS3){
+		if(GetArrayPosition() == 0) return true;
+		return false;
+	}
+	if(GetArrayPosition()%2)return true;
+	return false;
+}
+
+
 TVector3 TS3Hit::GetPosition(Double_t phioffset, Double_t dist, bool smear) const
 {
-   return TS3::GetPosition(GetRing(), GetSector(), phioffset, dist, GetIsDownstream(), smear);
+   return TS3::GetPosition(GetRing(), GetSector(), phioffset, dist, SectorsDownstream(), smear);
 }
 
 TVector3 TS3Hit::GetPosition(Double_t phioffset, bool smear) const
 {
-   return TS3::GetPosition(GetRing(), GetSector(), phioffset, GetDefaultDistance(), GetIsDownstream(), smear);
+   return TS3::GetPosition(GetRing(), GetSector(), phioffset, GetDefaultDistance(), SectorsDownstream(), smear);
 }
 
 TVector3 TS3Hit::GetPosition(bool smear) const
 {
-   return TS3::GetPosition(GetRing(), GetSector(), GetDefaultPhiOffset(), GetDefaultDistance(), GetIsDownstream(),
-                           smear);
+   return TS3::GetPosition(GetRing(), GetSector(), GetDefaultPhiOffset(), GetDefaultDistance(), SectorsDownstream(),smear);
 }
 
 void TS3Hit::Print(Option_t*) const
@@ -85,9 +97,9 @@ void TS3Hit::Print(Option_t*) const
 }
 
 Double_t TS3Hit::GetDefaultPhiOffset() const
-{
-   double deg = -90;
-   if(GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLiS3) {
+{	//Phi rotation of connector in setup
+   double deg = -90-21;// -22.5 should be bambino chamber rotation -90 rotation of detector in chamber
+   if(GetChannel()->GetMnemonic()->System() == TMnemonic::ESystem::kSiLiS3) {
       deg = -22.5;
       if(GetChannel()->GetMnemonic()->ArrayPosition() == 2) {
          deg += 90;
@@ -99,8 +111,8 @@ Double_t TS3Hit::GetDefaultPhiOffset() const
 Double_t TS3Hit::GetDefaultDistance() const
 { // relative to target (SPICE target not at Z=0)
    double z = 0;
-   if(GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLiS3) {
-      std::string str = GetChannel()->GetMnemonic()->ArraySubPositionString();
+   std::string str = GetDistanceStr();
+   if(GetChannel()->GetMnemonic()->System() == TMnemonic::ESystem::kSiLiS3) {
       if(str.find('D') < str.size()) {
          z = 22.5;
       } else if(str.find('E') < str.size()) {
@@ -109,16 +121,15 @@ Double_t TS3Hit::GetDefaultDistance() const
          z = 42.1;
       }
    } else {
-      std::string str = GetChannel()->GetMnemonic()->ArraySubPositionString();
       if(str.find('D') < str.size()) {
          z = 20;
       } else if(str.find('E') < str.size()) {
-         z = 31;
+         z = 32;
       } else {
          z = 40;
       }
 
-      if(!GetIsDownstream()) {
+      if(GetArrayPosition()<2) {
          z = -z;
       }
    }

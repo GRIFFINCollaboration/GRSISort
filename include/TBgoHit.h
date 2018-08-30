@@ -28,13 +28,11 @@ public:
    TBgoHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
    ~TBgoHit() override;
 
-public:
    /////////////////////////		/////////////////////////////////////
-   int GetCrystal() const override;
+   virtual UShort_t GetArrayNumber() const override { return -1; } //!<!
 
-private:
-public:
    void Clear(Option_t* opt = "") override;       //!<!
+	using TGRSIDetectorHit::Copy;
    void Copy(TObject&) const override;            //!<!
    void Print(Option_t* opt = "") const override; //!<!
 

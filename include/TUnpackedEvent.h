@@ -47,7 +47,7 @@ std::shared_ptr<T> TUnpackedEvent::GetDetector(bool make_if_not_found)
 {
    static_assert(std::is_base_of<TDetector, T>::value, "T must be a subclass of TDetector");
    for(const auto& det : fDetectors) {
-      std::shared_ptr<T> output = std::static_pointer_cast<T>(det);
+      std::shared_ptr<T> output = std::dynamic_pointer_cast<T>(det);
       if(output) {
          return output;
       }

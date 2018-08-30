@@ -24,17 +24,16 @@
 
 #include "TObject.h"
 
-#include "TMidasEvent.h"
-#include "TLstEvent.h"
+#include "TRawEvent.h"
 
 /// Reader for MIDAS .mid files
 
 class TRawFile : public TObject {
 public:
-   enum EOpenType { kRead, kWrite };
+   enum class EOpenType { kRead, kWrite };
 
    TRawFile() {} ///< default constructor
-   TRawFile(const char*, EOpenType = kRead) {}
+   TRawFile(const char*, EOpenType = EOpenType::kRead) {}
    ~TRawFile() override = default; ///< destructor
 
    virtual bool Open(const char* filename) = 0; ///< Open input file
