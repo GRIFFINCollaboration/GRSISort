@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
     double calibrator_period=10000.;//The period of the calibrator (manually set in the module). It is the time difference between the peaks, which will be 10 ns in most cases
     double tac_range = 50000.; //TAC range, 50 ns for most experiments
     double ps_per_chan = 10.; //binning of the TACs, in ps per channel, 10 is a reasonable number 
-    int first_TAC_channel = 84; //This is the channel number of the first TAC, it is needed to write the calibration file. In general it will be 84
+    int first_TAC_channel = 75; //This is the channel number of the first TAC, it is needed to write the calibration file. In general it will be 84
     int number_of_peaks=(int) (tac_range/calibrator_period); //maximum number of peaks that we expect to find in the TAC-calibrator spectra
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -92,8 +92,8 @@ int main(int argc, char** argv) {
       raw_tac_calibrator[i] = new TH1F(Form("raw_TAC_calibrator%d",i),Form("raw_TAC_calibrator%d",i),(int) (tac_range/ps_per_chan),0,tac_range); list.Add(raw_tac_calibrator[i]);
     }
 
-    //for(int i=0; i<tree->GetEntries(); i++){ //Loops through the whole AnalysisTree
-    for(int i=0; i<1e6; i++){ //Loops through limited number of entries. A million usually is enough
+    for(int i=0; i<tree->GetEntries(); i++){ //Loops through the whole AnalysisTree
+      //for(int i=0; i<1e6; i++){ //Loops through limited number of entries. A million usually is enough
 
 			
       tree->GetEntry(i);

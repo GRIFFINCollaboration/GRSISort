@@ -49,6 +49,7 @@ Double_t DeadTimeAffect(Double_t function, Double_t deadtime, Double_t binWidth 
 
 // Timing functions
  Double_t ConvolutedDecay(Double_t *x, Double_t *par);
+ Double_t ConvolutedDecay2(Double_t *x, Double_t *par);
 
 #ifdef HAS_MATHMORE
 // Angular correlation fitting
