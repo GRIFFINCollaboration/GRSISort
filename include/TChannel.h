@@ -48,6 +48,7 @@ public:
    static TChannel* GetChannel(unsigned int temp_address);
    static TChannel* GetChannelByNumber(int temp_num);
    static TChannel* FindChannelByName(const char* ccName);
+   static std::vector<TChannel*> FindChannelByRegEx(const char* ccName);
 
    TChannel();
    TChannel(const char*);

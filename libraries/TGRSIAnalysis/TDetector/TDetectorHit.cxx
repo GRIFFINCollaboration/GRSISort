@@ -234,15 +234,6 @@ Int_t TDetectorHit::GetCrystal() const
 	return -1;
 }
 
-UShort_t TDetectorHit::GetArrayNumber() const
-{
-	TChannel* channel = GetChannel();
-	if(channel != nullptr) {
-		return (GetDetector() - 1) * 4 + GetCrystal();
-	}
-	return -1;
-}
-
 bool TDetectorHit::CompareEnergy(TDetectorHit* lhs, TDetectorHit* rhs)
 {
 	return (lhs->GetEnergy() > rhs->GetEnergy());

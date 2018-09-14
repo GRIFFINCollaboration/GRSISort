@@ -10,6 +10,7 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
+#include <regex>
 
 #include "TFile.h"
 #include "TKey.h"
@@ -358,13 +359,33 @@ TChannel* TChannel::FindChannelByName(const char* ccName)
       chan                    = iter.second;
       std::string channelName = chan->GetName();
       if(channelName.compare(0, name.length(), name) == 0) {
-         break;
+         return chan;
       }
-      chan = nullptr;
    }
-   // either comes out normally as null or breaks out with some TChannel [SC]
 
-   return chan;
+   return nullptr;
+}
+
+std::vector<TChannel*> TChannel::FindChannelByRegEx(const char* ccName)
+{
+   /// Finds the TChannel by the name of the channel
+	std::vector<TChannel*> result;
+   if(ccName == nullptr) {
+      return result;
+   }
+
+   std::regex regex(ccName);
+
+	TChannel* chan;
+   for(auto iter : *fChannelMap) {
+      chan                    = iter.second;
+      std::string channelName = chan->GetName();
+		if(std::regex_match(channelName, regex)) {
+         result.push_back(chan);
+      }
+   }
+
+   return result;
 }
 
 void TChannel::UpdateChannelNumberMap()
