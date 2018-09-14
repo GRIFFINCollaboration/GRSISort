@@ -1299,7 +1299,7 @@ int TChannel::WriteToRoot(TFile* fileptr)
    TIter iter(gDirectory->GetListOfKeys());
 
    bool        found         = false;
-   std::string mastername    = "TChannel";
+   std::string mastername    = "Channel";
    std::string mastertitle   = "TChannel";
    std::string channelbuffer = fFileData; //fFileData is the old TChannel information read from file
    WriteCalBuffer(); //replaces fFileData with the current channels
@@ -1332,7 +1332,7 @@ int TChannel::WriteToRoot(TFile* fileptr)
    TChannel::ParseInputData(channelbuffer.c_str(), "q", EPriority::kRootFile);
    c = TChannel::GetDefaultChannel();
    c->SetNameTitle(mastername.c_str(), mastertitle.c_str());
-   c->Write("", TObject::kOverwrite);
+   c->Write("Channel", TObject::kOverwrite);
 
    ParseInputData(savedata.c_str(), "q", EPriority::kRootFile);
    SaveToSelf(savedata.c_str());

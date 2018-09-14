@@ -146,21 +146,20 @@ void TFragWriteLoop::Write()
       fBadEventTree->Write(fBadEventTree->GetName(), TObject::kOverwrite);
       fScalerTree->Write(fScalerTree->GetName(), TObject::kOverwrite);
       if(GValue::Size() != 0) {
-         gValues->Write();
+         gValues->Write("Values", TObject::kOverwrite);
       }
 
       if(TChannel::GetNumberOfChannels() != 0) {
-         // TChannel::GetDefaultChannel()->Write();
          TChannel::WriteToRoot();
       }
 
       runInfo->WriteToRoot(fOutputFile);
       options->WriteToFile(fOutputFile);
-      ppg->Write();
+      ppg->Write("PPG", TObject::kOverwrite);
 
       if(options->WriteDiagnostics()) {
          parsingDiagnostics->ReadPPG(ppg);
-         parsingDiagnostics->Write();
+         parsingDiagnostics->Write("ParsingDiagnostics", TObject::kOverwrite);
       }
 
       fOutputFile->Close();

@@ -334,8 +334,8 @@ bool TRunInfo::WriteToRoot(TFile* fileptr)
       printf("No file opened to write to.\n");
       bool2return = false;
    } else {
-      runInfo->Write();
-		runInfo->fDetectorInformation->Write();
+      runInfo->Write("RunInfo", TObject::kOverwrite);
+		runInfo->fDetectorInformation->Write("DetectorInformation", TObject::kOverwrite);
    }
 
    printf("Writing TRunInfo to %s\n", gDirectory->GetFile()->GetName());
