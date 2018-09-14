@@ -90,9 +90,28 @@ TPacesHit* TPaces::GetPacesHit(const int& i)
 	return nullptr;
 }
 
-TVector3 TPaces::GetPosition(int)
+TVector3 TPaces::GetPosition(int DetNbr)
 {
 	// Gets the position vector for a crystal specified by DetNbr
-	// Does not currently contain any positons.
-	return TVector3(0, 0, 1);
+	// Angles measured 12 December 2017 (Garnsworthy/Bowry)
+	double PACESTHETA[5] = {120.1780, 120.8275, 119.7421, 120.2992, 120.1934};
+	double PACESPHI[5] = {21.0000, 94.0000, 166.0000, 237.0000, 313.0000};
+
+	TVector3 pacesPosition [5] = {
+		TVector3(TMath::Sin(TMath::DegToRad()*PACESTHETA[0]) *TMath::Cos(TMath::DegToRad()*PACESPHI [0] ), TMath::Sin(TMath::DegToRad()*PACESTHETA[0]) *TMath::Sin(TMath::DegToRad()*PACESPHI [0] ), 
+		TMath::Cos(TMath::DegToRad()*PACESTHETA[0])), 
+		
+		TVector3(TMath::Sin(TMath::DegToRad()*PACESTHETA[1]) *TMath::Cos(TMath::DegToRad()*PACESPHI [1] ), TMath::Sin(TMath::DegToRad()*PACESTHETA[1]) *TMath::Sin(TMath::DegToRad()*PACESPHI [1] ), 
+		TMath::Cos(TMath::DegToRad()*PACESTHETA[1])), 
+		
+		TVector3(TMath::Sin(TMath::DegToRad()*PACESTHETA[2]) *TMath::Cos(TMath::DegToRad()*PACESPHI [2] ), TMath::Sin(TMath::DegToRad()*PACESTHETA[2]) *TMath::Sin(TMath::DegToRad()*PACESPHI [2] ), 
+		TMath::Cos(TMath::DegToRad()*PACESTHETA[2])), 
+		
+		TVector3(TMath::Sin(TMath::DegToRad()*PACESTHETA[3]) *TMath::Cos(TMath::DegToRad()*PACESPHI [3] ), TMath::Sin(TMath::DegToRad()*PACESTHETA[3]) *TMath::Sin(TMath::DegToRad()*PACESPHI [3] ), 
+		TMath::Cos(TMath::DegToRad()*PACESTHETA[3])), 
+		
+		TVector3(TMath::Sin(TMath::DegToRad()*PACESTHETA[4]) *TMath::Cos(TMath::DegToRad()*PACESPHI [4] ), TMath::Sin(TMath::DegToRad()*PACESTHETA[4]) *TMath::Sin(TMath::DegToRad()*PACESPHI [4] ), 
+		TMath::Cos(TMath::DegToRad()*PACESTHETA[4])) 	
+	};
+	return pacesPosition[DetNbr];
 }
