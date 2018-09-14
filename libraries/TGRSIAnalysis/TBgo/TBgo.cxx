@@ -175,3 +175,4 @@ TVector3 TBgo::GetPosition(int DetNbr, int CryNbr, double dist)
 
 	return (temp_pos + shift);
 }
+

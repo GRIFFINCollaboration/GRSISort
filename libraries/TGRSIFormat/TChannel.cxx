@@ -1092,12 +1092,16 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
             std::string type = line.substr(0, ntype);
             line             = line.substr(ntype + 1, line.length());
             trim(&line);
-				// capitalize the line
-				std::transform(line.begin(), line.end(), line.begin(), ::toupper);
             std::istringstream ss(line);
-				// capitalize the type
-				std::transform(type.begin(), type.end(), type.begin(), ::toupper);
-            // printf("type = %s\n",type.c_str());
+				// this can all be replace by using:
+				// std::transform(type.begin(), type.end(), type.begin(), ::toupper);
+				// size_t j = type.length();
+            int                j = 0;
+            while(type[j] != 0) {
+               char c    = *(type.c_str() + j);
+               c         = toupper(c);
+               type[j++] = c;
+            }
             if(type.compare("NAME") == 0) {
                channel->SetName(line.c_str());
             } else if(type.compare("ADDRESS") == 0) {
@@ -1106,7 +1110,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                if(tempadd == 0) { // maybe it is in hex...
                   std::stringstream newss;
                   newss<<std::hex<<line;
-                  newss>>tempadd;
+                  newss >> tempadd;
                }
                tempadd = tempadd & 0x00ffffff; // front end number is not included in the odb...
                channel->SetAddress(tempadd);
@@ -1127,6 +1131,15 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                ss >> tempstream;
                channel->SetStream(TPriorityValue<int>(tempstream, pr));
             } else if(type.compare("DIGITIZER") == 0) {
+					// what is this doing??? we're looping over type with j being the end of the above loop 'while(type[j] != 0)'
+					// so all characters of type are set to touppper(0) and then type isn't used at all
+					// was this meant to convert the remaining line (the argument to DIGITIZER) to upper case?
+               int k = 0;
+               while(type[k] != 0) {
+                  char c    = *(type.c_str() + j);
+                  c         = toupper(c);
+                  type[k++] = c;
+               }
                channel->SetDigitizerType(TPriorityValue<std::string>(line, pr));
             } else if(type.compare("ENGCHI2") == 0) {
                double tempdbl;

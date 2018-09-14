@@ -371,21 +371,6 @@ Double_t TGRSIFunctions::ConvolutedDecay(Double_t *x, Double_t *par)
 ///   - par[3]:  Lambda of the level
 
   Double_t val;
-  val = TMath::Sqrt(TMath::Pi())*par[0]*par[3]/2*TMath::Exp(par[3]/2*(2*par[1]+par[3]*pow(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[3]*pow(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]))+par[4];
-  return val;
-}
-
-Double_t TGRSIFunctions::ConvolutedDecay2(Double_t *x, Double_t *par){
-//This function is the same as ConvolutedDecay but should be use when the lifetime has two different components.
-//Requires the following parameters:
-//   - par[0]:  Weight of lifetime-1
-//   - par[1]:  Centroid of gaussian
-//   - par[2]:  Width of gaussian 
-//   - par[3]:  Lambda of the level-1
-//   - par[4]:  Weight of lifetime-2
-//   - par[5]:  Lambda of the level-2
-
-  Double_t val;
-  val = TMath::Sqrt(TMath::Pi())*par[0]*par[3]/2*TMath::Exp(par[3]/2*(2*par[1]+par[3]*pow(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[3]*pow(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]))   +  TMath::Sqrt(TMath::Pi())*par[4]*par[5]/2*TMath::Exp(par[5]/2*(2*par[1]+par[5]*pow(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[5]*pow(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]));
+  val = TMath::Sqrt(TMath::Pi())*par[0]*par[3]/2.*TMath::Exp(par[3]/2.*(2.*par[1]+par[3]*pow(par[2],2.)-2.*x[0]))*TMath::Erfc((par[1]+par[3]*pow(par[2],2.)-x[0])/(TMath::Sqrt(2)*par[2]));
   return val;
 }

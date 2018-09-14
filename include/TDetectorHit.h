@@ -91,7 +91,7 @@ public:
    bool operator<(const TDetectorHit& rhs) const { return GetEnergy() > rhs.GetEnergy(); } // sorts large->small
 
 public:
-   virtual void Copy(TObject&) const override;       //!<!
+   void         Copy(TObject&) const override;       //!<!
    virtual void Copy(TObject&, bool copywave) const; //!<!
    virtual void CopyWave(TObject&) const;            //!<!
    void Clear(Option_t* opt = "") override;          //!<!
