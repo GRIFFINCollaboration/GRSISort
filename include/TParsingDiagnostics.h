@@ -10,7 +10,7 @@
 /// \class TParsingDiagnostics
 ///
 /// This class gathers various diagnostics calculated during the sorting from
-/// a midas file to a fragment tree and analysis tree and provides convenient
+/// a raw file to a fragment tree and analysis tree and provides convenient
 /// methods of printing and/or visualizing them.
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -56,8 +56,8 @@ private:
    std::map<UInt_t, long> fMinTimeStamp; ///< map of minimum timestamp per channel address
    std::map<UInt_t, long> fMaxTimeStamp; ///< map of maximum timestamp per channel address
 
-   time_t fMinMidasTimeStamp; ///< minimum midas timestamp
-   time_t fMaxMidasTimeStamp; ///< maximum midas timestamp
+   time_t fMinDaqTimeStamp; ///< minimum daq timestamp
+   time_t fMaxDaqTimeStamp; ///< maximum daq timestamp
 
    Int_t fMinNetworkPacketNumber; ///< minimum network packet id
    Int_t fMaxNetworkPacketNumber; ///< maximum network packet id

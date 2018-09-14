@@ -17,6 +17,7 @@
 
 #include "Globals.h"
 #include "TFragment.h"
+#include "TDetectorHit.h"
 #include "TChannel.h"
 
 /////////////////////////////////////////////////////////////////
@@ -52,10 +53,17 @@ public:
    } //!<!
 #endif
 
-   void Copy(TObject&) const override;            //!<!
-   void Clear(Option_t* opt = "") override;       //!<!
-   virtual void ClearTransients() {}              //!<!
-   void Print(Option_t* opt = "") const override; //!<!
+   void Copy(TObject&) const override;                        //!<!
+   void Clear(Option_t* = "") override { fHits.clear(); } //!<!
+   virtual void ClearTransients();                            //!<!
+   void Print(Option_t* opt = "") const override;             //!<!
+
+	virtual Short_t GetMultiplicity() const { return fHits.size(); }
+	virtual TDetectorHit* GetHit(const int&) const;
+	virtual const std::vector<TDetectorHit*>& GetHitVector() const { return fHits; }
+
+protected:
+	std::vector<TDetectorHit*> fHits;
 
    /// \cond CLASSIMP
    ClassDefOverride(TDetector, 1) // Abstract class for detector systems

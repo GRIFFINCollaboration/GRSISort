@@ -26,7 +26,7 @@
 #include "TSortingDiagnostics.h"
 
 #include "GRootCommands.h"
-#include "TGRSIRunInfo.h"
+#include "TRunInfo.h"
 
 #include "TInterpreter.h"
 #include "TGHtmlBrowser.h"
@@ -36,6 +36,7 @@
 #include <utility>
 
 #include <pwd.h>
+#include <dlfcn.h>
 
 /// \cond CLASSIMP
 ClassImp(TGRSIint)
@@ -47,10 +48,6 @@ extern void WaitLogo();
 TGRSIint* TGRSIint::fTGRSIint = nullptr;
 
 TEnv* TGRSIint::fGRSIEnv = nullptr;
-// std::vector<std::string> *TGRSIint::fInputRootFile  = new std::vector<std::string>;
-// std::vector<std::string> *TGRSIint::fInputMidasFile = new std::vector<std::string>;
-// std::vector<std::string> *TGRSIint::fInputCalFile   = new std::vector<std::string>;
-// std::vector<std::string> *TGRSIint::fInputOdbFile   = new std::vector<std::string>;
 
 void ReadTheNews();
 
@@ -67,7 +64,7 @@ TGRSIint* TGRSIint::instance(int argc, char** argv, void* options, int numOption
 TGRSIint::TGRSIint(int argc, char** argv, void* options, Int_t numOptions, Bool_t noLogo, const char* appClassName)
    : TRint(appClassName, &argc, argv, options, numOptions, noLogo), fKeepAliveTimer(nullptr),
      main_thread_id(std::this_thread::get_id()), fIsTabComplete(false), fAllowedToTerminate(true), fRootFilesOpened(0),
-     fMidasFilesOpened(0)
+     fRawFilesOpened(0)
 {
    /// Singleton constructor
    fGRSIEnv = gEnv;
@@ -89,6 +86,8 @@ TGRSIint::TGRSIint(int argc, char** argv, void* options, Int_t numOptions, Bool_
    SetPrompt("GRSI [%d] ");
    std::string grsipath = getenv("GRSISYS");
    gInterpreter->AddIncludePath(Form("%s/include", grsipath.c_str()));
+	fHandle = nullptr;
+	OpenLibrary();
 }
 
 void TGRSIint::ApplyOptions()
@@ -102,7 +101,7 @@ void TGRSIint::ApplyOptions()
       MakeBatch();
    }
 
-   bool missing_raw_file = !all_files_exist(opt->InputMidasFiles());
+   bool missing_raw_file = !all_files_exist(opt->InputFiles());
 
    if(!false) { // this will be change to something like, if(!ClassicRoot)
       LoadGROOTGraphics();
@@ -119,23 +118,18 @@ void TGRSIint::ApplyOptions()
    ////////////////////////////////////////////////////////
    ////////////////////////////////////////////////////////
 
-   for(const auto& filename : opt->RootInputFiles()) {
+	TRunInfo::ClearVersion();
+	TRunInfo::SetVersion(GRSI_RELEASE);
+
+  for(auto& rawFile : opt->InputFiles()) {
+      OpenRawFile(rawFile);
+   }
+
+  for(const auto& filename : opt->RootInputFiles()) {
       // this will populate gChain if able.
       //   TChannels from the root file will be loaded as file is opened.
       //   GValues from the root file will be loaded as file is opened.
       OpenRootFile(filename);
-   }
-
-   for(auto& midas_file : opt->InputMidasFiles()) {
-      OpenMidasFile(midas_file);
-   }
-
-   for(auto& lst_file : opt->InputLstFiles()) {
-      OpenLstFile(lst_file);
-   }
-
-   for(auto& tdr_file : opt->InputTdrFiles()) {
-      OpenTdrFile(tdr_file);
    }
 
    SetupPipeline();
@@ -182,6 +176,9 @@ void TGRSIint::LoopUntilDone()
 TGRSIint::~TGRSIint()
 {
    /// Default dtor.
+	if(fHandle != nullptr) {
+		dlclose(fHandle);
+	}
 }
 
 bool TGRSIint::HandleTermInput()
@@ -358,159 +355,144 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
 #endif
          }
 
-         if(file->FindObjectAny("TChannel") != nullptr) {
-            file->Get("TChannel"); // this calls TChannel::Streamer
+         if(file->FindObjectAny("Channel") != nullptr) {
+            file->Get("Channel"); // this calls TChannel::Streamer
          }
          if(file->FindObjectAny("GValue") != nullptr) {
             file->Get("GValue");
          }
+         fRootFilesOpened++;
+      } else {
+         std::cout<<"Could not open "<<filename<<std::endl;
+      }
+   }
 
-			fRootFilesOpened++;
-		} else {
-			std::cout<<"Could not open "<<filename<<std::endl;
-			return nullptr;
-		}
-	}
-
-	AddFileToGUI(file);
-	if(file->FindObjectAny("TGRSIRunInfo")) {
-		TGRSIRunInfo::ReadInfoFromFile();
-	}
+   AddFileToGUI(file);
+   TRunInfo::ReadInfoFromFile();
 
 	return file;
 }
 
-TMidasFile* TGRSIint::OpenMidasFile(const std::string& filename)
+void TGRSIint::OpenLibrary()
 {
-	/// Opens MidasFiles and stores them in _midas if successfuly opened.
-	if(!file_exists(filename.c_str())) {
-		std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
-		return nullptr;
+	if(fHandle != nullptr && fCreateRawFile != nullptr && fDestroyRawFile != nullptr && fLibraryVersion != nullptr) {
+		std::cout<<"\tAlready loaded library "<<TGRSIOptions::Get()->ParserLibrary()<<" version "<<fLibraryVersion()<<std::endl;
+		return;
 	}
-
-	auto* file = new TMidasFile(filename.c_str());
-	fRawFiles.push_back(file);
-
-	const char* command = Form("TMidasFile* _midas%i = (TMidasFile*)%luL;", fMidasFilesOpened, (unsigned long)file);
-	ProcessLine(command);
-
-	if(file != nullptr) {
-		std::cout<<"\tfile "<<BLUE<<filename<<RESET_COLOR<<" opened as "<<BLUE<<"_midas"
-			<<fMidasFilesOpened<<RESET_COLOR<<std::endl;
-	}
-	fMidasFilesOpened++;
-	return file;
+   fHandle = dlopen(TGRSIOptions::Get()->ParserLibrary().c_str(), RTLD_LAZY);
+   if(fHandle == nullptr) {
+      std::ostringstream str;
+      str<<"Failed to open raw file library '"<<TGRSIOptions::Get()->ParserLibrary()<<"': "<<dlerror()<<"!";
+		std::cout<<"dlerror: '"<<dlerror()<<"'"<<std::endl;
+      throw std::runtime_error(str.str());
+   }
+   // try and get constructor and destructor functions from opened library
+   fCreateRawFile  = (TRawFile* (*)(const std::string&)) dlsym(fHandle, "CreateFile");
+   fDestroyRawFile = (void (*)(TRawFile*))               dlsym(fHandle, "DestroyFile");
+	fLibraryVersion = (std::string (*)())                 dlsym(fHandle, "LibraryVersion");
+   if(fCreateRawFile == nullptr || fDestroyRawFile == nullptr || fLibraryVersion == nullptr) {
+      std::ostringstream str;
+      str<<"Failed to find CreateFile, DestroyFile and/or LibraryVersion functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!";
+      throw std::runtime_error(str.str());
+   }
+	std::cout<<"\tUsing library "<<TGRSIOptions::Get()->ParserLibrary()<<" version "<<fLibraryVersion()<<std::endl;
 }
 
-TLstFile* TGRSIint::OpenLstFile(const std::string& filename)
+TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
 {
-	/// Opens Lst Files.
-	if(!file_exists(filename.c_str())) {
-		std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
-		return nullptr;
+   /// Opens Raw input file and stores them in _raw if successfuly opened.
+   if(!file_exists(filename.c_str())) {
+      std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
+      return nullptr;
+   }
+
+	if(fHandle == nullptr || fCreateRawFile == nullptr || fDestroyRawFile == nullptr || fLibraryVersion == nullptr) {
+		OpenLibrary();
 	}
 
-	auto* file = new TLstFile(filename.c_str());
-	fRawFiles.push_back(file);
+   // create new raw file
+   auto* file = fCreateRawFile(filename);
+   fRawFiles.push_back(file);
 
-	return file;
-}
+   if(file != nullptr) {
+		const char* command = Form("TRawFile* _raw%i = (TRawFile*)%luL;", fRawFilesOpened, (unsigned long)file);
+		ProcessLine(command);
 
-TTdrFile* TGRSIint::OpenTdrFile(const std::string& filename)
-{
-	/// Opens Tdr Files.
-	if(!file_exists(filename.c_str())) {
-		std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
-		return nullptr;
-	}
-
-	auto* file = new TTdrFile(filename.c_str());
-	fRawFiles.push_back(file);
-
-	return file;
+      std::cout<<"\tfile "<<BLUE<<filename<<RESET_COLOR<<" opened as "
+			      <<BLUE<<"_raw"<<fRawFilesOpened<<RESET_COLOR<<std::endl;
+   }
+   fRawFilesOpened++;
+   return file;
 }
 
 void TGRSIint::SetupPipeline()
 {
-	/// Finds all of the files input as well as flags provided and makes all
-	/// of the decisions about what to sort and what order to open everything up
-	/// in. This also creates the output files. Starts the threads and gets the
-	/// sorting going. This is really the brains of the command line sorting routine.
-	TGRSIOptions* opt = TGRSIOptions::Get();
+   /// Finds all of the files input as well as flags provided and makes all
+   /// of the decisions about what to sort and what order to open everything up
+   /// in. This also creates the output files. Starts the threads and gets the
+   /// sorting going. This is really the brains of the command line sorting routine.
+   TGRSIOptions* opt = TGRSIOptions::Get();
 
-	// Determining which parts of the pipeline need to be set up.
+   // Determining which parts of the pipeline need to be set up.
 
-	bool missing_raw_file = false;
-	for(auto& filename : opt->InputMidasFiles()) {
-		if(!file_exists(filename.c_str())) {
-			missing_raw_file = true;
-			std::cerr<<"File not found: "<<filename<<std::endl;
-		}
-	}
-	for(auto& filename : opt->InputLstFiles()) {
-		if(!file_exists(filename.c_str())) {
-			missing_raw_file = true;
-			std::cerr<<"File not found: "<<filename<<std::endl;
-		}
-	}
-	for(auto& filename : opt->InputTdrFiles()) {
-		if(!file_exists(filename.c_str())) {
-			missing_raw_file = true;
-			std::cerr<<"File not found: "<<filename<<std::endl;
-		}
-	}
+   bool missing_raw_file = false;
+   for(auto& filename : opt->InputFiles()) {
+      if(!file_exists(filename.c_str())) {
+         missing_raw_file = true;
+         std::cerr<<"File not found: "<<filename<<std::endl;
+      }
+   }
 
-	// Which input files do we have
-	bool has_raw_file =
-		(!opt->InputMidasFiles().empty() || !opt->InputLstFiles().empty() || !opt->InputTdrFiles().empty()) && opt->SortRaw() && !missing_raw_file;
-	bool has_input_fragment_tree = gFragment != nullptr; // && opt->SortRoot();
-	bool has_input_analysis_tree = gAnalysis != nullptr; // && opt->SortRoot();
+   // Which input files do we have
+   bool has_raw_file = !opt->InputFiles().empty() && opt->SortRaw() && !missing_raw_file;
+   bool has_input_fragment_tree = gFragment != nullptr; // && opt->SortRoot();
+   bool has_input_analysis_tree = gAnalysis != nullptr; // && opt->SortRoot();
 
-	// Which output files are could possibly be made
-	bool able_to_write_fragment_histograms =
-		((has_raw_file || has_input_fragment_tree) && opt->FragmentHistogramLib().length() > 0);
-	bool able_to_write_fragment_tree       = (has_raw_file && !missing_raw_file);
-	bool able_to_write_analysis_histograms = ((has_raw_file || has_input_fragment_tree || has_input_analysis_tree) &&
-			opt->AnalysisHistogramLib().length() > 0);
-	bool able_to_write_analysis_tree = (able_to_write_fragment_tree || has_input_fragment_tree);
+   // Which output files are could possibly be made
+   bool able_to_write_fragment_histograms =
+      ((has_raw_file || has_input_fragment_tree) && opt->FragmentHistogramLib().length() > 0);
+   bool able_to_write_fragment_tree       = (has_raw_file && !missing_raw_file);
+   bool able_to_write_analysis_histograms = ((has_raw_file || has_input_fragment_tree || has_input_analysis_tree) &&
+                                             opt->AnalysisHistogramLib().length() > 0);
+   bool able_to_write_analysis_tree = (able_to_write_fragment_tree || has_input_fragment_tree);
 
-	// Which output files will we make
-	bool write_fragment_histograms = (able_to_write_fragment_histograms && opt->MakeHistos());
-	bool write_fragment_tree       = able_to_write_fragment_tree;
-	bool write_analysis_histograms =
-		(able_to_write_analysis_histograms  && opt->MakeHistos()); //TODO: make it so we aren't always trying to generate both frag and analysis histograms
-	bool write_analysis_tree = (able_to_write_analysis_tree && opt->MakeAnalysisTree());
+   // Which output files will we make
+   bool write_fragment_histograms = (able_to_write_fragment_histograms && opt->MakeHistos());
+   bool write_fragment_tree       = able_to_write_fragment_tree;
+   bool write_analysis_histograms =
+      (able_to_write_analysis_histograms  && opt->MakeHistos()); //TODO: make it so we aren't always trying to generate both frag and analysis histograms
+   bool write_analysis_tree = (able_to_write_analysis_tree && opt->MakeAnalysisTree());
 
-	// Which steps need to be performed to get from the inputs to the outputs
-	bool self_stopping = opt->CloseAfterSort();
+   // Which steps need to be performed to get from the inputs to the outputs
+   bool self_stopping = opt->CloseAfterSort();
 
-	bool read_from_raw = (has_raw_file && (write_fragment_histograms || write_fragment_tree ||
-				write_analysis_histograms || write_analysis_tree));
+   bool read_from_raw = (has_raw_file && (write_fragment_histograms || write_fragment_tree ||
+                                          write_analysis_histograms || write_analysis_tree));
 
-	bool read_from_fragment_tree =
-		(has_input_fragment_tree && (write_fragment_histograms || write_analysis_histograms || write_analysis_tree));
+   bool read_from_fragment_tree =
+      (has_input_fragment_tree && (write_fragment_histograms || write_analysis_histograms || write_analysis_tree));
 
-	bool generate_analysis_data =
-		((read_from_raw || read_from_fragment_tree) && (write_analysis_histograms || write_analysis_tree));
+   bool generate_analysis_data =
+      ((read_from_raw || read_from_fragment_tree) && (write_analysis_histograms || write_analysis_tree));
 
-	bool read_from_analysis_tree =
-		(has_input_analysis_tree && (write_analysis_histograms || write_analysis_tree) && !generate_analysis_data);
+   bool read_from_analysis_tree =
+      (has_input_analysis_tree && (write_analysis_histograms || write_analysis_tree) && !generate_analysis_data);
 
-	// Extract the run number and sub run number from whatever we were given
-	int run_number     = 0;
-	int sub_run_number = 0;
-	if(read_from_raw) {
-		run_number     = fRawFiles[0]->GetRunNumber();
-		sub_run_number = fRawFiles[0]->GetSubRunNumber();
-	} else if(read_from_fragment_tree) {
-		auto run_title = gFragment->GetListOfFiles()->At(0)->GetTitle();
-		run_number     = GetRunNumber(run_title);
-		sub_run_number = GetSubRunNumber(run_title);
-	} else if(read_from_analysis_tree) {
-		auto run_title = gAnalysis->GetListOfFiles()->At(0)->GetTitle();
-		run_number     = GetRunNumber(run_title);
-		sub_run_number = GetSubRunNumber(run_title);
-	}
+   // Extract the run number and sub run number from whatever we were given
+   int run_number     = 0;
+   int sub_run_number = 0;
+   if(read_from_raw) {
+      run_number     = fRawFiles[0]->GetRunNumber();
+      sub_run_number = fRawFiles[0]->GetSubRunNumber();
+   } else if(read_from_fragment_tree) {
+      auto run_title = gFragment->GetListOfFiles()->At(0)->GetTitle();
+      run_number     = GetRunNumber(run_title);
+      sub_run_number = GetSubRunNumber(run_title);
+   } else if(read_from_analysis_tree) {
+      auto run_title = gAnalysis->GetListOfFiles()->At(0)->GetTitle();
+      run_number     = GetRunNumber(run_title);
+      sub_run_number = GetSubRunNumber(run_title);
+   }
 
 	// Choose output file names for the 4 possible output files
 	std::string output_fragment_tree_filename = opt->OutputFragmentFile();
@@ -605,23 +587,22 @@ void TGRSIint::SetupPipeline()
 		TChannel::ReadCalFile(cal_filename.c_str());
 	}
 	// Set the run number and sub-run number
-	if(!fRawFiles.empty()) {
-		TGRSIRunInfo::Get()->SetRunInfo(fRawFiles[0]->GetRunNumber(), fRawFiles[0]->GetSubRunNumber());
-	} else {
-		TGRSIRunInfo::Get()->SetRunInfo(0, -1);
-	}
+   if(!fRawFiles.empty()) {
+      TRunInfo::Get()->SetRunInfo(fRawFiles[0]->GetRunNumber(), fRawFiles[0]->GetSubRunNumber());
+   } else {
+      TRunInfo::Get()->SetRunInfo(0, -1);
+   }
 
-	for(const auto& val_filename : opt->ValInputFiles()) {
-		GValue::ReadValFile(val_filename.c_str());
-	}
-	for(const auto& info_filename : opt->ExternalRunInfo()) {
-		TGRSIRunInfo::Get()->ReadInfoFile(info_filename.c_str());
-	}
+   for(const auto& val_filename : opt->ValInputFiles()) {
+      GValue::ReadValFile(val_filename.c_str());
+   }
+   for(const auto& info_filename : opt->ExternalRunInfo()) {
+      TRunInfo::Get()->ReadInfoFile(info_filename.c_str());
+   }
 
-	// this happens here, because the TDataLoop constructor is where we read the midas file ODB
-	TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::EBuildMode::kTriggerId;
-	if(TGRSIRunInfo::Get()->Griffin() || TGRSIRunInfo::Get()->Fipps() || TGRSIRunInfo::Get()->TdrClover()) {
-		event_build_mode = TEventBuildingLoop::EBuildMode::kTimestamp;
+   TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::EBuildMode::kDefault;
+	if(TRunInfo::Get()->GetDetectorInformation() != nullptr) {
+		event_build_mode = TRunInfo::Get()->GetDetectorInformation()->BuildMode();
 	}
 
 	// If requested, write the fragment histograms

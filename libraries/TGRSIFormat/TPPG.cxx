@@ -3,7 +3,7 @@
 #include <iomanip>
 #include "TDirectory.h"
 
-#include "TGRSIRunInfo.h"
+#include "TRunInfo.h"
 
 /// \cond CLASSIMP
 ClassImp(TPPGData)
@@ -364,13 +364,9 @@ Int_t TPPG::Write(const char*, Int_t, Int_t) const
 
 void TPPG::Setup()
 {
-   if(TGRSIRunInfo::Tigress() || TGRSIRunInfo::Sharc()) {
-      return;
-   }
-
-   if(TGRSIRunInfo::SubRunNumber() > 0) {
+   if(TRunInfo::SubRunNumber() > 0) {
       auto* prevSubRun =
-         new TFile(Form("fragment%05d_%03d.root", TGRSIRunInfo::RunNumber(), TGRSIRunInfo::SubRunNumber() - 1));
+         new TFile(Form("fragment%05d_%03d.root", TRunInfo::RunNumber(), TRunInfo::SubRunNumber() - 1));
       if(prevSubRun != nullptr && prevSubRun->IsOpen()) {
          TPPG* prev_ppg = static_cast<TPPG*>(prevSubRun->Get("TPPG"));
          if(prev_ppg != nullptr) {
@@ -378,13 +374,13 @@ void TPPG::Setup()
             printf("Found previous PPG data from run %s\n", prevSubRun->GetName());
          } else {
             printf("Error, could not find PPG in file fragment%05d_%03d.root, not adding previous PPG data\n",
-                   TGRSIRunInfo::RunNumber(), TGRSIRunInfo::SubRunNumber() - 1);
+                   TRunInfo::RunNumber(), TRunInfo::SubRunNumber() - 1);
             printf("PPG set up.\n");
          }
          prevSubRun->Close();
       } else {
          printf("Error, could not find file fragment%05d_%03d.root, not adding previous PPG data\n",
-                TGRSIRunInfo::RunNumber(), TGRSIRunInfo::SubRunNumber() - 1);
+                TRunInfo::RunNumber(), TRunInfo::SubRunNumber() - 1);
          printf("PPG set up.\n");
       }
    }

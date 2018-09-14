@@ -15,32 +15,23 @@
 
 #include "Globals.h"
 #include "TBgoHit.h"
-#include "TGRSIDetector.h"
-#include "TGRSIRunInfo.h"
+#include "TDetector.h"
 #include "TTransientBits.h"
 #include "TSpline.h"
 
-class TBgo : public TGRSIDetector {
+class TBgo : public TDetector {
 public:
    TBgo();
    TBgo(const TBgo&);
    virtual ~TBgo();
 
 public:
-   TBgoHit* GetBgoHit(const Int_t& i);
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override { return GetBgoHit(idx); }
-   Short_t   GetMultiplicity() const override { return fBgoHits.size(); }
-	const std::vector<TBgoHit*>& GetHitVector() const { return fBgoHits; }
+   TBgoHit* GetBgoHit(const Int_t& i) { return static_cast<TBgoHit*>(GetHit(i)); }
 
    static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
 #ifndef __CINT__
    void AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan) override; //!<!
 #endif
-   void ClearTransients() override
-   {
-      for(auto hit : fBgoHits) hit->ClearTransients();
-   }
-   void ResetFlags() const;
 
    TBgo& operator=(const TBgo&); //!<!
 

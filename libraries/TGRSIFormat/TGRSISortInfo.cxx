@@ -84,7 +84,7 @@ Long64_t TGRSISortList::Merge(TCollection* list)
 	//  fRunInfoList.AddAll(list);
 }
 
-TGRSISortInfo::TGRSISortInfo(const TGRSIRunInfo* info)
+TGRSISortInfo::TGRSISortInfo(const TRunInfo* info)
 {
 	Clear();
 	SetRunInfo(info);
@@ -97,7 +97,7 @@ TGRSISortInfo::TGRSISortInfo()
 
 TGRSISortInfo::~TGRSISortInfo() = default;
 
-void TGRSISortInfo::SetRunInfo(const TGRSIRunInfo* info)
+void TGRSISortInfo::SetRunInfo(const TRunInfo* info)
 {
 	fRunNumber    = info->RunNumber();
 	fSubRunNumber = info->SubRunNumber();

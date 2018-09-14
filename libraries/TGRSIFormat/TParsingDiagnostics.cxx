@@ -31,8 +31,8 @@ void TParsingDiagnostics::Copy(TObject& obj) const
    static_cast<TParsingDiagnostics&>(obj).fDeadTime               = fDeadTime;
    static_cast<TParsingDiagnostics&>(obj).fMinTimeStamp           = fMinTimeStamp;
    static_cast<TParsingDiagnostics&>(obj).fMaxTimeStamp           = fMaxTimeStamp;
-   static_cast<TParsingDiagnostics&>(obj).fMinMidasTimeStamp      = fMinMidasTimeStamp;
-   static_cast<TParsingDiagnostics&>(obj).fMaxMidasTimeStamp      = fMaxMidasTimeStamp;
+   static_cast<TParsingDiagnostics&>(obj).fMinDaqTimeStamp      = fMinDaqTimeStamp;
+   static_cast<TParsingDiagnostics&>(obj).fMaxDaqTimeStamp      = fMaxDaqTimeStamp;
    static_cast<TParsingDiagnostics&>(obj).fMinNetworkPacketNumber = fMinNetworkPacketNumber;
    static_cast<TParsingDiagnostics&>(obj).fMaxNetworkPacketNumber = fMaxNetworkPacketNumber;
    static_cast<TParsingDiagnostics&>(obj).fNumberOfNetworkPackets = fNumberOfNetworkPackets;
@@ -51,8 +51,8 @@ void TParsingDiagnostics::Clear(Option_t*)
    fDeadTime.clear();
    fMinTimeStamp.clear();
    fMaxTimeStamp.clear();
-   fMinMidasTimeStamp      = 0;
-   fMaxMidasTimeStamp      = 0;
+   fMinDaqTimeStamp      = 0;
+   fMaxDaqTimeStamp      = 0;
    fMinNetworkPacketNumber = 0x7fffffff; // just a large number
    fMaxNetworkPacketNumber = 0;
    fNumberOfNetworkPackets = 0;
@@ -61,7 +61,7 @@ void TParsingDiagnostics::Clear(Option_t*)
 
 void TParsingDiagnostics::Print(Option_t*) const
 {
-   std::cout<<"Total run time of this (sub-)run is "<<fMaxMidasTimeStamp - fMinMidasTimeStamp<<" s"<<std::endl
+   std::cout<<"Total run time of this (sub-)run is "<<fMaxDaqTimeStamp - fMinDaqTimeStamp<<" s"<<std::endl
             <<"PPG cycle is "<<fPPGCycleLength / 1e5<<" ms long."<<std::endl
             <<"Found "<<fNumberOfNetworkPackets<<" network packets in range "<<fMinNetworkPacketNumber<<" - "
             <<fMaxNetworkPacketNumber<<" => "
@@ -150,11 +150,11 @@ void TParsingDiagnostics::GoodFragment(const std::shared_ptr<const TFragment>& f
       }
    }
 
-   if(fMinMidasTimeStamp == 0 || frag->GetMidasTimeStamp() < fMinMidasTimeStamp) {
-      fMinMidasTimeStamp = frag->GetMidasTimeStamp();
+   if(fMinDaqTimeStamp == 0 || frag->GetDaqTimeStamp() < fMinDaqTimeStamp) {
+      fMinDaqTimeStamp = frag->GetDaqTimeStamp();
    }
-   if(fMaxMidasTimeStamp == 0 || frag->GetMidasTimeStamp() > fMaxMidasTimeStamp) {
-      fMaxMidasTimeStamp = frag->GetMidasTimeStamp();
+   if(fMaxDaqTimeStamp == 0 || frag->GetDaqTimeStamp() > fMaxDaqTimeStamp) {
+      fMaxDaqTimeStamp = frag->GetDaqTimeStamp();
    }
 }
 
@@ -200,7 +200,7 @@ void TParsingDiagnostics::WriteToFile(const char* fileName) const
 {
    std::ofstream statsOut(fileName);
    statsOut<<std::endl
-           <<"Run time to the nearest second = "<<fMaxMidasTimeStamp - fMinMidasTimeStamp<<std::endl
+           <<"Run time to the nearest second = "<<fMaxDaqTimeStamp - fMinDaqTimeStamp<<std::endl
            <<std::endl;
 
    statsOut<<"Good fragments:";
