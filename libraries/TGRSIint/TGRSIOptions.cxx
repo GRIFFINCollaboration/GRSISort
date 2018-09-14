@@ -548,8 +548,8 @@ bool TGRSIOptions::WriteToFile(TFile* file)
       printf("No file opened to write to.\n");
       success = false;
    } else {
-      Get()->Write();
-		fAnalysisOptions->Write();
+      Get()->Write("GRSIOptions", TObject::kOverwrite);
+		fAnalysisOptions->WriteToFile(file);
    }
 
    printf("Writing TGRSIOptions to %s\n", gDirectory->GetFile()->GetName());

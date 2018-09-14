@@ -61,7 +61,7 @@ bool TAnalysisOptions::WriteToFile(TFile* file)
       printf("No file opened to write to.\n");
       success = false;
    } else {
-      Write();
+      Write("AnalysisOptions",TObject::kOverwrite);
    }
 
    printf("Writing TAnalysisOptions to %s\n", gDirectory->GetFile()->GetName());

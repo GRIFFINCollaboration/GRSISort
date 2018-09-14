@@ -10,6 +10,7 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
+#include <regex>
 
 #include "TFile.h"
 #include "TKey.h"
@@ -358,13 +359,33 @@ TChannel* TChannel::FindChannelByName(const char* ccName)
       chan                    = iter.second;
       std::string channelName = chan->GetName();
       if(channelName.compare(0, name.length(), name) == 0) {
-         break;
+         return chan;
       }
-      chan = nullptr;
    }
-   // either comes out normally as null or breaks out with some TChannel [SC]
 
-   return chan;
+   return nullptr;
+}
+
+std::vector<TChannel*> TChannel::FindChannelByRegEx(const char* ccName)
+{
+   /// Finds the TChannel by the name of the channel
+	std::vector<TChannel*> result;
+   if(ccName == nullptr) {
+      return result;
+   }
+
+   std::regex regex(ccName);
+
+	TChannel* chan;
+   for(auto iter : *fChannelMap) {
+      chan                    = iter.second;
+      std::string channelName = chan->GetName();
+		if(std::regex_match(channelName, regex)) {
+         result.push_back(chan);
+      }
+   }
+
+   return result;
 }
 
 void TChannel::UpdateChannelNumberMap()
@@ -1299,7 +1320,7 @@ int TChannel::WriteToRoot(TFile* fileptr)
    TIter iter(gDirectory->GetListOfKeys());
 
    bool        found         = false;
-   std::string mastername    = "TChannel";
+   std::string mastername    = "Channel";
    std::string mastertitle   = "TChannel";
    std::string channelbuffer = fFileData; //fFileData is the old TChannel information read from file
    WriteCalBuffer(); //replaces fFileData with the current channels
@@ -1332,7 +1353,7 @@ int TChannel::WriteToRoot(TFile* fileptr)
    TChannel::ParseInputData(channelbuffer.c_str(), "q", EPriority::kRootFile);
    c = TChannel::GetDefaultChannel();
    c->SetNameTitle(mastername.c_str(), mastertitle.c_str());
-   c->Write("", TObject::kOverwrite);
+   c->Write("Channel", TObject::kOverwrite);
 
    ParseInputData(savedata.c_str(), "q", EPriority::kRootFile);
    SaveToSelf(savedata.c_str());

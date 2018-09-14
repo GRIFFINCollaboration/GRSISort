@@ -141,17 +141,17 @@ void TAnalysisWriteLoop::Write()
 		outputFile->cd();
 
 		if(GValue::Size() != 0) {
-			GValue::Get()->Write();
+			GValue::Get()->Write("Values", TObject::kOverwrite);
 		}
 		if(TChannel::GetNumberOfChannels() != 0) {
 			TChannel::WriteToRoot();
 		}
 		runInfo->WriteToRoot(outputFile);
 		options->AnalysisOptions()->WriteToFile(outputFile);
-		ppg->Write();
+		ppg->Write("PPG", TObject::kOverwrite);
 
 		if(options->WriteDiagnostics()) {
-			diag->Write();
+			diag->Write("SortingDiagnostics", TObject::kOverwrite);
 		}
 
 		outputFile->Close();

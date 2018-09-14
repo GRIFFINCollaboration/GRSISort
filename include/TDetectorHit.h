@@ -153,7 +153,7 @@ public:
    virtual Int_t    GetSegment() const;       //!<!
    virtual Int_t    GetCrystal() const;       //!<!
    const char*      GetName() const override; //!<!
-   virtual UShort_t GetArrayNumber() const;   //!<!
+   virtual UShort_t GetArrayNumber() const { return GetDetector(); } //!<! Simply returns the detector number, overwritten for detectors that have crystals/segments
 
    // virtual void GetSegment() const;
 
