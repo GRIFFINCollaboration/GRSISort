@@ -66,7 +66,7 @@ protected:
 			bool suppress = false;
          if(bgo != nullptr) {
             for(auto b : bgo->GetHitVector()) {
-               if(SuppressionCriterion(hit, *b)) {
+               if(SuppressionCriterion(hit, b)) {
                   suppress = true;
                   break;
                }
@@ -88,7 +88,7 @@ protected:
 			bool suppress = false;
          if(bgo != nullptr){
 			   for(auto b : bgo->GetHitVector()) {
-				   if(SuppressionCriterion(hit, *b)) {
+				   if(SuppressionCriterion(hit, b)) {
 					   suppress = true;
 					   break;
 				   }
