@@ -16,6 +16,8 @@ ClassImp(TRunInfo)
 /// \endcond
 
 std::string TRunInfo::fVersion;
+std::string TRunInfo::fFullVersion;
+std::string TRunInfo::fDate;
 std::string TRunInfo::fLibraryVersion;
 
 Bool_t TRunInfo::ReadInfoFromFile(TFile* tempf)
@@ -140,6 +142,12 @@ void TRunInfo::SetRunInfo(int runnum, int subrunnum)
 	// set version of GRSISort
 	TRunInfo::ClearVersion();
 	TRunInfo::SetVersion(GRSI_RELEASE);
+
+	TRunInfo::ClearFullVersion();
+	TRunInfo::SetFullVersion(GRSI_GIT_COMMIT);
+
+	TRunInfo::ClearDate();
+	TRunInfo::SetDate(GRSI_GIT_COMMIT_TIME);
 }
 
 void TRunInfo::SetAnalysisTreeBranches(TTree*)

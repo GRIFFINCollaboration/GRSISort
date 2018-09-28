@@ -77,6 +77,28 @@ public:
       }
    }
 
+   static const char* GetFullVersion() { return fFullVersion.c_str(); }
+   static void        ClearFullVersion() { fFullVersion.clear(); }
+   static void SetFullVersion(const char* ver)
+   {
+      if(fFullVersion.length() != 0) {
+         printf(ALERTTEXT "WARNING; FULL VERSION ALREADY SET TO %s!!" RESET_COLOR "\n", fFullVersion.c_str());
+      } else {
+         fFullVersion.assign(ver);
+      }
+   }
+
+   static const char* GetDate() { return fDate.c_str(); }
+   static void        ClearDate() { fDate.clear(); }
+   static void SetDate(const char* ver)
+   {
+      if(fDate.length() != 0) {
+         printf(ALERTTEXT "WARNING; DATE ALREADY SET TO %s!!" RESET_COLOR "\n", fDate.c_str());
+      } else {
+         fDate.assign(ver);
+      }
+   }
+
    static const char* GetLibraryVersion() { return fLibraryVersion.c_str(); }
    static void        ClearLibraryVersion() { fLibraryVersion.clear(); }
    static void SetLibraryVersion(const char* ver)
@@ -185,7 +207,9 @@ private:
    double fRunStop{0.};   // The stop   of the current run in seconds
    double fRunLength{0.}; // The length of the current run in seconds
 
-   static std::string fVersion;        // The version of GRSISort that generated the file
+   static std::string fVersion;        // The version of GRSISort that generated the file - GRSI_RELEASE from GVersion.h
+   static std::string fFullVersion;    // The full version of GRSISort that generated the file (includes last commit) - GRSI_GIT_COMMIT from GVersion.h
+	static std::string fDate;           // The date of the last commit used in this version - GRSI_GIT_COMMIT_TIME from GVersion.h
    static std::string fLibraryVersion; // The version of the parser/file library that generated the file
 
    std::string fCalFileName; // Name of calfile that generated cal
@@ -218,7 +242,7 @@ public:
    std::string PrintToString(Option_t* opt = "");
 
    /// \cond CLASSIMP
-   ClassDefOverride(TRunInfo, 14); // Contains the run-dependent information.
+   ClassDefOverride(TRunInfo, 15); // Contains the run-dependent information.
    /// \endcond
 };
 /*! @} */
