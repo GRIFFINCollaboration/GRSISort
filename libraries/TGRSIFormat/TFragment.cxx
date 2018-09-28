@@ -12,7 +12,7 @@ ClassImp(TFragment)
 
 Long64_t TFragment::fNumberOfFragments = 0;
 
-TFragment::TFragment() : TGRSIDetectorHit()
+TFragment::TFragment() : TDetectorHit()
 {
 /// Default constructor
 #if MAJOR_ROOT_VERSION < 6
@@ -21,12 +21,12 @@ TFragment::TFragment() : TGRSIDetectorHit()
    Clear();
 }
 
-TFragment::TFragment(const TFragment& rhs) : TGRSIDetectorHit(rhs)
+TFragment::TFragment(const TFragment& rhs) : TDetectorHit(rhs)
 {
    /// Copy constructor
    // first copy all "normal" data members
-   fMidasTimeStamp      = rhs.fMidasTimeStamp;
-   fMidasId             = rhs.fMidasId;
+   fDaqTimeStamp      = rhs.fDaqTimeStamp;
+   fDaqId             = rhs.fDaqId;
    fFragmentId          = rhs.fFragmentId;
    fTriggerBitPattern   = rhs.fTriggerBitPattern;
    fNetworkPacketNumber = rhs.fNetworkPacketNumber;
@@ -56,10 +56,10 @@ TFragment::~TFragment()
 void TFragment::Clear(Option_t* opt)
 {
    /// Clears all fields of the TFragment
-   TGRSIDetectorHit::Clear(opt);
+   TDetectorHit::Clear(opt);
 
-   fMidasTimeStamp      = 0;
-   fMidasId             = 0;
+   fDaqTimeStamp      = 0;
+   fDaqId             = 0;
    fFragmentId          = 0;
    fTriggerBitPattern   = 0;
    fNetworkPacketNumber = 0;
@@ -158,11 +158,11 @@ void TFragment::Print(Option_t*) const
 
    TChannel* chan = GetChannel();
    char      buff[20];
-   ctime(&fMidasTimeStamp);
-   struct tm* timeinfo = localtime(&fMidasTimeStamp);
+   ctime(&fDaqTimeStamp);
+   struct tm* timeinfo = localtime(&fDaqTimeStamp);
    strftime(buff, 20, "%b %d %H:%M:%S", timeinfo);
-   printf("MidasTimeStamp: %s\n", buff);
-   printf("MidasId      %i\n", fMidasId);
+   printf("DaqTimeStamp: %s\n", buff);
+   printf("DaqId      %i\n", fDaqId);
    printf("\tTriggerId[%lu]	  ", fTriggerId.size());
    for(long x : fTriggerId) {
       printf("     0x%08lx", x);

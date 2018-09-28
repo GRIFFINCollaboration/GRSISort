@@ -6,6 +6,7 @@
 
 #include "TEnv.h"
 #include "TKey.h"
+#include "TSystem.h"
 
 #include "Globals.h"
 #include "ArgParser.h"
@@ -37,9 +38,7 @@ TGRSIOptions::TGRSIOptions(int argc, char** argv) : fShouldExit(false)
 void TGRSIOptions::Clear(Option_t*)
 {
    /// Clears all of the variables in the TGRSIOptions
-   fInputMidasFiles.clear();
-   fInputLstFiles.clear();
-   fInputTdrFiles.clear();
+   fInputFiles.clear();
    fInputRootFiles.clear();
    fInputCalFiles.clear();
    fInputOdbFiles.clear();
@@ -115,6 +114,8 @@ void TGRSIOptions::Clear(Option_t*)
    fSelectorOnly = false;
 
    fHelp          = false;
+
+	fParserLibrary.clear();
 }
 
 void TGRSIOptions::Print(Option_t*) const
@@ -169,7 +170,9 @@ void TGRSIOptions::Print(Option_t*) const
             <<"fMaxWorkers: "<<fMaxWorkers<<std::endl
             <<"fSelectorOnly: "<<fSelectorOnly<<std::endl
 				<<std::endl
-				<<"fHelp: "<<fHelp<<std::endl;
+				<<"fHelp: "<<fHelp<<std::endl
+				<<std::endl
+				<<"fParserLibrary: "<<fParserLibrary<<std::endl;
 
 				fAnalysisOptions->Print();
 }
@@ -181,6 +184,8 @@ void TGRSIOptions::Load(int argc, char** argv)
    Clear();
    fFragmentHistogramLib = gEnv->GetValue("GRSI.FragmentHistLib", "");
    fAnalysisHistogramLib = gEnv->GetValue("GRSI.AnalysisHistLib", "");
+
+	fParserLibrary = gEnv->GetValue("GRSI.ParserLibrary","");
 
    // Load default TChannels, if specified.
    {
@@ -360,10 +365,14 @@ void TGRSIOptions::Load(int argc, char** argv)
       FileAutoDetect(file);
    }
 
+	// load any additional parser library
+	if(!fParserLibrary.empty()) {
+		gSystem->Load(fParserLibrary.c_str());
+	}
+
 	// read analysis options from input file(s)
 	for(const std::string& file : fInputRootFiles) {
 		fAnalysisOptions->ReadFromFile(file);
-		fAnalysisOptions->Print();
 	}
 	// parse analysis options from command line options 
    try {
@@ -458,11 +467,11 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
    case kFileType::NSCL_EVT:
    case kFileType::GRETINA_MODE2:
    case kFileType::GRETINA_MODE3:
-   case kFileType::MIDAS_FILE: fInputMidasFiles.push_back(filename); return true;
+   case kFileType::MIDAS_FILE: fInputFiles.push_back(filename); return true;
 
-   case kFileType::LST_FILE: fInputLstFiles.push_back(filename); return true;
+   case kFileType::LST_FILE: fInputFiles.push_back(filename); return true;
 
-   case kFileType::TDR_FILE: fInputTdrFiles.push_back(filename); return true;
+   case kFileType::TDR_FILE: fInputFiles.push_back(filename); return true;
 
    case kFileType::ROOT_DATA: fInputRootFiles.push_back(filename); return true;
 
@@ -480,6 +489,11 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
       }
       if(lib.GetSymbol("MakeAnalysisHistograms") != nullptr) {
          fAnalysisHistogramLib = filename;
+         used                  = true;
+      }
+      if(lib.GetSymbol("CreateParser") != nullptr && lib.GetSymbol("DestroyParser") != nullptr &&
+			lib.GetSymbol("CreateFile")   != nullptr && lib.GetSymbol("DestroyFile")   != nullptr) {
+         fParserLibrary        = filename;
          used                  = true;
       }
       if(!used) {
@@ -534,8 +548,8 @@ bool TGRSIOptions::WriteToFile(TFile* file)
       printf("No file opened to write to.\n");
       success = false;
    } else {
-      Get()->Write();
-		fAnalysisOptions->Write();
+      Get()->Write("GRSIOptions", TObject::kOverwrite);
+		fAnalysisOptions->WriteToFile(file);
    }
 
    printf("Writing TGRSIOptions to %s\n", gDirectory->GetFile()->GetName());

@@ -15,47 +15,36 @@
 
 #include "Globals.h"
 #include "TBgoHit.h"
-#include "TGRSIDetector.h"
-#include "TGRSIRunInfo.h"
+#include "TDetector.h"
 #include "TTransientBits.h"
 #include "TSpline.h"
 
-class TBgo : public TGRSIDetector {
+class TBgo : public TDetector {
 public:
    TBgo();
    TBgo(const TBgo&);
    virtual ~TBgo();
 
 public:
-   TBgoHit* GetBgoHit(const Int_t& i);
-   TGRSIDetectorHit* GetHit(const Int_t& idx = 0) override { return GetBgoHit(idx); }
-   Short_t   GetMultiplicity() const override { return fBgoHits.size(); }
-	const std::vector<TBgoHit*>& GetHitVector() const { return fBgoHits; }
+   TBgoHit* GetBgoHit(const Int_t& i) { return static_cast<TBgoHit*>(GetHit(i)); }
 
    static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
 #ifndef __CINT__
-   void AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan) override; //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan); //!<!
 #endif
-   void ClearTransients() override
-   {
-      for(auto hit : fBgoHits) hit->ClearTransients();
-   }
-   void ResetFlags() const;
 
    TBgo& operator=(const TBgo&); //!<!
 
-protected:
-   std::vector<TBgoHit*> fBgoHits; //  The set of crystal hits
 private:
    static TVector3 gScintPosition[17];                      //!<! Position of each BGO scintillator
 
 public:
-   virtual void Copy(TObject&) const override;            //!<!
-   virtual void Clear(Option_t* opt = "all") override;    //!<!
-   virtual void Print(Option_t* opt = "") const override; //!<!
+   virtual void Copy(TObject&) const;            //!<!
+   virtual void Clear(Option_t* opt = "all");    //!<!
+   virtual void Print(Option_t* opt = "") const; //!<!
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBgo, 2) // Bgo Physics structure
+   ClassDef(TBgo, 1) // Bgo Physics structure
    /// \endcond
 };
 /*! @} */

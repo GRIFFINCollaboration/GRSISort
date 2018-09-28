@@ -35,9 +35,6 @@
 
 #include "Globals.h"
 #include "TRawFile.h"
-#include "TMidasFile.h"
-#include "TLstFile.h"
-#include "TTdrFile.h"
 
 class TGRSIint : public TRint {
 private:
@@ -60,9 +57,7 @@ public:
    int  TabCompletionHook(char*, int*, std::ostream&) override;
 
    TFile* OpenRootFile(const std::string& filename, Option_t* opt = "read");
-   TMidasFile* OpenMidasFile(const std::string& filename);
-   TLstFile* OpenLstFile(const std::string& filename);
-   TTdrFile* OpenTdrFile(const std::string& filename);
+   TRawFile* OpenRawFile(const std::string& filename);
    void RunMacroFile(const std::string& filename);
 
    void Terminate(Int_t status = 0) override;
@@ -82,6 +77,7 @@ private:
    void DrawLogo();
    void LoadGROOTGraphics();
    void LoadExtraClasses();
+	void OpenLibrary();
 
    Long_t DelayedProcessLine(std::string command);
 
@@ -91,19 +87,18 @@ private:
 #endif
 
 private:
-   // bool fPrintLogo;
-   // bool fPrintHelp;
+	void* fHandle; ///< handle for shared object library
 
-   // bool fAutoSort;
-   // bool fFragmentSort;
-   // bool fMakeAnalysisTree;
    bool        fIsTabComplete;      ///< Flag for tab completion hook
    bool        fAllowedToTerminate; ///< Flag for shutting down GRSISort
    int         fRootFilesOpened;    ///< Number of ROOT files opened
-   int         fMidasFilesOpened;   ///< Number of Midas Files opened
+   int         fRawFilesOpened;     ///< Number of Raw Files opened
    std::string fNewFragmentFile;    ///< New fragment file name
 
    std::vector<TRawFile*> fRawFiles; ///< List of Raw files opened
+	TRawFile*   (*fCreateRawFile)(const std::string&);
+	void        (*fDestroyRawFile)(TRawFile*);
+	std::string (*fLibraryVersion)();
 
    /// \cond CLASSIMP
    ClassDefOverride(TGRSIint, 0); // Interpreter for GRSISort

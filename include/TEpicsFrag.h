@@ -24,7 +24,7 @@
 /// \class TEpicsFrag
 ///
 /// This Class should contain all the information found in
-/// NOT typeid 1 midas events. aka Epics (scaler) Events.
+/// Epics (scaler) events.
 ///
 /////////////////////////////////////////////////////////////////
 
@@ -33,8 +33,8 @@ public:
    TEpicsFrag();
    ~TEpicsFrag() override;
 
-   time_t fMidasTimeStamp; //->  Timestamp of the MIDAS event
-   Int_t  fMidasId;        //->  MIDAS ID
+   time_t fDaqTimeStamp; //->  Timestamp of the daq event
+   Int_t  fDaqId;        //->  daq ID
 
    std::vector<float>       fData; ///<The data in the scaler
    std::vector<std::string> fName; ///<The name of the scaler
@@ -69,7 +69,7 @@ private:
    static Long64_t fSmallestTime;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEpicsFrag, 1); // Scaler Fragments
+   ClassDefOverride(TEpicsFrag, 2); // Scaler Fragments
    /// \endcond
 };
 /*! @} */

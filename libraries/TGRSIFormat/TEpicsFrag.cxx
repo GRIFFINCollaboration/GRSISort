@@ -8,7 +8,7 @@
 #include <ctime>
 
 #include "TChannel.h"
-#include "TGRSIRunInfo.h"
+#include "TRunInfo.h"
 
 ////////////////////////////////////////////////////////////////
 //                                                            //
@@ -31,8 +31,8 @@ Long64_t TEpicsFrag::fSmallestTime = std::numeric_limits<Long64_t>::max();
 TEpicsFrag::TEpicsFrag()
 {
    // Default Constructor.
-   fMidasTimeStamp = 0;
-   fMidasId        = -1;
+   fDaqTimeStamp = 0;
+   fDaqId        = -1;
 }
 
 TEpicsFrag::~TEpicsFrag() = default;
@@ -40,8 +40,8 @@ TEpicsFrag::~TEpicsFrag() = default;
 void TEpicsFrag::Clear(Option_t*)
 {
    // Clears the TEpicsFrag.
-   fMidasTimeStamp = 0;
-   fMidasId        = -1;
+   fDaqTimeStamp = 0;
+   fDaqId        = -1;
 
    fName.clear();
    fData.clear();
@@ -55,12 +55,12 @@ void TEpicsFrag::Print(Option_t*) const
    printf("------ EPICS %i Varibles Found ------\n", static_cast<int>(largest));
 
    char buff[20];
-   ctime(&fMidasTimeStamp);
-   struct tm* timeInfo = localtime(&fMidasTimeStamp);
+   ctime(&fDaqTimeStamp);
+   struct tm* timeInfo = localtime(&fDaqTimeStamp);
    strftime(buff, 20, "%b %d %H:%M:%S", timeInfo);
 
-   printf("  MidasTimeStamp: %s\n", buff);
-   printf("  MidasId:    	  %i\n", fMidasId);
+   printf("  DaqTimeStamp: %s\n", buff);
+   printf("  DaqId:    	  %i\n", fDaqId);
    for(size_t i = 0; i < largest; i++) {
       std::cout<<std::setw(3)<<i<<":  ";
       std::cout<<std::setw(30)<<fName.at(i)<<" --- ";
@@ -111,13 +111,11 @@ void TEpicsFrag::BuildScalerMap(TTree* tree)
    if(tree->SetBranchAddress("TEpicsFrag", &my_frag) == 0) {
       for(int i = 0; i < tree->GetEntries(); ++i) {
          tree->GetEntry(i);
-         if((static_cast<Long64_t>(my_frag->fMidasTimeStamp) - static_cast<Long64_t>(TGRSIRunInfo::Get()->RunStart())) <
-            fSmallestTime) {
-            fSmallestTime =
-               static_cast<Long64_t>(my_frag->fMidasTimeStamp) - static_cast<Long64_t>(TGRSIRunInfo::Get()->RunStart());
+         if((static_cast<Long64_t>(my_frag->fDaqTimeStamp) - static_cast<Long64_t>(TRunInfo::Get()->RunStart())) < fSmallestTime) {
+            fSmallestTime = static_cast<Long64_t>(my_frag->fDaqTimeStamp) - static_cast<Long64_t>(TRunInfo::Get()->RunStart());
          }
-         fScalerMap[static_cast<Long64_t>(my_frag->fMidasTimeStamp) -
-                    static_cast<Long64_t>(TGRSIRunInfo::Get()->RunStart())] = *my_frag;
+         fScalerMap[static_cast<Long64_t>(my_frag->fDaqTimeStamp) -
+                    static_cast<Long64_t>(TRunInfo::Get()->RunStart())] = *my_frag;
       }
    } else {
       std::cout<<DRED<<"Could not build map from tree"<<RESET_COLOR<<std::endl;
@@ -159,6 +157,6 @@ void TEpicsFrag::PrintScalerMap()
       }
    }
    for(auto i : fScalerMap) {
-      std::cout<<i.first<<"    "<<i.second.fMidasTimeStamp<<std::endl;
+      std::cout<<i.first<<"    "<<i.second.fDaqTimeStamp<<std::endl;
    }
 }
