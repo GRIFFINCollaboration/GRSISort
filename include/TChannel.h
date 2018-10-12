@@ -75,7 +75,7 @@ private:
    unsigned int fAddress;     // The address of the digitizer
    TPriorityValue<int>          fIntegration; // The charge integration setting
    TPriorityValue<std::string>  fDigitizerTypeString;
-	TPriorityValue<TMnemonic::EDigitizer> fDigitizerType;
+	TPriorityValue<EDigitizer>   fDigitizerType;
    TPriorityValue<int>          fNumber;
    TPriorityValue<int>          fStream;
    TPriorityValue<int>          fUserInfoNumber;
@@ -141,7 +141,8 @@ public:
    inline void SetDigitizerType(TPriorityValue<std::string> tmp)
    {
       fDigitizerTypeString = tmp;
-      fDigitizerType.Set(TMnemonic::EnumerateDigitizer(fDigitizerTypeString.Value()), fDigitizerTypeString.Priority());
+      //fDigitizerType.Set(fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString.Value()), fDigitizerTypeString.Priority());
+      fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType);
    }
    static void SetDigitizerType(const std::string& mnemonic, const char* tmpstr, EPriority pr);
    inline void SetTimeOffset(TPriorityValue<Long64_t> tmp) { fTimeOffset = tmp; }
@@ -163,7 +164,7 @@ public:
    int          GetStream() const { return fStream.Value(); }
    int          GetUserInfoNumber() const { return fUserInfoNumber.Value(); }
    const char*  GetDigitizerTypeString() const { return fDigitizerTypeString.Value().c_str(); }
-	TMnemonic::EDigitizer GetDigitizerType() const { return fDigitizerType.Value(); }
+	EDigitizer   GetDigitizerType() const { return fDigitizerType.Value(); }
    Long64_t     GetTimeOffset() const { return fTimeOffset.Value(); }
    // write the rest of the gettters/setters...
 

@@ -59,40 +59,7 @@ Double_t TDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
       return fTime;
    }
 
-   //TChannel* channel = GetChannel();
-   //if(channel == nullptr) {
-   //   Error("GetTime", "No TChannel exists for address 0x%08x", GetAddress());
-      return SetTime(10. * (static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform())));
-   //}
-   //switch(channel->GetDigitizerType()) {
-	//	Double_t dTime;
-	//	case TMnemonic::EDigitizer::kGRF16:
-	//	dTime = (GetTimeStamp() & (~0x3ffff)) * 10. +
-	//	channel->CalibrateCFD((GetCfd() + gRandom->Uniform()) / 1.6); // CFD is in 10/16th of a nanosecond
-	//	return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
-	//	case TMnemonic::EDigitizer::kGRF4G:
-	//	dTime = GetTimeStamp() * 10. + channel->CalibrateCFD((fCfd >> 22) + ((fCfd & 0x3fffff) + gRandom->Uniform()) / 256.);
-	//	return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
-	//	case TMnemonic::EDigitizer::kTIG10:
-	//	dTime = (GetTimeStamp() & (~0x7fffff)) * 10. +
-	//	channel->CalibrateCFD((GetCfd() + gRandom->Uniform()) / 1.6); // CFD is in 10/16th of a nanosecond
-	//	//channel->CalibrateCFD((GetCfd() & (~0xf) + gRandom->Uniform()) / 1.6); // PBender suggests this.
-	//	return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
-   //   case TMnemonic::EDigitizer::kCaen:
-   //   //10 bit CFD for 0-2ns => divide by 512
-   //   dTime = GetTimeStamp() * 10. + channel->CalibrateCFD((GetCfd() + gRandom->Uniform()) / 512.);
-   //   return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
-	//	case TMnemonic::EDigitizer::kPixie:
-	//	dTime = GetTimeStamp() * 10. + channel->CalibrateCFD(fCfd/3276.8);// CFD is reported as 15bit interpolation of 10 ns
-	//	return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
-	//	case TMnemonic::EDigitizer::kFastPixie:
-	//	dTime = GetTimeStamp() * 10. + channel->CalibrateCFD(fCfd/6553.6);// CFD is reported as 16bit interpolation of 10 ns
-	//	return SetTime(dTime - 10. * (channel->GetTZero(GetEnergy())));
-	//	default:
-	//	dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
-	//	return SetTime(10. * (dTime - channel->GetTZero(GetEnergy())));
-	//}
-   //return 0.;
+	return SetTime(10. * (static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform())));
 }
 
 Float_t TDetectorHit::GetCharge() const

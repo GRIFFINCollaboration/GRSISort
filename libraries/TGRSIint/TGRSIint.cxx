@@ -380,7 +380,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
 
 void TGRSIint::OpenLibrary()
 {
-	if(fHandle != nullptr && fCreateRawFile != nullptr && fDestroyRawFile != nullptr && fLibraryVersion != nullptr) {
+	if(fHandle != nullptr && fCreateRawFile != nullptr && fDestroyRawFile != nullptr && fLibraryVersion != nullptr && fInitLibrary != nullptr) {
 		std::cout<<"\tAlready loaded library "<<TGRSIOptions::Get()->ParserLibrary()<<" version "<<fLibraryVersion()<<std::endl;
 		return;
 	}
@@ -395,11 +395,13 @@ void TGRSIint::OpenLibrary()
 	fCreateRawFile  = (TRawFile* (*)(const std::string&)) dlsym(fHandle, "CreateFile");
 	fDestroyRawFile = (void (*)(TRawFile*))               dlsym(fHandle, "DestroyFile");
 	fLibraryVersion = (std::string (*)())                 dlsym(fHandle, "LibraryVersion");
-	if(fCreateRawFile == nullptr || fDestroyRawFile == nullptr || fLibraryVersion == nullptr) {
+	fInitLibrary    = (void (*)())                        dlsym(fHandle, "InitLibrary");
+	if(fCreateRawFile == nullptr || fDestroyRawFile == nullptr || fLibraryVersion == nullptr || fInitLibrary == nullptr) {
 		std::ostringstream str;
-		str<<"Failed to find CreateFile, DestroyFile and/or LibraryVersion functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!";
+		str<<"Failed to find CreateFile, DestroyFile, LibraryVersion, and/or InitLibrary functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!";
 		throw std::runtime_error(str.str());
 	}
+	fInitLibrary();
 	std::cout<<"\tUsing library "<<TGRSIOptions::Get()->ParserLibrary()<<" version "<<fLibraryVersion()<<std::endl;
 }
 
@@ -411,7 +413,7 @@ TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
 		return nullptr;
 	}
 
-	if(fHandle == nullptr || fCreateRawFile == nullptr || fDestroyRawFile == nullptr || fLibraryVersion == nullptr) {
+	if(fHandle == nullptr || fCreateRawFile == nullptr || fDestroyRawFile == nullptr || fLibraryVersion == nullptr || fInitLibrary == nullptr) {
 		OpenLibrary();
 	}
 

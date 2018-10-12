@@ -54,11 +54,6 @@ void TMnemonic::EnumerateMnemonic(std::string mnemonic_word, EMnemonic& mnemonic
 	};
 }
 
-TMnemonic::EDigitizer TMnemonic::EnumerateDigitizer(std::string)
-{
-   return EDigitizer::kDefault;
-}
-
 void TMnemonic::Parse(std::string* name)
 {
    if((name == nullptr) || name->length() < 9) {

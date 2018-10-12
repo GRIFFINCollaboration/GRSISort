@@ -2,9 +2,14 @@
 #define MNEMONIC_H
 
 #include <string>
+
 #include "TObject.h"
-#include "Globals.h"
 #include "TClass.h"
+
+#include "Globals.h"
+#include "TPriorityValue.h"
+
+enum class EDigitizer : char;// { kDefault };
 
 class TMnemonic : public TObject {
 public:
@@ -16,7 +21,6 @@ public:
    // EMnemonic or ESystem has no effect on the clashing of enumerated variable names.
    // These separations exist only to easily see the difference when looking at the code here.
    enum class EMnemonic { kA, kB, kC, kD, kE, kF, kG, kH, kI, kJ, kK, kL, kM, kN, kO, kP, kQ, kR, kS, kT, kU, kV, kW, kX, kY, kZ, kClear };
-   enum class EDigitizer { kDefault };
 
    virtual EMnemonic SubSystem() const { return fSubSystem; }
    virtual EMnemonic ArraySubPosition() const { return fArraySubPosition; }
@@ -35,7 +39,7 @@ public:
    virtual void Parse(std::string* name);
    virtual void Parse(const char* name);
 
-   static EDigitizer EnumerateDigitizer(std::string name);
+   virtual void EnumerateDigitizer(TPriorityValue<std::string>&, TPriorityValue<EDigitizer>&) { }
 
    virtual void SetRFMNEMONIC(std::string* name);
 

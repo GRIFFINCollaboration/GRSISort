@@ -282,7 +282,7 @@ void TChannel::Clear(Option_t*)
 	fAddress = 0xffffffff;
    fIntegration.Reset(0);
 	fDigitizerTypeString = TPriorityValue<std::string>();
-	fDigitizerType.Reset(TMnemonic::EDigitizer::kDefault);
+	//fDigitizerType.Reset(EDigitizer::kDefault);
    fNumber.Reset(0);
    fStream.Reset(0);
    fUserInfoNumber.Reset(0xffffffff);
