@@ -99,6 +99,7 @@ private:
 	TRawFile*   (*fCreateRawFile)(const std::string&);
 	void        (*fDestroyRawFile)(TRawFile*);
 	std::string (*fLibraryVersion)();
+	void        (*fInitLibrary)();
 
    /// \cond CLASSIMP
    ClassDefOverride(TGRSIint, 0); // Interpreter for GRSISort
