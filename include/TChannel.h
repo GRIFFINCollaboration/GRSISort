@@ -141,7 +141,6 @@ public:
    inline void SetDigitizerType(TPriorityValue<std::string> tmp)
    {
       fDigitizerTypeString = tmp;
-      //fDigitizerType.Set(fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString.Value()), fDigitizerTypeString.Priority());
       fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType);
    }
    static void SetDigitizerType(const std::string& mnemonic, const char* tmpstr, EPriority pr);
