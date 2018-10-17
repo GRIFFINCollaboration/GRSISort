@@ -30,8 +30,9 @@ public:
 
    static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
 #ifndef __CINT__
-   void AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan); //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan) override; //!<!
 #endif
+	void BuildHits() override {} // no need to build any hits, everything already done in AddFragment
 
    TBgo& operator=(const TBgo&); //!<!
 
@@ -39,12 +40,12 @@ private:
    static TVector3 gScintPosition[17];                      //!<! Position of each BGO scintillator
 
 public:
-   virtual void Copy(TObject&) const;            //!<!
-   virtual void Clear(Option_t* opt = "all");    //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
+   virtual void Copy(TObject&) const override;            //!<!
+   virtual void Clear(Option_t* opt = "all") override;    //!<!
+   virtual void Print(Option_t* opt = "") const override; //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TBgo, 1) // Bgo Physics structure
+   ClassDefOverride(TBgo, 1) // Bgo Physics structure
    /// \endcond
 };
 /*! @} */
