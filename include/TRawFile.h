@@ -26,7 +26,7 @@
 
 #include "TRawEvent.h"
 
-/// Reader for MIDAS .mid files
+/// Reader for raw files
 
 class TRawFile : public TObject {
 public:
@@ -56,6 +56,7 @@ public:
    virtual size_t GetFileSize() { return fFileSize; }
 
 #ifndef __CINT__
+   virtual std::shared_ptr<TRawEvent> GetOdbEvent() { return nullptr; }
    virtual std::shared_ptr<TRawEvent> NewEvent() = 0;
 #endif
 
@@ -68,7 +69,7 @@ protected:
    size_t fFileSize{0};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TRawFile, 0) // Used to open and write Midas Files
+   ClassDefOverride(TRawFile, 0) // Used to open and write raw files
    /// \endcond
 };
 /*! @} */

@@ -26,10 +26,7 @@ int StoppableThread::GetNThreads()
 StoppableThread::StoppableThread(std::string name)
    : fItemsPopped(0), fInputSize(0), fName(std::move(name)), running(true), paused(true)
 {
-	if(fThreadMap.find(fName) != fThreadMap.end()) {
-		std::cerr<<"Already have thread '"<<fName<<"': "<<fThreadMap[fName]<<", can't create new thread with same name ("<<this<<")"<<std::endl;
-		throw std::runtime_error(fName);
-	}
+   // TODO: check if a thread already exists and delete?
    fThreadMap.insert(std::make_pair(fName, this));
    thread = std::thread(&StoppableThread::Loop, this);
    if(!status_thread_on) {

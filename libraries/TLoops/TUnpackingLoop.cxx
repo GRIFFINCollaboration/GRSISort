@@ -6,9 +6,8 @@
 #include <memory>
 
 #include "TGRSIOptions.h"
-#include "TLstEvent.h"
-#include "TTdrEvent.h"
-#include "TMidasEvent.h"
+
+#include <dlfcn.h>
 
 TUnpackingLoop* TUnpackingLoop::Get(std::string name)
 {
@@ -27,9 +26,34 @@ TUnpackingLoop::TUnpackingLoop(std::string name)
    : StoppableThread(name), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>()),
      fFragsReadFromRaw(0), fGoodFragsRead(0), fEvaluateDataType(true), fDataType(EDataType::kMidas)
 {
+	// try and open dynamic library
+	if(TGRSIOptions::Get()->ParserLibrary().empty()) {
+      throw std::runtime_error("No data parser library supplied, can't open parser!");
+	}
+
+	fHandle = dlopen(TGRSIOptions::Get()->ParserLibrary().c_str(), RTLD_LAZY);
+	if(fHandle == nullptr) {
+		std::ostringstream str;
+		str<<"Failed to open data parser library '"<<TGRSIOptions::Get()->ParserLibrary()<<"': "<<dlerror()<<"!";
+		throw std::runtime_error(str.str());
+	}
+	// try and get constructor and destructor functions from opened library
+	fCreateDataParser  = (TDataParser* (*)())     dlsym(fHandle, "CreateParser");
+	fDestroyDataParser = (void (*)(TDataParser*)) dlsym(fHandle, "DestroyParser");
+	fLibraryVersion    = (std::string (*)())      dlsym(fHandle, "LibraryVersion");
+	if(fCreateDataParser == nullptr || fDestroyDataParser == nullptr || fLibraryVersion == nullptr) {
+		std::ostringstream str;
+		str<<"Failed to find CreateParser, DestroyParser, and/or LibraryVersion functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!";
+		throw std::runtime_error(str.str());
+	}
+	// create new data parser
+	fParser = fCreateDataParser();
 }
 
-TUnpackingLoop::~TUnpackingLoop() = default;
+TUnpackingLoop::~TUnpackingLoop() {
+	fDestroyDataParser(fParser);
+	dlclose(fHandle);
+}
 
 void TUnpackingLoop::ClearQueue()
 {
@@ -38,7 +62,7 @@ void TUnpackingLoop::ClearQueue()
       fInputQueue->Pop(singleEvent);
    }
 
-   fParser.ClearQueue();
+   fParser->ClearQueue();
 }
 
 bool TUnpackingLoop::Iteration()
@@ -49,7 +73,7 @@ bool TUnpackingLoop::Iteration()
       fInputSize = 0;
       if(fInputQueue->IsFinished()) {
          // Source is dead, push the last event and stop.
-         fParser.SetFinished();
+         fParser->SetFinished();
          BadOutputQueue()->SetFinished();
          ScalerOutputQueue()->SetFinished();
          return false;
@@ -58,24 +82,11 @@ bool TUnpackingLoop::Iteration()
       std::this_thread::sleep_for(std::chrono::milliseconds(10));
       return true;
    }
-   if(fEvaluateDataType) {
-		if(event->IsA() == TLstEvent::Class()) {
-			fDataType         = EDataType::kLst;
-		} else if(event->IsA() == TTdrEvent::Class()) {
-			fDataType = EDataType::kTdr;
-		} else {
-			fDataType = EDataType::kMidas;
-		}
-      fEvaluateDataType = false;
-   }
-   if(fDataType == EDataType::kLst) {// || fDataType == EDataType::kTdr) {
-      fParser.SetStatusVariables(&fItemsPopped, &fInputSize);
-   } else {
-      fInputSize = error;//"error" is the return value of popping an event from the input queue (which returns the number of events left)
-      ++fItemsPopped;
-   }
+	fParser->SetStatusVariables(&fItemsPopped, &fInputSize);
+	fInputSize = error;//"error" is the return value of popping an event from the input queue (which returns the number of events left)
+	++fItemsPopped;
 
-   fFragsReadFromRaw += event->Process(fParser);
+   fFragsReadFromRaw += fParser->Process(event);
    fGoodFragsRead += event->GoodFrags();
 
    return true;
@@ -90,6 +101,6 @@ std::string TUnpackingLoop::EndStatus()
    } else {
       ss<<"\rno fragments read from midas => none parsed!"<<std::endl;
    }
-   ss<<fParser.OutputQueueStatus();
+   ss<<fParser->OutputQueueStatus();
    return ss.str();
 }

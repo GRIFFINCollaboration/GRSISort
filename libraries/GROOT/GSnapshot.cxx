@@ -39,7 +39,7 @@ GSnapshot::GSnapshot(const char* snapshot_dir)
 
 void GSnapshot::Snapshot(TCanvas* can)
 {
-   if((can == nullptr) && (gPad != nullptr)) {
+   if((can == nullptr) && gPad) {
       can = gPad->GetCanvas();
    }
    if(!fCanWriteHere || (can == nullptr)) {

@@ -10,7 +10,7 @@
 /// \class TSortingDiagnostics
 ///
 /// This class gathers various diagnostics calculated during the sorting from
-/// a midas file to a fragment tree and analysis tree and provides convenient
+/// a raw file to a fragment tree and analysis tree and provides convenient
 /// methods of printing and/or visualizing them.
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,11 +41,13 @@ private:
    std::map<long, std::pair<long, long>> fFragmentsOutOfOrder;
    std::vector<Long_t> fPreviousTimeStamps; ///< timestamps of previous fragments, saved every 'BuildWindow' entries
    long                fMaxEntryDiff{0};
+	std::map<TClass*, long> fMissingDetectorClasses; ///< counts of missing detector classes
 
 public:
    //"setter" functions
    void OutOfOrder(long newFragTS, long oldFragTS, long newEntry);
    void AddTimeStamp(Long_t val) { fPreviousTimeStamps.push_back(val); }
+	void AddDetectorClass(TChannel*);
 
    // getter functions
    size_t NumberOfFragmentsOutOfOrder() const { return fFragmentsOutOfOrder.size(); }

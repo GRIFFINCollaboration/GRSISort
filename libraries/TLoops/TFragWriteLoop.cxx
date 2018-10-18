@@ -11,7 +11,7 @@
 
 #include "GValue.h"
 #include "TChannel.h"
-#include "TGRSIRunInfo.h"
+#include "TRunInfo.h"
 #include "TGRSIOptions.h"
 #include "TThread.h"
 #include "TTreeFillMutex.h"
@@ -135,7 +135,7 @@ void TFragWriteLoop::Write()
    if(fOutputFile != nullptr) {
 		// get all singletons before switching to the output file
 		gROOT->cd();
-		TGRSIRunInfo* runInfo = TGRSIRunInfo::Get();
+		TRunInfo* runInfo = TRunInfo::Get();
 		TGRSIOptions* options = TGRSIOptions::Get();
 		TPPG* ppg = TPPG::Get();
 		TParsingDiagnostics* parsingDiagnostics = TParsingDiagnostics::Get();
@@ -146,21 +146,20 @@ void TFragWriteLoop::Write()
       fBadEventTree->Write(fBadEventTree->GetName(), TObject::kOverwrite);
       fScalerTree->Write(fScalerTree->GetName(), TObject::kOverwrite);
       if(GValue::Size() != 0) {
-         gValues->Write();
+         gValues->Write("Values", TObject::kOverwrite);
       }
 
       if(TChannel::GetNumberOfChannels() != 0) {
-         // TChannel::GetDefaultChannel()->Write();
          TChannel::WriteToRoot();
       }
 
       runInfo->WriteToRoot(fOutputFile);
       options->WriteToFile(fOutputFile);
-      ppg->Write();
+      ppg->Write("PPG", TObject::kOverwrite);
 
       if(options->WriteDiagnostics()) {
          parsingDiagnostics->ReadPPG(ppg);
-         parsingDiagnostics->Write();
+         parsingDiagnostics->Write("ParsingDiagnostics", TObject::kOverwrite);
       }
 
       fOutputFile->Close();

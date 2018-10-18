@@ -61,7 +61,7 @@ bool TAnalysisOptions::WriteToFile(TFile* file)
       printf("No file opened to write to.\n");
       success = false;
    } else {
-      Write();
+      Write("AnalysisOptions",TObject::kOverwrite);
    }
 
    printf("Writing TAnalysisOptions to %s\n", gDirectory->GetFile()->GetName());
@@ -86,7 +86,6 @@ void TAnalysisOptions::ReadFromFile(const std::string& file)
             continue;
          }
 
-			std::cout<<R"(Reading analysis options from file ")"<<CYAN<<f->GetName()<<RESET_COLOR<<R"(":)"<<std::endl;
          *this = *static_cast<TAnalysisOptions*>(key->ReadObj());
          f->Close();
          oldDir->cd();

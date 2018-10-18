@@ -5,11 +5,11 @@ ClassImp(TSuppressed)
 void TSuppressed::Copy(TObject& rhs) const
 {
    // Copy function.
-   TGRSIDetector::Copy(rhs);
+   TDetector::Copy(rhs);
 }
 
 void TSuppressed::Clear(Option_t* opt)
 {
    // Clears the mother, and all of the hits
-   TGRSIDetector::Clear(opt);
+   TDetector::Clear(opt);
 }

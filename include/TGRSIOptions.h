@@ -39,9 +39,7 @@ public:
 	static Bool_t ReadFromFile(TFile* file = nullptr);
 
 	bool                            ShouldExit() { return fShouldExit; }
-	const std::vector<std::string>& InputMidasFiles() { return fInputMidasFiles; }
-	const std::vector<std::string>& InputLstFiles() { return fInputLstFiles; }
-	const std::vector<std::string>& InputTdrFiles() { return fInputTdrFiles; }
+	const std::vector<std::string>& InputFiles() { return fInputFiles; }
 	const std::vector<std::string>& RootInputFiles() { return fInputRootFiles; }
 	const std::vector<std::string>& CalInputFiles() { return fInputCalFiles; }
 	const std::vector<std::string>& ValInputFiles() { return fInputValFiles; }
@@ -130,15 +128,16 @@ public:
 
 	void SuppressErrors(bool suppress) { fSuppressErrors = suppress; }
 
+	// shared object libraries
+	const std::string& ParserLibrary() const { return fParserLibrary; }
+
 private:
 	TGRSIOptions(int argc, char** argv);
 	static TGRSIOptions* fGRSIOptions;
 
 	bool FileAutoDetect(const std::string& filename);
 
-	std::vector<std::string> fInputMidasFiles; ///< A list of the input Midas files
-	std::vector<std::string> fInputLstFiles;   ///< A list of the input Lst files
-	std::vector<std::string> fInputTdrFiles;   ///< A list of the input Tdr files
+	std::vector<std::string> fInputFiles; ///< A list of the input  files
 	std::vector<std::string> fInputRootFiles;  ///< A list of the input root files
 	std::vector<std::string> fInputCalFiles;   ///< A list of the input cal files
 	std::vector<std::string> fInputOdbFiles;   ///< A list of the input odb files
@@ -186,7 +185,7 @@ private:
 
 	bool fShowedVersion;///< Flag to show version
 	bool fShowLogo;     ///< Flag to show logo (suppress with -l)
-	bool fSortRaw;      ///< Flag to sort Midas file
+	bool fSortRaw;      ///< Flag to sort raw file
 	bool fExtractWaves; ///< Flag to keep waveforms (suppress with --no-waveforms)
 	bool fIsOnline;     ///< Flag to sort online data
 	bool fStartGui;     ///< Flag to start GUI (-g)
@@ -218,6 +217,9 @@ private:
 	// Proof only
 	int  fMaxWorkers;   ///< Max workers used in grsiproof
 	bool fSelectorOnly; ///< Flag to turn PROOF off in grsiproof
+
+	// shared object libraries
+	std::string fParserLibrary; ///< location of shared object library for data parser and files
 
 	/// \cond CLASSIMP
 	ClassDefOverride(TGRSIOptions, 3); ///< Class for storing options in GRSISort
