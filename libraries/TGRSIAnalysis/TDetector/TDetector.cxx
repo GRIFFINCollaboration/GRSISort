@@ -1,5 +1,3 @@
-
-
 #include "TDetector.h"
 #include <TClass.h>
 

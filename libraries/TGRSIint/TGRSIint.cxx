@@ -24,6 +24,7 @@
 #include "TUnpackingLoop.h"
 #include "TPPG.h"
 #include "TSortingDiagnostics.h"
+#include "TParserLibrary.h"
 
 #include "GRootCommands.h"
 #include "TRunInfo.h"
@@ -36,7 +37,6 @@
 #include <utility>
 
 #include <pwd.h>
-#include <dlfcn.h>
 
 /// \cond CLASSIMP
 ClassImp(TGRSIint)
@@ -86,8 +86,6 @@ TGRSIint::TGRSIint(int argc, char** argv, void* options, Int_t numOptions, Bool_
    SetPrompt("GRSI [%d] ");
    std::string grsipath = getenv("GRSISYS");
    gInterpreter->AddIncludePath(Form("%s/include", grsipath.c_str()));
-	fHandle = nullptr;
-	OpenLibrary();
 }
 
 void TGRSIint::ApplyOptions()
@@ -182,9 +180,6 @@ void TGRSIint::LoopUntilDone()
 TGRSIint::~TGRSIint()
 {
 	/// Default dtor.
-	if(fHandle != nullptr) {
-		dlclose(fHandle);
-	}
 }
 
 bool TGRSIint::HandleTermInput()
@@ -378,33 +373,6 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
 	return file;
 }
 
-void TGRSIint::OpenLibrary()
-{
-	if(fHandle != nullptr && fCreateRawFile != nullptr && fDestroyRawFile != nullptr && fLibraryVersion != nullptr && fInitLibrary != nullptr) {
-		std::cout<<"\tAlready loaded library "<<TGRSIOptions::Get()->ParserLibrary()<<" version "<<fLibraryVersion()<<std::endl;
-		return;
-	}
-	fHandle = dlopen(TGRSIOptions::Get()->ParserLibrary().c_str(), RTLD_LAZY);
-	if(fHandle == nullptr) {
-		std::ostringstream str;
-		str<<"Failed to open raw file library '"<<TGRSIOptions::Get()->ParserLibrary()<<"': "<<dlerror()<<"!";
-		std::cout<<"dlerror: '"<<dlerror()<<"'"<<std::endl;
-		throw std::runtime_error(str.str());
-	}
-	// try and get constructor and destructor functions from opened library
-	fCreateRawFile  = (TRawFile* (*)(const std::string&)) dlsym(fHandle, "CreateFile");
-	fDestroyRawFile = (void (*)(TRawFile*))               dlsym(fHandle, "DestroyFile");
-	fLibraryVersion = (std::string (*)())                 dlsym(fHandle, "LibraryVersion");
-	fInitLibrary    = (void (*)())                        dlsym(fHandle, "InitLibrary");
-	if(fCreateRawFile == nullptr || fDestroyRawFile == nullptr || fLibraryVersion == nullptr || fInitLibrary == nullptr) {
-		std::ostringstream str;
-		str<<"Failed to find CreateFile, DestroyFile, LibraryVersion, and/or InitLibrary functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!";
-		throw std::runtime_error(str.str());
-	}
-	fInitLibrary();
-	std::cout<<"\tUsing library "<<TGRSIOptions::Get()->ParserLibrary()<<" version "<<fLibraryVersion()<<std::endl;
-}
-
 TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
 {
 	/// Opens Raw input file and stores them in _raw if successfuly opened.
@@ -413,12 +381,8 @@ TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
 		return nullptr;
 	}
 
-	if(fHandle == nullptr || fCreateRawFile == nullptr || fDestroyRawFile == nullptr || fLibraryVersion == nullptr || fInitLibrary == nullptr) {
-		OpenLibrary();
-	}
-
 	// create new raw file
-	auto* file = fCreateRawFile(filename);
+	auto* file = TParserLibrary::Get()->CreateRawFile(filename);
 	fRawFiles.push_back(file);
 
 	if(file != nullptr) {
@@ -465,7 +429,7 @@ void TGRSIint::SetupPipeline()
 
 	// Which output files will we make
 	bool write_fragment_histograms = (able_to_write_fragment_histograms && opt->MakeHistos());
-	bool write_fragment_tree       = able_to_write_fragment_tree;
+	bool write_fragment_tree       = able_to_write_fragment_tree && opt->WriteFragmentTree();
 	bool write_analysis_histograms =
 		(able_to_write_analysis_histograms  && opt->MakeHistos()); //TODO: make it so we aren't always trying to generate both frag and analysis histograms
 	bool write_analysis_tree = (able_to_write_analysis_tree && opt->MakeAnalysisTree());

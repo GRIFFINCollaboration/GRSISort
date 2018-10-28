@@ -85,6 +85,7 @@ public:
 
 	bool IgnoreScaler() const { return fIgnoreScaler; }
 	bool IgnoreEpics() const { return fIgnoreEpics; }
+	bool WriteFragmentTree() const { return fWriteFragmentTree; }
 	bool WriteBadFrags() const { return fWriteBadFrags; }
 	bool WriteDiagnostics() const { return fWriteDiagnostics; }
 	int  WordOffset() const { return fWordOffset; }
@@ -106,6 +107,8 @@ public:
 	size_t AnalysisWriteQueueSize() const { return fAnalysisWriteQueueSize; }
 
 	size_t NumberOfClients() const { return fNumberOfClients; }
+
+	size_t NumberOfEvents() const { return fNumberOfEvents; }
 
 	bool TimeSortInput() const { return fTimeSortInput; }
 	int  SortDepth() const { return fSortDepth; }
@@ -129,6 +132,7 @@ public:
 	void SuppressErrors(bool suppress) { fSuppressErrors = suppress; }
 
 	// shared object libraries
+	void ParserLibrary(std::string& library) { fParserLibrary = library; }
 	const std::string& ParserLibrary() const { return fParserLibrary; }
 
 private:
@@ -177,6 +181,7 @@ private:
 
 	bool fIgnoreScaler;     ///< Flag to ignore scalers in GRIFFIN
 	bool fIgnoreEpics;      ///< Flag to ignore epics
+	bool fWriteFragmentTree;///< Flag to write fragment tree
 	bool fWriteBadFrags;    ///< Flag to write bad fragments
 	bool fWriteDiagnostics; ///< Flag to write diagnostics
 	int  fWordOffset;       ///< Offset for word count in GRIFFIN header (default 1)
@@ -197,6 +202,8 @@ private:
 	size_t fAnalysisWriteQueueSize; ///< Size of the analysis write Q
 
 	size_t fNumberOfClients;        ///< Number of analysis write loop clients
+
+	size_t fNumberOfEvents;         ///< Number of events, fragments, etc. to process (0 - all)
 
 	bool fTimeSortInput; ///< Flag to sort on time or triggers
 	int  fSortDepth;     ///< Size of Q that stores fragments to be built into events
