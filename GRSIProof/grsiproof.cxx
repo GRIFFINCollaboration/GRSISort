@@ -237,6 +237,7 @@ int main(int argc, char** argv)
    for(const auto& calFile : gGRSIOpt->CalInputFiles()) {
       gGRSIProof->AddInput(new TNamed(Form("calFile%d", i++), calFile.c_str()));
    }
+	gGRSIProof->AddInput(new TNamed("ParserLibrary", library.c_str()));
 
    Analyze("FragmentTree");
    Analyze("AnalysisTree");

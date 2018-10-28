@@ -9,6 +9,7 @@
 
 #include "Globals.h"
 #include "TGRSIOptions.h"
+#include "TParserLibrary.h"
 
 #include <iostream>
 #include <sstream>
@@ -68,6 +69,7 @@ public:
 		std::string library = TGRSIOptions::Get()->ParserLibrary();
 		if(!library.empty()) {
 			Exec(Form(R"(gSystem->Load("%s");)", library.c_str()));
+			TParserLibrary::Get()->Load();
 		}
 	}
 

@@ -6,8 +6,7 @@
 #include <memory>
 
 #include "TGRSIOptions.h"
-
-#include <dlfcn.h>
+#include "TParserLibrary.h"
 
 TUnpackingLoop* TUnpackingLoop::Get(std::string name)
 {
@@ -31,28 +30,12 @@ TUnpackingLoop::TUnpackingLoop(std::string name)
       throw std::runtime_error("No data parser library supplied, can't open parser!");
 	}
 
-	fHandle = dlopen(TGRSIOptions::Get()->ParserLibrary().c_str(), RTLD_LAZY);
-	if(fHandle == nullptr) {
-		std::ostringstream str;
-		str<<"Failed to open data parser library '"<<TGRSIOptions::Get()->ParserLibrary()<<"': "<<dlerror()<<"!";
-		throw std::runtime_error(str.str());
-	}
-	// try and get constructor and destructor functions from opened library
-	fCreateDataParser  = (TDataParser* (*)())     dlsym(fHandle, "CreateParser");
-	fDestroyDataParser = (void (*)(TDataParser*)) dlsym(fHandle, "DestroyParser");
-	fLibraryVersion    = (std::string (*)())      dlsym(fHandle, "LibraryVersion");
-	if(fCreateDataParser == nullptr || fDestroyDataParser == nullptr || fLibraryVersion == nullptr) {
-		std::ostringstream str;
-		str<<"Failed to find CreateParser, DestroyParser, and/or LibraryVersion functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!";
-		throw std::runtime_error(str.str());
-	}
 	// create new data parser
-	fParser = fCreateDataParser();
+	fParser = TParserLibrary::Get()->CreateDataParser();
 }
 
 TUnpackingLoop::~TUnpackingLoop() {
-	fDestroyDataParser(fParser);
-	dlclose(fHandle);
+	//TParserLibrary::Get()->DestroyDataParser(fParser);
 }
 
 void TUnpackingLoop::ClearQueue()

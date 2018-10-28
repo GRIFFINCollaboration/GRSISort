@@ -136,11 +136,11 @@ void TDetectorHit::Print(Option_t*) const
 {
    /// General print statement for a TDetectorHit.
    /// Currently prints nothing.
-	printf("==== %s @ 0x%p\n ====", ClassName(), (void*)this);
+	printf("==== %s @ 0x%p ====\n", ClassName(), (void*)this);
 	printf("\t%s\n", GetName());
-	printf("\tCharge: %.2f\n", Charge());
-	printf("\tTime:   %.2f\n", GetTime());
-	std::cout<<"\tTime:   "<<GetTimeStamp()<<"\n";
+	printf("\tCharge:    %.2f\n", Charge());
+	printf("\tTime:      %.2f\n", GetTime());
+	std::cout<<"\tTimestamp: "<<GetTimeStamp()<<"\n";
 	printf("============================\n");
 }
 

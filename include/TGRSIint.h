@@ -77,7 +77,6 @@ private:
    void DrawLogo();
    void LoadGROOTGraphics();
    void LoadExtraClasses();
-	void OpenLibrary();
 
    Long_t DelayedProcessLine(std::string command);
 
@@ -87,8 +86,6 @@ private:
 #endif
 
 private:
-	void* fHandle; ///< handle for shared object library
-
    bool        fIsTabComplete;      ///< Flag for tab completion hook
    bool        fAllowedToTerminate; ///< Flag for shutting down GRSISort
    int         fRootFilesOpened;    ///< Number of ROOT files opened
@@ -96,10 +93,6 @@ private:
    std::string fNewFragmentFile;    ///< New fragment file name
 
    std::vector<TRawFile*> fRawFiles; ///< List of Raw files opened
-	TRawFile*   (*fCreateRawFile)(const std::string&);
-	void        (*fDestroyRawFile)(TRawFile*);
-	std::string (*fLibraryVersion)();
-	void        (*fInitLibrary)();
 
    /// \cond CLASSIMP
    ClassDefOverride(TGRSIint, 0); // Interpreter for GRSISort

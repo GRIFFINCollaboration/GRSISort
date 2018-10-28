@@ -75,6 +75,7 @@ void TGRSIOptions::Clear(Option_t*)
 
    fIgnoreScaler     = false;
    fIgnoreEpics      = false;
+   fWriteFragmentTree= false;
    fWriteBadFrags    = false;
    fWriteDiagnostics = false;
 	fWordOffset       = 1;
@@ -95,6 +96,8 @@ void TGRSIOptions::Clear(Option_t*)
    fAnalysisWriteQueueSize = 100000;
 
 	fNumberOfClients = 2;
+
+	fNumberOfEvents = 0;
 
    fTimeSortInput = false;
 
@@ -135,6 +138,7 @@ void TGRSIOptions::Print(Option_t*) const
             <<std::endl
             <<"fIgnoreScaler: "<<fIgnoreScaler<<std::endl
             <<"fIgnoreEpics: "<<fIgnoreEpics<<std::endl
+            <<"fWriteFragmentTree: "<<fWriteFragmentTree<<std::endl
             <<"fWriteBadFrags: "<<fWriteBadFrags<<std::endl
             <<"fWriteDiagnostics: "<<fWriteDiagnostics<<std::endl
             <<"fWordOffset: "<<fWordOffset<<std::endl
@@ -279,6 +283,8 @@ void TGRSIOptions::Load(int argc, char** argv)
 			.default_value(1);
 		parser.option("log-errors", &fLogErrors, true);
 		parser.option("reading-material", &fReadingMaterial, true);
+		parser.option("write-fragment-tree write-frag-tree", &fWriteFragmentTree, true)
+			.description("Write fragment tree.");
 		parser.option("bad-frags write-bad-frags bad-fragments write-bad-fragments", &fWriteBadFrags, true)
 			.description("Write fragments that failed parsing to BadFragmentTree").colour(DGREEN);
 		parser.option("separate-out-of-order", &fSeparateOutOfOrder, true)
@@ -320,6 +326,9 @@ void TGRSIOptions::Load(int argc, char** argv)
 			.description("Turns off PROOF to run a selector on the main thread");
 		parser.option("log-file", &fLogFile, true).description("File logs from grsiproof are written to");
 	}
+
+	parser.option("max-events", &fNumberOfEvents, true)
+		.description("Maximum number of events, fragments, etc. processed").default_value(0);
 
    // look for any arguments ending with .info, pass to parser.
    for(int i = 0; i < argc; i++) {
@@ -386,6 +395,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 		fShowLogo = false;
 		fCloseAfterSort = true;
 		fWriteDiagnostics = true;
+		fWriteFragmentTree = true;
 		fWriteBadFrags = true;
 		fSeparateOutOfOrder = true;
 		fSuppressErrors = true;
