@@ -116,6 +116,11 @@ void TGRSIint::ApplyOptions()
    ////////////////////////////////////////////////////////
    ////////////////////////////////////////////////////////
 
+	// load parser library if provided
+	if(!opt->ParserLibrary().empty()) {
+		TParserLibrary::Get()->Load();
+	}
+
 	TRunInfo::ClearVersion();
 	TRunInfo::SetVersion(GRSI_RELEASE);
 
