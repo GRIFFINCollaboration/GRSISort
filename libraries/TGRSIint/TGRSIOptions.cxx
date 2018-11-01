@@ -284,7 +284,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 		parser.option("log-errors", &fLogErrors, true);
 		parser.option("reading-material", &fReadingMaterial, true);
 		parser.option("write-fragment-tree write-frag-tree", &fWriteFragmentTree, true)
-			.description("Write fragment tree.");
+			.description("Write fragment tree.").colour(DGREEN);
 		parser.option("bad-frags write-bad-frags bad-fragments write-bad-fragments", &fWriteBadFrags, true)
 			.description("Write fragments that failed parsing to BadFragmentTree").colour(DGREEN);
 		parser.option("separate-out-of-order", &fSeparateOutOfOrder, true)
