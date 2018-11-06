@@ -98,6 +98,7 @@ void TRunInfo::Print(Option_t* opt) const
       printf("\t==============================\n");
       printf(DBLUE "\t\tArray Position (mm) = " DRED "%.01f" RESET_COLOR "\n", TRunInfo::HPGeArrayPosition());
 		if(fDetectorInformation != nullptr) fDetectorInformation->Print(opt);
+		else printf("no detector information\n");
       printf("\t==============================\n");
    }
 }

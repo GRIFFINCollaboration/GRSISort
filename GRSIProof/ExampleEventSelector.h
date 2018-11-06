@@ -16,19 +16,21 @@
 #include "THnSparse.h"
 
 // Header file for the classes stored in the TTree if any.
+#include "TGRSISelector.h"
 #include "TGriffin.h"
 #include "TSceptar.h"
-#include "TGRSISelector.h"
+#include "TGriffinBgo.h"
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
 class ExampleEventSelector : public TGRSISelector { //Must be same name as .C and .h
 
  public :
-   TGriffin * fGrif; //Pointers to spot that events will be
-   TSceptar * fScep;
+   TGriffin* fGrif; //Pointers to spot that events will be
+   TSceptar* fScep;
+	TGriffinBgo* fGriffinBgo;
 
-   ExampleEventSelector(TTree * /*tree*/ =0) : TGRSISelector(), fGrif(0), fScep(0) {
+   ExampleEventSelector(TTree * /*tree*/ =0) : TGRSISelector(), fGrif(nullptr), fScep(nullptr), fGriffinBgo(nullptr) {
       SetOutputPrefix("ExampleEvent"); //Changes prefix of output file
    }
 	//These functions are expected to exist
@@ -52,6 +54,9 @@ void ExampleEventSelector::InitializeBranches(TTree* tree)
 	}
    if(tree->SetBranchAddress("TSceptar", &fScep) == TTree::kMissingBranch) {
 		fScep = new TSceptar;
+	}
+   if(tree->SetBranchAddress("TGriffinBgo", &fGriffinBgo) == TTree::kMissingBranch) {
+		fGriffinBgo = new TGriffinBgo;
 	}
 }
 

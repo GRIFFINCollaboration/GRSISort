@@ -578,7 +578,11 @@ void TGRSIint::SetupPipeline()
 
 	TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::EBuildMode::kDefault;
 	if(TRunInfo::Get()->GetDetectorInformation() != nullptr) {
+		// call DetectorInformation::Set again, in case the calibration files we've loaded now changed things
+		TRunInfo::Get()->GetDetectorInformation()->Set();
 		event_build_mode = TRunInfo::Get()->GetDetectorInformation()->BuildMode();
+	} else {
+		std::cout<<"no detector information, can't set build mode"<<std::endl;
 	}
 
 	// If requested, write the fragment histograms
