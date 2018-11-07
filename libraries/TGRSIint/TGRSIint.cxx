@@ -118,7 +118,12 @@ void TGRSIint::ApplyOptions()
 
 	// load parser library if provided
 	if(!opt->ParserLibrary().empty()) {
-		TParserLibrary::Get()->Load();
+		try {
+			TParserLibrary::Get()->Load();
+		} catch(std::runtime_error& e) {
+			// if we failed to load the library, try to continue w/o it
+			std::cerr<<DRED<<e.what()<<RESET_COLOR<<std::endl;
+		}
 	}
 
 	TRunInfo::ClearVersion();
