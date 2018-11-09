@@ -64,6 +64,7 @@ private:
 
    TRawFile* fSource;
    bool      fSelfStopping;
+	size_t    fEventsRead;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>> fOutputQueue;

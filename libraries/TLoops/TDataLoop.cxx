@@ -14,7 +14,7 @@
 #include "TPriorityValue.h"
 
 TDataLoop::TDataLoop(std::string name, TRawFile* source)
-   : StoppableThread(name), fSource(source), fSelfStopping(true),
+   : StoppableThread(name), fSource(source), fSelfStopping(true), fEventsRead(0),
      fOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>("midas_queue"))
 {
 }
@@ -69,9 +69,16 @@ bool TDataLoop::Iteration()
    int                        bytesRead;
    {
       std::lock_guard<std::mutex> lock(fSourceMutex);
-      bytesRead   = fSource->Read(evt);
-      fItemsPopped = fSource->GetBytesRead() / 1000;
-      fInputSize = fSource->GetFileSize() / 1000 - fItemsPopped; // this way fInputSize+fItemsPopped give the file size
+		if(TGRSIOptions::Get()->Downscaling() <= 1 || (fEventsRead%TGRSIOptions::Get()->Downscaling() == 0)) {
+			bytesRead   = fSource->Read(evt);
+			fItemsPopped = fSource->GetBytesRead() / 1000;
+			fInputSize = fSource->GetFileSize() / 1000 - fItemsPopped; // this way fInputSize+fItemsPopped give the file size
+		} else {
+			fSource->Skip(TGRSIOptions::Get()->Downscaling()-1);
+			fItemsPopped = fSource->GetBytesRead() / 1000;
+			fInputSize = fSource->GetFileSize() / 1000 - fItemsPopped; // this way fInputSize+fItemsPopped give the file size
+			return true;
+		}
    }
 
    if(bytesRead <= 0 && fSelfStopping) {
