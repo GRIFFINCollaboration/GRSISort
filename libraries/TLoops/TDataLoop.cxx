@@ -66,18 +66,20 @@ void TDataLoop::OnEnd()
 bool TDataLoop::Iteration()
 {
    std::shared_ptr<TRawEvent> evt = fSource->NewEvent();
-   int                        bytesRead;
+   int                        bytesRead = 0;
    {
       std::lock_guard<std::mutex> lock(fSourceMutex);
-		if(TGRSIOptions::Get()->Downscaling() <= 1 || (fEventsRead%TGRSIOptions::Get()->Downscaling() == 0)) {
-			bytesRead   = fSource->Read(evt);
-			fItemsPopped = fSource->GetBytesRead() / 1000;
-			fInputSize = fSource->GetFileSize() / 1000 - fItemsPopped; // this way fInputSize+fItemsPopped give the file size
-		} else {
+		bytesRead   = fSource->Read(evt);
+		fItemsPopped = fSource->GetBytesRead() / 1000;
+		fInputSize = fSource->GetFileSize() / 1000 - fItemsPopped; // this way fInputSize+fItemsPopped give the file size
+		++fEventsRead;
+		if(TGRSIOptions::Get()->Downscaling() > 1) {
+			// if we use downscaling we skip n-1 events without updating bytesRead
+			// that way all further checks work as usual on the single event we read
 			fSource->Skip(TGRSIOptions::Get()->Downscaling()-1);
 			fItemsPopped = fSource->GetBytesRead() / 1000;
 			fInputSize = fSource->GetFileSize() / 1000 - fItemsPopped; // this way fInputSize+fItemsPopped give the file size
-			return true;
+			fEventsRead += TGRSIOptions::Get()->Downscaling()-1;
 		}
    }
 
