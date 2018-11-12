@@ -45,6 +45,7 @@ public:
 #ifndef __CINT__
    virtual int Read(std::shared_ptr<TRawEvent> event) = 0; ///< Read one event from the file
 #endif
+	virtual void Skip(size_t nofEvents) = 0; ///< Skip nofEvents events in file
    virtual std::string Status(bool long_file_description = true) = 0;
 
    virtual const char* GetFilename() const { return fFilename.c_str(); } ///< Get the name of this file

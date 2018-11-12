@@ -3,6 +3,7 @@
 #include <dlfcn.h>
 
 #include "TGRSIOptions.h"
+#include "TGRSIUtilities.h"
 
 TParserLibrary::~TParserLibrary() {
 	if(fHandle != nullptr) {
@@ -12,7 +13,14 @@ TParserLibrary::~TParserLibrary() {
 
 void TParserLibrary::Load() {
 	if(fHandle != nullptr) {
+		std::cout<<"Already loaded handle "<<fHandle<<std::endl;
 		return;
+	}
+
+	if(!file_exists(TGRSIOptions::Get()->ParserLibrary().c_str())) {
+		std::ostringstream str;
+		str<<"Library '"<<TGRSIOptions::Get()->ParserLibrary()<<"' does not exist or we do not have permissions to access it!";
+		throw std::runtime_error(str.str());
 	}
 
 	fHandle = dlopen(TGRSIOptions::Get()->ParserLibrary().c_str(), RTLD_LAZY);

@@ -69,9 +69,9 @@ void TGRSIOptions::Clear(Option_t*)
    fUseMidFileOdb  = false;
 
    fMakeAnalysisTree = false;
-   fProgressDialog   = false;
    fReadingMaterial  = false;
    fIgnoreFileOdb    = false;
+	fDownscaling      = 1;
 
    fIgnoreScaler     = false;
    fIgnoreEpics      = false;
@@ -131,10 +131,9 @@ void TGRSIOptions::Print(Option_t*) const
             <<"fReconstructTimeStamp: "<<fReconstructTimeStamp<<std::endl
             <<std::endl
             <<"fMakeAnalysisTree: "<<fMakeAnalysisTree<<std::endl
-            <<"fProgressDialog: "<<fProgressDialog<<std::endl
             <<"fReadingMaterial;: "<<fReadingMaterial<<std::endl
             <<"fIgnoreFileOdb: "<<fIgnoreFileOdb<<std::endl
-            <<"fRecordDialog: "<<fRecordDialog<<std::endl
+            <<"fDownscaling: "<<fDownscaling<<std::endl
             <<std::endl
             <<"fIgnoreScaler: "<<fIgnoreScaler<<std::endl
             <<"fIgnoreEpics: "<<fIgnoreEpics<<std::endl
@@ -275,7 +274,6 @@ void TGRSIOptions::Load(int argc, char** argv)
 		parser.option("d debug", &fDebug, true)
 			.description("Write debug information to output/file, e.g. enables writing of TDescantDebug at analysis stage")
 			.default_value(false);
-		parser.option("no-record-dialog", &fRecordDialog, true).description("Dump stuff to screen");
 		parser.option("write-diagnostics", &fWriteDiagnostics, true).description("Write Parsing/SortingDiagnostics to root-file")
 			.colour(DGREEN);
 		parser.option("word-count-offset", &fWordOffset, true)
@@ -291,6 +289,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 			.description("Write out-of-order fragments to a separate tree at the sorting stage")
 			.default_value(false).colour(DGREEN);
 		parser.option("ignore-odb", &fIgnoreFileOdb, true);
+		parser.option("downscaling", &fDownscaling, true).description("Downscaling factor for raw events to be processed").default_value(1);
 		parser.option("ignore-epics", &fIgnoreEpics, true);
 		parser.option("ignore-scaler", &fIgnoreScaler, true);
 		parser.option("suppress-error suppress-errors suppress_error suppress_errors", &fSuppressErrors, true)

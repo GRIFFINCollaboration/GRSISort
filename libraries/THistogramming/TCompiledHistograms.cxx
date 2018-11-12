@@ -147,7 +147,7 @@ void TCompiledHistograms::Fill(std::shared_ptr<const TFragment> frag)
    }
 
    TPreserveGDirectory preserve;
-   fDefault_directory->cd();
+   //fDefault_directory->cd();
    fObj.SetDirectory(fDefault_directory);
 
    fObj.SetFragment(std::move(frag));
@@ -167,7 +167,7 @@ void TCompiledHistograms::Fill(std::shared_ptr<TUnpackedEvent> detectors)
    }
 
    TPreserveGDirectory preserve;
-   fDefault_directory->cd();
+   //fDefault_directory->cd();
    fObj.SetDirectory(fDefault_directory);
 
    fObj.SetDetectors(std::move(detectors));

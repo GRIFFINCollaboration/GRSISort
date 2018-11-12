@@ -166,10 +166,10 @@ include/GVersion.h:
 grsirc:
 	$(call run_and_test,util/gen_grsirc.sh,$@,$(COM_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
 
-lib/lib%.so: .build/histos/%.o include/GVersion.h | lib
+lib/lib%.so: .build/histos/%.o | include/GVersion.h lib
 	$(call run_and_test,$(CPP) -fPIC $^ $(SHAREDSWITCH)lib$*.so $(ROOT_LIBFLAGS) -o $@,$@,$(BLD_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
 
-lib/lib%.so: .build/filters/%.o include/GVersion.h | lib
+lib/lib%.so: .build/filters/%.o | include/GVersion.h lib
 	$(call run_and_test,$(CPP) -fPIC $^ $(SHAREDSWITCH)lib$*.so $(ROOT_LIBFLAGS) -o $@,$@,$(BLD_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
 
 config: bin

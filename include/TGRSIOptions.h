@@ -67,7 +67,6 @@ public:
 	static TAnalysisOptions* AnalysisOptions() { return fAnalysisOptions; }
 
 	bool SeparateOutOfOrder() const { return fSeparateOutOfOrder; }
-	bool RecordDialog() const { return fRecordDialog; }
 	bool StartGui() const { return fStartGui; }
 
 	bool SuppressErrors() const { return fSuppressErrors; }
@@ -79,9 +78,9 @@ public:
 	bool UseMidFileOdb() const { return fUseMidFileOdb; }
 
 	bool MakeAnalysisTree() const { return fMakeAnalysisTree; }
-	bool ProgressDialog() const { return fProgressDialog; }
 	bool ReadingMaterial() const { return fReadingMaterial; }
 	bool IgnoreFileOdb() const { return fIgnoreFileOdb; }
+	int  Downscaling() const { return fDownscaling; }
 
 	bool IgnoreScaler() const { return fIgnoreScaler; }
 	bool IgnoreEpics() const { return fIgnoreEpics; }
@@ -174,10 +173,9 @@ private:
 	bool fReconstructTimeStamp; ///< Flag to reconstruct missing high bits of time stamps (--reconstruct-timestamp)
 
 	bool fMakeAnalysisTree; ///< Flag to make analysis tree (-a)
-	bool fProgressDialog;   ///< Flag to show progress in proof (not used)
 	bool fReadingMaterial;  ///< Flag to show reading material (--reading-material)
 	bool fIgnoreFileOdb;    ///< Flag to ignore midas file odb
-	bool fRecordDialog;
+	int  fDownscaling;      ///< Downscaling factor for raw events to be processed
 
 	bool fIgnoreScaler;     ///< Flag to ignore scalers in GRIFFIN
 	bool fIgnoreEpics;      ///< Flag to ignore epics
