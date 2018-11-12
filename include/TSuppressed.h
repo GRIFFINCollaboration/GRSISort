@@ -116,16 +116,16 @@ protected:
 				suppressed.push_back(suppress);
 			}
 		}
-		//// loop over all created addback hits and check if they contain a suppressed hit
-		//for(j = 0; j < addbacks.size(); ++j) {
-		//	// if this his is suppressed we need to suppress the whole addback event
-		//	if(suppressed[j]) {
-		//		addbacks.erase(addbacks.begin()+j);
-		//		nofFragments.erase(nofFragments.begin()+j);
-		//		suppressed.erase(suppressed.begin()+j);
-		//		--j;
-		//	}
-		//}
+		// loop over all created addback hits and check if they contain a suppressed hit
+		for(j = 0; j < addbacks.size(); ++j) {
+			// if this his is suppressed we need to suppress the whole addback event
+			if(suppressed[j]) {
+				addbacks.erase(addbacks.begin()+j);
+				nofFragments.erase(nofFragments.begin()+j);
+				suppressed.erase(suppressed.begin()+j);
+				--j;
+			}
+		}
 	}
 
 	/// \cond CLASSIMP
