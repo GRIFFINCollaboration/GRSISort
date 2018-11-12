@@ -60,17 +60,17 @@ void ExampleEventSelector::FillHistograms() {
 	//Loop over all suppressed Griffin Hits
    for(auto i = 0; i < fGrif->GetSuppressedMultiplicity(fGriffinBgo); ++i){
 		auto grif1 = fGrif->GetSuppressedHit(i);
-      fH1.at("gE")->Fill(grif1->GetEnergy());
+      fH1.at("gsE")->Fill(grif1->GetEnergy());
 		//Loop over all sceptar hits
 		for(auto j = 0; j < fScep->GetMultiplicity(); ++j){
 			if(PromptCoincidence(grif1,fScep->GetSceptarHit(j))){
-         	fH1.at("gE_b")->Fill(grif1->GetEnergy());
+         	fH1.at("gsE_b")->Fill(grif1->GetEnergy());
 			}
 		}
    }
 	//Loop over all suppressed addback Griffin Hits
    for(auto i = 0; i < fGrif->GetSuppressedAddbackMultiplicity(fGriffinBgo); ++i){
 		auto grif1 = fGrif->GetSuppressedAddbackHit(i);
-      fH1.at("aE")->Fill(grif1->GetEnergy());
+      fH1.at("asE")->Fill(grif1->GetEnergy());
 	}
 }
