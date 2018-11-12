@@ -1,4 +1,4 @@
-// TXMLOdb.h TRawEvent.h TRawFile.h
+// TRawEvent.h TRawFile.h
 
 
 #ifdef __CINT__
@@ -8,7 +8,6 @@
 #pragma link off all functions;
 #pragma link C++ nestedclasses;
 
-#pragma link C++ class TXMLOdb+;
 #pragma link C++ class TRawEvent+;
 #pragma link C++ class TRawFile+;
 

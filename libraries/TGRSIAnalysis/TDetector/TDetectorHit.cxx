@@ -136,11 +136,11 @@ void TDetectorHit::Print(Option_t*) const
 {
    /// General print statement for a TDetectorHit.
    /// Currently prints nothing.
-	printf("==== %s @ 0x%p\n ====", ClassName(), (void*)this);
+	printf("==== %s @ 0x%p ====\n", ClassName(), (void*)this);
 	printf("\t%s\n", GetName());
-	printf("\tCharge: %.2f\n", Charge());
-	printf("\tTime:   %.2f\n", GetTime());
-	std::cout<<"\tTime:   "<<GetTimeStamp()<<"\n";
+	printf("\tCharge:    %.2f\n", Charge());
+	printf("\tTime:      %.2f\n", GetTime());
+	std::cout<<"\tTimestamp: "<<GetTimeStamp()<<"\n";
 	printf("============================\n");
 }
 
@@ -157,19 +157,17 @@ void TDetectorHit::Clear(Option_t*)
 {
 	/// General clear statement for a TDetectorHit.
 	fAddress = 0xffffffff; // -1
-	// fPosition.SetXYZ(0,0,1);  // unit vector along the beam.
-	fWaveform.clear(); // reset size to zero.
 	fCharge    = 0;
 	fKValue    = 0;
 	fCfd       = -1;
 	fTimeStamp = 0;
-	// fDetector       = -1;
-	// fSegment        = -1;
+	fWaveform.clear(); // reset size to zero.
+	fTime           = 0.;
 	fEnergy         = 0.;
-	fBitFlags       = 0;
 	fPPGStatus      = EPpgPattern::kJunk;
 	fCycleTimeStamp = 0;
 	fChannel        = nullptr;
+	fBitFlags       = 0;
 }
 
 Int_t TDetectorHit::GetDetector() const

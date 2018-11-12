@@ -2,6 +2,7 @@
 #define MNEMONIC_H
 
 #include <string>
+#include <iostream>
 
 #include "TObject.h"
 #include "TClass.h"
@@ -39,7 +40,7 @@ public:
    virtual void Parse(std::string* name);
    virtual void Parse(const char* name);
 
-   virtual void EnumerateDigitizer(TPriorityValue<std::string>&, TPriorityValue<EDigitizer>&) { }
+   virtual void EnumerateDigitizer(TPriorityValue<std::string>&, TPriorityValue<EDigitizer>&) { std::cout<<__PRETTY_FUNCTION__<<std::endl; }
 
    virtual void SetRFMNEMONIC(std::string* name);
 

@@ -26,7 +26,7 @@ class TDetector;
 template <typename T>
 class ThreadsafeQueue {
 public:
-   ThreadsafeQueue(std::string name = "default", size_t maxSize = 50000);
+   ThreadsafeQueue(std::string name = "default", size_t maxSize = 100000);
    ~ThreadsafeQueue();
 #ifndef __CINT__
    int Push(T obj);

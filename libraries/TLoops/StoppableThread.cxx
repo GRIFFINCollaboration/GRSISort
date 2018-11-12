@@ -12,8 +12,8 @@
 #include "TFragmentChainLoop.h"
 
 std::map<std::string, StoppableThread*> StoppableThread::fThreadMap;
-bool        StoppableThread::status_thread_on = false;
-std::thread StoppableThread::status_thread;
+bool        StoppableThread::fStatusThreadOn = false;
+std::thread StoppableThread::fStatusThread;
 
 size_t StoppableThread::fColumnWidth = 20;
 size_t StoppableThread::fStatusWidth = 80;
@@ -24,12 +24,12 @@ int StoppableThread::GetNThreads()
 }
 
 StoppableThread::StoppableThread(std::string name)
-   : fItemsPopped(0), fInputSize(0), fName(std::move(name)), running(true), paused(true)
+   : fItemsPopped(0), fInputSize(0), fName(std::move(name)), fRunning(true), fPaused(true)
 {
    // TODO: check if a thread already exists and delete?
    fThreadMap.insert(std::make_pair(fName, this));
-   thread = std::thread(&StoppableThread::Loop, this);
-   if(!status_thread_on) {
+   fThread = std::thread(&StoppableThread::Loop, this);
+   if(!fStatusThreadOn) {
       start_status_thread();
    }
 }
@@ -185,68 +185,69 @@ StoppableThread::~StoppableThread()
 		fThreadMap.erase(fName);
 	}
 	if(fThreadMap.empty()) {
-		status_thread_on = false;
-		status_thread.join();
+		fStatusThreadOn = false;
+		fStatusThread.join();
 	}
 }
 
 void StoppableThread::Resume()
 {
-	if(running) {
-		std::unique_lock<std::mutex> lock(pause_mutex);
-		paused = false;
-		paused_wait.notify_one();
+	if(fRunning) {
+		std::unique_lock<std::mutex> lock(fPauseMutex);
+		fPaused = false;
+		fPausedWait.notify_one();
 	}
 }
 
 void StoppableThread::Pause()
 {
-	if(running) {
-		paused = true;
+	if(fRunning) {
+		fPaused = true;
 	}
 }
 
 void StoppableThread::Stop()
 {
-	std::unique_lock<std::mutex> lock(pause_mutex);
-	running = false;
+	std::unique_lock<std::mutex> lock(fPauseMutex);
+	fRunning = false;
 	std::cout<<std::endl;
-	paused = false;
+	fPaused = false;
 	std::cout<<EndStatus();
-	paused_wait.notify_one();
+	fPausedWait.notify_one();
 }
 
 bool StoppableThread::IsRunning()
 {
-	return running;
+	return fRunning;
 }
 
 bool StoppableThread::IsPaused()
 {
-	return paused;
+	return fPaused;
 }
 
 void StoppableThread::Join()
 {
-	std::cout<<EndStatus();
-	thread.join();
+	if(fThread.joinable()) {
+		std::cout<<EndStatus();
+		fThread.join();
+	}
 }
 
 void StoppableThread::Loop()
 {
-	while(running) {
-		std::unique_lock<std::mutex> lock(pause_mutex);
-		while(paused && running) {
-			paused_wait.wait_for(lock, std::chrono::milliseconds(100));
+	while(fRunning) {
+		std::unique_lock<std::mutex> lock(fPauseMutex);
+		while(fPaused && fRunning) {
+			fPausedWait.wait_for(lock, std::chrono::milliseconds(100));
 		}
 		bool success = Iteration();
 		if(!success) {
-			running = false;
+			fRunning = false;
 			std::cout<<std::endl;
 			break;
 		}
 	}
-
 	OnEnd();
 }
 
@@ -263,28 +264,28 @@ void StoppableThread::Print()
 
 void StoppableThread::start_status_thread()
 {
-	if(!status_thread_on) {
-		status_thread_on = true;
-		status_thread    = std::thread(StoppableThread::status_out_loop);
+	if(!fStatusThreadOn) {
+		fStatusThreadOn = true;
+		fStatusThread   = std::thread(StoppableThread::status_out_loop);
 	}
 }
 
 void StoppableThread::stop_status_thread()
 {
-	if(status_thread_on) {
-		status_thread_on = false;
+	if(fStatusThreadOn) {
+		fStatusThreadOn = false;
 	}
 }
 
 void StoppableThread::join_status_thread()
 {
 	stop_status_thread();
-	status_thread.join();
+	fStatusThread.join();
 }
 
 void StoppableThread::status_out_loop()
 {
-	while(status_thread_on) {
+	while(fStatusThreadOn) {
 		std::this_thread::sleep_for(std::chrono::seconds(2));
 		status_out();
 	}

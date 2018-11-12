@@ -537,9 +537,12 @@ double TChannel::CalibrateCFD(double cfd)
    }
 
    double cal_cfd = 0.0;
+	//std::cout<<cfd<<":";
    for(size_t i = 0; i < fCFDCoefficients.Value().size(); i++) {
       cal_cfd += fCFDCoefficients.Value()[i] * pow(cfd, i);
+		//std::cout<<" "<<i<<" - "<<fCFDCoefficients.Value()[i]<<" = "<<cal_cfd;
    }
+	//std::cout<<std::endl;
 
    return cal_cfd;
 }
@@ -677,13 +680,6 @@ void TChannel::Print(Option_t*) const
       std::cout<<fENGCoefficient<<"\t";
    }
    std::cout<<std::endl;
-	if(!fCFDCoefficients.Value().empty()) {
-		std::cout<<"CfdCoeff:  ";
-		for(float fCFDCoefficient : fCFDCoefficients.Value()) {
-			std::cout<<fCFDCoefficient<<"\t";
-		}
-		std::cout<<std::endl;
-	}
    std::cout<<"Integration: "<<fIntegration<<std::endl;
    std::cout<<"ENGChi2:   "<<fENGChi2<<std::endl;
    std::cout<<"EffCoeff:  ";
