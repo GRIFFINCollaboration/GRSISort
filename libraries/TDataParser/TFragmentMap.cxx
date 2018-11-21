@@ -351,6 +351,10 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
 void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vector<Float_t> c, std::vector<Long_t> k2,
                          int situation)
 {
+	/// Solves minimization of charges for given integrated charges c and integration lengths k2.
+	/// Resulting charges are stored in the provided fragments with a k-value of 1.
+	/// The situation parameter distinguishes between the two different ways 3 hits can pile up with each other:
+	/// 3 - both later hits pile up with the first, any other value - the third hit only piles up with the second hit not the first one.
    switch(frag.size()) {
    case 2:
       frag[0]->SetCharge((c[0] * (k2[0] * k2[1] + k2[0] * k2[2]) + (c[1] - c[2]) * k2[1] * k2[2]) /
