@@ -51,7 +51,11 @@ protected:
 			}
 			// if we haven't found an addback hit to add this hit to, or if there are no addback hits yet we create a new addback hit
 			if(j == addbacks.size()) {
-				addbacks.push_back(new T(*hit));
+				/// Because the functions to return hit vectors etc. are almost always returning vectors of TDetectorHits, T is most likely TDetectorHit.
+				/// This means we can't use T directly to create a new hit, we need to use TClass::New().
+				T* tmpT = static_cast<T*>(hit->IsA()->New());
+				*tmpT = *hit;
+				addbacks.push_back(tmpT);
 				nofFragments.push_back(1);
 			}
 		}
@@ -72,7 +76,13 @@ protected:
                }
             }
          }
-			if(!suppress) suppressedHits.push_back(new T(*hit));
+			/// Because the functions to return hit vectors etc. are almost always returning vectors of TDetectorHits, T is most likely TDetectorHit.
+			/// This means we can't use T directly to create a new hit, we need to use TClass::New().
+			if(!suppress) {
+				T* tmpT = static_cast<T*>(hit->IsA()->New());
+				*tmpT = *hit;
+				suppressedHits.push_back(tmpT);
+			}
 		}
 	}
 
@@ -111,7 +121,11 @@ protected:
 			}
 			// if we haven't found an addback hit to add this hit to, or if there are no addback hits yet we create a new addback hit
 			if(j == addbacks.size()) {
-				addbacks.push_back(new T(*hit));
+				/// Because the functions to return hit vectors etc. are almost always returning vectors of TDetectorHits, T is most likely TDetectorHit.
+				/// This means we can't use T directly to create a new hit, we need to use TClass::New().
+				T* tmpT = static_cast<T*>(hit->IsA()->New());
+				*tmpT = *hit;
+				addbacks.push_back(tmpT);
 				nofFragments.push_back(1);
 				suppressed.push_back(suppress);
 			}
