@@ -12,7 +12,7 @@
 #include "TGRSIProof.h"
 #include "TGRSIOptions.h"
 #include "TChannel.h"
-#include "TGRSIRunInfo.h"
+#include "TRunInfo.h"
 #include "TObjectWrapper.h"
 #include "TStopwatch.h"
 #include "TGRSIMap.h"
@@ -45,8 +45,8 @@ void Analyze(const char* tree_type)
             // TODO: A smarter way of finding run info for run number and sub run number naming
             static bool info_set = false;
             if(!info_set) {
-               TGRSIRunInfo::Get()->ReadInfoFromFile(in_file);
-					TGRSIRunInfo::Get()->Print();
+               TRunInfo::Get()->ReadInfoFromFile(in_file);
+					TRunInfo::Get()->Print();
                info_set = true;
             }
 
@@ -102,7 +102,7 @@ void AtExitHandler()
 	controlC = true;
 	if(startedProof) {
 		std::cout<<"getting session logs ..."<<std::endl;
-		TProofLog* pl = nullptr;//TProof::Mgr("proof://__lite__")->GetSessionLogs();
+		TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
 		if(pl != nullptr) {
 			pl->Save("*", gGRSIOpt->LogFile().c_str());
 		} else {
@@ -164,19 +164,31 @@ int main(int argc, char** argv)
    gROOT->SetMacroPath(Form("%s/GRSIProof", pPath));
    gROOT->SetMacroPath(Form("%s/myAnalysis", pPath));
    gInterpreter->AddIncludePath(Form("%s/include", pPath));
+	// if we have a data parser/detector library, add it's include path as well
+	std::string library = gGRSIOpt->ParserLibrary();
+	if(!library.empty()) {
+		size_t tmpPos = library.rfind("/lib/lib");
+		if(tmpPos != std::string::npos) {
+			gInterpreter->AddIncludePath(Form("%s/include", library.substr(0,tmpPos).c_str()));
+		} else {
+			std::cout<<"Warning, expected dataparser/detector library location to be of form <path>/lib/lib<name>.so, but it is "<<library<<". Won't be able to add include path!"<<std::endl;
+		}
+		//gSystem->Load(library.c_str());
+	} else {
+		std::cout<<"Warning, no dataparser/detector library provided, won't be able to add include path!"<<std::endl;
+	}
    // The first thing we want to do is see if we can compile the macros that are passed to us
    if(gGRSIOpt->MacroInputFiles().empty()) {
       std::cout<<DRED<<"Can't PROOF if there is no MACRO"<<RESET_COLOR<<std::endl;
-      return 0;
+      return 1;
    }
    std::cout<<DCYAN<<"************************* MACRO COMPILATION ****************************"<<RESET_COLOR
             <<std::endl;
    for(const auto& i : gGRSIOpt->MacroInputFiles()) {
-      // Int_t error_code = gROOT->LoadMacro(Form("%s+",i->c_str()));
-      Int_t error_code = gSystem->CompileMacro(i.c_str(), "kO");
-      if(error_code == 0) { // TODO: Fix this check
+      Int_t error_code = gSystem->CompileMacro(i.c_str(), "kO"); // k - keep shared library after session ends, O - optimize the code
+      if(error_code == 0) {
          std::cout<<DRED<<i<<" failed to compile properly.. ABORT!"<<RESET_COLOR<<std::endl;
-         return 0;
+         return 1;
       }
    }
    std::cout<<DCYAN<<"************************* END COMPILATION ******************************"<<RESET_COLOR
@@ -187,7 +199,7 @@ int main(int argc, char** argv)
                <<RESET_COLOR<<std::endl;
    }
 
-   if(!gGRSIOpt->InputMidasFiles().empty()) {
+   if(!gGRSIOpt->InputFiles().empty()) {
       std::cout<<DRED<<"Can't Proof a Midas file..."<<RESET_COLOR<<std::endl;
    }
 
@@ -225,6 +237,7 @@ int main(int argc, char** argv)
    for(const auto& calFile : gGRSIOpt->CalInputFiles()) {
       gGRSIProof->AddInput(new TNamed(Form("calFile%d", i++), calFile.c_str()));
    }
+	gGRSIProof->AddInput(new TNamed("ParserLibrary", library.c_str()));
 
    Analyze("FragmentTree");
    Analyze("AnalysisTree");

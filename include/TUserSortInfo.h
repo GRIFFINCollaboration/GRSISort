@@ -12,13 +12,13 @@
 #include "TCollection.h"
 
 #include "Globals.h"
-#include "TGRSIRunInfo.h"
+#include "TRunInfo.h"
 #include "TGRSISortInfo.h"
 
 class TUserSortInfo : public TGRSISortInfo {
 public:
    TUserSortInfo() {};
-   TUserSortInfo(const TGRSIRunInfo* info) : TGRSISortInfo(info) {};
+   TUserSortInfo(const TRunInfo* info) : TGRSISortInfo(info) {};
    ~TUserSortInfo() override = default;
 
    void Print(Option_t* opt = "") const override;

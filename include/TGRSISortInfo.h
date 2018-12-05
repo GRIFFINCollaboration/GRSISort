@@ -11,7 +11,7 @@
 #include "TString.h"
 #include "TCollection.h"
 #include "Globals.h"
-#include "TGRSIRunInfo.h"
+#include "TRunInfo.h"
 
 class TGRSISortInfo;
 
@@ -44,11 +44,11 @@ private:
 class TGRSISortInfo : public TObject {
 public:
    TGRSISortInfo();
-   TGRSISortInfo(const TGRSIRunInfo* info);
+   TGRSISortInfo(const TRunInfo* info);
    ~TGRSISortInfo() override;
 
 public:
-   void SetRunInfo(const TGRSIRunInfo* info);
+   void SetRunInfo(const TRunInfo* info);
    Int_t   RunNumber() const { return fRunNumber; }
    Int_t   SubRunNumber() const { return fSubRunNumber; }
    TString Comment() const { return fComment; }

@@ -7,7 +7,10 @@ void ExampleEventSelector::CreateHistograms() {
    fH1["gE"] 	= new TH1D("gE","#gamma Singles",12000,0,3000);
    fH1["gE_b"] = new TH1D("gE_b","#gamma Singles in rough #beta coincidence",12000,0,3000);
 	fH1["aE"]	= new TH1D("aE", "Addback Singles", 12000,0,3000);
-	fH2["ggE"] 	= new TH2F("ggE","#gamma #gamma Coincidence",6000,0,3000,6000,0,3000);
+	fH2["ggE"] 	= new TH2F("ggE","#gamma #gamma Coincidence",8192,0,4096.,8192,0,4096.);
+   fH1["gsE"] 	= new TH1D("gsE","suppressed #gamma Singles",12000,0,3000);
+   fH1["gsE_b"] = new TH1D("gsE_b","suppressed #gamma Singles in rough #beta coincidence",12000,0,3000);
+	fH1["asE"]	= new TH1D("asE", "suppressed Addback Singles", 12000,0,3000);
 
 	//Send histograms to Output list to be added and written.
 	for(auto it : fH1) {
@@ -34,12 +37,40 @@ bool PromptCoincidence(TGriffinHit *g1, TGriffinHit *g2){
 void ExampleEventSelector::FillHistograms() {
 	//Loop over all Griffin Hits
    for(auto i = 0; i < fGrif->GetMultiplicity(); ++i){
-      fH1.at("gE")->Fill(fGrif->GetGriffinHit(i)->GetEnergy());
+		auto grif1 = fGrif->GetGriffinHit(i);
+      fH1.at("gE")->Fill(grif1->GetEnergy());
+		// second loop over all Griffin Hits
+		for(auto j = 0; j < fGrif->GetMultiplicity(); ++j){
+			if(i == j) continue;
+			auto grif2 = fGrif->GetGriffinHit(j);
+			fH2.at("ggE")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+		}
 		//Loop over all sceptar hits
 		for(auto j = 0; j < fScep->GetMultiplicity(); ++j){
-			if(PromptCoincidence(fGrif->GetGriffinHit(i),fScep->GetSceptarHit(j))){
-         	fH1.at("gE_b")->Fill(fGrif->GetGriffinHit(i)->GetEnergy());
+			if(PromptCoincidence(grif1,fScep->GetSceptarHit(j))){
+         	fH1.at("gE_b")->Fill(grif1->GetEnergy());
 			}
 		}
    }
+	//Loop over all addback Griffin Hits
+   for(auto i = 0; i < fGrif->GetAddbackMultiplicity(); ++i){
+		auto grif1 = fGrif->GetAddbackHit(i);
+      fH1.at("aE")->Fill(grif1->GetEnergy());
+	}
+	//Loop over all suppressed Griffin Hits
+   for(auto i = 0; i < fGrif->GetSuppressedMultiplicity(fGriffinBgo); ++i){
+		auto grif1 = fGrif->GetSuppressedHit(i);
+      fH1.at("gsE")->Fill(grif1->GetEnergy());
+		//Loop over all sceptar hits
+		for(auto j = 0; j < fScep->GetMultiplicity(); ++j){
+			if(PromptCoincidence(grif1,fScep->GetSceptarHit(j))){
+         	fH1.at("gsE_b")->Fill(grif1->GetEnergy());
+			}
+		}
+   }
+	//Loop over all suppressed addback Griffin Hits
+   for(auto i = 0; i < fGrif->GetSuppressedAddbackMultiplicity(fGriffinBgo); ++i){
+		auto grif1 = fGrif->GetSuppressedAddbackHit(i);
+      fH1.at("asE")->Fill(grif1->GetEnergy());
+	}
 }

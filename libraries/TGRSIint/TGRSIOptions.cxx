@@ -6,6 +6,7 @@
 
 #include "TEnv.h"
 #include "TKey.h"
+#include "TSystem.h"
 
 #include "Globals.h"
 #include "ArgParser.h"
@@ -37,9 +38,7 @@ TGRSIOptions::TGRSIOptions(int argc, char** argv) : fShouldExit(false)
 void TGRSIOptions::Clear(Option_t*)
 {
    /// Clears all of the variables in the TGRSIOptions
-   fInputMidasFiles.clear();
-   fInputLstFiles.clear();
-   fInputTdrFiles.clear();
+   fInputFiles.clear();
    fInputRootFiles.clear();
    fInputCalFiles.clear();
    fInputOdbFiles.clear();
@@ -70,12 +69,13 @@ void TGRSIOptions::Clear(Option_t*)
    fUseMidFileOdb  = false;
 
    fMakeAnalysisTree = false;
-   fProgressDialog   = false;
    fReadingMaterial  = false;
    fIgnoreFileOdb    = false;
+	fDownscaling      = 1;
 
    fIgnoreScaler     = false;
    fIgnoreEpics      = false;
+   fWriteFragmentTree= false;
    fWriteBadFrags    = false;
    fWriteDiagnostics = false;
 	fWordOffset       = 1;
@@ -97,6 +97,8 @@ void TGRSIOptions::Clear(Option_t*)
 
 	fNumberOfClients = 2;
 
+	fNumberOfEvents = 0;
+
    fTimeSortInput = false;
 
    fSeparateOutOfOrder    = false;
@@ -115,6 +117,8 @@ void TGRSIOptions::Clear(Option_t*)
    fSelectorOnly = false;
 
    fHelp          = false;
+
+	fParserLibrary.clear();
 }
 
 void TGRSIOptions::Print(Option_t*) const
@@ -127,13 +131,13 @@ void TGRSIOptions::Print(Option_t*) const
             <<"fReconstructTimeStamp: "<<fReconstructTimeStamp<<std::endl
             <<std::endl
             <<"fMakeAnalysisTree: "<<fMakeAnalysisTree<<std::endl
-            <<"fProgressDialog: "<<fProgressDialog<<std::endl
             <<"fReadingMaterial;: "<<fReadingMaterial<<std::endl
             <<"fIgnoreFileOdb: "<<fIgnoreFileOdb<<std::endl
-            <<"fRecordDialog: "<<fRecordDialog<<std::endl
+            <<"fDownscaling: "<<fDownscaling<<std::endl
             <<std::endl
             <<"fIgnoreScaler: "<<fIgnoreScaler<<std::endl
             <<"fIgnoreEpics: "<<fIgnoreEpics<<std::endl
+            <<"fWriteFragmentTree: "<<fWriteFragmentTree<<std::endl
             <<"fWriteBadFrags: "<<fWriteBadFrags<<std::endl
             <<"fWriteDiagnostics: "<<fWriteDiagnostics<<std::endl
             <<"fWordOffset: "<<fWordOffset<<std::endl
@@ -169,7 +173,9 @@ void TGRSIOptions::Print(Option_t*) const
             <<"fMaxWorkers: "<<fMaxWorkers<<std::endl
             <<"fSelectorOnly: "<<fSelectorOnly<<std::endl
 				<<std::endl
-				<<"fHelp: "<<fHelp<<std::endl;
+				<<"fHelp: "<<fHelp<<std::endl
+				<<std::endl
+				<<"fParserLibrary: "<<fParserLibrary<<std::endl;
 
 				fAnalysisOptions->Print();
 }
@@ -181,6 +187,8 @@ void TGRSIOptions::Load(int argc, char** argv)
    Clear();
    fFragmentHistogramLib = gEnv->GetValue("GRSI.FragmentHistLib", "");
    fAnalysisHistogramLib = gEnv->GetValue("GRSI.AnalysisHistLib", "");
+
+	fParserLibrary = gEnv->GetValue("GRSI.ParserLibrary","");
 
    // Load default TChannels, if specified.
    {
@@ -266,7 +274,6 @@ void TGRSIOptions::Load(int argc, char** argv)
 		parser.option("d debug", &fDebug, true)
 			.description("Write debug information to output/file, e.g. enables writing of TDescantDebug at analysis stage")
 			.default_value(false);
-		parser.option("no-record-dialog", &fRecordDialog, true).description("Dump stuff to screen");
 		parser.option("write-diagnostics", &fWriteDiagnostics, true).description("Write Parsing/SortingDiagnostics to root-file")
 			.colour(DGREEN);
 		parser.option("word-count-offset", &fWordOffset, true)
@@ -274,12 +281,15 @@ void TGRSIOptions::Load(int argc, char** argv)
 			.default_value(1);
 		parser.option("log-errors", &fLogErrors, true);
 		parser.option("reading-material", &fReadingMaterial, true);
+		parser.option("write-fragment-tree write-frag-tree", &fWriteFragmentTree, true)
+			.description("Write fragment tree.").colour(DGREEN);
 		parser.option("bad-frags write-bad-frags bad-fragments write-bad-fragments", &fWriteBadFrags, true)
 			.description("Write fragments that failed parsing to BadFragmentTree").colour(DGREEN);
 		parser.option("separate-out-of-order", &fSeparateOutOfOrder, true)
 			.description("Write out-of-order fragments to a separate tree at the sorting stage")
 			.default_value(false).colour(DGREEN);
 		parser.option("ignore-odb", &fIgnoreFileOdb, true);
+		parser.option("downscaling", &fDownscaling, true).description("Downscaling factor for raw events to be processed").default_value(1);
 		parser.option("ignore-epics", &fIgnoreEpics, true);
 		parser.option("ignore-scaler", &fIgnoreScaler, true);
 		parser.option("suppress-error suppress-errors suppress_error suppress_errors", &fSuppressErrors, true)
@@ -315,6 +325,9 @@ void TGRSIOptions::Load(int argc, char** argv)
 			.description("Turns off PROOF to run a selector on the main thread");
 		parser.option("log-file", &fLogFile, true).description("File logs from grsiproof are written to");
 	}
+
+	parser.option("max-events", &fNumberOfEvents, true)
+		.description("Maximum number of events, fragments, etc. processed").default_value(0);
 
    // look for any arguments ending with .info, pass to parser.
    for(int i = 0; i < argc; i++) {
@@ -360,10 +373,14 @@ void TGRSIOptions::Load(int argc, char** argv)
       FileAutoDetect(file);
    }
 
+	// load any additional parser library
+	if(!fParserLibrary.empty()) {
+		gSystem->Load(fParserLibrary.c_str());
+	}
+
 	// read analysis options from input file(s)
 	for(const std::string& file : fInputRootFiles) {
 		fAnalysisOptions->ReadFromFile(file);
-		fAnalysisOptions->Print();
 	}
 	// parse analysis options from command line options 
    try {
@@ -377,6 +394,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 		fShowLogo = false;
 		fCloseAfterSort = true;
 		fWriteDiagnostics = true;
+		fWriteFragmentTree = true;
 		fWriteBadFrags = true;
 		fSeparateOutOfOrder = true;
 		fSuppressErrors = true;
@@ -458,11 +476,11 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
    case kFileType::NSCL_EVT:
    case kFileType::GRETINA_MODE2:
    case kFileType::GRETINA_MODE3:
-   case kFileType::MIDAS_FILE: fInputMidasFiles.push_back(filename); return true;
+   case kFileType::MIDAS_FILE: fInputFiles.push_back(filename); return true;
 
-   case kFileType::LST_FILE: fInputLstFiles.push_back(filename); return true;
+   case kFileType::LST_FILE: fInputFiles.push_back(filename); return true;
 
-   case kFileType::TDR_FILE: fInputTdrFiles.push_back(filename); return true;
+   case kFileType::TDR_FILE: fInputFiles.push_back(filename); return true;
 
    case kFileType::ROOT_DATA: fInputRootFiles.push_back(filename); return true;
 
@@ -480,6 +498,11 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
       }
       if(lib.GetSymbol("MakeAnalysisHistograms") != nullptr) {
          fAnalysisHistogramLib = filename;
+         used                  = true;
+      }
+      if(lib.GetSymbol("CreateParser") != nullptr && lib.GetSymbol("DestroyParser") != nullptr &&
+			lib.GetSymbol("CreateFile")   != nullptr && lib.GetSymbol("DestroyFile")   != nullptr) {
+         fParserLibrary        = filename;
          used                  = true;
       }
       if(!used) {
@@ -534,8 +557,8 @@ bool TGRSIOptions::WriteToFile(TFile* file)
       printf("No file opened to write to.\n");
       success = false;
    } else {
-      Get()->Write();
-		fAnalysisOptions->Write();
+      Get()->Write("GRSIOptions", TObject::kOverwrite);
+		fAnalysisOptions->WriteToFile(file);
    }
 
    printf("Writing TGRSIOptions to %s\n", gDirectory->GetFile()->GetName());

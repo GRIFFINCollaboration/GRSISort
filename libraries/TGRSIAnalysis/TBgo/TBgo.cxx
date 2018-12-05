@@ -93,13 +93,13 @@ TVector3 TBgo::gScintPosition[17] = {
             TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Sin(TMath::DegToRad() * (337.5)),
             TMath::Cos(TMath::DegToRad() * (135.0)))};
 
-TBgo::TBgo() : TGRSIDetector()
+TBgo::TBgo() : TDetector()
 {
 	/// Default ctor.
    Clear();
 }
 
-TBgo::TBgo(const TBgo& rhs) : TGRSIDetector()
+TBgo::TBgo(const TBgo& rhs) : TDetector()
 {
 	/// Copy ctor.
    rhs.Copy(*this);
@@ -108,9 +108,7 @@ TBgo::TBgo(const TBgo& rhs) : TGRSIDetector()
 void TBgo::Copy(TObject& rhs) const
 {
    // Copy function.
-   TGRSIDetector::Copy(rhs);
-
-   static_cast<TBgo&>(rhs).fBgoHits   = fBgoHits;
+   TDetector::Copy(rhs);
 }
 
 TBgo::~TBgo()
@@ -121,8 +119,7 @@ TBgo::~TBgo()
 void TBgo::Clear(Option_t* opt)
 {
    /// Clears the mother, and all of the hits
-   TGRSIDetector::Clear(opt);
-   fBgoHits.clear();
+   TDetector::Clear(opt);
 }
 
 void TBgo::Print(Option_t*) const
@@ -145,8 +142,8 @@ void TBgo::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* c
       return;
    }
 
-	TBgoHit hit(*frag);
-	fBgoHits.push_back(std::move(hit));
+	TBgoHit* hit = new TBgoHit(*frag);
+	fHits.push_back(std::move(hit));
 }
 
 TVector3 TBgo::GetPosition(int DetNbr, int CryNbr, double dist)
@@ -179,15 +176,3 @@ TVector3 TBgo::GetPosition(int DetNbr, int CryNbr, double dist)
 	return (temp_pos + shift);
 }
 
-TBgoHit* TBgo::GetBgoHit(const Int_t& i)
-{
-	try {
-		return &(fBgoHits.at(i));
-	} catch(const std::out_of_range& oor) {
-		std::cerr<<ClassName()<<" Hits are out of range: "<<oor.what()<<std::endl;
-		if(!gInterpreter) {
-			throw grsi::exit_exception(1);
-		}
-	}
-	return nullptr;
-}

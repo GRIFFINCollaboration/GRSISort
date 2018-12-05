@@ -11,9 +11,8 @@
 #include "TDirectoryFile.h"
 #include "TProfile.h"
 
-#include "GH1D.h"
-#include "GH2D.h"
-#include "GH2D.h"
+#include "TH1D.h"
+#include "TH2D.h"
 
 #include "GValue.h"
 
@@ -51,7 +50,7 @@ TH1* TRuntimeObjects::FillHistogram(const char* name, int bins, double low, doub
 {
    TH1* hist = dynamic_cast<TH1*>(GetObjects().FindObject(name));
    if(hist == nullptr) {
-      hist = new GH1D(name, name, bins, low, high);
+      hist = new TH1D(name, name, bins, low, high);
       if(fDirectory != nullptr) {
          hist->SetDirectory(fDirectory);
       }
@@ -68,7 +67,7 @@ TH2* TRuntimeObjects::FillHistogram(const char* name, int Xbins, double Xlow, do
 {
    TH2* hist = dynamic_cast<TH2*>(GetObjects().FindObject(name));
    if(hist == nullptr) {
-      hist = new GH2D(name, name, Xbins, Xlow, Xhigh, Ybins, Ylow, Yhigh);
+      hist = new TH2D(name, name, Xbins, Xlow, Xhigh, Ybins, Ylow, Yhigh);
       if(fDirectory != nullptr) {
          hist->SetDirectory(fDirectory);
       }
@@ -104,7 +103,7 @@ TH2* TRuntimeObjects::FillHistogramSym(const char* name, int Xbins, double Xlow,
 {
    TH2* hist = dynamic_cast<TH2*>(GetObjects().FindObject(name));
    if(hist == nullptr) {
-      hist = new GH2D(name, name, Xbins, Xlow, Xhigh, Ybins, Ylow, Yhigh);
+      hist = new TH2D(name, name, Xbins, Xlow, Xhigh, Ybins, Ylow, Yhigh);
       if(fDirectory != nullptr) {
          hist->SetDirectory(fDirectory);
       }
@@ -133,7 +132,7 @@ TDirectory* TRuntimeObjects::FillHistogram(const char* dirname, const char* name
    dir->cd();
    TH1* hist = dynamic_cast<TH1*>(dir->FindObject(name));
    if(hist == nullptr) {
-      hist = new GH1D(name, name, bins, low, high);
+      hist = new TH1D(name, name, bins, low, high);
       hist->SetDirectory(dir);
       dir->Add(hist);
    }
@@ -186,7 +185,7 @@ TDirectory* TRuntimeObjects::FillHistogram(const char* dirname, const char* name
    dir->cd();
    TH2* hist = dynamic_cast<TH2*>(dir->FindObject(name));
    if(hist == nullptr) {
-      hist = new GH2D(name, name, Xbins, Xlow, Xhigh, Ybins, Ylow, Yhigh);
+      hist = new TH2D(name, name, Xbins, Xlow, Xhigh, Ybins, Ylow, Yhigh);
       hist->SetDirectory(dir);
       dir->Add(hist);
    }
@@ -199,7 +198,7 @@ TDirectory* TRuntimeObjects::FillHistogram(const char* dirname, const char* name
    return dir; /*
                   TH2* hist = (TH2*) GetObjects().FindObject(name);
                   if(!hist){
-                  hist = new GH2D(name.c_str(),name.c_str(),
+                  hist = new TH2D(name.c_str(),name.c_str(),
                   Xbins, Xlow, Xhigh,
                   Ybins, Ylow, Yhigh);
                   GetObjects().Add(hist);
@@ -246,7 +245,7 @@ TDirectory* TRuntimeObjects::FillHistogramSym(const char* dirname, const char* n
    dir->cd();
    TH2* hist = dynamic_cast<TH2*>(dir->FindObject(name));
    if(hist == nullptr) {
-      hist = new GH2D(name, name, Xbins, Xlow, Xhigh, Ybins, Ylow, Yhigh);
+      hist = new TH2D(name, name, Xbins, Xlow, Xhigh, Ybins, Ylow, Yhigh);
       hist->SetDirectory(dir);
       dir->Add(hist);
    }
@@ -261,7 +260,7 @@ TDirectory* TRuntimeObjects::FillHistogramSym(const char* dirname, const char* n
    return dir; /*
                   TH2* hist = (TH2*) GetObjects().FindObject(name);
                   if(!hist){
-                  hist = new GH2D(name.c_str(),name.c_str(),
+                  hist = new TH2D(name.c_str(),name.c_str(),
                   Xbins, Xlow, Xhigh,
                   Ybins, Ylow, Yhigh);
                   GetObjects().Add(hist);

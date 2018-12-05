@@ -48,6 +48,7 @@ public:
    static TChannel* GetChannel(unsigned int temp_address);
    static TChannel* GetChannelByNumber(int temp_num);
    static TChannel* FindChannelByName(const char* ccName);
+   static std::vector<TChannel*> FindChannelByRegEx(const char* ccName);
 
    TChannel();
    TChannel(const char*);
@@ -67,11 +68,14 @@ public:
 
    static TChannel* GetDefaultChannel();
 
+	static void    SetMnemonicClass(TClass* cl) { fMnemonicClass = cl; }
+	static TClass* GetMnemonicClass()           { return fMnemonicClass; }
+
 private:
    unsigned int fAddress;     // The address of the digitizer
    TPriorityValue<int>          fIntegration; // The charge integration setting
    TPriorityValue<std::string>  fDigitizerTypeString;
-	TPriorityValue<TMnemonic::EDigitizer> fDigitizerType;
+	TPriorityValue<EDigitizer>   fDigitizerType;
    TPriorityValue<int>          fNumber;
    TPriorityValue<int>          fStream;
    TPriorityValue<int>          fUserInfoNumber;
@@ -82,7 +86,8 @@ private:
    mutable int fCrystalNumber;
 
    TPriorityValue<Long64_t>    fTimeOffset;
-   TPriorityValue<TMnemonic>   fMnemonic;
+   TPriorityValue<TMnemonic*>  fMnemonic;
+	static TClass*					 fMnemonicClass;
 
    TPriorityValue<std::vector<Float_t> > fENGCoefficients;  // Energy calibration coeffs (low to high order)
    TPriorityValue<double>                fENGChi2;          // Chi2 of the energy calibration
@@ -136,7 +141,7 @@ public:
    inline void SetDigitizerType(TPriorityValue<std::string> tmp)
    {
       fDigitizerTypeString = tmp;
-      fDigitizerType.Set(TMnemonic::EnumerateDigitizer(fDigitizerTypeString.Value()), fDigitizerTypeString.Priority());
+      fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType);
    }
    static void SetDigitizerType(const std::string& mnemonic, const char* tmpstr, EPriority pr);
    inline void SetTimeOffset(TPriorityValue<Long64_t> tmp) { fTimeOffset = tmp; }
@@ -145,12 +150,12 @@ public:
    void SetSegmentNumber(int tempint) { fSegmentNumber = tempint; }
    void SetCrystalNumber(int tempint) { fCrystalNumber = tempint; }
 
-   int              GetDetectorNumber() const;
-   int              GetSegmentNumber() const;
-   int              GetCrystalNumber() const;
-   const TMnemonic* GetMnemonic() const { return fMnemonic.Address(); }
-   TClass*          GetClassType() const { return fMnemonic.Value().GetClassType(); }
-   void SetClassType(TClass* cl_type) { fMnemonic.Address()->SetClassType(cl_type); }
+   int               GetDetectorNumber() const;
+   int               GetSegmentNumber() const;
+   int               GetCrystalNumber() const;
+   const TMnemonic*  GetMnemonic() const { return fMnemonic.Value(); }
+   TClass*           GetClassType() const { return fMnemonic.Value()->GetClassType(); }
+   void              SetClassType(TClass* cl_type) { fMnemonic.Value()->SetClassType(cl_type); }
 
    int          GetNumber() const { return fNumber.Value(); }
    unsigned int GetAddress() const { return fAddress; }
@@ -158,7 +163,7 @@ public:
    int          GetStream() const { return fStream.Value(); }
    int          GetUserInfoNumber() const { return fUserInfoNumber.Value(); }
    const char*  GetDigitizerTypeString() const { return fDigitizerTypeString.Value().c_str(); }
-	TMnemonic::EDigitizer GetDigitizerType() const { return fDigitizerType.Value(); }
+	EDigitizer   GetDigitizerType() const { return fDigitizerType.Value(); }
    Long64_t     GetTimeOffset() const { return fTimeOffset.Value(); }
    // write the rest of the gettters/setters...
 

@@ -1,5 +1,3 @@
-
-
 #include "TDetector.h"
 #include <TClass.h>
 
@@ -35,6 +33,7 @@ void TDetector::Copy(TObject& rhs) const
    // if(!rhs.InheritsFrom("TDetector"))
    //   return;
    TObject::Copy(rhs);
+	static_cast<TDetector&>(rhs).fHits = fHits;
 }
 
 void TDetector::Print(Option_t*) const
@@ -43,8 +42,20 @@ void TDetector::Print(Option_t*) const
    /// nothing
 }
 
-void TDetector::Clear(Option_t*)
+void TDetector::ClearTransients()
 {
-   /// Default clear statement for TDetector. Currently does
-   /// nothing
+	for(auto hit : fHits) {
+		hit->ClearTransients();
+	}
+}
+
+TDetectorHit* TDetector::GetHit(const int& i) const
+{
+	try {
+		return fHits.at(i);
+	} catch(const std::out_of_range& oor) {
+		std::cerr<<ClassName()<<" is out of range: "<<oor.what()<<std::endl;
+		throw grsi::exit_exception(1);
+	}
+	return nullptr;
 }

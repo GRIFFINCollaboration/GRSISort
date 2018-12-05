@@ -78,9 +78,9 @@ public:
    static size_t                  StatusWidth() { return fStatusWidth; }
 
 #ifndef __CINT__
-   static std::thread status_thread;
+   static std::thread fStatusThread;
 #endif
-   static bool status_thread_on;
+   static bool fStatusThreadOn;
    static void start_status_thread();
    static void stop_status_thread();
    static void join_status_thread();
@@ -96,23 +96,23 @@ protected:
                                        ///< always fully up-to-date (signed to hold error from queue::pop)
 #endif
 
+   std::string   fName;
 private:
    StoppableThread(const StoppableThread&) {}
    StoppableThread& operator=(const StoppableThread&) { return *this; }
 
-   std::string   fName;
    static size_t fColumnWidth;
    static size_t fStatusWidth;
 
    void Loop();
 
 #ifndef __CINT__
-   std::thread             thread;
-   std::atomic_bool        running{false};
-   std::atomic_bool        force_stop{false};
-   std::atomic_bool        paused{false};
-   std::condition_variable paused_wait;
-   std::mutex              pause_mutex;
+   std::thread             fThread;
+   std::atomic_bool        fRunning{false};
+   std::atomic_bool        fForceStop{false};
+   std::atomic_bool        fPaused{false};
+   std::condition_variable fPausedWait;
+   std::mutex              fPauseMutex;
 #endif
 
    ClassDef(StoppableThread, 0);

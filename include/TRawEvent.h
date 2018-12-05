@@ -33,6 +33,7 @@ public:
 
    // get event information
 
+   virtual uint32_t GetTimeStamp() const { return 0; } ///< return the event size
    virtual uint32_t GetDataSize() const { return 0; } ///< return the event size
 
    // helpers for event creation
@@ -43,14 +44,14 @@ public:
    {
       return 0;
    } ///< convert event data between little-endian (Linux-x86) and big endian (MacOS-PPC)
-   virtual int Process(TDataParser& parser) = 0;
 
    virtual int GoodFrags() { return fGoodFrags; } ///< returns number of good fragments parsed
+	virtual void IncrementGoodFrags() { ++fGoodFrags; } ///< increments the number of good fragments parsed
 
 protected:
    int fGoodFrags{0}; ///< number of good fragments parsed
    /// \cond CLASSIMP
-   ClassDefOverride(TRawEvent, 0) // All of the data contained in a Midas Event
+   ClassDefOverride(TRawEvent, 0) // All of the data contained in a raw Event
    /// \endcond
 };
 /*! @} */
