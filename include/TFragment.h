@@ -124,7 +124,7 @@ private:
    UShort_t fDeadTime;        ///< Deadtime from trigger
    UShort_t fModuleType;      ///< Data Type (GRIF-16, 4G, etc.)
    UShort_t fDetectorType;    ///< Detector Type (PACES,HPGe, etc.)
-   UShort_t fNumberOfPileups; ///< Number of piled up hits 1-3
+   Short_t  fNumberOfPileups; ///< Number of piled up hits 1-3
 
    std::vector<Long_t> fTriggerId; ///<  MasterFilterID in Griffin DAQ
 
@@ -143,7 +143,7 @@ private:
    // int HitIndex;    //!<! transient member indicating which pile-up hit this is in the original fragment
 
    /// \cond CLASSIMP
-   ClassDefOverride(TFragment, 6); // Event Fragments
+   ClassDefOverride(TFragment, 7); // Event Fragments
    /// \endcond
 };
 /*! @} */
