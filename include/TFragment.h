@@ -51,7 +51,7 @@ public:
       std::cerr<<"Error, "<<__PRETTY_FUNCTION__<<" called, TFragment shouldn't have a number of filters."
                <<std::endl;
    }
-   void SetNumberOfPileups(UShort_t value) { fNumberOfPileups = value; }
+   void SetNumberOfPileups(Short_t value) { fNumberOfPileups = value; }
    void SetNumberOfWords(UShort_t value) { fNumberOfWords = value; }
    void SetTriggerBitPattern(Int_t value) { fTriggerBitPattern = value; }
    void SetTriggerId(Long_t value) { fTriggerId.push_back(value); }
@@ -73,7 +73,7 @@ public:
    Int_t    GetNetworkPacketNumber() const { return fNetworkPacketNumber; }
    UShort_t GetNumberOfFilters() const { return fNumberOfWords - 9; }
    Int_t    GetNumberOfHits() const { return 1; }
-   UShort_t GetNumberOfPileups() const { return fNumberOfPileups; }
+   Short_t GetNumberOfPileups() const { return fNumberOfPileups; }
    UShort_t GetNumberOfWords() const { return fNumberOfWords; }
    Int_t    GetTriggerBitPattern() const { return fTriggerBitPattern; }
    Long_t GetTriggerId(size_t iter = 0) const
@@ -124,7 +124,7 @@ private:
    UShort_t fDeadTime;        ///< Deadtime from trigger
    UShort_t fModuleType;      ///< Data Type (GRIF-16, 4G, etc.)
    UShort_t fDetectorType;    ///< Detector Type (PACES,HPGe, etc.)
-   UShort_t fNumberOfPileups; ///< Number of piled up hits 1-3
+   Short_t  fNumberOfPileups; ///< Number of piled up hits 1-3
 
    std::vector<Long_t> fTriggerId; ///<  MasterFilterID in Griffin DAQ
 
@@ -143,7 +143,7 @@ private:
    // int HitIndex;    //!<! transient member indicating which pile-up hit this is in the original fragment
 
    /// \cond CLASSIMP
-   ClassDefOverride(TFragment, 6); // Event Fragments
+   ClassDefOverride(TFragment, 7); // Event Fragments
    /// \endcond
 };
 /*! @} */
