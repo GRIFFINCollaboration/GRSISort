@@ -43,10 +43,10 @@ libdir=$GRSISYS/lib
 incdir=$GRSISYS/include
 utildir=$GRSISYS/etc
 
-# the repitition of '-lTGRSIint -lTGRSIFormat' is needed for debian-style OSes like ubuntu (see issue #979)
-grsilibs="-lTDetector -lTGRSIint -lTGRSIFormat -lTGRSIint -lTGRSIFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction"
+# the repitition of '-lTGRSIint -lTFormat' is needed for debian-style OSes like ubuntu (see issue #979)
+grsilibs="-lTDetector -lTGRSIint -lTFormat -lTGRSIint -lTFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction"
 detlibs="-lTSuppressed -lTBgo -lTPulseAnalyzer -lGROOT -lTGRSIFit -lTNucleus"
-grsimore="-lTMidas -lTDataParser -lTHistogramming"
+grsimore="-lTRawFile -lTDataParser -lTHistogramming"
 
 cflags="-std=c++0x -I$incdir"
 
