@@ -130,6 +130,7 @@ endif
 
 all: include/GVersion.h grsirc $(EXECUTABLES) $(LIBRARY_OUTPUT) lib/libGRSI.so config $(HISTOGRAM_SO) $(FILTER_SO)
 	@$(FIND) .build users -name "*.pcm" -exec cp {} lib/ \;
+	@$(FIND) .build users -name "*.rootmap" -exec cp {} lib/ \;
 	@printf "$(OK_COLOR)Compilation successful, $(WARN_COLOR)woohoo!$(NO_COLOR)\n"
 
 docs: doxygen
@@ -205,7 +206,7 @@ find_linkdef = $(shell $(FIND) $(1) -name "*LinkDef.h")
 define library_template
 .build/$(1)/$(notdir $(1))Dict.cxx: $(1)/LinkDef.h $$(call dict_header_files,$(1)/LinkDef.h) 
 	@mkdir -p $$(dir $$@)
-	$$(call run_and_test,$$(ROOTCINT) -f $$@ -c $$(INCLUDES) $$(RCFLAGS) -p $$(notdir $$(filter-out $$<,$$^)) $$<,$$@,$$(COM_COLOR),$$(BLD_STRING) ,$$(OBJ_COLOR))
+	$$(call run_and_test,$$(ROOTCINT) -f $$@ -c $$(INCLUDES) $$(RCFLAGS) -s .build/$(1)/$(notdir $(1)) -multiDict -rml .build/$(1)/$(notdir $(1)) -rmf .build/$(1)/$(notdir $(1)).rootmap -p $$(notdir $$(filter-out $$<,$$^)) $$<,$$@,$$(COM_COLOR),$$(BLD_STRING) ,$$(OBJ_COLOR))
 
 .build/$(1)/LibDictionary.o: .build/$(1)/$(notdir $(1))Dict.cxx
 	$$(call run_and_test,$$(CPP) -fPIC -c $$< -o $$@ $$(CFLAGS),$$@,$$(COM_COLOR),$$(COM_STRING),$$(OBJ_COLOR) )

@@ -39,7 +39,7 @@
 #include "TList.h"
 #include "TTree.h"
 #include "TMnemonic.h"
-#include "TClass.h"
+#include "TClassRef.h"
 #include "Globals.h"
 #include "TPriorityValue.h"
 
@@ -68,8 +68,8 @@ public:
 
    static TChannel* GetDefaultChannel();
 
-	static void    SetMnemonicClass(TClass* cl) { fMnemonicClass = cl; }
-	static TClass* GetMnemonicClass()           { return fMnemonicClass; }
+	static void      SetMnemonicClass(TClassRef cl) { fMnemonicClass = cl; }
+	static TClassRef GetMnemonicClass()             { return fMnemonicClass; }
 
 private:
    unsigned int fAddress;     // The address of the digitizer
@@ -87,7 +87,7 @@ private:
 
    TPriorityValue<Long64_t>    fTimeOffset;
    TPriorityValue<TMnemonic*>  fMnemonic;
-	static TClass*					 fMnemonicClass;
+	static TClassRef  			 fMnemonicClass;
 
    TPriorityValue<std::vector<Float_t> > fENGCoefficients;  // Energy calibration coeffs (low to high order)
    TPriorityValue<double>                fENGChi2;          // Chi2 of the energy calibration

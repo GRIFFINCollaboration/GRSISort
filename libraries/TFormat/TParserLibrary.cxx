@@ -1,9 +1,14 @@
 #include "TParserLibrary.h"
 
+#define dlsym __bull__
 #include <dlfcn.h>
+#undef dlsym
 
 #include "TGRSIOptions.h"
 #include "TGRSIUtilities.h"
+
+// redeclare dlsym to be a function returning a function pointer instead of void *
+extern "C" void *(*dlsym(void *handle, const char *symbol))();
 
 TParserLibrary::~TParserLibrary() {
 	if(fHandle != nullptr) {
@@ -31,14 +36,14 @@ void TParserLibrary::Load() {
 		throw std::runtime_error(str.str());
 	}
 	// try and get constructor and destructor functions from opened library
-	fInitLibrary    = (void (*)())                        dlsym(fHandle, "InitLibrary");
-	fLibraryVersion = (std::string (*)())                 dlsym(fHandle, "LibraryVersion");
+	fInitLibrary       = reinterpret_cast<void (*)()>(dlsym(fHandle, "InitLibrary"));
+	fLibraryVersion    = reinterpret_cast<std::string (*)()>(dlsym(fHandle, "LibraryVersion"));
 
-	fCreateRawFile  = (TRawFile* (*)(const std::string&)) dlsym(fHandle, "CreateFile");
-	fDestroyRawFile = (void (*)(TRawFile*))               dlsym(fHandle, "DestroyFile");
+	fCreateRawFile     = reinterpret_cast<TRawFile* (*)(const std::string&)>(dlsym(fHandle, "CreateFile"));
+	fDestroyRawFile    = reinterpret_cast<void (*)(TRawFile*)>(dlsym(fHandle, "DestroyFile"));
 
-	fCreateDataParser  = (TDataParser* (*)())     dlsym(fHandle, "CreateParser");
-	fDestroyDataParser = (void (*)(TDataParser*)) dlsym(fHandle, "DestroyParser");
+	fCreateDataParser  = reinterpret_cast<TDataParser* (*)()>(dlsym(fHandle, "CreateParser"));
+	fDestroyDataParser = reinterpret_cast<void (*)(TDataParser*)>(dlsym(fHandle, "DestroyParser"));
 
 	if(fInitLibrary == nullptr || fLibraryVersion == nullptr || fCreateRawFile == nullptr || fDestroyRawFile == nullptr || fCreateDataParser == nullptr || fDestroyDataParser == nullptr) {
 		std::ostringstream str;

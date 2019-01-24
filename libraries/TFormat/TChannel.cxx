@@ -30,7 +30,8 @@ ClassImp(TChannel)
 std::map<unsigned int, TChannel*>* TChannel::fChannelMap = new std::map<unsigned int, TChannel*>; // global maps of channels
 std::map<int, TChannel*>* TChannel::fChannelNumberMap = new std::map<int, TChannel*>;
 
-TClass* TChannel::fMnemonicClass = TMnemonic::Class();
+//TClass* TChannel::fMnemonicClass = TMnemonic::Class();
+TClassRef TChannel::fMnemonicClass = TClassRef("TMnemonic");
 
 std::string TChannel::fFileName;
 std::string TChannel::fFileData;

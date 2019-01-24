@@ -227,7 +227,7 @@ private:
 	std::string fParserLibrary; ///< location of shared object library for data parser and files
 
 	/// \cond CLASSIMP
-	ClassDefOverride(TGRSIOptions, 3); ///< Class for storing options in GRSISort
+	ClassDefOverride(TGRSIOptions, 4); ///< Class for storing options in GRSISort
 	/// \endcond
 };
 /*! @} */
