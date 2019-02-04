@@ -80,6 +80,7 @@ public:
 	bool MakeAnalysisTree() const { return fMakeAnalysisTree; }
 	bool ReadingMaterial() const { return fReadingMaterial; }
 	bool IgnoreFileOdb() const { return fIgnoreFileOdb; }
+	bool IgnoreOdbChannels() const { return fIgnoreOdbChannels; }
 	int  Downscaling() const { return fDownscaling; }
 
 	bool IgnoreScaler() const { return fIgnoreScaler; }
@@ -175,6 +176,7 @@ private:
 	bool fMakeAnalysisTree; ///< Flag to make analysis tree (-a)
 	bool fReadingMaterial;  ///< Flag to show reading material (--reading-material)
 	bool fIgnoreFileOdb;    ///< Flag to ignore midas file odb
+	bool fIgnoreOdbChannels;///< Flag to ignore channels from midas file odb (but do use EPICS from ODB)
 	int  fDownscaling;      ///< Downscaling factor for raw events to be processed
 
 	bool fIgnoreScaler;     ///< Flag to ignore scalers in GRIFFIN
