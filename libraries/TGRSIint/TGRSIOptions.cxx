@@ -71,6 +71,7 @@ void TGRSIOptions::Clear(Option_t*)
    fMakeAnalysisTree = false;
    fReadingMaterial  = false;
    fIgnoreFileOdb    = false;
+   fIgnoreOdbChannels= false;
 	fDownscaling      = 1;
 
    fIgnoreScaler     = false;
@@ -133,6 +134,7 @@ void TGRSIOptions::Print(Option_t*) const
             <<"fMakeAnalysisTree: "<<fMakeAnalysisTree<<std::endl
             <<"fReadingMaterial;: "<<fReadingMaterial<<std::endl
             <<"fIgnoreFileOdb: "<<fIgnoreFileOdb<<std::endl
+            <<"fIgnoreOdbChannels: "<<fIgnoreOdbChannels<<std::endl
             <<"fDownscaling: "<<fDownscaling<<std::endl
             <<std::endl
             <<"fIgnoreScaler: "<<fIgnoreScaler<<std::endl
@@ -289,6 +291,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 			.description("Write out-of-order fragments to a separate tree at the sorting stage")
 			.default_value(false).colour(DGREEN);
 		parser.option("ignore-odb", &fIgnoreFileOdb, true);
+		parser.option("ignore-odb-channels", &fIgnoreOdbChannels, true);
 		parser.option("downscaling", &fDownscaling, true).description("Downscaling factor for raw events to be processed").default_value(1);
 		parser.option("ignore-epics", &fIgnoreEpics, true);
 		parser.option("ignore-scaler", &fIgnoreScaler, true);
