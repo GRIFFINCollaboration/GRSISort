@@ -37,7 +37,7 @@ void TPPGData::SetTimeStamp()
    Long64_t time = GetHighTimeStamp();
    time          = time<<28;
    time |= GetLowTimeStamp() & 0x0fffffff;
-   fTimeStamp = time;
+   fTimeStamp = 10 * time;
 }
 
 void TPPGData::Clear(Option_t*)
