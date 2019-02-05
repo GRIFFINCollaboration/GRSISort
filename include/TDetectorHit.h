@@ -197,7 +197,7 @@ protected:
    Float_t              fCharge{0.};   ///< charge collected from the hit
    Short_t              fKValue{0};    ///< integration value.
    Int_t                fCfd{0};       ///< CFD time of the Hit
-   Long64_t             fTimeStamp{0}; ///< Timestamp given to hit
+   Long64_t             fTimeStamp{0}; ///< Timestamp given to hit in ns
    std::vector<Short_t> fWaveform;     ///<
    mutable Double_t fTime{0.}; //!<! Calibrated Time of the hit
 

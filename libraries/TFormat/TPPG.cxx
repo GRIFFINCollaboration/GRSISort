@@ -293,10 +293,10 @@ void TPPG::Print(Option_t* opt) const
    }
 
    // the print statement itself
-   printf("Cycle length is %lld in 10 ns units = %.3lf seconds.\n", cycleLength, cycleLength / 1e8);
-   printf("Cycle: %.3lf s tape move, %.3lf s background, %.3lf s beam on, and %.3lf s decay\n", stateLength[0] / 1e8,
-          stateLength[1] / 1e8, stateLength[2] / 1e8, stateLength[3] / 1e8);
-   printf("Offset is %d [10 ns]\n", offset);
+   printf("Cycle length is %lld in ns = %.3lf seconds.\n", cycleLength, cycleLength / 1e9);
+   printf("Cycle: %.3lf s tape move, %.3lf s background, %.3lf s beam on, and %.3lf s decay\n", stateLength[0] / 1e9,
+          stateLength[1] / 1e9, stateLength[2] / 1e9, stateLength[3] / 1e9);
+   printf("Offset is %d [ns]\n", offset);
    printf("Got %ld PPG words:\n", fPPGStatusMap->size() - 1);
    for(auto& statu : status) {
       printf("\tfound status 0x%04x %d times\n", static_cast<std::underlying_type<EPpgPattern>::type>(statu.first), statu.second);

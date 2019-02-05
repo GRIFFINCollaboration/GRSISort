@@ -59,7 +59,7 @@ Double_t TDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
       return fTime;
    }
 
-	return SetTime(10. * (static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform())));
+	return SetTime(static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform()));
 }
 
 Float_t TDetectorHit::GetCharge() const
@@ -248,7 +248,7 @@ Long64_t TDetectorHit::GetCycleTimeStamp() const
 double TDetectorHit::GetTimeSinceTapeMove() const
 {
 	/// returns time in ns, minus the time of the last tape move
-	return GetTime() - 10.*TPPG::Get()->GetLastStatusTime(GetTimeStamp(), EPpgPattern::kTapeMove);
+	return GetTime() - TPPG::Get()->GetLastStatusTime(GetTimeStamp(), EPpgPattern::kTapeMove);
 }
 
 // const here is rather dirty

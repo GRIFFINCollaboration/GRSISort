@@ -98,15 +98,6 @@ double TFragment::GetTZero() const
    return chan->GetTZero(GetEnergy());
 }
 
-long TFragment::GetTimeStamp_ns() const
-{
-   long ns = 0;
-   if(fModuleType == 2) {
-      ns = (GetCfd() >> 21) & 0xf;
-   }
-   return 10 * GetTimeStamp() + ns;
-}
-
 Int_t TFragment::Get4GCfd() const
 { // return a 4G cfd in terms of 1/256 ns since the trigger
    return GetCfd() & 0x001fffff;
