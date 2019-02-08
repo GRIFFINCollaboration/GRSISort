@@ -173,7 +173,7 @@ int main(int argc, char** argv)
 		} else {
 			std::cout<<"Warning, expected dataparser/detector library location to be of form <path>/lib/lib<name>.so, but it is "<<library<<". Won't be able to add include path!"<<std::endl;
 		}
-		//gSystem->Load(library.c_str());
+		gSystem->Load(library.c_str());
 	} else {
 		std::cout<<"Warning, no dataparser/detector library provided, won't be able to add include path!"<<std::endl;
 	}
