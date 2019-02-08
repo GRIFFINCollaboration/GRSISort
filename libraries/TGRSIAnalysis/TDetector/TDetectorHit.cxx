@@ -58,8 +58,12 @@ Double_t TDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
    if(IsTimeSet()) {
       return fTime;
    }
+	TChannel* tmpChan = GetChannel();
+	if(tmpChan == nullptr) {
+		return SetTime(static_cast<Double_t>(((GetRawTimeStamp()) + gRandom->Uniform()) * GetTimeStampUnit()));
+	}
 
-	return SetTime(static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform()));
+	return SetTime(static_cast<Double_t>(((GetRawTimeStamp()) + gRandom->Uniform()) * GetTimeStampUnit() - tmpChan->GetTimeOffset()));
 }
 
 Float_t TDetectorHit::GetCharge() const
@@ -140,7 +144,7 @@ void TDetectorHit::Print(Option_t*) const
 	printf("\t%s\n", GetName());
 	printf("\tCharge:    %.2f\n", Charge());
 	printf("\tTime:      %.2f\n", GetTime());
-	std::cout<<"\tTimestamp: "<<GetTimeStamp()<<"\n";
+	std::cout<<"\tTimestamp: "<<GetRawTimeStamp()<<" in "<<GetTimeStampUnit()<<" ns = "<<GetTimeStamp()<<"\n";
 	printf("============================\n");
 }
 
@@ -208,9 +212,9 @@ Long64_t TDetectorHit::GetTimeStamp(Option_t*) const
 {
 	TChannel* tmpChan = GetChannel();
 	if(tmpChan == nullptr) {
-		return fTimeStamp;
+		return fTimeStamp * GetTimeStampUnit();
 	}
-	return fTimeStamp - tmpChan->GetTimeOffset();
+	return fTimeStamp * GetTimeStampUnit() - tmpChan->GetTimeOffset();
 }
 
 EPpgPattern TDetectorHit::GetPPGStatus() const

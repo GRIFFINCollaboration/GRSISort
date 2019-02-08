@@ -106,8 +106,9 @@ public:
    void SetAddress(const UInt_t& temp_address) { fAddress = temp_address; }                 //!<!
    void SetKValue(const Short_t& temp_kval) { fKValue = temp_kval; }                        //!<!
    void SetCharge(const Float_t& temp_charge) { fCharge = temp_charge; }                    //!<!
-   void SetCharge(const Int_t& temp_charge) { fCharge = temp_charge + gRandom->Uniform(); } //!<!
-   virtual void SetCfd(const Int_t& x) { fCfd = x; }                                        //!<!
+   void SetCharge(const Int_t& temp_charge) { fCharge = temp_charge + gRandom->Uniform(); } //!<! this function automatically randomizes the integer provided
+   virtual void SetCfd(const Float_r& x) { fCfd = x; }                                      //!<!
+   virtual void SetCfd(const Int_t& x) { fCfd = x + gRandom->Uniform(); }                   //!<! this function automatically randomizes the integer provided
    void SetWaveform(const std::vector<Short_t>& x) { fWaveform = x; }                       //!<!
    void AddWaveformSample(const Short_t& x) { fWaveform.push_back(x); }                     //!<!
    virtual void SetTimeStamp(const Long64_t& x) { fTimeStamp = x; }                         //!<!
@@ -133,7 +134,7 @@ public:
    Long64_t         GetRawTimeStamp(Option_t* = "") const { return fTimeStamp; }
    virtual Double_t GetTime(const ETimeFlag& correct_flag = ETimeFlag::kAll,
                             Option_t*     opt          = "") const; ///< Returns a time value to the nearest nanosecond!
-   virtual Int_t               GetCfd() const { return fCfd; }            //!<!
+   virtual Float_t             GetCfd() const { return fCfd; }            //!<!
    virtual UInt_t              GetAddress() const { return fAddress; }    //!<!
    virtual Float_t             GetCharge() const;                         //!<!
    virtual Float_t             Charge() const { return fCharge; }         //!<!
@@ -154,6 +155,7 @@ public:
    virtual Int_t    GetCrystal() const;       //!<!
    const char*      GetName() const override; //!<!
    virtual UShort_t GetArrayNumber() const { return GetDetector(); } //!<! Simply returns the detector number, overwritten for detectors that have crystals/segments
+	virtual Int_t    GetTimeStampUnit() const { return 1; } //!<!
 
    // virtual void GetSegment() const;
 
@@ -196,7 +198,7 @@ protected:
    UInt_t               fAddress{0};   ///< address of the the channel in the DAQ.
    Float_t              fCharge{0.};   ///< charge collected from the hit
    Short_t              fKValue{0};    ///< integration value.
-   Int_t                fCfd{0};       ///< CFD time of the Hit
+   Float_t              fCfd{0};       ///< CFD time of the Hit
    Long64_t             fTimeStamp{0}; ///< Timestamp given to hit in ns
    std::vector<Short_t> fWaveform;     ///<
    mutable Double_t fTime{0.}; //!<! Calibrated Time of the hit
