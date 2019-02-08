@@ -1090,15 +1090,8 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
             line             = line.substr(ntype + 1, line.length());
             trim(&line);
             std::istringstream ss(line);
-				// this can all be replace by using:
-				// std::transform(type.begin(), type.end(), type.begin(), ::toupper);
-				// size_t j = type.length();
-            int                j = 0;
-            while(type[j] != 0) {
-               char c    = *(type.c_str() + j);
-               c         = toupper(c);
-               type[j++] = c;
-            }
+				// transform type to upper case
+				std::transform(type.begin(), type.end(), type.begin(), ::toupper);
             if(type.compare("NAME") == 0) {
                channel->SetName(line.c_str());
             } else if(type.compare("ADDRESS") == 0) {
@@ -1128,15 +1121,6 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                ss >> tempstream;
                channel->SetStream(TPriorityValue<int>(tempstream, pr));
             } else if(type.compare("DIGITIZER") == 0) {
-					// what is this doing??? we're looping over type with j being the end of the above loop 'while(type[j] != 0)'
-					// so all characters of type are set to touppper(0) and then type isn't used at all
-					// was this meant to convert the remaining line (the argument to DIGITIZER) to upper case?
-               int k = 0;
-               while(type[k] != 0) {
-                  char c    = *(type.c_str() + j);
-                  c         = toupper(c);
-                  type[k++] = c;
-               }
                channel->SetDigitizerType(TPriorityValue<std::string>(line, pr));
             } else if(type.compare("ENGCHI2") == 0) {
                double tempdbl;
