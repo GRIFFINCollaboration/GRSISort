@@ -39,19 +39,25 @@ public:
 private:
    // analysis tree diagnostics 
    std::map<long, std::pair<long, long>> fFragmentsOutOfOrder;
+   std::map<double, std::pair<double, double>> fFragmentsOutOfTimeOrder;
    std::vector<Long_t> fPreviousTimeStamps; ///< timestamps of previous fragments, saved every 'BuildWindow' entries
+   std::vector<double> fPreviousTimes;      ///< times of previous fragments, saved every 'BuildWindow' entries
    long                fMaxEntryDiff{0};
 	std::map<TClass*, long> fMissingDetectorClasses; ///< counts of missing detector classes
 
 public:
    //"setter" functions
+   void OutOfTimeOrder(double newFragTime, double oldFragTime, long newEntry);
    void OutOfOrder(long newFragTS, long oldFragTS, long newEntry);
+   void AddTime(double val)      { fPreviousTimes.push_back(val); }
    void AddTimeStamp(Long_t val) { fPreviousTimeStamps.push_back(val); }
 	void AddDetectorClass(TChannel*);
 
    // getter functions
    size_t NumberOfFragmentsOutOfOrder() const { return fFragmentsOutOfOrder.size(); }
    std::map<long, std::pair<long, long>> FragmentsOutOfOrder() { return fFragmentsOutOfOrder; }
+   size_t NumberOfFragmentsOutOfTimeOrder() const { return fFragmentsOutOfTimeOrder.size(); }
+   std::map<double, std::pair<double, double>> FragmentsOutOfTimeOrder() { return fFragmentsOutOfTimeOrder; }
    long MaxEntryDiff() const { return fMaxEntryDiff; }
 
    // other functions

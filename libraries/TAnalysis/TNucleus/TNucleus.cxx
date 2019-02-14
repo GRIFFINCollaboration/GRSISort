@@ -18,7 +18,7 @@ static double amu = 931.494043;
 
 std::string& TNucleus::massfile()
 {
-	static std::string output = std::string(getenv("GRSISYS")) + "/libraries/TGRSIAnalysis/SourceData/mass.dat";
+	static std::string output = std::string(getenv("GRSISYS")) + "/libraries/TAnalysis/SourceData/mass.dat";
 	return output;
 }
 // const char *TNucleus::massfile = mfile.c_str();
@@ -324,7 +324,7 @@ double TNucleus::GetRadius() const
 	name[0] = name[0]-'A'+'a';
 	name = name + Form("%i",GetA()) + ".sou";
 	std::string path = getenv("GRSISYS");
-	path +=  "/libraries/TGRSIAnalysis/SourceData/";
+	path +=  "/libraries/TAnalysis/SourceData/";
 	path +=  name;
 
 	printf("path = %s\n",path.c_str());
@@ -464,7 +464,7 @@ bool TNucleus::LoadTransitionFile()
 		return false;
 	}
 	std::string filename;
-	filename           = std::string(getenv("GRSISYS")) + "/libraries/TGRSIAnalysis/SourceData/";
+	filename           = std::string(getenv("GRSISYS")) + "/libraries/TAnalysis/SourceData/";
 	std::string symbol = GetSymbol();
 	std::transform(symbol.begin(), symbol.end(), symbol.begin(), ::tolower);
 	filename.append(symbol);

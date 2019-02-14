@@ -420,16 +420,20 @@ bool GUIIsRunning()
    return gui_is_running;
 }
 
+#ifdef HAS_CORRECT_PYTHON_VERSION
 void AddFileToGUI(TFile* file)
 {
-#ifdef HAS_CORRECT_PYTHON_VERSION
    // Pass the TFile to the python GUI.
    if((file != nullptr) && GUIIsRunning()) {
       TPython::Bind(file, "tdir");
       gROOT->ProcessLine(R"lit(TPython::Exec("window.AddDirectory(tdir)");)lit");
    }
-#endif
 }
+#else
+void AddFileToGUI(TFile*)
+{
+}
+#endif
 
 TH2* AddOffset(TH2* mat, double offset, EAxis axis)
 {

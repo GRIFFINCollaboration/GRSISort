@@ -100,7 +100,7 @@ double TFragment::GetTZero() const
 
 Int_t TFragment::Get4GCfd() const
 { // return a 4G cfd in terms of 1/256 ns since the trigger
-   return GetCfd() & 0x001fffff;
+   return static_cast<Int_t>(GetCfd()) & 0x001fffff;
 }
 
 ULong64_t TFragment::GetTimeInCycle()
@@ -168,7 +168,7 @@ void TFragment::Print(Option_t*) const
    }
    printf("\tChannel Address: 0x%08x\n", GetAddress());
    printf("\tCharge:          0x%08x\n ", static_cast<Int_t>(GetCharge()));
-   printf("\tCFD:             0x%08x\n ", GetCfd());
+   printf("\tCFD:             0x%08x\n ", static_cast<Int_t>(GetCfd()));
    printf("\tZC:              0x%08x\n ", fZc);
    printf("\tTimeStamp:       %lld\n", GetTimeStamp());
    if(HasWave()) {

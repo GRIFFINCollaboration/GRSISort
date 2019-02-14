@@ -97,7 +97,7 @@ public:
    void Clear(Option_t* opt = "") override;          //!<!
    virtual void ClearTransients() const { fBitFlags = 0; }
    void Print(Option_t* opt = "") const override;                                 //!<!
-   virtual bool HasWave() const { return (fWaveform.size() > 0) ? true : false; } //!<!
+   virtual bool HasWave() const { return (fWaveform.size() > 0); } //!<!
 
    static bool CompareEnergy(TDetectorHit* lhs, TDetectorHit* rhs);
    // We need a common function for all detectors in here
@@ -107,7 +107,8 @@ public:
    void SetKValue(const Short_t& temp_kval) { fKValue = temp_kval; }                        //!<!
    void SetCharge(const Float_t& temp_charge) { fCharge = temp_charge; }                    //!<!
    void SetCharge(const Int_t& temp_charge) { fCharge = temp_charge + gRandom->Uniform(); } //!<! this function automatically randomizes the integer provided
-   virtual void SetCfd(const Float_r& x) { fCfd = x; }                                      //!<!
+   virtual void SetCfd(const Float_t& x) { fCfd = x; }                                      //!<!
+   virtual void SetCfd(const uint32_t& x) { fCfd = x + gRandom->Uniform(); }                   //!<! this function automatically randomizes the integer provided
    virtual void SetCfd(const Int_t& x) { fCfd = x + gRandom->Uniform(); }                   //!<! this function automatically randomizes the integer provided
    void SetWaveform(const std::vector<Short_t>& x) { fWaveform = x; }                       //!<!
    void AddWaveformSample(const Short_t& x) { fWaveform.push_back(x); }                     //!<!
@@ -155,7 +156,7 @@ public:
    virtual Int_t    GetCrystal() const;       //!<!
    const char*      GetName() const override; //!<!
    virtual UShort_t GetArrayNumber() const { return GetDetector(); } //!<! Simply returns the detector number, overwritten for detectors that have crystals/segments
-	virtual Int_t    GetTimeStampUnit() const { return 1; } //!<!
+	virtual Int_t    GetTimeStampUnit() const; //!<!
 
    // virtual void GetSegment() const;
 

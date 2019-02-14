@@ -217,6 +217,15 @@ Long64_t TDetectorHit::GetTimeStamp(Option_t*) const
 	return fTimeStamp * GetTimeStampUnit() - tmpChan->GetTimeOffset();
 }
 
+Int_t TDetectorHit::GetTimeStampUnit() const
+{
+	TChannel* chan = GetChannel();
+	if(chan == nullptr) {
+		return 1;
+	}
+	return chan->GetTimeStampUnit();
+}
+
 EPpgPattern TDetectorHit::GetPPGStatus() const
 {
 	if(IsPPGSet()) {

@@ -20,19 +20,21 @@ TAnalysisOptions::TAnalysisOptions()
 void TAnalysisOptions::Clear(Option_t*)
 {
    /// Clears all of the variables in the TAnalysisOptions
-   fBuildWindow           = 200;
-   fAddbackWindow         = 300;
-   fSuppressionWindow     = 300.;
-   fSuppressionEnergy     = 0.;
-   fStaticWindow          = false;
-   fWaveformFitting       = false;
-   fIsCorrectingCrossTalk = true;
+   fBuildWindow            = 2000;
+	fBuildEventsByTimeStamp = false;
+   fAddbackWindow          = 300;
+   fSuppressionWindow      = 300.;
+   fSuppressionEnergy      = 0.;
+   fStaticWindow           = false;
+   fWaveformFitting        = false;
+   fIsCorrectingCrossTalk  = true;
 }
 
 void TAnalysisOptions::Print(Option_t*) const
 {
    /// Print the current status of TAnalysisOptions, includes all names, lists and flags
    std::cout<<BLUE<<"fBuildWindow: "<<DCYAN<<fBuildWindow<<std::endl
+		      <<BLUE<<"fBuildEventsByTimeStamp: "<<DCYAN<<fBuildEventsByTimeStamp<<std::endl
             <<BLUE<<"fAddbackWindow: "<<DCYAN<<fAddbackWindow<<std::endl
             <<BLUE<<"fSuppressionWindow: "<<DCYAN<<fSuppressionWindow<<std::endl
             <<BLUE<<"fSuppressionEnergy: "<<DCYAN<<fSuppressionEnergy<<std::endl

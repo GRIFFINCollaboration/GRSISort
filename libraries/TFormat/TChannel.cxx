@@ -28,6 +28,7 @@ ClassImp(TChannel)
 /// \endcond
 
 std::map<unsigned int, TChannel*>* TChannel::fChannelMap = new std::map<unsigned int, TChannel*>; // global maps of channels
+std::map<unsigned int, int>* TChannel::fMissingChannelMap = new std::map<unsigned int, int>; // global map of missing channels
 std::map<int, TChannel*>* TChannel::fChannelNumberMap = new std::map<int, TChannel*>;
 
 //TClass* TChannel::fMnemonicClass = TMnemonic::Class();
@@ -313,17 +314,21 @@ void TChannel::Clear(Option_t*)
    fENGChi2.Reset(0.0);
 }
 
-TChannel* TChannel::GetChannel(unsigned int temp_address)
+TChannel* TChannel::GetChannel(unsigned int temp_address, bool warn)
 {
    /// Returns the TChannel at the specified address. If the address doesn't exist, returns an empty gChannel.
 
    TChannel* chan = nullptr;
-   //    if(temp_address == 0 || temp_address == 0xffffffff) {//default (nullptr) address, return 0;
-   //	      return chan;
-   //    }
    if(fChannelMap->count(temp_address) == 1) { // found channel
       chan = fChannelMap->at(temp_address);
    }
+	if(warn && chan == nullptr) {
+		if(fMissingChannelMap->find(temp_address) == fMissingChannelMap->end()) {
+			std::cerr<<RED<<"Failed to find channel for address 0x"<<std::hex<<temp_address<<std::dec<<", this channel won't get sorted properly!"<<RESET_COLOR<<std::endl;
+			fMissingChannelMap->insert(std::pair<unsigned int, int>(temp_address, 0));
+		}
+		++(*fMissingChannelMap)[temp_address];
+	}
    return chan;
 }
 
@@ -1060,7 +1065,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
       if(closebrace != std::string::npos) {
          brace_open = false;
          if(channel != nullptr) {
-            TChannel* currentchan = GetChannel(channel->GetAddress());
+            TChannel* currentchan = GetChannel(channel->GetAddress(), false);
             if(currentchan == nullptr) {
                AddChannel(channel); // consider using a default option here
                newchannels++;
