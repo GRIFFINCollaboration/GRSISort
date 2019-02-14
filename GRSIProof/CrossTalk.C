@@ -64,26 +64,26 @@ void CrossTalk::FillHistograms() {
 	//find the multiplicity in each clover over the entire event
    //we do this because we want to force a multiplicity of 2
 	Int_t det_multiplicity[17] = {0};
-	for(auto gr1 = 0; gr1 < fGrif->GetMultiplicity(); ++gr1){
-		++(det_multiplicity[fGrif->GetGriffinHit(gr1)->GetDetector()]);
+	for(auto gr1 = 0; gr1 < fGrif->GetSuppressedMultiplicity(); ++gr1){
+		++(det_multiplicity[fGrif->GetSuppressedHit(gr1)->GetDetector()]);
 	}
-   for(auto gr1 = 0; gr1 < fGrif->GetMultiplicity(); ++gr1){
-		if(pileup_reject && (fGrif->GetGriffinHit(gr1)->GetKValue() != 700)) continue; //This pileup number might have to change for other expmnts
-		fH1[Form("gEdet%d",fGrif->GetGriffinHit(gr1)->GetDetector())]->Fill(fGrif->GetGriffinHit(gr1)->GetEnergy());
-		fH2["gE_chan"]->Fill(fGrif->GetGriffinHit(gr1)->GetArrayNumber(),fGrif->GetGriffinHit(gr1)->GetEnergy());
-		fH1["gE"]->Fill(fGrif->GetGriffinHit(gr1)->GetEnergy());
-		fH1["gEnoCT"]->Fill(fGrif->GetGriffinHit(gr1)->GetNoCTEnergy());
+   for(auto gr1 = 0; gr1 < fGrif->GetSuppressedMultiplicity(); ++gr1){
+		if(pileup_reject && (fGrif->GetSuppressedHit(gr1)->GetKValue() != 700)) continue; //This pileup number might have to change for other expmnts
+		fH1[Form("gEdet%d",fGrif->GetSuppressedHit(gr1)->GetDetector())]->Fill(fGrif->GetSuppressedHit(gr1)->GetEnergy());
+		fH2["gE_chan"]->Fill(fGrif->GetSuppressedHit(gr1)->GetArrayNumber(),fGrif->GetSuppressedHit(gr1)->GetEnergy());
+		fH1["gE"]->Fill(fGrif->GetSuppressedHit(gr1)->GetEnergy());
+		fH1["gEnoCT"]->Fill(fGrif->GetSuppressedHit(gr1)->GetNoCTEnergy());
 		for(auto gr2 = gr1 + 1; gr2 < fGrif->GetMultiplicity(); ++gr2){
-			if(pileup_reject && fGrif->GetGriffinHit(gr2)->GetKValue() != 700) continue; //This pileup number might have to change for other expmnts
-			if((det_multiplicity[fGrif->GetGriffinHit(gr1)->GetDetector()] == 2) && Addback(*(fGrif->GetGriffinHit(gr1)), *(fGrif->GetGriffinHit(gr2)))){
-				TGriffinHit *low_crys_hit, *high_crys_hit;
-				if(fGrif->GetGriffinHit(gr1)->GetCrystal() < fGrif->GetGriffinHit(gr2)->GetCrystal()){
-					low_crys_hit = fGrif->GetGriffinHit(gr1);
-					high_crys_hit = fGrif->GetGriffinHit(gr2);
+			if(pileup_reject && fGrif->GetSuppressedHit(gr2)->GetKValue() != 700) continue; //This pileup number might have to change for other expmnts
+			if((det_multiplicity[fGrif->GetSuppressedHit(gr1)->GetDetector()] == 2) && Addback(*(fGrif->GetSuppressedHit(gr1)), *(fGrif->GetSuppressedHit(gr2)))){
+				TSuppressedHit *low_crys_hit, *high_crys_hit;
+				if(fGrif->GetSuppressedHit(gr1)->GetCrystal() < fGrif->GetSuppressedHit(gr2)->GetCrystal()){
+					low_crys_hit = fGrif->GetSuppressedHit(gr1);
+					high_crys_hit = fGrif->GetSuppressedHit(gr2);
 				}
 				else{
-					low_crys_hit = fGrif->GetGriffinHit(gr2);
-					high_crys_hit = fGrif->GetGriffinHit(gr1);
+					low_crys_hit = fGrif->GetSuppressedHit(gr2);
+					high_crys_hit = fGrif->GetSuppressedHit(gr1);
 				}
 				if(low_crys_hit->GetCrystal() != high_crys_hit->GetCrystal()){
 					fH2[Form("det_%d_%d_%d",low_crys_hit->GetDetector(),low_crys_hit->GetCrystal(),high_crys_hit->GetCrystal())]->Fill(low_crys_hit->GetNoCTEnergy(),high_crys_hit->GetNoCTEnergy());
@@ -92,13 +92,13 @@ void CrossTalk::FillHistograms() {
 		}
 	}
 
-   for(auto gr1 = 0; gr1 < fGrif->GetAddbackMultiplicity(); ++gr1) {
-      if(pileup_reject && (fGrif->GetAddbackHit(gr1)->GetKValue() != 700))
+   for(auto gr1 = 0; gr1 < fGrif->GetSuppressedAddbackMultiplicity(); ++gr1) {
+      if(pileup_reject && (fGrif->GetSuppressedAddbackHit(gr1)->GetKValue() != 700))
          continue; // This pileup number might have to change for other expmnts
-      fH1["aE"]->Fill(fGrif->GetAddbackHit(gr1)->GetEnergy());
-      fH1[Form("aEdet%d", fGrif->GetAddbackHit(gr1)->GetDetector())]->Fill(fGrif->GetAddbackHit(gr1)->GetEnergy());
-      fH1["aMult"]->Fill(fGrif->GetNAddbackFrags(gr1));
-      if(fGrif->GetNAddbackFrags(gr1) == 2)
-         fH1[Form("aE2det%d", fGrif->GetAddbackHit(gr1)->GetDetector())]->Fill(fGrif->GetAddbackHit(gr1)->GetEnergy());
+      fH1["aE"]->Fill(fGrif->GetSuppressedAddbackHit(gr1)->GetEnergy());
+      fH1[Form("aEdet%d", fGrif->GetSuppressedAddbackHit(gr1)->GetDetector())]->Fill(fGrif->GetSuppressedAddbackHit(gr1)->GetEnergy());
+      fH1["aMult"]->Fill(fGrif->GetNSuppressedAddbackFrags(gr1));
+      if(fGrif->GetNSuppressedAddbackFrags(gr1) == 2)
+         fH1[Form("aE2det%d", fGrif->GetSuppressedAddbackHit(gr1)->GetDetector())]->Fill(fGrif->GetSuppressedAddbackHit(gr1)->GetEnergy());
    }
 }
