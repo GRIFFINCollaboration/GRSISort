@@ -26,7 +26,7 @@
 
 class TEventBuildingLoop : public StoppableThread {
 public:
-   enum class EBuildMode { kDefault, kTimestamp, kTriggerId };
+   enum class EBuildMode { kDefault, kTime, kTimestamp, kTriggerId };
 
    static TEventBuildingLoop* Get(std::string name = "", EBuildMode mode = EBuildMode::kTimestamp);
    ~TEventBuildingLoop() override;
@@ -64,6 +64,7 @@ private:
 
 #ifndef __CINT__
    bool CheckBuildCondition(const std::shared_ptr<const TFragment>&);
+   bool CheckTimeCondition(const std::shared_ptr<const TFragment>&);
    bool CheckTimestampCondition(const std::shared_ptr<const TFragment>&);
    bool CheckTriggerIdCondition(const std::shared_ptr<const TFragment>&);
 

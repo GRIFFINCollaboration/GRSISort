@@ -90,6 +90,9 @@ bool TDataLoop::Iteration()
    if(bytesRead > 0) {
       // A good event was returned
       fOutputQueue->Push(evt);
+		if(fEventsRead == TGRSIOptions::Get()->NumberOfEvents()) {
+			return false;
+		}
       return true;
    }
    // Nothing returned this time, but I might get something next time.

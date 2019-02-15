@@ -234,6 +234,8 @@ void TGRSIOptions::Load(int argc, char** argv)
 	// analysis options, these options are to be parsed on the second pass, so firstPass is set to false
 	parser.option("build-window", &fAnalysisOptions->fBuildWindow, false)
 		.description("Build window, timestamp units").colour(DCYAN);
+	parser.option("build-events-by-timestamp", &fAnalysisOptions->fBuildEventsByTimeStamp, false)
+		.description("Build events by timestamp w/o using CFD").colour(DCYAN);
 	parser.option("addback-window", &fAnalysisOptions->fAddbackWindow, false)
 		.description("Addback window, time in ns").colour(DCYAN);
 	parser.option("suppression-window", &fAnalysisOptions->fSuppressionWindow, false)

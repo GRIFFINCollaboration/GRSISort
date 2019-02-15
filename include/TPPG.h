@@ -106,12 +106,12 @@ public:
    Long64_t GetTimeStamp() const { return fTimeStamp; }
 
 private:
-   ULong64_t   fTimeStamp;
+   ULong64_t   fTimeStamp; ///< time stamp in ns
    EPpgPattern fOldPpg;
    EPpgPattern fNewPpg;
    UInt_t      fNetworkPacketId;
-   UInt_t      fLowTimeStamp;
-   UInt_t      fHighTimeStamp;
+   UInt_t      fLowTimeStamp; ///< low bits of time stamp in 10 ns
+   UInt_t      fHighTimeStamp; ///< high bits of time stamp in 10 ns
 
    /// \cond CLASSIMP
    ClassDefOverride(TPPGData, 3) // Contains PPG data information

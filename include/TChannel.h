@@ -45,7 +45,7 @@
 
 class TChannel : public TNamed {
 public:
-   static TChannel* GetChannel(unsigned int temp_address);
+   static TChannel* GetChannel(unsigned int temp_address, bool warn = true);
    static TChannel* GetChannelByNumber(int temp_num);
    static TChannel* FindChannelByName(const char* ccName);
    static std::vector<TChannel*> FindChannelByRegEx(const char* ccName);
@@ -62,6 +62,7 @@ public:
    static int UpdateChannel(TChannel*, Option_t* opt = "");
 
    static std::map<unsigned int, TChannel*>* GetChannelMap() { return fChannelMap; }
+   static std::map<unsigned int, int>* GetMissingChannelMap() { return fMissingChannelMap; }
    static void DeleteAllChannels();
 
    static bool CompareChannels(const TChannel&, const TChannel&);
@@ -76,6 +77,7 @@ private:
    TPriorityValue<int>          fIntegration; // The charge integration setting
    TPriorityValue<std::string>  fDigitizerTypeString;
 	TPriorityValue<EDigitizer>   fDigitizerType;
+   TPriorityValue<int>          fTimeStampUnit;
    TPriorityValue<int>          fNumber;
    TPriorityValue<int>          fStream;
    TPriorityValue<int>          fUserInfoNumber;
@@ -111,6 +113,7 @@ private:
    WaveFormShapePar WaveFormShape;
 
    static std::map<unsigned int, TChannel*>* fChannelMap;       // A map to all of the channels based on address
+   static std::map<unsigned int, int>* fMissingChannelMap;      // A map to all of the missing channels based on address
    static std::map<int, TChannel*>*          fChannelNumberMap; // A map of TChannels based on channel number
    static void UpdateChannelNumberMap();
    static void UpdateChannelMap();
@@ -141,7 +144,7 @@ public:
    inline void SetDigitizerType(TPriorityValue<std::string> tmp)
    {
       fDigitizerTypeString = tmp;
-      fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType);
+      fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType, fTimeStampUnit);
    }
    static void SetDigitizerType(const std::string& mnemonic, const char* tmpstr, EPriority pr);
    inline void SetTimeOffset(TPriorityValue<Long64_t> tmp) { fTimeOffset = tmp; }
@@ -164,6 +167,7 @@ public:
    int          GetUserInfoNumber() const { return fUserInfoNumber.Value(); }
    const char*  GetDigitizerTypeString() const { return fDigitizerTypeString.Value().c_str(); }
 	EDigitizer   GetDigitizerType() const { return fDigitizerType.Value(); }
+	int          GetTimeStampUnit() const { return fTimeStampUnit.Value(); }
    Long64_t     GetTimeOffset() const { return fTimeOffset.Value(); }
    // write the rest of the gettters/setters...
 

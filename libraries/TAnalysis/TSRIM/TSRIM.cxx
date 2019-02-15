@@ -42,7 +42,7 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
 
    char        buf[256];
    std::string grsipath = getenv("GRSISYS");
-   sprintf(buf, "%s/libraries/TGRSIAnalysis/SRIMData/%s", grsipath.c_str(), fname.c_str());
+   sprintf(buf, "%s/libraries/TAnalysis/SRIMData/%s", grsipath.c_str(), fname.c_str());
    if(printfile) {
       printf("\nSearching for %s..\n", buf);
    }

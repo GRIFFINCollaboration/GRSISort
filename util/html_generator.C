@@ -125,29 +125,29 @@ void html_generator() {
    html.SetEtcDir("etc/html");
 //We must do this because of our naming convention of GRSISort directories
    html.AddSourcePath("GROOT");
-   html.AddSourcePath("TGRSIFormat"); 
+   html.AddSourcePath("TFormat"); 
    html.AddSourcePath("TDataParser");
    html.AddSourcePath("TGint");
    html.AddSourcePath("TGRSILoop");
-   html.AddSourcePath("TGRSIAnalysis");
+   html.AddSourcePath("TAnalysis");
    html.AddSourcePath("TMidas");
    html.AddSourcePath("TGRSIint");
    html.AddSourcePath("TGRSIRootIO");
-   html.AddSourcePath("TGRSIAnalysis/TAnalysisTreeBuilder");
-   html.AddSourcePath("TGRSIAnalysis/TKinematics");
-   html.AddSourcePath("TGRSIAnalysis/TNucleus");
-   html.AddSourcePath("TGRSIAnalysis/TSharc");
-   html.AddSourcePath("TGRSIAnalysis/TCSM");
-   html.AddSourcePath("TGRSIAnalysis/TGriffin");
-   html.AddSourcePath("TGRSIAnalysis/TGRSIFit");
-   html.AddSourcePath("TGRSIAnalysis/TPaces");
-   html.AddSourcePath("TGRSIAnalysis/TSceptar");
-   html.AddSourcePath("TGRSIAnalysis/TSharc");
-   html.AddSourcePath("TGRSIAnalysis/TSRIM");
-   html.AddSourcePath("TGRSIAnalysis/TGRSIDetector");
-   html.AddSourcePath("TGRSIAnalysis/TTigress");
-   html.AddSourcePath("TGRSIAnalysis/TBetaDecay");
-   html.AddSourcePath("TGRSIAnalysis/TCal");
+   html.AddSourcePath("TAnalysis/TAnalysisTreeBuilder");
+   html.AddSourcePath("TAnalysis/TKinematics");
+   html.AddSourcePath("TAnalysis/TNucleus");
+   html.AddSourcePath("TAnalysis/TSharc");
+   html.AddSourcePath("TAnalysis/TCSM");
+   html.AddSourcePath("TAnalysis/TGriffin");
+   html.AddSourcePath("TAnalysis/TGRSIFit");
+   html.AddSourcePath("TAnalysis/TPaces");
+   html.AddSourcePath("TAnalysis/TSceptar");
+   html.AddSourcePath("TAnalysis/TSharc");
+   html.AddSourcePath("TAnalysis/TSRIM");
+   html.AddSourcePath("TAnalysis/TGRSIDetector");
+   html.AddSourcePath("TAnalysis/TTigress");
+   html.AddSourcePath("TAnalysis/TBetaDecay");
+   html.AddSourcePath("TAnalysis/TCal");
 
    html.RunAll();
 }

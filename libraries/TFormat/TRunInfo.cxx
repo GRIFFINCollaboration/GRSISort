@@ -39,7 +39,7 @@ Bool_t TRunInfo::ReadInfoFromFile(TFile* tempf)
    TIter  iter(list);
 	TKey* key;
    while((key = static_cast<TKey*>(iter.Next())) != nullptr) {
-      if((key == nullptr) || (strcmp(key->GetClassName(), "TRunInfo") != 0)) {
+      if(strcmp(key->GetClassName(), "TRunInfo") != 0) {
          continue;
       }
 
@@ -47,11 +47,10 @@ Bool_t TRunInfo::ReadInfoFromFile(TFile* tempf)
 		Get()->fDetectorInformation = nullptr;// just to be safe
 		// see if we can find detector information
 		while((key = static_cast<TKey*>(iter.Next())) != nullptr) {
-			if((key == nullptr) || !TClass(key->GetClassName()).InheritsFrom(TDetectorInformation::Class())) {
-				continue;
-			}
-			Get()->fDetectorInformation = static_cast<TDetectorInformation*>(key->ReadObj());
-			break;
+			// for some reason the classic way of using TClass::InheritsFrom fails in grsiproof
+			// so instead we just try to dynamically cast every key into TDetectorInformation
+			Get()->fDetectorInformation = dynamic_cast<TDetectorInformation*>(key->ReadObj());
+			if(Get()->fDetectorInformation != nullptr) break;
 		}
       savdir->cd();
       return true;

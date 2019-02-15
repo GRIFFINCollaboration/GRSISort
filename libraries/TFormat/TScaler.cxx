@@ -473,7 +473,7 @@ TH1D* TScaler::DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime,
 
    TString opt = option;
    opt.ToLower();
-   int nofBins = std::abs(static_cast<int>(1e8 * (hightime - lowtime) / GetTimePeriod(address)));
+   int nofBins = std::abs(static_cast<int>(1e9 * (hightime - lowtime) / GetTimePeriod(address)));
    std::cout<<nofBins<<"nofbins"<<std::endl;
    // This scHist could be leaky as the outside user has ownership of it.
    auto* scHist =
@@ -489,7 +489,7 @@ TH1D* TScaler::DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime,
          // fill the difference between the current and the next scaler (if we found a previous value and that one is
          // smaller than the current one)
          if(previousValue != 0 && previousValue < fScalerData->GetScaler(index)) {
-            scHist->Fill(fScalerData->GetTimeStamp() / 1e8, fScalerData->GetScaler(index) - previousValue);
+            scHist->Fill(fScalerData->GetTimeStamp() / 1e9, fScalerData->GetScaler(index) - previousValue);
          }
          previousValue = fScalerData->GetScaler(index);
       }

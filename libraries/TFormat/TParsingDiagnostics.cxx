@@ -221,7 +221,7 @@ void TParsingDiagnostics::WriteToFile(const char* fileName) const
          continue;
       }
       statsOut<<"0x"<<std::hex<<it.first<<std::dec<<":\t"<<chan->GetName()
-              <<"\tdead time: "<<static_cast<float>(it.second) / 1e8<<" seconds."<<std::endl;
+              <<"\tdead time: "<<static_cast<float>(it.second) / 1e9<<" seconds."<<std::endl;
    }
    statsOut<<std::endl;
 
