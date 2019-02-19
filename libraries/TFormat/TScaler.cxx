@@ -41,7 +41,7 @@ void TScalerData::Clear(Option_t*)
 
 void TScalerData::Print(Option_t*) const
 {
-   printf("time: %16lld, address: 0x%04x", GetTimeStampNs(), fAddress);
+   printf("time: %16lld, address: 0x%04x", GetTimeStamp(), fAddress);
    for(size_t i = 0; i < fScaler.size(); ++i) {
       printf("\t Scaler[%lu]: 0x%07x", i, fScaler[i]);
    }
@@ -60,7 +60,7 @@ TScaler::TScaler(bool loadIntoMap)
       if(loadIntoMap) {
          for(Long64_t entry = 0; entry < fEntries; ++entry) {
             fTree->GetEntry(entry);
-            fScalerMap[fScalerData->GetAddress()][fScalerData->GetTimeStampNs()] = fScalerData->GetScaler();
+            fScalerMap[fScalerData->GetAddress()][fScalerData->GetTimeStamp()] = fScalerData->GetScaler();
          }
       }
    }
@@ -76,7 +76,7 @@ TScaler::TScaler(TTree* tree, bool loadIntoMap)
       if(loadIntoMap) {
          for(Long64_t entry = 0; entry < fEntries; ++entry) {
             fTree->GetEntry(entry);
-            fScalerMap[fScalerData->GetAddress()][fScalerData->GetTimeStampNs()] = fScalerData->GetScaler();
+            fScalerMap[fScalerData->GetAddress()][fScalerData->GetTimeStamp()] = fScalerData->GetScaler();
          }
       }
    }
@@ -143,11 +143,11 @@ std::vector<UInt_t> TScaler::GetScaler(UInt_t address, ULong64_t time) const
    for(Long64_t entry = 0; entry < fEntries; ++entry) {
       fTree->GetEntry(entry);
       // got the exact time match, so we return the current value
-      if(fScalerData->GetAddress() == address && fScalerData->GetTimeStampNs() == time) {
+      if(fScalerData->GetAddress() == address && fScalerData->GetTimeStamp() == time) {
          return fScalerData->GetScaler();
       }
       // got a scaler that is later than our requested time, so we need to find the previous time and return that one
-      if(fScalerData->GetAddress() == address && fScalerData->GetTimeStampNs() > time) {
+      if(fScalerData->GetAddress() == address && fScalerData->GetTimeStamp() > time) {
          for(--entry; entry >= 0; --entry) {
             if(fScalerData->GetAddress() == address) {
                return fScalerData->GetScaler();
@@ -204,7 +204,7 @@ UInt_t TScaler::GetScalerDifference(UInt_t address, ULong64_t time, size_t index
    for(Long64_t entry = 0; entry < fEntries; ++entry) {
       fTree->GetEntry(entry);
       // got the exact time match, so we look for the previous value
-      if(fScalerData->GetAddress() == address && fScalerData->GetTimeStampNs() == time) {
+      if(fScalerData->GetAddress() == address && fScalerData->GetTimeStamp() == time) {
          UInt_t currentValue = fScalerData->GetScaler(index);
          for(--entry; entry >= 0; --entry) {
             if(fScalerData->GetAddress() == address) {
@@ -214,7 +214,7 @@ UInt_t TScaler::GetScalerDifference(UInt_t address, ULong64_t time, size_t index
          return currentValue;
       }
       // got a scaler that is later than our requested time, so we need to find the previous time and return that one
-      if(fScalerData->GetAddress() == address && fScalerData->GetTimeStampNs() > time) {
+      if(fScalerData->GetAddress() == address && fScalerData->GetTimeStamp() > time) {
          for(--entry; entry >= 0; --entry) {
             if(fScalerData->GetAddress() == address) {
                // got the current entry, so we look for the previous value
@@ -311,7 +311,7 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t* option)
             // fill the difference between the current and the next scaler (if we found a previous value and that one is
             // smaller than the current one)
             if(previousValue != 0 && previousValue < fScalerData->GetScaler(index)) {
-               fHist[address]->Fill(fPPG->GetTimeInCycle(fScalerData->GetTimeStampNs()) / 1e6,
+               fHist[address]->Fill(fPPG->GetTimeInCycle(fScalerData->GetTimeStamp()) / 1e6,
                                     fScalerData->GetScaler(index) - previousValue);
             }
             previousValue = fScalerData->GetScaler(index);
@@ -386,7 +386,7 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
                if(previousValue[fScalerData->GetAddress()] != 0 &&
                   previousValue[fScalerData->GetAddress()] < fScalerData->GetScaler(index)) {
                   fHistRange[std::make_pair(lowAddress, highAddress)]->Fill(
-                     fPPG->GetTimeInCycle(fScalerData->GetTimeStampNs()) / 1e6,
+                     fPPG->GetTimeInCycle(fScalerData->GetTimeStamp()) / 1e6,
                      fScalerData->GetScaler(index) - previousValue[fScalerData->GetAddress()]);
                }
                previousValue[fScalerData->GetAddress()] = fScalerData->GetScaler(index);
@@ -437,7 +437,7 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
          // smaller than the current one)
          if(previousValue[fScalerData->GetAddress()] != 0 &&
             previousValue[fScalerData->GetAddress()] < fScalerData->GetScaler(index)) {
-            fHist[fScalerData->GetAddress()]->Fill(fPPG->GetTimeInCycle(fScalerData->GetTimeStampNs()) / 1e6,
+            fHist[fScalerData->GetAddress()]->Fill(fPPG->GetTimeInCycle(fScalerData->GetTimeStamp()) / 1e6,
                                                    fScalerData->GetScaler(index) -
                                                       previousValue[fScalerData->GetAddress()]);
          }
@@ -489,7 +489,7 @@ TH1D* TScaler::DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime,
          // fill the difference between the current and the next scaler (if we found a previous value and that one is
          // smaller than the current one)
          if(previousValue != 0 && previousValue < fScalerData->GetScaler(index)) {
-            scHist->Fill(fScalerData->GetTimeStampNs() / 1e9, fScalerData->GetScaler(index) - previousValue);
+            scHist->Fill(fScalerData->GetTimeStamp() / 1e9, fScalerData->GetScaler(index) - previousValue);
          }
          previousValue = fScalerData->GetScaler(index);
       }
@@ -516,12 +516,12 @@ ULong64_t TScaler::GetTimePeriod(UInt_t address)
          if(fScalerData->GetAddress() == address) {
             // fill the difference between the current and the next scaler (if we found a previous value and that one is
             // smaller than the current one)
-            if(previousValue != 0 && previousValue < fScalerData->GetTimeStampNs()) {
+            if(previousValue != 0 && previousValue < fScalerData->GetTimeStamp()) {
                // compare timestamp of current element with that of the previous element
-               ULong64_t diff = fScalerData->GetTimeStampNs() - previousValue;
+               ULong64_t diff = fScalerData->GetTimeStamp() - previousValue;
                fNumberOfTimePeriods[address][diff]++;
             }
-            previousValue = fScalerData->GetTimeStampNs();
+            previousValue = fScalerData->GetTimeStamp();
          }
       }
       int counter = 0;
