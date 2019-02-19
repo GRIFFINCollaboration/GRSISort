@@ -36,7 +36,7 @@ TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode)
       break;
 	case EBuildMode::kTimestamp:
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
-         return a->GetTimeStamp() < b->GetTimeStamp();
+         return a->GetTimeStampNs() < b->GetTimeStampNs();
       });
 		std::cout<<DYELLOW<<"sorting by timestamp, using build window of "<<fBuildWindow<<"!"<<RESET_COLOR<<std::endl;
       break;
@@ -170,9 +170,9 @@ bool TEventBuildingLoop::CheckTimeCondition(const std::shared_ptr<const TFragmen
 
 bool TEventBuildingLoop::CheckTimestampCondition(const std::shared_ptr<const TFragment>& frag)
 {
-   long timestamp   = frag->GetTimeStamp();
-   long event_start = (!fNextEvent.empty() ? (TGRSIOptions::Get()->AnalysisOptions()->StaticWindow() ? fNextEvent[0]->GetTimeStamp()
-                                                                                                      : fNextEvent.back()->GetTimeStamp())
+   long timestamp   = frag->GetTimeStampNs();
+   long event_start = (!fNextEvent.empty() ? (TGRSIOptions::Get()->AnalysisOptions()->StaticWindow() ? fNextEvent[0]->GetTimeStampNs()
+                                                                                                     : fNextEvent.back()->GetTimeStampNs())
                                            : timestamp);
 
    // save timestamp every <BuildWindow> fragments

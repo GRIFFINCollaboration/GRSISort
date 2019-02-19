@@ -112,7 +112,7 @@ ULong64_t TFragment::GetTimeInCycle()
    if(fPPG == nullptr) {
       return 0;
    }
-   return fPPG->GetTimeInCycle(GetTimeStamp());
+   return fPPG->GetTimeInCycle(GetTimeStampNs());
 }
 
 ULong64_t TFragment::GetCycleNumber()
@@ -123,7 +123,7 @@ ULong64_t TFragment::GetCycleNumber()
    if(fPPG == nullptr) {
       return 0;
    }
-   return fPPG->GetCycleNumber(GetTimeStamp());
+   return fPPG->GetCycleNumber(GetTimeStampNs());
 }
 
 Short_t TFragment::GetChannelNumber() const

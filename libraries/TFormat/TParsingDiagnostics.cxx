@@ -103,7 +103,7 @@ void TParsingDiagnostics::GoodFragment(const std::shared_ptr<const TFragment>& f
 
    UInt_t channelAddress = frag->GetAddress();
    UInt_t channelId      = frag->GetChannelId();
-   long   timeStamp      = frag->GetTimeStamp();
+   long   timeStamp      = frag->GetTimeStampNs();
 	
    // check if this is a new minimum/maximum of the channel id
    if(fMinChannelId.find(channelAddress) == fMinChannelId.end()) { // check if this channel has been found before

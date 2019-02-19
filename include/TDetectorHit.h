@@ -131,8 +131,8 @@ public:
    virtual TVector3 GetPosition(Double_t) const { return TVector3(0., 0., 0.); } //!<!
    virtual TVector3 GetPosition() const { return TVector3(0., 0., 0.); }         //!<!
    virtual double GetEnergy(Option_t* opt = "") const;
-   virtual Long64_t GetTimeStamp(Option_t* opt = "") const;
-   Long64_t         GetRawTimeStamp(Option_t* = "") const { return fTimeStamp; }
+   virtual Long64_t GetTimeStamp(Option_t* = "") const { return fTimeStamp; }
+   virtual Long64_t GetTimeStampNs(Option_t* opt = "") const;
    virtual Double_t GetTime(const ETimeFlag& correct_flag = ETimeFlag::kAll,
                             Option_t*     opt          = "") const; ///< Returns a time value to the nearest nanosecond!
    virtual Float_t             GetCfd() const { return fCfd; }            //!<!
