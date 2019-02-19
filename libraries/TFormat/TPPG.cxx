@@ -119,7 +119,7 @@ void TPPG::AddData(TPPGData* pat)
 {
    /// Adds a PPG status word at a given time in the current run. Makes a copy of the pointer to
    /// store in the map.
-   fPPGStatusMap->insert(std::make_pair(pat->GetTimeStamp(), new TPPGData(*pat)));
+   fPPGStatusMap->insert(std::make_pair(pat->GetTimeStampNs(), new TPPGData(*pat)));
    fCycleLength = 0;
    fNumberOfCycleLengths.clear();
 }
@@ -242,24 +242,24 @@ void TPPG::Print(Option_t* opt) const
    std::map<int, int> numberOfOffsets; // to calculate the offset on each timestamp
    for(ppgIt = MapBegin(); ppgIt != MapEnd(); ++ppgIt) {
       status[ppgIt->second->GetNewPPG()]++;
-      ULong64_t diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp());
+      ULong64_t diff = ppgIt->second->GetTimeStampNs() - GetLastStatusTime(ppgIt->second->GetTimeStampNs());
       numberOfCycleLengths[diff]++;
-      numberOfOffsets[(ppgIt->second->GetTimeStamp()) % 1000]++; // let's assume our offset is less than 10 us
+      numberOfOffsets[(ppgIt->second->GetTimeStampNs()) % 1000]++; // let's assume our offset is less than 10 us
       switch(ppgIt->second->GetNewPPG()) {
 		case EPpgPattern::kBackground:
-         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kTapeMove);
+         diff = ppgIt->second->GetTimeStampNs() - GetLastStatusTime(ppgIt->second->GetTimeStampNs(), EPpgPattern::kTapeMove);
          numberOfStateLengths[0][diff]++;
          break;
 		case EPpgPattern::kBeamOn:
-         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kBackground);
+         diff = ppgIt->second->GetTimeStampNs() - GetLastStatusTime(ppgIt->second->GetTimeStampNs(), EPpgPattern::kBackground);
          numberOfStateLengths[1][diff]++;
          break;
 		case EPpgPattern::kDecay:
-         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kBeamOn);
+         diff = ppgIt->second->GetTimeStampNs() - GetLastStatusTime(ppgIt->second->GetTimeStampNs(), EPpgPattern::kBeamOn);
          numberOfStateLengths[2][diff]++;
          break;
 		case EPpgPattern::kTapeMove:
-         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kDecay);
+         diff = ppgIt->second->GetTimeStampNs() - GetLastStatusTime(ppgIt->second->GetTimeStampNs(), EPpgPattern::kDecay);
          numberOfStateLengths[3][diff]++;
          break;
       default: break;
@@ -307,7 +307,7 @@ void TPPG::Print(Option_t* opt) const
 		ULong64_t time = offset;
 		auto      it   = MapEnd();
 		--it;
-		ULong64_t lastTimeStamp = it->second->GetTimeStamp();
+		ULong64_t lastTimeStamp = it->second->GetTimeStampNs();
 		for(int cycle = 1; time < lastTimeStamp; ++cycle) {
 			if(GetLastStatusTime(time, EPpgPattern::kTapeMove) != time) {
 				printf("Missing tape move status at %12lld in %d. cycle, last tape move status came at %lld.\n", time, cycle,
@@ -416,7 +416,7 @@ bool TPPG::Correct(bool verbose)
          continue;
       }
       // get time difference to previous ppg with same status
-      ULong64_t diff = (*it).second->GetTimeStamp() - GetLastStatusTime((*it).second->GetTimeStamp());
+      ULong64_t diff = (*it).second->GetTimeStampNs() - GetLastStatusTime((*it).second->GetTimeStampNs());
       if(diff != fCycleLength) {
          if(verbose) {
             printf("%ld: found missing ppg at time %lu (%lld != %lld)\n", std::distance(MapBegin(), it), (*it).first,
@@ -453,9 +453,9 @@ bool TPPG::Correct(bool verbose)
          new_data->SetHighTimeStamp(new_ts >> 28);
          new_data->SetLowTimeStamp(new_ts & 0x0fffffff);
          if(verbose) {
-            printf("inserting new ppg data at %lld\n", new_data->GetTimeStamp());
+            printf("inserting new ppg data at %lld\n", new_data->GetTimeStampNs());
          }
-         it = fPPGStatusMap->insert(std::make_pair(new_data->GetTimeStamp(), new_data)).first;
+         it = fPPGStatusMap->insert(std::make_pair(new_data->GetTimeStampNs(), new_data)).first;
          --it;
       }
    }
@@ -539,7 +539,7 @@ ULong64_t TPPG::GetCycleLength()
    if(fCycleLength == 0) {
       PPGMap_t::iterator ppgit;
       for(ppgit = MapBegin(); ppgit != MapEnd(); ++ppgit) {
-         ULong64_t diff = ppgit->second->GetTimeStamp() - GetLastStatusTime(ppgit->second->GetTimeStamp());
+         ULong64_t diff = ppgit->second->GetTimeStampNs() - GetLastStatusTime(ppgit->second->GetTimeStampNs());
          fNumberOfCycleLengths[diff]++;
       }
       int counter = 0;
@@ -556,7 +556,7 @@ ULong64_t TPPG::GetCycleLength()
 
 ULong64_t TPPG::GetNumberOfCycles()
 {
-   return Last()->GetTimeStamp() / GetCycleLength();
+   return Last()->GetTimeStampNs() / GetCycleLength();
 }
 
 Long64_t TPPG::Merge(TCollection* list)
@@ -574,7 +574,7 @@ Long64_t TPPG::Merge(TCollection* list)
 ULong64_t TPPG::GetStatusStart(EPpgPattern pat)
 {
    /// return the time in the cycle when pat starts
-   return GetTimeInCycle(GetLastStatusTime(Last()->GetTimeStamp(), pat));
+   return GetTimeInCycle(GetLastStatusTime(Last()->GetTimeStampNs(), pat));
 }
 
 void TPPG::operator+=(const TPPG& rhs)
