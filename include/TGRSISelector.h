@@ -15,6 +15,8 @@
 #include "TH1.h"
 #include "TH2.h"
 #include "THnSparse.h"
+#include "TCutG.h"
+
 #include "GHSym.h"
 #include "GCube.h"
 #include "TAnalysisOptions.h"
@@ -64,7 +66,8 @@ protected:
    TGRSIMap<std::string, GHSym*>      fSym; //!<!
    TGRSIMap<std::string, GCube*>      fCube; //!<!
    TGRSIMap<std::string, THnSparseF*> fHSparse; //!<!
-	TPPG*             fPpg{nullptr}; //!<!
+	TPPG*                              fPpg{nullptr}; //!<!
+	std::map<std::string, TCutG*>      fCuts; //!<!
 
 private:
    std::string       fOutputPrefix; //!<!

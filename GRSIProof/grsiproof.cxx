@@ -17,6 +17,7 @@
 #include "TStopwatch.h"
 #include "TGRSIMap.h"
 #include "TPPG.h"
+#include "TCutG.h"
 
 #include <iostream>
 #include <vector>
@@ -236,6 +237,10 @@ int main(int argc, char** argv)
    i = 0;
    for(const auto& calFile : gGRSIOpt->CalInputFiles()) {
       gGRSIProof->AddInput(new TNamed(Form("calFile%d", i++), calFile.c_str()));
+   }
+   i = 0;
+   for(const auto& cutFile : gGRSIOpt->InputCutFiles()) {
+      gGRSIProof->AddInput(new TNamed(Form("cutFile%d", i++), cutFile.c_str()));
    }
 	gGRSIProof->AddInput(new TNamed("ParserLibrary", library.c_str()));
 
