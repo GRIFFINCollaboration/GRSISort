@@ -8,6 +8,7 @@
 
 #include "TH1.h"
 #include "TLine.h"
+#include "TCutG.h"
 
 #include "GH2I.h"
 
@@ -125,6 +126,8 @@ private:
    std::vector<GMarker*>  fMarkers;
    std::vector<GMarker*>  fBackgroundMarkers;
    EBackgroundSubtraction fBackgroundMode;
+	std::vector<TCutG*>    fCuts;
+	char*                  fCutName;
    void AddMarker(int, int, int dim = 1);
    void RemoveMarker(Option_t* opt = "");
    void OrderMarkers();

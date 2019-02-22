@@ -90,7 +90,6 @@ public:
    Short_t   GetChannelNumber() const;
    TPPG*     GetPPG();
    double    GetTZero() const;
-   long      GetTimeStamp_ns() const;
    ULong64_t GetTimeInCycle();
    ULong64_t GetCycleNumber();
    size_t    GetNumberOfCharges() { return 1; }

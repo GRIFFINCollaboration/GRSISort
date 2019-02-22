@@ -34,6 +34,7 @@ public:
 
    // sorting options
    inline void SetBuildWindow(const long int t_bw) { fBuildWindow = t_bw; }
+	inline void SetBuildEventsByTimeStamp(bool val) { fBuildEventsByTimeStamp = val; }
    inline void SetAddbackWindow(const double t_abw) { fAddbackWindow = t_abw; }
    inline void SetSuppressionWindow(const double t_sup) { fSuppressionWindow = t_sup; }
    inline void SetSuppressionEnergy(const double e_sup) { fSuppressionEnergy = e_sup; }
@@ -45,6 +46,7 @@ public:
    inline bool IsCorrectingCrossTalk() { return fIsCorrectingCrossTalk; }
 
    inline long int BuildWindow() { return fBuildWindow; }
+	inline bool BuildEventsByTimeStamp() { return fBuildEventsByTimeStamp; }
    inline double   AddbackWindow()
    {
       if(fAddbackWindow < 1) {
@@ -68,16 +70,17 @@ public:
 private:
    // sorting options
    long int
-        fBuildWindow;   ///< if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
-   int  fAddbackWindow; ///< Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default = 150 ns (150))
-   double fSuppressionWindow; ///< Time used to suppress Ge-Events.   (default = 150 ns (150))
+        fBuildWindow;   ///< if building with a window(GRIFFIN) this is the size of the window. (default = 2us (2000))
+	bool fBuildEventsByTimeStamp; ///< use time stamps instead of time (including CFD) to build events
+   int  fAddbackWindow; ///< Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default = 300 ns (300))
+   double fSuppressionWindow; ///< Time used to suppress Ge-Events.   (default = 300 ns (300))
    double fSuppressionEnergy; ///< Minimum energy used to suppress Ge-Events.   (default = 0 keV)
    bool fIsCorrectingCrossTalk; ///< True if we are correcting for cross-talk in GRIFFIN at analysis-level
    bool fWaveformFitting;       ///< If true, waveform fitting with SFU algorithm will be performed
    bool fStaticWindow;          ///< Flag to use static window (default moving)
 
    /// \cond CLASSIMP
-   ClassDefOverride(TAnalysisOptions, 3); ///< Class for storing options in GRSISort
+   ClassDefOverride(TAnalysisOptions, 4); ///< Class for storing options in GRSISort
 	/// \endcond
 };
 /*! @} */

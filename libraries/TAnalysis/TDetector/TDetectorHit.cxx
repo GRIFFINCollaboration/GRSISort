@@ -58,8 +58,12 @@ Double_t TDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
    if(IsTimeSet()) {
       return fTime;
    }
+	TChannel* tmpChan = GetChannel();
+	if(tmpChan == nullptr) {
+		return SetTime(static_cast<Double_t>(((GetTimeStamp()) + gRandom->Uniform()) * GetTimeStampUnit()));
+	}
 
-	return SetTime(10. * (static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform())));
+	return SetTime(static_cast<Double_t>(((GetTimeStamp()) + gRandom->Uniform()) * GetTimeStampUnit() - tmpChan->GetTimeOffset()));
 }
 
 Float_t TDetectorHit::GetCharge() const
@@ -140,7 +144,7 @@ void TDetectorHit::Print(Option_t*) const
 	printf("\t%s\n", GetName());
 	printf("\tCharge:    %.2f\n", Charge());
 	printf("\tTime:      %.2f\n", GetTime());
-	std::cout<<"\tTimestamp: "<<GetTimeStamp()<<"\n";
+	std::cout<<"\tTimestamp: "<<GetTimeStamp()<<" in "<<GetTimeStampUnit()<<" ns = "<<GetTimeStampNs()<<"\n";
 	printf("============================\n");
 }
 
@@ -204,13 +208,22 @@ bool TDetectorHit::CompareEnergy(TDetectorHit* lhs, TDetectorHit* rhs)
 	return (lhs->GetEnergy() > rhs->GetEnergy());
 }
 
-Long64_t TDetectorHit::GetTimeStamp(Option_t*) const
+Long64_t TDetectorHit::GetTimeStampNs(Option_t*) const
 {
 	TChannel* tmpChan = GetChannel();
 	if(tmpChan == nullptr) {
-		return fTimeStamp;
+		return fTimeStamp * GetTimeStampUnit();
 	}
-	return fTimeStamp - tmpChan->GetTimeOffset();
+	return fTimeStamp * GetTimeStampUnit() - tmpChan->GetTimeOffset();
+}
+
+Int_t TDetectorHit::GetTimeStampUnit() const
+{
+	TChannel* chan = GetChannel();
+	if(chan == nullptr) {
+		return 1;
+	}
+	return chan->GetTimeStampUnit();
 }
 
 EPpgPattern TDetectorHit::GetPPGStatus() const
@@ -223,8 +236,8 @@ EPpgPattern TDetectorHit::GetPPGStatus() const
 		return EPpgPattern::kJunk;
 	}
 
-	fPPGStatus      = TPPG::Get()->GetStatus(GetTimeStamp());
-	fCycleTimeStamp = GetTimeStamp() - TPPG::Get()->GetLastStatusTime(GetTimeStamp());
+	fPPGStatus      = TPPG::Get()->GetStatus(GetTimeStampNs());
+	fCycleTimeStamp = GetTimeStampNs() - TPPG::Get()->GetLastStatusTime(GetTimeStampNs());
 	SetHitBit(EBitFlag::kIsPPGSet, true);
 	return fPPGStatus;
 }
@@ -239,8 +252,8 @@ Long64_t TDetectorHit::GetCycleTimeStamp() const
 		return 0;
 	}
 
-	fPPGStatus      = TPPG::Get()->GetStatus(GetTimeStamp());
-	fCycleTimeStamp = GetTimeStamp() - TPPG::Get()->GetLastStatusTime(GetTimeStamp());
+	fPPGStatus      = TPPG::Get()->GetStatus(GetTimeStampNs());
+	fCycleTimeStamp = GetTimeStampNs() - TPPG::Get()->GetLastStatusTime(GetTimeStampNs());
 	SetHitBit(EBitFlag::kIsPPGSet, true);
 	return fCycleTimeStamp;
 }
@@ -248,7 +261,7 @@ Long64_t TDetectorHit::GetCycleTimeStamp() const
 double TDetectorHit::GetTimeSinceTapeMove() const
 {
 	/// returns time in ns, minus the time of the last tape move
-	return GetTime() - 10.*TPPG::Get()->GetLastStatusTime(GetTimeStamp(), EPpgPattern::kTapeMove);
+	return GetTime() - TPPG::Get()->GetLastStatusTime(GetTimeStampNs(), EPpgPattern::kTapeMove);
 }
 
 // const here is rather dirty

@@ -311,7 +311,7 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t* option)
             // fill the difference between the current and the next scaler (if we found a previous value and that one is
             // smaller than the current one)
             if(previousValue != 0 && previousValue < fScalerData->GetScaler(index)) {
-               fHist[address]->Fill(fPPG->GetTimeInCycle(fScalerData->GetTimeStamp()) / 1e5,
+               fHist[address]->Fill(fPPG->GetTimeInCycle(fScalerData->GetTimeStamp()) / 1e6,
                                     fScalerData->GetScaler(index) - previousValue);
             }
             previousValue = fScalerData->GetScaler(index);
@@ -386,7 +386,7 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
                if(previousValue[fScalerData->GetAddress()] != 0 &&
                   previousValue[fScalerData->GetAddress()] < fScalerData->GetScaler(index)) {
                   fHistRange[std::make_pair(lowAddress, highAddress)]->Fill(
-                     fPPG->GetTimeInCycle(fScalerData->GetTimeStamp()) / 1e5,
+                     fPPG->GetTimeInCycle(fScalerData->GetTimeStamp()) / 1e6,
                      fScalerData->GetScaler(index) - previousValue[fScalerData->GetAddress()]);
                }
                previousValue[fScalerData->GetAddress()] = fScalerData->GetScaler(index);
@@ -437,7 +437,7 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
          // smaller than the current one)
          if(previousValue[fScalerData->GetAddress()] != 0 &&
             previousValue[fScalerData->GetAddress()] < fScalerData->GetScaler(index)) {
-            fHist[fScalerData->GetAddress()]->Fill(fPPG->GetTimeInCycle(fScalerData->GetTimeStamp()) / 1e5,
+            fHist[fScalerData->GetAddress()]->Fill(fPPG->GetTimeInCycle(fScalerData->GetTimeStamp()) / 1e6,
                                                    fScalerData->GetScaler(index) -
                                                       previousValue[fScalerData->GetAddress()]);
          }
@@ -473,7 +473,7 @@ TH1D* TScaler::DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime,
 
    TString opt = option;
    opt.ToLower();
-   int nofBins = std::abs(static_cast<int>(1e8 * (hightime - lowtime) / GetTimePeriod(address)));
+   int nofBins = std::abs(static_cast<int>(1e9 * (hightime - lowtime) / GetTimePeriod(address)));
    std::cout<<nofBins<<"nofbins"<<std::endl;
    // This scHist could be leaky as the outside user has ownership of it.
    auto* scHist =
@@ -489,7 +489,7 @@ TH1D* TScaler::DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime,
          // fill the difference between the current and the next scaler (if we found a previous value and that one is
          // smaller than the current one)
          if(previousValue != 0 && previousValue < fScalerData->GetScaler(index)) {
-            scHist->Fill(fScalerData->GetTimeStamp() / 1e8, fScalerData->GetScaler(index) - previousValue);
+            scHist->Fill(fScalerData->GetTimeStamp() / 1e9, fScalerData->GetScaler(index) - previousValue);
          }
          previousValue = fScalerData->GetScaler(index);
       }

@@ -98,18 +98,9 @@ double TFragment::GetTZero() const
    return chan->GetTZero(GetEnergy());
 }
 
-long TFragment::GetTimeStamp_ns() const
-{
-   long ns = 0;
-   if(fModuleType == 2) {
-      ns = (GetCfd() >> 21) & 0xf;
-   }
-   return 10 * GetTimeStamp() + ns;
-}
-
 Int_t TFragment::Get4GCfd() const
 { // return a 4G cfd in terms of 1/256 ns since the trigger
-   return GetCfd() & 0x001fffff;
+   return static_cast<Int_t>(GetCfd()) & 0x001fffff;
 }
 
 ULong64_t TFragment::GetTimeInCycle()
@@ -121,7 +112,7 @@ ULong64_t TFragment::GetTimeInCycle()
    if(fPPG == nullptr) {
       return 0;
    }
-   return fPPG->GetTimeInCycle(GetTimeStamp());
+   return fPPG->GetTimeInCycle(GetTimeStampNs());
 }
 
 ULong64_t TFragment::GetCycleNumber()
@@ -132,7 +123,7 @@ ULong64_t TFragment::GetCycleNumber()
    if(fPPG == nullptr) {
       return 0;
    }
-   return fPPG->GetCycleNumber(GetTimeStamp());
+   return fPPG->GetCycleNumber(GetTimeStampNs());
 }
 
 Short_t TFragment::GetChannelNumber() const
@@ -177,7 +168,7 @@ void TFragment::Print(Option_t*) const
    }
    printf("\tChannel Address: 0x%08x\n", GetAddress());
    printf("\tCharge:          0x%08x\n ", static_cast<Int_t>(GetCharge()));
-   printf("\tCFD:             0x%08x\n ", GetCfd());
+   printf("\tCFD:             0x%08x\n ", static_cast<Int_t>(GetCfd()));
    printf("\tZC:              0x%08x\n ", fZc);
    printf("\tTimeStamp:       %lld\n", GetTimeStamp());
    if(HasWave()) {

@@ -25,16 +25,21 @@ TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode)
    : StoppableThread(name), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>()),
      fOutputQueue(std::make_shared<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment>>>>()),
      fOutOfOrderQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>()), fBuildMode(mode),
-     fSortingDepth(10000), fBuildWindow(200), fPreviousSortingDepthError(false)
+     fSortingDepth(10000), fBuildWindow(2000), fPreviousSortingDepthError(false)
 {
    switch(fBuildMode) {
+	case EBuildMode::kTime:
+      fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
+         return a->GetTime() < b->GetTime();
+      });
+		std::cout<<DYELLOW<<"sorting by time, using build window of "<<fBuildWindow<<"!"<<RESET_COLOR<<std::endl;
+      break;
 	case EBuildMode::kTimestamp:
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
-         return a->GetTimeStamp() < b->GetTimeStamp();
+         return a->GetTimeStampNs() < b->GetTimeStampNs();
       });
-		std::cout<<DYELLOW<<"sorting by timestamp!"<<RESET_COLOR<<std::endl;
+		std::cout<<DYELLOW<<"sorting by timestamp, using build window of "<<fBuildWindow<<"!"<<RESET_COLOR<<std::endl;
       break;
-
 	case EBuildMode::kTriggerId:
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
          return a->GetTriggerId() < b->GetTriggerId();
@@ -103,7 +108,12 @@ bool TEventBuildingLoop::Iteration()
    std::shared_ptr<const TFragment> next_fragment = *fOrdered.begin();
    fOrdered.erase(fOrdered.begin());
    if(CheckBuildCondition(next_fragment)) {
+		//std::cout.precision(12);
+		//if(!fNextEvent.empty()) {
+		//	std::cout<<std::setw(12)<<(*fNextEvent.begin())->GetTime()<<", "<<std::setw(12)<<next_fragment->GetTime()<<", "<<std::setw(12)<<(next_fragment->GetTime() - (*fNextEvent.begin())->GetTime())<<std::endl;
+		//}
       fNextEvent.push_back(next_fragment);
+		//std::cout<<fNextEvent.size()<<": "<<std::setw(12)<<(fNextEvent.back())->GetTimeStamp()<<" - "<<std::setw(12)<<(fNextEvent.back())->GetTime()<<std::endl;
    }
 
    return true;
@@ -112,6 +122,7 @@ bool TEventBuildingLoop::Iteration()
 bool TEventBuildingLoop::CheckBuildCondition(const std::shared_ptr<const TFragment>& frag)
 {
    switch(fBuildMode) {
+	case EBuildMode::kTime:      return CheckTimeCondition(frag); break;
 	case EBuildMode::kTimestamp: return CheckTimestampCondition(frag); break;
 	case EBuildMode::kTriggerId: return CheckTriggerIdCondition(frag); break;
 	default: return false;
@@ -119,11 +130,49 @@ bool TEventBuildingLoop::CheckBuildCondition(const std::shared_ptr<const TFragme
    return false; // we should never reach this statement!
 }
 
+bool TEventBuildingLoop::CheckTimeCondition(const std::shared_ptr<const TFragment>& frag)
+{
+   double time   = frag->GetTime();
+   double event_start = (!fNextEvent.empty() ? (TGRSIOptions::Get()->AnalysisOptions()->StaticWindow() ? fNextEvent[0]->GetTime()
+                                                                                                       : fNextEvent.back()->GetTime())
+                                             : time);
+
+   // save time every <BuildWindow> fragments
+   if(frag->GetEntryNumber() % (TGRSIOptions::Get()->SortDepth()) == 0) {
+      TSortingDiagnostics::Get()->AddTime(event_start);
+   }
+   if(time > event_start + fBuildWindow || time < event_start - fBuildWindow) {
+		//std::cout.precision(12);
+		//std::cout<<std::setw(12)<<time<<", "<<std::setw(12)<<event_start<<", "<<std::setw(12)<<fBuildWindow<<"; "<<std::setw(12)<<fabs(time - event_start)<<", "<<std::setw(12)<<event_start + fBuildWindow<<", "<<std::setw(12)<<event_start - fBuildWindow<<std::endl;
+      fOutputQueue->Push(fNextEvent);
+      fNextEvent.clear();
+   }
+
+   if(time < event_start) {
+      TSortingDiagnostics::Get()->OutOfTimeOrder(time, event_start, frag->GetEntryNumber());
+      if(!fPreviousSortingDepthError) {
+			std::cerr.precision(12);
+         std::cerr<<std::endl
+                  <<"Sorting depth of "<<fSortingDepth<<" was insufficient. time: "<<std::setw(12)<<time
+                  <<" Last: "<<std::setw(12)<<event_start<<" \n"
+                  <<"Not all events were built correctly"<<std::endl;
+         std::cerr<<"Please increase sort depth with --sort-depth=N"<<std::endl;
+         fPreviousSortingDepthError = true;
+      }
+      if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
+         fOutOfOrderQueue->Push(frag);
+         return false;
+      }
+   }
+
+   return true;
+}
+
 bool TEventBuildingLoop::CheckTimestampCondition(const std::shared_ptr<const TFragment>& frag)
 {
-   long timestamp   = frag->GetTimeStamp();
-   long event_start = (!fNextEvent.empty() ? (TGRSIOptions::Get()->AnalysisOptions()->StaticWindow() ? fNextEvent[0]->GetTimeStamp()
-                                                                                                      : fNextEvent.back()->GetTimeStamp())
+   long timestamp   = frag->GetTimeStampNs();
+   long event_start = (!fNextEvent.empty() ? (TGRSIOptions::Get()->AnalysisOptions()->StaticWindow() ? fNextEvent[0]->GetTimeStampNs()
+                                                                                                     : fNextEvent.back()->GetTimeStampNs())
                                            : timestamp);
 
    // save timestamp every <BuildWindow> fragments

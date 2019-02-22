@@ -62,11 +62,12 @@ public:
       // too - you will end up with a copy of ROOT's class reference.
       // The documentation will end up in the subdirectory htmldoc/.
 
-      std::string inclpath = "$(GRSISYS)/grsisort/";
+      std::string inclpath = "$(GRSISYS):$(GRSISYS)/include";
       std::stringstream totpath;
       totpath<<inclpath<<fpath.str();
       std::string incldirs = totpath.str(); 
       GetHtml()->SetSourceDir(incldirs.c_str());
+		std::cout<<"set source dir to "<<incldirs.c_str()<<std::endl;
       GetHtml()->SetOutputDir("$GRSISYS/htmldoc");
       GetHtml()->MakeAll();
    }
@@ -93,6 +94,11 @@ public:
    void AddSourcePath(std::string newpath)
    {   
        fpath<<":$(GRSISYS)/libraries/"<<newpath;
+   }
+
+   void AddLibraryPath(std::string newpath)
+   {   
+       fpath<<":$(GRSISYS)/"<<newpath;
    }
 
    void AddRootSourcePath(){
@@ -125,29 +131,78 @@ void html_generator() {
    html.SetEtcDir("etc/html");
 //We must do this because of our naming convention of GRSISort directories
    html.AddSourcePath("GROOT");
-   html.AddSourcePath("TGRSIFormat"); 
+   html.AddSourcePath("TAnalysis");
    html.AddSourcePath("TDataParser");
-   html.AddSourcePath("TGint");
-   html.AddSourcePath("TGRSILoop");
-   html.AddSourcePath("TGRSIAnalysis");
-   html.AddSourcePath("TMidas");
+   html.AddSourcePath("TFormat"); 
    html.AddSourcePath("TGRSIint");
-   html.AddSourcePath("TGRSIRootIO");
-   html.AddSourcePath("TGRSIAnalysis/TAnalysisTreeBuilder");
-   html.AddSourcePath("TGRSIAnalysis/TKinematics");
-   html.AddSourcePath("TGRSIAnalysis/TNucleus");
-   html.AddSourcePath("TGRSIAnalysis/TSharc");
-   html.AddSourcePath("TGRSIAnalysis/TCSM");
-   html.AddSourcePath("TGRSIAnalysis/TGriffin");
-   html.AddSourcePath("TGRSIAnalysis/TGRSIFit");
-   html.AddSourcePath("TGRSIAnalysis/TPaces");
-   html.AddSourcePath("TGRSIAnalysis/TSceptar");
-   html.AddSourcePath("TGRSIAnalysis/TSharc");
-   html.AddSourcePath("TGRSIAnalysis/TSRIM");
-   html.AddSourcePath("TGRSIAnalysis/TGRSIDetector");
-   html.AddSourcePath("TGRSIAnalysis/TTigress");
-   html.AddSourcePath("TGRSIAnalysis/TBetaDecay");
-   html.AddSourcePath("TGRSIAnalysis/TCal");
+   html.AddSourcePath("TGRSIProof");
+   html.AddSourcePath("TGUI");
+   html.AddSourcePath("THistogramming");
+   html.AddSourcePath("TLoops");
+   html.AddSourcePath("TRawFile");
+   html.AddSourcePath("TAnalysis/SourceData");
+   html.AddSourcePath("TAnalysis/SRIMData");
+   html.AddSourcePath("TAnalysis/TBetaDecay");
+   html.AddSourcePath("TAnalysis/TBgo");
+   html.AddSourcePath("TAnalysis/TCal");
+   html.AddSourcePath("TAnalysis/TDetector");
+   html.AddSourcePath("TAnalysis/TGRSIFit");
+   html.AddSourcePath("TAnalysis/TKinematics");
+   html.AddSourcePath("TAnalysis/TNucleus");
+   html.AddSourcePath("TAnalysis/TPeakFitting");
+   html.AddSourcePath("TAnalysis/TPulseAnalyzer");
+   html.AddSourcePath("TAnalysis/TReaction");
+   html.AddSourcePath("TAnalysis/TSRIM");
+   html.AddSourcePath("TAnalysis/TSuppressed");
+
+	html.AddLibraryPath("GRSIData");
+	html.AddLibraryPath("GRSIData/include");
+	html.AddLibraryPath("GRSIData/libraries");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIDataParser");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIFormat");
+	html.AddLibraryPath("GRSIData/libraries/TMidas");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TAngularCorrelation");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TCSM");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TDescant");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TGenericDetector");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TGriffin");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TGRSIDetector");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TLaBr");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TPaces");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TRF");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TS3");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TSceptar");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TSharc");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TSiLi");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TTAC");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TTigress");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TTip");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TTriFoil");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TZeroDegree");
+
+	html.AddLibraryPath("ILLData");
+	html.AddLibraryPath("ILLData/include");
+	html.AddLibraryPath("ILLData/libraries");
+	html.AddLibraryPath("ILLData/libraries/TILLAnalysis");
+	html.AddLibraryPath("ILLData/libraries/TILLDataParser");
+	html.AddLibraryPath("ILLData/libraries/TILLFormat");
+	html.AddLibraryPath("ILLData/libraries/TLst");
+	html.AddLibraryPath("ILLData/libraries/TILLAnalysis/TFipps");
+	html.AddLibraryPath("ILLData/libraries/TILLAnalysis/TILLDetector");
+
+	html.AddLibraryPath("iThembaData");
+	html.AddLibraryPath("iThembaData/include");
+	html.AddLibraryPath("iThembaData/libraries");
+	html.AddLibraryPath("iThembaData/libraries/TTdr");
+	html.AddLibraryPath("iThembaData/libraries/TTdrAnalysis");
+	html.AddLibraryPath("iThembaData/libraries/TTdrDataParser");
+	html.AddLibraryPath("iThembaData/libraries/TTdrFormat");
+	html.AddLibraryPath("iThembaData/libraries/TTdrAnalysis/TTdrClover");
+	html.AddLibraryPath("iThembaData/libraries/TTdrAnalysis/TTdrDetector");
+	html.AddLibraryPath("iThembaData/libraries/TTdrAnalysis/TTdrPlastic");
+	html.AddLibraryPath("iThembaData/libraries/TTdrAnalysis/TTdrSiLi");
+	html.AddLibraryPath("iThembaData/libraries/TTdrAnalysis/TTdrTigress");
 
    html.RunAll();
 }

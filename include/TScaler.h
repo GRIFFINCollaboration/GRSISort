@@ -75,7 +75,7 @@ public:
       ULong64_t time = GetHighTimeStamp();
       time           = time<<28;
       time |= GetLowTimeStamp() & 0x0fffffff;
-      return time;
+      return 10 * time; // convert from raw 10 ns units to ns
    }
 
    void ResizeScaler(size_t newSize = 1) { fScaler.resize(newSize); }

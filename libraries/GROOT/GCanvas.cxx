@@ -20,6 +20,7 @@
 #include "TSpectrum.h"
 #include "TPython.h"
 #include "TCutG.h"
+#include "TGInputDialog.h"
 
 #include "TApplication.h"
 #include "TContextMenu.h"
@@ -100,6 +101,7 @@ GCanvas::GCanvas(const char* name, const char* title, Int_t wtopx, Int_t wtopy, 
 GCanvas::~GCanvas()
 {
    // TCanvas::~TCanvas();
+	delete[] fCutName;
 }
 
 void GCanvas::GCanvasInit()
@@ -114,6 +116,7 @@ void GCanvas::GCanvasInit()
    control_key     = false;
    fGuiEnabled     = false;
    fBackgroundMode = EBackgroundSubtraction::kNoBackground;
+	fCutName = new char[256];
    // if(gVirtualX->InheritsFrom("TGX11")) {
    //    printf("\tusing x11-like graphical interface.\n");
    //}
@@ -1155,6 +1158,18 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       return edited;
    }
    switch(*keysym) {
+	case kKey_c:
+		{
+			TString defaultName = "cut";
+			if(gROOT->FindObject("CUTG") == nullptr) {
+				std::cout<<"Something went wrong, can't find 'CUTG', did you initialize the cut beforehand?"<<std::endl;
+				break;
+			}
+			fCuts.push_back(static_cast<TCutG*>(gROOT->FindObject("CUTG")));
+			fCuts.back()->SetName(fCutName);
+		}
+		break;
+
    case kKey_e:
       if(GetNMarkers() < 2) {
          break;
@@ -1207,6 +1222,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       }
       edited = true;
       break;
+
    case kKey_g:
       if(GetNMarkers() < 2) {
          break;
@@ -1249,6 +1265,18 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       edited = true;
       RemoveMarker("all");
       break;
+
+	case kKey_i:
+		{
+			TString defaultName = "cut";
+			new TGInputDialog(nullptr, static_cast<TRootCanvas*>(GetCanvasImp()), "Enter name of cut", defaultName, fCutName);
+			if(strlen(fCutName) == 0) {
+				break;
+			}
+			gROOT->SetEditorMode("CutG");
+		}
+		break;
+
    case kKey_n:
       RemoveMarker("all");
       // for(unsigned int i=0;i<hists.size();i++)
@@ -1338,6 +1366,29 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       }
       edited = true;
       break;
+
+	case kKey_s: 
+		{
+			TString defaultName = "CutFile.cuts";
+			char* fileName = new char[256];
+			new TGInputDialog(nullptr, static_cast<TRootCanvas*>(GetCanvasImp()), "Enter file name to save cuts to", defaultName, fileName);
+			if(strlen(fileName) == 0) {
+				break;
+			}
+			TFile f(fileName, "recreate");
+			if(!f.IsOpen()) {
+				std::cout<<RESET_COLOR<<"Failed to open file '"<<fileName<<"', not saving cuts!"<<std::endl;
+				break;
+			}
+			std::cout<<RESET_COLOR<<"Writing the following cuts to '"<<fileName<<"':"<<std::endl;
+			for(auto cut : fCuts) {
+				std::cout<<cut->GetName()<<std::endl;
+				cut->Write();
+			}
+			f.Close();
+			delete fileName;
+		}
+		break;
 
    case kKey_x: {
       GH2D* ghist = nullptr;

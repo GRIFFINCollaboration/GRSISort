@@ -21,13 +21,33 @@ TSortingDiagnostics::~TSortingDiagnostics() = default;
 void TSortingDiagnostics::Copy(TObject& obj) const
 {
    static_cast<TSortingDiagnostics&>(obj).fFragmentsOutOfOrder = fFragmentsOutOfOrder;
+   static_cast<TSortingDiagnostics&>(obj).fFragmentsOutOfTimeOrder = fFragmentsOutOfTimeOrder;
    static_cast<TSortingDiagnostics&>(obj).fMissingDetectorClasses = fMissingDetectorClasses;
 }
 
 void TSortingDiagnostics::Clear(Option_t*)
 {
    fFragmentsOutOfOrder.clear();
+   fFragmentsOutOfTimeOrder.clear();
    fMissingDetectorClasses.clear();
+}
+
+void TSortingDiagnostics::OutOfTimeOrder(double newFragTime, double oldFragTime, long newEntry)
+{
+   fFragmentsOutOfTimeOrder[oldFragTime] = std::make_pair(oldFragTime - newFragTime, newEntry);
+   // try and find a time before newFragTime
+   size_t entry = 0;
+   if(!fPreviousTimes.empty()) {
+      for(entry = fPreviousTimes.size() - 1; entry > 0; --entry) {
+         if(fPreviousTimes[entry] < newFragTime) {
+            break;
+         }
+      }
+   }
+   long entryDiff = newEntry - (entry * TGRSIOptions::Get()->SortDepth());
+   if(entryDiff > fMaxEntryDiff) {
+      fMaxEntryDiff = entryDiff;
+   }
 }
 
 void TSortingDiagnostics::OutOfOrder(long newFragTS, long oldFragTS, long newEntry)
@@ -70,7 +90,7 @@ void TSortingDiagnostics::Print(Option_t* opt) const
 		}
 	}
    std::string color;
-   if(fFragmentsOutOfOrder.empty()) {
+   if(fFragmentsOutOfOrder.empty() && fFragmentsOutOfTimeOrder.empty()) {
       if(option.EqualTo("ERROR")) {
          color = DGREEN;
       }
@@ -80,10 +100,18 @@ void TSortingDiagnostics::Print(Option_t* opt) const
    if(option.EqualTo("ERROR")) {
       color = DRED;
    }
-   std::cerr<<color<<NumberOfFragmentsOutOfOrder()<<" fragments were out of order, maximum entry difference was "
-            <<fMaxEntryDiff<<"!"<<std::endl
-            <<"Please consider increasing the sort depth with --sort-depth="<<fMaxEntryDiff<<RESET_COLOR
-            <<std::endl;
+	if(!fFragmentsOutOfOrder.empty()) {
+		std::cerr<<color<<NumberOfFragmentsOutOfOrder()<<" fragments were out of order, maximum entry difference was "
+					<<fMaxEntryDiff<<"!"<<std::endl
+					<<"Please consider increasing the sort depth with --sort-depth="<<fMaxEntryDiff<<RESET_COLOR
+					<<std::endl;
+	}
+	if(!fFragmentsOutOfTimeOrder.empty()) {
+		std::cerr<<color<<NumberOfFragmentsOutOfTimeOrder()<<" fragments were out of order, maximum entry difference was "
+					<<fMaxEntryDiff<<"!"<<std::endl
+					<<"Please consider increasing the sort depth with --sort-depth="<<fMaxEntryDiff<<RESET_COLOR
+					<<std::endl;
+	}
 }
 
 void TSortingDiagnostics::Draw(Option_t*)
@@ -95,6 +123,7 @@ void TSortingDiagnostics::WriteToFile(const char* fileName) const
    std::ofstream statsOut(fileName);
    statsOut<<std::endl
            <<"Number of fragments out of order = "<<NumberOfFragmentsOutOfOrder()<<std::endl
+           <<"Number of fragments out of time order = "<<NumberOfFragmentsOutOfTimeOrder()<<std::endl
            <<"Maximum entry difference = "<<fMaxEntryDiff<<std::endl
            <<std::endl;
 }

@@ -109,6 +109,42 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
 		}
 		++i;
 	}
+	i = 0;
+	while(fInput->FindObject(Form("cutFile%d", i)) != nullptr) {
+		std::cout<<"trying to open "<<Form("cutFile%d", i)<<std::flush<<" = "<<fInput->FindObject(Form("cutFile%d", i))<<std::flush<<" with title "<<static_cast<TNamed*>(fInput->FindObject(Form("cutFile%d", i)))->GetTitle()<<std::endl;
+		const char* fileName = static_cast<TNamed*>(fInput->FindObject(Form("cutFile%d", i)))->GetTitle();
+		if(fileName[0] == 0) {
+			std::cout<<"Error, empty file name!"<<std::endl;
+			break;
+		}
+		// if we have a relative path and a working directory, combine them
+		TFile* file = nullptr;
+		if(workingDirectory[0] != 0 && fileName[0] != '/') {
+			file = new TFile(Form("%s/%s", workingDirectory, fileName));
+		} else {
+			file = new TFile(fileName);
+		}
+		if(file != nullptr && file->IsOpen()) {
+			TIter iter(file->GetListOfKeys());
+			TKey* key = nullptr;
+			while((key = static_cast<TKey*>(iter.Next())) != nullptr) {
+				if(strcmp(key->GetClassName(), "TCutG") != 0) {
+					continue;
+				}
+				TCutG* tmpCut = static_cast<TCutG*>(key->ReadObj());
+				if(tmpCut != nullptr) {
+					fCuts[tmpCut->GetName()] = tmpCut;
+				}
+			}
+		} else {
+			std::cout<<"Error, failed to open file "<<fileName<<"!"<<std::endl;
+			break;
+		}
+		++i;
+	}
+	for(auto cut : fCuts) {
+		std::cout<<cut.first<<" = "<<cut.second<<std::endl;
+	}
 
 	if(GValue::Size() == 0) {
 		std::cout<<"No g-values!"<<std::flush;

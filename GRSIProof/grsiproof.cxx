@@ -17,6 +17,7 @@
 #include "TStopwatch.h"
 #include "TGRSIMap.h"
 #include "TPPG.h"
+#include "TCutG.h"
 
 #include <iostream>
 #include <vector>
@@ -173,7 +174,7 @@ int main(int argc, char** argv)
 		} else {
 			std::cout<<"Warning, expected dataparser/detector library location to be of form <path>/lib/lib<name>.so, but it is "<<library<<". Won't be able to add include path!"<<std::endl;
 		}
-		//gSystem->Load(library.c_str());
+		gSystem->Load(library.c_str());
 	} else {
 		std::cout<<"Warning, no dataparser/detector library provided, won't be able to add include path!"<<std::endl;
 	}
@@ -236,6 +237,10 @@ int main(int argc, char** argv)
    i = 0;
    for(const auto& calFile : gGRSIOpt->CalInputFiles()) {
       gGRSIProof->AddInput(new TNamed(Form("calFile%d", i++), calFile.c_str()));
+   }
+   i = 0;
+   for(const auto& cutFile : gGRSIOpt->InputCutFiles()) {
+      gGRSIProof->AddInput(new TNamed(Form("cutFile%d", i++), cutFile.c_str()));
    }
 	gGRSIProof->AddInput(new TNamed("ParserLibrary", library.c_str()));
 
