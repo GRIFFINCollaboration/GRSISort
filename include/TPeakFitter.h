@@ -72,6 +72,8 @@ private:
 
    bool fInitFlag{false};
 
+	TH1* fLastHistFit{nullptr};
+
    /// \cond CLASSIMP
    ClassDefOverride(TPeakFitter, 1);
    /// \endcond
