@@ -73,6 +73,7 @@ int main(int argc, char** argv)
 	TKey* key = nullptr;
 	// look for histogram names to add
 	for(auto name : histNames) {
+		std::cout<<"looking for "<<name<<" in "<<infile->GetName()<<std::endl;
 		object = infile->Get(name.c_str());
 		// if we couldn't find the object, loop through all object in the file, and if they're folders search in those
 		if(object == nullptr) {
@@ -92,11 +93,11 @@ int main(int argc, char** argv)
 		}
 
 		//check what type this object is: 1D- or 2D-histogram, spline, graph w/ or w/o errors
-      std::string keyType = key->ReadObj()->ClassName();
+      std::string keyType = object->ClassName();
 		std::string fileName = path;
-		path += "/";
-		path += name;
-		path += ".dat";
+		fileName += "/";
+		fileName += name;
+		fileName += ".dat";
 		if(keyType.compare(0, 3, "TH1") == 0) {
 			WriteHistogram(static_cast<TH1*>(object), fileName, format);
 		} else if(keyType.compare(0, 3, "TH2") == 0) {
@@ -124,14 +125,15 @@ int main(int argc, char** argv)
 
 	if(histNames.empty()) {
 		// loop through all keys to find any object we can write
+		std::cout<<"looping over all objects in "<<infile->GetName()<<std::endl;
 		TIter next(infile->GetListOfKeys());
 		while((key = static_cast<TKey*>(next())) != nullptr) {
 			object = key->ReadObj();
 			std::string keyType = object->ClassName();
 			std::string fileName = path;
-			path += "/";
-			path += object->GetName();
-			path += ".dat";
+			fileName += "/";
+			fileName += object->GetName();
+			fileName += ".dat";
 			if(keyType.compare(0, 3, "TH1") == 0) {
 				WriteHistogram(static_cast<TH1*>(object), fileName, format);
 			} else if(keyType.compare(0, 3, "TH2") == 0) {
