@@ -42,6 +42,16 @@ else
     GRSISYS=$(cd ${thisgrsi};pwd); export GRSISYS
 fi
 
+if [ -e $GRSISYS/GRSIData ] ; then
+	export GRSIDATA=$GRSISYS/GRSIData
+fi
+if [ -e $GRSISYS/ILLData ] ; then
+	export ILLDATA=$GRSISYS/ILLData
+fi
+if [ -e $GRSISYS/iThembaData ] ; then
+	export ITHEMBADATA=$GRSISYS/iThembaData
+fi
+
 if [ -n "${old_grsisys}" ] ; then
    if [ -n "${PATH}" ]; then
       drop_from_path "$PATH" ${old_grsisys}/bin
