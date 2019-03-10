@@ -8,7 +8,7 @@
 
 ClassImp(TEventBuildingLoop)
 
-TEventBuildingLoop* TEventBuildingLoop::Get(std::string name, EBuildMode mode)
+TEventBuildingLoop* TEventBuildingLoop::Get(std::string name, EBuildMode mode, long buildWindow)
 {
    if(name.length() == 0) {
       name = "build_loop";
@@ -16,7 +16,7 @@ TEventBuildingLoop* TEventBuildingLoop::Get(std::string name, EBuildMode mode)
 
    TEventBuildingLoop* loop = static_cast<TEventBuildingLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
-      loop = new TEventBuildingLoop(name, mode);
+      loop = new TEventBuildingLoop(name, mode, buildWindow);
    }
    return loop;
 }

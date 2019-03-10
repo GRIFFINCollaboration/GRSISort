@@ -58,7 +58,7 @@ public:
    std::string EndStatus() override;
 
 private:
-   TEventBuildingLoop(std::string name, EBuildMode mode);
+   TEventBuildingLoop(std::string name, EBuildMode mode, long buildWindow);
    TEventBuildingLoop(const TEventBuildingLoop& other);
    TEventBuildingLoop& operator=(const TEventBuildingLoop& other);
 
