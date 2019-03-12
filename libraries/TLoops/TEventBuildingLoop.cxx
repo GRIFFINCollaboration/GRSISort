@@ -8,7 +8,7 @@
 
 ClassImp(TEventBuildingLoop)
 
-TEventBuildingLoop* TEventBuildingLoop::Get(std::string name, EBuildMode mode)
+TEventBuildingLoop* TEventBuildingLoop::Get(std::string name, EBuildMode mode, long buildWindow)
 {
    if(name.length() == 0) {
       name = "build_loop";
@@ -16,16 +16,16 @@ TEventBuildingLoop* TEventBuildingLoop::Get(std::string name, EBuildMode mode)
 
    TEventBuildingLoop* loop = static_cast<TEventBuildingLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
-      loop = new TEventBuildingLoop(name, mode);
+      loop = new TEventBuildingLoop(name, mode, buildWindow);
    }
    return loop;
 }
 
-TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode)
+TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode, long buildWindow)
    : StoppableThread(name), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>()),
      fOutputQueue(std::make_shared<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment>>>>()),
      fOutOfOrderQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>()), fBuildMode(mode),
-     fSortingDepth(10000), fBuildWindow(2000), fPreviousSortingDepthError(false)
+     fSortingDepth(10000), fBuildWindow(buildWindow), fPreviousSortingDepthError(false)
 {
    switch(fBuildMode) {
 	case EBuildMode::kTime:

@@ -622,9 +622,8 @@ void TGRSIint::SetupPipeline()
 	// If needed, generate the individual detectors from the TFragments
 	if(generate_analysis_data) {
 		TGRSIOptions::AnalysisOptions()->Print();
-		eventBuildingLoop = TEventBuildingLoop::Get("5_event_build_loop", event_build_mode);
+		eventBuildingLoop = TEventBuildingLoop::Get("5_event_build_loop", event_build_mode, opt->AnalysisOptions()->BuildWindow());
 		eventBuildingLoop->SetSortDepth(opt->SortDepth());
-		eventBuildingLoop->SetBuildWindow(opt->AnalysisOptions()->BuildWindow());
 		if(unpackLoop != nullptr) {
 			eventBuildingLoop->InputQueue() = unpackLoop->AddGoodOutputQueue();
 		}
