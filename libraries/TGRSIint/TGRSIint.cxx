@@ -707,22 +707,23 @@ bool TGRSIInterruptHandler::Notify()
 {
 	/// When ctrl-c is pressed, this takes over. This can be used in the future
 	/// for safe cleanup.
-	static int timespressed = 0;
-	timespressed++;
-	switch(timespressed) {
+	if(!StoppableThread::AnyThreadRunning()) {
+		std::cout<<std::endl<<DRED<<BG_WHITE<<"   Control-c was pressed in interactive mode.   "<<RESET_COLOR<<std::endl;
+		exit(1);
+	}
+	static int timesPressed = 0;
+	timesPressed++;
+	switch(timesPressed) {
 		case 1:
-			printf("\n" DRED BG_WHITE "   Control-c was pressed, terminating input loop.   " RESET_COLOR "\n");
-			fflush(stdout);
+			std::cout<<std::endl<<DRED<<BG_WHITE<<"   Control-c was pressed, terminating input loop.   "<<RESET_COLOR<<std::endl;
 			TGRSIint::instance()->Terminate();
 			break;
 		case 2:
-			printf("\n" DRED BG_WHITE "   Control-c was pressed again, stopping all queues.   " RESET_COLOR "\n");
-			fflush(stdout);
+			std::cout<<std::endl<<DRED<<BG_WHITE<<"   Control-c was pressed, stopping all queues.   "<<RESET_COLOR<<std::endl;
 			StoppableThread::ClearAllQueues();
 			break;
 		default:
-			printf("\n" DRED BG_WHITE "   No you shutup!   " RESET_COLOR "\n");
-			fflush(stdout);
+			std::cout<<std::endl<<DRED<<BG_WHITE<<"   No you shutup!   "<<RESET_COLOR<<std::endl;
 			exit(1);
 	}
 	return true;
