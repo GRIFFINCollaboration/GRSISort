@@ -88,7 +88,6 @@ double TDetectorHit::GetEnergy(Option_t*) const
    }
    TChannel* channel = GetChannel();
    if(channel == nullptr) {
-      // Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
       return SetEnergy(static_cast<Double_t>(Charge()));
    }
    if(channel->UseCalFileIntegration()) {
@@ -178,7 +177,6 @@ Int_t TDetectorHit::GetDetector() const
 {
 	TChannel* channel = GetChannel();
 	if(channel == nullptr) {
-		Error("GetDetector", "No TChannel exists for address 0x%08x", GetAddress());
 		return -1;
 	}
 	return channel->GetDetectorNumber(); // mnemonic.arrayposition;
@@ -188,7 +186,6 @@ Int_t TDetectorHit::GetSegment() const
 {
 	TChannel* channel = GetChannel();
 	if(channel == nullptr) {
-		Error("GetSegment", "No TChannel exists for address %08x", GetAddress());
 		return -1;
 	}
 	return channel->GetSegmentNumber();
