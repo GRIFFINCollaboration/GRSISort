@@ -46,6 +46,16 @@ if ($?thisgrsi) then
 
 setenv GRSISYS "`(cd ${thisgrsi};pwd)`"
 
+if ( -e $GRSISYS/GRSIData ) then
+	setenv GRSIDATA $GRSISYS/GRSIData
+endif
+if ( -e $GRSISYS/ILLData ) then
+	setenv ILLDATA $GRSISYS/ILLData
+endif
+if ( -e $GRSISYS/iThembaData ) then
+	setenv ITHEMBADATA $GRSISYS/iThembaData
+endif
+
 if ($?old_grsisys) then
    setenv PATH `echo $PATH | sed -e "s;:$old_grsisys/bin:;:;g" \
                                  -e "s;:$old_grsisys/bin;;g"   \
