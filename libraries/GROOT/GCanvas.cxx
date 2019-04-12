@@ -1369,13 +1369,14 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 
 	case kKey_s: 
 		{
+			TDirectory* oldDir = gDirectory;
 			TString defaultName = "CutFile.cuts";
 			char* fileName = new char[256];
 			new TGInputDialog(nullptr, static_cast<TRootCanvas*>(GetCanvasImp()), "Enter file name to save cuts to", defaultName, fileName);
 			if(strlen(fileName) == 0) {
 				break;
 			}
-			TFile f(fileName, "recreate");
+			TFile f(fileName, "update");
 			if(!f.IsOpen()) {
 				std::cout<<RESET_COLOR<<"Failed to open file '"<<fileName<<"', not saving cuts!"<<std::endl;
 				break;
@@ -1387,6 +1388,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 			}
 			f.Close();
 			delete fileName;
+			oldDir->cd();
 		}
 		break;
 
