@@ -36,39 +36,39 @@ public:
    TPeakFitter(const Double_t& range_low, const Double_t& range_high);
 
 public:
-   void AddPeak(TSinglePeak *p)     { fPeaksToFit.push_back(p); }
-   void RemovePeak(TSinglePeak *p)  { fPeaksToFit.remove(p); }
-//   void SetPeakToFit(TMultiplePeak * peaks_to_fit) { fPeaksToFit = peaks_to_fit; }
+   void AddPeak(TSinglePeak* p)     { fPeaksToFit.push_back(p); }
+   void RemovePeak(TSinglePeak* p)  { fPeaksToFit.remove(p); }
+//   void SetPeakToFit(TMultiplePeak*  peaks_to_fit) { fPeaksToFit = peaks_to_fit; }
    void SetBackground(TF1* bg_to_fit)                 { fBGToFit = bg_to_fit; }
    void InitializeParameters(TH1* fit_hist);
    void InitializeBackgroundParameters(TH1* fit_hist);
 
-   virtual void Print(Option_t * opt = "") const override;
+   virtual void Print(Option_t* opt = "") const override;
 
-   TF1 * GetBackground() { return fBGToFit; }
+   TF1* GetBackground() { return fBGToFit; }
    void SetRange(const Double_t &low, const Double_t &high);
    Int_t GetNParameters() const;
-   void Fit(TH1* fit_hist,Option_t *opt="");
-   void DrawPeaks(Option_t * = "") const;
+   void Fit(TH1* fit_hist,Option_t* opt="");
+   void DrawPeaks(Option_t* = "") const;
 
 private:
    void UpdateFitterParameters();
    void UpdatePeakParameters(TFitResultPtr fit_res,TH1* fit_hist);
-   Double_t DefaultBackgroundFunction(Double_t *dim, Double_t *par);
+   Double_t DefaultBackgroundFunction(Double_t* dim, Double_t* par);
 
 
 private:
-//   TMultiplePeak *fPeaksToFit{nullptr};
+//   TMultiplePeak* fPeaksToFit{nullptr};
    MultiplePeak_t fPeaksToFit;
-   TF1 *fBGToFit{nullptr};
+   TF1* fBGToFit{nullptr};
 
    TF1* fTotalFitFunction;
 
    Double_t fRangeLow;
    Double_t fRangeHigh;
    
-   Double_t FitFunction(Double_t *dim, Double_t *par);
-   Double_t BackgroundFunction(Double_t *dim, Double_t *par);
+   Double_t FitFunction(Double_t* dim, Double_t* par);
+   Double_t BackgroundFunction(Double_t* dim, Double_t* par);
 
    bool fInitFlag{false};
 

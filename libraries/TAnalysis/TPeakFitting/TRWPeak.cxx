@@ -4,9 +4,10 @@
 ClassImp(TRWPeak)
 /// \endcond
 
-TRWPeak::TRWPeak() : TSinglePeak(){ }
+TRWPeak::TRWPeak() : TSinglePeak() { }
 
-TRWPeak::TRWPeak(Double_t centroid) : TSinglePeak() {
+TRWPeak::TRWPeak(Double_t centroid) : TSinglePeak()
+{
 
    fTotalFunction = new TF1("rw_total",this,&TRWPeak::TotalFunction,0,1,6,"TRWPeak","TotalFunction");
    InitParNames();
@@ -15,7 +16,8 @@ TRWPeak::TRWPeak(Double_t centroid) : TSinglePeak() {
    fTotalFunction->SetLineColor(kMagenta);
 }
 
-void TRWPeak::InitParNames(){
+void TRWPeak::InitParNames()
+{
    fTotalFunction->SetParName(0, "Height");
    fTotalFunction->SetParName(1, "centroid");
    fTotalFunction->SetParName(2, "sigma");
@@ -24,46 +26,60 @@ void TRWPeak::InitParNames(){
    fTotalFunction->SetParName(5, "step");
 }
 
-void TRWPeak::InitializeParameters(TH1* fit_hist){
-   // Makes initial guesses at parameters for the fit. Uses the histogram to
-   Double_t xlow, xhigh, low, high;
-   fTotalFunction->GetRange(xlow, xhigh);
-   Int_t bin     = fit_hist->FindBin(fTotalFunction->GetParameter(1));
-   fTotalFunction->SetParLimits(0, 0, fit_hist->GetMaximum()*2.);
-   fTotalFunction->GetParLimits(1, low, high);
-   fTotalFunction->GetParLimits(2, low, high);
-   fTotalFunction->SetParLimits(2, 0.01, 10.); // sigma should be less than the window width - JKS
-   fTotalFunction->SetParLimits(3, 0.000001, 10);
-   fTotalFunction->SetParLimits(4, 0.000001, 100); // this is a percentage. no reason for it to go to 500% - JKS
-   // Step size is allow to vary to anything. If it goes below 0, the code will fix it to 0
-   fTotalFunction->SetParLimits(5, 0.0, 1.0E2);
-   
+void TRWPeak::InitializeParameters(TH1* fit_hist)
+{
+   /// Makes initial guesses at parameters for the fit base on the histogram.
    // Make initial guesses
    // Actually set the parameters in the photopeak function
    // Fixing has to come after setting
    // Might have to include bin widths eventually
    // The centroid should already be set by this point in the ctor
-   fTotalFunction->SetParameter("Height", fit_hist->GetBinContent(bin));
-   fTotalFunction->SetParameter("centroid", fTotalFunction->GetParameter(1));
- //  fTotalFunction->SetParameter("sigma", TMath::Sqrt(9.0 + 2. * fTotalFunction->GetParameter("centroid") / 1000.) / 2.35);
-   fTotalFunction->SetParameter("sigma", TMath::Sqrt(5 + 1.33 * fTotalFunction->GetParameter("centroid") / 1000. +  0.9*TMath::Power(fTotalFunction->GetParameter("centroid")/1000.,2)) / 2.35);
-   fTotalFunction->SetParameter("beta", fTotalFunction->GetParameter("sigma") / 2.0);
-   fTotalFunction->SetParameter("R", 0.001);
-   fTotalFunction->SetParameter("step", 0.1);
-   fTotalFunction->FixParameter(3, fTotalFunction->GetParameter("beta"));
-   fTotalFunction->FixParameter(4, 0.00);
+   Double_t xlow, xhigh, low, high;
+   fTotalFunction->GetRange(xlow, xhigh);
+   Int_t bin     = fit_hist->FindBin(fTotalFunction->GetParameter(1));
+   if(!ParameterSetByUser(0)) {
+		fTotalFunction->SetParLimits(0, 0, fit_hist->GetMaximum()*2.);
+		fTotalFunction->SetParameter("Height", fit_hist->GetBinContent(bin));
+	}
+	if(!ParameterSetByUser(1)) {
+		fTotalFunction->GetParLimits(1, low, high);
+		fTotalFunction->SetParameter("centroid", fTotalFunction->GetParameter(1));
+	}
+	if(!ParameterSetByUser(2)) {
+		fTotalFunction->GetParLimits(2, low, high);
+		fTotalFunction->SetParLimits(2, 0.01, 10.); // sigma should be less than the window width - JKS
+		//  fTotalFunction->SetParameter("sigma", TMath::Sqrt(9.0 + 2. * fTotalFunction->GetParameter("centroid") / 1000.) / 2.35);
+		fTotalFunction->SetParameter("sigma", TMath::Sqrt(5 + 1.33 * fTotalFunction->GetParameter("centroid") / 1000. +  0.9*TMath::Power(fTotalFunction->GetParameter("centroid")/1000.,2)) / 2.35);
+	}
+	if(!ParameterSetByUser(3)) {
+		fTotalFunction->SetParLimits(3, 0.000001, 10);
+		fTotalFunction->SetParameter("beta", fTotalFunction->GetParameter("sigma") / 2.0);
+		fTotalFunction->FixParameter(3, fTotalFunction->GetParameter("beta"));
+	}
+	if(!ParameterSetByUser(4)) {
+		fTotalFunction->SetParLimits(4, 0.000001, 100); // this is a percentage. no reason for it to go to 500% - JKS
+		fTotalFunction->SetParameter("R", 0.001);
+		fTotalFunction->FixParameter(4, 0.00);
+	}
+	// Step size is allow to vary to anything. If it goes below 0, the code will fix it to 0
+	if(!ParameterSetByUser(5)) {
+		fTotalFunction->SetParLimits(5, 0.0, 1.0E2);
+		fTotalFunction->SetParameter("step", 0.1);
+	}
 }
 
-Double_t TRWPeak::Centroid() const{
+Double_t TRWPeak::Centroid() const
+{
    return fTotalFunction->GetParameter("centroid");
 }
 
-Double_t TRWPeak::CentroidErr() const{
+Double_t TRWPeak::CentroidErr() const
+{
    return fTotalFunction->GetParError(1);
 }
 
-Double_t TRWPeak::PeakFunction(Double_t *dim, Double_t *par){
-   
+Double_t TRWPeak::PeakFunction(Double_t *dim, Double_t *par)
+{
    Double_t x      = dim[0]; // channel number used for fitting
    Double_t height = par[0]; // height of photopeak
    Double_t c      = par[1]; // Peak Centroid of non skew gaus
@@ -80,8 +96,8 @@ Double_t TRWPeak::PeakFunction(Double_t *dim, Double_t *par){
           (TMath::Erfc(((x - c) / (TMath::Sqrt(2.0) * sigma)) + sigma / (TMath::Sqrt(2.0) * beta)));
 }
 
-Double_t TRWPeak::BackgroundFunction(Double_t *dim, Double_t *par){
-   
+Double_t TRWPeak::BackgroundFunction(Double_t *dim, Double_t *par)
+{
    Double_t x      = dim[0]; // channel number used for fitting
    Double_t height = par[0]; // height of photopeak
    Double_t c      = par[1]; // Peak Centroid of non skew gaus
@@ -94,7 +110,8 @@ Double_t TRWPeak::BackgroundFunction(Double_t *dim, Double_t *par){
 }
 
 
-void TRWPeak::Print(Option_t * opt) const{
+void TRWPeak::Print(Option_t * opt) const
+{
    std::cout << "RadWare-like peak:" << std::endl;
    TSinglePeak::Print(opt);
 }
