@@ -686,14 +686,14 @@ void TChannel::Print(Option_t*) const
    std::cout<<std::setfill(' ');
    std::cout<<"Digitizer: "<<fDigitizerTypeString<<std::endl;
    std::cout<<"TimeOffset: "<<fTimeOffset<<std::endl;
-   std::cout<<"EngCoeff:  ";
+   std::cout<<"ENGCoeff:  ";
    for(float fENGCoefficient : fENGCoefficients.Value()) {
       std::cout<<fENGCoefficient<<"\t";
    }
    std::cout<<std::endl;
    std::cout<<"Integration: "<<fIntegration<<std::endl;
    std::cout<<"ENGChi2:   "<<fENGChi2<<std::endl;
-   std::cout<<"EffCoeff:  ";
+   std::cout<<"EFFCoeff:  ";
    for(double fEFFCoefficient : fEFFCoefficients.Value()) {
       std::cout<<fEFFCoefficient<<"\t";
    }
@@ -776,16 +776,16 @@ std::string TChannel::PrintToString(Option_t*)
    buffer.append(Form("Number:    %d\n", fNumber.Value()));
    buffer.append(Form("Address:   0x%08x\n", fAddress));
    buffer.append(Form("Digitizer: %s\n", fDigitizerTypeString.Value().c_str()));
-   buffer.append("EngCoeff:  ");
+   buffer.append("ENGCoeff:  ");
    for(float fENGCoefficient : fENGCoefficients.Value()) {
-      if(fENGCoefficient<0.001)buffer.append(Form("%e\t", fENGCoefficient));
+      if(std::fabs(fENGCoefficient)<0.001)buffer.append(Form("%e\t", fENGCoefficient));
       else buffer.append(Form("%f\t", fENGCoefficient));
    }
    buffer.append("\n");
 	if(!fCFDCoefficients.Value().empty()) {
-		buffer.append("CfdCoeff:  ");
+		buffer.append("CFDCoeff:  ");
 		for(float fCFDCoefficient : fCFDCoefficients.Value()) {
-			if(fCFDCoefficient<0.001)buffer.append(Form("%e\t", fCFDCoefficient));
+			if(std::fabs(fCFDCoefficient)<0.001)buffer.append(Form("%e\t", fCFDCoefficient));
 			else buffer.append(Form("%f\t", fCFDCoefficient));
 		}
 		buffer.append("\n");
@@ -793,7 +793,7 @@ std::string TChannel::PrintToString(Option_t*)
    buffer.append(Form("Integration: %d\n", fIntegration.Value()));
    buffer.append(Form("TimeOffset: %lld\n", fTimeOffset.Value()));
    buffer.append(Form("ENGChi2:     %f\n", fENGChi2.Value()));
-   buffer.append("EffCoeff:  ");
+   buffer.append("EFFCoeff:  ");
    for(double fEFFCoefficient : fEFFCoefficients.Value()) {
       buffer.append(Form("%f\t", fEFFCoefficient));
    }
@@ -813,13 +813,6 @@ std::string TChannel::PrintToString(Option_t*)
       }
       buffer.append("\n");
    }
-   if(!fCFDCoefficients.Value().empty()) {
-      buffer.append("CFDCoeff:  ");
-      for(double fCFDCoefficient : fCFDCoefficients.Value()) {
-         buffer.append(Form("%f\t", fCFDCoefficient));
-      }
-      buffer.append("\n");
-	}
    buffer.append(Form("FileInt: %d\n", static_cast<int>(fUseCalFileInt.Value())));
    if(UseWaveParam()) {
       buffer.append(Form("RiseTime: %f\n", WaveFormShape.TauRise));

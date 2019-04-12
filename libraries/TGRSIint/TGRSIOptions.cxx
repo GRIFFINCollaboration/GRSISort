@@ -45,7 +45,7 @@ void TGRSIOptions::Clear(Option_t*)
    fExternalRunInfo.clear();
    fMacroFiles.clear();
 
-   fInputCutsFiles.clear();
+   fInputCutFiles.clear();
    fInputValFiles.clear();
    fInputWinFiles.clear();
    fInputRing = "";
@@ -520,7 +520,7 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
 
    case kFileType::PRESETWINDOW: fInputWinFiles.push_back(filename); return true;
 
-   case kFileType::CUTS_FILE: fInputCutsFiles.push_back(filename); return true;
+   case kFileType::CUTS_FILE: fInputCutFiles.push_back(filename); return true;
 
    case kFileType::CONFIG_FILE: return false;
 
