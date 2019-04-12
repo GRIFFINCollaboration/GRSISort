@@ -36,20 +36,13 @@ void TAB3Peak::InitializeParameters(TH1* fit_hist)
    // Fixing has to come after setting
    // Might have to include bin widths eventually
    // The centroid should already be set by this point in the ctor
-   Double_t xlow, xhigh, low, high;
-   fTotalFunction->GetRange(xlow, xhigh);
    Int_t bin     = fit_hist->FindBin(fTotalFunction->GetParameter(1));
 	if(!ParameterSetByUser(0)) {
 		fTotalFunction->SetParLimits(0, 0, fit_hist->GetMaximum()*1.5);
 		fTotalFunction->SetParameter("Height", fit_hist->GetBinContent(bin));
 	}
-	if(!ParameterSetByUser(1)) {
-		fTotalFunction->GetParLimits(1, low, high);
-		fTotalFunction->SetParameter("centroid", fTotalFunction->GetParameter(1));
-	}
 	if(!ParameterSetByUser(2)) {
-		fTotalFunction->GetParLimits(2, low, high);
-		fTotalFunction->SetParLimits(2, 0.1, 8); // sigma should be less than the window width - JKS
+		fTotalFunction->SetParLimits(2, 0.1, 8);
 		fTotalFunction->SetParameter("sigma", TMath::Sqrt(2.25 + 1.33 * fTotalFunction->GetParameter("centroid") / 1000. +0.9*TMath::Power(fTotalFunction->GetParameter("centroid")/1000.,2)) / 2.35);
 	}
 	if(!ParameterSetByUser(3)) {
