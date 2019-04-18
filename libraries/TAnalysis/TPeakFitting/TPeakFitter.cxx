@@ -64,6 +64,12 @@ void TPeakFitter::Fit(TH1* fit_hist,Option_t *opt)
 		return;
 	}
 
+	// store original range
+	int firstBin = fit_hist->GetXaxis()->GetFirst();
+	int lastBin = fit_hist->GetXaxis()->GetLast();
+	// set range to fit range of peak fitter
+	fit_hist->GetXaxis()->SetRangeUser(fRangeLow, fRangeHigh);
+
 	ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2", "Combination");
 	TVirtualFitter::SetMaxIterations(100000);
 	TVirtualFitter::SetPrecision(1e-4);
@@ -85,16 +91,20 @@ void TPeakFitter::Fit(TH1* fit_hist,Option_t *opt)
 	fit_hist->Fit(fTotalFitFunction,Form("RNQO%s",opt));
 	//Now do a final fit with integrated bins
 	TFitResultPtr fit_res = fit_hist->Fit(fTotalFitFunction,Form("SRI%s",opt));
-	fTotalFitFunction->SetFitResult(*fit_res); //Not sure if this is needed
 
-	//Once we do the fit, we want to update all of the Peak parameters.
-	UpdatePeakParameters(fit_res,fit_hist);
+	if(fit_res.Get() != nullptr) {
+		fTotalFitFunction->SetFitResult(*fit_res); //Not sure if this is needed
+
+		//Once we do the fit, we want to update all of the Peak parameters.
+		UpdatePeakParameters(fit_res,fit_hist);
+	}
 	fPeaksToFit.front()->DrawBackground("same");
 
 	std::cout << "****************" <<std::endl;
 	std::cout << "Summary of Fit: " << std::endl;
 	Print();
-
+	// restore old range
+	fit_hist->GetXaxis()->SetRange(firstBin, lastBin);
 }
 
 void TPeakFitter::UpdatePeakParameters(TFitResultPtr fit_res, TH1* fit_hist) {
