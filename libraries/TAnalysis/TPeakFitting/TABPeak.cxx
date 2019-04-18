@@ -45,11 +45,11 @@ void TABPeak::InitializeParameters(TH1* fit_hist)
 	}
 	if(!ParameterSetByUser(3)) {
 		fTotalFunction->SetParLimits(3, 0.000001, 1.0);
-		fTotalFunction->SetParameter("rel_sigma", 2.);
+		fTotalFunction->SetParameter("rel_height", 0.25);
 	}
 	if(!ParameterSetByUser(4)) {
 		fTotalFunction->SetParLimits(4, 1.0, 100); 
-		fTotalFunction->SetParameter("rel_height", 0.25);
+		fTotalFunction->SetParameter("rel_sigma", 2.);
 	}
 	if(!ParameterSetByUser(5)) {
 		// Step size is allow to vary to anything. If it goes below 0, the code will fix it to 0
