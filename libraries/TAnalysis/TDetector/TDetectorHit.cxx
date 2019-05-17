@@ -104,6 +104,15 @@ double TDetectorHit::GetEnergy(Option_t*) const
    return SetEnergy(energy + GetEnergyNonlinearity(energy));
 }
 
+Double_t TDetectorHit::GetEnergyNonlinearity(double energy) const
+{
+	TChannel* channel = GetChannel();
+	if(channel == nullptr) {
+		return 0.;
+	}
+	return -(channel->GetEnergyNonlinearity(energy));
+}
+
 void TDetectorHit::Copy(TObject& rhs) const
 {
    TObject::Copy(rhs);

@@ -131,6 +131,7 @@ public:
    virtual TVector3 GetPosition(Double_t) const { return TVector3(0., 0., 0.); } //!<!
    virtual TVector3 GetPosition() const { return TVector3(0., 0., 0.); }         //!<!
    virtual double GetEnergy(Option_t* opt = "") const;
+	virtual Double_t GetEnergyNonlinearity(double energy) const;
    virtual Long64_t GetTimeStamp(Option_t* = "") const { return fTimeStamp; }
    virtual Long64_t GetTimeStampNs(Option_t* opt = "") const;
    virtual Double_t GetTime(const ETimeFlag& correct_flag = ETimeFlag::kAll,
@@ -157,10 +158,6 @@ public:
    const char*      GetName() const override; //!<!
    virtual UShort_t GetArrayNumber() const { return GetDetector(); } //!<! Simply returns the detector number, overwritten for detectors that have crystals/segments
 	virtual Int_t    GetTimeStampUnit() const; //!<!
-
-   // virtual void GetSegment() const;
-
-   virtual Double_t GetEnergyNonlinearity(double) const { return 0.0; }
 
    // The PPG is only stored in events that come out of the GRIFFIN DAQ
 	EPpgPattern GetPPGStatus() const;
