@@ -42,6 +42,16 @@ else
     GRSISYS=$(cd ${thisgrsi};pwd); export GRSISYS
 fi
 
+if [ -e $GRSISYS/GRSIData ] ; then
+	export GRSIDATA=$GRSISYS/GRSIData
+fi
+if [ -e $GRSISYS/ILLData ] ; then
+	export ILLDATA=$GRSISYS/ILLData
+fi
+if [ -e $GRSISYS/iThembaData ] ; then
+	export ITHEMBADATA=$GRSISYS/iThembaData
+fi
+
 if [ -n "${old_grsisys}" ] ; then
    if [ -n "${PATH}" ]; then
       drop_from_path "$PATH" ${old_grsisys}/bin
@@ -49,6 +59,18 @@ if [ -n "${old_grsisys}" ] ; then
    fi
    if [ -n "${LD_LIBRARY_PATH}" ]; then
       drop_from_path $LD_LIBRARY_PATH ${old_grsisys}/lib
+      LD_LIBRARY_PATH=$newpath
+		if [ -e ${old_grsisys}/GRSIData ]; then
+			drop_from_path $LD_LIBRARY_PATH ${old_grsisys}/GRSIData/lib
+		fi
+      LD_LIBRARY_PATH=$newpath
+		if [ -e ${old_grsisys}/ILLData ]; then
+			drop_from_path $LD_LIBRARY_PATH ${old_grsisys}/ILLData/lib
+		fi
+      LD_LIBRARY_PATH=$newpath
+		if [ -e ${old_grsisys}/iThembaData ]; then
+			drop_from_path $LD_LIBRARY_PATH ${old_grsisys}/iThembaData/lib
+		fi
       LD_LIBRARY_PATH=$newpath
    fi
    if [ -n "${DYLD_LIBRARY_PATH}" ]; then
@@ -77,10 +99,20 @@ else
 fi
 
 if [ -z "${LD_LIBRARY_PATH}" ]; then
-   LD_LIBRARY_PATH=$GRSISYS/lib; export LD_LIBRARY_PATH       # Linux, ELF HP-UX
+   LD_LIBRARY_PATH=$GRSISYS/lib;
 else
-   LD_LIBRARY_PATH=$GRSISYS/lib:$LD_LIBRARY_PATH; export LD_LIBRARY_PATH
+   LD_LIBRARY_PATH=$GRSISYS/lib:$LD_LIBRARY_PATH;
 fi
+if [ ! -z "${GRSIDATA}" ]; then
+	LD_LIBRARY_PATH=$GRSIDATA/lib:$LD_LIBRARY_PATH;
+fi
+if [ ! -z "${ILLDATA}" ]; then
+	LD_LIBRARY_PATH=$ILLDATA/lib:$LD_LIBRARY_PATH;
+fi
+if [ ! -z "${ITHEMBADATA}" ]; then
+	LD_LIBRARY_PATH=$ITHEMBADATA/lib:$LD_LIBRARY_PATH;
+fi
+export LD_LIBRARY_PATH       # Linux, ELF HP-UX
 
 if [ -z "${DYLD_LIBRARY_PATH}" ]; then
    DYLD_LIBRARY_PATH=$GRSISYS/lib; export DYLD_LIBRARY_PATH   # Mac OS X

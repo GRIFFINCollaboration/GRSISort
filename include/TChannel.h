@@ -38,6 +38,7 @@
 #include "TRandom.h"
 #include "TList.h"
 #include "TTree.h"
+#include "TGraph.h"
 #include "TMnemonic.h"
 #include "TClassRef.h"
 #include "Globals.h"
@@ -102,6 +103,7 @@ private:
    TPriorityValue<std::vector<double> >  fEFFCoefficients;  // Efficiency calibration coeffs (low to high order)
    TPriorityValue<double>                fEFFChi2;          // Chi2 of Efficiency calibration
    TPriorityValue<std::vector<double> >  fCTCoefficients;   // Cross talk coefficients
+	TPriorityValue<TGraph>                fEnergyNonlinearity; // Energy nonlinearity as spline
 
    struct WaveFormShapePar {
       bool   InUse;
@@ -126,6 +128,9 @@ private:
    void SetTIMECoefficients(TPriorityValue<std::vector<double> > tmp) { fTIMECoefficients = tmp; }
    void SetEFFCoefficients(TPriorityValue<std::vector<double> > tmp) { fEFFCoefficients = tmp; }
    void SetCTCoefficients(TPriorityValue<std::vector<double> > tmp) { fCTCoefficients = tmp; }
+	void SetEnergyNonlinearity(TPriorityValue<TGraph> tmp) { fEnergyNonlinearity = tmp; }
+
+	void SetupEnergyNonlinearity(); // sort energy nonlinearity graph and set name/title
 
    static void trim(std::string*, const std::string& trimChars = " \f\n\r\t\v");
 
@@ -187,6 +192,8 @@ public:
    std::vector<double>  GetTIMECoeff() const { return fTIMECoefficients.Value(); }
    std::vector<double>  GetEFFCoeff() const { return fEFFCoefficients.Value(); }
    std::vector<double>  GetCTCoeff() const { return fCTCoefficients.Value(); }
+	TGraph               GetEnergyNonlinearity() const { return fEnergyNonlinearity.Value(); }
+	double               GetEnergyNonlinearity(double en) const;
 
    inline void AddENGCoefficient(Float_t temp) { fENGCoefficients.Address()->push_back(temp); }
    inline void AddCFDCoefficient(double temp) { fCFDCoefficients.Address()->push_back(temp); }
@@ -194,6 +201,7 @@ public:
    inline void AddTIMECoefficient(double temp) { fTIMECoefficients.Address()->push_back(temp); }
    inline void AddEFFCoefficient(double temp) { fEFFCoefficients.Address()->push_back(temp); }
    inline void AddCTCoefficient(double temp) { fCTCoefficients.Address()->push_back(temp); }
+	void AddEnergyNonlinearityPoint(double x, double y) { fEnergyNonlinearity.Address()->SetPoint(fEnergyNonlinearity.Address()->GetN(), x, y); }
 
    inline void SetENGChi2(TPriorityValue<double> tmp) { fENGChi2 = tmp; }
    inline void SetCFDChi2(TPriorityValue<double> tmp) { fCFDChi2 = tmp; }
@@ -251,6 +259,7 @@ public:
    void DestroyTIMECal();
    void DestroyEFFCal();
    void DestroyCTCal();
+	void DestroyEnergyNonlinearity();
 
    static Int_t ReadCalFromCurrentFile(Option_t* opt = "overwrite");
    static Int_t ReadCalFromTree(TTree*, Option_t* opt = "overwrite");

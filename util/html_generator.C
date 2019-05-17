@@ -165,6 +165,7 @@ void html_generator() {
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TAngularCorrelation");
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TCSM");
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TDescant");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TEmma");
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TGenericDetector");
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TGriffin");
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TGRSIDetector");

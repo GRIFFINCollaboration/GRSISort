@@ -94,3 +94,16 @@ void TSinglePeak::Draw(Option_t *opt){
    fPeakOnGlobal->Draw(opt);
 }
 
+bool TSinglePeak::ParameterSetByUser(int par)
+{
+	/// This function checks if a parameter or its limits have been set to a non-zero value.
+	/// In case that the user fixed a parameter to be zero, the limits are non-zero, so this case is covered as well.
+	Double_t lowLimit;
+	Double_t highLimit;
+
+	fTotalFunction->GetParLimits(par, lowLimit, highLimit);
+	double value = fTotalFunction->GetParameter(par);
+
+	// if either one of the three has been set, we return true
+	return (value != 0 || lowLimit != 0 || highLimit != 0);
+}

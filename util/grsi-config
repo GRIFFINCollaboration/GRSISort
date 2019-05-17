@@ -38,10 +38,8 @@ if [ "$?" -ne "0" ]; then
 fi
 
 
-bindir=$GRSISYS/bin
 libdir=$GRSISYS/lib
 incdir=$GRSISYS/include
-utildir=$GRSISYS/etc
 
 # the repitition of '-lTGRSIint -lTFormat' is needed for debian-style OSes like ubuntu (see issue #979)
 grsilibs="-lTDetector -lTGRSIint -lTFormat -lTGRSIint -lTFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction"
@@ -51,7 +49,7 @@ grsimore="-lTRawFile -lTDataParser -lTHistogramming"
 cflags="-std=c++0x -I$incdir"
 
 usage="\
-Usage: grsi-config [--version] [--incdir] [--cflags] [--libs] [--all-libs] [--help]"
+Usage: grsi-config [--version] [--incdir] [--cflags] [--libs] [--all-libs] [--<detector specific library>-libs] [--help]"
 
 if test $# -eq 0; then
   echo "${usage}" 1>&2
@@ -122,6 +120,14 @@ while test $# -gt 0; do
         out=$"$out -L${libdir} $grsilibs $detlibs $grsimore -lXMLParser -lXMLIO -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lPyROOT -lSpectrum -lMathMore "
       fi
       ;;
+	 --*-libs)
+		 lib=${1%-libs}; # remove trailing -libs
+		 lib=${lib#--};  # remove leading  --
+		 # check that the config script exists
+		 if [ -e $GRSISYS/$lib/util/config ] ; then
+			 out="$out `$GRSISYS/$lib/util/config --libs`"
+		 fi
+		 ;;
     --root)
       if test "x$rootout" = "xyes" ; then
         shift
@@ -137,8 +143,9 @@ while test $# -gt 0; do
       echo "  --version       Print the current GRSI Version number."
       echo "  --incdir        Print header path."
       echo "  --cflags        Print compiler flags and header path."
-      echo "  --libs          Print libdir + most used GRSI libraries ."
-      echo "  --all-libs      Print libdir + all GRSI libraries ."
+      echo "  --libs          Print libdir + most used GRSI libraries."
+      echo "  --all-libs      Print libdir + all GRSI libraries."
+		echo "  --<det>-libs    Print libdir for detector specific libraries."
       echo "  --root          Print root-config output need for most grsi compulations."
       echo "  --help          Print what you see here."
       exit 0

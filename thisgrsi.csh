@@ -46,6 +46,16 @@ if ($?thisgrsi) then
 
 setenv GRSISYS "`(cd ${thisgrsi};pwd)`"
 
+if ( -e $GRSISYS/GRSIData ) then
+	setenv GRSIDATA $GRSISYS/GRSIData
+endif
+if ( -e $GRSISYS/ILLData ) then
+	setenv ILLDATA $GRSISYS/ILLData
+endif
+if ( -e $GRSISYS/iThembaData ) then
+	setenv ITHEMBADATA $GRSISYS/iThembaData
+endif
+
 if ($?old_grsisys) then
    setenv PATH `echo $PATH | sed -e "s;:$old_grsisys/bin:;:;g" \
                                  -e "s;:$old_grsisys/bin;;g"   \
@@ -57,6 +67,13 @@ if ($?old_grsisys) then
                                  -e "s;:$old_grsisys/lib;;g"   \
                                  -e "s;$old_grsisys/lib:;;g"   \
                                  -e "s;$old_grsisys/lib;;g"`
+		if ( -e $GRSISYS/GRSIData ) then
+			setenv LD_LIBRARY_PATH `echo $LD_LIBRARY_PATH | \
+											sed -e "s;:$old_grsisys/GRSIData/lib:;:;g" \
+												 -e "s;:$old_grsisys/GRSIData/lib;;g"   \
+												 -e "s;$old_grsisys/GRSIData/lib:;;g"   \
+												 -e "s;$old_grsisys/GRSIData/lib;;g"`
+		endif
    endif
    if ($?DYLD_LIBRARY_PATH) then
       setenv DYLD_LIBRARY_PATH `echo $DYLD_LIBRARY_PATH | \
@@ -64,6 +81,13 @@ if ($?old_grsisys) then
                                  -e "s;:$old_grsisys/lib;;g"   \
                                  -e "s;$old_grsisys/lib:;;g"   \
                                  -e "s;$old_grsisys/lib;;g"`
+		if ( -e $GRSISYS/ILLData ) then
+			setenv LD_LIBRARY_PATH `echo $LD_LIBRARY_PATH | \
+											sed -e "s;:$old_grsisys/ILLData/lib:;:;g" \
+												 -e "s;:$old_grsisys/ILLData/lib;;g"   \
+												 -e "s;$old_grsisys/ILLData/lib:;;g"   \
+												 -e "s;$old_grsisys/ILLData/lib;;g"`
+		endif
    endif
    if ($?MANPATH) then
       setenv MANPATH `echo $MANPATH | \
@@ -71,6 +95,13 @@ if ($?old_grsisys) then
                                  -e "s;:$old_grsisys/man;;g"   \
                                  -e "s;$old_grsisys/man:;;g"   \
                                  -e "s;$old_grsisys/man;;g"`
+		if ( -e $GRSISYS/iThembaData ) then
+			setenv LD_LIBRARY_PATH `echo $LD_LIBRARY_PATH | \
+											sed -e "s;:$old_grsisys/iThembaData/lib:;:;g" \
+												 -e "s;:$old_grsisys/iThembaData/lib;;g"   \
+												 -e "s;$old_grsisys/iThembaData/lib:;;g"   \
+												 -e "s;$old_grsisys/iThembaData/lib;;g"`
+		endif
    endif
 endif
 
@@ -92,6 +123,18 @@ if ($?LD_LIBRARY_PATH) then
    setenv LD_LIBRARY_PATH $GRSISYS/lib:$LD_LIBRARY_PATH      # Linux, ELF HP-UX
 else
    setenv LD_LIBRARY_PATH $GRSISYS/lib
+endif
+
+if ($?GRSIDATA) then
+	setenv LD_LIBRARY_PATH $GRSIDATA/lib:$LD_LIBRARY_PATH
+endif
+
+if ($?ILLDATA) then
+	setenv LD_LIBRARY_PATH $ILLDATA/lib:$LD_LIBRARY_PATH
+endif
+
+if ($?ITHEMBADATA) then
+	setenv LD_LIBRARY_PATH $ITHEMBADATA/lib:$LD_LIBRARY_PATH
 endif
 
 if ($?DYLD_LIBRARY_PATH) then
