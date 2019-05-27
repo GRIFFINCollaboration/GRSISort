@@ -86,7 +86,7 @@ void TSortingDiagnostics::Print(Option_t* opt) const
 	if(!fMissingDetectorClasses.empty()) {
 		std::cout<<"Missing detector classes:"<<std::endl;
 		for(auto it : fMissingDetectorClasses) {
-			std::cout<<it.first<<": "<<it.second<<std::endl;
+			std::cout<<it.first->GetName()<<": "<<it.second<<std::endl;
 		}
 	}
    std::string color;
@@ -112,6 +112,12 @@ void TSortingDiagnostics::Print(Option_t* opt) const
 					<<"Please consider increasing the sort depth with --sort-depth="<<fMaxEntryDiff<<RESET_COLOR
 					<<std::endl;
 	}
+	if(!fHitsRemoved.empty()) {
+		std::cout<<"Removed hits per detector class:"<<std::endl;
+		for(auto it : fHitsRemoved) {
+			std::cout<<it.first->GetName()<<": "<<it.second.first<<"/"<<it.second.second<<" = "<<(100.*it.second.first)/it.second.second<<"%"<<std::endl;
+		}
+	}
 }
 
 void TSortingDiagnostics::Draw(Option_t*)
@@ -127,3 +133,14 @@ void TSortingDiagnostics::WriteToFile(const char* fileName) const
            <<"Maximum entry difference = "<<fMaxEntryDiff<<std::endl
            <<std::endl;
 }
+
+void TSortingDiagnostics::RemovedHits(TClass* detClass, long removed, long total)
+{
+	if(fHitsRemoved.find(detClass) == fHitsRemoved.end()) {
+		fHitsRemoved[detClass] = std::make_pair(removed, total);
+	} else {
+		fHitsRemoved[detClass].first += removed;
+		fHitsRemoved[detClass].second += total;
+	}
+}
+

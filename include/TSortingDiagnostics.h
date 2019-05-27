@@ -45,6 +45,8 @@ private:
    long                fMaxEntryDiff{0};
 	std::map<TClass*, long> fMissingDetectorClasses; ///< counts of missing detector classes
 
+	std::map<TClass*, std::pair<long, long> > fHitsRemoved; ///< removed hits and total hits per detector class
+
 public:
    //"setter" functions
    void OutOfTimeOrder(double newFragTime, double oldFragTime, long newEntry);
@@ -52,6 +54,7 @@ public:
    void AddTime(double val)      { fPreviousTimes.push_back(val); }
    void AddTimeStamp(Long_t val) { fPreviousTimeStamps.push_back(val); }
 	void AddDetectorClass(TChannel*);
+	void RemovedHits(TClass* detClass, long removed, long total);
 
    // getter functions
    size_t NumberOfFragmentsOutOfOrder() const { return fFragmentsOutOfOrder.size(); }
