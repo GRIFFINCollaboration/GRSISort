@@ -90,6 +90,21 @@ void TSortingDiagnostics::Print(Option_t* opt) const
 		}
 	}
    std::string color;
+	if(!fHitsRemoved.empty()) {
+		if(option.EqualTo("ERROR")) {
+			color = DRED;
+		}
+		std::cout<<color<<"Removed hits per detector class:"<<RESET_COLOR<<std::endl;
+		for(auto it : fHitsRemoved) {
+			std::cout<<it.first->GetName()<<": "<<it.second.first<<"/"<<it.second.second<<" = "<<(100.*it.second.first)/it.second.second<<"%"<<std::endl;
+		}
+	} else {
+      if(option.EqualTo("ERROR")) {
+         color = DGREEN;
+      }
+		std::cout<<color<<"No hits were removed!"<<RESET_COLOR<<std::endl;
+	}
+	color = ""; // reset color string
    if(fFragmentsOutOfOrder.empty() && fFragmentsOutOfTimeOrder.empty()) {
       if(option.EqualTo("ERROR")) {
          color = DGREEN;
@@ -111,12 +126,6 @@ void TSortingDiagnostics::Print(Option_t* opt) const
 					<<fMaxEntryDiff<<"!"<<std::endl
 					<<"Please consider increasing the sort depth with --sort-depth="<<fMaxEntryDiff<<RESET_COLOR
 					<<std::endl;
-	}
-	if(!fHitsRemoved.empty()) {
-		std::cout<<"Removed hits per detector class:"<<std::endl;
-		for(auto it : fHitsRemoved) {
-			std::cout<<it.first->GetName()<<": "<<it.second.first<<"/"<<it.second.second<<" = "<<(100.*it.second.first)/it.second.second<<"%"<<std::endl;
-		}
 	}
 }
 
