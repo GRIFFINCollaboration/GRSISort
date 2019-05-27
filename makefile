@@ -130,10 +130,8 @@ endif
 
 all: include/GVersion.h grsirc $(EXECUTABLES) $(LIBRARY_OUTPUT) lib/libGRSI.so config $(HISTOGRAM_SO) $(FILTER_SO)
 	@$(FIND) .build users -name "*.pcm" -exec cp {} lib/ \;
-ifneq ("$(wildcard *.pcm)","")
-	@mv -f *.pcm lib/
-endif
 	@$(FIND) .build users -name "*.rootmap" -exec cp {} lib/ \;
+	@$(FIND) . -maxdepth 1 -name "*.pcm" -exec mv {} lib/ \;
 	@printf "$(OK_COLOR)Compilation successful, $(WARN_COLOR)woohoo!$(NO_COLOR)\n"
 
 docs: doxygen
