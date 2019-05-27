@@ -86,10 +86,25 @@ void TSortingDiagnostics::Print(Option_t* opt) const
 	if(!fMissingDetectorClasses.empty()) {
 		std::cout<<"Missing detector classes:"<<std::endl;
 		for(auto it : fMissingDetectorClasses) {
-			std::cout<<it.first<<": "<<it.second<<std::endl;
+			std::cout<<it.first->GetName()<<": "<<it.second<<std::endl;
 		}
 	}
    std::string color;
+	if(!fHitsRemoved.empty()) {
+		if(option.EqualTo("ERROR")) {
+			color = DRED;
+		}
+		std::cout<<color<<"Removed hits per detector class:"<<RESET_COLOR<<std::endl;
+		for(auto it : fHitsRemoved) {
+			std::cout<<it.first->GetName()<<": "<<it.second.first<<"/"<<it.second.second<<" = "<<(100.*it.second.first)/it.second.second<<"%"<<std::endl;
+		}
+	} else {
+      if(option.EqualTo("ERROR")) {
+         color = DGREEN;
+      }
+		std::cout<<color<<"No hits were removed!"<<RESET_COLOR<<std::endl;
+	}
+	color = ""; // reset color string
    if(fFragmentsOutOfOrder.empty() && fFragmentsOutOfTimeOrder.empty()) {
       if(option.EqualTo("ERROR")) {
          color = DGREEN;
@@ -127,3 +142,14 @@ void TSortingDiagnostics::WriteToFile(const char* fileName) const
            <<"Maximum entry difference = "<<fMaxEntryDiff<<std::endl
            <<std::endl;
 }
+
+void TSortingDiagnostics::RemovedHits(TClass* detClass, long removed, long total)
+{
+	if(fHitsRemoved.find(detClass) == fHitsRemoved.end()) {
+		fHitsRemoved[detClass] = std::make_pair(removed, total);
+	} else {
+		fHitsRemoved[detClass].first += removed;
+		fHitsRemoved[detClass].second += total;
+	}
+}
+
