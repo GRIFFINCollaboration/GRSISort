@@ -22,16 +22,22 @@ void TParserLibrary::Load() {
 		return;
 	}
 
+	if(TGRSIOptions::Get()->ParserLibrary().empty()) {
+		std::ostringstream str;
+		str<<DRED<<"No data parser library provided! Please provided the location of the parser library via .grsirc file or on the command line."<<RESET_COLOR;
+		throw std::runtime_error(str.str());
+	}
+
 	if(!file_exists(TGRSIOptions::Get()->ParserLibrary().c_str())) {
 		std::ostringstream str;
-		str<<"Library '"<<TGRSIOptions::Get()->ParserLibrary()<<"' does not exist or we do not have permissions to access it!";
+		str<<DRED<<"Library '"<<TGRSIOptions::Get()->ParserLibrary()<<"' does not exist or we do not have permissions to access it!"<<RESET_COLOR;
 		throw std::runtime_error(str.str());
 	}
 
 	fHandle = dlopen(TGRSIOptions::Get()->ParserLibrary().c_str(), RTLD_LAZY);
 	if(fHandle == nullptr) {
 		std::ostringstream str;
-		str<<"Failed to open raw file library '"<<TGRSIOptions::Get()->ParserLibrary()<<"': "<<dlerror()<<"!";
+		str<<DRED<<"Failed to open raw file library '"<<TGRSIOptions::Get()->ParserLibrary()<<"': "<<dlerror()<<"!"<<RESET_COLOR;
 		std::cout<<"dlerror: '"<<dlerror()<<"'"<<std::endl;
 		throw std::runtime_error(str.str());
 	}
@@ -47,7 +53,7 @@ void TParserLibrary::Load() {
 
 	if(fInitLibrary == nullptr || fLibraryVersion == nullptr || fCreateRawFile == nullptr || fDestroyRawFile == nullptr || fCreateDataParser == nullptr || fDestroyDataParser == nullptr) {
 		std::ostringstream str;
-		str<<"Failed to find CreateFile, DestroyFile, CreateParser, DestroyParser, LibraryVersion, and/or InitLibrary functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!";
+		str<<DRED<<"Failed to find CreateFile, DestroyFile, CreateParser, DestroyParser, LibraryVersion, and/or InitLibrary functions in library '"<<TGRSIOptions::Get()->ParserLibrary()<<"'!"<<RESET_COLOR;
 		throw std::runtime_error(str.str());
 	}
 	fInitLibrary();
