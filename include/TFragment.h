@@ -32,6 +32,8 @@ public:
    TFragment(const TFragment&);
    ~TFragment() override;
 
+	TFragment& operator=(const TFragment&) = default; // use default assignment operator (to shut up gcc 9.1)
+
    //////////////////// basic setter functions ////////////////////
 
    void SetAcceptedChannelId(UShort_t value) { fAcceptedChannelId = value; }

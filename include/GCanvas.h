@@ -95,10 +95,10 @@ public:
 
 // void ProcessEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
 // void CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Woverloaded-virtual"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Woverloaded-virtual"
    void HandleInput(int event, Int_t x, Int_t y);
-#pragma clang diagnostic pop
+#pragma GCC diagnostic pop
    void Draw(Option_t* opt = "") override;
 
    static GCanvas* MakeDefCanvas();
