@@ -90,7 +90,7 @@ Int_t TCompiledHistograms::Write(const char*, Int_t, Int_t)
    while((obj = next()) != nullptr) {
       if(obj->InheritsFrom(TDirectory::Class())) {
          //WATCH OUT: THIS DOESN'T SEEM THREAD-SAFE DUE TO gDIRECTORY BEING USED.
-			TPreserveGDirectory preserve;
+         TPreserveGDirectory preserve;
          TDirectory*         dir = static_cast<TDirectory*>(obj);
          gDirectory->mkdir(dir->GetName())->cd();
          TIter    dir_next(dir->GetList());
