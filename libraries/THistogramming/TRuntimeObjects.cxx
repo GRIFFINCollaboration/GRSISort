@@ -115,7 +115,7 @@ TDirectory* TRuntimeObjects::FillProfileHist(const char* dirname, const char* na
 {
 
    TDirectory *dir = FindDirectory(dirname);
-   TProfile* prof = dynamic_cast<TProfile*>(dir->FindObject(name));
+   TProfile* prof = static_cast<TProfile*>(dir->FindObject(name));
    if(prof == nullptr) {
       prof = new TProfile(name, name, Xbins, Xlow, Xhigh);
       prof->SetDirectory(dir);
@@ -135,7 +135,7 @@ TDirectory* TRuntimeObjects::FillHistogramSym(const char* dirname, const char* n
                                               double Yvalue)
 {
    TDirectory *dir = FindDirectory(dirname);
-   TH2* hist = dynamic_cast<TH2*>(dir->FindObject(name));
+   TH2* hist = static_cast<TH2*>(dir->FindObject(name));
    if(hist == nullptr) {
       hist = new TH2D(name, name, Xbins, Xlow, Xhigh, Ybins, Ylow, Yhigh);
       hist->SetDirectory(dir);
@@ -166,7 +166,7 @@ TCutG* TRuntimeObjects::GetCut(const std::string& name)
    for(auto& tfile : fCut_files) {
       TObject* obj = tfile->Get(name.c_str());
       if(obj != nullptr) {
-         TCutG* cut = dynamic_cast<TCutG*>(obj);
+         TCutG* cut = static_cast<TCutG*>(obj);
          if(cut != nullptr) {
             return cut;
          }
