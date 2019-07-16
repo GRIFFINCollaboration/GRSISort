@@ -32,7 +32,7 @@
 #include <string>
 #include <cmath>
 #include <utility>
-#include <map>
+#include <unordered_map>
 
 #include "TNamed.h"
 #include "TRandom.h"
@@ -62,8 +62,8 @@ public:
    static void AddChannel(TChannel*, Option_t* opt = "");
    static int UpdateChannel(TChannel*, Option_t* opt = "");
 
-   static std::map<unsigned int, TChannel*>* GetChannelMap() { return fChannelMap; }
-   static std::map<unsigned int, int>* GetMissingChannelMap() { return fMissingChannelMap; }
+   static std::unordered_map<unsigned int, TChannel*>* GetChannelMap() { return fChannelMap; }
+   static std::unordered_map<unsigned int, int>* GetMissingChannelMap() { return fMissingChannelMap; }
    static void DeleteAllChannels();
 
    static bool CompareChannels(const TChannel&, const TChannel&);
@@ -114,9 +114,9 @@ private:
 
    WaveFormShapePar WaveFormShape;
 
-   static std::map<unsigned int, TChannel*>* fChannelMap;       // A map to all of the channels based on address
-   static std::map<unsigned int, int>* fMissingChannelMap;      // A map to all of the missing channels based on address
-   static std::map<int, TChannel*>*          fChannelNumberMap; // A map of TChannels based on channel number
+   static std::unordered_map<unsigned int, TChannel*>* fChannelMap;       // A map to all of the channels based on address
+   static std::unordered_map<unsigned int, int>* fMissingChannelMap;      // A map to all of the missing channels based on address
+   static std::unordered_map<int, TChannel*>*          fChannelNumberMap; // A map of TChannels based on channel number
    static void UpdateChannelNumberMap();
    static void UpdateChannelMap();
    void        OverWriteChannel(TChannel*);
