@@ -19,7 +19,7 @@
 #include <iomanip>
 #include <string>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #ifndef __CINT__
 #include <memory>
@@ -42,19 +42,19 @@ public:
 
 private:
    // fragment tree diagnostics (should these all be static?)
-	// detector type maps
-   std::map<Short_t, Long_t> fNumberOfGoodFragments; ///< map of number of good fragments per detector type
-   std::map<Short_t, Long_t> fNumberOfBadFragments;  ///< map of number of bad fragments per detector type
+	// detector type unordered_maps
+   std::unordered_map<Short_t, Long_t> fNumberOfGoodFragments; ///< unordered_map of number of good fragments per detector type
+   std::unordered_map<Short_t, Long_t> fNumberOfBadFragments;  ///< unordered_map of number of bad fragments per detector type
 
-	// channel address maps
-   std::map<UInt_t, UInt_t> fMinChannelId; ///< map of minimum channel id per channel address
-   std::map<UInt_t, UInt_t> fMaxChannelId; ///< map of maximum channel id per channel address
+	// channel address unordered_maps
+   std::unordered_map<UInt_t, UInt_t> fMinChannelId; ///< unordered_map of minimum channel id per channel address
+   std::unordered_map<UInt_t, UInt_t> fMaxChannelId; ///< unordered_map of maximum channel id per channel address
 
-   std::map<UInt_t, Long_t> fNumberOfHits; ///< map of number of hits per channel address
+   std::unordered_map<UInt_t, Long_t> fNumberOfHits; ///< unordered_map of number of hits per channel address
 
-   std::map<UInt_t, long> fDeadTime;     ///< map of deadtime per channel address
-   std::map<UInt_t, long> fMinTimeStamp; ///< map of minimum timestamp per channel address
-   std::map<UInt_t, long> fMaxTimeStamp; ///< map of maximum timestamp per channel address
+   std::unordered_map<UInt_t, long> fDeadTime;     ///< unordered_map of deadtime per channel address
+   std::unordered_map<UInt_t, long> fMinTimeStamp; ///< unordered_map of minimum timestamp per channel address
+   std::unordered_map<UInt_t, long> fMaxTimeStamp; ///< unordered_map of maximum timestamp per channel address
 
    time_t fMinDaqTimeStamp; ///< minimum daq timestamp
    time_t fMaxDaqTimeStamp; ///< maximum daq timestamp

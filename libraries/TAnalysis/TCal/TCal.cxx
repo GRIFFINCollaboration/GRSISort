@@ -72,8 +72,8 @@ Bool_t TCal::SetChannel(const TChannel* chan)
 void TCal::WriteToAllChannels(const std::string& mnemonic)
 {
    /// Writes this calibration to all channels in the current TChannel Map
-   std::map<unsigned int, TChannel*>::iterator mapIt;
-   std::map<unsigned int, TChannel*>*          chanMap = TChannel::GetChannelMap();
+   std::unordered_map<unsigned int, TChannel*>::iterator mapIt;
+   std::unordered_map<unsigned int, TChannel*>* chanMap = TChannel::GetChannelMap();
    TChannel* origChan = GetChannel();
    for(mapIt = chanMap->begin(); mapIt != chanMap->end(); mapIt++) {
       if(mnemonic.empty() || (strncmp(mapIt->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
