@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <fcntl.h>
 #include <unistd.h>
+#include<unordered_map>
 
 #include <vector>
 #include <sstream>
@@ -25,13 +26,16 @@
  *
  */
 
+
+//NOTE: The fChannelMap is unordered. The easiest way to order it is using std::map<int, int> ordered(unordered.begin(), unordered.end());
+
 /// \cond CLASSIMP
 ClassImp(TChannel)
 /// \endcond
 
-std::map<unsigned int, TChannel*>* TChannel::fChannelMap = new std::map<unsigned int, TChannel*>; // global maps of channels
-std::map<unsigned int, int>* TChannel::fMissingChannelMap = new std::map<unsigned int, int>; // global map of missing channels
-std::map<int, TChannel*>* TChannel::fChannelNumberMap = new std::map<int, TChannel*>;
+std::unordered_map<unsigned int, TChannel*>* TChannel::fChannelMap = new std::unordered_map<unsigned int, TChannel*>; // global maps of channels
+std::unordered_map<unsigned int, int>* TChannel::fMissingChannelMap = new std::unordered_map<unsigned int, int>; // global map of missing channels
+std::unordered_map<int, TChannel*>* TChannel::fChannelNumberMap = new std::unordered_map<int, TChannel*>;
 
 //TClass* TChannel::fMnemonicClass = TMnemonic::Class();
 TClassRef TChannel::fMnemonicClass = TClassRef("TMnemonic");
@@ -625,8 +629,8 @@ void TChannel::SetUseCalFileIntegration(const std::string& mnemonic, bool flag, 
    /// Writes this UseCalFileIntegration to all channels in the current TChannel Map
    /// that starts with the mnemonic. Use "" to write to ALL channels
    /// WARNING: This is case sensitive!
-   std::map<unsigned int, TChannel*>::iterator mapit;
-   std::map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
+   std::unordered_map<unsigned int, TChannel*>::iterator mapit;
+   std::unordered_map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
    for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++) {
       if(mnemonic.empty() || (strncmp(mapit->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
          mapit->second->SetUseCalFileIntegration(TPriorityValue<bool>(flag, pr));
@@ -639,8 +643,8 @@ void TChannel::SetIntegration(const std::string& mnemonic, int tmpint, EPriority
    // Writes this integration to all channels in the current TChannel Map
    // that starts with the mnemonic. Use "" to write to ALL channels
    // WARNING: This is case sensitive!
-   std::map<unsigned int, TChannel*>::iterator mapit;
-   std::map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
+   std::unordered_map<unsigned int, TChannel*>::iterator mapit;
+   std::unordered_map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
    for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++) {
       if(mnemonic.empty() || (strncmp(mapit->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
          mapit->second->SetIntegration(TPriorityValue<int>(tmpint, pr));
@@ -653,8 +657,8 @@ void TChannel::SetDigitizerType(const std::string& mnemonic, const char* tmpstr,
    // Writes this digitizer type to all channels in the current TChannel Map
    // that starts with the mnemonic. Use "" to write to ALL channels
    // WARNING: This is case sensitive!
-   std::map<unsigned int, TChannel*>::iterator mapit;
-   std::map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
+   std::unordered_map<unsigned int, TChannel*>::iterator mapit;
+   std::unordered_map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
    for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++) {
       if(mnemonic.empty() || (strncmp(mapit->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
          mapit->second->SetDigitizerType(TPriorityValue<std::string>(tmpstr, pr));
@@ -861,6 +865,7 @@ void TChannel::WriteCalFile(const std::string& outfilename)
       }
    }
 
+   //This orders channels nicely
    std::sort(chanVec.begin(), chanVec.end(), TChannel::CompareChannels);
 
    if(outfilename.length() > 0) {
@@ -882,7 +887,6 @@ void TChannel::WriteCalFile(const std::string& outfilename)
 
 void TChannel::WriteCTCorrections(const std::string& outfilename)
 {
-
    std::vector<TChannel*> chanVec;
    for(auto iter : *fChannelMap) {
       if(iter.second != nullptr) {
@@ -890,6 +894,7 @@ void TChannel::WriteCTCorrections(const std::string& outfilename)
       }
    }
 
+   //This ordered channels nicely
    std::sort(chanVec.begin(), chanVec.end(), TChannel::CompareChannels);
 
    if(outfilename.length() > 0) {
@@ -922,6 +927,7 @@ void TChannel::WriteCalBuffer(Option_t*)
       }
    }
 
+	//This ordered channels nicely
    std::sort(chanVec.begin(), chanVec.end(), TChannel::CompareChannels);
 
    std::string data;
