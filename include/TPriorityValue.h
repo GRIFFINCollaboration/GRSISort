@@ -72,7 +72,7 @@ public:
 	}
 
 	// getters
-	const T&         Value() const    { return fValue; }
+	const T&  Value() const    { return fValue; }
 	EPriority Priority() const { return fPriority; }
 	T*        Address()        { return &fValue; }
 	const T*  Address() const  { return &fValue; }

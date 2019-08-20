@@ -21,6 +21,7 @@
 #include "GCube.h"
 #include "TAnalysisOptions.h"
 #include "TPPG.h"
+#include "TRunInfo.h"
 #include "TGRSIMap.h"
 
 #include <string>
@@ -67,6 +68,7 @@ protected:
    TGRSIMap<std::string, GCube*>      fCube; //!<!
    TGRSIMap<std::string, THnSparseF*> fHSparse; //!<!
 	TPPG*                              fPpg{nullptr}; //!<!
+	TRunInfo*                          fRunInfo{nullptr}; //!<!
 	std::map<std::string, TCutG*>      fCuts; //!<!
 
 private:
