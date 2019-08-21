@@ -174,18 +174,21 @@ public:
 	void RemoveBadCycle(int cycle);
 	bool IsBadCycle(int cycle) const;
 
+	void PrintRunList();
+
 	static void SetDetectorInformation(TDetectorInformation* inf) { Get()->fDetectorInformation = inf; }
 	static TDetectorInformation* GetDetectorInformation() { return Get()->fDetectorInformation; }
 
 private:
 	std::string fRunTitle;     ///< The title of the run
 	std::string fRunComment;   ///< The comment on the run
-	int         fRunNumber;    // The current run number
-	int         fSubRunNumber; // The current sub run number
-	int         fFirstRunNumber{0};    // The first run number (for combined runs)
-	int         fFirstSubRunNumber{-1}; // The first sub run number (for combined subruns)
-	int         fLastRunNumber{0};    // The last run number (for combined runs)
-	int         fLastSubRunNumber{-1}; // The last sub run number (for combined subruns)
+	int         fRunNumber;    ///< The current run number
+	int         fSubRunNumber; ///< The current sub run number
+	int         fFirstRunNumber{0};     ///< The first run number (for combined runs)
+	int         fFirstSubRunNumber{-1}; ///< The first sub run number (for combined subruns)
+	int         fLastRunNumber{0};      ///< The last run number (for combined runs)
+	int         fLastSubRunNumber{-1};  ///< The last sub run number (for combined subruns)
+	std::vector<std::pair<int, int> > fRunList; ///< List of all runs added to this run info
 
 	double fRunStart{0.};  // The start  of the current run in seconds
 	double fRunStop{0.};   // The stop   of the current run in seconds

@@ -408,6 +408,19 @@ TEventBuildingLoop::EBuildMode TRunInfo::BuildMode() const
 
 void TRunInfo::Add(TRunInfo* runinfo)
 {
+	// add new run to list of runs (and check if the current run needs to be added)
+	if(fRunList.empty()) {
+		std::pair<int, int> currentPair = std::make_pair(fRunNumber, fSubRunNumber);
+		fRunList.push_back(currentPair);
+	}
+	std::pair<int, int> newPair = std::make_pair(runinfo->fRunNumber, runinfo->fSubRunNumber);
+	// check for dual entries
+	if(std::find(fRunList.begin(), fRunList.end(), newPair) != fRunList.end()) {
+		std::cerr<<DYELLOW<<"Warning, adding run "<<std::setfill('0')<<std::setw(5)<<newPair.first<<"_"<<std::setw(3)<<newPair.second<<std::setfill(' ')<<" again!"<<RESET_COLOR<<std::endl;
+		return;
+	}
+	fRunList.push_back(newPair);
+
 	//std::cout<<"adding run "<<runinfo->fRunNumber<<", sub run "<<runinfo->fSubRunNumber<<" to run "<<fRunNumber<<", sub run "<<fSubRunNumber<<std::endl;
 	// add the run length together
 	if(runinfo->fRunLength > 0) {
@@ -525,4 +538,15 @@ void TRunInfo::Add(TRunInfo* runinfo)
 	}
 }
 
-
+void TRunInfo::PrintRunList()
+{
+	if(fRunList.empty()) {
+		std::cout<<"No runs added to list of runs!"<<std::endl;
+		return;
+	}
+	std::sort(fRunList.begin(), fRunList.end());
+	std::cout<<"Got "<<fRunList.size()<<" runs:"<<std::endl;
+	for(auto pair : fRunList) {
+		std::cout<<std::setw(5)<<std::setfill('0')<<pair.first<<"_"<<std::setw(3)<<pair.second<<std::setfill(' ')<<std::endl;
+	}
+}
