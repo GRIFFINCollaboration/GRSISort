@@ -687,7 +687,7 @@ void GCube::FillRandom(TH1* h, Int_t ntimes)
    }
 }
 
-Int_t GCube::FindFirstBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, Int_t lastBin) const
+Int_t GCube::FindFirstBinAbove(Double_t threshold, Int_t axis) const
 {
    /// find first bin with content > threshold for axis (1=x, 2=y, 3=z)
    /// if no bins with content > threshold is found the function returns -1.
@@ -697,15 +697,12 @@ Int_t GCube::FindFirstBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, I
       axis = 1;
    }
    Int_t nbinsx = fXaxis.GetNbins();
-	if(lastBin > firstBin && lastBin < nbinsx) nbinsx = lastBin;
    Int_t nbinsy = fYaxis.GetNbins();
-	if(lastBin > firstBin && lastBin < nbinsy) nbinsy = lastBin;
    Int_t nbinsz = fZaxis.GetNbins();
-	if(lastBin > firstBin && lastBin < nbinsz) nbinsz = lastBin;
    if(axis == 1) {
-      for(Int_t binx = firstBin; binx <= nbinsx; ++binx) {
-         for(Int_t biny = firstBin; biny <= nbinsy; ++biny) {
-            for(Int_t binz = firstBin; binz <= nbinsz; ++binz) {
+      for(Int_t binx = 1; binx <= nbinsx; ++binx) {
+         for(Int_t biny = 1; biny <= nbinsy; ++biny) {
+            for(Int_t binz = 1; binz <= nbinsz; ++binz) {
                if(GetBinContent(binx, biny, binz) > threshold) {
                   return binx;
                }
@@ -713,9 +710,9 @@ Int_t GCube::FindFirstBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, I
          }
       }
    } else if(axis == 2) {
-      for(Int_t biny = firstBin; biny <= nbinsy; ++biny) {
-         for(Int_t binx = firstBin; binx <= nbinsx; ++binx) {
-            for(Int_t binz = firstBin; binz <= nbinsz; ++binz) {
+      for(Int_t biny = 1; biny <= nbinsy; ++biny) {
+         for(Int_t binx = 1; binx <= nbinsx; ++binx) {
+            for(Int_t binz = 1; binz <= nbinsz; ++binz) {
                if(GetBinContent(binx, biny, binz) > threshold) {
                   return biny;
                }
@@ -723,9 +720,9 @@ Int_t GCube::FindFirstBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, I
          }
       }
    } else {
-      for(Int_t binz = firstBin; binz <= nbinsz; ++binz) {
-         for(Int_t binx = firstBin; binx <= nbinsx; ++binx) {
-            for(Int_t biny = firstBin; biny <= nbinsy; ++biny) {
+      for(Int_t binz = 1; binz <= nbinsz; ++binz) {
+         for(Int_t binx = 1; binx <= nbinsx; ++binx) {
+            for(Int_t biny = 1; biny <= nbinsy; ++biny) {
                if(GetBinContent(binx, biny, binz) > threshold) {
                   return binz;
                }
@@ -736,7 +733,7 @@ Int_t GCube::FindFirstBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, I
    return -1;
 }
 
-Int_t GCube::FindLastBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, Int_t lastBin) const
+Int_t GCube::FindLastBinAbove(Double_t threshold, Int_t axis) const
 {
    // find last bin with content > threshold for axis (1=x, 2=y, 3=z)
    // if no bins with content > threshold is found the function returns -1.
@@ -746,15 +743,12 @@ Int_t GCube::FindLastBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, In
       axis = 1;
    }
    Int_t nbinsx = fXaxis.GetNbins();
-	if(lastBin > firstBin && lastBin < nbinsx) nbinsx = lastBin;
    Int_t nbinsy = fYaxis.GetNbins();
-	if(lastBin > firstBin && lastBin < nbinsy) nbinsy = lastBin;
    Int_t nbinsz = fZaxis.GetNbins();
-	if(lastBin > firstBin && lastBin < nbinsz) nbinsz = lastBin;
    if(axis == 1) {
-      for(Int_t binx = nbinsx; binx >= firstBin; --binx) {
-         for(Int_t biny = firstBin; biny <= nbinsy; ++biny) {
-            for(Int_t binz = firstBin; binz <= nbinsz; ++binz) {
+      for(Int_t binx = nbinsx; binx >= 1; --binx) {
+         for(Int_t biny = 1; biny <= nbinsy; ++biny) {
+            for(Int_t binz = 1; binz <= nbinsz; ++binz) {
                if(GetBinContent(binx, biny, binz) > threshold) {
                   return binx;
                }
@@ -762,9 +756,9 @@ Int_t GCube::FindLastBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, In
          }
       }
    } else if(axis == 2) {
-      for(Int_t biny = nbinsy; biny >= firstBin; --biny) {
-         for(Int_t binx = firstBin; binx <= nbinsx; ++binx) {
-            for(Int_t binz = firstBin; binz <= nbinsz; ++binz) {
+      for(Int_t biny = nbinsy; biny >= 1; --biny) {
+         for(Int_t binx = 1; binx <= nbinsx; ++binx) {
+            for(Int_t binz = 1; binz <= nbinsz; ++binz) {
                if(GetBinContent(binx, biny, binz) > threshold) {
                   return biny;
                }
@@ -772,9 +766,9 @@ Int_t GCube::FindLastBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, In
          }
       }
    } else {
-      for(Int_t binz = nbinsz; binz >= firstBin; --binz) {
-         for(Int_t binx = firstBin; binx <= nbinsx; ++binx) {
-            for(Int_t biny = firstBin; biny <= nbinsy; ++biny) {
+      for(Int_t binz = nbinsz; binz >= 1; --binz) {
+         for(Int_t binx = 1; binx <= nbinsx; ++binx) {
+            for(Int_t biny = 1; biny <= nbinsy; ++biny) {
                if(GetBinContent(binx, biny, binz) > threshold) {
                   return binz;
                }

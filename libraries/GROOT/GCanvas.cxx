@@ -1387,7 +1387,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 				cut->Write();
 			}
 			f.Close();
-			delete[] fileName;
+			delete fileName;
 			oldDir->cd();
 		}
 		break;

@@ -170,12 +170,7 @@ void TParsingDiagnostics::ReadPPG(TPPG* ppg)
 void TParsingDiagnostics::Draw(Option_t* opt)
 {
    UInt_t minChannel = fNumberOfHits.begin()->first;
-   UInt_t maxChannel = fNumberOfHits.begin()->first;
-
-	for(auto it : fNumberOfHits) {
-		if(it.first < minChannel) minChannel = it.first;
-		if(it.first > maxChannel) maxChannel = it.first;
-	}
+   UInt_t maxChannel = std::prev(fNumberOfHits.end())->first;
 
    // check that the histogram (if it already exists) has the right number of bins
    if(fIdHist != nullptr && fIdHist->GetNbinsX() != static_cast<Int_t>(maxChannel - minChannel + 1)) {
