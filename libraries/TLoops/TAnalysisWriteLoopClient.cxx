@@ -50,6 +50,7 @@ bool TAnalysisWriteLoopClient::Iteration()
    fInputSize = fInputQueue->Pop(event);
    if(fInputSize < 0) {
       fInputSize = 0;
+   	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
    }
    ++fItemsPopped;
 
@@ -73,7 +74,6 @@ bool TAnalysisWriteLoopClient::Iteration()
 		//fEventTree->GetUserInfo()->Add(TChannel::GetMnemonicClass());
       return false;
    }
-   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
    return true;
 }
 
@@ -178,11 +178,12 @@ void TAnalysisWriteLoopClient::WriteEvent(std::shared_ptr<TUnpackedEvent>& event
 		}
 
 		// Fill
-		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
+	//	std::lock_guard<std::mutex> lock(ttree_fill_mutex);
 		fEventTree->Fill();
 
 		// write file every 100000 popped events (this sends the events to the server)
 		if(fItemsPopped%100000 == 0) {
+			std::lock_guard<std::mutex> lock(ttree_fill_mutex);
 			fOutputFile->Write();
 		}
 	}

@@ -19,7 +19,7 @@
 #include <iomanip>
 #include <string>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #include "TObject.h"
 #include "TH1F.h"
@@ -38,14 +38,14 @@ public:
 
 private:
    // analysis tree diagnostics 
-   std::map<long, std::pair<long, long>> fFragmentsOutOfOrder;
-   std::map<double, std::pair<double, double>> fFragmentsOutOfTimeOrder;
+   std::unordered_map<long, std::pair<long, long>> fFragmentsOutOfOrder;
+   std::unordered_map<double, std::pair<double, double>> fFragmentsOutOfTimeOrder;
    std::vector<Long_t> fPreviousTimeStamps; ///< timestamps of previous fragments, saved every 'BuildWindow' entries
    std::vector<double> fPreviousTimes;      ///< times of previous fragments, saved every 'BuildWindow' entries
    long                fMaxEntryDiff{0};
-	std::map<TClass*, long> fMissingDetectorClasses; ///< counts of missing detector classes
+	std::unordered_map<TClass*, long> fMissingDetectorClasses; ///< counts of missing detector classes
 
-	std::map<TClass*, std::pair<long, long> > fHitsRemoved; ///< removed hits and total hits per detector class
+	std::unordered_map<TClass*, std::pair<long, long> > fHitsRemoved; ///< removed hits and total hits per detector class
 
 public:
    //"setter" functions
@@ -58,9 +58,9 @@ public:
 
    // getter functions
    size_t NumberOfFragmentsOutOfOrder() const { return fFragmentsOutOfOrder.size(); }
-   std::map<long, std::pair<long, long>> FragmentsOutOfOrder() { return fFragmentsOutOfOrder; }
+   std::unordered_map<long, std::pair<long, long>> FragmentsOutOfOrder() { return fFragmentsOutOfOrder; }
    size_t NumberOfFragmentsOutOfTimeOrder() const { return fFragmentsOutOfTimeOrder.size(); }
-   std::map<double, std::pair<double, double>> FragmentsOutOfTimeOrder() { return fFragmentsOutOfTimeOrder; }
+   std::unordered_map<double, std::pair<double, double>> FragmentsOutOfTimeOrder() { return fFragmentsOutOfTimeOrder; }
    long MaxEntryDiff() const { return fMaxEntryDiff; }
 
    // other functions
