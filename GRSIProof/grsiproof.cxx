@@ -199,7 +199,7 @@ int main(int argc, char** argv)
    std::cout<<DCYAN<<"************************* MACRO COMPILATION ****************************"<<RESET_COLOR
             <<std::endl;
    for(const auto& i : gGRSIOpt->MacroInputFiles()) {
-      Int_t error_code = gSystem->CompileMacro(i.c_str(), "kO"); // k - keep shared library after session ends, O - optimize the code
+      Int_t error_code = gSystem->CompileMacro(i.c_str(), "kOvd"); // k - keep shared library after session ends, O - optimize the code
       if(error_code == 0) {
          std::cout<<DRED<<i<<" failed to compile properly.. ABORT!"<<RESET_COLOR<<std::endl;
          return 1;

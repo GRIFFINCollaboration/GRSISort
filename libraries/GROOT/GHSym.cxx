@@ -581,7 +581,7 @@ void GHSym::FillRandom(TH1* h, Int_t ntimes)
    }
 }
 
-Int_t GHSym::FindFirstBinAbove(Double_t threshold, Int_t axis) const
+Int_t GHSym::FindFirstBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, Int_t lastBin) const
 {
    // find first bin with content > threshold for axis (1=x, 2=y, 3=z)
    // if no bins with content > threshold is found the function returns -1.
@@ -591,18 +591,20 @@ Int_t GHSym::FindFirstBinAbove(Double_t threshold, Int_t axis) const
       axis = 1;
    }
    Int_t nbinsx = fXaxis.GetNbins();
+	if(lastBin > firstBin && lastBin < nbinsx) nbinsx = lastBin;
    Int_t nbinsy = fYaxis.GetNbins();
+	if(lastBin > firstBin && lastBin < nbinsy) nbinsy = lastBin;
    if(axis == 1) {
-      for(Int_t binx = 1; binx <= nbinsx; ++binx) {
-         for(Int_t biny = 1; biny <= nbinsy; ++biny) {
+      for(Int_t binx = firstBin; binx <= nbinsx; ++binx) {
+         for(Int_t biny = firstBin; biny <= nbinsy; ++biny) {
             if(GetBinContent(binx, biny) > threshold) {
                return binx;
             }
          }
       }
    } else {
-      for(Int_t biny = 1; biny <= nbinsy; ++biny) {
-         for(Int_t binx = 1; binx <= nbinsx; ++binx) {
+      for(Int_t biny = firstBin; biny <= nbinsy; ++biny) {
+         for(Int_t binx = firstBin; binx <= nbinsx; ++binx) {
             if(GetBinContent(binx, biny) > threshold) {
                return biny;
             }
@@ -612,7 +614,7 @@ Int_t GHSym::FindFirstBinAbove(Double_t threshold, Int_t axis) const
    return -1;
 }
 
-Int_t GHSym::FindLastBinAbove(Double_t threshold, Int_t axis) const
+Int_t GHSym::FindLastBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, Int_t lastBin) const
 {
    // find last bin with content > threshold for axis (1=x, 2=y, 3=z)
    // if no bins with content > threshold is found the function returns -1.
@@ -622,18 +624,20 @@ Int_t GHSym::FindLastBinAbove(Double_t threshold, Int_t axis) const
       axis = 1;
    }
    Int_t nbinsx = fXaxis.GetNbins();
+	if(lastBin > firstBin && lastBin < nbinsx) nbinsx = lastBin;
    Int_t nbinsy = fYaxis.GetNbins();
+	if(lastBin > firstBin && lastBin < nbinsy) nbinsy = lastBin;
    if(axis == 1) {
-      for(Int_t binx = nbinsx; binx >= 1; --binx) {
-         for(Int_t biny = 1; biny <= nbinsy; ++biny) {
+      for(Int_t binx = nbinsx; binx >= firstBin; --binx) {
+         for(Int_t biny = firstBin; biny <= nbinsy; ++biny) {
             if(GetBinContent(binx, biny) > threshold) {
                return binx;
             }
          }
       }
    } else {
-      for(Int_t biny = nbinsy; biny >= 1; --biny) {
-         for(Int_t binx = 1; binx <= nbinsx; ++binx) {
+      for(Int_t biny = nbinsy; biny >= firstBin; --biny) {
+         for(Int_t binx = firstBin; binx <= nbinsx; ++binx) {
             if(GetBinContent(binx, biny) > threshold) {
                return biny;
             }
