@@ -86,6 +86,8 @@ public:
    // void CopyWaveform(const TFragment&);
    ~TDetectorHit() override;
 
+	TDetectorHit& operator=(const TDetectorHit&) = default; // use default assignment operator (to shut up gcc 9.1)
+
    static void SetPPGPtr(TPPG* ptr) { fPPG = ptr; }
 
    bool operator<(const TDetectorHit& rhs) const { return GetEnergy() > rhs.GetEnergy(); } // sorts large->small

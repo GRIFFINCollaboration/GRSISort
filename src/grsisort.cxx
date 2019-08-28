@@ -82,7 +82,10 @@ int main(int argc, char** argv)
    } catch(grsi::exit_exception& e) {
       std::cerr<<e.message<<std::endl;
       // Close files and clean up properly here
-   }
+   } catch(std::runtime_error& e) {
+		std::cerr<<e.what()<<std::endl;
+		std::cout<<"Don't know how to handle this error, exiting "<<argv[0]<<"!"<<std::endl;
+	}
 
    return 0;
 }
@@ -170,9 +173,10 @@ static void SetDisplay()
          tty += 5; // remove "/dev/"
          STRUCT_UTMP* utmp_entry = SearchEntry(ReadUtmp(), tty);
          if(utmp_entry != nullptr) {
-            auto* display = new char[sizeof(utmp_entry->ut_host) + 15];
-            auto* host    = new char[sizeof(utmp_entry->ut_host) + 1];
-            strncpy(host, utmp_entry->ut_host, sizeof(utmp_entry->ut_host));
+				size_t length = sizeof(utmp_entry->ut_host);
+            auto* display = new char[length + 15];
+            auto* host    = new char[length + 1];
+            strncpy(host, utmp_entry->ut_host, length); // instead of using size of utmp_entry->ut_host to prevent warning from gcc 9.1
             host[sizeof(utmp_entry->ut_host)] = 0;
             if(host[0] != 0) {
                if(strchr(host, ':') != nullptr) {

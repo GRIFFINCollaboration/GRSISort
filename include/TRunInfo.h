@@ -119,8 +119,14 @@ public:
    static inline int RunNumber() { return Get()->fRunNumber; }
    static inline int SubRunNumber() { return Get()->fSubRunNumber; }
 
-   inline void SetRunTitle(const char* run_title) { if(run_title != nullptr) Get()->fRunTitle.assign(run_title); }
-   inline void SetRunComment(const char* run_comment) { if(run_comment != nullptr) Get()->fRunComment.assign(run_comment); }
+   static inline int FirstRunNumber() { return Get()->fFirstRunNumber; }
+   static inline int FirstSubRunNumber() { return Get()->fFirstSubRunNumber; }
+
+   static inline int LastRunNumber() { return Get()->fLastRunNumber; }
+   static inline int LastSubRunNumber() { return Get()->fLastSubRunNumber; }
+
+   static inline void SetRunTitle(const char* run_title) { if(run_title != nullptr) Get()->fRunTitle.assign(run_title); }
+   static inline void SetRunComment(const char* run_comment) { if(run_comment != nullptr) Get()->fRunComment.assign(run_comment); }
 
 	static inline std::string RunTitle() { return Get()->fRunTitle; }
 	static inline std::string RunComment() { return Get()->fRunComment; }
@@ -152,98 +158,79 @@ public:
    static Bool_t ReadInfoFile(const char* filename = "");
    static Bool_t ParseInputData(const char* inputdata = "", Option_t* opt = "q");
 
-   inline void SetRunInfoFileName(const char* fname) { Get()->fRunInfoFileName.assign(fname); }
-   inline void SetRunInfoFile(const char* ffile) { Get()->fRunInfoFile.assign(ffile); }
+   static inline void SetRunInfoFileName(const char* fname) { Get()->fRunInfoFileName.assign(fname); }
+   static inline void SetRunInfoFile(const char* ffile) { Get()->fRunInfoFile.assign(ffile); }
 
-   inline void SetHPGeArrayPosition(const double arr_pos) { Get()->fHPGeArrayPosition = arr_pos; }
+   static inline void SetHPGeArrayPosition(const double arr_pos) { Get()->fHPGeArrayPosition = arr_pos; }
    static inline double                          HPGeArrayPosition() { return Get()->fHPGeArrayPosition; }
 
    Long64_t Merge(TCollection* list);
-   void Add(TRunInfo* runinfo)
-   {
-		// add the run length together
-      if(runinfo->fRunLength > 0) {
-			if(Get()->fRunLength > 0) {
-				Get()->fRunLength += runinfo->fRunLength;
-			} else {
-				Get()->fRunLength = runinfo->fRunLength;
-			}
-		}
-		if(runinfo->fRunNumber != Get()->fRunNumber) {
-			// the run number is meaningful only when the run numbers are the same
-			Get()->fRunNumber = 0;
-			Get()->fSubRunNumber = -1;
-			Get()->fRunStart = 0.;
-			Get()->fRunStop  = 0.;
-		} else if(runinfo->fSubRunNumber == Get()->fSubRunNumber + 1) {
-			// if the run numbers are the same and we have subsequent sub runs we can update the run stop
-			Get()->fRunStop = runinfo->fRunStop;
-			Get()->fSubRunNumber = runinfo->fSubRunNumber; // so we can check the next subrun as well
-		} else {
-			// with multiple files added, the sub run number has no meaning anymore
-			Get()->fSubRunNumber = -1;
-			Get()->fRunStart = 0.;
-			Get()->fRunStop  = 0.;
-		}
-   }
-
+   void Add(TRunInfo* runinfo);
+  
 	virtual TEventBuildingLoop::EBuildMode BuildMode() const;
 
-   void PrintBadCycles() const;
-   void AddBadCycle(int bad_cycle);
-   void RemoveBadCycle(int cycle);
-   bool IsBadCycle(int cycle) const;
+	void PrintBadCycles() const;
+	void AddBadCycle(int bad_cycle);
+	void RemoveBadCycle(int cycle);
+	bool IsBadCycle(int cycle) const;
+
+	void PrintRunList();
 
 	static void SetDetectorInformation(TDetectorInformation* inf) { Get()->fDetectorInformation = inf; }
 	static TDetectorInformation* GetDetectorInformation() { return Get()->fDetectorInformation; }
 
 private:
-   std::string fRunTitle;     ///< The title of the run
-   std::string fRunComment;   ///< The comment on the run
-   int         fRunNumber;    // The current run number
-   int         fSubRunNumber; // The current sub run number
+	std::string fRunTitle;     ///< The title of the run
+	std::string fRunComment;   ///< The comment on the run
+	int         fRunNumber;    ///< The current run number
+	int         fSubRunNumber; ///< The current sub run number
+	int         fFirstRunNumber{0};     ///< The first run number (for combined runs)
+	int         fFirstSubRunNumber{-1}; ///< The first sub run number (for combined subruns)
+	int         fLastRunNumber{0};      ///< The last run number (for combined runs)
+	int         fLastSubRunNumber{-1};  ///< The last sub run number (for combined subruns)
+	std::vector<std::pair<int, int> > fRunList; ///< List of all runs added to this run info
 
-   double fRunStart{0.};  // The start  of the current run in seconds
-   double fRunStop{0.};   // The stop   of the current run in seconds
-   double fRunLength{0.}; // The length of the current run in seconds
+	double fRunStart{0.};  // The start  of the current run in seconds
+	double fRunStop{0.};   // The stop   of the current run in seconds
+	double fRunLength{0.}; // The length of the current run in seconds
 
-   static std::string fVersion;        // The version of GRSISort that generated the file - GRSI_RELEASE from GVersion.h
-   static std::string fFullVersion;    // The full version of GRSISort that generated the file (includes last commit) - GRSI_GIT_COMMIT from GVersion.h
+	static std::string fVersion;        // The version of GRSISort that generated the file - GRSI_RELEASE from GVersion.h
+	static std::string fFullVersion;    // The full version of GRSISort that generated the file (includes last commit) - GRSI_GIT_COMMIT from GVersion.h
 	static std::string fDate;           // The date of the last commit used in this version - GRSI_GIT_COMMIT_TIME from GVersion.h
-   static std::string fLibraryVersion; // The version of the parser/file library that generated the file
+	static std::string fLibraryVersion; // The version of the parser/file library that generated the file
 
-   std::string fCalFileName; // Name of calfile that generated cal
-   std::string fCalFile;     // Cal File to load into Cal of tree
+	std::string fCalFileName; // Name of calfile that generated cal
+	std::string fCalFile;     // Cal File to load into Cal of tree
 
-   std::string fXMLODBFileName; // Name of XML Odb file
-   std::string fXMLODBFile;     // The odb
+	std::string fXMLODBFileName; // Name of XML Odb file
+	std::string fXMLODBFile;     // The odb
 
-   /////////////////////////////////////////////////
-   //////////////// Building Options ///////////////
-   /////////////////////////////////////////////////
+	/////////////////////////////////////////////////
+	//////////////// Building Options ///////////////
+	/////////////////////////////////////////////////
 
-   std::string fRunInfoFileName; // The name of the Run info file
-   std::string fRunInfoFile;     // The contents of the run info file
-   static void trim(std::string*, const std::string& trimChars = " \f\n\r\t\v");
+	std::string fRunInfoFileName; // The name of the Run info file
+	std::string fRunInfoFile;     // The contents of the run info file
+	static void trim(std::string*, const std::string& trimChars = " \f\n\r\t\v");
 
-   double fHPGeArrayPosition; // Position of the HPGe Array (default = 110.0 mm );
+	double fHPGeArrayPosition; // Position of the HPGe Array (default = 110.0 mm );
 
-   unsigned int     fBadCycleListSize;
-   std::vector<int> fBadCycleList; //!<!List of bad cycles to be used for cycle rejection
+	unsigned int     fBadCycleListSize;
+	std::vector<int> fBadCycleList; //!<!List of bad cycles to be used for cycle rejection
 
 	TDetectorInformation* fDetectorInformation; //!<! pointer to detector specific information (set by each parser library)
 
 public:
-   void Print(Option_t* opt = "") const override;
-   void Clear(Option_t* opt = "") override;
+	void Print(Option_t* opt = "") const override;
+	void Clear(Option_t* opt = "") override;
 
-   static bool WriteToRoot(TFile* fileptr = nullptr);
-   static bool WriteInfoFile(const std::string& filename);
-   std::string PrintToString(Option_t* opt = "");
+	static bool WriteToRoot(TFile* fileptr = nullptr);
+	static bool WriteInfoFile(const std::string& filename);
+	std::string PrintToString(Option_t* opt = "");
 
-   /// \cond CLASSIMP
-   ClassDefOverride(TRunInfo, 15); // Contains the run-dependent information.
-   /// \endcond
+	/// \cond CLASSIMP
+	ClassDefOverride(TRunInfo, 16); // Contains the run-dependent information.
+	/// \endcond
 };
 /*! @} */
 #endif

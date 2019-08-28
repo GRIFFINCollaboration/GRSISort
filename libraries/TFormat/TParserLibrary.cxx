@@ -42,6 +42,8 @@ void TParserLibrary::Load() {
 		throw std::runtime_error(str.str());
 	}
 	// try and get constructor and destructor functions from opened library
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-function-type"
 	fInitLibrary       = reinterpret_cast<void (*)()>(dlsym(fHandle, "InitLibrary"));
 	fLibraryVersion    = reinterpret_cast<std::string (*)()>(dlsym(fHandle, "LibraryVersion"));
 
@@ -50,6 +52,7 @@ void TParserLibrary::Load() {
 
 	fCreateDataParser  = reinterpret_cast<TDataParser* (*)()>(dlsym(fHandle, "CreateParser"));
 	fDestroyDataParser = reinterpret_cast<void (*)(TDataParser*)>(dlsym(fHandle, "DestroyParser"));
+#pragma GCC diagnostic pop
 
 	if(fInitLibrary == nullptr || fLibraryVersion == nullptr || fCreateRawFile == nullptr || fDestroyRawFile == nullptr || fCreateDataParser == nullptr || fDestroyDataParser == nullptr) {
 		std::ostringstream str;

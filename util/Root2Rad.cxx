@@ -344,7 +344,10 @@ void WriteHist(TH1* hist, std::fstream* outfile)
 {
    SpeHeader spehead;
    spehead.buffsize = 24;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
    strncpy(spehead.label, hist->GetName(), 8);
+#pragma GCC diagnostic pop
 
    if(hist->GetRMS() > 16384 / 2) {
       while(hist->GetNbinsX() > 16384) {

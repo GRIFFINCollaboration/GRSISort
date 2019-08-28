@@ -95,7 +95,7 @@ TNucleus::TNucleus(const char* name)
 				break;
 			}
 		}
-	} catch(std::out_of_range) {
+	} catch(std::out_of_range&) {
 		std::cout<<"Could not parse element "<<name<<std::endl<<"Nucleus not Set!"<<std::endl;
 		return;
 	}
