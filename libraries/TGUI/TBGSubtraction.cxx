@@ -377,7 +377,10 @@ void TBGSubtraction::UpdateBackground()
 void TBGSubtraction::DoPeakFit()
 {
 
-   if(fPeakFit) fPeakFit->Delete(); fPeakFit = nullptr;
+   if(fPeakFit) {
+		fPeakFit->Delete(); 
+		fPeakFit = nullptr;
+	}
    
    fPeakFit = new TPeak(fPeakValue, fPeakLowValue, fPeakHighValue);
    fGateCanvas->GetCanvas()->cd();
@@ -703,35 +706,41 @@ void TBGSubtraction::DoEntry(Long_t)
    //When we do an entry, update the corresponding slider...this then performs the gating.
    switch(id) {
    case kGateLowEntry:
-      if(fGateEntryLow->GetNumber() > fGateEntryHigh->GetNumber())
+      if(fGateEntryLow->GetNumber() > fGateEntryHigh->GetNumber()) {
          fGateEntryLow->SetNumber(fGateEntryHigh->GetNumber());
          UpdateGateSlider();
          fGateSlider->PositionChanged();
+		}
       break;
    case kGateHighEntry:
-      if(fGateEntryHigh->GetNumber() < fGateEntryLow->GetNumber())
+      if(fGateEntryHigh->GetNumber() < fGateEntryLow->GetNumber()) {
          fGateEntryHigh->SetNumber(fGateEntryLow->GetNumber());
          UpdateGateSlider();
+		}
       break;
    case kBGLowEntry1:
-      if(fBGEntryLow1->GetNumber() > fBGEntryHigh1->GetNumber())
+      if(fBGEntryLow1->GetNumber() > fBGEntryHigh1->GetNumber()) {
          fBGEntryLow1->SetNumber(fBGEntryHigh1->GetNumber());
          UpdateBGSlider1();
+		}
       break;
    case kBGHighEntry1:
-      if(fBGEntryHigh1->GetNumber() < fBGEntryLow1->GetNumber())
+      if(fBGEntryHigh1->GetNumber() < fBGEntryLow1->GetNumber()) {
          fBGEntryHigh1->SetNumber(fBGEntryLow1->GetNumber());
          UpdateBGSlider1();
+		}
       break;
    case kBGLowEntry2:
-      if(fBGEntryLow2->GetNumber() > fBGEntryHigh2->GetNumber())
+      if(fBGEntryLow2->GetNumber() > fBGEntryHigh2->GetNumber()) {
          fBGEntryLow2->SetNumber(fBGEntryHigh2->GetNumber());
          UpdateBGSlider2();
+		}
       break;
    case kBGHighEntry2:
-      if(fBGEntryHigh2->GetNumber() < fBGEntryLow2->GetNumber())
+      if(fBGEntryHigh2->GetNumber() < fBGEntryLow2->GetNumber()) {
          fBGEntryHigh2->SetNumber(fBGEntryLow2->GetNumber());
          UpdateBGSlider2();
+		}
       break;
    };
 }

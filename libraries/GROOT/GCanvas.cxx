@@ -794,6 +794,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
 
    case kKey_m: SetMarkerMode(true); break;
    case kKey_M: SetMarkerMode(false);
+					 [[fallthrough]];
    case kKey_n:
       RemoveMarker("all");
       for(auto& hist : hists) {
@@ -1387,7 +1388,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 				cut->Write();
 			}
 			f.Close();
-			delete fileName;
+			delete[] fileName;
 			oldDir->cd();
 		}
 		break;

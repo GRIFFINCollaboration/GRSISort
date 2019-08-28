@@ -44,13 +44,7 @@ void Analyze(const char* tree_type)
          if(in_file->FindObjectAny(tree_type) != nullptr) {
             tree_list.push_back(i);
 
-            // TODO: A smarter way of finding run info for run number and sub run number naming
-            static bool info_set = false;
-            if(!info_set) {
-               TRunInfo::Get()->ReadInfoFromFile(in_file);
-					TRunInfo::Get()->Print();
-               info_set = true;
-            }
+				TRunInfo::AddCurrent();
 
 				// try and add PPG from this file to global PPG
 				if(in_file->Get("TPPG") != nullptr) {
@@ -61,9 +55,13 @@ void Analyze(const char* tree_type)
          in_file->Close(); // Close the files when you are done with them
       }
    }
+
 	if(tree_list.empty()) {
 		return;
 	}
+
+	TRunInfo::Get()->Print();
+	gGRSIProof->AddInput(TRunInfo::Get());
 
 	//add the global PPG to the input list
 	gGRSIProof->AddInput(gPpg);
@@ -199,7 +197,7 @@ int main(int argc, char** argv)
    std::cout<<DCYAN<<"************************* MACRO COMPILATION ****************************"<<RESET_COLOR
             <<std::endl;
    for(const auto& i : gGRSIOpt->MacroInputFiles()) {
-      Int_t error_code = gSystem->CompileMacro(i.c_str(), "kO"); // k - keep shared library after session ends, O - optimize the code
+      Int_t error_code = gSystem->CompileMacro(i.c_str(), "kOvd"); // k - keep shared library after session ends, O - optimize the code
       if(error_code == 0) {
          std::cout<<DRED<<i<<" failed to compile properly.. ABORT!"<<RESET_COLOR<<std::endl;
          return 1;
