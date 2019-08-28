@@ -1,4 +1,4 @@
-*.o
+#*.2
 *.so
 *.exe
 grsisort
@@ -30,3 +30,4 @@ __pycache__
 grsi_logon.C
 *.pcm
 *Data
+.grsirc
