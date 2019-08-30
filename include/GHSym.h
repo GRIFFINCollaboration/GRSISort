@@ -29,8 +29,10 @@ public:
    void FillN(Int_t ntimes, const Double_t* x, const Double_t* y, const Double_t* w, Int_t stride = 1) override;
    void FillRandom(const char* fname, Int_t ntimes = 5000) override;
    void FillRandom(TH1* h, Int_t ntimes = 5000) override;
-   Int_t FindFirstBinAbove(Double_t threshold = 0, Int_t axis = 1, Int_t firstBin=1, Int_t lastBin=-1) const override;
-   Int_t FindLastBinAbove(Double_t threshold = 0, Int_t axis = 1, Int_t firstBin=1, Int_t lastBin=-1) const override;
+   Int_t FindFirstBinAbove(Double_t threshold = 0, Int_t axis = 1) const override { return FindFirstBinAbove(threshold, axis, 1, -1); }
+   Int_t FindFirstBinAbove(Double_t threshold = 0, Int_t axis = 1, Int_t firstBin=1, Int_t lastBin=-1) const;
+   Int_t FindLastBinAbove(Double_t threshold = 0, Int_t axis = 1) const override { return FindLastBinAbove(threshold, axis, 1, -1); }
+   Int_t FindLastBinAbove(Double_t threshold = 0, Int_t axis = 1, Int_t firstBin=1, Int_t lastBin=-1) const;
    virtual void FitSlices(TF1* f1 = nullptr, Int_t firstbin = 0, Int_t lastbin = -1, Int_t cut = 0,
                           Option_t* option = "QNR", TObjArray* arr = nullptr);
    Int_t GetBin(Int_t binx, Int_t biny = 0, Int_t binz = 0) const override;
