@@ -211,11 +211,15 @@ void TPPG::Print(Option_t* opt) const
       std::cout<<"Mismatch between number of ppg codes ("<<fOdbPPGCodes.size()<<") and durations ("
                <<fOdbDurations.size()<<")"<<std::endl;
    } else {
-      std::cout<<"ODB cycle:"<<std::endl<<"Code       Duration"<<std::endl;
-      for(size_t i = 0; i < fOdbPPGCodes.size(); ++i) {
-         std::cout<<"0x"<<std::hex<<std::setw(8)<<fOdbPPGCodes[i]<<std::dec<<" "<<fOdbDurations[i]
-                  <<std::endl;
-      }
+		if(fOdbPPGCodes.empty()) {
+			std::cout<<"No ODB cycle read!"<<std::endl;
+		} else {
+			std::cout<<"ODB cycle:"<<std::endl<<"Code   Duration"<<std::endl;
+			for(size_t i = 0; i < fOdbPPGCodes.size(); ++i) {
+				std::cout<<"0x"<<std::hex<<std::setw(4)<<fOdbPPGCodes[i]<<std::dec<<" "<<fOdbDurations[i]
+							<<std::endl;
+			}
+		}
    }
    if(MapIsEmpty()) {
       printf("Empty\n");
@@ -594,4 +598,8 @@ void TPPG::Add(const TPPG* ppg)
    fNumberOfCycleLengths.clear();
    fCycleLength = 0;
    GetCycleLength();
+	if(fOdbPPGCodes.empty()) {
+		fOdbPPGCodes = ppg->fOdbPPGCodes;
+		fOdbDurations = ppg->fOdbDurations;
+	}
 }
