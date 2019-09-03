@@ -274,7 +274,7 @@ Double_t TGRSIFunctions::MultiGausWithBG(Double_t* dim, Double_t* par)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Double_t TGRSIFunctions::Bateman(Double_t* dim, Double_t* par, UInt_t nChain, Double_t)
+Double_t TGRSIFunctions::Bateman(std::vector<Double_t>& dim, std::vector<Double_t>& par, UInt_t nChain, Double_t)
 {
    //****NOT TESTED****The Bateman equation is the general closed form for a decay chain of nuclei. This functions
    // returns
@@ -286,7 +286,7 @@ Double_t TGRSIFunctions::Bateman(Double_t* dim, Double_t* par, UInt_t nChain, Do
    //   - par[2+3*i]:  Activity at time t s^(-1)
    // NOTE: The lowest paramters correspond to the most 'senior' nuclei
 
-   if(sizeof(par) / sizeof(par[0]) < (nChain * 3)) {
+   if(par.size() < (nChain * 3)) {
       std::cout<<"not enough parameters passed to function"<<std::endl;
       return 0;
    }

@@ -156,7 +156,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
 	}
 
 	if(GValue::Size() == 0) {
-		std::cout<<"No g-values!"<<std::flush;
+		std::cout<<"No g-values!"<<std::endl;
 	} else {
 		std::cout<<GValue::Size()<<" g-values"<<std::endl;
 	}

@@ -29,7 +29,7 @@ Double_t MultiPhotoPeakBG(Double_t* dim, Double_t* par);
 Double_t Gaus(Double_t* dim, Double_t* par);
 Double_t SkewedGaus(Double_t* dim, Double_t* par);
 Double_t MultiSkewedGausWithBG(Double_t* dim, Double_t* par);
-Double_t Bateman(Double_t* dim, Double_t* par, UInt_t nChain = 1, Double_t SecondsPerBin = 1.0);
+Double_t Bateman(std::vector<Double_t>& dim, std::vector<Double_t>& par, UInt_t nChain = 1, Double_t SecondsPerBin = 1.0);
 Double_t PhotoEfficiency(Double_t* dim, Double_t* par);
 
 // STEFFEN ADDED THESE
