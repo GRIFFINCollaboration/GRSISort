@@ -77,6 +77,7 @@ private:
    unsigned int fSortingDepth;
    long         fBuildWindow;
    bool         fPreviousSortingDepthError;
+	bool         fSkipInputSort;
 
 #ifndef __CINT__
    std::vector<std::shared_ptr<const TFragment>> fNextEvent;

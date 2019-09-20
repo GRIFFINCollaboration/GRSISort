@@ -110,7 +110,7 @@ public:
 
 	size_t NumberOfEvents() const { return fNumberOfEvents; }
 
-	bool TimeSortInput() const { return fTimeSortInput; }
+	bool SkipInputSort() const { return fSkipInputSort; }
 	int  SortDepth() const { return fSortDepth; }
 
 	bool ShouldExitImmediately() const { return fShouldExit; }
@@ -205,7 +205,7 @@ private:
 
 	size_t fNumberOfEvents;         ///< Number of events, fragments, etc. to process (0 - all)
 
-	bool fTimeSortInput; ///< Flag to sort on time or triggers
+	bool fSkipInputSort; ///< Flag to sort on time or triggers
 	int  fSortDepth;     ///< Size of Q that stores fragments to be built into events
 
 	static TAnalysisOptions* fAnalysisOptions; ///< contains all options for analysis
