@@ -117,8 +117,6 @@ private:
    static std::unordered_map<unsigned int, TChannel*>* fChannelMap;       // A map to all of the channels based on address
    static std::unordered_map<unsigned int, int>* fMissingChannelMap;      // A map to all of the missing channels based on address
    static std::unordered_map<int, TChannel*>*          fChannelNumberMap; // A map of TChannels based on channel number
-   static void UpdateChannelNumberMap();
-   static void UpdateChannelMap();
    void        OverWriteChannel(TChannel*);
    void        AppendChannel(TChannel*);
 
@@ -139,8 +137,13 @@ public:
    void SetAddress(unsigned int tmpadd);
    inline void SetNumber(TPriorityValue<int> tmp)
    {
+		if(fNumber == tmp) return;
+		// channel number has changed so we need to delete the old one and insert the new one
+		fChannelNumberMap->erase(fNumber);
       fNumber = tmp;
-      UpdateChannelNumberMap();
+		if((fNumber != 0) && (fChannelNumberMap->count(fNumber) == 0)) {
+			fChannelNumberMap->insert(std::make_pair(fNumber, oldchan));
+		}
    }
    inline void SetIntegration(TPriorityValue<int> tmp) { fIntegration = tmp; }
    static void SetIntegration(const std::string& mnemonic, int tmpint, EPriority pr);

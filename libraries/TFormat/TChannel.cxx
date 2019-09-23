@@ -175,9 +175,16 @@ void TChannel::AddChannel(TChannel* chan, Option_t* opt)
    if(fChannelMap->count(chan->GetAddress()) == 1) { // if this channel exists
       if(strcmp(opt, "overwrite") == 0) {
          TChannel* oldchan = GetChannel(chan->GetAddress());
+			int oldNumber = oldchan->GetNumber();
          oldchan->OverWriteChannel(chan);
          // Need to also update the channel number map RD
-         UpdateChannelNumberMap();
+			if(oldNumber != oldchan->GetNumber()) {
+				// channel number has changed so we need to delete the old one and insert the new one
+				fChannelNumberMap->erase(oldNumber);
+				if((oldchan->GetNumber() != 0) && (fChannelNumberMap->count(oldchan->GetNumber()) == 0)) {
+					fChannelNumberMap->insert(std::make_pair(oldchan->GetNumber(), oldchan));
+				}
+			}
          return;
       }
       printf("Trying to add a channel that already exists!\n");
@@ -349,10 +356,6 @@ TChannel* TChannel::GetChannel(unsigned int temp_address, bool warn)
 TChannel* TChannel::GetChannelByNumber(int temp_num)
 {
    /// Returns the TChannel based on the channel number and not the channel address.
-   //  if(fChannelMap->size() != fChannelNumberMap->size()) {
-   // We should just always update this map before we use it
-   UpdateChannelNumberMap();
-   //    }
    TChannel* chan = nullptr;
    try {
       chan = fChannelNumberMap->at(temp_num);
@@ -406,17 +409,6 @@ std::vector<TChannel*> TChannel::FindChannelByRegEx(const char* ccName)
    }
 
    return result;
-}
-
-void TChannel::UpdateChannelNumberMap()
-{
-   /// Updates the fChannelNumberMap based on the entries in the fChannelMap. This should be called before using the
-   /// fChannelNumberMap.
-   fChannelNumberMap->clear(); // This isn't the nicest way to do this but will keep us consistent.
-
-   for(auto mapiter : *fChannelMap) {
-      fChannelNumberMap->insert(std::make_pair(mapiter.second->GetNumber(), mapiter.second));
-   }
 }
 
 void TChannel::SetAddress(unsigned int tmpadd)
