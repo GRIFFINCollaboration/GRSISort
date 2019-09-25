@@ -94,6 +94,11 @@ public:
 		return *this;
 	}
 
+	// comparison operator
+	bool operator ==(const TPriorityValue<T>& rhs) {
+		return fValue == rhs.fValue;
+	}
+
 	template<class U>
 	friend std::ostream& operator<<(std::ostream&, const TPriorityValue<U>&);
 

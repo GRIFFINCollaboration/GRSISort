@@ -139,10 +139,10 @@ public:
    {
 		if(fNumber == tmp) return;
 		// channel number has changed so we need to delete the old one and insert the new one
-		fChannelNumberMap->erase(fNumber);
+		fChannelNumberMap->erase(fNumber.Value());
       fNumber = tmp;
-		if((fNumber != 0) && (fChannelNumberMap->count(fNumber) == 0)) {
-			fChannelNumberMap->insert(std::make_pair(fNumber, oldchan));
+		if((fNumber.Value() != 0) && (fChannelNumberMap->count(fNumber.Value()) == 0)) {
+			fChannelNumberMap->insert(std::make_pair(fNumber.Value(), this));
 		}
    }
    inline void SetIntegration(TPriorityValue<int> tmp) { fIntegration = tmp; }

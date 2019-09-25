@@ -1022,110 +1022,116 @@ Int_t TChannel::ReadCalFile(const char* filename)
 
    int channels_found = ParseInputData(const_cast<const char*>(buffer), "", EPriority::kInputFile);
    SaveToSelf(infilename.c_str());
-   UpdateChannelNumberMap();
-   return channels_found;
+
+	fChannelNumberMap->clear(); // This isn't the nicest way to do this but will keep us consistent.
+
+	for(auto mapiter : *fChannelMap) {
+		fChannelNumberMap->insert(std::make_pair(mapiter.second->GetNumber(), mapiter.second));
+	}
+
+	return channels_found;
 }
 
 void TChannel::SaveToSelf(const char* fname)
 {
-   if(fFileName.length() == 0) {
-      fFileName.assign(fname);
-   } else if(fFileName.compare(fname) == 0) {
-      // do nothing.
-   } else {
-      // also do nothing, but perhaps jest append the names toghter...
-   }
-   std::stringstream buffer;
-   std::streambuf*   std_out = std::cout.rdbuf(buffer.rdbuf());
-   WriteCalFile();
-   fFileData.assign(buffer.str());
-   std::cout.rdbuf(std_out);
+	if(fFileName.length() == 0) {
+		fFileName.assign(fname);
+	} else if(fFileName.compare(fname) == 0) {
+		// do nothing.
+	} else {
+		// also do nothing, but perhaps jest append the names toghter...
+	}
+	std::stringstream buffer;
+	std::streambuf*   std_out = std::cout.rdbuf(buffer.rdbuf());
+	WriteCalFile();
+	fFileData.assign(buffer.str());
+	std::cout.rdbuf(std_out);
 }
 
 Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority pr)
 {
-   std::istringstream infile(inputdata);
+	std::istringstream infile(inputdata);
 
-   TChannel* channel = nullptr;
+	TChannel* channel = nullptr;
 
-   std::string line;
-   int         linenumber  = 0;
-   int         newchannels = 0;
+	std::string line;
+	int         linenumber  = 0;
+	int         newchannels = 0;
 
-   // bool creatednewchannel = false;
-   bool brace_open = false;
-   // int detector = 0;
-   std::string name;
+	// bool creatednewchannel = false;
+	bool brace_open = false;
+	// int detector = 0;
+	std::string name;
 
-   // Parse the cal file. This is useful because if the cal file contains something that
-   // the parser does not recognize, it just skips it!
-   while(std::getline(infile, line)) {
-      linenumber++;
-      trim(&line);
-      size_t comment = line.find("//");
-      if(comment != std::string::npos) {
-         line = line.substr(0, comment);
-      }
-      if(line.length() == 0u) {
-         continue;
-      }
-      size_t openbrace  = line.find('{');
-      size_t closebrace = line.find('}');
-      size_t colon      = line.find(':');
+	// Parse the cal file. This is useful because if the cal file contains something that
+	// the parser does not recognize, it just skips it!
+	while(std::getline(infile, line)) {
+		linenumber++;
+		trim(&line);
+		size_t comment = line.find("//");
+		if(comment != std::string::npos) {
+			line = line.substr(0, comment);
+		}
+		if(line.length() == 0u) {
+			continue;
+		}
+		size_t openbrace  = line.find('{');
+		size_t closebrace = line.find('}');
+		size_t colon      = line.find(':');
 
-      if(openbrace == std::string::npos && closebrace == std::string::npos && colon == std::string::npos) {
-         continue;
-      }
+		if(openbrace == std::string::npos && closebrace == std::string::npos && colon == std::string::npos) {
+			continue;
+		}
 
-      //*************************************//
-      if(closebrace != std::string::npos) {
-         brace_open = false;
-         if(channel != nullptr) {
-            TChannel* currentchan = GetChannel(channel->GetAddress(), false);
-            if(currentchan == nullptr) {
-               AddChannel(channel); // consider using a default option here
-               newchannels++;
-            } else {
-               currentchan->UpdateChannel(channel);
-               delete channel;
-               newchannels++;
-            }
-         } else {
-            delete channel;
-         }
-         channel = nullptr;
-         name.clear();
-      }
-      //*************************************//
-      if(openbrace != std::string::npos) {
-         brace_open = true;
-         name       = line.substr(0, openbrace);
-         channel    = new TChannel("");
-         channel->SetName(name.c_str());
-      }
-      //*************************************//
-      if(brace_open) {
-         size_t ntype = line.find(':');
-         if(ntype != std::string::npos) {
-            std::string type = line.substr(0, ntype);
-            line             = line.substr(ntype + 1, line.length());
-            trim(&line);
-            std::istringstream ss(line);
+		//*************************************//
+		if(closebrace != std::string::npos) {
+			brace_open = false;
+			if(channel != nullptr) {
+				TChannel* currentchan = GetChannel(channel->GetAddress(), false);
+				if(currentchan == nullptr) {
+					AddChannel(channel); // consider using a default option here
+					newchannels++;
+				} else {
+					currentchan->UpdateChannel(channel);
+					delete channel;
+					newchannels++;
+				}
+			} else {
+				delete channel;
+			}
+			channel = nullptr;
+			name.clear();
+		}
+		//*************************************//
+		if(openbrace != std::string::npos) {
+			brace_open = true;
+			name       = line.substr(0, openbrace);
+			channel    = new TChannel("");
+			channel->SetName(name.c_str());
+		}
+		//*************************************//
+		if(brace_open) {
+			size_t ntype = line.find(':');
+			if(ntype != std::string::npos) {
+				std::string type = line.substr(0, ntype);
+				line             = line.substr(ntype + 1, line.length());
+				trim(&line);
+				std::istringstream ss(line);
 				// transform type to upper case
 				std::transform(type.begin(), type.end(), type.begin(), ::toupper);
-            if(type.compare("NAME") == 0) {
-               channel->SetName(line.c_str());
-            } else if(type.compare("ADDRESS") == 0) {
-               unsigned int tempadd = 0;
-               ss >> tempadd;
-               if(tempadd == 0) { // maybe it is in hex...
-                  std::stringstream newss;
-                  newss<<std::hex<<line;
-                  newss >> tempadd;
-               }
-               tempadd = tempadd & 0x00ffffff; // front end number is not included in the odb...
-               channel->SetAddress(tempadd);
-            } else if(type.compare("INTEGRATION") == 0) {
+				if(type.compare("NAME") == 0) {
+					channel->SetName(line.c_str());
+				} else if(type.compare("ADDRESS") == 0) {
+					unsigned int tempadd = 0;
+					ss >> tempadd;
+					if(tempadd == 0) { // maybe it is in hex...
+						std::stringstream newss;
+						newss<<std::hex<<line;
+						newss >> tempadd;
+					}
+					tempadd = tempadd & 0x00ffffff; // front end number is not included in the odb...
+					channel->SetAddress(tempadd);
+				} else if(type.compare("INTEGRATION") == 0) {
 					int tempint;
 					ss >> tempint;
 					channel->SetIntegration(TPriorityValue<int>(tempint, pr));
@@ -1136,68 +1142,68 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 				} else if(type.compare("TIMEOFFSET") == 0) {
 					Long64_t tempoff;
 					ss >> tempoff;
-               channel->SetTimeOffset(TPriorityValue<Long64_t>(tempoff, pr));
-            } else if(type.compare("STREAM") == 0) {
-               int tempstream;
-               ss >> tempstream;
-               channel->SetStream(TPriorityValue<int>(tempstream, pr));
-            } else if(type.compare("DIGITIZER") == 0) {
-               channel->SetDigitizerType(TPriorityValue<std::string>(line, pr));
-            } else if(type.compare("ENGCHI2") == 0) {
-               double tempdbl;
-               ss >> tempdbl;
-               channel->SetENGChi2(TPriorityValue<double>(tempdbl, pr));
-            } else if(type.compare("CFDCHI2") == 0) {
-               double tempdbl;
-               ss >> tempdbl;
-               channel->SetCFDChi2(TPriorityValue<double>(tempdbl, pr));
-            } else if(type.compare("LEDCHI2") == 0) {
-               double tempdbl;
-               ss >> tempdbl;
-               channel->SetLEDChi2(TPriorityValue<double>(tempdbl, pr));
-            } else if(type.compare("TIMECHI2") == 0) {
-               double tempdbl;
-               ss >> tempdbl;
-               channel->SetTIMEChi2(TPriorityValue<double>(tempdbl, pr));
-            } else if(type.compare("EFFCHI2") == 0) {
-               double tempdbl;
-               ss >> tempdbl;
-               channel->SetEFFChi2(TPriorityValue<double>(tempdbl, pr));
-            } else if(type.compare("ENGCOEFF") == 0) {
-               channel->DestroyENGCal();
+					channel->SetTimeOffset(TPriorityValue<Long64_t>(tempoff, pr));
+				} else if(type.compare("STREAM") == 0) {
+					int tempstream;
+					ss >> tempstream;
+					channel->SetStream(TPriorityValue<int>(tempstream, pr));
+				} else if(type.compare("DIGITIZER") == 0) {
+					channel->SetDigitizerType(TPriorityValue<std::string>(line, pr));
+				} else if(type.compare("ENGCHI2") == 0) {
+					double tempdbl;
+					ss >> tempdbl;
+					channel->SetENGChi2(TPriorityValue<double>(tempdbl, pr));
+				} else if(type.compare("CFDCHI2") == 0) {
+					double tempdbl;
+					ss >> tempdbl;
+					channel->SetCFDChi2(TPriorityValue<double>(tempdbl, pr));
+				} else if(type.compare("LEDCHI2") == 0) {
+					double tempdbl;
+					ss >> tempdbl;
+					channel->SetLEDChi2(TPriorityValue<double>(tempdbl, pr));
+				} else if(type.compare("TIMECHI2") == 0) {
+					double tempdbl;
+					ss >> tempdbl;
+					channel->SetTIMEChi2(TPriorityValue<double>(tempdbl, pr));
+				} else if(type.compare("EFFCHI2") == 0) {
+					double tempdbl;
+					ss >> tempdbl;
+					channel->SetEFFChi2(TPriorityValue<double>(tempdbl, pr));
+				} else if(type.compare("ENGCOEFF") == 0) {
+					channel->DestroyENGCal();
 					channel->fENGCoefficients.SetPriority(pr);
-               double value;
-               while(!(ss >> value).fail()) {
-                  channel->AddENGCoefficient(value);
-               }
-            } else if(type.compare("LEDCOEFF") == 0) {
-               channel->DestroyLEDCal();
+					double value;
+					while(!(ss >> value).fail()) {
+						channel->AddENGCoefficient(value);
+					}
+				} else if(type.compare("LEDCOEFF") == 0) {
+					channel->DestroyLEDCal();
 					channel->fLEDCoefficients.SetPriority(pr);
-               double value;
-               while(!(ss >> value).fail()) {
-                  channel->AddLEDCoefficient(value);
-               }
-            } else if(type.compare("CFDCOEFF") == 0) {
-               channel->DestroyCFDCal();
+					double value;
+					while(!(ss >> value).fail()) {
+						channel->AddLEDCoefficient(value);
+					}
+				} else if(type.compare("CFDCOEFF") == 0) {
+					channel->DestroyCFDCal();
 					channel->fCFDCoefficients.SetPriority(pr);
-               double value;
-               while(!(ss >> value).fail()) {
-                  channel->AddCFDCoefficient(value);
-               }
-            } else if((type.compare("TIMECOEFF") == 0) || (type.compare("WALK") == 0)) {
-               channel->DestroyTIMECal();
+					double value;
+					while(!(ss >> value).fail()) {
+						channel->AddCFDCoefficient(value);
+					}
+				} else if((type.compare("TIMECOEFF") == 0) || (type.compare("WALK") == 0)) {
+					channel->DestroyTIMECal();
 					channel->fTIMECoefficients.SetPriority(pr);
-               double value;
-               while(!(ss >> value).fail()) {
-                  channel->AddTIMECoefficient(value);
-               }
-            } else if(type.compare("CTCOEFF") == 0) {
-               channel->DestroyCTCal();
+					double value;
+					while(!(ss >> value).fail()) {
+						channel->AddTIMECoefficient(value);
+					}
+				} else if(type.compare("CTCOEFF") == 0) {
+					channel->DestroyCTCal();
 					channel->fCTCoefficients.SetPriority(pr);
-               double value;
-               while(!(ss >> value).fail()) {
-                  channel->AddCTCoefficient(value);
-               }
+					double value;
+					while(!(ss >> value).fail()) {
+						channel->AddCTCoefficient(value);
+					}
 				} else if(type.compare("ENERGYNONLINEARITY") == 0) {
 					channel->DestroyEnergyNonlinearity();
 					channel->fEnergyNonlinearity.SetPriority(pr);
@@ -1206,139 +1212,139 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 						channel->AddEnergyNonlinearityPoint(x, y);
 					}
 					channel->SetupEnergyNonlinearity();	
-            } else if(type.compare("EFFCOEFF") == 0) {
-               channel->DestroyEFFCal();
+				} else if(type.compare("EFFCOEFF") == 0) {
+					channel->DestroyEFFCal();
 					channel->fEFFCoefficients.SetPriority(pr);
-               double value;
-               while(!(ss >> value).fail()) {
-                  channel->AddEFFCoefficient(value);
-               }
-            } else if(type.compare("FILEINT") == 0) {
-               int tempstream;
-               ss >> tempstream;
-               if(tempstream > 0) {
-                  channel->SetUseCalFileIntegration(TPriorityValue<bool>(true, pr));
-               } else {
-                  channel->SetUseCalFileIntegration(TPriorityValue<bool>(false, pr));
-               }
-            } else if(type.compare("RISETIME") == 0) {
-               double tempdbl;
-               ss >> tempdbl;
-               channel->SetWaveRise(tempdbl);
-            } else if(type.compare("DECAYTIME") == 0) {
-               double tempdbl;
-               ss >> tempdbl;
-               channel->SetWaveDecay(tempdbl);
-            } else if(type.compare("BASELINE") == 0) {
-               double tempdbl;
-               ss >> tempdbl;
-               channel->SetWaveBaseLine(tempdbl);
-            } else {
-            }
-         }
-      }
-   }
-   if(strcmp(opt, "q") != 0) {
-      printf("parsed %i lines.\n", linenumber);
-   }
+					double value;
+					while(!(ss >> value).fail()) {
+						channel->AddEFFCoefficient(value);
+					}
+				} else if(type.compare("FILEINT") == 0) {
+					int tempstream;
+					ss >> tempstream;
+					if(tempstream > 0) {
+						channel->SetUseCalFileIntegration(TPriorityValue<bool>(true, pr));
+					} else {
+						channel->SetUseCalFileIntegration(TPriorityValue<bool>(false, pr));
+					}
+				} else if(type.compare("RISETIME") == 0) {
+					double tempdbl;
+					ss >> tempdbl;
+					channel->SetWaveRise(tempdbl);
+				} else if(type.compare("DECAYTIME") == 0) {
+					double tempdbl;
+					ss >> tempdbl;
+					channel->SetWaveDecay(tempdbl);
+				} else if(type.compare("BASELINE") == 0) {
+					double tempdbl;
+					ss >> tempdbl;
+					channel->SetWaveBaseLine(tempdbl);
+				} else {
+				}
+			}
+		}
+	}
+	if(strcmp(opt, "q") != 0) {
+		printf("parsed %i lines.\n", linenumber);
+	}
 
-   return newchannels;
+	return newchannels;
 }
 
 void TChannel::trim(std::string* line, const std::string& trimChars)
 {
-   /// Removes the the string "trimCars" from  the string 'line'
-   if(line->length() == 0) {
-      return;
-   }
-   std::size_t found = line->find_first_not_of(trimChars);
-   if(found != std::string::npos) {
-      *line = line->substr(found, line->length());
-   }
-   found = line->find_last_not_of(trimChars);
-   if(found != std::string::npos) {
-      *line = line->substr(0, found + 1);
-   }
-   return;
+	/// Removes the the string "trimCars" from  the string 'line'
+	if(line->length() == 0) {
+		return;
+	}
+	std::size_t found = line->find_first_not_of(trimChars);
+	if(found != std::string::npos) {
+		*line = line->substr(found, line->length());
+	}
+	found = line->find_last_not_of(trimChars);
+	if(found != std::string::npos) {
+		*line = line->substr(0, found + 1);
+	}
+	return;
 }
 
 void TChannel::Streamer(TBuffer& R__b)
 {
-   SetBit(kCanDelete);
-   UInt_t R__s, R__c;
-   if(R__b.IsReading()) { // reading from file
-      Version_t R__v = R__b.ReadVersion(&R__s, &R__c);
-      if(R__v != 0) {
-      }
-      TNamed::Streamer(R__b);
-      {
-         fMnemonicClass->Streamer(R__b);
-      }
-      {
-         TString R__str;
-         R__str.Streamer(R__b);
-         fFileName.assign(R__str.Data());
-      }
-      {
-         TString R__str;
-         R__str.Streamer(R__b);
-         fFileData.assign(R__str.Data());
-      }
-      InitChannelInput();
-      R__b.CheckByteCount(R__s, R__c, TChannel::IsA());
-   } else { // writing to file
-      R__c = R__b.WriteVersion(TChannel::IsA(), true);
-      TNamed::Streamer(R__b);
-      {
-         fMnemonicClass->Streamer(R__b);
-      }
-      {
-         TString R__str = fFileName.c_str();
-         R__str.Streamer(R__b);
-      }
-      {
-         TString R__str = fFileData.c_str();
-         R__str.Streamer(R__b);
-      }
-      R__b.SetByteCount(R__c, true);
-   }
+	SetBit(kCanDelete);
+	UInt_t R__s, R__c;
+	if(R__b.IsReading()) { // reading from file
+		Version_t R__v = R__b.ReadVersion(&R__s, &R__c);
+		if(R__v != 0) {
+		}
+		TNamed::Streamer(R__b);
+		{
+			fMnemonicClass->Streamer(R__b);
+		}
+		{
+			TString R__str;
+			R__str.Streamer(R__b);
+			fFileName.assign(R__str.Data());
+		}
+		{
+			TString R__str;
+			R__str.Streamer(R__b);
+			fFileData.assign(R__str.Data());
+		}
+		InitChannelInput();
+		R__b.CheckByteCount(R__s, R__c, TChannel::IsA());
+	} else { // writing to file
+		R__c = R__b.WriteVersion(TChannel::IsA(), true);
+		TNamed::Streamer(R__b);
+		{
+			fMnemonicClass->Streamer(R__b);
+		}
+		{
+			TString R__str = fFileName.c_str();
+			R__str.Streamer(R__b);
+		}
+		{
+			TString R__str = fFileData.c_str();
+			R__str.Streamer(R__b);
+		}
+		R__b.SetByteCount(R__c, true);
+	}
 }
 
 int TChannel::WriteToRoot(TFile* fileptr)
 {
-   /// Writes Cal File information to the tree
+	/// Writes Cal File information to the tree
 
-   TChannel* c = GetDefaultChannel();
-   // Maintain old gDirectory info
-   TDirectory* savdir = gDirectory;
+	TChannel* c = GetDefaultChannel();
+	// Maintain old gDirectory info
+	TDirectory* savdir = gDirectory;
 
-   if(c == nullptr) {
-      printf("No TChannels found to write.\n");
-   }
-   if(fileptr == nullptr) {
-      fileptr = gDirectory->GetFile();
-   }
+	if(c == nullptr) {
+		printf("No TChannels found to write.\n");
+	}
+	if(fileptr == nullptr) {
+		fileptr = gDirectory->GetFile();
+	}
 
-   fileptr->cd();
-   std::string oldoption = std::string(fileptr->GetOption());
-   if(oldoption == "READ") {
-      fileptr->ReOpen("UPDATE");
-   }
-   if(gDirectory == nullptr) {
-      printf("No file opened to write to.\n");
-   }
-   TIter iter(gDirectory->GetListOfKeys());
+	fileptr->cd();
+	std::string oldoption = std::string(fileptr->GetOption());
+	if(oldoption == "READ") {
+		fileptr->ReOpen("UPDATE");
+	}
+	if(gDirectory == nullptr) {
+		printf("No file opened to write to.\n");
+	}
+	TIter iter(gDirectory->GetListOfKeys());
 
-   bool        found         = false;
-   std::string mastername    = "Channel";
-   std::string mastertitle   = "TChannel";
-   std::string channelbuffer = fFileData; //fFileData is the old TChannel information read from file
-   WriteCalBuffer(); //replaces fFileData with the current channels
-   std::string savedata = fFileData;
+	bool        found         = false;
+	std::string mastername    = "Channel";
+	std::string mastertitle   = "TChannel";
+	std::string channelbuffer = fFileData; //fFileData is the old TChannel information read from file
+	WriteCalBuffer(); //replaces fFileData with the current channels
+	std::string savedata = fFileData;
 
-   FILE* originalstdout = stdout;
-   int   fd             = open("/dev/null", O_WRONLY); // turn off stdout.
-   stdout               = fdopen(fd, "w");
+	FILE* originalstdout = stdout;
+	int   fd             = open("/dev/null", O_WRONLY); // turn off stdout.
+	stdout               = fdopen(fd, "w");
 
 	while(TKey* key = static_cast<TKey*>(iter.Next())) {
 		if((key == nullptr) || (strcmp(key->GetClassName(), "TChannel") != 0)) {
@@ -1356,71 +1362,71 @@ int TChannel::WriteToRoot(TFile* fileptr)
 		TChannel::DeleteAllChannels();
 	}
 
-   stdout = originalstdout; // Restore stdout
+	stdout = originalstdout; // Restore stdout
 
-   ParseInputData(savedata.c_str(), "q", EPriority::kRootFile);
-   SaveToSelf(savedata.c_str());
-   TChannel::ParseInputData(channelbuffer.c_str(), "q", EPriority::kRootFile);
-   c = TChannel::GetDefaultChannel();
-   c->SetNameTitle(mastername.c_str(), mastertitle.c_str());
-   c->Write("Channel", TObject::kOverwrite);
+	ParseInputData(savedata.c_str(), "q", EPriority::kRootFile);
+	SaveToSelf(savedata.c_str());
+	TChannel::ParseInputData(channelbuffer.c_str(), "q", EPriority::kRootFile);
+	c = TChannel::GetDefaultChannel();
+	c->SetNameTitle(mastername.c_str(), mastertitle.c_str());
+	c->Write("Channel", TObject::kOverwrite);
 
-   ParseInputData(savedata.c_str(), "q", EPriority::kRootFile);
-   SaveToSelf(savedata.c_str());
+	ParseInputData(savedata.c_str(), "q", EPriority::kRootFile);
+	SaveToSelf(savedata.c_str());
 
-   printf("  %i TChannels saved to %s.\n", GetNumberOfChannels(), gDirectory->GetFile()->GetName());
-   if(oldoption == "READ") {
-      printf("  Returning %s to \"%s\" mode.\n", gDirectory->GetFile()->GetName(), oldoption.c_str());
-      fileptr->ReOpen("READ");
-   }
-   savdir->cd(); // Go back to original gDirectory
+	printf("  %i TChannels saved to %s.\n", GetNumberOfChannels(), gDirectory->GetFile()->GetName());
+	if(oldoption == "READ") {
+		printf("  Returning %s to \"%s\" mode.\n", gDirectory->GetFile()->GetName(), oldoption.c_str());
+		fileptr->ReOpen("READ");
+	}
+	savdir->cd(); // Go back to original gDirectory
 
-   return GetNumberOfChannels();
+	return GetNumberOfChannels();
 }
 
 int TChannel::GetDetectorNumber() const
 {
-   if(fDetectorNumber > -1) { //||fDetectorNumber==0x0fffffff)
-      return fDetectorNumber;
-   }
+	if(fDetectorNumber > -1) { //||fDetectorNumber==0x0fffffff)
+		return fDetectorNumber;
+	}
 
-   fDetectorNumber = static_cast<int32_t>(fMnemonic.Value()->ArrayPosition());
-   return fDetectorNumber;
+	fDetectorNumber = static_cast<int32_t>(fMnemonic.Value()->ArrayPosition());
+	return fDetectorNumber;
 }
 
 int TChannel::GetSegmentNumber() const
 {
-   if(fSegmentNumber > -1) {
-      return fSegmentNumber;
-   }
+	if(fSegmentNumber > -1) {
+		return fSegmentNumber;
+	}
 
-   std::string name = GetName();
-   if(name.length() < 10) {
-      fSegmentNumber = 0;
-   } else {
-      TString str = name[9];
-      if(str.IsDigit()) {
-         std::string buf;
-         buf.clear();
-         buf.assign(name, 7, 3);
-         fSegmentNumber = (int32_t)atoi(buf.c_str());
-      } else {
-         fSegmentNumber = static_cast<int32_t>(fMnemonic.Value()->Segment());
-      }
-   }
+	std::string name = GetName();
+	if(name.length() < 10) {
+		fSegmentNumber = 0;
+	} else {
+		TString str = name[9];
+		if(str.IsDigit()) {
+			std::string buf;
+			buf.clear();
+			buf.assign(name, 7, 3);
+			fSegmentNumber = (int32_t)atoi(buf.c_str());
+		} else {
+			fSegmentNumber = static_cast<int32_t>(fMnemonic.Value()->Segment());
+		}
+	}
 
-   return fSegmentNumber;
+	return fSegmentNumber;
 }
 
 int TChannel::GetCrystalNumber() const
 {
-   if(fCrystalNumber > -1) {
-      return fCrystalNumber;
-   }
+	if(fCrystalNumber > -1) {
+		return fCrystalNumber;
+	}
 
 	fCrystalNumber = fMnemonic.Value()->NumericArraySubPosition();
 
-   return fCrystalNumber;
+	return fCrystalNumber;
 }
 
 double TChannel::GetEnergyNonlinearity(double en) const
