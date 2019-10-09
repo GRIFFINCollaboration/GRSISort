@@ -535,56 +535,36 @@ void TBGSubtraction::DrawPeakMarkers()
       fPeakMarker = new GMarker();
    }
    if(fSubtractedHist){
-      fLowPeakMarker->localx  = fPeakLowValue;
-      fHighPeakMarker->localx = fPeakHighValue;
-      fPeakMarker->localx     = fPeakValue;
-      fLowPeakMarker->binx    = fSubtractedHist->GetXaxis()->FindBin(fLowPeakMarker->localx);
-      fHighPeakMarker->binx   = fSubtractedHist->GetXaxis()->FindBin(fHighPeakMarker->localx);
-      fPeakMarker->binx       = fSubtractedHist->GetXaxis()->FindBin(fPeakMarker->localx);
+		fLowPeakMarker->SetHist(fSubtractedHist);
+		fHighPeakMarker->SetHist(fSubtractedHist);
+		fPeakMarker->SetHist(fSubtractedHist);
+
+      fLowPeakMarker->SetLocalX(fPeakLowValue);
+      fHighPeakMarker->SetLocalX(fPeakHighValue);
+      fPeakMarker->SetLocalX(fPeakValue);
+      fLowPeakMarker->SetBinX(fSubtractedHist->GetXaxis()->FindBin(fLowPeakMarker->GetLocalX()));
+      fHighPeakMarker->SetBinX(fSubtractedHist->GetXaxis()->FindBin(fHighPeakMarker->GetLocalX()));
+      fPeakMarker->SetBinX(fSubtractedHist->GetXaxis()->FindBin(fPeakMarker->GetLocalX()));
    
-      double low_peak_bin_edge  = fSubtractedHist->GetXaxis()->GetBinLowEdge(fLowPeakMarker->binx);
-      double high_peak_bin_edge = fSubtractedHist->GetXaxis()->GetBinLowEdge(fHighPeakMarker->binx);
-      double peak_bin_edge       = fSubtractedHist->GetXaxis()->GetBinLowEdge(fPeakMarker->binx);
+      double low_peak_bin_edge  = fSubtractedHist->GetXaxis()->GetBinLowEdge(fLowPeakMarker->GetBinX());
+      double high_peak_bin_edge = fSubtractedHist->GetXaxis()->GetBinLowEdge(fHighPeakMarker->GetBinX());
+      double peak_bin_edge      = fSubtractedHist->GetXaxis()->GetBinLowEdge(fPeakMarker->GetBinX());
   
-      if((fLowPeakMarker->linex) == nullptr) {
-         fLowPeakMarker->linex =
-            new TLine(low_peak_bin_edge, fSubtractedHist->GetMinimum(), low_peak_bin_edge, fSubtractedHist->GetMaximum());
-         fLowPeakMarker->SetColor(kMagenta);
-      }
+		fLowPeakMarker->SetLineX(low_peak_bin_edge, low_peak_bin_edge, fSubtractedHist->GetMinimum(), fSubtractedHist->GetMaximum());
+		fLowPeakMarker->SetColor(kMagenta);
 
-      if((fHighPeakMarker->linex) == nullptr) {
-         fHighPeakMarker->linex =
-            new TLine(high_peak_bin_edge, fSubtractedHist->GetMinimum(), high_peak_bin_edge, fSubtractedHist->GetMaximum());
-         fHighPeakMarker->SetColor(kMagenta);
-      }
-      if((fPeakMarker->linex) == nullptr) {
-         fPeakMarker->linex =
-            new TLine(peak_bin_edge, fSubtractedHist->GetMinimum(), peak_bin_edge, fSubtractedHist->GetMaximum());
-         fPeakMarker->SetColor(kMagenta);
-         fPeakMarker->SetStyle(kDashed);
-      }
+		fHighPeakMarker->SetLineX(high_peak_bin_edge, high_peak_bin_edge, fSubtractedHist->GetMinimum(), fSubtractedHist->GetMaximum());
+		fHighPeakMarker->SetColor(kMagenta);
 
-      fLowPeakMarker->linex->SetX1(low_peak_bin_edge);
-      fLowPeakMarker->linex->SetX2(low_peak_bin_edge);
-      fLowPeakMarker->linex->SetY1(fSubtractedHist->GetMinimum());
-      fLowPeakMarker->linex->SetY2(fSubtractedHist->GetMaximum());
-      
-      fHighPeakMarker->linex->SetX1(high_peak_bin_edge);
-      fHighPeakMarker->linex->SetX2(high_peak_bin_edge);
-      fHighPeakMarker->linex->SetY1(fSubtractedHist->GetMinimum());
-      fHighPeakMarker->linex->SetY2(fSubtractedHist->GetMaximum());
-
-      fPeakMarker->linex->SetX1(peak_bin_edge);
-      fPeakMarker->linex->SetX2(peak_bin_edge);
-      fPeakMarker->linex->SetY1(fSubtractedHist->GetMinimum());
-      fPeakMarker->linex->SetY2(fSubtractedHist->GetMaximum());
+		fPeakMarker->SetLineX(peak_bin_edge, peak_bin_edge, fSubtractedHist->GetMinimum(), fSubtractedHist->GetMaximum());
+		fPeakMarker->SetColor(kMagenta);
+		fPeakMarker->SetStyle(kDashed);
 
       fGateCanvas->GetCanvas()->cd();
-      fLowPeakMarker->linex->Draw();
-      fHighPeakMarker->linex->Draw();
-      fPeakMarker->linex->Draw();
+      fLowPeakMarker->Draw();
+      fHighPeakMarker->Draw();
+      fPeakMarker->Draw();
       fGateCanvas->GetCanvas()->Update();
-
    }
 }
 
@@ -594,41 +574,28 @@ void TBGSubtraction::DrawBGMarkers(TGCheckButton *&check_button, GMarker *&low_m
    if((check_button != nullptr) && check_button->IsDown()) {
       if(low_marker == nullptr) {
          low_marker = new GMarker();
+			low_marker->SetHist(fProjection);
       }
       if(high_marker == nullptr) {
          high_marker = new GMarker();
+			high_marker->SetHist(fProjection);
       }
-      low_marker->localx         = low_entry->GetNumber();
-      high_marker->localx        = high_entry->GetNumber();
-      low_marker->binx           = fProjection->GetXaxis()->FindBin(low_marker->localx);
-      high_marker->binx          = fProjection->GetXaxis()->FindBin(high_marker->localx);
-      double low_bg_bin_edge     = fProjection->GetXaxis()->GetBinLowEdge(low_marker->binx);
-      double high_bg_bin_edge    = fProjection->GetXaxis()->GetBinLowEdge(high_marker->binx);
+      low_marker->SetLocalX(low_entry->GetNumber());
+      high_marker->SetLocalX(high_entry->GetNumber());
+      low_marker->SetBinX(fProjection->GetXaxis()->FindBin(low_marker->GetLocalX()));
+      high_marker->SetBinX(fProjection->GetXaxis()->FindBin(high_marker->GetLocalX()));
+      double low_bg_bin_edge     = fProjection->GetXaxis()->GetBinLowEdge(low_marker->GetBinX());
+      double high_bg_bin_edge    = fProjection->GetXaxis()->GetBinLowEdge(high_marker->GetBinX());
    
-      if((low_marker->linex) == nullptr) {
-         low_marker->linex =
-            new TLine(low_bg_bin_edge, fProjection->GetMinimum(), low_bg_bin_edge, fProjection->GetMaximum());
-         low_marker->SetColor(color);
-      }
+		low_marker->SetLineX(low_bg_bin_edge, low_bg_bin_edge, fProjection->GetMinimum(), fProjection->GetMaximum());
+		low_marker->SetColor(color);
 
-      if((high_marker->linex) == nullptr) {
-         high_marker->linex =
-            new TLine(high_bg_bin_edge, fProjection->GetMinimum(), high_bg_bin_edge, fProjection->GetMaximum());
-         high_marker->SetColor(color);
-      }
-      low_marker->linex->SetX1(low_bg_bin_edge);
-      low_marker->linex->SetX2(low_bg_bin_edge);
-      low_marker->linex->SetY1(fProjection->GetMinimum());
-      low_marker->linex->SetY2(fProjection->GetMaximum());
-
-      high_marker->linex->SetX1(high_bg_bin_edge);
-      high_marker->linex->SetX2(high_bg_bin_edge);
-      high_marker->linex->SetY1(fProjection->GetMinimum());
-      high_marker->linex->SetY2(fProjection->GetMaximum());
+		high_marker->SetLineX(high_bg_bin_edge, high_bg_bin_edge, fProjection->GetMinimum(), fProjection->GetMaximum());
+		high_marker->SetColor(color);
 
       fProjectionCanvas->GetCanvas()->cd();
-      low_marker->linex->Draw();
-      high_marker->linex->Draw();
+      low_marker->Draw();
+      high_marker->Draw();
       fProjectionCanvas->GetCanvas()->Update();
    }
    
@@ -655,43 +622,30 @@ void TBGSubtraction::DrawGateMarkers()
 {
    if(fLowGateMarker == nullptr) {
       fLowGateMarker = new GMarker();
+		fLowGateMarker->SetHist(fProjection);
    }
    if(fHighGateMarker == nullptr) {
       fHighGateMarker = new GMarker();
+		fHighGateMarker->SetHist(fProjection);
    }
 
-   fLowGateMarker->localx  = fGateEntryLow->GetNumber();
-   fHighGateMarker->localx = fGateEntryHigh->GetNumber();
-   fLowGateMarker->binx    = fProjection->GetXaxis()->FindBin(fLowGateMarker->localx);
-   fHighGateMarker->binx   = fProjection->GetXaxis()->FindBin(fHighGateMarker->localx);
+   fLowGateMarker->SetLocalX(fGateEntryLow->GetNumber());
+   fHighGateMarker->SetLocalX(fGateEntryHigh->GetNumber());
+   fLowGateMarker->SetBinX(fProjection->GetXaxis()->FindBin(fLowGateMarker->GetLocalX()));
+   fHighGateMarker->SetBinX(fProjection->GetXaxis()->FindBin(fHighGateMarker->GetLocalX()));
 
-   double low_gate_bin_edge  = fProjection->GetXaxis()->GetBinLowEdge(fLowGateMarker->binx);
-   double high_gate_bin_edge = fProjection->GetXaxis()->GetBinLowEdge(fHighGateMarker->binx);
-   if((fLowGateMarker->linex) == nullptr) {
-      fLowGateMarker->linex =
-         new TLine(low_gate_bin_edge, fProjection->GetMinimum(), low_gate_bin_edge, fProjection->GetMaximum());
-      fLowGateMarker->SetColor(kGreen);
-   }
+   double low_gate_bin_edge  = fProjection->GetXaxis()->GetBinLowEdge(fLowGateMarker->GetBinX());
+   double high_gate_bin_edge = fProjection->GetXaxis()->GetBinLowEdge(fHighGateMarker->GetBinX());
 
-   if((fHighGateMarker->linex) == nullptr) {
-      fHighGateMarker->linex =
-         new TLine(high_gate_bin_edge, fProjection->GetMinimum(), high_gate_bin_edge, fProjection->GetMaximum());
-      fHighGateMarker->SetColor(kGreen);
-   }
+	fLowGateMarker->SetLineX(low_gate_bin_edge, low_gate_bin_edge, fProjection->GetMinimum(), fProjection->GetMaximum());
+	fLowGateMarker->SetColor(kGreen);
 
-   fLowGateMarker->linex->SetX1(low_gate_bin_edge);
-   fLowGateMarker->linex->SetX2(low_gate_bin_edge);
-   fLowGateMarker->linex->SetY1(fProjection->GetMinimum());
-   fLowGateMarker->linex->SetY2(fProjection->GetMaximum());
-
-   fHighGateMarker->linex->SetX1(high_gate_bin_edge);
-   fHighGateMarker->linex->SetX2(high_gate_bin_edge);
-   fHighGateMarker->linex->SetY1(fProjection->GetMinimum());
-   fHighGateMarker->linex->SetY2(fProjection->GetMaximum());
+	fHighGateMarker->SetLineX(high_gate_bin_edge, high_gate_bin_edge, fProjection->GetMinimum(), fProjection->GetMaximum());
+	fHighGateMarker->SetColor(kGreen);
 
    fProjectionCanvas->GetCanvas()->cd();
-   fLowGateMarker->linex->Draw();
-   fHighGateMarker->linex->Draw();
+   fLowGateMarker->Draw();
+   fHighGateMarker->Draw();
 
    fProjectionCanvas->GetCanvas()->Update();
 
