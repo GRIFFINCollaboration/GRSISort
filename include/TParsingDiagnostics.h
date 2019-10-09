@@ -36,7 +36,7 @@ class TParsingDiagnosticsData {
 public:
 	TParsingDiagnosticsData();
 	TParsingDiagnosticsData(const std::shared_ptr<const TFragment>& frag);
-	~TParsingDiagnosticsData();
+	~TParsingDiagnosticsData() {}
 
 	void Update(const std::shared_ptr<const TFragment>& frag);
 	void Print(UInt_t address) const;
