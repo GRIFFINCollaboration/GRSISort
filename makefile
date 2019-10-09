@@ -44,7 +44,7 @@ LINKFLAGS_PREFIX += -Wl,--no-as-needed
 SHAREDSWITCH = -shared -Wl,-soname,# NO ENDING SPACE
 HEAD=head
 FIND=find
-LIBRARY_DIRS   := $(shell $(FIND) libraries/* -type d -links 2 2> /dev/null | grep -v SourceData | grep -v SRIMData)
+LIBRARY_DIRS   := $(shell $(FIND) libraries/* -type d -maxdepth 2 2> /dev/null | grep -v SourceData | grep -v SRIMData)
 endif
 
 ROOTCINT=$(shell command -v rootcint 2> /dev/null)
