@@ -38,7 +38,9 @@ void TDetector::Copy(TObject& rhs) const
    TObject::Copy(rhs);
 	static_cast<TDetector&>(rhs).fHits.resize(fHits.size());
 	for(size_t i = 0; i < fHits.size(); ++i) {
-		static_cast<TDetector&>(rhs).fHits[i] = new TDetectorHit(*fHits[i]);
+		// we need to use IsA()->New() to make a new hit of whatever derived type this actually is
+		static_cast<TDetector&>(rhs).fHits[i] = static_cast<TDetectorHit*>(fHits[i]->IsA()->New());
+		*static_cast<TDetector&>(rhs).fHits[i] = *fHits[i];
 	}
 }
 
