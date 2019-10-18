@@ -146,10 +146,12 @@ public:
    const std::vector<Short_t>* GetWaveform() const { return &fWaveform; } //!<!
    TChannel*                   GetChannel() const
    {
-      if(!IsChannelSet()) {
+		// this is a clutch used because the transient bits aren't working
+		// we shouldn't need to check that the channel is a nullptr
+      if(!IsChannelSet() || fChannel == nullptr) {
          fChannel = TChannel::GetChannel(fAddress);
          SetHitBit(EBitFlag::kIsChannelSet, true);
-      }
+		}
       return fChannel;
    } //!<!
 
