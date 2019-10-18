@@ -53,7 +53,7 @@ public:
    } //!<!
 #endif
 
-   void Copy(TObject&) const override;                        //!<!
+   virtual void Copy(TObject&) const override;                        //!<!
    void Clear(Option_t* = "") override { fHits.clear(); } //!<!
    virtual void ClearTransients();                            //!<!
    void Print(Option_t* opt = "") const override;             //!<!
