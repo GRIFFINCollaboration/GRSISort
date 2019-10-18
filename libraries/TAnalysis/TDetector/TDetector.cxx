@@ -26,6 +26,9 @@ TDetector::TDetector(const TDetector& rhs) : TObject()
 TDetector::~TDetector()
 {
    /// Default Destructor.
+	for(auto hit : fHits) {
+		delete hit;
+	}
 }
 
 void TDetector::Copy(TObject& rhs) const
@@ -33,7 +36,10 @@ void TDetector::Copy(TObject& rhs) const
    // if(!rhs.InheritsFrom("TDetector"))
    //   return;
    TObject::Copy(rhs);
-	static_cast<TDetector&>(rhs).fHits = fHits;
+	static_cast<TDetector&>(rhs).fHits.resize(fHits.size());
+	for(size_t i = 0; i < fHits.size(); ++i) {
+		static_cast<TDetector&>(rhs).fHits[i] = new TDetectorHit(*fHits[i]);
+	}
 }
 
 void TDetector::Print(Option_t*) const
