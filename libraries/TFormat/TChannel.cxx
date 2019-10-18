@@ -1016,9 +1016,10 @@ Int_t TChannel::ReadCalFile(const char* filename)
       return -2;
    }
 
-   auto* buffer = new char[length];
+   auto* buffer = new char[length+1];//+1 for the null character to terminate the string
    infile.seekg(0, std::ios::beg);
    infile.read(buffer, length);
+	buffer[length] = '\0';
 
    int channels_found = ParseInputData(const_cast<const char*>(buffer), "", EPriority::kInputFile);
    SaveToSelf(infilename.c_str());
