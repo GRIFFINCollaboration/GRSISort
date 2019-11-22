@@ -1,4 +1,4 @@
-//TSinglePeak.h TRWPeak.h TPeakFitter.h TABPeak.h TAB3Peak.h
+//TSinglePeak.h TRWPeak.h TPeakFitter.h TABPeak.h TAB3Peak.h TGauss.h
 
 #ifdef __CINT__
 
@@ -13,6 +13,7 @@
 #pragma link C++ class TABPeak+;
 #pragma link C++ class TAB3Peak+;
 #pragma link C++ class TRWPeak+;
+#pragma link C++ class TGauss+;
 #pragma link C++ class TPeakFitter+;
 
 #endif
