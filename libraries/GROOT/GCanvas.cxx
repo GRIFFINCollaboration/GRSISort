@@ -740,6 +740,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
       }
       break;
    case kKey_l:
+   case kKey_y:
       if(GetLogy() != 0) {
          // Show full y range, not restricted to positive values.
          for(auto& hist : hists) {
@@ -1449,9 +1450,9 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
    case kKey_l:
    case kKey_z:
       if(GetLogz() != 0) {
-         // Show full y range, not restricted to positive values.
+         // Show full z range, not restricted to positive values.
          for(auto& hist : hists) {
-            hist->GetYaxis()->UnZoom();
+            hist->GetZaxis()->UnZoom();
          }
          TVirtualPad* cpad = gPad;
          cd();
@@ -1460,8 +1461,8 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       } else {
          // Only show plot from 0 up when in log scale.
          for(auto& hist : hists) {
-            if(hist->GetYaxis()->GetXmin() < 0) {
-               hist->GetYaxis()->SetRangeUser(0, hist->GetYaxis()->GetXmax());
+            if(hist->GetZaxis()->GetXmin() < 0) {
+               hist->GetZaxis()->SetRangeUser(0, hist->GetYaxis()->GetXmax());
             }
          }
          TVirtualPad* cpad = gPad;

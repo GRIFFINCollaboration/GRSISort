@@ -1,7 +1,8 @@
-
-
+#include <iostream>
 #include<stdio.h>
 #include<string.h>
+
+#include "TH1.h"
 
 /* ======================================================================= */
 void swapb8(char *buf)
@@ -69,11 +70,11 @@ int get_file_rec(FILE *fd, void *data, int maxbytes, int swap_bytes)
   //warn("ERROR: record is too big for get_file_rec\n"
   //    "       max size = %d, record size = %d.\n",
   //     maxbytes, reclen);
-	cout<<"ERR1 \n";
+	std::cout<<"ERR1"<<std::endl;
   return 0;
  ERR2:
   //warn("ERROR during read in get_file_rec.\n");
-	cout<<"ERR2 \n";  
+	std::cout<<"ERR2"<<std::endl;
 	return 0;
 
 return 0;
@@ -81,7 +82,7 @@ return 0;
 /* ====================================================================== */
 
 
-int load_spe(char *filename,TH1F* histo)
+int load_spe(const char *filename,TH1F* histo)
 {
 	int idim1,idim2,j,rl;
 	int swap = -1;
@@ -115,15 +116,15 @@ int load_spe(char *filename,TH1F* histo)
 
 	for(j=0;j<numch;j++)
 	{
-		//if(sp[j]>0){cout<<j<<"\t"<<sp[j]<<endl;	}
+		//if(sp[j]>0){std::cout<<j<<"\t"<<sp[j]<<endl;	}
 		//histo->SetBinContent(j,sp[j]);
 		temp->Fill(j,sp[j]);
 	}	
 
-	*histo = (TH1F*)temp->Clone();
+	histo = (TH1F*)temp->Clone();
 	histo->SetName(filename);
 
-	cout<<"loaded\n";
+	std::cout<<"loaded"<<std::endl;
 	return 0;
 }
 

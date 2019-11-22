@@ -189,8 +189,6 @@ Bool_t TGRSISelector::Process(Long64_t entry)
 		current_file = fChain->GetCurrentFile();
 		std::cout<<"Starting to sort: "<<current_file->GetName()<<std::endl;
 		TChannel::ReadCalFromFile(current_file);
-		//TRunInfo::Get()->ReadInfoFromFile(current_file);
-		//   TChannel::WriteCalFile();
 	}
 
 	fChain->GetEntry(entry);
@@ -263,6 +261,7 @@ void TGRSISelector::Terminate()
 		std::cerr<<"failed to find TPPG, can't write it!"<<std::endl;
 	}
 	options->AnalysisOptions()->WriteToFile(outputFile);
+	TChannel::WriteToRoot();
 	outputFile->Close();
 }
 

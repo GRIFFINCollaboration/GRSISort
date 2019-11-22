@@ -20,6 +20,8 @@ TAnalysisWriteLoopClient::TAnalysisWriteLoopClient(std::string name, std::string
 	}
    fOutputFile->Write();
 
+	fOutputFile->cd();
+
 	fEventTree  = new TTree("AnalysisTree", "AnalysisTree");
 	if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
 		fOutOfOrderTree = new TTree("OutOfOrderTree", "OutOfOrderTree");

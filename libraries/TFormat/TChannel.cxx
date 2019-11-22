@@ -1320,7 +1320,8 @@ int TChannel::WriteToRoot(TFile* fileptr)
 	TDirectory* savdir = gDirectory;
 
 	if(c == nullptr) {
-		printf("No TChannels found to write.\n");
+		std::cout<<"No TChannels found to write."<<std::endl;
+		return 0;
 	}
 	if(fileptr == nullptr) {
 		fileptr = gDirectory->GetFile();
