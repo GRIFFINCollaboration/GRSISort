@@ -206,11 +206,6 @@ int main(int argc, char** argv)
    std::cout<<DCYAN<<"************************* END COMPILATION ******************************"<<RESET_COLOR
             <<std::endl;
 
-   if(!gGRSIOpt->CalInputFiles().empty()) {
-      std::cout<<DRED<<"Cal Files are currently ignored in GRSIProof, please write calibration to tree"
-               <<RESET_COLOR<<std::endl;
-   }
-
    if(!gGRSIOpt->InputFiles().empty()) {
       std::cout<<DRED<<"Can't Proof a Midas file..."<<RESET_COLOR<<std::endl;
    }
