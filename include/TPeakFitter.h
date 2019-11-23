@@ -46,6 +46,7 @@ public:
    virtual void Print(Option_t* opt = "") const override;
 
    TF1* GetBackground() { return fBGToFit; }
+   TF1* GetFitFunction() { return fTotalFitFunction; }
    void SetRange(const Double_t &low, const Double_t &high);
    Int_t GetNParameters() const;
    void Fit(TH1* fit_hist,Option_t* opt="");
