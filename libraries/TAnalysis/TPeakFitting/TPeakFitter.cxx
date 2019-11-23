@@ -98,6 +98,8 @@ void TPeakFitter::Fit(TH1* fit_hist,Option_t *opt)
 		//Once we do the fit, we want to update all of the Peak parameters.
 		UpdatePeakParameters(fit_res,fit_hist);
 	}
+	fit_hist->Draw("hist");
+	fTotalFitFunction->Draw("same");
 	fPeaksToFit.front()->DrawBackground("same");
 
 	std::cout << "****************" <<std::endl;
