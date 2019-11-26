@@ -136,7 +136,11 @@ void TChannel::SetName(const char* tmpName)
 void TChannel::InitChannelInput()
 {
    int channels_found = ParseInputData(fFileData.c_str(), "q", EPriority::kRootFile);
-   printf("Successfully read %i TChannels from" CYAN " %s" RESET_COLOR "\n", channels_found, gFile->GetName());
+	if(gFile != nullptr) {
+		std::cout<<"Successfully read "<<channels_found<<" TChannels from "<<CYAN<<gFile->GetName()<<RESET_COLOR<<std::endl;
+	} else {
+		std::cout<<"Successfully read "<<channels_found<<" TChannels"<<std::endl;
+	}
 }
 
 bool TChannel::CompareChannels(const TChannel& chana, const TChannel& chanb)

@@ -31,7 +31,6 @@ template <typename key_type, typename mapped_type, typename key_compare = std::l
 class TGRSIMap : public std::map<key_type, mapped_type, key_compare, allocator_type>
 {
 public:
-	//TGRSIMap() : std::map<key_type, mapped_type, key_compare, allocator_type>() {}
 	TGRSIMap(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : std::map<key_type, mapped_type, key_compare, allocator_type>(comp, alloc) {}
 	TGRSIMap(const allocator_type& alloc) : std::map<key_type, mapped_type, key_compare, allocator_type>(alloc) {}
 	template <class InputIterator>
@@ -42,10 +41,13 @@ public:
 	TGRSIMap(const TGRSIMap& x, const allocator_type& alloc) : std::map<key_type, mapped_type, key_compare, allocator_type>(x, alloc) {}
 	TGRSIMap(TGRSIMap&& x) : std::map<key_type, mapped_type, key_compare, allocator_type>(x) {}
 	TGRSIMap(TGRSIMap&& x, const allocator_type& alloc) : std::map<key_type, mapped_type, key_compare, allocator_type>(x, alloc) {}
-	//TGRSIMap(initializer_list<value_type> il,
-	//		const key_compare& comp = key_compare(),
-	//		const allocator_type& alloc = allocator_type()) : std::map<key_type, mapped_type, key_compare, allocator_type>(il, comp, alloc) {}
 	~TGRSIMap() {}
+
+	void Print() {
+		for(auto it : *this) {
+			std::cout<<it.first<<" - "<<it.second<<std::endl;
+		}
+	}
 
 	mapped_type& at(const key_type& k) { 
 		try {
