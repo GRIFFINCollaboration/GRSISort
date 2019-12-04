@@ -50,7 +50,7 @@ public:
    static TGRSIProof* Open(const char* worker = "")
    {
       TGRSIProof* p = static_cast<TGRSIProof*>(TProof::Open(worker));
-      p->LoadLibsIntoProof();
+		if(p != nullptr) p->LoadLibsIntoProof();
       return p;
    }
    void LoadLibsIntoProof()

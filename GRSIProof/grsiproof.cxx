@@ -85,6 +85,7 @@ void Analyze(const char* tree_type)
 			std::cout<<DRED<<"Exception when processing chain: "<<e.detail()<<RESET_COLOR<<std::endl;
 			throw e;
 		}
+      std::cout<<"Done with "<<(Form("%s", macro_it.c_str()))<<std::endl;
    }
 
    // Delete the proof chain now that we are done with it.
@@ -222,7 +223,20 @@ int main(int argc, char** argv)
    }
 
    if(gGRSIProof == nullptr) {
-      std::cout<<"Can't connect to proof"<<std::endl;
+      std::cout<<"Couldn't connect to proof on first attempt, trying again"<<std::endl;
+		if(gGRSIOpt->GetMaxWorkers() >= 0) {
+			std::cout<<"Opening proof with '"<<Form("workers=%d", gGRSIOpt->GetMaxWorkers())<<"'"<<std::endl;
+			gGRSIProof = TGRSIProof::Open(Form("workers=%d", gGRSIOpt->GetMaxWorkers()));
+		} else if(gGRSIOpt->SelectorOnly()) {
+			std::cout<<"Opening proof with one worker (selector-only)"<<std::endl;
+			gGRSIProof = TGRSIProof::Open("workers=1");
+		} else {
+			gGRSIProof = TGRSIProof::Open("");
+		}
+   }
+
+   if(gGRSIProof == nullptr) {
+      std::cout<<"Still can't connect to proof, try running it again?"<<std::endl;
       return 0;
    }
 
