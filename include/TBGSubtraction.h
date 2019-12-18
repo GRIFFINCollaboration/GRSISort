@@ -1,10 +1,10 @@
 #ifndef _TBGSUBTRACTION_H
 #define _TBGSUBTRACTION_H
-#include <TGClient.h>
-#include <TCanvas.h>
-#include <TF1.h>
-#include <TRandom.h>
-#include <TGButton.h>
+#include "TGClient.h"
+#include "TCanvas.h"
+#include "TF1.h"
+#include "TRandom.h"
+#include "TGButton.h"
 #include "TGDoubleSlider.h"
 #include "TGTripleSlider.h"
 #include "TGSlider.h"
@@ -13,10 +13,10 @@
 #include "TGNumberEntry.h"
 #include "TGLabel.h"
 #include "TGStatusBar.h"
-#include <TGFrame.h>
+#include "TGFrame.h"
 #include "TGComboBox.h"
-#include <TRootEmbeddedCanvas.h>
-#include <RQ_OBJECT.h>
+#include "TRootEmbeddedCanvas.h"
+#include "RQ_OBJECT.h"
 
 #include "TPeak.h"
 
@@ -24,6 +24,19 @@
 #include "TH2.h"
 #include "GCanvas.h"
 #include "TFile.h"
+
+/** \addtogroup GUI
+ *  @{
+ */
+
+/////////////////////////////////////////////////////////////////
+///
+/// \class TBGSubtraction
+///
+/// This class implements a GUI to perform projections of a 2D-Matrix
+/// with proper background subtraction.
+///
+/////////////////////////////////////////////////////////////////
 
 class TBGSubtraction : public TGMainFrame {
 	// these enums are used to communicate with ROOT classes
@@ -174,6 +187,7 @@ private:
    void BuildInterface();
    void ResetInterface();
    void MakeConnections();
+   void Disconnect();
    void InitializeInterface();
    void StatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected);
    void DrawBGMarkers(TGCheckButton *&check_button, GMarker *&low_marker, GMarker *&high_marker, TGNumberEntry *&low_entry, TGNumberEntry *&high_entry, Int_t color = kBlue);
