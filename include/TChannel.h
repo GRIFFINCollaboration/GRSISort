@@ -272,6 +272,7 @@ public:
    static void WriteCalFile(const std::string& outfilename = "");
    static void WriteCTCorrections(const std::string& outfilename = "");
    static void WriteCalBuffer(Option_t* opt = "");
+	static void ReadEnergyNonlinearities(TFile*, const char* graphName = "EnergyNonlinearity0x");
 
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
@@ -289,6 +290,8 @@ private:
    static std::string fFileData;
    static void        InitChannelInput();
    static void        SaveToSelf(const char*);
+
+	static Int_t ReadFile(TFile* tempf);
 
    /// \cond CLASSIMP
    ClassDefOverride(TChannel, 5) // Contains the Digitizer Information

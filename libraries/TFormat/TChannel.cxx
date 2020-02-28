@@ -942,17 +942,8 @@ Int_t TChannel::ReadCalFromCurrentFile(Option_t*)
    }
 
    TFile* tempf = gFile->CurrentFile();
-   TList* list  = tempf->GetListOfKeys();
-   TIter  iter(list);
 
-   while(TKey* key = static_cast<TKey*>(iter.Next())) {
-      if((key == nullptr) || (strcmp(key->GetClassName(), "TChannel") != 0)) {
-         continue;
-      }
-      key->ReadObj();
-      return GetNumberOfChannels();
-   }
-   return 0;
+	return ReadFile(tempf);
 }
 
 Int_t TChannel::ReadCalFromFile(TFile* tempf, Option_t*)
@@ -962,17 +953,7 @@ Int_t TChannel::ReadCalFromFile(TFile* tempf, Option_t*)
       return 0;
    }
 
-   TList* list = tempf->GetListOfKeys();
-   TIter  iter(list);
-
-   while(TKey* key = static_cast<TKey*>(iter.Next())) {
-      if((key == nullptr) || (strcmp(key->GetClassName(), "TChannel") != 0)) {
-         continue;
-      }
-      key->ReadObj();
-      return GetNumberOfChannels();
-   }
-   return 0;
+	return ReadFile(tempf);
 }
 
 Int_t TChannel::ReadCalFromTree(TTree* tree, Option_t*)
@@ -983,9 +964,14 @@ Int_t TChannel::ReadCalFromTree(TTree* tree, Option_t*)
    }
 
    TFile* tempf = tree->GetCurrentFile();
+
+	return ReadFile(tempf);
+}
+
+Int_t TChannel::ReadFile(TFile* tempf)
+{
    TList* list  = tempf->GetListOfKeys();
    TIter  iter(list);
-
    while(TKey* key = static_cast<TKey*>(iter.Next())) {
       if((key == nullptr) || (strcmp(key->GetClassName(), "TChannel") != 0)) {
          continue;
@@ -1447,6 +1433,25 @@ void TChannel::SetupEnergyNonlinearity()
 {
 	fEnergyNonlinearity.Address()->Sort();
 	fEnergyNonlinearity.Address()->SetBit(TGraph::kIsSortedX);
-	fEnergyNonlinearity.Address()->SetName(Form("EnergyNonlinearity0x%08x", fAddress));
-	fEnergyNonlinearity.Address()->SetTitle(Form("Energy nonlinearity of channel 0x%08x", fAddress));
+	fEnergyNonlinearity.Address()->SetName(Form("EnergyNonlinearity0x%04x", fAddress));
+	fEnergyNonlinearity.Address()->SetTitle(Form("Energy nonlinearity of channel 0x%04x", fAddress));
+}
+
+void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName)
+{
+	/// Read energy nonlinearities as TGraphErrors from provided root file using "graphName%x" as names
+   TList* list  = file->GetListOfKeys();
+   TIter  iter(list);
+   while(TKey* key = static_cast<TKey*>(iter.Next())) {
+      if(!key->InheritsFrom(TGraph::Class()) || strncmp(key->GetName(), graphName, strlen(graphName)) != 0) {
+         continue;
+      }
+		// get address from keys name
+		std::stringstream str;
+		str<<std::hex<<(key->GetName()+strlen(graphName));
+		unsigned int address;
+		str>>address;
+		GetChannel(address)->fEnergyNonlinearity.Set(*(static_cast<TGraph*>(key->ReadObj())), EPriority::kRootFile);
+   }
+	SetupEnergyNonlinearity();
 }
