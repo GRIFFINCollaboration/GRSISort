@@ -1211,7 +1211,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 					while(!(ss>>x>>y).fail()) {
 						channel->AddEnergyNonlinearityPoint(x, y);
 					}
-					//channel->SetupEnergyNonlinearity();	
+					channel->SetupEnergyNonlinearity();	
 				} else if(type.compare("EFFCOEFF") == 0) {
 					channel->DestroyEFFCal();
 					channel->fEFFCoefficients.SetPriority(pr);
@@ -1461,6 +1461,6 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName)
 		unsigned int address;
 		str>>address;
 		GetChannel(address)->fEnergyNonlinearity.Set(*(static_cast<TGraph*>(key->ReadObj())), EPriority::kRootFile);
+		GetChannel(address)->SetupEnergyNonlinearity();
 	}
-	//SetupEnergyNonlinearity();
 }
