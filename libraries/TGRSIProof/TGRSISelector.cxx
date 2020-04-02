@@ -209,6 +209,7 @@ void TGRSISelector::SlaveTerminate()
 	/// on each slave server.
 
 	EndOfSort();
+	fOutput->Add(new TChannel(TChannel::GetChannelMap()->begin()->second));
 }
 
 void TGRSISelector::Terminate()
