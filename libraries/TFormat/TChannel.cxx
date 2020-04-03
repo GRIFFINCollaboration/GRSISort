@@ -1452,7 +1452,8 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName)
 	TList* list  = file->GetListOfKeys();
 	TIter  iter(list);
 	while(TKey* key = static_cast<TKey*>(iter.Next())) {
-		if(!key->InheritsFrom(TGraph::Class()) || strncmp(key->GetName(), graphName, strlen(graphName)) != 0) {
+		TClass* cl = TClass::GetClass(key->GetClassName());
+		if(!cl->InheritsFrom(TGraph::Class()) || strncmp(key->GetName(), graphName, strlen(graphName)) != 0) {
 			continue;
 		}
 		// get address from keys name
@@ -1460,7 +1461,9 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName)
 		str<<std::hex<<(key->GetName()+strlen(graphName));
 		unsigned int address;
 		str>>address;
-		GetChannel(address)->fEnergyNonlinearity.Set(*(static_cast<TGraph*>(key->ReadObj())), EPriority::kRootFile);
-		GetChannel(address)->SetupEnergyNonlinearity();
+		if(GetChannel(address) != nullptr) {
+			GetChannel(address)->fEnergyNonlinearity.Set(*(static_cast<TGraph*>(key->ReadObj())), EPriority::kRootFile);
+			GetChannel(address)->SetupEnergyNonlinearity();
+		}
 	}
 }
