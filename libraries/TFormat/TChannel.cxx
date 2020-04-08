@@ -128,7 +128,6 @@ TChannel::TChannel(TChannel* chan)
 void TChannel::SetName(const char* tmpName)
 {
 	if(strlen(tmpName) == 0) return;
-	std::cout<<std::hex<<"0x"<<fAddress<<std::dec<<": old name '"<<fName<<"', new name '"<<tmpName<<"'"<<std::endl;
    TNamed::SetName(tmpName);
 	// do not parse the default name
 	if(strcmp(tmpName, "DefaultTChannel") != 0) {
