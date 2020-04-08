@@ -53,7 +53,8 @@ TChannel::~TChannel() = default;
 TChannel::TChannel(const char* tempName)
 {
    Clear();
-	SetName(tempName);
+	// only set name if it's not empty
+	if(strlen(tempName)>0) SetName(tempName);
 }
 
 TChannel::TChannel(const TChannel& chan) : TNamed(chan)
@@ -126,6 +127,8 @@ TChannel::TChannel(TChannel* chan)
 
 void TChannel::SetName(const char* tmpName)
 {
+	if(strlen(tmpName) == 0) return;
+	std::cout<<std::hex<<"0x"<<fAddress<<std::dec<<": old name '"<<fName<<"', new name '"<<tmpName<<"'"<<std::endl;
    TNamed::SetName(tmpName);
 	// do not parse the default name
 	if(strcmp(tmpName, "DefaultTChannel") != 0) {
@@ -191,7 +194,7 @@ void TChannel::AddChannel(TChannel* chan, Option_t* opt)
 			}
          return;
       }
-      printf("Trying to add a channel that already exists!\n");
+		std::cout<<"Trying to add a channel that already exists!"<<std::endl;
       return;
    }
    if((chan->GetAddress() & 0x00ffffff) == 0x00ffffff) {
@@ -205,8 +208,6 @@ void TChannel::AddChannel(TChannel* chan, Option_t* opt)
          fChannelNumberMap->insert(std::make_pair(chan->GetNumber(), chan));
       }
    }
-
-   return;
 }
 
 void TChannel::OverWriteChannel(TChannel* chan)
@@ -252,7 +253,7 @@ void TChannel::AppendChannel(TChannel* chan)
 	SetNumber(chan->fNumber);
 	SetStream(chan->fStream);
 	SetUserInfoNumber(chan->fUserInfoNumber);
-	SetName(chan->GetName());
+	if(strcmp(chan->GetName(), "DefaultTChannel") != 0) SetName(chan->GetName()); // don't overwrite an existing name by the default name
 	SetDigitizerType(chan->fDigitizerTypeString);
 	SetTimeOffset(chan->fTimeOffset);
 	SetENGCoefficients(chan->fENGCoefficients);
@@ -494,7 +495,7 @@ double TChannel::CalibrateENG(int charge, int temp_int)
 
    // int temp_int = 1; //125.0;
    if(temp_int == 0) {
-      if(fIntegration.Value() != 0) {
+      if(fIntegration != 0) {
          temp_int = fIntegration.Value(); // the 4 is the dis.
       } else {
          temp_int = 1;
@@ -518,7 +519,7 @@ double TChannel::CalibrateENG(double charge, int temp_int)
 
    // int temp_int = 1; //125.0;
    if(temp_int == 0) {
-      if(fIntegration.Value() != 0) {
+      if(fIntegration != 0) {
          temp_int = fIntegration.Value(); // the 4 is the dis.
       } else {
          temp_int = 1;
@@ -681,77 +682,10 @@ void TChannel::PrintCTCoeffs(Option_t*) const
 void TChannel::Print(Option_t*) const
 {
    /// Prints out the current TChannel.
-   std::cout<<GetName()<<"\t{\n"; //,channelname.c_str();
-   std::cout<<"Type:      ";
-   if(GetClassType() != nullptr) {
-      std::cout<<GetClassType()->GetName()<<std::endl;
-   } else {
-      std::cout<<"None"<<std::endl;
-   }
-
-   std::cout<<"Name:      "<<GetName()<<std::endl;
-   std::cout<<"Number:    "<<fNumber<<std::endl;
-   std::cout<<std::setfill('0');
-   std::cout<<"Address:   0x"<<std::hex<<std::setw(8)<<fAddress<<std::dec<<std::endl;
-   std::cout<<std::setfill(' ');
-   std::cout<<"Digitizer: "<<fDigitizerTypeString<<std::endl;
-   std::cout<<"TimeOffset: "<<fTimeOffset<<std::endl;
-   std::cout<<"ENGCoeff:  ";
-   for(float fENGCoefficient : fENGCoefficients.Value()) {
-      std::cout<<fENGCoefficient<<"\t";
-   }
-   std::cout<<std::endl;
-   std::cout<<"Integration: "<<fIntegration<<std::endl;
-   std::cout<<"ENGChi2:   "<<fENGChi2<<std::endl;
-   std::cout<<"EFFCoeff:  ";
-   for(double fEFFCoefficient : fEFFCoefficients.Value()) {
-      std::cout<<fEFFCoefficient<<"\t";
-   }
-   std::cout<<std::endl;
-   std::cout<<"EFFChi2:   "<<fEFFChi2<<std::endl;
-   if(!fCFDCoefficients.Value().empty()) {
-      std::cout<<"CFDCoeff:  ";
-      for(double fCFDCoefficient : fCFDCoefficients.Value()) {
-         std::cout<<fCFDCoefficient<<"\t";
-      }
-      std::cout<<std::endl;
-	}
-   if(fEnergyNonlinearity.Value().GetN() > 0) {
-		std::cout<<"EnergyNonlinearity:  ";
-		double* x = fEnergyNonlinearity.Value().GetX();
-		double* y = fEnergyNonlinearity.Value().GetY();
-		for(int i = 0; i < fEnergyNonlinearity.Value().GetN(); ++i) {
-			std::cout<<x[i]<<"\t"<<y[i]<<"\t";
-		}
-		std::cout<<std::endl;
-	}
-	if(!fCTCoefficients.Value().empty()) {
-		std::cout<<"CTCoeff:  ";
-		for(double fCTCoefficient : fCTCoefficients.Value()) {
-			std::cout<<fCTCoefficient<<"\t";
-		}
-		std::cout<<std::endl;
-	}
-	if(!fTIMECoefficients.Value().empty()) {
-		std::cout<<"TIMECoeff: ";
-		for(double fTIMECoefficient : fTIMECoefficients.Value()) {
-			std::cout<<fTIMECoefficient<<"\t";
-		}
-		std::cout<<std::endl;
-	}
-	if(fUseCalFileInt.Value()) {
-		std::cout<<"FileInt: "<<fUseCalFileInt<<std::endl;
-	}
-	if(UseWaveParam()) {
-		std::cout<<"RiseTime: "<<WaveFormShape.TauRise<<std::endl;
-		std::cout<<"DecayTime: "<<WaveFormShape.TauDecay<<std::endl;
-		std::cout<<"BaseLine: "<<WaveFormShape.BaseLine<<std::endl;
-	}
-	std::cout<<"}\n";
-	std::cout<<"//====================================//\n";
+	std::cout<<PrintToString();
 }
 
-std::string TChannel::PrintCTToString(Option_t*)
+std::string TChannel::PrintCTToString(Option_t*) const
 {
 	std::string buffer;
 	buffer.append("\n");
@@ -776,82 +710,89 @@ std::string TChannel::PrintCTToString(Option_t*)
 	return buffer;
 }
 
-std::string TChannel::PrintToString(Option_t*)
+std::string TChannel::PrintToString(Option_t*) const
 {
-	std::string buffer;
-	buffer.append("\n");
-	buffer.append(GetName());
-	buffer.append("\t{\n"); //,channelname.c_str();
-	buffer.append("Type:      ");
-	if(GetClassType() != nullptr) {
-		buffer.append(Form("%s\n", GetClassType()->GetName()));
-	} else {
-		buffer.append("None\n");
-	}
+	std::ostringstream str;
 
-	buffer.append("Name:      ");
-	buffer.append(GetName());
-	buffer.append("\n");
-	buffer.append(Form("Number:    %d\n", fNumber.Value()));
-	buffer.append(Form("Address:   0x%08x\n", fAddress));
-	buffer.append(Form("Digitizer: %s\n", fDigitizerTypeString.Value().c_str()));
-	buffer.append("ENGCoeff:  ");
-	for(float fENGCoefficient : fENGCoefficients.Value()) {
-		if(std::fabs(fENGCoefficient)<0.001)buffer.append(Form("%e\t", fENGCoefficient));
-		else buffer.append(Form("%f\t", fENGCoefficient));
+	str<<GetName()<<"\t{"<<std::endl; //,channelname.c_str();
+   str<<"Type:      ";
+   if(GetClassType() != nullptr) {
+      str<<GetClassType()->GetName()<<std::endl;
+   } else {
+      str<<"None"<<std::endl;
+   }
+
+   str<<"Name:      "<<GetName()<<std::endl;
+   str<<"Number:    "<<fNumber<<std::endl;
+   str<<std::setfill('0');
+   str<<"Address:   0x"<<std::hex<<std::setw(8)<<fAddress<<std::dec<<std::endl;
+   str<<std::setfill(' ');
+	if(!fDigitizerTypeString.Value().empty()) {
+		str<<"Digitizer: "<<fDigitizerTypeString<<std::endl;
 	}
-	buffer.append("\n");
-	if(!fCFDCoefficients.Value().empty()) {
-		buffer.append("CFDCoeff:  ");
-		for(float fCFDCoefficient : fCFDCoefficients.Value()) {
-			if(std::fabs(fCFDCoefficient)<0.001)buffer.append(Form("%e\t", fCFDCoefficient));
-			else buffer.append(Form("%f\t", fCFDCoefficient));
+   str<<"TimeOffset: "<<fTimeOffset<<std::endl;
+	if(!fENGCoefficients.Value().empty()) {
+		str<<"ENGCoeff:  ";
+		for(float fENGCoefficient : fENGCoefficients.Value()) {
+			str<<fENGCoefficient<<"\t";
 		}
-		buffer.append("\n");
+		str<<std::endl;
 	}
-	buffer.append("EnergyNonlinearity:  ");
-	double* x = fEnergyNonlinearity.Value().GetX();
-	double* y = fEnergyNonlinearity.Value().GetY();
-	for(int i = 0; i < fEnergyNonlinearity.Value().GetN(); ++i) {
-		if(std::fabs(x[i])<0.001)buffer.append(Form("%e\t", x[i]));
-		else buffer.append(Form("%f\t", x[i]));
-		if(std::fabs(y[i])<0.001)buffer.append(Form("%e\t", y[i]));
-		else buffer.append(Form("%f\t", y[i]));
+   str<<"Integration: "<<fIntegration<<std::endl;
+	if(fENGChi2 != 0) {
+		str<<"ENGChi2:   "<<fENGChi2<<std::endl;
 	}
-	buffer.append("\n");
-	buffer.append(Form("Integration: %d\n", fIntegration.Value()));
-	buffer.append(Form("TimeOffset: %lld\n", fTimeOffset.Value()));
-	buffer.append(Form("ENGChi2:     %f\n", fENGChi2.Value()));
-	buffer.append("EFFCoeff:  ");
-	for(double fEFFCoefficient : fEFFCoefficients.Value()) {
-		buffer.append(Form("%f\t", fEFFCoefficient));
+	if(!fEFFCoefficients.Value().empty()) {
+		str<<"EFFCoeff:  ";
+		for(double fEFFCoefficient : fEFFCoefficients.Value()) {
+			str<<fEFFCoefficient<<"\t";
+		}
+		str<<std::endl;
 	}
-	buffer.append("\n");
-	buffer.append(Form("EFFChi2:   %f\n", fEFFChi2.Value()));
+	if(fEFFChi2 != 0) {
+		str<<"EFFChi2:   "<<fEFFChi2<<std::endl;
+	}
+   if(!fCFDCoefficients.Value().empty()) {
+      str<<"CFDCoeff:  ";
+      for(double fCFDCoefficient : fCFDCoefficients.Value()) {
+         str<<fCFDCoefficient<<"\t";
+      }
+      str<<std::endl;
+	}
+   if(fEnergyNonlinearity.Value().GetN() > 0) {
+		str<<"EnergyNonlinearity:  ";
+		double* x = fEnergyNonlinearity.Value().GetX();
+		double* y = fEnergyNonlinearity.Value().GetY();
+		for(int i = 0; i < fEnergyNonlinearity.Value().GetN(); ++i) {
+			str<<x[i]<<"\t"<<y[i]<<"\t";
+		}
+		str<<std::endl;
+	}
 	if(!fCTCoefficients.Value().empty()) {
-		buffer.append("CTCoeff:  ");
+		str<<"CTCoeff:  ";
 		for(double fCTCoefficient : fCTCoefficients.Value()) {
-			buffer.append(Form("%f\t", fCTCoefficient));
+			str<<fCTCoefficient<<"\t";
 		}
-		buffer.append("\n");
+		str<<std::endl;
 	}
 	if(!fTIMECoefficients.Value().empty()) {
-		buffer.append("TIMECoeff:  ");
+		str<<"TIMECoeff: ";
 		for(double fTIMECoefficient : fTIMECoefficients.Value()) {
-			buffer.append(Form("%f\t", fTIMECoefficient));
+			str<<fTIMECoefficient<<"\t";
 		}
-		buffer.append("\n");
+		str<<std::endl;
 	}
-	buffer.append(Form("FileInt: %d\n", static_cast<int>(fUseCalFileInt.Value())));
+	if(fUseCalFileInt.Value()) {
+		str<<"FileInt: "<<fUseCalFileInt<<std::endl;
+	}
 	if(UseWaveParam()) {
-		buffer.append(Form("RiseTime: %f\n", WaveFormShape.TauRise));
-		buffer.append(Form("DecayTime: %f\n", WaveFormShape.TauDecay));
-		buffer.append(Form("BaseLine: %f\n", WaveFormShape.BaseLine));
+		str<<"RiseTime: "<<WaveFormShape.TauRise<<std::endl;
+		str<<"DecayTime: "<<WaveFormShape.TauDecay<<std::endl;
+		str<<"BaseLine: "<<WaveFormShape.BaseLine<<std::endl;
 	}
-
-	buffer.append("}\n");
-
-	buffer.append("//====================================//\n");
+	str<<"}"<<std::endl;
+	str<<"//====================================//"<<std::endl;
+	std::string buffer = str.str();
 
 	return buffer;
 }
@@ -1067,7 +1008,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 	// the parser does not recognize, it just skips it!
 	while(std::getline(infile, line)) {
 		linenumber++;
-		trim(&line);
+		trim(line);
 		size_t comment = line.find("//");
 		if(comment != std::string::npos) {
 			line = line.substr(0, comment);
@@ -1106,8 +1047,9 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 		if(openbrace != std::string::npos) {
 			brace_open = true;
 			name       = line.substr(0, openbrace);
+			trim(name);
 			channel    = new TChannel("");
-			channel->SetName(name.c_str());
+			if(!name.empty()) channel->SetName(name.c_str());
 		}
 		//*************************************//
 		if(brace_open) {
@@ -1115,7 +1057,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 			if(ntype != std::string::npos) {
 				std::string type = line.substr(0, ntype);
 				line             = line.substr(ntype + 1, line.length());
-				trim(&line);
+				trim(line);
 				std::istringstream ss(line);
 				// transform type to upper case
 				std::transform(type.begin(), type.end(), type.begin(), ::toupper);
@@ -1251,21 +1193,15 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 	return newchannels;
 }
 
-void TChannel::trim(std::string* line, const std::string& trimChars)
+void TChannel::trim(std::string& line)
 {
-	/// Removes the the string "trimCars" from  the string 'line'
-	if(line->length() == 0) {
-		return;
-	}
-	std::size_t found = line->find_first_not_of(trimChars);
-	if(found != std::string::npos) {
-		*line = line->substr(found, line->length());
-	}
-	found = line->find_last_not_of(trimChars);
-	if(found != std::string::npos) {
-		*line = line->substr(0, found + 1);
-	}
-	return;
+	/// Removes whitespace from  the string 'line'
+	line.erase(line.begin(), std::find_if(line.begin(), line.end(), [](int ch) {
+				return !std::isspace(ch);
+				}));
+	line.erase(std::find_if(line.rbegin(), line.rend(), [](int ch) { 
+				return !std::isspace(ch);
+				}).base(), line.end());
 }
 
 void TChannel::Streamer(TBuffer& R__b)
@@ -1446,7 +1382,7 @@ void TChannel::SetupEnergyNonlinearity()
 	fEnergyNonlinearity.Address()->SetTitle(Form("Energy nonlinearity of channel 0x%04x", fAddress));
 }
 
-void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName)
+void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName, bool all)
 {
 	/// Read energy nonlinearities as TGraphErrors from provided root file using "graphName%x" as names
 	TList* list  = file->GetListOfKeys();
@@ -1464,6 +1400,12 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName)
 		if(GetChannel(address) != nullptr) {
 			GetChannel(address)->fEnergyNonlinearity.Set(*(static_cast<TGraph*>(key->ReadObj())), EPriority::kRootFile);
 			GetChannel(address)->SetupEnergyNonlinearity();
+		} else if(all) {
+			TChannel* newChannel = new TChannel("");
+			newChannel->SetAddress(address);
+			newChannel->fEnergyNonlinearity.Set(*(static_cast<TGraph*>(key->ReadObj())), EPriority::kRootFile);
+			newChannel->SetupEnergyNonlinearity();
+			AddChannel(newChannel);
 		}
 	}
 }
