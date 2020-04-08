@@ -130,7 +130,7 @@ private:
 
 	void SetupEnergyNonlinearity(); // sort energy nonlinearity graph and set name/title
 
-   static void trim(std::string*, const std::string& trimChars = " \f\n\r\t\v");
+   static void trim(std::string&);
 
 public:
    void SetName(const char* tmpName) override;
@@ -272,13 +272,13 @@ public:
    static void WriteCalFile(const std::string& outfilename = "");
    static void WriteCTCorrections(const std::string& outfilename = "");
    static void WriteCalBuffer(Option_t* opt = "");
-	static void ReadEnergyNonlinearities(TFile*, const char* graphName = "EnergyNonlinearity0x");
+	static void ReadEnergyNonlinearities(TFile*, const char* graphName = "EnergyNonlinearity0x", bool all = false);
 
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
    // static  void PrintAll(Option_t* opt = "");
-   std::string PrintToString(Option_t* opt = "");
-   std::string PrintCTToString(Option_t* opt = "");
+   std::string PrintToString(Option_t* opt = "") const;
+   std::string PrintCTToString(Option_t* opt = "") const;
    void PrintCTCoeffs(Option_t* opt = "") const;
 
    static int WriteToRoot(TFile* fileptr = nullptr);
