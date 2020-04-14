@@ -492,18 +492,9 @@ double TChannel::CalibrateENG(int charge, int temp_int)
       return 0.0000;
    }
 
-   // int temp_int = 1; //125.0;
-   if(temp_int == 0) {
-      if(fIntegration != 0) {
-         temp_int = fIntegration.Value(); // the 4 is the dis.
-      } else {
-         temp_int = 1;
-      }
-   }
-
    // We need to add a random number between 0 and 1 before calibrating to avoid
    // binning issues.
-   return CalibrateENG((static_cast<double>(charge) + gRandom->Uniform()) / static_cast<double>(temp_int));
+   return CalibrateENG(static_cast<double>(charge) + gRandom->Uniform(), temp_int);
 }
 
 double TChannel::CalibrateENG(double charge, int temp_int)
@@ -519,7 +510,7 @@ double TChannel::CalibrateENG(double charge, int temp_int)
    // int temp_int = 1; //125.0;
    if(temp_int == 0) {
       if(fIntegration != 0) {
-         temp_int = fIntegration.Value(); // the 4 is the dis.
+         temp_int = static_cast<int>(fIntegration); // the 4 is the dis.
       } else {
          temp_int = 1;
       }
@@ -533,12 +524,12 @@ double TChannel::CalibrateENG(double charge)
    /// Returns the calibrated energy. The polynomial energy calibration formula is
    /// applied to get the calibrated energy. This function does not use the
    /// integration parameter.
-   if(fENGCoefficients.Value().empty()) {
+   if(fENGCoefficients.empty()) {
       return charge;
    }
-   double cal_chg = fENGCoefficients.Value()[0];
-   for(size_t i = 1; i < fENGCoefficients.Value().size(); i++) {
-      cal_chg += fENGCoefficients.Value()[i] * pow((charge), i);
+   double cal_chg = fENGCoefficients[0];
+   for(size_t i = 1; i < fENGCoefficients.size(); i++) {
+      cal_chg += fENGCoefficients[i] * pow((charge), i);
    }
    return cal_chg;
 }
@@ -553,15 +544,15 @@ double TChannel::CalibrateCFD(double cfd)
 {
    /// Returns the calibrated CFD. The polynomial CFD calibration formula is
    /// applied to get the calibrated CFD.
-   if(fCFDCoefficients.Value().empty()) {
+   if(fCFDCoefficients.empty()) {
       return cfd;
    }
 
    double cal_cfd = 0.0;
 	//std::cout<<cfd<<":";
-   for(size_t i = 0; i < fCFDCoefficients.Value().size(); i++) {
-      cal_cfd += fCFDCoefficients.Value()[i] * pow(cfd, i);
-		//std::cout<<" "<<i<<" - "<<fCFDCoefficients.Value()[i]<<" = "<<cal_cfd;
+   for(size_t i = 0; i < fCFDCoefficients.size(); i++) {
+      cal_cfd += fCFDCoefficients[i] * pow(cfd, i);
+		//std::cout<<" "<<i<<" - "<<fCFDCoefficients[i]<<" = "<<cal_cfd;
    }
 	//std::cout<<std::endl;
 
@@ -578,13 +569,13 @@ double TChannel::CalibrateLED(double led)
 {
    /// Returns the calibrated LED. The polynomial LED calibration formula is
    /// applied to get the calibrated LED.
-   if(fLEDCoefficients.Value().empty()) {
+   if(fLEDCoefficients.empty()) {
       return led;
    }
 
    double cal_led = 0.0;
-   for(size_t i = 0; i < fLEDCoefficients.Value().size(); i++) {
-      cal_led += fLEDCoefficients.Value()[i] * pow(led, i);
+   for(size_t i = 0; i < fLEDCoefficients.size(); i++) {
+      cal_led += fLEDCoefficients[i] * pow(led, i);
    }
    return cal_led;
 }
@@ -592,7 +583,7 @@ double TChannel::CalibrateLED(double led)
 double TChannel::CalibrateTIME(int chg)
 {
    /// Calibrates the time spectrum
-   if(fTIMECoefficients.Value().size() != 3 || (chg < 1)) {
+   if(fTIMECoefficients.size() != 3 || (chg < 1)) {
       return 0.0000;
    }
    return CalibrateTIME((CalibrateENG(chg)));
@@ -603,13 +594,13 @@ double TChannel::CalibrateTIME(double energy)
    /// uses the values stored in TIMECOefficients to calculate a
    /// "walk correction" factor.  This function returns the correction
    /// not an adjusted time stamp!   pcb.
-   if(fTIMECoefficients.Value().size() != 3 || (energy < 3.0)) {
+   if(fTIMECoefficients.size() != 3 || (energy < 3.0)) {
       return 0.0000;
    }
 
    double timeCorrection = 0.0;
 
-   timeCorrection = fTIMECoefficients.Value().at(0) + (fTIMECoefficients.Value().at(1) * pow(energy, fTIMECoefficients.Value().at(2)));
+   timeCorrection = fTIMECoefficients.at(0) + (fTIMECoefficients.at(1) * pow(energy, fTIMECoefficients.at(2)));
 
    return timeCorrection;
 }
@@ -670,7 +661,7 @@ void TChannel::PrintCTCoeffs(Option_t*) const
    std::cout<<"Number:    "<<fNumber<<std::endl;
    std::cout<<std::setfill('0');
    std::cout<<"Address:   0x"<<std::hex<<std::setw(8)<<fAddress<<std::dec<<std::endl;
-   for(double fCTCoefficient : fCTCoefficients.Value()) {
+   for(double fCTCoefficient : fCTCoefficients) {
       std::cout<<fCTCoefficient<<"\t";
    }
    std::cout<<std::endl;
@@ -695,9 +686,9 @@ std::string TChannel::PrintCTToString(Option_t*) const
 	buffer.append("\n");
 	buffer.append(Form("Number:    %d\n", fNumber.Value()));
 	buffer.append(Form("Address:   0x%08x\n", fAddress));
-	if(!fCTCoefficients.Value().empty()) {
+	if(!fCTCoefficients.empty()) {
 		buffer.append("CTCoeff:  ");
-		for(double fCTCoefficient : fCTCoefficients.Value()) {
+		for(double fCTCoefficient : fCTCoefficients) {
 			buffer.append(Form("%f\t", fCTCoefficient));
 		}
 		buffer.append("\n");
@@ -726,13 +717,13 @@ std::string TChannel::PrintToString(Option_t*) const
    str<<std::setfill('0');
    str<<"Address:   0x"<<std::hex<<std::setw(8)<<fAddress<<std::dec<<std::endl;
    str<<std::setfill(' ');
-	if(!fDigitizerTypeString.Value().empty()) {
+	if(!fDigitizerTypeString.empty()) {
 		str<<"Digitizer: "<<fDigitizerTypeString<<std::endl;
 	}
    str<<"TimeOffset: "<<fTimeOffset<<std::endl;
-	if(!fENGCoefficients.Value().empty()) {
+	if(!fENGCoefficients.empty()) {
 		str<<"ENGCoeff:  ";
-		for(float fENGCoefficient : fENGCoefficients.Value()) {
+		for(float fENGCoefficient : fENGCoefficients) {
 			str<<fENGCoefficient<<"\t";
 		}
 		str<<std::endl;
@@ -741,9 +732,9 @@ std::string TChannel::PrintToString(Option_t*) const
 	if(fENGChi2 != 0) {
 		str<<"ENGChi2:   "<<fENGChi2<<std::endl;
 	}
-	if(!fEFFCoefficients.Value().empty()) {
+	if(!fEFFCoefficients.empty()) {
 		str<<"EFFCoeff:  ";
-		for(double fEFFCoefficient : fEFFCoefficients.Value()) {
+		for(double fEFFCoefficient : fEFFCoefficients) {
 			str<<fEFFCoefficient<<"\t";
 		}
 		str<<std::endl;
@@ -751,9 +742,9 @@ std::string TChannel::PrintToString(Option_t*) const
 	if(fEFFChi2 != 0) {
 		str<<"EFFChi2:   "<<fEFFChi2<<std::endl;
 	}
-   if(!fCFDCoefficients.Value().empty()) {
+   if(!fCFDCoefficients.empty()) {
       str<<"CFDCoeff:  ";
-      for(double fCFDCoefficient : fCFDCoefficients.Value()) {
+      for(double fCFDCoefficient : fCFDCoefficients) {
          str<<fCFDCoefficient<<"\t";
       }
       str<<std::endl;
@@ -767,21 +758,21 @@ std::string TChannel::PrintToString(Option_t*) const
 		}
 		str<<std::endl;
 	}
-	if(!fCTCoefficients.Value().empty()) {
+	if(!fCTCoefficients.empty()) {
 		str<<"CTCoeff:  ";
-		for(double fCTCoefficient : fCTCoefficients.Value()) {
+		for(double fCTCoefficient : fCTCoefficients) {
 			str<<fCTCoefficient<<"\t";
 		}
 		str<<std::endl;
 	}
-	if(!fTIMECoefficients.Value().empty()) {
+	if(!fTIMECoefficients.empty()) {
 		str<<"TIMECoeff: ";
-		for(double fTIMECoefficient : fTIMECoefficients.Value()) {
+		for(double fTIMECoefficient : fTIMECoefficients) {
 			str<<fTIMECoefficient<<"\t";
 		}
 		str<<std::endl;
 	}
-	if(fUseCalFileInt.Value()) {
+	if(fUseCalFileInt) {
 		str<<"FileInt: "<<fUseCalFileInt<<std::endl;
 	}
 	if(UseWaveParam()) {

@@ -141,7 +141,7 @@ public:
 		// channel number has changed so we need to delete the old one and insert the new one
 		fChannelNumberMap->erase(fNumber.Value());
       fNumber = tmp;
-		if((fNumber.Value() != 0) && (fChannelNumberMap->count(fNumber.Value()) == 0)) {
+		if((fNumber != 0) && (fChannelNumberMap->count(fNumber.Value()) == 0)) {
 			fChannelNumberMap->insert(std::make_pair(fNumber.Value(), this));
 		}
    }
@@ -173,7 +173,7 @@ public:
    int          GetIntegration() const { return fIntegration.Value(); }
    int          GetStream() const { return fStream.Value(); }
    int          GetUserInfoNumber() const { return fUserInfoNumber.Value(); }
-   const char*  GetDigitizerTypeString() const { return fDigitizerTypeString.Value().c_str(); }
+   const char*  GetDigitizerTypeString() const { return fDigitizerTypeString.c_str(); }
 	EDigitizer   GetDigitizerType() const { return fDigitizerType.Value(); }
 	int          GetTimeStampUnit() const { return fTimeStampUnit.Value(); }
    Long64_t     GetTimeOffset() const { return fTimeOffset.Value(); }
