@@ -1294,21 +1294,33 @@ Double_t GCube::IntegralAndError(Int_t firstxbin, Int_t lastxbin, Int_t firstybi
    return DoIntegral(firstxbin, lastxbin, firstybin, lastybin, firstzbin, lastzbin, error, option, kTRUE);
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
 Double_t GCube::Interpolate(Double_t)
+#else
+Double_t GCube::Interpolate(Double_t) const
+#endif
 {
    // illegal for a TH3
    Error("Interpolate", "This function must be called with 3 arguments for a TH3");
    return 0;
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
 Double_t GCube::Interpolate(Double_t, Double_t)
+#else
+Double_t GCube::Interpolate(Double_t, Double_t) const
+#endif
 {
    // illegal for a TH3
    Error("Interpolate", "This function must be called with 3 arguments for a TH3");
    return 0;
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
 Double_t GCube::Interpolate(Double_t x, Double_t y, Double_t z)
+#else
+Double_t GCube::Interpolate(Double_t x, Double_t y, Double_t z) const
+#endif
 {
    /// Given a point P(x,y,z), Interpolate approximates the value via trilinear interpolation
    /// based on the 8 nearest bin center points ( corner of the cube surronding the points)
