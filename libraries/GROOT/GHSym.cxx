@@ -1126,14 +1126,22 @@ Double_t GHSym::IntegralAndError(Int_t firstxbin, Int_t lastxbin, Int_t firstybi
    return DoIntegral(firstxbin, lastxbin, firstybin, lastybin, error, option, kTRUE);
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
 Double_t GHSym::Interpolate(Double_t)
+#else
+Double_t GHSym::Interpolate(Double_t) const
+#endif
 {
    // illegal for a TH2
    Error("Interpolate", "This function must be called with 2 arguments for a TH2");
    return 0;
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
 Double_t GHSym::Interpolate(Double_t x, Double_t y)
+#else
+Double_t GHSym::Interpolate(Double_t x, Double_t y) const
+#endif
 {
    // Given a point P(x,y), Interpolate approximates the value via bilinear
    // interpolation based on the four nearest bin centers
@@ -1225,7 +1233,11 @@ Double_t GHSym::Interpolate(Double_t x, Double_t y)
    return f;
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
 Double_t GHSym::Interpolate(Double_t, Double_t, Double_t)
+#else
+Double_t GHSym::Interpolate(Double_t, Double_t, Double_t) const
+#endif
 {
    // illegal for a TH2
    Error("Interpolate", "This function must be called with 2 arguments for a TH2");

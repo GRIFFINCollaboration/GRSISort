@@ -57,9 +57,15 @@ public:
    using TH1::IntegralAndError;
    virtual Double_t IntegralAndError(Int_t firstxbin, Int_t lastxbin, Int_t firstybin, Int_t lastybin, Double_t& error,
                                      Option_t* option = "") const;
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
    Double_t Interpolate(Double_t) override;
    Double_t Interpolate(Double_t, Double_t) override;
    Double_t Interpolate(Double_t, Double_t, Double_t) override;
+#else
+   Double_t Interpolate(Double_t) const override;
+   Double_t Interpolate(Double_t, Double_t) const override;
+   Double_t Interpolate(Double_t, Double_t, Double_t) const override;
+#endif
    Double_t KolmogorovTest(const TH1* h2, Option_t* option = "") const override;
    Long64_t Merge(TCollection* list) override;
    virtual TProfile* Profile(const char* name = "_pf", Int_t firstbin = 1, Int_t lastbin = -1,
