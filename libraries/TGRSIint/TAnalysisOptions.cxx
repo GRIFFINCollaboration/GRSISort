@@ -51,27 +51,39 @@ bool TAnalysisOptions::WriteToFile(TFile* file)
    bool        success = true;
    TDirectory* oldDir  = gDirectory;
 
+	// if no file was provided, try to use the current file
    if(file == nullptr) {
       file = gDirectory->GetFile();
    }
+	// check if we got a file
+   if(file == nullptr) {
+		std::cout<<"Error, no file provided and no file open (gDirectory = "<<gDirectory->GetName()<<")!"<<std::endl;
+		return !success;
+	}
+
    file->cd();
    std::string oldoption = std::string(file->GetOption());
    if(oldoption == "READ") {
       file->ReOpen("UPDATE");
    }
-   if(!gDirectory) {
-      printf("No file opened to write to.\n");
-      success = false;
-   } else {
-      Write("AnalysisOptions",TObject::kOverwrite);
-   }
 
-   printf("Writing TAnalysisOptions to %s\n", gDirectory->GetFile()->GetName());
+	// check again that we have a directory to write to
+   if(gDirectory == nullptr) {
+		std::cout<<"No file opened to write to."<<std::endl;
+      return !success;
+   }
+	// write analysis options
+	std::cout<<"Writing TAnalysisOptions to "<<gDirectory->GetFile()->GetName()<<std::endl;
+	Write("AnalysisOptions",TObject::kOverwrite);
+
+	// check if we need to change back to read mode
    if(oldoption == "READ") {
-      printf("  Returning %s to \"%s\" mode.\n", gDirectory->GetFile()->GetName(), oldoption.c_str());
+		std::cout<<"  Returning "<<gDirectory->GetFile()->GetName()<<" to \""<<oldoption.c_str()<<"\" mode."<<std::endl;
       file->ReOpen("READ");
    }
-   oldDir->cd(); // Go back to original gDirectory
+
+	// go back to original gDirectory
+   oldDir->cd();
 
    return success;
 }
