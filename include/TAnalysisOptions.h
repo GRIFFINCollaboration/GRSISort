@@ -29,8 +29,10 @@ public:
    void Clear(Option_t* opt = "") override;
    void Print(Option_t* opt = "") const override;
 
+   bool WriteToFile(const std::string& file);
    bool WriteToFile(TFile* file = nullptr);
    void ReadFromFile(const std::string& file);
+   void ReadFromFile(TFile* file = nullptr);
 
    // sorting options
    inline void SetBuildWindow(const long int t_bw) { fBuildWindow = t_bw; }

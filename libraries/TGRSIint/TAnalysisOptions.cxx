@@ -44,6 +44,16 @@ void TAnalysisOptions::Print(Option_t*) const
             <<RESET_COLOR<<std::endl;
 }
 
+bool TAnalysisOptions::WriteToFile(const std::string& file)
+{
+	TFile f(file.c_str(), "update");
+	if(f.IsOpen()) {
+		return WriteToFile(&f);
+	}
+	std::cout<<R"(Failed to open file ")"<<file<<R"(" in update mode!)"<<std::endl;
+	return false;
+}
+
 bool TAnalysisOptions::WriteToFile(TFile* file)
 {
    /// Writes options information to the root file
@@ -90,10 +100,18 @@ bool TAnalysisOptions::WriteToFile(TFile* file)
 
 void TAnalysisOptions::ReadFromFile(const std::string& file)
 {
+	TFile f(file.c_str(), "read");
+	if(f.IsOpen()) {
+		return ReadFromFile(&f);
+	}
+	std::cout<<R"(Failed to open file ")"<<file<<R"(" in read mode!)"<<std::endl;
+}
+
+void TAnalysisOptions::ReadFromFile(TFile* file)
+{
    TDirectory* oldDir = gDirectory;
-   auto        f      = new TFile(file.c_str());
-   if(f != nullptr && f->IsOpen()) {
-      TList* list = f->GetListOfKeys();
+   if(file != nullptr && file->IsOpen()) {
+      TList* list = file->GetListOfKeys();
       TIter  iter(list);
       while(TKey* key = static_cast<TKey*>(iter.Next())) {
          if((key == nullptr) || (strcmp(key->GetClassName(), "TAnalysisOptions") != 0)) {
@@ -101,14 +119,12 @@ void TAnalysisOptions::ReadFromFile(const std::string& file)
          }
 
          *this = *static_cast<TAnalysisOptions*>(key->ReadObj());
-         f->Close();
          oldDir->cd();
          return;
       }
-		std::cout<<R"(Failed to find analysis options in file ")"<<CYAN<<f->GetName()<<RESET_COLOR<<R"(":)"<<std::endl;
-		f->Close();
+		std::cout<<R"(Failed to find analysis options in file ")"<<CYAN<<file->GetName()<<RESET_COLOR<<R"(":)"<<std::endl;
    } else {
-      std::cout<<R"(Failed to open file ")"<<file<<R"(")"<<std::endl;
+      std::cout<<R"(File ")"<<file<<R"(" is null or not open)"<<std::endl;
    }
    oldDir->cd();
 }
