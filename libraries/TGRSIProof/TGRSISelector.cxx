@@ -189,6 +189,7 @@ Bool_t TGRSISelector::Process(Long64_t entry)
 		current_file = fChain->GetCurrentFile();
 		std::cout<<"Starting to sort: "<<current_file->GetName()<<std::endl;
 		TChannel::ReadCalFromFile(current_file);
+		TGRSIOptions::AnalysisOptions()->ReadFromFile(current_file);
 	}
 
 	fChain->GetEntry(entry);

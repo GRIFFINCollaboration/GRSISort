@@ -1252,13 +1252,18 @@ int TChannel::WriteToRoot(TFile* fileptr)
 		fileptr = gDirectory->GetFile();
 	}
 
+	// check if we got a file
+   if(fileptr == nullptr) {
+		std::cout<<"Error, no file provided and no file open (gDirectory = "<<gDirectory->GetName()<<")!"<<std::endl;
+		return 0;
+	}
 	fileptr->cd();
 	std::string oldoption = std::string(fileptr->GetOption());
 	if(oldoption == "READ") {
 		fileptr->ReOpen("UPDATE");
 	}
 	if(gDirectory == nullptr) {
-		printf("No file opened to write to.\n");
+		std::cout<<"No file opened to write to."<<std::endl;
 	}
 	TIter iter(gDirectory->GetListOfKeys());
 
@@ -1301,9 +1306,9 @@ int TChannel::WriteToRoot(TFile* fileptr)
 	ParseInputData(savedata.c_str(), "q", EPriority::kRootFile);
 	SaveToSelf(savedata.c_str());
 
-	printf("  %i TChannels saved to %s.\n", GetNumberOfChannels(), gDirectory->GetFile()->GetName());
+	std::cout<<"  "<<GetNumberOfChannels()<<" TChannels saved to "<<gDirectory->GetFile()->GetName()<<std::endl;
 	if(oldoption == "READ") {
-		printf("  Returning %s to \"%s\" mode.\n", gDirectory->GetFile()->GetName(), oldoption.c_str());
+		std::cout<<"  Returning "<<gDirectory->GetFile()->GetName()<<" to \"READ\" mode."<<std::endl;
 		fileptr->ReOpen("READ");
 	}
 	savdir->cd(); // Go back to original gDirectory

@@ -281,8 +281,8 @@ void TGRSIOptions::Load(int argc, char** argv)
 		parser.option("write-diagnostics", &fWriteDiagnostics, true).description("Write Parsing/SortingDiagnostics to root-file")
 			.colour(DGREEN);
 		parser.option("word-count-offset", &fWordOffset, true)
-			.description("Offset to the word count in the GRIFFIN header word, default is 1.")
-			.default_value(1);
+			.description("Offset to the word count in the GRIFFIN header word, default is -1 (disabled).")
+			.default_value(1).colour(DGREEN);
 		parser.option("log-errors", &fLogErrors, true);
 		parser.option("reading-material", &fReadingMaterial, true);
 		parser.option("write-fragment-tree write-frag-tree", &fWriteFragmentTree, true)
@@ -406,6 +406,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 		fSeparateOutOfOrder = true;
 		fSuppressErrors = true;
 		fReconstructTimeStamp = true;
+		fWordOffset = -1;
 	}
 }
 
