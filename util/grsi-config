@@ -46,10 +46,10 @@ grsilibs="-lTDetector -lTGRSIint -lTFormat -lTGRSIint -lTFormat -lTLoops -lTKine
 detlibs="-lTSuppressed -lTBgo -lTPulseAnalyzer -lGROOT -lTGRSIFit -lTNucleus"
 grsimore="-lTRawFile -lTDataParser -lTHistogramming"
 
-cflags="-std=c++0x -I$incdir"
+cflags="-std=c++11 -I$incdir"
 
 usage="\
-Usage: grsi-config [--version] [--incdir] [--cflags] [--libs] [--all-libs] [--<detector specific library>-libs] [--help]"
+Usage: grsi-config [--version] [--incdir] [--cflags] [--libs] [--all-libs] [--<detector specific library>-libs/incdir/cflags] [--help]"
 
 if test $# -eq 0; then
   echo "${usage}" 1>&2
@@ -120,6 +120,22 @@ while test $# -gt 0; do
         out=$"$out -L${libdir} $grsilibs $detlibs $grsimore -lXMLParser -lXMLIO -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lPyROOT -lSpectrum -lMathMore "
       fi
       ;;
+	 --*-cflags)
+		 lib=${1%-cflags}; # remove trailing -cflags
+		 lib=${lib#--};  # remove leading  --
+		 # check that the config script exists
+		 if [ -e $GRSISYS/$lib/util/config ] ; then
+			 out="$out `$GRSISYS/$lib/util/config --cflags`"
+		 fi
+		 ;;
+	 --*-incdir)
+		 lib=${1%-incdir}; # remove trailing -incdir
+		 lib=${lib#--};  # remove leading  --
+		 # check that the config script exists
+		 if [ -e $GRSISYS/$lib/util/config ] ; then
+			 out="$out `$GRSISYS/$lib/util/config --incdir`"
+		 fi
+		 ;;
 	 --*-libs)
 		 lib=${1%-libs}; # remove trailing -libs
 		 lib=${lib#--};  # remove leading  --
