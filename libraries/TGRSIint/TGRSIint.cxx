@@ -671,7 +671,22 @@ void TGRSIint::RunMacroFile(const std::string& filename)
 		const char* command = Form(".x %s", filename.c_str());
 		ProcessLine(command);
 	} else {
-		std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
+		// check if commandline arguments were supplied
+		size_t beginning_pos = filename.find_first_of('(');
+		if(beginning_pos != std::string::npos && filename.back() == ')') {
+			std::string trueFilename = filename.substr(0,beginning_pos);
+			std::string arguments = filename.substr(beginning_pos, std::string::npos);
+			if(file_exists(trueFilename.c_str())) {
+				const char* command = Form(".L %s", trueFilename.c_str());
+				ProcessLine(command);
+				command = Form("%s%s", trueFilename.substr(0,filename.find_first_of('.')).c_str(), arguments.c_str());
+				ProcessLine(command);
+			} else {
+				std::cerr<<R"(File ")"<<trueFilename<<R"(" does not exist)"<<std::endl;
+			}
+		} else {
+			std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
+		}
 	}
 }
 
