@@ -123,36 +123,3 @@ GH1D* GH2I::ProjectionY(const char* name, int firstbin, int lastbin, Option_t* o
 {
    return GH2ProjectionY(name, firstbin, lastbin, option);
 }
-
-/*
-void GH2I::Streamer(TBuffer &b) {
-  if(b.IsReading()) {
-    Version_t v = b.ReadVersion();
-    TH2I::Streamer(b);
-    TDirectory *current = gDirectory;
-    if(TDirectory::Cd(Form("%s_projections",GetName()))) {
-      TList *list = gDirectory->GetList();
-      TIter iter(list);
-      while(TObject *obj = iter.Next()) {
-        if(obj->InheritsFrom(TH1::Class())) {
-          GH1D *h = new GH1D(*obj);
-          h->SetParent(this);
-          fProjections.Add(h);
-        }
-      }
-    }
-    current->cd();
-  } else {
-    b.WriteVersion(GH2I::IsA());
-    TH2I::Streamer(b);
-    if(fProjections.GetEntries()) {
-      TDirectory *current = gDirectory;
-      TDirectory *newdir  =  current->mkdir(Form("%s_projections",GetName());
-      newdir->cd();
-      fProjections->Write();
-      current->cd();
-    }
-
-  }
-}
-*/

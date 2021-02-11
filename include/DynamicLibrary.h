@@ -14,7 +14,7 @@ class DynamicLibrary {
 public:
    /// Loads a shared object library.
    /**
-      @param libname Path to the library to be loaded.
+      @param libname_param Path to the library to be loaded.
       @param unique_name Generates a uniquely named symlink to the file, which is then opened.
 
       dlopen/dlclose maintains a reference count,
