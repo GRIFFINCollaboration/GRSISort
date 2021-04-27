@@ -1337,7 +1337,7 @@
           </dir>
         </dir>
         <dir name="Trigger Settings">
-          <dir name="Master">
+          <dir name="Primary">
             <keyarray name="pretrigger1" type="STRING" size="32" num_values="4">
               <value index="0">Ge singles</value>
               <value index="1">PortMask:1-8 Durn:100</value>
@@ -1649,7 +1649,7 @@
             <value index="12">1-12</value>
           </keyarray>
           <keyarray name="Trigger Setting" type="STRING" size="32" num_values="13">
-            <value index="0">master</value>
+            <value index="0">primary</value>
             <value index="1">gamma</value>
             <value index="2">gamma</value>
             <value index="3">gamma</value>
@@ -9000,7 +9000,7 @@
     </dir>
   </dir>
   <dir name="MSCB">
-    <dir name="Submaster"/>
+    <dir name="Secondary"/>
   </dir>
 </odb>
 
