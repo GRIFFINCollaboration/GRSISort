@@ -368,8 +368,8 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
 			if(file->FindObjectAny("Channel") != nullptr) {
 				file->Get("Channel"); // this calls TChannel::Streamer
 			}
-			if(file->FindObjectAny("GValue") != nullptr) {
-				file->Get("GValue");
+			if(file->FindObjectAny("Values") != nullptr) {
+				file->Get("Values");
 			}
 			fRootFilesOpened++;
 		} else {
@@ -521,9 +521,15 @@ void TGRSIint::SetupPipeline()
 	////////////////////////////////////////////////////
 
 	if(!write_fragment_histograms && !write_fragment_tree && !write_analysis_histograms && !write_analysis_tree) {
-		// We still might want to read a cal file
+		// We still might want to read the calibration, values, or run info files
 		for(const auto& cal_filename : opt->CalInputFiles()) {
 			TChannel::ReadCalFile(cal_filename.c_str());
+		}
+		for(const auto& val_filename : opt->ValInputFiles()) {
+			GValue::ReadValFile(val_filename.c_str());
+		}
+		for(const auto& info_filename : opt->ExternalRunInfo()) {
+			TRunInfo::Get()->ReadInfoFile(info_filename.c_str());
 		}
 		return;
 	}

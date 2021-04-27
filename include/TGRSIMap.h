@@ -13,8 +13,6 @@
 
 ////////////////////////////////////////////////////////////
 ///
-/// \class TGRSIMap<T>
-///
 /// This class re-implements std::map with more explicit
 /// expections replacing out-of-range exceptions.
 ///

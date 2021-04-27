@@ -488,7 +488,7 @@ void TBGSubtraction::UpdateBGSlider2()
 void TBGSubtraction::UpdateProjectionSliders()
 {
    //Something has happened, so we have to let the sliders know about it
-   //This is as simple as checking the status of the "master" entry boxes
+   //This is as simple as checking the status of the "main" entry boxes
    UpdateGateSlider();
    UpdateBGSlider1();
    UpdateBGSlider2();
@@ -497,7 +497,7 @@ void TBGSubtraction::UpdateProjectionSliders()
 void TBGSubtraction::UpdatePeakSliders()
 {
    //Something has happened, so we have to let the sliders know about it
-   //This is as simple as checking the status of the "master" entry boxes
+   //This is as simple as checking the status of the "main" entry boxes
    //The range has to be set first so that the other slider pieces don't get confused.
    fPeakSlider->SetRange(fPeakLowLimit, fPeakHighLimit);
    fPeakSlider->SetPosition(fPeakLowValue,fPeakHighValue);

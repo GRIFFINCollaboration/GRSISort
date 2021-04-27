@@ -9,7 +9,9 @@
 #include "GRootFunctions.h"
 #include "GCanvas.h"
 
+/// \cond CLASSIMP
 ClassImp(GPeak)
+/// \endcond
 
 GPeak* GPeak::fLastFit = nullptr;
 

@@ -29,8 +29,6 @@
 
 #include <unistd.h>
 const char* const nulFileName = "/dev/null";
-#define CROSS_DUP(fd) dup(fd)
-#define CROSS_DUP2(fd, newfd) dup2(fd, newfd)
 
 /////////////////////////////////////////////////////////////////
 ///
