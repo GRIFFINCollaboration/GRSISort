@@ -115,7 +115,7 @@ private:
    time_t fDaqTimeStamp;      ///< Timestamp of the Daq event
    Int_t  fDaqId;             ///< Daq ID
    Int_t  fFragmentId;          ///< Channel Trigger ID ??? not needed anymore ???
-   Int_t  fTriggerBitPattern;   ///< MasterFilterPattern in Griffin DAQ
+   Int_t  fTriggerBitPattern;   ///< PrimaryFilterPattern in Griffin DAQ
    Int_t  fNetworkPacketNumber; ///< Network packet number
    UInt_t fChannelId;           ///< Threshold crossing counter for a channel
    UInt_t fAcceptedChannelId;   ///< Accepted threshold crossing counter for a channel
@@ -127,7 +127,7 @@ private:
    UShort_t fDetectorType;    ///< Detector Type (PACES,HPGe, etc.)
    Short_t  fNumberOfPileups; ///< Number of piled up hits 1-3
 
-   std::vector<Long_t> fTriggerId; ///<  MasterFilterID in Griffin DAQ
+   std::vector<Long_t> fTriggerId; ///<  PrimaryFilterID in Griffin DAQ
 
    //////////////////// transient members ////////////////////
    TPPG* fPPG; //!<! Programmable pattern generator value

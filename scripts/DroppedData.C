@@ -10,5 +10,5 @@ void DroppedData(TFile *file) {
 //   double filterLost = tree->GetMaximum("MidasId") - tree->GetMinimum("MidasId") - entries;
 
    std::cout<<"Got "<<packetRatio*100.<<" % of the network packets (lost "<<packetLost<<" packets"<<std::endl;
-//   std::cout<<"Got "<<packetRatio*100.<<" % of the network packets and "<<filterRatio*100.<<" % of the master filter IDs (lost "<<packetLost<<" packets and "<<filterLost<<" IDs)"<<std::endl;
+//   std::cout<<"Got "<<packetRatio*100.<<" % of the network packets and "<<filterRatio*100.<<" % of the primary filter IDs (lost "<<packetLost<<" packets and "<<filterLost<<" IDs)"<<std::endl;
 }
