@@ -471,7 +471,7 @@ void GHSym::FillN(Int_t ntimes, const Double_t* x, const Double_t* y, const Doub
    }
 }
 
-void GHSym::FillRandom(const char* fname, Int_t ntimes)
+void GHSym::FillRandom(const char* fname, Int_t ntimes, TRandom* rng)
 {
    //*-*-*-*-*-*-*Fill histogram following distribution in function fname*-*-*-*
    //*-*          =======================================================
@@ -532,7 +532,7 @@ void GHSym::FillRandom(const char* fname, Int_t ntimes)
 
    //*-*--------------Start main loop ntimes
    for(int loop = 0; loop < ntimes; ++loop) {
-      r1   = gRandom->Rndm(loop);
+      r1   = (rng != nullptr) ? rng->Rndm(loop) : gRandom->Rndm(loop);
       ibin = TMath::BinarySearch(nbins, &integral[0], r1);
       biny = ibin / nbinsx;
       binx = 1 + ibin - nbinsx * biny;
@@ -544,7 +544,7 @@ void GHSym::FillRandom(const char* fname, Int_t ntimes)
    delete[] integral;
 }
 
-void GHSym::FillRandom(TH1* h, Int_t ntimes)
+void GHSym::FillRandom(TH1* h, Int_t ntimes, TRandom* rng)
 {
    //*-*-*-*-*-*-*Fill histogram following distribution in histogram h*-*-*-*
    //*-*          ====================================================
@@ -576,7 +576,7 @@ void GHSym::FillRandom(TH1* h, Int_t ntimes)
    Double_t x, y;
    TH2*     h2 = static_cast<TH2*>(h);
    for(int loop = 0; loop < ntimes; ++loop) {
-      h2->GetRandom2(x, y);
+      h2->GetRandom2(x, y, rng);
       Fill(x, y);
    }
 }

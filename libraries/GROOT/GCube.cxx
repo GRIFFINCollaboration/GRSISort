@@ -570,7 +570,7 @@ Int_t GCube::Fill(const char* namex, const char* namey, const char* namez, Doubl
    return bin;
 }
 
-void GCube::FillRandom(const char* fname, Int_t ntimes)
+void GCube::FillRandom(const char* fname, Int_t ntimes, TRandom* rng)
 {
    ///*-*-*-*-*-*-*Fill histogram following distribution in function fname*-*-*-*
    ///*-*          =======================================================
@@ -636,7 +636,7 @@ void GCube::FillRandom(const char* fname, Int_t ntimes)
 
    //*-*--------------Start main loop ntimes
    for(int loop = 0; loop < ntimes; ++loop) {
-      r1   = gRandom->Rndm(loop);
+      r1   = (rng != nullptr) ? rng->Rndm(loop) : gRandom->Rndm(loop);
       ibin = TMath::BinarySearch(nbins, &integral[0], r1);
       binz = ibin / nxy;
       biny = (ibin - nxy * binz) / nbinsx;
@@ -650,7 +650,7 @@ void GCube::FillRandom(const char* fname, Int_t ntimes)
    delete[] integral;
 }
 
-void GCube::FillRandom(TH1* h, Int_t ntimes)
+void GCube::FillRandom(TH1* h, Int_t ntimes, TRandom* rng)
 {
    ///*-*-*-*-*-*-*Fill histogram following distribution in histogram h*-*-*-*
    ///*-*          ====================================================
@@ -682,7 +682,7 @@ void GCube::FillRandom(TH1* h, Int_t ntimes)
    Double_t x, y, z;
    TH3*     h3 = static_cast<TH3*>(h);
    for(int loop = 0; loop < ntimes; ++loop) {
-      h3->GetRandom3(x, y, z);
+      h3->GetRandom3(x, y, z, rng);
       Fill(x, y, z);
    }
 }

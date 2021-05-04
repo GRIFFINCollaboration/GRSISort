@@ -13,6 +13,7 @@
 #include "TMonitor.h"
 #include "TFileCacheWrite.h"
 #include "TROOT.h"
+#include "THashTable.h"
 
 #include "GValue.h"
 #include "TChannel.h"

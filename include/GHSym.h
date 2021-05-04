@@ -27,8 +27,15 @@ public:
    virtual Int_t Fill(const char* namex, const char* namey, Double_t w);
    void FillN(Int_t, const Double_t*, const Double_t*, Int_t) override { ; } // MayNotUse
    void FillN(Int_t ntimes, const Double_t* x, const Double_t* y, const Double_t* w, Int_t stride = 1) override;
-   void FillRandom(const char* fname, Int_t ntimes = 5000) override;
-   void FillRandom(TH1* h, Int_t ntimes = 5000) override;
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 24, 0)
+   void FillRandom(const char* fname, Int_t ntimes = 5000) override { FillRandom(fname, ntimes, nullptr); }
+   void FillRandom(TH1* h, Int_t ntimes = 5000) override { FillRandom(h, ntimes, nullptr); }
+   void FillRandom(const char* fname, Int_t ntimes = 5000, TRandom* rng = nullptr);
+   void FillRandom(TH1* h, Int_t ntimes = 5000, TRandom* rng = nullptr);
+#else
+   void FillRandom(const char* fname, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
+   void FillRandom(TH1* h, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
+#endif
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 18, 0)
    Int_t FindFirstBinAbove(Double_t threshold = 0, Int_t axis = 1) const override { return FindFirstBinAbove(threshold, axis, 1, -1); }
    Int_t FindLastBinAbove(Double_t threshold = 0, Int_t axis = 1) const override { return FindLastBinAbove(threshold, axis, 1, -1); }
