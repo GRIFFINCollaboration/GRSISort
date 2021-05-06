@@ -7,6 +7,7 @@
 #include "TArrayD.h"
 #include "TProfile.h"
 #include "TF1.h"
+#include "TRandom.h"
 
 class GHSym : public TH1 {
 public:

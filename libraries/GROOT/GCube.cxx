@@ -650,7 +650,11 @@ void GCube::FillRandom(const char* fname, Int_t ntimes, TRandom* rng)
    delete[] integral;
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 24, 0)
+void GCube::FillRandom(TH1* h, Int_t ntimes, TRandom*)
+#else
 void GCube::FillRandom(TH1* h, Int_t ntimes, TRandom* rng)
+#endif
 {
    ///*-*-*-*-*-*-*Fill histogram following distribution in histogram h*-*-*-*
    ///*-*          ====================================================
@@ -682,7 +686,11 @@ void GCube::FillRandom(TH1* h, Int_t ntimes, TRandom* rng)
    Double_t x, y, z;
    TH3*     h3 = static_cast<TH3*>(h);
    for(int loop = 0; loop < ntimes; ++loop) {
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 24, 0)
+      h3->GetRandom3(x, y, z);
+#else
       h3->GetRandom3(x, y, z, rng);
+#endif
       Fill(x, y, z);
    }
 }
