@@ -544,7 +544,11 @@ void GHSym::FillRandom(const char* fname, Int_t ntimes, TRandom* rng)
    delete[] integral;
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 24, 0)
+void GHSym::FillRandom(TH1* h, Int_t ntimes, TRandom*)
+#else
 void GHSym::FillRandom(TH1* h, Int_t ntimes, TRandom* rng)
+#endif
 {
    //*-*-*-*-*-*-*Fill histogram following distribution in histogram h*-*-*-*
    //*-*          ====================================================
@@ -576,7 +580,11 @@ void GHSym::FillRandom(TH1* h, Int_t ntimes, TRandom* rng)
    Double_t x, y;
    TH2*     h2 = static_cast<TH2*>(h);
    for(int loop = 0; loop < ntimes; ++loop) {
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 24, 0)
+      h2->GetRandom2(x, y);
+#else
       h2->GetRandom2(x, y, rng);
+#endif
       Fill(x, y);
    }
 }

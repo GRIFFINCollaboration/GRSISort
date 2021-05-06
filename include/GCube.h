@@ -8,6 +8,7 @@
 #include "TArrayD.h"
 #include "TProfile.h"
 #include "TF1.h"
+#include "TRandom.h"
 
 class GCube : public TH1 {
 public:
