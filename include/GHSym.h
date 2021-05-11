@@ -7,6 +7,7 @@
 #include "TArrayD.h"
 #include "TProfile.h"
 #include "TF1.h"
+#include "TRandom.h"
 
 class GHSym : public TH1 {
 public:
@@ -27,8 +28,15 @@ public:
    virtual Int_t Fill(const char* namex, const char* namey, Double_t w);
    void FillN(Int_t, const Double_t*, const Double_t*, Int_t) override { ; } // MayNotUse
    void FillN(Int_t ntimes, const Double_t* x, const Double_t* y, const Double_t* w, Int_t stride = 1) override;
-   void FillRandom(const char* fname, Int_t ntimes = 5000) override;
-   void FillRandom(TH1* h, Int_t ntimes = 5000) override;
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 24, 0)
+   void FillRandom(const char* fname, Int_t ntimes = 5000) override { FillRandom(fname, ntimes, nullptr); }
+   void FillRandom(TH1* h, Int_t ntimes = 5000) override { FillRandom(h, ntimes, nullptr); }
+   void FillRandom(const char* fname, Int_t ntimes = 5000, TRandom* rng = nullptr);
+   void FillRandom(TH1* h, Int_t ntimes = 5000, TRandom* rng = nullptr);
+#else
+   void FillRandom(const char* fname, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
+   void FillRandom(TH1* h, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
+#endif
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 18, 0)
    Int_t FindFirstBinAbove(Double_t threshold = 0, Int_t axis = 1) const override { return FindFirstBinAbove(threshold, axis, 1, -1); }
    Int_t FindLastBinAbove(Double_t threshold = 0, Int_t axis = 1) const override { return FindLastBinAbove(threshold, axis, 1, -1); }
@@ -57,9 +65,15 @@ public:
    using TH1::IntegralAndError;
    virtual Double_t IntegralAndError(Int_t firstxbin, Int_t lastxbin, Int_t firstybin, Int_t lastybin, Double_t& error,
                                      Option_t* option = "") const;
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
    Double_t Interpolate(Double_t) override;
    Double_t Interpolate(Double_t, Double_t) override;
    Double_t Interpolate(Double_t, Double_t, Double_t) override;
+#else
+   Double_t Interpolate(Double_t) const override;
+   Double_t Interpolate(Double_t, Double_t) const override;
+   Double_t Interpolate(Double_t, Double_t, Double_t) const override;
+#endif
    Double_t KolmogorovTest(const TH1* h2, Option_t* option = "") const override;
    Long64_t Merge(TCollection* list) override;
    virtual TProfile* Profile(const char* name = "_pf", Int_t firstbin = 1, Int_t lastbin = -1,

@@ -8,6 +8,7 @@
 #include "TArrayD.h"
 #include "TProfile.h"
 #include "TF1.h"
+#include "TRandom.h"
 
 class GCube : public TH1 {
 public:
@@ -30,8 +31,15 @@ public:
    virtual Int_t Fill(Double_t x, Double_t y, Double_t z);
    virtual Int_t Fill(Double_t x, Double_t y, Double_t z, Double_t w);
    virtual Int_t Fill(const char* namex, const char* namey, const char* namez, Double_t w);
-   void FillRandom(const char* fname, Int_t ntimes = 5000) override;
-   void FillRandom(TH1* h, Int_t ntimes = 5000) override;
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 24, 0)
+   void FillRandom(const char* fname, Int_t ntimes = 5000) override { FillRandom(fname, ntimes, nullptr); }
+   void FillRandom(TH1* h, Int_t ntimes = 5000) override { FillRandom(h, ntimes, nullptr); }
+   void FillRandom(const char* fname, Int_t ntimes = 5000, TRandom* rng = nullptr);
+   void FillRandom(TH1* h, Int_t ntimes = 5000, TRandom* rng = nullptr);
+#else
+   void FillRandom(const char* fname, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
+   void FillRandom(TH1* h, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
+#endif
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 18, 0)
    Int_t FindFirstBinAbove(Double_t threshold = 0, Int_t axis = 1) const override { return FindFirstBinAbove(threshold, axis, 1, -1); }
    Int_t FindLastBinAbove(Double_t threshold = 0, Int_t axis = 1) const override { return FindLastBinAbove(threshold, axis, 1, -1); }
@@ -58,9 +66,15 @@ public:
    using TH1::IntegralAndError;
    virtual Double_t IntegralAndError(Int_t firstxbin, Int_t lastxbin, Int_t firstybin, Int_t lastybin, Int_t firstzbin,
                                      Int_t lastzbin, Double_t& error, Option_t* option = "") const;
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
    Double_t Interpolate(Double_t) override;
    Double_t Interpolate(Double_t, Double_t) override;
    Double_t Interpolate(Double_t, Double_t, Double_t) override;
+#else
+   Double_t Interpolate(Double_t) const override;
+   Double_t Interpolate(Double_t, Double_t) const override;
+   Double_t Interpolate(Double_t, Double_t, Double_t) const override;
+#endif
    Double_t KolmogorovTest(const TH1* h2, Option_t* option = "") const override;
    Long64_t Merge(TCollection* list) override;
    virtual TH1D* Projection(const char* name = "_pr", Int_t firstBiny = 0, Int_t lastBiny = -1, Int_t firstBinz = 0,

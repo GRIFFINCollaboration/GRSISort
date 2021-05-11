@@ -13,8 +13,6 @@
 
 ////////////////////////////////////////////////////////////
 ///
-/// \class TGRSIMap<T>
-///
 /// This class re-implements std::map with more explicit
 /// expections replacing out-of-range exceptions.
 ///
@@ -52,8 +50,8 @@ public:
 		}
 	}
 
-	      mapped_type& operator[](const key_type& k)       { return at(k); }
-	const mapped_type& operator[](const key_type& k) const { return at(k); }
+	      mapped_type& operator[](const key_type& k)       { return fMap[k]; }
+	const mapped_type& operator[](const key_type& k) const { return fMap[k]; }
 
 	typedef std::map<key_type, mapped_type, key_compare, allocator_type> map_t;
 	typename map_t::iterator begin()       { return fMap.begin(); }

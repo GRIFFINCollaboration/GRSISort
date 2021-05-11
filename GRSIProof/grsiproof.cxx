@@ -173,9 +173,6 @@ int main(int argc, char** argv)
 
    // Add the path were we store headers for GRSIProof macros to see
    const char* pPath = getenv("GRSISYS");
-   gROOT->SetMacroPath(Form("%s", pPath));
-   gROOT->SetMacroPath(Form("%s/GRSIProof", pPath));
-   gROOT->SetMacroPath(Form("%s/myAnalysis", pPath));
    gInterpreter->AddIncludePath(Form("%s/include", pPath));
 	// if we have a data parser/detector library, add it's include path as well
 	std::string library = gGRSIOpt->ParserLibrary();
@@ -198,7 +195,7 @@ int main(int argc, char** argv)
    std::cout<<DCYAN<<"************************* MACRO COMPILATION ****************************"<<RESET_COLOR
             <<std::endl;
    for(const auto& i : gGRSIOpt->MacroInputFiles()) {
-      Int_t error_code = gSystem->CompileMacro(i.c_str(), "kO"); // k - keep shared library after session ends, O - optimize the code
+      Int_t error_code = gSystem->CompileMacro(i.c_str(), "kgO"); // k - keep shared library after session ends, g - add debuging symbols, O - optimize the code, v - verbose output
       if(error_code == 0) {
          std::cout<<DRED<<i<<" failed to compile properly.. ABORT!"<<RESET_COLOR<<std::endl;
          return 1;

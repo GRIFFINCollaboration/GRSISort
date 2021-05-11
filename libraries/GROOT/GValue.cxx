@@ -100,28 +100,25 @@ bool GValue::ReplaceValue(GValue* oldvalue)
    return false;
 }
 
-bool GValue::AddValue(GValue* value, Option_t* opt)
+bool GValue::AddValue(GValue* value, Option_t*)
 {
    if(value == nullptr) {
       return false;
    }
-   TString option(opt);
-
    std::string temp_string = value->GetName();
+   if(temp_string.compare("") == 0) {
+      // default value, get rid of it and ignore;
+      delete value;
+      return false;
+   }
 
-   GValue* oldvalue = GValue::FindValue(value->GetName());
+   GValue* oldvalue = GValue::FindValue(temp_string);
    if(oldvalue != nullptr) {
       value->ReplaceValue(oldvalue);
       delete value;
       return true;
    }
-   if(temp_string.compare("") == 0) {
-      // default value, get rid of it and ignore;
-      delete value;
-      value = nullptr;
-      return false;
-   }
-   fValueVector[temp_string] = value; //.push_back(value);
+   fValueVector[temp_string] = value;
    return true;
 }
 
@@ -131,8 +128,12 @@ std::string GValue::PrintToString() const
    std::string buffer;
    buffer.append(GetName());
    buffer.append("\t{\n");
-   buffer.append("value:\t");
-   buffer.append(Form("%f\n", fValue));
+   buffer.append(Form("value:\t%f\n", fValue));
+	if(!info.empty()) {
+		buffer.append("info:\t");
+		buffer.append(info);
+		buffer.append("\n");
+	}
    buffer.append("}\n");
    return buffer;
 }
@@ -176,6 +177,16 @@ std::string GValue::WriteToBuffer(Option_t*)
       buffer.append("\n");
    }
    return buffer;
+}
+
+void GValue::Clear()
+{
+	// loop over all values and delete them
+	for(auto value : fValueVector) {
+		delete value.second;
+	}
+	// delete map
+	fValueVector.clear();
 }
 
 int GValue::ReadValFile(const char* filename, Option_t* opt)
@@ -264,9 +275,8 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
                type = line.substr(openbrace + 1, colon - (openbrace + 1));
             }
             line = line.substr(colon + 1, line.length());
-            // trim(&line); //this is not needed? VB
+				trim(&line); //strip beginning whitespace (not needed for value itself, but for the readability of info)
             trim(&type);
-            // std::istringstream ss(line); //this is not used anywhere? VB
             int j = 0;
             while(type[j] != 0) {
                char c    = *(type.c_str() + j);

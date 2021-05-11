@@ -130,7 +130,7 @@ private:
 
 	void SetupEnergyNonlinearity(); // sort energy nonlinearity graph and set name/title
 
-   static void trim(std::string*, const std::string& trimChars = " \f\n\r\t\v");
+   static void trim(std::string&);
 
 public:
    void SetName(const char* tmpName) override;
@@ -141,7 +141,7 @@ public:
 		// channel number has changed so we need to delete the old one and insert the new one
 		fChannelNumberMap->erase(fNumber.Value());
       fNumber = tmp;
-		if((fNumber.Value() != 0) && (fChannelNumberMap->count(fNumber.Value()) == 0)) {
+		if((fNumber != 0) && (fChannelNumberMap->count(fNumber.Value()) == 0)) {
 			fChannelNumberMap->insert(std::make_pair(fNumber.Value(), this));
 		}
    }
@@ -173,7 +173,7 @@ public:
    int          GetIntegration() const { return fIntegration.Value(); }
    int          GetStream() const { return fStream.Value(); }
    int          GetUserInfoNumber() const { return fUserInfoNumber.Value(); }
-   const char*  GetDigitizerTypeString() const { return fDigitizerTypeString.Value().c_str(); }
+   const char*  GetDigitizerTypeString() const { return fDigitizerTypeString.c_str(); }
 	EDigitizer   GetDigitizerType() const { return fDigitizerType.Value(); }
 	int          GetTimeStampUnit() const { return fTimeStampUnit.Value(); }
    Long64_t     GetTimeOffset() const { return fTimeOffset.Value(); }
@@ -272,12 +272,13 @@ public:
    static void WriteCalFile(const std::string& outfilename = "");
    static void WriteCTCorrections(const std::string& outfilename = "");
    static void WriteCalBuffer(Option_t* opt = "");
+	static void ReadEnergyNonlinearities(TFile*, const char* graphName = "EnergyNonlinearity0x", bool all = false);
 
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
    // static  void PrintAll(Option_t* opt = "");
-   std::string PrintToString(Option_t* opt = "");
-   std::string PrintCTToString(Option_t* opt = "");
+   std::string PrintToString(Option_t* opt = "") const;
+   std::string PrintCTToString(Option_t* opt = "") const;
    void PrintCTCoeffs(Option_t* opt = "") const;
 
    static int WriteToRoot(TFile* fileptr = nullptr);
@@ -289,6 +290,8 @@ private:
    static std::string fFileData;
    static void        InitChannelInput();
    static void        SaveToSelf(const char*);
+
+	static Int_t ReadFile(TFile* tempf);
 
    /// \cond CLASSIMP
    ClassDefOverride(TChannel, 5) // Contains the Digitizer Information

@@ -17,8 +17,6 @@
 
 ///////////////////////////////////////////////////////////////
 ///
-/// \class TSingleton<T>
-///
 /// This class is intended as a base class for singletons,
 /// especially those that are written to file.
 /// The Get() function is written such that it reads the class
@@ -185,7 +183,9 @@ private:
 	/// \endcond
 };
 
+/// \cond CLASSIMP
 templateClassImp(TSingleton)
+/// \endcond
 
 template<class T>
 T* TSingleton<T>::fSingleton = nullptr;

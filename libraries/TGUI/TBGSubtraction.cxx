@@ -102,6 +102,63 @@ void TBGSubtraction::MakeConnections()
    fAutoUpdateCheckButton->Connect("Clicked()","TBGSubtraction",this,"SetStatusFromUpdateCheckButton()");
 }
 
+void TBGSubtraction::Disconnect()
+{
+   ///Disconnect Canvases to recognize that they have been zoomed
+   ///This function includes setting the slider, and drawing the gate markers.
+   fProjectionCanvas->GetCanvas()->Disconnect("RangeChanged()", this, "DoProjectionCanvasZoomed()");
+
+   fGateCanvas->GetCanvas()->Disconnect("RangeChanged()", this, "DoGateCanvasZoomed()");
+
+   //Disconnect Status Info to canvases
+   fProjectionCanvas->GetCanvas()->Disconnect("ProcessedEvent(Int_t,Int_t,Int_t,TObject*)", this,
+                                          "ProjectionStatusInfo(Int_t,Int_t,Int_t,TObject*)");
+   fGateCanvas->GetCanvas()->Disconnect("ProcessedEvent(Int_t,Int_t,Int_t,TObject*)", this,
+                                     "GateStatusInfo(Int_t,Int_t,Int_t,TObject*)");
+
+   //Disconnect the sliding of sliders
+   //I'm storing the "true" information in the entry boxes. This is what we refer back to for
+   //the actual value of the sliders, etc.
+   //However, there are two number entries, so we will send out two signals per change. We want to connect the gating to 
+   //the slider instead.
+
+   fGateSlider->Disconnect("PositionChanged()", this, "DoSlider()");
+
+   fBGSlider1->Disconnect("PositionChanged()", this, "DoSlider()");
+   fBGSlider2->Disconnect("PositionChanged()", this, "DoSlider()");
+   
+   fPeakSlider->Disconnect("PointerPositionChanged()", this, "DoSlider()");
+   fPeakSlider->Disconnect("PositionChanged()", this, "DoSlider()");
+
+   //Disconnect the clicking of buttons
+   fPeakFitButton->Disconnect("Clicked()", this, "DoPeakFit()");
+
+   fBGCheckButton1->Disconnect("Clicked()",this,"UpdateBackground()");
+   fBGCheckButton2->Disconnect("Clicked()",this,"UpdateBackground()");
+
+   fWrite2FileButton->Disconnect("Clicked()", this, "WriteHistograms()");
+
+   //Disconnect the axis combo box
+   fAxisCombo->Disconnect("Selected(Int_t,Int_t)", this, "AxisComboSelected()");
+
+   //Disconnect the Gate entries so that if you type a value in they do the proper things
+   //Everyhting that is updated sets the value of these entries, which trickles down and fixes everything else
+   fGateEntryLow->Disconnect("ValueSet(Long_t)", this, "DoEntry(Long_t)");
+   fGateEntryHigh->Disconnect("ValueSet(Long_t)", this, "DoEntry(Long_t)");
+   fBGEntryLow1->Disconnect("ValueSet(Long_t)", this, "DoEntry(Long_t)");
+   fBGEntryHigh1->Disconnect("ValueSet(Long_t)", this, "DoEntry(Long_t)");
+   fBGEntryLow2->Disconnect("ValueSet(Long_t)", this, "DoEntry(Long_t)");
+   fBGEntryHigh2->Disconnect("ValueSet(Long_t)", this, "DoEntry(Long_t)");
+   fBGEntryHigh2->Disconnect("ValueSet(Long_t)", this, "UpdateProjectionSliders()");
+
+   //Disconnect the bg paramater entry to do the proper thing
+   fBGParamEntry->Disconnect("ValueSet(Long_t)",this,"UpdateBackground()");
+
+   //We want to connect the fit peak, and write histogram buttons with the update check box.
+   //We don't want someone writing a histo, or fitting a peak when the gate isn't as expected.
+   fAutoUpdateCheckButton->Disconnect("Clicked()",this,"SetStatusFromUpdateCheckButton()");
+}
+
 void TBGSubtraction::ResetInterface()
 {
    Double_t def_gate_low  = 0.3;
@@ -326,6 +383,7 @@ void TBGSubtraction::BuildInterface()
 
 TBGSubtraction::~TBGSubtraction()
 {
+   Disconnect();
    // Clean up used widgets: frames, buttons, layout hints
    Cleanup();
    if(fLowBGMarker1 != nullptr) {
@@ -430,7 +488,7 @@ void TBGSubtraction::UpdateBGSlider2()
 void TBGSubtraction::UpdateProjectionSliders()
 {
    //Something has happened, so we have to let the sliders know about it
-   //This is as simple as checking the status of the "master" entry boxes
+   //This is as simple as checking the status of the "main" entry boxes
    UpdateGateSlider();
    UpdateBGSlider1();
    UpdateBGSlider2();
@@ -439,7 +497,7 @@ void TBGSubtraction::UpdateProjectionSliders()
 void TBGSubtraction::UpdatePeakSliders()
 {
    //Something has happened, so we have to let the sliders know about it
-   //This is as simple as checking the status of the "master" entry boxes
+   //This is as simple as checking the status of the "main" entry boxes
    //The range has to be set first so that the other slider pieces don't get confused.
    fPeakSlider->SetRange(fPeakLowLimit, fPeakHighLimit);
    fPeakSlider->SetPosition(fPeakLowValue,fPeakHighValue);

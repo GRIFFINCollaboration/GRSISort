@@ -53,7 +53,8 @@ TChannel::~TChannel() = default;
 TChannel::TChannel(const char* tempName)
 {
    Clear();
-	SetName(tempName);
+	// only set name if it's not empty
+	if(strlen(tempName)>0) SetName(tempName);
 }
 
 TChannel::TChannel(const TChannel& chan) : TNamed(chan)
@@ -126,6 +127,7 @@ TChannel::TChannel(TChannel* chan)
 
 void TChannel::SetName(const char* tmpName)
 {
+	if(strlen(tmpName) == 0) return;
    TNamed::SetName(tmpName);
 	// do not parse the default name
 	if(strcmp(tmpName, "DefaultTChannel") != 0) {
@@ -191,7 +193,7 @@ void TChannel::AddChannel(TChannel* chan, Option_t* opt)
 			}
          return;
       }
-      printf("Trying to add a channel that already exists!\n");
+		std::cout<<"Trying to add a channel that already exists!"<<std::endl;
       return;
    }
    if((chan->GetAddress() & 0x00ffffff) == 0x00ffffff) {
@@ -205,8 +207,6 @@ void TChannel::AddChannel(TChannel* chan, Option_t* opt)
          fChannelNumberMap->insert(std::make_pair(chan->GetNumber(), chan));
       }
    }
-
-   return;
 }
 
 void TChannel::OverWriteChannel(TChannel* chan)
@@ -252,7 +252,7 @@ void TChannel::AppendChannel(TChannel* chan)
 	SetNumber(chan->fNumber);
 	SetStream(chan->fStream);
 	SetUserInfoNumber(chan->fUserInfoNumber);
-	SetName(chan->GetName());
+	if(strcmp(chan->GetName(), "DefaultTChannel") != 0) SetName(chan->GetName()); // don't overwrite an existing name by the default name
 	SetDigitizerType(chan->fDigitizerTypeString);
 	SetTimeOffset(chan->fTimeOffset);
 	SetENGCoefficients(chan->fENGCoefficients);
@@ -492,18 +492,9 @@ double TChannel::CalibrateENG(int charge, int temp_int)
       return 0.0000;
    }
 
-   // int temp_int = 1; //125.0;
-   if(temp_int == 0) {
-      if(fIntegration.Value() != 0) {
-         temp_int = fIntegration.Value(); // the 4 is the dis.
-      } else {
-         temp_int = 1;
-      }
-   }
-
    // We need to add a random number between 0 and 1 before calibrating to avoid
    // binning issues.
-   return CalibrateENG((static_cast<double>(charge) + gRandom->Uniform()) / static_cast<double>(temp_int));
+   return CalibrateENG(static_cast<double>(charge) + gRandom->Uniform(), temp_int);
 }
 
 double TChannel::CalibrateENG(double charge, int temp_int)
@@ -518,8 +509,8 @@ double TChannel::CalibrateENG(double charge, int temp_int)
 
    // int temp_int = 1; //125.0;
    if(temp_int == 0) {
-      if(fIntegration.Value() != 0) {
-         temp_int = fIntegration.Value(); // the 4 is the dis.
+      if(fIntegration != 0) {
+         temp_int = static_cast<int>(fIntegration); // the 4 is the dis.
       } else {
          temp_int = 1;
       }
@@ -533,12 +524,12 @@ double TChannel::CalibrateENG(double charge)
    /// Returns the calibrated energy. The polynomial energy calibration formula is
    /// applied to get the calibrated energy. This function does not use the
    /// integration parameter.
-   if(fENGCoefficients.Value().empty()) {
+   if(fENGCoefficients.empty()) {
       return charge;
    }
-   double cal_chg = fENGCoefficients.Value()[0];
-   for(size_t i = 1; i < fENGCoefficients.Value().size(); i++) {
-      cal_chg += fENGCoefficients.Value()[i] * pow((charge), i);
+   double cal_chg = fENGCoefficients[0];
+   for(size_t i = 1; i < fENGCoefficients.size(); i++) {
+      cal_chg += fENGCoefficients[i] * pow((charge), i);
    }
    return cal_chg;
 }
@@ -553,15 +544,15 @@ double TChannel::CalibrateCFD(double cfd)
 {
    /// Returns the calibrated CFD. The polynomial CFD calibration formula is
    /// applied to get the calibrated CFD.
-   if(fCFDCoefficients.Value().empty()) {
+   if(fCFDCoefficients.empty()) {
       return cfd;
    }
 
    double cal_cfd = 0.0;
 	//std::cout<<cfd<<":";
-   for(size_t i = 0; i < fCFDCoefficients.Value().size(); i++) {
-      cal_cfd += fCFDCoefficients.Value()[i] * pow(cfd, i);
-		//std::cout<<" "<<i<<" - "<<fCFDCoefficients.Value()[i]<<" = "<<cal_cfd;
+   for(size_t i = 0; i < fCFDCoefficients.size(); i++) {
+      cal_cfd += fCFDCoefficients[i] * pow(cfd, i);
+		//std::cout<<" "<<i<<" - "<<fCFDCoefficients[i]<<" = "<<cal_cfd;
    }
 	//std::cout<<std::endl;
 
@@ -578,13 +569,13 @@ double TChannel::CalibrateLED(double led)
 {
    /// Returns the calibrated LED. The polynomial LED calibration formula is
    /// applied to get the calibrated LED.
-   if(fLEDCoefficients.Value().empty()) {
+   if(fLEDCoefficients.empty()) {
       return led;
    }
 
    double cal_led = 0.0;
-   for(size_t i = 0; i < fLEDCoefficients.Value().size(); i++) {
-      cal_led += fLEDCoefficients.Value()[i] * pow(led, i);
+   for(size_t i = 0; i < fLEDCoefficients.size(); i++) {
+      cal_led += fLEDCoefficients[i] * pow(led, i);
    }
    return cal_led;
 }
@@ -592,7 +583,7 @@ double TChannel::CalibrateLED(double led)
 double TChannel::CalibrateTIME(int chg)
 {
    /// Calibrates the time spectrum
-   if(fTIMECoefficients.Value().size() != 3 || (chg < 1)) {
+   if(fTIMECoefficients.size() != 3 || (chg < 1)) {
       return 0.0000;
    }
    return CalibrateTIME((CalibrateENG(chg)));
@@ -603,13 +594,13 @@ double TChannel::CalibrateTIME(double energy)
    /// uses the values stored in TIMECOefficients to calculate a
    /// "walk correction" factor.  This function returns the correction
    /// not an adjusted time stamp!   pcb.
-   if(fTIMECoefficients.Value().size() != 3 || (energy < 3.0)) {
+   if(fTIMECoefficients.size() != 3 || (energy < 3.0)) {
       return 0.0000;
    }
 
    double timeCorrection = 0.0;
 
-   timeCorrection = fTIMECoefficients.Value().at(0) + (fTIMECoefficients.Value().at(1) * pow(energy, fTIMECoefficients.Value().at(2)));
+   timeCorrection = fTIMECoefficients.at(0) + (fTIMECoefficients.at(1) * pow(energy, fTIMECoefficients.at(2)));
 
    return timeCorrection;
 }
@@ -670,7 +661,7 @@ void TChannel::PrintCTCoeffs(Option_t*) const
    std::cout<<"Number:    "<<fNumber<<std::endl;
    std::cout<<std::setfill('0');
    std::cout<<"Address:   0x"<<std::hex<<std::setw(8)<<fAddress<<std::dec<<std::endl;
-   for(double fCTCoefficient : fCTCoefficients.Value()) {
+   for(double fCTCoefficient : fCTCoefficients) {
       std::cout<<fCTCoefficient<<"\t";
    }
    std::cout<<std::endl;
@@ -681,352 +672,287 @@ void TChannel::PrintCTCoeffs(Option_t*) const
 void TChannel::Print(Option_t*) const
 {
    /// Prints out the current TChannel.
-   std::cout<<GetName()<<"\t{\n"; //,channelname.c_str();
-   std::cout<<"Type:      ";
-   if(GetClassType() != nullptr) {
-      std::cout<<GetClassType()->GetName()<<std::endl;
-   } else {
-      std::cout<<"None"<<std::endl;
-   }
-
-   std::cout<<"Name:      "<<GetName()<<std::endl;
-   std::cout<<"Number:    "<<fNumber<<std::endl;
-   std::cout<<std::setfill('0');
-   std::cout<<"Address:   0x"<<std::hex<<std::setw(8)<<fAddress<<std::dec<<std::endl;
-   std::cout<<std::setfill(' ');
-   std::cout<<"Digitizer: "<<fDigitizerTypeString<<std::endl;
-   std::cout<<"TimeOffset: "<<fTimeOffset<<std::endl;
-   std::cout<<"ENGCoeff:  ";
-   for(float fENGCoefficient : fENGCoefficients.Value()) {
-      std::cout<<fENGCoefficient<<"\t";
-   }
-   std::cout<<std::endl;
-   std::cout<<"Integration: "<<fIntegration<<std::endl;
-   std::cout<<"ENGChi2:   "<<fENGChi2<<std::endl;
-   std::cout<<"EFFCoeff:  ";
-   for(double fEFFCoefficient : fEFFCoefficients.Value()) {
-      std::cout<<fEFFCoefficient<<"\t";
-   }
-   std::cout<<std::endl;
-   std::cout<<"EFFChi2:   "<<fEFFChi2<<std::endl;
-   if(!fCFDCoefficients.Value().empty()) {
-      std::cout<<"CFDCoeff:  ";
-      for(double fCFDCoefficient : fCFDCoefficients.Value()) {
-         std::cout<<fCFDCoefficient<<"\t";
-      }
-      std::cout<<std::endl;
-	}
-   if(!fCTCoefficients.Value().empty()) {
-      std::cout<<"CTCoeff:  ";
-      for(double fCTCoefficient : fCTCoefficients.Value()) {
-         std::cout<<fCTCoefficient<<"\t";
-      }
-      std::cout<<std::endl;
-	}
-   if(!fTIMECoefficients.Value().empty()) {
-      std::cout<<"TIMECoeff: ";
-      for(double fTIMECoefficient : fTIMECoefficients.Value()) {
-         std::cout<<fTIMECoefficient<<"\t";
-      }
-      std::cout<<std::endl;
-   }
-   if(fUseCalFileInt.Value()) {
-      std::cout<<"FileInt: "<<fUseCalFileInt<<std::endl;
-   }
-   if(UseWaveParam()) {
-      std::cout<<"RiseTime: "<<WaveFormShape.TauRise<<std::endl;
-      std::cout<<"DecayTime: "<<WaveFormShape.TauDecay<<std::endl;
-      std::cout<<"BaseLine: "<<WaveFormShape.BaseLine<<std::endl;
-   }
-   std::cout<<"}\n";
-   std::cout<<"//====================================//\n";
+	std::cout<<PrintToString();
 }
 
-std::string TChannel::PrintCTToString(Option_t*)
+std::string TChannel::PrintCTToString(Option_t*) const
 {
-   std::string buffer;
-   buffer.append("\n");
-   buffer.append(GetName());
-   buffer.append("\t{\n"); //,channelname.c_str();
-   buffer.append("Name:      ");
-   buffer.append(GetName());
-   buffer.append("\n");
-   buffer.append(Form("Number:    %d\n", fNumber.Value()));
-   buffer.append(Form("Address:   0x%08x\n", fAddress));
-   if(!fCTCoefficients.Value().empty()) {
-      buffer.append("CTCoeff:  ");
-      for(double fCTCoefficient : fCTCoefficients.Value()) {
-         buffer.append(Form("%f\t", fCTCoefficient));
-      }
-      buffer.append("\n");
-   }
-   buffer.append("}\n");
-
-   buffer.append("//====================================//\n");
-
-   return buffer;
-}
-
-std::string TChannel::PrintToString(Option_t*)
-{
-   std::string buffer;
-   buffer.append("\n");
-   buffer.append(GetName());
-   buffer.append("\t{\n"); //,channelname.c_str();
-   buffer.append("Type:      ");
-   if(GetClassType() != nullptr) {
-      buffer.append(Form("%s\n", GetClassType()->GetName()));
-   } else {
-      buffer.append("None\n");
-   }
-
-   buffer.append("Name:      ");
-   buffer.append(GetName());
-   buffer.append("\n");
-   buffer.append(Form("Number:    %d\n", fNumber.Value()));
-   buffer.append(Form("Address:   0x%08x\n", fAddress));
-   buffer.append(Form("Digitizer: %s\n", fDigitizerTypeString.Value().c_str()));
-   buffer.append("ENGCoeff:  ");
-   for(float fENGCoefficient : fENGCoefficients.Value()) {
-      if(std::fabs(fENGCoefficient)<0.001)buffer.append(Form("%e\t", fENGCoefficient));
-      else buffer.append(Form("%f\t", fENGCoefficient));
-   }
-   buffer.append("\n");
-	if(!fCFDCoefficients.Value().empty()) {
-		buffer.append("CFDCoeff:  ");
-		for(float fCFDCoefficient : fCFDCoefficients.Value()) {
-			if(std::fabs(fCFDCoefficient)<0.001)buffer.append(Form("%e\t", fCFDCoefficient));
-			else buffer.append(Form("%f\t", fCFDCoefficient));
+	std::string buffer;
+	buffer.append("\n");
+	buffer.append(GetName());
+	buffer.append("\t{\n"); //,channelname.c_str();
+	buffer.append("Name:      ");
+	buffer.append(GetName());
+	buffer.append("\n");
+	buffer.append(Form("Number:    %d\n", fNumber.Value()));
+	buffer.append(Form("Address:   0x%08x\n", fAddress));
+	if(!fCTCoefficients.empty()) {
+		buffer.append("CTCoeff:  ");
+		for(double fCTCoefficient : fCTCoefficients) {
+			buffer.append(Form("%f\t", fCTCoefficient));
 		}
 		buffer.append("\n");
 	}
-	buffer.append("EnergyNonlinearity:  ");
-	double* x = fEnergyNonlinearity.Value().GetX();
-	double* y = fEnergyNonlinearity.Value().GetY();
-   for(int i = 0; i < fEnergyNonlinearity.Value().GetN(); ++i) {
-      if(std::fabs(x[i])<0.001)buffer.append(Form("%e\t", x[i]));
-      else buffer.append(Form("%f\t", x[i]));
-      if(std::fabs(y[i])<0.001)buffer.append(Form("%e\t", y[i]));
-      else buffer.append(Form("%f\t", y[i]));
+	buffer.append("}\n");
+
+	buffer.append("//====================================//\n");
+
+	return buffer;
+}
+
+std::string TChannel::PrintToString(Option_t*) const
+{
+	std::ostringstream str;
+
+	str<<GetName()<<"\t{"<<std::endl; //,channelname.c_str();
+   str<<"Type:      ";
+   if(GetClassType() != nullptr) {
+      str<<GetClassType()->GetName()<<std::endl;
+   } else {
+      str<<"None"<<std::endl;
    }
-   buffer.append("\n");
-	buffer.append(Form("Integration: %d\n", fIntegration.Value()));
-   buffer.append(Form("TimeOffset: %lld\n", fTimeOffset.Value()));
-   buffer.append(Form("ENGChi2:     %f\n", fENGChi2.Value()));
-   buffer.append("EFFCoeff:  ");
-   for(double fEFFCoefficient : fEFFCoefficients.Value()) {
-      buffer.append(Form("%f\t", fEFFCoefficient));
-   }
-   buffer.append("\n");
-   buffer.append(Form("EFFChi2:   %f\n", fEFFChi2.Value()));
-   if(!fCTCoefficients.Value().empty()) {
-      buffer.append("CTCoeff:  ");
-      for(double fCTCoefficient : fCTCoefficients.Value()) {
-         buffer.append(Form("%f\t", fCTCoefficient));
+
+   str<<"Name:      "<<GetName()<<std::endl;
+   str<<"Number:    "<<fNumber<<std::endl;
+   str<<std::setfill('0');
+   str<<"Address:   0x"<<std::hex<<std::setw(8)<<fAddress<<std::dec<<std::endl;
+   str<<std::setfill(' ');
+	if(!fDigitizerTypeString.empty()) {
+		str<<"Digitizer: "<<fDigitizerTypeString<<std::endl;
+	}
+   str<<"TimeOffset: "<<fTimeOffset<<std::endl;
+	if(!fENGCoefficients.empty()) {
+		str<<"ENGCoeff:  ";
+		for(float fENGCoefficient : fENGCoefficients) {
+			str<<fENGCoefficient<<"\t";
+		}
+		str<<std::endl;
+	}
+   str<<"Integration: "<<fIntegration<<std::endl;
+	if(fENGChi2 != 0) {
+		str<<"ENGChi2:   "<<fENGChi2<<std::endl;
+	}
+	if(!fEFFCoefficients.empty()) {
+		str<<"EFFCoeff:  ";
+		for(double fEFFCoefficient : fEFFCoefficients) {
+			str<<fEFFCoefficient<<"\t";
+		}
+		str<<std::endl;
+	}
+	if(fEFFChi2 != 0) {
+		str<<"EFFChi2:   "<<fEFFChi2<<std::endl;
+	}
+   if(!fCFDCoefficients.empty()) {
+      str<<"CFDCoeff:  ";
+      for(double fCFDCoefficient : fCFDCoefficients) {
+         str<<fCFDCoefficient<<"\t";
       }
-      buffer.append("\n");
-   }
-   if(!fTIMECoefficients.Value().empty()) {
-      buffer.append("TIMECoeff:  ");
-      for(double fTIMECoefficient : fTIMECoefficients.Value()) {
-         buffer.append(Form("%f\t", fTIMECoefficient));
-      }
-      buffer.append("\n");
-   }
-   buffer.append(Form("FileInt: %d\n", static_cast<int>(fUseCalFileInt.Value())));
-   if(UseWaveParam()) {
-      buffer.append(Form("RiseTime: %f\n", WaveFormShape.TauRise));
-      buffer.append(Form("DecayTime: %f\n", WaveFormShape.TauDecay));
-      buffer.append(Form("BaseLine: %f\n", WaveFormShape.BaseLine));
-   }
+      str<<std::endl;
+	}
+   if(fEnergyNonlinearity.Value().GetN() > 0) {
+		str<<"EnergyNonlinearity:  ";
+		double* x = fEnergyNonlinearity.Value().GetX();
+		double* y = fEnergyNonlinearity.Value().GetY();
+		for(int i = 0; i < fEnergyNonlinearity.Value().GetN(); ++i) {
+			str<<x[i]<<"\t"<<y[i]<<"\t";
+		}
+		str<<std::endl;
+	}
+	if(!fCTCoefficients.empty()) {
+		str<<"CTCoeff:  ";
+		for(double fCTCoefficient : fCTCoefficients) {
+			str<<fCTCoefficient<<"\t";
+		}
+		str<<std::endl;
+	}
+	if(!fTIMECoefficients.empty()) {
+		str<<"TIMECoeff: ";
+		for(double fTIMECoefficient : fTIMECoefficients) {
+			str<<fTIMECoefficient<<"\t";
+		}
+		str<<std::endl;
+	}
+	if(fUseCalFileInt) {
+		str<<"FileInt: "<<fUseCalFileInt<<std::endl;
+	}
+	if(UseWaveParam()) {
+		str<<"RiseTime: "<<WaveFormShape.TauRise<<std::endl;
+		str<<"DecayTime: "<<WaveFormShape.TauDecay<<std::endl;
+		str<<"BaseLine: "<<WaveFormShape.BaseLine<<std::endl;
+	}
+	str<<"}"<<std::endl;
+	str<<"//====================================//"<<std::endl;
+	std::string buffer = str.str();
 
-   buffer.append("}\n");
-
-   buffer.append("//====================================//\n");
-
-   return buffer;
+	return buffer;
 }
 
 void TChannel::WriteCalFile(const std::string& outfilename)
 {
-   /// prints the context of addresschannelmap formatted correctly to stdout if
-   /// no file name is passed to the function.  If a file name is passed to the function
-   /// prints the context of addresschannelmap formatted correctly to a file with the given
-   /// name.  This will earse and rewrite the file if the file already exisits!
+	/// prints the context of addresschannelmap formatted correctly to stdout if
+	/// no file name is passed to the function.  If a file name is passed to the function
+	/// prints the context of addresschannelmap formatted correctly to a file with the given
+	/// name.  This will earse and rewrite the file if the file already exisits!
 
-   std::vector<TChannel*> chanVec;
-   for(auto iter : *fChannelMap) {
-      if(iter.second != nullptr) {
-         chanVec.push_back(iter.second);
-      }
-   }
+	std::vector<TChannel*> chanVec;
+	for(auto iter : *fChannelMap) {
+		if(iter.second != nullptr) {
+			chanVec.push_back(iter.second);
+		}
+	}
 
-   //This orders channels nicely
-   std::sort(chanVec.begin(), chanVec.end(), TChannel::CompareChannels);
+	//This orders channels nicely
+	std::sort(chanVec.begin(), chanVec.end(), TChannel::CompareChannels);
 
-   if(outfilename.length() > 0) {
-      std::ofstream calout;
-      calout.open(outfilename.c_str());
-      for(auto iter_vec : chanVec) {
-         std::string chanstr = iter_vec->PrintToString();
-         calout<<chanstr.c_str();
-         calout<<std::endl;
-      }
-      calout<<std::endl;
-      calout.close();
-   } else {
-      for(auto iter_vec : chanVec) {
-         iter_vec->Print();
-      }
-   }
+	if(outfilename.length() > 0) {
+		std::ofstream calout;
+		calout.open(outfilename.c_str());
+		for(auto iter_vec : chanVec) {
+			std::string chanstr = iter_vec->PrintToString();
+			calout<<chanstr.c_str();
+			calout<<std::endl;
+		}
+		calout<<std::endl;
+		calout.close();
+	} else {
+		for(auto iter_vec : chanVec) {
+			iter_vec->Print();
+		}
+	}
 }
 
 void TChannel::WriteCTCorrections(const std::string& outfilename)
 {
-   std::vector<TChannel*> chanVec;
-   for(auto iter : *fChannelMap) {
-      if(iter.second != nullptr) {
-         chanVec.push_back(iter.second);
-      }
-   }
+	std::vector<TChannel*> chanVec;
+	for(auto iter : *fChannelMap) {
+		if(iter.second != nullptr) {
+			chanVec.push_back(iter.second);
+		}
+	}
 
-   //This ordered channels nicely
-   std::sort(chanVec.begin(), chanVec.end(), TChannel::CompareChannels);
+	//This ordered channels nicely
+	std::sort(chanVec.begin(), chanVec.end(), TChannel::CompareChannels);
 
-   if(outfilename.length() > 0) {
-      std::ofstream calout;
-      calout.open(outfilename.c_str());
-      for(auto iter_vec : chanVec) {
-         std::string chanstr = iter_vec->PrintCTToString();
-         calout<<chanstr.c_str();
-         calout<<std::endl;
-      }
-      calout<<std::endl;
-      calout.close();
-   } else {
-      for(auto iter_vec : chanVec) {
-         iter_vec->PrintCTCoeffs();
-      }
-   }
+	if(outfilename.length() > 0) {
+		std::ofstream calout;
+		calout.open(outfilename.c_str());
+		for(auto iter_vec : chanVec) {
+			std::string chanstr = iter_vec->PrintCTToString();
+			calout<<chanstr.c_str();
+			calout<<std::endl;
+		}
+		calout<<std::endl;
+		calout.close();
+	} else {
+		for(auto iter_vec : chanVec) {
+			iter_vec->PrintCTCoeffs();
+		}
+	}
 }
 
 void TChannel::WriteCalBuffer(Option_t*)
 {
-   /// writes any TChannels in memory to the internal buffer
-   /// fFileData.  Can be used to over write info that is there
-   /// or create the buffer if the channels originated from the odb.
+	/// writes any TChannels in memory to the internal buffer
+	/// fFileData.  Can be used to over write info that is there
+	/// or create the buffer if the channels originated from the odb.
 
-   std::vector<TChannel*> chanVec;
-   for(auto iter : *fChannelMap) {
-      if(iter.second != nullptr) {
-         chanVec.push_back(iter.second);
-      }
-   }
+	std::vector<TChannel*> chanVec;
+	for(auto iter : *fChannelMap) {
+		if(iter.second != nullptr) {
+			chanVec.push_back(iter.second);
+		}
+	}
 
 	//This ordered channels nicely
-   std::sort(chanVec.begin(), chanVec.end(), TChannel::CompareChannels);
+	std::sort(chanVec.begin(), chanVec.end(), TChannel::CompareChannels);
 
-   std::string data;
+	std::string data;
 
 	for(auto iter_vec : chanVec) {
-      data.append(iter_vec->PrintToString());
-   }
-   fFileData.clear();
-   fFileData = data;
+		data.append(iter_vec->PrintToString());
+	}
+	fFileData.clear();
+	fFileData = data;
 }
 
 Int_t TChannel::ReadCalFromCurrentFile(Option_t*)
 {
-   if(!gFile) {
-      return 0;
-   }
+	if(!gFile) {
+		return 0;
+	}
 
-   TFile* tempf = gFile->CurrentFile();
-   TList* list  = tempf->GetListOfKeys();
-   TIter  iter(list);
+	TFile* tempf = gFile->CurrentFile();
 
-   while(TKey* key = static_cast<TKey*>(iter.Next())) {
-      if((key == nullptr) || (strcmp(key->GetClassName(), "TChannel") != 0)) {
-         continue;
-      }
-      key->ReadObj();
-      return GetNumberOfChannels();
-   }
-   return 0;
+	return ReadFile(tempf);
 }
 
 Int_t TChannel::ReadCalFromFile(TFile* tempf, Option_t*)
 {
-   /// Reads the TChannel information from a TFile if it has already been written to that File.
-   if(tempf == nullptr) {
-      return 0;
-   }
+	/// Reads the TChannel information from a TFile if it has already been written to that File.
+	if(tempf == nullptr) {
+		return 0;
+	}
 
-   TList* list = tempf->GetListOfKeys();
-   TIter  iter(list);
-
-   while(TKey* key = static_cast<TKey*>(iter.Next())) {
-      if((key == nullptr) || (strcmp(key->GetClassName(), "TChannel") != 0)) {
-         continue;
-      }
-      key->ReadObj();
-      return GetNumberOfChannels();
-   }
-   return 0;
+	return ReadFile(tempf);
 }
 
 Int_t TChannel::ReadCalFromTree(TTree* tree, Option_t*)
 {
-   /// Reads the TChannel information from a Tree if it has already been written to that Tree.
-   if(tree == nullptr) {
-      return 0;
-   }
+	/// Reads the TChannel information from a Tree if it has already been written to that Tree.
+	if(tree == nullptr) {
+		return 0;
+	}
 
-   TFile* tempf = tree->GetCurrentFile();
-   TList* list  = tempf->GetListOfKeys();
-   TIter  iter(list);
+	TFile* tempf = tree->GetCurrentFile();
 
-   while(TKey* key = static_cast<TKey*>(iter.Next())) {
-      if((key == nullptr) || (strcmp(key->GetClassName(), "TChannel") != 0)) {
-         continue;
-      }
-      key->ReadObj();
-      return GetNumberOfChannels();
-   }
-   return 0;
+	return ReadFile(tempf);
+}
+
+Int_t TChannel::ReadFile(TFile* tempf)
+{
+	TList* list  = tempf->GetListOfKeys();
+	TIter  iter(list);
+	while(TKey* key = static_cast<TKey*>(iter.Next())) {
+		if((key == nullptr) || (strcmp(key->GetClassName(), "TChannel") != 0)) {
+			continue;
+		}
+		key->ReadObj();
+		return GetNumberOfChannels();
+	}
+	return 0;
 }
 
 Int_t TChannel::ReadCalFile(const char* filename)
 {
-   /// Makes TChannels from a cal file to be used as the current calibration until grsisort
-   /// is closed. Returns the number of channels properly read in.
-   std::string infilename;
-   infilename.append(filename);
+	/// Makes TChannels from a cal file to be used as the current calibration until grsisort
+	/// is closed. Returns the number of channels properly read in.
+	std::string infilename;
+	infilename.append(filename);
 
-   if(infilename.length() == 0) {
-      return -1;
-   }
+	if(infilename.length() == 0) {
+		return -1;
+	}
 
-   printf("Reading from calibration file:" CYAN " %s" RESET_COLOR ".....", filename);
-   std::ifstream infile;
-   infile.open(infilename.c_str());
-   if(!infile.is_open()) {
-      printf(DRED "could not open file." RESET_COLOR "\n");
-      return -2;
-   }
-   infile.seekg(0, std::ios::end);
-   int length = infile.tellg();
-   if(length < 1) {
-      return -2;
-   }
+	printf("Reading from calibration file:" CYAN " %s" RESET_COLOR ".....", filename);
+	std::ifstream infile;
+	infile.open(infilename.c_str());
+	if(!infile.is_open()) {
+		printf(DRED "could not open file." RESET_COLOR "\n");
+		return -2;
+	}
+	infile.seekg(0, std::ios::end);
+	int length = infile.tellg();
+	if(length < 1) {
+		return -2;
+	}
 
-   auto* buffer = new char[length+1];//+1 for the null character to terminate the string
-   infile.seekg(0, std::ios::beg);
-   infile.read(buffer, length);
+	auto* buffer = new char[length+1];//+1 for the null character to terminate the string
+	infile.seekg(0, std::ios::beg);
+	infile.read(buffer, length);
 	buffer[length] = '\0';
 
-   int channels_found = ParseInputData(const_cast<const char*>(buffer), "", EPriority::kInputFile);
-   SaveToSelf(infilename.c_str());
+	int channels_found = ParseInputData(const_cast<const char*>(buffer), "", EPriority::kInputFile);
+	SaveToSelf(infilename.c_str());
 
 	fChannelNumberMap->clear(); // This isn't the nicest way to do this but will keep us consistent.
 
@@ -1072,7 +998,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 	// the parser does not recognize, it just skips it!
 	while(std::getline(infile, line)) {
 		linenumber++;
-		trim(&line);
+		trim(line);
 		size_t comment = line.find("//");
 		if(comment != std::string::npos) {
 			line = line.substr(0, comment);
@@ -1111,8 +1037,9 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 		if(openbrace != std::string::npos) {
 			brace_open = true;
 			name       = line.substr(0, openbrace);
+			trim(name);
 			channel    = new TChannel("");
-			channel->SetName(name.c_str());
+			if(!name.empty()) channel->SetName(name.c_str());
 		}
 		//*************************************//
 		if(brace_open) {
@@ -1120,7 +1047,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 			if(ntype != std::string::npos) {
 				std::string type = line.substr(0, ntype);
 				line             = line.substr(ntype + 1, line.length());
-				trim(&line);
+				trim(line);
 				std::istringstream ss(line);
 				// transform type to upper case
 				std::transform(type.begin(), type.end(), type.begin(), ::toupper);
@@ -1256,21 +1183,15 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 	return newchannels;
 }
 
-void TChannel::trim(std::string* line, const std::string& trimChars)
+void TChannel::trim(std::string& line)
 {
-	/// Removes the the string "trimCars" from  the string 'line'
-	if(line->length() == 0) {
-		return;
-	}
-	std::size_t found = line->find_first_not_of(trimChars);
-	if(found != std::string::npos) {
-		*line = line->substr(found, line->length());
-	}
-	found = line->find_last_not_of(trimChars);
-	if(found != std::string::npos) {
-		*line = line->substr(0, found + 1);
-	}
-	return;
+	/// Removes whitespace from  the string 'line'
+	line.erase(line.begin(), std::find_if(line.begin(), line.end(), [](int ch) {
+				return !std::isspace(ch);
+				}));
+	line.erase(std::find_if(line.rbegin(), line.rend(), [](int ch) { 
+				return !std::isspace(ch);
+				}).base(), line.end());
 }
 
 void TChannel::Streamer(TBuffer& R__b)
@@ -1331,19 +1252,24 @@ int TChannel::WriteToRoot(TFile* fileptr)
 		fileptr = gDirectory->GetFile();
 	}
 
+	// check if we got a file
+   if(fileptr == nullptr) {
+		std::cout<<"Error, no file provided and no file open (gDirectory = "<<gDirectory->GetName()<<")!"<<std::endl;
+		return 0;
+	}
 	fileptr->cd();
 	std::string oldoption = std::string(fileptr->GetOption());
 	if(oldoption == "READ") {
 		fileptr->ReOpen("UPDATE");
 	}
-	if(gDirectory == nullptr) {
-		printf("No file opened to write to.\n");
+	if(gDirectory) { // we don't compare to nullptr here, as ROOT >= 6.24.00 uses the TDirectoryAtomicAdapter structure with a bool() operator
+		std::cout<<"No file opened to write to."<<std::endl;
 	}
 	TIter iter(gDirectory->GetListOfKeys());
 
 	bool        found         = false;
-	std::string mastername    = "Channel";
-	std::string mastertitle   = "TChannel";
+	std::string defaultName    = "Channel";
+	std::string defaultTitle   = "TChannel";
 	std::string channelbuffer = fFileData; //fFileData is the old TChannel information read from file
 	WriteCalBuffer(); //replaces fFileData with the current channels
 	std::string savedata = fFileData;
@@ -1359,8 +1285,8 @@ int TChannel::WriteToRoot(TFile* fileptr)
 		if(!found) {
 			found        = true;
 			TChannel* ch = static_cast<TChannel*>(key->ReadObj());
-			mastername.assign(ch->GetName());
-			mastertitle.assign(ch->GetTitle());
+			defaultName.assign(ch->GetName());
+			defaultTitle.assign(ch->GetTitle());
 		}
 		std::string cname = key->ReadObj()->GetName();
 		cname.append(";*");
@@ -1374,15 +1300,15 @@ int TChannel::WriteToRoot(TFile* fileptr)
 	SaveToSelf(savedata.c_str());
 	TChannel::ParseInputData(channelbuffer.c_str(), "q", EPriority::kRootFile);
 	c = TChannel::GetDefaultChannel();
-	c->SetNameTitle(mastername.c_str(), mastertitle.c_str());
+	c->SetNameTitle(defaultName.c_str(), defaultTitle.c_str());
 	c->Write("Channel", TObject::kOverwrite);
 
 	ParseInputData(savedata.c_str(), "q", EPriority::kRootFile);
 	SaveToSelf(savedata.c_str());
 
-	printf("  %i TChannels saved to %s.\n", GetNumberOfChannels(), gDirectory->GetFile()->GetName());
+	std::cout<<"  "<<GetNumberOfChannels()<<" TChannels saved to "<<gDirectory->GetFile()->GetName()<<std::endl;
 	if(oldoption == "READ") {
-		printf("  Returning %s to \"%s\" mode.\n", gDirectory->GetFile()->GetName(), oldoption.c_str());
+		std::cout<<"  Returning "<<gDirectory->GetFile()->GetName()<<" to \"READ\" mode."<<std::endl;
 		fileptr->ReOpen("READ");
 	}
 	savdir->cd(); // Go back to original gDirectory
@@ -1447,6 +1373,34 @@ void TChannel::SetupEnergyNonlinearity()
 {
 	fEnergyNonlinearity.Address()->Sort();
 	fEnergyNonlinearity.Address()->SetBit(TGraph::kIsSortedX);
-	fEnergyNonlinearity.Address()->SetName(Form("EnergyNonlinearity0x%08x", fAddress));
-	fEnergyNonlinearity.Address()->SetTitle(Form("Energy nonlinearity of channel 0x%08x", fAddress));
+	fEnergyNonlinearity.Address()->SetName(Form("EnergyNonlinearity0x%04x", fAddress));
+	fEnergyNonlinearity.Address()->SetTitle(Form("Energy nonlinearity of channel 0x%04x", fAddress));
+}
+
+void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName, bool all)
+{
+	/// Read energy nonlinearities as TGraphErrors from provided root file using "graphName%x" as names
+	TList* list  = file->GetListOfKeys();
+	TIter  iter(list);
+	while(TKey* key = static_cast<TKey*>(iter.Next())) {
+		TClass* cl = TClass::GetClass(key->GetClassName());
+		if(!cl->InheritsFrom(TGraph::Class()) || strncmp(key->GetName(), graphName, strlen(graphName)) != 0) {
+			continue;
+		}
+		// get address from keys name
+		std::stringstream str;
+		str<<std::hex<<(key->GetName()+strlen(graphName));
+		unsigned int address;
+		str>>address;
+		if(GetChannel(address) != nullptr) {
+			GetChannel(address)->fEnergyNonlinearity.Set(*(static_cast<TGraph*>(key->ReadObj())), EPriority::kRootFile);
+			GetChannel(address)->SetupEnergyNonlinearity();
+		} else if(all) {
+			TChannel* newChannel = new TChannel("");
+			newChannel->SetAddress(address);
+			newChannel->fEnergyNonlinearity.Set(*(static_cast<TGraph*>(key->ReadObj())), EPriority::kRootFile);
+			newChannel->SetupEnergyNonlinearity();
+			AddChannel(newChannel);
+		}
+	}
 }

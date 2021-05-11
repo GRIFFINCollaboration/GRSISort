@@ -570,7 +570,7 @@ Int_t GCube::Fill(const char* namex, const char* namey, const char* namez, Doubl
    return bin;
 }
 
-void GCube::FillRandom(const char* fname, Int_t ntimes)
+void GCube::FillRandom(const char* fname, Int_t ntimes, TRandom* rng)
 {
    ///*-*-*-*-*-*-*Fill histogram following distribution in function fname*-*-*-*
    ///*-*          =======================================================
@@ -636,7 +636,7 @@ void GCube::FillRandom(const char* fname, Int_t ntimes)
 
    //*-*--------------Start main loop ntimes
    for(int loop = 0; loop < ntimes; ++loop) {
-      r1   = gRandom->Rndm(loop);
+      r1   = (rng != nullptr) ? rng->Rndm(loop) : gRandom->Rndm(loop);
       ibin = TMath::BinarySearch(nbins, &integral[0], r1);
       binz = ibin / nxy;
       biny = (ibin - nxy * binz) / nbinsx;
@@ -650,7 +650,11 @@ void GCube::FillRandom(const char* fname, Int_t ntimes)
    delete[] integral;
 }
 
-void GCube::FillRandom(TH1* h, Int_t ntimes)
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 24, 0)
+void GCube::FillRandom(TH1* h, Int_t ntimes, TRandom*)
+#else
+void GCube::FillRandom(TH1* h, Int_t ntimes, TRandom* rng)
+#endif
 {
    ///*-*-*-*-*-*-*Fill histogram following distribution in histogram h*-*-*-*
    ///*-*          ====================================================
@@ -682,7 +686,11 @@ void GCube::FillRandom(TH1* h, Int_t ntimes)
    Double_t x, y, z;
    TH3*     h3 = static_cast<TH3*>(h);
    for(int loop = 0; loop < ntimes; ++loop) {
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 24, 0)
       h3->GetRandom3(x, y, z);
+#else
+      h3->GetRandom3(x, y, z, rng);
+#endif
       Fill(x, y, z);
    }
 }
@@ -1294,21 +1302,33 @@ Double_t GCube::IntegralAndError(Int_t firstxbin, Int_t lastxbin, Int_t firstybi
    return DoIntegral(firstxbin, lastxbin, firstybin, lastybin, firstzbin, lastzbin, error, option, kTRUE);
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
 Double_t GCube::Interpolate(Double_t)
+#else
+Double_t GCube::Interpolate(Double_t) const
+#endif
 {
    // illegal for a TH3
    Error("Interpolate", "This function must be called with 3 arguments for a TH3");
    return 0;
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
 Double_t GCube::Interpolate(Double_t, Double_t)
+#else
+Double_t GCube::Interpolate(Double_t, Double_t) const
+#endif
 {
    // illegal for a TH3
    Error("Interpolate", "This function must be called with 3 arguments for a TH3");
    return 0;
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
 Double_t GCube::Interpolate(Double_t x, Double_t y, Double_t z)
+#else
+Double_t GCube::Interpolate(Double_t x, Double_t y, Double_t z) const
+#endif
 {
    /// Given a point P(x,y,z), Interpolate approximates the value via trilinear interpolation
    /// based on the 8 nearest bin center points ( corner of the cube surronding the points)

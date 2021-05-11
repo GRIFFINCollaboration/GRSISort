@@ -67,7 +67,8 @@ typedef char int8_t;
 #include <cstdlib>
 #include <execinfo.h>
 #include <cxxabi.h>
-//#include <stdint.h>
+#include <sstream>
+
 const std::string& ProgramName();
 
 namespace grsi {
@@ -83,7 +84,43 @@ public:
    const int   code;
    const char* message;
 };
+
+//-------------------- three function templates that print all arguments into a string
+//this template uses existing stream and appends the last argument to it
+template <typename T>
+void Append(std::stringstream& stream, const T& tail) {
+	// append last argument
+	stream<<tail;
 }
+
+//this template uses existing stream and appends to it
+template <typename T, typename... U>
+void Append(std::stringstream& stream, const T& head, const U&... tail) {
+	// append first argument
+	stream<<head;
+
+	// reversely call this template (or the one with the last argument)
+	Append(stream,tail...);
+}
+
+//this function typically gets called by user
+template <typename T, typename... U>
+std::string Stringify(const T& head, const U&... tail) {
+	// print first arguments to string
+	std::stringstream stream;
+	stream<<head;
+
+	// call the second template (or the third if tail is just one argument)
+	Append(stream,tail...);
+
+	// append a newline
+	stream<<std::endl;
+
+	// return resulting string
+	return stream.str();
+}
+
+} // end of namespace grsi
 
 // print a demangled stack backtrace of the caller function (copied from https://panthema.net/2008/0901-stacktrace-demangled/)
 static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int maxFrames = 63)

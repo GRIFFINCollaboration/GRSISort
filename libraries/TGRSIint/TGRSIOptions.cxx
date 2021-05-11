@@ -281,8 +281,8 @@ void TGRSIOptions::Load(int argc, char** argv)
 		parser.option("write-diagnostics", &fWriteDiagnostics, true).description("Write Parsing/SortingDiagnostics to root-file")
 			.colour(DGREEN);
 		parser.option("word-count-offset", &fWordOffset, true)
-			.description("Offset to the word count in the GRIFFIN header word, default is 1.")
-			.default_value(1);
+			.description("Offset to the word count in the GRIFFIN header word, default is -1 (disabled).")
+			.default_value(1).colour(DGREEN);
 		parser.option("log-errors", &fLogErrors, true);
 		parser.option("reading-material", &fReadingMaterial, true);
 		parser.option("write-fragment-tree write-frag-tree", &fWriteFragmentTree, true)
@@ -406,6 +406,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 		fSeparateOutOfOrder = true;
 		fSuppressErrors = true;
 		fReconstructTimeStamp = true;
+		fWordOffset = -1;
 	}
 }
 
@@ -420,6 +421,7 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const
    }
    std::string ext     = filename.substr(dot_pos + 1);
 
+	//check if this is a zipped file and if so get the extension before the zip-extension
    bool isZipped = (ext == "gz") || (ext == "bz2") || (ext == "zip");
    if(isZipped) {
       std::string remaining = filename.substr(0, dot_pos);
@@ -471,6 +473,15 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const
 	if(ext == "xml") {
       return kFileType::XML_FILE;
    }
+	
+	// strip possible parenthese with arguments for the script from the extension
+   size_t      opening_pos = ext.find_first_of('(');
+	if(opening_pos != std::string::npos) {
+		ext = ext.substr(0,opening_pos);
+		if((ext == "c") || (ext == "C") || (ext == "c+") || (ext == "C+") || (ext == "c++") || (ext == "C++")) {
+			return kFileType::ROOT_MACRO;
+		}
+	}
 	return kFileType::UNKNOWN_FILETYPE;
 }
 

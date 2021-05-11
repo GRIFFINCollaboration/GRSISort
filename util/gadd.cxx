@@ -163,9 +163,9 @@ int main(int argc, char** argv)
          }
          ++ffirst;
       } else if(argv[a][0] == '-') {
-         char ft[4];
+         char ft[5];
          for(int j = 0; j <= 9; ++j) {
-            snprintf(ft, 4, "-f%d", j);
+            snprintf(ft, 5, "-f%d", j);
             if(strcmp(argv[a], ft) == 0) {
                force   = kTRUE;
                newcomp = j;

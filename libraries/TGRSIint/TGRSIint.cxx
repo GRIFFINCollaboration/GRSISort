@@ -368,8 +368,8 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
 			if(file->FindObjectAny("Channel") != nullptr) {
 				file->Get("Channel"); // this calls TChannel::Streamer
 			}
-			if(file->FindObjectAny("GValue") != nullptr) {
-				file->Get("GValue");
+			if(file->FindObjectAny("Values") != nullptr) {
+				file->Get("Values");
 			}
 			fRootFilesOpened++;
 		} else {
@@ -521,9 +521,15 @@ void TGRSIint::SetupPipeline()
 	////////////////////////////////////////////////////
 
 	if(!write_fragment_histograms && !write_fragment_tree && !write_analysis_histograms && !write_analysis_tree) {
-		// We still might want to read a cal file
+		// We still might want to read the calibration, values, or run info files
 		for(const auto& cal_filename : opt->CalInputFiles()) {
 			TChannel::ReadCalFile(cal_filename.c_str());
+		}
+		for(const auto& val_filename : opt->ValInputFiles()) {
+			GValue::ReadValFile(val_filename.c_str());
+		}
+		for(const auto& info_filename : opt->ExternalRunInfo()) {
+			TRunInfo::Get()->ReadInfoFile(info_filename.c_str());
 		}
 		return;
 	}
@@ -671,7 +677,22 @@ void TGRSIint::RunMacroFile(const std::string& filename)
 		const char* command = Form(".x %s", filename.c_str());
 		ProcessLine(command);
 	} else {
-		std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
+		// check if commandline arguments were supplied
+		size_t beginning_pos = filename.find_first_of('(');
+		if(beginning_pos != std::string::npos && filename.back() == ')') {
+			std::string trueFilename = filename.substr(0,beginning_pos);
+			std::string arguments = filename.substr(beginning_pos, std::string::npos);
+			if(file_exists(trueFilename.c_str())) {
+				const char* command = Form(".L %s", trueFilename.c_str());
+				ProcessLine(command);
+				command = Form("%s%s", trueFilename.substr(0,filename.find_first_of('.')).c_str(), arguments.c_str());
+				ProcessLine(command);
+			} else {
+				std::cerr<<R"(File ")"<<trueFilename<<R"(" does not exist)"<<std::endl;
+			}
+		} else {
+			std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
+		}
 	}
 }
 
