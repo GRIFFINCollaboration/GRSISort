@@ -52,17 +52,34 @@ enum MyArrowPress { kMyArrowLeft = 0x1012, kMyArrowUp = 0x1013, kMyArrowRight = 
 ClassImp(GMarker)
 /// \endcond
 
+GMarker::GMarker(int x, int y, TH1* hist)
+	: fHist(hist)
+{
+   if(fHist->GetDimension() == 1) {
+      double localX = gPad->AbsPixeltoX(x);
+
+      fLineX = new TLine(localX, gPad->GetUymin(), localX, gPad->GetUymax());
+		fLineY = nullptr;
+      SetColor(kRed);
+      Draw();
+   } else if(fHist->GetDimension() == 2) {
+      double localX     = gPad->AbsPixeltoX(x);
+      double localY     = gPad->AbsPixeltoY(y);
+
+      fLineX = new TLine(localX, gPad->GetUymin(), localX, gPad->GetUymax());
+      fLineY = new TLine(gPad->GetUxmin(), localY, gPad->GetUxmax(), localY);
+
+      SetColor(kRed);
+      Draw();
+   }
+}
+
 void GMarker::Copy(TObject& object) const
 {
    TObject::Copy(object);
-   (static_cast<GMarker&>(object)).x      = x;
-   (static_cast<GMarker&>(object)).y      = y;
-   (static_cast<GMarker&>(object)).localx = localx;
-   (static_cast<GMarker&>(object)).localy = localy;
-   (static_cast<GMarker&>(object)).linex  = nullptr;
-   (static_cast<GMarker&>(object)).liney  = nullptr;
-   (static_cast<GMarker&>(object)).binx   = binx;
-   (static_cast<GMarker&>(object)).biny   = biny;
+   (static_cast<GMarker&>(object)).fLineX  = nullptr;
+   (static_cast<GMarker&>(object)).fLineY  = nullptr;
+   (static_cast<GMarker&>(object)).fHist   = fHist;
 }
 
 int GCanvas::lastx = 0;
@@ -124,43 +141,10 @@ void GCanvas::GCanvasInit()
    SetBit(kNotDeleted, false); // root voodoo.
 }
 
-void GCanvas::AddMarker(int x, int y, int dim)
+void GCanvas::AddMarker(int x, int y, TH1* hist)
 {
-   std::vector<TH1*> hists = FindHists(dim);
-   if(hists.empty()) {
-      return;
-   }
-   TH1* hist = hists[0];
-
-   auto* mark = new GMarker();
-   mark->x    = x;
-   mark->y    = y;
-   if(dim == 1) {
-      mark->localx = gPad->AbsPixeltoX(x);
-      mark->localy = gPad->AbsPixeltoY(y);
-      mark->binx   = hist->GetXaxis()->FindBin(mark->localx);
-      mark->biny   = hist->GetYaxis()->FindBin(mark->localy);
-
-      double bin_edge = hist->GetXaxis()->GetBinLowEdge(mark->binx);
-      mark->linex     = new TLine(bin_edge, hist->GetMinimum(), bin_edge, hist->GetMaximum());
-      mark->SetColor(kRed);
-      mark->Draw();
-   } else if(dim == 2) {
-      mark->localx     = gPad->AbsPixeltoX(x);
-      mark->localy     = gPad->AbsPixeltoY(y);
-      mark->binx       = hist->GetXaxis()->FindBin(mark->localx);
-      mark->biny       = hist->GetYaxis()->FindBin(mark->localy);
-      double binx_edge = hist->GetXaxis()->GetBinLowEdge(mark->binx);
-      double biny_edge = hist->GetYaxis()->GetBinLowEdge(mark->biny);
-
-      mark->linex = new TLine(binx_edge, hist->GetYaxis()->GetXmin(), binx_edge, hist->GetYaxis()->GetXmax());
-      mark->liney = new TLine(hist->GetXaxis()->GetXmin(), biny_edge, hist->GetXaxis()->GetXmax(), biny_edge);
-
-      mark->SetColor(kRed);
-      mark->Draw();
-   }
-
-   unsigned int max_number_of_markers = (dim == 1) ? 4 : 2;
+   auto* mark = new GMarker(x, y, hist);
+   unsigned int max_number_of_markers = (hist->GetDimension() == 1) ? 4 : 2;
 
    fMarkers.push_back(mark);
 
@@ -188,11 +172,9 @@ void GCanvas::RemoveMarker(Option_t* opt)
       if(fMarkers.empty()) {
          return;
       }
-      if(fMarkers.at(fMarkers.size() - 1) != nullptr) {
-         delete fMarkers.at(fMarkers.size() - 1);
-      }
+		delete fMarkers.back();
       // printf("Marker %i Removed\n");
-      fMarkers.erase(fMarkers.end() - 1);
+      fMarkers.pop_back();
    }
 }
 
@@ -205,26 +187,12 @@ void GCanvas::RedrawMarkers()
 {
    gPad->Update();
    for(auto marker : fMarkers) {
-      if(marker->linex != nullptr) {
-         marker->linex->SetY1(GetUymin());
-         marker->linex->SetY2(GetUymax());
-      }
-      if(marker->liney != nullptr) {
-         marker->liney->SetX1(GetUxmin());
-         marker->liney->SetX2(GetUxmax());
-      }
-      marker->Draw();
+		marker->Update(GetUxmin(), GetUxmax(), GetUymin(), GetUymax());
+		marker->Draw();
    }
 
    for(auto marker : fBackgroundMarkers) {
-      if(marker->linex != nullptr) {
-         marker->linex->SetY1(GetUymin());
-         marker->linex->SetY2(GetUymax());
-      }
-      if(marker->liney != nullptr) {
-         marker->liney->SetX1(GetUxmin());
-         marker->liney->SetX2(GetUxmax());
-      }
+		marker->Update(GetUxmin(), GetUxmax(), GetUymin(), GetUymax());
       marker->Draw();
    }
 }
@@ -440,7 +408,7 @@ bool GCanvas::HandleMousePress(Int_t event, Int_t x, Int_t y)
    bool used = false;
 
    if(fMarkerMode) {
-      AddMarker(x, y, hist->GetDimension());
+      AddMarker(x, y, hist);
       used = true;
    }
 
@@ -667,15 +635,15 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
          break;
       }
       {
-         if(fMarkers.at(fMarkers.size() - 1)->localx < fMarkers.at(fMarkers.size() - 2)->localx) {
+         if(fMarkers.at(fMarkers.size() - 1)->GetLocalX() < fMarkers.at(fMarkers.size() - 2)->GetLocalX()) {
             for(auto& hist : hists) {
-               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 1)->localx,
-                                              fMarkers.at(fMarkers.size() - 2)->localx);
+               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 1)->GetLocalX(),
+                                              fMarkers.at(fMarkers.size() - 2)->GetLocalX());
             }
          } else {
             for(auto& hist : hists) {
-               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 2)->localx,
-                                              fMarkers.at(fMarkers.size() - 1)->localx);
+               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 2)->GetLocalX(),
+                                              fMarkers.at(fMarkers.size() - 1)->GetLocalX());
             }
          }
       }
@@ -712,8 +680,8 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
       break;
    case kKey_f:
       if(!hists.empty() && GetNMarkers() > 1) {
-         // printf("x low = %.1f\t\txhigh = %.1f\n",fMarkers.at(fMarkers.size()-2)->localx,fMarkers.back()->localx);
-         if(PhotoPeakFit(hists.back(), fMarkers.at(fMarkers.size() - 2)->localx, fMarkers.back()->localx) != nullptr) {
+         printf("x low = %.1f\t\txhigh = %.1f\n",fMarkers.at(fMarkers.size()-2)->GetLocalX(),fMarkers.back()->GetLocalX());
+         if(PhotoPeakFit(hists.back(), fMarkers.at(fMarkers.size() - 2)->GetLocalX(), fMarkers.back()->GetLocalX()) != nullptr) {
             edited = true;
          }
       }
@@ -721,8 +689,8 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
 
    case kKey_F:
       if(!hists.empty() && GetNMarkers() > 1) {
-         // printf("x low = %.1f\t\txhigh = %.1f\n",fMarkers.at(fMarkers.size()-2)->localx,fMarkers.back()->localx);
-         if(AltPhotoPeakFit(hists.back(), fMarkers.at(fMarkers.size() - 2)->localx, fMarkers.back()->localx) !=
+         printf("x low = %.1f\t\txhigh = %.1f\n",fMarkers.at(fMarkers.size()-2)->GetLocalX(),fMarkers.back()->GetLocalX());
+         if(AltPhotoPeakFit(hists.back(), fMarkers.at(fMarkers.size() - 2)->GetLocalX(), fMarkers.back()->GetLocalX()) !=
             nullptr) {
             edited = true;
          }
@@ -730,7 +698,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
       break;
 
    case kKey_g:
-      if(GausFit(hists.back(), fMarkers.at(fMarkers.size() - 2)->localx, fMarkers.back()->localx) != nullptr) {
+      if(GausFit(hists.back(), fMarkers.at(fMarkers.size() - 2)->GetLocalX(), fMarkers.back()->GetLocalX()) != nullptr) {
          edited = true;
       }
       break;
@@ -741,8 +709,8 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
 
    case kKey_i:
       if(!hists.empty() && GetNMarkers() > 1) {
-         int binlow  = fMarkers.at(fMarkers.size() - 1)->binx;
-         int binhigh = fMarkers.at(fMarkers.size() - 2)->binx;
+         int binlow  = fMarkers.at(fMarkers.size() - 1)->GetBinX();
+         int binhigh = fMarkers.at(fMarkers.size() - 2)->GetBinX();
          if(binlow > binhigh) {
             std::swap(binlow, binhigh);
          }
@@ -772,6 +740,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
       }
       break;
    case kKey_l:
+   case kKey_y:
       if(GetLogy() != 0) {
          // Show full y range, not restricted to positive values.
          for(auto& hist : hists) {
@@ -794,6 +763,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
 
    case kKey_m: SetMarkerMode(true); break;
    case kKey_M: SetMarkerMode(false);
+					 [[fallthrough]];
    case kKey_n:
       RemoveMarker("all");
       for(auto& hist : hists) {
@@ -845,8 +815,8 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
       //
       if(ghist != nullptr) {
          GH1D* proj    = nullptr;
-         int   binlow  = fMarkers.at(fMarkers.size() - 1)->binx;
-         int   binhigh = fMarkers.at(fMarkers.size() - 2)->binx;
+         int   binlow  = fMarkers.at(fMarkers.size() - 1)->GetBinX();
+         int   binhigh = fMarkers.at(fMarkers.size() - 2)->GetBinX();
          if(binlow > binhigh) {
             std::swap(binlow, binhigh);
          }
@@ -864,8 +834,8 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
          }
 
 			if(fBackgroundMarkers.size() >= 2 && fBackgroundMode != EBackgroundSubtraction::kNoBackground) {
-            int bg_binlow  = fBackgroundMarkers.at(0)->binx;
-            int bg_binhigh = fBackgroundMarkers.at(1)->binx;
+            int bg_binlow  = fBackgroundMarkers.at(0)->GetBinX();
+            int bg_binhigh = fBackgroundMarkers.at(1)->GetBinX();
             if(bg_binlow > bg_binhigh) {
                std::swap(bg_binlow, bg_binhigh);
             }
@@ -903,8 +873,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
    case kKey_q: {
       TH1* ghist = hists.at(0);
       if(GetNMarkers() > 1) {
-
-         edited = (PhotoPeakFit(ghist, fMarkers.at(fMarkers.size() - 2)->localx, fMarkers.back()->localx) != nullptr);
+         edited = (PhotoPeakFit(ghist, fMarkers.at(fMarkers.size() - 2)->GetLocalX(), fMarkers.back()->GetLocalX()) != nullptr);
       }
       if(edited) {
          ghist->Draw("hist");
@@ -925,15 +894,15 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
          break;
       }
       {
-         if(fMarkers.at(fMarkers.size() - 1)->localy < fMarkers.at(fMarkers.size() - 2)->localy) {
+         if(fMarkers.at(fMarkers.size() - 1)->GetLocalY() < fMarkers.at(fMarkers.size() - 2)->GetLocalY()) {
             for(auto& hist : hists) {
-               hist->GetYaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 1)->localy,
-                                              fMarkers.at(fMarkers.size() - 2)->localy);
+               hist->GetYaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 1)->GetLocalY(),
+                                              fMarkers.at(fMarkers.size() - 2)->GetLocalY());
             }
          } else {
             for(auto& hist : hists) {
-               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 2)->localy,
-                                              fMarkers.at(fMarkers.size() - 1)->localy);
+               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 2)->GetLocalY(),
+                                              fMarkers.at(fMarkers.size() - 1)->GetLocalY());
             }
          }
       }
@@ -975,13 +944,13 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
          edited = ShowPeaks(hists.data(), hists.size());
          RemoveMarker("all");
       } else {
-         double x1 = fMarkers.at(fMarkers.size() - 1)->localx;
-         double x2 = fMarkers.at(fMarkers.size() - 2)->localx;
+         double x1 = fMarkers.at(fMarkers.size() - 1)->GetLocalX();
+         double x2 = fMarkers.at(fMarkers.size() - 2)->GetLocalX();
          if(x1 > x2) {
             std::swap(x1, x2);
          }
-         double y1 = fMarkers.at(fMarkers.size() - 1)->localy;
-         double y2 = fMarkers.at(fMarkers.size() - 2)->localy;
+         double y1 = fMarkers.at(fMarkers.size() - 1)->GetLocalY();
+         double y2 = fMarkers.at(fMarkers.size() - 2)->GetLocalY();
          if(y1 > y2) {
             std::swap(y1, y2);
          }
@@ -1002,13 +971,13 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
          edited = ShowPeaks(hists.data(), hists.size());
          RemoveMarker("all");
       } else {
-         double x1 = fMarkers.at(fMarkers.size() - 1)->localx;
-         double x2 = fMarkers.at(fMarkers.size() - 2)->localx;
+         double x1 = fMarkers.at(fMarkers.size() - 1)->GetLocalX();
+         double x2 = fMarkers.at(fMarkers.size() - 2)->GetLocalX();
          if(x1 > x2) {
             std::swap(x1, x2);
          }
-         double y1 = fMarkers.at(fMarkers.size() - 1)->localy;
-         double y2 = fMarkers.at(fMarkers.size() - 2)->localy;
+         double y1 = fMarkers.at(fMarkers.size() - 1)->GetLocalY();
+         double y2 = fMarkers.at(fMarkers.size() - 2)->GetLocalY();
          if(y1 > y2) {
             std::swap(y1, y2);
          }
@@ -1175,10 +1144,10 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
          break;
       }
       {
-         double x1 = fMarkers.at(fMarkers.size() - 1)->localx;
-         double y1 = fMarkers.at(fMarkers.size() - 1)->localy;
-         double x2 = fMarkers.at(fMarkers.size() - 2)->localx;
-         double y2 = fMarkers.at(fMarkers.size() - 2)->localy;
+         double x1 = fMarkers.at(fMarkers.size() - 1)->GetLocalX();
+         double y1 = fMarkers.at(fMarkers.size() - 1)->GetLocalY();
+         double x2 = fMarkers.at(fMarkers.size() - 2)->GetLocalX();
+         double y2 = fMarkers.at(fMarkers.size() - 2)->GetLocalY();
          if(x1 > x2) {
             std::swap(x1, x2);
          }
@@ -1233,10 +1202,10 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
          // cut->SetVarX("");
          // cut->SetVarY("");
          //
-         double x1 = fMarkers.at(fMarkers.size() - 1)->localx;
-         double y1 = fMarkers.at(fMarkers.size() - 1)->localy;
-         double x2 = fMarkers.at(fMarkers.size() - 2)->localx;
-         double y2 = fMarkers.at(fMarkers.size() - 2)->localy;
+         double x1 = fMarkers.at(fMarkers.size() - 1)->GetLocalX();
+         double y1 = fMarkers.at(fMarkers.size() - 1)->GetLocalY();
+         double x2 = fMarkers.at(fMarkers.size() - 2)->GetLocalX();
+         double y2 = fMarkers.at(fMarkers.size() - 2)->GetLocalY();
          if(x1 > x2) {
             std::swap(x1, x2);
          }
@@ -1323,15 +1292,15 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
          break;
       }
       {
-         if(fMarkers.at(fMarkers.size() - 1)->localy < fMarkers.at(fMarkers.size() - 2)->localy) {
+         if(fMarkers.at(fMarkers.size() - 1)->GetLocalY() < fMarkers.at(fMarkers.size() - 2)->GetLocalY()) {
             for(auto& hist : hists) {
-               hist->GetYaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 1)->localy,
-                                              fMarkers.at(fMarkers.size() - 2)->localy);
+               hist->GetYaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 1)->GetLocalY(),
+                                              fMarkers.at(fMarkers.size() - 2)->GetLocalY());
             }
          } else {
             for(auto& hist : hists) {
-               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 2)->localy,
-                                              fMarkers.at(fMarkers.size() - 1)->localy);
+               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 2)->GetLocalY(),
+                                              fMarkers.at(fMarkers.size() - 1)->GetLocalY());
             }
          }
       }
@@ -1369,13 +1338,14 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 
 	case kKey_s: 
 		{
+			TDirectory* oldDir = gDirectory;
 			TString defaultName = "CutFile.cuts";
 			char* fileName = new char[256];
 			new TGInputDialog(nullptr, static_cast<TRootCanvas*>(GetCanvasImp()), "Enter file name to save cuts to", defaultName, fileName);
 			if(strlen(fileName) == 0) {
 				break;
 			}
-			TFile f(fileName, "recreate");
+			TFile f(fileName, "update");
 			if(!f.IsOpen()) {
 				std::cout<<RESET_COLOR<<"Failed to open file '"<<fileName<<"', not saving cuts!"<<std::endl;
 				break;
@@ -1386,7 +1356,8 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 				cut->Write();
 			}
 			f.Close();
-			delete fileName;
+			delete[] fileName;
+			oldDir->cd();
 		}
 		break;
 
@@ -1479,9 +1450,9 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
    case kKey_l:
    case kKey_z:
       if(GetLogz() != 0) {
-         // Show full y range, not restricted to positive values.
+         // Show full z range, not restricted to positive values.
          for(auto& hist : hists) {
-            hist->GetYaxis()->UnZoom();
+            hist->GetZaxis()->UnZoom();
          }
          TVirtualPad* cpad = gPad;
          cd();
@@ -1490,8 +1461,8 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       } else {
          // Only show plot from 0 up when in log scale.
          for(auto& hist : hists) {
-            if(hist->GetYaxis()->GetXmin() < 0) {
-               hist->GetYaxis()->SetRangeUser(0, hist->GetYaxis()->GetXmax());
+            if(hist->GetZaxis()->GetXmin() < 0) {
+               hist->GetZaxis()->SetRangeUser(0, hist->GetYaxis()->GetXmax());
             }
          }
          TVirtualPad* cpad = gPad;

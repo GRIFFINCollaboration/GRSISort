@@ -45,7 +45,7 @@ public:
 	const std::vector<std::string>& ValInputFiles() { return fInputValFiles; }
 	const std::vector<std::string>& InputOdbFiles() { return fInputOdbFiles; }
 	const std::vector<std::string>& ExternalRunInfo() { return fExternalRunInfo; }
-	const std::vector<std::string>& InputCutFiles() { return fInputCutsFiles; }
+	const std::vector<std::string>& InputCutFiles() { return fInputCutFiles; }
 	const std::vector<std::string>& WinInputFiles() { return fInputWinFiles; }
 	const std::vector<std::string>& MacroInputFiles() { return fMacroFiles; }
 
@@ -110,7 +110,7 @@ public:
 
 	size_t NumberOfEvents() const { return fNumberOfEvents; }
 
-	bool TimeSortInput() const { return fTimeSortInput; }
+	bool SkipInputSort() const { return fSkipInputSort; }
 	int  SortDepth() const { return fSortDepth; }
 
 	bool ShouldExitImmediately() const { return fShouldExit; }
@@ -148,7 +148,7 @@ private:
 	std::vector<std::string> fExternalRunInfo; ///< A list of the input run info files
 	std::vector<std::string> fMacroFiles;      ///< A list of the input macro (.C) files
 
-	std::vector<std::string> fInputCutsFiles; ///< A list of input cut files
+	std::vector<std::string> fInputCutFiles;  ///< A list of input cut files
 	std::vector<std::string> fInputValFiles;  ///< A list of the input GValue files
 	std::vector<std::string> fInputWinFiles;  ///< A list of the input window files
 	std::string              fInputRing;      ///< The name of hte input ring
@@ -205,7 +205,7 @@ private:
 
 	size_t fNumberOfEvents;         ///< Number of events, fragments, etc. to process (0 - all)
 
-	bool fTimeSortInput; ///< Flag to sort on time or triggers
+	bool fSkipInputSort; ///< Flag to sort on time or triggers
 	int  fSortDepth;     ///< Size of Q that stores fragments to be built into events
 
 	static TAnalysisOptions* fAnalysisOptions; ///< contains all options for analysis

@@ -20,6 +20,8 @@ TAnalysisWriteLoopClient::TAnalysisWriteLoopClient(std::string name, std::string
 	}
    fOutputFile->Write();
 
+	fOutputFile->cd();
+
 	fEventTree  = new TTree("AnalysisTree", "AnalysisTree");
 	if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
 		fOutOfOrderTree = new TTree("OutOfOrderTree", "OutOfOrderTree");
@@ -50,6 +52,7 @@ bool TAnalysisWriteLoopClient::Iteration()
    fInputSize = fInputQueue->Pop(event);
    if(fInputSize < 0) {
       fInputSize = 0;
+   	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
    }
    ++fItemsPopped;
 
@@ -70,10 +73,8 @@ bool TAnalysisWriteLoopClient::Iteration()
    }
 
    if(fInputQueue->IsFinished()) {
-		//fEventTree->GetUserInfo()->Add(TChannel::GetMnemonicClass());
       return false;
    }
-   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
    return true;
 }
 
@@ -93,7 +94,7 @@ void TAnalysisWriteLoopClient::AddBranch(TClass* cls)
 		TDetector* det_p  = reinterpret_cast<TDetector*>(cls->New());
 		fDefaultDets[cls] = det_p;
 
-		// Make the TDetector**
+		// Add to our local map
 		auto det_pp   = new TDetector*;
 		*det_pp       = det_p;
 		fDetMap[cls]  = det_pp;
@@ -116,9 +117,9 @@ void TAnalysisWriteLoopClient::AddBranch(TClass* cls)
 		//   When TTree::Fill is called, it calls TBranch::Fill for each
 		// branch, then increments the number of entries.  We may be
 		// adding branches after other branches have already been filled.
-		// If the S800 branch has been filled 100 times before the Gretina
-		// branch is created, then the next call to TTree::Fill will fill
-		// entry 101 of S800, but entry 1 of Gretina, rather than entry
+		// If the branch 'x' has been filled 100 times before the branch
+		// 'y' is created, then the next call to TTree::Fill will fill
+		// entry 101 of 'x', but entry 1 of 'y', rather than entry
 		// 101 of both.
 		//   Therefore, we need to fill the new branch as many times as
 		// TTree::Fill has been called before.
@@ -146,7 +147,6 @@ void TAnalysisWriteLoopClient::WriteEvent(std::shared_ptr<TUnpackedEvent>& event
 		//   which suggests that a new object would be constructed only when setting the address,
 		//   not when filling the TTree.
 		for(auto& elem : fDetMap) {
-			//*elem.second = fDefaultDets[elem.first];
 			(*elem.second)->Clear();
 		}
 
@@ -178,11 +178,12 @@ void TAnalysisWriteLoopClient::WriteEvent(std::shared_ptr<TUnpackedEvent>& event
 		}
 
 		// Fill
-		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
+		//	std::lock_guard<std::mutex> lock(ttree_fill_mutex);
 		fEventTree->Fill();
 
 		// write file every 100000 popped events (this sends the events to the server)
 		if(fItemsPopped%100000 == 0) {
+			std::lock_guard<std::mutex> lock(ttree_fill_mutex);
 			fOutputFile->Write();
 		}
 	}

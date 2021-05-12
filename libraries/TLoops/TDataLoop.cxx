@@ -11,7 +11,6 @@
 #include "TRawFile.h"
 #include "TChannel.h"
 #include "TRunInfo.h"
-#include "TPriorityValue.h"
 
 TDataLoop::TDataLoop(std::string name, TRawFile* source)
    : StoppableThread(name), fSource(source), fSelfStopping(true), fEventsRead(0),

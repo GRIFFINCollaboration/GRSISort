@@ -31,6 +31,8 @@ public:
    TCalGraph(const char* name, const char* title) : TGraphErrors(name, title) {};
    ~TCalGraph() override;
 
+	TCalGraph& operator=(const TCalGraph&) = default;
+
    TCalGraph(const TCalGraph& copy);
 
    void AddPoint(const TCalPoint& cal_point);

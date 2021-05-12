@@ -13,6 +13,7 @@
 #include "TMonitor.h"
 #include "TFileCacheWrite.h"
 #include "TROOT.h"
+#include "THashTable.h"
 
 #include "GValue.h"
 #include "TChannel.h"
@@ -99,6 +100,7 @@ bool TAnalysisWriteLoop::Iteration()
    fInputSize = fInputQueue->Pop(event);
    if(fInputSize < 0) {
       fInputSize = 0;
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
    } else {
 		++fItemsPopped;
 	}
@@ -124,7 +126,6 @@ bool TAnalysisWriteLoop::Iteration()
 	if(fInputQueue->IsFinished()) {
 		return false;
 	}
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	return true;
 }
 

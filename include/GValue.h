@@ -55,6 +55,7 @@ public:
    static int         Size() { return fValueVector.size(); }
    std::string        PrintToString() const;
    static std::string WriteToBuffer(Option_t* opt = "");
+	static void			 Clear();
 
 private:
    double         fValue{0.};

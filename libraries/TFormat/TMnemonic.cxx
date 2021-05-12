@@ -68,8 +68,14 @@ void TMnemonic::Parse(std::string* name)
    EnumerateMnemonic(fSubSystemString, fSubSystem);
    buf.clear();
    buf.assign(*name, 3, 2);
-   fArrayPosition = static_cast<uint16_t>(atoi(buf.c_str()));
-   fArraySubPositionString.assign(*name, 5, 1);
+   fArrayPosition = static_cast<uint16_t>(atoi(buf.c_str())); 
+// TIP is a Bad Mnemonic and uses 3 characters for array position this may be changed in the future - S. Gillespie
+   if(fSystemString.compare("TP") == 0){ 
+     fArraySubPositionString.assign(*name, 5, 2);
+   }
+   else {
+     fArraySubPositionString.assign(*name, 5, 1);
+   }
    EnumerateMnemonic(fArraySubPositionString, fArraySubPosition);
    fCollectedChargeString.assign(*name, 6, 1);
    EnumerateMnemonic(fCollectedChargeString, fCollectedCharge);

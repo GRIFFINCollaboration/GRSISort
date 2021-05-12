@@ -35,6 +35,8 @@ public:
 
    TEfficiencyGraph(const TEfficiencyGraph& copy);
 
+	TEfficiencyGraph& operator=(const TEfficiencyGraph&) = default; // use default to stop gcc 9.1 warning
+
 public:
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;

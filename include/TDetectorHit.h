@@ -86,6 +86,8 @@ public:
    // void CopyWaveform(const TFragment&);
    ~TDetectorHit() override;
 
+	TDetectorHit& operator=(const TDetectorHit&) = default; // use default assignment operator (to shut up gcc 9.1)
+
    static void SetPPGPtr(TPPG* ptr) { fPPG = ptr; }
 
    bool operator<(const TDetectorHit& rhs) const { return GetEnergy() > rhs.GetEnergy(); } // sorts large->small
@@ -131,6 +133,7 @@ public:
    virtual TVector3 GetPosition(Double_t) const { return TVector3(0., 0., 0.); } //!<!
    virtual TVector3 GetPosition() const { return TVector3(0., 0., 0.); }         //!<!
    virtual double GetEnergy(Option_t* opt = "") const;
+	virtual Double_t GetEnergyNonlinearity(double energy) const;
    virtual Long64_t GetTimeStamp(Option_t* = "") const { return fTimeStamp; }
    virtual Long64_t GetTimeStampNs(Option_t* opt = "") const;
    virtual Double_t GetTime(const ETimeFlag& correct_flag = ETimeFlag::kAll,
@@ -143,10 +146,12 @@ public:
    const std::vector<Short_t>* GetWaveform() const { return &fWaveform; } //!<!
    TChannel*                   GetChannel() const
    {
-      if(!IsChannelSet()) {
+		// this is a clutch used because the transient bits aren't working
+		// we shouldn't need to check that the channel is a nullptr
+      if(!IsChannelSet() || fChannel == nullptr) {
          fChannel = TChannel::GetChannel(fAddress);
          SetHitBit(EBitFlag::kIsChannelSet, true);
-      }
+		}
       return fChannel;
    } //!<!
 
@@ -157,10 +162,6 @@ public:
    const char*      GetName() const override; //!<!
    virtual UShort_t GetArrayNumber() const { return GetDetector(); } //!<! Simply returns the detector number, overwritten for detectors that have crystals/segments
 	virtual Int_t    GetTimeStampUnit() const; //!<!
-
-   // virtual void GetSegment() const;
-
-   virtual Double_t GetEnergyNonlinearity(double) const { return 0.0; }
 
    // The PPG is only stored in events that come out of the GRIFFIN DAQ
 	EPpgPattern GetPPGStatus() const;

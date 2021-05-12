@@ -45,7 +45,7 @@ void TGRSIOptions::Clear(Option_t*)
    fExternalRunInfo.clear();
    fMacroFiles.clear();
 
-   fInputCutsFiles.clear();
+   fInputCutFiles.clear();
    fInputValFiles.clear();
    fInputWinFiles.clear();
    fInputRing = "";
@@ -100,7 +100,7 @@ void TGRSIOptions::Clear(Option_t*)
 
 	fNumberOfEvents = 0;
 
-   fTimeSortInput = false;
+   fSkipInputSort = false;
 
    fSeparateOutOfOrder    = false;
 
@@ -160,7 +160,7 @@ void TGRSIOptions::Print(Option_t*) const
             <<"fFragmentWriteQueueSize: "<<fFragmentWriteQueueSize<<std::endl
             <<"fAnalysisWriteQueueSize: "<<fAnalysisWriteQueueSize<<std::endl
             <<std::endl
-            <<"fTimeSortInput: "<<fTimeSortInput<<std::endl
+            <<"fSkipInputSort: "<<fSkipInputSort<<std::endl
             <<"fSortDepth: "<<fSortDepth<<std::endl
             <<std::endl
             <<"fSeparateOutOfOrder: "<<fSeparateOutOfOrder<<std::endl
@@ -281,8 +281,8 @@ void TGRSIOptions::Load(int argc, char** argv)
 		parser.option("write-diagnostics", &fWriteDiagnostics, true).description("Write Parsing/SortingDiagnostics to root-file")
 			.colour(DGREEN);
 		parser.option("word-count-offset", &fWordOffset, true)
-			.description("Offset to the word count in the GRIFFIN header word, default is 1.")
-			.default_value(1);
+			.description("Offset to the word count in the GRIFFIN header word, default is -1 (disabled).")
+			.default_value(1).colour(DGREEN);
 		parser.option("log-errors", &fLogErrors, true);
 		parser.option("reading-material", &fReadingMaterial, true);
 		parser.option("write-fragment-tree write-frag-tree", &fWriteFragmentTree, true)
@@ -301,6 +301,8 @@ void TGRSIOptions::Load(int argc, char** argv)
 			.description("Suppress error output from parsing").colour(DGREEN);
 		parser.option("reconstruct-timestamp reconstruct-time-stamp", &fReconstructTimeStamp, true)
 			.description("Reconstruct missing high bits of timestamp").colour(DGREEN);
+		parser.option("skip-input-sort", &fSkipInputSort, true)
+			.description("Skip sorting fragments before building events (default is false)").default_value(false);
 
 		parser.option("fragment-size", &fFragmentWriteQueueSize, true)
 			.description("Size of fragment write queue")
@@ -404,6 +406,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 		fSeparateOutOfOrder = true;
 		fSuppressErrors = true;
 		fReconstructTimeStamp = true;
+		fWordOffset = -1;
 	}
 }
 
@@ -418,6 +421,7 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const
    }
    std::string ext     = filename.substr(dot_pos + 1);
 
+	//check if this is a zipped file and if so get the extension before the zip-extension
    bool isZipped = (ext == "gz") || (ext == "bz2") || (ext == "zip");
    if(isZipped) {
       std::string remaining = filename.substr(0, dot_pos);
@@ -469,6 +473,15 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const
 	if(ext == "xml") {
       return kFileType::XML_FILE;
    }
+	
+	// strip possible parenthese with arguments for the script from the extension
+   size_t      opening_pos = ext.find_first_of('(');
+	if(opening_pos != std::string::npos) {
+		ext = ext.substr(0,opening_pos);
+		if((ext == "c") || (ext == "C") || (ext == "c+") || (ext == "C+") || (ext == "c++") || (ext == "C++")) {
+			return kFileType::ROOT_MACRO;
+		}
+	}
 	return kFileType::UNKNOWN_FILETYPE;
 }
 
@@ -520,7 +533,7 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
 
    case kFileType::PRESETWINDOW: fInputWinFiles.push_back(filename); return true;
 
-   case kFileType::CUTS_FILE: fInputCutsFiles.push_back(filename); return true;
+   case kFileType::CUTS_FILE: fInputCutFiles.push_back(filename); return true;
 
    case kFileType::CONFIG_FILE: return false;
 

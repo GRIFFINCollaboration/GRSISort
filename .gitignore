@@ -1,3 +1,4 @@
+.build
 *.o
 *.so
 *.exe
@@ -30,3 +31,6 @@ __pycache__
 grsi_logon.C
 *.pcm
 *Data
+.grsirc
+documentation
+wiki

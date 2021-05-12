@@ -61,6 +61,15 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    *(TGRSIOptions::AnalysisOptions()) = *fAnalysisOptions;
 	// read the TPPG that was passed along
    fPpg = static_cast<TPPG*>(fInput->FindObject("TPPG"));
+	if(fPpg == nullptr) {
+		std::cerr<<"failed to find TPPG!"<<std::endl;
+	}
+
+	// read the TRunInfo that was passed along
+   fRunInfo = static_cast<TRunInfo*>(fInput->FindObject("TRunInfo"));
+	if(fRunInfo == nullptr) {
+		std::cerr<<"failed to find TRunInfo!"<<std::endl;
+	}
 
 	// if we have a data parser/detector library load it
 	if(fInput->FindObject("ParserLibrary") != nullptr) {
@@ -147,7 +156,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
 	}
 
 	if(GValue::Size() == 0) {
-		std::cout<<"No g-values!"<<std::flush;
+		std::cout<<"No g-values!"<<std::endl;
 	} else {
 		std::cout<<GValue::Size()<<" g-values"<<std::endl;
 	}
@@ -180,8 +189,7 @@ Bool_t TGRSISelector::Process(Long64_t entry)
 		current_file = fChain->GetCurrentFile();
 		std::cout<<"Starting to sort: "<<current_file->GetName()<<std::endl;
 		TChannel::ReadCalFromFile(current_file);
-		TRunInfo::Get()->ReadInfoFromFile(current_file);
-		//   TChannel::WriteCalFile();
+		TGRSIOptions::AnalysisOptions()->ReadFromFile(current_file);
 	}
 
 	fChain->GetEntry(entry);
@@ -202,6 +210,7 @@ void TGRSISelector::SlaveTerminate()
 	/// on each slave server.
 
 	EndOfSort();
+	fOutput->Add(new TChannel(TChannel::GetChannelMap()->begin()->second));
 }
 
 void TGRSISelector::Terminate()
@@ -210,16 +219,52 @@ void TGRSISelector::Terminate()
 	/// a query. It always runs on the client, it can be used to present
 	/// the results graphically or save the results to file.
 	TGRSIOptions* options = TGRSIOptions::Get();
-	TRunInfo* runInfo = TRunInfo::Get();
-	Int_t runnumber    = runInfo->RunNumber();
-	Int_t subrunnumber = runInfo->SubRunNumber();
+	if(fRunInfo == nullptr) {
+		fRunInfo = TRunInfo::Get();
+		std::cout<<"replaced null run info with:"<<std::endl;
+		fRunInfo->Print();
+	}
+	Int_t runNumber    = fRunInfo->RunNumber();
+	Int_t subRunNumber = fRunInfo->SubRunNumber();
 
-	std::cout<<"Using run "<<runnumber<<" subrun "<<subrunnumber<<std::endl;
-	TFile outputFile(Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runnumber, subrunnumber), "RECREATE");
+	TFile* outputFile;
+	if(runNumber != 0 && subRunNumber != -1) {
+		// both run and subrun number set => single file processed
+		std::cout<<"Using run "<<runNumber<<" subrun "<<subRunNumber<<std::endl;
+		outputFile = new TFile(Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runNumber, subRunNumber), "RECREATE");
+		if(!outputFile->IsOpen()) {
+			std::cerr<<"Failed to open output file "<<Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runNumber, subRunNumber)<<"!"<<std::endl<<std::endl;
+			return;
+		}
+	} else if(runNumber != 0) {
+		// multiple subruns of a single run
+		std::cout<<"Using run "<<runNumber<<" subruns "<<fRunInfo->FirstSubRunNumber()<<" - "<<fRunInfo->LastSubRunNumber()<<std::endl;
+		outputFile = new TFile(Form("%s%05d_%03d-%03d.root", fOutputPrefix.c_str(), runNumber, fRunInfo->FirstSubRunNumber(), fRunInfo->LastSubRunNumber()), "RECREATE");
+		if(!outputFile->IsOpen()) {
+			std::cerr<<"Failed to open output file "<<Form("%s%05d_%03d-%03d.root", fOutputPrefix.c_str(), runNumber, fRunInfo->FirstSubRunNumber(), fRunInfo->LastSubRunNumber())<<"!"<<std::endl<<std::endl;
+			return;
+		}
+	} else {
+		// multiple runs
+		std::cout<<"Using runs "<<fRunInfo->FirstRunNumber()<<" - "<<fRunInfo->LastRunNumber()<<std::endl;
+		outputFile = new TFile(Form("%s%05d-%05d.root", fOutputPrefix.c_str(), fRunInfo->FirstRunNumber(), fRunInfo->LastRunNumber()), "RECREATE");
+		if(!outputFile->IsOpen()) {
+			std::cerr<<"Failed to open output file "<<Form("%s%05d-%05d.root", fOutputPrefix.c_str(), fRunInfo->FirstRunNumber(), fRunInfo->LastRunNumber())<<"!"<<std::endl<<std::endl;
+			return;
+		}
+	}
+
+	outputFile->cd();
 	fOutput->Write();
-	runInfo->Write();
-	options->AnalysisOptions()->WriteToFile(&outputFile);
-	outputFile.Close();
+	fRunInfo->Write();
+	if(fPpg != nullptr) {
+		fPpg->Write();
+	} else {
+		std::cerr<<"failed to find TPPG, can't write it!"<<std::endl;
+	}
+	options->AnalysisOptions()->WriteToFile(outputFile);
+	TChannel::WriteToRoot();
+	outputFile->Close();
 }
 
 void TGRSISelector::Init(TTree* tree)

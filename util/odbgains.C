@@ -24,8 +24,8 @@ void ODBGains(char *fname, char *outname = "odbgains.sh") {
       TChannel *chan = TChannel::GetChannelByNumber(i);
       if(!chan) continue;
 
-      myfile<<"odbedit -c \"set /DAQ/MSC/offset["<<i<<"] "<< chan->GetENGCoeff().at(0)<<"\"\n";
-      myfile<<"odbedit -c \"set /DAQ/MSC/gain["<<i<<"] "<< chan->GetENGCoeff().at(1)<<"\"\n\n";
+      myfile<<"odbedit -c \"set /DAQ/PSC/offset["<<i<<"] "<< chan->GetENGCoeff().at(0)<<"\"\n";
+      myfile<<"odbedit -c \"set /DAQ/PSC/gain["<<i<<"] "<< chan->GetENGCoeff().at(1)<<"\"\n\n";
 
    }
 

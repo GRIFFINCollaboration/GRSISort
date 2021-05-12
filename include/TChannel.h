@@ -32,12 +32,13 @@
 #include <string>
 #include <cmath>
 #include <utility>
-#include <map>
+#include <unordered_map>
 
 #include "TNamed.h"
 #include "TRandom.h"
 #include "TList.h"
 #include "TTree.h"
+#include "TGraph.h"
 #include "TMnemonic.h"
 #include "TClassRef.h"
 #include "Globals.h"
@@ -61,8 +62,8 @@ public:
    static void AddChannel(TChannel*, Option_t* opt = "");
    static int UpdateChannel(TChannel*, Option_t* opt = "");
 
-   static std::map<unsigned int, TChannel*>* GetChannelMap() { return fChannelMap; }
-   static std::map<unsigned int, int>* GetMissingChannelMap() { return fMissingChannelMap; }
+   static std::unordered_map<unsigned int, TChannel*>* GetChannelMap() { return fChannelMap; }
+   static std::unordered_map<unsigned int, int>* GetMissingChannelMap() { return fMissingChannelMap; }
    static void DeleteAllChannels();
 
    static bool CompareChannels(const TChannel&, const TChannel&);
@@ -102,6 +103,7 @@ private:
    TPriorityValue<std::vector<double> >  fEFFCoefficients;  // Efficiency calibration coeffs (low to high order)
    TPriorityValue<double>                fEFFChi2;          // Chi2 of Efficiency calibration
    TPriorityValue<std::vector<double> >  fCTCoefficients;   // Cross talk coefficients
+	TPriorityValue<TGraph>                fEnergyNonlinearity; // Energy nonlinearity as spline
 
    struct WaveFormShapePar {
       bool   InUse;
@@ -112,11 +114,9 @@ private:
 
    WaveFormShapePar WaveFormShape;
 
-   static std::map<unsigned int, TChannel*>* fChannelMap;       // A map to all of the channels based on address
-   static std::map<unsigned int, int>* fMissingChannelMap;      // A map to all of the missing channels based on address
-   static std::map<int, TChannel*>*          fChannelNumberMap; // A map of TChannels based on channel number
-   static void UpdateChannelNumberMap();
-   static void UpdateChannelMap();
+   static std::unordered_map<unsigned int, TChannel*>* fChannelMap;       // A map to all of the channels based on address
+   static std::unordered_map<unsigned int, int>* fMissingChannelMap;      // A map to all of the missing channels based on address
+   static std::unordered_map<int, TChannel*>*          fChannelNumberMap; // A map of TChannels based on channel number
    void        OverWriteChannel(TChannel*);
    void        AppendChannel(TChannel*);
 
@@ -126,16 +126,24 @@ private:
    void SetTIMECoefficients(TPriorityValue<std::vector<double> > tmp) { fTIMECoefficients = tmp; }
    void SetEFFCoefficients(TPriorityValue<std::vector<double> > tmp) { fEFFCoefficients = tmp; }
    void SetCTCoefficients(TPriorityValue<std::vector<double> > tmp) { fCTCoefficients = tmp; }
+	void SetEnergyNonlinearity(TPriorityValue<TGraph> tmp) { fEnergyNonlinearity = tmp; }
 
-   static void trim(std::string*, const std::string& trimChars = " \f\n\r\t\v");
+	void SetupEnergyNonlinearity(); // sort energy nonlinearity graph and set name/title
+
+   static void trim(std::string&);
 
 public:
    void SetName(const char* tmpName) override;
    void SetAddress(unsigned int tmpadd);
    inline void SetNumber(TPriorityValue<int> tmp)
    {
+		if(fNumber == tmp) return;
+		// channel number has changed so we need to delete the old one and insert the new one
+		fChannelNumberMap->erase(fNumber.Value());
       fNumber = tmp;
-      UpdateChannelNumberMap();
+		if((fNumber != 0) && (fChannelNumberMap->count(fNumber.Value()) == 0)) {
+			fChannelNumberMap->insert(std::make_pair(fNumber.Value(), this));
+		}
    }
    inline void SetIntegration(TPriorityValue<int> tmp) { fIntegration = tmp; }
    static void SetIntegration(const std::string& mnemonic, int tmpint, EPriority pr);
@@ -165,7 +173,7 @@ public:
    int          GetIntegration() const { return fIntegration.Value(); }
    int          GetStream() const { return fStream.Value(); }
    int          GetUserInfoNumber() const { return fUserInfoNumber.Value(); }
-   const char*  GetDigitizerTypeString() const { return fDigitizerTypeString.Value().c_str(); }
+   const char*  GetDigitizerTypeString() const { return fDigitizerTypeString.c_str(); }
 	EDigitizer   GetDigitizerType() const { return fDigitizerType.Value(); }
 	int          GetTimeStampUnit() const { return fTimeStampUnit.Value(); }
    Long64_t     GetTimeOffset() const { return fTimeOffset.Value(); }
@@ -187,6 +195,8 @@ public:
    std::vector<double>  GetTIMECoeff() const { return fTIMECoefficients.Value(); }
    std::vector<double>  GetEFFCoeff() const { return fEFFCoefficients.Value(); }
    std::vector<double>  GetCTCoeff() const { return fCTCoefficients.Value(); }
+	TGraph               GetEnergyNonlinearity() const { return fEnergyNonlinearity.Value(); }
+	double               GetEnergyNonlinearity(double en) const;
 
    inline void AddENGCoefficient(Float_t temp) { fENGCoefficients.Address()->push_back(temp); }
    inline void AddCFDCoefficient(double temp) { fCFDCoefficients.Address()->push_back(temp); }
@@ -194,6 +204,7 @@ public:
    inline void AddTIMECoefficient(double temp) { fTIMECoefficients.Address()->push_back(temp); }
    inline void AddEFFCoefficient(double temp) { fEFFCoefficients.Address()->push_back(temp); }
    inline void AddCTCoefficient(double temp) { fCTCoefficients.Address()->push_back(temp); }
+	void AddEnergyNonlinearityPoint(double x, double y) { fEnergyNonlinearity.Address()->SetPoint(fEnergyNonlinearity.Address()->GetN(), x, y); }
 
    inline void SetENGChi2(TPriorityValue<double> tmp) { fENGChi2 = tmp; }
    inline void SetCFDChi2(TPriorityValue<double> tmp) { fCFDChi2 = tmp; }
@@ -251,6 +262,7 @@ public:
    void DestroyTIMECal();
    void DestroyEFFCal();
    void DestroyCTCal();
+	void DestroyEnergyNonlinearity();
 
    static Int_t ReadCalFromCurrentFile(Option_t* opt = "overwrite");
    static Int_t ReadCalFromTree(TTree*, Option_t* opt = "overwrite");
@@ -260,12 +272,13 @@ public:
    static void WriteCalFile(const std::string& outfilename = "");
    static void WriteCTCorrections(const std::string& outfilename = "");
    static void WriteCalBuffer(Option_t* opt = "");
+	static void ReadEnergyNonlinearities(TFile*, const char* graphName = "EnergyNonlinearity0x", bool all = false);
 
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
    // static  void PrintAll(Option_t* opt = "");
-   std::string PrintToString(Option_t* opt = "");
-   std::string PrintCTToString(Option_t* opt = "");
+   std::string PrintToString(Option_t* opt = "") const;
+   std::string PrintCTToString(Option_t* opt = "") const;
    void PrintCTCoeffs(Option_t* opt = "") const;
 
    static int WriteToRoot(TFile* fileptr = nullptr);
@@ -277,6 +290,8 @@ private:
    static std::string fFileData;
    static void        InitChannelInput();
    static void        SaveToSelf(const char*);
+
+	static Int_t ReadFile(TFile* tempf);
 
    /// \cond CLASSIMP
    ClassDefOverride(TChannel, 5) // Contains the Digitizer Information

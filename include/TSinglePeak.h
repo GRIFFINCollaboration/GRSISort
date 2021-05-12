@@ -68,6 +68,7 @@ public:
    Double_t GetNDF() const { return fNDF; }
    Double_t GetReducedChi2() const { return fChi2/fNDF; }
 
+	bool ParameterSetByUser(int par);
 
 protected:
    Double_t TotalFunction(Double_t* dim, Double_t* par);

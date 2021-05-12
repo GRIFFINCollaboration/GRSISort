@@ -36,5 +36,5 @@ public:
    T* operator->() { return pT; }
    ClassDefOverride(TObjectWrapper, 1);
 };
-
-#endif // TOBJECTWRAPPER_H
+/*! @} */
+#endif
