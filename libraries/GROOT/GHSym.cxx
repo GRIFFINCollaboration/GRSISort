@@ -471,7 +471,7 @@ void GHSym::FillN(Int_t ntimes, const Double_t* x, const Double_t* y, const Doub
    }
 }
 
-void GHSym::FillRandom(const char* fname, Int_t ntimes)
+void GHSym::FillRandom(const char* fname, Int_t ntimes, TRandom* rng)
 {
    //*-*-*-*-*-*-*Fill histogram following distribution in function fname*-*-*-*
    //*-*          =======================================================
@@ -532,7 +532,7 @@ void GHSym::FillRandom(const char* fname, Int_t ntimes)
 
    //*-*--------------Start main loop ntimes
    for(int loop = 0; loop < ntimes; ++loop) {
-      r1   = gRandom->Rndm(loop);
+      r1   = (rng != nullptr) ? rng->Rndm(loop) : gRandom->Rndm(loop);
       ibin = TMath::BinarySearch(nbins, &integral[0], r1);
       biny = ibin / nbinsx;
       binx = 1 + ibin - nbinsx * biny;
@@ -544,7 +544,11 @@ void GHSym::FillRandom(const char* fname, Int_t ntimes)
    delete[] integral;
 }
 
-void GHSym::FillRandom(TH1* h, Int_t ntimes)
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 24, 0)
+void GHSym::FillRandom(TH1* h, Int_t ntimes, TRandom*)
+#else
+void GHSym::FillRandom(TH1* h, Int_t ntimes, TRandom* rng)
+#endif
 {
    //*-*-*-*-*-*-*Fill histogram following distribution in histogram h*-*-*-*
    //*-*          ====================================================
@@ -576,12 +580,16 @@ void GHSym::FillRandom(TH1* h, Int_t ntimes)
    Double_t x, y;
    TH2*     h2 = static_cast<TH2*>(h);
    for(int loop = 0; loop < ntimes; ++loop) {
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 24, 0)
       h2->GetRandom2(x, y);
+#else
+      h2->GetRandom2(x, y, rng);
+#endif
       Fill(x, y);
    }
 }
 
-Int_t GHSym::FindFirstBinAbove(Double_t threshold, Int_t axis) const
+Int_t GHSym::FindFirstBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, Int_t lastBin) const
 {
    // find first bin with content > threshold for axis (1=x, 2=y, 3=z)
    // if no bins with content > threshold is found the function returns -1.
@@ -591,18 +599,20 @@ Int_t GHSym::FindFirstBinAbove(Double_t threshold, Int_t axis) const
       axis = 1;
    }
    Int_t nbinsx = fXaxis.GetNbins();
+	if(lastBin > firstBin && lastBin < nbinsx) nbinsx = lastBin;
    Int_t nbinsy = fYaxis.GetNbins();
+	if(lastBin > firstBin && lastBin < nbinsy) nbinsy = lastBin;
    if(axis == 1) {
-      for(Int_t binx = 1; binx <= nbinsx; ++binx) {
-         for(Int_t biny = 1; biny <= nbinsy; ++biny) {
+      for(Int_t binx = firstBin; binx <= nbinsx; ++binx) {
+         for(Int_t biny = firstBin; biny <= nbinsy; ++biny) {
             if(GetBinContent(binx, biny) > threshold) {
                return binx;
             }
          }
       }
    } else {
-      for(Int_t biny = 1; biny <= nbinsy; ++biny) {
-         for(Int_t binx = 1; binx <= nbinsx; ++binx) {
+      for(Int_t biny = firstBin; biny <= nbinsy; ++biny) {
+         for(Int_t binx = firstBin; binx <= nbinsx; ++binx) {
             if(GetBinContent(binx, biny) > threshold) {
                return biny;
             }
@@ -612,7 +622,7 @@ Int_t GHSym::FindFirstBinAbove(Double_t threshold, Int_t axis) const
    return -1;
 }
 
-Int_t GHSym::FindLastBinAbove(Double_t threshold, Int_t axis) const
+Int_t GHSym::FindLastBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, Int_t lastBin) const
 {
    // find last bin with content > threshold for axis (1=x, 2=y, 3=z)
    // if no bins with content > threshold is found the function returns -1.
@@ -622,18 +632,20 @@ Int_t GHSym::FindLastBinAbove(Double_t threshold, Int_t axis) const
       axis = 1;
    }
    Int_t nbinsx = fXaxis.GetNbins();
+	if(lastBin > firstBin && lastBin < nbinsx) nbinsx = lastBin;
    Int_t nbinsy = fYaxis.GetNbins();
+	if(lastBin > firstBin && lastBin < nbinsy) nbinsy = lastBin;
    if(axis == 1) {
-      for(Int_t binx = nbinsx; binx >= 1; --binx) {
-         for(Int_t biny = 1; biny <= nbinsy; ++biny) {
+      for(Int_t binx = nbinsx; binx >= firstBin; --binx) {
+         for(Int_t biny = firstBin; biny <= nbinsy; ++biny) {
             if(GetBinContent(binx, biny) > threshold) {
                return binx;
             }
          }
       }
    } else {
-      for(Int_t biny = nbinsy; biny >= 1; --biny) {
-         for(Int_t binx = 1; binx <= nbinsx; ++binx) {
+      for(Int_t biny = nbinsy; biny >= firstBin; --biny) {
+         for(Int_t binx = firstBin; binx <= nbinsx; ++binx) {
             if(GetBinContent(binx, biny) > threshold) {
                return biny;
             }
@@ -1122,14 +1134,22 @@ Double_t GHSym::IntegralAndError(Int_t firstxbin, Int_t lastxbin, Int_t firstybi
    return DoIntegral(firstxbin, lastxbin, firstybin, lastybin, error, option, kTRUE);
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
 Double_t GHSym::Interpolate(Double_t)
+#else
+Double_t GHSym::Interpolate(Double_t) const
+#endif
 {
    // illegal for a TH2
    Error("Interpolate", "This function must be called with 2 arguments for a TH2");
    return 0;
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
 Double_t GHSym::Interpolate(Double_t x, Double_t y)
+#else
+Double_t GHSym::Interpolate(Double_t x, Double_t y) const
+#endif
 {
    // Given a point P(x,y), Interpolate approximates the value via bilinear
    // interpolation based on the four nearest bin centers
@@ -1221,7 +1241,11 @@ Double_t GHSym::Interpolate(Double_t x, Double_t y)
    return f;
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
 Double_t GHSym::Interpolate(Double_t, Double_t, Double_t)
+#else
+Double_t GHSym::Interpolate(Double_t, Double_t, Double_t) const
+#endif
 {
    // illegal for a TH2
    Error("Interpolate", "This function must be called with 2 arguments for a TH2");
