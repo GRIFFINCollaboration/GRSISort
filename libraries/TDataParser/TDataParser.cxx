@@ -1511,6 +1511,11 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 	int nofFragments = 0;
    short timestampRemainder;
    uint64_t timestamp;
+
+   if(fOptions == nullptr) {
+		fOptions = TGRSIOptions::Get();
+	}
+	
 	for(int board = 0; w < size; ++board) {
 		// read board aggregate header
 		if(data[w]>>28 != 0xa) {
@@ -1537,7 +1542,7 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
          }
 			return -w;
 		}
-		//uint8_t boardId = data[w]>>27; // GEO address of board (can be set via register 0xef08 for VME)
+		uint8_t boardId = data[w]>>27; // GEO address of board (can be set via register 0xef08 for VME)
 		//uint16_t pattern = (data[w]>>8) & 0x7fff; // value read from LVDS I/O (VME only)
 		uint8_t channelMask = data[w++]&0xff; // which channels are in this board aggregate
 		++w;//uint32_t boardCounter = data[w++]&0x7fffff; // ??? "counts the board aggregate"
@@ -1600,9 +1605,9 @@ int TDataParser::CaenToFragment(uint32_t* data, int size)
 			// read channel data
 			for(int ev = 0; ev < (numWords-2)/eventSize; ++ev) { // -2 = 2 header words for channel aggregate
 				eventFrag->SetMidasTimeStamp(boardTime);
-				eventFrag->SetAddress(0x8000 + channel + (data[w]>>31)); // highest bit indicates odd channel
-            if(eventFrag->GetAddress() == 0x8000) eventFrag->SetDetectorType(9); //ZDS will always be in channel 0
-            else                                  eventFrag->SetDetectorType(6);
+				eventFrag->SetAddress(0x8000 + (boardId * 0x100) + channel + (data[w]>>31)); // highest bit indicates odd channel
+				if(eventFrag->GetAddress() == 0x8000) eventFrag->SetDetectorType(9); //ZDS will always be in channel 0
+				else                                  eventFrag->SetDetectorType(6);
             // these timestamps are in 2ns units, but the "normal" timestamps are in 10ns units
             // so we store the remainder and set our timestamp in 10ns units
             // the remainder will later be used to modify the CFD value to automatically correct for it
