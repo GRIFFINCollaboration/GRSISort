@@ -265,5 +265,7 @@ int main(int argc, char** argv)
    Analyze("AnalysisTree");
    Analyze("Lst2RootTree");
 
+	AtExitHandler();
+
 	return 0;
 }
