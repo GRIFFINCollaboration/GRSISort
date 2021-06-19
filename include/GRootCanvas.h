@@ -1,12 +1,3 @@
-//
-//  A slightly edited version of the the GRootCanvas
-//  file in the default root source.  The reason for
-//  the swap was take more control over the keyboard
-//  interface to the canvas (particularly the arrow
-//  keys.)   pcb.
-//
-//
-
 #ifndef ROOT_GRootCanvas
 #define ROOT_GRootCanvas
 
@@ -20,6 +11,12 @@
 ///
 /// This class creates a main window with menubar, scrollbars and a
 /// drawing area. The widgets used are the new native ROOT GUI widgets.
+///
+/// A slightly edited version of the the GRootCanvas
+/// file in the default root source.  The reason for
+/// the swap was take more control over the keyboard
+/// interface to the canvas (particularly the arrow
+/// keys).
 ///
 ///////////////////////////////////////////////////////////////////////////
 

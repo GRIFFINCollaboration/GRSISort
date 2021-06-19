@@ -68,6 +68,9 @@ typedef char int8_t;
 #include <execinfo.h>
 #include <cxxabi.h>
 #include <sstream>
+#include <array>
+#include <memory>
+#include <unistd.h>
 
 const std::string& ProgramName();
 
@@ -122,10 +125,30 @@ std::string Stringify(const T& head, const U&... tail) {
 
 } // end of namespace grsi
 
+static inline std::string getexepath() {
+	char result[1024];
+	ssize_t count = readlink("/proc/self/exe", result, sizeof(result)-1);
+	return std::string(result, (count > 0) ? count : 0);
+}
+
+static inline std::string sh(std::string cmd) {
+	std::array<char, 128> buffer;
+	std::string result;
+	std::shared_ptr<FILE> pipe(popen(cmd.c_str(), "r"), pclose);
+	if(!pipe) throw std::runtime_error("popen() failed!");
+	while(!feof(pipe.get())) {
+		if(fgets(buffer.data(), 128, pipe.get()) != nullptr) {
+			result += buffer.data();
+		}
+	}
+	return result;
+}
+
 // print a demangled stack backtrace of the caller function (copied from https://panthema.net/2008/0901-stacktrace-demangled/)
 static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int maxFrames = 63)
 {
-	out<<"stack trace:"<<std::endl;
+	std::stringstream str;
+	str<<"stack trace:"<<std::endl;
 
 	// storage array for stack trace address data
 	void** addrlist = new void*[maxFrames+1];
@@ -134,7 +157,8 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int m
 	int addrlen = backtrace(addrlist, maxFrames+1);
 
 	if(addrlen == 0) {
-		out<<"  <empty, possibly corrupt>"<<std::endl;
+		str<<"  <empty, possibly corrupt>"<<std::endl;
+		out<<str.str();
 		return;
 	}
 
@@ -166,6 +190,12 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int m
 			}
 		}
 
+		//// try and decode file and line number
+		//std::stringstream command;
+		//command<<"addr2line "<<addrlist[i]<<" -e "<<getexepath();
+		//std::cout<<symbollist[i]<<": executing command "<<command.str()<<std::endl;
+		//auto line = sh(command.str());
+
 		if(begin_name && begin_offset && end_offset && begin_name < begin_offset) {
 			*begin_name++ = '\0';
 			*begin_offset++ = '\0';
@@ -179,20 +209,21 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int m
 			char* ret = abi::__cxa_demangle(begin_name, funcname, &funcnamesize, &status);
 			if(status == 0) {
 				funcname = ret; // use possibly realloc()-ed string
-				std::cout<<"  "<<symbollist[i]<<" : "<<funcname<<"+"<<begin_offset<<std::endl;
+				str<<"  "<<symbollist[i]<<": "<<funcname<<"+"<<begin_offset<<std::endl;
 			} else {
 				// demangling failed. Output function name as a C function with
 				// no arguments.
-				std::cout<<"  "<<symbollist[i]<<" : "<<begin_name<<"()+"<<begin_offset<<std::endl;
+				str<<"  "<<symbollist[i]<<": "<<begin_name<<"()+"<<begin_offset<<std::endl;
 			}
 		} else {
 			// couldn't parse the line? print the whole line.
-			std::cout<<"  "<<symbollist[i]<<std::endl;
+			str<<"  "<<symbollist[i]<<std::endl;
 		}
 	}
 
 	free(funcname);
 	free(symbollist);
+	out<<str.str();
 }
 
 #endif

@@ -59,6 +59,7 @@ struct SpeHeader {
 // the value of all bins in int sizes
 // an integer os bin size * 4           ------- number of char in the histogram.
 
+void ProcessKeys(TList* keys, TList* histsToWrite, TList* matsToWrite, TList* m4bsToWrite, bool split, bool compress);
 void AddToList(TList*, TH2*, bool, bool);
 void WriteHist(TH1*, std::fstream*);
 void WriteMat(TH2*, std::fstream*);
@@ -71,7 +72,7 @@ int main(int argc, char** argv)
    if(argc < 2 || (infile = TFile::Open(argv[1], "read")) == nullptr) {
       std::cout<<"problem opening file."<<std::endl
                <<"Usage: "<<argv[0]
-               <<" file.root (optional: -8 to use 8k matrices, -s to split large matrices, -c to compress large matrices, which need to go last!)"<<std::endl;
+               <<" file.root (optional after the file: -8 to use 8k matrices, -s to split large matrices, -c to compress large matrices, which need to go last!)"<<std::endl;
       return 1;
    }
 
@@ -117,43 +118,7 @@ int main(int argc, char** argv)
    auto* histsToWrite = new TList();
    auto* matsToWrite  = new TList();
    auto* m4bsToWrite  = new TList();
-   // int counter = 1;
-   while(TKey* currentkey = dynamic_cast<TKey*>(next())) {
-      std::string keytype = currentkey->ReadObj()->IsA()->GetName();
-      if(keytype.compare(0, 3, "TH1") == 0) {
-         // printf("%i currentkey->GetName() = %s\n",counter++, currentkey->GetName());
-         // if((counter-1)%4==0)
-         //	printf("*****************************\n");
-         histsToWrite->Add(currentkey->ReadObj());
-      } else if(keytype.compare(0, 4, "TH2C") == 0 || keytype.compare(0, 4, "TH2S") == 0) {
-         AddToList(matsToWrite, dynamic_cast<TH2*>(currentkey->ReadObj()), split, compress);
-      } else if(keytype.compare(0, 3, "TH2") == 0) {
-         AddToList(m4bsToWrite, dynamic_cast<TH2*>(currentkey->ReadObj()), split, compress);
-      } else if(keytype.compare(0, 3, "THn") == 0) {
-         THnSparse* hist = (dynamic_cast<THnSparse*>(currentkey->ReadObj()));
-         if(hist->GetNdimensions() == 1) {
-            histsToWrite->Add(hist->Projection(0));
-         } else if(hist->GetNdimensions() == 2) {
-            if(keytype.compare(17, 1, "C") == 0 || keytype.compare(17, 1, "S") == 0) {
-               AddToList(matsToWrite, hist->Projection(0, 1), split, compress);
-            } else {
-               AddToList(m4bsToWrite, hist->Projection(0, 1), split, compress);
-            }
-         }
-      } else if(keytype.compare(0, 5, "GHSym") == 0) {
-         if(keytype.compare(5, 1, "F") == 0) {
-            AddToList(m4bsToWrite, dynamic_cast<GHSymF*>(currentkey->ReadObj())->GetMatrix(), split, compress);
-         } else if(keytype.compare(5, 1, "D") == 0) {
-            AddToList(m4bsToWrite, dynamic_cast<GHSymF*>(currentkey->ReadObj())->GetMatrix(), split, compress);
-         } else {
-            std::cout<<"unknown GHSym type "<<keytype<<std::endl;
-         }
-      } else {
-         std::cout<<"skipping "<<keytype<<std::endl;
-      }
-   }
-
-   // printf("histsToWrite->GetSize() = %i\n", histsToWrite->GetSize());
+	ProcessKeys(keys, histsToWrite, matsToWrite, m4bsToWrite, split, compress);
 
    TIter nexthist(histsToWrite);
    while(TH1* currenthist = dynamic_cast<TH1*>(nexthist())) {
@@ -203,6 +168,51 @@ int main(int argc, char** argv)
    // outfile.close();
 
    return 0;
+}
+
+void ProcessKeys(TList* keys, TList* histsToWrite, TList* matsToWrite, TList* m4bsToWrite, bool split, bool compress)
+{
+	std::vector<TDirectoryFile*> directories;
+   TIter next(keys);
+   while(TKey* currentkey = dynamic_cast<TKey*>(next())) {
+      std::string keytype = currentkey->ReadObj()->IsA()->GetName();
+      if(keytype.compare(0, 3, "TH1") == 0) {
+         histsToWrite->Add(currentkey->ReadObj());
+      } else if(keytype.compare(0, 4, "TH2C") == 0 || keytype.compare(0, 4, "TH2S") == 0) {
+         AddToList(matsToWrite, dynamic_cast<TH2*>(currentkey->ReadObj()), split, compress);
+      } else if(keytype.compare(0, 3, "TH2") == 0) {
+         AddToList(m4bsToWrite, dynamic_cast<TH2*>(currentkey->ReadObj()), split, compress);
+      } else if(keytype.compare(0, 3, "THn") == 0) {
+         THnSparse* hist = (dynamic_cast<THnSparse*>(currentkey->ReadObj()));
+         if(hist->GetNdimensions() == 1) {
+            histsToWrite->Add(hist->Projection(0));
+         } else if(hist->GetNdimensions() == 2) {
+            if(keytype.compare(17, 1, "C") == 0 || keytype.compare(17, 1, "S") == 0) {
+               AddToList(matsToWrite, hist->Projection(0, 1), split, compress);
+            } else {
+               AddToList(m4bsToWrite, hist->Projection(0, 1), split, compress);
+            }
+         }
+      } else if(keytype.compare(0, 5, "GHSym") == 0) {
+         if(keytype.compare(5, 1, "F") == 0) {
+            AddToList(m4bsToWrite, dynamic_cast<GHSymF*>(currentkey->ReadObj())->GetMatrix(), split, compress);
+         } else if(keytype.compare(5, 1, "D") == 0) {
+            AddToList(m4bsToWrite, dynamic_cast<GHSymF*>(currentkey->ReadObj())->GetMatrix(), split, compress);
+         } else {
+            std::cout<<"unknown GHSym type "<<keytype<<std::endl;
+         }
+		} else if(keytype.compare(0, 14, "TDirectoryFile") == 0) {
+			directories.push_back(dynamic_cast<TDirectoryFile*>(currentkey->ReadObj()));
+      } else {
+         std::cout<<"skipping "<<keytype<<std::endl;
+      }
+   }
+	// loop over directories and process keys in them
+	for(auto dir : directories) {
+		TList* dir_keys = dir->GetListOfKeys();
+		dir_keys->Sort();
+		ProcessKeys(dir_keys, histsToWrite, matsToWrite, m4bsToWrite, split, compress);
+	}
 }
 
 void AddToList(TList* list, TH2* hist, bool split, bool compress)

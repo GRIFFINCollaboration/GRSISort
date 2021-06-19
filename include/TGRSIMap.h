@@ -59,7 +59,27 @@ public:
 	typename map_t::iterator end()       { return fMap.end(); }
 	typename map_t::const_iterator end() const { return fMap.end(); }
 
-	typename map_t::size_type count(const key_type* k) const { return fMap.count(); }
+	// capacity functions of std::map
+	bool empty() const noexcept { return fMap.empty(); }
+	size_t size() const noexcept { return fMap.size(); }
+	size_t max_size() const noexcept { return fMap.max_size(); }
+	// modifier functions of std::map
+	void clear() noexcept { fMap.clear(); }
+	//insert
+	//insert_or_assign
+	//emplace
+	//emplace_hint
+	//try_emplace
+	void erase(typename map_t::iterator pos) { fMap.erase(pos); }
+	void erase(typename map_t::iterator first, typename map_t::iterator last) { fMap.erase(first, last); }
+	void swap(map_t& other) { fMap.swap(other); }
+	// lookup functions of std::map
+	typename map_t::size_type count(const key_type* key) const { return fMap.count(key); }
+	typename map_t::iterator find(const key_type& key) { return fMap.find(key); }
+	typename map_t::const_iterator find(const key_type& key) const { return fMap.find(key); }
+	//equal_range
+	//lower_bound
+	//upper_bound
 
 private:
 	std::map<key_type, mapped_type, key_compare, allocator_type> fMap;
