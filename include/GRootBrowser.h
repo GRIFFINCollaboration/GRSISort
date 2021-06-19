@@ -21,6 +21,7 @@ class TGStatusBar;
 class TGVSplitter;
 class TGHSplitter;
 
+/////////////////////////////////////////////////////////////////
 ///
 /// \class GBrowserPlugin
 ///
@@ -33,12 +34,13 @@ class TGHSplitter;
 ///
 ///  pcb.
 ///
+/////////////////////////////////////////////////////////////////
 
 class GBrowserPlugin : public TNamed {
 public:
-   Int_t   fTab;     // Tab number
-   Int_t   fSubTab;  // Tab element number
-   TString fCommand; // Command to be executed
+   Int_t   fTab;     ///< Tab number
+   Int_t   fSubTab;  ///< Tab element number
+   TString fCommand; ///< Command to be executed
 
    GBrowserPlugin(const char* name, const char* cmd = "", Int_t tab = 1, Int_t sub = -1)
       : TNamed(name, cmd), fTab(tab), fSubTab(sub), fCommand(cmd)
@@ -46,14 +48,56 @@ public:
    }
    ~GBrowserPlugin() override = default;
 
-   void SetTab(Int_t tab) { fTab = tab; }
-   void SetSubTab(Int_t sub) { fSubTab = sub; }
-   void SetCommand(const char* cmd) { fCommand = cmd; }
+   void SetTab(Int_t tab) { fTab = tab; } ///< simple setter function for the tab number
+   void SetSubTab(Int_t sub) { fSubTab = sub; } ///< simple setter function for the tab element number
+   void SetCommand(const char* cmd) { fCommand = cmd; } ///< simple setter function for the command to be executed
 
    /// \cond CLASSIMP
    ClassDefOverride(GBrowserPlugin, 0) // basic plugin description class
    /// \endcond
 };
+
+/////////////////////////////////////////////////////////////////
+///
+/// \class GRootBrowser
+///
+/// This class creates a ROOT object browser, constitued by three main
+/// tabs.
+///
+/// All tabs can 'swallow' frames, thanks to the new method:
+///   ExecPlugin(const char *name = 0, const char *fname = 0,
+///              const char *cmd = 0, Int_t pos = kRight,
+///              Int_t subpos = -1)
+/// allowing to select plugins (can be a macro or a command)
+/// to be executed, and where to embed the frame created by
+/// the plugin (tab and tab element). Examples:
+///
+/// create a new browser:
+/// TBrowser b;
+///
+/// create a new TCanvas in a new top right tab element:
+/// b.ExecPlugin("Canvas", 0, "new TCanvas()");
+///
+/// create a new top right tab element embedding the
+/// TGMainFrame created by the macro 'myMacro.C':
+/// b.ExecPlugin("MyPlugin", "myMacro.C");
+///
+/// create a new bottom tab element embedding the
+/// TGMainFrame created by the macro 'myMacro.C':
+/// b.ExecPlugin("MyPlugin", "myMacro.C", 0, GRootBrowser::kBottom);
+///
+/// this browser implementation can be selected via the env
+/// 'Browser.Name' in .rootrc, (GRootBrowser or GRootBrowserLite)
+/// the default being GRootBrowserLite (old browser)
+/// a list of options (plugins) for the new GRootBrowser is also
+/// specified via the env 'Browser.Options' in .rootrc, the default
+/// being: FECI
+/// Here is the list of available options:
+/// F: File browser E: Text Editor H: HTML browser C: Canvas I: I/O
+/// redirection P: Proof G: GL viewer
+///
+/////////////////////////////////////////////////////////////////
+
 
 class GRootBrowser : public TGMainFrame, public TBrowserImp {
 private:

@@ -30,9 +30,7 @@
 #include <GGaus.h>
 #include <GH2D.h>
 #include <GH1D.h>
-//#include <GRootObjectManager.h>
 #include <TGRSIOptions.h>
-//#include <TGRUTInt.h>
 #include <GNotifier.h>
 
 TChain* gFragment = nullptr;
