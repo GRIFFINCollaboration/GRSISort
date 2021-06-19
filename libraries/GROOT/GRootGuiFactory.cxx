@@ -52,7 +52,7 @@ GRootGuiFactory::GRootGuiFactory(const char* name, const char* title) : TGuiFact
 }
 
 //______________________________________________________________________________
-TApplicationImp* GRootGuiFactory::CreateApplicationImp(const char* classname, Int_t* argc, char** argv)
+TApplicationImp* GRootGuiFactory::CreateApplicationImp(const char* classname, int* argc, char** argv)
 {
    // Create a ROOT native GUI version of TApplicationImp
 
