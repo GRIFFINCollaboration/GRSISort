@@ -1,13 +1,3 @@
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// GRootCanvas                                                          //
-//                                                                      //
-// This class creates a main window with menubar, scrollbars and a      //
-// drawing area. The widgets used are the new native ROOT GUI widgets.  //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
 #include "RConfigure.h"
 
 #include "GRootCanvas.h"
@@ -234,7 +224,7 @@ public:
 //______________________________________________________________________________
 GRootContainer::GRootContainer(GRootCanvas* c, Window_t id, const TGWindow* p) : TGCompositeFrame(gClient, id, p)
 {
-   // Create a canvas container.
+   /// Create a canvas container.
 
    fCanvas = c;
 
@@ -249,8 +239,8 @@ GRootContainer::GRootContainer(GRootCanvas* c, Window_t id, const TGWindow* p) :
 //______________________________________________________________________________
 Bool_t GRootContainer::HandleButton(Event_t* event)
 {
-   // Directly handle scroll mouse buttons (4 and 5), only pass buttons
-   // 1, 2 and 3 on to the TCanvas.
+   /// Directly handle scroll mouse buttons (4 and 5), only pass buttons
+   /// 1, 2 and 3 on to the TCanvas.
 
    const TGViewPort* vp   = static_cast<const TGViewPort*>(fParent);
    UInt_t            page = vp->GetHeight() / 4;
@@ -282,7 +272,7 @@ ClassImp(GRootCanvas)
    GRootCanvas::GRootCanvas(GCanvas* c, const char* name, UInt_t width, UInt_t height)
    : TGMainFrame(gClient->GetRoot(), width, height), TCanvasImp(c)
 {
-   // Create a basic ROOT canvas.
+   /// Create a basic ROOT canvas.
    CreateCanvas(name);
 
    ShowToolBar(kFALSE);
@@ -295,7 +285,7 @@ ClassImp(GRootCanvas)
 GRootCanvas::GRootCanvas(GCanvas* c, const char* name, Int_t x, Int_t y, UInt_t width, UInt_t height)
    : TGMainFrame(gClient->GetRoot(), width, height), TCanvasImp(c)
 {
-   // Create a basic ROOT canvas.
+   /// Create a basic ROOT canvas.
    CreateCanvas(name);
 
    ShowToolBar(kFALSE);
@@ -308,7 +298,7 @@ GRootCanvas::GRootCanvas(GCanvas* c, const char* name, Int_t x, Int_t y, UInt_t 
 //______________________________________________________________________________
 void GRootCanvas::CreateCanvas(const char* name)
 {
-   // Create the actual canvas.
+   /// Create the actual canvas.
 
    fButton   = 0;
    fAutoFit  = kTRUE; // check also menu entry
@@ -595,8 +585,8 @@ void GRootCanvas::CreateCanvas(const char* name)
 //______________________________________________________________________________
 GRootCanvas::~GRootCanvas()
 {
-   // Delete ROOT basic canvas. Order is significant. Delete in reverse
-   // order of creation.
+   /// Delete ROOT basic canvas. Order is significant. Delete in reverse
+   /// order of creation.
 
    delete fToolTip;
    if(fIconPic != nullptr) {
@@ -661,9 +651,8 @@ GRootCanvas::~GRootCanvas()
 //______________________________________________________________________________
 void GRootCanvas::Close()
 {
-   // Called via TCanvasImp interface by TCanvas.
-   // printf("Closing canvas 0x%08x\n",((TCanvasImp*)this)->Canvas());
-   // GRootObjcetManager::CanvasClosed(((TCanvasImp*)this)->Canvas());
+   /// Called via TCanvasImp interface by TCanvas.
+
    TVirtualPadEditor* gged = TVirtualPadEditor::GetPadEditor(kFALSE);
    if((gged != nullptr) && gged->GetCanvas() == fCanvas) {
       if(fEmbedded) {
@@ -680,7 +669,7 @@ void GRootCanvas::Close()
 //______________________________________________________________________________
 void GRootCanvas::ReallyDelete()
 {
-   // Really delete the canvas and this GUI.
+   /// Really delete the canvas and this GUI.
 
    TVirtualPadEditor* gged = TVirtualPadEditor::GetPadEditor(kFALSE);
    if((gged != nullptr) && gged->GetCanvas() == fCanvas) {
@@ -706,7 +695,7 @@ void GRootCanvas::ReallyDelete()
 //______________________________________________________________________________
 void GRootCanvas::CloseWindow()
 {
-   // In case window is closed via WM we get here.
+   /// In case window is closed via WM we get here.
 
    DeleteWindow();
 }
@@ -714,7 +703,7 @@ void GRootCanvas::CloseWindow()
 //______________________________________________________________________________
 UInt_t GRootCanvas::GetCwidth() const
 {
-   // Return width of canvas container.
+   /// Return width of canvas container.
 
    return fCanvasContainer->GetWidth();
 }
@@ -722,7 +711,7 @@ UInt_t GRootCanvas::GetCwidth() const
 //______________________________________________________________________________
 UInt_t GRootCanvas::GetCheight() const
 {
-   // Return height of canvas container.
+   /// Return height of canvas container.
 
    return fCanvasContainer->GetHeight();
 }
@@ -730,8 +719,8 @@ UInt_t GRootCanvas::GetCheight() const
 //______________________________________________________________________________
 UInt_t GRootCanvas::GetWindowGeometry(Int_t& x, Int_t& y, UInt_t& w, UInt_t& h)
 {
-   // Gets the size and position of the window containing the canvas. This
-   // size includes the menubar and borders.
+   /// Gets the size and position of the window containing the canvas. This
+   /// size includes the menubar and borders.
 
    gVirtualX->GetWindowSize(fId, x, y, w, h);
 
@@ -746,7 +735,7 @@ UInt_t GRootCanvas::GetWindowGeometry(Int_t& x, Int_t& y, UInt_t& w, UInt_t& h)
 //______________________________________________________________________________
 void GRootCanvas::SetStatusText(const char* txt, Int_t partidx)
 {
-   // Set text in status bar.
+   /// Set text in status bar.
 
    fStatusBar->SetText(txt, partidx);
 }
@@ -754,7 +743,7 @@ void GRootCanvas::SetStatusText(const char* txt, Int_t partidx)
 //______________________________________________________________________________
 Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
 {
-   // Handle menu and other command generated by the user.
+   /// Handle menu and other command generated by the user.
 
    TRootHelpDialog* hd;
    TList*           lc;
@@ -1166,7 +1155,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
 //______________________________________________________________________________
 Int_t GRootCanvas::InitWindow()
 {
-   // Called by TCanvas ctor to get window indetifier.
+   /// Called by TCanvas ctor to get window indetifier.
 
    if(fCanvas->OpaqueMoving()) {
       fOptionMenu->CheckEntry(kOptionMoveOpaque);
@@ -1181,7 +1170,7 @@ Int_t GRootCanvas::InitWindow()
 //______________________________________________________________________________
 void GRootCanvas::SetCanvasSize(UInt_t w, UInt_t h)
 {
-   // Set size of canvas container. Units in pixels.
+   /// Set size of canvas container. Units in pixels.
 
    // turn off autofit, we want to stay at the given size
    fAutoFit = kFALSE;
@@ -1199,7 +1188,7 @@ void GRootCanvas::SetCanvasSize(UInt_t w, UInt_t h)
 //______________________________________________________________________________
 void GRootCanvas::SetWindowPosition(Int_t x, Int_t y)
 {
-   // Set canvas position (units in pixels).
+   /// Set canvas position (units in pixels).
 
    Move(x, y);
 }
@@ -1207,7 +1196,7 @@ void GRootCanvas::SetWindowPosition(Int_t x, Int_t y)
 //______________________________________________________________________________
 void GRootCanvas::SetWindowSize(UInt_t w, UInt_t h)
 {
-   // Set size of canvas (units in pixels).
+   /// Set size of canvas (units in pixels).
 
    Resize(w, h);
 
@@ -1222,7 +1211,7 @@ void GRootCanvas::SetWindowSize(UInt_t w, UInt_t h)
 //______________________________________________________________________________
 void GRootCanvas::RaiseWindow()
 {
-   // Put canvas window on top of the window stack.
+   /// Put canvas window on top of the window stack.
 
    gVirtualX->RaiseWindow(GetId());
 }
@@ -1230,7 +1219,7 @@ void GRootCanvas::RaiseWindow()
 //______________________________________________________________________________
 void GRootCanvas::SetWindowTitle(const char* title)
 {
-   // Change title on window.
+   /// Change title on window.
 
    SetWindowName(title);
    SetIconName(title);
@@ -1240,7 +1229,7 @@ void GRootCanvas::SetWindowTitle(const char* title)
 //______________________________________________________________________________
 void GRootCanvas::FitCanvas()
 {
-   // Fit canvas container to current window size.
+   /// Fit canvas container to current window size.
 
    if(!fAutoFit) {
       int opt  = fCanvasContainer->GetOptions();
@@ -1257,7 +1246,7 @@ void GRootCanvas::FitCanvas()
 //______________________________________________________________________________
 void GRootCanvas::PrintCanvas()
 {
-   // Print the canvas.
+   /// Print the canvas.
 
    Int_t          ret   = 0;
    Bool_t         pname = kTRUE;
@@ -1325,7 +1314,7 @@ void GRootCanvas::PrintCanvas()
 //______________________________________________________________________________
 void GRootCanvas::EventInfo(Int_t event, Int_t px, Int_t py, TObject* selected)
 {
-   // Display a tooltip with infos about the primitive below the cursor.
+   /// Display a tooltip with infos about the primitive below the cursor.
 
    fToolTip->Hide();
    if(!fCanvas->GetShowToolTips() || selected == nullptr || event != kMouseMotion || fButton != 0) {
@@ -1356,7 +1345,7 @@ void GRootCanvas::EventInfo(Int_t event, Int_t px, Int_t py, TObject* selected)
 //______________________________________________________________________________
 void GRootCanvas::ShowMenuBar(Bool_t show)
 {
-   // Show or hide menubar.
+   /// Show or hide menubar.
 
    if(show) {
       ShowFrame(fMenuBar);
@@ -1368,7 +1357,7 @@ void GRootCanvas::ShowMenuBar(Bool_t show)
 //______________________________________________________________________________
 void GRootCanvas::ShowStatusBar(Bool_t show)
 {
-   // Show or hide statusbar.
+   /// Show or hide statusbar.
 
    UInt_t dh = fClient->GetDisplayHeight();
    UInt_t ch = fCanvas->GetWindowHeight();
@@ -1399,7 +1388,7 @@ void GRootCanvas::ShowStatusBar(Bool_t show)
 //______________________________________________________________________________
 void GRootCanvas::ShowEditor(Bool_t show)
 {
-   // Show or hide side frame.
+   /// Show or hide side frame.
 
    TVirtualPad* savedPad = nullptr;
    savedPad              = gPad;
@@ -1485,7 +1474,7 @@ void GRootCanvas::ShowEditor(Bool_t show)
 //______________________________________________________________________________
 void GRootCanvas::CreateEditor()
 {
-   // Create embedded editor.
+   /// Create embedded editor.
 
    fEditorFrame->SetEditDisabled(kEditEnable);
    fEditorFrame->SetEditable();
@@ -1509,7 +1498,7 @@ void GRootCanvas::CreateEditor()
 //______________________________________________________________________________
 void GRootCanvas::ShowToolBar(Bool_t show)
 {
-   // Show or hide toolbar.
+   /// Show or hide toolbar.
 
    if(show && (fToolBar == nullptr)) {
 
@@ -1588,7 +1577,7 @@ void GRootCanvas::ShowToolBar(Bool_t show)
 //______________________________________________________________________________
 void GRootCanvas::ShowToolTips(Bool_t show)
 {
-   // Enable or disable tooltip info.
+   /// Enable or disable tooltip info.
 
    if(show) {
       fViewMenu->CheckEntry(kViewToolTips);
@@ -1600,7 +1589,7 @@ void GRootCanvas::ShowToolTips(Bool_t show)
 //______________________________________________________________________________
 Bool_t GRootCanvas::HasEditor() const
 {
-   // Returns kTRUE if the editor is shown.
+   /// Returns kTRUE if the editor is shown.
 
    return ((fEditor) != nullptr) && fViewMenu->IsEntryChecked(kViewEditor);
 }
@@ -1608,7 +1597,7 @@ Bool_t GRootCanvas::HasEditor() const
 //______________________________________________________________________________
 Bool_t GRootCanvas::HasMenuBar() const
 {
-   // Returns kTRUE if the menu bar is shown.
+   /// Returns kTRUE if the menu bar is shown.
 
    return ((fMenuBar) != nullptr) && fMenuBar->IsMapped();
 }
@@ -1616,7 +1605,7 @@ Bool_t GRootCanvas::HasMenuBar() const
 //______________________________________________________________________________
 Bool_t GRootCanvas::HasStatusBar() const
 {
-   // Returns kTRUE if the status bar is shown.
+   /// Returns kTRUE if the status bar is shown.
 
    return ((fStatusBar) != nullptr) && fStatusBar->IsMapped();
 }
@@ -1624,7 +1613,7 @@ Bool_t GRootCanvas::HasStatusBar() const
 //______________________________________________________________________________
 Bool_t GRootCanvas::HasToolBar() const
 {
-   // Returns kTRUE if the tool bar is shown.
+   /// Returns kTRUE if the tool bar is shown.
 
    return ((fToolBar) != nullptr) && fToolBar->IsMapped();
 }
@@ -1632,7 +1621,7 @@ Bool_t GRootCanvas::HasToolBar() const
 //______________________________________________________________________________
 Bool_t GRootCanvas::HasToolTips() const
 {
-   // Returns kTRUE if the tooltips are enabled.
+   /// Returns kTRUE if the tooltips are enabled.
 
    return ((fCanvas) != nullptr) && fCanvas->GetShowToolTips();
 }
@@ -1640,7 +1629,7 @@ Bool_t GRootCanvas::HasToolTips() const
 //______________________________________________________________________________
 void GRootCanvas::AdjustSize()
 {
-   // Keep the same canvas size while docking/undocking toolbar.
+   /// Keep the same canvas size while docking/undocking toolbar.
 
    UInt_t h  = GetHeight();
    UInt_t dh = fToolBar->GetHeight();
@@ -1667,7 +1656,7 @@ void GRootCanvas::AdjustSize()
 //______________________________________________________________________________
 Bool_t GRootCanvas::HandleContainerButton(Event_t* event)
 {
-   // Handle mouse button events in the canvas container.
+   /// Handle mouse button events in the canvas container.
 
    Int_t button = event->fCode;
    Int_t x      = event->fX;
@@ -1724,7 +1713,7 @@ Bool_t GRootCanvas::HandleContainerButton(Event_t* event)
 //______________________________________________________________________________
 Bool_t GRootCanvas::HandleContainerDoubleClick(Event_t* event)
 {
-   // Handle mouse button double click events in the canvas container.
+   /// Handle mouse button double click events in the canvas container.
 
    Int_t button = event->fCode;
    Int_t x      = event->fX;
@@ -1746,7 +1735,7 @@ Bool_t GRootCanvas::HandleContainerDoubleClick(Event_t* event)
 //______________________________________________________________________________
 Bool_t GRootCanvas::HandleContainerConfigure(Event_t*)
 {
-   // Handle configure (i.e. resize) event.
+   /// Handle configure (i.e. resize) event.
    if(fAutoFit) {
       fCanvas->Resize();
       fCanvas->Update();
@@ -1767,15 +1756,15 @@ Bool_t GRootCanvas::HandleContainerConfigure(Event_t*)
 //______________________________________________________________________________
 Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
 {
-   // Handle keyboard events in the canvas container.
+   /// Handle keyboard events in the canvas container.
 
-   //
-   //   This is the function I wanted to edit so bad that
-   //   I went through all the trouble to copy this thing.
-   //   This will allow us to take complete control of the
-   //   canvas interface make a more root-ish/radware-isf
-   //   work enviorment.      pcb.
-   //
+   ///
+   ///   This is the function I wanted to edit so bad that
+   ///   I went through all the trouble to copy this thing.
+   ///   This will allow us to take complete control of the
+   ///   canvas interface make a more root-ish/radware-isf
+   ///   work enviorment.      pcb.
+   ///
 
    static EGEventType previous_event  = kOtherEvent;
    static UInt_t      previous_keysym = 0;
@@ -1894,7 +1883,7 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
 //______________________________________________________________________________
 Bool_t GRootCanvas::HandleContainerMotion(Event_t* event)
 {
-   // Handle mouse motion event in the canvas container.
+   /// Handle mouse motion event in the canvas container.
 
    Int_t x = event->fX;
    Int_t y = event->fY;
@@ -1919,7 +1908,7 @@ Bool_t GRootCanvas::HandleContainerMotion(Event_t* event)
 //______________________________________________________________________________
 Bool_t GRootCanvas::HandleContainerExpose(Event_t* event)
 {
-   // Handle expose events.
+   /// Handle expose events.
 
    if(event->fCount == 0) {
       fCanvas->Flush();
@@ -1931,7 +1920,7 @@ Bool_t GRootCanvas::HandleContainerExpose(Event_t* event)
 //______________________________________________________________________________
 Bool_t GRootCanvas::HandleContainerCrossing(Event_t* event)
 {
-   // Handle enter/leave events. Only leave is activated at the moment.
+   /// Handle enter/leave events. Only leave is activated at the moment.
 
    Int_t x = event->fX;
    Int_t y = event->fY;
@@ -1948,7 +1937,7 @@ Bool_t GRootCanvas::HandleContainerCrossing(Event_t* event)
 //______________________________________________________________________________
 Bool_t GRootCanvas::HandleDNDDrop(TDNDData* data)
 {
-   // Handle drop events.
+   /// Handle drop events.
 
    static Atom_t rootObj = gVirtualX->InternAtom("application/root", kFALSE);
    static Atom_t uriObj  = gVirtualX->InternAtom("text/uri-list", kFALSE);
@@ -2006,7 +1995,7 @@ Bool_t GRootCanvas::HandleDNDDrop(TDNDData* data)
 //______________________________________________________________________________
 Atom_t GRootCanvas::HandleDNDPosition(Int_t x, Int_t y, Atom_t action, Int_t /*xroot*/, Int_t /*yroot*/)
 {
-   // Handle dragging position events.
+   /// Handle dragging position events.
 
    TPad* pad = fCanvas->Pick(x, y, nullptr);
    if(pad != nullptr) {
@@ -2021,7 +2010,7 @@ Atom_t GRootCanvas::HandleDNDPosition(Int_t x, Int_t y, Atom_t action, Int_t /*x
 //______________________________________________________________________________
 Atom_t GRootCanvas::HandleDNDEnter(Atom_t* typelist)
 {
-   // Handle drag enter events.
+   /// Handle drag enter events.
 
    static Atom_t rootObj = gVirtualX->InternAtom("application/root", kFALSE);
    static Atom_t uriObj  = gVirtualX->InternAtom("text/uri-list", kFALSE);
@@ -2040,7 +2029,7 @@ Atom_t GRootCanvas::HandleDNDEnter(Atom_t* typelist)
 //______________________________________________________________________________
 Bool_t GRootCanvas::HandleDNDLeave()
 {
-   // Handle drag leave events.
+   /// Handle drag leave events.
 
    return kTRUE;
 }
@@ -2048,8 +2037,8 @@ Bool_t GRootCanvas::HandleDNDLeave()
 //______________________________________________________________________________
 void GRootCanvas::Activated(Int_t id)
 {
-   // Slot handling tab switching in the browser, to properly set the canvas
-   // and the model to the editor.
+   /// Slot handling tab switching in the browser, to properly set the canvas
+   /// and the model to the editor.
 
    if(fEmbedded) {
       TGTab* sender = reinterpret_cast<TGTab*>(gTQSender);
@@ -2071,7 +2060,7 @@ void GRootCanvas::Activated(Int_t id)
 //______________________________________________________________________________
 void GRootContainer::SavePrimitive(std::ostream& out, Option_t* /*= ""*/)
 {
-   // Save a canvas container as a C++ statement(s) on output stream out.
+   /// Save a canvas container as a C++ statement(s) on output stream out.
 
    out<<std::endl<<"   // canvas container"<<std::endl;
    out<<"   Int_t canvasID = gVirtualX->InitWindow((ULong_t)"<<GetParent()->GetParent()->GetName()<<"->GetId());"
