@@ -56,21 +56,21 @@ if [ -n "${old_grsisys}" ] ; then
    if [ -n "${PATH}" ]; then
       drop_from_path "$PATH" ${old_grsisys}/bin
       PATH=$newpath
+      drop_from_path "$PATH" ${old_grsisys}/GRSIData/bin
+      PATH=$newpath
+      drop_from_path "$PATH" ${old_grsisys}/ILLData/bin
+      PATH=$newpath
+      drop_from_path "$PATH" ${old_grsisys}/iThembaData/bin
+      PATH=$newpath
    fi
    if [ -n "${LD_LIBRARY_PATH}" ]; then
       drop_from_path $LD_LIBRARY_PATH ${old_grsisys}/lib
       LD_LIBRARY_PATH=$newpath
-		if [ -e ${old_grsisys}/GRSIData ]; then
-			drop_from_path $LD_LIBRARY_PATH ${old_grsisys}/GRSIData/lib
-		fi
+		drop_from_path $LD_LIBRARY_PATH ${old_grsisys}/GRSIData/lib
       LD_LIBRARY_PATH=$newpath
-		if [ -e ${old_grsisys}/ILLData ]; then
-			drop_from_path $LD_LIBRARY_PATH ${old_grsisys}/ILLData/lib
-		fi
+		drop_from_path $LD_LIBRARY_PATH ${old_grsisys}/ILLData/lib
       LD_LIBRARY_PATH=$newpath
-		if [ -e ${old_grsisys}/iThembaData ]; then
-			drop_from_path $LD_LIBRARY_PATH ${old_grsisys}/iThembaData/lib
-		fi
+		drop_from_path $LD_LIBRARY_PATH ${old_grsisys}/iThembaData/lib
       LD_LIBRARY_PATH=$newpath
    fi
    if [ -n "${DYLD_LIBRARY_PATH}" ]; then
@@ -93,9 +93,9 @@ if [ -z "${MANPATH}" ]; then
 fi
 
 if [ -z "${PATH}" ]; then
-   PATH=$GRSISYS/bin; export PATH
+   PATH=$GRSISYS/bin;
 else
-   PATH=$GRSISYS/bin:$PATH; export PATH
+   PATH=$GRSISYS/bin:$PATH;
 fi
 
 if [ -z "${LD_LIBRARY_PATH}" ]; then
@@ -105,26 +105,33 @@ else
 fi
 if [ ! -z "${GRSIDATA}" ]; then
 	LD_LIBRARY_PATH=$GRSIDATA/lib:$LD_LIBRARY_PATH;
+	PATH=$GRSIDATA/bin:$PATH;
 fi
 if [ ! -z "${ILLDATA}" ]; then
 	LD_LIBRARY_PATH=$ILLDATA/lib:$LD_LIBRARY_PATH;
+	PATH=$ILLDATA/bin:$PATH;
 fi
 if [ ! -z "${ITHEMBADATA}" ]; then
 	LD_LIBRARY_PATH=$ITHEMBADATA/lib:$LD_LIBRARY_PATH;
+	PATH=$ITHEMBADATA/bin:$PATH;
 fi
-export LD_LIBRARY_PATH       # Linux, ELF HP-UX
 
 if [ -z "${DYLD_LIBRARY_PATH}" ]; then
-   DYLD_LIBRARY_PATH=$GRSISYS/lib; export DYLD_LIBRARY_PATH   # Mac OS X
+   DYLD_LIBRARY_PATH=$GRSISYS/lib;
 else
-   DYLD_LIBRARY_PATH=$GRSISYS/lib:$DYLD_LIBRARY_PATH; export DYLD_LIBRARY_PATH
+   DYLD_LIBRARY_PATH=$GRSISYS/lib:$DYLD_LIBRARY_PATH;
 fi
 
 if [ -z "${MANPATH}" ]; then
-   MANPATH=`dirname $GRSISYS/man/man1`:${default_manpath}; export MANPATH
+   MANPATH=`dirname $GRSISYS/man/man1`:${default_manpath};
 else
-   MANPATH=`dirname $GRSISYS/man/man1`:$MANPATH; export MANPATH
+   MANPATH=`dirname $GRSISYS/man/man1`:$MANPATH;
 fi
+
+export PATH
+export LD_LIBRARY_PATH
+export DYLD_LIBRARY_PATH
+export MANPATH
 
 #if [ "x`grsi-config --arch | grep -v win32gcc | grep -i win32`" != "x" ]; then
 #  GRSISYS="`cygpath -w $GRSISYS`"
