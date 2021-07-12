@@ -103,7 +103,7 @@ private:
    TPriorityValue<std::vector<double> >  fEFFCoefficients;  // Efficiency calibration coeffs (low to high order)
    TPriorityValue<double>                fEFFChi2;          // Chi2 of Efficiency calibration
    TPriorityValue<std::vector<double> >  fCTCoefficients;   // Cross talk coefficients
-	TPriorityValue<TGraph>                fEnergyNonlinearity; // Energy nonlinearity as spline
+	TPriorityValue<TGraph>                fEnergyNonlinearity; // Energy nonlinearity as TGraph, is used as E=E+GetEnergyNonlinearity(E), so y should be E(source)-calibration(peak)
 
    struct WaveFormShapePar {
       bool   InUse;
