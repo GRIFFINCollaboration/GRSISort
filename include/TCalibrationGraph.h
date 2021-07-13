@@ -17,8 +17,8 @@ public:
 	bool SetResidual(const bool& force = false);
 	Int_t RemovePoint() override; // *MENU*
 
-	void SetLineColor(int color) { SetLineColor(color); fResidual->SetLineColor(color); }
-	void SetMarkerColor(int color) { SetMarkerColor(color); fResidual->SetMarkerColor(color); }
+	void SetLineColor(int color) { TGraphErrors::SetLineColor(color); fResidual->SetLineColor(color); }
+	void SetMarkerColor(int color) { TGraphErrors::SetMarkerColor(color); fResidual->SetMarkerColor(color); }
 
 	void DrawResidual(Option_t* opt = "") { fResidual->Draw(opt); }
 

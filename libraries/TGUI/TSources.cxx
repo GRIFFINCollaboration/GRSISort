@@ -15,9 +15,7 @@
 
 std::map<std::tuple<double, double>, std::tuple<double, double> > Match(std::vector<std::tuple<double, double> > peaks, std::vector<std::tuple<double, double> > sources)
 {
-	/// Takes two vectors of peak positions and source energies with their uncertainties and finds a linear combination of them.
-	/// The two vectors do not have to be the same size!
-	/// returns a map of peak position keys and source energy values
+	std::cout<<"Matching "<<peaks.size()<<" peaks with "<<sources.size()<<" source energies"<<std::endl;
    std::map<std::tuple<double, double>, std::tuple<double, double> > result;
    std::sort(peaks.begin(), peaks.end());
    std::sort(sources.begin(), sources.end());
@@ -25,59 +23,50 @@ std::map<std::tuple<double, double>, std::tuple<double, double> > Match(std::vec
 	double maxSize = peaks.size();
 	if(sources.size() > maxSize) maxSize = sources.size();
 
-   // peaks are the fitted points.
-   // sources are the known values
+   // Peaks are the fitted points.
+   // source are the known values
 
    std::vector<bool> filled(maxSize);
    std::fill(filled.begin(), filled.end(), true);
 
    TLinearFitter fitter(1, "1 ++ x");
 
-	// create vectors with just the values from the vectors of tuples
+	// intermediate vectors and map
 	std::vector<double> peakValues(peaks.size());
-	for(size_t i = 0; i < peaks.size(); ++i) {
-		peakValues[i] = std::get<0>(peaks[i]);
-	}
+	for(size_t i = 0; i < peaks.size(); ++i) peakValues[i] = std::get<0>(peaks[i]);
 	std::vector<double> sourceValues(sources.size());
-	for(size_t i = 0; i < sources.size(); ++i) {
-		sourceValues[i] = std::get<0>(sources[i]);
-	}
-   std::map<double, double> tmpMap; // map to hold just the peak and source values without uncertainties
+	for(size_t i = 0; i < sources.size(); ++i) sourceValues[i] = std::get<0>(sources[i]);
+	std::map<double, double> tmpMap;
 
    for(size_t num_data_points = peakValues.size(); num_data_points > 0; num_data_points--) {
-		std::cout<<"trying "<<num_data_points<<" data points"<<std::endl;
+		std::cout<<num_data_points<<" data points:"<<std::endl;
       double best_chi2 = DBL_MAX;
-      for(auto peak : combinations(peakValues, num_data_points)) {
+      for(auto peak_values : combinations(peakValues, num_data_points)) {
          // Add a (0,0) point to the calibration.
-         peak.push_back(0.);
-         for(auto source : combinations(sourceValues, num_data_points)) {
-            source.push_back(0.);
-				//std::cout<<peak.size()<<" peaks: ";
-				//for(auto val : peak) std::cout<<val<<" ";
-				//std::cout<<std::endl;
-				//std::cout<<source.size()<<" sources: ";
-				//for(auto val : source) std::cout<<val<<" ";
-				//std::cout<<std::endl;
+         peak_values.push_back(0);
+         for(auto source_values : combinations(sourceValues, num_data_points)) {
+            source_values.push_back(0);
 
             if(peakValues.size() > 3) {
                double max_err = 0.02;
-               double pratio  = peak.front() / peak.at(peak.size() - 2);
-               double sratio  = source.front() / source.at(source.size() - 2);
+               double pratio  = peak_values.front() / peak_values.at(peak_values.size() - 2);
+               double sratio  = source_values.front() / source_values.at(source_values.size() - 2);
+               // std::cout<<"ratio: "<<pratio<<" - "<<sratio<<" = "<<std::abs(pratio-sratio)<<std::endl;
                if(std::abs(pratio - sratio) > max_err) {
+                  // std::cout<<"skipping"<<std::endl;
                   continue;
                }
             }
 
             fitter.ClearPoints();
-            fitter.AssignData(source.size(), 1, peak.data(), source.data());
+            fitter.AssignData(source_values.size(), 1, peak_values.data(), source_values.data());
             fitter.Eval();
 
             if(fitter.GetChisquare() < best_chi2) {
                tmpMap.clear();
                for(size_t i = 0; i < num_data_points; i++) {
-                  tmpMap[peakValues[i]] = sourceValues[i];
+                  tmpMap[peak_values[i]] = source_values[i];
                }
-					std::cout<<fitter.GetChisquare()<<" < "<<best_chi2<<": got map with "<<tmpMap.size()<<" data points"<<std::endl;
                best_chi2 = fitter.GetChisquare();
             }
          }
@@ -85,51 +74,44 @@ std::map<std::tuple<double, double>, std::tuple<double, double> > Match(std::vec
 
       // Remove one peak value from the best fit, make sure that we reproduce (0,0) intercept.
       if(tmpMap.size() > 2) {
-         std::vector<double> tmpPeakValues;
-         std::vector<double> tmpSourceValues;
+         std::vector<double> peak_values;
+         std::vector<double> source_values;
          for(auto& item : tmpMap) {
-            tmpPeakValues.push_back(item.first);
-            tmpSourceValues.push_back(item.second);
+            peak_values.push_back(item.first);
+            source_values.push_back(item.second);
          }
 
-         for(size_t skipped_point = 0; skipped_point < tmpSourceValues.size(); skipped_point++) {
-            std::swap(tmpPeakValues[skipped_point], tmpPeakValues.back());
-            std::swap(tmpSourceValues[skipped_point], tmpSourceValues.back());
+         for(size_t skipped_point = 0; skipped_point < source_values.size(); skipped_point++) {
+            std::swap(peak_values[skipped_point], peak_values.back());
+            std::swap(source_values[skipped_point], source_values.back());
 
             fitter.ClearPoints();
-            fitter.AssignData(tmpSourceValues.size() - 1, 1, tmpPeakValues.data(), tmpSourceValues.data());
+            fitter.AssignData(source_values.size() - 1, 1, peak_values.data(), source_values.data());
             fitter.Eval();
 
             if(std::abs(fitter.GetParameter(0)) > 10) {
-					std::cout<<fitter.GetParameter(0)<<" too big, clearing map with "<<tmpMap.size()<<" data points: ";
+					std::cout<<fitter.GetParameter(0)<<" too big, clearing map with "<<tmpMap.size()<<" points: ";
 					for(auto it : tmpMap) std::cout<<it.first<<" - "<<it.second<<"; ";
 					std::cout<<std::endl;
                tmpMap.clear();
                break;
             }
 
-            std::swap(tmpPeakValues[skipped_point], tmpPeakValues.back());
-            std::swap(tmpSourceValues[skipped_point], tmpSourceValues.back());
+            std::swap(peak_values[skipped_point], peak_values.back());
+            std::swap(source_values[skipped_point], source_values.back());
          }
       }
 
-		std::cout<<"Got map with "<<tmpMap.size()<<" data points: ";
-		for(auto it : tmpMap) std::cout<<it.first<<" - "<<it.second<<"; ";
-		std::cout<<std::endl;
-
       if(!tmpMap.empty()) {
-			// loop over the map with the values, find corresponding entries in vectors and add them to the result
-			for(auto& item : tmpMap) {
-				result[*(std::find_if(peaks.begin(), peaks.end(),     [&item] (std::tuple<double, double> peak)   { return std::get<0>(peak)   == item.first;  }))] = 
-					    *(std::find_if(sources.begin(), sources.end(), [&item] (std::tuple<double, double> source) { return std::get<0>(source) == item.second; }));
-			}
+			for(auto it : tmpMap) result[*(std::find_if(peaks.begin(),   peaks.end(),   [&it] (auto& item) { return it.first  == std::get<0>(item); }))] = 
+				                          *(std::find_if(sources.begin(), sources.end(), [&it] (auto& item) { return it.second == std::get<0>(item); }));
+			std::cout<<"Returning map with "<<result.size()<<" points: ";
+			for(auto it : result) std::cout<<std::get<0>(it.first)<<" - "<<std::get<0>(it.second)<<"; ";
+			std::cout<<std::endl;
          break;
       }
    }
 
-	std::cout<<"Using map with "<<result.size()<<" points: ";
-	for(auto it : result) std::cout<<std::get<0>(it.first)<<"("<<std::get<1>(it.first)<<") - "<<std::get<0>(it.second)<<"("<<std::get<1>(it.second)<<"); ";
-	std::cout<<std::endl;
    return result;
 }
 
@@ -1172,11 +1154,12 @@ void TSources::UpdateChannel(const int& channelId)
 		fFinalData[channelId]->GetListOfFunctions()->Print();
 		return;
 	}
+	std::vector<Float_t> parameters;
+	calibration.push_back(parameters->GetParameter(0));
+	calibration.push_back(parameters->GetParameter(1));
+	if(Quadratic()) calibration.push_back(parameters->GetParameter(2));
 	TChannel* channel = TChannel::GetChannel(address);
-	channel->DestroyENGCal();
-	channel->AddENGCoefficient(calibration->GetParameter(0));
-	channel->AddENGCoefficient(calibration->GetParameter(1));
-	if(Quadratic()) channel->AddENGCoefficient(calibration->GetParameter(2));
+	channel->SetENGCoefficients(TPriorityValue<std::vector<Float_t> >(parameters, EPriority::kForce));
 	channel->DestroyEnergyNonlinearity();
 	double* x = fFinalData[channelId]->GetX();
 	double* y = fFinalData[channelId]->GetY();
