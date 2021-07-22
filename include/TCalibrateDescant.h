@@ -29,11 +29,13 @@
 /////////////////////////////////////////////////////////////////
 class TCalibrateDescant;
 
-class TParameterInput {
+class TParameterInput : public TGHorizontalFrame {
 public:
-	TParameterInput() {}
+	TParameterInput(TGVerticalFrame*& frame) : TGHorizontalFrame(frame, 400, 400) {}
 	~TParameterInput() {}
-	TGHorizontalFrame* Build(TGVerticalFrame*& frame, const std::string& name, const Int_t& baseId, const Double_t& xmin, const Double_t& xmax);
+	TGHorizontalFrame* Build(const std::string& name, const Int_t& baseId, const Double_t& xmin, const Double_t& xmax);
+
+	Bool_t ProcessMessage(Long_t msg, Long_t parameter1, Long_t parameter2) override;
 
 	double Value()     const { return fEntry->GetNumber(); }
 	double LowLimit()  const { return fEntryLow->GetNumber(); }
@@ -41,6 +43,7 @@ public:
 
 	const char* Name() const { return fLabel->GetTitle(); }
 
+	void Set(double val);
 	void Set(double val, double min, double max);
 
 	void UpdateSlider();
@@ -49,9 +52,9 @@ public:
 	void Connect(TCalibrateDescant* parent);
 
 private:
-	Int_t fBaseId{-1};
+	void PrintStatus(const char*);
 
-	TGHorizontalFrame* fFrame{nullptr};
+	Int_t fBaseId{-1};
 
 	TGLabel* fLabel{nullptr};
 	TGTripleHSlider* fSlider{nullptr};
@@ -63,18 +66,22 @@ private:
 class TCalibrateDescant : public TGMainFrame {
 public:
    enum class ESourceType { k22NaLow, k22NaHigh, k24NaLow, k24NaHigh, k60Co, k137Cs, k152Eu121, k152Eu344, k152Eu1408, k241AmEdge, k241Am };
-	enum EParameter { kAmplitude = 0, kPosition = 3, kSigma = 6, kDSigma = 9, kPeakAmp = 12, kPeakPos = 15, kPeakSigma = 18, kNoiseAmp = 21, kNoisePos = 24, kNoiseSigma = 27, kThreshold = 30, kThresholdSigma = 33, kBgConst = 36, kBgAmp = 39, kBgDecayConst = 42 };
+	enum EParameter { kAmplitude = 0, kPosition = 3, kSigma = 6, kDSigma = 9, kPeakAmp = 12, kPeakPos = 15, kPeakSigma = 18, kNoiseAmp = 21, kNoisePos = 24, kNoiseSigma = 27, kThreshold = 30, kThresholdSigma = 33, kBgConst = 36, kBgAmp = 39, kBgDecayConst = 42, kCutoff = 45 };
 
 	TCalibrateDescant(TH2* hist, const ESourceType& source = ESourceType::k137Cs);
+
+	Bool_t ProcessMessage(Long_t msg, Long_t parameter1, Long_t parameter2) override;
 
 	void Previous();
 	void Next();
 	void Fit();
+	void ResetFit();
+	void UpdateInitialParameters();
 	void Save();
 	void Status(Int_t px, Int_t py, Int_t pz, TObject* selected);
 	void FitCanvasZoomed();
 	void CalibrationCanvasZoomed();
-	void UpdateInitial();
+	void UpdateInitialFunction();
 
 private:
 	void BuildInterface();
@@ -104,42 +111,31 @@ private:
    TRootEmbeddedCanvas* fCalibrationCanvas{nullptr};
 	TGStatusBar*         fStatusBar{nullptr};
 
-	TParameterInput fAmplitude;
-	TGHorizontalFrame* fAmplitudeFrame{nullptr};
-	TParameterInput fPosition;
-	TGHorizontalFrame* fPositionFrame{nullptr};
-	TParameterInput fSigma;
-	TGHorizontalFrame* fSigmaFrame{nullptr};
-	TParameterInput fDSigma;
-	TGHorizontalFrame* fDSigmaFrame{nullptr};
-	TParameterInput fPeakAmp;
-	TGHorizontalFrame* fPeakAmpFrame{nullptr};
-	TParameterInput fPeakPos;
-	TGHorizontalFrame* fPeakPosFrame{nullptr};
-	TParameterInput fPeakSigma;
-	TGHorizontalFrame* fPeakSigmaFrame{nullptr};
-	TParameterInput fNoiseAmp;
-	TGHorizontalFrame* fNoiseAmpFrame{nullptr};
-	TParameterInput fNoisePos;
-	TGHorizontalFrame* fNoisePosFrame{nullptr};
-	TParameterInput fNoiseSigma;
-	TGHorizontalFrame* fNoiseSigmaFrame{nullptr};
-	TParameterInput fThreshold;
-	TGHorizontalFrame* fThresholdFrame{nullptr};
-	TParameterInput fThresholdSigma;
-	TGHorizontalFrame* fThresholdSigmaFrame{nullptr};
-	TParameterInput fBgConst;
-	TGHorizontalFrame* fBgConstFrame{nullptr};
-	TParameterInput fBgAmp;
-	TGHorizontalFrame* fBgAmpFrame{nullptr};
-	TParameterInput fBgDecayConst;
-	TGHorizontalFrame* fBgDecayConstFrame{nullptr};
+	TParameterInput* fAmplitude{nullptr};
+	TParameterInput* fPosition{nullptr};
+	TParameterInput* fSigma{nullptr};
+	TParameterInput* fDSigma{nullptr};
+	TParameterInput* fPeakAmp{nullptr};
+	TParameterInput* fPeakPos{nullptr};
+	TParameterInput* fPeakSigma{nullptr};
+	TParameterInput* fNoiseAmp{nullptr};
+	TParameterInput* fNoisePos{nullptr};
+	TParameterInput* fNoiseSigma{nullptr};
+	TParameterInput* fThreshold{nullptr};
+	TParameterInput* fThresholdSigma{nullptr};
+	TParameterInput* fBgConst{nullptr};
+	TParameterInput* fBgAmp{nullptr};
+	TParameterInput* fBgDecayConst{nullptr};
+	TParameterInput* fCutoff{nullptr};
 
-	TGHorizontalFrame* fButtonFrame{nullptr};
+	TGHorizontalFrame* fTopButtonFrame{nullptr};
+	TGHorizontalFrame* fBottomButtonFrame{nullptr};
 
 	TGTextButton* fPreviousButton{nullptr};
 	TGTextButton* fFitButton{nullptr};
 	TGTextButton* fNextButton{nullptr};
+	TGTextButton* fResetFitButton{nullptr};
+	TGTextButton* fUpdateInitialButton{nullptr};
 	TGTextButton* fSaveButton{nullptr};
 
    /// \cond CLASSIMP
