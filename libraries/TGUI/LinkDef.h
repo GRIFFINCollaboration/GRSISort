@@ -12,6 +12,7 @@
 #pragma link C++ class TCalibrateDescant+;
 #pragma link C++ class TSources+;
 #pragma link C++ class TCalibrationGraph+;
+#pragma link C++ class TCalibrationGraphSet+;
 
 #endif
 

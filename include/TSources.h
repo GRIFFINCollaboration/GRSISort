@@ -34,6 +34,7 @@ class TSources;
 class TChannelTab {
 public:
 	TChannelTab(TGTab* parent, TH1* projection, TGCompositeFrame* frame, const double& sigma, const double& threshold, const bool& quadratic, const std::vector<std::tuple<double, double> >& sourceEnergy);
+	TChannelTab(const TChannelTab& rhs);
 	~TChannelTab();
 
 	void MakeConnections();
@@ -46,7 +47,7 @@ public:
 	void Calibrate(const bool& quadratic, const std::vector<std::tuple<double, double> >& sourceEnergy, const bool& force = false);
 	void FindPeaks(const double& sigma, const double& threshold, const bool& force = false);
 
-	TCalibrationGraph* Data() { return fData; }
+	TGraphErrors* Data() { return fData; }
 
 private:
 	void BuildInterface();
@@ -65,7 +66,7 @@ private:
 
 	// storage elements
 	TH1* fProjection{nullptr};
-	TCalibrationGraph* fData{nullptr};
+	TGraphErrors* fData{nullptr};
 	double fSigma{2.};
 	double fThreshold{0.05};
 	bool fQuadratic{false};
@@ -83,7 +84,7 @@ public:
 	void Calibrate(const bool& quadratic, const std::vector<std::tuple<double, double> >& sourceEnergy, const bool& force = false) { fChannel[fChannelTab->GetCurrent()]->Calibrate(quadratic, sourceEnergy, force); }
 	void FindPeaks(const double& sigma, const double& threshold, const bool& force = false) { fChannel[fChannelTab->GetCurrent()]->FindPeaks(sigma, threshold, force); }
 	TGTab* ChannelTab() { return fChannelTab; }
-	TCalibrationGraph* Data(int channelId) { return fChannel[channelId]->Data(); }
+	TGraphErrors* Data(int channelId) { return fChannel[channelId]->Data(); }
 	size_t NumberOfChannels() { return fChannel.size(); }
 
 private:
@@ -192,8 +193,8 @@ private:
 	std::vector<std::vector<std::tuple<double, double> > > fSourceEnergy;
 	std::vector<int> fActualSourceId;
 	std::vector<std::vector<int> > fActualChannelId;
-	std::vector<std::vector<TCalibrationGraph*> > fData;
-	std::vector<TCalibrationGraph*> fFinalData;
+	std::vector<std::vector<TGraphErrors*> > fData;
+	std::vector<TCalibrationGraphSet*> fFinalData;
 	std::vector<const char*> fChannelLabel;
 	std::map<int, int> fChannelToIndex;
 	std::vector<TLegend*> fLegend;
