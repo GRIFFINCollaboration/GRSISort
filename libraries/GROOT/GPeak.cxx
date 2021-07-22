@@ -107,7 +107,6 @@ GPeak::GPeak()
 
 GPeak::GPeak(const GPeak& peak) : TF1(peak)
 {
-
    SetParent(nullptr);
    // SetDirectory(0);
    fBGFit.SetParent(nullptr);
@@ -123,19 +122,6 @@ GPeak::~GPeak()
    //  delete background;
 }
 
-// void GPeak::Fcn(Int_t &npar,Double_t *gin,Double_T &f,Double_t *par,Int_t iflag) {
-// chisquared calculator
-//
-//  int i=0;
-//  double chisq = 0;
-//  double delta = 0;
-//  for(i=0;i<nbins;i++) {
-//    delta = (data[i] - GRootFunctions::PhotoPeakBG((x+i),par))/error[i];
-//    chisq += delta*delta;
-//  }
-//  f=chisq;
-//}
-
 void GPeak::InitNames()
 {
    TF1::SetParName(0, "Height");
@@ -143,22 +129,12 @@ void GPeak::InitNames()
    TF1::SetParName(2, "sigma");
    TF1::SetParName(3, "R");
    TF1::SetParName(4, "beta");
-   // TF1::SetParName(5,"step");
-   // TF1::SetParName(6,"A");
-   // TF1::SetParName(7,"B");
-   // TF1::SetParName(8,"C");
    TF1::SetParName(5, "step");
    TF1::SetParName(6, "bg_offset");
-   // TF1::SetParName(7,"bg_slope");
 }
 
 void GPeak::Copy(TObject& obj) const
 {
-   // printf("0x%08x\n",&obj);
-   // fflush(stdout);
-   // printf("%s\n",obj.GetName());
-   // fflush(stdout);
-
    TF1::Copy(obj);
    (static_cast<GPeak&>(obj)).init_flag = init_flag;
    (static_cast<GPeak&>(obj)).fArea     = fArea;
@@ -177,7 +153,6 @@ bool GPeak::InitParams(TH1* fithist)
       printf("No histogram is associated yet, no initial guesses made\n");
       return false;
    }
-   // printf("%s called.\n",__PRETTY_FUNCTION__); fflush(stdout);
    // Makes initial guesses at parameters for the fit. Uses the histogram to
    Double_t xlow, xhigh;
    GetRange(xlow, xhigh);
@@ -231,11 +206,8 @@ bool GPeak::InitParams(TH1* fithist)
    // TF1::SetParLimits(5,step-step*.1,step+.1*step);
    TF1::SetParLimits(5, 0.0, step + step);
 
-   // double slope  = (yhigh-ylow)/(xhigh-xlow);
-   // double offset = yhigh-slope*xhigh;
    double offset = lowy;
    TF1::SetParLimits(6, offset - 0.5 * offset, offset + offset);
-   // TF1::SetParLimits(7,-2*slope,2*slope);
 
    // Make initial guesses
    TF1::SetParameter(0, largesty);                // fithist->GetBinContent(bin));
@@ -245,7 +217,6 @@ bool GPeak::InitParams(TH1* fithist)
    TF1::SetParameter(4, 1.);
    TF1::SetParameter(5, step);
    TF1::SetParameter(6, offset);
-   // TF1::SetParameter(7,slope);
 
    TF1::SetParError(0, 0.10 * largesty);
    TF1::SetParError(1, 0.25);
@@ -254,8 +225,6 @@ bool GPeak::InitParams(TH1* fithist)
    TF1::SetParError(4, 0.5);
    TF1::SetParError(5, 0.10 * step);
    TF1::SetParError(6, 0.10 * offset);
-
-   // TF1::Print();
 
    SetInitialized();
    return true;
