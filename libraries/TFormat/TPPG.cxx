@@ -10,6 +10,7 @@ ClassImp(TPPGData)
 ClassImp(TPPG)
 /// \endcond
 
+short TPPG::fTimestampUnits = 10;
 TPPG* TPPG::fPPG = nullptr;
 
 TPPGData::TPPGData()
@@ -127,12 +128,14 @@ void TPPG::AddData(TPPGData* pat)
 ULong64_t TPPG::GetLastStatusTime(ULong64_t time, EPpgPattern pat) const
 {
    /// Gets the last time that a status was given. If the EPpgPattern kJunk is passed, the
-   /// current status at the time "time" is looked for. 
+   /// current status at the time "time" is looked for.
+	/// "time" is converted from ns to PPG timestamp units (10 ns).
    if(MapIsEmpty()) {
       printf("Empty\n");
       return 0;
    }
 
+	time /= fTimestampUnits;
    auto               curppg_it = --(fPPGStatusMap->upper_bound(time));
    PPGMap_t::iterator ppg_it;
    if(pat == EPpgPattern::kJunk) {
@@ -156,11 +159,13 @@ ULong64_t TPPG::GetNextStatusTime(ULong64_t time, EPpgPattern pat) const
 {
    /// Gets the next time that a status was given. If the EPpgPattern kJunk is passed, the
    /// current status at the time "time" is looked for. 
+	/// "time" is converted from ns to PPG timestamp units (10 ns).
    if(MapIsEmpty()) {
       printf("Empty\n");
       return 0;
    }
 
+	time /= fTimestampUnits;
    auto               curppg_it = --(fPPGStatusMap->upper_bound(time));
    PPGMap_t::iterator ppg_it;
    if(pat == EPpgPattern::kJunk) {
@@ -183,6 +188,7 @@ ULong64_t TPPG::GetNextStatusTime(ULong64_t time, EPpgPattern pat) const
 EPpgPattern TPPG::GetStatus(ULong64_t time) const
 {
    /// Returns the current status of the PPG at the time "time".
+	/// "time" is converted from ns to PPG timestamp units (10 ns).
    if(MapIsEmpty()) {
       printf("Empty\n");
    }
@@ -194,9 +200,11 @@ EPpgPattern TPPG::GetStatus(ULong64_t time) const
 EPpgPattern TPPG::GetNextStatus(ULong64_t time) const
 {
    /// Returns the next status of the PPG at the time "time".
+	/// "time" is converted from ns to PPG timestamp units (10 ns).
    if(MapIsEmpty()) {
       printf("Empty\n");
    }
+	time /= fTimestampUnits;
    // The upper_bound and lower_bound functions always return an iterator to the NEXT map element. We back off by one
    // because we want to know what the last PPG event was.
 	if(fPPGStatusMap->upper_bound(time) == fPPGStatusMap->end()) {
@@ -530,12 +538,18 @@ void TPPG::Streamer(TBuffer& R__b)
 
 ULong64_t TPPG::GetTimeInCycle(ULong64_t real_time)
 {
-   return real_time % GetCycleLength();
+	/// Returns the time in the cycle based on "real_time", i.e. the modulus of the 
+	/// time and the cycle length.
+	/// "real_time" is converted from ns to PPG timestamp units (10 ns).
+   return (real_time/fTimestampUnits) % GetCycleLength();
 }
 
 ULong64_t TPPG::GetCycleNumber(ULong64_t real_time)
 {
-   return real_time / GetCycleLength();
+	/// Returns the cycle number based on "real_time", i.e. the time divided by the
+	/// cycle length.
+	/// "real_time" is converted from ns to PPG timestamp units (10 ns).
+   return (real_time/fTimestampUnits) / GetCycleLength();
 }
 
 ULong64_t TPPG::GetCycleLength()
