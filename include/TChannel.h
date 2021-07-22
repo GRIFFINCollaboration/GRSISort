@@ -120,14 +120,6 @@ private:
    void        OverWriteChannel(TChannel*);
    void        AppendChannel(TChannel*);
 
-   void SetENGCoefficients(TPriorityValue<std::vector<Float_t> > tmp) { fENGCoefficients = tmp; }
-   void SetCFDCoefficients(TPriorityValue<std::vector<double> > tmp) { fCFDCoefficients = tmp; }
-   void SetLEDCoefficients(TPriorityValue<std::vector<double> > tmp) { fLEDCoefficients = tmp; }
-   void SetTIMECoefficients(TPriorityValue<std::vector<double> > tmp) { fTIMECoefficients = tmp; }
-   void SetEFFCoefficients(TPriorityValue<std::vector<double> > tmp) { fEFFCoefficients = tmp; }
-   void SetCTCoefficients(TPriorityValue<std::vector<double> > tmp) { fCTCoefficients = tmp; }
-	void SetEnergyNonlinearity(TPriorityValue<TGraph> tmp) { fEnergyNonlinearity = tmp; }
-
 	void SetupEnergyNonlinearity(); // sort energy nonlinearity graph and set name/title
 
    static void trim(std::string&);
@@ -197,6 +189,14 @@ public:
    std::vector<double>  GetCTCoeff() const { return fCTCoefficients.Value(); }
 	TGraph               GetEnergyNonlinearity() const { return fEnergyNonlinearity.Value(); }
 	double               GetEnergyNonlinearity(double en) const;
+
+   void SetENGCoefficients(TPriorityValue<std::vector<Float_t> > tmp) { fENGCoefficients = tmp; }
+   void SetCFDCoefficients(TPriorityValue<std::vector<double> > tmp) { fCFDCoefficients = tmp; }
+   void SetLEDCoefficients(TPriorityValue<std::vector<double> > tmp) { fLEDCoefficients = tmp; }
+   void SetTIMECoefficients(TPriorityValue<std::vector<double> > tmp) { fTIMECoefficients = tmp; }
+   void SetEFFCoefficients(TPriorityValue<std::vector<double> > tmp) { fEFFCoefficients = tmp; }
+   void SetCTCoefficients(TPriorityValue<std::vector<double> > tmp) { fCTCoefficients = tmp; }
+	void SetEnergyNonlinearity(TPriorityValue<TGraph> tmp) { fEnergyNonlinearity = tmp; }
 
    inline void AddENGCoefficient(Float_t temp) { fENGCoefficients.Address()->push_back(temp); }
    inline void AddCFDCoefficient(double temp) { fCFDCoefficients.Address()->push_back(temp); }
