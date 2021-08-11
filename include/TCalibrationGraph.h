@@ -40,15 +40,15 @@ public:
 	bool SetResidual(const bool& force = false);
 	void Add(TGraphErrors*, const std::string& label);
 
-	void SetLineColor(int index, int color)   { fGraphs[index]->SetLineColor(color);   fResidualGraphs[index]->SetLineColor(color); }
-	void SetMarkerColor(int index, int color) { fGraphs[index]->SetMarkerColor(color); fResidualGraphs[index]->SetMarkerColor(color); std::cout<<"fResidualGraph["<<index<<"] marker color "<<fResidualGraphs[index]->GetMarkerColor()<<" from "<<color<<std::endl; }
+	void SetLineColor(int index, int color)   { fGraphs[index]->SetLineColor(color);   fResidualGraphs[index]->SetLineColor(color); }   ///< Set the line color of the graph and residuals at <index>
+	void SetMarkerColor(int index, int color) { fGraphs[index]->SetMarkerColor(color); fResidualGraphs[index]->SetMarkerColor(color); } ///< Set the marker color of the graph and residuals at <index>
 
-	int GetN() { return fTotalGraph->GetN(); }
-	double* GetX() { return fTotalGraph->GetX(); }
-	double* GetY() { return fTotalGraph->GetY(); }
+	int GetN() { return fTotalGraph->GetN(); }     ///< Returns GetN(), i.e. number of points of the total graph.
+	double* GetX() { return fTotalGraph->GetX(); } ///< Returns an array of x-values of the total graph.
+	double* GetY() { return fTotalGraph->GetY(); } ///< Returns an array of y-values of the total graph.
 
-	void Fit(TF1* function, Option_t* opt) { fTotalGraph->Fit(function, opt); }
-	TF1* GetCalibration() { return reinterpret_cast<TF1*>(fTotalGraph->GetListOfFunctions()->FindObject("calibration")); }
+	void Fit(TF1* function, Option_t* opt) { fTotalGraph->Fit(function, opt); } ///< Fits the <function> to the total graph.
+	TF1* GetFitFunction() { return reinterpret_cast<TF1*>(fTotalGraph->GetListOfFunctions()->FindObject("fitfunction")); } ///< Gets the calibration from the total graph (might be nullptr!).
 
 	void DrawCalibration(Option_t* opt, TLegend* legend = nullptr);
 	void DrawResidual(Option_t* opt, TLegend* legend = nullptr);
@@ -56,10 +56,13 @@ public:
 	Int_t RemovePoint();
 	Int_t RemoveResidualPoint();
 
+	void Scale(); ///< scale all graphs to fit each other (based on the first graph)
+
 	void Print();
 
 	TCalibrationGraphSet& operator=(const TCalibrationGraphSet& rhs)
 	{
+		/// Assignment operator that takes care of properly cloning all the pointers to objects.
 		fGraphs.resize(rhs.fGraphs.size());
 		for(size_t i = 0; i < fGraphs.size(); ++i) {
 			fGraphs[i] = static_cast<TCalibrationGraph*>(rhs.fGraphs[i]->Clone());
@@ -79,14 +82,14 @@ public:
 
 
 private:
-	std::vector<TCalibrationGraph*> fGraphs; ///< These are the graphs used for plotting the calibration points per source
-	std::vector<TCalibrationGraph*> fResidualGraphs; ///< These are the graphs used for plotting the residuals per source
-	std::vector<std::string> fLabel; ///< The labels for the different graphs
-	TGraphErrors* fTotalGraph{nullptr}; ///< The sum of the other graphs, used for fitting
-	TGraphErrors* fTotalResidualGraph{nullptr}; ///< The sum of the residuals, not used right now?
-	std::vector<size_t> fGraphIndex; ///< index of the graph this point belongs to
-	std::vector<size_t> fPointIndex; ///< index of the point within the graph this point corresponds to
-	bool fResidualSet{false}; ///< Flag to indicate if the residual has been set correctly
+	std::vector<TCalibrationGraph*> fGraphs; ///< These are the graphs used for plotting the calibration points per source.
+	std::vector<TCalibrationGraph*> fResidualGraphs; ///< These are the graphs used for plotting the residuals per source.
+	std::vector<std::string> fLabel; ///< The labels for the different graphs.
+	TGraphErrors* fTotalGraph{nullptr}; ///< The sum of the other graphs, used for fitting.
+	TGraphErrors* fTotalResidualGraph{nullptr}; ///< The sum of the residuals. Not really used apart from plotting (but overlayed with the individual graphs).
+	std::vector<size_t> fGraphIndex; ///< Index of the graph this point belongs to.
+	std::vector<size_t> fPointIndex; ///< Index of the point within the graph this point corresponds to.
+	bool fResidualSet{false}; ///< Flag to indicate if the residual has been set correctly.
 
 	ClassDefOverride(TCalibrationGraphSet, 1)
 };

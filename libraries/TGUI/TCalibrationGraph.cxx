@@ -91,7 +91,7 @@ void TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
 bool TCalibrationGraphSet::SetResidual(const bool& force)
 {
 	std::cout<<__PRETTY_FUNCTION__<<std::endl;
-	TF1* calibration = GetCalibration();
+	TF1* calibration = GetFitFunction();
 	if(calibration != nullptr && (!fResidualSet || force)) {
 		double* x  = fTotalGraph->GetX();
 		double* y  = fTotalGraph->GetY();
@@ -273,9 +273,49 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint()
 	return ipoint;
 }
 
+void TCalibrationGraphSet::Scale()
+{
+	std::cout<<__PRETTY_FUNCTION__<<std::endl;
+	double minRef = fGraphs[0]->GetPointX(0);
+	double maxRef = fGraphs[0]->GetPointX(fGraphs[0]->GetN()-1);
+	for(size_t g = 1; g < fGraphs.size(); ++g) {
+		double* x = fGraphs[g]->GetX();
+		double* y = fGraphs[g]->GetY();
+		double* ey = fGraphs[g]->GetEY();
+		if(maxRef < x[0] || x[fGraphs[g]->GetN()-1] < minRef) {
+			// no overlap between the two graphs, for now we just skip this one, but we could try and compare it to all the other ones?
+			std::cout<<"No overlap between 0. graph ("<<minRef<<" - "<<maxRef<<") and "<<g<<". graph ("<<x[0]<<" - "<<x[fGraphs[g]->GetN()-1]<<")"<<std::endl;
+			continue;
+		}
+		// we have an overlap, so we calculate the scaling factor for each point and take the average (maybe should add some weight from the errors bars)
+		int count = 0;
+		double sum = 0.;
+		for(int p = 0; p < fGraphs[g]->GetN(); ++p) {
+			if(minRef < x[p] && x[p] < maxRef) {
+				sum += fGraphs[0]->Eval(x[p])/y[p];
+				++count;
+				std::cout<<g<<", "<<p<<": "<<count<<" - "<<sum<<", "<<fGraphs[0]->Eval(x[p])/y[p]<<std::endl;
+			}
+		}
+		sum /= count;
+		std::cout<<g<<": scaling with "<<sum<<std::endl;
+		for(int p = 0; p < fGraphs[g]->GetN(); ++p) {
+			y[p] *= sum;
+			ey[p] *= sum;
+		}
+	}
+	Print();
+}
+
 void TCalibrationGraphSet::Print()
 {
 	std::cout<<"TCalibrationGraphSet: "<<fGraphs.size()<<" calibration graphs, "<<fResidualGraphs.size()<<" residual graphs, "<<fLabel.size()<<" labels, "<<fTotalGraph->GetN()<<" calibration points, and "<<fTotalResidualGraph->GetN()<<" residual points"<<std::endl;
+	for(auto g : fGraphs) {
+		for(int p = 0; p < g->GetN(); ++p) {
+			std::cout<<p<<" - "<<g->GetPointX(p)<<", "<<g->GetPointY(p)<<"; ";
+		}
+		std::cout<<std::endl;
+	}
 	std::cout<<fGraphIndex.size()<<" graph indices: ";
 	for(auto i : fGraphIndex) std::cout<<i<<" ";
 	std::cout<<std::endl;
