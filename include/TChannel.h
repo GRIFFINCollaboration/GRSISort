@@ -74,15 +74,15 @@ public:
 	static TClassRef GetMnemonicClass()             { return fMnemonicClass; }
 
 private:
-   unsigned int fAddress;     // The address of the digitizer
-   TPriorityValue<int>          fIntegration; // The charge integration setting
+   unsigned int fAddress{0};     // The address of the digitizer
+   TPriorityValue<int>          fIntegration{1}; // The charge integration setting
    TPriorityValue<std::string>  fDigitizerTypeString;
 	TPriorityValue<EDigitizer>   fDigitizerType;
-   TPriorityValue<int>          fTimeStampUnit;
-   TPriorityValue<int>          fNumber;
-   TPriorityValue<int>          fStream;
-   TPriorityValue<int>          fUserInfoNumber;
-   TPriorityValue<bool>         fUseCalFileInt;
+   TPriorityValue<int>          fTimeStampUnit{0};
+   TPriorityValue<int>          fNumber{0};
+   TPriorityValue<int>          fStream{0};
+   TPriorityValue<int>          fUserInfoNumber{0};
+   TPriorityValue<bool>         fUseCalFileInt{false};
 
    mutable int fDetectorNumber;
    mutable int fSegmentNumber;
@@ -133,7 +133,7 @@ public:
 		// channel number has changed so we need to delete the old one and insert the new one
 		fChannelNumberMap->erase(fNumber.Value());
       fNumber = tmp;
-		if((fNumber != 0) && (fChannelNumberMap->count(fNumber.Value()) == 0)) {
+		if((fNumber.Value() != 0) && (fChannelNumberMap->count(fNumber.Value()) == 0)) {
 			fChannelNumberMap->insert(std::make_pair(fNumber.Value(), this));
 		}
    }
