@@ -62,6 +62,7 @@ void TMnemonic::Parse(std::string* name)
       }
       return;
    }
+	SetName(*name);
    std::string buf;
    fSystemString.assign(*name, 0, 2);
    fSubSystemString.assign(*name, 2, 1);

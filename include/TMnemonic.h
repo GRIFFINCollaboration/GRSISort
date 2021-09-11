@@ -50,7 +50,12 @@ public:
    virtual void Print(Option_t* opt = "") const override;
    virtual void Clear(Option_t* opt = "") override;
 
+	void SetName(const char* val) { fName = val; }
+	void SetName(const std::string& val) { fName = val; }
+	const char* GetName() const override { return fName.c_str(); }
+
 protected:
+	std::string fName;
    int16_t     fArrayPosition;
    int16_t     fSegment;
    std::string fSystemString;
