@@ -74,22 +74,22 @@ public:
 	static TClassRef GetMnemonicClass()             { return fMnemonicClass; }
 
 private:
-	unsigned int fAddress;     // The address of the digitizer
-	TPriorityValue<int>          fIntegration; // The charge integration setting
-	TPriorityValue<std::string>  fDigitizerTypeString;
+   unsigned int fAddress{0};     // The address of the digitizer
+   TPriorityValue<int>          fIntegration{1}; // The charge integration setting
+   TPriorityValue<std::string>  fDigitizerTypeString;
 	TPriorityValue<EDigitizer>   fDigitizerType;
-	TPriorityValue<int>          fTimeStampUnit;
-	TPriorityValue<int>          fNumber;
-	TPriorityValue<int>          fStream;
-	TPriorityValue<int>          fUserInfoNumber;
-	TPriorityValue<bool>         fUseCalFileInt;
+   TPriorityValue<int>          fTimeStampUnit{0};
+   TPriorityValue<int>          fNumber{0};
+   TPriorityValue<int>          fStream{0};
+   TPriorityValue<int>          fUserInfoNumber{0};
+   TPriorityValue<bool>         fUseCalFileInt{false};
 
-	mutable int fDetectorNumber;
-	mutable int fSegmentNumber;
-	mutable int fCrystalNumber;
+   mutable int fDetectorNumber;
+   mutable int fSegmentNumber;
+   mutable int fCrystalNumber;
 
-	TPriorityValue<Long64_t>    fTimeOffset;
-	TPriorityValue<TMnemonic*>  fMnemonic;
+   TPriorityValue<Long64_t>    fTimeOffset;
+   TPriorityValue<TMnemonic*>  fMnemonic;
 	static TClassRef  			 fMnemonicClass;
 
 	TPriorityValue<std::vector<std::vector<Float_t> > >      fENGCoefficients;     // Energy calibration coeffs (low to high order)
@@ -105,22 +105,22 @@ private:
 	TPriorityValue<std::vector<double> >                     fEFFCoefficients;     // Efficiency calibration coeffs (low to high order)
 	TPriorityValue<double>                                   fEFFChi2;             // Chi2 of Efficiency calibration
 	TPriorityValue<std::vector<double> >                     fCTCoefficients;      // Cross talk coefficients
-	TPriorityValue<TGraph>                                   fEnergyNonlinearity;  // Energy nonlinearity as spline
+	TPriorityValue<TGraph>                                   fEnergyNonlinearity;  // Energy nonlinearity as TGraph, is used as E=E+GetEnergyNonlinearity(E), so y should be E(source)-calibration(peak)
 
-	struct WaveFormShapePar {
-		bool   InUse;
-		double BaseLine;
-		double TauDecay;
-		double TauRise;
-	};
+   struct WaveFormShapePar {
+      bool   InUse;
+      double BaseLine;
+      double TauDecay;
+      double TauRise;
+   };
 
-	WaveFormShapePar WaveFormShape;
+   WaveFormShapePar WaveFormShape;
 
-	static std::unordered_map<unsigned int, TChannel*>* fChannelMap;       // A map to all of the channels based on address
-	static std::unordered_map<unsigned int, int>* fMissingChannelMap;      // A map to all of the missing channels based on address
-	static std::unordered_map<int, TChannel*>*          fChannelNumberMap; // A map of TChannels based on channel number
-	void        OverWriteChannel(TChannel*);
-	void        AppendChannel(TChannel*);
+   static std::unordered_map<unsigned int, TChannel*>* fChannelMap;       // A map to all of the channels based on address
+   static std::unordered_map<unsigned int, int>* fMissingChannelMap;      // A map to all of the missing channels based on address
+   static std::unordered_map<int, TChannel*>*          fChannelNumberMap; // A map of TChannels based on channel number
+   void        OverWriteChannel(TChannel*);
+   void        AppendChannel(TChannel*);
 
 	void SetAllENGCoefficients(TPriorityValue<std::vector<std::vector<Float_t> > > tmp) { fENGCoefficients = tmp; }
 	void SetENGRanges(TPriorityValue<std::vector<std::pair<double, double> > > tmp) { fENGRanges = tmp; }
@@ -144,8 +144,8 @@ public:
 		if(fNumber == tmp) return;
 		// channel number has changed so we need to delete the old one and insert the new one
 		fChannelNumberMap->erase(fNumber.Value());
-		fNumber = tmp;
-		if((fNumber != 0) && (fChannelNumberMap->count(fNumber.Value()) == 0)) {
+      fNumber = tmp;
+		if((fNumber.Value() != 0) && (fChannelNumberMap->count(fNumber.Value()) == 0)) {
 			fChannelNumberMap->insert(std::make_pair(fNumber.Value(), this));
 		}
 	}

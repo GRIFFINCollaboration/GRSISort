@@ -74,8 +74,8 @@ public:
 	// Bool_t RemoveTransition(Int_t idx);
 	TTransition* GetTransition(Int_t idx);
 
-	Int_t  NTransitions() const { return TransitionList.GetSize(); };
-	Int_t  GetNTransitions() const { return TransitionList.GetSize(); };
+	Int_t  NTransitions() const { return fTransitionList.GetSize(); };
+	Int_t  GetNTransitions() const { return fTransitionList.GetSize(); };
 	double GetRadius() const;
 	int    GetZfromSymbol(char*);
 
@@ -84,7 +84,10 @@ public:
 	void Print(Option_t* opt = "") const override;
 	void WriteSourceFile(const std::string& outfilename = "");
 
-	const TList* GetTransitionList() const { return &TransitionList; }
+	const TList* GetTransitionList() const { return &fTransitionList; }
+
+	bool operator==(const TNucleus& rhs) const { return ((fA == rhs.fA) && (fN == rhs.fN) && (fZ == rhs.fZ)); }
+	bool operator!=(const TNucleus& rhs) const { return !(*this == rhs); }
 
 private:
 	void SetName(const char* c = "") override;
@@ -96,10 +99,12 @@ private:
 	double      fMassExcess{0.};// Mass excess (in MeV)
 	std::string fSymbol;        // Atomic symbol (ex. Ba, C, O, N)
 
-	TList TransitionList;
+	TList fTransitionList;
 	bool  LoadTransitionFile();
 
-	ClassDefOverride(TNucleus, 1); // Creates a nucleus with corresponding nuclear information
+   /// \cond CLASSIMP
+	ClassDefOverride(TNucleus, 2); // Creates a nucleus with corresponding nuclear information
+   /// \endcond
 };
 
 #endif

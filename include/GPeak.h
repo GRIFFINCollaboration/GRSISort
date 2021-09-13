@@ -22,10 +22,8 @@ public:
    bool InitParams(TH1* fithist = nullptr);
    bool Fit(TH1*, Option_t* opt = "");
    void DrawResiduals(TH1*) const;
-   // void DrawResiduals(); // *MENU*
 
    TF1* Background(Option_t* = "TF1") { return &fBGFit; }
-   // void DrawBackground(Option_t* opt = "SAME") const; // *MENU*
 
    Double_t GetCentroid() const { return GetParameter("centroid"); }
    Double_t GetCentroidErr() const { return GetParError(GetParNumber("centroid")); }
@@ -35,10 +33,6 @@ public:
    Double_t GetSumErr() const { return fDSum; }
    Double_t GetFWHM() const { return GetParameter("sigma") * 2.3548; }
    Double_t GetFWHMErr() const { return GetParError(GetParNumber("sigma")) * 2.3548; }
-   // Double_t GetIntegralArea();
-   // Double_t GetIntegralArea(Double_t int_low, Double_t int_high);
-   // Double_t GetIntegralAreaErr();
-   // Double_t GetIntegralAreaErr(Double_t int_low, Double_t int_high);
 
 protected:
    void SetArea(Double_t a) { fArea = a; }
@@ -54,8 +48,6 @@ protected:
    void SetNdf(Double_t Ndf) { fNdf = Ndf; }
 
 public:
-   // void CheckArea();
-   // void CheckArea(Double_t int_low, Double_t int_high);
    static Bool_t CompareEnergy(const GPeak& lhs, const GPeak& rhs) { return lhs.GetCentroid() < rhs.GetCentroid(); }
    static Bool_t CompareArea(const GPeak& lhs, const GPeak& rhs) { return lhs.GetArea() < rhs.GetArea(); }
 
@@ -76,7 +68,6 @@ private:
    static GPeak* fLastFit;
 
    TF1 fBGFit;
-   //    TF1 fBGHist;
 
    ClassDefOverride(GPeak, 3)
 };

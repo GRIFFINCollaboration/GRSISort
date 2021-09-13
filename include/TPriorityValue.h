@@ -29,7 +29,7 @@ public:
 		fPriority = EPriority::kDefault;
 	}
 
-	TPriorityValue(T value, EPriority priority) {
+	TPriorityValue(T value, EPriority priority = EPriority::kDefault) {
 		fValue = value;
 		fPriority = priority;
 	}

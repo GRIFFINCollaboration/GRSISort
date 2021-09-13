@@ -21,14 +21,11 @@ std::string& TNucleus::massfile()
 	static std::string output = std::string(getenv("GRSISYS")) + "/libraries/TAnalysis/SourceData/mass.dat";
 	return output;
 }
-// const char *TNucleus::massfile = mfile.c_str();
 
 TNucleus::TNucleus(const char* name)
 {
 	// Creates a nucleus based on symbol (ex. 26Na OR Na26) and sets all parameters from mass.dat
 	std::string Name = name;
-	// fName=name;
-	// SetMassFile();
 	int           Number = 0;
 	std::string   symbol;
 	std::string   element;
@@ -77,14 +74,11 @@ TNucleus::TNucleus(const char* name)
 		element.append(std::to_string(static_cast<long long>(Number)));
 		element.append(symbol);
 		MassFile = massfile();
-		// MassFile.append(massfile);
 		infile.open(MassFile.c_str());
-		// printf("MassFile.c_str()
 		while(!getline(infile, line).fail()) {
 			if(line.length() < 1) {
 				continue;
 			}
-			//              printf("%s\n",line.c_str());
 			std::stringstream ss(line);
 			ss >> n;
 			ss >> z;
@@ -111,30 +105,23 @@ TNucleus::TNucleus(const char* name)
 	SetMass();
 	SetSymbol(symbol.c_str());
 	SetName();
-	// SetName(element.c_str());
-	// SetSourceData();
 	LoadTransitionFile();
 }
-/*
-*/
+
 TNucleus::TNucleus(int charge, int neutrons, double mass, const char* symbol)
 {
 	// Creates a nucleus with Z, N, mass, and symbol
-	// SetMassFile();
 	fZ      = charge;
 	fN      = neutrons;
 	fSymbol = symbol;
 	fMass   = mass;
-	// SetName(symbol);
 	SetName();
 	LoadTransitionFile();
-	// SetSourceData();
 }
 
 TNucleus::TNucleus(int charge, int neutrons, const char* MassFile)
 {
 	// Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
-	// SetMassFile();
 	if(MassFile == nullptr) {
 		MassFile = massfile().c_str();
 	}
@@ -163,7 +150,6 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile)
 		i++;
 		mass_file.ignore(256, '\n');
 	}
-	// max_elements=i;
 
 	mass_file.close();
 	std::string name   = fSymbol;
@@ -171,16 +157,10 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile)
 
 	name = name.substr(name.find_first_not_of("0123456789 "));
 	name.append(number);
-	// SetName(name.c_str());
 
 	SetName();
 	LoadTransitionFile();
-	// SetSourceData();
 }
-
-// void TNucleus::SetA(int aval){
-//  fA = aval;
-//}
 
 void TNucleus::SetName(const char*)
 {
@@ -191,14 +171,13 @@ void TNucleus::SetName(const char*)
 
 TNucleus::~TNucleus()
 {
-	TransitionList.Delete();
+	fTransitionList.Delete();
 }
 
 const char* TNucleus::SortName(const char* name)
 {
 	// Names a nucleus based on symbol (ex. 26Na OR Na26). This is to get a nice naming convention.
 	std::string Name = name;
-	// SetMassFile();
 	int         Number = 0;
 	std::string symbol;
 	std::string element;
@@ -313,81 +292,6 @@ double TNucleus::GetRadius() const
 	return 1.12 * pow(GetA(), 1. / 3.) - 0.94 * pow(GetA(), -1. / 3.);
 }
 
-/*
-	bool TNucleus::SetSourceData() {
-
-	std::string name = GetSymbol();
-	if(name.length()==0)
-	return false;
-
-	if(name[0]<='Z' && name[0]>='A')
-	name[0] = name[0]-'A'+'a';
-	name = name + Form("%i",GetA()) + ".sou";
-	std::string path = getenv("GRSISYS");
-	path +=  "/libraries/TAnalysis/SourceData/";
-	path +=  name;
-
-	printf("path = %s\n",path.c_str());
-	std::ifstream sourcefile;
-	sourcefile.open(path.c_str());
-	if(!sourcefile.is_open()) {
-	printf("unable to set source data for %s.\n",GetName());
-	return false;
-	}
-
-	TransitionList.Clear();
-
-	std::string line;
-	int linenumber = 0;
-	while(getline(sourcefile,line)) {
-	linenumber++;
-	int comment = line.find("//");
-	if (comment != std::string::npos)
-	line = line.substr(0, comment);
-	if(line.length()==0)
-	continue;
-//TGRSITransition *tran = new TGRSITransition;
-//std::stringstream ss(line);
-//ss >> tran->fenergy;
-//ss >> tran->fenergy_uncertainty;
-//ss >> tran->fintensity;
-//ss >> tran->fintensity_uncertainty;
-//TransitionList.Add(tran);
-//  printf("eng: %.02f\tinten:
-%.02f\n",((TGRSITransition*)TransitionList.Last())->fenergy,((TGRSITransition*)TransitionList.Last())->fintensity);
-}
-
-printf("Found %d Transitions for %s\n",TransitionList.GetSize(),GetName());
-return true;
-
-TransitionList.Clear();
-
-std::string line;
-int linenumber = 0;
-while(getline(sourcefile,line)) {
-linenumber++;
-int comment = line.find("//");
-if (comment != std::string::npos)
-line = line.substr(0, comment);
-if(line.length()==0)
-continue;
-//TGRSITransition *tran = new TGRSITransition;
-//std::stringstream ss(line);
-//ss >> tran->fenergy;
-//ss >> tran->fenergy_uncertainty;
-//ss >> tran->fintensity;
-//ss >> tran->fintensity_uncertainty;
-//TransitionList.Add(tran);
-//  printf("eng: %.02f\tinten:
-%.02f\n",((TGRSITransition*)TransitionList.Last())->fenergy,((TGRSITransition*)TransitionList.Last())->fintensity);
-}
-
-printf("Found %d Transitions for %s\n",TransitionList.GetSize(),GetName());
-return true;
-
-}
-*/
-
 void TNucleus::AddTransition(Double_t energy, Double_t intensity, Double_t energy_uncertainty,
 		Double_t intensity_uncertainty)
 {
@@ -402,28 +306,12 @@ void TNucleus::AddTransition(Double_t energy, Double_t intensity, Double_t energ
 
 void TNucleus::AddTransition(TTransition* tran)
 {
-	TransitionList.Add(tran);
+	fTransitionList.Add(tran);
 }
-/*
-	Bool_t TNucleus::RemoveTransition(Int_t idx){
-	TGRSITransition *tran;
-	tran = (TGRSITransition*)TransitionList.RemoveAt(idx);
-	if(tran){
-	printf("Removed transition: ");
-	printf("%d\t eng: %.02f\tinten: %.02f\n",idx,tran->fenergy,tran->fintensity);
-	delete tran;
-	return true;
-	}
-	else{
-	printf("Out of range\n");
-	return false;
-	}
-	}
-	*/
 
 TTransition* TNucleus::GetTransition(Int_t idx)
 {
-	TTransition* tran = static_cast<TTransition*>(TransitionList.At(idx));
+	TTransition* tran = static_cast<TTransition*>(fTransitionList.At(idx));
 	if(tran == nullptr) {
 		printf("Out of Range\n");
 	}
@@ -435,7 +323,7 @@ void TNucleus::Print(Option_t*) const
 {
 	// Prints out the Name of the nucleus, as well as the numerated transition list
 	printf("Nucleus: %s\n", GetName());
-	TIter next(&TransitionList);
+	TIter next(&fTransitionList);
 	int   counter = 0;
 	while(TTransition* tran = static_cast<TTransition*>(next())) {
 		printf("\t%i\t", counter++);
@@ -448,8 +336,8 @@ void TNucleus::WriteSourceFile(const std::string& outfilename)
 	if(outfilename.length() > 0) {
 		std::ofstream sourceout;
 		sourceout.open(outfilename.c_str());
-		for(int i = 0; i < TransitionList.GetSize(); i++) {
-			std::string transtr = (static_cast<TTransition*>(TransitionList.At(i)))->PrintToString();
+		for(int i = 0; i < fTransitionList.GetSize(); i++) {
+			std::string transtr = (static_cast<TTransition*>(fTransitionList.At(i)))->PrintToString();
 			sourceout<<transtr.c_str();
 			sourceout<<std::endl;
 		}
@@ -460,7 +348,7 @@ void TNucleus::WriteSourceFile(const std::string& outfilename)
 
 bool TNucleus::LoadTransitionFile()
 {
-	if(TransitionList.GetSize() != 0) {
+	if(fTransitionList.GetSize() != 0) {
 		return false;
 	}
 	std::string filename;
@@ -476,12 +364,10 @@ bool TNucleus::LoadTransitionFile()
 		printf("failed to open source file: %s\n", filename.c_str());
 		return false;
 	}
-	// printf("found %s\n",filename.c_str());
 
 	std::string line;
 
 	while(!getline(transfile, line).fail()) {
-		// printf("%i\t%s\n",counter++,line.c_str());
 		if(line.compare(0, 2, "//") == 0) {
 			continue;
 		}
