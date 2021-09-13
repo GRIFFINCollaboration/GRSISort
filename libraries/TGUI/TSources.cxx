@@ -816,18 +816,26 @@ void TSources::DisconnectFirst()
 	fStartButton->Disconnect("Clicked()", this, "Start()");
 }
 
+void TSources::DeleteElement(TGFrame* element)
+{
+	HideFrame(element);
+	RemoveFrame(element);
+	//delete element;
+	//element = nullptr;
+}
+
 void TSources::DeleteFirst()
 {
 	for(auto name : fMatrixNames) {
-		delete name;
+		DeleteElement(name);
 	}
 	fMatrixNames.clear();
 	for(auto box : fSourceBox) {
-		delete box;
+		DeleteElement(box);
 	}
 	fSourceBox.clear();
-	delete fStartButton;
-	fStartButton = nullptr;
+	DeleteElement(fStartButton);
+	std::cout<<"Deleted start button "<<fStartButton<<std::endl;
 }
 
 void TSources::SetSource(Int_t windowId, Int_t entryId)
@@ -846,7 +854,23 @@ void TSources::SetSource(Int_t windowId, Int_t entryId)
 	fSource[index] = nucleus;
 }
 
+void TSources::HandleTimer()
+{
+	std::cout<<__PRETTY_FUNCTION__<<": fEmitter "<<fEmitter<<", fStartButton "<<fStartButton<<", fAcceptAllButton "<<fAcceptAllButton<<std::endl;
+	if(fEmitter == fStartButton) {
+		SecondWindow();
+	} else if(fEmitter == fAcceptAllButton) {
+		FinalWindow();
+	}
+}
+
 void TSources::Start()
+{
+	fEmitter = fStartButton;
+	TTimer::SingleShot(100, "TSources", this, "HandleTimer()");
+}
+
+void TSources::SecondWindow()
 {
 	//std::cout<<__PRETTY_FUNCTION__<<std::endl;
 	// check that all sources have been set
@@ -894,9 +918,7 @@ void TSources::Start()
 	MakeSecondConnections();
 
 	// remove progress bar
-	RemoveFrame(fProgressBar);
-	delete fProgressBar;
-	fProgressBar = nullptr;
+	DeleteElement(fProgressBar);
 
 	// Map all subwindows of main frame
 	MapSubwindows();
@@ -1106,44 +1128,50 @@ void TSources::AcceptChannel(const int& channelId)
 	// if this was also the last source vector we initiate the last screen
 	if(fActualSourceId.empty()) {
 		std::cout<<"last source tab done - going to final screen"<<std::endl;
-		// disconnect signals of first screen and remove all elements
-		DisconnectSecond();
-		fParameterFrame->RemoveAll();
-		fRightFrame->RemoveAll();
-		fLeftFrame->RemoveAll();
-		fBottomFrame->RemoveAll();
-		RemoveAll();
-		DeleteSecond();
-
-		if(fMatrices.size() == 1) { // single matrix => don't need the last screen
-			fFinalData.resize(fData[0].size());
-			fFinalEfficiency.resize(fEfficiency[0].size());
-			for(size_t i = 0; i < fData[0].size(); ++i) { // should both be the same size, so just one loop
-				fFinalData[i] = new TCalibrationGraphSet(fData[0][i]);
-				fFinalEfficiency[i] = new TCalibrationGraphSet(fEfficiency[0][i]);
-			}
-			for(size_t id = 0; id < fChannelLabel.size(); ++id) {
-				UpdateChannel(id);
-			}
-			WriteCalibration();
-			CloseWindow();
-			exit(0);
-		}
-
-		// create last screen and its connections
-		BuildThirdInterface();
-		//MakeThirdConnections();
-
-		// Map all subwindows of main frame
-		MapSubwindows();
-
-		// Initialize the layout algorithm
-		Resize(TGDimension(600, 600));
-
-		// Map main frame
-		MapWindow();
-		std::cout<<"final screen done"<<std::endl;
+		fEmitter = fAcceptAllButton;
+		TTimer::SingleShot(100, "TSources", this, "HandleTimer()");
 	}
+}
+
+void TSources::FinalWindow()
+{
+	// disconnect signals of first screen and remove all elements
+	DisconnectSecond();
+	fParameterFrame->RemoveAll();
+	fRightFrame->RemoveAll();
+	fLeftFrame->RemoveAll();
+	fBottomFrame->RemoveAll();
+	RemoveAll();
+	DeleteSecond();
+
+	if(fMatrices.size() == 1) { // single matrix => don't need the last screen
+		fFinalData.resize(fData[0].size());
+		fFinalEfficiency.resize(fEfficiency[0].size());
+		for(size_t i = 0; i < fData[0].size(); ++i) { // should both be the same size, so just one loop
+			fFinalData[i] = new TCalibrationGraphSet(fData[0][i]);
+			fFinalEfficiency[i] = new TCalibrationGraphSet(fEfficiency[0][i]);
+		}
+		for(size_t id = 0; id < fChannelLabel.size(); ++id) {
+			UpdateChannel(id);
+		}
+		WriteCalibration();
+		CloseWindow();
+		exit(0);
+	}
+
+	// create last screen and its connections
+	BuildThirdInterface();
+	MakeThirdConnections();
+
+	// Map all subwindows of main frame
+	MapSubwindows();
+
+	// Initialize the layout algorithm
+	Resize(TGDimension(600, 600));
+
+	// Map main frame
+	MapWindow();
+	std::cout<<"final screen done"<<std::endl;
 }
 
 void TSources::DeleteSecond()
@@ -1153,44 +1181,23 @@ void TSources::DeleteSecond()
 		//delete tab;
 	}
 	fSourceTab.clear();
-	delete fTab;
-	fTab = nullptr;
-	delete fBottomFrame;
-	fBottomFrame = nullptr;
-	delete fLeftFrame;
-	fLeftFrame = nullptr;
-	delete fNavigationGroup;
-	fNavigationGroup = nullptr;
-	//delete fPreviousButton;
-	//fPreviousButton = nullptr;
-	//delete fFindPeaksButton;
-	//fFindPeaksButton = nullptr;
-	//delete fCalibrateButton;
-	//fCalibrateButton = nullptr;
-	//delete fPreviousButton;
-	//fPreviousButton = nullptr;
-	//delete fDiscardButton;
-	//fDiscardButton = nullptr;
-	//delete fAcceptButton;
-	//fAcceptButton = nullptr;
-	//delete fAcceptAllButton;
-	//fAcceptAllButton = nullptr;
-	//delete fNextButton;
-	//fNextButton = nullptr;
-	delete fRightFrame;
-	fRightFrame = nullptr;
-	delete fParameterFrame;
-	fParameterFrame = nullptr;
-	delete fSigmaLabel;
-	fSigmaLabel = nullptr;
-	delete fSigmaEntry;
-	fSigmaEntry = nullptr;
-	delete fThresholdLabel;
-	fThresholdLabel = nullptr;
-	delete fThresholdEntry;
-	fThresholdEntry = nullptr;
-	delete fQuadraticButton;
-	fQuadraticButton = nullptr;
+	DeleteElement(fBottomFrame);
+	DeleteElement(fLeftFrame);
+	DeleteElement(fNavigationGroup);
+	DeleteElement(fPreviousButton);
+	DeleteElement(fFindPeaksButton);
+	DeleteElement(fCalibrateButton);
+	DeleteElement(fDiscardButton);
+	DeleteElement(fAcceptButton);
+	DeleteElement(fAcceptAllButton);
+	DeleteElement(fNextButton);
+	DeleteElement(fRightFrame);
+	DeleteElement(fParameterFrame);
+	DeleteElement(fSigmaLabel);
+	DeleteElement(fSigmaEntry);
+	DeleteElement(fThresholdLabel);
+	DeleteElement(fThresholdEntry);
+	DeleteElement(fQuadraticButton);
 }
 
 void TSources::FindPeaks()
@@ -1430,7 +1437,7 @@ void TSources::SelectedFinalTab(Int_t id)
 void TSources::AcceptFinalChannel(const int& channelId)
 {
 	// select the next (or if we are on the last tab, the previous) tab
-	int nofTabs = fTab->GetNumberOfTabs();
+	int nofTabs = fCalibrationTab->GetNumberOfTabs();
 	int minChannel = 0;
 	int maxChannel = nofTabs - 1;
 	if(channelId >= 0) {
@@ -1446,19 +1453,20 @@ void TSources::AcceptFinalChannel(const int& channelId)
 			fTab->SetTab(currentChannelId-1);
 		}
 		// remove the original active tab
-		fTab->RemoveTab(currentChannelId);
+		fCalibrationTab->RemoveTab(currentChannelId);
+		fEfficiencyTab->RemoveTab(currentChannelId);
 		//fTab->Layout();
 		UpdateChannel(actualChannelId);
 		fActualSourceId.erase(fActualSourceId.begin()+currentChannelId);
-		//std::cout<<"Erased "<<currentChannelId<<", fActualSourceId.size() "<<fActualSourceId.size()<<std::endl;
+		std::cout<<"Erased "<<currentChannelId<<", fActualSourceId.size() "<<fActualSourceId.size()<<std::endl;
 	}
 	// if this was the last tab, we're done
 	if(fActualSourceId.empty()) {
 		WriteCalibration();
 		CloseWindow();
 		exit(0);
-	//} else {
-		//std::cout<<"Still got "<<fActualSourceId.size()<<" channels left"<<std::endl;
+	} else {
+		std::cout<<"Still got "<<fActualSourceId.size()<<" channels left"<<std::endl;
 	}
 }
 

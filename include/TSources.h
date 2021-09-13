@@ -162,6 +162,10 @@ public:
 	std::vector<std::tuple<double, double, double, double> > SourceEnergy(const size_t& i) { return fSourceEnergy.at(i); }
 	void CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
 
+	void HandleTimer();
+	void SecondWindow();
+	void FinalWindow();
+	
 private:
 	void BuildFirstInterface();
 	void MakeFirstConnections();
@@ -176,6 +180,7 @@ private:
 	void MakeThirdConnections();
 	void AcceptFinalChannel(const int& channelId = -1);
 	void DisconnectThird();
+	void DeleteElement(TGFrame* element);
 
 	//TGHorizontalFrame* fTopFrame{nullptr};
 	TGHorizontalFrame* fBottomFrame{nullptr};
@@ -187,6 +192,7 @@ private:
 	TGTab* fEfficiencyTab{nullptr};
 	std::vector<TSourceTab*> fSourceTab;
 
+	TGTextButton*        fEmitter{nullptr};
 	TGHButtonGroup*      fNavigationGroup{nullptr};
 	TGTextButton*        fPreviousButton{nullptr};
 	TGTextButton*        fCalibrateButton{nullptr};
