@@ -45,6 +45,10 @@ incdir=$GRSISYS/include
 grsilibs="-lTDetector -lTGRSIint -lTFormat -lTGRSIint -lTFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction"
 detlibs="-lTSuppressed -lTBgo -lTPulseAnalyzer -lGROOT -lTGRSIFit -lTNucleus"
 grsimore="-lTRawFile -lTDataParser -lTHistogramming"
+if [ `root-config --has-xml` == "yes" ]
+  then XMLlib="-lXMLParser -lXMLIO"
+  else XMLlib=""
+fi
 
 cflags="-std=c++11 -I$incdir"
 
@@ -117,7 +121,7 @@ while test $# -gt 0; do
       if test "x$libsout" = "xyes" ; then
         out=$"$out $grsimore "
       else
-        out=$"$out -L${libdir} $grsilibs $detlibs $grsimore -lXMLParser -lXMLIO -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum -lMathMore "
+        out=$"$out -L${libdir} $grsilibs $detlibs $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum -lMathMore "
       fi
       ;;
 	 --*-cflags)
