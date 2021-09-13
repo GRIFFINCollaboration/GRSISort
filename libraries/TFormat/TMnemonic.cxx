@@ -57,8 +57,9 @@ void TMnemonic::EnumerateMnemonic(std::string mnemonic_word, EMnemonic& mnemonic
 void TMnemonic::Parse(std::string* name)
 {
    if((name == nullptr) || name->length() < 9) {
+		// ??? has this ever worked? How can we compare 2 character from a string with a length < 1, i.e. an empty string?
       if((name->length() < 1) && (name->compare(0, 2, "RF") == 0)) {
-         SetRFMNEMONIC(name);
+         SetRFMnemonic(name);
       }
       return;
    }
@@ -93,7 +94,7 @@ void TMnemonic::Parse(const char* name)
    Parse(&sname);
 }
 
-void TMnemonic::SetRFMNEMONIC(std::string* name)
+void TMnemonic::SetRFMnemonic(std::string* name)
 {
    fSystemString.assign(*name, 0, 2);
    fSubSystemString.assign("X");
