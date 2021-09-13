@@ -50,7 +50,7 @@ if [ `root-config --has-xml` == "yes" ]
   else XMLlib=""
 fi
 
-cflags="-std=c++11 -I$incdir"
+cflags="-std=c++14 -I$incdir"
 
 usage="\
 Usage: grsi-config [--version] [--incdir] [--cflags] [--libs] [--all-libs] [--<detector specific library>-libs/incdir/cflags] [--help]"
