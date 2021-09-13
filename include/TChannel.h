@@ -92,19 +92,20 @@ private:
 	TPriorityValue<TMnemonic*>  fMnemonic;
 	static TClassRef  			 fMnemonicClass;
 
-	TPriorityValue<std::vector<std::vector<Float_t> > >      fENGCoefficients;  // Energy calibration coeffs (low to high order)
-	TPriorityValue<std::vector<std::pair<double, double> > > fENGRanges;        // Range of energy calibrations
-	TPriorityValue<std::vector<double> >                     fENGChi2;          // Chi2 of the energy calibration
-	TPriorityValue<std::vector<double> >                     fCFDCoefficients;  // CFD calibration coeffs (low to high order)
-	TPriorityValue<double>                                   fCFDChi2;          // Chi2 of the CFD calibration
-	TPriorityValue<std::vector<double> >                     fLEDCoefficients;  // LED calibration coeffs (low to high order)
-	TPriorityValue<double>                                   fLEDChi2;          // Chi2 of LED calibration
-	TPriorityValue<std::vector<double> >                     fTIMECoefficients; // Time calibration coeffs (low to high order)
-	TPriorityValue<double>                                   fTIMEChi2;         // Chi2 of the Time calibration
-	TPriorityValue<std::vector<double> >                     fEFFCoefficients;  // Efficiency calibration coeffs (low to high order)
-	TPriorityValue<double>                                   fEFFChi2;          // Chi2 of Efficiency calibration
-	TPriorityValue<std::vector<double> >                     fCTCoefficients;   // Cross talk coefficients
-	TPriorityValue<TGraph>                                   fEnergyNonlinearity; // Energy nonlinearity as spline
+	TPriorityValue<std::vector<std::vector<Float_t> > >      fENGCoefficients;     // Energy calibration coeffs (low to high order)
+	TPriorityValue<std::vector<std::pair<double, double> > > fENGRanges;           // Range of energy calibrations
+	TPriorityValue<std::vector<double> >                     fENGChi2;             // Chi2 of the energy calibration
+	TPriorityValue<std::vector<Float_t> >                    fENGDriftCoefficents; // Energy drift coefficents (applied after energy calibration has been applied)
+	TPriorityValue<std::vector<double> >                     fCFDCoefficients;     // CFD calibration coeffs (low to high order)
+	TPriorityValue<double>                                   fCFDChi2;             // Chi2 of the CFD calibration
+	TPriorityValue<std::vector<double> >                     fLEDCoefficients;     // LED calibration coeffs (low to high order)
+	TPriorityValue<double>                                   fLEDChi2;             // Chi2 of LED calibration
+	TPriorityValue<std::vector<double> >                     fTIMECoefficients;    // Time calibration coeffs (low to high order)
+	TPriorityValue<double>                                   fTIMEChi2;            // Chi2 of the Time calibration
+	TPriorityValue<std::vector<double> >                     fEFFCoefficients;     // Efficiency calibration coeffs (low to high order)
+	TPriorityValue<double>                                   fEFFChi2;             // Chi2 of Efficiency calibration
+	TPriorityValue<std::vector<double> >                     fCTCoefficients;      // Cross talk coefficients
+	TPriorityValue<TGraph>                                   fEnergyNonlinearity;  // Energy nonlinearity as spline
 
 	struct WaveFormShapePar {
 		bool   InUse;
@@ -122,13 +123,14 @@ private:
 	void        AppendChannel(TChannel*);
 
 	void SetAllENGCoefficients(TPriorityValue<std::vector<std::vector<Float_t> > > tmp) { fENGCoefficients = tmp; }
+	void SetENGRanges(TPriorityValue<std::vector<std::pair<double, double> > > tmp) { fENGRanges = tmp; }
+	void SetENGDriftCoefficents(TPriorityValue<std::vector<Float_t> > tmp) { fENGDriftCoefficents = tmp; }
 	void SetCFDCoefficients(TPriorityValue<std::vector<double> > tmp) { fCFDCoefficients = tmp; }
 	void SetLEDCoefficients(TPriorityValue<std::vector<double> > tmp) { fLEDCoefficients = tmp; }
 	void SetTIMECoefficients(TPriorityValue<std::vector<double> > tmp) { fTIMECoefficients = tmp; }
 	void SetEFFCoefficients(TPriorityValue<std::vector<double> > tmp) { fEFFCoefficients = tmp; }
 	void SetCTCoefficients(TPriorityValue<std::vector<double> > tmp) { fCTCoefficients = tmp; }
 	void SetEnergyNonlinearity(TPriorityValue<TGraph> tmp) { fEnergyNonlinearity = tmp; }
-	void SetAllENGRanges(TPriorityValue<std::vector<std::pair<double, double> > > tmp) { fENGRanges = tmp; }
 
 	void SetupEnergyNonlinearity(); // sort energy nonlinearity graph and set name/title
 
@@ -203,8 +205,10 @@ public:
 	double               GetEnergyNonlinearity(double en) const;
 	std::vector<std::pair<double, double> > GetENGRanges() const { return fENGRanges.Value(); }
 	std::pair<double, double> GetENGRange(size_t range) const { return fENGRanges.Value()[range]; }
+	std::vector<Float_t> GetENGDriftCoefficents() const { return fENGDriftCoefficents.Value(); }
 
 	inline void AddENGCoefficient(Float_t temp, size_t range = 0) { if(range >= fENGCoefficients.size()) { fENGCoefficients.resize(range+1); } fENGCoefficients.Address()->at(range).push_back(temp); }
+	inline void AddENGDriftCoefficent(Float_t temp) { fENGDriftCoefficents.Address()->push_back(temp); }
 	inline void AddCFDCoefficient(double temp) { fCFDCoefficients.Address()->push_back(temp); }
 	inline void AddLEDCoefficient(double temp) { fLEDCoefficients.Address()->push_back(temp); }
 	inline void AddTIMECoefficient(double temp) { fTIMECoefficients.Address()->push_back(temp); }

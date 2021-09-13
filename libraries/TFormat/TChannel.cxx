@@ -71,13 +71,15 @@ TChannel::TChannel(const TChannel& chan) : TNamed(chan)
 	SetDigitizerType(chan.fDigitizerTypeString);
 	SetTimeOffset(chan.fTimeOffset);
 	SetAllENGCoefficients(chan.fENGCoefficients);
+	SetENGRanges(chan.fENGRanges);
+	SetAllENGChi2(chan.fENGChi2);
+	SetENGDriftCoefficents(chan.fENGDriftCoefficents);
 	SetCFDCoefficients(chan.fCFDCoefficients);
 	SetLEDCoefficients(chan.fLEDCoefficients);
 	SetTIMECoefficients(chan.fTIMECoefficients);
 	SetEFFCoefficients(chan.fEFFCoefficients);
 	SetCTCoefficients(chan.fCTCoefficients);
 	SetEnergyNonlinearity(chan.fEnergyNonlinearity);
-	SetAllENGChi2(chan.fENGChi2);
 	SetCFDChi2(chan.fCFDChi2);
 	SetLEDChi2(chan.fLEDChi2);
 	SetTIMEChi2(chan.fTIMEChi2);
@@ -105,13 +107,15 @@ TChannel::TChannel(TChannel* chan)
 	SetDigitizerType(chan->fDigitizerTypeString);
 	SetTimeOffset(chan->fTimeOffset);
 	SetAllENGCoefficients(chan->fENGCoefficients);
+	SetENGRanges(chan->fENGRanges);
+	SetAllENGChi2(chan->fENGChi2);
+	SetENGDriftCoefficents(chan->fENGDriftCoefficents);
 	SetCFDCoefficients(chan->fCFDCoefficients);
 	SetLEDCoefficients(chan->fLEDCoefficients);
 	SetTIMECoefficients(chan->fTIMECoefficients);
 	SetEFFCoefficients(chan->fEFFCoefficients);
 	SetCTCoefficients(chan->fCTCoefficients);
 	SetEnergyNonlinearity(chan->fEnergyNonlinearity);
-	SetAllENGChi2(chan->fENGChi2);
 	SetCFDChi2(chan->fCFDChi2);
 	SetLEDChi2(chan->fLEDChi2);
 	SetTIMEChi2(chan->fTIMEChi2);
@@ -221,6 +225,9 @@ void TChannel::OverWriteChannel(TChannel* chan)
 	SetName(chan->GetName());
 
 	SetAllENGCoefficients(TPriorityValue<std::vector<std::vector<Float_t> > >(chan->GetAllENGCoeff(), EPriority::kForce));
+	SetENGRanges(TPriorityValue<std::vector<std::pair<double, double> > >(chan->GetENGRanges(), EPriority::kForce));
+	SetAllENGChi2(TPriorityValue<std::vector<double> >(chan->GetAllENGChi2(), EPriority::kForce));
+	SetENGDriftCoefficents(TPriorityValue<std::vector<Float_t> >(chan->GetENGDriftCoefficents(), EPriority::kForce));
 	SetCFDCoefficients(TPriorityValue<std::vector<double> >(chan->GetCFDCoeff(), EPriority::kForce));
 	SetLEDCoefficients(TPriorityValue<std::vector<double> >(chan->GetLEDCoeff(), EPriority::kForce));
 	SetTIMECoefficients(TPriorityValue<std::vector<double> >(chan->GetTIMECoeff(), EPriority::kForce));
@@ -228,7 +235,6 @@ void TChannel::OverWriteChannel(TChannel* chan)
 	SetCTCoefficients(TPriorityValue<std::vector<double> >(chan->GetCTCoeff(), EPriority::kForce));
 	SetEnergyNonlinearity(TPriorityValue<TGraph>(chan->GetEnergyNonlinearity(), EPriority::kForce));
 
-	SetAllENGChi2(TPriorityValue<std::vector<double> >(chan->GetAllENGChi2(), EPriority::kForce));
 	SetCFDChi2(TPriorityValue<double>(chan->GetCFDChi2(), EPriority::kForce));
 	SetLEDChi2(TPriorityValue<double>(chan->GetLEDChi2(), EPriority::kForce));
 	SetTIMEChi2(TPriorityValue<double>(chan->GetTIMEChi2(), EPriority::kForce));
@@ -256,13 +262,15 @@ void TChannel::AppendChannel(TChannel* chan)
 	SetDigitizerType(chan->fDigitizerTypeString);
 	SetTimeOffset(chan->fTimeOffset);
 	SetAllENGCoefficients(chan->fENGCoefficients);
+	SetENGRanges(chan->fENGRanges);
+	SetAllENGChi2(chan->fENGChi2);
+	SetENGDriftCoefficents(chan->fENGDriftCoefficents);
 	SetCFDCoefficients(chan->fCFDCoefficients);
 	SetLEDCoefficients(chan->fLEDCoefficients);
 	SetTIMECoefficients(chan->fTIMECoefficients);
 	SetEFFCoefficients(chan->fEFFCoefficients);
 	SetCTCoefficients(chan->fCTCoefficients);
 	SetEnergyNonlinearity(chan->fEnergyNonlinearity);
-	SetAllENGChi2(chan->fENGChi2);
 	SetCFDChi2(chan->fCFDChi2);
 	SetLEDChi2(chan->fLEDChi2);
 	SetTIMEChi2(chan->fTIMEChi2);
@@ -324,6 +332,7 @@ void TChannel::Clear(Option_t*)
 	fENGCoefficients.Reset(std::vector<std::vector<Float_t> >());
 	fENGRanges.Reset(std::vector<std::pair<double, double> >());
 	fENGChi2.Reset(std::vector<double>());
+	fENGDriftCoefficents.Reset(std::vector<Float_t>());
 	fCFDCoefficients.Reset(std::vector<double>());
 	fCFDChi2.Reset(0.0);
 	fLEDCoefficients.Reset(std::vector<double>());
@@ -434,6 +443,8 @@ void TChannel::DestroyENGCal()
 	/// Erases the ENGCoefficients vector
 	fENGCoefficients.Address()->clear();
 	fENGRanges.Address()->clear();
+	fENGChi2.Address()->clear();
+	fENGDriftCoefficents.Address()->clear();
 }
 
 void TChannel::DestroyCFDCal()
@@ -556,6 +567,15 @@ double TChannel::CalibrateENG(double charge)
 		}
 	}
 
+	// apply the drift correction first
+	if(!fENGDriftCoefficents.empty()) {
+		double corrCharge = -fENGDriftCoefficents[0]; // ILL subtracts the offset instead of adding it
+		for(size_t i = 1; i < fENGDriftCoefficents.size(); i++) {
+			corrCharge += fENGDriftCoefficents[i] * pow((charge), i);
+		}
+		charge = corrCharge;
+	}
+	// if we had drift correction charge is now the corrected charge, otherwise it is still the charge
 	double cal_chg = fENGCoefficients[currentRange][0];
 	for(size_t i = 1; i < fENGCoefficients[currentRange].size(); i++) {
 		cal_chg += fENGCoefficients[currentRange][i] * pow((charge), i);
@@ -770,10 +790,20 @@ std::string TChannel::PrintToString(Option_t*) const
 			str<<"ENGRange:   "<<i<<"\t"<<fENGRanges[i].first<<" "<<fENGRanges[i].second<<std::endl;
 		}
 	}
+	if(!fENGDriftCoefficents.empty()) {
+		str<<"ENGDrift:   ";
+		auto oldPrecision = str.precision();
+		str.precision(9);
+		for(auto coeff : fENGDriftCoefficents) {
+			str<<coeff<<"\t";
+		}
+		str.precision(oldPrecision);
+		str<<std::endl;
+	}
 	if(!fEFFCoefficients.empty()) {
 		str<<"EFFCoeff:  ";
-		for(auto fEFFCoefficient : fEFFCoefficients) {
-			str<<fEFFCoefficient<<"\t";
+		for(auto coeff : fEFFCoefficients) {
+			str<<coeff<<"\t";
 		}
 		str<<std::endl;
 	}
@@ -782,8 +812,8 @@ std::string TChannel::PrintToString(Option_t*) const
 	}
 	if(!fCFDCoefficients.empty()) {
 		str<<"CFDCoeff:  ";
-		for(auto fCFDCoefficient : fCFDCoefficients) {
-			str<<fCFDCoefficient<<"\t";
+		for(auto coeff : fCFDCoefficients) {
+			str<<coeff<<"\t";
 		}
 		str<<std::endl;
 	}
@@ -798,15 +828,15 @@ std::string TChannel::PrintToString(Option_t*) const
 	}
 	if(!fCTCoefficients.empty()) {
 		str<<"CTCoeff:  ";
-		for(double fCTCoefficient : fCTCoefficients) {
-			str<<fCTCoefficient<<"\t";
+		for(auto coeff : fCTCoefficients) {
+			str<<coeff<<"\t";
 		}
 		str<<std::endl;
 	}
 	if(!fTIMECoefficients.empty()) {
 		str<<"TIMECoeff: ";
-		for(double fTIMECoefficient : fTIMECoefficients) {
-			str<<fTIMECoefficient<<"\t";
+		for(auto coeff : fTIMECoefficients) {
+			str<<coeff<<"\t";
 		}
 		str<<std::endl;
 	}
@@ -1172,6 +1202,11 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 					double high;
 					ss>>range>>low>>high;
 					channel->SetENGRange(std::make_pair(low, high), range);
+				} else if(type.compare("ENGDRIFT") == 0) {
+					double value;
+					while(!(ss>>value).fail()) {
+						channel->AddENGDriftCoefficent(value);
+					}
 				} else if(type.compare("LEDCOEFF") == 0) {
 					channel->DestroyLEDCal();
 					channel->fLEDCoefficients.SetPriority(pr);
