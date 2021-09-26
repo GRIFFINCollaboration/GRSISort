@@ -346,7 +346,7 @@ bool TRunInfo::WriteToRoot(TFile* fileptr)
       fileptr->ReOpen("UPDATE");
    }
    if(!gDirectory) {
-      printf("No file opened to write to.\n");
+      std::cout<<"No file opened to write to."<<std::endl;
       bool2return = false;
    } else {
       runInfo->Write("RunInfo", TObject::kOverwrite);
