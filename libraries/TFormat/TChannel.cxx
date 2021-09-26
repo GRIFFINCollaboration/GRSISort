@@ -772,7 +772,11 @@ std::string TChannel::PrintToString(Option_t*) const
 	str<<"Integration: "<<fIntegration<<std::endl;
 	if(!fENGCoefficients.empty()) {
 		for(size_t i = 0; i < fENGCoefficients.size(); ++i) {
-			str<<"ENGCoeff:  range "<<i<<"\t";
+			if(fENGCoefficients.size() == 1) {
+				str<<"ENGCoeff:  ";
+			} else {
+				str<<"ENGCoeff:  range "<<i<<"\t";
+			}
 			for(auto coeff : fENGCoefficients[i]) {
 				str<<coeff<<"\t";
 			}
@@ -781,7 +785,11 @@ std::string TChannel::PrintToString(Option_t*) const
 	}
 	if(!fENGChi2.empty()) {
 		for(size_t i = 0; i < fENGChi2.size(); ++i) {
-			str<<"ENGChi2:   range "<<i<<"\t"<<fENGChi2[i]<<std::endl;
+			if(fENGCoefficients.size() == 1) {
+				str<<"ENGChi2:   "<<fENGChi2[i]<<std::endl;
+			} else {
+				str<<"ENGChi2:   range "<<i<<"\t"<<fENGChi2[i]<<std::endl;
+			}
 		}
 	}
 	if(!fENGRanges.empty()) {
