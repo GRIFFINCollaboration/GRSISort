@@ -520,8 +520,8 @@ double TChannel::CalibrateENG(double charge, int temp_int)
 	}
 
 	if(temp_int == 0) {
-		if(fIntegration != 0) {
-			temp_int = static_cast<int>(fIntegration); // the 4 is the dis.
+		if(fIntegration.Value() != 0) {
+			temp_int = fIntegration.Value();
 		} else {
 			temp_int = 1;
 		}
@@ -570,7 +570,7 @@ double TChannel::CalibrateENG(double charge)
 	if(!fENGDriftCoefficents.empty()) {
 		double corrCharge = -fENGDriftCoefficents[0]; // ILL subtracts the offset instead of adding it
 		for(size_t i = 1; i < fENGDriftCoefficents.size(); i++) {
-			corrCharge += fENGDriftCoefficents[i] * pow((charge), i);
+			corrCharge += fENGDriftCoefficents[i] * pow(charge, i);
 		}
 		charge = corrCharge;
 	}
@@ -1360,7 +1360,7 @@ int TChannel::WriteToRoot(TFile* fileptr)
 	if(oldoption == "READ") {
 		fileptr->ReOpen("UPDATE");
 	}
-	if(gDirectory) { // we don't compare to nullptr here, as ROOT >= 6.24.00 uses the TDirectoryAtomicAdapter structure with a bool() operator
+	if(!gDirectory) { // we don't compare to nullptr here, as ROOT >= 6.24.00 uses the TDirectoryAtomicAdapter structure with a bool() operator
 		std::cout<<"No file opened to write to."<<std::endl;
 	}
 	TIter iter(gDirectory->GetListOfKeys());
