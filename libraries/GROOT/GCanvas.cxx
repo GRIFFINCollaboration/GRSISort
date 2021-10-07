@@ -18,7 +18,7 @@
 #include "TGraph.h"
 #include "TPolyMarker.h"
 #include "TSpectrum.h"
-#include "TPython.h"
+//#include "TPython.h"
 #include "TCutG.h"
 #include "TGInputDialog.h"
 
