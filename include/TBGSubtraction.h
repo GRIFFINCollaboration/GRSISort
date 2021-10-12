@@ -18,7 +18,7 @@
 #include "TRootEmbeddedCanvas.h"
 #include "RQ_OBJECT.h"
 
-#include "TPeak.h"
+#include "TRWPeak.h"
 
 #include "TH1.h"
 #include "TH2.h"
@@ -146,7 +146,7 @@ private:
    Double_t fPeakHighValue;
    Double_t fPeakValue;
 
-   TPeak* fPeakFit;
+   TRWPeak* fPeakFit;
 
 public:
    TBGSubtraction(TH2* mat, const char* gate_axis = "x");

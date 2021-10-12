@@ -440,7 +440,7 @@ void TBGSubtraction::DoPeakFit()
 		fPeakFit = nullptr;
 	}
    
-   fPeakFit = new TPeak(fPeakValue, fPeakLowValue, fPeakHighValue);
+   fPeakFit = new TRWPeak(fPeakValue, fPeakLowValue, fPeakHighValue);
    fGateCanvas->GetCanvas()->cd();
    if((fPeakSkewCheckButton != nullptr) && fPeakSkewCheckButton->IsDown()) {
       fPeakFit->Fit(fSubtractedHist,"Q");
