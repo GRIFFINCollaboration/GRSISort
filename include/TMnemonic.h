@@ -42,7 +42,7 @@ public:
 
    virtual void EnumerateDigitizer(TPriorityValue<std::string>&, TPriorityValue<EDigitizer>&, TPriorityValue<int>&) { }
 
-   virtual void SetRFMNEMONIC(std::string* name);
+   virtual void SetRFMnemonic(std::string* name);
 
    virtual void SetClassType(TClass* classType) { fClassType = classType; }
    virtual TClass*                   GetClassType() const;
