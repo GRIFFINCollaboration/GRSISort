@@ -5,6 +5,11 @@
 #include "TInterpreter.h"
 #include "TString.h"
 
+#include "TGauss.h"
+#include "TRWPeak.h"
+#include "TABPeak.h"
+#include "TAB3Peak.h"
+
 /// \cond CLASSIMP
 ClassImp(TBGSubtraction)
 /// \endcond
@@ -13,10 +18,10 @@ TBGSubtraction::TBGSubtraction(TH2* mat, const char* gate_axis)
    : TGMainFrame(nullptr, 10, 10, kHorizontalFrame), fProjectionCanvas(nullptr), fGateCanvas(nullptr), fMatrix(mat),
      fProjection(nullptr), fGateHist(nullptr), fBGHist1(nullptr), fBGHist2(nullptr), fSubtractedHist(nullptr), fGateSlider(nullptr),
      fBGSlider1(nullptr), fBGSlider2(nullptr), fPeakSlider(nullptr), fBGParamEntry(nullptr), fBGCheckButton1(nullptr), fBGCheckButton2(nullptr), 
-     fPeakSkewCheckButton(nullptr), fAutoUpdateCheckButton(nullptr), fBly(nullptr), fBly1(nullptr), fGateFrame(nullptr), 
-     fProjectionFrame(nullptr), fAxisCombo(nullptr), fLowGateMarker(nullptr), fHighGateMarker(nullptr), fLowBGMarker1(nullptr),  
+     fAutoUpdateCheckButton(nullptr), fBly(nullptr), fBly1(nullptr), fGateFrame(nullptr), 
+     fProjectionFrame(nullptr), fAxisCombo(nullptr), fPeakCombo(nullptr), fLowGateMarker(nullptr), fHighGateMarker(nullptr), fLowBGMarker1(nullptr),  
      fHighBGMarker1(nullptr), fLowBGMarker2(nullptr), fHighBGMarker2(nullptr), fLowPeakMarker(nullptr), fHighPeakMarker(nullptr), 
-     fPeakMarker(nullptr), fGateAxis(0), fForceUpdate(true), fPeakFit(nullptr)
+     fPeakMarker(nullptr), fGateAxis(0), fForceUpdate(true), fPeak(nullptr), fPeakFitter(new TPeakFitter())
 {
    TString tmp_gate_word(gate_axis);
    tmp_gate_word.ToUpper();
@@ -83,6 +88,7 @@ void TBGSubtraction::MakeConnections()
 
    //Connect the axis combo box
    fAxisCombo->Connect("Selected(Int_t,Int_t)", "TBGSubtraction", this, "AxisComboSelected()");
+   fPeakCombo->Connect("Selected(Int_t,Int_t)", "TBGSubtraction", this, "PeakComboSelected()");
 
    //Connect the Gate entries so that if you type a value in they do the proper things
    //Everyhting that is updated sets the value of these entries, which trickles down and fixes everything else
@@ -140,6 +146,7 @@ void TBGSubtraction::Disconnect()
 
    //Disconnect the axis combo box
    fAxisCombo->Disconnect("Selected(Int_t,Int_t)", this, "AxisComboSelected()");
+   fPeakCombo->Disconnect("Selected(Int_t,Int_t)", this, "PeakComboSelected()");
 
    //Disconnect the Gate entries so that if you type a value in they do the proper things
    //Everyhting that is updated sets the value of these entries, which trickles down and fixes everything else
@@ -168,13 +175,7 @@ void TBGSubtraction::ResetInterface()
    Double_t def_peak_low  = 0.4; 
    Double_t def_peak_high = 0.5; //ratios of bar width
 
-   if(fPeakFit){ 
-      fPeakFit->Delete();
-      fPeakFit = nullptr;
-   }
-   
    //Lets Project out the matrix
-
 
    //Set Up entry and sliders for doing gating.
    Double_t xmin, ymin, xmax, ymax;
@@ -227,6 +228,15 @@ void TBGSubtraction::InitializeInterface()
    fAxisCombo->SetEnabled();
    fAxisCombo->Select(fGateAxis);
    AxisComboSelected();
+
+   fPeakCombo->Resize(150, 20);
+   fPeakCombo->AddEntry("TGauss",   0);
+   fPeakCombo->AddEntry("TRWPeak",  1);
+   fPeakCombo->AddEntry("TABPeak",  2);
+   fPeakCombo->AddEntry("TAB3Peak", 3);
+   fPeakCombo->SetEnabled();
+   fPeakCombo->Select(0);
+   PeakComboSelected();
 
    ResetInterface();
    DoGateCanvasZoomed();
@@ -290,8 +300,6 @@ void TBGSubtraction::BuildInterface()
 
    fPeakFitFrame  = new TGHorizontalFrame(fGateFrame, 200, 200);
    fPeakFitButton = new TGTextButton(fPeakFitFrame, "&Fit Peak");
-   fPeakSkewCheckButton = new TGCheckButton(fPeakFitFrame, "Skew", kPeakSkewCheckButton);
-   fPeakSkewCheckButton->SetState(kButtonUp);
 
    fBGParamFrame = new TGHorizontalFrame(fGateFrame, 200, 200);
    fBGParamLabel = new TGLabel(fBGParamFrame, "Background:");
@@ -301,6 +309,8 @@ void TBGSubtraction::BuildInterface()
                                      1, 1.);                          // limit values
 
    fAxisCombo = new TGComboBox(fBGParamFrame, kComboAxisEntry);
+   
+   fPeakCombo = new TGComboBox(fBGParamFrame, kComboPeakEntry);
 
    fBGCheckButton1 = new TGCheckButton(fBGParamFrame, "BG 1", kBGCheckButton1);
    fBGCheckButton1->SetState(kButtonDown);
@@ -325,6 +335,7 @@ void TBGSubtraction::BuildInterface()
 
    //Build smaller horizontal frames
    fBGParamFrame->AddFrame(fAxisCombo, fBly);
+   fBGParamFrame->AddFrame(fPeakCombo, fBly);
    fBGParamFrame->AddFrame(fBGCheckButton1, fBly);
    fBGParamFrame->AddFrame(fBGCheckButton2, fBly);
    fBGParamFrame->AddFrame(fBGParamLabel, fBly);
@@ -333,7 +344,6 @@ void TBGSubtraction::BuildInterface()
    fGateEntryFrame->AddFrame(fGateEntryLow, fBly);
    fGateEntryFrame->AddFrame(fGateEntryHigh, fBly);
 
-   fPeakFitFrame->AddFrame(fPeakSkewCheckButton,fBly);
    fPeakFitFrame->AddFrame(fPeakFitButton,fBly);
 
    fBGEntryFrame1->AddFrame(fBGEntryLow1, fBly);
@@ -434,28 +444,21 @@ void TBGSubtraction::UpdateBackground()
 
 void TBGSubtraction::DoPeakFit()
 {
-
-   if(fPeakFit) {
-		fPeakFit->Delete(); 
-		fPeakFit = nullptr;
+	if(fPeak == nullptr) {
+		std::cerr<<"Something went wrong and the peak is a nullptr?"<<std::endl;
+		return;
 	}
-   
-   fPeakFit = new TPeak(fPeakValue, fPeakLowValue, fPeakHighValue);
+	fPeak->Centroid(fPeakValue);
+	fPeakFitter->SetRange(fPeakLowValue, fPeakHighValue);
    fGateCanvas->GetCanvas()->cd();
-   if((fPeakSkewCheckButton != nullptr) && fPeakSkewCheckButton->IsDown()) {
-      fPeakFit->Fit(fSubtractedHist,"Q");
-      fPeakFit->ReleaseParameter(3);
-      fPeakFit->ReleaseParameter(4);
-   }
-   fPeakFit->Fit(fSubtractedHist);
+   fPeakFitter->Fit(fSubtractedHist);
    DrawPeak();
    fGateCanvas->GetCanvas()->Update();
 }
 
 void TBGSubtraction::DrawPeak()
 {
-   if(fPeakFit)
-      fPeakFit->Draw("same");
+   if(fPeak) fPeak->Draw("same");
 }
 
 void TBGSubtraction::ClickedBGButton1()
@@ -502,7 +505,6 @@ void TBGSubtraction::UpdatePeakSliders()
    fPeakSlider->SetRange(fPeakLowLimit, fPeakHighLimit);
    fPeakSlider->SetPosition(fPeakLowValue,fPeakHighValue);
    fPeakSlider->SetPointerPosition(fPeakValue);
-
 }
 
 void TBGSubtraction::DoSlider(Int_t pos)
@@ -579,6 +581,41 @@ void TBGSubtraction::AxisComboSelected()
       ResetInterface();
       fProjectionCanvas->GetCanvas()->Update();
    }
+}
+
+void TBGSubtraction::PeakComboSelected()
+{
+	static int oldPeakId = -1;
+	fPeakId = fPeakCombo->GetSelected();
+
+	if(oldPeakId != fPeakId) {
+		oldPeakId = fPeakId;
+		if(fPeak != nullptr) fPeakFitter->RemovePeak(fPeak);
+		switch(fPeakId) {
+			case kGauss:
+				std::cout<<"Selecting gaussian peak"<<std::endl;
+				fPeak = static_cast<TSinglePeak*>(TGauss::Class()->New());
+				std::cout<<"fPeak = "<<fPeak<<std::endl;
+				break;
+			case kRWPeak:
+				std::cout<<"Selecting radware peak"<<std::endl;
+				fPeak = static_cast<TSinglePeak*>(TRWPeak::Class()->New());
+				break;
+			case kABPeak:
+				std::cout<<"Selecting two hit addback peak"<<std::endl;
+				fPeak = static_cast<TSinglePeak*>(TABPeak::Class()->New());
+				break;
+			case kAB3Peak:
+				std::cout<<"Selecting three hit addback peak"<<std::endl;
+				fPeak = static_cast<TSinglePeak*>(TAB3Peak::Class()->New());
+				break;
+			default:
+				std::cerr<<"Unknown peak id "<<fPeakId<<", only know kGauss ("<<kGauss<<"), kRWPeak ("<<kRWPeak<<"), kABPeak ("<<kABPeak<<"), and kAB3Peak ("<<kAB3Peak<<")"<<std::endl;
+				break;
+		}
+		fPeakFitter->ResetInitFlag();
+		fPeakFitter->AddPeak(fPeak);
+	}
 }
 
 void TBGSubtraction::DrawPeakMarkers()
@@ -957,8 +994,6 @@ void TBGSubtraction::DoGateProjection()
    }
    DrawPeakMarkers();
    fGateCanvas->GetCanvas()->Update();
-
-
 }
 
 void TBGSubtraction::DoProjection()

@@ -34,6 +34,8 @@ public:
    void InitParNames() override;
    void InitializeParameters(TH1* hist) override;
 
+	void Centroid(const Double_t& centroid) override;
+
    Double_t Centroid() const override;
    Double_t CentroidErr() const override;
    Double_t Width() const override;
@@ -60,7 +62,7 @@ private:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TAB3Peak, 1);
+   ClassDefOverride(TAB3Peak, 2);
    /// \endcond
 };
 /*! @} */

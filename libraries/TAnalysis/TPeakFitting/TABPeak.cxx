@@ -9,9 +9,14 @@ TABPeak::TABPeak() : TSinglePeak() {}
 
 TABPeak::TABPeak(Double_t centroid) : TSinglePeak()
 {
+	Centroid(centroid);
+}
+
+void TABPeak::Centroid(const Double_t& centroid)
+{
    fTotalFunction = new TF1("ab_fit",this,&TABPeak::TotalFunction,0,1,6,"TABPeak","TotalFunction");
    InitParNames();
-   fTotalFunction->SetParameter(1,centroid);
+   fTotalFunction->SetParameter(1, centroid);
    SetListOfBGPar(std::vector<bool> {0,0,0,0,0,1});
    fTotalFunction->SetLineColor(kMagenta);
 }
