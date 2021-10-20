@@ -51,7 +51,7 @@ protected:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TRWPeak, 1);
+   ClassDefOverride(TRWPeak, 2);
    /// \endcond
 };
 /*! @} */

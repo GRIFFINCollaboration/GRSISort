@@ -50,7 +50,7 @@ protected:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TGauss, 1);
+   ClassDefOverride(TGauss, 2);
    /// \endcond
 };
 /*! @} */

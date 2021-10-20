@@ -95,7 +95,7 @@ protected:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TSinglePeak, 1);
+   ClassDefOverride(TSinglePeak, 2);
    /// \endcond
 };
 /*! @} */

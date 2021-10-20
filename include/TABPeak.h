@@ -59,7 +59,7 @@ private:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TABPeak, 1);
+   ClassDefOverride(TABPeak, 2);
    /// \endcond
 };
 /*! @} */

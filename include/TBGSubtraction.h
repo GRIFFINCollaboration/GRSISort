@@ -206,7 +206,7 @@ private:
    void UpdateBGSlider2();
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBGSubtraction, 6); // Background subtractor GUI
+   ClassDefOverride(TBGSubtraction, 7); // Background subtractor GUI
    /// \endcond
 };
 /*! @} */
