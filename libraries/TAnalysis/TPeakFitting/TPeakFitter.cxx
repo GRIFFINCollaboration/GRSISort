@@ -20,7 +20,8 @@ TPeakFitter::TPeakFitter(const Double_t &range_low, const Double_t &range_high) 
    fRangeHigh = range_high;
 }
 
-void TPeakFitter::Print(Option_t * opt) const{
+void TPeakFitter::Print(Option_t * opt) const
+{
 	std::cout << "Range: " << fRangeLow << " to " << fRangeHigh << std::endl;
 	Int_t counter = 0;
 	if(!fPeaksToFit.empty()) {
@@ -41,7 +42,19 @@ void TPeakFitter::Print(Option_t * opt) const{
 	}
 }
 
-Int_t TPeakFitter::GetNParameters() const{
+void TPeakFitter::PrintParameters() const
+{
+	std::cout<<"Range: "<<fRangeLow<<" to "<<fRangeHigh<<" - ";
+	int i = 0;
+	for(auto peak : fPeaksToFit) {
+		std::cout<<peak->IsA()->GetName()<<" #"<<i++<<" ";
+		peak->PrintParameters();
+	}
+	std::cout<<std::endl;
+}
+
+Int_t TPeakFitter::GetNParameters() const
+{
 	Int_t n_par = 0;
 	for(auto i : fPeaksToFit)
 		n_par += i->GetNParameters();
@@ -85,6 +98,7 @@ void TPeakFitter::Fit(TH1* fit_hist,Option_t *opt)
 		fLastHistFit = fit_hist;
 	}
 	UpdateFitterParameters();
+	PrintParameters();
 	//Do a first fit to get closer on the parameters
 	fit_hist->Fit(fTotalFitFunction,"RNQ0");
 	//Now try the fit with the options provided

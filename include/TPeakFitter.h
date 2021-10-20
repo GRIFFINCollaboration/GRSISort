@@ -44,6 +44,7 @@ public:
    void InitializeBackgroundParameters(TH1* fit_hist);
 
    virtual void Print(Option_t* opt = "") const override;
+	void PrintParameters() const;
 
    TF1* GetBackground() { return fBGToFit; }
    TF1* GetFitFunction() { return fTotalFitFunction; }
@@ -51,6 +52,8 @@ public:
    Int_t GetNParameters() const;
    void Fit(TH1* fit_hist,Option_t* opt="");
    void DrawPeaks(Option_t* = "") const;
+
+	void ResetInitFlag() { fInitFlag = false; }
 
 private:
    void UpdateFitterParameters();

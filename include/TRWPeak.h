@@ -37,6 +37,8 @@ public:
    void InitParNames() override;
    void InitializeParameters(TH1* hist) override;
 
+	void Centroid(const Double_t& centroid) override;
+
    Double_t Centroid() const override;
    Double_t CentroidErr() const override;
    Double_t Width() const override { return fTotalFunction->GetParameter("sigma"); }

@@ -48,6 +48,7 @@ public:
    Double_t Area() const { return fArea; }
    Double_t AreaErr() const { return fAreaErr; }
 
+	virtual void Centroid(const Double_t& centroid) = 0;
    virtual Double_t Centroid() const = 0;
    virtual Double_t CentroidErr() const = 0;
    virtual Double_t Width() const = 0;
@@ -56,6 +57,7 @@ public:
    virtual void Draw(Option_t * opt = "") override;
    virtual void DrawBackground(Option_t * opt = "") { if(fGlobalBackground) fGlobalBackground->Draw(opt);}
    virtual void DrawComponents(Option_t* opt = "");
+	virtual void PrintParameters() const;
 
    TF1* GetFitFunction() { return fTotalFunction; }
    TF1* GetBackgroundFunction();

@@ -51,6 +51,16 @@ void TSinglePeak::Print(Option_t *) const{
 
 }
 
+void TSinglePeak::PrintParameters() const {
+	if(fTotalFunction != nullptr) {
+		for(int i = 0; i < fTotalFunction->GetNpar(); ++i) {
+			std::cout<<i<<"/"<<fTotalFunction->GetParName(i)<<" = "<<fTotalFunction->GetParameter(i)<<" ";
+		}
+	} else {
+		std::cout<<"no total function ";
+	}
+}
+
 Double_t TSinglePeak::TotalFunction(Double_t *dim, Double_t *par){
    return PeakFunction(dim,par) + BackgroundFunction(dim,par);
 }

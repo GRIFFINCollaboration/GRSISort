@@ -8,10 +8,14 @@ TRWPeak::TRWPeak() : TSinglePeak() { }
 
 TRWPeak::TRWPeak(Double_t centroid) : TSinglePeak()
 {
+	Centroid(centroid);
+}
 
+void TRWPeak::Centroid(const Double_t& centroid)
+{
    fTotalFunction = new TF1("rw_total",this,&TRWPeak::TotalFunction,0,1,6,"TRWPeak","TotalFunction");
    InitParNames();
-   fTotalFunction->SetParameter(1,centroid);
+   fTotalFunction->SetParameter(1, centroid);
    SetListOfBGPar(std::vector<bool> {0,0,0,0,0,1});
    fTotalFunction->SetLineColor(kMagenta);
 }
