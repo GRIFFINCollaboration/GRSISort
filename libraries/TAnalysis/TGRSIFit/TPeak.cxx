@@ -271,13 +271,16 @@ Bool_t TPeak::InitParams(TH1* fitHist)
 
 Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
 {
-   TString optstr = opt;
-   if((fitHist == nullptr) && (GetHist() == nullptr)) {
-      printf("No hist passed, trying something...");
+   TString options = opt;
+	options.ToLower();
+	bool verbose = !options.Contains("q");
+
+   if(fitHist == nullptr && GetHist() == nullptr) {
+      std::cout<<"No hist passed, trying something... ";
       fitHist = fHistogram;
    }
    if(fitHist == nullptr) {
-      printf("No histogram associated with Peak\n");
+		std::cout<<"No histogram associated with Peak"<<std::endl;
       return false;
    }
    if(!IsInitialized()) {
@@ -288,12 +291,6 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    TVirtualFitter::SetPrecision(1e-3);
 
    SetHist(fitHist);
-
-   TString options(opt);
-   bool    print_flag = true;
-   if(options.Contains("Q")) {
-      print_flag = false;
-   }
 
    // Now that it is initialized, let's fit it.
    // Just in case the range changed, we should reset the centroid and bg energy limits
@@ -352,7 +349,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
          InitParams(fitHist);
          FixParameter(4, 0);
          FixParameter(3, 1);
-         std::cout<<"Beta may have broken the fit, retrying with R=0"<<std::endl;
+         if(verbose) std::cout<<"Beta may have broken the fit, retrying with R=0"<<std::endl;
          // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
          fitHist->GetListOfFunctions()->Last()->Delete();
          if(GetLogLikelihoodFlag()) {
@@ -362,16 +359,10 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
          }
       }
    }
-   /*   if(fitres->Parameter(5) < 0.0) {
-         FixParameter(5,0);
-         std::cout<<"Step < 0. Retrying fit with stp = 0"<<std::endl;
-         fitres = fitHist->Fit(this,Form("%sRSML",opt));
-      }
-   */
    Double_t binWidth = fitHist->GetBinWidth(GetParameter("centroid"));
    Double_t width    = GetParameter("sigma");
-   if(print_flag) {
-      printf("Chi^2/NDF = %lf\n", fitres->Chi2() / fitres->Ndf());
+   if(verbose) {
+		std::cout<<"Chi^2/NDF = "<<fitres->Chi2()/fitres->Ndf()<<std::endl;
    }
    fChi2 = fitres->Chi2();
    fNdf  = fitres->Ndf();
@@ -382,7 +373,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    int_high = xhigh + 10. * width;
 
    // Make a function that does not include the background
-   // Intgrate the background.
+   // Integrate the background.
    // TPeak* tmppeak = new TPeak(*this);
    auto* tmppeak = new TPeak;
    Copy(*tmppeak);
@@ -406,7 +397,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    CovMat(9, 9) = 0.0;
    fDArea = (tmppeak->IntegralError(int_low, int_high, tmppeak->GetParameters(), CovMat.GetMatrixArray())) / binWidth;
 
-   if(print_flag) {
+   if(verbose) {
       printf("Integral: %lf +/- %lf\n", fArea, fDArea);
    }
    // Set the background for drawing later
@@ -416,7 +407,13 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    //  if(optstr.Contains("+"))
    //    Copy(*fitHist->GetListOfFunctions()->Before(fitHist->GetListOfFunctions()->Last()));
 
+	// always print result of the fit even if not verbose
    Print("+");
+	//std::cout<<"fit result is valid: "<<(fitres->IsValid()?"true":"false")<<", status is "<<fitres->Status()<<std::endl;
+	//fitres->Print("v");
+	//for(int i = 0; i < 10; ++i) {
+	//	std::cout<<"parameter "<<i<<" error "<<fitres->Error(i)<<", minos errors: "<<(fitres->HasMinosError(i)?"true":"false")<<std::endl;
+	//}
    delete tmppeak;
    return true;
 }
