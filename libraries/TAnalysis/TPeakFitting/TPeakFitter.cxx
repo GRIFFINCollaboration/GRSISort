@@ -1,6 +1,7 @@
 #include "TPeakFitter.h"
 #include "Math/Minimizer.h"
 #include "TH1.h"
+#include "TClass.h"
 
 #include "Globals.h"
 
