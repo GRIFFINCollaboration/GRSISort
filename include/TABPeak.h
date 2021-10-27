@@ -40,8 +40,6 @@ public:
    Double_t CentroidErr() const override;
    Double_t Width() const override;
 
-   void Print(Option_t *opt = "") const override;
-
    void DrawComponents(Option_t *opt = "") override;
 
 protected:

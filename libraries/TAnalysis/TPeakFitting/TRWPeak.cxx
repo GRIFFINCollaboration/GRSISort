@@ -105,10 +105,3 @@ Double_t TRWPeak::BackgroundFunction(Double_t *dim, Double_t *par)
    return step_func;
 }
 
-
-void TRWPeak::Print(Option_t * opt) const
-{
-   std::cout << "RadWare-like peak:" << std::endl;
-   TSinglePeak::Print(opt);
-}
-

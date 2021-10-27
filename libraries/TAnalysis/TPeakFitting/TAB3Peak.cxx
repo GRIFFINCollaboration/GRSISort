@@ -156,12 +156,6 @@ Double_t TAB3Peak::BackgroundFunction(Double_t *dim, Double_t *par)
    return step_func;
 }
 
-void TAB3Peak::Print(Option_t * opt) const
-{
-   std::cout << "Addback-like peak:" << std::endl;
-   TSinglePeak::Print(opt);
-}
-
 void TAB3Peak::DrawComponents(Option_t * opt)
 {
    //We need to draw this on top of the global background. Probably easiest to make another temporary TF1?

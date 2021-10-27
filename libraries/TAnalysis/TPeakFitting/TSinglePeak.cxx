@@ -37,18 +37,12 @@ TF1* TSinglePeak::GetBackgroundFunction(){
    return fBackgroundFunction;
 }
 
-void TSinglePeak::Print(Option_t *) const{
-
-   std::cout << "Centroid = " << std::fixed << Centroid() << " +/- " << CentroidErr() << std::endl;
-   std::cout << "Area = " << Area() << " +/- " << AreaErr() << std::endl;
-/*   std::cout << "BG params = ";
-   for(int i = 0; i < 6; ++i){
-      if(IsBackgroundParameter(i)){
-         std::cout << fFitFunction->GetParName(i) << ", ";
-      }
-   }*/
-   std::cout << std::endl;
-
+void TSinglePeak::Print(Option_t *) const
+{
+	std::cout<<Class()->GetName()<<":"<<std::endl;
+   std::cout<<"Centroid = "<<std::fixed<<Centroid()<<" +/- "<<CentroidErr()<<std::endl;
+   std::cout<<"Area = "<<Area()<<" +/- "<<AreaErr()<<std::endl;
+   std::cout<<std::endl;
 }
 
 void TSinglePeak::PrintParameters() const {

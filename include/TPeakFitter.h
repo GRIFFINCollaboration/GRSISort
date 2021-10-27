@@ -57,7 +57,8 @@ public:
 
 private:
    void UpdateFitterParameters();
-   void UpdatePeakParameters(TFitResultPtr fit_res,TH1* fit_hist);
+   void UpdatePeakParameters(const TFitResultPtr& fit_res,TH1* fit_hist);
+	bool CheckParameterErrors(const TFitResultPtr& fit_res);
    Double_t DefaultBackgroundFunction(Double_t* dim, Double_t* par);
 
 
