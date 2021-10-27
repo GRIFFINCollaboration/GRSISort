@@ -1,4 +1,5 @@
 #include "TSinglePeak.h"
+#include "TClass.h"
 
 /// \cond CLASSIMP
 ClassImp(TSinglePeak)
