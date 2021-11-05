@@ -130,7 +130,6 @@ void GCanvas::GCanvasInit()
    // default gui's (canvas,browser,etc).
    // fStatsDisplayed = true;
    fMarkerMode     = true;
-   control_key     = false;
    fGuiEnabled     = false;
    fBackgroundMode = EBackgroundSubtraction::kNoBackground;
 	fCutName = new char[256];
@@ -603,7 +602,10 @@ bool GCanvas::ProcessNonHistKeyboardPress(Event_t*, UInt_t* keysym)
       GetCanvasImp()->ShowEditor(!GetCanvasImp()->HasEditor());
       edited = true;
       break;
-   case kKey_F9: SetCrosshair(static_cast<Int_t>(!HasCrosshair())); edited = true;
+   case kKey_F9: 
+		SetCrosshair(static_cast<Int_t>(!HasCrosshair()));
+		edited = true;
+		break;
    }
 
    return edited;
@@ -618,16 +620,12 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
    }
 
    switch(*keysym) {
-   case kKey_Control: toggle_control(); break;
-
    case kKey_b: edited = SetBackgroundMarkers(); break;
 
    case kKey_B: edited = CycleBackgroundSubtraction(); break;
 
    case kKey_d: {
-      printf("i am here.\n");
       new GPopup(gClient->GetDefaultRoot(), gClient->GetDefaultRoot(), 500, 200);
-
    } break;
 
    case kKey_e:
@@ -702,10 +700,6 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
          edited = true;
       }
       break;
-
-   // case kKey_G:
-   //   edited = GausBGFit();
-   //   break;
 
    case kKey_i:
       if(!hists.empty() && GetNMarkers() > 1) {
@@ -901,7 +895,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
             }
          } else {
             for(auto& hist : hists) {
-               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 2)->GetLocalY(),
+               hist->GetYaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 2)->GetLocalY(),
                                               fMarkers.at(fMarkers.size() - 1)->GetLocalY());
             }
          }
@@ -1265,14 +1259,6 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       RemoveMarker("all");
       edited = true;
       break;
-   case kKey_p:
-      if(hists.empty()) {
-         break;
-      }
-      printf("you hit the p key.\n");
-
-      break;
-
    case kKey_P: {
       GH2D* ghist = nullptr;
       for(auto hist : hists) {
@@ -1299,7 +1285,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
             }
          } else {
             for(auto& hist : hists) {
-               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 2)->GetLocalY(),
+               hist->GetYaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 2)->GetLocalY(),
                                               fMarkers.at(fMarkers.size() - 1)->GetLocalY());
             }
          }

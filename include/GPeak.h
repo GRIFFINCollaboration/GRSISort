@@ -1,7 +1,9 @@
 #ifndef GPEAK_H
 #define GPEAK_H
 
-#include <TF1.h>
+#include "TF1.h"
+#include "TFitResultPtr.h"
+#include "TFitResult.h"
 
 #include <string>
 #include <algorithm>

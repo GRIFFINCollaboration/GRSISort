@@ -48,26 +48,26 @@ public:
 
    TF1* GetBackground() { return fBGToFit; }
    TF1* GetFitFunction() { return fTotalFitFunction; }
-   void SetRange(const Double_t &low, const Double_t &high);
+   void SetRange(const Double_t& low, const Double_t& high);
    Int_t GetNParameters() const;
    void Fit(TH1* fit_hist,Option_t* opt="");
    void DrawPeaks(Option_t* = "") const;
 
 	void ResetInitFlag() { fInitFlag = false; }
 
+	void SetIndex(const int& index) { fIndex = index; }
+
 private:
    void UpdateFitterParameters();
    void UpdatePeakParameters(const TFitResultPtr& fit_res,TH1* fit_hist);
-	bool CheckParameterErrors(const TFitResultPtr& fit_res);
    Double_t DefaultBackgroundFunction(Double_t* dim, Double_t* par);
-
 
 private:
 //   TMultiplePeak* fPeaksToFit{nullptr};
    MultiplePeak_t fPeaksToFit;
    TF1* fBGToFit{nullptr};
 
-   TF1* fTotalFitFunction;
+   TF1* fTotalFitFunction{nullptr};
 
    Double_t fRangeLow;
    Double_t fRangeHigh;
@@ -79,6 +79,7 @@ private:
 
 	TH1* fLastHistFit{nullptr};
 
+	int fIndex{0}; ///< this index is added to the colors kRed for the total function and kMagenta for the individual peaks
    /// \cond CLASSIMP
    ClassDefOverride(TPeakFitter, 2);
    /// \endcond

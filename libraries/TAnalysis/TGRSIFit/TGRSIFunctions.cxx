@@ -12,6 +12,38 @@ NamespaceImp(TGRSIFunctions)
 //
 ///////////////////////////////////////////////////////////////////////
 
+bool TGRSIFunctions::CheckParameterErrors(const TFitResultPtr& fitres, std::string opt)
+{
+	/// This function compares the parameter error with the square root of the corresponding
+	/// diagonal entry of the covariance matrix. If the difference between the two is larger
+	/// than 0.1 (arbitrarily chosen cutoff), the check fails.
+	/// Implemented options are "q" to be quiet (prints nothing), or "v" to be verbose
+	/// (prints message not just for failed parameters but also ones that pass the test).
+
+   // if we do not have a fit result, we have to assume everything is okay for now
+   if(fitres.Get() == nullptr) return true;
+   std::transform(opt.begin(), opt.end(), opt.begin(), [](unsigned char c){ return std::tolower(c); });
+   bool quiet = (opt.find('q') != std::string::npos);
+   bool verbose = (opt.find('v') != std::string::npos);
+   bool result = true;
+   // loop over all parameters and compare the parameter error with the square root 
+   // of the diagonal element of the covariance matrix
+   auto covarianceMatrix = fitres->GetCovarianceMatrix();
+   for(unsigned int i = 0; i < fitres->NPar(); ++i) {
+      if(std::fabs(fitres->ParError(i) - TMath::Sqrt(covarianceMatrix[i][i])) > 0.1) {
+         if(!quiet) {
+            std::cout<<RED<<"Parameter "<<i<<" = "<<fitres->GetParameterName(i)<<" is at or close to the limit, error is "<<fitres->ParError(i)<<", and square root of diagonal is "<<TMath::Sqrt(covarianceMatrix[i][i])<<RESET_COLOR<<std::endl;
+         }
+         result = false;
+         // we don't break here even though we could, because we want to print out
+         // all parameters with issues
+      } else if(verbose) {
+         std::cout<<GREEN<<"Parameter "<<i<<" = "<<fitres->GetParameterName(i)<<" is not close to the limit, error is "<<fitres->ParError(i)<<", and square root of diagonal is "<<TMath::Sqrt(covarianceMatrix[i][i])<<RESET_COLOR<<std::endl;
+      } 
+   }
+   return result;
+}  
+
 Double_t TGRSIFunctions::CsIFitFunction(Double_t* i, Double_t* p)
 {
    Double_t x, s, e;

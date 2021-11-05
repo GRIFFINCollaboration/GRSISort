@@ -10,7 +10,7 @@
 
 ClassImp(GGaus)
 
-   GGaus::GGaus(Double_t xlow, Double_t xhigh, Option_t*)
+GGaus::GGaus(Double_t xlow, Double_t xhigh, Option_t*)
    : TF1("gausbg", "gaus(0)+pol1(3)", xlow, xhigh), fBGFit("background", "pol1", xlow, xhigh)
 {
    Clear("");
@@ -55,7 +55,6 @@ GGaus::GGaus(Double_t xlow, Double_t xhigh, TF1* bg, Option_t*) : TF1("gausbg", 
 
 GGaus::GGaus() : TF1("gausbg", "gaus(0)+pol1(3)", 0, 1000), fBGFit("background", "pol1", 0, 1000)
 {
-
    Clear();
    InitNames();
    fBGFit.SetNpx(1000);

@@ -7,6 +7,7 @@
 
 #include "Globals.h"
 #include "GRootFunctions.h"
+#include "TGRSIFunctions.h"
 #include "GCanvas.h"
 
 /// \cond CLASSIMP
@@ -274,16 +275,14 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    TVirtualFitter::SetMaxIterations(100000);
 
    bool verbose = !options.Contains("q");
-   bool noprint = options.Contains("no-print");
-   if(noprint) {
-      options.ReplaceAll("no-print", "");
-   }
+	bool retryFit = options.Contains("retryfit");
+   options.ReplaceAll("retryfit", "");
 
    if(fithist->GetSumw2()->fN != fithist->GetNbinsX() + 2) {
       fithist->Sumw2();
    }
 
-   TFitResultPtr fitres = fithist->Fit(this, Form("%sLRSM", options.Data()));
+   TFitResultPtr fitres = fithist->Fit(this, Form("%sLRS", options.Data()));
 
    if(verbose) printf("chi^2/NDF = %.02f\n", GetChisquare() / static_cast<double>(GetNDF()));
 
@@ -296,6 +295,21 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
       } else {
          printf(DRED " refit also failed :( " RESET_COLOR "\n");
       }
+   }
+
+   // check parameter errors and re-try using minos instead of minuit
+   if(!TGRSIFunctions::CheckParameterErrors(fitres)) {
+      std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
+      fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
+   }
+   // check the parameter errors again and see if we need to fit again with all parameters released
+   if(!TGRSIFunctions::CheckParameterErrors(fitres, "q") && retryFit) {
+      std::cout<<GREEN<<"Re-fitting with released parameters (without any limits):"<<RESET_COLOR<<std::endl;
+      for(int i = 0; i < GetNpar(); ++i) {
+         ReleaseParameter(i);
+      }
+      fitres = fithist->Fit(this, Form("%sLRSM", options.Data()));
+      TGRSIFunctions::CheckParameterErrors(fitres);
    }
 
    Double_t xlow, xhigh;
