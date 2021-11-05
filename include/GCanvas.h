@@ -4,7 +4,6 @@
 #include "TROOT.h"
 #include "TCanvas.h"
 #include "TRootCanvas.h"
-//#include "TPeak.h"
 
 #include "TH1.h"
 #include "TLine.h"
@@ -118,19 +117,6 @@ public:
 	ClassDefOverride(GMarker, 0)
 };
 
-/*
-	class GPopup : public TGTransientFrame  {
-	public:
-	GPopup(const TGWindow *p=0,const TGWindow *m=0);
-	virtual ~GPopup();
-	virtual void CloseWindow();
-//bool ProcessMessage(Long_t,Long_t,Long_t);
-private:
-TGTextButton *fButton1,*fButton2;
-ClassDefOverride(GPopup,0)
-};
-*/
-
 class GCanvas : public TCanvas {
 public:
 	GCanvas(Bool_t build = kTRUE);
@@ -140,8 +126,6 @@ public:
 	GCanvas(const char* name, const char* title, Int_t wtopx, Int_t wtopy, Int_t ww, Int_t wh, bool gui = false);
 	~GCanvas() override;
 
-	// void ProcessEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
-	// void CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Woverloaded-virtual"
 	void HandleInput(int event, Int_t x, Int_t y);
@@ -151,10 +135,7 @@ public:
 	static GCanvas* MakeDefCanvas();
 
 	Int_t GetNMarkers() { return fMarkers.size(); }
-	// Int_t  GetNBG_Markers()            { return fBG_Markers.size(); }
 	void SetMarkerMode(bool flag = true) { fMarkerMode = flag; }
-
-	// static void SetBackGroundSubtractionType();
 
 	TF1* GetLastFit();
 
@@ -168,7 +149,6 @@ private:
 
 	bool fGuiEnabled{false};
 
-	// bool fStatsDisplayed;
 	bool                   fMarkerMode{false};
 	std::vector<GMarker*>  fMarkers;
 	std::vector<GMarker*>  fBackgroundMarkers;
@@ -181,12 +161,6 @@ private:
 	void RedrawMarkers();
 	bool SetBackgroundMarkers();
 	bool CycleBackgroundSubtraction();
-
-	// std::vector<GMarker*> fBG_Markers;
-	// void AddBGMarker(GMarker *mark);
-	// void RemoveBGMarker();
-	// void ClearBGMarkers();
-	// void OrderBGMarkers();
 
 	std::vector<TH1*> FindHists(int dim = 1);
 	std::vector<TH1*> FindAllHists();
@@ -209,7 +183,6 @@ private:
 	bool Process2DMousePress(Int_t event, Int_t x, Int_t y);
 
 private:
-	//Window_t     fCanvasWindowID{};
 	TRootCanvas* fRootCanvas{nullptr};
 
 	bool control_key{false};

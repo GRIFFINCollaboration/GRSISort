@@ -274,6 +274,8 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    TString options = opt;
 	options.ToLower();
 	bool verbose = !options.Contains("q");
+	bool retryFit = options.Contains("retryfit");
+   options.ReplaceAll("retryfit", "");
 
    if(fitHist == nullptr && GetHist() == nullptr) {
       std::cout<<"No hist passed, trying something... ";
@@ -359,6 +361,30 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
          }
       }
    }
+
+	// check parameter errors and re-try using minos instead of minuit
+   if(!TGRSIFunctions::CheckParameterErrors(fitres)) {
+      std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
+		if(GetLogLikelihoodFlag()) {
+			fitres = fitHist->Fit(this, Form("%sERLS", opt)); // The RS needs to always be there
+		} else {
+			fitres = fitHist->Fit(this, Form("%sERS", opt));
+		}
+   }
+   // check the parameter errors again and see if we need to fit again with all parameters released
+   if(!TGRSIFunctions::CheckParameterErrors(fitres, "q") && retryFit) {
+      std::cout<<GREEN<<"Re-fitting with released parameters (without any limits):"<<RESET_COLOR<<std::endl;
+      for(int i = 0; i < GetNpar(); ++i) {
+         ReleaseParameter(i);
+      }
+		if(GetLogLikelihoodFlag()) {
+			fitres = fitHist->Fit(this, Form("%sRLS", opt)); // The RS needs to always be there
+		} else {
+			fitres = fitHist->Fit(this, Form("%sRS", opt));
+		}
+      TGRSIFunctions::CheckParameterErrors(fitres);
+   }
+
    Double_t binWidth = fitHist->GetBinWidth(GetParameter("centroid"));
    Double_t width    = GetParameter("sigma");
    if(verbose) {
@@ -409,11 +435,6 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
 
 	// always print result of the fit even if not verbose
    Print("+");
-	//std::cout<<"fit result is valid: "<<(fitres->IsValid()?"true":"false")<<", status is "<<fitres->Status()<<std::endl;
-	//fitres->Print("v");
-	//for(int i = 0; i < 10; ++i) {
-	//	std::cout<<"parameter "<<i<<" error "<<fitres->Error(i)<<", minos errors: "<<(fitres->HasMinosError(i)?"true":"false")<<std::endl;
-	//}
    delete tmppeak;
    return true;
 }
