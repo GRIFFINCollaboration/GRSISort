@@ -185,14 +185,6 @@ private:
 private:
 	TRootCanvas* fRootCanvas{nullptr};
 
-	bool control_key{false};
-
-	bool toggle_control()
-	{
-		control_key = !control_key;
-		return control_key;
-	}
-
 	ClassDefOverride(GCanvas, 2);
 };
 
