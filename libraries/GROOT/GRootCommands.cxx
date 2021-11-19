@@ -306,9 +306,7 @@ TPeak* AltPhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
    // std::cout<<"here."<<std::endl;
 
    auto*       mypeak  = new TPeak((xlow + xhigh) / 2.0, xlow, xhigh);
-   std::string options = opt;
-   options.append("Q+");
-   mypeak->Fit(hist, options.c_str());
+   mypeak->Fit(hist, opt);
    // mypeak->Background()->Draw("SAME");
    auto* bg = new TF1(*mypeak->Background());
    hist->GetListOfFunctions()->Add(bg);

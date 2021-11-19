@@ -7,6 +7,7 @@
 
 #include "Globals.h"
 #include "GRootFunctions.h"
+#include "TGRSIFunctions.h"
 #include "GCanvas.h"
 
 /// \cond CLASSIMP
@@ -236,36 +237,48 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
       return false;
    }
    TString options = opt;
+	options.ToLower();
    if(!IsInitialized()) {
       InitParams(fithist);
    }
    TVirtualFitter::SetMaxIterations(100000);
 
-   bool verbose = !options.Contains("Q");
-   bool noprint = options.Contains("no-print");
-   if(noprint) {
-      options.ReplaceAll("no-print", "");
-   }
+   bool verbose = !options.Contains("q");
+	bool retryFit = options.Contains("retryfit");
+   options.ReplaceAll("retryfit", "");
 
    if(fithist->GetSumw2()->fN != fithist->GetNbinsX() + 2) {
       fithist->Sumw2();
    }
 
-   TFitResultPtr fitres = fithist->Fit(this, Form("%sLRSM", options.Data()));
+   TFitResultPtr fitres = fithist->Fit(this, Form("%sLRS", options.Data()));
 
-   if(!noprint) printf("chi^2/NDF = %.02f\n", GetChisquare() / static_cast<double>(GetNDF()));
+   if(verbose) printf("chi^2/NDF = %.02f\n", GetChisquare() / static_cast<double>(GetNDF()));
 
    if(!fitres.Get()->IsValid()) {
-      if(verbose) printf(RED "fit has failed, trying refit... " RESET_COLOR);
+      printf(RED "fit has failed, trying refit... " RESET_COLOR);
       fithist->GetListOfFunctions()->Last()->Delete();
-      fitres = fithist->Fit(this, Form("%sLRSME", options.Data())); //,Form("%sRSM",options.Data()))
-		if(verbose) {
-			if(fitres.Get()->IsValid()) {
-				printf(DGREEN " refit passed!" RESET_COLOR "\n");
-			} else {
-				printf(DRED " refit also failed :( " RESET_COLOR "\n");
-			}
-		}
+      fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
+      if(fitres.Get()->IsValid()) {
+         printf(DGREEN " refit passed!" RESET_COLOR "\n");
+      } else {
+         printf(DRED " refit also failed :( " RESET_COLOR "\n");
+      }
+   }
+
+   // check parameter errors and re-try using minos instead of minuit
+   if(!TGRSIFunctions::CheckParameterErrors(fitres)) {
+      std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
+      fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
+   }
+   // check the parameter errors again and see if we need to fit again with all parameters released
+   if(!TGRSIFunctions::CheckParameterErrors(fitres, "q") && retryFit) {
+      std::cout<<GREEN<<"Re-fitting with released parameters (without any limits):"<<RESET_COLOR<<std::endl;
+      for(int i = 0; i < GetNpar(); ++i) {
+         ReleaseParameter(i);
+      }
+      fitres = fithist->Fit(this, Form("%sLRSM", options.Data()));
+      TGRSIFunctions::CheckParameterErrors(fitres);
    }
 
    Double_t xlow, xhigh;
@@ -280,6 +293,9 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
 
    fBGFit.SetParameters(bgpars);
 
+   fChi2 = GetChisquare();
+   fNdf  = GetNDF();
+
    fArea         = Integral(xlow, xhigh) / fithist->GetBinWidth(1);
    double bgArea = fBGFit.Integral(xlow, xhigh) / fithist->GetBinWidth(1);
    fArea -= bgArea;
@@ -289,10 +305,10 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    }
    fSum = fithist->Integral(fithist->GetXaxis()->FindBin(xlow),
                             fithist->GetXaxis()->FindBin(xhigh)); //* fithist->GetBinWidth(1);
-   if(!noprint) printf("sum between markers: %02f\n", fSum);
+   if(verbose) printf("sum between markers: %02f\n", fSum);
    fDSum = TMath::Sqrt(fSum);
    fSum -= bgArea;
-   if(!noprint) printf("sum after subtraction: %02f\n", fSum);
+   if(verbose) printf("sum after subtraction: %02f\n", fSum);
 
    // Make a function that does not include the background
    // Intgrate the background.
@@ -319,12 +335,11 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
 
    delete tmppeak;
 
-   if(verbose) {
-      Print();
-   }
+	// always print the results of the fit even if not verbose
+	Print();
 
    Copy(*fithist->GetListOfFunctions()->FindObject(GetName()));
-   fithist->GetListOfFunctions()->Add(fBGFit.Clone()); // use to be a clone.
+   fithist->GetListOfFunctions()->Add(fBGFit.Clone());
    fLastFit = this;
 
    SetParent(nullptr);
@@ -363,7 +378,6 @@ void GPeak::Print(Option_t* opt) const
       TF1::Print(opt);
    }
    printf(RESET_COLOR);
-   printf("\n");
 }
 
 void GPeak::DrawResiduals(TH1* hist) const

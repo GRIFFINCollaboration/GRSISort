@@ -92,8 +92,8 @@ public:
 
 	TPriorityValue<T>& operator =(TPriorityValue<T>&& rhs) {
 		if(rhs.fPriority >= fPriority) {
-			fValue = std::move(rhs.fValue);
-			fPriority = std::move(rhs.fPriority);
+			fValue = rhs.fValue;
+			fPriority = rhs.fPriority;
 		}
 		return *this;
 	}
