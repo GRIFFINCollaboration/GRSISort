@@ -153,6 +153,7 @@ public:
 	void FitFinal(const int& channelId);
 	void FitEfficiency(const int& channelId);
 	void SelectedFinalTab(Int_t id);
+	void SelectedFinalMainTab(Int_t id);
 	void UpdateChannel(const int& channelId);
 	void WriteCalibration();
 
@@ -188,8 +189,7 @@ private:
 	TGVerticalFrame* fRightFrame{nullptr};
 	TGTextButton* fStartButton{nullptr};
 	TGTab* fTab{nullptr};
-	TGTab* fCalibrationTab{nullptr};
-	TGTab* fEfficiencyTab{nullptr};
+	std::vector<TGTab*> fFinalTabs;
 	std::vector<TSourceTab*> fSourceTab;
 
 	TGTextButton*        fEmitter{nullptr};
