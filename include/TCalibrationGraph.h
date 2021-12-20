@@ -15,6 +15,7 @@ class TCalibrationGraphSet;
 
 class TCalibrationGraph : public TGraphErrors {
 public:
+	TCalibrationGraph() {}
 	TCalibrationGraph(TCalibrationGraphSet* parent, const int& size, const bool& isResidual = false) : TGraphErrors(size), fParent(parent), fIsResidual(isResidual) {}
 	TCalibrationGraph(TCalibrationGraphSet* parent, TGraphErrors* graph) : TGraphErrors(*graph), fParent(parent), fIsResidual(false) {}
 	~TCalibrationGraph() {}
@@ -24,6 +25,8 @@ public:
 
 	void IsResidual(bool val) { fIsResidual = val; }
 	bool IsResidual() { return fIsResidual; }
+
+	void Scale(const double& scale);
 
 private:
 	TCalibrationGraphSet* fParent{nullptr}; ///< pointer to the set this graph belongs to
@@ -40,18 +43,22 @@ public:
 	bool SetResidual(const bool& force = false);
 	void Add(TGraphErrors*, const std::string& label);
 
-	void SetLineColor(int index, int color)   { fGraphs[index]->SetLineColor(color);   fResidualGraphs[index]->SetLineColor(color); }   ///< Set the line color of the graph and residuals at <index>
-	void SetMarkerColor(int index, int color) { fGraphs[index]->SetMarkerColor(color); fResidualGraphs[index]->SetMarkerColor(color); } ///< Set the marker color of the graph and residuals at <index>
+	void SetLineColor(int index, int color)   { fGraphs[index].SetLineColor(color);   fResidualGraphs[index].SetLineColor(color); }   ///< Set the line color of the graph and residuals at <index>
+	void SetMarkerColor(int index, int color) { fGraphs[index].SetMarkerColor(color); fResidualGraphs[index].SetMarkerColor(color); } ///< Set the marker color of the graph and residuals at <index>
 
 	int GetN() { return fTotalGraph->GetN(); }     ///< Returns GetN(), i.e. number of points of the total graph.
 	double* GetX() { return fTotalGraph->GetX(); } ///< Returns an array of x-values of the total graph.
 	double* GetY() { return fTotalGraph->GetY(); } ///< Returns an array of y-values of the total graph.
 
-	void Fit(TF1* function, Option_t* opt) { fTotalGraph->Fit(function, opt); } ///< Fits the <function> to the total graph.
-	TF1* GetFitFunction() { return reinterpret_cast<TF1*>(fTotalGraph->GetListOfFunctions()->FindObject("fitfunction")); } ///< Gets the calibration from the total graph (might be nullptr!).
+	void Fit(TF1* function, Option_t* opt = "") { fTotalGraph->Fit(function, opt); } ///< Fits the <function> to the total graph.
+	TF1* FitFunction() { return reinterpret_cast<TF1*>(fTotalGraph->GetListOfFunctions()->FindObject("fitfunction")); } ///< Gets the calibration from the total graph (might be nullptr!).
+	TGraphErrors* TotalGraph() { return fTotalGraph; }
+	size_t NumberOfGraphs() { return fGraphs.size(); }
+	TCalibrationGraph* Graph(size_t i) { return &(fGraphs.at(i)); }
+	TCalibrationGraph* Residual(size_t i) { return &(fResidualGraphs.at(i)); }
 
-	void DrawCalibration(Option_t* opt, TLegend* legend = nullptr);
-	void DrawResidual(Option_t* opt, TLegend* legend = nullptr);
+	void DrawCalibration(Option_t* opt = "", TLegend* legend = nullptr);
+	void DrawResidual(Option_t* opt = "", TLegend* legend = nullptr);
 
 	Int_t RemovePoint();
 	Int_t RemoveResidualPoint();
@@ -60,16 +67,18 @@ public:
 
 	void Print();
 
+	void ResetTotalGraph(); ///< reset the total graph and add the individual ones again (used e.g. after scaling of individual graphs is done)
+
 	TCalibrationGraphSet& operator=(const TCalibrationGraphSet& rhs)
 	{
 		/// Assignment operator that takes care of properly cloning all the pointers to objects.
 		fGraphs.resize(rhs.fGraphs.size());
 		for(size_t i = 0; i < fGraphs.size(); ++i) {
-			fGraphs[i] = static_cast<TCalibrationGraph*>(rhs.fGraphs[i]->Clone());
+			fGraphs[i] = rhs.fGraphs[i];
 		}
 		fResidualGraphs.resize(rhs.fResidualGraphs.size());
 		for(size_t i = 0; i < fResidualGraphs.size(); ++i) {
-			fResidualGraphs[i] = static_cast<TCalibrationGraph*>(rhs.fResidualGraphs[i]->Clone());
+			fResidualGraphs[i] = rhs.fResidualGraphs[i];
 		}
 		fLabel = rhs.fLabel;
 		fTotalGraph = static_cast<TGraphErrors*>(rhs.fTotalGraph->Clone());
@@ -80,10 +89,9 @@ public:
 		return *this;
 	}
 
-
 private:
-	std::vector<TCalibrationGraph*> fGraphs; ///< These are the graphs used for plotting the calibration points per source.
-	std::vector<TCalibrationGraph*> fResidualGraphs; ///< These are the graphs used for plotting the residuals per source.
+	std::vector<TCalibrationGraph> fGraphs; ///< These are the graphs used for plotting the calibration points per source.
+	std::vector<TCalibrationGraph> fResidualGraphs; ///< These are the graphs used for plotting the residuals per source.
 	std::vector<std::string> fLabel; ///< The labels for the different graphs.
 	TGraphErrors* fTotalGraph{nullptr}; ///< The sum of the other graphs, used for fitting.
 	TGraphErrors* fTotalResidualGraph{nullptr}; ///< The sum of the residuals. Not really used apart from plotting (but overlayed with the individual graphs).
@@ -91,6 +99,6 @@ private:
 	std::vector<size_t> fPointIndex; ///< Index of the point within the graph this point corresponds to.
 	bool fResidualSet{false}; ///< Flag to indicate if the residual has been set correctly.
 
-	ClassDefOverride(TCalibrationGraphSet, 1)
+	ClassDefOverride(TCalibrationGraphSet, 3)
 };
 #endif

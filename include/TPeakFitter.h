@@ -38,6 +38,7 @@ public:
 public:
    void AddPeak(TSinglePeak* p)     { fPeaksToFit.push_back(p); }
    void RemovePeak(TSinglePeak* p)  { fPeaksToFit.remove(p); }
+   void RemoveAllPeaks()  { fPeaksToFit.clear(); }
 //   void SetPeakToFit(TMultiplePeak*  peaks_to_fit) { fPeaksToFit = peaks_to_fit; }
    void SetBackground(TF1* bg_to_fit)                 { fBGToFit = bg_to_fit; }
    void InitializeParameters(TH1* fit_hist);
