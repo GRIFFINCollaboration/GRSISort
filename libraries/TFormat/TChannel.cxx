@@ -509,7 +509,7 @@ double TChannel::CalibrateENG(double charge, int temp_int)
 
    // int temp_int = 1; //125.0;
    if(temp_int == 0) {
-      if(fIntegration != 0) {
+      if(fIntegration.Value() != 0) {
          temp_int = static_cast<int>(fIntegration); // the 4 is the dis.
       } else {
          temp_int = 1;

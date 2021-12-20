@@ -108,7 +108,6 @@ GPeak::GPeak()
 
 GPeak::GPeak(const GPeak& peak) : TF1(peak)
 {
-
    SetParent(nullptr);
    // SetDirectory(0);
    fBGFit.SetParent(nullptr);
@@ -124,19 +123,6 @@ GPeak::~GPeak()
    //  delete background;
 }
 
-// void GPeak::Fcn(Int_t &npar,Double_t *gin,Double_T &f,Double_t *par,Int_t iflag) {
-// chisquared calculator
-//
-//  int i=0;
-//  double chisq = 0;
-//  double delta = 0;
-//  for(i=0;i<nbins;i++) {
-//    delta = (data[i] - GRootFunctions::PhotoPeakBG((x+i),par))/error[i];
-//    chisq += delta*delta;
-//  }
-//  f=chisq;
-//}
-
 void GPeak::InitNames()
 {
    TF1::SetParName(0, "Height");
@@ -144,22 +130,12 @@ void GPeak::InitNames()
    TF1::SetParName(2, "sigma");
    TF1::SetParName(3, "R");
    TF1::SetParName(4, "beta");
-   // TF1::SetParName(5,"step");
-   // TF1::SetParName(6,"A");
-   // TF1::SetParName(7,"B");
-   // TF1::SetParName(8,"C");
    TF1::SetParName(5, "step");
    TF1::SetParName(6, "bg_offset");
-   // TF1::SetParName(7,"bg_slope");
 }
 
 void GPeak::Copy(TObject& obj) const
 {
-   // printf("0x%08x\n",&obj);
-   // fflush(stdout);
-   // printf("%s\n",obj.GetName());
-   // fflush(stdout);
-
    TF1::Copy(obj);
    (static_cast<GPeak&>(obj)).init_flag = init_flag;
    (static_cast<GPeak&>(obj)).fArea     = fArea;
@@ -178,7 +154,6 @@ bool GPeak::InitParams(TH1* fithist)
       printf("No histogram is associated yet, no initial guesses made\n");
       return false;
    }
-   // printf("%s called.\n",__PRETTY_FUNCTION__); fflush(stdout);
    // Makes initial guesses at parameters for the fit. Uses the histogram to
    Double_t xlow, xhigh;
    GetRange(xlow, xhigh);
@@ -232,11 +207,8 @@ bool GPeak::InitParams(TH1* fithist)
    // TF1::SetParLimits(5,step-step*.1,step+.1*step);
    TF1::SetParLimits(5, 0.0, step + step);
 
-   // double slope  = (yhigh-ylow)/(xhigh-xlow);
-   // double offset = yhigh-slope*xhigh;
    double offset = lowy;
    TF1::SetParLimits(6, offset - 0.5 * offset, offset + offset);
-   // TF1::SetParLimits(7,-2*slope,2*slope);
 
    // Make initial guesses
    TF1::SetParameter(0, largesty);                // fithist->GetBinContent(bin));
@@ -246,7 +218,6 @@ bool GPeak::InitParams(TH1* fithist)
    TF1::SetParameter(4, 1.);
    TF1::SetParameter(5, step);
    TF1::SetParameter(6, offset);
-   // TF1::SetParameter(7,slope);
 
    TF1::SetParError(0, 0.10 * largesty);
    TF1::SetParError(1, 0.25);
@@ -255,8 +226,6 @@ bool GPeak::InitParams(TH1* fithist)
    TF1::SetParError(4, 0.5);
    TF1::SetParError(5, 0.10 * step);
    TF1::SetParError(6, 0.10 * offset);
-
-   // TF1::Print();
 
    SetInitialized();
    return true;
@@ -274,7 +243,8 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    }
    TVirtualFitter::SetMaxIterations(100000);
 
-   bool verbose = !options.Contains("q");
+   bool quiet = options.Contains("q");
+   bool verbose = options.Contains("v");
 	bool retryFit = options.Contains("retryfit");
    options.ReplaceAll("retryfit", "");
 
@@ -287,30 +257,34 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    if(verbose) printf("chi^2/NDF = %.02f\n", GetChisquare() / static_cast<double>(GetNDF()));
 
    if(!fitres.Get()->IsValid()) {
-      printf(RED "fit has failed, trying refit... " RESET_COLOR);
+      if(!quiet) printf(RED "fit has failed, trying refit... " RESET_COLOR);
       fithist->GetListOfFunctions()->Last()->Delete();
       fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
-      if(fitres.Get()->IsValid()) {
-         printf(DGREEN " refit passed!" RESET_COLOR "\n");
-      } else {
-         printf(DRED " refit also failed :( " RESET_COLOR "\n");
-      }
+		if(!quiet) {
+			if(fitres.Get()->IsValid()) {
+				printf(DGREEN " refit passed!" RESET_COLOR "\n");
+			} else {
+				printf(DRED " refit also failed :( " RESET_COLOR "\n");
+			}
+		}
    }
 
-   // check parameter errors and re-try using minos instead of minuit
-   if(!TGRSIFunctions::CheckParameterErrors(fitres)) {
-      std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
-      fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
-   }
-   // check the parameter errors again and see if we need to fit again with all parameters released
-   if(!TGRSIFunctions::CheckParameterErrors(fitres, "q") && retryFit) {
-      std::cout<<GREEN<<"Re-fitting with released parameters (without any limits):"<<RESET_COLOR<<std::endl;
-      for(int i = 0; i < GetNpar(); ++i) {
-         ReleaseParameter(i);
-      }
-      fitres = fithist->Fit(this, Form("%sLRSM", options.Data()));
-      TGRSIFunctions::CheckParameterErrors(fitres);
-   }
+   // check parameter errors
+   if(!TGRSIFunctions::CheckParameterErrors(fitres, options.Data())) {
+		if(retryFit) {
+			// fit again with all parameters released
+			if(!quiet) std::cout<<GREEN<<"Re-fitting with released parameters (without any limits):"<<RESET_COLOR<<std::endl;
+			for(int i = 0; i < GetNpar(); ++i) {
+				ReleaseParameter(i);
+			}
+			fitres = fithist->Fit(this, Form("%sLRSM", options.Data()));
+		} else {
+			// re-try using minos instead of minuit
+			if(!quiet) std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
+			fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
+		}
+	}
+	TGRSIFunctions::CheckParameterErrors(fitres, options.Data());
 
    Double_t xlow, xhigh;
    TF1::GetRange(xlow, xhigh);
@@ -367,7 +341,7 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    delete tmppeak;
 
 	// always print the results of the fit even if not verbose
-	Print();
+	if(!quiet) Print();
 
    Copy(*fithist->GetListOfFunctions()->FindObject(GetName()));
    fithist->GetListOfFunctions()->Add(fBGFit.Clone());

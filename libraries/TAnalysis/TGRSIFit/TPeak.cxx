@@ -273,7 +273,12 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
 {
    TString options = opt;
 	options.ToLower();
-	bool verbose = !options.Contains("q");
+	bool quiet = options.Contains("q");
+	bool verbose = options.Contains("v");
+	if(quiet && verbose) {
+		std::cout<<"Don't know how to be quiet and verbose at once ("<<opt<<"), going to be verbose!"<<std::endl;
+		quiet = false;
+	}
 	bool retryFit = options.Contains("retryfit");
    options.ReplaceAll("retryfit", "");
 
@@ -362,28 +367,31 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
       }
    }
 
-	// check parameter errors and re-try using minos instead of minuit
-   if(!TGRSIFunctions::CheckParameterErrors(fitres)) {
-      std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
-		if(GetLogLikelihoodFlag()) {
-			fitres = fitHist->Fit(this, Form("%sERLS", opt)); // The RS needs to always be there
+	
+   // check parameter errors
+	if(!TGRSIFunctions::CheckParameterErrors(fitres, options.Data())) {
+		if(retryFit) {
+			// fit again with all parameters released
+			if(!quiet) std::cout<<GREEN<<"Re-fitting with released parameters (without any limits)"<<RESET_COLOR<<std::endl;
+			for(int i = 0; i < GetNpar(); ++i) {
+				ReleaseParameter(i);
+			}
+			if(GetLogLikelihoodFlag()) {
+				fitres = fitHist->Fit(this, Form("%sRLS", opt)); // The RS needs to always be there
+			} else {
+				fitres = fitHist->Fit(this, Form("%sRS", opt));
+			}
 		} else {
-			fitres = fitHist->Fit(this, Form("%sERS", opt));
+			// re-try using minos instead of minuit
+			if(!quiet) std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
+			if(GetLogLikelihoodFlag()) {
+				fitres = fitHist->Fit(this, Form("%sERLS", opt)); // The RS needs to always be there
+			} else {
+				fitres = fitHist->Fit(this, Form("%sERS", opt));
+			}
 		}
-   }
-   // check the parameter errors again and see if we need to fit again with all parameters released
-   if(!TGRSIFunctions::CheckParameterErrors(fitres, "q") && retryFit) {
-      std::cout<<GREEN<<"Re-fitting with released parameters (without any limits):"<<RESET_COLOR<<std::endl;
-      for(int i = 0; i < GetNpar(); ++i) {
-         ReleaseParameter(i);
-      }
-		if(GetLogLikelihoodFlag()) {
-			fitres = fitHist->Fit(this, Form("%sRLS", opt)); // The RS needs to always be there
-		} else {
-			fitres = fitHist->Fit(this, Form("%sRS", opt));
-		}
-      TGRSIFunctions::CheckParameterErrors(fitres);
-   }
+	}
+	TGRSIFunctions::CheckParameterErrors(fitres);
 
    Double_t binWidth = fitHist->GetBinWidth(GetParameter("centroid"));
    Double_t width    = GetParameter("sigma");
@@ -434,7 +442,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    //    Copy(*fitHist->GetListOfFunctions()->Before(fitHist->GetListOfFunctions()->Last()));
 
 	// always print result of the fit even if not verbose
-   Print("+");
+   if(!quiet) Print("+");
    delete tmppeak;
    return true;
 }
