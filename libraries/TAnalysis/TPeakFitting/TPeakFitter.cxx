@@ -87,7 +87,12 @@ void TPeakFitter::Fit(TH1* fit_hist, Option_t *opt)
 
 	TString options = opt;
 	options.ToLower();
-	bool verbose = !options.Contains("q");
+	bool quiet = options.Contains("q");
+	bool verbose = options.Contains("v");
+	if(quiet && verbose) {
+		std::cout<<"Don't know how to be quiet and verbose at once ("<<opt<<"), going to be verbose!"<<std::endl;
+		quiet = false;
+	}
 	bool retryFit = options.Contains("retryfit");
 	options.ReplaceAll("retryfit", "");
 
@@ -121,19 +126,21 @@ void TPeakFitter::Fit(TH1* fit_hist, Option_t *opt)
 	//Now do a final fit with integrated bins
 	TFitResultPtr fit_res = fit_hist->Fit(fTotalFitFunction,Form("SRI%s",options.Data()));
 
-	// check parameter errors and re-try using minos instead of minuit
-	if(!TGRSIFunctions::CheckParameterErrors(fit_res)) {
-		std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
-		fit_res = fit_hist->Fit(fTotalFitFunction,Form("SRIE%s",options.Data()));
-	}
-	// check the parameter errors again and see if we need to fit again with all parameters released
-	if(!TGRSIFunctions::CheckParameterErrors(fit_res, "q") && retryFit) {
-		std::cout<<GREEN<<"Re-fitting with released parameters (without any limits):"<<RESET_COLOR<<std::endl;
-		for(int i = 0; i < fTotalFitFunction->GetNpar(); ++i) {
-			fTotalFitFunction->ReleaseParameter(i);
+	// check the parameter errors
+	if(!TGRSIFunctions::CheckParameterErrors(fit_res, options.Data())) {
+		if(retryFit) {
+			// fit again with all parameters released
+			if(!quiet) std::cout<<GREEN<<"Re-fitting with released parameters (without any limits)"<<RESET_COLOR<<std::endl;
+			for(int i = 0; i < fTotalFitFunction->GetNpar(); ++i) {
+				fTotalFitFunction->ReleaseParameter(i);
+			}
+			fit_res = fit_hist->Fit(fTotalFitFunction,Form("SRI%s",options.Data()));
+			TGRSIFunctions::CheckParameterErrors(fit_res, options.Data());
+		} else {
+			// re-try using minos instead of minuit (only thing from opt that might play a role it 'q' or 'v')
+			if(!quiet) std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
+			fit_res = fit_hist->Fit(fTotalFitFunction,Form("SRIE%s",options.Data()));
 		}
-		fit_res = fit_hist->Fit(fTotalFitFunction,Form("SRI%s",options.Data()));
-		TGRSIFunctions::CheckParameterErrors(fit_res);
 	}
 
 	if(fit_res.Get() != nullptr) {
@@ -141,7 +148,7 @@ void TPeakFitter::Fit(TH1* fit_hist, Option_t *opt)
 
 		//Once we do the fit, we want to update all of the Peak parameters.
 		UpdatePeakParameters(fit_res, fit_hist);
-	} else {
+	} else if(!quiet) {
 		std::cout<<RED<<"Failed to get fit result, be aware that the results and especially the error estimates might be wrong!"<<RESET_COLOR<<std::endl;
 	}
 	fit_hist->Draw("hist");
@@ -149,9 +156,11 @@ void TPeakFitter::Fit(TH1* fit_hist, Option_t *opt)
 	fPeaksToFit.front()->DrawBackground("same");
 
 	// always print the result of the fit even if not verbose
-	std::cout<<"****************"<<std::endl
-				<<"Summary of Fit: "<<std::endl;
-	Print();
+	if(!quiet) {
+		std::cout<<"****************"<<std::endl
+					<<"Summary of Fit: "<<std::endl;
+		Print();
+	}
 	// restore old range
 	fit_hist->GetXaxis()->SetRange(firstBin, lastBin);
 	// reset the default back to minuit in case we switched to minos in between

@@ -36,6 +36,15 @@ public:
    Double_t GetFWHM() const { return GetParameter("sigma") * 2.3548; }
    Double_t GetFWHMErr() const { return GetParError(GetParNumber("sigma")) * 2.3548; }
 
+   Double_t Centroid() const { return GetCentroid(); }
+   Double_t CentroidErr() const { return GetCentroidErr(); }
+   Double_t Area() const { return GetArea(); }
+   Double_t AreaErr() const { return GetAreaErr(); }
+   Double_t Sum() const { return GetSum(); }
+   Double_t SumErr() const { return GetSumErr(); }
+   Double_t FWHM() const { return GetFWHM(); }
+   Double_t FWHMErr() const { return GetFWHMErr(); }
+
 protected:
    void SetArea(Double_t a) { fArea = a; }
    void SetAreaErr(Double_t d_a) { fDArea = d_a; }

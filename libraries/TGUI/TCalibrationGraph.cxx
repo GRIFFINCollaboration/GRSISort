@@ -297,6 +297,7 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint()
 void TCalibrationGraphSet::Scale()
 {
 	//std::cout<<__PRETTY_FUNCTION__<<std::endl;
+	//Print();
 	double minRef = fGraphs[0].GetPointX(0);
 	double maxRef = fGraphs[0].GetPointX(fGraphs[0].GetN()-1);
 	for(size_t g = 1; g < fGraphs.size(); ++g) {
@@ -305,7 +306,7 @@ void TCalibrationGraphSet::Scale()
 		double* ey = fGraphs[g].GetEY();
 		if(maxRef < x[0] || x[fGraphs[g].GetN()-1] < minRef) {
 			// no overlap between the two graphs, for now we just skip this one, but we could try and compare it to all the other ones?
-			//std::cout<<"No overlap between 0. graph ("<<minRef<<" - "<<maxRef<<") and "<<g<<". graph ("<<x[0]<<" - "<<x[fGraphs[g].GetN()-1]<<")"<<std::endl;
+			std::cout<<"No overlap between 0. graph ("<<minRef<<" - "<<maxRef<<") and "<<g<<". graph ("<<x[0]<<" - "<<x[fGraphs[g].GetN()-1]<<")"<<std::endl;
 			continue;
 		}
 		// we have an overlap, so we calculate the scaling factor for each point and take the average (maybe should add some weight from the errors bars)

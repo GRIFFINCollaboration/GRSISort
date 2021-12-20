@@ -243,7 +243,8 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    }
    TVirtualFitter::SetMaxIterations(100000);
 
-   bool verbose = !options.Contains("q");
+   bool quiet = options.Contains("q");
+   bool verbose = options.Contains("v");
 	bool retryFit = options.Contains("retryfit");
    options.ReplaceAll("retryfit", "");
 
@@ -256,30 +257,34 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    if(verbose) printf("chi^2/NDF = %.02f\n", GetChisquare() / static_cast<double>(GetNDF()));
 
    if(!fitres.Get()->IsValid()) {
-      printf(RED "fit has failed, trying refit... " RESET_COLOR);
+      if(!quiet) printf(RED "fit has failed, trying refit... " RESET_COLOR);
       fithist->GetListOfFunctions()->Last()->Delete();
       fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
-      if(fitres.Get()->IsValid()) {
-         printf(DGREEN " refit passed!" RESET_COLOR "\n");
-      } else {
-         printf(DRED " refit also failed :( " RESET_COLOR "\n");
-      }
+		if(!quiet) {
+			if(fitres.Get()->IsValid()) {
+				printf(DGREEN " refit passed!" RESET_COLOR "\n");
+			} else {
+				printf(DRED " refit also failed :( " RESET_COLOR "\n");
+			}
+		}
    }
 
-   // check parameter errors and re-try using minos instead of minuit
-   if(!TGRSIFunctions::CheckParameterErrors(fitres)) {
-      std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
-      fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
-   }
-   // check the parameter errors again and see if we need to fit again with all parameters released
-   if(!TGRSIFunctions::CheckParameterErrors(fitres, "q") && retryFit) {
-      std::cout<<GREEN<<"Re-fitting with released parameters (without any limits):"<<RESET_COLOR<<std::endl;
-      for(int i = 0; i < GetNpar(); ++i) {
-         ReleaseParameter(i);
-      }
-      fitres = fithist->Fit(this, Form("%sLRSM", options.Data()));
-      TGRSIFunctions::CheckParameterErrors(fitres);
-   }
+   // check parameter errors
+   if(!TGRSIFunctions::CheckParameterErrors(fitres, options.Data())) {
+		if(retryFit) {
+			// fit again with all parameters released
+			if(!quiet) std::cout<<GREEN<<"Re-fitting with released parameters (without any limits):"<<RESET_COLOR<<std::endl;
+			for(int i = 0; i < GetNpar(); ++i) {
+				ReleaseParameter(i);
+			}
+			fitres = fithist->Fit(this, Form("%sLRSM", options.Data()));
+		} else {
+			// re-try using minos instead of minuit
+			if(!quiet) std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
+			fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
+		}
+	}
+	TGRSIFunctions::CheckParameterErrors(fitres, options.Data());
 
    Double_t xlow, xhigh;
    TF1::GetRange(xlow, xhigh);
@@ -336,7 +341,7 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    delete tmppeak;
 
 	// always print the results of the fit even if not verbose
-	Print();
+	if(!quiet) Print();
 
    Copy(*fithist->GetListOfFunctions()->FindObject(GetName()));
    fithist->GetListOfFunctions()->Add(fBGFit.Clone());

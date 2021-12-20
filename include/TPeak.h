@@ -66,6 +66,18 @@ public:
       return static_cast<const TF1*>(this);
    } // I might move the fit functions to TGRSIFit, it's just a little tricky to initilize the function
 
+   Double_t Centroid() const { return GetCentroid(); }
+   Double_t CentroidErr() const { return GetCentroidErr(); }
+   Double_t Area() const { return GetArea(); }
+   Double_t AreaErr() const { return GetAreaErr(); }
+   Double_t FWHM() const { return GetFWHM(); }
+   Double_t FWHMErr() const { return GetFWHMErr(); }
+   Double_t IntegralArea() { return GetIntegralArea(); }
+   Double_t IntegralArea(Double_t int_low, Double_t int_high) { return GetIntegralArea(int_low, int_high); }
+   Double_t IntegralAreaErr() { return GetIntegralAreaErr(); }
+   Double_t IntegralAreaErr(Double_t int_low, Double_t int_high) { return GetIntegralAreaErr(int_low, int_high); }
+   const TF1* FitFunction() const { return GetFitFunction(); }
+
 protected:
    void SetArea(Double_t a) { fArea = a; }
    void SetAreaErr(Double_t d_a) { fDArea = d_a; }

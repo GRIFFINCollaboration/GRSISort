@@ -1,5 +1,5 @@
-#ifndef TSOURCES_H
-#define TSOURCES_H
+#ifndef TSOURCECALIBRATION_H
+#define TSOURCECALIBRATION_H
 
 #include <cstdarg>
 #include <iostream>
@@ -25,23 +25,23 @@
 #include "TH2.h"
 
 #include "GPeak.h"
+#include "TSinglePeak.h"
 #include "TNucleus.h"
 #include "TCalibrationGraph.h"
 
 std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double> > Match(std::vector<std::tuple<double, double, double, double> > peaks, std::vector<std::tuple<double, double, double, double> > source);
 std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double> > SmartMatch(std::vector<std::tuple<double, double, double, double> > peaks, std::vector<std::tuple<double, double, double, double> > source);
 
-double Linear(double* x, double* par);
-double Quadratic(double* x, double* par);
+double Polynomial(double* x, double* par);
 double Efficiency(double* x, double* par);
 
 bool FilledBin(TH2* matrix, const int& bin);
 
-class TSources;
+class TSourceCalibration;
 
 class TChannelTab {
 public:
-	TChannelTab(TGTab* parent, TH1* projection, TGCompositeFrame* frame, const double& sigma, const double& threshold, const bool& quadratic, const std::vector<std::tuple<double, double, double, double> >& sourceEnergy);
+	TChannelTab(TGTab* parent, TH1* projection, TGCompositeFrame* frame, const double& sigma, const double& threshold, const int& degree, const std::vector<std::tuple<double, double, double, double> >& sourceEnergy);
 	TChannelTab(const TChannelTab& rhs);
 	~TChannelTab();
 
@@ -52,8 +52,8 @@ public:
 	void CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
 
 	void Add(std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double> > map);
-	void Calibrate(const bool& quadratic, const std::vector<std::tuple<double, double, double, double> >& sourceEnergy, const bool& force = false);
-	void FindPeaks(const double& sigma, const double& threshold, const bool& force = false);
+	void Calibrate(const int& degree, const bool& force = false);
+	void FindPeaks(const double& sigma, const double& threshold, const std::vector<std::tuple<double, double, double, double> >& sourceEnergy, const bool& force = false, const bool& fast = true);
 
 	TGraphErrors* Data() { return fData; }
 	TGraphErrors* Efficiency() { return fEfficiency; }
@@ -79,13 +79,13 @@ private:
 	TGraphErrors* fEfficiency{nullptr};
 	double fSigma{2.};
 	double fThreshold{0.05};
-	bool fQuadratic{false};
+	int fDegree{1};
 	std::vector<GPeak*> fPeaks;
 };
 
 class TSourceTab {
 public:
-	TSourceTab(TSources* parent, TNucleus* nucleus, TH2* matrix, TGCompositeFrame* frame, const double& sigma, const double& threshold, const bool& quadratic, const std::vector<std::tuple<double, double, double, double> >& sourceEnergy, TGHProgressBar* progressBar);
+	TSourceTab(TSourceCalibration* parent, TNucleus* nucleus, TH2* matrix, TGCompositeFrame* frame, const double& sigma, const double& threshold, const int& degree, const std::vector<std::tuple<double, double, double, double> >& sourceEnergy, TGHProgressBar* progressBar);
 	~TSourceTab();
 
 	void CreateChannelTab(int bin);
@@ -93,8 +93,8 @@ public:
 	void MakeConnections();
 	void Disconnect();
 
-	void Calibrate(const bool& quadratic, const std::vector<std::tuple<double, double, double, double> >& sourceEnergy, const bool& force = false) { fChannel[fChannelTab->GetCurrent()]->Calibrate(quadratic, sourceEnergy, force); }
-	void FindPeaks(const double& sigma, const double& threshold, const bool& force = false) { fChannel[fChannelTab->GetCurrent()]->FindPeaks(sigma, threshold, force); }
+	void Calibrate(const int& degree, const bool& force = false) { fChannel[fChannelTab->GetCurrent()]->Calibrate(degree, force); }
+	void FindPeaks(const double& sigma, const double& threshold, const bool& force = false, const bool& fast = true) { fChannel[fChannelTab->GetCurrent()]->FindPeaks(sigma, threshold, fSourceEnergy, force, fast); }
 	TGTab* ChannelTab() { return fChannelTab; }
 	TGraphErrors* Data(int channelId) { return fChannel[channelId]->Data(); }
 	TGraphErrors* Efficiency(int channelId) { return fChannel[channelId]->Efficiency(); }
@@ -110,15 +110,15 @@ private:
 	// storage elements
 	std::vector<TH1*> fProjections; ///< vector of all projections
 	TNucleus* fNucleus; ///< the source nucleus
-	TSources* fParent; ///< the parent of this tab
+	TSourceCalibration* fParent; ///< the parent of this tab
 	TH2* fMatrix{nullptr}; ///< the matrix we're using
 	double fSigma{2.}; ///< the sigma used in the peak finder
 	double fThreshold{0.05}; ///< the threshold (relative to the largest peak) used in the peak finder
-	bool fQuadratic{false}; ///< flag to determine whether a quadratic term is included
+	int fDegree{false}; ///< degree of polynomial function used to calibrate
 	std::vector<std::tuple<double, double, double, double> > fSourceEnergy; ///< vector with source energies and uncertainties
 };
 
-class TSources : public TGMainFrame {
+class TSourceCalibration : public TGMainFrame {
 public:
 	enum ESources {
 		k22Na,
@@ -132,12 +132,13 @@ public:
 		kStartButton,
 		kSourceBox = 100,
 		kSigmaEntry = 200,
-		kThresholdEntry = 300
+		kThresholdEntry = 300,
+		kDegreeEntry = 400
 	};
 
 public:
-	TSources(double sigma, double threshold, int n...);
-	~TSources();
+	TSourceCalibration(double sigma, double threshold, int n...);
+	~TSourceCalibration();
 
 	void SetSource(Int_t windowId, Int_t entryId);
 	void Start();
@@ -147,6 +148,7 @@ public:
 	void Navigate(Int_t id);
 	void Calibrate();
 	void FindPeaks();
+	void FindPeaksFast();
 	void SelectedTab(Int_t id);
 
 	void NavigateFinal(Int_t id);
@@ -159,7 +161,7 @@ public:
 
 	double Sigma() { return fSigmaEntry->GetNumber(); }
 	double Threshold() { return fThresholdEntry->GetNumber(); }
-	bool Quadratic() { if(fQuadraticButton == nullptr) return false; return fQuadraticButton->IsOn(); }
+	int Degree() { if(fDegreeEntry == nullptr) return 1; return fDegreeEntry->GetNumber(); }
 	std::vector<std::tuple<double, double, double, double> > SourceEnergy(const size_t& i) { return fSourceEnergy.at(i); }
 	void CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
 
@@ -197,6 +199,7 @@ private:
 	TGTextButton*        fPreviousButton{nullptr};
 	TGTextButton*        fCalibrateButton{nullptr};
 	TGTextButton*        fFindPeaksButton{nullptr};
+	TGTextButton*        fFindPeaksFastButton{nullptr};
 	TGTextButton*        fDiscardButton{nullptr};
 	TGTextButton*        fAcceptButton{nullptr};
 	TGTextButton*        fAcceptAllButton{nullptr};
@@ -206,7 +209,8 @@ private:
 	TGNumberEntry*       fSigmaEntry{nullptr};
 	TGLabel*             fThresholdLabel{nullptr};
 	TGNumberEntry*       fThresholdEntry{nullptr};
-	TGCheckButton*       fQuadraticButton{nullptr};
+	TGLabel*             fDegreeLabel{nullptr};
+	TGNumberEntry*       fDegreeEntry{nullptr};
 	TGHProgressBar*      fProgressBar{nullptr};
 	std::vector<TGCompositeFrame*> fFinalTab;
 	std::vector<TRootEmbeddedCanvas*> fFinalCanvas;
@@ -243,10 +247,11 @@ private:
 
 	double fDefaultSigma{2.}; ///< The default sigma used for the peak finding algorithm, can be changed later.
 	double fDefaultThreshold{0.05}; ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.
+	int fDefaultDegree{1}; ///< The default degree of the polynomial used for calibrating, can be changed later.
 
 	TFile* fOutput{nullptr};
 
-	ClassDef(TSources, 1);
+	ClassDef(TSourceCalibration, 1);
 };
 
 #endif

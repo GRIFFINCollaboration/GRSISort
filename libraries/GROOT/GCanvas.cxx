@@ -1125,7 +1125,13 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 		{
 			TString defaultName = "cut";
 			if(gROOT->FindObject("CUTG") == nullptr) {
-				std::cout<<"Something went wrong, can't find 'CUTG', did you initialize the cut beforehand?"<<std::endl;
+				std::cout<<"Something went wrong, can't find 'CUTG', did you initialize the cut beforehand? Or maybe you already pressed c?"<<std::endl
+							<<"Current list of cuts is ";
+				if(fCuts.empty()) std::cout<<"empty";
+				for(auto cut : fCuts) {
+					std::cout<<cut->GetName()<<" ";
+				}
+				std::cout<<std::endl;
 				break;
 			}
 			fCuts.push_back(static_cast<TCutG*>(gROOT->FindObject("CUTG")));
