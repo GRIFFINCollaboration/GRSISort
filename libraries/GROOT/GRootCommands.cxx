@@ -24,14 +24,14 @@
 #include <TTimer.h>
 #include <TF1.h>
 
-#include <GCanvas.h>
-#include <GPeak.h>
+#include "GCanvas.h"
+#include "GPeak.h"
 #include "TPeak.h"
-#include <GGaus.h>
-#include <GH2D.h>
-#include <GH1D.h>
-#include <TGRSIOptions.h>
-#include <GNotifier.h>
+#include "GGaus.h"
+#include "GH2D.h"
+#include "GH1D.h"
+#include "TGRSIOptions.h"
+#include "GNotifier.h"
 
 TChain* gFragment = nullptr;
 TChain* gAnalysis = nullptr;
@@ -283,16 +283,12 @@ GPeak* PhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
       std::swap(xlow, xhigh);
    }
 
-   // std::cout<<"here."<<std::endl;
-
    auto*       mypeak  = new GPeak((xlow + xhigh) / 2.0, xlow, xhigh);
    std::string options = opt;
    options.append("Q+");
    mypeak->Fit(hist, options.c_str());
-   // mypeak->Background()->Draw("SAME");
    auto* bg = new TF1(*mypeak->Background());
    hist->GetListOfFunctions()->Add(bg);
-   // edit = true;
 
    return mypeak;
 }
