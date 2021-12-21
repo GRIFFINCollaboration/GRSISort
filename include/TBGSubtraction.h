@@ -18,7 +18,8 @@
 #include "TRootEmbeddedCanvas.h"
 #include "RQ_OBJECT.h"
 
-#include "TRWPeak.h"
+#include "TPeakFitter.h"
+#include "TSinglePeak.h"
 
 #include "TH1.h"
 #include "TH2.h"
@@ -62,11 +63,17 @@ class TBGSubtraction : public TGMainFrame {
       kWrite2FileNameEntry,
       kHistogramDescriptionEntry,
       kComboAxisEntry,
+      kComboPeakEntry,
       kBGCheckButton1,
       kBGCheckButton2,
-      kPeakSkewCheckButton,
       kAutoUpdateCheckButton
    };
+	enum EPeaks {
+		kGauss = 0,
+		kRWPeak = 1,
+		kABPeak = 2,
+		kAB3Peak = 3
+	};
 
    //  RQ_OBJECT("TBGSubtraction")
 private:
@@ -93,7 +100,6 @@ private:
    TGLabel*             fBGParamLabel{nullptr};
    TGCheckButton*       fBGCheckButton1;
    TGCheckButton*       fBGCheckButton2;
-   TGCheckButton*       fPeakSkewCheckButton;
    TGCheckButton*       fAutoUpdateCheckButton;
 
    TGLayoutHints* fBly;
@@ -123,6 +129,7 @@ private:
 
    // Combo box
    TGComboBox* fAxisCombo;
+   TGComboBox* fPeakCombo;
 
    // Markers
    GMarker* fLowGateMarker;
@@ -140,18 +147,21 @@ private:
    Int_t fGateAxis;
 
    Bool_t fForceUpdate;
-   Double_t fPeakLowLimit;
-   Double_t fPeakHighLimit;
-   Double_t fPeakLowValue;
-   Double_t fPeakHighValue;
-   Double_t fPeakValue;
+   Double_t fPeakLowLimit; ///< lower limit for peak slider range
+   Double_t fPeakHighLimit; ///< upper limit for peak slider range
+   Double_t fPeakLowValue; ///< low range for fit
+   Double_t fPeakHighValue; ///< high range for fit
+   Double_t fPeakValue; ///< centroid for fit
 
-   TRWPeak* fPeakFit;
+   TSinglePeak* fPeak; ///< the peak to be fit (will be a class that inherits from TSinglePeak)
+	TPeakFitter* fPeakFitter; ///< the peak fitter that fPeak is added to
+	Int_t fPeakId; ///< the current ID of the peak
 
 public:
    TBGSubtraction(TH2* mat, const char* gate_axis = "x");
    ~TBGSubtraction() override;
    void AxisComboSelected();
+   void PeakComboSelected();
    void ClickedBGButton1();
    void ClickedBGButton2();
  //  void ClickedBG2Button();
@@ -196,7 +206,7 @@ private:
    void UpdateBGSlider2();
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBGSubtraction, 6); // Background subtractor GUI
+   ClassDefOverride(TBGSubtraction, 7); // Background subtractor GUI
    /// \endcond
 };
 /*! @} */

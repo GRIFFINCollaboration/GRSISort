@@ -7,10 +7,15 @@ PLATFORM:=$(shell uname)
 # EDIT THIS SECTION
 
 INCLUDES   = include users
-CFLAGS     = -g -std=c++11 -O3 -Wall -Wextra -pedantic -Wno-unknown-pragmas -Wno-unused-function -Wshadow
+ifneq (,$(findstring -std=,$(shell root-config --cflags)))
+CFLAGS = -g -O3 -Wall -Wextra -pedantic -Wno-unknown-pragmas -Wno-unused-function -Wshadow
+LINKFLAGS_SUFFIX  = -L/opt/X11/lib -lX11 -lXpm
+else
+CFLAGS = -std=c++11 -g -O3 -Wall -Wextra -pedantic -Wno-unknown-pragmas -Wno-unused-function -Wshadow
+LINKFLAGS_SUFFIX  = -std=c++11 -L/opt/X11/lib -lX11 -lXpm
+endif
 #-Wall -Wextra -pedantic -Wno-unused-parameter
 LINKFLAGS_PREFIX  =
-LINKFLAGS_SUFFIX  = -L/opt/X11/lib -lX11 -lXpm -std=c++11
 SRC_SUFFIX = cxx
 
 # EVERYTHING PAST HERE SHOULD WORK AUTOMATICALLY

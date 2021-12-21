@@ -1,6 +1,9 @@
 #include "TPeakFitter.h"
 #include "Math/Minimizer.h"
 #include "TH1.h"
+#include "TClass.h"
+
+#include "Globals.h"
 
 /// \cond CLASSIMP
 ClassImp(TPeakFitter)
@@ -11,7 +14,7 @@ TPeakFitter::TPeakFitter() : TObject()
    fBGToFit = new TF1("fbg",this, &TPeakFitter::DefaultBackgroundFunction,fRangeLow,fRangeHigh,4,"TPeakFitter","DefaultBackgroundFunction"); 
    fBGToFit->FixParameter(3,0);
    fTotalFitFunction = nullptr;
-   fBGToFit->SetLineColor(kRed);
+   fBGToFit->SetLineColor(kRed+fIndex);
 }
 
 TPeakFitter::TPeakFitter(const Double_t &range_low, const Double_t &range_high) : TPeakFitter()
@@ -20,28 +23,43 @@ TPeakFitter::TPeakFitter(const Double_t &range_low, const Double_t &range_high) 
    fRangeHigh = range_high;
 }
 
-void TPeakFitter::Print(Option_t * opt) const{
-	std::cout << "Range: " << fRangeLow << " to " << fRangeHigh << std::endl;
+void TPeakFitter::Print(Option_t * opt) const
+{
+	/// Print information from the fit, opt is passed along to each individual peaks Print function.
+	std::cout<<"Range: "<<fRangeLow<<" to "<<fRangeHigh<<std::endl;
 	Int_t counter = 0;
 	if(!fPeaksToFit.empty()) {
-		std::cout << "Peaks: " << std::endl<<std::endl;
+		std::cout<<"Peaks: "<<std::endl<<std::endl;
 		for(auto i : fPeaksToFit) {
-			std::cout << "Peak #" << counter++ <<std::endl;
+			std::cout<<"Peak #"<<counter++ <<std::endl;
 			i->Print(opt);
 		}
-		std::cout << "Chi2/Ndf = " << fPeaksToFit.front()->GetChi2() << "/"<<fPeaksToFit.front()->GetNDF()<< " = " << fPeaksToFit.front()->GetReducedChi2() << std::endl;
+		std::cout<<"Chi2/Ndf = "<<fPeaksToFit.front()->GetChi2()<<"/"<<fPeaksToFit.front()->GetNDF()<< " = "<<fPeaksToFit.front()->GetReducedChi2()<<std::endl;
 	} else {
-		std::cout << "Could not find peak to print" << std::endl;
+		std::cout<<"Could not find peak to print"<<std::endl;
 	}
 	if(fBGToFit) {
-		std::cout << "BG: " << std::endl;
+		std::cout<<"BG: "<<std::endl;
 		fBGToFit->Print(opt);
 	} else {
-		std::cout << "Could not find a BG to print" << std::endl;
+		std::cout<<"Could not find a BG to print"<<std::endl;
 	}
 }
 
-Int_t TPeakFitter::GetNParameters() const{
+void TPeakFitter::PrintParameters() const
+{
+	/// Print the range of the fit and the parameters of each peak on a single line.
+	std::cout<<"Range: "<<fRangeLow<<" to "<<fRangeHigh<<" - ";
+	int i = 0;
+	for(auto peak : fPeaksToFit) {
+		std::cout<<peak->IsA()->GetName()<<" #"<<i++<<" ";
+		peak->PrintParameters();
+	}
+	std::cout<<std::endl;
+}
+
+Int_t TPeakFitter::GetNParameters() const
+{
 	Int_t n_par = 0;
 	for(auto i : fPeaksToFit)
 		n_par += i->GetNParameters();
@@ -57,12 +75,21 @@ void TPeakFitter::SetRange(const Double_t &low, const Double_t &high)
 	fRangeHigh = high;
 }
 
-void TPeakFitter::Fit(TH1* fit_hist,Option_t *opt)
+void TPeakFitter::Fit(TH1* fit_hist, Option_t *opt)
 {
+	/// Fit the histogram. Recognized options are "q" for a quiet fit, "retryfit" to retry a fit without parameter limits
+	/// if one of the parameters got close to its limit. All options (apart from "retryfit") are passed on to the actual 
+	/// call to TH1::Fit.
 	if(fPeaksToFit.empty()) {
 		std::cout<<"No peaks provided!"<<std::endl;
 		return;
 	}
+
+	TString options = opt;
+	options.ToLower();
+	bool verbose = !options.Contains("q");
+	bool retryFit = options.Contains("retryfit");
+	options.ReplaceAll("retryfit", "");
 
 	// store original range
 	int firstBin = fit_hist->GetXaxis()->GetFirst();
@@ -76,40 +103,63 @@ void TPeakFitter::Fit(TH1* fit_hist,Option_t *opt)
 	if(!fTotalFitFunction) {
 		fTotalFitFunction = new TF1("total_fit",this,&TPeakFitter::FitFunction,fRangeLow,fRangeHigh,GetNParameters(),"TPeakFitter","FitFunction");
 	}
+	fTotalFitFunction->SetLineColor(kMagenta+fIndex);
 	//We need to initialize all of the parameters based on the peak parameters
 	if(fit_hist != nullptr && (!fInitFlag || fit_hist != fLastHistFit)) {
-		std::cout << "Initializing Fit...." << std::endl;
+		if(verbose) std::cout<<"Initializing Fit...."<<std::endl;
 		InitializeBackgroundParameters(fit_hist);
 		InitializeParameters(fit_hist);
 		fInitFlag = true;
 		fLastHistFit = fit_hist;
 	}
 	UpdateFitterParameters();
+	if(verbose) PrintParameters();
 	//Do a first fit to get closer on the parameters
 	fit_hist->Fit(fTotalFitFunction,"RNQ0");
 	//Now try the fit with the options provided
-	fit_hist->Fit(fTotalFitFunction,Form("RNQO%s",opt));
+	fit_hist->Fit(fTotalFitFunction,Form("RNQO%s",options.Data()));
 	//Now do a final fit with integrated bins
-	TFitResultPtr fit_res = fit_hist->Fit(fTotalFitFunction,Form("SRI%s",opt));
+	TFitResultPtr fit_res = fit_hist->Fit(fTotalFitFunction,Form("SRI%s",options.Data()));
+
+	// check parameter errors and re-try using minos instead of minuit
+	if(!TGRSIFunctions::CheckParameterErrors(fit_res)) {
+		std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
+		fit_res = fit_hist->Fit(fTotalFitFunction,Form("SRIE%s",options.Data()));
+	}
+	// check the parameter errors again and see if we need to fit again with all parameters released
+	if(!TGRSIFunctions::CheckParameterErrors(fit_res, "q") && retryFit) {
+		std::cout<<GREEN<<"Re-fitting with released parameters (without any limits):"<<RESET_COLOR<<std::endl;
+		for(int i = 0; i < fTotalFitFunction->GetNpar(); ++i) {
+			fTotalFitFunction->ReleaseParameter(i);
+		}
+		fit_res = fit_hist->Fit(fTotalFitFunction,Form("SRI%s",options.Data()));
+		TGRSIFunctions::CheckParameterErrors(fit_res);
+	}
 
 	if(fit_res.Get() != nullptr) {
 		fTotalFitFunction->SetFitResult(*fit_res); //Not sure if this is needed
 
 		//Once we do the fit, we want to update all of the Peak parameters.
-		UpdatePeakParameters(fit_res,fit_hist);
+		UpdatePeakParameters(fit_res, fit_hist);
+	} else {
+		std::cout<<RED<<"Failed to get fit result, be aware that the results and especially the error estimates might be wrong!"<<RESET_COLOR<<std::endl;
 	}
 	fit_hist->Draw("hist");
 	fTotalFitFunction->Draw("same");
 	fPeaksToFit.front()->DrawBackground("same");
 
-	std::cout << "****************" <<std::endl;
-	std::cout << "Summary of Fit: " << std::endl;
+	// always print the result of the fit even if not verbose
+	std::cout<<"****************"<<std::endl
+				<<"Summary of Fit: "<<std::endl;
 	Print();
 	// restore old range
 	fit_hist->GetXaxis()->SetRange(firstBin, lastBin);
+	// reset the default back to minuit in case we switched to minos in between
+	ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2", "Combination");
 }
 
-void TPeakFitter::UpdatePeakParameters(TFitResultPtr fit_res, TH1* fit_hist) {
+void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hist)
+{
 	//We enter this function once we have performed a fit and need to tell the peaks
 	//what their new parameters should be.
 	Int_t peak_counter = 0;
@@ -156,12 +206,10 @@ void TPeakFitter::UpdatePeakParameters(TFitResultPtr fit_res, TH1* fit_hist) {
 		//zero other non-peak portions of matrix
 		for(auto i : param_to_zero_list) {
 			for(auto j : param_to_zero_list) {
-				//    std::cout << "Zeroing : " << i << " " << j << std::endl;
 				covariance_matrix(i,j) = 0.0;
 			}
 			total_function_copy->SetParameter(i,0.0);
 		}
-		//     covariance_matrix.Print();
 		if(peak_func) {
 			for(int i = 0;i < peak_func->GetNpar(); ++i) {
 				peak_func->SetParameter(i,fTotalFitFunction->GetParameter(param_counter));
@@ -174,7 +222,7 @@ void TPeakFitter::UpdatePeakParameters(TFitResultPtr fit_res, TH1* fit_hist) {
 			}
 			p_it->SetArea(total_function_copy->Integral(p_it->Centroid()-p_it->Width()*5., p_it->Centroid()+p_it->Width()*5.,1e-8)/fit_hist->GetBinWidth(1));
 			p_it->SetAreaErr(total_function_copy->IntegralError(p_it->Centroid()-p_it->Width()*5., p_it->Centroid()+p_it->Width()*5., total_function_copy->GetParameters(), covariance_matrix.GetMatrixArray(),1E-5)/fit_hist->GetBinWidth(1));
-			std::cout << "Integrating from: " << p_it->Centroid()-p_it->Width()*5. << " to " <<  p_it->Centroid()+p_it->Width()*5. << std::endl;
+			//std::cout<<"Integrating from: "<<p_it->Centroid()-p_it->Width()*5.<<" to "<<p_it->Centroid()+p_it->Width()*5.<<std::endl;
 			++peak_counter;
 		}
 		total_function_copy->Delete();
@@ -233,7 +281,6 @@ void TPeakFitter::UpdateFitterParameters()
 		}
 	}
 }
-
 
 Double_t TPeakFitter::FitFunction(Double_t *dim, Double_t *par)
 {
@@ -322,13 +369,12 @@ void TPeakFitter::DrawPeaks(Option_t *) const{
 	//First we are going to draw the background
 	TF1* bg_to_draw = new TF1;
 	fTotalFitFunction->Copy(*bg_to_draw);
-	bg_to_draw->SetLineColor(kRed);
+	bg_to_draw->SetLineColor(kRed+fIndex);
 
 	for(auto p_it : fPeaksToFit) {
 		TF1* peak_func = p_it->GetFitFunction();
 		TF1* total_function_copy = new TF1;
 		fTotalFitFunction->Copy(*total_function_copy);
-		total_function_copy->SetLineColor(kMagenta);
 		//Now we need to remove all of the parts of the covariance peak that has nothing to do with this particular peak
 		//This would be the diagonals of the background, and all of the other peaks.
 		Int_t param_to_zero_counter = 0;
