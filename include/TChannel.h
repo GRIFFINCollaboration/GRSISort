@@ -74,15 +74,15 @@ public:
 	static TClassRef GetMnemonicClass()             { return fMnemonicClass; }
 
 private:
-   unsigned int fAddress;     // The address of the digitizer
-   TPriorityValue<int>          fIntegration; // The charge integration setting
+   unsigned int fAddress{0};     // The address of the digitizer
+   TPriorityValue<int>          fIntegration{1}; // The charge integration setting
    TPriorityValue<std::string>  fDigitizerTypeString;
 	TPriorityValue<EDigitizer>   fDigitizerType;
-   TPriorityValue<int>          fTimeStampUnit;
-   TPriorityValue<int>          fNumber;
-   TPriorityValue<int>          fStream;
-   TPriorityValue<int>          fUserInfoNumber;
-   TPriorityValue<bool>         fUseCalFileInt;
+   TPriorityValue<int>          fTimeStampUnit{0};
+   TPriorityValue<int>          fNumber{0};
+   TPriorityValue<int>          fStream{0};
+   TPriorityValue<int>          fUserInfoNumber{0};
+   TPriorityValue<bool>         fUseCalFileInt{false};
 
    mutable int fDetectorNumber;
    mutable int fSegmentNumber;
@@ -103,7 +103,7 @@ private:
    TPriorityValue<std::vector<double> >  fEFFCoefficients;  // Efficiency calibration coeffs (low to high order)
    TPriorityValue<double>                fEFFChi2;          // Chi2 of Efficiency calibration
    TPriorityValue<std::vector<double> >  fCTCoefficients;   // Cross talk coefficients
-	TPriorityValue<TGraph>                fEnergyNonlinearity; // Energy nonlinearity as spline
+	TPriorityValue<TGraph>                fEnergyNonlinearity; // Energy nonlinearity as TGraph, is used as E=E+GetEnergyNonlinearity(E), so y should be E(source)-calibration(peak)
 
    struct WaveFormShapePar {
       bool   InUse;
@@ -120,14 +120,6 @@ private:
    void        OverWriteChannel(TChannel*);
    void        AppendChannel(TChannel*);
 
-   void SetENGCoefficients(TPriorityValue<std::vector<Float_t> > tmp) { fENGCoefficients = tmp; }
-   void SetCFDCoefficients(TPriorityValue<std::vector<double> > tmp) { fCFDCoefficients = tmp; }
-   void SetLEDCoefficients(TPriorityValue<std::vector<double> > tmp) { fLEDCoefficients = tmp; }
-   void SetTIMECoefficients(TPriorityValue<std::vector<double> > tmp) { fTIMECoefficients = tmp; }
-   void SetEFFCoefficients(TPriorityValue<std::vector<double> > tmp) { fEFFCoefficients = tmp; }
-   void SetCTCoefficients(TPriorityValue<std::vector<double> > tmp) { fCTCoefficients = tmp; }
-	void SetEnergyNonlinearity(TPriorityValue<TGraph> tmp) { fEnergyNonlinearity = tmp; }
-
 	void SetupEnergyNonlinearity(); // sort energy nonlinearity graph and set name/title
 
    static void trim(std::string&);
@@ -141,7 +133,7 @@ public:
 		// channel number has changed so we need to delete the old one and insert the new one
 		fChannelNumberMap->erase(fNumber.Value());
       fNumber = tmp;
-		if((fNumber != 0) && (fChannelNumberMap->count(fNumber.Value()) == 0)) {
+		if((fNumber.Value() != 0) && (fChannelNumberMap->count(fNumber.Value()) == 0)) {
 			fChannelNumberMap->insert(std::make_pair(fNumber.Value(), this));
 		}
    }
@@ -197,6 +189,14 @@ public:
    std::vector<double>  GetCTCoeff() const { return fCTCoefficients.Value(); }
 	TGraph               GetEnergyNonlinearity() const { return fEnergyNonlinearity.Value(); }
 	double               GetEnergyNonlinearity(double en) const;
+
+   void SetENGCoefficients(TPriorityValue<std::vector<Float_t> > tmp) { fENGCoefficients = tmp; }
+   void SetCFDCoefficients(TPriorityValue<std::vector<double> > tmp) { fCFDCoefficients = tmp; }
+   void SetLEDCoefficients(TPriorityValue<std::vector<double> > tmp) { fLEDCoefficients = tmp; }
+   void SetTIMECoefficients(TPriorityValue<std::vector<double> > tmp) { fTIMECoefficients = tmp; }
+   void SetEFFCoefficients(TPriorityValue<std::vector<double> > tmp) { fEFFCoefficients = tmp; }
+   void SetCTCoefficients(TPriorityValue<std::vector<double> > tmp) { fCTCoefficients = tmp; }
+	void SetEnergyNonlinearity(TPriorityValue<TGraph> tmp) { fEnergyNonlinearity = tmp; }
 
    inline void AddENGCoefficient(Float_t temp) { fENGCoefficients.Address()->push_back(temp); }
    inline void AddCFDCoefficient(double temp) { fCFDCoefficients.Address()->push_back(temp); }

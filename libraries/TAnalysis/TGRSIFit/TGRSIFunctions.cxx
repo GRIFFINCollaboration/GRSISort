@@ -25,6 +25,10 @@ bool TGRSIFunctions::CheckParameterErrors(const TFitResultPtr& fitres, std::stri
    std::transform(opt.begin(), opt.end(), opt.begin(), [](unsigned char c){ return std::tolower(c); });
    bool quiet = (opt.find('q') != std::string::npos);
    bool verbose = (opt.find('v') != std::string::npos);
+	if(quiet && verbose) {
+		std::cout<<"Don't know how to be quiet and verbose at once ("<<opt<<"), going to be verbose!"<<std::endl;
+		quiet = false;
+	}
    bool result = true;
    // loop over all parameters and compare the parameter error with the square root 
    // of the diagonal element of the covariance matrix
@@ -119,7 +123,9 @@ Double_t TGRSIFunctions::PhotoPeak(Double_t* dim, Double_t* par)
 Double_t TGRSIFunctions::PhotoPeakBG(Double_t* dim, Double_t* par)
 {
    // Returns a single RadWare style peak
-   return Gaus(dim, par) + SkewedGaus(dim, par) + StepFunction(dim, par) + PolyBg(dim, &par[6], 2);
+   double result = Gaus(dim, par) + SkewedGaus(dim, par) + StepFunction(dim, par) + PolyBg(dim, &par[6], 2);
+	if(isfinite(result)) return result;
+   return 0.;
 }
 
 Double_t TGRSIFunctions::MultiPhotoPeakBG(Double_t* dim, Double_t* par)
