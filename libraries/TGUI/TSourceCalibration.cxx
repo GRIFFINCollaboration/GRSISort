@@ -107,8 +107,11 @@ std::map<std::tuple<double, double, double, double>, std::tuple<double, double, 
 
 		// copy all values from the vectors to the result map
       if(!tmpMap.empty()) {
-			for(auto it : tmpMap) result[*(std::find_if(peaks.begin(),   peaks.end(),   [&it] (auto& item) { return it.first  == std::get<0>(item); }))] = 
-				                          *(std::find_if(sources.begin(), sources.end(), [&it] (auto& item) { return it.second == std::get<0>(item); }));
+			// apparently c++14 is needed to use auto in a lambda so for now we spell it out
+		//	for(auto it : tmpMap) result[*(std::find_if(peaks.begin(),   peaks.end(),   [&it] (auto& item) { return it.first  == std::get<0>(item); }))] = 
+		//		                          *(std::find_if(sources.begin(), sources.end(), [&it] (auto& item) { return it.second == std::get<0>(item); }));
+			for(auto it : tmpMap) result[*(std::find_if(peaks.begin(),   peaks.end(),   [&it] (std::tuple<double, double, double, double>& item) { return it.first  == std::get<0>(item); }))] = 
+				                          *(std::find_if(sources.begin(), sources.end(), [&it] (std::tuple<double, double, double, double>& item) { return it.second == std::get<0>(item); }));
 			//std::cout<<"Matched "<<num_data_points<<" data points from "<<peaks.size()<<" peaks with "<<sources.size()<<" source energies"<<std::endl;
 			//std::cout<<"Returning map with "<<result.size()<<" points: ";
 			//for(auto it : result) std::cout<<std::get<0>(it.first)<<" - "<<std::get<0>(it.second)<<"; ";
@@ -214,8 +217,11 @@ std::map<std::tuple<double, double, double, double>, std::tuple<double, double, 
 
 		// copy all values from the vectors to the result map
       if(!tmpMap.empty()) {
-			for(auto it : tmpMap) result[*(std::find_if(peaks.begin(),   peaks.end(),   [&it] (auto& item) { return it.first  == std::get<0>(item); }))] = 
-				                          *(std::find_if(sources.begin(), sources.end(), [&it] (auto& item) { return it.second == std::get<0>(item); }));
+			// apparently c++14 is needed to use auto in a lambda so for now we spell it out
+		//	for(auto it : tmpMap) result[*(std::find_if(peaks.begin(),   peaks.end(),   [&it] (auto& item) { return it.first  == std::get<0>(item); }))] = 
+		//		                          *(std::find_if(sources.begin(), sources.end(), [&it] (auto& item) { return it.second == std::get<0>(item); }));
+			for(auto it : tmpMap) result[*(std::find_if(peaks.begin(),   peaks.end(),   [&it] (std::tuple<double, double, double, double>& item) { return it.first  == std::get<0>(item); }))] = 
+				                          *(std::find_if(sources.begin(), sources.end(), [&it] (std::tuple<double, double, double, double>& item) { return it.second == std::get<0>(item); }));
 			//std::cout<<"Smart matched "<<num_data_points<<" data points from "<<peaks.size()<<" peaks with "<<sources.size()<<" source energies"<<std::endl;
 			//std::cout<<"Returning map with "<<result.size()<<" points: ";
 			//for(auto it : result) std::cout<<std::get<0>(it.first)<<" - "<<std::get<0>(it.second)<<"; ";
