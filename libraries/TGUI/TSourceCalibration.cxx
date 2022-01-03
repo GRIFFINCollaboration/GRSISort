@@ -462,7 +462,11 @@ void TChannelTab::Add(std::map<std::tuple<double, double, double, double>, std::
 	if(fData != nullptr) delete fData;
 	if(fEfficiency != nullptr) delete fEfficiency;
 	fData = new TGraphErrors(map.size());
+	fData->SetLineColor(2);
+	fData->SetMarkerColor(2);
 	fEfficiency = new TGraphErrors(map.size());
+	fEfficiency->SetLineColor(2);
+	fEfficiency->SetMarkerColor(2);
 	int i = 0;
 	for(auto iter = map.begin(); iter != map.end(); ++iter, ++i) {
 		fData->SetPoint(i, std::get<0>(iter->first), std::get<0>(iter->second));
@@ -521,18 +525,19 @@ TSourceTab::TSourceTab(TSourceCalibration* parent, TNucleus* nucleus, TH2* matri
 	fChannel.resize(fMatrix->GetNbinsX(), nullptr);
 	//fCurrentBin = 1;
 	//fMutex.unlock(); // just to make sure we're unlocked ???
+	//std::cout<<__PRETTY_FUNCTION__<<": creating channels for bin 1 to "<<fMatrix->GetNbinsX()<<std::endl;
 	for(int bin = 1; bin <= fMatrix->GetNbinsX(); ++bin) {
-		CreateChannelTab(bin-1);
+		CreateChannelTab(bin);
 		//std::stringstream str;
 		//str<<"Starting new thread on bin "<<bin<<std::endl;
 		//std::cout<<str.str();
 		//fThreads.push_back(new TThread(Form("%s_%s", fNucleus->GetName(), fMatrix->GetXaxis()->GetBinLabel(bin)), reinterpret_cast<TThread::VoidRtnFunc_t>(&TSourceTab::CreateChannelTab), this));
 		//fThreads.push_back(std::move(std::thread(&TSourceTab::CreateChannelTab, this, bin)));
-		//str.clear();
+		//str.str(std::string());
 		//str<<"Running new thread on bin "<<bin<<std::endl;
 		//std::cout<<str.str();
 		//fThreads.back()->Run();
-		//str.clear();
+		//str.str(std::string());
 		//str<<"New thread on bin "<<bin<<" is running"<<std::endl;
 		//std::cout<<str.str();
 	}
@@ -543,7 +548,7 @@ TSourceTab::TSourceTab(TSourceCalibration* parent, TNucleus* nucleus, TH2* matri
 	//	str<<"Joining thread "<<i++<<std::endl;
 	//	std::cout<<str.str();
 	//	thread.join();
-	//	str.clear();
+	//	str.str(std::string());
 	//	str<<"Joined thread "<<i++<<std::endl;
 	//	std::cout<<str.str();
 	//}
@@ -576,14 +581,14 @@ void TSourceTab::CreateChannelTab(int bin)
 	//	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	//	++attempt;
 	//}
-	//str.clear();
+	//str.str(std::string());
 	//str<<__PRETTY_FUNCTION__<<" bin "<<bin<<" got lock after "<<attempt<<" attempts = "<<attempt/100.<<" s"<<std::endl;
 	//std::cout<<str.str();
-	//str.clear();
+	//str.str(std::string());
 	//str<<"getting bin from "<<fCurrentBin<<std::endl;
 	//std::cout<<str.str();
 	//int bin = fCurrentBin++; // get the current bin and then increment the current bin
-	//str.clear();
+	//str.str(std::string());
 	//str<<"using bin "<<bin<<" from "<<fCurrentBin<<std::endl;
 	//std::cout<<str.str();
 	auto proj = fMatrix->ProjectionY(Form("%s_%s", fNucleus->GetName(), fMatrix->GetXaxis()->GetBinLabel(bin)), bin, bin);
@@ -591,17 +596,17 @@ void TSourceTab::CreateChannelTab(int bin)
 	//TThread::UnLock();
 	//fMutex.unlock();
 	if(proj->GetEntries() > 1000) {
-		fChannel[bin] = new TChannelTab(fChannelTab, proj, fChannelTab->AddTab(Form("%s_%s", fNucleus->GetName(), label)),
+		fChannel[bin-1] = new TChannelTab(fChannelTab, proj, fChannelTab->AddTab(Form("%s_%s", fNucleus->GetName(), label)),
 				fSigma, fThreshold, fDegree, fSourceEnergy);
 		fProgressBar->Increment(1);
 		//gSystem->DispatchOneEvent(true);
 	} else {
-		fChannel[bin] = nullptr;
-		//str.clear();
+		fChannel[bin-1] = nullptr;
+		//str.str(std::string());
 		//str<<"Skipping projection of bin "<<bin<<" = "<<proj->GetName()<<", only "<<proj->GetEntries()<<" entries"<<std::endl;
 		//std::cout<<str.str();
 	}
-	//str.clear();
+	//str.str(std::string());
 	//str<<__PRETTY_FUNCTION__<<" bin "<<bin<<" done"<<std::endl;
 	//std::cout<<str.str();
 }
@@ -1112,7 +1117,7 @@ void TSourceCalibration::AcceptChannel(const int& channelId)
 	auto currentTab = fSourceTab[actualSourceId]->ChannelTab();
 	int nofTabs = currentTab->GetNumberOfTabs();
 	int minChannel = 0;
-	int maxChannel = nofTabs;
+	int maxChannel = nofTabs-1;
 	if(channelId >= 0) {
 		minChannel = channelId;
 		maxChannel = channelId;

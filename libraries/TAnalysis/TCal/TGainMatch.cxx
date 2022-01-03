@@ -746,8 +746,8 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    peak2->SetParameter("centroid", (energy[1] * fAlignCoeffs[1] + fAlignCoeffs[0] - offset) / gain);
    // Change the range for the fit to be in the gain corrected spectrum
 
-   std::cout<<" Should be: "<<((energy[0] * fAlignCoeffs[1] + fAlignCoeffs[0] - offset) / gain)<<std::endl;
-   std::cout<<" Should be: "<<((energy[1] * fAlignCoeffs[1] + fAlignCoeffs[0] - offset) / gain)<<std::endl;
+   std::cout<<" Should be: "<<((energy[0] * fAlignCoeffs[1] + fAlignCoeffs[0] - offset) / gain)<<" from ("<<energy[0]<<" * "<<fAlignCoeffs[1]<<" + "<<fAlignCoeffs[0]<<" - "<<offset<<")/"<<gain<<std::endl;
+   std::cout<<" Should be: "<<((energy[1] * fAlignCoeffs[1] + fAlignCoeffs[0] - offset) / gain)<<" from ("<<energy[1]<<" * "<<fAlignCoeffs[1]<<" + "<<fAlignCoeffs[0]<<" - "<<offset<<")/"<<gain<<std::endl;
 
    //   peak1->SetRange(((peak1->GetXmin()-offset)/gain)*fAlignCoeffs[1] +
    //   fAlignCoeffs[0],((peak1->GetXmax()-offset)/gain)*fAlignCoeffs[1] + fAlignCoeffs[0]);
