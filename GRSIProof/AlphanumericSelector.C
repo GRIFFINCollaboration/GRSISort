@@ -9,18 +9,20 @@ void AlphanumericSelector::CreateHistograms() {
 	std::map<int, unsigned int> address;
 
 	for(auto channel : *channelMap) {
+		// use only GRIFFIN channels
 		if(channel.second->GetClassType() == TGriffin::Class()) {
+			// use only the "A" channel, not the "B" channel
 			if(channel.second->GetMnemonic()->OutputSensor() == TMnemonic::EMnemonic::kA) {
 				address[4*(channel.second->GetDetectorNumber() - 1) + channel.second->GetCrystalNumber() + 1] = channel.second->GetAddress();
 			}
 		}
 	}
 
-	std::cout<<"x-axis: "<<address.rbegin()->first - address.begin()->first<<" bins from "<<address.begin()->first<<" to "<<address.rbegin()->first<<std::endl;
+	std::cout<<"x-axis: "<<address.rbegin()->first - address.begin()->first + 1<<" bins from "<<address.begin()->first<<" to "<<address.rbegin()->first + 1<<std::endl;
 
 	//Define Histograms
-   fH2["EnergyVsChannel"] 	= new TH2D("EnergyVsChannel","#gamma singles energy vs. channel", address.rbegin()->first - address.begin()->first, address.begin()->first, address.rbegin()->first, 4000, 0, 2000);
-   fH2["ChargeVsChannel"] 	= new TH2D("ChargeVsChannel","#gamma singles charge vs. channel", address.rbegin()->first - address.begin()->first, address.begin()->first, address.rbegin()->first, 4000, 0, 4000);
+   fH2["EnergyVsChannel"] 	= new TH2D("EnergyVsChannel","#gamma singles energy vs. channel", address.rbegin()->first - address.begin()->first + 1, address.begin()->first, address.rbegin()->first + 1, 4000, 0, 2000);
+   fH2["ChargeVsChannel"] 	= new TH2D("ChargeVsChannel","#gamma singles charge vs. channel", address.rbegin()->first - address.begin()->first + 1, address.begin()->first, address.rbegin()->first + 1, 4000, 0, 4000);
 
 	for(int bin = 1; bin <= fH2["EnergyVsChannel"]->GetNbinsX(); ++bin) {
 		if(address.find(bin) == address.end()) {
