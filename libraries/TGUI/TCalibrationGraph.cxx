@@ -298,8 +298,8 @@ void TCalibrationGraphSet::Scale()
 {
 	//std::cout<<__PRETTY_FUNCTION__<<std::endl;
 	//Print();
-	double minRef = fGraphs[0].GetPointX(0);
-	double maxRef = fGraphs[0].GetPointX(fGraphs[0].GetN()-1);
+	double minRef = fGraphs[0].GetX()[0];
+	double maxRef = fGraphs[0].GetX()[fGraphs[0].GetN()-1];
 	for(size_t g = 1; g < fGraphs.size(); ++g) {
 		double* x = fGraphs[g].GetX();
 		double* y = fGraphs[g].GetY();
@@ -382,8 +382,10 @@ void TCalibrationGraphSet::Print()
 {
 	std::cout<<"TCalibrationGraphSet: "<<fGraphs.size()<<" calibration graphs, "<<fResidualGraphs.size()<<" residual graphs, "<<fLabel.size()<<" labels, "<<fTotalGraph->GetN()<<" calibration points, and "<<fTotalResidualGraph->GetN()<<" residual points"<<std::endl;
 	for(auto g : fGraphs) {
+		double* x  = g.GetX();
+		double* y  = g.GetY();
 		for(int p = 0; p < g.GetN(); ++p) {
-			std::cout<<p<<" - "<<g.GetPointX(p)<<", "<<g.GetPointY(p)<<"; ";
+			std::cout<<p<<" - "<<x[p]<<", "<<y[p]<<"; ";
 		}
 		std::cout<<std::endl;
 	}
