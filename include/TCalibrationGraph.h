@@ -28,9 +28,13 @@ public:
 
 	void Scale(const double& scale);
 
+	void VerboseLevel(int val) { fVerboseLevel = val; }
+
 private:
 	TCalibrationGraphSet* fParent{nullptr}; ///< pointer to the set this graph belongs to
 	bool fIsResidual{false}; ///< flag to indicate that this graph is for residuals
+
+	int fVerboseLevel{0}; ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 
 	ClassDefOverride(TCalibrationGraph, 1)
 };
@@ -65,6 +69,7 @@ public:
 
 	void Scale(); ///< scale all graphs to fit each other (based on the first graph)
 
+	using TObject::Print;
 	void Print();
 
 	void ResetTotalGraph(); ///< reset the total graph and add the individual ones again (used e.g. after scaling of individual graphs is done)
@@ -89,6 +94,8 @@ public:
 		return *this;
 	}
 
+	void VerboseLevel(int val) { fVerboseLevel = val; for(auto graph : fGraphs) graph.VerboseLevel(val); for(auto graph : fResidualGraphs) graph.VerboseLevel(val); }
+
 private:
 	std::vector<TCalibrationGraph> fGraphs; ///< These are the graphs used for plotting the calibration points per source.
 	std::vector<TCalibrationGraph> fResidualGraphs; ///< These are the graphs used for plotting the residuals per source.
@@ -98,6 +105,8 @@ private:
 	std::vector<size_t> fGraphIndex; ///< Index of the graph this point belongs to.
 	std::vector<size_t> fPointIndex; ///< Index of the point within the graph this point corresponds to.
 	bool fResidualSet{false}; ///< Flag to indicate if the residual has been set correctly.
+
+	int fVerboseLevel{0}; ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 
 	ClassDefOverride(TCalibrationGraphSet, 3)
 };

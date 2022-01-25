@@ -58,6 +58,8 @@ public:
 	TGraphErrors* Data() { return fData; }
 	TGraphErrors* Efficiency() { return fEfficiency; }
 
+	void VerboseLevel(int val) { fVerboseLevel = val; }
+
 private:
 	void BuildInterface();
 
@@ -81,6 +83,7 @@ private:
 	double fThreshold{0.05};
 	int fDegree{1};
 	std::vector<GPeak*> fPeaks;
+	int fVerboseLevel{0}; ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 };
 
 class TSourceTab {
@@ -100,6 +103,8 @@ public:
 	TGraphErrors* Efficiency(int channelId) { return fChannel[channelId]->Efficiency(); }
 	size_t NumberOfChannels() { return fChannel.size(); }
 
+	void VerboseLevel(int val) { fVerboseLevel = val; for(auto channel : fChannel) channel->VerboseLevel(val); }
+
 private:
 	// graphic elements
 	TGCompositeFrame* fFrame{nullptr}; ///< main frame of this tab
@@ -116,6 +121,7 @@ private:
 	double fThreshold{0.05}; ///< the threshold (relative to the largest peak) used in the peak finder
 	int fDegree{false}; ///< degree of polynomial function used to calibrate
 	std::vector<std::tuple<double, double, double, double> > fSourceEnergy; ///< vector with source energies and uncertainties
+	int fVerboseLevel{0}; ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 };
 
 class TSourceCalibration : public TGMainFrame {
@@ -169,6 +175,8 @@ public:
 	void SecondWindow();
 	void FinalWindow();
 	
+	void VerboseLevel(int val) { fVerboseLevel = val; for(auto source : fSourceTab) source->VerboseLevel(val); }
+
 private:
 	void BuildFirstInterface();
 	void MakeFirstConnections();
@@ -239,11 +247,13 @@ private:
 	std::map<int, int> fChannelToIndex;
 	
 	std::vector<TH2*> fMatrices;
-	int fNofBins{0};
+	int fNofBins{0}; ///< Number of filled bins in first matrix
 
-	unsigned int fLineHeight{20};
+	unsigned int fLineHeight{20}; ///< Height of text boxes and progress bar
 
-	int fOldErrorLevel;
+	int fOldErrorLevel; ///< Used to store old value of gErrorIgnoreLevel (set to kError for the scope of the class)
+
+	int fVerboseLevel{0}; ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 
 	double fDefaultSigma{2.}; ///< The default sigma used for the peak finding algorithm, can be changed later.
 	double fDefaultThreshold{0.05}; ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.
