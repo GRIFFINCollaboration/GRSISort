@@ -454,10 +454,10 @@ void TChannelTab::FindPeaks(const double& sigma, const double& threshold, const 
 		}
 
 		if(fast) {
-			auto map = SmartMatch(peaks, sourceEnergy);
+			auto map = SmartMatch(peaks, sourceEnergy, fVerboseLevel);
 			Add(map);
 		} else {
-			auto map = Match(peaks, sourceEnergy);
+			auto map = Match(peaks, sourceEnergy, fVerboseLevel);
 			Add(map);
 		}
 	}

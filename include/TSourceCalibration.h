@@ -29,8 +29,8 @@
 #include "TNucleus.h"
 #include "TCalibrationGraph.h"
 
-std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double> > Match(std::vector<std::tuple<double, double, double, double> > peaks, std::vector<std::tuple<double, double, double, double> > source);
-std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double> > SmartMatch(std::vector<std::tuple<double, double, double, double> > peaks, std::vector<std::tuple<double, double, double, double> > source);
+std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double> > Match(std::vector<std::tuple<double, double, double, double> > peaks, std::vector<std::tuple<double, double, double, double> > source, int verboseLevel);
+std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double> > SmartMatch(std::vector<std::tuple<double, double, double, double> > peaks, std::vector<std::tuple<double, double, double, double> > source, int verboseLevel);
 
 double Polynomial(double* x, double* par);
 double Efficiency(double* x, double* par);
