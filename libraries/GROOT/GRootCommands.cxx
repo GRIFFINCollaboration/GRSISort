@@ -285,7 +285,7 @@ GPeak* PhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 
    auto*       mypeak  = new GPeak((xlow + xhigh) / 2.0, xlow, xhigh);
    std::string options = opt;
-   options.append("Q+");
+   options.append("+");
    mypeak->Fit(hist, options.c_str());
    auto* bg = new TF1(*mypeak->Background());
    hist->GetListOfFunctions()->Add(bg);
