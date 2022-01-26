@@ -58,7 +58,6 @@ public:
    void Copy(TObject& obj) const override;
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
-   virtual const char* PrintString(Option_t* opt = "") const;
 
 private:
    static bool         fLogLikelihoodFlag; //!<!

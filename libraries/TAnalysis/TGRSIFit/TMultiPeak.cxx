@@ -397,12 +397,6 @@ void TMultiPeak::Print(Option_t* opt) const
    }
 }
 
-const char* TMultiPeak::PrintString(Option_t*) const
-{
-   /// Prints TMultiPeak properties to a string, returns the string. Not implemented!
-   return "b";
-}
-
 Double_t TMultiPeak::MultiPhotoPeakBG(Double_t* dim, Double_t* par)
 {
    // Limits need to be imposed or error states may occour.

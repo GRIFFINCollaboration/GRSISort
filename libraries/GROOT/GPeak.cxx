@@ -247,6 +247,7 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    bool verbose = options.Contains("v");
 	bool retryFit = options.Contains("retryfit");
    options.ReplaceAll("retryfit", "");
+	if(!verbose && !quiet) options.Append("q");
 
    if(fithist->GetSumw2()->fN != fithist->GetNbinsX() + 2) {
       fithist->Sumw2();
