@@ -503,10 +503,10 @@ void TChannelTab::Add(std::map<std::tuple<double, double, double, double>, std::
 	TIter iter(functions);
 	TObject* item;
 	while((item = iter.Next()) != nullptr) {
-		if(item->IsA() == TF1::Class() || item->IsA() == TSinglePeak::Class()) { // if the item is a TF1 or TSinglePeak we see if we can find the centroid in the map of used peaks
+		if(item->IsA() == TF1::Class() || item->IsA() == GPeak::Class()) { // if the item is a TF1 or GPeak we see if we can find the centroid in the map of used peaks
 			double centroid = 0.;
 			if(item->IsA() == TF1::Class()) centroid = static_cast<TF1*>(item)->GetParameter(1);
-			else                            centroid = static_cast<TSinglePeak*>(item)->Centroid();
+			else                            centroid = static_cast<GPeak*>(item)->Centroid();
 			bool found = false;
 			for(auto point : map) {
 				if(TMath::Abs(centroid - std::get<0>(point.first)) < fSigma) {

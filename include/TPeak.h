@@ -109,7 +109,6 @@ public:
 
 public:
    void Print(Option_t* opt = "") const override;
-   const char* PrintString(Option_t* opt = "") const;
    void Clear(Option_t* opt = "") override;
 
 private:

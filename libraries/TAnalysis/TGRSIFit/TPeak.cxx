@@ -281,6 +281,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
 	}
 	bool retryFit = options.Contains("retryfit");
    options.ReplaceAll("retryfit", "");
+	if(!verbose && !quiet) options.Append("q");
 
    if(fitHist == nullptr && GetHist() == nullptr) {
       std::cout<<"No hist passed, trying something... ";
@@ -324,9 +325,9 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    TFitResultPtr fitres;
    // Log likelihood is the proper fitting technique UNLESS the data is a result of an addition or subtraction.
    if(GetLogLikelihoodFlag()) {
-      fitres = fitHist->Fit(this, Form("%sRLSN", opt)); // The RS needs to always be there
+      fitres = fitHist->Fit(this, Form("%sRLSN", options.Data())); // The RS needs to always be there
    } else {
-      fitres = fitHist->Fit(this, Form("%sRSN", opt)); // The RS needs to always be there
+      fitres = fitHist->Fit(this, Form("%sRSN", options.Data())); // The RS needs to always be there
    }
    
    // Check fit exited successfully before continuing
@@ -338,9 +339,9 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
 
    // Log likelihood is the proper fitting technique UNLESS the data is a result of an addition or subtraction.
    if(GetLogLikelihoodFlag()) {
-      fitres = fitHist->Fit(this, Form("%sRLS", opt)); // The RS needs to always be there
+      fitres = fitHist->Fit(this, Form("%sRLS", options.Data())); // The RS needs to always be there
    } else {
-      fitres = fitHist->Fit(this, Form("%sRS", opt)); // The RS needs to always be there
+      fitres = fitHist->Fit(this, Form("%sRS", options.Data())); // The RS needs to always be there
    }
    
    // Check fit exited successfully before continuing
@@ -360,9 +361,9 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
          // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
          fitHist->GetListOfFunctions()->Last()->Delete();
          if(GetLogLikelihoodFlag()) {
-            fitres = fitHist->Fit(this, Form("%sRLS", opt)); // The RS needs to always be there
+            fitres = fitHist->Fit(this, Form("%sRLS", options.Data())); // The RS needs to always be there
          } else {
-            fitres = fitHist->Fit(this, Form("%sRS", opt));
+            fitres = fitHist->Fit(this, Form("%sRS", options.Data()));
          }
       }
    }
@@ -377,17 +378,17 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
 				ReleaseParameter(i);
 			}
 			if(GetLogLikelihoodFlag()) {
-				fitres = fitHist->Fit(this, Form("%sRLS", opt)); // The RS needs to always be there
+				fitres = fitHist->Fit(this, Form("%sRLS", options.Data())); // The RS needs to always be there
 			} else {
-				fitres = fitHist->Fit(this, Form("%sRS", opt));
+				fitres = fitHist->Fit(this, Form("%sRS", options.Data()));
 			}
 		} else {
 			// re-try using minos instead of minuit
 			if(!quiet) std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
 			if(GetLogLikelihoodFlag()) {
-				fitres = fitHist->Fit(this, Form("%sERLS", opt)); // The RS needs to always be there
+				fitres = fitHist->Fit(this, Form("%sERLS", options.Data())); // The RS needs to always be there
 			} else {
-				fitres = fitHist->Fit(this, Form("%sERS", opt));
+				fitres = fitHist->Fit(this, Form("%sERS", options.Data()));
 			}
 		}
 	}
@@ -472,33 +473,6 @@ void TPeak::Print(Option_t* opt) const
       TF1::Print();
       TGRSIFit::Print(opt); // Polymorphise this a bit better
    }
-}
-
-const char* TPeak::PrintString(Option_t* opt) const
-{
-   // Prints TPeak properties to a string, returns the string.
-   std::string temp;
-   temp.assign("Name:        ");
-   temp.append(GetName());
-   temp.append("\n");
-   temp.append("Centroid:    ");
-   temp.append(Form("%lf", GetParameter("centroid")));
-   temp.append(" +/- ");
-   temp.append(Form("%lf", GetParError(GetParNumber("centroid"))));
-   temp.append("\n");
-   temp.append("Area: 	     ");
-   temp.append(Form("%lf", fArea));
-   temp.append(" +/- ");
-   temp.append(Form("%lf", fDArea));
-   temp.append("\n");
-   temp.append("Chi^2/NDF:   ");
-   temp.append(Form("%lf", fChi2 / fNdf));
-   temp.append("\n");
-   // if(strchr(opt,'+') != nullptr) {
-   //   TF1::Print();
-   TGRSIFit::Print(opt); // Polymorphise this a bit better
-   //}
-   return temp.c_str();
 }
 
 void TPeak::DrawBackground(Option_t* opt) const
