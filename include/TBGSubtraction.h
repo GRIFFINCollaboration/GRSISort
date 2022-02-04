@@ -47,7 +47,8 @@ class TBGSubtraction : public TGMainFrame {
       kGateSlider,
       kBGSlider1,
       kBGSlider2,
-      kPeakSlider
+      kPeakSlider,
+		kBinningSlider
    };
    enum EEntries {
       kBGParamEntry,
@@ -86,10 +87,12 @@ private:
    TH1*                 fBGHist1;
    TH1*                 fBGHist2;
    TH1*                 fSubtractedHist;
+   TH1*                 fSubtractedBinHist;
    TGDoubleHSlider*     fGateSlider;
    TGDoubleHSlider*     fBGSlider1;
    TGDoubleHSlider*     fBGSlider2;
    TGTripleHSlider*     fPeakSlider;
+	TGHSlider*				fBinningSlider;
    TGNumberEntry*       fBGParamEntry;
    TGNumberEntry*       fBGEntryLow1{nullptr};
    TGNumberEntry*       fBGEntryHigh1{nullptr};
@@ -173,7 +176,7 @@ public:
    void UpdateProjectionSliders();
    void UpdateBackground();
    void UpdatePeakSliders();
-   void DoProjection();
+   //void DoProjection();
    void DrawOnNewCanvas();
    void DrawAllMarkers();
    void DrawGateMarkers();
@@ -204,6 +207,8 @@ private:
    void UpdateGateSlider();
    void UpdateBGSlider1();
    void UpdateBGSlider2();
+	void UpdateBinningSlider();
+	void RebinProjection();
 
    /// \cond CLASSIMP
    ClassDefOverride(TBGSubtraction, 7); // Background subtractor GUI
