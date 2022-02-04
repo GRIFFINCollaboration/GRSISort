@@ -53,6 +53,8 @@ public:
 	int GetN() { return fTotalGraph->GetN(); }     ///< Returns GetN(), i.e. number of points of the total graph.
 	double* GetX() { return fTotalGraph->GetX(); } ///< Returns an array of x-values of the total graph.
 	double* GetY() { return fTotalGraph->GetY(); } ///< Returns an array of y-values of the total graph.
+	double* GetEX() { return fTotalGraph->GetEX(); } ///< Returns an array of x-errors of the total graph.
+	double* GetEY() { return fTotalGraph->GetEY(); } ///< Returns an array of y-errors of the total graph.
 
 	void Fit(TF1* function, Option_t* opt = "") { fTotalGraph->Fit(function, opt); } ///< Fits the <function> to the total graph.
 	TF1* FitFunction() { return reinterpret_cast<TF1*>(fTotalGraph->GetListOfFunctions()->FindObject("fitfunction")); } ///< Gets the calibration from the total graph (might be nullptr!).
