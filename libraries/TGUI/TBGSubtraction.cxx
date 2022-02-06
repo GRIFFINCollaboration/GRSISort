@@ -1206,7 +1206,6 @@ void TBGSubtraction::SetStatusFromUpdateCheckButton(){
 void TBGSubtraction::RebinProjection()
 {
 	if(fSubtractedBinHist != nullptr) {
-		auto xAxis = fSubtractedHist->GetXaxis();
 		delete fSubtractedBinHist;
 	}
 	fSubtractedBinHist = fSubtractedHist->Rebin(fBinningSlider->GetPosition(), Form("%s_bin", fSubtractedHist->GetName()));
