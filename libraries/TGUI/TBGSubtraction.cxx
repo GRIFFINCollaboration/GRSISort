@@ -301,7 +301,9 @@ void TBGSubtraction::BuildInterface()
 
    fPeakSlider = new TGTripleHSlider(fGateFrame, 100, kDoubleScaleBoth, kPeakSlider, kHorizontalFrame);
 
-	fBinningSlider = new TGHSlider(fGateFrame, 100, kSlider1 | kScaleBoth, kBinningSlider, kHorizontalFrame);
+	fBinningFrame = new TGHorizontalFrame(fGateFrame, 200, 200);
+	fBinningLabel = new TGLabel(fBinningFrame, Form("Binning (1 - %d): ", fMaxBinning));
+	fBinningSlider = new TGHSlider(fBinningFrame, 100, kSlider2 , kBinningSlider, kHorizontalFrame);
 
    fPeakFitFrame  = new TGHorizontalFrame(fGateFrame, 200, 200);
    fPeakFitButton = new TGTextButton(fPeakFitFrame, "&Fit Peak");
@@ -351,6 +353,9 @@ void TBGSubtraction::BuildInterface()
 
    fPeakFitFrame->AddFrame(fPeakFitButton,fBly);
 
+	fBinningFrame->AddFrame(fBinningLabel, new TGLayoutHints(kLHintsTop | kLHintsLeft | kLHintsCenterY, 1, 3, 3, 1));
+	fBinningFrame->AddFrame(fBinningSlider, fBly);
+
    fBGEntryFrame1->AddFrame(fBGEntryLow1, fBly);
    fBGEntryFrame1->AddFrame(fBGEntryHigh1, fBly);
 
@@ -375,8 +380,8 @@ void TBGSubtraction::BuildInterface()
 
    fGateFrame->AddFrame(fGateCanvas, fLayoutCanvases);
    fGateFrame->AddFrame(fPeakSlider,fBly);
-   fGateFrame->AddFrame(fBinningSlider,fBly);
    fGateFrame->AddFrame(fPeakFitFrame,fBly);
+   fGateFrame->AddFrame(fBinningFrame,fBly);
    fGateFrame->AddFrame(fBGParamFrame, fLayoutParam);
    fGateFrame->AddFrame(fDescriptionFrame, fLayoutParam);
    fGateFrame->AddFrame(fButtonFrame, fLayoutParam);
@@ -516,7 +521,7 @@ void TBGSubtraction::UpdatePeakSliders()
 void TBGSubtraction::UpdateBinningSlider()
 {
 	// for now this is hard coded from 1 to 10, might want to change the upper limit somehow?
-	fBinningSlider->SetRange(1, 10);
+	fBinningSlider->SetRange(1, fMaxBinning);
 	fBinningSlider->SetPosition(1);
 }
 
@@ -1187,8 +1192,7 @@ void TBGSubtraction::SetStatusFromUpdateCheckButton(){
       //mess with the user.
       fPeakFitButton->SetEnabled(false);
       fWrite2FileButton->SetEnabled(false);
-   }
-   else{
+   } else {
       //2. the checkbox has been turned on, this means we want to enable features as well as take all
       //of the current gates
       fPeakFitButton->SetEnabled(true);
@@ -1201,21 +1205,14 @@ void TBGSubtraction::SetStatusFromUpdateCheckButton(){
 
 void TBGSubtraction::RebinProjection()
 {
-	double lowX = -1.;
-	double highX = -1.;
 	if(fSubtractedBinHist != nullptr) {
 		auto xAxis = fSubtractedHist->GetXaxis();
-		lowX = xAxis->GetXmin();
-		highX = xAxis->GetXmax();
-		//std::cout<<"lowX "<<lowX<<", highX "<<highX<<", first "<<xAxis->GetFirst()<<", last "<<xAxis->GetLast()<<std::endl;
 		delete fSubtractedBinHist;
 	}
 	fSubtractedBinHist = fSubtractedHist->Rebin(fBinningSlider->GetPosition(), Form("%s_bin", fSubtractedHist->GetName()));
 	fSubtractedBinHist->SetDirectory(nullptr);
    fGateCanvas->GetCanvas()->cd();
-	if(lowX != highX) {
-		fSubtractedBinHist->GetXaxis()->SetRangeUser(lowX, highX);
-	}
+	fSubtractedBinHist->GetXaxis()->SetRangeUser(fGateCanvas->GetCanvas()->GetUxmin(), fGateCanvas->GetCanvas()->GetUxmax());
 	fSubtractedBinHist->Draw("hist");
    DrawPeakMarkers();
    fGateCanvas->GetCanvas()->Update();
