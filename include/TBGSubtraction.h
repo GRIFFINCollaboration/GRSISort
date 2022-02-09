@@ -101,6 +101,7 @@ private:
    TGNumberEntry*       fGateEntryLow{nullptr};
    TGNumberEntry*       fGateEntryHigh{nullptr};
    TGLabel*             fBGParamLabel{nullptr};
+   TGLabel*             fBinningLabel{nullptr};
    TGCheckButton*       fBGCheckButton1;
    TGCheckButton*       fBGCheckButton2;
    TGCheckButton*       fAutoUpdateCheckButton;
@@ -123,6 +124,7 @@ private:
    TGVerticalFrame*   fGateFrame;
    TGVerticalFrame*   fProjectionFrame;
    TGHorizontalFrame* fPeakFitFrame{nullptr};
+   TGHorizontalFrame* fBinningFrame{nullptr};
    TGHorizontalFrame* fBGParamFrame{nullptr};
    TGHorizontalFrame* fGateEntryFrame{nullptr};
    TGHorizontalFrame* fBGEntryFrame1{nullptr};
@@ -159,6 +161,8 @@ private:
    TSinglePeak* fPeak; ///< the peak to be fit (will be a class that inherits from TSinglePeak)
 	TPeakFitter* fPeakFitter; ///< the peak fitter that fPeak is added to
 	Int_t fPeakId; ///< the current ID of the peak
+
+	Int_t fMaxBinning{10}; ///< maximum binning possible with binning slider (hard-coded, for now?)
 
 public:
    TBGSubtraction(TH2* mat, const char* gate_axis = "x");
