@@ -78,7 +78,11 @@ bool TAnalysisOptions::WriteToFile(TFile* file)
    }
 
 	// check again that we have a directory to write to
-   if(gDirectory) { // we don't compare to nullptr here, as ROOT >= 6.24.00 uses the TDirectoryAtomicAdapter structure with a bool() operator
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,24,0)
+	if(gDirectory == nullptr) {
+#else
+   if(!gDirectory) { // we don't compare to nullptr here, as ROOT >= 6.24.00 uses the TDirectoryAtomicAdapter structure with a bool() operator
+#endif
 		std::cout<<"No file opened to write to."<<std::endl;
       return !success;
    }
