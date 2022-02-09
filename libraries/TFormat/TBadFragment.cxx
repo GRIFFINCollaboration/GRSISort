@@ -5,7 +5,7 @@ ClassImp(TBadFragment)
 TBadFragment::TBadFragment() : TFragment()
 {
 	/// Default constructor
-#if MAJOR_ROOT_VERSION < 6
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
    Clear();
