@@ -169,17 +169,14 @@ else
 endif
 
 if ($?GRSIDATA) then
-	setenv PATH $GRSIDATA/bin/$PATH
 	setenv LD_LIBRARY_PATH $GRSIDATA/lib:$LD_LIBRARY_PATH
 endif
 
 if ($?ILLDATA) then
-	setenv PATH $ILLDATA/bin/$PATH
 	setenv LD_LIBRARY_PATH $ILLDATA/lib:$LD_LIBRARY_PATH
 endif
 
 if ($?ITHEMBADATA) then
-	setenv PATH $ITHEMBADATA/bin/$PATH
 	setenv LD_LIBRARY_PATH $ITHEMBADATA/lib:$LD_LIBRARY_PATH
 endif
 
