@@ -99,15 +99,12 @@ else
 fi
 if [ ! -z "${GRSIDATA}" ]; then
 	LD_LIBRARY_PATH=$GRSIDATA/lib:$LD_LIBRARY_PATH;
-	PATH=$GRSIDATA/bin:$PATH;
 fi
 if [ ! -z "${ILLDATA}" ]; then
 	LD_LIBRARY_PATH=$ILLDATA/lib:$LD_LIBRARY_PATH;
-	PATH=$ILLDATA/bin:$PATH;
 fi
 if [ ! -z "${ITHEMBADATA}" ]; then
 	LD_LIBRARY_PATH=$ITHEMBADATA/lib:$LD_LIBRARY_PATH;
-	PATH=$ITHEMBADATA/bin:$PATH;
 fi
 
 if [ -z "${DYLD_LIBRARY_PATH}" ]; then
