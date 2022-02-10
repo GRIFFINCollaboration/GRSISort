@@ -343,7 +343,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
 					// gFragment->SetNotify(GrutNotifier::Get());
 				}
 				printf("file %s added to gFragment.\n", file->GetName());
-#if MAJOR_ROOT_VERSION < 6
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
 				gFragment->AddFile(file->GetName(), TChain::kBigNumber, "FragmentTree");
 #else
 				gFragment->AddFile(file->GetName(), TTree::kMaxEntries, "FragmentTree");
@@ -358,7 +358,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
 					// gAnalysis->SetNotify(GrutNotifier::Get());
 				}
 				printf("file %s added to gAnalysis.\n", file->GetName());
-#if MAJOR_ROOT_VERSION < 6
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
 				gAnalysis->AddFile(file->GetName(), TChain::kBigNumber, "AnalysisTree");
 #else
 				gAnalysis->AddFile(file->GetName(), TTree::kMaxEntries, "AnalysisTree");

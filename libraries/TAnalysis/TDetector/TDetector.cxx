@@ -9,7 +9,7 @@ TDetector::TDetector()
    : TObject()
 {
    /// Default constructor.
-#if MAJOR_ROOT_VERSION < 6
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
 }
@@ -17,7 +17,7 @@ TDetector::TDetector()
 TDetector::TDetector(const TDetector& rhs) : TObject()
 {
    /// Default Copy constructor.
-#if MAJOR_ROOT_VERSION < 6
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
    rhs.Copy(*this);

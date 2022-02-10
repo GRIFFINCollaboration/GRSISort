@@ -56,12 +56,6 @@ if [ -n "${old_grsisys}" ] ; then
    if [ -n "${PATH}" ]; then
       drop_from_path "$PATH" ${old_grsisys}/bin
       PATH=$newpath
-      drop_from_path "$PATH" ${old_grsisys}/GRSIData/bin
-      PATH=$newpath
-      drop_from_path "$PATH" ${old_grsisys}/ILLData/bin
-      PATH=$newpath
-      drop_from_path "$PATH" ${old_grsisys}/iThembaData/bin
-      PATH=$newpath
    fi
    if [ -n "${LD_LIBRARY_PATH}" ]; then
       drop_from_path $LD_LIBRARY_PATH ${old_grsisys}/lib

@@ -20,14 +20,11 @@ SRC_SUFFIX = cxx
 
 # EVERYTHING PAST HERE SHOULD WORK AUTOMATICALLY
 
-MAJOR_ROOT_VERSION:=$(shell root-config --version | cut -d '.' -f1)
-MINOR_ROOT_VERSION:=$(shell root-config --version | cut -d '.' -f2 | cut -d '/' -f1)
 ROOT_PYTHON_VERSION=$(shell root-config --python-version)
 
 MATHMORE_INSTALLED:=$(shell root-config --has-mathmore)
 XML_INSTALLED:=$(shell root-config --has-xml)
 
-CFLAGS += -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} -DMINOR_ROOT_VERSION=${MINOR_ROOT_VERSION}
 ifeq ($(ROOT_PYTHON_VERSION),2.7)
   CFLAGS += -DHAS_CORRECT_PYTHON_VERSION
 endif

@@ -18,7 +18,7 @@ TDetectorHit::TDetectorHit(const int& Address) : TObject()
    Clear();
    fAddress = Address;
 
-#if MAJOR_ROOT_VERSION < 6
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
 }
@@ -32,7 +32,7 @@ TDetectorHit::TDetectorHit(const TDetectorHit& rhs, bool copywave) : TObject(rhs
    }
    ClearTransients();
 
-#if MAJOR_ROOT_VERSION < 6
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
 }
