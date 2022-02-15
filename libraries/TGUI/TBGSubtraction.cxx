@@ -13,14 +13,14 @@
 ClassImp(TBGSubtraction)
 /// \endcond
 
-TBGSubtraction::TBGSubtraction(TH2* mat, const char* gate_axis)
+TBGSubtraction::TBGSubtraction(TH2* mat, const char* gate_axis, int maxBinning)
    : TGMainFrame(nullptr, 10, 10, kHorizontalFrame), fProjectionCanvas(nullptr), fGateCanvas(nullptr), fMatrix(mat),
      fProjection(nullptr), fGateHist(nullptr), fBGHist1(nullptr), fBGHist2(nullptr), fSubtractedHist(nullptr), fSubtractedBinHist(nullptr), fGateSlider(nullptr),
      fBGSlider1(nullptr), fBGSlider2(nullptr), fPeakSlider(nullptr), fBinningSlider(nullptr), fBGParamEntry(nullptr), fBGCheckButton1(nullptr), fBGCheckButton2(nullptr), 
      fAutoUpdateCheckButton(nullptr), fBly(nullptr), fBly1(nullptr), fGateFrame(nullptr), 
      fProjectionFrame(nullptr), fAxisCombo(nullptr), fPeakCombo(nullptr), fLowGateMarker(nullptr), fHighGateMarker(nullptr), fLowBGMarker1(nullptr),  
      fHighBGMarker1(nullptr), fLowBGMarker2(nullptr), fHighBGMarker2(nullptr), fLowPeakMarker(nullptr), fHighPeakMarker(nullptr), 
-     fPeakMarker(nullptr), fGateAxis(0), fForceUpdate(true), fPeak(nullptr), fPeakFitter(new TPeakFitter())
+     fPeakMarker(nullptr), fGateAxis(0), fForceUpdate(true), fPeak(nullptr), fPeakFitter(new TPeakFitter()), fMaxBinning(maxBinning)
 {
    TString tmp_gate_word(gate_axis);
    tmp_gate_word.ToUpper();
@@ -1205,13 +1205,31 @@ void TBGSubtraction::SetStatusFromUpdateCheckButton(){
 
 void TBGSubtraction::RebinProjection()
 {
+	// first get the min. and max. of the old histogram and calculate where
+	// they are in percent of the unzoomed range
+	double minimumRatio = 0.;
+	double maximumRatio = 1.;
 	if(fSubtractedBinHist != nullptr) {
+		double oldMinimum = fSubtractedBinHist->GetMinimum();
+		double oldMaximum = fSubtractedBinHist->GetMaximum();
+		fSubtractedBinHist->GetYaxis()->UnZoom();
+		double unZoomedMinimum = fSubtractedBinHist->GetMinimum();
+		double unZoomedMaximum = fSubtractedBinHist->GetMaximum();
+		minimumRatio = (oldMinimum - unZoomedMinimum)/(unZoomedMaximum - unZoomedMinimum);
+		maximumRatio = (oldMaximum - unZoomedMinimum)/(unZoomedMaximum - unZoomedMinimum);
 		delete fSubtractedBinHist;
 	}
 	fSubtractedBinHist = fSubtractedHist->Rebin(fBinningSlider->GetPosition(), Form("%s_bin", fSubtractedHist->GetName()));
 	fSubtractedBinHist->SetDirectory(nullptr);
    fGateCanvas->GetCanvas()->cd();
 	fSubtractedBinHist->GetXaxis()->SetRangeUser(fGateCanvas->GetCanvas()->GetUxmin(), fGateCanvas->GetCanvas()->GetUxmax());
+	// we only need (and want) to set the range of the y-axis if it was zoomed in
+	if(minimumRatio != 0. || maximumRatio != 1.) {
+		double unZoomedMinimum = fSubtractedBinHist->GetMinimum();
+		double unZoomedMaximum = fSubtractedBinHist->GetMaximum();
+		fSubtractedBinHist->GetYaxis()->SetRangeUser(unZoomedMinimum + minimumRatio*(unZoomedMaximum - unZoomedMinimum), 
+				                                       unZoomedMinimum + maximumRatio*(unZoomedMaximum - unZoomedMinimum));
+	}
 	fSubtractedBinHist->Draw("hist");
    DrawPeakMarkers();
    fGateCanvas->GetCanvas()->Update();
