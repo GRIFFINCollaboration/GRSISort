@@ -1205,14 +1205,31 @@ void TBGSubtraction::SetStatusFromUpdateCheckButton(){
 
 void TBGSubtraction::RebinProjection()
 {
+	// first get the min. and max. of the old histogram and calculate where
+	// they are in percent of the unzoomed range
+	double minimumRatio = 0.;
+	double maximumRatio = 1.;
 	if(fSubtractedBinHist != nullptr) {
+		double oldMinimum = fSubtractedBinHist->GetMinimum();
+		double oldMaximum = fSubtractedBinHist->GetMaximum();
+		fSubtractedBinHist->GetYaxis()->UnZoom();
+		double unZoomedMinimum = fSubtractedBinHist->GetMinimum();
+		double unZoomedMaximum = fSubtractedBinHist->GetMaximum();
+		minimumRatio = (oldMinimum - unZoomedMinimum)/(unZoomedMaximum - unZoomedMinimum);
+		maximumRatio = (oldMaximum - unZoomedMinimum)/(unZoomedMaximum - unZoomedMinimum);
 		delete fSubtractedBinHist;
 	}
 	fSubtractedBinHist = fSubtractedHist->Rebin(fBinningSlider->GetPosition(), Form("%s_bin", fSubtractedHist->GetName()));
 	fSubtractedBinHist->SetDirectory(nullptr);
    fGateCanvas->GetCanvas()->cd();
 	fSubtractedBinHist->GetXaxis()->SetRangeUser(fGateCanvas->GetCanvas()->GetUxmin(), fGateCanvas->GetCanvas()->GetUxmax());
-	fSubtractedBinHist->GetYaxis()->SetRangeUser(fGateCanvas->GetCanvas()->GetUymin(), fGateCanvas->GetCanvas()->GetUymax());
+	// we only need (and want) to set the range of the y-axis if it was zoomed in
+	if(minimumRatio != 0. || maximumRatio != 1.) {
+		double unZoomedMinimum = fSubtractedBinHist->GetMinimum();
+		double unZoomedMaximum = fSubtractedBinHist->GetMaximum();
+		fSubtractedBinHist->GetYaxis()->SetRangeUser(unZoomedMinimum + minimumRatio*(unZoomedMaximum - unZoomedMinimum), 
+				                                       unZoomedMinimum + maximumRatio*(unZoomedMaximum - unZoomedMinimum));
+	}
 	fSubtractedBinHist->Draw("hist");
    DrawPeakMarkers();
    fGateCanvas->GetCanvas()->Update();
