@@ -13,14 +13,14 @@
 ClassImp(TBGSubtraction)
 /// \endcond
 
-TBGSubtraction::TBGSubtraction(TH2* mat, const char* gate_axis)
+TBGSubtraction::TBGSubtraction(TH2* mat, const char* gate_axis, int maxBinning)
    : TGMainFrame(nullptr, 10, 10, kHorizontalFrame), fProjectionCanvas(nullptr), fGateCanvas(nullptr), fMatrix(mat),
      fProjection(nullptr), fGateHist(nullptr), fBGHist1(nullptr), fBGHist2(nullptr), fSubtractedHist(nullptr), fSubtractedBinHist(nullptr), fGateSlider(nullptr),
      fBGSlider1(nullptr), fBGSlider2(nullptr), fPeakSlider(nullptr), fBinningSlider(nullptr), fBGParamEntry(nullptr), fBGCheckButton1(nullptr), fBGCheckButton2(nullptr), 
      fAutoUpdateCheckButton(nullptr), fBly(nullptr), fBly1(nullptr), fGateFrame(nullptr), 
      fProjectionFrame(nullptr), fAxisCombo(nullptr), fPeakCombo(nullptr), fLowGateMarker(nullptr), fHighGateMarker(nullptr), fLowBGMarker1(nullptr),  
      fHighBGMarker1(nullptr), fLowBGMarker2(nullptr), fHighBGMarker2(nullptr), fLowPeakMarker(nullptr), fHighPeakMarker(nullptr), 
-     fPeakMarker(nullptr), fGateAxis(0), fForceUpdate(true), fPeak(nullptr), fPeakFitter(new TPeakFitter())
+     fPeakMarker(nullptr), fGateAxis(0), fForceUpdate(true), fPeak(nullptr), fPeakFitter(new TPeakFitter()), fMaxBinning(maxBinning)
 {
    TString tmp_gate_word(gate_axis);
    tmp_gate_word.ToUpper();
@@ -1212,6 +1212,7 @@ void TBGSubtraction::RebinProjection()
 	fSubtractedBinHist->SetDirectory(nullptr);
    fGateCanvas->GetCanvas()->cd();
 	fSubtractedBinHist->GetXaxis()->SetRangeUser(fGateCanvas->GetCanvas()->GetUxmin(), fGateCanvas->GetCanvas()->GetUxmax());
+	fSubtractedBinHist->GetYaxis()->SetRangeUser(fGateCanvas->GetCanvas()->GetUymin(), fGateCanvas->GetCanvas()->GetUymax());
 	fSubtractedBinHist->Draw("hist");
    DrawPeakMarkers();
    fGateCanvas->GetCanvas()->Update();

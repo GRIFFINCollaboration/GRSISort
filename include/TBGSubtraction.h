@@ -79,21 +79,21 @@ class TBGSubtraction : public TGMainFrame {
    //  RQ_OBJECT("TBGSubtraction")
 private:
    TGMainFrame*         fMain{nullptr};
-   TRootEmbeddedCanvas* fProjectionCanvas;
-   TRootEmbeddedCanvas* fGateCanvas;
-   TH2*                 fMatrix;
-   TH1*                 fProjection;
-   TH1*                 fGateHist;
-   TH1*                 fBGHist1;
-   TH1*                 fBGHist2;
-   TH1*                 fSubtractedHist;
-   TH1*                 fSubtractedBinHist;
-   TGDoubleHSlider*     fGateSlider;
-   TGDoubleHSlider*     fBGSlider1;
-   TGDoubleHSlider*     fBGSlider2;
-   TGTripleHSlider*     fPeakSlider;
-	TGHSlider*				fBinningSlider;
-   TGNumberEntry*       fBGParamEntry;
+   TRootEmbeddedCanvas* fProjectionCanvas{nullptr};
+   TRootEmbeddedCanvas* fGateCanvas{nullptr};
+   TH2*                 fMatrix{nullptr};
+   TH1*                 fProjection{nullptr};
+   TH1*                 fGateHist{nullptr};
+   TH1*                 fBGHist1{nullptr};
+   TH1*                 fBGHist2{nullptr};
+   TH1*                 fSubtractedHist{nullptr};
+   TH1*                 fSubtractedBinHist{nullptr};
+   TGDoubleHSlider*     fGateSlider{nullptr};
+   TGDoubleHSlider*     fBGSlider1{nullptr};
+   TGDoubleHSlider*     fBGSlider2{nullptr};
+   TGTripleHSlider*     fPeakSlider{nullptr};
+	TGHSlider*				fBinningSlider{nullptr};
+   TGNumberEntry*       fBGParamEntry{nullptr};
    TGNumberEntry*       fBGEntryLow1{nullptr};
    TGNumberEntry*       fBGEntryHigh1{nullptr};
    TGNumberEntry*       fBGEntryLow2{nullptr};
@@ -102,18 +102,17 @@ private:
    TGNumberEntry*       fGateEntryHigh{nullptr};
    TGLabel*             fBGParamLabel{nullptr};
    TGLabel*             fBinningLabel{nullptr};
-   TGCheckButton*       fBGCheckButton1;
-   TGCheckButton*       fBGCheckButton2;
-   TGCheckButton*       fAutoUpdateCheckButton;
+   TGCheckButton*       fBGCheckButton1{nullptr};
+   TGCheckButton*       fBGCheckButton2{nullptr};
+   TGCheckButton*       fAutoUpdateCheckButton{nullptr};
 
-   TGLayoutHints* fBly;
-   TGLayoutHints* fBly1;
+   TGLayoutHints* fBly{nullptr};
+   TGLayoutHints* fBly1{nullptr};
    TGLayoutHints* fLayoutCanvases{nullptr};
    TGLayoutHints* fLayoutParam{nullptr};
 
    TGTextEntry* fWrite2FileName{nullptr};
    TGTextEntry* fHistogramDescription{nullptr};
-   //      TGTextButton         *fDrawCanvasButton;
    TGTextButton* fWrite2FileButton{nullptr};
    TGTextButton* fPeakFitButton{nullptr};
 
@@ -121,8 +120,8 @@ private:
    TGStatusBar* fProjectionStatus{nullptr};
 
    // Frames
-   TGVerticalFrame*   fGateFrame;
-   TGVerticalFrame*   fProjectionFrame;
+   TGVerticalFrame*   fGateFrame{nullptr};
+   TGVerticalFrame*   fProjectionFrame{nullptr};
    TGHorizontalFrame* fPeakFitFrame{nullptr};
    TGHorizontalFrame* fBinningFrame{nullptr};
    TGHorizontalFrame* fBGParamFrame{nullptr};
@@ -133,21 +132,21 @@ private:
    TGHorizontalFrame* fButtonFrame{nullptr};
 
    // Combo box
-   TGComboBox* fAxisCombo;
-   TGComboBox* fPeakCombo;
+   TGComboBox* fAxisCombo{nullptr};
+   TGComboBox* fPeakCombo{nullptr};
 
    // Markers
-   GMarker* fLowGateMarker;
-   GMarker* fHighGateMarker;
-   GMarker* fLowBGMarker1;
-   GMarker* fHighBGMarker1;
-   GMarker* fLowBGMarker2;
-   GMarker* fHighBGMarker2;
-   GMarker* fLowPeakMarker;
-   GMarker* fHighPeakMarker;
-   GMarker* fPeakMarker;
+   GMarker* fLowGateMarker{nullptr};
+   GMarker* fHighGateMarker{nullptr};
+   GMarker* fLowBGMarker1{nullptr};
+   GMarker* fHighBGMarker1{nullptr};
+   GMarker* fLowBGMarker2{nullptr};
+   GMarker* fHighBGMarker2{nullptr};
+   GMarker* fLowPeakMarker{nullptr};
+   GMarker* fHighPeakMarker{nullptr};
+   GMarker* fPeakMarker{nullptr};
 
-   TFile* fCurrentFile;
+   TFile* fCurrentFile{nullptr};
 
    Int_t fGateAxis;
 
@@ -158,14 +157,14 @@ private:
    Double_t fPeakHighValue; ///< high range for fit
    Double_t fPeakValue; ///< centroid for fit
 
-   TSinglePeak* fPeak; ///< the peak to be fit (will be a class that inherits from TSinglePeak)
-	TPeakFitter* fPeakFitter; ///< the peak fitter that fPeak is added to
+   TSinglePeak* fPeak{nullptr}; ///< the peak to be fit (will be a class that inherits from TSinglePeak)
+	TPeakFitter* fPeakFitter{nullptr}; ///< the peak fitter that fPeak is added to
 	Int_t fPeakId; ///< the current ID of the peak
 
-	Int_t fMaxBinning{10}; ///< maximum binning possible with binning slider (hard-coded, for now?)
+	Int_t fMaxBinning{20}; ///< maximum binning possible with binning slider (hard-coded, for now?)
 
 public:
-   TBGSubtraction(TH2* mat, const char* gate_axis = "x");
+   TBGSubtraction(TH2* mat, const char* gate_axis = "x", int maxBinning = 20);
    ~TBGSubtraction() override;
    void AxisComboSelected();
    void PeakComboSelected();
