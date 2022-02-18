@@ -193,6 +193,7 @@ Bool_t TGRSISelector::Process(Long64_t entry)
 	}
 
 	fChain->GetEntry(entry);
+	fEntry = entry;
 	try {
 		FillHistograms();
 	} catch(TGRSIMapException<std::string>& e) {
@@ -253,6 +254,7 @@ void TGRSISelector::Terminate()
 			return;
 		}
 	}
+	std::cout<<"Opened '"<<outputFile->GetName()<<"' for writing:"<<std::endl;
 
 	outputFile->cd();
 	fOutput->Write();
