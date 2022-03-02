@@ -13,6 +13,9 @@ const double gg_time_high = 300.;
 const double gb_time_low  = -250.;
 const double gb_time_high = 350.;
 
+// default k-value this might have to be adjusted for each experiment!!!
+const Short_t defaultKValue = 379;
+
 bool Addback(TGriffinHit& one, TGriffinHit& two)
 {
 	return ((one.GetDetector() == two.GetDetector()) && (std::fabs(one.GetTime() - two.GetTime()) < 300.));
@@ -70,13 +73,13 @@ void CrossTalk::FillHistograms() {
 	}
 
 	for(auto gr1 = 0; gr1 < fGrif->GetSuppressedMultiplicity(fGriffinBgo); ++gr1){
-		if(pileup_reject && (fGrif->GetSuppressedHit(gr1)->GetKValue() != 700)) continue; //This pileup number might have to change for other expmnts
+		if(pileup_reject && (fGrif->GetSuppressedHit(gr1)->GetKValue() != defaultKValue)) continue; //This pileup number might have to change for other expmnts
 		fH1[Form("gEdet%d",fGrif->GetSuppressedHit(gr1)->GetDetector())]->Fill(fGrif->GetSuppressedHit(gr1)->GetEnergy());
 		fH2["gE_chan"]->Fill(fGrif->GetSuppressedHit(gr1)->GetArrayNumber(),fGrif->GetSuppressedHit(gr1)->GetEnergy());
 		fH1["gE"]->Fill(fGrif->GetSuppressedHit(gr1)->GetEnergy());
 		fH1["gEnoCT"]->Fill(fGrif->GetSuppressedHit(gr1)->GetNoCTEnergy());
 		for(auto gr2 = gr1 + 1; gr2 < fGrif->GetSuppressedMultiplicity(fGriffinBgo); ++gr2){
-			if(pileup_reject && fGrif->GetSuppressedHit(gr2)->GetKValue() != 700) continue; //This pileup number might have to change for other expmnts
+			if(pileup_reject && fGrif->GetSuppressedHit(gr2)->GetKValue() != defaultKValue) continue; //This pileup number might have to change for other expmnts
 			if((det_multiplicity[fGrif->GetSuppressedHit(gr1)->GetDetector()] == 2) && Addback(*(fGrif->GetSuppressedHit(gr1)), *(fGrif->GetSuppressedHit(gr2)))){
 				TGriffinHit *low_crys_hit, *high_crys_hit;
 				if(fGrif->GetSuppressedHit(gr1)->GetCrystal() < fGrif->GetSuppressedHit(gr2)->GetCrystal()){
@@ -95,7 +98,7 @@ void CrossTalk::FillHistograms() {
 	}
 
 	for(auto gr1 = 0; gr1 < fGrif->GetSuppressedAddbackMultiplicity(fGriffinBgo); ++gr1) {
-		if(pileup_reject && (fGrif->GetSuppressedAddbackHit(gr1)->GetKValue() != 700))
+		if(pileup_reject && (fGrif->GetSuppressedAddbackHit(gr1)->GetKValue() != defaultKValue))
 			continue; // This pileup number might have to change for other expmnts
 		fH1["aE"]->Fill(fGrif->GetSuppressedAddbackHit(gr1)->GetEnergy());
 		fH1[Form("aEdet%d", fGrif->GetSuppressedAddbackHit(gr1)->GetDetector())]->Fill(fGrif->GetSuppressedAddbackHit(gr1)->GetEnergy());

@@ -33,6 +33,8 @@ bool TGRSIFunctions::CheckParameterErrors(const TFitResultPtr& fitres, std::stri
    // loop over all parameters and compare the parameter error with the square root 
    // of the diagonal element of the covariance matrix
    auto covarianceMatrix = fitres->GetCovarianceMatrix();
+	// if we fail to get a covariance matrix we assume there was a problem in the fit
+	if(covarianceMatrix.GetNrows() != static_cast<Int_t>(fitres->NPar()) || covarianceMatrix.GetNcols() != static_cast<Int_t>(fitres->NPar())) return false;
    for(unsigned int i = 0; i < fitres->NPar(); ++i) {
       if(std::fabs(fitres->ParError(i) - TMath::Sqrt(covarianceMatrix[i][i])) > 0.1) {
          if(!quiet) {

@@ -27,7 +27,6 @@ GGaus::GGaus(Double_t xlow, Double_t xhigh, Option_t*)
    // Changing the name here causes an infinite loop when starting the FitEditor
    // SetName(Form("gaus_%d_to_%d",(Int_t)(xlow),(Int_t)(xhigh)));
    InitNames();
-   // TF1::SetParameter("centroid",cent);
 }
 
 GGaus::GGaus(Double_t xlow, Double_t xhigh, TF1* bg, Option_t*) : TF1("gausbg", "gaus(0)+pol1(3)", xlow, xhigh)
@@ -69,22 +68,7 @@ GGaus::GGaus(const GGaus& peak) : TF1(peak)
 
 GGaus::~GGaus()
 {
-   // if(background)
-   //  delete background;
 }
-
-// void GGaus::Fcn(Int_t &npar,Double_t *gin,Double_T &f,Double_t *par,Int_t iflag) {
-// chisquared calculator
-//
-//  int i=0;
-//  double chisq = 0;
-//  double delta = 0;
-//  for(i=0;i<nbins;i++) {
-//    delta = (data[i] - GRootFunctions::PhotoPeakBG((x+i),par))/error[i];
-//    chisq += delta*delta;
-//  }
-//  f=chisq;
-//}
 
 void GGaus::InitNames()
 {
@@ -97,11 +81,6 @@ void GGaus::InitNames()
 
 void GGaus::Copy(TObject& obj) const
 {
-   // printf("0x%08x\n",&obj);
-   // fflush(stdout);
-   // printf("%s\n",obj.GetName());
-   // fflush(stdout);
-
    TF1::Copy(obj);
    (static_cast<GGaus&>(obj)).init_flag = init_flag;
    (static_cast<GGaus&>(obj)).fArea     = fArea;
@@ -120,7 +99,6 @@ bool GGaus::InitParams(TH1* fithist)
       printf("No histogram is associated yet, no initial guesses made\n");
       return false;
    }
-   // printf("%s called.\n",__PRETTY_FUNCTION__); fflush(stdout);
    // Makes initial guesses at parameters for the fit. Uses the histogram to
    Double_t xlow, xhigh;
    GetRange(xlow, xhigh);
@@ -161,23 +139,15 @@ bool GGaus::InitParams(TH1* fithist)
    TF1::SetParLimits(0, 0, largesty * 2);
    TF1::SetParLimits(1, xlow, xhigh);
    TF1::SetParLimits(2, 0, xhigh - xlow);
-   // TF1::SetParLimits(3,0.0,40);
-   // TF1::SetParLimits(4,0.01,5);
 
    // Make initial guesses
    TF1::SetParameter(0, largesty);                // fithist->GetBinContent(bin));
    TF1::SetParameter(1, largestx);                // GetParameter("centroid"));
    TF1::SetParameter(2, (largestx * .01) / 2.35); // 2,(xhigh-xlow));     //2.0/binWidth); //
-   // TF1::SetParameter(3,5.);
-   // TF1::SetParameter(4,1.);
 
    TF1::SetParError(0, 0.10 * largesty);
    TF1::SetParError(1, 0.25);
    TF1::SetParError(2, 0.10 * ((largestx * .01) / 2.35));
-   // TF1::SetParError(3,5);
-   // TF1::SetParError(4,0.5);
-
-   // TF1::Print();
 
    SetInitialized();
    return true;
@@ -206,14 +176,10 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
 
    TFitResultPtr fitres = fithist->Fit(this, Form("%sRSME", options.Data()));
 
-   // fitres.Get()->Print();
    if(!fitres.Get()->IsValid()) {
       if(!verbose) {
          printf(RED "fit has failed, trying refit... " RESET_COLOR);
       }
-      // SetParameter(3,0.1);
-      // SetParameter(4,0.01);
-      // SetParameter(5,0.0);
       fithist->GetListOfFunctions()->Last()->Delete();
       fitres = fithist->Fit(this, Form("%sRSME", options.Data())); //,Form("%sRSM",options.Data()))
       if(fitres.Get()->IsValid()) {
@@ -227,51 +193,14 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
       }
    }
 
-   // if(fitres->ParError(2) != fitres->ParError(2)) { // checks if nan.
-   //  if(fitres->Parameter(3)<1) {
-   //    FixParameter(4,0);
-   //    FixParameter(3,1);
-   // printf("Beta may have broken the fit, retrying with R=0);
-   //    fithist->GetListOfFunctions()->Last()->Delete();
-   //    fitres = fithist->Fit(this,Form("%sRSM",options.Data()));
-   //  }
-   //}
-
-   // TF1::Print();
-
-   // Double_t binwidth = fithist->GetBinWidth(GetParameter("centroid"));
-   // Double_t width    = TF1::GetParameter("sigma");
    Double_t xlow, xhigh;
-   // Double_t int_low,int_high;
    TF1::GetRange(xlow, xhigh);
-   // int_low  = xlow - 5.*width;
-   // int_high = xhigh +5.*width;
-
-   // Make a function that does not include the background
-   // Intgrate the background.
-   // GGaus *tmppeak = new GGaus;
-   // Copy(*tmppeak);
-
-   // tmppeak->SetParameter("bg_offset",0.0);
-   // tmppeak->SetRange(int_low,int_high);//This will help get the true area of the gaussian 200 ~ infinity in a gaus
-   // tmppeak->SetName("tmppeak");
-
-   // fArea = (tmppeak->Integral(int_low,int_high))/binwidth;
-   //  TMatrixDSym CovMat = fitres->GetCovarianceMatrix();
-   //  CovMat(6,6) = 0.0;
-   //  CovMat(7,7) = 0.0;
-   //  CovMat(8,8) = 0.0;
-   //  CovMat(9,9) = 0.0;
-
-   //  fDArea = (tmppeak->IntegralError(int_low,int_high,tmppeak->GetParameters(),CovMat.GetMatrixArray()))/binwidth;
 
    double bgpars[2];
    bgpars[0] = TF1::GetParameters()[3];
    bgpars[1] = TF1::GetParameters()[4];
-   // bgpars[5] = TF1::GetParameters()[7];
 
    fBGFit.SetParameters(bgpars);
-   // fithist->GetListOfFunctions()->Print();
 
    fArea         = Integral(xlow, xhigh) / fithist->GetBinWidth(1);
    double bgArea = fBGFit.Integral(xlow, xhigh) / fithist->GetBinWidth(1);
@@ -289,18 +218,12 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
    printf("sum after subtraction: %02f\n", fSum);
 
    if(!verbose && !noprint) {
-      Print(); /*
-       printf("BG Area:         %.02f\n",bgArea);
-       printf("GetChisquared(): %.4f\n", TF1::GetChisquare());
-       printf("GetNDF():        %i\n",   TF1::GetNDF());
-       printf("GetProb():       %.4f\n", TF1::GetProb());*/
-      // TF1::Print();
+      Print();
    }
 
    Copy(*fithist->GetListOfFunctions()->FindObject(GetName()));
    fithist->GetListOfFunctions()->Add(fBGFit.Clone());
 
-   // delete tmppeak;
    return true;
 }
 

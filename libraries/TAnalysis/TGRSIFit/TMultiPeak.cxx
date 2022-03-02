@@ -244,7 +244,6 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
    // After performing this fit I want to put something here that takes the fit result (good,bad,etc)
    // for printing out. RD
 
-   // Int_t fitStatus = fitres; //This returns a fit status from the TFitResult Ptr
    // This removes the background parts of the fit form the integral error, while maintaining the covariance between the
    // fits and the background.
    TMatrixDSym CovMat = fitres->GetCovarianceMatrix();
@@ -253,7 +252,6 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
    CovMat(2, 2) = 0.0;
    CovMat(3, 3) = 0.0;
    CovMat(4, 4) = 0.0;
-   //   printf("covmat ");CovMat.Print();
 
    // This copies the parameters background but the background function doesn't have peaks
    CopyParameters(fBackground);
@@ -271,31 +269,6 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
       //  printf("empt covmat ");emptyCovMat.Print();
    }
 
-   /*
-      if(fitres->ParError(2) != fitres->ParError(2)){ //Check to see if nan
-         if(fitres->Parameter(3) < 1){
-            InitParams(fithist);
-            FixParameter(4,0);
-            FixParameter(3,1);
-            std::cout<<"Beta may have broken the fit, retrying with R=0"<<std::endl;
-          // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
-            fithist->GetListOfFunctions()->Last()->Delete();
-            if(GetLogLikelihoodFlag()){
-               fitres = fithist->Fit(this,Form("%sLRS",opt));//The RS needs to always be there
-            }
-            else{
-               fitres = fithist->Fit(this,Form("%sRS",opt));
-            }
-         }
-      }*/
-   /*   if(fitres->Parameter(5) < 0.0){
-         FixParameter(5,0);
-         std::cout<<"Step < 0. Retrying fit with stp = 0"<<std::endl;
-         fitres = fithist->Fit(this,Form("%sRSML",opt));
-      }
-   */
-   /*
-*/
    if(print_flag) {
       printf("Chi^2/NDF = %lf\n", fitres->Chi2() / fitres->Ndf());
    }
@@ -318,8 +291,6 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
       peak->SetParameter("bg_offset", 0.0);
       peak->SetChi2(fitres->Chi2());
       peak->SetNdf(fitres->Ndf());
-
-      // printf("tmp cov mat: ");tmpCovMat.Print();
 
       // Set the important diagonals for the integral of the covariance matrix
       tmpCovMat(6 * i + 5, 6 * i + 5) = CovMat(6 * i + 5, 6 * i + 5);
@@ -360,15 +331,6 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
       }
    }
 
-   // Set the background for drawing later
-   //  background->SetParameters(GetParameters());
-   // To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
-   // Copy(*fithist->GetListOfFunctions()->Last());
-   // if(optstr.Contains("+"))
-   //    Copy(*fithist->GetListOfFunctions()->Before(fithist->GetListOfFunctions()->Last()));
-
-   //     peak->SetParameter("step",GetParameter(Form("Step_%i",i)));
-   //   delete tmppeak;
    return true;
 }
 
@@ -409,9 +371,6 @@ Double_t TMultiPeak::MultiPhotoPeakBG(Double_t* dim, Double_t* par)
       tmp_par[0] = par[6 * i + 5];  // height of photopeak
       tmp_par[1] = par[6 * i + 6];  // Peak Centroid of non skew gaus
       tmp_par[2] = par[6 * i + 7];  // standard deviation  of gaussian
-      //This is where I link up the widths of the gaussians if they are within 5 keV. 
-   //  for(int j = 0; j < npeaks; ++j){
-      //}
       tmp_par[3] = par[6 * i + 8];  //"skewedness" of the skewed gaussian
       tmp_par[4] = par[6 * i + 9];  // relative height of skewed gaussian
       tmp_par[5] = par[6 * i + 10]; // Size of step in background
@@ -513,7 +472,6 @@ void TMultiPeak::DrawPeaks()
       sum->SetLineStyle(2);
       sum->SetLineColor(kMagenta);
 
-      //  peak->DrawF1(Form("%s + %s",peak->GetName(),Background()->GetName()),centroid-range,centroid+range,"same");
       sum->SetRange(centroid - range, centroid + range);
       sum->DrawCopy("SAME");
       delete sum;
