@@ -459,6 +459,7 @@ void TBGSubtraction::DoPeakFit()
 		std::cerr<<"Something went wrong and the peak is a nullptr?"<<std::endl;
 		return;
 	}
+	fPeakFitter->ResetInitFlag();
 	fPeak->Centroid(fPeakValue);
 	fPeakFitter->SetRange(fPeakLowValue, fPeakHighValue);
    fGateCanvas->GetCanvas()->cd();
@@ -469,7 +470,7 @@ void TBGSubtraction::DoPeakFit()
 
 void TBGSubtraction::DrawPeak()
 {
-   if(fPeak) fPeak->Draw("same");
+   if(fPeak != nullptr) fPeak->Draw("same");
 }
 
 void TBGSubtraction::ClickedBGButton1()
