@@ -220,7 +220,6 @@ Bool_t TPeak::InitParams(TH1* fitHist)
    Int_t bin     = fitHist->FindBin(GetParameter("centroid"));
    Int_t binlow  = fitHist->GetXaxis()->FindBin(xlow);
    Int_t binhigh = fitHist->GetXaxis()->FindBin(xhigh);
-   // Double_t binWidth = fitHist->GetBinWidth(bin);
    SetParLimits(0, 0, fitHist->GetMaximum());
    GetParLimits(1, low, high);
    if(low == high && low == 0.) {
@@ -252,8 +251,6 @@ Bool_t TPeak::InitParams(TH1* fitHist)
    // The centroid should already be set by this point in the ctor
    SetParameter("Height", fitHist->GetBinContent(bin));
    SetParameter("centroid", GetParameter("centroid"));
-   //  SetParameter("sigma",(xhigh-xlow)*0.5); // slightly more robust starting value for sigma -JKS
-   //  SetParameter("sigma",1.0/binWidth); // slightly more robust starting value for sigma -JKS
    SetParameter("sigma", TMath::Sqrt(9.0 + 4. * GetParameter("centroid") / 1000.) / 2.35);
    SetParameter("beta", GetParameter("sigma") / 2.0);
    SetParameter("R", 0.001);
@@ -303,16 +300,6 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    // Now that it is initialized, let's fit it.
    // Just in case the range changed, we should reset the centroid and bg energy limits
    // check first if the parameter has been fixed!
-   /////////////////// TODO: this should be done in SetRange !!!!!!!!!!
-   // double parmin, parmax;
-   // GetParLimits(1,parmin,parmax);
-   // if(parmin < parmax) {
-   //	SetParLimits(1,GetXmin(),GetXmax());
-   //}
-   // GetParLimits(9,parmin,parmax);
-   // if(parmin < parmax) {
-   //	SetParLimits(9,GetXmin(),GetXmax());
-   //}
    std::vector<double> lowerLimit(GetNpar());
    std::vector<double> upperLimit(GetNpar());
    for(int i = 0; i < GetNpar(); ++i) {
@@ -349,8 +336,6 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
 
    // After performing this fit I want to put something here that takes the fit result (good,bad,etc)
    // for printing out. RD
-
-   // Int_t fitStatus = fitres; //This returns a fit status from the TFitResult Ptr
 
    if(fitres->ParError(2) != fitres->ParError(2)) { // Check to see if nan
       if(fitres->Parameter(3) < 1) {
@@ -439,8 +424,6 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    fBackground->SetParameters(GetParameters());
    // To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
    Copy(*fitHist->GetListOfFunctions()->Last());
-   //  if(optstr.Contains("+"))
-   //    Copy(*fitHist->GetListOfFunctions()->Before(fitHist->GetListOfFunctions()->Last()));
 
 	// always print result of the fit even if not verbose
    if(!quiet) Print("+");
