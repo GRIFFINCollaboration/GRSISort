@@ -60,10 +60,10 @@ Double_t TDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
    }
 	TChannel* tmpChan = GetChannel();
 	if(tmpChan == nullptr) {
-		return SetTime(static_cast<Double_t>(((GetTimeStamp()) + gRandom->Uniform()) * GetTimeStampUnit()));
+		return SetTime(static_cast<Double_t>(GetTimeStamp() + gRandom->Uniform()));
 	}
 
-	return SetTime(static_cast<Double_t>(((GetTimeStamp()) + gRandom->Uniform()) * GetTimeStampUnit() - tmpChan->GetTimeOffset()));
+	return SetTime(tmpChan->GetTime(GetTimeStamp(), GetCfd()));
 }
 
 Float_t TDetectorHit::GetCharge() const

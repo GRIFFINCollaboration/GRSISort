@@ -1404,3 +1404,29 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName, bool
 		}
 	}
 }
+
+void TChannel::SetDigitizerType(TPriorityValue<std::string> tmp)
+{
+	fDigitizerTypeString = tmp;
+	fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType, fTimeStampUnit);
+}
+
+double TChannel::GetTime(Long64_t timestamp, Float_t cfd) const
+{
+	return fMnemonic.Value()->GetTime(timestamp, cfd, this);
+}
+
+const TMnemonic* TChannel::GetMnemonic() const
+{
+	return fMnemonic.Value();
+}
+
+TClass* TChannel::GetClassType() const
+{
+	return fMnemonic.Value()->GetClassType();
+}
+
+void TChannel::SetClassType(TClass* cl_type)
+{
+	fMnemonic.Value()->SetClassType(cl_type);
+}

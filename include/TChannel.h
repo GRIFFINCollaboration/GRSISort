@@ -44,6 +44,9 @@
 #include "Globals.h"
 #include "TPriorityValue.h"
 
+enum class EDigitizer : char;
+class TMnemonic;
+
 class TChannel : public TNamed {
 public:
    static TChannel* GetChannel(unsigned int temp_address, bool warn = true);
@@ -141,11 +144,7 @@ public:
    static void SetIntegration(const std::string& mnemonic, int tmpint, EPriority pr);
    inline void SetStream(TPriorityValue<int> tmp) { fStream = tmp; }
    inline void SetUserInfoNumber(TPriorityValue<int> tmp) { fUserInfoNumber = tmp; }
-   inline void SetDigitizerType(TPriorityValue<std::string> tmp)
-   {
-      fDigitizerTypeString = tmp;
-      fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType, fTimeStampUnit);
-   }
+   inline void SetDigitizerType(TPriorityValue<std::string> tmp);
    static void SetDigitizerType(const std::string& mnemonic, const char* tmpstr, EPriority pr);
    inline void SetTimeOffset(TPriorityValue<Long64_t> tmp) { fTimeOffset = tmp; }
 
@@ -153,12 +152,13 @@ public:
    void SetSegmentNumber(int tempint) { fSegmentNumber = tempint; }
    void SetCrystalNumber(int tempint) { fCrystalNumber = tempint; }
 
+	double            GetTime(Long64_t timestamp, Float_t cfd) const;
    int               GetDetectorNumber() const;
    int               GetSegmentNumber() const;
    int               GetCrystalNumber() const;
-   const TMnemonic*  GetMnemonic() const { return fMnemonic.Value(); }
-   TClass*           GetClassType() const { return fMnemonic.Value()->GetClassType(); }
-   void              SetClassType(TClass* cl_type) { fMnemonic.Value()->SetClassType(cl_type); }
+   const TMnemonic*  GetMnemonic() const;
+   TClass*           GetClassType() const;
+   void              SetClassType(TClass* cl_type);
 
    int          GetNumber() const { return fNumber.Value(); }
    unsigned int GetAddress() const { return fAddress; }
