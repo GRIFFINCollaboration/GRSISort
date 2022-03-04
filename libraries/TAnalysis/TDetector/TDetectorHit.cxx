@@ -63,7 +63,7 @@ Double_t TDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
 		return SetTime(static_cast<Double_t>(GetTimeStamp() + gRandom->Uniform()));
 	}
 
-	return SetTime(tmpChan->GetTime(GetTimeStamp(), GetCfd()));
+	return SetTime(tmpChan->GetTime(GetTimeStamp(), GetCfd(), GetEnergy()));
 }
 
 Float_t TDetectorHit::GetCharge() const

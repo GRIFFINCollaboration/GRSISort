@@ -50,7 +50,7 @@ public:
    virtual void SetClassType(TClass* classType) { fClassType = classType; }
    virtual TClass*                   GetClassType() const;
 
-	virtual double GetTime(Long64_t timestamp, Float_t, const TChannel* channel) const;
+	virtual double GetTime(Long64_t timestamp, Float_t cfd, double energy, const TChannel* channel) const;
 	
    virtual void Print(Option_t* opt = "") const override;
    virtual void Clear(Option_t* opt = "") override;
