@@ -44,6 +44,9 @@
 #include "Globals.h"
 #include "TPriorityValue.h"
 
+enum class EDigitizer : char;
+class TMnemonic;
+
 class TChannel : public TNamed {
 public:
    static TChannel* GetChannel(unsigned int temp_address, bool warn = true);
@@ -141,11 +144,7 @@ public:
    static void SetIntegration(const std::string& mnemonic, int tmpint, EPriority pr);
    inline void SetStream(TPriorityValue<int> tmp) { fStream = tmp; }
    inline void SetUserInfoNumber(TPriorityValue<int> tmp) { fUserInfoNumber = tmp; }
-   inline void SetDigitizerType(TPriorityValue<std::string> tmp)
-   {
-      fDigitizerTypeString = tmp;
-      fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType, fTimeStampUnit);
-   }
+   void SetDigitizerType(TPriorityValue<std::string> tmp);
    static void SetDigitizerType(const std::string& mnemonic, const char* tmpstr, EPriority pr);
    inline void SetTimeOffset(TPriorityValue<Long64_t> tmp) { fTimeOffset = tmp; }
 
@@ -153,12 +152,13 @@ public:
    void SetSegmentNumber(int tempint) { fSegmentNumber = tempint; }
    void SetCrystalNumber(int tempint) { fCrystalNumber = tempint; }
 
+	double            GetTime(Long64_t timestamp, Float_t cfd, double energy) const;
    int               GetDetectorNumber() const;
    int               GetSegmentNumber() const;
    int               GetCrystalNumber() const;
-   const TMnemonic*  GetMnemonic() const { return fMnemonic.Value(); }
-   TClass*           GetClassType() const { return fMnemonic.Value()->GetClassType(); }
-   void              SetClassType(TClass* cl_type) { fMnemonic.Value()->SetClassType(cl_type); }
+   const TMnemonic*  GetMnemonic() const;
+   TClass*           GetClassType() const;
+   void              SetClassType(TClass* cl_type);
 
    int          GetNumber() const { return fNumber.Value(); }
    unsigned int GetAddress() const { return fAddress; }
@@ -237,22 +237,22 @@ public:
    bool             UseWaveParam() const { return WaveFormShape.InUse; }
    WaveFormShapePar GetWaveParam() const { return WaveFormShape; }
 
-   double CalibrateENG(double);
-   double CalibrateENG(double, int temp_int);
-   double CalibrateENG(int, int temp_int = 0);
+   double CalibrateENG(double) const;
+   double CalibrateENG(double, int temp_int) const;
+   double CalibrateENG(int, int temp_int = 0) const;
 
-   double CalibrateCFD(double);
-   double CalibrateCFD(int);
+   double CalibrateCFD(double) const;
+   double CalibrateCFD(int) const;
 
-   double CalibrateLED(double);
-   double CalibrateLED(int);
+   double CalibrateLED(double) const;
+   double CalibrateLED(int) const;
 
-   double        CalibrateTIME(double);
-   double        CalibrateTIME(int);
-   inline double GetTZero(double tempd) { return CalibrateTIME(tempd); }
-   inline double GetTZero(int tempi) { return CalibrateTIME(tempi); }
+   double        CalibrateTIME(double) const;
+   double        CalibrateTIME(int) const;
+   inline double GetTZero(double tempd) const { return CalibrateTIME(tempd); }
+   inline double GetTZero(int tempi) const { return CalibrateTIME(tempi); }
 
-   double CalibrateEFF(double);
+   double CalibrateEFF(double) const;
 
    void DestroyCalibrations();
 

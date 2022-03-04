@@ -481,7 +481,7 @@ void TChannel::DestroyCalibrations()
    DestroyCTCal();
 }
 
-double TChannel::CalibrateENG(int charge, int temp_int)
+double TChannel::CalibrateENG(int charge, int temp_int) const
 {
    /// Returns the calibrated energy of the channel when a charge is passed to it.
    /// This is done by first adding a random number between 0 and 1 to the charge
@@ -497,7 +497,7 @@ double TChannel::CalibrateENG(int charge, int temp_int)
    return CalibrateENG(static_cast<double>(charge) + gRandom->Uniform(), temp_int);
 }
 
-double TChannel::CalibrateENG(double charge, int temp_int)
+double TChannel::CalibrateENG(double charge, int temp_int) const
 {
    /// Returns the calibrated energy of the channel when a charge is passed to it.
    /// This is divided by the integration parameter. The
@@ -519,7 +519,7 @@ double TChannel::CalibrateENG(double charge, int temp_int)
    return CalibrateENG((charge) / static_cast<double>(temp_int));
 }
 
-double TChannel::CalibrateENG(double charge)
+double TChannel::CalibrateENG(double charge) const
 {
    /// Returns the calibrated energy. The polynomial energy calibration formula is
    /// applied to get the calibrated energy. This function does not use the
@@ -534,13 +534,13 @@ double TChannel::CalibrateENG(double charge)
    return cal_chg;
 }
 
-double TChannel::CalibrateCFD(int cfd)
+double TChannel::CalibrateCFD(int cfd) const
 {
    /// Calibrates the CFD properly.
    return CalibrateCFD(static_cast<double>(cfd) + gRandom->Uniform());
 }
 
-double TChannel::CalibrateCFD(double cfd)
+double TChannel::CalibrateCFD(double cfd) const
 {
    /// Returns the calibrated CFD. The polynomial CFD calibration formula is
    /// applied to get the calibrated CFD.
@@ -559,13 +559,13 @@ double TChannel::CalibrateCFD(double cfd)
    return cal_cfd;
 }
 
-double TChannel::CalibrateLED(int led)
+double TChannel::CalibrateLED(int led) const
 {
    /// Calibrates the LED
    return CalibrateLED(static_cast<double>(led) + gRandom->Uniform());
 }
 
-double TChannel::CalibrateLED(double led)
+double TChannel::CalibrateLED(double led) const
 {
    /// Returns the calibrated LED. The polynomial LED calibration formula is
    /// applied to get the calibrated LED.
@@ -580,7 +580,7 @@ double TChannel::CalibrateLED(double led)
    return cal_led;
 }
 
-double TChannel::CalibrateTIME(int chg)
+double TChannel::CalibrateTIME(int chg) const
 {
    /// Calibrates the time spectrum
    if(fTIMECoefficients.size() != 3 || (chg < 1)) {
@@ -589,7 +589,7 @@ double TChannel::CalibrateTIME(int chg)
    return CalibrateTIME((CalibrateENG(chg)));
 }
 
-double TChannel::CalibrateTIME(double energy)
+double TChannel::CalibrateTIME(double energy) const
 {
    /// uses the values stored in TIMECOefficients to calculate a
    /// "walk correction" factor.  This function returns the correction
@@ -605,7 +605,7 @@ double TChannel::CalibrateTIME(double energy)
    return timeCorrection;
 }
 
-double TChannel::CalibrateEFF(double)
+double TChannel::CalibrateEFF(double) const
 {
    /// This needs to be added
    return 1.0;
@@ -1403,4 +1403,30 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName, bool
 			AddChannel(newChannel);
 		}
 	}
+}
+
+inline void TChannel::SetDigitizerType(TPriorityValue<std::string> tmp)
+{
+	fDigitizerTypeString = tmp;
+	fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType, fTimeStampUnit);
+}
+
+double TChannel::GetTime(Long64_t timestamp, Float_t cfd, double energy) const
+{
+	return fMnemonic.Value()->GetTime(timestamp, cfd, energy, this);
+}
+
+const TMnemonic* TChannel::GetMnemonic() const
+{
+	return fMnemonic.Value();
+}
+
+TClass* TChannel::GetClassType() const
+{
+	return fMnemonic.Value()->GetClassType();
+}
+
+void TChannel::SetClassType(TClass* cl_type)
+{
+	fMnemonic.Value()->SetClassType(cl_type);
 }
