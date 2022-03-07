@@ -37,7 +37,7 @@ void TPeakFitter::Print(Option_t * opt) const
 	if(!fPeaksToFit.empty()) {
 		std::cout<<"Peaks: "<<std::endl;
 		for(auto i : fPeaksToFit) {
-			std::cout<<"Peak #"<<counter++ <<std::endl;
+			std::cout<<"Peak #"<<counter++<<" - ";
 			i->Print(opt);
 		}
 		std::cout<<"Chi2/Ndf = "<<fPeaksToFit.front()->GetChi2()<<"/"<<fPeaksToFit.front()->GetNDF()<< " = "<<fPeaksToFit.front()->GetReducedChi2()<<std::endl;
