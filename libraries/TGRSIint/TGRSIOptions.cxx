@@ -334,7 +334,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 	}
 
 	parser.option("max-events", &fNumberOfEvents, true)
-		.description("Maximum number of events, fragments, etc. processed").default_value(0);
+		.description("Maximum number of (midas, lst, or tdr) events read").default_value(0);
 
    // look for any arguments ending with .info, pass to parser.
    for(int i = 0; i < argc; i++) {
