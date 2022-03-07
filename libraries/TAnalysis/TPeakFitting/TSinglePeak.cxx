@@ -40,7 +40,7 @@ TF1* TSinglePeak::GetBackgroundFunction(){
 
 void TSinglePeak::Print(Option_t *) const
 {
-	std::cout<<Class()->GetName()<<":"<<std::endl;
+	std::cout<<IsA()->GetName()<<":"<<std::endl;
    std::cout<<"Centroid = "<<std::fixed<<Centroid()<<" +/- "<<CentroidErr()<<std::endl;
    std::cout<<"Area = "<<Area()<<" +/- "<<AreaErr()<<std::endl;
    std::cout<<std::endl;
