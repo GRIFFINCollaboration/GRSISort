@@ -70,9 +70,3 @@ Double_t TGauss::PeakFunction(Double_t *dim, Double_t *par)
    
 	return gauss;
 }
-
-void TGauss::Print(Option_t * opt) const
-{
-   std::cout << "gaussian peak:" << std::endl;
-   TSinglePeak::Print(opt);
-}
