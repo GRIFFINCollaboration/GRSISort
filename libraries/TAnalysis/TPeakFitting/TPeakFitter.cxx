@@ -26,10 +26,16 @@ TPeakFitter::TPeakFitter(const Double_t &range_low, const Double_t &range_high) 
 void TPeakFitter::Print(Option_t * opt) const
 {
 	/// Print information from the fit, opt is passed along to each individual peaks Print function.
-	std::cout<<"Range: "<<fRangeLow<<" to "<<fRangeHigh<<std::endl;
+	if(fTotalFitFunction != nullptr) {
+		double xMin, xMax;
+		fTotalFitFunction->GetRange(xMin, xMax);
+		std::cout<<"Fitting range: "<<xMin<<" to "<<xMax<<std::endl;
+	} else {
+		std::cout<<"Range: "<<fRangeLow<<" to "<<fRangeHigh<<std::endl;
+	}
 	Int_t counter = 0;
 	if(!fPeaksToFit.empty()) {
-		std::cout<<"Peaks: "<<std::endl<<std::endl;
+		std::cout<<"Peaks: "<<std::endl;
 		for(auto i : fPeaksToFit) {
 			std::cout<<"Peak #"<<counter++ <<std::endl;
 			i->Print(opt);
@@ -109,6 +115,7 @@ void TPeakFitter::Fit(TH1* fit_hist, Option_t *opt)
 		fTotalFitFunction = new TF1("total_fit",this,&TPeakFitter::FitFunction,fRangeLow,fRangeHigh,GetNParameters(),"TPeakFitter","FitFunction");
 	}
 	fTotalFitFunction->SetLineColor(kMagenta+fIndex);
+	fTotalFitFunction->SetRange(fRangeLow, fRangeHigh);
 	//We need to initialize all of the parameters based on the peak parameters
 	if(fit_hist != nullptr && (!fInitFlag || fit_hist != fLastHistFit)) {
 		if(verbose) std::cout<<"Initializing Fit...."<<std::endl;
