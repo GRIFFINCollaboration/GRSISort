@@ -787,13 +787,8 @@ std::string TChannel::PrintToString(Option_t*) const
 	return buffer;
 }
 
-void TChannel::WriteCalFile(const std::string& outfilename)
+std::vector<TChannel*> TChannel::SortedChannels()
 {
-	/// prints the context of addresschannelmap formatted correctly to stdout if
-	/// no file name is passed to the function.  If a file name is passed to the function
-	/// prints the context of addresschannelmap formatted correctly to a file with the given
-	/// name.  This will earse and rewrite the file if the file already exisits!
-
 	std::vector<TChannel*> chanVec;
 	for(auto iter : *fChannelMap) {
 		if(iter.second != nullptr) {
@@ -803,6 +798,18 @@ void TChannel::WriteCalFile(const std::string& outfilename)
 
 	//This orders channels nicely
 	std::sort(chanVec.begin(), chanVec.end(), TChannel::CompareChannels);
+
+	return chanVec;
+}
+
+void TChannel::WriteCalFile(const std::string& outfilename)
+{
+	/// prints the context of addresschannelmap formatted correctly to stdout if
+	/// no file name is passed to the function.  If a file name is passed to the function
+	/// prints the context of addresschannelmap formatted correctly to a file with the given
+	/// name.  This will earse and rewrite the file if the file already exisits!
+
+	std::vector<TChannel*> chanVec = SortedChannels();
 
 	if(outfilename.length() > 0) {
 		std::ofstream calout;
@@ -823,15 +830,7 @@ void TChannel::WriteCalFile(const std::string& outfilename)
 
 void TChannel::WriteCTCorrections(const std::string& outfilename)
 {
-	std::vector<TChannel*> chanVec;
-	for(auto iter : *fChannelMap) {
-		if(iter.second != nullptr) {
-			chanVec.push_back(iter.second);
-		}
-	}
-
-	//This ordered channels nicely
-	std::sort(chanVec.begin(), chanVec.end(), TChannel::CompareChannels);
+	std::vector<TChannel*> chanVec = SortedChannels();
 
 	if(outfilename.length() > 0) {
 		std::ofstream calout;
@@ -856,15 +855,7 @@ void TChannel::WriteCalBuffer(Option_t*)
 	/// fFileData.  Can be used to over write info that is there
 	/// or create the buffer if the channels originated from the odb.
 
-	std::vector<TChannel*> chanVec;
-	for(auto iter : *fChannelMap) {
-		if(iter.second != nullptr) {
-			chanVec.push_back(iter.second);
-		}
-	}
-
-	//This ordered channels nicely
-	std::sort(chanVec.begin(), chanVec.end(), TChannel::CompareChannels);
+	std::vector<TChannel*> chanVec = SortedChannels();
 
 	std::string data;
 
@@ -1405,7 +1396,7 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName, bool
 	}
 }
 
-inline void TChannel::SetDigitizerType(TPriorityValue<std::string> tmp)
+void TChannel::SetDigitizerType(TPriorityValue<std::string> tmp)
 {
 	fDigitizerTypeString = tmp;
 	fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType, fTimeStampUnit);

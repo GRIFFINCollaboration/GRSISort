@@ -127,6 +127,8 @@ private:
 
    static void trim(std::string&);
 
+	static std::vector<TChannel*> SortedChannels();
+
 public:
    void SetName(const char* tmpName) override;
    void SetAddress(unsigned int tmpadd);
