@@ -193,7 +193,10 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
 		TF1* total_function_copy = new TF1(*fTotalFitFunction);
 		TMatrixDSym covariance_matrix = fit_res->GetCovarianceMatrix();
 		bool goodCovarianceMatrix = true;
-		if(covariance_matrix.GetNrows() != peak_func->GetNpar() || covariance_matrix.GetNcols() != peak_func->GetNpar()) goodCovarianceMatrix = false;
+		if(covariance_matrix.GetNrows() < peak_func->GetNpar() || covariance_matrix.GetNcols() < peak_func->GetNpar()) {
+			goodCovarianceMatrix = false;
+			std::cout<<covariance_matrix.GetNrows()<<" < "<<peak_func->GetNpar()<<" || "<<covariance_matrix.GetNcols()<<" < "<<peak_func->GetNpar()<<" => not a good covariance matrix"<<std::endl;
+		}
 		//Now we need to remove all of the parts of the covariance peak that has nothing to do with this particular peak
 		//This would be the diagonals of the background, and all of the other peaks.
 		Int_t param_to_zero_counter = 0;
@@ -240,6 +243,7 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
 			}
 			p_it->SetArea(total_function_copy->Integral(p_it->Centroid()-p_it->Width()*5., p_it->Centroid()+p_it->Width()*5.,1e-8)/fit_hist->GetBinWidth(1));
 			if(goodCovarianceMatrix) p_it->SetAreaErr(total_function_copy->IntegralError(p_it->Centroid()-p_it->Width()*5., p_it->Centroid()+p_it->Width()*5., total_function_copy->GetParameters(), covariance_matrix.GetMatrixArray(),1E-5)/fit_hist->GetBinWidth(1));
+			else std::cout<<"Not setting area error because we don't have a good covariance matrix!"<<std::endl;
 			//std::cout<<"Integrating from: "<<p_it->Centroid()-p_it->Width()*5.<<" to "<<p_it->Centroid()+p_it->Width()*5.<<std::endl;
 			++peak_counter;
 		}
