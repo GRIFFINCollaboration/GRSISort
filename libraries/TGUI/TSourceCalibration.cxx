@@ -1223,6 +1223,8 @@ void TSourceCalibration::BuildThirdInterface()
 	fEfficiencyResidualPad.resize(fNofBins, nullptr);
 	fLegend.resize(fNofBins, nullptr);
 	fEfficiencyLegend.resize(fNofBins, nullptr);
+	fChi2Label.resize(fNofBins, nullptr);
+	fEfficiencyChi2Label.resize(fNofBins, nullptr);
 	int tmpBin = 0;
 	int parts[] = { 20, 50, 30 };
 	int partsEff[] = { 60, 40 };
@@ -1236,7 +1238,7 @@ void TSourceCalibration::BuildThirdInterface()
 		// copy all data into one graph (which we use for the calibration)
 		fFinalData[tmpBin] = new TCalibrationGraphSet;
 		fFinalEfficiency[tmpBin] = new TCalibrationGraphSet;
-		if(fVerboseLevel > 2) std::cout<<"fFinalData["<<tmpBin<<"] "<<fFinalData[tmpBin]<<": "<<(fFinalData[tmpBin]?fFinalData[tmpBin]->GetN():0)<<" data points"<<std::endl;
+		if(fVerboseLevel > 2) std::cout<<"fFinalData["<<tmpBin<<"] "<<fFinalData[tmpBin]<<": "<<(fFinalData[tmpBin]?fFinalData[tmpBin]->GetN():-1)<<" data points after creation"<<std::endl;
 		for(size_t source = 0; source < fSource.size(); ++source) {
 			fFinalData[tmpBin]->Add(fData[source][tmpBin], fSource[source]->GetName());
 			fFinalData[tmpBin]->SetLineColor(source, source+1); //+1 for the color so that we start with 1 = black instead of 0 = white
@@ -1255,7 +1257,7 @@ void TSourceCalibration::BuildThirdInterface()
 		fStatusBar.back()->SetParts(parts, 3);
 		fFinalTab.back()->AddFrame(fStatusBar.back(), new TGLayoutHints(kLHintsTop | kLHintsExpandX, 2, 2, 2, 2));
 
-		if(fVerboseLevel > 2) std::cout<<"fFinalData["<<tmpBin<<"] "<<fFinalData[tmpBin]<<": "<<(fFinalData[tmpBin]?fFinalData[tmpBin]->GetN():0)<<" data points"<<std::endl;
+		if(fVerboseLevel > 2) std::cout<<"fFinalData["<<tmpBin<<"] "<<fFinalData[tmpBin]<<": "<<(fFinalData[tmpBin]?fFinalData[tmpBin]->GetN():-1)<<" data points after adding"<<std::endl;
 		fActualSourceId[tmpBin] = tmpBin;
 		// plot the graphs without their fit functions
 		fFinalCanvas.back()->GetCanvas()->cd();
@@ -1266,6 +1268,7 @@ void TSourceCalibration::BuildThirdInterface()
 		fLegend[tmpBin] = new TLegend(0.8,0.3,0.95,0.3+fMatrices.size()*0.05); // x1, y1, x2, y2
 		//fFinalData[tmpBin]->DrawCalibration("*", fLegend[tmpBin]);
 		//fLegend[tmpBin]->Draw();
+		fChi2Label[tmpBin] = new TPaveText(0.3,0.8,0.4,0.85);
 		fFinalCanvas.back()->GetCanvas()->cd();
 		fResidualPad[tmpBin] = new TPad(Form("res_%s", fChannelLabel[tmpBin]), Form("residual for %s", fChannelLabel[tmpBin]), 0.0, 0., 0.2, 1.);
 		fResidualPad[tmpBin]->SetNumber(2);
@@ -1293,8 +1296,10 @@ void TSourceCalibration::BuildThirdInterface()
 		fEfficiencyPad[tmpBin]->Draw();
 		fEfficiencyPad[tmpBin]->cd();
 		fEfficiencyLegend[tmpBin] = new TLegend(0.8,0.3,0.95,0.3+fMatrices.size()*0.05); // x1, y1, x2, y2
+		fEfficiencyChi2Label[tmpBin] = new TPaveText(0.3,0.8,0.4,0.85);
 		fFinalEfficiency[tmpBin]->DrawCalibration("*", fEfficiencyLegend[tmpBin]);
 		fEfficiencyLegend[tmpBin]->Draw();
+		fEfficiencyChi2Label[tmpBin]->Draw();
 		fEfficiencyCanvas.back()->GetCanvas()->cd();
 		fEfficiencyResidualPad[tmpBin] = new TPad(Form("eff_res_%s", fChannelLabel[tmpBin]), Form("residual for %s", fChannelLabel[tmpBin]), 0.0, 0., 0.2, 1.);
 		fEfficiencyResidualPad[tmpBin]->SetNumber(2);
@@ -1478,7 +1483,7 @@ void TSourceCalibration::FitFinal(const int& channelId)
 {
 	TF1* calibration = new TF1("fitfunction", ::Polynomial, 0., 10000., Degree()+2);
 	calibration->FixParameter(0, Degree());
-	if(fVerboseLevel > 1) std::cout<<"fFinalData["<<channelId<<"] "<<fFinalData[channelId]<<": "<<(fFinalData[channelId]?fFinalData[channelId]->GetN():0)<<" data points"<<std::endl;
+	if(fVerboseLevel > 1) std::cout<<"fFinalData["<<channelId<<"] "<<fFinalData[channelId]<<": "<<(fFinalData[channelId]?fFinalData[channelId]->GetN():-1)<<" data points being fit"<<std::endl;
 	fFinalData[channelId]->Fit(calibration, "Q");
 	TString text = Form("%.6f + %.6f*x", calibration->GetParameter(1), calibration->GetParameter(2));
 	for(int i = 2; i <= Degree(); ++i) {
@@ -1488,18 +1493,25 @@ void TSourceCalibration::FitFinal(const int& channelId)
 	// re-calculate the residuals
 	fFinalData[channelId]->SetResidual(true);
 
-	delete calibration;
 	fLegend[channelId]->Clear();
 	fCalibrationPad[channelId]->cd();
 	fFinalData[channelId]->DrawCalibration("*", fLegend[channelId]);
 	fLegend[channelId]->Draw();
+	if(fChi2Label[channelId] != nullptr) {
+		fChi2Label[channelId]->Clear();
+		fChi2Label[channelId]->AddText(Form("#chi^2/NDF = %f", calibration->GetChisquare()/calibration->GetNDF()));
+		fChi2Label[channelId]->Draw();
+	} else {
+		std::cout<<"fChi2Label["<<channelId<<"] not created, no text with reduced chi square will be created."<<std::endl;
+	}
+
 	fResidualPad[channelId]->cd();
 	fFinalData[channelId]->DrawResidual("*");
 
-	//fFinalCanvas[channelId]->GetCanvas()->cd();
-	//fCalibrationPad[channelId]->Draw();
-	//fResidualPad[channelId]->Draw();
 	fFinalCanvas[channelId]->GetCanvas()->Modified();
+
+	delete calibration;
+	
 	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<" done"<<std::endl;
 }
 
@@ -1510,10 +1522,18 @@ void TSourceCalibration::FitEfficiency(const int& channelId)
 	fFinalEfficiency[channelId]->Scale();
 	TF1* efficiency;
 	efficiency = new TF1("fitfunction", ::Efficiency, 0., 10000., 9);
-	if(fVerboseLevel > 2) std::cout<<"fFinalData["<<channelId<<"] "<<fFinalData[channelId]<<": "<<(fFinalData[channelId]?fFinalData[channelId]->GetN():0)<<" data points"<<std::endl;
+	if(fVerboseLevel > 2) std::cout<<"fFinalEfficiency["<<channelId<<"] "<<fFinalEfficiency[channelId]<<": "<<(fFinalEfficiency[channelId]?fFinalEfficiency[channelId]->GetN():0)<<" data points"<<std::endl;
 	fFinalEfficiency[channelId]->Fit(efficiency, "Q");
 	// re-calculate the residuals
 	fFinalEfficiency[channelId]->SetResidual(true);
+
+	if(fEfficiencyChi2Label[channelId] != nullptr) {
+		fEfficiencyChi2Label[channelId]->Clear();
+		fEfficiencyChi2Label[channelId]->AddText(Form("#chi^2/NDF = %f", efficiency->GetChisquare()/efficiency->GetNDF()));
+		fEfficiencyChi2Label[channelId]->Draw();
+	} else {
+		std::cout<<"fEfficiencyChi2Label["<<channelId<<"] not created, no text with reduced chi square will be created."<<std::endl;
+	}
 
 	delete efficiency;
 	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<" done"<<std::endl;

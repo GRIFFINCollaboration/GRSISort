@@ -23,6 +23,7 @@
 #include "TGProgressBar.h"
 #include "TRootEmbeddedCanvas.h"
 #include "TH2.h"
+#include "TPaveText.h"
 
 #include "GPeak.h"
 #include "TSinglePeak.h"
@@ -226,12 +227,14 @@ private:
 	std::vector<TPad*> fCalibrationPad;
 	std::vector<TGStatusBar*> fStatusBar;
 	std::vector<TLegend*> fLegend;
+	std::vector<TPaveText*> fChi2Label;
 	std::vector<TGCompositeFrame*> fEfficiencyTabs;
 	std::vector<TRootEmbeddedCanvas*> fEfficiencyCanvas;
 	std::vector<TPad*> fEfficiencyResidualPad;
 	std::vector<TPad*> fEfficiencyPad;
 	std::vector<TGStatusBar*> fEfficiencyStatusBar;
 	std::vector<TLegend*> fEfficiencyLegend;
+	std::vector<TPaveText*> fEfficiencyChi2Label;
 
 	std::vector<TGLabel*> fMatrixNames;
 	std::vector<TGComboBox*> fSourceBox;
@@ -253,7 +256,7 @@ private:
 
 	int fOldErrorLevel; ///< Used to store old value of gErrorIgnoreLevel (set to kError for the scope of the class)
 
-	int fVerboseLevel{0}; ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
+	int fVerboseLevel{4}; ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 
 	double fDefaultSigma{2.}; ///< The default sigma used for the peak finding algorithm, can be changed later.
 	double fDefaultThreshold{0.05}; ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.

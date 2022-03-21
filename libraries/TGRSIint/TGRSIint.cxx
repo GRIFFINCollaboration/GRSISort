@@ -51,18 +51,18 @@ TEnv* TGRSIint::fGRSIEnv = nullptr;
 
 void ReadTheNews();
 
-TGRSIint* TGRSIint::instance(int argc, char** argv, void* options, int numOptions, bool, const char* appClassName)
+TGRSIint* TGRSIint::instance(int argc, char** argv, void*, int, bool, const char* appClassName)
 {
    /// Singleton constructor instance
    if(fTGRSIint == nullptr) {
-      fTGRSIint = new TGRSIint(argc, argv, options, numOptions, true, appClassName);
+      fTGRSIint = new TGRSIint(argc, argv, nullptr, 0, true, appClassName);
       fTGRSIint->ApplyOptions();
    }
    return fTGRSIint;
 }
 
-TGRSIint::TGRSIint(int argc, char** argv, void* options, int numOptions, bool noLogo, const char* appClassName)
-   : TRint(appClassName, &argc, argv, options, numOptions, noLogo), fKeepAliveTimer(nullptr),
+TGRSIint::TGRSIint(int argc, char** argv, void*, int, bool noLogo, const char* appClassName)
+   : TRint(appClassName, new int(0), argv, nullptr, 0, noLogo), fKeepAliveTimer(nullptr),
      main_thread_id(std::this_thread::get_id()), fIsTabComplete(false), fAllowedToTerminate(true), fRootFilesOpened(0),
      fRawFilesOpened(0)
 {
