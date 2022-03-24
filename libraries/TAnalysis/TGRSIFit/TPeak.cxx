@@ -428,6 +428,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
 	// always print result of the fit even if not verbose
    if(!quiet) Print("+");
    delete tmppeak;
+   fLastFit = this;
    return true;
 }
 
