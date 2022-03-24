@@ -63,6 +63,7 @@ public:
 	const std::vector<std::string>& OptionFiles() { return fOptionsFile; }
 
 	std::string LogFile() { return fLogFile; }
+	void LogFile(const std::string& val) { fLogFile = val; }
 
 	static TAnalysisOptions* AnalysisOptions() { return fAnalysisOptions; }
 

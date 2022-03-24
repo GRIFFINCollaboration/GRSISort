@@ -237,6 +237,7 @@ void TGRSISelector::Terminate()
 			std::cerr<<"Failed to open output file "<<Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runNumber, subRunNumber)<<"!"<<std::endl<<std::endl;
 			return;
 		}
+		options->LogFile(Form("%s%05d_%03d.log", fOutputPrefix.c_str(), runNumber, subRunNumber));
 	} else if(runNumber != 0) {
 		// multiple subruns of a single run
 		std::cout<<"Using run "<<runNumber<<" subruns "<<fRunInfo->FirstSubRunNumber()<<" - "<<fRunInfo->LastSubRunNumber()<<std::endl;
@@ -245,6 +246,7 @@ void TGRSISelector::Terminate()
 			std::cerr<<"Failed to open output file "<<Form("%s%05d_%03d-%03d.root", fOutputPrefix.c_str(), runNumber, fRunInfo->FirstSubRunNumber(), fRunInfo->LastSubRunNumber())<<"!"<<std::endl<<std::endl;
 			return;
 		}
+		options->LogFile(Form("%s%05d_%03d-%03d.log", fOutputPrefix.c_str(), runNumber, fRunInfo->FirstSubRunNumber(), fRunInfo->LastSubRunNumber()));
 	} else {
 		// multiple runs
 		std::cout<<"Using runs "<<fRunInfo->FirstRunNumber()<<" - "<<fRunInfo->LastRunNumber()<<std::endl;
@@ -253,6 +255,7 @@ void TGRSISelector::Terminate()
 			std::cerr<<"Failed to open output file "<<Form("%s%05d-%05d.root", fOutputPrefix.c_str(), fRunInfo->FirstRunNumber(), fRunInfo->LastRunNumber())<<"!"<<std::endl<<std::endl;
 			return;
 		}
+		options->LogFile(Form("%s%05d-%05d.log", fOutputPrefix.c_str(), fRunInfo->FirstRunNumber(), fRunInfo->LastRunNumber()));
 	}
 	std::cout<<"Opened '"<<outputFile->GetName()<<"' for writing:"<<std::endl;
 
