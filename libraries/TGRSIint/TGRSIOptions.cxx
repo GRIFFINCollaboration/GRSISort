@@ -334,7 +334,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 	}
 
 	parser.option("max-events", &fNumberOfEvents, true)
-		.description("Maximum number of (midas, lst, or tdr) events read").default_value(0);
+		.description("Maximum number of (midas, lst, rlmd, or tdr) events read").default_value(0);
 
    // look for any arguments ending with .info, pass to parser.
    for(int i = 0; i < argc; i++) {
@@ -434,6 +434,9 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const
 	if(ext == "lst") {
       return kFileType::LST_FILE;
    }
+	if(ext == "rlmd") {
+      return kFileType::RLMD_FILE;
+   }
 	if(ext == "evt") {
       return kFileType::NSCL_EVT;
    }
@@ -497,6 +500,8 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
    case kFileType::MIDAS_FILE: fInputFiles.push_back(filename); return true;
 
    case kFileType::LST_FILE: fInputFiles.push_back(filename); return true;
+
+   case kFileType::RLMD_FILE: fInputFiles.push_back(filename); return true;
 
    case kFileType::TDR_FILE: fInputFiles.push_back(filename); return true;
 

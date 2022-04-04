@@ -13,6 +13,7 @@ enum class kFileType {
    GRETINA_MODE3,
    MIDAS_FILE,
    LST_FILE,
+	RLMD_FILE,
 	TDR_FILE,
    ROOT_DATA,
    ROOT_MACRO,
