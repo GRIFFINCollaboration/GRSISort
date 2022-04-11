@@ -348,7 +348,9 @@ TChannel* TChannel::GetChannel(unsigned int temp_address, bool warn)
 		if(fMissingChannelMap->find(temp_address) == fMissingChannelMap->end()) {
 			// if there are threads running we're not in interactive mode, so we print a warning about sorting
 			if(StoppableThread::AnyThreadRunning()) {
-				std::cerr<<RED<<"Failed to find channel for address 0x"<<std::hex<<temp_address<<std::dec<<", this channel won't get sorted properly!"<<RESET_COLOR<<std::endl;
+				std::ostringstream str;
+				str<<RED<<"Failed to find channel for address 0x"<<std::hex<<temp_address<<std::dec<<", this channel won't get sorted properly!"<<RESET_COLOR<<std::endl;
+				std::cerr<<str.str();
 			}
 			fMissingChannelMap->insert(std::pair<unsigned int, int>(temp_address, 0));
 		}

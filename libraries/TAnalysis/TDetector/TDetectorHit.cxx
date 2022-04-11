@@ -147,13 +147,20 @@ void TDetectorHit::Copy(TObject& rhs, bool copywave) const
 void TDetectorHit::Print(Option_t*) const
 {
    /// General print statement for a TDetectorHit.
-   /// Currently prints nothing.
-	printf("==== %s @ 0x%p ====\n", ClassName(), (void*)this);
-	printf("\t%s\n", GetName());
-	printf("\tCharge:    %.2f\n", Charge());
-	printf("\tTime:      %.2f\n", GetTime());
-	std::cout<<"\tTimestamp: "<<GetTimeStamp()<<" in "<<GetTimeStampUnit()<<" ns = "<<GetTimeStampNs()<<"\n";
-	printf("============================\n");
+	Print(std::cout);
+}
+
+void TDetectorHit::Print(std::ostream& out) const
+{
+	/// Print detector hit to stream out.
+	std::ostringstream str;
+	str<<"==== "<<ClassName()<<" @ "<<this<<" ===="<<std::endl;
+	str<<"\t"<<GetName()<<std::endl;
+	str<<"\tCharge:    "<<Charge()<<std::endl;
+	str<<"\tTime:      "<<GetTime()<<std::endl;
+	str<<"\tTimestamp: "<<GetTimeStamp()<<" in "<<GetTimeStampUnit()<<" ns = "<<GetTimeStampNs()<<std::endl;
+	str<<"============================"<<std::endl;
+	out<<str.str();
 }
 
 const char* TDetectorHit::GetName() const

@@ -30,7 +30,7 @@ class TFragment : public TDetectorHit {
 public:
    TFragment();
    TFragment(const TFragment&);
-   ~TFragment() override;
+   ~TFragment();
 
 	TFragment& operator=(const TFragment&) = default; // use default assignment operator (to shut up gcc 9.1)
 
@@ -102,6 +102,8 @@ public:
 
    void Clear(Option_t* opt = "") override;
    void Print(Option_t* opt = "") const override;
+
+	virtual void Print(std::ostream& out) const override;
 
    TObject* Clone(const char* name = "") const override;
 
