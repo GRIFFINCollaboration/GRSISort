@@ -28,6 +28,9 @@
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
+// 1 GB size limit for objects in ROOT
+#define SIZE_LIMIT 1073741822
+
 class TGRSISelector : public TSelector {
 public:
    TTree* fChain; //! pointer to the analyzed TTree or TChain
@@ -50,7 +53,7 @@ public:
    void SetOption(const char* option) override { fOption = option; }
    void SetObject(TObject* obj) override { fObject = obj; }
    // void    SetInputList(TList *input) { fInput = input; }
-   TList* GetOutputList() const override { return fOutput; }
+   TList* GetOutputList() const override { return fOutput; } ///< this does the same as TSelector::GetOutputList()
    void   SlaveTerminate() override;
    void   Terminate() override;
 
@@ -74,6 +77,7 @@ protected:
 	int64_t				fEntry; //!<! entry number currently being processed
 
 private:
+	void CheckSizes(const char* usage); ///< Function to check size of objects in output list
    std::string       fOutputPrefix; //!<! pre-fix for output files
    TAnalysisOptions* fAnalysisOptions{nullptr}; //!<! pointer to analysis options
 	Int_t             fFirstRunNumber; //!<! run number of first file
