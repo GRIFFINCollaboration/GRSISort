@@ -128,7 +128,7 @@ ULong64_t TFragment::GetCycleNumber()
 
 Short_t TFragment::GetChannelNumber() const
 {
-   TChannel* chan = TChannel::GetChannel(fAddress);
+   TChannel* chan = TChannel::GetChannel(fAddress, true);
    if(chan == nullptr) {
       return 0;
    }
