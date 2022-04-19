@@ -229,7 +229,7 @@ void TParsingDiagnostics::WriteToFile(const char* fileName) const
 	statsOut<<std::endl;
 
 	for(auto it : fChannelAddressData) {
-		TChannel* chan = TChannel::GetChannel(it.first);
+		TChannel* chan = TChannel::GetChannel(it.first, false);
 		if(chan == nullptr) {
 			continue;
 		}

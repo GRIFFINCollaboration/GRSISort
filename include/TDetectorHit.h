@@ -147,7 +147,7 @@ public:
    TChannel*                   GetChannel() const
    {
       if(!IsChannelSet()) {
-         fChannel = TChannel::GetChannel(fAddress);
+         fChannel = TChannel::GetChannel(fAddress, false);
          SetHitBit(EBitFlag::kIsChannelSet, true);
 		}
       return fChannel;
