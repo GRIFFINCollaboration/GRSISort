@@ -27,14 +27,14 @@ TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t
    for(double cent : centroids) {
       Bool_t out_of_range_flag = false;
       if(cent > xhigh) {
-         printf("centroid %lf is higher than range\n", cent);
+         std::cout<<"centroid "<<cent<<" is higher than range"<<std::endl;
          out_of_range_flag = true;
       } else if(cent < xlow) {
-         printf("centroid %lf is lower than range\n", cent);
+         std::cout<<"centroid "<<cent<<" is lower than range"<<std::endl;
          out_of_range_flag = true;
       }
       if(out_of_range_flag) {
-         printf("ignoring peak at %lf, make a new multi peak with the corrected energy\n", cent);
+         std::cout<<"ignoring peak at "<<cent<<", make a new multi peak with the corrected energy"<<std::endl;
       } else {
          auto* peak = new TPeak(cent, xlow, xhigh, fBackground);
          peak->AddToGlobalList(kFALSE);
@@ -131,7 +131,7 @@ Bool_t TMultiPeak::InitParams(TH1* fithist)
    }
 
    if(fithist == nullptr) {
-      printf("No histogram is associated yet, no initial guesses made\n");
+      std::cout<<"No histogram is associated yet, no initial guesses made"<<std::endl;
       return false;
    }
 
@@ -187,11 +187,11 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
 {
    TString optstr = opt;
    if((fithist == nullptr) && (GetHist() == nullptr)) {
-      printf("No hist passed, trying something...");
+      std::cout<<"No hist passed, trying something...";
       fithist = fHistogram;
    }
    if(fithist == nullptr) {
-      printf("No histogram associated with Peak\n");
+      std::cout<<"No histogram associated with Peak"<<std::endl;
       return false;
    }
    if(!IsInitialized()) {
@@ -266,11 +266,10 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
       emptyCovMat(6 * i + 8, 6 * i + 8)   = 0.0;
       emptyCovMat(6 * i + 9, 6 * i + 9)   = 0.0;
       emptyCovMat(6 * i + 10, 6 * i + 10) = 0.0;
-      //  printf("empt covmat ");emptyCovMat.Print();
    }
 
    if(print_flag) {
-      printf("Chi^2/NDF = %lf\n", fitres->Chi2() / fitres->Ndf());
+      std::cout<<"Chi^2/NDF = "<<fitres->Chi2() / fitres->Ndf()<<std::endl;
    }
    // We will now set the parameters of each of the peaks based on the fits.
    for(int i = 0; i < static_cast<int>(fPeakVec.size()); ++i) {
@@ -327,7 +326,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
       peak->SetParameter("sigma", GetParameter(GetParNumber(Form("Sigma_%i", i))));
       peak->SetParError(peak->GetParNumber("sigma"), GetParError(GetParNumber(Form("Sigma_%i", i))));
       if(print_flag) {
-         printf("Integral: %lf +/- %lf\n", peak->GetArea(), peak->GetAreaErr());
+         std::cout<<"Integral: "<<peak->GetArea()<<" +- "<<peak->GetAreaErr()<<std::endl;
       }
    }
 
@@ -349,13 +348,13 @@ void TMultiPeak::Clear(Option_t* opt)
 void TMultiPeak::Print(Option_t* opt) const
 {
    /// Prints TMultiPeak properties. To see More properties use the option "+"
-   printf("Name:        %s \n", GetName());
-   printf("Number of Peaks: %lu\n", fPeakVec.size());
+   std::cout<<"Name:        "<<GetName()<<std::endl;
+   std::cout<<"Number of Peaks: "<<fPeakVec.size()<<std::endl;
    TF1::Print();
    for(int i = 0; i < static_cast<int>(fPeakVec.size()); ++i) {
-      printf("Peak: %i\n", i);
+      std::cout<<"Peak: "<<i<<std::endl;
       fPeakVec.at(i)->Print(opt);
-      printf("\n");
+      std::cout<<std::endl;
    }
 }
 
@@ -426,7 +425,7 @@ TPeak* TMultiPeak::GetPeak(UInt_t idx)
    if(idx < fPeakVec.size()) {
       return fPeakVec.at(idx);
    }
-   printf("No matching peak at index %u\n", idx);
+   std::cout<<"No matching peak at index "<<idx<<std::endl;
 
    return nullptr;
 }

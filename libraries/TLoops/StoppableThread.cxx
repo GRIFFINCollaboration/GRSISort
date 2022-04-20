@@ -254,10 +254,10 @@ void StoppableThread::Loop()
 void StoppableThread::Print()
 {
 	std::cout<<"column width "<<fColumnWidth<<", status width "<<fStatusWidth<<std::endl;
-	printf("%i Threads:\n", GetNThreads());
+	std::cout<<GetNThreads()<<" Threads:"<<std::endl;
 	int counter = 0;
 	for(auto& it : fThreadMap) {
-		printf("  %i\t%s @ 0x%08lx\n", counter, it.first.c_str(), (unsigned long)it.second);
+		std::cout<<"  "<<counter<<"\t"<<it.first<<" @ "<<hex(it.second,8)<<std::endl;
 		counter++;
 	}
 }

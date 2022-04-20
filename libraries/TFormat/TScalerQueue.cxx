@@ -57,7 +57,7 @@ void TDeadtimeScalerQueue::Clear(Option_t*)
    }
 
    if(fScalersInQueue != 0) {
-      printf(RED "\n\tWarning, discarding %i Scalers!" RESET_COLOR "\n", fScalersInQueue);
+      std::cout<<RED<<std::endl<<"\tWarning, discarding "<<fScalersInQueue<<" Scalers!"<<RESET_COLOR<<std::endl;
       while(!fDeadtimeScalerQueue.empty()) {
          fDeadtimeScalerQueue.pop();
       }
@@ -159,9 +159,9 @@ void TDeadtimeScalerQueue::CheckStatus() const
       // do nothing
    }
 
-   printf(BLUE "# Scalers currently in Q     = %d" RESET_COLOR "\n", Size());
-   printf(BLUE "# Total Scalers put in Q     = %d" RESET_COLOR "\n", fTotalScalersIn);
-   printf(DGREEN "# Total Scalers taken from Q = %d" RESET_COLOR "\n", fTotalScalersOut);
+   std::cout<<BLUE<<"# Scalers currently in Q     = "<<Size()<<RESET_COLOR<<std::endl;
+   std::cout<<BLUE<<"# Total Scalers put in Q     = "<<fTotalScalersIn<<RESET_COLOR<<std::endl;
+   std::cout<<DGREEN<<"# Total Scalers taken from Q = "<<fTotalScalersOut<<RESET_COLOR<<std::endl;
 
    TDeadtimeScalerQueue::All.unlock();
 }
@@ -181,8 +181,8 @@ void TDeadtimeScalerQueue::StatusUpdate()
          // do nothing
       }
 
-      printf(BLUE "\n\tscalers rate in  = %.2f/sec, nqueue = %d\n" RESET_COLOR, scaler_rate_in, Size());
-      printf(DGREEN "\tscalers rate out = %.2f/sec\n" RESET_COLOR, scaler_rate_out);
+      std::cout<<BLUE<<"\tscalers rate in  = "<<scaler_rate_in<<"/sec, nqueue = "<<Size()<<RESET_COLOR<<std::endl;
+      std::cout<<DGREEN<<"\tscalers rate out = "<<scaler_rate_out<<"/sec"<<RESET_COLOR<<std::endl;
       TDeadtimeScalerQueue::All.unlock();
       ResetRateCounter();
       fStopwatch->Start();
@@ -258,7 +258,7 @@ void TRateScalerQueue::Clear(Option_t*)
    }
 
    if(fScalersInQueue != 0) {
-      printf(RED "\n\tWarning, discarding %i Scalers!" RESET_COLOR "\n", fScalersInQueue);
+      std::cout<<RED<<"\tWarning, discarding "<<fScalersInQueue<<" Scalers!"<<RESET_COLOR<<std::endl;
       while(!fRateScalerQueue.empty()) {
          fRateScalerQueue.pop();
       }
@@ -360,9 +360,9 @@ void TRateScalerQueue::CheckStatus() const
       // do nothing
    }
 
-   printf(BLUE "# Scalers currently in Q     = %d" RESET_COLOR "\n", Size());
-   printf(BLUE "# Total Scalers put in Q     = %d" RESET_COLOR "\n", fTotalScalersIn);
-   printf(DGREEN "# Total Scalers taken from Q = %d" RESET_COLOR "\n", fTotalScalersOut);
+   std::cout<<BLUE<<"# Scalers currently in Q     = "<<Size()<<RESET_COLOR<<std::endl;
+   std::cout<<BLUE<<"# Total Scalers put in Q     = "<<fTotalScalersIn<<RESET_COLOR<<std::endl;
+   std::cout<<DGREEN<<"# Total Scalers taken from Q = "<<fTotalScalersOut<<RESET_COLOR<<std::endl;
 
    TRateScalerQueue::All.unlock();
 }
@@ -382,8 +382,8 @@ void TRateScalerQueue::StatusUpdate()
          // do nothing
       }
 
-      printf(BLUE "\n\tscalers rate in  = %.2f/sec, nqueue = %d\n" RESET_COLOR, scaler_rate_in, Size());
-      printf(DGREEN "\tscalers rate out = %.2f/sec\n" RESET_COLOR, scaler_rate_out);
+      std::cout<<BLUE<<"\tscalers rate in  = "<<scaler_rate_in<<"/sec, nqueue = "<<Size()<<RESET_COLOR<<std::endl;
+      std::cout<<DGREEN<<"\tscalers rate out = "<<scaler_rate_out<<"/sec"<<RESET_COLOR<<std::endl;
       TRateScalerQueue::All.unlock();
       ResetRateCounter();
       fStopwatch->Start();

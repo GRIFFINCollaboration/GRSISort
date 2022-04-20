@@ -56,12 +56,11 @@ void TParsingDiagnosticsData::Update(const std::shared_ptr<const TFragment>& fra
 
 void TParsingDiagnosticsData::Print(UInt_t address) const
 {
-	std::cout<<"channel 0x"<<std::hex<<std::setw(4)<<std::setfill('0')<<address<<std::dec
-		<<std::setfill(' ')<<": "<<fDeadTime / 1e5<<" ms deadtime out of ";
+	std::cout<<"channel "<<hex(address,4)<<": "<<fDeadTime/1e5<<" ms deadtime out of ";
 	if(fMaxTimeStamp == fMinTimeStamp && fMaxChannelId == fMinChannelId) {
 		std::cout<<"empty channel"<<std::endl;
 	} else {
-		std::cout<<std::setw(12)<<(fMaxTimeStamp - fMinTimeStamp) / 1e5
+		std::cout<<std::setw(12)<<(fMaxTimeStamp - fMinTimeStamp)/1e5
 			<<"ms = "<<(100. * fDeadTime) / (fMaxTimeStamp - fMinTimeStamp)<<" %"
 			<<std::endl;
 	}
@@ -233,7 +232,7 @@ void TParsingDiagnostics::WriteToFile(const char* fileName) const
 		if(chan == nullptr) {
 			continue;
 		}
-		statsOut<<"0x"<<std::hex<<it.first<<std::dec<<":\t"<<chan->GetName()
+		statsOut<<hex(it.first,4)<<":\t"<<chan->GetName()
 			<<"\tdead time: "<<static_cast<float>(it.second.DeadTime()) / 1e9<<" seconds."<<std::endl;
 	}
 	statsOut<<std::endl;

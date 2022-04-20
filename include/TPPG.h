@@ -75,7 +75,7 @@ public:
 			case EPpgPattern::kBackground: case EPpgPattern::kJunk:
 				break;
 			default:
-				if(newPpg != 0) std::cout<<"Warning, unknown ppg pattern 0x"<<std::hex<<newPpg<<std::dec<<", setting new pattern to kJunk!"<<std::endl;
+				if(newPpg != 0) std::cout<<"Warning, unknown ppg pattern "<<hex(newPpg,8)<<", setting new pattern to kJunk!"<<std::endl;
 				fNewPpg = EPpgPattern::kJunk;
 		}
 	}
@@ -88,7 +88,7 @@ public:
 			case EPpgPattern::kBackground: case EPpgPattern::kJunk:
 				break;
 			default:
-				if(oldPpg != 0) std::cout<<"Warning, unknown ppg pattern 0x"<<std::hex<<oldPpg<<std::dec<<", setting old pattern to kJunk!"<<std::endl;
+				if(oldPpg != 0) std::cout<<"Warning, unknown ppg pattern "<<hex(oldPpg,8)<<", setting old pattern to kJunk!"<<std::endl;
 				fOldPpg = EPpgPattern::kJunk;
 		}
 	}

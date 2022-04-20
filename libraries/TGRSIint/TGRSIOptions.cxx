@@ -540,7 +540,7 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
    case kFileType::XML_FILE: fInputOdbFiles.push_back(filename); return true;
 
    case kFileType::UNKNOWN_FILETYPE:
-   default: printf("\tDiscarding unknown file: %s\n", filename.c_str()); return false;
+   default: std::cout<<"\tDiscarding unknown file: "<<filename<<std::endl; return false;
    }
 }
 
@@ -579,9 +579,9 @@ bool TGRSIOptions::WriteToFile(TFile* file)
 		fAnalysisOptions->WriteToFile(file);
    }
 
-   printf("Writing TGRSIOptions to %s\n", gDirectory->GetFile()->GetName());
+   std::cout<<"Writing TGRSIOptions to "<<gDirectory->GetFile()->GetName()<<std::endl;
    if(oldoption == "READ") {
-      printf("  Returning %s to \"%s\" mode.\n", gDirectory->GetFile()->GetName(), oldoption.c_str());
+      std::cout<<"  Returning "<<gDirectory->GetFile()->GetName()<<" to \""<<oldoption<<"\" mode."<<std::endl;
       file->ReOpen("READ");
    }
    oldDir->cd(); // Go back to original gDirectory
@@ -606,7 +606,7 @@ Bool_t TGRSIOptions::ReadFromFile(TFile* file)
    }
 
    if(gDirectory->GetFile() == nullptr) {
-      printf("File does not exist\n");
+      std::cout<<"File does not exist"<<std::endl;
       oldDir->cd();
       return false;
    }

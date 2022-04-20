@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <fcntl.h>
 #include <unistd.h>
-#include<unordered_map>
+#include <unordered_map>
 
 #include <vector>
 #include <sstream>
@@ -17,6 +17,7 @@
 #include "TKey.h"
 
 #include "StoppableThread.h"
+#include "Globals.h"
 
 /*
  * Author:  P.C. Bender, <pcbend@gmail.com>
@@ -348,7 +349,7 @@ TChannel* TChannel::GetChannel(unsigned int temp_address, bool warn)
 		if(fMissingChannelMap->find(temp_address) == fMissingChannelMap->end()) {
 			// if there are threads running we're not in interactive mode, so we print a warning about sorting
 			if(StoppableThread::AnyThreadRunning()) {
-				std::cerr<<RED<<"Failed to find channel for address 0x"<<std::hex<<temp_address<<std::dec<<", this channel won't get sorted properly!"<<RESET_COLOR<<std::endl;
+				std::cerr<<RED<<"Failed to find channel for address "<<hex(temp_address,4)<<", this channel won't get sorted properly!"<<RESET_COLOR<<std::endl;
 			}
 			fMissingChannelMap->insert(std::pair<unsigned int, int>(temp_address, 0));
 		}
@@ -420,7 +421,7 @@ void TChannel::SetAddress(unsigned int tmpadd)
    /// Sets the address of a TChannel and also overwrites that channel if it is in the channel map
    for(auto iter1 : *fChannelMap) {
       if(iter1.second == this) {
-         std::cout<<"Channel at address: 0x"<<std::hex<<fAddress
+         std::cout<<"Channel at address: "<<hex(fAddress,4)
                   <<" already exists. Please use AddChannel() or OverWriteChannel() to change this TChannel"
                   <<std::dec<<std::endl;
          break;
@@ -659,8 +660,7 @@ void TChannel::PrintCTCoeffs(Option_t*) const
    std::cout<<GetName()<<"\t{\n"; //,channelname.c_str();
    std::cout<<"Name:      "<<GetName()<<std::endl;
    std::cout<<"Number:    "<<fNumber<<std::endl;
-   std::cout<<std::setfill('0');
-   std::cout<<"Address:   0x"<<std::hex<<std::setw(8)<<fAddress<<std::dec<<std::endl;
+   std::cout<<"Address:   "<<hex(fAddress,8)<<std::endl;
    for(double fCTCoefficient : fCTCoefficients) {
       std::cout<<fCTCoefficient<<"\t";
    }
@@ -714,9 +714,7 @@ std::string TChannel::PrintToString(Option_t*) const
 
    str<<"Name:      "<<GetName()<<std::endl;
    str<<"Number:    "<<fNumber<<std::endl;
-   str<<std::setfill('0');
-   str<<"Address:   0x"<<std::hex<<std::setw(8)<<fAddress<<std::dec<<std::endl;
-   str<<std::setfill(' ');
+   str<<"Address:   "<<hex(fAddress,4)<<std::dec<<std::endl;
 	if(!fDigitizerTypeString.empty()) {
 		str<<"Digitizer: "<<fDigitizerTypeString<<std::endl;
 	}
@@ -924,11 +922,11 @@ Int_t TChannel::ReadCalFile(const char* filename)
 		return -1;
 	}
 
-	printf("Reading from calibration file:" CYAN " %s" RESET_COLOR ".....", filename);
+	std::cout<<"Reading from calibration file: "<<CYAN<<filename<<RESET_COLOR<<".....";
 	std::ifstream infile;
 	infile.open(infilename.c_str());
 	if(!infile.is_open()) {
-		printf(DRED "could not open file." RESET_COLOR "\n");
+		std::cout<<DRED<<"could not open file."<<RESET_COLOR<<std::endl;
 		return -2;
 	}
 	infile.seekg(0, std::ios::end);
@@ -1050,7 +1048,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 					if(tempadd == 0) { // maybe it is in hex...
 						std::stringstream newss;
 						newss<<std::hex<<line;
-						newss >> tempadd;
+						newss>>tempadd;
 					}
 					tempadd = tempadd & 0x00ffffff; // front end number is not included in the odb...
 					channel->SetAddress(tempadd);
@@ -1168,7 +1166,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 		}
 	}
 	if(strcmp(opt, "q") != 0) {
-		printf("parsed %i lines.\n", linenumber);
+		std::cout<<"parsed "<<linenumber<<" lines."<<std::endl;
 	}
 
 	return newchannels;
@@ -1380,7 +1378,7 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName, bool
 		}
 		// get address from keys name
 		std::stringstream str;
-		str<<std::hex<<(key->GetName()+strlen(graphName));
+		str<<hex(key->GetName()+strlen(graphName),4);
 		unsigned int address;
 		str>>address;
 		if(GetChannel(address) != nullptr) {

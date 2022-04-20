@@ -61,6 +61,7 @@ typedef char int8_t;
 #endif
 
 #include <iostream>
+#include <iomanip>
 #include <stdexcept>
 #include <string>
 #include <cstdio>
@@ -124,6 +125,21 @@ std::string Stringify(const T& head, const U&... tail) {
 }
 
 } // end of namespace grsi
+
+template <typename T>
+inline std::string hex(T val, int width = -1)
+{
+	std::ostringstream str;
+	str<<"0x"<<std::hex;
+	if(width > 0) {
+		str<<std::setfill('0')<<std::setw(width);
+	}
+	str<<val;
+	if(width > 0) {
+		str<<std::setfill(' ');
+	}
+	return str.str();
+}
 
 static inline std::string getexepath() {
 	char result[1024];

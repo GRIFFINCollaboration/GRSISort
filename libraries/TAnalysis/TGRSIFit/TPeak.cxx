@@ -21,10 +21,10 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
    Bool_t outOfRangeFlag = false;
 
    if(cent > xhigh) {
-      printf("centroid is higher than range\n");
+      std::cout<<"centroid is higher than range"<<std::endl;
       outOfRangeFlag = true;
    } else if(cent < xlow) {
-      printf("centroid is lower than range\n");
+      std::cout<<"centroid is lower than range"<<std::endl;
       outOfRangeFlag = true;
    }
 
@@ -39,9 +39,8 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
       if(cent > xhigh) {
          std::swap(cent, xhigh);
       }
-      printf("Something about your range was wrong. Assuming:\n");
-      printf("centroid: %d \t range: %d to %d\n", static_cast<Int_t>(cent), static_cast<Int_t>(xlow),
-             static_cast<Int_t>(xhigh));
+      std::cout<<"Something about your range was wrong. Assuming:"<<std::endl;
+      std::cout<<"centroid: "<<cent<<" \t range: "<<xlow<<" to "<<xhigh<<std::endl;
    }
 
    SetRange(xlow, xhigh);
@@ -63,7 +62,7 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
       fBackground = background;
       fOwnBgFlag  = false;
    } else {
-      printf("Bad background pointer. Creating basic background.\n");
+      std::cout<<"Bad background pointer. Creating basic background."<<std::endl;
       fBackground = new TF1(
          Form("background%d_%d_to_%d", static_cast<Int_t>(cent), static_cast<Int_t>(xlow), static_cast<Int_t>(xhigh)),
          TGRSIFunctions::StepBG, xlow, xhigh, 10);
@@ -89,10 +88,10 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh)
    Bool_t outOfRangeFlag = false;
 
    if(cent > xhigh) {
-      printf("centroid is higher than range\n");
+      std::cout<<"centroid is higher than range"<<std::endl;
       outOfRangeFlag = true;
    } else if(cent < xlow) {
-      printf("centroid is lower than range\n");
+      std::cout<<"centroid is lower than range"<<std::endl;
       outOfRangeFlag = true;
    }
 
@@ -107,9 +106,8 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh)
       if(cent > xhigh) {
          std::swap(cent, xhigh);
       }
-      printf("Something about your range was wrong. Assuming:\n");
-      printf("centroid: %d \t range: %d to %d\n", static_cast<Int_t>(cent), static_cast<Int_t>(xlow),
-             static_cast<Int_t>(xhigh));
+      std::cout<<"Something about your range was wrong. Assuming:"<<std::endl;
+      std::cout<<"centroid: "<<cent<<" \t range: "<<xlow<<" to "<<xhigh<<std::endl;
    }
 
    SetRange(xlow, xhigh);
@@ -241,7 +239,7 @@ Bool_t TPeak::InitParams(TH1* fitHist)
    }
 
    if(fitHist == nullptr) {
-      printf("No histogram is associated yet, no initial guesses made\n");
+      std::cout<<"No histogram is associated yet, no initial guesses made"<<std::endl;
       return false;
    }
    // Make initial guesses
@@ -418,7 +416,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    fDArea = (tmppeak->IntegralError(int_low, int_high, tmppeak->GetParameters(), CovMat.GetMatrixArray())) / binWidth;
 
    if(verbose) {
-      printf("Integral: %lf +/- %lf\n", fArea, fDArea);
+      std::cout<<"Integral: "<<fArea<<" +/- "<<fDArea<<std::endl;
    }
    // Set the background for drawing later
    fBackground->SetParameters(GetParameters());
@@ -448,11 +446,11 @@ void TPeak::Clear(Option_t*)
 void TPeak::Print(Option_t* opt) const
 {
    // Prints TPeak properties. To see More properties use the option "+"
-   printf("Name:        %s \n", GetName());
-   printf("Centroid:    %lf +/- %lf \n", GetParameter("centroid"), GetParError(GetParNumber("centroid")));
-   printf("Area: 	      %lf +/- %lf \n", fArea, fDArea);
-   printf("FWHM:        %lf +/- %lf \n", GetParameter("sigma") * 2.3548, GetParError(GetParNumber("sigma")) * 2.3548);
-   printf("Chi^2/NDF:   %lf\n", fChi2 / fNdf);
+   std::cout<<"Name:        "<<GetName()<<std::endl;
+   std::cout<<"Centroid:    "<<GetParameter("centroid")<<" +/- "<<GetParError(GetParNumber("centroid"))<<std::endl;
+   std::cout<<"Area: 	    "<<fArea<<" +/- "<<fDArea<<std::endl;
+   std::cout<<"FWHM:        "<<GetParameter("sigma") * 2.3548<<" +/- "<<GetParError(GetParNumber("sigma")) * 2.3548<<std::endl;
+   std::cout<<"Chi^2/NDF:   "<<fChi2/fNdf<<std::endl;
    if(strchr(opt, '+') != nullptr) {
       TF1::Print();
       TGRSIFit::Print(opt); // Polymorphise this a bit better
@@ -467,11 +465,11 @@ void TPeak::DrawBackground(Option_t* opt) const
 void TPeak::DrawResiduals()
 {
    if(GetHist() == nullptr) {
-      printf("No hist set\n");
+      std::cout<<"No hist set"<<std::endl;
       return;
    }
    if(fChi2 < 0.000000001) {
-      printf("No fit performed\n");
+      std::cout<<"No fit performed"<<std::endl;
       return;
    }
 
@@ -501,16 +499,22 @@ void TPeak::DrawResiduals()
    delete[] bin;
 }
 
-Double_t TPeak::GetIntegralArea()
+bool TPeak::GoodStatus()
 {
    if(GetHist() == nullptr) {
-      printf("No hist set\n");
-      return 0;
+      std::cout<<"No hist set"<<std::endl;
+      return false;
    }
    if(fChi2 < 0.000000001) {
-      printf("No fit performed\n");
-      return 0;
+      std::cout<<"No fit performed"<<std::endl;
+      return false;
    }
+	return true;
+}
+
+Double_t TPeak::GetIntegralArea()
+{
+	if(!GoodStatus()) return 0.;
 
    Double_t width = GetParameter("sigma");
    Double_t xlow, xhigh;
@@ -523,14 +527,7 @@ Double_t TPeak::GetIntegralArea()
 
 Double_t TPeak::GetIntegralArea(Double_t int_low, Double_t int_high)
 {
-   if(GetHist() == nullptr) {
-      printf("No hist set\n");
-      return 0;
-   }
-   if(fChi2 < 0.000000001) {
-      printf("No fit performed\n");
-      return 0;
-   }
+	if(!GoodStatus()) return 0.;
 
    // pull appropriate properties from peak and histogram
    TH1* hist = GetHist();
@@ -554,14 +551,7 @@ Double_t TPeak::GetIntegralArea(Double_t int_low, Double_t int_high)
 
 Double_t TPeak::GetIntegralAreaErr(Double_t int_low, Double_t int_high)
 {
-   if(GetHist() == nullptr) {
-      printf("No hist set\n");
-      return 0;
-   }
-   if(fChi2 < 0.000000001) {
-      printf("No fit performed\n");
-      return 0;
-   }
+	if(!GoodStatus()) return 0.;
 
    // pull appropriate properties from peak and histogram
    TH1* hist = GetHist();
@@ -585,14 +575,7 @@ Double_t TPeak::GetIntegralAreaErr(Double_t int_low, Double_t int_high)
 
 Double_t TPeak::GetIntegralAreaErr()
 {
-   if(GetHist() == nullptr) {
-      printf("No hist set\n");
-      return 0;
-   }
-   if(fChi2 < 0.000000001) {
-      printf("No fit performed\n");
-      return 0;
-   }
+	if(!GoodStatus()) return 0.;
 
    Double_t width = GetParameter("sigma");
    Double_t xlow, xhigh;
@@ -605,28 +588,21 @@ Double_t TPeak::GetIntegralAreaErr()
 
 void TPeak::CheckArea(Double_t int_low, Double_t int_high)
 {
-   if(GetHist() == nullptr) {
-      printf("No hist set\n");
-      return;
-   }
-   if(fChi2 < 0.000000001) {
-      printf("No fit performed\n");
-      return;
-   }
+	if(!GoodStatus()) return;
 
    // calculate the peak area and error
    Double_t peakarea = GetIntegralArea(int_low, int_high);
    Double_t peakerr  = GetIntegralAreaErr(int_low, int_high);
 
    // now print properties
-   printf("TPeak integral: 	      %lf +/- %lf \n", fArea, fDArea);
-   printf("Histogram - BG integral:        %lf +/- %lf \n", peakarea, peakerr);
+   std::cout<<"TPeak integral: 	        "<<fArea<<" +/- "<<fDArea<<std::endl;
+   std::cout<<"Histogram - BG integral:  "<<peakarea<<" +/- "<<peakerr<<std::endl;
    if(std::abs(peakarea - fArea) < (fDArea + peakerr)) {
-      printf(DGREEN "Areas are consistent.\n" RESET_COLOR);
+      std::cout<<DGREEN<<"Areas are consistent."<<RESET_COLOR<<std::endl;
    } else if(std::abs(peakarea - fArea) < 2 * (fDArea + peakerr)) {
-      printf(DYELLOW "Areas are consistent within 2 sigma.\n" RESET_COLOR);
+      std::cout<<DYELLOW<<"Areas are consistent within 2 sigma."<<RESET_COLOR<<std::endl;
    } else {
-      printf(DRED "Areas are inconsistent.\n" RESET_COLOR);
+      std::cout<<DRED<<"Areas are inconsistent."<<RESET_COLOR<<std::endl;
    }
 
    return;
@@ -634,28 +610,21 @@ void TPeak::CheckArea(Double_t int_low, Double_t int_high)
 
 void TPeak::CheckArea()
 {
-   if(GetHist() == nullptr) {
-      printf("No hist set\n");
-      return;
-   }
-   if(fChi2 < 0.000000001) {
-      printf("No fit performed\n");
-      return;
-   }
+	if(!GoodStatus()) return;
 
    // calculate the peak area and error
    Double_t peakarea = GetIntegralArea();
    Double_t peakerr  = GetIntegralAreaErr();
 
    // now print properties
-   printf("TPeak integral: 	      %lf +/- %lf \n", fArea, fDArea);
-   printf("Histogram - BG integral:        %lf +/- %lf \n", peakarea, peakerr);
+   std::cout<<"TPeak integral: 	        "<<fArea<<" +/- "<<fDArea<<std::endl;
+   std::cout<<"Histogram - BG integral:  "<<peakarea<<" +/- "<<peakerr<<std::endl;
    if(std::abs(peakarea - fArea) < (fDArea + peakerr)) {
-      printf(DGREEN "Areas are consistent.\n" RESET_COLOR);
+      std::cout<<DGREEN<<"Areas are consistent."<<RESET_COLOR<<std::endl;
    } else if(std::abs(peakarea - fArea) < 2 * (fDArea + peakerr)) {
-      printf(DYELLOW "Areas are consistent within 2 sigma.\n" RESET_COLOR);
+      std::cout<<DYELLOW<<"Areas are consistent within 2 sigma."<<RESET_COLOR<<std::endl;
    } else {
-      printf(DRED "Areas are inconsistent.\n" RESET_COLOR);
+      std::cout<<DRED<<"Areas are inconsistent."<<RESET_COLOR<<std::endl;
    }
 
    return;

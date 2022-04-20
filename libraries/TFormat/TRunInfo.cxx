@@ -28,7 +28,7 @@ Bool_t TRunInfo::ReadInfoFromFile(TFile* tempf)
    }
 
    if((gDirectory->GetFile()) == nullptr) {
-      printf("File does not exist\n");
+      std::cout<<"File does not exist"<<std::endl;
       savdir->cd();
       return false;
    }
@@ -83,29 +83,31 @@ void TRunInfo::Print(Option_t* opt) const
 	time_t tmpStop  = static_cast<time_t>(RunStop());
 	struct tm runStart = *localtime(const_cast<const time_t*>(&tmpStart));
 	struct tm runStop  = *localtime(const_cast<const time_t*>(&tmpStop));
+	std::cout<<std::setfill('0');
 	if(RunNumber() != 0 && SubRunNumber() != -1) {
-		printf("\t\tRunNumber:          %05i\n", RunNumber());
-		printf("\t\tSubRunNumber:       %03i\n", SubRunNumber());
+		std::cout<<"\t\tRunNumber:          "<<std::setw(5)<<RunNumber()<<std::endl;
+		std::cout<<"\t\tSubRunNumber:       "<<std::setw(3)<<SubRunNumber()<<std::endl;
 	} else if(RunNumber() != 0) {
-		printf("\t\tRunNumber:          %05i\n", RunNumber());
-		printf("\t\tSubRunNumbers:      %03i-%03i\n", FirstSubRunNumber(), LastSubRunNumber());
+		std::cout<<"\t\tRunNumber:          "<<std::setw(5)<<RunNumber()<<std::endl;
+		std::cout<<"\t\tSubRunNumbers:      "<<std::setw(3)<<FirstSubRunNumber()<<"-"<<std::setw(3)<<LastSubRunNumber()<<std::endl;
 	} else {
-		printf("\t\tRunNumbers:         %05i-%05i\n", FirstRunNumber(), LastRunNumber());
+		std::cout<<"\t\tRunNumbers:         "<<std::setw(5)<<FirstRunNumber()<<"-"<<std::setw(5)<<LastRunNumber()<<std::endl;
 	}
+	std::cout<<std::setfill(' ');
 	if(RunStart() != 0 && RunStop() != 0) {
-		printf("\t\tRunStart:           %s", asctime(&runStart));
-		printf("\t\tRunStop:            %s", asctime(&runStop));
-		printf("\t\tRunLength:          %.0f s\n", RunLength());
+		std::cout<<"\t\tRunStart:           "<<asctime(&runStart)<<std::endl;
+		std::cout<<"\t\tRunStop:            "<<asctime(&runStop)<<std::endl;
+		std::cout<<"\t\tRunLength:          "<<RunLength()<<" s"<<std::endl;
 	} else {
-		printf("\t\tCombined RunLength: %.0f s\n", RunLength());
+		std::cout<<"\t\tCombined RunLength: "<<RunLength()<<" s"<<std::endl;
 	}
    if(strchr(opt, 'a') != nullptr) {
-      printf("\n");
-      printf("\t==============================\n");
-      printf(DBLUE "\t\tArray Position (mm) = " DRED "%.01f" RESET_COLOR "\n", TRunInfo::HPGeArrayPosition());
+      std::cout<<std::endl;
+      std::cout<<"\t=============================="<<std::endl;
+      std::cout<<DBLUE "\t\tArray Position (mm) = "<<DRED<<TRunInfo::HPGeArrayPosition()<<RESET_COLOR<<std::endl;
 		if(fDetectorInformation != nullptr) fDetectorInformation->Print(opt);
-		else printf("no detector information\n");
-      printf("\t==============================\n");
+		else std::cout<<"no detector information"<<std::endl;
+      std::cout<<"\t=============================="<<std::endl;
    }
 }
 
@@ -168,22 +170,22 @@ Bool_t TRunInfo::ReadInfoFile(const char* filename)
    // An example can be found in the "examples" directory.
    std::string infilename;
    infilename.append(filename);
-   printf("Reading info from file:" CYAN " %s" RESET_COLOR "\n", filename);
+   std::cout<<"Reading info from file: "<<CYAN<<filename<<RESET_COLOR<<std::endl;
    if(infilename.length() == 0) {
-      printf("Bad file name length\n");
+      std::cout<<"Bad file name length"<<std::endl;
       return false;
    }
 
    std::ifstream infile;
    infile.open(infilename.c_str());
    if(!infile) {
-      printf("could not open file.\n");
+      std::cout<<"could not open file."<<std::endl;
       return false;
    }
    infile.seekg(0, std::ios::end);
    int length = infile.tellg();
    if(length < 1) {
-      printf("file is empty.\n");
+      std::cout<<"file is empty."<<std::endl;
       return false;
    }
    auto* buffer = new char[length];
@@ -251,8 +253,8 @@ Bool_t TRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
    }
 
    if(strcmp(opt, "q") != 0) {
-      printf("parsed %i lines.\n", linenumber);
-      printf(DBLUE "\tArray Position (mm) = " DRED "%lf" RESET_COLOR "\n", TRunInfo::HPGeArrayPosition());
+      std::cout<<"parsed "<<linenumber<<" lines."<<std::endl;
+      std::cout<<DBLUE "\tArray Position (mm) = "<<DRED<<TRunInfo::HPGeArrayPosition()<<RESET_COLOR<<std::endl;
    }
    return true;
 }
@@ -346,16 +348,16 @@ bool TRunInfo::WriteToRoot(TFile* fileptr)
       fileptr->ReOpen("UPDATE");
    }
    if(!gDirectory) {
-      printf("No file opened to write to.\n");
+      std::cout<<"No file opened to write to."<<std::endl;
       bool2return = false;
    } else {
       runInfo->Write("RunInfo", TObject::kOverwrite);
 		runInfo->fDetectorInformation->Write("DetectorInformation", TObject::kOverwrite);
    }
 
-   printf("Writing TRunInfo to %s\n", gDirectory->GetFile()->GetName());
+   std::cout<<"Writing TRunInfo to "<<gDirectory->GetFile()->GetName()<<std::endl;
    if(oldoption == "READ") {
-      printf("  Returning %s to \"%s\" mode.\n", gDirectory->GetFile()->GetName(), oldoption.c_str());
+      std::cout<<"  Returning "<<gDirectory->GetFile()->GetName()<<" to \""<<oldoption<<"\" mode."<<std::endl;
       fileptr->ReOpen("READ");
    }
    savdir->cd(); // Go back to original gDirectory
@@ -375,7 +377,7 @@ bool TRunInfo::WriteInfoFile(const std::string& filename)
       infoout<<std::endl;
       infoout.close();
    } else {
-      printf("Please enter a file name\n");
+      std::cout<<"Please enter a file name"<<std::endl;
       return false;
    }
 
