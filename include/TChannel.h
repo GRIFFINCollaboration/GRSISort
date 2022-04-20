@@ -49,7 +49,7 @@ class TMnemonic;
 
 class TChannel : public TNamed {
 public:
-   static TChannel* GetChannel(unsigned int temp_address, bool warn = true);
+   static TChannel* GetChannel(unsigned int temp_address, bool warn = false);
    static TChannel* GetChannelByNumber(int temp_num);
    static TChannel* FindChannelByName(const char* ccName);
    static std::vector<TChannel*> FindChannelByRegEx(const char* ccName);

@@ -1614,7 +1614,7 @@ void TSourceCalibration::UpdateChannel(const int& channelId)
 	for(int i = 0; i <= calibration->GetParameter(0); ++i) {
 		parameters.push_back(calibration->GetParameter(i+1));
 	}
-	TChannel* channel = TChannel::GetChannel(address);
+	TChannel* channel = TChannel::GetChannel(address, false);
 	if(channel == nullptr) {
 		std::cerr<<"Failed to get channel for address "<<hex(address,4)<<std::endl;
 		//TChannel::WriteCalFile();

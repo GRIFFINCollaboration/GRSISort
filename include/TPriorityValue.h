@@ -155,7 +155,7 @@ template<class T>
 class TPriorityValue<std::vector<T> > {
 	// these are the vector specific functions, the rest is just copy-paste of the original class
 public:
-	// we only have specific (const) functions to access the vectors data`
+	// we only have specific (const) functions to access the vectors data
 	const T& at(size_t n) const { return fValue.at(n); }
 	typename std::vector<T>::const_iterator back() const { return fValue.back(); }
 	typename std::vector<T>::const_iterator begin() const { return fValue.begin(); }

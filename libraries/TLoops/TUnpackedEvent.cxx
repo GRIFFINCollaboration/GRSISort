@@ -14,10 +14,10 @@ TUnpackedEvent::~TUnpackedEvent() = default;
 void TUnpackedEvent::Build()
 {
    for(const auto& frag : fFragments) {
-      TChannel* channel = TChannel::GetChannel(frag->GetAddress());
+      TChannel* channel = TChannel::GetChannel(frag->GetAddress(), true);
       if(channel == nullptr) {
-         //std::cout<<"Failed to find channel for address 0x"<<std::hex<<frag->GetAddress()<<std::dec<<std::endl;
-			//TODO: add this to Diagnostics
+			// add to diagnostics, one time printing of error message is already taken care of by TChannel::GetChannel
+			TSortingDiagnostics::Get()->MissingChannel(frag->GetAddress());
          continue;
       }
 

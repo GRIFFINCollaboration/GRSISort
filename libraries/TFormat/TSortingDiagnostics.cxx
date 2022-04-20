@@ -68,6 +68,15 @@ void TSortingDiagnostics::OutOfOrder(long newFragTS, long oldFragTS, long newEnt
    }
 }
 
+void TSortingDiagnostics::MissingChannel(const UInt_t& address)
+{
+	if(fMissingChannels.find(address) != fMissingChannels.end()) {
+		++(fMissingChannels[address]);
+	} else {
+		fMissingChannels[address] = 0;
+	}
+}
+
 void TSortingDiagnostics::AddDetectorClass(TChannel* channel)
 {
 	if(fMissingDetectorClasses.find(channel->GetClassType()) != fMissingDetectorClasses.end()) {
@@ -83,6 +92,12 @@ void TSortingDiagnostics::Print(Option_t* opt) const
 {
    TString option = opt;
    option.ToUpper();
+	if(!fMissingChannels.empty()) {
+		std::cout<<"Missing channels:"<<std::endl;
+		for(auto it : fMissingChannels) {
+			std::cout<<"0x"<<std::hex<<std::setfill('0')<<std::setw(4)<<it.first<<std::dec<<std::setfill(' ')<<": "<<it.second<<std::endl;
+		}
+	}
 	if(!fMissingDetectorClasses.empty()) {
 		std::cout<<"Missing detector classes:"<<std::endl;
 		for(auto it : fMissingDetectorClasses) {

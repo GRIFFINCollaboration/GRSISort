@@ -43,6 +43,7 @@ private:
    std::vector<Long_t> fPreviousTimeStamps; ///< timestamps of previous fragments, saved every 'BuildWindow' entries
    std::vector<double> fPreviousTimes;      ///< times of previous fragments, saved every 'BuildWindow' entries
    long                fMaxEntryDiff{0};
+	std::unordered_map<UInt_t, long> fMissingChannels; ///< counts of missing channels
 	std::unordered_map<TClass*, long> fMissingDetectorClasses; ///< counts of missing detector classes
 
 	std::unordered_map<TClass*, std::pair<long, long> > fHitsRemoved; ///< removed hits and total hits per detector class
@@ -53,6 +54,7 @@ public:
    void OutOfOrder(long newFragTS, long oldFragTS, long newEntry);
    void AddTime(double val)      { fPreviousTimes.push_back(val); }
    void AddTimeStamp(Long_t val) { fPreviousTimeStamps.push_back(val); }
+	void MissingChannel(const UInt_t& address); 
 	void AddDetectorClass(TChannel*);
 	void RemovedHits(TClass* detClass, long removed, long total);
 

@@ -27,6 +27,7 @@
 #include "TGRSISelector.h"
 #include "GValue.h"
 #include "TParserLibrary.h"
+#include "TBufferFile.h"
 
 #include "TSystem.h"
 #include "TH2.h"
@@ -162,6 +163,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
 	}
 
 	CreateHistograms();
+	CheckSizes("use");
 }
 
 Bool_t TGRSISelector::Process(Long64_t entry)
@@ -210,7 +212,9 @@ void TGRSISelector::SlaveTerminate()
 	/// have been processed. When running with PROOF SlaveTerminate() is called
 	/// on each slave server.
 
+	// check size of each object in the output list
 	EndOfSort();
+	CheckSizes("send to server");
 	fOutput->Add(new TChannel(TChannel::GetChannelMap()->begin()->second));
 }
 
@@ -219,6 +223,9 @@ void TGRSISelector::Terminate()
 	/// The Terminate() function is the last function to be called during
 	/// a query. It always runs on the client, it can be used to present
 	/// the results graphically or save the results to file.
+
+	CheckSizes("write");
+
 	TGRSIOptions* options = TGRSIOptions::Get();
 	if(fRunInfo == nullptr) {
 		fRunInfo = TRunInfo::Get();
@@ -298,4 +305,21 @@ Bool_t TGRSISelector::Notify()
 	/// user if needed. The return value is currently not used.
 
 	return kTRUE;
+}
+
+void TGRSISelector::CheckSizes(const char* usage)
+{
+	// check size of each object in the output list
+	for(const auto&& obj : *fOutput) {
+		TBufferFile b(TBuffer::kWrite, 10000);
+		TClass::GetClass(obj->ClassName())->WriteBuffer(b, obj);
+		if(b.Length() > SIZE_LIMIT) {
+			std::cout<<DRED<<obj->ClassName()<<" '"<<obj->GetName()<<"' too large to "<<usage<<": "<<b.Length()<<" bytes = "<<b.Length()/1024./1024./1024.<<" GB, removing it!"<<RESET_COLOR<<std::endl;
+			// we only remove it from the output list, not deleting the object itself
+			// this way the selector will still work and fill that histogram, it just won't get written to file
+			fOutput->Remove(obj);
+		//} else {
+			//std::cout<<GREEN<<obj->ClassName()<<" '"<<obj->GetName()<<"' okay to "<<usage<<": "<<b.Length()<<" bytes = "<<b.Length()/1024./1024./1024.<<" GB"<<RESET_COLOR<<std::endl;
+		}
+	}
 }
