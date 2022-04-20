@@ -152,29 +152,29 @@ void TFragment::Print(Option_t*) const
    ctime(&fDaqTimeStamp);
    struct tm* timeinfo = localtime(&fDaqTimeStamp);
    strftime(buff, 20, "%b %d %H:%M:%S", timeinfo);
-   printf("DaqTimeStamp: %s\n", buff);
-   printf("DaqId      %i\n", fDaqId);
-   printf("\tTriggerId[%lu]	  ", fTriggerId.size());
+   std::cout<<"DaqTimeStamp: "<<buff<<std::endl;
+   std::cout<<"DaqId      "<<fDaqId<<std::endl;
+   std::cout<<"\tTriggerId["<<fTriggerId.size()<<"]	"<<std::endl;
    for(long x : fTriggerId) {
-      printf("     0x%08lx", x);
+      std::cout<<"     "<<hex(x,8)<<std::endl;
    }
-   printf("\n");
-   printf("FragmentId:   %i\n", fFragmentId);
-   printf("TriggerBit:  0x%08x\n", fTriggerBitPattern);
-   printf("NetworkPacketNumber: %i\n", fNetworkPacketNumber);
+   std::cout<<"\n"<<std::endl;
+   std::cout<<"FragmentId:          "<<fFragmentId<<std::endl;
+   std::cout<<"TriggerBit:          "<<hex(fTriggerBitPattern,8)<<std::endl;
+   std::cout<<"NetworkPacketNumber: "<<fNetworkPacketNumber<<std::endl;
    if(chan != nullptr) {
-      printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetName());
-      printf("\tChannel Num:      %i\n", GetChannelNumber());
+      std::cout<<"Channel: "<<chan->GetNumber()<<"\tName: "<<chan->GetName()<<std::endl;
+      std::cout<<"\tChannel Num:    "<<GetChannelNumber()<<std::endl;
    }
-   printf("\tChannel Address: 0x%08x\n", GetAddress());
-   printf("\tCharge:          0x%08x\n ", static_cast<Int_t>(GetCharge()));
-   printf("\tCFD:             0x%08x\n ", static_cast<Int_t>(GetCfd()));
-   printf("\tZC:              0x%08x\n ", fZc);
-   printf("\tTimeStamp:       %lld\n", GetTimeStamp());
+   std::cout<<"\tChannel Address:   "<<hex(GetAddress(),8)<<std::endl;
+   std::cout<<"\tCharge:            "<<hex(static_cast<Int_t>(GetCharge()),8)<<std::endl;
+   std::cout<<"\tCFD:               "<<hex(static_cast<Int_t>(GetCfd()),8)<<std::endl;
+   std::cout<<"\tZC:                "<<hex(fZc,8)<<std::endl;
+   std::cout<<"\tTimeStamp:         "<<GetTimeStamp()<<std::endl;
    if(HasWave()) {
-      printf("Has a wave form stored.\n");
+      std::cout<<"Has a wave form stored."<<std::endl;
    } else {
-      printf("Does Not have a wave form stored.\n");
+      std::cout<<"Does Not have a wave form stored."<<std::endl;
    }
 }
 
@@ -232,8 +232,6 @@ Int_t TFragment::GetSharcMesyBoard() const
    int slave   = (fAddress & 0x00f00000) >> 20;
    int port    = (fAddress & 0x00000f00) >> 8;
    int channel = (fAddress & 0x000000ff);
-
-   // printf("slave = 0x%08x    port = 0x%08x  channel = 0x%08x\n",slave,port,channel);
 
    if(slave != 0x1 && slave != 0x2) {
       return -1;

@@ -18,6 +18,7 @@ Int_t TCalibrationGraph::RemovePoint()
 	else            return fParent->RemovePoint();
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,26,0)
 void TCalibrationGraph::Scale(const double& scale)
 {
 	Double_t* y = GetY();
@@ -28,6 +29,7 @@ void TCalibrationGraph::Scale(const double& scale)
 		ey[i] *= scale;
 	}
 }
+#endif
 
 void TCalibrationGraph::Streamer(TBuffer& R__b)
 {
@@ -99,6 +101,10 @@ void TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
 		fGraphIndex[i] = std::get<4>(data[i]);
 		fPointIndex[i] = std::get<5>(data[i]);
 	}
+	fMinimumX = std::get<0>(data[0]);
+	fMinimumY = std::get<1>(data[0]);
+	fMaximumX = std::get<0>(data.back());
+	fMaximumY = std::get<1>(data.back());
 	// doesn't really make sense to calculate the residual here, as we don't have a fit of all the data yet
 	fResidualSet = false;
 
@@ -301,8 +307,10 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint()
 
 void TCalibrationGraphSet::Scale()
 {
-	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<std::endl;
-	//Print();
+	if(fVerboseLevel > 1) {
+		std::cout<<__PRETTY_FUNCTION__<<std::endl;
+		Print();
+	}
 	double minRef = fGraphs[0].GetX()[0];
 	double maxRef = fGraphs[0].GetX()[fGraphs[0].GetN()-1];
 	for(size_t g = 1; g < fGraphs.size(); ++g) {
@@ -381,6 +389,11 @@ void TCalibrationGraphSet::ResetTotalGraph()
 	}
 	// doesn't really make sense to calculate the residual here, as we don't have a fit of all the data yet
 	fResidualSet = false;
+	// set the new minima and maxima (always assuming the first and last points are minima and maxima, respectively)
+	fMinimumX = std::get<0>(data[0]);
+	fMinimumY = std::get<1>(data[0]);
+	fMaximumX = std::get<0>(data.back());
+	fMaximumY = std::get<1>(data.back());
 }
 
 void TCalibrationGraphSet::Print()
@@ -400,6 +413,14 @@ void TCalibrationGraphSet::Print()
 	std::cout<<fPointIndex.size()<<" point indices: ";
 	for(auto i : fPointIndex) std::cout<<i<<" ";
 	std::cout<<std::endl;
+	std::cout<<"---- total graph ----"<<std::endl;
+	double* x  = fTotalGraph->GetX();
+	double* y  = fTotalGraph->GetY();
+	for(int p = 0; p < fTotalGraph->GetN(); ++p) {
+		std::cout<<p<<" - "<<x[p]<<", "<<y[p]<<"; ";
+	}
+	std::cout<<std::endl;
+	std::cout<<"---------------------"<<std::endl;
 }
 
 void TCalibrationGraphSet::Streamer(TBuffer &R__b)
