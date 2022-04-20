@@ -111,22 +111,22 @@ void TParsingDiagnostics::Clear(Option_t*)
 void TParsingDiagnostics::Print(Option_t*) const
 {
 	std::cout<<"Total run time of this (sub-)run is "<<fMaxDaqTimeStamp - fMinDaqTimeStamp<<" s"<<std::endl
-		<<"PPG cycle is "<<fPPGCycleLength / 1e5<<" ms long."<<std::endl
-		<<"Found "<<fNumberOfNetworkPackets<<" network packets in range "<<fMinNetworkPacketNumber<<" - "
-		<<fMaxNetworkPacketNumber<<" => "
-		<<100. * fNumberOfNetworkPackets / (fMaxNetworkPacketNumber - fMinNetworkPacketNumber + 1.)
-		<<" % packet survival."<<std::endl;
+	  	      <<"PPG cycle is "<<fPPGCycleLength / 1e5<<" ms long."<<std::endl
+		      <<"Found "<<fNumberOfNetworkPackets<<" network packets in range "<<fMinNetworkPacketNumber<<" - "
+		      <<fMaxNetworkPacketNumber<<" => "
+		      <<100. * fNumberOfNetworkPackets / (fMaxNetworkPacketNumber - fMinNetworkPacketNumber + 1.)
+		      <<" % packet survival."<<std::endl;
 	// loop over number of good fragments per detector type
 	for(const auto& fNumberOfGoodFragment : fNumberOfGoodFragments) {
 		std::cout<<"detector type "<<std::setw(2)<<fNumberOfGoodFragment.first<<": "<<std::setw(12)
-			<<fNumberOfGoodFragment.second<<" good, ";
+			      <<fNumberOfGoodFragment.second<<" good, ";
 		// check if we have corresponding bad fragment for this detector type
 		if(fNumberOfBadFragments.find(fNumberOfGoodFragment.first) == fNumberOfBadFragments.end()) {
 			std::cout<<"          no";
 		} else {
 			std::cout<<std::setw(12)<<fNumberOfBadFragments.at(fNumberOfGoodFragment.first)<<" ("
-				<<(100. * fNumberOfBadFragments.at(fNumberOfGoodFragment.first)) / fNumberOfGoodFragment.second
-				<<" %)";
+				      <<(100. * fNumberOfBadFragments.at(fNumberOfGoodFragment.first)) / fNumberOfGoodFragment.second
+				      <<" %)";
 		}
 		std::cout<<" bad fragments."<<std::endl;
 	}
@@ -212,8 +212,8 @@ void TParsingDiagnostics::WriteToFile(const char* fileName) const
 {
 	std::ofstream statsOut(fileName);
 	statsOut<<std::endl
-		<<"Run time to the nearest second = "<<fMaxDaqTimeStamp - fMinDaqTimeStamp<<std::endl
-		<<std::endl;
+		     <<"Run time to the nearest second = "<<fMaxDaqTimeStamp - fMinDaqTimeStamp<<std::endl
+		     <<std::endl;
 
 	statsOut<<"Good fragments:";
 	for(auto it : fNumberOfGoodFragments) {
@@ -233,7 +233,7 @@ void TParsingDiagnostics::WriteToFile(const char* fileName) const
 			continue;
 		}
 		statsOut<<hex(it.first,4)<<":\t"<<chan->GetName()
-			<<"\tdead time: "<<static_cast<float>(it.second.DeadTime()) / 1e9<<" seconds."<<std::endl;
+			     <<"\tdead time: "<<static_cast<float>(it.second.DeadTime()) / 1e9<<" seconds."<<std::endl;
 	}
 	statsOut<<std::endl;
 
