@@ -96,7 +96,7 @@ void GGaus::Copy(TObject& obj) const
 bool GGaus::InitParams(TH1* fithist)
 {
    if(fithist == nullptr) {
-      printf("No histogram is associated yet, no initial guesses made\n");
+      std::cout<<"No histogram is associated yet, no initial guesses made"<<std::endl;
       return false;
    }
    // Makes initial guesses at parameters for the fit. Uses the histogram to
@@ -178,17 +178,17 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
 
    if(!fitres.Get()->IsValid()) {
       if(!verbose) {
-         printf(RED "fit has failed, trying refit... " RESET_COLOR);
+         std::cout<<RED<<"fit has failed, trying refit... "<<RESET_COLOR;
       }
       fithist->GetListOfFunctions()->Last()->Delete();
       fitres = fithist->Fit(this, Form("%sRSME", options.Data())); //,Form("%sRSM",options.Data()))
       if(fitres.Get()->IsValid()) {
          if(!verbose && !noprint) {
-            printf(DGREEN " refit passed!" RESET_COLOR "\n");
+            std::cout<<DGREEN<<" refit passed!"<<RESET_COLOR<<std::endl;
          }
       } else {
          if(!verbose && !noprint) {
-            printf(DRED " refit also failed :( " RESET_COLOR "\n");
+            std::cout<<DRED<<" refit also failed :( "<<RESET_COLOR<<std::endl;
          }
       }
    }
@@ -212,10 +212,10 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
    }
    fSum = fithist->Integral(fithist->GetXaxis()->FindBin(xlow),
                             fithist->GetXaxis()->FindBin(xhigh)); //* fithist->GetBinWidth(1);
-   printf("sum between markers: %02f\n", fSum);
+   std::cout<<"sum between markers: "<<fSum<<std::endl;
    fDSum = TMath::Sqrt(fSum);
    fSum -= bgArea;
-   printf("sum after subtraction: %02f\n", fSum);
+   std::cout<<"sum after subtraction: "<<fSum<<std::endl;
 
    if(!verbose && !noprint) {
       Print();
@@ -246,19 +246,18 @@ void GGaus::Clear(Option_t* opt)
 void GGaus::Print(Option_t* opt) const
 {
    TString options = opt;
-   printf(GREEN);
-   printf("Name: %s \n", GetName());
-   printf("Centroid:  %1f +/- %1f \n", GetParameter("centroid"), GetParError(GetParNumber("centroid")));
-   printf("Area:      %1f +/- %1f \n", fArea, fDArea);
-   printf("Sum:       %1f +/- %1f \n", fSum, fDSum);
-   printf("FWHM:      %1f +/- %1f \n", GetFWHM(), GetFWHMErr());
-   printf("Reso:      %1f%%  \n", GetFWHM() / GetParameter("centroid") * 100.);
-   printf("Chi^2/NDF: %1f\n", fChi2 / fNdf);
+   std::cout<<GREEN;
+   std::cout<<"Name: "<<GetName()<<std::endl;
+   std::cout<<"Centroid:  "<<GetParameter("centroid")<<" +- "<<GetParError(GetParNumber("centroid"))<<std::endl;
+   std::cout<<"Area:      "<<fArea<<" +- "<<fDArea<<std::endl;
+   std::cout<<"Sum:       "<<fSum<<" +- "<<fDSum<<std::endl;
+   std::cout<<"FWHM:      "<<GetFWHM()<<" +- "<<GetFWHMErr()<<std::endl;
+   std::cout<<"Reso:      "<<GetFWHM()/GetParameter("centroid") * 100.<<"%%"<<std::endl;
+   std::cout<<"Chi^2/NDF: "<<fChi2/fNdf<<std::endl;
    if(options.Contains("all")) {
       TF1::Print(opt);
    }
-   printf(RESET_COLOR);
-   printf("\n");
+   std::cout<<RESET_COLOR;
 }
 
 void GGaus::DrawResiduals(TH1* hist) const
@@ -267,7 +266,7 @@ void GGaus::DrawResiduals(TH1* hist) const
       return;
    }
    if(fChi2 < 0.000000001) {
-      printf("No fit performed\n");
+      std::cout<<"No fit performed"<<std::endl;
       return;
    }
    Double_t xlow, xhigh;

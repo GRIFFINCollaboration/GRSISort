@@ -87,7 +87,7 @@ void TBadFragment::Print(Option_t*) const
       if(i == static_cast<size_t>(fFailedWord)) {
          std::cout<<ALERTTEXT;
       }
-      std::cout<<"0x"<<std::setw(8)<<std::setfill('0')<<std::hex<<fData[i]<<std::dec<<std::setfill(' ');
+      std::cout<<hex(fData[i],8);
       if(i == static_cast<size_t>(fFailedWord)) {
          std::cout<<RESET_COLOR;
       }

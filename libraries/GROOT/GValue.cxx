@@ -199,13 +199,13 @@ int GValue::ReadValFile(const char* filename, Option_t* opt)
    std::ifstream infile;
    infile.open(infilename.c_str());
    if(!infile) {
-      fprintf(stderr, "%s:  could not open infile %s.", __PRETTY_FUNCTION__, infilename.c_str());
+      std::cerr<<__PRETTY_FUNCTION__<<":  could not open infile "<<infilename<<std::endl;
       return -2;
    }
    infile.seekg(0, std::ios::end);
    size_t length = infile.tellg();
    if(length == 0) {
-      fprintf(stderr, "%s:  infile %s appears to be empty.", __PRETTY_FUNCTION__, infilename.c_str());
+      std::cerr<<__PRETTY_FUNCTION__<<":  infile "<<infilename<<" appears to be empty."<<std::endl;
       return -2;
    }
 
@@ -216,10 +216,6 @@ int GValue::ReadValFile(const char* filename, Option_t* opt)
    sbuffer.assign(buffer.data());
 
    int values_found = ParseInputData(sbuffer, EPriority::kValFile, opt);
-   // if(values_found) {
-   //  //fFileNames.push_back(std::string(filename);
-   //  fValueData = sbuffer; //.push_back(std::string((const char*)buffer);
-   //}
    return values_found;
 }
 
@@ -313,7 +309,7 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
       }
    }
    if(strcmp(opt, "debug") == 0) {
-      printf("parsed %i lines,\n", linenumber);
+      std::cout<<"parsed "<<linenumber<<" lines"<<std::endl;
    }
    return newvalues;
 }

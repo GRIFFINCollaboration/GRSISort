@@ -149,28 +149,14 @@ static Pixmap GetRootLogo()
    file.append(getenv("GRSISYS"));
    file.append("/libraries/TGRSIint/grsisplash_bw.xpm");
 
-// printf("test 2\n");
-// printf("file:  %s\n",file.c_str());
-
-#ifdef ROOTICONPATH
-// snprintf(file, sizeof(file), "%s/Splash.xpm", ROOTICONPATH);
-/// snprintf(file, sizeof(file), "%s/Splash.xpm", ROOTICONPATH);
-#else
-// snprintf(file, sizeof(file), "%s/icons/Splash.xpm", getenv("ROOTSYS"));
-#endif
-   // printf("test 3\n");
    int ret = XpmReadFileToPixmap(gDisplay, gLogoWindow, const_cast<char*>(file.c_str()), &logo, nullptr, &attr);
-   // printf("test 4\n");
    XpmFreeAttributes(&attr);
-   // printf("test 5\n");
-
-   // printf("logo  = %i\n",logo);
 
    if(ret == XpmSuccess || ret == XpmColorError) {
       return logo;
    }
 
-   printf("rootx xpm error: %s\n", XpmGetErrorString(ret));
+   std::cout<<"rootx xpm error: "<<XpmGetErrorString(ret)<<std::endl;
 
    if(logo != 0u) {
       XFreePixmap(gDisplay, logo);
@@ -279,13 +265,9 @@ static int DrawCredits(bool draw, bool)
    /// Draw credits. If draw is true draw credits,
    /// otherwise just return size of all credit text.
 
-   // printf("here 1 \n");
-
    if(gFont == nullptr) {
       return 150; // size not important no text will be drawn anyway
    }
-
-   // printf("here 2 \n");
 
    int lineSpacing = gFont->max_bounds.ascent + gFont->max_bounds.descent;
    int y           = lineSpacing;
@@ -321,7 +303,6 @@ void ScrollCredits(int ypos)
 void PopupLogo(bool about)
 {
    // Popup logo, waiting till ROOT is ready to run.
-   // printf("here 8\n");
    gDisplay = XOpenDisplay("");
    if(gDisplay == nullptr) {
       return;
@@ -337,16 +318,13 @@ void PopupLogo(bool about)
 
    gLogoWindow = XCreateSimpleWindow(gDisplay, DefaultRootWindow(gDisplay), -100, -100, 50, 50, 0, fore, back);
 
-   // printf("here 9\n");
    gLogoPixmap = GetRootLogo();
-   // printf("here 9.5    gLogoPixmap = %i\n",gLogoPixmap);
 
    if(gLogoPixmap == 0u) {
       XCloseDisplay(gDisplay);
       gDisplay = nullptr;
       return;
    }
-   // printf("here 10\n");
 
    Window       root;
    int          x, y;
@@ -376,13 +354,13 @@ void PopupLogo(bool about)
    gGC   = XCreateGC(gDisplay, gLogoWindow, 0, nullptr);
    gFont = XLoadQueryFont(gDisplay, "-adobe-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-1");
    if(gFont == nullptr) {
-      printf("Couldn't find font \"-adobe-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-1\",\n"
-             "trying \"fixed\". Please fix your system so helvetica can be found, \n"
-             "this font typically is in the rpm (or pkg equivalent) package \n"
-             "XFree86-[75,100]dpi-fonts or fonts-xorg-[75,100]dpi.\n");
+      std::cout<<"Couldn't find font \"-adobe-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-1\","<<std::endl
+               <<"trying \"fixed\". Please fix your system so helvetica can be found, "<<std::endl
+               <<"this font typically is in the rpm (or pkg equivalent) package "<<std::endl
+               <<"XFree86-[75,100]dpi-fonts or fonts-xorg-[75,100]dpi."<<std::endl;
       gFont = XLoadQueryFont(gDisplay, "fixed");
       if(gFont == nullptr) {
-         printf("Also couln't find font \"fixed\", your system is terminally misconfigured.\n");
+         std::cout<<"Also couln't find font \"fixed\", your system is terminally misconfigured."<<std::endl;
       }
    }
    if(gFont != nullptr) {

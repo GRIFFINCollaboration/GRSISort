@@ -1,5 +1,7 @@
 #include "TGRSITransition.h"
 
+#include <iostream>
+
 /// \cond CLASSIMP
 ClassImp(TGRSITransition)
 /// \endcond
@@ -21,11 +23,11 @@ TGRSITransition::~TGRSITransition()
 void TGRSITransition::Print(Option_t*) const
 {
 	// Prints information about the TGRSITransition
-	printf("**************************\n");
-	printf("TGRSITransition:\n");
-	printf("Energy:    %lf\t+/-%lf\n", fEnergy, fEnergyUncertainty);
-	printf("Intensity: %lf\t+/-%lf\n", fIntensity, fIntensityUncertainty);
-	printf("**************************\n");
+	std::cout<<"**************************"<<std::endl;
+	std::cout<<"TGRSITransition:"<<std::endl;
+	std::cout<<"Energy:    "<<fEnergy<<" +/- "<<fEnergyUncertainty<<std::endl;
+	std::cout<<"Intensity: "<<fIntensity<<" +/- "<<fIntensityUncertainty<<std::endl;
+	std::cout<<"**************************"<<std::endl;
 }
 
 std::string TGRSITransition::PrintToString()
@@ -62,7 +64,6 @@ int TGRSITransition::Compare(const TObject* obj) const
 	} //(fIntensity < static_cast<const TGRSITransition*>(obj)->fIntensity)
 	return 1;
 
-	printf("%s: Error, intensity neither greater, nor equal, nor smaller than provided intensity!\n",
-			__PRETTY_FUNCTION__);
+	std::cout<<__PRETTY_FUNCTION__<<": Error, intensity neither greater, nor equal, nor smaller than provided intensity!"<<std::endl;
 	return -9;
 }

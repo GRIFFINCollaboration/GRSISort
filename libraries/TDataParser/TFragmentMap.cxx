@@ -30,13 +30,12 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
          std::cout<<"address "<<frag->GetAddress()<<": added single fragment "<<frag<<std::endl;
       }
       if(fDebug && integrationLength[0] != 700) {
-         std::cout<<"single fragment (address 0x"<<std::hex<<frag->GetAddress()<<std::dec
-                  <<") with integration length "<<integrationLength[0]<<", # pileups "
-                  <<frag->GetNumberOfPileups()<<std::endl;
+         std::cout<<"single fragment (address "<<hex(frag->GetAddress(),4)<<") with integration length "
+			         <<integrationLength[0]<<", # pileups "<<frag->GetNumberOfPileups()<<std::endl;
          if(frag->GetNumberOfPileups() > 1) {
             std::cout<<"have fragments:"<<std::endl;
             for(auto& it : fMap) {
-               std::cout<<"\t0x"<<std::hex<<std::get<0>(it.second)->GetAddress()<<std::dec<<": "
+               std::cout<<"\t"<<hex(std::get<0>(it.second)->GetAddress(),4)<<": "
                         <<std::get<0>(it.second)->GetNumberOfPileups()<<std::endl;
             }
          }
@@ -120,8 +119,8 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
          if(k[i] > 0) {
             c.push_back((std::get<1>((*(range.first)).second)[i] + gRandom->Uniform()) / k[i]);
             if(fDebug) {
-               std::cout<<"2, "<<i<<std::hex<<": 0x"<<std::get<1>((*(range.first)).second)[i]<<"/0x"
-                        <<k[i]<<std::dec<<" = "<<(std::get<1>((*(range.first)).second)[i] + gRandom->Uniform())
+               std::cout<<"2, "<<i<<": "<<hex(std::get<1>((*(range.first)).second)[i])<<"/"<<hex(k[i])
+					         <<" = "<<(std::get<1>((*(range.first)).second)[i] + gRandom->Uniform())
                         <<"/"<<k[i]<<" = "<<c.back()<<std::endl;
             }
          } else {
@@ -184,7 +183,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
       default: // dropped none
          c.push_back((charge[0] + gRandom->Uniform()) / integrationLength[0]);
          if(fDebug) {
-            std::cout<<std::hex<<"2, -: 0x"<<charge[0]<<"/0x"<<integrationLength[0]<<std::dec<<" = "
+            std::cout<<"2, -: "<<hex(charge[0])<<"/"<<hex(integrationLength[0])<<" = "
                      <<(charge[0] + gRandom->Uniform())<<"/"<<integrationLength[0]<<" = "<<c.back()
                      <<std::endl;
          }
@@ -230,8 +229,8 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
          if(k[i] > 0) {
             c.push_back((std::get<1>((*(range.first)).second)[i] + gRandom->Uniform()) / k[i]);
             if(fDebug) {
-               std::cout<<"3, "<<i<<std::hex<<": 0x"<<std::get<1>((*(range.first)).second)[i]<<"/0x"
-                        <<k[i]<<std::dec<<" = "<<(std::get<1>((*(range.first)).second)[i] + gRandom->Uniform())
+               std::cout<<"3, "<<i<<": "<<hex(std::get<1>((*(range.first)).second)[i])<<"/"
+                        <<hex(k[i])<<" = "<<(std::get<1>((*(range.first)).second)[i] + gRandom->Uniform())
                         <<"/"<<k[i]<<" = "<<c.back()<<std::endl;
             }
          } else {
@@ -245,8 +244,8 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
          if(k[i + situation] > 0) {
             c.push_back((std::get<1>((*std::next(range.first)).second)[i] + gRandom->Uniform()) / k[i + situation]);
             if(fDebug) {
-               std::cout<<"3, "<<i + situation<<std::hex<<": 0x"
-                        <<std::get<1>((*std::next(range.first)).second)[i]<<"/0x"<<k[i + situation]<<std::dec
+               std::cout<<"3, "<<i + situation<<": "
+                        <<hex(std::get<1>((*std::next(range.first)).second)[i])<<"/"<<hex(k[i + situation])
                         <<" = "<<(std::get<1>((*std::next(range.first)).second)[i] + gRandom->Uniform())<<"/"
                         <<k[i + situation]<<" = "<<c.back()<<std::endl;
             }
@@ -264,7 +263,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
       case 0: // dropped none
          c.push_back((charge[0] + gRandom->Uniform()) / integrationLength[0]);
          if(fDebug) {
-            std::cout<<std::hex<<"3, -: 0x"<<charge[0]<<"/0x"<<integrationLength[0]<<std::dec<<" = "
+            std::cout<<"3, -: "<<hex(charge[0])<<"/"<<hex(integrationLength[0])<<" = "
                      <<(charge[0] + gRandom->Uniform())<<"/"<<integrationLength[0]<<" = "<<c.back()
                      <<std::endl;
          }

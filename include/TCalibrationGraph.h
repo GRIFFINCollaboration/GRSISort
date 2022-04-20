@@ -20,13 +20,15 @@ public:
 	TCalibrationGraph(TCalibrationGraphSet* parent, TGraphErrors* graph) : TGraphErrors(*graph), fParent(parent), fIsResidual(false) {}
 	~TCalibrationGraph() {}
 
-	using TGraph::RemovePoint;
+	using TGraph::RemovePoint; // to use the function with integer index as argument
 	Int_t RemovePoint() override; // *MENU*
 
 	void IsResidual(bool val) { fIsResidual = val; }
 	bool IsResidual() { return fIsResidual; }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,26,0)
 	void Scale(const double& scale);
+#endif
 
 	void VerboseLevel(int val) { fVerboseLevel = val; }
 
@@ -55,6 +57,11 @@ public:
 	double* GetY() { return fTotalGraph->GetY(); } ///< Returns an array of y-values of the total graph.
 	double* GetEX() { return fTotalGraph->GetEX(); } ///< Returns an array of x-errors of the total graph.
 	double* GetEY() { return fTotalGraph->GetEY(); } ///< Returns an array of y-errors of the total graph.
+
+	double GetMinimumX() { return fMinimumX; } ///< Return minimum x-value.
+	double GetMaximumX() { return fMaximumX; } ///< Return maximum x-value.
+	double GetMinimumY() { return fMinimumY; } ///< Return minimum y-value.
+	double GetMaximumY() { return fMaximumY; } ///< Return maximum y-value.
 
 	void Fit(TF1* function, Option_t* opt = "") { fTotalGraph->Fit(function, opt); } ///< Fits the <function> to the total graph.
 	TF1* FitFunction() { return reinterpret_cast<TF1*>(fTotalGraph->GetListOfFunctions()->FindObject("fitfunction")); } ///< Gets the calibration from the total graph (might be nullptr!).
@@ -107,6 +114,10 @@ private:
 	std::vector<size_t> fGraphIndex; ///< Index of the graph this point belongs to.
 	std::vector<size_t> fPointIndex; ///< Index of the point within the graph this point corresponds to.
 	bool fResidualSet{false}; ///< Flag to indicate if the residual has been set correctly.
+	double fMinimumX{0.}; ///< Minimum x-value
+	double fMaximumX{0.}; ///< Maximum x-value
+	double fMinimumY{0.}; ///< Minimum y-value
+	double fMaximumY{0.}; ///< Maximum y-value
 
 	int fVerboseLevel{0}; ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 

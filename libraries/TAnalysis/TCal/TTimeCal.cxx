@@ -19,9 +19,9 @@ void TTimeCal::WriteToChannel() const
       return;
    }
    GetChannel()->DestroyTIMECal();
-   printf("\nWriting to channel %d\n", GetChannel()->GetNumber());
+   std::cout<<std::endl<<"Writing to channel "<<GetChannel()->GetNumber()<<std::endl;
    for(int i = 0; i < static_cast<int>(fParameters.size()); i++) {
-      printf("p%i = %lf \t", i, fParameters[i]);
+      std::cout<<"p"<<i<<" = "<<fParameters[i]<<"\t ";
       GetChannel()->AddTIMECoefficient(fParameters[i]);
    }
 }
@@ -52,13 +52,13 @@ void TTimeCal::ReadFromChannel()
 void TTimeCal::Print(Option_t*) const
 {
    if(GetChannel() != nullptr) {
-      printf("Channel Number: %u\n", GetChannel()->GetNumber());
+      std::cout<<"Channel Number: "<<GetChannel()->GetNumber()<<std::endl;
    } else {
-      printf("Channel Number: NOT SET\n");
+      std::cout<<"Channel Number: NOT SET"<<std::endl;
    }
 
    for(int i = 0; i < static_cast<int>(fParameters.size()); i++) {
-      printf("p%i = %lf \t", i, fParameters[i]);
+      std::cout<<"p"<<i<<" = "<<fParameters[i]<<"\t ";
    }
 }
 

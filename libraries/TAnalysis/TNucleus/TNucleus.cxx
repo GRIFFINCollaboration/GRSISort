@@ -57,7 +57,9 @@ TNucleus::TNucleus(const char* name)
 				Name.clear();
 				Name.assign("he4");
 				break;
-			default: printf("error, type numbersymbol, or symbolnumber, i.e. 30Mg oder Mg30\n"); return;
+			default:
+				std::cout<<"error, type numbersymbol, or symbolnumber, i.e. 30Mg oder Mg30"<<std::endl;
+				return;
 		};
 	}
 	try {
@@ -94,8 +96,8 @@ TNucleus::TNucleus(const char* name)
 		return;
 	}
 	if(!found) {
-		printf("Warning: Element %s not found in the mass table %s.\n Nucleus not Set!\n", element.c_str(),
-				MassFile.c_str());
+		std::cout<<"Warning: Element "<<element<<" not found in the mass table "<<MassFile<<"."<<std::endl
+		         <<"Nucleus not set!"<<std::endl;
 		return;
 	}
 	infile.close();
@@ -201,7 +203,9 @@ const char* TNucleus::SortName(const char* name)
 				Name.clear();
 				Name.assign("he4");
 				break;
-			default: printf("error, type numbersymbol, or symbolnumber, i.e. 30Mg oder Mg30\n"); return nullptr;
+			default:
+				std::cout<<"error, type numbersymbol, or symbolnumber, i.e. 30Mg oder Mg30"<<std::endl;
+				return "";
 		};
 	}
 	int first_digit  = Name.find_first_of("0123456789 \t\n\r");
@@ -313,7 +317,7 @@ TTransition* TNucleus::GetTransition(Int_t idx)
 {
 	TTransition* tran = static_cast<TTransition*>(fTransitionList.At(idx));
 	if(tran == nullptr) {
-		printf("Out of Range\n");
+		std::cout<<"Out of Range"<<std::endl;
 	}
 
 	return tran;
@@ -322,11 +326,11 @@ TTransition* TNucleus::GetTransition(Int_t idx)
 void TNucleus::Print(Option_t*) const
 {
 	// Prints out the Name of the nucleus, as well as the numerated transition list
-	printf("Nucleus: %s\n", GetName());
+	std::cout<<"Nucleus: "<<GetName()<<std::endl;
 	TIter next(&fTransitionList);
 	int   counter = 0;
 	while(TTransition* tran = static_cast<TTransition*>(next())) {
-		printf("\t%i\t", counter++);
+		std::cout<<"\t"<<counter++<<"\t";
 		tran->Print();
 	}
 }
@@ -361,7 +365,7 @@ bool TNucleus::LoadTransitionFile()
 	std::ifstream transfile;
 	transfile.open(filename.c_str());
 	if(!transfile.is_open()) {
-		printf("failed to open source file: %s\n", filename.c_str());
+		std::cout<<"failed to open source file: "<<filename.c_str()<<std::endl;
 		return false;
 	}
 

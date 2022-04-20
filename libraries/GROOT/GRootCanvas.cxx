@@ -619,17 +619,6 @@ GRootCanvas::~GRootCanvas()
       delete fToolBarLayout;
       delete fHorizontal1;
       delete fHorizontal1Layout;
-      // printf("I AM HERE!!!!\n"); fflush(stdout);
-      // printf("fMenuBar = 0x%08x\n",fMenuBar); fflush(stdout);
-      // printf("fMenuBar->MustCleanup()) = %i\n",fMenuBar->MustCleanup()); fflush(stdout);
-      // fMenuBar->Print();
-      // printf("I AM HERE!!!!\n"); fflush(stdout);
-      //
-      //  This is most certainly wrong, but i can not get the TBrowser to not seg fault on close with out it.  pcb.
-      //
-      // delete fMenuBar;
-      //
-      // printf("I AM HERE!!!!\n"); fflush(stdout);
       delete fMenuBarLayout;
       delete fMenuBarItemLayout;
       delete fMenuBarHelpLayout;
@@ -1106,9 +1095,9 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             new TWin32SplashThread(kTRUE);
 #else
 
-            char str[32];
-            sprintf(str, "About ROOT %s...", gROOT->GetVersion());
-            hd = new GRootHelpDialog(this, str, 600, 400);
+            std::ostringstream str;
+				str<<"About ROOT "<<gROOT->GetVersion()<<"...";
+            hd = new GRootHelpDialog(this, str.str(), 600, 400);
             hd->SetText(gHelpAbout);
             hd->Popup();
 #endif // WIN32
@@ -1403,14 +1392,12 @@ void GRootCanvas::ShowEditor(Bool_t show)
       const TGMainFrame* main = static_cast<const TGMainFrame*>(fParent->GetMainFrame());
       fMainFrame->HideFrame(fEditorFrame);
       if((main != nullptr) && main->InheritsFrom("TRootBrowser")) {
-         printf("I am here GRootCanvas 1469.\n");
          TRootBrowser* browser = const_cast<TRootBrowser*>(static_cast<const TRootBrowser*>(main));
          if(!fEmbedded) {
             browser->GetTabRight()->Connect("Selected(Int_t)", "GRootCanvas", this, "Activated(Int_t)");
          }
          fEmbedded = kTRUE;
          if(show && ((fEditor == nullptr) || !static_cast<TGedEditor*>(fEditor)->IsMapped())) {
-            printf("I am here GRootCanvas 1476.\n");
             if(browser->GetTabLeft()->GetTabTab("Pad Editor") == nullptr) {
                browser->StartEmbedding(TRootBrowser::kLeft);
                if(fEditor == nullptr) {
@@ -1426,8 +1413,6 @@ void GRootCanvas::ShowEditor(Bool_t show)
                   static_cast<TGedEditor*>(fEditor)->SetCanvas(fCanvas);
                   static_cast<TGedEditor*>(fEditor)->SetModel(fCanvas, fCanvas, kButton1Down);
                }
-            } else {
-               printf("I am here GRootCanvas 1494.\n");
             }
             fEditor = TVirtualPadEditor::GetPadEditor(kFALSE);
          }
@@ -1669,7 +1654,6 @@ Bool_t GRootCanvas::HandleContainerButton(Event_t* event)
          gSystem->ProcessEvents();
       }
       fButton = button;
-      // printf("Event_t::State = 0x%08x\n",event->fState);
       if(button == kButton1) {
          if((event->fState & kKeyShiftMask) != 0u) {
             (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Shift, x, y);
@@ -1786,8 +1770,6 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
          gROOT->SetInterrupt();
       }
 
-      // printf("HandleContainerKey has been called with a kGKeyPress.\n");
-
       // handle arrow keys
       if(keysym > 0x1011 && keysym < 0x1016) {
          Window_t dum1, dum2, wid;
@@ -1805,19 +1787,15 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
          if((previous_keysym == keysym) && (previous_event == kGKeyPress)) {
             switch(keysym) {
             case 0x1012: // left
-               // printf("LEFT\n");
                //                  gVirtualX->Warp(--mx, my, wid); --tx;
                break;
             case 0x1013: // up
-               // printf("UP\n");
                //                  gVirtualX->Warp(mx, --my, wid); --ty;
                break;
             case 0x1014: // right
-               // printf("RIGHT\n");
                //                  gVirtualX->Warp(++mx, my, wid); ++tx;
                break;
             case 0x1015: // down
-               // printf("DOWN\n");
                //                  gVirtualX->Warp(mx, ++my, wid); ++ty;
                break;
             default: break;
@@ -1840,31 +1818,8 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
          wid = gVirtualX->GetDefaultRootWindow();
          gVirtualX->QueryPointer(wid, dum1, dum2, mx, my, mx, my, mask);
 
-         // printf("GetCanvas() = 0x%08x\t%s\n",gPad->GetCanvas(),gPad->GetCanvas()->IsA()->GetName());
          GCanvas* gCanvas = static_cast<GCanvas*>(gPad->GetCanvas());
          gCanvas->HandleArrowKeyPress(event, &keysym);
-         /*
-                  switch (keysym) {
-                     case 0x1012: // left
-                        printf("LEFT\n");
-                        //gVirtualX->Warp(--mx, my, wid);
-                        break;
-                     case 0x1013: // up
-                        printf("UP\n");
-                        //gVirtualX->Warp(mx, --my, wid);
-                        break;
-                     case 0x1014: // right
-                        printf("RIGHT\n");
-                        //gVirtualX->Warp(++mx, my, wid);
-                        break;
-                     case 0x1015: // down
-                        printf("DOWN\n");
-                        //gVirtualX->Warp(mx, ++my, wid);
-                        break;
-                     default:
-                        break;
-                  }
-         */
          gVirtualX->TranslateCoordinates(gClient->GetDefaultRoot()->GetId(), fCanvasContainer->GetId(), mx, my, tx, ty,
                                          dum1);
          (static_cast<GCanvas*>(fCanvas))->HandleInput(static_cast<EEventType>(kArrowKeyRelease), tx, ty);

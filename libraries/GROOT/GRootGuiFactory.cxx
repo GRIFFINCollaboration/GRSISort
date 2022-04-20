@@ -109,14 +109,12 @@ TBrowserImp* GRootGuiFactory::CreateBrowserImp(TBrowser* b, const char* title, U
       return new TRootBrowserLite(b, title, width, height);
    }
    if((ph != nullptr) && ph->LoadPlugin() != -1) {
-      // printf("i am here now 1.\t %s \n",browserOptions.Data());
       TBrowserImp* imp = (TBrowserImp*)ph->ExecPlugin(5, b, title, width, height, browserOptions.Data());
       if(imp != nullptr) {
 
          return imp;
       }
    }
-   printf(" and never here.\n");
    return new TRootBrowserLite(b, title, width, height);
 }
 

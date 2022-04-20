@@ -112,6 +112,7 @@ public:
    void Clear(Option_t* opt = "") override;
 
 private:
+	bool GoodStatus();
    // Centroid will eventually be read from parameters
    Double_t fArea{0.};
    Double_t fDArea{0.};

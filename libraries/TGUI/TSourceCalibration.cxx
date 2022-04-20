@@ -15,6 +15,7 @@
 #include "GRootCommands.h"
 #include "combinations.h"
 #include "TRWPeak.h"
+#include "Globals.h"
 
 std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double> > Match(std::vector<std::tuple<double, double, double, double> > peaks, std::vector<std::tuple<double, double, double, double> > sources, int verboseLevel)
 {
@@ -474,12 +475,30 @@ void TChannelTab::Add(std::map<std::tuple<double, double, double, double>, std::
 	fEfficiency->SetLineColor(2);
 	fEfficiency->SetMarkerColor(2);
 	int i = 0;
-	for(auto iter = map.begin(); iter != map.end(); ++iter, ++i) {
-		fData->SetPoint(i, std::get<0>(iter->first), std::get<0>(iter->second));
-		fData->SetPointError(i, std::get<1>(iter->first), std::get<1>(iter->second));
-		// we use the source energy for the x-values, and the ratio of peak area and intensity for y
-		fEfficiency->SetPoint(i, std::get<0>(iter->second), std::get<2>(iter->first)/std::get<2>(iter->second));
-		fEfficiency->SetPointError(i, std::get<1>(iter->second), std::get<2>(iter->first)/std::get<2>(iter->second)*TMath::Sqrt(TMath::Power(std::get<3>(iter->first)/std::get<2>(iter->first),2)+TMath::Power(std::get<3>(iter->second)/std::get<2>(iter->second),2)));
+	for(auto iter = map.begin(); iter != map.end();) {
+		// more readable variable names
+		auto peakPos = std::get<0>(iter->first);
+		auto peakPosErr = std::get<1>(iter->first);
+		auto peakArea = std::get<2>(iter->first);
+		auto peakAreaErr = std::get<3>(iter->first);
+		auto energy = std::get<0>(iter->second);
+		auto energyErr = std::get<1>(iter->second);
+		auto intensity = std::get<2>(iter->second);
+		auto intensityErr = std::get<3>(iter->second);
+		// drop this peak if the uncertainties in area or position are too large
+		if(peakPosErr > 0.1*peakPos || peakAreaErr > peakArea) {
+			if(fVerboseLevel > 1) std::cout<<"Dropping peak with position "<<peakPos<<" +- "<<peakPosErr<<", area "<<peakArea<<" +- "<<peakAreaErr<<", energy "<<energy<<", intensity "<<intensity<<std::endl;
+			map.erase(iter++);
+		} else {
+			fData->SetPoint(i, peakPos, energy);
+			fData->SetPointError(i, peakPosErr, energyErr);
+			// we use the source energy for the x-values, and the ratio of peak area and intensity for y
+			fEfficiency->SetPoint(i, energy, peakArea/intensity);
+			fEfficiency->SetPointError(i, energyErr, peakArea/intensity*TMath::Sqrt(TMath::Power(peakAreaErr/peakArea,2)+TMath::Power(intensityErr/intensity,2)));
+			if(fVerboseLevel > 2) std::cout<<"Using peak with position "<<peakPos<<" +- "<<peakPosErr<<", area "<<peakArea<<" +- "<<peakAreaErr<<", energy "<<energy<<", intensity "<<intensity<<std::endl;
+			++iter;
+			++i;
+		}
 	}
 	// remove poly markers that weren't used for the fit
 	TList* functions = fProjection->GetListOfFunctions();
@@ -1237,7 +1256,9 @@ void TSourceCalibration::BuildThirdInterface()
 		if(fVerboseLevel > 2) std::cout<<"using bin "<<bin<<", tmpBin "<<tmpBin<<std::endl;
 		// copy all data into one graph (which we use for the calibration)
 		fFinalData[tmpBin] = new TCalibrationGraphSet;
+		fFinalData[tmpBin]->VerboseLevel(fVerboseLevel-4);
 		fFinalEfficiency[tmpBin] = new TCalibrationGraphSet;
+		fFinalEfficiency[tmpBin]->VerboseLevel(fVerboseLevel-4);
 		if(fVerboseLevel > 2) std::cout<<"fFinalData["<<tmpBin<<"] "<<fFinalData[tmpBin]<<": "<<(fFinalData[tmpBin]?fFinalData[tmpBin]->GetN():-1)<<" data points after creation"<<std::endl;
 		for(size_t source = 0; source < fSource.size(); ++source) {
 			fFinalData[tmpBin]->Add(fData[source][tmpBin], fSource[source]->GetName());
@@ -1268,14 +1289,14 @@ void TSourceCalibration::BuildThirdInterface()
 		fLegend[tmpBin] = new TLegend(0.8,0.3,0.95,0.3+fMatrices.size()*0.05); // x1, y1, x2, y2
 		//fFinalData[tmpBin]->DrawCalibration("*", fLegend[tmpBin]);
 		//fLegend[tmpBin]->Draw();
-		fChi2Label[tmpBin] = new TPaveText(0.3,0.8,0.4,0.85);
 		fFinalCanvas.back()->GetCanvas()->cd();
 		fResidualPad[tmpBin] = new TPad(Form("res_%s", fChannelLabel[tmpBin]), Form("residual for %s", fChannelLabel[tmpBin]), 0.0, 0., 0.2, 1.);
 		fResidualPad[tmpBin]->SetNumber(2);
 		fResidualPad[tmpBin]->Draw();
 		//fResidualPad[tmpBin]->cd();
 		//fFinalData[tmpBin]->DrawResidual("*");
-		FitFinal(tmpBin); // also creates the residual
+		FitFinal(tmpBin); // also creates the residual and chi^2 label
+		fChi2Label[tmpBin]->Draw();
 
 		// efficiency and residual graphs
 		// create tab and status bar
@@ -1287,7 +1308,6 @@ void TSourceCalibration::BuildThirdInterface()
 		fEfficiencyStatusBar.back()->SetParts(partsEff, 2);
 		fEfficiencyTabs.back()->AddFrame(fEfficiencyStatusBar.back(), new TGLayoutHints(kLHintsTop | kLHintsExpandX, 2, 2, 2, 2));
 
-		FitEfficiency(tmpBin);
 		// plot the graphs without their fit functions
 		if(fVerboseLevel > 2) std::cout<<__PRETTY_FUNCTION__<<": "<<tmpBin<<"/"<<fEfficiencyPad.size()<<"/"<<fEfficiencyResidualPad.size()<<std::endl;
 		fEfficiencyCanvas.back()->GetCanvas()->cd();
@@ -1296,7 +1316,7 @@ void TSourceCalibration::BuildThirdInterface()
 		fEfficiencyPad[tmpBin]->Draw();
 		fEfficiencyPad[tmpBin]->cd();
 		fEfficiencyLegend[tmpBin] = new TLegend(0.8,0.3,0.95,0.3+fMatrices.size()*0.05); // x1, y1, x2, y2
-		fEfficiencyChi2Label[tmpBin] = new TPaveText(0.3,0.8,0.4,0.85);
+		FitEfficiency(tmpBin); // also scales different source to first source, creates residual, and chi^2 label
 		fFinalEfficiency[tmpBin]->DrawCalibration("*", fEfficiencyLegend[tmpBin]);
 		fEfficiencyLegend[tmpBin]->Draw();
 		fEfficiencyChi2Label[tmpBin]->Draw();
@@ -1384,7 +1404,7 @@ void TSourceCalibration::DisconnectThird()
 
 void TSourceCalibration::CalibrationStatus(Int_t, Int_t px, Int_t py, TObject* selected)
 {
-	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<": px "<<px<<", py "<<py<<", object "<<selected->GetName()<<std::endl;
+	if(fVerboseLevel > 3) std::cout<<__PRETTY_FUNCTION__<<": px "<<px<<", py "<<py<<", object "<<selected->GetName()<<std::endl;
 	fStatusBar[fTab->GetCurrent()]->SetText(selected->GetName(), 0);
 	fStatusBar[fTab->GetCurrent()]->SetText(selected->GetObjectInfo(px, py), 2);
 }
@@ -1497,12 +1517,25 @@ void TSourceCalibration::FitFinal(const int& channelId)
 	fCalibrationPad[channelId]->cd();
 	fFinalData[channelId]->DrawCalibration("*", fLegend[channelId]);
 	fLegend[channelId]->Draw();
-	if(fChi2Label[channelId] != nullptr) {
-		fChi2Label[channelId]->Clear();
-		fChi2Label[channelId]->AddText(Form("#chi^2/NDF = %f", calibration->GetChisquare()/calibration->GetNDF()));
-		fChi2Label[channelId]->Draw();
-	} else {
-		std::cout<<"fChi2Label["<<channelId<<"] not created, no text with reduced chi square will be created."<<std::endl;
+	// calculate the corners of the chi^2 label from the minimum and maximum x/y-values of the graph
+	// we position it in the top left corner about 50% of the width and 10% of the height of the graph
+	double left = fFinalData[channelId]->GetMinimumX();
+	double right = left + (fFinalData[channelId]->GetMaximumX() - left)*0.5;
+	double top = fFinalData[channelId]->GetMaximumY();
+	double bottom = top - (top - fFinalData[channelId]->GetMinimumY())*0.1;
+	fChi2Label[channelId] = new TPaveText(left, bottom, right, top);
+	if(fVerboseLevel > 2) {
+		std::cout<<"fChi2Label["<<channelId<<"] created "<<fChi2Label[channelId]<<" ("<<left<<" - "<<right<<", "<<bottom<<" - "<<top<<", from "<<fFinalData[channelId]->GetMinimumX()<<"-"<<fFinalData[channelId]->GetMaximumX()<<", "<<fFinalData[channelId]->GetMinimumY()<<"-"<<fFinalData[channelId]->GetMaximumY()<<")"<<std::endl;
+		fFinalData[channelId]->Print();
+	}
+	fChi2Label[channelId]->Clear();
+	fChi2Label[channelId]->AddText(Form("#chi^2/NDF = %f", calibration->GetChisquare()/calibration->GetNDF()));
+	fChi2Label[channelId]->SetFillColor(10);
+	fChi2Label[channelId]->SetTextSize(20);
+	fChi2Label[channelId]->Draw();
+	if(fVerboseLevel > 2) {
+		std::cout<<"fChi2Label["<<channelId<<"] set to "<<fChi2Label[channelId]->GetLabel()<<std::endl;
+		fChi2Label[channelId]->GetListOfLines()->Print();
 	}
 
 	fResidualPad[channelId]->cd();
@@ -1511,7 +1544,7 @@ void TSourceCalibration::FitFinal(const int& channelId)
 	fFinalCanvas[channelId]->GetCanvas()->Modified();
 
 	delete calibration;
-	
+
 	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<" done"<<std::endl;
 }
 
@@ -1524,15 +1557,39 @@ void TSourceCalibration::FitEfficiency(const int& channelId)
 	efficiency = new TF1("fitfunction", ::Efficiency, 0., 10000., 9);
 	if(fVerboseLevel > 2) std::cout<<"fFinalEfficiency["<<channelId<<"] "<<fFinalEfficiency[channelId]<<": "<<(fFinalEfficiency[channelId]?fFinalEfficiency[channelId]->GetN():0)<<" data points"<<std::endl;
 	fFinalEfficiency[channelId]->Fit(efficiency, "Q");
+	//TString text = Form("%.6f + %.6f*x", calibration->GetParameter(1), calibration->GetParameter(2));
+	//for(int i = 2; i <= Degree(); ++i) {
+	//	text.Append(Form(" + %.6f*x^%d", calibration->GetParameter(i+1), i));
+	//}
+	//fStatusBar[channelId]->SetText(text.Data(), 1);
 	// re-calculate the residuals
 	fFinalEfficiency[channelId]->SetResidual(true);
 
-	if(fEfficiencyChi2Label[channelId] != nullptr) {
-		fEfficiencyChi2Label[channelId]->Clear();
-		fEfficiencyChi2Label[channelId]->AddText(Form("#chi^2/NDF = %f", efficiency->GetChisquare()/efficiency->GetNDF()));
-		fEfficiencyChi2Label[channelId]->Draw();
-	} else {
-		std::cout<<"fEfficiencyChi2Label["<<channelId<<"] not created, no text with reduced chi square will be created."<<std::endl;
+	//fLegend[channelId]->Clear();
+	//fCalibrationPad[channelId]->cd();
+	//fFinalData[channelId]->DrawCalibration("*", fLegend[channelId]);
+	//fLegend[channelId]->Draw();
+	// calculate the corners of the chi^2 label from the minimum and maximum x/y-values of the graph
+	// we position it in the top right corner about 50% of the width and 10% of the height of the graph
+	double right = fFinalEfficiency[channelId]->GetMaximumX();
+	double left = right - (right - fFinalEfficiency[channelId]->GetMinimumX())*0.5;
+	// y is switched around because the first point is actually the highest (typically???)
+	// and the last point is the lowest
+	double top = fFinalEfficiency[channelId]->GetMinimumY();
+	double bottom = top - (top - fFinalEfficiency[channelId]->GetMaximumY())*0.1;
+	fEfficiencyChi2Label[channelId] = new TPaveText(left, bottom, right, top);
+	if(fVerboseLevel > 2) {
+		std::cout<<"fEfficiencyChi2Label["<<channelId<<"] created "<<fChi2Label[channelId]<<" ("<<left<<" - "<<right<<", "<<bottom<<" - "<<top<<", from "<<fFinalEfficiency[channelId]->GetMinimumX()<<"-"<<fFinalEfficiency[channelId]->GetMaximumX()<<", "<<fFinalEfficiency[channelId]->GetMinimumY()<<"-"<<fFinalEfficiency[channelId]->GetMaximumY()<<")"<<std::endl;
+		fFinalEfficiency[channelId]->Print();
+	}
+	fEfficiencyChi2Label[channelId]->Clear();
+	fEfficiencyChi2Label[channelId]->AddText(Form("#chi^2/NDF = %f", efficiency->GetChisquare()/efficiency->GetNDF()));
+	fEfficiencyChi2Label[channelId]->SetFillColor(10);
+	fEfficiencyChi2Label[channelId]->SetTextSize(12);
+	fEfficiencyChi2Label[channelId]->Draw();
+	if(fVerboseLevel > 2) {
+		std::cout<<"fEfficiencyChi2Label["<<channelId<<"] set to "<<fEfficiencyChi2Label[channelId]->GetLabel()<<std::endl;
+		fEfficiencyChi2Label[channelId]->GetListOfLines()->Print();
 	}
 
 	delete efficiency;
@@ -1547,7 +1604,7 @@ void TSourceCalibration::UpdateChannel(const int& channelId)
 	str<<std::hex<<fChannelLabel[channelId];
 	int address;
 	str>>address;
-	if(fVerboseLevel > 2) std::cout<<"Got address 0x"<<std::hex<<address<<std::dec<<" from label "<<fChannelLabel[channelId]<<std::endl;
+	if(fVerboseLevel > 2) std::cout<<"Got address "<<hex(address,4)<<" from label "<<fChannelLabel[channelId]<<std::endl;
 	TF1* calibration = fFinalData[channelId]->FitFunction();
 	if(calibration == nullptr) {
 		std::cout<<"Failed to find calibration in fFinalData["<<channelId<<"]"<<std::endl;
@@ -1559,7 +1616,7 @@ void TSourceCalibration::UpdateChannel(const int& channelId)
 	}
 	TChannel* channel = TChannel::GetChannel(address, false);
 	if(channel == nullptr) {
-		std::cerr<<"Failed to get channel for address 0x"<<std::hex<<address<<std::dec<<std::endl;
+		std::cerr<<"Failed to get channel for address "<<hex(address,4)<<std::endl;
 		//TChannel::WriteCalFile();
 		if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<": done"<<std::endl;
 		return;

@@ -106,6 +106,7 @@ void AtExitHandler()
 		TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
 		if(pl != nullptr) {
 			pl->Save("*", gGRSIOpt->LogFile().c_str());
+			std::cout<<"Wrote logs to '"<<gGRSIOpt->LogFile()<<"'"<<std::endl;
 		} else {
 			std::cout<<"Failed to get logs!"<<std::endl;
 		}

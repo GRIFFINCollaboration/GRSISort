@@ -81,8 +81,6 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoi
    FinalCm();
    SetName(name);
    Cm2LabSpline = nullptr;
-   //  printf("\e[1;31m" "M[0] = %.01f \tM[1] = %.01f \tM[2] = %.01f \tM[3] = %.01f \t\n\n\n "
-   //  "\e[m",fM[0],fM[1],fM[2],fM[3]);
 }
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam,
@@ -176,12 +174,8 @@ void TKinematics::InitKin()
 
 TSpline3* TKinematics::Evslab(double thmin, double thmax, double size, int part)
 {
-   // double* energy = new double[(int)((thmax-thmin)/size)+1];
-   // double* angle = new double[(int)((thmax-thmin)/size)+1];
-
    if(part < 2 || part > 3) {
-      printf(ALERTTEXT
-             "WARNING: the function Evslab should use nuclei after the reaction (part 2 or part 3)" RESET_COLOR "\n");
+      std::cout<<ALERTTEXT<<"WARNING: the function Evslab should use nuclei after the reaction (part 2 or part 3)"<<RESET_COLOR<<std::endl;
       return nullptr;
    }
 
@@ -196,18 +190,13 @@ TSpline3* TKinematics::Evslab(double thmin, double thmax, double size, int part)
                                        // i am under the impression that size should always be 1.0;
                                        //
    double lastangle = 0.0;
-   ;
-   // for(int i=0;i<((thmax-thmin)/size);i++){
    for(int i = 0; i < steps; i++) {
       Final((thmin + i * size) * deg2rad, 2); // part);   //2);
       double tmpangle = GetThetalab(part) * (1 / deg2rad);
       double tmpeng   = GetTlab(part) * 1000;
-      // printf("step[%i] \t tmpangle = %.02f \t tmpeng = %.02f\n",i,tmpangle,tmpeng);
       if(tmpangle < lastangle) {
-         printf(ALERTTEXT "WARNING: the abscissa(theta) is no longer increasing; Drawing spline will fail." RESET_COLOR
-                          "\n");
-         printf(ALERTTEXT "         try Evslab_graph to see what this looks like.                         " RESET_COLOR
-                          "\n");
+         std::cout<<ALERTTEXT<<"WARNING: the abscissa(theta) is no longer increasing; Drawing spline will fail."<<RESET_COLOR<<std::endl;
+         std::cout<<ALERTTEXT<<"         try Evslab_graph to see what this looks like.                         "<<RESET_COLOR<<std::endl;
          return nullptr;
       }
       lastangle = tmpangle;
@@ -229,13 +218,8 @@ TSpline3* TKinematics::Evslab(double thmin, double thmax, double size, int part)
 
 TGraph* TKinematics::Evslab_graph(double thmin, double thmax, double size, int part)
 {
-   // double* energy = new double[(int)((thmax-thmin)/size)+1];
-   // double* angle = new double[(int)((thmax-thmin)/size)+1];
-
    if(part < 2 || part > 3) {
-      printf(ALERTTEXT
-             "WARNING: the function Evslab_graph should use nuclei after the reaction (part 2 or part 3)" RESET_COLOR
-             "\n");
+      std::cout<<ALERTTEXT<<"WARNING: the function Evslab+graph should use nuclei after the reaction (part 2 or part 3)"<<RESET_COLOR<<std::endl;
       return nullptr;
    }
 
@@ -249,12 +233,10 @@ TGraph* TKinematics::Evslab_graph(double thmin, double thmax, double size, int p
                static_cast<int>(size); // when is size ever needed to be a double?? pcb.
                                        // i am under the impression that size should always be 1.0;
                                        //
-   // for(int i=0;i<((thmax-thmin)/size);i++){
    for(int i = 0; i < steps; i++) {
       Final((thmin + i * size) * deg2rad, 2); // part);   //2);
       double tmpangle = GetThetalab(part) * (1 / deg2rad);
       double tmpeng   = GetTlab(part) * 1000;
-      // printf("step[%i] \t tmpangle = %.02f \t tmpeng = %.02f\n",i,tmpangle,tmpeng);
       if(tmpangle < 1 || tmpangle > (GetMaxAngle(fVcm[part]) * rad2deg) - 1) {
          continue;
       }
@@ -315,11 +297,6 @@ double TKinematics::GetExcEnergy(TVector3 position, double KinE)
    //	double TotalEnergy = fParticle[2]->GetMass()+KinE;
    double TotalEnergy = fM[2] + KinE;
 
-   //	recoil.SetVect(position);
-   //	recoil.SetE(TotalEnergy);
-
-   // printf( "ejectile_lab = [%.05f,\t %.05f %.05f %.05f]\t\t magnitude = %.05f
-   // \n",recoil[3],recoil[0],recoil[1],recoil[2],recoil.Mag());
    position.SetMag(sqrt(pow(TotalEnergy, 2) - pow(TotalEnergy - KinE, 2)));
    recoil.SetXYZT(position.X(), position.Y(), position.Z(), TotalEnergy);
 
@@ -396,11 +373,6 @@ void TKinematics::Initial()
    fGamma_cm  = 1 / sqrt(1 - fBeta_cm * fBeta_cm);
    fTCm_i     = GetCmEnergy(fEBeam) - fM[0] - fM[1];
    fTCm_f     = fTCm_i + fQValue;
-   //  printf("\n\nfM[0] = %.05f \tfM[1] = %.05f \tfM[2] = %.05f \tfM[3] = %.05f \n",fM[0],fM[1],fM[2],fM[3]);
-   // printf("fT[0] = %.05f	\tfT[1] = %.05f	\tfE[0] = %.05f	\tfE[1] = %.05f	\tfP[0] = %.05f	\tfP[1] = %.05f
-   // \nfV[0] = %.05f	\tfV[1] = %.05f	\tfEcm[0] = %.05f	\tfEcm[1] = %.05f	\tfECM = %.05f	\tfBeta_cm = %.04f
-   // \tfGamma_cm = %.04f \n\n\n",
-   // fT[0],fT[1],fE[0],fE[1],fP[0],fP[1],fV[0],fV[1],fEcm[0],fEcm[1],GetCmEnergy(fEBeam),fBeta_cm,fGamma_cm);
 }
 void TKinematics::FinalCm()
 {

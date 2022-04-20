@@ -216,11 +216,9 @@ void TGRSIint::Terminate(Int_t status)
 	}
 
 	if((clock() % 60) == 0) {
-		printf("DING!");
-		fflush(stdout);
+		std::cout<<"DING!"<<std::flush;
 		gSystem->Sleep(500);
-		printf("\r              \r");
-		fflush(stdout);
+		std::cout<<"\r              \r"<<std::flush;
 	}
 
 	TSeqCollection* canvases = gROOT->GetListOfCanvases();
@@ -342,7 +340,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
 					gFragment = new TChain("FragmentChain");
 					// gFragment->SetNotify(GrutNotifier::Get());
 				}
-				printf("file %s added to gFragment.\n", file->GetName());
+				std::cout<<"file "<<file->GetName()<<" added to gFragment."<<std::endl;
 #if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
 				gFragment->AddFile(file->GetName(), TChain::kBigNumber, "FragmentTree");
 #else
@@ -357,7 +355,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
 					// TODO: Once we have a notifier set up
 					// gAnalysis->SetNotify(GrutNotifier::Get());
 				}
-				printf("file %s added to gAnalysis.\n", file->GetName());
+				std::cout<<"file "<<file->GetName()<<" added to gAnalysis."<<std::endl;
 #if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
 				gAnalysis->AddFile(file->GetName(), TChain::kBigNumber, "AnalysisTree");
 #else
@@ -718,7 +716,7 @@ void TGRSIint::PrintHelp(bool print)
 {
 	/// Prints the help. Not sure this is used anymore.
 	if(print) {
-		printf(DRED BG_WHITE "     Sending Help!!     " RESET_COLOR "\n");
+		std::cout<<DRED<<BG_WHITE<<"     Sending Help!!     "<<RESET_COLOR<<std::endl;
 		new TGHtmlBrowser(gSystem->ExpandPathName("${GRSISYS}/README.html"));
 	}
 	return;

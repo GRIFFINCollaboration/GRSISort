@@ -408,7 +408,6 @@ TGraph* TReaction::OmegaVsTheta(double thmin, double thmax, int part, bool Frame
          Om    = 1 / Om;
       }
 
-      //	printf("Theta_%s = %2f deg \t dOmega%s/dOmega%s = %.2e\n",frame,theta,other,frame,Om);
       if(theta < thmin || theta > thmax || Om > 1e3) { //|| Om<=0 || isnan(Om) || isinf(Om))
          continue;                                     // set angular range and remove singularities
       }
@@ -455,44 +454,48 @@ void TReaction::Print(Option_t* opt) const
    std::string pstring;
    pstring.assign(opt);
 
-   printf("\n\n * * * * * * * * * * * * * * * * * * * * * * * * *");
-   printf("\n\n\tTReaction  ' %s ' :\n\n", GetName());
+   std::cout<<std::endl<<std::endl<<" * * * * * * * * * * * * * * * * * * * * * * * * *"<<std::endl;
+   std::cout<<std::endl<<std::endl<<"\tTReaction  '"<<GetName()<<"' :"<<std::endl<<std::endl;
 
-   printf(" -> Beam '%s' kinetic energy = %.4e [MeV]\n", fNuc[0]->GetName(), fTBeam);
-   printf(" -> Reaction Q value (total)   = %.4e [MeV]\n", fQVal);
-   printf(" -> Reaction kinematics type   = '%s' \n", fInverse ? "INVERSE" : "NORMAL");
+   std::cout<<" -> Beam '"<<fNuc[0]->GetName()<<"' kinetic energy = "<<fTBeam<<" [MeV]"<<std::endl;
+   std::cout<<" -> Reaction Q value (total)   = "<<fQVal<<" [MeV]"<<std::endl;
+   std::cout<<" -> Reaction kinematics type   = '"<<(fInverse ? "INVERSE" : "NORMAL")<<"'"<<std::endl;
    if(fInverse) {
-      printf("\n Inverse beam '%s' [lab frame] :- \n", fNuc[1]->GetName());
-      printf("\t Kinetic energy = %.4e [MeV]\n\t Velocity       = %.4e [/c] \n", (fGLab[0] - 1) * fM[1], fVLab[0]);
+      std::cout<<std::endl<<" Inverse beam '"<<fNuc[1]->GetName()<<"' [lab frame] :- "<<std::endl;
+      std::cout<<"\t Kinetic energy = "<<(fGLab[0] - 1) * fM[1]<<" [MeV]"<<std::endl;
+		std::cout<<"\t Velocity       = "<<fVLab[0]<<" [/c] "<<std::endl;
    }
 
-   printf("\n Center of mass motion :- \n");
-   printf("\t CmE  = %.4e [MeV]\n\t CmTi = %.4e [MeV]\n\t CmTf = %.4e [MeV]\n\t CmV  = %.4e [/c]\n\t CmP  = %.4e "
-          "[MeV/c]\n\t CmG  = %.4e \n\n",
-          fCmE, fCmTi, fCmTf, fCmV, fCmP, fCmG);
+   std::cout<<std::endl<<" Center of mass motion :- "<<std::endl;
+   std::cout<<"\t CmE  = "<<fCmE<<" [MeV]"<<std::endl;
+	std::cout<<"\t CmTi = "<<fCmTi<<" [MeV]"<<std::endl;
+	std::cout<<"\t CmTf = "<<fCmTf<<" [MeV]"<<std::endl;
+	std::cout<<"\t CmV  = "<<fCmV<<" [/c]"<<std::endl;
+	std::cout<<"\t CmP  = "<<fCmP<<" [MeV/c]"<<std::endl;
+	std::cout<<"\t CmG  = "<<fCmG<<std::endl;
+	std::cout<<std::endl;
 
    if(pstring.find("all") != std::string::npos) {
       for(int i = 0; i < 4; i++) {
-         printf("\n Particle %i : '%s' : \t A = %i, Z = %i, Mass = %.4e [MeV]\n", i, fNuc[i]->GetName(),
-                fNuc[i]->GetA(), fNuc[i]->GetZ(), fM[i]);
+         std::cout<<std::endl<<" Particle "<<i<<" : '"<<fNuc[i]->GetName()<<"' : \t A = "<<fNuc[i]->GetA()<<", Z = "<<fNuc[i]->GetZ()<<", Mass = "<<fM[i]<<" [MeV]"<<std::endl;
 
          if(i < 2) {
-            printf("\t ECm = %.4e [MeV]\t\t ELab = %.4e [MeV]\n", fECm[i], fELab[i]);
-            printf("\t TCm = %.4e [MeV]\t\t TLab = %.4e [MeV]\n", fTCm[i], fTLab[i]);
-            printf("\t VCm = %.4e [/c]\t\t VLab = %.4e [/c]\n", fVCm[i], fVLab[i]);
-            printf("\t PCm = %.4e [MeV/c]\t PLab = %.4e [MeV/c]\n", fPCm[i], fPLab[i]);
-            printf("\t GCm = %.4e \t\t GLab = %.4e \n", fGCm[i], fGLab[i]);
+            std::cout<<"\t ECm = "<<fECm[i]<<" [MeV]\t\t ELab = "<<fELab[i]<<" [MeV]"<<std::endl;
+            std::cout<<"\t TCm = "<<fTCm[i]<<" [MeV]\t\t TLab = "<<fTLab[i]<<" [MeV]"<<std::endl;
+            std::cout<<"\t VCm = "<<fVCm[i]<<" [/c]\t\t VLab = "<<fVLab[i]<<" [/c]"<<std::endl;
+            std::cout<<"\t PCm = "<<fPCm[i]<<" [MeV/c]\t PLab = "<<fPLab[i]<<" [MeV/c]"<<std::endl;
+            std::cout<<"\t GCm = "<<fGCm[i]<<" \t\t GLab = "<<fGLab[i]<<std::endl;
          } else {
-            printf("\t ECm = %.4e [MeV]\t\t ELab = N/A       \n", fECm[i]);
-            printf("\t TCm = %.4e [MeV]\t\t TLab = N/A       \n", fTCm[i]);
-            printf("\t VCm = %.4e [/c]\t\t VLab = N/A       \n", fVCm[i]);
-            printf("\t PCm = %.4e [MeV/c]\t PLab = N/A       \n", fPCm[i]);
-            printf("\t GCm = %.4e \t\t GLab = N/A       \n", fGCm[i]);
-            printf("\t\t ThetaLab_max = %.2f [deg]\n", fThetaMax[i] * R2D);
+            std::cout<<"\t ECm = "<<fECm[i]<<" [MeV]\t\t ELab = N/A"<<std::endl;
+            std::cout<<"\t TCm = "<<fTCm[i]<<" [MeV]\t\t TLab = N/A"<<std::endl;
+            std::cout<<"\t VCm = "<<fVCm[i]<<" [/c]\t\t VLab = N/A"<<std::endl;
+            std::cout<<"\t PCm = "<<fPCm[i]<<" [MeV/c]\t PLab = N/A"<<std::endl;
+            std::cout<<"\t GCm = "<<fGCm[i]<<" \t\t GLab = N/A"<<std::endl;
+            std::cout<<"\t\t ThetaLab_max = "<<fThetaMax[i] * R2D<<" [deg]"<<std::endl;
          }
       }
    }
-   printf("\n\n * * * * * * * * * * * * * * * * * * * * * * * * *\n\n");
+   std::cout<<std::endl<<std::endl<<" * * * * * * * * * * * * * * * * * * * * * * * * *"<<std::endl<<std::endl;
 }
 
 void TReaction::Clear(Option_t*)

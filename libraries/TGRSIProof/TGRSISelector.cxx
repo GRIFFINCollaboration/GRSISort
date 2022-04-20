@@ -244,6 +244,7 @@ void TGRSISelector::Terminate()
 			std::cerr<<"Failed to open output file "<<Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runNumber, subRunNumber)<<"!"<<std::endl<<std::endl;
 			return;
 		}
+		options->LogFile(Form("%s%05d_%03d.log", fOutputPrefix.c_str(), runNumber, subRunNumber));
 	} else if(runNumber != 0) {
 		// multiple subruns of a single run
 		std::cout<<"Using run "<<runNumber<<" subruns "<<fRunInfo->FirstSubRunNumber()<<" - "<<fRunInfo->LastSubRunNumber()<<std::endl;
@@ -252,6 +253,7 @@ void TGRSISelector::Terminate()
 			std::cerr<<"Failed to open output file "<<Form("%s%05d_%03d-%03d.root", fOutputPrefix.c_str(), runNumber, fRunInfo->FirstSubRunNumber(), fRunInfo->LastSubRunNumber())<<"!"<<std::endl<<std::endl;
 			return;
 		}
+		options->LogFile(Form("%s%05d_%03d-%03d.log", fOutputPrefix.c_str(), runNumber, fRunInfo->FirstSubRunNumber(), fRunInfo->LastSubRunNumber()));
 	} else {
 		// multiple runs
 		std::cout<<"Using runs "<<fRunInfo->FirstRunNumber()<<" - "<<fRunInfo->LastRunNumber()<<std::endl;
@@ -260,6 +262,7 @@ void TGRSISelector::Terminate()
 			std::cerr<<"Failed to open output file "<<Form("%s%05d-%05d.root", fOutputPrefix.c_str(), fRunInfo->FirstRunNumber(), fRunInfo->LastRunNumber())<<"!"<<std::endl<<std::endl;
 			return;
 		}
+		options->LogFile(Form("%s%05d-%05d.log", fOutputPrefix.c_str(), fRunInfo->FirstRunNumber(), fRunInfo->LastRunNumber()));
 	}
 	std::cout<<"Opened '"<<outputFile->GetName()<<"' for writing:"<<std::endl;
 
@@ -309,7 +312,7 @@ void TGRSISelector::CheckSizes(const char* usage)
 	// check size of each object in the output list
 	for(const auto&& obj : *fOutput) {
 		TBufferFile b(TBuffer::kWrite, 10000);
-		TClass::GetClass(obj->ClassName())->WriteBuffer(b, obj);
+		obj->IsA()->WriteBuffer(b, obj);
 		if(b.Length() > SIZE_LIMIT) {
 			std::cout<<DRED<<obj->ClassName()<<" '"<<obj->GetName()<<"' too large to "<<usage<<": "<<b.Length()<<" bytes = "<<b.Length()/1024./1024./1024.<<" GB, removing it!"<<RESET_COLOR<<std::endl;
 			// we only remove it from the output list, not deleting the object itself
