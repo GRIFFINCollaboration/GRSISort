@@ -57,10 +57,16 @@ public:
    void Clear(Option_t* = "") override { fHits.clear(); } //!<!
    virtual void ClearTransients();                            //!<!
    void Print(Option_t* opt = "") const override;             //!<!
+	virtual void Print(std::ostream& out) const;
 
 	virtual Short_t GetMultiplicity() const { return fHits.size(); }
 	virtual TDetectorHit* GetHit(const int&) const;
 	virtual const std::vector<TDetectorHit*>& GetHitVector() const { return fHits; }
+
+	friend std::ostream& operator<<(std::ostream& out, const TDetector& det) {
+		det.Print(out);
+		return out;
+	}
 
 protected:
 	std::vector<TDetectorHit*> fHits;
