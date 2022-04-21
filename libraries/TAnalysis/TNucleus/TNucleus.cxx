@@ -176,7 +176,7 @@ TNucleus::~TNucleus()
 	fTransitionList.Delete();
 }
 
-const char* TNucleus::SortName(const char* name)
+std::string TNucleus::SortName(const char* name)
 {
 	// Names a nucleus based on symbol (ex. 26Na OR Na26). This is to get a nice naming convention.
 	std::string Name = name;
@@ -222,7 +222,7 @@ const char* TNucleus::SortName(const char* name)
 	element.append(std::to_string(static_cast<long long>(Number)));
 	element.append(symbol);
 
-	return element.c_str();
+	return element;
 }
 
 void TNucleus::SetZ(int charge)
