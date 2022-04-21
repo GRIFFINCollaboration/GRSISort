@@ -135,7 +135,7 @@ public:
       return fTime;
    }
 
-   virtual TVector3 GetPosition(Double_t) const { return TVector3(0., 0., 0.); } //!<!
+   virtual TVector3 GetPosition(Double_t) const { return GetPosition(); } //!<!
    virtual TVector3 GetPosition() const { return TVector3(0., 0., 0.); }         //!<!
    virtual double GetEnergy(Option_t* opt = "") const;
 	virtual Double_t GetEnergyNonlinearity(double energy) const;
