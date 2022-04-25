@@ -124,8 +124,15 @@ void TBgo::Clear(Option_t* opt)
 
 void TBgo::Print(Option_t*) const
 {
-   std::cout<<"Bgo Contains: "<<std::endl;
-   std::cout<<std::setw(6)<<GetMultiplicity()<<" hits"<<std::endl;
+	Print(std::cout);
+}
+
+void TBgo::Print(std::ostream& out) const
+{
+	std::ostringstream str;
+   str<<"Bgo Contains: "<<std::endl;
+   str<<std::setw(6)<<GetMultiplicity()<<" hits"<<std::endl;
+	out<<str.str();
 }
 
 TBgo& TBgo::operator=(const TBgo& rhs)
