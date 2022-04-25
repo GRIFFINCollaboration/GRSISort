@@ -19,6 +19,9 @@ public:
 
 public:
    void Copy(TObject& obj) const override;
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,24,0)
+	using TGraph::AddPoint;
+#endif
    void AddPoint(Double_t energy, Double_t area, Double_t dEnergy = 0.0, Double_t dArea = 0.0);
    void AddPoint(TPeak* peak);
 

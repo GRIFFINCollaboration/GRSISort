@@ -53,6 +53,7 @@ void TEfficiencyGraph::BuildGraph()
    }
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,26,0)
 void TEfficiencyGraph::Scale(const Double_t& scale)
 {
    for(auto& it : fCompareMap) {
@@ -64,3 +65,4 @@ void TEfficiencyGraph::Scale(const Double_t& scale)
       GetEY()[i] *= scale;
    }
 }
+#endif

@@ -44,7 +44,7 @@ public:
 
 	// static void SetMassFile(const char *tmp = nullptr);// {massfile = tmp;} //Sets the mass file to be used
 
-	static const char* SortName(const char* name);
+	static std::string SortName(const char* name);
 	// void SetName(const char *name) { fName = name; }
 	void SetZ(int);              // Sets the Z (# of protons) of the nucleus
 	void SetN(int);              // Sets the N (# of neutrons) of the nucleus
