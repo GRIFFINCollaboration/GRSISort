@@ -35,6 +35,9 @@ public:
 
    TCalGraph(const TCalGraph& copy);
 
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,24,0)
+	using TGraph::AddPoint;
+#endif
    void AddPoint(const TCalPoint& cal_point);
    Int_t FindClosestPointX(const Double_t& x_val);
    Double_t FindDistToClosestPointX(const Double_t& x_val);

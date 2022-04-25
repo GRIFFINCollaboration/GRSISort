@@ -99,6 +99,11 @@ public:
    void Clear(Option_t* opt = "") override;          //!<!
    virtual void ClearTransients() const { fBitFlags = 0; }
    void Print(Option_t* opt = "") const override;                                 //!<!
+	virtual void Print(std::ostream& out) const;
+	friend std::ostream& operator<<(std::ostream& out, const TDetectorHit& hit) {
+		hit.Print(out);
+		return out;
+	}
    virtual bool HasWave() const { return (fWaveform.size() > 0); } //!<!
 
    static bool CompareEnergy(TDetectorHit* lhs, TDetectorHit* rhs);
@@ -130,7 +135,7 @@ public:
       return fTime;
    }
 
-   virtual TVector3 GetPosition(Double_t) const { return TVector3(0., 0., 0.); } //!<!
+   virtual TVector3 GetPosition(Double_t) const { return GetPosition(); } //!<!
    virtual TVector3 GetPosition() const { return TVector3(0., 0., 0.); }         //!<!
    virtual double GetEnergy(Option_t* opt = "") const;
 	virtual Double_t GetEnergyNonlinearity(double energy) const;

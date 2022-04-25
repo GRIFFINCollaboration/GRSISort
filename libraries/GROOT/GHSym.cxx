@@ -1905,7 +1905,6 @@ TProfile* GHSym::Profile(const char* name, Int_t firstbin, Int_t lastbin, Option
 
    // Fill the profile histogram
    // no entries/bin is available so can fill only using bin content as weight
-   Double_t totcont  = 0;
    TArrayD& binSumw2 = *(h1->GetBinSumw2());
 
    // implement filling of projected histogram
@@ -1946,7 +1945,6 @@ TProfile* GHSym::Profile(const char* name, Int_t firstbin, Int_t lastbin, Option
             if(useWeights) {
                binSumw2.fArray[binOut] = tmp + fSumw2.fArray[bin];
             }
-            totcont += cxy;
          }
       }
    }
