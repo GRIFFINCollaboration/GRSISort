@@ -17,13 +17,13 @@ TBgoHit::~TBgoHit() = default;
 
 TBgoHit::TBgoHit(const TBgoHit& rhs) : TDetectorHit()
 {
-   rhs.Copy(*this);
+   rhs.Copy(*this, true);
 }
 
-void TBgoHit::Copy(TObject& rhs) const
+void TBgoHit::Copy(TObject& rhs, bool copywave) const
 {
    // Copy function.
-   TDetectorHit::Copy(rhs);
+   TDetectorHit::Copy(rhs, copywave);
 }
 
 void TBgoHit::Clear(Option_t* opt)
