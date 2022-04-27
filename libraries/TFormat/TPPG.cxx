@@ -10,7 +10,7 @@ ClassImp(TPPGData)
 ClassImp(TPPG)
 /// \endcond
 
-short TPPG::fTimestampUnits = 10;
+short TPPGData::fTimestampUnits = 10;
 TPPG* TPPG::fPPG = nullptr;
 
 TPPGData::TPPGData()
@@ -38,7 +38,7 @@ void TPPGData::SetTimeStamp()
    Long64_t time = GetHighTimeStamp();
    time          = time<<28;
    time |= GetLowTimeStamp() & 0x0fffffff;
-   fTimeStamp = 10 * time;
+   fTimeStamp = fTimestampUnits * time;
 }
 
 void TPPGData::Clear(Option_t*)
@@ -129,13 +129,12 @@ ULong64_t TPPG::GetLastStatusTime(ULong64_t time, EPpgPattern pat) const
 {
    /// Gets the last time that a status was given. If the EPpgPattern kJunk is passed, the
    /// current status at the time "time" is looked for.
-	/// "time" is converted from ns to PPG timestamp units (10 ns).
+	/// "time" is in ns (since we store the PPG timestamp in ns as well)
    if(MapIsEmpty()) {
       std::cout<<"Empty"<<std::endl;
       return 0;
    }
 
-	time /= fTimestampUnits;
    auto               curppg_it = --(fPPGStatusMap->upper_bound(time));
    PPGMap_t::iterator ppg_it;
    if(pat == EPpgPattern::kJunk) {
@@ -158,13 +157,12 @@ ULong64_t TPPG::GetNextStatusTime(ULong64_t time, EPpgPattern pat) const
 {
    /// Gets the next time that a status was given. If the EPpgPattern kJunk is passed, the
    /// current status at the time "time" is looked for. 
-	/// "time" is converted from ns to PPG timestamp units (10 ns).
+	/// "time" is in ns (since we store the PPG timestamp in ns as well)
    if(MapIsEmpty()) {
       std::cout<<"Empty"<<std::endl;
       return 0;
    }
 
-	time /= fTimestampUnits;
    auto               curppg_it = --(fPPGStatusMap->upper_bound(time));
    PPGMap_t::iterator ppg_it;
    if(pat == EPpgPattern::kJunk) {
@@ -186,7 +184,7 @@ ULong64_t TPPG::GetNextStatusTime(ULong64_t time, EPpgPattern pat) const
 EPpgPattern TPPG::GetStatus(ULong64_t time) const
 {
    /// Returns the current status of the PPG at the time "time".
-	/// "time" is converted from ns to PPG timestamp units (10 ns).
+	/// "time" is in ns (since we store the PPG timestamp in ns as well)
    if(MapIsEmpty()) {
       std::cout<<"Empty"<<std::endl;
    }
@@ -198,11 +196,10 @@ EPpgPattern TPPG::GetStatus(ULong64_t time) const
 EPpgPattern TPPG::GetNextStatus(ULong64_t time) const
 {
    /// Returns the next status of the PPG at the time "time".
-	/// "time" is converted from ns to PPG timestamp units (10 ns).
+	/// "time" is in ns (since we store the PPG timestamp in ns as well)
    if(MapIsEmpty()) {
       std::cout<<"Empty"<<std::endl;
    }
-	time /= fTimestampUnits;
    // The upper_bound and lower_bound functions always return an iterator to the NEXT map element. We back off by one
    // because we want to know what the last PPG event was.
 	if(fPPGStatusMap->upper_bound(time) == fPPGStatusMap->end()) {
@@ -245,9 +242,8 @@ void TPPG::Print(Option_t* opt) const
    // can't call non-const GetCycleLength here, so we do the calculation with local variables here
    PPGMap_t::iterator ppgIt;
    std::map<EPpgPattern, int>  status;               // to calculate how often each different status occured
-   std::map<ULong64_t, int> numberOfCycleLengths; // to calculate the length of the whole cycle
-   std::map<ULong64_t, int>
-      numberOfStateLengths[4]; // to calculate the length of each state (tape move, background, beam on, and decay)
+   std::map<ULong64_t, int> numberOfCycleLengths;    // to calculate the length of the whole cycle
+   std::map<ULong64_t, int> numberOfStateLengths[4]; // to calculate the length of each state (tape move, background, beam on, and decay)
    std::map<int, int> numberOfOffsets; // to calculate the offset on each timestamp
    for(ppgIt = MapBegin(); ppgIt != MapEnd(); ++ppgIt) {
       status[ppgIt->second->GetNewPPG()]++;
@@ -255,23 +251,23 @@ void TPPG::Print(Option_t* opt) const
       numberOfCycleLengths[diff]++;
       numberOfOffsets[(ppgIt->second->GetTimeStamp()) % 1000]++; // let's assume our offset is less than 10 us
       switch(ppgIt->second->GetNewPPG()) {
-		case EPpgPattern::kBackground:
-         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kTapeMove);
-         numberOfStateLengths[0][diff]++;
-         break;
-		case EPpgPattern::kBeamOn:
-         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kBackground);
-         numberOfStateLengths[1][diff]++;
-         break;
-		case EPpgPattern::kDecay:
-         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kBeamOn);
-         numberOfStateLengths[2][diff]++;
-         break;
-		case EPpgPattern::kTapeMove:
-         diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kDecay);
-         numberOfStateLengths[3][diff]++;
-         break;
-      default: break;
+			case EPpgPattern::kBackground:
+				diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kTapeMove);
+				numberOfStateLengths[0][diff]++;
+				break;
+			case EPpgPattern::kBeamOn:
+				diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kBackground);
+				numberOfStateLengths[1][diff]++;
+				break;
+			case EPpgPattern::kDecay:
+				diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kBeamOn);
+				numberOfStateLengths[2][diff]++;
+				break;
+			case EPpgPattern::kTapeMove:
+				diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kDecay);
+				numberOfStateLengths[3][diff]++;
+				break;
+			default: break;
       }
    }
    int       counter     = 0;
@@ -522,16 +518,16 @@ ULong64_t TPPG::GetTimeInCycle(ULong64_t real_time)
 {
 	/// Returns the time in the cycle based on "real_time", i.e. the modulus of the 
 	/// time and the cycle length.
-	/// "real_time" is converted from ns to PPG timestamp units (10 ns).
-   return (real_time/fTimestampUnits) % GetCycleLength();
+	/// "real_time" is in ns since that's how we store the PPG timestamps as well.
+   return real_time % GetCycleLength();
 }
 
 ULong64_t TPPG::GetCycleNumber(ULong64_t real_time)
 {
 	/// Returns the cycle number based on "real_time", i.e. the time divided by the
 	/// cycle length.
-	/// "real_time" is converted from ns to PPG timestamp units (10 ns).
-   return (real_time/fTimestampUnits) / GetCycleLength();
+	/// "real_time" is in ns since that's how we store the PPG timestamps as well.
+   return real_time / GetCycleLength();
 }
 
 ULong64_t TPPG::GetCycleLength()
