@@ -111,6 +111,8 @@ void AtExitHandler()
 
 			std::string firstMacro;
 			if(!gGRSIOpt->MacroInputFiles().empty()) firstMacro = gGRSIOpt->MacroInputFiles().at(0);
+			firstMacro = basename(firstMacro.c_str()); // remove path
+			firstMacro = firstMacro.substr(0, firstMacro.find_last_of('.')); // remove extension
 
 			if(runNumber != 0 && subRunNumber != -1) {
 				// both run and subrun number set => single file processed
@@ -202,7 +204,7 @@ int main(int argc, char** argv)
 		} else {
 			std::cout<<"Warning, expected dataparser/detector library location to be of form <path>/lib/lib<name>.so, but it is "<<library<<". Won't be able to add include path!"<<std::endl;
 		}
-		gSystem->Load(library.c_str());
+		// no need to load the parser library, that is already taken care of by TGRSIProof class
 	} else {
 		std::cout<<"Warning, no dataparser/detector library provided, won't be able to add include path!"<<std::endl;
 	}
@@ -214,7 +216,7 @@ int main(int argc, char** argv)
 	std::cout<<DCYAN<<"************************* MACRO COMPILATION ****************************"<<RESET_COLOR
 		<<std::endl;
 	for(const auto& i : gGRSIOpt->MacroInputFiles()) {
-		Int_t error_code = gSystem->CompileMacro(i.c_str(), "kgO"); // k - keep shared library after session ends, g - add debuging symbols, O - optimize the code, v - verbose output
+		Int_t error_code = gSystem->CompileMacro(i.c_str(), "kgOs"); // k - keep shared library after session ends, g - add debuging symbols, O - optimize the code, s - silent, v - verbose output
 		if(error_code == 0) {
 			std::cout<<DRED<<i<<" failed to compile properly.. ABORT!"<<RESET_COLOR<<std::endl;
 			return 1;
