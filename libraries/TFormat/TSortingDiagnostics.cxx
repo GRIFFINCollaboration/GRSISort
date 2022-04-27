@@ -101,7 +101,7 @@ void TSortingDiagnostics::Print(Option_t* opt) const
 	if(!fMissingDetectorClasses.empty()) {
 		std::cout<<"Missing detector classes:"<<std::endl;
 		for(auto it : fMissingDetectorClasses) {
-			std::cout<<it.first->GetName()<<": "<<it.second<<std::endl;
+			std::cout<<(it.first == nullptr?"nullptr":it.first->GetName())<<": "<<it.second<<std::endl;
 		}
 	}
    std::string color;

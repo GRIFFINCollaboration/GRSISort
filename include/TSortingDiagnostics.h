@@ -74,7 +74,7 @@ public:
    void Draw(Option_t* opt = "") override;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TSortingDiagnostics, 3);
+   ClassDefOverride(TSortingDiagnostics, 4);
    /// \endcond
 };
 /*! @} */
