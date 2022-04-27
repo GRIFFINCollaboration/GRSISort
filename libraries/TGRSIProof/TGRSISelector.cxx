@@ -78,7 +78,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
 		TGRSIOptions::Get()->ParserLibrary(library);
 		if(!library.empty()) {
 			// this might throw a runtime exception, but we don't want to catch it here as we need the library for things to work properly!
-			TParserLibrary::Get()->Load();
+			//TParserLibrary::Get()->Load();
 		} else {
 			std::cout<<"no parser library!"<<std::endl;
 			TGRSIOptions::Get()->Print();
@@ -236,34 +236,24 @@ void TGRSISelector::Terminate()
 	Int_t subRunNumber = fRunInfo->SubRunNumber();
 
 	TFile* outputFile;
+	std::string outputFileName;
 	if(runNumber != 0 && subRunNumber != -1) {
 		// both run and subrun number set => single file processed
-		std::cout<<"Using run "<<runNumber<<" subrun "<<subRunNumber<<std::endl;
-		outputFile = new TFile(Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runNumber, subRunNumber), "RECREATE");
-		if(!outputFile->IsOpen()) {
-			std::cerr<<"Failed to open output file "<<Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runNumber, subRunNumber)<<"!"<<std::endl<<std::endl;
-			return;
-		}
-		options->LogFile(Form("%s%05d_%03d.log", fOutputPrefix.c_str(), runNumber, subRunNumber));
+		outputFileName = Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runNumber, subRunNumber);
 	} else if(runNumber != 0) {
 		// multiple subruns of a single run
-		std::cout<<"Using run "<<runNumber<<" subruns "<<fRunInfo->FirstSubRunNumber()<<" - "<<fRunInfo->LastSubRunNumber()<<std::endl;
-		outputFile = new TFile(Form("%s%05d_%03d-%03d.root", fOutputPrefix.c_str(), runNumber, fRunInfo->FirstSubRunNumber(), fRunInfo->LastSubRunNumber()), "RECREATE");
-		if(!outputFile->IsOpen()) {
-			std::cerr<<"Failed to open output file "<<Form("%s%05d_%03d-%03d.root", fOutputPrefix.c_str(), runNumber, fRunInfo->FirstSubRunNumber(), fRunInfo->LastSubRunNumber())<<"!"<<std::endl<<std::endl;
-			return;
-		}
-		options->LogFile(Form("%s%05d_%03d-%03d.log", fOutputPrefix.c_str(), runNumber, fRunInfo->FirstSubRunNumber(), fRunInfo->LastSubRunNumber()));
+		outputFileName = Form("%s%05d_%03d-%03d.root", fOutputPrefix.c_str(), runNumber, fRunInfo->FirstSubRunNumber(), fRunInfo->LastSubRunNumber());
 	} else {
 		// multiple runs
-		std::cout<<"Using runs "<<fRunInfo->FirstRunNumber()<<" - "<<fRunInfo->LastRunNumber()<<std::endl;
-		outputFile = new TFile(Form("%s%05d-%05d.root", fOutputPrefix.c_str(), fRunInfo->FirstRunNumber(), fRunInfo->LastRunNumber()), "RECREATE");
-		if(!outputFile->IsOpen()) {
-			std::cerr<<"Failed to open output file "<<Form("%s%05d-%05d.root", fOutputPrefix.c_str(), fRunInfo->FirstRunNumber(), fRunInfo->LastRunNumber())<<"!"<<std::endl<<std::endl;
-			return;
-		}
-		options->LogFile(Form("%s%05d-%05d.log", fOutputPrefix.c_str(), fRunInfo->FirstRunNumber(), fRunInfo->LastRunNumber()));
+		outputFileName = Form("%s%05d-%05d.root", fOutputPrefix.c_str(), fRunInfo->FirstRunNumber(), fRunInfo->LastRunNumber());
 	}
+	outputFile = new TFile(outputFileName.c_str(), "recreate");
+	if(!outputFile->IsOpen()) {
+		std::cerr<<"Failed to open output file "<<outputFileName<<"!"<<std::endl<<std::endl;
+		return;
+	}
+	outputFileName = outputFileName.substr(0, outputFileName.find_last_of('.'))+".log";
+	options->LogFile(outputFileName.c_str());
 	std::cout<<"Opened '"<<outputFile->GetName()<<"' for writing:"<<std::endl;
 
 	outputFile->cd();
@@ -277,6 +267,7 @@ void TGRSISelector::Terminate()
 	options->AnalysisOptions()->WriteToFile(outputFile);
 	TChannel::WriteToRoot();
 	outputFile->Close();
+	std::cout<<"Closed '"<<outputFile->GetName()<<"'"<<std::endl;
 }
 
 void TGRSISelector::Init(TTree* tree)

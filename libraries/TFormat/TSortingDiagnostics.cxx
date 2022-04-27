@@ -95,13 +95,13 @@ void TSortingDiagnostics::Print(Option_t* opt) const
 	if(!fMissingChannels.empty()) {
 		std::cout<<"Missing channels:"<<std::endl;
 		for(auto it : fMissingChannels) {
-			std::cout<<"0x"<<std::hex<<std::setfill('0')<<std::setw(4)<<it.first<<std::dec<<std::setfill(' ')<<": "<<it.second<<std::endl;
+			std::cout<<hex(it.first,4)<<": "<<it.second<<std::endl;
 		}
 	}
 	if(!fMissingDetectorClasses.empty()) {
 		std::cout<<"Missing detector classes:"<<std::endl;
 		for(auto it : fMissingDetectorClasses) {
-			std::cout<<it.first->GetName()<<": "<<it.second<<std::endl;
+			std::cout<<(it.first == nullptr?"nullptr":it.first->GetName())<<": "<<it.second<<std::endl;
 		}
 	}
    std::string color;

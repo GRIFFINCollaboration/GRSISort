@@ -31,6 +31,12 @@ public:
    /////////////////////////		/////////////////////////////////////
    inline UShort_t GetArrayNumber() const override { return (20 * (GetDetector() - 1) + 5 * GetCrystal() + GetSegment()); } //!<!
 
+	using TObject::Copy;
+   virtual void Copy(TObject&, bool copywave) const override; //!<!
+   virtual void Clear(Option_t* opt = "all") override;        //!<!
+   virtual void Print(Option_t* opt = "") const override;     //!<!
+	virtual void Print(std::ostream& out) const override;      //!<!
+
    /// \cond CLASSIMP
    ClassDefOverride(TBgoHit, 1)
    /// \endcond

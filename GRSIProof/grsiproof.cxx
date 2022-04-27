@@ -105,8 +105,28 @@ void AtExitHandler()
 		std::cout<<"getting session logs ..."<<std::endl;
 		TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
 		if(pl != nullptr) {
-			pl->Save("*", gGRSIOpt->LogFile().c_str());
-			std::cout<<"Wrote logs to '"<<gGRSIOpt->LogFile()<<"'"<<std::endl;
+			TRunInfo* runInfo = TRunInfo::Get();
+			Int_t runNumber    = runInfo->RunNumber();
+			Int_t subRunNumber = runInfo->SubRunNumber();
+
+			std::string firstMacro;
+			if(!gGRSIOpt->MacroInputFiles().empty()) firstMacro = gGRSIOpt->MacroInputFiles().at(0);
+			firstMacro = basename(firstMacro.c_str()); // remove path
+			firstMacro = firstMacro.substr(0, firstMacro.find_last_of('.')); // remove extension
+
+			if(runNumber != 0 && subRunNumber != -1) {
+				// both run and subrun number set => single file processed
+				pl->Save("*", Form("%s%05d_%03d.log", firstMacro.c_str(), runNumber, subRunNumber));
+				std::cout<<"Wrote logs to '"<<Form("%s%05d_%03d.log", firstMacro.c_str(), runNumber, subRunNumber)<<"'"<<std::endl;
+			} else if(runNumber != 0) {
+				// multiple subruns of a single run
+				pl->Save("*", Form("%s%05d_%03d-%03d.log", firstMacro.c_str(), runNumber, runInfo->FirstSubRunNumber(), runInfo->LastSubRunNumber()));
+				std::cout<<"Wrote logs to '"<<Form("%s%05d_%03d-%03d.log", firstMacro.c_str(), runNumber, runInfo->FirstSubRunNumber(), runInfo->LastSubRunNumber())<<"'"<<std::endl;
+			} else {
+				// multiple runs
+				pl->Save("*", Form("%s%05d-%05d.log", firstMacro.c_str(), runInfo->FirstRunNumber(), runInfo->LastRunNumber()));
+				std::cout<<"Wrote logs to '"<<Form("%s%05d-%05d.log", firstMacro.c_str(), runInfo->FirstRunNumber(), runInfo->LastRunNumber())<<"'"<<std::endl;
+			}
 		} else {
 			std::cout<<"Failed to get logs!"<<std::endl;
 		}
@@ -114,17 +134,17 @@ void AtExitHandler()
 		std::cout<<"stopping all workers ..."<<std::endl;
 		gGRSIProof->StopProcess(true);
 	}
-	
+
 	// print time it took to run grsiproof
-   double realTime = gStopwatch->RealTime();
-   int    hour     = static_cast<int>(realTime / 3600);
-   realTime -= hour * 3600;
-   int min = static_cast<int>(realTime / 60);
-   realTime -= min * 60;
-   std::cout<<DMAGENTA<<std::endl
-            <<"Done after "<<hour<<":"<<std::setfill('0')<<std::setw(2)<<min<<":"
-				<<std::setprecision(3)<<std::fixed<<realTime<<" h:m:s"
-				<<RESET_COLOR<<std::endl;
+	double realTime = gStopwatch->RealTime();
+	int    hour     = static_cast<int>(realTime / 3600);
+	realTime -= hour * 3600;
+	int min = static_cast<int>(realTime / 60);
+	realTime -= min * 60;
+	std::cout<<DMAGENTA<<std::endl
+		<<"Done after "<<hour<<":"<<std::setfill('0')<<std::setw(2)<<min<<":"
+		<<std::setprecision(3)<<std::fixed<<realTime<<" h:m:s"
+		<<RESET_COLOR<<std::endl;
 }
 
 void HandleSignal(int)
@@ -146,20 +166,20 @@ static void CatchSignals()
 
 void SetGRSIEnv()
 {
-   std::string grsi_path = getenv("GRSISYS"); // Finds the GRSISYS path to be used by other parts of the grsisort code
-   if(grsi_path.length() > 0) {
-      grsi_path += "/";
-   }
-   // Read in grsirc in the GRSISYS directory to set user defined options on grsisort startup
-   grsi_path += ".grsirc";
-   gEnv->ReadFile(grsi_path.c_str(), kEnvChange);
+	std::string grsi_path = getenv("GRSISYS"); // Finds the GRSISYS path to be used by other parts of the grsisort code
+	if(grsi_path.length() > 0) {
+		grsi_path += "/";
+	}
+	// Read in grsirc in the GRSISYS directory to set user defined options on grsisort startup
+	grsi_path += ".grsirc";
+	gEnv->ReadFile(grsi_path.c_str(), kEnvChange);
 }
 
 int main(int argc, char** argv)
 {
 	gStopwatch = new TStopwatch;
 	try {
-      SetGRSIEnv();
+		SetGRSIEnv();
 		gGRSIOpt = TGRSIOptions::Get(argc, argv);
 		if(gGRSIOpt->ShouldExit()) {
 			return 0;
@@ -172,9 +192,9 @@ int main(int argc, char** argv)
 	std::atexit(AtExitHandler);
 	CatchSignals();
 
-   // Add the path were we store headers for GRSIProof macros to see
-   const char* pPath = getenv("GRSISYS");
-   gInterpreter->AddIncludePath(Form("%s/include", pPath));
+	// Add the path were we store headers for GRSIProof macros to see
+	const char* pPath = getenv("GRSISYS");
+	gInterpreter->AddIncludePath(Form("%s/include", pPath));
 	// if we have a data parser/detector library, add it's include path as well
 	std::string library = gGRSIOpt->ParserLibrary();
 	if(!library.empty()) {
@@ -184,44 +204,44 @@ int main(int argc, char** argv)
 		} else {
 			std::cout<<"Warning, expected dataparser/detector library location to be of form <path>/lib/lib<name>.so, but it is "<<library<<". Won't be able to add include path!"<<std::endl;
 		}
-		gSystem->Load(library.c_str());
+		// no need to load the parser library, that is already taken care of by TGRSIProof class
 	} else {
 		std::cout<<"Warning, no dataparser/detector library provided, won't be able to add include path!"<<std::endl;
 	}
-   // The first thing we want to do is see if we can compile the macros that are passed to us
-   if(gGRSIOpt->MacroInputFiles().empty()) {
-      std::cout<<DRED<<"Can't PROOF if there is no MACRO"<<RESET_COLOR<<std::endl;
-      return 1;
-   }
-   std::cout<<DCYAN<<"************************* MACRO COMPILATION ****************************"<<RESET_COLOR
-            <<std::endl;
-   for(const auto& i : gGRSIOpt->MacroInputFiles()) {
-      Int_t error_code = gSystem->CompileMacro(i.c_str(), "kgO"); // k - keep shared library after session ends, g - add debuging symbols, O - optimize the code, v - verbose output
-      if(error_code == 0) {
-         std::cout<<DRED<<i<<" failed to compile properly.. ABORT!"<<RESET_COLOR<<std::endl;
-         return 1;
-      }
-   }
-   std::cout<<DCYAN<<"************************* END COMPILATION ******************************"<<RESET_COLOR
-            <<std::endl;
+	// The first thing we want to do is see if we can compile the macros that are passed to us
+	if(gGRSIOpt->MacroInputFiles().empty()) {
+		std::cout<<DRED<<"Can't PROOF if there is no MACRO"<<RESET_COLOR<<std::endl;
+		return 1;
+	}
+	std::cout<<DCYAN<<"************************* MACRO COMPILATION ****************************"<<RESET_COLOR
+		<<std::endl;
+	for(const auto& i : gGRSIOpt->MacroInputFiles()) {
+		Int_t error_code = gSystem->CompileMacro(i.c_str(), "kgOs"); // k - keep shared library after session ends, g - add debuging symbols, O - optimize the code, s - silent, v - verbose output
+		if(error_code == 0) {
+			std::cout<<DRED<<i<<" failed to compile properly.. ABORT!"<<RESET_COLOR<<std::endl;
+			return 1;
+		}
+	}
+	std::cout<<DCYAN<<"************************* END COMPILATION ******************************"<<RESET_COLOR
+		<<std::endl;
 
-   if(!gGRSIOpt->InputFiles().empty()) {
-      std::cout<<DRED<<"Can't Proof a Midas file..."<<RESET_COLOR<<std::endl;
-   }
+	if(!gGRSIOpt->InputFiles().empty()) {
+		std::cout<<DRED<<"Can't Proof a Midas file..."<<RESET_COLOR<<std::endl;
+	}
 
-   // The first thing we do is get the PROOF Lite instance to run
-   if(gGRSIOpt->GetMaxWorkers() >= 0) {
-      std::cout<<"Opening proof with '"<<Form("workers=%d", gGRSIOpt->GetMaxWorkers())<<"'"<<std::endl;
-      gGRSIProof = TGRSIProof::Open(Form("workers=%d", gGRSIOpt->GetMaxWorkers()));
-   } else if(gGRSIOpt->SelectorOnly()) {
-      std::cout<<"Opening proof with one worker (selector-only)"<<std::endl;
-      gGRSIProof = TGRSIProof::Open("workers=1");
-   } else {
-      gGRSIProof = TGRSIProof::Open("");
-   }
+	// The first thing we do is get the PROOF Lite instance to run
+	if(gGRSIOpt->GetMaxWorkers() >= 0) {
+		std::cout<<"Opening proof with '"<<Form("workers=%d", gGRSIOpt->GetMaxWorkers())<<"'"<<std::endl;
+		gGRSIProof = TGRSIProof::Open(Form("workers=%d", gGRSIOpt->GetMaxWorkers()));
+	} else if(gGRSIOpt->SelectorOnly()) {
+		std::cout<<"Opening proof with one worker (selector-only)"<<std::endl;
+		gGRSIProof = TGRSIProof::Open("workers=1");
+	} else {
+		gGRSIProof = TGRSIProof::Open("");
+	}
 
-   if(gGRSIProof == nullptr) {
-      std::cout<<"Couldn't connect to proof on first attempt, trying again"<<std::endl;
+	if(gGRSIProof == nullptr) {
+		std::cout<<"Couldn't connect to proof on first attempt, trying again"<<std::endl;
 		if(gGRSIOpt->GetMaxWorkers() >= 0) {
 			std::cout<<"Opening proof with '"<<Form("workers=%d", gGRSIOpt->GetMaxWorkers())<<"'"<<std::endl;
 			gGRSIProof = TGRSIProof::Open(Form("workers=%d", gGRSIOpt->GetMaxWorkers()));
@@ -231,40 +251,40 @@ int main(int argc, char** argv)
 		} else {
 			gGRSIProof = TGRSIProof::Open("");
 		}
-   }
+	}
 
-   if(gGRSIProof == nullptr) {
-      std::cout<<"Still can't connect to proof, try running it again?"<<std::endl;
-      return 0;
-   }
+	if(gGRSIProof == nullptr) {
+		std::cout<<"Still can't connect to proof, try running it again?"<<std::endl;
+		return 0;
+	}
 
 	startedProof = true;
 
-   gGRSIProof->SetBit(TProof::kUsingSessionGui);
-   gGRSIProof->AddEnvVar("GRSISYS", pPath);
-   gInterpreter->AddIncludePath(Form("%s/include", pPath));
-   gGRSIProof->AddIncludePath(Form("%s/include", pPath));
-   gGRSIProof->AddDynamicPath(Form("%s/lib", pPath));
+	gGRSIProof->SetBit(TProof::kUsingSessionGui);
+	gGRSIProof->AddEnvVar("GRSISYS", pPath);
+	gInterpreter->AddIncludePath(Form("%s/include", pPath));
+	gGRSIProof->AddIncludePath(Form("%s/include", pPath));
+	gGRSIProof->AddDynamicPath(Form("%s/lib", pPath));
 
-   gGRSIProof->AddInput(gGRSIOpt->AnalysisOptions());
-   gGRSIProof->AddInput(new TNamed("pwd", getenv("PWD")));
-   int i = 0;
-   for(const auto& valFile : gGRSIOpt->ValInputFiles()) {
-      gGRSIProof->AddInput(new TNamed(Form("valFile%d", i++), valFile.c_str()));
-   }
-   i = 0;
-   for(const auto& calFile : gGRSIOpt->CalInputFiles()) {
-      gGRSIProof->AddInput(new TNamed(Form("calFile%d", i++), calFile.c_str()));
-   }
-   i = 0;
-   for(const auto& cutFile : gGRSIOpt->InputCutFiles()) {
-      gGRSIProof->AddInput(new TNamed(Form("cutFile%d", i++), cutFile.c_str()));
-   }
+	gGRSIProof->AddInput(gGRSIOpt->AnalysisOptions());
+	gGRSIProof->AddInput(new TNamed("pwd", getenv("PWD")));
+	int i = 0;
+	for(const auto& valFile : gGRSIOpt->ValInputFiles()) {
+		gGRSIProof->AddInput(new TNamed(Form("valFile%d", i++), valFile.c_str()));
+	}
+	i = 0;
+	for(const auto& calFile : gGRSIOpt->CalInputFiles()) {
+		gGRSIProof->AddInput(new TNamed(Form("calFile%d", i++), calFile.c_str()));
+	}
+	i = 0;
+	for(const auto& cutFile : gGRSIOpt->InputCutFiles()) {
+		gGRSIProof->AddInput(new TNamed(Form("cutFile%d", i++), cutFile.c_str()));
+	}
 	gGRSIProof->AddInput(new TNamed("ParserLibrary", library.c_str()));
 
-   Analyze("FragmentTree");
-   Analyze("AnalysisTree");
-   Analyze("Lst2RootTree");
+	Analyze("FragmentTree");
+	Analyze("AnalysisTree");
+	Analyze("Lst2RootTree");
 
 	AtExitHandler();
 

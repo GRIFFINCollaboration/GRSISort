@@ -74,41 +74,43 @@ TRunInfo::~TRunInfo() = default;
 
 void TRunInfo::Print(Option_t* opt) const
 {
-   // Prints the TRunInfo. Options:
-   // a: Print out more details.
+   /// Prints the TRunInfo. Options:
+   /// a: Print out more details (array position and detector information).
 	TSingleton<TRunInfo>::PrintDirectory();
-   std::cout<<"Title: "<<RunTitle()<<std::endl;
-   std::cout<<"Comment: "<<RunComment()<<std::endl;
+	std::ostringstream str;
+   str<<"Title: "<<RunTitle()<<std::endl;
+   str<<"Comment: "<<RunComment()<<std::endl;
 	time_t tmpStart = static_cast<time_t>(RunStart());
 	time_t tmpStop  = static_cast<time_t>(RunStop());
 	struct tm runStart = *localtime(const_cast<const time_t*>(&tmpStart));
 	struct tm runStop  = *localtime(const_cast<const time_t*>(&tmpStop));
-	std::cout<<std::setfill('0');
+	str<<std::setfill('0');
 	if(RunNumber() != 0 && SubRunNumber() != -1) {
-		std::cout<<"\t\tRunNumber:          "<<std::setw(5)<<RunNumber()<<std::endl;
-		std::cout<<"\t\tSubRunNumber:       "<<std::setw(3)<<SubRunNumber()<<std::endl;
+		str<<"\t\tRunNumber:          "<<std::setw(5)<<RunNumber()<<std::endl;
+		str<<"\t\tSubRunNumber:       "<<std::setw(3)<<SubRunNumber()<<std::endl;
 	} else if(RunNumber() != 0) {
-		std::cout<<"\t\tRunNumber:          "<<std::setw(5)<<RunNumber()<<std::endl;
-		std::cout<<"\t\tSubRunNumbers:      "<<std::setw(3)<<FirstSubRunNumber()<<"-"<<std::setw(3)<<LastSubRunNumber()<<std::endl;
+		str<<"\t\tRunNumber:          "<<std::setw(5)<<RunNumber()<<std::endl;
+		str<<"\t\tSubRunNumbers:      "<<std::setw(3)<<FirstSubRunNumber()<<"-"<<std::setw(3)<<LastSubRunNumber()<<std::endl;
 	} else {
-		std::cout<<"\t\tRunNumbers:         "<<std::setw(5)<<FirstRunNumber()<<"-"<<std::setw(5)<<LastRunNumber()<<std::endl;
+		str<<"\t\tRunNumbers:         "<<std::setw(5)<<FirstRunNumber()<<"-"<<std::setw(5)<<LastRunNumber()<<std::endl;
 	}
-	std::cout<<std::setfill(' ');
+	str<<std::setfill(' ');
 	if(RunStart() != 0 && RunStop() != 0) {
-		std::cout<<"\t\tRunStart:           "<<asctime(&runStart)<<std::endl;
-		std::cout<<"\t\tRunStop:            "<<asctime(&runStop)<<std::endl;
-		std::cout<<"\t\tRunLength:          "<<RunLength()<<" s"<<std::endl;
+		str<<"\t\tRunStart:           "<<asctime(&runStart);
+		str<<"\t\tRunStop:            "<<asctime(&runStop);
+		str<<"\t\tRunLength:          "<<RunLength()<<" s"<<std::endl;
 	} else {
-		std::cout<<"\t\tCombined RunLength: "<<RunLength()<<" s"<<std::endl;
+		str<<"\t\tCombined RunLength: "<<RunLength()<<" s"<<std::endl;
 	}
    if(strchr(opt, 'a') != nullptr) {
-      std::cout<<std::endl;
-      std::cout<<"\t=============================="<<std::endl;
-      std::cout<<DBLUE "\t\tArray Position (mm) = "<<DRED<<TRunInfo::HPGeArrayPosition()<<RESET_COLOR<<std::endl;
+      str<<std::endl;
+      str<<"\t=============================="<<std::endl;
+      str<<DBLUE "\t\tArray Position (mm) = "<<DRED<<TRunInfo::HPGeArrayPosition()<<RESET_COLOR<<std::endl;
 		if(fDetectorInformation != nullptr) fDetectorInformation->Print(opt);
-		else std::cout<<"no detector information"<<std::endl;
-      std::cout<<"\t=============================="<<std::endl;
+		else str<<"no detector information"<<std::endl;
+      str<<"\t=============================="<<std::endl;
    }
+	std::cout<<str.str();
 }
 
 void TRunInfo::Clear(Option_t*)

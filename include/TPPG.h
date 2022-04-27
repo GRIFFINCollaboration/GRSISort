@@ -106,6 +106,7 @@ public:
    Long64_t GetTimeStamp() const { return fTimeStamp; }
 
 private:
+	static short       fTimestampUnits; ///< timestamp units of the PPG (10 ns)
    ULong64_t   fTimeStamp; ///< time stamp in ns
    EPpgPattern fOldPpg;
    EPpgPattern fNewPpg;
@@ -178,7 +179,6 @@ public:
    }
 
 private:
-	static short       fTimestampUnits; ///< timestamp units of the PPG (10 ns)
    static TPPG*       fPPG; ///< static pointer to TPPG
    PPGMap_t::iterator MapBegin() const { return ++(fPPGStatusMap->begin()); }
    PPGMap_t::iterator MapEnd() const { return fPPGStatusMap->end(); }
