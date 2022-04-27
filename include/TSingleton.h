@@ -31,7 +31,7 @@ template <class T>
 class TSingleton : public TObject
 {
 public:
-	static T* Get()
+	static T* Get(bool verbose = false)
 	{
 		// if we don't have an instance yet or changed into another directory
 		// we want to read from the current directory
@@ -39,7 +39,7 @@ public:
 			if((gDirectory->GetFile()) != nullptr) {
 				TList* list = gDirectory->GetFile()->GetListOfKeys();
 				TIter  iter(list);
-				std::cout<<"Reading "<<T::Class()->GetName()<<R"( from file ")"<<CYAN<<gDirectory->GetFile()->GetName()<<RESET_COLOR<<R"(")"<<std::endl;
+				if(verbose) std::cout<<"Reading "<<T::Class()->GetName()<<R"( from file ")"<<CYAN<<gDirectory->GetFile()->GetName()<<RESET_COLOR<<R"(")"<<std::endl;
 				while(TKey* key = static_cast<TKey*>(iter.Next())) {
 					if(strcmp(key->GetClassName(), T::Class()->GetName()) != 0) {
 						continue;
@@ -48,6 +48,7 @@ public:
 					// this automatically deletes the old singleton if we just switched files
 					Set(static_cast<T*>(key->ReadObj()));
 					fDir = gDirectory; // in either case (read from file or created new), gDirectory is the current directory
+					break; // we will find the newest key first, so we want to break here and not try and read other instaces of the same class
 				}
 			}
 			if(fSingleton == nullptr) {
