@@ -130,6 +130,7 @@ public:
    ~TPPG() override;
 
    void Copy(TObject& obj) const override;
+	// not sure why these arguments are here, they are not being used? And why do we have a non-const version that just calls the const version?
    Int_t Write(const char* name = nullptr, Int_t option = 0, Int_t bufsize = 0) override
    {
       return static_cast<const TPPG*>(this)->Write(name, option, bufsize);
@@ -142,19 +143,20 @@ public:
    void  Setup();
    bool Correct(bool verbose = false);
 
-   void AddData(TPPGData* pat);
+   void        AddData(TPPGData* pat);
    EPpgPattern GetStatus(ULong64_t time) const;
    EPpgPattern GetNextStatus(ULong64_t time) const;
-   ULong64_t GetLastStatusTime(ULong64_t time, EPpgPattern pat = EPpgPattern::kJunk) const;
-   ULong64_t GetNextStatusTime(ULong64_t time, EPpgPattern pat = EPpgPattern::kJunk) const;
+   ULong64_t   GetLastStatusTime(ULong64_t time, EPpgPattern pat = EPpgPattern::kJunk) const;
+   ULong64_t   GetNextStatusTime(ULong64_t time, EPpgPattern pat = EPpgPattern::kJunk) const;
    Bool_t      MapIsEmpty() const;
    std::size_t PPGSize() const { return fPPGStatusMap->size() - 1; }
    std::size_t OdbPPGSize() const { return fOdbPPGCodes.size(); }
    short       OdbPPGCode(size_t index) const { return fOdbPPGCodes.at(index); }
    int         OdbDuration(size_t index) const { return fOdbDurations.at(index); }
    Long64_t    OdbCycleLength() const { Long64_t result = 0; for(auto dur : fOdbDurations) { result += dur; } return result; }
-   Long64_t Merge(TCollection* list);
-   void Add(const TPPG* ppg);
+   Long64_t    Merge(TCollection* list);
+   void        Add(const TPPG* ppg);
+
    void operator+=(const TPPG& rhs);
 
    void SetCycleLength(ULong64_t length) { fCycleLength = length; }
@@ -178,7 +180,12 @@ public:
       fOdbDurations = std::move(durations);
    }
 
+	bool OdbMatchesData(bool verbose = false);
+	void SetOdbFromData(bool verbose = false);
+
 private:
+	bool CalculateCycleFromData(bool verbose = false);
+
    static TPPG*       fPPG; ///< static pointer to TPPG
    PPGMap_t::iterator MapBegin() const { return ++(fPPGStatusMap->begin()); }
    PPGMap_t::iterator MapEnd() const { return fPPGStatusMap->end(); }
@@ -188,13 +195,15 @@ private:
    ULong64_t fCycleLength;
    std::map<ULong64_t, int> fNumberOfCycleLengths;
 
-	//bool               fUseOdb;
-	//uint16_t           fCycleOffset;  ///< offset of cycle
-   std::vector<short> fOdbPPGCodes;  ///< ppg state codes read from odb
-   std::vector<int>   fOdbDurations; ///< duration of ppg state as read from odb
+   std::vector<short>     fOdbPPGCodes;  ///< ppg state codes read from odb
+   std::vector<int>       fOdbDurations; ///< duration of ppg state as read from odb
+
+	bool                   fCycleSet{false};              //!<! flag to indicate whether the codes and durations have been calculated from the data
+   std::vector<short>     fPPGCodes{0x8, 0x2, 0x1, 0x4}; //!<! ppg state codes (these are always set)
+   std::vector<ULong64_t> fDurations{ 0,   0,   0,   0}; //!<! duration of ppg state calculated from data
 
    /// \cond CLASSIMP
-   ClassDefOverride(TPPG, 4) // Contains PPG information
+   ClassDefOverride(TPPG, 5) // Contains PPG information
    /// \endcond
 };
 /*! @} */

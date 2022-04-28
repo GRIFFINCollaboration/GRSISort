@@ -122,6 +122,7 @@ void TPPG::AddData(TPPGData* pat)
    /// store in the map.
    fPPGStatusMap->insert(std::make_pair(pat->GetTimeStamp(), new TPPGData(*pat)));
    fCycleLength = 0;
+	fCycleSet = false;
    fNumberOfCycleLengths.clear();
 }
 
@@ -240,12 +241,11 @@ void TPPG::Print(Option_t* opt) const
    }
    // print only an overview of the ppg
    // can't call non-const GetCycleLength here, so we do the calculation with local variables here
-   PPGMap_t::iterator ppgIt;
    std::map<EPpgPattern, int>  status;               // to calculate how often each different status occured
    std::map<ULong64_t, int> numberOfCycleLengths;    // to calculate the length of the whole cycle
    std::map<ULong64_t, int> numberOfStateLengths[4]; // to calculate the length of each state (tape move, background, beam on, and decay)
    std::map<int, int> numberOfOffsets; // to calculate the offset on each timestamp
-   for(ppgIt = MapBegin(); ppgIt != MapEnd(); ++ppgIt) {
+   for(PPGMap_t::iterator ppgIt = MapBegin(); ppgIt != MapEnd(); ++ppgIt) {
       status[ppgIt->second->GetNewPPG()]++;
       ULong64_t diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp());
       numberOfCycleLengths[diff]++;
@@ -330,6 +330,97 @@ void TPPG::Print(Option_t* opt) const
 	}
 }
 
+bool TPPG::OdbMatchesData(bool verbose)
+{
+	if(!CalculateCycleFromData(verbose)) return false;
+	
+	// we got a cycle from the data, so we can compare it
+	if(fPPGCodes.size() != fOdbPPGCodes.size()) {
+		if(verbose) {
+			std::cout<<"Got: "<<fPPGCodes.size()<<" states from data, and "<<fOdbPPGCodes.size()<<" states from ODB"<<std::endl;
+		}
+		return false;
+	}
+	for(size_t i = 0; i < fPPGCodes.size(); ++i) {
+		// we only check the lowest nibble of the code, as the ODB code quite often is of the form 0xc00x (x = 1, 2, 4, or 8)
+		// and we need to convert the data durations (in ns) to the ODB duration (in microseconds)
+		if((fPPGCodes.at(i)&0xf) != (fOdbPPGCodes.at(i)&0xf) || static_cast<int>(fDurations.at(i)/1000) != fOdbDurations.at(i)) {
+			if(verbose) {
+				std::cout<<i<<": Mismatch between lowest nibble of codes ("<<hex(fPPGCodes.at(i),4)<<", "<<hex(fOdbPPGCodes.at(i),4)<<") or durations ("<<fDurations.at(i)<<", "<<fOdbDurations.at(i)<<")"<<std::endl;
+			}
+			return false;
+		}
+	}
+	// if we got here without finding anything wrong the odb matches the data
+	return true;
+}
+
+void TPPG::SetOdbFromData(bool verbose)
+{
+	if(!CalculateCycleFromData(verbose)) {
+		std::cerr<<RED<<"Can't set ODB from data as we failed to calculate the cycle from data!"<<RESET_COLOR<<std::endl;
+		return;
+	}
+	// we got a cycle, so we can set the ODB to it
+	fOdbPPGCodes  = fPPGCodes;
+	// need to convert the durations from ns to microseconds
+	fOdbDurations.resize(fDurations.size());
+	for(size_t i = 0; i < fDurations.size(); ++i) {
+		fOdbDurations[i] = fDurations[i]/1000;
+	}
+}
+
+bool TPPG::CalculateCycleFromData(bool verbose)
+{
+	/// Calculate the cycle from the data and store it.
+	if(fCycleSet) return true;
+
+	// loop over all data and count how often we get each time difference between one state and the previous state
+   std::map<ULong64_t, int> numberOfStateLengths[4]; // to calculate the length of each state (tape move, background, beam on, and decay)
+	ULong64_t diff;
+   for(PPGMap_t::iterator ppgIt = MapBegin(); ppgIt != MapEnd(); ++ppgIt) {
+      switch(ppgIt->second->GetNewPPG()) {
+			case EPpgPattern::kBackground:
+				diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kTapeMove);
+				numberOfStateLengths[0][diff]++;
+				break;
+			case EPpgPattern::kBeamOn:
+				diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kBackground);
+				numberOfStateLengths[1][diff]++;
+				break;
+			case EPpgPattern::kDecay:
+				diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kBeamOn);
+				numberOfStateLengths[2][diff]++;
+				break;
+			case EPpgPattern::kTapeMove:
+				diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kDecay);
+				numberOfStateLengths[3][diff]++;
+				break;
+			default: break;
+      }
+   }
+	// set the durations to the one that occured the most often
+	// (codes are already set)
+   for(int i = 0; i < 4; ++i) {
+      int counter = 0;
+		if(verbose) std::cout<<"state "<<hex(fPPGCodes[i],4)<<" checking "<<numberOfStateLengths[i].size()<<" lengths:";
+      for(auto it : numberOfStateLengths[i]) {
+         if(it.second > counter) {
+				if(verbose) std::cout<<" "<<it.second<<">"<<counter<<" => fDurations["<<i<<"] = "<<it.first;
+            counter       = it.second;
+            fDurations[i] = it.first;
+         } else if(verbose) {
+				std::cout<<" "<<it.second<<"<"<<counter<<" => fDurations["<<i<<"] != "<<it.first;
+			}
+      }
+		if(verbose) std::cout<<std::endl;
+   }
+ 
+	fCycleSet = true;
+
+	return true;
+}
+
 void TPPG::Clear(Option_t*)
 {
    if(fPPGStatusMap != nullptr) {
@@ -349,6 +440,7 @@ void TPPG::Clear(Option_t*)
    fNumberOfCycleLengths.clear();
    fOdbPPGCodes.clear();
    fOdbDurations.clear();
+	fCycleSet = false;
 }
 
 Int_t TPPG::Write(const char*, Int_t, Int_t) const
@@ -504,7 +596,7 @@ const TPPGData* TPPG::First()
 
 void TPPG::Streamer(TBuffer& R__b)
 {
-   // Stream an object of class TPPG.
+   /// Stream an object of class TPPG.
 
    if(R__b.IsReading()) {
       R__b.ReadClassBuffer(TPPG::Class(), this);
@@ -532,6 +624,9 @@ ULong64_t TPPG::GetCycleNumber(ULong64_t real_time)
 
 ULong64_t TPPG::GetCycleLength()
 {
+	/// Calculates cycle length from the most often occuring time difference between
+	/// two PPG events with the same code. The result is also stored in fCycleLength
+	/// (which prevents a second calculation of it the next time this function is called)
    if(fCycleLength == 0) {
       PPGMap_t::iterator ppgit;
       for(ppgit = MapBegin(); ppgit != MapEnd(); ++ppgit) {
