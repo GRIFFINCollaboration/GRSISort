@@ -25,6 +25,7 @@ public:
    std::vector<std::shared_ptr<TDetector>>& GetDetectors() { return fDetectors; }
    void AddDetector(const std::shared_ptr<TDetector>& det) { fDetectors.push_back(det); }
    void AddRawData(const std::shared_ptr<const TFragment>& frag);
+   void SetRawData(const std::vector<std::shared_ptr<const TFragment>>& fragments) { fFragments = fragments; }
 #endif
    void ClearRawData();
 

@@ -49,10 +49,7 @@ bool TDetBuildingLoop::Iteration()
    ++fItemsPopped;
 
    std::shared_ptr<TUnpackedEvent> outputEvent = std::make_shared<TUnpackedEvent>();
-   for(const auto& frag : frags) {
-      // passes ownership of all TFragments, no need to delete here
-      outputEvent->AddRawData(frag);
-   }
+	outputEvent->SetRawData(frags);
    outputEvent->Build();
    for(const auto& outQueue : fOutputQueues) {
       outQueue->Push(outputEvent);
