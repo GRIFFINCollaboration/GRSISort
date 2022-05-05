@@ -274,6 +274,8 @@ void TPeakFitter::InitializeParameters(TH1* fit_hist)
 
 void TPeakFitter::UpdateFitterParameters()
 {
+	/// This functions gets the parameters and their limits from the peak functions and 
+	/// sets them for the total fit function
 	Int_t param_counter = 0;
 	Int_t peak_counter = 0;
 	for(auto p_it : fPeaksToFit) {
