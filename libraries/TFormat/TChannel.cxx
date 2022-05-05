@@ -1399,7 +1399,8 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName, bool
 void TChannel::SetDigitizerType(TPriorityValue<std::string> tmp)
 {
 	fDigitizerTypeString = tmp;
-	fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType, fTimeStampUnit);
+	if(fMnemonic.Value() != nullptr) fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType, fTimeStampUnit);
+	else std::cerr<<__PRETTY_FUNCTION__<<": mnemonic not set, can't set digitizer type and timestamp unit from "<<fDigitizerTypeString<<std::endl;
 }
 
 double TChannel::GetTime(Long64_t timestamp, Float_t cfd, double energy) const

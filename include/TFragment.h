@@ -43,7 +43,7 @@ public:
    void SetModuleType(UShort_t value) { fModuleType = value; }
    void SetDeadTime(UShort_t value) { fDeadTime = value; }
    void SetDetectorType(UShort_t value) { fDetectorType = value; }
-   void                          SetEntryNumber() { fEntryNumber = fNumberOfFragments++; }
+   void SetEntryNumber() { fEntryNumber = fNumberOfFragments++; }
    void SetDaqId(Int_t value) { fDaqId = value; }
    void SetFragmentId(Int_t value) { fFragmentId = value; }
    void SetDaqTimeStamp(time_t value) { fDaqTimeStamp = value; }
