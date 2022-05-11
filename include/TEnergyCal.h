@@ -30,6 +30,9 @@ public:
 	Double_t GetParameter(size_t parameter) const override;
 	void WriteToChannel() const override;
 
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,24,0)
+	using TGraph::AddPoint;
+#endif
 	void AddPoint(Double_t measured, Double_t accepted, Double_t measuredUncertainty = 0.0,
 			Double_t acceptedUncertainty = 0.0);
 	using TGraphErrors::SetPoint;

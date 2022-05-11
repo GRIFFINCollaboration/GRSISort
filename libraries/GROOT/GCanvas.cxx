@@ -130,14 +130,9 @@ void GCanvas::GCanvasInit()
    // default gui's (canvas,browser,etc).
    // fStatsDisplayed = true;
    fMarkerMode     = true;
-   control_key     = false;
    fGuiEnabled     = false;
    fBackgroundMode = EBackgroundSubtraction::kNoBackground;
 	fCutName = new char[256];
-   // if(gVirtualX->InheritsFrom("TGX11")) {
-   //    printf("\tusing x11-like graphical interface.\n");
-   //}
-   // SetCrosshair(true);
    SetBit(kNotDeleted, false); // root voodoo.
 }
 
@@ -173,7 +168,6 @@ void GCanvas::RemoveMarker(Option_t* opt)
          return;
       }
 		delete fMarkers.back();
-      // printf("Marker %i Removed\n");
       fMarkers.pop_back();
    }
 }
@@ -236,7 +230,6 @@ bool GCanvas::CycleBackgroundSubtraction()
    switch(fBackgroundMode) {
 		case EBackgroundSubtraction::kNoBackground:
 			fBackgroundMode = EBackgroundSubtraction::kRegionBackground;
-			printf("hello??\n");
 			Prompt();
 			color = kBlue;
 			break;
@@ -311,7 +304,7 @@ void GCanvas::HandleInput(int event, Int_t x, Int_t y)
 
 void GCanvas::Draw(Option_t* opt)
 {
-   printf("GCanvas Draw was called.\n");
+   std::cout<<"GCanvas Draw was called."<<std::endl;
    TCanvas::Draw(opt);
    if(FindObject("TFrame") != nullptr) {
       FindObject("TFrame")->SetBit(TBox::kCannotMove);
@@ -462,11 +455,9 @@ bool GCanvas::HandleMouseShiftPress(Int_t, Int_t, Int_t)
 
 bool GCanvas::HandleMouseControlPress(Int_t, Int_t, Int_t)
 {
-   // printf("GetSelected() = 0x%08x\n",GetSelected());
    if(GetSelected() == nullptr) {
       return false;
    }
-   // printf("GetSelected()->GetName() = %s\n",GetSelected()->GetName());
    if(GetSelected()->InheritsFrom(TCutG::Class())) {
       // TODO: Bring this back, once we have brought over more from GRUTinizer
       // if(TRuntimeObjects::Get())
@@ -589,7 +580,7 @@ bool GCanvas::Process1DArrowKeyPress(Event_t*, UInt_t* keysym)
          }
       }
    } break;
-   default: printf("keysym = %i\n", *keysym); break;
+   default: std::cout<<"keysym = "<<*keysym<<std::endl; break;
    }
    return edited;
 }
@@ -603,7 +594,10 @@ bool GCanvas::ProcessNonHistKeyboardPress(Event_t*, UInt_t* keysym)
       GetCanvasImp()->ShowEditor(!GetCanvasImp()->HasEditor());
       edited = true;
       break;
-   case kKey_F9: SetCrosshair(static_cast<Int_t>(!HasCrosshair())); edited = true;
+   case kKey_F9: 
+		SetCrosshair(static_cast<Int_t>(!HasCrosshair()));
+		edited = true;
+		break;
    }
 
    return edited;
@@ -618,16 +612,12 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
    }
 
    switch(*keysym) {
-   case kKey_Control: toggle_control(); break;
-
    case kKey_b: edited = SetBackgroundMarkers(); break;
 
    case kKey_B: edited = CycleBackgroundSubtraction(); break;
 
    case kKey_d: {
-      printf("i am here.\n");
       new GPopup(gClient->GetDefaultRoot(), gClient->GetDefaultRoot(), 500, 200);
-
    } break;
 
    case kKey_e:
@@ -680,7 +670,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
       break;
    case kKey_f:
       if(!hists.empty() && GetNMarkers() > 1) {
-         printf("x low = %.1f\t\txhigh = %.1f\n",fMarkers.at(fMarkers.size()-2)->GetLocalX(),fMarkers.back()->GetLocalX());
+         std::cout<<"x low = "<<fMarkers.at(fMarkers.size()-2)->GetLocalX()<<"\t\txhigh = "<<fMarkers.back()->GetLocalX()<<std::endl;
          if(PhotoPeakFit(hists.back(), fMarkers.at(fMarkers.size() - 2)->GetLocalX(), fMarkers.back()->GetLocalX()) != nullptr) {
             edited = true;
          }
@@ -689,8 +679,8 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
 
    case kKey_F:
       if(!hists.empty() && GetNMarkers() > 1) {
-         printf("x low = %.1f\t\txhigh = %.1f\n",fMarkers.at(fMarkers.size()-2)->GetLocalX(),fMarkers.back()->GetLocalX());
-         if(AltPhotoPeakFit(hists.back(), fMarkers.at(fMarkers.size() - 2)->GetLocalX(), fMarkers.back()->GetLocalX()) !=
+         std::cout<<"x low = "<<fMarkers.at(fMarkers.size()-2)->GetLocalX()<<"\t\txhigh = "<<fMarkers.back()->GetLocalX()<<std::endl;
+         if(AltPhotoPeakFit(hists.back(), fMarkers.at(fMarkers.size() - 2)->GetLocalX(), fMarkers.back()->GetLocalX(), "+") !=
             nullptr) {
             edited = true;
          }
@@ -702,10 +692,6 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
          edited = true;
       }
       break;
-
-   // case kKey_G:
-   //   edited = GausBGFit();
-   //   break;
 
    case kKey_i:
       if(!hists.empty() && GetNMarkers() > 1) {
@@ -729,14 +715,12 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
 
          double sum =
             hists.back()->Integral(hists.back()->GetXaxis()->FindBin(xlow), hists.back()->GetXaxis()->FindBin(xhigh));
-         printf(BLUE "\n\tSum [%.01f : %.01f] = %.01f" RESET_COLOR "\n", xlow, xhigh, sum);
+         std::cout<<BLUE<<std::endl
+			         <<"\tSum ["<<xlow<<" : "<<xhigh<<"] = "<<sum<<RESET_COLOR<<std::endl;
       }
       break;
    case kKey_I:
       if(!hists.empty()) {
-         printf(BLUE);
-
-         printf(RESET_COLOR);
       }
       break;
    case kKey_l:
@@ -901,7 +885,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
             }
          } else {
             for(auto& hist : hists) {
-               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 2)->GetLocalY(),
+               hist->GetYaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 2)->GetLocalY(),
                                               fMarkers.at(fMarkers.size() - 1)->GetLocalY());
             }
          }
@@ -1113,7 +1097,7 @@ bool GCanvas::Process2DArrowKeyPress(Event_t*, UInt_t* keysym)
 
       edited = true;
    } break;
-   default: printf("keysym = %i\n", *keysym); break;
+   default: std::cout<<"keysym = "<<*keysym<<std::endl; break;
    }
    return edited;
 }
@@ -1121,7 +1105,6 @@ bool GCanvas::Process2DArrowKeyPress(Event_t*, UInt_t* keysym)
 bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 {
    bool edited = false;
-   // printf("2d hist key pressed.\n");
    std::vector<TH1*> hists = FindHists(2);
    if(hists.empty()) {
       return edited;
@@ -1131,7 +1114,13 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 		{
 			TString defaultName = "cut";
 			if(gROOT->FindObject("CUTG") == nullptr) {
-				std::cout<<"Something went wrong, can't find 'CUTG', did you initialize the cut beforehand?"<<std::endl;
+				std::cout<<"Something went wrong, can't find 'CUTG', did you initialize the cut beforehand? Or maybe you already pressed c?"<<std::endl
+							<<"Current list of cuts is ";
+				if(fCuts.empty()) std::cout<<"empty";
+				for(auto cut : fCuts) {
+					std::cout<<cut->GetName()<<" ";
+				}
+				std::cout<<std::endl;
 				break;
 			}
 			fCuts.push_back(static_cast<TCutG*>(gROOT->FindObject("CUTG")));
@@ -1265,14 +1254,6 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       RemoveMarker("all");
       edited = true;
       break;
-   case kKey_p:
-      if(hists.empty()) {
-         break;
-      }
-      printf("you hit the p key.\n");
-
-      break;
-
    case kKey_P: {
       GH2D* ghist = nullptr;
       for(auto hist : hists) {
@@ -1299,7 +1280,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
             }
          } else {
             for(auto& hist : hists) {
-               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 2)->GetLocalY(),
+               hist->GetYaxis()->SetRangeUser(fMarkers.at(fMarkers.size() - 2)->GetLocalY(),
                                               fMarkers.at(fMarkers.size() - 1)->GetLocalY());
             }
          }
@@ -1413,10 +1394,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 
       if(ghist != nullptr) {
          ghist->SetSummary(false);
-         // printf("ghist = 0x%08x\n",ghist);
          TH1* phist = ghist->ProjectionY(); //->Draw();
-         // printf("phist = 0x%08x\n",phist);
-         // printf("phist->GetName() = %s\n",phist->GetName());
          if(phist != nullptr) {
             new GCanvas();
             phist->Draw("");

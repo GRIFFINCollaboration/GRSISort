@@ -18,7 +18,8 @@
 #include "TRootEmbeddedCanvas.h"
 #include "RQ_OBJECT.h"
 
-#include "TPeak.h"
+#include "TPeakFitter.h"
+#include "TSinglePeak.h"
 
 #include "TH1.h"
 #include "TH2.h"
@@ -46,7 +47,8 @@ class TBGSubtraction : public TGMainFrame {
       kGateSlider,
       kBGSlider1,
       kBGSlider2,
-      kPeakSlider
+      kPeakSlider,
+		kBinningSlider
    };
    enum EEntries {
       kBGParamEntry,
@@ -62,28 +64,36 @@ class TBGSubtraction : public TGMainFrame {
       kWrite2FileNameEntry,
       kHistogramDescriptionEntry,
       kComboAxisEntry,
+      kComboPeakEntry,
       kBGCheckButton1,
       kBGCheckButton2,
-      kPeakSkewCheckButton,
       kAutoUpdateCheckButton
    };
+	enum EPeaks {
+		kGauss = 0,
+		kRWPeak = 1,
+		kABPeak = 2,
+		kAB3Peak = 3
+	};
 
    //  RQ_OBJECT("TBGSubtraction")
 private:
    TGMainFrame*         fMain{nullptr};
-   TRootEmbeddedCanvas* fProjectionCanvas;
-   TRootEmbeddedCanvas* fGateCanvas;
-   TH2*                 fMatrix;
-   TH1*                 fProjection;
-   TH1*                 fGateHist;
-   TH1*                 fBGHist1;
-   TH1*                 fBGHist2;
-   TH1*                 fSubtractedHist;
-   TGDoubleHSlider*     fGateSlider;
-   TGDoubleHSlider*     fBGSlider1;
-   TGDoubleHSlider*     fBGSlider2;
-   TGTripleHSlider*     fPeakSlider;
-   TGNumberEntry*       fBGParamEntry;
+   TRootEmbeddedCanvas* fProjectionCanvas{nullptr};
+   TRootEmbeddedCanvas* fGateCanvas{nullptr};
+   TH2*                 fMatrix{nullptr};
+   TH1*                 fProjection{nullptr};
+   TH1*                 fGateHist{nullptr};
+   TH1*                 fBGHist1{nullptr};
+   TH1*                 fBGHist2{nullptr};
+   TH1*                 fSubtractedHist{nullptr};
+   TH1*                 fSubtractedBinHist{nullptr};
+   TGDoubleHSlider*     fGateSlider{nullptr};
+   TGDoubleHSlider*     fBGSlider1{nullptr};
+   TGDoubleHSlider*     fBGSlider2{nullptr};
+   TGTripleHSlider*     fPeakSlider{nullptr};
+	TGHSlider*				fBinningSlider{nullptr};
+   TGNumberEntry*       fBGParamEntry{nullptr};
    TGNumberEntry*       fBGEntryLow1{nullptr};
    TGNumberEntry*       fBGEntryHigh1{nullptr};
    TGNumberEntry*       fBGEntryLow2{nullptr};
@@ -91,19 +101,18 @@ private:
    TGNumberEntry*       fGateEntryLow{nullptr};
    TGNumberEntry*       fGateEntryHigh{nullptr};
    TGLabel*             fBGParamLabel{nullptr};
-   TGCheckButton*       fBGCheckButton1;
-   TGCheckButton*       fBGCheckButton2;
-   TGCheckButton*       fPeakSkewCheckButton;
-   TGCheckButton*       fAutoUpdateCheckButton;
+   TGLabel*             fBinningLabel{nullptr};
+   TGCheckButton*       fBGCheckButton1{nullptr};
+   TGCheckButton*       fBGCheckButton2{nullptr};
+   TGCheckButton*       fAutoUpdateCheckButton{nullptr};
 
-   TGLayoutHints* fBly;
-   TGLayoutHints* fBly1;
+   TGLayoutHints* fBly{nullptr};
+   TGLayoutHints* fBly1{nullptr};
    TGLayoutHints* fLayoutCanvases{nullptr};
    TGLayoutHints* fLayoutParam{nullptr};
 
    TGTextEntry* fWrite2FileName{nullptr};
    TGTextEntry* fHistogramDescription{nullptr};
-   //      TGTextButton         *fDrawCanvasButton;
    TGTextButton* fWrite2FileButton{nullptr};
    TGTextButton* fPeakFitButton{nullptr};
 
@@ -111,9 +120,10 @@ private:
    TGStatusBar* fProjectionStatus{nullptr};
 
    // Frames
-   TGVerticalFrame*   fGateFrame;
-   TGVerticalFrame*   fProjectionFrame;
+   TGVerticalFrame*   fGateFrame{nullptr};
+   TGVerticalFrame*   fProjectionFrame{nullptr};
    TGHorizontalFrame* fPeakFitFrame{nullptr};
+   TGHorizontalFrame* fBinningFrame{nullptr};
    TGHorizontalFrame* fBGParamFrame{nullptr};
    TGHorizontalFrame* fGateEntryFrame{nullptr};
    TGHorizontalFrame* fBGEntryFrame1{nullptr};
@@ -122,36 +132,42 @@ private:
    TGHorizontalFrame* fButtonFrame{nullptr};
 
    // Combo box
-   TGComboBox* fAxisCombo;
+   TGComboBox* fAxisCombo{nullptr};
+   TGComboBox* fPeakCombo{nullptr};
 
    // Markers
-   GMarker* fLowGateMarker;
-   GMarker* fHighGateMarker;
-   GMarker* fLowBGMarker1;
-   GMarker* fHighBGMarker1;
-   GMarker* fLowBGMarker2;
-   GMarker* fHighBGMarker2;
-   GMarker* fLowPeakMarker;
-   GMarker* fHighPeakMarker;
-   GMarker* fPeakMarker;
+   GMarker* fLowGateMarker{nullptr};
+   GMarker* fHighGateMarker{nullptr};
+   GMarker* fLowBGMarker1{nullptr};
+   GMarker* fHighBGMarker1{nullptr};
+   GMarker* fLowBGMarker2{nullptr};
+   GMarker* fHighBGMarker2{nullptr};
+   GMarker* fLowPeakMarker{nullptr};
+   GMarker* fHighPeakMarker{nullptr};
+   GMarker* fPeakMarker{nullptr};
 
-   TFile* fCurrentFile;
+   TFile* fCurrentFile{nullptr};
 
    Int_t fGateAxis;
 
    Bool_t fForceUpdate;
-   Double_t fPeakLowLimit;
-   Double_t fPeakHighLimit;
-   Double_t fPeakLowValue;
-   Double_t fPeakHighValue;
-   Double_t fPeakValue;
+   Double_t fPeakLowLimit; ///< lower limit for peak slider range
+   Double_t fPeakHighLimit; ///< upper limit for peak slider range
+   Double_t fPeakLowValue; ///< low range for fit
+   Double_t fPeakHighValue; ///< high range for fit
+   Double_t fPeakValue; ///< centroid for fit
 
-   TPeak* fPeakFit;
+   TSinglePeak* fPeak{nullptr}; ///< the peak to be fit (will be a class that inherits from TSinglePeak)
+	TPeakFitter* fPeakFitter{nullptr}; ///< the peak fitter that fPeak is added to
+	Int_t fPeakId; ///< the current ID of the peak
+
+	Int_t fMaxBinning{20}; ///< maximum binning possible with binning slider (hard-coded, for now?)
 
 public:
-   TBGSubtraction(TH2* mat, const char* gate_axis = "x");
+   TBGSubtraction(TH2* mat, const char* gate_axis = "x", int maxBinning = 20);
    ~TBGSubtraction() override;
    void AxisComboSelected();
+   void PeakComboSelected();
    void ClickedBGButton1();
    void ClickedBGButton2();
  //  void ClickedBG2Button();
@@ -163,7 +179,7 @@ public:
    void UpdateProjectionSliders();
    void UpdateBackground();
    void UpdatePeakSliders();
-   void DoProjection();
+   //void DoProjection();
    void DrawOnNewCanvas();
    void DrawAllMarkers();
    void DrawGateMarkers();
@@ -194,9 +210,11 @@ private:
    void UpdateGateSlider();
    void UpdateBGSlider1();
    void UpdateBGSlider2();
+	void UpdateBinningSlider();
+	void RebinProjection();
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBGSubtraction, 6); // Background subtractor GUI
+   ClassDefOverride(TBGSubtraction, 7); // Background subtractor GUI
    /// \endcond
 };
 /*! @} */

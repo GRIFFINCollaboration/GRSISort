@@ -1,16 +1,15 @@
-
-
 #include <sys/stat.h>
 #include <cstdio>
+#include <iostream>
 
-#include <TGButton.h>
-#include <TGListView.h>
+#include "TGButton.h"
+#include "TGListView.h"
 
-#include <GPopup.h>
+#include "GPopup.h"
 
 ClassImp(GPopup)
 
-   GPopup::GPopup(const TGWindow* p, const TGWindow* main, UInt_t w, UInt_t h, UInt_t options)
+GPopup::GPopup(const TGWindow* p, const TGWindow* main, UInt_t w, UInt_t h, UInt_t options)
    : TGTransientFrame(p, main, w, h, options)
 {
    SetCleanup(kDeepCleanup);
@@ -19,11 +18,9 @@ ClassImp(GPopup)
 
    auto* listv = new TGListView(vframe, 500, 200);
    auto* listc = new TGLVContainer(listv->GetViewPort(), 500, 200, kHorizontalFrame, fgWhitePixel);
-   // listc->Associate(this);
    listv->SetContainer(listc);
    listv->GetViewPort()->SetBackgroundColor(fgWhitePixel);
    listv->SetViewMode(kLVList);
-   // listv->SetIncremental(1,19);
 
    vframe->AddFrame(listv, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY));
 
@@ -44,24 +41,14 @@ ClassImp(GPopup)
    Resize(); // resize to default size
    // position relative to the parent's window
    CenterOnParent();
-   // SetWindowName("Dialog");
    MapWindow();
-   // fClient->WaitFor(this);    // otherwise canvas contextmenu does not work
 }
 
 GPopup::~GPopup() = default;
 
-// void GPopup::AddEntry(const char *name) {
-//  std::string sname = name;
-//  if(!sname.length())
-//    return;
-//  TGLVEntry *entry = new TGLVEntry;
-//  entry->SetTitle(name);
-//}
-
 void GPopup::Print(Option_t*) const
 {
-   printf("%s was called.\n", __PRETTY_FUNCTION__);
+   std::cout<<__PRETTY_FUNCTION__<<" was called."<<std::endl;
 }
 
 void GPopup::CloseWindow()

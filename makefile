@@ -7,22 +7,24 @@ PLATFORM:=$(shell uname)
 # EDIT THIS SECTION
 
 INCLUDES   = include users
-CFLAGS     = -g -std=c++14 -O3 -Wall -Wextra -pedantic -Wno-unknown-pragmas -Wno-unused-function -Wshadow
+ifneq (,$(findstring -std=,$(shell root-config --cflags)))
+CFLAGS = -g -O3 -Wall -Wextra -pedantic -Wno-unknown-pragmas -Wno-unused-function -Wshadow
+LINKFLAGS_SUFFIX  = -L/opt/X11/lib -lX11 -lXpm
+else
+CFLAGS = -std=c++11 -g -O3 -Wall -Wextra -pedantic -Wno-unknown-pragmas -Wno-unused-function -Wshadow
+LINKFLAGS_SUFFIX  = -std=c++11 -L/opt/X11/lib -lX11 -lXpm
+endif
 #-Wall -Wextra -pedantic -Wno-unused-parameter
 LINKFLAGS_PREFIX  =
-LINKFLAGS_SUFFIX  = -L/opt/X11/lib -lX11 -lXpm -std=c++14
 SRC_SUFFIX = cxx
 
 # EVERYTHING PAST HERE SHOULD WORK AUTOMATICALLY
 
-MAJOR_ROOT_VERSION:=$(shell root-config --version | cut -d '.' -f1)
-MINOR_ROOT_VERSION:=$(shell root-config --version | cut -d '.' -f2 | cut -d '/' -f1)
 ROOT_PYTHON_VERSION=$(shell root-config --python-version)
 
 MATHMORE_INSTALLED:=$(shell root-config --has-mathmore)
 XML_INSTALLED:=$(shell root-config --has-xml)
 
-CFLAGS += -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} -DMINOR_ROOT_VERSION=${MINOR_ROOT_VERSION}
 ifeq ($(ROOT_PYTHON_VERSION),2.7)
   CFLAGS += -DHAS_CORRECT_PYTHON_VERSION
 endif

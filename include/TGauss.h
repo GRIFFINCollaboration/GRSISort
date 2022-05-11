@@ -37,18 +37,18 @@ public:
    void InitParNames() override;
    void InitializeParameters(TH1* hist) override;
 
+	void Centroid(const Double_t& centroid) override;
+
    Double_t Centroid() const override;
    Double_t CentroidErr() const override;
    Double_t Width() const override { return fTotalFunction->GetParameter("sigma"); }
-
-   void Print(Option_t *opt = "") const override;
 
 protected:
    Double_t PeakFunction(Double_t *dim, Double_t *par) override;
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TGauss, 1);
+   ClassDefOverride(TGauss, 2);
    /// \endcond
 };
 /*! @} */

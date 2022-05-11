@@ -9,7 +9,7 @@ TDetector::TDetector()
    : TObject()
 {
    /// Default constructor.
-#if MAJOR_ROOT_VERSION < 6
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
 }
@@ -17,7 +17,7 @@ TDetector::TDetector()
 TDetector::TDetector(const TDetector& rhs) : TObject()
 {
    /// Default Copy constructor.
-#if MAJOR_ROOT_VERSION < 6
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
    rhs.Copy(*this);
@@ -46,8 +46,18 @@ void TDetector::Copy(TObject& rhs) const
 
 void TDetector::Print(Option_t*) const
 {
-   /// Default print statement for TDetector. Currently does
-   /// nothing
+   /// Default print statement for TDetector.
+	Print(std::cout);
+}
+
+void TDetector::Print(std::ostream& out) const
+{
+	/// Print detector to stream out. Iterates over hits and prints them.
+	std::ostringstream str;
+	for(auto hit : fHits) {
+		hit->Print(str);
+	}
+	out<<str.str();
 }
 
 void TDetector::ClearTransients()

@@ -7,6 +7,7 @@
 
 #include "Globals.h"
 #include "GRootFunctions.h"
+#include "TGRSIFunctions.h"
 #include "GCanvas.h"
 
 /// \cond CLASSIMP
@@ -150,7 +151,7 @@ void GPeak::Copy(TObject& obj) const
 bool GPeak::InitParams(TH1* fithist)
 {
    if(fithist == nullptr) {
-      printf("No histogram is associated yet, no initial guesses made\n");
+      std::cout<<"No histogram is associated yet, no initial guesses made"<<std::endl;
       return false;
    }
    // Makes initial guesses at parameters for the fit. Uses the histogram to
@@ -236,37 +237,55 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
       return false;
    }
    TString options = opt;
+	options.ToLower();
    if(!IsInitialized()) {
       InitParams(fithist);
    }
    TVirtualFitter::SetMaxIterations(100000);
 
-   bool verbose = !options.Contains("Q");
-   bool noprint = options.Contains("no-print");
-   if(noprint) {
-      options.ReplaceAll("no-print", "");
-   }
+   bool quiet = options.Contains("q");
+   bool verbose = options.Contains("v");
+	bool retryFit = options.Contains("retryfit");
+   options.ReplaceAll("retryfit", "");
+	if(!verbose && !quiet) options.Append("q");
 
    if(fithist->GetSumw2()->fN != fithist->GetNbinsX() + 2) {
       fithist->Sumw2();
    }
 
-   TFitResultPtr fitres = fithist->Fit(this, Form("%sLRSM", options.Data()));
+   TFitResultPtr fitres = fithist->Fit(this, Form("%sLRS", options.Data()));
 
-   if(!noprint) printf("chi^2/NDF = %.02f\n", GetChisquare() / static_cast<double>(GetNDF()));
+   if(verbose) std::cout<<"chi^2/NDF = "<<GetChisquare() / static_cast<double>(GetNDF())<<std::endl;
 
    if(!fitres.Get()->IsValid()) {
-      if(verbose) printf(RED "fit has failed, trying refit... " RESET_COLOR);
+      if(!quiet) std::cout<<RED<<"fit has failed, trying refit... "<<RESET_COLOR<<std::endl;
       fithist->GetListOfFunctions()->Last()->Delete();
-      fitres = fithist->Fit(this, Form("%sLRSME", options.Data())); //,Form("%sRSM",options.Data()))
-		if(verbose) {
+      fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
+		if(!quiet) {
 			if(fitres.Get()->IsValid()) {
-				printf(DGREEN " refit passed!" RESET_COLOR "\n");
+				std::cout<<DGREEN<<" refit passed!"<<RESET_COLOR<<std::endl;
 			} else {
-				printf(DRED " refit also failed :( " RESET_COLOR "\n");
+				std::cout<<DRED<<" refit also failed :( "<<RESET_COLOR<<std::endl;
 			}
 		}
    }
+
+   // check parameter errors
+   if(!TGRSIFunctions::CheckParameterErrors(fitres, options.Data())) {
+		if(retryFit) {
+			// fit again with all parameters released
+			if(!quiet) std::cout<<GREEN<<"Re-fitting with released parameters (without any limits):"<<RESET_COLOR<<std::endl;
+			for(int i = 0; i < GetNpar(); ++i) {
+				ReleaseParameter(i);
+			}
+			fitres = fithist->Fit(this, Form("%sLRSM", options.Data()));
+		} else {
+			// re-try using minos instead of minuit
+			if(!quiet) std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
+			fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
+		}
+	}
+	TGRSIFunctions::CheckParameterErrors(fitres, options.Data());
 
    Double_t xlow, xhigh;
    TF1::GetRange(xlow, xhigh);
@@ -280,6 +299,9 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
 
    fBGFit.SetParameters(bgpars);
 
+   fChi2 = GetChisquare();
+   fNdf  = GetNDF();
+
    fArea         = Integral(xlow, xhigh) / fithist->GetBinWidth(1);
    double bgArea = fBGFit.Integral(xlow, xhigh) / fithist->GetBinWidth(1);
    fArea -= bgArea;
@@ -289,10 +311,10 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    }
    fSum = fithist->Integral(fithist->GetXaxis()->FindBin(xlow),
                             fithist->GetXaxis()->FindBin(xhigh)); //* fithist->GetBinWidth(1);
-   if(!noprint) printf("sum between markers: %02f\n", fSum);
+   if(verbose) std::cout<<"sum between markers: "<<fSum<<std::endl;
    fDSum = TMath::Sqrt(fSum);
    fSum -= bgArea;
-   if(!noprint) printf("sum after subtraction: %02f\n", fSum);
+   if(verbose) std::cout<<"sum after subtraction: "<<fSum<<std::endl;
 
    // Make a function that does not include the background
    // Intgrate the background.
@@ -319,12 +341,11 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
 
    delete tmppeak;
 
-   if(verbose) {
-      Print();
-   }
+	// always print the results of the fit even if not verbose
+	if(!quiet) Print();
 
    Copy(*fithist->GetListOfFunctions()->FindObject(GetName()));
-   fithist->GetListOfFunctions()->Add(fBGFit.Clone()); // use to be a clone.
+   fithist->GetListOfFunctions()->Add(fBGFit.Clone());
    fLastFit = this;
 
    SetParent(nullptr);
@@ -351,19 +372,18 @@ void GPeak::Clear(Option_t* opt)
 void GPeak::Print(Option_t* opt) const
 {
    TString options = opt;
-   printf(GREEN);
-   printf("Name: %s \n", GetName());
-   printf("Centroid:  %1f +/- %1f \n", GetParameter("centroid"), GetParError(GetParNumber("centroid")));
-   printf("Area:      %1f +/- %1f \n", fArea, fDArea);
-   printf("Sum:       %1f +/- %1f \n", fSum, fDSum);
-   printf("FWHM:      %1f +/- %1f \n", GetFWHM(), GetFWHMErr());
-   printf("Reso:      %1f%%  \n", GetFWHM() / GetParameter("centroid") * 100.);
-   printf("Chi^2/NDF: %1f\n", fChi2 / fNdf);
+   std::cout<<GREEN;
+   std::cout<<"Name: "<<GetName()<<std::endl;
+   std::cout<<"Centroid:  "<<GetParameter("centroid")<<" +- "<<GetParError(GetParNumber("centroid"))<<std::endl;
+   std::cout<<"Area:      "<<fArea<<" +- "<<fDArea<<std::endl;
+   std::cout<<"Sum:       "<<fSum<<" +- "<<fDSum<<std::endl;
+   std::cout<<"FWHM:      "<<GetFWHM()<<" +- "<<GetFWHMErr()<<std::endl;
+   std::cout<<"Reso:      "<<GetFWHM()/GetParameter("centroid") * 100.<<"%%"<<std::endl;
+   std::cout<<"Chi^2/NDF: "<<fChi2/fNdf<<std::endl;
    if(options.Contains("all")) {
       TF1::Print(opt);
    }
-   printf(RESET_COLOR);
-   printf("\n");
+   std::cout<<RESET_COLOR;
 }
 
 void GPeak::DrawResiduals(TH1* hist) const
@@ -372,7 +392,7 @@ void GPeak::DrawResiduals(TH1* hist) const
       return;
    }
    if(fChi2 < 0.000000001) {
-      printf("No fit performed\n");
+      std::cout<<"No fit performed"<<std::endl;
       return;
    }
    Double_t xlow, xhigh;

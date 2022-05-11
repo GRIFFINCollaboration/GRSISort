@@ -18,7 +18,7 @@ TDetectorHit::TDetectorHit(const int& Address) : TObject()
    Clear();
    fAddress = Address;
 
-#if MAJOR_ROOT_VERSION < 6
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
 }
@@ -32,7 +32,7 @@ TDetectorHit::TDetectorHit(const TDetectorHit& rhs, bool copywave) : TObject(rhs
    }
    ClearTransients();
 
-#if MAJOR_ROOT_VERSION < 6
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
 }
@@ -60,10 +60,10 @@ Double_t TDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
    }
 	TChannel* tmpChan = GetChannel();
 	if(tmpChan == nullptr) {
-		return SetTime(static_cast<Double_t>(((GetTimeStamp()) + gRandom->Uniform()) * GetTimeStampUnit()));
+		return SetTime(static_cast<Double_t>(GetTimeStamp() + gRandom->Uniform()));
 	}
 
-	return SetTime(static_cast<Double_t>(((GetTimeStamp()) + gRandom->Uniform()) * GetTimeStampUnit() - tmpChan->GetTimeOffset()));
+	return SetTime(tmpChan->GetTime(GetTimeStamp(), GetCfd(), GetEnergy()));
 }
 
 Float_t TDetectorHit::GetCharge() const
@@ -147,13 +147,20 @@ void TDetectorHit::Copy(TObject& rhs, bool copywave) const
 void TDetectorHit::Print(Option_t*) const
 {
    /// General print statement for a TDetectorHit.
-   /// Currently prints nothing.
-	printf("==== %s @ 0x%p ====\n", ClassName(), (void*)this);
-	printf("\t%s\n", GetName());
-	printf("\tCharge:    %.2f\n", Charge());
-	printf("\tTime:      %.2f\n", GetTime());
-	std::cout<<"\tTimestamp: "<<GetTimeStamp()<<" in "<<GetTimeStampUnit()<<" ns = "<<GetTimeStampNs()<<"\n";
-	printf("============================\n");
+	Print(std::cout);
+}
+
+void TDetectorHit::Print(std::ostream& out) const
+{
+	/// Print detector hit to stream out.
+	std::ostringstream str;
+	str<<"==== "<<ClassName()<<" @ "<<this<<" ===="<<std::endl;
+	str<<"\t"<<GetName()<<std::endl;
+	str<<"\tCharge:    "<<Charge()<<std::endl;
+	str<<"\tTime:      "<<GetTime()<<std::endl;
+	str<<"\tTimestamp: "<<GetTimeStamp()<<" in "<<GetTimeStampUnit()<<" ns = "<<GetTimeStampNs()<<std::endl;
+	str<<"============================"<<std::endl;
+	out<<str.str();
 }
 
 const char* TDetectorHit::GetName() const
@@ -218,7 +225,7 @@ Long64_t TDetectorHit::GetTimeStampNs(Option_t*) const
 {
 	TChannel* tmpChan = GetChannel();
 	if(tmpChan == nullptr) {
-		return fTimeStamp * GetTimeStampUnit();
+		return fTimeStamp; // GetTimeStampUnit returns 1 of there is no channel
 	}
 	return fTimeStamp * GetTimeStampUnit() - tmpChan->GetTimeOffset();
 }

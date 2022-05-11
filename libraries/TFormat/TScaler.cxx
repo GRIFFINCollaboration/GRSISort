@@ -41,11 +41,11 @@ void TScalerData::Clear(Option_t*)
 
 void TScalerData::Print(Option_t*) const
 {
-   printf("time: %16lld, address: 0x%04x", GetTimeStamp(), fAddress);
+   std::cout<<"time: "<<std::setw(16)<<GetTimeStamp()<<", address: "<<hex(fAddress,4);
    for(size_t i = 0; i < fScaler.size(); ++i) {
-      printf("\t Scaler[%lu]: 0x%07x", i, fScaler[i]);
+      std::cout<<"\t Scaler["<<i<<"]: "<<hex(fScaler[i],7);
    }
-   printf("\n");
+   std::cout<<std::endl;
 }
 
 TScaler::TScaler(bool loadIntoMap)
@@ -122,7 +122,7 @@ std::vector<UInt_t> TScaler::GetScaler(UInt_t address, ULong64_t time) const
    /// If the time is after the last entry, we return the last entry, otherwise we return the following entry (or the
    /// current entry if the time is an exact match).
    if(fTree == nullptr || fEntries == 0) {
-      printf("Empty\n");
+      std::cout<<"Empty"<<std::endl;
       return std::vector<UInt_t>(0);
    }
    if(!fScalerMap.empty()) {
@@ -179,7 +179,7 @@ UInt_t TScaler::GetScalerDifference(UInt_t address, ULong64_t time, size_t index
    /// if this is before the first scaler, we just return the first scaler, otherwise we return the scaler minus the
    /// previous scaler.
    if(fTree == nullptr || fEntries == 0) {
-      printf("Empty\n");
+      std::cout<<"Empty"<<std::endl;
       return 0;
    }
    if(!fScalerMap.empty()) {
@@ -268,7 +268,7 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t* option)
    /// Draw scaler differences (i.e. current scaler minus last scaler) vs. time in cycle.
    /// Passing "redraw" as option forces re-drawing of the histogram (e.g. for a different index).
    if(fTree == nullptr || fEntries == 0) {
-      printf("Empty\n");
+      std::cout<<"Empty"<<std::endl;
       return nullptr;
    }
 
@@ -293,7 +293,6 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t* option)
       // we only need to create a new histogram if this is the first time drawing it, if we're just re-drawing we can
       // re-use the existing histogram
       if(fHist[address] == nullptr) {
-         // printf("failed to find histogram for address 0x%04x\n",address);
          int nofBins = fPPG->GetCycleLength() / GetTimePeriod(address);
          fHist[address] =
             new TH1D(Form("TScalerHist_%04x", address),
@@ -339,7 +338,7 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
    /// The "single" options creates spectra for all single addresses in the given range (instead of one accumulative
    /// spectrum).
    if(fTree == nullptr || fEntries == 0) {
-      printf("Empty\n");
+      std::cout<<"Empty"<<std::endl;
       return nullptr;
    }
 
@@ -365,7 +364,6 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
          fHistRange[std::make_pair(lowAddress, highAddress)] = nullptr;
       }
       if(fHistRange[std::make_pair(lowAddress, highAddress)] == nullptr || draw_index >= 0) {
-         // printf("failed to find histogram for address range 0x%04x - 0x%04x\n",lowAddress,highAddress);
          int nofBins =
             fPPG->GetCycleLength() / GetTimePeriod(lowAddress); // the time period should be the same for all channels
          fHistRange[std::make_pair(lowAddress, highAddress)] =
@@ -414,7 +412,6 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
    for(UInt_t address = lowAddress; address <= highAddress; ++address) {
       // if the address doesn't exist in the histogram map, create a new histogram
       if(fHist.find(address) == fHist.end()) {
-         // printf("failed to find histogram for address 0x%04x\n",address);
          int nofBins = fPPG->GetCycleLength() / GetTimePeriod(address);
          fHist[address] =
             new TH1D(Form("TScalerHist_%04x", address),
@@ -467,7 +464,7 @@ TH1D* TScaler::DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime,
 {
    /// Draw scaler differences (i.e. current scaler minus last scaler) vs. time.
    if(fTree == nullptr || fEntries == 0) {
-      printf("Empty\n");
+      std::cout<<"Empty"<<std::endl;
       return nullptr;
    }
 
@@ -538,13 +535,13 @@ ULong64_t TScaler::GetTimePeriod(UInt_t address)
 
 void TScaler::ListHistograms()
 {
-   printf("single address histograms:\n");
+   std::cout<<"single address histograms:"<<std::endl;
    for(auto& it : fHist) {
-      printf("\t0x%04x: %s, %s\n", it.first, it.second->GetName(), it.second->GetTitle());
+      std::cout<<"\t"<<hex(it.first,4)<<": "<<it.second->GetName()<<", "<<it.second->GetTitle()<<std::endl;
    }
 
-   printf("range histograms:\n");
+   std::cout<<"range histograms:"<<std::endl;
    for(auto& it : fHistRange) {
-      printf("\t0x%04x, %d: %s, %s\n", it.first.first, it.first.second, it.second->GetName(), it.second->GetTitle());
+      std::cout<<"\t"<<hex(it.first.first,4)<<", "<<it.first.second<<": "<<it.second->GetName()<<", "<<it.second->GetTitle()<<std::endl;
    }
 }

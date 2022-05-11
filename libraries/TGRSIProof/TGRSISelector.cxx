@@ -27,6 +27,7 @@
 #include "TGRSISelector.h"
 #include "GValue.h"
 #include "TParserLibrary.h"
+#include "TBufferFile.h"
 
 #include "TSystem.h"
 #include "TH2.h"
@@ -77,7 +78,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
 		TGRSIOptions::Get()->ParserLibrary(library);
 		if(!library.empty()) {
 			// this might throw a runtime exception, but we don't want to catch it here as we need the library for things to work properly!
-			TParserLibrary::Get()->Load();
+			//TParserLibrary::Get()->Load();
 		} else {
 			std::cout<<"no parser library!"<<std::endl;
 			TGRSIOptions::Get()->Print();
@@ -162,6 +163,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
 	}
 
 	CreateHistograms();
+	CheckSizes("use");
 }
 
 Bool_t TGRSISelector::Process(Long64_t entry)
@@ -193,6 +195,7 @@ Bool_t TGRSISelector::Process(Long64_t entry)
 	}
 
 	fChain->GetEntry(entry);
+	fEntry = entry;
 	try {
 		FillHistograms();
 	} catch(TGRSIMapException<std::string>& e) {
@@ -209,7 +212,9 @@ void TGRSISelector::SlaveTerminate()
 	/// have been processed. When running with PROOF SlaveTerminate() is called
 	/// on each slave server.
 
+	// check size of each object in the output list
 	EndOfSort();
+	CheckSizes("send to server");
 	fOutput->Add(new TChannel(TChannel::GetChannelMap()->begin()->second));
 }
 
@@ -218,6 +223,9 @@ void TGRSISelector::Terminate()
 	/// The Terminate() function is the last function to be called during
 	/// a query. It always runs on the client, it can be used to present
 	/// the results graphically or save the results to file.
+
+	CheckSizes("write");
+
 	TGRSIOptions* options = TGRSIOptions::Get();
 	if(fRunInfo == nullptr) {
 		fRunInfo = TRunInfo::Get();
@@ -228,31 +236,25 @@ void TGRSISelector::Terminate()
 	Int_t subRunNumber = fRunInfo->SubRunNumber();
 
 	TFile* outputFile;
+	std::string outputFileName;
 	if(runNumber != 0 && subRunNumber != -1) {
 		// both run and subrun number set => single file processed
-		std::cout<<"Using run "<<runNumber<<" subrun "<<subRunNumber<<std::endl;
-		outputFile = new TFile(Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runNumber, subRunNumber), "RECREATE");
-		if(!outputFile->IsOpen()) {
-			std::cerr<<"Failed to open output file "<<Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runNumber, subRunNumber)<<"!"<<std::endl<<std::endl;
-			return;
-		}
+		outputFileName = Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runNumber, subRunNumber);
 	} else if(runNumber != 0) {
 		// multiple subruns of a single run
-		std::cout<<"Using run "<<runNumber<<" subruns "<<fRunInfo->FirstSubRunNumber()<<" - "<<fRunInfo->LastSubRunNumber()<<std::endl;
-		outputFile = new TFile(Form("%s%05d_%03d-%03d.root", fOutputPrefix.c_str(), runNumber, fRunInfo->FirstSubRunNumber(), fRunInfo->LastSubRunNumber()), "RECREATE");
-		if(!outputFile->IsOpen()) {
-			std::cerr<<"Failed to open output file "<<Form("%s%05d_%03d-%03d.root", fOutputPrefix.c_str(), runNumber, fRunInfo->FirstSubRunNumber(), fRunInfo->LastSubRunNumber())<<"!"<<std::endl<<std::endl;
-			return;
-		}
+		outputFileName = Form("%s%05d_%03d-%03d.root", fOutputPrefix.c_str(), runNumber, fRunInfo->FirstSubRunNumber(), fRunInfo->LastSubRunNumber());
 	} else {
 		// multiple runs
-		std::cout<<"Using runs "<<fRunInfo->FirstRunNumber()<<" - "<<fRunInfo->LastRunNumber()<<std::endl;
-		outputFile = new TFile(Form("%s%05d-%05d.root", fOutputPrefix.c_str(), fRunInfo->FirstRunNumber(), fRunInfo->LastRunNumber()), "RECREATE");
-		if(!outputFile->IsOpen()) {
-			std::cerr<<"Failed to open output file "<<Form("%s%05d-%05d.root", fOutputPrefix.c_str(), fRunInfo->FirstRunNumber(), fRunInfo->LastRunNumber())<<"!"<<std::endl<<std::endl;
-			return;
-		}
+		outputFileName = Form("%s%05d-%05d.root", fOutputPrefix.c_str(), fRunInfo->FirstRunNumber(), fRunInfo->LastRunNumber());
 	}
+	outputFile = new TFile(outputFileName.c_str(), "recreate");
+	if(!outputFile->IsOpen()) {
+		std::cerr<<"Failed to open output file "<<outputFileName<<"!"<<std::endl<<std::endl;
+		return;
+	}
+	outputFileName = outputFileName.substr(0, outputFileName.find_last_of('.'))+".log";
+	options->LogFile(outputFileName.c_str());
+	std::cout<<"Opened '"<<outputFile->GetName()<<"' for writing:"<<std::endl;
 
 	outputFile->cd();
 	fOutput->Write();
@@ -265,6 +267,7 @@ void TGRSISelector::Terminate()
 	options->AnalysisOptions()->WriteToFile(outputFile);
 	TChannel::WriteToRoot();
 	outputFile->Close();
+	std::cout<<"Closed '"<<outputFile->GetName()<<"'"<<std::endl;
 }
 
 void TGRSISelector::Init(TTree* tree)
@@ -293,4 +296,21 @@ Bool_t TGRSISelector::Notify()
 	/// user if needed. The return value is currently not used.
 
 	return kTRUE;
+}
+
+void TGRSISelector::CheckSizes(const char* usage)
+{
+	// check size of each object in the output list
+	for(const auto&& obj : *fOutput) {
+		TBufferFile b(TBuffer::kWrite, 10000);
+		obj->IsA()->WriteBuffer(b, obj);
+		if(b.Length() > SIZE_LIMIT) {
+			std::cout<<DRED<<obj->ClassName()<<" '"<<obj->GetName()<<"' too large to "<<usage<<": "<<b.Length()<<" bytes = "<<b.Length()/1024./1024./1024.<<" GB, removing it!"<<RESET_COLOR<<std::endl;
+			// we only remove it from the output list, not deleting the object itself
+			// this way the selector will still work and fill that histogram, it just won't get written to file
+			fOutput->Remove(obj);
+		//} else {
+			//std::cout<<GREEN<<obj->ClassName()<<" '"<<obj->GetName()<<"' okay to "<<usage<<": "<<b.Length()<<" bytes = "<<b.Length()/1024./1024./1024.<<" GB"<<RESET_COLOR<<std::endl;
+		}
+	}
 }

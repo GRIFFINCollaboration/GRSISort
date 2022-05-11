@@ -40,16 +40,16 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
       fname.append(".txt");
    }
 
-   char        buf[256];
    std::string grsipath = getenv("GRSISYS");
-   sprintf(buf, "%s/libraries/TAnalysis/SRIMData/%s", grsipath.c_str(), fname.c_str());
+	std::ostringstream str;
+	str<<grsipath<<"/libraries/TAnalysis/SRIMData/"<<fname;
    if(printfile) {
-      printf("\nSearching for %s..\n", buf);
+      std::cout<<std::endl<<"Searching for "<<str.str()<<"..."<<std::endl;
    }
 
-   infile.open(buf);
+   infile.open(str.str().c_str());
    if(!infile.good()) {
-      printf("{TSRIM} Warning : Couldn't find the file '%s' ..\n", filename);
+      std::cout<<"{TSRIM} Warning : Couldn't find the file '"<<filename<<"' ..."<<std::endl;
       return;
    }
    std::string line;
@@ -101,7 +101,7 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
 
    if(!dEdX_temp.empty()) {
       if(density_scale == 0.) {
-         printf("WARNING: stopping power remains in original units, unable to find scale factor.\n");
+         std::cout<<"WARNING: stopping power remains in original units, unable to find scale factor."<<std::endl;
          density_scale = 1.;
       }
 
@@ -120,13 +120,13 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
       if(emax == -1.0) {
          emax = dataEmax; // default to highest available energy in data table
       } else if(emax > dataEmax || emax < dataEmin) {
-         printf("\n{TSRIM} WARNING: specified emax is out of range. Setting emax to default value (%.02f)\n", dataEmax);
+         std::cout<<std::endl<<"{TSRIM} WARNING: specified emax is out of range. Setting emax to default value ("<<dataEmax<<")"<<std::endl;
          emax = dataEmax; // default to highest available energy in data table
       }
       if(emin == 0.0) {
          emin = dataEmin; // default to lowest available energy in data table
       } else if(emin < dataEmin || emin > dataEmax) {
-         printf("\n{TSRIM} WARNING: specified emin is out of range. Setting emin to default value (%.02f)\n", dataEmin);
+         std::cout<<std::endl<<"{TSRIM} WARNING: specified emin is out of range. Setting emin to default value ("<<dataEmin<<")"<<std::endl;
          emin = dataEmin; // default to lowest available energy in data table
       }
       if(emax < emin) {
@@ -192,22 +192,19 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
    }
 
    if(printfile) {
-      printf("\n\t%s file read in, %lu entries found.\n", fname.c_str(), dEdX.size());
-      printf("[Energy loss range = %.03f - %.03f keV & total range = %.03f - %.03f um ]\n", Emax, Emin, Xmin, Xmax);
+      std::cout<<std::endl<<"\t"<<fname<<" file read in, "<<dEdX.size()<<" entries found."<<std::endl;
+      std::cout<<"[Energy loss range = "<<Emax<<" - "<<Emin<<" keV & total range = "<<Xmin<<" - "<<Xmax<<" um ]"<<std::endl;
    }
 }
 
 double TSRIM::GetEnergy(double energy, double dist)
 {
-
    double xbegin = sEgetX->Eval(energy);
-   // printf("xbegin = %.02f \t energy = %.02f \t xend = %.02f \t Xmax = %.02f\n",xbegin,energy,xbegin+dist,Xmax);
 
    if(energy > Emax || xbegin + dist < Xmin) {
-      printf("\n {TSRIM} WARNING: data is out of range. Results may be unpredictable.\n" DRED
-             "\t\tenergy = %.03f keV \txbegin = %.02f um\t dist = %.02f um\t xend = %.02f um\n" DYELLOW
-             "\t\tErange = [%.03f , %.03f] keV \t\t Xrange = [0 , %.1f] um\n" RESET_COLOR,
-             energy, xbegin, dist, xbegin + dist, Emin, Emax, Xmax);
+      std::cout<<std::endl<<" {TSRIM} WARNING: data is out of range. Results may be unpredictable."<<std::endl
+		         <<DRED"\t\tenergy = "<<energy<<" keV \txbegin = "<<xbegin<<" um\t dist = "<<dist<<" um\t xend = "<<xbegin + dist<<" um"<<std::endl
+					<<DYELLOW<<"\t\tErange = ["<<Emin<<", "<<Emax<<"] keV \t\t Xrange = [0 , "<<Xmax<<" um"<<RESET_COLOR<<std::endl;
    } else if(xbegin > Xmax || xbegin + dist > Xmax) {
       return 0.0;
    }
@@ -219,7 +216,7 @@ double TSRIM::GetEnergy(double energy, double dist)
 double TSRIM::GetAdjustedEnergy(double energy, double thickness, double stepsize)
 {
    if(fEnergyLoss == nullptr) {
-      printf("energy loss file has not yet been read in.\n");
+      std::cout<<"energy loss file has not yet been read in."<<std::endl;
       return 0.0;
    }
 
@@ -233,7 +230,6 @@ double TSRIM::GetAdjustedEnergy(double energy, double thickness, double stepsize
    if(thickness >= xstep) {
 
       while(xtot < thickness) {
-         //				printf("energy_temp = %.02f\t DEDX = %.02f\n",energy_temp,fEnergyLoss->Eval(energy_temp,0,"S"));
          energy_temp -=
             xstep * sEnergyLoss->Eval(energy_temp); // update energy recursively so that it decreases each step
          xtot += xstep;

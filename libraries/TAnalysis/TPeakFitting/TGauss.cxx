@@ -8,12 +8,17 @@ TGauss::TGauss() : TSinglePeak() { }
 
 TGauss::TGauss(Double_t centroid, Double_t relativeLimit) : TSinglePeak()
 {
-   fTotalFunction = new TF1("gauss_total",this,&TGauss::TotalFunction,0,1,3,"TGauss","TotalFunction");
-   InitParNames();
-   fTotalFunction->SetParameter(1,centroid);
+	Centroid(centroid);
 	if(relativeLimit >= 0) {
 		fTotalFunction->SetParLimits(1, (1.-relativeLimit)*centroid, (1.+relativeLimit)*centroid);
 	}
+}
+
+void TGauss::Centroid(const Double_t& centroid)
+{
+   fTotalFunction = new TF1("gauss_total",this,&TGauss::TotalFunction,0,1,3,"TGauss","TotalFunction");
+   InitParNames();
+   fTotalFunction->SetParameter(1, centroid);
    SetListOfBGPar(std::vector<bool> {0,0,0,0,0,1});
    fTotalFunction->SetLineColor(kMagenta);
 }
@@ -65,10 +70,3 @@ Double_t TGauss::PeakFunction(Double_t *dim, Double_t *par)
    
 	return gauss;
 }
-
-void TGauss::Print(Option_t * opt) const
-{
-   std::cout << "gaussian peak:" << std::endl;
-   TSinglePeak::Print(opt);
-}
-

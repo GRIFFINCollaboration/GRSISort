@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <fcntl.h>
 #include <unistd.h>
-#include<unordered_map>
+#include <unordered_map>
 
 #include <vector>
 #include <sstream>
@@ -17,6 +17,7 @@
 #include "TKey.h"
 
 #include "StoppableThread.h"
+#include "Globals.h"
 
 /*
  * Author:  P.C. Bender, <pcbend@gmail.com>
@@ -357,7 +358,9 @@ TChannel* TChannel::GetChannel(unsigned int temp_address, bool warn)
 		if(fMissingChannelMap->find(temp_address) == fMissingChannelMap->end()) {
 			// if there are threads running we're not in interactive mode, so we print a warning about sorting
 			if(StoppableThread::AnyThreadRunning()) {
-				std::cerr<<RED<<"Failed to find channel for address 0x"<<std::hex<<temp_address<<std::dec<<", this channel won't get sorted properly!"<<RESET_COLOR<<std::endl;
+				std::ostringstream str;
+				str<<RED<<"Failed to find channel for address "<<hex(temp_address,4)<<", this channel won't get sorted properly!"<<RESET_COLOR<<std::endl;
+				std::cerr<<str.str();
 			}
 			fMissingChannelMap->insert(std::pair<unsigned int, int>(temp_address, 0));
 		}
@@ -426,16 +429,16 @@ std::vector<TChannel*> TChannel::FindChannelByRegEx(const char* ccName)
 
 void TChannel::SetAddress(unsigned int tmpadd)
 {
-	/// Sets the address of a TChannel and also overwrites that channel if it is in the channel map
-	for(auto iter1 : *fChannelMap) {
-		if(iter1.second == this) {
-			std::cout<<"Channel at address: 0x"<<std::hex<<fAddress
-				<<" already exists. Please use AddChannel() or OverWriteChannel() to change this TChannel"
-				<<std::dec<<std::endl;
-			break;
-		}
-	}
-	fAddress = tmpadd;
+   /// Sets the address of a TChannel and also overwrites that channel if it is in the channel map
+   for(auto iter1 : *fChannelMap) {
+      if(iter1.second == this) {
+         std::cout<<"Channel at address: "<<hex(fAddress,4)
+                  <<" already exists. Please use AddChannel() or OverWriteChannel() to change this TChannel"
+                  <<std::dec<<std::endl;
+         break;
+      }
+   }
+   fAddress = tmpadd;
 }
 
 void TChannel::DestroyENGCal()
@@ -493,7 +496,7 @@ void TChannel::DestroyCalibrations()
 	DestroyCTCal();
 }
 
-double TChannel::CalibrateENG(int charge, int temp_int)
+double TChannel::CalibrateENG(int charge, int temp_int) const
 {
 	/// Returns the calibrated energy of the channel when a charge is passed to it.
 	/// This is done by first adding a random number between 0 and 1 to the charge
@@ -509,28 +512,28 @@ double TChannel::CalibrateENG(int charge, int temp_int)
 	return CalibrateENG(static_cast<double>(charge) + gRandom->Uniform(), temp_int);
 }
 
-double TChannel::CalibrateENG(double charge, int temp_int)
+double TChannel::CalibrateENG(double charge, int temp_int) const
 {
-	/// Returns the calibrated energy of the channel when a charge is passed to it.
-	/// This is divided by the integration parameter. The
-	/// polynomial energy calibration formula is then applied to get the calibrated
-	/// energy.
-	if(charge == 0) {
-		return 0.0000;
-	}
+   /// Returns the calibrated energy of the channel when a charge is passed to it.
+   /// This is divided by the integration parameter. The
+   /// polynomial energy calibration formula is then applied to get the calibrated
+   /// energy.
+   if(charge == 0) {
+      return 0.0000;
+   }
 
-	if(temp_int == 0) {
-		if(fIntegration.Value() != 0) {
+   if(temp_int == 0) {
+      if(fIntegration.Value() != 0) {
 			temp_int = fIntegration.Value();
-		} else {
-			temp_int = 1;
-		}
-	}
+      } else {
+         temp_int = 1;
+      }
+   }
 
-	return CalibrateENG((charge) / static_cast<double>(temp_int));
+   return CalibrateENG((charge) / static_cast<double>(temp_int));
 }
 
-double TChannel::CalibrateENG(double charge)
+double TChannel::CalibrateENG(double charge) const
 {
 	/// Returns the calibrated energy. The polynomial energy calibration formula is
 	/// applied to get the calibrated energy. This function does not use the
@@ -582,13 +585,13 @@ double TChannel::CalibrateENG(double charge)
 	return cal_chg;
 }
 
-double TChannel::CalibrateCFD(int cfd)
+double TChannel::CalibrateCFD(int cfd) const
 {
 	/// Calibrates the CFD properly.
 	return CalibrateCFD(static_cast<double>(cfd) + gRandom->Uniform());
 }
 
-double TChannel::CalibrateCFD(double cfd)
+double TChannel::CalibrateCFD(double cfd) const
 {
 	/// Returns the calibrated CFD. The polynomial CFD calibration formula is
 	/// applied to get the calibrated CFD.
@@ -607,13 +610,13 @@ double TChannel::CalibrateCFD(double cfd)
 	return cal_cfd;
 }
 
-double TChannel::CalibrateLED(int led)
+double TChannel::CalibrateLED(int led) const
 {
 	/// Calibrates the LED
 	return CalibrateLED(static_cast<double>(led) + gRandom->Uniform());
 }
 
-double TChannel::CalibrateLED(double led)
+double TChannel::CalibrateLED(double led) const
 {
 	/// Returns the calibrated LED. The polynomial LED calibration formula is
 	/// applied to get the calibrated LED.
@@ -628,7 +631,7 @@ double TChannel::CalibrateLED(double led)
 	return cal_led;
 }
 
-double TChannel::CalibrateTIME(int chg)
+double TChannel::CalibrateTIME(int chg) const
 {
 	/// Calibrates the time spectrum
 	if(fTIMECoefficients.size() != 3 || (chg < 1)) {
@@ -637,7 +640,7 @@ double TChannel::CalibrateTIME(int chg)
 	return CalibrateTIME((CalibrateENG(chg)));
 }
 
-double TChannel::CalibrateTIME(double energy)
+double TChannel::CalibrateTIME(double energy) const
 {
 	/// uses the values stored in TIMECOefficients to calculate a
 	/// "walk correction" factor.  This function returns the correction
@@ -653,7 +656,7 @@ double TChannel::CalibrateTIME(double energy)
 	return timeCorrection;
 }
 
-double TChannel::CalibrateEFF(double)
+double TChannel::CalibrateEFF(double) const
 {
 	/// This needs to be added
 	return 1.0;
@@ -703,18 +706,17 @@ void TChannel::SetDigitizerType(const std::string& mnemonic, const char* tmpstr,
 
 void TChannel::PrintCTCoeffs(Option_t*) const
 {
-	/// Prints out the current TChannel.
-	std::cout<<GetName()<<"\t{\n"; //,channelname.c_str();
-	std::cout<<"Name:      "<<GetName()<<std::endl;
-	std::cout<<"Number:    "<<fNumber<<std::endl;
-	std::cout<<std::setfill('0');
-	std::cout<<"Address:   0x"<<std::hex<<std::setw(8)<<fAddress<<std::dec<<std::endl;
-	for(double fCTCoefficient : fCTCoefficients) {
-		std::cout<<fCTCoefficient<<"\t";
-	}
-	std::cout<<std::endl;
-	std::cout<<"}\n";
-	std::cout<<"//====================================//\n";
+   /// Prints out the current TChannel.
+   std::cout<<GetName()<<"\t{\n"; //,channelname.c_str();
+   std::cout<<"Name:      "<<GetName()<<std::endl;
+   std::cout<<"Number:    "<<fNumber<<std::endl;
+   std::cout<<"Address:   "<<hex(fAddress,8)<<std::endl;
+   for(double fCTCoefficient : fCTCoefficients) {
+      std::cout<<fCTCoefficient<<"\t";
+   }
+   std::cout<<std::endl;
+   std::cout<<"}\n";
+   std::cout<<"//====================================//\n";
 }
 
 void TChannel::Print(Option_t*) const
@@ -753,18 +755,16 @@ std::string TChannel::PrintToString(Option_t*) const
 	std::ostringstream str;
 
 	str<<GetName()<<"\t{"<<std::endl; //,channelname.c_str();
-	str<<"Type:      ";
-	if(GetClassType() != nullptr) {
-		str<<GetClassType()->GetName()<<std::endl;
-	} else {
-		str<<"None"<<std::endl;
-	}
+   str<<"Type:      ";
+   if(GetClassType() != nullptr) {
+      str<<GetClassType()->GetName()<<std::endl;
+   } else {
+      str<<"None"<<std::endl;
+   }
 
-	str<<"Name:      "<<GetName()<<std::endl;
-	str<<"Number:    "<<fNumber<<std::endl;
-	str<<std::setfill('0');
-	str<<"Address:   0x"<<std::hex<<std::setw(8)<<fAddress<<std::dec<<std::endl;
-	str<<std::setfill(' ');
+   str<<"Name:      "<<GetName()<<std::endl;
+   str<<"Number:    "<<fNumber<<std::endl;
+   str<<"Address:   "<<hex(fAddress,4)<<std::dec<<std::endl;
 	if(!fDigitizerTypeString.empty()) {
 		str<<"Digitizer: "<<fDigitizerTypeString<<std::endl;
 	}
@@ -862,13 +862,8 @@ std::string TChannel::PrintToString(Option_t*) const
 	return buffer;
 }
 
-void TChannel::WriteCalFile(const std::string& outfilename)
+std::vector<TChannel*> TChannel::SortedChannels()
 {
-	/// prints the context of addresschannelmap formatted correctly to stdout if
-	/// no file name is passed to the function.  If a file name is passed to the function
-	/// prints the context of addresschannelmap formatted correctly to a file with the given
-	/// name.  This will earse and rewrite the file if the file already exisits!
-
 	std::vector<TChannel*> chanVec;
 	for(auto iter : *fChannelMap) {
 		if(iter.second != nullptr) {
@@ -878,6 +873,18 @@ void TChannel::WriteCalFile(const std::string& outfilename)
 
 	//This orders channels nicely
 	std::sort(chanVec.begin(), chanVec.end(), TChannel::CompareChannels);
+
+	return chanVec;
+}
+
+void TChannel::WriteCalFile(const std::string& outfilename)
+{
+	/// prints the context of addresschannelmap formatted correctly to stdout if
+	/// no file name is passed to the function.  If a file name is passed to the function
+	/// prints the context of addresschannelmap formatted correctly to a file with the given
+	/// name.  This will earse and rewrite the file if the file already exisits!
+
+	std::vector<TChannel*> chanVec = SortedChannels();
 
 	if(outfilename.length() > 0) {
 		std::ofstream calout;
@@ -898,15 +905,7 @@ void TChannel::WriteCalFile(const std::string& outfilename)
 
 void TChannel::WriteCTCorrections(const std::string& outfilename)
 {
-	std::vector<TChannel*> chanVec;
-	for(auto iter : *fChannelMap) {
-		if(iter.second != nullptr) {
-			chanVec.push_back(iter.second);
-		}
-	}
-
-	//This ordered channels nicely
-	std::sort(chanVec.begin(), chanVec.end(), TChannel::CompareChannels);
+	std::vector<TChannel*> chanVec = SortedChannels();
 
 	if(outfilename.length() > 0) {
 		std::ofstream calout;
@@ -931,15 +930,7 @@ void TChannel::WriteCalBuffer(Option_t*)
 	/// fFileData.  Can be used to over write info that is there
 	/// or create the buffer if the channels originated from the odb.
 
-	std::vector<TChannel*> chanVec;
-	for(auto iter : *fChannelMap) {
-		if(iter.second != nullptr) {
-			chanVec.push_back(iter.second);
-		}
-	}
-
-	//This ordered channels nicely
-	std::sort(chanVec.begin(), chanVec.end(), TChannel::CompareChannels);
+	std::vector<TChannel*> chanVec = SortedChannels();
 
 	std::string data;
 
@@ -1008,11 +999,11 @@ Int_t TChannel::ReadCalFile(const char* filename)
 		return -1;
 	}
 
-	printf("Reading from calibration file:" CYAN " %s" RESET_COLOR ".....", filename);
+	std::cout<<"Reading from calibration file: "<<CYAN<<filename<<RESET_COLOR<<".....";
 	std::ifstream infile;
 	infile.open(infilename.c_str());
 	if(!infile.is_open()) {
-		printf(DRED "could not open file." RESET_COLOR "\n");
+		std::cout<<DRED<<"could not open file."<<RESET_COLOR<<std::endl;
 		return -2;
 	}
 	infile.seekg(0, std::ios::end);
@@ -1134,7 +1125,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 					if(tempadd == 0) { // maybe it is in hex...
 						std::stringstream newss;
 						newss<<std::hex<<line;
-						newss >> tempadd;
+						newss>>tempadd;
 					}
 					tempadd = tempadd & 0x00ffffff; // front end number is not included in the odb...
 					channel->SetAddress(tempadd);
@@ -1283,7 +1274,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 		}
 	}
 	if(strcmp(opt, "q") != 0) {
-		printf("parsed %i lines.\n", linenumber);
+		std::cout<<"parsed "<<linenumber<<" lines."<<std::endl;
 	}
 
 	return newchannels;
@@ -1495,7 +1486,7 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName, bool
 		}
 		// get address from keys name
 		std::stringstream str;
-		str<<std::hex<<(key->GetName()+strlen(graphName));
+		str<<hex(key->GetName()+strlen(graphName),4);
 		unsigned int address;
 		str>>address;
 		if(GetChannel(address) != nullptr) {
@@ -1509,4 +1500,31 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName, bool
 			AddChannel(newChannel);
 		}
 	}
+}
+
+void TChannel::SetDigitizerType(TPriorityValue<std::string> tmp)
+{
+	fDigitizerTypeString = tmp;
+	if(fMnemonic.Value() != nullptr) fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType, fTimeStampUnit);
+	else std::cerr<<__PRETTY_FUNCTION__<<": mnemonic not set, can't set digitizer type and timestamp unit from "<<fDigitizerTypeString<<std::endl;
+}
+
+double TChannel::GetTime(Long64_t timestamp, Float_t cfd, double energy) const
+{
+	return fMnemonic.Value()->GetTime(timestamp, cfd, energy, this);
+}
+
+const TMnemonic* TChannel::GetMnemonic() const
+{
+	return fMnemonic.Value();
+}
+
+TClass* TChannel::GetClassType() const
+{
+	return fMnemonic.Value()->GetClassType();
+}
+
+void TChannel::SetClassType(TClass* cl_type)
+{
+	fMnemonic.Value()->SetClassType(cl_type);
 }

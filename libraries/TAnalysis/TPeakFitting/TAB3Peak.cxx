@@ -9,9 +9,14 @@ TAB3Peak::TAB3Peak() : TSinglePeak() {}
 
 TAB3Peak::TAB3Peak(Double_t centroid) : TSinglePeak()
 {
+	Centroid(centroid);
+}
+
+void TAB3Peak::Centroid(const Double_t& centroid)
+{
    fTotalFunction = new TF1("ab_fit",this,&TAB3Peak::TotalFunction,0,1,8,"TAB3Peak","TotalFunction");
    InitParNames();
-   fTotalFunction->SetParameter(1,centroid);
+   fTotalFunction->SetParameter(1, centroid);
    SetListOfBGPar(std::vector<bool> {0,0,0,0,0,0,0,1});
    fTotalFunction->SetLineColor(kMagenta);
 }
@@ -149,12 +154,6 @@ Double_t TAB3Peak::BackgroundFunction(Double_t *dim, Double_t *par)
    Double_t step_func   = TMath::Abs(step) * height / 100.0 * TMath::Erfc((x - c) / (TMath::Sqrt(2.0) * sigma));
    
    return step_func;
-}
-
-void TAB3Peak::Print(Option_t * opt) const
-{
-   std::cout << "Addback-like peak:" << std::endl;
-   TSinglePeak::Print(opt);
 }
 
 void TAB3Peak::DrawComponents(Option_t * opt)

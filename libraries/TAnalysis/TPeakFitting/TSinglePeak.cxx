@@ -1,4 +1,5 @@
 #include "TSinglePeak.h"
+#include "TClass.h"
 
 /// \cond CLASSIMP
 ClassImp(TSinglePeak)
@@ -37,18 +38,22 @@ TF1* TSinglePeak::GetBackgroundFunction(){
    return fBackgroundFunction;
 }
 
-void TSinglePeak::Print(Option_t *) const{
+void TSinglePeak::Print(Option_t *) const
+{
+	std::cout<<IsA()->GetName()<<":"<<std::endl;
+   std::cout<<"Centroid = "<<std::fixed<<Centroid()<<" +/- "<<CentroidErr()<<std::endl;
+   std::cout<<"Area = "<<Area()<<" +/- "<<AreaErr()<<std::endl;
+   std::cout<<std::endl;
+}
 
-   std::cout << "Centroid = " << std::fixed << Centroid() << " +/- " << CentroidErr() << std::endl;
-   std::cout << "Area = " << Area() << " +/- " << AreaErr() << std::endl;
-/*   std::cout << "BG params = ";
-   for(int i = 0; i < 6; ++i){
-      if(IsBackgroundParameter(i)){
-         std::cout << fFitFunction->GetParName(i) << ", ";
-      }
-   }*/
-   std::cout << std::endl;
-
+void TSinglePeak::PrintParameters() const {
+	if(fTotalFunction != nullptr) {
+		for(int i = 0; i < fTotalFunction->GetNpar(); ++i) {
+			std::cout<<i<<"/"<<fTotalFunction->GetParName(i)<<" = "<<fTotalFunction->GetParameter(i)<<" ";
+		}
+	} else {
+		std::cout<<"no total function ";
+	}
 }
 
 Double_t TSinglePeak::TotalFunction(Double_t *dim, Double_t *par){

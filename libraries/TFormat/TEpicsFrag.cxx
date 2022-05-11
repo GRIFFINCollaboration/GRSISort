@@ -52,15 +52,15 @@ void TEpicsFrag::Print(Option_t*) const
    // Prints the TEpicsFrag. This includes Midas information as well the data
    // kep inside of the scaler.
    size_t largest = fData.size();
-   printf("------ EPICS %i Varibles Found ------\n", static_cast<int>(largest));
+   std::cout<<"------ EPICS "<<largest<<" Varibles Found ------"<<std::endl;
 
    char buff[20];
    ctime(&fDaqTimeStamp);
    struct tm* timeInfo = localtime(&fDaqTimeStamp);
    strftime(buff, 20, "%b %d %H:%M:%S", timeInfo);
 
-   printf("  DaqTimeStamp: %s\n", buff);
-   printf("  DaqId:    	  %i\n", fDaqId);
+   std::cout<<"  DaqTimeStamp: "<<buff<<std::endl;
+   std::cout<<"  DaqId:    	 "<<fDaqId<<std::endl;
    for(size_t i = 0; i < largest; i++) {
       std::cout<<std::setw(3)<<i<<":  ";
       std::cout<<std::setw(30)<<fName.at(i)<<" --- ";

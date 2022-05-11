@@ -1444,11 +1444,11 @@ Double_t GHSym::KolmogorovTest(const TH1* h2, Option_t* option) const
    }
    //    debug printout
    if(opt.Contains("D")) {
-      printf(" Kolmo Prob  h1 = %s, sum1=%g\n", h1->GetName(), sum1);
-      printf(" Kolmo Prob  h2 = %s, sum2=%g\n", h2->GetName(), sum2);
-      printf(" Kolmo Probabil = %f, Max Dist = %g\n", prb, dfmax);
+      std::cout<<" Kolmo Prob  h1 = "<<h1->GetName()<<", sum1 = "<<sum1<<std::endl;
+      std::cout<<" Kolmo Prob  h2 = "<<h2->GetName()<<", sum2 = "<<sum2<<std::endl;
+      std::cout<<" Kolmo Probabil = "<<prb<<", Max dist = "<<dfmax<<std::endl;
       if(opt.Contains("N")) {
-         printf(" Kolmo Probabil = %f for shape alone, =%f for normalisation alone\n", prb1, prb2);
+         std::cout<<" Kolmo Probabil = "<<prb1<<" for shape alone, "<<prb2<<" for normalisation alone"<<std::endl;
       }
    }
    // This numerical error condition should never occur:
@@ -1905,7 +1905,6 @@ TProfile* GHSym::Profile(const char* name, Int_t firstbin, Int_t lastbin, Option
 
    // Fill the profile histogram
    // no entries/bin is available so can fill only using bin content as weight
-   Double_t totcont  = 0;
    TArrayD& binSumw2 = *(h1->GetBinSumw2());
 
    // implement filling of projected histogram
@@ -1946,7 +1945,6 @@ TProfile* GHSym::Profile(const char* name, Int_t firstbin, Int_t lastbin, Option
             if(useWeights) {
                binSumw2.fArray[binOut] = tmp + fSumw2.fArray[bin];
             }
-            totcont += cxy;
          }
       }
    }

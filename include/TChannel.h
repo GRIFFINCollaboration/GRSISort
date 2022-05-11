@@ -44,16 +44,19 @@
 #include "Globals.h"
 #include "TPriorityValue.h"
 
+enum class EDigitizer : char;
+class TMnemonic;
+
 class TChannel : public TNamed {
 public:
-	static TChannel* GetChannel(unsigned int temp_address, bool warn = true);
-	static TChannel* GetChannelByNumber(int temp_num);
-	static TChannel* FindChannelByName(const char* ccName);
-	static std::vector<TChannel*> FindChannelByRegEx(const char* ccName);
+   static TChannel* GetChannel(unsigned int temp_address, bool warn = false);
+   static TChannel* GetChannelByNumber(int temp_num);
+   static TChannel* FindChannelByName(const char* ccName);
+   static std::vector<TChannel*> FindChannelByRegEx(const char* ccName);
 
-	TChannel();
-	TChannel(const char*);
-	TChannel(TChannel*);
+   TChannel();
+   TChannel(const char*);
+   TChannel(TChannel*);
 	TChannel(const TChannel&);
 
 	~TChannel() override;
@@ -122,19 +125,11 @@ private:
    void        OverWriteChannel(TChannel*);
    void        AppendChannel(TChannel*);
 
-	void SetAllENGCoefficients(TPriorityValue<std::vector<std::vector<Float_t> > > tmp) { fENGCoefficients = tmp; }
-	void SetENGRanges(TPriorityValue<std::vector<std::pair<double, double> > > tmp) { fENGRanges = tmp; }
-	void SetENGDriftCoefficents(TPriorityValue<std::vector<Float_t> > tmp) { fENGDriftCoefficents = tmp; }
-	void SetCFDCoefficients(TPriorityValue<std::vector<double> > tmp) { fCFDCoefficients = tmp; }
-	void SetLEDCoefficients(TPriorityValue<std::vector<double> > tmp) { fLEDCoefficients = tmp; }
-	void SetTIMECoefficients(TPriorityValue<std::vector<double> > tmp) { fTIMECoefficients = tmp; }
-	void SetEFFCoefficients(TPriorityValue<std::vector<double> > tmp) { fEFFCoefficients = tmp; }
-	void SetCTCoefficients(TPriorityValue<std::vector<double> > tmp) { fCTCoefficients = tmp; }
-	void SetEnergyNonlinearity(TPriorityValue<TGraph> tmp) { fEnergyNonlinearity = tmp; }
-
 	void SetupEnergyNonlinearity(); // sort energy nonlinearity graph and set name/title
 
 	static void trim(std::string&);
+
+	static std::vector<TChannel*> SortedChannels();
 
 public:
 	void SetName(const char* tmpName) override;
@@ -153,11 +148,7 @@ public:
 	static void SetIntegration(const std::string& mnemonic, int tmpint, EPriority pr);
 	inline void SetStream(TPriorityValue<int> tmp) { fStream = tmp; }
 	inline void SetUserInfoNumber(TPriorityValue<int> tmp) { fUserInfoNumber = tmp; }
-	inline void SetDigitizerType(TPriorityValue<std::string> tmp)
-	{
-		fDigitizerTypeString = tmp;
-		fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType, fTimeStampUnit);
-	}
+   void SetDigitizerType(TPriorityValue<std::string> tmp);
 	static void SetDigitizerType(const std::string& mnemonic, const char* tmpstr, EPriority pr);
 	inline void SetTimeOffset(TPriorityValue<Long64_t> tmp) { fTimeOffset = tmp; }
 
@@ -165,12 +156,13 @@ public:
 	void SetSegmentNumber(int tempint) { fSegmentNumber = tempint; }
 	void SetCrystalNumber(int tempint) { fCrystalNumber = tempint; }
 
+	double            GetTime(Long64_t timestamp, Float_t cfd, double energy) const;
 	int               GetDetectorNumber() const;
 	int               GetSegmentNumber() const;
 	int               GetCrystalNumber() const;
-	const TMnemonic*  GetMnemonic() const { return fMnemonic.Value(); }
-	TClass*           GetClassType() const { return fMnemonic.Value()->GetClassType(); }
-	void              SetClassType(TClass* cl_type) { fMnemonic.Value()->SetClassType(cl_type); }
+   const TMnemonic*  GetMnemonic() const;
+   TClass*           GetClassType() const;
+   void              SetClassType(TClass* cl_type);
 
 	int          GetNumber() const { return fNumber.Value(); }
 	unsigned int GetAddress() const { return fAddress; }
@@ -218,8 +210,18 @@ public:
 
 	inline void ResizeENG(size_t size) { fENGCoefficients.resize(size); fENGChi2.resize(size); fENGRanges.resize(size); }
 
+	void SetAllENGCoefficients(TPriorityValue<std::vector<std::vector<Float_t> > > tmp) { fENGCoefficients = tmp; }
 	void SetENGCoefficients(std::vector<Float_t> tmp, size_t range = 0) { if(range >= fENGCoefficients.size()) fENGCoefficients.resize(range+1); fENGCoefficients.Address()->at(range) = tmp; }
+	void SetENGRanges(TPriorityValue<std::vector<std::pair<double, double> > > tmp) { fENGRanges = tmp; }
 	void SetENGRange(std::pair<double, double> tmp, size_t range) { if(range >= fENGRanges.size()) fENGRanges.resize(range+1); fENGRanges.Address()->at(range) = tmp; }
+	void SetENGDriftCoefficents(TPriorityValue<std::vector<Float_t> > tmp) { fENGDriftCoefficents = tmp; }
+	void SetCFDCoefficients(TPriorityValue<std::vector<double> > tmp) { fCFDCoefficients = tmp; }
+	void SetLEDCoefficients(TPriorityValue<std::vector<double> > tmp) { fLEDCoefficients = tmp; }
+	void SetTIMECoefficients(TPriorityValue<std::vector<double> > tmp) { fTIMECoefficients = tmp; }
+	void SetEFFCoefficients(TPriorityValue<std::vector<double> > tmp) { fEFFCoefficients = tmp; }
+	void SetCTCoefficients(TPriorityValue<std::vector<double> > tmp) { fCTCoefficients = tmp; }
+	void SetEnergyNonlinearity(TPriorityValue<TGraph> tmp) { fEnergyNonlinearity = tmp; }
+
 	inline void SetAllENGChi2(TPriorityValue<std::vector<double> > tmp) { fENGChi2 = tmp; }
 	inline void SetENGChi2(TPriorityValue<double> tmp, size_t range = 0) { if(tmp.Priority() >= fENGChi2.Priority()) { if(range >= fENGChi2.size()) fENGChi2.resize(range+1); fENGChi2.Address()->at(range) = tmp.Value(); } }
 	inline void SetCFDChi2(TPriorityValue<double> tmp) { fCFDChi2 = tmp; }
@@ -252,22 +254,22 @@ public:
 	bool             UseWaveParam() const { return WaveFormShape.InUse; }
 	WaveFormShapePar GetWaveParam() const { return WaveFormShape; }
 
-	double CalibrateENG(double);
-	double CalibrateENG(double, int temp_int);
-	double CalibrateENG(int, int temp_int = 0);
+   double CalibrateENG(double) const;
+   double CalibrateENG(double, int temp_int) const;
+   double CalibrateENG(int, int temp_int = 0) const;
 
-	double CalibrateCFD(double);
-	double CalibrateCFD(int);
+   double CalibrateCFD(double) const;
+   double CalibrateCFD(int) const;
 
-	double CalibrateLED(double);
-	double CalibrateLED(int);
+   double CalibrateLED(double) const;
+   double CalibrateLED(int) const;
 
-	double        CalibrateTIME(double);
-	double        CalibrateTIME(int);
-	inline double GetTZero(double tempd) { return CalibrateTIME(tempd); }
-	inline double GetTZero(int tempi) { return CalibrateTIME(tempi); }
+   double        CalibrateTIME(double) const;
+   double        CalibrateTIME(int) const;
+   inline double GetTZero(double tempd) const { return CalibrateTIME(tempd); }
+   inline double GetTZero(int tempi) const { return CalibrateTIME(tempi); }
 
-	double CalibrateEFF(double);
+   double CalibrateEFF(double) const;
 
 	void DestroyCalibrations();
 

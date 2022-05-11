@@ -99,12 +99,11 @@ void TFragHistLoop::Write()
       fCompiledHistograms.Write();
       if(GValue::Size() != 0) {
          GValue::Get()->Write();
-         printf(BLUE "\t%i GValues written to file %s" RESET_COLOR "\n", GValue::Size(), gDirectory->GetName());
+         std::cout<<BLUE<<"\t"<<GValue::Size()<<" GValues written to file "<<gDirectory->GetName()<<RESET_COLOR<<std::endl;
       }
       if(TChannel::GetNumberOfChannels() != 0) {
          TChannel::GetDefaultChannel()->Write();
-         printf(BLUE "\t%i TChannels written to file %s" RESET_COLOR "\n", TChannel::GetNumberOfChannels(),
-                gDirectory->GetName());
+         std::cout<<BLUE<<"\t"<<TChannel::GetNumberOfChannels()<<" TChannels written to file "<<gDirectory->GetName()<<RESET_COLOR<<std::endl;
       }
    }
 }

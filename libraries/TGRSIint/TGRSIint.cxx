@@ -51,18 +51,18 @@ TEnv* TGRSIint::fGRSIEnv = nullptr;
 
 void ReadTheNews();
 
-TGRSIint* TGRSIint::instance(int argc, char** argv, void* options, int numOptions, bool, const char* appClassName)
+TGRSIint* TGRSIint::instance(int argc, char** argv, void*, int, bool, const char* appClassName)
 {
    /// Singleton constructor instance
    if(fTGRSIint == nullptr) {
-      fTGRSIint = new TGRSIint(argc, argv, options, numOptions, true, appClassName);
+      fTGRSIint = new TGRSIint(argc, argv, nullptr, 0, true, appClassName);
       fTGRSIint->ApplyOptions();
    }
    return fTGRSIint;
 }
 
-TGRSIint::TGRSIint(int argc, char** argv, void* options, int numOptions, bool noLogo, const char* appClassName)
-   : TRint(appClassName, &argc, argv, options, numOptions, noLogo), fKeepAliveTimer(nullptr),
+TGRSIint::TGRSIint(int argc, char** argv, void*, int, bool noLogo, const char* appClassName)
+   : TRint(appClassName, new int(0), argv, nullptr, 0, noLogo), fKeepAliveTimer(nullptr),
      main_thread_id(std::this_thread::get_id()), fIsTabComplete(false), fAllowedToTerminate(true), fRootFilesOpened(0),
      fRawFilesOpened(0)
 {
@@ -216,11 +216,9 @@ void TGRSIint::Terminate(Int_t status)
 	}
 
 	if((clock() % 60) == 0) {
-		printf("DING!");
-		fflush(stdout);
+		std::cout<<"DING!"<<std::flush;
 		gSystem->Sleep(500);
-		printf("\r              \r");
-		fflush(stdout);
+		std::cout<<"\r              \r"<<std::flush;
 	}
 
 	TSeqCollection* canvases = gROOT->GetListOfCanvases();
@@ -342,8 +340,8 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
 					gFragment = new TChain("FragmentChain");
 					// gFragment->SetNotify(GrutNotifier::Get());
 				}
-				printf("file %s added to gFragment.\n", file->GetName());
-#if MAJOR_ROOT_VERSION < 6
+				std::cout<<"file "<<file->GetName()<<" added to gFragment."<<std::endl;
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
 				gFragment->AddFile(file->GetName(), TChain::kBigNumber, "FragmentTree");
 #else
 				gFragment->AddFile(file->GetName(), TTree::kMaxEntries, "FragmentTree");
@@ -357,8 +355,8 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
 					// TODO: Once we have a notifier set up
 					// gAnalysis->SetNotify(GrutNotifier::Get());
 				}
-				printf("file %s added to gAnalysis.\n", file->GetName());
-#if MAJOR_ROOT_VERSION < 6
+				std::cout<<"file "<<file->GetName()<<" added to gAnalysis."<<std::endl;
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
 				gAnalysis->AddFile(file->GetName(), TChain::kBigNumber, "AnalysisTree");
 #else
 				gAnalysis->AddFile(file->GetName(), TTree::kMaxEntries, "AnalysisTree");
@@ -718,7 +716,7 @@ void TGRSIint::PrintHelp(bool print)
 {
 	/// Prints the help. Not sure this is used anymore.
 	if(print) {
-		printf(DRED BG_WHITE "     Sending Help!!     " RESET_COLOR "\n");
+		std::cout<<DRED<<BG_WHITE<<"     Sending Help!!     "<<RESET_COLOR<<std::endl;
 		new TGHtmlBrowser(gSystem->ExpandPathName("${GRSISYS}/README.html"));
 	}
 	return;

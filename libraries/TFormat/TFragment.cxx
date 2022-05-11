@@ -15,7 +15,7 @@ Long64_t TFragment::fNumberOfFragments = 0;
 TFragment::TFragment() : TDetectorHit()
 {
 /// Default constructor
-#if MAJOR_ROOT_VERSION < 6
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
    Clear();
@@ -128,7 +128,7 @@ ULong64_t TFragment::GetCycleNumber()
 
 Short_t TFragment::GetChannelNumber() const
 {
-   TChannel* chan = TChannel::GetChannel(fAddress);
+   TChannel* chan = TChannel::GetChannel(fAddress, true);
    if(chan == nullptr) {
       return 0;
    }
@@ -146,36 +146,34 @@ TPPG* TFragment::GetPPG()
 void TFragment::Print(Option_t*) const
 {
    /// Prints out all fields of the TFragment
+	Print(std::cout);
+}
 
-   TChannel* chan = GetChannel();
-   char      buff[20];
-   ctime(&fDaqTimeStamp);
-   struct tm* timeinfo = localtime(&fDaqTimeStamp);
-   strftime(buff, 20, "%b %d %H:%M:%S", timeinfo);
-   printf("DaqTimeStamp: %s\n", buff);
-   printf("DaqId      %i\n", fDaqId);
-   printf("\tTriggerId[%lu]	  ", fTriggerId.size());
-   for(long x : fTriggerId) {
-      printf("     0x%08lx", x);
-   }
-   printf("\n");
-   printf("FragmentId:   %i\n", fFragmentId);
-   printf("TriggerBit:  0x%08x\n", fTriggerBitPattern);
-   printf("NetworkPacketNumber: %i\n", fNetworkPacketNumber);
-   if(chan != nullptr) {
-      printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetName());
-      printf("\tChannel Num:      %i\n", GetChannelNumber());
-   }
-   printf("\tChannel Address: 0x%08x\n", GetAddress());
-   printf("\tCharge:          0x%08x\n ", static_cast<Int_t>(GetCharge()));
-   printf("\tCFD:             0x%08x\n ", static_cast<Int_t>(GetCfd()));
-   printf("\tZC:              0x%08x\n ", fZc);
-   printf("\tTimeStamp:       %lld\n", GetTimeStamp());
-   if(HasWave()) {
-      printf("Has a wave form stored.\n");
-   } else {
-      printf("Does Not have a wave form stored.\n");
-   }
+void TFragment::Print(std::ostream& out) const
+{
+	/// Print fragment to stream out in a thread-safe way
+	std::ostringstream str;
+	str<<"DaqTimeStamp:        "<<ctime(&fDaqTimeStamp)<<std::endl
+		<<"DaqId:               "<<fDaqId<<std::endl
+		<<"\tTriggerId["<<fTriggerId.size()<<"]";
+	for(auto id : fTriggerId) {
+		str<<"    0x"<<std::hex<<id<<std::dec;
+	}
+	str<<std::endl
+		<<"FragmentId:           "<<fFragmentId<<std::endl
+		<<"TriggerBit:           0x"<<std::hex<<fTriggerBitPattern<<std::dec<<std::endl
+		<<"NetworkPacketNumber:  "<<fNetworkPacketNumber<<std::endl
+		<<"Channel Address:      0x"<<std::hex<<GetAddress()<<std::dec<<std::endl;
+	TChannel* channel = GetChannel();
+	if(channel != nullptr) {
+		str<<"Channel: "<<channel->GetNumber()<<"\t Name: "<<channel->GetName()<<std::endl;
+	}
+	str<<"Charge:               0x"<<std::hex<<static_cast<Int_t>(GetCharge())<<std::dec<<std::endl
+		<<"Cfd:                  0x"<<std::hex<<static_cast<Int_t>(GetCfd())<<std::dec<<std::endl
+		<<"ZC:                   0x"<<std::hex<<fZc<<std::dec<<std::endl
+		<<"TimeStamp:            "<<GetTimeStamp()<<std::endl
+		<<(HasWave()?"Has a wave form stored":"Doesn't have a wave form stored")<<std::endl;
+	out<<str.str();
 }
 
 bool TFragment::IsDetector(const char* prefix, Option_t* opt) const
@@ -232,8 +230,6 @@ Int_t TFragment::GetSharcMesyBoard() const
    int slave   = (fAddress & 0x00f00000) >> 20;
    int port    = (fAddress & 0x00000f00) >> 8;
    int channel = (fAddress & 0x000000ff);
-
-   // printf("slave = 0x%08x    port = 0x%08x  channel = 0x%08x\n",slave,port,channel);
 
    if(slave != 0x1 && slave != 0x2) {
       return -1;

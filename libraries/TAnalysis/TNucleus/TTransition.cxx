@@ -1,5 +1,7 @@
 #include "TTransition.h"
 
+#include <iostream>
+
 /// \cond CLASSIMP
 ClassImp(TTransition)
 /// \endcond
@@ -26,21 +28,19 @@ void TTransition::Print(Option_t*) const
 {
 
 	if(!std::isnan(fEngUncertainty)) {
-		printf("Energy:    %.02f +/- %.02f", fEnergy, fEngUncertainty);
+		std::cout<<"Energy:    "<<fEnergy<<" +/- "<<fEngUncertainty<<std::endl;
 	} else {
-		printf("Energy:    %.02f ", fEnergy);
+		std::cout<<"Energy:    "<<fEnergy<<std::endl;
 	}
 	if(!std::isnan(fIntensity)) {
 		if(!std::isnan(fIntUncertainty)) {
-			printf("\tIntensity: %.02f +/- %.02f\n", fIntensity, fIntUncertainty);
+			std::cout<<"\tIntensity: "<<fIntensity<<" +/- "<<fIntUncertainty<<std::endl;
 		} else {
-			printf("\tIntensity: %.02f \n", fEnergy);
+			std::cout<<"\tIntensity: "<<fEnergy<<std::endl;
 		}
 	} else {
-		printf("\n");
+		std::cout<<std::endl;
 	}
-
-	// printf("**************************\n");
 }
 
 std::string TTransition::PrintToString()

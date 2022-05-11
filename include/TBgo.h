@@ -25,7 +25,6 @@ public:
    TBgo(const TBgo&);
    virtual ~TBgo();
 
-public:
    TBgoHit* GetBgoHit(const Int_t& i) { return static_cast<TBgoHit*>(GetHit(i)); }
 
    static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
@@ -43,6 +42,7 @@ public:
    virtual void Copy(TObject&) const override;            //!<!
    virtual void Clear(Option_t* opt = "all") override;    //!<!
    virtual void Print(Option_t* opt = "") const override; //!<!
+	virtual void Print(std::ostream& out) const override;  //!<!
 
    /// \cond CLASSIMP
    ClassDefOverride(TBgo, 1) // Bgo Physics structure

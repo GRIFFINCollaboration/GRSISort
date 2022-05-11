@@ -30,7 +30,7 @@ class TFragment : public TDetectorHit {
 public:
    TFragment();
    TFragment(const TFragment&);
-   ~TFragment() override;
+   ~TFragment();
 
 	TFragment& operator=(const TFragment&) = default; // use default assignment operator (to shut up gcc 9.1)
 
@@ -43,7 +43,7 @@ public:
    void SetModuleType(UShort_t value) { fModuleType = value; }
    void SetDeadTime(UShort_t value) { fDeadTime = value; }
    void SetDetectorType(UShort_t value) { fDetectorType = value; }
-   void                          SetEntryNumber() { fEntryNumber = fNumberOfFragments++; }
+   void SetEntryNumber() { fEntryNumber = fNumberOfFragments++; }
    void SetDaqId(Int_t value) { fDaqId = value; }
    void SetFragmentId(Int_t value) { fFragmentId = value; }
    void SetDaqTimeStamp(time_t value) { fDaqTimeStamp = value; }
@@ -102,6 +102,8 @@ public:
 
    void Clear(Option_t* opt = "") override;
    void Print(Option_t* opt = "") const override;
+
+	virtual void Print(std::ostream& out) const override;
 
    TObject* Clone(const char* name = "") const override;
 

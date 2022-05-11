@@ -250,13 +250,13 @@ int main(int argc, char** argv)
    if(status) {
       if(verbosity == 1) {
          std::cout<<"gadd merged "<<merger.GetMergeList()->GetEntries()<<" input files in "<<targetname
-                  <<".\n";
+                  <<"."<<std::endl;
       }
       return 0;
    }
    if(verbosity == 1) {
       std::cout<<"gadd failure during the merge of "<<merger.GetMergeList()->GetEntries()<<" input files in "
-               <<targetname<<".\n";
+               <<targetname<<"."<<std::endl;
    }
    return 1;
 }

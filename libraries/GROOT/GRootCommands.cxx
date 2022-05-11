@@ -6,25 +6,23 @@
 #include <sstream>
 #include <fstream>
 
-#include "TRint.h"
-#include "TTree.h"
-#include "Getline.h"
-#include "TAxis.h"
-#include "TDirectory.h"
-#include "TFile.h"
-#include "TPolyMarker.h"
-#include "TSpectrum.h"
-#include "TText.h"
-#include "TExec.h"
-#include "TKey.h"
-#include "TObject.h"
-#include "TObjArray.h"
-#include "TH1.h"
-#ifdef HAS_CORRECT_PYTHON_VERSION
-#include "TPython.h"
-#endif
-#include "TTimer.h"
-#include "TF1.h"
+#include <TRint.h>
+#include <TTree.h>
+#include <Getline.h>
+#include <TAxis.h>
+#include <TDirectory.h>
+#include <TFile.h>
+#include <TPolyMarker.h>
+#include <TSpectrum.h>
+#include <TText.h>
+#include <TExec.h>
+#include <TKey.h>
+#include <TObject.h>
+#include <TObjArray.h>
+#include <TH1.h>
+#include <TPython.h>
+#include <TTimer.h>
+#include <TF1.h>
 
 #include "GCanvas.h"
 #include "GPeak.h"
@@ -40,12 +38,12 @@ TChain* gAnalysis = nullptr;
 
 void Help()
 {
-   printf("This is helpful information.\n");
+   std::cout<<"This is helpful information."<<std::endl;
 }
 
 void Commands()
 {
-   printf("this is a list of useful commands.\n");
+   std::cout<<"this is a list of useful commands."<<std::endl;
 }
 
 void Prompt()
@@ -287,7 +285,7 @@ GPeak* PhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 
    auto*       mypeak  = new GPeak((xlow + xhigh) / 2.0, xlow, xhigh);
    std::string options = opt;
-   options.append("Q+");
+   options.append("+");
    mypeak->Fit(hist, options.c_str());
    auto* bg = new TF1(*mypeak->Background());
    hist->GetListOfFunctions()->Add(bg);
@@ -308,9 +306,7 @@ TPeak* AltPhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
    // std::cout<<"here."<<std::endl;
 
    auto*       mypeak  = new TPeak((xlow + xhigh) / 2.0, xlow, xhigh);
-   std::string options = opt;
-   options.append("Q+");
-   mypeak->Fit(hist, options.c_str());
+   mypeak->Fit(hist, opt);
    // mypeak->Background()->Draw("SAME");
    auto* bg = new TF1(*mypeak->Background());
    hist->GetListOfFunctions()->Add(bg);
@@ -440,32 +436,6 @@ TH2* AddOffset(TH2* mat, double offset, EAxis axis)
    // int dim = mat->GetDimension();
    int xmax = mat->GetXaxis()->GetNbins() + 1;
    int ymax = mat->GetYaxis()->GetNbins() + 1;
-   /*
-   switch(dim) {
-     case 3:
-       xmax = mat->GetXaxis()->GetNbins()+1;
-       ymax = mat->GetYaxis()->GetNbins()+1;
-       zmax = mat->GetZaxis()->GetNbins()+1;
-       break;
-     case 2:
-       if(axis>3) {
-         fprintf(stderr,"%s z-axis offest called on %s but has no z-axis",
-                 __PRETTY_FUNCTION__,mat->GetName())
-         return toreturn;
-       }
-       xmax = mat->GetXaxis()->GetNbins()+1;
-       ymax = mat->GetYaxis()->GetNbins()+1;
-       break;
-     case 1:
-       if(axis!=1) {
-         fprintf(stderr,"%s offest called on %s with an axis it doesn't have.",
-                 __PRETTY_FUNCTION__,mat->GetName())
-         return toreturn;
-       }
-       xmax = mat->GetXaxis()->GetNbins()+1;
-       break;
-   };
-   */
    toreturn = static_cast<TH2*>(mat->Clone(Form("%s_offset", mat->GetName())));
    toreturn->Reset();
 

@@ -43,7 +43,6 @@ int GetRunNumber(const std::string& fileName)
       return 0;
    }
    std::size_t found2 = fileName.rfind('-');
-   // printf("found 2 = %i\n",found2);
 
    if(found2 == std::string::npos) {
       found2 = fileName.rfind('_');
