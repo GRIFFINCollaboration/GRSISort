@@ -111,6 +111,7 @@ public:
 
 	size_t NumberOfEvents() const { return fNumberOfEvents; }
 
+	bool IgnoreMissingChannel() const { return fIgnoreMissingChannel; }
 	bool SkipInputSort() const { return fSkipInputSort; }
 	int  SortDepth() const { return fSortDepth; }
 
@@ -206,6 +207,7 @@ private:
 
 	size_t fNumberOfEvents;         ///< Number of events, fragments, etc. to process (0 - all)
 
+	bool fIgnoreMissingChannel; ///< Flag to completely ignore missing channels
 	bool fSkipInputSort; ///< Flag to sort on time or triggers
 	int  fSortDepth;     ///< Size of Q that stores fragments to be built into events
 
