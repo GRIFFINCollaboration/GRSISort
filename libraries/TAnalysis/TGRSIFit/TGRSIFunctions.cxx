@@ -126,7 +126,7 @@ Double_t TGRSIFunctions::PhotoPeakBG(Double_t* dim, Double_t* par)
 {
    // Returns a single RadWare style peak
    double result = Gaus(dim, par) + SkewedGaus(dim, par) + StepFunction(dim, par) + PolyBg(dim, &par[6], 2);
-	if(isfinite(result)) return result;
+	if(std::isfinite(result)) return result;
    return 0.;
 }
 
