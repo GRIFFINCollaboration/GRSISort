@@ -100,6 +100,7 @@ void TGRSIOptions::Clear(Option_t*)
 
 	fNumberOfEvents = 0;
 
+   fIgnoreMissingChannel = false;
    fSkipInputSort = false;
 
    fSeparateOutOfOrder    = false;
@@ -160,6 +161,7 @@ void TGRSIOptions::Print(Option_t*) const
             <<"fFragmentWriteQueueSize: "<<fFragmentWriteQueueSize<<std::endl
             <<"fAnalysisWriteQueueSize: "<<fAnalysisWriteQueueSize<<std::endl
             <<std::endl
+            <<"fIgnoreMissingChannel: "<<fIgnoreMissingChannel<<std::endl
             <<"fSkipInputSort: "<<fSkipInputSort<<std::endl
             <<"fSortDepth: "<<fSortDepth<<std::endl
             <<std::endl
@@ -301,6 +303,8 @@ void TGRSIOptions::Load(int argc, char** argv)
 			.description("Suppress error output from parsing").colour(DGREEN);
 		parser.option("reconstruct-timestamp reconstruct-time-stamp", &fReconstructTimeStamp, true)
 			.description("Reconstruct missing high bits of timestamp").colour(DGREEN);
+		parser.option("ignore-missing-channel", &fIgnoreMissingChannel, true)
+			.description("Ignore missing channels completely (not written to fragment or analysis tree)").default_value(false);
 		parser.option("skip-input-sort", &fSkipInputSort, true)
 			.description("Skip sorting fragments before building events (default is false)").default_value(false);
 
