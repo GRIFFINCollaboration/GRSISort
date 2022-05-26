@@ -35,6 +35,14 @@ Bool_t TRunInfo::ReadInfoFromFile(TFile* tempf)
 
    tempf = gDirectory->GetFile();
 
+	// try and read the run info directly
+	if(tempf->FindObjectAny("TRunInfo") != nullptr) {
+		Get()->fDetectorInformation = static_cast<TDetectorInformation*>(tempf->Get("TRunInfo"));
+      savdir->cd();
+      return true;
+	}
+
+	// if the above failed we try all keys to find a run info
    TList* list = tempf->GetListOfKeys();
    TIter  iter(list);
 	TKey* key;
