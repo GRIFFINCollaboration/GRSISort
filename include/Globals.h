@@ -72,6 +72,10 @@ typedef char int8_t;
 #include <array>
 #include <memory>
 #include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <sys/prctl.h>
 
 const std::string& ProgramName();
 
@@ -206,11 +210,15 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int m
 			}
 		}
 
-		//// try and decode file and line number
-		//std::stringstream command;
-		//command<<"addr2line "<<addrlist[i]<<" -e "<<getexepath();
-		//std::cout<<symbollist[i]<<": executing command "<<command.str()<<std::endl;
-		//auto line = sh(command.str());
+		// try and decode file and line number (only if we have an absolute path)
+		//std::string line;
+		//if(symbollist[i][0] == '/') {
+		//	std::stringstream command;
+		//	std::string filename = symbollist[i];
+		//	command<<"addr2line "<<addrlist[i]<<" -e "<<filename.substr(0, filename.find_first_of('('));
+		//	//std::cout<<symbollist[i]<<": executing command "<<command.str()<<std::endl;
+		//	line = sh(command.str());
+		//}
 
 		if(begin_name && begin_offset && end_offset && begin_name < begin_offset) {
 			*begin_name++ = '\0';
@@ -235,11 +243,28 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int m
 			// couldn't parse the line? print the whole line.
 			str<<"  "<<symbollist[i]<<std::endl;
 		}
+		//str<<line;
 	}
 
 	free(funcname);
 	free(symbollist);
 	out<<str.str();
+}
+
+static inline void PrintGdbStacktrace() {
+	char pid_buf[30];
+	sprintf(pid_buf, "%d", getpid());
+	char name_buf[512];
+	name_buf[readlink("/proc/self/exe", name_buf, 511)] = 0;
+	prctl(PR_SET_PTRACER, PR_SET_PTRACER_ANY, 0, 0, 0);
+	int child_pid = fork();
+	if (!child_pid) {
+		dup2(2,1); // redirect output to stderr - edit: unnecessary?
+		execl("/usr/bin/gdb", "gdb", "--batch", "-n", "-ex", "thread", "-ex", "bt", name_buf, pid_buf, NULL);
+		abort(); /* If gdb failed to start */
+	} else {
+		waitpid(child_pid,NULL,0);
+	}
 }
 
 #endif
