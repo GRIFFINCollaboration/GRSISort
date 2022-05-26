@@ -31,6 +31,7 @@
 #pragma link C++ class TScalerData+;
 #pragma link C++ class std::map<UInt_t, std::map<ULong64_t, TScalerData*> >;
 #pragma link C++ class std::map<ULong64_t, TScalerData*>;
+#pragma link C++ class TParsingDiagnosticsData+;
 #pragma link C++ class TParsingDiagnostics+;
 #pragma link C++ class TSingleton<TParsingDiagnostics>-;
 #pragma link C++ class TSortingDiagnostics+;
