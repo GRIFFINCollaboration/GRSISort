@@ -43,7 +43,7 @@ public:
    virtual void Parse(std::string* name);
    virtual void Parse(const char* name);
 
-   virtual void EnumerateDigitizer(TPriorityValue<std::string>&, TPriorityValue<EDigitizer>&, TPriorityValue<int>&) { }
+   virtual void EnumerateDigitizer(TPriorityValue<std::string>&, TPriorityValue<EDigitizer>&, TPriorityValue<int>&) { std::cerr<<RED<<ClassName()<<": Should never get here, please use a data library!"<<RESET_COLOR<<std::endl; }
 
    virtual void SetRFMnemonic(std::string* name);
 

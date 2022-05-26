@@ -78,7 +78,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
 		TGRSIOptions::Get()->ParserLibrary(library);
 		if(!library.empty()) {
 			// this might throw a runtime exception, but we don't want to catch it here as we need the library for things to work properly!
-			//TParserLibrary::Get()->Load();
+			TParserLibrary::Get()->Load();
 		} else {
 			std::cout<<"no parser library!"<<std::endl;
 			TGRSIOptions::Get()->Print();
