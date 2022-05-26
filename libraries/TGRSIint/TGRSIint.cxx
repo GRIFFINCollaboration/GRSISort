@@ -364,7 +364,8 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
 			}
 
 			if(file->FindObjectAny("Channel") != nullptr) {
-				file->Get("Channel"); // this calls TChannel::Streamer
+				// not necessary to do anything as FindObjectAny already seems to call the streamer?
+				//file->Get("Channel"); // this calls TChannel::Streamer
 			}
 			if(file->FindObjectAny("Values") != nullptr) {
 				file->Get("Values");
