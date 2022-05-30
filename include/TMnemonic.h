@@ -43,7 +43,7 @@ public:
    virtual void Parse(std::string* name);
    virtual void Parse(const char* name);
 
-   virtual void EnumerateDigitizer(TPriorityValue<std::string>&, TPriorityValue<EDigitizer>&, TPriorityValue<int>&) { std::cerr<<RED<<ClassName()<<": Should never get here, please use a data library!"<<RESET_COLOR<<std::endl; }
+   virtual void EnumerateDigitizer(TPriorityValue<std::string>&, TPriorityValue<EDigitizer>&, TPriorityValue<int>&) { if(fPrint) { std::cerr<<RED<<ClassName()<<": No data library set, some things like timing won't work!"<<RESET_COLOR<<std::endl; fPrint = false; } }
 
    virtual void SetRFMnemonic(std::string* name);
 
@@ -72,6 +72,8 @@ protected:
    mutable TClass* fClassType; //!<! TGRSIDetector Type that this mnemonic represents
 
    void EnumerateMnemonic(std::string mnemonic_word, EMnemonic& mnemonic_enum);
+
+	static bool fPrint;
 
    /// \cond CLASSIMP
    ClassDefOverride(TMnemonic, 1)
