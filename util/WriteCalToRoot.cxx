@@ -1,8 +1,12 @@
-#include "TChannel.h"
 #include <map>
 #include "Globals.h"
 #include "TFile.h"
 #include "TSystem.h"
+#include "TEnv.h"
+
+#include "TGRSIOptions.h"
+#include "TChannel.h"
+#include "TParserLibrary.h"
 
 int main(int argc, char** argv)
 {
@@ -13,6 +17,29 @@ int main(int argc, char** argv)
 
    std::vector<const char*> bad_file;
    std::vector<const char*> bad_tree;
+
+	// read .grsirc
+   std::string grsi_path = getenv("GRSISYS"); // Finds the GRSISYS path to be used by other parts of the grsisort code
+   if(grsi_path.length() > 0) {
+      grsi_path += "/";
+   }
+   // Read in grsirc in the GRSISYS directory to set user defined options on grsisort startup
+   grsi_path += ".grsirc";
+   gEnv->ReadFile(grsi_path.c_str(), kEnvChange);
+	// load TGRSIOptions (to get the parser library), we set the number of arguments to 1 so that the options
+	// specific to this program are ignored by TGRSIOptions
+	auto* opt = TGRSIOptions::Get(1, argv);
+	// load parser library if provided
+	if(!opt->ParserLibrary().empty()) {
+		try {
+			TParserLibrary::Get()->Load();
+		} catch(std::runtime_error& e) {
+			// if we failed to load the library, try to continue w/o it
+			std::cerr<<DRED<<e.what()<<RESET_COLOR<<std::endl;
+		}
+	} else {
+		std::cout<<"No parser library set!"<<std::endl;
+	}
 
    // See if we can open the cal file
    if(TChannel::ReadCalFile(argv[2]) < 1) {
