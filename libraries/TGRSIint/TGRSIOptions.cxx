@@ -341,7 +341,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 		.description("Maximum number of (midas, lst, or tdr) events read").default_value(0);
 
    // look for any arguments ending with .info, pass to parser.
-   for(int i = 0; i < argc; i++) {
+   for(int i = 1; i < argc; i++) {
       std::string filename = argv[i];
       if(DetermineFileType(filename) == kFileType::CONFIG_FILE) {
          try {
