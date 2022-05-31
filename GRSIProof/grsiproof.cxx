@@ -80,7 +80,11 @@ void Analyze(const char* tree_type)
    for(const auto& macro_it : gGRSIOpt->MacroInputFiles()) {
       std::cout<<"Currently Running: "<<(Form("%s", macro_it.c_str()))<<std::endl;
 		try {
-			proof_chain->Process(Form("%s+", macro_it.c_str()));
+			if(gGRSIOpt->NumberOfEvents() == 0) {
+				proof_chain->Process(Form("%s+", macro_it.c_str()));
+			} else {
+				proof_chain->Process(Form("%s+", macro_it.c_str()), "", gGRSIOpt->NumberOfEvents());
+			}
 		} catch(TGRSIMapException<std::string>& e) {
 			std::cout<<DRED<<"Exception when processing chain: "<<e.detail()<<RESET_COLOR<<std::endl;
 			throw e;

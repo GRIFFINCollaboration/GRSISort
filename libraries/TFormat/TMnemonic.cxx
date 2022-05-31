@@ -5,6 +5,8 @@
 
 ClassImp(TMnemonic)
 
+bool TMnemonic::fPrint = true;
+
 void TMnemonic::Clear(Option_t*)
 {
    fArrayPosition = -1;
@@ -57,7 +59,8 @@ void TMnemonic::EnumerateMnemonic(std::string mnemonic_word, EMnemonic& mnemonic
 void TMnemonic::Parse(std::string* name)
 {
    if((name == nullptr) || name->length() < 9) {
-		// ??? has this ever worked? How can we compare 2 character from a string with a length < 1, i.e. an empty string?
+		// ??? has this ever worked? How can we compare 2 characters from a string with a length < 1, i.e. an empty string?
+		// or use a null pointer for this?
       if((name->length() < 1) && (name->compare(0, 2, "RF") == 0)) {
          SetRFMnemonic(name);
       }
@@ -70,7 +73,7 @@ void TMnemonic::Parse(std::string* name)
    buf.clear();
    buf.assign(*name, 3, 2);
    fArrayPosition = static_cast<uint16_t>(atoi(buf.c_str())); 
-// TIP is a Bad Mnemonic and uses 3 characters for array position this may be changed in the future - S. Gillespie
+	// TIP is a Bad Mnemonic and uses 3 characters for array position this may be changed in the future - S. Gillespie
    if(fSystemString.compare("TP") == 0){ 
      fArraySubPositionString.assign(*name, 5, 2);
    }
