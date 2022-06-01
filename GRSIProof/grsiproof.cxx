@@ -24,6 +24,7 @@
 #include <vector>
 #include <string>
 #include <signal.h>
+#include <libgen.h>
 
 TGRSIProof* gGRSIProof;
 TGRSIOptions* gGRSIOpt;
@@ -115,7 +116,7 @@ void AtExitHandler()
 
 			std::string firstMacro;
 			if(!gGRSIOpt->MacroInputFiles().empty()) firstMacro = gGRSIOpt->MacroInputFiles().at(0);
-			firstMacro = basename(firstMacro.c_str()); // remove path
+			firstMacro = basename(const_cast<char*>(firstMacro.c_str())); // remove path
 			firstMacro = firstMacro.substr(0, firstMacro.find_last_of('.')); // remove extension
 
 			if(runNumber != 0 && subRunNumber != -1) {

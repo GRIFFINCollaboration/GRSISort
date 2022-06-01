@@ -76,4 +76,5 @@ void ExampleTreeSelector::InitializeBranches(TTree* tree)
 	}
 }
 
+/*! @} */
 #endif // #ifdef ExampleTreeSelector_cxx
