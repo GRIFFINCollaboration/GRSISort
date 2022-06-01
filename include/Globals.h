@@ -72,10 +72,6 @@ typedef char int8_t;
 #include <array>
 #include <memory>
 #include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <sys/prctl.h>
 
 const std::string& ProgramName();
 
@@ -251,6 +247,11 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int m
 	out<<str.str();
 }
 
+#if !__APPLE__
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <sys/prctl.h>
 static inline void PrintGdbStacktrace() {
 	char pid_buf[30];
 	sprintf(pid_buf, "%d", getpid());
@@ -266,5 +267,6 @@ static inline void PrintGdbStacktrace() {
 		waitpid(child_pid,NULL,0);
 	}
 }
+#endif
 
 #endif
