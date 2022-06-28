@@ -161,6 +161,7 @@ public:
    void   DrawCsIExclusion();
    void   DrawCsIFit();
    int    GetCsIChiSq();
+   int    GetCsIFitType();
 
 private:
    bool         set;
@@ -170,6 +171,8 @@ private:
    std::vector<Short_t> cWavebuffer;
    SinPar*              spar;
    ShapePar*            shpar;
+   WaveFormPar*         csiTestWpar[4]; //used for testing different CsI fit types
+   ShapePar*            csiTestShpar[4]; //used for testing different CsI fit types
 
    std::string fName;
 
@@ -187,9 +190,10 @@ private:
 
    // CsI functions
    void   GetCsIExclusionZone();
-   double GetCsITau(int);
-   double GetCsIt0();
+   double GetCsITau(int, ShapePar*);
+   double GetCsIt0(ShapePar*, WaveFormPar*);
    int    GetCsIShape();
+   int    FitCsIShape(int, ShapePar*, WaveFormPar*);
 
    bool   CsISet;
 	double EPS;
@@ -223,19 +227,23 @@ private:
    void GetQuickPara();
 
    // bad chi squares for debugging
-   const static int BADCHISQ_SMOOTH_T0 = -1024 - 2; // smooth_t0 gives bad result
-   const static int BADCHISQ_PAR_T0    = -1024 - 3; // parabolic_t0 gives bad result
-   const static int BADCHISQ_LIN_T0    = -1024 - 4; // linear_t0 gives bad result
-   const static int BADCHISQ_MAT       = -1024 - 5; // matrix for fit is not invertable
-   const static int BADCHISQ_EXC       = -1024 - 8; // -1032	bad exclusion zone
+   const static int BADCHISQ_SMOOTH_T0   = -1024 - 2; // smooth_t0 gives bad result
+   const static int BADCHISQ_PAR_T0      = -1024 - 3; // parabolic_t0 gives bad result
+   const static int BADCHISQ_LIN_T0      = -1024 - 4; // linear_t0 gives bad result
+   const static int BADCHISQ_MAT         = -1024 - 5; // matrix for fit is not invertable
+   const static int BADCHISQ_FAIL_DIRECT = -1024 - 9; //generic fit failure
+   const static int BAD_EXCLUSION_ZONE   = -1024 - 10; //fails finding exclusion zone
+   const static int BAD_MAX              = -1024 - 11;
+   const static int BAD_BASELINE_RANGE   = -1024 - 12;
+   const static int BAD_PID              = -1024; //PID value returned when the fit fails
+
    // new definitions for Kris' changes to the waveform analyzer
    const static int PIN_BASELINE_RANGE = 16; // minimum ticks before max for a valid signal
-   const static int BAD_BASELINE_RANGE = -1024 - 11;
    const static int MAX_SAMPLES        = 4096;
 
-   const static int CSI_BASELINE_RANGE = 50;
-   const static int NOISE_LEVEL_CSI    = 100;
-   const static int NSHAPE             = 5;
+   const static int CSI_BASELINE_RANGE = 50; //baseline range in channels
+   const static int NOISE_LEVEL_CSI    = 100; //noise level for CsI
+   const static int NSHAPE             = 5; //number of trial functions for waveform fit
 
    const static int BADCHISQ_T0   = -1024 - 7;
    const static int BADCHISQ_NEG  = -1024 - 1;
