@@ -1380,7 +1380,7 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName, bool
 		}
 		// get address from keys name
 		std::stringstream str;
-		str<<hex(key->GetName()+strlen(graphName),4);
+		str<<std::hex<<key->GetName()+strlen(graphName);
 		unsigned int address;
 		str>>address;
 		if(GetChannel(address) != nullptr) {
