@@ -62,6 +62,7 @@ public:
    virtual void InitializeBranches(TTree* tree) = 0;
    virtual void EndOfSort() {};
    void SetOutputPrefix(const char* prefix) { fOutputPrefix = prefix; }
+	std::string GetOutputPrefix() const { return fOutputPrefix; }
 
 protected:
    TGRSIMap<std::string, TH1*>        fH1; //!<! map for 1-D histograms
