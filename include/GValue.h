@@ -47,7 +47,7 @@ public:
    bool AppendValue(GValue*);
    bool ReplaceValue(GValue*);
 
-   // virtual void Clear(Option_t *opt="");
+   using TNamed::Clear;
    void Print(Option_t* opt = "") const override;
    void Copy(TObject& obj) const override;
    // virtual bool Notify();

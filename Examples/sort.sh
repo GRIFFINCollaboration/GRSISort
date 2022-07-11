@@ -30,7 +30,7 @@ for run in `seq $firstRun $lastRun` ; do
    fi
 	# loop over all subruns that haven't been changed in the last three minutes
 	# (only important when using this during an experiment)
-   for midasFile in `find ${DATADIR} -amin +3 -name "run${run}_???.mid"` ; do
+   for midasFile in `find ${DATADIR} -maxdepth 1 -amin +3 -name "run${run}_???.mid"` ; do
       subrun=$(basename $midasFile | cut -d '_' -f2 | cut -d '.' -f1)
 		# if the analysis file exists, we don't re-run the analysis
       if [ -e analysis${run}_${subrun}.root ] ; then

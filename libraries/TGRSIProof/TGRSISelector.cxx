@@ -216,6 +216,7 @@ void TGRSISelector::SlaveTerminate()
 	EndOfSort();
 	CheckSizes("send to server");
 	fOutput->Add(new TChannel(TChannel::GetChannelMap()->begin()->second));
+	fOutput->Add(new TNamed("prefix", GetOutputPrefix().c_str()));
 }
 
 void TGRSISelector::Terminate()
@@ -234,6 +235,10 @@ void TGRSISelector::Terminate()
 	}
 	Int_t runNumber    = fRunInfo->RunNumber();
 	Int_t subRunNumber = fRunInfo->SubRunNumber();
+
+	if(fOutput->FindObject("prefix") != nullptr) {
+		fOutputPrefix = static_cast<TNamed*>(fOutput->FindObject("prefix"))->GetTitle();
+	}
 
 	TFile* outputFile;
 	std::string outputFileName;

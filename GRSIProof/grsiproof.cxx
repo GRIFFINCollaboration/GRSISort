@@ -287,9 +287,14 @@ int main(int argc, char** argv)
 	}
 	gGRSIProof->AddInput(new TNamed("ParserLibrary", library.c_str()));
 
-	Analyze("FragmentTree");
-	Analyze("AnalysisTree");
-	Analyze("Lst2RootTree");
+	if(gGRSIOpt->TreeName().empty()) {
+		Analyze("FragmentTree");
+		Analyze("AnalysisTree");
+		Analyze("Lst2RootTree");
+	} else {
+		std::cout<<"Running selector on tree '"<<gGRSIOpt->TreeName()<<"'"<<std::endl;
+		Analyze(gGRSIOpt->TreeName().c_str());
+	}
 
 	AtExitHandler();
 

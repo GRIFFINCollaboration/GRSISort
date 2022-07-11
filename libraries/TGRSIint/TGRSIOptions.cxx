@@ -117,6 +117,7 @@ void TGRSIOptions::Clear(Option_t*)
    // Proof only
    fMaxWorkers   = -1;
    fSelectorOnly = false;
+	fTreeName.clear();
 
    fHelp          = false;
 
@@ -176,6 +177,7 @@ void TGRSIOptions::Print(Option_t*) const
 				<<std::endl
             <<"fMaxWorkers: "<<fMaxWorkers<<std::endl
             <<"fSelectorOnly: "<<fSelectorOnly<<std::endl
+				<<"fTreeName: "<<fTreeName<<std::endl
 				<<std::endl
 				<<"fHelp: "<<fHelp<<std::endl
 				<<std::endl
@@ -335,6 +337,9 @@ void TGRSIOptions::Load(int argc, char** argv)
 		parser.option("selector-only", &fSelectorOnly, true)
 			.description("Turns off PROOF to run a selector on the main thread");
 		parser.option("log-file", &fLogFile, true).description("File logs from grsiproof are written to");
+
+		parser.option("tree-name", &fTreeName, true)
+			.description("Name of tree to be proofed, default is empty, i.e. FragmentTree, AnalysisTree, and Lst2RootTree are checked");
 	}
 
 	parser.option("max-events", &fNumberOfEvents, true)
