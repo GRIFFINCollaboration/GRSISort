@@ -675,6 +675,10 @@ void TPPG::operator+=(const TPPG& rhs)
 
 void TPPG::Add(const TPPG* ppg)
 {
+	if(ppg == nullptr) {
+		std::cerr<<"Passed nullptr to TPPG::Add(const TPPG* ppg)!"<<std::endl;
+		return;
+	}
    PPGMap_t::iterator ppgit;
    for(ppgit = ppg->MapBegin(); ppgit != ppg->MapEnd(); ++ppgit) {
       if(ppgit->second != nullptr) {
