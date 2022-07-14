@@ -78,7 +78,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
 		TGRSIOptions::Get()->ParserLibrary(library);
 		if(!library.empty()) {
 			// this might throw a runtime exception, but we don't want to catch it here as we need the library for things to work properly!
-			//TParserLibrary::Get()->Load();
+			TParserLibrary::Get()->Load();
 		} else {
 			std::cout<<"no parser library!"<<std::endl;
 			TGRSIOptions::Get()->Print();
@@ -216,6 +216,7 @@ void TGRSISelector::SlaveTerminate()
 	EndOfSort();
 	CheckSizes("send to server");
 	fOutput->Add(new TChannel(TChannel::GetChannelMap()->begin()->second));
+	fOutput->Add(new TNamed("prefix", GetOutputPrefix().c_str()));
 }
 
 void TGRSISelector::Terminate()
@@ -234,6 +235,10 @@ void TGRSISelector::Terminate()
 	}
 	Int_t runNumber    = fRunInfo->RunNumber();
 	Int_t subRunNumber = fRunInfo->SubRunNumber();
+
+	if(fOutput->FindObject("prefix") != nullptr) {
+		fOutputPrefix = static_cast<TNamed*>(fOutput->FindObject("prefix"))->GetTitle();
+	}
 
 	TFile* outputFile;
 	std::string outputFileName;

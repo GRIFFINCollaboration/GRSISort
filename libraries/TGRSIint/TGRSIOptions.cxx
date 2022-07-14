@@ -100,6 +100,7 @@ void TGRSIOptions::Clear(Option_t*)
 
 	fNumberOfEvents = 0;
 
+   fIgnoreMissingChannel = false;
    fSkipInputSort = false;
 
    fSeparateOutOfOrder    = false;
@@ -116,6 +117,7 @@ void TGRSIOptions::Clear(Option_t*)
    // Proof only
    fMaxWorkers   = -1;
    fSelectorOnly = false;
+	fTreeName.clear();
 
    fHelp          = false;
 
@@ -160,6 +162,7 @@ void TGRSIOptions::Print(Option_t*) const
             <<"fFragmentWriteQueueSize: "<<fFragmentWriteQueueSize<<std::endl
             <<"fAnalysisWriteQueueSize: "<<fAnalysisWriteQueueSize<<std::endl
             <<std::endl
+            <<"fIgnoreMissingChannel: "<<fIgnoreMissingChannel<<std::endl
             <<"fSkipInputSort: "<<fSkipInputSort<<std::endl
             <<"fSortDepth: "<<fSortDepth<<std::endl
             <<std::endl
@@ -174,6 +177,7 @@ void TGRSIOptions::Print(Option_t*) const
 				<<std::endl
             <<"fMaxWorkers: "<<fMaxWorkers<<std::endl
             <<"fSelectorOnly: "<<fSelectorOnly<<std::endl
+				<<"fTreeName: "<<fTreeName<<std::endl
 				<<std::endl
 				<<"fHelp: "<<fHelp<<std::endl
 				<<std::endl
@@ -301,6 +305,8 @@ void TGRSIOptions::Load(int argc, char** argv)
 			.description("Suppress error output from parsing").colour(DGREEN);
 		parser.option("reconstruct-timestamp reconstruct-time-stamp", &fReconstructTimeStamp, true)
 			.description("Reconstruct missing high bits of timestamp").colour(DGREEN);
+		parser.option("ignore-missing-channel", &fIgnoreMissingChannel, true)
+			.description("Ignore missing channels completely (not written to fragment or analysis tree)").default_value(false);
 		parser.option("skip-input-sort", &fSkipInputSort, true)
 			.description("Skip sorting fragments before building events (default is false)").default_value(false);
 
@@ -331,13 +337,16 @@ void TGRSIOptions::Load(int argc, char** argv)
 		parser.option("selector-only", &fSelectorOnly, true)
 			.description("Turns off PROOF to run a selector on the main thread");
 		parser.option("log-file", &fLogFile, true).description("File logs from grsiproof are written to");
+
+		parser.option("tree-name", &fTreeName, true)
+			.description("Name of tree to be proofed, default is empty, i.e. FragmentTree, AnalysisTree, and Lst2RootTree are checked");
 	}
 
 	parser.option("max-events", &fNumberOfEvents, true)
-		.description("Maximum number of (midas, lst, or tdr) events read").default_value(0);
+		.description("Maximum number of (midas, lst, rlmd, or tdr) events read").default_value(0);
 
    // look for any arguments ending with .info, pass to parser.
-   for(int i = 0; i < argc; i++) {
+   for(int i = 1; i < argc; i++) {
       std::string filename = argv[i];
       if(DetermineFileType(filename) == kFileType::CONFIG_FILE) {
          try {
@@ -434,6 +443,9 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const
 	if(ext == "lst") {
       return kFileType::LST_FILE;
    }
+	if(ext == "rlmd") {
+      return kFileType::RLMD_FILE;
+   }
 	if(ext == "evt") {
       return kFileType::NSCL_EVT;
    }
@@ -497,6 +509,8 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
    case kFileType::MIDAS_FILE: fInputFiles.push_back(filename); return true;
 
    case kFileType::LST_FILE: fInputFiles.push_back(filename); return true;
+
+   case kFileType::RLMD_FILE: fInputFiles.push_back(filename); return true;
 
    case kFileType::TDR_FILE: fInputFiles.push_back(filename); return true;
 

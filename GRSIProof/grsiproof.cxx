@@ -24,6 +24,7 @@
 #include <vector>
 #include <string>
 #include <signal.h>
+#include <libgen.h>
 
 TGRSIProof* gGRSIProof;
 TGRSIOptions* gGRSIOpt;
@@ -80,7 +81,11 @@ void Analyze(const char* tree_type)
    for(const auto& macro_it : gGRSIOpt->MacroInputFiles()) {
       std::cout<<"Currently Running: "<<(Form("%s", macro_it.c_str()))<<std::endl;
 		try {
-			proof_chain->Process(Form("%s+", macro_it.c_str()));
+			if(gGRSIOpt->NumberOfEvents() == 0) {
+				proof_chain->Process(Form("%s+", macro_it.c_str()));
+			} else {
+				proof_chain->Process(Form("%s+", macro_it.c_str()), "", gGRSIOpt->NumberOfEvents());
+			}
 		} catch(TGRSIMapException<std::string>& e) {
 			std::cout<<DRED<<"Exception when processing chain: "<<e.detail()<<RESET_COLOR<<std::endl;
 			throw e;
@@ -111,7 +116,7 @@ void AtExitHandler()
 
 			std::string firstMacro;
 			if(!gGRSIOpt->MacroInputFiles().empty()) firstMacro = gGRSIOpt->MacroInputFiles().at(0);
-			firstMacro = basename(firstMacro.c_str()); // remove path
+			firstMacro = basename(const_cast<char*>(firstMacro.c_str())); // remove path
 			firstMacro = firstMacro.substr(0, firstMacro.find_last_of('.')); // remove extension
 
 			if(runNumber != 0 && subRunNumber != -1) {
@@ -282,9 +287,14 @@ int main(int argc, char** argv)
 	}
 	gGRSIProof->AddInput(new TNamed("ParserLibrary", library.c_str()));
 
-	Analyze("FragmentTree");
-	Analyze("AnalysisTree");
-	Analyze("Lst2RootTree");
+	if(gGRSIOpt->TreeName().empty()) {
+		Analyze("FragmentTree");
+		Analyze("AnalysisTree");
+		Analyze("Lst2RootTree");
+	} else {
+		std::cout<<"Running selector on tree '"<<gGRSIOpt->TreeName()<<"'"<<std::endl;
+		Analyze(gGRSIOpt->TreeName().c_str());
+	}
 
 	AtExitHandler();
 

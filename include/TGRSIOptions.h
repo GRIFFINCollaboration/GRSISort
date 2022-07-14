@@ -111,6 +111,7 @@ public:
 
 	size_t NumberOfEvents() const { return fNumberOfEvents; }
 
+	bool IgnoreMissingChannel() const { return fIgnoreMissingChannel; }
 	bool SkipInputSort() const { return fSkipInputSort; }
 	int  SortDepth() const { return fSortDepth; }
 
@@ -129,6 +130,7 @@ public:
 	// Proof only
 	int  GetMaxWorkers() const { return fMaxWorkers; }
 	bool SelectorOnly() const { return fSelectorOnly; }
+	std::string TreeName() const { return fTreeName; }
 
 	void SuppressErrors(bool suppress) { fSuppressErrors = suppress; }
 
@@ -206,6 +208,7 @@ private:
 
 	size_t fNumberOfEvents;         ///< Number of events, fragments, etc. to process (0 - all)
 
+	bool fIgnoreMissingChannel; ///< Flag to completely ignore missing channels
 	bool fSkipInputSort; ///< Flag to sort on time or triggers
 	int  fSortDepth;     ///< Size of Q that stores fragments to be built into events
 
@@ -223,8 +226,9 @@ private:
 	bool         fLongFileDescription;
 
 	// Proof only
-	int  fMaxWorkers;   ///< Max workers used in grsiproof
-	bool fSelectorOnly; ///< Flag to turn PROOF off in grsiproof
+	int         fMaxWorkers;   ///< Max workers used in grsiproof
+	bool        fSelectorOnly; ///< Flag to turn PROOF off in grsiproof
+	std::string fTreeName;     ///< Name of tree to be analyzed (default is empty, i.e. FragmentTree, AnalysisTree, and Lst2RootTree are checked)
 
 	// shared object libraries
 	std::string fParserLibrary; ///< location of shared object library for data parser and files

@@ -1,4 +1,4 @@
-.PHONY: clean all extras docs doxygen grsirc complete parsers GRSIData ILLData iThembaData
+.PHONY: clean all extras docs doxygen grsirc complete parsers GRSIData ILLData iThembaData HILData
 .SECONDARY:
 .SECONDEXPANSION:
 
@@ -111,7 +111,7 @@ EXECUTABLES     := $(patsubst %.o,bin/%,$(notdir $(EXE_O_FILES))) bin/grsisort
 HISTOGRAM_SO    := $(patsubst histos/%.$(SRC_SUFFIX),lib/lib%.so,$(wildcard histos/*.$(SRC_SUFFIX)))
 FILTER_SO    := $(patsubst filters/%.$(SRC_SUFFIX),lib/lib%.so,$(wildcard filters/*.$(SRC_SUFFIX)))
 
-PARSER_LIBRARIES := $(shell ls -d GRSIData ILLData iThembaData 2> /dev/null)
+PARSER_LIBRARIES := $(shell ls -d GRSIData ILLData iThembaData HILData 2> /dev/null)
 
 ifdef VERBOSE
 run_and_test = @echo $(1) && $(1);
@@ -241,6 +241,9 @@ ILLData: all
 
 iThembaData: all
 	@$(MAKE) -C iThembaData
+
+HILData: all
+	@$(MAKE) -C HILData
 
 clean:
 	@printf "\n$(WARN_COLOR)Cleaning up$(NO_COLOR)\n\n"
