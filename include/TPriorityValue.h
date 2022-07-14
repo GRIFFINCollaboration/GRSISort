@@ -157,7 +157,7 @@ class TPriorityValue<std::vector<T> > {
 public:
 	// we only have specific (const) functions to access the vectors data
 	const T& at(size_t n) const { return fValue.at(n); }
-	typename std::vector<T>::const_iterator back() const { return fValue.back(); }
+	const T& back() const { return fValue.back(); }
 	typename std::vector<T>::const_iterator begin() const { return fValue.begin(); }
 	typename std::vector<T>::const_iterator cbegin() const { return fValue.cbegin(); }
 	typename std::vector<T>::const_iterator cend() const { return fValue.cend(); }
@@ -165,14 +165,18 @@ public:
 	typename std::vector<T>::const_reverse_iterator crend() const { return fValue.crend(); }
 	bool empty() const { return fValue.empty(); }
 	typename std::vector<T>::const_iterator end() const { return fValue.end(); }
-	typename std::vector<T>::const_iterator front() const { return fValue.front(); }
+	const T& front() const { return fValue.front(); }
 	size_t max_size() const { return fValue.max_size(); }
+	//T& operator[](size_t n) { return fValue[n]; }
 	const T& operator[](size_t n) const { return fValue[n]; }
 	typename std::vector<T>::const_reverse_iterator rbegin() const { return fValue.rbegin(); }
 	typename std::vector<T>::const_reverse_iterator rend() const { return fValue.rend(); }
 	void reserve(size_t n) { fValue.reserve(n); }
 	void shrink_to_fit() { fValue.shrink_to_fit(); }
 	size_t size() const { return fValue.size(); }
+	void resize(size_t count) { fValue.resize(count); }
+	void resize(size_t count, const T& value) { fValue.resize(count, value); }
+
 	
 	// copy-paste of original class (with 'T ' replace by 'std::vector<T> ', 'T>' by 'std::vector<T> >', 'T& ' by 'std::vector<T>& ', and 'T* ' by 'std::vector<T>* '):
 	// minus the boolean conversion operator

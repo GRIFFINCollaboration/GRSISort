@@ -251,7 +251,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 	parser.option("waveform-fitting", &fAnalysisOptions->fWaveformFitting, false)
 		.description("Fit waveforms using SFU algorithms").colour(DCYAN);
 	parser.option("is-correcting-cross-talk", &fAnalysisOptions->fIsCorrectingCrossTalk, false)
-		.takes_argument().description("Correct cross-talk").colour(DCYAN);
+		.description("Correct cross-talk").colour(DCYAN);
 
 	// program specific options
 	if(program.compare("grsisort") == 0) {
