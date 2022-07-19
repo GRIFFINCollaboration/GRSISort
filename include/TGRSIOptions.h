@@ -131,6 +131,11 @@ public:
 	int  GetMaxWorkers() const { return fMaxWorkers; }
 	bool SelectorOnly() const { return fSelectorOnly; }
 	std::string TreeName() const { return fTreeName; }
+   bool AverageRateEstimation() const { return fAverageRateEstimation; }
+   bool ParallelUnzip() const { return fParallelUnzip; }
+   int CacheSize() const { return fCacheSize; }
+   int Submergers() const { return fSubmergers; }
+   bool ProofStats() const { return fProofStats; }
 
 	void SuppressErrors(bool suppress) { fSuppressErrors = suppress; }
 
@@ -229,6 +234,11 @@ private:
 	int         fMaxWorkers;   ///< Max workers used in grsiproof
 	bool        fSelectorOnly; ///< Flag to turn PROOF off in grsiproof
 	std::string fTreeName;     ///< Name of tree to be analyzed (default is empty, i.e. FragmentTree, AnalysisTree, and Lst2RootTree are checked)
+   bool        fAverageRateEstimation; ///< enable average rate estimation
+   bool        fParallelUnzip;         ///< enable use of parallel unzipping
+   int         fCacheSize;             ///< set tree cache size, default is -1 (off)
+   int         fSubmergers;            ///< set number of sub-mergers (0 = automatic), default is -1 (off) 
+   bool        fProofStats;            ///< enable proof stats
 
 	// shared object libraries
 	std::string fParserLibrary; ///< location of shared object library for data parser and files
