@@ -265,6 +265,46 @@ int main(int argc, char** argv)
 
 	startedProof = true;
 
+	// set some proof parameters	
+	// average rate, can also be set via Proof.RateEstimation in gEnv ("current" or "average)
+   if(gGRSIOpt->AverageRateEstimation()) gGRSIProof->SetParameter("PROOF_RateEstimation", "average");
+
+   // Parallel unzip, can also be set via ProofPlayer.UseParallelUnzip
+   if(gGRSIOpt->ParallelUnzip()) {
+      gGRSIProof->SetParameter("PROOF_UseParallelUnzip", 1);
+   } else {
+      gGRSIProof->SetParameter("PROOF_UseParallelUnzip", 0);
+   }
+
+   // Tree cache
+   if(gGRSIOpt->CacheSize() >= 0) {
+      if(gGRSIOpt->CacheSize() == 0) {
+         gGRSIProof->SetParameter("PROOF_UseTreeCache", 0);
+      } else {
+         gGRSIProof->SetParameter("PROOF_UseTreeCache", 1);
+         gGRSIProof->SetParameter("PROOF_CacheSize", gGRSIOpt->CacheSize());
+      }
+   } else {
+      // Use defaults
+      gGRSIProof->DeleteParameters("PROOF_UseTreeCache");
+      gGRSIProof->DeleteParameters("PROOF_CacheSize");
+   }
+
+   // Enable submergers, if required
+   if(gGRSIOpt->Submergers() >= 0) {
+      gGRSIProof->SetParameter("PROOF_UseMergers", gGRSIOpt->Submergers());
+   } else {
+      gGRSIProof->DeleteParameters("PROOF_UseMergers");
+   }
+
+   // enable perfomance output
+   if(gGRSIOpt->ProofStats()) {
+      gGRSIProof->SetParameter("PROOF_StatsHist", "");
+      gGRSIProof->SetParameter("PROOF_StatsTrace", "");
+      gGRSIProof->SetParameter("PROOF_RateTrace", "");
+      gGRSIProof->SetParameter("PROOF_SlaveStatsTrace", "");
+   }
+
 	gGRSIProof->SetBit(TProof::kUsingSessionGui);
 	gGRSIProof->AddEnvVar("GRSISYS", pPath);
 	gInterpreter->AddIncludePath(Form("%s/include", pPath));
