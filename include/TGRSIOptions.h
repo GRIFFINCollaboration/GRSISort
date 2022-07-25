@@ -48,6 +48,7 @@ public:
 	const std::vector<std::string>& InputCutFiles() { return fInputCutFiles; }
 	const std::vector<std::string>& WinInputFiles() { return fInputWinFiles; }
 	const std::vector<std::string>& MacroInputFiles() { return fMacroFiles; }
+	const std::string& DataFrameLibrary() { return fDataFrameLibrary; }
 
 	const std::string& OutputFragmentFile() { return fOutputFragmentFile; }
 	const std::string& OutputAnalysisFile() { return fOutputAnalysisFile; }
@@ -150,6 +151,7 @@ private:
 	std::vector<std::string> fInputOdbFiles;   ///< A list of the input odb files
 	std::vector<std::string> fExternalRunInfo; ///< A list of the input run info files
 	std::vector<std::string> fMacroFiles;      ///< A list of the input macro (.C) files
+	std::string              fDataFrameLibrary;///< library (or .cxx file) for dataframe processing (used with grsiframe)
 
 	std::vector<std::string> fInputCutFiles;  ///< A list of input cut files
 	std::vector<std::string> fInputValFiles;  ///< A list of the input GValue files

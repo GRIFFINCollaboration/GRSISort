@@ -17,6 +17,7 @@ enum class kFileType {
 	TDR_FILE,
    ROOT_DATA,
    ROOT_MACRO,
+	DATAFRAME,
    CALIBRATED,
    GVALUE,
    PRESETWINDOW,

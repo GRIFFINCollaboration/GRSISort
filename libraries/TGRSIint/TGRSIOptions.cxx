@@ -9,6 +9,7 @@
 #include "TSystem.h"
 
 #include "Globals.h"
+#include "FullPath.h"
 #include "ArgParser.h"
 #include "DynamicLibrary.h"
 #include "TGRSIUtilities.h"
@@ -44,6 +45,7 @@ void TGRSIOptions::Clear(Option_t*)
    fInputOdbFiles.clear();
    fExternalRunInfo.clear();
    fMacroFiles.clear();
+	fDataFrameLibrary = "";
 
    fInputCutFiles.clear();
    fInputValFiles.clear();
@@ -328,7 +330,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 
 		parser.option("write-clients", &fNumberOfClients, true)
 			.description("Number of clients used to write analysis tree").default_value(2);
-	} else if(program.compare("grsiproof") == 0) {
+	} else if(program.compare("grsiproof") == 0 || program.compare("grsiframe") == 0) {
 		// Proof only parser options
 		parser.option("max-workers", &fMaxWorkers, true)
 			.description("Max number of nodes to use when running a grsiproof session")
@@ -455,6 +457,9 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const
 	if(ext == "root") {
       return kFileType::ROOT_DATA;
    }
+	if((ext == "cxx")) {
+      return kFileType::DATAFRAME;
+   }
 	if((ext == "c") || (ext == "C") || (ext == "c+") || (ext == "C+") || (ext == "c++") || (ext == "C++")) {
       return kFileType::ROOT_MACRO;
    }
@@ -506,13 +511,10 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
    case kFileType::NSCL_EVT:
    case kFileType::GRETINA_MODE2:
    case kFileType::GRETINA_MODE3:
+   case kFileType::LST_FILE:
+   case kFileType::RLMD_FILE:
+   case kFileType::TDR_FILE:
    case kFileType::MIDAS_FILE: fInputFiles.push_back(filename); return true;
-
-   case kFileType::LST_FILE: fInputFiles.push_back(filename); return true;
-
-   case kFileType::RLMD_FILE: fInputFiles.push_back(filename); return true;
-
-   case kFileType::TDR_FILE: fInputFiles.push_back(filename); return true;
 
    case kFileType::ROOT_DATA: fInputRootFiles.push_back(filename); return true;
 
@@ -520,27 +522,34 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
 
    case kFileType::CALIBRATED: fInputCalFiles.push_back(filename); return true;
 
-   case kFileType::COMPILED_SHARED_LIBRARY: {
+   case kFileType::DATAFRAME: fDataFrameLibrary = full_path(filename); return true;
 
+   case kFileType::COMPILED_SHARED_LIBRARY: {
       bool           used = false;
-      DynamicLibrary lib(filename);
+		// need absolute path not relative path in case the current working directory is not in LD_LIBRARY_PATH
+		std::string fullFilename = full_path(filename);
+      DynamicLibrary lib(fullFilename);
       if(lib.GetSymbol("MakeFragmentHistograms") != nullptr) {
-         fFragmentHistogramLib = filename;
+         fFragmentHistogramLib = fullFilename;
          used                  = true;
       }
       if(lib.GetSymbol("MakeAnalysisHistograms") != nullptr) {
-         fAnalysisHistogramLib = filename;
+         fAnalysisHistogramLib = fullFilename;
          used                  = true;
       }
       if(lib.GetSymbol("CreateParser") != nullptr && lib.GetSymbol("DestroyParser") != nullptr &&
 			lib.GetSymbol("CreateFile")   != nullptr && lib.GetSymbol("DestroyFile")   != nullptr) {
-         fParserLibrary        = filename;
+         fParserLibrary        = fullFilename;
+         used                  = true;
+      }
+      if(lib.GetSymbol("CreateHelper") != nullptr && lib.GetSymbol("DestroyHelper") != nullptr) {
+         fDataFrameLibrary     = fullFilename;
          used                  = true;
       }
       if(!used) {
-         std::cerr<<filename<<" did not contain MakeFragmentHistograms() or MakeAnalysisHistograms()"<<std::endl;
+         std::cerr<<fullFilename<<" did not contain MakeFragmentHistograms or MakeAnalysisHistograms or CreateParser and others or CreateHelper and DestroyHelper"<<std::endl;
       }
-      return true;
+      return used;
    }
 
    case kFileType::GVALUE: fInputValFiles.push_back(filename); return true;
