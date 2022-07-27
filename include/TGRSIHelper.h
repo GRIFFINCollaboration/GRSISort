@@ -49,6 +49,15 @@ public:
 		}
 		TH1::AddDirectory(true); // restores old behaviour
 	}
+	/// Virtual helper function that the user uses to create their histograms
+	virtual void CreateHistograms(unsigned int) {
+		std::cout<<this<<" - "<<__PRETTY_FUNCTION__<<", "<<Prefix()<<": This function should not get called, the user's code should replace it. Not creating any histograms!"<<std::endl;
+	}
+	/// This method will call the Book action on the provided dataframe
+	virtual ROOT::RDF::RResultPtr<TList> Book(ROOT::RDataFrame*) {
+		std::cout<<this<<" - "<<__PRETTY_FUNCTION__<<", "<<Prefix()<<": This function should not get called, the user's code should replace it. Returning empty list!"<<std::endl; 
+		return ROOT::RDF::RResultPtr<TList>();
+	}
 
    TGRSIHelper(TGRSIHelper &&) = default;
    TGRSIHelper(const TGRSIHelper &) = delete;
