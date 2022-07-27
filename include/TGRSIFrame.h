@@ -7,7 +7,7 @@
 
 #include "TGRSIOptions.h"
 #include "TPPG.h"
-#include "TGRSIHelper.h"
+#include "ROOT/RDataFrame.hxx"
 
 class TGRSIFrame {
 public:

@@ -111,9 +111,6 @@ void TGRSIFrame::Run()
 			++counter;
          });
 
-	// this print doesn't work, as referencing *entries makes the progress bar print ...
-	//std::cout<<"Processing "<<*entries<<" entries in dataframe"<<std::endl;
-
 	if(fOutput != nullptr) {
 		fOutput->Write();
 	} else {

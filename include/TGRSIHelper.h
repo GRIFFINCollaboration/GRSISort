@@ -1,7 +1,7 @@
 #ifndef TGRSIHELPER_H
 #define TGRSIHELPER_H
 #include "ROOT/RDataFrame.hxx"
-#include "ROOT/RDF/ActionHelpers.hxx"
+#include "TObject.h"
 #include "TList.h"
 #include "TH1.h"
 #include "TH2.h"
@@ -11,12 +11,7 @@
 #include "TRunInfo.h"
 #include "TGRSIMap.h"
 
-// Templates may only be implemented in the header, that's why all the code is here!
-
-// This is a custom action which respects a well defined interface. It supports parallelism,
-// in the sense that it behaves correctly if implicit multi threading is enabled.
-// Note the plural: in presence of a MT execution, internally more than a single TList is created.
-class TGRSIHelper : public ROOT::Detail::RDF::RActionImpl<TGRSIHelper> {
+class TGRSIHelper : public TObject {
 private:
 protected:
    std::vector<std::shared_ptr<TList>> fLists;   //!<! one list per data processing slot to hold all histograms
@@ -31,10 +26,10 @@ public:
    /// This type is a requirement for every helper.
    using Result_t = TList;
  
-   /// This constructor builds the vectors of TLists and maps for 1D- and 2D-histograms.
+   TGRSIHelper(TPPG* ppg) : fPpg(ppg) {}
+   /// This function builds the vectors of TLists and maps for 1D- and 2D-histograms.
 	/// It calls the overloaded CreateHistograms functions in which the user can define
 	/// their histograms. Then it adds all those histograms to the list of the corresponding slot.
-   TGRSIHelper(TPPG* ppg) : fPpg(ppg) {}
 	virtual void Setup() {
 		std::cout<<__PRETTY_FUNCTION__<<" calling setup of TGRSIHelper"<<std::endl;
 		const auto nSlots = ROOT::IsImplicitMTEnabled() ? ROOT::GetThreadPoolSize() : 1;
@@ -60,46 +55,12 @@ public:
    std::shared_ptr<TList> GetResultPtr() const { return fLists[0]; }
    void InitTask(TTreeReader *, unsigned int) {}
 	void Initialize() {} // required method, gets called once before starting the event loop
-   /// This is a required method executed at every entry and calls FillHistograms 
-	template<typename... Args>
-   void Exec(unsigned int slot, Args... args) {
-		try {
-			FillHistograms(slot, args...);
-		} catch(TGRSIMapException<std::string>& e) {
-			std::cout<<DRED<<"Exception in "<<__PRETTY_FUNCTION__<<": "<<e.detail()<<RESET_COLOR<<std::endl;
-			throw e;
-		}
-	}
-	/// This method will call the Book action on the provided dataframe
-	virtual ROOT::RDF::RResultPtr<TList> Book(ROOT::RDataFrame*) {
-		std::cout<<this<<" - "<<__PRETTY_FUNCTION__<<", "<<Prefix()<<": This function should not get called, the user's code should replace it. Returning empty list!"<<std::endl; 
-		return ROOT::RDF::RResultPtr<TList>();
-	}
-	/// Virtual helper function that the user uses to create their histograms
-	virtual void CreateHistograms(unsigned int) {
-		std::cout<<this<<" - "<<__PRETTY_FUNCTION__<<", "<<Prefix()<<": This function should not get called, the user's code should replace it. Not creating any histograms!"<<std::endl; 
-	}
-	/// Helper function that the user uses to fill their histograms
-	template<typename... Args>
-   void FillHistograms(unsigned int slot, Args... args) {
-		if(!fWarned[slot]) {
-			std::cout<<this<<" - "<<__PRETTY_FUNCTION__<<", "<<Prefix()<<": This function should not get called, the user's code should replace it. Not filling any histograms!"<<std::endl; 
-			fWarned[slot] = true;
-		}
-	}
    /// This required method is called at the end of the event loop. It is used to merge all the internal TLists which
    /// were used in each of the data processing slots.
    void Finalize() {
 		std::cout<<std::endl<<__PRETTY_FUNCTION__<<" calling Finalize of TGRSIHelper - "<<Prefix()<<std::endl;
 		auto &res = fLists[0];
-		//std::cout<<"Using first list: ";
-		//fLists[0]->Print();
-		//std::cout<<std::endl;
 		for (auto slot : ROOT::TSeqU(1, fLists.size())) {
-			//std::cout<<"Merging with: ";
-			//fLists[slot]->Print();
-			//std::cout<<std::endl;
-
 			for(const auto&& obj : *res) {
 				if(obj->InheritsFrom(TH1::Class())) {
 					if(fLists[slot]->FindObject(obj->GetName()) != nullptr) {
