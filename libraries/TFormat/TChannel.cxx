@@ -1253,8 +1253,8 @@ int TChannel::WriteToRoot(TFile* fileptr)
 	if(oldoption == "READ") {
 		fileptr->ReOpen("UPDATE");
 	}
-	if(gDirectory) { // we don't compare to nullptr here, as ROOT >= 6.24.00 uses the TDirectoryAtomicAdapter structure with a bool() operator
-		std::cout<<"No file opened to write to."<<std::endl;
+	if(!gDirectory) { // we don't compare to nullptr here, as ROOT >= 6.24.00 uses the TDirectoryAtomicAdapter structure with a bool() operator
+		std::cout<<"No file opened to write TChannel to."<<std::endl;
 	}
 	TIter iter(gDirectory->GetListOfKeys());
 

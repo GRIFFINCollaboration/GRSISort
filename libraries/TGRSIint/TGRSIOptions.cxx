@@ -595,7 +595,7 @@ bool TGRSIOptions::WriteToFile(TFile* file)
       file->ReOpen("UPDATE");
    }
    if(!gDirectory) { // we don't compare to nullptr here, as ROOT >= 6.24.00 uses the TDirectoryAtomicAdapter structure with a bool() operator
-		std::cout<<"No file opened to write to."<<std::endl;
+		std::cout<<"No file opened to write TGRSIOptions to."<<std::endl;
       success = false;
    } else {
       Get()->Write("GRSIOptions", TObject::kOverwrite);
