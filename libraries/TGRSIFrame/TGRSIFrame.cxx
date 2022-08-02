@@ -58,20 +58,38 @@ TGRSIFrame::TGRSIFrame()
 
 	std::cout<<"Looped over "<<chain->GetNtrees()<<"/"<<fOptions->RootInputFiles().size()<<" files and got:"<<std::endl;
 	TRunInfo::Get()->Print();
-	fPpg->Print();
+	fPpg->Print("odb");
 
 	fTotalEntries = chain->GetEntries();
 
-	TRunInfo::Get()->Print();
-
 	fDataFrame = new ROOT::RDataFrame(*chain);
+
+	// create an input list to pass to the helper
+	auto inputList = new TList;
+	inputList->Add(fPpg);
+	inputList->Add(TRunInfo::Get());
+	inputList->Add(fOptions->AnalysisOptions());
+	int i = 0;
+   for(const auto& valFile : fOptions->ValInputFiles()) {
+      inputList->Add(new TNamed(Form("valFile%d", i++), valFile.c_str()));
+   }
+   i = 0;
+   for(const auto& calFile : fOptions->CalInputFiles()) {
+      inputList->Add(new TNamed(Form("calFile%d", i++), calFile.c_str()));
+   }
+   i = 0;
+   for(const auto& cutFile : fOptions->InputCutFiles()) {
+      inputList->Add(new TNamed(Form("cutFile%d", i++), cutFile.c_str()));
+   }
 
 	/// Try to load an external library with the correct function in it.
 	/// If that library does not exist, try to compile it.
 	/// To handle all that we use the class TDataFrameLibrary (very similar to TParserLibrary)
-	auto helper = TDataFrameLibrary::Get()->CreateHelper(fPpg);
+	auto helper = TDataFrameLibrary::Get()->CreateHelper(inputList);
 	fOutputPrefix = helper->Prefix();
-	fOutput = helper->Book(fDataFrame); // this actually moves the helper to the data frame, so from here on "helper" doesn't refer to the object we created anymore
+	// this actually moves the helper to the data frame, so from here on "helper" doesn't refer to the object we created anymore
+	// aka don't use helper after this!
+	fOutput = helper->Book(fDataFrame);
 }
 
 void TGRSIFrame::Run()
@@ -107,12 +125,20 @@ void TGRSIFrame::Run()
 			static int counter = 1;
          progressBar.push_back('#');
          // re-print the line with the progress bar
-         std::cout<<"\r["<<std::left<<std::setw(barWidth)<<progressBar<<' '<<(counter*everyN*100)/fTotalEntries<<" %]"<<std::flush;
+         std::cout<<"\r["<<std::left<<std::setw(barWidth)<<progressBar<<' '<<std::setw(3)<<(counter*everyN*100)/fTotalEntries<<" %]"<<std::flush;
 			++counter;
          });
 
 	if(fOutput != nullptr) {
-		fOutput->Write();
+		// accessing the result from Book causes the actual processing of the helper
+		// so we try and catch any exception
+		try {
+			fOutput->Write();
+         std::cout<<"\r["<<std::left<<std::setw(barWidth)<<progressBar<<' '<<"100 %]"<<std::flush;
+		} catch(TGRSIMapException<std::string>& e) {
+			std::cout<<DRED<<"Exception in "<<__PRETTY_FUNCTION__<<": "<<e.detail()<<RESET_COLOR<<std::endl;
+			throw e;
+		}
 	} else {
 		std::cout<<"Error, output list is nullptr!"<<std::endl;
 	}

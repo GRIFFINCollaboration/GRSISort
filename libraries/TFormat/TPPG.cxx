@@ -224,6 +224,9 @@ void TPPG::Print(Option_t* opt) const
 			}
 		}
    }
+   if(TString(opt).Contains("odb", TString::ECaseCompare::kIgnoreCase)) {
+		return;
+	}
    if(MapIsEmpty()) {
       std::cout<<"Empty"<<std::endl;
       return;

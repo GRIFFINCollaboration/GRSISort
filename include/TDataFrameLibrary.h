@@ -3,9 +3,10 @@
 
 #include <string>
 
+#include "TList.h"
+
 #include "TSingleton.h"
 #include "TGRSIHelper.h"
-#include "TPPG.h"
 
 class TDataFrameLibrary : public TSingleton<TDataFrameLibrary> {
 public:
@@ -15,7 +16,7 @@ public:
 
 	void Load();                                 ///< if necessary loads shared object library and sets/initializes all other functions
 
-	TGRSIHelper* CreateHelper(TPPG* ppg)    { Load(); return fCreateHelper(ppg); }  ///< function to open library specific data parser
+	TGRSIHelper* CreateHelper(TList* list)  { Load(); return fCreateHelper(list); }  ///< function to open library specific data parser
 	void DestroyHelper(TGRSIHelper* parser) { Load(); fDestroyHelper(parser); }  ///< function to destroy library specific data parser
 
 private:
@@ -24,7 +25,7 @@ private:
 
 	void* fHandle;                                      ///< handle for shared object library
 
-	TGRSIHelper*    (*fCreateHelper)(TPPG*);
+	TGRSIHelper*    (*fCreateHelper)(TList*);
 	void            (*fDestroyHelper)(TGRSIHelper*);
 
 	/// \cond CLASSIMP

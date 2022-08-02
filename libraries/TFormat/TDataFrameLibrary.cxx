@@ -75,7 +75,7 @@ void TDataFrameLibrary::Load() {
 	// try and get constructor and destructor functions from opened library
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-function-type"
-	fCreateHelper     = reinterpret_cast<TGRSIHelper* (*)(TPPG*)>(dlsym(fHandle, "CreateHelper"));
+	fCreateHelper     = reinterpret_cast<TGRSIHelper* (*)(TList*)>(dlsym(fHandle, "CreateHelper"));
 	fDestroyHelper    = reinterpret_cast<void (*)(TGRSIHelper*)>(dlsym(fHandle, "DestroyHelper"));
 #pragma GCC diagnostic pop
 
