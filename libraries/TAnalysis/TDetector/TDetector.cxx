@@ -54,6 +54,7 @@ void TDetector::Print(std::ostream& out) const
 {
 	/// Print detector to stream out. Iterates over hits and prints them.
 	std::ostringstream str;
+	str<<"TDetector "<<this<<":"<<std::endl;
 	for(auto hit : fHits) {
 		hit->Print(str);
 	}

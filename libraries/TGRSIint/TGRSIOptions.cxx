@@ -120,6 +120,11 @@ void TGRSIOptions::Clear(Option_t*)
    fMaxWorkers   = -1;
    fSelectorOnly = false;
 	fTreeName.clear();
+   fAverageRateEstimation = false;
+   fParallelUnzip = false;
+   fCacheSize = -1;
+   fSubmergers = -1;
+   fProofStats = false;
 
    fHelp          = false;
 
@@ -180,6 +185,11 @@ void TGRSIOptions::Print(Option_t*) const
             <<"fMaxWorkers: "<<fMaxWorkers<<std::endl
             <<"fSelectorOnly: "<<fSelectorOnly<<std::endl
 				<<"fTreeName: "<<fTreeName<<std::endl
+				<<"fAverageRateEstimation: "<<fAverageRateEstimation<<std::endl
+   			<<"fParallelUnzip: "<<fParallelUnzip<<std::endl
+   			<<"fCacheSize: "<<fCacheSize<<std::endl
+   			<<"fSubmergers: "<<fSubmergers<<std::endl
+   			<<"fProofStats: "<<fProofStats<<std::endl
 				<<std::endl
 				<<"fHelp: "<<fHelp<<std::endl
 				<<std::endl
@@ -253,7 +263,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 	parser.option("waveform-fitting", &fAnalysisOptions->fWaveformFitting, false)
 		.description("Fit waveforms using SFU algorithms").colour(DCYAN);
 	parser.option("is-correcting-cross-talk", &fAnalysisOptions->fIsCorrectingCrossTalk, false)
-		.takes_argument().description("Correct cross-talk").colour(DCYAN);
+		.description("Correct cross-talk").colour(DCYAN);
 
 	// program specific options
 	if(program.compare("grsisort") == 0) {
@@ -342,6 +352,16 @@ void TGRSIOptions::Load(int argc, char** argv)
 
 		parser.option("tree-name", &fTreeName, true)
 			.description("Name of tree to be proofed, default is empty, i.e. FragmentTree, AnalysisTree, and Lst2RootTree are checked");
+		parser.option("average-rate", &fAverageRateEstimation, true)
+			.description("use average rate instead of current rate");
+		parser.option("parallel-unzip", &fParallelUnzip, true)
+			.description("use parallel unzipping of input files");
+		parser.option("cache-size", &fCacheSize, true)
+			.description("set tree cache size (default = -1 = off)");
+		parser.option("sub-mergers", &fSubmergers, true)
+			.description("use sub mergers to merge result from workers (default = -1 = off, 0 = automatic number of mergers)");
+		parser.option("proof-stats", &fProofStats, true)
+			.description("enable proof stats");
 	}
 
 	parser.option("max-events", &fNumberOfEvents, true)

@@ -1621,7 +1621,7 @@ void TSourceCalibration::UpdateChannel(const int& channelId)
 		if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<": done"<<std::endl;
 		return;
 	}
-	channel->SetENGCoefficients(TPriorityValue<std::vector<Float_t> >(parameters, EPriority::kForce));
+	channel->SetENGCoefficients(parameters);
 	channel->DestroyEnergyNonlinearity();
 	double* x = fFinalData[channelId]->GetX();
 	double* y = fFinalData[channelId]->GetY();
