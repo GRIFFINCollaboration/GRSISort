@@ -32,6 +32,8 @@ public:
 	// this function gets called for every single event and fills the histograms
 	// TODO: edit the function arguments to match the detectors you want to use!
 	void Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo, TZeroDegree& zds);
+	// this function is optional and is called after the output lists off all slots/workers have been merged
+	void EndOfSort(std::shared_ptr<TList> list) override;
 
 	// these are needed to make the compiler happy
 	using ROOT::Detail::RDF::RActionImpl<ExampleEventHelper>::CallFinalizeTask;
