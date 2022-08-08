@@ -122,9 +122,14 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
 	}
 	std::cout<<DCYAN<<"----------  starting compilation of user code  ----------"<<RESET_COLOR<<std::endl;
 	// TODO: replace --GRSIData-flags with something based on which data parser library we've loaded
+	std::string parserLibraryPath = TGRSIOptions::Get()->ParserLibrary();
+	// this should look something like $GRSISYS/<library name>/lib/lib<library name>.so
+	// so we can simply take everything between "last '/' + 3" and "last '.'" to be the name?
+	std::string parserLibraryName = parserLibraryPath.substr(parserLibraryPath.find_last_of('/')+4, parserLibraryPath.find_last_of('.')-parserLibraryPath.find_last_of('/')-4);
+	std::cout<<"From parser library path '"<<parserLibraryPath<<"' we got library name '"<<parserLibraryName<<"'"<<std::endl;
 	std::string objectFile = path.replace(dot, std::string::npos, ".o");
 	std::stringstream command;
-	command<<"g++ -c -fPIC -g `grsi-config --cflags --GRSIData-cflags` `root-config --cflags --glibs` -I"<<includePath<<" -o "<<objectFile<<" "<<sourceFile<<std::endl;
+	command<<"g++ -c -fPIC -g `grsi-config --cflags --"<<parserLibraryName<<"-cflags` `root-config --cflags --glibs` -I"<<includePath<<" -o "<<objectFile<<" "<<sourceFile<<std::endl;
 	if(std::system(command.str().c_str()) != 0) {
 		std::stringstream str;
 		str<<"Unable to compile source file "<<sourceFile<<" using '"<<command.str()<<"'"<<std::endl;
