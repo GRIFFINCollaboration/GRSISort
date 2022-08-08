@@ -24,7 +24,6 @@ public:
 	}
 
 	ROOT::RDF::RResultPtr<TList> Book(ROOT::RDataFrame* d) override {
-		std::cout<<this<<": "<<__PRETTY_FUNCTION__<<std::endl;
 		// TODO: edit the template specification and branch names to match the detectors you want to use!
 		return d->Book<TGriffin, TGriffinBgo, TZeroDegree>(std::move(*this), {"TGriffin", "TGriffinBgo", "TZeroDegree"});
 	}

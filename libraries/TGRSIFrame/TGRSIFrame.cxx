@@ -99,8 +99,8 @@ void TGRSIFrame::Run()
 	Int_t runNumber    = runInfo->RunNumber();
    Int_t subRunNumber = runInfo->SubRunNumber();
 
+	// get output file name
 	std::string outputFileName;
-	runInfo->Print();
 	std::cout<<"Using run number "<<runNumber<<", sub run number "<<subRunNumber<<", first/last run number "<<runInfo->FirstRunNumber()<<"/"<<runInfo->LastRunNumber()<<", first/last sub run number"<<runInfo->FirstSubRunNumber()<<"/"<<runInfo->LastSubRunNumber()<<", and prefix "<<fOutputPrefix<<std::endl;
    if(runNumber != 0 && subRunNumber != -1) {
       // both run and subrun number set => single file processed
@@ -112,9 +112,11 @@ void TGRSIFrame::Run()
       // multiple runs
       outputFileName = Form("%s%05d-%05d.root", fOutputPrefix.c_str(), runInfo->FirstRunNumber(), runInfo->LastRunNumber());
    }
+	std::cout<<"Writing to "<<outputFileName<<std::endl;
 
 	TFile outputFile(outputFileName.c_str(), "recreate");
 
+	// create a progress bar with percentage
    auto entries = fDataFrame->Count();
    std::string progressBar;
    std::mutex barMutex; // Only one thread at a time can lock a mutex. Let's use this to avoid concurrent printing.

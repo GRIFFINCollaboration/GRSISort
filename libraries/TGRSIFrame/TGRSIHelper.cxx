@@ -80,11 +80,27 @@ void TGRSIHelper::Setup() {
 		fLists.emplace_back(std::make_shared<TList>());
 		fH1.emplace_back(TGRSIMap<std::string, TH1*>());
 		fH2.emplace_back(TGRSIMap<std::string, TH2*>());
+		fH3.emplace_back(TGRSIMap<std::string, TH3*>());
+		fSym.emplace_back(TGRSIMap<std::string, GHSym*>());
+		fCube.emplace_back(TGRSIMap<std::string, GCube*>());
+		fTree.emplace_back(TGRSIMap<std::string, TTree*>());
 		CreateHistograms(i);
 		for(auto it : fH1[i]) {
 			fLists[i]->Add(it.second);
 		}
 		for(auto it : fH2[i]) {
+			fLists[i]->Add(it.second);
+		}
+		for(auto it : fH3[i]) {
+			fLists[i]->Add(it.second);
+		}
+		for(auto it : fSym[i]) {
+			fLists[i]->Add(it.second);
+		}
+		for(auto it : fCube[i]) {
+			fLists[i]->Add(it.second);
+		}
+		for(auto it : fTree[i]) {
 			fLists[i]->Add(it.second);
 		}
 		CheckSizes(i, "use");
@@ -94,20 +110,53 @@ void TGRSIHelper::Setup() {
 
 void TGRSIHelper::Finalize() {
 	CheckSizes(0, "write");
-	auto &res = fLists[0];
+	// get all objects from the first slot
+	auto& res = fLists[0];
+	// map to keep track of trees we found
+	std::map<TTree*, TList*> treeList;
+	// loop over all other slots
 	for(auto slot : ROOT::TSeqU(1, fLists.size())) {
 		CheckSizes(slot, "write");
+		// loop over each object in the list we merge into
 		for(const auto&& obj : *res) {
-			if(obj->InheritsFrom(TH1::Class())) {
-				if(fLists[slot]->FindObject(obj->GetName()) != nullptr) {
+			// check if object exists in the slot's list
+			if(fLists[slot]->FindObject(obj->GetName()) != nullptr) {
+				// check object type and merge correspondingly
+				if(obj->InheritsFrom(TH1::Class())) {
+					// histograms can just be added together
 					static_cast<TH1*>(obj)->Add(static_cast<TH1*>(fLists[slot]->FindObject(obj->GetName())));
+				} else if(obj->InheritsFrom(TTree::Class())) {
+					// trees are added to the list and merged later
+					TTree* tree = static_cast<TTree*>(obj);
+					//std::cout<<slot<<" copied "<<tree->CopyEntries(static_cast<TTree*>(fLists[slot]->FindObject(obj->GetName())))<<" bytes to tree "<<tree->GetName()<<std::endl;
+					treeList.emplace(tree, new TList); // emplace does not overwrite existing elements!
+					treeList.at(tree)->Add(fLists[slot]->FindObject(obj->GetName()));
+					std::cout<<slot<<": adding "<<treeList.at(tree)->GetSize()<<". "<<tree->GetName()<<" tree with "<<static_cast<TTree*>(fLists[slot]->FindObject(obj->GetName()))->GetEntries()<<" entries"<<std::endl;
 				} else {
-					std::cerr<<"Failed to find object '"<<obj->GetName()<<"' in "<<slot<<". list"<<std::endl;
+					std::cerr<<"Object '"<<obj->GetName()<<"' is not a histogram ("<<obj->ClassName()<<"), don't know what to do with it!"<<std::endl;
 				}
 			} else {
-				std::cerr<<"Object '"<<obj->GetName()<<"' is not a histogram ("<<obj->ClassName()<<"), don't know what to do with it!"<<std::endl;
+				std::cerr<<"Failed to find object '"<<obj->GetName()<<"' in "<<slot<<". list"<<std::endl;
 			}
 		}
+	}
+	// merge the trees in the list (if there are any)
+	for(auto tree : treeList) {
+		tree.second->Add(tree.first);
+		Long64_t entries = 0;
+		int i = 0;
+		for(const auto&& obj : *tree.second) {
+			std::cout<<++i<<". "<<tree.first->GetName()<<" tree: "<<static_cast<TTree*>(obj)->GetEntries()<<" entries"<<std::endl;
+			entries += static_cast<TTree*>(obj)->GetEntries();
+		}
+		std::cout<<"total of "<<entries<<" entries"<<std::endl;
+		auto newTree = TTree::MergeTrees(tree.second);
+		std::cout<<"Got new tree with "<<newTree->GetEntries()<<" => "<<entries-newTree->GetEntries()<<" less than total"<<std::endl;
+		res->Remove(tree.first);
+		res->Add(newTree);
+	//	std::cout<<"Adding "<<tree.second->GetSize()<<" "<<tree.first->GetName()<<" trees to "<<tree.first->GetEntries()<<" entries"<<std::endl;
+	//	tree.first->Merge(tree.second);
+	//	std::cout<<"Got "<<tree.first->GetEntries()<<" entries"<<std::endl;
 	}
 }
 

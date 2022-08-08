@@ -38,23 +38,9 @@ void TDataFrameLibrary::Load() {
 	// if there is no dot in the path or the dot is before a slash in the path we just try to load this weirdly named library
 	size_t   dot = libraryPath.find_last_of('.');
 	size_t slash = libraryPath.find_last_of('/');
-	//std::cout<<libraryPath<<": ";
-	//if(dot != std::string::npos) {
-	//	std::cout<<"found dot at "<<dot;
-	//} else {
-	//	std::cout<<"didn't find dot";
-	//}
-	//if(slash != std::string::npos) {
-	//	std::cout<<", and slash at "<<slash;
-	//} else {
-	//	std::cout<<", and didn't find slash";
-	//}
-	//std::cout<<", libaryPath.substr("<<dot<<") is "<<libraryPath.substr(dot)<<std::endl;
 	if(dot != std::string::npos && (dot > slash || slash == std::string::npos) && libraryPath.substr(dot) == ".cxx") {
 		// let's get the full path first (or maybe move this into the function?)
-		//std::string fullpath = full_path(libraryPath);
-		//std::cout<<libraryPath<<" => "<<fullpath<<std::endl;
-		Compile(libraryPath, dot);
+		Compile(libraryPath, dot, slash);
 		// replace the .cxx extension with .so
 		libraryPath.replace(dot, std::string::npos, ".so");
 	}
@@ -87,7 +73,7 @@ void TDataFrameLibrary::Load() {
 	std::cout<<"\tUsing library "<<libraryPath<<std::endl;
 }
 
-void TDataFrameLibrary::Compile(std::string& path, const size_t& dot)
+void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size_t& slash)
 {
 	/// Try and compile the provided .c file into a shared object library
 	// first we create the paths for the header file, and shared library
@@ -129,11 +115,16 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot)
 		std::cout<<"shared library "<<sharedLibrary<<" exists and is newer than "<<sourceFile<<", "<<headerFile<<", and $GRSISYS/lib/libTGRSIFrame.so"<<std::endl;
 		return;
 	}
+	// get include path
+	std::string includePath = ".";
+	if(slash != std::string::npos) {
+		includePath = path.substr(0, slash);
+	}
 	std::cout<<DCYAN<<"----------  starting compilation of user code  ----------"<<RESET_COLOR<<std::endl;
 	// TODO: replace --GRSIData-flags with something based on which data parser library we've loaded
 	std::string objectFile = path.replace(dot, std::string::npos, ".o");
 	std::stringstream command;
-	command<<"g++ -c -fPIC `grsi-config --cflags --GRSIData-cflags` `root-config --cflags --glibs` -o "<<objectFile<<" "<<sourceFile<<std::endl;
+	command<<"g++ -c -fPIC -g `grsi-config --cflags --GRSIData-cflags` `root-config --cflags --glibs` -I"<<includePath<<" -o "<<objectFile<<" "<<sourceFile<<std::endl;
 	if(std::system(command.str().c_str()) != 0) {
 		std::stringstream str;
 		str<<"Unable to compile source file "<<sourceFile<<" using '"<<command.str()<<"'"<<std::endl;
@@ -141,7 +132,7 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot)
 	}
 	std::cout<<DCYAN<<"----------  starting linking user code  -----------------"<<RESET_COLOR<<std::endl;
 	command.clear();
-	command<<"g++ -fPIC -shared -Wl,-dylib -o "<<sharedLibrary<<" "<<objectFile<<std::endl;
+	command<<"g++ -fPIC -g -shared -Wl,-dylib -o "<<sharedLibrary<<" "<<objectFile<<std::endl;
 	if(std::system(command.str().c_str()) != 0) {
 		std::stringstream str;
 		str<<"Unable to link shared object library "<<sharedLibrary<<" using '"<<command.str()<<"'"<<std::endl;

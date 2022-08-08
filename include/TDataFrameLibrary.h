@@ -21,7 +21,9 @@ public:
 
 private:
 	TDataFrameLibrary() { fHandle = nullptr; }
-	void Compile(std::string& path, const size_t& dot); ///< compile user code into shared object library, dot is the positions of the last dot (guaranteed to be after the last slash!)
+	/// compile user code into shared object library, dot is the positions of the last dot (guaranteed to be after the last slash!)
+	/// slash is the position of the last slash (could be npos)
+	void Compile(std::string& path, const size_t& dot, const size_t& slash);
 
 	void* fHandle;                                      ///< handle for shared object library
 

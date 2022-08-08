@@ -42,9 +42,9 @@ libdir=$GRSISYS/lib
 incdir=$GRSISYS/include
 
 # the repitition of '-lTGRSIint -lTFormat' is needed for debian-style OSes like ubuntu (see issue #979)
-grsilibs="-lTDetector -lTGRSIint -lTFormat -lTGRSIint -lTFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction"
+grsilibs="-lTDetector -lTGRSIint -lTFormat -lTGRSIint -lTFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction -lTPeakFitting -lTGRSIFrame"
 detlibs="-lTSuppressed -lTBgo -lTPulseAnalyzer -lGROOT -lTGRSIFit -lTNucleus"
-grsimore="-lTRawFile -lTDataParser -lTHistogramming"
+grsimore="-lTRawFile -lTDataParser -lTHistogramming -lTGUI"
 if [ `root-config --has-xml` == "yes" ]
   then XMLlib="-lXMLParser -lXMLIO"
   else XMLlib=""
@@ -124,7 +124,7 @@ while test $# -gt 0; do
       fi
       alllibsout="yes"
       if test "x$libsout" = "xyes" ; then
-        out=$"$out $grsimore "
+        out=$"$out $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum -lMathMore "
       else
         out=$"$out -L${libdir} $grsilibs $detlibs $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum -lMathMore "
       fi

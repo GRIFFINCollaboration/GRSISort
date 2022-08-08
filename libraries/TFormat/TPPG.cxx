@@ -218,7 +218,7 @@ void TPPG::Print(Option_t* opt) const
 		if(fOdbPPGCodes.empty()) {
 			std::cout<<"No ODB cycle read!"<<std::endl;
 		} else {
-			std::cout<<"ODB cycle:"<<std::endl<<"Code   Duration"<<std::endl;
+			std::cout<<"ODB cycle: "<<OdbCycleLength()/1e6<<" s"<<std::endl<<"Code   Duration"<<std::endl;
 			for(size_t i = 0; i < fOdbPPGCodes.size(); ++i) {
 				std::cout<<hex(fOdbPPGCodes[i],4)<<" "<<fOdbDurations[i]<<std::endl;
 			}
