@@ -158,6 +158,7 @@ void TGRSIHelper::Finalize() {
 	//	tree.first->Merge(tree.second);
 	//	std::cout<<"Got "<<tree.first->GetEntries()<<" entries"<<std::endl;
 	}
+	EndOfSort(res);
 }
 
 void TGRSIHelper::CheckSizes(unsigned int slot, const char* usage) {

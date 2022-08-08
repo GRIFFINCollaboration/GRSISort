@@ -69,6 +69,9 @@ public:
 	/// were used in each of the data processing slots.
 	void Finalize();
 
+	/// This method gets called at the end of Finalize()
+	virtual void EndOfSort(std::shared_ptr<TList>) {}
+
 	std::string Prefix() const { return fPrefix; }
 	void Prefix(const std::string& val) { fPrefix = val; }
 	std::string GetActionName() const { return Prefix(); } // apparently a required function (not documented but doesn't compile w/o it)
