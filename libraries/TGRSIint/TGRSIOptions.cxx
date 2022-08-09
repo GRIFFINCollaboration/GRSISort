@@ -340,7 +340,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 
 		parser.option("write-clients", &fNumberOfClients, true)
 			.description("Number of clients used to write analysis tree").default_value(2);
-	} else if(program.compare("grsiproof") == 0 || program.compare("grsiframe") == 0) {
+	} else if(program.compare("grsiproof") == 0) {
 		// Proof only parser options
 		parser.option("max-workers", &fMaxWorkers, true)
 			.description("Max number of nodes to use when running a grsiproof session")
@@ -362,10 +362,21 @@ void TGRSIOptions::Load(int argc, char** argv)
 			.description("use sub mergers to merge result from workers (default = -1 = off, 0 = automatic number of mergers)");
 		parser.option("proof-stats", &fProofStats, true)
 			.description("enable proof stats");
+	} else if(program.compare("grsiframe") == 0) {
+		parser.option("max-workers", &fMaxWorkers, true)
+			.description("Maximum number of nodes to use when running a grsiframe session")
+			.default_value(1);
+		parser.option("tree-name", &fTreeName, true)
+			.description("Name of tree to be used, default is empty, i.e. FragmentTree, and AnalysisTree are checked");
+		parser.option("d debug", &fDebug, true)
+			.description("Increases verbosity of RDataFrame (also turns off the progress bar)")
+			.default_value(false);
 	}
 
-	parser.option("max-events", &fNumberOfEvents, true)
-		.description("Maximum number of (midas, lst, rlmd, or tdr) events read").default_value(0);
+	if(program.compare("grsiframe") != 0) {
+		parser.option("max-events", &fNumberOfEvents, true)
+			.description("Maximum number of (midas, lst, rlmd, or tdr) events read").default_value(0);
+	}
 
    // look for any arguments ending with .info, pass to parser.
    for(int i = 1; i < argc; i++) {

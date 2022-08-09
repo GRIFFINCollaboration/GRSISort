@@ -112,7 +112,7 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
 			sharedLibStat.st_atime > sourceStat.st_atime && 
 			sharedLibStat.st_atime > headerStat.st_atime && 
 			sharedLibStat.st_atime > frameLibStat.st_atime) {
-		std::cout<<"shared library "<<sharedLibrary<<" exists and is newer than "<<sourceFile<<", "<<headerFile<<", and $GRSISYS/lib/libTGRSIFrame.so"<<std::endl;
+		std::cout<<DCYAN<<"shared library "<<sharedLibrary<<" exists and is newer than "<<sourceFile<<", "<<headerFile<<", and $GRSISYS/lib/libTGRSIFrame.so"<<RESET_COLOR<<std::endl;
 		return;
 	}
 	// get include path
@@ -126,7 +126,6 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
 	// this should look something like $GRSISYS/<library name>/lib/lib<library name>.so
 	// so we can simply take everything between "last '/' + 3" and "last '.'" to be the name?
 	std::string parserLibraryName = parserLibraryPath.substr(parserLibraryPath.find_last_of('/')+4, parserLibraryPath.find_last_of('.')-parserLibraryPath.find_last_of('/')-4);
-	std::cout<<"From parser library path '"<<parserLibraryPath<<"' we got library name '"<<parserLibraryName<<"'"<<std::endl;
 	std::string objectFile = path.replace(dot, std::string::npos, ".o");
 	std::stringstream command;
 	command<<"g++ -c -fPIC -g `grsi-config --cflags --"<<parserLibraryName<<"-cflags` `root-config --cflags --glibs` -I"<<includePath<<" -o "<<objectFile<<" "<<sourceFile<<std::endl;

@@ -40,6 +40,7 @@ private:
 	// branches of output trees
 	std::vector<double> fSuppressedAddback; ///< vector of suppressed addback energies
 	std::vector<double> fBetaGammaTiming; ///< vector of beta-gamma timing
+	int fGriffinMultiplicity; ///< multiplicity of suppressed addback energies
 };
 
 extern "C" ExampleTreeHelper* CreateHelper(TList* list) { return new ExampleTreeHelper(list); }

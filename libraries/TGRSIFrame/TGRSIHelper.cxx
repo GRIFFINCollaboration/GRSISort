@@ -73,7 +73,6 @@ TGRSIHelper::TGRSIHelper(TList* input) {
 }
 
 void TGRSIHelper::Setup() {
-	std::cout<<__PRETTY_FUNCTION__<<" calling setup of TGRSIHelper"<<std::endl;
 	const auto nSlots = ROOT::IsImplicitMTEnabled() ? ROOT::GetThreadPoolSize() : 1;
 	TH1::AddDirectory(false); // turns off warnings about multiple histograms with the same name because ROOT doesn't manage them anymore
 	for(auto i : ROOT::TSeqU(nSlots)) {

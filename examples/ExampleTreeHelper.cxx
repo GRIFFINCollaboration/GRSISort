@@ -6,10 +6,10 @@ void ExampleTreeHelper::CreateHistograms(unsigned int slot) {
 	fTree[slot]["timebg"] = new TTree("timebg", "time random events");
 
 	// set branch addresses for output tree (these can be different for different trees)
-	// we save the entry number as well to detect possible double counting
 	// four coincident gammas a,b,c,d will be saved as a,b,c, a,b,d, a,c,d, and b,c,d
 	fTree[slot]["coinc"]->Branch("energy", &fSuppressedAddback);
 	fTree[slot]["coinc"]->Branch("timing", &fBetaGammaTiming);
+	fTree[slot]["coinc"]->Branch("mult", &fGriffinMultiplicity, "mult/I");
 
 	fTree[slot]["timebg"]->Branch("energy", &fSuppressedAddback);
 	fTree[slot]["timebg"]->Branch("timing", &fBetaGammaTiming);
@@ -48,7 +48,8 @@ void ExampleTreeHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gri
 	fH2[slot].at("zdsMult")->Fill(grif.GetSuppressedAddbackMultiplicity(&grifBgo), zds.GetMultiplicity());
 
 	//Loop over all suppressed addback Griffin Hits
-   for(auto i = 0; i < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++i) {
+	fGriffinMultiplicity = grif.GetSuppressedAddbackMultiplicity(&grifBgo);
+   for(auto i = 0; i < fGriffinMultiplicity; ++i) {
 		auto grif1 = grif.GetSuppressedAddbackHit(i);
       fH1[slot].at("asE")->Fill(grif1->GetEnergy());
 		fSuppressedAddback[0] = grif1->GetEnergy();
@@ -95,7 +96,18 @@ void ExampleTreeHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gri
 				}
 
 				if(foundBeta) {
+					auto entries = fTree[slot].at("coinc")->GetEntries();
+					if(entries < 10) {
+						std::cout<<slot<<" "<<fGriffinMultiplicity<<" "<<fSuppressedAddback.size();
+						for(auto e : fSuppressedAddback) {
+							std::cout<<" "<<e;
+						}
+						std::cout<<std::endl;
+					}
 					fTree[slot].at("coinc")->Fill();
+					if(entries < 10) {
+						fTree[slot].at("coinc")->Scan("*");
+					}
 				} else {
 					fTree[slot].at("timebg")->Fill();
 				}

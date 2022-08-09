@@ -17,6 +17,11 @@ TGRSIFrame::TGRSIFrame()
 	// this assumes the options have been set from argc and argv before!
 	fOptions = TGRSIOptions::Get();
 
+	// this increases RDF's verbosity level as long as the `fVerbosity` variable is in scope, i.e. until TGRSIFrame is destroyed
+	if(fOptions->Debug()) {
+		fVerbosity = new ROOT::Experimental::RLogScopedVerbosity(ROOT::Detail::RDF::RDFLogChannel(), ROOT::Experimental::ELogLevel::kInfo);
+	}
+
 	// check if we have a tree-name, otherwise get it from the first input file
 	std::string treeName = fOptions->TreeName();
 	if(treeName.empty()) {
@@ -116,20 +121,22 @@ void TGRSIFrame::Run()
 
 	TFile outputFile(outputFileName.c_str(), "recreate");
 
-	// create a progress bar with percentage
-   auto entries = fDataFrame->Count();
-   std::string progressBar;
-   std::mutex barMutex; // Only one thread at a time can lock a mutex. Let's use this to avoid concurrent printing.
-   const auto barWidth = 100;
-   const auto everyN = fTotalEntries/barWidth;
-   entries.OnPartialResultSlot(everyN, [&everyN, &fTotalEntries = fTotalEntries, &barWidth, &progressBar, &barMutex](unsigned int /*slot*/, ULong64_t& /*partialList*/) {
-         std::lock_guard<std::mutex> l(barMutex); // lock_guard locks the mutex at construction, releases it at destruction
-			static int counter = 1;
-         progressBar.push_back('#');
-         // re-print the line with the progress bar
-         std::cout<<"\r["<<std::left<<std::setw(barWidth)<<progressBar<<' '<<std::setw(3)<<(counter*everyN*100)/fTotalEntries<<" %]"<<std::flush;
-			++counter;
-         });
+	std::string progressBar;
+	const auto barWidth = 100;
+	if(!fOptions->Debug()) {
+		// create a progress bar with percentage
+		auto entries = fDataFrame->Count();
+		std::mutex barMutex; // Only one thread at a time can lock a mutex. Let's use this to avoid concurrent printing.
+		const auto everyN = fTotalEntries/barWidth;
+		entries.OnPartialResultSlot(everyN, [&everyN, &fTotalEntries = fTotalEntries, &barWidth, &progressBar, &barMutex](unsigned int /*slot*/, ULong64_t& /*partialList*/) {
+				std::lock_guard<std::mutex> l(barMutex); // lock_guard locks the mutex at construction, releases it at destruction
+				static int counter = 1;
+				progressBar.push_back('#');
+				// re-print the line with the progress bar
+				std::cout<<"\r["<<std::left<<std::setw(barWidth)<<progressBar<<' '<<std::setw(3)<<(counter*everyN*100)/fTotalEntries<<" %]"<<std::flush;
+				++counter;
+				});
+	}
 
 	if(fOutput != nullptr) {
 		// accessing the result from Book causes the actual processing of the helper

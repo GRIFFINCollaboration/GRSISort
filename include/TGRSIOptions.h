@@ -101,7 +101,7 @@ public:
 	bool MakeHistos() const { return fMakeHistos; }
 	bool SortMultiple() const { return fSortMultiple; }
 
-	bool Debug() const { return fDebug; }
+	bool Debug() const { return fDebug; } // also used by GRSIFrame
 
 	bool IsOnline() const { return fIsOnline; }
 
@@ -128,10 +128,11 @@ public:
 	unsigned int StatusInterval() const { return fStatusInterval; }
 	bool         LongFileDescription() const { return fLongFileDescription; }
 
-	// Proof only
+	// GRSIProof and GRSIFrame only
 	int  GetMaxWorkers() const { return fMaxWorkers; }
-	bool SelectorOnly() const { return fSelectorOnly; }
 	std::string TreeName() const { return fTreeName; }
+	// Proof only
+	bool SelectorOnly() const { return fSelectorOnly; }
    bool AverageRateEstimation() const { return fAverageRateEstimation; }
    bool ParallelUnzip() const { return fParallelUnzip; }
    int CacheSize() const { return fCacheSize; }
