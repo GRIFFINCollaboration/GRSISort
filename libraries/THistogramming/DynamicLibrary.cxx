@@ -1,7 +1,6 @@
 #include "DynamicLibrary.h"
 
 #include <cstdlib>
-
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -9,7 +8,6 @@
 #include <sstream>
 #include <string>
 #include <utility>
-
 #include <dlfcn.h>
 #include <unistd.h>
 

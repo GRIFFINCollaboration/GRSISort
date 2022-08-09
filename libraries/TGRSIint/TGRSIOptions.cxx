@@ -9,6 +9,7 @@
 #include "TSystem.h"
 
 #include "Globals.h"
+#include "FullPath.h"
 #include "ArgParser.h"
 #include "DynamicLibrary.h"
 #include "TGRSIUtilities.h"
@@ -44,6 +45,7 @@ void TGRSIOptions::Clear(Option_t*)
    fInputOdbFiles.clear();
    fExternalRunInfo.clear();
    fMacroFiles.clear();
+	fDataFrameLibrary = "";
 
    fInputCutFiles.clear();
    fInputValFiles.clear();
@@ -360,10 +362,21 @@ void TGRSIOptions::Load(int argc, char** argv)
 			.description("use sub mergers to merge result from workers (default = -1 = off, 0 = automatic number of mergers)");
 		parser.option("proof-stats", &fProofStats, true)
 			.description("enable proof stats");
+	} else if(program.compare("grsiframe") == 0) {
+		parser.option("max-workers", &fMaxWorkers, true)
+			.description("Maximum number of nodes to use when running a grsiframe session")
+			.default_value(1);
+		parser.option("tree-name", &fTreeName, true)
+			.description("Name of tree to be used, default is empty, i.e. FragmentTree, and AnalysisTree are checked");
+		parser.option("d debug", &fDebug, true)
+			.description("Increases verbosity of RDataFrame (also turns off the progress bar)")
+			.default_value(false);
 	}
 
-	parser.option("max-events", &fNumberOfEvents, true)
-		.description("Maximum number of (midas, lst, rlmd, or tdr) events read").default_value(0);
+	if(program.compare("grsiframe") != 0) {
+		parser.option("max-events", &fNumberOfEvents, true)
+			.description("Maximum number of (midas, lst, rlmd, or tdr) events read").default_value(0);
+	}
 
    // look for any arguments ending with .info, pass to parser.
    for(int i = 1; i < argc; i++) {
@@ -475,6 +488,9 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const
 	if(ext == "root") {
       return kFileType::ROOT_DATA;
    }
+	if((ext == "cxx")) {
+      return kFileType::DATAFRAME;
+   }
 	if((ext == "c") || (ext == "C") || (ext == "c+") || (ext == "C+") || (ext == "c++") || (ext == "C++")) {
       return kFileType::ROOT_MACRO;
    }
@@ -526,13 +542,10 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
    case kFileType::NSCL_EVT:
    case kFileType::GRETINA_MODE2:
    case kFileType::GRETINA_MODE3:
+   case kFileType::LST_FILE:
+   case kFileType::RLMD_FILE:
+   case kFileType::TDR_FILE:
    case kFileType::MIDAS_FILE: fInputFiles.push_back(filename); return true;
-
-   case kFileType::LST_FILE: fInputFiles.push_back(filename); return true;
-
-   case kFileType::RLMD_FILE: fInputFiles.push_back(filename); return true;
-
-   case kFileType::TDR_FILE: fInputFiles.push_back(filename); return true;
 
    case kFileType::ROOT_DATA: fInputRootFiles.push_back(filename); return true;
 
@@ -540,27 +553,34 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
 
    case kFileType::CALIBRATED: fInputCalFiles.push_back(filename); return true;
 
-   case kFileType::COMPILED_SHARED_LIBRARY: {
+   case kFileType::DATAFRAME: fDataFrameLibrary = full_path(filename); return true;
 
+   case kFileType::COMPILED_SHARED_LIBRARY: {
       bool           used = false;
-      DynamicLibrary lib(filename);
+		// need absolute path not relative path in case the current working directory is not in LD_LIBRARY_PATH
+		std::string fullFilename = full_path(filename);
+      DynamicLibrary lib(fullFilename);
       if(lib.GetSymbol("MakeFragmentHistograms") != nullptr) {
-         fFragmentHistogramLib = filename;
+         fFragmentHistogramLib = fullFilename;
          used                  = true;
       }
       if(lib.GetSymbol("MakeAnalysisHistograms") != nullptr) {
-         fAnalysisHistogramLib = filename;
+         fAnalysisHistogramLib = fullFilename;
          used                  = true;
       }
       if(lib.GetSymbol("CreateParser") != nullptr && lib.GetSymbol("DestroyParser") != nullptr &&
 			lib.GetSymbol("CreateFile")   != nullptr && lib.GetSymbol("DestroyFile")   != nullptr) {
-         fParserLibrary        = filename;
+         fParserLibrary        = fullFilename;
+         used                  = true;
+      }
+      if(lib.GetSymbol("CreateHelper") != nullptr && lib.GetSymbol("DestroyHelper") != nullptr) {
+         fDataFrameLibrary     = fullFilename;
          used                  = true;
       }
       if(!used) {
-         std::cerr<<filename<<" did not contain MakeFragmentHistograms() or MakeAnalysisHistograms()"<<std::endl;
+         std::cerr<<fullFilename<<" did not contain MakeFragmentHistograms or MakeAnalysisHistograms or CreateParser and others or CreateHelper and DestroyHelper"<<std::endl;
       }
-      return true;
+      return used;
    }
 
    case kFileType::GVALUE: fInputValFiles.push_back(filename); return true;
@@ -606,7 +626,7 @@ bool TGRSIOptions::WriteToFile(TFile* file)
       file->ReOpen("UPDATE");
    }
    if(!gDirectory) { // we don't compare to nullptr here, as ROOT >= 6.24.00 uses the TDirectoryAtomicAdapter structure with a bool() operator
-		std::cout<<"No file opened to write to."<<std::endl;
+		std::cout<<"No file opened to write TGRSIOptions to."<<std::endl;
       success = false;
    } else {
       Get()->Write("GRSIOptions", TObject::kOverwrite);

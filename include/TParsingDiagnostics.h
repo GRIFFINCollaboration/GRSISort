@@ -39,6 +39,7 @@ public:
 	~TParsingDiagnosticsData() {}
 
 	void Update(const std::shared_ptr<const TFragment>& frag);
+	using TObject::Print;
 	void Print(UInt_t address) const;
 
 	// getters

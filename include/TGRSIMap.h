@@ -14,7 +14,7 @@
 ////////////////////////////////////////////////////////////
 ///
 /// This class re-implements std::map with more explicit
-/// expections replacing out-of-range exceptions.
+/// exceptions replacing out-of-range exceptions.
 ///
 ////////////////////////////////////////////////////////////
 
@@ -68,6 +68,10 @@ public:
 	//insert
 	//insert_or_assign
 	//emplace
+	template<class... Args>
+		std::pair<typename map_t::iterator, bool> emplace(Args&&... args) {
+			return fMap.emplace(args...);
+		}
 	//emplace_hint
 	//try_emplace
 	void erase(typename map_t::iterator pos) { fMap.erase(pos); }

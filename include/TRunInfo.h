@@ -165,7 +165,7 @@ public:
    static inline double                          HPGeArrayPosition() { return Get()->fHPGeArrayPosition; }
 
    Long64_t Merge(TCollection* list);
-   void Add(TRunInfo* runinfo);
+   void Add(TRunInfo* runinfo, bool verbose = false);
   
 	virtual TEventBuildingLoop::EBuildMode BuildMode() const;
 
