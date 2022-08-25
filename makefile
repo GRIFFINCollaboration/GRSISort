@@ -32,7 +32,7 @@ endif
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
 CFLAGS     += -DOS_DARWIN -DHAVE_ZLIB
-CFLAGS     += -I/opt/X11/include -Qunused-arguments
+CFLAGS     += -I/opt/X11/include -Qunused-arguments -I/opt/local/include
 CPP        = clang++
 SHAREDSWITCH = -Qunused-arguments -shared -undefined dynamic_lookup -dynamiclib -Wl,-install_name,'@executable_path/../lib/'# NO ENDING SPACE
 HEAD=ghead
@@ -211,7 +211,7 @@ find_linkdef = $(shell $(FIND) $(1) -name "*LinkDef.h")
 define library_template
 .build/$(1)/$(notdir $(1))Dict.cxx: $(1)/LinkDef.h $$(call dict_header_files,$(1)/LinkDef.h) 
 	@mkdir -p $$(dir $$@)
-	$$(call run_and_test,$$(ROOTCINT) -f $$@ $$(INCLUDES) $$(RCFLAGS) -s $(notdir $(1)) -multiDict -rml lib$(notdir $(1)).so -rmf .build/$(1)/$(notdir $(1)).rootmap $$(notdir $$(filter-out $$<,$$^)) $$<,$$@,$$(COM_COLOR),$$(BLD_STRING) ,$$(OBJ_COLOR))
+	$$(call run_and_test,$$(ROOTCINT) -f $$@ $$(INCLUDES) -I/opt/local/include $$(RCFLAGS) -s $(notdir $(1)) -multiDict -rml lib$(notdir $(1)).so -rmf .build/$(1)/$(notdir $(1)).rootmap $$(notdir $$(filter-out $$<,$$^)) $$<,$$@,$$(COM_COLOR),$$(BLD_STRING) ,$$(OBJ_COLOR))
 
 .build/$(1)/LibDictionary.o: .build/$(1)/$(notdir $(1))Dict.cxx
 	$$(call run_and_test,$$(CPP) -fPIC -c $$< -o $$@ $$(CFLAGS),$$@,$$(COM_COLOR),$$(COM_STRING),$$(OBJ_COLOR) )
