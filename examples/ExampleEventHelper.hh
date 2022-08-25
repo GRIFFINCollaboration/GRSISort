@@ -28,7 +28,7 @@ public:
 		return d->Book<TGriffin, TGriffinBgo, TZeroDegree>(std::move(*this), {"TGriffin", "TGriffinBgo", "TZeroDegree"});
 	}
 	// this function creates and books all histograms
-	void CreateHistograms(unsigned int i);
+	void CreateHistograms(unsigned int slot) override;
 	// this function gets called for every single event and fills the histograms
 	// TODO: edit the function arguments to match the detectors you want to use!
 	void Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo, TZeroDegree& zds);
