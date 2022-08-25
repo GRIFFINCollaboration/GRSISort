@@ -8,12 +8,14 @@ PLATFORM:=$(shell uname)
 
 INCLUDES   = include users
 ifneq (,$(findstring -std=,$(shell root-config --cflags)))
-CFLAGS = -g -O3 -Wall -Wextra -pedantic -Wno-unknown-pragmas -Wno-unused-function -Wshadow
-LINKFLAGS_SUFFIX  = -L/opt/X11/lib -lX11 -lXpm
+CFLAGS = 
+LINKFLAGS_SUFFIX  = 
 else
-CFLAGS = -std=c++11 -g -O3 -Wall -Wextra -pedantic -Wno-unknown-pragmas -Wno-unused-function -Wshadow
-LINKFLAGS_SUFFIX  = -std=c++11 -L/opt/X11/lib -lX11 -lXpm
+CFLAGS = -std=c++11 
+LINKFLAGS_SUFFIX  = -std=c++11 
 endif
+CFLAGS += -g -O3 -Wall -Wextra -pedantic -Wno-unknown-pragmas -Wno-unused-function
+LINKFLAGS_SUFFIX  += -L/opt/X11/lib -lX11 -lXpm
 #-Wall -Wextra -pedantic -Wno-unused-parameter
 LINKFLAGS_PREFIX  =
 SRC_SUFFIX = cxx
@@ -41,7 +43,7 @@ LIBRARY_DIRS   := $(shell $(FIND) libraries/* -type d)
 else
 export __LINUX__:= 1
 CPP        = g++
-CFLAGS     += -Wl,--no-as-needed
+CFLAGS     += -Wl,--no-as-needed -Wshadow
 LINKFLAGS_PREFIX += -Wl,--no-as-needed
 SHAREDSWITCH = -shared -Wl,-soname,# NO ENDING SPACE
 HEAD=head
