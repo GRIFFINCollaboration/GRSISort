@@ -8,10 +8,10 @@ PLATFORM:=$(shell uname)
 
 INCLUDES   = include users
 ifneq (,$(findstring -std=,$(shell root-config --cflags)))
-CFLAGS = -g -O3 -Wall -Wextra -pedantic -Wno-unknown-pragmas -Wno-unused-function
+CFLAGS = -g -O3 -Wall -Wextra -pedantic -Wno-unknown-pragmas -Wno-unused-function -Wshadow
 LINKFLAGS_SUFFIX  = -L/opt/X11/lib -lX11 -lXpm
 else
-CFLAGS = -std=c++11 -g -O3 -Wall -Wextra -pedantic -Wno-unknown-pragmas -Wno-unused-function
+CFLAGS = -std=c++11 -g -O3 -Wall -Wextra -pedantic -Wno-unknown-pragmas -Wno-unused-function -Wshadow
 LINKFLAGS_SUFFIX  = -std=c++11 -L/opt/X11/lib -lX11 -lXpm
 endif
 #-Wall -Wextra -pedantic -Wno-unused-parameter
@@ -31,7 +31,7 @@ endif
 
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
-CFLAGS     += -DOS_DARWIN -DHAVE_ZLIB -Wshadow
+CFLAGS     += -DOS_DARWIN -DHAVE_ZLIB
 CFLAGS     += -I/opt/X11/include -Qunused-arguments -I/opt/local/include
 CPP        = clang++
 SHAREDSWITCH = -Qunused-arguments -shared -undefined dynamic_lookup -dynamiclib -Wl,-install_name,'@executable_path/../lib/'# NO ENDING SPACE
