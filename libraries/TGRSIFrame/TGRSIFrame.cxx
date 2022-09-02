@@ -17,10 +17,12 @@ TGRSIFrame::TGRSIFrame()
 	// this assumes the options have been set from argc and argv before!
 	fOptions = TGRSIOptions::Get();
 
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6, 24, 0)
 	// this increases RDF's verbosity level as long as the `fVerbosity` variable is in scope, i.e. until TGRSIFrame is destroyed
 	if(fOptions->Debug()) {
 		fVerbosity = new ROOT::Experimental::RLogScopedVerbosity(ROOT::Detail::RDF::RDFLogChannel(), ROOT::Experimental::ELogLevel::kInfo);
 	}
+#endif
 
 	// check if we have a tree-name, otherwise get it from the first input file
 	std::string treeName = fOptions->TreeName();
