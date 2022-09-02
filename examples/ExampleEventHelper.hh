@@ -28,19 +28,13 @@ public:
 		return d->Book<TGriffin, TGriffinBgo, TZeroDegree>(std::move(*this), {"TGriffin", "TGriffinBgo", "TZeroDegree"});
 	}
 	// this function creates and books all histograms
-	void CreateHistograms(unsigned int i);
+	void CreateHistograms(unsigned int slot) override;
 	// this function gets called for every single event and fills the histograms
 	// TODO: edit the function arguments to match the detectors you want to use!
 	void Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo, TZeroDegree& zds);
 	// this function is optional and is called after the output lists off all slots/workers have been merged
 	void EndOfSort(std::shared_ptr<TList> list) override;
 
-	// these are needed to make the compiler happy
-	using ROOT::Detail::RDF::RActionImpl<ExampleEventHelper>::CallFinalizeTask;
-	using ROOT::Detail::RDF::RActionImpl<ExampleEventHelper>::CallPartialUpdate;
-	using ROOT::Detail::RDF::RActionImpl<ExampleEventHelper>::GetMergeableValue;
-	using ROOT::Detail::RDF::RActionImpl<ExampleEventHelper>::GetSampleCallback;
-	using ROOT::Detail::RDF::RActionImpl<ExampleEventHelper>::CallMakeNew;
 private:
 	// any constants that are set in the CreateHistograms function and used in the Exec function can be stored here
 	// or any other settings
