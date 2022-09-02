@@ -53,6 +53,7 @@ public:
    } //!<!
 #endif
 
+	virtual void AddHit(TDetectorHit* hit) { fHits.push_back(hit); }
    virtual void Copy(TObject&) const override;                        //!<!
    void Clear(Option_t* = "") override { fHits.clear(); } //!<!
    virtual void ClearTransients();                            //!<!
