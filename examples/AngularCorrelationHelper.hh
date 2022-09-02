@@ -17,8 +17,8 @@ private:
    std::map<double, int>               fAngleMap;
    std::map<double, int>               fAngleMapAddback; // with addback
 
-   TGriffin fLastGrif;
-   TSceptar fLastScep;
+	std::map<unsigned int, TGriffin> fLastGrif;
+	std::map<unsigned int, TSceptar> fLastScep;
 
 public:
    AngularCorrelationHelper(TList* list) : TGRSIHelper(list) {
