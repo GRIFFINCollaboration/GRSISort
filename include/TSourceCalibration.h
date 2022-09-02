@@ -257,7 +257,7 @@ private:
 
 	int fOldErrorLevel; ///< Used to store old value of gErrorIgnoreLevel (set to kError for the scope of the class)
 
-	int fVerboseLevel{3}; ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
+	int fVerboseLevel{0}; ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 
 	double fDefaultSigma{2.}; ///< The default sigma used for the peak finding algorithm, can be changed later.
 	double fDefaultThreshold{0.05}; ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.

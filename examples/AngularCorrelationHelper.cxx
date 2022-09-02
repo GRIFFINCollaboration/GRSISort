@@ -186,10 +186,11 @@ void AngularCorrelationHelper::Exec(unsigned int slot, TGriffin& grif, TSceptar&
             }
          }
       }
-      // event mixing, we use the last event as second griffin
-      for(auto g2 = 0; g2 < fLastGrif.GetMultiplicity(); ++g2) {
+      // event mixing, we use the last event as second griffin 
+		// if there was no last event the default constructed TGriffin will have a multiplicity of zero
+      for(auto g2 = 0; g2 < fLastGrif[slot].GetMultiplicity(); ++g2) {
          if(g1 == g2) continue;
-         auto   grif2 = fLastGrif.GetGriffinHit(g2);
+         auto   grif2 = fLastGrif[slot].GetGriffinHit(g2);
          double angle = grif1->GetPosition().Angle(grif2->GetPosition()) * 180. / TMath::Pi();
          if(angle < 0.0001) continue;
          auto   angleIndex = fAngleMap.lower_bound(angle - 0.0005);
@@ -245,9 +246,9 @@ void AngularCorrelationHelper::Exec(unsigned int slot, TGriffin& grif, TSceptar&
          }
       }
       // event mixing, we use the last event as second griffin
-      for(auto g2 = 0; g2 < fLastGrif.GetAddbackMultiplicity(); ++g2) {
+      for(auto g2 = 0; g2 < fLastGrif[slot].GetAddbackMultiplicity(); ++g2) {
          if(g1 == g2) continue;
-         auto   grif2 = fLastGrif.GetAddbackHit(g2);
+         auto   grif2 = fLastGrif[slot].GetAddbackHit(g2);
          double angle = grif1->GetPosition().Angle(grif2->GetPosition()) * 180. / TMath::Pi();
          if(angle < 0.0001) continue;
          auto   angleIndex = fAngleMapAddback.lower_bound(angle - 0.0005);
@@ -264,6 +265,6 @@ void AngularCorrelationHelper::Exec(unsigned int slot, TGriffin& grif, TSceptar&
    }
 
    // update "last" event
-   fLastGrif = grif;
-   fLastScep = scep;
+   fLastGrif[slot] = grif;
+   fLastScep[slot] = scep;
 }

@@ -3,15 +3,15 @@
 void ExampleEventHelper::CreateHistograms(unsigned int slot)
 {
 	// try and get the cycle length if we have a PPG provided
-   if(fPpg != nullptr) {
-		// the ODB cycle length is in microseconds!
-      fCycleLength = fPpg->OdbCycleLength();
-		// only print this for one worker, should be the same result for all them after all
+	// only necessary for the first worker, this is shared with all other workers
+   if(i == 0) {
+		if(fPpg != nullptr) {
+			// the ODB cycle length is in microseconds!
+			fCycleLength = fPpg->OdbCycleLength();
 		if(slot == 0) {
 			std::stringstream str;
-			str<<"Got ODB cycle length "<<fCycleLength<<" ns = "<<fCycleLength/1e6<<" s"<<std::endl;
+			str<<"Got ODB cycle length "<<fCycleLength<<" us = "<<fCycleLength/1e6<<" s"<<std::endl;
 			std::cerr<<str.str();
-		}
    } else if(slot == 0) {
 		std::stringstream str;
 		str<<DRED<<"No ppg provided, can't fill cycle spectra!"<<RESET_COLOR<<std::endl;
