@@ -8,7 +8,9 @@
 #include "TGRSIOptions.h"
 #include "TPPG.h"
 #include "ROOT/RDataFrame.hxx"
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6, 24, 0)
 #include "ROOT/RLogger.hxx"
+#endif
 
 class TGRSIFrame {
 public:
@@ -26,7 +28,9 @@ private:
 	ROOT::RDataFrame* fDataFrame{nullptr};
 	Long64_t fTotalEntries{0};
 
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6, 24, 0)
 	ROOT::Experimental::RLogScopedVerbosity* fVerbosity{nullptr};
+#endif
 };
 
 void DummyFunctionToLocateTGRSIFrameLibrary();
