@@ -130,7 +130,8 @@ public:
    ~TPPG() override;
 
    void Copy(TObject& obj) const override;
-	// not sure why these arguments are here, they are not being used? And why do we have a non-const version that just calls the const version?
+	// why do we have a non-const version that just calls the const version?
+	// the arguments are needed to match the TObject version and thus override it
    Int_t Write(const char* name = nullptr, Int_t option = 0, Int_t bufsize = 0) override
    {
       return static_cast<const TPPG*>(this)->Write(name, option, bufsize);
