@@ -11,7 +11,7 @@ ClassImp(TPPG)
 /// \endcond
 
 short TPPGData::fTimestampUnits = 10;
-TPPG* TPPG::fPPG = nullptr;
+TPPG* TPPG::fPPG = nullptr; // not used anywhere?
 
 TPPGData::TPPGData()
 {
@@ -446,11 +446,12 @@ void TPPG::Clear(Option_t*)
 	fCycleSet = false;
 }
 
-Int_t TPPG::Write(const char*, Int_t, Int_t) const
+Int_t TPPG::Write(const char* name, Int_t, Int_t) const
 {
+	if(name == nullptr) name = "TPPG";
    if(PPGSize() > 0 || OdbPPGSize() > 0) {
       std::cout<<"Writing PPG with "<<PPGSize()<<" events and "<<OdbPPGSize()<<" ODB settings"<<std::endl;
-      return TObject::Write("TPPG", TObject::kSingleKey);
+      return TObject::Write(name, TObject::kSingleKey);
    }
 
    return 0;
