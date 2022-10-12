@@ -149,7 +149,7 @@ void TAnalysisWriteLoop::Write()
 		}
 		runInfo->WriteToRoot(outputFile);
 		options->AnalysisOptions()->WriteToFile(outputFile);
-		ppg->Write("PPG", TObject::kOverwrite);
+		ppg->Write("PPG");
 
 		if(options->WriteDiagnostics()) {
 			diag->Write("SortingDiagnostics", TObject::kOverwrite);
