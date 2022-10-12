@@ -126,24 +126,53 @@ public:
 
    void ListHistograms();
 
+	static double GetLastScaler(TTree* tree = nullptr, UInt_t address = 0xffff, size_t nominator = 2, size_t denominator = 1)
+	{
+		/// This function returns the ratio of the two scalers nominator and denominator for the last entry with a matching address for a given tree.
+		/// If no tree is provided it tries to get the "RateScaler" tree from the current directory.
+		if(tree == nullptr) {
+			tree = static_cast<TTree*>(gDirectory->Get("RateScaler"));
+			if(tree == nullptr) {
+				std::cerr<<__PRETTY_FUNCTION__<<": no tree provided and failed to find \"RateScaler\" in "<<gDirectory->GetName()<<std::endl;
+				return -1.;
+			}
+		}
+		TScalerData* scalerData = nullptr;
+		tree->SetBranchAddress("ScalerData", &scalerData);
+
+		for(Long64_t entry = tree->GetEntries()-1; entry >= 0; --entry) {
+			tree->GetEntry(entry);
+			if(scalerData->GetAddress() != address) continue;
+			auto scalers = scalerData->GetScaler();
+			if(nominator >= scalers.size() || denominator >= scalers.size()) {
+				std::cerr<<__PRETTY_FUNCTION__<<": trying to get nominator "<<nominator<<" and denominator "<<denominator<<" from vector of size "<<scalers.size()<<std::endl;
+				return -1.;
+			}
+			return ((double)scalers[nominator])/scalers[denominator];
+		}
+		std::cerr<<__PRETTY_FUNCTION__<<": failed to find any entry for address "<<hex(address, 4)<<std::endl;
+		return -1.;
+	}
+
+
 private:
 	void ReadTree(bool loadIntoMap);
 
-   TTree*       fTree;
-   TScalerData* fScalerData;
-   Long64_t     fEntries;
-   std::map<UInt_t, std::map<ULong64_t, std::vector<UInt_t>>> fScalerMap; //!<! an address-map of timestamp mapped scaler values
-   std::map<UInt_t, ULong64_t> fTimePeriod; //!<! a map between addresses and time differences (used to calculate the time period)
-   std::map<UInt_t, std::map<ULong64_t, int>> fNumberOfTimePeriods; //!<!
-   ULong64_t fTotalTimePeriod;                                      //!<!
-   std::map<ULong64_t, int> fTotalNumberOfTimePeriods;              //!<!
-   TPPG* fPPG;                                                      //!<!
-   std::map<UInt_t, TH1D*> fHist;                         //!<! map to store histograms that have already been drawn
-   std::map<std::pair<UInt_t, UInt_t>, TH1D*> fHistRange; //!<! map to store histograms for address-ranges
+	TTree*       fTree;
+	TScalerData* fScalerData;
+	Long64_t     fEntries;
+	std::map<UInt_t, std::map<ULong64_t, std::vector<UInt_t>>> fScalerMap; //!<! an address-map of timestamp mapped scaler values
+	std::map<UInt_t, ULong64_t> fTimePeriod; //!<! a map between addresses and time differences (used to calculate the time period)
+	std::map<UInt_t, std::map<ULong64_t, int>> fNumberOfTimePeriods; //!<!
+	ULong64_t fTotalTimePeriod;                                      //!<!
+	std::map<ULong64_t, int> fTotalNumberOfTimePeriods;              //!<!
+	TPPG* fPPG;                                                      //!<!
+	std::map<UInt_t, TH1D*> fHist;                         //!<! map to store histograms that have already been drawn
+	std::map<std::pair<UInt_t, UInt_t>, TH1D*> fHistRange; //!<! map to store histograms for address-ranges
 
-   /// \cond CLASSIMP
-   ClassDefOverride(TScaler, 2) // Contains scaler information
-   /// \endcond
+	/// \cond CLASSIMP
+	ClassDefOverride(TScaler, 2) // Contains scaler information
+		/// \endcond
 };
 /*! @} */
 #endif
