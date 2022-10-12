@@ -25,8 +25,6 @@ public:
    static TDeadtimeScalerQueue* Get(); // Returns the Queue
    ~TDeadtimeScalerQueue() override;
 
-   int ScalersInQueue() { return fScalersInQueue; }
-
 private:
    TDeadtimeScalerQueue();
    static TDeadtimeScalerQueue* fDeadtimeScalerQueueClassPointer; // Pointer to the scaler Q singleton
@@ -84,8 +82,6 @@ class TRateScalerQueue : public TObject {
 public:
    static TRateScalerQueue* Get(); // Returns the Queue
    ~TRateScalerQueue() override;
-
-   int ScalersInQueue() { return fScalersInQueue; }
 
 private:
    TRateScalerQueue();

@@ -55,6 +55,10 @@ public:
                   <<fScaler.size()<<std::endl;
       }
    }
+	void SetScaler(UInt_t* data, int size)
+	{
+		fScaler = std::vector<uint32_t>(data, data+size);
+	}
 
    UInt_t              GetAddress() const { return fAddress; }
    UInt_t              GetNetworkPacketId() const { return fNetworkPacketId; }
@@ -104,7 +108,6 @@ public:
 
    void Copy(TObject& obj) const override;
 
-public:
    std::vector<UInt_t> GetScaler(UInt_t address, ULong64_t time) const;
    UInt_t GetScaler(UInt_t address, ULong64_t time, size_t index) const;
    UInt_t GetScalerDifference(UInt_t address, ULong64_t time, size_t index) const;
@@ -124,13 +127,13 @@ public:
    void ListHistograms();
 
 private:
+	void ReadTree(bool loadIntoMap);
+
    TTree*       fTree;
    TScalerData* fScalerData;
    Long64_t     fEntries;
-   std::map<UInt_t, std::map<ULong64_t, std::vector<UInt_t>>>
-      fScalerMap; //!<! an address-map of timestamp mapped scaler values
-   std::map<UInt_t, ULong64_t>
-      fTimePeriod; //!<! a map between addresses and time differences (used to calculate the time period)
+   std::map<UInt_t, std::map<ULong64_t, std::vector<UInt_t>>> fScalerMap; //!<! an address-map of timestamp mapped scaler values
+   std::map<UInt_t, ULong64_t> fTimePeriod; //!<! a map between addresses and time differences (used to calculate the time period)
    std::map<UInt_t, std::map<ULong64_t, int>> fNumberOfTimePeriods; //!<!
    ULong64_t fTotalTimePeriod;                                      //!<!
    std::map<ULong64_t, int> fTotalNumberOfTimePeriods;              //!<!

@@ -18,6 +18,7 @@
 #include "TParsingDiagnostics.h"
 
 #include "TBadFragment.h"
+#include "TScalerQueue.h"
 
 TFragWriteLoop* TFragWriteLoop::Get(std::string name, std::string fOutputFilename)
 {
@@ -155,12 +156,37 @@ void TFragWriteLoop::Write()
 
       runInfo->WriteToRoot(fOutputFile);
       options->WriteToFile(fOutputFile);
-      ppg->Write("PPG", TObject::kOverwrite);
+      ppg->Write("PPG");
 
       if(options->WriteDiagnostics()) {
-         parsingDiagnostics->ReadPPG(ppg);
+         parsingDiagnostics->ReadPPG(ppg); // this set's the cycle length from the PPG information
          parsingDiagnostics->Write("ParsingDiagnostics", TObject::kOverwrite);
       }
+
+		if(!options->IgnoreScaler()) {
+			std::cout<<"Starting to write dead time scalers"<<std::endl;
+			auto deadtimeQueue = TDeadtimeScalerQueue::Get();
+			auto scalerTree = new TTree("DeadtimeScaler", "DeadtimeScaler");
+			TScalerData* scalerData = new TScalerData;
+			scalerTree->Branch("ScalerData", &scalerData);
+			while(deadtimeQueue->Size() > 0) {
+				scalerData = deadtimeQueue->PopScaler();
+				scalerTree->Fill();
+			}
+			scalerTree->Write();
+
+			std::cout<<"Starting to write rate scalers"<<std::endl;
+			auto rateQueue = TRateScalerQueue::Get();
+			scalerTree = new TTree("RateScaler", "RateScaler");
+			scalerData = new TScalerData;
+			scalerTree->Branch("ScalerData", &scalerData);
+			while(rateQueue->Size() > 0) {
+				scalerData = rateQueue->PopScaler();
+				scalerTree->Fill();
+			}
+			scalerTree->Write();
+			std::cout<<"Done writing scaler trees"<<std::endl;
+		}
 
       fOutputFile->Close();
       fOutputFile->Delete();

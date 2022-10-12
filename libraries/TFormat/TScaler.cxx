@@ -43,7 +43,7 @@ void TScalerData::Print(Option_t*) const
 {
    std::cout<<"time: "<<std::setw(16)<<GetTimeStamp()<<", address: "<<hex(fAddress,4);
    for(size_t i = 0; i < fScaler.size(); ++i) {
-      std::cout<<"\t Scaler["<<i<<"]: "<<hex(fScaler[i],7);
+      std::cout<<"\t Scaler["<<i<<"]: "<<hex(fScaler[i],8);
    }
    std::cout<<std::endl;
 }
@@ -54,25 +54,21 @@ TScaler::TScaler(bool loadIntoMap)
    ///\param[in] loadIntoMap Flag telling TScaler to load all scaler data into fScalerMap.
    Clear();
    fTree = static_cast<TTree*>(gROOT->FindObject("ScalerTree"));
-   if(fTree != nullptr) {
-      fEntries = fTree->GetEntries();
-      fTree->SetBranchAddress("TScalerData", &fScalerData);
-      if(loadIntoMap) {
-         for(Long64_t entry = 0; entry < fEntries; ++entry) {
-            fTree->GetEntry(entry);
-            fScalerMap[fScalerData->GetAddress()][fScalerData->GetTimeStamp()] = fScalerData->GetScaler();
-         }
-      }
-   }
+	ReadTree(loadIntoMap);
 }
 
 TScaler::TScaler(TTree* tree, bool loadIntoMap)
 {
    Clear();
    fTree = tree;
+	ReadTree(loadIntoMap);
+}
+
+void TScaler::ReadTree(bool loadIntoMap)
+{
    if(fTree != nullptr) {
       fEntries = fTree->GetEntries();
-      fTree->SetBranchAddress("TScalerData", &fScalerData);
+      fTree->SetBranchAddress("ScalerData", &fScalerData);
       if(loadIntoMap) {
          for(Long64_t entry = 0; entry < fEntries; ++entry) {
             fTree->GetEntry(entry);
