@@ -1201,6 +1201,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 					ss>>range>>low>>high;
 					channel->SetENGRange(std::make_pair(low, high), range);
 				} else if(type.compare("ENGDRIFT") == 0) {
+					channel->fENGDriftCoefficents.SetPriority(pr);
 					double value;
 					while(!(ss>>value).fail()) {
 						channel->AddENGDriftCoefficent(value);
