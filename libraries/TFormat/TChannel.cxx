@@ -1201,6 +1201,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 					ss>>range>>low>>high;
 					channel->SetENGRange(std::make_pair(low, high), range);
 				} else if(type.compare("ENGDRIFT") == 0) {
+					channel->fENGDriftCoefficents.SetPriority(pr);
 					double value;
 					while(!(ss>>value).fail()) {
 						channel->AddENGDriftCoefficent(value);
@@ -1360,7 +1361,7 @@ int TChannel::WriteToRoot(TFile* fileptr)
 		fileptr->ReOpen("UPDATE");
 	}
 	if(!gDirectory) { // we don't compare to nullptr here, as ROOT >= 6.24.00 uses the TDirectoryAtomicAdapter structure with a bool() operator
-		std::cout<<"No file opened to write to."<<std::endl;
+		std::cout<<"No file opened to write TChannel to."<<std::endl;
 	}
 	TIter iter(gDirectory->GetListOfKeys());
 
@@ -1486,7 +1487,7 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName, bool
 		}
 		// get address from keys name
 		std::stringstream str;
-		str<<hex(key->GetName()+strlen(graphName),4);
+		str<<std::hex<<key->GetName()+strlen(graphName);
 		unsigned int address;
 		str>>address;
 		if(GetChannel(address) != nullptr) {
@@ -1505,8 +1506,11 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName, bool
 void TChannel::SetDigitizerType(TPriorityValue<std::string> tmp)
 {
 	fDigitizerTypeString = tmp;
-	if(fMnemonic.Value() != nullptr) fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType, fTimeStampUnit);
-	else std::cerr<<__PRETTY_FUNCTION__<<": mnemonic not set, can't set digitizer type and timestamp unit from "<<fDigitizerTypeString<<std::endl;
+	if(fMnemonic.Value() != nullptr) {
+		fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType, fTimeStampUnit);
+	} else {
+		std::cerr<<__PRETTY_FUNCTION__<<": mnemonic not set, can't set digitizer type and timestamp unit from "<<fDigitizerTypeString<<std::endl;
+	}
 }
 
 double TChannel::GetTime(Long64_t timestamp, Float_t cfd, double energy) const

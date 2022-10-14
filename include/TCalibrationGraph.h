@@ -49,8 +49,8 @@ public:
 	bool SetResidual(const bool& force = false);
 	void Add(TGraphErrors*, const std::string& label);
 
-	void SetLineColor(int index, int color)   { fGraphs[index].SetLineColor(color);   fResidualGraphs[index].SetLineColor(color); }   ///< Set the line color of the graph and residuals at <index>
-	void SetMarkerColor(int index, int color) { fGraphs[index].SetMarkerColor(color); fResidualGraphs[index].SetMarkerColor(color); } ///< Set the marker color of the graph and residuals at <index>
+	void SetLineColor(int index, int color)   { fGraphs[index].SetLineColor(color);   fResidualGraphs[index].SetLineColor(color); }   ///< Set the line color of the graph and residuals at index
+	void SetMarkerColor(int index, int color) { fGraphs[index].SetMarkerColor(color); fResidualGraphs[index].SetMarkerColor(color); } ///< Set the marker color of the graph and residuals at index
 
 	int GetN() { return fTotalGraph->GetN(); }     ///< Returns GetN(), i.e. number of points of the total graph.
 	double* GetX() { return fTotalGraph->GetX(); } ///< Returns an array of x-values of the total graph.
@@ -63,7 +63,7 @@ public:
 	double GetMinimumY() { return fMinimumY; } ///< Return minimum y-value.
 	double GetMaximumY() { return fMaximumY; } ///< Return maximum y-value.
 
-	void Fit(TF1* function, Option_t* opt = "") { fTotalGraph->Fit(function, opt); } ///< Fits the <function> to the total graph.
+	void Fit(TF1* function, Option_t* opt = "") { fTotalGraph->Fit(function, opt); } ///< Fits the provided function to the total graph.
 	TF1* FitFunction() { return reinterpret_cast<TF1*>(fTotalGraph->GetListOfFunctions()->FindObject("fitfunction")); } ///< Gets the calibration from the total graph (might be nullptr!).
 	TGraphErrors* TotalGraph() { return fTotalGraph; }
 	size_t NumberOfGraphs() { return fGraphs.size(); }

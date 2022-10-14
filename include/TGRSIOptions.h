@@ -48,6 +48,7 @@ public:
 	const std::vector<std::string>& InputCutFiles() { return fInputCutFiles; }
 	const std::vector<std::string>& WinInputFiles() { return fInputWinFiles; }
 	const std::vector<std::string>& MacroInputFiles() { return fMacroFiles; }
+	const std::string& DataFrameLibrary() { return fDataFrameLibrary; }
 
 	const std::string& OutputFragmentFile() { return fOutputFragmentFile; }
 	const std::string& OutputAnalysisFile() { return fOutputAnalysisFile; }
@@ -100,7 +101,7 @@ public:
 	bool MakeHistos() const { return fMakeHistos; }
 	bool SortMultiple() const { return fSortMultiple; }
 
-	bool Debug() const { return fDebug; }
+	bool Debug() const { return fDebug; } // also used by GRSIFrame
 
 	bool IsOnline() const { return fIsOnline; }
 
@@ -111,6 +112,7 @@ public:
 
 	size_t NumberOfEvents() const { return fNumberOfEvents; }
 
+	bool IgnoreMissingChannel() const { return fIgnoreMissingChannel; }
 	bool SkipInputSort() const { return fSkipInputSort; }
 	int  SortDepth() const { return fSortDepth; }
 
@@ -126,9 +128,16 @@ public:
 	unsigned int StatusInterval() const { return fStatusInterval; }
 	bool         LongFileDescription() const { return fLongFileDescription; }
 
-	// Proof only
+	// GRSIProof and GRSIFrame only
 	int  GetMaxWorkers() const { return fMaxWorkers; }
+	std::string TreeName() const { return fTreeName; }
+	// Proof only
 	bool SelectorOnly() const { return fSelectorOnly; }
+   bool AverageRateEstimation() const { return fAverageRateEstimation; }
+   bool ParallelUnzip() const { return fParallelUnzip; }
+   int CacheSize() const { return fCacheSize; }
+   int Submergers() const { return fSubmergers; }
+   bool ProofStats() const { return fProofStats; }
 
 	void SuppressErrors(bool suppress) { fSuppressErrors = suppress; }
 
@@ -148,6 +157,7 @@ private:
 	std::vector<std::string> fInputOdbFiles;   ///< A list of the input odb files
 	std::vector<std::string> fExternalRunInfo; ///< A list of the input run info files
 	std::vector<std::string> fMacroFiles;      ///< A list of the input macro (.C) files
+	std::string              fDataFrameLibrary;///< library (or .cxx file) for dataframe processing (used with grsiframe)
 
 	std::vector<std::string> fInputCutFiles;  ///< A list of input cut files
 	std::vector<std::string> fInputValFiles;  ///< A list of the input GValue files
@@ -206,6 +216,7 @@ private:
 
 	size_t fNumberOfEvents;         ///< Number of events, fragments, etc. to process (0 - all)
 
+	bool fIgnoreMissingChannel; ///< Flag to completely ignore missing channels
 	bool fSkipInputSort; ///< Flag to sort on time or triggers
 	int  fSortDepth;     ///< Size of Q that stores fragments to be built into events
 
@@ -223,14 +234,20 @@ private:
 	bool         fLongFileDescription;
 
 	// Proof only
-	int  fMaxWorkers;   ///< Max workers used in grsiproof
-	bool fSelectorOnly; ///< Flag to turn PROOF off in grsiproof
+	int         fMaxWorkers;   ///< Max workers used in grsiproof
+	bool        fSelectorOnly; ///< Flag to turn PROOF off in grsiproof
+	std::string fTreeName;     ///< Name of tree to be analyzed (default is empty, i.e. FragmentTree, AnalysisTree, and Lst2RootTree are checked)
+   bool        fAverageRateEstimation; ///< enable average rate estimation
+   bool        fParallelUnzip;         ///< enable use of parallel unzipping
+   int         fCacheSize;             ///< set tree cache size, default is -1 (off)
+   int         fSubmergers;            ///< set number of sub-mergers (0 = automatic), default is -1 (off) 
+   bool        fProofStats;            ///< enable proof stats
 
 	// shared object libraries
 	std::string fParserLibrary; ///< location of shared object library for data parser and files
 
 	/// \cond CLASSIMP
-	ClassDefOverride(TGRSIOptions, 4); ///< Class for storing options in GRSISort
+	ClassDefOverride(TGRSIOptions, 5); ///< Class for storing options in GRSISort
 	/// \endcond
 };
 /*! @} */

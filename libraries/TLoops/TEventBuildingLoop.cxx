@@ -47,6 +47,13 @@ TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode, long b
       });
 		std::cout<<DYELLOW<<"sorting by trigger ID!"<<RESET_COLOR<<std::endl;
       break;
+	case EBuildMode::kSkip:
+		// no need for ordering, always return true
+      fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment>, std::shared_ptr<const TFragment>) {
+         return true;
+      });
+		std::cout<<DYELLOW<<"not sorting!"<<RESET_COLOR<<std::endl;
+      break;
 	case EBuildMode::kDefault:
 		std::cout<<"build mode was "<<static_cast<int>(fBuildMode)<<", not "<<static_cast<int>(EBuildMode::kTimestamp)<<", or "<<static_cast<int>(EBuildMode::kTriggerId)<<std::endl;
 		throw std::runtime_error("Error in event building loop, no build mode selected. Maybe because no custom run info was loaded?");
@@ -129,6 +136,12 @@ bool TEventBuildingLoop::CheckBuildCondition(const std::shared_ptr<const TFragme
 		case EBuildMode::kTime:      return CheckTimeCondition(frag); break;
 		case EBuildMode::kTimestamp: return CheckTimestampCondition(frag); break;
 		case EBuildMode::kTriggerId: return CheckTriggerIdCondition(frag); break;
+		case EBuildMode::kSkip:
+											  // always push the current "event" (single fragment) on and clear it
+											  fOutputQueue->Push(fNextEvent);
+											  fNextEvent.clear();
+											  return true;
+											  break;
 		default: return false;
 	}
 	return false; // we should never reach this statement!

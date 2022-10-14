@@ -24,6 +24,7 @@
 #include <vector>
 #include <string>
 #include <signal.h>
+#include <libgen.h>
 
 TGRSIProof* gGRSIProof;
 TGRSIOptions* gGRSIOpt;
@@ -80,7 +81,11 @@ void Analyze(const char* tree_type)
    for(const auto& macro_it : gGRSIOpt->MacroInputFiles()) {
       std::cout<<"Currently Running: "<<(Form("%s", macro_it.c_str()))<<std::endl;
 		try {
-			proof_chain->Process(Form("%s+", macro_it.c_str()));
+			if(gGRSIOpt->NumberOfEvents() == 0) {
+				proof_chain->Process(Form("%s+", macro_it.c_str()));
+			} else {
+				proof_chain->Process(Form("%s+", macro_it.c_str()), "", gGRSIOpt->NumberOfEvents());
+			}
 		} catch(TGRSIMapException<std::string>& e) {
 			std::cout<<DRED<<"Exception when processing chain: "<<e.detail()<<RESET_COLOR<<std::endl;
 			throw e;
@@ -111,7 +116,7 @@ void AtExitHandler()
 
 			std::string firstMacro;
 			if(!gGRSIOpt->MacroInputFiles().empty()) firstMacro = gGRSIOpt->MacroInputFiles().at(0);
-			firstMacro = basename(firstMacro.c_str()); // remove path
+			firstMacro = basename(const_cast<char*>(firstMacro.c_str())); // remove path
 			firstMacro = firstMacro.substr(0, firstMacro.find_last_of('.')); // remove extension
 
 			if(runNumber != 0 && subRunNumber != -1) {
@@ -260,6 +265,46 @@ int main(int argc, char** argv)
 
 	startedProof = true;
 
+	// set some proof parameters	
+	// average rate, can also be set via Proof.RateEstimation in gEnv ("current" or "average)
+   if(gGRSIOpt->AverageRateEstimation()) gGRSIProof->SetParameter("PROOF_RateEstimation", "average");
+
+   // Parallel unzip, can also be set via ProofPlayer.UseParallelUnzip
+   if(gGRSIOpt->ParallelUnzip()) {
+      gGRSIProof->SetParameter("PROOF_UseParallelUnzip", 1);
+   } else {
+      gGRSIProof->SetParameter("PROOF_UseParallelUnzip", 0);
+   }
+
+   // Tree cache
+   if(gGRSIOpt->CacheSize() >= 0) {
+      if(gGRSIOpt->CacheSize() == 0) {
+         gGRSIProof->SetParameter("PROOF_UseTreeCache", 0);
+      } else {
+         gGRSIProof->SetParameter("PROOF_UseTreeCache", 1);
+         gGRSIProof->SetParameter("PROOF_CacheSize", gGRSIOpt->CacheSize());
+      }
+   } else {
+      // Use defaults
+      gGRSIProof->DeleteParameters("PROOF_UseTreeCache");
+      gGRSIProof->DeleteParameters("PROOF_CacheSize");
+   }
+
+   // Enable submergers, if required
+   if(gGRSIOpt->Submergers() >= 0) {
+      gGRSIProof->SetParameter("PROOF_UseMergers", gGRSIOpt->Submergers());
+   } else {
+      gGRSIProof->DeleteParameters("PROOF_UseMergers");
+   }
+
+   // enable perfomance output
+   if(gGRSIOpt->ProofStats()) {
+      gGRSIProof->SetParameter("PROOF_StatsHist", "");
+      gGRSIProof->SetParameter("PROOF_StatsTrace", "");
+      gGRSIProof->SetParameter("PROOF_RateTrace", "");
+      gGRSIProof->SetParameter("PROOF_SlaveStatsTrace", "");
+   }
+
 	gGRSIProof->SetBit(TProof::kUsingSessionGui);
 	gGRSIProof->AddEnvVar("GRSISYS", pPath);
 	gInterpreter->AddIncludePath(Form("%s/include", pPath));
@@ -282,9 +327,14 @@ int main(int argc, char** argv)
 	}
 	gGRSIProof->AddInput(new TNamed("ParserLibrary", library.c_str()));
 
-	Analyze("FragmentTree");
-	Analyze("AnalysisTree");
-	Analyze("Lst2RootTree");
+	if(gGRSIOpt->TreeName().empty()) {
+		Analyze("FragmentTree");
+		Analyze("AnalysisTree");
+		Analyze("Lst2RootTree");
+	} else {
+		std::cout<<"Running selector on tree '"<<gGRSIOpt->TreeName()<<"'"<<std::endl;
+		Analyze(gGRSIOpt->TreeName().c_str());
+	}
 
 	AtExitHandler();
 

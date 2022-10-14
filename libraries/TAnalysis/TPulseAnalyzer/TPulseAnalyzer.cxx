@@ -121,7 +121,7 @@ long double TPulseAnalyzer::determinant(int m)
    }
    for(int j = m - 2; j >= 0; j--) {
       for(int i = 0; i < m; i++) {
-         copy_matrix[i][j] -= copy_matrix[i][m - 1] / copy_matrix[m - 1][m - 1] * copy_matrix[m - 1][j];
+         copy_matrix[i][j] -= copy_matrix[i][m - 1] /copy_matrix[m - 1][m - 1] * copy_matrix[m - 1][j];
       }
    }
    return copy_matrix[m - 1][m - 1] * determinant(m - 1);
@@ -872,8 +872,17 @@ int TPulseAnalyzer::GetCsIChiSq()
    return -1;
 }
 
+int TPulseAnalyzer::GetCsIFitType()
+{
+   if(CsIIsSet()) {
+      return shpar->type;
+   }
+   return -1;
+}
+
 double TPulseAnalyzer::CsIt0()
 {
+   
    if(CsIIsSet()) {
       return shpar->t[0];
    }
@@ -889,11 +898,15 @@ double TPulseAnalyzer::CsIt0()
       delete shpar;
    }
    shpar = new ShapePar;
+   
    GetCsIExclusionZone();
-   int tmpchisq = GetCsIShape();
-   if(tmpchisq >= 0) {
-      SetCsI();
-      return shpar->t[0];
+   if(cWpar->teflag == 1){
+      //good exclusion zone
+      int tmpchisq = GetCsIShape();
+      if(tmpchisq >= 0) {
+         SetCsI();
+         return shpar->t[0];
+      }
    }
 
    return -1.0;
@@ -901,7 +914,7 @@ double TPulseAnalyzer::CsIt0()
 
 double TPulseAnalyzer::CsIPID()
 {
-
+   //std::cout << "Fitting CsI PID" << std::endl;
    if(CsIIsSet()) {
       double f = shpar->am[2];
       double s = shpar->am[3];
@@ -927,6 +940,20 @@ double TPulseAnalyzer::CsIPID()
    shpar->t[3] = 380.0;
 
    GetCsIExclusionZone();
+
+   if(cWpar->bflag==0) {
+      shpar->type=-2; //type for failed exclusion zone determination
+      return BAD_BASELINE_RANGE;
+   }
+   if(cWpar->mflag==0) {
+      shpar->type=-2; //type for failed exclusion zone determination
+      return BAD_MAX;
+   }
+   if(cWpar->teflag==0) {
+      shpar->type=-2; //type for failed exclusion zone determination
+      return BAD_EXCLUSION_ZONE;
+   }
+   
    int tmpchisq = GetCsIShape();
    if(tmpchisq >= 0) {
       double f;
@@ -942,14 +969,128 @@ double TPulseAnalyzer::CsIPID()
       return r;
    }
 
-   return -1.0;
+   return BAD_PID;
 }
 
 int TPulseAnalyzer::GetCsIShape()
 {
+   
+   double chisq[4], chimin; //chisq array for fit types: 0=2 comp, 1=fast, 2=slow, 3=gamma on PIN
 
-   int dim = 4;
+   int ndf;
+   int i, imin;
+  
+   //calculate ndf assuming two component (4 parameter) fit 
+   ndf = -4;
+   for(i = 0; i < cWpar->temin; i++) {
+      ndf++;
+   }
+   for(i = cWpar->temax; i < cN; i++) {
+      ndf++;
+   }
 
+   //std::cout << "ndf 4 parameters: " << ndf << std::endl;
+
+   //initialize chisq to large value and set up waveform parameters
+   for(i = 0; i < 4; i++) {
+      chisq[i] = LARGECHISQ;
+      csiTestShpar[i] = new ShapePar;
+      csiTestWpar[i] = new WaveFormPar;
+      memcpy(csiTestShpar[i], shpar, sizeof(ShapePar));
+      memcpy(csiTestWpar[i], cWpar, sizeof(WaveFormPar));
+   }
+
+   //two component fit 
+   FitCsIShape(4, csiTestShpar[0], csiTestWpar[0]);
+   chisq[0] = csiTestShpar[0]->chisq / ndf;
+
+   //for 3 parameter fits, ndf is one larger
+   ndf++;
+
+   //std::cout << "ndf 3 parameters: " << ndf << std::endl;
+
+   //fast only for high Z recoils
+   FitCsIShape(3, csiTestShpar[1], csiTestWpar[1]);
+   chisq[1] = csiTestShpar[1]->chisq / ndf;
+
+   //slow only for gamma on CsI
+   csiTestShpar[2]->t[2] = shpar->t[3];
+   csiTestShpar[2]->t[3] = shpar->t[2];
+   FitCsIShape(3, csiTestShpar[2], csiTestWpar[2]);
+   chisq[2] = csiTestShpar[2]->chisq / ndf;
+
+   //gamma on PIN
+   csiTestShpar[3]->t[2] = shpar->t[4];
+   csiTestShpar[3]->t[4] = shpar->t[2];
+   FitCsIShape(3, csiTestShpar[3], csiTestWpar[3]);
+   chisq[3] = csiTestShpar[3]->chisq / ndf;
+
+   /*std::cout << "0=two comp 1=fast 2=slow 3=gamma on PIN" << std::endl;
+   for(i = 0; i < 4; i++)
+      std::cout << "chisq " << csiTestShpar[i]->chisq << ", chisq[" << i << "]/ndf " << chisq[i] << std::endl;*/
+
+   //find minimum chisq
+   imin = -1;
+   chimin = LARGECHISQ;
+   for(i = 0; i < 4; i++)
+   if( (chisq[i] < chimin) && (chisq[i] > 0) ) {
+      chimin = chisq[i];
+      imin = i;
+   }
+
+   //std::cout << "minimum chisq[" << imin << "]/ndf " << chisq[imin] << ", t0min " << csiTestShpar[imin]->t[0] << std::endl;
+
+   switch(imin) {
+      case 3:
+         //gamma on PIN fit type
+         memcpy(shpar, csiTestShpar[imin], sizeof(ShapePar));
+         memcpy(cWpar, csiTestWpar[imin], sizeof(WaveFormPar));
+         shpar->t[2] = csiTestShpar[imin]->t[4];
+         shpar->am[2] = csiTestShpar[imin]->am[4];
+         shpar->t[4] = csiTestShpar[imin]->t[2];
+         shpar->am[4] = csiTestShpar[imin]->am[2];
+         shpar->type = imin + 1; //gamma on PIN type
+         break;
+      case 2:
+         //slow component only fit type
+         memcpy(shpar, csiTestShpar[imin], sizeof(ShapePar));
+         memcpy(cWpar, csiTestWpar[imin], sizeof(WaveFormPar));
+         shpar->t[2] = csiTestShpar[imin]->t[3];
+         shpar->am[2] = csiTestShpar[imin]->am[3];
+         shpar->t[3] = csiTestShpar[imin]->t[2];
+         shpar->am[3] = csiTestShpar[imin]->am[2];
+         shpar->type = imin + 1; //slow only type
+         break;
+      case 1:
+         //fast component only fit type
+         memcpy(shpar, csiTestShpar[imin], sizeof(ShapePar));
+         memcpy(cWpar, csiTestWpar[imin], sizeof(WaveFormPar));
+         shpar->type = imin + 1; //fast only type
+         break;
+      case 0:
+         //two component fit type
+         memcpy(shpar, csiTestShpar[imin], sizeof(ShapePar));
+         memcpy(cWpar, csiTestWpar[imin], sizeof(WaveFormPar));
+         shpar->type = imin + 1; //two component type
+         break;
+      default:
+         //failed fit
+         shpar->type = -1; // fit failure type
+         shpar->chisq = BADCHISQ_FAIL_DIRECT; // set it here so it still frees memory on bad fits
+         break;
+   }
+
+   // free memory allocated for the fit
+   for(i = 0; i < 4; i++) {
+      delete csiTestShpar[i];
+      delete csiTestWpar[i];
+   }
+
+   return shpar->chisq; // generic chisq return statement for all types
+}
+
+int TPulseAnalyzer::FitCsIShape(int dim, ShapePar* par, WaveFormPar* wpar)
+{
    long double sum, tau, tau_i, tau_j;
    int         p, q, d;
 
@@ -958,30 +1099,30 @@ int TPulseAnalyzer::GetCsIShape()
    memset(lineq_solution, 0, sizeof(lineq_solution));
 
    /* q is the low limit of the signal section */
-   q = cWpar->temax;
+   q = wpar->temax;
    if(q >= cN || q <= 0) {
-      shpar->chisq = -1;
+      par->chisq = -1;
       return -1.;
    }
 
    /* p is the high limit of the baseline section */
-   p = cWpar->temin;
+   p = wpar->temin;
    if(p >= cN || p <= 0) {
-      shpar->chisq = -1;
+      par->chisq = -1;
       return -1.;
    }
    lineq_dim = dim;
 
    // initialize amplitudes to 0
-   for(long double& i : shpar->am) {
+   for(long double& i : par->am) {
       i = 0.;
    }
 
    d = cN;
 
    // initialize chi square 0 and ndf = n-k to -k where k=dim
-   shpar->chisq = 0.;
-   shpar->ndf   = -lineq_dim;
+   par->chisq = 0.;
+   par->ndf   = -lineq_dim;
 
    /**************************************************************************
      linearized chi square fit is Mu = v where M is a data matrix
@@ -991,7 +1132,7 @@ int TPulseAnalyzer::GetCsIShape()
 
    // create matrix for linearized fit
    for(int i = 1; i < lineq_dim; i++) {
-      tau   = GetCsITau(i);
+      tau   = GetCsITau(i, par);
       tau_i = tau;
       sum   = -(static_cast<double>(q)) / tau + log(1. - exp(-(static_cast<double>(d - q)) / tau));
       sum -= log(1. - exp(-1. / tau));
@@ -1004,7 +1145,7 @@ int TPulseAnalyzer::GetCsIShape()
       lineq_matrix[i][i] = exp(sum);
 
       for(int j = i + 1; j < lineq_dim; j++) {
-         tau_j = GetCsITau(j);
+         tau_j = GetCsITau(j, par);
          tau   = (tau_i * tau_j) / (tau_i + tau_j);
          sum   = -(static_cast<double>(q)) / tau + log(1. - exp(-(static_cast<double>(d - q)) / tau));
          sum -= log(1. - exp(-1. / tau));
@@ -1019,17 +1160,17 @@ int TPulseAnalyzer::GetCsIShape()
    for(int j = q; j < cN; j++) {
       lineq_vector[0] += cWavebuffer[j];
       lineq_matrix[0][0] += 1;
-      shpar->chisq += cWavebuffer[j] * cWavebuffer[j];
-      shpar->ndf += 1;
+      par->chisq += cWavebuffer[j] * cWavebuffer[j];
+      par->ndf += 1;
    }
 
    if(lineq_dim >= cN) {
-      shpar->chisq = -1;
+      par->chisq = -1;
       return -1.;
    }
 
    for(int i = 1; i < lineq_dim; i++) {
-      tau             = GetCsITau(i);
+      tau             = GetCsITau(i, par);
       lineq_vector[i] = 0;
       for(int j = q; j < cN; j++) {
          lineq_vector[i] += cWavebuffer[j] * exp(-(double(j)) / tau);
@@ -1039,8 +1180,8 @@ int TPulseAnalyzer::GetCsIShape()
    for(int j = 0; j < p; j++) {
       lineq_vector[0] += cWavebuffer[j];
       lineq_matrix[0][0] += 1;
-      shpar->chisq += cWavebuffer[j] * cWavebuffer[j];
-      shpar->ndf += 1;
+      par->chisq += cWavebuffer[j] * cWavebuffer[j];
+      par->ndf += 1;
    }
 
    // solve the matrix equation Mu = v -> u = M^(-1)v where M^(-1) is the inverse
@@ -1048,49 +1189,61 @@ int TPulseAnalyzer::GetCsIShape()
 
    // error if the matrix cannot be inverted
    if(solve_lin_eq() == 0) {
-      shpar->chisq = BADCHISQ_MAT;
-      shpar->ndf   = 1;
+      par->chisq = BADCHISQ_MAT;
+      par->ndf   = 1;
 
       return BADCHISQ_MAT;
    } // else try and find t0 and calculate amplitudes
 
    // see the function comments for find_t0 for details
 
-   shpar->t[0] = GetCsIt0();
+   par->t[0] = GetCsIt0(par, wpar);
 
    // if t0 is less than 0, return a T0FAIL
-   if(shpar->t[0] <= 0) {
-      shpar->chisq = BADCHISQ_T0;
-      shpar->ndf   = 1;
+   if(par->t[0] <= 0) {
+      par->chisq = BADCHISQ_T0;
+      par->ndf   = 1;
       return BADCHISQ_T0;
    }
 
    // calculate amplitudes
-   shpar->am[0] = lineq_solution[0];
+   par->am[0] = lineq_solution[0];
 
    for(int i = 1; i < lineq_dim; i++) {
-      tau          = GetCsITau(i);
-      shpar->am[i] = lineq_solution[i] * exp(-shpar->t[0] / tau);
+      tau        = GetCsITau(i, par);
+      par->am[i] = lineq_solution[i] * exp(-par->t[0] / tau);
    }
    // done calculating amplitudes
 
    for(int i = 0; i < lineq_dim; i++) {
-      shpar->chisq -= lineq_solution[i] * lineq_vector[i];
+      par->chisq -= lineq_solution[i] * lineq_vector[i];
    }
 
-   if(shpar->chisq < 0) {
-      shpar->chisq = BADCHISQ_NEG;
-      shpar->ndf   = 1;
+   if(par->chisq < 0) {
+      par->chisq = BADCHISQ_NEG;
+      par->ndf   = 1;
       return BADCHISQ_NEG;
    }
 
    for(int i = 2; i < lineq_dim; i++) {
-      shpar->am[i] *= -1;
+      par->am[i] *= -1;
    }
 
-   shpar->type = dim - 2;
+   par->type = dim - 2;
 
-   return shpar->chisq;
+   //return BADCHISQ_AMPL if a component amplitude is less than 0
+   //(apart from the baseline which can be negative)
+   for(int i = 1; i < lineq_dim; i++) {
+      if(par->am[i]<0) {
+         par->chisq=BADCHISQ_AMPL;
+         par->ndf=1;
+         return BADCHISQ_AMPL;
+      }
+   }
+
+   //std::cout << "chisq from FitCsIShape: " << par->chisq << std::endl;
+
+   return par->chisq;
 }
 
 void TPulseAnalyzer::GetCsIExclusionZone()
@@ -1133,7 +1286,7 @@ void TPulseAnalyzer::GetCsIExclusionZone()
          }
       }
 
-      if(cWpar->temax > cWpar->tmax || cWpar->temax < cWpar->baseline_range) {
+      if(cWpar->temax > cWpar->tmax || cWpar->temax < cWpar->baseline_range || cWpar->temax < 0) {
          cWpar->teflag = 0;
       }
       // End of the determination of the upper limit of the exclusion zone.
@@ -1187,48 +1340,48 @@ void TPulseAnalyzer::GetCsIExclusionZone()
    }
 }
 
-double TPulseAnalyzer::GetCsITau(int i)
+double TPulseAnalyzer::GetCsITau(int i, ShapePar *par)
 {
 
    if(i == 1) {
-      return shpar->t[1];
+      return par->t[1];
    }
 
    if(i >= 2) {
       if(i < NSHAPE) {
-         return shpar->t[i] * shpar->t[1] / (shpar->t[i] + shpar->t[1]);
+         return par->t[i] * par->t[1] / (par->t[i] + par->t[1]);
       }
    }
 
    return -1.;
 }
 
-double TPulseAnalyzer::GetCsIt0()
+double TPulseAnalyzer::GetCsIt0(ShapePar *par, WaveFormPar *wpar)
 {
    /*************************************************************************
-     This function calculates t0 given the matrix solution from the get_shape.
-     In this case, the fit function is written as follows:
+   This function calculates t0 given the matrix solution from FitCsIShape.
+   In this case, the fit function is written as follows:
 
-     f(t) = C + (Af+As)*exp(t0/tRC)*exp(-t/tRC) - Af*exp(t0/tF')*exp(-t/tF')
-     - As*exp(t0/tS')*exp(-t/tS')
+   f(t) = C + (Af+As)*exp(t0/tRC)*exp(-t/tRC) - Af*exp(t0/tF')*exp(-t/tF')
+   - As*exp(t0/tS')*exp(-t/tS')
 
-     This can be re-written as:
+   This can be re-written as:
 
-     f(t) = C' + alpha*exp(-t/tRC) + beta*exp(-t/tF') + gamma*exp(-t/tS')
+   f(t) = C' + alpha*exp(-t/tRC) + beta*exp(-t/tF') + gamma*exp(-t/tS')
 
-Where:
-C = C'
-alpha = (Af+As)*exp(t0/tRC)
-beta  = -Af*exp(t0/tF')
-gamma = -As*exp(t0/tS')
+   Where:
+   C = C'
+   alpha = (Af+As)*exp(t0/tRC)
+   beta  = -Af*exp(t0/tF')
+   gamma = -As*exp(t0/tS')
 
-Ignoring the constant, we have:
+   Ignoring the constant, we have:
 
-f'(t0) = alpha*exp(-t0/tRC) + beta*exp(-t0/tF') + gamma*exp(-t0/tS') = 0
+   f'(t0) = alpha*exp(-t0/tRC) + beta*exp(-t0/tF') + gamma*exp(-t0/tS') = 0
 
-For t<t0, f'(t)< 0, and for t>t0, f'(t)>0. This function finds the
-intersection of f'(t) and 0 by linear interpolation from these endpoints.
-    *************************************************************************/
+   For t<t0, f'(t)< 0, and for t>t0, f'(t)>0. This function finds the
+   intersection of f'(t) and 0 by linear interpolation from these endpoints.
+   *************************************************************************/
 
    double fa, fb, fc;     // value of the fit function at points a,b,c
    double ta, tb, tc = 0; // corresponding time (x-)axis values
@@ -1237,27 +1390,27 @@ intersection of f'(t) and 0 by linear interpolation from these endpoints.
    double tau;
    int    i;
 
-   ta = cWpar->baseline_range;
-   // ta=cWpar->temin;
+   ta = wpar->baseline_range;
+   // ta=wpar->temin;
    fa = 0.;
 
    // t0 must be between the baseline and the max
    // calculates fit value (no constant) at the end of the baseline range
    // this is the t<t0 point
    for(i = 1; i < lineq_dim; i++) {
-      tau = GetCsITau(i);
+      tau = GetCsITau(i, par);
       // getc(stdin);
       fa += lineq_solution[i] * exp(-ta / tau);
    }
 
-   tb = cWpar->tmax;
-   // tb=cWpar->temax;
+   tb = wpar->tmax;
+   // tb=wpar->temax;
    fb = 0.;
 
    // calculates fit value (no constant) at tmax
    // this is the t>t0 point
    for(i = 1; i < lineq_dim; i++) {
-      tau = GetCsITau(i);
+      tau = GetCsITau(i, par);
       fb += lineq_solution[i] * exp(-tb / tau);
    }
 
@@ -1283,7 +1436,7 @@ intersection of f'(t) and 0 by linear interpolation from these endpoints.
          tc = ta + slope * (tb - ta);
          fc = 0.;
          for(i = 1; i < lineq_dim; i++) {
-            tau = GetCsITau(i);
+            tau = GetCsITau(i, par);
             fc += lineq_solution[i] * exp(-tc / tau);
          }
 
@@ -1305,8 +1458,8 @@ intersection of f'(t) and 0 by linear interpolation from these endpoints.
       return -1;
    }
 
-   // set cWpar->t0 here
-   cWpar->t0 = tc;
+   // set wpar->t0 here
+   wpar->t0 = tc;
 
    return tc;
 }

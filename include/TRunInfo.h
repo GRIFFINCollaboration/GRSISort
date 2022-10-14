@@ -165,7 +165,7 @@ public:
    static inline double                          HPGeArrayPosition() { return Get()->fHPGeArrayPosition; }
 
    Long64_t Merge(TCollection* list);
-   void Add(TRunInfo* runinfo);
+   void Add(TRunInfo* runinfo, bool verbose = false);
   
 	virtual TEventBuildingLoop::EBuildMode BuildMode() const;
 
@@ -190,9 +190,9 @@ private:
 	int         fLastSubRunNumber{-1};  ///< The last sub run number (for combined subruns)
 	std::vector<std::pair<int, int> > fRunList; ///< List of all runs added to this run info
 
-	double fRunStart{0.};  // The start  of the current run in seconds
-	double fRunStop{0.};   // The stop   of the current run in seconds
-	double fRunLength{0.}; // The length of the current run in seconds
+	double fRunStart{0.};  // The start  of the current run in seconds - no idea why we store this as double?
+	double fRunStop{0.};   // The stop   of the current run in seconds - no idea why we store this as double?
+	double fRunLength{0.}; // The length of the current run in seconds - no idea why we store this as double?
 
 	static std::string fVersion;        // The version of GRSISort that generated the file - GRSI_RELEASE from GVersion.h
 	static std::string fFullVersion;    // The full version of GRSISort that generated the file (includes last commit) - GRSI_GIT_COMMIT from GVersion.h

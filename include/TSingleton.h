@@ -146,18 +146,19 @@ public:
 			if((gDirectory->GetFile()) != nullptr) {
 				TList* list = gDirectory->GetFile()->GetListOfKeys();
 				TIter  iter(list);
-				std::cout<<R"(Reading from file ")"<<CYAN<<gDirectory->GetFile()->GetName()<<RESET_COLOR<<R"(":)"<<std::endl;
+				std::cout<<R"(Reading from file ")"<<CYAN<<gDirectory->GetFile()->GetName()<<RESET_COLOR<<R"(": )"<<std::flush;
 				while(TKey* key = static_cast<TKey*>(iter.Next())) {
 					if(strcmp(key->GetClassName(), T::Class()->GetName()) != 0) {
 						continue;
 					}
 					// we found the object in the file, so we use it as our singleton
 					// this automatically deletes the old singleton if we just switched files
-					std::cout<<"Adding "<<T::Class()->GetName()<<std::endl;
+					std::cout<<"adding "<<T::Class()->GetName()<<" "<<std::flush;
 					T* tmpSingleton = static_cast<T*>(key->ReadObj());
 					fSingleton->Add(tmpSingleton);
 					fDir = gDirectory; // update the directory to gDirectory so we don't read from this file again
 				}
+				std::cout<<std::endl;
 			}
 		}
 		return fSingleton;

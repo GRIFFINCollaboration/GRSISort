@@ -11,7 +11,7 @@ ClassImp(TPPG)
 /// \endcond
 
 short TPPGData::fTimestampUnits = 10;
-TPPG* TPPG::fPPG = nullptr;
+TPPG* TPPG::fPPG = nullptr; // not used anywhere?
 
 TPPGData::TPPGData()
 {
@@ -218,12 +218,15 @@ void TPPG::Print(Option_t* opt) const
 		if(fOdbPPGCodes.empty()) {
 			std::cout<<"No ODB cycle read!"<<std::endl;
 		} else {
-			std::cout<<"ODB cycle:"<<std::endl<<"Code   Duration"<<std::endl;
+			std::cout<<"ODB cycle: "<<OdbCycleLength()/1e6<<" s"<<std::endl<<"Code   Duration"<<std::endl;
 			for(size_t i = 0; i < fOdbPPGCodes.size(); ++i) {
 				std::cout<<hex(fOdbPPGCodes[i],4)<<" "<<fOdbDurations[i]<<std::endl;
 			}
 		}
    }
+   if(TString(opt).Contains("odb", TString::ECaseCompare::kIgnoreCase)) {
+		return;
+	}
    if(MapIsEmpty()) {
       std::cout<<"Empty"<<std::endl;
       return;
@@ -443,11 +446,12 @@ void TPPG::Clear(Option_t*)
 	fCycleSet = false;
 }
 
-Int_t TPPG::Write(const char*, Int_t, Int_t) const
+Int_t TPPG::Write(const char* name, Int_t, Int_t) const
 {
+	if(name == nullptr) name = "TPPG";
    if(PPGSize() > 0 || OdbPPGSize() > 0) {
       std::cout<<"Writing PPG with "<<PPGSize()<<" events and "<<OdbPPGSize()<<" ODB settings"<<std::endl;
-      return TObject::Write("TPPG", TObject::kSingleKey);
+      return TObject::Write(name, TObject::kSingleKey);
    }
 
    return 0;
@@ -675,6 +679,10 @@ void TPPG::operator+=(const TPPG& rhs)
 
 void TPPG::Add(const TPPG* ppg)
 {
+	if(ppg == nullptr) {
+		std::cerr<<"Passed nullptr to TPPG::Add(const TPPG* ppg)!"<<std::endl;
+		return;
+	}
    PPGMap_t::iterator ppgit;
    for(ppgit = ppg->MapBegin(); ppgit != ppg->MapEnd(); ++ppgit) {
       if(ppgit->second != nullptr) {

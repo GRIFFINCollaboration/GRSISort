@@ -1149,6 +1149,9 @@ void TSourceCalibration::FinalWindow()
 		for(size_t i = 0; i < fData[0].size(); ++i) { // should both be the same size, so just one loop
 			fFinalData[i] = new TCalibrationGraphSet(fData[0][i]);
 			fFinalEfficiency[i] = new TCalibrationGraphSet(fEfficiency[0][i]);
+			TF1* calibration = new TF1("fitfunction", ::Polynomial, 0., 10000., Degree()+2);
+			calibration->FixParameter(0, Degree());
+			fFinalData[i]->Fit(calibration, "Q");
 		}
 		for(size_t id = 0; id < fChannelLabel.size(); ++id) {
 			UpdateChannel(id);
@@ -1501,6 +1504,7 @@ void TSourceCalibration::AcceptFinalChannel(const int& channelId)
 
 void TSourceCalibration::FitFinal(const int& channelId)
 {
+	/// This function fit's the final data of the given channel. It requires all other elements to have been created already.
 	TF1* calibration = new TF1("fitfunction", ::Polynomial, 0., 10000., Degree()+2);
 	calibration->FixParameter(0, Degree());
 	if(fVerboseLevel > 1) std::cout<<"fFinalData["<<channelId<<"] "<<fFinalData[channelId]<<": "<<(fFinalData[channelId]?fFinalData[channelId]->GetN():-1)<<" data points being fit"<<std::endl;
@@ -1510,6 +1514,7 @@ void TSourceCalibration::FitFinal(const int& channelId)
 		text.Append(Form(" + %.6f*x^%d", calibration->GetParameter(i+1), i));
 	}
 	fStatusBar[channelId]->SetText(text.Data(), 1);
+	if(fVerboseLevel > 2) std::cout<<"re-calculating residuals and clearing fields"<<std::endl;
 	// re-calculate the residuals
 	fFinalData[channelId]->SetResidual(true);
 
@@ -1517,6 +1522,7 @@ void TSourceCalibration::FitFinal(const int& channelId)
 	fCalibrationPad[channelId]->cd();
 	fFinalData[channelId]->DrawCalibration("*", fLegend[channelId]);
 	fLegend[channelId]->Draw();
+	if(fVerboseLevel > 2) std::cout<<"set chi2 label"<<std::endl;
 	// calculate the corners of the chi^2 label from the minimum and maximum x/y-values of the graph
 	// we position it in the top left corner about 50% of the width and 10% of the height of the graph
 	double left = fFinalData[channelId]->GetMinimumX();
@@ -1608,6 +1614,7 @@ void TSourceCalibration::UpdateChannel(const int& channelId)
 	TF1* calibration = fFinalData[channelId]->FitFunction();
 	if(calibration == nullptr) {
 		std::cout<<"Failed to find calibration in fFinalData["<<channelId<<"]"<<std::endl;
+		fFinalData[channelId]->TotalGraph()->GetListOfFunctions()->Print();
 		return;
 	}
 	std::vector<Float_t> parameters;

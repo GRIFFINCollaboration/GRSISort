@@ -1,4 +1,4 @@
-// TFragment.h TBadFragment.h TChannel.h TRunInfo.h TGRSISortInfo.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TParsingDiagnostics.h TGRSIUtilities.h TMnemonic.h TSortingDiagnostics.h TTransientBits.h TPriorityValue.h TSingleton.h TDetectorInformation.h TParserLibrary.h
+// TFragment.h TBadFragment.h TChannel.h TRunInfo.h TGRSISortInfo.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TParsingDiagnostics.h TGRSIUtilities.h TMnemonic.h TSortingDiagnostics.h TTransientBits.h TPriorityValue.h TSingleton.h TDetectorInformation.h TParserLibrary.h TDataFrameLibrary.h
 
 
 #ifdef __CINT__
@@ -31,6 +31,7 @@
 #pragma link C++ class TScalerData+;
 #pragma link C++ class std::map<UInt_t, std::map<ULong64_t, TScalerData*> >;
 #pragma link C++ class std::map<ULong64_t, TScalerData*>;
+#pragma link C++ class TParsingDiagnosticsData+;
 #pragma link C++ class TParsingDiagnostics+;
 #pragma link C++ class TSingleton<TParsingDiagnostics>-;
 #pragma link C++ class TSortingDiagnostics+;
@@ -38,6 +39,7 @@
 #pragma link C++ class TMnemonic+;
 #pragma link C++ class TDetectorInformation+;
 #pragma link C++ class TParserLibrary+;
+#pragma link C++ class TDataFrameLibrary+;
 
 #pragma link C++ class TTransientBits<UChar_t>+;
 #pragma link C++ class TTransientBits<UShort_t>+;

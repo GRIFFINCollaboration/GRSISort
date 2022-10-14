@@ -32,13 +32,14 @@
 #include "TPPG.h"
 #include "TFragment.h"
 
-class TParsingDiagnosticsData {
+class TParsingDiagnosticsData : public TObject {
 public:
 	TParsingDiagnosticsData();
 	TParsingDiagnosticsData(const std::shared_ptr<const TFragment>& frag);
 	~TParsingDiagnosticsData() {}
 
 	void Update(const std::shared_ptr<const TFragment>& frag);
+	using TObject::Print;
 	void Print(UInt_t address) const;
 
 	// getters
@@ -61,6 +62,10 @@ private:
    long fDeadTime;     ///< deadtime per channel address
    long fMinTimeStamp; ///< minimum timestamp per channel address
    long fMaxTimeStamp; ///< maximum timestamp per channel address
+							  
+   /// \cond CLASSIMP
+   ClassDefOverride(TParsingDiagnosticsData, 1);
+   /// \endcond
 };
 
 class TParsingDiagnostics : public TSingleton<TParsingDiagnostics> {

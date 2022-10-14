@@ -1125,6 +1125,11 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 			}
 			fCuts.push_back(static_cast<TCutG*>(gROOT->FindObject("CUTG")));
 			fCuts.back()->SetName(fCutName);
+			std::cout<<"Added cut to list of cuts: ";
+			for(auto cut : fCuts) {
+				std::cout<<cut->GetName()<<" ";
+			}
+			std::cout<<std::endl;
 		}
 		break;
 

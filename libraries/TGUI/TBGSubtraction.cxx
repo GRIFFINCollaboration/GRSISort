@@ -596,7 +596,7 @@ void TBGSubtraction::AxisComboSelected()
       }
       
       fProjectionCanvas->GetCanvas()->cd();
-      fProjection->Draw();
+      fProjection->Draw("HIST");
       ResetInterface();
       fProjectionCanvas->GetCanvas()->Update();
    }

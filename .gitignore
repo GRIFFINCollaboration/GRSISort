@@ -17,7 +17,6 @@ bin
 lib
 myAnalysis
 Sandbox
-examples
 *User*
 .deps
 .nfs*
@@ -34,3 +33,4 @@ grsi_logon.C
 .grsirc
 documentation
 wiki
+doxygen

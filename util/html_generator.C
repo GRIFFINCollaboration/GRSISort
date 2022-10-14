@@ -1,32 +1,3 @@
-/*
-void html_generator(){
-
-   //Order matters!!!!
-   gSystem->Load("libTreePlayer");
-   gSystem->Load("$GRSISYS/libraries/libMidasFormat.so");
-   gSystem->Load("$GRSISYS/libraries/libGRSIFormat.so");
- //  gSystem->Load("$GRSISYS/libraries/libBuilder.so");
- //  gSystem->Load("$GRSISYS/libraries/libGRSIRootIO.so");
-   gSystem->Load("$GRSISYS/libraries/libDataParser.so");
-   gSystem->Load("$GRSISYS/libraries/libNucleus.so");
-   gSystem->Load("$GRSISYS/libraries/libKinematics.so");
-   gSystem->Load("$GRSISYS/libraries/libSharc.so");
-   gSystem->Load("$GRSISYS/libraries/libGRSIint.so");
-   gSystem->Load("libProof");
-
-   THtml html;
-   html.SetProductName("GRSISort");
-   html.SetInputDir("$(GRSISYS)");
- //  html.SetIncludePath("$(GRSISYS)/include/");
-   html.AddMacroPath("$(GRSISYS)/util");
-   html.SetOutputDir("$(GRSISYS)/htmldoc");
- //  html.SetSourceDir("$(GRSISYS)/libraries/TGint:$(GRSISYS)/include/:$(GRSISYS)/src");
-   html.MakeAll();
-}
-*/
-
-
-
 #include "THtml.h"
 #include <string>
 #include <sstream>
@@ -168,7 +139,6 @@ void html_generator() {
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TEmma");
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TGenericDetector");
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TGriffin");
-	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TGRSIDetector");
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TLaBr");
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TPaces");
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TRF");
@@ -179,8 +149,10 @@ void html_generator() {
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TTAC");
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TTigress");
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TTip");
+	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TTrific");
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TTriFoil");
 	html.AddLibraryPath("GRSIData/libraries/TGRSIAnalysis/TZeroDegree");
+	html.AddLibraryPath("GRSIData/util");
 
 	html.AddLibraryPath("ILLData");
 	html.AddLibraryPath("ILLData/include");
@@ -190,7 +162,11 @@ void html_generator() {
 	html.AddLibraryPath("ILLData/libraries/TILLFormat");
 	html.AddLibraryPath("ILLData/libraries/TLst");
 	html.AddLibraryPath("ILLData/libraries/TILLAnalysis/TFipps");
-	html.AddLibraryPath("ILLData/libraries/TILLAnalysis/TILLDetector");
+	html.AddLibraryPath("ILLData/libraries/TILLAnalysis/TFippsLaBr");
+	html.AddLibraryPath("ILLData/libraries/TILLAnalysis/TFippsPulser");
+	html.AddLibraryPath("ILLData/libraries/TILLAnalysis/TFippsTAC");
+	html.AddLibraryPath("ILLData/libraries/TILLAnalysis/TIfin");
+	html.AddLibraryPath("ILLData/util");
 
 	html.AddLibraryPath("iThembaData");
 	html.AddLibraryPath("iThembaData/include");
@@ -200,10 +176,22 @@ void html_generator() {
 	html.AddLibraryPath("iThembaData/libraries/TTdrDataParser");
 	html.AddLibraryPath("iThembaData/libraries/TTdrFormat");
 	html.AddLibraryPath("iThembaData/libraries/TTdrAnalysis/TTdrClover");
-	html.AddLibraryPath("iThembaData/libraries/TTdrAnalysis/TTdrDetector");
 	html.AddLibraryPath("iThembaData/libraries/TTdrAnalysis/TTdrPlastic");
 	html.AddLibraryPath("iThembaData/libraries/TTdrAnalysis/TTdrSiLi");
 	html.AddLibraryPath("iThembaData/libraries/TTdrAnalysis/TTdrTigress");
+	html.AddLibraryPath("iThembaData/util");
+
+	html.AddLibraryPath("HILData");
+	html.AddLibraryPath("HILData/include");
+	html.AddLibraryPath("HILData/libraries");
+	html.AddLibraryPath("HILData/libraries/THILAnalysis");
+	html.AddLibraryPath("HILData/libraries/THILDataParser");
+	html.AddLibraryPath("HILData/libraries/THILFormat");
+	html.AddLibraryPath("HILData/libraries/TRlmd");
+	html.AddLibraryPath("HILData/libraries/THILAnalysis/TEagle");
+	html.AddLibraryPath("HILData/libraries/THILAnalysis/TEaglePulser");
+	html.AddLibraryPath("HILData/libraries/THILAnalysis/TPinDiode");
+	html.AddLibraryPath("HILData/util");
 
    html.RunAll();
 }
