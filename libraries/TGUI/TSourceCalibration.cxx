@@ -382,7 +382,6 @@ void TChannelTab::ProjectionStatus(Int_t event, Int_t px, Int_t py, TObject* sel
 
 void TChannelTab::CalibrationStatus(Int_t, Int_t px, Int_t py, TObject* selected)
 {
-	//if(event != 51 && event != 52 && event != 53)
 	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<": px "<<px<<", py "<<py<<", object "<<selected->GetName()<<std::endl;
 	fStatusBar->SetText(selected->GetName(), 3);
 	fStatusBar->SetText(selected->GetObjectInfo(px, py), 4);
@@ -416,7 +415,7 @@ void TChannelTab::FindPeaks(const double& sigma, const double& threshold, const 
 	/// This functions finds the peaks in the histogram, fits them, and adds the fits to the list of peaks.
 	/// This list is then used to find all peaks that lie on a straight line.
 	
-	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<std::flush<<" got "<<fPeaks.size()<<" peaks"<<std::endl;
+	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<std::flush<<" "<<fProjection->GetName()<<": got "<<fPeaks.size()<<" peaks"<<std::endl;
 
 	if(fPeaks.empty() || fData == nullptr || sigma != fSigma || threshold != fThreshold || force) {
 		if(fVerboseLevel > 2) std::cout<<__PRETTY_FUNCTION__<<": no peaks "<<fPeaks.size()<<", sigma ("<<sigma<<"/"<<fSigma<<"), or threshold ("<<threshold<<"/"<<fThreshold<<") have changed"<<std::endl;
@@ -462,6 +461,15 @@ void TChannelTab::FindPeaks(const double& sigma, const double& threshold, const 
 			Add(map);
 		}
 	}
+	if(fVerboseLevel > 2) {
+		std::cout<<__PRETTY_FUNCTION__<<": found "<<fData->GetN()<<" peaks";
+		Double_t* x = fData->GetX();
+		Double_t* y = fData->GetY();
+		for(int i = 0; i < fData->GetN(); ++i)	{
+			std::cout<<" - "<<x[i]<<", "<<y[i];
+		}
+		std::cout<<std::endl;
+	}
 }
 
 void TChannelTab::Add(std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double> > map)
@@ -500,6 +508,9 @@ void TChannelTab::Add(std::map<std::tuple<double, double, double, double>, std::
 			++i;
 		}
 	}
+	// if we dropped a peak, we need to resize the graph, if we haven't dropped any this doesn't do anything
+	fData->Set(map.size());
+	fEfficiency->Set(map.size());
 	// remove poly markers that weren't used for the fit
 	TList* functions = fProjection->GetListOfFunctions();
 	TPolyMarker* pm = static_cast<TPolyMarker*>(functions->FindObject("TPolyMarker"));
@@ -606,11 +617,14 @@ void TSourceTab::Disconnect()
 }
 
 //////////////////////////////////////// TSourceCalibration ////////////////////////////////////////
-TSourceCalibration::TSourceCalibration(double sigma, double threshold, int count...)
+TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degree, int count...)
 	: TGMainFrame(nullptr, 1200, 600)
 {
 	fDefaultSigma = sigma;
 	fDefaultThreshold = threshold;
+	fDefaultDegree = degree;
+
+	TH1::AddDirectory(false); // turns off warnings about multiple histograms with the same name because ROOT doesn't manage them anymore
 
 	va_list args;
 	va_start(args, count);
@@ -704,7 +718,6 @@ TSourceCalibration::TSourceCalibration(double sigma, double threshold, int count
 	MapSubwindows();
 
 	// Initialize the layout algorithm
-	//Resize(TGDimension(1200, 600));
 	Resize(GetDefaultSize());
 
 	// Map main frame
@@ -722,12 +735,6 @@ TSourceCalibration::~TSourceCalibration()
 void TSourceCalibration::BuildFirstInterface()
 {
 	/// Build initial interface with histogram <-> source assignment
-
-	// layout hints and padding (left, right, top, bottom)
-	//auto top      = new TGLayoutHints(kLHintsTop     | kLHintsCenterX | kLHintsExpandX, 0, 0, 0, 0);
-	//auto bottom   = new TGLayoutHints(kLHintsBottom  | kLHintsCenterX | kLHintsExpandX, 0, 0, 0, 0);
-	//auto topLeft  = new TGLayoutHints(kLHintsTop     | kLHintsLeft    | kLHintsExpandX, 0, 0, 0, 0);
-	//auto topRight = new TGLayoutHints(kLHintsCenterY | kLHintsRight   | kLHintsExpandX, 0, 0, 0, 0);
 
 	auto layoutManager = new TGTableLayout(this, fMatrices.size()+1, 2, true, 5);
 	if(fVerboseLevel > 1) std::cout<<"created table layout manager with 2 columns, "<<fMatrices.size()+1<<" rows"<<std::endl;
@@ -860,8 +867,11 @@ void TSourceCalibration::HandleTimer()
 
 void TSourceCalibration::Start()
 {
-	fEmitter = fStartButton;
-	TTimer::SingleShot(100, "TSourceCalibration", this, "HandleTimer()");
+	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<": fEmitter "<<fEmitter<<", fStartButton "<<fStartButton<<std::endl;
+	if(fEmitter == nullptr) { // we only want to do this once at the beginning (after fEmitter was initialized to nullptr)
+		fEmitter = fStartButton;
+		TTimer::SingleShot(100, "TSourceCalibration", this, "HandleTimer()");
+	}
 }
 
 void TSourceCalibration::SecondWindow()
@@ -981,7 +991,7 @@ void TSourceCalibration::BuildSecondInterface()
 	fThresholdLabel = new TGLabel(fParameterFrame, "Threshold");
 	fThresholdEntry = new TGNumberEntry(fParameterFrame, fDefaultThreshold, 5, kThresholdEntry, TGNumberFormat::EStyle::kNESRealThree, TGNumberFormat::EAttribute::kNEAPositive, TGNumberFormat::ELimit::kNELLimitMinMax, 0., 1.);
 	fDegreeLabel = new TGLabel(fParameterFrame, "Degree of polynomial");
-	fDegreeEntry = new TGNumberEntry(fParameterFrame, 1, 2, kDegreeEntry, TGNumberFormat::EStyle::kNESInteger, TGNumberFormat::EAttribute::kNEAPositive); 
+	fDegreeEntry = new TGNumberEntry(fParameterFrame, fDefaultDegree, 2, kDegreeEntry, TGNumberFormat::EStyle::kNESInteger, TGNumberFormat::EAttribute::kNEAPositive); 
 
 	fParameterFrame->AddFrame(fSigmaLabel);
 	fParameterFrame->AddFrame(fSigmaEntry);
@@ -996,7 +1006,6 @@ void TSourceCalibration::BuildSecondInterface()
 
 	AddFrame(fBottomFrame, new TGLayoutHints(kLHintsBottom | kLHintsExpandX, 2, 2, 2, 2));
 	if(fVerboseLevel > 2) std::cout<<"Second interface done"<<std::endl;
-	//GetList()->Print("a", -1);
 }
 
 void TSourceCalibration::MakeSecondConnections()
@@ -1052,7 +1061,6 @@ void TSourceCalibration::Navigate(Int_t id)
 			}
 			// remove the original active tab
 			currentTab->RemoveTab(currentChannelId);
-			//currentTab->Layout();
 			break;
 		case 6: // accept
 			AcceptChannel(currentChannelId);
@@ -1117,7 +1125,8 @@ void TSourceCalibration::AcceptChannel(const int& channelId)
 	if(fVerboseLevel > 2) std::cout<<__PRETTY_FUNCTION__<<": # of channel tabs "<<fActualChannelId[currentSourceId].size()<<", # of source tabs "<<fActualSourceId.size()<<std::endl;
 	// if this was the last tab, we close the whole source tab and remove that vector from the actual ids too
 	if(fActualChannelId[currentSourceId].empty()) {
-		if(fVerboseLevel > 2) std::cout<<"Last tab closed, closing source tab"<<std::endl;
+		if(fVerboseLevel > 2) std::cout<<"Last tab closed, closing source tab "<<currentSourceId<<"/"<<fActualSourceId.size()<<"/"<<fActualChannelId.size()<<std::endl;
+		std::cout<<"Last tab closed, closing source tab "<<currentSourceId<<"/"<<fActualSourceId.size()<<"/"<<fActualChannelId.size()<<std::endl;
 		fTab->RemoveTab();
 		fActualSourceId.erase(fActualSourceId.begin()+currentSourceId);
 		fActualChannelId.erase(fActualChannelId.begin()+currentSourceId);
@@ -1260,16 +1269,28 @@ void TSourceCalibration::BuildThirdInterface()
 		// copy all data into one graph (which we use for the calibration)
 		fFinalData[tmpBin] = new TCalibrationGraphSet;
 		fFinalData[tmpBin]->VerboseLevel(fVerboseLevel-4);
+		fFinalData[tmpBin]->SetName(Form("data%s", fMatrices[0]->GetXaxis()->GetBinLabel(bin)));
+		if(fVerboseLevel > 2) std::cout<<"set name of fFinalData["<<tmpBin<<"] to "<<fMatrices[0]->GetXaxis()->GetBinLabel(bin)<<" = "<<fFinalData[tmpBin]->GetName()<<std::endl;
 		fFinalEfficiency[tmpBin] = new TCalibrationGraphSet;
 		fFinalEfficiency[tmpBin]->VerboseLevel(fVerboseLevel-4);
+		fFinalEfficiency[tmpBin]->SetName(Form("eff%s", fMatrices[0]->GetXaxis()->GetBinLabel(bin)));
+		if(fVerboseLevel > 2) std::cout<<"set name of fFinalEfficiency["<<tmpBin<<"] to "<<fMatrices[0]->GetXaxis()->GetBinLabel(bin)<<" = "<<fFinalEfficiency[tmpBin]->GetName()<<std::endl;
 		if(fVerboseLevel > 2) std::cout<<"fFinalData["<<tmpBin<<"] "<<fFinalData[tmpBin]<<": "<<(fFinalData[tmpBin]?fFinalData[tmpBin]->GetN():-1)<<" data points after creation"<<std::endl;
 		for(size_t source = 0; source < fSource.size(); ++source) {
-			fFinalData[tmpBin]->Add(fData[source][tmpBin], fSource[source]->GetName());
-			fFinalData[tmpBin]->SetLineColor(source, source+1); //+1 for the color so that we start with 1 = black instead of 0 = white
-			fFinalData[tmpBin]->SetMarkerColor(source, source+1);
-			fFinalEfficiency[tmpBin]->Add(fEfficiency[source][tmpBin], fSource[source]->GetName());
-			fFinalEfficiency[tmpBin]->SetLineColor(source, source+1); //+1 for the color so that we start with 1 = black instead of 0 = white
-			fFinalEfficiency[tmpBin]->SetMarkerColor(source, source+1);
+			if(fData[source][tmpBin]->GetN() > 0) {
+				int index = fFinalData[tmpBin]->Add(fData[source][tmpBin], fSource[source]->GetName());
+				if(index >= 0) {
+					fFinalData[tmpBin]->SetLineColor(index, source+1); //+1 for the color so that we start with 1 = black instead of 0 = white
+					fFinalData[tmpBin]->SetMarkerColor(index, source+1);
+				}
+			}
+			if(fEfficiency[source][tmpBin]->GetN() > 0) {
+				int index = fFinalEfficiency[tmpBin]->Add(fEfficiency[source][tmpBin], fSource[source]->GetName());
+				if(index >= 0) {
+					fFinalEfficiency[tmpBin]->SetLineColor(index, source+1); //+1 for the color so that we start with 1 = black instead of 0 = white
+					fFinalEfficiency[tmpBin]->SetMarkerColor(index, source+1);
+				}
+			}
 		}
 
 		// calibration and residual graphs
@@ -1289,6 +1310,7 @@ void TSourceCalibration::BuildThirdInterface()
 		fCalibrationPad[tmpBin]->SetNumber(1);
 		fCalibrationPad[tmpBin]->Draw();
 		fCalibrationPad[tmpBin]->cd();
+		fCalibrationPad[tmpBin]->AddExec("zoom", "TSourceCalibration::ZoomY()");
 		fLegend[tmpBin] = new TLegend(0.8,0.3,0.95,0.3+fMatrices.size()*0.05); // x1, y1, x2, y2
 		//fFinalData[tmpBin]->DrawCalibration("*", fLegend[tmpBin]);
 		//fLegend[tmpBin]->Draw();
@@ -1297,9 +1319,10 @@ void TSourceCalibration::BuildThirdInterface()
 		fResidualPad[tmpBin]->SetNumber(2);
 		fResidualPad[tmpBin]->Draw();
 		//fResidualPad[tmpBin]->cd();
+		fResidualPad[tmpBin]->AddExec("zoom", "TSourceCalibration::ZoomY()");
 		//fFinalData[tmpBin]->DrawResidual("*");
 		FitFinal(tmpBin); // also creates the residual and chi^2 label
-		fChi2Label[tmpBin]->Draw();
+		//fChi2Label[tmpBin]->Draw();
 
 		// efficiency and residual graphs
 		// create tab and status bar
@@ -1329,8 +1352,6 @@ void TSourceCalibration::BuildThirdInterface()
 		fEfficiencyResidualPad[tmpBin]->Draw();
 		fEfficiencyResidualPad[tmpBin]->cd();
 		fFinalEfficiency[tmpBin]->DrawResidual("*");
-
-		//fFinalEfficiency[tmpBin]->Print();
 
 		// write graphs to output file
 		fOutput->cd();
@@ -1371,14 +1392,13 @@ void TSourceCalibration::BuildThirdInterface()
 	// new right frame (only degree option left, no sigma or threshold)
 	fRightFrame = new TGVerticalFrame(fBottomFrame, 300, 50);
 	fDegreeLabel = new TGLabel(fRightFrame, "Degree of polynomial");
-	fDegreeEntry = new TGNumberEntry(fRightFrame, 1, 2, kDegreeEntry, TGNumberFormat::EStyle::kNESInteger, TGNumberFormat::EAttribute::kNEAPositive); 
+	fDegreeEntry = new TGNumberEntry(fRightFrame, fDefaultDegree, 2, kDegreeEntry, TGNumberFormat::EStyle::kNESInteger, TGNumberFormat::EAttribute::kNEAPositive); 
 	fRightFrame->AddFrame(fDegreeEntry);
 	fRightFrame->AddFrame(fDegreeLabel);
 
 	fBottomFrame->AddFrame(fRightFrame, new TGLayoutHints(kLHintsBottom | kLHintsExpandY, 2, 2, 2, 2));
 
 	AddFrame(fBottomFrame, new TGLayoutHints(kLHintsBottom | kLHintsExpandX, 2, 2, 2, 2));
-	//GetList()->Print("", 1);
 }
 
 void TSourceCalibration::MakeThirdConnections()
@@ -1420,7 +1440,6 @@ void TSourceCalibration::NavigateFinal(Int_t id)
 
 	int currentChannelId = fFinalTabs[fTab->GetCurrent()]->GetCurrent();
 	int actualChannelId = fActualSourceId[currentChannelId];
-	//int nofTabs = fTab->GetNumberOfTabs();
 	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<": id "<<id<<", channel tab id "<<currentChannelId<<std::endl;
 	switch(id) {
 		case 1: // previous
@@ -1480,6 +1499,7 @@ void TSourceCalibration::AcceptFinalChannel(const int& channelId)
 	// we need to loop backward, because removing the first channel would make the second one the new first and so on
 	for(int currentChannelId = maxChannel; currentChannelId >= minChannel; --currentChannelId) {
 		int actualChannelId = fActualSourceId[currentChannelId];
+		UpdateChannel(actualChannelId);
 		if(currentChannelId < nofTabs - 1) {
 			fTab->SetTab(currentChannelId+1);
 		} else {
@@ -1489,7 +1509,6 @@ void TSourceCalibration::AcceptFinalChannel(const int& channelId)
 		fFinalTabs[0]->RemoveTab(currentChannelId);
 		fFinalTabs[1]->RemoveTab(currentChannelId);
 		//fTab->Layout();
-		UpdateChannel(actualChannelId);
 		fActualSourceId.erase(fActualSourceId.begin()+currentChannelId);
 		if(fVerboseLevel > 2) std::cout<<"Erased "<<currentChannelId<<", fActualSourceId.size() "<<fActualSourceId.size()<<std::endl;
 	}
@@ -1531,17 +1550,17 @@ void TSourceCalibration::FitFinal(const int& channelId)
 	double bottom = top - (top - fFinalData[channelId]->GetMinimumY())*0.1;
 	fChi2Label[channelId] = new TPaveText(left, bottom, right, top);
 	if(fVerboseLevel > 2) {
-		std::cout<<"fChi2Label["<<channelId<<"] created "<<fChi2Label[channelId]<<" ("<<left<<" - "<<right<<", "<<bottom<<" - "<<top<<", from "<<fFinalData[channelId]->GetMinimumX()<<"-"<<fFinalData[channelId]->GetMaximumX()<<", "<<fFinalData[channelId]->GetMinimumY()<<"-"<<fFinalData[channelId]->GetMaximumY()<<")"<<std::endl;
-		fFinalData[channelId]->Print();
+		std::cout<<"fChi2Label["<<channelId<<"] created "<<fChi2Label[channelId]<<" ("<<left<<" - "<<right<<", "<<bottom<<" - "<<top<<", from "<<fFinalData[channelId]->GetMinimumX()<<"-"<<fFinalData[channelId]->GetMaximumX()<<", "<<fFinalData[channelId]->GetMinimumY()<<"-"<<fFinalData[channelId]->GetMaximumY()<<") on gPad "<<gPad->GetName()<<std::endl;
+		fFinalData[channelId]->Print("e");
 	}
 	fChi2Label[channelId]->Clear();
-	fChi2Label[channelId]->AddText(Form("#chi^2/NDF = %f", calibration->GetChisquare()/calibration->GetNDF()));
+	fChi2Label[channelId]->AddText(Form("#chi^{2}/NDF = %f", calibration->GetChisquare()/calibration->GetNDF()));
 	fChi2Label[channelId]->SetFillColor(10);
-	fChi2Label[channelId]->SetTextSize(20);
 	fChi2Label[channelId]->Draw();
 	if(fVerboseLevel > 2) {
-		std::cout<<"fChi2Label["<<channelId<<"] set to "<<fChi2Label[channelId]->GetLabel()<<std::endl;
+		std::cout<<"fChi2Label["<<channelId<<"] set to:"<<std::endl;
 		fChi2Label[channelId]->GetListOfLines()->Print();
+		std::cout<<"Text size "<<fChi2Label[channelId]->GetTextSize()<<std::endl;
 	}
 
 	fResidualPad[channelId]->cd();
@@ -1589,9 +1608,9 @@ void TSourceCalibration::FitEfficiency(const int& channelId)
 		fFinalEfficiency[channelId]->Print();
 	}
 	fEfficiencyChi2Label[channelId]->Clear();
-	fEfficiencyChi2Label[channelId]->AddText(Form("#chi^2/NDF = %f", efficiency->GetChisquare()/efficiency->GetNDF()));
+	TText* chi2 = fEfficiencyChi2Label[channelId]->AddText(Form("#chi^{2}/NDF = %f", efficiency->GetChisquare()/efficiency->GetNDF()));
+	chi2->SetTextSize(12);
 	fEfficiencyChi2Label[channelId]->SetFillColor(10);
-	fEfficiencyChi2Label[channelId]->SetTextSize(12);
 	fEfficiencyChi2Label[channelId]->Draw();
 	if(fVerboseLevel > 2) {
 		std::cout<<"fEfficiencyChi2Label["<<channelId<<"] set to "<<fEfficiencyChi2Label[channelId]->GetLabel()<<std::endl;
@@ -1639,7 +1658,6 @@ void TSourceCalibration::UpdateChannel(const int& channelId)
 		channel->AddEnergyNonlinearityPoint(y[i], y[i]-calibration->Eval(x[i]));
 		if(fVerboseLevel > 3) std::cout<<"Added "<<channel->GetEnergyNonlinearity().GetN()<<". point "<<y[i]<<", "<<y[i]-calibration->Eval(x[i])<<" = "<<y[i]<<" - "<<calibration->Eval(x[i])<<std::endl;
 	}
-	//channel->Print();
 }
 
 void TSourceCalibration::WriteCalibration()
@@ -1651,5 +1669,54 @@ void TSourceCalibration::WriteCalibration()
 	}
 	str<<".cal";
 	TChannel::WriteCalFile(str.str());
-	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<": wrote "<<str.str()<<std::endl;
+	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<": wrote "<<str.str()<<" with "<<TChannel::GetNumberOfChannels()<<" channels"<<std::endl;
+	if(fVerboseLevel > 2) TChannel::WriteCalFile();
+}
+
+void TSourceCalibration::ZoomY()
+{
+	TObject* select = gPad->GetSelected();
+   if(select == nullptr) return;
+   if(!select->InheritsFrom(TH1::Class())) return;
+   // get the y-axis from the selected histogram
+   TH1* hist = static_cast<TH1*>(select);
+   TAxis* axis = hist->GetXaxis();
+   std::cout<<"From pad "<<gPad->GetName()<<" and selected histogram "<<hist->GetName()<<" we get range "<<axis->GetFirst()<<" - "<<axis->GetLast()<<std::endl;
+	// extract base name and channel from pad name
+	std::string padName = gPad->GetName();
+	std::string baseName = padName.substr(0,3);
+	std::string channelName = padName.substr(4);
+   // find the corresponding partner canvas to the selected one
+	TCanvas* canvas2 = nullptr;
+	std::string newName;
+	if(baseName.compare("cal") == 0) {
+		newName = "res_" + channelName;
+		canvas2 = static_cast<TCanvas*>(gROOT->FindObject(newName.c_str()));
+	} else if(baseName.compare("res") == 0) {
+		newName = "cal_" + channelName;
+		canvas2 = static_cast<TCanvas*>(gROOT->FindObject(newName.c_str()));
+	} else {
+		std::cout<<"Unknown combination of canvas "<<gPad->GetName()<<" and histogram "<<hist->GetName()<<std::endl;
+		return;
+	}
+	if(canvas2 == nullptr) {
+		std::cout<<"Failed to find partner canvas "<<newName<<std::endl;
+		return;
+	}
+	// find the histogram in the partner canvas
+	TH1* hist2 = nullptr;
+	for(const auto&& obj : *(canvas2->GetListOfPrimitives())) {
+		if(obj->InheritsFrom(TH1::Class())) {
+			hist2 = static_cast<TH1*>(obj);
+			break;
+		}
+	}
+	if(hist2 == nullptr) {
+		std::cout<<"Failed to find histogram for canvas "<<newName<<std::endl;
+		return;
+	}
+   // set the y-axis of the partner histogram to the same range as the y-axis of the selected histogram
+	hist2->GetXaxis()->SetRangeUser(axis->GetBinLowEdge(axis->GetFirst()), axis->GetBinLowEdge(axis->GetLast()));
+	canvas2->Modified();
+	canvas2->Update();
 }

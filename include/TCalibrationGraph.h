@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 
-#include "TObject.h"
+#include "TNamed.h"
 #include "TGraphErrors.h"
 #include "TFitResultPtr.h"
 #include "TList.h"
@@ -41,13 +41,13 @@ private:
 	ClassDefOverride(TCalibrationGraph, 1)
 };
 
-class TCalibrationGraphSet : public TObject {
+class TCalibrationGraphSet : public TNamed {
 public:
 	TCalibrationGraphSet(TGraphErrors* graph = nullptr, const std::string& label = "");
 	~TCalibrationGraphSet();
 
 	bool SetResidual(const bool& force = false);
-	void Add(TGraphErrors*, const std::string& label);
+	int Add(TGraphErrors*, const std::string& label);
 
 	void SetLineColor(int index, int color)   { fGraphs[index].SetLineColor(color);   fResidualGraphs[index].SetLineColor(color); }   ///< Set the line color of the graph and residuals at index
 	void SetMarkerColor(int index, int color) { fGraphs[index].SetMarkerColor(color); fResidualGraphs[index].SetMarkerColor(color); } ///< Set the marker color of the graph and residuals at index
@@ -79,7 +79,7 @@ public:
 	void Scale(); ///< scale all graphs to fit each other (based on the first graph)
 
 	using TObject::Print;
-	void Print();
+	void Print(Option_t* opt);
 
 	void ResetTotalGraph(); ///< reset the total graph and add the individual ones again (used e.g. after scaling of individual graphs is done)
 
@@ -100,6 +100,7 @@ public:
 		fGraphIndex = rhs.fGraphIndex;
 		fPointIndex = rhs.fPointIndex;
 		fResidualSet = rhs.fResidualSet;
+		fName = rhs.fName;
 		return *this;
 	}
 

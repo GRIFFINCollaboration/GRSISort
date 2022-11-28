@@ -7,6 +7,7 @@
 #include "TPad.h"
 #include "TF1.h"
 #include "TBuffer.h"
+#include "TH1F.h"
 
 ClassImp(TCalibrationGraph)
 ClassImp(TCalibrationGraphSet)
@@ -55,12 +56,17 @@ TCalibrationGraphSet::~TCalibrationGraphSet()
 {
 }
 
-void TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
+int TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
 {
 	if(fVerboseLevel > 1) {
 		std::cout<<__PRETTY_FUNCTION__<<std::endl;
 		Print();
 	}
+	if(graph->GetN() == 0) {
+		std::cout<<__PRETTY_FUNCTION__<<": graph \""<<graph->GetName()<<"\", label \""<<label<<"\" is empty, not adding it"<<std::endl;
+		return -1;
+	}
+
 	graph->GetListOfFunctions()->Clear(); // we don't want to include any fits
 
 	// get points and error bars from our calibration
@@ -117,11 +123,12 @@ void TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
 		std::cout<<"done"<<std::endl;
 		Print();
 	}
+	return fGraphs.size()-1;
 }
 
 bool TCalibrationGraphSet::SetResidual(const bool& force)
 {
-	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<std::endl;
+	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<" gpad "<<gPad->GetName()<<std::endl;
 	TF1* calibration = FitFunction();
 	if(calibration != nullptr && (!fResidualSet || force)) {
 		double* x  = fTotalGraph->GetX();
@@ -149,7 +156,9 @@ bool TCalibrationGraphSet::SetResidual(const bool& force)
 		int pad = 0;
 		while(mother->GetPad(pad) != nullptr) {
 			mother->GetPad(pad)->Modified();
-			if(fVerboseLevel > 2) std::cout<<"Modified pad "<<pad<<" = "<<mother->GetPad(pad)->GetName()<<std::endl;
+			mother->GetPad(pad)->Update();
+			mother->cd(pad);
+			if(fVerboseLevel > 2) std::cout<<"Modified and updated pad "<<pad<<" = "<<mother->GetPad(pad)->GetName()<<std::endl;
 			pad++;
 		}
 	} else {
@@ -180,6 +189,13 @@ void TCalibrationGraphSet::DrawResidual(Option_t* opt, TLegend* legend)
 	TString options = opt;
 	options.Append("a");
 	fTotalResidualGraph->Draw(options.Data());
+	auto hist = fTotalResidualGraph->GetHistogram();
+	if(hist != nullptr) {
+		hist->GetXaxis()->SetLabelSize(0.06);
+	} else {
+		std::cout<<"Failed to get histogram for graph:"<<std::endl;
+		fTotalResidualGraph->Print();
+	}
 
 	for(size_t i = 0; i < fResidualGraphs.size(); ++i) {
 		if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<" drawing "<<i<<". residual graph with option \""<<opt<<"\", marker color "<<fResidualGraphs[i].GetMarkerColor()<<std::endl;
@@ -195,6 +211,11 @@ Int_t TCalibrationGraphSet::RemovePoint()
 	/// This function is primarily a copy of TGraph::RemovePoint with some added bits to remove a point that has been selected in the calibration graph from it and the corresponding point from the residual graph and the total graphs
 	Int_t px = gPad->GetEventX();
 	Int_t py = gPad->GetEventY();
+
+	if(fVerboseLevel > 1) {
+		std::cout<<__PRETTY_FUNCTION__<<": point "<<px<<", "<<py<<std::endl;
+		Print();
+	}
 
 	//localize point to be deleted
 	Int_t ipoint = -2;
@@ -212,12 +233,16 @@ Int_t TCalibrationGraphSet::RemovePoint()
 	}
 	if(ipoint < 0) {
 		std::cout<<"Failed to find point close to "<<px<<", "<<py<<std::endl;
+		if(fVerboseLevel > 2) {
+			std::cout<<__PRETTY_FUNCTION__<<std::endl;
+			Print();
+		}
 		return ipoint;
 	}
 	if(fVerboseLevel > 1) {
-		std::cout<<__PRETTY_FUNCTION__<<std::endl;
 		Print();
 	}
+	fTotalGraph->RemovePoint(ipoint);
 	if(fTotalResidualGraph->RemovePoint(ipoint) < 0) {
 		// we failed to remove the point in the residual, so we assume it's out of whack
 		fResidualSet = false;
@@ -225,8 +250,10 @@ Int_t TCalibrationGraphSet::RemovePoint()
 	} else if(fVerboseLevel > 2) std::cout<<ipoint<<" removed residual point"<<std::endl;
 	// need to find which of the graphs we have to remove this point from -> use fGraphIndex[ipoint]
 	// and also which point this is of the graph -> use fPointIndex[ipoint]
-	if(fVerboseLevel > 2) std::cout<<ipoint<<" - "<<fGraphIndex[ipoint]<<", "<<fPointIndex[ipoint]<<": "<<fGraphs[fGraphIndex[ipoint]].RemovePoint(fPointIndex[ipoint])<<std::endl;
-	if(fVerboseLevel > 2) std::cout<<ipoint<<" - "<<fGraphIndex[ipoint]<<", "<<fPointIndex[ipoint]<<": "<<fResidualGraphs[fGraphIndex[ipoint]].RemovePoint(fPointIndex[ipoint])<<std::endl;
+	if(fVerboseLevel > 2) std::cout<<ipoint<<" - "<<fGraphIndex[ipoint]<<", "<<fPointIndex[ipoint]<<std::endl;
+	if(fGraphs[fGraphIndex[ipoint]].RemovePoint(fPointIndex[ipoint]) == -1 || fResidualGraphs[fGraphIndex[ipoint]].RemovePoint(fPointIndex[ipoint]) == -1) {
+		std::cout<<"point "<<ipoint<<" out of range?"<<std::endl;
+	}
 	// and now also remove the points from the indices - also need to update all points after this point!
 	auto oldGraph = fGraphIndex[ipoint];
 	auto oldPoint = fPointIndex[ipoint];
@@ -241,7 +268,9 @@ Int_t TCalibrationGraphSet::RemovePoint()
 	int pad = 0;
 	while(mother->GetPad(pad) != nullptr) {
 		mother->GetPad(pad)->Modified();
-		if(fVerboseLevel > 2) std::cout<<"Modified pad "<<pad<<" = "<<mother->GetPad(pad)->GetName()<<std::endl;
+		mother->GetPad(pad)->Update();
+		mother->cd(pad);
+		if(fVerboseLevel > 2) std::cout<<"Modified and updated pad "<<pad<<" = "<<mother->GetPad(pad)->GetName()<<std::endl;
 		pad++;
 	}
 	if(fVerboseLevel > 1) Print();
@@ -270,6 +299,10 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint()
 	}
 	if(ipoint < 0) {
 		if(fVerboseLevel > 1) std::cout<<"Failed to find point close to "<<px<<", "<<py<<std::endl;
+		if(fVerboseLevel > 2) {
+			std::cout<<__PRETTY_FUNCTION__<<std::endl;
+			Print();
+		}
 		return ipoint;
 	}
 	if(fVerboseLevel > 2) {
@@ -279,9 +312,11 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint()
 	// no need to check if we can remove the residual point in this case
 	// need to find which of the graphs we have to remove this point from -> use fGraphIndex[ipoint]
 	// and also which point this is of the graph -> use fPointIndex[ipoint]
-	if(fVerboseLevel > 2) {
-		std::cout<<ipoint<<" - "<<fGraphIndex[ipoint]<<", "<<fPointIndex[ipoint]<<": "<<fGraphs[fGraphIndex[ipoint]].RemovePoint(fPointIndex[ipoint])<<std::endl;
-		std::cout<<ipoint<<" - "<<fGraphIndex[ipoint]<<", "<<fPointIndex[ipoint]<<": "<<fResidualGraphs[fGraphIndex[ipoint]].RemovePoint(fPointIndex[ipoint])<<std::endl;
+	fTotalGraph->RemovePoint(ipoint);
+	fTotalResidualGraph->RemovePoint(ipoint);
+	if(fVerboseLevel > 2) std::cout<<ipoint<<" - "<<fGraphIndex[ipoint]<<", "<<fPointIndex[ipoint]<<std::endl;
+	if(fGraphs[fGraphIndex[ipoint]].RemovePoint(fPointIndex[ipoint]) == -1 || fResidualGraphs[fGraphIndex[ipoint]].RemovePoint(fPointIndex[ipoint]) == -1) {
+		std::cout<<"point "<<ipoint<<" out of range?"<<std::endl;
 	}
 	// and now also remove the points from the indices - also need to update all points after this point!
 	auto oldGraph = fGraphIndex[ipoint];
@@ -314,18 +349,25 @@ void TCalibrationGraphSet::Scale()
 	double minRef = fGraphs[0].GetX()[0];
 	double maxRef = fGraphs[0].GetX()[fGraphs[0].GetN()-1];
 	for(size_t g = 1; g < fGraphs.size(); ++g) {
-		double* x = fGraphs[g].GetX();
-		double* y = fGraphs[g].GetY();
-		double* ey = fGraphs[g].GetEY();
-		if(maxRef < x[0] || x[fGraphs[g].GetN()-1] < minRef) {
+		auto graph = fGraphs[g];
+		if(graph.GetN() == 0) {
+			std::cout<<"No entries in "<<g<<". graph"<<std::endl;
+		}
+		double* x = graph.GetX();
+		double* y = graph.GetY();
+		double* ey = graph.GetEY();
+		if(fVerboseLevel > 1) {
+			std::cout<<"Checking overlap between 0. graph ("<<fGraphs[0].GetN()<<": "<<minRef<<" - "<<maxRef<<") and "<<g<<". graph ("<<graph.GetN()<<std::flush<<": "<<x[0]<<" - "<<x[graph.GetN()-1]<<")"<<std::endl;
+		}
+		if(maxRef < x[0] || x[graph.GetN()-1] < minRef) {
 			// no overlap between the two graphs, for now we just skip this one, but we could try and compare it to all the other ones?
-			std::cout<<"No overlap between 0. graph ("<<minRef<<" - "<<maxRef<<") and "<<g<<". graph ("<<x[0]<<" - "<<x[fGraphs[g].GetN()-1]<<")"<<std::endl;
+			std::cout<<"No overlap between 0. graph ("<<fGraphs[0].GetN()<<": "<<minRef<<" - "<<maxRef<<") and "<<g<<". graph ("<<graph.GetN()<<": "<<x[0]<<" - "<<x[graph.GetN()-1]<<")"<<std::endl;
 			continue;
 		}
 		// we have an overlap, so we calculate the scaling factor for each point and take the average (maybe should add some weight from the errors bars)
 		int count = 0;
 		double sum = 0.;
-		for(int p = 0; p < fGraphs[g].GetN(); ++p) {
+		for(int p = 0; p < graph.GetN(); ++p) {
 			if(minRef < x[p] && x[p] < maxRef) {
 				sum += fGraphs[0].Eval(x[p])/y[p];
 				++count;
@@ -334,7 +376,7 @@ void TCalibrationGraphSet::Scale()
 		}
 		sum /= count;
 		if(fVerboseLevel > 2) std::cout<<g<<": scaling with "<<sum<<std::endl;
-		for(int p = 0; p < fGraphs[g].GetN(); ++p) {
+		for(int p = 0; p < graph.GetN(); ++p) {
 			y[p] *= sum;
 			ey[p] *= sum;
 		}
@@ -396,14 +438,19 @@ void TCalibrationGraphSet::ResetTotalGraph()
 	fMaximumY = std::get<1>(data.back());
 }
 
-void TCalibrationGraphSet::Print()
+void TCalibrationGraphSet::Print(Option_t* opt)
 {
-	std::cout<<"TCalibrationGraphSet: "<<fGraphs.size()<<" calibration graphs, "<<fResidualGraphs.size()<<" residual graphs, "<<fLabel.size()<<" labels, "<<fTotalGraph->GetN()<<" calibration points, and "<<fTotalResidualGraph->GetN()<<" residual points"<<std::endl;
+	std::cout<<"TCalibrationGraphSet "<<this<<" - "<<GetName()<<": "<<fGraphs.size()<<" calibration graphs, "<<fResidualGraphs.size()<<" residual graphs, "<<fLabel.size()<<" labels, "<<fTotalGraph->GetN()<<" calibration points, and "<<fTotalResidualGraph->GetN()<<" residual points"<<std::endl;
+	TString options = opt;
+	bool errors = options.Contains("e", TString::ECaseCompare::kIgnoreCase);
 	for(auto g : fGraphs) {
 		double* x  = g.GetX();
 		double* y  = g.GetY();
+		double* ex  = g.GetEX();
+		double* ey  = g.GetEY();
 		for(int p = 0; p < g.GetN(); ++p) {
-			std::cout<<p<<" - "<<x[p]<<", "<<y[p]<<"; ";
+			if(errors) std::cout<<p<<" - "<<x[p]<<"("<<ex[p]<<"), "<<y[p]<<"("<<ey[p]<<"); ";
+			else std::cout<<p<<" - "<<x[p]<<", "<<y[p]<<"; ";
 		}
 		std::cout<<std::endl;
 	}
