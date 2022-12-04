@@ -429,7 +429,7 @@ void TGRSIint::SetupPipeline()
 	}
 
 	// Which input files do we have
-	bool has_raw_file = !opt->InputFiles().empty() && opt->SortRaw() && !missing_raw_file;
+	bool has_raw_file = !opt->InputFiles().empty() && opt->SortRaw() && !missing_raw_file && !fRawFiles.empty();
 	bool has_input_fragment_tree = gFragment != nullptr; // && opt->SortRoot();
 	bool has_input_analysis_tree = gAnalysis != nullptr; // && opt->SortRoot();
 
