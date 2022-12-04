@@ -4,15 +4,15 @@ void ExampleEventHelper::CreateHistograms(unsigned int slot)
 {
 	// try and get the cycle length if we have a PPG provided
 	// only necessary for the first worker, this is shared with all other workers
-   if(i == 0) {
-		if(fPpg != nullptr) {
-			// the ODB cycle length is in microseconds!
-			fCycleLength = fPpg->OdbCycleLength();
+	if(fPpg != nullptr) {
+		// the ODB cycle length is in microseconds!
+		fCycleLength = fPpg->OdbCycleLength();
 		if(slot == 0) {
 			std::stringstream str;
 			str<<"Got ODB cycle length "<<fCycleLength<<" us = "<<fCycleLength/1e6<<" s"<<std::endl;
 			std::cerr<<str.str();
-   } else if(slot == 0) {
+		}
+	} else if(slot == 0) {
 		std::stringstream str;
 		str<<DRED<<"No ppg provided, can't fill cycle spectra!"<<RESET_COLOR<<std::endl;
 		std::cerr<<str.str();
@@ -52,16 +52,16 @@ void ExampleEventHelper::CreateHistograms(unsigned int slot)
 
 // Coincidences Gates
 bool PromptCoincidence(TGriffinHit *h1, TGriffinHit *h2) { // Griffin-Griffin
-   return -250. <= h2->GetTime() - h1->GetTime() && h2->GetTime() - h1->GetTime() <= 250.;
+	return -250. <= h2->GetTime() - h1->GetTime() && h2->GetTime() - h1->GetTime() <= 250.;
 }
 bool TimeRandom(TGriffinHit *h1, TGriffinHit *h2) {
-   return (-500. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= -250.) || (250. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <=500.);
+	return (-500. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= -250.) || (250. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <=500.);
 }
 bool PromptCoincidence(TGriffinHit *h1, TZeroDegreeHit *h2) { // Griffin-Zds
-   return -200. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= 20.;
+	return -200. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= 20.;
 }
 bool TimeRandom(TGriffinHit *h1, TZeroDegreeHit *h2) {
-   return (-310. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= -200.) || (20. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= 130.);
+	return (-310. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= -200.) || (20. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= 130.);
 }
 
 // TODO: Change the function arguments to match the detectors you want to use and the declaration in the header file!
@@ -148,9 +148,9 @@ void ExampleEventHelper::EndOfSort(std::shared_ptr<TList> list)
 		list->Print();
 		return;
 	}
-	
+
 	auto corrected = static_cast<TH2*>(coincident->Clone("griffinESuppAddbackMatrixBetaCorr"));
-   // coinc = -250 - 250 = 500 wide, bg = -500 - -250 plus 250 - 500 = 500 wide
+	// coinc = -250 - 250 = 500 wide, bg = -500 - -250 plus 250 - 500 = 500 wide
 	corrected->Add(timeRandom, -1.);
 	list->Add(corrected);
 }

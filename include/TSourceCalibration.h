@@ -120,7 +120,7 @@ private:
 	TH2* fMatrix{nullptr}; ///< the matrix we're using
 	double fSigma{2.}; ///< the sigma used in the peak finder
 	double fThreshold{0.05}; ///< the threshold (relative to the largest peak) used in the peak finder
-	int fDegree{false}; ///< degree of polynomial function used to calibrate
+	int fDegree{1}; ///< degree of polynomial function used to calibrate
 	std::vector<std::tuple<double, double, double, double> > fSourceEnergy; ///< vector with source energies and uncertainties
 	int fVerboseLevel{0}; ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 };
@@ -144,7 +144,7 @@ public:
 	};
 
 public:
-	TSourceCalibration(double sigma, double threshold, int n...);
+	TSourceCalibration(double sigma, double threshold, int degree, int n...);
 	~TSourceCalibration();
 
 	void SetSource(Int_t windowId, Int_t entryId);
@@ -168,7 +168,7 @@ public:
 
 	double Sigma() { return fSigmaEntry->GetNumber(); }
 	double Threshold() { return fThresholdEntry->GetNumber(); }
-	int Degree() { if(fDegreeEntry == nullptr) return 1; return fDegreeEntry->GetNumber(); }
+	int Degree() { if(fDegreeEntry != nullptr) fDefaultDegree = fDegreeEntry->GetNumber(); return fDefaultDegree; }
 	std::vector<std::tuple<double, double, double, double> > SourceEnergy(const size_t& i) { return fSourceEnergy.at(i); }
 	void CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
 
@@ -178,6 +178,8 @@ public:
 	void FinalWindow();
 	
 	void VerboseLevel(int val) { fVerboseLevel = val; for(auto source : fSourceTab) source->VerboseLevel(val); }
+
+	static void ZoomY();
 
 private:
 	void BuildFirstInterface();
