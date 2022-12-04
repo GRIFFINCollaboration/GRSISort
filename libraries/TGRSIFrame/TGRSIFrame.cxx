@@ -52,7 +52,7 @@ TGRSIFrame::TGRSIFrame()
 		if(chain->Add(fileName.c_str(), 0) >= 1) { // setting nentries parameter to zero make TChain load the file header and return a 1 if the file was opened successfully
 			TFile* file = TFile::Open(fileName.c_str());
 			TRunInfo::AddCurrent();
-			auto ppg = static_cast<TPPG*>(file->Get("TPPG"));
+			auto ppg = static_cast<TPPG*>(file->Get("PPG"));
 			if(ppg != nullptr) {
 				fPpg->Add(ppg);
 			}
