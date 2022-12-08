@@ -8,7 +8,7 @@
 ClassImp(TDetectorHit)
 /// \endcond
 
-TPPG* TDetectorHit::fPPG = nullptr;
+//TPPG* TDetectorHit::fPPG = nullptr;
 
 TVector3 TDetectorHit::fBeamDirection(0, 0, 1);
 
@@ -219,6 +219,15 @@ Int_t TDetectorHit::GetCrystal() const
 bool TDetectorHit::CompareEnergy(TDetectorHit* lhs, TDetectorHit* rhs)
 {
 	return (lhs->GetEnergy() > rhs->GetEnergy());
+}
+
+Short_t TDetectorHit::GetChannelNumber() const
+{
+   TChannel* chan = TChannel::GetChannel(fAddress, true);
+   if(chan == nullptr) {
+      return 0;
+   }
+   return chan->GetNumber();
 }
 
 Long64_t TDetectorHit::GetTimeStampNs(Option_t*) const

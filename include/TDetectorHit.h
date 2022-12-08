@@ -88,7 +88,7 @@ public:
 
 	TDetectorHit& operator=(const TDetectorHit&) = default; // use default assignment operator (to shut up gcc 9.1)
 
-   static void SetPPGPtr(TPPG* ptr) { fPPG = ptr; }
+   //static void SetPPGPtr(TPPG* ptr) { fPPG = ptr; }
 
    bool operator<(const TDetectorHit& rhs) const { return GetEnergy() > rhs.GetEnergy(); } // sorts large->small
 
@@ -159,6 +159,7 @@ public:
    } //!<!
 
    // stored in the tchannel (things common to all hits of this address)
+   virtual Short_t  GetChannelNumber() const; //!<!
    virtual Int_t    GetDetector() const;      //!<!
    virtual Int_t    GetSegment() const;       //!<!
    virtual Int_t    GetCrystal() const;       //!<!
@@ -216,7 +217,7 @@ private:
    mutable TChannel* fChannel{nullptr};        //!<!
 
 protected:
-   static TPPG* fPPG;
+   //static TPPG* fPPG;
    // flags
    mutable TTransientBits<UChar_t> fBitFlags;
    static TVector3                 fBeamDirection; //!

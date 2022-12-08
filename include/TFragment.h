@@ -89,7 +89,6 @@ public:
 
    //////////////////// advanced getter functions ////////////////////
 
-   Short_t   GetChannelNumber() const;
    TPPG*     GetPPG();
    double    GetTZero() const;
    ULong64_t GetTimeInCycle();
