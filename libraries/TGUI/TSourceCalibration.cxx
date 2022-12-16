@@ -394,7 +394,12 @@ void TChannelTab::Calibrate(const int& degree, const bool& force)
 
 	if(degree != fDegree || force) {
 		if(fVerboseLevel > 2) std::cout<<__PRETTY_FUNCTION__<<": degree ("<<degree<<"/"<<fDegree<<") has changed, fitting "<<fData->GetN()<<" peaks with ploynomial of "<<degree<<" degree"<<std::endl;
-		fDegree = degree;
+		if(fData->GetN() > degree) {
+			fDegree = degree;
+		} else {
+			if(fVerboseLevel > 1) std::cout<<"Only got "<<fData->GetN()<<" data points, reducing degree of polynomial from "<<degree<<" to "<<fData->GetN()-1<<std::endl;
+			fDegree = fData->GetN()-1;
+		}
 		TF1* calibration = new TF1("fitfunction", ::Polynomial, 0., 10000., fDegree+2);
 		calibration->FixParameter(0, fDegree);
 		fData->Fit(calibration, "Q");
@@ -1124,7 +1129,7 @@ void TSourceCalibration::AcceptChannel(const int& channelId)
 	}
 	if(fVerboseLevel > 2) std::cout<<__PRETTY_FUNCTION__<<": # of channel tabs "<<fActualChannelId[currentSourceId].size()<<", # of source tabs "<<fActualSourceId.size()<<std::endl;
 	// if this was the last tab, we close the whole source tab and remove that vector from the actual ids too
-	if(fActualChannelId[currentSourceId].empty()) {
+	if(!fActualChannelId.empty() && fActualChannelId[currentSourceId].empty()) {
 		if(fVerboseLevel > 2) std::cout<<"Last tab closed, closing source tab "<<currentSourceId<<"/"<<fActualSourceId.size()<<"/"<<fActualChannelId.size()<<std::endl;
 		std::cout<<"Last tab closed, closing source tab "<<currentSourceId<<"/"<<fActualSourceId.size()<<"/"<<fActualChannelId.size()<<std::endl;
 		fTab->RemoveTab();
@@ -1311,6 +1316,7 @@ void TSourceCalibration::BuildThirdInterface()
 		fCalibrationPad[tmpBin]->Draw();
 		fCalibrationPad[tmpBin]->cd();
 		fCalibrationPad[tmpBin]->AddExec("zoom", "TSourceCalibration::ZoomY()");
+		//fCalibrationPad[tmpBin]->GetListOfExecs()->Print();
 		fLegend[tmpBin] = new TLegend(0.8,0.3,0.95,0.3+fMatrices.size()*0.05); // x1, y1, x2, y2
 		//fFinalData[tmpBin]->DrawCalibration("*", fLegend[tmpBin]);
 		//fLegend[tmpBin]->Draw();
@@ -1320,6 +1326,7 @@ void TSourceCalibration::BuildThirdInterface()
 		fResidualPad[tmpBin]->Draw();
 		//fResidualPad[tmpBin]->cd();
 		fResidualPad[tmpBin]->AddExec("zoom", "TSourceCalibration::ZoomY()");
+		//fResidualPad[tmpBin]->GetListOfExecs()->Print();
 		//fFinalData[tmpBin]->DrawResidual("*");
 		FitFinal(tmpBin); // also creates the residual and chi^2 label
 		//fChi2Label[tmpBin]->Draw();
@@ -1356,7 +1363,7 @@ void TSourceCalibration::BuildThirdInterface()
 		// write graphs to output file
 		fOutput->cd();
 		if(fVerboseLevel > 2) std::cout<<"writing "<<tmpBin<<std::endl;
-		fFinalData[tmpBin]->Write(Form("cal_%s", fChannelLabel[tmpBin]), TObject::kOverwrite);
+		fFinalData[tmpBin]->Write(Form("calGraph_%s", fChannelLabel[tmpBin]), TObject::kOverwrite);
 		if(fVerboseLevel > 2) std::cout<<"wrote data "<<tmpBin<<std::endl;
 		fFinalEfficiency[tmpBin]->Write(Form("eff_%s", fChannelLabel[tmpBin]), TObject::kOverwrite);
 		if(fVerboseLevel > 2) std::cout<<"wrote efficiency "<<tmpBin<<std::endl;
@@ -1673,50 +1680,142 @@ void TSourceCalibration::WriteCalibration()
 	if(fVerboseLevel > 2) TChannel::WriteCalFile();
 }
 
-void TSourceCalibration::ZoomY()
+void TSourceCalibration::ZoomX()
 {
-	TObject* select = gPad->GetSelected();
-   if(select == nullptr) return;
-   if(!select->InheritsFrom(TH1::Class())) return;
-   // get the y-axis from the selected histogram
-   TH1* hist = static_cast<TH1*>(select);
-   TAxis* axis = hist->GetXaxis();
-   std::cout<<"From pad "<<gPad->GetName()<<" and selected histogram "<<hist->GetName()<<" we get range "<<axis->GetFirst()<<" - "<<axis->GetLast()<<std::endl;
+	/// finds corresponding graph (res_xxx for cal_xxx and vice versa) and sets it's x-axis range to be the same as the selected graphs
+	// find the histogram in the current pad
+   TH1* hist1 = nullptr;
+   for(const auto&& obj : *(gPad->GetListOfPrimitives())) {
+      if(obj->InheritsFrom(TGraph::Class())) {
+         hist1 = static_cast<TGraph*>(obj)->GetHistogram();
+         break;
+      }
+   }
+   if(hist1 == nullptr) {
+      std::cout<<"Failed to find histogram for pad "<<gPad->GetName()<<std::endl;
+      return;
+   }
+
 	// extract base name and channel from pad name
 	std::string padName = gPad->GetName();
 	std::string baseName = padName.substr(0,3);
 	std::string channelName = padName.substr(4);
-   // find the corresponding partner canvas to the selected one
-	TCanvas* canvas2 = nullptr;
+	
+   // find the corresponding partner pad to the selected one
+	TPad* pad2 = nullptr;
 	std::string newName;
 	if(baseName.compare("cal") == 0) {
 		newName = "res_" + channelName;
-		canvas2 = static_cast<TCanvas*>(gROOT->FindObject(newName.c_str()));
 	} else if(baseName.compare("res") == 0) {
 		newName = "cal_" + channelName;
-		canvas2 = static_cast<TCanvas*>(gROOT->FindObject(newName.c_str()));
 	} else {
-		std::cout<<"Unknown combination of canvas "<<gPad->GetName()<<" and histogram "<<hist->GetName()<<std::endl;
+		std::cout<<"Unknown combination of pad "<<gPad->GetName()<<" and histogram "<<hist1->GetName()<<std::endl;
 		return;
 	}
-	if(canvas2 == nullptr) {
-		std::cout<<"Failed to find partner canvas "<<newName<<std::endl;
+	auto newObj = gPad->GetCanvas()->FindObject(newName.c_str());
+	if(newObj == nullptr) {
+		std::cout<<"Failed to find "<<newName<<std::endl;
 		return;
 	}
-	// find the histogram in the partner canvas
-	TH1* hist2 = nullptr;
-	for(const auto&& obj : *(canvas2->GetListOfPrimitives())) {
-		if(obj->InheritsFrom(TH1::Class())) {
-			hist2 = static_cast<TH1*>(obj);
-			break;
-		}
-	}
-	if(hist2 == nullptr) {
-		std::cout<<"Failed to find histogram for canvas "<<newName<<std::endl;
+
+	if(newObj->IsA() != TPad::Class()) {
+		std::cout<<newObj<<" = "<<newObj->GetName()<<", "<<newObj->GetTitle()<<" is a "<<newObj->ClassName()<<" not a TPad"<<std::endl;
 		return;
 	}
-   // set the y-axis of the partner histogram to the same range as the y-axis of the selected histogram
-	hist2->GetXaxis()->SetRangeUser(axis->GetBinLowEdge(axis->GetFirst()), axis->GetBinLowEdge(axis->GetLast()));
-	canvas2->Modified();
-	canvas2->Update();
+	pad2 = static_cast<TPad*>(newObj);
+	if(pad2 == nullptr) {
+		std::cout<<"Failed to find partner pad "<<newName<<std::endl;
+		return;
+	}
+	// find the histogram in the partner pad
+   TH1* hist2 = nullptr;
+   for(const auto&& obj : *(pad2->GetListOfPrimitives())) {
+      if(obj->InheritsFrom(TGraph::Class())) {
+         hist2 = static_cast<TGraph*>(obj)->GetHistogram();
+         break;
+      }
+   }
+   if(hist2 == nullptr) {
+      std::cout<<"Failed to find histogram for pad "<<newName<<std::endl;
+      return;
+   }
+
+   TAxis* axis1 = hist1->GetXaxis();
+   Int_t binmin = axis1->GetFirst();
+   Int_t binmax = axis1->GetLast();
+   Float_t xmin = axis1->GetBinLowEdge(binmin);
+   Float_t xmax = axis1->GetBinLowEdge(binmax);
+   TAxis* axis2 = hist2->GetXaxis();
+   Int_t newmin = axis2->FindBin(xmin);
+   Int_t newmax = axis2->FindBin(xmax);
+   axis2->SetRange(newmin,newmax);
+   pad2->Modified();
+   pad2->Update();
+}
+
+void TSourceCalibration::ZoomY()
+{
+	/// finds corresponding graph (res_xxx for cal_xxx and vice versa) and sets it's y-axis range to be the same as the selected graphs
+	// find the histogram in the current pad
+   TH1* hist1 = nullptr;
+   for(const auto&& obj : *(gPad->GetListOfPrimitives())) {
+      if(obj->InheritsFrom(TGraph::Class())) {
+         hist1 = static_cast<TGraph*>(obj)->GetHistogram();
+         break;
+      }
+   }
+   if(hist1 == nullptr) {
+      std::cout<<"Failed to find histogram for pad "<<gPad->GetName()<<std::endl;
+      return;
+   }
+
+	// extract base name and channel from pad name
+	std::string padName = gPad->GetName();
+	std::string baseName = padName.substr(0,3);
+	std::string channelName = padName.substr(4);
+	
+   // find the corresponding partner pad to the selected one
+	TPad* pad2 = nullptr;
+	std::string newName;
+	if(baseName.compare("cal") == 0) {
+		newName = "res_" + channelName;
+	} else if(baseName.compare("res") == 0) {
+		newName = "cal_" + channelName;
+	} else {
+		std::cout<<"Unknown combination of pad "<<gPad->GetName()<<" and histogram "<<hist1->GetName()<<std::endl;
+		return;
+	}
+	auto newObj = gPad->GetCanvas()->FindObject(newName.c_str());
+	if(newObj == nullptr) {
+		std::cout<<"Failed to find "<<newName<<std::endl;
+		return;
+	}
+
+	if(newObj->IsA() != TPad::Class()) {
+		std::cout<<newObj<<" = "<<newObj->GetName()<<", "<<newObj->GetTitle()<<" is a "<<newObj->ClassName()<<" not a TPad"<<std::endl;
+		return;
+	}
+	pad2 = static_cast<TPad*>(newObj);
+	if(pad2 == nullptr) {
+		std::cout<<"Failed to find partner pad "<<newName<<std::endl;
+		return;
+	}
+	// find the histogram in the partner pad
+   TH1* hist2 = nullptr;
+   for(const auto&& obj : *(pad2->GetListOfPrimitives())) {
+      if(obj->InheritsFrom(TGraph::Class())) {
+         hist2 = static_cast<TGraph*>(obj)->GetHistogram();
+         break;
+      }
+   }
+   if(hist2 == nullptr) {
+      std::cout<<"Failed to find histogram for pad "<<newName<<std::endl;
+      return;
+   }
+
+	hist2->SetMinimum(hist1->GetMinimum());
+	hist2->SetMaximum(hist1->GetMaximum());
+
+   pad2->Modified();
+   pad2->Update();
 }
