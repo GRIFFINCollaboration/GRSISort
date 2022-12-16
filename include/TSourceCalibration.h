@@ -179,6 +179,7 @@ public:
 	
 	void VerboseLevel(int val) { fVerboseLevel = val; for(auto source : fSourceTab) source->VerboseLevel(val); }
 
+	static void ZoomX();
 	static void ZoomY();
 
 private:

@@ -11,7 +11,7 @@ public:
 		Prefix("ExampleFragment");
 		Setup();
 	}
-	ROOT::RDF::RResultPtr<TList> Book(ROOT::RDataFrame* d) override {
+	ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override {
       return d->Book<TFragment>(std::move(*this), {"TFragment"});
    }
 

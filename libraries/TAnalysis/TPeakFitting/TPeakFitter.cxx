@@ -81,14 +81,14 @@ void TPeakFitter::SetRange(const Double_t &low, const Double_t &high)
 	fRangeHigh = high;
 }
 
-void TPeakFitter::Fit(TH1* fit_hist, Option_t *opt)
+TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t *opt)
 {
 	/// Fit the histogram. Recognized options are "q" for a quiet fit, "retryfit" to retry a fit without parameter limits
 	/// if one of the parameters got close to its limit. All options (apart from "retryfit") are passed on to the actual 
 	/// call to TH1::Fit.
 	if(fPeaksToFit.empty()) {
 		std::cout<<"No peaks provided!"<<std::endl;
-		return;
+		return TFitResultPtr();
 	}
 
 	TString options = opt;
@@ -172,6 +172,8 @@ void TPeakFitter::Fit(TH1* fit_hist, Option_t *opt)
 	fit_hist->GetXaxis()->SetRange(firstBin, lastBin);
 	// reset the default back to minuit in case we switched to minos in between
 	ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2", "Combination");
+
+	return fit_res;
 }
 
 void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hist)

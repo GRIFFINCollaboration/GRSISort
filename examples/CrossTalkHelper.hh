@@ -12,7 +12,7 @@ public:
 		Prefix("Crosstalk");
 		Setup();
 	}
-	ROOT::RDF::RResultPtr<TList> Book(ROOT::RDataFrame* d) override {
+	ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override {
       return d->Book<TGriffin, TGriffinBgo>(std::move(*this), {"TGriffin", "TGriffinBgo"});
 	}
 	void          CreateHistograms(unsigned int slot);

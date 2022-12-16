@@ -13,7 +13,7 @@ class TimeWalkHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl
 		Setup();
    }
 	//These functions are expected to exist
-	ROOT::RDF::RResultPtr<TList> Book(ROOT::RDataFrame* d) override {
+	ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override {
       return d->Book<TGriffin, TSceptar>(std::move(*this), {"TGriffin", "TSceptar"});
 	}
    void CreateHistograms(unsigned int slot);
