@@ -1,6 +1,7 @@
 #ifndef TGRSIFRAME_H
 #define TGRSIFRAME_H
 
+#include <map>
 #include <string>
 
 #include "TList.h"
@@ -12,6 +13,10 @@
 #include "ROOT/RLogger.hxx"
 #endif
 
+/** \addtogroup Framing
+ *  * @{
+ *  */
+
 class TGRSIFrame {
 public:
    TGRSIFrame();
@@ -20,7 +25,7 @@ public:
 
 private:
 	std::string fOutputPrefix{"default"};
-	ROOT::RDF::RResultPtr<TList> fOutput;
+	ROOT::RDF::RResultPtr<std::map<std::string, TList>> fOutput;
 
 	TGRSIOptions* fOptions{nullptr};
 	TPPG* fPpg{nullptr};
@@ -33,6 +38,7 @@ private:
 #endif
 };
 
+/*! @} */
 void DummyFunctionToLocateTGRSIFrameLibrary();
 
 #endif

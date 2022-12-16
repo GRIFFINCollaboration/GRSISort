@@ -35,7 +35,7 @@ public:
 		// Setup calls CreateHistograms, which uses the stored angle combinations, so we need those set before
 		Setup();
    }
-	ROOT::RDF::RResultPtr<TList> Book(ROOT::RDataFrame* d) override {
+	ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override {
       return d->Book<TGriffin, TSceptar>(std::move(*this), {"TGriffin", "TSceptar"});
    }
    void          CreateHistograms(unsigned int slot);

@@ -144,7 +144,22 @@ void TGRSIFrame::Run()
 		// accessing the result from Book causes the actual processing of the helper
 		// so we try and catch any exception
 		try {
-			fOutput->Write();
+			for(auto& list : *fOutput) {
+				// try and switch to the directory this list should be written to
+				if(gDirectory->GetDirectory(list.first.c_str()) && gDirectory->cd(list.first.c_str())) {
+					list.second.Write();
+				} else {
+					// directory this list should be written to doesn't exist, so create it
+					gDirectory->mkdir(list.first.c_str());
+					if(gDirectory->cd(list.first.c_str())) {
+						list.second.Write();
+					} else {
+						std::cout<<"Error, failed to find or create path "<<list.first<<", writing into "<<gDirectory->GetPath()<<std::endl;
+					}
+				}
+				// switch back to topmost directory
+				while(gDirectory->GetDirectory("..")) { gDirectory->cd(".."); }
+			}
          std::cout<<"\r["<<std::left<<std::setw(barWidth)<<progressBar<<' '<<"100 %]"<<std::flush;
 		} catch(TGRSIMapException<std::string>& e) {
 			std::cout<<DRED<<"Exception in "<<__PRETTY_FUNCTION__<<": "<<e.detail()<<RESET_COLOR<<std::endl;

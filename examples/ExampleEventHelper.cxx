@@ -134,23 +134,23 @@ void ExampleEventHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gr
 	}
 }
 
-void ExampleEventHelper::EndOfSort(std::shared_ptr<TList> list)
+void ExampleEventHelper::EndOfSort(std::shared_ptr<std::map<std::string, TList>> list)
 {
-	auto coincident = static_cast<TH2*>(list->FindObject(fH2[0].at("griffinESuppAddbackMatrixBeta")));
+	auto coincident = static_cast<TH2*>(list->at("").FindObject(fH2[0].at("griffinESuppAddbackMatrixBeta")));
 	if(coincident == nullptr) {
 		std::cout<<"Failed to find griffinESuppAddbackMatrixBeta histogram in list:"<<std::endl;
-		list->Print();
+		list->at("").Print();
 		return;
 	}
-	auto timeRandom = static_cast<TH2*>(list->FindObject(fH2[0].at("griffinESuppAddbackMatrixBetaBg")));
+	auto timeRandom = static_cast<TH2*>(list->at("").FindObject(fH2[0].at("griffinESuppAddbackMatrixBetaBg")));
 	if(timeRandom == nullptr) {
 		std::cout<<"Failed to find griffinESuppAddbackMatrixBetaBg histogram in list:"<<std::endl;
-		list->Print();
+		list->at("").Print();
 		return;
 	}
 
 	auto corrected = static_cast<TH2*>(coincident->Clone("griffinESuppAddbackMatrixBetaCorr"));
 	// coinc = -250 - 250 = 500 wide, bg = -500 - -250 plus 250 - 500 = 500 wide
 	corrected->Add(timeRandom, -1.);
-	list->Add(corrected);
+	list->at("").Add(corrected);
 }

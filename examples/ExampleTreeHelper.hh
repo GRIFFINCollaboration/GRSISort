@@ -30,7 +30,7 @@ public :
 		Setup();
 	}
 	//These functions are expected to exist
-	ROOT::RDF::RResultPtr<TList> Book(ROOT::RDataFrame* d) override {
+	ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override {
       return d->Book<TGriffin, TGriffinBgo, TZeroDegree, TSceptar>(std::move(*this), {"TGriffin", "TGriffinBgo", "TZeroDegree", "TSceptar"});
 	}
 	void CreateHistograms(unsigned int slot);
@@ -38,9 +38,12 @@ public :
 
 private:
 	// branches of output trees
-	std::vector<double> fSuppressedAddback; ///< vector of suppressed addback energies
-	std::vector<double> fBetaGammaTiming; ///< vector of beta-gamma timing
-	int fGriffinMultiplicity; ///< multiplicity of suppressed addback energies
+	// all of these need to be maps for the different slots/workers, we're using maps as they don't need to be resized and once accessed
+	// the address of key stays the same (important to be able to create branches)
+	std::map<unsigned int, double*> fSuppressedAddback2; ///< vector of suppressed addback energies
+	std::map<unsigned int, std::vector<double>> fSuppressedAddback; ///< vector of suppressed addback energies
+	std::map<unsigned int, std::vector<double>> fBetaGammaTiming; ///< vector of beta-gamma timing
+	std::map<unsigned int, int> fGriffinMultiplicity; ///< multiplicity of suppressed addback energies
 };
 
 extern "C" ExampleTreeHelper* CreateHelper(TList* list) { return new ExampleTreeHelper(list); }
