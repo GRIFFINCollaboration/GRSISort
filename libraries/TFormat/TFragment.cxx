@@ -126,15 +126,6 @@ ULong64_t TFragment::GetCycleNumber()
    return fPPG->GetCycleNumber(GetTimeStampNs());
 }
 
-Short_t TFragment::GetChannelNumber() const
-{
-   TChannel* chan = TChannel::GetChannel(fAddress, true);
-   if(chan == nullptr) {
-      return 0;
-   }
-   return chan->GetNumber();
-}
-
 TPPG* TFragment::GetPPG()
 {
    if(fPPG == nullptr) {

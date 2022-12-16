@@ -391,18 +391,23 @@ TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
 	}
 
 	// create new raw file
-	auto* file = TParserLibrary::Get()->CreateRawFile(filename);
-	fRawFiles.push_back(file);
+	try {
+		auto* file = TParserLibrary::Get()->CreateRawFile(filename);
+		fRawFiles.push_back(file);
 
-	if(file != nullptr) {
-		const char* command = Form("TRawFile* _raw%i = (TRawFile*)%luL;", fRawFilesOpened, (unsigned long)file);
-		ProcessLine(command);
+		if(file != nullptr) {
+			const char* command = Form("TRawFile* _raw%i = (TRawFile*)%luL;", fRawFilesOpened, (unsigned long)file);
+			ProcessLine(command);
 
-		std::cout<<"\tfile "<<BLUE<<filename<<RESET_COLOR<<" opened as "
-			<<BLUE<<"_raw"<<fRawFilesOpened<<RESET_COLOR<<std::endl;
+			std::cout<<"\tfile "<<BLUE<<filename<<RESET_COLOR<<" opened as "
+				<<BLUE<<"_raw"<<fRawFilesOpened<<RESET_COLOR<<std::endl;
+		}
+		fRawFilesOpened++;
+		return file;
+	} catch(std::runtime_error& e) {
+		std::cout<<e.what();
 	}
-	fRawFilesOpened++;
-	return file;
+	return nullptr;
 }
 
 void TGRSIint::SetupPipeline()
@@ -424,7 +429,7 @@ void TGRSIint::SetupPipeline()
 	}
 
 	// Which input files do we have
-	bool has_raw_file = !opt->InputFiles().empty() && opt->SortRaw() && !missing_raw_file;
+	bool has_raw_file = !opt->InputFiles().empty() && opt->SortRaw() && !missing_raw_file && !fRawFiles.empty();
 	bool has_input_fragment_tree = gFragment != nullptr; // && opt->SortRoot();
 	bool has_input_analysis_tree = gAnalysis != nullptr; // && opt->SortRoot();
 
