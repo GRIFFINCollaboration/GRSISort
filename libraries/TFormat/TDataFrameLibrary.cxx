@@ -136,7 +136,7 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
 	}
 	std::cout<<DCYAN<<"----------  starting linking user code  -----------------"<<RESET_COLOR<<std::endl;
 	command.clear();
-	command<<"g++ -fPIC -g -shared -Wl,-dylib -o "<<sharedLibrary<<" "<<objectFile<<std::endl;
+	command<<"g++ -fPIC -g -shared -o "<<sharedLibrary<<" "<<objectFile<<std::endl;
 	if(std::system(command.str().c_str()) != 0) {
 		std::stringstream str;
 		str<<"Unable to link shared object library "<<sharedLibrary<<" using '"<<command.str()<<"'"<<std::endl;
