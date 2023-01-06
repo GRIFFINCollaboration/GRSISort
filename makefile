@@ -238,14 +238,30 @@ parsers: all
 GRSIData: all
 	@$(MAKE) -C GRSIData
 
+GRSIData-clean:
+	@$(MAKE) -C GRSIData clean
+	@$(MAKE) clean
+
 ILLData: all
 	@$(MAKE) -C ILLData
+
+ILLData-clean:
+	@$(MAKE) -C ILLData clean
+	@$(MAKE) clean
 
 iThembaData: all
 	@$(MAKE) -C iThembaData
 
+iThembaData-clean:
+	@$(MAKE) -C iThembaData clean
+	@$(MAKE) clean
+
 HILData: all
 	@$(MAKE) -C HILData
+
+HILData-clean:
+	@$(MAKE) -C HILData clean
+	@$(MAKE) clean
 
 clean:
 	@printf "\n$(WARN_COLOR)Cleaning up$(NO_COLOR)\n\n"

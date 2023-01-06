@@ -5,6 +5,7 @@
 #include <type_traits>
 #include <memory>
 #endif
+#include <sstream>
 
 #include "TClass.h"
 
@@ -32,6 +33,8 @@ public:
    void Build();
 
    int Size() { return fDetectors.size(); }
+
+	std::ostringstream Print();
 
 private:
    void BuildHits();
