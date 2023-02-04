@@ -73,6 +73,8 @@ typedef char int8_t;
 #include <memory>
 #include <unistd.h>
 
+#include "TEnv.h"
+
 const std::string& ProgramName();
 
 namespace grsi {
@@ -88,6 +90,8 @@ public:
    const int   code;
    const char* message;
 };
+
+void SetGRSIEnv();
 
 //-------------------- three function templates that print all arguments into a string
 //this template uses existing stream and appends the last argument to it

@@ -176,6 +176,8 @@ public:
 
 	void PrintRunList();
 
+	static std::string CreateLabel(bool quiet = false);
+
 	static void SetDetectorInformation(TDetectorInformation* inf) { Get()->fDetectorInformation = inf; }
 	static TDetectorInformation* GetDetectorInformation() { return Get()->fDetectorInformation; }
 
