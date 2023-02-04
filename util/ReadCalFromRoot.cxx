@@ -7,16 +7,17 @@
 #include "TGRSIOptions.h"
 #include "TChannel.h"
 #include "TParserLibrary.h"
+#include "TRunInfo.h"
 
 int main(int argc, char** argv)
 {
-   if(argc < 4) {
-		std::cout<<"Usage: WriteCalToRoot <update/replace> <calfile.cal> <root file(s)>"<<std::endl;
+   if(argc < 2) {
+		std::cout<<"Usage: "<<argv[0]<<" <root file(s)"<<std::endl;
       return 1;
    }
 
    std::vector<const char*> badFile;
-   std::vector<const char*> badTree;
+   std::vector<const char*> badChannel;
 
 	// read .grsirc
 	grsi::SetGRSIEnv();
@@ -35,25 +36,8 @@ int main(int argc, char** argv)
 		std::cout<<"No parser library set!"<<std::endl;
 	}
 
-   // See if we can open the cal file
-   if(TChannel::ReadCalFile(argv[2]) < 1) {
-		std::cout<<"Bad Cal File: "<<argv[1]<<std::endl;
-      return 1;
-   }
-
-	//check if the should update or replace the existing calibration
-	bool update = false;
-	std::string option = argv[1];
-	std::transform(option.begin(), option.end(), option.begin(), ::tolower);
-	if(option.compare("update") == 0) {
-		update = true;
-	} else if(option.compare("replace") != 0) {
-		std::cout<<R"(Wrong option ")"<<option<<R"(", should be either "update" or "replace")"<<std::endl;
-		return 1;
-	}
-
    // Loop over the files in the argv list
-   for(int i = 3; i < argc; ++i) {
+   for(int i = 1; i < argc; ++i) {
       if(gSystem->AccessPathName(argv[i])) {
 			std::cout<<DRED<<"No file "<<argv[i]<<" found."<<RESET_COLOR<<std::endl;
          badFile.push_back(argv[i]);
@@ -67,18 +51,19 @@ int main(int argc, char** argv)
          continue;
       }
 
-      if((f.Get("FragmentTree") == nullptr) && (f.Get("AnalysisTree") == nullptr)) {
-			std::cout<<DRED<<"Could not find a fragment ot analysis tree in "<<argv[i]<<"."<<RESET_COLOR<<std::endl;
-         badTree.push_back(argv[i]);
+      if((f.Get("Channel") == nullptr) || (f.Get("RunInfo") == nullptr)) {
+			std::cout<<DRED<<"Could not find Channel or RunInfo in "<<argv[i]<<"."<<RESET_COLOR<<std::endl;
+         badChannel.push_back(argv[i]);
          continue;
       }
 
+		int runNumber = TRunInfo::Get()->RunNumber();
+		int subRunNumber = TRunInfo::Get()->SubRunNumber();
+
+		// This ensures that no information from the previous file is written to the cal-file for this file.
 		TChannel::DeleteAllChannels();
-		if(update) {
-			TChannel::ReadCalFromCurrentFile();
-		}
-      TChannel::ReadCalFile(argv[2]);
-      TChannel::WriteToRoot();
+		TChannel::ReadCalFromCurrentFile();
+      TChannel::WriteCalFile(Form("%05d_%03d.cal", runNumber, subRunNumber));
    }
 
 	if(!badFile.empty()) {
@@ -89,9 +74,9 @@ int main(int argc, char** argv)
    }
 	std::cout<<std::endl;
 
-	if(!badTree.empty()) {
-		std::cout<<"File(s) missing analysis and fragment tree:";
-		for(auto& file : badTree) {
+	if(!badChannel.empty()) {
+		std::cout<<"File(s) that had no Channel or no RunInfo:";
+		for(auto& file : badChannel) {
 			std::cout<<" "<<BLUE<<file<<RESET_COLOR;
 		}
    }

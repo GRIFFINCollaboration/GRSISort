@@ -103,22 +103,9 @@ void TGRSIFrame::Run()
 {
 	// get runinfo and get run and sub-run number
 	auto runInfo = TRunInfo::Get();
-	Int_t runNumber    = runInfo->RunNumber();
-   Int_t subRunNumber = runInfo->SubRunNumber();
 
 	// get output file name
-	std::string outputFileName;
-	std::cout<<"Using run number "<<runNumber<<", sub run number "<<subRunNumber<<", first/last run number "<<runInfo->FirstRunNumber()<<"/"<<runInfo->LastRunNumber()<<", first/last sub run number"<<runInfo->FirstSubRunNumber()<<"/"<<runInfo->LastSubRunNumber()<<", and prefix "<<fOutputPrefix<<std::endl;
-   if(runNumber != 0 && subRunNumber != -1) {
-      // both run and subrun number set => single file processed
-      outputFileName = Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runNumber, subRunNumber);
-   } else if(runNumber != 0) {
-      // multiple subruns of a single run
-      outputFileName = Form("%s%05d_%03d-%03d.root", fOutputPrefix.c_str(), runNumber, runInfo->FirstSubRunNumber(), runInfo->LastSubRunNumber());
-   } else {
-      // multiple runs
-      outputFileName = Form("%s%05d-%05d.root", fOutputPrefix.c_str(), runInfo->FirstRunNumber(), runInfo->LastRunNumber());
-   }
+	std::string outputFileName = Form("%s%s.root", fOutputPrefix.c_str(), runInfo->CreateLabel().c_str());
 	std::cout<<"Writing to "<<outputFileName<<std::endl;
 
 	TFile outputFile(outputFileName.c_str(), "recreate");
