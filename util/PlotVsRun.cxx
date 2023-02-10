@@ -108,7 +108,8 @@ int main(int argc, char** argv)
 			input->cd();
 		}
 		// get run info from this file and create a label for the bins from it
-		auto label = TRunInfo::Get()->CreateLabel(false);
+		auto label = TRunInfo::Get()->CreateLabel(true);
+		std::cout<<"working on "<<i<<"/"<<inputFiles.size()-1<<" = "<<label<<"\r"<<std::flush;
 		// we need to loop through the histogramNames and the outputHistograms at the same time
 		for(size_t j = 0; j < histogramNames.size(); ++j) {
 			obj = input->Get(histogramNames[j].c_str());
@@ -137,6 +138,7 @@ int main(int argc, char** argv)
 		input->Close();
 		input = nullptr;
 	}
+	std::cout<<"writing generated histograms to file "<<output->GetName()<<std::endl;
 
 	output->cd();
 	for(auto outputHistogram : outputHistograms) {

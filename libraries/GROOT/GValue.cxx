@@ -40,8 +40,13 @@ void GValue::Copy(TObject& obj) const
 
 double GValue::Value(const std::string& name)
 {
+	return GValue::Value(name, sqrt(-1));
+}
+
+double GValue::Value(const std::string& name, const double& defaultValue)
+{
    if(fValueVector.count(name) == 0u) {
-      return sqrt(-1);
+      return defaultValue;
    }
    return fValueVector.at(name)->GetValue();
 }
