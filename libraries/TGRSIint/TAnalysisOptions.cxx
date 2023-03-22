@@ -138,5 +138,5 @@ void TAnalysisOptions::SetCorrectCrossTalk(const bool flag, Option_t* opt)
       return;
    }
 
-   std::cout<<"Please call TGriffin::ResetFlags() on current event to avoid bugs"<<std::endl;
+   std::cout<<"Please call TDetector::ResetFlags() on current event to avoid bugs"<<std::endl;
 }

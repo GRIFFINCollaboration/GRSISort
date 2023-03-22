@@ -28,10 +28,11 @@ public:
    static GValue* GetDefaultValue() { return fDefaultValue; }
    // Search fValueVector for GValue with name given by string
    static GValue* FindValue(const std::string& = "");
-   static void SetReplaceValue(const std::string& name, double value, EPriority priority = EPriority::kUser);
+   static void    SetReplaceValue(const std::string& name, double value, EPriority priority = EPriority::kUser);
    static GValue* Get(std::string name = "") { return FindValue(std::move(name)); }
-   static double                  Value(const std::string&);
-   static TList*                  AllValues()
+   static double  Value(const std::string&); // get the named value, returns sqrt(-1) = NaN
+   static double  Value(const std::string&, const double&); // try and find the named value, otherwise return the provided default
+   static TList*  AllValues()
    {
       auto* output = new TList;
       output->SetOwner(false);

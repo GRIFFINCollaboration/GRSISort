@@ -562,3 +562,28 @@ void TRunInfo::PrintRunList()
 		std::cout<<std::setw(5)<<std::setfill('0')<<pair.first<<"_"<<std::setw(3)<<pair.second<<std::setfill(' ')<<std::endl;
 	}
 }
+
+std::string TRunInfo::CreateLabel(bool quiet)
+{
+	/// This function creates a label/string based on the run number and the subrun number.
+	auto runInfo = Get();
+	Int_t runNumber    = runInfo->RunNumber();
+   Int_t subRunNumber = runInfo->SubRunNumber();
+
+	std::string result;
+	if(!quiet) std::cout<<"Using run number "<<runNumber<<", sub run number "<<subRunNumber<<", first/last run number "<<runInfo->FirstRunNumber()<<"/"<<runInfo->LastRunNumber()<<", and first/last sub run number"<<runInfo->FirstSubRunNumber()<<"/"<<runInfo->LastSubRunNumber()<<std::endl;
+   if(runNumber != 0 && subRunNumber != -1) {
+      // both run and subrun number set => single file processed
+      result = Form("%05d_%03d", runNumber, subRunNumber);
+   } else if(runNumber != 0) {
+      // multiple subruns of a single run
+		// we could check if first and last sub run number are both -1 (which is non-consecutive runs or not initialized, the latter would mean single file w/o a subrun number, like ILL data)
+      result = Form("%05d_%03d-%03d", runNumber, runInfo->FirstSubRunNumber(), runInfo->LastSubRunNumber());
+   } else {
+      // multiple runs
+      result = Form("%05d-%05d", runInfo->FirstRunNumber(), runInfo->LastRunNumber());
+   }
+	if(!quiet) std::cout<<"Created label "<<result<<std::endl;
+
+	return result;
+}
