@@ -33,14 +33,14 @@ public:
 private:
 	// any constants that are set in the CreateHistograms function and used in the Exec function can be stored here
 	// or any other settings
-	std::vector<double> fLastTS;
-	std::vector<double> fLastSuppressedTS;
-	std::vector<double> fLastTime;
-	std::vector<double> fLastSuppressedTime;
-	std::vector<double> fLastTSNoPileup;
-	std::vector<double> fLastSuppressedTSNoPileup;
-	std::vector<double> fLastTimeNoPileup;
-	std::vector<double> fLastSuppressedTimeNoPileup;
+	std::map<std::vector<double>> fLastTS;
+	std::map<std::vector<double>> fLastSuppressedTS;
+	std::map<std::vector<double>> fLastTime;
+	std::map<std::vector<double>> fLastSuppressedTime;
+	std::map<std::vector<double>> fLastTSNoPileup;
+	std::map<std::vector<double>> fLastSuppressedTSNoPileup;
+	std::map<std::vector<double>> fLastTimeNoPileup;
+	std::map<std::vector<double>> fLastSuppressedTimeNoPileup;
 };
 
 // These are needed functions used by TDataFrameLibrary to create and destroy the instance of this helper

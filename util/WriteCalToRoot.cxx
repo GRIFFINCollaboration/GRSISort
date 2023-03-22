@@ -15,7 +15,6 @@ int main(int argc, char** argv)
       return 1;
    }
 
-
 	// there is a limit of 1024 open files on some (all?) linux systems, so we check that here
 	if(argc > 1020) {
 		std::cerr<<DRED<<"More than 1020 files provided, will only process first 1020 ones from "<<argv[3]<<" to "<<argv[1019]<<RESET_COLOR<<std::endl;
