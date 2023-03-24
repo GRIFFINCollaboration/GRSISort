@@ -15,6 +15,12 @@ int main(int argc, char** argv)
       return 1;
    }
 
+	// there is a limit of 1024 open files on some (all?) linux systems, so we check that here
+	if(argc > 1020) {
+		std::cerr<<DRED<<"More than 1020 files provided, will only process first 1020 ones from "<<argv[3]<<" to "<<argv[1019]<<RESET_COLOR<<std::endl;
+		argc = 1020;
+	}
+
    std::vector<const char*> badFile;
    std::vector<const char*> badTree;
 
@@ -52,15 +58,24 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
+	std::cout<<(update ? "Updating" : "Replacing")<<" calibration for "<<argc-3<<" file";
+	if(argc > 4) std::cout<<"s from "<<argv[3]<<" to "<<argv[argc-1];
+	std::cout<<std::endl;
+
+	// Open cal-file so that we can re-use it in the loop instead of opening tons of files
+	std::ifstream calfile(argv[2]);
+
    // Loop over the files in the argv list
    for(int i = 3; i < argc; ++i) {
+		std::cout<<i-2<<". file: "<<argv[i]<<std::endl;
+
       if(gSystem->AccessPathName(argv[i])) {
 			std::cout<<DRED<<"No file "<<argv[i]<<" found."<<RESET_COLOR<<std::endl;
          badFile.push_back(argv[i]);
          continue;
       }
 
-      TFile f(argv[i]);
+      TFile f(argv[i], "update");
       if(!f.IsOpen()) {
 			std::cout<<DRED<<"Could not open "<<argv[i]<<"."<<RESET_COLOR<<std::endl;
          badFile.push_back(argv[i]);
@@ -77,9 +92,12 @@ int main(int argc, char** argv)
 		if(update) {
 			TChannel::ReadCalFromCurrentFile();
 		}
-      TChannel::ReadCalFile(argv[2]);
+      TChannel::ReadCalFile(calfile);
       TChannel::WriteToRoot();
+		f.Close();
    }
+
+	calfile.close();
 
 	if(!badFile.empty()) {
 		std::cout<<"File(s) that could not be opened:";

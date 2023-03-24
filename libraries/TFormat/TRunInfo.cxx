@@ -583,7 +583,7 @@ std::string TRunInfo::CreateLabel(bool quiet)
       // multiple runs
       result = Form("%05d-%05d", runInfo->FirstRunNumber(), runInfo->LastRunNumber());
    }
-	if(!quiet) std::cout<<"Writing to "<<result<<std::endl;
+	if(!quiet) std::cout<<"Created label "<<result<<std::endl;
 
 	return result;
 }
