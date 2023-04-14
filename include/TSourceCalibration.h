@@ -24,6 +24,7 @@
 #include "TRootEmbeddedCanvas.h"
 #include "TH2.h"
 #include "TPaveText.h"
+#include "RVersion.h"
 
 #include "GPeak.h"
 #include "TSinglePeak.h"
