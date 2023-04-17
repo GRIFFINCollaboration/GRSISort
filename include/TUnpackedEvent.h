@@ -5,7 +5,9 @@
 #include <type_traits>
 #include <memory>
 #endif
+#if __GNUC__ > 5
 #include <sstream>
+#endif
 
 #include "TClass.h"
 
@@ -34,7 +36,9 @@ public:
 
    int Size() { return fDetectors.size(); }
 
+   #if __GNUC__ > 5
 	std::ostringstream Print();
+   #endif
 
 private:
    void BuildHits();

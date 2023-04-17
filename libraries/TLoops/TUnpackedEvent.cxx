@@ -67,6 +67,7 @@ std::shared_ptr<TDetector> TUnpackedEvent::GetDetector(TClass* cls, bool make_if
    return nullptr;
 }
 
+#if __GNUC__ > 5
 std::ostringstream TUnpackedEvent::Print()
 {
 	std::ostringstream str;
@@ -80,3 +81,4 @@ std::ostringstream TUnpackedEvent::Print()
 	}
 	return str;
 }
+#endif
