@@ -64,7 +64,6 @@ private:
    static GValue* fDefaultValue;
    static std::map<std::string, GValue*> fValueVector;
    static int ParseInputData(const std::string& input, EPriority priority, Option_t* opt = "");
-   static void trim(std::string*, const std::string& trimChars = " \f\n\r\t\v");
 
    ClassDefOverride(GValue, 1);
 };

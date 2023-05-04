@@ -14,7 +14,6 @@
 #include "StoppableThread.h"
 #include "ThreadsafeQueue.h"
 #include "TUnpackedEvent.h"
-#include "TAnalysisWriteLoopClient.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
@@ -53,18 +52,18 @@ protected:
 private:
    TAnalysisWriteLoop(std::string name, std::string output_filename);
    void AddBranch(TClass* cls);
+	void WriteEvent(std::shared_ptr<TUnpackedEvent>& event);
 
-	bool Server();
-
-	std::string fOutputFilename;
-	size_t fCurrentClient;
+	TFile* fOutputFile;
+	TTree* fEventTree;
+   TTree* fOutOfOrderTree;
+   TFragment* fOutOfOrderFrag;
 	bool fOutOfOrder;
-	TServerSocket* fServerSocket;
 #ifndef __CINT__
+	std::map<TClass*, TDetector**> fDetMap;
+   std::map<TClass*, TDetector*>  fDefaultDets;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>  fInputQueue;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fOutOfOrderQueue;
-	std::vector<TAnalysisWriteLoopClient*> fClients;
-	std::future<bool> fServerFuture;
 #endif
 
    ClassDefOverride(TAnalysisWriteLoop, 0);

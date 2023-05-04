@@ -44,7 +44,7 @@ incdir=$GRSISYS/include
 # the repitition of '-lTGRSIint -lTFormat' is needed for debian-style OSes like ubuntu (see issue #979)
 grsilibs="-lTDetector -lTGRSIint -lTFormat -lTGRSIint -lTFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction -lTPeakFitting -lTGRSIFrame"
 detlibs="-lTSuppressed -lTBgo -lTPulseAnalyzer -lGROOT -lTGRSIFit -lTNucleus"
-grsimore="-lTRawFile -lTDataParser -lTHistogramming -lTGUI"
+grsimore="-lTRawFile -lTDataParser -lTHistogramming -lTGUI -lTLevelScheme"
 if [ `root-config --has-xml` == "yes" ]
   then XMLlib="-lXMLParser -lXMLIO"
   else XMLlib=""

@@ -127,8 +127,6 @@ private:
 
 	void SetupEnergyNonlinearity(); // sort energy nonlinearity graph and set name/title
 
-	static void trim(std::string&);
-
 	static std::vector<TChannel*> SortedChannels();
 
 public:
