@@ -188,28 +188,24 @@ TLevel& TLevel::operator=(const TLevel& rhs)
 	return *this;
 }
 
-bool TLevel::AddGamma(const double energy, const char* label, double br, double ts)
+TGamma* TLevel::AddGamma(const double energy, const char* label, double br, double ts)
 {
 	/// MENU function to add gamma from this level to another level at "energy"
-	return AddGamma(fLevelScheme->GetLevel(energy), label, br, ts) != nullptr;
-}
-
-TGamma* TLevel::AddGamma(TLevel* level, const std::string label, double br, double ts)
-{
-	/// Add a new gamma ray with specified branching ratio (default 100.), and transition strength (default 1.)
+	/// Adds a new gamma ray with specified branching ratio (default 100.), and transition strength (default 1.)
 	/// return gamma if it doesn't exist yet and was successfully added, null pointer otherwise
-	if(fGammas.count(level) == 1) {
+	auto level = fLevelScheme->GetLevel(energy);
+	if(fGammas.count(energy) == 1) {
 		if(fDebug) {
 			std::cout<<"Already found gamma ray from ";
 			Print();
-			std::cout<<" to ";
+			std::cout<<" to "<<energy<<" keV";
 			level->Print();
 		}
 		return nullptr;
 	}
 
-	fGammas.emplace(std::piecewise_construct, std::forward_as_tuple(level), std::forward_as_tuple(fLevelScheme, label, br, ts));
-	fGammas[level].Debug(fDebug);
+	fGammas.emplace(std::piecewise_construct, std::forward_as_tuple(energy), std::forward_as_tuple(fLevelScheme, label, br, ts));
+	fGammas[energy].Debug(fDebug);
 	level->AddFeeding();
 
 	if(fDebug) Print();
@@ -220,7 +216,7 @@ TGamma* TLevel::AddGamma(TLevel* level, const std::string label, double br, doub
 		fLevelScheme->Draw();
 	}
 
-	return &(fGammas[level]);
+	return &(fGammas[energy]);
 }
 
 void TLevel::MoveToBand(const char* val)
@@ -927,11 +923,12 @@ void TLevelScheme::Draw(Option_t*)
 			if(fDebug) level.Print();
 
 			// loop over all gammas from this level and draw them
-			for(auto& [finalLevel, gamma] : level) {
+			for(auto& [finalEnergy, gamma] : level) {
+				auto finalLevel = GetLevel(finalEnergy);
 				if(fDebug) {
 					std::cout<<"Drawing gamma "<<g<<" from level ";
 					level.Print();
-					std::cout<<" to level ";
+					std::cout<<" to level at "<<finalEnergy<<" keV";
 					finalLevel->Print();
 					std::cout<<std::endl;
 				}
@@ -940,9 +937,9 @@ void TLevelScheme::Draw(Option_t*)
 				bool found = false;
 				for(b2 = 0; b2 < fBands.size(); ++b2) {
 					for(auto& [energy2, level2] : fBands[b2]) {
-						if(finalLevel == &level2) {
+						if(finalEnergy == level2.Energy()) {
 							if(fDebug) {
-								std::cout<<"band "<<b2<<": "<<finalLevel<<" == "<<&level2<<std::endl;
+								std::cout<<"band "<<b2<<": "<<finalEnergy<<" == "<<level2.Energy()<<std::endl;
 							}
 							found = true;
 							break;
@@ -954,7 +951,7 @@ void TLevelScheme::Draw(Option_t*)
 				}
 
 				if(!found) {
-					std::cout<<"Warning, failed to find final level "<<finalLevel<<" for gamma-ray!"<<std::endl;
+					std::cout<<"Warning, failed to find final level at "<<finalEnergy<<" keV for gamma-ray!"<<std::endl;
 				}
 
 				// set the scaling for the width
@@ -962,7 +959,7 @@ void TLevelScheme::Draw(Option_t*)
 
 				// y-position is easy, simply grab the energy of the initial and final level
 				double gY1 = level.Energy();
-				double gY2 = finalLevel->Energy();
+				double gY2 = finalEnergy;
 
 				// x-position is more complicated, depends whether it's intra- or inter-band
 				// and what other gamma rays are there at this energy range
@@ -1227,8 +1224,8 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
 								 std::cout<<"Adding gamma with energy "<<energy<<" +- "<<energyUncertainty<<", "<<photonIntensity<<" +- "<<photonIntensityUncertainty<<", "<<multipolarity<<", "<<mixingRatio<<" +- "<<mixingRatioUncertainty<<", "<<conversionCoeff<<" +- "<<conversionCoeffUncertainty<<", "<<totalIntensity<<" +- "<<totalIntensityUncertainty<<std::endl;
 								 std::cout<<"\""<<line.substr(9,10)<<"\", \""<<line.substr(19,2)<<"\", \""<<line.substr(21,8)<<"\", \""<<line.substr(29,2)<<"\", \""<<line.substr(31,10)<<"\", \""<<line.substr(41,8)<<"\", \""<<line.substr(49,6)<<"\", \""<<line.substr(55,7)<<"\", \""<<line.substr(62,2)<<"\", \""<<line.substr(64,10)<<"\", \""<<line.substr(74,2)<<"\""<<std::endl;
 							 }
-							 auto finalLevel = FindLevel(currentLevel->Energy()-energy, energyUncertainty);
-							 auto gamma = currentLevel->AddGamma(finalLevel, multipolarity, photonIntensity, totalIntensity);
+							 //auto finalLevel = FindLevel(currentLevel->Energy()-energy, energyUncertainty);
+							 auto gamma = currentLevel->AddGamma(currentLevel->Energy()-energy, multipolarity.c_str(), photonIntensity, totalIntensity);
 							 gamma->BranchingRatioUncertainty(photonIntensityUncertainty);
 							 gamma->TransitionStrengthUncertainty(totalIntensityUncertainty);
 							 // currently ignoring mixing ratio and conversion coefficents

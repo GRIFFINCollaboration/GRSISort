@@ -100,8 +100,7 @@ public:
 	TLevel(const TLevel& rhs);
 	~TLevel();
 
-	TGamma* AddGamma(TLevel* level, const std::string label = "", double br = 100., double ts = 1.);
-	bool AddGamma(const double energy, const char* label = "", double br = 100., double ts = 1.); // *MENU*
+	TGamma* AddGamma(const double energy, const char* label = "", double br = 100., double ts = 1.); // *MENU*
 
 	void Energy(const double val) { fEnergy = val; } // *MENU*
 	void EnergyUncertainty(const double val) { fEnergyUncertainty = val; } // *MENU*
@@ -125,10 +124,10 @@ public:
 	void DrawLabel(const double& pos);
 	void DrawEnergy(const double& pos);
 
-	std::map<TLevel*, TGamma>::iterator begin() { return fGammas.begin(); }
-	std::map<TLevel*, TGamma>::iterator end() { return fGammas.end(); }
-	std::map<TLevel*, TGamma>::const_iterator begin() const { return fGammas.begin(); }
-	std::map<TLevel*, TGamma>::const_iterator end() const { return fGammas.end(); }
+	std::map<double, TGamma>::iterator begin() { return fGammas.begin(); }
+	std::map<double, TGamma>::iterator end() { return fGammas.end(); }
+	std::map<double, TGamma>::const_iterator begin() const { return fGammas.begin(); }
+	std::map<double, TGamma>::const_iterator end() const { return fGammas.end(); }
 
 	// comparison operators (level-level, level-double, and double-level)
 	friend bool operator<(const TLevel& lhs, const TLevel& rhs) { return lhs.fEnergy < rhs.fEnergy; }
@@ -160,7 +159,7 @@ private:
 	double fEnergy{0.}; ///< energy of this level
 	double fEnergyUncertainty{0.}; ///< energy uncertainty of this level
 	std::string fLabel; ///< label for this level
-	std::map<TLevel*, TGamma> fGammas; ///< gamma rays draining this level, each pointing to a level
+	std::map<double, TGamma> fGammas; ///< gamma rays draining this level, each pointing to a level
 	size_t fNofFeeding{0}; ///< counter for gammas feeding this level
 	TLevelScheme* fLevelScheme{nullptr};
 
