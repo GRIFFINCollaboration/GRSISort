@@ -1,6 +1,6 @@
 # GRSISort
 
-A lean, mean, sorting machine.    
+A lean, mean, sorting machine base on [ROOT](https://root.cern.ch), used to analyze data from experiments at Triumf, ILL, iThemba, or HIL. 
 
 **For Up-To-Date Information** please Join the [Analysis_User](https://github.com/orgs/GRIFFINCollaboration/teams/analysis_users) team.
 

@@ -17,14 +17,14 @@ void DirectoryHelper::CreateHistograms(unsigned int slot)
 	fH1[slot]["suppressed/addback/griffinESuppAddback"] = new TH1F("griffinESuppAddback", Form("Suppressed griffin addback energy;energy [keV];counts/%.1f keV", (highEnergy-lowEnergy)/energyBins), energyBins, lowEnergy, highEnergy);
 
 	// initialize the two arrays to keep time
-	fLastTS.resize(64, 0.);
-	fLastSuppressedTS.resize(64, 0.);
-	fLastTime.resize(64, 0.);
-	fLastSuppressedTime.resize(64, 0.);
-	fLastTSNoPileup.resize(64, 0.);
-	fLastSuppressedTSNoPileup.resize(64, 0.);
-	fLastTimeNoPileup.resize(64, 0.);
-	fLastSuppressedTimeNoPileup.resize(64, 0.);
+	fLastTS[slot].resize(64, 0.);
+	fLastSuppressedTS[slot].resize(64, 0.);
+	fLastTime[slot].resize(64, 0.);
+	fLastSuppressedTime[slot].resize(64, 0.);
+	fLastTSNoPileup[slot].resize(64, 0.);
+	fLastSuppressedTSNoPileup[slot].resize(64, 0.);
+	fLastTimeNoPileup[slot].resize(64, 0.);
+	fLastSuppressedTimeNoPileup[slot].resize(64, 0.);
 
 	// timing spectra
 	fH2[slot]["griffinDeadTS"] = new TH2F("griffinDeadTS", "timestamp difference between consecutive hits in a griffin channel", 200, 0., 2000., 64, 0.5, 64.5);
@@ -55,15 +55,15 @@ void DirectoryHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifB
 		auto grif1 = grif.GetGriffinHit(g);
 		fH1[slot].at("unsuppressed/singles/griffinE")->Fill(grif1->GetEnergy());
 		if(grif1->GetArrayNumber() <= 64) {
-			if(fLastTS[grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinDeadTS")->Fill(grif1->GetTimeStampNs() - fLastTS[grif1->GetArrayNumber()], grif1->GetArrayNumber());
-			fLastTS[grif1->GetArrayNumber()] = grif1->GetTimeStampNs();
-			if(fLastTime[grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinDeadTime")->Fill(grif1->GetTime() - fLastTime[grif1->GetArrayNumber()], grif1->GetArrayNumber());
-			fLastTime[grif1->GetArrayNumber()] = grif1->GetTime();
+			if(fLastTS[slot][grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinDeadTS")->Fill(grif1->GetTimeStampNs() - fLastTS[slot][grif1->GetArrayNumber()], grif1->GetArrayNumber());
+			fLastTS[slot][grif1->GetArrayNumber()] = grif1->GetTimeStampNs();
+			if(fLastTime[slot][grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinDeadTime")->Fill(grif1->GetTime() - fLastTime[slot][grif1->GetArrayNumber()], grif1->GetArrayNumber());
+			fLastTime[slot][grif1->GetArrayNumber()] = grif1->GetTime();
 			if(grif1->GetKValue() != 379) {
-				if(fLastTSNoPileup[grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinDeadTSNoPileup")->Fill(grif1->GetTimeStampNs() - fLastTSNoPileup[grif1->GetArrayNumber()], grif1->GetArrayNumber());
-				fLastTSNoPileup[grif1->GetArrayNumber()] = grif1->GetTimeStampNs();
-				if(fLastTimeNoPileup[grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinDeadTimeNoPileup")->Fill(grif1->GetTime() - fLastTimeNoPileup[grif1->GetArrayNumber()], grif1->GetArrayNumber());
-				fLastTimeNoPileup[grif1->GetArrayNumber()] = grif1->GetTime();
+				if(fLastTSNoPileup[slot][grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinDeadTSNoPileup")->Fill(grif1->GetTimeStampNs() - fLastTSNoPileup[slot][grif1->GetArrayNumber()], grif1->GetArrayNumber());
+				fLastTSNoPileup[slot][grif1->GetArrayNumber()] = grif1->GetTimeStampNs();
+				if(fLastTimeNoPileup[slot][grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinDeadTimeNoPileup")->Fill(grif1->GetTime() - fLastTimeNoPileup[slot][grif1->GetArrayNumber()], grif1->GetArrayNumber());
+				fLastTimeNoPileup[slot][grif1->GetArrayNumber()] = grif1->GetTime();
 			}
 		}
 	}
@@ -73,15 +73,15 @@ void DirectoryHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifB
 		auto grif1 = grif.GetSuppressedHit(g);
 		fH1[slot].at("suppressed/singles/griffinESupp")->Fill(grif1->GetEnergy());
 		if(grif1->GetArrayNumber() <= 64) {
-			if(fLastSuppressedTS[grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinSuppressedDeadTS")->Fill(grif1->GetTimeStampNs() - fLastSuppressedTS[grif1->GetArrayNumber()], grif1->GetArrayNumber());
-			fLastSuppressedTS[grif1->GetArrayNumber()] = grif1->GetTimeStampNs();
-			if(fLastSuppressedTime[grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinSuppressedDeadTime")->Fill(grif1->GetTime() - fLastSuppressedTime[grif1->GetArrayNumber()], grif1->GetArrayNumber());
-			fLastSuppressedTime[grif1->GetArrayNumber()] = grif1->GetTime();
+			if(fLastSuppressedTS[slot][grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinSuppressedDeadTS")->Fill(grif1->GetTimeStampNs() - fLastSuppressedTS[slot][grif1->GetArrayNumber()], grif1->GetArrayNumber());
+			fLastSuppressedTS[slot][grif1->GetArrayNumber()] = grif1->GetTimeStampNs();
+			if(fLastSuppressedTime[slot][grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinSuppressedDeadTime")->Fill(grif1->GetTime() - fLastSuppressedTime[slot][grif1->GetArrayNumber()], grif1->GetArrayNumber());
+			fLastSuppressedTime[slot][grif1->GetArrayNumber()] = grif1->GetTime();
 			if(grif1->GetKValue() != 379) {
-				if(fLastSuppressedTSNoPileup[grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinSuppressedDeadTSNoPileup")->Fill(grif1->GetTimeStampNs() - fLastSuppressedTSNoPileup[grif1->GetArrayNumber()], grif1->GetArrayNumber());
-				fLastSuppressedTSNoPileup[grif1->GetArrayNumber()] = grif1->GetTimeStampNs();
-				if(fLastSuppressedTimeNoPileup[grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinSuppressedDeadTimeNoPileup")->Fill(grif1->GetTime() - fLastSuppressedTimeNoPileup[grif1->GetArrayNumber()], grif1->GetArrayNumber());
-				fLastSuppressedTimeNoPileup[grif1->GetArrayNumber()] = grif1->GetTime();
+				if(fLastSuppressedTSNoPileup[slot][grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinSuppressedDeadTSNoPileup")->Fill(grif1->GetTimeStampNs() - fLastSuppressedTSNoPileup[slot][grif1->GetArrayNumber()], grif1->GetArrayNumber());
+				fLastSuppressedTSNoPileup[slot][grif1->GetArrayNumber()] = grif1->GetTimeStampNs();
+				if(fLastSuppressedTimeNoPileup[slot][grif1->GetArrayNumber()] != 0) fH2[slot].at("griffinSuppressedDeadTimeNoPileup")->Fill(grif1->GetTime() - fLastSuppressedTimeNoPileup[slot][grif1->GetArrayNumber()], grif1->GetArrayNumber());
+				fLastSuppressedTimeNoPileup[slot][grif1->GetArrayNumber()] = grif1->GetTime();
 			}
 		}
 	}

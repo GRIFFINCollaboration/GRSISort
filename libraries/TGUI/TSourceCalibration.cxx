@@ -1223,12 +1223,14 @@ void TSourceCalibration::FindPeaks()
 {
 	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<std::endl;
 	fSourceTab[fTab->GetCurrent()]->FindPeaks(Sigma(), Threshold(), true, false);
+	Calibrate();
 }
 
 void TSourceCalibration::FindPeaksFast()
 {
 	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<std::endl;
-	fSourceTab[fTab->GetCurrent()]->FindPeaks(Sigma(), Threshold(), true);
+	fSourceTab[fTab->GetCurrent()]->FindPeaks(Sigma(), Threshold(), true, true);
+	Calibrate();
 }
 
 void TSourceCalibration::Calibrate()
@@ -1245,8 +1247,14 @@ void TSourceCalibration::BuildThirdInterface()
 	fTab = new TGTab(this, 600, 600);
 	auto calTab = fTab->AddTab("Calibration");
 	fFinalTabs.push_back(new TGTab(calTab, 600, 600));
+	#if ROOT_VERSION_CODE >= ROOT_VERSION(6,26,11)
+	fFinalTabs.back()->SetScrollingEnabled();
+	#endif
 	auto effTab = fTab->AddTab("Efficiency");
 	fFinalTabs.push_back(new TGTab(effTab, 600, 600));
+	#if ROOT_VERSION_CODE >= ROOT_VERSION(6,26,11)
+	fFinalTabs.back()->SetScrollingEnabled();
+	#endif
 	if(fVerboseLevel > 2) std::cout<<"# of tabs before adding: "<<fTab->GetNumberOfTabs()<<std::endl;
 	// we're re-using the actual source id for the channels here
 	fActualSourceId.resize(fNofBins);

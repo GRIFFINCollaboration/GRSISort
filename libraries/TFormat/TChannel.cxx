@@ -42,7 +42,6 @@ std::unordered_map<int, TChannel*>* TChannel::fChannelNumberMap = new std::unord
 //TClass* TChannel::fMnemonicClass = TMnemonic::Class();
 TClassRef TChannel::fMnemonicClass = TClassRef("TMnemonic");
 
-std::string TChannel::fFileName;
 std::string TChannel::fFileData;
 
 TChannel::TChannel()
@@ -912,6 +911,7 @@ void TChannel::WriteCTCorrections(const std::string& outfilename)
 		std::ofstream calout;
 		calout.open(outfilename.c_str());
 		for(auto iter_vec : chanVec) {
+			if(iter_vec->fCTCoefficients.empty()) continue;
 			std::string chanstr = iter_vec->PrintCTToString();
 			calout<<chanstr.c_str();
 			calout<<std::endl;
@@ -989,24 +989,13 @@ Int_t TChannel::ReadFile(TFile* tempf)
 	return 0;
 }
 
-Int_t TChannel::ReadCalFile(const char* filename)
+Int_t TChannel::ReadCalFile(std::ifstream& infile)
 {
-	/// Makes TChannels from a cal file to be used as the current calibration until grsisort
-	/// is closed. Returns the number of channels properly read in.
-	std::string infilename;
-	infilename.append(filename);
-
-	if(infilename.length() == 0) {
-		return -1;
-	}
-
-	std::cout<<"Reading from calibration file: "<<CYAN<<filename<<RESET_COLOR<<".....";
-	std::ifstream infile;
-	infile.open(infilename.c_str());
 	if(!infile.is_open()) {
 		std::cout<<DRED<<"could not open file."<<RESET_COLOR<<std::endl;
 		return -2;
 	}
+
 	infile.seekg(0, std::ios::end);
 	int length = infile.tellg();
 	if(length < 1) {
@@ -1018,8 +1007,8 @@ Int_t TChannel::ReadCalFile(const char* filename)
 	infile.read(buffer, length);
 	buffer[length] = '\0';
 
-	int channels_found = ParseInputData(const_cast<const char*>(buffer), "", EPriority::kInputFile);
-	SaveToSelf(infilename.c_str());
+	int channelsFound = ParseInputData(const_cast<const char*>(buffer), "q", EPriority::kInputFile);
+	SaveToSelf();
 
 	fChannelNumberMap->clear(); // This isn't the nicest way to do this but will keep us consistent.
 
@@ -1027,18 +1016,33 @@ Int_t TChannel::ReadCalFile(const char* filename)
 		fChannelNumberMap->insert(std::make_pair(mapiter.second->GetNumber(), mapiter.second));
 	}
 
-	return channels_found;
+	return channelsFound;
 }
 
-void TChannel::SaveToSelf(const char* fname)
+Int_t TChannel::ReadCalFile(const char* filename)
 {
-	if(fFileName.length() == 0) {
-		fFileName.assign(fname);
-	} else if(fFileName.compare(fname) == 0) {
-		// do nothing.
-	} else {
-		// also do nothing, but perhaps jest append the names toghter...
+	/// Makes TChannels from a cal file to be used as the current calibration until grsisort
+	/// is closed. Returns the number of channels properly read in.
+	std::string infilename(filename);
+
+	if(infilename.length() == 0) {
+		return -1;
 	}
+
+	std::cout<<"Reading from calibration file: "<<CYAN<<filename<<RESET_COLOR<<".....";
+	std::ifstream infile(infilename.c_str());
+
+	auto channelsFound = ReadCalFile(infile);
+
+	infile.close();
+
+	return channelsFound;
+}
+
+void TChannel::SaveToSelf()
+{
+	/// This function saves the current cal-file to fFileData.
+	/// For some reason it does the latter not by using WriteCalBuffer ???
 	std::stringstream buffer;
 	std::streambuf*   std_out = std::cout.rdbuf(buffer.rdbuf());
 	WriteCalFile();
@@ -1294,10 +1298,10 @@ void TChannel::Streamer(TBuffer& R__b)
 		{
 			fMnemonicClass->Streamer(R__b);
 		}
-		{
+		if(R__v <= 5) {
 			TString R__str;
 			R__str.Streamer(R__b);
-			fFileName.assign(R__str.Data());
+			//fFileName.assign(R__str.Data());
 		}
 		{
 			TString R__str;
@@ -1311,10 +1315,6 @@ void TChannel::Streamer(TBuffer& R__b)
 		TNamed::Streamer(R__b);
 		{
 			fMnemonicClass->Streamer(R__b);
-		}
-		{
-			TString R__str = fFileName.c_str();
-			R__str.Streamer(R__b);
 		}
 		{
 			TString R__str = fFileData.c_str();
@@ -1385,14 +1385,14 @@ int TChannel::WriteToRoot(TFile* fileptr)
 	stdout = originalstdout; // Restore stdout
 
 	ParseInputData(savedata.c_str(), "q", EPriority::kRootFile);
-	SaveToSelf(savedata.c_str());
+	SaveToSelf();
 	TChannel::ParseInputData(channelbuffer.c_str(), "q", EPriority::kRootFile);
 	c = TChannel::GetDefaultChannel();
 	c->SetNameTitle(defaultName.c_str(), defaultTitle.c_str());
 	c->Write("Channel", TObject::kOverwrite);
 
 	ParseInputData(savedata.c_str(), "q", EPriority::kRootFile);
-	SaveToSelf(savedata.c_str());
+	SaveToSelf();
 
 	std::cout<<"  "<<GetNumberOfChannels()<<" TChannels saved to "<<gDirectory->GetFile()->GetName()<<std::endl;
 	if(oldoption == "READ") {

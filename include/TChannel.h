@@ -282,6 +282,7 @@ public:
 	static Int_t ReadCalFromCurrentFile(Option_t* opt = "overwrite");
 	static Int_t ReadCalFromTree(TTree*, Option_t* opt = "overwrite");
 	static Int_t ReadCalFromFile(TFile* tempf, Option_t* opt = "overwrite");
+	static Int_t ReadCalFile(std::ifstream& infile);
 	static Int_t ReadCalFile(const char* filename = "");
 	static Int_t ParseInputData(const char* inputdata = "", Option_t* opt = "", EPriority pr = EPriority::kUser);
 	static void WriteCalFile(const std::string& outfilename = "");
@@ -301,15 +302,15 @@ public:
 private:
 	// the follow is to make the custom streamer
 	// stuff play nice.  pcb.
-	static std::string fFileName;
 	static std::string fFileData;
 	static void        InitChannelInput();
+	static void        SaveToSelf();
 	static void        SaveToSelf(const char*);
 
 	static Int_t ReadFile(TFile* tempf);
 
 	/// \cond CLASSIMP
-	ClassDefOverride(TChannel, 5) // Contains the Digitizer Information
+	ClassDefOverride(TChannel, 6) // Contains the Digitizer Information
 	/// \endcond
 };
 /*! @} */

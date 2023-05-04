@@ -3,6 +3,7 @@
 #include "TGNumberEntry.h"
 #include "TInterpreter.h"
 #include "TString.h"
+#include "GCanvas.h"
 
 #include "TGauss.h"
 #include "TRWPeak.h"
@@ -293,6 +294,9 @@ void TBGSubtraction::BuildInterface()
 
    fGateFrame = new TGVerticalFrame(this, 200, 200);
    fGateCanvas = new TRootEmbeddedCanvas("GateCanvas", fGateFrame, 200, 200);
+	auto canvas = fGateCanvas->GetCanvas();
+	auto gcanvas = new GCanvas(canvas->GetName(), canvas->GetWindowWidth(), canvas->GetWindowHeight(), canvas->GetCanvasID());
+	fGateCanvas->AdoptCanvas(gcanvas);
    
    // Status Bars
    Int_t parts[]     = {20, 50};
