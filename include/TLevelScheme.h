@@ -23,11 +23,10 @@
 /// \class TLevelScheme
 ///
 /// This class implements a level scheme. The level scheme has a
-/// vector of bands/groups of levels (0 is the default/unnamed 
-/// band/group). Each of the bands contains a vector of levels,
-/// and each level has a vector of gamma rays draining it.
+/// vector of bands/groups of levels. Each of the bands contains
+/// a map of levels, and each level has a map of gamma rays draining it.
 /// The gamma rays can have strength assigned to them which then
-/// translate to the width of their arrows.
+/// can translate to the width of their arrows.
 ///
 /////////////////////////////////////////////////////////////////
 
@@ -40,6 +39,8 @@ public:
 	~TGamma();
 
 	// setters
+	void Energy(const double val) { fEnergy = val; }
+	void EnergyUncertainty(const double val) { fEnergyUncertainty = val; }
 	void UseTransitionStrength(const bool val) { fUseTransitionStrength = val; UpdateWidth(); } // *MENU*
 	void Scaling(const double offset, const double gain) { fScalingOffset = offset; fScalingGain = gain; UpdateWidth(); } // *MENU*
 	void BranchingRatio(const double val) { if(fDebug) std::cout<<__PRETTY_FUNCTION__<<": "<<std::flush<<val<<std::endl; fBranchingRatio = val; UpdateWidth(); } // *MENU*
@@ -49,6 +50,8 @@ public:
 	void TransitionStrengthUncertainty(const double val) { fTransitionStrengthUncertainty = val; }
 
 	// getters
+	double Energy() const { return fEnergy; }
+	double EnergyUncertainty() const { return fEnergyUncertainty; }
 	bool UseTransitionStrength() const { return fUseTransitionStrength; }
 	double ScalingGain() const { return fScalingGain; }
 	double ScalingOffset() const { return fScalingOffset; }
@@ -77,6 +80,8 @@ public:
 private:
 	bool fDebug{false};
 	bool fUseTransitionStrength{false};
+	double fEnergy{0.};
+	double fEnergyUncertainty{0.};
 	double fScalingGain{1.};
 	double fScalingOffset{1.};
 	double fBranchingRatio{100.};
@@ -100,7 +105,8 @@ public:
 	TLevel(const TLevel& rhs);
 	~TLevel();
 
-	TGamma* AddGamma(const double energy, const char* label = "", double br = 100., double ts = 1.); // *MENU*
+	TGamma* AddGamma(const double levelEnergy, const char* label = "", double br = 100., double ts = 1.); // *MENU*
+	TGamma* AddGamma(const double levelEnergy, const double energyUncertainty, const char* label = "", double br = 100., double ts = 1.);
 
 	void Energy(const double val) { fEnergy = val; } // *MENU*
 	void EnergyUncertainty(const double val) { fEnergyUncertainty = val; } // *MENU*

@@ -38,6 +38,8 @@ TGamma::TGamma(const TGamma& rhs)
 	}
 
 	fDebug = rhs.fDebug;
+	fEnergy = rhs.fEnergy;
+	fEnergyUncertainty = rhs.fEnergyUncertainty;
 	fUseTransitionStrength = rhs.fUseTransitionStrength;
 	fScalingGain = rhs.fScalingGain;
 	fScalingOffset = rhs.fScalingOffset;
@@ -63,6 +65,8 @@ TGamma& TGamma::operator=(const TGamma& rhs)
 	if(this != &rhs) {
 		TArrow::operator=(rhs);
 		fDebug = rhs.fDebug;
+		fEnergy = rhs.fEnergy;
+		fEnergyUncertainty = rhs.fEnergyUncertainty;
 		fUseTransitionStrength = rhs.fUseTransitionStrength;
 		fScalingGain = rhs.fScalingGain;
 		fScalingOffset = rhs.fScalingOffset;
@@ -97,7 +101,6 @@ void TGamma::Draw(const double& x1, const double& y1, const double& x2, const do
 {
 	double arrowsize = (fUseTransitionStrength ? fTransitionStrength : fBranchingRatio)*fScalingGain + fScalingOffset;
 
-	//PaintArrow(x1, y1, x2, y2, arrowsize, "|>"); // |> means using a filled triangle as point at x2,y2
 	SetX1(x1);
 	SetY1(y1);
 	SetX2(x2);
@@ -120,7 +123,7 @@ void TGamma::Draw(const double& x1, const double& y1, const double& x2, const do
 void TGamma::Print() const
 {
 	TArrow::Print();
-	std::cout<<(fUseTransitionStrength ? "Using" : "Not using")<<" transition strength "<<fTransitionStrength<<", branching "<<fBranchingRatio<<", scaling gain "<<fScalingGain<<", scaling offset "<<fScalingOffset<<", arrow size "<<GetArrowSize()<<", line color "<<GetLineColor()<<", line width "<<GetLineWidth()<<std::endl;
+	std::cout<<"Gamma with energy "<<fEnergy<<" +- "<<fEnergyUncertainty<<(fUseTransitionStrength ? " using" : " not using")<<" transition strength "<<fTransitionStrength<<", branching "<<fBranchingRatio<<", scaling gain "<<fScalingGain<<", scaling offset "<<fScalingOffset<<", arrow size "<<GetArrowSize()<<", line color "<<GetLineColor()<<", line width "<<GetLineWidth()<<std::endl;
 }
 
 TLevel::TLevel(TLevelScheme* levelScheme, const double& energy, const std::string& label)
@@ -188,24 +191,40 @@ TLevel& TLevel::operator=(const TLevel& rhs)
 	return *this;
 }
 
-TGamma* TLevel::AddGamma(const double energy, const char* label, double br, double ts)
+TGamma* TLevel::AddGamma(const double levelEnergy, const char* label, double br, double ts)
 {
-	/// MENU function to add gamma from this level to another level at "energy"
-	/// Adds a new gamma ray with specified branching ratio (default 100.), and transition strength (default 1.)
-	/// return gamma if it doesn't exist yet and was successfully added, null pointer otherwise
-	auto level = fLevelScheme->GetLevel(energy);
-	if(fGammas.count(energy) == 1) {
+	/// MENU function to add gamma from this level to another level at "levelEnergy"
+	/// Adds a new gamma ray with specified branching ratio (default 100.), and transition strength (default 1.).
+	/// Returns gamma if it doesn't exist yet and was successfully added, null pointer otherwise.
+	return AddGamma(levelEnergy, 0., label, br, ts);
+}
+
+TGamma* TLevel::AddGamma(const double levelEnergy, const double energyUncertainty, const char* label, double br, double ts)
+{
+	/// Function to add gamma from this level to another level at "levelEnergy +- energyUncertainty".
+	/// Adds a new gamma ray with specified branching ratio (default 100.), and transition strength (default 1.).
+	/// Returns gamma if it doesn't exist yet and was successfully added, null pointer otherwise.
+	auto level = fLevelScheme->FindLevel(levelEnergy, energyUncertainty);
+	if(level == nullptr) {
+		std::cerr<<"Failed to find level at "<<levelEnergy<<" keV, can't add gamma!"<<std::endl;
+		return nullptr;
+	}
+
+	// now that we found a level, we will use its energy instead of the levelEnergy parameter
+	if(fGammas.count(level->Energy()) == 1) {
 		if(fDebug) {
 			std::cout<<"Already found gamma ray from ";
 			Print();
-			std::cout<<" to "<<energy<<" keV";
+			std::cout<<" to "<<levelEnergy<<"/"<<level->Energy()<<" keV";
 			level->Print();
 		}
 		return nullptr;
 	}
 
-	fGammas.emplace(std::piecewise_construct, std::forward_as_tuple(energy), std::forward_as_tuple(fLevelScheme, label, br, ts));
-	fGammas[energy].Debug(fDebug);
+	fGammas.emplace(std::piecewise_construct, std::forward_as_tuple(level->Energy()), std::forward_as_tuple(fLevelScheme, label, br, ts));
+	fGammas[level->Energy()].Debug(fDebug);
+	fGammas[level->Energy()].Energy(Energy()-levelEnergy); // here we do use the levelEnergy parameter instead of the energy of the level we found
+	fGammas[level->Energy()].EnergyUncertainty(energyUncertainty);
 	level->AddFeeding();
 
 	if(fDebug) Print();
@@ -216,7 +235,7 @@ TGamma* TLevel::AddGamma(const double energy, const char* label, double br, doub
 		fLevelScheme->Draw();
 	}
 
-	return &(fGammas[energy]);
+	return &(fGammas[level->Energy()]);
 }
 
 void TLevel::MoveToBand(const char* val)
@@ -362,6 +381,7 @@ TBand& TBand::operator=(const TBand& rhs)
 
 TLevel* TBand::GetLevel(double energy)
 {
+	/// Returns level at provided energy, returns null pointer if level at this energy does not exist
 	if(fLevels.count(energy) == 0) {
 		std::cout<<this<<": failed to find level with "<<energy<<" keV"<<std::endl;
 		Print();
@@ -377,6 +397,8 @@ TLevel* TBand::GetLevel(double energy)
 
 TLevel* TBand::FindLevel(double energy, double energyUncertainty)
 {
+	/// Returns level at the provided energy +- the uncertainty. If there isn't any level in that range a null pointer is returned.
+	/// If there are multiple levels in the range the one with the smallest energy difference is returned.
 	auto low = fLevels.lower_bound(energy-energyUncertainty);
 	auto high = fLevels.upper_bound(energy+energyUncertainty);
 	if(low == high) {
@@ -615,8 +637,9 @@ TLevel* TLevelScheme::GetLevel(double energy)
 TLevel* TLevelScheme::FindLevel(double energy, double energyUncertainty)
 {
 	for(auto& band : fBands) {
-		if(band.FindLevel(energy, energyUncertainty) != nullptr) {
-			return band.FindLevel(energy, energyUncertainty);
+		auto level = band.FindLevel(energy, energyUncertainty);
+		if(level != nullptr) {
+			return level;
 		}
 	}
 	// if we reach here we failed to find a level with this energy
@@ -850,15 +873,6 @@ void TLevelScheme::Draw(Option_t*)
 			for(size_t i = 0; i < group.size(); ++i) {
 				centers.push_back(std::make_pair(average, i - (group.size()-1)/2.));
 			}
-			//for(auto& level : group) {
-			//	if(level.first == average) {
-			//		centers.push_back(std::make_pair(average, 0));
-			//	} else if(level.first < average) {
-			//		centers.push_back(std::make_pair(average, -(std::distance(std::lower_bound(group.begin(), group.end(), level.first, [](const std::pair<double, int>& pair, const double& val) { return pair.first < val; }), std::upper_bound(group.begin(), group.end(), average, [](const double& val, const std::pair<double, int>& pair) { return val < pair.first; }))-1)));
-			//	} else {
-			//		centers.push_back(std::make_pair(average, std::distance(std::lower_bound(group.begin(), group.end(), average, [](const std::pair<double, int>& pair, const double& val) { return pair.first < val; }), std::upper_bound(group.begin(), group.end(), level.first, [](const double& val, const std::pair<double, int>& pair) { return val < pair.first; }))-1));
-			//	}
-			//}
 		}
 		if(fDebug) {
 			std::cout<<"centers: ";
@@ -877,44 +891,9 @@ void TLevelScheme::Draw(Option_t*)
 				std::cout<<"starting calculations for drawing level at "<<energy<<std::endl;
 			}
 			// check level distance compare to size of labels
-			double move = 0.; // how far we move the current level
-			//// for this we do a double loop to find all other levels that are closer than the number of labels we need to fit in between them
-			//// for each conflicting level we shift the current level by half the difference between level distance and the size of the label(s)
-			//// check distance to all other levels
-			//if(fDebug) std::cout<<"checking "<<energy<<":"<<std::flush;
-			//int index2 = 0;
-			//for(auto& [energy2, level2] : fBands[b]) {
-			//	if(energy != energy2) {
-			//		if(fDebug) std::cout<<" "<<energy2<<std::flush<<","<<std::fabs(energy-energy2)<<"<"<<labelSize*std::abs(index2-index)<<std::flush;
-			//		if(std::fabs(energy-energy2) < labelSize*std::abs(index2-index)) {
-			//			if(energy > energy2) {
-			//				// this level is below the current level so we shift upward
-			//				move += (labelSize*std::abs(index2-index) - std::fabs(energy-energy2))/2.;
-			//				if(fDebug) std::cout<<"(+"<<(labelSize*std::abs(index2-index) - std::fabs(energy-energy2))/2.<<")";
-			//			}
-			//			if(energy < energy2) {
-			//				// this level is above the current level so we shift downward
-			//				move -= (labelSize*std::abs(index2-index) - std::fabs(energy-energy2))/2.;
-			//				if(fDebug) std::cout<<"(-"<<(labelSize*std::abs(index2-index) - std::fabs(energy-energy2))/2.<<")";
-			//			}
-			//		}
-			//	}
-			//	++index2;
-			//}
-			// centers[index] gives us a pair of the center of the group and the number of levels between it and this level
-			//// the number of levels is positive or negative depending if the level is above or below the average
-			//// thus we can just use one formula
-			//move = centers[index].second*labelSize - (energy - centers[index].first);
-			if(energy < centers[index].first) {
-				move = centers[index].first - energy + labelSize*(centers[index].second);
-				if(fDebug) {
-					std::cout<<"calculations for drawing level at "<<energy<<": move "<<move<<" ("<<centers[index].first<<" - "<<energy<<" + "<<labelSize<<"*("<<centers[index].second<<"-0.5)) => "<<energy+move<<", "<<left<<"-"<<right<<std::endl;
-				}
-			} else if(energy > centers[index].first) {
-				move = centers[index].first - energy + labelSize*(centers[index].second);
-				if(fDebug) {
-					std::cout<<"calculations for drawing level at "<<energy<<": move "<<move<<" ("<<centers[index].first<<" - "<<energy<<" + "<<labelSize<<"*("<<centers[index].second<<"+0.5)) => "<<energy+move<<", "<<left<<"-"<<right<<std::endl;
-				}
+			double move = centers[index].first - energy + labelSize*centers[index].second;
+			if(fDebug) {
+				std::cout<<"calculations for drawing level at "<<energy<<": move "<<move<<" ("<<centers[index].first<<" - "<<energy<<" + "<<labelSize<<"*"<<centers[index].second<<") => "<<energy+move<<", "<<left<<"-"<<right<<std::endl;
 			}
 			level.Offset(move);
 			level.Draw(left, right);
@@ -924,14 +903,6 @@ void TLevelScheme::Draw(Option_t*)
 
 			// loop over all gammas from this level and draw them
 			for(auto& [finalEnergy, gamma] : level) {
-				auto finalLevel = GetLevel(finalEnergy);
-				if(fDebug) {
-					std::cout<<"Drawing gamma "<<g<<" from level ";
-					level.Print();
-					std::cout<<" to level at "<<finalEnergy<<" keV";
-					finalLevel->Print();
-					std::cout<<std::endl;
-				}
 				// find the final level, get it's energy and x-position
 				size_t b2;
 				bool found = false;
@@ -944,7 +915,7 @@ void TLevelScheme::Draw(Option_t*)
 							found = true;
 							break;
 						} else if(fDebug) {
-							std::cout<<"band "<<b2<<": "<<finalLevel<<" != "<<&level2<<std::endl;
+							std::cout<<"band "<<b2<<": "<<finalEnergy<<" != "<<level2.Energy()<<std::endl;
 						}
 					}
 					if(found) break;
@@ -1014,6 +985,7 @@ void TLevelScheme::Draw(Option_t*)
 
 void TLevelScheme::DrawAuxillaryLevel(const double& energy, const double& left, const double& right)
 {
+	// maybe change this to be a short solid line connected by a dotted line to the original level?
 	if(fAuxillaryLevels.count(energy) > 0) {
 		// we have multiple auxillary levels => try and find one with matching left and right
 		auto range = fAuxillaryLevels.equal_range(energy);
@@ -1221,11 +1193,10 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
 							 str>>totalIntensityUncertainty;
 							 // we already checked that the current level is not a null pointer so we can add the gamma here
 							 if(fDebug) {
-								 std::cout<<"Adding gamma with energy "<<energy<<" +- "<<energyUncertainty<<", "<<photonIntensity<<" +- "<<photonIntensityUncertainty<<", "<<multipolarity<<", "<<mixingRatio<<" +- "<<mixingRatioUncertainty<<", "<<conversionCoeff<<" +- "<<conversionCoeffUncertainty<<", "<<totalIntensity<<" +- "<<totalIntensityUncertainty<<std::endl;
+								 std::cout<<"Adding gamma with energy "<<energy<<" +- "<<energyUncertainty<<", "<<photonIntensity<<" +- "<<photonIntensityUncertainty<<", "<<multipolarity<<", "<<mixingRatio<<" +- "<<mixingRatioUncertainty<<", "<<conversionCoeff<<" +- "<<conversionCoeffUncertainty<<", "<<totalIntensity<<" +- "<<totalIntensityUncertainty<<", final level energy "<<currentLevel->Energy()-energy<<std::endl;
 								 std::cout<<"\""<<line.substr(9,10)<<"\", \""<<line.substr(19,2)<<"\", \""<<line.substr(21,8)<<"\", \""<<line.substr(29,2)<<"\", \""<<line.substr(31,10)<<"\", \""<<line.substr(41,8)<<"\", \""<<line.substr(49,6)<<"\", \""<<line.substr(55,7)<<"\", \""<<line.substr(62,2)<<"\", \""<<line.substr(64,10)<<"\", \""<<line.substr(74,2)<<"\""<<std::endl;
 							 }
-							 //auto finalLevel = FindLevel(currentLevel->Energy()-energy, energyUncertainty);
-							 auto gamma = currentLevel->AddGamma(currentLevel->Energy()-energy, multipolarity.c_str(), photonIntensity, totalIntensity);
+							 auto gamma = currentLevel->AddGamma(currentLevel->Energy()-energy, energyUncertainty, multipolarity.c_str(), photonIntensity, totalIntensity);
 							 gamma->BranchingRatioUncertainty(photonIntensityUncertainty);
 							 gamma->TransitionStrengthUncertainty(totalIntensityUncertainty);
 							 // currently ignoring mixing ratio and conversion coefficents
