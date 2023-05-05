@@ -129,7 +129,7 @@ void TGamma::Print() const
 TLevel::TLevel(TLevelScheme* levelScheme, const double& energy, const std::string& label)
 	: TPolyLine()
 {
-	if(levelScheme == nullptr) {
+	if(fDebug && levelScheme == nullptr) {
 		std::cout<<"Warning, nullptr provided to new band \""<<label<<"\" for parent level scheme, some functions might no be available"<<std::endl;
 	}
 	fLevelScheme = levelScheme;
