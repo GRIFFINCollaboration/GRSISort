@@ -213,7 +213,6 @@ private:
 
 	std::string fRunInfoFileName; // The name of the Run info file
 	std::string fRunInfoFile;     // The contents of the run info file
-	static void trim(std::string*, const std::string& trimChars = " \f\n\r\t\v");
 
 	double fHPGeArrayPosition; // Position of the HPGe Array (default = 110.0 mm );
 

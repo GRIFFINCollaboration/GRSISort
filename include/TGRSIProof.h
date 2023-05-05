@@ -61,12 +61,12 @@ public:
 
       // First set the include path on each slave
       Exec(Form(R"(gInterpreter->AddIncludePath("%s/include"))", pPath));
-      std::cout<<"Loading library '"<<pPath<<"/lib/libGRSI.so'"<<std::endl;
-		Exec(Form(R"(gSystem->Load("%s/lib/libGRSI.so");)", pPath));
 		// if we have a data parser/detector library load it
 		std::string library = TGRSIOptions::Get()->ParserLibrary();
 		if(library.empty()) {
 			std::cout<<DYELLOW<<"Not loading any parser library, this might not work!"<<RESET_COLOR<<std::endl;
+			std::cout<<"Loading library '"<<pPath<<"/lib/libGRSI.so'"<<std::endl;
+			Exec(Form(R"(gSystem->Load("%s/lib/libGRSI.so");)", pPath));
 		} else {
 			std::cout<<"Loading parser library '"<<library<<"'"<<std::endl;
 			Exec(Form(R"(gSystem->Load("%s");)", library.c_str()));

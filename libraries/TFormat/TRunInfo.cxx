@@ -10,6 +10,7 @@
 
 #include "TGRSIOptions.h"
 #include "GVersion.h"
+#include "TGRSIUtilities.h"
 
 /// \cond CLASSIMP
 ClassImp(TRunInfo)
@@ -219,7 +220,7 @@ Bool_t TRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
    // Parse the info file.
    while(!std::getline(infile, line).fail() ) {
       linenumber++;
-      trim(&line);
+      trim(line);
       size_t comment = line.find("//");
       if(comment != std::string::npos) {
          line = line.substr(0, comment);
@@ -235,7 +236,7 @@ Bool_t TRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
 
       std::string type = line.substr(0, ntype);
       line             = line.substr(ntype + 1, line.length());
-      trim(&line);
+      trim(line);
       int j = 0;
       while(type[j] != 0) {
          char c    = *(type.c_str() + j);
@@ -267,23 +268,6 @@ Bool_t TRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
       std::cout<<DBLUE "\tArray Position (mm) = "<<DRED<<TRunInfo::HPGeArrayPosition()<<RESET_COLOR<<std::endl;
    }
    return true;
-}
-
-void TRunInfo::trim(std::string* line, const std::string& trimChars)
-{
-   /// Removes the string "trimCars" from  the string 'line'
-   if(line->length() == 0) {
-      return;
-   }
-   std::size_t found = line->find_first_not_of(trimChars);
-   if(found != std::string::npos) {
-      *line = line->substr(found, line->length());
-   }
-   found = line->find_last_not_of(trimChars);
-   if(found != std::string::npos) {
-      *line = line->substr(0, found + 1);
-   }
-   return;
 }
 
 Long64_t TRunInfo::Merge(TCollection* list)

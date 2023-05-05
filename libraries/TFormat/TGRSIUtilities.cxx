@@ -33,6 +33,34 @@ bool all_files_exist(const std::vector<std::string>& filenames)
    return true;
 }
 
+void trim(std::string& line, const std::string& trimChars)
+{
+   /// Removes the string "trimCars" from  the string 'line'
+   if(line.length() == 0) {
+      return;
+   }
+   std::size_t found = line.find_first_not_of(trimChars);
+   if(found != std::string::npos) {
+      line = line.substr(found, line.length());
+   }
+   found = line.find_last_not_of(trimChars);
+   if(found != std::string::npos) {
+      line = line.substr(0, found + 1);
+   }
+   return;
+}
+
+void trimWS(std::string& line)
+{
+	/// Removes whitespace from the string 'line'
+	line.erase(line.begin(), std::find_if(line.begin(), line.end(), [](int ch) {
+				return !std::isspace(ch);
+				}));
+	line.erase(std::find_if(line.rbegin(), line.rend(), [](int ch) { 
+				return !std::isspace(ch);
+				}).base(), line.end());
+}
+
 int GetRunNumber(const std::string& fileName)
 {
    if(fileName.length() == 0) {

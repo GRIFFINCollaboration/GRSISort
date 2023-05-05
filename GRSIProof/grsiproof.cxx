@@ -34,30 +34,37 @@ TPPG* gPpg;
 bool startedProof = false;
 bool controlC = false;
 
-void Analyze(const char* tree_type)
+void Analyze(const char* treeType)
 {
-   std::vector<std::string> tree_list;
+   std::vector<std::string> treeList;
+	TChannel* channel = nullptr;
 
    // Loop over all of the file names, find all the files with the tree type in them and are "openable"
    for(const auto& i : gGRSIOpt->RootInputFiles()) {
-      TFile* in_file = TFile::Open(i.c_str());
-      if((in_file != nullptr) && in_file->IsOpen()) {
-         if(in_file->FindObjectAny(tree_type) != nullptr) {
-            tree_list.push_back(i);
+      TFile* inputFile = TFile::Open(i.c_str());
+      if((inputFile != nullptr) && inputFile->IsOpen()) {
+         if(inputFile->FindObjectAny(treeType) != nullptr) {
+            treeList.push_back(i);
 
 				TRunInfo::AddCurrent();
 
 				// try and add PPG from this file to global PPG
-				if(in_file->Get("TPPG") != nullptr) {
-					std::cout<<in_file->GetName()<<": adding ppg"<<std::endl;
-					gPpg->Add(static_cast<TPPG*>(in_file->Get("TPPG")));
+				if(inputFile->Get("TPPG") != nullptr) {
+					std::cout<<inputFile->GetName()<<": adding ppg"<<std::endl;
+					gPpg->Add(static_cast<TPPG*>(inputFile->Get("TPPG")));
 				}
          }
-         in_file->Close(); // Close the files when you are done with them
+			if(channel == nullptr || inputFile->FindObjectAny("Channel") != nullptr) {
+				channel = static_cast<TChannel*>(inputFile->Get("Channel"));
+			}
+         inputFile->Close(); // Close the files when you are done with them
       }
    }
 
-	if(tree_list.empty()) {
+	//add the channel map to the input list
+	gGRSIProof->AddInput(channel);
+
+	if(treeList.empty()) {
 		return;
 	}
 
@@ -67,36 +74,36 @@ void Analyze(const char* tree_type)
 	//add the global PPG to the input list
 	gGRSIProof->AddInput(gPpg);
 
-   auto* proof_chain = new TChain(tree_type);
+   auto* proofChain = new TChain(treeType);
    // loop over the list of files that belong to this tree type and add them to the chain
-   for(auto& i : tree_list) {
-      proof_chain->Add(i.c_str()); // First add the file to the chain.
+   for(auto& i : treeList) {
+      proofChain->Add(i.c_str()); // First add the file to the chain.
    }
    // Start getting ready to run proof
    gGRSIProof->ClearCache();
    if(!(gGRSIOpt->SelectorOnly())) {
-      proof_chain->SetProof();
+      proofChain->SetProof();
    }
 
-   for(const auto& macro_it : gGRSIOpt->MacroInputFiles()) {
-      std::cout<<"Currently Running: "<<(Form("%s", macro_it.c_str()))<<std::endl;
+   for(const auto& macroIt : gGRSIOpt->MacroInputFiles()) {
+      std::cout<<"Currently Running: "<<(Form("%s", macroIt.c_str()))<<std::endl;
 		try {
 			if(gGRSIOpt->NumberOfEvents() == 0) {
-				proof_chain->Process(Form("%s+", macro_it.c_str()));
+				proofChain->Process(Form("%s+", macroIt.c_str()));
 			} else {
-				proof_chain->Process(Form("%s+", macro_it.c_str()), "", gGRSIOpt->NumberOfEvents());
+				proofChain->Process(Form("%s+", macroIt.c_str()), "", gGRSIOpt->NumberOfEvents());
 			}
 		} catch(TGRSIMapException<std::string>& e) {
 			std::cout<<DRED<<"Exception when processing chain: "<<e.detail()<<RESET_COLOR<<std::endl;
 			throw e;
 		}
-      std::cout<<"Done with "<<(Form("%s", macro_it.c_str()))<<std::endl;
+      std::cout<<"Done with "<<(Form("%s", macroIt.c_str()))<<std::endl;
    }
 
    // Delete the proof chain now that we are done with it.
-   if(proof_chain != nullptr) {
-      delete proof_chain;
-      proof_chain = nullptr;
+   if(proofChain != nullptr) {
+      delete proofChain;
+      proofChain = nullptr;
    }
 }
 
@@ -171,13 +178,13 @@ static void CatchSignals()
 
 void SetGRSIEnv()
 {
-	std::string grsi_path = getenv("GRSISYS"); // Finds the GRSISYS path to be used by other parts of the grsisort code
-	if(grsi_path.length() > 0) {
-		grsi_path += "/";
+	std::string grsiPath = getenv("GRSISYS"); // Finds the GRSISYS path to be used by other parts of the grsisort code
+	if(grsiPath.length() > 0) {
+		grsiPath += "/";
 	}
 	// Read in grsirc in the GRSISYS directory to set user defined options on grsisort startup
-	grsi_path += ".grsirc";
-	gEnv->ReadFile(grsi_path.c_str(), kEnvChange);
+	grsiPath += ".grsirc";
+	gEnv->ReadFile(grsiPath.c_str(), kEnvChange);
 }
 
 int main(int argc, char** argv)
@@ -221,8 +228,8 @@ int main(int argc, char** argv)
 	std::cout<<DCYAN<<"************************* MACRO COMPILATION ****************************"<<RESET_COLOR
 		<<std::endl;
 	for(const auto& i : gGRSIOpt->MacroInputFiles()) {
-		Int_t error_code = gSystem->CompileMacro(i.c_str(), "kgOs"); // k - keep shared library after session ends, g - add debuging symbols, O - optimize the code, s - silent, v - verbose output
-		if(error_code == 0) {
+		Int_t errorCode = gSystem->CompileMacro(i.c_str(), "kgOs"); // k - keep shared library after session ends, g - add debuging symbols, O - optimize the code, s - silent, v - verbose output
+		if(errorCode == 0) {
 			std::cout<<DRED<<i<<" failed to compile properly.. ABORT!"<<RESET_COLOR<<std::endl;
 			return 1;
 		}

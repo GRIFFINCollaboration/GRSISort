@@ -18,6 +18,7 @@
 
 #include "StoppableThread.h"
 #include "Globals.h"
+#include "TGRSIUtilities.h"
 
 /*
  * Author:  P.C. Bender, <pcbend@gmail.com>
@@ -1068,7 +1069,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 	// the parser does not recognize, it just skips it!
 	while(std::getline(infile, line)) {
 		linenumber++;
-		trim(line);
+		trimWS(line);
 		size_t comment = line.find("//");
 		if(comment != std::string::npos) {
 			line = line.substr(0, comment);
@@ -1107,7 +1108,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 		if(openbrace != std::string::npos) {
 			brace_open = true;
 			name       = line.substr(0, openbrace);
-			trim(name);
+			trimWS(name);
 			channel    = new TChannel("");
 			if(!name.empty()) channel->SetName(name.c_str());
 		}
@@ -1117,7 +1118,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 			if(ntype != std::string::npos) {
 				std::string type = line.substr(0, ntype);
 				line             = line.substr(ntype + 1, line.length());
-				trim(line);
+				trimWS(line);
 				std::istringstream ss(line);
 				// transform type to upper case
 				std::transform(type.begin(), type.end(), type.begin(), ::toupper);
@@ -1155,7 +1156,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 					size_t range = line.find("range");
 					if(range != std::string::npos) {
 						line             = line.substr(range + 5, line.length());
-						trim(line);
+						trimWS(line);
 						ss.str(line);
 						ss>>range;
 					} else {
@@ -1184,7 +1185,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 					size_t range = line.find("range");
 					if(range != std::string::npos) {
 						line             = line.substr(range + 5, line.length());
-						trim(line);
+						trimWS(line);
 						ss.str(line);
 						ss>>range;
 					} else {
@@ -1283,17 +1284,6 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 	}
 
 	return newchannels;
-}
-
-void TChannel::trim(std::string& line)
-{
-	/// Removes whitespace from  the string 'line'
-	line.erase(line.begin(), std::find_if(line.begin(), line.end(), [](int ch) {
-				return !std::isspace(ch);
-				}));
-	line.erase(std::find_if(line.rbegin(), line.rend(), [](int ch) { 
-				return !std::isspace(ch);
-				}).base(), line.end());
 }
 
 void TChannel::Streamer(TBuffer& R__b)
