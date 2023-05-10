@@ -43,11 +43,15 @@ public:
 	void EnergyUncertainty(const double val) { fEnergyUncertainty = val; }
 	void UseTransitionStrength(const bool val) { fUseTransitionStrength = val; UpdateWidth(); } // *MENU*
 	void Scaling(const double offset, const double gain) { fScalingOffset = offset; fScalingGain = gain; UpdateWidth(); } // *MENU*
-	void BranchingRatio(const double val) { if(fDebug) std::cout<<__PRETTY_FUNCTION__<<": "<<std::flush<<val<<std::endl; fBranchingRatio = val; UpdateWidth(); } // *MENU*
-	void TransitionStrength(const double val) { fTransitionStrength = val; UpdateWidth(); } // *MENU*
-	void LabelText(const char* val) { fLabelText = val; UpdateLabel(); } // *MENU*
+	void BranchingRatio(const double val) { fBranchingRatio = val; UpdateWidth(); } // *MENU*
 	void BranchingRatioUncertainty(const double val) { fBranchingRatioUncertainty = val; }
+	void BranchingRatioPercent(const double val) { fBranchingRatioPercent = val; }
+	void BranchingRatioPercentUncertainty(const double val) { fBranchingRatioPercentUncertainty = val; }
+	void TransitionStrength(const double val) { fTransitionStrength = val; UpdateWidth(); } // *MENU*
 	void TransitionStrengthUncertainty(const double val) { fTransitionStrengthUncertainty = val; }
+	void LabelText(const char* val) { fLabelText = val; UpdateLabel(); } // *MENU*
+	void InitialEnergy(const double val) { fInitialEnergy = val; }
+	void FinalEnergy(const double val) { fFinalEnergy = val; }
 
 	// getters
 	double Energy() const { return fEnergy; }
@@ -56,10 +60,19 @@ public:
 	double ScalingGain() const { return fScalingGain; }
 	double ScalingOffset() const { return fScalingOffset; }
 	double BranchingRatio() const { return fBranchingRatio; }
+	double BranchingRatioUncertainty() const { return fBranchingRatioUncertainty; }
+	double BranchingRatioPercent() const { return fBranchingRatioPercent; }
+	double BranchingRatioPercentUncertainty() const { return fBranchingRatioPercentUncertainty; }
 	double TransitionStrength() const { return fTransitionStrength; }
+	double TransitionStrengthUncertainty() const { return fTransitionStrengthUncertainty; }
+	double InitialEnergy() const { return fInitialEnergy; }
+	double FinalEnergy() const { return fFinalEnergy; }
 	double Width() const { return (fUseTransitionStrength ? fTransitionStrength : fBranchingRatio); }
 	std::string LabelText() const { return fLabelText; }
 	TLatex* Label() const { return fLabel; }
+
+	std::map<double, double> CoincidentGammas();
+	void PrintCoincidentGammas(); // *MENU*
 
 	using TArrow::Print;
 	void Print() const;
@@ -80,17 +93,21 @@ public:
 private:
 	bool fDebug{false};
 	bool fUseTransitionStrength{false};
-	double fEnergy{0.};
+	double fEnergy{0.}; ///< Energy of this gamma ray
 	double fEnergyUncertainty{0.};
 	double fScalingGain{1.};
 	double fScalingOffset{1.};
 	double fBranchingRatio{100.};
 	double fBranchingRatioUncertainty{0.};
+	double fBranchingRatioPercent{100.};
+	double fBranchingRatioPercentUncertainty{0.};
 	double fTransitionStrength{1.};
 	double fTransitionStrengthUncertainty{0.};
 	std::string fLabelText;
 	TLatex* fLabel{nullptr};
 	TLevelScheme* fLevelScheme{nullptr};
+	double fInitialEnergy{0.}; ///< Energy of initial level that emits this gamma ray
+	double fFinalEnergy{0.}; ///< Energy of final level that is populated by this gamma ray
 
 	static double gTextSize;
 
@@ -235,6 +252,10 @@ public:
 	TLevel* GetLevel(double energy);
 	TLevel* FindLevel(double energy, double energyUncertainty);
 
+	std::map<double, double> FeedingGammas(double levelEnergy, double factor = 100.);
+	std::map<double, double> DrainingGammas(double levelEnergy, double factor = 100.);
+	void ResetGammaMap() { fGammaMap.clear(); }
+
 	void MoveToBand(const char* bandName, TLevel* level);
 
 	void UseGlobalGammaWidth(const int val) { fGammaWidth = static_cast<EGammaWidth>(val); } // *MENU*
@@ -255,11 +276,13 @@ public:
 private:
 	void ParseENSDF(const std::string& filename);
 	void DrawAuxillaryLevel(const double& energy, const double& left, const double& right);
+	void BuildGammaMap(double levelEnergy);
 
 	bool fDebug{false};
 
 	std::vector<TBand> fBands;
 	std::multimap<double, TLine> fAuxillaryLevels;
+	std::multimap<double, TGamma*> fGammaMap;
 
 	// nuclide information
 	std::string fNuclide{""};

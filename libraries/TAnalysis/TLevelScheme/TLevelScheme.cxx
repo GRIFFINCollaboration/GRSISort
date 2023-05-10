@@ -45,11 +45,15 @@ TGamma::TGamma(const TGamma& rhs)
 	fScalingOffset = rhs.fScalingOffset;
 	fBranchingRatio = rhs.fBranchingRatio;
 	fBranchingRatioUncertainty = rhs.fBranchingRatioUncertainty;
+	fBranchingRatioPercent = rhs.fBranchingRatioPercent;
+	fBranchingRatioPercentUncertainty = rhs.fBranchingRatioPercentUncertainty;
 	fTransitionStrength = rhs.fTransitionStrength;
 	fTransitionStrengthUncertainty = rhs.fTransitionStrengthUncertainty;
 	fLabelText = rhs.fLabelText;
 	fLabel = rhs.fLabel;
 	fLevelScheme = rhs.fLevelScheme;
+	fInitialEnergy = rhs.fInitialEnergy;
+	fFinalEnergy = rhs.fFinalEnergy;
 }
 
 TGamma::~TGamma()
@@ -72,11 +76,15 @@ TGamma& TGamma::operator=(const TGamma& rhs)
 		fScalingOffset = rhs.fScalingOffset;
 		fBranchingRatio = rhs.fBranchingRatio;
 		fBranchingRatioUncertainty = rhs.fBranchingRatioUncertainty;
+		fBranchingRatioPercent = rhs.fBranchingRatioPercent;
+		fBranchingRatioPercentUncertainty = rhs.fBranchingRatioPercentUncertainty;
 		fTransitionStrength = rhs.fTransitionStrength;
 		fTransitionStrengthUncertainty = rhs.fTransitionStrengthUncertainty;
 		fLabelText = rhs.fLabelText;
 		fLabel = rhs.fLabel;
 		fLevelScheme = rhs.fLevelScheme;
+		fInitialEnergy = rhs.fInitialEnergy;
+		fFinalEnergy = rhs.fFinalEnergy;
 	}
 
 	return *this;
@@ -123,7 +131,52 @@ void TGamma::Draw(const double& x1, const double& y1, const double& x2, const do
 void TGamma::Print() const
 {
 	TArrow::Print();
-	std::cout<<"Gamma with energy "<<fEnergy<<" +- "<<fEnergyUncertainty<<(fUseTransitionStrength ? " using" : " not using")<<" transition strength "<<fTransitionStrength<<", branching "<<fBranchingRatio<<", scaling gain "<<fScalingGain<<", scaling offset "<<fScalingOffset<<", arrow size "<<GetArrowSize()<<", line color "<<GetLineColor()<<", line width "<<GetLineWidth()<<std::endl;
+	std::cout<<"Gamma with energy "<<fEnergy<<" +- "<<fEnergyUncertainty<<" (from "<<fInitialEnergy<<" to "<<fFinalEnergy<<") "<<(fUseTransitionStrength ? "using" : "not using")<<" transition strength "<<fTransitionStrength<<", branching "<<fBranchingRatio<<" = "<<100.*fBranchingRatioPercent<<"%, scaling gain "<<fScalingGain<<", scaling offset "<<fScalingOffset<<", arrow size "<<GetArrowSize()<<", line color "<<GetLineColor()<<", line width "<<GetLineWidth()<<std::endl;
+}
+
+std::map<double, double> TGamma::CoincidentGammas()
+{
+	/// Returns a vector with the energies and relative strength of all feeding and draining gamma rays.
+	if(fLevelScheme == nullptr) {
+		std::cerr<<"Parent level scheme not set, can't find coincident gamma rays"<<std::endl;
+		return std::map<double, double>();
+	}
+	if(fDebug) {
+		std::cout<<"Looking for coincident gammas for gamma of "<<fEnergy<<" kev from level at "<<fInitialEnergy<<" keV to level at "<<fFinalEnergy<<" keV"<<std::endl;
+	}
+	fLevelScheme->ResetGammaMap(); // clear the map of feeding gammas before calling the recursive function using it
+	auto result = fLevelScheme->FeedingGammas(fInitialEnergy, fBranchingRatioPercent);
+	if(fDebug) {
+		std::cout<<"Got "<<result.size()<<" gammas feeding level at "<<fInitialEnergy<<std::endl;
+	}
+	if(fFinalEnergy > 0) {
+		auto draining = fLevelScheme->DrainingGammas(fFinalEnergy);
+		if(fDebug) {
+			std::cout<<"Plus "<<draining.size()<<" gammas draining level at "<<fFinalEnergy<<std::endl;
+		}
+		for(auto& [energy, factor] : draining) {
+			result[energy] += factor;
+		}
+	}
+	if(fDebug) {
+		std::cout<<"Got "<<result.size()<<" coincident gammas including duplicates:";
+		for(auto& element : result) {
+			std::cout<<" "<<element.first<<" ("<<element.second<<"%)";
+		}
+		std::cout<<std::endl;
+	}
+
+	return result;
+}
+
+void TGamma::PrintCoincidentGammas()
+{
+	auto vec = CoincidentGammas();
+	std::cout<<vec.size()<<" coincident gammas for gamma "<<fEnergy<<" +- "<<fEnergyUncertainty<<" ("<<fInitialEnergy<<" to "<<fFinalEnergy<<"):";
+	for(auto gamma : vec) {
+		std::cout<<" "<<gamma.first<<" ("<<gamma.second<<"%)";
+	}
+	std::cout<<std::endl;
 }
 
 TLevel::TLevel(TLevelScheme* levelScheme, const double& energy, const std::string& label)
@@ -221,11 +274,20 @@ TGamma* TLevel::AddGamma(const double levelEnergy, const double energyUncertaint
 		return nullptr;
 	}
 
+	// create the gamma and set its properties
 	fGammas.emplace(std::piecewise_construct, std::forward_as_tuple(level->Energy()), std::forward_as_tuple(fLevelScheme, label, br, ts));
 	fGammas[level->Energy()].Debug(fDebug);
 	fGammas[level->Energy()].Energy(Energy()-levelEnergy); // here we do use the levelEnergy parameter instead of the energy of the level we found
 	fGammas[level->Energy()].EnergyUncertainty(energyUncertainty);
+	fGammas[level->Energy()].InitialEnergy(fEnergy);
+	fGammas[level->Energy()].FinalEnergy(level->Energy());
 	level->AddFeeding();
+	// re-calculate the branching ratios in % for all gammas
+	double sum = std::accumulate(fGammas.begin(), fGammas.end(), 0., [](double r, std::pair<const double, TGamma>& g) { r += g.second.BranchingRatio(); return r; });
+	for(auto& [en, gamma] : fGammas) {
+		gamma.BranchingRatioPercent(gamma.BranchingRatio()/sum);
+		gamma.BranchingRatioPercentUncertainty(gamma.BranchingRatioUncertainty()/sum);
+	}
 
 	if(fDebug) Print();
 
@@ -326,7 +388,7 @@ void TLevel::DrawEnergy(const double& pos)
 
 void TLevel::Print() const
 {
-	std::cout<<"Level \""<<fLabel<<"\" ("<<this<<") at "<<fEnergy<<" keV has "<<fGammas.size()<<" gammas, debugging"<<(fDebug?"":" not")<<" enabled"<<std::endl;
+	std::cout<<"Level \""<<fLabel<<"\" ("<<this<<") at "<<fEnergy<<" keV has "<<fGammas.size()<<" draining gammas and "<<fNofFeeding<<" feeding gammas, debugging"<<(fDebug?"":" not")<<" enabled"<<std::endl;
 	if(fDebug) {
 		for(auto& [level, gamma] : fGammas) {
 			std::cout<<"gamma to level "<<level<<" \""<<gamma.LabelText()<<"\""<<std::endl;
@@ -620,8 +682,9 @@ TLevel* TLevelScheme::AddLevel(const double energy, const std::string bandName, 
 TLevel* TLevelScheme::GetLevel(double energy)
 {
 	for(auto& band : fBands) {
-		if(band.GetLevel(energy) != nullptr) {
-			return band.GetLevel(energy);
+		auto level = band.GetLevel(energy);
+		if(level != nullptr) {
+			return level;
 		}
 	}
 	// if we reach here we failed to find a level with this energy
@@ -650,6 +713,107 @@ TLevel* TLevelScheme::FindLevel(double energy, double energyUncertainty)
 	}
 
 	return nullptr;
+}
+
+void TLevelScheme::BuildGammaMap(double levelEnergy)
+{
+	/// Build a map of all gamma rays that populate levels equal and greater than levelEnergy.
+	/// This map is used to determine all gammas feeding a specific level.
+	/// Does nothing if the map isn't empty.
+	if(!fGammaMap.empty()) return;
+
+	for(auto& band : fBands) {
+		for(auto& [energy, level] : band) {
+			if(energy <= levelEnergy) {
+				// if the level is below this level or this level itself, gamma rays draining it can't feed this level
+				continue;
+			}
+			for(auto& [finalEnergy, gamma] : level) {
+				if(finalEnergy >= levelEnergy) {
+					fGammaMap.insert({finalEnergy, &gamma});
+				}
+			}
+		}
+	}
+	if(fDebug) {
+		std::cout<<"Built map of "<<fGammaMap.size()<<" gamma rays populating levels above or equal "<<levelEnergy<<" keV"<<std::endl;
+	}
+}
+
+std::map<double, double> TLevelScheme::FeedingGammas(double levelEnergy, double factor)
+{
+	/// Returns the energies and relative strengths of all gamma rays feeding the level at <energy>.
+	/// Gamma rays may appear multiple times with different strengths, if they are part of multiple cascades.
+	/// This search is a bit complicated, we need to find all gammas that feed this level.
+	/// Since this requires looping over all gamma rays, and we do this recursize, we will populate a single map with all gammas above this one.
+	/// That map has to be deleted before calling this function by calling TLevelScheme::ResetGammaMap!
+	std::map<double, double> result;
+	BuildGammaMap(levelEnergy);
+	
+	auto range = fGammaMap.equal_range(levelEnergy);
+	if(fDebug) {
+		std::cout<<"Got "<<std::distance(range.first, range.second)<<" gamma rays feeding level at "<<levelEnergy<<" kev (factor "<<factor<<")"<<std::endl;
+	}
+	for(auto& it = range.first; it != range.second; ++it) {
+		if(fDebug) {
+			std::cout<<"Adding gamma "<<it->second<<": ";
+			it->second->Print();
+		}
+		result[it->second->Energy()] += factor*it->second->BranchingRatioPercent();
+		auto tmp = FeedingGammas(it->second->InitialEnergy(), factor*it->second->BranchingRatioPercent());
+		for(auto& [energy, tmpFactor] : tmp) {
+			result[energy] += tmpFactor;
+		}
+	}
+
+	if(fDebug) {
+		std::cout<<"returning list of "<<result.size()<<" gammas feeding level at "<<levelEnergy<<" keV"<<std::endl;
+	}
+	return result;
+}
+
+std::map<double, double> TLevelScheme::DrainingGammas(double levelEnergy, double factor)
+{
+	/// Returns the energies and relative strengths of all gamma rays draining the level at <energy>.
+	/// Gamma rays may appear multiple times with different strengths, if they are part of multiple cascades.
+	
+	// Since the branching ratio of a gamma ray cascades down to all gamma rays below it, we want to follow each
+	// cascade until we reach the ground state. So we get the level whos energy was provided and loop over it's gamma rays
+	// and for each gamma ray we get the next level and it's gamma rays
+	auto level = GetLevel(levelEnergy);
+	std::map<double, double> result;
+	if(level == nullptr) {
+		std::cerr<<"Failed to find level at "<<levelEnergy<<" keV, returning empty list of gammas draining that level"<<std::endl;
+		Print();
+		return result;
+	}
+
+	if(fDebug) {
+		std::cout<<level<<": looping over "<<level->NofDrainingGammas()<<" gammas for level at "<<levelEnergy<<" keV (factor "<<factor<<")"<<std::endl;
+	}
+
+	// loop over all gamma rays 
+	for(auto& [finalEnergy, gamma] : *level) {
+		if(fDebug) {
+			std::cout<<"Adding gamma: ";
+			gamma.Print();
+		}
+		// add this gamma to the result
+		auto branchingRatio = gamma.BranchingRatioPercent();
+		result[gamma.Energy()] += factor*branchingRatio;
+		// if we aren't at the ground state, add all gammas from the new level as well
+		if(gamma.FinalEnergy() > 0.) {
+			auto tmp = DrainingGammas(finalEnergy, factor*branchingRatio);
+			for(auto& [energy, tmpFactor] : tmp) {
+				result[energy] += tmpFactor;
+			}
+		}
+	}
+
+	if(fDebug) {
+		std::cout<<"returning list of "<<result.size()<<" gammas draining level at "<<levelEnergy<<" keV"<<std::endl;
+	}
+	return result;
 }
 
 void TLevelScheme::MoveToBand(const char* bandName, TLevel* level)
@@ -820,7 +984,7 @@ void TLevelScheme::Draw(Option_t*)
 					// don't compare to the levels of the group as is, but assume that they are going to be shifted by average - energy + label size * (index - (# in group - 1)/2)
 					// so the energy we want to compare to is average + label size * (index - (# in group - 1)/2)
 					// for that we need the average of the group at this point
-					double average = std::accumulate(groups[i].begin(), groups[i].end(), 0., [](double r, std::pair<double,double> p) { r += p.first; return r; })/groups[i].size();
+					double average = std::accumulate(groups[i].begin(), groups[i].end(), 0., [](double r, std::pair<double, int> p) { r += p.first; return r; })/groups[i].size();
 					// we don't need abs here as we know the current energy and index are larger than the previous ones
 					if(energy - (average + labelSize*(j - (groups[i].size()-1)/2.)) < labelSize*(index-groups[i][j].second)) {
 						if(fDebug) {
