@@ -9,6 +9,7 @@
 #include "TROOT.h"
 #include "TString.h"
 
+#include "GCanvas.h"
 #include "TGRSIUtilities.h"
 
 ClassImp(TGamma)
@@ -291,11 +292,7 @@ TGamma* TLevel::AddGamma(const double levelEnergy, const double energyUncertaint
 
 	if(fDebug) Print();
 
-	// only re-draw if we find a matching canvas
-	auto canvas = static_cast<TCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
-	if(canvas != nullptr && fLevelScheme != nullptr) {
-		fLevelScheme->Draw();
-	}
+	fLevelScheme->Refresh();
 
 	return &(fGammas[level->Energy()]);
 }
@@ -358,7 +355,7 @@ void TLevel::Draw(const double& left, const double& right)
 	if(fDebug) std::cout<<"Drew TPolyLine using x "<<left<<"-"<<right<<" and y "<<fEnergy<<" with a width of "<<GetLineWidth()<<" and offset "<<fOffset<<std::endl;
 }
 
-void TLevel::DrawLabel(const double& pos)
+double TLevel::DrawLabel(const double& pos)
 {
 	if(fLevelLabel == nullptr) {
 		fLevelLabel = new TLatex(pos, fEnergy+fOffset, fLabel.c_str());
@@ -370,9 +367,10 @@ void TLevel::DrawLabel(const double& pos)
 	fLevelLabel->SetTextFont(42); // helvetica-medium-r-normal (default is 62 = helvetica-bold-r-normal) 
 	fLevelLabel->SetTextSize(gTextSize); // text size in fraction of window width/height in pixel (whichever is smaller)
 	fLevelLabel->Draw();
+	return fLevelLabel->GetXsize();
 }
 
-void TLevel::DrawEnergy(const double& pos)
+double TLevel::DrawEnergy(const double& pos)
 {
 	if(fEnergyLabel == nullptr) {
 		fEnergyLabel = new TLatex(pos, fEnergy+fOffset, Form("%.0f keV", fEnergy));
@@ -384,6 +382,7 @@ void TLevel::DrawEnergy(const double& pos)
 	fEnergyLabel->SetTextFont(42); // helvetica-medium-r-normal (default is 62 = helvetica-bold-r-normal) 
 	fEnergyLabel->SetTextSize(gTextSize); // text size in fraction of window width/height in pixel (whichever is smaller)
 	fEnergyLabel->Draw();
+	return fEnergyLabel->GetXsize();
 }
 
 void TLevel::Print() const
@@ -532,11 +531,7 @@ TLevel* TBand::AddLevel(const double energy, const std::string& label)
 		}
 	}
 	
-	// only re-draw if we find a matching canvas
-	auto canvas = static_cast<TCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
-	if(canvas != nullptr && fLevelScheme != nullptr) {
-		fLevelScheme->Draw();
-	}
+	fLevelScheme->Refresh();
 
 	return &(newLevel->second);
 }
@@ -570,7 +565,7 @@ double TBand::Width(double distance) const
 {
 	size_t nofGammas = 0.;
 	if(fDebug) {
-		std::cout<<" ("<<fLevels.size()<<": ";
+		std::cout<<" ("<<GetLabel()<<" - "<<fLevels.size()<<": ";
 	}
 	for(auto& level : fLevels) {
 		nofGammas += level.second.NofDrainingGammas()+1; // plus 1 for the gap between the gammas from each level
@@ -604,6 +599,7 @@ void TBand::Print() const
 TLevelScheme::TLevelScheme(const std::string& filename, bool debug)
 {
 	fDebug = debug;
+	SetName("TLevelScheme");
 
 	// open the file and read the level scheme
 	// still need to decide what format that should be
@@ -627,7 +623,7 @@ TLevelScheme::TLevelScheme(const std::string& filename, bool debug)
 }
 
 TLevelScheme::TLevelScheme(const TLevelScheme& rhs)
-	: TBox(rhs)
+	: TPaveLabel(rhs)
 {
 	fDebug = rhs.fDebug;
 	fBands = rhs.fBands;
@@ -867,19 +863,34 @@ void TLevelScheme::MoveToBand(const char* bandName, TLevel* level)
 		band.RemoveLevel(level);
 	}
 	
+	Refresh();
+}
+
+void TLevelScheme::Refresh()
+{
 	// only re-draw if we find a matching canvas
-	auto canvas = static_cast<TCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
+	auto canvas = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
 	if(canvas != nullptr) {
 		Draw();
+	}
+}
+
+void TLevelScheme::UnZoom()
+{
+	auto canvas = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
+	if(canvas != nullptr) {
+		canvas->Range(fX1, fY1, fX2, fY2);
+		canvas->Modified();
+		canvas->Update();
 	}
 }
 
 void TLevelScheme::Draw(Option_t*)
 {
 	if(fDebug) std::cout<<__PRETTY_FUNCTION__<<std::endl;
-	auto canvas = static_cast<TCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
+	auto canvas = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
 	if(canvas == nullptr) {
-		canvas = new TCanvas("LevelScheme", "Level Scheme");
+		canvas = new GCanvas("LevelScheme", "Level Scheme");
 	} else {
 		canvas->Clear();
 	}
@@ -901,33 +912,37 @@ void TLevelScheme::Draw(Option_t*)
 	width += (fBands.size()-1)*fBandGap;
 
 	// ys calculated from the lowest and highest level plus the bottom and top margins
-	double y1 = minMaxLevel.first;
-	double y2 = minMaxLevel.second;
-	double height = y2-y1;
+	fY1 = minMaxLevel.first;
+	fY2 = minMaxLevel.second;
+	double height = fY2-fY1;
 	// if the margins haven't been set, we add 10% of the height
-	if(fBottomMargin < 0) y1 -= height/10.;
-	else y1 -= fBottomMargin;
-	if(fTopMargin < 0) y2 += height/10.;
-	else y2 += fTopMargin;
+	if(fBottomMargin < 0) fY1 -= height/10.;
+	else fY1 -= fBottomMargin;
+	if(fTopMargin < 0) fY2 += height/10.;
+	else fY2 += fTopMargin;
 
 	// xs are calculated from the width of each band, plus the left and right margin, plus n-1 times the margin between bands
-	double x1 = 0.;
-	double x2 = width;
+	fX1 = 0.;
+	fX2 = width;
 	// if the margins haven't been set, we add the band gap
-	if(fLeftMargin < 0) x1 -= fBandGap;
-	else x1 -= fLeftMargin;
-	if(fRightMargin < 0) x2 += fBandGap;
-	else x2 += fRightMargin;
+	if(fLeftMargin < 0) fX1 -= fBandGap;
+	else fX1 -= fLeftMargin;
+	if(fRightMargin < 0) fX2 += fBandGap;
+	else fX2 += fRightMargin;
 
-	if(fDebug) std::cout<<"got x1 - x2 "<<x1<<" - "<<x2<<", and y1 - y2 "<<y1<<" - "<<y2<<std::endl;
-	canvas->Range(x1, y1, x2, y2);
+	if(fDebug) std::cout<<"got x1 - x2 "<<fX1<<" - "<<fX2<<", and y1 - y2 "<<fY1<<" - "<<fY2<<std::endl;
+	canvas->Range(fX1, fY1, fX2, fY2);
 	canvas->cd();
 
-	SetX1(x1);
-	SetX2(x2);
-	SetY1(y1);
-	SetY2(y2);
-	TBox::Draw();
+	SetX1(fX2-fBandGap);
+	SetX2(fX2);
+	if(fTopMargin < 0) SetY1(fX2-height/12.);
+	else SetY1(fX2-fTopMargin*0.75);
+	SetY2(fX2);
+	SetLabel("Level Scheme");
+	SetTextSize(0); // default size (?)
+	SetTextAlign(22); // centered in x and y
+	TPaveLabel::Draw();
 
 	if(fGammaWidth == EGammaWidth::kGlobal) {
 		// if we want the gamma width to be on a global scale, i.e. across all bands, we need to find the minimum and maximum values
@@ -967,7 +982,7 @@ void TLevelScheme::Draw(Option_t*)
 			scalingOffset = fMinWidth;
 		}
 
-		double labelSize = TLevel::TextSize()*std::min(x2-x1,y2-y1);
+		double labelSize = TLevel::TextSize()*std::min(fX2-fX1,fY2-fY1);
 		labelSize *= 1.5; // we want a bit of a gap between labels ...
 
 		// loop to calculate "center" for closely grouped levels
@@ -1061,8 +1076,12 @@ void TLevelScheme::Draw(Option_t*)
 			}
 			level.Offset(move);
 			level.Draw(left, right);
-			level.DrawLabel(right);
-			level.DrawEnergy(left);
+			double labelWidth = level.DrawLabel(right);
+			double energyWidth = level.DrawEnergy(left);
+			// TODO: check these widths to see if we need to adjust the margins.
+			// Should also adjust gaps between bands to be equal to their sum, but how?
+			// If we call Draw recursively if we changed anything it will never stop (as that re-adjusts the text sizes).
+			// Maybe only set a flag to re-draw when the change is larger than a minimum value?
 			if(fDebug) level.Print();
 
 			// loop over all gammas from this level and draw them
@@ -1100,29 +1119,62 @@ void TLevelScheme::Draw(Option_t*)
 				// and what other gamma rays are there at this energy range
 				double gX1;
 				double gX2;
-				if(b == b2) { // intra-band: for now just increment the position, later maybe search all previously added intra-band transitions for this band
-					if(fDebug) std::cout<<b<<" == "<<b2<<": intra band "<<g<<" at position "<<g*fGammaDistance<<std::endl;
-					gX1 = left + g*fGammaDistance;
-					gX2 = left + g*fGammaDistance;
-					++g;
-				} else if(b + 1 == b2) { // inter-band from this band to the next band on the right
-					if(fDebug) std::cout<<b<<"+1 == "<<b2<<": inter band "<<g<<" to right "<<right<<"-"<<right+fBandGap<<std::endl;
-					gX1 = right - fGammaDistance/2.;
-					gX2 = right + fBandGap + fGammaDistance/2.;
-				} else if(b == b2 + 1) { // inter-band from this band to the next band on the left
-					if(fDebug) std::cout<<b<<" == "<<b2<<"+1: inter band "<<g<<" to left "<<left<<"-"<<left-fBandGap<<std::endl;
-					gX1 = left + fGammaDistance/2.;
-					gX2 = left - fBandGap - fGammaDistance/2.;
-				} else if(b < b2) { // inter-band to a band on the right that is not a direct neighbour
-					if(fDebug) std::cout<<b<<" < "<<b2<<": inter band far "<<g<<" right "<<right<<"-"<<right+fBandGap/8.<<std::endl;
-					gX1 = right;
-					gX2 = right + fBandGap/8.;
-					DrawAuxillaryLevel(gY2, right, right + fBandGap/4.);
-				} else { // inter-band to a band on the left that is not a direct neighbour
-					if(fDebug) std::cout<<b<<" > "<<b2<<": inter band far "<<g<<" left "<<left<<"-"<<left-fBandGap/8.<<std::endl;
-					gX1 = left;
-					gX2 = left - fBandGap/8.;
-					DrawAuxillaryLevel(gY2, left, left - fBandGap/4.);
+				if(fRadwareStyle) {
+					if(b == b2) { // intra-band: for now just increment the position, later maybe search all previously added intra-band transitions for this band
+						if(fDebug) std::cout<<b<<" == "<<b2<<": intra band "<<g<<" at position "<<g*fGammaDistance<<std::endl;
+						gX1 = left + g*fGammaDistance;
+						gX2 = left + g*fGammaDistance;
+						++g;
+					} else if(b < b2) { // inter-band to a band on the right
+						if(fDebug) std::cout<<b<<" < "<<b2<<": inter band to right "<<g<<" at position "<<g*fGammaDistance<<std::endl;
+						gX1 = left + g*fGammaDistance;
+						gX2 = left + g*fGammaDistance + (gY1-gY2)/10.;
+						double shift = right + fBandGap;
+						// sum the width of bands b+1 to b2-1 and the band gaps between them
+						if(b+1 < b2) shift = std::accumulate(fBands.begin()+b+1, fBands.begin()+b2, right + fBandGap, [&](double r, TBand& el) { r += el.Width(fGammaDistance) + fBandGap; return r; });
+						DrawAuxillaryLevel(gY2, right + g*fGammaDistance, shift - fBandGap/2.); // for now always a gap of fBandGap/2. for the label
+						++g;
+					} else { // inter-band to a band on the left
+						if(fDebug) std::cout<<b<<" > "<<b2<<": inter band to left "<<g<<" at position "<<g*fGammaDistance<<std::endl;
+						gX1 = left + g*fGammaDistance;
+						gX2 = left + g*fGammaDistance - (gY1-gY2)/10.;
+						double shift = left - fBandGap;
+						// sum the width of bands b2+1 to b-1 and the band gaps between them
+						if(b2+1 < b) shift = std::accumulate(fBands.begin()+b2+1, fBands.begin()+b, left - fBandGap, [&](double r, TBand& el) { r -= el.Width(fGammaDistance) + fBandGap; return r; });
+						DrawAuxillaryLevel(gY2, left + g*fGammaDistance, shift + fBandGap/2.);
+						++g;
+					}
+				} else {
+					if(b == b2) { // intra-band: for now just increment the position, later maybe search all previously added intra-band transitions for this band
+						if(fDebug) std::cout<<b<<" == "<<b2<<": intra band "<<g<<" at position "<<g*fGammaDistance<<std::endl;
+						gX1 = left + g*fGammaDistance;
+						gX2 = left + g*fGammaDistance;
+						++g;
+					} else if(b + 1 == b2) { // inter-band from this band to the next band on the right
+						if(fDebug) std::cout<<b<<"+1 == "<<b2<<": inter band "<<g<<" to right "<<right<<"-"<<right+fBandGap<<std::endl;
+						gX1 = right - fGammaDistance/2.;
+						gX2 = right + fBandGap + fGammaDistance/2.;
+					} else if(b == b2 + 1) { // inter-band from this band to the next band on the left
+						if(fDebug) std::cout<<b<<" == "<<b2<<"+1: inter band "<<g<<" to left "<<left<<"-"<<left-fBandGap<<std::endl;
+						gX1 = left + fGammaDistance/2.;
+						gX2 = left - fBandGap - fGammaDistance/2.;
+					} else if(b < b2) { // inter-band to a band on the right that is not a direct neighbour
+						if(fDebug) std::cout<<b<<" < "<<b2<<": inter band far "<<g<<" right "<<right<<", band gap "<<fBandGap<<std::endl;
+						gX1 = right;
+						gX2 = right + fBandGap/8.;
+						double shift = right + fBandGap;
+						// sum the width of bands b+1 to b2-1 and the band gaps between them
+						if(b+1 < b2) shift = std::accumulate(fBands.begin()+b+1, fBands.begin()+b2, right + fBandGap, [&](double r, TBand& el) { r += el.Width(fGammaDistance) + fBandGap; return r; });
+						DrawAuxillaryLevel(gY2, right, shift - fBandGap/2.);
+					} else { // inter-band to a band on the left that is not a direct neighbour
+						if(fDebug) std::cout<<b<<" > "<<b2<<": inter band far "<<g<<" left "<<left<<", band gap "<<fBandGap<<std::endl;
+						gX1 = left;
+						gX2 = left - fBandGap/8.;
+						double shift = left - fBandGap;
+						// sum the width of bands b2+1 to b-1 and the band gaps between them
+						if(b2+1 < b) shift = std::accumulate(fBands.begin()+b2+1, fBands.begin()+b, left - fBandGap, [&](double r, TBand& el) { r -= el.Width(fGammaDistance) + fBandGap; return r; });
+						DrawAuxillaryLevel(gY2, left, shift + fBandGap/2.);
+					}
 				}
 
 				gamma.Draw(gX1, gY1, gX2, gY2);
@@ -1149,6 +1201,9 @@ void TLevelScheme::Draw(Option_t*)
 
 void TLevelScheme::DrawAuxillaryLevel(const double& energy, const double& left, const double& right)
 {
+	if(fDebug) {
+		std::cout<<"Drawing auxillary level at "<<energy<<" keV from "<<left<<" to "<<right<<std::endl;
+	}
 	// maybe change this to be a short solid line connected by a dotted line to the original level?
 	if(fAuxillaryLevels.count(energy) > 0) {
 		// we have multiple auxillary levels => try and find one with matching left and right

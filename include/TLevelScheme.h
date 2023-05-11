@@ -6,9 +6,7 @@
 #include <map>
 #include <utility>
 
-#include "TCanvas.h"
 #include "TColor.h"
-#include "TBox.h"
 #include "TPolyLine.h"
 #include "TArrow.h"
 #include "TPaveLabel.h"
@@ -144,8 +142,8 @@ public:
 
 	using TPolyLine::Draw;
 	void Draw(const double& left, const double& right);
-	void DrawLabel(const double& pos);
-	void DrawEnergy(const double& pos);
+	double DrawLabel(const double& pos);
+	double DrawEnergy(const double& pos);
 
 	std::map<double, TGamma>::iterator begin() { return fGammas.begin(); }
 	std::map<double, TGamma>::iterator end() { return fGammas.end(); }
@@ -238,7 +236,7 @@ private:
    /// \endcond
 };
 
-class TLevelScheme : public TBox {
+class TLevelScheme : public TPaveLabel {
 public:
 	enum class EGammaWidth { kNoWidth, kBand, kGlobal };
 
@@ -258,15 +256,17 @@ public:
 
 	void MoveToBand(const char* bandName, TLevel* level);
 
-	void UseGlobalGammaWidth(const int val) { fGammaWidth = static_cast<EGammaWidth>(val); } // *MENU*
-	void GammaDistance(const double val) { fGammaDistance = val; } // *MENU*
-	void BandGap(const double val) { fBandGap = val; } // *MENU*
-	void LeftMargin(const double val) { fLeftMargin = val; } // *MENU*
-	void RightMargin(const double val) { fRightMargin = val; } // *MENU*
-	void BottomMargin(const double val) { fBottomMargin = val; } // *MENU*
-	void TopMargin(const double val) { fTopMargin = val; } // *MENU*
+	void UseGlobalGammaWidth(const int val) { fGammaWidth = static_cast<EGammaWidth>(val); Refresh(); } // *MENU*
+	void RadwareStyle(const bool val) { fRadwareStyle = val; Refresh(); } // *MENU*
+	void GammaDistance(const double val) { fGammaDistance = val; Refresh(); } // *MENU*
+	void BandGap(const double val) { fBandGap = val; Refresh(); } // *MENU*
+	void LeftMargin(const double val) { fLeftMargin = val; Refresh(); } // *MENU*
+	void RightMargin(const double val) { fRightMargin = val; Refresh(); } // *MENU*
+	void BottomMargin(const double val) { fBottomMargin = val; Refresh(); } // *MENU*
+	void TopMargin(const double val) { fTopMargin = val; Refresh(); } // *MENU*
 
-	void Refresh() { Draw(); } // *MENU*
+	void Refresh(); // *MENU*
+	void UnZoom();
 	void Draw(Option_t* option = "") override;
 
 	void Print();
@@ -293,6 +293,7 @@ private:
 
 	// graphics settings
 	EGammaWidth fGammaWidth{EGammaWidth::kNoWidth};
+	bool fRadwareStyle{true};
 	double fGammaDistance{50.};
 	double fBandGap{200.};
 	double fLeftMargin{-1.};
@@ -301,6 +302,12 @@ private:
 	double fTopMargin{-1.};
 	double fMinWidth{1.};
 	double fMaxWidth{10.};
+
+	// original canvas range
+	double fX1{0.};
+	double fY1{0.};
+	double fX2{0.};
+	double fY2{0.};
 
    /// \cond CLASSIMP
    ClassDefOverride(TLevelScheme, 1); // Level scheme

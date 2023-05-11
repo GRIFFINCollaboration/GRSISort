@@ -144,8 +144,8 @@ private:
 
 	void UpdateStatsInfo(int, int);
 
-	static int lastx;
-	static int lasty;
+	static double gLastX;
+	static double gLastY;
 
 	bool fGuiEnabled{false};
 
@@ -171,6 +171,9 @@ public:
 	bool HandleMousePress(Int_t event, Int_t x, Int_t y);
 	bool HandleMouseShiftPress(Int_t event, Int_t x, Int_t y);
 	bool HandleMouseControlPress(Int_t event, Int_t x, Int_t y);
+	bool HandleWheel(Int_t event, Int_t x, Int_t y);
+	bool StorePosition(Int_t event, Int_t x, Int_t y);
+	bool Zoom(Int_t event, Int_t x, Int_t y);
 
 private:
 	bool ProcessNonHistKeyboardPress(Event_t* event, UInt_t* keysym);
