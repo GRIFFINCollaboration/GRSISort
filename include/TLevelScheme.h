@@ -1,3 +1,4 @@
+#if __GNUC__ > 6
 #ifndef TLEVELSCHEME_H
 #define TLEVELSCHEME_H
 
@@ -285,4 +286,5 @@ private:
 };
 /*! @} */
 
+#endif
 #endif

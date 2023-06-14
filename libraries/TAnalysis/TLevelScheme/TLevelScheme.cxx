@@ -1,3 +1,4 @@
+#if __GNUC__ > 6
 #include "TLevelScheme.h"
 
 #include <iostream>
@@ -1231,4 +1232,4 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
 
 	input.close();
 }
-
+#endif

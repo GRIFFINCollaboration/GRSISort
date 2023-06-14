@@ -1,5 +1,6 @@
 //TLevelScheme.h
 
+#if __GNUC__ > 6
 #ifdef __CINT__
 
 #pragma link off all globals;
@@ -20,3 +21,4 @@
 
 #endif
 
+#endif
