@@ -1,4 +1,4 @@
-#if __GNUC__ > 6
+#if __cplusplus >= 201703L
 #include "TLevelScheme.h"
 
 #include <iostream>
