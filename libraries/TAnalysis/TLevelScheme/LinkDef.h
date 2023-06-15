@@ -1,5 +1,6 @@
 //TLevelScheme.h
 
+#if __cplusplus >= 201402L
 #ifdef __CINT__
 
 #pragma link off all globals;
@@ -18,5 +19,6 @@
 #pragma link C++ class std::map<double, TLevel>+;
 #pragma link C++ class std::map<std::string, TBand>+;
 
+#endif
 #endif
 
