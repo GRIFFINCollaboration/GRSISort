@@ -1,4 +1,4 @@
-#if __GNUC__ > 6
+#if __cplusplus >= 201703L
 #ifndef TLEVELSCHEME_H
 #define TLEVELSCHEME_H
 
