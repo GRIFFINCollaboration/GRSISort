@@ -140,7 +140,7 @@ void TRunInfo::SetRunInfo(int runnum, int subrunnum)
 {
    /// Sets the run info. This figures out what systems are available.
 
-   std::cout<<__PRETTY_FUNCTION__<<": found "<<TChannel::GetNumberOfChannels()<<" channels."<<std::endl;
+   std::cout<<" found "<<TChannel::GetNumberOfChannels()<<" channels."<<std::endl;
    if(runnum != 0) {
       if(RunNumber() != 0 && RunNumber() != runnum) {
          std::cout<<"Warning, overwriting non-default run-number "<<RunNumber()<<" with "<<runnum<<std::endl;
