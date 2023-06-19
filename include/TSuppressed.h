@@ -132,7 +132,7 @@ protected:
 		}
 		// loop over all created addback hits and check if they contain a suppressed hit
 		for(j = 0; j < addbacks.size(); ++j) {
-			// if this his is suppressed we need to suppress the whole addback event
+			// if this hit is suppressed we need to suppress the whole addback event
 			if(suppressed[j]) {
 				addbacks.erase(addbacks.begin()+j);
 				nofFragments.erase(nofFragments.begin()+j);

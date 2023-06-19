@@ -40,6 +40,7 @@
 #include "TMath.h"
 
 #include "TGRSIint.h"
+#include "TLevelScheme.h"
 
 #ifndef kArrowKeyPress
 #define kArrowKeyPress 25
@@ -82,8 +83,8 @@ void GMarker::Copy(TObject& object) const
    (static_cast<GMarker&>(object)).fHist   = fHist;
 }
 
-int GCanvas::lastx = 0;
-int GCanvas::lasty = 0;
+double GCanvas::gLastX = 0;
+double GCanvas::gLastY = 0;
 
 GCanvas::GCanvas(Bool_t build) : TCanvas(build)
 {
@@ -286,6 +287,8 @@ void GCanvas::HandleInput(int event, Int_t x, Int_t y)
    bool used = false;
    switch(event) {
    case kButton1Down:   // single click
+		used = StorePosition(event, x, y);
+		if(used) break;
    case kButton1Double: // double click
       used = HandleMousePress(event, x, y);
       break;
@@ -295,6 +298,13 @@ void GCanvas::HandleInput(int event, Int_t x, Int_t y)
    case 9: // control-click
       used = HandleMouseControlPress(event, x, y);
       break;
+   case kButton1Up:   // button released
+		used = Zoom(event, x, y);
+		break;
+	case kWheelUp:
+	case kWheelDown:
+		used = HandleWheel(event, x, y);
+		break;
    };
    if(!used) {
       TCanvas::HandleInput(static_cast<EEventType>(event), x, y);
@@ -466,6 +476,77 @@ bool GCanvas::HandleMouseControlPress(Int_t, Int_t, Int_t)
    return true;
 }
 
+bool GCanvas::StorePosition(Int_t, Int_t px, Int_t py)
+{
+	/// Store the position the mouse button was pressed at.
+	if(std::strcmp(GetName(), "LevelScheme") != 0) return false;
+
+	gLastX = PixeltoX(px);
+	gLastY = PixeltoY(py - GetWh()); // see https:://root.cern.ch/root/htmldoc/guides/users-guide/Graphics.html 11.3.3 "Converting between Coordinate Systems"
+
+	return true;
+}
+
+bool GCanvas::Zoom(Int_t, Int_t px, Int_t py)
+{
+	/// Mouse button was released at this point, set the new range.
+	
+	if(std::strcmp(GetName(), "LevelScheme") != 0) return false;
+
+	double x = PixeltoX(px);
+	double y = PixeltoY(py - GetWh()); // see https:://root.cern.ch/root/htmldoc/guides/users-guide/Graphics.html 11.3.3 "Converting between Coordinate Systems"
+	// ensure x,y is the second point of the range
+	if(gLastX > x) std::swap(gLastX, x);
+	if(gLastY > y) std::swap(gLastY, y);
+	Range(gLastX, gLastY, x, y);
+	Modified();
+	Update();
+
+	return true;
+}
+
+bool GCanvas::HandleWheel(Int_t event, Int_t px, Int_t py)
+{
+	/// Zoom in (wheel up) and out (wheel down) of level scheme, focused around x, y.
+	/// Does nothing if the canvas doesn't have the name "LevelScheme".
+	
+	if(std::strcmp(GetName(), "LevelScheme") != 0) return false;
+
+	// convert from pixel coordinates to user coordinates
+	double x = PixeltoX(px);
+	double y = PixeltoY(py - GetWh()); // see https:://root.cern.ch/root/htmldoc/guides/users-guide/Graphics.html 11.3.3 "Converting between Coordinate Systems"
+
+	// get the current range
+	double x1, y1, x2, y2;
+	GetRange(x1, y1, x2, y2);
+
+	// calculate the new range
+	double width = (x2-x1);
+	double height = (y2-y1);
+
+	if(event == kWheelUp) {
+		width /= 1.1;
+		height /= 1.1;
+	} else if(event == kWheelDown) {
+		width *= 1.1;
+		height *= 1.1;
+	} else {
+		std::cout<<"Don't know what to do, got event "<<event<<" which isn't kWheelUp ("<<kWheelUp<<") or kWheelDown ("<<kWheelDown<<")"<<std::endl;
+		return false;
+	}
+
+	x1 = x - width/2.;
+	y1 = y - height/2.;
+	x2 = x + width/2.;
+	y2 = y + height/2.;
+
+	Range(x1, y1, x2, y2);
+	Modified();
+	Update();
+
+	return true;
+}
+
 TF1* GCanvas::GetLastFit()
 {
    TH1*  hist = nullptr;
@@ -597,6 +678,12 @@ bool GCanvas::ProcessNonHistKeyboardPress(Event_t*, UInt_t* keysym)
    case kKey_F9: 
 		SetCrosshair(static_cast<Int_t>(!HasCrosshair()));
 		edited = true;
+		break;
+   case kKey_u: 
+		if(GetListOfPrimitives()->FindObject("TLevelScheme") != nullptr) {
+			static_cast<TLevelScheme*>(GetListOfPrimitives()->FindObject("TLevelScheme"))->UnZoom();
+			edited = true;
+		}
 		break;
    }
 
