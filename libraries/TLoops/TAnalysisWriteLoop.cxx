@@ -85,8 +85,7 @@ std::string TAnalysisWriteLoop::EndStatus()
 
 void TAnalysisWriteLoop::OnEnd()
 {
-	fOutputFile->Write();
-	delete fOutputFile;
+	Write();
 }
 
 bool TAnalysisWriteLoop::Iteration()

@@ -10,6 +10,7 @@
 #include "TROOT.h"
 #include "TString.h"
 
+#include "GCanvas.h"
 #include "TGRSIUtilities.h"
 
 ClassImp(TGamma)
@@ -46,11 +47,15 @@ TGamma::TGamma(const TGamma& rhs)
 	fScalingOffset = rhs.fScalingOffset;
 	fBranchingRatio = rhs.fBranchingRatio;
 	fBranchingRatioUncertainty = rhs.fBranchingRatioUncertainty;
+	fBranchingRatioPercent = rhs.fBranchingRatioPercent;
+	fBranchingRatioPercentUncertainty = rhs.fBranchingRatioPercentUncertainty;
 	fTransitionStrength = rhs.fTransitionStrength;
 	fTransitionStrengthUncertainty = rhs.fTransitionStrengthUncertainty;
 	fLabelText = rhs.fLabelText;
 	fLabel = rhs.fLabel;
 	fLevelScheme = rhs.fLevelScheme;
+	fInitialEnergy = rhs.fInitialEnergy;
+	fFinalEnergy = rhs.fFinalEnergy;
 }
 
 TGamma::~TGamma()
@@ -73,11 +78,15 @@ TGamma& TGamma::operator=(const TGamma& rhs)
 		fScalingOffset = rhs.fScalingOffset;
 		fBranchingRatio = rhs.fBranchingRatio;
 		fBranchingRatioUncertainty = rhs.fBranchingRatioUncertainty;
+		fBranchingRatioPercent = rhs.fBranchingRatioPercent;
+		fBranchingRatioPercentUncertainty = rhs.fBranchingRatioPercentUncertainty;
 		fTransitionStrength = rhs.fTransitionStrength;
 		fTransitionStrengthUncertainty = rhs.fTransitionStrengthUncertainty;
 		fLabelText = rhs.fLabelText;
 		fLabel = rhs.fLabel;
 		fLevelScheme = rhs.fLevelScheme;
+		fInitialEnergy = rhs.fInitialEnergy;
+		fFinalEnergy = rhs.fFinalEnergy;
 	}
 
 	return *this;
@@ -124,13 +133,58 @@ void TGamma::Draw(const double& x1, const double& y1, const double& x2, const do
 void TGamma::Print() const
 {
 	TArrow::Print();
-	std::cout<<"Gamma with energy "<<fEnergy<<" +- "<<fEnergyUncertainty<<(fUseTransitionStrength ? " using" : " not using")<<" transition strength "<<fTransitionStrength<<", branching "<<fBranchingRatio<<", scaling gain "<<fScalingGain<<", scaling offset "<<fScalingOffset<<", arrow size "<<GetArrowSize()<<", line color "<<GetLineColor()<<", line width "<<GetLineWidth()<<std::endl;
+	std::cout<<"Gamma with energy "<<fEnergy<<" +- "<<fEnergyUncertainty<<" (from "<<fInitialEnergy<<" to "<<fFinalEnergy<<") "<<(fUseTransitionStrength ? "using" : "not using")<<" transition strength "<<fTransitionStrength<<", branching "<<fBranchingRatio<<" = "<<100.*fBranchingRatioPercent<<"%, scaling gain "<<fScalingGain<<", scaling offset "<<fScalingOffset<<", arrow size "<<GetArrowSize()<<", line color "<<GetLineColor()<<", line width "<<GetLineWidth()<<std::endl;
+}
+
+std::map<double, double> TGamma::CoincidentGammas()
+{
+	/// Returns a vector with the energies and relative strength of all feeding and draining gamma rays.
+	if(fLevelScheme == nullptr) {
+		std::cerr<<"Parent level scheme not set, can't find coincident gamma rays"<<std::endl;
+		return std::map<double, double>();
+	}
+	if(fDebug) {
+		std::cout<<"Looking for coincident gammas for gamma of "<<fEnergy<<" kev from level at "<<fInitialEnergy<<" keV to level at "<<fFinalEnergy<<" keV"<<std::endl;
+	}
+	fLevelScheme->ResetGammaMap(); // clear the map of feeding gammas before calling the recursive function using it
+	auto result = fLevelScheme->FeedingGammas(fInitialEnergy, fBranchingRatioPercent);
+	if(fDebug) {
+		std::cout<<"Got "<<result.size()<<" gammas feeding level at "<<fInitialEnergy<<std::endl;
+	}
+	if(fFinalEnergy > 0) {
+		auto draining = fLevelScheme->DrainingGammas(fFinalEnergy);
+		if(fDebug) {
+			std::cout<<"Plus "<<draining.size()<<" gammas draining level at "<<fFinalEnergy<<std::endl;
+		}
+		for(auto& [energy, factor] : draining) {
+			result[energy] += factor;
+		}
+	}
+	if(fDebug) {
+		std::cout<<"Got "<<result.size()<<" coincident gammas including duplicates:";
+		for(auto& element : result) {
+			std::cout<<" "<<element.first<<" ("<<element.second<<"%)";
+		}
+		std::cout<<std::endl;
+	}
+
+	return result;
+}
+
+void TGamma::PrintCoincidentGammas()
+{
+	auto vec = CoincidentGammas();
+	std::cout<<vec.size()<<" coincident gammas for gamma "<<fEnergy<<" +- "<<fEnergyUncertainty<<" ("<<fInitialEnergy<<" to "<<fFinalEnergy<<"):";
+	for(auto gamma : vec) {
+		std::cout<<" "<<gamma.first<<" ("<<gamma.second<<"%)";
+	}
+	std::cout<<std::endl;
 }
 
 TLevel::TLevel(TLevelScheme* levelScheme, const double& energy, const std::string& label)
 	: TPolyLine()
 {
-	if(levelScheme == nullptr) {
+	if(fDebug && levelScheme == nullptr) {
 		std::cout<<"Warning, nullptr provided to new band \""<<label<<"\" for parent level scheme, some functions might no be available"<<std::endl;
 	}
 	fLevelScheme = levelScheme;
@@ -222,19 +276,24 @@ TGamma* TLevel::AddGamma(const double levelEnergy, const double energyUncertaint
 		return nullptr;
 	}
 
+	// create the gamma and set its properties
 	fGammas.emplace(std::piecewise_construct, std::forward_as_tuple(level->Energy()), std::forward_as_tuple(fLevelScheme, label, br, ts));
 	fGammas[level->Energy()].Debug(fDebug);
 	fGammas[level->Energy()].Energy(Energy()-levelEnergy); // here we do use the levelEnergy parameter instead of the energy of the level we found
 	fGammas[level->Energy()].EnergyUncertainty(energyUncertainty);
+	fGammas[level->Energy()].InitialEnergy(fEnergy);
+	fGammas[level->Energy()].FinalEnergy(level->Energy());
 	level->AddFeeding();
+	// re-calculate the branching ratios in % for all gammas
+	double sum = std::accumulate(fGammas.begin(), fGammas.end(), 0., [](double r, std::pair<const double, TGamma>& g) { r += g.second.BranchingRatio(); return r; });
+	for(auto& [en, gamma] : fGammas) {
+		gamma.BranchingRatioPercent(gamma.BranchingRatio()/sum);
+		gamma.BranchingRatioPercentUncertainty(gamma.BranchingRatioUncertainty()/sum);
+	}
 
 	if(fDebug) Print();
 
-	// only re-draw if we find a matching canvas
-	auto canvas = static_cast<TCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
-	if(canvas != nullptr && fLevelScheme != nullptr) {
-		fLevelScheme->Draw();
-	}
+	fLevelScheme->Refresh();
 
 	return &(fGammas[level->Energy()]);
 }
@@ -297,7 +356,7 @@ void TLevel::Draw(const double& left, const double& right)
 	if(fDebug) std::cout<<"Drew TPolyLine using x "<<left<<"-"<<right<<" and y "<<fEnergy<<" with a width of "<<GetLineWidth()<<" and offset "<<fOffset<<std::endl;
 }
 
-void TLevel::DrawLabel(const double& pos)
+double TLevel::DrawLabel(const double& pos)
 {
 	if(fLevelLabel == nullptr) {
 		fLevelLabel = new TLatex(pos, fEnergy+fOffset, fLabel.c_str());
@@ -309,9 +368,10 @@ void TLevel::DrawLabel(const double& pos)
 	fLevelLabel->SetTextFont(42); // helvetica-medium-r-normal (default is 62 = helvetica-bold-r-normal) 
 	fLevelLabel->SetTextSize(gTextSize); // text size in fraction of window width/height in pixel (whichever is smaller)
 	fLevelLabel->Draw();
+	return fLevelLabel->GetXsize();
 }
 
-void TLevel::DrawEnergy(const double& pos)
+double TLevel::DrawEnergy(const double& pos)
 {
 	if(fEnergyLabel == nullptr) {
 		fEnergyLabel = new TLatex(pos, fEnergy+fOffset, Form("%.0f keV", fEnergy));
@@ -323,11 +383,12 @@ void TLevel::DrawEnergy(const double& pos)
 	fEnergyLabel->SetTextFont(42); // helvetica-medium-r-normal (default is 62 = helvetica-bold-r-normal) 
 	fEnergyLabel->SetTextSize(gTextSize); // text size in fraction of window width/height in pixel (whichever is smaller)
 	fEnergyLabel->Draw();
+	return fEnergyLabel->GetXsize();
 }
 
 void TLevel::Print() const
 {
-	std::cout<<"Level \""<<fLabel<<"\" ("<<this<<") at "<<fEnergy<<" keV has "<<fGammas.size()<<" gammas, debugging"<<(fDebug?"":" not")<<" enabled"<<std::endl;
+	std::cout<<"Level \""<<fLabel<<"\" ("<<this<<") at "<<fEnergy<<" keV has "<<fGammas.size()<<" draining gammas and "<<fNofFeeding<<" feeding gammas, debugging"<<(fDebug?"":" not")<<" enabled"<<std::endl;
 	if(fDebug) {
 		for(auto& [level, gamma] : fGammas) {
 			std::cout<<"gamma to level "<<level<<" \""<<gamma.LabelText()<<"\""<<std::endl;
@@ -471,11 +532,7 @@ TLevel* TBand::AddLevel(const double energy, const std::string& label)
 		}
 	}
 	
-	// only re-draw if we find a matching canvas
-	auto canvas = static_cast<TCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
-	if(canvas != nullptr && fLevelScheme != nullptr) {
-		fLevelScheme->Draw();
-	}
+	fLevelScheme->Refresh();
 
 	return &(newLevel->second);
 }
@@ -509,7 +566,7 @@ double TBand::Width(double distance) const
 {
 	size_t nofGammas = 0.;
 	if(fDebug) {
-		std::cout<<" ("<<fLevels.size()<<": ";
+		std::cout<<" ("<<GetLabel()<<" - "<<fLevels.size()<<": ";
 	}
 	for(auto& level : fLevels) {
 		nofGammas += level.second.NofDrainingGammas()+1; // plus 1 for the gap between the gammas from each level
@@ -543,6 +600,7 @@ void TBand::Print() const
 TLevelScheme::TLevelScheme(const std::string& filename, bool debug)
 {
 	fDebug = debug;
+	SetName("TLevelScheme");
 
 	// open the file and read the level scheme
 	// still need to decide what format that should be
@@ -566,7 +624,7 @@ TLevelScheme::TLevelScheme(const std::string& filename, bool debug)
 }
 
 TLevelScheme::TLevelScheme(const TLevelScheme& rhs)
-	: TBox(rhs)
+	: TPaveLabel(rhs)
 {
 	fDebug = rhs.fDebug;
 	fBands = rhs.fBands;
@@ -621,8 +679,9 @@ TLevel* TLevelScheme::AddLevel(const double energy, const std::string bandName, 
 TLevel* TLevelScheme::GetLevel(double energy)
 {
 	for(auto& band : fBands) {
-		if(band.GetLevel(energy) != nullptr) {
-			return band.GetLevel(energy);
+		auto level = band.GetLevel(energy);
+		if(level != nullptr) {
+			return level;
 		}
 	}
 	// if we reach here we failed to find a level with this energy
@@ -651,6 +710,107 @@ TLevel* TLevelScheme::FindLevel(double energy, double energyUncertainty)
 	}
 
 	return nullptr;
+}
+
+void TLevelScheme::BuildGammaMap(double levelEnergy)
+{
+	/// Build a map of all gamma rays that populate levels equal and greater than levelEnergy.
+	/// This map is used to determine all gammas feeding a specific level.
+	/// Does nothing if the map isn't empty.
+	if(!fGammaMap.empty()) return;
+
+	for(auto& band : fBands) {
+		for(auto& [energy, level] : band) {
+			if(energy <= levelEnergy) {
+				// if the level is below this level or this level itself, gamma rays draining it can't feed this level
+				continue;
+			}
+			for(auto& [finalEnergy, gamma] : level) {
+				if(finalEnergy >= levelEnergy) {
+					fGammaMap.insert({finalEnergy, &gamma});
+				}
+			}
+		}
+	}
+	if(fDebug) {
+		std::cout<<"Built map of "<<fGammaMap.size()<<" gamma rays populating levels above or equal "<<levelEnergy<<" keV"<<std::endl;
+	}
+}
+
+std::map<double, double> TLevelScheme::FeedingGammas(double levelEnergy, double factor)
+{
+	/// Returns the energies and relative strengths of all gamma rays feeding the level at <energy>.
+	/// Gamma rays may appear multiple times with different strengths, if they are part of multiple cascades.
+	/// This search is a bit complicated, we need to find all gammas that feed this level.
+	/// Since this requires looping over all gamma rays, and we do this recursize, we will populate a single map with all gammas above this one.
+	/// That map has to be deleted before calling this function by calling TLevelScheme::ResetGammaMap!
+	std::map<double, double> result;
+	BuildGammaMap(levelEnergy);
+	
+	auto range = fGammaMap.equal_range(levelEnergy);
+	if(fDebug) {
+		std::cout<<"Got "<<std::distance(range.first, range.second)<<" gamma rays feeding level at "<<levelEnergy<<" kev (factor "<<factor<<")"<<std::endl;
+	}
+	for(auto& it = range.first; it != range.second; ++it) {
+		if(fDebug) {
+			std::cout<<"Adding gamma "<<it->second<<": ";
+			it->second->Print();
+		}
+		result[it->second->Energy()] += factor*it->second->BranchingRatioPercent();
+		auto tmp = FeedingGammas(it->second->InitialEnergy(), factor*it->second->BranchingRatioPercent());
+		for(auto& [energy, tmpFactor] : tmp) {
+			result[energy] += tmpFactor;
+		}
+	}
+
+	if(fDebug) {
+		std::cout<<"returning list of "<<result.size()<<" gammas feeding level at "<<levelEnergy<<" keV"<<std::endl;
+	}
+	return result;
+}
+
+std::map<double, double> TLevelScheme::DrainingGammas(double levelEnergy, double factor)
+{
+	/// Returns the energies and relative strengths of all gamma rays draining the level at <energy>.
+	/// Gamma rays may appear multiple times with different strengths, if they are part of multiple cascades.
+	
+	// Since the branching ratio of a gamma ray cascades down to all gamma rays below it, we want to follow each
+	// cascade until we reach the ground state. So we get the level whos energy was provided and loop over it's gamma rays
+	// and for each gamma ray we get the next level and it's gamma rays
+	auto level = GetLevel(levelEnergy);
+	std::map<double, double> result;
+	if(level == nullptr) {
+		std::cerr<<"Failed to find level at "<<levelEnergy<<" keV, returning empty list of gammas draining that level"<<std::endl;
+		Print();
+		return result;
+	}
+
+	if(fDebug) {
+		std::cout<<level<<": looping over "<<level->NofDrainingGammas()<<" gammas for level at "<<levelEnergy<<" keV (factor "<<factor<<")"<<std::endl;
+	}
+
+	// loop over all gamma rays 
+	for(auto& [finalEnergy, gamma] : *level) {
+		if(fDebug) {
+			std::cout<<"Adding gamma: ";
+			gamma.Print();
+		}
+		// add this gamma to the result
+		auto branchingRatio = gamma.BranchingRatioPercent();
+		result[gamma.Energy()] += factor*branchingRatio;
+		// if we aren't at the ground state, add all gammas from the new level as well
+		if(gamma.FinalEnergy() > 0.) {
+			auto tmp = DrainingGammas(finalEnergy, factor*branchingRatio);
+			for(auto& [energy, tmpFactor] : tmp) {
+				result[energy] += tmpFactor;
+			}
+		}
+	}
+
+	if(fDebug) {
+		std::cout<<"returning list of "<<result.size()<<" gammas draining level at "<<levelEnergy<<" keV"<<std::endl;
+	}
+	return result;
 }
 
 void TLevelScheme::MoveToBand(const char* bandName, TLevel* level)
@@ -704,19 +864,34 @@ void TLevelScheme::MoveToBand(const char* bandName, TLevel* level)
 		band.RemoveLevel(level);
 	}
 	
+	Refresh();
+}
+
+void TLevelScheme::Refresh()
+{
 	// only re-draw if we find a matching canvas
-	auto canvas = static_cast<TCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
+	auto canvas = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
 	if(canvas != nullptr) {
 		Draw();
+	}
+}
+
+void TLevelScheme::UnZoom()
+{
+	auto canvas = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
+	if(canvas != nullptr) {
+		canvas->Range(fX1, fY1, fX2, fY2);
+		canvas->Modified();
+		canvas->Update();
 	}
 }
 
 void TLevelScheme::Draw(Option_t*)
 {
 	if(fDebug) std::cout<<__PRETTY_FUNCTION__<<std::endl;
-	auto canvas = static_cast<TCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
+	auto canvas = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
 	if(canvas == nullptr) {
-		canvas = new TCanvas("LevelScheme", "Level Scheme");
+		canvas = new GCanvas("LevelScheme", "Level Scheme");
 	} else {
 		canvas->Clear();
 	}
@@ -738,33 +913,37 @@ void TLevelScheme::Draw(Option_t*)
 	width += (fBands.size()-1)*fBandGap;
 
 	// ys calculated from the lowest and highest level plus the bottom and top margins
-	double y1 = minMaxLevel.first;
-	double y2 = minMaxLevel.second;
-	double height = y2-y1;
+	fY1 = minMaxLevel.first;
+	fY2 = minMaxLevel.second;
+	double height = fY2-fY1;
 	// if the margins haven't been set, we add 10% of the height
-	if(fBottomMargin < 0) y1 -= height/10.;
-	else y1 -= fBottomMargin;
-	if(fTopMargin < 0) y2 += height/10.;
-	else y2 += fTopMargin;
+	if(fBottomMargin < 0) fY1 -= height/10.;
+	else fY1 -= fBottomMargin;
+	if(fTopMargin < 0) fY2 += height/10.;
+	else fY2 += fTopMargin;
 
 	// xs are calculated from the width of each band, plus the left and right margin, plus n-1 times the margin between bands
-	double x1 = 0.;
-	double x2 = width;
+	fX1 = 0.;
+	fX2 = width;
 	// if the margins haven't been set, we add the band gap
-	if(fLeftMargin < 0) x1 -= fBandGap;
-	else x1 -= fLeftMargin;
-	if(fRightMargin < 0) x2 += fBandGap;
-	else x2 += fRightMargin;
+	if(fLeftMargin < 0) fX1 -= fBandGap;
+	else fX1 -= fLeftMargin;
+	if(fRightMargin < 0) fX2 += fBandGap;
+	else fX2 += fRightMargin;
 
-	if(fDebug) std::cout<<"got x1 - x2 "<<x1<<" - "<<x2<<", and y1 - y2 "<<y1<<" - "<<y2<<std::endl;
-	canvas->Range(x1, y1, x2, y2);
+	if(fDebug) std::cout<<"got x1 - x2 "<<fX1<<" - "<<fX2<<", and y1 - y2 "<<fY1<<" - "<<fY2<<std::endl;
+	canvas->Range(fX1, fY1, fX2, fY2);
 	canvas->cd();
 
-	SetX1(x1);
-	SetX2(x2);
-	SetY1(y1);
-	SetY2(y2);
-	TBox::Draw();
+	SetX1(fX2-fBandGap);
+	SetX2(fX2);
+	if(fTopMargin < 0) SetY1(fX2-height/12.);
+	else SetY1(fX2-fTopMargin*0.75);
+	SetY2(fX2);
+	SetLabel("Level Scheme");
+	SetTextSize(0); // default size (?)
+	SetTextAlign(22); // centered in x and y
+	TPaveLabel::Draw();
 
 	if(fGammaWidth == EGammaWidth::kGlobal) {
 		// if we want the gamma width to be on a global scale, i.e. across all bands, we need to find the minimum and maximum values
@@ -804,7 +983,7 @@ void TLevelScheme::Draw(Option_t*)
 			scalingOffset = fMinWidth;
 		}
 
-		double labelSize = TLevel::TextSize()*std::min(x2-x1,y2-y1);
+		double labelSize = TLevel::TextSize()*std::min(fX2-fX1,fY2-fY1);
 		labelSize *= 1.5; // we want a bit of a gap between labels ...
 
 		// loop to calculate "center" for closely grouped levels
@@ -821,7 +1000,7 @@ void TLevelScheme::Draw(Option_t*)
 					// don't compare to the levels of the group as is, but assume that they are going to be shifted by average - energy + label size * (index - (# in group - 1)/2)
 					// so the energy we want to compare to is average + label size * (index - (# in group - 1)/2)
 					// for that we need the average of the group at this point
-					double average = std::accumulate(groups[i].begin(), groups[i].end(), 0., [](double r, std::pair<double,double> p) { r += p.first; return r; })/groups[i].size();
+					double average = std::accumulate(groups[i].begin(), groups[i].end(), 0., [](double r, std::pair<double, int> p) { r += p.first; return r; })/groups[i].size();
 					// we don't need abs here as we know the current energy and index are larger than the previous ones
 					if(energy - (average + labelSize*(j - (groups[i].size()-1)/2.)) < labelSize*(index-groups[i][j].second)) {
 						if(fDebug) {
@@ -898,8 +1077,12 @@ void TLevelScheme::Draw(Option_t*)
 			}
 			level.Offset(move);
 			level.Draw(left, right);
-			level.DrawLabel(right);
-			level.DrawEnergy(left);
+			double labelWidth = level.DrawLabel(right);
+			double energyWidth = level.DrawEnergy(left);
+			// TODO: check these widths to see if we need to adjust the margins.
+			// Should also adjust gaps between bands to be equal to their sum, but how?
+			// If we call Draw recursively if we changed anything it will never stop (as that re-adjusts the text sizes).
+			// Maybe only set a flag to re-draw when the change is larger than a minimum value?
 			if(fDebug) level.Print();
 
 			// loop over all gammas from this level and draw them
@@ -937,29 +1120,62 @@ void TLevelScheme::Draw(Option_t*)
 				// and what other gamma rays are there at this energy range
 				double gX1;
 				double gX2;
-				if(b == b2) { // intra-band: for now just increment the position, later maybe search all previously added intra-band transitions for this band
-					if(fDebug) std::cout<<b<<" == "<<b2<<": intra band "<<g<<" at position "<<g*fGammaDistance<<std::endl;
-					gX1 = left + g*fGammaDistance;
-					gX2 = left + g*fGammaDistance;
-					++g;
-				} else if(b + 1 == b2) { // inter-band from this band to the next band on the right
-					if(fDebug) std::cout<<b<<"+1 == "<<b2<<": inter band "<<g<<" to right "<<right<<"-"<<right+fBandGap<<std::endl;
-					gX1 = right - fGammaDistance/2.;
-					gX2 = right + fBandGap + fGammaDistance/2.;
-				} else if(b == b2 + 1) { // inter-band from this band to the next band on the left
-					if(fDebug) std::cout<<b<<" == "<<b2<<"+1: inter band "<<g<<" to left "<<left<<"-"<<left-fBandGap<<std::endl;
-					gX1 = left + fGammaDistance/2.;
-					gX2 = left - fBandGap - fGammaDistance/2.;
-				} else if(b < b2) { // inter-band to a band on the right that is not a direct neighbour
-					if(fDebug) std::cout<<b<<" < "<<b2<<": inter band far "<<g<<" right "<<right<<"-"<<right+fBandGap/8.<<std::endl;
-					gX1 = right;
-					gX2 = right + fBandGap/8.;
-					DrawAuxillaryLevel(gY2, right, right + fBandGap/4.);
-				} else { // inter-band to a band on the left that is not a direct neighbour
-					if(fDebug) std::cout<<b<<" > "<<b2<<": inter band far "<<g<<" left "<<left<<"-"<<left-fBandGap/8.<<std::endl;
-					gX1 = left;
-					gX2 = left - fBandGap/8.;
-					DrawAuxillaryLevel(gY2, left, left - fBandGap/4.);
+				if(fRadwareStyle) {
+					if(b == b2) { // intra-band: for now just increment the position, later maybe search all previously added intra-band transitions for this band
+						if(fDebug) std::cout<<b<<" == "<<b2<<": intra band "<<g<<" at position "<<g*fGammaDistance<<std::endl;
+						gX1 = left + g*fGammaDistance;
+						gX2 = left + g*fGammaDistance;
+						++g;
+					} else if(b < b2) { // inter-band to a band on the right
+						if(fDebug) std::cout<<b<<" < "<<b2<<": inter band to right "<<g<<" at position "<<g*fGammaDistance<<std::endl;
+						gX1 = left + g*fGammaDistance;
+						gX2 = left + g*fGammaDistance + (gY1-gY2)/10.;
+						double shift = right + fBandGap;
+						// sum the width of bands b+1 to b2-1 and the band gaps between them
+						if(b+1 < b2) shift = std::accumulate(fBands.begin()+b+1, fBands.begin()+b2, right + fBandGap, [&](double r, TBand& el) { r += el.Width(fGammaDistance) + fBandGap; return r; });
+						DrawAuxillaryLevel(gY2, right + g*fGammaDistance, shift - fBandGap/2.); // for now always a gap of fBandGap/2. for the label
+						++g;
+					} else { // inter-band to a band on the left
+						if(fDebug) std::cout<<b<<" > "<<b2<<": inter band to left "<<g<<" at position "<<g*fGammaDistance<<std::endl;
+						gX1 = left + g*fGammaDistance;
+						gX2 = left + g*fGammaDistance - (gY1-gY2)/10.;
+						double shift = left - fBandGap;
+						// sum the width of bands b2+1 to b-1 and the band gaps between them
+						if(b2+1 < b) shift = std::accumulate(fBands.begin()+b2+1, fBands.begin()+b, left - fBandGap, [&](double r, TBand& el) { r -= el.Width(fGammaDistance) + fBandGap; return r; });
+						DrawAuxillaryLevel(gY2, left + g*fGammaDistance, shift + fBandGap/2.);
+						++g;
+					}
+				} else {
+					if(b == b2) { // intra-band: for now just increment the position, later maybe search all previously added intra-band transitions for this band
+						if(fDebug) std::cout<<b<<" == "<<b2<<": intra band "<<g<<" at position "<<g*fGammaDistance<<std::endl;
+						gX1 = left + g*fGammaDistance;
+						gX2 = left + g*fGammaDistance;
+						++g;
+					} else if(b + 1 == b2) { // inter-band from this band to the next band on the right
+						if(fDebug) std::cout<<b<<"+1 == "<<b2<<": inter band "<<g<<" to right "<<right<<"-"<<right+fBandGap<<std::endl;
+						gX1 = right - fGammaDistance/2.;
+						gX2 = right + fBandGap + fGammaDistance/2.;
+					} else if(b == b2 + 1) { // inter-band from this band to the next band on the left
+						if(fDebug) std::cout<<b<<" == "<<b2<<"+1: inter band "<<g<<" to left "<<left<<"-"<<left-fBandGap<<std::endl;
+						gX1 = left + fGammaDistance/2.;
+						gX2 = left - fBandGap - fGammaDistance/2.;
+					} else if(b < b2) { // inter-band to a band on the right that is not a direct neighbour
+						if(fDebug) std::cout<<b<<" < "<<b2<<": inter band far "<<g<<" right "<<right<<", band gap "<<fBandGap<<std::endl;
+						gX1 = right;
+						gX2 = right + fBandGap/8.;
+						double shift = right + fBandGap;
+						// sum the width of bands b+1 to b2-1 and the band gaps between them
+						if(b+1 < b2) shift = std::accumulate(fBands.begin()+b+1, fBands.begin()+b2, right + fBandGap, [&](double r, TBand& el) { r += el.Width(fGammaDistance) + fBandGap; return r; });
+						DrawAuxillaryLevel(gY2, right, shift - fBandGap/2.);
+					} else { // inter-band to a band on the left that is not a direct neighbour
+						if(fDebug) std::cout<<b<<" > "<<b2<<": inter band far "<<g<<" left "<<left<<", band gap "<<fBandGap<<std::endl;
+						gX1 = left;
+						gX2 = left - fBandGap/8.;
+						double shift = left - fBandGap;
+						// sum the width of bands b2+1 to b-1 and the band gaps between them
+						if(b2+1 < b) shift = std::accumulate(fBands.begin()+b2+1, fBands.begin()+b, left - fBandGap, [&](double r, TBand& el) { r -= el.Width(fGammaDistance) + fBandGap; return r; });
+						DrawAuxillaryLevel(gY2, left, shift + fBandGap/2.);
+					}
 				}
 
 				gamma.Draw(gX1, gY1, gX2, gY2);
@@ -986,6 +1202,9 @@ void TLevelScheme::Draw(Option_t*)
 
 void TLevelScheme::DrawAuxillaryLevel(const double& energy, const double& left, const double& right)
 {
+	if(fDebug) {
+		std::cout<<"Drawing auxillary level at "<<energy<<" keV from "<<left<<" to "<<right<<std::endl;
+	}
 	// maybe change this to be a short solid line connected by a dotted line to the original level?
 	if(fAuxillaryLevels.count(energy) > 0) {
 		// we have multiple auxillary levels => try and find one with matching left and right
