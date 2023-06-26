@@ -71,6 +71,7 @@ TChannel::TChannel(const TChannel& chan) : TNamed(chan)
 	SetName(chan.GetName());
 	SetDigitizerType(chan.fDigitizerTypeString);
 	SetTimeOffset(chan.fTimeOffset);
+	SetTimeDrift(chan.fTimeDrift);
 	SetAllENGCoefficients(chan.fENGCoefficients);
 	SetENGRanges(chan.fENGRanges);
 	SetAllENGChi2(chan.fENGChi2);
@@ -107,6 +108,7 @@ TChannel::TChannel(TChannel* chan)
 	SetName(chan->GetName());
 	SetDigitizerType(chan->fDigitizerTypeString);
 	SetTimeOffset(chan->fTimeOffset);
+	SetTimeDrift(chan->fTimeDrift);
 	SetAllENGCoefficients(chan->fENGCoefficients);
 	SetENGRanges(chan->fENGRanges);
 	SetAllENGChi2(chan->fENGChi2);
@@ -249,6 +251,7 @@ void TChannel::OverWriteChannel(TChannel* chan)
 	SetSegmentNumber(chan->GetSegmentNumber());
 	SetCrystalNumber(chan->GetCrystalNumber());
 	SetTimeOffset(TPriorityValue<Long64_t>(chan->GetTimeOffset(), EPriority::kForce));
+	SetTimeDrift(TPriorityValue<double>(chan->GetTimeDrift(), EPriority::kForce));
 	SetClassType(chan->GetClassType());
 }
 
@@ -262,6 +265,7 @@ void TChannel::AppendChannel(TChannel* chan)
 	if(strcmp(chan->GetName(), "DefaultTChannel") != 0) SetName(chan->GetName()); // don't overwrite an existing name by the default name
 	SetDigitizerType(chan->fDigitizerTypeString);
 	SetTimeOffset(chan->fTimeOffset);
+	SetTimeDrift(chan->fTimeDrift);
 	SetAllENGCoefficients(chan->fENGCoefficients);
 	SetENGRanges(chan->fENGRanges);
 	SetAllENGChi2(chan->fENGChi2);
@@ -324,6 +328,7 @@ void TChannel::Clear(Option_t*)
 	fSegmentNumber = -1;
 	fCrystalNumber = -1;
 	fTimeOffset.Reset(0);
+	fTimeDrift.Reset(0);
 
 	WaveFormShape = WaveFormShapePar();
 
@@ -769,6 +774,7 @@ std::string TChannel::PrintToString(Option_t*) const
 		str<<"Digitizer: "<<fDigitizerTypeString<<std::endl;
 	}
 	str<<"TimeOffset: "<<fTimeOffset<<std::endl;
+	str<<"TimeDrift: "<<fTimeDrift<<std::endl;
 	str<<"Integration: "<<fIntegration<<std::endl;
 	if(!fENGCoefficients.empty()) {
 		for(size_t i = 0; i < fENGCoefficients.size(); ++i) {
@@ -1146,6 +1152,10 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 					Long64_t tempoff;
 					ss >> tempoff;
 					channel->SetTimeOffset(TPriorityValue<Long64_t>(tempoff, pr));
+				} else if(type.compare("TIMEDRIFT") == 0) {
+					double tempdrift;
+					ss >> tempdrift;
+					channel->SetTimeDrift(TPriorityValue<double>(tempdrift, pr));
 				} else if(type.compare("STREAM") == 0) {
 					int tempstream;
 					ss >> tempstream;
