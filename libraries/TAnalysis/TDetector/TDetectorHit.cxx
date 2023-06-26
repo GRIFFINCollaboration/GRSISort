@@ -236,7 +236,7 @@ Long64_t TDetectorHit::GetTimeStampNs(Option_t*) const
 	if(tmpChan == nullptr) {
 		return fTimeStamp; // GetTimeStampUnit returns 1 of there is no channel
 	}
-	return fTimeStamp * GetTimeStampUnit() - tmpChan->GetTimeOffset();
+	return fTimeStamp * GetTimeStampUnit() * ( 1.0 - tmpChan->GetTimeDrift() ) - tmpChan->GetTimeOffset();
 }
 
 Int_t TDetectorHit::GetTimeStampUnit() const
