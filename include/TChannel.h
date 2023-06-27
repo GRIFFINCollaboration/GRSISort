@@ -92,7 +92,7 @@ private:
    mutable int fCrystalNumber;
 
 	TPriorityValue<Long64_t>    fTimeOffset;
-	TPriorityValue<double>		fTimeDrift; 	// Time drift factor: TimeStamp_New - TimeStamp + TimeStamp * fTimeDrift
+	TPriorityValue<double>		fTimeDrift; 	// Time drift factor
 	TPriorityValue<TMnemonic*>  fMnemonic;
 	static TClassRef			fMnemonicClass;
 

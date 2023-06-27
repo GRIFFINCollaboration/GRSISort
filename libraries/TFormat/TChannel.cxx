@@ -1152,7 +1152,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 					Long64_t tempoff;
 					ss >> tempoff;
 					channel->SetTimeOffset(TPriorityValue<Long64_t>(tempoff, pr));
-				} else if(type.compare("TIMEDRIFT") == 0) {
+				} else if(type.compare("TIMEDRIFT") == 0.0) {
 					double tempdrift;
 					ss >> tempdrift;
 					channel->SetTimeDrift(TPriorityValue<double>(tempdrift, pr));

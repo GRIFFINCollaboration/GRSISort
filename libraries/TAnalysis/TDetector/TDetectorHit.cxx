@@ -60,10 +60,10 @@ Double_t TDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
    }
 	TChannel* tmpChan = GetChannel();
 	if(tmpChan == nullptr) {
-		return SetTime(static_cast<Double_t>(GetTimeStamp() + gRandom->Uniform()));
+		return SetTime(static_cast<Double_t>(GetTimeStampNs() + gRandom->Uniform()));
 	}
 
-	return SetTime(tmpChan->GetTime(GetTimeStamp(), GetCfd(), GetEnergy()));
+	return SetTime(tmpChan->GetTime(GetTimeStampNs(), GetCfd(), GetEnergy()));
 }
 
 Float_t TDetectorHit::GetCharge() const
@@ -234,9 +234,9 @@ Long64_t TDetectorHit::GetTimeStampNs(Option_t*) const
 {
 	TChannel* tmpChan = GetChannel();
 	if(tmpChan == nullptr) {
-		return fTimeStamp; // GetTimeStampUnit returns 1 of there is no channel
+		return GetTimeStamp(); // GetTimeStampUnit returns 1 of there is no channel
 	}
-	return fTimeStamp * GetTimeStampUnit() * ( 1.0 - tmpChan->GetTimeDrift() ) - tmpChan->GetTimeOffset();
+	return GetTimeStamp() * GetTimeStampUnit() * ( 1.0 - tmpChan->GetTimeDrift() ) - tmpChan->GetTimeOffset();
 }
 
 Int_t TDetectorHit::GetTimeStampUnit() const
@@ -283,7 +283,7 @@ Long64_t TDetectorHit::GetCycleTimeStamp() const
 double TDetectorHit::GetTimeSinceTapeMove() const
 {
 	/// returns time in ns, minus the time of the last tape move
-	return GetTime() - TPPG::Get()->GetLastStatusTime(GetTimeStampNs(), EPpgPattern::kTapeMove);
+	return GetTimeStampNs() - TPPG::Get()->GetLastStatusTime(GetTimeStampNs(), EPpgPattern::kTapeMove);
 }
 
 // const here is rather dirty
