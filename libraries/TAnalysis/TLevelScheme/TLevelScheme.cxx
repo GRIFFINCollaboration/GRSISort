@@ -10,6 +10,7 @@
 #include "TROOT.h"
 #include "TString.h"
 
+#include "Globals.h"
 #include "GCanvas.h"
 #include "TGRSIUtilities.h"
 
@@ -20,6 +21,8 @@ ClassImp(TLevelScheme)
 
 double TGamma::gTextSize = 0.020;
 double TLevel::gTextSize = 0.025;
+
+std::vector<TLevelScheme*> TLevelScheme::gLevelSchemes;
 
 TGamma::TGamma(TLevelScheme* levelScheme, const std::string& label, const double& br, const double& ts)
 	: TArrow()
@@ -138,7 +141,7 @@ void TGamma::Print() const
 
 std::map<double, double> TGamma::CoincidentGammas()
 {
-	/// Returns a vector with the energies and relative strength of all feeding and draining gamma rays.
+	/// Returns a map with the energies and relative strength of all feeding and draining gamma rays in coincidence with this gamma ray.
 	if(fLevelScheme == nullptr) {
 		std::cerr<<"Parent level scheme not set, can't find coincident gamma rays"<<std::endl;
 		return std::map<double, double>();
@@ -161,7 +164,7 @@ std::map<double, double> TGamma::CoincidentGammas()
 		}
 	}
 	if(fDebug) {
-		std::cout<<"Got "<<result.size()<<" coincident gammas including duplicates:";
+		std::cout<<"Got "<<result.size()<<" coincident gammas:";
 		for(auto& element : result) {
 			std::cout<<" "<<element.first<<" ("<<element.second<<"%)";
 		}
@@ -173,12 +176,60 @@ std::map<double, double> TGamma::CoincidentGammas()
 
 void TGamma::PrintCoincidentGammas()
 {
-	auto vec = CoincidentGammas();
-	std::cout<<vec.size()<<" coincident gammas for gamma "<<fEnergy<<" +- "<<fEnergyUncertainty<<" ("<<fInitialEnergy<<" to "<<fFinalEnergy<<"):";
-	for(auto gamma : vec) {
+	auto map = CoincidentGammas();
+	std::cout<<map.size()<<" coincident gammas for gamma "<<fEnergy<<" +- "<<fEnergyUncertainty<<" ("<<fInitialEnergy<<" to "<<fFinalEnergy<<"):";
+	for(auto gamma : map) {
 		std::cout<<" "<<gamma.first<<" ("<<gamma.second<<"%)";
 	}
 	std::cout<<std::endl;
+}
+
+std::vector<std::tuple<double, std::vector<double>>> TGamma::ParallelGammas()
+{
+	/// Returns a map with the relative strength and energies of all gamma rays that connect the same initial and final level.
+	/// Meaning these are all gamma rays that are parallel with this one and together add up to the same energy.
+	if(fLevelScheme == nullptr) {
+		std::cerr<<"Parent level scheme not set, can't find parallel gamma rays"<<std::endl;
+		return std::vector<std::tuple<double, std::vector<double>>>();
+	}
+	if(fDebug) {
+		std::cout<<"Looking for parallel gammas for gamma of "<<fEnergy<<" kev from level at "<<fInitialEnergy<<" keV to level at "<<fFinalEnergy<<" keV"<<std::endl;
+	}
+	auto result = fLevelScheme->ParallelGammas(fInitialEnergy, fFinalEnergy);
+	auto last = std::remove_if(result.begin(), result.end(), [](std::tuple<double, std::vector<double>> x) { return std::get<1>(x).size() < 2; });
+	if(fDebug) {
+		std::cout<<"Removing "<<std::distance(last, result.end())<<" paths, keeping "<<std::distance(result.begin(), last)<<std::endl;
+	}
+	result.erase(last, result.end());
+	//if(fDebug) {
+	//	std::cout<<"Got "<<result.size()<<" paths from level at "<<fInitialEnergy<<" keV to level at "<<fFinalEnergy<<" keV:"<<std::endl;
+	//	for(auto& element : result) {
+	//		std::cout<<std::get<0>(element)<<":";
+	//		double totalEnergy = 0.;
+	//		for(auto& energy : std::get<1>(element)) {
+	//			std::cout<<" "<<energy;
+	//			totalEnergy += energy;
+	//		}
+	//		std::cout<<" ("<<totalEnergy<<")"<<std::endl;
+	//	}
+	//}
+
+	return result;
+}
+
+void TGamma::PrintParallelGammas()
+{
+	auto vec = ParallelGammas();
+	std::cout<<vec.size()<<" parallel paths for gamma "<<fEnergy<<" +- "<<fEnergyUncertainty<<" ("<<fInitialEnergy<<" to "<<fFinalEnergy<<"):"<<std::endl;
+	for(auto& element : vec) {
+		std::cout<<std::get<0>(element)<<":";
+		double totalEnergy = 0.;
+		for(auto& energy : std::get<1>(element)) {
+			std::cout<<" "<<energy;
+			totalEnergy += energy;
+		}
+		std::cout<<" ("<<totalEnergy<<")"<<std::endl;
+	}
 }
 
 TLevel::TLevel(TLevelScheme* levelScheme, const double& energy, const std::string& label)
@@ -261,7 +312,7 @@ TGamma* TLevel::AddGamma(const double levelEnergy, const double energyUncertaint
 	/// Returns gamma if it doesn't exist yet and was successfully added, null pointer otherwise.
 	auto level = fLevelScheme->FindLevel(levelEnergy, energyUncertainty);
 	if(level == nullptr) {
-		std::cerr<<"Failed to find level at "<<levelEnergy<<" keV, can't add gamma!"<<std::endl;
+		std::cerr<<DRED<<"Failed to find level at "<<levelEnergy<<" keV, can't add gamma!"<<RESET_COLOR<<std::endl;
 		return nullptr;
 	}
 
@@ -518,7 +569,7 @@ TLevel* TBand::AddLevel(const double energy, const std::string& label)
 	}
 	auto [newLevel, success] = fLevels.emplace(std::piecewise_construct, std::forward_as_tuple(energy), std::forward_as_tuple(fLevelScheme, energy, label));
 	if(!success) {
-		std::cerr<<"Failed to add new level \""<<label<<"\" at "<<energy<<" keV to ";
+		std::cerr<<DRED<<"Failed to add new level \""<<label<<"\" at "<<energy<<" keV to "<<RESET_COLOR;
 		Print();
 	}
 
@@ -601,6 +652,7 @@ TLevelScheme::TLevelScheme(const std::string& filename, bool debug)
 {
 	fDebug = debug;
 	SetName("TLevelScheme");
+	SetLabel("Level Scheme");
 
 	// open the file and read the level scheme
 	// still need to decide what format that should be
@@ -621,6 +673,8 @@ TLevelScheme::TLevelScheme(const std::string& filename, bool debug)
 			}
 		}
 	}
+
+	gLevelSchemes.push_back(this);
 }
 
 TLevelScheme::TLevelScheme(const TLevelScheme& rhs)
@@ -629,7 +683,6 @@ TLevelScheme::TLevelScheme(const TLevelScheme& rhs)
 	fDebug = rhs.fDebug;
 	fBands = rhs.fBands;
 	fAuxillaryLevels = rhs.fAuxillaryLevels;
-	fNuclide = rhs.fNuclide;
 	fQValue = rhs.fQValue;
 	fQValueUncertainty = rhs.fQValueUncertainty;
 	fNeutronSeparation = rhs.fNeutronSeparation;
@@ -643,10 +696,34 @@ TLevelScheme::TLevelScheme(const TLevelScheme& rhs)
 	fTopMargin = rhs.fTopMargin;
 	fMinWidth = rhs.fMinWidth;
 	fMaxWidth = rhs.fMaxWidth;
+
+	gLevelSchemes.push_back(this);
 }
 
 TLevelScheme::~TLevelScheme()
 {
+}
+
+void TLevelScheme::ListLevelSchemes()
+{
+	for(auto& scheme : gLevelSchemes) {
+		std::cout<<" \""<<scheme->GetLabel()<<"\"";
+	}
+	std::cout<<std::endl;
+}
+
+TLevelScheme* TLevelScheme::GetLevelScheme(const char* name)
+{
+	for(auto& scheme : gLevelSchemes) {
+		if(strcmp(name, scheme->GetLabel()) == 0) {
+			return scheme;
+		}
+	}
+
+	std::cout<<"Failed to find level scheme \""<<name<<"\", "<<gLevelSchemes.size()<<" level schemes exist";
+	ListLevelSchemes();
+
+	return nullptr;
 }
 
 TLevel* TLevelScheme::AddLevel(const double energy, const std::string bandName, const std::string label)
@@ -710,6 +787,45 @@ TLevel* TLevelScheme::FindLevel(double energy, double energyUncertainty)
 	}
 
 	return nullptr;
+}
+
+TGamma* TLevelScheme::FindGamma(double energy, double energyUncertainty)
+{
+	/// Finds gamma ray in range [energy - energyUncertainty, energy + energyUncertainty].
+	/// If multiple gamma rays are in this range it returns the one closest to the given energy.
+	auto list = FindGammas(energy - energyUncertainty, energy + energyUncertainty);
+
+	if(list.empty()) {
+		std::cerr<<"Failed to find any gamma ray in range ["<<energy - energyUncertainty<<", "<<energy + energyUncertainty<<"]"<<std::endl;
+		return nullptr;
+	}
+
+	auto result = list[0];
+	for(size_t i = 1; i < list.size(); ++i) {
+		if(std::fabs(list[i]->Energy() - energy) < std::fabs(result->Energy() - energy)) result = list[i];
+	}
+
+	return result;
+}
+
+std::vector<TGamma*> TLevelScheme::FindGammas(double lowEnergy, double highEnergy)
+{
+	/// Returns a list of all gamma-rays in the range [lowEnergy, highEnergy]
+	std::vector<TGamma*> result;
+	// loop over all bands
+	for(auto& band : fBands) {
+		// loop over all levels in this band
+		for(auto& [levelEnergy, level] : band) {
+			// loop over all gamma-rays in the level
+			for(auto& [finalEnergy, gamma] : level) {
+				if(lowEnergy <= gamma.Energy() && gamma.Energy() <= highEnergy) {
+					result.push_back(&gamma);
+				}
+			}
+		}
+	}
+
+	return result;
 }
 
 void TLevelScheme::BuildGammaMap(double levelEnergy)
@@ -810,6 +926,120 @@ std::map<double, double> TLevelScheme::DrainingGammas(double levelEnergy, double
 	if(fDebug) {
 		std::cout<<"returning list of "<<result.size()<<" gammas draining level at "<<levelEnergy<<" keV"<<std::endl;
 	}
+	return result;
+}
+
+std::vector<std::tuple<double,std::vector<double>>> TLevelScheme::ParallelGammas(double initialEnergy, double finalEnergy, double factor)
+{
+	/// This (recursive) function returns the combined probability and energies of gamma rays that are connecting the levels at initial and final energy.
+	
+	auto level = GetLevel(initialEnergy);
+	std::vector<std::tuple<double,std::vector<double>>> result;
+	if(level == nullptr) {
+		std::cerr<<"Failed to find level at "<<initialEnergy<<" keV, returning empty list of gammas"<<std::endl;
+		Print();
+		return result;
+	}
+
+	if(fDebug) {
+		std::cout<<level<<": looping over "<<level->NofDrainingGammas()<<" gammas for level at "<<initialEnergy<<" keV (factor "<<factor<<")"<<std::endl;
+	}
+
+	result.push_back(std::make_tuple(1., std::vector<double>()));
+	// loop over all gamma rays 
+	for(auto& [levelEnergy, gamma] : *level) {
+		// if the level we populate with this gamma is below the final energy, we skip it
+		if(levelEnergy < finalEnergy) {
+			if(fDebug) {
+				std::cout<<"skipping gamma ";
+				gamma.Print();
+			}
+			continue;
+		}
+		// add this gamma ray to the path for now
+		std::get<0>(result.back()) *= gamma.BranchingRatioPercent();
+		std::get<1>(result.back()).insert(std::get<1>(result.back()).end(), gamma.Energy());
+		if(fDebug) {
+			std::cout<<"Added gamma ";
+			gamma.Print();
+			std::cout<<"New result:";
+			for(auto& entry : result) {
+				std::cout<<" "<<std::get<0>(entry)<<"-";
+				for(auto& e : std::get<1>(entry)) {
+					std::cout<<e<<",";
+				}
+			}
+			std::cout<<std::endl;
+		}
+		// if the level we populate is above the final energy, we see if we can find a gamma from that energy to the final energy
+		if(levelEnergy > finalEnergy) {
+			auto tmp = ParallelGammas(levelEnergy, finalEnergy, factor*gamma.BranchingRatioPercent());
+			// if we have multiple combinations, we don't just want to add all of them to one single entry, but create separate entries for each
+			// so we want to add n-1 copies of the last entry, this does not work if n is zero, so we check for that first
+			if(!tmp.empty()) {
+				auto it = result.insert(result.end(), tmp.size()-1, result.back());
+				// insert returns position of first inserted element or pos (=.end() in this case) if count is zero, so we need to decrement by one
+				--it;
+				if(fDebug) {
+					std::cout<<"Got "<<tmp.size()<<" paths, so added "<<tmp.size()-1<<" copies of last element:";
+					for(auto& entry : result) {
+						std::cout<<" "<<std::get<0>(entry)<<"-";
+						for(auto& e : std::get<1>(entry)) {
+							std::cout<<e<<",";
+						}
+					}
+					std::cout<<std::endl;
+				}
+				for(auto& combo : tmp) {
+					// maybe we can reject any that don't reach the final energy already here???
+					std::get<0>(*it) *= std::get<0>(combo);
+					std::get<1>(*it).insert(std::get<1>(*it).end(), std::get<1>(combo).begin(), std::get<1>(combo).end());
+					++it;
+				}
+				if(fDebug) {
+					std::cout<<"Got "<<tmp.size()<<" more gammas, new result:";
+					for(auto& entry : result) {
+						std::cout<<" "<<std::get<0>(entry)<<"-";
+						double sum = 0.;
+						for(auto& e : std::get<1>(entry)) {
+							std::cout<<e<<",";
+							sum += e;
+						}
+						std::cout<<"total "<<sum;
+					}
+					std::cout<<std::endl;
+				}
+			} else {
+				// we failed to find a path from the level this gamma populates to the final level, so we need to remove it from the path
+				// that is equivalent to re-setting the factor to one and clearing the vector of gammas
+				//std::get<0>(result.back())  = 1.;
+				//std::get<1>(result.back()).clear();
+				result.pop_back();
+				if(fDebug) {
+					std::cout<<"Failed to find path from "<<levelEnergy<<" to "<<finalEnergy<<", removed last gamma ray";
+					for(auto& entry : result) {
+						std::cout<<" "<<std::get<0>(entry)<<"-";
+						for(auto& e : std::get<1>(entry)) {
+							std::cout<<e<<",";
+						}
+					}
+					std::cout<<std::endl;
+				}
+			}
+		}
+		// if we found a path to the final energy (either via more gamma rays or by this one), we add this one and 
+		// since we are done with this path, we can add a new one (otherwise we will add to this path)
+		result.push_back(std::make_tuple(1., std::vector<double>()));
+		if(fDebug) {
+			std::cout<<"Reached final level, added new (empty) entry to result"<<std::endl;
+		}
+	} // loop over all gammas
+
+	// delete last entry if it's empty
+	if(std::get<1>(result.back()).empty()) {
+		result.pop_back();
+	}
+
 	return result;
 }
 
@@ -940,7 +1170,6 @@ void TLevelScheme::Draw(Option_t*)
 	if(fTopMargin < 0) SetY1(fX2-height/12.);
 	else SetY1(fX2-fTopMargin*0.75);
 	SetY2(fX2);
-	SetLabel("Level Scheme");
 	SetTextSize(0); // default size (?)
 	SetTextAlign(22); // centered in x and y
 	TPaveLabel::Draw();
@@ -1239,7 +1468,7 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
 	//TODO: check if file exists
 	std::ifstream input(filename);
 	if(!input.is_open()) {
-		std::cerr<<"Failed to open \""<<filename<<"\""<<std::endl;
+		std::cerr<<DRED<<"Failed to open \""<<filename<<"\""<<RESET_COLOR<<std::endl;
 		return;
 	}
 
@@ -1256,9 +1485,9 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
 	
 	// first line should be identification record (1-5 nuclide, 10-39 data set ident., 40-65 refs., 66-74 publ. inf., 75-80 date
 	std::getline(input, line);
-	fNuclide = line.substr(0,5);
-	trimWS(fNuclide); // trim whitespace
-	std::cout<<"Reading level scheme for "<<fNuclide<<std::endl;
+	SetLabel(line.substr(0,5).c_str());
+	//trimWS(fNuclide); // trim whitespace
+	std::cout<<"Reading level scheme for "<<GetLabel()<<std::endl;
 	// check that data set ident is "ADOPTED LEVELS, GAMMAS" or at least "ADOPTED LEVELS"
 	if(line.substr(9,14).compare("ADOPTED LEVELS") != 0) {
 		std::cout<<"Data set is not \"ADOPTED LEVELS\" or \"ADOPTED LEVELS, GAMMAS\", but \""<<line.substr(9,14)<<"\", don't know how to read that ("<<line<<")"<<std::endl;
@@ -1351,7 +1580,7 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
 								 std::cout<<"\""<<line.substr(9,10)<<"\", \""<<line.substr(19,2)<<"\", \""<<line.substr(21,18)<<"\", \""<<line.substr(39,10)<<"\", \""<<line.substr(49,6)<<"\""<<std::endl;
 							 }
 							 // create new level and set it's energy uncertainty
-							 currentLevel = AddLevel(energy, fNuclide, label);
+							 currentLevel = AddLevel(energy, GetLabel(), label);
 							 currentLevel->EnergyUncertainty(energyUncertainty);
 						 } else if(fDebug) std::cout<<"Ignoring level \""<<line<<"\""<<std::endl;
 						 break;
@@ -1417,9 +1646,11 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
 								 std::cout<<"\""<<line.substr(9,10)<<"\", \""<<line.substr(19,2)<<"\", \""<<line.substr(21,8)<<"\", \""<<line.substr(29,2)<<"\", \""<<line.substr(31,10)<<"\", \""<<line.substr(41,8)<<"\", \""<<line.substr(49,6)<<"\", \""<<line.substr(55,7)<<"\", \""<<line.substr(62,2)<<"\", \""<<line.substr(64,10)<<"\", \""<<line.substr(74,2)<<"\""<<std::endl;
 							 }
 							 auto gamma = currentLevel->AddGamma(currentLevel->Energy()-energy, energyUncertainty, multipolarity.c_str(), photonIntensity, totalIntensity);
-							 gamma->BranchingRatioUncertainty(photonIntensityUncertainty);
-							 gamma->TransitionStrengthUncertainty(totalIntensityUncertainty);
-							 // currently ignoring mixing ratio and conversion coefficents
+							 if(gamma != nullptr) {
+								 gamma->BranchingRatioUncertainty(photonIntensityUncertainty);
+								 gamma->TransitionStrengthUncertainty(totalIntensityUncertainty);
+								 // currently ignoring mixing ratio and conversion coefficents
+							 }
 						 } else if(fDebug) std::cout<<"Ignoring gamma \""<<line<<"\""<<std::endl;
 						 break;
 			case 'B': // beta record (1-5 nuclide, 6 blank or not '1' for cont., 7-9 " B ", ...), seems to be for decay data sets only?

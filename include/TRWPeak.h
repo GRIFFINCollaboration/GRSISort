@@ -42,6 +42,7 @@ public:
    Double_t Centroid() const override;
    Double_t CentroidErr() const override;
    Double_t Width() const override { return fTotalFunction->GetParameter("sigma"); }
+   Double_t Sigma() const override { return fTotalFunction->GetParameter("sigma"); }
 
 protected:
    Double_t PeakFunction(Double_t *dim, Double_t *par) override;

@@ -24,7 +24,7 @@ bool TSinglePeak::IsPeakParameter(const Int_t& par) const{
 }
 
 Int_t TSinglePeak::GetNParameters() const{
-   if(fTotalFunction)
+   if(fTotalFunction != nullptr)
       return fTotalFunction->GetNpar();
    else
       return 0;
@@ -65,13 +65,21 @@ void TSinglePeak::UpdateBackgroundParameters(){
 }
 
 void TSinglePeak::DrawComponents(Option_t *){
-   //This behaves like the draw function except each daughter class decides how to break the draw into multiple components.
-   //This means that we should delegate this task to the daughted class.
+   /// This behaves like the draw function except each daughter class decides how to break the draw into multiple components.
+   /// This means that we should delegate this task to the daughter class.
 }
 
+Double_t TSinglePeak::FWHM() const
+{
+   /// Return the full width at half-maximum.
+   auto max = fPeakFunction->GetMaximum();
+   auto maxX = fPeakFunction->GetMaximumX();
+   return (fTotalFunction->GetX(max/2., maxX, maxX+10.*Sigma()) - fTotalFunction->GetX(max/2., maxX-10.*Sigma(), maxX));
+}  
+
+
 Double_t TSinglePeak::PeakOnGlobalFunction(Double_t *dim, Double_t *par){
-   if(!fGlobalBackground)
-      return 0.0;
+   if(fGlobalBackground == nullptr) return 0.0;
 
    return PeakFunction(dim,par) + fGlobalBackground->EvalPar(dim,&par[fTotalFunction->GetNpar()]);
 
@@ -79,8 +87,7 @@ Double_t TSinglePeak::PeakOnGlobalFunction(Double_t *dim, Double_t *par){
 
 void TSinglePeak::Draw(Option_t *opt){
    //We need to draw this on top of the global background. Probably easiest to make another temporary TF1?
-   if(!fGlobalBackground)
-      return;
+   if(fGlobalBackground == nullptr) return;
 
    Double_t low, high;
    fGlobalBackground->GetRange(low,high);

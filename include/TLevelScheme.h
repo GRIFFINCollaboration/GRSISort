@@ -73,6 +73,9 @@ public:
 	std::map<double, double> CoincidentGammas();
 	void PrintCoincidentGammas(); // *MENU*
 
+	std::vector<std::tuple<double, std::vector<double>>> ParallelGammas();
+	void PrintParallelGammas(); // *MENU*
+
 	using TArrow::Print;
 	void Print() const;
 
@@ -246,14 +249,21 @@ public:
 	TLevelScheme(const TLevelScheme& rhs);
 	~TLevelScheme();
 
+	static void ListLevelSchemes();
+	static TLevelScheme* GetLevelScheme(const char* name);
+
 	TLevel* AddLevel(const double energy, const std::string bandName, const std::string label);
 	TLevel* AddLevel(const double energy, const char* bandName, const char* label) { return AddLevel(energy, std::string(bandName), std::string(label)); } // *MENU*
 	TLevel* GetLevel(double energy);
 	TLevel* FindLevel(double energy, double energyUncertainty);
 
-	std::map<double, double> FeedingGammas(double levelEnergy, double factor = 100.);
-	std::map<double, double> DrainingGammas(double levelEnergy, double factor = 100.);
+	TGamma* FindGamma(double energy, double energyUncertainty = 0.);
+	std::vector<TGamma*> FindGammas(double lowEnergy, double highEnergy);
+
+	std::map<double, double> FeedingGammas(double levelEnergy, double factor = 1.);
+	std::map<double, double> DrainingGammas(double levelEnergy, double factor = 1.);
 	void ResetGammaMap() { fGammaMap.clear(); }
+	std::vector<std::tuple<double, std::vector<double>>> ParallelGammas(double initialEnergy, double finalEnergy, double factor = 1.);
 
 	void MoveToBand(const char* bandName, TLevel* level);
 
@@ -280,13 +290,13 @@ private:
 	void BuildGammaMap(double levelEnergy);
 
 	bool fDebug{false};
+	static std::vector<TLevelScheme*> gLevelSchemes;
 
 	std::vector<TBand> fBands;
 	std::multimap<double, TLine> fAuxillaryLevels;
 	std::multimap<double, TGamma*> fGammaMap;
 
 	// nuclide information
-	std::string fNuclide{""};
 	double fQValue{0.};
 	double fQValueUncertainty{0.};
 	double fNeutronSeparation{0.};
