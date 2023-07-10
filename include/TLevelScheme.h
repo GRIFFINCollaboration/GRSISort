@@ -1,6 +1,7 @@
-#if __cplusplus >= 201703L
 #ifndef TLEVELSCHEME_H
 #define TLEVELSCHEME_H
+
+#if __cplusplus >= 201703L
 
 #include <iostream>
 #include <vector>
@@ -73,8 +74,10 @@ public:
 	std::map<double, double> CoincidentGammas();
 	void PrintCoincidentGammas(); // *MENU*
 
-	using TArrow::Print;
-	void Print(Option_t* option="") const;
+	std::vector<std::tuple<double, std::vector<double>>> ParallelGammas();
+	void PrintParallelGammas(); // *MENU*
+
+	void Print(Option_t* option="") const override;
 
 	void UpdateWidth();
 	void UpdateLabel();
@@ -167,7 +170,7 @@ public:
 	friend bool operator<=(const double& lhs, const TLevel& rhs) { return !(rhs < lhs); }
 	friend bool operator>=(const double& lhs, const TLevel& rhs) { return !(lhs < rhs); }
 
-	void Print(Option_t* option="") const;
+	void Print(Option_t* option="") const override;
 
 	void Debug(bool val) { fDebug = val; for(auto& [level, gamma] : fGammas) { gamma.Debug(val); } }
 
@@ -221,7 +224,7 @@ public:
 	std::map<double, TLevel>::const_iterator begin() const { return fLevels.begin(); }
 	std::map<double, TLevel>::const_iterator end() const { return fLevels.end(); }
 
-	void Print(Option_t* option="") const;
+	void Print(Option_t* option="") const override;
 
 	void Debug(bool val) { fDebug = val; for(auto& [energy, level] : fLevels) { level.Debug(val); } }
 
@@ -246,14 +249,21 @@ public:
 	TLevelScheme(const TLevelScheme& rhs);
 	~TLevelScheme();
 
+	static void ListLevelSchemes();
+	static TLevelScheme* GetLevelScheme(const char* name);
+
 	TLevel* AddLevel(const double energy, const std::string bandName, const std::string label);
 	TLevel* AddLevel(const double energy, const char* bandName, const char* label) { return AddLevel(energy, std::string(bandName), std::string(label)); } // *MENU*
 	TLevel* GetLevel(double energy);
 	TLevel* FindLevel(double energy, double energyUncertainty);
 
-	std::map<double, double> FeedingGammas(double levelEnergy, double factor = 100.);
-	std::map<double, double> DrainingGammas(double levelEnergy, double factor = 100.);
+	TGamma* FindGamma(double energy, double energyUncertainty = 0.);
+	std::vector<TGamma*> FindGammas(double lowEnergy, double highEnergy);
+
+	std::map<double, double> FeedingGammas(double levelEnergy, double factor = 1.);
+	std::map<double, double> DrainingGammas(double levelEnergy, double factor = 1.);
 	void ResetGammaMap() { fGammaMap.clear(); }
+	std::vector<std::tuple<double, std::vector<double>>> ParallelGammas(double initialEnergy, double finalEnergy, double factor = 1.);
 
 	void MoveToBand(const char* bandName, TLevel* level);
 
@@ -270,7 +280,7 @@ public:
 	void UnZoom();
 	void Draw(Option_t* option = "") override;
 
-	void Print(Option_t* option="") const;
+	void Print(Option_t* option="") const override;
 
 	void Debug(bool val) { fDebug = val; for(auto& band : fBands) { band.Debug(val); } }
 
@@ -280,13 +290,13 @@ private:
 	void BuildGammaMap(double levelEnergy);
 
 	bool fDebug{false};
+	static std::vector<TLevelScheme*> gLevelSchemes;
 
 	std::vector<TBand> fBands;
 	std::multimap<double, TLine> fAuxillaryLevels;
 	std::multimap<double, TGamma*> fGammaMap;
 
 	// nuclide information
-	std::string fNuclide{""};
 	double fQValue{0.};
 	double fQValueUncertainty{0.};
 	double fNeutronSeparation{0.};

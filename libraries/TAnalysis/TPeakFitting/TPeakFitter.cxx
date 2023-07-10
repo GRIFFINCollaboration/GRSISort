@@ -180,7 +180,6 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
 {
 	//We enter this function once we have performed a fit and need to tell the peaks
 	//what their new parameters should be.
-	Int_t peak_counter = 0;
 	Int_t param_counter = 0;
 
 	TF1* global_bg = new TF1("global_bg",this,&TPeakFitter::BackgroundFunction,fRangeLow,fRangeHigh,fTotalFitFunction->GetNpar(),"TPeakFitter","BackgroundFunction");
@@ -247,7 +246,6 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
 			if(goodCovarianceMatrix) p_it->SetAreaErr(total_function_copy->IntegralError(p_it->Centroid()-p_it->Width()*5., p_it->Centroid()+p_it->Width()*5., total_function_copy->GetParameters(), covariance_matrix.GetMatrixArray(),1E-5)/fit_hist->GetBinWidth(1));
 			else std::cout<<"Not setting area error because we don't have a good covariance matrix!"<<std::endl;
 			//std::cout<<"Integrating from: "<<p_it->Centroid()-p_it->Width()*5.<<" to "<<p_it->Centroid()+p_it->Width()*5.<<std::endl;
-			++peak_counter;
 		}
 		total_function_copy->Delete();
 	}

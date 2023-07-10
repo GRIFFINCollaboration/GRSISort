@@ -679,12 +679,14 @@ bool GCanvas::ProcessNonHistKeyboardPress(Event_t*, UInt_t* keysym)
 		SetCrosshair(static_cast<Int_t>(!HasCrosshair()));
 		edited = true;
 		break;
+#if __cplusplus >= 201703L
    case kKey_u: 
 		if(GetListOfPrimitives()->FindObject("TLevelScheme") != nullptr) {
 			static_cast<TLevelScheme*>(GetListOfPrimitives()->FindObject("TLevelScheme"))->UnZoom();
 			edited = true;
 		}
 		break;
+#endif
    }
 
    return edited;
