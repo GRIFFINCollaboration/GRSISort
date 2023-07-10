@@ -174,60 +174,6 @@ class TEfficiencyCalibrator : public TGMainFrame {
 ///
 /////////////////////////////////////////////////////////////////
 
-class TEfficiencyTab {
-public:
-	enum EPeakType { kRWPeak, kABPeak, kAB3Peak, kGaussian };
-
-   TEfficiencyTab(TSourceCalibration* parent, TNucleus* nucleus, std::tuple<TH1*, TH2*, TH2*> hists, TGCompositeFrame* frame, const double& sigma, const double& threshold, const int& degree, TGHProgressBar* progressBar);
-   ~TEfficiencyTab();
-
-	void FindPeaks();
-   void MakeConnections();
-   void Disconnect();
-
-   void VerboseLevel(int val) { fVerboseLevel = val; for(auto channel : fChannel) channel->VerboseLevel(val); }
-
-private:
-   // graphic elements
-   TGCompositeFrame* fFrame{nullptr}; ///< main frame of this tab
-   TGHProgressBar*      fProgressBar{nullptr};
-
-   // storage elements
-   TNucleus* fNucleus; ///< the source nucleus
-   TSourceCalibration* fParent; ///< the parent of this tab
-   TH1* fSingles{nullptr}; ///< the singles histogram we're using
-   TH2* fMatrix{nullptr}; ///< the (mixed) matrix we're using
-   TH2* fSumMatrix{nullptr}; ///< the sum matrix we're using
-   double fSigma{2.}; ///< the sigma used in the peak finder
-   double fThreshold{0.05}; ///< the threshold (relative to the largest peak) used in the peak finder
-   int fDegree{1}; ///< degree of polynomial function used to calibrate
-	TPeakFitter fPeakFitter;
-	EPeakType fPeakType{EPeakType::kRWPeak};
-	std::vector<TH1*> fSummingInProj;
-	std::vector<TH1*> fSummingInProjBg;
-	std::vector<TH1*> fSummingOutProj;
-	TH1* fSummingOutTotalProj;
-	TH1* fSummingOutTotalProjBg;
-	std::tuple<double, double, double, double, double, double, double, double, double, double> fPeaks;
-   int fVerboseLevel{0}; ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
-};
-
-class TEfficiencyCalibrator : public TGMainFrame {
-public:
-   TEfficiencyCalibrator(double sigma, double threshold, int n...);
-	~TEfficiencyCalibrator();
-
-private:
-   void BuildFirstInterface();
-   void MakeFirstConnections();
-
-	double fSigma;
-	double fThreshold;
-	std::vector<TFile*> fFiles;
-	std::vector<std::vector<std::tuple<TH1*, TH2*, TH2*>>> fHistograms; ///< for each type of data (suppressed, addback) in the file a vector with three histograms for each source
-	std::vector<TNucleus*> fSources;
-
-	// graphic elements
 public:
 	enum ESources { k22Na, k56Co, k60Co, k133Ba, k152Eu, k241Am	};
 	enum EEntry { kStartButton, kSourceBox = 100, kSigmaEntry = 200, kThresholdEntry = 300, kDegreeEntry = 400 };

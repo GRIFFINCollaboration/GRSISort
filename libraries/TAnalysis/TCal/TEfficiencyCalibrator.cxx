@@ -2,12 +2,6 @@
 
 #include <cstdarg>
 
-<<<<<<< HEAD
-
-//////////////////////////////////////// TEfficiencyTab ////////////////////////////////////////
-TEfficiencyTab::TEfficiencyTab(TSourceCalibration* parent, TNucleus* nucleus, std::tuple<TH1*, TH2*, TH2*> hists, TGCompositeFrame* frame, const double& sigma, const double& threshold, const int& degree, TGHProgressBar* progressBar)
-   : fFrame(frame), fProgressBar(progressBar), fNucleus(nucleus), fParent(parent), fSigma(sigma), fThreshold(threshold), fDegree(degree)
-=======
 #include "TGTableLayout.h"
 #include "TTimer.h"
 
@@ -19,7 +13,6 @@ TEfficiencyTab::TEfficiencyTab(TSourceCalibration* parent, TNucleus* nucleus, st
 //////////////////////////////////////// TEfficiencyTab ////////////////////////////////////////
 TEfficiencyTab::TEfficiencyTab(TEfficiencySourceTab* parent, TNucleus* nucleus, std::tuple<TH1*, TH2*, TH2*> hists, TGCompositeFrame* frame, const double& range, const double& threshold, const int& bgParam)
    : fFrame(frame), fNucleus(nucleus), fParent(parent), fRange(range), fThreshold(threshold), fBgParam(bgParam)
->>>>>>> f4cf2280f599c1276e27d5a49ca91203b4995be7
 {
 	fSingles    = std::get<0>(hists);
 	fSummingOut = std::get<1>(hists);
@@ -34,21 +27,11 @@ TEfficiencyTab::~TEfficiencyTab()
 
 void TEfficiencyTab::BuildInterface()
 {
-<<<<<<< HEAD
-   // top frame with two canvases amd status bar
-   fTopFrame = new TGHorizontalFrame(fFrame, 1200, 450);
-   fProjectionCanvas = new TRootEmbeddedCanvas("ProjectionCanvas", fTopFrame, 600, 400);
-   fEfficiencyCanvas = new TRootEmbeddedCanvas("EfficiencyCanvas", fTopFrame, 600, 400);
-
-   fTopFrame->AddFrame(fProjectionCanvas, new TGLayoutHints(kLHintsLeft   | kLHintsTop | kLHintsExpandY | kLHintsExpandX, 2, 2, 2, 2));
-   fTopFrame->AddFrame(fEfficiencyCanvas, new TGLayoutHints(kLHintsRight | kLHintsTop | kLHintsExpandY | kLHintsExpandX, 2, 2, 2, 2));
-=======
    // top frame with one canvas, status bar, and controls
    fTopFrame = new TGHorizontalFrame(fFrame, 1200, 450);
    fProjectionCanvas = new TRootEmbeddedCanvas("ProjectionCanvas", fTopFrame, 600, 400);
 
    fTopFrame->AddFrame(fProjectionCanvas, new TGLayoutHints(kLHintsLeft   | kLHintsTop | kLHintsExpandY | kLHintsExpandX, 2, 2, 2, 2));
->>>>>>> f4cf2280f599c1276e27d5a49ca91203b4995be7
 
    fFrame->AddFrame(fTopFrame, new TGLayoutHints(kLHintsTop | kLHintsExpandX, 2, 2, 2, 2));
 
@@ -56,11 +39,7 @@ void TEfficiencyTab::BuildInterface()
    int parts[] = {35, 15, 20, 15, 15 };
    fStatusBar->SetParts(parts, 5);
 
-<<<<<<< HEAD
-   fFrame->AddFrame(fStatusBar, new TGLayoutHints(kLHintsBottom | kLHintsExpandX, 2, 2, 2, 2));
-=======
 	fFrame->AddFrame(fStatusBar, new TGLayoutHints(kLHintsBottom | kLHintsExpandX, 2, 2, 2, 2));
->>>>>>> f4cf2280f599c1276e27d5a49ca91203b4995be7
 }
 
 void TEfficiencyTab::FindPeaks()
@@ -68,16 +47,6 @@ void TEfficiencyTab::FindPeaks()
 	/// Find and fit the peaks in the singles histogram, then checks for each peak how much summing in and summing out happens.
 	
 	fSummingOutTotalProj = fSummingOut->ProjectionY();
-<<<<<<< HEAD
-	fSummingOutTotalProjBg = fSummingOutTotalProj->ShowBackground(fBgParamEntry->GetNumberEntry()->GetIntNumber());
-	// loop through all gamma-rays of the source
-	for(TTransition* transition : *(fNucleus->GetTransitionList())) {
-		auto energy = transition->GetEnergy();
-		double range = 4. * fSigma;
-		fPeakFitter.RemoveAllPeaks();
-		fPeakFitter.ResetInitFlag();
-		fPeakFitter.SetRange(energy - range, energy + range);
-=======
 	fSummingOutTotalProjBg = fSummingOutTotalProj->ShowBackground(fBgParam);
 	// loop through all gamma-rays of the source
 	for(TObject* obj : *(fNucleus->GetTransitionList())) {
@@ -86,7 +55,6 @@ void TEfficiencyTab::FindPeaks()
 		fPeakFitter.RemoveAllPeaks();
 		fPeakFitter.ResetInitFlag();
 		fPeakFitter.SetRange(energy - fRange, energy + fRange);
->>>>>>> f4cf2280f599c1276e27d5a49ca91203b4995be7
 		TSinglePeak* peak;
 		switch(fPeakType) {
 			case kRWPeak:
@@ -98,13 +66,8 @@ void TEfficiencyTab::FindPeaks()
 			case kAB3Peak:
 				peak = new TAB3Peak(energy);
 				break;
-<<<<<<< HEAD
-			case kGaussian:
-				peak = new TGaussian(energy);
-=======
 			case kGauss:
 				peak = new TGauss(energy);
->>>>>>> f4cf2280f599c1276e27d5a49ca91203b4995be7
 				break;
 			default:
 				std::cerr<<"Unknow peak type "<<fPeakType<<", defaulting to TRWPeak!"<<std::endl;
@@ -123,19 +86,11 @@ void TEfficiencyTab::FindPeaks()
 		double fwhm = peak->FWHM();
 		double centroid = peak->Centroid();
 		// for summing in we need to estimate the background and subtract that from the integral
-<<<<<<< HEAD
-		fSummingInProj.push_back(fSummingIn->ProjectionY(fSummingIn->GetXaxis()->FindBin(centroid-fwhm/2.), fSummingIn->GetXaxis()->FindBin(centroid-fwhm/2.)));
-		fSummingInProjBg.push_back(fSummingInProj.back()->ShowBackground(fBgParamEntry->GetNumberEntry()->GetIntNumber()));
-		double summingIn = fSummingInProj.back()->Integral() - fSummingInProjBg.back()->Integral();
-		// for summing out we need to do a background subtraction - to make this easier we just use a total projection and scale it according to the bg integral?
-		fSummingOutProj.push_back(fSummingOut->ProjectionY(fSummingOut->GetXaxis()->FindBin(centroid-fwhm/2.), fSummingOut->GetXaxis()->FindBin(centroid-fwhm/2.)));
-=======
 		fSummingInProj.push_back(fSummingIn->ProjectionY(Form("%s_%.0f-%.0f", fSummingIn->GetName(), centroid-fwhm/2., centroid+fwhm/2.), fSummingIn->GetXaxis()->FindBin(centroid-fwhm/2.), fSummingIn->GetXaxis()->FindBin(centroid+fwhm/2.)));
 		fSummingInProjBg.push_back(fSummingInProj.back()->ShowBackground(fBgParam));
 		double summingIn = fSummingInProj.back()->Integral() - fSummingInProjBg.back()->Integral();
 		// for summing out we need to do a background subtraction - to make this easier we just use a total projection and scale it according to the bg integral?
 		fSummingOutProj.push_back(fSummingOut->ProjectionY(Form("%s_%.0f-%.0f", fSummingOut->GetName(), centroid-fwhm/2., centroid+fwhm/2.), fSummingOut->GetXaxis()->FindBin(centroid-fwhm/2.), fSummingOut->GetXaxis()->FindBin(centroid+fwhm/2.)));
->>>>>>> f4cf2280f599c1276e27d5a49ca91203b4995be7
 		double ratio = fSummingOutTotalProjBg->Integral(fSummingOutTotalProjBg->GetXaxis()->FindBin(centroid-fwhm/2.), fSummingOutTotalProjBg->GetXaxis()->FindBin(centroid+fwhm/2.))/fSummingOutTotalProjBg->Integral();
 		double summingOut = fSummingOutProj.back()->Integral() - fSummingOutTotalProj->Integral()*ratio;
 
@@ -144,10 +99,6 @@ void TEfficiencyTab::FindPeaks()
 		double correctedAreaErr = TMath::Sqrt(TMath::Power(peak->AreaErr(), 2) + summingIn + summingOut);
 		fPeaks.push_back(std::make_tuple(energy, centroid, correctedArea, correctedAreaErr, transition->GetIntensity(), transition->GetIntensityUncertainty(), peak->Area(), peak->AreaErr(), summingIn, summingOut));
 	}
-<<<<<<< HEAD
-	fProgressBar->Increment(1); // or maybe do this for every transition?
-=======
->>>>>>> f4cf2280f599c1276e27d5a49ca91203b4995be7
 }
 
 void TEfficiencyTab::MakeConnections()
@@ -158,13 +109,6 @@ void TEfficiencyTab::Disconnect()
 {
 }
 
-<<<<<<< HEAD
-//////////////////////////////////////// TEfficiencyCalibrator ////////////////////////////////////////
-TEfficiencyCalibrator::TEfficiencyCalibrator(double sigma, double threshold, int n...)
-	: TGMainFrame(nullptr, 1200, 600)
-{
-	fSigma = sigma;
-=======
 
 //////////////////////////////////////// TEfficiencySourceTab ////////////////////////////////////////
 TEfficiencySourceTab::TEfficiencySourceTab(TEfficiencyCalibrator* parent, TNucleus* nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const double& range, const double& threshold, const int& bgParam, TGHProgressBar* progressBar)
@@ -222,7 +166,6 @@ TEfficiencyCalibrator::TEfficiencyCalibrator(double range, double threshold, int
 	: TGMainFrame(nullptr, 1200, 600)
 {
 	fRange = range;
->>>>>>> f4cf2280f599c1276e27d5a49ca91203b4995be7
 	fThreshold = threshold;
 
 	va_list args;
@@ -333,8 +276,6 @@ TEfficiencyCalibrator::~TEfficiencyCalibrator()
 	for(auto& file : fFiles) {
 		file->Close();
 	}
-<<<<<<< HEAD
-=======
 	if(fOutput != nullptr) fOutput->Close();
 }
 
@@ -344,7 +285,6 @@ void TEfficiencyCalibrator::DeleteElement(TGFrame* element)
 	RemoveFrame(element);
 	//delete element;
 	//element = nullptr;
->>>>>>> f4cf2280f599c1276e27d5a49ca91203b4995be7
 }
 
 void TEfficiencyCalibrator::BuildFirstInterface()
@@ -373,10 +313,6 @@ void TEfficiencyCalibrator::BuildFirstInterface()
 			fSourceBox.back()->AddEntry("241Am", k241Am);
 		}
 		fSourceBox.back()->SetMinHeight(200);
-<<<<<<< HEAD
-		//fSourceLabel.back()->Resize(600, fLineHeight);
-=======
->>>>>>> f4cf2280f599c1276e27d5a49ca91203b4995be7
 		fSourceBox.back()->Resize(100, fLineHeight);
 		if(fVerboseLevel > 2) std::cout<<"Attaching "<<i<<". label to 0, 1, "<<i<<", "<<i+1<<", and box to 1, 2, "<<i<<", "<<i+1<<std::endl;
 		AddFrame(fSourceLabel.back(), new TGTableLayoutHints(0, 1, i, i+1, kLHintsRight | kLHintsCenterY));
