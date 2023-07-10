@@ -162,36 +162,32 @@ static void SetDisplay()
          STRUCT_UTMP* utmp_entry = SearchEntry(ReadUtmp(), tty);
          if(utmp_entry != nullptr) {
 				size_t length = sizeof(utmp_entry->ut_host);
-            auto* display = new char[length + 15];
+				std::string display;
             auto* host    = new char[length + 1];
             strncpy(host, utmp_entry->ut_host, length); // instead of using size of utmp_entry->ut_host to prevent warning from gcc 9.1
             host[sizeof(utmp_entry->ut_host)] = 0;
             if(host[0] != 0) {
+					display = host;
                if(strchr(host, ':') != nullptr) {
-                  sprintf(display, "DISPLAY=%s", host);
                   fprintf(stderr, "*** DISPLAY not set, setting it to %s\n", host);
                } else {
-                  sprintf(display, "DISPLAY=%s:0.0", host);
                   fprintf(stderr, "*** DISPLAY not set, setting it to %s:0.0\n", host);
+						display += ":0.0";
                }
-               putenv(display);
+					setenv("DISPLAY", display.c_str(), 0);
 #ifndef UTMP_NO_ADDR
             } else if(utmp_entry->ut_addr != 0) {
                struct hostent* he;
                if((he = gethostbyaddr(reinterpret_cast<const char*>(&utmp_entry->ut_addr), sizeof(utmp_entry->ut_addr),
                                       AF_INET)) != nullptr) {
-                  sprintf(display, "DISPLAY=%s:0.0", he->h_name);
                   fprintf(stderr, "*** DISPLAY not set, setting it to %s:0.0\n", he->h_name);
-                  putenv(display);
-               } else {
-                  delete[] display; // if display is not used, we can delete it
+						display = he->h_name;
+						display += ":0.0";
+						setenv("DISPLAY", display.c_str(), 0);
                }
 #endif
-            } else {
-               delete[] display; // if display is not used, we can delete it
             }
             delete[] host;
-            // display cannot be deleted otherwise the env var is deleted too
          }
          free(gUtmpContents);
       }

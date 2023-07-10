@@ -43,10 +43,7 @@ TList* AnalyzeDataLoss(TTree* tree, long entries = 0, TStopwatch* w = nullptr)
 
    int fEntries = tree->GetEntries();
 
-   int FragsIn = 0;
-
    tree->GetEntry(0);
-   FragsIn++;
    long      entry;
    long      skip     = 1000; // skip this many entries before beginning
    const int channels = 150;  // number of channels

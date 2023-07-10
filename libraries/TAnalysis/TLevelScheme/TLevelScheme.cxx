@@ -1,5 +1,6 @@
-#if __cplusplus >= 201703L
 #include "TLevelScheme.h"
+
+#if __cplusplus >= 201402L
 
 #include <iostream>
 #include <fstream>
@@ -133,7 +134,7 @@ void TGamma::Draw(const double& x1, const double& y1, const double& x2, const do
 	if(fDebug) Print();
 }
 
-void TGamma::Print() const
+void TGamma::Print(Option_t*) const
 {
 	TArrow::Print();
 	std::cout<<"Gamma with energy "<<fEnergy<<" +- "<<fEnergyUncertainty<<" (from "<<fInitialEnergy<<" to "<<fFinalEnergy<<") "<<(fUseTransitionStrength ? "using" : "not using")<<" transition strength "<<fTransitionStrength<<", branching "<<fBranchingRatio<<" = "<<100.*fBranchingRatioPercent<<"%, scaling gain "<<fScalingGain<<", scaling offset "<<fScalingOffset<<", arrow size "<<GetArrowSize()<<", line color "<<GetLineColor()<<", line width "<<GetLineWidth()<<std::endl;
@@ -437,7 +438,7 @@ double TLevel::DrawEnergy(const double& pos)
 	return fEnergyLabel->GetXsize();
 }
 
-void TLevel::Print() const
+void TLevel::Print(Option_t*) const
 {
 	std::cout<<"Level \""<<fLabel<<"\" ("<<this<<") at "<<fEnergy<<" keV has "<<fGammas.size()<<" draining gammas and "<<fNofFeeding<<" feeding gammas, debugging"<<(fDebug?"":" not")<<" enabled"<<std::endl;
 	if(fDebug) {
@@ -634,7 +635,7 @@ double TBand::Width(double distance) const
 	return nofGammas*distance;
 }
 
-void TBand::Print() const
+void TBand::Print(Option_t*) const
 {
 	std::cout<<this<<": band \""<<GetLabel()<<"\" "<<fLevels.size()<<" level(s):";
 	for(auto& level : fLevels) {
@@ -1306,8 +1307,10 @@ void TLevelScheme::Draw(Option_t*)
 			}
 			level.Offset(move);
 			level.Draw(left, right);
-			double labelWidth = level.DrawLabel(right);
-			double energyWidth = level.DrawEnergy(left);
+			//double labelWidth = level.DrawLabel(right);
+			//double energyWidth = level.DrawEnergy(left);
+			level.DrawLabel(right);
+			level.DrawEnergy(left);
 			// TODO: check these widths to see if we need to adjust the margins.
 			// Should also adjust gaps between bands to be equal to their sum, but how?
 			// If we call Draw recursively if we changed anything it will never stop (as that re-adjusts the text sizes).
@@ -1448,7 +1451,7 @@ void TLevelScheme::DrawAuxillaryLevel(const double& energy, const double& left, 
 	it->second.Draw();
 }
 
-void TLevelScheme::Print()
+void TLevelScheme::Print(Option_t*) const
 {
 	std::cout<<this<<": got "<<fBands.size()<<" bands: ";
 	for(size_t b = 0; b < fBands.size(); ++b) {
