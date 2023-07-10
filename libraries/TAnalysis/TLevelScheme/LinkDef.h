@@ -19,4 +19,5 @@
 #pragma link C++ class std::map<std::string, TBand>+;
 
 #endif
+#endif
 
