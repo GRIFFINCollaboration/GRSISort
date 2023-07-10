@@ -78,6 +78,11 @@ Double_t TABPeak::Width() const
 	return fTotalFunction->GetParameter("sigma")*fTotalFunction->GetParameter("rel_sigma");
 }
 
+Double_t TABPeak::Sigma() const
+{
+	return fTotalFunction->GetParameter("sigma");
+}
+
 Double_t TABPeak::PeakFunction(Double_t *dim, Double_t *par)
 {
 	return OneHitPeakFunction(dim,par) + TwoHitPeakFunction(dim,par);

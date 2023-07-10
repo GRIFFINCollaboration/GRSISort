@@ -105,7 +105,7 @@ void TGRSIFrame::Run()
 	auto runInfo = TRunInfo::Get();
 
 	// get output file name
-	std::string outputFileName = Form("%s%s.root", fOutputPrefix.c_str(), runInfo->CreateLabel().c_str());
+	std::string outputFileName = Form("%s%s.root", fOutputPrefix.c_str(), runInfo->CreateLabel(true).c_str());
 	std::cout<<"Writing to "<<outputFileName<<std::endl;
 
 	TFile outputFile(outputFileName.c_str(), "recreate");

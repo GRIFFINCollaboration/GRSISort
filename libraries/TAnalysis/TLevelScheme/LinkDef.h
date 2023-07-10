@@ -1,6 +1,5 @@
 //TLevelScheme.h
 
-#if __cplusplus >= 201703L
 #ifdef __CINT__
 
 #pragma link off all globals;
@@ -21,4 +20,3 @@
 
 #endif
 
-#endif

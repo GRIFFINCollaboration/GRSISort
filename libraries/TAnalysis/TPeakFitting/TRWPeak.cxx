@@ -14,6 +14,7 @@ TRWPeak::TRWPeak(Double_t centroid) : TSinglePeak()
 void TRWPeak::Centroid(const Double_t& centroid)
 {
    fTotalFunction = new TF1("rw_total",this,&TRWPeak::TotalFunction,0,1,6,"TRWPeak","TotalFunction");
+   fPeakFunction =  new TF1("rw_peak",this,&TRWPeak::PeakFunction,0,1,5,"TRWPeak","PeakFunction");
    InitParNames();
    fTotalFunction->SetParameter(1, centroid);
    SetListOfBGPar(std::vector<bool> {0,0,0,0,0,1});

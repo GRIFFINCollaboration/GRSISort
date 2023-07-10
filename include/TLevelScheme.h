@@ -1,15 +1,14 @@
-#if __cplusplus >= 201703L
 #ifndef TLEVELSCHEME_H
 #define TLEVELSCHEME_H
+
+#if __cplusplus >= 201703L
 
 #include <iostream>
 #include <vector>
 #include <map>
 #include <utility>
 
-#include "TCanvas.h"
 #include "TColor.h"
-#include "TBox.h"
 #include "TPolyLine.h"
 #include "TArrow.h"
 #include "TPaveLabel.h"
@@ -44,11 +43,15 @@ public:
 	void EnergyUncertainty(const double val) { fEnergyUncertainty = val; }
 	void UseTransitionStrength(const bool val) { fUseTransitionStrength = val; UpdateWidth(); } // *MENU*
 	void Scaling(const double offset, const double gain) { fScalingOffset = offset; fScalingGain = gain; UpdateWidth(); } // *MENU*
-	void BranchingRatio(const double val) { if(fDebug) std::cout<<__PRETTY_FUNCTION__<<": "<<std::flush<<val<<std::endl; fBranchingRatio = val; UpdateWidth(); } // *MENU*
-	void TransitionStrength(const double val) { fTransitionStrength = val; UpdateWidth(); } // *MENU*
-	void LabelText(const char* val) { fLabelText = val; UpdateLabel(); } // *MENU*
+	void BranchingRatio(const double val) { fBranchingRatio = val; UpdateWidth(); } // *MENU*
 	void BranchingRatioUncertainty(const double val) { fBranchingRatioUncertainty = val; }
+	void BranchingRatioPercent(const double val) { fBranchingRatioPercent = val; }
+	void BranchingRatioPercentUncertainty(const double val) { fBranchingRatioPercentUncertainty = val; }
+	void TransitionStrength(const double val) { fTransitionStrength = val; UpdateWidth(); } // *MENU*
 	void TransitionStrengthUncertainty(const double val) { fTransitionStrengthUncertainty = val; }
+	void LabelText(const char* val) { fLabelText = val; UpdateLabel(); } // *MENU*
+	void InitialEnergy(const double val) { fInitialEnergy = val; }
+	void FinalEnergy(const double val) { fFinalEnergy = val; }
 
 	// getters
 	double Energy() const { return fEnergy; }
@@ -57,13 +60,24 @@ public:
 	double ScalingGain() const { return fScalingGain; }
 	double ScalingOffset() const { return fScalingOffset; }
 	double BranchingRatio() const { return fBranchingRatio; }
+	double BranchingRatioUncertainty() const { return fBranchingRatioUncertainty; }
+	double BranchingRatioPercent() const { return fBranchingRatioPercent; }
+	double BranchingRatioPercentUncertainty() const { return fBranchingRatioPercentUncertainty; }
 	double TransitionStrength() const { return fTransitionStrength; }
+	double TransitionStrengthUncertainty() const { return fTransitionStrengthUncertainty; }
+	double InitialEnergy() const { return fInitialEnergy; }
+	double FinalEnergy() const { return fFinalEnergy; }
 	double Width() const { return (fUseTransitionStrength ? fTransitionStrength : fBranchingRatio); }
 	std::string LabelText() const { return fLabelText; }
 	TLatex* Label() const { return fLabel; }
 
-	using TArrow::Print;
-	void Print() const;
+	std::map<double, double> CoincidentGammas();
+	void PrintCoincidentGammas(); // *MENU*
+
+	std::vector<std::tuple<double, std::vector<double>>> ParallelGammas();
+	void PrintParallelGammas(); // *MENU*
+
+	void Print(Option_t* option="") const override;
 
 	void UpdateWidth();
 	void UpdateLabel();
@@ -81,17 +95,21 @@ public:
 private:
 	bool fDebug{false};
 	bool fUseTransitionStrength{false};
-	double fEnergy{0.};
+	double fEnergy{0.}; ///< Energy of this gamma ray
 	double fEnergyUncertainty{0.};
 	double fScalingGain{1.};
 	double fScalingOffset{1.};
 	double fBranchingRatio{100.};
 	double fBranchingRatioUncertainty{0.};
+	double fBranchingRatioPercent{100.};
+	double fBranchingRatioPercentUncertainty{0.};
 	double fTransitionStrength{1.};
 	double fTransitionStrengthUncertainty{0.};
 	std::string fLabelText;
 	TLatex* fLabel{nullptr};
 	TLevelScheme* fLevelScheme{nullptr};
+	double fInitialEnergy{0.}; ///< Energy of initial level that emits this gamma ray
+	double fFinalEnergy{0.}; ///< Energy of final level that is populated by this gamma ray
 
 	static double gTextSize;
 
@@ -128,8 +146,8 @@ public:
 
 	using TPolyLine::Draw;
 	void Draw(const double& left, const double& right);
-	void DrawLabel(const double& pos);
-	void DrawEnergy(const double& pos);
+	double DrawLabel(const double& pos);
+	double DrawEnergy(const double& pos);
 
 	std::map<double, TGamma>::iterator begin() { return fGammas.begin(); }
 	std::map<double, TGamma>::iterator end() { return fGammas.end(); }
@@ -152,7 +170,7 @@ public:
 	friend bool operator<=(const double& lhs, const TLevel& rhs) { return !(rhs < lhs); }
 	friend bool operator>=(const double& lhs, const TLevel& rhs) { return !(lhs < rhs); }
 
-	void Print() const;
+	void Print(Option_t* option="") const override;
 
 	void Debug(bool val) { fDebug = val; for(auto& [level, gamma] : fGammas) { gamma.Debug(val); } }
 
@@ -206,7 +224,7 @@ public:
 	std::map<double, TLevel>::const_iterator begin() const { return fLevels.begin(); }
 	std::map<double, TLevel>::const_iterator end() const { return fLevels.end(); }
 
-	void Print() const;
+	void Print(Option_t* option="") const override;
 
 	void Debug(bool val) { fDebug = val; for(auto& [energy, level] : fLevels) { level.Debug(val); } }
 
@@ -222,7 +240,7 @@ private:
    /// \endcond
 };
 
-class TLevelScheme : public TBox {
+class TLevelScheme : public TPaveLabel {
 public:
 	enum class EGammaWidth { kNoWidth, kBand, kGlobal };
 
@@ -231,39 +249,54 @@ public:
 	TLevelScheme(const TLevelScheme& rhs);
 	~TLevelScheme();
 
+	static void ListLevelSchemes();
+	static TLevelScheme* GetLevelScheme(const char* name);
+
 	TLevel* AddLevel(const double energy, const std::string bandName, const std::string label);
 	TLevel* AddLevel(const double energy, const char* bandName, const char* label) { return AddLevel(energy, std::string(bandName), std::string(label)); } // *MENU*
 	TLevel* GetLevel(double energy);
 	TLevel* FindLevel(double energy, double energyUncertainty);
 
+	TGamma* FindGamma(double energy, double energyUncertainty = 0.);
+	std::vector<TGamma*> FindGammas(double lowEnergy, double highEnergy);
+
+	std::map<double, double> FeedingGammas(double levelEnergy, double factor = 1.);
+	std::map<double, double> DrainingGammas(double levelEnergy, double factor = 1.);
+	void ResetGammaMap() { fGammaMap.clear(); }
+	std::vector<std::tuple<double, std::vector<double>>> ParallelGammas(double initialEnergy, double finalEnergy, double factor = 1.);
+
 	void MoveToBand(const char* bandName, TLevel* level);
 
-	void UseGlobalGammaWidth(const int val) { fGammaWidth = static_cast<EGammaWidth>(val); } // *MENU*
-	void GammaDistance(const double val) { fGammaDistance = val; } // *MENU*
-	void BandGap(const double val) { fBandGap = val; } // *MENU*
-	void LeftMargin(const double val) { fLeftMargin = val; } // *MENU*
-	void RightMargin(const double val) { fRightMargin = val; } // *MENU*
-	void BottomMargin(const double val) { fBottomMargin = val; } // *MENU*
-	void TopMargin(const double val) { fTopMargin = val; } // *MENU*
+	void UseGlobalGammaWidth(const int val) { fGammaWidth = static_cast<EGammaWidth>(val); Refresh(); } // *MENU*
+	void RadwareStyle(const bool val) { fRadwareStyle = val; Refresh(); } // *MENU*
+	void GammaDistance(const double val) { fGammaDistance = val; Refresh(); } // *MENU*
+	void BandGap(const double val) { fBandGap = val; Refresh(); } // *MENU*
+	void LeftMargin(const double val) { fLeftMargin = val; Refresh(); } // *MENU*
+	void RightMargin(const double val) { fRightMargin = val; Refresh(); } // *MENU*
+	void BottomMargin(const double val) { fBottomMargin = val; Refresh(); } // *MENU*
+	void TopMargin(const double val) { fTopMargin = val; Refresh(); } // *MENU*
 
-	void Refresh() { Draw(); } // *MENU*
+	void Refresh(); // *MENU*
+	void UnZoom();
 	void Draw(Option_t* option = "") override;
 
-	void Print();
+	void Print(Option_t* option="") const override;
 
 	void Debug(bool val) { fDebug = val; for(auto& band : fBands) { band.Debug(val); } }
 
 private:
 	void ParseENSDF(const std::string& filename);
 	void DrawAuxillaryLevel(const double& energy, const double& left, const double& right);
+	void BuildGammaMap(double levelEnergy);
 
 	bool fDebug{false};
+	static std::vector<TLevelScheme*> gLevelSchemes;
 
 	std::vector<TBand> fBands;
 	std::multimap<double, TLine> fAuxillaryLevels;
+	std::multimap<double, TGamma*> fGammaMap;
 
 	// nuclide information
-	std::string fNuclide{""};
 	double fQValue{0.};
 	double fQValueUncertainty{0.};
 	double fNeutronSeparation{0.};
@@ -271,6 +304,7 @@ private:
 
 	// graphics settings
 	EGammaWidth fGammaWidth{EGammaWidth::kNoWidth};
+	bool fRadwareStyle{true};
 	double fGammaDistance{50.};
 	double fBandGap{200.};
 	double fLeftMargin{-1.};
@@ -279,6 +313,12 @@ private:
 	double fTopMargin{-1.};
 	double fMinWidth{1.};
 	double fMaxWidth{10.};
+
+	// original canvas range
+	double fX1{0.};
+	double fY1{0.};
+	double fX2{0.};
+	double fY2{0.};
 
    /// \cond CLASSIMP
    ClassDefOverride(TLevelScheme, 1); // Level scheme
