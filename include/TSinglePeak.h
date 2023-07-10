@@ -52,6 +52,8 @@ public:
    virtual Double_t Centroid() const = 0;
    virtual Double_t CentroidErr() const = 0;
    virtual Double_t Width() const = 0;
+   virtual Double_t Sigma() const = 0;
+   virtual Double_t FWHM() const;
 
    virtual void Print(Option_t * = "" ) const override;
    virtual void Draw(Option_t * opt = "") override;
@@ -60,6 +62,7 @@ public:
 	virtual void PrintParameters() const;
 
    TF1* GetFitFunction() { return fTotalFunction; }
+   TF1* GetPeakFunction() { return fPeakFunction; }
    TF1* GetBackgroundFunction();
    void SetGlobalBackground(TF1* bg) { fGlobalBackground = bg;
       fGlobalBackground->SetLineStyle(kDashed);}
@@ -86,6 +89,7 @@ protected:
    TF1* fBackgroundFunction{nullptr};
    TF1* fGlobalBackground{nullptr};
    TF1* fPeakOnGlobal{nullptr};
+   TF1* fPeakFunction{nullptr};
 
    std::vector<bool> fListOfBGPars;
    Double_t fArea{-0.1};
