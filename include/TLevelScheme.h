@@ -1,6 +1,7 @@
-#if __cplusplus >= 201703L
 #ifndef TLEVELSCHEME_H
 #define TLEVELSCHEME_H
+
+#if __cplusplus >= 201703L
 
 #include <iostream>
 #include <vector>
@@ -76,8 +77,7 @@ public:
 	std::vector<std::tuple<double, std::vector<double>>> ParallelGammas();
 	void PrintParallelGammas(); // *MENU*
 
-	using TArrow::Print;
-	void Print() const;
+	void Print(Option_t* option="") const override;
 
 	void UpdateWidth();
 	void UpdateLabel();
@@ -170,7 +170,7 @@ public:
 	friend bool operator<=(const double& lhs, const TLevel& rhs) { return !(rhs < lhs); }
 	friend bool operator>=(const double& lhs, const TLevel& rhs) { return !(lhs < rhs); }
 
-	void Print() const;
+	void Print(Option_t* option="") const override;
 
 	void Debug(bool val) { fDebug = val; for(auto& [level, gamma] : fGammas) { gamma.Debug(val); } }
 
@@ -224,7 +224,7 @@ public:
 	std::map<double, TLevel>::const_iterator begin() const { return fLevels.begin(); }
 	std::map<double, TLevel>::const_iterator end() const { return fLevels.end(); }
 
-	void Print() const;
+	void Print(Option_t* option="") const override;
 
 	void Debug(bool val) { fDebug = val; for(auto& [energy, level] : fLevels) { level.Debug(val); } }
 
@@ -280,7 +280,7 @@ public:
 	void UnZoom();
 	void Draw(Option_t* option = "") override;
 
-	void Print();
+	void Print(Option_t* option="") const override;
 
 	void Debug(bool val) { fDebug = val; for(auto& band : fBands) { band.Debug(val); } }
 
