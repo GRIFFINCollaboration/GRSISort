@@ -15,7 +15,7 @@ CFLAGS = -std=c++11
 LINKFLAGS_SUFFIX  = -std=c++11 
 endif
 CFLAGS += -g -O3 -Wall -Wextra -pedantic -Wno-unknown-pragmas -Wno-unused-function
-LINKFLAGS_SUFFIX  += -L/opt/X11/lib -lX11 -lXpm
+LINKFLAGS_SUFFIX  += -L/opt/local/lib -lX11 -lXpm
 #-Wall -Wextra -pedantic -Wno-unused-parameter
 LINKFLAGS_PREFIX  =
 SRC_SUFFIX = cxx
@@ -34,7 +34,7 @@ endif
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
 CFLAGS     += -DOS_DARWIN -DHAVE_ZLIB
-CFLAGS     += -I/opt/X11/include -Qunused-arguments -I/opt/local/include
+CFLAGS     += -Qunused-arguments -I/opt/local/include
 CPP        = clang++
 SHAREDSWITCH = -Qunused-arguments -shared -undefined dynamic_lookup -dynamiclib -Wl,-install_name,'@executable_path/../lib/'# NO ENDING SPACE
 HEAD=ghead
