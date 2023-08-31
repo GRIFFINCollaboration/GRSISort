@@ -53,7 +53,7 @@ public:
    virtual Double_t CentroidErr() const = 0;
    virtual Double_t Width() const = 0;
    virtual Double_t Sigma() const = 0;
-   virtual Double_t FWHM() const;
+   Double_t FWHM() const;
 
    virtual void Print(Option_t * = "" ) const override;
    virtual void Draw(Option_t * opt = "") override;
