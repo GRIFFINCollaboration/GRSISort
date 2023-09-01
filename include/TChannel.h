@@ -91,26 +91,26 @@ private:
    mutable int fSegmentNumber;
    mutable int fCrystalNumber;
 
-	TPriorityValue<Long64_t>    fTimeOffset;
-	TPriorityValue<double>		fTimeDrift; 	// Time drift factor
-	TPriorityValue<TMnemonic*>  fMnemonic;
-	static TClassRef			fMnemonicClass;
+   TPriorityValue<Long64_t>    fTimeOffset;
+	TPriorityValue<double>		fTimeDrift; 	///< Time drift factor
+   TPriorityValue<TMnemonic*>  fMnemonic;
+	static TClassRef  			 fMnemonicClass;
 
-	TPriorityValue<std::vector<std::vector<Float_t> > >      fENGCoefficients;     // Energy calibration coeffs (low to high order)
-	TPriorityValue<std::vector<std::pair<double, double> > > fENGRanges;           // Range of energy calibrations
-	TPriorityValue<std::vector<double> >                     fENGChi2;             // Chi2 of the energy calibration
-	TPriorityValue<std::vector<Float_t> >                    fENGDriftCoefficents; // Energy drift coefficents (applied after energy calibration has been applied)
-	TPriorityValue<std::vector<double> >                     fCFDCoefficients;     // CFD calibration coeffs (low to high order)
-	TPriorityValue<double>                                   fCFDChi2;             // Chi2 of the CFD calibration
-	TPriorityValue<std::vector<double> >                     fLEDCoefficients;     // LED calibration coeffs (low to high order)
-	TPriorityValue<double>                                   fLEDChi2;             // Chi2 of LED calibration
-	TPriorityValue<std::vector<double> >                     fTIMECoefficients;    // Time calibration coeffs (low to high order)
-	TPriorityValue<double>                                   fTIMEChi2;            // Chi2 of the Time calibration
-	TPriorityValue<std::vector<double> >                     fEFFCoefficients;     // Efficiency calibration coeffs (low to high order)
-	TPriorityValue<double>                                   fEFFChi2;             // Chi2 of Efficiency calibration
-	TPriorityValue<std::vector<double> >                     fCTCoefficients;      // Cross talk coefficients
-	TPriorityValue<TGraph>                                   fEnergyNonlinearity;  // Energy nonlinearity as TGraph, is used as E=E+GetEnergyNonlinearity(E), so y should be E(source)-calibration(peak)
-	
+	TPriorityValue<std::vector<std::vector<Float_t> > >      fENGCoefficients;     ///< Energy calibration coeffs (low to high order)
+	TPriorityValue<std::vector<std::pair<double, double> > > fENGRanges;           ///< Range of energy calibrations
+	TPriorityValue<std::vector<double> >                     fENGChi2;             ///< Chi2 of the energy calibration
+	TPriorityValue<std::vector<Float_t> >                    fENGDriftCoefficents; ///< Energy drift coefficents (applied after energy calibration has been applied)
+	TPriorityValue<std::vector<double> >                     fCFDCoefficients;     ///< CFD calibration coeffs (low to high order)
+	TPriorityValue<double>                                   fCFDChi2;             ///< Chi2 of the CFD calibration
+	TPriorityValue<std::vector<double> >                     fLEDCoefficients;     ///< LED calibration coeffs (low to high order)
+	TPriorityValue<double>                                   fLEDChi2;             ///< Chi2 of LED calibration
+	TPriorityValue<std::vector<double> >                     fTIMECoefficients;    ///< Time calibration coeffs (low to high order)
+	TPriorityValue<double>                                   fTIMEChi2;            ///< Chi2 of the Time calibration
+	TPriorityValue<std::vector<double> >                     fEFFCoefficients;     ///< Efficiency calibration coeffs (low to high order)
+	TPriorityValue<double>                                   fEFFChi2;             ///< Chi2 of Efficiency calibration
+	TPriorityValue<std::vector<double> >                     fCTCoefficients;      ///< Cross talk coefficients
+	TPriorityValue<TGraph>                                   fEnergyNonlinearity;  ///< Energy nonlinearity as TGraph, is used as E=E+GetEnergyNonlinearity(E), so y should be E(source)-calibration(peak)
+
    struct WaveFormShapePar {
       bool   InUse;
       double BaseLine;
@@ -156,23 +156,23 @@ public:
 	void SetSegmentNumber(int tempint) { fSegmentNumber = tempint; }
 	void SetCrystalNumber(int tempint) { fCrystalNumber = tempint; }
 
-	double				GetTime(Long64_t timestamp, Float_t cfd, double energy) const;
-	int					GetDetectorNumber() const;
-	int					GetSegmentNumber() const;
-	int					GetCrystalNumber() const;
-	const TMnemonic*	GetMnemonic() const;
-	TClass*				GetClassType() const;
-	void				SetClassType(TClass* cl_type);
+	double            GetTime(Long64_t timestamp, Float_t cfd, double energy) const;
+	int               GetDetectorNumber() const;
+	int               GetSegmentNumber() const;
+	int               GetCrystalNumber() const;
+   const TMnemonic*  GetMnemonic() const;
+   TClass*           GetClassType() const;
+   void              SetClassType(TClass* cl_type);
 
-	int				GetNumber() const { return fNumber.Value(); }
-	unsigned int	GetAddress() const { return fAddress; }
-	int				GetIntegration() const { return fIntegration.Value(); }
-	int				GetStream() const { return fStream.Value(); }
-	int				GetUserInfoNumber() const { return fUserInfoNumber.Value(); }
-	const char*		GetDigitizerTypeString() const { return fDigitizerTypeString.c_str(); }
-	EDigitizer		GetDigitizerType() const { return fDigitizerType.Value(); }
-	int				GetTimeStampUnit() const { return fTimeStampUnit.Value(); }
-	Long64_t		GetTimeOffset() const { return fTimeOffset.Value(); }
+	int          GetNumber() const { return fNumber.Value(); }
+	unsigned int GetAddress() const { return fAddress; }
+	int          GetIntegration() const { return fIntegration.Value(); }
+	int          GetStream() const { return fStream.Value(); }
+	int          GetUserInfoNumber() const { return fUserInfoNumber.Value(); }
+	const char*  GetDigitizerTypeString() const { return fDigitizerTypeString.c_str(); }
+	EDigitizer   GetDigitizerType() const { return fDigitizerType.Value(); }
+	int          GetTimeStampUnit() const { return fTimeStampUnit.Value(); }
+	Long64_t     GetTimeOffset() const { return fTimeOffset.Value(); }
 	double			GetTimeDrift() const { return fTimeDrift.Value(); }
 	// write the rest of the gettters/setters...
 
