@@ -117,7 +117,8 @@ void TGRSIFrame::Run()
 		auto entries = fDataFrame->Count();
 		std::mutex barMutex; // Only one thread at a time can lock a mutex. Let's use this to avoid concurrent printing.
 		const auto everyN = fTotalEntries/barWidth;
-		entries.OnPartialResultSlot(everyN, [&everyN, &fTotalEntries = fTotalEntries, &barWidth, &progressBar, &barMutex](unsigned int /*slot*/, ULong64_t& /*partialList*/) {
+		//entries.OnPartialResultSlot(everyN, [&everyN, &fTotalEntries = fTotalEntries, &barWidth, &progressBar, &barMutex](unsigned int /*slot*/, ULong64_t& /*partialList*/) {
+		entries.OnPartialResultSlot(everyN, [&everyN, &fTotalEntries = fTotalEntries, &progressBar, &barMutex](unsigned int /*slot*/, ULong64_t& /*partialList*/) {
 				std::lock_guard<std::mutex> l(barMutex); // lock_guard locks the mutex at construction, releases it at destruction
 				static int counter = 1;
 				progressBar.push_back('#');
