@@ -46,6 +46,9 @@ public:
 
    std::string PrintToString();
 
+	bool operator>(const TTransition& rhs) const { return GetEnergy() > rhs.GetEnergy(); }
+	bool operator<(const TTransition& rhs) const { return GetEnergy() < rhs.GetEnergy(); }
+
 private:
    double fEnergy{0.};         // Energy of the transition
    double fEngUncertainty{0.}; // Uncertainty in the energy of the transition
