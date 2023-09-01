@@ -47,10 +47,15 @@ public:
 	~TCalibrationGraphSet();
 
 	bool SetResidual(const bool& force = false);
-	int Add(TGraphErrors*, const std::string& label);
+	int Add(TGraphErrors*, const std::string& label); ///< Add new graph to set, using the label when creating legends during plotting
 
 	void SetLineColor(int index, int color)   { fGraphs[index].SetLineColor(color);   fResidualGraphs[index].SetLineColor(color); }   ///< Set the line color of the graph and residuals at index
-	void SetMarkerColor(int index, int color) { fGraphs[index].SetMarkerColor(color); fResidualGraphs[index].SetMarkerColor(color); } ///< Set the marker color of the graph and residuals at index
+	void SetMarkerColor(int index, int color) { if(fVerboseLevel > 3) std::cout<<"setting marker color of graph "<<index<<" to "<<color<<std::endl; fGraphs[index].SetMarkerColor(color); fResidualGraphs[index].SetMarkerColor(color); } ///< Set the marker color of the graph and residuals at index
+	void SetMarkerStyle(int index, int style) { fGraphs[index].SetMarkerStyle(style); fResidualGraphs[index].SetMarkerStyle(style); } ///< Set the marker style of the graph and residuals at index
+	void SetColor(int index, int color)       { SetLineColor(index, color); SetMarkerColor(index, color); }                           ///< Set the line and marker color of the graph and residuals at index
+	void SetColorStyle(int index, int val)    { SetLineColor(index, val); SetMarkerColor(index, val); SetMarkerStyle(index, val); }   ///< Set the line and marker color and marker style of the graph and residuals at index
+
+	void SetAxisTitle(const char* title); ///< Set axis title for the graph (form "x-axis title;y-axis title")
 
 	int GetN() { return fTotalGraph->GetN(); }     ///< Returns GetN(), i.e. number of points of the total graph.
 	double* GetX() { return fTotalGraph->GetX(); } ///< Returns an array of x-values of the total graph.
@@ -78,8 +83,7 @@ public:
 
 	void Scale(); ///< scale all graphs to fit each other (based on the first graph)
 
-	using TObject::Print;
-	void Print(Option_t* opt);
+	void Print(Option_t* opt = "") const override;
 
 	void ResetTotalGraph(); ///< reset the total graph and add the individual ones again (used e.g. after scaling of individual graphs is done)
 
@@ -104,7 +108,7 @@ public:
 		return *this;
 	}
 
-	void VerboseLevel(int val) { fVerboseLevel = val; for(auto graph : fGraphs) graph.VerboseLevel(val); for(auto graph : fResidualGraphs) graph.VerboseLevel(val); }
+	void VerboseLevel(int val) { fVerboseLevel = val; for(auto& graph : fGraphs) graph.VerboseLevel(val); for(auto& graph : fResidualGraphs) graph.VerboseLevel(val); }
 
 private:
 	std::vector<TCalibrationGraph> fGraphs; ///< These are the graphs used for plotting the calibration points per source.
