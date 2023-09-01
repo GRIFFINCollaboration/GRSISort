@@ -22,7 +22,6 @@
 #pragma link C++ class TEfficiencyGraph+;
 
 #pragma link C++ class TEfficiencyCalibration+;
-#pragma link C++ class TEfficiencyCalibrator+;
 
 #pragma link C++ class TEfficiencyCalibrator+;
 

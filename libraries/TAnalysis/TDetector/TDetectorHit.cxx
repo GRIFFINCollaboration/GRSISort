@@ -283,7 +283,7 @@ Long64_t TDetectorHit::GetCycleTimeStamp() const
 double TDetectorHit::GetTimeSinceTapeMove() const
 {
 	/// returns time in ns, minus the time of the last tape move
-	return GetTimeStampNs() - TPPG::Get()->GetLastStatusTime(GetTimeStampNs(), EPpgPattern::kTapeMove);
+	return GetTime() - TPPG::Get()->GetLastStatusTime(GetTimeStampNs(), EPpgPattern::kTapeMove);
 }
 
 // const here is rather dirty
