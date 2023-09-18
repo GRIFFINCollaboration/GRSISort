@@ -105,6 +105,7 @@ long double TPulseAnalyzer::determinant(int m)
    if(m == 1) {
       return copy_matrix[0][0];
    }
+   int sign = 1;
    if(copy_matrix[m - 1][m - 1] == 0.) {
       int j = m - 1;
       while(copy_matrix[m - 1][j] == 0 && j >= 0) {
@@ -118,13 +119,14 @@ long double TPulseAnalyzer::determinant(int m)
          copy_matrix[i][m - 1] = copy_matrix[i][j];
          copy_matrix[i][j]     = s;
       }
+      sign *= -1;
    }
    for(int j = m - 2; j >= 0; j--) {
       for(int i = 0; i < m; i++) {
          copy_matrix[i][j] -= copy_matrix[i][m - 1] /copy_matrix[m - 1][m - 1] * copy_matrix[m - 1][j];
       }
    }
-   return copy_matrix[m - 1][m - 1] * determinant(m - 1);
+   return copy_matrix[m - 1][m - 1] * sign * determinant(m - 1);
 }
 
 ////////////////////////////////////////
