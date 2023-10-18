@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	if(opt->DataFrameLibrary().empty()) {
-		std::cout<<"No dataframe library provided!"<<std::endl;
+		std::cout<<"No dataframe library (*.cxx file or *.so library) provided!"<<std::endl;
 		return 1;
 	}
 

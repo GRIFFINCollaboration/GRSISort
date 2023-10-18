@@ -608,7 +608,7 @@ void TSourceTab::CreateChannelTab(int bin)
 void TSourceTab::MakeConnections()
 {
 	fChannelTab->Connect("Selected(Int_t)", "TSourceCalibration", fParent, "SelectedTab(Int_t)");
-	for(auto channel : fChannel) {
+	for(auto& channel : fChannel) {
 		channel->MakeConnections();
 	}
 }
@@ -616,7 +616,7 @@ void TSourceTab::MakeConnections()
 void TSourceTab::Disconnect()
 {
 	fChannelTab->Disconnect("Selected(Int_t)", fParent, "SelectedTab(Int_t)");
-	for(auto channel : fChannel) {
+	for(auto& channel : fChannel) {
 		channel->Disconnect();
 	}
 }

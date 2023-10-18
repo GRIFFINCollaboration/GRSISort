@@ -40,7 +40,6 @@ public:
    Double_t CentroidErr() const override;
    Double_t Width() const override;
    Double_t Sigma() const override;
-   Double_t FWHM() const;
 
    void DrawComponents(Option_t *opt = "") override;
 

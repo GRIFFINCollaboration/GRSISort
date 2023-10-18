@@ -1,6 +1,6 @@
 #include "CrossTalkHelper.hh"
 
-bool pileup_reject = true;
+bool pileup_reject = false;
 
 const double gg_time_low  = -200.;
 const double gg_time_high = 300.;
@@ -10,7 +10,7 @@ const double gb_time_low  = -250.;
 const double gb_time_high = 350.;
 
 // default k-value this might have to be adjusted for each experiment!!!
-const Short_t defaultKValue = 700;
+const Short_t defaultKValue = 379;
 
 bool Addback(TGriffinHit* one, TGriffinHit* two)
 {

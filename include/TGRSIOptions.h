@@ -48,7 +48,7 @@ public:
 	const std::vector<std::string>& InputCutFiles() { return fInputCutFiles; }
 	const std::vector<std::string>& WinInputFiles() { return fInputWinFiles; }
 	const std::vector<std::string>& MacroInputFiles() { return fMacroFiles; }
-	const std::string& DataFrameLibrary() { return fDataFrameLibrary; }
+	const std::string&              DataFrameLibrary() { return fDataFrameLibrary; }
 
 	const std::string& OutputFragmentFile() { return fOutputFragmentFile; }
 	const std::string& OutputAnalysisFile() { return fOutputAnalysisFile; }

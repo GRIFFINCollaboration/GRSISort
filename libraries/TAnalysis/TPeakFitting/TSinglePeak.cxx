@@ -60,6 +60,10 @@ Double_t TSinglePeak::TotalFunction(Double_t *dim, Double_t *par){
    return PeakFunction(dim,par) + BackgroundFunction(dim,par);
 }
 
+void TSinglePeak::UpdatePeakParameters(){
+   fPeakFunction->SetParameters(fTotalFunction->GetParameters());
+}
+
 void TSinglePeak::UpdateBackgroundParameters(){
    fBackgroundFunction->SetParameters(fTotalFunction->GetParameters());
 }
@@ -69,12 +73,19 @@ void TSinglePeak::DrawComponents(Option_t *){
    /// This means that we should delegate this task to the daughter class.
 }
 
-Double_t TSinglePeak::FWHM() const
+Double_t TSinglePeak::FWHM()
 {
    /// Return the full width at half-maximum.
-   auto max = fPeakFunction->GetMaximum();
-   auto maxX = fPeakFunction->GetMaximumX();
-   return (fTotalFunction->GetX(max/2., maxX, maxX+10.*Sigma()) - fTotalFunction->GetX(max/2., maxX-10.*Sigma(), maxX));
+	if(fPeakFunction == nullptr) {
+		std::cerr<<__PRETTY_FUNCTION__<<": peak function ("<<fPeakFunction<<") is null"<<std::endl;
+		return 0.;
+	}
+	UpdatePeakParameters();
+	double low  = Centroid() - 10.*Sigma();
+	double high = Centroid() + 10.*Sigma();
+   auto maxX = fPeakFunction->GetMaximumX(low, high);
+   auto max = fPeakFunction->Eval(maxX);
+   return (fPeakFunction->GetX(max/2., maxX, maxX+10.*Sigma()) - fPeakFunction->GetX(max/2., maxX-10.*Sigma(), maxX));
 }  
 
 

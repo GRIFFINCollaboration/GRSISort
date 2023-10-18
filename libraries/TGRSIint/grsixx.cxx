@@ -215,7 +215,7 @@ static void DrawVersion()
    // Draw version string.
 
    char version[80];
-   sprintf(version, "Version %s", GRSI_RELEASE);
+   snprintf(version, 80, "Version %s", GRSI_RELEASE);
 
    XDrawString(gDisplay, gLogoWindow, gGC, 15, gHeight - 20, version, strlen(version));
 }
@@ -224,8 +224,7 @@ static void DrawROOTCredit()
 {
    // Draw version string.
 
-   char version[80];
-   sprintf(version, "A ROOT based package");
+   const char* version = "A ROOT based package";
 
    XDrawString(gDisplay, gLogoWindow, gGC, 15, gHeight - 35, version, strlen(version));
 }

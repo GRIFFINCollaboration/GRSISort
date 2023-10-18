@@ -53,7 +53,7 @@ public:
    virtual Double_t CentroidErr() const = 0;
    virtual Double_t Width() const = 0;
    virtual Double_t Sigma() const = 0;
-   Double_t FWHM() const;
+   virtual Double_t FWHM(); // not constant because we have to update the parmeters of the peak function
 
    virtual void Print(Option_t * = "" ) const override;
    virtual void Draw(Option_t * opt = "") override;
@@ -67,6 +67,7 @@ public:
    void SetGlobalBackground(TF1* bg) { fGlobalBackground = bg;
       fGlobalBackground->SetLineStyle(kDashed);}
 
+   void UpdatePeakParameters();
    void UpdateBackgroundParameters();
 
    Double_t GetChi2() const { return fChi2; }
