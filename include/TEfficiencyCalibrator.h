@@ -39,7 +39,7 @@
  */
 
 class TEfficiencyCalibrator;
-class TEfficiencySourceTab;
+class TEfficiencyDatatypeTab;
 
 class TEfficiencyTab {
 /////////////////////////////////////////////////////////////////
@@ -58,27 +58,17 @@ class TEfficiencyTab {
 public:
 	enum EPeakType { kRWPeak = 0, kABPeak = 1, kAB3Peak = 2, kGauss = 3 };
 
-   TEfficiencyTab(TEfficiencySourceTab* parent, TNucleus* nucleus, std::tuple<TH1*, TH2*, TH2*> hists, TGCompositeFrame* frame, const double& range, const double& threshold, const int& bgParam, const int& verboseLevel = 0);
+   TEfficiencyTab(TEfficiencyDatatypeTab* parent, TNucleus* nucleus, std::tuple<TH1*, TH2*, TH2*> hists, TGCompositeFrame* frame, const int& verboseLevel = 0);
    ~TEfficiencyTab();
 
 	void FindPeaks();
-	void FindPeaks(const double& range, const double& threshold, const int& bgParam) {
-		fRange = range;
-		fThreshold = threshold;
-		fBgParam = bgParam;
-		FindPeaks();
-	}
+	TSinglePeak* NewPeak(const double& energy);
    void Redraw();
    void MakeConnections();
    void Disconnect();
 	void Status(Int_t event, Int_t px, Int_t py, TObject* selected);
 
    void VerboseLevel(int val) { fVerboseLevel = val; }
-
-	// setters
-	void Range(double val) { fRange = val; }
-	void Threshold(double val) { fThreshold = val; }
-	void BgParam(double val) { fBgParam = val; }
 
 	// getters
 	std::vector<std::tuple<TTransition*, double, double, double, double, double, double, double, double>> Peaks() const { return fPeaks; }
@@ -95,15 +85,11 @@ private:
 
    // storage elements
    TNucleus* fNucleus; ///< the source nucleus
-   TEfficiencySourceTab* fParent; ///< the parent of this tab
+   TEfficiencyDatatypeTab* fParent; ///< the parent of this tab
    TH1* fSingles{nullptr}; ///< the singles histogram we're using
    TH2* fSummingOut{nullptr}; ///< the (mixed) matrix we're using for summing out
    TH2* fSummingIn{nullptr}; ///< the sum matrix we're using for summing in
-	double fRange{10.}; ///< range of the fit (+- range)
-   double fThreshold{100.}; ///< the threshold (relative to the largest peak) under which peaks are ignored
-   int fBgParam{20}; ///< the bg parameter used to determine the background in the gamma spectra
 	TPeakFitter fPeakFitter;
-	EPeakType fPeakType{EPeakType::kRWPeak};
 	std::vector<TH1*> fSummingInProj;
 	std::vector<TH1*> fSummingInProjBg;
 	std::vector<TH1*> fSummingOutProj;
@@ -111,13 +97,14 @@ private:
 	TH1* fSummingOutTotalProjBg;
 	std::vector<std::tuple<TTransition*, double, double, double, double, double, double, double, double>> fPeaks;
 	std::vector<TObject*> fFitFunctions; ///< vector with all fits of the singles histogram
+	std::vector<TObject*> fRemovedFitFunctions; ///< vector with all removed fits of the singles histogram
    int fVerboseLevel{0}; ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 };
 
-class TEfficiencySourceTab {
+class TEfficiencyDatatypeTab {
 /////////////////////////////////////////////////////////////////
 ///
-/// \class TEfficiencySourceTab
+/// \class TEfficiencyDatatypeTab
 ///
 /// This class is the outer tab with all the sources data for one
 /// data type (single/addback, suppressed/unsuppressed). It creates
@@ -128,24 +115,23 @@ public:
 	enum EEntry { kRangeEntry, kThresholdEntry, kBgParamEntry, kCalibrationUncertaintyEntry, kPeakTypeBox, kDegreeEntry, kPlotEfficiencyCheck, kPlotUncorrEfficiencyCheck, kPlotPeakAreaCheck, kPlotSummingInCheck, kPlotSummingOutCheck };
 
 public:
-   TEfficiencySourceTab(TEfficiencyCalibrator* parent, std::vector<TNucleus*> nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, const double& range, const double& threshold, TGHProgressBar* progressBar, const int& verboseLevel = 0);
-   ~TEfficiencySourceTab();
+   TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, std::vector<TNucleus*> nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, TGHProgressBar* progressBar, const int& verboseLevel = 0);
+   ~TEfficiencyDatatypeTab();
 
 	void CreateTabs();
    void MakeConnections();
    void Disconnect();
-
-	TEfficiencyTab::EPeakType PeakType() { if(fPeakTypeBox == nullptr) return TEfficiencyTab::EPeakType::kRWPeak; if(fVerboseLevel > 3) { std::cout<<"peak type box "<<fPeakTypeBox<<std::flush<<", getting selected "<<fPeakTypeBox->GetSelected()<<std::endl; } return static_cast<TEfficiencyTab::EPeakType>(fPeakTypeBox->GetSelected()); }
 
    void VerboseLevel(int val) { fVerboseLevel = val; for(auto& tab : fEfficiencyTab) { tab->VerboseLevel(val); } }
 
 	void Status(Int_t event, Int_t px, Int_t py, TObject* selected);
 	void DrawGraph();
 	void UpdateEfficiencyGraph();
+	void UpdatePeakType();
 	void FitEfficiency();
 	void FittingControl(Int_t id);
 
-	int Degree() { if(fDegreeEntry != nullptr) fDegree = fDegreeEntry->GetNumber(); return fDegree; }
+	int Degree();
 
 	TCalibrationGraphSet* EfficiencyGraph() { return fEfficiencyGraph; }
 
@@ -193,12 +179,7 @@ private:
 	std::vector<TNucleus*> fNucleus; ///< the source nuclei
    TEfficiencyCalibrator* fParent; ///< the parent of this tab
 	std::string fDataType; ///< data type of this tab
-	double fRange{10.}; ///< range of the fit (+- range)
-   double fThreshold{100.}; ///< the threshold (relative to the largest peak) under which peaks are ignored
-   int fBgParam{20}; ///< the bg parameter used to determine the background in the gamma spectra
    int fVerboseLevel{0}; ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
-	int fDegree{0}; ///< degree of fit function (0 = debertin form, 1 = radware form, everything else polynomial ln(e(E)) = sum i 0->8 a_i (ln(E))^i (Ryan's & Andrew's PhD theses)
-	double fCalibrationUncertainty{1.}; ///< calibration uncertainty (peaks are rejected if the centroid and energy difference is larger than centroid and energy uncertainties plus this)
 	TCalibrationGraphSet* fEfficiencyGraph{nullptr}; ///< the combined efficiency graph from all sources
 	TCalibrationGraphSet* fUncorrEfficiencyGraph{nullptr}; ///< the combined uncorrected efficiency graph from all sources
 	TCalibrationGraphSet* fPeakAreaGraph{nullptr}; ///< the combined peak area graph from all sources
@@ -239,7 +220,7 @@ public:
 	enum ESources { k22Na, k56Co, k60Co, k133Ba, k152Eu, k241Am	};
 	enum EEntry { kStartButton, kSourceBox = 100, kSigmaEntry = 200, kThresholdEntry = 300 };
 
-   TEfficiencyCalibrator(double range, double threshold, int n...);
+   TEfficiencyCalibrator(int n...);
 	~TEfficiencyCalibrator();
 
 	void SetSource(Int_t windowId, Int_t entryId);
@@ -250,6 +231,22 @@ public:
 	using TGWindow::HandleTimer;
 	void HandleTimer();
 	void SecondWindow();
+
+	static void Range(const double& val) { fRange = val; }
+	static void Threshold(const double& val) { fThreshold = val; }
+   static void BgParam(const int& val) { fBgParam = val; }
+	static void PeakType(const TEfficiencyTab::EPeakType& val) { fPeakType = val; }
+	static void Degree(const int& val) { fDegree = val; }
+	static void CalibrationUncertainty(const double& val) { fCalibrationUncertainty = val; }
+	static void ShowRemovedFits(const bool& val) { fShowRemovedFits = val; }
+
+	static double Range() { return fRange; }
+	static double Threshold() { return fThreshold; }
+   static int BgParam() { return fBgParam; }
+	static TEfficiencyTab::EPeakType PeakType() { return fPeakType; }
+	static int Degree() { return fDegree; }
+	static double CalibrationUncertainty() { return fCalibrationUncertainty; }
+	static bool ShowRemovedFits() { return fShowRemovedFits; }
 
 	static int LineHeight() { return fLineHeight; }
 	static int WindowWidth() { return fWindowWidth; }
@@ -271,13 +268,18 @@ private:
 	void DisconnectSecond();
 
 	int fVerboseLevel{4}; ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
-	double fRange{20.};
-	double fThreshold{100.};
+	static double fRange;
+	static double fThreshold;
+   static int fBgParam; ///< the bg parameter used to determine the background in the gamma spectra
+	static TEfficiencyTab::EPeakType fPeakType; ///< peak type used for fitting
+	static int fDegree; ///< degree of fit function (0 = debertin form, 1 = radware form, everything else polynomial ln(e(E)) = sum i 0->8 a_i (ln(E))^i (Ryan's & Andrew's PhD theses)
+	static double fCalibrationUncertainty; ///< calibration uncertainty (peaks are rejected if the centroid and energy difference is larger than centroid and energy uncertainties plus this)
+	static bool fShowRemovedFits; ///< flag to toggle whether removed fits are shown on the plot or not
 	std::vector<TFile*> fFiles;
 	std::vector<TNucleus*> fSources;
 	std::vector<std::string> fDataType; ///< type of each data set
 	std::vector<std::vector<std::tuple<TH1*, TH2*, TH2*>>> fHistograms; ///< for each type of data (suppressed, addback) in the file a vector with three histograms for each source
-	std::vector<TEfficiencySourceTab*> fEfficiencySourceTab;
+	std::vector<TEfficiencyDatatypeTab*> fEfficiencyDatatypeTab;
 	std::vector<TCalibrationGraphSet*> fEfficiencyGraph;
 	TFile* fOutput{nullptr};
 
@@ -289,7 +291,7 @@ private:
 	// graphic elements
 	std::vector<TGLabel*> fSourceLabel;
 	std::vector<TGComboBox*> fSourceBox;
-	TGTab*               fSourceTab{nullptr};
+	TGTab*               fDatatypeTab{nullptr};
 	TGHProgressBar*      fProgressBar{nullptr};
    TGTextButton*        fStartButton{nullptr};
 	
