@@ -32,7 +32,7 @@ public:
    TAB3Peak(Double_t centroid);
 
    void InitParNames() override;
-   void InitializeParameters(TH1* hist) override;
+   void InitializeParameters(TH1* hist, const double& rangeLow, const double& rangeHigh) override;
 
 	void Centroid(const Double_t& centroid) override;
 

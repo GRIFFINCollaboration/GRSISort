@@ -23,7 +23,12 @@
 ///
 /// \class TSinglePeak
 ///
-///  This class is used to fit things that resemble "peaks" in data
+/// This is the base class for anything that is used to fit 
+/// things that resemble "peaks" in data.
+/// Any derived classes must implement functions to 
+/// - initialize parameters and parameter names,
+/// - set the total function and peak function,
+/// The centroid of the peak should always be parameter 1.
 ///
 /////////////////////////////////////////////////////////////////
 class TPeakFitter;
@@ -36,7 +41,7 @@ public:
    TSinglePeak();
 
    virtual void InitParNames() {}
-   virtual void InitializeParameters(TH1* = nullptr) {}
+   virtual void InitializeParameters(TH1*, const double&, const double&) {}
    bool IsBackgroundParameter(const Int_t& par) const;
    bool IsPeakParameter(const Int_t& par) const;
    void SetListOfBGPar(std::vector<bool> list_of_bg_par) { fListOfBGPars = list_of_bg_par; }
