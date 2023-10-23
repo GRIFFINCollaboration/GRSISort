@@ -13,7 +13,7 @@
 
 #include "TObject.h"
 #include "TNamed.h"
-#include "TList.h"
+#include "TSortedList.h"
 
 /////////////////////////////////////////////////////////////////
 ///
@@ -60,17 +60,21 @@ public:
 	double GetEnergyFromBeta(double beta);
 	double GetBetaFromEnergy(double energy_MeV);
 
-	TTransition* GetTransition(Int_t idx);
+	TTransition* GetTransition(Int_t idx) { return GetTransitionByIntensity(idx); }
+	TTransition* GetTransitionByIntensity(Int_t idx);
+	TTransition* GetTransitionByEnergy(Int_t idx);
 
-	Int_t  NTransitions() const { return fTransitionList.GetSize(); };
-	Int_t  GetNTransitions() const { return fTransitionList.GetSize(); };
+	Int_t  NTransitions() const { return fTransitionListByIntensity.GetSize(); };
+	Int_t  GetNTransitions() const { return fTransitionListByIntensity.GetSize(); };
 	double GetRadius() const;
 	int    GetZfromSymbol(char*);
 
 	void Print(Option_t* opt = "") const override;
 	void WriteSourceFile(const std::string& outfilename = "");
 
-	const TList* GetTransitionList() const { return &fTransitionList; }
+	const TSortedList* GetTransitionList() const { return GetTransitionListByIntensity(); }
+	const TSortedList* GetTransitionListByIntensity() const { return &fTransitionListByIntensity; }
+	const TSortedList* GetTransitionListByEnergy() const { return &fTransitionListByEnergy; }
 
 	bool operator==(const TNucleus& rhs) const { return ((fA == rhs.fA) && (fN == rhs.fN) && (fZ == rhs.fZ)); }
 	bool operator!=(const TNucleus& rhs) const { return !(*this == rhs); }
@@ -85,7 +89,8 @@ private:
 	double      fMassExcess{0.};///< Mass excess (in MeV)
 	std::string fSymbol;        ///< Atomic symbol (ex. Ba, C, O, N)
 
-	TList fTransitionList;
+	TSortedList fTransitionListByIntensity;
+	TSortedList fTransitionListByEnergy;
 	bool  LoadTransitionFile();
 
    /// \cond CLASSIMP
