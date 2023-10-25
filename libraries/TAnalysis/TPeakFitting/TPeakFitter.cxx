@@ -111,7 +111,7 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t *opt)
 	ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2", "Combination");
 	TVirtualFitter::SetMaxIterations(100000);
 	TVirtualFitter::SetPrecision(1e-4);
-	if(!fTotalFitFunction) {
+	if(fTotalFitFunction == nullptr) {
 		fTotalFitFunction = new TF1("total_fit",this,&TPeakFitter::FitFunction,fRangeLow,fRangeHigh,GetNParameters(),"TPeakFitter","FitFunction");
 	}
 	fTotalFitFunction->SetLineColor(kMagenta+fIndex);
@@ -139,6 +139,7 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t *opt)
 			// fit again with all parameters released
 			if(!quiet) std::cout<<GREEN<<"Re-fitting with released parameters (without any limits)"<<RESET_COLOR<<std::endl;
 			for(int i = 0; i < fTotalFitFunction->GetNpar(); ++i) {
+				if(i == 1) continue; // skipping centroid, which should always be parameter 1
 				fTotalFitFunction->ReleaseParameter(i);
 			}
 			fit_res = fit_hist->Fit(fTotalFitFunction,Form("SRI%s",options.Data()));
@@ -196,7 +197,6 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
 		bool goodCovarianceMatrix = true;
 		if(covariance_matrix.GetNrows() < peak_func->GetNpar() || covariance_matrix.GetNcols() < peak_func->GetNpar()) {
 			goodCovarianceMatrix = false;
-			std::cout<<covariance_matrix.GetNrows()<<" < "<<peak_func->GetNpar()<<" || "<<covariance_matrix.GetNcols()<<" < "<<peak_func->GetNpar()<<" => not a good covariance matrix"<<std::endl;
 		}
 		//Now we need to remove all of the parts of the covariance peak that has nothing to do with this particular peak
 		//This would be the diagonals of the background, and all of the other peaks.
@@ -220,7 +220,7 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
 				peak_func->SetRange(low_range,high_range);
 			}
 		}
-		//We have no taken care to zero all of the non-peak parameters in the peak list, so we want to remove the total background contribution
+		//We have now taken care to zero all of the non-peak parameters in the peak list, so we want to remove the total background contribution
 		for(int i = param_to_zero_counter; i < fTotalFitFunction->GetNpar(); ++i) {
 			param_to_zero_list.push_back(i);
 		}
@@ -268,7 +268,7 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
 void TPeakFitter::InitializeParameters(TH1* fit_hist)
 {
 	for(auto p_it : fPeaksToFit) {
-		p_it->InitializeParameters(fit_hist);
+		p_it->InitializeParameters(fit_hist, fRangeLow, fRangeHigh);
 	}
 }
 

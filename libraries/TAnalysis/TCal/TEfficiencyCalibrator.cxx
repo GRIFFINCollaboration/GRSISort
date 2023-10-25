@@ -16,8 +16,8 @@
 #include "TRedirect.h"
 
 //////////////////////////////////////// TEfficiencyTab ////////////////////////////////////////
-TEfficiencyTab::TEfficiencyTab(TEfficiencySourceTab* parent, TNucleus* nucleus, std::tuple<TH1*, TH2*, TH2*> hists, TGCompositeFrame* frame, const double& range, const double& threshold, const int& bgParam, const int& verboseLevel)
-   : fFrame(frame), fNucleus(nucleus), fParent(parent), fRange(range), fThreshold(threshold), fBgParam(bgParam), fVerboseLevel(verboseLevel)
+TEfficiencyTab::TEfficiencyTab(TEfficiencyDatatypeTab* parent, TNucleus* nucleus, std::tuple<TH1*, TH2*, TH2*> hists, TGCompositeFrame* frame, const int& verboseLevel)
+   : fFrame(frame), fNucleus(nucleus), fParent(parent), fVerboseLevel(verboseLevel)
 {
 	fSingles    = std::get<0>(hists);
 	fSummingOut = std::get<1>(hists); // name *180Corr
@@ -59,14 +59,13 @@ void TEfficiencyTab::FindPeaks()
 	
 	if(fVerboseLevel > 3) {
 		std::cout<<__PRETTY_FUNCTION__<<std::endl;
-		std::cout<<"Using parent "<<fParent<<" and transition list "<<fNucleus->GetTransitionList()<<std::endl;
-		fNucleus->GetTransitionList()->Print();
-		std::cout<<"Using parent "<<fParent<<std::flush<<", trying to get peak type "<<fParent->PeakType()<<std::endl;
+		std::cout<<"Using parent "<<fParent<<" and transition list "<<fNucleus->GetTransitionListByEnergy()<<std::endl;
+		fNucleus->GetTransitionListByEnergy()->Print();
+		std::cout<<"Using parent "<<fParent<<std::flush<<", trying to get peak type "<<TEfficiencyCalibrator::PeakType()<<std::endl;
 	}
 	fProjectionCanvas->GetCanvas()->cd();
-	fPeakType = fParent->PeakType();
 	if(fVerboseLevel > 3) {
-		std::cout<<"Got peak type "<<fPeakType<<", getting projection from "<<fSummingOut->GetName()<<std::endl;
+		std::cout<<"Got peak type "<<TEfficiencyCalibrator::PeakType()<<", getting projection from "<<fSummingOut->GetName()<<std::endl;
 	}
 	fSummingOutTotalProj = fSummingOut->ProjectionY();
 	if(fVerboseLevel > 2) {
@@ -76,95 +75,124 @@ void TEfficiencyTab::FindPeaks()
 	if(fVerboseLevel > 3) {
 		std::cout<<"Got projection "<<fSummingOutTotalProj<<", getting background from "<<fSummingOutTotalProj->GetName()<<std::endl;
 	}
-	fSummingOutTotalProjBg = fSummingOutTotalProj->ShowBackground(fBgParam);
+	fSummingOutTotalProjBg = fSummingOutTotalProj->ShowBackground(TEfficiencyCalibrator::BgParam());
 	if(fVerboseLevel > 2) {
 		std::cout<<"Writing '"<<fSummingOutTotalProjBg->GetName()<<"' to '"<<gDirectory->GetName()<<"'"<<std::endl;
 	}
 	fSummingOutTotalProjBg->Write(nullptr, TObject::kOverwrite);
 	// loop through all gamma-rays of the source
-	for(TObject* obj : *(fNucleus->GetTransitionList())) {
-		auto transition = static_cast<TTransition*>(obj);
+	// TODO: combine ranges if peak ranges overlap
+	// probably need to: change loop to using size and ->At(index), plus extra loop that finds all peaks within the range
+	// maybe also change the creation of the peak to either a function or using TClass::New()
+	for(int t = 0; t < fNucleus->GetTransitionListByEnergy()->GetSize(); ++t) {
+		auto transition = static_cast<TTransition*>(fNucleus->GetTransitionListByEnergy()->At(t));
 		auto energy = transition->GetEnergy();
+		if(energy > fSingles->GetXaxis()->GetXmax()) {
+			// need to check if we also want to reject peaks whose fit range is partially outside the range of the histogram
+			std::cout<<"Skipping peak at "<<energy<<" keV of "<<fNucleus->GetA()<<fNucleus->GetSymbol()<<", maximum range of histogram is "<<fSingles->GetXaxis()->GetXmax()<<std::endl;
+			continue;
+		}
 		if(fVerboseLevel > 3) {
-			std::cout<<"Fitting peak at "<<energy<<" keV, using range "<<energy-fRange<<", "<<energy+fRange<<" peak type "<<fPeakType<<" singles histogram "<<fSingles->GetName()<<std::endl;
+			std::cout<<"Fitting peak at "<<energy<<" keV, using range "<<energy-TEfficiencyCalibrator::Range()<<", "<<energy+TEfficiencyCalibrator::Range()<<" peak type "<<TEfficiencyCalibrator::PeakType()<<" singles histogram "<<fSingles->GetName()<<std::endl;
 		}
 		fPeakFitter.RemoveAllPeaks();
 		fPeakFitter.ResetInitFlag();
-		fPeakFitter.SetRange(energy - fRange, energy + fRange);
-		TSinglePeak* peak;
-		switch(fPeakType) {
-			case kRWPeak:
-				peak = new TRWPeak(energy);
-				break;
-			case kABPeak:
-				peak = new TABPeak(energy);
-				break;
-			case kAB3Peak:
-				peak = new TAB3Peak(energy);
-				break;
-			case kGauss:
-				peak = new TGauss(energy);
-				break;
-			default:
-				std::cerr<<"Unknow peak type "<<fPeakType<<", defaulting to TRWPeak!"<<std::endl;
-				peak = new TRWPeak(energy);
-		}
-		fPeakFitter.AddPeak(peak);
-		//peak->SetArea(fSingles->Integral(fSingles->GetXaxis()->FindBin(energy-2.), fSingles->GetXaxis()->FindBin(energy+2.)));
-		std::cout<<"---------------------------------------- Fitting peak at "<<energy<<" from "<<energy-fRange<<" to "<<energy+fRange<<std::endl;
-		fPeakFitter.Fit(fSingles, "retryfit");
-		if(peak->Area() < fThreshold) {
-			if(fVerboseLevel > 2) {
-				std::cout<<"Skipping peak at "<<energy<<" keV with centroid "<<peak->Centroid()<<", FWHM "<<peak->FWHM()<<", and area "<<peak->Area()<<std::endl;
-			}
-			continue;
-		}
-		// increase number of points of fit function
-		fPeakFitter.GetFitFunction()->SetNpx(1000);
-		peak->GetPeakFunction()->SetNpx(1000);
-		double fwhm = peak->FWHM();
-		double centroid = peak->Centroid();
-		double centroidErr = peak->CentroidErr();
-		if(fVerboseLevel > 3) {
-			std::cout<<"Got centroid "<<centroid<<" keV, FWHM "<<fwhm<<":"<<std::endl;
-		}
-		if(fVerboseLevel > 2) {
-			std::cout<<"Writing '"<<Form("%s_%.0fkeV", fSingles->GetName(), energy)<<"' to '"<<gDirectory->GetName()<<"'"<<std::endl;
-		}
-		fSingles->Write(Form("%s_%.0fkeV", fSingles->GetName(), energy), TObject::kOverwrite);
-		// for summing in we need to estimate the background and subtract that from the integral
-		fSummingInProj.push_back(fSummingIn->ProjectionY(Form("%s_%.0f_to_%.0f", fSummingIn->GetName(), centroid-fwhm/2., centroid+fwhm/2.), fSummingIn->GetXaxis()->FindBin(centroid-fwhm/2.), fSummingIn->GetXaxis()->FindBin(centroid+fwhm/2.)));
-		fSummingInProjBg.push_back(fSummingInProj.back()->ShowBackground(fBgParam));
-		if(fVerboseLevel > 2) {
-			std::cout<<"Writing '"<<Form("%s_%.0fkeV", fSummingInProj.back()->GetName(), energy)<<"' and '"<<Form("%s_%.0fkeV", fSummingInProjBg.back()->GetName(), energy)<<"' to '"<<gDirectory->GetName()<<"'"<<std::endl;
-		}
-		double summingIn = fSummingInProj.back()->Integral() - fSummingInProjBg.back()->Integral();
-		fSummingInProj.back()->Write(Form("%s_%.0fkeV", fSummingInProj.back()->GetName(), energy), TObject::kOverwrite);
-		fSummingInProjBg.back()->Write(Form("%s_%.0fkeV", fSummingInProjBg.back()->GetName(), energy), TObject::kOverwrite);
-		// for summing out we need to do a background subtraction - to make this easier we just use a total projection and scale it according to the bg integral?
-		fSummingOutProj.push_back(fSummingOut->ProjectionY(Form("%s_%.0f_to_%.0f", fSummingOut->GetName(), centroid-fwhm/2., centroid+fwhm/2.), fSummingOut->GetXaxis()->FindBin(centroid-fwhm/2.), fSummingOut->GetXaxis()->FindBin(centroid+fwhm/2.)));
-		double ratio = fSummingOutTotalProjBg->Integral(fSummingOutTotalProjBg->GetXaxis()->FindBin(centroid-fwhm/2.), fSummingOutTotalProjBg->GetXaxis()->FindBin(centroid+fwhm/2.))/fSummingOutTotalProjBg->Integral();
-		double summingOut = fSummingOutProj.back()->Integral() - fSummingOutTotalProj->Integral()*ratio;
-		if(fVerboseLevel > 2) {
-			std::cout<<"Writing '"<<Form("%s_%.0fkeV", fSummingOutProj.back()->GetName(), energy)<<"' to '"<<gDirectory->GetName()<<"'"<<std::endl;
-		}
-		fSummingOutProj.back()->Write(Form("%s_%.0fkeV", fSummingOutProj.back()->GetName(), energy), TObject::kOverwrite);
-		auto hist = static_cast<TH1*>(fSummingOutProj.back()->Clone(Form("%s_subtracted_%.0f", fSummingOutProj.back()->GetName(), 1000000*ratio)));
-		hist->Add(fSummingOutTotalProj, -ratio);
-		if(fVerboseLevel > 2) {
-			std::cout<<"Writing '"<<hist->GetName()<<"' to '"<<gDirectory->GetName()<<"'"<<std::endl;
-		}
-		hist->Write(nullptr, TObject::kOverwrite);
 
-		double correctedArea = peak->Area() - summingIn + summingOut;
-		// uncertainties for summing in and summing out is sqrt(N) (?)
-		double correctedAreaErr = TMath::Sqrt(TMath::Power(peak->AreaErr(), 2) + summingIn + summingOut);
-		if(fVerboseLevel > 3) {
-			std::cout<<"Got summingIn "<<summingIn<<", ratio "<<ratio<<", summingOut "<<summingOut<<", correctedArea "<<correctedArea<<" +- "<<correctedAreaErr<<std::endl;
+		std::vector<TSinglePeak*> peaks;
+		peaks.push_back(NewPeak(energy));
+		double lastEnergy = energy;
+		for(int t2 = t+1; t2 < fNucleus->GetTransitionListByEnergy()->GetSize(); ++t2) {
+			auto transition2 = static_cast<TTransition*>(fNucleus->GetTransitionListByEnergy()->At(t2));
+			auto energy2 = transition2->GetEnergy();
+			if(lastEnergy + TEfficiencyCalibrator::Range() > energy2 - TEfficiencyCalibrator::Range()) {
+				if(fVerboseLevel > 2) {
+					std::cout<<t<<". peak: Found "<<peaks.size()<<". overlapping peak for "<<lastEnergy<<", and "<<energy2<<" with range "<<TEfficiencyCalibrator::Range()<<std::endl;
+				}
+				// peak ranges overlap, so we add this peak to the fit, skip it in the main loop, and update lastEnergy to refer to it instead
+				peaks.push_back(NewPeak(energy2));
+				++t;
+				lastEnergy = energy2;
+			} else {
+				// list of transitions is sorted by energy, so all others will be outside the range as well
+				if(fVerboseLevel > 2) {
+					std::cout<<t<<". peak: Found "<<peaks.size()<<". overlapping peaks, stopping here with "<<lastEnergy<<", and "<<energy2<<" with range "<<TEfficiencyCalibrator::Range()<<std::endl;
+				}
+				break;
+			}
 		}
-		fPeaks.push_back(std::make_tuple(transition, centroid, centroidErr, correctedArea, correctedAreaErr, peak->Area(), peak->AreaErr(), summingIn, summingOut));
-		fFitFunctions.push_back(fPeakFitter.GetFitFunction()->Clone(Form("fit_%.1f", energy)));
+
+		fPeakFitter.SetRange(energy - TEfficiencyCalibrator::Range(), lastEnergy + TEfficiencyCalibrator::Range());
+		for(auto& peak : peaks) {
+			fPeakFitter.AddPeak(peak);
+		}
+		std::cout<<"---------------------------------------- Fitting peak(s) at "<<energy<<"/"<<lastEnergy<<" from "<<energy-TEfficiencyCalibrator::Range()<<" to "<<energy+TEfficiencyCalibrator::Range()<<std::endl;
+		fPeakFitter.Print();
+		fPeakFitter.PrintParameters();
+		fPeakFitter.Fit(fSingles, "retryfit");
+		for(auto& peak : peaks) {
+			if(fVerboseLevel > 2) {
+				std::cout<<"================================================================================"<<std::endl;
+				std::cout<<"Got centroid "<<peak->Centroid()<<" +- "<<peak->CentroidErr()<<" ("<<100*peak->CentroidErr()/peak->Centroid()<<" %), area "<<peak->Area()<<" +- "<<peak->AreaErr()<<" ("<<100*peak->AreaErr()/peak->Area()<<" %), FWHM "<<peak->FWHM()<<", red. chi sq. "<<peak->GetReducedChi2()<<std::endl;
+			}
+			if(peak->Area() < TEfficiencyCalibrator::Threshold() || peak->CentroidErr() > peak->Centroid() || peak->AreaErr() > peak->Area() || std::isnan(peak->Centroid()) || std::isnan(peak->Area()) || std::isnan(peak->CentroidErr()) || std::isnan(peak->AreaErr())) {
+				if(fVerboseLevel > 2) {
+					std::cout<<"Skipping peak at "<<energy<<" keV with centroid "<<peak->Centroid()<<" +- "<<peak->CentroidErr()<<" ("<<100*peak->CentroidErr()/peak->Centroid()<<" %), FWHM "<<peak->FWHM()<<", and area "<<peak->Area()<<" +- "<<peak->AreaErr()<<" ("<<100*peak->AreaErr()/peak->Area()<<" %)"<<std::endl;
+					std::cout<<"================================================================================"<<std::endl;
+				}
+				fRemovedFitFunctions.push_back(fPeakFitter.GetFitFunction()->Clone(Form("removed_fit_%.1f", peak->Centroid())));
+				continue;
+			}
+			if(fVerboseLevel > 2) {
+				std::cout<<"================================================================================"<<std::endl;
+			}
+			// increase number of points of fit function
+			fPeakFitter.GetFitFunction()->SetNpx(1000);
+			peak->GetPeakFunction()->SetNpx(1000);
+			double fwhm = peak->FWHM();
+			double centroid = peak->Centroid();
+			double centroidErr = peak->CentroidErr();
+			if(fVerboseLevel > 3) {
+				std::cout<<"Got centroid "<<centroid<<" keV, FWHM "<<fwhm<<":"<<std::endl;
+			}
+			if(fVerboseLevel > 2) {
+				std::cout<<"Writing '"<<Form("%s_%.0fkeV", fSingles->GetName(), centroid)<<"' to '"<<gDirectory->GetName()<<"'"<<std::endl;
+			}
+			fSingles->Write(Form("%s_%.0fkeV", fSingles->GetName(), centroid), TObject::kOverwrite);
+			// for summing in we need to estimate the background and subtract that from the integral
+			fSummingInProj.push_back(fSummingIn->ProjectionY(Form("%s_%.0f_to_%.0f", fSummingIn->GetName(), centroid-fwhm/2., centroid+fwhm/2.), fSummingIn->GetXaxis()->FindBin(centroid-fwhm/2.), fSummingIn->GetXaxis()->FindBin(centroid+fwhm/2.)));
+			fSummingInProjBg.push_back(fSummingInProj.back()->ShowBackground(TEfficiencyCalibrator::BgParam()));
+			if(fVerboseLevel > 2) {
+				std::cout<<"Writing '"<<Form("%s_%.0fkeV", fSummingInProj.back()->GetName(), centroid)<<"' and '"<<Form("%s_%.0fkeV", fSummingInProjBg.back()->GetName(), centroid)<<"' to '"<<gDirectory->GetName()<<"'"<<std::endl;
+			}
+			double summingIn = fSummingInProj.back()->Integral() - fSummingInProjBg.back()->Integral();
+			fSummingInProj.back()->Write(Form("%s_%.0fkeV", fSummingInProj.back()->GetName(), centroid), TObject::kOverwrite);
+			fSummingInProjBg.back()->Write(Form("%s_%.0fkeV", fSummingInProjBg.back()->GetName(), centroid), TObject::kOverwrite);
+			// for summing out we need to do a background subtraction - to make this easier we just use a total projection and scale it according to the bg integral?
+			fSummingOutProj.push_back(fSummingOut->ProjectionY(Form("%s_%.0f_to_%.0f", fSummingOut->GetName(), centroid-fwhm/2., centroid+fwhm/2.), fSummingOut->GetXaxis()->FindBin(centroid-fwhm/2.), fSummingOut->GetXaxis()->FindBin(centroid+fwhm/2.)));
+			double ratio = fSummingOutTotalProjBg->Integral(fSummingOutTotalProjBg->GetXaxis()->FindBin(centroid-fwhm/2.), fSummingOutTotalProjBg->GetXaxis()->FindBin(centroid+fwhm/2.))/fSummingOutTotalProjBg->Integral();
+			double summingOut = fSummingOutProj.back()->Integral() - fSummingOutTotalProj->Integral()*ratio;
+			if(fVerboseLevel > 2) {
+				std::cout<<"Writing '"<<Form("%s_%.0fkeV", fSummingOutProj.back()->GetName(), centroid)<<"' to '"<<gDirectory->GetName()<<"'"<<std::endl;
+			}
+			fSummingOutProj.back()->Write(Form("%s_%.0fkeV", fSummingOutProj.back()->GetName(), centroid), TObject::kOverwrite);
+			auto hist = static_cast<TH1*>(fSummingOutProj.back()->Clone(Form("%s_subtracted_%.0f", fSummingOutProj.back()->GetName(), 1000000*ratio)));
+			hist->Add(fSummingOutTotalProj, -ratio);
+			if(fVerboseLevel > 2) {
+				std::cout<<"Writing '"<<hist->GetName()<<"' to '"<<gDirectory->GetName()<<"'"<<std::endl;
+			}
+			hist->Write(nullptr, TObject::kOverwrite);
+
+			double correctedArea = peak->Area() - summingIn + summingOut;
+			// uncertainties for summing in and summing out is sqrt(N) (?)
+			double correctedAreaErr = TMath::Sqrt(TMath::Power(peak->AreaErr(), 2) + summingIn + summingOut);
+			if(fVerboseLevel > 3) {
+				std::cout<<"Got summingIn "<<summingIn<<", ratio "<<ratio<<", summingOut "<<summingOut<<", correctedArea "<<correctedArea<<" +- "<<correctedAreaErr<<std::endl;
+			}
+			fPeaks.push_back(std::make_tuple(transition, centroid, centroidErr, correctedArea, correctedAreaErr, peak->Area(), peak->AreaErr(), summingIn, summingOut));
+			fFitFunctions.push_back(fPeakFitter.GetFitFunction()->Clone(Form("fit_%.1f", centroid)));
+		}
 	}
+
 	Redraw();
 	if(fVerboseLevel > 3) {
 		std::cout<<"Unsorted peak vector:";
@@ -179,12 +207,40 @@ void TEfficiencyTab::FindPeaks()
 	}
 }
 
+TSinglePeak* TEfficiencyTab::NewPeak(const double& energy)
+{
+	switch(TEfficiencyCalibrator::PeakType()) {
+		case kRWPeak:
+			return new TRWPeak(energy);
+			break;
+		case kABPeak:
+			return new TABPeak(energy);
+			break;
+		case kAB3Peak:
+			return new TAB3Peak(energy);
+			break;
+		case kGauss:
+			return new TGauss(energy);
+			break;
+		default:
+			std::cerr<<"Unknow peak type "<<TEfficiencyCalibrator::PeakType()<<", defaulting to TRWPeak!"<<std::endl;
+			return new TRWPeak(energy);
+	}
+}
+
 void TEfficiencyTab::Redraw()
 {
 	fProjectionCanvas->GetCanvas()->cd();
 	fSingles->GetListOfFunctions()->Clear();
 	for(auto& fit : fFitFunctions) {
+		static_cast<TF1*>(fit)->SetLineColor(2); // red line color for fits
 		fSingles->GetListOfFunctions()->Add(fit);
+	}
+	if(TEfficiencyCalibrator::ShowRemovedFits()) {
+		for(auto& fit : fRemovedFitFunctions) {
+			static_cast<TF1*>(fit)->SetLineColor(15); // grey line color for removed fits
+			fSingles->GetListOfFunctions()->Add(fit);
+		}
 	}
 	fSingles->Draw();
 	fProjectionCanvas->GetCanvas()->Modified();
@@ -206,9 +262,9 @@ void TEfficiencyTab::Status(Int_t, Int_t px, Int_t py, TObject* selected)
 	fStatusBar->SetText(selected->GetObjectInfo(px, py), 1);
 }
 
-//////////////////////////////////////// TEfficiencySourceTab ////////////////////////////////////////
-TEfficiencySourceTab::TEfficiencySourceTab(TEfficiencyCalibrator* parent, std::vector<TNucleus*> nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, const double& range, const double& threshold, TGHProgressBar* progressBar, const int& verboseLevel)
-   : fFrame(frame), fNucleus(nucleus), fParent(parent), fDataType(dataType), fRange(range), fThreshold(threshold), fVerboseLevel(verboseLevel)
+//////////////////////////////////////// TEfficiencyDatatypeTab ////////////////////////////////////////
+TEfficiencyDatatypeTab::TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, std::vector<TNucleus*> nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, TGHProgressBar* progressBar, const int& verboseLevel)
+   : fFrame(frame), fNucleus(nucleus), fParent(parent), fDataType(dataType), fVerboseLevel(verboseLevel)
 {
 	if(fVerboseLevel > 1) {
 		std::cout<<"======================================== creating tab for data type "<<dataType<<std::endl;
@@ -230,19 +286,19 @@ TEfficiencySourceTab::TEfficiencySourceTab(TEfficiencyCalibrator* parent, std::v
 	fDataTab = new TGTab(fLeftFrame, TEfficiencyCalibrator::WindowWidth()/2, 500);
 	fEfficiencyTab.resize(hists.size(), nullptr);
 	for(size_t i = 0; i < hists.size(); ++i) {
-		if(fVerboseLevel > 2) std::cout<<i<<": Creating efficiency tab using "<<fNucleus[i]<<" = "<<fNucleus[i]->GetName()<<", "<<std::get<0>(hists[i])->GetName()<<", "<<std::get<1>(hists[i])->GetName()<<", "<<std::get<2>(hists[i])->GetName()<<", "<<fRange<<", "<<fThreshold<<", "<<fBgParam<<std::endl;
-		fEfficiencyTab[i] = new TEfficiencyTab(this, fNucleus[i], hists[i], fDataTab->AddTab(fNucleus[i]->GetName()), fRange, fThreshold, fBgParam, fVerboseLevel);
+		if(fVerboseLevel > 2) std::cout<<i<<": Creating efficiency tab using "<<fNucleus[i]<<" = "<<fNucleus[i]->GetName()<<", "<<std::get<0>(hists[i])->GetName()<<", "<<std::get<1>(hists[i])->GetName()<<", "<<std::get<2>(hists[i])->GetName()<<", "<<TEfficiencyCalibrator::Range()<<", "<<TEfficiencyCalibrator::Threshold()<<", "<<TEfficiencyCalibrator::BgParam()<<std::endl;
+		fEfficiencyTab[i] = new TEfficiencyTab(this, fNucleus[i], hists[i], fDataTab->AddTab(fNucleus[i]->GetName()), fVerboseLevel);
 		progressBar->Increment(1);
 	}
 
 	fFittingParameterFrame = new TGGroupFrame(fLeftFrame, "Fitting Parameters", kHorizontalFrame);
 	fFittingParameterFrame->SetLayoutManager(new TGTableLayout(fFittingParameterFrame, 2, 4, false, 5)); // rows, columns, not homogenous cell sizes, 5 = interval between frames in pixel
 	fRangeLabel = new TGLabel(fFittingParameterFrame, "Range");
-	fRangeEntry = new TGNumberEntry(fFittingParameterFrame, fRange, 5, kRangeEntry, TGNumberFormat::EStyle::kNESRealTwo, TGNumberFormat::EAttribute::kNEAPositive);
+	fRangeEntry = new TGNumberEntry(fFittingParameterFrame, TEfficiencyCalibrator::Range(), 5, kRangeEntry, TGNumberFormat::EStyle::kNESRealTwo, TGNumberFormat::EAttribute::kNEAPositive);
 	fBgParamLabel = new TGLabel(fFittingParameterFrame, "BG Parameter");
-	fBgParamEntry = new TGNumberEntry(fFittingParameterFrame, fBgParam, 5, kBgParamEntry, TGNumberFormat::EStyle::kNESRealTwo, TGNumberFormat::EAttribute::kNEAPositive);
+	fBgParamEntry = new TGNumberEntry(fFittingParameterFrame, TEfficiencyCalibrator::BgParam(), 5, kBgParamEntry, TGNumberFormat::EStyle::kNESRealTwo, TGNumberFormat::EAttribute::kNEAPositive);
 	fThresholdLabel = new TGLabel(fFittingParameterFrame, "Threshold");
-	fThresholdEntry = new TGNumberEntry(fFittingParameterFrame, fThreshold, 5, kThresholdEntry, TGNumberFormat::EStyle::kNESRealThree, TGNumberFormat::EAttribute::kNEAPositive);
+	fThresholdEntry = new TGNumberEntry(fFittingParameterFrame, TEfficiencyCalibrator::Threshold(), 5, kThresholdEntry, TGNumberFormat::EStyle::kNESRealThree, TGNumberFormat::EAttribute::kNEAPositive);
 	fPeakTypeBox = new TGComboBox(fFittingParameterFrame, kPeakTypeBox);
 	fPeakTypeBox->AddEntry("Radware", TEfficiencyTab::EPeakType::kRWPeak); 
 	fPeakTypeBox->AddEntry("Addback", TEfficiencyTab::EPeakType::kABPeak); 
@@ -250,7 +306,7 @@ TEfficiencySourceTab::TEfficiencySourceTab(TEfficiencyCalibrator* parent, std::v
 	fPeakTypeBox->AddEntry("Gaussian", TEfficiencyTab::EPeakType::kGauss); 
 	fPeakTypeBox->SetMinHeight(200);
 	fPeakTypeBox->Resize(100, TEfficiencyCalibrator::LineHeight());
-	fPeakTypeBox->Select(0); // select radware-style peak as default
+	fPeakTypeBox->Select(TEfficiencyCalibrator::PeakType());
 	fFittingControlGroup = new TGHButtonGroup(fFittingParameterFrame, "");
 	fRefitButton = new TGTextButton(fFittingControlGroup, "Refit this source");
 	fRefitAllButton = new TGTextButton(fFittingControlGroup, "Refit all sources");
@@ -275,10 +331,10 @@ TEfficiencySourceTab::TEfficiencySourceTab(TEfficiencyCalibrator* parent, std::v
    fStatusBar->SetParts(parts, 2);
 	fGraphParameterFrame = new TGGroupFrame(fRightFrame, "Graph Parameters", kHorizontalFrame);
 	fGraphParameterFrame->SetLayoutManager(new TGTableLayout(fGraphParameterFrame, 3, 4, false, 5)); // rows, columns, not homogenous cell sizes, 5 = interval between frames in pixel
-	fDegreeEntry = new TGNumberEntry(fGraphParameterFrame, fDegree, 2, kDegreeEntry, TGNumberFormat::EStyle::kNESInteger);
+	fDegreeEntry = new TGNumberEntry(fGraphParameterFrame, TEfficiencyCalibrator::Degree(), 2, kDegreeEntry, TGNumberFormat::EStyle::kNESInteger);
 	fDegreeLabel = new TGLabel(fGraphParameterFrame, "Type of efficiency curve");
 	fCalibrationUncertaintyLabel = new TGLabel(fGraphParameterFrame, "Calibration Uncertainty");
-	fCalibrationUncertaintyEntry = new TGNumberEntry(fGraphParameterFrame, fCalibrationUncertainty, 5, kCalibrationUncertaintyEntry, TGNumberFormat::EStyle::kNESRealOne, TGNumberFormat::EAttribute::kNEAPositive);
+	fCalibrationUncertaintyEntry = new TGNumberEntry(fGraphParameterFrame, TEfficiencyCalibrator::CalibrationUncertainty(), 5, kCalibrationUncertaintyEntry, TGNumberFormat::EStyle::kNESRealOne, TGNumberFormat::EAttribute::kNEAPositive);
 	fPlotOptionFrame = new TGGroupFrame(fGraphParameterFrame, "Plot Selection", kHorizontalFrame);
 	fPlotOptionFrame->SetLayoutManager(new TGTableLayout(fPlotOptionFrame, 2, 3, false, 5)); // rows, columns, not homogenous cell sizes, 5 = interval between frames in pixel
 	fPlotEfficiencyCheck = new TGCheckButton(fPlotOptionFrame, "Efficiency", kPlotEfficiencyCheck);
@@ -324,27 +380,28 @@ TEfficiencySourceTab::TEfficiencySourceTab(TEfficiencyCalibrator* parent, std::v
 	}
 }
 
-TEfficiencySourceTab::~TEfficiencySourceTab()
+TEfficiencyDatatypeTab::~TEfficiencyDatatypeTab()
 {
 	fMainDirectory->cd();
 }
 
-void TEfficiencySourceTab::MakeConnections()
+void TEfficiencyDatatypeTab::MakeConnections()
 {
-   fFittingControlGroup->Connect("Clicked(Int_t)", "TEfficiencySourceTab", this, "FittingControl(Int_t)");
-	fPlotEfficiencyCheck->Connect("Clicked()", "TEfficiencySourceTab", this, "DrawGraph()");
-	fPlotUncorrEfficiencyCheck->Connect("Clicked()", "TEfficiencySourceTab", this, "DrawGraph()");
-	fPlotPeakAreaCheck->Connect("Clicked()", "TEfficiencySourceTab", this, "DrawGraph()");
-	fPlotSummingInCheck->Connect("Clicked()", "TEfficiencySourceTab", this, "DrawGraph()");
-	fPlotSummingOutCheck->Connect("Clicked()", "TEfficiencySourceTab", this, "DrawGraph()");
-   fRecalculateButton->Connect("Clicked()", "TEfficiencySourceTab", this, "DrawGraph()");
-	fEfficiencyCanvas->GetCanvas()->Connect("ProcessedEvent(Int_t, Int_t, Int_t, TObject*)", "TEfficiencySourceTab", this, "Status(Int_t, Int_t, Int_t, TObject*)");
+   fFittingControlGroup->Connect("Clicked(Int_t)", "TEfficiencyDatatypeTab", this, "FittingControl(Int_t)");
+	fPlotEfficiencyCheck->Connect("Clicked()", "TEfficiencyDatatypeTab", this, "DrawGraph()");
+	fPlotUncorrEfficiencyCheck->Connect("Clicked()", "TEfficiencyDatatypeTab", this, "DrawGraph()");
+	fPlotPeakAreaCheck->Connect("Clicked()", "TEfficiencyDatatypeTab", this, "DrawGraph()");
+	fPlotSummingInCheck->Connect("Clicked()", "TEfficiencyDatatypeTab", this, "DrawGraph()");
+	fPlotSummingOutCheck->Connect("Clicked()", "TEfficiencyDatatypeTab", this, "DrawGraph()");
+   fRecalculateButton->Connect("Clicked()", "TEfficiencyDatatypeTab", this, "DrawGraph()");
+	fEfficiencyCanvas->GetCanvas()->Connect("ProcessedEvent(Int_t, Int_t, Int_t, TObject*)", "TEfficiencyDatatypeTab", this, "Status(Int_t, Int_t, Int_t, TObject*)");
 	for(auto& tab : fEfficiencyTab) {
 		tab->MakeConnections();
 	}
+	fPeakTypeBox->Connect("Selected(Int_t)", "TEfficiencyDatatypeTab", this, "UpdatePeakType()");
 }
 
-void TEfficiencySourceTab::Disconnect()
+void TEfficiencyDatatypeTab::Disconnect()
 {
    fFittingControlGroup->Disconnect("Clicked(Int_t)", this, "FittingControl(Int_t)");
    fPlotEfficiencyCheck->Disconnect("Clicked()", this, "DrawGraph()");
@@ -359,13 +416,13 @@ void TEfficiencySourceTab::Disconnect()
 	}
 }
 
-void TEfficiencySourceTab::Status(Int_t, Int_t px, Int_t py, TObject* selected)
+void TEfficiencyDatatypeTab::Status(Int_t, Int_t px, Int_t py, TObject* selected)
 {
 	fStatusBar->SetText(selected->GetName(), 0);
 	fStatusBar->SetText(selected->GetObjectInfo(px, py), 1);
 }
 
-void TEfficiencySourceTab::DrawGraph()
+void TEfficiencyDatatypeTab::DrawGraph()
 {
 	ReadValues();
 	UpdateEfficiencyGraph();
@@ -439,7 +496,7 @@ void TEfficiencySourceTab::DrawGraph()
 	fEfficiencyCanvas->GetCanvas()->Modified();
 }
 
-void TEfficiencySourceTab::UpdateEfficiencyGraph()
+void TEfficiencyDatatypeTab::UpdateEfficiencyGraph()
 {
 	if(fMainDirectory == nullptr) {
 		std::cout<<"No main directory open ("<<fMainDirectory<<"), sub directory is "<<fSubDirectory<<", gDirectory is "<<gDirectory->GetName()<<std::endl;
@@ -496,7 +553,7 @@ void TEfficiencySourceTab::UpdateEfficiencyGraph()
 		int goodPeaks = 0;
 		for(auto& peak : peaks) {
 			std::tie(transition, centroid, centroidErr, correctedArea, correctedAreaErr, peakArea, peakAreaErr, summingIn, summingOut) = peak;
-			if(std::abs(transition->GetEnergy() - centroid) < transition->GetEnergyUncertainty() + centroidErr + fCalibrationUncertainty) {
+			if(std::abs(transition->GetEnergy() - centroid) < transition->GetEnergyUncertainty() + centroidErr + TEfficiencyCalibrator::CalibrationUncertainty()) {
 				energy.push_back(transition->GetEnergy());
 				energyErr.push_back(transition->GetEnergyUncertainty());
 				efficiency.push_back(correctedArea/transition->GetIntensity());
@@ -509,7 +566,7 @@ void TEfficiencySourceTab::UpdateEfficiencyGraph()
 				summingOutVec.push_back(summingOut);
 				++goodPeaks;
 			} else if(fVerboseLevel > 2) {
-				std::cout<<"Rejecting centroid "<<centroid<<" +- "<<centroidErr<<" with area "<<correctedArea<<" +- "<<correctedAreaErr<<" for transition at "<<transition->GetEnergy()<<" +- "<<transition->GetEnergyUncertainty()<<" using calibration uncertainty "<<fCalibrationUncertainty<<" ("<<std::abs(transition->GetEnergy() - centroid)<<" >= "<<transition->GetEnergyUncertainty() + centroidErr + fCalibrationUncertainty<<")"<<std::endl;
+				std::cout<<"Rejecting centroid "<<centroid<<" +- "<<centroidErr<<" with area "<<correctedArea<<" +- "<<correctedAreaErr<<" for transition at "<<transition->GetEnergy()<<" +- "<<transition->GetEnergyUncertainty()<<" using calibration uncertainty "<<TEfficiencyCalibrator::CalibrationUncertainty()<<" ("<<std::abs(transition->GetEnergy() - centroid)<<" >= "<<transition->GetEnergyUncertainty() + centroidErr + TEfficiencyCalibrator::CalibrationUncertainty()<<")"<<std::endl;
 			}
 		}
 		auto effGraph = new TGraphErrors(goodPeaks, energy.data(), efficiency.data(), energyErr.data(), efficiencyErr.data());
@@ -538,20 +595,40 @@ void TEfficiencySourceTab::UpdateEfficiencyGraph()
 	fMainDirectory->cd();
 }
 
+void TEfficiencyDatatypeTab::UpdatePeakType()
+{
+	if(fPeakTypeBox == nullptr) {
+		throw std::runtime_error("Failed to find peak type box, but got a signal it was selected?");
+	}
+	if(fVerboseLevel > 3) {
+		std::cout<<"peak type box "<<fPeakTypeBox<<std::flush<<", getting selected "<<fPeakTypeBox->GetSelected()<<std::endl;
+	}
+	
+	TEfficiencyCalibrator::PeakType(static_cast<TEfficiencyTab::EPeakType>(fPeakTypeBox->GetSelected()));
+}
+
+int TEfficiencyDatatypeTab::Degree()
+{
+	if(fDegreeEntry != nullptr) {
+		TEfficiencyCalibrator::Degree(fDegreeEntry->GetNumber());
+	}
+	return TEfficiencyCalibrator::Degree();
+}
+
 /// The efficiency curves can be:
 /// e(E) = ln E + (ln E)/E + (ln E)^2/E + (ln E)^3/E + (ln E)^4/E,
 /// or the radware form
 /// ln(e(E)) = ((a1 + a2 x + a3 x^2)^-a7 + (a4 + a5 y + a6 y^2)^-a7)^-1/a7
 /// with x = ln(E/100), y = ln(E/1000)
 /// or a polynomial ln(e(E)) = sum i 0->8 a_i (ln(E))^i (Ryan's & Andrew's PhD theses)
-double TEfficiencySourceTab::EfficiencyDebertin(double* x, double* par)
+double TEfficiencyDatatypeTab::EfficiencyDebertin(double* x, double* par)
 {
 	double eff = par[0]*TMath::Log(x[0]) + par[1]*TMath::Log(x[0])/x[0] + par[2]*TMath::Power(TMath::Log(x[0])/x[0],2)
 		        + par[3]*TMath::Power(TMath::Log(x[0])/x[0],4) + par[4]*TMath::Power(TMath::Log(x[0])/x[0],5);
 	return eff;
 }
 
-double TEfficiencySourceTab::EfficiencyRadware(double* val, double* par)
+double TEfficiencyDatatypeTab::EfficiencyRadware(double* val, double* par)
 {
 	double x = TMath::Log(val[0]/100.);
 	double y = TMath::Log(val[0]/1000.);
@@ -560,7 +637,7 @@ double TEfficiencySourceTab::EfficiencyRadware(double* val, double* par)
 	return TMath::Exp(logEff);
 }
 
-double TEfficiencySourceTab::EfficiencyPolynomial(double* x, double* par)
+double TEfficiencyDatatypeTab::EfficiencyPolynomial(double* x, double* par)
 {
 	// first parameter: degree of polynomial
 	double logEff = 0;
@@ -570,40 +647,40 @@ double TEfficiencySourceTab::EfficiencyPolynomial(double* x, double* par)
 	return TMath::Exp(logEff);
 }
 
-void TEfficiencySourceTab::FitEfficiency()
+void TEfficiencyDatatypeTab::FitEfficiency()
 {
 	ReadValues();
 	if(fEfficiency != nullptr) delete fEfficiency;
 	// degree of fit function: 0 = ln(E)/E form, 1 = radware form, everything else polynomial ln(e(E)) = sum i 0->8 a_i (ln(E))^i (Ryan's & Andrew's PhD theses)
-	switch(fDegree) {
+	switch(TEfficiencyCalibrator::Degree()) {
 		case 0:
-			fEfficiency = new TF1("EfficiencyDebertin", TEfficiencySourceTab::EfficiencyDebertin, 0., 10000., 5);
+			fEfficiency = new TF1("EfficiencyDebertin", TEfficiencyDatatypeTab::EfficiencyDebertin, 0., 10000., 5);
 			break;
 		case 1:
-			fEfficiency = new TF1("EfficiencyRadware", TEfficiencySourceTab::EfficiencyRadware, 0., 10000., 7);
+			fEfficiency = new TF1("EfficiencyRadware", TEfficiencyDatatypeTab::EfficiencyRadware, 0., 10000., 7);
 			break;
 		default:
-			fEfficiency = new TF1("EfficiencyPolynomial", TEfficiencySourceTab::EfficiencyPolynomial, 0., 10000., fDegree+1);
-			fEfficiency->FixParameter(0, fDegree);
+			fEfficiency = new TF1("EfficiencyPolynomial", TEfficiencyDatatypeTab::EfficiencyPolynomial, 0., 10000., TEfficiencyCalibrator::Degree()+1);
+			fEfficiency->FixParameter(0, TEfficiencyCalibrator::Degree());
 			break;
 	}
 
 	fEfficiencyGraph->Fit(fEfficiency);
 }
 
-void TEfficiencySourceTab::FittingControl(Int_t id)
+void TEfficiencyDatatypeTab::FittingControl(Int_t id)
 {
 	int currentTabId = fDataTab->GetCurrent();
    if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<": id "<<id<<", current tab id "<<currentTabId<<std::endl;
 	ReadValues();
    switch(id) {
       case 1: // re-fit
-         fEfficiencyTab[currentTabId]->FindPeaks(fRange, fThreshold, fBgParam);
+         fEfficiencyTab[currentTabId]->FindPeaks();
          UpdateEfficiencyGraph();
          break;
       case 2: // re-fit all
          for(auto& tab : fEfficiencyTab) {
-				tab->FindPeaks(fRange, fThreshold, fBgParam);
+				tab->FindPeaks();
 			}
          UpdateEfficiencyGraph();
          break;
@@ -612,26 +689,32 @@ void TEfficiencySourceTab::FittingControl(Int_t id)
    }
 }
 
-void TEfficiencySourceTab::ReadValues()
+void TEfficiencyDatatypeTab::ReadValues()
 {
-	fRange = fRangeEntry->GetNumber();
-	fThreshold = fThresholdEntry->GetNumber();
-	fBgParam = fBgParamEntry->GetNumberEntry()->GetIntNumber();
-	fDegree = fDegreeEntry->GetNumberEntry()->GetIntNumber();
-	fCalibrationUncertainty = fCalibrationUncertaintyEntry->GetNumber();
+	TEfficiencyCalibrator::Range(fRangeEntry->GetNumber());
+	TEfficiencyCalibrator::Threshold(fThresholdEntry->GetNumber());
+	TEfficiencyCalibrator::BgParam(fBgParamEntry->GetNumberEntry()->GetIntNumber());
+	TEfficiencyCalibrator::Degree(fDegreeEntry->GetNumberEntry()->GetIntNumber());
+	TEfficiencyCalibrator::CalibrationUncertainty(fCalibrationUncertaintyEntry->GetNumber());
 }
 
 //////////////////////////////////////// TEfficiencyCalibrator ////////////////////////////////////////
+double TEfficiencyCalibrator::fRange = 20.;
+double TEfficiencyCalibrator::fThreshold = 100.;
+int TEfficiencyCalibrator::fBgParam = 20;
+TEfficiencyTab::EPeakType TEfficiencyCalibrator::fPeakType = TEfficiencyTab::EPeakType::kRWPeak;
+int TEfficiencyCalibrator::fDegree = 0;
+double TEfficiencyCalibrator::fCalibrationUncertainty = 1.;
+bool TEfficiencyCalibrator::fShowRemovedFits = false;
+
 unsigned int TEfficiencyCalibrator::fLineHeight = 20;
 unsigned int TEfficiencyCalibrator::fWindowWidth = 1200;
 
-TEfficiencyCalibrator::TEfficiencyCalibrator(double range, double threshold, int n...)
+TEfficiencyCalibrator::TEfficiencyCalibrator(int n...)
 	: TGMainFrame(nullptr, TEfficiencyCalibrator::WindowWidth()+10, TEfficiencyCalibrator::WindowWidth()/2) // +10 for padding between frames
 {
 	// remove old file with redirect from fitting
 	std::remove("fitOutput.txt");
-	fRange = range;
-	fThreshold = threshold;
 
 	// we want to store the histograms in a vector of types (suppressed/addback), but we don't know yet if we have all types present
 	// so we create a vector of 4 now (unsuppressed singles, suppressed singles, unsuppressed addback, and suppressed addback)
@@ -978,19 +1061,19 @@ void TEfficiencyCalibrator::BuildSecondInterface()
    SetLayoutManager(new TGHorizontalLayout(this));
 
 	// left frame with tabs for each source
-	fSourceTab = new TGTab(this, WindowWidth(), WindowWidth()/2);
-   fEfficiencySourceTab.resize(fHistograms.size());
+	fDatatypeTab = new TGTab(this, WindowWidth(), WindowWidth()/2);
+   fEfficiencyDatatypeTab.resize(fHistograms.size());
    fEfficiencyGraph.resize(fHistograms.size());
    if(fVerboseLevel > 2) std::cout<<__PRETTY_FUNCTION__<<" creating "<<fHistograms.size()<<" tabs"<<std::endl;
    for(size_t i = 0; i < fHistograms.size(); ++i) {
 		if(fVerboseLevel > 2) std::cout<<i<<": Creating efficiency source tab using "<<fHistograms[i].size()<<" histograms, and "<<fSources.size()<<" sources, "<<fRange<<", "<<fThreshold<<", "<<fProgressBar<<std::endl;
-      auto frame = fSourceTab->AddTab(fDataType[i].c_str());
+      auto frame = fDatatypeTab->AddTab(fDataType[i].c_str());
 		std::replace(fDataType[i].begin(), fDataType[i].end(), ' ', '_');
-      fEfficiencySourceTab[i] = new TEfficiencySourceTab(this, fSources, fHistograms[i], frame, fDataType[i], fRange, fThreshold, fProgressBar, fVerboseLevel);
-		//fEfficiencySourceTab[i]->UpdateEfficiencyGraph();
-		fEfficiencyGraph[i] = fEfficiencySourceTab[i]->EfficiencyGraph();
+      fEfficiencyDatatypeTab[i] = new TEfficiencyDatatypeTab(this, fSources, fHistograms[i], frame, fDataType[i], fProgressBar, fVerboseLevel);
+		//fEfficiencyDatatypeTab[i]->UpdateEfficiencyGraph();
+		fEfficiencyGraph[i] = fEfficiencyDatatypeTab[i]->EfficiencyGraph();
    }
-	AddFrame(fSourceTab, new TGLayoutHints(kLHintsTop | kLHintsCenterX | kLHintsExpandX, 0, 0, 0, 0));
+	AddFrame(fDatatypeTab, new TGLayoutHints(kLHintsTop | kLHintsCenterX | kLHintsExpandX, 0, 0, 0, 0));
 
    if(fVerboseLevel > 2) std::cout<<"Second interface done"<<std::endl;
 }
@@ -999,7 +1082,7 @@ void TEfficiencyCalibrator::MakeSecondConnections()
 {
 	if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<std::endl;
    // we don't need to connect the range, threshold, and degree number entries, those are automatically read when we start the calibration
-   for(auto sourceTab : fEfficiencySourceTab) {
+   for(auto sourceTab : fEfficiencyDatatypeTab) {
       sourceTab->MakeConnections();
    }
 }
@@ -1007,7 +1090,7 @@ void TEfficiencyCalibrator::MakeSecondConnections()
 void TEfficiencyCalibrator::DisconnectSecond()
 {
    if(fVerboseLevel > 1) std::cout<<__PRETTY_FUNCTION__<<std::endl;
-   for(auto sourceTab : fEfficiencySourceTab) {
+   for(auto sourceTab : fEfficiencyDatatypeTab) {
       sourceTab->Disconnect();
    }
 }

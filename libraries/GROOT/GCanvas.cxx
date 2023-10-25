@@ -290,6 +290,8 @@ void GCanvas::HandleInput(int event, Int_t x, Int_t y)
    case kButton1Down:   // single click
 		used = StorePosition(event, x, y);
 		if(used) break;
+		// next comment prevents warning about falling through for gcc, with c++17 we can also use "[[fallthrough]];"
+		// fall through
    case kButton1Double: // double click
       used = HandleMousePress(event, x, y);
       break;

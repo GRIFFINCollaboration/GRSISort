@@ -36,9 +36,9 @@ public:
    TPeakFitter(const Double_t& range_low, const Double_t& range_high);
 
 public:
-   void AddPeak(TSinglePeak* p)     { fPeaksToFit.push_back(p); }
-   void RemovePeak(TSinglePeak* p)  { fPeaksToFit.remove(p); }
-   void RemoveAllPeaks()  { fPeaksToFit.clear(); }
+   void AddPeak(TSinglePeak* p)     { fPeaksToFit.push_back(p); ResetTotalFitFunction(); }
+   void RemovePeak(TSinglePeak* p)  { fPeaksToFit.remove(p); ResetTotalFitFunction(); }
+   void RemoveAllPeaks()  { fPeaksToFit.clear(); ResetTotalFitFunction(); }
 //   void SetPeakToFit(TMultiplePeak*  peaks_to_fit) { fPeaksToFit = peaks_to_fit; }
    void SetBackground(TF1* bg_to_fit)                 { fBGToFit = bg_to_fit; }
    void InitializeParameters(TH1* fit_hist);
@@ -62,6 +62,12 @@ private:
    void UpdateFitterParameters();
    void UpdatePeakParameters(const TFitResultPtr& fit_res,TH1* fit_hist);
    Double_t DefaultBackgroundFunction(Double_t* dim, Double_t* par);
+	void ResetTotalFitFunction() {
+		if(fTotalFitFunction != nullptr) {
+			delete fTotalFitFunction;
+			fTotalFitFunction = nullptr;
+		}
+	}
 
 private:
 //   TMultiplePeak* fPeaksToFit{nullptr};

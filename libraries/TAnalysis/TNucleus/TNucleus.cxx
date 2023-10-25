@@ -173,7 +173,8 @@ void TNucleus::SetName(const char*)
 
 TNucleus::~TNucleus()
 {
-	fTransitionList.Delete();
+	fTransitionListByIntensity.Delete();
+	fTransitionListByEnergy.Delete();
 }
 
 std::string TNucleus::SortName(const char* name)
@@ -310,12 +311,25 @@ void TNucleus::AddTransition(Double_t energy, Double_t intensity, Double_t energ
 
 void TNucleus::AddTransition(TTransition* tran)
 {
-	fTransitionList.Add(tran);
+	fTransitionListByIntensity.Add(tran);
+	auto* tran2 = new TTransition(*tran);
+	tran2->SetCompareIntensity(false);
+	fTransitionListByEnergy.Add(tran2);
 }
 
-TTransition* TNucleus::GetTransition(Int_t idx)
+TTransition* TNucleus::GetTransitionByIntensity(Int_t idx)
 {
-	TTransition* tran = static_cast<TTransition*>(fTransitionList.At(idx));
+	TTransition* tran = static_cast<TTransition*>(fTransitionListByIntensity.At(idx));
+	if(tran == nullptr) {
+		std::cout<<"Out of Range"<<std::endl;
+	}
+
+	return tran;
+}
+
+TTransition* TNucleus::GetTransitionByEnergy(Int_t idx)
+{
+	TTransition* tran = static_cast<TTransition*>(fTransitionListByEnergy.At(idx));
 	if(tran == nullptr) {
 		std::cout<<"Out of Range"<<std::endl;
 	}
@@ -327,7 +341,7 @@ void TNucleus::Print(Option_t*) const
 {
 	// Prints out the Name of the nucleus, as well as the numerated transition list
 	std::cout<<"Nucleus: "<<GetName()<<std::endl;
-	TIter next(&fTransitionList);
+	TIter next(&fTransitionListByIntensity);
 	int   counter = 0;
 	while(TTransition* tran = static_cast<TTransition*>(next())) {
 		std::cout<<"\t"<<counter++<<"\t";
@@ -340,8 +354,8 @@ void TNucleus::WriteSourceFile(const std::string& outfilename)
 	if(outfilename.length() > 0) {
 		std::ofstream sourceout;
 		sourceout.open(outfilename.c_str());
-		for(int i = 0; i < fTransitionList.GetSize(); i++) {
-			std::string transtr = (static_cast<TTransition*>(fTransitionList.At(i)))->PrintToString();
+		for(int i = 0; i < fTransitionListByIntensity.GetSize(); i++) {
+			std::string transtr = (static_cast<TTransition*>(fTransitionListByIntensity.At(i)))->PrintToString();
 			sourceout<<transtr.c_str();
 			sourceout<<std::endl;
 		}
@@ -352,7 +366,7 @@ void TNucleus::WriteSourceFile(const std::string& outfilename)
 
 bool TNucleus::LoadTransitionFile()
 {
-	if(fTransitionList.GetSize() != 0) {
+	if(fTransitionListByIntensity.GetSize() != 0) {
 		return false;
 	}
 	std::string filename;
@@ -398,6 +412,8 @@ bool TNucleus::LoadTransitionFile()
 		}
 		AddTransition(tran);
 	}
+
+	fTransitionListByIntensity.Sort();
 
 	return true;
 }

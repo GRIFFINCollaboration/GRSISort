@@ -15,6 +15,7 @@ TAB3Peak::TAB3Peak(Double_t centroid) : TSinglePeak()
 void TAB3Peak::Centroid(const Double_t& centroid)
 {
    fTotalFunction = new TF1("ab_fit",this,&TAB3Peak::TotalFunction,0,1,8,"TAB3Peak","TotalFunction");
+   fPeakFunction =  new TF1("ab_peak",this,&TAB3Peak::PeakFunction,0,1,7,"TAB3Peak","PeakFunction");
    InitParNames();
    fTotalFunction->SetParameter(1, centroid);
    SetListOfBGPar(std::vector<bool> {0,0,0,0,0,0,0,1});
@@ -33,7 +34,7 @@ void TAB3Peak::InitParNames()
    fTotalFunction->SetParName(7, "step");
 }
 
-void TAB3Peak::InitializeParameters(TH1* fit_hist)
+void TAB3Peak::InitializeParameters(TH1* fit_hist, const double& rangeLow, const double& rangeHigh)
 {
    /// Makes initial guesses at parameters for the fit base on the histogram.
    // Make initial guesses
@@ -43,33 +44,35 @@ void TAB3Peak::InitializeParameters(TH1* fit_hist)
    // The centroid should already be set by this point in the ctor
    Int_t bin     = fit_hist->FindBin(fTotalFunction->GetParameter(1));
 	if(!ParameterSetByUser(0)) {
-		fTotalFunction->SetParLimits(0, 0, fit_hist->GetMaximum()*1.5);
 		fTotalFunction->SetParameter("Height", fit_hist->GetBinContent(bin));
+		fTotalFunction->SetParLimits(0, 0, fit_hist->GetMaximum()*1.5);
 	}
+	// no sense checking whether the centroid has been set, this always gets set in the constructor
+	fTotalFunction->SetParLimits(1, rangeLow, rangeHigh);
 	if(!ParameterSetByUser(2)) {
-		fTotalFunction->SetParLimits(2, 0.1, 8);
 		fTotalFunction->SetParameter("sigma", TMath::Sqrt(2.25 + 1.33 * fTotalFunction->GetParameter("centroid") / 1000. +0.9*TMath::Power(fTotalFunction->GetParameter("centroid")/1000.,2)) / 2.35);
+		fTotalFunction->SetParLimits(2, 0.1, 8);
 	}
 	if(!ParameterSetByUser(3)) {
-		fTotalFunction->SetParLimits(3, 0.000001, 1.0);
 		fTotalFunction->SetParameter("rel_height1", 0.25);
+		fTotalFunction->SetParLimits(3, 0.000001, 1.0);
 	}
 	if(!ParameterSetByUser(4)) {
-		fTotalFunction->SetParLimits(4, 1.0, 100); 
 		fTotalFunction->SetParameter("rel_sigma1", 2.);
+		fTotalFunction->SetParLimits(4, 1.0, 100); 
 	}
 	if(!ParameterSetByUser(5)) {
-		fTotalFunction->SetParLimits(5, 0.000001, 1.0);
 		fTotalFunction->SetParameter("rel_height2", 0.25);
+		fTotalFunction->SetParLimits(5, 0.000001, 1.0);
 	}
 	if(!ParameterSetByUser(6)) {
-		fTotalFunction->SetParLimits(6, 1.0, 100); 
 		fTotalFunction->SetParameter("rel_sigma2", 6.);
+		fTotalFunction->SetParLimits(6, 1.0, 100); 
 	}
 	if(!ParameterSetByUser(7)) {
 		// Step size is allow to vary to anything. If it goes below 0, the code will fix it to 0
-		fTotalFunction->SetParLimits(7, 0.0, 1.0E2);
 		fTotalFunction->SetParameter("step", 1.0);
+		fTotalFunction->SetParLimits(7, 0.0, 1.0E2);
 	}
 }
 
