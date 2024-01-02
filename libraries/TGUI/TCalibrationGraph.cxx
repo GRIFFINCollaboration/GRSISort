@@ -364,42 +364,54 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint()
 	return ipoint;
 }
 
-void TCalibrationGraphSet::Scale()
+void TCalibrationGraphSet::Scale(bool useAllPrevious)
 {
+	/// Scale all graphs to fit each other (based on the first "previous" graph found or just the first graph).
+	/// If no overlap is being found between the graph that is being scaled and the first graph (or all graphs before this one),
+	/// the current graph isn't being scaled and we continue with the next graph.
 	if(fVerboseLevel > 1) {
 		std::cout<<__PRETTY_FUNCTION__<<std::endl;
 		Print();
 	}
-	double minRef = fGraphs[0].GetX()[0];
-	double maxRef = fGraphs[0].GetX()[fGraphs[0].GetN()-1];
 	for(size_t g = 1; g < fGraphs.size(); ++g) {
 		auto& graph = fGraphs[g];
 		if(graph.GetN() == 0) {
 			std::cout<<"No entries in "<<g<<". graph"<<std::endl;
 		}
+		graph.Sort();
 		double* x = graph.GetX();
 		double* y = graph.GetY();
-		if(fVerboseLevel > 1) {
-			std::cout<<"Checking overlap between 0. graph ("<<fGraphs[0].GetN()<<": "<<minRef<<" - "<<maxRef<<") and "<<g<<". graph ("<<graph.GetN()<<std::flush<<": "<<x[0]<<" - "<<x[graph.GetN()-1]<<")"<<std::endl;
-		}
-		if(maxRef < x[0] || x[graph.GetN()-1] < minRef) {
-			// no overlap between the two graphs, for now we just skip this one, but we could try and compare it to all the other ones?
-			std::cout<<"No overlap between 0. graph ("<<fGraphs[0].GetN()<<": "<<minRef<<" - "<<maxRef<<") and "<<g<<". graph ("<<graph.GetN()<<": "<<x[0]<<" - "<<x[graph.GetN()-1]<<")"<<std::endl;
-			continue;
-		}
-		// we have an overlap, so we calculate the scaling factor for each point and take the average (maybe should add some weight from the errors bars)
-		int count = 0;
-		double sum = 0.;
-		for(int p = 0; p < graph.GetN(); ++p) {
-			if(minRef < x[p] && x[p] < maxRef) {
-				sum += fGraphs[0].Eval(x[p])/y[p];
-				++count;
-				if(fVerboseLevel > 3) std::cout<<g<<", "<<p<<": "<<count<<" - "<<sum<<", "<<fGraphs[0].Eval(x[p])/y[p]<<std::endl;
+		// loop over all other graphs before this one and use the first one with an overlap (should this be extended to use all possible ones before this one?)
+		size_t g2;
+		for(g2 = 0; (useAllPrevious ? g2 < g : g2 < 1); ++g2) {
+			double minRef = fGraphs[g2].GetX()[0];
+			double maxRef = fGraphs[g2].GetX()[fGraphs[g2].GetN()-1];
+			if(fVerboseLevel > 1) {
+				std::cout<<"Checking overlap between "<<g2<<". graph ("<<fGraphs[g2].GetN()<<": "<<minRef<<" - "<<maxRef<<") and "<<g<<". graph ("<<graph.GetN()<<std::flush<<": "<<x[0]<<" - "<<x[graph.GetN()-1]<<")"<<std::endl;
 			}
+			if(maxRef < x[0] || x[graph.GetN()-1] < minRef) {
+				// no overlap between the two graphs, for now we just skip this one, but we could try and compare it to all the other ones?
+				std::cout<<"No overlap between "<<g2<<". graph ("<<fGraphs[g2].GetN()<<": "<<minRef<<" - "<<maxRef<<") and "<<g<<". graph ("<<graph.GetN()<<": "<<x[0]<<" - "<<x[graph.GetN()-1]<<")"<<std::endl;
+				continue;
+			}
+			// we have an overlap, so we calculate the scaling factor for each point and take the average (maybe should add some weight from the errors bars)
+			int count = 0;
+			double sum = 0.;
+			for(int p = 0; p < graph.GetN(); ++p) {
+				if(minRef < x[p] && x[p] < maxRef) {
+					sum += fGraphs[g2].Eval(x[p])/y[p];
+					++count;
+					if(fVerboseLevel > 3) std::cout<<g<<", "<<p<<": "<<count<<" - "<<sum<<", "<<fGraphs[g2].Eval(x[p])/y[p]<<std::endl;
+				}
+			}
+			sum /= count;
+			if(fVerboseLevel > 2) std::cout<<g<<": scaling with "<<sum<<std::endl;
+			graph.Scale(sum);
+			break;
 		}
-		sum /= count;
-		if(fVerboseLevel > 2) std::cout<<g<<": scaling with "<<sum<<std::endl;
-		graph.Scale(sum);
+		if(g2 == g && fVerboseLevel > 0) {
+			std::cout<<"No overlap(s) between 0. to "<<g2-1<<". graph and "<<g<<". graph ("<<graph.GetN()<<": "<<x[0]<<" - "<<x[graph.GetN()-1]<<"), not scaling this one!"<<std::endl;
+		}
 	}
 	if(fVerboseLevel > 1) Print();
 	ResetTotalGraph();
