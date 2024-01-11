@@ -7,6 +7,7 @@
 #include "TFile.h"
 #include "TChain.h"
 #include "ROOT/RDataFrame.hxx"
+#include "ROOT/RDFHelpers.hxx"
 
 #include "TRunInfo.h"
 #include "TPPG.h"
@@ -110,6 +111,7 @@ void TGRSIFrame::Run()
 
 	TFile outputFile(outputFileName.c_str(), "recreate");
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,30,0)
 	std::string progressBar;
 	const auto barWidth = 100;
 	if(!fOptions->Debug()) {
@@ -127,6 +129,9 @@ void TGRSIFrame::Run()
 				++counter;
 				});
 	}
+#else
+	ROOT::RDF::Experimental::AddProgressBar(*fDataFrame);
+#endif
 
 	if(fOutput != nullptr) {
 		// accessing the result from Book causes the actual processing of the helper
@@ -148,7 +153,9 @@ void TGRSIFrame::Run()
 				// switch back to topmost directory
 				while(gDirectory->GetDirectory("..")) { gDirectory->cd(".."); }
 			}
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,30,0)
          std::cout<<"\r["<<std::left<<std::setw(barWidth)<<progressBar<<' '<<"100 %]"<<std::flush;
+#endif
 		} catch(TGRSIMapException<std::string>& e) {
 			std::cout<<DRED<<"Exception in "<<__PRETTY_FUNCTION__<<": "<<e.detail()<<RESET_COLOR<<std::endl;
 			throw e;
