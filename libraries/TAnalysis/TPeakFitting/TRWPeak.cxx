@@ -44,8 +44,9 @@ void TRWPeak::InitializeParameters(TH1* fit_hist, const double& rangeLow, const 
 		fTotalFunction->SetParameter("Height", fit_hist->GetBinContent(bin));
 		fTotalFunction->SetParLimits(0, 0, fit_hist->GetMaximum()*2.);
 	}
-	// no sense checking whether the centroid has been set, this always gets set in the constructor
-	fTotalFunction->SetParLimits(1, rangeLow, rangeHigh);
+   if(!ParameterSetByUser(1)) {
+		fTotalFunction->SetParLimits(1, rangeLow, rangeHigh);
+	}
 	if(!ParameterSetByUser(2)) {
 		fTotalFunction->SetParameter("sigma", TMath::Sqrt(5 + 1.33 * fTotalFunction->GetParameter("centroid") / 1000. +  0.9*TMath::Power(fTotalFunction->GetParameter("centroid")/1000.,2)) / 2.35);
 		fTotalFunction->SetParLimits(2, 0.01, 10.);
