@@ -47,8 +47,9 @@ void TAB3Peak::InitializeParameters(TH1* fit_hist, const double& rangeLow, const
 		fTotalFunction->SetParameter("Height", fit_hist->GetBinContent(bin));
 		fTotalFunction->SetParLimits(0, 0, fit_hist->GetMaximum()*1.5);
 	}
-	// no sense checking whether the centroid has been set, this always gets set in the constructor
-	fTotalFunction->SetParLimits(1, rangeLow, rangeHigh);
+	if(!ParameterSetByUser(1)) {
+		fTotalFunction->SetParLimits(1, rangeLow, rangeHigh);
+	}
 	if(!ParameterSetByUser(2)) {
 		fTotalFunction->SetParameter("sigma", TMath::Sqrt(2.25 + 1.33 * fTotalFunction->GetParameter("centroid") / 1000. +0.9*TMath::Power(fTotalFunction->GetParameter("centroid")/1000.,2)) / 2.35);
 		fTotalFunction->SetParLimits(2, 0.1, 8);
@@ -78,126 +79,126 @@ void TAB3Peak::InitializeParameters(TH1* fit_hist, const double& rangeLow, const
 
 Double_t TAB3Peak::Centroid() const
 {
-   return fTotalFunction->GetParameter("centroid");
+	return fTotalFunction->GetParameter("centroid");
 }
 
 Double_t TAB3Peak::CentroidErr() const
 {
-   return fTotalFunction->GetParError(1);
+	return fTotalFunction->GetParError(1);
 }
 
 Double_t TAB3Peak::Width() const
 {
-   return fTotalFunction->GetParameter("sigma")*fTotalFunction->GetParameter("rel_sigma2");
+	return fTotalFunction->GetParameter("sigma")*fTotalFunction->GetParameter("rel_sigma2");
 }
 
 Double_t TAB3Peak::Sigma() const
 {
-   return fTotalFunction->GetParameter("sigma");
+	return fTotalFunction->GetParameter("sigma");
 }
 
 Double_t TAB3Peak::PeakFunction(Double_t *dim, Double_t *par)
 {
-   return OneHitPeakFunction(dim,par) + TwoHitPeakFunction(dim,par) + ThreeHitPeakFunction(dim,par);
+	return OneHitPeakFunction(dim,par) + TwoHitPeakFunction(dim,par) + ThreeHitPeakFunction(dim,par);
 }
 
 Double_t TAB3Peak::OneHitPeakFunction(Double_t *dim, Double_t *par)
 {
-   Double_t x           = dim[0]; // channel number used for fitting
-   Double_t height      = par[0]; // height of photopeak
-   Double_t c           = par[1]; // Peak Centroid of non skew gaus
-   Double_t sigma       = par[2]; // standard deviation of gaussian
+	Double_t x           = dim[0]; // channel number used for fitting
+	Double_t height      = par[0]; // height of photopeak
+	Double_t c           = par[1]; // Peak Centroid of non skew gaus
+	Double_t sigma       = par[2]; // standard deviation of gaussian
 
-   return height * TMath::Gaus(x, c, sigma);
+	return height * TMath::Gaus(x, c, sigma);
 }
 
 Double_t TAB3Peak::TwoHitPeakFunction(Double_t *dim, Double_t *par)
 {
-   Double_t x           = dim[0]; // channel number used for fitting
-   Double_t height      = par[0]; // height of photopeak
-   Double_t c           = par[1]; // Peak Centroid of non skew gaus
-   Double_t sigma       = par[2]; // standard deviation of gaussian
-   Double_t rel_height  = par[3]; // relative height of 2-hit peak
-   Double_t rel_sigma   = par[4]; // relative sigma of 2-hit peak
-   
-   return height * rel_height * TMath::Gaus(x,c,rel_sigma*sigma);
+	Double_t x           = dim[0]; // channel number used for fitting
+	Double_t height      = par[0]; // height of photopeak
+	Double_t c           = par[1]; // Peak Centroid of non skew gaus
+	Double_t sigma       = par[2]; // standard deviation of gaussian
+	Double_t rel_height  = par[3]; // relative height of 2-hit peak
+	Double_t rel_sigma   = par[4]; // relative sigma of 2-hit peak
+
+	return height * rel_height * TMath::Gaus(x,c,rel_sigma*sigma);
 }
 
 Double_t TAB3Peak::ThreeHitPeakFunction(Double_t *dim, Double_t *par)
 {
-   Double_t x           = dim[0]; // channel number used for fitting
-   Double_t height      = par[0]; // height of photopeak
-   Double_t c           = par[1]; // Peak Centroid of non skew gaus
-   Double_t sigma       = par[2]; // standard deviation of gaussian
-   Double_t rel_height  = par[5]; // relative height of 2-hit peak
-   Double_t rel_sigma   = par[6]; // relative sigma of 2-hit peak
-   
-   return height * rel_height * TMath::Gaus(x,c,rel_sigma*sigma);
+	Double_t x           = dim[0]; // channel number used for fitting
+	Double_t height      = par[0]; // height of photopeak
+	Double_t c           = par[1]; // Peak Centroid of non skew gaus
+	Double_t sigma       = par[2]; // standard deviation of gaussian
+	Double_t rel_height  = par[5]; // relative height of 2-hit peak
+	Double_t rel_sigma   = par[6]; // relative sigma of 2-hit peak
+
+	return height * rel_height * TMath::Gaus(x,c,rel_sigma*sigma);
 }
 
 
 Double_t TAB3Peak::OneHitPeakOnGlobalFunction(Double_t *dim, Double_t *par)
 {
-   return OneHitPeakFunction(dim,par) + fGlobalBackground->EvalPar(dim, &par[fTotalFunction->GetNpar()]);
+	return OneHitPeakFunction(dim,par) + fGlobalBackground->EvalPar(dim, &par[fTotalFunction->GetNpar()]);
 }
 
 Double_t TAB3Peak::TwoHitPeakOnGlobalFunction(Double_t *dim, Double_t *par)
 {
-   return TwoHitPeakFunction(dim,par) + fGlobalBackground->EvalPar(dim, &par[fTotalFunction->GetNpar()]);
+	return TwoHitPeakFunction(dim,par) + fGlobalBackground->EvalPar(dim, &par[fTotalFunction->GetNpar()]);
 }
 
 Double_t TAB3Peak::ThreeHitPeakOnGlobalFunction(Double_t *dim, Double_t *par)
 {
-   return ThreeHitPeakFunction(dim,par) + fGlobalBackground->EvalPar(dim, &par[fTotalFunction->GetNpar()]);
+	return ThreeHitPeakFunction(dim,par) + fGlobalBackground->EvalPar(dim, &par[fTotalFunction->GetNpar()]);
 }
 
 Double_t TAB3Peak::BackgroundFunction(Double_t *dim, Double_t *par)
 {
-   Double_t x           = dim[0]; // channel number used for fitting
-   Double_t height      = par[0]; // height of photopeak
-   Double_t c           = par[1]; // Peak Centroid of non skew gaus
-   Double_t sigma       = par[2]; // standard deviation of gaussian
-   Double_t step        = par[7]; // Size of the step function;
+	Double_t x           = dim[0]; // channel number used for fitting
+	Double_t height      = par[0]; // height of photopeak
+	Double_t c           = par[1]; // Peak Centroid of non skew gaus
+	Double_t sigma       = par[2]; // standard deviation of gaussian
+	Double_t step        = par[7]; // Size of the step function;
 
-   Double_t step_func   = TMath::Abs(step) * height / 100.0 * TMath::Erfc((x - c) / (TMath::Sqrt(2.0) * sigma));
-   
-   return step_func;
+	Double_t step_func   = TMath::Abs(step) * height / 100.0 * TMath::Erfc((x - c) / (TMath::Sqrt(2.0) * sigma));
+
+	return step_func;
 }
 
 void TAB3Peak::DrawComponents(Option_t * opt)
 {
-   //We need to draw this on top of the global background. Probably easiest to make another temporary TF1?
-   if(!fGlobalBackground)
-      return;
+	//We need to draw this on top of the global background. Probably easiest to make another temporary TF1?
+	if(!fGlobalBackground)
+		return;
 
-   Double_t low, high;
-   fGlobalBackground->GetRange(low,high);
-   if(fOneHitOnGlobal) fOneHitOnGlobal->Delete();
-   if(fTwoHitOnGlobal) fTwoHitOnGlobal->Delete();
-   if(fThreeHitOnGlobal) fThreeHitOnGlobal->Delete();
-   //Make a copy of the total function, and then tack on the global background parameters.
-   fOneHitOnGlobal = new TF1("draw_component1", this, &TAB3Peak::OneHitPeakOnGlobalFunction,low,high,fTotalFunction->GetNpar()+fGlobalBackground->GetNpar(),"TAB3Peak","OneHitPeakOnGlobalFunction");
-   fTwoHitOnGlobal = new TF1("draw_component2", this, &TAB3Peak::TwoHitPeakOnGlobalFunction,low,high,fTotalFunction->GetNpar()+fGlobalBackground->GetNpar(),"TAB3Peak","TwoHitPeakOnGlobalFunction");
-   fThreeHitOnGlobal = new TF1("draw_component2", this, &TAB3Peak::ThreeHitPeakOnGlobalFunction,low,high,fTotalFunction->GetNpar()+fGlobalBackground->GetNpar(),"TAB3Peak","ThreeHitPeakOnGlobalFunction");
-   for(int i = 0; i < fTotalFunction->GetNpar(); ++i) {
-      fOneHitOnGlobal->SetParameter(i,fTotalFunction->GetParameter(i));
-      fTwoHitOnGlobal->SetParameter(i,fTotalFunction->GetParameter(i));
-      fThreeHitOnGlobal->SetParameter(i,fTotalFunction->GetParameter(i));
-   }
-   for(int i = 0; i < fGlobalBackground->GetNpar(); ++i) {
-      fOneHitOnGlobal->SetParameter(i+fTotalFunction->GetNpar(),fGlobalBackground->GetParameter(i));
-      fTwoHitOnGlobal->SetParameter(i+fTotalFunction->GetNpar(),fGlobalBackground->GetParameter(i));
-      fThreeHitOnGlobal->SetParameter(i+fTotalFunction->GetNpar(),fGlobalBackground->GetParameter(i));
-   }
-   //Draw a copy of this function
-   fOneHitOnGlobal->SetLineColor(fTotalFunction->GetLineColor());
-   fTwoHitOnGlobal->SetLineColor(fTotalFunction->GetLineColor());
-   fThreeHitOnGlobal->SetLineColor(fTotalFunction->GetLineColor());
-   fOneHitOnGlobal->SetLineStyle(8);
-   fTwoHitOnGlobal->SetLineStyle(3);
-   fThreeHitOnGlobal->SetLineStyle(2);
-   fOneHitOnGlobal->Draw(opt);
-   fTwoHitOnGlobal->Draw(opt);
-   fThreeHitOnGlobal->Draw(opt);
+	Double_t low, high;
+	fGlobalBackground->GetRange(low,high);
+	if(fOneHitOnGlobal) fOneHitOnGlobal->Delete();
+	if(fTwoHitOnGlobal) fTwoHitOnGlobal->Delete();
+	if(fThreeHitOnGlobal) fThreeHitOnGlobal->Delete();
+	//Make a copy of the total function, and then tack on the global background parameters.
+	fOneHitOnGlobal = new TF1("draw_component1", this, &TAB3Peak::OneHitPeakOnGlobalFunction,low,high,fTotalFunction->GetNpar()+fGlobalBackground->GetNpar(),"TAB3Peak","OneHitPeakOnGlobalFunction");
+	fTwoHitOnGlobal = new TF1("draw_component2", this, &TAB3Peak::TwoHitPeakOnGlobalFunction,low,high,fTotalFunction->GetNpar()+fGlobalBackground->GetNpar(),"TAB3Peak","TwoHitPeakOnGlobalFunction");
+	fThreeHitOnGlobal = new TF1("draw_component2", this, &TAB3Peak::ThreeHitPeakOnGlobalFunction,low,high,fTotalFunction->GetNpar()+fGlobalBackground->GetNpar(),"TAB3Peak","ThreeHitPeakOnGlobalFunction");
+	for(int i = 0; i < fTotalFunction->GetNpar(); ++i) {
+		fOneHitOnGlobal->SetParameter(i,fTotalFunction->GetParameter(i));
+		fTwoHitOnGlobal->SetParameter(i,fTotalFunction->GetParameter(i));
+		fThreeHitOnGlobal->SetParameter(i,fTotalFunction->GetParameter(i));
+	}
+	for(int i = 0; i < fGlobalBackground->GetNpar(); ++i) {
+		fOneHitOnGlobal->SetParameter(i+fTotalFunction->GetNpar(),fGlobalBackground->GetParameter(i));
+		fTwoHitOnGlobal->SetParameter(i+fTotalFunction->GetNpar(),fGlobalBackground->GetParameter(i));
+		fThreeHitOnGlobal->SetParameter(i+fTotalFunction->GetNpar(),fGlobalBackground->GetParameter(i));
+	}
+	//Draw a copy of this function
+	fOneHitOnGlobal->SetLineColor(fTotalFunction->GetLineColor());
+	fTwoHitOnGlobal->SetLineColor(fTotalFunction->GetLineColor());
+	fThreeHitOnGlobal->SetLineColor(fTotalFunction->GetLineColor());
+	fOneHitOnGlobal->SetLineStyle(8);
+	fTwoHitOnGlobal->SetLineStyle(3);
+	fThreeHitOnGlobal->SetLineStyle(2);
+	fOneHitOnGlobal->Draw(opt);
+	fTwoHitOnGlobal->Draw(opt);
+	fThreeHitOnGlobal->Draw(opt);
 }
 

@@ -78,10 +78,11 @@ public:
 	void DrawCalibration(Option_t* opt = "", TLegend* legend = nullptr);
 	void DrawResidual(Option_t* opt = "", TLegend* legend = nullptr);
 
+	void RemoveGraph(size_t i) { fGraphs.erase(fGraphs.begin()+i); ResetTotalGraph(); }
 	Int_t RemovePoint();
 	Int_t RemoveResidualPoint();
 
-	void Scale(); ///< scale all graphs to fit each other (based on the first graph)
+	void Scale(bool useAllPrevious = true);
 
 	void Print(Option_t* opt = "") const override;
 

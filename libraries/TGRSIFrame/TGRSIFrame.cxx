@@ -7,6 +7,7 @@
 #include "TFile.h"
 #include "TChain.h"
 #include "ROOT/RDataFrame.hxx"
+#include "ROOT/RDFHelpers.hxx"
 
 #include "TRunInfo.h"
 #include "TPPG.h"
@@ -129,7 +130,7 @@ void TGRSIFrame::Run()
 				});
 	}
 #else
-	ROOT::RDF::Experimental::AddProgressBar(fDataFrame);
+	ROOT::RDF::Experimental::AddProgressBar(*fDataFrame);
 #endif
 
 	if(fOutput != nullptr) {
