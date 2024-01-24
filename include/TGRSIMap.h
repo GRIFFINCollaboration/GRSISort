@@ -102,7 +102,7 @@ public:
 			}
 		}
 
-	std::string detail() {
+	std::string detail() const noexcept {
 		std::ostringstream str;
 		str<<"Key "<<fKey<<" not found in '";
 		for(auto key = fKeys.begin(); key != fKeys.end(); ++key) {
@@ -114,6 +114,8 @@ public:
 		str<<"'";
 		return str.str();
 	}
+
+	const char* what() const noexcept { return strdup(detail().c_str()); }
 
 private:
 	key_type fKey;
