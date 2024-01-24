@@ -81,7 +81,7 @@ void TGRSIOptions::Clear(Option_t*)
    fWriteFragmentTree= false;
    fWriteBadFrags    = false;
    fWriteDiagnostics = false;
-	fWordOffset       = 1;
+	fWordOffset       = -1;
 
    fBatch = false;
 
@@ -298,7 +298,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 			.colour(DGREEN);
 		parser.option("word-count-offset", &fWordOffset, true)
 			.description("Offset to the word count in the GRIFFIN header word, default is -1 (disabled).")
-			.default_value(1).colour(DGREEN);
+			.default_value(-1).colour(DGREEN);
 		parser.option("log-errors", &fLogErrors, true);
 		parser.option("reading-material", &fReadingMaterial, true);
 		parser.option("write-fragment-tree write-frag-tree", &fWriteFragmentTree, true)
