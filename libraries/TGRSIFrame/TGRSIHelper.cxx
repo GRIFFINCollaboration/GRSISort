@@ -83,6 +83,7 @@ void TGRSIHelper::Setup() {
 		fSym.emplace_back(TGRSIMap<std::string, GHSym*>());
 		fCube.emplace_back(TGRSIMap<std::string, GCube*>());
 		fTree.emplace_back(TGRSIMap<std::string, TTree*>());
+		fObject.emplace_back(TGRSIMap<std::string, TObject*>());
 		CreateHistograms(i);
 		for(auto& it : fH1[i]) {
 			// if the key/name of the histogram does not contain a forward slash we put it in the root-directory
@@ -138,6 +139,16 @@ void TGRSIHelper::Setup() {
 			// trees can only be written into the root-directory due to the way they get merge in Finalize (for now?)
 			(*fLists[i])[""].Add(it.second);
 		}
+		for(auto& it : fObject[i]) {
+			// if the key/name of the histogram does not contain a forward slash we put it in the root-directory
+			if(it.first.find_last_of('/') == std::string::npos) {
+				(*fLists[i])[""].Add(it.second);
+			} else {
+				// extract the path from the key/name
+				auto lastSlash = it.first.find_last_of('/');
+				(*fLists[i])[it.first.substr(0, lastSlash)].Add(it.second);
+			}
+		}
 		CheckSizes(i, "use");
 	}
 	TH1::AddDirectory(true); // restores old behaviour
@@ -174,7 +185,10 @@ void TGRSIHelper::Finalize() {
 						std::cerr<<"Object '"<<obj->GetName()<<"' is not a histogram ("<<obj->ClassName()<<"), don't know what to do with it!"<<std::endl;
 					}
 				} else {
-					std::cerr<<"Failed to find object '"<<obj->GetName()<<"' in "<<slot<<". list"<<std::endl;
+					// only warn about not finding the object in other lists for histograms and trees
+					if(obj->InheritsFrom(TH1::Class()) || obj->InheritsFrom(TTree::Class())) {
+						std::cerr<<"Failed to find object '"<<obj->GetName()<<"' in "<<slot<<". list"<<std::endl;
+					}
 				}
 			}
 		}
