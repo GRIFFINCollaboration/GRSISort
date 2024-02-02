@@ -17,6 +17,7 @@
 
 TGRSIOptions* TGRSIOptions::fGRSIOptions = nullptr;
 TAnalysisOptions* TGRSIOptions::fAnalysisOptions = new TAnalysisOptions;
+TUserSettings* TGRSIOptions::fUserSettings = new TUserSettings;
 
 TGRSIOptions* TGRSIOptions::Get(int argc, char** argv)
 {
@@ -115,6 +116,7 @@ void TGRSIOptions::Clear(Option_t*)
    fLongFileDescription = false;
 
 	fAnalysisOptions->Clear();
+	fUserSettings->Clear();
 
    // Proof only
    fMaxWorkers   = -1;
@@ -267,7 +269,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 
 	// program specific options
 	if(program.compare("grsisort") == 0) {
-		// grsisort options
+		// grsisort only options
 		parser.option("recommended", &useRecommendedFlags, true).description("Use recommended flags (those in " DGREEN "dark green" GREEN ")").colour(GREEN);
 		parser.option("output-fragment-tree", &fOutputFragmentFile, true).description("Filename of output fragment tree");
 		parser.option("output-analysis-tree", &fOutputAnalysisFile, true).description("Filename of output analysis tree");
@@ -363,6 +365,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 		parser.option("proof-stats", &fProofStats, true)
 			.description("enable proof stats");
 	} else if(program.compare("grsiframe") == 0) {
+		// grsiframe only parser options
 		parser.option("max-workers", &fMaxWorkers, true)
 			.description("Maximum number of nodes to use when running a grsiframe session")
 			.default_value(1);
@@ -374,6 +377,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 	}
 
 	if(program.compare("grsiframe") != 0) {
+		// grsisort or grsiproof options
 		parser.option("max-events", &fNumberOfEvents, true)
 			.description("Maximum number of (midas, lst, rlmd, or tdr) events read").default_value(0);
 	}
@@ -512,6 +516,9 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const
 	if(ext == "val") {
       return kFileType::GVALUE;
    }
+	if(ext == "par") {
+      return kFileType::USERSETTINGS;
+   }
 	if(ext == "win") {
       return kFileType::PRESETWINDOW;
    }
@@ -538,64 +545,70 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
    /// Detects the type of file provided on the command line. This uses the extension to determine
    /// the type of the file. Once the type is determined, the file is sent to the appropriate list
    /// in TGRSIOptions. This is also smart enough to dynamically link histogramming libraries.
-   switch(DetermineFileType(filename)) {
-   case kFileType::NSCL_EVT:
-   case kFileType::GRETINA_MODE2:
-   case kFileType::GRETINA_MODE3:
-   case kFileType::LST_FILE:
-   case kFileType::RLMD_FILE:
-   case kFileType::TDR_FILE:
-   case kFileType::MIDAS_FILE: fInputFiles.push_back(filename); return true;
+	switch(DetermineFileType(filename)) {
+		case kFileType::NSCL_EVT:
+		case kFileType::GRETINA_MODE2:
+		case kFileType::GRETINA_MODE3:
+		case kFileType::LST_FILE:
+		case kFileType::RLMD_FILE:
+		case kFileType::TDR_FILE:
+		case kFileType::MIDAS_FILE: fInputFiles.push_back(filename); return true;
 
-   case kFileType::ROOT_DATA: fInputRootFiles.push_back(filename); return true;
+		case kFileType::ROOT_DATA: fInputRootFiles.push_back(filename); return true;
 
-   case kFileType::ROOT_MACRO: fMacroFiles.push_back(filename); return true;
+		case kFileType::ROOT_MACRO: fMacroFiles.push_back(filename); return true;
 
-   case kFileType::CALIBRATED: fInputCalFiles.push_back(filename); return true;
+		case kFileType::CALIBRATED: fInputCalFiles.push_back(filename); return true;
 
-   case kFileType::DATAFRAME: fDataFrameLibrary = full_path(filename); return true;
+		case kFileType::DATAFRAME: fDataFrameLibrary = full_path(filename); return true;
 
-   case kFileType::COMPILED_SHARED_LIBRARY: {
-      bool           used = false;
-		// need absolute path not relative path in case the current working directory is not in LD_LIBRARY_PATH
-		std::string fullFilename = full_path(filename);
-      DynamicLibrary lib(fullFilename);
-      if(lib.GetSymbol("MakeFragmentHistograms") != nullptr) {
-         fFragmentHistogramLib = fullFilename;
-         used                  = true;
-      }
-      if(lib.GetSymbol("MakeAnalysisHistograms") != nullptr) {
-         fAnalysisHistogramLib = fullFilename;
-         used                  = true;
-      }
-      if(lib.GetSymbol("CreateParser") != nullptr && lib.GetSymbol("DestroyParser") != nullptr &&
-			lib.GetSymbol("CreateFile")   != nullptr && lib.GetSymbol("DestroyFile")   != nullptr) {
-         fParserLibrary        = fullFilename;
-         used                  = true;
-      }
-      if(lib.GetSymbol("CreateHelper") != nullptr && lib.GetSymbol("DestroyHelper") != nullptr) {
-         fDataFrameLibrary     = fullFilename;
-         used                  = true;
-      }
-      if(!used) {
-         std::cerr<<fullFilename<<" did not contain MakeFragmentHistograms or MakeAnalysisHistograms or CreateParser and others or CreateHelper and DestroyHelper"<<std::endl;
-      }
-      return used;
-   }
+		case kFileType::COMPILED_SHARED_LIBRARY: {
+																  bool           used = false;
+																  // need absolute path not relative path in case the current working directory is not in LD_LIBRARY_PATH
+																  std::string fullFilename = full_path(filename);
+																  DynamicLibrary lib(fullFilename);
+																  if(lib.GetSymbol("MakeFragmentHistograms") != nullptr) {
+																	  fFragmentHistogramLib = fullFilename;
+																	  used                  = true;
+																  }
+																  if(lib.GetSymbol("MakeAnalysisHistograms") != nullptr) {
+																	  fAnalysisHistogramLib = fullFilename;
+																	  used                  = true;
+																  }
+																  if(lib.GetSymbol("CreateParser") != nullptr && lib.GetSymbol("DestroyParser") != nullptr &&
+																		  lib.GetSymbol("CreateFile")   != nullptr && lib.GetSymbol("DestroyFile")   != nullptr) {
+																	  fParserLibrary        = fullFilename;
+																	  used                  = true;
+																  }
+																  if(lib.GetSymbol("CreateHelper") != nullptr && lib.GetSymbol("DestroyHelper") != nullptr) {
+																	  fDataFrameLibrary     = fullFilename;
+																	  used                  = true;
+																  }
+																  if(!used) {
+																	  std::cerr<<fullFilename<<" did not contain MakeFragmentHistograms or MakeAnalysisHistograms or CreateParser and others or CreateHelper and DestroyHelper"<<std::endl;
+																  }
+																  return used;
+															  }
 
-   case kFileType::GVALUE: fInputValFiles.push_back(filename); return true;
+		case kFileType::GVALUE: fInputValFiles.push_back(filename); return true;
 
-   case kFileType::PRESETWINDOW: fInputWinFiles.push_back(filename); return true;
+		case kFileType::USERSETTINGS:
+										// if we haven't read any user setting create new ones and read the file, otherwise just read the file
+										if(fUserSettings == nullptr) fUserSettings = new TUserSettings(filename);
+										else fUserSettings->Read(filename);
+										return true;
 
-   case kFileType::CUTS_FILE: fInputCutFiles.push_back(filename); return true;
+		case kFileType::PRESETWINDOW: fInputWinFiles.push_back(filename); return true;
 
-   case kFileType::CONFIG_FILE: return false;
+		case kFileType::CUTS_FILE: fInputCutFiles.push_back(filename); return true;
 
-   case kFileType::XML_FILE: fInputOdbFiles.push_back(filename); return true;
+		case kFileType::CONFIG_FILE: return false;
 
-   case kFileType::UNKNOWN_FILETYPE:
-   default: std::cout<<"\tDiscarding unknown file: "<<filename<<std::endl; return false;
-   }
+		case kFileType::XML_FILE: fInputOdbFiles.push_back(filename); return true;
+
+		case kFileType::UNKNOWN_FILETYPE:
+		default: std::cout<<"\tDiscarding unknown file: "<<filename<<std::endl; return false;
+	}
 }
 
 std::string TGRSIOptions::GenerateOutputFilename(const std::string&)
@@ -631,6 +644,7 @@ bool TGRSIOptions::WriteToFile(TFile* file)
    } else {
       Get()->Write("GRSIOptions", TObject::kOverwrite);
 		fAnalysisOptions->WriteToFile(file);
+		if(!fUserSettings->empty()) fUserSettings->Write("UserSettings", TObject::kOverwrite);
    }
 
    std::cout<<"Writing TGRSIOptions to "<<gDirectory->GetFile()->GetName()<<std::endl;

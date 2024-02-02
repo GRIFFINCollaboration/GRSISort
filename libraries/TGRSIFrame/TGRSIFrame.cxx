@@ -77,6 +77,7 @@ TGRSIFrame::TGRSIFrame()
 	inputList->Add(fPpg);
 	inputList->Add(TRunInfo::Get());
 	inputList->Add(fOptions->AnalysisOptions());
+	inputList->Add(fOptions->UserSettings());
 	int i = 0;
    for(const auto& valFile : fOptions->ValInputFiles()) {
       inputList->Add(new TNamed(Form("valFile%d", i++), valFile.c_str()));
@@ -170,6 +171,7 @@ void TGRSIFrame::Run()
       std::cerr<<"failed to find TPPG, can't write it!"<<std::endl;
    }
    fOptions->AnalysisOptions()->WriteToFile(&outputFile);
+	fOptions->UserSettings()->Write("UserSettings", TObject::kOverwrite);
    TChannel::WriteToRoot();
    outputFile.Close();
    std::cout<<"Closed '"<<outputFile.GetName()<<"'"<<std::endl;
