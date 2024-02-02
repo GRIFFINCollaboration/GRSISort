@@ -1,0 +1,15 @@
+# settings to calculate the angles between crystals in the helper:
+GriffinDistance: 145.
+Addback: true
+Folding: true
+Grouping: true
+
+# settings for analysing the matrices produced by the helper
+Projection.Low: 1327.
+Projection.High: 1337.
+Background.1.Low: 1500.
+Background.1.High: 1800.
+TimeRandomNormalization: 1.
+Peak.Position: 1173.7
+Peak.Low: 1140.
+Peak.High: 1200.

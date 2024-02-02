@@ -3,6 +3,7 @@
 TGRSIHelper::TGRSIHelper(TList* input) {
 	fPpg = static_cast<TPPG*>(input->FindObject("TPPG"));
 	fRunInfo = static_cast<TRunInfo*>(input->FindObject("TRunInfo"));
+	fUserSettings = static_cast<TUserSettings*>(input->FindObject("UserSettings"));
 	// get the analysis options from the input list and assign them to our local analysis options
 	// (this might not be needed anymore since the workers aren't started as separate processes but threads)
 	*(TGRSIOptions::AnalysisOptions()) = *static_cast<TAnalysisOptions*>(input->FindObject("TAnalysisOptions"));

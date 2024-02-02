@@ -8,13 +8,12 @@
 
 class AngularCorrelationHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<AngularCorrelationHelper> {
 private:
-	double fGriffinDistance = 145.;
+	double fGriffinDistance{145.};
+	bool fFolding{false};
+	bool fGrouping{false};
+	bool fAddback{true};
 
-	bool fFolding = true;
-	bool fGrouping = true;
-	bool fAddback = true;
-
-	TGriffinAngles* fAngles = new TGriffinAngles(fGriffinDistance, fFolding, fGrouping, fAddback);
+	TGriffinAngles* fAngles{nullptr};
 
 	std::map<unsigned int, std::deque<TGriffin*>> fGriffinDeque;
 	std::map<unsigned int, std::deque<TGriffinBgo*>> fBgoDeque;
@@ -23,6 +22,17 @@ public :
 	AngularCorrelationHelper(TList* list) : TGRSIHelper(list) {
 		Prefix("AngularCorrelation");
 
+		if(fUserSettings != nullptr) {
+			fGriffinDistance = fUserSettings->GetDouble("GriffinDistance");
+			fAddback = fUserSettings->GetBool("Addback");
+			fFolding = fUserSettings->GetBool("Folding");
+			fGrouping = fUserSettings->GetBool("Grouping");
+		} else {
+			std::cout<<"No user settings provided, using default settings: ";
+		}
+		std::cout<<std::boolalpha<<"distance "<<fGriffinDistance<<" mm, addback "<<fAddback<<", folding "<<fFolding<<", and grouping "<<fGrouping<<std::endl;
+
+		fAngles = new TGriffinAngles(fGriffinDistance, fFolding, fGrouping, fAddback);
 		fAngles->Print();
 
 		// Setup calls CreateHistograms, which uses the stored angle combinations, so we need those set before
