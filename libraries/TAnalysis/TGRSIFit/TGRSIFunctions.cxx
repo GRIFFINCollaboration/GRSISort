@@ -22,7 +22,7 @@ bool TGRSIFunctions::CheckParameterErrors(const TFitResultPtr& fitres, std::stri
 
    // if we do not have a fit result, we have to assume everything is okay for now
    if(fitres.Get() == nullptr) return true;
-   std::transform(opt.begin(), opt.end(), opt.begin(), [](unsigned char c){ return std::tolower(c); });
+   std::transform(opt.begin(), opt.end(), opt.begin(), [](unsigned char c) { return std::tolower(c); });
    bool quiet = (opt.find('q') != std::string::npos);
    bool verbose = (opt.find('v') != std::string::npos);
 	if(quiet && verbose) {
@@ -76,7 +76,7 @@ Double_t TGRSIFunctions::PolyBg(Double_t* x, Double_t* par, Int_t order)
    // Polynomial function of the form SUM(par[i]*(x - shift)^i). The shift is done to match parameters with Radware
    // output.
 
-   /*   if((Double_t)(sizeof(par))/(Double_t)(sizeof(par[0])) < (order + 2)){ //This doesn't work with the current
+   /*   if((Double_t)(sizeof(par))/(Double_t)(sizeof(par[0])) < (order + 2)) { //This doesn't work with the current
       method
         std::cout<<"not enough parameters passed to function"<<std::endl;
         std::cout<<"sizeof par = "<<sizeof(par)<<std::endl;
@@ -411,11 +411,11 @@ Double_t TGRSIFunctions::ConvolutedDecay(Double_t *x, Double_t *par)
 ///   - par[3]:  Lambda of the level
 
   Double_t val;
-  val = TMath::Sqrt(TMath::Pi())*par[0]*par[3]/2*TMath::Exp(par[3]/2*(2*par[1]+par[3]*pow(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[3]*pow(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]))+par[4];
+  val = TMath::Sqrt(TMath::Pi())*par[0]*par[3]/2*TMath::Exp(par[3]/2*(2*par[1]+par[3]*TMath::Power(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[3]*TMath::Power(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]))+par[4];
   return val;
 }
 
-Double_t TGRSIFunctions::ConvolutedDecay2(Double_t *x, Double_t *par){
+Double_t TGRSIFunctions::ConvolutedDecay2(Double_t *x, Double_t *par) {
 //This function is the same as ConvolutedDecay but should be use when the lifetime has two different components.
 //Requires the following parameters:
 //   - par[0]:  Weight of lifetime-1
@@ -426,6 +426,118 @@ Double_t TGRSIFunctions::ConvolutedDecay2(Double_t *x, Double_t *par){
 //   - par[5]:  Lambda of the level-2
 
   Double_t val;
-  val = TMath::Sqrt(TMath::Pi())*par[0]*par[3]/2*TMath::Exp(par[3]/2*(2*par[1]+par[3]*pow(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[3]*pow(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]))   +  TMath::Sqrt(TMath::Pi())*par[4]*par[5]/2*TMath::Exp(par[5]/2*(2*par[1]+par[5]*pow(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[5]*pow(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]));
+  val = TMath::Sqrt(TMath::Pi())*par[0]*par[3]/2*TMath::Exp(par[3]/2*(2*par[1]+par[3]*TMath::Power(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[3]*TMath::Power(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]))   +  TMath::Sqrt(TMath::Pi())*par[4]*par[5]/2*TMath::Exp(par[5]/2*(2*par[1]+par[5]*TMath::Power(par[2],2)-2*x[0]))*TMath::Erfc((par[1]+par[5]*TMath::Power(par[2],2)-x[0])/(TMath::Sqrt(2)*par[2]));
   return val;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+double TGRSIFunctions::ClebschGordan(double j1, double m1, double j2, double m2, double j, double m)
+{
+    // Conditions check
+    if(2*j1 != floor(2*j1) ||
+		 2*j2 != floor(2*j2) ||
+       2*j  != floor(2*j)  ||
+       2*m1 != floor(2*m1) ||
+       2*m2 != floor(2*m2) ||
+       2*m  != floor(2*m)) {
+		 return 0;
+	 }
+	 if((m1+m2) != m) {
+		 return 0;
+	 }
+	 if((j1-m1) != floor(j1-m1)) {
+		 return 0;
+	 }
+	 if((j2-m2) != floor(j2-m2)) {
+		 return 0;
+	 }
+	 if(j - m != floor(j-m) ) {
+		 return 0;
+	 }
+	 if(j > (j1+j2) || j < abs(j1-j2)) {
+		 return 0;
+	 }
+	 if(abs(m1) > j1) {
+		 return 0;
+	 }
+	 if(abs(m2) > j2) {
+		 return 0;
+	 }
+	 if(abs(m) > j) {
+		 return 0 ;
+	 }
+
+	 double term1 = TMath::Sqrt((((2*j+1)/TMath::Factorial(j1+j2+j+1))*TMath::Factorial(j2+j-j1)*TMath::Factorial(j+j1-j2)*TMath::Factorial(j1+j2-j)*TMath::Factorial(j1+m1)*TMath::Factorial(j1-m1)*TMath::Factorial(j2+m2)*TMath::Factorial(j2-m2)*TMath::Factorial(j+m)*TMath::Factorial(j-m)));
+	 double sum = 0.;
+	 for(int k = 0 ; k <= 99 ; k++ ) {
+		 if((j1+j2-j-k < 0) || (j1-m1-k < 0) || (j2+m2-k < 0) ) {
+			 //no further terms will contribute to sum, exit loop
+			 break;
+		 } else if((j-j1-m2+k < 0) || (j-j2+m1+k < 0)) {
+			 //jump ahead to next term that will contribute
+			 const Int_t a1 = (j-j1-m2);
+			 const Int_t a2 = (j-j2+m1);
+			 k = TMath::Max(-TMath::Min(a1, a2) - 1, k);
+		 } else {
+			 double term = TMath::Factorial(j1+j2-j-k)*TMath::Factorial(j-j1-m2+k)*TMath::Factorial(j-j2+m1+k)*TMath::Factorial(j1-m1-k)*TMath::Factorial(j2+m2-k)*TMath::Factorial(k);
+			 if((k%2) == 1) {
+				 term *= -1.;
+			 }
+			 sum += 1./term;
+		 }
+	 }
+	 return term1*sum;
+	 // Reference: An Effective Algorithm for Calculation of the C.G.
+	 // Coefficients Liang Zuo, et. al.
+	 // J. Appl. Cryst. (1993). 26, 302-304
+}
+
+double TGRSIFunctions::RacahW(double a, double b, double c, double d, double e, double f)
+{
+	return TMath::Power((-1), int(a+b+d+c))*ROOT::Math::wigner_6j(int(2*a),int(2*b),int(2*e),int(2*d),int(2*c),int(2*f));
+}
+
+double TGRSIFunctions::F(double k, double jf, double L1, double L2, double ji)
+{
+	double cg = TGRSIFunctions::ClebschGordan(L1,1,L2,-1,k,0);
+	if(cg == 0) {
+		return 0;
+	}
+	double w = TGRSIFunctions::RacahW(ji,ji,L1,L2,k,jf);
+	if(w == 0) {
+		return 0;
+	}
+	return TMath::Power((-1), (jf-ji-1)) * TMath::Power((2*L1+1)*(2*L2+1)*(2*ji+1), (1.0/2.0)) * cg * w;
+	// Reference: Tables of coefficients for angular distribution of gamma rays from aligned nuclei
+	// T. Yamazaki. Nuclear Data A, 3(1):1?23, 1967.
+}
+
+double TGRSIFunctions::A(double k, double ji, double jf, double L1, double L2, double delta)
+{
+	double f1 = F(k,ji,L1,L1,jf);
+	double f2 = F(k,ji,L1,L2,jf);
+	double f3 = F(k,ji,L2,L2,jf);
+
+	return (1./(1.+TMath::Power(delta, 2))) * (f1 + 2*delta*f2 + delta*delta*f3);
+}
+
+double TGRSIFunctions::B(double k, double ji, double jf, double L1, double L2, double delta)
+{
+	double f1 = F(k,jf,L1,L1,ji);
+	double f2 = F(k,jf,L1,L2,ji);
+	double f3 = F(k,jf,L2,L2,ji);
+	return (1./(1.+TMath::Power(delta, 2))) * (f1 + TMath::Power((-1), L1+L2)*2*delta*f2 + delta*delta*f3);
+}
+
+double TGRSIFunctions::CalculateA2(double j1, double j2, double j3, double l1a, double l1b, double l2a, double l2b, double delta1, double delta2)
+{
+	return B(2,j2,j1,l1a,l1b,delta1) * A(2,j3,j2,l2a,l2b,delta2);
+}
+
+double TGRSIFunctions::CalculateA4(double j1, double j2, double j3, double l1a, double l1b, double l2a, double l2b, double delta1, double delta2)
+{
+	return B(4,j2,j1,l1a,l1b,delta1) * A(4,j3,j2,l2a,l2b,delta2);
+}
+
