@@ -12,11 +12,16 @@ private:
 	bool fFolding{false};
 	bool fGrouping{false};
 	bool fAddback{true};
+	std::vector<int> fExcludedDetectors;
+	std::vector<int> fExcludedCrystals;
 
 	TGriffinAngles* fAngles{nullptr};
 
 	std::map<unsigned int, std::deque<TGriffin*>> fGriffinDeque;
 	std::map<unsigned int, std::deque<TGriffinBgo*>> fBgoDeque;
+
+	bool ExcludeDetector(int detector) { for(auto exclude : fExcludedDetectors) { if(detector == exclude) return true; } return false; }
+	bool ExcludeCrystal(int arraynumber) { for(auto exclude : fExcludedCrystals) { if(arraynumber == exclude) return true; } return false; }
 
 public :
 	AngularCorrelationHelper(TList* list) : TGRSIHelper(list) {
@@ -27,6 +32,8 @@ public :
 			fAddback = fUserSettings->GetBool("Addback");
 			fFolding = fUserSettings->GetBool("Folding");
 			fGrouping = fUserSettings->GetBool("Grouping");
+			fExcludedDetectors = fUserSettings->GetIntVector("ExcludedDetector");
+			fExcludedCrystals = fUserSettings->GetIntVector("ExcludedCrystal");
 		} else {
 			std::cout<<"No user settings provided, using default settings: ";
 		}

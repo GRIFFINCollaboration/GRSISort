@@ -13,3 +13,14 @@ TimeRandomNormalization: 1.
 Peak.Position: 1173.7
 Peak.Low: 1140.
 Peak.High: 1200.
+
+# it's also possible to exclude specific detectors, e.g. to exclude detectors 1-3 comment back in:
+//ExcludeDetector: 1, 2, 3
+
+# settings for the mixing methods analysis, need to specify J's of high, middle, and low level
+# all of them are vectors, but only one of these can be a vector with more than one element
+# this will produce plots of reduced chi^2 vs mixing angle for spins from 0 to 4 for the high level
+TwoJ.Low: 0,
+TwoJ.Middle: 4,
+TwoJ.High: 0, 2, 4, 6, 8
+
