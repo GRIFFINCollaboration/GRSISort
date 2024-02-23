@@ -1,9 +1,3 @@
-# settings to calculate the angles between crystals in the helper:
-GriffinDistance: 145.
-Addback: true
-Folding: true
-Grouping: true
-
 # settings for analysing the matrices produced by the helper
 Projection.Low: 1327.
 Projection.High: 1337.
@@ -13,9 +7,6 @@ TimeRandomNormalization: 1.
 Peak.Position: 1173.7
 Peak.Low: 1140.
 Peak.High: 1200.
-
-# it's also possible to exclude specific detectors, e.g. to exclude detectors 1-3 comment back in:
-//ExcludeDetector: 1, 2, 3
 
 # settings for the mixing methods analysis, need to specify J's of high, middle, and low level
 # all of them are vectors, but only one of these can be a vector with more than one element

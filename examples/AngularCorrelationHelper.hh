@@ -15,6 +15,14 @@ private:
 	std::vector<int> fExcludedDetectors;
 	std::vector<int> fExcludedCrystals;
 
+	double fPrompt{200.};  // Maximum absolute time difference for prompt gamma-gamma
+	double fTimeRandomLow{400.}; // Minimum time difference for gamma-gamma time random background
+	double fTimeRandomHigh{600.}; // Maximum time difference for gamma-gamma time random background
+
+	int fBins{3000};
+	double fMinEnergy{0.};
+	double fMaxEnergy{3000.};
+
 	TGriffinAngles* fAngles{nullptr};
 
 	std::map<unsigned int, std::deque<TGriffin*>> fGriffinDeque;
@@ -28,12 +36,20 @@ public :
 		Prefix("AngularCorrelation");
 
 		if(fUserSettings != nullptr) {
-			fGriffinDistance = fUserSettings->GetDouble("GriffinDistance");
-			fAddback = fUserSettings->GetBool("Addback");
-			fFolding = fUserSettings->GetBool("Folding");
-			fGrouping = fUserSettings->GetBool("Grouping");
-			fExcludedDetectors = fUserSettings->GetIntVector("ExcludedDetector");
-			fExcludedCrystals = fUserSettings->GetIntVector("ExcludedCrystal");
+			fGriffinDistance = fUserSettings->GetDouble("GriffinDistance", 145.);
+			fAddback = fUserSettings->GetBool("Addback", true);
+			fFolding = fUserSettings->GetBool("Folding", false);
+			fGrouping = fUserSettings->GetBool("Grouping", false);
+			fExcludedDetectors = fUserSettings->GetIntVector("ExcludedDetector", true); // be quiet if we don't find this
+			fExcludedCrystals = fUserSettings->GetIntVector("ExcludedCrystal", true); // be quiet if we don't find this
+
+			fPrompt = fUserSettings->GetDouble("MaxPromptTime", 200.);
+			fTimeRandomLow = fUserSettings->GetDouble("TimeRandom.Low", 400.);
+			fTimeRandomHigh = fUserSettings->GetDouble("TimeRandom.High", 600.);
+
+			fBins = fUserSettings->GetInt("NumberOfBins", 3000);
+			fMinEnergy = fUserSettings->GetDouble("MinimumEnergy", 0.);
+			fMaxEnergy = fUserSettings->GetDouble("MaximumEnergy", 3000.);
 		} else {
 			std::cout<<"No user settings provided, using default settings: ";
 		}
