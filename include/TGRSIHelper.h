@@ -19,6 +19,7 @@
 #include "TRunInfo.h"
 #include "TGRSIMap.h"
 #include "TChannel.h"
+#include "TUserSettings.h"
 
 // 1 GB size limit for objects in ROOT
 #define SIZE_LIMIT 1073741822
@@ -32,8 +33,10 @@ protected:
    std::vector<TGRSIMap<std::string, GHSym*>> fSym; //!<! one map per data processing slot for GRSISort's symmectric 2D histograms
    std::vector<TGRSIMap<std::string, GCube*>> fCube; //!<! one map per data processing slot for GRSISort's 3D histograms
    std::vector<TGRSIMap<std::string, TTree*>> fTree; //!<! one map per data processing slot for trees
+   std::vector<TGRSIMap<std::string, TObject*>> fObject; //!<! one map per data processing slot for any TObjects
 	TPPG*     fPpg{nullptr};     //!<! pointer to the PPG
 	TRunInfo* fRunInfo{nullptr}; //!<! pointer to the run info
+	TUserSettings* fUserSettings{nullptr}; //!<! pointer to the user settings
 	std::map<std::string, TCutG*>      fCuts; //!<! map of cuts
 	std::string fPrefix{"TGRSIHelper"}; //!<! name of this action (used as prefix)
 

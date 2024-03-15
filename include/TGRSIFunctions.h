@@ -62,6 +62,16 @@ namespace TGRSIFunctions {
 	// Angular correlation fitting
 	Double_t LegendrePolynomial(Double_t* x, Double_t* p);
 #endif
+
+	// functions used for angular correlations
+	double ClebschGordan(double j1, double m1, double j2, double m2, double j, double m);
+	double RacahW(double a, double b, double c, double d, double e, double f);
+	double F(double k, double jf, double L1, double L2, double ji);
+	double A(double k, double ji, double jf, double L1, double L2, double delta);
+	double B(double k, double ji, double jf, double L1, double L2, double delta);
+	double CalculateA2(double j1, double j2, double j3, double l1a, double l1b, double l2a, double l2b, double delta1, double delta2);
+	double CalculateA4(double j1, double j2, double j3, double l1a, double l1b, double l2a, double l2b, double delta1, double delta2);
+
 }
 /*! @} */
 #endif

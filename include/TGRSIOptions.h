@@ -12,6 +12,7 @@
 
 #include "TGRSITypes.h"
 #include "TAnalysisOptions.h"
+#include "TUserSettings.h"
 
 /////////////////////////////////////////////////////////////////
 ///
@@ -67,6 +68,7 @@ public:
 	void LogFile(const std::string& val) { fLogFile = val; }
 
 	static TAnalysisOptions* AnalysisOptions() { return fAnalysisOptions; }
+	static TUserSettings* UserSettings() { return fUserSettings; }
 
 	bool SeparateOutOfOrder() const { return fSeparateOutOfOrder; }
 	bool StartGui() const { return fStartGui; }
@@ -221,6 +223,7 @@ private:
 	int  fSortDepth;     ///< Size of Q that stores fragments to be built into events
 
 	static TAnalysisOptions* fAnalysisOptions; ///< contains all options for analysis
+	static TUserSettings* fUserSettings; ///< contains user settings read from text-file
 
 	bool fSeparateOutOfOrder; ///< Flag to build out of order into seperate event tree
 
