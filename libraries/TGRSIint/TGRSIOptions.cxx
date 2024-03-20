@@ -595,7 +595,7 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
 		case kFileType::USERSETTINGS:
 										// if we haven't read any user setting create new ones and read the file, otherwise just read the file
 										if(fUserSettings == nullptr) fUserSettings = new TUserSettings(filename);
-										else fUserSettings->Read(filename);
+										else fUserSettings->ReadSettings(filename);
 										return true;
 
 		case kFileType::PRESETWINDOW: fInputWinFiles.push_back(filename); return true;

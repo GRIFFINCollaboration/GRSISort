@@ -11,7 +11,7 @@
 
 ClassImp(TUserSettings)
 
-bool TUserSettings::Read(std::string settingsFile)
+bool TUserSettings::ReadSettings(std::string settingsFile)
 {
 	/// Read user settings from text file.
 	/// The file is expected to have the format
