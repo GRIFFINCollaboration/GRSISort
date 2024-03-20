@@ -27,11 +27,11 @@
 class TUserSettings : public TNamed {
 public:
 	TUserSettings() {}
-	TUserSettings(std::string settingsFile) { if(!Read(settingsFile)) throw std::runtime_error("Failed to read user settings file!"); }
+	TUserSettings(std::string settingsFile) { if(!ReadSettings(settingsFile)) throw std::runtime_error("Failed to read user settings file!"); }
 
 	~TUserSettings() {}
 
-	bool Read(std::string settingsFile);
+	bool ReadSettings(std::string settingsFile);
 
 	bool empty() { return fBool.empty() && fInt.empty() && fDouble.empty() && fString.empty() && fBoolVector.empty() && fIntVector.empty() && fDoubleVector.empty() && fStringVector.empty(); }
 
@@ -66,7 +66,7 @@ public:
 	std::string GetString(std::string parameter, std::string def) const { try { return fString.at(parameter); } catch(std::out_of_range& e) { return def; } }
 	
 	void Print(Option_t* opt = "") const override;
-	void Clear() { fBool.clear(); fInt.clear(); fDouble.clear(); fString.clear(); fBoolVector.clear(); fIntVector.clear(); fDoubleVector.clear(); fStringVector.clear(); SetName(""); }
+	void Clear(Option_t* = "") override { fBool.clear(); fInt.clear(); fDouble.clear(); fString.clear(); fBoolVector.clear(); fIntVector.clear(); fDoubleVector.clear(); fStringVector.clear(); SetName(""); }
 
 private:
 	void ParseValue(const std::string& name, const std::string& value, bool vector);

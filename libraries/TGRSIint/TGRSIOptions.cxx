@@ -251,7 +251,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 
 	// analysis options, these options are to be parsed on the second pass, so firstPass is set to false
 	parser.option("build-window", &fAnalysisOptions->fBuildWindow, false)
-		.description("Build window, timestamp units").colour(DCYAN);
+		.description("Build window, in ns.").colour(DCYAN);
 	parser.option("build-events-by-timestamp", &fAnalysisOptions->fBuildEventsByTimeStamp, false)
 		.description("Build events by timestamp w/o using CFD").colour(DCYAN);
 	parser.option("addback-window", &fAnalysisOptions->fAddbackWindow, false)
@@ -595,7 +595,7 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
 		case kFileType::USERSETTINGS:
 										// if we haven't read any user setting create new ones and read the file, otherwise just read the file
 										if(fUserSettings == nullptr) fUserSettings = new TUserSettings(filename);
-										else fUserSettings->Read(filename);
+										else fUserSettings->ReadSettings(filename);
 										return true;
 
 		case kFileType::PRESETWINDOW: fInputWinFiles.push_back(filename); return true;
