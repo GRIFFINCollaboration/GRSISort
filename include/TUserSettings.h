@@ -65,6 +65,16 @@ public:
 	double GetDouble(std::string parameter, double def) const { try { return fDouble.at(parameter); } catch(std::out_of_range& e) { return def; } }
 	std::string GetString(std::string parameter, std::string def) const { try { return fString.at(parameter); } catch(std::out_of_range& e) { return def; } }
 	
+	// setter functions
+	void SetBool(std::string parameter, bool value) { fBool[parameter] = value; }
+	void SetInt(std::string parameter, int value) { fInt[parameter] = value; }
+	void SetDouble(std::string parameter, double value) { fDouble[parameter] = value; }
+	void SetString(std::string parameter, std::string value) { fString[parameter] = value; }
+	void SetBoolVector(std::string parameter, std::vector<bool> value) { fBoolVector[parameter] = value; }
+	void SetIntVector(std::string parameter, std::vector<int> value) { fIntVector[parameter] = value; }
+	void SetDoubleVector(std::string parameter, std::vector<double> value) { fDoubleVector[parameter] = value; }
+	void SetStringVector(std::string parameter, std::vector<std::string> value) { fStringVector[parameter] = value; }
+
 	void Print(Option_t* opt = "") const override;
 	void Clear(Option_t* = "") override { fBool.clear(); fInt.clear(); fDouble.clear(); fString.clear(); fBoolVector.clear(); fIntVector.clear(); fDoubleVector.clear(); fStringVector.clear(); SetName(""); }
 
