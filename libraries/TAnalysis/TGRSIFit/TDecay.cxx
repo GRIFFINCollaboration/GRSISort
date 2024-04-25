@@ -2,7 +2,8 @@
 #include "Math/Minimizer.h"
 #include "Math/Factory.h"
 #include "Math/Functor.h"
-#include "GCanvas.h"
+#include "TCanvas.h"
+#include "TBuffer.h"
 #include "TLMFitter.h"
 
 /// \cond CLASSIMP
@@ -110,7 +111,7 @@ void TDecayFit::UpdateResiduals(TH1* hist)
 void TDecayFit::DrawResiduals()
 {
    if(fResiduals.GetN() != 0) {
-      new GCanvas;
+      new TCanvas;
       fResiduals.Draw("AP");
    } else {
       std::cout<<"Residuals not set yet"<<std::endl;

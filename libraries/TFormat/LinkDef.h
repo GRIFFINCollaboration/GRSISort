@@ -1,4 +1,4 @@
-// TFragment.h TBadFragment.h TChannel.h TRunInfo.h TGRSISortInfo.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TParsingDiagnostics.h TGRSIUtilities.h TMnemonic.h TSortingDiagnostics.h TTransientBits.h TPriorityValue.h TSingleton.h TDetectorInformation.h TParserLibrary.h TDataFrameLibrary.h TUserSettings.h
+// TDetector.h TFragment.h TBadFragment.h TChannel.h TRunInfo.h TGRSISortInfo.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TParsingDiagnostics.h TGRSIUtilities.h TMnemonic.h TSortingDiagnostics.h TTransientBits.h TPriorityValue.h TSingleton.h TDetectorInformation.h TParserLibrary.h TDataFrameLibrary.h TUserSettings.h GValue.h
 
 
 #ifdef __CINT__
@@ -14,6 +14,9 @@
 #pragma link C++ class TSingleton+;
 #pragma link C++ class TRunInfo+;
 #pragma link C++ class TSingleton<TRunInfo>-;
+
+#pragma link C++ class TDetector+;
+#pragma link C++ class TDetectorHit-;
 
 #pragma link C++ class TFragment+;
 #pragma link C++ class TBadFragment+;
@@ -49,5 +52,9 @@
 
 #pragma link C++ function GetRunNumber;
 #pragma link C++ function GetSubRunNumber;
+
+#pragma link C++ class GValue-;
+#pragma link C++ class std::map<std::string,GValue*>+;
+#pragma link C++ class std::pair<std::string,GValue*>+;
 
 #endif

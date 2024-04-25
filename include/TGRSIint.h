@@ -31,10 +31,14 @@
 #include "TList.h"
 #include "TEnv.h"
 #include "TFile.h"
+#include "TChain.h"
 #include "TStopwatch.h"
 
 #include "Globals.h"
 #include "TRawFile.h"
+
+extern TChain* gFragment;
+extern TChain* gAnalysis;
 
 class TGRSIint : public TRint {
 private:
