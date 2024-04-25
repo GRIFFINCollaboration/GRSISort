@@ -54,10 +54,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 #----------------------------------------------------------------------------
 # configure the include directories and set other variables
-include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include ${ROOT_INCLUDE_DIRS})
-
-#file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/lib ${CMAKE_BINARY_DIR}/bin)
-#set_property(GLOBAL APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${CMAKE_BINARY_DIR}/lib ${CMAKE_BINARY_DIR}/bin)
+include_directories(${PROJECT_SOURCE_DIR}/include ${ROOT_INCLUDE_DIRS})
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -77,7 +74,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/.grsi.mimes  ${CMAKE_CURRENT_BINARY_D
 
 #----------------------------------------------------------------------------
 # copy examples
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/examples DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/examples)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/examples DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 #----------------------------------------------------------------------------
 # define all libraries and root dictionaries
@@ -282,23 +279,38 @@ add_executable(grsisort ${PROJECT_SOURCE_DIR}/src/grsisort.cxx)
 set(GRSI_LIBRARIES TFormat TPulseAnalyzer TSuppressed TReaction TPeakFitting TGRSIFit TKinematics TNucleus TBgo TBetaDecay TSRIM TCal TGUI TGRSIProof TDataParser TRawFile MakeFragmentHistograms)
 target_link_libraries(grsisort ${GRSI_LIBRARIES} ${ROOT_LIBRARIES} X11 Xpm)
 
-##----------------------------------------------------------------------------
-## add all executable in util
+#----------------------------------------------------------------------------
+# add all executable in util
 set(UTIL_NAMES AddToChannelNumber AnalyzeDataLoss checkSort Compton_Scale_Plot converTH1 EfficCal EnableCrosstalkCorrection EnergyCal gadd grsiframe LeanAnalyzeComptonMatrices PlotVsRun ReadCalFromRoot Root2Ascii Root2Rad ScaleCalibration SetOdbFromData WriteCalToRoot WriteNonlinearitiesCal)
 foreach(UTIL IN LISTS UTIL_NAMES)
 	add_executable(${UTIL} ${PROJECT_SOURCE_DIR}/util/${UTIL}.cxx)
 	target_link_libraries(${UTIL} ${GRSI_LIBRARIES} ${ROOT_LIBRARIES} X11 Xpm)
 endforeach()
 
+#----------------------------------------------------------------------------
 # copy scripts
 configure_file(${PROJECT_SOURCE_DIR}/util/grsi-config    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/grsi-config COPYONLY)
 configure_file(${PROJECT_SOURCE_DIR}/util/ErrorReport.sh ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/ErrorReport.sh COPYONLY)
 
-##----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+# clean up all copied files and directories
+# we're using grsisort as target here, because most (all?) of these do not belong to a specific target
+set_property(TARGET grsisort APPEND PROPERTY ADDITIONAL_CLEAN_FILES
+	${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/grsi-config
+	${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/ErrorReport.sh
+	${CMAKE_CURRENT_BINARY_DIR}/thisgrsi.sh
+	${CMAKE_CURRENT_BINARY_DIR}/thisgrsi.csh
+	${CMAKE_CURRENT_BINARY_DIR}/.grsirc
+	${CMAKE_CURRENT_BINARY_DIR}/.grsi.mimes
+	${CMAKE_CURRENT_BINARY_DIR}/examples
+	${CMAKE_CURRENT_BINARY_DIR}/module.modulemap
+	)
+
+#----------------------------------------------------------------------------
 # custom target to generate the version header
 add_custom_target(GVersion
 	${CMAKE_COMMAND} -D SRC=${CMAKE_SOURCE_DIR}/include/GVersion.h.in
-						  -D DST=${CMAKE_BINARY_DIR}/include/GVersion.h
+	                 -D DST=${CMAKE_SOURCE_DIR}/include/GVersion.h
                     -D GIT_EXECUTABLE=${GIT_EXECUTABLE}
                     -P ${CMAKE_SOURCE_DIR}/GenerateVersionHeader.cmake
   )
@@ -319,6 +331,9 @@ FetchContent_Declare(
 	)
 FetchContent_MakeAvailable(
 	GRSIData
+	)
+set_property(TARGET GRSIData APPEND PROPERTY ADDITIONAL_CLEAN_FILES
+	${CMAKE_CURRENT_BINARY_DIR}/_deps
 	)
 
 #----------------------------------------------------------------------------
