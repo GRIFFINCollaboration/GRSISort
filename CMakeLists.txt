@@ -54,7 +54,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 #----------------------------------------------------------------------------
 # configure the include directories and set other variables
-include_directories(${PROJECT_SOURCE_DIR}/include ${ROOT_INCLUDE_DIRS})
+include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include ${ROOT_INCLUDE_DIRS})
 
 #file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/lib ${CMAKE_BINARY_DIR}/bin)
 #set_property(GLOBAL APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${CMAKE_BINARY_DIR}/lib ${CMAKE_BINARY_DIR}/bin)
@@ -66,7 +66,18 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_INSTALL_LIBDIR ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_INSTALL_BINDIR ${CMAKE_BINARY_DIR}/bin)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/thisgrsi.sh ${CMAKE_CURRENT_BINARY_DIR}/thisgrsi.sh COPYONLY)
+#----------------------------------------------------------------------------
+# copy some necessary text files
+# this will always overwrite the files, including any changes in them
+# tried using file(COPY, file(GENERATE, and add_custom_command to get around this for grsirc, no success
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/thisgrsi.sh  ${CMAKE_CURRENT_BINARY_DIR}/thisgrsi.sh  COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/thisgrsi.csh ${CMAKE_CURRENT_BINARY_DIR}/thisgrsi.csh COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/.grsirc      ${CMAKE_CURRENT_BINARY_DIR}/.grsirc      COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/.grsi.mimes  ${CMAKE_CURRENT_BINARY_DIR}/.grsi.mimes  COPYONLY)
+
+#----------------------------------------------------------------------------
+# copy examples
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/examples DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/examples)
 
 #----------------------------------------------------------------------------
 # define all libraries and root dictionaries
@@ -181,7 +192,7 @@ add_library(TFormat SHARED
 	${PROJECT_SOURCE_DIR}/libraries/GROOT/GRootGuiFactory.cxx
 	${PROJECT_SOURCE_DIR}/libraries/GROOT/TLevelScheme.cxx
 	)
-root_generate_dictionary(G__TFormat TFragment.h TBadFragment.h TChannel.h TRunInfo.h TGRSISortInfo.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TParsingDiagnostics.h TGRSIUtilities.h TMnemonic.h TSortingDiagnostics.h TTransientBits.h TPriorityValue.h TSingleton.h TDetectorInformation.h TParserLibrary.h TDataFrameLibrary.h TUserSettings.h TDetector.h TDetectorHit.h GValue.h TGRSIFrame.h TGRSIHelper.h TGRSIOptions.h TGRSIint.h TAnalysisOptions.h TDataLoop.h StoppableThread.h TFragWriteLoop.h TTerminalLoop.h TFragment.h TEventBuildingLoop.h TDetBuildingLoop.h TAnalysisWriteLoop.h TParallelFileMerger.h TFragHistLoop.h TCompiledHistograms.h TRuntimeObjects.h TAnalysisHistLoop.h GRootGuiFactory.h GRootFunctions.h GRootCommands.h GRootCanvas.h GRootBrowser.h GCanvas.h GH2Base.h  GH2I.h GH2D.h  GPeak.h GGaus.h GH1D.h GNotifier.h GPopup.h GSnapshot.h TCalibrator.h GHSym.h GCube.h TLevelScheme.h MODULE TFormat LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TFormat/CMakeLinkDef.h)
+root_generate_dictionary(G__TFormat TFragment.h TBadFragment.h TChannel.h TRunInfo.h TGRSISortInfo.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TParsingDiagnostics.h TGRSIUtilities.h TMnemonic.h TSortingDiagnostics.h TTransientBits.h TPriorityValue.h TSingleton.h TDetectorInformation.h TParserLibrary.h TDataFrameLibrary.h TUserSettings.h TDetector.h TDetectorHit.h GValue.h TGRSIFrame.h TGRSIHelper.h TGRSIOptions.h TGRSIint.h TAnalysisOptions.h TDataLoop.h StoppableThread.h TFragWriteLoop.h TTerminalLoop.h TEventBuildingLoop.h TDetBuildingLoop.h TAnalysisWriteLoop.h TParallelFileMerger.h TFragHistLoop.h TCompiledHistograms.h TRuntimeObjects.h TAnalysisHistLoop.h GRootGuiFactory.h GRootFunctions.h GRootCommands.h GRootCanvas.h GRootBrowser.h GCanvas.h GH2Base.h  GH2I.h GH2D.h  GPeak.h GGaus.h GH1D.h GNotifier.h GPopup.h GSnapshot.h TCalibrator.h GHSym.h GCube.h TLevelScheme.h MODULE TFormat LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TFormat/CMakeLinkDef.h)
 target_link_libraries(TFormat TGRSIFit TNucleus ${ROOT_LIBRARIES} X11 Xpm)
 add_dependencies(TFormat GVersion)
 
@@ -279,6 +290,7 @@ foreach(UTIL IN LISTS UTIL_NAMES)
 	target_link_libraries(${UTIL} ${GRSI_LIBRARIES} ${ROOT_LIBRARIES} X11 Xpm)
 endforeach()
 
+# copy scripts
 configure_file(${PROJECT_SOURCE_DIR}/util/grsi-config    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/grsi-config COPYONLY)
 configure_file(${PROJECT_SOURCE_DIR}/util/ErrorReport.sh ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/ErrorReport.sh COPYONLY)
 
