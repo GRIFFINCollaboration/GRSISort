@@ -40,8 +40,17 @@ public :
 			fAddback = fUserSettings->GetBool("Addback", true);
 			fFolding = fUserSettings->GetBool("Folding", false);
 			fGrouping = fUserSettings->GetBool("Grouping", false);
-			fExcludedDetectors = fUserSettings->GetIntVector("ExcludedDetector", true); // be quiet if we don't find this
-			fExcludedCrystals = fUserSettings->GetIntVector("ExcludedCrystal", true); // be quiet if we don't find this
+
+			try {
+				fExcludedDetectors = fUserSettings->GetIntVector("ExcludedDetector", true); // be quiet if we don't find this
+			} catch(std::out_of_range&) {
+				// do nothing, we simply don't have any detectors to exclude
+			}
+			try {
+				fExcludedCrystals = fUserSettings->GetIntVector("ExcludedCrystal", true); // be quiet if we don't find this
+			} catch(std::out_of_range&) {
+				// do nothing, we simply don't have any crystals to exclude
+			}
 
 			fPrompt = fUserSettings->GetDouble("MaxPromptTime", 200.);
 			fTimeRandomLow = fUserSettings->GetDouble("TimeRandom.Low", 400.);

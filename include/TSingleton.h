@@ -166,7 +166,7 @@ public:
 
 	static void PrintDirectory()
 	{
-		std::cout<<"Read singleton "<<fSingleton<<" from "<<(fDir!=nullptr?fDir->GetName():"N/A")<<std::endl;
+		std::cout<<"Singleton "<<fSingleton<<" was read from "<<(fDir!=nullptr?fDir->GetName():"N/A")<<std::endl;
 	}
 
 protected:

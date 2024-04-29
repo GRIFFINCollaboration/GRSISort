@@ -176,25 +176,14 @@ TList* ComptonPol(TFile* f, TStopwatch* w)
   char* XiHistGeoTitle = Form("Possible #xi Angles in GRIFFIN Array ( %.1f <= #theta <= %.1f ) -> UseDetCoincidenceAngle = %d;Experimental Angle #xi (#circ);Counts", RestrictCoincidenceAngleMin, RestrictCoincidenceAngleMax, UseDetCoincidenceAngle );
   char* XiHistNonCoTitle = Form("Measured #xi Angles for Non-Coincident #gamma_{1} and #gamma_{2} ( %.1f <= #theta <= %.1f ) -> UseDetCoincidenceAngle = %d;Experimental Angle #xi (#circ);Counts", RestrictCoincidenceAngleMin, RestrictCoincidenceAngleMax, UseDetCoincidenceAngle ); 
 
-  TH1D* XiHist      = new TH1D("XiHist", XiHistTitle, XiBins, 0, 180.000001); list->Add(XiHist);
-  TH1D* XiHistGeo   = new TH1D("XiHist_Geo", XiHistGeoTitle, XiBins, 0.0, 180.000001); list->Add(XiHistGeo);
-  TH1D* XiHistNonCo = new TH1D("XiHist_NonCo", XiHistNonCoTitle, XiBins, 0, 180.000001); list->Add(XiHistNonCo);
+  TH1D* XiHist      = new TH1D("XiHist", XiHistTitle, XiBins, XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(1), XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(XiBins+1)); list->Add(XiHist);
+  TH1D* XiHistGeo   = new TH1D("XiHist_Geo", XiHistGeoTitle, XiBins, XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(1), XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(XiBins+1)); list->Add(XiHistGeo);
+  TH1D* XiHistNonCo = new TH1D("XiHist_NonCo", XiHistNonCoTitle, XiBins, XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(1), XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(XiBins+1)); list->Add(XiHistNonCo);
   
   TGraphErrors* AsymmetryNonCo         = new TGraphErrors(); list->Add(AsymmetryNonCo);
   TGraphErrors* AsymmetryBinnedNonCo   = new TGraphErrors(); list->Add(AsymmetryBinnedNonCo);
   TGraphErrors* AsymmetryBinFoldNonCo   = new TGraphErrors(); list->Add(AsymmetryBinFoldNonCo);
   
-  TH1D* gammaSinglesAll    = (TH1D*)f->Get("gammaSingles");    list->Add(gammaSinglesAll);
-  TH2D* gammagammaAll    = (TH2D*)f->Get("gammagamma"); list->Add(gammagammaAll);
-  TH2D* gammaCrystalAll    = (TH2D*)f->Get("gammaCrystal"); list->Add(gammaCrystalAll);
-  
-  TH1D* gammaSingles_g1    = (TH1D*)f->Get("gammaSingles_g1"); list->Add(gammaSingles_g1);
-  TH1D* gammaSingles_g2    = (TH1D*)f->Get("gammaSingles_g2"); list->Add(gammaSingles_g2);
-  TH1D* gammaSingles_g3    = (TH1D*)f->Get("gammaSingles_g3"); list->Add(gammaSingles_g3);
-  TH1D* ggTimeDiff_g1g2    = (TH1D*)f->Get("ggTimeDiff_g1g2"); list->Add(ggTimeDiff_g1g2);
-  TH1D* ggTimeDiff_g1g3    = (TH1D*)f->Get("ggTimeDiff_g1g3"); list->Add(ggTimeDiff_g1g3);
-  TH1D* ggTimeDiff_g2g3    = (TH1D*)f->Get("ggTimeDiff_g2g3"); list->Add(ggTimeDiff_g2g3);
-
   /////////////////////////////////////////////////////////////////////////////////////
   //-------------------------- Gated Projection Plots -------------------------------//
   /////////////////////////////////////////////////////////////////////////////////////

@@ -346,7 +346,7 @@ bool TRunInfo::WriteToRoot(TFile* fileptr)
       bool2return = false;
    } else {
       runInfo->Write("RunInfo", TObject::kOverwrite);
-		runInfo->fDetectorInformation->Write("DetectorInformation", TObject::kOverwrite);
+		if(runInfo->fDetectorInformation != nullptr) runInfo->fDetectorInformation->Write("DetectorInformation", TObject::kOverwrite);
    }
 
    std::cout<<"Writing TRunInfo to "<<gDirectory->GetFile()->GetName()<<std::endl;

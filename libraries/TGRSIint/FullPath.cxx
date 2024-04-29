@@ -1,6 +1,6 @@
 #include "FullPath.h"
 
-//#ifdef __linux__
+//#ifdef __LINUX__
 
 #include <cstdlib>
 #include <climits>

@@ -34,12 +34,12 @@ void AngularCorrelationHelper::Exec(unsigned int slot, TGriffin& fGriffin, TGrif
 {
 	for(auto g1 = 0; g1 < (fAddback ? fGriffin.GetSuppressedAddbackMultiplicity(&fGriffinBgo) : fGriffin.GetSuppressedMultiplicity(&fGriffinBgo)); ++g1) {
 		auto grif1 = (fAddback ? fGriffin.GetSuppressedAddbackHit(g1) : fGriffin.GetSuppressedHit(g1));
-		if(ExcludeDetector(grif1->GetDetector()) || ExcludeCrystal(grif1->GetArrayNumber()) continue;
+		if(ExcludeDetector(grif1->GetDetector()) || ExcludeCrystal(grif1->GetArrayNumber())) continue;
 
 		for(auto g2 = 0; g2 < (fAddback ? fGriffin.GetSuppressedAddbackMultiplicity(&fGriffinBgo) : fGriffin.GetSuppressedMultiplicity(&fGriffinBgo)); ++g2) {
 			if(g1 == g2) continue;
 			auto grif2 = (fAddback ? fGriffin.GetSuppressedAddbackHit(g2) : fGriffin.GetSuppressedHit(g2));
-			if(ExcludeDetector(grif2->GetDetector()) || ExcludeCrystal(grif2->GetArrayNumber()) continue;
+			if(ExcludeDetector(grif2->GetDetector()) || ExcludeCrystal(grif2->GetArrayNumber())) continue;
 
 			// skip hits in the same detector when using addback, or in the same crystal when not using addback
 			if(grif1->GetDetector() == grif2->GetDetector() && (fAddback || grif1->GetCrystal() == grif2->GetCrystal())) {
@@ -71,7 +71,7 @@ void AngularCorrelationHelper::Exec(unsigned int slot, TGriffin& fGriffin, TGrif
 			auto fLastBgo = fBgoDeque[slot][l];
 			for(auto g2 = 0; g2 < (fAddback ? fLastGriffin->GetSuppressedAddbackMultiplicity(fLastBgo) : fLastGriffin->GetSuppressedMultiplicity(fLastBgo)); ++g2) {
 				auto grif2 = (fAddback ? fLastGriffin->GetSuppressedAddbackHit(g2) : fLastGriffin->GetSuppressedHit(g2));
-				if(ExcludeDetector(grif2->GetDetector()) || ExcludeCrystal(grif2->GetArrayNumber()) continue;
+				if(ExcludeDetector(grif2->GetDetector()) || ExcludeCrystal(grif2->GetArrayNumber())) continue;
 
 				// skip hits in the same detector when using addback, or in the same crystal when not using addback
 				if(grif1->GetDetector() == grif2->GetDetector() && (fAddback || grif1->GetCrystal() == grif2->GetCrystal())) continue; 

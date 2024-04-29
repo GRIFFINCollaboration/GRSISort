@@ -1,5 +1,7 @@
 #ifndef TGRSIHELPER_H
 #define TGRSIHELPER_H
+#include "RVersion.h"
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
 #include "ROOT/RDataFrame.hxx"
 #include "TObject.h"
 #include "TList.h"
@@ -80,4 +82,5 @@ public:
 	std::string GetActionName() const { return Prefix(); } // apparently a required function (not documented but doesn't compile w/o it)
 };
 
+#endif
 #endif

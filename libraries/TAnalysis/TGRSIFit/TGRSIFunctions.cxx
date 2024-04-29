@@ -493,10 +493,15 @@ double TGRSIFunctions::ClebschGordan(double j1, double m1, double j2, double m2,
 	 // Coefficients Liang Zuo, et. al.
 	 // J. Appl. Cryst. (1993). 26, 302-304
 }
-
+	
 double TGRSIFunctions::RacahW(double a, double b, double c, double d, double e, double f)
 {
-	return TMath::Power((-1), int(a+b+d+c))*ROOT::Math::wigner_6j(int(2*a),int(2*b),int(2*e),int(2*d),int(2*c),int(2*f));
+#ifdef HAS_MATHMORE
+	return TMath::Power((-1), int(a+b+d+c))*::ROOT::Math::wigner_6j(int(2*a),int(2*b),int(2*e),int(2*d),int(2*c),int(2*f));
+#else
+	std::cout<<"Mathmore feature of ROOT is missing, "<<__PRETTY_FUNCTION__<<" will always return 1!"<<std::endl;
+	return 1.;
+#endif
 }
 
 double TGRSIFunctions::F(double k, double jf, double L1, double L2, double ji)

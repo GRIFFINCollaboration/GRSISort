@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 
+#include "RVersion.h"
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
 #include "TStyle.h"
 #include "TFile.h"
 #include "TChain.h"
@@ -78,3 +80,10 @@ int main(int argc, char** argv)
 
 	return 0;
 }
+#else
+int main(int, char** argv)
+{
+	std::cerr<<argv[0]<<": need at least ROOT version 6.14"<<std::endl;
+	return 1;
+}
+#endif
