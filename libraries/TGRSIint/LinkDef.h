@@ -7,6 +7,9 @@
 #pragma link off all functions;
 #pragma link C++ nestedclasses;
 
+#pragma link C++ global gFragment;
+#pragma link C++ global gAnalysis;
+
 #pragma link C++ class TGRSIOptions+;
 #pragma link C++ class TAnalysisOptions+;
 #pragma link C++ class TGRSIint+;

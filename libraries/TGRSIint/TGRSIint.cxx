@@ -51,6 +51,9 @@ TEnv* TGRSIint::fGRSIEnv = nullptr;
 
 void ReadTheNews();
 
+TChain* gFragment = nullptr;
+TChain* gAnalysis = nullptr;
+
 TGRSIint* TGRSIint::instance(int argc, char** argv, void*, int, bool, const char* appClassName)
 {
    /// Singleton constructor instance

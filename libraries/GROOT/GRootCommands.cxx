@@ -6,23 +6,23 @@
 #include <sstream>
 #include <fstream>
 
-#include <TRint.h>
-#include <TTree.h>
-#include <Getline.h>
-#include <TAxis.h>
-#include <TDirectory.h>
-#include <TFile.h>
-#include <TPolyMarker.h>
-#include <TSpectrum.h>
-#include <TText.h>
-#include <TExec.h>
-#include <TKey.h>
-#include <TObject.h>
-#include <TObjArray.h>
-#include <TH1.h>
-#include <TPython.h>
-#include <TTimer.h>
-#include <TF1.h>
+#include "TRint.h"
+#include "TTree.h"
+#include "Getline.h"
+#include "TAxis.h"
+#include "TDirectory.h"
+#include "TFile.h"
+#include "TPolyMarker.h"
+#include "TSpectrum.h"
+#include "TText.h"
+#include "TExec.h"
+#include "TKey.h"
+#include "TObject.h"
+#include "TObjArray.h"
+#include "TH1.h"
+#include "TPython.h"
+#include "TTimer.h"
+#include "TF1.h"
 
 #include "GCanvas.h"
 #include "GPeak.h"
@@ -32,9 +32,6 @@
 #include "GH1D.h"
 #include "TGRSIOptions.h"
 #include "GNotifier.h"
-
-TChain* gFragment = nullptr;
-TChain* gAnalysis = nullptr;
 
 void Help()
 {

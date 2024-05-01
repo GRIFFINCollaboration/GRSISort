@@ -2,7 +2,6 @@
 #define GROOTCOMMANDS__H
 
 #include <string>
-#include <TChain.h>
 class TTree;
 class TH1;
 class TH2;
@@ -17,9 +16,6 @@ class GGaus;
 class TFile;
 
 #include "TDirectory.h"
-
-extern TChain* gFragment;
-extern TChain* gAnalysis;
 
 int LabelPeaks(TH1*, double, double, Option_t* opt = "");
 bool ShowPeaks(TH1**, unsigned int, double sigma = 2.0, double thresh = 0.02);

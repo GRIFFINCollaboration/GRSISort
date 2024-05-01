@@ -1,4 +1,4 @@
-// GRootGuiFactory.h GRootFunctions.h GRootCommands.h GRootCanvas.h GRootBrowser.h GCanvas.h GH2Base.h  GH2I.h GH2D.h  GPeak.h GGaus.h GValue.h GH1D.h GNotifier.h GPopup.h GSnapshot.h TCalibrator.h GHSym.h GCube.h
+// GRootGuiFactory.h GRootFunctions.h GRootCommands.h GRootCanvas.h GRootBrowser.h GCanvas.h GH2Base.h  GH2I.h GH2D.h  GPeak.h GGaus.h GH1D.h GNotifier.h GPopup.h GSnapshot.h TCalibrator.h GHSym.h GCube.h TLevelScheme.h
 
 
 #ifdef __CINT__
@@ -41,14 +41,8 @@
 #pragma link C++ enum kBackgroundSubtraction;
 #pragma link C++ function AddOffset;
 
-#pragma link C++ global gFragment;
-#pragma link C++ global gAnalysis;
-
 #pragma link C++ class GPopup+;
 
-#pragma link C++ class GValue-;
-#pragma link C++ class std::map<std::string,GValue*>+;
-#pragma link C++ class std::pair<std::string,GValue*>+;
 #pragma link C++ class GMarker+;
 #pragma link C++ class GCanvas+;
 #pragma link C++ class GRootCanvas+;
@@ -79,5 +73,14 @@
 #pragma link C++ class GNotifier+;
 
 #pragma link C++ class GSnapshot+;
+
+#pragma link C++ class TGamma+;
+#pragma link C++ class TLevel+;
+#pragma link C++ class TBand+;
+#pragma link C++ class TLevelScheme+;
+
+#pragma link C++ class std::map<TLevel*, std::tuple<double, double, TColor*, std::string>>+;
+#pragma link C++ class std::map<double, TLevel>+;
+#pragma link C++ class std::map<std::string, TBand>+;
 
 #endif
