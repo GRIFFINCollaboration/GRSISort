@@ -1,4 +1,6 @@
 #include "TDataFrameLibrary.h"
+#include "RVersion.h"
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
 
 #define dlsym __bull__
 #include <dlfcn.h>
@@ -144,3 +146,4 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
 	}
 	std::cout<<DCYAN<<"----------  done compiling user code  -------------------"<<RESET_COLOR<<std::endl;
 }
+#endif

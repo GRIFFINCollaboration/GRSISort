@@ -1,4 +1,6 @@
 #include "TGRSIHelper.h"
+#include "RVersion.h"
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
 
 TGRSIHelper::TGRSIHelper(TList* input) {
 	fPpg = static_cast<TPPG*>(input->FindObject("TPPG"));
@@ -235,4 +237,4 @@ void TGRSIHelper::CheckSizes(unsigned int slot, const char* usage) {
 		}
 	}
 }
-
+#endif

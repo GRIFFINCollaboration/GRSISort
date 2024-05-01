@@ -64,8 +64,8 @@ namespace TGRSIFunctions {
 #endif
 
 	// functions used for angular correlations
-	double ClebschGordan(double j1, double m1, double j2, double m2, double j, double m);
 	double RacahW(double a, double b, double c, double d, double e, double f);
+	double ClebschGordan(double j1, double m1, double j2, double m2, double j, double m);
 	double F(double k, double jf, double L1, double L2, double ji);
 	double A(double k, double ji, double jf, double L1, double L2, double delta);
 	double B(double k, double ji, double jf, double L1, double L2, double delta);
