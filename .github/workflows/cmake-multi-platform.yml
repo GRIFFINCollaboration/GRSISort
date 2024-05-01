@@ -27,18 +27,19 @@ jobs:
       matrix:
         config:
         - {
-            name: "Ubuntu latest gcc", artifact: "Ubuntu.tar.xz",
-            os: ubuntu-latest,
+            name: "Ubuntu latest gcc, ROOT 6.30.06", artifact: "UbuntuROOT6.30.06.tar.xz",
+            os: ubuntu-latest, root: "6.30.06",
             build_type: "Release", cc: "gcc", cxx: "g++"
           }
         - {
-            name: "MacOS latest gcc", artifact: "macOS.tar.xz",
-            os: macos-latest,
+            name: "MacOS latest gcc, ROOT 6.30.06", artifact: "macOSROOT6.30.06.tar.xz",
+            os: macos-latest, root: "6.30.06",
             build_type: "Release", cc: "clang", cxx: "clang++"
           }
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Check out repository code
+      uses: actions/checkout@v4
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
@@ -47,6 +48,13 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
+    - name: Install ROOT
+      run: |
+        wget https://root.cern/download/root_v${{matrix.config.root}}.source.tar.gz
+        tar -xzf root_v${{matrix.config.root}}.source.tar.gz
+        cmake -S root-${{matrix.config.root}} -B root_v${{matrix.config.root}} -Dall=ON -Dcuda=OFF -Dclad=OFF
+        cmake --build root_v${{matrix.config.root}}
+        
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
