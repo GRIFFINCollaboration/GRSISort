@@ -44,7 +44,7 @@ find_package(Python)
 if(${Python_VERSION} STREQUAL "2.7")
 	add_compile_options(-DHAS_CORRECT_PYTHON_VERSION)
 else()
-	message("${Yellow}Python version found is ${Python_VERSION} and not 2.7, GUI won't be active${ColourReset}")
+	message(CONFIGURE_LOG "${Yellow}Python version found is ${Python_VERSION} and not 2.7, GUI won't be active${ColourReset}")
 endif()
 
 #----------------------------------------------------------------------------
@@ -189,14 +189,14 @@ add_library(TFormat SHARED
 	${PROJECT_SOURCE_DIR}/libraries/GROOT/GRootGuiFactory.cxx
 	${PROJECT_SOURCE_DIR}/libraries/GROOT/TLevelScheme.cxx
 	)
-root_generate_dictionary(G__TFormat TFragment.h TBadFragment.h TChannel.h TRunInfo.h TGRSISortInfo.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TParsingDiagnostics.h TGRSIUtilities.h TMnemonic.h TSortingDiagnostics.h TTransientBits.h TPriorityValue.h TSingleton.h TDetectorInformation.h TParserLibrary.h TDataFrameLibrary.h TUserSettings.h TDetector.h TDetectorHit.h GValue.h TGRSIFrame.h TGRSIHelper.h TGRSIOptions.h TGRSIint.h TAnalysisOptions.h TDataLoop.h StoppableThread.h TFragWriteLoop.h TTerminalLoop.h TEventBuildingLoop.h TDetBuildingLoop.h TAnalysisWriteLoop.h TParallelFileMerger.h TFragHistLoop.h TCompiledHistograms.h TRuntimeObjects.h TAnalysisHistLoop.h GRootGuiFactory.h GRootFunctions.h GRootCommands.h GRootCanvas.h GRootBrowser.h GCanvas.h GH2Base.h  GH2I.h GH2D.h  GPeak.h GGaus.h GH1D.h GNotifier.h GPopup.h GSnapshot.h TCalibrator.h GHSym.h GCube.h TLevelScheme.h MODULE TFormat LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TFormat/CMakeLinkDef.h)
+root_generate_dictionary(G__TFormat TSingleton.h TFragment.h TBadFragment.h TChannel.h TRunInfo.h TGRSISortInfo.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TParsingDiagnostics.h TGRSIUtilities.h TMnemonic.h TSortingDiagnostics.h TTransientBits.h TPriorityValue.h TSingleton.h TDetectorInformation.h TParserLibrary.h TDataFrameLibrary.h TUserSettings.h TDetector.h TDetectorHit.h GValue.h TGRSIFrame.h TGRSIHelper.h TGRSIOptions.h TGRSIint.h TAnalysisOptions.h TDataLoop.h StoppableThread.h TFragWriteLoop.h TTerminalLoop.h TEventBuildingLoop.h TDetBuildingLoop.h TAnalysisWriteLoop.h TParallelFileMerger.h TFragHistLoop.h TCompiledHistograms.h TRuntimeObjects.h TAnalysisHistLoop.h GRootGuiFactory.h GRootFunctions.h GRootCommands.h GRootCanvas.h GRootBrowser.h GCanvas.h GH2Base.h  GH2I.h GH2D.h  GPeak.h GGaus.h GH1D.h GNotifier.h GPopup.h GSnapshot.h TCalibrator.h GHSym.h GCube.h TLevelScheme.h MODULE TFormat LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TFormat/CMakeLinkDef.h)
 target_link_libraries(TFormat TGRSIFit TNucleus ${ROOT_LIBRARIES} X11 Xpm)
 add_dependencies(TFormat GVersion)
 
 add_library(TGRSIProof SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TGRSIProof/TGRSISelector.cxx
 	)
-root_generate_dictionary(G__TGRSIProof TGRSISelector.h MODULE TGRSIProof LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TGRSIProof/LinkDef.h)
+root_generate_dictionary(G__TGRSIProof TGRSIProof.h TObjectWrapper.h TGRSISelector.h MODULE TGRSIProof LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TGRSIProof/LinkDef.h)
 target_link_libraries(TGRSIProof TFormat)
 
 add_library(TGUI SHARED
@@ -304,6 +304,8 @@ set_property(TARGET grsisort APPEND PROPERTY ADDITIONAL_CLEAN_FILES
 	${CMAKE_CURRENT_BINARY_DIR}/.grsi.mimes
 	${CMAKE_CURRENT_BINARY_DIR}/examples
 	${CMAKE_CURRENT_BINARY_DIR}/module.modulemap
+	${CMAKE_INSTALL_BINDIR}
+	${CMAKE_INSTALL_LIBDIR}
 	)
 
 #----------------------------------------------------------------------------
@@ -313,12 +315,18 @@ add_custom_target(GVersion
 	                 -D DST=${CMAKE_SOURCE_DIR}/include/GVersion.h
                     -D GIT_EXECUTABLE=${GIT_EXECUTABLE}
                     -P ${CMAKE_SOURCE_DIR}/GenerateVersionHeader.cmake
+						  BYPRODUCTS ${CMAKE_SOURCE_DIR}/include/GVersion.h
+						  COMMENT "Generating ${CMAKE_SOURCE_DIR}/include/GVersion.h from ${CMAKE_SOURCE_DIR}/include/GVersion.h.in"
+						  #WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   )
 
 #----------------------------------------------------------------------------
 # add grsiproof (but exclude it from target all)
 add_executable(grsiproof EXCLUDE_FROM_ALL ${PROJECT_SOURCE_DIR}/GRSIProof/grsiproof.cxx)
 target_link_libraries(grsiproof ${GRSI_LIBRARIES} ${ROOT_LIBRARIES} X11 Xpm)
+
+#----------------------------------------------------------------------------
+# all parser libraries
 
 #----------------------------------------------------------------------------
 include(FetchContent)
@@ -332,23 +340,37 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(
 	GRSIData
 	)
-set_property(TARGET GRSIData APPEND PROPERTY ADDITIONAL_CLEAN_FILES
-	${CMAKE_CURRENT_BINARY_DIR}/_deps
+#set_property(TARGET GRSIData APPEND PROPERTY ADDITIONAL_CLEAN_FILES
+#	${CMAKE_CURRENT_BINARY_DIR}/_deps
+#	)
+
+#----------------------------------------------------------------------------
+include(FetchContent)
+FetchContent_Declare(
+	ILLData
+	EXCLUDE_FROM_ALL
+	GIT_REPOSITORY https://github.com/VinzenzBildstein/ILLData.git
+	GIT_TAG cmake
+	GIT_REMOTE_NAME upstream
+	)
+FetchContent_MakeAvailable(
+	ILLData
+	)
+
+#----------------------------------------------------------------------------
+include(FetchContent)
+FetchContent_Declare(
+	iThembaData
+	EXCLUDE_FROM_ALL
+	GIT_REPOSITORY https://github.com/VinzenzBildstein/iThembaData.git
+	GIT_TAG cmake
+	GIT_REMOTE_NAME upstream
+	)
+FetchContent_MakeAvailable(
+	iThembaData
 	)
 
 #----------------------------------------------------------------------------
 # add custom command to generate html documentation
 #add_custom_command(
-
-#----------------------------------------------------------------------------
-# external projects for all parser libraries
-
-#include(ExternalProject)
-#ExternalProject_Add(GRSIData
-#	#GIT_REPOSITORY https://github.com/GRIFFINCollaboration/GRSIData.git
-#	GIT_REPOSITORY https://github.com/VinzenzBildstein/GRSIData.git
-#	GIT_TAG cmake
-#	GIT_REMOTE_NAME upstream
-#	)
-#set_target_properties(GRSIData PROPERTIES EXCLUDE_FROM_ALL TRUE)
 

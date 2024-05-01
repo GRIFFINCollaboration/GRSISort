@@ -11,7 +11,7 @@
 #pragma link C++ class std::vector<Int_t>+;
 
 #pragma link C++ class std::string+;
-#pragma link C++ class TSingleton+;
+//#pragma link C++ class TSingleton+;
 #pragma link C++ class TRunInfo+;
 #pragma link C++ class TSingleton<TRunInfo>-;
 
