@@ -81,9 +81,13 @@ jobs:
     - name: Configure ROOT
       #if: ${{hashFiles('root_v${{matrix.config.root}}/bin/thisroot.sh') != ''}}
       run: |
-        source root_v${{matrix.config.root}}/bin/thisroot.sh
-          whichroot=`which root`
-          echo "using $whichroot"
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          source root_v${{matrix.config.root}}/bin/thisroot.sh
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+          source /opt/homebrew/bin/thisroot.sh
+        fi
+        whichroot=`which root`
+        echo "using $whichroot"
       shell: bash
         
     - name: Configure CMake
