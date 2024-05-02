@@ -49,6 +49,8 @@ endif()
 
 #----------------------------------------------------------------------------
 # set c++ standard to the one used for root
+message("${Green}Using c++ standard ${ROOT_CXX_STANDARD}${ColourReset}")
+
 set(CMAKE_CXX_STANDARD ${ROOT_CXX_STANDARD})
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 

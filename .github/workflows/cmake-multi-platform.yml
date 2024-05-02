@@ -71,6 +71,7 @@ jobs:
           tar -xzf root_v${{matrix.config.root}}.source.tar.gz
           mkdir root_v${{matrix.config.root}}
           cmake -S root-${{matrix.config.root}} -B root_v${{matrix.config.root}}-build -DCMAKE_INSTALL_PREFIX=root_v${{matrix.config.root}} -Dasimage=ON -Dbuiltin_afterimage=ON -Dbuiltin_clang=ON -Dbuiltin_cling=ON -Dbuiltin_cppzmq=ON -Dbuiltin_davix=ON -Dbuiltin_gl2ps=ON -Dbuiltin_llvm=ON -Dbuiltin_openui5=ON -Dbuiltin_tbb=ON -Dbuiltin_unuran=ON -Dbuiltin_vdt=ON -Dbuiltin_veccore=ON -Dbuiltin_xrootd=ON -Dbuiltin_xxhash=ON -Dbuiltin_zeromq=ON -Dcefweb=ON -Ddataframe=ON -Ddavix=ON -Dfftw3=ON -Dfitsio=ON -Dfortran=ON -Dgdml=ON -Dgviz=ON -Dhttp=ON -Dimt=ON -Dmathmore=ON -Dmlp=ON -Dmysql=ON -Dodbc=ON -Dopengl=ON -Dpgsql=ON -Dproof=ON -Dpyroot=ON -Dqt5web=ON -Droofit=ON -Droofit_multiprocess=ON -Dwebgui=ON -Drpath=ON -Druntime_cxxmodules=ON -Dshadowpw=ON -Dshared=ON -Dsqlite=ON -Dssl=ON -Dtmva=ON -Dtmva-cpu=ON -Dtmva-pymva=ON -Dspectrum=ON -Dunuran=ON -Dvdt=ON -Dveccore=ON -Dx11=ON -Dxml=ON -Dxrootd=ON
+          cmake --build root_v${{matrix.config.root}}-build -- -j4
           cmake --build root_v${{matrix.config.root}}-build -- install -j4
         elif [ "$RUNNER_OS" == "macOS" ]; then
         #sudo port install root6
