@@ -49,10 +49,15 @@ endif()
 
 #----------------------------------------------------------------------------
 # set c++ standard to the one used for root
-message("${Green}Using c++ standard ${ROOT_CXX_STANDARD}${ColourReset}")
 
-set(CMAKE_CXX_STANDARD ${ROOT_CXX_STANDARD})
+if(DEFINED ROOT_CXX_STANDARD)
+	set(CMAKE_CXX_STANDARD ${ROOT_CXX_STANDARD})
+else()
+	set(CMAKE_CXX_STANDARD 17)
+endif()
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+message("${Green}Using c++ standard ${CMAKE_CXX_STANDARD} (from ${ROOT_CXX_STANDARD})${ColourReset}")
 
 #----------------------------------------------------------------------------
 # configure the include directories and set other variables
