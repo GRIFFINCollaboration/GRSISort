@@ -28,6 +28,7 @@ project(GRSISort)
 #----------------------------------------------------------------------------
 # finde required packages
 find_package(X11 REQUIRED)
+message("X11_Xpm_FOUND = ${X11_Xpm_FOUND}, X11_Xpm_LIB = ${X11_Xpm_LIB}")
 
 #----------------------------------------------------------------------------
 # find the root package (and add COMPONENTS)
