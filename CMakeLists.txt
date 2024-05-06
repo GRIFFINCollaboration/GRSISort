@@ -26,6 +26,11 @@ cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 project(GRSISort)
 
 #----------------------------------------------------------------------------
+# finde required packages
+find_package(X11 REQUIRED)
+message("X11_INCLUDE_DIR = ${X11_INCLUDE_DIR}, X11_Xpm_FOUND = ${X11_Xpm_FOUND}, X11_Xpm_LIB = ${X11_Xpm_LIB}")
+
+#----------------------------------------------------------------------------
 # find the root package (and add COMPONENTS)
 find_package(ROOT REQUIRED COMPONENTS Gui GuiHtml Minuit Spectrum OPTIONAL_COMPONENTS MathMore Proof)
 
@@ -49,12 +54,24 @@ endif()
 
 #----------------------------------------------------------------------------
 # set c++ standard to the one used for root
-set(CMAKE_CXX_STANDARD ${ROOT_CXX_STANDARD})
+
+if(DEFINED ROOT_CXX_STANDARD)
+	set(CMAKE_CXX_STANDARD ${ROOT_CXX_STANDARD})
+else()
+	set(CMAKE_CXX_STANDARD 17)
+endif()
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+message("${Green}Using c++ standard ${CMAKE_CXX_STANDARD} (from ${ROOT_CXX_STANDARD})${ColourReset}")
+
 #----------------------------------------------------------------------------
-# configure the include directories and set other variables
-include_directories(${PROJECT_SOURCE_DIR}/include ${ROOT_INCLUDE_DIRS})
+# configure the include directories and set other variables (could mayme have just one include_directories for both linux and macOS?)
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	include_directories(${PROJECT_SOURCE_DIR}/include ${ROOT_INCLUDE_DIRS} ${X11_INCLUDE_DIR})
+	add_compile_options(-DOS_DARWIN)
+else()
+	include_directories(${PROJECT_SOURCE_DIR}/include ${ROOT_INCLUDE_DIRS})
+endif()
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -89,14 +106,14 @@ add_library(TBetaDecay SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TBetaDecay/TBetaDecay.cxx
 	)
 root_generate_dictionary(G__TBetaDecay TBetaDecay.h MODULE TBetaDecay LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TBetaDecay/LinkDef.h)
-target_link_libraries(TBetaDecay TNucleus)
+target_link_libraries(TBetaDecay TNucleus ${ROOT_LIBRARIES})
 
 add_library(TBgo SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TBgo/TBgo.cxx
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TBgo/TBgoHit.cxx
 	)
 root_generate_dictionary(G__TBgo TBgo.h TBgoHit.h MODULE TBgo LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TBgo/LinkDef.h)
-target_link_libraries(TBgo TFormat)
+target_link_libraries(TBgo TFormat ${ROOT_LIBRARIES})
 
 add_library(TCal SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TCal/TCFDCal.cxx
@@ -115,13 +132,13 @@ add_library(TCal SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TCal/TCalManager.cxx
 	)
 root_generate_dictionary(G__TCal TCal.h TCalManager.h TCFDCal.h TEfficiencyCal.h TEnergyCal.h TGainMatch.h TTimeCal.h TCalPoint.h TCalList.h TSourceList.h TCalGraph.h TEfficiencyGraph.h TEfficiencyCalibration.h TEfficiencyCalibrator.h MODULE TCal LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TCal/LinkDef.h)
-target_link_libraries(TCal TFormat TGRSIFit TGUI TNucleus TPeakFitting)
+target_link_libraries(TCal TFormat TGRSIFit TGUI TNucleus TPeakFitting ${ROOT_LIBRARIES})
 
 add_library(TDataParser SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TDataParser/TFragmentMap.cxx
 	${PROJECT_SOURCE_DIR}/libraries/TDataParser/TDataParser.cxx
 	)
-target_link_libraries(TDataParser TFormat)
+target_link_libraries(TDataParser TFormat ${ROOT_LIBRARIES})
 
 add_library(TFormat SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TFormat/TMnemonic.cxx
@@ -190,14 +207,14 @@ add_library(TFormat SHARED
 	${PROJECT_SOURCE_DIR}/libraries/GROOT/TLevelScheme.cxx
 	)
 root_generate_dictionary(G__TFormat TSingleton.h TFragment.h TBadFragment.h TChannel.h TRunInfo.h TGRSISortInfo.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TParsingDiagnostics.h TGRSIUtilities.h TMnemonic.h TSortingDiagnostics.h TTransientBits.h TPriorityValue.h TSingleton.h TDetectorInformation.h TParserLibrary.h TDataFrameLibrary.h TUserSettings.h TDetector.h TDetectorHit.h GValue.h TGRSIFrame.h TGRSIHelper.h TGRSIOptions.h TGRSIint.h TAnalysisOptions.h TDataLoop.h StoppableThread.h TFragWriteLoop.h TTerminalLoop.h TEventBuildingLoop.h TDetBuildingLoop.h TAnalysisWriteLoop.h TParallelFileMerger.h TFragHistLoop.h TCompiledHistograms.h TRuntimeObjects.h TAnalysisHistLoop.h GRootGuiFactory.h GRootFunctions.h GRootCommands.h GRootCanvas.h GRootBrowser.h GCanvas.h GH2Base.h  GH2I.h GH2D.h  GPeak.h GGaus.h GH1D.h GNotifier.h GPopup.h GSnapshot.h TCalibrator.h GHSym.h GCube.h TLevelScheme.h MODULE TFormat LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TFormat/CMakeLinkDef.h)
-target_link_libraries(TFormat TGRSIFit TNucleus ${ROOT_LIBRARIES} X11 Xpm)
+target_link_libraries(TFormat TGRSIFit TNucleus ${ROOT_LIBRARIES} ${X11_LIBRARIES} ${X11_Xpm_LIB})
 add_dependencies(TFormat GVersion)
 
 add_library(TGRSIProof SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TGRSIProof/TGRSISelector.cxx
 	)
 root_generate_dictionary(G__TGRSIProof TGRSIProof.h TObjectWrapper.h TGRSISelector.h MODULE TGRSIProof LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TGRSIProof/LinkDef.h)
-target_link_libraries(TGRSIProof TFormat)
+target_link_libraries(TGRSIProof TFormat ${ROOT_LIBRARIES})
 
 add_library(TGUI SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TGUI/TCalibrationGraph.cxx
@@ -206,13 +223,13 @@ add_library(TGUI SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TGUI/TSourceCalibration.cxx
 	)
 root_generate_dictionary(G__TGUI TBGSubtraction.h TCalibrateDescant.h TSourceCalibration.h TCalibrationGraph.h MODULE TGUI LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TGUI/LinkDef.h)
-target_link_libraries(TGUI TFormat TNucleus TPeakFitting)
+target_link_libraries(TGUI TFormat TNucleus TPeakFitting ${ROOT_LIBRARIES})
 
 add_library(TKinematics SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TKinematics/TKinematics.cxx
 	)
 root_generate_dictionary(G__TKinematics TKinematics.h MODULE TKinematics LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TKinematics/LinkDef.h)
-target_link_libraries(TKinematics TNucleus)
+target_link_libraries(TKinematics TNucleus ${ROOT_LIBRARIES})
 
 add_library(TPeakFitting SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TPeakFitting/TRWPeak.cxx
@@ -223,25 +240,25 @@ add_library(TPeakFitting SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TPeakFitting/TSinglePeak.cxx
 	)
 root_generate_dictionary(G__TPeakFitting TSinglePeak.h TRWPeak.h TPeakFitter.h TABPeak.h TAB3Peak.h TGauss.h MODULE TPeakFitting LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TPeakFitting/LinkDef.h)
-target_link_libraries(TPeakFitting TGRSIFit)
+target_link_libraries(TPeakFitting TGRSIFit ${ROOT_LIBRARIES})
 
 add_library(TPulseAnalyzer SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TPulseAnalyzer/TPulseAnalyzer.cxx
 	)
 root_generate_dictionary(G__TPulseAnalyzer TPulseAnalyzer.h MODULE TPulseAnalyzer LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TPulseAnalyzer/LinkDef.h)
-target_link_libraries(TPulseAnalyzer TGRSIFit)
+target_link_libraries(TPulseAnalyzer TGRSIFit ${ROOT_LIBRARIES})
 
 add_library(TReaction SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TReaction/TReaction.cxx
 	)
 root_generate_dictionary(G__TReaction TReaction.h MODULE TReaction LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TReaction/LinkDef.h)
-target_link_libraries(TReaction TNucleus)
+target_link_libraries(TReaction TNucleus ${ROOT_LIBRARIES})
 
 add_library(TSuppressed SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TSuppressed/TSuppressed.cxx
 	)
 root_generate_dictionary(G__TSuppressed TSuppressed.h MODULE TSuppressed LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TSuppressed/LinkDef.h)
-target_link_libraries(TSuppressed TFormat)
+target_link_libraries(TSuppressed TFormat ${ROOT_LIBRARIES})
 
 add_library(TGRSIFit SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TGRSIFit/TDecay.cxx
@@ -252,6 +269,7 @@ add_library(TGRSIFit SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TGRSIFit/TGRSIFunctions.cxx
 	)
 root_generate_dictionary(G__TGRSIFit TGRSIFit.h TGRSIFunctions.h TMultiPeak.h TPeak.h TDecay.h TLMFitter.h MODULE TGRSIFit LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TGRSIFit/LinkDef.h)
+target_link_libraries(TGRSIFit ${ROOT_LIBRARIES})
 
 add_library(TNucleus SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TNucleus/TNucleus.cxx
@@ -259,11 +277,13 @@ add_library(TNucleus SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TNucleus/TGRSITransition.cxx
 	)
 root_generate_dictionary(G__TNucleus TNucleus.h TTransition.h TGRSITransition.h MODULE TNucleus LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TNucleus/LinkDef.h)
+target_link_libraries(TNucleus ${ROOT_LIBRARIES})
 
 add_library(TSRIM SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TSRIM/TSRIM.cxx
 	)
 root_generate_dictionary(G__TSRIM TSRIM.h MODULE TSRIM LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TSRIM/LinkDef.h)
+target_link_libraries(TSRIM ${ROOT_LIBRARIES})
 
 #add_library(TRawFile INTERFACE)
 add_library(TRawFile SHARED
@@ -271,20 +291,21 @@ add_library(TRawFile SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TRawFile/TRawEvent.cxx
 	)
 root_generate_dictionary(G__TRawFile TRawFile.h TRawEvent.h MODULE TRawFile LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TRawFile/LinkDef.h)
+target_link_libraries(TRawFile ${ROOT_LIBRARIES})
 
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the generated libraries and the ROOT libraries
 add_executable(grsisort ${PROJECT_SOURCE_DIR}/src/grsisort.cxx)
 
 set(GRSI_LIBRARIES TFormat TPulseAnalyzer TSuppressed TReaction TPeakFitting TGRSIFit TKinematics TNucleus TBgo TBetaDecay TSRIM TCal TGUI TGRSIProof TDataParser TRawFile MakeFragmentHistograms)
-target_link_libraries(grsisort ${GRSI_LIBRARIES} ${ROOT_LIBRARIES} X11 Xpm)
+target_link_libraries(grsisort ${GRSI_LIBRARIES} ${ROOT_LIBRARIES} ${X11_LIBRARIES} ${X11_Xpm_LIB})
 
 #----------------------------------------------------------------------------
 # add all executable in util
 set(UTIL_NAMES AddToChannelNumber AnalyzeDataLoss checkSort Compton_Scale_Plot converTH1 EfficCal EnableCrosstalkCorrection EnergyCal gadd grsiframe LeanAnalyzeComptonMatrices PlotVsRun ReadCalFromRoot Root2Ascii Root2Rad ScaleCalibration SetOdbFromData WriteCalToRoot WriteNonlinearitiesCal)
 foreach(UTIL IN LISTS UTIL_NAMES)
 	add_executable(${UTIL} ${PROJECT_SOURCE_DIR}/util/${UTIL}.cxx)
-	target_link_libraries(${UTIL} ${GRSI_LIBRARIES} ${ROOT_LIBRARIES} X11 Xpm)
+	target_link_libraries(${UTIL} ${GRSI_LIBRARIES} ${ROOT_LIBRARIES} ${X11_LIBRARIES} ${X11_Xpm_LIB})
 endforeach()
 
 #----------------------------------------------------------------------------
@@ -323,7 +344,7 @@ add_custom_target(GVersion
 #----------------------------------------------------------------------------
 # add grsiproof (but exclude it from target all)
 add_executable(grsiproof EXCLUDE_FROM_ALL ${PROJECT_SOURCE_DIR}/GRSIProof/grsiproof.cxx)
-target_link_libraries(grsiproof ${GRSI_LIBRARIES} ${ROOT_LIBRARIES} X11 Xpm)
+target_link_libraries(grsiproof ${GRSI_LIBRARIES} ${ROOT_LIBRARIES} ${X11_LIBRARIES} ${X11_Xpm_LIB})
 
 #----------------------------------------------------------------------------
 # all parser libraries
