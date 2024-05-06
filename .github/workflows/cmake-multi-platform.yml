@@ -86,6 +86,11 @@ jobs:
           source root_v${{matrix.config.root}}/bin/thisroot.sh
         elif [ "$RUNNER_OS" == "macOS" ]; then
           source /opt/homebrew/bin/thisroot.sh
+          ln -s /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers/X11/ /usr/local/include/X11
+          ls -l /usr/local/include/X11
+          ls -l /opt/homebrew/include/
+          message("finding Xlib.h")
+          find /opt/homebrew -name Xlib.h
         fi
         whichroot=`which root`
         echo "using $whichroot"
