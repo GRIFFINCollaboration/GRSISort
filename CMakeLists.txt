@@ -28,7 +28,7 @@ project(GRSISort)
 #----------------------------------------------------------------------------
 # finde required packages
 find_package(X11 REQUIRED)
-message("X11_Xpm_FOUND = ${X11_Xpm_FOUND}, X11_Xpm_LIB = ${X11_Xpm_LIB}")
+message("X11_INCLUDE_DIR = ${X11_INCLUDE_DIR}, X11_Xpm_FOUND = ${X11_Xpm_FOUND}, X11_Xpm_LIB = ${X11_Xpm_LIB}")
 
 #----------------------------------------------------------------------------
 # find the root package (and add COMPONENTS)
@@ -65,9 +65,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 message("${Green}Using c++ standard ${CMAKE_CXX_STANDARD} (from ${ROOT_CXX_STANDARD})${ColourReset}")
 
 #----------------------------------------------------------------------------
-# configure the include directories and set other variables
+# configure the include directories and set other variables (could mayme have just one include_directories for both linux and macOS?)
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-	include_directories(${PROJECT_SOURCE_DIR}/include ${ROOT_INCLUDE_DIRS} /opt/local/include)
+	include_directories(${PROJECT_SOURCE_DIR}/include ${ROOT_INCLUDE_DIRS} ${X11_INCLUDE_DIR})
 	add_compile_options(-DOS_DARWIN)
 else()
 	include_directories(${PROJECT_SOURCE_DIR}/include ${ROOT_INCLUDE_DIRS})
