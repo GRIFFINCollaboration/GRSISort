@@ -11,8 +11,8 @@ on:
 
 jobs:
   build:
-    name: ${{ matrix.config.name }}
-    runs-on: ${{ matrix.config.os }}
+    name: ${{matrix.config.name}}
+    runs-on: ${{matrix.config.os}}
 
     strategy:
       # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
@@ -47,9 +47,9 @@ jobs:
       id: strings
       shell: bash
       run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        echo "build-output-dir=${{github.workspace}}/build" >> "$GITHUB_OUTPUT"
         
-    - name: Cache Linux ROOT
+    - name: Linux - Cache ROOT
       if: ${{runner.os == 'Linux'}}
       uses: actions/cache@v3
       id: cache-root
@@ -96,10 +96,6 @@ jobs:
         source root_v${{matrix.config.root}}/bin/thisroot.sh
         elif [ "$RUNNER_OS" == "macOS" ]; then
         source /opt/homebrew/bin/thisroot.sh
-        #ln -s /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers/X11/ /usr/local/include/X11
-        ls -l /opt/homebrew/include/X11
-        echo "finding Xlib.h"
-        find /opt/homebrew -name Xlib.h
         fi
         whichroot=`which root`
         echo "using $whichroot"
@@ -109,18 +105,19 @@ jobs:
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
-        -DCMAKE_C_COMPILER=${{ matrix.config.cc }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }}
-        -S ${{ github.workspace }}
+        cmake -B ${{steps.strings.outputs.build-output-dir}}
+        -DCMAKE_CXX_COMPILER=${{matrix.config.cxx}}
+        -DCMAKE_C_COMPILER=${{matrix.config.cc}}
+        -DCMAKE_BUILD_TYPE=${{matrix.config.build_type}}
+        -DCMAKE_PREFIX_PATH=root_v${{matrix.config.root}}
+        -S ${{github.workspace}}
 
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.config.build_type }}
+      run: cmake --build ${{steps.strings.outputs.build-output-dir}} --config ${{matrix.config.build_type}}
 
     - name: Test
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      working-directory: ${{steps.strings.outputs.build-output-dir}}
         # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest --build-config ${{ matrix.config.build_type }}
+      run: ctest --build-config ${{matrix.config.build_type}}
