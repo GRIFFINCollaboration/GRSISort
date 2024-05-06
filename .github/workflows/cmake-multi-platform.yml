@@ -99,6 +99,7 @@ jobs:
         fi
         whichroot=`which root`
         echo "using $whichroot"
+        find ${{github.workspace}} -name ROOTConfig.cmake
       shell: bash
 
     - name: Configure CMake
