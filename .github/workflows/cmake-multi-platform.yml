@@ -49,14 +49,14 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
         
-    - name: Cache Linux ROOT
-      if: ${{runner.os == 'Linux'}}
-      uses: actions/cache@v3
-      id: cache-root
-      with:
-        path: root_v${{matrix.config.root}}
-        key: ${{runner.os}}-root_v${{matrix.config.root}}-${{hashFiles('**/root')}}
-        restore-keys: ${{runner.os}}-root_v${{matrix.config.root}}-
+        #- name: Cache Linux ROOT
+        #  if: ${{runner.os == 'Linux'}}
+        #  uses: actions/cache@v3
+        #  id: cache-root
+        #  with:
+        #    path: root_v${{matrix.config.root}}
+        #    key: ${{runner.os}}-root_v${{matrix.config.root}}-${{hashFiles('**/root')}}
+        #    restore-keys: ${{runner.os}}-root_v${{matrix.config.root}}-
 
     - name: Compile Linux ROOT
       if: ${{runner.os == 'Linux'}}
@@ -69,7 +69,7 @@ jobs:
         cmake --build root_v${{matrix.config.root}}-build -- -j4
 
     - name: Install ROOT
-      if: steps.cache-root.outputs.cache-hit != 'true'
+      #if: steps.cache-root.outputs.cache-hit != 'true'
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
           cmake --build root_v${{matrix.config.root}}-build -- install -j4
@@ -89,7 +89,7 @@ jobs:
           ln -s /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers/X11/ /usr/local/include/X11
           ls -l /usr/local/include/X11
           ls -l /opt/homebrew/include/
-          message("finding Xlib.h")
+          echo "finding Xlib.h"
           find /opt/homebrew -name Xlib.h
         fi
         whichroot=`which root`
