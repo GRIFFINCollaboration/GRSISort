@@ -58,6 +58,9 @@ int main(int argc, char** argv)
    std::string path = infile->GetName();
    path.erase(path.find_last_of('.'));
 
+	// might be able to replace all this by
+	// struct stat st{};
+	// ???
 #if defined(OS_DARWIN)
    struct stat st = {0, 0, 0, 0, 0, 0, 0, {0, 0}, {0, 0}, {0, 0}, {0, 0}, 0, 0, 0, 0, 0, 0, {0}};
 #elif defined(__clang__)

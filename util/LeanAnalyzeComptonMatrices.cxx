@@ -87,7 +87,7 @@ double PolarizationCalculation();
 TList* AGATATheory(TList* list, double Q);
 double ScaleQ(double E1, double E2);
 
-
+#ifdef HAS_MATHMORE
 //Main
 int main(int argc, char **argv)
 {
@@ -128,7 +128,6 @@ int main(int argc, char **argv)
   
   return 0;
 }
-
 
 // ****************************************************************** //
 // ********************* FUNCTION DEFINITIONS *********************** //
@@ -579,4 +578,12 @@ double ScaleQ(double E1, double E2)
   
   return Q2/Q1;
 }
+
+#else
+int main(int, char** argv)
+{
+	std::cout<<"No mathmore support in ROOT, "<<argv[0]<<" can't run!"<<std::endl;
+	return 1;
+}
+#endif
 
