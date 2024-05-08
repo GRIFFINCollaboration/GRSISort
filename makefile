@@ -229,13 +229,6 @@ $(foreach lib,$(LIBRARY_DIRS),$(eval $(call library_template,$(lib))))
 
 -include $(shell $(FIND) .build -name '*.d' 2> /dev/null)
 
-html: all
-	@printf " ${COM_COLOR}Building      ${OBJ_COLOR} HTML Documentation ${NO_COLOR}\n"
-	@cp -r include grsisort
-	@grsisort -qlb util/html_generator.C #>/dev/null
-	@$(RM) -r grsisort
-	@$(RM) tempfile.out
-
 complete: all parsers
 
 parsers: all
@@ -274,6 +267,3 @@ clean:
 	@-$(RM) -rf .build bin lib include/GVersion.h
 	@-$(RM) -rf libraries/*.so libraries/*.pcm #this is here for cleaning up libraries from pre GRSI 3.0
 
-cleaner: clean
-	@printf "\nEven more clean up\n\n"
-	@-$(RM) -rf htmldoc
