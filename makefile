@@ -101,14 +101,15 @@ LINKFLAGS := $(LINKFLAGS_PREFIX) $(LINKFLAGS) $(LINKFLAGS_SUFFIX) $(CFLAGS)
 
 ROOT_LIBFLAGS := $(shell root-config --cflags --glibs)
 
-UTIL_O_FILES    := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard util/*.$(SRC_SUFFIX)))
-#SANDBOX_O_FILES := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard Sandbox/*.$(SRC_SUFFIX)))
-SCRIPT_O_FILES    := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard scripts/*.$(SRC_SUFFIX)))
+UTIL_O_FILES     := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard util/*.$(SRC_SUFFIX)))
+#SANDBOX_O_FILES  := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard Sandbox/*.$(SRC_SUFFIX)))
+SCRIPT_O_FILES   := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard scripts/*.$(SRC_SUFFIX)))
 PROOF_O_FILES    := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard GRSIProof/grsiproof.$(SRC_SUFFIX)))
 ANALYSIS_O_FILES := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard myAnalysis/*.$(SRC_SUFFIX)))
-MAIN_O_FILES    := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard src/*.$(SRC_SUFFIX)))
-EXE_O_FILES     := $(UTIL_O_FILES) $(SANDBOX_O_FILES) $(SCRIPT_O_FILES) $(ANALYSIS_O_FILES) $(PROOF_O_FILES)
-EXECUTABLES     := $(patsubst %.o,bin/%,$(notdir $(EXE_O_FILES))) bin/grsisort
+MAIN_O_FILES     := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard src/*.$(SRC_SUFFIX)))
+EXE_O_FILES      := $(UTIL_O_FILES) $(SANDBOX_O_FILES) $(SCRIPT_O_FILES) $(ANALYSIS_O_FILES) $(PROOF_O_FILES)
+EXECUTABLES      := $(patsubst %.o,bin/%,$(notdir $(EXE_O_FILES))) bin/grsisort
+TEST_O_FILES     := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard UnitTests/*.$(SRC_SUFFIX)))
 
 HISTOGRAM_SO    := $(patsubst histos/%.$(SRC_SUFFIX),lib/lib%.so,$(wildcard histos/*.$(SRC_SUFFIX)))
 FILTER_SO    := $(patsubst filters/%.$(SRC_SUFFIX),lib/lib%.so,$(wildcard filters/*.$(SRC_SUFFIX)))
@@ -140,6 +141,8 @@ all: include/GVersion.h grsirc $(EXECUTABLES) $(LIBRARY_OUTPUT) lib/libGRSI.so c
 	@$(FIND) . -maxdepth 1 -name "*.pcm" -exec mv {} lib/ \;
 	@printf "$(OK_COLOR)Compilation successful, $(WARN_COLOR)woohoo!$(NO_COLOR)\n"
 
+test: bin/test-main
+
 docs: doxygen
 
 doxygen:
@@ -162,6 +165,9 @@ bin/%: .build/GRSIProof/%.o | $(LIBRARY_OUTPUT) bin include/GVersion.h
 
 bin/%: .build/myAnalysis/%.o | $(LIBRARY_OUTPUT) bin include/GVersion.h
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
+
+bin/test-main: $(TEST_O_FILES) | $(LIBRARY_OUTPUT) bin include/GVersion.h
+	$(call run_and_test,$(CPP) $^ -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
 bin lib:
 	@mkdir -p $@
@@ -223,13 +229,6 @@ $(foreach lib,$(LIBRARY_DIRS),$(eval $(call library_template,$(lib))))
 
 -include $(shell $(FIND) .build -name '*.d' 2> /dev/null)
 
-html: all
-	@printf " ${COM_COLOR}Building      ${OBJ_COLOR} HTML Documentation ${NO_COLOR}\n"
-	@cp -r include grsisort
-	@grsisort -q -l --work_harder util/html_generator.C #>/dev/null
-	@$(RM) -r grsisort
-	@$(RM) tempfile.out
-
 complete: all parsers
 
 parsers: all
@@ -268,6 +267,3 @@ clean:
 	@-$(RM) -rf .build bin lib include/GVersion.h
 	@-$(RM) -rf libraries/*.so libraries/*.pcm #this is here for cleaning up libraries from pre GRSI 3.0
 
-cleaner: clean
-	@printf "\nEven more clean up\n\n"
-	@-$(RM) -rf htmldoc

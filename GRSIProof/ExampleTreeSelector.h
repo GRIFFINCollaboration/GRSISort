@@ -55,7 +55,7 @@ private:
 
 	ClassDef(ExampleTreeSelector,2); //Makes ROOT happier
 };
-
+/*! @} */
 #endif
 
 #ifdef ExampleTreeSelector_cxx
@@ -76,5 +76,4 @@ void ExampleTreeSelector::InitializeBranches(TTree* tree)
 	}
 }
 
-/*! @} */
 #endif // #ifdef ExampleTreeSelector_cxx

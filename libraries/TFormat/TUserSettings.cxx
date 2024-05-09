@@ -15,8 +15,8 @@ bool TUserSettings::ReadSettings(std::string settingsFile)
 {
 	/// Read user settings from text file.
 	/// The file is expected to have the format
-	/// <parameter name>: <value>
-	/// where <parameter name> is a string w/o whitespace and <value> is the value of the parameter
+	/// parameter name: value
+	/// where parameter name is a string w/o whitespace and value is the value of the parameter
 	/// the type of the value (bool, int, double, std::string, or vectors of these types) will be determined automatically
 	/// vectors are comma separated values of one type
 	/// the default type will be std::string
