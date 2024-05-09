@@ -21,13 +21,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: List files
-        run: |
-          ls -lh
-          ls -lh /github/workspace/
-          ls -lh /github/workspace/doxygen/
-        shell: bash
-
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.9.8
         with:
