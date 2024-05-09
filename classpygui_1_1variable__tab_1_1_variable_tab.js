@@ -1,0 +1,26 @@
+var classpygui_1_1variable__tab_1_1_variable_tab =
+[
+    [ "__init__", "classpygui_1_1variable__tab_1_1_variable_tab.html#aa0c995df14583843534d51d8789fe74c", null ],
+    [ "_dump_to_tfile", "classpygui_1_1variable__tab_1_1_variable_tab.html#a947654b3ca8ae3e1696fbd4a55bf7674", null ],
+    [ "_load_variable_patterns", "classpygui_1_1variable__tab_1_1_variable_tab.html#a850944d35697411f5e002923e18db423", null ],
+    [ "_MakeButtons", "classpygui_1_1variable__tab_1_1_variable_tab.html#ab7917d1e28916459cab179188a929a54", null ],
+    [ "_MakeTreeView", "classpygui_1_1variable__tab_1_1_variable_tab.html#aca2f273d6de892001ed7806a954332b1", null ],
+    [ "_setup_GUI", "classpygui_1_1variable__tab_1_1_variable_tab.html#a4ed15aa21f80d791cccf0fcca93ccf6b", null ],
+    [ "_variable_patterns", "classpygui_1_1variable__tab_1_1_variable_tab.html#acd1b2d88db15b4d484406c11d363487e", null ],
+    [ "AddFile", "classpygui_1_1variable__tab_1_1_variable_tab.html#ae3c70ccbdc3ac86d4b4bca7c69e5ef35", null ],
+    [ "DeleteVariable", "classpygui_1_1variable__tab_1_1_variable_tab.html#aa314fcc31660fdf7f9cbd4ea23ea67c0", null ],
+    [ "OnDeleteVariable_Click", "classpygui_1_1variable__tab_1_1_variable_tab.html#a601d625863f5d1f02bf1874e837335d8", null ],
+    [ "OnSave_Click", "classpygui_1_1variable__tab_1_1_variable_tab.html#a8c48c7c6e959e5ace453643707894a55", null ],
+    [ "OnSetReplaceVariable_Click", "classpygui_1_1variable__tab_1_1_variable_tab.html#a94dc6a2ea5f617c8f1c89cb92595dceb", null ],
+    [ "OnUpdateAll_Click", "classpygui_1_1variable__tab_1_1_variable_tab.html#ad957dd8ebe44723067addc84c4d08aef", null ],
+    [ "SetReplaceVariable", "classpygui_1_1variable__tab_1_1_variable_tab.html#a8a0650d03dab4c07007a736861a588a6", null ],
+    [ "VariableSelection", "classpygui_1_1variable__tab_1_1_variable_tab.html#ab32fe280b7e2cd3b484c31046dd68212", null ],
+    [ "frame", "classpygui_1_1variable__tab_1_1_variable_tab.html#abcf929939c22be0ba68c83976ad16511", null ],
+    [ "main", "classpygui_1_1variable__tab_1_1_variable_tab.html#a23af82dacb9400c5a720e888223e4cd2", null ],
+    [ "OnSetReplaceVariable_Click", "classpygui_1_1variable__tab_1_1_variable_tab.html#abf8fbc5197403a200c10bc5174adc023", null ],
+    [ "treeview", "classpygui_1_1variable__tab_1_1_variable_tab.html#abcc6c9ec14c2c3bea97c6d139850c828", null ],
+    [ "var_name", "classpygui_1_1variable__tab_1_1_variable_tab.html#adbd36b55b600d4be189edee7e5abfd49", null ],
+    [ "var_value", "classpygui_1_1variable__tab_1_1_variable_tab.html#ac04ccde0421da3855c399038f5a70202", null ],
+    [ "variables", "classpygui_1_1variable__tab_1_1_variable_tab.html#afa0f2955cfe2dce145124a29d8931022", null ],
+    [ "VariableSelection", "classpygui_1_1variable__tab_1_1_variable_tab.html#abe807033aac1093fb8f6cc2aac5ff83d", null ]
+];

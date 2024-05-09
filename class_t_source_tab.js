@@ -1,0 +1,28 @@
+var class_t_source_tab =
+[
+    [ "TSourceTab", "class_t_source_tab.html#ab43e3ae3574733ce356d4be75d36b369", null ],
+    [ "~TSourceTab", "class_t_source_tab.html#a10a12f62ff40089d14f5765edf219ea8", null ],
+    [ "Calibrate", "class_t_source_tab.html#a2dde2a3e2f0221aa98d3ff860fb88e47", null ],
+    [ "ChannelTab", "class_t_source_tab.html#a41ed3d099b5bf5e4cc30b8768a391c2a", null ],
+    [ "CreateChannelTab", "class_t_source_tab.html#acd8760a26ca0629781b0d706af4bbc00", null ],
+    [ "Data", "class_t_source_tab.html#a81f994bea87a8e1a49ad2ff507f42ee2", null ],
+    [ "Disconnect", "class_t_source_tab.html#a69432b774b089733fd288fe3996a0c67", null ],
+    [ "Efficiency", "class_t_source_tab.html#a9e31840e4b40b37b4df3cdae124ee122", null ],
+    [ "FindPeaks", "class_t_source_tab.html#a4253852a7dfada724414655993bd74a2", null ],
+    [ "MakeConnections", "class_t_source_tab.html#aff0111f504fa513d2bf7da1d60c496f0", null ],
+    [ "NumberOfChannels", "class_t_source_tab.html#adc498ec1675e6e9d55f4f2954fed9bad", null ],
+    [ "VerboseLevel", "class_t_source_tab.html#a0748c46f9106970b74bf21c8e6477318", null ],
+    [ "fChannel", "class_t_source_tab.html#a7f6332b6102ca59333bee4c0df537cac", null ],
+    [ "fChannelTab", "class_t_source_tab.html#a26127f8d18a313e93daf2615814b0f8c", null ],
+    [ "fDegree", "class_t_source_tab.html#a0ad7b0b09fd7713c07ee7b1de79af686", null ],
+    [ "fFrame", "class_t_source_tab.html#a01717473836347ca5c5ae1db91873ee3", null ],
+    [ "fMatrix", "class_t_source_tab.html#a91d4c3401c0d188567983dcc9e967a59", null ],
+    [ "fNucleus", "class_t_source_tab.html#abbbd6f47b9f68bf39f2d824fd3f60b23", null ],
+    [ "fParent", "class_t_source_tab.html#a46a328e24f4463bec8b45244cb887193", null ],
+    [ "fProgressBar", "class_t_source_tab.html#aec4eeb43b56344c7ecb6dfd670a36c72", null ],
+    [ "fProjections", "class_t_source_tab.html#a9cfa82c35c2dd5a053f1e4917aa04c68", null ],
+    [ "fSigma", "class_t_source_tab.html#abad6b7bf241ea12cc8e8783ea99e82b0", null ],
+    [ "fSourceEnergy", "class_t_source_tab.html#ac5a435b86ca04c9ecde898ade1b71b81", null ],
+    [ "fThreshold", "class_t_source_tab.html#a2ab2d311d6f2a888721420951b4aeb4e", null ],
+    [ "fVerboseLevel", "class_t_source_tab.html#a5a571324d8c563bcffdcbdad5f8b55a6", null ]
+];
