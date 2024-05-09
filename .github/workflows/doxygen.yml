@@ -21,6 +21,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Create footer
+        run: doxygen/makehtmlfooter.sh > doxygen/footer.html
+        shell: bash
+
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.9.8
         with:
