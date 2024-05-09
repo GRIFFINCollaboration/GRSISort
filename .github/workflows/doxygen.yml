@@ -18,23 +18,30 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v4
-        
-    - name: Doxygen Action
-      uses: mattnotmitt/doxygen-action@v1.9.8
-      with:
-        # Path to Doxyfile
-        doxyfile-path: "./doxygen/Doxyfile" # default is ./Doxyfile
-        # Working directory
-        working-directory: "./doxygen/" # default is .
-        enable-latex: true # default is false
-    
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{secrets.GITHUB_TOKEN}}
-        # Default Doxyfile build documentation to html directory. 
-        # Change the directory if changes in Doxyfile
-        publish_dir: ./html
-          # this corresponds to: http://<your-github-username>.github.io/<your-repo-name>/index.html
-          # old: https://rawgit.com/wiki/GriffinCollaboration/GRSISort/technical-docs/ROOT-Gen-Html/htmldoc/index.html
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: List files
+        run: |
+          ls -lh
+          echo $(PWD)
+        shell: bash
+
+      - name: Doxygen Action
+        uses: mattnotmitt/doxygen-action@v1.9.8
+        with:
+          # Path to Doxyfile
+          doxyfile-path: "./doxygen/Doxyfile" # default is ./Doxyfile
+            # Working directory
+          working-directory: "./doxygen/" # default is .
+          enable-latex: true # default is false
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+            # Default Doxyfile build documentation to html directory. 
+            # Change the directory if changes in Doxyfile
+          publish_dir: ./html
+            # this corresponds to: http://<your-github-username>.github.io/<your-repo-name>/index.html
+            # old: https://rawgit.com/wiki/GriffinCollaboration/GRSISort/technical-docs/ROOT-Gen-Html/htmldoc/index.html
