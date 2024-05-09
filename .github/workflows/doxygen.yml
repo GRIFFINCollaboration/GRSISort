@@ -24,16 +24,17 @@ jobs:
       - name: List files
         run: |
           ls -lh
-          echo $(PWD)
+          ls -lh ./doxygen/
+          ls -lh doxygen/
         shell: bash
 
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.9.8
         with:
           # Path to Doxyfile
-          doxyfile-path: "./doxygen/Doxyfile" # default is ./Doxyfile
+          doxyfile-path: "doxygen/Doxyfile" # default is ./Doxyfile
             # Working directory
-          working-directory: "./doxygen/" # default is .
+          working-directory: "doxygen/" # default is .
           enable-latex: true # default is false
 
       - name: Deploy
