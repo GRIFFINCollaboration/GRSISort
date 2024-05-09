@@ -21,11 +21,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: List files
-        run: |
-          ls -lh
-          ls -lh /github/workspace/
-          ls -lh /github/workspace/doxygen/
+      - name: Create footer
+        run: doxygen/makehtmlfooter.sh > doxygen/footer.html
         shell: bash
 
       - name: Doxygen Action
@@ -35,7 +32,7 @@ jobs:
           doxyfile-path: "Doxyfile" # default is ./Doxyfile
             # Working directory
           working-directory: "doxygen/" # default is .
-          enable-latex: true # default is false
+            #enable-latex: true # default is false
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
