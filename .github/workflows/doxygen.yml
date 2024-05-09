@@ -32,7 +32,7 @@ jobs:
           doxyfile-path: "Doxyfile" # default is ./Doxyfile
             # Working directory
           working-directory: "doxygen/" # default is .
-          enable-latex: true # default is false
+            #enable-latex: true # default is false
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
