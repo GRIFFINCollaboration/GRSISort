@@ -24,15 +24,15 @@ jobs:
       - name: List files
         run: |
           ls -lh
-          ls -lh ./doxygen/
-          ls -lh doxygen/
+          ls -lh /github/workspace/
+          ls -lh /github/workspace/doxygen/
         shell: bash
 
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.9.8
         with:
           # Path to Doxyfile
-          doxyfile-path: "doxygen/Doxyfile" # default is ./Doxyfile
+          doxyfile-path: "Doxyfile" # default is ./Doxyfile
             # Working directory
           working-directory: "doxygen/" # default is .
           enable-latex: true # default is false
