@@ -10,11 +10,11 @@ all: doxygen
 doxygen:
 	if [ ! -d $(DOXYGEN_OUTPUT_DIRECTORY) ]; then mkdir $(DOXYGEN_OUTPUT_DIRECTORY); fi
 	if [ ! -d $(DOXYGEN_EXAMPLE_PATH) ]; then mkdir $(DOXYGEN_EXAMPLE_PATH); fi
-	./makehtmlfooter.sh > htmlfooter.html
+	./makehtmlfooter.sh > footer.html
 	doxygen
 	rm -f c1*
 	rm -f stdout.dat
-	rm -f htmlfooter.html
+	rm -f footer.html
 
 clean:
 	rm -rf $(DOXYGEN_OUTPUT_DIRECTORY)
