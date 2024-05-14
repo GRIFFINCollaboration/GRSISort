@@ -21,11 +21,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: List result
+        run: |
+          ls -lh 
+          pwd
+        shell: bash
+
     # Check out the data libraries
       - name: Checkout GRSIData
         uses: actions/checkout@v4
         with:
           repository: GRIFFINCollaboration/GRSIData
+
+      - name: List result
+        run: |
+          ls -lh 
+          pwd
+        shell: bash
 
       - name: Checkout ILLData
         uses: actions/checkout@v4
@@ -42,11 +54,15 @@ jobs:
         with:
           repository: UoG-Nuclear-Physics-Group/HILData
 
+      - name: List result
+        run: |
+          ls -lh 
+          pwd
+        shell: bash
+
       - name: Create footer
         run: |
           doxygen/makehtmlfooter.sh > doxygen/footer.html
-          ls -lh doxygen
-          if [ -e doxygen/footer.html ] ; then cat doxygen/footer.html ; fi
         shell: bash
 
       - name: Doxygen Action
