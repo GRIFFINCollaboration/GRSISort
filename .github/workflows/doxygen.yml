@@ -32,6 +32,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: GRIFFINCollaboration/GRSIData
+          path: GRSIData
 
       - name: List result
         run: |
@@ -43,16 +44,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: UoG-Nuclear-Physics-Group/ILLData
+          path: IllData
 
       - name: Checkout iThembaData
         uses: actions/checkout@v4
         with:
           repository: UoG-Nuclear-Physics-Group/iThembaData
+          path: iThembaData
 
       - name: Checkout HILData
         uses: actions/checkout@v4
         with:
           repository: UoG-Nuclear-Physics-Group/HILData
+          path: HILData
 
       - name: List result
         run: |
