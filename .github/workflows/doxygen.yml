@@ -49,5 +49,5 @@ jobs:
             # Default Doxyfile build documentation to html directory. 
             # Change the directory if changes in Doxyfile
           publish_dir: doxygen/html
-            # this corresponds to: http://<your-github-username>.github.io/<your-repo-name>/index.html
+            # this corresponds to: http://griffincollaboration.github.io/grsisort/index.html
             # old: https://rawgit.com/wiki/GriffinCollaboration/GRSISort/technical-docs/ROOT-Gen-Html/htmldoc/index.html
