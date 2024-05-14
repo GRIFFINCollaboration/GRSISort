@@ -10,5 +10,6 @@ var searchData=
   ['projection_5faxis_7',['projection_axis',['../class_g_h1_d.html#aec5194ebcb54ac57982f9fa1ce3fe28f',1,'GH1D']]],
   ['prompthigh_8',['promptHigh',['../_efficiency_helper_8cxx.html#aa65dd5665747fd0644c9f2a2d80b3f93',1,'EfficiencyHelper.cxx']]],
   ['promptlow_9',['promptLow',['../_efficiency_helper_8cxx.html#a5791b08cc30d0fec0245621ca11d97ab',1,'EfficiencyHelper.cxx']]],
-  ['pt_10',['pT',['../class_t_object_wrapper.html#af45121b2845f48eff59617e029d3f6c8',1,'TObjectWrapper']]]
+  ['ps_10',['ps',['../_make_griffin_histograms_8cxx.html#a2438a45a0a3a3a4b5fcfa60b2e7097d6',1,'MakeGriffinHistograms.cxx']]],
+  ['pt_11',['pT',['../class_t_object_wrapper.html#af45121b2845f48eff59617e029d3f6c8',1,'TObjectWrapper']]]
 ];

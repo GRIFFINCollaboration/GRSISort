@@ -197,7 +197,7 @@ $(document).ready(function(){initNavTree('_t_analysis_options_8cxx_source.html',
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>   }</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>   <span class="comment">// write analysis options</span></div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;Writing TAnalysisOptions to &quot;</span>&lt;&lt;gDirectory-&gt;GetFile()-&gt;GetName()&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>   Write(<span class="stringliteral">&quot;AnalysisOptions&quot;</span>,TObject::kOverwrite);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>   <a class="code hl_function" href="bufferclean_8cxx.html#a7677daa89164938e6564835835396bc9">Write</a>(<span class="stringliteral">&quot;AnalysisOptions&quot;</span>,TObject::kOverwrite);</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>   <span class="comment">// check if we need to change back to read mode</span></div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>   <span class="keywordflow">if</span>(oldoption == <span class="stringliteral">&quot;READ&quot;</span>) {</div>
@@ -269,6 +269,7 @@ $(document).ready(function(){initNavTree('_t_analysis_options_8cxx_source.html',
 <div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00004">Globals.h:4</a></div></div>
 <div class="ttc" id="a_t_analysis_options_8h_html"><div class="ttname"><a href="_t_analysis_options_8h.html">TAnalysisOptions.h</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_utilities_8h_html"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html">TGRSIUtilities.h</a></div></div>
+<div class="ttc" id="abufferclean_8cxx_html_a7677daa89164938e6564835835396bc9"><div class="ttname"><a href="bufferclean_8cxx.html#a7677daa89164938e6564835835396bc9">Write</a></div><div class="ttdeci">void Write(std::shared_ptr&lt; TMidasEvent &gt; evt, TMidasFile *outfile)</div><div class="ttdef"><b>Definition</b> <a href="bufferclean_8cxx_source.html#l00112">bufferclean.cxx:112</a></div></div>
 <div class="ttc" id="aclass_t_analysis_options_html"><div class="ttname"><a href="class_t_analysis_options.html">TAnalysisOptions</a></div><div class="ttdef"><b>Definition</b> <a href="_t_analysis_options_8h_source.html#l00023">TAnalysisOptions.h:23</a></div></div>
 <div class="ttc" id="aclass_t_analysis_options_html_a04d965bd0a480fb63dc15dbe3d31cd6e"><div class="ttname"><a href="class_t_analysis_options.html#a04d965bd0a480fb63dc15dbe3d31cd6e">TAnalysisOptions::fAddbackWindow</a></div><div class="ttdeci">int fAddbackWindow</div><div class="ttdoc">Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN. (default = 300 ns (300))</div><div class="ttdef"><b>Definition</b> <a href="_t_analysis_options_8h_source.html#l00077">TAnalysisOptions.h:77</a></div></div>
 <div class="ttc" id="aclass_t_analysis_options_html_a19e6780bb3d164c01f41f8243321ae23"><div class="ttname"><a href="class_t_analysis_options.html#a19e6780bb3d164c01f41f8243321ae23">TAnalysisOptions::fIsCorrectingCrossTalk</a></div><div class="ttdeci">bool fIsCorrectingCrossTalk</div><div class="ttdoc">True if we are correcting for cross-talk in GRIFFIN at analysis-level.</div><div class="ttdef"><b>Definition</b> <a href="_t_analysis_options_8h_source.html#l00080">TAnalysisOptions.h:80</a></div></div>
@@ -291,7 +292,7 @@ $(document).ready(function(){initNavTree('_t_analysis_options_8cxx_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_1f2c117abb9c439347e5eda4f80f97eb.html">TGRSIint</a></li><li class="navelem"><a class="el" href="_t_analysis_options_8cxx.html">TAnalysisOptions.cxx</a></li>
-    <li class="footer">GRSISort () Reference Guide Generated on Tue May 14 2024 02:24:21.</li>
+    <li class="footer">GRSISort () Reference Guide Generated on Tue May 14 2024 16:16:11.</li>
   </ul>
 </div>
 </body>

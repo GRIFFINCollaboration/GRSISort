@@ -1,6 +1,6 @@
 var dir_c27fb4ff404115d281d3c6aa730dcb72 =
 [
-    [ "LinkDef.h", "_t_analysis_2_t_g_r_s_i_fit_2_link_def_8h.html", null ],
+    [ "LinkDef.h", "libraries_2_t_analysis_2_t_g_r_s_i_fit_2_link_def_8h.html", null ],
     [ "TDecay.cxx", "_t_decay_8cxx.html", null ],
     [ "TGRSIFit.cxx", "_t_g_r_s_i_fit_8cxx.html", null ],
     [ "TGRSIFunctions.cxx", "_t_g_r_s_i_functions_8cxx.html", "_t_g_r_s_i_functions_8cxx" ],

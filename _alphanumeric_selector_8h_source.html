@@ -121,7 +121,7 @@ $(document).ready(function(){initNavTree('_alphanumeric_selector_8h_source.html'
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">// Header file for the classes stored in the TTree if any.</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="_t_g_r_s_i_selector_8h.html">TGRSISelector.h</a>&quot;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;TGriffin.h&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="_t_griffin_8h.html">TGriffin.h</a>&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">// Fixed size dimensions of array or collections stored in the TTree if any.</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
@@ -129,7 +129,7 @@ $(document).ready(function(){initNavTree('_alphanumeric_selector_8h_source.html'
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="class_alphanumeric_selector.html">   24</a></span><span class="keyword">class </span><a class="code hl_class" href="class_alphanumeric_selector.html">AlphanumericSelector</a> : <span class="keyword">public</span> <a class="code hl_class" href="class_t_g_r_s_i_selector.html">TGRSISelector</a> { <span class="comment">//Must be same name as .C and .h</span></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> public :</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="class_alphanumeric_selector.html#aecda8ebe03d2d6f4830f1b4d9ba51691">   27</a></span>   TGriffin* <a class="code hl_variable" href="class_alphanumeric_selector.html#aecda8ebe03d2d6f4830f1b4d9ba51691">fGrif</a>; <span class="comment">//Pointers to spot that events will be</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="class_alphanumeric_selector.html#aecda8ebe03d2d6f4830f1b4d9ba51691">   27</a></span>   <a class="code hl_class" href="class_t_griffin.html">TGriffin</a>* <a class="code hl_variable" href="class_alphanumeric_selector.html#aecda8ebe03d2d6f4830f1b4d9ba51691">fGrif</a>; <span class="comment">//Pointers to spot that events will be</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_alphanumeric_selector.html#a580dba6981830fa3c4adda38e3bb5646">   29</a></span>   <a class="code hl_function" href="class_alphanumeric_selector.html#a580dba6981830fa3c4adda38e3bb5646">AlphanumericSelector</a>(TTree * <span class="comment">/*tree*/</span> =0) : <a class="code hl_class" href="class_t_g_r_s_i_selector.html">TGRSISelector</a>(), <a class="code hl_variable" href="class_alphanumeric_selector.html#aecda8ebe03d2d6f4830f1b4d9ba51691">fGrif</a>(nullptr) {</div>
@@ -154,12 +154,13 @@ $(document).ready(function(){initNavTree('_alphanumeric_selector_8h_source.html'
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>{</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>   <span class="keywordflow">if</span>(!tree) <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>   <span class="keywordflow">if</span>(tree-&gt;SetBranchAddress(<span class="stringliteral">&quot;TGriffin&quot;</span>, &amp;<a class="code hl_variable" href="class_alphanumeric_selector.html#aecda8ebe03d2d6f4830f1b4d9ba51691">fGrif</a>) == TTree::kMissingBranch) {</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      <a class="code hl_variable" href="class_alphanumeric_selector.html#aecda8ebe03d2d6f4830f1b4d9ba51691">fGrif</a> = <span class="keyword">new</span> TGriffin;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      <a class="code hl_variable" href="class_alphanumeric_selector.html#aecda8ebe03d2d6f4830f1b4d9ba51691">fGrif</a> = <span class="keyword">new</span> <a class="code hl_class" href="class_t_griffin.html">TGriffin</a>;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>   }</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>}</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#endif </span><span class="comment">// #ifdef AlphanumericSelector_cxx</span></div>
 <div class="ttc" id="a_t_g_r_s_i_selector_8h_html"><div class="ttname"><a href="_t_g_r_s_i_selector_8h.html">TGRSISelector.h</a></div></div>
+<div class="ttc" id="a_t_griffin_8h_html"><div class="ttname"><a href="_t_griffin_8h.html">TGriffin.h</a></div></div>
 <div class="ttc" id="aclass_alphanumeric_selector_html"><div class="ttname"><a href="class_alphanumeric_selector.html">AlphanumericSelector</a></div><div class="ttdef"><b>Definition</b> <a href="_alphanumeric_selector_8h_source.html#l00024">AlphanumericSelector.h:24</a></div></div>
 <div class="ttc" id="aclass_alphanumeric_selector_html_a1d59e4374d4ab9545e87e05e45467131"><div class="ttname"><a href="class_alphanumeric_selector.html#a1d59e4374d4ab9545e87e05e45467131">AlphanumericSelector::CreateHistograms</a></div><div class="ttdeci">void CreateHistograms()</div><div class="ttdef"><b>Definition</b> <a href="_alphanumeric_selector_8_c_source.html#l00005">AlphanumericSelector.C:5</a></div></div>
 <div class="ttc" id="aclass_alphanumeric_selector_html_a21b4ed735f1d17cb6a232510ca430339"><div class="ttname"><a href="class_alphanumeric_selector.html#a21b4ed735f1d17cb6a232510ca430339">AlphanumericSelector::FillHistograms</a></div><div class="ttdeci">void FillHistograms()</div><div class="ttdef"><b>Definition</b> <a href="_alphanumeric_selector_8_c_source.html#l00048">AlphanumericSelector.C:48</a></div></div>
@@ -171,6 +172,7 @@ $(document).ready(function(){initNavTree('_alphanumeric_selector_8h_source.html'
 <div class="ttc" id="aclass_alphanumeric_selector_html_aecda8ebe03d2d6f4830f1b4d9ba51691"><div class="ttname"><a href="class_alphanumeric_selector.html#aecda8ebe03d2d6f4830f1b4d9ba51691">AlphanumericSelector::fGrif</a></div><div class="ttdeci">TGriffin * fGrif</div><div class="ttdef"><b>Definition</b> <a href="_alphanumeric_selector_8h_source.html#l00027">AlphanumericSelector.h:27</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_selector_html"><div class="ttname"><a href="class_t_g_r_s_i_selector.html">TGRSISelector</a></div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_selector_8h_source.html#l00034">TGRSISelector.h:34</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_selector_html_a7c93561fc0f34db9f5c3381b9aa6fe67"><div class="ttname"><a href="class_t_g_r_s_i_selector.html#a7c93561fc0f34db9f5c3381b9aa6fe67">TGRSISelector::SetOutputPrefix</a></div><div class="ttdeci">void SetOutputPrefix(const char *prefix)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_selector_8h_source.html#l00064">TGRSISelector.h:64</a></div></div>
+<div class="ttc" id="aclass_t_griffin_html"><div class="ttname"><a href="class_t_griffin.html">TGriffin</a></div><div class="ttdef"><b>Definition</b> <a href="_t_griffin_8h_source.html#l00023">TGriffin.h:23</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -178,7 +180,7 @@ $(document).ready(function(){initNavTree('_alphanumeric_selector_8h_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_9898311765dba9e8b5ad6a9c9b1db5d5.html">GRSIProof</a></li><li class="navelem"><a class="el" href="_alphanumeric_selector_8h.html">AlphanumericSelector.h</a></li>
-    <li class="footer">GRSISort () Reference Guide Generated on Tue May 14 2024 02:24:20.</li>
+    <li class="footer">GRSISort () Reference Guide Generated on Tue May 14 2024 16:16:10.</li>
   </ul>
 </div>
 </body>

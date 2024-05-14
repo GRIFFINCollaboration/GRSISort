@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['result_5ft_0',['Result_t',['../class_t_g_r_s_i_helper.html#a649dd6a8cfd47823ff7145fb02362f3c',1,'TGRSIHelper']]]
+  ['ppgmap_5ft_0',['PPGMap_t',['../class_t_p_p_g.html#a074b637577b231a9133f584299c6df3d',1,'TPPG']]]
 ];

@@ -1,0 +1,27 @@
+var class_t_i_l_l_detector_information =
+[
+    [ "TILLDetectorInformation", "class_t_i_l_l_detector_information.html#afb6b95ab382b48a3a6a87c30d30b84ef", null ],
+    [ "~TILLDetectorInformation", "class_t_i_l_l_detector_information.html#a21f6282468625e3fa43c7329ba9887a8", null ],
+    [ "BuildMode", "class_t_i_l_l_detector_information.html#ae56eb2baa8d51b088005b774410f8508", null ],
+    [ "Clear", "class_t_i_l_l_detector_information.html#a35fa06c59a3543796047c1671739ae89", null ],
+    [ "Fipps", "class_t_i_l_l_detector_information.html#abe9cd93497dc018646927ed7a7d332a9", null ],
+    [ "FippsBgo", "class_t_i_l_l_detector_information.html#a94ccca24fb4dc15459c749abe70e87ee", null ],
+    [ "FippsLaBr", "class_t_i_l_l_detector_information.html#a3fdfac59f69669689ef9881fca80678d", null ],
+    [ "FippsLaBrBgo", "class_t_i_l_l_detector_information.html#aefface02addd5db0866fccfd7fb1237c", null ],
+    [ "FippsPulser", "class_t_i_l_l_detector_information.html#a72b5ea4844c8741ae12a4ce77111913f", null ],
+    [ "FippsTAC", "class_t_i_l_l_detector_information.html#a46cee5a0da4b06fe6a9c9fb5afd597ca", null ],
+    [ "Print", "class_t_i_l_l_detector_information.html#a860a9c90dc9d281fe6d96c76cdfce558", null ],
+    [ "Set", "class_t_i_l_l_detector_information.html#ac6606707a16e130246d8ea9df17097fe", null ],
+    [ "SetFipps", "class_t_i_l_l_detector_information.html#a689b8caaaefbcf1965d418e725c6afb4", null ],
+    [ "SetFippsBgo", "class_t_i_l_l_detector_information.html#a24dabbe291c5c658751292fefeb68df0", null ],
+    [ "SetFippsLaBr", "class_t_i_l_l_detector_information.html#acc575afe22ed6d01f9cb9be6048e65ef", null ],
+    [ "SetFippsLaBrBgo", "class_t_i_l_l_detector_information.html#a7b2afa4ebaf376acf3b92797dc8295c0", null ],
+    [ "SetFippsPulser", "class_t_i_l_l_detector_information.html#a3ab39bde5b43a50c1077c7d197e7e970", null ],
+    [ "SetFippsTAC", "class_t_i_l_l_detector_information.html#ab5808b99e1eea83becb24f74adc9eb3b", null ],
+    [ "fFipps", "class_t_i_l_l_detector_information.html#ad2f52eff8c32e74dc0f03b2c93929806", null ],
+    [ "fFippsBgo", "class_t_i_l_l_detector_information.html#a82b842fc12d7905b5e256986be497f98", null ],
+    [ "fFippsLaBr", "class_t_i_l_l_detector_information.html#abe0f3b5376559eab55e8dd2057778797", null ],
+    [ "fFippsLaBrBgo", "class_t_i_l_l_detector_information.html#a19f317f902f55d7333e709e5f7197956", null ],
+    [ "fFippsPulser", "class_t_i_l_l_detector_information.html#a749e05c4cd2d7496baabca891eeeb038", null ],
+    [ "fFippsTAC", "class_t_i_l_l_detector_information.html#ad2750d71cdb01a8a91daf6fd6e3e0bbf", null ]
+];

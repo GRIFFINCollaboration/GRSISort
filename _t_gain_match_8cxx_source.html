@@ -114,7 +114,7 @@ $(document).ready(function(){initNavTree('_t_gain_match_8cxx_source.html',''); i
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;Math/Functor.h&quot;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"></span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">/// \cond CLASSIMP</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"></span><a class="code hl_function" href="_g_cube_8cxx.html#a07239ddbd385de00a6c7e335d23f5247">ClassImp</a>(<a class="code hl_class" href="class_t_gain_match.html">TGainMatch</a>)<span class="comment"></span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"></span><a class="code hl_function" href="_t_griffin_angles_8cxx.html#af805acda91d6c5d558b18b0fc07255dc">ClassImp</a>(<a class="code hl_class" href="class_t_gain_match.html">TGainMatch</a>)<span class="comment"></span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">/// \endcond</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"></span> </div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>Double_t <a class="code hl_variable" href="class_t_gain_match.html#a208c9506fc44e8bf65144847318613f0">TGainMatch::gDefaultCoarseRange</a> = 40.;</div>
@@ -205,15 +205,15 @@ $(document).ready(function(){initNavTree('_t_gain_match_8cxx_source.html',''); i
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>   Int_t high = <a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a>-&gt;GetXaxis()-&gt;GetLast();</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>   <a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a>-&gt;GetXaxis()-&gt;SetRangeUser(100,<a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a>-&gt;GetXaxis()-&gt;GetBinCenter(high));</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>   <span class="comment">// Use a TSpectrum to find the two largest peaks in the spectrum</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>   <span class="keyword">auto</span>* s      = <span class="keyword">new</span> TSpectrum;                <span class="comment">// This might not have to be allocated</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>   Int_t nFound = s-&gt;Search(<a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a>, 2, <span class="stringliteral">&quot;&quot;</span>, 0.50); <span class="comment">// This returns peaks in order of their height in the spectrum.</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>   <span class="keyword">auto</span>* <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>      = <span class="keyword">new</span> TSpectrum;                <span class="comment">// This might not have to be allocated</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>   Int_t nFound = <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>-&gt;Search(<a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a>, 2, <span class="stringliteral">&quot;&quot;</span>, 0.50); <span class="comment">// This returns peaks in order of their height in the spectrum.</span></div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>   </div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>   <span class="comment">//return histogram to proper range</span></div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>   <a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a>-&gt;GetXaxis()-&gt;UnZoom(); </div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>   <span class="comment">// If we didn&#39;t find two peaks, it is likely we gave it garbage</span></div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>   <span class="keywordflow">if</span>(nFound &lt; 2) {</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>      Error(<span class="stringliteral">&quot;CoarseMatch&quot;</span>, <span class="stringliteral">&quot;Did not find enough peaks&quot;</span>);</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      <span class="keyword">delete</span> s;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      <span class="keyword">delete</span> <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>;</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>   }</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
@@ -221,7 +221,7 @@ $(document).ready(function(){initNavTree('_t_gain_match_8cxx_source.html',''); i
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>   std::vector&lt;Double_t&gt; foundBin;</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> x = 0; x &lt; 2;</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>       x++) { <span class="comment">// I have hard-coded this to 2 because I&#39;m assuming the rough match peaks will be by far the largest.</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>      foundBin.push_back((s-&gt;GetPositionX()[x]));</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>      foundBin.push_back((<a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>-&gt;GetPositionX()[x]));</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>      std::cout&lt;&lt;<span class="stringliteral">&quot;Found peak at bin &quot;</span>&lt;&lt;foundBin[x]&lt;&lt;std::endl;</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>   }</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>   std::sort(foundBin.begin(), foundBin.end());</div>
@@ -256,7 +256,7 @@ $(document).ready(function(){initNavTree('_t_gain_match_8cxx_source.html',''); i
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>   <span class="keyword">delete</span> gainFit;</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>   <span class="comment">// We have finished gain matching so let the TGainMatch know that it is a coarse gain</span></div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>   <a class="code hl_variable" href="class_t_gain_match.html#a72062a11179fb53efe919219a76ff9be">fCoarseMatch</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>   <span class="keyword">delete</span> s;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>   <span class="keyword">delete</span> <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>;</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>   <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>}</div>
 </div>
@@ -326,18 +326,18 @@ $(document).ready(function(){initNavTree('_t_gain_match_8cxx_source.html',''); i
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>   <span class="comment">// The gains won&#39;t be perfect, so we need to search for the peak within a range.</span></div>
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>   hist1-&gt;GetXaxis()-&gt;SetRangeUser(peak1-&gt;GetXmin() - 20., peak1-&gt;GetXmax() + 20.);</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>   TSpectrum s;</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>   Int_t     nFound = s.Search(hist1, 2, <span class="stringliteral">&quot;&quot;</span>, 0.3);</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>   TSpectrum <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>;</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>   Int_t     nFound = <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>.Search(hist1, 2, <span class="stringliteral">&quot;&quot;</span>, 0.3);</div>
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> x = 0; x &lt; nFound; x++) {</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>      std::cout&lt;&lt;s.GetPositionX()[x]&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>      std::cout&lt;&lt;<a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>.GetPositionX()[x]&lt;&lt;std::endl;</div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>   }</div>
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>   Double_t closestPeak = 0;</div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>   Double_t closestDiff = 10000;</div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> x = 0; x &lt; nFound; x++) {</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>      <span class="keywordflow">if</span>(fabs(peak1-&gt;<a class="code hl_function" href="class_t_peak.html#ae71437ddab1693069e618edc7d1a3efa">GetCentroid</a>() - s.GetPositionX()[x]) &lt; closestDiff) {</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>         closestPeak = s.GetPositionX()[x];</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>         closestDiff = fabs(peak1-&gt;<a class="code hl_function" href="class_t_peak.html#ae71437ddab1693069e618edc7d1a3efa">GetCentroid</a>() - s.GetPositionX()[x]);</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>      <span class="keywordflow">if</span>(fabs(peak1-&gt;<a class="code hl_function" href="class_t_peak.html#ae71437ddab1693069e618edc7d1a3efa">GetCentroid</a>() - <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>.GetPositionX()[x]) &lt; closestDiff) {</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>         closestPeak = <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>.GetPositionX()[x];</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>         closestDiff = fabs(peak1-&gt;<a class="code hl_function" href="class_t_peak.html#ae71437ddab1693069e618edc7d1a3efa">GetCentroid</a>() - <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>.GetPositionX()[x]);</div>
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>      }</div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>   }</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
@@ -902,19 +902,19 @@ $(document).ready(function(){initNavTree('_t_gain_match_8cxx_source.html',''); i
 <div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span>                   ((peak2-&gt;GetXmax() * <a class="code hl_variable" href="class_t_gain_match.html#a00e9e9a3d71a8f1b4b4880830c64d3dd">fAlignCoeffs</a>[1] + <a class="code hl_variable" href="class_t_gain_match.html#a00e9e9a3d71a8f1b4b4880830c64d3dd">fAlignCoeffs</a>[0] - offset) / gain));</div>
 <div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span> </div>
 <div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span>   <span class="comment">// The gains won&#39;t be perfect, so we need to search for the peak within a range.</span></div>
-<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span>   TSpectrum s;</div>
+<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span>   TSpectrum <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>;</div>
 <div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span>   chargeHist-&gt;GetXaxis()-&gt;SetRangeUser(peak1-&gt;GetXmin() - 20., peak1-&gt;GetXmax() + 20.);</div>
-<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span>   Int_t nFound = s.Search(chargeHist, 2, <span class="stringliteral">&quot;&quot;</span>, 0.3);</div>
+<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span>   Int_t nFound = <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>.Search(chargeHist, 2, <span class="stringliteral">&quot;&quot;</span>, 0.3);</div>
 <div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span> </div>
 <div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> x = 0; x &lt; nFound; x++) {</div>
-<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>      std::cout&lt;&lt;s.GetPositionX()[x]&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>      std::cout&lt;&lt;<a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>.GetPositionX()[x]&lt;&lt;std::endl;</div>
 <div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>   }</div>
 <div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>   Double_t closestPeak = 0;</div>
 <div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>   Double_t closestDiff = 10000;</div>
 <div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> x = 0; x &lt; nFound; x++) {</div>
-<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>      <span class="keywordflow">if</span>(fabs(peak1-&gt;GetCentroid() - s.GetPositionX()[x]) &lt; closestDiff) {</div>
-<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>         closestPeak = s.GetPositionX()[x];</div>
-<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>         closestDiff = fabs(peak1-&gt;GetCentroid() - s.GetPositionX()[x]);</div>
+<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>      <span class="keywordflow">if</span>(fabs(peak1-&gt;GetCentroid() - <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>.GetPositionX()[x]) &lt; closestDiff) {</div>
+<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>         closestPeak = <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>.GetPositionX()[x];</div>
+<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>         closestDiff = fabs(peak1-&gt;GetCentroid() - <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>.GetPositionX()[x]);</div>
 <div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>      }</div>
 <div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>   }</div>
 <div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span> </div>
@@ -1002,8 +1002,9 @@ $(document).ready(function(){initNavTree('_t_gain_match_8cxx_source.html',''); i
 <div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>   <span class="keywordflow">return</span> par[0] * content;</div>
 <div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span>}</div>
 </div>
-<div class="ttc" id="a_g_cube_8cxx_html_a07239ddbd385de00a6c7e335d23f5247"><div class="ttname"><a href="_g_cube_8cxx.html#a07239ddbd385de00a6c7e335d23f5247">ClassImp</a></div><div class="ttdeci">ClassImp(GCube) GCube</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l00031">GCube.cxx:31</a></div></div>
+<div class="ttc" id="a_make_griffin_histograms_8cxx_html_ac9f781c0a1f40b02ce4266f1add0feb9"><div class="ttname"><a href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a></div><div class="ttdeci">const Double_t s</div><div class="ttdef"><b>Definition</b> <a href="_make_griffin_histograms_8cxx_source.html#l00015">MakeGriffinHistograms.cxx:15</a></div></div>
 <div class="ttc" id="a_t_gain_match_8h_html"><div class="ttname"><a href="_t_gain_match_8h.html">TGainMatch.h</a></div></div>
+<div class="ttc" id="a_t_griffin_angles_8cxx_html_af805acda91d6c5d558b18b0fc07255dc"><div class="ttname"><a href="_t_griffin_angles_8cxx.html#af805acda91d6c5d558b18b0fc07255dc">ClassImp</a></div><div class="ttdeci">ClassImp(TGriffinAngles) TGriffinAngles</div><div class="ttdef"><b>Definition</b> <a href="_t_griffin_angles_8cxx_source.html#l00005">TGriffinAngles.cxx:5</a></div></div>
 <div class="ttc" id="a_user_fill_obj_8h_html_a34079cedfcd0dcc6476bf9f1076e8cbd"><div class="ttname"><a href="_user_fill_obj_8h.html#a34079cedfcd0dcc6476bf9f1076e8cbd">mat</a></div><div class="ttdeci">TH2D * mat</div><div class="ttdef"><b>Definition</b> <a href="_user_fill_obj_8h_source.html#l00012">UserFillObj.h:12</a></div></div>
 <div class="ttc" id="a_user_fill_obj_8h_html_ac15e5a1de3bd77dc1ff2768e42dc9e8b"><div class="ttname"><a href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a></div><div class="ttdeci">TH1D * hist</div><div class="ttdef"><b>Definition</b> <a href="_user_fill_obj_8h_source.html#l00003">UserFillObj.h:3</a></div></div>
 <div class="ttc" id="aclass_t_cal_html"><div class="ttname"><a href="class_t_cal.html">TCal</a></div><div class="ttdef"><b>Definition</b> <a href="_t_cal_8h_source.html#l00044">TCal.h:44</a></div></div>
@@ -1056,7 +1057,7 @@ $(document).ready(function(){initNavTree('_t_gain_match_8cxx_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_4d17f409fb020449a7716dffae2b2761.html">TCal</a></li><li class="navelem"><a class="el" href="_t_gain_match_8cxx.html">TGainMatch.cxx</a></li>
-    <li class="footer">GRSISort () Reference Guide Generated on Tue May 14 2024 02:24:20.</li>
+    <li class="footer">GRSISort () Reference Guide Generated on Tue May 14 2024 16:16:11.</li>
   </ul>
 </div>
 </body>

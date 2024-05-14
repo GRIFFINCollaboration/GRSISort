@@ -1,0 +1,28 @@
+var class_t_eagle =
+[
+    [ "TEagle", "class_t_eagle.html#a30aaa96e2f7f8b494c08578f152c37f2", null ],
+    [ "~TEagle", "class_t_eagle.html#a5f75535ad3bb0c6499e2472b69d71c86", null ],
+    [ "TEagle", "class_t_eagle.html#aa29826eba1b57902fb59189d22993338", null ],
+    [ "AddFragment", "class_t_eagle.html#a934abf901da13679f026bb5578094b0c", null ],
+    [ "AddHit", "class_t_eagle.html#af83ad943618a30f7d1639675e18fc5b8", null ],
+    [ "BuildHits", "class_t_eagle.html#a6394eb99077e090bb79072438d8e6a80", null ],
+    [ "Clear", "class_t_eagle.html#a0cb5e6afaefc6cdf8fa67c3828169905", null ],
+    [ "ClearTransients", "class_t_eagle.html#a5157695811c23caccbc71ce62b9cacd0", null ],
+    [ "Copy", "class_t_eagle.html#ae3d2e430fd1e80b02df3b040bfa628f0", null ],
+    [ "GetEagleHit", "class_t_eagle.html#aad5ebdd1d5571847a0be5bb01650aa04", null ],
+    [ "GetHit", "class_t_eagle.html#abb7c88ad69c596f7c183a82a746e2542", null ],
+    [ "GetHitVector", "class_t_eagle.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
+    [ "GetMultiplicity", "class_t_eagle.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
+    [ "GetPinDiodeHit", "class_t_eagle.html#a711e4657d06cb362fec18abf1e7789ca", null ],
+    [ "GetPinDiodePosition", "class_t_eagle.html#ac6bd449d7f24c9d2a7b20e3a009dd0f4", null ],
+    [ "GetPosition", "class_t_eagle.html#ab70d8ea8150830443cefa7d560196205", null ],
+    [ "operator=", "class_t_eagle.html#a4f97f226cfe130d91786b4bd729bf961", null ],
+    [ "Print", "class_t_eagle.html#aefddaeacc6c9403594938dcac698e699", null ],
+    [ "Print", "class_t_eagle.html#a64c8b1abf7ad6acef184f9dc9cc96894", null ],
+    [ "fEventNumber", "class_t_eagle.html#accf3a898e27fe957ada03c6261739ff3", null ],
+    [ "fHits", "class_t_eagle.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ],
+    [ "fPinDiodeHits", "class_t_eagle.html#a2eb1c1adb79a5883a4d2502228a0279b", null ],
+    [ "fUsTime", "class_t_eagle.html#a022297049770be7015ee67c045203e3b", null ],
+    [ "gDetectorPosition", "class_t_eagle.html#ae28a59fb94ce1b119d81c2b5526f9e43", null ],
+    [ "gDiodePosition", "class_t_eagle.html#a87d91ac85b7d825584482c2fb93f8264", null ]
+];

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['info_5fmap_0',['info_map',['../class_t_g_r_s_i_sort_list.html#a30eaf76dfa74cab13630c147b7c0594e',1,'TGRSISortList']]]
+  ['calmap_0',['CalMap',['../class_t_cal_manager.html#aed46a4492f98dc9a1b0069cedc275e67',1,'TCalManager']]],
+  ['clientcoll_5ft_1',['ClientColl_t',['../class_t_parallel_file_merger.html#af61b902762ffe5864d12454a720f8b21',1,'TParallelFileMerger']]]
 ];

@@ -107,8 +107,8 @@ $(document).ready(function(){initNavTree('_efficiency_helper_8hh_source.html',''
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="_t_g_r_s_i_helper_8h.html">TGRSIHelper.h</a>&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;TGriffin.h&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;TGriffinBgo.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="_t_griffin_8h.html">TGriffin.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="_t_griffin_bgo_8h.html">TGriffinBgo.h</a>&quot;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">// This is a custom action which respects a well defined interface. It supports parallelism,</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">// in the sense that it behaves correctly if implicit multi threading is enabled.</span></div>
@@ -129,13 +129,13 @@ $(document).ready(function(){initNavTree('_efficiency_helper_8hh_source.html',''
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="foldopen" id="foldopen00023" data-start="{" data-end="}">
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="class_efficiency_helper.html#a8bff3d4f537ae16f80f0ead74df45719">   23</a></span>   ROOT::RDF::RResultPtr&lt;std::map&lt;std::string, TList&gt;&gt; <a class="code hl_function" href="class_efficiency_helper.html#a8bff3d4f537ae16f80f0ead74df45719">Book</a>(ROOT::RDataFrame* d)<span class="keyword"> override </span>{</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      <span class="keywordflow">return</span> d-&gt;Book&lt;TGriffin, TGriffinBgo&gt;(std::move(*<span class="keyword">this</span>), {<span class="stringliteral">&quot;TGriffin&quot;</span>, <span class="stringliteral">&quot;TGriffinBgo&quot;</span>});</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      <span class="keywordflow">return</span> d-&gt;Book&lt;<a class="code hl_class" href="class_t_griffin.html">TGriffin</a>, <a class="code hl_class" href="class_t_griffin_bgo.html">TGriffinBgo</a>&gt;(std::move(*<span class="keyword">this</span>), {<span class="stringliteral">&quot;TGriffin&quot;</span>, <span class="stringliteral">&quot;TGriffinBgo&quot;</span>});</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>   }</div>
 </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>   <span class="comment">// this function creates and books all histograms</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_efficiency_helper.html#a9453da0d40d3b9647a6ab29f50b94f38">CreateHistograms</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> slot) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>   <span class="comment">// this function gets called for every single event and fills the histograms</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_efficiency_helper.html#adce7bf65d1e5561eab29b6cb448a0c5a">Exec</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> slot, TGriffin&amp; grif, TGriffinBgo&amp; grifBgo);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_efficiency_helper.html#adce7bf65d1e5561eab29b6cb448a0c5a">Exec</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> slot, <a class="code hl_class" href="class_t_griffin.html">TGriffin</a>&amp; grif, <a class="code hl_class" href="class_t_griffin_bgo.html">TGriffinBgo</a>&amp; grifBgo);</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   <span class="comment">// this function is optional and is called after the output lists off all slots/workers have been merged</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_efficiency_helper.html#a83b164d029f8464c7dde651000869249">EndOfSort</a>(std::shared_ptr&lt;std::map&lt;std::string, TList&gt;&gt; list) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
@@ -155,6 +155,8 @@ $(document).ready(function(){initNavTree('_efficiency_helper_8hh_source.html',''
 <div class="ttc" id="a_efficiency_helper_8hh_html_a27be8731f98163f424ff2a52c0bb771b"><div class="ttname"><a href="_efficiency_helper_8hh.html#a27be8731f98163f424ff2a52c0bb771b">DestroyHelper</a></div><div class="ttdeci">void DestroyHelper(TGRSIHelper *helper)</div><div class="ttdef"><b>Definition</b> <a href="_efficiency_helper_8hh_source.html#l00042">EfficiencyHelper.hh:42</a></div></div>
 <div class="ttc" id="a_efficiency_helper_8hh_html_ad82307644b793d895a7a60e1e2b76f71"><div class="ttname"><a href="_efficiency_helper_8hh.html#ad82307644b793d895a7a60e1e2b76f71">CreateHelper</a></div><div class="ttdeci">EfficiencyHelper * CreateHelper(TList *list)</div><div class="ttdef"><b>Definition</b> <a href="_efficiency_helper_8hh_source.html#l00040">EfficiencyHelper.hh:40</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_helper_8h_html"><div class="ttname"><a href="_t_g_r_s_i_helper_8h.html">TGRSIHelper.h</a></div></div>
+<div class="ttc" id="a_t_griffin_8h_html"><div class="ttname"><a href="_t_griffin_8h.html">TGriffin.h</a></div></div>
+<div class="ttc" id="a_t_griffin_bgo_8h_html"><div class="ttname"><a href="_t_griffin_bgo_8h.html">TGriffinBgo.h</a></div></div>
 <div class="ttc" id="aclass_efficiency_helper_html"><div class="ttname"><a href="class_efficiency_helper.html">EfficiencyHelper</a></div><div class="ttdef"><b>Definition</b> <a href="_efficiency_helper_8hh_source.html#l00014">EfficiencyHelper.hh:14</a></div></div>
 <div class="ttc" id="aclass_efficiency_helper_html_a83b164d029f8464c7dde651000869249"><div class="ttname"><a href="class_efficiency_helper.html#a83b164d029f8464c7dde651000869249">EfficiencyHelper::EndOfSort</a></div><div class="ttdeci">void EndOfSort(std::shared_ptr&lt; std::map&lt; std::string, TList &gt; &gt; list) override</div><div class="ttdoc">This method gets called at the end of Finalize()</div><div class="ttdef"><b>Definition</b> <a href="_efficiency_helper_8cxx_source.html#l00152">EfficiencyHelper.cxx:152</a></div></div>
 <div class="ttc" id="aclass_efficiency_helper_html_a8bff3d4f537ae16f80f0ead74df45719"><div class="ttname"><a href="class_efficiency_helper.html#a8bff3d4f537ae16f80f0ead74df45719">EfficiencyHelper::Book</a></div><div class="ttdeci">ROOT::RDF::RResultPtr&lt; std::map&lt; std::string, TList &gt; &gt; Book(ROOT::RDataFrame *d) override</div><div class="ttdoc">This method will call the Book action on the provided dataframe.</div><div class="ttdef"><b>Definition</b> <a href="_efficiency_helper_8hh_source.html#l00023">EfficiencyHelper.hh:23</a></div></div>
@@ -165,6 +167,8 @@ $(document).ready(function(){initNavTree('_efficiency_helper_8hh_source.html',''
 <div class="ttc" id="aclass_t_g_r_s_i_helper_html"><div class="ttname"><a href="class_t_g_r_s_i_helper.html">TGRSIHelper</a></div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_helper_8h_source.html#l00029">TGRSIHelper.h:29</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_helper_html_a43b96b9c64dcb585762ce691e38814ac"><div class="ttname"><a href="class_t_g_r_s_i_helper.html#a43b96b9c64dcb585762ce691e38814ac">TGRSIHelper::Prefix</a></div><div class="ttdeci">std::string Prefix() const</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_helper_8h_source.html#l00080">TGRSIHelper.h:80</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_helper_html_ae5c188f3fc54bc1e7ee607421a46b678"><div class="ttname"><a href="class_t_g_r_s_i_helper.html#ae5c188f3fc54bc1e7ee607421a46b678">TGRSIHelper::Setup</a></div><div class="ttdeci">virtual void Setup()</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_helper_8cxx_source.html#l00078">TGRSIHelper.cxx:78</a></div></div>
+<div class="ttc" id="aclass_t_griffin_bgo_html"><div class="ttname"><a href="class_t_griffin_bgo.html">TGriffinBgo</a></div><div class="ttdef"><b>Definition</b> <a href="_t_griffin_bgo_8h_source.html#l00011">TGriffinBgo.h:11</a></div></div>
+<div class="ttc" id="aclass_t_griffin_html"><div class="ttname"><a href="class_t_griffin.html">TGriffin</a></div><div class="ttdef"><b>Definition</b> <a href="_t_griffin_8h_source.html#l00023">TGriffin.h:23</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -172,7 +176,7 @@ $(document).ready(function(){initNavTree('_efficiency_helper_8hh_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="_efficiency_helper_8hh.html">EfficiencyHelper.hh</a></li>
-    <li class="footer">GRSISort () Reference Guide Generated on Tue May 14 2024 02:24:20.</li>
+    <li class="footer">GRSISort () Reference Guide Generated on Tue May 14 2024 16:16:09.</li>
   </ul>
 </div>
 </body>

@@ -18,7 +18,7 @@ var dir_47358ee868e3aed1e59cf9c2ead119a2 =
     [ "GRootGuiFactory.cxx", "_g_root_gui_factory_8cxx.html", null ],
     [ "GSnapshot.cxx", "_g_snapshot_8cxx.html", null ],
     [ "GValue.cxx", "_g_value_8cxx.html", null ],
-    [ "LinkDef.h", "_g_r_o_o_t_2_link_def_8h.html", null ],
+    [ "LinkDef.h", "libraries_2_g_r_o_o_t_2_link_def_8h.html", null ],
     [ "TCalibrator.cxx", "_t_calibrator_8cxx.html", null ],
     [ "TTreeFillMutex.cxx", "_t_tree_fill_mutex_8cxx.html", "_t_tree_fill_mutex_8cxx" ]
 ];

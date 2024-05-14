@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['waveformpar_0',['WaveFormPar',['../struct_t_pulse_analyzer_1_1_wave_form_par.html',1,'TPulseAnalyzer']]],
-  ['waveformshapepar_1',['WaveFormShapePar',['../struct_t_channel_1_1_wave_form_shape_par.html',1,'TChannel']]]
+  ['variabletab_0',['VariableTab',['../classpygui_1_1variable__tab_1_1_variable_tab.html',1,'pygui::variable_tab']]],
+  ['virtualodb_1',['VirtualOdb',['../class_virtual_odb.html',1,'']]]
 ];

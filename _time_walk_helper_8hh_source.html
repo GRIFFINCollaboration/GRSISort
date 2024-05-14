@@ -106,8 +106,8 @@ $(document).ready(function(){initNavTree('_time_walk_helper_8hh_source.html','')
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define TimeWalkHelper_h</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">// Header file for the classes stored in the TTree if any.</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;TGriffin.h&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;TSceptar.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="_t_griffin_8h.html">TGriffin.h</a>&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="_t_sceptar_8h.html">TSceptar.h</a>&quot;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="_t_g_r_s_i_helper_8h.html">TGRSIHelper.h</a>&quot;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="foldopen" id="foldopen00009" data-start="{" data-end="};">
@@ -122,11 +122,11 @@ $(document).ready(function(){initNavTree('_time_walk_helper_8hh_source.html','')
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>   <span class="comment">//These functions are expected to exist</span></div>
 <div class="foldopen" id="foldopen00016" data-start="{" data-end="}">
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="class_time_walk_helper.html#ae831de4a785c33e55f889b2406ab8430">   16</a></span>   ROOT::RDF::RResultPtr&lt;std::map&lt;std::string, TList&gt;&gt; <a class="code hl_function" href="class_time_walk_helper.html#ae831de4a785c33e55f889b2406ab8430">Book</a>(ROOT::RDataFrame* d)<span class="keyword"> override </span>{</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      <span class="keywordflow">return</span> d-&gt;Book&lt;TGriffin, TSceptar&gt;(std::move(*<span class="keyword">this</span>), {<span class="stringliteral">&quot;TGriffin&quot;</span>, <span class="stringliteral">&quot;TSceptar&quot;</span>});</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      <span class="keywordflow">return</span> d-&gt;Book&lt;<a class="code hl_class" href="class_t_griffin.html">TGriffin</a>, <a class="code hl_class" href="class_t_sceptar.html">TSceptar</a>&gt;(std::move(*<span class="keyword">this</span>), {<span class="stringliteral">&quot;TGriffin&quot;</span>, <span class="stringliteral">&quot;TSceptar&quot;</span>});</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>   }</div>
 </div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_time_walk_helper.html#a1dcd4170e9ca35c8e0f583e6a1f1643d">CreateHistograms</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> slot);</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_time_walk_helper.html#a13d75eb98256ae11e6bd917de6eb10aa">Exec</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> slot, TGriffin&amp; grif, TSceptar&amp; scep);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_time_walk_helper.html#a13d75eb98256ae11e6bd917de6eb10aa">Exec</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> slot, <a class="code hl_class" href="class_t_griffin.html">TGriffin</a>&amp; grif, <a class="code hl_class" href="class_t_sceptar.html">TSceptar</a>&amp; scep);</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>};</div>
 </div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
@@ -137,11 +137,15 @@ $(document).ready(function(){initNavTree('_time_walk_helper_8hh_source.html','')
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_t_g_r_s_i_helper_8h_html"><div class="ttname"><a href="_t_g_r_s_i_helper_8h.html">TGRSIHelper.h</a></div></div>
+<div class="ttc" id="a_t_griffin_8h_html"><div class="ttname"><a href="_t_griffin_8h.html">TGriffin.h</a></div></div>
+<div class="ttc" id="a_t_sceptar_8h_html"><div class="ttname"><a href="_t_sceptar_8h.html">TSceptar.h</a></div></div>
 <div class="ttc" id="a_time_walk_helper_8hh_html_a27be8731f98163f424ff2a52c0bb771b"><div class="ttname"><a href="_time_walk_helper_8hh.html#a27be8731f98163f424ff2a52c0bb771b">DestroyHelper</a></div><div class="ttdeci">void DestroyHelper(TGRSIHelper *helper)</div><div class="ttdef"><b>Definition</b> <a href="_time_walk_helper_8hh_source.html#l00026">TimeWalkHelper.hh:26</a></div></div>
 <div class="ttc" id="a_time_walk_helper_8hh_html_a7f541043f799756a783571f354a83249"><div class="ttname"><a href="_time_walk_helper_8hh.html#a7f541043f799756a783571f354a83249">CreateHelper</a></div><div class="ttdeci">TimeWalkHelper * CreateHelper(TList *list)</div><div class="ttdef"><b>Definition</b> <a href="_time_walk_helper_8hh_source.html#l00024">TimeWalkHelper.hh:24</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_helper_html"><div class="ttname"><a href="class_t_g_r_s_i_helper.html">TGRSIHelper</a></div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_helper_8h_source.html#l00029">TGRSIHelper.h:29</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_helper_html_a43b96b9c64dcb585762ce691e38814ac"><div class="ttname"><a href="class_t_g_r_s_i_helper.html#a43b96b9c64dcb585762ce691e38814ac">TGRSIHelper::Prefix</a></div><div class="ttdeci">std::string Prefix() const</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_helper_8h_source.html#l00080">TGRSIHelper.h:80</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_helper_html_ae5c188f3fc54bc1e7ee607421a46b678"><div class="ttname"><a href="class_t_g_r_s_i_helper.html#ae5c188f3fc54bc1e7ee607421a46b678">TGRSIHelper::Setup</a></div><div class="ttdeci">virtual void Setup()</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_helper_8cxx_source.html#l00078">TGRSIHelper.cxx:78</a></div></div>
+<div class="ttc" id="aclass_t_griffin_html"><div class="ttname"><a href="class_t_griffin.html">TGriffin</a></div><div class="ttdef"><b>Definition</b> <a href="_t_griffin_8h_source.html#l00023">TGriffin.h:23</a></div></div>
+<div class="ttc" id="aclass_t_sceptar_html"><div class="ttname"><a href="class_t_sceptar.html">TSceptar</a></div><div class="ttdef"><b>Definition</b> <a href="_t_sceptar_8h_source.html#l00027">TSceptar.h:27</a></div></div>
 <div class="ttc" id="aclass_time_walk_helper_html"><div class="ttname"><a href="class_time_walk_helper.html">TimeWalkHelper</a></div><div class="ttdef"><b>Definition</b> <a href="_time_walk_helper_8hh_source.html#l00009">TimeWalkHelper.hh:9</a></div></div>
 <div class="ttc" id="aclass_time_walk_helper_html_a11499e49023f480a13c0949fe42a96f6"><div class="ttname"><a href="class_time_walk_helper.html#a11499e49023f480a13c0949fe42a96f6">TimeWalkHelper::TimeWalkHelper</a></div><div class="ttdeci">TimeWalkHelper(TList *list)</div><div class="ttdef"><b>Definition</b> <a href="_time_walk_helper_8hh_source.html#l00011">TimeWalkHelper.hh:11</a></div></div>
 <div class="ttc" id="aclass_time_walk_helper_html_a13d75eb98256ae11e6bd917de6eb10aa"><div class="ttname"><a href="class_time_walk_helper.html#a13d75eb98256ae11e6bd917de6eb10aa">TimeWalkHelper::Exec</a></div><div class="ttdeci">void Exec(unsigned int slot, TGriffin &amp;grif, TSceptar &amp;scep)</div><div class="ttdef"><b>Definition</b> <a href="_time_walk_helper_8cxx_source.html#l00055">TimeWalkHelper.cxx:55</a></div></div>
@@ -154,7 +158,7 @@ $(document).ready(function(){initNavTree('_time_walk_helper_8hh_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="_time_walk_helper_8hh.html">TimeWalkHelper.hh</a></li>
-    <li class="footer">GRSISort () Reference Guide Generated on Tue May 14 2024 02:24:20.</li>
+    <li class="footer">GRSISort () Reference Guide Generated on Tue May 14 2024 16:16:09.</li>
   </ul>
 </div>
 </body>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pi_0',['PI',['../_g_root_functions_8cxx.html#a598a3330b3c21701223ee0ca14316eca',1,'GRootFunctions.cxx']]]
+  ['num_5fsis_5fchan_0',['NUM_SIS_CHAN',['../_globals_8h.html#a7cbe25716a824e71292cdfdd04121030',1,'Globals.h']]]
 ];

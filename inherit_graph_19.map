@@ -1,3 +1,23 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$struct_t_calibrator_1_1_peak.html" title=" " alt="" coords="5,5,126,31"/>
+<area shape="rect" id="Node000000" href="$class_stoppable_thread.html" title=" " alt="" coords="5,228,125,254"/>
+<area shape="rect" id="Node000001" href="$class_t_analysis_hist_loop.html" title=" " alt="" coords="180,5,312,31"/>
+<area shape="poly" id="edge178_Node000000_Node000001" title=" " alt="" coords="71,212,85,174,105,128,134,81,171,40,188,29,191,34,174,44,138,84,110,130,90,176,76,214"/>
+<area shape="rect" id="Node000002" href="$class_t_analysis_write_loop.html" title=" " alt="" coords="177,55,315,80"/>
+<area shape="poly" id="edge179_Node000000_Node000002" title=" " alt="" coords="76,213,113,151,140,118,171,89,190,79,193,83,174,94,144,122,118,154,81,215"/>
+<area shape="rect" id="Node000003" href="$class_t_data_loop.html" title=" " alt="" coords="203,104,289,130"/>
+<area shape="poly" id="edge180_Node000000_Node000003" title=" " alt="" coords="85,214,123,176,171,139,201,125,204,130,174,143,126,180,89,218"/>
+<area shape="rect" id="Node000004" href="$class_t_det_building_loop.html" title=" " alt="" coords="184,153,308,179"/>
+<area shape="poly" id="edge181_Node000000_Node000004" title=" " alt="" coords="105,218,172,188,200,177,202,182,174,193,107,223"/>
+<area shape="rect" id="Node000005" href="$class_t_event_building_loop.html" title=" " alt="" coords="177,203,315,228"/>
+<area shape="poly" id="edge182_Node000000_Node000005" title=" " alt="" coords="140,228,177,222,177,228,141,233"/>
+<area shape="rect" id="Node000006" href="$class_t_frag_hist_loop.html" title=" " alt="" coords="192,252,300,278"/>
+<area shape="poly" id="edge183_Node000000_Node000006" title=" " alt="" coords="140,248,191,255,191,260,140,253"/>
+<area shape="rect" id="Node000007" href="$class_t_frag_write_loop.html" title=" " alt="" coords="189,301,303,327"/>
+<area shape="poly" id="edge184_Node000000_Node000007" title=" " alt="" coords="108,258,174,288,203,298,201,303,172,293,105,263"/>
+<area shape="rect" id="Node000008" href="$class_t_fragment_chain_loop.html" title=" " alt="" coords="173,351,319,376"/>
+<area shape="poly" id="edge185_Node000000_Node000008" title=" " alt="" coords="89,264,127,301,174,337,196,348,194,352,171,342,123,305,85,267"/>
+<area shape="rect" id="Node000009" href="$class_t_terminal_loop.html" title=" " alt="" coords="177,400,315,426"/>
+<area shape="poly" id="edge186_Node000000_Node000009" title=" " alt="" coords="81,266,118,327,144,359,174,387,193,397,190,402,171,391,140,363,113,330,77,269"/>
+<area shape="rect" id="Node000010" href="$class_t_unpacking_loop.html" title=" " alt="" coords="186,449,306,475"/>
+<area shape="poly" id="edge187_Node000000_Node000010" title=" " alt="" coords="76,267,90,305,110,351,138,397,174,436,191,447,188,451,171,440,134,400,105,353,85,307,71,269"/>
 </map>

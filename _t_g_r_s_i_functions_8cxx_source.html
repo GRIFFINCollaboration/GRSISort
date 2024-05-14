@@ -159,7 +159,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_functions_8cxx_source.html'
 <div class="foldopen" id="foldopen00053" data-start="{" data-end="}">
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="namespace_t_g_r_s_i_functions.html#a67ce9e340bca494d27cb6f5b100362e3">   53</a></span>Double_t <a class="code hl_function" href="namespace_t_g_r_s_i_functions.html#a67ce9e340bca494d27cb6f5b100362e3">TGRSIFunctions::CsIFitFunction</a>(Double_t* i, Double_t* p)</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>{</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>   Double_t x, s, e;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>   Double_t x, <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>, e;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>   <span class="comment">/*</span></div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">      p[0]-p[4] are t0, tRC, tF, TS, TGamma</span></div>
@@ -171,11 +171,11 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_functions_8cxx_source.html'
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>   <span class="keywordflow">if</span>(x &lt;= 0) {</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      <span class="keywordflow">return</span> p[5];</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>   }</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>   s = p[5];</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>   s += p[6] * (1 - exp(-x / p[2])) * e;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>   s += p[7] * (1 - exp(-x / p[3])) * e;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>   s += p[8] * (1 - exp(-x / p[4])) * e;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>   <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>   <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a> = p[5];</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>   <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a> += p[6] * (1 - exp(-x / p[2])) * e;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>   <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a> += p[7] * (1 - exp(-x / p[3])) * e;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>   <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a> += p[8] * (1 - exp(-x / p[4])) * e;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>   <span class="keywordflow">return</span> <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a>;</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>}</div>
 </div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
@@ -713,6 +713,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_functions_8cxx_source.html'
 <div class="ttc" id="a_globals_8h_html_a8d23feea868a983c8c2b661e1e16972f"><div class="ttname"><a href="_globals_8h.html#a8d23feea868a983c8c2b661e1e16972f">RED</a></div><div class="ttdeci">#define RED</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00008">Globals.h:8</a></div></div>
 <div class="ttc" id="a_globals_8h_html_acfbc006ea433ad708fdee3e82996e721"><div class="ttname"><a href="_globals_8h.html#acfbc006ea433ad708fdee3e82996e721">GREEN</a></div><div class="ttdeci">#define GREEN</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00007">Globals.h:7</a></div></div>
 <div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00004">Globals.h:4</a></div></div>
+<div class="ttc" id="a_make_griffin_histograms_8cxx_html_ac9f781c0a1f40b02ce4266f1add0feb9"><div class="ttname"><a href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a></div><div class="ttdeci">const Double_t s</div><div class="ttdef"><b>Definition</b> <a href="_make_griffin_histograms_8cxx_source.html#l00015">MakeGriffinHistograms.cxx:15</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_functions_8cxx_html_ac20396c2b6faec9330d37cc87a09bdb0"><div class="ttname"><a href="_t_g_r_s_i_functions_8cxx.html#ac20396c2b6faec9330d37cc87a09bdb0">NamespaceImp</a></div><div class="ttdeci">NamespaceImp(TGRSIFunctions) bool TGRSIFunctions</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_functions_8cxx_source.html#l00004">TGRSIFunctions.cxx:4</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_functions_8h_html"><div class="ttname"><a href="_t_g_r_s_i_functions_8h.html">TGRSIFunctions.h</a></div></div>
 <div class="ttc" id="anamespace_t_g_r_s_i_functions_html"><div class="ttname"><a href="namespace_t_g_r_s_i_functions.html">TGRSIFunctions</a></div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_functions_8h_source.html#l00024">TGRSIFunctions.h:24</a></div></div>
@@ -753,7 +754,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_functions_8cxx_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_c27fb4ff404115d281d3c6aa730dcb72.html">TGRSIFit</a></li><li class="navelem"><a class="el" href="_t_g_r_s_i_functions_8cxx.html">TGRSIFunctions.cxx</a></li>
-    <li class="footer">GRSISort () Reference Guide Generated on Tue May 14 2024 02:24:20.</li>
+    <li class="footer">GRSISort () Reference Guide Generated on Tue May 14 2024 16:16:11.</li>
   </ul>
 </div>
 </body>
