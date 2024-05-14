@@ -2,6 +2,12 @@
 
 /* @group Heading Levels */
 
+@media (prefers-color-scheme: dark) {
+  html:not(.dark-mode) {
+	  --title-background-color: #005baa;
+}
+}
+
 /* not used? */
 div.multicol {
 	-moz-column-gap: 1em;
@@ -157,73 +163,14 @@ dl
 }
 
 /* dl.note, dl.warning, dl.attention, dl.pre, dl.post, dl.invariant, dl.deprecated, dl.todo, dl.test, dl.bug */
-
-#projectlogo
-{
-	/*text-align: center;*/
-	vertical-align: top;
-	float:left;
-	height:151px;
-	width:118px;
-	background-color:#005baa;
-}
  
-#projectlogo img
-{ 
-	white-space:nowrap;
-}
- 
-#grsilogo
-{
-	vertical-align: top;
-	border-collapse: separate;
-	float:right;
-	height:151px;
-	width:233px;
-	background-color:#005baa;
-}
- 
-#grsilogo img
-{ 
-	border: 0px none;
-	white-space:nowrap;
-}
-
-#projecttitle
-{
-	display: flex;
-	flex-direction: column;
-	flex-basis: auto;
-	flex-grow: 1;
-	min-width: 430px;
-}
  
 #projectname
 {
-	font: 300% Tahoma, Arial,sans-serif;
-	margin: 0px;
-	padding: 2px 0px;
-	color:white;
-	background-color:#005baa;
+	font-size: 300%;
+	color: white;
+	padding: 20px 0px;
 	text-align:center;
-}
-    
-#projectauthor
-{
-	flex: 1;
-	font: 150% Tahoma, Arial,sans-serif;
-	margin: 0px;
-	padding: 0px;
-	color:white;
-	background-color:#005baa;
-	text-align:center;
-}
-
-#titlearea
-{
-	display: flex;
-	flex-direction: row;
-	height:151px;
 }
 
 div.zoom
