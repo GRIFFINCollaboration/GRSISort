@@ -23,17 +23,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: "Describe tags"
-        run: git describe --tags
-
       - name: "Describe tags abbrev"
         run: git describe --abbrev=0 --tags
 
-      - name: "Describe tags abbrev match"
-        run: git describe --abbrev=0 --match \"v*\" --tags
-
       - name: Set version
-        run: echo "DOXYGEN_GRSISORT_VERSION=${{ steps.gettag.outputs.tag }}" >> $GITHUB_ENV
+        run: echo "DOXYGEN_GRSISORT_VERSION=$(git describe --abbrev=0 --tags)" >> $GITHUB_ENV
 
       - name: test
         run: echo $DOXYGEN_GRSISORT_VERSION
