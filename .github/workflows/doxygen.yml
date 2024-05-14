@@ -20,13 +20,14 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-tags: true
 
       - name: "Get tag"
-        id: gettag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
-        with:
-          fallback: 1.0.0.0
-          workingdirectory: /home/runner/work/GRSISort/GRSISort
+        run: |
+          git describe --tags
+          git describe --abbrev=0 --tags
+          git describe --abbrev=0 --match \"v*\" --tags
 
       - name: Set version
         run: echo "DOXYGEN_GRSISORT_VERSION=${{ steps.gettag.outputs.tag }}" >> $GITHUB_ENV
