@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set version
-        run: echo "DOXYGEN_GRSISORT_VERSION=$(util/grsi-config --version)" >> $GITHUB_ENV
+        run: echo "DOXYGEN_GRSISORT_VERSION=$(git describe --abbrev=0 --match \"v*\" --tags)" >> $GITHUB_ENV
 
       - name: test
         run: echo $DOXYGEN_GRSISORT_VERSION
