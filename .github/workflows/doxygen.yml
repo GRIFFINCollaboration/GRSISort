@@ -26,6 +26,7 @@ jobs:
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
           fallback: 1.0.0.0
+          workingdirectory: /home/runner/work/GRSISort/GRSISort
 
       - name: Set version
         run: echo "DOXYGEN_GRSISORT_VERSION=${{ steps.gettag.outputs.tag }}" >> $GITHUB_ENV
