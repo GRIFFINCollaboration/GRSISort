@@ -21,6 +21,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+    # Check out the data libraries
+      - name: Checkout GRSIData
+        uses: actions/checkout@v4
+        with:
+          repository: GRIFFINCollaboration/GRSIData
+
+      - name: Checkout ILLData
+        uses: actions/checkout@v4
+        with:
+          repository: UoG-Nuclear-Physics-Group/ILLData
+
+      - name: Checkout iThembaData
+        uses: actions/checkout@v4
+        with:
+          repository: UoG-Nuclear-Physics-Group/iThembaData
+
+      - name: Checkout HILData
+        uses: actions/checkout@v4
+        with:
+          repository: UoG-Nuclear-Physics-Group/HILData
+
       - name: Create footer
         run: |
           doxygen/makehtmlfooter.sh > doxygen/footer.html
