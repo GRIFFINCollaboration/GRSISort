@@ -107,17 +107,23 @@ $(document).ready(function(){initNavTree('class_t_detector_hit.html',''); initRe
   <div class="headertitle"><div class="title">TDetectorHit Class Reference<div class="ingroups"><a class="el" href="group___detectors.html">Detectors</a></div></div></div>
 </div><!--header-->
 <div class="contents">
-<a name="details" id="details"></a><h2 class="groupheader"> </h2>
-<div class="textblock"><p>This is class that contains the basic info about detector hits:</p><ol type="1">
-<li>An address. The whoami for the detector. This is the value used by TChannel::GetChannel(address);</li>
-<li>An "Energy value." What this is left the parent class, but it is going to return a double.</li>
-<li>A Time value. This should be a time value common for detectors (derived from the timestamp) Units matter here, I am adobting the ns as the standard.</li>
-<li>A Position. Tvector3s are nice, they make doing geometery trival. Each hit needs one to determine where it is in space, the actual memory of the thing will be stored here. *** This is not actually needed here unless we start do waveform analysis to *** better determine where the hit is.</li>
-<li>The waveform. Since we are dealing with digital daqs, a waveform is a fairly common thing to have. It may not always be present, put it is echoed enough that the storage for it belongs here. </li>
-</ol>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00048">48</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
-</div><table class="memberdecls">
+<p><code>#include &lt;<a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>&gt;</code></p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for TDetectorHit:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_detector_hit__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for TDetectorHit:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_detector_hit__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:ada323f08a38cd73186465ecb4f9b72eb" id="r_ada323f08a38cd73186465ecb4f9b72eb"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_detector_hit.html#ada323f08a38cd73186465ecb4f9b72eb">EBitFlag</a> { <br />
@@ -328,23 +334,17 @@ Friends</h2></td></tr>
 <tr class="memitem:afb09e0e74adfbe8b8256e501972d5ef2" id="r_afb09e0e74adfbe8b8256e501972d5ef2"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_detector_hit.html#afb09e0e74adfbe8b8256e501972d5ef2">operator&lt;&lt;</a> (std::ostream &amp;out, const <a class="el" href="class_t_detector_hit.html">TDetectorHit</a> &amp;hit)</td></tr>
 <tr class="separator:afb09e0e74adfbe8b8256e501972d5ef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This is class that contains the basic info about detector hits:</p><ol type="1">
+<li>An address. The whoami for the detector. This is the value used by TChannel::GetChannel(address);</li>
+<li>An "Energy value." What this is left the parent class, but it is going to return a double.</li>
+<li>A Time value. This should be a time value common for detectors (derived from the timestamp) Units matter here, I am adobting the ns as the standard.</li>
+<li>A Position. Tvector3s are nice, they make doing geometery trival. Each hit needs one to determine where it is in space, the actual memory of the thing will be stored here. *** This is not actually needed here unless we start do waveform analysis to *** better determine where the hit is.</li>
+<li>The waveform. Since we are dealing with digital daqs, a waveform is a fairly common thing to have. It may not always be present, put it is echoed enough that the storage for it belongs here. </li>
+</ol>
 
-<p><code>#include &lt;<a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>&gt;</code></p>
-<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for TDetectorHit:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_detector_hit__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for TDetectorHit:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_detector_hit__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<h2 class="groupheader">Member Enumeration Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00048">48</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="ada323f08a38cd73186465ecb4f9b72eb" name="ada323f08a38cd73186465ecb4f9b72eb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ada323f08a38cd73186465ecb4f9b72eb">&#9670;&#160;</a></span>EBitFlag</h2>
 
@@ -2797,7 +2797,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_detector_hit.html">TDetectorHit</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Wed May 15 2024 15:22:16.</li>
+    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Wed May 15 2024 18:08:35.</li>
   </ul>
 </div>
 </body>

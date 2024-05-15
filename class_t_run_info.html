@@ -104,30 +104,23 @@ $(document).ready(function(){initNavTree('class_t_run_info.html',''); initResiza
   <div class="headertitle"><div class="title">TRunInfo Class Reference<div class="ingroups"><a class="el" href="group___sorting.html">Sorting</a></div></div></div>
 </div><!--header-->
 <div class="contents">
-<a name="details" id="details"></a><h2 class="groupheader"> </h2>
-<div class="textblock"><p>This Class is designed to store and run dependent information. It is used to store run numbers, existence of detector systems, reconstruction windows, etc. The <a class="el" href="class_t_run_info.html">TRunInfo</a> is written alongside both the fragment and analysis trees.</p>
-<p><a class="el" href="class_t_run_info.html">TRunInfo</a> designed to be made as the FragmentTree is created. Right now, it simple remembers the run and subrunnumber and sets which systems are present in the odb.</p>
-<p>Due to some root quarkiness, I have done something a bit strange. The info is written ok at the end of the fragment tree process. </p><div class="fragment"><div class="line">root [1] <a class="code hl_class" href="class_t_run_info.html">TRunInfo</a> *info = (<a class="code hl_class" href="class_t_run_info.html">TRunInfo</a>*)_file0-&gt;<a class="code hl_function" href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">Get</a>(<span class="stringliteral">&quot;TRunInfo&quot;</span>)</div>
-<div class="line">root [2] <a class="code hl_function" href="class_t_run_info.html#acfb8adbd578a07b5a5c7b2bc8d086d47">TRunInfo::ReadInfoFromFile</a>(info);</div>
-<div class="line">root [3] info-&gt;Print()</div>
-<div class="line">  <a class="code hl_class" href="class_t_run_info.html">TRunInfo</a> Status:</div>
-<div class="line">  <a class="code hl_function" href="class_t_run_info.html#a58ad08b4a74a64a1af8a7adab027def3">RunNumber</a>:    29038</div>
-<div class="line">  <a class="code hl_function" href="class_t_run_info.html#a3cd9ba734843cc6185730aa31db236d3">SubRunNumber</a>: 000</div>
-<div class="line">  TIGRESS:      <span class="keyword">true</span></div>
-<div class="line">  SHARC:        <span class="keyword">true</span></div>
-<div class="line">  GRIFFIN:      <span class="keyword">false</span></div>
-<div class="line">  SCEPTAR:      <span class="keyword">false</span></div>
-<div class="line">  =====================</div>
-<div class="line">root [4]</div>
-<div class="ttc" id="aclass_t_run_info_html"><div class="ttname"><a href="class_t_run_info.html">TRunInfo</a></div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00056">TRunInfo.h:56</a></div></div>
-<div class="ttc" id="aclass_t_run_info_html_a3cd9ba734843cc6185730aa31db236d3"><div class="ttname"><a href="class_t_run_info.html#a3cd9ba734843cc6185730aa31db236d3">TRunInfo::SubRunNumber</a></div><div class="ttdeci">static int SubRunNumber()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00120">TRunInfo.h:120</a></div></div>
-<div class="ttc" id="aclass_t_run_info_html_a58ad08b4a74a64a1af8a7adab027def3"><div class="ttname"><a href="class_t_run_info.html#a58ad08b4a74a64a1af8a7adab027def3">TRunInfo::RunNumber</a></div><div class="ttdeci">static int RunNumber()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00119">TRunInfo.h:119</a></div></div>
-<div class="ttc" id="aclass_t_run_info_html_acfb8adbd578a07b5a5c7b2bc8d086d47"><div class="ttname"><a href="class_t_run_info.html#acfb8adbd578a07b5a5c7b2bc8d086d47">TRunInfo::ReadInfoFromFile</a></div><div class="ttdeci">static Bool_t ReadInfoFromFile(TFile *tempf=nullptr)</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8cxx_source.html#l00024">TRunInfo.cxx:24</a></div></div>
-<div class="ttc" id="aclass_t_singleton_html_a58e2a8e03fa6a7c20638044626add93a"><div class="ttname"><a href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TSingleton::Get</a></div><div class="ttdeci">static T * Get(bool verbose=false)</div><div class="ttdef"><b>Definition</b> <a href="_t_singleton_8h_source.html#l00034">TSingleton.h:34</a></div></div>
-</div><!-- fragment --><dl class="section author"><dt>Author</dt><dd>P.C. Bender, <a href="#" onclick="location.href='mai'+'lto:'+'pcb'+'en'+'d@g'+'ma'+'il.'+'co'+'m'; return false;">pcben<span class="obfuscator">.nosp@m.</span>d@gm<span class="obfuscator">.nosp@m.</span>ail.c<span class="obfuscator">.nosp@m.</span>om</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00056">56</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
-</div><table class="memberdecls">
+<p><code>#include &lt;<a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>&gt;</code></p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for TRunInfo:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_run_info__inherit__graph.svg" width="170" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for TRunInfo:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_run_info__coll__graph.svg" width="100%" height="575"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aeb8bf11a7cd1691381d02e9fdc569197" id="r_aeb8bf11a7cd1691381d02e9fdc569197"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_run_info.html#aeb8bf11a7cd1691381d02e9fdc569197">TRunInfo</a> ()</td></tr>
@@ -347,23 +340,30 @@ Friends</h2></td></tr>
 <tr class="memitem:a8b5387beb49b6f19577f940168657cd5" id="r_a8b5387beb49b6f19577f940168657cd5"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_run_info.html#a8b5387beb49b6f19577f940168657cd5">TSingleton&lt; TRunInfo &gt;</a></td></tr>
 <tr class="separator:a8b5387beb49b6f19577f940168657cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This Class is designed to store and run dependent information. It is used to store run numbers, existence of detector systems, reconstruction windows, etc. The <a class="el" href="class_t_run_info.html">TRunInfo</a> is written alongside both the fragment and analysis trees.</p>
+<p><a class="el" href="class_t_run_info.html">TRunInfo</a> designed to be made as the FragmentTree is created. Right now, it simple remembers the run and subrunnumber and sets which systems are present in the odb.</p>
+<p>Due to some root quarkiness, I have done something a bit strange. The info is written ok at the end of the fragment tree process. </p><div class="fragment"><div class="line">root [1] <a class="code hl_class" href="class_t_run_info.html">TRunInfo</a> *info = (<a class="code hl_class" href="class_t_run_info.html">TRunInfo</a>*)_file0-&gt;<a class="code hl_function" href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">Get</a>(<span class="stringliteral">&quot;TRunInfo&quot;</span>)</div>
+<div class="line">root [2] <a class="code hl_function" href="class_t_run_info.html#acfb8adbd578a07b5a5c7b2bc8d086d47">TRunInfo::ReadInfoFromFile</a>(info);</div>
+<div class="line">root [3] info-&gt;Print()</div>
+<div class="line">  <a class="code hl_class" href="class_t_run_info.html">TRunInfo</a> Status:</div>
+<div class="line">  <a class="code hl_function" href="class_t_run_info.html#a58ad08b4a74a64a1af8a7adab027def3">RunNumber</a>:    29038</div>
+<div class="line">  <a class="code hl_function" href="class_t_run_info.html#a3cd9ba734843cc6185730aa31db236d3">SubRunNumber</a>: 000</div>
+<div class="line">  TIGRESS:      <span class="keyword">true</span></div>
+<div class="line">  SHARC:        <span class="keyword">true</span></div>
+<div class="line">  GRIFFIN:      <span class="keyword">false</span></div>
+<div class="line">  SCEPTAR:      <span class="keyword">false</span></div>
+<div class="line">  =====================</div>
+<div class="line">root [4]</div>
+<div class="ttc" id="aclass_t_run_info_html"><div class="ttname"><a href="class_t_run_info.html">TRunInfo</a></div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00056">TRunInfo.h:56</a></div></div>
+<div class="ttc" id="aclass_t_run_info_html_a3cd9ba734843cc6185730aa31db236d3"><div class="ttname"><a href="class_t_run_info.html#a3cd9ba734843cc6185730aa31db236d3">TRunInfo::SubRunNumber</a></div><div class="ttdeci">static int SubRunNumber()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00120">TRunInfo.h:120</a></div></div>
+<div class="ttc" id="aclass_t_run_info_html_a58ad08b4a74a64a1af8a7adab027def3"><div class="ttname"><a href="class_t_run_info.html#a58ad08b4a74a64a1af8a7adab027def3">TRunInfo::RunNumber</a></div><div class="ttdeci">static int RunNumber()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00119">TRunInfo.h:119</a></div></div>
+<div class="ttc" id="aclass_t_run_info_html_acfb8adbd578a07b5a5c7b2bc8d086d47"><div class="ttname"><a href="class_t_run_info.html#acfb8adbd578a07b5a5c7b2bc8d086d47">TRunInfo::ReadInfoFromFile</a></div><div class="ttdeci">static Bool_t ReadInfoFromFile(TFile *tempf=nullptr)</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8cxx_source.html#l00024">TRunInfo.cxx:24</a></div></div>
+<div class="ttc" id="aclass_t_singleton_html_a58e2a8e03fa6a7c20638044626add93a"><div class="ttname"><a href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TSingleton::Get</a></div><div class="ttdeci">static T * Get(bool verbose=false)</div><div class="ttdef"><b>Definition</b> <a href="_t_singleton_8h_source.html#l00034">TSingleton.h:34</a></div></div>
+</div><!-- fragment --><dl class="section author"><dt>Author</dt><dd>P.C. Bender, <a href="#" onclick="location.href='mai'+'lto:'+'pcb'+'en'+'d@g'+'ma'+'il.'+'co'+'m'; return false;">pcben<span class="obfuscator">.nosp@m.</span>d@gm<span class="obfuscator">.nosp@m.</span>ail.c<span class="obfuscator">.nosp@m.</span>om</a> </dd></dl>
 
-<p><code>#include &lt;<a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>&gt;</code></p>
-<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for TRunInfo:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_run_info__inherit__graph.svg" width="170" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for TRunInfo:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_run_info__coll__graph.svg" width="100%" height="575"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00056">56</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac207977e50a7efb63e50611e52620bcf" name="ac207977e50a7efb63e50611e52620bcf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac207977e50a7efb63e50611e52620bcf">&#9670;&#160;</a></span>~TRunInfo()</h2>
 
@@ -3332,7 +3332,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_run_info.html">TRunInfo</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Wed May 15 2024 15:22:19.</li>
+    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Wed May 15 2024 18:08:37.</li>
   </ul>
 </div>
 </body>
