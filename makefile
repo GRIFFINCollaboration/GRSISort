@@ -1,4 +1,4 @@
-.PHONY: clean all extras docs doxygen grsirc complete parsers GRSIData ILLData iThembaData HILData
+.PHONY: clean all extras docs grsirc complete parsers GRSIData ILLData iThembaData HILData
 .SECONDARY:
 .SECONDEXPANSION:
 
@@ -142,11 +142,6 @@ all: include/GVersion.h grsirc $(EXECUTABLES) $(LIBRARY_OUTPUT) lib/libGRSI.so c
 	@printf "$(OK_COLOR)Compilation successful, $(WARN_COLOR)woohoo!$(NO_COLOR)\n"
 
 test: bin/test-main
-
-docs: doxygen
-
-doxygen:
-	$(MAKE) -C $@
 
 bin/grsisort: $(MAIN_O_FILES) | $(LIBRARY_OUTPUT) bin include/GVersion.h
 	$(call run_and_test,$(CPP) $^ -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
