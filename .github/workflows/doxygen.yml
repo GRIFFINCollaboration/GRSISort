@@ -23,14 +23,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: "Describe tags abbrev"
-        run: git describe --abbrev=0 --tags
-
       - name: Set version
         run: echo "DOXYGEN_GRSISORT_VERSION=$(git describe --abbrev=0 --tags)" >> $GITHUB_ENV
-
-      - name: test
-        run: echo $DOXYGEN_GRSISORT_VERSION
 
     # Check out the data libraries
       - name: Checkout GRSIData
@@ -38,12 +32,6 @@ jobs:
         with:
           repository: GRIFFINCollaboration/GRSIData
           path: GRSIData
-
-      - name: List result
-        run: |
-          ls -lh 
-          pwd
-        shell: bash
 
       - name: Checkout ILLData
         uses: actions/checkout@v4
@@ -63,12 +51,6 @@ jobs:
           repository: UoG-Nuclear-Physics-Group/HILData
           path: HILData
 
-      - name: List result
-        run: |
-          ls -lh 
-          pwd
-        shell: bash
-
       - name: Create footer
         run: |
           doxygen/makehtmlfooter.sh > doxygen/footer.html
@@ -82,11 +64,6 @@ jobs:
             # Working directory
           working-directory: "doxygen/" # default is .
             #enable-latex: true # default is false
-
-      - name: List result
-        run: |
-          ls -lh 
-          ls -lh doxygen
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4

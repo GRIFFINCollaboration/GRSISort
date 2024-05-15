@@ -164,13 +164,39 @@ dl
 
 /* dl.note, dl.warning, dl.attention, dl.pre, dl.post, dl.invariant, dl.deprecated, dl.todo, dl.test, dl.bug */
  
- 
+/* grsilogo is 233 px wide and 151 px high, triumf logo is 118px wide and 151 px high (white on blue background with the logo sitting at the top) */
+
+#projectrow
+{
+	height: 151px;
+}
+
+table {
+	width: 100%;
+}
+
 #projectname
 {
 	font-size: 300%;
 	color: white;
 	padding: 20px 0px;
-	text-align:center;
+	text-align: center;
+}
+
+#projectbrief
+{
+	color: white;
+	text-align: center;
+}
+
+#projectlogo
+{
+	width: 118px;
+}
+
+#grsilogo
+{
+	width: 233px;
 }
 
 div.zoom
