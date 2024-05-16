@@ -128,6 +128,13 @@ int main(int argc, char **argv)
   
   return 0;
 }
+#else
+int main(int, char** argv)
+{
+	std::cout<<"No mathmore support in ROOT, "<<argv[0]<<" can't run!"<<std::endl;
+	return 1;
+}
+#endif
 
 // ****************************************************************** //
 // ********************* FUNCTION DEFINITIONS *********************** //

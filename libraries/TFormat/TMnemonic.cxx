@@ -3,7 +3,9 @@
 #include <algorithm>
 #include <iostream>
 
+/// \cond CLASSIMP
 ClassImp(TMnemonic)
+/// \endcond
 
 bool TMnemonic::fPrint = true;
 
