@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('md__2github_2workspace_2_ill_data_2_r_
   <div class="headertitle"><div class="title">ILLData</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md7"></a> This library provides the data parser and detector classes for data taken with FIPPS at the ILL. The names of the classes typically start with TILL.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md19"></a> This library provides the data parser and detector classes for data taken with FIPPS at the ILL. The names of the classes typically start with TILL.</p>
 <p>The data parser is set up to process FIPPS data written in the lst data format.</p>
 <p>Several detector classes are implimented: Fipps HPGe (<a class="el" href="class_t_fipps.html">TFipps</a>), LaBr (<a class="el" href="class_t_fipps_la_br.html">TFippsLaBr</a>), TAC (<a class="el" href="class_t_fipps_t_a_c.html">TFippsTAC</a>), etc.</p>
 <p>Other classes included are:</p><ul>
@@ -106,17 +106,17 @@ $(document).ready(function(){initNavTree('md__2github_2workspace_2_ill_data_2_r_
 <li><a class="el" href="class_t_i_l_l_detector_information.html">TILLDetectorInformation</a>, which only provides functions to tell whether FIPPS data is present (which should be all the time), and</li>
 <li>TILLDetectorHit, which implemements the algorithm for how to get the time in nanoseconds from the timestamp and CFD information.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 Installation</h1>
 <p>To compile simply call <code>make</code> from inside the ILLData directory.</p>
 <p>Tested with GRSISort <code>v4.0.0.1</code> and ROOT <code>v16.18/04</code>.</p>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 Cal Information</h1>
 <p>The most of the detector nomenclature of ILLData follows the <a href="https://grsi.wiki.triumf.ca/index.php/Detector_Nomenclature">GRSI wiki</a>. The exceptions are:</p><ul>
 <li><b>FI</b> denotes the <a class="el" href="class_t_fipps.html">TFipps</a> system</li>
 <li><b>PU</b> denotes a pulser, and is based on the Generic Detector system</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md22"></a>
 Transfering Fipps LUTs to Cal files</h1>
 <p>Fipps detectors are labeled from 0 to 15, while the detector numbering in the cal file are labeled from 1 to 16. Fipps detector numbers from the experiment LUTs should be incremented by one and then inputed into the cal file.</p>
 <p>In order to match the GRIFFIN clover colors to the FIPPS clover numbers the following table should be used:</p>
@@ -140,7 +140,7 @@ Transfering Fipps LUTs to Cal files</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Thu May 16 2024 14:22:50.</li>
+    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Thu May 16 2024 14:42:53.</li>
   </ul>
 </div>
 </body>

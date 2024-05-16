@@ -25,24 +25,38 @@
 var NAVTREE =
 [
   [ "GRSISort", "index.html", [
+    [ "Contributor Covenant Code of Conduct", "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html", [
+      [ "Our Pledge", "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md1", null ],
+      [ "Our Standards", "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md2", null ],
+      [ "Enforcement Responsibilities", "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md3", null ],
+      [ "Scope", "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md4", null ],
+      [ "Enforcement", "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md5", null ],
+      [ "Enforcement Guidelines", "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md6", [
+        [ "1. Correction", "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md7", null ],
+        [ "2. Warning", "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md8", null ],
+        [ "3. Temporary Ban", "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md9", null ],
+        [ "4. Permanent Ban", "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md10", null ]
+      ] ],
+      [ "Attribution", "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md11", null ]
+    ] ],
     [ "Contributing to GRSISort", "md__2github_2workspace_2_c_o_n_t_r_i_b_u_t_i_n_g.html", [
-      [ "Reporting an issue", "md__2github_2workspace_2_c_o_n_t_r_i_b_u_t_i_n_g.html#autotoc_md1", null ],
-      [ "Coding standards", "md__2github_2workspace_2_c_o_n_t_r_i_b_u_t_i_n_g.html#autotoc_md2", null ]
+      [ "Reporting an issue", "md__2github_2workspace_2_c_o_n_t_r_i_b_u_t_i_n_g.html#autotoc_md13", null ],
+      [ "Coding standards", "md__2github_2workspace_2_c_o_n_t_r_i_b_u_t_i_n_g.html#autotoc_md14", null ]
     ] ],
     [ "GRSIData", "md__2github_2workspace_2_g_r_s_i_data_2_r_e_a_d_m_e.html", null ],
     [ "HILData", "md__2github_2workspace_2_h_i_l_data_2_r_e_a_d_m_e.html", [
-      [ "Installation", "md__2github_2workspace_2_h_i_l_data_2_r_e_a_d_m_e.html#autotoc_md5", null ],
-      [ "Cal Information", "md__2github_2workspace_2_h_i_l_data_2_r_e_a_d_m_e.html#autotoc_md6", null ]
+      [ "Installation", "md__2github_2workspace_2_h_i_l_data_2_r_e_a_d_m_e.html#autotoc_md17", null ],
+      [ "Cal Information", "md__2github_2workspace_2_h_i_l_data_2_r_e_a_d_m_e.html#autotoc_md18", null ]
     ] ],
     [ "ILLData", "md__2github_2workspace_2_ill_data_2_r_e_a_d_m_e.html", [
-      [ "Installation", "md__2github_2workspace_2_ill_data_2_r_e_a_d_m_e.html#autotoc_md8", null ],
-      [ "Cal Information", "md__2github_2workspace_2_ill_data_2_r_e_a_d_m_e.html#autotoc_md9", null ],
-      [ "Transfering Fipps LUTs to Cal files", "md__2github_2workspace_2_ill_data_2_r_e_a_d_m_e.html#autotoc_md10", null ]
+      [ "Installation", "md__2github_2workspace_2_ill_data_2_r_e_a_d_m_e.html#autotoc_md20", null ],
+      [ "Cal Information", "md__2github_2workspace_2_ill_data_2_r_e_a_d_m_e.html#autotoc_md21", null ],
+      [ "Transfering Fipps LUTs to Cal files", "md__2github_2workspace_2_ill_data_2_r_e_a_d_m_e.html#autotoc_md22", null ]
     ] ],
     [ "iThembaData", "md__2github_2workspace_2i_themba_data_2_r_e_a_d_m_e.html", null ],
     [ "GRSISort", "md__2github_2workspace_2_r_e_a_d_m_e.html", [
-      [ "Running", "md__2github_2workspace_2_r_e_a_d_m_e.html#autotoc_md15", null ],
-      [ "Adding Documentation", "md__2github_2workspace_2_r_e_a_d_m_e.html#autotoc_md17", null ]
+      [ "Running", "md__2github_2workspace_2_r_e_a_d_m_e.html#autotoc_md27", null ],
+      [ "Adding Documentation", "md__2github_2workspace_2_r_e_a_d_m_e.html#autotoc_md29", null ]
     ] ],
     [ "Topics", "topics.html", "topics" ],
     [ "Namespaces", "namespaces.html", [
@@ -147,8 +161,8 @@ var NAVTREEINDEX =
 "classpygui_1_1tcut__tab_1_1_t_cut_tab.html",
 "functions_func_n.html",
 "group___fitting.html#gae6a348c9e19d9baf6268f5db9893f719",
-"namespace_t_g_r_s_i_functions.html#ace93bbe7e76c53a24559521303d93a34",
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#aa30204675c8ce3a6b5d844dd1d3cf1f1"
+"namespace_t_g_r_s_i_functions.html#a608e2b1aa6bb92909af5c231c585fe1b",
+"struct_t_pulse_analyzer_1_1_wave_form_par.html#a733fb26159e92e8c2b40d37998a920d0"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
