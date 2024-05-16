@@ -391,7 +391,3 @@ FetchContent_MakeAvailable(
 	iThembaData
 	)
 
-#----------------------------------------------------------------------------
-# add custom command to generate html documentation
-#add_custom_command(
-
