@@ -26,9 +26,12 @@ cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 project(GRSISort)
 
 #----------------------------------------------------------------------------
+# find git (to set version correctly)
+find_package(Git REQUIRED)
+
+#----------------------------------------------------------------------------
 # finde required packages
 find_package(X11 REQUIRED)
-message("X11_INCLUDE_DIR = ${X11_INCLUDE_DIR}, X11_Xpm_FOUND = ${X11_Xpm_FOUND}, X11_Xpm_LIB = ${X11_Xpm_LIB}")
 
 #----------------------------------------------------------------------------
 # find the root package (and add COMPONENTS)
