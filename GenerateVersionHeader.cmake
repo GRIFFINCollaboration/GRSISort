@@ -84,7 +84,7 @@ endif()
 # than anything else and spit out a warning to the developer.
 if(NOT DEFINED RELEASE)
 	set(RELEASE 0.0.0)
-	message(WARNING "Failed to determine RELEASE from Git tags (directory ${SRC_DIR}). Using default version \"${RELEASE}\".")
+	message(WARNING "Failed to determine RELEASE from Git tags (directory \"${SRC_DIR}\" from \"${SRC}\", git executable \"${GIT_EXECUTABLE}\"). Using default version \"${RELEASE}\".")
 endif()
 
 configure_file(${SRC} ${DST} @ONLY)

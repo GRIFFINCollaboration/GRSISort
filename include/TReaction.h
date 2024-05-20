@@ -1,6 +1,10 @@
 #ifndef TREACTION_H
 #define TREACTION_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include <iostream>
 #include <string>
 #include <cmath>
@@ -8,7 +12,6 @@
 #include "TNamed.h"
 #include "TMath.h"
 #include "TGraph.h"
-//#include "TSpline.h"
 
 #include "TNucleus.h"
 

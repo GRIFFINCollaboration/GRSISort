@@ -55,7 +55,7 @@ private:
 
 	ClassDef(ExampleTreeSelector,2); //Makes ROOT happier
 };
-
+/*! @} */
 #endif
 
 #ifdef ExampleTreeSelector_cxx
@@ -75,6 +75,4 @@ void ExampleTreeSelector::InitializeBranches(TTree* tree)
 		fGriffinBgo = new TGriffinBgo;
 	}
 }
-
-/*! @} */
 #endif // #ifdef ExampleTreeSelector_cxx
