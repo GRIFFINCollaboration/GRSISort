@@ -227,8 +227,8 @@ $(document).ready(function(){initNavTree('_t_calibration_graph_8cxx_source.html'
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_calibration_graph_set.html#a50f9615d7f707cc3af2ab9dc6b756791">fVerboseLevel</a> &gt; 2) std::cout&lt;&lt;<span class="stringliteral">&quot;Adding new calibration graph and label to vectors&quot;</span>&lt;&lt;std::endl;</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>   <span class="comment">// add graph and label to our vectors</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>   <a class="code hl_variable" href="class_t_calibration_graph_set.html#ac0ccbc9d948206b483210864fdf62bcc">fGraphs</a>.push_back(<a class="code hl_class" href="class_t_calibration_graph.html">TCalibrationGraph</a>(<span class="keyword">this</span>, graph));</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>   <a class="code hl_variable" href="class_t_calibration_graph_set.html#a48091d8a371c58ebf4498f031422f8d9">fResidualGraphs</a>.push_back(<a class="code hl_class" href="class_t_calibration_graph.html">TCalibrationGraph</a>(<span class="keyword">this</span>, 0, <span class="keyword">true</span>));</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>   <a class="code hl_variable" href="class_t_calibration_graph_set.html#ac0ccbc9d948206b483210864fdf62bcc">fGraphs</a>.emplace_back(<span class="keyword">this</span>, graph);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>   <a class="code hl_variable" href="class_t_calibration_graph_set.html#a48091d8a371c58ebf4498f031422f8d9">fResidualGraphs</a>.emplace_back(<span class="keyword">this</span>, 0, <span class="keyword">true</span>);</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>   <a class="code hl_variable" href="class_t_calibration_graph_set.html#afaa9bf05ffa12daa91e5230e88079f83">fLabel</a>.push_back(label);</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>   <span class="comment">// set initial color</span></div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>   <a class="code hl_variable" href="class_t_calibration_graph_set.html#ac0ccbc9d948206b483210864fdf62bcc">fGraphs</a>.back().SetLineColor(<a class="code hl_variable" href="class_t_calibration_graph_set.html#ac0ccbc9d948206b483210864fdf62bcc">fGraphs</a>.size());</div>
@@ -685,7 +685,7 @@ $(document).ready(function(){initNavTree('_t_calibration_graph_8cxx_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_af8759249976916949d3211b2e3ed5df.html">TGUI</a></li><li class="navelem"><a class="el" href="_t_calibration_graph_8cxx.html">TCalibrationGraph.cxx</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Thu May 16 2024 14:42:52.</li>
+    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 21 2024 16:12:19.</li>
   </ul>
 </div>
 </body>
