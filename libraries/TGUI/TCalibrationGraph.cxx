@@ -116,8 +116,8 @@ int TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
 
 	if(fVerboseLevel > 2) std::cout<<"Adding new calibration graph and label to vectors"<<std::endl;
 	// add graph and label to our vectors
-	fGraphs.push_back(TCalibrationGraph(this, graph));
-	fResidualGraphs.push_back(TCalibrationGraph(this, 0, true));
+	fGraphs.emplace_back(this, graph);
+	fResidualGraphs.emplace_back(this, 0, true);
 	fLabel.push_back(label);
 	// set initial color
 	fGraphs.back().SetLineColor(fGraphs.size());
