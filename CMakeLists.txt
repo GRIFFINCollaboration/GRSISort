@@ -37,6 +37,7 @@ find_package(X11 REQUIRED)
 # find the root package (and add COMPONENTS)
 find_package(ROOT REQUIRED COMPONENTS Gui GuiHtml Minuit Spectrum OPTIONAL_COMPONENTS MathMore Proof)
 
+# TODO check if using add_compile_definitions would be better here
 if(${ROOT_mathmore_FOUND})
 	add_compile_options(-DHAS_MATHMORE)
 else()
@@ -56,16 +57,25 @@ else()
 endif()
 
 #----------------------------------------------------------------------------
-# set c++ standard to the one used for root
-
-if(DEFINED ROOT_CXX_STANDARD)
-	set(CMAKE_CXX_STANDARD ${ROOT_CXX_STANDARD})
+# set c++ standard to the one used for root (adopted from agataselector's CMakeLists.txt)
+if(NOT ROOT_CXX_VERSION)
+	string(REGEX REPLACE ".*-std=.+\\+\\+([0-9][0-9]).*" "\\1" ROOT_CXX_VERSION ${ROOT_CXX_FLAGS})
+	if(${CMAKE_MATCH_COUNT} EQUAL "1")
+		message("Got ROOT_CXX_VERSION=${ROOT_CXX_VERSION} from \"${ROOT_CXX_FLAGS}\"")
+	else()
+		message(FATAL_ERROR "The ROOT cxx flags seem to be misformed (${ROOT_CXX_FLAGS}) (CMAKE_MATCH_COUNT=${CMAKE_MATCH_COUNT}), consider providing a cxx version by hand using \"-DROOT_CXX_VERSION=??\"")
+	endif()
 else()
-	set(CMAKE_CXX_STANDARD 17)
+	message("Got user provided ROOT_CXX_VERSION=${ROOT_CXX_VERSION}")
 endif()
-set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-message("${Green}Using c++ standard ${CMAKE_CXX_STANDARD} (from ${ROOT_CXX_STANDARD})${ColourReset}")
+if(${ROOT_CXX_VERSION} LESS 14)
+	message(FATAL_ERROR "${CMAKE_PROJECT_NAME} requires at least c++14, please consider installing a newer ROOT version that was compiled with at least c++14")
+endif()
+
+set(CMAKE_CXX_STANDARD ${ROOT_CXX_VERSION})
+message("${BoldBlue}C++ version set to: ${CMAKE_CXX_STANDARD}\n${ColourReset}")
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 #----------------------------------------------------------------------------
 # configure the include directories and set other variables (could mayme have just one include_directories for both linux and macOS?)
