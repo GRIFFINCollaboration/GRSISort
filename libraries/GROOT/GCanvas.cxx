@@ -447,7 +447,7 @@ bool GCanvas::HandleMouseShiftPress(Int_t, Int_t, Int_t)
          (static_cast<GH1D*>(hist))->GetParent()->Draw("colz");
          return true;
       }
-      std::vector<TH1*> hists = FindHists();
+      std::vector<TH1*> hists = FindHists(1);
       new GCanvas();
       // options.Append("HIST");
       hists.at(0)->DrawCopy(options.Data());
@@ -571,27 +571,31 @@ TF1* GCanvas::GetLastFit()
 
 bool GCanvas::Process1DArrowKeyPress(Event_t*, UInt_t* keysym)
 {
+	/// Moves displayed 1D histograms by 50% of the visible range left, right, or selects the next (up) or previous (down) GH1D histogram.
    bool              edited = false;
-   std::vector<TH1*> hists  = FindHists();
+   std::vector<TH1*> hists  = FindHists(1);
    if(hists.empty()) {
       return edited;
    }
 
+	// get first and last bin in current range
    int first = hists.at(0)->GetXaxis()->GetFirst();
    int last  = hists.at(0)->GetXaxis()->GetLast();
 
+	// first is 1 if no range is defined but can be 0, last is fNbins if no range is defined but can be 0
+	// so min will always be 0, and max will always be fNbins+1
    int min = std::min(first, 0);
    int max = std::max(last, hists.at(0)->GetXaxis()->GetNbins() + 1);
-   // int max = std::max(last,axis->GetNbins()+1);
 
    int xdiff = last - first;
-   int mdiff = max - min - 2;
+   int mdiff = max - min - 2; // this will always be fNbins-1
 
    switch(*keysym) {
    case kMyArrowLeft: {
       if(mdiff > xdiff) {
+			// try and move left by half the current range
          if(first == (min + 1)) {
-            //
+            // if first is 1 we can't go any further left
          } else if((first - (xdiff / 2)) < min) {
             first = min + 1;
             last  = min + (xdiff) + 1;
@@ -608,8 +612,9 @@ bool GCanvas::Process1DArrowKeyPress(Event_t*, UInt_t* keysym)
    } break;
    case kMyArrowRight: {
       if(mdiff > xdiff) {
+			// try and move right by half the current range
          if(last == (max - 1)) {
-            //
+            // last is fNbins so we can't move further right
          } else if((last + (xdiff / 2)) > max) {
             first = max - 1 - (xdiff);
             last  = max - 1;
@@ -635,10 +640,10 @@ bool GCanvas::Process1DArrowKeyPress(Event_t*, UInt_t* keysym)
       }
 
       if(ghist != nullptr) {
-         TH1* prev = ghist->GetNext();
-         if(prev != nullptr) {
-            prev->GetXaxis()->SetRange(first, last);
-            prev->Draw("");
+         TH1* next = ghist->GetNext();
+         if(next != nullptr) {
+            next->GetXaxis()->SetRange(first, last);
+            next->Draw("");
             RedrawMarkers();
             edited = true;
          }
@@ -698,7 +703,7 @@ bool GCanvas::ProcessNonHistKeyboardPress(Event_t*, UInt_t* keysym)
 bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
 {
    bool              edited = false;
-   std::vector<TH1*> hists  = FindHists();
+   std::vector<TH1*> hists  = FindHists(1);
    if(hists.empty()) {
       return edited;
    }
