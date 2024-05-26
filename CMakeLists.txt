@@ -369,8 +369,8 @@ include(FetchContent)
 FetchContent_Declare(
 	GRSIData
 	EXCLUDE_FROM_ALL
-	GIT_REPOSITORY https://github.com/VinzenzBildstein/GRSIData.git
-	GIT_TAG cmake
+	GIT_REPOSITORY https://github.com/GRIFFINCollaboration/GRSIData.git
+	GIT_TAG main
 	GIT_REMOTE_NAME upstream
 	)
 FetchContent_MakeAvailable(
@@ -385,8 +385,8 @@ include(FetchContent)
 FetchContent_Declare(
 	ILLData
 	EXCLUDE_FROM_ALL
-	GIT_REPOSITORY https://github.com/VinzenzBildstein/ILLData.git
-	GIT_TAG cmake
+	GIT_REPOSITORY https://github.com/UoG-Nuclear-Physics-Group/ILLData.git
+	GIT_TAG main
 	GIT_REMOTE_NAME upstream
 	)
 FetchContent_MakeAvailable(
@@ -396,10 +396,23 @@ FetchContent_MakeAvailable(
 #----------------------------------------------------------------------------
 include(FetchContent)
 FetchContent_Declare(
+	HILData
+	EXCLUDE_FROM_ALL
+	GIT_REPOSITORY https://github.com/UoG-Nuclear-Physics-Group/HILData.git
+	GIT_TAG main
+	GIT_REMOTE_NAME upstream
+	)
+FetchContent_MakeAvailable(
+	HILData
+	)
+
+#----------------------------------------------------------------------------
+include(FetchContent)
+FetchContent_Declare(
 	iThembaData
 	EXCLUDE_FROM_ALL
-	GIT_REPOSITORY https://github.com/VinzenzBildstein/iThembaData.git
-	GIT_TAG cmake
+	GIT_REPOSITORY https://github.com/UoG-Nuclear-Physics-Group/iThembaData.git
+	GIT_TAG main
 	GIT_REMOTE_NAME upstream
 	)
 FetchContent_MakeAvailable(
