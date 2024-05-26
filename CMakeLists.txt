@@ -99,8 +99,10 @@ set(CMAKE_INSTALL_BINDIR ${CMAKE_BINARY_DIR}/bin)
 # tried using file(COPY, file(GENERATE, and add_custom_command to get around this for grsirc, no success
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/thisgrsi.sh  ${CMAKE_CURRENT_BINARY_DIR}/thisgrsi.sh  COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/thisgrsi.csh ${CMAKE_CURRENT_BINARY_DIR}/thisgrsi.csh COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/.grsirc      ${CMAKE_CURRENT_BINARY_DIR}/.grsirc      COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/.grsi.mimes  ${CMAKE_CURRENT_BINARY_DIR}/.grsi.mimes  COPYONLY)
+if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/.grsirc")
+	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/.grsirc      ${CMAKE_CURRENT_BINARY_DIR}/.grsirc      COPYONLY)
+endif()
 
 #----------------------------------------------------------------------------
 # copy examples
