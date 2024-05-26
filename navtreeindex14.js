@@ -1,7 +1,5 @@
 var NAVTREEINDEX14 =
 {
-"class_griffin_k_value_helper.html#add19941df642bbd2f8994a3b799d4760":[9,0,48,8],
-"class_griffin_k_value_helper.html#ae5c188f3fc54bc1e7ee607421a46b678":[9,0,48,14],
 "class_griffin_k_value_helper.html#ae8293c18719d3e29c1d9afb74cc41d9a":[9,0,48,5],
 "class_griffin_k_value_helper.html#ae95111fa334deef7e49ea2050899e972":[9,0,48,24],
 "class_griffin_k_value_helper.html#af70ba099fb02f24961d985d47f7a568d":[9,0,48,19],
@@ -249,5 +247,7 @@ var NAVTREEINDEX14 =
 "class_t_analysis_hist_loop.html#a145499bbb554ad6ff9cbed4af14d4eb3":[7,9,1,35],
 "class_t_analysis_hist_loop.html#a14d1029d5d956a5f8cffcabb2e1c5e17":[7,9,1,56],
 "class_t_analysis_hist_loop.html#a292c5e3a19062bcc3d2a3b598327c175":[7,9,1,7],
-"class_t_analysis_hist_loop.html#a30e2bdefe7d239ea2abfe5da3e69f92e":[7,9,1,59]
+"class_t_analysis_hist_loop.html#a30e2bdefe7d239ea2abfe5da3e69f92e":[7,9,1,59],
+"class_t_analysis_hist_loop.html#a33897b2a9af9241851b3b735b35fed68":[7,9,1,33],
+"class_t_analysis_hist_loop.html#a345004678ce5aa33ddb539bad031c188":[7,9,1,36]
 };

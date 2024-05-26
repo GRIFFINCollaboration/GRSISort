@@ -1,7 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"class_cross_talk.html#a6179997d65c5c6e3a0d6edec42180405":[9,0,14,38],
-"class_cross_talk.html#a6905c9d58bac179b2f24c7f1832864ec":[9,0,14,15],
 "class_cross_talk.html#a6f2d56fbe9b582d4e90b02511e0e62ca":[9,0,14,33],
 "class_cross_talk.html#a75b53573beb251c2c0584441d4d1cb5e":[9,0,14,35],
 "class_cross_talk.html#a7c93561fc0f34db9f5c3381b9aa6fe67":[9,0,14,18],
@@ -249,5 +247,7 @@ var NAVTREEINDEX8 =
 "class_example_fragment_selector.html#a0a36b80b21d1c5fd0b2246943c28ebce":[9,0,27,38],
 "class_example_fragment_selector.html#a1935dbf4d7080d06bc59903daafca0ce":[9,0,27,19],
 "class_example_fragment_selector.html#a1a519df9716384c0e56b6b1e7979513d":[9,0,27,13],
-"class_example_fragment_selector.html#a1e35e3147d9f14a04e4d0f9f30431074":[9,0,27,31]
+"class_example_fragment_selector.html#a1e35e3147d9f14a04e4d0f9f30431074":[9,0,27,31],
+"class_example_fragment_selector.html#a1fa1d8b845cf81eaeb0a6de9106a7472":[9,0,27,22],
+"class_example_fragment_selector.html#a29945f1269efc3023c16716af041d4bd":[9,0,27,17]
 };
