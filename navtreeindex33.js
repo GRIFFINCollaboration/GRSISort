@@ -1,5 +1,7 @@
 var NAVTREEINDEX33 =
 {
+"class_t_gain_match.html#aa0e5908326f254a9ad59f906ef3be368":[7,1,10,5],
+"class_t_gain_match.html#aa9a8484393a4df75a7abc172d1aaa49a":[7,1,10,31],
 "class_t_gain_match.html#ab09cabe876f32d2f4b511bf94c37a2ea":[7,1,10,19],
 "class_t_gain_match.html#ab87bf24084500a8e34d24bb8833f7904":[7,1,10,12],
 "class_t_gain_match.html#abf08021024b9e0a2f0816195cfe95912":[7,1,10,38],
@@ -247,7 +249,5 @@ var NAVTREEINDEX33 =
 "class_t_griffin_angles.html#abeac19ee1c9d4df76540a39d00455b93":[7,0,0,14],
 "class_t_griffin_angles.html#ad553b5453657c0194f1484865c24198c":[7,0,0,19],
 "class_t_griffin_angles.html#ada59f37eb0221d344d5d8d280a76f418":[7,0,0,24],
-"class_t_griffin_angles.html#adcae16506d95a3772171a056e405a30a":[7,0,0,20],
-"class_t_griffin_angles.html#ae168cff819e782c7ce3f4d74449d93f5":[7,0,0,23],
-"class_t_griffin_angles.html#ae53441dc46c1588077d23572f703d03c":[7,0,0,5]
+"class_t_griffin_angles.html#adcae16506d95a3772171a056e405a30a":[7,0,0,20]
 };

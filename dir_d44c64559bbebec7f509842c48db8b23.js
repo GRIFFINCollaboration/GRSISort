@@ -72,7 +72,7 @@ var dir_d44c64559bbebec7f509842c48db8b23 =
     [ "TGRSIFrame.h", "_t_g_r_s_i_frame_8h.html", "_t_g_r_s_i_frame_8h" ],
     [ "TGRSIFunctions.h", "_t_g_r_s_i_functions_8h.html", "_t_g_r_s_i_functions_8h" ],
     [ "TGRSIHelper.h", "_t_g_r_s_i_helper_8h.html", "_t_g_r_s_i_helper_8h" ],
-    [ "TGRSIint.h", "_t_g_r_s_iint_8h.html", null ],
+    [ "TGRSIint.h", "_t_g_r_s_iint_8h.html", "_t_g_r_s_iint_8h" ],
     [ "TGRSIMap.h", "_t_g_r_s_i_map_8h.html", null ],
     [ "TGRSIOptions.h", "_t_g_r_s_i_options_8h.html", null ],
     [ "TGRSIProof.h", "_t_g_r_s_i_proof_8h.html", "_t_g_r_s_i_proof_8h" ],

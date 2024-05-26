@@ -104,17 +104,7 @@ $(document).ready(function(){initNavTree('class_g_root_browser.html',''); initRe
   <div class="headertitle"><div class="title">GRootBrowser Class Reference<div class="ingroups"><a class="el" href="group___g_r_o_o_t.html">GROOT</a></div></div></div>
 </div><!--header-->
 <div class="contents">
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class creates a ROOT object browser, constitued by three main tabs.</p>
-<p>All tabs can 'swallow' frames, thanks to the new method: ExecPlugin(const char *name = 0, const char *fname = 0, const char *cmd = 0, Int_t pos = kRight, Int_t subpos = -1) allowing to select plugins (can be a macro or a command) to be executed, and where to embed the frame created by the plugin (tab and tab element). Examples:</p>
-<p>create a new browser: TBrowser b;</p>
-<p>create a new TCanvas in a new top right tab element: b.ExecPlugin("Canvas", 0, "new TCanvas()");</p>
-<p>create a new top right tab element embedding the TGMainFrame created by the macro 'myMacro.C': b.ExecPlugin("MyPlugin", "myMacro.C");</p>
-<p>create a new bottom tab element embedding the TGMainFrame created by the macro 'myMacro.C': b.ExecPlugin("MyPlugin", "myMacro.C", 0, <a class="el" href="class_g_root_browser.html#ad4a1457a292dfc2fb4e93bb13b8f7a87a78cd851b433d8d6864110dd678e43586">GRootBrowser::kBottom</a>);</p>
-<p>this browser implementation can be selected via the env 'Browser.Name' in .rootrc, (<a class="el" href="class_g_root_browser.html">GRootBrowser</a> or GRootBrowserLite) the default being GRootBrowserLite (old browser) a list of options (plugins) for the new <a class="el" href="class_g_root_browser.html">GRootBrowser</a> is also specified via the env 'Browser.Options' in .rootrc, the default being: FECI Here is the list of available options: F: File browser E: Text Editor H: HTML browser C: Canvas I: I/O redirection P: Proof G: GL viewer </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00102">102</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
-</div>
 <p><code>#include &lt;<a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>&gt;</code></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for GRootBrowser:</div>
@@ -360,7 +350,17 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a709a75f99a4e5107882e1e0f79fb8172" id="r_a709a75f99a4e5107882e1e0f79fb8172"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_g_root_browser.html">GRootBrowser</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_root_browser.html#a709a75f99a4e5107882e1e0f79fb8172">operator=</a> (const <a class="el" href="class_g_root_browser.html">GRootBrowser</a> &amp;)</td></tr>
 <tr class="separator:a709a75f99a4e5107882e1e0f79fb8172"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This class creates a ROOT object browser, constitued by three main tabs.</p>
+<p>All tabs can 'swallow' frames, thanks to the new method: ExecPlugin(const char *name = 0, const char *fname = 0, const char *cmd = 0, Int_t pos = kRight, Int_t subpos = -1) allowing to select plugins (can be a macro or a command) to be executed, and where to embed the frame created by the plugin (tab and tab element). Examples:</p>
+<p>create a new browser: TBrowser b;</p>
+<p>create a new TCanvas in a new top right tab element: b.ExecPlugin("Canvas", 0, "new TCanvas()");</p>
+<p>create a new top right tab element embedding the TGMainFrame created by the macro 'myMacro.C': b.ExecPlugin("MyPlugin", "myMacro.C");</p>
+<p>create a new bottom tab element embedding the TGMainFrame created by the macro 'myMacro.C': b.ExecPlugin("MyPlugin", "myMacro.C", 0, <a class="el" href="class_g_root_browser.html#ad4a1457a292dfc2fb4e93bb13b8f7a87a78cd851b433d8d6864110dd678e43586">GRootBrowser::kBottom</a>);</p>
+<p>this browser implementation can be selected via the env 'Browser.Name' in .rootrc, (<a class="el" href="class_g_root_browser.html">GRootBrowser</a> or GRootBrowserLite) the default being GRootBrowserLite (old browser) a list of options (plugins) for the new <a class="el" href="class_g_root_browser.html">GRootBrowser</a> is also specified via the env 'Browser.Options' in .rootrc, the default being: FECI Here is the list of available options: F: File browser E: Text Editor H: HTML browser C: Canvas I: I/O redirection P: Proof G: GL viewer </p>
+
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00102">102</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="ad4a1457a292dfc2fb4e93bb13b8f7a87" name="ad4a1457a292dfc2fb4e93bb13b8f7a87"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad4a1457a292dfc2fb4e93bb13b8f7a87">&#9670;&#160;</a></span>EInsertPosition</h2>
 
@@ -3275,7 +3275,7 @@ Private Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_g_root_browser.html">GRootBrowser</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Thu May 23 2024 16:17:11.</li>
+    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Sun May 26 2024 06:24:36.</li>
   </ul>
 </div>
 </body>

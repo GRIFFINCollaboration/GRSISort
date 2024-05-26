@@ -2601,5 +2601,7 @@ var group___sorting =
     [ "operator<<", "group___sorting.html#ga9fd218568f5fb973251e82e1355572f6", null ],
     [ "TSingleton::fDir", "group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8", null ],
     [ "TSingleton::fSingleton", "group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad", null ],
+    [ "gAnalysis", "group___sorting.html#ga5e7379c3f6cdea31637fbc3cf6db2cc4", null ],
+    [ "gFragment", "group___sorting.html#ga9466a3fc20b906b9c5de0f00dee3ff94", null ],
     [ "nulFileName", "group___sorting.html#ga09ef713eb9ba7e13963a94f4ef049bde", null ]
 ];
