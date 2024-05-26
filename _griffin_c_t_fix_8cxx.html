@@ -111,6 +111,7 @@ $(document).ready(function(){initNavTree('_griffin_c_t_fix_8cxx.html',''); initR
 <code>#include &quot;TProfile.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="_t_channel_8h_source.html">TChannel.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_t_griffin_8h_source.html">TGriffin.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>&quot;</code><br />
 </div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for GriffinCTFix.cxx:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -125,10 +126,10 @@ $(document).ready(function(){initNavTree('_griffin_c_t_fix_8cxx.html',''); initR
 Functions</h2></td></tr>
 <tr class="memitem:afc9fef42cbd907209240ef82d2ddcf2e" id="r_afc9fef42cbd907209240ef82d2ddcf2e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_griffin_c_t_fix_8cxx.html#afc9fef42cbd907209240ef82d2ddcf2e">CrossTalkFit</a> (double *x, double *par)</td></tr>
 <tr class="separator:afc9fef42cbd907209240ef82d2ddcf2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaee7309da7e6c6c0effc985269365d88" id="r_aaee7309da7e6c6c0effc985269365d88"><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_griffin_c_t_fix_8cxx.html#aaee7309da7e6c6c0effc985269365d88">CrossTalkFix</a> (int det, double energy, TFile *in_file)</td></tr>
-<tr class="separator:aaee7309da7e6c6c0effc985269365d88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a939d6714dcb9e54af96e95da6a14e73c" id="r_a939d6714dcb9e54af96e95da6a14e73c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_griffin_c_t_fix_8cxx.html#a939d6714dcb9e54af96e95da6a14e73c">FixAll</a> (TFile *in_file, TFile *)</td></tr>
-<tr class="separator:a939d6714dcb9e54af96e95da6a14e73c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59563385f38e039618716857b4924b4c" id="r_a59563385f38e039618716857b4924b4c"><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_griffin_c_t_fix_8cxx.html#a59563385f38e039618716857b4924b4c">CrossTalkFix</a> (int det, double energy, TFile *inputFile)</td></tr>
+<tr class="separator:a59563385f38e039618716857b4924b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad00b72fbd61fcca8826704dc9f8283a8" id="r_ad00b72fbd61fcca8826704dc9f8283a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_griffin_c_t_fix_8cxx.html#ad00b72fbd61fcca8826704dc9f8283a8">FixAll</a> (TFile *inputFile, double energy)</td></tr>
+<tr class="separator:ad00b72fbd61fcca8826704dc9f8283a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627" id="r_a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_griffin_c_t_fix_8cxx.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
 <tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -159,14 +160,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00016">16</a> of file <a class="el" href="_griffin_c_t_fix_8cxx_source.html">GriffinCTFix.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00017">17</a> of file <a class="el" href="_griffin_c_t_fix_8cxx_source.html">GriffinCTFix.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00030">CrossTalkFix()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00031">CrossTalkFix()</a>.</p>
 
 </div>
 </div>
-<a id="aaee7309da7e6c6c0effc985269365d88" name="aaee7309da7e6c6c0effc985269365d88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaee7309da7e6c6c0effc985269365d88">&#9670;&#160;</a></span>CrossTalkFix()</h2>
+<a id="a59563385f38e039618716857b4924b4c" name="a59563385f38e039618716857b4924b4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59563385f38e039618716857b4924b4c">&#9670;&#160;</a></span>CrossTalkFix()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -187,7 +188,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">TFile *&#160;</td>
-          <td class="paramname"><em>in_file</em>&#160;</td>
+          <td class="paramname"><em>inputFile</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -197,16 +198,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00030">30</a> of file <a class="el" href="_griffin_c_t_fix_8cxx_source.html">GriffinCTFix.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00031">31</a> of file <a class="el" href="_griffin_c_t_fix_8cxx_source.html">GriffinCTFix.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_channel_8h_source.html#l00209">TChannel::AddCTCoefficient()</a>, <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00016">CrossTalkFit()</a>, <a class="el" href="_t_channel_8cxx_source.html#l00482">TChannel::DestroyCTCal()</a>, <a class="el" href="_globals_8h_source.html#l00017">DRED</a>, <a class="el" href="_t_channel_8cxx_source.html#l00389">TChannel::FindChannelByName()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00677">TGriffin::GetColorFromNumber()</a>, <a class="el" href="_user_fill_obj_8h_source.html#l00012">mat</a>, and <a class="el" href="_globals_8h_source.html#l00004">RESET_COLOR</a>.</p>
+<p class="reference">References <a class="el" href="_t_channel_8h_source.html#l00209">TChannel::AddCTCoefficient()</a>, <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00017">CrossTalkFit()</a>, <a class="el" href="_t_channel_8cxx_source.html#l00482">TChannel::DestroyCTCal()</a>, <a class="el" href="_globals_8h_source.html#l00017">DRED</a>, <a class="el" href="_t_channel_8cxx_source.html#l00389">TChannel::FindChannelByName()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00677">TGriffin::GetColorFromNumber()</a>, <a class="el" href="_user_fill_obj_8h_source.html#l00012">mat</a>, and <a class="el" href="_globals_8h_source.html#l00004">RESET_COLOR</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00209">FixAll()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00210">FixAll()</a>.</p>
 
 </div>
 </div>
-<a id="a939d6714dcb9e54af96e95da6a14e73c" name="a939d6714dcb9e54af96e95da6a14e73c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a939d6714dcb9e54af96e95da6a14e73c">&#9670;&#160;</a></span>FixAll()</h2>
+<a id="ad00b72fbd61fcca8826704dc9f8283a8" name="ad00b72fbd61fcca8826704dc9f8283a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad00b72fbd61fcca8826704dc9f8283a8">&#9670;&#160;</a></span>FixAll()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -215,13 +216,13 @@ Functions</h2></td></tr>
           <td class="memname">void FixAll </td>
           <td>(</td>
           <td class="paramtype">TFile *&#160;</td>
-          <td class="paramname"><em>in_file</em>, </td>
+          <td class="paramname"><em>inputFile</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TFile *&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>energy</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -231,11 +232,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00209">209</a> of file <a class="el" href="_griffin_c_t_fix_8cxx_source.html">GriffinCTFix.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00210">210</a> of file <a class="el" href="_griffin_c_t_fix_8cxx_source.html">GriffinCTFix.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00030">CrossTalkFix()</a>.</p>
+<p class="reference">References <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00031">CrossTalkFix()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00220">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00219">main()</a>.</p>
 
 </div>
 </div>
@@ -265,9 +266,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00220">220</a> of file <a class="el" href="_griffin_c_t_fix_8cxx_source.html">GriffinCTFix.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00219">219</a> of file <a class="el" href="_griffin_c_t_fix_8cxx_source.html">GriffinCTFix.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00209">FixAll()</a>, <a class="el" href="_t_channel_8cxx_source.html#l00998">TChannel::ReadCalFile()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l00912">TChannel::WriteCTCorrections()</a>.</p>
+<p class="reference">References <a class="el" href="_griffin_c_t_fix_8cxx_source.html#l00210">FixAll()</a>, <a class="el" href="_t_channel_8cxx_source.html#l00998">TChannel::ReadCalFile()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l00912">TChannel::WriteCTCorrections()</a>.</p>
 
 </div>
 </div>
@@ -278,7 +279,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_8965781c9f424dd985c8251b0fe5e6e9.html">util</a></li><li class="navelem"><a class="el" href="_griffin_c_t_fix_8cxx.html">GriffinCTFix.cxx</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Sun May 26 2024 06:27:23.</li>
+    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Sun May 26 2024 07:35:53.</li>
   </ul>
 </div>
 </body>

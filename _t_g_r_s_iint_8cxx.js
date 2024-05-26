@@ -10,5 +10,7 @@ var _t_g_r_s_iint_8cxx =
     [ "g__LineToProcess", "_t_g_r_s_iint_8cxx.html#ab6c88c7af950ca5440f4055c2c1550d7", null ],
     [ "g__NewResult", "_t_g_r_s_iint_8cxx.html#a0f7ea2711494ca8168a465150177a779", null ],
     [ "g__ProcessingNeeded", "_t_g_r_s_iint_8cxx.html#a532487ef9df1fa7bc61fc827b614dc63", null ],
-    [ "g__ResultListMutex", "_t_g_r_s_iint_8cxx.html#a8bb1c5d489e0d99328ee37cec0052d44", null ]
+    [ "g__ResultListMutex", "_t_g_r_s_iint_8cxx.html#a8bb1c5d489e0d99328ee37cec0052d44", null ],
+    [ "gAnalysis", "group___sorting.html#ga5e7379c3f6cdea31637fbc3cf6db2cc4", null ],
+    [ "gFragment", "group___sorting.html#ga9466a3fc20b906b9c5de0f00dee3ff94", null ]
 ];

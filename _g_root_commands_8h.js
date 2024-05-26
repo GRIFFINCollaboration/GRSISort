@@ -23,7 +23,5 @@ var _g_root_commands_8h =
     [ "RemovePeaks", "_g_root_commands_8h.html#ae93a2755ac95a4cb1251e8555baea788", null ],
     [ "ShowPeaks", "_g_root_commands_8h.html#a28a7ec0db908c962100c0ee421761e05", null ],
     [ "StartGUI", "_g_root_commands_8h.html#abd9b9bf20e6408d2c5d9e8729d262201", null ],
-    [ "Version", "_g_root_commands_8h.html#ad827984c977cbf89bbdac5f856d53efd", null ],
-    [ "gAnalysis", "_g_root_commands_8h.html#a5e7379c3f6cdea31637fbc3cf6db2cc4", null ],
-    [ "gFragment", "_g_root_commands_8h.html#a9466a3fc20b906b9c5de0f00dee3ff94", null ]
+    [ "Version", "_g_root_commands_8h.html#ad827984c977cbf89bbdac5f856d53efd", null ]
 ];

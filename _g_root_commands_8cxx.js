@@ -20,7 +20,5 @@ var _g_root_commands_8cxx =
     [ "ShowPeaks", "_g_root_commands_8cxx.html#ac01b4fd6a551e0f46ca1682c01a6308f", null ],
     [ "StartGUI", "_g_root_commands_8cxx.html#abd9b9bf20e6408d2c5d9e8729d262201", null ],
     [ "Version", "_g_root_commands_8cxx.html#ad827984c977cbf89bbdac5f856d53efd", null ],
-    [ "gAnalysis", "_g_root_commands_8cxx.html#a5e7379c3f6cdea31637fbc3cf6db2cc4", null ],
-    [ "gFragment", "_g_root_commands_8cxx.html#a9466a3fc20b906b9c5de0f00dee3ff94", null ],
     [ "gui_is_running", "_g_root_commands_8cxx.html#af590e05c04dcb1afb95061a057325ebe", null ]
 ];

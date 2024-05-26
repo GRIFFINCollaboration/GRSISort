@@ -68,7 +68,7 @@ var searchData=
   ['fitslices_65',['fitslices',['../class_t_angular_correlation.html#a852a6bd1cbe782d49da3c9a5e7422fbd',1,'TAngularCorrelation::FitSlices()'],['../class_g_h_sym.html#acf1ae5dd31acd4ff334f087afac5c05c',1,'GHSym::FitSlices()']]],
   ['fitslicesz_66',['FitSlicesZ',['../class_g_cube.html#a392da57c5e9a733ea821ce20df0b4c93',1,'GCube']]],
   ['fix_67',['Fix',['../class_t_single_decay.html#a18b513c9b0cfb2746bfb22fbfe20c0a0',1,'TSingleDecay']]],
-  ['fixall_68',['FixAll',['../_griffin_c_t_fix_8cxx.html#a939d6714dcb9e54af96e95da6a14e73c',1,'GriffinCTFix.cxx']]],
+  ['fixall_68',['FixAll',['../_griffin_c_t_fix_8cxx.html#ad00b72fbd61fcca8826704dc9f8283a8',1,'GriffinCTFix.cxx']]],
   ['fixbackground_69',['fixbackground',['../class_t_decay.html#a3ed500d97390b5b9692fca19dbb5f8cf',1,'TDecay::FixBackground()'],['../class_t_decay.html#ab1121408abb9330e84d286245ce537d5',1,'TDecay::FixBackground(const Double_t &amp;background)']]],
   ['fixcrosstalk_70',['fixcrosstalk',['../class_t_ifin.html#aa8fd7943c1c19021d58ffb7509550a39',1,'TIfin::FixCrossTalk()'],['../class_t_fipps.html#abd90b35cc7eb692523e0caefe9e18256',1,'TFipps::FixCrossTalk()'],['../class_t_griffin.html#a6956299ef2e707f6acdbc44789887dd1',1,'TGriffin::FixCrossTalk()']]],
   ['fixdecayrate_71',['fixdecayrate',['../class_t_single_decay.html#adb5d969cff05d9c001fd5da9f8663087',1,'TSingleDecay::FixDecayRate()'],['../class_t_single_decay.html#a69aaa3fd34909a9c883b9560a7613e07',1,'TSingleDecay::FixDecayRate(const Double_t &amp;decayrate)']]],
