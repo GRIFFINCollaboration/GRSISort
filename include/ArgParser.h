@@ -15,11 +15,6 @@ struct ParseError : public std::runtime_error {
    ParseError(const std::string& msg) : std::runtime_error(msg) {}
 };
 
-//// Because gcc-4.7 does not fully implement C++11
-// struct ParseError : public std::runtime_error{
-//   using std::runtime_error::runtime_error;
-// };
-
 /** Base class used to parse an individual item.
     Most methods are implemented in the templated ArgParseConfig<T>
  */
@@ -293,6 +288,27 @@ private:
    std::vector<T>* fOutput_location;
    int             fNum_arguments_expected;
 };
+
+//////////////////////////////////////////////////////////////////////////
+///
+/// \class ArgParser
+///
+/// This class is used to parse the command line arguments. 
+///
+/// Example usage:
+/// ```
+/// ArgParser parser;
+/// parser.option("some-option s", &myOption, true).description("my cool option").default_value(42);
+/// parser.parse(argc, argv, true);
+/// ```
+/// to read the flag "--some-option" or "-s" into the integer variable myOption.
+///
+/// The 3rd argument in ArgParser::option and ArgParser::parse that are set
+/// to true here are the "firstPass" arguments which simply means we want
+/// to read these options right away instead of reading something from an
+/// input file and only then parse the command line arguments.
+///
+//////////////////////////////////////////////////////////////////////////
 
 class ArgParser {
 public:
