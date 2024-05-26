@@ -4,7 +4,7 @@ var dir_d44c64559bbebec7f509842c48db8b23 =
     [ "combinations.h", "combinations_8h.html", "combinations_8h" ],
     [ "DynamicLibrary.h", "_dynamic_library_8h.html", "_dynamic_library_8h" ],
     [ "FullPath.h", "_full_path_8h.html", "_full_path_8h" ],
-    [ "GCanvas.h", "_g_canvas_8h.html", "_g_canvas_8h" ],
+    [ "GCanvas.h", "_g_canvas_8h.html", null ],
     [ "GCube.h", "_g_cube_8h.html", "_g_cube_8h" ],
     [ "GGaus.h", "_g_gaus_8h.html", "_g_gaus_8h" ],
     [ "GH1D.h", "_g_h1_d_8h.html", "_g_h1_d_8h" ],
