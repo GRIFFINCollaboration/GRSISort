@@ -22,6 +22,33 @@
 /// maps for booleans, integers, floats, and strings as well
 /// as vectors of those types.
 ///
+/// For helpers the reading of the user settings is done in 
+/// the TGRSIHelper class and made available as the member
+/// fUserSettings. Code to read the user setting "MyDouble"
+/// into the member variable `fMyMemberVariable` in the helper's
+/// constructor could be:
+/// ```
+///		if(fUserSettings != nullptr) {
+///			fMyMemberVariable = fUserSettings->GetDouble("MyDouble", 1.);
+///		}
+/// ```
+/// See the AngularCorrelationHelper's header file for more.
+///
+/// In general the user settings can be accessed via the
+/// static function `TUserSettings* TGRSIOptions::UserSettings()`.
+///
+/// If TGRSIOptions are not available, the user settings can 
+/// be read using the constructor:
+/// ```
+/// userSettings = new TUserSettings(filename);
+/// ```
+/// or using the ReadSettings function:
+/// ```
+/// userSettings->ReadSettings(filename);
+/// ```
+/// where userSettings is of type TUserSettings* and filename is 
+/// either a std::string or char*.
+///
 /////////////////////////////////////////////////////////////
 
 class TUserSettings : public TNamed {

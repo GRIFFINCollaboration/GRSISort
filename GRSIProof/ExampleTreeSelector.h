@@ -75,5 +75,4 @@ void ExampleTreeSelector::InitializeBranches(TTree* tree)
 		fGriffinBgo = new TGriffinBgo;
 	}
 }
-
 #endif // #ifdef ExampleTreeSelector_cxx

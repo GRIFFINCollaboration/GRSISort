@@ -8,7 +8,7 @@
 #include "TThread.h"
 
 #include "TDetector.h"
-#include "GRootCommands.h"
+#include "TGRSIint.h"
 #include "TFragment.h"
 
 TFragmentChainLoop* TFragmentChainLoop::Get(std::string name, TChain* chain)
