@@ -1,16 +1,5 @@
 var NAVTREEINDEX62 =
 {
-"group___fitting.html#gae76b5802028b1aa7805055e8425b3fcf":[7,3,32],
-"group___fitting.html#gae95e043170a58f32316faa2f1750e652":[7,3,90],
-"group___fitting.html#gaee0e901ac9144fae6b50154feae4ade2":[7,3,88],
-"group___fitting.html#gaf1017a82c93d1b000b7b6c220d62ffd3":[7,3,137],
-"group___fitting.html#gaf35c18c5ed109645a3247d8a33c9e4c2":[7,3,98],
-"group___fitting.html#gaf6dc3489b19633aed94e9e98451b6914":[7,3,77],
-"group___fitting.html#gaf70ddecea4bfe19dc3ef063487092ff0":[7,3,76],
-"group___fitting.html#gaf81927aa1249cf37ac3750267885b120":[7,3,145],
-"group___fitting.html#gafba264d4240278238eb1024ae68d0c5a":[7,3,69],
-"group___fitting.html#gafba28bd9200b27d84f36b575f49ab3f2":[7,3,56],
-"group___fitting.html#gafd8550a970eb6841ad85dfcd4c356dcd":[7,3,127],
 "group___framing.html":[7,4],
 "group___g_r_o_o_t.html":[7,5],
 "group___g_r_s_i_proof.html":[7,6],
@@ -249,5 +238,16 @@ var NAVTREEINDEX62 =
 "namespace_t_g_r_s_i_functions.html#a6b8b8466516fb370fdcb15bed55e09cf":[8,0,6,4],
 "namespace_t_g_r_s_i_functions.html#a6f5b91453a1c24a1b52541da1393f522":[8,0,6,25],
 "namespace_t_g_r_s_i_functions.html#a721eb99b7d385fa92e3fecdf828129a2":[8,0,6,23],
-"namespace_t_g_r_s_i_functions.html#a773f1f2109fc9ccb7cacbfcad9df3a80":[8,0,6,7]
+"namespace_t_g_r_s_i_functions.html#a773f1f2109fc9ccb7cacbfcad9df3a80":[8,0,6,7],
+"namespace_t_g_r_s_i_functions.html#a813c39a9bbf22073b10b1116b115cfbf":[8,0,6,10],
+"namespace_t_g_r_s_i_functions.html#a9b9b5e8719f58aa84d25f39bdf30ec49":[8,0,6,24],
+"namespace_t_g_r_s_i_functions.html#a9e8af435c4e7817962fb6709fd9fedd5":[8,0,6,1],
+"namespace_t_g_r_s_i_functions.html#ab33ee795defdb33b5041e4b3388a8205":[8,0,6,27],
+"namespace_t_g_r_s_i_functions.html#ac60dfd0889d1c6ec734c6fd0eeb94979":[8,0,6,11],
+"namespace_t_g_r_s_i_functions.html#ac8110d4d39e92b89dbef80966f9e4c16":[8,0,6,0],
+"namespace_t_g_r_s_i_functions.html#ace93bbe7e76c53a24559521303d93a34":[8,0,6,28],
+"namespace_t_g_r_s_i_functions.html#ae5f000a96279cb2c469ab00a28f94cd4":[8,0,6,6],
+"namespace_t_g_r_s_i_functions.html#ae669ed1ac562244960b150d8cc758b90":[8,0,6,13],
+"namespace_t_g_r_s_i_functions.html#af72b5fd24bef1dea1ab43af01d8b3682":[8,0,6,21],
+"namespace_t_g_r_s_i_functions.html#af79135e4e0ecb710d0ebbaedc51c5350":[8,0,6,26]
 };

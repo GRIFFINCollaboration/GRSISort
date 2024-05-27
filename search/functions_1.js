@@ -115,7 +115,7 @@ var searchData=
   ['arraysubpositionstring_112',['ArraySubPositionString',['../class_t_mnemonic.html#abd578d2e59d7c3f913f650b0c1bcf794',1,'TMnemonic']]],
   ['assigngroupmaps_113',['AssignGroupMaps',['../class_t_angular_correlation.html#a5135ada4710f657e27ecf2868c56482f',1,'TAngularCorrelation']]],
   ['at_114',['at',['../class_t_g_r_s_i_map.html#ae0a836224dac181bcfdd06ce159c382f',1,'TGRSIMap::at(const key_type &amp;k) const'],['../class_t_g_r_s_i_map.html#a0c6697052d6bd3b75756dea6a6c730e5',1,'TGRSIMap::at(const key_type &amp;k)']]],
-  ['atexithandler_115',['atexithandler',['../grsisort_8cxx.html#a04fc1723500e4bcabb52b985fedc0b72',1,'atexitHandler():&#160;grsisort.cxx'],['../grsiproof_8cxx.html#a90a49b50a652d99b8d612ad0f76a3565',1,'AtExitHandler():&#160;grsiproof.cxx']]],
+  ['atexithandler_115',['atexithandler',['../grsiproof_8cxx.html#a90a49b50a652d99b8d612ad0f76a3565',1,'AtExitHandler():&#160;grsiproof.cxx'],['../grsisort_8cxx.html#a04fc1723500e4bcabb52b985fedc0b72',1,'atexitHandler():&#160;grsisort.cxx']]],
   ['averageangle_116',['AverageAngle',['../class_t_griffin_angles.html#afd646dd0beca73b9b2ba03b13746a3d6',1,'TGriffinAngles']]],
   ['averagerateestimation_117',['AverageRateEstimation',['../class_t_g_r_s_i_options.html#a071bb1a060b139da8f30ebafacb4980d',1,'TGRSIOptions']]],
   ['axiscomboselected_118',['AxisComboSelected',['../class_t_b_g_subtraction.html#ad353baa32a1a03becedd02c4d1c7df01',1,'TBGSubtraction']]]

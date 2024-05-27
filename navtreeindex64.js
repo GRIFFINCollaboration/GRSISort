@@ -1,16 +1,5 @@
 var NAVTREEINDEX64 =
 {
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#a895b54a03d79a98dae60bc2c6979c25b":[7,3,19,4,2],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#a89f6f39d0b338e9299019ca489053f9c":[7,3,19,4,4],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#a909d31cdad1e78e072b4ed733f4c2e1e":[7,3,19,4,5],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#a98a33945bd49205b87d790cfa04ffcad":[7,3,19,4,17],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#a9a9509c6a2f10b06813a31b81c597752":[7,3,19,4,19],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#a9ae22b12e6eb51b07d2cf29cbf6b2e17":[7,3,19,4,36],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#aa30204675c8ce3a6b5d844dd1d3cf1f1":[7,3,19,4,39],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#aa6d0221399398372e1ab1052e92fd214":[7,3,19,4,7],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#ab1397e3b88c085ef465e1dc9ebd59c2d":[7,3,19,4,11],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#ab54767ebbbed3bf77f721359900b3b61":[7,3,19,4,26],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#abdf4ca731dde02aa8d328701591e8595":[7,3,19,4,41],
 "struct_t_pulse_analyzer_1_1_wave_form_par.html#ac0a1b28f3ed2fce17ffc45fa0aac8c32":[7,3,19,4,9],
 "struct_t_pulse_analyzer_1_1_wave_form_par.html#ac4b1969f5208ff30d97bd480afecbf33":[7,3,19,4,31],
 "struct_t_pulse_analyzer_1_1_wave_form_par.html#ac67fcd4d77d5c4674a040f1d7b504c81":[7,3,19,4,18],
