@@ -25,58 +25,20 @@ std::string& TNucleus::massfile()
 TNucleus::TNucleus(const char* name)
 {
 	// Creates a nucleus based on symbol (ex. 26Na OR Na26) and sets all parameters from mass.dat
-	std::string Name = name;
-	int           Number = 0;
+	int           number = 0;
 	std::string   symbol;
 	std::string   element;
-	int           first_digit, first_letter;
 	int           z, n;
 	std::string   sym_name;
 	double        mass;
 	bool          found = false;
 	std::string   line;
 	std::ifstream infile;
-	std::string   MassFile;
-	Name.erase(std::remove_if(Name.begin(), Name.end(), (int (*)(int))std::isspace), Name.end());
-
-	if(Name.length() < 2) {
-		switch(Name[0]) {
-			case 'p':
-				Name.clear();
-				Name.assign("h1");
-				break;
-			case 'd':
-				Name.clear();
-				Name.assign("h2");
-				break;
-			case 't':
-				Name.clear();
-				Name.assign("h3");
-				break;
-			case 'a':
-				Name.clear();
-				Name.assign("he4");
-				break;
-			default:
-				std::cout<<"error, type numbersymbol, or symbolnumber, i.e. 30Mg oder Mg30"<<std::endl;
-				return;
-		};
-	}
+	std::string   massFile;
+	ParseName(name, symbol, number, element);
 	try {
-		first_digit  = Name.find_first_of("0123456789 \t\n\r");
-		first_letter = Name.find_first_not_of("0123456789 \t\n\r");
-
-		if(first_digit > first_letter) {
-			Number = atoi(Name.substr(first_digit).c_str());
-			symbol.append(Name.substr(first_letter, first_digit - first_letter));
-		} else {
-			Number = atoi(Name.substr(first_digit, first_letter - first_digit).c_str());
-			symbol.append(Name.substr(first_letter));
-		}
-		element.append(std::to_string(static_cast<long long>(Number)));
-		element.append(symbol);
-		MassFile = massfile();
-		infile.open(MassFile.c_str());
+		massFile = massfile();
+		infile.open(massFile.c_str());
 		while(!getline(infile, line).fail()) {
 			if(line.length() < 1) {
 				continue;
@@ -96,7 +58,7 @@ TNucleus::TNucleus(const char* name)
 		return;
 	}
 	if(!found) {
-		std::cout<<"Warning: Element "<<element<<" not found in the mass table "<<MassFile<<"."<<std::endl
+		std::cout<<"Warning: Element "<<element<<" not found in the mass table "<<massFile<<"."<<std::endl
 		         <<"Nucleus not set!"<<std::endl;
 		return;
 	}
@@ -177,51 +139,64 @@ TNucleus::~TNucleus()
 	fTransitionListByEnergy.Delete();
 }
 
-std::string TNucleus::SortName(const char* name)
+void TNucleus::ParseName(std::string name, std::string& symbol, int& number, std::string& element)
 {
-	// Names a nucleus based on symbol (ex. 26Na OR Na26). This is to get a nice naming convention.
-	std::string Name = name;
-	int         Number = 0;
-	std::string symbol;
-	std::string element;
-	Name.erase(std::remove_if(Name.begin(), Name.end(), (int (*)(int))std::isspace), Name.end());
+	/// Strips any non-alphanumeric character from input, parses rest as number and symbol.
+	/// E.g. turns "na26" into "Na" and 26 or "  152  EU... " into "Eu" and 152.
+	/// Only uses the first number and first letter, so "na26   eu152" would be turned into "Na" and 26,
+	/// but "na26  152eu" would be turned into "Na" and 26152, and "26na  152eu" would be turned into "Na152eu" and 26.
+	/// Special inputs are "p" for "H" and 1, "d" for "H" and 2, "t" for "H" and 3, and "a" for "He" and 4.
+	/// element simply is the combined string of number and element.
+	
+	// remove any characters that aren't alphanumeric
+	name.erase(std::remove_if(name.begin(), name.end(), [](char c) { return !std::isalnum(c); }), name.end());
 
-	if(Name.length() < 2) {
-		switch(Name[0]) {
+	// special single letter cases
+	if(name.length() == 1) {
+		switch(name[0]) {
 			case 'p':
-				Name.clear();
-				Name.assign("h1");
-				break;
+				symbol.assign("H");
+				return ;
 			case 'd':
-				Name.clear();
-				Name.assign("h2");
-				break;
+				symbol.assign("H");
+				return;
 			case 't':
-				Name.clear();
-				Name.assign("h3");
-				break;
+				symbol.assign("H");
+				return;
 			case 'a':
-				Name.clear();
-				Name.assign("he4");
-				break;
+				symbol.assign("He");
+				return;
 			default:
-				std::cout<<"error, type numbersymbol, or symbolnumber, i.e. 30Mg oder Mg30"<<std::endl;
-				return "";
+				std::cout<<"error, type numbersymbol, or symbolnumber, i.e. 30Mg oder Mg30, not "<<name<<std::endl;
+				return;
 		};
 	}
-	int first_digit  = Name.find_first_of("0123456789 \t\n\r");
-	int first_letter = Name.find_first_not_of("0123456789 \t\n\r");
-	if(first_digit > first_letter) {
-		Number = atoi(Name.substr(first_digit).c_str());
-		symbol.append(Name.substr(first_letter, first_digit - first_letter));
+	
+	int firstDigit  = name.find_first_of("0123456789");
+	int firstLetter = name.find_first_not_of("0123456789");
+	if(firstDigit > firstLetter) {
+		number = atoi(name.substr(firstDigit).c_str());
+		symbol.append(name.substr(firstLetter, firstDigit - firstLetter));
 	} else {
-		Number = atoi(Name.substr(first_digit, first_letter - first_digit).c_str());
-		symbol.append(Name.substr(first_letter));
+		number = atoi(name.substr(firstDigit, firstLetter - firstDigit).c_str());
+		symbol.append(name.substr(firstLetter));
 	}
+	// make certain the symbol starts with upper case and rest is lower case by first transforming everything to lower case and then the first character to upper case.
 	std::transform(symbol.begin(), symbol.end(), symbol.begin(), ::tolower);
 	symbol[0] = toupper(symbol[0]);
-	element.append(std::to_string(static_cast<long long>(Number)));
+	element.append(std::to_string(static_cast<long long>(number)));
 	element.append(symbol);
+}
+
+std::string TNucleus::SortName(std::string input)
+{
+	/// Strips any non-alphanumeric character from input, parses rest as number and symbol.
+	/// E.g. turns "na26" into "26Na" or "  152  EU... " into "152Eu".
+	/// Special inputs are "p" for "1H", "d" for "2H", "t" for "2H", and "a" for "4He".
+	int         number = 0;
+	std::string symbol;
+	std::string element;
+	ParseName(input, symbol, number, element);
 
 	return element;
 }
