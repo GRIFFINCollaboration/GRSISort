@@ -49,6 +49,15 @@
 /// where userSettings is of type TUserSettings* and filename is 
 /// either a std::string or char*.
 ///
+/// The settings file is expected to have the format
+/// parameter name: value
+/// where parameter name is a string w/o whitespace and value is the value of the parameter
+/// the type of the value (bool, int, double, std::string, or vectors of these types) will be determined automatically.
+/// Vectors are comma separated values of one type.
+/// The default type is std::string.
+/// Any lines starting with '#' or '//' or without a colon will be ignored.
+/// See "examples/AngularCorrelationSettings.par" for an example of a settings file.
+///
 /////////////////////////////////////////////////////////////
 
 class TUserSettings : public TNamed {
