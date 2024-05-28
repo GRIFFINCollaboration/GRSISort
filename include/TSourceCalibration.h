@@ -128,14 +128,6 @@ private:
 
 class TSourceCalibration : public TGMainFrame {
 public:
-	enum ESources {
-		k22Na,
-		k56Co,
-		k60Co,
-		k133Ba,
-		k152Eu,
-		k241Am
-	};
 	enum EEntry {
 		kStartButton,
 		kSourceBox = 100,
