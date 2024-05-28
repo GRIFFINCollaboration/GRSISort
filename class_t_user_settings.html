@@ -110,28 +110,13 @@ $(document).ready(function(){initNavTree('class_t_user_settings.html',''); initR
 </div><!-- fragment --><p> See the <a class="el" href="class_angular_correlation_helper.html">AngularCorrelationHelper</a>'s header file for more.</p>
 <p>In general the user settings can be accessed via the static function <code>TUserSettings* <a class="el" href="class_t_g_r_s_i_options.html#a3f5f82869ca2a90c392dbfa2acd16290">TGRSIOptions::UserSettings()</a></code>.</p>
 <p>If <a class="el" href="class_t_g_r_s_i_options.html">TGRSIOptions</a> are not available, the user settings can be read using the constructor: </p><div class="fragment"><div class="line">userSettings = <span class="keyword">new</span> <a class="code hl_function" href="class_t_user_settings.html#ad60de83580d192dbe2fa9831bc9cb203">TUserSettings</a>(filename);</div>
-<div class="ttc" id="aclass_t_user_settings_html_ad60de83580d192dbe2fa9831bc9cb203"><div class="ttname"><a href="class_t_user_settings.html#ad60de83580d192dbe2fa9831bc9cb203">TUserSettings::TUserSettings</a></div><div class="ttdeci">TUserSettings()</div><div class="ttdef"><b>Definition</b> <a href="_t_user_settings_8h_source.html#l00056">TUserSettings.h:56</a></div></div>
+<div class="ttc" id="aclass_t_user_settings_html_ad60de83580d192dbe2fa9831bc9cb203"><div class="ttname"><a href="class_t_user_settings.html#ad60de83580d192dbe2fa9831bc9cb203">TUserSettings::TUserSettings</a></div><div class="ttdeci">TUserSettings()</div><div class="ttdef"><b>Definition</b> <a href="_t_user_settings_8h_source.html#l00065">TUserSettings.h:65</a></div></div>
 </div><!-- fragment --><p> or using the ReadSettings function: </p><div class="fragment"><div class="line">userSettings-&gt;ReadSettings(filename);</div>
-</div><!-- fragment --><p> where userSettings is of type TUserSettings* and filename is either a std::string or char*. </p>
+</div><!-- fragment --><p> where userSettings is of type TUserSettings* and filename is either a std::string or char*.</p>
+<p>The settings file is expected to have the format parameter name: value where parameter name is a string w/o whitespace and value is the value of the parameter the type of the value (bool, int, double, std::string, or vectors of these types) will be determined automatically. Vectors are comma separated values of one type. The default type is std::string. Any lines starting with '#' or '//' or without a colon will be ignored. See "examples/AngularCorrelationSettings.par" for an example of a settings file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00054">54</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
-</div>
-<p><code>#include &lt;<a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>&gt;</code></p>
-<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for TUserSettings:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_user_settings__inherit__graph.svg" width="116" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for TUserSettings:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_user_settings__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<table class="memberdecls">
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00063">63</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad60de83580d192dbe2fa9831bc9cb203" id="r_ad60de83580d192dbe2fa9831bc9cb203"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_user_settings.html#ad60de83580d192dbe2fa9831bc9cb203">TUserSettings</a> ()</td></tr>
@@ -216,6 +201,20 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a60701bf5a958bee3432d9cea9090ebd5" id="r_a60701bf5a958bee3432d9cea9090ebd5"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, std::vector&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_user_settings.html#a60701bf5a958bee3432d9cea9090ebd5">fStringVector</a></td></tr>
 <tr class="separator:a60701bf5a958bee3432d9cea9090ebd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for TUserSettings:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_user_settings__inherit__graph.svg" width="116" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for TUserSettings:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_user_settings__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad60de83580d192dbe2fa9831bc9cb203" name="ad60de83580d192dbe2fa9831bc9cb203"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad60de83580d192dbe2fa9831bc9cb203">&#9670;&#160;</a></span>TUserSettings() <span class="overload">[1/2]</span></h2>
@@ -240,7 +239,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00056">56</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00065">65</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
 </div>
 </div>
@@ -268,7 +267,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00057">57</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00066">66</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
 <p class="reference">References <a class="el" href="class_t_user_settings.html#ad447eee527aad98e3355142c54662f06">ReadSettings()</a>.</p>
 
@@ -297,7 +296,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00059">59</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00068">68</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
 </div>
 </div>
@@ -326,9 +325,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00106">106</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00115">115</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00111">fBool</a>, <a class="el" href="_t_user_settings_8h_source.html#l00115">fBoolVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00113">fDouble</a>, <a class="el" href="_t_user_settings_8h_source.html#l00117">fDoubleVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00112">fInt</a>, <a class="el" href="_t_user_settings_8h_source.html#l00116">fIntVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00114">fString</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00118">fStringVector</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00120">fBool</a>, <a class="el" href="_t_user_settings_8h_source.html#l00124">fBoolVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00122">fDouble</a>, <a class="el" href="_t_user_settings_8h_source.html#l00126">fDoubleVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00121">fInt</a>, <a class="el" href="_t_user_settings_8h_source.html#l00125">fIntVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00123">fString</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00127">fStringVector</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00040">TGRSIOptions::Clear()</a>.</p>
 
@@ -357,9 +356,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00063">63</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00072">72</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00111">fBool</a>, <a class="el" href="_t_user_settings_8h_source.html#l00115">fBoolVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00113">fDouble</a>, <a class="el" href="_t_user_settings_8h_source.html#l00117">fDoubleVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00112">fInt</a>, <a class="el" href="_t_user_settings_8h_source.html#l00116">fIntVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00114">fString</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00118">fStringVector</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00120">fBool</a>, <a class="el" href="_t_user_settings_8h_source.html#l00124">fBoolVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00122">fDouble</a>, <a class="el" href="_t_user_settings_8h_source.html#l00126">fDoubleVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00121">fInt</a>, <a class="el" href="_t_user_settings_8h_source.html#l00125">fIntVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00123">fString</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00127">fStringVector</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00626">TGRSIOptions::WriteToFile()</a>.</p>
 
@@ -391,7 +390,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00067">67</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00076">76</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_user_settings_8cxx_source.html#l00121">GetBool()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00173">GetBoolVector()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00147">GetDouble()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00199">GetDoubleVector()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00134">GetInt()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00186">GetIntVector()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00160">GetString()</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00212">GetStringVector()</a>.</p>
 
@@ -425,9 +424,9 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_user_settings_8cxx_source.html#l00121">121</a> of file <a class="el" href="_t_user_settings_8cxx_source.html">TUserSettings.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00111">fBool</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00120">fBool</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8hh_source.html#l00035">AngularCorrelationHelper::AngularCorrelationHelper()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00067">Get()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8hh_source.html#l00035">AngularCorrelationHelper::AngularCorrelationHelper()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00076">Get()</a>.</p>
 
 </div>
 </div>
@@ -459,9 +458,9 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_user_settings_8cxx_source.html#l00173">173</a> of file <a class="el" href="_t_user_settings_8cxx_source.html">TUserSettings.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00115">fBoolVector</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00124">fBoolVector</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00067">Get()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00076">Get()</a>.</p>
 
 </div>
 </div>
@@ -493,9 +492,9 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_user_settings_8cxx_source.html#l00147">147</a> of file <a class="el" href="_t_user_settings_8cxx_source.html">TUserSettings.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00113">fDouble</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00122">fDouble</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8hh_source.html#l00035">AngularCorrelationHelper::AngularCorrelationHelper()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00067">Get()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8hh_source.html#l00035">AngularCorrelationHelper::AngularCorrelationHelper()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00076">Get()</a>.</p>
 
 </div>
 </div>
@@ -533,9 +532,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00092">92</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00101">101</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00113">fDouble</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00122">fDouble</a>.</p>
 
 </div>
 </div>
@@ -567,9 +566,9 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_user_settings_8cxx_source.html#l00199">199</a> of file <a class="el" href="_t_user_settings_8cxx_source.html">TUserSettings.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00117">fDoubleVector</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00126">fDoubleVector</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00067">Get()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00076">Get()</a>.</p>
 
 </div>
 </div>
@@ -601,9 +600,9 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_user_settings_8cxx_source.html#l00134">134</a> of file <a class="el" href="_t_user_settings_8cxx_source.html">TUserSettings.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00112">fInt</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00121">fInt</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8hh_source.html#l00035">AngularCorrelationHelper::AngularCorrelationHelper()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00067">Get()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8hh_source.html#l00035">AngularCorrelationHelper::AngularCorrelationHelper()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00076">Get()</a>.</p>
 
 </div>
 </div>
@@ -641,9 +640,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00091">91</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00100">100</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00112">fInt</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00121">fInt</a>.</p>
 
 </div>
 </div>
@@ -675,9 +674,9 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_user_settings_8cxx_source.html#l00186">186</a> of file <a class="el" href="_t_user_settings_8cxx_source.html">TUserSettings.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00116">fIntVector</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00125">fIntVector</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8hh_source.html#l00035">AngularCorrelationHelper::AngularCorrelationHelper()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00005">ClassImp()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00067">Get()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8hh_source.html#l00035">AngularCorrelationHelper::AngularCorrelationHelper()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00005">ClassImp()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00076">Get()</a>.</p>
 
 </div>
 </div>
@@ -709,9 +708,9 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_user_settings_8cxx_source.html#l00160">160</a> of file <a class="el" href="_t_user_settings_8cxx_source.html">TUserSettings.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00114">fString</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00123">fString</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00067">Get()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00076">Get()</a>.</p>
 
 </div>
 </div>
@@ -749,9 +748,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00093">93</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00102">102</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00114">fString</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00123">fString</a>.</p>
 
 </div>
 </div>
@@ -783,9 +782,9 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_user_settings_8cxx_source.html#l00212">212</a> of file <a class="el" href="_t_user_settings_8cxx_source.html">TUserSettings.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00118">fStringVector</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00127">fStringVector</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00067">Get()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00076">Get()</a>.</p>
 
 </div>
 </div>
@@ -831,7 +830,7 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_user_settings_8cxx_source.html#l00063">63</a> of file <a class="el" href="_t_user_settings_8cxx_source.html">TUserSettings.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00111">fBool</a>, <a class="el" href="_t_user_settings_8h_source.html#l00115">fBoolVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00113">fDouble</a>, <a class="el" href="_t_user_settings_8h_source.html#l00117">fDoubleVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00112">fInt</a>, <a class="el" href="_t_user_settings_8h_source.html#l00116">fIntVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00114">fString</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00118">fStringVector</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00120">fBool</a>, <a class="el" href="_t_user_settings_8h_source.html#l00124">fBoolVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00122">fDouble</a>, <a class="el" href="_t_user_settings_8h_source.html#l00126">fDoubleVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00121">fInt</a>, <a class="el" href="_t_user_settings_8h_source.html#l00125">fIntVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00123">fString</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00127">fStringVector</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_user_settings_8cxx_source.html#l00012">ClassImp()</a>.</p>
 
@@ -863,7 +862,7 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_user_settings_8cxx_source.html#l00225">225</a> of file <a class="el" href="_t_user_settings_8cxx_source.html">TUserSettings.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00111">fBool</a>, <a class="el" href="_t_user_settings_8h_source.html#l00115">fBoolVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00113">fDouble</a>, <a class="el" href="_t_user_settings_8h_source.html#l00117">fDoubleVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00112">fInt</a>, <a class="el" href="_t_user_settings_8h_source.html#l00116">fIntVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00120">fSettingsFiles</a>, <a class="el" href="_t_user_settings_8h_source.html#l00114">fString</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00118">fStringVector</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00120">fBool</a>, <a class="el" href="_t_user_settings_8h_source.html#l00124">fBoolVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00122">fDouble</a>, <a class="el" href="_t_user_settings_8h_source.html#l00126">fDoubleVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00121">fInt</a>, <a class="el" href="_t_user_settings_8h_source.html#l00125">fIntVector</a>, <a class="el" href="_t_user_settings_8h_source.html#l00129">fSettingsFiles</a>, <a class="el" href="_t_user_settings_8h_source.html#l00123">fString</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00127">fStringVector</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_user_settings_8cxx_source.html#l00121">GetBool()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00173">GetBoolVector()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00147">GetDouble()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00199">GetDoubleVector()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00134">GetInt()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00186">GetIntVector()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00160">GetString()</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00212">GetStringVector()</a>.</p>
 
@@ -885,7 +884,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00057">TUserSettings()</a>, and <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00543">TGRSIOptions::FileAutoDetect()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00066">TUserSettings()</a>, and <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00543">TGRSIOptions::FileAutoDetect()</a>.</p>
 
 </div>
 </div>
@@ -923,9 +922,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00096">96</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00105">105</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00111">fBool</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00120">fBool</a>.</p>
 
 </div>
 </div>
@@ -963,9 +962,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00100">100</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00109">109</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00115">fBoolVector</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00124">fBoolVector</a>.</p>
 
 </div>
 </div>
@@ -1003,9 +1002,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00098">98</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00107">107</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00113">fDouble</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00122">fDouble</a>.</p>
 
 </div>
 </div>
@@ -1043,9 +1042,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00102">102</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00111">111</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00117">fDoubleVector</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00126">fDoubleVector</a>.</p>
 
 </div>
 </div>
@@ -1083,9 +1082,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00097">97</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00106">106</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00112">fInt</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00121">fInt</a>.</p>
 
 </div>
 </div>
@@ -1123,9 +1122,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00101">101</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00110">110</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00116">fIntVector</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00125">fIntVector</a>.</p>
 
 </div>
 </div>
@@ -1163,9 +1162,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00099">99</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00108">108</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00114">fString</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00123">fString</a>.</p>
 
 </div>
 </div>
@@ -1203,9 +1202,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00103">103</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00112">112</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00118">fStringVector</a>.</p>
+<p class="reference">References <a class="el" href="_t_user_settings_8h_source.html#l00127">fStringVector</a>.</p>
 
 </div>
 </div>
@@ -1230,9 +1229,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00111">111</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00120">120</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00106">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00063">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00121">GetBool()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00096">SetBool()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00115">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00072">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00121">GetBool()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00105">SetBool()</a>.</p>
 
 </div>
 </div>
@@ -1256,9 +1255,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00115">115</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00124">124</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00106">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00063">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00173">GetBoolVector()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00100">SetBoolVector()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00115">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00072">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00173">GetBoolVector()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00109">SetBoolVector()</a>.</p>
 
 </div>
 </div>
@@ -1282,9 +1281,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00113">113</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00122">122</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00106">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00063">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00147">GetDouble()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00092">GetDouble()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00098">SetDouble()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00115">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00072">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00147">GetDouble()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00101">GetDouble()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00107">SetDouble()</a>.</p>
 
 </div>
 </div>
@@ -1308,9 +1307,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00117">117</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00126">126</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00106">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00063">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00199">GetDoubleVector()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00102">SetDoubleVector()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00115">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00072">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00199">GetDoubleVector()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00111">SetDoubleVector()</a>.</p>
 
 </div>
 </div>
@@ -1334,9 +1333,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00112">112</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00121">121</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00106">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00063">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00134">GetInt()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00091">GetInt()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00097">SetInt()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00115">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00072">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00134">GetInt()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00100">GetInt()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00106">SetInt()</a>.</p>
 
 </div>
 </div>
@@ -1360,9 +1359,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00116">116</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00125">125</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00106">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00063">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00186">GetIntVector()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00101">SetIntVector()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00115">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00072">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00186">GetIntVector()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00110">SetIntVector()</a>.</p>
 
 </div>
 </div>
@@ -1386,7 +1385,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00120">120</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00129">129</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_user_settings_8cxx_source.html#l00012">ClassImp()</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>.</p>
 
@@ -1412,9 +1411,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00114">114</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00123">123</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00106">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00063">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00160">GetString()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00093">GetString()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00099">SetString()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00115">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00072">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00160">GetString()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00102">GetString()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00108">SetString()</a>.</p>
 
 </div>
 </div>
@@ -1438,9 +1437,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00118">118</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_user_settings_8h_source.html#l00127">127</a> of file <a class="el" href="_t_user_settings_8h_source.html">TUserSettings.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00106">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00063">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00212">GetStringVector()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00103">SetStringVector()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_user_settings_8h_source.html#l00115">Clear()</a>, <a class="el" href="_t_user_settings_8h_source.html#l00072">empty()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00212">GetStringVector()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00063">ParseValue()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00225">Print()</a>, and <a class="el" href="_t_user_settings_8h_source.html#l00112">SetStringVector()</a>.</p>
 
 </div>
 </div>
@@ -1451,7 +1450,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_user_settings.html">TUserSettings</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Mon May 27 2024 07:19:47.</li>
+    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:22.</li>
   </ul>
 </div>
 </body>

@@ -1,5 +1,8 @@
 var NAVTREEINDEX60 =
 {
+"classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a078fd779e4f4642df0c4b8b09307dc00":[9,0,1,4,0,0],
+"classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a078fd779e4f4642df0c4b8b09307dc00":[8,0,5,6,0,0],
+"classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a09ca95954c7b5608335d1cf1b2db58e6":[8,0,5,6,0,5],
 "classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a09ca95954c7b5608335d1cf1b2db58e6":[9,0,1,4,0,5],
 "classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a09ee1bb0f5ca099bb22ff0b4510f2310":[8,0,5,6,0,25],
 "classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a09ee1bb0f5ca099bb22ff0b4510f2310":[9,0,1,4,0,25],
@@ -246,8 +249,5 @@ var NAVTREEINDEX60 =
 "functions_func_u.html":[9,3,1,20],
 "functions_func_v.html":[9,3,1,21],
 "functions_func_w.html":[9,3,1,22],
-"functions_func_z.html":[9,3,1,23],
-"functions_func_~.html":[9,3,1,24],
-"functions_g.html":[9,3,0,7],
-"functions_h.html":[9,3,0,8]
+"functions_func_z.html":[9,3,1,23]
 };

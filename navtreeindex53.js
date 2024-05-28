@@ -1,5 +1,8 @@
 var NAVTREEINDEX53 =
 {
+"class_t_tdr_plastic_hit.html#ab4f4c27b4ee3c8d8b24db08ae85c2fb0":[7,2,56,28],
+"class_t_tdr_plastic_hit.html#ab5efce05747d2c39d501a16dc2382db5":[7,2,56,21],
+"class_t_tdr_plastic_hit.html#ab6769845c97c3ab9f3173407ed724da9":[7,2,56,8],
 "class_t_tdr_plastic_hit.html#ab6adf5ff1ffbcbb3b50c4559209f007a":[7,2,56,37],
 "class_t_tdr_plastic_hit.html#aba5e96b2f172f0e12eb2b6e06af5a735":[7,2,56,38],
 "class_t_tdr_plastic_hit.html#abab2f46047c824844baca0e7fae7eb03":[7,2,56,61],
@@ -246,8 +249,5 @@ var NAVTREEINDEX53 =
 "class_t_tdr_tigress.html#aee257899ae072a9ec5ac5ccd1b748658":[7,2,59,2],
 "class_t_tdr_tigress.html#af08bdfc51784d5d5579f6c3f9183d064":[7,2,59,67],
 "class_t_tdr_tigress.html#af34ce469ed42e363827fc6e5f3212a31":[7,2,59,57],
-"class_t_tdr_tigress.html#af3fc3f87a2f999d973051335fcbe9ac0":[7,2,59,41],
-"class_t_tdr_tigress.html#af83ad943618a30f7d1639675e18fc5b8":[7,2,59,6],
-"class_t_tdr_tigress_bgo.html":[7,2,60],
-"class_t_tdr_tigress_bgo.html#a12de5b850d133388ae18b48971e244c2":[7,2,60,0]
+"class_t_tdr_tigress.html#af3fc3f87a2f999d973051335fcbe9ac0":[7,2,59,41]
 };

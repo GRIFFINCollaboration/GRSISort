@@ -1,5 +1,8 @@
 var NAVTREEINDEX58 =
 {
+"class_t_zero_degree.html#a5bb705bebefab8cfb039ecb67ec0f9da":[7,2,69,8],
+"class_t_zero_degree.html#a5e9c810b797a49cc7df88b117fc5cca2":[7,2,69,15],
+"class_t_zero_degree.html#a5f57da45f84f972ccec7f23cadafd0fb":[7,2,69,3],
 "class_t_zero_degree.html#a6e483563c00dd55bc01da79977ad9964":[7,2,69,5],
 "class_t_zero_degree.html#a7130d318a44a127734673fb300fdaefe":[7,2,69,16],
 "class_t_zero_degree.html#a757446d5e1a10fe865c7f79e8807fc6e":[7,2,69,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX58 =
 "classcombinations_1_1iterator.html#aca68df075d771728aef4221e8ef1506d":[9,0,13,0,4],
 "classcombinations_1_1iterator.html#acbbce32dee45d1e03f4992e6da2a457e":[9,0,13,0,1],
 "classcombinations_1_1iterator.html#aeeedc620c446b6357a9e7821b1951f76":[9,0,13,0,2],
-"classes.html":[9,1],
-"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html":[8,0,5,0,0],
-"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html":[9,0,1,0,0],
-"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#a12da6bda587d04f61ffebbcb00ba973b":[9,0,1,0,0,8]
+"classes.html":[9,1]
 };
