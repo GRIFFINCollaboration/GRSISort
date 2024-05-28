@@ -38,7 +38,10 @@ public:
 
 	~TNucleus() override;
 
-	static std::string SortName(const char* name);
+	static void ParseName(const char* input, std::string& symbol, int& number, std::string& element) { std::string tmp(input); return ParseName(tmp, symbol, number, element); }
+	static void ParseName(std::string input, std::string& symbol, int& number, std::string& element);
+	static std::string SortName(const char* input) { std::string tmp(input); return SortName(tmp); }
+	static std::string SortName(std::string input);
 	void SetZ(int);              ///< Sets the Z (# of protons) of the nucleus
 	void SetN(int);              ///< Sets the N (# of neutrons) of the nucleus
 	void SetMassExcess(double);  ///< Sets the mass excess of the nucleus (in MeV)
