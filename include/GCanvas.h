@@ -138,10 +138,12 @@ public:
 ///   histograms on a new canvas, or (for 2D histograms) create new GH2D from
 ///   histogram and draw it on a new canvas (using "colz").
 /// - control click: doesn't do anything right now, code for TCutG is commented out.
+///
 /// For TLevelSchemes we also have:
 /// - mouse wheel to change zoom level
 /// - mouse drag to zoom in
 /// - u unzooms.
+///
 /// Also adds keyboard controls for 1D histograms:
 /// - left/right arrow moves the range left/right by 50%.
 /// - up/down arrow on GH1D histograms selects the next/previous histogram and draws it.
@@ -170,6 +172,7 @@ public:
 /// - R	Bring up the dialogue box used to set the desired y-axis range.
 /// - s	Show peak values.
 /// - S	Remove peak values. 
+///
 /// And for 2D histograms these keyboard controls are added:
 /// - left/right arrow moves the range left/right by 50%.
 /// - up/down arrow moves the range up/down by 50%.
