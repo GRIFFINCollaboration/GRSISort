@@ -147,7 +147,7 @@ PointerAlignment: Left
 PPIndentWidth:   -1
 #QualifierOrder: [inline, static, type, const, volatile]
 ReferenceAlignment: Left
-ReflowComments:  true
+ReflowComments:  false
 RemoveBracesLLVM: false
 SeparateDefinitionBlocks: Leave
 ShortNamespaceLines: 1
