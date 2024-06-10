@@ -6,42 +6,52 @@ AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: true
 # This would be nice to have but seems to also (mis)align function parameters
 AlignConsecutiveDeclarations: true
-AlignEscapedNewlinesLeft: true
+AlignEscapedNewlines: Left
 AlignOperands:   true
 AlignTrailingComments: true
 AllowAllParametersOfDeclarationOnNextLine: true
-AllowShortBlocksOnASingleLine: false
+AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: Inline
-AllowShortIfStatementsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: true
 # This option is "deprecated and is retained for backwards compatibility."
 # AlwaysBreakAfterDefinitionReturnType: None
-AlwaysBreakAfterReturnType: None
+# AlwaysBreakAfterReturnType: None (renamed to BreakAfterReturnType)
 AlwaysBreakBeforeMultilineStrings: false
-AlwaysBreakTemplateDeclarations: true
+# AlwaysBreakTemplateDeclarations: true (renamed to BreakTemplateDeclarations)
 BinPackArguments: true
 BinPackParameters: true
 BraceWrapping:
+  AfterCaseLabel: false
   AfterClass:      false
-  AfterControlStatement: false
+  AfterControlStatement: Never
   AfterEnum:       false
   AfterFunction:   true
   AfterNamespace:  false
   AfterObjCDeclaration: false
   AfterStruct:     false
   AfterUnion:      false
+  AfterExternBlock: false
   BeforeCatch:     false
   BeforeElse:      false
+  BeforeLambdaBody: false
+  BeforeWhile:     false
   IndentBraces:    false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+BreakAfterReturnType: Automatic
+BreakArrays: false
 BreakBeforeBinaryOperators: None
 # was Custom
 BreakBeforeBraces: Custom
 BreakBeforeTernaryOperators: true
-BreakConstructorInitializersBeforeComma: false
-ColumnLimit:     120
+BreakConstructorInitializers: BeforeColon
+ColumnLimit:     0
 CommentPragmas:  '^ IWYU pragma:'
-ConstructorInitializerAllOnOneLineOrOnePerLine: false
+# ConstructorInitializerAllOnOneLineOrOnePerLine: false (deprecated)
 ConstructorInitializerIndentWidth: 3
 ContinuationIndentWidth: 3
 Cpp11BracedListStyle: true
@@ -49,6 +59,7 @@ DerivePointerAlignment: false
 DisableFormat:   false
 ExperimentalAutoDetectBinPacking: false
 ForEachMacros:   [ foreach, Q_FOREACH, BOOST_FOREACH ]
+IncludeBlocks: Regroup
 IncludeCategories:
   - Regex:           '^("|<)T'
     Priority:        4
@@ -65,7 +76,11 @@ IncludeCategories:
 IndentCaseLabels: false
 IndentWidth:     3
 IndentWrappedFunctionNames: false
+InsertNewlineAtEOF: true
+KeepEmptyLinesAtEOF: false
 KeepEmptyLinesAtTheStartOfBlocks: true
+Language: Cpp
+LineEnding: LF
 MacroBlockBegin: ''
 MacroBlockEnd:   ''
 MaxEmptyLinesToKeep: 1
@@ -81,19 +96,39 @@ PenaltyExcessCharacter: 1000000
 PenaltyReturnTypeOnItsOwnLine: 60000
 PointerAlignment: Left
 PointerBindsToType: true
+QualifierAlignment: Left
+QualifierOrder: [inline, static, type, const, volatile]
+ReferenceAlignment: Left
 ReflowComments:  true
-SortIncludes: false
+SortIncludes: Never
+SortUsingDeclarations: LexicographicNumeric
 SpaceAfterCStyleCast: false
 SpaceBeforeAssignmentOperators: true
-SpaceBeforeParens: Never
-SpaceInEmptyParentheses: false
-SpacesBeforeTrailingComments: 1
-SpacesInAngles:  false
+SpaceBeforeCaseColon: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeParens: Custom
+SpaceBeforeParensOptions:
+  AfterControlStatements: false
+  AfterForeachMacros: false
+  AfterFunctionDeclarationName: false
+  AfterFunctionDefinitionName: false
+  AfterIfMacros: false
+  AfterOverloadedOperator: false
+  AfterPlacementOperator: true
+  AfterRequiresInClause: true
+  AfterRequiresInExpression: false
+  BeforeNonEmptyParentheses: false
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeSquareBrackets: false
+SpacesBeforeTrailingComments: 3
+SpacesInAngles:  Never
 SpacesInContainerLiterals: true
-SpacesInCStyleCastParentheses: false
-SpacesInParentheses: false
+SpacesInLineCommentPrefix:
+  Minimum: 1
+  Maximum: 3
+SpacesInParens: Never
 SpacesInSquareBrackets: false
-Standard:        Cpp11
+Standard:        Cpp17
 TabWidth:        3
 UseTab:          Never
 ...
