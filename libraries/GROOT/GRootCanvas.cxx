@@ -189,16 +189,16 @@ static ToolBarData_t gToolBarData1[] = {{"pointer.xpm", "Modify", kFALSE, kToolM
                                         {"cut.xpm", "Graphical Cut", kFALSE, kToolCutG, nullptr},
                                         {nullptr, nullptr, kFALSE, 0, nullptr}};
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// GRootContainer                                                       //
-//                                                                      //
-// Utility class used by GRootCanvas. The GRootContainer is the frame   //
-// embedded in the TGCanvas widget. The ROOT graphics goes into this    //
-// frame. This class is used to enable input events on this graphics    //
-// frame and forward the events to the GRootCanvas handlers.            //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+///                                                                      
+/// \class GRootContainer                                                       
+///                                                                      
+/// Utility class used by GRootCanvas. The GRootContainer is the frame   
+/// embedded in the TGCanvas widget. The ROOT graphics goes into this    
+/// frame. This class is used to enable input events on this graphics    
+/// frame and forward the events to the GRootCanvas handlers.            
+///                                                                      
+/////////////////////////////////////////////////////////////////////////
 
 class GRootContainer : public TGCompositeFrame {
 private:
@@ -2017,11 +2017,10 @@ void GRootContainer::SavePrimitive(std::ostream& out, Option_t* /*= ""*/)
 {
    /// Save a canvas container as a C++ statement(s) on output stream out.
 
-   out<<std::endl<<"   // canvas container"<<std::endl;
-   out<<"   Int_t canvasID = gVirtualX->InitWindow((ULong_t)"<<GetParent()->GetParent()->GetName()<<"->GetId());"
-      <<std::endl;
+   out<<std::endl
+		<<"   // canvas container"<<std::endl;
+   out<<"   Int_t canvasID = gVirtualX->InitWindow((ULong_t)"<<GetParent()->GetParent()->GetName()<<"->GetId());"<<std::endl;
    out<<"   Window_t winC = gVirtualX->GetWindowID(canvasID);"<<std::endl;
    out<<"   TGCompositeFrame *";
-   out<<GetName()<<" = new TGCompositeFrame(gClient,winC"
-      <<","<<GetParent()->GetName()<<");"<<std::endl;
+   out<<GetName()<<" = new TGCompositeFrame(gClient, winC, "<<GetParent()->GetName()<<");"<<std::endl;
 }
