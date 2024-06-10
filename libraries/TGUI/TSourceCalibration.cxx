@@ -1,6 +1,14 @@
 #include "TSourceCalibration.h"
 
 #include <chrono>
+#include <stdlib.h>
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <cstring>
+#if __cplusplus >= 201703L
+#include <filesystem>
+#endif
 
 #include "TSystem.h"
 #include "TGTableLayout.h"
@@ -753,36 +761,63 @@ void TSourceCalibration::BuildFirstInterface()
 		fSource.push_back(nullptr);
 		fSourceEnergy.push_back(std::vector<std::tuple<double, double, double, double> >());
 		fSourceBox.push_back(new TGComboBox(this, "Select source", kSourceBox + fSourceBox.size()));
-		fSourceBox.back()->AddEntry("22Na", k22Na);
+
+		int index = 0;
+#if __cplusplus >= 201703L
+		// For some reasons getenv("GRSISYS") with strcat does not work (adds the "sub"-path twice).
+		// Have to do this by copying the getenv result into a c++-string.
+		if(std::getenv("GRSISYS") == nullptr) {
+			throw std::runtime_error("Failed to get environment variable $GRSISYS");
+		}
+		std::string path(std::getenv("GRSISYS"));
+		path += "/libraries/TAnalysis/SourceData/";
+		for(const auto& file : std::filesystem::directory_iterator(path)) {
+			if(file.is_regular_file() && file.path().extension().compare(".sou") == 0) {
+				fSourceBox.back()->AddEntry(file.path().stem().c_str(), index);
+				if(std::strstr(fMatrices[i]->GetName(), file.path().stem().c_str()) != nullptr) {
+					fSourceBox.back()->Select(index);
+					SetSource(kSourceBox + fSourceBox.size() - 1, index);
+				}
+			}
+		}
+#else
+		fSourceBox.back()->AddEntry("22Na", index);
 		if(std::strstr(fMatrices[i]->GetName(), "22Na") != nullptr) {
-			fSourceBox.back()->Select(0);
-			SetSource(kSourceBox + fSourceBox.size() - 1, 0);
+			fSourceBox.back()->Select(index);
+			SetSource(kSourceBox + fSourceBox.size() - 1, index);
 		}
-		fSourceBox.back()->AddEntry("56Co", k56Co);
+		++index;
+		fSourceBox.back()->AddEntry("56Co", index);
 		if(std::strstr(fMatrices[i]->GetName(), "56Co") != nullptr) {
-			fSourceBox.back()->Select(1);
-			SetSource(kSourceBox + fSourceBox.size() - 1, 1);
+			fSourceBox.back()->Select(index);
+			SetSource(kSourceBox + fSourceBox.size() - 1, index);
 		}
-		fSourceBox.back()->AddEntry("60Co", k60Co);
+		++index;
+		fSourceBox.back()->AddEntry("60Co", index);
 		if(std::strstr(fMatrices[i]->GetName(), "60Co") != nullptr) {
-			fSourceBox.back()->Select(2);
-			SetSource(kSourceBox + fSourceBox.size() - 1, 2);
+			fSourceBox.back()->Select(index);
+			SetSource(kSourceBox + fSourceBox.size() - 1, index);
 		}
-		fSourceBox.back()->AddEntry("133Ba", k133Ba);
+		++index;
+		fSourceBox.back()->AddEntry("133Ba", index);
 		if(std::strstr(fMatrices[i]->GetName(), "133Ba") != nullptr) {
-			fSourceBox.back()->Select(3);
-			SetSource(kSourceBox + fSourceBox.size() - 1, 3);
+			fSourceBox.back()->Select(index);
+			SetSource(kSourceBox + fSourceBox.size() - 1, index);
 		}
-		fSourceBox.back()->AddEntry("152Eu", k152Eu);
+		++index;
+		fSourceBox.back()->AddEntry("152Eu", index);
 		if(std::strstr(fMatrices[i]->GetName(), "152Eu") != nullptr) {
-			fSourceBox.back()->Select(4);
-			SetSource(kSourceBox + fSourceBox.size() - 1, 4);
+			fSourceBox.back()->Select(index);
+			SetSource(kSourceBox + fSourceBox.size() - 1, index);
 		}
-		fSourceBox.back()->AddEntry("241Am", k241Am);
+		++index;
+		fSourceBox.back()->AddEntry("241Am", index);
 		if(std::strstr(fMatrices[i]->GetName(), "241Am") != nullptr) {
-			fSourceBox.back()->Select(5);
-			SetSource(kSourceBox + fSourceBox.size() - 1, 5);
+			fSourceBox.back()->Select(index);
+			SetSource(kSourceBox + fSourceBox.size() - 1, index);
 		}
+#endif
+
 		fSourceBox.back()->SetMinHeight(200);
 
 		//fMatrixNames.back()->Resize(600, fLineHeight);
