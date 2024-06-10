@@ -9,15 +9,6 @@
  * For the list of contributors see $ROOTSYS/README/CREDITS.             *
  *************************************************************************/
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// GRootGuiFactory                                                      //
-//                                                                      //
-// This class is a factory for ROOT GUI components. It overrides        //
-// the member functions of the ABS TGuiFactory.                         //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
 #include "GRootGuiFactory.h"
 #include "TRootApplication.h"
 
@@ -34,9 +25,9 @@
 
 /// \cond CLASSIMP
 ClassImp(GRootGuiFactory)
-/// \endcond
+   /// \endcond
 
-void GRootGuiFactory::Init()
+   void GRootGuiFactory::Init()
 {
    if(gROOT->IsBatch()) {
       return;
