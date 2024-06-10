@@ -18,7 +18,7 @@ AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: true
 # This option is "deprecated and is retained for backwards compatibility."
 # AlwaysBreakAfterDefinitionReturnType: None
-# AlwaysBreakAfterReturnType: None (renamed to BreakAfterReturnType)
+AlwaysBreakAfterReturnType: None 
 AlwaysBreakBeforeMultilineStrings: false
 # AlwaysBreakTemplateDeclarations: true (renamed to BreakTemplateDeclarations)
 BinPackArguments: true
@@ -42,10 +42,9 @@ BraceWrapping:
   SplitEmptyFunction: false
   SplitEmptyRecord: false
   SplitEmptyNamespace: false
-BreakAfterReturnType: Automatic
-BreakArrays: false
+#BreakAfterReturnType: Automatic
+#BreakArrays: false
 BreakBeforeBinaryOperators: None
-# was Custom
 BreakBeforeBraces: Custom
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeColon
@@ -76,11 +75,10 @@ IncludeCategories:
 IndentCaseLabels: false
 IndentWidth:     3
 IndentWrappedFunctionNames: false
-InsertNewlineAtEOF: true
-KeepEmptyLinesAtEOF: false
+#InsertNewlineAtEOF: true
+#KeepEmptyLinesAtEOF: false
 KeepEmptyLinesAtTheStartOfBlocks: true
-Language: Cpp
-LineEnding: LF
+#LineEnding: LF
 MacroBlockBegin: ''
 MacroBlockEnd:   ''
 MaxEmptyLinesToKeep: 1
@@ -97,11 +95,11 @@ PenaltyReturnTypeOnItsOwnLine: 60000
 PointerAlignment: Left
 PointerBindsToType: true
 QualifierAlignment: Left
-QualifierOrder: [inline, static, type, const, volatile]
+#QualifierOrder: [inline, static, type, const, volatile]
 ReferenceAlignment: Left
 ReflowComments:  true
 SortIncludes: Never
-SortUsingDeclarations: LexicographicNumeric
+#SortUsingDeclarations: LexicographicNumeric
 SpaceAfterCStyleCast: false
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeCaseColon: false
@@ -114,9 +112,9 @@ SpaceBeforeParensOptions:
   AfterFunctionDefinitionName: false
   AfterIfMacros: false
   AfterOverloadedOperator: false
-  AfterPlacementOperator: true
-  AfterRequiresInClause: true
-  AfterRequiresInExpression: false
+  #AfterPlacementOperator: true
+  #AfterRequiresInClause: true
+  #AfterRequiresInExpression: false
   BeforeNonEmptyParentheses: false
 SpaceBeforeRangeBasedForLoopColon: true
 SpaceBeforeSquareBrackets: false
@@ -126,9 +124,9 @@ SpacesInContainerLiterals: true
 SpacesInLineCommentPrefix:
   Minimum: 1
   Maximum: 3
-SpacesInParens: Never
+#SpacesInParens: Never
 SpacesInSquareBrackets: false
-Standard:        Cpp17
+Standard:        Cpp11
 TabWidth:        3
 UseTab:          Never
 ...
