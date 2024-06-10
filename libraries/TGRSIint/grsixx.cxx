@@ -1,12 +1,12 @@
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// GRSIxx                                                               //
-//                                                                      //
-// X11 based routines used to display the splash screen for grsisort.   //
-//                                                                      //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+///                                                                      
+/// \class GRSIxx                                                               
+///                                                                      
+/// X11 based routines used to display the splash screen for grsisort.   
+///                                                                      
+///                                                                      
+/////////////////////////////////////////////////////////////////////////
 
 #include "Globals.h"
 #include "GVersion.h"
@@ -54,26 +54,14 @@ static const char* gConception[] = {"P. C. Bender", nullptr};
 
 static const char* gLeadDevelopers[] = {"P. C. Bender", "R. Dunlop", nullptr};
 
-// static const char *gRootDevelopers[] = {
-//   0
-//};
-//
-// static const char *gCintDevelopers[] = {
-//   0
-//};
-//
-// static const char *gRootDocumentation[] = {
-//   0
-//};
-
 static const char* gKeyContributors[] = {"V. Bildstein", "D. Miller", nullptr};
 
 static char** gContributors = nullptr;
 
 static bool StayUp(int milliSec)
 {
-   // Returns false if milliSec milliseconds have passed since logo
-   // was popped up, true otherwise.
+   /// Returns false if milliSec milliseconds have passed since logo
+   /// was popped up, true otherwise.
 
    struct timeval ctv, dtv, tv, ptv = gPopupTime;
 
@@ -98,7 +86,7 @@ static bool StayUp(int milliSec)
 
 static void Sleep(int milliSec)
 {
-   // Sleep for specified amount of milli seconds.
+   /// Sleep for specified amount of milli seconds.
 
    // get current time
    struct timeval tv;
@@ -111,7 +99,7 @@ static void Sleep(int milliSec)
 
 static Pixmap GetRootLogo()
 {
-   // Get logo from xpm file.
+   /// Get logo from xpm file.
 
    Pixmap  logo    = 0;
    Screen* xscreen = XDefaultScreenOfDisplay(gDisplay);
@@ -168,8 +156,8 @@ static Pixmap GetRootLogo()
 
 static void ReadContributors()
 {
-   // Read the file $ROOTSYS/README/CREDITS for the names of the
-   // contributors.
+   /// Read the file $ROOTSYS/README/CREDITS for the names of the
+   /// contributors.
 
    char buf[2048];
 #ifdef ROOTDOCDIR
@@ -212,7 +200,7 @@ static void ReadContributors()
 
 static void DrawVersion()
 {
-   // Draw version string.
+   /// Draw version string.
 
    char version[80];
    snprintf(version, 80, "Version %s", GRSI_RELEASE);
@@ -222,7 +210,7 @@ static void DrawVersion()
 
 static void DrawROOTCredit()
 {
-   // Draw version string.
+   /// Draw version string.
 
    const char* version = "A ROOT based package";
 
@@ -231,7 +219,7 @@ static void DrawROOTCredit()
 
 static int DrawCreditItem(const char* creditItem, const char** members, int y, bool draw)
 {
-   // Draw credit item.
+   /// Draw credit item.
 
    char credit[1024];
    int  i;
@@ -301,7 +289,7 @@ void ScrollCredits(int ypos)
 
 void PopupLogo(bool about)
 {
-   // Popup logo, waiting till ROOT is ready to run.
+   /// Popup logo, waiting till ROOT is ready to run.
    gDisplay = XOpenDisplay("");
    if(gDisplay == nullptr) {
       return;
@@ -388,8 +376,8 @@ void PopupLogo(bool about)
 
 void WaitLogo()
 {
-   // Main event loop waiting till time arrives to pop down logo
-   // or when forced by button press event.
+   /// Main event loop waiting till time arrives to pop down logo
+   /// or when forced by button press event.
 
    if(gDisplay == nullptr) {
       return;
@@ -476,14 +464,14 @@ void WaitLogo()
 
 void PopdownLogo()
 {
-   // ROOT is ready to run, may pop down the logo if stay up time expires.
+   /// ROOT is ready to run, may pop down the logo if stay up time expires.
 
    gMayPopdown = true;
 }
 
 void CloseDisplay()
 {
-   // Close connection to X server (called by child).
+   /// Close connection to X server (called by child).
 
    if(gDisplay != nullptr) {
       close(ConnectionNumber(gDisplay));
