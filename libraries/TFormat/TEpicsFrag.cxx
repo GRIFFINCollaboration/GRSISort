@@ -10,19 +10,19 @@
 #include "TChannel.h"
 #include "TRunInfo.h"
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TEpicsFrag   TSCLRFrag                                     //
-//                                                            //
-// This Class should contain all the information found in     //
-// NOT typeid 1 midas events. aka Epics (scaler) Events.      //
-//                                                            //
-//                                                            //
-////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+///                                                            
+/// \class TEpicsFrag
+///                                                            
+/// This Class should contain all the information found in     
+/// NOT typeid 1 midas events. aka Epics (scaler) Events.      
+///                                                            
+///                                                            
+///////////////////////////////////////////////////////////////
 
 /// \cond CLASSIMP
 ClassImp(TEpicsFrag)
-   /// \endcond
+/// \endcond
 
    std::vector<std::string> TEpicsFrag::fNameList;
 std::map<Long64_t, TEpicsFrag> TEpicsFrag::fScalerMap;

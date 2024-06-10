@@ -4,14 +4,14 @@
 std::mutex TDeadtimeScalerQueue::All;
 std::mutex TDeadtimeScalerQueue::Sorted;
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TDeadtimeScalerQueue                                       //
-//                                                            //
-// This class is where we store scalers. It is thread-safe    //
-// and returns it's status in order to monitor progress.      //
-//                                                            //
-////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+///                                                            
+/// \class TDeadtimeScalerQueue                                       
+///                                                            
+/// This class is where we store scalers. It is thread-safe    
+/// and returns it's status in order to monitor progress.      
+///                                                            
+///////////////////////////////////////////////////////////////
 
 TDeadtimeScalerQueue* TDeadtimeScalerQueue::fDeadtimeScalerQueueClassPointer = nullptr;
 
@@ -205,14 +205,14 @@ void TDeadtimeScalerQueue::ResetRateCounter()
 std::mutex TRateScalerQueue::All;
 std::mutex TRateScalerQueue::Sorted;
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TRateScalerQueue                                               //
-//                                                            //
-// This class is where we store scalers. It is thread-safe    //
-// and returns it's status in order to monitor progress.      //
-//                                                            //
-////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+///                                                            
+/// \class TRateScalerQueue                                          
+///                                                            
+/// This class is where we store scalers. It is thread-safe    
+/// and returns it's status in order to monitor progress.      
+///                                                            
+///////////////////////////////////////////////////////////////
 
 TRateScalerQueue* TRateScalerQueue::fRateScalerQueueClassPointer = nullptr;
 
