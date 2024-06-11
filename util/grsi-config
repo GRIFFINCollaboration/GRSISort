@@ -124,9 +124,12 @@ while test $# -gt 0; do
 			fi
 			alllibsout="yes"
 			if test "$libsout" = "yes" ; then
-				out=$"$out $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum -lMathMore "
+				out="$out $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
 			else
-				out=$"$out -L${libdir} $grsilibs $detlibs $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum -lMathMore "
+				out="$out -L${libdir} $grsilibs $detlibs $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
+			fi
+			if [ $(root-config --has-mathmore) == "yes" ]
+				out="$out -lMathMore"
 			fi
 			;;
 		--*-cflags)
