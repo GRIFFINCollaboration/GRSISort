@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=all
 
 DATADIR=<your data directory here>
 SORTOPTIONS="your grsisort options here, e.g. --recommended"

@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=all
 
 # simple script to check grsisort log-files if sorts have finished correctly
 # checks if the last line is "bye,bye" (good) or "Deleting thread" (bad)
