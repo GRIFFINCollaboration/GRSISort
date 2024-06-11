@@ -2,6 +2,11 @@
 # Run this script to help report Errors in GRSISort
 # Author by Ryan Dunlop, 22/10/2015
 
+# for some reason shellcheck does not respect the if statements to check if files exist, so disable that check
+# shellcheck disable=SC1091
+# and also stop it complaining about NAME, VERSION_ID, etc. not being set in this script
+# shellcheck disable=SC2154
+
 # taken from stackexchange (https://unix.stackexchange.com/questions/6345/how-can-i-get-distribution-name-and-version-number-in-a-simple-shell-script)
 if [ -f /etc/os-release ]; then
 	# freedesktop.org and systemd
@@ -42,12 +47,12 @@ echo "VER          = $VER"
 echo "GRSISYS      = $GRSISYS"
 echo "ROOTSYS      = $ROOTSYS"
 
-echo ROOT Version = $(root-config --version)
+echo "ROOT Version = $(root-config --version)"
 printf "\nComputer and Path to File that failed: \n\n"
 
 LASTDIR=$PWD
 cd "$GRSISYS" || exit
-echo GRSISort Branch = $(git rev-parse --abbrev-ref HEAD)
+echo "GRSISort Branch = $(git rev-parse --abbrev-ref HEAD)"
 printf "\nLast Commit: " 
 
 git log -1

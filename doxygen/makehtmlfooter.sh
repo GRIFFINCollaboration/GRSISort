@@ -1,3 +1,5 @@
+# disable check for undefined variables, otherwise it would complain about DOXYGEN_GRSISORT_VERSION which is set outside this script
+# shellcheck disable=SC2154
 echo '<!-- HTML footer for doxygen 1.9.8-->'
 echo '<!-- start footer part -->'
 echo '<!--BEGIN GENERATE_TREEVIEW-->'
