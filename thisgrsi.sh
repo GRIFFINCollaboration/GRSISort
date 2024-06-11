@@ -1,3 +1,4 @@
+# shellcheck disable=all
 # Source this script to set up the GRSISort build that this script is part of.
 #
 # Conveniently an alias like this can be defined in .bashrc:
