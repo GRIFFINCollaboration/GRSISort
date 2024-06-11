@@ -128,7 +128,7 @@ while test $# -gt 0; do
 			else
 				out="$out -L${libdir} $grsilibs $detlibs $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
 			fi
-			if [ $(root-config --has-mathmore) == "yes" ]
+			if [ $(root-config --has-mathmore) == "yes" ]; then
 				out="$out -lMathMore"
 			fi
 			;;
