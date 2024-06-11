@@ -2,11 +2,11 @@
 // The class definition in AngularCorrelationSelector.h has been generated automatically
 #include "AngularCorrelationSelector.h"
 
-double gbLow  = -50.;  // min. time difference gamma-beta
-double gbHigh = 500.;  // max. time difference gamma-beta
-double ggHigh = 400.;  // max. absolute time difference gamma-gamma
-double bgLow  = 1000.; // min. time difference gamma-gamma background
-double bgHigh = 2000.; // max. time difference gamma-gamma background
+double gbLow  = -50.;    // min. time difference gamma-beta
+double gbHigh = 500.;    // max. time difference gamma-beta
+double ggHigh = 400.;    // max. absolute time difference gamma-gamma
+double bgLow  = 1000.;   // min. time difference gamma-gamma background
+double bgHigh = 2000.;   // max. time difference gamma-gamma background
 
 void AngularCorrelationSelector::CreateHistograms()
 {
@@ -17,8 +17,7 @@ void AngularCorrelationSelector::CreateHistograms()
    // coincident and time-random gamma-gamma
    for(int i = 0; i < static_cast<int>(fAngleCombinations.size()); ++i) {
       fH2[Form("gammaGamma%d", i)] =
-         new TH2D(Form("gammaGamma%d", i), Form("%.1f^{o}: #gamma-#gamma, |#Deltat_{#gamma-#gamma}| < %.1f",
-                                                fAngleCombinations[i].first, ggHigh),
+         new TH2D(Form("gammaGamma%d", i), Form("%.1f^{o}: #gamma-#gamma, |#Deltat_{#gamma-#gamma}| < %.1f", fAngleCombinations[i].first, ggHigh),
                   2000, 0., 2000., 2000, 0., 2000.);
       fH2[Form("gammaGammaBeta%d", i)] = new TH2D(
          Form("gammaGammaBeta%d", i),
@@ -26,8 +25,7 @@ void AngularCorrelationSelector::CreateHistograms()
               fAngleCombinations[i].first, ggHigh, gbLow, gbHigh),
          2000, 0., 2000., 2000, 0., 2000.);
       fH2[Form("gammaGammaBG%d", i)] =
-         new TH2D(Form("gammaGammaBG%d", i), Form("%.1f^{o}: #gamma-#gamma, #Deltat_{#gamma-#gamma} = %.1f - %.1f",
-                                                  fAngleCombinations[i].first, bgLow, bgHigh),
+         new TH2D(Form("gammaGammaBG%d", i), Form("%.1f^{o}: #gamma-#gamma, #Deltat_{#gamma-#gamma} = %.1f - %.1f", fAngleCombinations[i].first, bgLow, bgHigh),
                   2000, 0., 2000., 2000, 0., 2000.);
       fH2[Form("gammaGammaBetaBG%d", i)] = new TH2D(
          Form("gammaGammaBetaBG%d", i),
@@ -37,8 +35,7 @@ void AngularCorrelationSelector::CreateHistograms()
    }
    for(int i = 0; i < static_cast<int>(fAngleCombinationsAddback.size()); ++i) {
       fH2[Form("addbackAddback%d", i)] = new TH2D(
-         Form("addbackAddback%d", i), Form("%.1f^{o}: #gamma-#gamma with addback, |#Deltat_{#gamma-#gamma}| < %.1f",
-                                           fAngleCombinationsAddback[i].first, ggHigh),
+         Form("addbackAddback%d", i), Form("%.1f^{o}: #gamma-#gamma with addback, |#Deltat_{#gamma-#gamma}| < %.1f", fAngleCombinationsAddback[i].first, ggHigh),
          2000, 0., 2000., 2000, 0., 2000.);
       fH2[Form("addbackAddbackBeta%d", i)] = new TH2D(
          Form("addbackAddbackBeta%d", i), Form("%.1f^{o}: #gamma-#gamma with addback, |#Deltat_{#gamma-#gamma}| < "
@@ -56,11 +53,10 @@ void AngularCorrelationSelector::CreateHistograms()
                                                  fAngleCombinationsAddback[i].first, bgLow, bgHigh, gbLow, gbHigh),
          2000, 0., 2000., 2000, 0., 2000.);
    }
-   fH2["gammaGamma"] = new TH2D("gammaGamma", Form("#gamma-#gamma, |#Deltat_{#gamma-#gamma}| < %.1f", ggHigh), 2000, 0.,
-                                2000., 2000, 0., 2000.);
+   fH2["gammaGamma"]     = new TH2D("gammaGamma", Form("#gamma-#gamma, |#Deltat_{#gamma-#gamma}| < %.1f", ggHigh), 2000, 0.,
+                                    2000., 2000, 0., 2000.);
    fH2["gammaGammaBeta"] = new TH2D(
-      "gammaGammaBeta", Form("#gamma-#gamma, |#Deltat_{#gamma-#gamma}| < %.1f, #Deltat_{#gamma-#beta} = %.1f - %.1f",
-                             ggHigh, gbLow, gbHigh),
+      "gammaGammaBeta", Form("#gamma-#gamma, |#Deltat_{#gamma-#gamma}| < %.1f, #Deltat_{#gamma-#beta} = %.1f - %.1f", ggHigh, gbLow, gbHigh),
       2000, 0., 2000., 2000, 0., 2000.);
    fH2["gammaGammaBG"] =
       new TH2D("gammaGammaBG", Form("#gamma-#gamma, #Deltat_{#gamma-#gamma} = %.1f - %.1f", bgLow, bgHigh), 2000, 0.,
@@ -99,8 +95,7 @@ void AngularCorrelationSelector::CreateHistograms()
          new TH2D(Form("gammaGammaMixed%d", i), Form("%.1f^{o}: #gamma-#gamma", fAngleCombinations[i].first), 2000, 0.,
                   2000., 2000, 0., 2000.);
       fH2[Form("gammaGammaBetaMixed%d", i)] = new TH2D(
-         Form("gammaGammaBetaMixed%d", i), Form("%.1f^{o}: #gamma-#gamma, #Deltat_{#gamma-#beta} = %.1f - %.1f",
-                                                fAngleCombinations[i].first, gbLow, gbHigh),
+         Form("gammaGammaBetaMixed%d", i), Form("%.1f^{o}: #gamma-#gamma, #Deltat_{#gamma-#beta} = %.1f - %.1f", fAngleCombinations[i].first, gbLow, gbHigh),
          2000, 0., 2000., 2000, 0., 2000.);
    }
    for(int i = 0; i < static_cast<int>(fAngleCombinationsAddback.size()); ++i) {

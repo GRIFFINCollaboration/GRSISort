@@ -16,17 +16,17 @@ public:
    TCalibrator();
    ~TCalibrator() override;
 
-   void Copy(TObject& obj) const override;
-   void Print(Option_t* opt = "") const override;
-   void Clear(Option_t* opt = "") override;
-   void Draw(Option_t* opt = "") override;
+   void   Copy(TObject& obj) const override;
+   void   Print(Option_t* opt = "") const override;
+   void   Clear(Option_t* opt = "") override;
+   void   Draw(Option_t* opt = "") override;
    UInt_t Size() const { return fPeaks.size(); }
 
    int  GetFitOrder() const { return fit_order; }
    void SetFitOrder(int order) { fit_order = order; }
 
-   TGraph& MakeCalibrationGraph(double min_figure_of_merit = 0.001);
-   TGraphErrors& MakeEffGraph(double seconds = 3600., double bq = 100000., Option_t* opt = "draw");
+   TGraph&             MakeCalibrationGraph(double min_figure_of_merit = 0.001);
+   TGraphErrors&       MakeEffGraph(double seconds = 3600., double bq = 100000., Option_t* opt = "draw");
    std::vector<double> Calibrate(double min_figure_of_merit = 0.001);
 
    int AddData(TH1* data, const std::string& source, double sigma = 2.0, double threshold = 0.05, double error = 0.001);
@@ -35,7 +35,7 @@ public:
 
    void UpdateTChannel(TChannel* channel);
 
-   void Fit(int order = 1);
+   void   Fit(int order = 1);
    double GetParameter(int i = 0) const;
    double GetEffParameter(int i = 0) const;
 

@@ -29,7 +29,7 @@ public:
         Double_t yup);
    ~GH2D() override;
 
-   void Draw(Option_t* opt = "") override;
+   void         Draw(Option_t* opt = "") override;
    virtual void Draw(TCutG*);
 
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
@@ -40,14 +40,14 @@ public:
 
    TH1* DrawNormalized(Option_t* opt = "", Double_t norm = 1) const override;
 
-   void Clear(Option_t* opt = "") override;
-   void Print(Option_t* opt = "") const override;
+   void     Clear(Option_t* opt = "") override;
+   void     Print(Option_t* opt = "") const override;
    void     Copy(TObject&) const override;
    TObject* Clone(const char* newname = "") const override;
 
-   GH1D* ProjectionX(const char* name = "_px", int firstbin = 0, int lastbin = -1, Option_t* option = ""); // *MENU*
+   GH1D* ProjectionX(const char* name = "_px", int firstbin = 0, int lastbin = -1, Option_t* option = "");   // *MENU*
 
-   GH1D* ProjectionY(const char* name = "_py", int firstbin = 0, int lastbin = -1, Option_t* option = ""); // *MENU*
+   GH1D* ProjectionY(const char* name = "_py", int firstbin = 0, int lastbin = -1, Option_t* option = "");   // *MENU*
 
    TH2* GetTH2() override { return this; }
 

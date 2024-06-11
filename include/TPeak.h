@@ -34,7 +34,7 @@ public:
    TPeak(const TPeak& copy);
    TPeak(Double_t cent, Double_t xlow, Double_t xhigh);
    TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background);
-   TPeak(); // I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
+   TPeak();   // I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
 
 protected:
    void InitNames();
@@ -43,7 +43,7 @@ public:
    void Copy(TObject& obj) const override;
    void SetCentroid(Double_t cent) { SetParameter("centroid", cent); }
 
-   Bool_t Fit(TH1* fitHist, Option_t* opt = ""); // Might switch this to TFitResultPtr
+   Bool_t Fit(TH1* fitHist, Option_t* opt = "");   // Might switch this to TFitResultPtr
    // Bool_t Fit(TH1* fithist = 0);
 
    Double_t GetCentroid() const { return GetParameter("centroid"); }
@@ -64,18 +64,18 @@ public:
    const TF1* GetFitFunction() const
    {
       return static_cast<const TF1*>(this);
-   } // I might move the fit functions to TGRSIFit, it's just a little tricky to initilize the function
+   }   // I might move the fit functions to TGRSIFit, it's just a little tricky to initilize the function
 
-   Double_t Centroid() const { return GetCentroid(); }
-   Double_t CentroidErr() const { return GetCentroidErr(); }
-   Double_t Area() const { return GetArea(); }
-   Double_t AreaErr() const { return GetAreaErr(); }
-   Double_t FWHM() const { return GetFWHM(); }
-   Double_t FWHMErr() const { return GetFWHMErr(); }
-   Double_t IntegralArea() { return GetIntegralArea(); }
-   Double_t IntegralArea(Double_t int_low, Double_t int_high) { return GetIntegralArea(int_low, int_high); }
-   Double_t IntegralAreaErr() { return GetIntegralAreaErr(); }
-   Double_t IntegralAreaErr(Double_t int_low, Double_t int_high) { return GetIntegralAreaErr(int_low, int_high); }
+   Double_t   Centroid() const { return GetCentroid(); }
+   Double_t   CentroidErr() const { return GetCentroidErr(); }
+   Double_t   Area() const { return GetArea(); }
+   Double_t   AreaErr() const { return GetAreaErr(); }
+   Double_t   FWHM() const { return GetFWHM(); }
+   Double_t   FWHMErr() const { return GetFWHMErr(); }
+   Double_t   IntegralArea() { return GetIntegralArea(); }
+   Double_t   IntegralArea(Double_t int_low, Double_t int_high) { return GetIntegralArea(int_low, int_high); }
+   Double_t   IntegralAreaErr() { return GetIntegralAreaErr(); }
+   Double_t   IntegralAreaErr(Double_t int_low, Double_t int_high) { return GetIntegralAreaErr(int_low, int_high); }
    const TF1* FitFunction() const { return GetFitFunction(); }
 
 protected:
@@ -91,14 +91,14 @@ protected:
 
 public:
    Bool_t InitParams(TH1* fitHist = nullptr) override;
-   TF1* Background() const { return fBackground; }
-   void DrawBackground(Option_t* opt = "SAME") const; // *MENU*
-   void DrawResiduals();                              // *MENU*
-   void CheckArea();
-   void CheckArea(Double_t int_low, Double_t int_high);
+   TF1*   Background() const { return fBackground; }
+   void   DrawBackground(Option_t* opt = "SAME") const;   // *MENU*
+   void   DrawResiduals();                                // *MENU*
+   void   CheckArea();
+   void   CheckArea(Double_t int_low, Double_t int_high);
 
-   static void SetLogLikelihoodFlag(Bool_t flag = true) { fLogLikelihoodFlag = flag; }
-   static Bool_t                           GetLogLikelihoodFlag() { return fLogLikelihoodFlag; }
+   static void   SetLogLikelihoodFlag(Bool_t flag = true) { fLogLikelihoodFlag = flag; }
+   static Bool_t GetLogLikelihoodFlag() { return fLogLikelihoodFlag; }
 
    static Bool_t CompareEnergy(const TPeak& lhs, const TPeak& rhs) { return lhs.GetCentroid() < rhs.GetCentroid(); }
    static Bool_t CompareArea(const TPeak& lhs, const TPeak& rhs) { return lhs.GetArea() < rhs.GetArea(); }
@@ -112,7 +112,7 @@ public:
    void Clear(Option_t* opt = "") override;
 
 private:
-	bool GoodStatus();
+   bool GoodStatus();
    // Centroid will eventually be read from parameters
    Double_t fArea{0.};
    Double_t fDArea{0.};
@@ -120,8 +120,8 @@ private:
    Double_t fNdf{0.};
    Bool_t   fOwnBgFlag{false};
 
-   static bool   fLogLikelihoodFlag; //!<!
-   static TPeak* fLastFit;           //!<!
+   static bool   fLogLikelihoodFlag;   //!<!
+   static TPeak* fLastFit;             //!<!
 
    TF1*    fBackground;
    TGraph* fResiduals;

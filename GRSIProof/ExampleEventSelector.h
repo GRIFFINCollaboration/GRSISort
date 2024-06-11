@@ -23,24 +23,25 @@
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-class ExampleEventSelector : public TGRSISelector { //Must be same name as .C and .h
+class ExampleEventSelector : public TGRSISelector {   // Must be same name as .C and .h
 
- public :
-   TGriffin* fGrif; //Pointers to spot that events will be
-   TSceptar* fScep;
-	TGriffinBgo* fGriffinBgo;
+public:
+   TGriffin*    fGrif;   // Pointers to spot that events will be
+   TSceptar*    fScep;
+   TGriffinBgo* fGriffinBgo;
 
-   ExampleEventSelector(TTree * /*tree*/ =0) : TGRSISelector(), fGrif(nullptr), fScep(nullptr), fGriffinBgo(nullptr) {
-      SetOutputPrefix("ExampleEvent"); //Changes prefix of output file
+   ExampleEventSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(nullptr), fScep(nullptr), fGriffinBgo(nullptr)
+   {
+      SetOutputPrefix("ExampleEvent");   // Changes prefix of output file
    }
-	//These functions are expected to exist
-   virtual ~ExampleEventSelector() { }
-   virtual Int_t   Version() const { return 2; }
-   void CreateHistograms();
-   void FillHistograms();
-   void InitializeBranches(TTree *tree);
+   // These functions are expected to exist
+   virtual ~ExampleEventSelector() {}
+   virtual Int_t Version() const { return 2; }
+   void          CreateHistograms();
+   void          FillHistograms();
+   void          InitializeBranches(TTree* tree);
 
-   ClassDef(ExampleEventSelector,2); //Makes ROOT happier
+   ClassDef(ExampleEventSelector, 2);   // Makes ROOT happier
 };
 
 #endif
@@ -50,14 +51,14 @@ void ExampleEventSelector::InitializeBranches(TTree* tree)
 {
    if(!tree) return;
    if(tree->SetBranchAddress("TGriffin", &fGrif) == TTree::kMissingBranch) {
-		fGrif = new TGriffin;
-	}
+      fGrif = new TGriffin;
+   }
    if(tree->SetBranchAddress("TSceptar", &fScep) == TTree::kMissingBranch) {
-		fScep = new TSceptar;
-	}
+      fScep = new TSceptar;
+   }
    if(tree->SetBranchAddress("TGriffinBgo", &fGriffinBgo) == TTree::kMissingBranch) {
-		fGriffinBgo = new TGriffinBgo;
-	}
+      fGriffinBgo = new TGriffinBgo;
+   }
 }
 
-#endif // #ifdef ExampleEventSelector_cxx
+#endif   // #ifdef ExampleEventSelector_cxx

@@ -9,8 +9,8 @@
 
 class TCFDCal : public TCal {
 public:
-   TCFDCal() {};
-   TCFDCal(const char* name, const char* title) : TCal(name, title) {};
+   TCFDCal(){};
+   TCFDCal(const char* name, const char* title) : TCal(name, title){};
    ~TCFDCal() override = default;
 
    // pure virtual functions
@@ -20,7 +20,7 @@ public:
    void                  WriteToChannel() const override;
    virtual void          ReadFromChannel();
    std::vector<Double_t> GetParameters() const override;
-   Double_t GetParameter(size_t parameter) const override;
+   Double_t              GetParameter(size_t parameter) const override;
 
    void AddParameter(Double_t param);
    void SetParameters(std::vector<Double_t> paramvec);

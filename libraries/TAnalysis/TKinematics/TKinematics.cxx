@@ -5,10 +5,10 @@
 
 /// \cond CLASSIMP
 ClassImp(TKinematics)
-/// \endcond
+   /// \endcond
 
-TKinematics::TKinematics(double beame, const char* beam, const char* targ, const char* ejec, const char* reco,
-								 const char* name)
+   TKinematics::TKinematics(double beame, const char* beam, const char* targ, const char* ejec, const char* reco,
+                            const char* name)
 {
    InitKin();
 
@@ -90,8 +90,8 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoi
    InitKin();
    fParticle[0] = projectile;
    fParticle[1] = target;
-   fParticle[2] = recoil;   // This is oppiste what is right below it.
-   fParticle[3] = ejectile; // we need to define a convention and stick with it  pcb.
+   fParticle[2] = recoil;     // This is oppiste what is right below it.
+   fParticle[3] = ejectile;   // we need to define a convention and stick with it  pcb.
    for(int i = 0; i < 4; i++) {
       fM[i] = fParticle[i]->GetMass();
    }
@@ -186,12 +186,12 @@ TSpline3* TKinematics::Evslab(double thmin, double thmax, double size, int part)
    double rad2deg = 180.0 / PI;
 
    int steps = (static_cast<int>(thmax + 1) - static_cast<int>(thmin)) /
-               static_cast<int>(size); // when is size ever needed to be a double?? pcb.
-                                       // i am under the impression that size should always be 1.0;
-                                       //
+               static_cast<int>(size);   // when is size ever needed to be a double?? pcb.
+                                         // i am under the impression that size should always be 1.0;
+                                         //
    double lastangle = 0.0;
    for(int i = 0; i < steps; i++) {
-      Final((thmin + i * size) * deg2rad, 2); // part);   //2);
+      Final((thmin + i * size) * deg2rad, 2);   // part);   //2);
       double tmpangle = GetThetalab(part) * (1 / deg2rad);
       double tmpeng   = GetTlab(part) * 1000;
       if(tmpangle < lastangle) {
@@ -230,11 +230,11 @@ TGraph* TKinematics::Evslab_graph(double thmin, double thmax, double size, int p
    double deg2rad = PI / 180.0;
 
    int steps = (static_cast<int>(thmax + 1) - static_cast<int>(thmin)) /
-               static_cast<int>(size); // when is size ever needed to be a double?? pcb.
-                                       // i am under the impression that size should always be 1.0;
-                                       //
+               static_cast<int>(size);   // when is size ever needed to be a double?? pcb.
+                                         // i am under the impression that size should always be 1.0;
+                                         //
    for(int i = 0; i < steps; i++) {
-      Final((thmin + i * size) * deg2rad, 2); // part);   //2);
+      Final((thmin + i * size) * deg2rad, 2);   // part);   //2);
       double tmpangle = GetThetalab(part) * (1 / deg2rad);
       double tmpeng   = GetTlab(part) * 1000;
       if(tmpangle < 1 || tmpangle > (GetMaxAngle(fVcm[part]) * rad2deg) - 1) {
@@ -277,12 +277,12 @@ double TKinematics::GetExcEnergy(TLorentzVector recoil)
 {
    // Gets the excitation energy of the recoil in the CM frame using a 4-vector
    TLorentzVector ejectile;
-   recoil.Boost(0, 0, -GetBetacm()); // boost to cm system
+   recoil.Boost(0, 0, -GetBetacm());   // boost to cm system
 
-   ejectile.SetVect(-recoil.Vect());          // pr = -pe
-   ejectile.SetE(GetCmEnergy() - recoil.E()); // Ee=Ecm-Er
+   ejectile.SetVect(-recoil.Vect());            // pr = -pe
+   ejectile.SetE(GetCmEnergy() - recoil.E());   // Ee=Ecm-Er
 
-   ejectile.Boost(0, 0, GetBetacm()); // boost to lab system
+   ejectile.Boost(0, 0, GetBetacm());   // boost to lab system
 
    double eex = ejectile.M() - fParticle[3]->GetMass();
 
@@ -334,9 +334,7 @@ double TKinematics::GetBeamEnergy(double LabAngle, double LabEnergy)
                  2 * TargetMass * es * pow(cos(LabAngle) - sin(LabAngle), 4) +
                  16 * ts * LabEnergy * pow(cos(LabAngle), 3) * sin(LabAngle) -
                  8 * ps * LabEnergy * cs * (sin(2 * LabAngle) - 1) +
-                 2 * ps * cos(3 * LabAngle) * sqrt(2 * (4 * ts + 12 * te + es) + (8 * ts - 2 * es) * cos(2 * LabAngle) +
-                                                   LabEnergy * (LabEnergy / cs + 8 * TargetMass * sin(2 * LabAngle) -
-                                                                4 * LabEnergy * tan(LabAngle))) +
+                 2 * ps * cos(3 * LabAngle) * sqrt(2 * (4 * ts + 12 * te + es) + (8 * ts - 2 * es) * cos(2 * LabAngle) + LabEnergy * (LabEnergy / cs + 8 * TargetMass * sin(2 * LabAngle) - 4 * LabEnergy * tan(LabAngle))) +
                  2 * cos(LabAngle) * (3 * ps + te - te * sin(2 * LabAngle)) *
                     sqrt(2 * (4 * ts + 12 * te + es) + (8 * ts - 2 * es) * cos(2 * LabAngle) +
                          LabEnergy *
@@ -349,14 +347,14 @@ void TKinematics::Initial()
 {
    // An initializing function that sets the energies and momenta of the beam and target in the lab and CM frame,
    // as well as a few basic calculations.
-   fT[0] = fEBeam;                                  // KE of beam in lab
-   fT[1] = 0;                                       // KE of target in lab
-   fE[0] = E_tm(fT[0], fM[0]);                      // total E of beam in lab
-   fE[1] = E_tm(fT[1], fM[1]);                      // total E of target in lab
-   fP[0] = sqrt(fT[0] * fT[0] + 2 * fT[0] * fM[0]); // momentum of beam in lab
-   fP[1] = 0;                                       // momentum of target in lab
-   fV[0] = V_pe(fP[0], fE[0]);                      // velocity of beam in lab
-   fV[1] = V_pe(fP[1], fE[1]);                      // velocity of target in lab
+   fT[0] = fEBeam;                                    // KE of beam in lab
+   fT[1] = 0;                                         // KE of target in lab
+   fE[0] = E_tm(fT[0], fM[0]);                        // total E of beam in lab
+   fE[1] = E_tm(fT[1], fM[1]);                        // total E of target in lab
+   fP[0] = sqrt(fT[0] * fT[0] + 2 * fT[0] * fM[0]);   // momentum of beam in lab
+   fP[1] = 0;                                         // momentum of target in lab
+   fV[0] = V_pe(fP[0], fE[0]);                        // velocity of beam in lab
+   fV[1] = V_pe(fP[1], fE[1]);                        // velocity of target in lab
 
    fEcm[0] = GetCmEnergy(fEBeam) / 2 + (fM[0] * fM[0] - fM[1] * fM[1]) / (2 * GetCmEnergy(fEBeam));
    fEcm[1] = GetCmEnergy(fEBeam) / 2 - (fM[0] * fM[0] - fM[1] * fM[1]) / (2 * GetCmEnergy(fEBeam));
@@ -542,7 +540,7 @@ double TKinematics::Steffen_cm2labinverse(double theta_cm, int part)
 }
 
 double TKinematics::Steffen_lab2cminverse(double theta_lab)
-{ // assumes part = 2;
+{   // assumes part = 2;
 
    if(Cm2LabSpline == nullptr) {
       Cm2LabSpline = Steffen_labvscminverse(0.01, 179.9, 1.0, 2);
@@ -737,7 +735,7 @@ double TKinematics::Rutherford(double angle_cm)
    double a = 0.5 * 1.43997649 * fParticle[0]->GetZ() * fParticle[1]->GetZ() / fTCm_i;
    double b = sin(angle_cm / 2.) * sin(angle_cm / 2.);
    b        = b * b;
-   return a * a / b * 0.0025; // 1b=0.01fm
+   return a * a / b * 0.0025;   // 1b=0.01fm
 }
 
 TSpline3* TKinematics::Ruthvscm(double thmin, double thmax, double size)
@@ -774,7 +772,7 @@ TSpline3* TKinematics::Ruthvslab(double thmin, double thmax, double size, int pa
    int   number = 0;
    for(int i = 0; i < ((thmax - thmin) / size); i++) {
       if(part == 3 || part == 2) {
-         angle[i] = thmin + i * size; // angle[i] is in cm system
+         angle[i] = thmin + i * size;   // angle[i] is in cm system
       } else {
          std::cout<<"error "<<std::endl;
          exit(1);

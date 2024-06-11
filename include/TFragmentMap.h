@@ -47,8 +47,8 @@ private:
                                                                  std::vector<Short_t>>>::iterator>& range);
 
    std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>>> fMap;
-   std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& fGoodOutputQueue;
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>&           fBadOutputQueue;
+   std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>&                        fGoodOutputQueue;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>&                                  fBadOutputQueue;
 #endif
 };
 /*! @} */

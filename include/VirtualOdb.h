@@ -52,7 +52,7 @@ public:
    /// Read a string value, midas type TID_STRING
    virtual const char* odbReadString(const char* name, int index = 0, const char* defaultValue = nullptr) = 0;
    /// Destructor has to be virtual
-   virtual ~VirtualOdb(){/* empty */}; // dtor
+   virtual ~VirtualOdb(){/* empty */};   // dtor
 };
 /*! @} */
 #endif

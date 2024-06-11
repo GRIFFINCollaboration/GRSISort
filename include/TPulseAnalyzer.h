@@ -35,27 +35,27 @@ private:
    struct WaveFormPar {
       // parameters for baseline
       int    baseline_range;
-      double baseline;         // baseline
-      double baselineStDev;    // baseline variance
-      double baselinefin;      // baseline
-      double baselineStDevfin; // baseline variance
-      int    bflag;            // flag for baseline determiniation
-      //paramaters for oscillation
-      double baseamp;//amplitude of baseline oscillations
-      double basefreq;//tick frequency of baseline oscillations
-      double basephase; //flag for baseline determination
-      int osciflag; //flag for baseline determination
+      double baseline;           // baseline
+      double baselineStDev;      // baseline variance
+      double baselinefin;        // baseline
+      double baselineStDevfin;   // baseline variance
+      int    bflag;              // flag for baseline determiniation
+      // paramaters for oscillation
+      double baseamp;     // amplitude of baseline oscillations
+      double basefreq;    // tick frequency of baseline oscillations
+      double basephase;   // flag for baseline determination
+      int    osciflag;    // flag for baseline determination
       // paremeters for exclusion zone
-      double max;         // max value of the filtered waveform
-      double tmax;        // x position of the max value of the filtered waveform
-      double baselineMin; // max crossing point for exclusion zone
-      double baselineMax; // max crossing point for exclusion zone
-      int    temax;       // x position, exclusion zone upper limit
-      int    temin;       // x position, exclusion zone lower limit
-      double afit, bfit;  // parameters for the line which fits risetime above temax
-      int    mflag;       // flag for tmax found
-      int    teflag;      // flag for exclusion zone determined
-      double t0;          // required for compilation of map.c - check that it works
+      double max;           // max value of the filtered waveform
+      double tmax;          // x position of the max value of the filtered waveform
+      double baselineMin;   // max crossing point for exclusion zone
+      double baselineMax;   // max crossing point for exclusion zone
+      int    temax;         // x position, exclusion zone upper limit
+      int    temin;         // x position, exclusion zone lower limit
+      double afit, bfit;    // parameters for the line which fits risetime above temax
+      int    mflag;         // flag for tmax found
+      int    teflag;        // flag for exclusion zone determined
+      double t0;            // required for compilation of map.c - check that it works
       double t0_local;
       // new stuff necessary for compiliation of Kris' waveform analyzer changes
       double      b0;
@@ -75,7 +75,7 @@ private:
       int         t10t90_flag;
       int         thigh;
       double      sig2noise;
-      double      amplitude; // amplitude from sili fits
+      double      amplitude;   // amplitude from sili fits
       double      tauDecay;
       double      tauRise;
    };
@@ -105,8 +105,8 @@ private:
       double      chisq;
       int         ndf;
       int         type;
-      long double t[5];  // decay constants for the fits
-      long double am[5]; // associated aplitudes for the decay constants
+      long double t[5];    // decay constants for the fits
+      long double am[5];   // associated aplitudes for the decay constants
       double      rf[5];
 
       // new stuff necessary for compiliation of Kris' waveform analyzer changes
@@ -133,13 +133,13 @@ public:
    inline double Get_wpar_decay() { return cWpar->tauDecay; }
    inline double Get_wpar_rise() { return cWpar->tauRise; }
 
-   bool SiliShapePrepare(double tauDecay,double tauRise);
-   bool GetSiliShape(double tauDecay, double tauRise); // Added for Spice, parameters to be found : t0 and Amplitude
-   bool GetSiliShapeTF1(double tauDecay, double tauRise,double baseline,double basefreq=0); // Added for Spice, full slow fit to establish parameters, needs initial estimates
-   inline bool Get_bflag(){return cWpar->bflag;}
-   TF1       Getsilifit();
-   double    GetsiliSmirnov();
-   void      Drawsilifit();
+   bool        SiliShapePrepare(double tauDecay, double tauRise);
+   bool        GetSiliShape(double tauDecay, double tauRise);                                            // Added for Spice, parameters to be found : t0 and Amplitude
+   bool        GetSiliShapeTF1(double tauDecay, double tauRise, double baseline, double basefreq = 0);   // Added for Spice, full slow fit to establish parameters, needs initial estimates
+   inline bool Get_bflag() { return cWpar->bflag; }
+   TF1         Getsilifit();
+   double      GetsiliSmirnov();
+   void        Drawsilifit();
 
    static double SiLiFitFunction(double* i, double* p);
 
@@ -171,14 +171,14 @@ private:
    std::vector<Short_t> cWavebuffer;
    SinPar*              spar;
    ShapePar*            shpar;
-   WaveFormPar*         csiTestWpar[4]; //used for testing different CsI fit types
-   ShapePar*            csiTestShpar[4]; //used for testing different CsI fit types
+   WaveFormPar*         csiTestWpar[4];    // used for testing different CsI fit types
+   ShapePar*            csiTestShpar[4];   // used for testing different CsI fit types
 
    std::string fName;
 
    // pulse fitting parameters
-   int    FILTER;  // integration region for noise reduction (in samples)
-   int    T0RANGE; // tick range over which baseline is calulated
+   int    FILTER;    // integration region for noise reduction (in samples)
+   int    T0RANGE;   // tick range over which baseline is calulated
    double LARGECHISQ;
 
    // linear equation dataholders
@@ -196,10 +196,10 @@ private:
    int    FitCsIShape(int, ShapePar*, WaveFormPar*);
 
    bool   CsISet;
-	double EPS;
+   double EPS;
 
    void SetCsI(bool option = "true") { CsISet = option; }
-   bool             CsIIsSet() { return CsISet; }
+   bool CsIIsSet() { return CsISet; }
 
    // internal methods
    int         solve_lin_eq();
@@ -227,23 +227,23 @@ private:
    void GetQuickPara();
 
    // bad chi squares for debugging
-   const static int BADCHISQ_SMOOTH_T0   = -1024 - 2; // smooth_t0 gives bad result
-   const static int BADCHISQ_PAR_T0      = -1024 - 3; // parabolic_t0 gives bad result
-   const static int BADCHISQ_LIN_T0      = -1024 - 4; // linear_t0 gives bad result
-   const static int BADCHISQ_MAT         = -1024 - 5; // matrix for fit is not invertable
-   const static int BADCHISQ_FAIL_DIRECT = -1024 - 9; //generic fit failure
-   const static int BAD_EXCLUSION_ZONE   = -1024 - 10; //fails finding exclusion zone
+   const static int BADCHISQ_SMOOTH_T0   = -1024 - 2;    // smooth_t0 gives bad result
+   const static int BADCHISQ_PAR_T0      = -1024 - 3;    // parabolic_t0 gives bad result
+   const static int BADCHISQ_LIN_T0      = -1024 - 4;    // linear_t0 gives bad result
+   const static int BADCHISQ_MAT         = -1024 - 5;    // matrix for fit is not invertable
+   const static int BADCHISQ_FAIL_DIRECT = -1024 - 9;    // generic fit failure
+   const static int BAD_EXCLUSION_ZONE   = -1024 - 10;   // fails finding exclusion zone
    const static int BAD_MAX              = -1024 - 11;
    const static int BAD_BASELINE_RANGE   = -1024 - 12;
-   const static int BAD_PID              = -1024; //PID value returned when the fit fails
+   const static int BAD_PID              = -1024;   // PID value returned when the fit fails
 
    // new definitions for Kris' changes to the waveform analyzer
-   const static int PIN_BASELINE_RANGE = 16; // minimum ticks before max for a valid signal
+   const static int PIN_BASELINE_RANGE = 16;   // minimum ticks before max for a valid signal
    const static int MAX_SAMPLES        = 4096;
 
-   const static int CSI_BASELINE_RANGE = 50; //baseline range in channels
-   const static int NOISE_LEVEL_CSI    = 100; //noise level for CsI
-   const static int NSHAPE             = 5; //number of trial functions for waveform fit
+   const static int CSI_BASELINE_RANGE = 50;    // baseline range in channels
+   const static int NOISE_LEVEL_CSI    = 100;   // noise level for CsI
+   const static int NSHAPE             = 5;     // number of trial functions for waveform fit
 
    const static int BADCHISQ_T0   = -1024 - 7;
    const static int BADCHISQ_NEG  = -1024 - 1;

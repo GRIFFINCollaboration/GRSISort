@@ -73,8 +73,8 @@ private:
    double fNdf{0.};
 
    Bool_t IsInitialized() const { return init_flag; }
-   void SetInitialized(Bool_t flag = true) { init_flag = flag; }
-   bool                       init_flag{false};
+   void   SetInitialized(Bool_t flag = true) { init_flag = flag; }
+   bool   init_flag{false};
 
    static GPeak* fLastFit;
 

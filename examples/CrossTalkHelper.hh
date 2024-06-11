@@ -8,15 +8,17 @@
 
 class CrossTalkHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<CrossTalkHelper> {
 public:
-	CrossTalkHelper(TList* list) : TGRSIHelper(list) {
-		Prefix("Crosstalk");
-		Setup();
-	}
-	ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override {
+   CrossTalkHelper(TList* list) : TGRSIHelper(list)
+   {
+      Prefix("Crosstalk");
+      Setup();
+   }
+   ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override
+   {
       return d->Book<TGriffin, TGriffinBgo>(std::move(*this), {"TGriffin", "TGriffinBgo"});
-	}
-	void          CreateHistograms(unsigned int slot);
-	void          Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo);
+   }
+   void CreateHistograms(unsigned int slot);
+   void Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo);
 };
 
 // These are needed functions used by TDataFrameLibrary to create and destroy the instance of this helper

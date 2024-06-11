@@ -5,9 +5,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TCalGraph)
-/// \endcond
+   /// \endcond
 
-TCalGraph::TCalGraph()
+   TCalGraph::TCalGraph()
    : TGraphErrors()
 {
    Clear();
@@ -75,13 +75,13 @@ Int_t TCalGraph::AddLists(const TCalList& cal_list, const TSourceList& src_list)
 
    std::vector<std::pair<UInt_t, Double_t>> missing_cal_values_vec;
    std::vector<std::pair<UInt_t, Double_t>> missing_src_values_vec;
-   TCalList missing_cal_values;
-   TCalList missing_src_values;
+   TCalList                                 missing_cal_values;
+   TCalList                                 missing_src_values;
 
    // Look in cal_list for src_list entries
    for(const auto& cl : cal_map) {
       const auto& it = src_map.find(cl.first);
-      if(it != src_map.end()) { // we found the matching data point
+      if(it != src_map.end()) {   // we found the matching data point
          fCompareMap.insert(std::make_pair(cl.first, std::make_pair(cl.second, it->second)));
       } else {
          missing_cal_values.AddPoint(cl.second);
@@ -92,7 +92,7 @@ Int_t TCalGraph::AddLists(const TCalList& cal_list, const TSourceList& src_list)
    // Find if anything is missing from source list
    for(const auto& src_it : src_map) {
       const auto& cal_it = cal_map.find(src_it.first);
-      if(cal_it == cal_map.end()) { // we couldn't find the src data
+      if(cal_it == cal_map.end()) {   // we couldn't find the src data
          missing_src_values.AddPoint(src_it.second);
          missing_src_values_vec.push_back(std::make_pair(src_it.first, src_it.second.Centroid()));
       }

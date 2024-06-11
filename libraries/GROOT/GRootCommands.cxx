@@ -51,9 +51,9 @@ void Prompt()
 void Version()
 {
    int ret = system(Form("%s/bin/grsi-config --version", getenv("GRSISYS")));
-	if(ret == -1) {
-		std::cout<<"Failed to call grsi-config!"<<std::endl;
-	}
+   if(ret == -1) {
+      std::cout<<"Failed to call grsi-config!"<<std::endl;
+   }
 }
 
 bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg_high)
@@ -302,7 +302,7 @@ TPeak* AltPhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 
    // std::cout<<"here."<<std::endl;
 
-   auto*       mypeak  = new TPeak((xlow + xhigh) / 2.0, xlow, xhigh);
+   auto* mypeak = new TPeak((xlow + xhigh) / 2.0, xlow, xhigh);
    mypeak->Fit(hist, opt);
    // mypeak->Background()->Draw("SAME");
    auto* bg = new TF1(*mypeak->Background());
@@ -454,10 +454,9 @@ TH2* AddOffset(TH2* mat, double offset, EAxis axis)
    return toreturn;
 }
 
-EAxis operator &(EAxis lhs, EAxis rhs)
+EAxis operator&(EAxis lhs, EAxis rhs)
 {
-	return static_cast<EAxis> (
-			static_cast<std::underlying_type<EAxis>::type>(lhs) &
-			static_cast<std::underlying_type<EAxis>::type>(rhs)
-			);
+   return static_cast<EAxis>(
+      static_cast<std::underlying_type<EAxis>::type>(lhs) &
+      static_cast<std::underlying_type<EAxis>::type>(rhs));
 }

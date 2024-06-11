@@ -6,13 +6,13 @@
 
 /// \cond CLASSIMP
 ClassImp(TScalerData)
-ClassImp(TScaler)
-/// \endcond
+   ClassImp(TScaler)
+   /// \endcond
 
-TScalerData::TScalerData()
+   TScalerData::TScalerData()
 {
    Clear();
-   fScaler.resize(4); // we expect to have four scaler values
+   fScaler.resize(4);   // we expect to have four scaler values
 }
 
 TScalerData::TScalerData(const TScalerData& rhs) : TObject()
@@ -35,15 +35,15 @@ void TScalerData::Clear(Option_t*)
    fNetworkPacketId = -1;
    fAddress         = 0;
    fScaler.clear();
-   fLowTimeStamp    = 0;
-   fHighTimeStamp   = 0;
+   fLowTimeStamp  = 0;
+   fHighTimeStamp = 0;
 }
 
 void TScalerData::Print(Option_t*) const
 {
-   std::cout<<"time: "<<std::setw(16)<<GetTimeStamp()<<", address: "<<hex(fAddress,4);
+   std::cout<<"time: "<<std::setw(16)<<GetTimeStamp()<<", address: "<<hex(fAddress, 4);
    for(size_t i = 0; i < fScaler.size(); ++i) {
-      std::cout<<"\t Scaler["<<i<<"]: "<<hex(fScaler[i],8);
+      std::cout<<"\t Scaler["<<i<<"]: "<<hex(fScaler[i], 8);
    }
    std::cout<<std::endl;
 }
@@ -54,14 +54,14 @@ TScaler::TScaler(bool loadIntoMap)
    ///\param[in] loadIntoMap Flag telling TScaler to load all scaler data into fScalerMap.
    Clear();
    fTree = static_cast<TTree*>(gROOT->FindObject("ScalerTree"));
-	ReadTree(loadIntoMap);
+   ReadTree(loadIntoMap);
 }
 
 TScaler::TScaler(TTree* tree, bool loadIntoMap)
 {
    Clear();
    fTree = tree;
-	ReadTree(loadIntoMap);
+   ReadTree(loadIntoMap);
 }
 
 void TScaler::ReadTree(bool loadIntoMap)
@@ -244,14 +244,14 @@ void TScaler::Clear(Option_t*)
    fPPG = nullptr;
    for(auto& addrIt : fHist) {
       if(addrIt.second != nullptr) {
-         delete(addrIt.second);
+         delete (addrIt.second);
          addrIt.second = nullptr;
       }
    }
    fHist.clear();
    for(auto& addrIt : fHistRange) {
       if(addrIt.second != nullptr) {
-         delete(addrIt.second);
+         delete (addrIt.second);
          addrIt.second = nullptr;
       }
    }
@@ -274,7 +274,7 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t* option)
    }
    // try and find the ppg (if we haven't already done so)
    if(fPPG == nullptr) {
-      fPPG = TPPG::Get(); // static_cast<TPPG*>(gROOT->FindObject("TPPG"));
+      fPPG = TPPG::Get();   // static_cast<TPPG*>(gROOT->FindObject("TPPG"));
       // if we can't find the ppg we're done here
       if(fPPG == nullptr) {
          return nullptr;
@@ -340,7 +340,7 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
 
    // try and find the ppg (if we haven't already done so)
    if(fPPG == nullptr) {
-      fPPG = TPPG::Get(); // static_cast<TPPG*>(gROOT->FindObject("TPPG"));
+      fPPG = TPPG::Get();   // static_cast<TPPG*>(gROOT->FindObject("TPPG"));
       // if we can't find the ppg we're done here
       if(fPPG == nullptr) {
          return nullptr;
@@ -361,7 +361,7 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
       }
       if(fHistRange[std::make_pair(lowAddress, highAddress)] == nullptr || draw_index >= 0) {
          int nofBins =
-            fPPG->GetCycleLength() / GetTimePeriod(lowAddress); // the time period should be the same for all channels
+            fPPG->GetCycleLength() / GetTimePeriod(lowAddress);   // the time period should be the same for all channels
          fHistRange[std::make_pair(lowAddress, highAddress)] =
             new TH1D(Form("TScalerHist_%04x_%04x", lowAddress, highAddress),
                      Form("scaler %d vs time in cycle for address 0x%04x - 0x%04x; time in cycle [ms]; counts/%.0f ms",
@@ -370,8 +370,8 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
          // fHistRange[std::make_pair(lowAddress, highAddress)]->ResetBit(kMustCleanup);
          // we have to skip the first data point in case this is a sub-run
          // loop over the remaining scaler data for this address
-         std::map<UInt_t, UInt_t> previousValue; // we could make this a vector, since we know there can only be
-                                                 // highAddress-lowAddress+1 different addresses
+         std::map<UInt_t, UInt_t> previousValue;   // we could make this a vector, since we know there can only be
+                                                   // highAddress-lowAddress+1 different addresses
          for(Long64_t entry = 0; entry < fEntries; ++entry) {
             fTree->GetEntry(entry);
             if(lowAddress <= fScalerData->GetAddress() && fScalerData->GetAddress() <= highAddress) {
@@ -421,8 +421,8 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
       fHist[address]->SetLineColor(address - lowAddress + 1);
    }
    // now we have all histograms, so we loop through the tree (once) and create all that are in the range
-   std::map<UInt_t, UInt_t> previousValue; // we could make this a vector, since we know there can only be
-                                           // highAddress-lowAddress+1 different addresses
+   std::map<UInt_t, UInt_t> previousValue;   // we could make this a vector, since we know there can only be
+                                             // highAddress-lowAddress+1 different addresses
    for(Long64_t entry = 0; entry < fEntries; ++entry) {
       fTree->GetEntry(entry);
       if(lowAddress <= fScalerData->GetAddress() && fScalerData->GetAddress() <= highAddress) {
@@ -533,11 +533,11 @@ void TScaler::ListHistograms()
 {
    std::cout<<"single address histograms:"<<std::endl;
    for(auto& it : fHist) {
-      std::cout<<"\t"<<hex(it.first,4)<<": "<<it.second->GetName()<<", "<<it.second->GetTitle()<<std::endl;
+      std::cout<<"\t"<<hex(it.first, 4)<<": "<<it.second->GetName()<<", "<<it.second->GetTitle()<<std::endl;
    }
 
    std::cout<<"range histograms:"<<std::endl;
    for(auto& it : fHistRange) {
-      std::cout<<"\t"<<hex(it.first.first,4)<<", "<<it.first.second<<": "<<it.second->GetName()<<", "<<it.second->GetTitle()<<std::endl;
+      std::cout<<"\t"<<hex(it.first.first, 4)<<", "<<it.first.second<<": "<<it.second->GetName()<<", "<<it.second->GetTitle()<<std::endl;
    }
 }

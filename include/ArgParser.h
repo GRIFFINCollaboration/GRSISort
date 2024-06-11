@@ -21,12 +21,12 @@ struct ParseError : public std::runtime_error {
 class ArgParseItem {
 public:
    ArgParseItem(bool firstPass) : present_(false), fFirstPass(firstPass) {}
-   virtual ~ArgParseItem()                                            = default;
-   virtual bool matches(const std::string& flag) const                = 0;
-   virtual void parse_item(const std::vector<std::string>& arguments) = 0;
-   virtual int         num_arguments() const                          = 0;
+   virtual ~ArgParseItem()                                                                            = default;
+   virtual bool        matches(const std::string& flag) const                                         = 0;
+   virtual void        parse_item(const std::vector<std::string>& arguments)                          = 0;
+   virtual int         num_arguments() const                                                          = 0;
    virtual std::string printable(int description_column = -1, int* chars_before_desc = nullptr) const = 0;
-   virtual bool        is_required() const = 0;
+   virtual bool        is_required() const                                                            = 0;
    bool                is_present() const { return present_; }
    virtual std::string flag_name() const = 0;
 
@@ -65,7 +65,7 @@ public:
    ArgParseConfig(std::string flag_list, bool firstPass) : ArgParseItem(firstPass)
    {
       fDescription = "";
-		fColour      = "";
+      fColour      = "";
       fRequired    = false;
       std::stringstream ss(flag_list);
       while(!ss.eof()) {
@@ -159,7 +159,7 @@ public:
       }
 
       auto chars = ss.tellp();
-		chars -= fColour.length();
+      chars -= fColour.length();
       if(chars_before_desc != nullptr) {
          *chars_before_desc = chars;
       }
@@ -179,8 +179,8 @@ protected:
    /// A description for display on the terminal.
    std::string fDescription;
 
-	/// Colour string to be use for display
-	std::string fColour;
+   /// Colour string to be use for display
+   std::string fColour;
 
    /// The literal flag that is searched for, including leading dashes.
    std::vector<std::string> fFlags;
@@ -235,10 +235,10 @@ public:
    }
 
    ArgParseConfig<bool>& takes_argument()
-	{
-		fNum_arguments_expected = 1;
-		return *this;
-	}
+   {
+      fNum_arguments_expected = 1;
+      return *this;
+   }
 
    void parse_item(const std::vector<std::string>& arguments) override
    {
@@ -246,7 +246,7 @@ public:
          *fOutput_location = !fStored_default_value;
       } else {
          std::stringstream ss(arguments[0]);
-         ss>>std::boolalpha>>*fOutput_location;
+         ss >> std::boolalpha >> *fOutput_location;
       }
    }
 
@@ -255,7 +255,7 @@ public:
 private:
    bool* fOutput_location;
    bool  fStored_default_value;
-	int   fNum_arguments_expected;
+   int   fNum_arguments_expected;
 };
 
 template <typename T>
@@ -293,7 +293,7 @@ private:
 ///
 /// \class ArgParser
 ///
-/// This class is used to parse the command line arguments. 
+/// This class is used to parse the command line arguments.
 ///
 /// Example usage:
 /// ```
@@ -366,7 +366,7 @@ public:
          std::string remainder;
          if(has_colon) {
             flag = line.substr(0, colon);
-            std::stringstream(flag) >> flag; // Strip out whitespace
+            std::stringstream(flag) >> flag;   // Strip out whitespace
             if(flag.length() == 1) {
                flag = "-" + flag;
             } else {
@@ -387,13 +387,13 @@ public:
 
          if(has_colon) {
             ArgParseItem& item = get_item(flag);
-            item.parse(flag, args, true, true);  // parse "firstPass" items only
-            item.parse(flag, args, false, true); // parse "!firstPass" items only
+            item.parse(flag, args, true, true);    // parse "firstPass" items only
+            item.parse(flag, args, false, true);   // parse "!firstPass" items only
          } else {
             for(auto& arg : args) {
                ArgParseItem& item = get_item(arg);
-               item.parse(arg, std::vector<std::string>{arg}, true);  // parse "firstPass" items only
-               item.parse(arg, std::vector<std::string>{arg}, false); // parse "!firstPass" items only
+               item.parse(arg, std::vector<std::string>{arg}, true);    // parse "firstPass" items only
+               item.parse(arg, std::vector<std::string>{arg}, false);   // parse "!firstPass" items only
             }
          }
       }

@@ -16,12 +16,12 @@ public:
    ~TCalManager() override;
 
 public:
-   TCal* GetCal(UInt_t chanNum);
-   Bool_t AddToManager(TCal* cal, UInt_t chanNum, Option_t* opt = "");
-   Bool_t AddToManager(TCal* cal, Option_t* opt = "");
-   void RemoveCal(UInt_t channum, Option_t* opt = "");
-   void SetClass(const char* className);
-   void SetClass(const TClass* cl);
+   TCal*       GetCal(UInt_t chanNum);
+   Bool_t      AddToManager(TCal* cal, UInt_t chanNum, Option_t* opt = "");
+   Bool_t      AddToManager(TCal* cal, Option_t* opt = "");
+   void        RemoveCal(UInt_t channum, Option_t* opt = "");
+   void        SetClass(const char* className);
+   void        SetClass(const TClass* cl);
    const char* GetClass() { return fClass ? fClass->GetName() : nullptr; }
    void        WriteToChannel() const;
 
@@ -32,8 +32,8 @@ public:
 
 private:
    typedef std::map<UInt_t, TCal*> CalMap;
-   CalMap  fCalMap;
-   TClass* fClass;
+   CalMap                          fCalMap;
+   TClass*                         fClass;
 
    /// \cond CLASSIMP
    ClassDefOverride(TCalManager, 1);

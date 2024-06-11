@@ -89,7 +89,7 @@ Int_t TCompiledHistograms::Write(const char*, Int_t, Int_t)
    TObject* obj;
    while((obj = next()) != nullptr) {
       if(obj->InheritsFrom(TDirectory::Class())) {
-         //WATCH OUT: THIS DOESN'T SEEM THREAD-SAFE DUE TO gDIRECTORY BEING USED.
+         // WATCH OUT: THIS DOESN'T SEEM THREAD-SAFE DUE TO gDIRECTORY BEING USED.
          TPreserveGDirectory preserve;
          TDirectory*         dir = static_cast<TDirectory*>(obj);
          gDirectory->mkdir(dir->GetName())->cd();
@@ -148,7 +148,7 @@ void TCompiledHistograms::Fill(std::shared_ptr<const TFragment> frag)
    }
 
    TPreserveGDirectory preserve;
-   //fDefault_directory->cd();
+   // fDefault_directory->cd();
    fObj.SetDirectory(fDefault_directory);
 
    fObj.SetFragment(std::move(frag));
@@ -168,7 +168,7 @@ void TCompiledHistograms::Fill(std::shared_ptr<TUnpackedEvent> detectors)
    }
 
    TPreserveGDirectory preserve;
-   //fDefault_directory->cd();
+   // fDefault_directory->cd();
    fObj.SetDirectory(fDefault_directory);
 
    fObj.SetDetectors(std::move(detectors));

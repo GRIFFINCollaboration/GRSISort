@@ -32,7 +32,7 @@ public:
 
    std::string GetLibraryName() const { return fLibname; }
 
-   void SetDefaultDirectory(TDirectory* dir);
+   void        SetDefaultDirectory(TDirectory* dir);
    TDirectory* GetDefaultDirectory() { return fDefault_directory; }
 
    void ClearHistograms();
@@ -45,7 +45,7 @@ public:
    Int_t Write(const char* name = nullptr, Int_t option = 0, Int_t bufsize = 0) override;
 
 private:
-   void swap_lib(TCompiledHistograms& other);
+   void   swap_lib(TCompiledHistograms& other);
    time_t get_timestamp();
    bool   file_exists();
 

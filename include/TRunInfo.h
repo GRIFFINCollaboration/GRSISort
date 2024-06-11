@@ -55,10 +55,10 @@
 
 class TRunInfo : public TSingleton<TRunInfo> {
 public:
-	friend class TSingleton<TRunInfo>;
+   friend class TSingleton<TRunInfo>;
 
    ~TRunInfo() override;
-   TRunInfo(); // This should not be used.
+   TRunInfo();   // This should not be used.
    // root forces me have this here instead
    // of a private class member in
    // order to write this class to a tree.
@@ -68,7 +68,7 @@ public:
 
    static const char* GetVersion() { return fVersion.c_str(); }
    static void        ClearVersion() { fVersion.clear(); }
-   static void SetVersion(const char* ver)
+   static void        SetVersion(const char* ver)
    {
       if(fVersion.length() != 0) {
          std::cout<<ALERTTEXT<<"WARNING; VERSION ALREADY SET TO "<<fVersion<<"!!"<<RESET_COLOR<<std::endl;
@@ -79,7 +79,7 @@ public:
 
    static const char* GetFullVersion() { return fFullVersion.c_str(); }
    static void        ClearFullVersion() { fFullVersion.clear(); }
-   static void SetFullVersion(const char* ver)
+   static void        SetFullVersion(const char* ver)
    {
       if(fFullVersion.length() != 0) {
          std::cout<<ALERTTEXT<<"WARNING; FULL VERSION ALREADY SET TO "<<fFullVersion<<"!!"<<RESET_COLOR<<std::endl;
@@ -90,7 +90,7 @@ public:
 
    static const char* GetDate() { return fDate.c_str(); }
    static void        ClearDate() { fDate.clear(); }
-   static void SetDate(const char* ver)
+   static void        SetDate(const char* ver)
    {
       if(fDate.length() != 0) {
          std::cout<<ALERTTEXT<<"WARNING; DATE ALREADY SET TO "<<fDate<<"!!"<<RESET_COLOR<<std::endl;
@@ -101,7 +101,7 @@ public:
 
    static const char* GetLibraryVersion() { return fLibraryVersion.c_str(); }
    static void        ClearLibraryVersion() { fLibraryVersion.clear(); }
-   static void SetLibraryVersion(const char* ver)
+   static void        SetLibraryVersion(const char* ver)
    {
       if(fLibraryVersion.length() != 0) {
          std::cout<<ALERTTEXT<<"WARNING; VERSION ALREADY SET TO "<<fLibraryVersion<<"!!"<<RESET_COLOR<<std::endl;
@@ -125,11 +125,17 @@ public:
    static inline int LastRunNumber() { return Get()->fLastRunNumber; }
    static inline int LastSubRunNumber() { return Get()->fLastSubRunNumber; }
 
-   static inline void SetRunTitle(const char* run_title) { if(run_title != nullptr) Get()->fRunTitle.assign(run_title); }
-   static inline void SetRunComment(const char* run_comment) { if(run_comment != nullptr) Get()->fRunComment.assign(run_comment); }
+   static inline void SetRunTitle(const char* run_title)
+   {
+      if(run_title != nullptr) Get()->fRunTitle.assign(run_title);
+   }
+   static inline void SetRunComment(const char* run_comment)
+   {
+      if(run_comment != nullptr) Get()->fRunComment.assign(run_comment);
+   }
 
-	static inline std::string RunTitle() { return Get()->fRunTitle; }
-	static inline std::string RunComment() { return Get()->fRunComment; }
+   static inline std::string RunTitle() { return Get()->fRunTitle; }
+   static inline std::string RunComment() { return Get()->fRunComment; }
 
    static inline void SetRunStart(double tmp) { Get()->fRunStart = tmp; }
    static inline void SetRunStop(double tmp) { Get()->fRunStop = tmp; }
@@ -161,77 +167,77 @@ public:
    static inline void SetRunInfoFileName(const char* fname) { Get()->fRunInfoFileName.assign(fname); }
    static inline void SetRunInfoFile(const char* ffile) { Get()->fRunInfoFile.assign(ffile); }
 
-   static inline void SetHPGeArrayPosition(const double arr_pos) { Get()->fHPGeArrayPosition = arr_pos; }
-   static inline double                          HPGeArrayPosition() { return Get()->fHPGeArrayPosition; }
+   static inline void   SetHPGeArrayPosition(const double arr_pos) { Get()->fHPGeArrayPosition = arr_pos; }
+   static inline double HPGeArrayPosition() { return Get()->fHPGeArrayPosition; }
 
    Long64_t Merge(TCollection* list);
-   void Add(TRunInfo* runinfo, bool verbose = false);
-  
-	virtual TEventBuildingLoop::EBuildMode BuildMode() const;
+   void     Add(TRunInfo* runinfo, bool verbose = false);
 
-	void PrintBadCycles() const;
-	void AddBadCycle(int bad_cycle);
-	void RemoveBadCycle(int cycle);
-	bool IsBadCycle(int cycle) const;
+   virtual TEventBuildingLoop::EBuildMode BuildMode() const;
 
-	void PrintRunList();
+   void PrintBadCycles() const;
+   void AddBadCycle(int bad_cycle);
+   void RemoveBadCycle(int cycle);
+   bool IsBadCycle(int cycle) const;
 
-	static std::string CreateLabel(bool quiet = false);
+   void PrintRunList();
 
-	static void SetDetectorInformation(TDetectorInformation* inf) { Get()->fDetectorInformation = inf; }
-	static TDetectorInformation* GetDetectorInformation() { return Get()->fDetectorInformation; }
+   static std::string CreateLabel(bool quiet = false);
+
+   static void                  SetDetectorInformation(TDetectorInformation* inf) { Get()->fDetectorInformation = inf; }
+   static TDetectorInformation* GetDetectorInformation() { return Get()->fDetectorInformation; }
 
 private:
-	std::string fRunTitle;     ///< The title of the run
-	std::string fRunComment;   ///< The comment on the run
-	int         fRunNumber;    ///< The current run number
-	int         fSubRunNumber; ///< The current sub run number
-	int         fFirstRunNumber{0};     ///< The first run number (for combined runs)
-	int         fFirstSubRunNumber{-1}; ///< The first sub run number (for combined subruns)
-	int         fLastRunNumber{0};      ///< The last run number (for combined runs)
-	int         fLastSubRunNumber{-1};  ///< The last sub run number (for combined subruns)
-	std::vector<std::pair<int, int> > fRunList; ///< List of all runs added to this run info
+   std::string                      fRunTitle;                ///< The title of the run
+   std::string                      fRunComment;              ///< The comment on the run
+   int                              fRunNumber;               ///< The current run number
+   int                              fSubRunNumber;            ///< The current sub run number
+   int                              fFirstRunNumber{0};       ///< The first run number (for combined runs)
+   int                              fFirstSubRunNumber{-1};   ///< The first sub run number (for combined subruns)
+   int                              fLastRunNumber{0};        ///< The last run number (for combined runs)
+   int                              fLastSubRunNumber{-1};    ///< The last sub run number (for combined subruns)
+   std::vector<std::pair<int, int>> fRunList;                 ///< List of all runs added to this run info
 
-	double fRunStart{0.};  // The start  of the current run in seconds - no idea why we store this as double?
-	double fRunStop{0.};   // The stop   of the current run in seconds - no idea why we store this as double?
-	double fRunLength{0.}; // The length of the current run in seconds - no idea why we store this as double?
+   double fRunStart{0.};    // The start  of the current run in seconds - no idea why we store this as double?
+   double fRunStop{0.};     // The stop   of the current run in seconds - no idea why we store this as double?
+   double fRunLength{0.};   // The length of the current run in seconds - no idea why we store this as double?
 
-	static std::string fVersion;        // The version of GRSISort that generated the file - GRSI_RELEASE from GVersion.h
-	static std::string fFullVersion;    // The full version of GRSISort that generated the file (includes last commit) - GRSI_GIT_COMMIT from GVersion.h
-	static std::string fDate;           // The date of the last commit used in this version - GRSI_GIT_COMMIT_TIME from GVersion.h
-	static std::string fLibraryVersion; // The version of the parser/file library that generated the file
+   static std::string fVersion;          // The version of GRSISort that generated the file - GRSI_RELEASE from GVersion.h
+   static std::string fFullVersion;      // The full version of GRSISort that generated the file (includes last commit) - GRSI_GIT_COMMIT from GVersion.h
+   static std::string fDate;             // The date of the last commit used in this version - GRSI_GIT_COMMIT_TIME from GVersion.h
+   static std::string fLibraryVersion;   // The version of the parser/file library that generated the file
 
-	std::string fCalFileName; // Name of calfile that generated cal
-	std::string fCalFile;     // Cal File to load into Cal of tree
+   std::string fCalFileName;   // Name of calfile that generated cal
+   std::string fCalFile;       // Cal File to load into Cal of tree
 
-	std::string fXMLODBFileName; // Name of XML Odb file
-	std::string fXMLODBFile;     // The odb
+   std::string fXMLODBFileName;   // Name of XML Odb file
+   std::string fXMLODBFile;       // The odb
 
-	/////////////////////////////////////////////////
-	//////////////// Building Options ///////////////
-	/////////////////////////////////////////////////
+   /////////////////////////////////////////////////
+   //////////////// Building Options ///////////////
+   /////////////////////////////////////////////////
 
-	std::string fRunInfoFileName; // The name of the Run info file
-	std::string fRunInfoFile;     // The contents of the run info file
+   std::string fRunInfoFileName;   // The name of the Run info file
+   std::string fRunInfoFile;       // The contents of the run info file
 
-	double fHPGeArrayPosition; // Position of the HPGe Array (default = 110.0 mm );
+   double fHPGeArrayPosition;   // Position of the HPGe Array (default = 110.0 mm );
 
-	unsigned int     fBadCycleListSize;
-	std::vector<int> fBadCycleList; //!<!List of bad cycles to be used for cycle rejection
+   unsigned int     fBadCycleListSize;
+   std::vector<int> fBadCycleList;   //!<!List of bad cycles to be used for cycle rejection
 
-	TDetectorInformation* fDetectorInformation; //!<! pointer to detector specific information (set by each parser library)
+   TDetectorInformation* fDetectorInformation;   //!<! pointer to detector specific information (set by each parser library)
 
 public:
-	void Print(Option_t* opt = "") const override;
-	void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
-	static bool WriteToRoot(TFile* fileptr = nullptr);
-	static bool WriteInfoFile(const std::string& filename);
-	std::string PrintToString(Option_t* opt = "");
+   static bool WriteToRoot(TFile* fileptr = nullptr);
+   static bool WriteInfoFile(const std::string& filename);
+   std::string PrintToString(Option_t* opt = "");
 
-	/// \cond CLASSIMP
-	ClassDefOverride(TRunInfo, 16); // Contains the run-dependent information.
-	/// \endcond
+   /// \cond CLASSIMP
+   ClassDefOverride(TRunInfo, 16);   // Contains the run-dependent information.
+                                     /// \endcond
 };
 /*! @} */
 #endif

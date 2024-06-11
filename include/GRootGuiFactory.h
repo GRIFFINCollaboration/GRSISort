@@ -48,7 +48,7 @@ public:
    TControlBarImp* CreateControlBarImp(TControlBar* c, const char* title) override;
    TControlBarImp* CreateControlBarImp(TControlBar* c, const char* title, Int_t x, Int_t y) override;
 
-   ClassDefOverride(GRootGuiFactory, 0) // Factory for ROOT GUI components
+   ClassDefOverride(GRootGuiFactory, 0)   // Factory for ROOT GUI components
 };
 
 #endif

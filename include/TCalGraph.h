@@ -28,22 +28,22 @@
 class TCalGraph : public TGraphErrors {
 public:
    TCalGraph();
-   TCalGraph(const char* name, const char* title) : TGraphErrors(name, title) {};
+   TCalGraph(const char* name, const char* title) : TGraphErrors(name, title){};
    ~TCalGraph() override;
 
-	TCalGraph& operator=(const TCalGraph&) = default;
+   TCalGraph& operator=(const TCalGraph&) = default;
 
    TCalGraph(const TCalGraph& copy);
 
-#if ROOT_VERSION_CODE >= ROOT_VERSION(6,24,0)
-	using TGraph::AddPoint;
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6, 24, 0)
+   using TGraph::AddPoint;
 #endif
-   void AddPoint(const TCalPoint& cal_point);
-   Int_t FindClosestPointX(const Double_t& x_val);
+   void     AddPoint(const TCalPoint& cal_point);
+   Int_t    FindClosestPointX(const Double_t& x_val);
    Double_t FindDistToClosestPointX(const Double_t& x_val);
 
    Int_t AddLists(const TCalList& cal_list, const TSourceList& src_list);
-   void Draw(Option_t* opt = "") override
+   void  Draw(Option_t* opt = "") override
    {
       BuildGraph();
       TGraphErrors::Draw(opt);
@@ -63,7 +63,7 @@ private:
    virtual void BuildGraph() = 0;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalGraph, 1); // Graph Class for Calibrations
+   ClassDefOverride(TCalGraph, 1);   // Graph Class for Calibrations
    /// \endcond
 };
 /*! @} */

@@ -53,25 +53,25 @@ public:
    virtual Bool_t IsGroupable() const = 0;
 
 public:
-   void Copy(TObject& obj) const override;
-   virtual void WriteToChannel() const { Error("WriteToChannel", "Not defined for %s", ClassName()); }
-   virtual TF1* GetFitFunction() const { return fFitFunc; }
-   virtual void SetFitFunction(const TF1* func) { fFitFunc = const_cast<TF1*>(func); };
-   virtual std::vector<Double_t>          GetParameters() const;
-   virtual Double_t GetParameter(size_t parameter) const;
+   void                          Copy(TObject& obj) const override;
+   virtual void                  WriteToChannel() const { Error("WriteToChannel", "Not defined for %s", ClassName()); }
+   virtual TF1*                  GetFitFunction() const { return fFitFunc; }
+   virtual void                  SetFitFunction(const TF1* func) { fFitFunc = const_cast<TF1*>(func); };
+   virtual std::vector<Double_t> GetParameters() const;
+   virtual Double_t              GetParameter(size_t parameter) const;
 
    TChannel* GetChannel() const;
-   Bool_t SetChannel(const TChannel* chan);
-   Bool_t SetChannel(UInt_t chanNum);
-   void Print(Option_t* opt = "") const override;
-   void Clear(Option_t* opt = "") override;
+   Bool_t    SetChannel(const TChannel* chan);
+   Bool_t    SetChannel(UInt_t chanNum);
+   void      Print(Option_t* opt = "") const override;
+   void      Clear(Option_t* opt = "") override;
    // virtual void Draw(Option_t* chopt = "");
 
    virtual void WriteToAllChannels(const std::string& mnemonic = "");
 
-   virtual void SetHist(TH1* hist);
-   TH1*         GetHist() const { return fHist; }
-   virtual void SetNucleus(TNucleus* nuc, Option_t* opt = "");
+   virtual void      SetHist(TH1* hist);
+   TH1*              GetHist() const { return fHist; }
+   virtual void      SetNucleus(TNucleus* nuc, Option_t* opt = "");
    virtual TNucleus* GetNucleus() const { return fNuc; }
 
 protected:
@@ -79,12 +79,12 @@ protected:
 
 private:
    TRef      fChan;      ///< This points at the TChannel
-   TF1*      fFitFunc; ///< Fit function representing calibration
-   TH1*      fHist;    ///< Histogram that was fit by the TPeak.
-   TNucleus* fNuc;     ///< Nucleus that we are calibrating against
+   TF1*      fFitFunc;   ///< Fit function representing calibration
+   TH1*      fHist;      ///< Histogram that was fit by the TPeak.
+   TNucleus* fNuc;       ///< Nucleus that we are calibrating against
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCal, 2); // Abstract Class for Calibrations
+   ClassDefOverride(TCal, 2);   // Abstract Class for Calibrations
    /// \endcond
 };
 /*! @} */

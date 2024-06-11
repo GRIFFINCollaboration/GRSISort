@@ -45,18 +45,18 @@ TList* AnalyzeDataLoss(TTree* tree, long entries = 0, TStopwatch* w = nullptr)
 
    tree->GetEntry(0);
    long      entry;
-   long      skip     = 1000; // skip this many entries before beginning
-   const int channels = 150;  // number of channels
+   long      skip     = 1000;   // skip this many entries before beginning
+   const int channels = 150;    // number of channels
    // long lasttime = 0;
 
    //--------------- parameters for dealing with the roll-over of the AcceptedChannelId ----------------------//
-   unsigned long int acceptedMax = TMath::Power(2, 14); // this is the maximum number that the AcceptedChannelId can be
-   int               rollovers[channels];               // this is how many roll-overs we have had
+   unsigned long int acceptedMax = TMath::Power(2, 14);   // this is the maximum number that the AcceptedChannelId can be
+   int               rollovers[channels];                 // this is how many roll-overs we have had
    // long int lastAccepted[channels];
-   bool         rolling[channels]; // array that tells us if we're rolling over in that channel
-   int          rollnum[channels]; // array that tells us how many times we've had accepted ID over the threshold
+   bool         rolling[channels];   // array that tells us if we're rolling over in that channel
+   int          rollnum[channels];   // array that tells us how many times we've had accepted ID over the threshold
    unsigned int rollingthreshold  = 1000;
-   int          rollnum_threshold = 20; // if we have this many numbers above the threshold, turn rolling on or off
+   int          rollnum_threshold = 20;   // if we have this many numbers above the threshold, turn rolling on or off
 
    long int channelIds[channels][3];
    long int acceptedChannelIds[channels][3];
@@ -64,8 +64,8 @@ TList* AnalyzeDataLoss(TTree* tree, long entries = 0, TStopwatch* w = nullptr)
    int      networkPacketNumber[3] = {0, 0, 0};
    long int networkPacketTS[3]     = {0, 0, 0};
    int      timebins               = 10000;
-   double   timemin                = 0;    // in seconds
-   double   timemax                = 1000; // in seconds
+   double   timemin                = 0;      // in seconds
+   double   timemax                = 1000;   // in seconds
    auto*    accepted_hst =
       new TH2D("accepted_hst", "Accepted Channel Id vs. Channel Number;Channel Number;Accepted Channel Id", channels, 0,
                channels, 10000, 0, 10e5);
@@ -124,7 +124,7 @@ TList* AnalyzeDataLoss(TTree* tree, long entries = 0, TStopwatch* w = nullptr)
          continue;
       }
 
-      long time = currentFrag->GetTimeStamp(); // Get the timestamp of the x'th fragment
+      long          time      = currentFrag->GetTimeStamp();   // Get the timestamp of the x'th fragment
       int           chan      = currentFrag->GetChannelNumber();
       unsigned long accepted  = currentFrag->GetAcceptedChannelId();
       unsigned long chanid    = currentFrag->GetChannelId();

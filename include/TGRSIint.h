@@ -45,10 +45,10 @@ private:
    TGRSIint(int argc, char** argv, void* options = nullptr, int numOptions = 0, bool noLogo = false,
             const char* appClassName = "grsisort");
 
-   static TEnv* fGRSIEnv; ///< GRSI environment
+   static TEnv* fGRSIEnv;   ///< GRSI environment
 
 public:
-   static TGRSIint* fTGRSIint; ///< Static pointer (singleton)
+   static TGRSIint* fTGRSIint;   ///< Static pointer (singleton)
    static TGRSIint* instance(int argc = 0, char** argv = nullptr, void* options = nullptr, int numOptions = -1,
                              bool noLogo = false, const char* appClassName = "grsisort");
 
@@ -60,9 +60,9 @@ public:
    bool HandleTermInput() override;
    int  TabCompletionHook(char*, int*, std::ostream&) override;
 
-   TFile* OpenRootFile(const std::string& filename, Option_t* opt = "read");
+   TFile*    OpenRootFile(const std::string& filename, Option_t* opt = "read");
    TRawFile* OpenRawFile(const std::string& filename);
-   void RunMacroFile(const std::string& filename);
+   void      RunMacroFile(const std::string& filename);
 
    void Terminate(Int_t status = 0) override;
 
@@ -84,22 +84,22 @@ private:
 
    Long_t DelayedProcessLine(std::string command);
 
-   TTimer* fKeepAliveTimer; ///< Time of process
+   TTimer* fKeepAliveTimer;   ///< Time of process
 #ifndef __CINT__
-   std::thread::id main_thread_id; ///< Main sorting thread id
+   std::thread::id main_thread_id;   ///< Main sorting thread id
 #endif
 
 private:
-   bool        fIsTabComplete;      ///< Flag for tab completion hook
-   bool        fAllowedToTerminate; ///< Flag for shutting down GRSISort
-   int         fRootFilesOpened;    ///< Number of ROOT files opened
-   int         fRawFilesOpened;     ///< Number of Raw Files opened
-   std::string fNewFragmentFile;    ///< New fragment file name
+   bool        fIsTabComplete;        ///< Flag for tab completion hook
+   bool        fAllowedToTerminate;   ///< Flag for shutting down GRSISort
+   int         fRootFilesOpened;      ///< Number of ROOT files opened
+   int         fRawFilesOpened;       ///< Number of Raw Files opened
+   std::string fNewFragmentFile;      ///< New fragment file name
 
-   std::vector<TRawFile*> fRawFiles; ///< List of Raw files opened
+   std::vector<TRawFile*> fRawFiles;   ///< List of Raw files opened
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSIint, 0); // Interpreter for GRSISort
+   ClassDefOverride(TGRSIint, 0);   // Interpreter for GRSISort
    /// \endcond
 };
 

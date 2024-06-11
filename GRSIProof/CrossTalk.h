@@ -25,18 +25,18 @@
 class CrossTalk : public TGRSISelector {
 
 public:
-   TGriffin* fGrif;
-   TSceptar* fScep;
-	TGriffinBgo* fGriffinBgo;
+   TGriffin*    fGrif;
+   TSceptar*    fScep;
+   TGriffinBgo* fGriffinBgo;
 
-	CrossTalk(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(0), fScep(0), fGriffinBgo(0) { SetOutputPrefix("Crosstalk"); }
-	virtual ~CrossTalk() {}
-	virtual Int_t Version() const { return 2; }
-	void          CreateHistograms();
-	void          FillHistograms();
-	void InitializeBranches(TTree* tree);
+   CrossTalk(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(0), fScep(0), fGriffinBgo(0) { SetOutputPrefix("Crosstalk"); }
+   virtual ~CrossTalk() {}
+   virtual Int_t Version() const { return 2; }
+   void          CreateHistograms();
+   void          FillHistograms();
+   void          InitializeBranches(TTree* tree);
 
-	ClassDef(CrossTalk, 2);
+   ClassDef(CrossTalk, 2);
 };
 
 #endif
@@ -44,16 +44,16 @@ public:
 #ifdef CrossTalk_cxx
 void CrossTalk::InitializeBranches(TTree* tree)
 {
-	if(!tree) return;
-	if(tree->SetBranchAddress("TGriffin", &fGrif) == TTree::kMissingBranch) {
-		fGrif = new TGriffin;
-	}
-	if(tree->SetBranchAddress("TSceptar", &fScep) == TTree::kMissingBranch) {
-		fScep = new TSceptar;
-	}
-	if(tree->SetBranchAddress("TGriffinBgo", &fGriffinBgo) == TTree::kMissingBranch) {
-		fGriffinBgo = new TGriffinBgo;
-	}
+   if(!tree) return;
+   if(tree->SetBranchAddress("TGriffin", &fGrif) == TTree::kMissingBranch) {
+      fGrif = new TGriffin;
+   }
+   if(tree->SetBranchAddress("TSceptar", &fScep) == TTree::kMissingBranch) {
+      fScep = new TSceptar;
+   }
+   if(tree->SetBranchAddress("TGriffinBgo", &fGriffinBgo) == TTree::kMissingBranch) {
+      fGriffinBgo = new TGriffinBgo;
+   }
 }
 
-#endif // #ifdef CrossTalk_cxx
+#endif   // #ifdef CrossTalk_cxx

@@ -2,9 +2,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TCal)
-/// \endcond
+   /// \endcond
 
-TCal::TCal()
+   TCal::TCal()
 {
    /// Default constructor
    InitTCal();
@@ -73,8 +73,8 @@ void TCal::WriteToAllChannels(const std::string& mnemonic)
 {
    /// Writes this calibration to all channels in the current TChannel Map
    std::unordered_map<unsigned int, TChannel*>::iterator mapIt;
-   std::unordered_map<unsigned int, TChannel*>* chanMap = TChannel::GetChannelMap();
-   TChannel* origChan = GetChannel();
+   std::unordered_map<unsigned int, TChannel*>*          chanMap  = TChannel::GetChannelMap();
+   TChannel*                                             origChan = GetChannel();
    for(mapIt = chanMap->begin(); mapIt != chanMap->end(); mapIt++) {
       if(mnemonic.empty() || (strncmp(mapIt->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
          SetChannel(mapIt->second);
@@ -112,7 +112,7 @@ Double_t TCal::GetParameter(size_t parameter) const
       Error("GetParameter", "Function have not been fitted yet");
       return 0;
    }
-   return GetFitFunction()->GetParameter(parameter); // Root does all of the checking for us.
+   return GetFitFunction()->GetParameter(parameter);   // Root does all of the checking for us.
 }
 
 Bool_t TCal::SetChannel(UInt_t chanNum)
@@ -131,8 +131,8 @@ TChannel* TCal::GetChannel() const
 {
    /// Gets the channel being pointed to by the TCal. Returns 0 if no channel
    /// is set.
-   return static_cast<TChannel*>(fChan.GetObject()); // Gets the object pointed at by the TRef and casts it to a
-                                                     // TChannel
+   return static_cast<TChannel*>(fChan.GetObject());   // Gets the object pointed at by the TRef and casts it to a
+                                                       // TChannel
 }
 
 void TCal::SetHist(TH1* hist)
@@ -160,10 +160,12 @@ void TCal::Print(Option_t*) const
    }
 
    if(fFitFunc != nullptr) {
-      std::cout<<std::endl<<"*******************************"<<std::endl;
+      std::cout<<std::endl
+               <<"*******************************"<<std::endl;
       std::cout<<" Fit:"<<std::endl;
       fFitFunc->Print();
-      std::cout<<std::endl<<"*******************************"<<std::endl;
+      std::cout<<std::endl
+               <<"*******************************"<<std::endl;
    } else {
       std::cout<<"Parameters: FIT NOT SET"<<std::endl;
    }

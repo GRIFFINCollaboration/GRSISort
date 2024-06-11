@@ -30,12 +30,12 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
          std::cout<<"address "<<frag->GetAddress()<<": added single fragment "<<frag<<std::endl;
       }
       if(fDebug && integrationLength[0] != 700) {
-         std::cout<<"single fragment (address "<<hex(frag->GetAddress(),4)<<") with integration length "
-			         <<integrationLength[0]<<", # pileups "<<frag->GetNumberOfPileups()<<std::endl;
+         std::cout<<"single fragment (address "<<hex(frag->GetAddress(), 4)<<") with integration length "
+                  <<integrationLength[0]<<", # pileups "<<frag->GetNumberOfPileups()<<std::endl;
          if(frag->GetNumberOfPileups() > 1) {
             std::cout<<"have fragments:"<<std::endl;
             for(auto& it : fMap) {
-               std::cout<<"\t"<<hex(std::get<0>(it.second)->GetAddress(),4)<<": "
+               std::cout<<"\t"<<hex(std::get<0>(it.second)->GetAddress(), 4)<<": "
                         <<std::get<0>(it.second)->GetNumberOfPileups()<<std::endl;
             }
          }
@@ -47,13 +47,13 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
       return true;
    }
    // check if this is the last fragment needed
-   int  nofFrags   = 1;
-   int  nofCharges = charge.size();
-	// equal_range returns a pair of iterators:
-	// the first points to the first fragment with this address,
-	// the second to the first fragment of the next address
-	// if no fragment with this address exists, both point to the first fragment of the next address
-   auto range      = fMap.equal_range(frag->GetAddress());
+   int nofFrags   = 1;
+   int nofCharges = charge.size();
+   // equal_range returns a pair of iterators:
+   // the first points to the first fragment with this address,
+   // the second to the first fragment of the next address
+   // if no fragment with this address exists, both point to the first fragment of the next address
+   auto range = fMap.equal_range(frag->GetAddress());
    for(auto it = range.first; it != range.second; ++it) {
       ++nofFrags;
       nofCharges += std::get<1>((*it).second).size();
@@ -86,12 +86,12 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
    }
    // last fragment:
    // now we can loop over the stored fragments and the current fragment and calculate all charges
-   std::vector<std::shared_ptr<TFragment>> frags; // all fragments
-   std::vector<Long_t>                     k;     // all integration lengths
-   std::vector<Float_t>                    c;     // all charges (not integrated charges, but integrated charge divided by integration length!)
-   int                  situation = -1; // flag to select different scenarios for the time sequence of multiple hits
+   std::vector<std::shared_ptr<TFragment>> frags;            // all fragments
+   std::vector<Long_t>                     k;                // all integration lengths
+   std::vector<Float_t>                    c;                // all charges (not integrated charges, but integrated charge divided by integration length!)
+   int                                     situation = -1;   // flag to select different scenarios for the time sequence of multiple hits
    switch(nofFrags) {
-   case 2: // only one option: (2, 1)
+   case 2:   // only one option: (2, 1)
    {
       if(charge.size() != 1) {
          DropFragments(range);
@@ -120,12 +120,12 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
             c.push_back((std::get<1>((*(range.first)).second)[i] + gRandom->Uniform()) / k[i]);
             if(fDebug) {
                std::cout<<"2, "<<i<<": "<<hex(std::get<1>((*(range.first)).second)[i])<<"/"<<hex(k[i])
-					         <<" = "<<(std::get<1>((*(range.first)).second)[i] + gRandom->Uniform())
+                        <<" = "<<(std::get<1>((*(range.first)).second)[i] + gRandom->Uniform())
                         <<"/"<<k[i]<<" = "<<c.back()<<std::endl;
             }
          } else {
             // drop this charge, it's no good
-            if(dropped >= 0) { // we've already dropped one, so we don't have enough left
+            if(dropped >= 0) {   // we've already dropped one, so we don't have enough left
                DropFragments(range);
                if(fDebug) {
                   std::cout<<"2 too much dropped"<<std::endl;
@@ -138,7 +138,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
             dropped = i;
          }
       }
-      if(dropped >= 0 && integrationLength[0] <= 0) { // we've already dropped one, so we don't have enough left
+      if(dropped >= 0 && integrationLength[0] <= 0) {   // we've already dropped one, so we don't have enough left
          DropFragments(range);
          if(fDebug) {
             std::cout<<"2 too much dropped (end)"<<std::endl;
@@ -156,7 +156,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
          std::cout<<"dropped = "<<dropped<<", c.size() = "<<c.size()<<std::endl;
       }
       switch(dropped) {
-      case 0: // dropped e0, so only e0+e1 and e1 are left
+      case 0:   // dropped e0, so only e0+e1 and e1 are left
          frags[0]->SetCharge(c[0] * integrationLength[0] - charge[0]);
          frags[1]->SetCharge(charge[0]);
          frags[0]->SetKValue(integrationLength[0]);
@@ -164,7 +164,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
          frags[0]->SetNumberOfPileups(-200);
          frags[1]->SetNumberOfPileups(-201);
          break;
-      case 1: // dropped e0+e1, so only e0 and e1 are left
+      case 1:   // dropped e0+e1, so only e0 and e1 are left
          frags[0]->SetCharge(c[0] * integrationLength[0]);
          frags[1]->SetCharge(charge[0]);
          frags[0]->SetKValue(integrationLength[0]);
@@ -172,7 +172,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
          frags[0]->SetNumberOfPileups(-200);
          frags[1]->SetNumberOfPileups(-201);
          break;
-      case 2: // dropped e1, so only e0 and e0+e1 are left
+      case 2:   // dropped e1, so only e0 and e0+e1 are left
          frags[0]->SetCharge(c[0] * integrationLength[0]);
          frags[1]->SetCharge((c[1] - c[0]) * integrationLength[0]);
          frags[0]->SetKValue(integrationLength[0]);
@@ -180,7 +180,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
          frags[0]->SetNumberOfPileups(-200);
          frags[1]->SetNumberOfPileups(-201);
          break;
-      default: // dropped none
+      default:   // dropped none
          c.push_back((charge[0] + gRandom->Uniform()) / integrationLength[0]);
          if(fDebug) {
             std::cout<<"2, -: "<<hex(charge[0])<<"/"<<hex(integrationLength[0])<<" = "
@@ -191,7 +191,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
          break;
       }
    } break;
-   case 3: // two options: (3, 1, 1), (2, 2, 1)
+   case 3:   // two options: (3, 1, 1), (2, 2, 1)
    {
       if(charge.size() != 1) {
          DropFragments(range);
@@ -260,7 +260,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
          dropped.push_back(4);
       }
       switch(dropped.size()) {
-      case 0: // dropped none
+      case 0:   // dropped none
          c.push_back((charge[0] + gRandom->Uniform()) / integrationLength[0]);
          if(fDebug) {
             std::cout<<"3, -: "<<hex(charge[0])<<"/"<<hex(integrationLength[0])<<" = "
@@ -269,7 +269,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
          }
          Solve(frags, c, k, situation);
          break;
-      case 1: // dropped one
+      case 1:   // dropped one
          // don't know how to handle these right now
          DropFragments(range);
          if(fDebug) {
@@ -277,7 +277,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
          }
          return false;
          break;
-      case 2: // dropped two => as many left as there are fragments
+      case 2:   // dropped two => as many left as there are fragments
          DropFragments(range);
          if(fDebug) {
             std::cout<<"3, double drop"<<std::endl;
@@ -286,7 +286,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
          switch(dropped[0]) {
          case 0:
             switch(dropped[1]) {
-            case 1: // e0+e1+e2, e2, e3
+            case 1:   // e0+e1+e2, e2, e3
                break;
             case 2: break;
             case 3: break;
@@ -295,7 +295,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
             break;
          }
          break;
-      default: // dropped too many
+      default:   // dropped too many
          DropFragments(range);
          if(fDebug) {
             std::cout<<"3, dropped too many"<<std::endl;
@@ -303,18 +303,18 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
          return false;
       }
    } break;
-   case 4: // five options: (4, 1, 1, 1), (3, 2, 1, 1), (3, 1, 2, 1), (2, 3, 1, 1), (2, 2, 2, 1)
-           // break;
+   case 4:   // five options: (4, 1, 1, 1), (3, 2, 1, 1), (3, 1, 2, 1), (2, 3, 1, 1), (2, 2, 2, 1)
+             // break;
    default:
       // std::cerr<<"address "<<frag->GetAddress()<<": deconvolution of "<<nofCharges<<" charges for "<<nofFrags<<"
       // fragments not implemented yet!"<<std::endl;
       DropFragments(range);
-		if(fDebug) {
-			std::cout<<"unknown number of fragments "<<nofFrags<<std::endl;
-		}
+      if(fDebug) {
+         std::cout<<"unknown number of fragments "<<nofFrags<<std::endl;
+      }
       return false;
       break;
-   } // switch(nofFrags)
+   }   // switch(nofFrags)
    // add all fragments to queue
    int i = 0;
    for(auto it = range.first; it != range.second; ++it) {
@@ -342,16 +342,16 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
 void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vector<Float_t> c, std::vector<Long_t> k,
                          int situation)
 {
-	/// Solves minimization of charges for given integrated charges c and integration lengths k.
-	/// Resulting charges are stored in the provided fragments with a k-value of 1.
-	/// The situation parameter distinguishes between the two different ways 3 hits can pile up with each other:
-	/// 3 - both later hits pile up with the first, any other value - the third hit only piles up with the second hit not the first one.
-	
-	// all k's are needed squared so we square all elements of k
+   /// Solves minimization of charges for given integrated charges c and integration lengths k.
+   /// Resulting charges are stored in the provided fragments with a k-value of 1.
+   /// The situation parameter distinguishes between the two different ways 3 hits can pile up with each other:
+   /// 3 - both later hits pile up with the first, any other value - the third hit only piles up with the second hit not the first one.
+
+   // all k's are needed squared so we square all elements of k
    std::vector<Long_t> k2 = k;
-	for(long& it : k2) {
-		it = it * it;
-	}
+   for(long& it : k2) {
+      it = it * it;
+   }
 
    switch(frag.size()) {
    case 2:
@@ -382,14 +382,15 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
       }
       break;
    case 3:
-      if(situation == 3) { //(3, 1, 1)
+      if(situation == 3) {   //(3, 1, 1)
          frag[0]->SetCharge(
             (c[0] * (k2[0] * k2[1] * k2[2] + k2[0] * k2[1] * k2[3] + k2[0] * k2[1] * k2[4] + k2[0] * k2[2] * k2[4] +
                      k2[0] * k2[3] * k2[4]) +
              (c[1] + c[4]) * k2[1] * k2[3] * k2[4] + c[2] * (k2[1] * k2[2] * k2[3] + k2[2] * k2[3] * k2[4]) -
              c[3] * (k2[1] * k2[2] * k2[3] + k2[1] * k2[3] * k2[4] + k2[2] * k2[3] * k2[4])) /
             (k2[0] * k2[1] * k2[2] + k2[0] * k2[1] * k2[3] + k2[0] * k2[1] * k2[4] + k2[0] * k2[2] * k2[4] +
-             k2[0] * k2[3] * k2[4] + k2[1] * k2[2] * k2[3] + k2[1] * k2[3] * k2[4] + k2[2] * k2[3] * k2[4]) * k[0]);
+             k2[0] * k2[3] * k2[4] + k2[1] * k2[2] * k2[3] + k2[1] * k2[3] * k2[4] + k2[2] * k2[3] * k2[4]) *
+            k[0]);
          frag[1]->SetCharge(
             (c[0] * (k2[0] * k2[1] * k2[2] + k2[0] * k2[1] * k2[3] + k2[0] * k2[1] * k2[4] + k2[0] * k2[2] * k2[4]) -
              c[1] * (k2[0] * k2[1] * k2[2] + k2[0] * k2[1] * k2[3] + k2[0] * k2[1] * k2[4] + k2[1] * k2[2] * k2[3]) +
@@ -397,7 +398,8 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
              c[3] * (k2[0] * k2[3] * k2[4] + k2[1] * k2[2] * k2[3] + k2[1] * k2[3] * k2[4] + k2[2] * k2[3] * k2[4]) +
              c[4] * (k2[0] * k2[2] * k2[4] + k2[0] * k2[3] * k2[4] + k2[1] * k2[3] * k2[4] + k2[2] * k2[3] * k2[4])) /
             (k2[0] * k2[1] * k2[2] + k2[0] * k2[1] * k2[3] + k2[0] * k2[1] * k2[4] + k2[0] * k2[2] * k2[4] +
-             k2[0] * k2[3] * k2[4] + k2[1] * k2[2] * k2[3] + k2[1] * k2[3] * k2[4] + k2[2] * k2[3] * k2[4]) * k[1]);
+             k2[0] * k2[3] * k2[4] + k2[1] * k2[2] * k2[3] + k2[1] * k2[3] * k2[4] + k2[2] * k2[3] * k2[4]) *
+            k[1]);
          frag[2]->SetCharge(((c[0] + c[3]) * k2[0] * k2[1] * k2[3] +
                              c[1] * (k2[0] * k2[1] * k2[2] + k2[0] * k2[1] * k2[3] + k2[1] * k2[2] * k2[3]) +
                              c[2] * (k2[0] * k2[1] * k2[2] + k2[1] * k2[2] * k2[3]) +
@@ -405,29 +407,33 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
                                      k2[1] * k2[3] * k2[4] + k2[2] * k2[3] * k2[4])) /
                             (k2[0] * k2[1] * k2[2] + k2[0] * k2[1] * k2[3] + k2[0] * k2[1] * k2[4] +
                              k2[0] * k2[2] * k2[4] + k2[0] * k2[3] * k2[4] + k2[1] * k2[2] * k2[3] +
-                             k2[1] * k2[3] * k2[4] + k2[2] * k2[3] * k2[4]) * k[2]);
-      } else { //(2, 2, 1)
+                             k2[1] * k2[3] * k2[4] + k2[2] * k2[3] * k2[4]) *
+                            k[2]);
+      } else {   //(2, 2, 1)
          frag[0]->SetCharge(
             (c[0] * (k2[0] * k2[1] * k2[3] + k2[0] * k2[1] * k2[4] + k2[0] * k2[2] * k2[3] + k2[0] * k2[2] * k2[4] +
                      k2[0] * k2[3] * k2[4]) +
              c[1] * (k2[1] * k2[2] * k2[3] + k2[1] * k2[2] * k2[4] + k2[1] * k2[3] * k2[4]) -
              c[2] * (k2[1] * k2[2] * k2[3] + k2[1] * k2[2] * k2[4]) - (c[3] - c[4]) * k2[1] * k2[3] * k2[4]) /
             (k2[0] * k2[1] * k2[3] + k2[0] * k2[1] * k2[4] + k2[0] * k2[2] * k2[3] + k2[0] * k2[2] * k2[4] +
-             k2[0] * k2[3] * k2[4] + k2[1] * k2[2] * k2[3] + k2[1] * k2[2] * k2[4] + k2[1] * k2[3] * k2[4]) * k[0]);
+             k2[0] * k2[3] * k2[4] + k2[1] * k2[2] * k2[3] + k2[1] * k2[2] * k2[4] + k2[1] * k2[3] * k2[4]) *
+            k[0]);
          frag[1]->SetCharge(
             -(c[0] * k2[0] * k2[1] * k2[3] + c[0] * k2[0] * k2[1] * k2[4] - c[1] * k2[0] * k2[1] * k2[3] -
               c[1] * k2[0] * k2[1] * k2[4] - c[2] * k2[0] * k2[2] * k2[3] - c[2] * k2[0] * k2[2] * k2[4] -
               c[2] * k2[1] * k2[2] * k2[3] - c[2] * k2[1] * k2[2] * k2[4] - c[3] * k2[0] * k2[3] * k2[4] -
               c[3] * k2[1] * k2[3] * k2[4] + c[4] * k2[0] * k2[3] * k2[4] + c[4] * k2[1] * k2[3] * k2[4]) /
             (k2[0] * k2[1] * k2[3] + k2[0] * k2[1] * k2[4] + k2[0] * k2[2] * k2[3] + k2[0] * k2[2] * k2[4] +
-             k2[0] * k2[3] * k2[4] + k2[1] * k2[2] * k2[3] + k2[1] * k2[2] * k2[4] + k2[1] * k2[3] * k2[4]) * k[1]);
+             k2[0] * k2[3] * k2[4] + k2[1] * k2[2] * k2[3] + k2[1] * k2[2] * k2[4] + k2[1] * k2[3] * k2[4]) *
+            k[1]);
          frag[2]->SetCharge(
             (c[0] * k2[0] * k2[1] * k2[3] - c[1] * k2[0] * k2[1] * k2[3] - c[2] * k2[0] * k2[2] * k2[3] -
              c[2] * k2[1] * k2[2] * k2[3] + c[3] * k2[0] * k2[1] * k2[3] + c[3] * k2[0] * k2[2] * k2[3] +
              c[3] * k2[1] * k2[2] * k2[3] + c[4] * k2[0] * k2[1] * k2[4] + c[4] * k2[0] * k2[2] * k2[4] +
              c[4] * k2[0] * k2[3] * k2[4] + c[4] * k2[1] * k2[2] * k2[4] + c[4] * k2[1] * k2[3] * k2[4]) /
             (k2[0] * k2[1] * k2[3] + k2[0] * k2[1] * k2[4] + k2[0] * k2[2] * k2[3] + k2[0] * k2[2] * k2[4] +
-             k2[0] * k2[3] * k2[4] + k2[1] * k2[2] * k2[3] + k2[1] * k2[2] * k2[4] + k2[1] * k2[3] * k2[4]) * k[2]);
+             k2[0] * k2[3] * k2[4] + k2[1] * k2[2] * k2[3] + k2[1] * k2[2] * k2[4] + k2[1] * k2[3] * k2[4]) *
+            k[2]);
       }
       frag[0]->SetKValue(k[0]);
       frag[1]->SetKValue(k[1]);
@@ -452,12 +458,12 @@ void TFragmentMap::DropFragments(
 {
    /// put the fragments within the range of the two iterators into the bad output queue
    for(auto it = range.first; it != range.second; ++it) {
-		//(*it).second is a tuple, with the first element being a shared_ptr<TFragment>
-		//we need to convert this to a shared_ptr<TBadFragment>
+      //(*it).second is a tuple, with the first element being a shared_ptr<TFragment>
+      // we need to convert this to a shared_ptr<TBadFragment>
       fBadOutputQueue->Push(std::make_shared<TBadFragment>(*(std::get<0>((*it).second).get())));
       if(fDebug) {
          std::cout<<"Added bad fragment "<<std::get<0>((*it).second)<<std::endl;
       }
    }
-	fMap.erase(range.first, range.second);
+   fMap.erase(range.first, range.second);
 }

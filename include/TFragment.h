@@ -32,7 +32,7 @@ public:
    TFragment(const TFragment&);
    ~TFragment();
 
-	TFragment& operator=(const TFragment&) = default; // use default assignment operator (to shut up gcc 9.1)
+   TFragment& operator=(const TFragment&) = default;   // use default assignment operator (to shut up gcc 9.1)
 
    //////////////////// basic setter functions ////////////////////
 
@@ -48,7 +48,7 @@ public:
    void SetFragmentId(Int_t value) { fFragmentId = value; }
    void SetDaqTimeStamp(time_t value) { fDaqTimeStamp = value; }
    void SetNetworkPacketNumber(Int_t value) { fNetworkPacketNumber = value; }
-   void                              SetNumberOfFilters(UShort_t)
+   void SetNumberOfFilters(UShort_t)
    {
       std::cerr<<"Error, "<<__PRETTY_FUNCTION__<<" called, TFragment shouldn't have a number of filters."
                <<std::endl;
@@ -75,10 +75,10 @@ public:
    Int_t    GetNetworkPacketNumber() const { return fNetworkPacketNumber; }
    UShort_t GetNumberOfFilters() const { return fNumberOfWords - 9; }
    Int_t    GetNumberOfHits() const { return 1; }
-   Short_t GetNumberOfPileups() const { return fNumberOfPileups; }
+   Short_t  GetNumberOfPileups() const { return fNumberOfPileups; }
    UShort_t GetNumberOfWords() const { return fNumberOfWords; }
    Int_t    GetTriggerBitPattern() const { return fTriggerBitPattern; }
-   Long_t GetTriggerId(size_t iter = 0) const
+   Long_t   GetTriggerId(size_t iter = 0) const
    {
       if(iter < fTriggerId.size()) {
          return fTriggerId[iter];
@@ -102,7 +102,7 @@ public:
    void Clear(Option_t* opt = "") override;
    void Print(Option_t* opt = "") const override;
 
-	virtual void Print(std::ostream& out) const override;
+   virtual void Print(std::ostream& out) const override;
 
    TObject* Clone(const char* name = "") const override;
 
@@ -113,31 +113,31 @@ public:
 
 private:
    //////////////////// data members, sorted by size (as far as possible) to reduce padding ////////////////////
-   time_t fDaqTimeStamp;      ///< Timestamp of the Daq event
-   Int_t  fDaqId;             ///< Daq ID
-   Int_t  fFragmentId;          ///< Channel Trigger ID ??? not needed anymore ???
-   Int_t  fTriggerBitPattern;   ///< PrimaryFilterPattern in Griffin DAQ
-   Int_t  fNetworkPacketNumber; ///< Network packet number
-   UInt_t fChannelId;           ///< Threshold crossing counter for a channel
-   UInt_t fAcceptedChannelId;   ///< Accepted threshold crossing counter for a channel
+   time_t fDaqTimeStamp;          ///< Timestamp of the Daq event
+   Int_t  fDaqId;                 ///< Daq ID
+   Int_t  fFragmentId;            ///< Channel Trigger ID ??? not needed anymore ???
+   Int_t  fTriggerBitPattern;     ///< PrimaryFilterPattern in Griffin DAQ
+   Int_t  fNetworkPacketNumber;   ///< Network packet number
+   UInt_t fChannelId;             ///< Threshold crossing counter for a channel
+   UInt_t fAcceptedChannelId;     ///< Accepted threshold crossing counter for a channel
 
    /// Added to combine Grif Fragment  ////
 
-   UShort_t fDeadTime;        ///< Deadtime from trigger
-   UShort_t fModuleType;      ///< Data Type (GRIF-16, 4G, etc.)
-   UShort_t fDetectorType;    ///< Detector Type (PACES,HPGe, etc.)
-   Short_t  fNumberOfPileups; ///< Number of piled up hits 1-3
+   UShort_t fDeadTime;          ///< Deadtime from trigger
+   UShort_t fModuleType;        ///< Data Type (GRIF-16, 4G, etc.)
+   UShort_t fDetectorType;      ///< Detector Type (PACES,HPGe, etc.)
+   Short_t  fNumberOfPileups;   ///< Number of piled up hits 1-3
 
-   std::vector<Long_t> fTriggerId; ///<  PrimaryFilterID in Griffin DAQ
+   std::vector<Long_t> fTriggerId;   ///<  PrimaryFilterID in Griffin DAQ
 
    //////////////////// transient members ////////////////////
-   TPPG* fPPG; //!<! Programmable pattern generator value
+   TPPG* fPPG;   //!<! Programmable pattern generator value
 
-   Long64_t fEntryNumber;   //!<! Entry number in fragment tree
-   Int_t    fZc;            //!<! Zero-crossing value from 4G (saved in separate branch)
-   Int_t    fCcShort;       //!<! Short integration over waveform peak from 4G (saved in separate branch)
-   Int_t    fCcLong;        //!<! Long integration over waveform tail from 4G (saved in separate branch)
-   UShort_t fNumberOfWords; //!<! Number of non-waveform words in fragment, only used for check while parsing the fragment
+   Long64_t fEntryNumber;     //!<! Entry number in fragment tree
+   Int_t    fZc;              //!<! Zero-crossing value from 4G (saved in separate branch)
+   Int_t    fCcShort;         //!<! Short integration over waveform peak from 4G (saved in separate branch)
+   Int_t    fCcLong;          //!<! Long integration over waveform tail from 4G (saved in separate branch)
+   UShort_t fNumberOfWords;   //!<! Number of non-waveform words in fragment, only used for check while parsing the fragment
 
    static Long64_t fNumberOfFragments;
 
@@ -145,8 +145,8 @@ private:
    // int HitIndex;    //!<! transient member indicating which pile-up hit this is in the original fragment
 
    /// \cond CLASSIMP
-   ClassDefOverride(TFragment, 7); // Event Fragments
+   ClassDefOverride(TFragment, 7);   // Event Fragments
    /// \endcond
 };
 /*! @} */
-#endif // TFRAGMENT_H
+#endif   // TFRAGMENT_H

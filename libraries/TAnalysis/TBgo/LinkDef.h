@@ -1,13 +1,12 @@
-//TBgo.h TBgoHit.h
+// TBgo.h TBgoHit.h
 #ifdef __CINT__
 
 #pragma link off all globals;
 #pragma link off all classes;
 #pragma link off all functions;
-#pragma link C++ nestedclasses;
+#pragma link         C++ nestedclasses;
 
-#pragma link C++ class TBgoHit+;
-#pragma link C++ class TBgo+;
+#pragma link C++ class TBgoHit + ;
+#pragma link C++ class TBgo + ;
 
 #endif
-

@@ -29,8 +29,8 @@ public:
 public:
    void Copy(TObject& copy) const override;
 
-   void Clear(Option_t* opt = "") override;
-   void Print(Option_t* opt = "") const override;
+   void          Clear(Option_t* opt = "") override;
+   void          Print(Option_t* opt = "") const override;
    TFitResultPtr Fit(Option_t* opt = "");
 
    void Draw(Option_t* opt = "") override;
@@ -50,11 +50,11 @@ public:
 
 private:
    std::map<const char*, TEfficiencyGraph> fGraphMap;
-   TMultiGraph* fRelativeEffGraph;
-   TMultiGraph* fAbsEffGraph;
-   mutable bool fFitting;
-   TF1*         fRelativeFit;
-   TF1*         fAbsoluteFunc;
+   TMultiGraph*                            fRelativeEffGraph;
+   TMultiGraph*                            fAbsEffGraph;
+   mutable bool                            fFitting;
+   TF1*                                    fRelativeFit;
+   TF1*                                    fAbsoluteFunc;
 
    /// \cond CLASSIMP
    ClassDefOverride(TEfficiencyCalibration, 1);

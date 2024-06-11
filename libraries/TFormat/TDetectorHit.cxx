@@ -6,11 +6,11 @@
 
 /// \cond CLASSIMP
 ClassImp(TDetectorHit)
-/// \endcond
+   /// \endcond
 
-//TPPG* TDetectorHit::fPPG = nullptr;
+   // TPPG* TDetectorHit::fPPG = nullptr;
 
-TVector3 TDetectorHit::fBeamDirection(0, 0, 1);
+   TVector3 TDetectorHit::fBeamDirection(0, 0, 1);
 
 TDetectorHit::TDetectorHit(const int& Address) : TObject()
 {
@@ -18,7 +18,7 @@ TDetectorHit::TDetectorHit(const int& Address) : TObject()
    Clear();
    fAddress = Address;
 
-#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
 }
@@ -32,7 +32,7 @@ TDetectorHit::TDetectorHit(const TDetectorHit& rhs, bool copywave) : TObject(rhs
    }
    ClearTransients();
 
-#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
 }
@@ -58,12 +58,12 @@ Double_t TDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
    if(IsTimeSet()) {
       return fTime;
    }
-	TChannel* tmpChan = GetChannel();
-	if(tmpChan == nullptr) {
-		return SetTime(static_cast<Double_t>(GetTimeStamp() + gRandom->Uniform()));
-	}
+   TChannel* tmpChan = GetChannel();
+   if(tmpChan == nullptr) {
+      return SetTime(static_cast<Double_t>(GetTimeStamp() + gRandom->Uniform()));
+   }
 
-	return SetTime(tmpChan->GetTime(GetTimeStamp(), GetCfd(), GetEnergy()));
+   return SetTime(tmpChan->GetTime(GetTimeStamp(), GetCfd(), GetEnergy()));
 }
 
 Float_t TDetectorHit::GetCharge() const
@@ -73,12 +73,12 @@ Float_t TDetectorHit::GetCharge() const
       return Charge();
    }
    if(fKValue > 0 && !channel->UseCalFileIntegration()) {
-      return Charge() / (static_cast<Float_t>(fKValue)); // this will use the integration value
+      return Charge() / (static_cast<Float_t>(fKValue));   // this will use the integration value
    }
    if(channel->UseCalFileIntegration()) {
-      return Charge() / (static_cast<Float_t>(channel->GetIntegration())); // this will use the integration value
-   }                                                                       // in the TChannel if it exists.
-   return Charge();                                                        // this will use no integration value
+      return Charge() / (static_cast<Float_t>(channel->GetIntegration()));   // this will use the integration value
+   }                                                                         // in the TChannel if it exists.
+   return Charge();                                                          // this will use no integration value
 }
 
 double TDetectorHit::GetEnergy(Option_t*) const
@@ -93,8 +93,8 @@ double TDetectorHit::GetEnergy(Option_t*) const
    if(channel->UseCalFileIntegration()) {
       double energy = channel->CalibrateENG(Charge(), 0);
       return SetEnergy(energy +
-                       GetEnergyNonlinearity(energy)); // this will use the integration value
-                                                       // in the TChannel if it exists.
+                       GetEnergyNonlinearity(energy));   // this will use the integration value
+                                                         // in the TChannel if it exists.
    }
    if(fKValue > 0) {
       double energy = channel->CalibrateENG(Charge(), static_cast<int>(fKValue));
@@ -106,11 +106,11 @@ double TDetectorHit::GetEnergy(Option_t*) const
 
 Double_t TDetectorHit::GetEnergyNonlinearity(double energy) const
 {
-	TChannel* channel = GetChannel();
-	if(channel == nullptr) {
-		return 0.;
-	}
-	return -(channel->GetEnergyNonlinearity(energy));
+   TChannel* channel = GetChannel();
+   if(channel == nullptr) {
+      return 0.;
+   }
+   return -(channel->GetEnergyNonlinearity(energy));
 }
 
 void TDetectorHit::Copy(TObject& rhs) const
@@ -147,78 +147,78 @@ void TDetectorHit::Copy(TObject& rhs, bool copywave) const
 void TDetectorHit::Print(Option_t*) const
 {
    /// General print statement for a TDetectorHit.
-	Print(std::cout);
+   Print(std::cout);
 }
 
 void TDetectorHit::Print(std::ostream& out) const
 {
-	/// Print detector hit to stream out.
-	std::ostringstream str;
-	str<<"==== "<<ClassName()<<" @ "<<this<<" ===="<<std::endl;
-	str<<"\t"<<GetName()<<std::endl;
-	str<<"\tCharge:    "<<Charge()<<std::endl;
-	str<<"\tTime:      "<<GetTime()<<std::endl;
-	str<<"\tTimestamp: "<<GetTimeStamp()<<" in "<<GetTimeStampUnit()<<" ns = "<<GetTimeStampNs()<<std::endl;
-	str<<"============================"<<std::endl;
-	out<<str.str();
+   /// Print detector hit to stream out.
+   std::ostringstream str;
+   str<<"==== "<<ClassName()<<" @ "<<this<<" ===="<<std::endl;
+   str<<"\t"<<GetName()<<std::endl;
+   str<<"\tCharge:    "<<Charge()<<std::endl;
+   str<<"\tTime:      "<<GetTime()<<std::endl;
+   str<<"\tTimestamp: "<<GetTimeStamp()<<" in "<<GetTimeStampUnit()<<" ns = "<<GetTimeStampNs()<<std::endl;
+   str<<"============================"<<std::endl;
+   out<<str.str();
 }
 
 const char* TDetectorHit::GetName() const
 {
-	TChannel* channel = GetChannel();
-	if(channel == nullptr) {
-		return Class()->ClassName();
-	}
-	return channel->GetName();
+   TChannel* channel = GetChannel();
+   if(channel == nullptr) {
+      return Class()->ClassName();
+   }
+   return channel->GetName();
 }
 
 void TDetectorHit::Clear(Option_t*)
 {
-	/// General clear statement for a TDetectorHit.
-	fAddress = 0xffffffff; // -1
-	fCharge    = 0;
-	fKValue    = 0;
-	fCfd       = -1;
-	fTimeStamp = 0;
-	fWaveform.clear(); // reset size to zero.
-	fTime           = 0.;
-	fEnergy         = 0.;
-	fPPGStatus      = EPpgPattern::kJunk;
-	fCycleTimeStamp = 0;
-	fChannel        = nullptr;
-	fBitFlags       = 0;
+   /// General clear statement for a TDetectorHit.
+   fAddress   = 0xffffffff;   // -1
+   fCharge    = 0;
+   fKValue    = 0;
+   fCfd       = -1;
+   fTimeStamp = 0;
+   fWaveform.clear();   // reset size to zero.
+   fTime           = 0.;
+   fEnergy         = 0.;
+   fPPGStatus      = EPpgPattern::kJunk;
+   fCycleTimeStamp = 0;
+   fChannel        = nullptr;
+   fBitFlags       = 0;
 }
 
 Int_t TDetectorHit::GetDetector() const
 {
-	TChannel* channel = GetChannel();
-	if(channel == nullptr) {
-		return -1;
-	}
-	return channel->GetDetectorNumber(); // mnemonic.arrayposition;
+   TChannel* channel = GetChannel();
+   if(channel == nullptr) {
+      return -1;
+   }
+   return channel->GetDetectorNumber();   // mnemonic.arrayposition;
 }
 
 Int_t TDetectorHit::GetSegment() const
 {
-	TChannel* channel = GetChannel();
-	if(channel == nullptr) {
-		return -1;
-	}
-	return channel->GetSegmentNumber();
+   TChannel* channel = GetChannel();
+   if(channel == nullptr) {
+      return -1;
+   }
+   return channel->GetSegmentNumber();
 }
 
 Int_t TDetectorHit::GetCrystal() const
 {
-	TChannel* channel = GetChannel();
-	if(channel != nullptr) {
-		return channel->GetCrystalNumber();
-	}
-	return -1;
+   TChannel* channel = GetChannel();
+   if(channel != nullptr) {
+      return channel->GetCrystalNumber();
+   }
+   return -1;
 }
 
 bool TDetectorHit::CompareEnergy(TDetectorHit* lhs, TDetectorHit* rhs)
 {
-	return (lhs->GetEnergy() > rhs->GetEnergy());
+   return (lhs->GetEnergy() > rhs->GetEnergy());
 }
 
 Short_t TDetectorHit::GetChannelNumber() const
@@ -232,62 +232,62 @@ Short_t TDetectorHit::GetChannelNumber() const
 
 Long64_t TDetectorHit::GetTimeStampNs(Option_t*) const
 {
-	TChannel* tmpChan = GetChannel();
-	if(tmpChan == nullptr) {
-		return GetTimeStamp(); // GetTimeStampUnit returns 1 of there is no channel
-	}
-	return GetTimeStamp() * GetTimeStampUnit() * ( 1.0 - tmpChan->GetTimeDrift() ) - tmpChan->GetTimeOffset();
+   TChannel* tmpChan = GetChannel();
+   if(tmpChan == nullptr) {
+      return GetTimeStamp();   // GetTimeStampUnit returns 1 of there is no channel
+   }
+   return GetTimeStamp() * GetTimeStampUnit() * (1.0 - tmpChan->GetTimeDrift()) - tmpChan->GetTimeOffset();
 }
 
 Int_t TDetectorHit::GetTimeStampUnit() const
 {
-	TChannel* chan = GetChannel();
-	if(chan == nullptr) {
-		return 1;
-	}
-	return chan->GetTimeStampUnit();
+   TChannel* chan = GetChannel();
+   if(chan == nullptr) {
+      return 1;
+   }
+   return chan->GetTimeStampUnit();
 }
 
 EPpgPattern TDetectorHit::GetPPGStatus() const
 {
-	if(IsPPGSet()) {
-		return fPPGStatus;
-	}
+   if(IsPPGSet()) {
+      return fPPGStatus;
+   }
 
-	if(TPPG::Get() == nullptr) {
-		return EPpgPattern::kJunk;
-	}
+   if(TPPG::Get() == nullptr) {
+      return EPpgPattern::kJunk;
+   }
 
-	fPPGStatus      = TPPG::Get()->GetStatus(GetTimeStampNs());
-	fCycleTimeStamp = GetTimeStampNs() - TPPG::Get()->GetLastStatusTime(GetTimeStampNs());
-	SetHitBit(EBitFlag::kIsPPGSet, true);
-	return fPPGStatus;
+   fPPGStatus      = TPPG::Get()->GetStatus(GetTimeStampNs());
+   fCycleTimeStamp = GetTimeStampNs() - TPPG::Get()->GetLastStatusTime(GetTimeStampNs());
+   SetHitBit(EBitFlag::kIsPPGSet, true);
+   return fPPGStatus;
 }
 
 Long64_t TDetectorHit::GetCycleTimeStamp() const
 {
-	if(IsPPGSet()) {
-		return fCycleTimeStamp;
-	}
+   if(IsPPGSet()) {
+      return fCycleTimeStamp;
+   }
 
-	if(TPPG::Get() == nullptr) {
-		return 0;
-	}
+   if(TPPG::Get() == nullptr) {
+      return 0;
+   }
 
-	fPPGStatus      = TPPG::Get()->GetStatus(GetTimeStampNs());
-	fCycleTimeStamp = GetTimeStampNs() - TPPG::Get()->GetLastStatusTime(GetTimeStampNs());
-	SetHitBit(EBitFlag::kIsPPGSet, true);
-	return fCycleTimeStamp;
+   fPPGStatus      = TPPG::Get()->GetStatus(GetTimeStampNs());
+   fCycleTimeStamp = GetTimeStampNs() - TPPG::Get()->GetLastStatusTime(GetTimeStampNs());
+   SetHitBit(EBitFlag::kIsPPGSet, true);
+   return fCycleTimeStamp;
 }
 
 double TDetectorHit::GetTimeSinceTapeMove() const
 {
-	/// returns time in ns, minus the time of the last tape move
-	return GetTime() - TPPG::Get()->GetLastStatusTime(GetTimeStampNs(), EPpgPattern::kTapeMove);
+   /// returns time in ns, minus the time of the last tape move
+   return GetTime() - TPPG::Get()->GetLastStatusTime(GetTimeStampNs(), EPpgPattern::kTapeMove);
 }
 
 // const here is rather dirty
 void TDetectorHit::SetHitBit(enum EBitFlag flag, Bool_t set) const
 {
-	fBitFlags.SetBit(flag, set);
+   fBitFlags.SetBit(flag, set);
 }

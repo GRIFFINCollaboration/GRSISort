@@ -57,7 +57,7 @@ void GSnapshot::Snapshot(TCanvas* can)
 
    std::string ext = gEnv->GetValue("GRUT.SnapshotExt", "");
    if(ext.length() == 0) {
-      ext = "pdf"; // TODO, make this smarter again...
+      ext = "pdf";   // TODO, make this smarter again...
    }
 
    int date, time;

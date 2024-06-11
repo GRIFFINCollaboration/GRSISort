@@ -12,7 +12,7 @@
 
 // std::string GValue::fValueData
 // std::map<unsigned int, GValue*> GValue::fValueMap;
-GValue* GValue::fDefaultValue = new GValue("GValue", sqrt(-1));
+GValue*                        GValue::fDefaultValue = new GValue("GValue", sqrt(-1));
 std::map<std::string, GValue*> GValue::fValueVector;
 
 GValue::GValue() : fValue(0.00), fPriority(EPriority::kDefault)
@@ -42,7 +42,7 @@ void GValue::Copy(TObject& obj) const
 
 double GValue::Value(const std::string& name)
 {
-	return GValue::Value(name, sqrt(-1));
+   return GValue::Value(name, sqrt(-1));
 }
 
 double GValue::Value(const std::string& name, const double& defaultValue)
@@ -136,11 +136,11 @@ std::string GValue::PrintToString() const
    buffer.append(GetName());
    buffer.append("\t{\n");
    buffer.append(Form("value:\t%f\n", fValue));
-	if(!info.empty()) {
-		buffer.append("info:\t");
-		buffer.append(info);
-		buffer.append("\n");
-	}
+   if(!info.empty()) {
+      buffer.append("info:\t");
+      buffer.append(info);
+      buffer.append("\n");
+   }
    buffer.append("}\n");
    return buffer;
 }
@@ -188,12 +188,12 @@ std::string GValue::WriteToBuffer(Option_t*)
 
 void GValue::Clear()
 {
-	// loop over all values and delete them
-	for(auto value : fValueVector) {
-		delete value.second;
-	}
-	// delete map
-	fValueVector.clear();
+   // loop over all values and delete them
+   for(auto value : fValueVector) {
+      delete value.second;
+   }
+   // delete map
+   fValueVector.clear();
 }
 
 int GValue::ReadValFile(const char* filename, Option_t* opt)
@@ -243,7 +243,7 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
    bool        brace_open = false;
    std::string name;
 
-   while( !std::getline(infile, line).fail() ) {
+   while(!std::getline(infile, line).fail()) {
       linenumber++;
       trim(line);
       size_t comment = line.find("//");
@@ -278,7 +278,7 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
                type = line.substr(openbrace + 1, colon - (openbrace + 1));
             }
             line = line.substr(colon + 1, line.length());
-				trim(line); //strip beginning whitespace (not needed for value itself, but for the readability of info)
+            trim(line);   // strip beginning whitespace (not needed for value itself, but for the readability of info)
             trim(type);
             int j = 0;
             while(type[j] != 0) {

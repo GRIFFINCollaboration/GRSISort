@@ -2,9 +2,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TEnergyCal)
-/// \endcond
+   /// \endcond
 
-TEnergyCal::TEnergyCal()
+   TEnergyCal::TEnergyCal()
 {
    // Default Constructor
    SetDefaultTitles();
@@ -38,7 +38,7 @@ std::vector<Double_t> TEnergyCal::GetParameters() const
 Double_t TEnergyCal::GetParameter(size_t parameter) const
 {
    // WILL NEED TO CHANGE THIS APPROPRIATELY
-   return GetFunction("gain")->GetParameter(parameter); // Root does all of the checking for us.
+   return GetFunction("gain")->GetParameter(parameter);   // Root does all of the checking for us.
 }
 
 void TEnergyCal::SetNucleus(TNucleus* nuc, Option_t* opt)

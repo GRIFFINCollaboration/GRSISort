@@ -7,15 +7,17 @@
 #include "TGRSIHelper.h"
 
 class TimeWalkHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<TimeWalkHelper> {
- public :
-   TimeWalkHelper(TList* list) : TGRSIHelper(list) {
-      Prefix("TimeWalk"); //Changes prefix of output file
-		Setup();
+public:
+   TimeWalkHelper(TList* list) : TGRSIHelper(list)
+   {
+      Prefix("TimeWalk");   // Changes prefix of output file
+      Setup();
    }
-	//These functions are expected to exist
-	ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override {
+   // These functions are expected to exist
+   ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override
+   {
       return d->Book<TGriffin, TSceptar>(std::move(*this), {"TGriffin", "TSceptar"});
-	}
+   }
    void CreateHistograms(unsigned int slot);
    void Exec(unsigned int slot, TGriffin& grif, TSceptar& scep);
 };

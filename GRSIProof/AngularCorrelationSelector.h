@@ -26,12 +26,12 @@ std::vector<std::pair<double, int>> AngleCombinations(double distance = 110., bo
 
 class AngularCorrelationSelector : public TGRSISelector {
 public:
-   TGriffin* fGrif;
-   TSceptar* fScep;
+   TGriffin*                           fGrif;
+   TSceptar*                           fScep;
    std::vector<std::pair<double, int>> fAngleCombinations;
-   std::vector<std::pair<double, int>> fAngleCombinationsAddback; // with addback
+   std::vector<std::pair<double, int>> fAngleCombinationsAddback;   // with addback
    std::map<double, int>               fAngleMap;
-   std::map<double, int>               fAngleMapAddback; // with addback
+   std::map<double, int>               fAngleMapAddback;   // with addback
 
    TGriffin fLastGrif;
    TSceptar fLastScep;
@@ -41,7 +41,7 @@ public:
       SetOutputPrefix("AngularCorrelation");
       // calculate angle combinations
       fAngleCombinations        = AngleCombinations(110., false, false);
-      fAngleCombinationsAddback = AngleCombinations(110., false, true); // with addback
+      fAngleCombinationsAddback = AngleCombinations(110., false, true);   // with addback
       for(int i = 0; i < static_cast<int>(fAngleCombinations.size()); ++i) {
          fAngleMap.insert(std::make_pair(fAngleCombinations[i].first, i));
       }
@@ -53,7 +53,7 @@ public:
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();
    void          FillHistograms();
-   void InitializeBranches(TTree* tree);
+   void          InitializeBranches(TTree* tree);
 
    ClassDef(AngularCorrelationSelector, 1);
 };
@@ -65,17 +65,17 @@ void AngularCorrelationSelector::InitializeBranches(TTree* tree)
    if(tree == nullptr) return;
    tree->SetBranchAddress("TGriffin", &fGrif);
    if(tree->SetBranchAddress("TSceptar", &fScep) == TTree::kMissingBranch) {
-		fScep = new TSceptar;
-	}
+      fScep = new TSceptar;
+   }
 }
 
-#endif // #ifdef AngularCorrelationSelector_cxx
+#endif   // #ifdef AngularCorrelationSelector_cxx
 
 std::vector<std::pair<double, int>> AngleCombinations(double distance, bool folding, bool addback)
 {
    std::vector<std::pair<double, int>> result;
    std::vector<std::pair<double, int>> grouped_result;
-   std::vector<double> angle;
+   std::vector<double>                 angle;
    for(int firstDet = 1; firstDet <= 16; ++firstDet) {
       for(int firstCry = 0; firstCry < 4; ++firstCry) {
          for(int secondDet = 1; secondDet <= 16; ++secondDet) {
@@ -134,7 +134,7 @@ std::vector<std::pair<double, int>> AngleCombinations(double distance, bool fold
       }
    }
 
-   if(folding) { // if we fold we also want to group
+   if(folding) {   // if we fold we also want to group
       std::vector<std::pair<double, int>> groupedResult;
       for(size_t i = 0; i < result.size(); ++i) {
          switch(i) {

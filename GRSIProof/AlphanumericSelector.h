@@ -21,22 +21,23 @@
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-class AlphanumericSelector : public TGRSISelector { //Must be same name as .C and .h
+class AlphanumericSelector : public TGRSISelector {   // Must be same name as .C and .h
 
- public :
-   TGriffin* fGrif; //Pointers to spot that events will be
+public:
+   TGriffin* fGrif;   // Pointers to spot that events will be
 
-   AlphanumericSelector(TTree * /*tree*/ =0) : TGRSISelector(), fGrif(nullptr) {
-      SetOutputPrefix("Alphanumeric"); //Changes prefix of output file
+   AlphanumericSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(nullptr)
+   {
+      SetOutputPrefix("Alphanumeric");   // Changes prefix of output file
    }
-	//These functions are expected to exist
-   virtual ~AlphanumericSelector() { }
-   virtual Int_t   Version() const { return 2; }
-   void CreateHistograms();
-   void FillHistograms();
-   void InitializeBranches(TTree *tree);
+   // These functions are expected to exist
+   virtual ~AlphanumericSelector() {}
+   virtual Int_t Version() const { return 2; }
+   void          CreateHistograms();
+   void          FillHistograms();
+   void          InitializeBranches(TTree* tree);
 
-   ClassDef(AlphanumericSelector,2); //Makes ROOT happier
+   ClassDef(AlphanumericSelector, 2);   // Makes ROOT happier
 };
 
 #endif
@@ -46,8 +47,8 @@ void AlphanumericSelector::InitializeBranches(TTree* tree)
 {
    if(!tree) return;
    if(tree->SetBranchAddress("TGriffin", &fGrif) == TTree::kMissingBranch) {
-		fGrif = new TGriffin;
-	}
+      fGrif = new TGriffin;
+   }
 }
 
-#endif // #ifdef AlphanumericSelector_cxx
+#endif   // #ifdef AlphanumericSelector_cxx

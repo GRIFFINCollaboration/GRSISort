@@ -14,9 +14,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TSRIM)
-/// \endcond
+   /// \endcond
 
-const double TSRIM::dx = 1.0; // um [sets accuracy of energy loss E vs X functions]
+   const double TSRIM::dx = 1.0;   // um [sets accuracy of energy loss E vs X functions]
 
 TSRIM::TSRIM()
 {
@@ -40,11 +40,12 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
       fname.append(".txt");
    }
 
-   std::string grsipath = getenv("GRSISYS");
-	std::ostringstream str;
-	str<<grsipath<<"/libraries/TAnalysis/SRIMData/"<<fname;
+   std::string        grsipath = getenv("GRSISYS");
+   std::ostringstream str;
+   str<<grsipath<<"/libraries/TAnalysis/SRIMData/"<<fname;
    if(printfile) {
-      std::cout<<std::endl<<"Searching for "<<str.str()<<"..."<<std::endl;
+      std::cout<<std::endl
+               <<"Searching for "<<str.str()<<"..."<<std::endl;
    }
 
    infile.open(str.str().c_str());
@@ -60,7 +61,7 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
    std::vector<double>      number_input, dEdX_temp;
    std::vector<std::string> string_input;
 
-   while(!std::getline(infile, line).fail() ) {
+   while(!std::getline(infile, line).fail()) {
       if(line.length() == 0u) {
          continue;
       }
@@ -69,7 +70,7 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
       string_input.clear();
       while(!(linestream >> word).fail()) {
          std::stringstream ss(word);
-         if( !(ss >> temp).fail() ) { // if it's a number
+         if(!(ss >> temp).fail()) {   // if it's a number
             number_input.push_back(temp);
          } else {
             string_input.push_back(ss.str());
@@ -85,13 +86,13 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
       }
 
       if(string_input[0].compare(0, 3, "eV") == 0 && string_input[1].compare(0, 1, "/") != 0) {
-         IonEnergy.push_back(number_input[0] * 1e-3); // convert eV to keV.
+         IonEnergy.push_back(number_input[0] * 1e-3);   // convert eV to keV.
       } else if(string_input[0].compare(0, 3, "keV") == 0 && string_input[1].compare(0, 1, "/") != 0) {
-         IonEnergy.push_back(number_input[0]); // already in keV.
+         IonEnergy.push_back(number_input[0]);   // already in keV.
       } else if(string_input[0].compare(0, 3, "MeV") == 0 && string_input[1].compare(0, 1, "/") != 0) {
-         IonEnergy.push_back(number_input[0] * 1e3); // convert MeV to keV.
+         IonEnergy.push_back(number_input[0] * 1e3);   // convert MeV to keV.
       } else if(string_input[0].compare(0, 3, "GeV") == 0 && string_input[1].compare(0, 1, "/") != 0) {
-         IonEnergy.push_back(number_input[0] * 1e6); // convert GeV to keV.
+         IonEnergy.push_back(number_input[0] * 1e6);   // convert GeV to keV.
       } else {
          continue;
       }
@@ -118,16 +119,18 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
       double dataEmin = TMath::MinElement(IonEnergy.size(), &IonEnergy[0]);
 
       if(emax == -1.0) {
-         emax = dataEmax; // default to highest available energy in data table
+         emax = dataEmax;   // default to highest available energy in data table
       } else if(emax > dataEmax || emax < dataEmin) {
-         std::cout<<std::endl<<"{TSRIM} WARNING: specified emax is out of range. Setting emax to default value ("<<dataEmax<<")"<<std::endl;
-         emax = dataEmax; // default to highest available energy in data table
+         std::cout<<std::endl
+                  <<"{TSRIM} WARNING: specified emax is out of range. Setting emax to default value ("<<dataEmax<<")"<<std::endl;
+         emax = dataEmax;   // default to highest available energy in data table
       }
       if(emin == 0.0) {
-         emin = dataEmin; // default to lowest available energy in data table
+         emin = dataEmin;   // default to lowest available energy in data table
       } else if(emin < dataEmin || emin > dataEmax) {
-         std::cout<<std::endl<<"{TSRIM} WARNING: specified emin is out of range. Setting emin to default value ("<<dataEmin<<")"<<std::endl;
-         emin = dataEmin; // default to lowest available energy in data table
+         std::cout<<std::endl
+                  <<"{TSRIM} WARNING: specified emin is out of range. Setting emin to default value ("<<dataEmin<<")"<<std::endl;
+         emin = dataEmin;   // default to lowest available energy in data table
       }
       if(emax < emin) {
          double emaxtemp = emax;
@@ -140,16 +143,16 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
       double etemp = emax;
       double k[4]  = {0, 0, 0, 0};
 
-      for(int i = 0; i < 3; i++) { // start by using euler step on first few points
+      for(int i = 0; i < 3; i++) {   // start by using euler step on first few points
          X.push_back(xtemp);
          E.push_back(etemp);
-         k[i] = sEnergyLoss->Eval(etemp); // contains gradient at previous steps
+         k[i] = sEnergyLoss->Eval(etemp);   // contains gradient at previous steps
 
          xtemp += xstep;
          etemp -= xstep * sEnergyLoss->Eval(etemp);
       }
 
-      while(E.back() > 0) { // keep going until E goes negative
+      while(E.back() > 0) {   // keep going until E goes negative
          X.push_back(xtemp);
          E.push_back(etemp);
 
@@ -180,7 +183,7 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
       sXgetE->SetName(Form("%s_Xspline", filename));
 
       fEgetX = new TGraph(E.size());
-      for(int x = E.size() - 1; x >= 0; x--) { // make sure x data is increasing
+      for(int x = E.size() - 1; x >= 0; x--) {   // make sure x data is increasing
          fEgetX->SetPoint(E.size() - x - 1, E.at(x), X.at(x));
       }
       fEgetX->SetName("EgetX");
@@ -192,7 +195,8 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
    }
 
    if(printfile) {
-      std::cout<<std::endl<<"\t"<<fname<<" file read in, "<<dEdX.size()<<" entries found."<<std::endl;
+      std::cout<<std::endl
+               <<"\t"<<fname<<" file read in, "<<dEdX.size()<<" entries found."<<std::endl;
       std::cout<<"[Energy loss range = "<<Emax<<" - "<<Emin<<" keV & total range = "<<Xmin<<" - "<<Xmax<<" um ]"<<std::endl;
    }
 }
@@ -202,9 +206,10 @@ double TSRIM::GetEnergy(double energy, double dist)
    double xbegin = sEgetX->Eval(energy);
 
    if(energy > Emax || xbegin + dist < Xmin) {
-      std::cout<<std::endl<<" {TSRIM} WARNING: data is out of range. Results may be unpredictable."<<std::endl
-		         <<DRED"\t\tenergy = "<<energy<<" keV \txbegin = "<<xbegin<<" um\t dist = "<<dist<<" um\t xend = "<<xbegin + dist<<" um"<<std::endl
-					<<DYELLOW<<"\t\tErange = ["<<Emin<<", "<<Emax<<"] keV \t\t Xrange = [0 , "<<Xmax<<" um"<<RESET_COLOR<<std::endl;
+      std::cout<<std::endl
+               <<" {TSRIM} WARNING: data is out of range. Results may be unpredictable."<<std::endl
+               <<DRED "\t\tenergy = "<<energy<<" keV \txbegin = "<<xbegin<<" um\t dist = "<<dist<<" um\t xend = "<<xbegin + dist<<" um"<<std::endl
+               <<DYELLOW<<"\t\tErange = ["<<Emin<<", "<<Emax<<"] keV \t\t Xrange = [0 , "<<Xmax<<" um"<<RESET_COLOR<<std::endl;
    } else if(xbegin > Xmax || xbegin + dist > Xmax) {
       return 0.0;
    }
@@ -223,18 +228,18 @@ double TSRIM::GetAdjustedEnergy(double energy, double thickness, double stepsize
    double energy_temp = energy;
    double xstep       = stepsize,
           xtot =
-             0.0; // MAKE XSTEP SMALLER FOR BETTER RESULTS. 1UM SHOULD BE FINE ... UNLESS YOU ARE AT THE BRAGG PEAK ??
-   energy_temp -= fmod(thickness, xstep) * sEnergyLoss->Eval(energy_temp); // get rid of fractional distance
+             0.0;                                                            // MAKE XSTEP SMALLER FOR BETTER RESULTS. 1UM SHOULD BE FINE ... UNLESS YOU ARE AT THE BRAGG PEAK ??
+   energy_temp -= fmod(thickness, xstep) * sEnergyLoss->Eval(energy_temp);   // get rid of fractional distance
    xtot += fmod(thickness, xstep);
 
    if(thickness >= xstep) {
 
       while(xtot < thickness) {
          energy_temp -=
-            xstep * sEnergyLoss->Eval(energy_temp); // update energy recursively so that it decreases each step
+            xstep * sEnergyLoss->Eval(energy_temp);   // update energy recursively so that it decreases each step
          xtot += xstep;
          if(energy_temp <= 0.0) {
-            return 0.0; // if no energy is remaining then final energy is zero
+            return 0.0;   // if no energy is remaining then final energy is zero
          }
       }
    }

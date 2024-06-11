@@ -28,9 +28,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TCalibrator)
-/// \endcond
+   /// \endcond
 
-TCalibrator::TCalibrator()
+   TCalibrator::TCalibrator()
 {
    linfit = nullptr;
    efffit = nullptr;
@@ -59,7 +59,7 @@ void TCalibrator::Print(Option_t*) const
       double caleng = it.centroid * GetParameter(1) + GetParameter(0);
       double pdiff  = std::abs(caleng - it.energy) / it.energy;
       std::cout<<counter++<<":\t"<<std::setw(7)<<it.energy<<std::setw(16)<<it.centroid<<std::setw(8)<<caleng
-		         <<"   [%%"<<std::setw(3)<<pdiff*100.<<"]"<<std::setw(16)<<it.area<<std::setw(8)<<it.nucleus<<std::setw(16)<<it.intensity<<std::endl;
+               <<"   [%%"<<std::setw(3)<<pdiff * 100.<<"]"<<std::setw(16)<<it.area<<std::setw(8)<<it.nucleus<<std::setw(16)<<it.intensity<<std::endl;
    }
    std::cout<<"-------------------------------"<<std::endl;
 }
@@ -255,8 +255,8 @@ int TCalibrator::AddData(TH1* data, TNucleus* source, double sigma, double thres
       name = Form("%s_%i_%i", source->GetName(), displayed_x_min, displayed_x_max);
    }
 
-   TIter               iter(source->GetTransitionList());
-   std::vector<double> source_energy;
+   TIter                    iter(source->GetTransitionList());
+   std::vector<double>      source_energy;
    std::map<double, double> src_eng_int;
    while(TTransition* transition = static_cast<TTransition*>(iter.Next())) {
       source_energy.push_back(transition->GetEnergy());
@@ -266,7 +266,7 @@ int TCalibrator::AddData(TH1* data, TNucleus* source, double sigma, double thres
 
    TSpectrum spectrum;
    spectrum.Search(data, sigma, "", threshold);
-   std::vector<double> data_channels;
+   std::vector<double>      data_channels;
    std::map<double, double> peak_area;
    for(int x = 0; x < spectrum.GetNPeaks(); x++) {
       double range = 8 * data->GetXaxis()->GetBinWidth(1);
@@ -291,7 +291,7 @@ int TCalibrator::AddData(TH1* data, TNucleus* source, double sigma, double thres
          counter++;
       }
    }
-   return counter; // CheckMap(datatosource);
+   return counter;   // CheckMap(datatosource);
 }
 
 void TCalibrator::ResetMap(std::map<double, double>& inmap)

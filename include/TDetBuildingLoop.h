@@ -35,7 +35,10 @@ public:
    ~TDetBuildingLoop() override;
 
 #ifndef __CINT__
-   std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment>>>>& InputQueue() { return fInputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment>>>>& InputQueue()
+   {
+      return fInputQueue;
+   }
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>& AddOutputQueue(size_t maxSize = 50000)
    {
       std::stringstream name;
@@ -54,9 +57,9 @@ public:
          return fOutputQueues.back()->ItemsPushed();
       }
       return std::numeric_limits<size_t>::max();
-   } // this should work fine as all loops are always filled at the same time
-   size_t GetItemsPopped() override { return 0; }  // fOutputQueue->ItemsPopped(); }
-   size_t GetItemsCurrent() override { return 0; } // fOutputQueue->Size();        }
+   }                                                 // this should work fine as all loops are always filled at the same time
+   size_t GetItemsPopped() override { return 0; }    // fOutputQueue->ItemsPopped(); }
+   size_t GetItemsCurrent() override { return 0; }   // fOutputQueue->Size();        }
    size_t GetRate() override { return 0; }
 
 private:

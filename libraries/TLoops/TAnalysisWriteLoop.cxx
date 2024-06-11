@@ -45,15 +45,15 @@ TAnalysisWriteLoop::TAnalysisWriteLoop(std::string name, std::string outputFilen
      fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>()),
      fOutOfOrderQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>())
 {
-	fOutputFile = TFile::Open(outputFilename.c_str(), "recreate");
-	if(fOutputFile == nullptr || !fOutputFile->IsOpen()) {
-		std::cerr<<"Failed to open '"<<outputFilename<<"'"<<std::endl;
-		throw;
-	}
+   fOutputFile = TFile::Open(outputFilename.c_str(), "recreate");
+   if(fOutputFile == nullptr || !fOutputFile->IsOpen()) {
+      std::cerr<<"Failed to open '"<<outputFilename<<"'"<<std::endl;
+      throw;
+   }
 
-	fEventTree = new TTree("AnalysisTree", "AnalysisTree");
-	if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
-		fOutOfOrderTree = new TTree("OutOfOrderTree", "OutOfOrderTree");
+   fEventTree = new TTree("AnalysisTree", "AnalysisTree");
+   if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
+      fOutOfOrderTree = new TTree("OutOfOrderTree", "OutOfOrderTree");
       fOutOfOrderFrag = new TFragment;
       fOutOfOrderTree->Branch("Fragment", &fOutOfOrderFrag);
       fOutOfOrder = true;
@@ -62,30 +62,30 @@ TAnalysisWriteLoop::TAnalysisWriteLoop(std::string name, std::string outputFilen
 
 TAnalysisWriteLoop::~TAnalysisWriteLoop()
 {
-	for(auto& elem : fDetMap) {
+   for(auto& elem : fDetMap) {
       delete elem.second;
    }
 }
 
 void TAnalysisWriteLoop::ClearQueue()
 {
-	while(fInputQueue->Size() != 0u) {
-		std::shared_ptr<TUnpackedEvent> event;
-		fInputQueue->Pop(event);
-	}
+   while(fInputQueue->Size() != 0u) {
+      std::shared_ptr<TUnpackedEvent> event;
+      fInputQueue->Pop(event);
+   }
 }
 
 std::string TAnalysisWriteLoop::EndStatus()
 {
-	std::stringstream ss;
-	ss<<Name()<<":\t"<<std::setw(8)<<fItemsPopped<<"/"<<fInputSize + fItemsPopped<<", "
-		<<"??? good events"<<std::endl;
-	return ss.str();
+   std::stringstream ss;
+   ss<<Name()<<":\t"<<std::setw(8)<<fItemsPopped<<"/"<<fInputSize + fItemsPopped<<", "
+     <<"??? good events"<<std::endl;
+   return ss.str();
 }
 
 void TAnalysisWriteLoop::OnEnd()
 {
-	Write();
+   Write();
 }
 
 bool TAnalysisWriteLoop::Iteration()
@@ -94,61 +94,61 @@ bool TAnalysisWriteLoop::Iteration()
    fInputSize = fInputQueue->Pop(event);
    if(fInputSize < 0) {
       fInputSize = 0;
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+      std::this_thread::sleep_for(std::chrono::milliseconds(100));
    } else {
-		++fItemsPopped;
-	}
+      ++fItemsPopped;
+   }
 
-	if(fOutOfOrder) {
+   if(fOutOfOrder) {
       std::shared_ptr<const TFragment> frag;
       fOutOfOrderQueue->Pop(frag, 0);
       if(frag != nullptr) {
-			*fOutOfOrderFrag = *frag;
+         *fOutOfOrderFrag = *frag;
          fOutOfOrderFrag->ClearTransients();
          std::lock_guard<std::mutex> lock(ttree_fill_mutex);
          fOutOfOrderTree->Fill();
-		}
-	}
+      }
+   }
 
-	if(event != nullptr) {
-		WriteEvent(event);
-		return true;
-	}
+   if(event != nullptr) {
+      WriteEvent(event);
+      return true;
+   }
 
-	if(fInputQueue->IsFinished()) {
-		return false;
-	}
-	return true;
+   if(fInputQueue->IsFinished()) {
+      return false;
+   }
+   return true;
 }
 
 void TAnalysisWriteLoop::Write()
 {
-	if(fOutputFile != nullptr) {
-		gROOT->cd();
-		TRunInfo* runInfo = TRunInfo::Get();
-		TGRSIOptions* options = TGRSIOptions::Get();
-		TPPG* ppg = TPPG::Get();
-		TSortingDiagnostics* diag = TSortingDiagnostics::Get();
+   if(fOutputFile != nullptr) {
+      gROOT->cd();
+      TRunInfo*            runInfo = TRunInfo::Get();
+      TGRSIOptions*        options = TGRSIOptions::Get();
+      TPPG*                ppg     = TPPG::Get();
+      TSortingDiagnostics* diag    = TSortingDiagnostics::Get();
 
-		fOutputFile->cd();
-		if(GValue::Size() != 0) {
-			GValue::Get()->Write("Values", TObject::kOverwrite);
-		}
-		if(TChannel::GetNumberOfChannels() != 0) {
-			TChannel::WriteToRoot();
-		}
-		runInfo->WriteToRoot(fOutputFile);
-		options->AnalysisOptions()->WriteToFile(fOutputFile);
-		ppg->Write("PPG");
+      fOutputFile->cd();
+      if(GValue::Size() != 0) {
+         GValue::Get()->Write("Values", TObject::kOverwrite);
+      }
+      if(TChannel::GetNumberOfChannels() != 0) {
+         TChannel::WriteToRoot();
+      }
+      runInfo->WriteToRoot(fOutputFile);
+      options->AnalysisOptions()->WriteToFile(fOutputFile);
+      ppg->Write("PPG");
 
-		if(options->WriteDiagnostics()) {
-			diag->Write("SortingDiagnostics", TObject::kOverwrite);
-		}
+      if(options->WriteDiagnostics()) {
+         diag->Write("SortingDiagnostics", TObject::kOverwrite);
+      }
 
-		fOutputFile->Write();
-		delete fOutputFile;
-		fOutputFile = nullptr;
-	}
+      fOutputFile->Write();
+      delete fOutputFile;
+      fOutputFile = nullptr;
+   }
 }
 
 void TAnalysisWriteLoop::AddBranch(TClass* cls)
@@ -162,9 +162,9 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls)
       fDefaultDets[cls] = det_p;
 
       // Add to our local map
-      auto det_pp   = new TDetector*;
-      *det_pp       = det_p;
-      fDetMap[cls]  = det_pp;
+      auto det_pp  = new TDetector*;
+      *det_pp      = det_p;
+      fDetMap[cls] = det_pp;
 
       // Make a new branch.
       TBranch* newBranch = fEventTree->Branch(cls->GetName(), cls->GetName(), det_pp);
@@ -185,7 +185,7 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls)
          newBranch->Fill();
       }
 
-		std::cout<<"\r"<<std::string(30, ' ')<<"\r"<<Name()<<": added \""<<cls->GetName()<<R"(" branch)"<<std::endl;
+      std::cout<<"\r"<<std::string(30, ' ')<<"\r"<<Name()<<": added \""<<cls->GetName()<<R"(" branch)"<<std::endl;
 
       // Unlock after we are done.
       TThread::UnLock();
@@ -222,4 +222,3 @@ void TAnalysisWriteLoop::WriteEvent(std::shared_ptr<TUnpackedEvent>& event)
       fEventTree->Fill();
    }
 }
-

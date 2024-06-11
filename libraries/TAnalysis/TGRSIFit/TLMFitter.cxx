@@ -4,27 +4,27 @@
 
 /// \cond CLASSIMP
 ClassImp(TLMFitter)
-/// \endcond
+   /// \endcond
 
-/* DEFINITIONS */
-/*******************************************************************/
-/* alamda = parameter switches between curve and gradient method   */
-/*          must begin negative to initialize fit routine          */
-/* x[DIM] = x values of the data                                   */
-/* y[DIM] = y values of the data (Number of counts)                */
-/* sig[i] = sigma in the y value                                   */
-/* chisq  = chi-squared definitions defined in mrqcof subroutine   */
-/* sig2i  = 1 over sigma squared (Used in computing the chisq)     */
-/* a[i]   = fit parameters of the fitting function                 */
-/* ia[i]  = set to '1' to free a[i] or '0' for fixed               */
-/* beta[j]= extremum vector                                        */
-/* alpha[k][k] = curvature matrix                                  */
-/* dy     = yfit - ydata                                           */
-/* ma     = number of fit parameters in fit function               */
-/*******************************************************************/
+   /* DEFINITIONS */
+   /*******************************************************************/
+   /* alamda = parameter switches between curve and gradient method   */
+   /*          must begin negative to initialize fit routine          */
+   /* x[DIM] = x values of the data                                   */
+   /* y[DIM] = y values of the data (Number of counts)                */
+   /* sig[i] = sigma in the y value                                   */
+   /* chisq  = chi-squared definitions defined in mrqcof subroutine   */
+   /* sig2i  = 1 over sigma squared (Used in computing the chisq)     */
+   /* a[i]   = fit parameters of the fitting function                 */
+   /* ia[i]  = set to '1' to free a[i] or '0' for fixed               */
+   /* beta[j]= extremum vector                                        */
+   /* alpha[k][k] = curvature matrix                                  */
+   /* dy     = yfit - ydata                                           */
+   /* ma     = number of fit parameters in fit function               */
+   /*******************************************************************/
 
-/* Function Subroutine-***Put fitting function here***-------------*/
-void TLMFitter::funcs(const double& x, Vec_IO_double& a, double& y, Vec_O_double& dyda)
+   /* Function Subroutine-***Put fitting function here***-------------*/
+   void TLMFitter::funcs(const double& x, Vec_IO_double& a, double& y, Vec_O_double& dyda)
 {
    for(int i = 0; i < a.size(); ++i) {
       fFunction->SetParameter(i, a[i]);
@@ -75,7 +75,7 @@ void TLMFitter::Fit(TH1* hist, TF1* func)
    bin_min = hist->FindBin(func_range_min);
    bin_max = hist->FindBin(func_range_max);
 
-   nBins = hist->GetNbinsX(); // bin_max - bin_min;
+   nBins = hist->GetNbinsX();   // bin_max - bin_min;
    // nBins = bin_max - bin_min;
    Vec_double x(nBins), y(nBins), sig(nBins), yfit(nBins), W(nBins), v(nBins);
 
@@ -98,7 +98,8 @@ void TLMFitter::Fit(TH1* hist, TF1* func)
    int k    = 1;
    int itst = 0;
    while(true) {
-      std::cout<<std::endl<<"Iteration #"<<std::setw(3)<<k;
+      std::cout<<std::endl
+               <<"Iteration #"<<std::setw(3)<<k;
       std::cout<<std::setw(18)<<"chi-squared:"<<std::setw(13)<<chisq;
       std::cout<<std::setw(11)<<"alamda:"<<std::setw(10)<<alamda<<std::endl;
       for(int i = 0; i < ma; ++i) {
@@ -149,7 +150,7 @@ int TLMFitter::integrator(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec
    int ma = a.size();
    //	int i, j, k;
    double     ynew   = 0;
-   double     xstart = x[bin]; // This is the start of the bin
+   double     xstart = x[bin];   // This is the start of the bin
    double     ymod   = 0;
    Vec_double z(fIntegrationSteps), temp(dyda.size());
 
@@ -219,7 +220,7 @@ void TLMFitter::mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
    }
    static Mat_double* oneda_p;
    static Vec_double *atry_p, *beta_p, *da_p;
-   if(alamda < 0.0) { // Initialization
+   if(alamda < 0.0) {   // Initialization
       atry_p = new Vec_double(ma);
       beta_p = new Vec_double(ma);
       da_p   = new Vec_double(ma);
@@ -251,16 +252,16 @@ void TLMFitter::mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
       }
       oneda[j][0] = beta[j];
    }
-   gaussj(temp, oneda); // Matrix solution
+   gaussj(temp, oneda);   // Matrix solution
    for(j = 0; j < mfit; j++) {
       for(k = 0; k < mfit; k++) {
          covar[j][k] = temp[j][k];
       }
       da[j] = oneda[j][0];
    }
-   if(alamda == 0.0) { // Once converged, evaluate covariance matrix
+   if(alamda == 0.0) {   // Once converged, evaluate covariance matrix
       covsrt(covar, ia, mfit);
-      covsrt(alpha, ia, mfit); // Spread out alpha to its full size too
+      covsrt(alpha, ia, mfit);   // Spread out alpha to its full size too
       chisqexp -= mfit;
       chisq /= chisqexp;
       delete oneda_p;
@@ -269,13 +270,13 @@ void TLMFitter::mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
       delete atry_p;
       return;
    }
-   for(j = 0, l = 0; l < ma; l++) { // Did the trial succeed?
+   for(j = 0, l = 0; l < ma; l++) {   // Did the trial succeed?
       if(ia[l]) {
          atry[l] = a[l] + da[j++];
       }
    }
    mrqcof(x, y, sig, atry, ia, covar, da, chisq, W, chisqexp);
-   if(chisq < ochisq) { // Success, accept the new solution
+   if(chisq < ochisq) {   // Success, accept the new solution
       alamda *= 0.1;
       ochisq = chisq;
       for(j = 0; j < mfit; j++) {
@@ -287,7 +288,7 @@ void TLMFitter::mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
       for(l = 0; l < ma; l++) {
          a[l] = atry[l];
       }
-   } else { // Failure, increase alamda and return
+   } else {   // Failure, increase alamda and return
       alamda *= 10.0;
       chisq = ochisq;
    }
@@ -314,14 +315,14 @@ void TLMFitter::mrqcof(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
          mfit++;
       }
    }
-   for(j = 0; j < mfit; j++) { // Initialize (symmetric) alpha, beta.
+   for(j = 0; j < mfit; j++) {   // Initialize (symmetric) alpha, beta.
       for(k = 0; k <= j; k++) {
          alpha[j][k] = 0.0;
       }
       beta[j] = 0.0;
    }
    chisq = 0.0;
-   for(i = fRangeMin; i < fRangeMax; ++i) { // Summation loop over all data.
+   for(i = fRangeMin; i < fRangeMax; ++i) {   // Summation loop over all data.
       int chisqnumber = integrator(x, y, sig, W, a, dyda, fInitChi2Number, fHist->GetXaxis()->GetBinWidth(1), yfit, i);
       // funcs(x[i],a,ymod,dyda); Integrator does this instead
       sig2i = 1.0 / (sig[i] * sig[i]);
@@ -333,14 +334,14 @@ void TLMFitter::mrqcof(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
             wt = dyda[l] * sig2i;
             for(k = 0, m = 0; m < l + 1; m++) {
                if(ia[m]) {
-                  if(chisqnumber == 0) { // least squares
+                  if(chisqnumber == 0) {   // least squares
                      alpha[j][k++] += wt * dyda[m] * (1.0 + dy / yfit[i]) * (1.0 + dy / yfit[i]) * W[i];
                   } else {
                      alpha[j][k++] += wt * dyda[m] * W[i];
                   }
                }
             }
-            if(chisqnumber == 0) { // Least squares
+            if(chisqnumber == 0) {   // Least squares
                beta[j++] += dy * wt * (1.0 + dy / (2.0 * yfit[i])) * W[i];
             } else {
                beta[j++] += dy * wt * W[i];
@@ -374,11 +375,11 @@ void TLMFitter::mrqcof(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
                            31.9385 / std::pow(yfit[i], 5.0) + 741.3189 / std::pow(yfit[i], 6.0) -
                            3928.1260 / std::pow(yfit[i], 7.0) + 6158.3381 / std::pow(yfit[i], 8.0);
             }
-         } // end of chi2 3
+         }   // end of chi2 3
       }
-   } // end of loop over data
+   }   // end of loop over data
 
-   for(j = 1; j < mfit; j++) { // Fill in the symmetric side.
+   for(j = 1; j < mfit; j++) {   // Fill in the symmetric side.
       for(k = 0; k < j; k++) {
          alpha[k][j] = alpha[j][k];
       }

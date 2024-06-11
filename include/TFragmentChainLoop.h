@@ -41,7 +41,10 @@ public:
    }
 #endif
 
-   size_t GetItemsPushed() override { return fItemsPopped; }
+   size_t GetItemsPushed() override
+   {
+      return fItemsPopped;
+   }
    size_t GetItemsPopped() override { return fItemsPopped; }
    size_t GetItemsCurrent() override { return fEntriesTotal; }
    size_t GetRate() override { return 0; }
@@ -51,8 +54,8 @@ public:
    void OnEnd() override;
 
    void SetSelfStopping(bool self_stopping) { fSelfStopping = self_stopping; }
-   bool                      GetSelfStopping() const { return fSelfStopping; }
-   void                      Restart();
+   bool GetSelfStopping() const { return fSelfStopping; }
+   void Restart();
 
 protected:
    bool Iteration() override;
@@ -70,7 +73,7 @@ private:
 
    bool fSelfStopping;
 
-   int SetupChain();
+   int                            SetupChain();
    std::map<TClass*, TDetector**> fDetMap;
 
    // ClassDefOverride(TFragmentChainLoop, 0);

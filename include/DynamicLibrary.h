@@ -47,7 +47,7 @@ private:
 
 public:
 #else
-   DynamicLibrary(const DynamicLibrary&) = delete;
+   DynamicLibrary(const DynamicLibrary&)            = delete;
    DynamicLibrary& operator=(const DynamicLibrary&) = delete;
 #endif
 

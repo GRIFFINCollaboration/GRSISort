@@ -148,7 +148,7 @@ GH1D* GH1D::GetPrevious(bool DrawEmpty) const
       int   last  = GetXaxis()->GetLast();
       GH1D* prev  = gpar->GetPrevious(this, DrawEmpty);
       prev->GetXaxis()->SetRange(first, last);
-      return prev; // gpar->GetPrevious(this,DrawEmpty);
+      return prev;   // gpar->GetPrevious(this,DrawEmpty);
    }
    return nullptr;
 }
@@ -161,7 +161,7 @@ GH1D* GH1D::GetNext(bool DrawEmpty) const
       int   last  = GetXaxis()->GetLast();
       GH1D* next  = gpar->GetNext(this, DrawEmpty);
       next->GetXaxis()->SetRange(first, last);
-      return next; // gpar->GetNext(this,DrawEmpty);
+      return next;   // gpar->GetNext(this,DrawEmpty);
    }
    return nullptr;
 }

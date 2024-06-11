@@ -20,7 +20,7 @@ std::map<std::string, TRuntimeObjects*> TRuntimeObjects::fRuntimeMap;
 
 TRuntimeObjects::TRuntimeObjects(std::shared_ptr<const TFragment> frag, TList* objects, TList* gates,
                                  std::vector<TFile*>& cut_files, TDirectory* directory, const char* name)
-   : fFrag(std::move(frag)), // detectors(nullptr),
+   : fFrag(std::move(frag)),   // detectors(nullptr),
      fObjects(objects), fGates(gates), fCut_files(cut_files), fDirectory(directory)
 {
    SetName(name);
@@ -39,7 +39,7 @@ TRuntimeObjects::TRuntimeObjects(std::shared_ptr<const TFragment> frag, TList* o
 
 TRuntimeObjects::TRuntimeObjects(TList* objects, TList* gates, std::vector<TFile*>& cut_files, TDirectory* directory,
                                  const char* name)
-   : fFrag(nullptr), // detectors(0),
+   : fFrag(nullptr),   // detectors(0),
      fObjects(objects), fGates(gates), fCut_files(cut_files), fDirectory(directory)
 {
    SetName(name);
@@ -48,28 +48,28 @@ TRuntimeObjects::TRuntimeObjects(TList* objects, TList* gates, std::vector<TFile
 
 TH1* TRuntimeObjects::FillHistogram(const char* name, int bins, double low, double high, double value, double weight)
 {
-   FillHistogram("General",name,bins,low,high,value,weight);
+   FillHistogram("General", name, bins, low, high, value, weight);
    return nullptr;
 }
 
 TH2* TRuntimeObjects::FillHistogram(const char* name, int Xbins, double Xlow, double Xhigh, double Xvalue, int Ybins,
                                     double Ylow, double Yhigh, double Yvalue, double weight)
 {
-   FillHistogram("General",name,Xbins,Xlow,Xhigh,Xvalue,Ybins,Ylow,Yhigh,Yvalue,weight);
+   FillHistogram("General", name, Xbins, Xlow, Xhigh, Xvalue, Ybins, Ylow, Yhigh, Yvalue, weight);
    return nullptr;
 }
 
 TProfile* TRuntimeObjects::FillProfileHist(const char* name, int Xbins, double Xlow, double Xhigh, double Xvalue,
                                            double Yvalue)
 {
-   FillProfileHist("General",name,Xbins,Xlow,Xhigh,Xvalue,Yvalue);
+   FillProfileHist("General", name, Xbins, Xlow, Xhigh, Xvalue, Yvalue);
    return nullptr;
 }
 
 TH2* TRuntimeObjects::FillHistogramSym(const char* name, int Xbins, double Xlow, double Xhigh, double Xvalue, int Ybins,
                                        double Ylow, double Yhigh, double Yvalue)
 {
-   FillHistogramSym("General",name,Xbins,Xlow,Xhigh,Xvalue,Ybins,Ylow,Yhigh,Yvalue);
+   FillHistogramSym("General", name, Xbins, Xlow, Xhigh, Xvalue, Ybins, Ylow, Yhigh, Yvalue);
    return nullptr;
 }
 
@@ -77,7 +77,7 @@ TH2* TRuntimeObjects::FillHistogramSym(const char* name, int Xbins, double Xlow,
 TDirectory* TRuntimeObjects::FillHistogram(const char* dirname, const char* name, int bins, double low, double high,
                                            double value, double weight)
 {
-   TDirectory * dir = FindDirectory(dirname);
+   TDirectory* dir = FindDirectory(dirname);
 
    TH1* hist = static_cast<TH1*>(dir->FindObject(name));
    if(hist == nullptr) {
@@ -96,8 +96,8 @@ TDirectory* TRuntimeObjects::FillHistogram(const char* dirname, const char* name
                                            double Xvalue, int Ybins, double Ylow, double Yhigh, double Yvalue,
                                            double weight)
 {
-   TDirectory * dir = FindDirectory(dirname);
-   TH2* hist = static_cast<TH2*>(dir->FindObject(name));
+   TDirectory* dir  = FindDirectory(dirname);
+   TH2*        hist = static_cast<TH2*>(dir->FindObject(name));
    if(hist == nullptr) {
       hist = new TH2D(name, name, Xbins, Xlow, Xhigh, Ybins, Ylow, Yhigh);
       hist->SetDirectory(dir);
@@ -107,15 +107,15 @@ TDirectory* TRuntimeObjects::FillHistogram(const char* dirname, const char* name
    if(!std::isnan(Xvalue) && !std::isnan(Yvalue)) {
       hist->Fill(Xvalue, Yvalue, weight);
    }
-   return dir; 
+   return dir;
 }
 
 TDirectory* TRuntimeObjects::FillProfileHist(const char* dirname, const char* name, int Xbins, double Xlow,
                                              double Xhigh, double Xvalue, double Yvalue)
 {
 
-   TDirectory *dir = FindDirectory(dirname);
-   TProfile* prof = static_cast<TProfile*>(dir->FindObject(name));
+   TDirectory* dir  = FindDirectory(dirname);
+   TProfile*   prof = static_cast<TProfile*>(dir->FindObject(name));
    if(prof == nullptr) {
       prof = new TProfile(name, name, Xbins, Xlow, Xhigh);
       prof->SetDirectory(dir);
@@ -134,8 +134,8 @@ TDirectory* TRuntimeObjects::FillHistogramSym(const char* dirname, const char* n
                                               double Xhigh, double Xvalue, int Ybins, double Ylow, double Yhigh,
                                               double Yvalue)
 {
-   TDirectory *dir = FindDirectory(dirname);
-   TH2* hist = static_cast<TH2*>(dir->FindObject(name));
+   TDirectory* dir  = FindDirectory(dirname);
+   TH2*        hist = static_cast<TH2*>(dir->FindObject(name));
    if(hist == nullptr) {
       hist = new TH2D(name, name, Xbins, Xlow, Xhigh, Ybins, Ylow, Yhigh);
       hist->SetDirectory(dir);
@@ -147,7 +147,7 @@ TDirectory* TRuntimeObjects::FillHistogramSym(const char* dirname, const char* n
          hist->Fill(Yvalue, Xvalue);
       }
    }
-   return dir; 
+   return dir;
 }
 //-------------------------------------------------------------------------
 
@@ -180,14 +180,14 @@ double TRuntimeObjects::GetVariable(const char* name)
    return GValue::Value(name);
 }
 
-TDirectory * TRuntimeObjects::FindDirectory(const char* dirname)
+TDirectory* TRuntimeObjects::FindDirectory(const char* dirname)
 {
    /*static bool found_default = false;
    if(!strcmp(dirname,"")){
       if(!found_default && !GetObjects().FindObject(fDirectory)){
          found_default = true;
          GetObjects().Add(fDirectory);
-      }	
+      }
       return fDirectory;
    }*/
 
@@ -197,5 +197,4 @@ TDirectory * TRuntimeObjects::FindDirectory(const char* dirname)
       GetObjects().Add(dir);
    }
    return dir;
-
 }

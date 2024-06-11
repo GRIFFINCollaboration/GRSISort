@@ -39,7 +39,7 @@ void help()
    std::cout<<"     2) Value of bin"<<std::endl;
    std::cout<<" **********************"<<std::endl;
 
-   exit(0); // normal
+   exit(0);   // normal
 }
 
 int main(int argc, char* argv[])

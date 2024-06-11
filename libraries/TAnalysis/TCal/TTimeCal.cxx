@@ -4,9 +4,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TTimeCal)
-/// \endcond
+   /// \endcond
 
-void TTimeCal::Clear(Option_t* opt)
+   void TTimeCal::Clear(Option_t* opt)
 {
    fParameters.clear();
    TCal::Clear(opt);
@@ -19,7 +19,8 @@ void TTimeCal::WriteToChannel() const
       return;
    }
    GetChannel()->DestroyTIMECal();
-   std::cout<<std::endl<<"Writing to channel "<<GetChannel()->GetNumber()<<std::endl;
+   std::cout<<std::endl
+            <<"Writing to channel "<<GetChannel()->GetNumber()<<std::endl;
    for(int i = 0; i < static_cast<int>(fParameters.size()); i++) {
       std::cout<<"p"<<i<<" = "<<fParameters[i]<<"\t ";
       GetChannel()->AddTIMECoefficient(fParameters[i]);

@@ -28,20 +28,20 @@ public:
    TTransientBits(const T& tmp) : fBits(tmp) {}
    ~TTransientBits() = default;
 
-   void SetBit(T f, Bool_t flag) { flag ? SetBit(f) : ClearBit(f); }
-   void SetBit(T f) { fBits |= f; }
-   void ClearBit(T f) { fBits &= ~f; }
+   void   SetBit(T f, Bool_t flag) { flag ? SetBit(f) : ClearBit(f); }
+   void   SetBit(T f) { fBits |= f; }
+   void   ClearBit(T f) { fBits &= ~f; }
    Bool_t TestBit(T f) const { return fBits & f; }
-   T TestBits(T f) const { return (fBits & f); }
-	template <typename U>
+   T      TestBits(T f) const { return (fBits & f); }
+   template <typename U>
    void SetBit(U f, Bool_t flag) { flag ? SetBit(f) : ClearBit(f); }
-	template <typename U>
+   template <typename U>
    void SetBit(U f) { fBits |= static_cast<typename std::underlying_type<U>::type>(f); }
-	template <typename U>
+   template <typename U>
    void ClearBit(U f) { fBits &= ~static_cast<typename std::underlying_type<U>::type>(f); }
-	template <typename U>
+   template <typename U>
    Bool_t TestBit(U f) const { return fBits & static_cast<typename std::underlying_type<U>::type>(f); }
-	template <typename U>
+   template <typename U>
    T TestBits(U f) const { return (fBits & static_cast<typename std::underlying_type<U>::type>(f)); }
 
    TTransientBits& operator=(const T& rhs)

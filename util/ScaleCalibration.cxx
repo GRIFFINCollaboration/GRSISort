@@ -23,7 +23,7 @@ int main(int argc, char** argv)
    // Read Cal file
    TChannel::ReadCalFile(argv[2]);
    std::unordered_map<unsigned int, TChannel*>::iterator it;
-   std::unordered_map<unsigned int, TChannel*>* chanmap = TChannel::GetChannelMap();
+   std::unordered_map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
 
    if(chanmap == nullptr) {
       printf("can't find channel map\n");
@@ -45,7 +45,7 @@ int main(int argc, char** argv)
          // Because it returns false after every potential failure while the mnemonic class sets all of the strings, and
          // then checks
          // for conditions.
-         if(channame.compare(0, mnemonic.length(), mnemonic) != 0) { // channame.NotBeginsWith(pre)){
+         if(channame.compare(0, mnemonic.length(), mnemonic) != 0) {   // channame.NotBeginsWith(pre)){
             continue;
          }
       }

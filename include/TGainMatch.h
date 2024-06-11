@@ -67,8 +67,8 @@ public:
       return nullptr;
    }
 
-   void SetCoarseRange(Double_t coarseRange) { fCoarseRange = coarseRange; }
-   Double_t                     GetCoarseRange() const { return fCoarseRange; }
+   void        SetCoarseRange(Double_t coarseRange) { fCoarseRange = coarseRange; }
+   Double_t    GetCoarseRange() const { return fCoarseRange; }
    static void SetDefaultCoarseRange(Double_t coarseRange)
    {
       std::cout<<"All new TGainMatch objects will have their range set to "<<coarseRange<<std::endl;

@@ -7,9 +7,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TEfficiencyCalibration)
-/// \endcond
+   /// \endcond
 
-TEfficiencyCalibration::TEfficiencyCalibration()
+   TEfficiencyCalibration::TEfficiencyCalibration()
    : TNamed(), fRelativeEffGraph(nullptr), fAbsEffGraph(nullptr), fFitting(false), fRelativeFit(nullptr),
      fAbsoluteFunc(nullptr)
 {
@@ -109,13 +109,13 @@ void TEfficiencyCalibration::AddEfficiencyGraph(const TEfficiencyGraph& graph, c
       it.first->second = graph;
    }
    if(graph.IsAbsolute()) {
-      fAbsEffGraph->Add(&(it.first->second)); // fill the multigraph with an actual pointer to the graph
+      fAbsEffGraph->Add(&(it.first->second));   // fill the multigraph with an actual pointer to the graph
    } else {
-      fRelativeEffGraph->Add(&(it.first->second)); // fill the multigraph with an actual pointer to the graph
+      fRelativeEffGraph->Add(&(it.first->second));   // fill the multigraph with an actual pointer to the graph
    }
    if(fRelativeFit != nullptr) {
       delete fRelativeFit;
-      fRelativeFit = nullptr; // Clear this because it is nonsense now.
+      fRelativeFit = nullptr;   // Clear this because it is nonsense now.
    }
 }
 
@@ -163,7 +163,7 @@ void TEfficiencyCalibration::ScaleGuess()
 
    // We want to loop through the list and find the best scale factor
    for(int graph_idx = 1; graph_idx < graph_list->GetSize();
-       ++graph_idx) { // Start at 1 because we don't want to change 0
+       ++graph_idx) {   // Start at 1 because we don't want to change 0
       Double_t          closest_dist      = 99999.;
       Int_t             closest_loop_idx  = 0;
       Int_t             closest_fixed_idx = 0;
@@ -257,151 +257,151 @@ TFitResultPtr TEfficiencyCalibration::Fit(Option_t*)
 
    fRelativeEffGraph->Fit(fRelativeFit, "R0");
 
-	//ADDED TO MAKE WORK
-	//We fix the higher order parameters to get to the real minimum more easily
-	//fRelativeFit->FixParameter(n_rel_graphs+0,-4.16);
-	fRelativeFit->FixParameter(n_rel_graphs+0,-4.25);
-	fRelativeFit->FixParameter(n_rel_graphs+1,4.92);
-	fRelativeFit->FixParameter(n_rel_graphs+2,-6.56E-1);
-	fRelativeFit->FixParameter(n_rel_graphs+3,1.33E-2);
-	fRelativeFit->FixParameter(n_rel_graphs+4,-1.54E-3);
-	fRelativeFit->FixParameter(n_rel_graphs+5,2.01E-4);
-	fRelativeFit->FixParameter(n_rel_graphs+6,8.36E-5);
-	fRelativeFit->FixParameter(n_rel_graphs+7,-8.30E-6);
+   // ADDED TO MAKE WORK
+   // We fix the higher order parameters to get to the real minimum more easily
+   // fRelativeFit->FixParameter(n_rel_graphs+0,-4.16);
+   fRelativeFit->FixParameter(n_rel_graphs + 0, -4.25);
+   fRelativeFit->FixParameter(n_rel_graphs + 1, 4.92);
+   fRelativeFit->FixParameter(n_rel_graphs + 2, -6.56E-1);
+   fRelativeFit->FixParameter(n_rel_graphs + 3, 1.33E-2);
+   fRelativeFit->FixParameter(n_rel_graphs + 4, -1.54E-3);
+   fRelativeFit->FixParameter(n_rel_graphs + 5, 2.01E-4);
+   fRelativeFit->FixParameter(n_rel_graphs + 6, 8.36E-5);
+   fRelativeFit->FixParameter(n_rel_graphs + 7, -8.30E-6);
 
-	// Do the real fit with all of the parameters
-	TFitResultPtr res = fRelativeEffGraph->Fit(fRelativeFit, "SR");
+   // Do the real fit with all of the parameters
+   TFitResultPtr res = fRelativeEffGraph->Fit(fRelativeFit, "SR");
 
-	// Turn fitting flag off for drawing
-	fFitting = false;
+   // Turn fitting flag off for drawing
+   fFitting = false;
 
-	// Draw The TF1
-	fRelativeFit->Draw("same");
+   // Draw The TF1
+   fRelativeFit->Draw("same");
 
-	// Update the graphs
-	for(int i = 0; i < fRelativeEffGraph->GetListOfGraphs()->GetSize(); ++i) {
-		(static_cast<TEfficiencyGraph*>(fRelativeEffGraph->GetListOfGraphs()->At(i)))
-			->Scale(fRelativeFit->GetParameter(i));
-	}
+   // Update the graphs
+   for(int i = 0; i < fRelativeEffGraph->GetListOfGraphs()->GetSize(); ++i) {
+      (static_cast<TEfficiencyGraph*>(fRelativeEffGraph->GetListOfGraphs()->At(i)))
+         ->Scale(fRelativeFit->GetParameter(i));
+   }
 
-	return res;
+   return res;
 }
 
 Double_t TEfficiencyCalibration::PhotoPeakEfficiency(Double_t* x, Double_t* par)
 {
 
-	Int_t    closest_graph   = 0;
-	Double_t dist_to_closest = 99999.;
-	if(fFitting) {
-		TList* gList = fRelativeEffGraph->GetListOfGraphs();
-		for(Int_t i = 0; i < gList->GetSize(); ++i) {
-			if((static_cast<TEfficiencyGraph*>(gList->At(i)))->FindDistToClosestPointX(x[0]) < dist_to_closest) {
-				dist_to_closest = (static_cast<TEfficiencyGraph*>(gList->At(i)))->FindDistToClosestPointX(x[0]);
-				closest_graph   = i;
-			}
-		}
-	}
+   Int_t    closest_graph   = 0;
+   Double_t dist_to_closest = 99999.;
+   if(fFitting) {
+      TList* gList = fRelativeEffGraph->GetListOfGraphs();
+      for(Int_t i = 0; i < gList->GetSize(); ++i) {
+         if((static_cast<TEfficiencyGraph*>(gList->At(i)))->FindDistToClosestPointX(x[0]) < dist_to_closest) {
+            dist_to_closest = (static_cast<TEfficiencyGraph*>(gList->At(i)))->FindDistToClosestPointX(x[0]);
+            closest_graph   = i;
+         }
+      }
+   }
 
-	double sum = 0.0;
-	for(int i = 0; i < 9; ++i) {
-		sum += par[i + fRelativeEffGraph->GetListOfGraphs()->GetSize()] * TMath::Power(TMath::Log(x[0]), i);
-	}
-	if(fFitting) {
-		return TMath::Exp(sum) / par[closest_graph];
-	}
-	return TMath::Exp(sum);
+   double sum = 0.0;
+   for(int i = 0; i < 9; ++i) {
+      sum += par[i + fRelativeEffGraph->GetListOfGraphs()->GetSize()] * TMath::Power(TMath::Log(x[0]), i);
+   }
+   if(fFitting) {
+      return TMath::Exp(sum) / par[closest_graph];
+   }
+   return TMath::Exp(sum);
 }
 
 Double_t TEfficiencyCalibration::AbsoluteEfficiency(Double_t* x, Double_t* par)
 {
 
-	double sum = 0.0;
-	for(int i = 0; i < 9; ++i) {
-		sum += par[i + 1] * TMath::Power(TMath::Log(x[0]), i);
-	}
-	return par[0] * TMath::Exp(sum);
+   double sum = 0.0;
+   for(int i = 0; i < 9; ++i) {
+      sum += par[i + 1] * TMath::Power(TMath::Log(x[0]), i);
+   }
+   return par[0] * TMath::Exp(sum);
 }
 
 bool TEfficiencyCalibration::ScaleToAbsolute()
 {
-	if((fAbsEffGraph->GetListOfGraphs()->GetSize() != 0) && (fRelativeFit != nullptr)) {
-		if(fAbsoluteFunc == nullptr) {
-			fAbsoluteFunc = new TF1("fAbsoluteFunc", this, &TEfficiencyCalibration::AbsoluteEfficiency, 0, 8000, 9,
-					"TEfficiencyCalibration", "AbsoluteEfficiency");
-		}
-		fAbsoluteFunc->SetParName(0, "Scale");
-		for(int i = 0; i < 8; ++i) {
-			fAbsoluteFunc->SetParName(i + 1, Form("a%d", i));
-			fAbsoluteFunc->SetParameter(i + 1,
-					fRelativeFit->GetParameter(i + fRelativeEffGraph->GetListOfGraphs()->GetSize()));
-			fAbsoluteFunc->SetParError(i + 1,
-					fRelativeFit->GetParError(i + fRelativeEffGraph->GetListOfGraphs()->GetSize()));
-		}
+   if((fAbsEffGraph->GetListOfGraphs()->GetSize() != 0) && (fRelativeFit != nullptr)) {
+      if(fAbsoluteFunc == nullptr) {
+         fAbsoluteFunc = new TF1("fAbsoluteFunc", this, &TEfficiencyCalibration::AbsoluteEfficiency, 0, 8000, 9,
+                                 "TEfficiencyCalibration", "AbsoluteEfficiency");
+      }
+      fAbsoluteFunc->SetParName(0, "Scale");
+      for(int i = 0; i < 8; ++i) {
+         fAbsoluteFunc->SetParName(i + 1, Form("a%d", i));
+         fAbsoluteFunc->SetParameter(i + 1,
+                                     fRelativeFit->GetParameter(i + fRelativeEffGraph->GetListOfGraphs()->GetSize()));
+         fAbsoluteFunc->SetParError(i + 1,
+                                    fRelativeFit->GetParError(i + fRelativeEffGraph->GetListOfGraphs()->GetSize()));
+      }
 
-		// we need to find the average amount that we must scale the relative efficiency fit by in order to have it line
-		// up with the absolute efficiency data points.
-		TIter    next(fAbsEffGraph->GetListOfGraphs());
-		Double_t w_avg_numer   = 0.0;
-		Double_t w_avg_denom   = 0.0;
-		Double_t semi_w_uncert = 0.0;
-		while(TEfficiencyGraph* abs_graph = static_cast<TEfficiencyGraph*>(next())) {
-			Double_t* y_val  = abs_graph->GetY();
-			Double_t* ey_val = abs_graph->GetEY();
-			Double_t* x_val  = abs_graph->GetX();
-			for(int i = 0; i < abs_graph->GetN(); ++i) {
-				Double_t scale = y_val[i] / fRelativeFit->Eval(x_val[i]);
-				w_avg_numer += scale / TMath::Power(ey_val[i], 2.0);
-				w_avg_denom += 1. / TMath::Power(ey_val[i], 2.0);
-			}
-			semi_w_uncert += 1. / TMath::Power(ey_val[0] / y_val[0], 2.0);
-		}
+      // we need to find the average amount that we must scale the relative efficiency fit by in order to have it line
+      // up with the absolute efficiency data points.
+      TIter    next(fAbsEffGraph->GetListOfGraphs());
+      Double_t w_avg_numer   = 0.0;
+      Double_t w_avg_denom   = 0.0;
+      Double_t semi_w_uncert = 0.0;
+      while(TEfficiencyGraph* abs_graph = static_cast<TEfficiencyGraph*>(next())) {
+         Double_t* y_val  = abs_graph->GetY();
+         Double_t* ey_val = abs_graph->GetEY();
+         Double_t* x_val  = abs_graph->GetX();
+         for(int i = 0; i < abs_graph->GetN(); ++i) {
+            Double_t scale = y_val[i] / fRelativeFit->Eval(x_val[i]);
+            w_avg_numer += scale / TMath::Power(ey_val[i], 2.0);
+            w_avg_denom += 1. / TMath::Power(ey_val[i], 2.0);
+         }
+         semi_w_uncert += 1. / TMath::Power(ey_val[0] / y_val[0], 2.0);
+      }
 
-		Double_t w_avg = w_avg_numer / w_avg_denom; // This is how much we should scale everything by
-		// Set the parameter and uncertainty based on the scale factor
-		fAbsoluteFunc->FixParameter(0, w_avg);
-		// For the error we assume that each absolute efficiency source error is entirely systematic in Activity.
-		fAbsoluteFunc->SetParError(0, TMath::Sqrt(1. / semi_w_uncert) * w_avg);
+      Double_t w_avg = w_avg_numer / w_avg_denom;   // This is how much we should scale everything by
+      // Set the parameter and uncertainty based on the scale factor
+      fAbsoluteFunc->FixParameter(0, w_avg);
+      // For the error we assume that each absolute efficiency source error is entirely systematic in Activity.
+      fAbsoluteFunc->SetParError(0, TMath::Sqrt(1. / semi_w_uncert) * w_avg);
 
-		// Scale all of the data points now in the relative graph
-		for(int i = 0; i < fRelativeEffGraph->GetListOfGraphs()->GetSize(); ++i) {
-			(static_cast<TEfficiencyGraph*>(fRelativeEffGraph->GetListOfGraphs()->At(i)))->Scale(w_avg);
-		}
+      // Scale all of the data points now in the relative graph
+      for(int i = 0; i < fRelativeEffGraph->GetListOfGraphs()->GetSize(); ++i) {
+         (static_cast<TEfficiencyGraph*>(fRelativeEffGraph->GetListOfGraphs()->At(i)))->Scale(w_avg);
+      }
 
-		return true;
-	}
+      return true;
+   }
 
-	return false;
+   return false;
 }
 
 Double_t TEfficiencyCalibration::GetEfficiency(const Double_t& eng)
 {
-	if(fAbsoluteFunc != nullptr) {
-		return fAbsoluteFunc->Eval(eng);
-	}
+   if(fAbsoluteFunc != nullptr) {
+      return fAbsoluteFunc->Eval(eng);
+   }
 
-	return -1000.0;
+   return -1000.0;
 }
 
 Double_t TEfficiencyCalibration::GetEfficiencyErr(const Double_t& eng)
 {
-	if(fAbsoluteFunc != nullptr) {
-		// partial derivative * error all squared for each parameter
-		// Function looks like Const*exp^(a0 + a1*lnE + a2*(lnE)^2 +....)
-		// so exp term shows up in every derivative
-		Double_t exp_term = 0.0;
-		for(int i = 0; i < 8; ++i) {
-			exp_term += fAbsoluteFunc->GetParameter(i + 1) * TMath::Power(TMath::Log(eng), i);
-		}
-		exp_term = TMath::Exp(exp_term);
-		// Now do the derivatives which have a pattern, and say the error in E is negligible
-		Double_t sum = TMath::Power(exp_term * fAbsoluteFunc->GetParError(0), 2.0);
-		for(int i = 0; i < 8; ++i) {
-			sum += TMath::Power(fAbsoluteFunc->GetParameter(0) * exp_term * TMath::Power(TMath::Log(eng), i) *
-					fAbsoluteFunc->GetParError(i + 1),
-					2.0);
-		}
-		return TMath::Sqrt(sum);
-	}
+   if(fAbsoluteFunc != nullptr) {
+      // partial derivative * error all squared for each parameter
+      // Function looks like Const*exp^(a0 + a1*lnE + a2*(lnE)^2 +....)
+      // so exp term shows up in every derivative
+      Double_t exp_term = 0.0;
+      for(int i = 0; i < 8; ++i) {
+         exp_term += fAbsoluteFunc->GetParameter(i + 1) * TMath::Power(TMath::Log(eng), i);
+      }
+      exp_term = TMath::Exp(exp_term);
+      // Now do the derivatives which have a pattern, and say the error in E is negligible
+      Double_t sum = TMath::Power(exp_term * fAbsoluteFunc->GetParError(0), 2.0);
+      for(int i = 0; i < 8; ++i) {
+         sum += TMath::Power(fAbsoluteFunc->GetParameter(0) * exp_term * TMath::Power(TMath::Log(eng), i) *
+                                fAbsoluteFunc->GetParError(i + 1),
+                             2.0);
+      }
+      return TMath::Sqrt(sum);
+   }
 
-	return -1000.0;
+   return -1000.0;
 }

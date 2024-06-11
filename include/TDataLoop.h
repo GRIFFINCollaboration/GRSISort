@@ -35,10 +35,16 @@ public:
    ~TDataLoop() override;
 
 #ifndef __CINT__
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>& OutputQueue() { return fOutputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>& OutputQueue()
+   {
+      return fOutputQueue;
+   }
 #endif
 
-   const TRawFile& GetSource() const { return *fSource; }
+   const TRawFile& GetSource() const
+   {
+      return *fSource;
+   }
 
    void ClearQueue() override;
 
@@ -54,7 +60,7 @@ public:
    void ResetSource();
 
    void SetSelfStopping(bool self_stopping) { fSelfStopping = self_stopping; }
-   bool                      GetSelfStopping() const { return fSelfStopping; }
+   bool GetSelfStopping() const { return fSelfStopping; }
 
 private:
    TDataLoop(std::string name, TRawFile* source);
@@ -64,7 +70,7 @@ private:
 
    TRawFile* fSource;
    bool      fSelfStopping;
-	size_t    fEventsRead;
+   size_t    fEventsRead;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>> fOutputQueue;

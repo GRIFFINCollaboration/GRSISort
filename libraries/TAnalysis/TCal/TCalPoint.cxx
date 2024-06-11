@@ -4,9 +4,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TCalPoint)
-/// \endcond
+   /// \endcond
 
-TCalPoint::TCalPoint()
+   TCalPoint::TCalPoint()
 {
    Clear();
 }

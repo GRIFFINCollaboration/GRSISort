@@ -185,7 +185,7 @@ int main(int argc, char** argv)
 
    gSystem->Load("libTreePlayer");
    gSystem->Load("libGROOT");
-   TClass::GetClass("ROOT::Cintex::Cintex"); // autoload Cintex if it exist.
+   TClass::GetClass("ROOT::Cintex::Cintex");   // autoload Cintex if it exist.
    if(gInterpreter->IsLoaded("libCintex")) {
       gROOT->ProcessLine("ROOT::Cintex::Cintex::Enable();");
    }
