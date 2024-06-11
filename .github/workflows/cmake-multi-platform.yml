@@ -101,7 +101,7 @@ jobs:
         elif [ "$RUNNER_OS" == "macOS" ]; then
         source /opt/homebrew/bin/thisroot.sh
         fi
-        whichroot=`which root`
+        whichroot=$(which root)
         echo "using $whichroot"
         find ${{github.workspace}} -name ROOTConfig.cmake
       shell: bash

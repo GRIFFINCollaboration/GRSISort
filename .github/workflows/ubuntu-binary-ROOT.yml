@@ -78,7 +78,7 @@ jobs:
       #if: ${{hashFiles('root_v${{matrix.config.root}}/bin/thisroot.sh') != ''}}
       run: |
         source root/bin/thisroot.sh
-        echo "using `which root`"
+        echo "using $(which root)"
       shell: bash
         
     - name: Configure CMake
