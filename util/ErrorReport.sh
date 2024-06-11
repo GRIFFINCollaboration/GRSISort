@@ -1,3 +1,4 @@
+#!/bin/bash
 # Run this script to help report Errors in GRSISort
 # Author by Ryan Dunlop, 22/10/2015
 
@@ -26,29 +27,29 @@ elif [ -f /etc/SuSe-release ]; then
 	VER=unknown
 elif [ -f /etc/redhat-release ]; then
 	# Older Red Hat, CentOS, etc.
-	OS=$(cat /etc/redhat-release | awk '{print $1}')
-	VER=$(cat /etc/redhat-release | awk '{print $3}')
+	OS=$(awk '{print $1}' /etc/redhat-release)
+	VER=$(awk '{print $3}' /etc/redhat-release)
 else
 	# Fall back to uname, e.g. "Linux <version>", also works for BSD, etc.
 	OS=$(uname -s)
 	VER=$(uname -r)
 fi
 
-echo "HOSTNAME     = `hostname`"
-echo "SYSTEM       = `uname`"
+echo "HOSTNAME     = $(hostname)"
+echo "SYSTEM       = $(uname)"
 echo "OS           = $OS"
 echo "VER          = $VER"
 echo "GRSISYS      = $GRSISYS"
 echo "ROOTSYS      = $ROOTSYS"
 
-echo ROOT Version = `root-config --version`
+echo ROOT Version = $(root-config --version)
 printf "\nComputer and Path to File that failed: \n\n"
 
 LASTDIR=$PWD
-cd $GRSISYS
-echo GRSISort Branch = `git rev-parse --abbrev-ref HEAD`
+cd "$GRSISYS" || exit
+echo GRSISort Branch = $(git rev-parse --abbrev-ref HEAD)
 printf "\nLast Commit: " 
 
 git log -1
 
-cd $LASTDIR
+cd "$LASTDIR" || exit
