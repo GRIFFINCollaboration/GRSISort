@@ -10,7 +10,7 @@
 #   }
 #}
 
-if [ `uname` == 'Darwin' ]; then
+if [ $(uname) == 'Darwin' ]; then
    script_dir=$(dirname $(greadlink -f "$0"))
 else
    script_dir=$(dirname $(readlink -f "$0"))
