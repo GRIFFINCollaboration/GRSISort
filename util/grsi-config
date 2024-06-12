@@ -1,12 +1,19 @@
 #!/usr/bin/env bash 
 
+# use ${variable//search/replace} instead of sed
+# shellcheck disable=SC2001
+# environment variable not assigned
+# shellcheck disable=SC2154
+# check exit code directly, not $?
+# shellcheck disable=SC2181
+
 readlink="readlink"
 if [ "$(uname)" = "AIX" ]; then
 	readlink="echo"
 fi
 
 # work around readlink versions not having -f option
-fullpath1="$($readlink $0)"
+fullpath1=$($readlink "$0")
 if [ "$?" -ne "0" ]; then
 	fullpath1=$0
 else
@@ -37,7 +44,6 @@ if [ "$?" -ne "0" ]; then
 	fullpath1=$fullpath
 fi
 
-
 libdir=$GRSISYS/lib
 incdir=$GRSISYS/include
 
@@ -45,7 +51,7 @@ incdir=$GRSISYS/include
 grsilibs="-lTGRSIint -lTFormat -lTGRSIint -lTFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction -lTPeakFitting"
 detlibs="-lTSuppressed -lTBgo -lTPulseAnalyzer -lGROOT -lTGRSIFit -lTNucleus"
 grsimore="-lTRawFile -lTDataParser -lTGUI"
-if [ $(root-config --has-xml) == "yes" ]
+if [ "$(root-config --has-xml)" == "yes" ]
 then XMLlib="-lXMLParser -lXMLIO"
 else XMLlib=""
 fi
@@ -74,16 +80,11 @@ alllibsout=no
 rootout=no
 
 while test $# -gt 0; do
-	case "$1" in 
-		-*=*) optarg=$(echo "$1" | sed 's/[-_a-zA-Z0-9]*=//') ;;
-		*)    optarg= ;;
-	esac
-
 	case $1 in
 		--version)
 			### Output the version number.  If GVersion.h can not be found, give up.
 			if test -r "${incdir}"/GVersion.h; then
-				out="$out $(sed -n 's,.*GRSI_RELEASE *\"\(.*\)\".*,\1,p' < ${incdir}/GVersion.h)"
+				out="$out $(sed -n 's,.*GRSI_RELEASE *\"\(.*\)\".*,\1,p' < "${incdir}"/GVersion.h)"
 			else
 				echo "cannot read ${incdir}/GVersion.h"
 				exit 1
@@ -128,7 +129,7 @@ while test $# -gt 0; do
 			else
 				out="$out -L${libdir} $grsilibs $detlibs $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
 			fi
-			if [ $(root-config --has-mathmore) == "yes" ]; then
+			if [ "$(root-config --has-mathmore)" == "yes" ]; then
 				out="$out -lMathMore"
 			fi
 			;;
@@ -137,7 +138,7 @@ while test $# -gt 0; do
 			lib=${lib#--};  # remove leading  --
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
-				out="$out $(GRSISYS/$lib/util/config --cflags)"
+				out="$out $(GRSISYS/"$lib"/util/config --cflags)"
 			fi
 			;;
 		--*-incdir)
@@ -145,7 +146,7 @@ while test $# -gt 0; do
 			lib=${lib#--};  # remove leading  --
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
-				out="$out $(GRSISYS/$lib/util/config --incdir)"
+				out="$out $(GRSISYS/"$lib"/util/config --incdir)"
 			fi
 			;;
 		--*-libs)
@@ -153,7 +154,7 @@ while test $# -gt 0; do
 			lib=${lib#--};  # remove leading  --
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
-				out="$out $(GRSISYS/$lib/util/config --libs)"
+				out="$out $(GRSISYS/"$lib"/util/config --libs)"
 			fi
 			;;
 		--root)
@@ -166,7 +167,7 @@ while test $# -gt 0; do
 			;;
 		--help)
 			### Print a helpful message...
-			echo "Usage: $(basename $0) [options]"
+			echo "Usage: $(basename "$0") [options]"
 			echo ""
 			echo "  --version       Print the current GRSI Version number."
 			echo "  --incdir        Print header path."

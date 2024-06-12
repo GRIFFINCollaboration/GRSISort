@@ -27,7 +27,7 @@ jobs:
         shell: bash
         run: |
           GRSISORT_VERSION="$(git describe --abbrev=0 --tags)"
-          echo "DOXYGEN_GRSISORT_VERSION=\"$GRSISORT_VERSION\"" >> $GITHUB_ENV
+          echo "DOXYGEN_GRSISORT_VERSION=\"$GRSISORT_VERSION\"" >> "$GITHUB_ENV"
 
     # Check out the data libraries
       - name: Checkout GRSIData
