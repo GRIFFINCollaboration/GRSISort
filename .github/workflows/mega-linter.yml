@@ -108,6 +108,27 @@ jobs:
       - name: Set APPLY_FIXES_IF var
         run: |
           echo "steps.ml.outputs.has_updated_sources = " ${{steps.ml.outputs.has_updated_sources}} ", github.event_name = " ${{github.event_name}} ", github.event.pull_request.head.repo.full_name = " ${{github.event.pull_request.head.repo.full_name}} ", github.repository = " ${{github.repository}}
+          echo "${{
+            steps.ml.outputs.has_updated_sources == 1
+          }}"
+          echo "${{
+            steps.ml.outputs.has_updated_sources == 1 &&
+            (
+              env.APPLY_FIXES_EVENT == 'all' ||
+              env.APPLY_FIXES_EVENT == github.event_name
+            )
+          }}"
+          echo "${{
+            steps.ml.outputs.has_updated_sources == 1 &&
+            (
+              env.APPLY_FIXES_EVENT == 'all' ||
+              env.APPLY_FIXES_EVENT == github.event_name
+            ) &&
+            (
+              github.event_name == 'push' ||
+              github.event.pull_request.head.repo.full_name == github.repository
+            )
+          }}"
           printf 'APPLY_FIXES_IF=%s\n' "${{
             steps.ml.outputs.has_updated_sources == 1 &&
             (
