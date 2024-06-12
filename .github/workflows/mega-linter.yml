@@ -25,7 +25,7 @@ env:
 
   # Decide which event triggers application of fixes in a commit or a PR
   # (pull_request, push, all)
-  APPLY_FIXES_EVENT: pull_request
+  APPLY_FIXES_EVENT: all
 
   # If APPLY_FIXES is used, defines if the fixes are directly committed (commit)
   # or posted in a PR (pull_request)
@@ -107,22 +107,6 @@ jobs:
       # Set APPLY_FIXES_IF var for use in future steps
       - name: Set APPLY_FIXES_IF var
         run: |
-          echo "steps.ml.outputs.has_updated_sources = " ${{steps.ml.outputs.has_updated_sources}} ", github.event_name = " ${{github.event_name}} ", github.event.pull_request.head.repo.full_name = " ${{github.event.pull_request.head.repo.full_name}} ", github.repository = " ${{github.repository}} ", env.APPLY_FIXES_EVENT = " ${{env.APPLY_FIXES_EVENT}}
-          echo "${{
-            steps.ml.outputs.has_updated_sources == 1
-          }}"
-          echo "${{
-            (
-              env.APPLY_FIXES_EVENT == 'all' ||
-              env.APPLY_FIXES_EVENT == github.event_name
-            )
-          }}"
-          echo "${{
-            (
-              github.event_name == 'push' ||
-              github.event.pull_request.head.repo.full_name == github.repository
-            )
-          }}"
           printf 'APPLY_FIXES_IF=%s\n' "${{
             steps.ml.outputs.has_updated_sources == 1 &&
             (
