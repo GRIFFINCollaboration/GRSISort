@@ -218,7 +218,7 @@ $(document).ready(function(){initNavTree('_t_l_m_fitter_8h_source.html',''); ini
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>   <span class="keywordflow">if</span>(<span class="keyword">this</span> != &amp;rhs) {</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>      <span class="keywordflow">if</span>(nn != rhs.<a class="code hl_variable" href="class_n_r_vec.html#a46f7df196fc598c88a27402bda5628a3">nn</a>) {</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>         <span class="keywordflow">if</span>(v != 0) {</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            <span class="keyword">delete</span>[](v);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            <span class="keyword">delete</span>[] (v);</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>         }</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>         nn = rhs.<a class="code hl_variable" href="class_n_r_vec.html#a46f7df196fc598c88a27402bda5628a3">nn</a>;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>         v  = <span class="keyword">new</span> T[nn];</div>
@@ -271,7 +271,7 @@ $(document).ready(function(){initNavTree('_t_l_m_fitter_8h_source.html',''); ini
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="group___fitting.html#gad57e106ba58c2255484f42cc687c429d">  144</a></span><a class="code hl_function" href="group___fitting.html#gad57e106ba58c2255484f42cc687c429d">NRVec&lt;T&gt;::~NRVec</a>()</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>{</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>   <span class="keywordflow">if</span>(v != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>      <span class="keyword">delete</span>[](v);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>      <span class="keyword">delete</span>[] (v);</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>   }</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>}</div>
 </div>
@@ -386,8 +386,8 @@ $(document).ready(function(){initNavTree('_t_l_m_fitter_8h_source.html',''); ini
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>      <span class="keywordtype">int</span> i, j;</div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>      <span class="keywordflow">if</span>(nn != rhs.<a class="code hl_variable" href="class_n_r_mat.html#a83dd72f199fb36b0e334a344174d3e80">nn</a> || mm != rhs.<a class="code hl_variable" href="class_n_r_mat.html#af6077429fdf806ac4c8eba949fa2c0bf">mm</a>) {</div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>         <span class="keywordflow">if</span>(v != 0) {</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>            <span class="keyword">delete</span>[](v[0]);</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>            <span class="keyword">delete</span>[](v);</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>            <span class="keyword">delete</span>[] (v[0]);</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>            <span class="keyword">delete</span>[] (v);</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>         }</div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>         nn   = rhs.<a class="code hl_variable" href="class_n_r_mat.html#a83dd72f199fb36b0e334a344174d3e80">nn</a>;</div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>         mm   = rhs.<a class="code hl_variable" href="class_n_r_mat.html#af6077429fdf806ac4c8eba949fa2c0bf">mm</a>;</div>
@@ -457,8 +457,8 @@ $(document).ready(function(){initNavTree('_t_l_m_fitter_8h_source.html',''); ini
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno"><a class="line" href="group___fitting.html#ga19e2e7c55418ac52c871e89d37783a47">  304</a></span><a class="code hl_function" href="group___fitting.html#ga19e2e7c55418ac52c871e89d37783a47">NRMat&lt;T&gt;::~NRMat</a>()</div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>{</div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>   <span class="keywordflow">if</span>(v != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>      <span class="keyword">delete</span>[](v[0]);</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>      <span class="keyword">delete</span>[](v);</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>      <span class="keyword">delete</span>[] (v[0]);</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>      <span class="keyword">delete</span>[] (v);</div>
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>   }</div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>}</div>
 </div>
@@ -556,9 +556,9 @@ $(document).ready(function(){initNavTree('_t_l_m_fitter_8h_source.html',''); ini
 <div class="line"><a id="l00385" name="l00385"></a><span class="lineno"><a class="line" href="group___fitting.html#ga5fb0445fe5547044072e7a0e67e21106">  385</a></span><a class="code hl_function" href="group___fitting.html#ga5fb0445fe5547044072e7a0e67e21106">NRMat3d&lt;T&gt;::~NRMat3d</a>()</div>
 <div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>{</div>
 <div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>   <span class="keywordflow">if</span>(v != 0) {</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>      <span class="keyword">delete</span>[](v[0][0]);</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>      <span class="keyword">delete</span>[](v[0]);</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>      <span class="keyword">delete</span>[](v);</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>      <span class="keyword">delete</span>[] (v[0][0]);</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>      <span class="keyword">delete</span>[] (v[0]);</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>      <span class="keyword">delete</span>[] (v);</div>
 <div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>   }</div>
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>}</div>
 </div>
@@ -959,7 +959,7 @@ $(document).ready(function(){initNavTree('_t_l_m_fitter_8h_source.html',''); ini
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_l_m_fitter_8h.html">TLMFitter.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:45:13.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 20:25:11.</li>
   </ul>
 </div>
 </body>
