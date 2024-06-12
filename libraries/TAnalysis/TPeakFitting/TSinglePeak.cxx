@@ -14,7 +14,7 @@ bool TSinglePeak::IsBackgroundParameter(const Int_t& par) const
    try {
       return fListOfBGPars.at(par);
    } catch(const std::out_of_range& oor) {
-      std::cerr<<"Parameter not in list: "<<par<<std::endl;
+      std::cerr << "Parameter not in list: " << par << std::endl;
       return true;
    }
    return true;   // never gets here...appeals to some compilers.
@@ -44,20 +44,20 @@ TF1* TSinglePeak::GetBackgroundFunction()
 
 void TSinglePeak::Print(Option_t*) const
 {
-   std::cout<<IsA()->GetName()<<":"<<std::endl;
-   std::cout<<"Centroid = "<<std::fixed<<Centroid()<<" +/- "<<CentroidErr()<<std::endl;
-   std::cout<<"Area = "<<Area()<<" +/- "<<AreaErr()<<std::endl;
-   std::cout<<std::endl;
+   std::cout << IsA()->GetName() << ":" << std::endl;
+   std::cout << "Centroid = " << std::fixed << Centroid() << " +/- " << CentroidErr() << std::endl;
+   std::cout << "Area = " << Area() << " +/- " << AreaErr() << std::endl;
+   std::cout << std::endl;
 }
 
 void TSinglePeak::PrintParameters() const
 {
    if(fTotalFunction != nullptr) {
       for(int i = 0; i < fTotalFunction->GetNpar(); ++i) {
-         std::cout<<i<<"/"<<fTotalFunction->GetParName(i)<<" = "<<fTotalFunction->GetParameter(i)<<" ";
+         std::cout << i << "/" << fTotalFunction->GetParName(i) << " = " << fTotalFunction->GetParameter(i) << " ";
       }
    } else {
-      std::cout<<"no total function ";
+      std::cout << "no total function ";
    }
 }
 
@@ -86,7 +86,7 @@ Double_t TSinglePeak::FWHM()
 {
    /// Return the full width at half-maximum.
    if(fPeakFunction == nullptr) {
-      std::cerr<<__PRETTY_FUNCTION__<<": peak function ("<<fPeakFunction<<") is null"<<std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ": peak function (" << fPeakFunction << ") is null" << std::endl;
       return 0.;
    }
    UpdatePeakParameters();

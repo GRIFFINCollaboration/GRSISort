@@ -27,35 +27,35 @@ TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode, long b
      fOutOfOrderQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>()), fBuildMode(mode),
      fSortingDepth(10000), fBuildWindow(buildWindow), fPreviousSortingDepthError(false), fSkipInputSort(TGRSIOptions::Get()->SkipInputSort())
 {
-   std::cout<<DYELLOW<<(fSkipInputSort ? "Not sorting " : "Sorting ")<<"input by time: ";
+   std::cout << DYELLOW << (fSkipInputSort ? "Not sorting " : "Sorting ") << "input by time: ";
    switch(fBuildMode) {
    case EBuildMode::kTime:
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
          return a->GetTime() < b->GetTime();
       });
-      std::cout<<DYELLOW<<"sorting by time, using build window of "<<fBuildWindow<<"!"<<RESET_COLOR<<std::endl;
+      std::cout << DYELLOW << "sorting by time, using build window of " << fBuildWindow << "!" << RESET_COLOR << std::endl;
       break;
    case EBuildMode::kTimestamp:
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
          return a->GetTimeStampNs() < b->GetTimeStampNs();
       });
-      std::cout<<DYELLOW<<"sorting by timestamp, using build window of "<<fBuildWindow<<"!"<<RESET_COLOR<<std::endl;
+      std::cout << DYELLOW << "sorting by timestamp, using build window of " << fBuildWindow << "!" << RESET_COLOR << std::endl;
       break;
    case EBuildMode::kTriggerId:
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
          return a->GetTriggerId() < b->GetTriggerId();
       });
-      std::cout<<DYELLOW<<"sorting by trigger ID!"<<RESET_COLOR<<std::endl;
+      std::cout << DYELLOW << "sorting by trigger ID!" << RESET_COLOR << std::endl;
       break;
    case EBuildMode::kSkip:
       // no need for ordering, always return true
       fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment>, std::shared_ptr<const TFragment>) {
          return true;
       });
-      std::cout<<DYELLOW<<"not sorting!"<<RESET_COLOR<<std::endl;
+      std::cout << DYELLOW << "not sorting!" << RESET_COLOR << std::endl;
       break;
    case EBuildMode::kDefault:
-      std::cout<<"build mode was "<<static_cast<int>(fBuildMode)<<", not "<<static_cast<int>(EBuildMode::kTimestamp)<<", or "<<static_cast<int>(EBuildMode::kTriggerId)<<std::endl;
+      std::cout << "build mode was " << static_cast<int>(fBuildMode) << ", not " << static_cast<int>(EBuildMode::kTimestamp) << ", or " << static_cast<int>(EBuildMode::kTriggerId) << std::endl;
       throw std::runtime_error("Error in event building loop, no build mode selected. Maybe because no custom run info was loaded?");
       break;
    }
@@ -169,11 +169,11 @@ bool TEventBuildingLoop::CheckTimeCondition(const std::shared_ptr<const TFragmen
       TSortingDiagnostics::Get()->OutOfTimeOrder(time, event_start, frag->GetEntryNumber());
       if(!fPreviousSortingDepthError) {
          std::cerr.precision(12);
-         std::cerr<<std::endl
-                  <<"Sorting depth of "<<fSortingDepth<<" was insufficient. time: "<<std::setw(12)<<time
-                  <<" Last: "<<std::setw(12)<<event_start<<" \n"
-                  <<"Not all events were built correctly"<<std::endl;
-         std::cerr<<"Please increase sort depth with --sort-depth=N"<<std::endl;
+         std::cerr << std::endl
+                   << "Sorting depth of " << fSortingDepth << " was insufficient. time: " << std::setw(12) << time
+                   << " Last: " << std::setw(12) << event_start << " \n"
+                   << "Not all events were built correctly" << std::endl;
+         std::cerr << "Please increase sort depth with --sort-depth=N" << std::endl;
          fPreviousSortingDepthError = true;
       }
       if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
@@ -204,11 +204,11 @@ bool TEventBuildingLoop::CheckTimestampCondition(const std::shared_ptr<const TFr
    if(timestamp < event_start) {
       TSortingDiagnostics::Get()->OutOfOrder(timestamp, event_start, frag->GetEntryNumber());
       if(!fPreviousSortingDepthError) {
-         std::cerr<<std::endl
-                  <<"Sorting depth of "<<fSortingDepth<<" was insufficient. timestamp: "<<timestamp
-                  <<" Last: "<<event_start<<" \n"
-                  <<"Not all events were built correctly"<<std::endl;
-         std::cerr<<"Please increase sort depth with --sort-depth=N"<<std::endl;
+         std::cerr << std::endl
+                   << "Sorting depth of " << fSortingDepth << " was insufficient. timestamp: " << timestamp
+                   << " Last: " << event_start << " \n"
+                   << "Not all events were built correctly" << std::endl;
+         std::cerr << "Please increase sort depth with --sort-depth=N" << std::endl;
          fPreviousSortingDepthError = true;
       }
       if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
@@ -239,12 +239,12 @@ bool TEventBuildingLoop::CheckTriggerIdCondition(const std::shared_ptr<const TFr
    if(trigger_id < current_trigger_id) {
       TSortingDiagnostics::Get()->OutOfOrder(trigger_id, current_trigger_id, frag->GetEntryNumber());
       if(!fPreviousSortingDepthError) {
-         std::cerr<<std::endl
-                  <<"Sorting depth of "<<fSortingDepth<<" was insufficient.\n"
-                  <<"Not all events were built correctly"<<std::endl;
-         std::cerr<<"Trigger id #"<<trigger_id<<" was incorrectly sorted before "
-                  <<"trigger id #"<<current_trigger_id<<std::endl;
-         std::cerr<<"Please increase sort depth with --sort-depth=N"<<std::endl;
+         std::cerr << std::endl
+                   << "Sorting depth of " << fSortingDepth << " was insufficient.\n"
+                   << "Not all events were built correctly" << std::endl;
+         std::cerr << "Trigger id #" << trigger_id << " was incorrectly sorted before "
+                   << "trigger id #" << current_trigger_id << std::endl;
+         std::cerr << "Please increase sort depth with --sort-depth=N" << std::endl;
          fPreviousSortingDepthError = true;
       }
       if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
@@ -259,8 +259,8 @@ bool TEventBuildingLoop::CheckTriggerIdCondition(const std::shared_ptr<const TFr
 std::string TEventBuildingLoop::EndStatus()
 {
    std::stringstream ss;
-   ss<<fInputQueue->Name()<<": "<<fItemsPopped<<"/"<<fInputQueue->ItemsPopped()<<" items popped"
-     <<std::endl;
+   ss << fInputQueue->Name() << ": " << fItemsPopped << "/" << fInputQueue->ItemsPopped() << " items popped"
+      << std::endl;
 
    return ss.str();
 }

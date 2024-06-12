@@ -47,7 +47,7 @@ TAnalysisWriteLoop::TAnalysisWriteLoop(std::string name, std::string outputFilen
 {
    fOutputFile = TFile::Open(outputFilename.c_str(), "recreate");
    if(fOutputFile == nullptr || !fOutputFile->IsOpen()) {
-      std::cerr<<"Failed to open '"<<outputFilename<<"'"<<std::endl;
+      std::cerr << "Failed to open '" << outputFilename << "'" << std::endl;
       throw;
    }
 
@@ -78,8 +78,8 @@ void TAnalysisWriteLoop::ClearQueue()
 std::string TAnalysisWriteLoop::EndStatus()
 {
    std::stringstream ss;
-   ss<<Name()<<":\t"<<std::setw(8)<<fItemsPopped<<"/"<<fInputSize + fItemsPopped<<", "
-     <<"??? good events"<<std::endl;
+   ss << Name() << ":\t" << std::setw(8) << fItemsPopped << "/" << fInputSize + fItemsPopped << ", "
+      << "??? good events" << std::endl;
    return ss.str();
 }
 
@@ -185,7 +185,7 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls)
          newBranch->Fill();
       }
 
-      std::cout<<"\r"<<std::string(30, ' ')<<"\r"<<Name()<<": added \""<<cls->GetName()<<R"(" branch)"<<std::endl;
+      std::cout << "\r" << std::string(30, ' ') << "\r" << Name() << ": added \"" << cls->GetName() << R"(" branch)" << std::endl;
 
       // Unlock after we are done.
       TThread::UnLock();

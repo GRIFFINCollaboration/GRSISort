@@ -27,7 +27,7 @@ ClassImp(TUserSettings)
    std::ifstream settings(settingsFile);
 
    if(!settings.is_open()) {
-      std::cerr<<"Failed to open user settings file '"<<settingsFile<<"'!"<<std::endl;
+      std::cerr << "Failed to open user settings file '" << settingsFile << "'!" << std::endl;
       return false;
    }
 
@@ -124,7 +124,7 @@ bool TUserSettings::GetBool(std::string parameter, bool quiet) const
       return fBool.at(parameter);
    } catch(std::out_of_range& e) {
       if(!quiet) {
-         std::cout<<"Failed to find \""<<parameter<<"\" in boolean map"<<std::endl;
+         std::cout << "Failed to find \"" << parameter << "\" in boolean map" << std::endl;
          Print();
       }
       throw e;
@@ -137,7 +137,7 @@ int TUserSettings::GetInt(std::string parameter, bool quiet) const
       return fInt.at(parameter);
    } catch(std::out_of_range& e) {
       if(!quiet) {
-         std::cout<<"Failed to find \""<<parameter<<"\" in integer map"<<std::endl;
+         std::cout << "Failed to find \"" << parameter << "\" in integer map" << std::endl;
          Print();
       }
       throw e;
@@ -150,7 +150,7 @@ double TUserSettings::GetDouble(std::string parameter, bool quiet) const
       return fDouble.at(parameter);
    } catch(std::out_of_range& e) {
       if(!quiet) {
-         std::cout<<"Failed to find \""<<parameter<<"\" in double map"<<std::endl;
+         std::cout << "Failed to find \"" << parameter << "\" in double map" << std::endl;
          Print();
       }
       throw e;
@@ -163,7 +163,7 @@ std::string TUserSettings::GetString(std::string parameter, bool quiet) const
       return fString.at(parameter);
    } catch(std::out_of_range& e) {
       if(!quiet) {
-         std::cout<<"Failed to find \""<<parameter<<"\" in string map"<<std::endl;
+         std::cout << "Failed to find \"" << parameter << "\" in string map" << std::endl;
          Print();
       }
       throw e;
@@ -176,7 +176,7 @@ std::vector<bool> TUserSettings::GetBoolVector(std::string parameter, bool quiet
       return fBoolVector.at(parameter);
    } catch(std::out_of_range& e) {
       if(!quiet) {
-         std::cout<<"Failed to find \""<<parameter<<"\" in boolean vector map"<<std::endl;
+         std::cout << "Failed to find \"" << parameter << "\" in boolean vector map" << std::endl;
          Print();
       }
       throw e;
@@ -189,7 +189,7 @@ std::vector<int> TUserSettings::GetIntVector(std::string parameter, bool quiet) 
       return fIntVector.at(parameter);
    } catch(std::out_of_range& e) {
       if(!quiet) {
-         std::cout<<"Failed to find \""<<parameter<<"\" in integer vector map"<<std::endl;
+         std::cout << "Failed to find \"" << parameter << "\" in integer vector map" << std::endl;
          Print();
       }
       throw e;
@@ -202,7 +202,7 @@ std::vector<double> TUserSettings::GetDoubleVector(std::string parameter, bool q
       return fDoubleVector.at(parameter);
    } catch(std::out_of_range& e) {
       if(!quiet) {
-         std::cout<<"Failed to find \""<<parameter<<"\" in double vector map"<<std::endl;
+         std::cout << "Failed to find \"" << parameter << "\" in double vector map" << std::endl;
          Print();
       }
       throw e;
@@ -215,7 +215,7 @@ std::vector<std::string> TUserSettings::GetStringVector(std::string parameter, b
       return fStringVector.at(parameter);
    } catch(std::out_of_range& e) {
       if(!quiet) {
-         std::cout<<"Failed to find \""<<parameter<<"\" in string vector map"<<std::endl;
+         std::cout << "Failed to find \"" << parameter << "\" in string vector map" << std::endl;
          Print();
       }
       throw e;
@@ -224,55 +224,55 @@ std::vector<std::string> TUserSettings::GetStringVector(std::string parameter, b
 
 void TUserSettings::Print(Option_t*) const
 {
-   std::cout<<"Settings read from";
-   for(auto file : fSettingsFiles) std::cout<<" "<<file;
-   std::cout<<":"<<std::endl;
-   if(!fBool.empty()) std::cout<<"---------- booleans ----------"<<std::endl;
+   std::cout << "Settings read from";
+   for(auto file : fSettingsFiles) std::cout << " " << file;
+   std::cout << ":" << std::endl;
+   if(!fBool.empty()) std::cout << "---------- booleans ----------" << std::endl;
    for(auto val : fBool) {
-      std::cout<<std::boolalpha<<val.first<<": "<<val.second<<std::endl;
+      std::cout << std::boolalpha << val.first << ": " << val.second << std::endl;
    }
-   if(!fInt.empty()) std::cout<<"---------- integers ----------"<<std::endl;
+   if(!fInt.empty()) std::cout << "---------- integers ----------" << std::endl;
    for(auto val : fInt) {
-      std::cout<<val.first<<": "<<val.second<<std::endl;
+      std::cout << val.first << ": " << val.second << std::endl;
    }
-   if(!fDouble.empty()) std::cout<<"---------- doubles ----------"<<std::endl;
+   if(!fDouble.empty()) std::cout << "---------- doubles ----------" << std::endl;
    for(auto val : fDouble) {
-      std::cout<<val.first<<": "<<val.second<<std::endl;
+      std::cout << val.first << ": " << val.second << std::endl;
    }
-   if(!fString.empty()) std::cout<<"---------- strings ----------"<<std::endl;
+   if(!fString.empty()) std::cout << "---------- strings ----------" << std::endl;
    for(auto val : fString) {
-      std::cout<<val.first<<": "<<val.second<<std::endl;
+      std::cout << val.first << ": " << val.second << std::endl;
    }
-   if(!fBoolVector.empty()) std::cout<<"---------- boolean vectors ----------"<<std::endl;
+   if(!fBoolVector.empty()) std::cout << "---------- boolean vectors ----------" << std::endl;
    for(auto val : fBoolVector) {
-      std::cout<<std::boolalpha<<val.first<<": ";
+      std::cout << std::boolalpha << val.first << ": ";
       for(auto item : val.second) {
-         std::cout<<item<<" ";
+         std::cout << item << " ";
       }
-      std::cout<<std::endl;
+      std::cout << std::endl;
    }
-   if(!fIntVector.empty()) std::cout<<"---------- integer vectors ----------"<<std::endl;
+   if(!fIntVector.empty()) std::cout << "---------- integer vectors ----------" << std::endl;
    for(auto val : fIntVector) {
-      std::cout<<val.first<<": ";
+      std::cout << val.first << ": ";
       for(auto item : val.second) {
-         std::cout<<item<<" ";
+         std::cout << item << " ";
       }
-      std::cout<<std::endl;
+      std::cout << std::endl;
    }
-   if(!fDoubleVector.empty()) std::cout<<"---------- double vectors ----------"<<std::endl;
+   if(!fDoubleVector.empty()) std::cout << "---------- double vectors ----------" << std::endl;
    for(auto val : fDoubleVector) {
-      std::cout<<val.first<<": ";
+      std::cout << val.first << ": ";
       for(auto item : val.second) {
-         std::cout<<item<<" ";
+         std::cout << item << " ";
       }
-      std::cout<<std::endl;
+      std::cout << std::endl;
    }
-   if(!fStringVector.empty()) std::cout<<"---------- string vectors ----------"<<std::endl;
+   if(!fStringVector.empty()) std::cout << "---------- string vectors ----------" << std::endl;
    for(auto val : fStringVector) {
-      std::cout<<val.first<<": ";
+      std::cout << val.first << ": ";
       for(auto item : val.second) {
-         std::cout<<item<<" ";
+         std::cout << item << " ";
       }
-      std::cout<<std::endl;
+      std::cout << std::endl;
    }
 }

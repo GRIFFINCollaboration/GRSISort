@@ -28,18 +28,18 @@ void TTransition::Print(Option_t*) const
 {
 
    if(!std::isnan(fEngUncertainty)) {
-      std::cout<<"Energy:    "<<fEnergy<<" +/- "<<fEngUncertainty<<std::endl;
+      std::cout << "Energy:    " << fEnergy << " +/- " << fEngUncertainty << std::endl;
    } else {
-      std::cout<<"Energy:    "<<fEnergy<<std::endl;
+      std::cout << "Energy:    " << fEnergy << std::endl;
    }
    if(!std::isnan(fIntensity)) {
       if(!std::isnan(fIntUncertainty)) {
-         std::cout<<"\tIntensity: "<<fIntensity<<" +/- "<<fIntUncertainty<<std::endl;
+         std::cout << "\tIntensity: " << fIntensity << " +/- " << fIntUncertainty << std::endl;
       } else {
-         std::cout<<"\tIntensity: "<<fEnergy<<std::endl;
+         std::cout << "\tIntensity: " << fEnergy << std::endl;
       }
    } else {
-      std::cout<<std::endl;
+      std::cout << std::endl;
    }
 }
 

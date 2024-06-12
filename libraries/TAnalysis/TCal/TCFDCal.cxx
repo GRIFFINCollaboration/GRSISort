@@ -19,10 +19,10 @@ void TCFDCal::WriteToChannel() const
       return;
    }
    GetChannel()->DestroyCFDCal();
-   std::cout<<std::endl
-            <<"Writing to channel "<<GetChannel()->GetNumber()<<std::endl;
+   std::cout << std::endl
+             << "Writing to channel " << GetChannel()->GetNumber() << std::endl;
    for(int i = 0; i < static_cast<int>(fParameters.size()); i++) {
-      std::cout<<"p"<<i<<" = "<<fParameters[i]<<"\t ";
+      std::cout << "p" << i << " = " << fParameters[i] << "\t ";
       GetChannel()->AddCFDCoefficient(fParameters[i]);
    }
 }
@@ -53,13 +53,13 @@ void TCFDCal::ReadFromChannel()
 void TCFDCal::Print(Option_t*) const
 {
    if(GetChannel() != nullptr) {
-      std::cout<<"Channel Number: "<<GetChannel()->GetNumber()<<std::endl;
+      std::cout << "Channel Number: " << GetChannel()->GetNumber() << std::endl;
    } else {
-      std::cout<<"Channel Number: NOT SET"<<std::endl;
+      std::cout << "Channel Number: NOT SET" << std::endl;
    }
 
    for(int i = 0; i < static_cast<int>(fParameters.size()); i++) {
-      std::cout<<"p"<<i<<" = "<<fParameters[i]<<"\t ";
+      std::cout << "p" << i << " = " << fParameters[i] << "\t ";
    }
 }
 

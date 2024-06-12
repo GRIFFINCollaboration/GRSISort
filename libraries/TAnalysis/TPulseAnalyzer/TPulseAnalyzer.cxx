@@ -519,8 +519,8 @@ void TPulseAnalyzer::get_baseline()
 
    // error if waveform length cN is shorter than baseline range
    if(cN < cWpar->baseline_range) {
-      std::cout<<"Baseline range ("<<cWpar->baseline_range<<") larger than waveform length!"<<std::endl;
-      std::cout<<"Terminating program"<<std::endl;
+      std::cout << "Baseline range (" << cWpar->baseline_range << ") larger than waveform length!" << std::endl;
+      std::cout << "Terminating program" << std::endl;
       exit(0);
    }
 
@@ -600,12 +600,12 @@ double TPulseAnalyzer::get_tfrac(double frac, double fraclow, double frachigh)
    double        p, q, r, d;
 
    if(cWpar->bflag != 1) {
-      std::cout<<"Baseline not deterimned for the tfraction"<<std::endl;
+      std::cout << "Baseline not deterimned for the tfraction" << std::endl;
       exit(1);
    }
 
    if(cWpar->mflag != 1) {
-      std::cout<<"Maximum not deterimned for the tfraction"<<std::endl;
+      std::cout << "Maximum not deterimned for the tfraction" << std::endl;
       exit(1);
    }
 
@@ -1745,7 +1745,7 @@ TF1 TPulseAnalyzer::Getsilifit()
 {
    if(set && cWpar) {
       std::stringstream ss;
-      ss<<"Fit"<<nameiter;
+      ss << "Fit" << nameiter;
       ++nameiter;
       TF1 g(ss.str().c_str(), SiLiFitFunction, 0, cN, 8);
 
@@ -1787,7 +1787,7 @@ void TPulseAnalyzer::Drawsilifit()
    DrawWave();
    if(cWpar) {
       Getsilifit().DrawCopy("same");
-      std::cout<<"t0:\t"<<cWpar->t0<<", A:\t"<<cWpar->amplitude<<std::endl;
+      std::cout << "t0:\t" << cWpar->t0 << ", A:\t" << cWpar->amplitude << std::endl;
    }
    return;
 }
@@ -1808,7 +1808,7 @@ TH1I* TPulseAnalyzer::GetWaveHist()
       return nullptr;
    }
    std::stringstream ss;
-   ss<<"WaveformHist"<<nameiter;
+   ss << "WaveformHist" << nameiter;
    ++nameiter;   // Avoid naming conflicts with TNamed
    TH1I* h = new TH1I(ss.str().c_str(), ss.str().c_str(), cN, -0.5,
                       cN - 0.5);   // midpoint should be the value, else time is off
@@ -1848,7 +1848,7 @@ void TPulseAnalyzer::DrawRFFit()
 
       f.DrawCopy("same");
 
-      std::cout<<"t0:\t"<<spar->t0<<", A:\t"<<spar->A<<", O:\t"<<spar->C<<std::endl;
+      std::cout << "t0:\t" << spar->t0 << ", A:\t" << spar->A << ", O:\t" << spar->C << std::endl;
    }
    return;
 }
@@ -1878,7 +1878,7 @@ void TPulseAnalyzer::DrawT0fit()
       f.DrawCopy("same");
       g.DrawCopy("same");
 
-      std::cout<<"t0:\t"<<cWpar->t0<<std::endl;
+      std::cout << "t0:\t" << cWpar->t0 << std::endl;
    }
    return;
 }
@@ -1897,8 +1897,8 @@ void TPulseAnalyzer::DrawCsIExclusion()
       TF1 h("basemax", "[0]", cWpar->temin, cWpar->temax);
       TF1 r("risetime", "[0]*x+[1]", cWpar->temin, cWpar->temax + 3 * FILTER);
 
-      std::cout<<"Baseline:\t"<<cWpar->baseline<<std::endl;
-      std::cout<<"Zero crossing:\t"<<cWpar->t0<<std::endl;
+      std::cout << "Baseline:\t" << cWpar->baseline << std::endl;
+      std::cout << "Zero crossing:\t" << cWpar->t0 << std::endl;
 
       f.SetParameter(0, cWpar->baseline);
       f.SetLineColor(kGreen);
@@ -1943,8 +1943,8 @@ void TPulseAnalyzer::DrawCsIFit()
       shape.SetParameter(8, shpar->am[4]);
       shape.SetLineColor(kRed);
 
-      std::cout<<"t0:\t"<<shpar->t[0]<<",\ttRC:\t"<<shpar->t[1]<<",\ttF:\t"<<shpar->t[2]<<",\ttS:\t"<<shpar->t[3]<<",\tTGamma:\t"<<shpar->t[4]<<std::endl;
-      std::cout<<"Baseline:\t"<<shpar->am[0]<<",\tFast:\t"<<shpar->am[2]<<",\tSlow:\t"<<shpar->am[3]<<",\tGamma:\t"<<shpar->am[4]<<std::endl;
+      std::cout << "t0:\t" << shpar->t[0] << ",\ttRC:\t" << shpar->t[1] << ",\ttF:\t" << shpar->t[2] << ",\ttS:\t" << shpar->t[3] << ",\tTGamma:\t" << shpar->t[4] << std::endl;
+      std::cout << "Baseline:\t" << shpar->am[0] << ",\tFast:\t" << shpar->am[2] << ",\tSlow:\t" << shpar->am[3] << ",\tGamma:\t" << shpar->am[4] << std::endl;
 
       shape.DrawCopy("same");
    }
@@ -1954,12 +1954,12 @@ void TPulseAnalyzer::DrawCsIFit()
 /*======================================================*/
 void TPulseAnalyzer::print_WavePar()
 {
-   std::cout<<"== Currently established waveform parameters ============"<<std::endl;
-   std::cout<<"baseline         : "<<std::setw(10)<<cWpar->baseline<<std::endl;
-   std::cout<<"baseline st. dev.: "<<std::setw(10)<<cWpar->baselineStDev<<std::endl;
-   std::cout<<"max              : "<<std::setw(10)<<cWpar->max<<std::endl;
-   std::cout<<"tmax             : "<<std::setw(10)<<cWpar->tmax<<std::endl;
-   std::cout<<"temin            : "<<std::setw(10)<<static_cast<double>(cWpar->temin)<<std::endl;
-   std::cout<<"temax            : "<<std::setw(10)<<static_cast<double>(cWpar->temax)<<std::endl;
-   std::cout<<"t0               : "<<std::setw(10)<<cWpar->t0<<std::endl;
+   std::cout << "== Currently established waveform parameters ============" << std::endl;
+   std::cout << "baseline         : " << std::setw(10) << cWpar->baseline << std::endl;
+   std::cout << "baseline st. dev.: " << std::setw(10) << cWpar->baselineStDev << std::endl;
+   std::cout << "max              : " << std::setw(10) << cWpar->max << std::endl;
+   std::cout << "tmax             : " << std::setw(10) << cWpar->tmax << std::endl;
+   std::cout << "temin            : " << std::setw(10) << static_cast<double>(cWpar->temin) << std::endl;
+   std::cout << "temax            : " << std::setw(10) << static_cast<double>(cWpar->temax) << std::endl;
+   std::cout << "t0               : " << std::setw(10) << cWpar->t0 << std::endl;
 }

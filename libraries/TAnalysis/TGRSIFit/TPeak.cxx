@@ -21,10 +21,10 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
    Bool_t outOfRangeFlag = false;
 
    if(cent > xhigh) {
-      std::cout<<"centroid is higher than range"<<std::endl;
+      std::cout << "centroid is higher than range" << std::endl;
       outOfRangeFlag = true;
    } else if(cent < xlow) {
-      std::cout<<"centroid is lower than range"<<std::endl;
+      std::cout << "centroid is lower than range" << std::endl;
       outOfRangeFlag = true;
    }
 
@@ -39,8 +39,8 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
       if(cent > xhigh) {
          std::swap(cent, xhigh);
       }
-      std::cout<<"Something about your range was wrong. Assuming:"<<std::endl;
-      std::cout<<"centroid: "<<cent<<" \t range: "<<xlow<<" to "<<xhigh<<std::endl;
+      std::cout << "Something about your range was wrong. Assuming:" << std::endl;
+      std::cout << "centroid: " << cent << " \t range: " << xlow << " to " << xhigh << std::endl;
    }
 
    SetRange(xlow, xhigh);
@@ -62,7 +62,7 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
       fBackground = background;
       fOwnBgFlag  = false;
    } else {
-      std::cout<<"Bad background pointer. Creating basic background."<<std::endl;
+      std::cout << "Bad background pointer. Creating basic background." << std::endl;
       fBackground = new TF1(
          Form("background%d_%d_to_%d", static_cast<Int_t>(cent), static_cast<Int_t>(xlow), static_cast<Int_t>(xhigh)),
          TGRSIFunctions::StepBG, xlow, xhigh, 10);
@@ -88,10 +88,10 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh)
    Bool_t outOfRangeFlag = false;
 
    if(cent > xhigh) {
-      std::cout<<"centroid is higher than range"<<std::endl;
+      std::cout << "centroid is higher than range" << std::endl;
       outOfRangeFlag = true;
    } else if(cent < xlow) {
-      std::cout<<"centroid is lower than range"<<std::endl;
+      std::cout << "centroid is lower than range" << std::endl;
       outOfRangeFlag = true;
    }
 
@@ -106,8 +106,8 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh)
       if(cent > xhigh) {
          std::swap(cent, xhigh);
       }
-      std::cout<<"Something about your range was wrong. Assuming:"<<std::endl;
-      std::cout<<"centroid: "<<cent<<" \t range: "<<xlow<<" to "<<xhigh<<std::endl;
+      std::cout << "Something about your range was wrong. Assuming:" << std::endl;
+      std::cout << "centroid: " << cent << " \t range: " << xlow << " to " << xhigh << std::endl;
    }
 
    SetRange(xlow, xhigh);
@@ -239,7 +239,7 @@ Bool_t TPeak::InitParams(TH1* fitHist)
    }
 
    if(fitHist == nullptr) {
-      std::cout<<"No histogram is associated yet, no initial guesses made"<<std::endl;
+      std::cout << "No histogram is associated yet, no initial guesses made" << std::endl;
       return false;
    }
    // Make initial guesses
@@ -271,7 +271,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    bool quiet   = options.Contains("q");
    bool verbose = options.Contains("v");
    if(quiet && verbose) {
-      std::cout<<"Don't know how to be quiet and verbose at once ("<<opt<<"), going to be verbose!"<<std::endl;
+      std::cout << "Don't know how to be quiet and verbose at once (" << opt << "), going to be verbose!" << std::endl;
       quiet = false;
    }
    bool retryFit = options.Contains("retryfit");
@@ -279,11 +279,11 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    if(!verbose && !quiet) options.Append("q");
 
    if(fitHist == nullptr && GetHist() == nullptr) {
-      std::cout<<"No hist passed, trying something... ";
+      std::cout << "No hist passed, trying something... ";
       fitHist = fHistogram;
    }
    if(fitHist == nullptr) {
-      std::cout<<"No histogram associated with Peak"<<std::endl;
+      std::cout << "No histogram associated with Peak" << std::endl;
       return false;
    }
    if(!IsInitialized()) {
@@ -340,7 +340,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
          InitParams(fitHist);
          FixParameter(4, 0);
          FixParameter(3, 1);
-         if(verbose) std::cout<<"Beta may have broken the fit, retrying with R=0"<<std::endl;
+         if(verbose) std::cout << "Beta may have broken the fit, retrying with R=0" << std::endl;
          // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
          fitHist->GetListOfFunctions()->Last()->Delete();
          if(GetLogLikelihoodFlag()) {
@@ -355,7 +355,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    if(!TGRSIFunctions::CheckParameterErrors(fitres, options.Data())) {
       if(retryFit) {
          // fit again with all parameters released
-         if(!quiet) std::cout<<GREEN<<"Re-fitting with released parameters (without any limits)"<<RESET_COLOR<<std::endl;
+         if(!quiet) std::cout << GREEN << "Re-fitting with released parameters (without any limits)" << RESET_COLOR << std::endl;
          for(int i = 0; i < GetNpar(); ++i) {
             ReleaseParameter(i);
          }
@@ -366,7 +366,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
          }
       } else {
          // re-try using minos instead of minuit
-         if(!quiet) std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
+         if(!quiet) std::cout << YELLOW << "Re-fitting with \"E\" option to get better error estimation using Minos technique." << RESET_COLOR << std::endl;
          if(GetLogLikelihoodFlag()) {
             fitres = fitHist->Fit(this, Form("%sERLS", options.Data()));   // The RS needs to always be there
          } else {
@@ -379,7 +379,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    Double_t binWidth = fitHist->GetBinWidth(GetParameter("centroid"));
    Double_t width    = GetParameter("sigma");
    if(verbose) {
-      std::cout<<"Chi^2/NDF = "<<fitres->Chi2() / fitres->Ndf()<<std::endl;
+      std::cout << "Chi^2/NDF = " << fitres->Chi2() / fitres->Ndf() << std::endl;
    }
    fChi2 = fitres->Chi2();
    fNdf  = fitres->Ndf();
@@ -415,7 +415,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    fDArea             = (tmppeak->IntegralError(int_low, int_high, tmppeak->GetParameters(), CovMat.GetMatrixArray())) / binWidth;
 
    if(verbose) {
-      std::cout<<"Integral: "<<fArea<<" +/- "<<fDArea<<std::endl;
+      std::cout << "Integral: " << fArea << " +/- " << fDArea << std::endl;
    }
    // Set the background for drawing later
    fBackground->SetParameters(GetParameters());
@@ -445,11 +445,11 @@ void TPeak::Clear(Option_t*)
 void TPeak::Print(Option_t* opt) const
 {
    // Prints TPeak properties. To see More properties use the option "+"
-   std::cout<<"Name:        "<<GetName()<<std::endl;
-   std::cout<<"Centroid:    "<<GetParameter("centroid")<<" +/- "<<GetParError(GetParNumber("centroid"))<<std::endl;
-   std::cout<<"Area: 	    "<<fArea<<" +/- "<<fDArea<<std::endl;
-   std::cout<<"FWHM:        "<<GetParameter("sigma") * 2.3548<<" +/- "<<GetParError(GetParNumber("sigma")) * 2.3548<<std::endl;
-   std::cout<<"Chi^2/NDF:   "<<fChi2 / fNdf<<std::endl;
+   std::cout << "Name:        " << GetName() << std::endl;
+   std::cout << "Centroid:    " << GetParameter("centroid") << " +/- " << GetParError(GetParNumber("centroid")) << std::endl;
+   std::cout << "Area: 	      " << fArea << " +/- " << fDArea << std::endl;
+   std::cout << "FWHM:        " << GetParameter("sigma") * 2.3548 << " +/- " << GetParError(GetParNumber("sigma")) * 2.3548 << std::endl;
+   std::cout << "Chi^2/NDF:   " << fChi2 / fNdf << std::endl;
    if(strchr(opt, '+') != nullptr) {
       TF1::Print();
       TGRSIFit::Print(opt);   // Polymorphise this a bit better
@@ -464,11 +464,11 @@ void TPeak::DrawBackground(Option_t* opt) const
 void TPeak::DrawResiduals()
 {
    if(GetHist() == nullptr) {
-      std::cout<<"No hist set"<<std::endl;
+      std::cout << "No hist set" << std::endl;
       return;
    }
    if(fChi2 < 0.000000001) {
-      std::cout<<"No fit performed"<<std::endl;
+      std::cout << "No fit performed" << std::endl;
       return;
    }
 
@@ -501,11 +501,11 @@ void TPeak::DrawResiduals()
 bool TPeak::GoodStatus()
 {
    if(GetHist() == nullptr) {
-      std::cout<<"No hist set"<<std::endl;
+      std::cout << "No hist set" << std::endl;
       return false;
    }
    if(fChi2 < 0.000000001) {
-      std::cout<<"No fit performed"<<std::endl;
+      std::cout << "No fit performed" << std::endl;
       return false;
    }
    return true;
@@ -594,14 +594,14 @@ void TPeak::CheckArea(Double_t int_low, Double_t int_high)
    Double_t peakerr  = GetIntegralAreaErr(int_low, int_high);
 
    // now print properties
-   std::cout<<"TPeak integral: 	        "<<fArea<<" +/- "<<fDArea<<std::endl;
-   std::cout<<"Histogram - BG integral:  "<<peakarea<<" +/- "<<peakerr<<std::endl;
+   std::cout << "TPeak integral: 	        " << fArea << " +/- " << fDArea << std::endl;
+   std::cout << "Histogram - BG integral:  " << peakarea << " +/- " << peakerr << std::endl;
    if(std::abs(peakarea - fArea) < (fDArea + peakerr)) {
-      std::cout<<DGREEN<<"Areas are consistent."<<RESET_COLOR<<std::endl;
+      std::cout << DGREEN << "Areas are consistent." << RESET_COLOR << std::endl;
    } else if(std::abs(peakarea - fArea) < 2 * (fDArea + peakerr)) {
-      std::cout<<DYELLOW<<"Areas are consistent within 2 sigma."<<RESET_COLOR<<std::endl;
+      std::cout << DYELLOW << "Areas are consistent within 2 sigma." << RESET_COLOR << std::endl;
    } else {
-      std::cout<<DRED<<"Areas are inconsistent."<<RESET_COLOR<<std::endl;
+      std::cout << DRED << "Areas are inconsistent." << RESET_COLOR << std::endl;
    }
 
    return;
@@ -616,14 +616,14 @@ void TPeak::CheckArea()
    Double_t peakerr  = GetIntegralAreaErr();
 
    // now print properties
-   std::cout<<"TPeak integral: 	        "<<fArea<<" +/- "<<fDArea<<std::endl;
-   std::cout<<"Histogram - BG integral:  "<<peakarea<<" +/- "<<peakerr<<std::endl;
+   std::cout << "TPeak integral: 	        " << fArea << " +/- " << fDArea << std::endl;
+   std::cout << "Histogram - BG integral:  " << peakarea << " +/- " << peakerr << std::endl;
    if(std::abs(peakarea - fArea) < (fDArea + peakerr)) {
-      std::cout<<DGREEN<<"Areas are consistent."<<RESET_COLOR<<std::endl;
+      std::cout << DGREEN << "Areas are consistent." << RESET_COLOR << std::endl;
    } else if(std::abs(peakarea - fArea) < 2 * (fDArea + peakerr)) {
-      std::cout<<DYELLOW<<"Areas are consistent within 2 sigma."<<RESET_COLOR<<std::endl;
+      std::cout << DYELLOW << "Areas are consistent within 2 sigma." << RESET_COLOR << std::endl;
    } else {
-      std::cout<<DRED<<"Areas are inconsistent."<<RESET_COLOR<<std::endl;
+      std::cout << DRED << "Areas are inconsistent." << RESET_COLOR << std::endl;
    }
 
    return;

@@ -9,13 +9,13 @@ void ExampleEventHelper::CreateHistograms(unsigned int slot)
       fCycleLength = fPpg->OdbCycleLength();
       if(slot == 0) {
          std::stringstream str;
-         str<<"Got ODB cycle length "<<fCycleLength<<" us = "<<fCycleLength / 1e6<<" s"<<std::endl;
-         std::cerr<<str.str();
+         str << "Got ODB cycle length " << fCycleLength << " us = " << fCycleLength / 1e6 << " s" << std::endl;
+         std::cerr << str.str();
       }
    } else if(slot == 0) {
       std::stringstream str;
-      str<<DRED<<"No ppg provided, can't fill cycle spectra!"<<RESET_COLOR<<std::endl;
-      std::cerr<<str.str();
+      str << DRED << "No ppg provided, can't fill cycle spectra!" << RESET_COLOR << std::endl;
+      std::cerr << str.str();
    }
 
    // some variables to easily change range and binning for multiple histograms at once
@@ -142,13 +142,13 @@ void ExampleEventHelper::EndOfSort(std::shared_ptr<std::map<std::string, TList>>
 {
    auto coincident = static_cast<TH2*>(list->at("").FindObject(fH2[0].at("griffinESuppAddbackMatrixBeta")));
    if(coincident == nullptr) {
-      std::cout<<"Failed to find griffinESuppAddbackMatrixBeta histogram in list:"<<std::endl;
+      std::cout << "Failed to find griffinESuppAddbackMatrixBeta histogram in list:" << std::endl;
       list->at("").Print();
       return;
    }
    auto timeRandom = static_cast<TH2*>(list->at("").FindObject(fH2[0].at("griffinESuppAddbackMatrixBetaBg")));
    if(timeRandom == nullptr) {
-      std::cout<<"Failed to find griffinESuppAddbackMatrixBetaBg histogram in list:"<<std::endl;
+      std::cout << "Failed to find griffinESuppAddbackMatrixBetaBg histogram in list:" << std::endl;
       list->at("").Print();
       return;
    }

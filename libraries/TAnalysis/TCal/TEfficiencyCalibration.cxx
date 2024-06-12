@@ -73,20 +73,20 @@ void TEfficiencyCalibration::Copy(TObject& copy) const
 
 void TEfficiencyCalibration::Print(Option_t*) const
 {
-   std::cout<<"Graphs included: "<<std::endl;
+   std::cout << "Graphs included: " << std::endl;
    for(auto it : fGraphMap) {
-      std::cout<<"Name: "<<it.first<<" N of points: "<<it.second.GetN();
+      std::cout << "Name: " << it.first << " N of points: " << it.second.GetN();
       if(it.second.IsAbsolute()) {
-         std::cout<<"  Absolute calibration ";
+         std::cout << "  Absolute calibration ";
       }
-      std::cout<<std::endl;
+      std::cout << std::endl;
    }
    if(fRelativeFit != nullptr) {
-      std::cout<<"Relative Fit: "<<std::endl;
+      std::cout << "Relative Fit: " << std::endl;
       fRelativeFit->Print();
    }
    if(fAbsoluteFunc != nullptr) {
-      std::cout<<"Absolute Fit: "<<std::endl;
+      std::cout << "Absolute Fit: " << std::endl;
       fAbsoluteFunc->Print();
    }
 }
@@ -104,8 +104,8 @@ void TEfficiencyCalibration::AddEfficiencyGraph(const TEfficiencyGraph& graph, c
 {
    auto it = fGraphMap.insert(std::make_pair(name, graph));
    if(!it.second) {
-      std::cout<<"There is already a graph with the name "<<name<<" in this calibration, overwriting."
-               <<std::endl;
+      std::cout << "There is already a graph with the name " << name << " in this calibration, overwriting."
+                << std::endl;
       it.first->second = graph;
    }
    if(graph.IsAbsolute()) {
@@ -178,8 +178,8 @@ void TEfficiencyCalibration::ScaleGuess()
          }
       }
       // We have now found the two closest points, scale them
-      std::cout<<"Scaling "<<graph_idx<<" graph by "
-               <<fixed_graph->GetY()[closest_fixed_idx] / loop_graph->GetY()[closest_loop_idx]<<std::endl;
+      std::cout << "Scaling " << graph_idx << " graph by "
+                << fixed_graph->GetY()[closest_fixed_idx] / loop_graph->GetY()[closest_loop_idx] << std::endl;
       loop_graph->Scale((fixed_graph->GetY()[closest_fixed_idx]) / (loop_graph->GetY()[closest_loop_idx]));
    }
 }

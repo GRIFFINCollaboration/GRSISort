@@ -13,7 +13,7 @@ TGRSIHelper::TGRSIHelper(TList* input)
    // check that we have a parser library
    if(TGRSIOptions::Get()->ParserLibrary().empty()) {
       std::stringstream str;
-      str<<DRED<<"No parser library set!"<<RESET_COLOR<<std::endl;
+      str << DRED << "No parser library set!" << RESET_COLOR << std::endl;
       throw std::runtime_error(str.str());
    }
    // loop over all cal-files, val-files, and cut-files we might have (these are full paths!)
@@ -21,7 +21,7 @@ TGRSIHelper::TGRSIHelper(TList* input)
    while(input->FindObject(Form("calFile%d", i)) != nullptr) {
       const char* fileName = static_cast<TNamed*>(input->FindObject(Form("calFile%d", i)))->GetTitle();
       if(fileName[0] == 0) {
-         std::cout<<"Error, empty file name!"<<std::endl;
+         std::cout << "Error, empty file name!" << std::endl;
          break;
       }
       TChannel::ReadCalFile(fileName);
@@ -31,7 +31,7 @@ TGRSIHelper::TGRSIHelper(TList* input)
    while(input->FindObject(Form("valFile%d", i)) != nullptr) {
       const char* fileName = static_cast<TNamed*>(input->FindObject(Form("valFile%d", i)))->GetTitle();
       if(fileName[0] == 0) {
-         std::cout<<"Error, empty file name!"<<std::endl;
+         std::cout << "Error, empty file name!" << std::endl;
          break;
       }
       GValue::ReadValFile(fileName);
@@ -39,10 +39,10 @@ TGRSIHelper::TGRSIHelper(TList* input)
    }
    i = 0;
    while(input->FindObject(Form("cutFile%d", i)) != nullptr) {
-      std::cout<<"trying to open "<<Form("cutFile%d", i)<<std::flush<<" = "<<input->FindObject(Form("cutFile%d", i))<<std::flush<<" with title "<<static_cast<TNamed*>(input->FindObject(Form("cutFile%d", i)))->GetTitle()<<std::endl;
+      std::cout << "trying to open " << Form("cutFile%d", i) << std::flush << " = " << input->FindObject(Form("cutFile%d", i)) << std::flush << " with title " << static_cast<TNamed*>(input->FindObject(Form("cutFile%d", i)))->GetTitle() << std::endl;
       const char* fileName = static_cast<TNamed*>(input->FindObject(Form("cutFile%d", i)))->GetTitle();
       if(fileName[0] == 0) {
-         std::cout<<"Error, empty file name!"<<std::endl;
+         std::cout << "Error, empty file name!" << std::endl;
          break;
       }
       // if we have a relative path and a working directory, combine them
@@ -60,19 +60,19 @@ TGRSIHelper::TGRSIHelper(TList* input)
             }
          }
       } else {
-         std::cout<<"Error, failed to open file "<<fileName<<"!"<<std::endl;
+         std::cout << "Error, failed to open file " << fileName << "!" << std::endl;
          break;
       }
       ++i;
    }
    for(auto& cut : fCuts) {
-      std::cout<<cut.first<<" = "<<cut.second<<std::endl;
+      std::cout << cut.first << " = " << cut.second << std::endl;
    }
 
    if(GValue::Size() == 0) {
-      std::cout<<"No g-values!"<<std::endl;
+      std::cout << "No g-values!" << std::endl;
    } else {
-      std::cout<<GValue::Size()<<" g-values"<<std::endl;
+      std::cout << GValue::Size() << " g-values" << std::endl;
    }
 }
 
@@ -186,14 +186,14 @@ void TGRSIHelper::Finalize()
                   // std::cout<<slot<<" copied "<<tree->CopyEntries(static_cast<TTree*>((*fLists[slot]).at(list.first).FindObject(obj->GetName())))<<" bytes to tree "<<tree->GetName()<<std::endl;
                   treeList.emplace(tree, new TList);   // emplace does not overwrite existing elements!
                   treeList.at(tree)->Add((*fLists[slot]).at(list.first).FindObject(obj->GetName()));
-                  std::cout<<slot<<": adding "<<treeList.at(tree)->GetSize()<<". "<<tree->GetName()<<" tree with "<<static_cast<TTree*>((*fLists[slot]).at(list.first).FindObject(obj->GetName()))->GetEntries()<<" entries"<<std::endl;
+                  std::cout << slot << ": adding " << treeList.at(tree)->GetSize() << ". " << tree->GetName() << " tree with " << static_cast<TTree*>((*fLists[slot]).at(list.first).FindObject(obj->GetName()))->GetEntries() << " entries" << std::endl;
                } else {
-                  std::cerr<<"Object '"<<obj->GetName()<<"' is not a histogram ("<<obj->ClassName()<<"), don't know what to do with it!"<<std::endl;
+                  std::cerr << "Object '" << obj->GetName() << "' is not a histogram (" << obj->ClassName() << "), don't know what to do with it!" << std::endl;
                }
             } else {
                // only warn about not finding the object in other lists for histograms and trees
                if(obj->InheritsFrom(TH1::Class()) || obj->InheritsFrom(TTree::Class())) {
-                  std::cerr<<"Failed to find object '"<<obj->GetName()<<"' in "<<slot<<". list"<<std::endl;
+                  std::cerr << "Failed to find object '" << obj->GetName() << "' in " << slot << ". list" << std::endl;
                }
             }
          }
@@ -205,12 +205,12 @@ void TGRSIHelper::Finalize()
       Long64_t entries = 0;
       int      i       = 0;
       for(const auto&& obj : *tree.second) {
-         std::cout<<++i<<". "<<tree.first->GetName()<<" tree: "<<static_cast<TTree*>(obj)->GetEntries()<<" entries"<<std::endl;
+         std::cout << ++i << ". " << tree.first->GetName() << " tree: " << static_cast<TTree*>(obj)->GetEntries() << " entries" << std::endl;
          entries += static_cast<TTree*>(obj)->GetEntries();
       }
-      std::cout<<"total of "<<entries<<" entries"<<std::endl;
+      std::cout << "total of " << entries << " entries" << std::endl;
       auto newTree = TTree::MergeTrees(tree.second);
-      std::cout<<"Got new tree with "<<newTree->GetEntries()<<" => "<<entries - newTree->GetEntries()<<" less than total"<<std::endl;
+      std::cout << "Got new tree with " << newTree->GetEntries() << " => " << entries - newTree->GetEntries() << " less than total" << std::endl;
       (*res).at("").Remove(tree.first);
       (*res).at("").Add(newTree);
       //	std::cout<<"Adding "<<tree.second->GetSize()<<" "<<tree.first->GetName()<<" trees to "<<tree.first->GetEntries()<<" entries"<<std::endl;
@@ -231,8 +231,8 @@ void TGRSIHelper::CheckSizes(unsigned int slot, const char* usage)
          obj->IsA()->WriteBuffer(b, obj);
          if(b.Length() > SIZE_LIMIT) {
             std::stringstream str;
-            str<<DRED<<slot<<". slot: "<<obj->ClassName()<<" '"<<obj->GetName()<<"' too large to "<<usage<<": "<<b.Length()<<" bytes = "<<b.Length() / 1024. / 1024. / 1024.<<" GB, removing it!"<<RESET_COLOR<<std::endl;
-            std::cout<<str.str();
+            str << DRED << slot << ". slot: " << obj->ClassName() << " '" << obj->GetName() << "' too large to " << usage << ": " << b.Length() << " bytes = " << b.Length() / 1024. / 1024. / 1024. << " GB, removing it!" << RESET_COLOR << std::endl;
+            std::cout << str.str();
             // we only remove it from the output list, not deleting the object itself
             // this way the filling of that histogram will still work, it just won't get written to file
             // we remove it from all lists though, not just the first one

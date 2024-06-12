@@ -120,7 +120,7 @@ TGHorizontalFrame* TParameterInput::Build(const std::string& name, const Int_t& 
 
 void TParameterInput::Set(double val)
 {
-   std::cout<<__PRETTY_FUNCTION__<<": "<<val<<std::endl;
+   std::cout << __PRETTY_FUNCTION__ << ": " << val << std::endl;
    PrintStatus("Set single initial");
    fEntry->SetNumber(val);
    UpdateSlider();
@@ -129,7 +129,7 @@ void TParameterInput::Set(double val)
 
 void TParameterInput::Set(double val, double low, double high)
 {
-   std::cout<<__PRETTY_FUNCTION__<<": "<<val<<", "<<low<<", "<<high<<std::endl;
+   std::cout << __PRETTY_FUNCTION__ << ": " << val << ", " << low << ", " << high << std::endl;
    PrintStatus("Set initial");
    fEntry->SetNumber(val);
    fEntry->SetLimits(TGNumberFormat::kNELLimitMinMax, low, high);
@@ -180,7 +180,7 @@ void TParameterInput::Connect(TCalibrateDescant* parent)
 Bool_t TParameterInput::ProcessMessage(Long_t msg, Long_t parameter1, Long_t parameter2)
 {
    /// This functions deals with changes in the text fields of the TGNumberEntry as those don't seem to emit signals?
-   std::cout<<__PRETTY_FUNCTION__<<": msg "<<msg<<", parameter 1 "<<parameter1<<", parameter 2 "<<parameter2<<std::endl;
+   std::cout << __PRETTY_FUNCTION__ << ": msg " << msg << ", parameter 1 " << parameter1 << ", parameter 2 " << parameter2 << std::endl;
    switch(GET_MSG(msg)) {
    case kC_TEXTENTRY:
       switch(GET_SUBMSG(msg)) {
@@ -203,7 +203,7 @@ Bool_t TParameterInput::ProcessMessage(Long_t msg, Long_t parameter1, Long_t par
 
 void TParameterInput::PrintStatus(const char* function)
 {
-   std::cout<<Name()<<" - "<<std::setw(40)<<function<<": entries - "<<Value()<<", "<<LowLimit()<<", "<<HighLimit()<<", sliders - "<<fSlider->GetPointerPosition()<<", "<<fSlider->GetMinPosition()<<", "<<fSlider->GetMaxPosition()<<std::endl;
+   std::cout << Name() << " - " << std::setw(40) << function << ": entries - " << Value() << ", " << LowLimit() << ", " << HighLimit() << ", sliders - " << fSlider->GetPointerPosition() << ", " << fSlider->GetMinPosition() << ", " << fSlider->GetMaxPosition() << std::endl;
 }
 
 TCalibrateDescant::TCalibrateDescant(TH2* hist, const ESourceType& source)
@@ -362,7 +362,7 @@ void TCalibrateDescant::MakeConnections()
 Bool_t TCalibrateDescant::ProcessMessage(Long_t msg, Long_t parameter1, Long_t parameter2)
 {
    /// This functions deals with changes in the text fields of the TGNumberEntry as those don't seem to emit signals?
-   std::cout<<__PRETTY_FUNCTION__<<": msg "<<msg<<", parameter 1 "<<parameter1<<", parameter 2 "<<parameter2<<std::endl;
+   std::cout << __PRETTY_FUNCTION__ << ": msg " << msg << ", parameter 1 " << parameter1 << ", parameter 2 " << parameter2 << std::endl;
    switch(GET_MSG(msg)) {
    case kC_TEXTENTRY:
       switch(GET_SUBMSG(msg)) {
@@ -418,7 +418,7 @@ void TCalibrateDescant::CreateGraphicMembers()
 
 void TCalibrateDescant::UpdateInterface()
 {
-   std::cout<<"Updating interface for current projection "<<fCurrentProjection<<std::endl;
+   std::cout << "Updating interface for current projection " << fCurrentProjection << std::endl;
    InitializeParameters();
    UpdateInitialFunction();
    // fProjections[fCurrentProjection]->GetListOfFunctions()->Clear();
@@ -438,7 +438,7 @@ void TCalibrateDescant::UpdateInterface()
 
 void TCalibrateDescant::UpdateInitialFunction()
 {
-   std::cout<<__PRETTY_FUNCTION__<<std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;
    fInitial->FixParameter(0, fAmplitude->Value());
    fInitial->FixParameter(1, fPosition->Value());
    fInitial->FixParameter(2, fSigma->Value());
@@ -459,12 +459,12 @@ void TCalibrateDescant::UpdateInitialFunction()
    fFit->SetLineColor(2);
    fFit->SetLineStyle(1);
    for(int i = 0; i < 15; ++i) {
-      std::cout<<fInitial->GetParName(i)<<": "<<fInitial->GetParameter(i)<<std::endl;
+      std::cout << fInitial->GetParName(i) << ": " << fInitial->GetParameter(i) << std::endl;
    }
    if(fProjections[fCurrentProjection]->GetListOfFunctions()->GetSize() == 0) {
       fProjections[fCurrentProjection]->GetListOfFunctions()->Add(fInitial);
    } else {
-      std::cout<<"Already "<<fProjections[fCurrentProjection]->GetListOfFunctions()->GetSize()<<" functions added to histogram:"<<std::endl;
+      std::cout << "Already " << fProjections[fCurrentProjection]->GetListOfFunctions()->GetSize() << " functions added to histogram:" << std::endl;
       fProjections[fCurrentProjection]->GetListOfFunctions()->Print();
    }
    fFitCanvas->GetCanvas()->cd();
@@ -507,7 +507,7 @@ void TCalibrateDescant::InitializeParameters()
    }
    double roughPos = fProjections[fCurrentProjection]->GetBinCenter(roughBin);
 
-   std::cout<<"Initializing parameters for current projection "<<fCurrentProjection<<" based on threshold bin "<<threshold<<", average "<<average<<", rough bin "<<roughBin<<", and rough position "<<roughPos<<std::endl;
+   std::cout << "Initializing parameters for current projection " << fCurrentProjection << " based on threshold bin " << threshold << ", average " << average << ", rough bin " << roughBin << ", and rough position " << roughPos << std::endl;
 
    fInitial->FixParameter(0, 0.9 * fProjections[fCurrentProjection]->GetBinContent((roughBin - threshold) / 2.));                             // amplitude
    fInitial->FixParameter(1, roughPos);                                                                                                       // position
@@ -567,14 +567,14 @@ void TCalibrateDescant::InitializeParameters()
 
 void TCalibrateDescant::Previous()
 {
-   std::cout<<__PRETTY_FUNCTION__<<std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;
    if(fCurrentProjection > 0) --fCurrentProjection;
    UpdateInterface();
 }
 
 void TCalibrateDescant::Next()
 {
-   std::cout<<__PRETTY_FUNCTION__<<std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;
    if(fCurrentProjection + 1 < static_cast<int>(fProjections.size())) ++fCurrentProjection;
    UpdateInterface();
 }
@@ -617,20 +617,20 @@ void TCalibrateDescant::Fit()
    fFit->SetParameter(15, fCutoff->Value());
    fFit->SetParLimits(15, fCutoff->LowLimit(), fCutoff->HighLimit());
 
-   std::cout<<"done setting parameters"<<std::endl;
+   std::cout << "done setting parameters" << std::endl;
 
    // perform the fit
    fProjections[fCurrentProjection]->Fit(fFit, "RQN");   // R - use function range, Q - quiet, N - do not store/draw
 
-   std::cout<<"done fitting"<<std::endl;
+   std::cout << "done fitting" << std::endl;
 
    // get parameters and parameter errors
 
    // update the component functions
    for(int i = 0; i < 15; ++i) {
-      std::cout<<"parameter "<<i<<" - "<<fFit->GetParName(i)<<": "<<fFit->GetParameter(i)<<" +- "<<fFit->GetParError(i)<<std::endl;
+      std::cout << "parameter " << i << " - " << fFit->GetParName(i) << ": " << fFit->GetParameter(i) << " +- " << fFit->GetParError(i) << std::endl;
       double par = fFit->GetParameter(i);
-      std::cout<<fEdge<<", "<<fPeak<<", "<<fNoise<<", "<<fBg<<std::endl;
+      std::cout << fEdge << ", " << fPeak << ", " << fNoise << ", " << fBg << std::endl;
       fEdge->Print();
       fPeak->Print();
       fNoise->Print();
@@ -675,7 +675,7 @@ void TCalibrateDescant::Fit()
       };
    }
 
-   std::cout<<"done updating components"<<std::endl;
+   std::cout << "done updating components" << std::endl;
 
    // add all functions to histogram (after clearing all functions from it)
    if(fProjections[fCurrentProjection]->GetListOfFunctions()->GetSize() < 5) {
@@ -685,11 +685,11 @@ void TCalibrateDescant::Fit()
       fProjections[fCurrentProjection]->GetListOfFunctions()->Add(fEdge);
       fProjections[fCurrentProjection]->GetListOfFunctions()->Add(fFit);
    } else {
-      std::cout<<"Already "<<fProjections[fCurrentProjection]->GetListOfFunctions()->GetSize()<<" functions added to histogram:"<<std::endl;
+      std::cout << "Already " << fProjections[fCurrentProjection]->GetListOfFunctions()->GetSize() << " functions added to histogram:" << std::endl;
       fProjections[fCurrentProjection]->GetListOfFunctions()->Print();
    }
 
-   std::cout<<"done adding functions"<<std::endl;
+   std::cout << "done adding functions" << std::endl;
 
    // add new point to calibration graph
    AddCalibrationPoint(fFit->GetParameter(1), fFit->GetParError(1));
@@ -701,12 +701,12 @@ void TCalibrateDescant::Fit()
 
    UpdateInitialParameters();
 
-   std::cout<<"done"<<std::endl;
+   std::cout << "done" << std::endl;
 }
 
 void TCalibrateDescant::UpdateInitialParameters()
 {
-   std::cout<<__PRETTY_FUNCTION__<<std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;
    fAmplitude->Set(fFit->GetParameter(0));
    fPosition->Set(fFit->GetParameter(1));
    fSigma->Set(fFit->GetParameter(2));
@@ -727,7 +727,7 @@ void TCalibrateDescant::UpdateInitialParameters()
 
 void TCalibrateDescant::ResetFit()
 {
-   std::cout<<__PRETTY_FUNCTION__<<std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;
    fInitial->Copy(*fFit);
    fFit->SetLineColor(2);
    fFit->SetLineStyle(1);
@@ -737,7 +737,7 @@ void TCalibrateDescant::ResetFit()
 
 void TCalibrateDescant::Save()
 {
-   std::cout<<__PRETTY_FUNCTION__<<std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
 void TCalibrateDescant::AddCalibrationPoint(double value, double uncertainty)
@@ -759,12 +759,12 @@ void TCalibrateDescant::AddCalibrationPoint(double value, double uncertainty)
 
 void TCalibrateDescant::FitCanvasZoomed()
 {
-   std::cout<<__PRETTY_FUNCTION__<<std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;
    // update range of fit functions
    Double_t xmin, ymin, xmax, ymax;
    fFitCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
 
-   std::cout<<"updating ranges to "<<xmin<<" - "<<xmax<<std::endl;
+   std::cout << "updating ranges to " << xmin << " - " << xmax << std::endl;
    fInitial->SetRange(xmin, xmax);
    fFit->SetRange(xmin, xmax);
    fEdge->SetRange(xmin, xmax);
@@ -779,7 +779,7 @@ void TCalibrateDescant::FitCanvasZoomed()
 
 void TCalibrateDescant::CalibrationCanvasZoomed()
 {
-   std::cout<<__PRETTY_FUNCTION__<<std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;
    // nothing to do for this one?
 }
 

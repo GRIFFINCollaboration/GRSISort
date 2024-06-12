@@ -71,12 +71,12 @@ std::shared_ptr<TDetector> TUnpackedEvent::GetDetector(TClass* cls, bool make_if
 std::ostringstream TUnpackedEvent::Print()
 {
    std::ostringstream str;
-   str<<fDetectors.size()<<" detector types:"<<std::endl;
+   str << fDetectors.size() << " detector types:" << std::endl;
    for(const auto& det : fDetectors) {
-      str<<"detector type "<<det->ClassName()<<std::endl;
+      str << "detector type " << det->ClassName() << std::endl;
       for(int i = 0; i < det->GetMultiplicity(); ++i) {
          auto hit = det->GetHit(i);
-         str<<hit<<" "<<hex(hit->GetAddress(), 4)<<" "<<std::setw(16)<<hit->GetTimeStamp()<<" "<<std::setw(16)<<static_cast<int>(hit->Charge())<<" "<<std::setw(16)<<hit->GetEnergy()<<std::endl;
+         str << hit << " " << hex(hit->GetAddress(), 4) << " " << std::setw(16) << hit->GetTimeStamp() << " " << std::setw(16) << static_cast<int>(hit->Charge()) << " " << std::setw(16) << hit->GetEnergy() << std::endl;
       }
    }
    return str;

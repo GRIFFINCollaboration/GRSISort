@@ -73,9 +73,9 @@ public:
          fMinEnergy = fUserSettings->GetDouble("MinimumEnergy", 0.);
          fMaxEnergy = fUserSettings->GetDouble("MaximumEnergy", 3000.);
       } else {
-         std::cout<<"No user settings provided, using default settings: ";
+         std::cout << "No user settings provided, using default settings: ";
       }
-      std::cout<<std::boolalpha<<"distance "<<fGriffinDistance<<" mm, addback "<<fAddback<<", folding "<<fFolding<<", and grouping "<<fGrouping<<std::endl;
+      std::cout << std::boolalpha << "distance " << fGriffinDistance << " mm, addback " << fAddback << ", folding " << fFolding << ", and grouping " << fGrouping << std::endl;
 
       fAngles = new TGriffinAngles(fGriffinDistance, fFolding, fGrouping, fAddback);
       fAngles->Print();

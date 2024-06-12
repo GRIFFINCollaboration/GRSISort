@@ -15,7 +15,7 @@ ClassImp(TMultiPeak)
 TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t>& centroids, Option_t*)
    : TGRSIFit("multipeakbg", this, &TMultiPeak::MultiPhotoPeakBG, xlow, xhigh, centroids.size() * 6 + 5, "TMultiPeak", "MultiPhotoPeakBG")
 {
-   std::cout<<"Warning, the class TMultiPeak is deprecated!"<<std::endl;
+   std::cout << "Warning, the class TMultiPeak is deprecated!" << std::endl;
    Clear();
    // We make the background first so we can send it to the TPeaks.
    fBackground = new TF1(Form("MPbackground_%d_to_%d", static_cast<Int_t>(xlow), static_cast<Int_t>(xhigh)), this, &TMultiPeak::MultiStepBG, xlow, xhigh, centroids.size() * 6 + 5, "TMuliPeak", "MultiStepBG");
@@ -27,14 +27,14 @@ TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t
    for(double cent : centroids) {
       Bool_t out_of_range_flag = false;
       if(cent > xhigh) {
-         std::cout<<"centroid "<<cent<<" is higher than range"<<std::endl;
+         std::cout << "centroid " << cent << " is higher than range" << std::endl;
          out_of_range_flag = true;
       } else if(cent < xlow) {
-         std::cout<<"centroid "<<cent<<" is lower than range"<<std::endl;
+         std::cout << "centroid " << cent << " is lower than range" << std::endl;
          out_of_range_flag = true;
       }
       if(out_of_range_flag) {
-         std::cout<<"ignoring peak at "<<cent<<", make a new multi peak with the corrected energy"<<std::endl;
+         std::cout << "ignoring peak at " << cent << ", make a new multi peak with the corrected energy" << std::endl;
       } else {
          auto* peak = new TPeak(cent, xlow, xhigh, fBackground);
          peak->AddToGlobalList(kFALSE);
@@ -51,7 +51,7 @@ TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t
 
 TMultiPeak::TMultiPeak() : TGRSIFit("multipeakbg", this, &TMultiPeak::MultiPhotoPeakBG, 0, 1000, 10, "TMultiPeak", "MultiPhotoPeakBG")
 {
-   std::cout<<"Warning, the class TMultiPeak is deprecated!"<<std::endl;
+   std::cout << "Warning, the class TMultiPeak is deprecated!" << std::endl;
    // I don't think this constructor should be used, RD.
    InitNames();
    fBackground = new TF1("background", this, &TMultiPeak::MultiStepBG, 1000, 10, 10, "TMultiPeak", "MultiStepBG");   // This is a weird nonsense line.
@@ -131,7 +131,7 @@ Bool_t TMultiPeak::InitParams(TH1* fithist)
    }
 
    if(fithist == nullptr) {
-      std::cout<<"No histogram is associated yet, no initial guesses made"<<std::endl;
+      std::cout << "No histogram is associated yet, no initial guesses made" << std::endl;
       return false;
    }
 
@@ -187,11 +187,11 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
 {
    TString optstr = opt;
    if((fithist == nullptr) && (GetHist() == nullptr)) {
-      std::cout<<"No hist passed, trying something...";
+      std::cout << "No hist passed, trying something...";
       fithist = fHistogram;
    }
    if(fithist == nullptr) {
-      std::cout<<"No histogram associated with Peak"<<std::endl;
+      std::cout << "No histogram associated with Peak" << std::endl;
       return false;
    }
    if(!IsInitialized()) {
@@ -269,7 +269,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
    }
 
    if(print_flag) {
-      std::cout<<"Chi^2/NDF = "<<fitres->Chi2() / fitres->Ndf()<<std::endl;
+      std::cout << "Chi^2/NDF = " << fitres->Chi2() / fitres->Ndf() << std::endl;
    }
    // We will now set the parameters of each of the peaks based on the fits.
    for(int i = 0; i < static_cast<int>(fPeakVec.size()); ++i) {
@@ -326,7 +326,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
       peak->SetParameter("sigma", GetParameter(GetParNumber(Form("Sigma_%i", i))));
       peak->SetParError(peak->GetParNumber("sigma"), GetParError(GetParNumber(Form("Sigma_%i", i))));
       if(print_flag) {
-         std::cout<<"Integral: "<<peak->GetArea()<<" +- "<<peak->GetAreaErr()<<std::endl;
+         std::cout << "Integral: " << peak->GetArea() << " +- " << peak->GetAreaErr() << std::endl;
       }
    }
 
@@ -348,13 +348,13 @@ void TMultiPeak::Clear(Option_t* opt)
 void TMultiPeak::Print(Option_t* opt) const
 {
    /// Prints TMultiPeak properties. To see More properties use the option "+"
-   std::cout<<"Name:        "<<GetName()<<std::endl;
-   std::cout<<"Number of Peaks: "<<fPeakVec.size()<<std::endl;
+   std::cout << "Name:        " << GetName() << std::endl;
+   std::cout << "Number of Peaks: " << fPeakVec.size() << std::endl;
    TF1::Print();
    for(int i = 0; i < static_cast<int>(fPeakVec.size()); ++i) {
-      std::cout<<"Peak: "<<i<<std::endl;
+      std::cout << "Peak: " << i << std::endl;
       fPeakVec.at(i)->Print(opt);
-      std::cout<<std::endl;
+      std::cout << std::endl;
    }
 }
 
@@ -425,7 +425,7 @@ TPeak* TMultiPeak::GetPeak(UInt_t idx)
    if(idx < fPeakVec.size()) {
       return fPeakVec.at(idx);
    }
-   std::cout<<"No matching peak at index "<<idx<<std::endl;
+   std::cout << "No matching peak at index " << idx << std::endl;
 
    return nullptr;
 }

@@ -41,9 +41,9 @@ int main(int argc, char** argv)
 {
    TFile* infile = nullptr;
    if(argc < 2 || (infile = TFile::Open(argv[1], "read")) == nullptr) {
-      std::cout<<"problem opening file."<<std::endl
-               <<"Usage: "<<argv[0]<<" file.root (optional: -<output format> <list of histogram names>)"<<std::endl
-               <<"format is e = write error column, z = write zeroes, v = values only, p = pm3d format, g = gnuplot xyerrorbars format, and f = fresco input format"<<std::endl;
+      std::cout << "problem opening file." << std::endl
+                << "Usage: " << argv[0] << " file.root (optional: -<output format> <list of histogram names>)" << std::endl
+                << "format is e = write error column, z = write zeroes, v = values only, p = pm3d format, g = gnuplot xyerrorbars format, and f = fresco input format" << std::endl;
       return 1;
    }
 
@@ -79,7 +79,7 @@ int main(int argc, char** argv)
    TKey*    key    = nullptr;
    // look for histogram names to add
    for(auto name : histNames) {
-      std::cout<<"looking for "<<name<<" in "<<infile->GetName()<<std::endl;
+      std::cout << "looking for " << name << " in " << infile->GetName() << std::endl;
       object = infile->Get(name.c_str());
       // if we couldn't find the object, loop through all object in the file, and if they're folders search in those
       if(object == nullptr) {
@@ -93,7 +93,7 @@ int main(int argc, char** argv)
             }
          }
          if(key == nullptr || object == nullptr) {
-            std::cerr<<"couldn't find histogram "<<name<<" in file "<<infile->GetName()<<std::endl;
+            std::cerr << "couldn't find histogram " << name << " in file " << infile->GetName() << std::endl;
             continue;
          }
       }
@@ -122,16 +122,16 @@ int main(int argc, char** argv)
          } else if(keyType.compare(5, 1, "D") == 0) {
             WriteHistogram(static_cast<GHSymD*>(object)->GetMatrix(), fileName, format);
          } else {
-            std::cout<<"unknown GHSym type "<<keyType<<std::endl;
+            std::cout << "unknown GHSym type " << keyType << std::endl;
          }
       } else {
-         std::cout<<"skipping "<<keyType<<std::endl;
+         std::cout << "skipping " << keyType << std::endl;
       }
    }
 
    if(histNames.empty()) {
       // loop through all keys to find any object we can write
-      std::cout<<"looping over all objects in "<<infile->GetName()<<std::endl;
+      std::cout << "looping over all objects in " << infile->GetName() << std::endl;
       TIter next(infile->GetListOfKeys());
       while((key = static_cast<TKey*>(next())) != nullptr) {
          object               = key->ReadObj();
@@ -158,10 +158,10 @@ int main(int argc, char** argv)
             } else if(keyType.compare(5, 1, "D") == 0) {
                WriteHistogram(static_cast<GHSymD*>(object)->GetMatrix(), fileName, format);
             } else {
-               std::cout<<"unknown GHSym type "<<keyType<<std::endl;
+               std::cout << "unknown GHSym type " << keyType << std::endl;
             }
          } else {
-            std::cout<<"skipping "<<keyType<<std::endl;
+            std::cout << "skipping " << keyType << std::endl;
          }
       }
    }
@@ -208,17 +208,17 @@ int WriteHistogram(T* histogram, std::string& fileName, std::string& format)
    }
 
    if(writePm3d && (writeErrors || writeValuesOnly)) {
-      std::cerr<<"Error, can't write pm3d format and errors or only values!"<<std::endl;
+      std::cerr << "Error, can't write pm3d format and errors or only values!" << std::endl;
       return 1;
    }
    if(writePm3d && (yNumberOfBins == 1 || zNumberOfBins > 1)) {
-      std::cerr<<"Error, pm3d format requested but histogram doesn't seem to be a TH2: yNumberOfBins = "<<yNumberOfBins<<", zNumberOfBins = "<<zNumberOfBins<<", class name = "<<histogram->IsA()->GetName()<<std::endl;
+      std::cerr << "Error, pm3d format requested but histogram doesn't seem to be a TH2: yNumberOfBins = " << yNumberOfBins << ", zNumberOfBins = " << zNumberOfBins << ", class name = " << histogram->IsA()->GetName() << std::endl;
       return 2;
    }
 
    std::ofstream output(fileName);
    if(output.rdstate() != 0) {
-      std::cerr<<"Error, couldn't open file "<<fileName<<std::endl;
+      std::cerr << "Error, couldn't open file " << fileName << std::endl;
       return 1;
    }
 
@@ -231,16 +231,16 @@ int WriteHistogram(T* histogram, std::string& fileName, std::string& format)
             for(int k = 1; k <= zNumberOfBins; k++) {
                if(writeZeros || histogram->GetBinContent(i, j, k) > 0) {
                   if(!writeValuesOnly) {
-                     output<<std::setw(8)<<histogram->GetXaxis()->GetBinCenter(i);
+                     output << std::setw(8) << histogram->GetXaxis()->GetBinCenter(i);
                      if(yNumberOfBins > 1)
-                        output<<" "<<std::setw(8)<<histogram->GetYaxis()->GetBinCenter(j);
+                        output << " " << std::setw(8) << histogram->GetYaxis()->GetBinCenter(j);
                      if(zNumberOfBins > 1)
-                        output<<" "<<std::setw(8)<<histogram->GetZaxis()->GetBinCenter(k);
+                        output << " " << std::setw(8) << histogram->GetZaxis()->GetBinCenter(k);
                   }
-                  output<<" "<<std::setw(8)<<histogram->GetBinContent(i, j, k);
+                  output << " " << std::setw(8) << histogram->GetBinContent(i, j, k);
                   if(writeErrors)
-                     output<<" "<<std::setw(8)<<histogram->GetBinError(i, j, k);
-                  output<<std::endl;
+                     output << " " << std::setw(8) << histogram->GetBinError(i, j, k);
+                  output << std::endl;
                }
             }
          }
@@ -295,29 +295,29 @@ int WriteHistogram(T* histogram, std::string& fileName, std::string& format)
                erasedX++;
             }
          } else {   // if(i > xBinLow)
-            output<<"not erasing values since i = "<<i<<" not between 1 and "<<xNumberOfBins + 1 - erasedX<<std::endl;
+            output << "not erasing values since i = " << i << " not between 1 and " << xNumberOfBins + 1 - erasedX << std::endl;
          }
       }
 
       // printing of values (and instructions)
-      output<<"#set pm3d map corners2color c1"<<std::endl
-            <<"#set palette rgbformulae 22,13,-31"<<std::endl
-            <<"#splot 'fileName'"<<std::endl;
+      output << "#set pm3d map corners2color c1" << std::endl
+             << "#set palette rgbformulae 22,13,-31" << std::endl
+             << "#splot 'fileName'" << std::endl;
       for(size_t i = 0; i < values.size(); i++) {
          for(size_t j = 0; j < values.at(i).size(); j++) {
-            output<<std::setw(8)<<x.at(i)<<std::setw(8)<<y.at(i).at(j)<<std::setw(8)<<values.at(i).at(j)<<std::endl;
+            output << std::setw(8) << x.at(i) << std::setw(8) << y.at(i).at(j) << std::setw(8) << values.at(i).at(j) << std::endl;
          }
-         output<<std::endl;
+         output << std::endl;
          if(i < values.size() - 1) {
             for(size_t j = 0; j < values.at(i).size(); j++) {
-               output<<std::setw(8)<<x.at(i + 1)<<std::setw(8)<<y.at(i).at(j)<<std::setw(8)<<values.at(i).at(j)<<std::endl;
+               output << std::setw(8) << x.at(i + 1) << std::setw(8) << y.at(i).at(j) << std::setw(8) << values.at(i).at(j) << std::endl;
             }
-            output<<std::endl;
+            output << std::endl;
          } else {
             for(size_t j = 0; j < values.at(i).size(); j++) {
-               output<<std::setw(8)<<x.at(i) + histogram->GetXaxis()->GetBinWidth(1)<<std::setw(8)<<y.at(i).at(j)<<std::setw(8)<<values.at(i).at(j)<<std::endl;
+               output << std::setw(8) << x.at(i) + histogram->GetXaxis()->GetBinWidth(1) << std::setw(8) << y.at(i).at(j) << std::setw(8) << values.at(i).at(j) << std::endl;
             }
-            output<<std::endl;
+            output << std::endl;
          }
       }
    }
@@ -332,7 +332,7 @@ int WriteGraph(T* graph, std::string& fileName, std::string& format)
 {
    std::ofstream output(fileName);
    if(output.rdstate() != 0) {
-      std::cerr<<"Error, couldn't open file "<<fileName<<std::endl;
+      std::cerr << "Error, couldn't open file " << fileName << std::endl;
       return 1;
    }
 
@@ -366,7 +366,7 @@ int WriteGraph(T* graph, std::string& fileName, std::string& format)
    }
 
    if(gnuplot && fresco) {
-      std::cerr<<"Error, can't write gnuplot and fresco format at once!"<<std::endl;
+      std::cerr << "Error, can't write gnuplot and fresco format at once!" << std::endl;
       return 1;
    }
 
@@ -376,20 +376,20 @@ int WriteGraph(T* graph, std::string& fileName, std::string& format)
       graph->GetPoint(point, x, y);
       if(y != 0 || writeZeros) {
          if(!writeErrors && !gnuplot && !fresco) {
-            output<<std::setw(8)<<x<<" "<<std::setw(8)<<y<<std::endl;
+            output << std::setw(8) << x << " " << std::setw(8) << y << std::endl;
          } else if(gnuplot) {
             if(strcmp(graph->IsA()->GetName(), "TGraphAsymmErrors") == 0) {
                // x,y,xlow,xhigh,ylow,yhigh, and lows and highs are the absolute values
-               output<<std::setw(8)<<x<<" "<<std::setw(8)<<y<<" "<<std::setw(8)<<x - graph->GetErrorXlow(point)<<" "<<std::setw(8)<<x + graph->GetErrorXhigh(point)<<" "<<std::setw(8)<<y - graph->GetErrorYlow(point)<<" "<<std::setw(8)<<y + graph->GetErrorYhigh(point)<<std::endl;
+               output << std::setw(8) << x << " " << std::setw(8) << y << " " << std::setw(8) << x - graph->GetErrorXlow(point) << " " << std::setw(8) << x + graph->GetErrorXhigh(point) << " " << std::setw(8) << y - graph->GetErrorYlow(point) << " " << std::setw(8) << y + graph->GetErrorYhigh(point) << std::endl;
             } else {
                // x,y,delta x,delta y
-               output<<std::setw(8)<<x<<" "<<std::setw(8)<<y<<" "<<std::setw(8)<<graph->GetErrorX(point)<<" "<<std::setw(8)<<graph->GetErrorY(point)<<std::endl;
+               output << std::setw(8) << x << " " << std::setw(8) << y << " " << std::setw(8) << graph->GetErrorX(point) << " " << std::setw(8) << graph->GetErrorY(point) << std::endl;
             }
          } else if(fresco) {
             // x,y,yerror
-            output<<std::setw(8)<<x<<" "<<std::setw(8)<<y<<" "<<std::setw(8)<<graph->GetErrorY(point)<<std::endl;
+            output << std::setw(8) << x << " " << std::setw(8) << y << " " << std::setw(8) << graph->GetErrorY(point) << std::endl;
          } else {
-            output<<std::setw(8)<<x<<" "<<std::setw(8)<<graph->GetErrorXlow(point)<<" "<<std::setw(8)<<graph->GetErrorXhigh(point)<<" "<<std::setw(8)<<y<<" "<<std::setw(8)<<graph->GetErrorYlow(point)<<" "<<std::setw(8)<<graph->GetErrorYhigh(point)<<std::endl;
+            output << std::setw(8) << x << " " << std::setw(8) << graph->GetErrorXlow(point) << " " << std::setw(8) << graph->GetErrorXhigh(point) << " " << std::setw(8) << y << " " << std::setw(8) << graph->GetErrorYlow(point) << " " << std::setw(8) << graph->GetErrorYhigh(point) << std::endl;
          }
       }
    }
@@ -404,12 +404,12 @@ int WriteSpline(TSpline3* s, std::string& fileName)
    std::ofstream output(fileName);
    output.open(fileName);
    if(output.rdstate() != 0) {
-      std::cerr<<"Error, couldn't open file "<<fileName<<std::endl;
+      std::cerr << "Error, couldn't open file " << fileName << std::endl;
       return 1;
    }
 
    for(double x = s->GetXmin(); x <= s->GetXmax(); x += (s->GetXmax() - s->GetXmin()) / s->GetNp()) {
-      output<<x<<" "<<s->Eval(x)<<std::endl;
+      output << x << " " << s->Eval(x) << std::endl;
       ;
    }
 

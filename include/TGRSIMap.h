@@ -31,7 +31,7 @@ public:
    void Print()
    {
       for(auto it : fMap) {
-         std::cout<<it.first<<" - "<<it.second<<std::endl;
+         std::cout << it.first << " - " << it.second << std::endl;
       }
    }
 
@@ -107,14 +107,14 @@ public:
    std::string detail() const noexcept
    {
       std::ostringstream str;
-      str<<"Key "<<fKey<<" not found in '";
+      str << "Key " << fKey << " not found in '";
       for(auto key = fKeys.begin(); key != fKeys.end(); ++key) {
-         str<<*key;
+         str << *key;
          if(std::next(key) != fKeys.end()) {
-            str<<", ";
+            str << ", ";
          }
       }
-      str<<"'";
+      str << "'";
       return str.str();
    }
 

@@ -54,14 +54,14 @@ void TCalibrator::Copy(TObject&) const
 void TCalibrator::Print(Option_t*) const
 {
    int counter = 0;
-   std::cout<<"\t  senergy          scent          scalc          sarea       snuc        sintensity"<<std::endl;
+   std::cout << "\t  senergy          scent          scalc          sarea       snuc        sintensity" << std::endl;
    for(auto it : fPeaks) {
       double caleng = it.centroid * GetParameter(1) + GetParameter(0);
       double pdiff  = std::abs(caleng - it.energy) / it.energy;
-      std::cout<<counter++<<":\t"<<std::setw(7)<<it.energy<<std::setw(16)<<it.centroid<<std::setw(8)<<caleng
-               <<"   [%%"<<std::setw(3)<<pdiff * 100.<<"]"<<std::setw(16)<<it.area<<std::setw(8)<<it.nucleus<<std::setw(16)<<it.intensity<<std::endl;
+      std::cout << counter++ << ":\t" << std::setw(7) << it.energy << std::setw(16) << it.centroid << std::setw(8) << caleng
+                << "   [%%" << std::setw(3) << pdiff * 100. << "]" << std::setw(16) << it.area << std::setw(8) << it.nucleus << std::setw(16) << it.intensity << std::endl;
    }
-   std::cout<<"-------------------------------"<<std::endl;
+   std::cout << "-------------------------------" << std::endl;
 }
 
 std::string TCalibrator::PrintEfficency(const char* filename)
@@ -80,10 +80,10 @@ std::string TCalibrator::PrintEfficency(const char* filename)
    if(file.length() != 0u) {
       std::ofstream ofile;
       ofile.open(file.c_str());
-      ofile<<toprint;
+      ofile << toprint;
       ofile.close();
    }
-   std::cout<<toprint<<std::endl;
+   std::cout << toprint << std::endl;
    return toprint;
 }
 
@@ -128,8 +128,8 @@ TGraphErrors& TCalibrator::MakeEffGraph(double seconds, double bq, Option_t* opt
       }
    }
    for(unsigned int i = 0; i < energy.size(); i++) {
-      std::cout<<"["<<energy.at(i)<<"] Observed  = "<<observed.at(i)<<"  | Calculated = "<<efffit->Eval(energy.at(i))<<"  |  per diff = "
-               <<(std::abs(observed.at(i) - efffit->Eval(energy.at(i))) / observed.at(i)) * 100.<<std::endl;
+      std::cout << "[" << energy.at(i) << "] Observed  = " << observed.at(i) << "  | Calculated = " << efffit->Eval(energy.at(i)) << "  |  per diff = "
+                << (std::abs(observed.at(i) - efffit->Eval(energy.at(i))) / observed.at(i)) * 100. << std::endl;
    }
    return eff_graph;
 }
@@ -230,7 +230,7 @@ std::vector<double> TCalibrator::Calibrate(double)
 int TCalibrator::AddData(TH1* data, const std::string& source, double sigma, double threshold, double error)
 {
    if((data == nullptr) || (source.length() == 0u)) {
-      std::cout<<"data not added. data = "<<data<<" \t source = "<<source<<std::endl;
+      std::cout << "data not added. data = " << data << " \t source = " << source << std::endl;
       return 0;
    }
    TNucleus n(source.c_str());
@@ -240,7 +240,7 @@ int TCalibrator::AddData(TH1* data, const std::string& source, double sigma, dou
 int TCalibrator::AddData(TH1* data, TNucleus* source, double sigma, double threshold, double)
 {
    if((data == nullptr) || (source == nullptr)) {
-      std::cout<<"data not added. data = "<<data<<" \t source = "<<source<<std::endl;
+      std::cout << "data not added. data = " << data << " \t source = " << source << std::endl;
       return 0;
    }
    int actual_x_max    = std::floor(data->GetXaxis()->GetXmax());
@@ -303,10 +303,10 @@ void TCalibrator::ResetMap(std::map<double, double>& inmap)
 
 void TCalibrator::PrintMap(std::map<double, double>& inmap)
 {
-   std::cout<<"\tfirst\tsecond"<<std::endl;
+   std::cout << "\tfirst\tsecond" << std::endl;
    int counter = 0;
    for(auto& it : inmap) {
-      std::cout<<counter++<<"\t"<<it.first<<"\t"<<it.second<<std::endl;
+      std::cout << counter++ << "\t" << it.first << "\t" << it.second << std::endl;
    }
 }
 

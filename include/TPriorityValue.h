@@ -567,7 +567,7 @@ private:
 template <class T>
 std::ostream& operator<<(std::ostream& out, const TPriorityValue<T>& val)
 {
-   out<<val.fValue;
+   out << val.fValue;
    return out;
 }
 

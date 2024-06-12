@@ -144,27 +144,27 @@ void TFragment::Print(std::ostream& out) const
 {
    /// Print fragment to stream out in a thread-safe way
    std::ostringstream str;
-   str<<"DaqTimeStamp:        "<<ctime(&fDaqTimeStamp)<<std::endl
-      <<"DaqId:               "<<fDaqId<<std::endl
-      <<"\tTriggerId["<<fTriggerId.size()<<"]";
+   str << "DaqTimeStamp:        " << ctime(&fDaqTimeStamp) << std::endl
+       << "DaqId:               " << fDaqId << std::endl
+       << "\tTriggerId[" << fTriggerId.size() << "]";
    for(auto id : fTriggerId) {
-      str<<"    0x"<<std::hex<<id<<std::dec;
+      str << "    0x" << std::hex << id << std::dec;
    }
-   str<<std::endl
-      <<"FragmentId:           "<<fFragmentId<<std::endl
-      <<"TriggerBit:           0x"<<std::hex<<fTriggerBitPattern<<std::dec<<std::endl
-      <<"NetworkPacketNumber:  "<<fNetworkPacketNumber<<std::endl
-      <<"Channel Address:      0x"<<std::hex<<GetAddress()<<std::dec<<std::endl;
+   str << std::endl
+       << "FragmentId:           " << fFragmentId << std::endl
+       << "TriggerBit:           0x" << std::hex << fTriggerBitPattern << std::dec << std::endl
+       << "NetworkPacketNumber:  " << fNetworkPacketNumber << std::endl
+       << "Channel Address:      0x" << std::hex << GetAddress() << std::dec << std::endl;
    TChannel* channel = GetChannel();
    if(channel != nullptr) {
-      str<<"Channel: "<<channel->GetNumber()<<"\t Name: "<<channel->GetName()<<std::endl;
+      str << "Channel: " << channel->GetNumber() << "\t Name: " << channel->GetName() << std::endl;
    }
-   str<<"Charge:               0x"<<std::hex<<static_cast<Int_t>(GetCharge())<<std::dec<<std::endl
-      <<"Cfd:                  0x"<<std::hex<<static_cast<Int_t>(GetCfd())<<std::dec<<std::endl
-      <<"ZC:                   0x"<<std::hex<<fZc<<std::dec<<std::endl
-      <<"TimeStamp:            "<<GetTimeStamp()<<std::endl
-      <<(HasWave() ? "Has a wave form stored" : "Doesn't have a wave form stored")<<std::endl;
-   out<<str.str();
+   str << "Charge:               0x" << std::hex << static_cast<Int_t>(GetCharge()) << std::dec << std::endl
+       << "Cfd:                  0x" << std::hex << static_cast<Int_t>(GetCfd()) << std::dec << std::endl
+       << "ZC:                   0x" << std::hex << fZc << std::dec << std::endl
+       << "TimeStamp:            " << GetTimeStamp() << std::endl
+       << (HasWave() ? "Has a wave form stored" : "Doesn't have a wave form stored") << std::endl;
+   out << str.str();
 }
 
 bool TFragment::IsDetector(const char* prefix, Option_t* opt) const

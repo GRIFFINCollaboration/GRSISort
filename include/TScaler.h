@@ -51,8 +51,8 @@ public:
       if(index < fScaler.size()) {
          fScaler[index] = scaler;
       } else {
-         std::cout<<"Failed to set scaler "<<scaler<<", index "<<index<<" is out of range 0 - "
-                  <<fScaler.size()<<std::endl;
+         std::cout << "Failed to set scaler " << scaler << ", index " << index << " is out of range 0 - "
+                   << fScaler.size() << std::endl;
       }
    }
    void SetScaler(UInt_t* data, int size)
@@ -77,7 +77,7 @@ public:
    ULong64_t GetTimeStamp() const
    {
       ULong64_t time = GetHighTimeStamp();
-      time           = time<<28;
+      time           = time << 28;
       time |= GetLowTimeStamp() & 0x0fffffff;
       return 10 * time;   // convert from raw 10 ns units to ns
    }
@@ -133,7 +133,7 @@ public:
       if(tree == nullptr) {
          tree = static_cast<TTree*>(gDirectory->Get("RateScaler"));
          if(tree == nullptr) {
-            std::cerr<<__PRETTY_FUNCTION__<<": no tree provided and failed to find \"RateScaler\" in "<<gDirectory->GetName()<<std::endl;
+            std::cerr << __PRETTY_FUNCTION__ << ": no tree provided and failed to find \"RateScaler\" in " << gDirectory->GetName() << std::endl;
             return -1.;
          }
       }
@@ -145,12 +145,12 @@ public:
          if(scalerData->GetAddress() != address) continue;
          auto scalers = scalerData->GetScaler();
          if(nominator >= scalers.size() || denominator >= scalers.size()) {
-            std::cerr<<__PRETTY_FUNCTION__<<": trying to get nominator "<<nominator<<" and denominator "<<denominator<<" from vector of size "<<scalers.size()<<std::endl;
+            std::cerr << __PRETTY_FUNCTION__ << ": trying to get nominator " << nominator << " and denominator " << denominator << " from vector of size " << scalers.size() << std::endl;
             return -1.;
          }
          return ((double)scalers[nominator]) / scalers[denominator];
       }
-      std::cerr<<__PRETTY_FUNCTION__<<": failed to find any entry for address "<<hex(address, 4)<<std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ": failed to find any entry for address " << hex(address, 4) << std::endl;
       return -1.;
    }
 

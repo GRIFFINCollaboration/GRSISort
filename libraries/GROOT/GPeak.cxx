@@ -151,7 +151,7 @@ void GPeak::Copy(TObject& obj) const
 bool GPeak::InitParams(TH1* fithist)
 {
    if(fithist == nullptr) {
-      std::cout<<"No histogram is associated yet, no initial guesses made"<<std::endl;
+      std::cout << "No histogram is associated yet, no initial guesses made" << std::endl;
       return false;
    }
    // Makes initial guesses at parameters for the fit. Uses the histogram to
@@ -255,17 +255,17 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
 
    TFitResultPtr fitres = fithist->Fit(this, Form("%sLRS", options.Data()));
 
-   if(verbose) std::cout<<"chi^2/NDF = "<<GetChisquare() / static_cast<double>(GetNDF())<<std::endl;
+   if(verbose) std::cout << "chi^2/NDF = " << GetChisquare() / static_cast<double>(GetNDF()) << std::endl;
 
    if(!fitres.Get()->IsValid()) {
-      if(!quiet) std::cout<<RED<<"fit has failed, trying refit... "<<RESET_COLOR<<std::endl;
+      if(!quiet) std::cout << RED << "fit has failed, trying refit... " << RESET_COLOR << std::endl;
       fithist->GetListOfFunctions()->Last()->Delete();
       fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
       if(!quiet) {
          if(fitres.Get()->IsValid()) {
-            std::cout<<DGREEN<<" refit passed!"<<RESET_COLOR<<std::endl;
+            std::cout << DGREEN << " refit passed!" << RESET_COLOR << std::endl;
          } else {
-            std::cout<<DRED<<" refit also failed :( "<<RESET_COLOR<<std::endl;
+            std::cout << DRED << " refit also failed :( " << RESET_COLOR << std::endl;
          }
       }
    }
@@ -274,14 +274,14 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    if(!TGRSIFunctions::CheckParameterErrors(fitres, options.Data())) {
       if(retryFit) {
          // fit again with all parameters released
-         if(!quiet) std::cout<<GREEN<<"Re-fitting with released parameters (without any limits):"<<RESET_COLOR<<std::endl;
+         if(!quiet) std::cout << GREEN << "Re-fitting with released parameters (without any limits):" << RESET_COLOR << std::endl;
          for(int i = 0; i < GetNpar(); ++i) {
             ReleaseParameter(i);
          }
          fitres = fithist->Fit(this, Form("%sLRSM", options.Data()));
       } else {
          // re-try using minos instead of minuit
-         if(!quiet) std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
+         if(!quiet) std::cout << YELLOW << "Re-fitting with \"E\" option to get better error estimation using Minos technique." << RESET_COLOR << std::endl;
          fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
       }
    }
@@ -311,10 +311,10 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    }
    fSum = fithist->Integral(fithist->GetXaxis()->FindBin(xlow),
                             fithist->GetXaxis()->FindBin(xhigh));   //* fithist->GetBinWidth(1);
-   if(verbose) std::cout<<"sum between markers: "<<fSum<<std::endl;
+   if(verbose) std::cout << "sum between markers: " << fSum << std::endl;
    fDSum = TMath::Sqrt(fSum);
    fSum -= bgArea;
-   if(verbose) std::cout<<"sum after subtraction: "<<fSum<<std::endl;
+   if(verbose) std::cout << "sum after subtraction: " << fSum << std::endl;
 
    // Make a function that does not include the background
    // Intgrate the background.
@@ -372,18 +372,18 @@ void GPeak::Clear(Option_t* opt)
 void GPeak::Print(Option_t* opt) const
 {
    TString options = opt;
-   std::cout<<GREEN;
-   std::cout<<"Name: "<<GetName()<<std::endl;
-   std::cout<<"Centroid:  "<<GetParameter("centroid")<<" +- "<<GetParError(GetParNumber("centroid"))<<std::endl;
-   std::cout<<"Area:      "<<fArea<<" +- "<<fDArea<<std::endl;
-   std::cout<<"Sum:       "<<fSum<<" +- "<<fDSum<<std::endl;
-   std::cout<<"FWHM:      "<<GetFWHM()<<" +- "<<GetFWHMErr()<<std::endl;
-   std::cout<<"Reso:      "<<GetFWHM() / GetParameter("centroid") * 100.<<"%%"<<std::endl;
-   std::cout<<"Chi^2/NDF: "<<fChi2 / fNdf<<std::endl;
+   std::cout << GREEN;
+   std::cout << "Name: " << GetName() << std::endl;
+   std::cout << "Centroid:  " << GetParameter("centroid") << " +- " << GetParError(GetParNumber("centroid")) << std::endl;
+   std::cout << "Area:      " << fArea << " +- " << fDArea << std::endl;
+   std::cout << "Sum:       " << fSum << " +- " << fDSum << std::endl;
+   std::cout << "FWHM:      " << GetFWHM() << " +- " << GetFWHMErr() << std::endl;
+   std::cout << "Reso:      " << GetFWHM() / GetParameter("centroid") * 100. << "%%" << std::endl;
+   std::cout << "Chi^2/NDF: " << fChi2 / fNdf << std::endl;
    if(options.Contains("all")) {
       TF1::Print(opt);
    }
-   std::cout<<RESET_COLOR;
+   std::cout << RESET_COLOR;
 }
 
 void GPeak::DrawResiduals(TH1* hist) const
@@ -392,7 +392,7 @@ void GPeak::DrawResiduals(TH1* hist) const
       return;
    }
    if(fChi2 < 0.000000001) {
-      std::cout<<"No fit performed"<<std::endl;
+      std::cout << "No fit performed" << std::endl;
       return;
    }
    Double_t xlow, xhigh;

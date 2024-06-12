@@ -35,12 +35,12 @@
 
 void Help()
 {
-   std::cout<<"This is helpful information."<<std::endl;
+   std::cout << "This is helpful information." << std::endl;
 }
 
 void Commands()
 {
-   std::cout<<"this is a list of useful commands."<<std::endl;
+   std::cout << "this is a list of useful commands." << std::endl;
 }
 
 void Prompt()
@@ -52,7 +52,7 @@ void Version()
 {
    int ret = system(Form("%s/bin/grsi-config --version", getenv("GRSISYS")));
    if(ret == -1) {
-      std::cout<<"Failed to call grsi-config!"<<std::endl;
+      std::cout << "Failed to call grsi-config!" << std::endl;
    }
 }
 
@@ -316,12 +316,12 @@ std::string MergeStrings(const std::vector<std::string>& strings, char split)
 {
    std::stringstream ss;
    for(auto it = strings.begin(); it != strings.end(); it++) {
-      ss<<*it;
+      ss << *it;
 
       auto next = it;
       next++;
       if(next != strings.end()) {
-         ss<<split;
+         ss << split;
       }
    }
    return ss.str();
@@ -400,7 +400,7 @@ void StartGUI()
 #else
 void StartGUI()
 {
-   std::cout<<"Cannot start gui, requires ROOT compiled against python 2.7"<<std::endl;
+   std::cout << "Cannot start gui, requires ROOT compiled against python 2.7" << std::endl;
 }
 #endif
 

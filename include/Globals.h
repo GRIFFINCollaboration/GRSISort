@@ -99,7 +99,7 @@ template <typename T>
 void Append(std::stringstream& stream, const T& tail)
 {
    // append last argument
-   stream<<tail;
+   stream << tail;
 }
 
 // this template uses existing stream and appends to it
@@ -107,7 +107,7 @@ template <typename T, typename... U>
 void Append(std::stringstream& stream, const T& head, const U&... tail)
 {
    // append first argument
-   stream<<head;
+   stream << head;
 
    // reversely call this template (or the one with the last argument)
    Append(stream, tail...);
@@ -119,13 +119,13 @@ std::string Stringify(const T& head, const U&... tail)
 {
    // print first arguments to string
    std::stringstream stream;
-   stream<<head;
+   stream << head;
 
    // call the second template (or the third if tail is just one argument)
    Append(stream, tail...);
 
    // append a newline
-   stream<<std::endl;
+   stream << std::endl;
 
    // return resulting string
    return stream.str();
@@ -137,13 +137,13 @@ template <typename T>
 inline std::string hex(T val, int width = -1)
 {
    std::ostringstream str;
-   str<<"0x"<<std::hex;
+   str << "0x" << std::hex;
    if(width > 0) {
-      str<<std::setfill('0')<<std::setw(width);
+      str << std::setfill('0') << std::setw(width);
    }
-   str<<val;
+   str << val;
    if(width > 0) {
-      str<<std::setfill(' ');
+      str << std::setfill(' ');
    }
    return str.str();
 }
@@ -173,7 +173,7 @@ static inline std::string sh(std::string cmd)
 static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int maxFrames = 63)
 {
    std::stringstream str;
-   str<<"stack trace:"<<std::endl;
+   str << "stack trace:" << std::endl;
 
    // storage array for stack trace address data
    void** addrlist = new void*[maxFrames + 1];
@@ -182,8 +182,8 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int m
    int addrlen = backtrace(addrlist, maxFrames + 1);
 
    if(addrlen == 0) {
-      str<<"  <empty, possibly corrupt>"<<std::endl;
-      out<<str.str();
+      str << "  <empty, possibly corrupt>" << std::endl;
+      out << str.str();
       return;
    }
 
@@ -238,22 +238,22 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int m
          char* ret = abi::__cxa_demangle(begin_name, funcname, &funcnamesize, &status);
          if(status == 0) {
             funcname = ret;   // use possibly realloc()-ed string
-            str<<"  "<<symbollist[i]<<": "<<funcname<<"+"<<begin_offset<<std::endl;
+            str << "  " << symbollist[i] << ": " << funcname << "+" << begin_offset << std::endl;
          } else {
             // demangling failed. Output function name as a C function with
             // no arguments.
-            str<<"  "<<symbollist[i]<<": "<<begin_name<<"()+"<<begin_offset<<std::endl;
+            str << "  " << symbollist[i] << ": " << begin_name << "()+" << begin_offset << std::endl;
          }
       } else {
          // couldn't parse the line? print the whole line.
-         str<<"  "<<symbollist[i]<<std::endl;
+         str << "  " << symbollist[i] << std::endl;
       }
       // str<<line;
    }
 
    free(funcname);
    free(symbollist);
-   out<<str.str();
+   out << str.str();
 }
 
 #if !__APPLE__

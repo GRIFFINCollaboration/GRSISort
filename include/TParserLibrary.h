@@ -17,33 +17,33 @@ public:
 
    TRawFile* CreateRawFile(const std::string& file)
    {
-		/// function to open library specific raw data file
+      /// function to open library specific raw data file
       Load();
       return fCreateRawFile(file);
    }
    void DestroyRawFile(TRawFile* file)
    {
-		/// function to destroy library specific raw data file
+      /// function to destroy library specific raw data file
       Load();
       fDestroyRawFile(file);
    }
 
    TDataParser* CreateDataParser()
    {
-		/// function to open library specific data parser
+      /// function to open library specific data parser
       Load();
       return fCreateDataParser();
    }
    void DestroyDataParser(TDataParser* parser)
    {
-		/// function to destroy library specific data parser
+      /// function to destroy library specific data parser
       Load();
       fDestroyDataParser(parser);
    }
 
    std::string LibraryVersion()
    {
-		/// returns version of shared object library loaded
+      /// returns version of shared object library loaded
       Load();
       return fLibraryVersion();
    }
@@ -64,7 +64,7 @@ private:
 
    /// \cond CLASSIMP
    ClassDefOverride(TParserLibrary, 1);   // parser library class
-	/// \endcond
+                                          /// \endcond
 };
 
 #endif

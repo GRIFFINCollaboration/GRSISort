@@ -29,7 +29,7 @@ Bool_t TRunInfo::ReadInfoFromFile(TFile* tempf)
    }
 
    if((gDirectory->GetFile()) == nullptr) {
-      std::cout<<"File does not exist"<<std::endl;
+      std::cout << "File does not exist" << std::endl;
       savdir->cd();
       return false;
    }
@@ -87,39 +87,39 @@ void TRunInfo::Print(Option_t* opt) const
    /// a: Print out more details (array position and detector information).
    TSingleton<TRunInfo>::PrintDirectory();
    std::ostringstream str;
-   str<<"Title: "<<RunTitle()<<std::endl;
-   str<<"Comment: "<<RunComment()<<std::endl;
+   str << "Title: " << RunTitle() << std::endl;
+   str << "Comment: " << RunComment() << std::endl;
    time_t    tmpStart = static_cast<time_t>(RunStart());
    time_t    tmpStop  = static_cast<time_t>(RunStop());
    struct tm runStart = *localtime(const_cast<const time_t*>(&tmpStart));
    struct tm runStop  = *localtime(const_cast<const time_t*>(&tmpStop));
-   str<<std::setfill('0');
+   str << std::setfill('0');
    if(RunNumber() != 0 && SubRunNumber() != -1) {
-      str<<"\t\tRunNumber:          "<<std::setw(5)<<RunNumber()<<std::endl;
-      str<<"\t\tSubRunNumber:       "<<std::setw(3)<<SubRunNumber()<<std::endl;
+      str << "\t\tRunNumber:          " << std::setw(5) << RunNumber() << std::endl;
+      str << "\t\tSubRunNumber:       " << std::setw(3) << SubRunNumber() << std::endl;
    } else if(RunNumber() != 0) {
-      str<<"\t\tRunNumber:          "<<std::setw(5)<<RunNumber()<<std::endl;
-      str<<"\t\tSubRunNumbers:      "<<std::setw(3)<<FirstSubRunNumber()<<"-"<<std::setw(3)<<LastSubRunNumber()<<std::endl;
+      str << "\t\tRunNumber:          " << std::setw(5) << RunNumber() << std::endl;
+      str << "\t\tSubRunNumbers:      " << std::setw(3) << FirstSubRunNumber() << "-" << std::setw(3) << LastSubRunNumber() << std::endl;
    } else {
-      str<<"\t\tRunNumbers:         "<<std::setw(5)<<FirstRunNumber()<<"-"<<std::setw(5)<<LastRunNumber()<<std::endl;
+      str << "\t\tRunNumbers:         " << std::setw(5) << FirstRunNumber() << "-" << std::setw(5) << LastRunNumber() << std::endl;
    }
-   str<<std::setfill(' ');
+   str << std::setfill(' ');
    if(RunStart() != 0 && RunStop() != 0) {
-      str<<"\t\tRunStart:           "<<asctime(&runStart);
-      str<<"\t\tRunStop:            "<<asctime(&runStop);
-      str<<"\t\tRunLength:          "<<RunLength()<<" s"<<std::endl;
+      str << "\t\tRunStart:           " << asctime(&runStart);
+      str << "\t\tRunStop:            " << asctime(&runStop);
+      str << "\t\tRunLength:          " << RunLength() << " s" << std::endl;
    } else {
-      str<<"\t\tCombined RunLength: "<<RunLength()<<" s"<<std::endl;
+      str << "\t\tCombined RunLength: " << RunLength() << " s" << std::endl;
    }
    if(strchr(opt, 'a') != nullptr) {
-      str<<std::endl;
-      str<<"\t=============================="<<std::endl;
-      str<<DBLUE "\t\tArray Position (mm) = "<<DRED<<TRunInfo::HPGeArrayPosition()<<RESET_COLOR<<std::endl;
+      str << std::endl;
+      str << "\t==============================" << std::endl;
+      str << DBLUE "\t\tArray Position (mm) = " << DRED << TRunInfo::HPGeArrayPosition() << RESET_COLOR << std::endl;
       if(fDetectorInformation != nullptr) fDetectorInformation->Print(opt);
-      else str<<"no detector information"<<std::endl;
-      str<<"\t=============================="<<std::endl;
+      else str << "no detector information" << std::endl;
+      str << "\t==============================" << std::endl;
    }
-   std::cout<<str.str();
+   std::cout << str.str();
 }
 
 void TRunInfo::Clear(Option_t*)
@@ -140,17 +140,17 @@ void TRunInfo::SetRunInfo(int runnum, int subrunnum)
 {
    /// Sets the run info. This figures out what systems are available.
 
-   std::cout<<"found "<<TChannel::GetNumberOfChannels()<<" channels"<<std::endl;
+   std::cout << "found " << TChannel::GetNumberOfChannels() << " channels" << std::endl;
    if(runnum != 0) {
       if(RunNumber() != 0 && RunNumber() != runnum) {
-         std::cout<<"Warning, overwriting non-default run-number "<<RunNumber()<<" with "<<runnum<<std::endl;
+         std::cout << "Warning, overwriting non-default run-number " << RunNumber() << " with " << runnum << std::endl;
       }
       SetRunNumber(runnum);
    }
    if(subrunnum != -1) {
       if(SubRunNumber() != -1 && SubRunNumber() != subrunnum) {
-         std::cout<<"Warning, overwriting non-default sub-run-number "<<SubRunNumber()<<" with "<<subrunnum
-                  <<std::endl;
+         std::cout << "Warning, overwriting non-default sub-run-number " << SubRunNumber() << " with " << subrunnum
+                   << std::endl;
       }
       SetSubRunNumber(subrunnum);
    }
@@ -181,22 +181,22 @@ Bool_t TRunInfo::ReadInfoFile(const char* filename)
    // An example can be found in the "examples" directory.
    std::string infilename;
    infilename.append(filename);
-   std::cout<<"Reading info from file: "<<CYAN<<filename<<RESET_COLOR<<std::endl;
+   std::cout << "Reading info from file: " << CYAN << filename << RESET_COLOR << std::endl;
    if(infilename.length() == 0) {
-      std::cout<<"Bad file name length"<<std::endl;
+      std::cout << "Bad file name length" << std::endl;
       return false;
    }
 
    std::ifstream infile;
    infile.open(infilename.c_str());
    if(!infile) {
-      std::cout<<"could not open file."<<std::endl;
+      std::cout << "could not open file." << std::endl;
       return false;
    }
    infile.seekg(0, std::ios::end);
    int length = infile.tellg();
    if(length < 1) {
-      std::cout<<"file is empty."<<std::endl;
+      std::cout << "file is empty." << std::endl;
       return false;
    }
    auto* buffer = new char[length];
@@ -264,8 +264,8 @@ Bool_t TRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
    }
 
    if(strcmp(opt, "q") != 0) {
-      std::cout<<"parsed "<<linenumber<<" lines."<<std::endl;
-      std::cout<<DBLUE "\tArray Position (mm) = "<<DRED<<TRunInfo::HPGeArrayPosition()<<RESET_COLOR<<std::endl;
+      std::cout << "parsed " << linenumber << " lines." << std::endl;
+      std::cout << DBLUE "\tArray Position (mm) = " << DRED << TRunInfo::HPGeArrayPosition() << RESET_COLOR << std::endl;
    }
    return true;
 }
@@ -287,14 +287,14 @@ Long64_t TRunInfo::Merge(TCollection* list)
 
 void TRunInfo::PrintBadCycles() const
 {
-   std::cout<<"Bad Cycles:\t";
+   std::cout << "Bad Cycles:\t";
    if(Get()->fBadCycleList.empty()) {
-      std::cout<<"NONE"<<std::endl;
+      std::cout << "NONE" << std::endl;
    } else {
       for(int it : Get()->fBadCycleList) {
-         std::cout<<" "<<it;
+         std::cout << " " << it;
       }
-      std::cout<<std::endl;
+      std::cout << std::endl;
    }
 }
 
@@ -342,16 +342,16 @@ bool TRunInfo::WriteToRoot(TFile* fileptr)
       fileptr->ReOpen("UPDATE");
    }
    if(!gDirectory) {
-      std::cout<<"No file opened to write TRunInfo to."<<std::endl;
+      std::cout << "No file opened to write TRunInfo to." << std::endl;
       bool2return = false;
    } else {
       runInfo->Write("RunInfo", TObject::kOverwrite);
       if(runInfo->fDetectorInformation != nullptr) runInfo->fDetectorInformation->Write("DetectorInformation", TObject::kOverwrite);
    }
 
-   std::cout<<"Writing TRunInfo to "<<gDirectory->GetFile()->GetName()<<std::endl;
+   std::cout << "Writing TRunInfo to " << gDirectory->GetFile()->GetName() << std::endl;
    if(oldoption == "READ") {
-      std::cout<<"  Returning "<<gDirectory->GetFile()->GetName()<<" to \""<<oldoption<<"\" mode."<<std::endl;
+      std::cout << "  Returning " << gDirectory->GetFile()->GetName() << " to \"" << oldoption << "\" mode." << std::endl;
       fileptr->ReOpen("READ");
    }
    savdir->cd();   // Go back to original gDirectory
@@ -366,12 +366,12 @@ bool TRunInfo::WriteInfoFile(const std::string& filename)
       std::ofstream infoout;
       infoout.open(filename.c_str());
       std::string infostr = Get()->PrintToString();
-      infoout<<infostr.c_str();
-      infoout<<std::endl;
-      infoout<<std::endl;
+      infoout << infostr.c_str();
+      infoout << std::endl;
+      infoout << std::endl;
       infoout.close();
    } else {
-      std::cout<<"Please enter a file name"<<std::endl;
+      std::cout << "Please enter a file name" << std::endl;
       return false;
    }
 
@@ -398,7 +398,7 @@ std::string TRunInfo::PrintToString(Option_t*)
 
 TEventBuildingLoop::EBuildMode TRunInfo::BuildMode() const
 {
-   std::cout<<this<<": default build mode "<<static_cast<int>(TEventBuildingLoop::EBuildMode::kDefault)<<std::endl;
+   std::cout << this << ": default build mode " << static_cast<int>(TEventBuildingLoop::EBuildMode::kDefault) << std::endl;
    return TEventBuildingLoop::EBuildMode::kDefault;
 }
 
@@ -412,12 +412,12 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
    std::pair<int, int> newPair = std::make_pair(runinfo->fRunNumber, runinfo->fSubRunNumber);
    // check for dual entries
    if(std::find(fRunList.begin(), fRunList.end(), newPair) != fRunList.end()) {
-      std::cerr<<DYELLOW<<"Warning, adding run "<<std::setfill('0')<<std::setw(5)<<newPair.first<<"_"<<std::setw(3)<<newPair.second<<std::setfill(' ')<<" again!"<<RESET_COLOR<<std::endl;
+      std::cerr << DYELLOW << "Warning, adding run " << std::setfill('0') << std::setw(5) << newPair.first << "_" << std::setw(3) << newPair.second << std::setfill(' ') << " again!" << RESET_COLOR << std::endl;
       return;
    }
    fRunList.push_back(newPair);
 
-   if(verbose) std::cout<<"adding run "<<runinfo->fRunNumber<<", sub run "<<runinfo->fSubRunNumber<<" to run "<<fRunNumber<<", sub run "<<fSubRunNumber<<std::endl;
+   if(verbose) std::cout << "adding run " << runinfo->fRunNumber << ", sub run " << runinfo->fSubRunNumber << " to run " << fRunNumber << ", sub run " << fSubRunNumber << std::endl;
    // add the run length together
    if(runinfo->fRunLength > 0) {
       if(fRunLength > 0) {
@@ -431,19 +431,19 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
       // check if the added run is an increment of the current run number (if the run number is set)
       if(fRunNumber != 0) {
          if(runinfo->fRunNumber + 1 == fRunNumber) {
-            if(verbose) std::cout<<"found second run ("<<runinfo->fRunNumber<<") before current run ("<<fRunNumber<<")"<<std::endl;
+            if(verbose) std::cout << "found second run (" << runinfo->fRunNumber << ") before current run (" << fRunNumber << ")" << std::endl;
             // use runinfo as first run and the current run as last
             fFirstRunNumber = runinfo->fRunNumber;
             fLastRunNumber  = fRunNumber;
             fRunStart       = runinfo->fRunStart;   // no need to set run stop
          } else if(runinfo->fRunNumber - 1 == fRunNumber) {
-            if(verbose) std::cout<<"found second run ("<<runinfo->fRunNumber<<") after current run ("<<fRunNumber<<")"<<std::endl;
+            if(verbose) std::cout << "found second run (" << runinfo->fRunNumber << ") after current run (" << fRunNumber << ")" << std::endl;
             // use runinfo as last run and the current run as first
             fFirstRunNumber = fRunNumber;
             fLastRunNumber  = runinfo->fRunNumber;
             fRunStop        = runinfo->fRunStop;   // no need to set run start
          } else {
-            if(verbose) std::cout<<"found second run ("<<runinfo->fRunNumber<<") non-consecutive to run ("<<fRunNumber<<")"<<std::endl;
+            if(verbose) std::cout << "found second run (" << runinfo->fRunNumber << ") non-consecutive to run (" << fRunNumber << ")" << std::endl;
             // run start and stop don't make a lot of sense with non-consecutive runs (?)
             fRunStart = 0.;
             fRunStop  = 0.;
@@ -458,26 +458,26 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
       } else if(fFirstRunNumber != 0 && fLastRunNumber != 0 && fFirstRunNumber != fLastRunNumber) {
          // if we already have a (good) range of runs, check if runinfo fits at the beginning or the end
          if(runinfo->fRunNumber + 1 == fFirstRunNumber) {
-            if(verbose) std::cout<<"found another run ("<<runinfo->fRunNumber<<") before first run ("<<fFirstRunNumber<<")"<<std::endl;
+            if(verbose) std::cout << "found another run (" << runinfo->fRunNumber << ") before first run (" << fFirstRunNumber << ")" << std::endl;
             // use runinfo as first run
             fFirstRunNumber = runinfo->fRunNumber;
             fRunStart       = runinfo->fRunStart;
          } else if(runinfo->fRunNumber - 1 == fLastRunNumber) {
-            if(verbose) std::cout<<"found another run ("<<runinfo->fRunNumber<<") after last run ("<<fLastRunNumber<<")"<<std::endl;
+            if(verbose) std::cout << "found another run (" << runinfo->fRunNumber << ") after last run (" << fLastRunNumber << ")" << std::endl;
             // use runinfo as last run
             fLastRunNumber = runinfo->fRunNumber;
             fRunStop       = runinfo->fRunStop;
          } else if(runinfo->fRunNumber == fFirstRunNumber || runinfo->fRunNumber == fLastRunNumber) {
-            if(verbose) std::cout<<"found another sub(?) run part of runs ("<<fFirstRunNumber<<" - "<<fLastRunNumber<<")"<<std::endl;
+            if(verbose) std::cout << "found another sub(?) run part of runs (" << fFirstRunNumber << " - " << fLastRunNumber << ")" << std::endl;
             // found probably another subrun of a run already added
             // since we do not keep track of all subruns we have to assume this is in order
             // so we only update the run start or stop if necessary
-            if(verbose) std::cout<<"changing run start/stop from "<<std::setw(16)<<fRunStart<<"/"<<std::setw(16)<<fRunStop<<" to ";
+            if(verbose) std::cout << "changing run start/stop from " << std::setw(16) << fRunStart << "/" << std::setw(16) << fRunStop << " to ";
             if(fRunStop < runinfo->fRunStop) fRunStop = runinfo->fRunStop;
             if(fRunStart > runinfo->fRunStart) fRunStart = runinfo->fRunStart;
-            if(verbose) std::cout<<std::setw(16)<<fRunStart<<"/"<<std::setw(16)<<fRunStop<<std::endl;
+            if(verbose) std::cout << std::setw(16) << fRunStart << "/" << std::setw(16) << fRunStop << std::endl;
          } else {
-            if(verbose) std::cout<<"found another run ("<<runinfo->fRunNumber<<") non-consecutive to runs ("<<fFirstRunNumber<<" - "<<fLastRunNumber<<")"<<std::endl;
+            if(verbose) std::cout << "found another run (" << runinfo->fRunNumber << ") non-consecutive to runs (" << fFirstRunNumber << " - " << fLastRunNumber << ")" << std::endl;
             // run start and stop don't make a lot of sense with non-consecutive runs (?)
             fRunStart = 0.;
             fRunStop  = 0.;
@@ -487,24 +487,24 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
          }
       } else {
          // the run number is zero, and we do not have a (good) range, so there is nothing to do.
-         if(verbose) std::cout<<"found another run ("<<runinfo->fRunNumber<<") non-consecutive run ("<<fFirstRunNumber<<" - "<<fLastRunNumber<<")"<<std::endl;
+         if(verbose) std::cout << "found another run (" << runinfo->fRunNumber << ") non-consecutive run (" << fFirstRunNumber << " - " << fLastRunNumber << ")" << std::endl;
       }
    } else if(fSubRunNumber != -1) {
       // check if the added sub run is an increment of the current run number
       if(runinfo->fSubRunNumber + 1 == fSubRunNumber) {
-         if(verbose) std::cout<<"found second sub run ("<<runinfo->fSubRunNumber<<") before current sub run ("<<fSubRunNumber<<")"<<std::endl;
+         if(verbose) std::cout << "found second sub run (" << runinfo->fSubRunNumber << ") before current sub run (" << fSubRunNumber << ")" << std::endl;
          // if the run numbers are the same and we have subsequent sub runs we can update the run start
          fRunStart          = runinfo->fRunStart;
          fFirstSubRunNumber = runinfo->fSubRunNumber;
          fLastSubRunNumber  = fSubRunNumber;
       } else if(runinfo->fSubRunNumber - 1 == fSubRunNumber) {
-         if(verbose) std::cout<<"found second sub run ("<<runinfo->fSubRunNumber<<") after current sub run ("<<fSubRunNumber<<")"<<std::endl;
+         if(verbose) std::cout << "found second sub run (" << runinfo->fSubRunNumber << ") after current sub run (" << fSubRunNumber << ")" << std::endl;
          // if the run numbers are the same and we have subsequent sub runs we can update the run stop
          fRunStop           = runinfo->fRunStop;
          fFirstSubRunNumber = fSubRunNumber;
          fLastSubRunNumber  = runinfo->fSubRunNumber;
       } else {
-         if(verbose) std::cout<<"found second sub run ("<<runinfo->fSubRunNumber<<") non-consecutive to current sub run ("<<fSubRunNumber<<")"<<std::endl;
+         if(verbose) std::cout << "found second sub run (" << runinfo->fSubRunNumber << ") non-consecutive to current sub run (" << fSubRunNumber << ")" << std::endl;
          // with multiple non-sequential subruns added, the sub run number and start/stop have no meaning anymore
          fRunStart = 0.;
          fRunStop  = 0.;
@@ -514,17 +514,17 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
    } else {
       // we have the same run with a range of sub-runs already added, so check if this once fits at the end or the beginning
       if(runinfo->fSubRunNumber + 1 == fFirstSubRunNumber) {
-         if(verbose) std::cout<<"found another sub run ("<<runinfo->fSubRunNumber<<") before first sub run ("<<fFirstSubRunNumber<<")"<<std::endl;
+         if(verbose) std::cout << "found another sub run (" << runinfo->fSubRunNumber << ") before first sub run (" << fFirstSubRunNumber << ")" << std::endl;
          // use runinfo as first run
          fFirstSubRunNumber = runinfo->fSubRunNumber;
          fRunStart          = runinfo->fRunStart;
       } else if(runinfo->fSubRunNumber - 1 == fLastSubRunNumber) {
-         if(verbose) std::cout<<"found another sub run ("<<runinfo->fSubRunNumber<<") after last sub run ("<<fLastSubRunNumber<<")"<<std::endl;
+         if(verbose) std::cout << "found another sub run (" << runinfo->fSubRunNumber << ") after last sub run (" << fLastSubRunNumber << ")" << std::endl;
          // use runinfo as last run
          fLastSubRunNumber = runinfo->fSubRunNumber;
          fRunStop          = runinfo->fRunStop;
       } else {
-         if(verbose) std::cout<<"found another sub run ("<<runinfo->fSubRunNumber<<") non-consecutive to sub runs ("<<fFirstSubRunNumber<<" - "<<fLastSubRunNumber<<")"<<std::endl;
+         if(verbose) std::cout << "found another sub run (" << runinfo->fSubRunNumber << ") non-consecutive to sub runs (" << fFirstSubRunNumber << " - " << fLastSubRunNumber << ")" << std::endl;
          // with multiple non-sequential subruns added, the sub run number and start/stop have no meaning anymore
          fRunStart          = 0.;
          fRunStop           = 0.;
@@ -537,13 +537,13 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
 void TRunInfo::PrintRunList()
 {
    if(fRunList.empty()) {
-      std::cout<<"No runs added to list of runs!"<<std::endl;
+      std::cout << "No runs added to list of runs!" << std::endl;
       return;
    }
    std::sort(fRunList.begin(), fRunList.end());
-   std::cout<<"Got "<<fRunList.size()<<" runs:"<<std::endl;
+   std::cout << "Got " << fRunList.size() << " runs:" << std::endl;
    for(auto pair : fRunList) {
-      std::cout<<std::setw(5)<<std::setfill('0')<<pair.first<<"_"<<std::setw(3)<<pair.second<<std::setfill(' ')<<std::endl;
+      std::cout << std::setw(5) << std::setfill('0') << pair.first << "_" << std::setw(3) << pair.second << std::setfill(' ') << std::endl;
    }
 }
 
@@ -555,7 +555,7 @@ std::string TRunInfo::CreateLabel(bool quiet)
    Int_t subRunNumber = runInfo->SubRunNumber();
 
    std::string result;
-   if(!quiet) std::cout<<"Using run number "<<runNumber<<", sub run number "<<subRunNumber<<", first/last run number "<<runInfo->FirstRunNumber()<<"/"<<runInfo->LastRunNumber()<<", and first/last sub run number"<<runInfo->FirstSubRunNumber()<<"/"<<runInfo->LastSubRunNumber()<<std::endl;
+   if(!quiet) std::cout << "Using run number " << runNumber << ", sub run number " << subRunNumber << ", first/last run number " << runInfo->FirstRunNumber() << "/" << runInfo->LastRunNumber() << ", and first/last sub run number" << runInfo->FirstSubRunNumber() << "/" << runInfo->LastSubRunNumber() << std::endl;
    if(runNumber != 0 && subRunNumber != -1) {
       // both run and subrun number set => single file processed
       result = Form("%05d_%03d", runNumber, subRunNumber);
@@ -567,7 +567,7 @@ std::string TRunInfo::CreateLabel(bool quiet)
       // multiple runs
       result = Form("%05d-%05d", runInfo->FirstRunNumber(), runInfo->LastRunNumber());
    }
-   if(!quiet) std::cout<<"Created label "<<result<<std::endl;
+   if(!quiet) std::cout << "Created label " << result << std::endl;
 
    return result;
 }

@@ -81,7 +81,7 @@ void TCal::WriteToAllChannels(const std::string& mnemonic)
          WriteToChannel();
       }
    }
-   std::cout<<std::endl;
+   std::cout << std::endl;
    if(origChan != nullptr) {
       SetChannel(origChan);
    }
@@ -155,26 +155,26 @@ void TCal::Print(Option_t*) const
 {
    /// Prints calibration information
    if(GetChannel() != nullptr) {
-      std::cout<<"Channel Number: "<<GetChannel()->GetNumber()<<std::endl;
+      std::cout << "Channel Number: " << GetChannel()->GetNumber() << std::endl;
    } else {
    }
 
    if(fFitFunc != nullptr) {
-      std::cout<<std::endl
-               <<"*******************************"<<std::endl;
-      std::cout<<" Fit:"<<std::endl;
+      std::cout << std::endl
+                << "*******************************" << std::endl;
+      std::cout << " Fit:" << std::endl;
       fFitFunc->Print();
-      std::cout<<std::endl
-               <<"*******************************"<<std::endl;
+      std::cout << std::endl
+                << "*******************************" << std::endl;
    } else {
-      std::cout<<"Parameters: FIT NOT SET"<<std::endl;
+      std::cout << "Parameters: FIT NOT SET" << std::endl;
    }
 
-   std::cout<<"Nucleus: ";
+   std::cout << "Nucleus: ";
    if(GetNucleus() != nullptr) {
-      std::cout<<GetNucleus()->GetName()<<std::endl;
+      std::cout << GetNucleus()->GetName() << std::endl;
    } else {
-      std::cout<<"NOT SET"<<std::endl;
+      std::cout << "NOT SET" << std::endl;
    }
 }
 

@@ -48,7 +48,7 @@ void TCalManager::SetClass(const TClass* cl)
 {
    /// Sets the Derived class of the TCal being held in the TCalManager
    if(fClass != nullptr) {
-      std::cout<<"TCalManager type already set to "<<fClass->ClassName()<<std::endl;
+      std::cout << "TCalManager type already set to " << fClass->ClassName() << std::endl;
       return;
    }
 
@@ -69,7 +69,7 @@ void TCalManager::SetClass(const TClass* cl)
       Error("SetClass", "%s must inherit from TObject as the left most base class.", className);
       return;
    }
-   std::cout<<"Changing TCalManager to type: "<<className<<std::endl;
+   std::cout << "Changing TCalManager to type: " << className << std::endl;
    Int_t nch  = strlen(className) + 2;
    auto* name = new char[nch];
    snprintf(name, nch, "%ss", className);
@@ -145,7 +145,7 @@ Bool_t TCalManager::AddToManager(TCal* cal, UInt_t chanNum, Option_t* opt)
    // This has the effect of making it persistent as far as the ROOT streamer
    // facility is concerned. All of the other "pointer members" of the TCal
    // Get Deep copied into the TCal Manager.
-   std::cout<<"newCal: "<<newCal->GetChannel()<<", cal: "<<cal->GetChannel()<<std::endl;
+   std::cout << "newCal: " << newCal->GetChannel() << ", cal: " << cal->GetChannel() << std::endl;
    ;
    fCalMap.insert(std::make_pair(chanNum, newCal));
 
@@ -180,7 +180,7 @@ void TCalManager::Clear(Option_t*)
 void TCalManager::Print(Option_t*) const
 {
    if(fClass != nullptr) {
-      std::cout<<"Type: "<<fClass->GetName()<<std::endl;
+      std::cout << "Type: " << fClass->GetName() << std::endl;
    }
-   std::cout<<"Size: "<<fCalMap.size()<<std::endl;   // Printing this way due to size_type return
+   std::cout << "Size: " << fCalMap.size() << std::endl;   // Printing this way due to size_type return
 }

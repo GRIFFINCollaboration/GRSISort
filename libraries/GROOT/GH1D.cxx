@@ -49,9 +49,9 @@ bool GH1D::WriteDatFile(const char* outFile)
    }
 
    for(int i = 0; i < GetNbinsX(); i++) {
-      out<<GetXaxis()->GetBinCenter(i)<<"\t"<<GetBinContent(i)<<std::endl;
+      out << GetXaxis()->GetBinCenter(i) << "\t" << GetBinContent(i) << std::endl;
    }
-   out<<std::endl;
+   out << std::endl;
    out.close();
 
    return true;
@@ -90,7 +90,7 @@ void GH1D::Clear(Option_t* opt)
 void GH1D::Print(Option_t* opt) const
 {
    TH1D::Print(opt);
-   std::cout<<"\tParent: "<<parent.GetObject()<<std::endl;
+   std::cout << "\tParent: " << parent.GetObject() << std::endl;
 }
 
 void GH1D::Copy(TObject& obj) const

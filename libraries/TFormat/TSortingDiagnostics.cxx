@@ -83,7 +83,7 @@ void TSortingDiagnostics::AddDetectorClass(TChannel* channel)
       ++(fMissingDetectorClasses[channel->GetClassType()]);
    } else {
       fMissingDetectorClasses[channel->GetClassType()] = 0;
-      std::cout<<"Failed to find detector class "<<channel->GetClassType()<<" for channel:"<<std::endl;
+      std::cout << "Failed to find detector class " << channel->GetClassType() << " for channel:" << std::endl;
       channel->Print();
    }
 }
@@ -93,15 +93,15 @@ void TSortingDiagnostics::Print(Option_t* opt) const
    TString option = opt;
    option.ToUpper();
    if(!fMissingChannels.empty()) {
-      std::cout<<"Missing channels:"<<std::endl;
+      std::cout << "Missing channels:" << std::endl;
       for(auto it : fMissingChannels) {
-         std::cout<<hex(it.first, 4)<<": "<<it.second<<std::endl;
+         std::cout << hex(it.first, 4) << ": " << it.second << std::endl;
       }
    }
    if(!fMissingDetectorClasses.empty()) {
-      std::cout<<"Missing detector classes:"<<std::endl;
+      std::cout << "Missing detector classes:" << std::endl;
       for(auto it : fMissingDetectorClasses) {
-         std::cout<<(it.first == nullptr ? "nullptr" : it.first->GetName())<<": "<<it.second<<std::endl;
+         std::cout << (it.first == nullptr ? "nullptr" : it.first->GetName()) << ": " << it.second << std::endl;
       }
    }
    std::string color;
@@ -109,38 +109,38 @@ void TSortingDiagnostics::Print(Option_t* opt) const
       if(option.EqualTo("ERROR")) {
          color = DRED;
       }
-      std::cout<<color<<"Removed hits per detector class:"<<RESET_COLOR<<std::endl;
+      std::cout << color << "Removed hits per detector class:" << RESET_COLOR << std::endl;
       for(auto it : fHitsRemoved) {
-         std::cout<<it.first->GetName()<<": "<<it.second.first<<"/"<<it.second.second<<" = "<<(100. * it.second.first) / it.second.second<<"%"<<std::endl;
+         std::cout << it.first->GetName() << ": " << it.second.first << "/" << it.second.second << " = " << (100. * it.second.first) / it.second.second << "%" << std::endl;
       }
    } else {
       if(option.EqualTo("ERROR")) {
          color = DGREEN;
       }
-      std::cout<<color<<"No hits were removed!"<<RESET_COLOR<<std::endl;
+      std::cout << color << "No hits were removed!" << RESET_COLOR << std::endl;
    }
    color = "";   // reset color string
    if(fFragmentsOutOfOrder.empty() && fFragmentsOutOfTimeOrder.empty()) {
       if(option.EqualTo("ERROR")) {
          color = DGREEN;
       }
-      std::cout<<color<<"No fragments out of order!"<<RESET_COLOR<<std::endl;
+      std::cout << color << "No fragments out of order!" << RESET_COLOR << std::endl;
       return;
    }
    if(option.EqualTo("ERROR")) {
       color = DRED;
    }
    if(!fFragmentsOutOfOrder.empty()) {
-      std::cerr<<color<<NumberOfFragmentsOutOfOrder()<<" fragments were out of order, maximum entry difference was "
-               <<fMaxEntryDiff<<"!"<<std::endl
-               <<"Please consider increasing the sort depth with --sort-depth="<<fMaxEntryDiff<<RESET_COLOR
-               <<std::endl;
+      std::cerr << color << NumberOfFragmentsOutOfOrder() << " fragments were out of order, maximum entry difference was "
+                << fMaxEntryDiff << "!" << std::endl
+                << "Please consider increasing the sort depth with --sort-depth=" << fMaxEntryDiff << RESET_COLOR
+                << std::endl;
    }
    if(!fFragmentsOutOfTimeOrder.empty()) {
-      std::cerr<<color<<NumberOfFragmentsOutOfTimeOrder()<<" fragments were out of order, maximum entry difference was "
-               <<fMaxEntryDiff<<"!"<<std::endl
-               <<"Please consider increasing the sort depth with --sort-depth="<<fMaxEntryDiff<<RESET_COLOR
-               <<std::endl;
+      std::cerr << color << NumberOfFragmentsOutOfTimeOrder() << " fragments were out of order, maximum entry difference was "
+                << fMaxEntryDiff << "!" << std::endl
+                << "Please consider increasing the sort depth with --sort-depth=" << fMaxEntryDiff << RESET_COLOR
+                << std::endl;
    }
 }
 
@@ -151,11 +151,11 @@ void TSortingDiagnostics::Draw(Option_t*)
 void TSortingDiagnostics::WriteToFile(const char* fileName) const
 {
    std::ofstream statsOut(fileName);
-   statsOut<<std::endl
-           <<"Number of fragments out of order = "<<NumberOfFragmentsOutOfOrder()<<std::endl
-           <<"Number of fragments out of time order = "<<NumberOfFragmentsOutOfTimeOrder()<<std::endl
-           <<"Maximum entry difference = "<<fMaxEntryDiff<<std::endl
-           <<std::endl;
+   statsOut << std::endl
+            << "Number of fragments out of order = " << NumberOfFragmentsOutOfOrder() << std::endl
+            << "Number of fragments out of time order = " << NumberOfFragmentsOutOfTimeOrder() << std::endl
+            << "Maximum entry difference = " << fMaxEntryDiff << std::endl
+            << std::endl;
 }
 
 void TSortingDiagnostics::RemovedHits(TClass* detClass, long removed, long total)

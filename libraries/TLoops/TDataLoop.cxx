@@ -52,7 +52,7 @@ void TDataLoop::ReplaceSource(TRawFile* new_source)
 
 void TDataLoop::ResetSource()
 {
-   std::cerr<<"Reset not implemented for TRawFile"<<std::endl;
+   std::cerr << "Reset not implemented for TRawFile" << std::endl;
    // std::lock_guard<std::mutex> lock(fSourceMutex);
    // source->Reset();
 }

@@ -454,59 +454,59 @@ void TReaction::Print(Option_t* opt) const
    std::string pstring;
    pstring.assign(opt);
 
-   std::cout<<std::endl
-            <<std::endl
-            <<" * * * * * * * * * * * * * * * * * * * * * * * * *"<<std::endl;
-   std::cout<<std::endl
-            <<std::endl
-            <<"\tTReaction  '"<<GetName()<<"' :"<<std::endl
-            <<std::endl;
+   std::cout << std::endl
+             << std::endl
+             << " * * * * * * * * * * * * * * * * * * * * * * * * *" << std::endl;
+   std::cout << std::endl
+             << std::endl
+             << "\tTReaction  '" << GetName() << "' :" << std::endl
+             << std::endl;
 
-   std::cout<<" -> Beam '"<<fNuc[0]->GetName()<<"' kinetic energy = "<<fTBeam<<" [MeV]"<<std::endl;
-   std::cout<<" -> Reaction Q value (total)   = "<<fQVal<<" [MeV]"<<std::endl;
-   std::cout<<" -> Reaction kinematics type   = '"<<(fInverse ? "INVERSE" : "NORMAL")<<"'"<<std::endl;
+   std::cout << " -> Beam '" << fNuc[0]->GetName() << "' kinetic energy = " << fTBeam << " [MeV]" << std::endl;
+   std::cout << " -> Reaction Q value (total)   = " << fQVal << " [MeV]" << std::endl;
+   std::cout << " -> Reaction kinematics type   = '" << (fInverse ? "INVERSE" : "NORMAL") << "'" << std::endl;
    if(fInverse) {
-      std::cout<<std::endl
-               <<" Inverse beam '"<<fNuc[1]->GetName()<<"' [lab frame] :- "<<std::endl;
-      std::cout<<"\t Kinetic energy = "<<(fGLab[0] - 1) * fM[1]<<" [MeV]"<<std::endl;
-      std::cout<<"\t Velocity       = "<<fVLab[0]<<" [/c] "<<std::endl;
+      std::cout << std::endl
+                << " Inverse beam '" << fNuc[1]->GetName() << "' [lab frame] :- " << std::endl;
+      std::cout << "\t Kinetic energy = " << (fGLab[0] - 1) * fM[1] << " [MeV]" << std::endl;
+      std::cout << "\t Velocity       = " << fVLab[0] << " [/c] " << std::endl;
    }
 
-   std::cout<<std::endl
-            <<" Center of mass motion :- "<<std::endl;
-   std::cout<<"\t CmE  = "<<fCmE<<" [MeV]"<<std::endl;
-   std::cout<<"\t CmTi = "<<fCmTi<<" [MeV]"<<std::endl;
-   std::cout<<"\t CmTf = "<<fCmTf<<" [MeV]"<<std::endl;
-   std::cout<<"\t CmV  = "<<fCmV<<" [/c]"<<std::endl;
-   std::cout<<"\t CmP  = "<<fCmP<<" [MeV/c]"<<std::endl;
-   std::cout<<"\t CmG  = "<<fCmG<<std::endl;
-   std::cout<<std::endl;
+   std::cout << std::endl
+             << " Center of mass motion :- " << std::endl;
+   std::cout << "\t CmE  = " << fCmE << " [MeV]" << std::endl;
+   std::cout << "\t CmTi = " << fCmTi << " [MeV]" << std::endl;
+   std::cout << "\t CmTf = " << fCmTf << " [MeV]" << std::endl;
+   std::cout << "\t CmV  = " << fCmV << " [/c]" << std::endl;
+   std::cout << "\t CmP  = " << fCmP << " [MeV/c]" << std::endl;
+   std::cout << "\t CmG  = " << fCmG << std::endl;
+   std::cout << std::endl;
 
    if(pstring.find("all") != std::string::npos) {
       for(int i = 0; i < 4; i++) {
-         std::cout<<std::endl
-                  <<" Particle "<<i<<" : '"<<fNuc[i]->GetName()<<"' : \t A = "<<fNuc[i]->GetA()<<", Z = "<<fNuc[i]->GetZ()<<", Mass = "<<fM[i]<<" [MeV]"<<std::endl;
+         std::cout << std::endl
+                   << " Particle " << i << " : '" << fNuc[i]->GetName() << "' : \t A = " << fNuc[i]->GetA() << ", Z = " << fNuc[i]->GetZ() << ", Mass = " << fM[i] << " [MeV]" << std::endl;
 
          if(i < 2) {
-            std::cout<<"\t ECm = "<<fECm[i]<<" [MeV]\t\t ELab = "<<fELab[i]<<" [MeV]"<<std::endl;
-            std::cout<<"\t TCm = "<<fTCm[i]<<" [MeV]\t\t TLab = "<<fTLab[i]<<" [MeV]"<<std::endl;
-            std::cout<<"\t VCm = "<<fVCm[i]<<" [/c]\t\t VLab = "<<fVLab[i]<<" [/c]"<<std::endl;
-            std::cout<<"\t PCm = "<<fPCm[i]<<" [MeV/c]\t PLab = "<<fPLab[i]<<" [MeV/c]"<<std::endl;
-            std::cout<<"\t GCm = "<<fGCm[i]<<" \t\t GLab = "<<fGLab[i]<<std::endl;
+            std::cout << "\t ECm = " << fECm[i] << " [MeV]\t\t ELab = " << fELab[i] << " [MeV]" << std::endl;
+            std::cout << "\t TCm = " << fTCm[i] << " [MeV]\t\t TLab = " << fTLab[i] << " [MeV]" << std::endl;
+            std::cout << "\t VCm = " << fVCm[i] << " [/c]\t\t VLab = " << fVLab[i] << " [/c]" << std::endl;
+            std::cout << "\t PCm = " << fPCm[i] << " [MeV/c]\t PLab = " << fPLab[i] << " [MeV/c]" << std::endl;
+            std::cout << "\t GCm = " << fGCm[i] << " \t\t GLab = " << fGLab[i] << std::endl;
          } else {
-            std::cout<<"\t ECm = "<<fECm[i]<<" [MeV]\t\t ELab = N/A"<<std::endl;
-            std::cout<<"\t TCm = "<<fTCm[i]<<" [MeV]\t\t TLab = N/A"<<std::endl;
-            std::cout<<"\t VCm = "<<fVCm[i]<<" [/c]\t\t VLab = N/A"<<std::endl;
-            std::cout<<"\t PCm = "<<fPCm[i]<<" [MeV/c]\t PLab = N/A"<<std::endl;
-            std::cout<<"\t GCm = "<<fGCm[i]<<" \t\t GLab = N/A"<<std::endl;
-            std::cout<<"\t\t ThetaLab_max = "<<fThetaMax[i] * R2D<<" [deg]"<<std::endl;
+            std::cout << "\t ECm = " << fECm[i] << " [MeV]\t\t ELab = N/A" << std::endl;
+            std::cout << "\t TCm = " << fTCm[i] << " [MeV]\t\t TLab = N/A" << std::endl;
+            std::cout << "\t VCm = " << fVCm[i] << " [/c]\t\t VLab = N/A" << std::endl;
+            std::cout << "\t PCm = " << fPCm[i] << " [MeV/c]\t PLab = N/A" << std::endl;
+            std::cout << "\t GCm = " << fGCm[i] << " \t\t GLab = N/A" << std::endl;
+            std::cout << "\t\t ThetaLab_max = " << fThetaMax[i] * R2D << " [deg]" << std::endl;
          }
       }
    }
-   std::cout<<std::endl
-            <<std::endl
-            <<" * * * * * * * * * * * * * * * * * * * * * * * * *"<<std::endl
-            <<std::endl;
+   std::cout << std::endl
+             << std::endl
+             << " * * * * * * * * * * * * * * * * * * * * * * * * *" << std::endl
+             << std::endl;
 }
 
 void TReaction::Clear(Option_t*)

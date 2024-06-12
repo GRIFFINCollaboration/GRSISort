@@ -9,7 +9,7 @@
 int main(int argc, char** argv)
 {
    if(argc == 1) {
-      std::cout<<"Usage: "<<argv[0]<<" <analysis root-file>"<<std::endl;
+      std::cout << "Usage: " << argv[0] << " <analysis root-file>" << std::endl;
       return 1;
    }
 
@@ -19,13 +19,13 @@ int main(int argc, char** argv)
    for(int file = 1; file < argc; ++file) {
       TFile input(argv[file]);
       if(!input.IsOpen()) {
-         std::cout<<MAGENTA<<"Failed to open "<<argv[file]<<RESET_COLOR<<std::endl;
+         std::cout << MAGENTA << "Failed to open " << argv[file] << RESET_COLOR << std::endl;
          return 1;
       }
 
       TTree* tree = static_cast<TTree*>(input.Get("AnalysisTree"));
       if(tree == nullptr) {
-         std::cout<<"No AnalysysTree in "<<argv[file]<<std::endl;
+         std::cout << "No AnalysysTree in " << argv[file] << std::endl;
          continue;
       }
 
@@ -56,7 +56,7 @@ int main(int argc, char** argv)
          tree->GetEntry(e);
 
          if(e % 1000 == 0) {
-            std::cout<<"\r"<<(100 * e) / nEntries<<"% done"<<std::flush;
+            std::cout << "\r" << (100 * e) / nEntries << "% done" << std::flush;
          }
 
          // re-using the d-variable from above
@@ -81,7 +81,7 @@ int main(int argc, char** argv)
                   }
                }
                if(sameE && sameTS) {
-                  std::cerr<<"\r"<<RED<<"Got the same timestamp and energy for entry "<<e<<". File "<<YELLOW<<argv[file]<<RED<<" is bad!"<<RESET_COLOR<<std::endl;
+                  std::cerr << "\r" << RED << "Got the same timestamp and energy for entry " << e << ". File " << YELLOW << argv[file] << RED << " is bad!" << RESET_COLOR << std::endl;
                   break;
                }
                lastTS[cl].emplace_back(hit->GetTimeStamp());
@@ -94,7 +94,7 @@ int main(int argc, char** argv)
          if(d != det.size()) break;
       }   // loop over entries
       if(e == nEntries) {
-         std::cerr<<"\r"<<GREEN<<"File "<<BLUE<<argv[file]<<GREEN<<" is good!"<<RESET_COLOR<<std::endl;
+         std::cerr << "\r" << GREEN << "File " << BLUE << argv[file] << GREEN << " is good!" << RESET_COLOR << std::endl;
       }
 
       input.Close();

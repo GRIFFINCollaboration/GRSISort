@@ -81,23 +81,23 @@ void TBadFragment::Print(Option_t*) const
    /// highlighted/
    TFragment::Print();
 
-   std::cout<<"Raw data with "<<(fMultipleErrors ? "multiple errors" : "single error")<<" failed on word "<<fFailedWord<<":"<<std::endl;
+   std::cout << "Raw data with " << (fMultipleErrors ? "multiple errors" : "single error") << " failed on word " << fFailedWord << ":" << std::endl;
    size_t i;
    for(i = 0; i < fData.size(); ++i) {
       if(i == static_cast<size_t>(fFailedWord)) {
-         std::cout<<ALERTTEXT;
+         std::cout << ALERTTEXT;
       }
-      std::cout<<hex(fData[i], 8);
+      std::cout << hex(fData[i], 8);
       if(i == static_cast<size_t>(fFailedWord)) {
-         std::cout<<RESET_COLOR;
+         std::cout << RESET_COLOR;
       }
       if(i % 10 == 9) {
-         std::cout<<std::endl;
+         std::cout << std::endl;
       } else {
-         std::cout<<" ";
+         std::cout << " ";
       }
    }
    if(i % 10 != 0) {
-      std::cout<<std::endl;   // add newline if the last data word didn't have one
+      std::cout << std::endl;   // add newline if the last data word didn't have one
    }
 }

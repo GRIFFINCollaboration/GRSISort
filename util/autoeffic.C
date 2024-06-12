@@ -103,8 +103,8 @@ TFitResultPtr FitPeak(Double_t* par, TH1* h, Float_t& area, Float_t& darea, Doub
    TVirtualFitter::SetMaxIterations(10000);
    Int_t xp = par[1];
    Int_t yp = par[0];
-   std::cout<<"Now yp is: "<<yp<<std::endl;
-   std::cout<<"A is: "<<par[6]<<std::endl;
+   std::cout << "Now yp is: " << yp << std::endl;
+   std::cout << "A is: " << par[6] << std::endl;
    Int_t A = par[6];
    // Define the fit function and the range of the fit
    TF1* pp = new TF1("photopeak", fitFunction, xp - rw, xp + rw, 10);
@@ -151,7 +151,7 @@ TFitResultPtr FitPeak(Double_t* par, TH1* h, Float_t& area, Float_t& darea, Doub
       if(fitres->Parameter(3) < 1) {
          pp->FixParameter(4, 0);
          pp->FixParameter(3, 1);
-         std::cout<<"Beta may have broken the fit, retrying with R=0"<<std::endl;
+         std::cout << "Beta may have broken the fit, retrying with R=0" << std::endl;
          fitres = h->Fit("photopeak", options);
          pp->ReleaseParameter(4);
          pp->SetParLimits(4, 0, 500);
@@ -174,11 +174,11 @@ TFitResultPtr FitPeak(Double_t* par, TH1* h, Float_t& area, Float_t& darea, Doub
    Double_t integral = photopeak->Integral(xp - rw, xp + rw) / binWidth;
 
    if(verbosity) {
-      std::cout<<"FIT RESULT CHI2 "<<fitres->Chi2()<<std::endl;
-      std::cout<<"FWHM = "<<2.35482 * fitres->Parameter(2)<<"("<<fitres->ParError(2)<<")"<<std::endl;
-      std::cout<<"NDF: "<<fitres->Ndf()<<std::endl;
+      std::cout << "FIT RESULT CHI2 " << fitres->Chi2() << std::endl;
+      std::cout << "FWHM = " << 2.35482 * fitres->Parameter(2) << "(" << fitres->ParError(2) << ")" << std::endl;
+      std::cout << "NDF: " << fitres->Ndf() << std::endl;
    }
-   std::cout<<"X sq./v = "<<fitres->Chi2() / fitres->Ndf()<<std::endl;
+   std::cout << "X sq./v = " << fitres->Chi2() / fitres->Ndf() << std::endl;
 
    TVirtualFitter* fitter = TVirtualFitter::GetFitter();
 
@@ -187,7 +187,7 @@ TFitResultPtr FitPeak(Double_t* par, TH1* h, Float_t& area, Float_t& darea, Doub
    // I don't think I am doing this properly
    Double_t sigma_integral = photopeak->IntegralError(xp - rw, xp + rw) / binWidth;
 
-   std::cout<<"Integral = "<<integral<<" +/- "<<sigma_integral<<std::endl;
+   std::cout << "Integral = " << integral << " +/- " << sigma_integral << std::endl;
 
    area    = integral;
    darea   = sigma_integral;
@@ -196,7 +196,7 @@ TFitResultPtr FitPeak(Double_t* par, TH1* h, Float_t& area, Float_t& darea, Doub
    delete photopeak;
    delete pp;
    if(fitres->Chi2() / fitres->Ndf() > 17.0) {
-      std::cout<<"THIS FIT WAS NOT GOOD (Reduced Chi2 = "<<fitres->Chi2() / fitres->Ndf()<<" )"<<std::endl;
+      std::cout << "THIS FIT WAS NOT GOOD (Reduced Chi2 = " << fitres->Chi2() / fitres->Ndf() << " )" << std::endl;
       //   return false;
    }
 
@@ -379,7 +379,7 @@ void autogain60(const char* f, int channum = -1, bool verbosity = false)
    TFile* file = new TFile(f, "READ");
 
    TH2D* matrix = (TH2D*)file->Get("hp_charge");
-   std::cout<<"Channum is: "<<channum<<std::endl;
+   std::cout << "Channum is: " << channum << std::endl;
    autogain60(matrix, channum, verbosity);
 }
 
@@ -397,7 +397,7 @@ void autogain60(TH2D* mat, int channum = -1, bool verbosity = false)
       int   i  = channum;
       TH1D* h1 = (TH1D*)mat->ProjectionY(Form("Channel%d", i), i + 1, i + 1);
       if(h1->Integral() < 1)
-         std::cout<<"There are no counts in Channel "<<channum<<std::endl;
+         std::cout << "There are no counts in Channel " << channum << std::endl;
       else
          autogain60(h1, i, verbosity);
    }
@@ -406,7 +406,7 @@ void autogain60(TH2D* mat, int channum = -1, bool verbosity = false)
 
 TGraph* autogain60(TH1D* hist, int channum, bool verbosity = false)
 {
-   std::cout<<"Now fitting channel "<<channum<<std::endl;
+   std::cout << "Now fitting channel " << channum << std::endl;
    static bool cal_flag = false;
    //   TNucleus nuc("60Co");
    //   TNucleus *nucptr = &nuc;
@@ -440,7 +440,7 @@ TGraph* autogain60(TH1D* hist, int channum, bool verbosity = false)
       nfound = 2;
 
    if(nfound < 2) {
-      std::cout<<"Did not find enough peaks"<<std::endl;
+      std::cout << "Did not find enough peaks" << std::endl;
       exit(1);
    }
 
@@ -449,7 +449,7 @@ TGraph* autogain60(TH1D* hist, int channum, bool verbosity = false)
       foundchan.push_back(s->GetPositionX()[x]);
 
    if(verbosity)
-      std::cout<<"Found at position "<<s->GetPositionX()[0]<<std::endl;
+      std::cout << "Found at position " << s->GetPositionX()[0] << std::endl;
 
    // std::sort(foundchan.begin(),foundchan.end());
 
@@ -479,7 +479,7 @@ TGraph* autogain60(TH1D* hist, int channum, bool verbosity = false)
       //  if(goodfit){ //DO STUFF HERE
       //   	areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
       //   	area_uncertainty.push_back(sigma);
-      std::cout<<"centroid is "<<*centroid<<std::endl;
+      std::cout << "centroid is " << *centroid << std::endl;
       goodenergyvec.push_back(*centroid);
       //   goodintensvec.push_back(intensvec.at(p));
       /
@@ -624,10 +624,10 @@ TGraph* autoefficiency(TH1* hist, TNucleus* nuc, Double_t runlengthsecs, Double_
    Float_t  integral, sigma;
    Double_t binWidth = hist->GetXaxis()->GetBinWidth(10000);
 
-   std::cout<<"bin width is "<<binWidth<<std::endl;
+   std::cout << "bin width is " << binWidth << std::endl;
    for(int p = 0; p < engvec.size(); p++) {
       Float_t xp = engvec.at(p) / binWidth;
-      std::cout<<"Trying to fit "<<xp<<" keV"<<std::endl;
+      std::cout << "Trying to fit " << xp << " keV" << std::endl;
 
       Int_t   bin  = hist->GetXaxis()->FindBin(xp);
       Float_t yp   = hist->GetBinContent(bin);
@@ -651,7 +651,7 @@ TGraph* autoefficiency(TH1* hist, TNucleus* nuc, Double_t runlengthsecs, Double_
       //   fitlist->Add(f);
    }
 
-   std::cout<<"or made it here"<<std::endl;
+   std::cout << "or made it here" << std::endl;
 
    Float_t* area = &(areavec[0]);
    //  Float_t *energies = &(engvec[0]);
@@ -675,7 +675,7 @@ int autoefficiency60(TH2D* mat, const char* name, Double_t runlengthsecs, Double
    TTree* tree = new TTree("CalibrationTree", "Calibration Tree");
    TPeak* peak = 0;
    tree->Branch("TPeak", "TPeak", &peak);
-   std::cout<<&peak<<std::endl;
+   std::cout << &peak << std::endl;
 
    gSystem->Load("libNucleus");
    TNucleus nuc(name);
@@ -778,14 +778,14 @@ TMultiGraph* autoefficiency60(TTree* tree, TPeak* peak, TH1D* hist, int channum,
       if(s->GetPositionX()[x] < 370. && s->GetPositionX()[x] > 340.) engvec[1] = s->GetPositionX()[x];
    }
 
-   std::cout<<"0: "<<engvec[0]<<std::endl;
-   std::cout<<"1: "<<engvec[1]<<std::endl;
+   std::cout << "0: " << engvec[0] << std::endl;
+   std::cout << "1: " << engvec[1] << std::endl;
 
    Float_t  integral, sigma;
    Double_t binWidth = hist->GetXaxis()->GetBinWidth(1000);
    Double_t dummyarray[4];
 
-   std::cout<<"bin width is "<<binWidth<<std::endl;
+   std::cout << "bin width is " << binWidth << std::endl;
    for(int p = 0; p < 2; p++) {
       Double_t centroid = engvec[p];
 
@@ -799,7 +799,7 @@ TMultiGraph* autoefficiency60(TTree* tree, TPeak* peak, TH1D* hist, int channum,
       area_uncertainty.push_back(sigma);
       // area_uncertainty.push_back(0.01*integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
 
-      std::cout<<"Eff = "<<areavec.back()<<"+/-"<<area_uncertainty.back()<<std::endl;
+      std::cout << "Eff = " << areavec.back() << "+/-" << area_uncertainty.back() << std::endl;
       channumvec.push_back((Float_t)(channum));
       delete tpeak;
       //   }
@@ -807,7 +807,7 @@ TMultiGraph* autoefficiency60(TTree* tree, TPeak* peak, TH1D* hist, int channum,
 
    // std::cout<<"IM PRINTING!!!"<<std::endl;
    // std::cout<<"Chi2 = "<<fitresult->Chi2()<<std::endl;
-   std::cout<<"or made it here"<<std::endl;
+   std::cout << "or made it here" << std::endl;
    //   static Float_t eff1;
    //   static Float_t eff2;
    Float_t* area = &(areavec[0]);
@@ -907,7 +907,7 @@ Double_t gainwalk(TH1* hist)
    //     nfound = 1;
 
    if(nfound < 1) {
-      std::cout<<"Did not find enough peaks"<<std::endl;
+      std::cout << "Did not find enough peaks" << std::endl;
       exit(1);
    }
 
@@ -929,14 +929,14 @@ Double_t gainwalk(TH1* hist)
    Double_t binWidth = hist->GetXaxis()->GetBinWidth(1000);
    Double_t dummyarray[4];
 
-   std::cout<<"bin width is "<<binWidth<<std::endl;
+   std::cout << "bin width is " << binWidth << std::endl;
    Float_t xp = s->GetPositionX()[0];
-   std::cout<<"Trying to fit "<<xp<<" Channel"<<std::endl;
+   std::cout << "Trying to fit " << xp << " Channel" << std::endl;
 
    Int_t bin = hist->GetXaxis()->FindBin(xp);
-   std::cout<<"Bin is: "<<bin<<"xp is "<<xp<<std::endl;
+   std::cout << "Bin is: " << bin << "xp is " << xp << std::endl;
    Float_t yp = hist->GetBinContent(bin);
-   std::cout<<"yp is: "<<yp<<std::endl;
+   std::cout << "yp is: " << yp << std::endl;
    par[0]                  = yp;                                                                                // height
    par[1]                  = xp;                                                                                // centroid
    par[2]                  = 1.0;                                                                               // sigma
@@ -949,8 +949,8 @@ Double_t gainwalk(TH1* hist)
    par[9]                  = xp;                                                                                // bg offset
    TFitResultPtr fitresult = FitPeak(par, hist, integral, sigma, dummyarray, verbosity);
 
-   std::cout<<"IM PRINTING!!!"<<std::endl;
-   std::cout<<"Chi2 = "<<fitresult->Chi2()<<std::endl;
+   std::cout << "IM PRINTING!!!" << std::endl;
+   std::cout << "Chi2 = " << fitresult->Chi2() << std::endl;
    return fitresult->Parameter(1);
 }
 
@@ -960,7 +960,7 @@ int autoresolution60(TH2D* mat, const char* name, Double_t runlengthsecs, Double
    TTree* tree = new TTree("CalibrationTree", "Calibration Tree");
    TPeak* peak = 0;
    tree->Branch("TPeak", "TPeak", &peak);
-   std::cout<<&peak<<std::endl;
+   std::cout << &peak << std::endl;
 
    gSystem->Load("libNucleus");
    TNucleus nuc(name);
@@ -1035,15 +1035,15 @@ TMultiGraph* autoresolution60(TTree* tree, TPeak* peak, TH1D* hist, int channum,
    Float_t  integral, sigma;
    Double_t binWidth = hist->GetXaxis()->GetBinWidth(1000);
 
-   std::cout<<"bin width is "<<binWidth<<std::endl;
+   std::cout << "bin width is " << binWidth << std::endl;
    for(int p = 0; p < engvec.size(); p++) {
       Float_t xp = engvec.at(p);
-      std::cout<<"Trying to fit "<<xp<<" keV"<<std::endl;
+      std::cout << "Trying to fit " << xp << " keV" << std::endl;
 
       Int_t bin = hist->GetXaxis()->FindBin(xp);
-      std::cout<<"Bin is: "<<bin<<"xp is "<<xp<<std::endl;
+      std::cout << "Bin is: " << bin << "xp is " << xp << std::endl;
       Float_t yp = hist->GetBinContent(bin);
-      std::cout<<"yp is: "<<yp<<std::endl;
+      std::cout << "yp is: " << yp << std::endl;
       par[0]                  = yp;                                                                                // height
       par[1]                  = xp;                                                                                // centroid
       par[2]                  = 1.0;                                                                               // sigma
@@ -1057,7 +1057,7 @@ TMultiGraph* autoresolution60(TTree* tree, TPeak* peak, TH1D* hist, int channum,
       TFitResultPtr fitresult = FitPeak(par, hist, integral, sigma, dummyarray, verbosity);
       // peak = new TPeak;
       peak->Clear();
-      std::cout<<peak<<std::endl;
+      std::cout << peak << std::endl;
       peak->SetCentroid(fitresult->Parameter(1), fitresult->ParError(1));
       peak->SetArea(integral, sigma);
       peak->SetFitResult(fitresult);
@@ -1074,9 +1074,9 @@ TMultiGraph* autoresolution60(TTree* tree, TPeak* peak, TH1D* hist, int channum,
 
       //   }
    }
-   std::cout<<"IM PRINTING!!!"<<std::endl;
-   std::cout<<"Chi2 = "<<fitresult->Chi2()<<std::endl;
-   std::cout<<"or made it here"<<std::endl;
+   std::cout << "IM PRINTING!!!" << std::endl;
+   std::cout << "Chi2 = " << fitresult->Chi2() << std::endl;
+   std::cout << "or made it here" << std::endl;
    Float_t* sigmaarr = &(sigmavec[0]);
    Float_t* area     = &(areavec[0]);
    Float_t* darea    = &(area_uncertainty[0]);
@@ -1201,15 +1201,15 @@ TGraphErrors* autoeffic152(TH1* hist, Double_t runlengthsecs, Double_t activityk
    Float_t  integral, sigma;
    Double_t binWidth = hist->GetXaxis()->GetBinWidth(1000);
 
-   std::cout<<"bin width is "<<binWidth<<std::endl;
+   std::cout << "bin width is " << binWidth << std::endl;
    for(int p = 0; p < 16; p++) {
       Float_t xp = nucEnergy[p];
-      std::cout<<"Trying to fit "<<xp<<" keV"<<std::endl;
+      std::cout << "Trying to fit " << xp << " keV" << std::endl;
 
       Int_t bin = hist->GetXaxis()->FindBin(xp);
-      std::cout<<"Bin is: "<<bin<<"xp is "<<xp<<std::endl;
+      std::cout << "Bin is: " << bin << "xp is " << xp << std::endl;
       Float_t yp = hist->GetBinContent(bin);
-      std::cout<<"yp is: "<<yp<<std::endl;
+      std::cout << "yp is: " << yp << std::endl;
       par[0]                  = yp;                                                                                // height
       par[1]                  = xp;                                                                                // centroid
       par[2]                  = 1.0;                                                                               // sigma
@@ -1223,7 +1223,7 @@ TGraphErrors* autoeffic152(TH1* hist, Double_t runlengthsecs, Double_t activityk
       TFitResultPtr fitresult = FitPeak(par, hist, integral, sigma, dummyarray, verbosity);
       peak                    = new TPeak;
       peak->Clear();
-      std::cout<<peak<<std::endl;
+      std::cout << peak << std::endl;
       peak->SetCentroid(fitresult->Parameter(1), fitresult->ParError(1));
       peak->SetArea(integral, sigma);
       peak->SetFitResult(fitresult);
@@ -1234,9 +1234,9 @@ TGraphErrors* autoeffic152(TH1* hist, Double_t runlengthsecs, Double_t activityk
       area_uncertainty.push_back(integral / nucIntensity[p] * TMath::Sqrt((sigma / integral) * (sigma / integral) + (dnucIntensity[p] / nucIntensity[p] * dnucIntensity[p] / nucIntensity[p])));
       //   delete peak;
    }
-   std::cout<<"IM PRINTING!!!"<<std::endl;
-   std::cout<<"Chi2 = "<<fitresult->Chi2()<<std::endl;
-   std::cout<<"or made it here"<<std::endl;
+   std::cout << "IM PRINTING!!!" << std::endl;
+   std::cout << "Chi2 = " << fitresult->Chi2() << std::endl;
+   std::cout << "or made it here" << std::endl;
    Float_t*      area  = &(areavec[0]);
    Float_t*      darea = &(area_uncertainty[0]);
    TGraphErrors* res   = new TGraphErrors(16, &nucEnergy[0], &area[0], &dnucEnergy[0], &darea[0]);
@@ -1258,7 +1258,7 @@ void autogain56(const char* f, int channum = -1, bool verbosity = false)
    TFile* file = new TFile(f, "READ");
 
    TH2D* matrix = (TH2D*)file->Get("hp_charge");
-   std::cout<<"Channum is: "<<channum<<std::endl;
+   std::cout << "Channum is: " << channum << std::endl;
    autogain56(matrix, channum, verbosity);
 }
 
@@ -1278,7 +1278,7 @@ void autogain56(TH2* mat, int channum = -1, bool verbosity = false)
       int   i  = channum;
       TH1D* h1 = (TH1D*)mat->ProjectionY(Form("Channel%d", i), i + 1, i + 1);
       if(h1->Integral() < 1)
-         std::cout<<"There are no counts in Channel "<<channum<<std::endl;
+         std::cout << "There are no counts in Channel " << channum << std::endl;
       else
          autogain56(h1, i, verbosity);
    }
@@ -1296,8 +1296,8 @@ TGraph* autogain56(TH1D* hist, int channum, bool verbosity = false)
    }
 
    TChannel* chan = TChannel::GetChannelByNumber(channum);
-   if(!chan) { std::cout<<"Could not find Channel"<<x<<std::endl; }
-   std::cout<<"Now fitting channel "<<channum<<std::endl;
+   if(!chan) { std::cout << "Could not find Channel" << x << std::endl; }
+   std::cout << "Now fitting channel " << channum << std::endl;
    static bool           cal_flag = false;
    std::vector<Double_t> engvec;
 
@@ -1320,7 +1320,7 @@ TGraph* autogain56(TH1D* hist, int channum, bool verbosity = false)
    for(int p = 0; p < engvec.size(); p++) {
       if(p == 0) Double_t xp = engvec.at(p) / engcoeffs.at(1);
       else Double_t xp = 1377.0 / engcoeffs.at(1);
-      std::cout<<"Fitting the "<<engvec.at(p)<<" keV line at channel "<<xp<<std::endl;
+      std::cout << "Fitting the " << engvec.at(p) << " keV line at channel " << xp << std::endl;
       //   std::cout<<"Trying to fit channel "<<foundchan<<" and match it to "<<engvec[p]  <<std::endl;
       Int_t   bin = xp;   // hist->GetXaxis()->FindBin(xp);
       Float_t yp  = hist->GetBinContent(bin);
@@ -1335,7 +1335,7 @@ TGraph* autogain56(TH1D* hist, int channum, bool verbosity = false)
       par[8]      = -0.5;                                                                     // C
       par[9]      = xp;                                                                       // bg offset
       FitPeak(par, hist, integral, sigma, centroid, verbosity);
-      std::cout<<"centroid is "<<*centroid<<std::endl;
+      std::cout << "centroid is " << *centroid << std::endl;
       goodenergyvec.push_back(*centroid);
    }
 

@@ -23,11 +23,11 @@ TGRSITransition::~TGRSITransition()
 void TGRSITransition::Print(Option_t*) const
 {
    // Prints information about the TGRSITransition
-   std::cout<<"**************************"<<std::endl;
-   std::cout<<"TGRSITransition:"<<std::endl;
-   std::cout<<"Energy:    "<<fEnergy<<" +/- "<<fEnergyUncertainty<<std::endl;
-   std::cout<<"Intensity: "<<fIntensity<<" +/- "<<fIntensityUncertainty<<std::endl;
-   std::cout<<"**************************"<<std::endl;
+   std::cout << "**************************" << std::endl;
+   std::cout << "TGRSITransition:" << std::endl;
+   std::cout << "Energy:    " << fEnergy << " +/- " << fEnergyUncertainty << std::endl;
+   std::cout << "Intensity: " << fIntensity << " +/- " << fIntensityUncertainty << std::endl;
+   std::cout << "**************************" << std::endl;
 }
 
 std::string TGRSITransition::PrintToString()
@@ -64,6 +64,6 @@ int TGRSITransition::Compare(const TObject* obj) const
    }   //(fIntensity < static_cast<const TGRSITransition*>(obj)->fIntensity)
    return 1;
 
-   std::cout<<__PRETTY_FUNCTION__<<": Error, intensity neither greater, nor equal, nor smaller than provided intensity!"<<std::endl;
+   std::cout << __PRETTY_FUNCTION__ << ": Error, intensity neither greater, nor equal, nor smaller than provided intensity!" << std::endl;
    return -9;
 }

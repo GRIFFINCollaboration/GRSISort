@@ -115,15 +115,15 @@ void TMnemonic::SetRFMnemonic(std::string* name)
 
 void TMnemonic::Print(Option_t*) const
 {
-   std::cout<<"====== MNEMONIC ======"<<std::endl;
-   std::cout<<"fArrayPosition           = "<<fArrayPosition<<std::endl;
-   std::cout<<"fSegment                 = "<<fSegment<<std::endl;
-   std::cout<<"fSystemString            = "<<fSystemString<<std::endl;
-   std::cout<<"fSubSystemString         = "<<fSubSystemString<<std::endl;
-   std::cout<<"fArraySubPositionString  = "<<fArraySubPositionString<<std::endl;
-   std::cout<<"fCollectedChargeString   = "<<fCollectedChargeString<<std::endl;
-   std::cout<<"fOutputSensorString      = "<<fOutputSensorString<<std::endl;
-   std::cout<<"==============================="<<std::endl;
+   std::cout << "====== MNEMONIC ======" << std::endl;
+   std::cout << "fArrayPosition           = " << fArrayPosition << std::endl;
+   std::cout << "fSegment                 = " << fSegment << std::endl;
+   std::cout << "fSystemString            = " << fSystemString << std::endl;
+   std::cout << "fSubSystemString         = " << fSubSystemString << std::endl;
+   std::cout << "fArraySubPositionString  = " << fArraySubPositionString << std::endl;
+   std::cout << "fCollectedChargeString   = " << fCollectedChargeString << std::endl;
+   std::cout << "fOutputSensorString      = " << fOutputSensorString << std::endl;
+   std::cout << "===============================" << std::endl;
 }
 
 int TMnemonic::NumericArraySubPosition() const

@@ -130,9 +130,9 @@ void TBgo::Print(Option_t*) const
 void TBgo::Print(std::ostream& out) const
 {
    std::ostringstream str;
-   str<<"Bgo Contains: "<<std::endl;
-   str<<std::setw(6)<<GetMultiplicity()<<" hits"<<std::endl;
-   out<<str.str();
+   str << "Bgo Contains: " << std::endl;
+   str << std::setw(6) << GetMultiplicity() << " hits" << std::endl;
+   out << str.str();
 }
 
 TBgo& TBgo::operator=(const TBgo& rhs)

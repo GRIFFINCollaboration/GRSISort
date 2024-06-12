@@ -42,15 +42,15 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
 
    std::string        grsipath = getenv("GRSISYS");
    std::ostringstream str;
-   str<<grsipath<<"/libraries/TAnalysis/SRIMData/"<<fname;
+   str << grsipath << "/libraries/TAnalysis/SRIMData/" << fname;
    if(printfile) {
-      std::cout<<std::endl
-               <<"Searching for "<<str.str()<<"..."<<std::endl;
+      std::cout << std::endl
+                << "Searching for " << str.str() << "..." << std::endl;
    }
 
    infile.open(str.str().c_str());
    if(!infile.good()) {
-      std::cout<<"{TSRIM} Warning : Couldn't find the file '"<<filename<<"' ..."<<std::endl;
+      std::cout << "{TSRIM} Warning : Couldn't find the file '" << filename << "' ..." << std::endl;
       return;
    }
    std::string line;
@@ -102,7 +102,7 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
 
    if(!dEdX_temp.empty()) {
       if(density_scale == 0.) {
-         std::cout<<"WARNING: stopping power remains in original units, unable to find scale factor."<<std::endl;
+         std::cout << "WARNING: stopping power remains in original units, unable to find scale factor." << std::endl;
          density_scale = 1.;
       }
 
@@ -121,15 +121,15 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
       if(emax == -1.0) {
          emax = dataEmax;   // default to highest available energy in data table
       } else if(emax > dataEmax || emax < dataEmin) {
-         std::cout<<std::endl
-                  <<"{TSRIM} WARNING: specified emax is out of range. Setting emax to default value ("<<dataEmax<<")"<<std::endl;
+         std::cout << std::endl
+                   << "{TSRIM} WARNING: specified emax is out of range. Setting emax to default value (" << dataEmax << ")" << std::endl;
          emax = dataEmax;   // default to highest available energy in data table
       }
       if(emin == 0.0) {
          emin = dataEmin;   // default to lowest available energy in data table
       } else if(emin < dataEmin || emin > dataEmax) {
-         std::cout<<std::endl
-                  <<"{TSRIM} WARNING: specified emin is out of range. Setting emin to default value ("<<dataEmin<<")"<<std::endl;
+         std::cout << std::endl
+                   << "{TSRIM} WARNING: specified emin is out of range. Setting emin to default value (" << dataEmin << ")" << std::endl;
          emin = dataEmin;   // default to lowest available energy in data table
       }
       if(emax < emin) {
@@ -195,9 +195,9 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
    }
 
    if(printfile) {
-      std::cout<<std::endl
-               <<"\t"<<fname<<" file read in, "<<dEdX.size()<<" entries found."<<std::endl;
-      std::cout<<"[Energy loss range = "<<Emax<<" - "<<Emin<<" keV & total range = "<<Xmin<<" - "<<Xmax<<" um ]"<<std::endl;
+      std::cout << std::endl
+                << "\t" << fname << " file read in, " << dEdX.size() << " entries found." << std::endl;
+      std::cout << "[Energy loss range = " << Emax << " - " << Emin << " keV & total range = " << Xmin << " - " << Xmax << " um ]" << std::endl;
    }
 }
 
@@ -206,10 +206,10 @@ double TSRIM::GetEnergy(double energy, double dist)
    double xbegin = sEgetX->Eval(energy);
 
    if(energy > Emax || xbegin + dist < Xmin) {
-      std::cout<<std::endl
-               <<" {TSRIM} WARNING: data is out of range. Results may be unpredictable."<<std::endl
-               <<DRED "\t\tenergy = "<<energy<<" keV \txbegin = "<<xbegin<<" um\t dist = "<<dist<<" um\t xend = "<<xbegin + dist<<" um"<<std::endl
-               <<DYELLOW<<"\t\tErange = ["<<Emin<<", "<<Emax<<"] keV \t\t Xrange = [0 , "<<Xmax<<" um"<<RESET_COLOR<<std::endl;
+      std::cout << std::endl
+                << " {TSRIM} WARNING: data is out of range. Results may be unpredictable." << std::endl
+                << DRED "\t\tenergy = " << energy << " keV \txbegin = " << xbegin << " um\t dist = " << dist << " um\t xend = " << xbegin + dist << " um" << std::endl
+                << DYELLOW << "\t\tErange = [" << Emin << ", " << Emax << "] keV \t\t Xrange = [0 , " << Xmax << " um" << RESET_COLOR << std::endl;
    } else if(xbegin > Xmax || xbegin + dist > Xmax) {
       return 0.0;
    }
@@ -221,7 +221,7 @@ double TSRIM::GetEnergy(double energy, double dist)
 double TSRIM::GetAdjustedEnergy(double energy, double thickness, double stepsize)
 {
    if(fEnergyLoss == nullptr) {
-      std::cout<<"energy loss file has not yet been read in."<<std::endl;
+      std::cout << "energy loss file has not yet been read in." << std::endl;
       return 0.0;
    }
 

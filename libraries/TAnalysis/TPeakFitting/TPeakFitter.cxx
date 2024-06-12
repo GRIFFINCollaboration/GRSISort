@@ -29,39 +29,39 @@ void TPeakFitter::Print(Option_t* opt) const
    if(fTotalFitFunction != nullptr) {
       double xMin, xMax;
       fTotalFitFunction->GetRange(xMin, xMax);
-      std::cout<<"Fitting range: "<<xMin<<" to "<<xMax<<std::endl;
+      std::cout << "Fitting range: " << xMin << " to " << xMax << std::endl;
    } else {
-      std::cout<<"Range: "<<fRangeLow<<" to "<<fRangeHigh<<std::endl;
+      std::cout << "Range: " << fRangeLow << " to " << fRangeHigh << std::endl;
    }
    Int_t counter = 0;
    if(!fPeaksToFit.empty()) {
-      std::cout<<"Peaks: "<<std::endl;
+      std::cout << "Peaks: " << std::endl;
       for(auto i : fPeaksToFit) {
-         std::cout<<"Peak #"<<counter++<<" - ";
+         std::cout << "Peak #" << counter++ << " - ";
          i->Print(opt);
       }
-      std::cout<<"Chi2/Ndf = "<<fPeaksToFit.front()->GetChi2()<<"/"<<fPeaksToFit.front()->GetNDF()<<" = "<<fPeaksToFit.front()->GetReducedChi2()<<std::endl;
+      std::cout << "Chi2/Ndf = " << fPeaksToFit.front()->GetChi2() << "/" << fPeaksToFit.front()->GetNDF() << " = " << fPeaksToFit.front()->GetReducedChi2() << std::endl;
    } else {
-      std::cout<<"Could not find peak to print"<<std::endl;
+      std::cout << "Could not find peak to print" << std::endl;
    }
    if(fBGToFit) {
-      std::cout<<"BG: "<<std::endl;
+      std::cout << "BG: " << std::endl;
       fBGToFit->Print(opt);
    } else {
-      std::cout<<"Could not find a BG to print"<<std::endl;
+      std::cout << "Could not find a BG to print" << std::endl;
    }
 }
 
 void TPeakFitter::PrintParameters() const
 {
    /// Print the range of the fit and the parameters of each peak on a single line.
-   std::cout<<"Range: "<<fRangeLow<<" to "<<fRangeHigh<<" - ";
+   std::cout << "Range: " << fRangeLow << " to " << fRangeHigh << " - ";
    int i = 0;
    for(auto peak : fPeaksToFit) {
-      std::cout<<peak->IsA()->GetName()<<" #"<<i++<<" ";
+      std::cout << peak->IsA()->GetName() << " #" << i++ << " ";
       peak->PrintParameters();
    }
-   std::cout<<std::endl;
+   std::cout << std::endl;
 }
 
 Int_t TPeakFitter::GetNParameters() const
@@ -87,7 +87,7 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
    /// if one of the parameters got close to its limit. All options (apart from "retryfit") are passed on to the actual
    /// call to TH1::Fit.
    if(fPeaksToFit.empty()) {
-      std::cout<<"No peaks provided!"<<std::endl;
+      std::cout << "No peaks provided!" << std::endl;
       return TFitResultPtr();
    }
 
@@ -96,7 +96,7 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
    bool quiet   = options.Contains("q");
    bool verbose = options.Contains("v");
    if(quiet && verbose) {
-      std::cout<<"Don't know how to be quiet and verbose at once ("<<opt<<"), going to be verbose!"<<std::endl;
+      std::cout << "Don't know how to be quiet and verbose at once (" << opt << "), going to be verbose!" << std::endl;
       quiet = false;
    }
    bool retryFit = options.Contains("retryfit");
@@ -118,7 +118,7 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
    fTotalFitFunction->SetRange(fRangeLow, fRangeHigh);
    // We need to initialize all of the parameters based on the peak parameters
    if(fit_hist != nullptr && (!fInitFlag || fit_hist != fLastHistFit)) {
-      if(verbose) std::cout<<"Initializing Fit...."<<std::endl;
+      if(verbose) std::cout << "Initializing Fit...." << std::endl;
       InitializeBackgroundParameters(fit_hist);
       InitializeParameters(fit_hist);
       fInitFlag    = true;
@@ -137,7 +137,7 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
    if(!TGRSIFunctions::CheckParameterErrors(fit_res, options.Data())) {
       if(retryFit) {
          // fit again with all parameters released
-         if(!quiet) std::cout<<GREEN<<"Re-fitting with released parameters (without any limits)"<<RESET_COLOR<<std::endl;
+         if(!quiet) std::cout << GREEN << "Re-fitting with released parameters (without any limits)" << RESET_COLOR << std::endl;
          for(int i = 0; i < fTotalFitFunction->GetNpar(); ++i) {
             if(i == 1) continue;   // skipping centroid, which should always be parameter 1
             fTotalFitFunction->ReleaseParameter(i);
@@ -146,7 +146,7 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
          TGRSIFunctions::CheckParameterErrors(fit_res, options.Data());
       } else {
          // re-try using minos instead of minuit (only thing from opt that might play a role it 'q' or 'v')
-         if(!quiet) std::cout<<YELLOW<<"Re-fitting with \"E\" option to get better error estimation using Minos technique."<<RESET_COLOR<<std::endl;
+         if(!quiet) std::cout << YELLOW << "Re-fitting with \"E\" option to get better error estimation using Minos technique." << RESET_COLOR << std::endl;
          fit_res = fit_hist->Fit(fTotalFitFunction, Form("SRIE%s", options.Data()));
       }
    }
@@ -157,7 +157,7 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
       // Once we do the fit, we want to update all of the Peak parameters.
       UpdatePeakParameters(fit_res, fit_hist);
    } else if(!quiet) {
-      std::cout<<RED<<"Failed to get fit result, be aware that the results and especially the error estimates might be wrong!"<<RESET_COLOR<<std::endl;
+      std::cout << RED << "Failed to get fit result, be aware that the results and especially the error estimates might be wrong!" << RESET_COLOR << std::endl;
    }
    fit_hist->Draw("hist");
    fTotalFitFunction->Draw("same");
@@ -165,8 +165,8 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
 
    // always print the result of the fit even if not verbose
    if(!quiet) {
-      std::cout<<"****************"<<std::endl
-               <<"Summary of Fit: "<<std::endl;
+      std::cout << "****************" << std::endl
+                << "Summary of Fit: " << std::endl;
       Print();
    }
    // restore old range
@@ -244,7 +244,7 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
          }
          p_it->SetArea(total_function_copy->Integral(p_it->Centroid() - p_it->Width() * 5., p_it->Centroid() + p_it->Width() * 5., 1e-8) / fit_hist->GetBinWidth(1));
          if(goodCovarianceMatrix) p_it->SetAreaErr(total_function_copy->IntegralError(p_it->Centroid() - p_it->Width() * 5., p_it->Centroid() + p_it->Width() * 5., total_function_copy->GetParameters(), covariance_matrix.GetMatrixArray(), 1E-5) / fit_hist->GetBinWidth(1));
-         else std::cout<<"Not setting area error because we don't have a good covariance matrix!"<<std::endl;
+         else std::cout << "Not setting area error because we don't have a good covariance matrix!" << std::endl;
          // std::cout<<"Integrating from: "<<p_it->Centroid()-p_it->Width()*5.<<" to "<<p_it->Centroid()+p_it->Width()*5.<<std::endl;
       }
       total_function_copy->Delete();

@@ -53,10 +53,10 @@ void atexitHandler()
    realTime -= hour * 3600;
    int min = static_cast<int>(realTime / 60);
    realTime -= min * 60;
-   std::cout<<DMAGENTA<<std::endl
-            <<"bye,bye\t"<<DCYAN<<getpwuid(getuid())->pw_name<<RESET_COLOR<<" after "<<hour<<":"
-            <<std::setfill('0')<<std::setw(2)<<min<<":"<<std::setprecision(3)<<std::fixed<<realTime
-            <<" h:m:s"<<std::endl;
+   std::cout << DMAGENTA << std::endl
+             << "bye,bye\t" << DCYAN << getpwuid(getuid())->pw_name << RESET_COLOR << " after " << hour << ":"
+             << std::setfill('0') << std::setw(2) << min << ":" << std::setprecision(3) << std::fixed << realTime
+             << " h:m:s" << std::endl;
 }
 
 int main(int argc, char** argv)
@@ -79,11 +79,11 @@ int main(int argc, char** argv)
       // Run the code!
       input->Run(true);
    } catch(grsi::exit_exception& e) {
-      std::cerr<<e.message<<std::endl;
+      std::cerr << e.message << std::endl;
       // Close files and clean up properly here
    } catch(std::runtime_error& e) {
-      std::cerr<<e.what()<<std::endl;
-      std::cout<<"Don't know how to handle this error, exiting "<<argv[0]<<"!"<<std::endl;
+      std::cerr << e.what() << std::endl;
+      std::cout << "Don't know how to handle this error, exiting " << argv[0] << "!" << std::endl;
    }
 
    return 0;

@@ -55,13 +55,13 @@ void TParsingDiagnosticsData::Update(const std::shared_ptr<const TFragment>& fra
 
 void TParsingDiagnosticsData::Print(UInt_t address) const
 {
-   std::cout<<"channel "<<hex(address, 4)<<": "<<fDeadTime / 1e5<<" ms deadtime out of ";
+   std::cout << "channel " << hex(address, 4) << ": " << fDeadTime / 1e5 << " ms deadtime out of ";
    if(fMaxTimeStamp == fMinTimeStamp && fMaxChannelId == fMinChannelId) {
-      std::cout<<"empty channel"<<std::endl;
+      std::cout << "empty channel" << std::endl;
    } else {
-      std::cout<<std::setw(12)<<(fMaxTimeStamp - fMinTimeStamp) / 1e5
-               <<"ms = "<<(100. * fDeadTime) / (fMaxTimeStamp - fMinTimeStamp)<<" %"
-               <<std::endl;
+      std::cout << std::setw(12) << (fMaxTimeStamp - fMinTimeStamp) / 1e5
+                << "ms = " << (100. * fDeadTime) / (fMaxTimeStamp - fMinTimeStamp) << " %"
+                << std::endl;
    }
 }
 
@@ -109,25 +109,25 @@ void TParsingDiagnostics::Clear(Option_t*)
 
 void TParsingDiagnostics::Print(Option_t*) const
 {
-   std::cout<<"Total run time of this (sub-)run is "<<fMaxDaqTimeStamp - fMinDaqTimeStamp<<" s"<<std::endl
-            <<"PPG cycle is "<<fPPGCycleLength / 1e5<<" ms long."<<std::endl
-            <<"Found "<<fNumberOfNetworkPackets<<" network packets in range "<<fMinNetworkPacketNumber<<" - "
-            <<fMaxNetworkPacketNumber<<" => "
-            <<100. * fNumberOfNetworkPackets / (fMaxNetworkPacketNumber - fMinNetworkPacketNumber + 1.)
-            <<" % packet survival."<<std::endl;
+   std::cout << "Total run time of this (sub-)run is " << fMaxDaqTimeStamp - fMinDaqTimeStamp << " s" << std::endl
+             << "PPG cycle is " << fPPGCycleLength / 1e5 << " ms long." << std::endl
+             << "Found " << fNumberOfNetworkPackets << " network packets in range " << fMinNetworkPacketNumber << " - "
+             << fMaxNetworkPacketNumber << " => "
+             << 100. * fNumberOfNetworkPackets / (fMaxNetworkPacketNumber - fMinNetworkPacketNumber + 1.)
+             << " % packet survival." << std::endl;
    // loop over number of good fragments per detector type
    for(const auto& fNumberOfGoodFragment : fNumberOfGoodFragments) {
-      std::cout<<"detector type "<<std::setw(2)<<fNumberOfGoodFragment.first<<": "<<std::setw(12)
-               <<fNumberOfGoodFragment.second<<" good, ";
+      std::cout << "detector type " << std::setw(2) << fNumberOfGoodFragment.first << ": " << std::setw(12)
+                << fNumberOfGoodFragment.second << " good, ";
       // check if we have corresponding bad fragment for this detector type
       if(fNumberOfBadFragments.find(fNumberOfGoodFragment.first) == fNumberOfBadFragments.end()) {
-         std::cout<<"          no";
+         std::cout << "          no";
       } else {
-         std::cout<<std::setw(12)<<fNumberOfBadFragments.at(fNumberOfGoodFragment.first)<<" ("
-                  <<(100. * fNumberOfBadFragments.at(fNumberOfGoodFragment.first)) / fNumberOfGoodFragment.second
-                  <<" %)";
+         std::cout << std::setw(12) << fNumberOfBadFragments.at(fNumberOfGoodFragment.first) << " ("
+                   << (100. * fNumberOfBadFragments.at(fNumberOfGoodFragment.first)) / fNumberOfGoodFragment.second
+                   << " %)";
       }
-      std::cout<<" bad fragments."<<std::endl;
+      std::cout << " bad fragments." << std::endl;
    }
    for(const auto& it : fChannelAddressData) {
       it.second.Print(it.first);
@@ -210,31 +210,31 @@ void TParsingDiagnostics::Draw(Option_t* opt)
 void TParsingDiagnostics::WriteToFile(const char* fileName) const
 {
    std::ofstream statsOut(fileName);
-   statsOut<<std::endl
-           <<"Run time to the nearest second = "<<fMaxDaqTimeStamp - fMinDaqTimeStamp<<std::endl
-           <<std::endl;
+   statsOut << std::endl
+            << "Run time to the nearest second = " << fMaxDaqTimeStamp - fMinDaqTimeStamp << std::endl
+            << std::endl;
 
-   statsOut<<"Good fragments:";
+   statsOut << "Good fragments:";
    for(auto it : fNumberOfGoodFragments) {
-      statsOut<<" "<<it.second<<" of type "<<it.first;
+      statsOut << " " << it.second << " of type " << it.first;
    }
-   statsOut<<std::endl;
+   statsOut << std::endl;
 
-   statsOut<<"Bad fragments:";
+   statsOut << "Bad fragments:";
    for(auto it : fNumberOfBadFragments) {
-      statsOut<<" "<<it.second<<" of type "<<it.first;
+      statsOut << " " << it.second << " of type " << it.first;
    }
-   statsOut<<std::endl;
+   statsOut << std::endl;
 
    for(auto it : fChannelAddressData) {
       TChannel* chan = TChannel::GetChannel(it.first, false);
       if(chan == nullptr) {
          continue;
       }
-      statsOut<<hex(it.first, 4)<<":\t"<<chan->GetName()
-              <<"\tdead time: "<<static_cast<float>(it.second.DeadTime()) / 1e9<<" seconds."<<std::endl;
+      statsOut << hex(it.first, 4) << ":\t" << chan->GetName()
+               << "\tdead time: " << static_cast<float>(it.second.DeadTime()) / 1e9 << " seconds." << std::endl;
    }
-   statsOut<<std::endl;
+   statsOut << std::endl;
 
    statsOut.close();
 }

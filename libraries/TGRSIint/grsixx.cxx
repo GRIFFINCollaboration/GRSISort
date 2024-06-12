@@ -1,11 +1,11 @@
 
 /////////////////////////////////////////////////////////////////////////
-///                                                                      
-/// \class GRSIxx                                                               
-///                                                                      
-/// X11 based routines used to display the splash screen for grsisort.   
-///                                                                      
-///                                                                      
+///
+/// \class GRSIxx
+///
+/// X11 based routines used to display the splash screen for grsisort.
+///
+///
 /////////////////////////////////////////////////////////////////////////
 
 #include "Globals.h"
@@ -43,9 +43,9 @@ static bool         gMayPopdown    = false;
 static bool         gAbout         = false;
 static unsigned int gWidth         = 0;
 static unsigned int gHeight        = 0;
-static int          gStayUp        = 4000;                   // 4 seconds
-static XRectangle   gCreditsRect   = {15, 155, 285, 130};    // clip rect in logo
-static unsigned int gCreditsWidth  = gCreditsRect.width / 2; // credits pixmap size
+static int          gStayUp        = 4000;                     // 4 seconds
+static XRectangle   gCreditsRect   = {15, 155, 285, 130};      // clip rect in logo
+static unsigned int gCreditsWidth  = gCreditsRect.width / 2;   // credits pixmap size
 static unsigned int gCreditsHeight = 0;
 
 static struct timeval gPopupTime;
@@ -118,7 +118,7 @@ static Pixmap GetRootLogo()
    attr.colormap  = win_attr.colormap;
    attr.depth     = win_attr.depth;
 
-#ifdef XpmColorKey // Not available in XPM 3.2 and earlier
+#ifdef XpmColorKey   // Not available in XPM 3.2 and earlier
    attr.valuemask |= XpmColorKey;
    if(depth > 4) {
       attr.color_key = XPM_COLOR;
@@ -132,7 +132,7 @@ static Pixmap GetRootLogo()
       attr.valuemask &= ~XpmColorKey;
    }
 
-#endif // defined(XpmColorKey)
+#endif   // defined(XpmColorKey)
    std::string file;
    file.append(getenv("GRSISYS"));
    file.append("/libraries/TGRSIint/grsisplash_bw.xpm");
@@ -144,7 +144,7 @@ static Pixmap GetRootLogo()
       return logo;
    }
 
-   std::cout<<"rootx xpm error: "<<XpmGetErrorString(ret)<<std::endl;
+   std::cout << "rootx xpm error: " << XpmGetErrorString(ret) << std::endl;
 
    if(logo != 0u) {
       XFreePixmap(gDisplay, logo);
@@ -186,8 +186,8 @@ static void ReadContributors()
    while(fgets(buf, sizeof(buf), f) != nullptr) {
       if(strncmp(buf, "N: ", 3) == 0) {
          int len      = strlen(buf);
-         buf[len - 1] = 0; // remove \n
-         len -= 3;         // remove "N: "
+         buf[len - 1] = 0;   // remove \n
+         len -= 3;           // remove "N: "
          gContributors[cnt] = new char[len];
          strncpy(gContributors[cnt], buf + 3, len);
          cnt++;
@@ -253,7 +253,7 @@ static int DrawCredits(bool draw, bool)
    /// otherwise just return size of all credit text.
 
    if(gFont == nullptr) {
-      return 150; // size not important no text will be drawn anyway
+      return 150;   // size not important no text will be drawn anyway
    }
 
    int lineSpacing = gFont->max_bounds.ascent + gFont->max_bounds.descent;
@@ -265,11 +265,11 @@ static int DrawCredits(bool draw, bool)
 
    y = DrawCreditItem("Lead Developers: ", gLeadDevelopers, y, draw);
 
-   y += 2 * lineSpacing - 1; // special layout tweak
+   y += 2 * lineSpacing - 1;   // special layout tweak
 
    y = DrawCreditItem("Key Contributions: ", gKeyContributors, y, draw);
 
-   y += 2 * lineSpacing - 1; // special layout tweak
+   y += 2 * lineSpacing - 1;   // special layout tweak
 
    y += 10;
    return y;
@@ -329,7 +329,7 @@ void PopupLogo(bool about)
    y = (HeightOfScreen(xscreen) - gHeight) / 2;
 
    XMoveResizeWindow(gDisplay, gLogoWindow, x, y, gWidth, gHeight);
-   XSync(gDisplay, False); // make sure move & resize is done before mapping
+   XSync(gDisplay, False);   // make sure move & resize is done before mapping
 
    unsigned long        valmask;
    XSetWindowAttributes xswa;
@@ -341,13 +341,13 @@ void PopupLogo(bool about)
    gGC   = XCreateGC(gDisplay, gLogoWindow, 0, nullptr);
    gFont = XLoadQueryFont(gDisplay, "-adobe-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-1");
    if(gFont == nullptr) {
-      std::cout<<"Couldn't find font \"-adobe-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-1\","<<std::endl
-               <<"trying \"fixed\". Please fix your system so helvetica can be found, "<<std::endl
-               <<"this font typically is in the rpm (or pkg equivalent) package "<<std::endl
-               <<"XFree86-[75,100]dpi-fonts or fonts-xorg-[75,100]dpi."<<std::endl;
+      std::cout << "Couldn't find font \"-adobe-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-1\"," << std::endl
+                << "trying \"fixed\". Please fix your system so helvetica can be found, " << std::endl
+                << "this font typically is in the rpm (or pkg equivalent) package " << std::endl
+                << "XFree86-[75,100]dpi-fonts or fonts-xorg-[75,100]dpi." << std::endl;
       gFont = XLoadQueryFont(gDisplay, "fixed");
       if(gFont == nullptr) {
-         std::cout<<"Also couln't find font \"fixed\", your system is terminally misconfigured."<<std::endl;
+         std::cout << "Also couln't find font \"fixed\", your system is terminally misconfigured." << std::endl;
       }
    }
    if(gFont != nullptr) {

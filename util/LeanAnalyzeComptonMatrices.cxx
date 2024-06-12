@@ -71,9 +71,9 @@ ________________________________________________________________________________
 
 #define RUNNUMBER 10577
 
-#define AGATA_Q 0.2509     // The quality factor for creating a predicted Asymmetry plot of 0.5*Q*P*Cos(2*Xi), where
-                           // P is determined by PolarizationCalculation()  <- Parameters must be set internally for each transition
-                           // Dan measured 0.24492 with 12 clovers in Summer 2016.
+#define AGATA_Q 0.2509     // The quality factor for creating a predicted Asymmetry plot of 0.5*Q*P*Cos(2*Xi), where                 \
+                           // P is determined by PolarizationCalculation()  <- Parameters must be set internally for each transition \
+                           // Dan measured 0.24492 with 12 clovers in Summer 2016.                                                   \
                            // Adam measured 0.2509 with 16 clovers in Dec 2017.
 #define E_Q_Measure 1332   // The energy of the scattered gamma used to calculate AGATA_Q
 #define E_Q_Use 1332       // The energy of the scattered gamma currently being examined.  Used for scaling Q
@@ -110,21 +110,21 @@ int main(int argc, char** argv)
    TFile* outfile;
    outfile = new TFile(Form("./CompPlots_%05d.root", RUNNUMBER), "recreate");
 
-   std::cout<<argv[0]<<": starting Analysis after "<<w.RealTime()<<" seconds"<<std::endl;
+   std::cout << argv[0] << ": starting Analysis after " << w.RealTime() << " seconds" << std::endl;
    w.Continue();
    TList* outlist = new TList();
    outlist        = ComptonPol(file, &w);
    outlist        = AGATATheory(outlist, AGATA_Q * ScaleQ(E_Q_Measure, E_Q_Use));
    if(outlist == nullptr) {
-      std::cout<<"ComptonPol returned TList* nullptr!"<<std::endl;
+      std::cout << "ComptonPol returned TList* nullptr!" << std::endl;
       return 1;
    }
    outlist->Write();
    outfile->Close();
-   std::cout<<argv[0]<<" done after "<<w.RealTime()<<" seconds"<<std::endl
-            <<std::endl;
+   std::cout << argv[0] << " done after " << w.RealTime() << " seconds" << std::endl
+             << std::endl;
 
-   std::cout<<"ScaleQ("<<E_Q_Measure<<","<<E_Q_Use<<") = "<<ScaleQ(E_Q_Measure, E_Q_Use)<<"\nE_Q_Measure = "<<AGATA_Q<<"\nE_Q_Use = "<<(AGATA_Q * ScaleQ(E_Q_Measure, E_Q_Use))<<std::endl;
+   std::cout << "ScaleQ(" << E_Q_Measure << "," << E_Q_Use << ") = " << ScaleQ(E_Q_Measure, E_Q_Use) << "\nE_Q_Measure = " << AGATA_Q << "\nE_Q_Use = " << (AGATA_Q * ScaleQ(E_Q_Measure, E_Q_Use)) << std::endl;
 
    return 0;
 }
@@ -345,7 +345,7 @@ TList* ComptonPol(TFile* f, TStopwatch* w)
    AsymmetryBinFoldNonCo->GetYaxis()->SetTitle("Asymmetry A^{CE}");
    AsymmetryBinFoldNonCo->GetYaxis()->CenterTitle();
    AsymmetryBinFoldNonCo->GetXaxis()->SetRangeUser(0.0, 180.0);
-   std::cout<<std::endl;
+   std::cout << std::endl;
    return list;
 }
 
@@ -591,7 +591,7 @@ double ScaleQ(double E1, double E2)
 #else
 int main(int, char** argv)
 {
-   std::cout<<"No mathmore support in ROOT, "<<argv[0]<<" can't run!"<<std::endl;
+   std::cout << "No mathmore support in ROOT, " << argv[0] << " can't run!" << std::endl;
    return 1;
 }
 #endif

@@ -27,14 +27,14 @@ TDataFrameLibrary::~TDataFrameLibrary()
 void TDataFrameLibrary::Load()
 {
    if(fHandle != nullptr) {
-      std::cout<<"Already loaded handle "<<fHandle<<std::endl;
+      std::cout << "Already loaded handle " << fHandle << std::endl;
       return;
    }
 
    std::string libraryPath = TGRSIOptions::Get()->DataFrameLibrary();
    if(libraryPath.empty()) {
       std::ostringstream str;
-      str<<DRED<<"No data frame library provided! Please provided the location of the data frame library on the command line."<<RESET_COLOR;
+      str << DRED << "No data frame library provided! Please provided the location of the data frame library on the command line." << RESET_COLOR;
       throw std::runtime_error(str.str());
    }
 
@@ -51,15 +51,15 @@ void TDataFrameLibrary::Load()
 
    if(!file_exists(libraryPath.c_str())) {
       std::ostringstream str;
-      str<<DRED<<"Library '"<<libraryPath<<"' does not exist or we do not have permissions to access it!"<<RESET_COLOR;
+      str << DRED << "Library '" << libraryPath << "' does not exist or we do not have permissions to access it!" << RESET_COLOR;
       throw std::runtime_error(str.str());
    }
 
    fHandle = dlopen(libraryPath.c_str(), RTLD_LAZY);
    if(fHandle == nullptr) {
       std::ostringstream str;
-      str<<DRED<<"Failed to open data frame library '"<<libraryPath<<"': "<<dlerror()<<"!"<<RESET_COLOR;
-      std::cout<<"dlerror: '"<<dlerror()<<"'"<<std::endl;
+      str << DRED << "Failed to open data frame library '" << libraryPath << "': " << dlerror() << "!" << RESET_COLOR;
+      std::cout << "dlerror: '" << dlerror() << "'" << std::endl;
       throw std::runtime_error(str.str());
    }
    // try and get constructor and destructor functions from opened library
@@ -71,10 +71,10 @@ void TDataFrameLibrary::Load()
 
    if(fCreateHelper == nullptr || fDestroyHelper == nullptr) {
       std::ostringstream str;
-      str<<DRED<<"Failed to find CreateHelper, and/or DestroyHelper functions in library '"<<libraryPath<<"'!"<<RESET_COLOR;
+      str << DRED << "Failed to find CreateHelper, and/or DestroyHelper functions in library '" << libraryPath << "'!" << RESET_COLOR;
       throw std::runtime_error(str.str());
    }
-   std::cout<<"\tUsing library "<<libraryPath<<std::endl;
+   std::cout << "\tUsing library " << libraryPath << std::endl;
 }
 
 void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size_t& slash)
@@ -89,13 +89,13 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
    struct stat sourceStat;
    if(stat(sourceFile.c_str(), &sourceStat) != 0) {
       std::stringstream str;
-      str<<"Unable to access stat of source file "<<sourceFile<<std::endl;
+      str << "Unable to access stat of source file " << sourceFile << std::endl;
       throw std::runtime_error(str.str());
    }
    struct stat headerStat;
    if(stat(headerFile.c_str(), &headerStat) != 0) {
       std::stringstream str;
-      str<<"Unable to access stat of header file "<<headerFile<<std::endl;
+      str << "Unable to access stat of header file " << headerFile << std::endl;
       throw std::runtime_error(str.str());
    }
    struct stat frameLibStat;
@@ -103,12 +103,12 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
    Dl_info info;
    if(!dladdr(reinterpret_cast<void*>(DummyFunctionToLocateTGRSIFrameLibrary), &info)) {
       std::stringstream str;
-      str<<"Unable to find location of DummyFunctionToLocateTGRSIFrameLibrary"<<std::endl;
+      str << "Unable to find location of DummyFunctionToLocateTGRSIFrameLibrary" << std::endl;
       throw std::runtime_error(str.str());
    }
    if(stat(info.dli_fname, &frameLibStat) != 0) {
       std::stringstream str;
-      str<<"Unable to access stat of "<<info.dli_fname<<std::endl;
+      str << "Unable to access stat of " << info.dli_fname << std::endl;
       throw std::runtime_error(str.str());
    }
    struct stat sharedLibStat;
@@ -116,7 +116,7 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
       sharedLibStat.st_atime > sourceStat.st_atime &&
       sharedLibStat.st_atime > headerStat.st_atime &&
       sharedLibStat.st_atime > frameLibStat.st_atime) {
-      std::cout<<DCYAN<<"shared library "<<sharedLibrary<<" exists and is newer than "<<sourceFile<<", "<<headerFile<<", and $GRSISYS/lib/libTGRSIFrame.so"<<RESET_COLOR<<std::endl;
+      std::cout << DCYAN << "shared library " << sharedLibrary << " exists and is newer than " << sourceFile << ", " << headerFile << ", and $GRSISYS/lib/libTGRSIFrame.so" << RESET_COLOR << std::endl;
       return;
    }
    // get include path
@@ -124,7 +124,7 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
    if(slash != std::string::npos) {
       includePath = path.substr(0, slash);
    }
-   std::cout<<DCYAN<<"----------  starting compilation of user code  ----------"<<RESET_COLOR<<std::endl;
+   std::cout << DCYAN << "----------  starting compilation of user code  ----------" << RESET_COLOR << std::endl;
    // TODO: replace --GRSIData-flags with something based on which data parser library we've loaded
    std::string parserLibraryPath = TGRSIOptions::Get()->ParserLibrary();
    // this should look something like $GRSISYS/<library name>/lib/lib<library name>.so
@@ -132,20 +132,20 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
    std::string       parserLibraryName = parserLibraryPath.substr(parserLibraryPath.find_last_of('/') + 4, parserLibraryPath.find_last_of('.') - parserLibraryPath.find_last_of('/') - 4);
    std::string       objectFile        = path.replace(dot, std::string::npos, ".o");
    std::stringstream command;
-   command<<"g++ -c -fPIC -g `grsi-config --cflags --"<<parserLibraryName<<"-cflags` `root-config --cflags --glibs` -I"<<includePath<<" -o "<<objectFile<<" "<<sourceFile<<std::endl;
+   command << "g++ -c -fPIC -g `grsi-config --cflags --" << parserLibraryName << "-cflags` `root-config --cflags --glibs` -I" << includePath << " -o " << objectFile << " " << sourceFile << std::endl;
    if(std::system(command.str().c_str()) != 0) {
       std::stringstream str;
-      str<<"Unable to compile source file "<<sourceFile<<" using '"<<command.str()<<"'"<<std::endl;
+      str << "Unable to compile source file " << sourceFile << " using '" << command.str() << "'" << std::endl;
       throw std::runtime_error(str.str());
    }
-   std::cout<<DCYAN<<"----------  starting linking user code  -----------------"<<RESET_COLOR<<std::endl;
+   std::cout << DCYAN << "----------  starting linking user code  -----------------" << RESET_COLOR << std::endl;
    command.clear();
-   command<<"g++ -fPIC -g -shared -o "<<sharedLibrary<<" "<<objectFile<<std::endl;
+   command << "g++ -fPIC -g -shared -o " << sharedLibrary << " " << objectFile << std::endl;
    if(std::system(command.str().c_str()) != 0) {
       std::stringstream str;
-      str<<"Unable to link shared object library "<<sharedLibrary<<" using '"<<command.str()<<"'"<<std::endl;
+      str << "Unable to link shared object library " << sharedLibrary << " using '" << command.str() << "'" << std::endl;
       throw std::runtime_error(str.str());
    }
-   std::cout<<DCYAN<<"----------  done compiling user code  -------------------"<<RESET_COLOR<<std::endl;
+   std::cout << DCYAN << "----------  done compiling user code  -------------------" << RESET_COLOR << std::endl;
 }
 #endif

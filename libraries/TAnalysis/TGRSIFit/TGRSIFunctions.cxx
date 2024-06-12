@@ -26,7 +26,7 @@ NamespaceImp(TGRSIFunctions)
    bool quiet   = (opt.find('q') != std::string::npos);
    bool verbose = (opt.find('v') != std::string::npos);
    if(quiet && verbose) {
-      std::cout<<"Don't know how to be quiet and verbose at once ("<<opt<<"), going to be verbose!"<<std::endl;
+      std::cout << "Don't know how to be quiet and verbose at once (" << opt << "), going to be verbose!" << std::endl;
       quiet = false;
    }
    bool result = true;
@@ -38,13 +38,13 @@ NamespaceImp(TGRSIFunctions)
    for(unsigned int i = 0; i < fitres->NPar(); ++i) {
       if(std::fabs(fitres->ParError(i) - TMath::Sqrt(covarianceMatrix[i][i])) > 0.1) {
          if(!quiet) {
-            std::cout<<RED<<"Parameter "<<i<<" = "<<fitres->GetParameterName(i)<<" is at or close to the limit, error is "<<fitres->ParError(i)<<", and square root of diagonal is "<<TMath::Sqrt(covarianceMatrix[i][i])<<RESET_COLOR<<std::endl;
+            std::cout << RED << "Parameter " << i << " = " << fitres->GetParameterName(i) << " is at or close to the limit, error is " << fitres->ParError(i) << ", and square root of diagonal is " << TMath::Sqrt(covarianceMatrix[i][i]) << RESET_COLOR << std::endl;
          }
          result = false;
          // we don't break here even though we could, because we want to print out
          // all parameters with issues
       } else if(verbose) {
-         std::cout<<GREEN<<"Parameter "<<i<<" = "<<fitres->GetParameterName(i)<<" is not close to the limit, error is "<<fitres->ParError(i)<<", and square root of diagonal is "<<TMath::Sqrt(covarianceMatrix[i][i])<<RESET_COLOR<<std::endl;
+         std::cout << GREEN << "Parameter " << i << " = " << fitres->GetParameterName(i) << " is not close to the limit, error is " << fitres->ParError(i) << ", and square root of diagonal is " << TMath::Sqrt(covarianceMatrix[i][i]) << RESET_COLOR << std::endl;
       }
    }
    return result;
@@ -327,7 +327,7 @@ Double_t TGRSIFunctions::Bateman(std::vector<Double_t>& dim, std::vector<Double_
    // NOTE: The lowest paramters correspond to the most 'senior' nuclei
 
    if(par.size() < (nChain * 3)) {
-      std::cout<<"not enough parameters passed to function"<<std::endl;
+      std::cout << "not enough parameters passed to function" << std::endl;
       return 0;
    }
 
@@ -500,7 +500,7 @@ double TGRSIFunctions::RacahW(double a, double b, double c, double d, double e, 
 #ifdef HAS_MATHMORE
    return TMath::Power((-1), int(a + b + d + c)) * ::ROOT::Math::wigner_6j(int(2 * a), int(2 * b), int(2 * e), int(2 * d), int(2 * c), int(2 * f));
 #else
-   std::cout<<"Mathmore feature of ROOT is missing, "<<__PRETTY_FUNCTION__<<" will always return 1!"<<std::endl;
+   std::cout << "Mathmore feature of ROOT is missing, " << __PRETTY_FUNCTION__ << " will always return 1!" << std::endl;
    return 1.;
 #endif
 }

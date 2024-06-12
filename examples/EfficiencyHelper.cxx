@@ -153,19 +153,19 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
 
 void EfficiencyHelper::EndOfSort(std::shared_ptr<std::map<std::string, TList>> list)
 {
-   std::cout<<std::endl;
+   std::cout << std::endl;
    for(auto obj : list->at("")) {
       std::string name  = obj->GetName();
       size_t      coinc = name.rfind("Coinc");
       if(coinc == name.length() - 5) {
          auto timeRandom = static_cast<TH2*>(list->at("").FindObject(name.replace(coinc, 5, "Bg").c_str()));
          if(timeRandom == nullptr) {
-            std::cout<<"Failed to find \""<<name.replace(coinc, 5, "Bg")<<"\" after finding \""<<name<<"\" in list:"<<std::endl;
+            std::cout << "Failed to find \"" << name.replace(coinc, 5, "Bg") << "\" after finding \"" << name << "\" in list:" << std::endl;
             list->at("").Print();
             continue;
          }
          double factor = (promptHigh - promptLow) / (2. * (bgHigh - bgLow));   // factor two for BG window because we use absolute time here, might be wrong for asymmetric histograms?
-         std::cout<<"Found \""<<timeRandom->GetName()<<"\" after finding \""<<obj->GetName()<<"\", creating corrected spectrum using factor "<<factor<<std::endl;
+         std::cout << "Found \"" << timeRandom->GetName() << "\" after finding \"" << obj->GetName() << "\", creating corrected spectrum using factor " << factor << std::endl;
          auto corrected = static_cast<TH2*>(obj->Clone(name.replace(coinc, 5, "Corr").c_str()));
          corrected->Add(timeRandom, -factor);
          list->at("").Add(corrected);

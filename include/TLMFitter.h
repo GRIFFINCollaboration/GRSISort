@@ -590,9 +590,9 @@ protected:
    inline void nrerror(const std::string& error_text)
    // Numerical Recipes standard error handler
    {
-      std::cerr<<"Numerical Recipes run-time error..."<<std::endl;
-      std::cerr<<error_text<<std::endl;
-      std::cerr<<"...now exiting to system..."<<std::endl;
+      std::cerr << "Numerical Recipes run-time error..." << std::endl;
+      std::cerr << error_text << std::endl;
+      std::cerr << "...now exiting to system..." << std::endl;
       exit(1);
    }
 

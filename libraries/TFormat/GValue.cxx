@@ -147,7 +147,7 @@ std::string GValue::PrintToString() const
 
 void GValue::Print(Option_t*) const
 {
-   std::cout<<PrintToString()<<std::endl;
+   std::cout << PrintToString() << std::endl;
 }
 
 int GValue::WriteValFile(const std::string& filename, Option_t*)
@@ -161,12 +161,12 @@ int GValue::WriteValFile(const std::string& filename, Option_t*)
          return -1;
       }
       for(it = fValueVector.begin(); it != fValueVector.end(); it++) {
-         outfile<<it->second->PrintToString();
-         outfile<<"\n\n";
+         outfile << it->second->PrintToString();
+         outfile << "\n\n";
       }
    } else {
       for(it = fValueVector.begin(); it != fValueVector.end(); it++) {
-         std::cout<<it->second->PrintToString()<<"\n\n";
+         std::cout << it->second->PrintToString() << "\n\n";
       }
    }
    return fValueVector.size();
@@ -206,13 +206,13 @@ int GValue::ReadValFile(const char* filename, Option_t* opt)
    std::ifstream infile;
    infile.open(infilename.c_str());
    if(!infile) {
-      std::cerr<<__PRETTY_FUNCTION__<<":  could not open infile "<<infilename<<std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ":  could not open infile " << infilename << std::endl;
       return -2;
    }
    infile.seekg(0, std::ios::end);
    size_t length = infile.tellg();
    if(length == 0) {
-      std::cerr<<__PRETTY_FUNCTION__<<":  infile "<<infilename<<" appears to be empty."<<std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ":  infile " << infilename << " appears to be empty." << std::endl;
       return -2;
    }
 
@@ -316,7 +316,7 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
       }
    }
    if(strcmp(opt, "debug") == 0) {
-      std::cout<<"parsed "<<linenumber<<" lines"<<std::endl;
+      std::cout << "parsed " << linenumber << " lines" << std::endl;
    }
    return newvalues;
 }

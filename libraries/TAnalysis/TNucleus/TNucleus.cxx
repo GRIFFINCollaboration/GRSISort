@@ -54,13 +54,13 @@ TNucleus::TNucleus(const char* name)
          }
       }
    } catch(std::out_of_range&) {
-      std::cout<<"Could not parse element "<<name<<std::endl
-               <<"Nucleus not Set!"<<std::endl;
+      std::cout << "Could not parse element " << name << std::endl
+                << "Nucleus not Set!" << std::endl;
       return;
    }
    if(!found) {
-      std::cout<<"Warning: Element "<<element<<" not found in the mass table "<<massFile<<"."<<std::endl
-               <<"Nucleus not set!"<<std::endl;
+      std::cout << "Warning: Element " << element << " not found in the mass table " << massFile << "." << std::endl
+                << "Nucleus not set!" << std::endl;
       return;
    }
    infile.close();
@@ -106,7 +106,7 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile)
          fMassExcess = emass / 1000.;
          fSymbol     = tmp;
 #ifdef debug
-         cout<<"Symbol "<<fSymbol<<" tmp "<<tmp<<endl;
+         cout << "Symbol " << fSymbol << " tmp " << tmp << endl;
 #endif
          SetMass();
          SetSymbol(fSymbol.c_str());
@@ -168,7 +168,7 @@ void TNucleus::ParseName(std::string name, std::string& symbol, int& number, std
          symbol.assign("He");
          return;
       default:
-         std::cout<<"error, type numbersymbol, or symbolnumber, i.e. 30Mg oder Mg30, not "<<name<<std::endl;
+         std::cout << "error, type numbersymbol, or symbolnumber, i.e. 30Mg oder Mg30, not " << name << std::endl;
          return;
       };
    }
@@ -297,7 +297,7 @@ TTransition* TNucleus::GetTransitionByIntensity(Int_t idx)
 {
    TTransition* tran = static_cast<TTransition*>(fTransitionListByIntensity.At(idx));
    if(tran == nullptr) {
-      std::cout<<"Out of Range"<<std::endl;
+      std::cout << "Out of Range" << std::endl;
    }
 
    return tran;
@@ -307,7 +307,7 @@ TTransition* TNucleus::GetTransitionByEnergy(Int_t idx)
 {
    TTransition* tran = static_cast<TTransition*>(fTransitionListByEnergy.At(idx));
    if(tran == nullptr) {
-      std::cout<<"Out of Range"<<std::endl;
+      std::cout << "Out of Range" << std::endl;
    }
 
    return tran;
@@ -316,11 +316,11 @@ TTransition* TNucleus::GetTransitionByEnergy(Int_t idx)
 void TNucleus::Print(Option_t*) const
 {
    // Prints out the Name of the nucleus, as well as the numerated transition list
-   std::cout<<"Nucleus: "<<GetName()<<std::endl;
+   std::cout << "Nucleus: " << GetName() << std::endl;
    TIter next(&fTransitionListByIntensity);
    int   counter = 0;
    while(TTransition* tran = static_cast<TTransition*>(next())) {
-      std::cout<<"\t"<<counter++<<"\t";
+      std::cout << "\t" << counter++ << "\t";
       tran->Print();
    }
 }
@@ -332,10 +332,10 @@ void TNucleus::WriteSourceFile(const std::string& outfilename)
       sourceout.open(outfilename.c_str());
       for(int i = 0; i < fTransitionListByIntensity.GetSize(); i++) {
          std::string transtr = (static_cast<TTransition*>(fTransitionListByIntensity.At(i)))->PrintToString();
-         sourceout<<transtr.c_str();
-         sourceout<<std::endl;
+         sourceout << transtr.c_str();
+         sourceout << std::endl;
       }
-      sourceout<<std::endl;
+      sourceout << std::endl;
       sourceout.close();
    }
 }
@@ -355,7 +355,7 @@ bool TNucleus::LoadTransitionFile()
    std::ifstream transfile;
    transfile.open(filename.c_str());
    if(!transfile.is_open()) {
-      std::cout<<"failed to open source file: "<<filename.c_str()<<std::endl;
+      std::cout << "failed to open source file: " << filename.c_str() << std::endl;
       return false;
    }
 

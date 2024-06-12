@@ -240,7 +240,7 @@ void GRootBrowser::CreateBrowser(const char* name)
 GRootBrowser::~GRootBrowser()
 {
    /// Clean up all widgets, frames and layouthints that were used
-   std::cout<<__PRETTY_FUNCTION__<<std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;
    fflush(stdout);
 
    if(fIconPic != nullptr) {
@@ -648,7 +648,7 @@ void GRootBrowser::HandleMenu(Int_t id)
       new TWin32SplashThread(kTRUE);
 #else
       std::ostringstream str;
-      str<<"About ROOT "<<gROOT->GetVersion()<<"...";
+      str << "About ROOT " << gROOT->GetVersion() << "...";
       hd = new TRootHelpDialog(this, str.str(), 600, 400);
       hd->SetText(gHelpAbout);
       hd->Popup();

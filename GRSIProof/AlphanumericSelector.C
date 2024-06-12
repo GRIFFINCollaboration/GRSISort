@@ -6,7 +6,7 @@ void AlphanumericSelector::CreateHistograms()
 {
    // get the channel map and loop over it, building a map of array number to channel address
    std::unordered_map<unsigned int, TChannel*>* channelMap = TChannel::GetChannelMap();
-   std::cout<<"Got "<<channelMap->size()<<" channels"<<std::endl;
+   std::cout << "Got " << channelMap->size() << " channels" << std::endl;
    std::map<int, unsigned int> address;
 
    for(auto channel : *channelMap) {
@@ -19,7 +19,7 @@ void AlphanumericSelector::CreateHistograms()
       }
    }
 
-   std::cout<<"x-axis: "<<address.rbegin()->first - address.begin()->first + 1<<" bins from "<<address.begin()->first<<" to "<<address.rbegin()->first + 1<<std::endl;
+   std::cout << "x-axis: " << address.rbegin()->first - address.begin()->first + 1 << " bins from " << address.begin()->first << " to " << address.rbegin()->first + 1 << std::endl;
 
    // Define Histograms
    fH2["EnergyVsChannel"] = new TH2D("EnergyVsChannel", "#gamma singles energy vs. channel", address.rbegin()->first - address.begin()->first + 1, address.begin()->first, address.rbegin()->first + 1, 4000, 0, 2000);
@@ -27,7 +27,7 @@ void AlphanumericSelector::CreateHistograms()
 
    for(int bin = 1; bin <= fH2["EnergyVsChannel"]->GetNbinsX(); ++bin) {
       if(address.find(bin) == address.end()) {
-         std::cout<<"Couldn't find array number "<<bin<<" in address map"<<std::endl;
+         std::cout << "Couldn't find array number " << bin << " in address map" << std::endl;
          continue;
       }
       fH2["EnergyVsChannel"]->GetXaxis()->SetBinLabel(bin, Form("0x%x", address.at(bin)));

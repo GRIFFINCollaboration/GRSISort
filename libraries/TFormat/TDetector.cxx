@@ -54,11 +54,11 @@ void TDetector::Print(std::ostream& out) const
 {
    /// Print detector to stream out. Iterates over hits and prints them.
    std::ostringstream str;
-   str<<"TDetector "<<this<<":"<<std::endl;
+   str << "TDetector " << this << ":" << std::endl;
    for(auto hit : fHits) {
       hit->Print(str);
    }
-   out<<str.str();
+   out << str.str();
 }
 
 void TDetector::ClearTransients()
@@ -73,7 +73,7 @@ TDetectorHit* TDetector::GetHit(const int& i) const
    try {
       return fHits.at(i);
    } catch(const std::out_of_range& oor) {
-      std::cerr<<ClassName()<<" is out of range: "<<oor.what()<<std::endl;
+      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
       throw grsi::exit_exception(1);
    }
    return nullptr;

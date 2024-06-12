@@ -136,66 +136,66 @@ void TGRSIOptions::Clear(Option_t*)
 void TGRSIOptions::Print(Option_t*) const
 {
    /// Print the current status of TGRSIOptions, includes all names, lists and flags
-   std::cout<<"fCloseAfterSort: "<<fCloseAfterSort<<std::endl
-            <<"fLogErrors: "<<fLogErrors<<std::endl
-            <<"fUseMidFileOdb: "<<fUseMidFileOdb<<std::endl
-            <<"fSuppressErrors: "<<fSuppressErrors<<std::endl
-            <<"fReconstructTimeStamp: "<<fReconstructTimeStamp<<std::endl
-            <<std::endl
-            <<"fMakeAnalysisTree: "<<fMakeAnalysisTree<<std::endl
-            <<"fReadingMaterial;: "<<fReadingMaterial<<std::endl
-            <<"fIgnoreFileOdb: "<<fIgnoreFileOdb<<std::endl
-            <<"fIgnoreOdbChannels: "<<fIgnoreOdbChannels<<std::endl
-            <<"fDownscaling: "<<fDownscaling<<std::endl
-            <<std::endl
-            <<"fIgnoreScaler: "<<fIgnoreScaler<<std::endl
-            <<"fIgnoreEpics: "<<fIgnoreEpics<<std::endl
-            <<"fWriteFragmentTree: "<<fWriteFragmentTree<<std::endl
-            <<"fWriteBadFrags: "<<fWriteBadFrags<<std::endl
-            <<"fWriteDiagnostics: "<<fWriteDiagnostics<<std::endl
-            <<"fWordOffset: "<<fWordOffset<<std::endl
-            <<std::endl
-            <<"fBatch: "<<fBatch<<std::endl
-            <<std::endl
-            <<"fShowedVersion: "<<fShowedVersion<<std::endl
-            <<"fShowLogo: "<<fShowLogo<<std::endl
-            <<"fSortRaw: "<<fSortRaw<<std::endl
-            <<"fExtractWaves;: "<<fExtractWaves<<std::endl
-            <<"fIsOnline: "<<fIsOnline<<std::endl
-            <<"fStartGui: "<<fStartGui<<std::endl
-            <<"fMakeHistos: "<<fMakeHistos<<std::endl
-            <<"fSortMultiple: "<<fSortMultiple<<std::endl
-            <<"fDebug: "<<fDebug<<std::endl
-            <<"fLogFile: "<<fLogFile<<std::endl
-            <<std::endl
-            <<"fFragmentWriteQueueSize: "<<fFragmentWriteQueueSize<<std::endl
-            <<"fAnalysisWriteQueueSize: "<<fAnalysisWriteQueueSize<<std::endl
-            <<std::endl
-            <<"fIgnoreMissingChannel: "<<fIgnoreMissingChannel<<std::endl
-            <<"fSkipInputSort: "<<fSkipInputSort<<std::endl
-            <<"fSortDepth: "<<fSortDepth<<std::endl
-            <<std::endl
-            <<"fSeparateOutOfOrder: "<<fSeparateOutOfOrder<<std::endl
-            <<std::endl
-            <<"fShouldExit: "<<fShouldExit<<std::endl
-            <<std::endl
-            <<"fColumnWidth: "<<fColumnWidth<<std::endl
-            <<"fStatusWidth: "<<fStatusWidth<<std::endl
-            <<"fStatusInterval: "<<fStatusInterval<<std::endl
-            <<"fLongFileDescription: "<<fLongFileDescription<<std::endl
-            <<std::endl
-            <<"fMaxWorkers: "<<fMaxWorkers<<std::endl
-            <<"fSelectorOnly: "<<fSelectorOnly<<std::endl
-            <<"fTreeName: "<<fTreeName<<std::endl
-            <<"fAverageRateEstimation: "<<fAverageRateEstimation<<std::endl
-            <<"fParallelUnzip: "<<fParallelUnzip<<std::endl
-            <<"fCacheSize: "<<fCacheSize<<std::endl
-            <<"fSubmergers: "<<fSubmergers<<std::endl
-            <<"fProofStats: "<<fProofStats<<std::endl
-            <<std::endl
-            <<"fHelp: "<<fHelp<<std::endl
-            <<std::endl
-            <<"fParserLibrary: "<<fParserLibrary<<std::endl;
+   std::cout << "fCloseAfterSort: " << fCloseAfterSort << std::endl
+             << "fLogErrors: " << fLogErrors << std::endl
+             << "fUseMidFileOdb: " << fUseMidFileOdb << std::endl
+             << "fSuppressErrors: " << fSuppressErrors << std::endl
+             << "fReconstructTimeStamp: " << fReconstructTimeStamp << std::endl
+             << std::endl
+             << "fMakeAnalysisTree: " << fMakeAnalysisTree << std::endl
+             << "fReadingMaterial;: " << fReadingMaterial << std::endl
+             << "fIgnoreFileOdb: " << fIgnoreFileOdb << std::endl
+             << "fIgnoreOdbChannels: " << fIgnoreOdbChannels << std::endl
+             << "fDownscaling: " << fDownscaling << std::endl
+             << std::endl
+             << "fIgnoreScaler: " << fIgnoreScaler << std::endl
+             << "fIgnoreEpics: " << fIgnoreEpics << std::endl
+             << "fWriteFragmentTree: " << fWriteFragmentTree << std::endl
+             << "fWriteBadFrags: " << fWriteBadFrags << std::endl
+             << "fWriteDiagnostics: " << fWriteDiagnostics << std::endl
+             << "fWordOffset: " << fWordOffset << std::endl
+             << std::endl
+             << "fBatch: " << fBatch << std::endl
+             << std::endl
+             << "fShowedVersion: " << fShowedVersion << std::endl
+             << "fShowLogo: " << fShowLogo << std::endl
+             << "fSortRaw: " << fSortRaw << std::endl
+             << "fExtractWaves;: " << fExtractWaves << std::endl
+             << "fIsOnline: " << fIsOnline << std::endl
+             << "fStartGui: " << fStartGui << std::endl
+             << "fMakeHistos: " << fMakeHistos << std::endl
+             << "fSortMultiple: " << fSortMultiple << std::endl
+             << "fDebug: " << fDebug << std::endl
+             << "fLogFile: " << fLogFile << std::endl
+             << std::endl
+             << "fFragmentWriteQueueSize: " << fFragmentWriteQueueSize << std::endl
+             << "fAnalysisWriteQueueSize: " << fAnalysisWriteQueueSize << std::endl
+             << std::endl
+             << "fIgnoreMissingChannel: " << fIgnoreMissingChannel << std::endl
+             << "fSkipInputSort: " << fSkipInputSort << std::endl
+             << "fSortDepth: " << fSortDepth << std::endl
+             << std::endl
+             << "fSeparateOutOfOrder: " << fSeparateOutOfOrder << std::endl
+             << std::endl
+             << "fShouldExit: " << fShouldExit << std::endl
+             << std::endl
+             << "fColumnWidth: " << fColumnWidth << std::endl
+             << "fStatusWidth: " << fStatusWidth << std::endl
+             << "fStatusInterval: " << fStatusInterval << std::endl
+             << "fLongFileDescription: " << fLongFileDescription << std::endl
+             << std::endl
+             << "fMaxWorkers: " << fMaxWorkers << std::endl
+             << "fSelectorOnly: " << fSelectorOnly << std::endl
+             << "fTreeName: " << fTreeName << std::endl
+             << "fAverageRateEstimation: " << fAverageRateEstimation << std::endl
+             << "fParallelUnzip: " << fParallelUnzip << std::endl
+             << "fCacheSize: " << fCacheSize << std::endl
+             << "fSubmergers: " << fSubmergers << std::endl
+             << "fProofStats: " << fProofStats << std::endl
+             << std::endl
+             << "fHelp: " << fHelp << std::endl
+             << std::endl
+             << "fParserLibrary: " << fParserLibrary << std::endl;
 
    fAnalysisOptions->Print();
 }
@@ -405,8 +405,8 @@ void TGRSIOptions::Load(int argc, char** argv)
          try {
             parser.parse_file(filename);
          } catch(ParseError& e) {
-            std::cerr<<"ERROR: "<<e.what()<<"\n"
-                     <<parser<<std::endl;
+            std::cerr << "ERROR: " << e.what() << "\n"
+                      << parser << std::endl;
             throw;
          }
       }
@@ -416,8 +416,8 @@ void TGRSIOptions::Load(int argc, char** argv)
    try {
       parser.parse(argc, argv, true);
    } catch(ParseError& e) {
-      std::cerr<<"ERROR: "<<e.what()<<"\n"
-               <<parser<<std::endl;
+      std::cerr << "ERROR: " << e.what() << "\n"
+                << parser << std::endl;
       throw;
    }
 
@@ -429,7 +429,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 
    // print help if required
    if(fHelp) {
-      std::cout<<parser<<std::endl;
+      std::cout << parser << std::endl;
       fShouldExit = true;
    }
 
@@ -457,8 +457,8 @@ void TGRSIOptions::Load(int argc, char** argv)
    try {
       parser.parse(argc, argv, false);
    } catch(ParseError& e) {
-      std::cerr<<"ERROR: "<<e.what()<<"\n"
-               <<parser<<std::endl;
+      std::cerr << "ERROR: " << e.what() << "\n"
+                << parser << std::endl;
       throw;
    }
    if(useRecommendedFlags) {
@@ -604,7 +604,7 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
          used              = true;
       }
       if(!used) {
-         std::cerr<<fullFilename<<" did not contain MakeFragmentHistograms or MakeAnalysisHistograms or CreateParser and others or CreateHelper and DestroyHelper"<<std::endl;
+         std::cerr << fullFilename << " did not contain MakeFragmentHistograms or MakeAnalysisHistograms or CreateParser and others or CreateHelper and DestroyHelper" << std::endl;
       }
       return used;
    }
@@ -626,7 +626,7 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
    case kFileType::XML_FILE: fInputOdbFiles.push_back(filename); return true;
 
    case kFileType::UNKNOWN_FILETYPE:
-   default: std::cout<<"\tDiscarding unknown file: "<<filename<<std::endl; return false;
+   default: std::cout << "\tDiscarding unknown file: " << filename << std::endl; return false;
    }
 }
 
@@ -658,7 +658,7 @@ bool TGRSIOptions::WriteToFile(TFile* file)
       file->ReOpen("UPDATE");
    }
    if(!gDirectory) {   // we don't compare to nullptr here, as ROOT >= 6.24.00 uses the TDirectoryAtomicAdapter structure with a bool() operator
-      std::cout<<"No file opened to write TGRSIOptions to."<<std::endl;
+      std::cout << "No file opened to write TGRSIOptions to." << std::endl;
       success = false;
    } else {
       Get()->Write("GRSIOptions", TObject::kOverwrite);
@@ -666,9 +666,9 @@ bool TGRSIOptions::WriteToFile(TFile* file)
       if(!fUserSettings->empty()) fUserSettings->Write("UserSettings", TObject::kOverwrite);
    }
 
-   std::cout<<"Writing TGRSIOptions to "<<gDirectory->GetFile()->GetName()<<std::endl;
+   std::cout << "Writing TGRSIOptions to " << gDirectory->GetFile()->GetName() << std::endl;
    if(oldoption == "READ") {
-      std::cout<<"  Returning "<<gDirectory->GetFile()->GetName()<<" to \""<<oldoption<<"\" mode."<<std::endl;
+      std::cout << "  Returning " << gDirectory->GetFile()->GetName() << " to \"" << oldoption << "\" mode." << std::endl;
       file->ReOpen("READ");
    }
    oldDir->cd();   // Go back to original gDirectory
@@ -693,7 +693,7 @@ Bool_t TGRSIOptions::ReadFromFile(TFile* file)
    }
 
    if(gDirectory->GetFile() == nullptr) {
-      std::cout<<"File does not exist"<<std::endl;
+      std::cout << "File does not exist" << std::endl;
       oldDir->cd();
       return false;
    }
@@ -702,7 +702,7 @@ Bool_t TGRSIOptions::ReadFromFile(TFile* file)
 
    TList* list = file->GetListOfKeys();
    TIter  iter(list);
-   std::cout<<"Reading options from file: "<<CYAN<<file->GetName()<<RESET_COLOR<<std::endl;
+   std::cout << "Reading options from file: " << CYAN << file->GetName() << RESET_COLOR << std::endl;
    while(TKey* key = static_cast<TKey*>(iter.Next())) {
       if((key == nullptr) || (strcmp(key->GetClassName(), "TGRSIOptions") != 0)) {
          continue;

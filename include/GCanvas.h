@@ -43,7 +43,7 @@ public:
    void Print(Option_t* option = "") const override
    {
       TObject::Print(option);
-      std::cout<<"fLineX = "<<fLineX<<", fLineY = "<<fLineY<<std::endl;
+      std::cout << "fLineX = " << fLineX << ", fLineY = " << fLineY << std::endl;
       TString opt = option;
       opt.ToLower();
       if(opt.Contains("a")) {

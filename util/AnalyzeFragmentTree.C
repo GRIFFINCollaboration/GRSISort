@@ -163,13 +163,13 @@ TList* AnalyzeFragmentTree(TTree* tree, long entries = 0, TStopwatch* w = nullpt
       }
 
       if(entry % 25000 == 0) {
-         std::cout<<"\t"<<entry<<" / "<<entries<<" = "<<(float)entry / entries * 100.0<<"%. "<<w->RealTime()<<" seconds"
-                  <<"\r"<<std::flush;
+         std::cout << "\t" << entry << " / " << entries << " = " << (float)entry / entries * 100.0 << "%. " << w->RealTime() << " seconds"
+                   << "\r" << std::flush;
          w->Continue();
       }
    }
-   std::cout<<"\t"<<entry<<" / "<<entries<<" = "<<(float)entry / entries * 100.0<<"%. "<<w->RealTime()<<" seconds"<<std::endl
-            <<std::endl;
+   std::cout << "\t" << entry << " / " << entries << " = " << (float)entry / entries * 100.0 << "%. " << w->RealTime() << " seconds" << std::endl
+             << std::endl;
    w->Continue();
 
    return list;
@@ -217,14 +217,14 @@ int main(int argc, char** argv)
       return 1;
    }
 
-   std::cout<<argv[0]<<": starting AnalyzeFragmentTree after "<<w.RealTime()<<" seconds"<<std::endl;
+   std::cout << argv[0] << ": starting AnalyzeFragmentTree after " << w.RealTime() << " seconds" << std::endl;
    w.Continue();
 
    TList* list;
    long   entries = tree->GetEntries();
    if(argc == 4 && atoi(argv[3]) < entries) {
       entries = atoi(argv[3]);
-      std::cout<<"Limiting processing of fragment tree to "<<entries<<" entries!"<<std::endl;
+      std::cout << "Limiting processing of fragment tree to " << entries << " entries!" << std::endl;
    }
    list = AnalyzeFragmentTree(tree, entries, &w);
 
@@ -232,7 +232,7 @@ int main(int argc, char** argv)
    list->Write();
    outfile->Close();
 
-   std::cout<<argv[0]<<" done after "<<w.RealTime()<<" seconds"<<std::endl;
+   std::cout << argv[0] << " done after " << w.RealTime() << " seconds" << std::endl;
 
    return 0;
 }

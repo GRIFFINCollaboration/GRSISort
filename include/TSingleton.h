@@ -38,7 +38,7 @@ public:
          if((gDirectory->GetFile()) != nullptr) {
             TList* list = gDirectory->GetFile()->GetListOfKeys();
             TIter  iter(list);
-            if(verbose) std::cout<<"Reading "<<T::Class()->GetName()<<R"( from file ")"<<CYAN<<gDirectory->GetFile()->GetName()<<RESET_COLOR<<R"(")"<<std::endl;
+            if(verbose) std::cout << "Reading " << T::Class()->GetName() << R"( from file ")" << CYAN << gDirectory->GetFile()->GetName() << RESET_COLOR << R"(")" << std::endl;
             while(TKey* key = static_cast<TKey*>(iter.Next())) {
                if(strcmp(key->GetClassName(), T::Class()->GetName()) != 0) {
                   continue;
@@ -104,22 +104,22 @@ public:
             T* prevSingleton = static_cast<T*>(prevSubRun->Get(fSingleton->GetName()));
             if(prevSingleton != nullptr) {
                fSingleton->Add(prevSingleton);
-               std::cout<<"Found previous "<<fSingleton->GetName()<<" data from "<<prevSubRun->GetName()<<std::endl;
+               std::cout << "Found previous " << fSingleton->GetName() << " data from " << prevSubRun->GetName() << std::endl;
             } else {
-               std::cout<<"Failed to find previous "<<fSingleton->GetName()<<" data from "<<prevSubRun->GetName()<<std::endl;
+               std::cout << "Failed to find previous " << fSingleton->GetName() << " data from " << prevSubRun->GetName() << std::endl;
                // try to find object without leading T
                prevSingleton = static_cast<T*>(prevSubRun->Get(&(fSingleton->GetName()[1])));
                if(prevSingleton != nullptr) {
                   fSingleton->Add(prevSingleton);
-                  std::cout<<"Found previous "<<&(fSingleton->GetName()[1])<<" data from "<<prevSubRun->GetName()<<std::endl;
+                  std::cout << "Found previous " << &(fSingleton->GetName()[1]) << " data from " << prevSubRun->GetName() << std::endl;
                } else {
-                  std::cout<<"Failed to find previous "<<&(fSingleton->GetName()[1])<<" data from "<<prevSubRun->GetName()<<std::endl;
+                  std::cout << "Failed to find previous " << &(fSingleton->GetName()[1]) << " data from " << prevSubRun->GetName() << std::endl;
                }
             }
             prevSubRun->Close();
             fDir->cd();
          } else {
-            std::cout<<"Failed to find previous file "<<prevSubRun->GetName()<<" not adding data to "<<fSingleton->GetName()<<std::endl;
+            std::cout << "Failed to find previous file " << prevSubRun->GetName() << " not adding data to " << fSingleton->GetName() << std::endl;
          }
       }
       return fSingleton;
@@ -145,19 +145,19 @@ public:
          if((gDirectory->GetFile()) != nullptr) {
             TList* list = gDirectory->GetFile()->GetListOfKeys();
             TIter  iter(list);
-            std::cout<<R"(Reading from file ")"<<CYAN<<gDirectory->GetFile()->GetName()<<RESET_COLOR<<R"(": )"<<std::flush;
+            std::cout << R"(Reading from file ")" << CYAN << gDirectory->GetFile()->GetName() << RESET_COLOR << R"(": )" << std::flush;
             while(TKey* key = static_cast<TKey*>(iter.Next())) {
                if(strcmp(key->GetClassName(), T::Class()->GetName()) != 0) {
                   continue;
                }
                // we found the object in the file, so we use it as our singleton
                // this automatically deletes the old singleton if we just switched files
-               std::cout<<"adding "<<T::Class()->GetName()<<" "<<std::flush;
+               std::cout << "adding " << T::Class()->GetName() << " " << std::flush;
                T* tmpSingleton = static_cast<T*>(key->ReadObj());
                fSingleton->Add(tmpSingleton);
                fDir = gDirectory;   // update the directory to gDirectory so we don't read from this file again
             }
-            std::cout<<std::endl;
+            std::cout << std::endl;
          }
       }
       return fSingleton;
@@ -165,7 +165,7 @@ public:
 
    static void PrintDirectory()
    {
-      std::cout<<"Singleton "<<fSingleton<<" was read from "<<(fDir != nullptr ? fDir->GetName() : "N/A")<<std::endl;
+      std::cout << "Singleton " << fSingleton << " was read from " << (fDir != nullptr ? fDir->GetName() : "N/A") << std::endl;
    }
 
 protected:

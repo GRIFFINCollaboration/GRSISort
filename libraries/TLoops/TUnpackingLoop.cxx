@@ -80,11 +80,11 @@ std::string TUnpackingLoop::EndStatus()
 {
    std::stringstream ss;
    if(fFragsReadFromRaw > 0) {
-      ss<<"\r"<<Name()<<":\t"<<fGoodFragsRead<<" good fragments out of "<<fFragsReadFromRaw
-        <<" fragments => "<<(100. * fGoodFragsRead) / fFragsReadFromRaw<<"% passed"<<std::endl;
+      ss << "\r" << Name() << ":\t" << fGoodFragsRead << " good fragments out of " << fFragsReadFromRaw
+         << " fragments => " << (100. * fGoodFragsRead) / fFragsReadFromRaw << "% passed" << std::endl;
    } else {
-      ss<<"\rno fragments read from midas => none parsed!"<<std::endl;
+      ss << "\rno fragments read from midas => none parsed!" << std::endl;
    }
-   ss<<fParser->OutputQueueStatus();
+   ss << fParser->OutputQueueStatus();
    return ss.str();
 }

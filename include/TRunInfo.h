@@ -71,7 +71,7 @@ public:
    static void        SetVersion(const char* ver)
    {
       if(fVersion.length() != 0) {
-         std::cout<<ALERTTEXT<<"WARNING; VERSION ALREADY SET TO "<<fVersion<<"!!"<<RESET_COLOR<<std::endl;
+         std::cout << ALERTTEXT << "WARNING; VERSION ALREADY SET TO " << fVersion << "!!" << RESET_COLOR << std::endl;
       } else {
          fVersion.assign(ver);
       }
@@ -82,7 +82,7 @@ public:
    static void        SetFullVersion(const char* ver)
    {
       if(fFullVersion.length() != 0) {
-         std::cout<<ALERTTEXT<<"WARNING; FULL VERSION ALREADY SET TO "<<fFullVersion<<"!!"<<RESET_COLOR<<std::endl;
+         std::cout << ALERTTEXT << "WARNING; FULL VERSION ALREADY SET TO " << fFullVersion << "!!" << RESET_COLOR << std::endl;
       } else {
          fFullVersion.assign(ver);
       }
@@ -93,7 +93,7 @@ public:
    static void        SetDate(const char* ver)
    {
       if(fDate.length() != 0) {
-         std::cout<<ALERTTEXT<<"WARNING; DATE ALREADY SET TO "<<fDate<<"!!"<<RESET_COLOR<<std::endl;
+         std::cout << ALERTTEXT << "WARNING; DATE ALREADY SET TO " << fDate << "!!" << RESET_COLOR << std::endl;
       } else {
          fDate.assign(ver);
       }
@@ -104,7 +104,7 @@ public:
    static void        SetLibraryVersion(const char* ver)
    {
       if(fLibraryVersion.length() != 0) {
-         std::cout<<ALERTTEXT<<"WARNING; VERSION ALREADY SET TO "<<fLibraryVersion<<"!!"<<RESET_COLOR<<std::endl;
+         std::cout << ALERTTEXT << "WARNING; VERSION ALREADY SET TO " << fLibraryVersion << "!!" << RESET_COLOR << std::endl;
       } else {
          fLibraryVersion.assign(ver);
       }

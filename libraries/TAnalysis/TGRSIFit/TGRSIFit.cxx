@@ -31,8 +31,8 @@ void TGRSIFit::Copy(TObject& obj) const
 void TGRSIFit::Print(Option_t* opt) const
 {
    if(strchr(opt, '+') != nullptr) {
-      std::cout<<"Params Init: "<<(fInitFlag ? "true" : "false")<<std::endl
-               <<"Good Fit: "<<(fGoodFitFlag ? "true" : "false")<<std::endl;
+      std::cout << "Params Init: " << (fInitFlag ? "true" : "false") << std::endl
+                << "Good Fit: " << (fGoodFitFlag ? "true" : "false") << std::endl;
       TNamed::Print(opt);
    }
 }

@@ -145,9 +145,9 @@ void TChannel::InitChannelInput()
 {
    int channels_found = ParseInputData(fFileData.c_str(), "q", EPriority::kRootFile);
    if(gFile != nullptr) {
-      std::cout<<"Successfully read "<<channels_found<<" TChannels from "<<CYAN<<gFile->GetName()<<RESET_COLOR<<std::endl;
+      std::cout << "Successfully read " << channels_found << " TChannels from " << CYAN << gFile->GetName() << RESET_COLOR << std::endl;
    } else {
-      std::cout<<"Successfully read "<<channels_found<<" TChannels"<<std::endl;
+      std::cout << "Successfully read " << channels_found << " TChannels" << std::endl;
    }
 }
 
@@ -199,7 +199,7 @@ void TChannel::AddChannel(TChannel* chan, Option_t* opt)
          }
          return;
       }
-      std::cout<<"Trying to add a channel that already exists!"<<std::endl;
+      std::cout << "Trying to add a channel that already exists!" << std::endl;
       return;
    }
    if((chan->GetAddress() & 0x00ffffff) == 0x00ffffff) {
@@ -363,8 +363,8 @@ TChannel* TChannel::GetChannel(unsigned int temp_address, bool warn)
          // if there are threads running we're not in interactive mode, so we print a warning about sorting
          if(StoppableThread::AnyThreadRunning()) {
             std::ostringstream str;
-            str<<RED<<"Failed to find channel for address "<<hex(temp_address, 4)<<", this channel won't get sorted properly!"<<RESET_COLOR<<std::endl;
-            std::cerr<<str.str();
+            str << RED << "Failed to find channel for address " << hex(temp_address, 4) << ", this channel won't get sorted properly!" << RESET_COLOR << std::endl;
+            std::cerr << str.str();
          }
          fMissingChannelMap->insert(std::pair<unsigned int, int>(temp_address, 0));
       }
@@ -436,9 +436,9 @@ void TChannel::SetAddress(unsigned int tmpadd)
    /// Sets the address of a TChannel and also overwrites that channel if it is in the channel map
    for(auto iter1 : *fChannelMap) {
       if(iter1.second == this) {
-         std::cout<<"Channel at address: "<<hex(fAddress, 4)
-                  <<" already exists. Please use AddChannel() or OverWriteChannel() to change this TChannel"
-                  <<std::dec<<std::endl;
+         std::cout << "Channel at address: " << hex(fAddress, 4)
+                   << " already exists. Please use AddChannel() or OverWriteChannel() to change this TChannel"
+                   << std::dec << std::endl;
          break;
       }
    }
@@ -568,7 +568,7 @@ double TChannel::CalibrateENG(double charge) const
       if(!foundRange) {
          currentRange = fENGRanges.size() - 1;
          if(charge < fENGRanges[currentRange].first || fENGRanges[currentRange].second < charge) {
-            std::cerr<<"Charge "<<charge<<" outside all ranges of calibration (first "<<fENGRanges.front().first<<" - "<<fENGRanges.front().second<<", last "<<fENGRanges.back().first<<" - "<<fENGRanges.back().second<<")"<<std::endl;
+            std::cerr << "Charge " << charge << " outside all ranges of calibration (first " << fENGRanges.front().first << " - " << fENGRanges.front().second << ", last " << fENGRanges.back().first << " - " << fENGRanges.back().second << ")" << std::endl;
          }
       }
    }
@@ -711,22 +711,22 @@ void TChannel::SetDigitizerType(const std::string& mnemonic, const char* tmpstr,
 void TChannel::PrintCTCoeffs(Option_t*) const
 {
    /// Prints out the current TChannel.
-   std::cout<<GetName()<<"\t{\n";   //,channelname.c_str();
-   std::cout<<"Name:      "<<GetName()<<std::endl;
-   std::cout<<"Number:    "<<fNumber<<std::endl;
-   std::cout<<"Address:   "<<hex(fAddress, 8)<<std::endl;
+   std::cout << GetName() << "\t{\n";   //,channelname.c_str();
+   std::cout << "Name:      " << GetName() << std::endl;
+   std::cout << "Number:    " << fNumber << std::endl;
+   std::cout << "Address:   " << hex(fAddress, 8) << std::endl;
    for(double fCTCoefficient : fCTCoefficients) {
-      std::cout<<fCTCoefficient<<"\t";
+      std::cout << fCTCoefficient << "\t";
    }
-   std::cout<<std::endl;
-   std::cout<<"}\n";
-   std::cout<<"//====================================//\n";
+   std::cout << std::endl;
+   std::cout << "}\n";
+   std::cout << "//====================================//\n";
 }
 
 void TChannel::Print(Option_t*) const
 {
    /// Prints out the current TChannel.
-   std::cout<<PrintToString();
+   std::cout << PrintToString();
 }
 
 std::string TChannel::PrintCTToString(Option_t*) const
@@ -758,110 +758,110 @@ std::string TChannel::PrintToString(Option_t*) const
 {
    std::ostringstream str;
 
-   str<<GetName()<<"\t{"<<std::endl;   //,channelname.c_str();
-   str<<"Type:      ";
+   str << GetName() << "\t{" << std::endl;   //,channelname.c_str();
+   str << "Type:      ";
    if(GetClassType() != nullptr) {
-      str<<GetClassType()->GetName()<<std::endl;
+      str << GetClassType()->GetName() << std::endl;
    } else {
-      str<<"None"<<std::endl;
+      str << "None" << std::endl;
    }
 
-   str<<"Name:      "<<GetName()<<std::endl;
-   str<<"Number:    "<<fNumber<<std::endl;
-   str<<"Address:   "<<hex(fAddress, 4)<<std::dec<<std::endl;
+   str << "Name:      " << GetName() << std::endl;
+   str << "Number:    " << fNumber << std::endl;
+   str << "Address:   " << hex(fAddress, 4) << std::dec << std::endl;
    if(!fDigitizerTypeString.empty()) {
-      str<<"Digitizer: "<<fDigitizerTypeString<<std::endl;
+      str << "Digitizer: " << fDigitizerTypeString << std::endl;
    }
-   str<<"TimeOffset: "<<fTimeOffset<<std::endl;
-   str<<"TimeDrift: "<<fTimeDrift<<std::endl;
-   str<<"Integration: "<<fIntegration<<std::endl;
+   str << "TimeOffset: " << fTimeOffset << std::endl;
+   str << "TimeDrift: " << fTimeDrift << std::endl;
+   str << "Integration: " << fIntegration << std::endl;
    if(!fENGCoefficients.empty()) {
       for(size_t i = 0; i < fENGCoefficients.size(); ++i) {
          if(fENGCoefficients.size() == 1) {
-            str<<"ENGCoeff:  ";
+            str << "ENGCoeff:  ";
          } else {
-            str<<"ENGCoeff:  range "<<i<<"\t";
+            str << "ENGCoeff:  range " << i << "\t";
          }
          for(auto coeff : fENGCoefficients[i]) {
-            str<<coeff<<"\t";
+            str << coeff << "\t";
          }
-         str<<std::endl;
+         str << std::endl;
       }
    }
    if(!fENGChi2.empty()) {
       for(size_t i = 0; i < fENGChi2.size(); ++i) {
          if(fENGCoefficients.size() == 1) {
-            str<<"ENGChi2:   "<<fENGChi2[i]<<std::endl;
+            str << "ENGChi2:   " << fENGChi2[i] << std::endl;
          } else {
-            str<<"ENGChi2:   range "<<i<<"\t"<<fENGChi2[i]<<std::endl;
+            str << "ENGChi2:   range " << i << "\t" << fENGChi2[i] << std::endl;
          }
       }
    }
    if(!fENGRanges.empty()) {
       for(size_t i = 0; i < fENGRanges.size(); ++i) {
-         str<<"ENGRange:   "<<i<<"\t"<<fENGRanges[i].first<<" "<<fENGRanges[i].second<<std::endl;
+         str << "ENGRange:   " << i << "\t" << fENGRanges[i].first << " " << fENGRanges[i].second << std::endl;
       }
    }
    if(!fENGDriftCoefficents.empty()) {
-      str<<"ENGDrift:   ";
+      str << "ENGDrift:   ";
       auto oldPrecision = str.precision();
       str.precision(9);
       for(auto coeff : fENGDriftCoefficents) {
-         str<<coeff<<"\t";
+         str << coeff << "\t";
       }
       str.precision(oldPrecision);
-      str<<std::endl;
+      str << std::endl;
    }
    if(!fEFFCoefficients.empty()) {
-      str<<"EFFCoeff:  ";
+      str << "EFFCoeff:  ";
       for(auto coeff : fEFFCoefficients) {
-         str<<coeff<<"\t";
+         str << coeff << "\t";
       }
-      str<<std::endl;
+      str << std::endl;
    }
    if(fEFFChi2 != 0) {
-      str<<"EFFChi2:   "<<fEFFChi2<<std::endl;
+      str << "EFFChi2:   " << fEFFChi2 << std::endl;
    }
    if(!fCFDCoefficients.empty()) {
-      str<<"CFDCoeff:  ";
+      str << "CFDCoeff:  ";
       for(auto coeff : fCFDCoefficients) {
-         str<<coeff<<"\t";
+         str << coeff << "\t";
       }
-      str<<std::endl;
+      str << std::endl;
    }
    if(fEnergyNonlinearity.Value().GetN() > 0) {
-      str<<"EnergyNonlinearity:  ";
+      str << "EnergyNonlinearity:  ";
       double* x = fEnergyNonlinearity.Value().GetX();
       double* y = fEnergyNonlinearity.Value().GetY();
       for(int i = 0; i < fEnergyNonlinearity.Value().GetN(); ++i) {
-         str<<x[i]<<"\t"<<y[i]<<"\t";
+         str << x[i] << "\t" << y[i] << "\t";
       }
-      str<<std::endl;
+      str << std::endl;
    }
    if(!fCTCoefficients.empty()) {
-      str<<"CTCoeff:  ";
+      str << "CTCoeff:  ";
       for(auto coeff : fCTCoefficients) {
-         str<<coeff<<"\t";
+         str << coeff << "\t";
       }
-      str<<std::endl;
+      str << std::endl;
    }
    if(!fTIMECoefficients.empty()) {
-      str<<"TIMECoeff: ";
+      str << "TIMECoeff: ";
       for(auto coeff : fTIMECoefficients) {
-         str<<coeff<<"\t";
+         str << coeff << "\t";
       }
-      str<<std::endl;
+      str << std::endl;
    }
    if(fUseCalFileInt) {
-      str<<"FileInt: "<<fUseCalFileInt<<std::endl;
+      str << "FileInt: " << fUseCalFileInt << std::endl;
    }
    if(UseWaveParam()) {
-      str<<"RiseTime: "<<WaveFormShape.TauRise<<std::endl;
-      str<<"DecayTime: "<<WaveFormShape.TauDecay<<std::endl;
-      str<<"BaseLine: "<<WaveFormShape.BaseLine<<std::endl;
+      str << "RiseTime: " << WaveFormShape.TauRise << std::endl;
+      str << "DecayTime: " << WaveFormShape.TauDecay << std::endl;
+      str << "BaseLine: " << WaveFormShape.BaseLine << std::endl;
    }
-   str<<"}"<<std::endl;
-   str<<"//====================================//"<<std::endl;
+   str << "}" << std::endl;
+   str << "//====================================//" << std::endl;
    std::string buffer = str.str();
 
    return buffer;
@@ -896,10 +896,10 @@ void TChannel::WriteCalFile(const std::string& outfilename)
       calout.open(outfilename.c_str());
       for(auto iter_vec : chanVec) {
          std::string chanstr = iter_vec->PrintToString();
-         calout<<chanstr.c_str();
-         calout<<std::endl;
+         calout << chanstr.c_str();
+         calout << std::endl;
       }
-      calout<<std::endl;
+      calout << std::endl;
       calout.close();
    } else {
       for(auto iter_vec : chanVec) {
@@ -918,10 +918,10 @@ void TChannel::WriteCTCorrections(const std::string& outfilename)
       for(auto iter_vec : chanVec) {
          if(iter_vec->fCTCoefficients.empty()) continue;
          std::string chanstr = iter_vec->PrintCTToString();
-         calout<<chanstr.c_str();
-         calout<<std::endl;
+         calout << chanstr.c_str();
+         calout << std::endl;
       }
-      calout<<std::endl;
+      calout << std::endl;
       calout.close();
    } else {
       for(auto iter_vec : chanVec) {
@@ -997,7 +997,7 @@ Int_t TChannel::ReadFile(TFile* tempf)
 Int_t TChannel::ReadCalFile(std::ifstream& infile)
 {
    if(!infile.is_open()) {
-      std::cout<<DRED<<"could not open file."<<RESET_COLOR<<std::endl;
+      std::cout << DRED << "could not open file." << RESET_COLOR << std::endl;
       return -2;
    }
 
@@ -1034,7 +1034,7 @@ Int_t TChannel::ReadCalFile(const char* filename)
       return -1;
    }
 
-   std::cout<<"Reading from calibration file: "<<CYAN<<filename<<RESET_COLOR<<".....";
+   std::cout << "Reading from calibration file: " << CYAN << filename << RESET_COLOR << ".....";
    std::ifstream infile(infilename.c_str());
 
    auto channelsFound = ReadCalFile(infile);
@@ -1134,7 +1134,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                ss >> tempadd;
                if(tempadd == 0) {   // maybe it is in hex...
                   std::stringstream newss;
-                  newss<<std::hex<<line;
+                  newss << std::hex << line;
                   newss >> tempadd;
                }
                tempadd = tempadd & 0x00ffffff;   // front end number is not included in the odb...
@@ -1289,7 +1289,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
       }
    }
    if(strcmp(opt, "q") != 0) {
-      std::cout<<"parsed "<<linenumber<<" lines."<<std::endl;
+      std::cout << "parsed " << linenumber << " lines." << std::endl;
    }
 
    return newchannels;
@@ -1342,7 +1342,7 @@ int TChannel::WriteToRoot(TFile* fileptr)
    TDirectory* savdir = gDirectory;
 
    if(c == nullptr) {
-      std::cout<<"No TChannels found to write."<<std::endl;
+      std::cout << "No TChannels found to write." << std::endl;
       return 0;
    }
    if(fileptr == nullptr) {
@@ -1351,7 +1351,7 @@ int TChannel::WriteToRoot(TFile* fileptr)
 
    // check if we got a file
    if(fileptr == nullptr) {
-      std::cout<<"Error, no file provided and no file open (gDirectory = "<<gDirectory->GetName()<<")!"<<std::endl;
+      std::cout << "Error, no file provided and no file open (gDirectory = " << gDirectory->GetName() << ")!" << std::endl;
       return 0;
    }
    fileptr->cd();
@@ -1360,7 +1360,7 @@ int TChannel::WriteToRoot(TFile* fileptr)
       fileptr->ReOpen("UPDATE");
    }
    if(!gDirectory) {   // we don't compare to nullptr here, as ROOT >= 6.24.00 uses the TDirectoryAtomicAdapter structure with a bool() operator
-      std::cout<<"No file opened to write TChannel to."<<std::endl;
+      std::cout << "No file opened to write TChannel to." << std::endl;
    }
    TIter iter(gDirectory->GetListOfKeys());
 
@@ -1403,9 +1403,9 @@ int TChannel::WriteToRoot(TFile* fileptr)
    ParseInputData(savedata.c_str(), "q", EPriority::kRootFile);
    SaveToSelf();
 
-   std::cout<<"  "<<GetNumberOfChannels()<<" TChannels saved to "<<gDirectory->GetFile()->GetName()<<std::endl;
+   std::cout << "  " << GetNumberOfChannels() << " TChannels saved to " << gDirectory->GetFile()->GetName() << std::endl;
    if(oldoption == "READ") {
-      std::cout<<"  Returning "<<gDirectory->GetFile()->GetName()<<" to \"READ\" mode."<<std::endl;
+      std::cout << "  Returning " << gDirectory->GetFile()->GetName() << " to \"READ\" mode." << std::endl;
       fileptr->ReOpen("READ");
    }
    savdir->cd();   // Go back to original gDirectory
@@ -1486,7 +1486,7 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName, bool
       }
       // get address from keys name
       std::stringstream str;
-      str<<std::hex<<key->GetName() + strlen(graphName);
+      str << std::hex << key->GetName() + strlen(graphName);
       unsigned int address;
       str >> address;
       if(GetChannel(address) != nullptr) {
@@ -1508,7 +1508,7 @@ void TChannel::SetDigitizerType(TPriorityValue<std::string> tmp)
    if(fMnemonic.Value() != nullptr) {
       fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType, fTimeStampUnit);
    } else {
-      std::cerr<<__PRETTY_FUNCTION__<<": mnemonic not set, can't set digitizer type and timestamp unit from "<<fDigitizerTypeString<<std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ": mnemonic not set, can't set digitizer type and timestamp unit from " << fDigitizerTypeString << std::endl;
    }
 }
 

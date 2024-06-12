@@ -125,7 +125,7 @@ void TGRSIint::ApplyOptions()
          TParserLibrary::Get()->Load();
       } catch(std::runtime_error& e) {
          // if we failed to load the library, try to continue w/o it
-         std::cerr<<DRED<<e.what()<<RESET_COLOR<<std::endl;
+         std::cerr << DRED << e.what() << RESET_COLOR << std::endl;
       }
    }
 
@@ -159,7 +159,7 @@ void TGRSIint::ApplyOptions()
       RunMacroFile(filename);
    }
 
-   std::cout<<StoppableThread::AllThreadHeader()<<std::endl;
+   std::cout << StoppableThread::AllThreadHeader() << std::endl;
    LoopUntilDone();
    if(opt->CloseAfterSort()) {
       int exit_status = missing_raw_file ? 1 : 0;
@@ -183,11 +183,11 @@ void TGRSIint::LoopUntilDone()
 
       ++iter;
       if(TGRSIOptions::Get()->StatusInterval() > 0 && iter % TGRSIOptions::Get()->StatusInterval() == 0) {
-         std::cout<<"\r"<<StoppableThread::AllThreadStatus()<<std::endl;
+         std::cout << "\r" << StoppableThread::AllThreadStatus() << std::endl;
       }
-      std::cout<<"\r"<<StoppableThread::AllThreadProgress()<<std::flush;
+      std::cout << "\r" << StoppableThread::AllThreadProgress() << std::flush;
    }
-   std::cout<<std::endl;
+   std::cout << std::endl;
 }
 
 TGRSIint::~TGRSIint()
@@ -206,7 +206,7 @@ void TGRSIint::Terminate(Int_t status)
    /// Kills all of the threads if the process is allowed to terminate. This
    /// sends an error to TSortingDiagnostics if an analysis tree is being created
    if(!fAllowedToTerminate) {
-      std::cout<<"Not allowed to terminate, sorry!"<<std::endl;
+      std::cout << "Not allowed to terminate, sorry!" << std::endl;
       return;
    }
 
@@ -219,9 +219,9 @@ void TGRSIint::Terminate(Int_t status)
    }
 
    if((clock() % 60) == 0) {
-      std::cout<<"DING!"<<std::flush;
+      std::cout << "DING!" << std::flush;
       gSystem->Sleep(500);
-      std::cout<<"\r              \r"<<std::flush;
+      std::cout << "\r              \r" << std::flush;
    }
 
    TSeqCollection* canvases = gROOT->GetListOfCanvases();
@@ -301,7 +301,7 @@ void TGRSIint::PrintLogo(bool print)
       std::thread drawlogo(&TGRSIint::DrawLogo, this);
       drawlogo.detach();
    } else {
-      std::cout<<"\tgrsisort version "<<GRSI_RELEASE<<std::endl;
+      std::cout << "\tgrsisort version " << GRSI_RELEASE << std::endl;
    }
 }
 
@@ -324,7 +324,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
          TRint::ProcessLine(command);
          fRootFilesOpened++;
       } else {
-         std::cout<<"Could not create "<<filename<<std::endl;
+         std::cout << "Could not create " << filename << std::endl;
       }
    } else {
       // Open an already existing file.
@@ -333,8 +333,8 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
          // Give access to the file inside the interpreter.
          const char* command = Form("TFile* _file%i = (TFile*)%luL;", fRootFilesOpened, (unsigned long)file);
          TRint::ProcessLine(command);
-         std::cout<<"\tfile "<<BLUE<<file->GetName()<<RESET_COLOR<<" opened as "<<BLUE<<"_file"
-                  <<fRootFilesOpened<<RESET_COLOR<<std::endl;
+         std::cout << "\tfile " << BLUE << file->GetName() << RESET_COLOR << " opened as " << BLUE << "_file"
+                   << fRootFilesOpened << RESET_COLOR << std::endl;
 
          // If FragmentTree exists, add the file to the chain.
          if(file->FindObjectAny("FragmentTree") != nullptr) {
@@ -343,7 +343,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
                gFragment = new TChain("FragmentChain");
                // gFragment->SetNotify(GrutNotifier::Get());
             }
-            std::cout<<"file "<<file->GetName()<<" added to gFragment."<<std::endl;
+            std::cout << "file " << file->GetName() << " added to gFragment." << std::endl;
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
             gFragment->AddFile(file->GetName(), TChain::kBigNumber, "FragmentTree");
 #else
@@ -358,7 +358,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
                // TODO: Once we have a notifier set up
                // gAnalysis->SetNotify(GrutNotifier::Get());
             }
-            std::cout<<"file "<<file->GetName()<<" added to gAnalysis."<<std::endl;
+            std::cout << "file " << file->GetName() << " added to gAnalysis." << std::endl;
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
             gAnalysis->AddFile(file->GetName(), TChain::kBigNumber, "AnalysisTree");
 #else
@@ -375,7 +375,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
          }
          fRootFilesOpened++;
       } else {
-         std::cout<<"Could not open "<<filename<<std::endl;
+         std::cout << "Could not open " << filename << std::endl;
       }
    }
 
@@ -389,7 +389,7 @@ TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
 {
    /// Opens Raw input file and stores them in _raw if successfuly opened.
    if(!file_exists(filename.c_str())) {
-      std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
+      std::cerr << R"(File ")" << filename << R"(" does not exist)" << std::endl;
       return nullptr;
    }
 
@@ -402,13 +402,13 @@ TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
          const char* command = Form("TRawFile* _raw%i = (TRawFile*)%luL;", fRawFilesOpened, (unsigned long)file);
          ProcessLine(command);
 
-         std::cout<<"\tfile "<<BLUE<<filename<<RESET_COLOR<<" opened as "
-                  <<BLUE<<"_raw"<<fRawFilesOpened<<RESET_COLOR<<std::endl;
+         std::cout << "\tfile " << BLUE << filename << RESET_COLOR << " opened as "
+                   << BLUE << "_raw" << fRawFilesOpened << RESET_COLOR << std::endl;
       }
       fRawFilesOpened++;
       return file;
    } catch(std::runtime_error& e) {
-      std::cout<<e.what();
+      std::cout << e.what();
    }
    return nullptr;
 }
@@ -427,7 +427,7 @@ void TGRSIint::SetupPipeline()
    for(auto& filename : opt->InputFiles()) {
       if(!file_exists(filename.c_str())) {
          missing_raw_file = true;
-         std::cerr<<"File not found: "<<filename<<std::endl;
+         std::cerr << "File not found: " << filename << std::endl;
       }
    }
 
@@ -520,7 +520,7 @@ void TGRSIint::SetupPipeline()
    }
 
    if(read_from_analysis_tree) {
-      std::cerr<<"Reading from analysis tree not currently supported"<<std::endl;
+      std::cerr << "Reading from analysis tree not currently supported" << std::endl;
    }
 
    ////////////////////////////////////////////////////
@@ -559,7 +559,7 @@ void TGRSIint::SetupPipeline()
    // If needed, read from the raw file
    if(read_from_raw) {
       if(fRawFiles.size() > 1) {
-         std::cerr<<"I'm going to ignore all but first .mid"<<std::endl;
+         std::cerr << "I'm going to ignore all but first .mid" << std::endl;
       }
 
       dataLoop = TDataLoop::Get("1_input_loop", fRawFiles[0]);
@@ -600,7 +600,7 @@ void TGRSIint::SetupPipeline()
       TRunInfo::Get()->GetDetectorInformation()->Set();
       event_build_mode = TRunInfo::Get()->GetDetectorInformation()->BuildMode();
    } else {
-      std::cout<<"no detector information, can't set build mode"<<std::endl;
+      std::cout << "no detector information, can't set build mode" << std::endl;
    }
 
    // If requested, write the fragment histograms
@@ -656,8 +656,8 @@ void TGRSIint::SetupPipeline()
       if(detBuildingLoop != nullptr) {   // TODO: This needs to be extended to being able to read from an analysis tree
          loop->InputQueue() = detBuildingLoop->AddOutputQueue();
       } else {
-         std::cerr<<DRED<<"Error, writing analysis histograms is enabled, but no detector building loop was found!"
-                  <<RESET_COLOR<<std::endl;
+         std::cerr << DRED << "Error, writing analysis histograms is enabled, but no detector building loop was found!"
+                   << RESET_COLOR << std::endl;
          exit(1);
       }
 
@@ -695,10 +695,10 @@ void TGRSIint::RunMacroFile(const std::string& filename)
             command = Form("%s%s", trueFilename.substr(0, filename.find_first_of('.')).c_str(), arguments.c_str());
             ProcessLine(command);
          } else {
-            std::cerr<<R"(File ")"<<trueFilename<<R"(" does not exist)"<<std::endl;
+            std::cerr << R"(File ")" << trueFilename << R"(" does not exist)" << std::endl;
          }
       } else {
-         std::cerr<<R"(File ")"<<filename<<R"(" does not exist)"<<std::endl;
+         std::cerr << R"(File ")" << filename << R"(" does not exist)" << std::endl;
       }
    }
 }
@@ -725,7 +725,7 @@ void TGRSIint::PrintHelp(bool print)
 {
    /// Prints the help. Not sure this is used anymore.
    if(print) {
-      std::cout<<DRED<<BG_WHITE<<"     Sending Help!!     "<<RESET_COLOR<<std::endl;
+      std::cout << DRED << BG_WHITE << "     Sending Help!!     " << RESET_COLOR << std::endl;
       new TGHtmlBrowser(gSystem->ExpandPathName("${GRSISYS}/README.html"));
    }
    return;
@@ -736,26 +736,26 @@ bool TGRSIInterruptHandler::Notify()
    /// When ctrl-c is pressed, this takes over. This can be used in the future
    /// for safe cleanup.
    if(!StoppableThread::AnyThreadRunning()) {
-      std::cout<<std::endl
-               <<DRED<<BG_WHITE<<"   Control-c was pressed in interactive mode.   "<<RESET_COLOR<<std::endl;
+      std::cout << std::endl
+                << DRED << BG_WHITE << "   Control-c was pressed in interactive mode.   " << RESET_COLOR << std::endl;
       exit(1);
    }
    static int timesPressed = 0;
    timesPressed++;
    switch(timesPressed) {
    case 1:
-      std::cout<<std::endl
-               <<DRED<<BG_WHITE<<"   Control-c was pressed, terminating input loop.   "<<RESET_COLOR<<std::endl;
+      std::cout << std::endl
+                << DRED << BG_WHITE << "   Control-c was pressed, terminating input loop.   " << RESET_COLOR << std::endl;
       TGRSIint::instance()->Terminate();
       break;
    case 2:
-      std::cout<<std::endl
-               <<DRED<<BG_WHITE<<"   Control-c was pressed, stopping all queues.   "<<RESET_COLOR<<std::endl;
+      std::cout << std::endl
+                << DRED << BG_WHITE << "   Control-c was pressed, stopping all queues.   " << RESET_COLOR << std::endl;
       StoppableThread::ClearAllQueues();
       break;
    default:
-      std::cout<<std::endl
-               <<DRED<<BG_WHITE<<"   No you shutup!   "<<RESET_COLOR<<std::endl;
+      std::cout << std::endl
+                << DRED << BG_WHITE << "   No you shutup!   " << RESET_COLOR << std::endl;
       exit(1);
    }
    return true;

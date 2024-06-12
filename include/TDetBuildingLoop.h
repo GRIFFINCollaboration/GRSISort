@@ -42,7 +42,7 @@ public:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>& AddOutputQueue(size_t maxSize = 50000)
    {
       std::stringstream name;
-      name<<"event_queue_"<<fOutputQueues.size();
+      name << "event_queue_" << fOutputQueues.size();
       fOutputQueues.push_back(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>(name.str(), maxSize));
       return fOutputQueues.back();
    }

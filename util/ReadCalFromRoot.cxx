@@ -12,7 +12,7 @@
 int main(int argc, char** argv)
 {
    if(argc < 2) {
-      std::cout<<"Usage: "<<argv[0]<<" <root file(s)"<<std::endl;
+      std::cout << "Usage: " << argv[0] << " <root file(s)" << std::endl;
       return 1;
    }
 
@@ -30,29 +30,29 @@ int main(int argc, char** argv)
          TParserLibrary::Get()->Load();
       } catch(std::runtime_error& e) {
          // if we failed to load the library, try to continue w/o it
-         std::cerr<<DRED<<e.what()<<RESET_COLOR<<std::endl;
+         std::cerr << DRED << e.what() << RESET_COLOR << std::endl;
       }
    } else {
-      std::cout<<"No parser library set!"<<std::endl;
+      std::cout << "No parser library set!" << std::endl;
    }
 
    // Loop over the files in the argv list
    for(int i = 1; i < argc; ++i) {
       if(gSystem->AccessPathName(argv[i])) {
-         std::cout<<DRED<<"No file "<<argv[i]<<" found."<<RESET_COLOR<<std::endl;
+         std::cout << DRED << "No file " << argv[i] << " found." << RESET_COLOR << std::endl;
          badFile.push_back(argv[i]);
          continue;
       }
 
       TFile f(argv[i]);
       if(!f.IsOpen()) {
-         std::cout<<DRED<<"Could not open "<<argv[i]<<"."<<RESET_COLOR<<std::endl;
+         std::cout << DRED << "Could not open " << argv[i] << "." << RESET_COLOR << std::endl;
          badFile.push_back(argv[i]);
          continue;
       }
 
       if((f.Get("Channel") == nullptr) || (f.Get("RunInfo") == nullptr)) {
-         std::cout<<DRED<<"Could not find Channel or RunInfo in "<<argv[i]<<"."<<RESET_COLOR<<std::endl;
+         std::cout << DRED << "Could not find Channel or RunInfo in " << argv[i] << "." << RESET_COLOR << std::endl;
          badChannel.push_back(argv[i]);
          continue;
       }
@@ -67,20 +67,20 @@ int main(int argc, char** argv)
    }
 
    if(!badFile.empty()) {
-      std::cout<<"File(s) that could not be opened:";
+      std::cout << "File(s) that could not be opened:";
       for(auto& file : badFile) {
-         std::cout<<" "<<BLUE<<file<<RESET_COLOR;
+         std::cout << " " << BLUE << file << RESET_COLOR;
       }
    }
-   std::cout<<std::endl;
+   std::cout << std::endl;
 
    if(!badChannel.empty()) {
-      std::cout<<"File(s) that had no Channel or no RunInfo:";
+      std::cout << "File(s) that had no Channel or no RunInfo:";
       for(auto& file : badChannel) {
-         std::cout<<" "<<BLUE<<file<<RESET_COLOR;
+         std::cout << " " << BLUE << file << RESET_COLOR;
       }
    }
-   std::cout<<std::endl;
+   std::cout << std::endl;
 
    return 0;
 }

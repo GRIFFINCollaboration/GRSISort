@@ -36,8 +36,8 @@ TCompiledHistograms::TCompiledHistograms(std::string input_lib, std::string func
    *reinterpret_cast<void_alias*>(&fFunc) = fLibrary->GetSymbol(fFunc_name.c_str());
 
    if(fFunc == nullptr) {
-      std::cout<<"Could not find "<<fFunc_name<<"() inside "
-               <<R"(")"<<input_lib<<R"(")"<<std::endl;
+      std::cout << "Could not find " << fFunc_name << "() inside "
+                << R"(")" << input_lib << R"(")" << std::endl;
    }
    fLast_modified = get_timestamp();
    fLast_checked  = time(nullptr);
@@ -65,7 +65,7 @@ void TCompiledHistograms::ClearHistograms()
          }
       }
    }
-   std::cout<<"ended "<<std::endl;
+   std::cout << "ended " << std::endl;
 }
 
 time_t TCompiledHistograms::get_timestamp()

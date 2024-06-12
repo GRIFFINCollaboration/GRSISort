@@ -84,10 +84,10 @@ std::string TFragWriteLoop::EndStatus()
    std::stringstream ss;
    // ss<<"\r"<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputSize>0 ?
    // fInputSize+GetItemsPushed():GetItemsPushed())<<std::endl;
-   ss<<std::endl
-     <<Name()<<": "<<std::setw(8)<<fItemsPopped<<"/"<<fItemsPopped + fInputSize<<", "
-     <<fEventTree->GetEntries()<<" good fragments, "<<fBadEventTree->GetEntries()<<" bad fragments"
-     <<std::endl;
+   ss << std::endl
+      << Name() << ": " << std::setw(8) << fItemsPopped << "/" << fItemsPopped + fInputSize << ", "
+      << fEventTree->GetEntries() << " good fragments, " << fBadEventTree->GetEntries() << " bad fragments"
+      << std::endl;
    return ss.str();
 }
 
@@ -164,7 +164,7 @@ void TFragWriteLoop::Write()
       }
 
       if(!options->IgnoreScaler()) {
-         std::cout<<"Starting to write dead time scalers"<<std::endl;
+         std::cout << "Starting to write dead time scalers" << std::endl;
          auto         deadtimeQueue = TDeadtimeScalerQueue::Get();
          auto         scalerTree    = new TTree("DeadtimeScaler", "DeadtimeScaler");
          TScalerData* scalerData    = new TScalerData;
@@ -175,7 +175,7 @@ void TFragWriteLoop::Write()
          }
          scalerTree->Write();
 
-         std::cout<<"Starting to write rate scalers"<<std::endl;
+         std::cout << "Starting to write rate scalers" << std::endl;
          auto rateQueue = TRateScalerQueue::Get();
          scalerTree     = new TTree("RateScaler", "RateScaler");
          scalerData     = new TScalerData;
@@ -185,7 +185,7 @@ void TFragWriteLoop::Write()
             scalerTree->Fill();
          }
          scalerTree->Write();
-         std::cout<<"Done writing scaler trees"<<std::endl;
+         std::cout << "Done writing scaler trees" << std::endl;
       }
 
       fOutputFile->Close();
@@ -203,7 +203,7 @@ void TFragWriteLoop::WriteEvent(const std::shared_ptr<const TFragment>& event)
       fEventTree->Fill();
       // fEventAddress = nullptr;
    } else {
-      std::cout<<__PRETTY_FUNCTION__<<": no fragment tree!"<<std::endl;
+      std::cout << __PRETTY_FUNCTION__ << ": no fragment tree!" << std::endl;
    }
 }
 

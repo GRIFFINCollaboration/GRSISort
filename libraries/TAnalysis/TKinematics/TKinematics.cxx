@@ -175,7 +175,7 @@ void TKinematics::InitKin()
 TSpline3* TKinematics::Evslab(double thmin, double thmax, double size, int part)
 {
    if(part < 2 || part > 3) {
-      std::cout<<ALERTTEXT<<"WARNING: the function Evslab should use nuclei after the reaction (part 2 or part 3)"<<RESET_COLOR<<std::endl;
+      std::cout << ALERTTEXT << "WARNING: the function Evslab should use nuclei after the reaction (part 2 or part 3)" << RESET_COLOR << std::endl;
       return nullptr;
    }
 
@@ -195,8 +195,8 @@ TSpline3* TKinematics::Evslab(double thmin, double thmax, double size, int part)
       double tmpangle = GetThetalab(part) * (1 / deg2rad);
       double tmpeng   = GetTlab(part) * 1000;
       if(tmpangle < lastangle) {
-         std::cout<<ALERTTEXT<<"WARNING: the abscissa(theta) is no longer increasing; Drawing spline will fail."<<RESET_COLOR<<std::endl;
-         std::cout<<ALERTTEXT<<"         try Evslab_graph to see what this looks like.                         "<<RESET_COLOR<<std::endl;
+         std::cout << ALERTTEXT << "WARNING: the abscissa(theta) is no longer increasing; Drawing spline will fail." << RESET_COLOR << std::endl;
+         std::cout << ALERTTEXT << "         try Evslab_graph to see what this looks like.                         " << RESET_COLOR << std::endl;
          return nullptr;
       }
       lastangle = tmpangle;
@@ -219,7 +219,7 @@ TSpline3* TKinematics::Evslab(double thmin, double thmax, double size, int part)
 TGraph* TKinematics::Evslab_graph(double thmin, double thmax, double size, int part)
 {
    if(part < 2 || part > 3) {
-      std::cout<<ALERTTEXT<<"WARNING: the function Evslab+graph should use nuclei after the reaction (part 2 or part 3)"<<RESET_COLOR<<std::endl;
+      std::cout << ALERTTEXT << "WARNING: the function Evslab+graph should use nuclei after the reaction (part 2 or part 3)" << RESET_COLOR << std::endl;
       return nullptr;
    }
 
@@ -435,8 +435,8 @@ void TKinematics::SetAngles(double angle, int part, bool upper)
       given = 3;
       other = 2;
    } else {
-      std::cout<<" error in TKinematics::SetAngles("<<angle<<", "<<part<<") "<<std::endl;
-      std::cout<<" part must be 2 or 3 "<<std::endl;
+      std::cout << " error in TKinematics::SetAngles(" << angle << ", " << part << ") " << std::endl;
+      std::cout << " part must be 2 or 3 " << std::endl;
       exit(4);
    }
    fTheta[given]   = angle;
@@ -774,7 +774,7 @@ TSpline3* TKinematics::Ruthvslab(double thmin, double thmax, double size, int pa
       if(part == 3 || part == 2) {
          angle[i] = thmin + i * size;   // angle[i] is in cm system
       } else {
-         std::cout<<"error "<<std::endl;
+         std::cout << "error " << std::endl;
          exit(1);
       }
       if(angle[i] > 179.99 || angle[i] < 0.01) {

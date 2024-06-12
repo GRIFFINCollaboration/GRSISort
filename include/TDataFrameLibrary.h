@@ -19,17 +19,17 @@ public:
    void Load();   ///< if necessary loads shared object library and sets/initializes all other functions
 
    TGRSIHelper* CreateHelper(TList* list)
-	{
-		/// function to open library specific data parser
+   {
+      /// function to open library specific data parser
       Load();
       return fCreateHelper(list);
-	}
+   }
    void DestroyHelper(TGRSIHelper* parser)
-	{
-		/// function to destroy library specific data parser
+   {
+      /// function to destroy library specific data parser
       Load();
       fDestroyHelper(parser);
-	}
+   }
 
 private:
    TDataFrameLibrary() { fHandle = nullptr; }

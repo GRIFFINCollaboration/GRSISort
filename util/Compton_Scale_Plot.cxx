@@ -44,9 +44,9 @@ ________________________________________________________________________________
 
 #define RUNNUMBER 10577
 
-#define AGATA_Q 0.2509     // The quality factor for creating a predicted Asymmetry plot of 0.5*Q*P*Cos(2*Xi), where
-                           // P is determined by PolarizationCalculation()  <- Parameters must be set internally for each transition
-                           // Dan measured 0.24492 with 12 clovers in Summer 2016.
+#define AGATA_Q 0.2509     // The quality factor for creating a predicted Asymmetry plot of 0.5*Q*P*Cos(2*Xi), where                 \
+                           // P is determined by PolarizationCalculation()  <- Parameters must be set internally for each transition \
+                           // Dan measured 0.24492 with 12 clovers in Summer 2016.                                                   \
                            // Adam measured 0.2509 with 16 clovers in Dec 2017.
 #define E_Q_Measure 1332   // The energy of the scattered gamma used to calculate AGATA_Q
 #define E_Q_Use 1332       // The energy of the scattered gamma currently being examined.  Used for scaling Q
@@ -66,7 +66,7 @@ int main(int argc, char** argv)
    }
 
    for(int i = 100; i <= MaxE; i += 100) {
-      std::cout<<i<<" "<<AGATA_Q * ScaleQ(i, E_Q_Use)<<std::endl;
+      std::cout << i << " " << AGATA_Q * ScaleQ(i, E_Q_Use) << std::endl;
    }
 
    return 0;

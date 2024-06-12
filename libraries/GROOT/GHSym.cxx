@@ -1444,11 +1444,11 @@ Double_t GHSym::KolmogorovTest(const TH1* h2, Option_t* option) const
    }
    //   debug printout
    if(opt.Contains("D")) {
-      std::cout<<" Kolmo Prob  h1 = "<<h1->GetName()<<", sum1 = "<<sum1<<std::endl;
-      std::cout<<" Kolmo Prob  h2 = "<<h2->GetName()<<", sum2 = "<<sum2<<std::endl;
-      std::cout<<" Kolmo Probabil = "<<prb<<", Max dist = "<<dfmax<<std::endl;
+      std::cout << " Kolmo Prob  h1 = " << h1->GetName() << ", sum1 = " << sum1 << std::endl;
+      std::cout << " Kolmo Prob  h2 = " << h2->GetName() << ", sum2 = " << sum2 << std::endl;
+      std::cout << " Kolmo Probabil = " << prb << ", Max dist = " << dfmax << std::endl;
       if(opt.Contains("N")) {
-         std::cout<<" Kolmo Probabil = "<<prb1<<" for shape alone, "<<prb2<<" for normalisation alone"<<std::endl;
+         std::cout << " Kolmo Probabil = " << prb1 << " for shape alone, " << prb2 << " for normalisation alone" << std::endl;
       }
    }
    // This numerical error condition should never occur:

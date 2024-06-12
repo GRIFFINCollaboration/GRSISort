@@ -49,7 +49,7 @@ void TLMFitter::Fit(TH1* hist, TF1* func)
    fHist     = hist;
 
    // Sets whether parameters are fixed or free.
-   std::cout<<"Setting the parameters..."<<std::endl;
+   std::cout << "Setting the parameters..." << std::endl;
    for(int i = 0; i < func->GetNpar(); ++i) {
       Double_t min, max;
       a[i] = func->GetParameter(i);
@@ -65,12 +65,12 @@ void TLMFitter::Fit(TH1* hist, TF1* func)
       ia[i] = true;
    }
    for(int i = 0; i < ma; ++i) {
-      std::cout<<"par["<<i<<"] = "<<fFunction->GetParameter(i)<<std::endl;
+      std::cout << "par[" << i << "] = " << fFunction->GetParameter(i) << std::endl;
    }
    double func_range_min, func_range_max;
    int    bin_min, bin_max, nBins;
    func->GetRange(func_range_min, func_range_max);
-   std::cout<<"function range: "<<func_range_min<<" to "<<func_range_max<<std::endl;
+   std::cout << "function range: " << func_range_min << " to " << func_range_max << std::endl;
    SetFitterRange(func_range_min, func_range_max);
    bin_min = hist->FindBin(func_range_min);
    bin_max = hist->FindBin(func_range_max);
@@ -79,8 +79,8 @@ void TLMFitter::Fit(TH1* hist, TF1* func)
    // nBins = bin_max - bin_min;
    Vec_double x(nBins), y(nBins), sig(nBins), yfit(nBins), W(nBins), v(nBins);
 
-   std::cout<<"Setting bin values..."<<std::endl;
-   std::cout<<"Range is "<<bin_min<<" to "<<bin_max<<std::endl;
+   std::cout << "Setting bin values..." << std::endl;
+   std::cout << "Range is " << bin_min << " to " << bin_max << std::endl;
    for(int i = 0; i < hist->GetNbinsX(); ++i) {
       x[i] = hist->GetXaxis()->GetBinUpEdge(i + 1) * hist->GetXaxis()->GetBinWidth(1);
       y[i] = hist->GetBinContent(i + 1);
@@ -94,18 +94,18 @@ void TLMFitter::Fit(TH1* hist, TF1* func)
 
    alamda = -1;
    mrqmin(x, y, sig, a, ia, covar, alpha, chisq, W, alamda);
-   std::cout<<"out of mrqmin"<<std::endl;
+   std::cout << "out of mrqmin" << std::endl;
    int k    = 1;
    int itst = 0;
    while(true) {
-      std::cout<<std::endl
-               <<"Iteration #"<<std::setw(3)<<k;
-      std::cout<<std::setw(18)<<"chi-squared:"<<std::setw(13)<<chisq;
-      std::cout<<std::setw(11)<<"alamda:"<<std::setw(10)<<alamda<<std::endl;
+      std::cout << std::endl
+                << "Iteration #" << std::setw(3) << k;
+      std::cout << std::setw(18) << "chi-squared:" << std::setw(13) << chisq;
+      std::cout << std::setw(11) << "alamda:" << std::setw(10) << alamda << std::endl;
       for(int i = 0; i < ma; ++i) {
-         std::cout<<"par["<<i<<"] = "<<fFunction->GetParameter(i)<<std::endl;
+         std::cout << "par[" << i << "] = " << fFunction->GetParameter(i) << std::endl;
       }
-      std::cout<<std::endl;
+      std::cout << std::endl;
       ++k;
       ochisq = chisq;
       mrqmin(x, y, sig, a, ia, covar, alpha, chisq, W, alamda);
@@ -115,14 +115,14 @@ void TLMFitter::Fit(TH1* hist, TF1* func)
       }
       alamda = 0.0;
       mrqmin(x, y, sig, a, ia, covar, alpha, chisq, W, alamda);
-      std::cout<<"Uncertainties:"<<std::endl;
+      std::cout << "Uncertainties:" << std::endl;
       for(int i = 0; i < ma; ++i) {
-         std::cout<<" "<<std::sqrt(covar[i][i]);
+         std::cout << " " << std::sqrt(covar[i][i]);
       }
-      std::cout<<std::endl;
+      std::cout << std::endl;
       break;
    }
-   std::cout<<"Chis2/ndf: "<<chisq<<std::endl;
+   std::cout << "Chis2/ndf: " << chisq << std::endl;
 
    // Feed the parameters back into the function.
    for(int i = 0; i < ma; ++i) {
@@ -215,7 +215,7 @@ void TLMFitter::mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
 
    int ma = a.size();
    if(ma <= 0) {
-      std::cerr<<__PRETTY_FUNCTION__<<": vector a is empty, not doing anything!"<<std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ": vector a is empty, not doing anything!" << std::endl;
       return;
    }
    static Mat_double* oneda_p;

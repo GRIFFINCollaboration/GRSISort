@@ -107,7 +107,7 @@ void DrawNext(void)
       tree->GetEntry(evno++);
    } while(frag->wavebuffer.empty());
 
-   cout<<"Event number "<<evno<<endl;
+   cout << "Event number " << evno << endl;
    frag->Print();
 
    // printf("wavebuffer.size() = %i\n",wavebuffer.size());
@@ -135,7 +135,7 @@ void DrawNextDescant(void)
       tree->GetEntry(evno++);
    } while(frag->wavebuffer.empty());
 
-   cout<<"Event number "<<evno<<endl;
+   cout << "Event number " << evno << endl;
    frag->Print();
 
    // printf("wavebuffer.size() = %i\n",wavebuffer.size());

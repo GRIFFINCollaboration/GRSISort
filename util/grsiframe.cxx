@@ -44,21 +44,21 @@ int main(int argc, char** argv)
          TParserLibrary::Get()->Load();
       } catch(std::runtime_error& e) {
          // if we failed to load the library, we quit
-         std::cerr<<DRED<<e.what()<<RESET_COLOR<<std::endl;
+         std::cerr << DRED << e.what() << RESET_COLOR << std::endl;
          return 1;
       }
    } else {
-      std::cout<<"No parser library set!"<<std::endl;
+      std::cout << "No parser library set!" << std::endl;
       return 1;
    }
 
    // check that we have input files and a macro
    if(opt->RootInputFiles().empty()) {
-      std::cout<<"No input files provided!"<<std::endl;
+      std::cout << "No input files provided!" << std::endl;
       return 1;
    }
    if(opt->DataFrameLibrary().empty()) {
-      std::cout<<"No dataframe library (*.cxx file or *.so library) provided!"<<std::endl;
+      std::cout << "No dataframe library (*.cxx file or *.so library) provided!" << std::endl;
       return 1;
    }
 
@@ -73,17 +73,17 @@ int main(int argc, char** argv)
    realTime -= hour * 3600;
    int min = static_cast<int>(realTime / 60);
    realTime -= min * 60;
-   std::cout<<DMAGENTA<<std::endl
-            <<"Done after "<<hour<<":"<<std::setfill('0')<<std::setw(2)<<min<<":"
-            <<std::setprecision(3)<<std::fixed<<realTime<<" h:m:s"
-            <<RESET_COLOR<<std::endl;
+   std::cout << DMAGENTA << std::endl
+             << "Done after " << hour << ":" << std::setfill('0') << std::setw(2) << min << ":"
+             << std::setprecision(3) << std::fixed << realTime << " h:m:s"
+             << RESET_COLOR << std::endl;
 
    return 0;
 }
 #else
 int main(int, char** argv)
 {
-   std::cerr<<argv[0]<<": need at least ROOT version 6.14"<<std::endl;
+   std::cerr << argv[0] << ": need at least ROOT version 6.14" << std::endl;
    return 1;
 }
 #endif

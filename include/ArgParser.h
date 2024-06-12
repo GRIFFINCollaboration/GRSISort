@@ -41,10 +41,10 @@ public:
             (num_arguments() != -1 && arguments.size() != size_t(num_arguments()))) {
             std::stringstream ss;
             if(num_arguments() == -1) {
-               ss<<R"(Flag ")"<<name<<R"(" expected at least one argument)";
+               ss << R"(Flag ")" << name << R"(" expected at least one argument)";
             } else {
-               ss<<R"(Flag ")"<<name<<R"(" expected )"<<num_arguments()<<" argument(s) and received "
-                 <<arguments.size();
+               ss << R"(Flag ")" << name << R"(" expected )" << num_arguments() << " argument(s) and received "
+                  << arguments.size();
             }
             throw ParseError(ss.str());
          }
@@ -133,29 +133,29 @@ public:
    {
       std::stringstream ss;
 
-      ss<<"  "<<fColour;
+      ss << "  " << fColour;
 
       bool has_singlechar_flag = false;
       for(const auto& flag : fFlags) {
          if(flag.length() == 2) {
-            ss<<flag<<" ";
+            ss << flag << " ";
             has_singlechar_flag = true;
          }
       }
       for(const auto& flag : fFlags) {
          if(flag.length() != 2) {
             if(has_singlechar_flag) {
-               ss<<"[ ";
+               ss << "[ ";
             }
-            ss<<flag<<" ";
+            ss << flag << " ";
             if(has_singlechar_flag) {
-               ss<<"]";
+               ss << "]";
             }
          }
       }
 
       if(num_arguments() != 0) {
-         ss<<" arg ";
+         ss << " arg ";
       }
 
       auto chars = ss.tellp();
@@ -166,11 +166,11 @@ public:
 
       if(description_column != -1 && chars < description_column) {
          for(unsigned int i = 0; i < description_column - chars; i++) {
-            ss<<" ";
+            ss << " ";
          }
       }
 
-      ss<<fDescription<<RESET_COLOR;
+      ss << fDescription << RESET_COLOR;
 
       return ss.str();
    }
@@ -347,7 +347,7 @@ public:
       for(auto& val : values) {
          if(val->is_required() && !val->is_present()) {
             std::stringstream ss;
-            ss<<R"(Required argument ")"<<val->flag_name()<<R"(" is not present)";
+            ss << R"(Required argument ")" << val->flag_name() << R"(" is not present)";
             throw ParseError(ss.str());
          }
       }
@@ -415,7 +415,7 @@ public:
 
    void print(std::ostream& out) const
    {
-      out<<"Options:\n";
+      out << "Options:\n";
 
       int max_length = -1;
       for(auto item : values) {
@@ -426,9 +426,9 @@ public:
 
       for(auto it = values.begin(); it != values.end(); it++) {
          ArgParseItem* item = *it;
-         out<<item->printable(max_length);
+         out << item->printable(max_length);
          if(it != values.end() - 1) {
-            out<<"\n";
+            out << "\n";
          }
       }
    }
@@ -522,9 +522,9 @@ private:
 
       std::stringstream ss;
       if(flag.at(0) == '-') {
-         ss<<R"(Unknown option: ")"<<flag<<R"(")";
+         ss << R"(Unknown option: ")" << flag << R"(")";
       } else {
-         ss<<R"(Was passed ")"<<flag<<R"(" as a non-option argument, when no non-option arguments are allowed)";
+         ss << R"(Was passed ")" << flag << R"(" as a non-option argument, when no non-option arguments are allowed)";
       }
       throw ParseError(ss.str());
    }

@@ -51,9 +51,9 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    /// The tree argument is deprecated (on PROOF 0 is passed).
    TString option = GetOption();
 
-   std::cout<<"input list size = "<<fInput->GetEntries()<<std::endl;
+   std::cout << "input list size = " << fInput->GetEntries() << std::endl;
    for(int i = 0; i < fInput->GetEntries(); ++i) {
-      std::cout<<fInput->At(i)->GetName()<<": ";
+      std::cout << fInput->At(i)->GetName() << ": ";
       fInput->At(i)->Print();
    }
 
@@ -63,13 +63,13 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    // read the TPPG that was passed along
    fPpg = static_cast<TPPG*>(fInput->FindObject("TPPG"));
    if(fPpg == nullptr) {
-      std::cerr<<"failed to find TPPG!"<<std::endl;
+      std::cerr << "failed to find TPPG!" << std::endl;
    }
 
    // read the TRunInfo that was passed along
    fRunInfo = static_cast<TRunInfo*>(fInput->FindObject("TRunInfo"));
    if(fRunInfo == nullptr) {
-      std::cerr<<"failed to find TRunInfo!"<<std::endl;
+      std::cerr << "failed to find TRunInfo!" << std::endl;
    }
 
    // if we have a data parser/detector library load it
@@ -80,7 +80,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
          // this might throw a runtime exception, but we don't want to catch it here as we need the library for things to work properly!
          TParserLibrary::Get()->Load();
       } else {
-         std::cout<<"no parser library!"<<std::endl;
+         std::cout << "no parser library!" << std::endl;
          TGRSIOptions::Get()->Print();
       }
    }
@@ -93,7 +93,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    while(fInput->FindObject(Form("calFile%d", i)) != nullptr) {
       const char* fileName = static_cast<TNamed*>(fInput->FindObject(Form("calFile%d", i)))->GetTitle();
       if(fileName[0] == 0) {
-         std::cout<<"Error, empty file name!"<<std::endl;
+         std::cout << "Error, empty file name!" << std::endl;
          break;
       }
       // if we have a relative path and a working directory, combine them
@@ -108,7 +108,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    while(fInput->FindObject(Form("valFile%d", i)) != nullptr) {
       const char* fileName = static_cast<TNamed*>(fInput->FindObject(Form("valFile%d", i)))->GetTitle();
       if(fileName[0] == 0) {
-         std::cout<<"Error, empty file name!"<<std::endl;
+         std::cout << "Error, empty file name!" << std::endl;
          break;
       }
       // if we have a relative path and a working directory, combine them
@@ -121,10 +121,10 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    }
    i = 0;
    while(fInput->FindObject(Form("cutFile%d", i)) != nullptr) {
-      std::cout<<"trying to open "<<Form("cutFile%d", i)<<std::flush<<" = "<<fInput->FindObject(Form("cutFile%d", i))<<std::flush<<" with title "<<static_cast<TNamed*>(fInput->FindObject(Form("cutFile%d", i)))->GetTitle()<<std::endl;
+      std::cout << "trying to open " << Form("cutFile%d", i) << std::flush << " = " << fInput->FindObject(Form("cutFile%d", i)) << std::flush << " with title " << static_cast<TNamed*>(fInput->FindObject(Form("cutFile%d", i)))->GetTitle() << std::endl;
       const char* fileName = static_cast<TNamed*>(fInput->FindObject(Form("cutFile%d", i)))->GetTitle();
       if(fileName[0] == 0) {
-         std::cout<<"Error, empty file name!"<<std::endl;
+         std::cout << "Error, empty file name!" << std::endl;
          break;
       }
       // if we have a relative path and a working directory, combine them
@@ -147,19 +147,19 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
             }
          }
       } else {
-         std::cout<<"Error, failed to open file "<<fileName<<"!"<<std::endl;
+         std::cout << "Error, failed to open file " << fileName << "!" << std::endl;
          break;
       }
       ++i;
    }
    for(auto cut : fCuts) {
-      std::cout<<cut.first<<" = "<<cut.second<<std::endl;
+      std::cout << cut.first << " = " << cut.second << std::endl;
    }
 
    if(GValue::Size() == 0) {
-      std::cout<<"No g-values!"<<std::endl;
+      std::cout << "No g-values!" << std::endl;
    } else {
-      std::cout<<GValue::Size()<<" g-values"<<std::endl;
+      std::cout << GValue::Size() << " g-values" << std::endl;
    }
 
    CreateHistograms();
@@ -189,7 +189,7 @@ Bool_t TGRSISelector::Process(Long64_t entry)
    static TFile* current_file = nullptr;
    if(current_file != fChain->GetCurrentFile()) {
       current_file = fChain->GetCurrentFile();
-      std::cout<<"Starting to sort: "<<current_file->GetName()<<std::endl;
+      std::cout << "Starting to sort: " << current_file->GetName() << std::endl;
       TChannel::ReadCalFromFile(current_file);
       TGRSIOptions::AnalysisOptions()->ReadFromFile(current_file);
    }
@@ -199,7 +199,7 @@ Bool_t TGRSISelector::Process(Long64_t entry)
    try {
       FillHistograms();
    } catch(TGRSIMapException<std::string>& e) {
-      std::cout<<DRED<<"Exception in "<<__PRETTY_FUNCTION__<<": "<<e.detail()<<RESET_COLOR<<std::endl;
+      std::cout << DRED << "Exception in " << __PRETTY_FUNCTION__ << ": " << e.detail() << RESET_COLOR << std::endl;
       throw e;
    }
 
@@ -230,7 +230,7 @@ void TGRSISelector::Terminate()
    TGRSIOptions* options = TGRSIOptions::Get();
    if(fRunInfo == nullptr) {
       fRunInfo = TRunInfo::Get();
-      std::cout<<"replaced null run info with:"<<std::endl;
+      std::cout << "replaced null run info with:" << std::endl;
       fRunInfo->Print();
    }
    Int_t runNumber    = fRunInfo->RunNumber();
@@ -254,13 +254,13 @@ void TGRSISelector::Terminate()
    }
    outputFile = new TFile(outputFileName.c_str(), "recreate");
    if(!outputFile->IsOpen()) {
-      std::cerr<<"Failed to open output file "<<outputFileName<<"!"<<std::endl
-               <<std::endl;
+      std::cerr << "Failed to open output file " << outputFileName << "!" << std::endl
+                << std::endl;
       return;
    }
    outputFileName = outputFileName.substr(0, outputFileName.find_last_of('.')) + ".log";
    options->LogFile(outputFileName.c_str());
-   std::cout<<"Opened '"<<outputFile->GetName()<<"' for writing:"<<std::endl;
+   std::cout << "Opened '" << outputFile->GetName() << "' for writing:" << std::endl;
 
    outputFile->cd();
    fOutput->Write();
@@ -268,12 +268,12 @@ void TGRSISelector::Terminate()
    if(fPpg != nullptr) {
       fPpg->Write();
    } else {
-      std::cerr<<"failed to find TPPG, can't write it!"<<std::endl;
+      std::cerr << "failed to find TPPG, can't write it!" << std::endl;
    }
    options->AnalysisOptions()->WriteToFile(outputFile);
    TChannel::WriteToRoot();
    outputFile->Close();
-   std::cout<<"Closed '"<<outputFile->GetName()<<"'"<<std::endl;
+   std::cout << "Closed '" << outputFile->GetName() << "'" << std::endl;
 }
 
 void TGRSISelector::Init(TTree* tree)
@@ -311,7 +311,7 @@ void TGRSISelector::CheckSizes(const char* usage)
       TBufferFile b(TBuffer::kWrite, 10000);
       obj->IsA()->WriteBuffer(b, obj);
       if(b.Length() > SIZE_LIMIT) {
-         std::cout<<DRED<<obj->ClassName()<<" '"<<obj->GetName()<<"' too large to "<<usage<<": "<<b.Length()<<" bytes = "<<b.Length() / 1024. / 1024. / 1024.<<" GB, removing it!"<<RESET_COLOR<<std::endl;
+         std::cout << DRED << obj->ClassName() << " '" << obj->GetName() << "' too large to " << usage << ": " << b.Length() << " bytes = " << b.Length() / 1024. / 1024. / 1024. << " GB, removing it!" << RESET_COLOR << std::endl;
          // we only remove it from the output list, not deleting the object itself
          // this way the selector will still work and fill that histogram, it just won't get written to file
          fOutput->Remove(obj);

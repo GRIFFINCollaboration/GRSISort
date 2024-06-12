@@ -320,7 +320,7 @@ void GCanvas::HandleInput(int event, Int_t x, Int_t y)
 
 void GCanvas::Draw(Option_t* opt)
 {
-   std::cout<<"GCanvas Draw was called."<<std::endl;
+   std::cout << "GCanvas Draw was called." << std::endl;
    TCanvas::Draw(opt);
    if(FindObject("TFrame") != nullptr) {
       FindObject("TFrame")->SetBit(TBox::kCannotMove);
@@ -537,7 +537,7 @@ bool GCanvas::HandleWheel(Int_t event, Int_t px, Int_t py)
       width *= 1.1;
       height *= 1.1;
    } else {
-      std::cout<<"Don't know what to do, got event "<<event<<" which isn't kWheelUp ("<<kWheelUp<<") or kWheelDown ("<<kWheelDown<<")"<<std::endl;
+      std::cout << "Don't know what to do, got event " << event << " which isn't kWheelUp (" << kWheelUp << ") or kWheelDown (" << kWheelDown << ")" << std::endl;
       return false;
    }
 
@@ -672,7 +672,7 @@ bool GCanvas::Process1DArrowKeyPress(Event_t*, UInt_t* keysym)
          }
       }
    } break;
-   default: std::cout<<"keysym = "<<*keysym<<std::endl; break;
+   default: std::cout << "keysym = " << *keysym << std::endl; break;
    }
    return edited;
 }
@@ -770,7 +770,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
       break;
    case kKey_f:
       if(!hists.empty() && GetNMarkers() > 1) {
-         std::cout<<"x low = "<<fMarkers.at(fMarkers.size() - 2)->GetLocalX()<<"\t\txhigh = "<<fMarkers.back()->GetLocalX()<<std::endl;
+         std::cout << "x low = " << fMarkers.at(fMarkers.size() - 2)->GetLocalX() << "\t\txhigh = " << fMarkers.back()->GetLocalX() << std::endl;
          if(PhotoPeakFit(hists.back(), fMarkers.at(fMarkers.size() - 2)->GetLocalX(), fMarkers.back()->GetLocalX()) != nullptr) {
             edited = true;
          }
@@ -779,7 +779,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
 
    case kKey_F:
       if(!hists.empty() && GetNMarkers() > 1) {
-         std::cout<<"x low = "<<fMarkers.at(fMarkers.size() - 2)->GetLocalX()<<"\t\txhigh = "<<fMarkers.back()->GetLocalX()<<std::endl;
+         std::cout << "x low = " << fMarkers.at(fMarkers.size() - 2)->GetLocalX() << "\t\txhigh = " << fMarkers.back()->GetLocalX() << std::endl;
          if(AltPhotoPeakFit(hists.back(), fMarkers.at(fMarkers.size() - 2)->GetLocalX(), fMarkers.back()->GetLocalX(), "+") !=
             nullptr) {
             edited = true;
@@ -815,8 +815,8 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
 
          double sum =
             hists.back()->Integral(hists.back()->GetXaxis()->FindBin(xlow), hists.back()->GetXaxis()->FindBin(xhigh));
-         std::cout<<BLUE<<std::endl
-                  <<"\tSum ["<<xlow<<" : "<<xhigh<<"] = "<<sum<<RESET_COLOR<<std::endl;
+         std::cout << BLUE << std::endl
+                   << "\tSum [" << xlow << " : " << xhigh << "] = " << sum << RESET_COLOR << std::endl;
       }
       break;
    case kKey_I:
@@ -1198,7 +1198,7 @@ bool GCanvas::Process2DArrowKeyPress(Event_t*, UInt_t* keysym)
 
       edited = true;
    } break;
-   default: std::cout<<"keysym = "<<*keysym<<std::endl; break;
+   default: std::cout << "keysym = " << *keysym << std::endl; break;
    }
    return edited;
 }
@@ -1214,22 +1214,22 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
    case kKey_c: {
       TString defaultName = "cut";
       if(gROOT->FindObject("CUTG") == nullptr) {
-         std::cout<<"Something went wrong, can't find 'CUTG', did you initialize the cut beforehand? Or maybe you already pressed c?"<<std::endl
-                  <<"Current list of cuts is ";
-         if(fCuts.empty()) std::cout<<"empty";
+         std::cout << "Something went wrong, can't find 'CUTG', did you initialize the cut beforehand? Or maybe you already pressed c?" << std::endl
+                   << "Current list of cuts is ";
+         if(fCuts.empty()) std::cout << "empty";
          for(auto cut : fCuts) {
-            std::cout<<cut->GetName()<<" ";
+            std::cout << cut->GetName() << " ";
          }
-         std::cout<<std::endl;
+         std::cout << std::endl;
          break;
       }
       fCuts.push_back(static_cast<TCutG*>(gROOT->FindObject("CUTG")));
       fCuts.back()->SetName(fCutName);
-      std::cout<<"Added cut to list of cuts: ";
+      std::cout << "Added cut to list of cuts: ";
       for(auto cut : fCuts) {
-         std::cout<<cut->GetName()<<" ";
+         std::cout << cut->GetName() << " ";
       }
-      std::cout<<std::endl;
+      std::cout << std::endl;
    } break;
 
    case kKey_e:
@@ -1429,12 +1429,12 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       }
       TFile f(fileName, "update");
       if(!f.IsOpen()) {
-         std::cout<<RESET_COLOR<<"Failed to open file '"<<fileName<<"', not saving cuts!"<<std::endl;
+         std::cout << RESET_COLOR << "Failed to open file '" << fileName << "', not saving cuts!" << std::endl;
          break;
       }
-      std::cout<<RESET_COLOR<<"Writing the following cuts to '"<<fileName<<"':"<<std::endl;
+      std::cout << RESET_COLOR << "Writing the following cuts to '" << fileName << "':" << std::endl;
       for(auto cut : fCuts) {
-         std::cout<<cut->GetName()<<std::endl;
+         std::cout << cut->GetName() << std::endl;
          cut->Write();
       }
       f.Close();

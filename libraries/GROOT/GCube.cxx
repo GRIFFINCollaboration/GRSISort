@@ -382,11 +382,11 @@ Int_t GCube::Fill(Double_t x, Double_t y, Double_t z)
    bin = biny * (2 * fXaxis.GetNbins() - biny + 3) / 2 + binx - binz +
          (fXaxis.GetNbins() + 2) * (fXaxis.GetNbins() + 3) * (fXaxis.GetNbins() + 4) / 6 -
          (fXaxis.GetNbins() + 2 - binz) * (fXaxis.GetNbins() + 3 - binz) * (fXaxis.GetNbins() + 4 - binz) / 6 - biny;
-   std::cout<<"binx,y,z = "<<binx<<","<<biny<<","<<binz<<" => bin = "<<bin<<std::endl;
+   std::cout << "binx,y,z = " << binx << "," << biny << "," << binz << " => bin = " << bin << std::endl;
    bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
          binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
                  10. / 3.);
-   std::cout<<"binx,y,z = "<<binx<<","<<biny<<","<<binz<<" => bin = "<<bin<<std::endl;
+   std::cout << "binx,y,z = " << binx << "," << biny << "," << binz << " => bin = " << bin << std::endl;
    AddBinContent(bin);
    if(fSumw2.fN != 0) {
       ++fSumw2.fArray[bin];
@@ -1577,11 +1577,11 @@ Double_t GCube::KolmogorovTest(const TH1* h2, Option_t* option) const
 
    //   debug printout
    if(opt.Contains("D")) {
-      std::cout<<" Kolmo Prob  h1 = "<<h1->GetName()<<", sum1 = "<<sum1<<std::endl;
-      std::cout<<" Kolmo Prob  h2 = "<<h2->GetName()<<", sum2 = "<<sum2<<std::endl;
-      std::cout<<" Kolmo Probabil = "<<prb<<", Max dist = "<<dfmax<<std::endl;
+      std::cout << " Kolmo Prob  h1 = " << h1->GetName() << ", sum1 = " << sum1 << std::endl;
+      std::cout << " Kolmo Prob  h2 = " << h2->GetName() << ", sum2 = " << sum2 << std::endl;
+      std::cout << " Kolmo Probabil = " << prb << ", Max dist = " << dfmax << std::endl;
       if(opt.Contains("N")) {
-         std::cout<<" Kolmo Probabil = "<<prb1<<" for shape alone, "<<prb2<<" for normalisation alone"<<std::endl;
+         std::cout << " Kolmo Probabil = " << prb1 << " for shape alone, " << prb2 << " for normalisation alone" << std::endl;
       }
    }
    // This numerical error condition should never occur:

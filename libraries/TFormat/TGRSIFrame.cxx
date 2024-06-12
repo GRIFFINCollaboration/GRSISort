@@ -37,7 +37,7 @@ TGRSIFrame::TGRSIFrame()
    }
    if(treeName.empty()) {
       std::stringstream str;
-      str<<"Failed to find 'AnalysisTree' or 'FragmentTree' in '"<<fOptions->RootInputFiles()[0]<<"', either provide a different tree name via --tree-name flag or check input file"<<std::endl;
+      str << "Failed to find 'AnalysisTree' or 'FragmentTree' in '" << fOptions->RootInputFiles()[0] << "', either provide a different tree name via --tree-name flag or check input file" << std::endl;
       throw std::runtime_error(str.str());
    }
 
@@ -62,11 +62,11 @@ TGRSIFrame::TGRSIFrame()
          TChannel::ReadCalFromFile(file);
          file->Close();
       } else {
-         std::cout<<"Failed to open '"<<fileName<<"'"<<std::endl;
+         std::cout << "Failed to open '" << fileName << "'" << std::endl;
       }
    }
 
-   std::cout<<"Looped over "<<chain->GetNtrees()<<"/"<<fOptions->RootInputFiles().size()<<" files and got:"<<std::endl;
+   std::cout << "Looped over " << chain->GetNtrees() << "/" << fOptions->RootInputFiles().size() << " files and got:" << std::endl;
    TRunInfo::Get()->Print();
    fPpg->Print("odb");
 
@@ -110,7 +110,7 @@ void TGRSIFrame::Run()
 
    // get output file name
    std::string outputFileName = Form("%s%s.root", fOutputPrefix.c_str(), runInfo->CreateLabel(true).c_str());
-   std::cout<<"Writing to "<<outputFileName<<std::endl;
+   std::cout << "Writing to " << outputFileName << std::endl;
 
    TFile outputFile(outputFileName.c_str(), "recreate");
 
@@ -128,7 +128,7 @@ void TGRSIFrame::Run()
          static int                  counter = 1;
          progressBar.push_back('#');
          // re-print the line with the progress bar
-         std::cout<<"\r["<<std::left<<std::setw(barWidth)<<progressBar<<' '<<std::setw(3)<<(counter * everyN * 100) / fTotalEntries<<" %]"<<std::flush;
+         std::cout << "\r[" << std::left << std::setw(barWidth) << progressBar << ' ' << std::setw(3) << (counter * everyN * 100) / fTotalEntries << " %]" << std::flush;
          ++counter;
       });
    }
@@ -150,33 +150,33 @@ void TGRSIFrame::Run()
                if(gDirectory->cd(list.first.c_str())) {
                   list.second.Write();
                } else {
-                  std::cout<<"Error, failed to find or create path "<<list.first<<", writing into "<<gDirectory->GetPath()<<std::endl;
+                  std::cout << "Error, failed to find or create path " << list.first << ", writing into " << gDirectory->GetPath() << std::endl;
                }
             }
             // switch back to topmost directory
             while(gDirectory->GetDirectory("..")) { gDirectory->cd(".."); }
          }
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 30, 0)
-         std::cout<<"\r["<<std::left<<std::setw(barWidth)<<progressBar<<' '<<"100 %]"<<std::flush;
+         std::cout << "\r[" << std::left << std::setw(barWidth) << progressBar << ' ' << "100 %]" << std::flush;
 #endif
       } catch(TGRSIMapException<std::string>& e) {
-         std::cout<<DRED<<"Exception in "<<__PRETTY_FUNCTION__<<": "<<e.detail()<<RESET_COLOR<<std::endl;
+         std::cout << DRED << "Exception in " << __PRETTY_FUNCTION__ << ": " << e.detail() << RESET_COLOR << std::endl;
          throw e;
       }
    } else {
-      std::cout<<"Error, output list is nullptr!"<<std::endl;
+      std::cout << "Error, output list is nullptr!" << std::endl;
    }
    runInfo->Write();
    if(fPpg != nullptr) {
       fPpg->Write();
    } else {
-      std::cerr<<"failed to find TPPG, can't write it!"<<std::endl;
+      std::cerr << "failed to find TPPG, can't write it!" << std::endl;
    }
    fOptions->AnalysisOptions()->WriteToFile(&outputFile);
    fOptions->UserSettings()->Write("UserSettings", TObject::kOverwrite);
    TChannel::WriteToRoot();
    outputFile.Close();
-   std::cout<<"Closed '"<<outputFile.GetName()<<"'"<<std::endl;
+   std::cout << "Closed '" << outputFile.GetName() << "'" << std::endl;
 }
 
 void DummyFunctionToLocateTGRSIFrameLibrary()

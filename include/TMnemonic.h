@@ -72,7 +72,7 @@ public:
    virtual void EnumerateDigitizer(TPriorityValue<std::string>&, TPriorityValue<EDigitizer>&, TPriorityValue<int>&)
    {
       if(fPrint) {
-         std::cerr<<RED<<ClassName()<<": No data library set, some things like timing won't work!"<<RESET_COLOR<<std::endl;
+         std::cerr << RED << ClassName() << ": No data library set, some things like timing won't work!" << RESET_COLOR << std::endl;
          fPrint = false;
       }
    }

@@ -22,15 +22,15 @@ TCalGraph::TCalGraph(const TCalGraph& copy) : TGraphErrors(copy)
 
 void TCalGraph::Print(Option_t* opt) const
 {
-   std::cout<<DRED;
+   std::cout << DRED;
    TGraphErrors::Print(opt);
-   std::cout<<RESET_COLOR;
+   std::cout << RESET_COLOR;
    for(auto it : fCompareMap) {
-      std::cout<<DBLUE<<" Data "<<RESET_COLOR<<std::endl;
+      std::cout << DBLUE << " Data " << RESET_COLOR << std::endl;
       it.second.first.Print();
-      std::cout<<DGREEN<<" Source "<<RESET_COLOR<<std::endl;
+      std::cout << DGREEN << " Source " << RESET_COLOR << std::endl;
       it.second.second.Print();
-      std::cout<<std::endl;
+      std::cout << std::endl;
    }
 }
 
@@ -99,18 +99,18 @@ Int_t TCalGraph::AddLists(const TCalList& cal_list, const TSourceList& src_list)
    }
 
    if(!missing_cal_values_vec.empty()) {
-      std::cout<<DRED<<"Couldn't find matching cal points for: "<<std::endl;
+      std::cout << DRED << "Couldn't find matching cal points for: " << std::endl;
       for(auto mit : missing_cal_values_vec) {
-         std::cout<<mit.first<<" Centroid = "<<mit.second<<std::endl;
+         std::cout << mit.first << " Centroid = " << mit.second << std::endl;
       }
    }
    if(!missing_src_values_vec.empty()) {
-      std::cout<<DGREEN<<"Couldn't find matching source points for: "<<std::endl;
+      std::cout << DGREEN << "Couldn't find matching source points for: " << std::endl;
       for(auto mit : missing_src_values_vec) {
-         std::cout<<mit.first<<" Centroid = "<<mit.second<<std::endl;
+         std::cout << mit.first << " Centroid = " << mit.second << std::endl;
       }
    }
-   std::cout<<RESET_COLOR;
+   std::cout << RESET_COLOR;
 
    CorrectMissingPoints(missing_cal_values, missing_src_values);
 
@@ -121,12 +121,12 @@ void TCalGraph::CorrectMissingPoints(TCalList& cal_list, TCalList& src_list)
 {
    const auto& cal_map = cal_list.Map();
    const auto& src_map = src_list.Map();
-   std::cout<<"Attempting to match points within +/- 2 keV"<<std::endl;
+   std::cout << "Attempting to match points within +/- 2 keV" << std::endl;
    for(auto cal_it : cal_map) {
       for(auto src_it : src_map) {
          if(std::abs(static_cast<Int_t>(cal_it.first - src_it.first)) < 3.0) {
             fCompareMap.insert(std::make_pair(src_it.first, std::make_pair(cal_it.second, src_it.second)));
-            std::cout<<"Matched: "<<cal_it.first<<" and "<<src_it.first<<std::endl;
+            std::cout << "Matched: " << cal_it.first << " and " << src_it.first << std::endl;
             break;
          }
       }

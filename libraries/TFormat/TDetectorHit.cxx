@@ -154,13 +154,13 @@ void TDetectorHit::Print(std::ostream& out) const
 {
    /// Print detector hit to stream out.
    std::ostringstream str;
-   str<<"==== "<<ClassName()<<" @ "<<this<<" ===="<<std::endl;
-   str<<"\t"<<GetName()<<std::endl;
-   str<<"\tCharge:    "<<Charge()<<std::endl;
-   str<<"\tTime:      "<<GetTime()<<std::endl;
-   str<<"\tTimestamp: "<<GetTimeStamp()<<" in "<<GetTimeStampUnit()<<" ns = "<<GetTimeStampNs()<<std::endl;
-   str<<"============================"<<std::endl;
-   out<<str.str();
+   str << "==== " << ClassName() << " @ " << this << " ====" << std::endl;
+   str << "\t" << GetName() << std::endl;
+   str << "\tCharge:    " << Charge() << std::endl;
+   str << "\tTime:      " << GetTime() << std::endl;
+   str << "\tTimestamp: " << GetTimeStamp() << " in " << GetTimeStampUnit() << " ns = " << GetTimeStampNs() << std::endl;
+   str << "============================" << std::endl;
+   out << str.str();
 }
 
 const char* TDetectorHit::GetName() const

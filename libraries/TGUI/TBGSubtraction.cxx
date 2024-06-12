@@ -458,7 +458,7 @@ void TBGSubtraction::UpdateBackground()
 void TBGSubtraction::DoPeakFit()
 {
    if(fPeak == nullptr) {
-      std::cerr<<"Something went wrong and the peak is a nullptr?"<<std::endl;
+      std::cerr << "Something went wrong and the peak is a nullptr?" << std::endl;
       return;
    }
    fPeakFitter->ResetInitFlag();
@@ -590,10 +590,10 @@ void TBGSubtraction::AxisComboSelected()
       old_selection = fGateAxis;
       delete fProjection;
       if(fGateAxis == 0) {
-         std::cout<<"Selecting the x axis"<<std::endl;
+         std::cout << "Selecting the x axis" << std::endl;
          fProjection = fMatrix->ProjectionY();
       } else {
-         std::cout<<"Selecting the y axis"<<std::endl;
+         std::cout << "Selecting the y axis" << std::endl;
          fProjection = fMatrix->ProjectionX();
       }
 
@@ -614,24 +614,24 @@ void TBGSubtraction::PeakComboSelected()
       if(fPeak != nullptr) fPeakFitter->RemovePeak(fPeak);
       switch(fPeakId) {
       case kGauss:
-         std::cout<<"Selecting gaussian peak"<<std::endl;
+         std::cout << "Selecting gaussian peak" << std::endl;
          fPeak = static_cast<TSinglePeak*>(TGauss::Class()->New());
-         std::cout<<"fPeak = "<<fPeak<<std::endl;
+         std::cout << "fPeak = " << fPeak << std::endl;
          break;
       case kRWPeak:
-         std::cout<<"Selecting radware peak"<<std::endl;
+         std::cout << "Selecting radware peak" << std::endl;
          fPeak = static_cast<TSinglePeak*>(TRWPeak::Class()->New());
          break;
       case kABPeak:
-         std::cout<<"Selecting two hit addback peak"<<std::endl;
+         std::cout << "Selecting two hit addback peak" << std::endl;
          fPeak = static_cast<TSinglePeak*>(TABPeak::Class()->New());
          break;
       case kAB3Peak:
-         std::cout<<"Selecting three hit addback peak"<<std::endl;
+         std::cout << "Selecting three hit addback peak" << std::endl;
          fPeak = static_cast<TSinglePeak*>(TAB3Peak::Class()->New());
          break;
       default:
-         std::cerr<<"Unknown peak id "<<fPeakId<<", only know kGauss ("<<kGauss<<"), kRWPeak ("<<kRWPeak<<"), kABPeak ("<<kABPeak<<"), and kAB3Peak ("<<kAB3Peak<<")"<<std::endl;
+         std::cerr << "Unknown peak id " << fPeakId << ", only know kGauss (" << kGauss << "), kRWPeak (" << kRWPeak << "), kABPeak (" << kABPeak << "), and kAB3Peak (" << kAB3Peak << ")" << std::endl;
          break;
       }
       fPeakFitter->ResetInitFlag();
@@ -1128,12 +1128,12 @@ void TBGSubtraction::WriteHistograms()
    const char* file_name = fWrite2FileName->GetText();
 
    if(file_name == nullptr) {
-      std::cout<<"Please enter a file name"<<std::endl;
+      std::cout << "Please enter a file name" << std::endl;
       return;
    }
 
    TFile f(file_name, "Update");
-   std::cout<<"Writing "<<fHistogramDescription->GetText()<<" histograms to "<<f.GetName()<<std::endl;
+   std::cout << "Writing " << fHistogramDescription->GetText() << " histograms to " << f.GetName() << std::endl;
    if(fSubtractedHist != nullptr) {
       if(fHistogramDescription->GetText() != nullptr) {
          fSubtractedHist->SetTitle(fHistogramDescription->GetText());

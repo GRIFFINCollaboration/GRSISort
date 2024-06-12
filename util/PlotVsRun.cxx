@@ -14,7 +14,7 @@ int ReadArgs(int index, int argc, char** argv, std::vector<std::string>& output)
 int main(int argc, char** argv)
 {
    if(argc < 5) {
-      std::cerr<<"Usage: "<<argv[0]<<" -if <list of input files> -hn <list of histogram names> (optional: -x or -y for projection on x- or y-axis, otherwise 2D-histograms will get split along x-axis)"<<std::endl;
+      std::cerr << "Usage: " << argv[0] << " -if <list of input files> -hn <list of histogram names> (optional: -x or -y for projection on x- or y-axis, otherwise 2D-histograms will get split along x-axis)" << std::endl;
       return 1;
    }
 
@@ -40,17 +40,17 @@ int main(int argc, char** argv)
 
    // verify input variables are set
    if(inputFiles.empty()) {
-      std::cerr<<"Missing input files, please provide a list of them using the \"-if\" flag!"<<std::endl;
+      std::cerr << "Missing input files, please provide a list of them using the \"-if\" flag!" << std::endl;
       return 1;
    }
 
    if(histogramNames.empty()) {
-      std::cerr<<"Missing names of histograms, please provide a list of them using the \"-hn\" flag!"<<std::endl;
+      std::cerr << "Missing names of histograms, please provide a list of them using the \"-hn\" flag!" << std::endl;
       return 1;
    }
 
    if(projectX && projectY) {
-      std::cerr<<"Both projection on x-axis and projection on y-axis are enabled, please select only one!"<<std::endl;
+      std::cerr << "Both projection on x-axis and projection on y-axis are enabled, please select only one!" << std::endl;
       return 1;
    }
 
@@ -69,7 +69,7 @@ int main(int argc, char** argv)
    for(auto histogramName : histogramNames) {
       obj = input->Get(histogramName.c_str());
       if(obj == nullptr) {
-         std::cerr<<"Failed to find \""<<histogramName<<"\" in file \""<<input->GetName()<<"\""<<std::endl;
+         std::cerr << "Failed to find \"" << histogramName << "\" in file \"" << input->GetName() << "\"" << std::endl;
          return 1;
       }
       // first check if this is a 2D-histogram because every 2D-histogram inherits from TH1 as well!
@@ -98,14 +98,14 @@ int main(int argc, char** argv)
          outputHistograms.emplace_back(new TH2F(Form("%sVsFile", histogramName.c_str()), Form("%s vs. file #", histogramName.c_str()), inputFiles.size() + 1, 0.5, inputFiles.size() + 0.5, axis->GetNbins(), axis->GetBinLowEdge(1), axis->GetBinLowEdge(axis->GetNbins() + 1)));
          outputIndex.push_back(index++);
       } else {
-         std::cerr<<"Found object \""<<histogramName<<"\" in file \""<<input->GetName()<<"\", but it's neither a TH1 nor a TH2, it's a "<<obj->ClassName()<<std::endl;
+         std::cerr << "Found object \"" << histogramName << "\" in file \"" << input->GetName() << "\", but it's neither a TH1 nor a TH2, it's a " << obj->ClassName() << std::endl;
          return 1;
       }
    }
 
    // since we might have created multiple histograms from a single 2D histogram we can have more output histograms than input ones
    if(outputHistograms.size() < histogramNames.size()) {
-      std::cerr<<"Something went wrong, only found "<<outputHistograms.size()<<" histograms from "<<histogramNames.size()<<" histograms?"<<std::endl;
+      std::cerr << "Something went wrong, only found " << outputHistograms.size() << " histograms from " << histogramNames.size() << " histograms?" << std::endl;
       return 1;
    }
 
@@ -121,12 +121,12 @@ int main(int argc, char** argv)
       }
       // get run info from this file and create a label for the bins from it
       auto label = TRunInfo::Get()->CreateLabel(true);
-      std::cout<<"working on "<<i<<"/"<<inputFiles.size() - 1<<" = "<<label<<"\r"<<std::flush;
+      std::cout << "working on " << i << "/" << inputFiles.size() - 1 << " = " << label << "\r" << std::flush;
       // we need to loop through the histogramNames and the outputHistograms at the same time
       for(size_t j = 0; j < histogramNames.size(); ++j) {
          obj = input->Get(histogramNames[j].c_str());
          if(obj == nullptr) {
-            std::cerr<<"Failed to find \""<<histogramNames[j]<<"\" in file \""<<input->GetName()<<"\""<<std::endl;
+            std::cerr << "Failed to find \"" << histogramNames[j] << "\" in file \"" << input->GetName() << "\"" << std::endl;
             continue;
          }
          if(obj->InheritsFrom(TH2::Class())) {
@@ -148,7 +148,7 @@ int main(int argc, char** argv)
          } else if(obj->InheritsFrom(TH1::Class())) {
             hist = static_cast<TH1*>(obj);
          } else {
-            std::cerr<<"Found object \""<<histogramNames[i]<<"\" in file \""<<input->GetName()<<"\", but it's neither a TH1 nor a TH2, it's a "<<obj->ClassName()<<std::endl;
+            std::cerr << "Found object \"" << histogramNames[i] << "\" in file \"" << input->GetName() << "\", but it's neither a TH1 nor a TH2, it's a " << obj->ClassName() << std::endl;
             continue;
          }
          // at this point hist is either set or we continued to the next file
@@ -160,7 +160,7 @@ int main(int argc, char** argv)
       input->Close();
       input = nullptr;
    }
-   std::cout<<"writing generated histograms to file "<<output->GetName()<<std::endl;
+   std::cout << "writing generated histograms to file " << output->GetName() << std::endl;
 
    output->cd();
    for(auto outputHistogram : outputHistograms) {

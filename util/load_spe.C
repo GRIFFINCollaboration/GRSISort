@@ -6,7 +6,7 @@ void swapb8(char* buf)
 {
    char c;
    c      = buf[7];
-	buf[7] = buf[0];
+   buf[7] = buf[0];
    buf[0] = c;
    c      = buf[6];
    buf[6] = buf[1];
@@ -77,11 +77,11 @@ ERR1:
    // warn("ERROR: record is too big for get_file_rec\n"
    //     "       max size = %d, record size = %d.\n",
    //      maxbytes, reclen);
-   cout<<"ERR1 \n";
+   cout << "ERR1 \n";
    return 0;
 ERR2:
    // warn("ERROR during read in get_file_rec.\n");
-   cout<<"ERR2 \n";
+   cout << "ERR2 \n";
    return 0;
 
    return 0;
@@ -129,6 +129,6 @@ int load_spe(char* filename, TH1F* histo)
    *histo = (TH1F*)temp->Clone();
    histo->SetName(filename);
 
-   cout<<"loaded\n";
+   cout << "loaded\n";
    return 0;
 }

@@ -144,7 +144,7 @@ std::vector<std::pair<double, int>> AngleCombinations(double distance, bool fold
          case 4:
          case 6:
             if(i + 1 >= result.size()) {
-               std::cerr<<"Error!"<<std::endl;
+               std::cerr << "Error!" << std::endl;
             }
             groupedResult.push_back(
                std::make_pair((result[i].first + result[i + 1].first) / 2., result[i].second + result[i + 1].second));

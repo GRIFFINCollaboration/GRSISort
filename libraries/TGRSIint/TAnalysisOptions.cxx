@@ -33,15 +33,15 @@ void TAnalysisOptions::Clear(Option_t*)
 void TAnalysisOptions::Print(Option_t*) const
 {
    /// Print the current status of TAnalysisOptions, includes all names, lists and flags
-   std::cout<<BLUE<<"fBuildWindow: "<<DCYAN<<fBuildWindow<<std::endl
-            <<BLUE<<"fBuildEventsByTimeStamp: "<<DCYAN<<fBuildEventsByTimeStamp<<std::endl
-            <<BLUE<<"fAddbackWindow: "<<DCYAN<<fAddbackWindow<<std::endl
-            <<BLUE<<"fSuppressionWindow: "<<DCYAN<<fSuppressionWindow<<std::endl
-            <<BLUE<<"fSuppressionEnergy: "<<DCYAN<<fSuppressionEnergy<<std::endl
-            <<BLUE<<"fStaticWindow: "<<DCYAN<<fStaticWindow<<std::endl
-            <<BLUE<<"fWaveformFitting: "<<DCYAN<<fWaveformFitting<<std::endl
-            <<BLUE<<"fIsCorrectingCrossTalk: "<<DCYAN<<fIsCorrectingCrossTalk<<std::endl
-            <<RESET_COLOR<<std::endl;
+   std::cout << BLUE << "fBuildWindow: " << DCYAN << fBuildWindow << std::endl
+             << BLUE << "fBuildEventsByTimeStamp: " << DCYAN << fBuildEventsByTimeStamp << std::endl
+             << BLUE << "fAddbackWindow: " << DCYAN << fAddbackWindow << std::endl
+             << BLUE << "fSuppressionWindow: " << DCYAN << fSuppressionWindow << std::endl
+             << BLUE << "fSuppressionEnergy: " << DCYAN << fSuppressionEnergy << std::endl
+             << BLUE << "fStaticWindow: " << DCYAN << fStaticWindow << std::endl
+             << BLUE << "fWaveformFitting: " << DCYAN << fWaveformFitting << std::endl
+             << BLUE << "fIsCorrectingCrossTalk: " << DCYAN << fIsCorrectingCrossTalk << std::endl
+             << RESET_COLOR << std::endl;
 }
 
 bool TAnalysisOptions::WriteToFile(const std::string& file)
@@ -50,7 +50,7 @@ bool TAnalysisOptions::WriteToFile(const std::string& file)
    if(f.IsOpen()) {
       return WriteToFile(&f);
    }
-   std::cout<<R"(Failed to open file ")"<<file<<R"(" in update mode!)"<<std::endl;
+   std::cout << R"(Failed to open file ")" << file << R"(" in update mode!)" << std::endl;
    return false;
 }
 
@@ -67,7 +67,7 @@ bool TAnalysisOptions::WriteToFile(TFile* file)
    }
    // check if we got a file
    if(file == nullptr) {
-      std::cout<<"Error, no file provided and no file open (gDirectory = "<<gDirectory->GetName()<<")!"<<std::endl;
+      std::cout << "Error, no file provided and no file open (gDirectory = " << gDirectory->GetName() << ")!" << std::endl;
       return !success;
    }
 
@@ -79,16 +79,16 @@ bool TAnalysisOptions::WriteToFile(TFile* file)
 
    // check again that we have a directory to write to
    if(!gDirectory) {   // we don't compare to nullptr here, as ROOT >= 6.24.00 uses the TDirectoryAtomicAdapter structure with a bool() operator
-      std::cout<<"No file opened to write TAnalysisOptions to."<<std::endl;
+      std::cout << "No file opened to write TAnalysisOptions to." << std::endl;
       return !success;
    }
    // write analysis options
-   std::cout<<"Writing TAnalysisOptions to "<<gDirectory->GetFile()->GetName()<<std::endl;
+   std::cout << "Writing TAnalysisOptions to " << gDirectory->GetFile()->GetName() << std::endl;
    Write("AnalysisOptions", TObject::kOverwrite);
 
    // check if we need to change back to read mode
    if(oldoption == "READ") {
-      std::cout<<"  Returning "<<gDirectory->GetFile()->GetName()<<" to \""<<oldoption.c_str()<<"\" mode."<<std::endl;
+      std::cout << "  Returning " << gDirectory->GetFile()->GetName() << " to \"" << oldoption.c_str() << "\" mode." << std::endl;
       file->ReOpen("READ");
    }
 
@@ -104,7 +104,7 @@ void TAnalysisOptions::ReadFromFile(const std::string& file)
    if(f.IsOpen()) {
       return ReadFromFile(&f);
    }
-   std::cout<<R"(Failed to open file ")"<<file<<R"(" in read mode!)"<<std::endl;
+   std::cout << R"(Failed to open file ")" << file << R"(" in read mode!)" << std::endl;
 }
 
 void TAnalysisOptions::ReadFromFile(TFile* file)
@@ -122,9 +122,9 @@ void TAnalysisOptions::ReadFromFile(TFile* file)
          oldDir->cd();
          return;
       }
-      std::cout<<R"(Failed to find analysis options in file ")"<<CYAN<<file->GetName()<<RESET_COLOR<<R"(":)"<<std::endl;
+      std::cout << R"(Failed to find analysis options in file ")" << CYAN << file->GetName() << RESET_COLOR << R"(":)" << std::endl;
    } else {
-      std::cout<<R"(File ")"<<file<<R"(" is null or not open)"<<std::endl;
+      std::cout << R"(File ")" << file << R"(" is null or not open)" << std::endl;
    }
    oldDir->cd();
 }
@@ -138,5 +138,5 @@ void TAnalysisOptions::SetCorrectCrossTalk(const bool flag, Option_t* opt)
       return;
    }
 
-   std::cout<<"Please call TDetector::ResetFlags() on current event to avoid bugs"<<std::endl;
+   std::cout << "Please call TDetector::ResetFlags() on current event to avoid bugs" << std::endl;
 }

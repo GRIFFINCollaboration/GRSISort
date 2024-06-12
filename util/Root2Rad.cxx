@@ -70,9 +70,9 @@ int main(int argc, char** argv)
 {
    TFile* infile = nullptr;
    if(argc < 2 || (infile = TFile::Open(argv[1], "read")) == nullptr) {
-      std::cout<<"problem opening file."<<std::endl
-               <<"Usage: "<<argv[0]
-               <<" file.root (optional after the file: -8 to use 8k matrices, -s to split large matrices, -c to compress large matrices, which need to go last!)"<<std::endl;
+      std::cout << "problem opening file." << std::endl
+                << "Usage: " << argv[0]
+                << " file.root (optional after the file: -8 to use 8k matrices, -s to split large matrices, -c to compress large matrices, which need to go last!)" << std::endl;
       return 1;
    }
 
@@ -87,7 +87,7 @@ int main(int argc, char** argv)
       } else if(strcmp(argv[i], "-8") == 0) {
          bigMatrix = true;
       } else {
-         std::cout<<"Unrecognized flag "<<argv[i]<<std::endl;
+         std::cout << "Unrecognized flag " << argv[i] << std::endl;
       }
    }
 
@@ -199,12 +199,12 @@ void ProcessKeys(TList* keys, TList* histsToWrite, TList* matsToWrite, TList* m4
          } else if(keytype.compare(5, 1, "D") == 0) {
             AddToList(m4bsToWrite, dynamic_cast<GHSymF*>(currentkey->ReadObj())->GetMatrix(), split, compress);
          } else {
-            std::cout<<"unknown GHSym type "<<keytype<<std::endl;
+            std::cout << "unknown GHSym type " << keytype << std::endl;
          }
       } else if(keytype.compare(0, 14, "TDirectoryFile") == 0) {
          directories.push_back(dynamic_cast<TDirectoryFile*>(currentkey->ReadObj()));
       } else {
-         std::cout<<"skipping "<<keytype<<std::endl;
+         std::cout << "skipping " << keytype << std::endl;
       }
    }
    // loop over directories and process keys in them
@@ -235,7 +235,7 @@ void AddToList(TList* list, TH2* hist, bool split, bool compress)
       }
       list->Add(splitHist);
       int rebin = (hist->GetXaxis()->GetNbins() + 4095) / 4096;
-      std::cout<<"rebinning "<<hist->GetName()<<" by "<<rebin<<std::endl;
+      std::cout << "rebinning " << hist->GetName() << " by " << rebin << std::endl;
       list->Add(hist->Rebin2D(rebin, rebin));
       return;
    } else if(split) {
@@ -244,8 +244,8 @@ void AddToList(TList* list, TH2* hist, bool split, bool compress)
       splitHist->SetBins(4096, 0., 4096., 4096, 0., 4096.);
       for(int i = 0; i < nofSplits; ++i) {
          for(int j = 0; j <= i; ++j) {
-            std::cout<<hist->GetName()<<": x = "<<i * 4096<<" - "<<(i + 1) * 4096<<", y = "<<j * 4096
-                     <<" - "<<(j + 1) * 4096<<std::endl;
+            std::cout << hist->GetName() << ": x = " << i * 4096 << " - " << (i + 1) * 4096 << ", y = " << j * 4096
+                      << " - " << (j + 1) * 4096 << std::endl;
             splitHist->Reset();
             splitHist->SetName(Form("%s_%d_%d", hist->GetName(), i, j));
             for(int binx = 1; binx <= 4096; ++binx) {
@@ -264,7 +264,7 @@ void AddToList(TList* list, TH2* hist, bool split, bool compress)
    }
    // only option left now is compress
    int rebin = (hist->GetXaxis()->GetNbins() + 4095) / 4096;
-   std::cout<<"rebinning "<<hist->GetName()<<" by "<<rebin<<std::endl;
+   std::cout << "rebinning " << hist->GetName() << " by " << rebin << std::endl;
    hist->SetName(Form("%s_rebin%d", hist->GetName(), rebin));
    list->Add(hist->Rebin2D(rebin, rebin));
 }

@@ -80,11 +80,11 @@ ERR1:
    // warn("ERROR: record is too big for get_file_rec\n"
    //     "       max size = %d, record size = %d.\n",
    //      maxbytes, reclen);
-   std::cout<<"ERR1"<<std::endl;
+   std::cout << "ERR1" << std::endl;
    return 0;
 ERR2:
    // warn("ERROR during read in get_file_rec.\n");
-   std::cout<<"ERR2"<<std::endl;
+   std::cout << "ERR2" << std::endl;
    return 0;
 
    return 0;
@@ -132,6 +132,6 @@ int load_spe(const char* filename, TH1F* histo)
    histo = (TH1F*)temp->Clone();
    histo->SetName(filename);
 
-   std::cout<<"loaded"<<std::endl;
+   std::cout << "loaded" << std::endl;
    return 0;
 }

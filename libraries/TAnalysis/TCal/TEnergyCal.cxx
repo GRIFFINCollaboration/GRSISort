@@ -55,7 +55,7 @@ void TEnergyCal::SetNucleus(TNucleus* nuc, Option_t* opt)
          TGraphErrors::SetPointError(i, 0.0, GetNucleus()->GetTransition(i)->GetEnergyUncertainty());
       }
    } else if(GetNucleus() != nullptr) {
-      std::cout<<"Nucleus already exists. Use \"F\" option to overwrite"<<std::endl;
+      std::cout << "Nucleus already exists. Use \"F\" option to overwrite" << std::endl;
    }
 
    SetDefaultTitles();
@@ -76,7 +76,7 @@ Bool_t TEnergyCal::SetPoint(Int_t idx, Double_t measured)
 {
    // Sets the data point at index idx.
    if(GetNucleus() == nullptr) {
-      std::cout<<"No nucleus set yet..."<<std::endl;
+      std::cout << "No nucleus set yet..." << std::endl;
       return false;
    }
 
@@ -96,7 +96,7 @@ Bool_t TEnergyCal::SetPoint(Int_t idx, TPeak* peak)
 {
    // Sets the data point at index idx using the centroid, and sigma of a fitted TPeak.
    if(peak == nullptr) {
-      std::cout<<"No Peak, pointer is null"<<std::endl;
+      std::cout << "No Peak, pointer is null" << std::endl;
       return false;
    }
    Double_t centroid  = peak->GetCentroid();
@@ -110,7 +110,7 @@ Bool_t TEnergyCal::SetPointError(Int_t idx, Double_t measuredUncertainty)
 {
    // Sets the measured Error of the data point at index idx.
    if(GetNucleus() == nullptr) {
-      std::cout<<"No nucleus set yet..."<<std::endl;
+      std::cout << "No nucleus set yet..." << std::endl;
       return false;
    }
 
@@ -128,8 +128,8 @@ void TEnergyCal::WriteToChannel() const
       return;
    }
    GetChannel()->DestroyENGCal();
-   std::cout<<"Writing to channel "<<GetChannel()->GetNumber()<<std::endl;
-   std::cout<<"p0 = "<<GetParameter(0)<<" \t p1 = "<<GetParameter(1)<<std::endl;
+   std::cout << "Writing to channel " << GetChannel()->GetNumber() << std::endl;
+   std::cout << "p0 = " << GetParameter(0) << " \t p1 = " << GetParameter(1) << std::endl;
    // Set the energy parameters based on the fitted calibration.
    GetChannel()->AddENGCoefficient(GetParameter(0));
    GetChannel()->AddENGCoefficient(GetParameter(1));
