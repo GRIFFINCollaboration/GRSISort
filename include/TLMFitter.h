@@ -101,7 +101,7 @@ NRVec<T>& NRVec<T>::operator=(const NRVec<T>& rhs)
    if(this != &rhs) {
       if(nn != rhs.nn) {
          if(v != 0) {
-            delete[](v);
+            delete[] (v);
          }
          nn = rhs.nn;
          v  = new T[nn];
@@ -144,7 +144,7 @@ template <class T>
 NRVec<T>::~NRVec()
 {
    if(v != nullptr) {
-      delete[](v);
+      delete[] (v);
    }
 }
 
@@ -245,8 +245,8 @@ NRMat<T>& NRMat<T>::operator=(const NRMat<T>& rhs)
       int i, j;
       if(nn != rhs.nn || mm != rhs.mm) {
          if(v != 0) {
-            delete[](v[0]);
-            delete[](v);
+            delete[] (v[0]);
+            delete[] (v);
          }
          nn   = rhs.nn;
          mm   = rhs.mm;
@@ -304,8 +304,8 @@ template <class T>
 NRMat<T>::~NRMat()
 {
    if(v != nullptr) {
-      delete[](v[0]);
-      delete[](v);
+      delete[] (v[0]);
+      delete[] (v);
    }
 }
 
@@ -385,9 +385,9 @@ template <class T>
 NRMat3d<T>::~NRMat3d()
 {
    if(v != 0) {
-      delete[](v[0][0]);
-      delete[](v[0]);
-      delete[](v);
+      delete[] (v[0][0]);
+      delete[] (v[0]);
+      delete[] (v);
    }
 }
 

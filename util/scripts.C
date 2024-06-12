@@ -191,9 +191,9 @@ void scripts()
 
 // do th linking for the template functions if we are in an interactive session
 #ifdef __CINT__
-#pragma link C++ function makeGraph < int>(const vector <int>&, const char*)
-#pragma link C++ function makeGraph < double>(const vector <double>&, const char*)
-#pragma link C++ function makeHistoCommon < int, TH1I>(const vector <int>&, const char*)
-#pragma link C++ function makeHistoCommon < double, TH1D>(const vector <double>&, const char*)
-#pragma link C++ function makeHistoCommon < short, TH1S>(const vector <short>&, const char*)
+#pragma link C++ function makeGraph < int>(const vector<int>&, const char*)
+#pragma link C++ function makeGraph < double>(const vector<double>&, const char*)
+#pragma link C++ function makeHistoCommon < int, TH1I>(const vector<int>&, const char*)
+#pragma link C++ function makeHistoCommon < double, TH1D>(const vector<double>&, const char*)
+#pragma link C++ function makeHistoCommon < short, TH1S>(const vector<short>&, const char*)
 #endif
