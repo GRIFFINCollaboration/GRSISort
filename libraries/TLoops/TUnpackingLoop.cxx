@@ -25,17 +25,18 @@ TUnpackingLoop::TUnpackingLoop(std::string name)
    : StoppableThread(name), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>()),
      fFragsReadFromRaw(0), fGoodFragsRead(0), fEvaluateDataType(true), fDataType(EDataType::kMidas)
 {
-	// try and open dynamic library
-	if(TGRSIOptions::Get()->ParserLibrary().empty()) {
+   // try and open dynamic library
+   if(TGRSIOptions::Get()->ParserLibrary().empty()) {
       throw std::runtime_error("No data parser library supplied, can't open parser!");
-	}
+   }
 
-	// create new data parser
-	fParser = TParserLibrary::Get()->CreateDataParser();
+   // create new data parser
+   fParser = TParserLibrary::Get()->CreateDataParser();
 }
 
-TUnpackingLoop::~TUnpackingLoop() {
-	//TParserLibrary::Get()->DestroyDataParser(fParser);
+TUnpackingLoop::~TUnpackingLoop()
+{
+   // TParserLibrary::Get()->DestroyDataParser(fParser);
 }
 
 void TUnpackingLoop::ClearQueue()
@@ -65,9 +66,9 @@ bool TUnpackingLoop::Iteration()
       std::this_thread::sleep_for(std::chrono::milliseconds(10));
       return true;
    }
-	fParser->SetStatusVariables(&fItemsPopped, &fInputSize);
-	fInputSize = error;//"error" is the return value of popping an event from the input queue (which returns the number of events left)
-	++fItemsPopped;
+   fParser->SetStatusVariables(&fItemsPopped, &fInputSize);
+   fInputSize = error;   //"error" is the return value of popping an event from the input queue (which returns the number of events left)
+   ++fItemsPopped;
 
    fFragsReadFromRaw += fParser->Process(event);
    fGoodFragsRead += event->GoodFrags();
@@ -79,11 +80,11 @@ std::string TUnpackingLoop::EndStatus()
 {
    std::stringstream ss;
    if(fFragsReadFromRaw > 0) {
-      ss<<"\r"<<Name()<<":\t"<<fGoodFragsRead<<" good fragments out of "<<fFragsReadFromRaw
-        <<" fragments => "<<(100. * fGoodFragsRead) / fFragsReadFromRaw<<"% passed"<<std::endl;
+      ss << "\r" << Name() << ":\t" << fGoodFragsRead << " good fragments out of " << fFragsReadFromRaw
+         << " fragments => " << (100. * fGoodFragsRead) / fFragsReadFromRaw << "% passed" << std::endl;
    } else {
-      ss<<"\rno fragments read from midas => none parsed!"<<std::endl;
+      ss << "\rno fragments read from midas => none parsed!" << std::endl;
    }
-   ss<<fParser->OutputQueueStatus();
+   ss << fParser->OutputQueueStatus();
    return ss.str();
 }

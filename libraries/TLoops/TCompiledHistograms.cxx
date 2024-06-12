@@ -36,8 +36,8 @@ TCompiledHistograms::TCompiledHistograms(std::string input_lib, std::string func
    *reinterpret_cast<void_alias*>(&fFunc) = fLibrary->GetSymbol(fFunc_name.c_str());
 
    if(fFunc == nullptr) {
-      std::cout<<"Could not find "<<fFunc_name<<"() inside "
-               <<R"(")"<<input_lib<<R"(")"<<std::endl;
+      std::cout << "Could not find " << fFunc_name << "() inside "
+                << R"(")" << input_lib << R"(")" << std::endl;
    }
    fLast_modified = get_timestamp();
    fLast_checked  = time(nullptr);
@@ -65,7 +65,7 @@ void TCompiledHistograms::ClearHistograms()
          }
       }
    }
-   std::cout<<"ended "<<std::endl;
+   std::cout << "ended " << std::endl;
 }
 
 time_t TCompiledHistograms::get_timestamp()
@@ -89,7 +89,7 @@ Int_t TCompiledHistograms::Write(const char*, Int_t, Int_t)
    TObject* obj;
    while((obj = next()) != nullptr) {
       if(obj->InheritsFrom(TDirectory::Class())) {
-         //WATCH OUT: THIS DOESN'T SEEM THREAD-SAFE DUE TO gDIRECTORY BEING USED.
+         // WATCH OUT: THIS DOESN'T SEEM THREAD-SAFE DUE TO gDIRECTORY BEING USED.
          TPreserveGDirectory preserve;
          TDirectory*         dir = static_cast<TDirectory*>(obj);
          gDirectory->mkdir(dir->GetName())->cd();
@@ -148,7 +148,7 @@ void TCompiledHistograms::Fill(std::shared_ptr<const TFragment> frag)
    }
 
    TPreserveGDirectory preserve;
-   //fDefault_directory->cd();
+   // fDefault_directory->cd();
    fObj.SetDirectory(fDefault_directory);
 
    fObj.SetFragment(std::move(frag));
@@ -168,7 +168,7 @@ void TCompiledHistograms::Fill(std::shared_ptr<TUnpackedEvent> detectors)
    }
 
    TPreserveGDirectory preserve;
-   //fDefault_directory->cd();
+   // fDefault_directory->cd();
    fObj.SetDirectory(fDefault_directory);
 
    fObj.SetDetectors(std::move(detectors));

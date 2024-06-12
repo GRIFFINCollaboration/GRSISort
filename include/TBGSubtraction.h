@@ -40,15 +40,15 @@
 /////////////////////////////////////////////////////////////////
 
 class TBGSubtraction : public TGMainFrame {
-	// these enums are used to communicate with ROOT classes
-	// since those classes take ints as arguments there isn't
-	// much gained by changing them to enum classes
+   // these enums are used to communicate with ROOT classes
+   // since those classes take ints as arguments there isn't
+   // much gained by changing them to enum classes
    enum ESliders {
       kGateSlider,
       kBGSlider1,
       kBGSlider2,
       kPeakSlider,
-		kBinningSlider
+      kBinningSlider
    };
    enum EEntries {
       kBGParamEntry,
@@ -69,12 +69,12 @@ class TBGSubtraction : public TGMainFrame {
       kBGCheckButton2,
       kAutoUpdateCheckButton
    };
-	enum EPeaks {
-		kGauss = 0,
-		kRWPeak = 1,
-		kABPeak = 2,
-		kAB3Peak = 3
-	};
+   enum EPeaks {
+      kGauss   = 0,
+      kRWPeak  = 1,
+      kABPeak  = 2,
+      kAB3Peak = 3
+   };
 
    //  RQ_OBJECT("TBGSubtraction")
 private:
@@ -92,7 +92,7 @@ private:
    TGDoubleHSlider*     fBGSlider1{nullptr};
    TGDoubleHSlider*     fBGSlider2{nullptr};
    TGTripleHSlider*     fPeakSlider{nullptr};
-	TGHSlider*				fBinningSlider{nullptr};
+   TGHSlider*           fBinningSlider{nullptr};
    TGNumberEntry*       fBGParamEntry{nullptr};
    TGNumberEntry*       fBGEntryLow1{nullptr};
    TGNumberEntry*       fBGEntryHigh1{nullptr};
@@ -111,8 +111,8 @@ private:
    TGLayoutHints* fLayoutCanvases{nullptr};
    TGLayoutHints* fLayoutParam{nullptr};
 
-   TGTextEntry* fWrite2FileName{nullptr};
-   TGTextEntry* fHistogramDescription{nullptr};
+   TGTextEntry*  fWrite2FileName{nullptr};
+   TGTextEntry*  fHistogramDescription{nullptr};
    TGTextButton* fWrite2FileButton{nullptr};
    TGTextButton* fPeakFitButton{nullptr};
 
@@ -150,18 +150,18 @@ private:
 
    Int_t fGateAxis;
 
-   Bool_t fForceUpdate;
-   Double_t fPeakLowLimit; ///< lower limit for peak slider range
-   Double_t fPeakHighLimit; ///< upper limit for peak slider range
-   Double_t fPeakLowValue; ///< low range for fit
-   Double_t fPeakHighValue; ///< high range for fit
-   Double_t fPeakValue; ///< centroid for fit
+   Bool_t   fForceUpdate;
+   Double_t fPeakLowLimit;    ///< lower limit for peak slider range
+   Double_t fPeakHighLimit;   ///< upper limit for peak slider range
+   Double_t fPeakLowValue;    ///< low range for fit
+   Double_t fPeakHighValue;   ///< high range for fit
+   Double_t fPeakValue;       ///< centroid for fit
 
-   TSinglePeak* fPeak{nullptr}; ///< the peak to be fit (will be a class that inherits from TSinglePeak)
-	TPeakFitter* fPeakFitter{nullptr}; ///< the peak fitter that fPeak is added to
-	Int_t fPeakId; ///< the current ID of the peak
+   TSinglePeak* fPeak{nullptr};         ///< the peak to be fit (will be a class that inherits from TSinglePeak)
+   TPeakFitter* fPeakFitter{nullptr};   ///< the peak fitter that fPeak is added to
+   Int_t        fPeakId;                ///< the current ID of the peak
 
-	Int_t fMaxBinning{20}; ///< maximum binning possible with binning slider (hard-coded, for now?)
+   Int_t fMaxBinning{20};   ///< maximum binning possible with binning slider (hard-coded, for now?)
 
 public:
    TBGSubtraction(TH2* mat, const char* gate_axis = "x", int maxBinning = 20);
@@ -170,7 +170,7 @@ public:
    void PeakComboSelected();
    void ClickedBGButton1();
    void ClickedBGButton2();
- //  void ClickedBG2Button();
+   //  void ClickedBG2Button();
    void DoPeakFit();
    void DoSlider(Int_t pos = 0);
    void DoEntry(Long_t);
@@ -179,7 +179,7 @@ public:
    void UpdateProjectionSliders();
    void UpdateBackground();
    void UpdatePeakSliders();
-   //void DoProjection();
+   // void DoProjection();
    void DrawOnNewCanvas();
    void DrawAllMarkers();
    void DrawGateMarkers();
@@ -206,15 +206,15 @@ private:
    void Disconnect();
    void InitializeInterface();
    void StatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected);
-   void DrawBGMarkers(TGCheckButton *&check_button, GMarker *&low_marker, GMarker *&high_marker, TGNumberEntry *&low_entry, TGNumberEntry *&high_entry, Int_t color = kBlue);
+   void DrawBGMarkers(TGCheckButton*& check_button, GMarker*& low_marker, GMarker*& high_marker, TGNumberEntry*& low_entry, TGNumberEntry*& high_entry, Int_t color = kBlue);
    void UpdateGateSlider();
    void UpdateBGSlider1();
    void UpdateBGSlider2();
-	void UpdateBinningSlider();
-	void RebinProjection();
+   void UpdateBinningSlider();
+   void RebinProjection();
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBGSubtraction, 7); // Background subtractor GUI
+   ClassDefOverride(TBGSubtraction, 7);   // Background subtractor GUI
    /// \endcond
 };
 /*! @} */

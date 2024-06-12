@@ -8,14 +8,14 @@
 
 /// \cond CLASSIMP
 ClassImp(TFragment)
-/// \endcond
+   /// \endcond
 
-Long64_t TFragment::fNumberOfFragments = 0;
+   Long64_t TFragment::fNumberOfFragments = 0;
 
 TFragment::TFragment() : TDetectorHit()
 {
 /// Default constructor
-#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
    Clear();
@@ -25,8 +25,8 @@ TFragment::TFragment(const TFragment& rhs) : TDetectorHit(rhs)
 {
    /// Copy constructor
    // first copy all "normal" data members
-   fDaqTimeStamp      = rhs.fDaqTimeStamp;
-   fDaqId             = rhs.fDaqId;
+   fDaqTimeStamp        = rhs.fDaqTimeStamp;
+   fDaqId               = rhs.fDaqId;
    fFragmentId          = rhs.fFragmentId;
    fTriggerBitPattern   = rhs.fTriggerBitPattern;
    fNetworkPacketNumber = rhs.fNetworkPacketNumber;
@@ -58,8 +58,8 @@ void TFragment::Clear(Option_t* opt)
    /// Clears all fields of the TFragment
    TDetectorHit::Clear(opt);
 
-   fDaqTimeStamp      = 0;
-   fDaqId             = 0;
+   fDaqTimeStamp        = 0;
+   fDaqId               = 0;
    fFragmentId          = 0;
    fTriggerBitPattern   = 0;
    fNetworkPacketNumber = 0;
@@ -74,7 +74,7 @@ void TFragment::Clear(Option_t* opt)
    fTriggerId.clear();
 
    fPPG           = nullptr;
-	fEntryNumber   = 0;
+   fEntryNumber   = 0;
    fZc            = 0;
    fCcShort       = 0;
    fCcLong        = 0;
@@ -99,7 +99,7 @@ double TFragment::GetTZero() const
 }
 
 Int_t TFragment::Get4GCfd() const
-{ // return a 4G cfd in terms of 1/256 ns since the trigger
+{   // return a 4G cfd in terms of 1/256 ns since the trigger
    return static_cast<Int_t>(GetCfd()) & 0x001fffff;
 }
 
@@ -107,7 +107,7 @@ ULong64_t TFragment::GetTimeInCycle()
 {
 
    if(fPPG == nullptr) {
-      fPPG = TPPG::Get(); // static_cast<TPPG*>(gROOT->FindObject("TPPG"));
+      fPPG = TPPG::Get();   // static_cast<TPPG*>(gROOT->FindObject("TPPG"));
    }
    if(fPPG == nullptr) {
       return 0;
@@ -118,7 +118,7 @@ ULong64_t TFragment::GetTimeInCycle()
 ULong64_t TFragment::GetCycleNumber()
 {
    if(fPPG == nullptr) {
-      fPPG = TPPG::Get(); // static_cast<TPPG*>(gROOT->FindObject("TPPG"));
+      fPPG = TPPG::Get();   // static_cast<TPPG*>(gROOT->FindObject("TPPG"));
    }
    if(fPPG == nullptr) {
       return 0;
@@ -137,34 +137,34 @@ TPPG* TFragment::GetPPG()
 void TFragment::Print(Option_t*) const
 {
    /// Prints out all fields of the TFragment
-	Print(std::cout);
+   Print(std::cout);
 }
 
 void TFragment::Print(std::ostream& out) const
 {
-	/// Print fragment to stream out in a thread-safe way
-	std::ostringstream str;
-	str<<"DaqTimeStamp:        "<<ctime(&fDaqTimeStamp)<<std::endl
-		<<"DaqId:               "<<fDaqId<<std::endl
-		<<"\tTriggerId["<<fTriggerId.size()<<"]";
-	for(auto id : fTriggerId) {
-		str<<"    0x"<<std::hex<<id<<std::dec;
-	}
-	str<<std::endl
-		<<"FragmentId:           "<<fFragmentId<<std::endl
-		<<"TriggerBit:           0x"<<std::hex<<fTriggerBitPattern<<std::dec<<std::endl
-		<<"NetworkPacketNumber:  "<<fNetworkPacketNumber<<std::endl
-		<<"Channel Address:      0x"<<std::hex<<GetAddress()<<std::dec<<std::endl;
-	TChannel* channel = GetChannel();
-	if(channel != nullptr) {
-		str<<"Channel: "<<channel->GetNumber()<<"\t Name: "<<channel->GetName()<<std::endl;
-	}
-	str<<"Charge:               0x"<<std::hex<<static_cast<Int_t>(GetCharge())<<std::dec<<std::endl
-		<<"Cfd:                  0x"<<std::hex<<static_cast<Int_t>(GetCfd())<<std::dec<<std::endl
-		<<"ZC:                   0x"<<std::hex<<fZc<<std::dec<<std::endl
-		<<"TimeStamp:            "<<GetTimeStamp()<<std::endl
-		<<(HasWave()?"Has a wave form stored":"Doesn't have a wave form stored")<<std::endl;
-	out<<str.str();
+   /// Print fragment to stream out in a thread-safe way
+   std::ostringstream str;
+   str << "DaqTimeStamp:        " << ctime(&fDaqTimeStamp) << std::endl
+       << "DaqId:               " << fDaqId << std::endl
+       << "\tTriggerId[" << fTriggerId.size() << "]";
+   for(auto id : fTriggerId) {
+      str << "    0x" << std::hex << id << std::dec;
+   }
+   str << std::endl
+       << "FragmentId:           " << fFragmentId << std::endl
+       << "TriggerBit:           0x" << std::hex << fTriggerBitPattern << std::dec << std::endl
+       << "NetworkPacketNumber:  " << fNetworkPacketNumber << std::endl
+       << "Channel Address:      0x" << std::hex << GetAddress() << std::dec << std::endl;
+   TChannel* channel = GetChannel();
+   if(channel != nullptr) {
+      str << "Channel: " << channel->GetNumber() << "\t Name: " << channel->GetName() << std::endl;
+   }
+   str << "Charge:               0x" << std::hex << static_cast<Int_t>(GetCharge()) << std::dec << std::endl
+       << "Cfd:                  0x" << std::hex << static_cast<Int_t>(GetCfd()) << std::dec << std::endl
+       << "ZC:                   0x" << std::hex << fZc << std::dec << std::endl
+       << "TimeStamp:            " << GetTimeStamp() << std::endl
+       << (HasWave() ? "Has a wave form stored" : "Doesn't have a wave form stored") << std::endl;
+   out << str.str();
 }
 
 bool TFragment::IsDetector(const char* prefix, Option_t* opt) const
@@ -191,8 +191,8 @@ bool TFragment::IsDetector(const char* prefix, Option_t* opt) const
    // Because it returns false after every potential failure while the mnemonic class sets all of the strings, and then
    // checks
    // for conditions.
-   if(channame.compare(0, pre.length(), pre) == 0) { // channame.BeginsWith(pre)){
-      if(option.Length() < 1) {                      // no option.
+   if(channame.compare(0, pre.length(), pre) == 0) {   // channame.BeginsWith(pre)){
+      if(option.Length() < 1) {                        // no option.
          return true;
       }
       if(channame.length() > 8) {

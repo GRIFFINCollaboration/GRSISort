@@ -52,7 +52,7 @@ void TDataLoop::ReplaceSource(TRawFile* new_source)
 
 void TDataLoop::ResetSource()
 {
-   std::cerr<<"Reset not implemented for TRawFile"<<std::endl;
+   std::cerr << "Reset not implemented for TRawFile" << std::endl;
    // std::lock_guard<std::mutex> lock(fSourceMutex);
    // source->Reset();
 }
@@ -64,22 +64,22 @@ void TDataLoop::OnEnd()
 
 bool TDataLoop::Iteration()
 {
-   std::shared_ptr<TRawEvent> evt = fSource->NewEvent();
+   std::shared_ptr<TRawEvent> evt       = fSource->NewEvent();
    int                        bytesRead = 0;
    {
       std::lock_guard<std::mutex> lock(fSourceMutex);
-		bytesRead   = fSource->Read(evt);
-		fItemsPopped = fSource->GetBytesRead() / 1000;
-		fInputSize = fSource->GetFileSize() / 1000 - fItemsPopped; // this way fInputSize+fItemsPopped give the file size
-		++fEventsRead;
-		if(TGRSIOptions::Get()->Downscaling() > 1) {
-			// if we use downscaling we skip n-1 events without updating bytesRead
-			// that way all further checks work as usual on the single event we read
-			fSource->Skip(TGRSIOptions::Get()->Downscaling()-1);
-			fItemsPopped = fSource->GetBytesRead() / 1000;
-			fInputSize = fSource->GetFileSize() / 1000 - fItemsPopped; // this way fInputSize+fItemsPopped give the file size
-			fEventsRead += TGRSIOptions::Get()->Downscaling()-1;
-		}
+      bytesRead    = fSource->Read(evt);
+      fItemsPopped = fSource->GetBytesRead() / 1000;
+      fInputSize   = fSource->GetFileSize() / 1000 - fItemsPopped;   // this way fInputSize+fItemsPopped give the file size
+      ++fEventsRead;
+      if(TGRSIOptions::Get()->Downscaling() > 1) {
+         // if we use downscaling we skip n-1 events without updating bytesRead
+         // that way all further checks work as usual on the single event we read
+         fSource->Skip(TGRSIOptions::Get()->Downscaling() - 1);
+         fItemsPopped = fSource->GetBytesRead() / 1000;
+         fInputSize   = fSource->GetFileSize() / 1000 - fItemsPopped;   // this way fInputSize+fItemsPopped give the file size
+         fEventsRead += TGRSIOptions::Get()->Downscaling() - 1;
+      }
    }
 
    if(bytesRead <= 0 && fSelfStopping) {
@@ -89,13 +89,12 @@ bool TDataLoop::Iteration()
    if(bytesRead > 0) {
       // A good event was returned
       fOutputQueue->Push(evt);
-		if(fEventsRead == TGRSIOptions::Get()->NumberOfEvents()) {
-			return false;
-		}
+      if(fEventsRead == TGRSIOptions::Get()->NumberOfEvents()) {
+         return false;
+      }
       return true;
    }
    // Nothing returned this time, but I might get something next time.
    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
    return true;
 }
-

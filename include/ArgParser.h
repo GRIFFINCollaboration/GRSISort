@@ -21,12 +21,12 @@ struct ParseError : public std::runtime_error {
 class ArgParseItem {
 public:
    ArgParseItem(bool firstPass) : present_(false), fFirstPass(firstPass) {}
-   virtual ~ArgParseItem()                                            = default;
-   virtual bool matches(const std::string& flag) const                = 0;
-   virtual void parse_item(const std::vector<std::string>& arguments) = 0;
-   virtual int         num_arguments() const                          = 0;
+   virtual ~ArgParseItem()                                                                            = default;
+   virtual bool        matches(const std::string& flag) const                                         = 0;
+   virtual void        parse_item(const std::vector<std::string>& arguments)                          = 0;
+   virtual int         num_arguments() const                                                          = 0;
    virtual std::string printable(int description_column = -1, int* chars_before_desc = nullptr) const = 0;
-   virtual bool        is_required() const = 0;
+   virtual bool        is_required() const                                                            = 0;
    bool                is_present() const { return present_; }
    virtual std::string flag_name() const = 0;
 
@@ -41,10 +41,10 @@ public:
             (num_arguments() != -1 && arguments.size() != size_t(num_arguments()))) {
             std::stringstream ss;
             if(num_arguments() == -1) {
-               ss<<R"(Flag ")"<<name<<R"(" expected at least one argument)";
+               ss << R"(Flag ")" << name << R"(" expected at least one argument)";
             } else {
-               ss<<R"(Flag ")"<<name<<R"(" expected )"<<num_arguments()<<" argument(s) and received "
-                 <<arguments.size();
+               ss << R"(Flag ")" << name << R"(" expected )" << num_arguments() << " argument(s) and received "
+                  << arguments.size();
             }
             throw ParseError(ss.str());
          }
@@ -65,7 +65,7 @@ public:
    ArgParseConfig(std::string flag_list, bool firstPass) : ArgParseItem(firstPass)
    {
       fDescription = "";
-		fColour      = "";
+      fColour      = "";
       fRequired    = false;
       std::stringstream ss(flag_list);
       while(!ss.eof()) {
@@ -133,44 +133,44 @@ public:
    {
       std::stringstream ss;
 
-      ss<<"  "<<fColour;
+      ss << "  " << fColour;
 
       bool has_singlechar_flag = false;
       for(const auto& flag : fFlags) {
          if(flag.length() == 2) {
-            ss<<flag<<" ";
+            ss << flag << " ";
             has_singlechar_flag = true;
          }
       }
       for(const auto& flag : fFlags) {
          if(flag.length() != 2) {
             if(has_singlechar_flag) {
-               ss<<"[ ";
+               ss << "[ ";
             }
-            ss<<flag<<" ";
+            ss << flag << " ";
             if(has_singlechar_flag) {
-               ss<<"]";
+               ss << "]";
             }
          }
       }
 
       if(num_arguments() != 0) {
-         ss<<" arg ";
+         ss << " arg ";
       }
 
       auto chars = ss.tellp();
-		chars -= fColour.length();
+      chars -= fColour.length();
       if(chars_before_desc != nullptr) {
          *chars_before_desc = chars;
       }
 
       if(description_column != -1 && chars < description_column) {
          for(unsigned int i = 0; i < description_column - chars; i++) {
-            ss<<" ";
+            ss << " ";
          }
       }
 
-      ss<<fDescription<<RESET_COLOR;
+      ss << fDescription << RESET_COLOR;
 
       return ss.str();
    }
@@ -179,8 +179,8 @@ protected:
    /// A description for display on the terminal.
    std::string fDescription;
 
-	/// Colour string to be use for display
-	std::string fColour;
+   /// Colour string to be use for display
+   std::string fColour;
 
    /// The literal flag that is searched for, including leading dashes.
    std::vector<std::string> fFlags;
@@ -235,10 +235,10 @@ public:
    }
 
    ArgParseConfig<bool>& takes_argument()
-	{
-		fNum_arguments_expected = 1;
-		return *this;
-	}
+   {
+      fNum_arguments_expected = 1;
+      return *this;
+   }
 
    void parse_item(const std::vector<std::string>& arguments) override
    {
@@ -246,7 +246,7 @@ public:
          *fOutput_location = !fStored_default_value;
       } else {
          std::stringstream ss(arguments[0]);
-         ss>>std::boolalpha>>*fOutput_location;
+         ss >> std::boolalpha >> *fOutput_location;
       }
    }
 
@@ -255,7 +255,7 @@ public:
 private:
    bool* fOutput_location;
    bool  fStored_default_value;
-	int   fNum_arguments_expected;
+   int   fNum_arguments_expected;
 };
 
 template <typename T>
@@ -293,7 +293,7 @@ private:
 ///
 /// \class ArgParser
 ///
-/// This class is used to parse the command line arguments. 
+/// This class is used to parse the command line arguments.
 ///
 /// Example usage:
 /// ```
@@ -347,7 +347,7 @@ public:
       for(auto& val : values) {
          if(val->is_required() && !val->is_present()) {
             std::stringstream ss;
-            ss<<R"(Required argument ")"<<val->flag_name()<<R"(" is not present)";
+            ss << R"(Required argument ")" << val->flag_name() << R"(" is not present)";
             throw ParseError(ss.str());
          }
       }
@@ -366,7 +366,7 @@ public:
          std::string remainder;
          if(has_colon) {
             flag = line.substr(0, colon);
-            std::stringstream(flag) >> flag; // Strip out whitespace
+            std::stringstream(flag) >> flag;   // Strip out whitespace
             if(flag.length() == 1) {
                flag = "-" + flag;
             } else {
@@ -387,13 +387,13 @@ public:
 
          if(has_colon) {
             ArgParseItem& item = get_item(flag);
-            item.parse(flag, args, true, true);  // parse "firstPass" items only
-            item.parse(flag, args, false, true); // parse "!firstPass" items only
+            item.parse(flag, args, true, true);    // parse "firstPass" items only
+            item.parse(flag, args, false, true);   // parse "!firstPass" items only
          } else {
             for(auto& arg : args) {
                ArgParseItem& item = get_item(arg);
-               item.parse(arg, std::vector<std::string>{arg}, true);  // parse "firstPass" items only
-               item.parse(arg, std::vector<std::string>{arg}, false); // parse "!firstPass" items only
+               item.parse(arg, std::vector<std::string>{arg}, true);    // parse "firstPass" items only
+               item.parse(arg, std::vector<std::string>{arg}, false);   // parse "!firstPass" items only
             }
          }
       }
@@ -415,7 +415,7 @@ public:
 
    void print(std::ostream& out) const
    {
-      out<<"Options:\n";
+      out << "Options:\n";
 
       int max_length = -1;
       for(auto item : values) {
@@ -426,9 +426,9 @@ public:
 
       for(auto it = values.begin(); it != values.end(); it++) {
          ArgParseItem* item = *it;
-         out<<item->printable(max_length);
+         out << item->printable(max_length);
          if(it != values.end() - 1) {
-            out<<"\n";
+            out << "\n";
          }
       }
    }
@@ -522,9 +522,9 @@ private:
 
       std::stringstream ss;
       if(flag.at(0) == '-') {
-         ss<<R"(Unknown option: ")"<<flag<<R"(")";
+         ss << R"(Unknown option: ")" << flag << R"(")";
       } else {
-         ss<<R"(Was passed ")"<<flag<<R"(" as a non-option argument, when no non-option arguments are allowed)";
+         ss << R"(Was passed ")" << flag << R"(" as a non-option argument, when no non-option arguments are allowed)";
       }
       throw ParseError(ss.str());
    }

@@ -38,20 +38,20 @@
 template <class T>
 class NRVec {
 private:
-   int nn; // size of array. upper index is nn-1
+   int nn;   // size of array. upper index is nn-1
    T*  v;
 
 public:
    NRVec();
-   explicit NRVec(int n);              // Zero-based array
-   NRVec(const T& a, int n);           // initialize to constant value
-   NRVec(const T* a, int n);           // Initialize to array
-   NRVec(const NRVec& rhs);            // Copy constructor
-   NRVec& operator=(const NRVec& rhs); // assignment
-   NRVec& operator=(const T& a);       // assign a to every element
-   inline T& operator[](const int i);  // i'th element
+   explicit NRVec(int n);                         // Zero-based array
+   NRVec(const T& a, int n);                      // initialize to constant value
+   NRVec(const T* a, int n);                      // Initialize to array
+   NRVec(const NRVec& rhs);                       // Copy constructor
+   NRVec&          operator=(const NRVec& rhs);   // assignment
+   NRVec&          operator=(const T& a);         // assign a to every element
+   inline T&       operator[](const int i);       // i'th element
    inline const T& operator[](const int i) const;
-   inline int size() const;
+   inline int      size() const;
    ~NRVec();
 };
 
@@ -114,7 +114,7 @@ NRVec<T>& NRVec<T>::operator=(const NRVec<T>& rhs)
 }
 
 template <class T>
-NRVec<T>& NRVec<T>::operator=(const T& a) // assign a to every element
+NRVec<T>& NRVec<T>::operator=(const T& a)   // assign a to every element
 {
    for(int i = 0; i < nn; i++) {
       v[i] = a;
@@ -123,13 +123,13 @@ NRVec<T>& NRVec<T>::operator=(const T& a) // assign a to every element
 }
 
 template <class T>
-inline T& NRVec<T>::operator[](const int i) // subscripting
+inline T& NRVec<T>::operator[](const int i)   // subscripting
 {
    return v[i];
 }
 
 template <class T>
-inline const T& NRVec<T>::operator[](const int i) const // subscripting
+inline const T& NRVec<T>::operator[](const int i) const   // subscripting
 {
    return v[i];
 }
@@ -157,16 +157,16 @@ private:
 
 public:
    NRMat();
-   NRMat(int n, int m);                // Zero-based array
-   NRMat(const T& a, int n, int m);    // Initialize to constant
-   NRMat(const T* a, int n, int m);    // Initialize to array
-   NRMat(const NRMat& rhs);            // Copy constructor
-   NRMat& operator=(const NRMat& rhs); // assignment
-   NRMat& operator=(const T& a);       // assign a to every element
-   inline T* operator[](const int i);  // subscripting: pointer to row i
+   NRMat(int n, int m);                           // Zero-based array
+   NRMat(const T& a, int n, int m);               // Initialize to constant
+   NRMat(const T* a, int n, int m);               // Initialize to array
+   NRMat(const NRMat& rhs);                       // Copy constructor
+   NRMat&          operator=(const NRMat& rhs);   // assignment
+   NRMat&          operator=(const T& a);         // assign a to every element
+   inline T*       operator[](const int i);       // subscripting: pointer to row i
    inline const T* operator[](const int i) const;
-   inline int nrows() const;
-   inline int ncols() const;
+   inline int      nrows() const;
+   inline int      ncols() const;
    ~NRMat();
 };
 
@@ -266,7 +266,7 @@ NRMat<T>& NRMat<T>::operator=(const NRMat<T>& rhs)
 }
 
 template <class T>
-NRMat<T>& NRMat<T>::operator=(const T& a) // assign a to every element
+NRMat<T>& NRMat<T>::operator=(const T& a)   // assign a to every element
 {
    for(int i = 0; i < nn; i++) {
       for(int j = 0; j < mm; j++) {
@@ -277,7 +277,7 @@ NRMat<T>& NRMat<T>::operator=(const T& a) // assign a to every element
 }
 
 template <class T>
-inline T* NRMat<T>::operator[](const int i) // subscripting: pointer to row i
+inline T* NRMat<T>::operator[](const int i)   // subscripting: pointer to row i
 {
    return v[i];
 }
@@ -320,11 +320,11 @@ private:
 public:
    NRMat3d();
    NRMat3d(int n, int m, int k);
-   inline T** operator[](const int i); // subscripting: pointer to row i
+   inline T**             operator[](const int i);   // subscripting: pointer to row i
    inline const T* const* operator[](const int i) const;
-   inline int dim1() const;
-   inline int dim2() const;
-   inline int dim3() const;
+   inline int             dim1() const;
+   inline int             dim2() const;
+   inline int             dim3() const;
    ~NRMat3d();
 };
 
@@ -352,7 +352,7 @@ NRMat3d<T>::NRMat3d(int n, int m, int k) : nn(n), mm(m), kk(k), v(new T**[n])
 }
 
 template <class T>
-inline T** NRMat3d<T>::operator[](const int i) // subscripting: pointer to row i
+inline T** NRMat3d<T>::operator[](const int i)   // subscripting: pointer to row i
 {
    return v[i];
 }
@@ -558,7 +558,7 @@ inline const std::complex<float> operator/(const std::complex<float>& a, const d
 
 class TLMFitter : public TObject {
 public:
-   TLMFitter() : fIntegrationSteps(100), fInitChi2Number(3) {};
+   TLMFitter() : fIntegrationSteps(100), fInitChi2Number(3){};
    ~TLMFitter() override = default;
 
 private:
@@ -590,9 +590,9 @@ protected:
    inline void nrerror(const std::string& error_text)
    // Numerical Recipes standard error handler
    {
-      std::cerr<<"Numerical Recipes run-time error..."<<std::endl;
-      std::cerr<<error_text<<std::endl;
-      std::cerr<<"...now exiting to system..."<<std::endl;
+      std::cerr << "Numerical Recipes run-time error..." << std::endl;
+      std::cerr << error_text << std::endl;
+      std::cerr << "...now exiting to system..." << std::endl;
       exit(1);
    }
 
@@ -604,11 +604,11 @@ protected:
                Vec_O_double& beta, double& chisq, Vec_I_double& W, double& chisqexp);
    void gaussj(Mat_IO_double& a, Mat_IO_double& b);
    void covsrt(Mat_IO_double& covar, Vec_I_BOOL& ia, const int mfit);
-   int integrator(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_I_double& W, Vec_IO_double& a,
-                  Vec_double& dyda, int chisqnumber, const double& bin_width, Vec_double& yfit, const int& bin);
+   int  integrator(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_I_double& W, Vec_IO_double& a,
+                   Vec_double& dyda, int chisqnumber, const double& bin_width, Vec_double& yfit, const int& bin);
 
 public:
    ClassDefOverride(TLMFitter, 1);
 };
 /*! @} */
-#endif // TLMFitter_H
+#endif   // TLMFitter_H

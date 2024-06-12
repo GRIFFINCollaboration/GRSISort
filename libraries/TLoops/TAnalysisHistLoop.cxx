@@ -99,11 +99,11 @@ void TAnalysisHistLoop::Write()
       fCompiledHistograms.Write();
       if(GValue::Size() != 0) {
          GValue::Get()->Write();
-         std::cout<<BLUE<<"\t"<<GValue::Size()<<" GValues written to file "<<gDirectory->GetName()<<RESET_COLOR<<std::endl;
+         std::cout << BLUE << "\t" << GValue::Size() << " GValues written to file " << gDirectory->GetName() << RESET_COLOR << std::endl;
       }
       if(TChannel::GetNumberOfChannels() != 0) {
          TChannel::GetDefaultChannel()->Write();
-         std::cout<<BLUE<<"\t"<<TChannel::GetNumberOfChannels()<<" TChannels written to file "<<gDirectory->GetName()<<RESET_COLOR<<std::endl;
+         std::cout << BLUE << "\t" << TChannel::GetNumberOfChannels() << " TChannels written to file " << gDirectory->GetName() << RESET_COLOR << std::endl;
       }
    }
 }

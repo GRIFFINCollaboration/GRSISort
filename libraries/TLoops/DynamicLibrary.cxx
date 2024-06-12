@@ -22,13 +22,13 @@ int incremental_id()
    std::lock_guard<std::mutex> lock(mutex);
    return count++;
 }
-}
+}   // namespace
 
 DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name) : fLibName(std::move(libname_param))
 {
    if(unique_name) {
       std::stringstream ss;
-      ss<<"/tmp/temp_dynlib_"<<getpid()<<"_"<<incremental_id()<<".so";
+      ss << "/tmp/temp_dynlib_" << getpid() << "_" << incremental_id() << ".so";
       fTempName = ss.str();
 
       // Need to symlink to full path, not a relative path.

@@ -6,9 +6,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TBgoHit)
-/// \endcond
+   /// \endcond
 
-TBgoHit::TBgoHit()
+   TBgoHit::TBgoHit()
 {
    Clear();
 }
@@ -34,10 +34,10 @@ void TBgoHit::Clear(Option_t* opt)
 
 void TBgoHit::Print(Option_t*) const
 {
-	Print(std::cout);
+   Print(std::cout);
 }
 
 void TBgoHit::Print(std::ostream& out) const
 {
-	TDetectorHit::Print(out);
+   TDetectorHit::Print(out);
 }

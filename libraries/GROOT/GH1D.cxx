@@ -49,9 +49,9 @@ bool GH1D::WriteDatFile(const char* outFile)
    }
 
    for(int i = 0; i < GetNbinsX(); i++) {
-      out<<GetXaxis()->GetBinCenter(i)<<"\t"<<GetBinContent(i)<<std::endl;
+      out << GetXaxis()->GetBinCenter(i) << "\t" << GetBinContent(i) << std::endl;
    }
-   out<<std::endl;
+   out << std::endl;
    out.close();
 
    return true;
@@ -90,7 +90,7 @@ void GH1D::Clear(Option_t* opt)
 void GH1D::Print(Option_t* opt) const
 {
    TH1D::Print(opt);
-   std::cout<<"\tParent: "<<parent.GetObject()<<std::endl;
+   std::cout << "\tParent: " << parent.GetObject() << std::endl;
 }
 
 void GH1D::Copy(TObject& obj) const
@@ -148,7 +148,7 @@ GH1D* GH1D::GetPrevious(bool DrawEmpty) const
       int   last  = GetXaxis()->GetLast();
       GH1D* prev  = gpar->GetPrevious(this, DrawEmpty);
       prev->GetXaxis()->SetRange(first, last);
-      return prev; // gpar->GetPrevious(this,DrawEmpty);
+      return prev;   // gpar->GetPrevious(this,DrawEmpty);
    }
    return nullptr;
 }
@@ -161,7 +161,7 @@ GH1D* GH1D::GetNext(bool DrawEmpty) const
       int   last  = GetXaxis()->GetLast();
       GH1D* next  = gpar->GetNext(this, DrawEmpty);
       next->GetXaxis()->SetRange(first, last);
-      return next; // gpar->GetNext(this,DrawEmpty);
+      return next;   // gpar->GetNext(this,DrawEmpty);
    }
    return nullptr;
 }

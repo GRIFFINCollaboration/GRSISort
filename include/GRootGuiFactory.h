@@ -2,16 +2,16 @@
 #ifndef ROOT_GRootGuiFactory
 #define ROOT_GRootGuiFactory
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// GRootGuiFactory                                                      //
-//                                                                      //
-// This class is a factory for ROOT GUI components. It overrides        //
-// the member functions of the ABS TGuiFactory.  This is necessary      //
-// in order to override the native root canvas and fully take control   //
-// of the users interface with objects drawn to the screen   pcb.       //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///
+/// \class GRootGuiFactory
+///
+/// This class is a factory for ROOT GUI components. It overrides
+/// the member functions of the ABS TGuiFactory.  This is necessary
+/// in order to override the native root canvas and fully take control
+/// of the users interface with objects drawn to the screen   pcb.
+///
+///////////////////////////////////////////////////////////////////////////
 
 #ifndef ROOT_TGuiFactory
 #include "TGuiFactory.h"
@@ -48,7 +48,7 @@ public:
    TControlBarImp* CreateControlBarImp(TControlBar* c, const char* title) override;
    TControlBarImp* CreateControlBarImp(TControlBar* c, const char* title, Int_t x, Int_t y) override;
 
-   ClassDefOverride(GRootGuiFactory, 0) // Factory for ROOT GUI components
+   ClassDefOverride(GRootGuiFactory, 0)   // Factory for ROOT GUI components
 };
 
 #endif

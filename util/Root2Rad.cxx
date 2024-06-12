@@ -46,13 +46,13 @@
 #include "GHSym.h"
 
 struct SpeHeader {
-   int32_t buffsize; /*fortran file, each record starts with record size */ // 14
+   int32_t buffsize; /*fortran file, each record starts with record size */   // 14
    char    label[8];
    int32_t size;
    int32_t junk1;
    int32_t junk2;
    int32_t junk3;
-   int32_t buffcheck; /*fortran file, record ends with record size :) */ // 14
+   int32_t buffcheck; /*fortran file, record ends with record size :) */   // 14
 } __attribute__((packed));
 
 // the above would be followed by an integer of bin size * 4
@@ -70,15 +70,15 @@ int main(int argc, char** argv)
 {
    TFile* infile = nullptr;
    if(argc < 2 || (infile = TFile::Open(argv[1], "read")) == nullptr) {
-      std::cout<<"problem opening file."<<std::endl
-               <<"Usage: "<<argv[0]
-               <<" file.root (optional after the file: -8 to use 8k matrices, -s to split large matrices, -c to compress large matrices, which need to go last!)"<<std::endl;
+      std::cout << "problem opening file." << std::endl
+                << "Usage: " << argv[0]
+                << " file.root (optional after the file: -8 to use 8k matrices, -s to split large matrices, -c to compress large matrices, which need to go last!)" << std::endl;
       return 1;
    }
 
-   bool split    = false;
-   bool compress = false;
-	bool bigMatrix = false;
+   bool split     = false;
+   bool compress  = false;
+   bool bigMatrix = false;
    for(int i = 2; i < argc; ++i) {
       if(strcmp(argv[i], "-s") == 0) {
          split = true;
@@ -87,7 +87,7 @@ int main(int argc, char** argv)
       } else if(strcmp(argv[i], "-8") == 0) {
          bigMatrix = true;
       } else {
-         std::cout<<"Unrecognized flag "<<argv[i]<<std::endl;
+         std::cout << "Unrecognized flag " << argv[i] << std::endl;
       }
    }
 
@@ -118,7 +118,7 @@ int main(int argc, char** argv)
    auto* histsToWrite = new TList();
    auto* matsToWrite  = new TList();
    auto* m4bsToWrite  = new TList();
-	ProcessKeys(keys, histsToWrite, matsToWrite, m4bsToWrite, split, compress);
+   ProcessKeys(keys, histsToWrite, matsToWrite, m4bsToWrite, split, compress);
 
    TIter nexthist(histsToWrite);
    while(TH1* currenthist = dynamic_cast<TH1*>(nexthist())) {
@@ -148,18 +148,18 @@ int main(int argc, char** argv)
    while(TH2* currentm4b = dynamic_cast<TH2*>(nextm4b())) {
       std::string outfilename = path + "/";
       outfilename.append(currentm4b->GetName());
-		if(bigMatrix) {
-			outfilename.append(".m8k");
-		} else {
-			outfilename.append(".m4b");
-		}
+      if(bigMatrix) {
+         outfilename.append(".m8k");
+      } else {
+         outfilename.append(".m4b");
+      }
       std::fstream outfile;
       outfile.open(outfilename.c_str(), std::ios::out | std::ios::binary);
-		if(bigMatrix) {
-			WriteM8k(currentm4b, &outfile);
-		} else {
-			WriteM4b(currentm4b, &outfile);
-		}
+      if(bigMatrix) {
+         WriteM8k(currentm4b, &outfile);
+      } else {
+         WriteM4b(currentm4b, &outfile);
+      }
       printf("\t%s written to file %s.\n", currentm4b->GetName(), outfilename.c_str());
       outfile.close();
    }
@@ -172,8 +172,8 @@ int main(int argc, char** argv)
 
 void ProcessKeys(TList* keys, TList* histsToWrite, TList* matsToWrite, TList* m4bsToWrite, bool split, bool compress)
 {
-	std::vector<TDirectoryFile*> directories;
-   TIter next(keys);
+   std::vector<TDirectoryFile*> directories;
+   TIter                        next(keys);
    while(TKey* currentkey = dynamic_cast<TKey*>(next())) {
       std::string keytype = currentkey->ReadObj()->IsA()->GetName();
       if(keytype.compare(0, 3, "TH1") == 0) {
@@ -199,20 +199,20 @@ void ProcessKeys(TList* keys, TList* histsToWrite, TList* matsToWrite, TList* m4
          } else if(keytype.compare(5, 1, "D") == 0) {
             AddToList(m4bsToWrite, dynamic_cast<GHSymF*>(currentkey->ReadObj())->GetMatrix(), split, compress);
          } else {
-            std::cout<<"unknown GHSym type "<<keytype<<std::endl;
+            std::cout << "unknown GHSym type " << keytype << std::endl;
          }
-		} else if(keytype.compare(0, 14, "TDirectoryFile") == 0) {
-			directories.push_back(dynamic_cast<TDirectoryFile*>(currentkey->ReadObj()));
+      } else if(keytype.compare(0, 14, "TDirectoryFile") == 0) {
+         directories.push_back(dynamic_cast<TDirectoryFile*>(currentkey->ReadObj()));
       } else {
-         std::cout<<"skipping "<<keytype<<std::endl;
+         std::cout << "skipping " << keytype << std::endl;
       }
    }
-	// loop over directories and process keys in them
-	for(auto dir : directories) {
-		TList* dir_keys = dir->GetListOfKeys();
-		dir_keys->Sort();
-		ProcessKeys(dir_keys, histsToWrite, matsToWrite, m4bsToWrite, split, compress);
-	}
+   // loop over directories and process keys in them
+   for(auto dir : directories) {
+      TList* dir_keys = dir->GetListOfKeys();
+      dir_keys->Sort();
+      ProcessKeys(dir_keys, histsToWrite, matsToWrite, m4bsToWrite, split, compress);
+   }
 }
 
 void AddToList(TList* list, TH2* hist, bool split, bool compress)
@@ -235,7 +235,7 @@ void AddToList(TList* list, TH2* hist, bool split, bool compress)
       }
       list->Add(splitHist);
       int rebin = (hist->GetXaxis()->GetNbins() + 4095) / 4096;
-		std::cout<<"rebinning "<<hist->GetName()<<" by "<<rebin<<std::endl;
+      std::cout << "rebinning " << hist->GetName() << " by " << rebin << std::endl;
       list->Add(hist->Rebin2D(rebin, rebin));
       return;
    } else if(split) {
@@ -244,8 +244,8 @@ void AddToList(TList* list, TH2* hist, bool split, bool compress)
       splitHist->SetBins(4096, 0., 4096., 4096, 0., 4096.);
       for(int i = 0; i < nofSplits; ++i) {
          for(int j = 0; j <= i; ++j) {
-            std::cout<<hist->GetName()<<": x = "<<i * 4096<<" - "<<(i + 1) * 4096<<", y = "<<j * 4096
-                     <<" - "<<(j + 1) * 4096<<std::endl;
+            std::cout << hist->GetName() << ": x = " << i * 4096 << " - " << (i + 1) * 4096 << ", y = " << j * 4096
+                      << " - " << (j + 1) * 4096 << std::endl;
             splitHist->Reset();
             splitHist->SetName(Form("%s_%d_%d", hist->GetName(), i, j));
             for(int binx = 1; binx <= 4096; ++binx) {
@@ -264,7 +264,7 @@ void AddToList(TList* list, TH2* hist, bool split, bool compress)
    }
    // only option left now is compress
    int rebin = (hist->GetXaxis()->GetNbins() + 4095) / 4096;
-   std::cout<<"rebinning "<<hist->GetName()<<" by "<<rebin<<std::endl;
+   std::cout << "rebinning " << hist->GetName() << " by " << rebin << std::endl;
    hist->SetName(Form("%s_rebin%d", hist->GetName(), rebin));
    list->Add(hist->Rebin2D(rebin, rebin));
 }
@@ -286,7 +286,7 @@ void WriteMat(TH2* mat, std::fstream* outfile)
       }
       for(int x = 1; x <= 4096; ++x) {
          if(x <= xbins) {
-            buffer[x - 1] = static_cast<uint16_t>(proj->GetBinContent(x)); //    mat->GetBinContent(x,y));
+            buffer[x - 1] = static_cast<uint16_t>(proj->GetBinContent(x));   //   mat->GetBinContent(x,y));
          } else {
             buffer[x - 1] = 0;
          }
@@ -313,7 +313,7 @@ void WriteM4b(TH2* mat, std::fstream* outfile)
       }
       for(int x = 1; x <= 4096; ++x) {
          if(x <= xbins) {
-            buffer[x - 1] = static_cast<uint32_t>(proj->GetBinContent(x)); //    mat->GetBinContent(x,y));
+            buffer[x - 1] = static_cast<uint32_t>(proj->GetBinContent(x));   //   mat->GetBinContent(x,y));
          } else {
             buffer[x - 1] = 0;
          }
@@ -340,7 +340,7 @@ void WriteM8k(TH2* mat, std::fstream* outfile)
       }
       for(int x = 1; x <= 8192; ++x) {
          if(x <= xbins) {
-            buffer[x - 1] = static_cast<uint32_t>(proj->GetBinContent(x)); //    mat->GetBinContent(x,y));
+            buffer[x - 1] = static_cast<uint32_t>(proj->GetBinContent(x));   //   mat->GetBinContent(x,y));
          } else {
             buffer[x - 1] = 0;
          }
@@ -374,7 +374,7 @@ void WriteHist(TH1* hist, std::fstream* outfile)
    spehead.junk1     = 1;
    spehead.junk2     = 1;
    spehead.junk3     = 1;
-   spehead.buffcheck = 24; /*fortran file, record ends with record size :) */ // 14
+   spehead.buffcheck = 24; /*fortran file, record ends with record size :) */   // 14
 
    outfile->write(reinterpret_cast<char*>(&spehead), sizeof(SpeHeader));
 

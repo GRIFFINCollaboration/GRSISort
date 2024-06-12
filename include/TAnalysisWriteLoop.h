@@ -30,7 +30,10 @@ public:
    ~TAnalysisWriteLoop() override;
 
 #ifndef __CINT__
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>&  InputQueue() { return fInputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>& InputQueue()
+   {
+      return fInputQueue;
+   }
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& OutOfOrderQueue() { return fOutOfOrderQueue; }
 #endif
 
@@ -44,7 +47,7 @@ public:
    size_t GetRate() override { return 0; }
 
    std::string EndStatus() override;
-	void OnEnd() override;
+   void        OnEnd() override;
 
 protected:
    bool Iteration() override;
@@ -52,16 +55,16 @@ protected:
 private:
    TAnalysisWriteLoop(std::string name, std::string output_filename);
    void AddBranch(TClass* cls);
-	void WriteEvent(std::shared_ptr<TUnpackedEvent>& event);
+   void WriteEvent(std::shared_ptr<TUnpackedEvent>& event);
 
-	TFile* fOutputFile;
-	TTree* fEventTree;
-   TTree* fOutOfOrderTree;
+   TFile*     fOutputFile;
+   TTree*     fEventTree;
+   TTree*     fOutOfOrderTree;
    TFragment* fOutOfOrderFrag;
-	bool fOutOfOrder;
+   bool       fOutOfOrder;
 #ifndef __CINT__
-	std::map<TClass*, TDetector**> fDetMap;
-   std::map<TClass*, TDetector*>  fDefaultDets;
+   std::map<TClass*, TDetector**>                                     fDetMap;
+   std::map<TClass*, TDetector*>                                      fDefaultDets;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>  fInputQueue;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fOutOfOrderQueue;
 #endif

@@ -32,7 +32,7 @@ public:
    // virtual void SetOption(Option_t* option=" ");
 
    TObject* GetParent() const { return parent.GetObject(); }
-   void SetParent(TObject* obj) { parent = obj; }
+   void     SetParent(TObject* obj) { parent = obj; }
 
    int  GetProjectionAxis() const { return projection_axis; }
    void SetProjectionAxis(int axis) { projection_axis = axis; }

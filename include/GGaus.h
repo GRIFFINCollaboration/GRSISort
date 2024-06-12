@@ -70,8 +70,8 @@ private:
    double fDSum{0.};
 
    Bool_t IsInitialized() const { return init_flag; }
-   void SetInitialized(Bool_t flag = true) { init_flag = flag; }
-   bool                       init_flag{false};
+   void   SetInitialized(Bool_t flag = true) { init_flag = flag; }
+   bool   init_flag{false};
 
    TF1 fBGFit;
    TF1 fBGHist;

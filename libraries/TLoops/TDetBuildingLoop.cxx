@@ -7,7 +7,7 @@
 
 ClassImp(TDetBuildingLoop)
 
-TDetBuildingLoop* TDetBuildingLoop::Get(std::string name)
+   TDetBuildingLoop* TDetBuildingLoop::Get(std::string name)
 {
    if(name.length() == 0) {
       name = "unpack_loop";
@@ -49,7 +49,7 @@ bool TDetBuildingLoop::Iteration()
    ++fItemsPopped;
 
    std::shared_ptr<TUnpackedEvent> outputEvent = std::make_shared<TUnpackedEvent>();
-	outputEvent->SetRawData(frags);
+   outputEvent->SetRawData(frags);
    outputEvent->Build();
    for(const auto& outQueue : fOutputQueues) {
       outQueue->Push(outputEvent);

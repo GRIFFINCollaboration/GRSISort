@@ -65,13 +65,13 @@ public:
 
    // returns reaction input parameters
    const char* GetNameFull() { return Form("%s @ %.3f MeV/u", this->GetName(), fTLab[0] / fNuc[0]->GetA()); }
-   TNucleus* GetNucleus(int part) { return fNuc[part]; }
-   double GetM(int part) { return fM[part]; }
-   double          GetExc() { return fExc; }
-   double          GetQVal() { return fQVal; }
-   bool            Inverse() { return fInverse; }
-   double GetTBeam(bool inverse);
-   double GetVBeam() { return fVLab[0]; }
+   TNucleus*   GetNucleus(int part) { return fNuc[part]; }
+   double      GetM(int part) { return fM[part]; }
+   double      GetExc() { return fExc; }
+   double      GetQVal() { return fQVal; }
+   bool        Inverse() { return fInverse; }
+   double      GetTBeam(bool inverse);
+   double      GetVBeam() { return fVLab[0]; }
 
    // CM frame properties
    double GetInvariantMass() { return fInvariantMass; }
@@ -114,14 +114,14 @@ public:
    }
 
    // this stuff depends on the CM angle as the cm motion and the particle in the cm are coupled
-   double GetELabFromThetaCm(double theta_cm = 0.0, int part = 0); // FULL MASS+KINETIC ENERGY
-   double GetTLabFromThetaCm(double theta_cm = 0.0, int part = 0); // KINETIC ENERGY
+   double GetELabFromThetaCm(double theta_cm = 0.0, int part = 0);   // FULL MASS+KINETIC ENERGY
+   double GetTLabFromThetaCm(double theta_cm = 0.0, int part = 0);   // KINETIC ENERGY
    double GetVLabFromThetaCm(double theta_cm = 0.0, int part = 0);
    double GetPLabFromThetaCm(double theta_cm = 0.0, int part = 0);
    double GetGLabFromThetaCm(double theta_cm = 0.0, int part = 0);
 
    double GetExcEnergy(double ekin = 0.00, double theta_lab = 0.00, int part = 2);
-   void AnalysisAngDist(double ekin, double theta_lab, int part, double& exc, double& theta_cm, double& omega_lab2cm);
+   void   AnalysisAngDist(double ekin, double theta_lab, int part, double& exc, double& theta_cm, double& omega_lab2cm);
    double AnalysisBeta(double ekin, int part);
 
    double GetRutherfordCm(double theta_cm, int part = 2, bool Units_mb = true);
@@ -130,12 +130,12 @@ public:
    // Conversion from LAB frame to CM frame
    double ConvertThetaLabToCm(double theta_lab, int part = 2);
    double ConvertOmegaLabToCm(double theta_lab, int part = 2);
-   void ConvertLabToCm(double theta_lab, double omega_lab, double& theta_cm, double& omega_cm, int part = 2);
+   void   ConvertLabToCm(double theta_lab, double omega_lab, double& theta_cm, double& omega_cm, int part = 2);
 
    // Conversion from CM frame to LAB frame
    double ConvertThetaCmToLab(double theta_cm, int part = 2);
    double ConvertOmegaCmToLab(double theta_cm, int part = 2);
-   void ConvertCmToLab(double theta_cm, double omega_cm, double& theta_lab, double& omega_lab, int part = 2);
+   void   ConvertCmToLab(double theta_cm, double omega_cm, double& theta_lab, double& omega_lab, int part = 2);
 
    // Graphs for conversions and kinematic/cross-section curves
    // Frame_Lab -> TLab[ThetaLab] 	and 	Frame_Cm -> TLab[ThetaCm]
@@ -161,7 +161,7 @@ public:
    void SetExcEnergy(double exc) { SetCmFrame(exc); }
 
 private:
-   void SetCmFrame(double exc); // enables the reaction to be modified using excitation energy
+   void SetCmFrame(double exc);   // enables the reaction to be modified using excitation energy
 
    // USER INPUTS
    TNucleus* fNuc[4];
@@ -171,8 +171,8 @@ private:
    double    fM[4];
 
    // CM FRAME MOTION
-   double fQVal; // effective Q value (includes excitation)
-   double fS;  // 'S' = M^2
+   double fQVal;   // effective Q value (includes excitation)
+   double fS;      // 'S' = M^2
    double fInvariantMass;
    double fCmTi;
    double fCmTf;
@@ -195,10 +195,10 @@ private:
    double fPLab[2];
    double fVLab[2];
    double fGLab[2];
-   double fThetaMax[4]; // only nonzero for ejectile and recoil
+   double fThetaMax[4];   // only nonzero for ejectile and recoil
 
    /// \cond CLASSIMP
-   ClassDefOverride(TReaction, 1) // Calculates reaction parameters for scattering experiments
+   ClassDefOverride(TReaction, 1)   // Calculates reaction parameters for scattering experiments
    /// \endcond
 };
 /*! @} */

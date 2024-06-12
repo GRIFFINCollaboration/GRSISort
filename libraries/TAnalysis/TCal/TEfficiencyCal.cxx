@@ -2,9 +2,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TEfficiencyCal)
-/// \endcond
+   /// \endcond
 
-TEfficiencyCal::TEfficiencyCal()
+   TEfficiencyCal::TEfficiencyCal()
 {
 }
 
@@ -54,7 +54,7 @@ void TEfficiencyCal::AddPoint(Double_t energy, Double_t area, Double_t dEnergy, 
    // Will eventually write a method that doesn't need a nucleus
 
    Double_t efficiency, dEfficiency;
-   Double_t intensity = 1.0; // nuc;
+   Double_t intensity = 1.0;   // nuc;
 
    efficiency  = area / intensity;
    dEfficiency = dArea / intensity;
@@ -63,7 +63,7 @@ void TEfficiencyCal::AddPoint(Double_t energy, Double_t area, Double_t dEnergy, 
    SetPoint(GetN(), energy, efficiency);
    SetPointError(GetN() - 1, dEnergy, dEfficiency);
 
-   Sort(); // This keeps the points in order of energy;
+   Sort();   // This keeps the points in order of energy;
 }
 
 void TEfficiencyCal::Print(Option_t*) const

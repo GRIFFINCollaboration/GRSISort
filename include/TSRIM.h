@@ -35,13 +35,13 @@ private:
    TSpline3*           sEnergyLoss{nullptr};
    TSpline3*           sEgetX{nullptr};
    TSpline3*           sXgetE{nullptr};
-   std::vector<double> E; // units of keV
-   std::vector<double> X; // units of um
+   std::vector<double> E;   // units of keV
+   std::vector<double> X;   // units of um
    double              Emin{0.};
-	double              Emax{0.};
-	double              Xmin{0.};
-	double              Xmax{0.};
-   static const double dx; // um [sets accuracy of energy loss E vs X functions]
+   double              Emax{0.};
+   double              Xmin{0.};
+   double              Xmax{0.};
+   static const double dx;   // um [sets accuracy of energy loss E vs X functions]
 
    std::map<std::pair<double, double>, double> AdjustedEnergyMap;
 

@@ -27,7 +27,7 @@ public:
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();
    void          FillHistograms();
-   void InitializeBranches(TTree* tree);
+   void          InitializeBranches(TTree* tree);
 
    ClassDef(ExampleFragmentSelector, 2);
 };
@@ -41,4 +41,4 @@ void ExampleFragmentSelector::InitializeBranches(TTree* tree)
    tree->SetBranchAddress("TFragment", &fFragment);
 }
 
-#endif // #ifdef ExampleFragmentSelector_cxx
+#endif   // #ifdef ExampleFragmentSelector_cxx

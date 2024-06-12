@@ -36,7 +36,10 @@ public:
    ~TTerminalLoop() override = default;
 
 #ifndef __CINT__
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<T>>>& InputQueue() { return fInputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<T>>>& InputQueue()
+   {
+      return fInputQueue;
+   }
 
    void ClearQueue() override
    {
@@ -47,7 +50,10 @@ public:
    }
 #endif
 
-   size_t GetItemsPopped() override { return 0; }
+   size_t GetItemsPopped() override
+   {
+      return 0;
+   }
    size_t GetItemsPushed() override { return 0; }
    size_t GetItemsCurrent() override { return 0; }
    size_t GetRate() override { return 0; }

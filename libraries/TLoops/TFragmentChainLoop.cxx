@@ -88,7 +88,7 @@ bool TFragmentChainLoop::Iteration()
    for(const auto& outQueue : fOutputQueues) {
       outQueue->Push(frag);
    }
-   fInputSize = fEntriesTotal - fItemsPopped; // this way fInputSize+fItemsPopped gives the total number of entries
+   fInputSize = fEntriesTotal - fItemsPopped;   // this way fInputSize+fItemsPopped gives the total number of entries
 
    return true;
 }

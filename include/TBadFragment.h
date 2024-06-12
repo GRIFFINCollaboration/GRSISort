@@ -27,7 +27,7 @@ public:
    TBadFragment(const TBadFragment&);
    ~TBadFragment() override;
 
-	TBadFragment& operator=(const TBadFragment&);
+   TBadFragment& operator=(const TBadFragment&);
 
    std::vector<uint32_t> GetData() const { return fData; }
    int                   GetFailedWord() const { return fFailedWord; }

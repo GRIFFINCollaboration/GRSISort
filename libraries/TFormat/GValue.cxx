@@ -12,7 +12,7 @@
 
 // std::string GValue::fValueData
 // std::map<unsigned int, GValue*> GValue::fValueMap;
-GValue* GValue::fDefaultValue = new GValue("GValue", sqrt(-1));
+GValue*                        GValue::fDefaultValue = new GValue("GValue", sqrt(-1));
 std::map<std::string, GValue*> GValue::fValueVector;
 
 GValue::GValue() : fValue(0.00), fPriority(EPriority::kDefault)
@@ -42,7 +42,7 @@ void GValue::Copy(TObject& obj) const
 
 double GValue::Value(const std::string& name)
 {
-	return GValue::Value(name, sqrt(-1));
+   return GValue::Value(name, sqrt(-1));
 }
 
 double GValue::Value(const std::string& name, const double& defaultValue)
@@ -136,18 +136,18 @@ std::string GValue::PrintToString() const
    buffer.append(GetName());
    buffer.append("\t{\n");
    buffer.append(Form("value:\t%f\n", fValue));
-	if(!info.empty()) {
-		buffer.append("info:\t");
-		buffer.append(info);
-		buffer.append("\n");
-	}
+   if(!info.empty()) {
+      buffer.append("info:\t");
+      buffer.append(info);
+      buffer.append("\n");
+   }
    buffer.append("}\n");
    return buffer;
 }
 
 void GValue::Print(Option_t*) const
 {
-   std::cout<<PrintToString()<<std::endl;
+   std::cout << PrintToString() << std::endl;
 }
 
 int GValue::WriteValFile(const std::string& filename, Option_t*)
@@ -161,12 +161,12 @@ int GValue::WriteValFile(const std::string& filename, Option_t*)
          return -1;
       }
       for(it = fValueVector.begin(); it != fValueVector.end(); it++) {
-         outfile<<it->second->PrintToString();
-         outfile<<"\n\n";
+         outfile << it->second->PrintToString();
+         outfile << "\n\n";
       }
    } else {
       for(it = fValueVector.begin(); it != fValueVector.end(); it++) {
-         std::cout<<it->second->PrintToString()<<"\n\n";
+         std::cout << it->second->PrintToString() << "\n\n";
       }
    }
    return fValueVector.size();
@@ -188,12 +188,12 @@ std::string GValue::WriteToBuffer(Option_t*)
 
 void GValue::Clear()
 {
-	// loop over all values and delete them
-	for(auto value : fValueVector) {
-		delete value.second;
-	}
-	// delete map
-	fValueVector.clear();
+   // loop over all values and delete them
+   for(auto value : fValueVector) {
+      delete value.second;
+   }
+   // delete map
+   fValueVector.clear();
 }
 
 int GValue::ReadValFile(const char* filename, Option_t* opt)
@@ -206,13 +206,13 @@ int GValue::ReadValFile(const char* filename, Option_t* opt)
    std::ifstream infile;
    infile.open(infilename.c_str());
    if(!infile) {
-      std::cerr<<__PRETTY_FUNCTION__<<":  could not open infile "<<infilename<<std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ":  could not open infile " << infilename << std::endl;
       return -2;
    }
    infile.seekg(0, std::ios::end);
    size_t length = infile.tellg();
    if(length == 0) {
-      std::cerr<<__PRETTY_FUNCTION__<<":  infile "<<infilename<<" appears to be empty."<<std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ":  infile " << infilename << " appears to be empty." << std::endl;
       return -2;
    }
 
@@ -243,7 +243,7 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
    bool        brace_open = false;
    std::string name;
 
-   while( !std::getline(infile, line).fail() ) {
+   while(!std::getline(infile, line).fail()) {
       linenumber++;
       trim(line);
       size_t comment = line.find("//");
@@ -278,7 +278,7 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
                type = line.substr(openbrace + 1, colon - (openbrace + 1));
             }
             line = line.substr(colon + 1, line.length());
-				trim(line); //strip beginning whitespace (not needed for value itself, but for the readability of info)
+            trim(line);   // strip beginning whitespace (not needed for value itself, but for the readability of info)
             trim(type);
             int j = 0;
             while(type[j] != 0) {
@@ -316,7 +316,7 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
       }
    }
    if(strcmp(opt, "debug") == 0) {
-      std::cout<<"parsed "<<linenumber<<" lines"<<std::endl;
+      std::cout << "parsed " << linenumber << " lines" << std::endl;
    }
    return newvalues;
 }

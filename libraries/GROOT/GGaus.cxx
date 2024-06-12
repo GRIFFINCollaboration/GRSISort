@@ -10,7 +10,7 @@
 
 ClassImp(GGaus)
 
-GGaus::GGaus(Double_t xlow, Double_t xhigh, Option_t*)
+   GGaus::GGaus(Double_t xlow, Double_t xhigh, Option_t*)
    : TF1("gausbg", "gaus(0)+pol1(3)", xlow, xhigh), fBGFit("background", "pol1", xlow, xhigh)
 {
    Clear("");
@@ -96,7 +96,7 @@ void GGaus::Copy(TObject& obj) const
 bool GGaus::InitParams(TH1* fithist)
 {
    if(fithist == nullptr) {
-      std::cout<<"No histogram is associated yet, no initial guesses made"<<std::endl;
+      std::cout << "No histogram is associated yet, no initial guesses made" << std::endl;
       return false;
    }
    // Makes initial guesses at parameters for the fit. Uses the histogram to
@@ -141,9 +141,9 @@ bool GGaus::InitParams(TH1* fithist)
    TF1::SetParLimits(2, 0, xhigh - xlow);
 
    // Make initial guesses
-   TF1::SetParameter(0, largesty);                // fithist->GetBinContent(bin));
-   TF1::SetParameter(1, largestx);                // GetParameter("centroid"));
-   TF1::SetParameter(2, (largestx * .01) / 2.35); // 2,(xhigh-xlow));     //2.0/binWidth); //
+   TF1::SetParameter(0, largesty);                  // fithist->GetBinContent(bin));
+   TF1::SetParameter(1, largestx);                  // GetParameter("centroid"));
+   TF1::SetParameter(2, (largestx * .01) / 2.35);   // 2,(xhigh-xlow));     //2.0/binWidth); //
 
    TF1::SetParError(0, 0.10 * largesty);
    TF1::SetParError(1, 0.25);
@@ -178,17 +178,17 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
 
    if(!fitres.Get()->IsValid()) {
       if(!verbose) {
-         std::cout<<RED<<"fit has failed, trying refit... "<<RESET_COLOR;
+         std::cout << RED << "fit has failed, trying refit... " << RESET_COLOR;
       }
       fithist->GetListOfFunctions()->Last()->Delete();
-      fitres = fithist->Fit(this, Form("%sRSME", options.Data())); //,Form("%sRSM",options.Data()))
+      fitres = fithist->Fit(this, Form("%sRSME", options.Data()));   //,Form("%sRSM",options.Data()))
       if(fitres.Get()->IsValid()) {
          if(!verbose && !noprint) {
-            std::cout<<DGREEN<<" refit passed!"<<RESET_COLOR<<std::endl;
+            std::cout << DGREEN << " refit passed!" << RESET_COLOR << std::endl;
          }
       } else {
          if(!verbose && !noprint) {
-            std::cout<<DRED<<" refit also failed :( "<<RESET_COLOR<<std::endl;
+            std::cout << DRED << " refit also failed :( " << RESET_COLOR << std::endl;
          }
       }
    }
@@ -211,11 +211,11 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
       std::swap(xlow, xhigh);
    }
    fSum = fithist->Integral(fithist->GetXaxis()->FindBin(xlow),
-                            fithist->GetXaxis()->FindBin(xhigh)); //* fithist->GetBinWidth(1);
-   std::cout<<"sum between markers: "<<fSum<<std::endl;
+                            fithist->GetXaxis()->FindBin(xhigh));   //* fithist->GetBinWidth(1);
+   std::cout << "sum between markers: " << fSum << std::endl;
    fDSum = TMath::Sqrt(fSum);
    fSum -= bgArea;
-   std::cout<<"sum after subtraction: "<<fSum<<std::endl;
+   std::cout << "sum after subtraction: " << fSum << std::endl;
 
    if(!verbose && !noprint) {
       Print();
@@ -246,18 +246,18 @@ void GGaus::Clear(Option_t* opt)
 void GGaus::Print(Option_t* opt) const
 {
    TString options = opt;
-   std::cout<<GREEN;
-   std::cout<<"Name: "<<GetName()<<std::endl;
-   std::cout<<"Centroid:  "<<GetParameter("centroid")<<" +- "<<GetParError(GetParNumber("centroid"))<<std::endl;
-   std::cout<<"Area:      "<<fArea<<" +- "<<fDArea<<std::endl;
-   std::cout<<"Sum:       "<<fSum<<" +- "<<fDSum<<std::endl;
-   std::cout<<"FWHM:      "<<GetFWHM()<<" +- "<<GetFWHMErr()<<std::endl;
-   std::cout<<"Reso:      "<<GetFWHM()/GetParameter("centroid") * 100.<<"%%"<<std::endl;
-   std::cout<<"Chi^2/NDF: "<<fChi2/fNdf<<std::endl;
+   std::cout << GREEN;
+   std::cout << "Name: " << GetName() << std::endl;
+   std::cout << "Centroid:  " << GetParameter("centroid") << " +- " << GetParError(GetParNumber("centroid")) << std::endl;
+   std::cout << "Area:      " << fArea << " +- " << fDArea << std::endl;
+   std::cout << "Sum:       " << fSum << " +- " << fDSum << std::endl;
+   std::cout << "FWHM:      " << GetFWHM() << " +- " << GetFWHMErr() << std::endl;
+   std::cout << "Reso:      " << GetFWHM() / GetParameter("centroid") * 100. << "%%" << std::endl;
+   std::cout << "Chi^2/NDF: " << fChi2 / fNdf << std::endl;
    if(options.Contains("all")) {
       TF1::Print(opt);
    }
-   std::cout<<RESET_COLOR;
+   std::cout << RESET_COLOR;
 }
 
 void GGaus::DrawResiduals(TH1* hist) const
@@ -266,7 +266,7 @@ void GGaus::DrawResiduals(TH1* hist) const
       return;
    }
    if(fChi2 < 0.000000001) {
-      std::cout<<"No fit performed"<<std::endl;
+      std::cout << "No fit performed" << std::endl;
       return;
    }
    Double_t xlow, xhigh;

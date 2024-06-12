@@ -62,7 +62,7 @@ public:
    double GetMaxAngle(double vcm);
    double GetMaxAngle(int part);
    double NormalkinEnergy();
-   bool CheckMaxAngle(double angle, int part);
+   bool   CheckMaxAngle(double angle, int part);
    double GetExcEnergy(TLorentzVector recoil);
    double GetExcEnergy(TVector3 position, double KinE);
    double GetExcEnergy(double theta, double KinE);
@@ -101,17 +101,17 @@ public:
 
    TSpline3* Ruthvscm(double thmin, double thmax, double size);
    TSpline3* Ruthvslab(double thmin, double thmax, double size, int part);
-   double Angle_lab2cm(double vcm, double angle_lab);
-   double Angle_lab2cminverse(double vcm, double angle_lab, bool upper = true);
-   double Steffen_cm2labinverse(double theta_cm, int part = 2); // NEW FUNCTIN+
-   double Steffen_lab2cminverse(double theta_lab);              // assumes part = 2;
-   double Angle_cm2lab(double vcm, double angle_cm);
-   double Sigma_cm2lab(double angle_cm, double sigma_cm);
-   double Sigma_lab2cm(double angle_cm, double sigma_lab);
-   void Transform2cm(double& angle, double& sigma);
-   void Transform2cm(double& angle, double& errangle, double& sigma, double& errsigma);
-   void AngleErr_lab2cm(double angle, double& err);
-   void SigmaErr_lab2cm(double angle, double err, double& sigma, double& errsigma);
+   double    Angle_lab2cm(double vcm, double angle_lab);
+   double    Angle_lab2cminverse(double vcm, double angle_lab, bool upper = true);
+   double    Steffen_cm2labinverse(double theta_cm, int part = 2);   // NEW FUNCTIN+
+   double    Steffen_lab2cminverse(double theta_lab);                // assumes part = 2;
+   double    Angle_cm2lab(double vcm, double angle_cm);
+   double    Sigma_cm2lab(double angle_cm, double sigma_cm);
+   double    Sigma_lab2cm(double angle_cm, double sigma_lab);
+   void      Transform2cm(double& angle, double& sigma);
+   void      Transform2cm(double& angle, double& errangle, double& sigma, double& errsigma);
+   void      AngleErr_lab2cm(double angle, double& err);
+   void      SigmaErr_lab2cm(double angle, double err, double& sigma, double& errsigma);
    // double Sigma_cm2labnew(double vcm, double angle_cm, double sigma_cm);
    double Rutherford(double angle_cm);
 
@@ -156,7 +156,7 @@ private:
 
    /// \cond CLASSIMP
    ClassDefOverride(TKinematics,
-                    1); // Calculates kinematics parameters (both normal and inverse) for scattering experiments
+                    1);   // Calculates kinematics parameters (both normal and inverse) for scattering experiments
    /// \endcond
 };
 /*! @} */

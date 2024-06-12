@@ -15,7 +15,7 @@ int main(int argc, char** argv)
    // Read Cal file
    TChannel::ReadCalFile(argv[2]);
    std::unordered_map<unsigned int, TChannel*>::iterator it;
-   std::unordered_map<unsigned int, TChannel*>* chanmap = TChannel::GetChannelMap();
+   std::unordered_map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
 
    if(chanmap == nullptr) {
       printf("can't find channel map\n");

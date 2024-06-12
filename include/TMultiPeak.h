@@ -37,30 +37,30 @@ public:
    // TMultiPeak(double xlow, double xhigh, int n, ...);
    TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t>& centroids, Option_t* type = "gsc");
    TMultiPeak(const TMultiPeak& copy);
-   TMultiPeak(); // I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call
-                 // anyway
+   TMultiPeak();   // I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call
+                   // anyway
 
 protected:
    void InitNames();
 
 public:
    Bool_t Fit(TH1* fithist, Option_t* opt = "");
-   bool InitParams(TH1* fithist) override;
+   bool   InitParams(TH1* fithist) override;
    void   SortPeaks(Bool_t (*SortFunction)(const TPeak*, const TPeak*) = TPeak::CompareEnergy);
    TPeak* GetPeak(UInt_t idx);
    TPeak* GetPeakClosestTo(Double_t energy);
-   void DrawPeaks();
-   TF1* Background() const { return fBackground; }
+   void   DrawPeaks();
+   TF1*   Background() const { return fBackground; }
 
    static void SetLogLikelihoodFlag(bool flag) { fLogLikelihoodFlag = flag; }
-   static bool                           GetLogLikelihoodFlag() { return fLogLikelihoodFlag; }
+   static bool GetLogLikelihoodFlag() { return fLogLikelihoodFlag; }
 
    void Copy(TObject& obj) const override;
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
 
 private:
-   static bool         fLogLikelihoodFlag; //!<!
+   static bool         fLogLikelihoodFlag;   //!<!
    std::vector<TPeak*> fPeakVec;
    TF1*                fBackground;
    bool                fConstrainWidths;

@@ -35,12 +35,12 @@
 
 void Help()
 {
-   std::cout<<"This is helpful information."<<std::endl;
+   std::cout << "This is helpful information." << std::endl;
 }
 
 void Commands()
 {
-   std::cout<<"this is a list of useful commands."<<std::endl;
+   std::cout << "this is a list of useful commands." << std::endl;
 }
 
 void Prompt()
@@ -51,9 +51,9 @@ void Prompt()
 void Version()
 {
    int ret = system(Form("%s/bin/grsi-config --version", getenv("GRSISYS")));
-	if(ret == -1) {
-		std::cout<<"Failed to call grsi-config!"<<std::endl;
-	}
+   if(ret == -1) {
+      std::cout << "Failed to call grsi-config!" << std::endl;
+   }
 }
 
 bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg_high)
@@ -302,7 +302,7 @@ TPeak* AltPhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 
    // std::cout<<"here."<<std::endl;
 
-   auto*       mypeak  = new TPeak((xlow + xhigh) / 2.0, xlow, xhigh);
+   auto* mypeak = new TPeak((xlow + xhigh) / 2.0, xlow, xhigh);
    mypeak->Fit(hist, opt);
    // mypeak->Background()->Draw("SAME");
    auto* bg = new TF1(*mypeak->Background());
@@ -316,12 +316,12 @@ std::string MergeStrings(const std::vector<std::string>& strings, char split)
 {
    std::stringstream ss;
    for(auto it = strings.begin(); it != strings.end(); it++) {
-      ss<<*it;
+      ss << *it;
 
       auto next = it;
       next++;
       if(next != strings.end()) {
-         ss<<split;
+         ss << split;
       }
    }
    return ss.str();
@@ -400,7 +400,7 @@ void StartGUI()
 #else
 void StartGUI()
 {
-   std::cout<<"Cannot start gui, requires ROOT compiled against python 2.7"<<std::endl;
+   std::cout << "Cannot start gui, requires ROOT compiled against python 2.7" << std::endl;
 }
 #endif
 
@@ -454,10 +454,9 @@ TH2* AddOffset(TH2* mat, double offset, EAxis axis)
    return toreturn;
 }
 
-EAxis operator &(EAxis lhs, EAxis rhs)
+EAxis operator&(EAxis lhs, EAxis rhs)
 {
-	return static_cast<EAxis> (
-			static_cast<std::underlying_type<EAxis>::type>(lhs) &
-			static_cast<std::underlying_type<EAxis>::type>(rhs)
-			);
+   return static_cast<EAxis>(
+      static_cast<std::underlying_type<EAxis>::type>(lhs) &
+      static_cast<std::underlying_type<EAxis>::type>(rhs));
 }

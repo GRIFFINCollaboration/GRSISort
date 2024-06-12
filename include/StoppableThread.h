@@ -40,7 +40,7 @@ public:
    static void ResumeAll();
 
    StoppableThread(std::string name);
-   static StoppableThread* Get(const std::string& name);
+   static StoppableThread*              Get(const std::string& name);
    static std::vector<StoppableThread*> GetAll();
    virtual ~StoppableThread();
 
@@ -54,7 +54,7 @@ public:
    virtual void        OnEnd() {}
    virtual std::string Status();
    virtual std::string Progress();
-   virtual std::string EndStatus() { return std::string(); } // std::stringstream ss; ss<<std::endl; return ss.str(); }
+   virtual std::string EndStatus() { return std::string(); }   // std::stringstream ss; ss<<std::endl; return ss.str(); }
    std::string         Name() const { return fName; }
 
    virtual void ClearQueue() {}
@@ -72,10 +72,10 @@ public:
 
    static void Print();
 
-   static void ColumnWidth(size_t val) { fColumnWidth = val; }
-   static void StatusWidth(size_t val) { fStatusWidth = val; }
-   static size_t                  ColumnWidth() { return fColumnWidth; }
-   static size_t                  StatusWidth() { return fStatusWidth; }
+   static void   ColumnWidth(size_t val) { fColumnWidth = val; }
+   static void   StatusWidth(size_t val) { fStatusWidth = val; }
+   static size_t ColumnWidth() { return fColumnWidth; }
+   static size_t StatusWidth() { return fStatusWidth; }
 
 #ifndef __CINT__
    static std::thread fStatusThread;
@@ -91,12 +91,13 @@ protected:
    static std::map<std::string, StoppableThread*> fThreadMap;
 
 #ifndef __CINT__
-   std::atomic_size_t fItemsPopped{0}; ///< number of items popped from input queue
-   std::atomic_long   fInputSize{0};   ///< number of items in the input (queue), only updated within Iteration(), so not
-                                       ///< always fully up-to-date (signed to hold error from queue::pop)
+   std::atomic_size_t fItemsPopped{0};   ///< number of items popped from input queue
+   std::atomic_long   fInputSize{0};     ///< number of items in the input (queue), only updated within Iteration(), so not
+                                         ///< always fully up-to-date (signed to hold error from queue::pop)
 #endif
 
-   std::string   fName;
+   std::string fName;
+
 private:
    StoppableThread(const StoppableThread&) {}
    StoppableThread& operator=(const StoppableThread&) { return *this; }

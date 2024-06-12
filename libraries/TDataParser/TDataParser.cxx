@@ -30,7 +30,6 @@ TDataParser::~TDataParser()
    delete fChannel;
 }
 
-
 void TDataParser::ClearQueue()
 {
    std::shared_ptr<const TFragment> frag;
@@ -59,11 +58,11 @@ void TDataParser::SetFinished()
 }
 
 void TDataParser::Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& queues,
-      const std::shared_ptr<TFragment>&                                                frag)
+                       const std::shared_ptr<TFragment>&                                                frag)
 {
    frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
    fFragmentIdMap[frag->GetTriggerId()]++;
-   frag->SetEntryNumber(); 
+   frag->SetEntryNumber();
    for(const auto& queue : queues) {
       queue->Push(frag);
    }
@@ -79,12 +78,12 @@ void TDataParser::Push(ThreadsafeQueue<std::shared_ptr<const TBadFragment>>& que
 
 std::string TDataParser::OutputQueueStatus()
 {
-	std::stringstream ss;
-	ss<<"********************************************************************************"<<std::endl;
-	for(const auto& queue : fGoodOutputQueues) {
-		ss<<queue->Name()<<": "<<queue->ItemsPushed()<<" pushed, "<<queue->ItemsPopped()<<" popped, "
-			<<queue->Size()<<" left"<<std::endl;
-	}
-	ss<<"********************************************************************************"<<std::endl;
-	return ss.str();
+   std::stringstream ss;
+   ss << "********************************************************************************" << std::endl;
+   for(const auto& queue : fGoodOutputQueues) {
+      ss << queue->Name() << ": " << queue->ItemsPushed() << " pushed, " << queue->ItemsPopped() << " popped, "
+         << queue->Size() << " left" << std::endl;
+   }
+   ss << "********************************************************************************" << std::endl;
+   return ss.str();
 }

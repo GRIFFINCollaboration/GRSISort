@@ -6,13 +6,13 @@
 
 /// \cond CLASSIMP
 ClassImp(TScalerData)
-ClassImp(TScaler)
-/// \endcond
+   ClassImp(TScaler)
+   /// \endcond
 
-TScalerData::TScalerData()
+   TScalerData::TScalerData()
 {
    Clear();
-   fScaler.resize(4); // we expect to have four scaler values
+   fScaler.resize(4);   // we expect to have four scaler values
 }
 
 TScalerData::TScalerData(const TScalerData& rhs) : TObject()
@@ -35,17 +35,17 @@ void TScalerData::Clear(Option_t*)
    fNetworkPacketId = -1;
    fAddress         = 0;
    fScaler.clear();
-   fLowTimeStamp    = 0;
-   fHighTimeStamp   = 0;
+   fLowTimeStamp  = 0;
+   fHighTimeStamp = 0;
 }
 
 void TScalerData::Print(Option_t*) const
 {
-   std::cout<<"time: "<<std::setw(16)<<GetTimeStamp()<<", address: "<<hex(fAddress,4);
+   std::cout << "time: " << std::setw(16) << GetTimeStamp() << ", address: " << hex(fAddress, 4);
    for(size_t i = 0; i < fScaler.size(); ++i) {
-      std::cout<<"\t Scaler["<<i<<"]: "<<hex(fScaler[i],8);
+      std::cout << "\t Scaler[" << i << "]: " << hex(fScaler[i], 8);
    }
-   std::cout<<std::endl;
+   std::cout << std::endl;
 }
 
 TScaler::TScaler(bool loadIntoMap)
@@ -54,14 +54,14 @@ TScaler::TScaler(bool loadIntoMap)
    ///\param[in] loadIntoMap Flag telling TScaler to load all scaler data into fScalerMap.
    Clear();
    fTree = static_cast<TTree*>(gROOT->FindObject("ScalerTree"));
-	ReadTree(loadIntoMap);
+   ReadTree(loadIntoMap);
 }
 
 TScaler::TScaler(TTree* tree, bool loadIntoMap)
 {
    Clear();
    fTree = tree;
-	ReadTree(loadIntoMap);
+   ReadTree(loadIntoMap);
 }
 
 void TScaler::ReadTree(bool loadIntoMap)
@@ -118,7 +118,7 @@ std::vector<UInt_t> TScaler::GetScaler(UInt_t address, ULong64_t time) const
    /// If the time is after the last entry, we return the last entry, otherwise we return the following entry (or the
    /// current entry if the time is an exact match).
    if(fTree == nullptr || fEntries == 0) {
-      std::cout<<"Empty"<<std::endl;
+      std::cout << "Empty" << std::endl;
       return std::vector<UInt_t>(0);
    }
    if(!fScalerMap.empty()) {
@@ -175,7 +175,7 @@ UInt_t TScaler::GetScalerDifference(UInt_t address, ULong64_t time, size_t index
    /// if this is before the first scaler, we just return the first scaler, otherwise we return the scaler minus the
    /// previous scaler.
    if(fTree == nullptr || fEntries == 0) {
-      std::cout<<"Empty"<<std::endl;
+      std::cout << "Empty" << std::endl;
       return 0;
    }
    if(!fScalerMap.empty()) {
@@ -244,14 +244,14 @@ void TScaler::Clear(Option_t*)
    fPPG = nullptr;
    for(auto& addrIt : fHist) {
       if(addrIt.second != nullptr) {
-         delete(addrIt.second);
+         delete (addrIt.second);
          addrIt.second = nullptr;
       }
    }
    fHist.clear();
    for(auto& addrIt : fHistRange) {
       if(addrIt.second != nullptr) {
-         delete(addrIt.second);
+         delete (addrIt.second);
          addrIt.second = nullptr;
       }
    }
@@ -264,7 +264,7 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t* option)
    /// Draw scaler differences (i.e. current scaler minus last scaler) vs. time in cycle.
    /// Passing "redraw" as option forces re-drawing of the histogram (e.g. for a different index).
    if(fTree == nullptr || fEntries == 0) {
-      std::cout<<"Empty"<<std::endl;
+      std::cout << "Empty" << std::endl;
       return nullptr;
    }
 
@@ -274,7 +274,7 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t* option)
    }
    // try and find the ppg (if we haven't already done so)
    if(fPPG == nullptr) {
-      fPPG = TPPG::Get(); // static_cast<TPPG*>(gROOT->FindObject("TPPG"));
+      fPPG = TPPG::Get();   // static_cast<TPPG*>(gROOT->FindObject("TPPG"));
       // if we can't find the ppg we're done here
       if(fPPG == nullptr) {
          return nullptr;
@@ -312,10 +312,10 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t* option)
             previousValue = fScalerData->GetScaler(index);
          }
          if(entry % 1000 == 0) {
-            std::cout<<std::setw(3)<<(100 * entry) / fEntries<<" % done\r"<<std::flush;
+            std::cout << std::setw(3) << (100 * entry) / fEntries << " % done\r" << std::flush;
          }
       }
-      std::cout<<"100 % done\r"<<std::flush;
+      std::cout << "100 % done\r" << std::flush;
    }
    // if redraw was part of the original options, remove it from the options passed on
    if(opt_index >= 0) {
@@ -334,13 +334,13 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
    /// The "single" options creates spectra for all single addresses in the given range (instead of one accumulative
    /// spectrum).
    if(fTree == nullptr || fEntries == 0) {
-      std::cout<<"Empty"<<std::endl;
+      std::cout << "Empty" << std::endl;
       return nullptr;
    }
 
    // try and find the ppg (if we haven't already done so)
    if(fPPG == nullptr) {
-      fPPG = TPPG::Get(); // static_cast<TPPG*>(gROOT->FindObject("TPPG"));
+      fPPG = TPPG::Get();   // static_cast<TPPG*>(gROOT->FindObject("TPPG"));
       // if we can't find the ppg we're done here
       if(fPPG == nullptr) {
          return nullptr;
@@ -361,7 +361,7 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
       }
       if(fHistRange[std::make_pair(lowAddress, highAddress)] == nullptr || draw_index >= 0) {
          int nofBins =
-            fPPG->GetCycleLength() / GetTimePeriod(lowAddress); // the time period should be the same for all channels
+            fPPG->GetCycleLength() / GetTimePeriod(lowAddress);   // the time period should be the same for all channels
          fHistRange[std::make_pair(lowAddress, highAddress)] =
             new TH1D(Form("TScalerHist_%04x_%04x", lowAddress, highAddress),
                      Form("scaler %d vs time in cycle for address 0x%04x - 0x%04x; time in cycle [ms]; counts/%.0f ms",
@@ -370,8 +370,8 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
          // fHistRange[std::make_pair(lowAddress, highAddress)]->ResetBit(kMustCleanup);
          // we have to skip the first data point in case this is a sub-run
          // loop over the remaining scaler data for this address
-         std::map<UInt_t, UInt_t> previousValue; // we could make this a vector, since we know there can only be
-                                                 // highAddress-lowAddress+1 different addresses
+         std::map<UInt_t, UInt_t> previousValue;   // we could make this a vector, since we know there can only be
+                                                   // highAddress-lowAddress+1 different addresses
          for(Long64_t entry = 0; entry < fEntries; ++entry) {
             fTree->GetEntry(entry);
             if(lowAddress <= fScalerData->GetAddress() && fScalerData->GetAddress() <= highAddress) {
@@ -386,10 +386,10 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
                previousValue[fScalerData->GetAddress()] = fScalerData->GetScaler(index);
             }
             if(entry % 1000 == 0) {
-               std::cout<<std::setw(3)<<(100 * entry) / fEntries<<" % done\r"<<std::flush;
+               std::cout << std::setw(3) << (100 * entry) / fEntries << " % done\r" << std::flush;
             }
          }
-         std::cout<<"100 % done\r"<<std::flush;
+         std::cout << "100 % done\r" << std::flush;
       }
       // if "redraw" was part of the original options, remove it from the options passed on
       if(draw_index >= 0) {
@@ -421,8 +421,8 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
       fHist[address]->SetLineColor(address - lowAddress + 1);
    }
    // now we have all histograms, so we loop through the tree (once) and create all that are in the range
-   std::map<UInt_t, UInt_t> previousValue; // we could make this a vector, since we know there can only be
-                                           // highAddress-lowAddress+1 different addresses
+   std::map<UInt_t, UInt_t> previousValue;   // we could make this a vector, since we know there can only be
+                                             // highAddress-lowAddress+1 different addresses
    for(Long64_t entry = 0; entry < fEntries; ++entry) {
       fTree->GetEntry(entry);
       if(lowAddress <= fScalerData->GetAddress() && fScalerData->GetAddress() <= highAddress) {
@@ -437,10 +437,10 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
          previousValue[fScalerData->GetAddress()] = fScalerData->GetScaler(index);
       }
       if(entry % 1000 == 0) {
-         std::cout<<std::setw(3)<<(100 * entry) / fEntries<<" % done\r"<<std::flush;
+         std::cout << std::setw(3) << (100 * entry) / fEntries << " % done\r" << std::flush;
       }
    }
-   std::cout<<"100 % done\r"<<std::flush;
+   std::cout << "100 % done\r" << std::flush;
    Double_t max = fHist[lowAddress]->GetMaximum();
    for(UInt_t address = lowAddress + 1; address <= highAddress; ++address) {
       if(max < fHist[address]->GetMaximum()) {
@@ -460,14 +460,14 @@ TH1D* TScaler::DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime,
 {
    /// Draw scaler differences (i.e. current scaler minus last scaler) vs. time.
    if(fTree == nullptr || fEntries == 0) {
-      std::cout<<"Empty"<<std::endl;
+      std::cout << "Empty" << std::endl;
       return nullptr;
    }
 
    TString opt = option;
    opt.ToLower();
    int nofBins = std::abs(static_cast<int>(1e9 * (hightime - lowtime) / GetTimePeriod(address)));
-   std::cout<<nofBins<<"nofbins"<<std::endl;
+   std::cout << nofBins << "nofbins" << std::endl;
    // This scHist could be leaky as the outside user has ownership of it.
    auto* scHist =
       new TH1D(Form("TScalerHistRaw_%04x", address),
@@ -487,10 +487,10 @@ TH1D* TScaler::DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime,
          previousValue = fScalerData->GetScaler(index);
       }
       if(entry % 1000 == 0) {
-         std::cout<<std::setw(3)<<(100 * entry) / fEntries<<" % done\r"<<std::flush;
+         std::cout << std::setw(3) << (100 * entry) / fEntries << " % done\r" << std::flush;
       }
    }
-   std::cout<<"100 % done\r"<<std::flush;
+   std::cout << "100 % done\r" << std::flush;
 
    scHist->Draw(opt);
 
@@ -531,13 +531,13 @@ ULong64_t TScaler::GetTimePeriod(UInt_t address)
 
 void TScaler::ListHistograms()
 {
-   std::cout<<"single address histograms:"<<std::endl;
+   std::cout << "single address histograms:" << std::endl;
    for(auto& it : fHist) {
-      std::cout<<"\t"<<hex(it.first,4)<<": "<<it.second->GetName()<<", "<<it.second->GetTitle()<<std::endl;
+      std::cout << "\t" << hex(it.first, 4) << ": " << it.second->GetName() << ", " << it.second->GetTitle() << std::endl;
    }
 
-   std::cout<<"range histograms:"<<std::endl;
+   std::cout << "range histograms:" << std::endl;
    for(auto& it : fHistRange) {
-      std::cout<<"\t"<<hex(it.first.first,4)<<", "<<it.first.second<<": "<<it.second->GetName()<<", "<<it.second->GetTitle()<<std::endl;
+      std::cout << "\t" << hex(it.first.first, 4) << ", " << it.first.second << ": " << it.second->GetName() << ", " << it.second->GetTitle() << std::endl;
    }
 }

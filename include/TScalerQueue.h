@@ -22,25 +22,25 @@
 
 class TDeadtimeScalerQueue : public TObject {
 public:
-   static TDeadtimeScalerQueue* Get(); // Returns the Queue
+   static TDeadtimeScalerQueue* Get();   // Returns the Queue
    ~TDeadtimeScalerQueue() override;
 
 private:
    TDeadtimeScalerQueue();
-   static TDeadtimeScalerQueue* fDeadtimeScalerQueueClassPointer; // Pointer to the scaler Q singleton
+   static TDeadtimeScalerQueue* fDeadtimeScalerQueueClassPointer;   // Pointer to the scaler Q singleton
 
-   std::queue<TScalerData*> fDeadtimeScalerQueue; // The scaler Queue itself
-   int                      fScalersInQueue;      // The current number of scalers in the Q
+   std::queue<TScalerData*> fDeadtimeScalerQueue;   // The scaler Queue itself
+   int                      fScalersInQueue;        // The current number of scalers in the Q
 
    void StatusUpdate();
-   bool fStatusUpdateOn{false}; // flag that determines whether the Q status should be read out
+   bool fStatusUpdateOn{false};   // flag that determines whether the Q status should be read out
 
    bool fStop;
 
    int fScalersIn{0};
    int fScalersOut{0};
 
-   TStopwatch* fStopwatch; // The stop watch used for timing in the status
+   TStopwatch* fStopwatch;   // The stop watch used for timing in the status
    void        ResetRateCounter();
 
    unsigned int fTotalScalersIn{0};
@@ -80,25 +80,25 @@ public:
 
 class TRateScalerQueue : public TObject {
 public:
-   static TRateScalerQueue* Get(); // Returns the Queue
+   static TRateScalerQueue* Get();   // Returns the Queue
    ~TRateScalerQueue() override;
 
 private:
    TRateScalerQueue();
-   static TRateScalerQueue* fRateScalerQueueClassPointer; // Pointer to the scaler Q singleton
+   static TRateScalerQueue* fRateScalerQueueClassPointer;   // Pointer to the scaler Q singleton
 
-   std::queue<TScalerData*> fRateScalerQueue; // The scaler Queue itself
-   int                      fScalersInQueue;  // The current number of scalers in the Q
+   std::queue<TScalerData*> fRateScalerQueue;   // The scaler Queue itself
+   int                      fScalersInQueue;    // The current number of scalers in the Q
 
    void StatusUpdate();
-   bool fStatusUpdateOn{false}; // flag that determines whether the Q status should be read out
+   bool fStatusUpdateOn{false};   // flag that determines whether the Q status should be read out
 
    bool fStop;
 
    int fScalersIn{0};
    int fScalersOut{0};
 
-   TStopwatch* fStopwatch; // The stop watch used for timing in the status
+   TStopwatch* fStopwatch;   // The stop watch used for timing in the status
    void        ResetRateCounter();
 
    unsigned int fTotalScalersIn{0};

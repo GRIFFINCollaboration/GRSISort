@@ -31,10 +31,13 @@ public:
    ~TFragWriteLoop() override;
 
 #ifndef __CINT__
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& InputQueue() { return fInputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& InputQueue()
+   {
+      return fInputQueue;
+   }
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>& BadInputQueue() { return fBadInputQueue; }
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>&      ScalerInputQueue() { return fScalerInputQueue; }
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& OutputQueue() { return fOutputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>&         ScalerInputQueue() { return fScalerInputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>&    OutputQueue() { return fOutputQueue; }
 #endif
 
    void ClearQueue() override;
@@ -72,10 +75,10 @@ private:
    TEpicsFrag*   fScalerAddress;
 
 #ifndef __CINT__
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fInputQueue;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>    fInputQueue;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>> fBadInputQueue;
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>      fScalerInputQueue;
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fOutputQueue;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>         fScalerInputQueue;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>    fOutputQueue;
 #endif
 
    ClassDefOverride(TFragWriteLoop, 0);

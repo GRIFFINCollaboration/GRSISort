@@ -8,13 +8,13 @@
 
 /// \cond CLASSIMP
 ClassImp(TSingleDecay)
-ClassImp(TDecayChain)
-ClassImp(TDecayFit)
-ClassImp(TDecay)
-ClassImp(TVirtualDecay)
-/// \endcond
+   ClassImp(TDecayChain)
+      ClassImp(TDecayFit)
+         ClassImp(TDecay)
+            ClassImp(TVirtualDecay)
+   /// \endcond
 
-UInt_t TSingleDecay::fCounter  = 0;
+   UInt_t TSingleDecay::fCounter  = 0;
 UInt_t TDecayChain::fChainCounter = 0;
 
 TDecayFit::~TDecayFit() = default;
@@ -35,7 +35,7 @@ void TDecayFit::Print(Option_t* opt) const
 {
    /// This prints the parameters of the fit (decay rate, intensities, etc...)
    TF1::Print(opt);
-   std::cout<<"fDecay = "<<fDecay<<std::endl;
+   std::cout << "fDecay = " << fDecay << std::endl;
 }
 
 TVirtualDecay* TDecayFit::GetDecay() const
@@ -70,7 +70,7 @@ void TDecayFit::Streamer(TBuffer& R__b)
 
 void TDecayFit::DefaultGraphs()
 {
-   fResiduals.SetMarkerStyle(20); // Filled circle
+   fResiduals.SetMarkerStyle(20);   // Filled circle
    fResiduals.SetMarkerSize(0.6);
    fResiduals.SetTitle("Residuals");
 }
@@ -98,7 +98,7 @@ void TDecayFit::UpdateResiduals(TH1* hist)
       }
       // This might not be correct for Poisson statistics.
       res = (hist->GetBinContent(i) - Eval(hist->GetBinCenter(i))) /
-            hist->GetBinError(i); /// GetHist()->GetBinError(i));// + GetParameter("Height") + 10.;
+            hist->GetBinError(i);   /// GetHist()->GetBinError(i));// + GetParameter("Height") + 10.;
       bin = hist->GetBinCenter(i);
       fResiduals.SetPoint(i, bin, res);
    }
@@ -114,13 +114,13 @@ void TDecayFit::DrawResiduals()
       new TCanvas;
       fResiduals.Draw("AP");
    } else {
-      std::cout<<"Residuals not set yet"<<std::endl;
+      std::cout << "Residuals not set yet" << std::endl;
    }
 }
 
 void TVirtualDecay::DrawComponents(Option_t* opt, Bool_t)
 {
-   std::cout<<"Draw components has not been set in "<<ClassName()<<std::endl;
+   std::cout << "Draw components has not been set in " << ClassName() << std::endl;
    Draw(Form("same%s", opt));
 }
 
@@ -196,7 +196,7 @@ TSingleDecay::TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlo
          }
       }
       if(gencounter != generation) {
-         std::cout<<"Generation numbers do not make sense"<<std::endl;
+         std::cout << "Generation numbers do not make sense" << std::endl;
       }
    }
    if(generation == 1) {
@@ -321,7 +321,7 @@ void TSingleDecay::SetDecayRateLimits(const Double_t& low, const Double_t& high)
 
 void TSingleDecay::GetHalfLifeLimits(Double_t& low, Double_t& high) const
 {
-   fDecayFunc->GetParLimits(1, high, low); // This gets the decay rates, not the half-life.
+   fDecayFunc->GetParLimits(1, high, low);   // This gets the decay rates, not the half-life.
    if(low == 0) {
       low = 0.000000000001;
    }
@@ -393,7 +393,7 @@ Double_t TSingleDecay::ActivityFunc(Double_t* dim, Double_t* par)
       curDecay = curDecay->GetParentDecay();
    }
    if(gencounter != fGeneration) {
-      std::cout<<"We have Problems!"<<std::endl;
+      std::cout << "We have Problems!" << std::endl;
       return 0.0;
    }
    // Multiply by the initial intensity of the initial parent.
@@ -435,9 +435,9 @@ TFitResultPtr TSingleDecay::Fit(TH1* fithist, Option_t* opt)
    //   TFitResultPtr fitres = fithist->Fit(fTotalDecayFunc,Form("%sWLRS",opt));
    TFitResultPtr fitres = fTotalDecayFunc->Fit(fithist, Form("%sWLRS", opt));
    Double_t      chi2   = fitres->Chi2();
-   Double_t      ndf    = fitres->Ndf(); // This ndf needs to be changed by a weighted poisson.
+   Double_t      ndf    = fitres->Ndf();   // This ndf needs to be changed by a weighted poisson.
 
-   std::cout<<"Chi2/ndf = "<<chi2/ndf<<std::endl;
+   std::cout << "Chi2/ndf = " << chi2 / ndf << std::endl;
 
    // Now copy the fits back to the appropriate nuclei.
    fFirstParent->SetIntensity(fTotalDecayFunc->GetParameter(0));
@@ -473,18 +473,19 @@ void TSingleDecay::SetRange(Double_t tlow, Double_t thigh)
 
 void TSingleDecay::Print(Option_t*) const
 {
-   std::cout<<"  Decay Id: "<<GetDecayId()<<std::endl;
-   std::cout<<" Intensity: "<<GetIntensity()<<" +/- "<<GetIntensityError()<<" c/s"<<std::endl;
-   std::cout<<"  HalfLife: "<<GetHalfLife()<<" +/- "<<GetHalfLifeError()<<" s"<<std::endl;
-   std::cout<<"Efficiency: "<<GetEfficiency()<<std::endl;
-   std::cout<<"My Address: "<<this<<std::endl;
+   std::cout << "  Decay Id: " << GetDecayId() << std::endl;
+   std::cout << " Intensity: " << GetIntensity() << " +/- " << GetIntensityError() << " c/s" << std::endl;
+   std::cout << "  HalfLife: " << GetHalfLife() << " +/- " << GetHalfLifeError() << " s" << std::endl;
+   std::cout << "Efficiency: " << GetEfficiency() << std::endl;
+   std::cout << "My Address: " << this << std::endl;
    if(fParent != nullptr) {
-      std::cout<<"Parent Address: %p\n"<<fParent<<std::endl;
+      std::cout << "Parent Address: %p\n"
+                << fParent << std::endl;
    }
    if(fDaughter != nullptr) {
-      std::cout<<"Daughter Address: "<<fDaughter<<std::endl;
+      std::cout << "Daughter Address: " << fDaughter << std::endl;
    }
-   std::cout<<"First Parent: "<<fFirstParent<<std::endl;
+   std::cout << "First Parent: " << fFirstParent << std::endl;
 }
 
 TDecayChain::TDecayChain() : fChainFunc(nullptr)
@@ -595,12 +596,12 @@ TSingleDecay* TDecayChain::GetDecay(UInt_t generation)
 
 void TDecayChain::Print(Option_t*) const
 {
-   std::cout<<"Number of Decays in Chain: "<<fDecayChain.size()<<std::endl;
-   std::cout<<"Chain Id "<<fDecayChain.at(0)->GetChainId()<<std::endl;
+   std::cout << "Number of Decays in Chain: " << fDecayChain.size() << std::endl;
+   std::cout << "Chain Id " << fDecayChain.at(0)->GetChainId() << std::endl;
    for(auto i : fDecayChain) {
-      std::cout<<"decay ptr: "<<i<<std::endl;
+      std::cout << "decay ptr: " << i << std::endl;
       i->Print();
-      std::cout<<std::endl;
+      std::cout << std::endl;
    }
 }
 
@@ -617,7 +618,7 @@ TFitResultPtr TDecayChain::Fit(TH1* fithist, Option_t* opt)
    Double_t      chi2   = fitres->Chi2();
    Double_t      ndf    = fitres->Ndf();
 
-   std::cout<<"Chi2/ndf = "<<chi2/ndf<<std::endl;
+   std::cout << "Chi2/ndf = " << chi2 / ndf << std::endl;
 
    // Now copy the fits back to the appropriate nuclei.
    curDecay->SetIntensity(fChainFunc->GetParameter(0));
@@ -723,7 +724,7 @@ TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt)
       fitres        = fFitFunc->Fit(fithist, Form("%sRIS", opt));
       Double_t chi2 = fitres->Chi2();
       Double_t ndf  = fitres->Ndf();
-		std::cout<<"Chi2/ndf = "<<chi2/ndf<<std::endl;
+      std::cout << "Chi2/ndf = " << chi2 / ndf << std::endl;
    }
 
    // Now Tell the decays about the results
@@ -844,7 +845,7 @@ void TDecay::SetHalfLife(Int_t Id, Double_t halflife)
 {
    auto it = fDecayMap.find(Id);
    if(it == fDecayMap.end()) {
-      std::cout<<"Could not find Id = : "<<Id<<std::endl;
+      std::cout << "Could not find Id = : " << Id << std::endl;
       return;
    }
    for(auto& i : it->second) {
@@ -857,7 +858,7 @@ void TDecay::SetHalfLifeLimits(Int_t Id, Double_t low, Double_t high)
 {
    auto it = fDecayMap.find(Id);
    if(it == fDecayMap.end()) {
-      std::cout<<"Could not find Id = : "<<Id<<std::endl;
+      std::cout << "Could not find Id = : " << Id << std::endl;
       return;
    }
    for(auto& i : it->second) {
@@ -870,7 +871,7 @@ void TDecay::SetDecayRateLimits(Int_t Id, Double_t low, Double_t high)
 {
    auto it = fDecayMap.find(Id);
    if(it == fDecayMap.end()) {
-      std::cout<<"Could not find Id = : "<<Id<<std::endl;
+      std::cout << "Could not find Id = : " << Id << std::endl;
       return;
    }
    for(auto& i : it->second) {
@@ -881,22 +882,23 @@ void TDecay::SetDecayRateLimits(Int_t Id, Double_t low, Double_t high)
 
 void TDecay::Print(Option_t*) const
 {
-   std::cout<<"Background: "<<GetBackground()<<" +/- "<<GetBackgroundError()<<std::endl<<std::endl;
+   std::cout << "Background: " << GetBackground() << " +/- " << GetBackgroundError() << std::endl
+             << std::endl;
    for(const auto& it : fDecayMap) {
-      std::cout<<"ID: "<<it.first<<" Name: "<<it.second.at(0)->GetName()<<std::endl;
+      std::cout << "ID: " << it.first << " Name: " << it.second.at(0)->GetName() << std::endl;
       it.second.at(0)->Print();
-		std::cout<<std::endl;
+      std::cout << std::endl;
    }
 }
 
 void TDecay::PrintMap() const
 {
    for(const auto& it : fDecayMap) {
-      std::cout<<"ID: "<<it.first<<std::endl;
+      std::cout << "ID: " << it.first << std::endl;
       for(auto i : it.second) {
          i->Print();
       }
-		std::cout<<std::endl;
+      std::cout << std::endl;
    }
 }
 

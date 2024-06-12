@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD041 -->
 ---
 name: Bug report
 about: Create a report to help us improve

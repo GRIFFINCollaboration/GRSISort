@@ -30,40 +30,40 @@
 
 class TSortingDiagnostics : public TSingleton<TSortingDiagnostics> {
 public:
-	friend class TSingleton<TSortingDiagnostics>;
+   friend class TSingleton<TSortingDiagnostics>;
 
    TSortingDiagnostics();
    TSortingDiagnostics(const TSortingDiagnostics&);
    ~TSortingDiagnostics() override;
 
 private:
-   // analysis tree diagnostics 
-   std::unordered_map<long, std::pair<long, long>> fFragmentsOutOfOrder;
+   // analysis tree diagnostics
+   std::unordered_map<long, std::pair<long, long>>       fFragmentsOutOfOrder;
    std::unordered_map<double, std::pair<double, double>> fFragmentsOutOfTimeOrder;
-   std::vector<Long_t> fPreviousTimeStamps; ///< timestamps of previous fragments, saved every 'BuildWindow' entries
-   std::vector<double> fPreviousTimes;      ///< times of previous fragments, saved every 'BuildWindow' entries
-   long                fMaxEntryDiff{0};
-	std::unordered_map<UInt_t, long> fMissingChannels; ///< counts of missing channels
-	std::unordered_map<TClass*, long> fMissingDetectorClasses; ///< counts of missing detector classes
+   std::vector<Long_t>                                   fPreviousTimeStamps;   ///< timestamps of previous fragments, saved every 'BuildWindow' entries
+   std::vector<double>                                   fPreviousTimes;        ///< times of previous fragments, saved every 'BuildWindow' entries
+   long                                                  fMaxEntryDiff{0};
+   std::unordered_map<UInt_t, long>                      fMissingChannels;          ///< counts of missing channels
+   std::unordered_map<TClass*, long>                     fMissingDetectorClasses;   ///< counts of missing detector classes
 
-	std::unordered_map<TClass*, std::pair<long, long> > fHitsRemoved; ///< removed hits and total hits per detector class
+   std::unordered_map<TClass*, std::pair<long, long>> fHitsRemoved;   ///< removed hits and total hits per detector class
 
 public:
    //"setter" functions
    void OutOfTimeOrder(double newFragTime, double oldFragTime, long newEntry);
    void OutOfOrder(long newFragTS, long oldFragTS, long newEntry);
-   void AddTime(double val)      { fPreviousTimes.push_back(val); }
+   void AddTime(double val) { fPreviousTimes.push_back(val); }
    void AddTimeStamp(Long_t val) { fPreviousTimeStamps.push_back(val); }
-	void MissingChannel(const UInt_t& address); 
-	void AddDetectorClass(TChannel*);
-	void RemovedHits(TClass* detClass, long removed, long total);
+   void MissingChannel(const UInt_t& address);
+   void AddDetectorClass(TChannel*);
+   void RemovedHits(TClass* detClass, long removed, long total);
 
    // getter functions
-   size_t NumberOfFragmentsOutOfOrder() const { return fFragmentsOutOfOrder.size(); }
-   std::unordered_map<long, std::pair<long, long>> FragmentsOutOfOrder() { return fFragmentsOutOfOrder; }
-   size_t NumberOfFragmentsOutOfTimeOrder() const { return fFragmentsOutOfTimeOrder.size(); }
+   size_t                                                NumberOfFragmentsOutOfOrder() const { return fFragmentsOutOfOrder.size(); }
+   std::unordered_map<long, std::pair<long, long>>       FragmentsOutOfOrder() { return fFragmentsOutOfOrder; }
+   size_t                                                NumberOfFragmentsOutOfTimeOrder() const { return fFragmentsOutOfTimeOrder.size(); }
    std::unordered_map<double, std::pair<double, double>> FragmentsOutOfTimeOrder() { return fFragmentsOutOfTimeOrder; }
-   long MaxEntryDiff() const { return fMaxEntryDiff; }
+   long                                                  MaxEntryDiff() const { return fMaxEntryDiff; }
 
    // other functions
    void WriteToFile(const char*) const;

@@ -45,18 +45,18 @@ TList* AnalyzeDataLoss(TTree* tree, long entries = 0, TStopwatch* w = nullptr)
 
    tree->GetEntry(0);
    long      entry;
-   long      skip     = 1000; // skip this many entries before beginning
-   const int channels = 150;  // number of channels
+   long      skip     = 1000;   // skip this many entries before beginning
+   const int channels = 150;    // number of channels
    // long lasttime = 0;
 
    //--------------- parameters for dealing with the roll-over of the AcceptedChannelId ----------------------//
-   unsigned long int acceptedMax = TMath::Power(2, 14); // this is the maximum number that the AcceptedChannelId can be
-   int               rollovers[channels];               // this is how many roll-overs we have had
+   unsigned long int acceptedMax = TMath::Power(2, 14);   // this is the maximum number that the AcceptedChannelId can be
+   int               rollovers[channels];                 // this is how many roll-overs we have had
    // long int lastAccepted[channels];
-   bool         rolling[channels]; // array that tells us if we're rolling over in that channel
-   int          rollnum[channels]; // array that tells us how many times we've had accepted ID over the threshold
+   bool         rolling[channels];   // array that tells us if we're rolling over in that channel
+   int          rollnum[channels];   // array that tells us how many times we've had accepted ID over the threshold
    unsigned int rollingthreshold  = 1000;
-   int          rollnum_threshold = 20; // if we have this many numbers above the threshold, turn rolling on or off
+   int          rollnum_threshold = 20;   // if we have this many numbers above the threshold, turn rolling on or off
 
    long int channelIds[channels][3];
    long int acceptedChannelIds[channels][3];
@@ -64,8 +64,8 @@ TList* AnalyzeDataLoss(TTree* tree, long entries = 0, TStopwatch* w = nullptr)
    int      networkPacketNumber[3] = {0, 0, 0};
    long int networkPacketTS[3]     = {0, 0, 0};
    int      timebins               = 10000;
-   double   timemin                = 0;    // in seconds
-   double   timemax                = 1000; // in seconds
+   double   timemin                = 0;      // in seconds
+   double   timemax                = 1000;   // in seconds
    auto*    accepted_hst =
       new TH2D("accepted_hst", "Accepted Channel Id vs. Channel Number;Channel Number;Accepted Channel Id", channels, 0,
                channels, 10000, 0, 10e5);
@@ -124,7 +124,7 @@ TList* AnalyzeDataLoss(TTree* tree, long entries = 0, TStopwatch* w = nullptr)
          continue;
       }
 
-      long time = currentFrag->GetTimeStamp(); // Get the timestamp of the x'th fragment
+      long          time      = currentFrag->GetTimeStamp();   // Get the timestamp of the x'th fragment
       int           chan      = currentFrag->GetChannelNumber();
       unsigned long accepted  = currentFrag->GetAcceptedChannelId();
       unsigned long chanid    = currentFrag->GetChannelId();
@@ -173,9 +173,9 @@ TList* AnalyzeDataLoss(TTree* tree, long entries = 0, TStopwatch* w = nullptr)
             networkPacketTS[0]     = networkPacketTS[1];
             networkPacketTS[1]     = networkPacketTS[2];
          } else if(networkPacketNumber[0] < networkPacketNumber[2]) {
-            std::cout<<"found wrong network packet number 0x"<<std::hex<<networkPacketNumber[1]
-                     <<" (not between 0x"<<networkPacketNumber[0]<<" and 0x"<<networkPacketNumber[2]<<std::dec
-                     <<")"<<std::endl;
+            std::cout << "found wrong network packet number 0x" << std::hex << networkPacketNumber[1]
+                      << " (not between 0x" << networkPacketNumber[0] << " and 0x" << networkPacketNumber[2] << std::dec
+                      << ")" << std::endl;
             networkPacketNumber[1] = networkPacketNumber[2];
             networkPacketTS[1]     = networkPacketTS[2];
          }
@@ -240,21 +240,21 @@ TList* AnalyzeDataLoss(TTree* tree, long entries = 0, TStopwatch* w = nullptr)
 
       // check if channel number and detector type agrees (this relies on a good ODB/cal-file)
       if(chan < 64 && currentFrag->GetDetectorType() != 0) {
-         std::cout<<entry<<": Found channel 0 - 63 without detector type zero: address 0x"<<std::hex
-                  <<currentFrag->GetAddress()<<std::dec<<", detector type "<<currentFrag->GetDetectorType()
-                  <<", time stamp "<<currentFrag->GetTimeStamp()<<std::endl;
+         std::cout << entry << ": Found channel 0 - 63 without detector type zero: address 0x" << std::hex
+                   << currentFrag->GetAddress() << std::dec << ", detector type " << currentFrag->GetDetectorType()
+                   << ", time stamp " << currentFrag->GetTimeStamp() << std::endl;
       }
 
       if(entry % 25000 == 0) {
-         std::cout<<"\t"<<entry<<" / "<<entries<<" = "<<static_cast<float>(entry) / entries * 100.0<<"%. "
-                  <<w->RealTime()<<" seconds"
-                  <<"\r"<<std::flush;
+         std::cout << "\t" << entry << " / " << entries << " = " << static_cast<float>(entry) / entries * 100.0 << "%. "
+                   << w->RealTime() << " seconds"
+                   << "\r" << std::flush;
          w->Continue();
       }
    }
-   std::cout<<"\t"<<entry<<" / "<<entries<<" = "<<static_cast<float>(entry) / entries * 100.0<<"%. "
-            <<w->RealTime()<<" seconds"<<std::endl
-            <<std::endl;
+   std::cout << "\t" << entry << " / " << entries << " = " << static_cast<float>(entry) / entries * 100.0 << "%. "
+             << w->RealTime() << " seconds" << std::endl
+             << std::endl;
    w->Continue();
 
    return list;
@@ -307,9 +307,9 @@ int main(int argc, char** argv)
    if(badtree == nullptr) {
       printf("Failed to find bad fragment tree in file '%s'!\n", argv[1]);
    } else {
-      std::cout<<badtree->GetEntries()
-               <<" bad entries in total = "<<(100. * badtree->GetEntries()) / tree->GetEntries()
-               <<"% of the good entries"<<std::endl;
+      std::cout << badtree->GetEntries()
+                << " bad entries in total = " << (100. * badtree->GetEntries()) / tree->GetEntries()
+                << "% of the good entries" << std::endl;
    }
 
    TTree* epicstree = dynamic_cast<TTree*>(file->Get("EpicsTree"));
@@ -317,7 +317,7 @@ int main(int argc, char** argv)
    if(epicstree == nullptr) {
       printf("Failed to find epics tree in file '%s'!\n", argv[1]);
    } else {
-      std::cout<<epicstree->GetEntries()<<" epics entries"<<std::endl;
+      std::cout << epicstree->GetEntries() << " epics entries" << std::endl;
    }
 
    TPPG* ppg = dynamic_cast<TPPG*>(file->Get("TPPG"));
@@ -325,17 +325,17 @@ int main(int argc, char** argv)
    if(ppg == nullptr) {
       printf("Failed to find ppg in file '%s'!\n", argv[1]);
    } else {
-      std::cout<<ppg->PPGSize()<<" ppg events"<<std::endl;
+      std::cout << ppg->PPGSize() << " ppg events" << std::endl;
    }
 
-   std::cout<<argv[0]<<": starting AnalyzeDataLoss after "<<w.RealTime()<<" seconds"<<std::endl;
+   std::cout << argv[0] << ": starting AnalyzeDataLoss after " << w.RealTime() << " seconds" << std::endl;
    w.Continue();
 
    TList* list;
    long   entries = tree->GetEntries();
    if(argc == 4 && atoi(argv[3]) < entries) {
       entries = atoi(argv[3]);
-      std::cout<<"Limiting processing of fragment tree to "<<entries<<" entries!"<<std::endl;
+      std::cout << "Limiting processing of fragment tree to " << entries << " entries!" << std::endl;
    }
    list = AnalyzeDataLoss(tree, entries, &w);
 
@@ -343,7 +343,7 @@ int main(int argc, char** argv)
    list->Write();
    outfile->Close();
 
-   std::cout<<argv[0]<<" done after "<<w.RealTime()<<" seconds"<<std::endl;
+   std::cout << argv[0] << " done after " << w.RealTime() << " seconds" << std::endl;
 
    return 0;
 }

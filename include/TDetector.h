@@ -45,35 +45,39 @@ public:
    }
 
 public:
-   virtual void BuildHits() { AbstractMethod("BuildHits()"); } //!<!
+   virtual void BuildHits() { AbstractMethod("BuildHits()"); }   //!<!
 #ifndef __CINT__
    virtual void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*)
    {
       AbstractMethod("AddFragment()");
-   } //!<!
+   }   //!<!
 #endif
 
-	virtual void AddHit(TDetectorHit* hit) { fHits.push_back(hit); }
-   virtual void Copy(TObject&) const override;                        //!<!
-   void Clear(Option_t* = "") override { fHits.clear(); } //!<!
-   virtual void ClearTransients();                            //!<!
-   void Print(Option_t* opt = "") const override;             //!<!
-	virtual void Print(std::ostream& out) const;
+   virtual void AddHit(TDetectorHit* hit)
+   {
+      fHits.push_back(hit);
+   }
+   virtual void Copy(TObject&) const override;                      //!<!
+   void         Clear(Option_t* = "") override { fHits.clear(); }   //!<!
+   virtual void ClearTransients();                                  //!<!
+   void         Print(Option_t* opt = "") const override;           //!<!
+   virtual void Print(std::ostream& out) const;
 
-	virtual Short_t GetMultiplicity() const { return fHits.size(); }
-	virtual TDetectorHit* GetHit(const int&) const;
-	virtual const std::vector<TDetectorHit*>& GetHitVector() const { return fHits; }
+   virtual Short_t                           GetMultiplicity() const { return fHits.size(); }
+   virtual TDetectorHit*                     GetHit(const int&) const;
+   virtual const std::vector<TDetectorHit*>& GetHitVector() const { return fHits; }
 
-	friend std::ostream& operator<<(std::ostream& out, const TDetector& det) {
-		det.Print(out);
-		return out;
-	}
+   friend std::ostream& operator<<(std::ostream& out, const TDetector& det)
+   {
+      det.Print(out);
+      return out;
+   }
 
 protected:
-	std::vector<TDetectorHit*> fHits;
+   std::vector<TDetectorHit*> fHits;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDetector, 1) // Abstract class for detector systems
+   ClassDefOverride(TDetector, 1)   // Abstract class for detector systems
    /// \endcond
 };
 /*! @} */

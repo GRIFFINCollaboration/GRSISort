@@ -30,13 +30,16 @@ public:
    ~TAnalysisHistLoop() override;
 
 #ifndef __CINT__
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>& InputQueue() { return fInputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>& InputQueue()
+   {
+      return fInputQueue;
+   }
 #endif
 
-   void SetOutputFilename(const std::string& name);
+   void        SetOutputFilename(const std::string& name);
    std::string GetOutputFilename() const;
 
-   void LoadLibrary(std::string library);
+   void        LoadLibrary(std::string library);
    std::string GetLibraryName() const;
    void        ClearHistograms();
 
