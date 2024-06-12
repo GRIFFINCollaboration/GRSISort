@@ -148,12 +148,12 @@ enum ERootCanvasCommands {
 
 static const char* gOpenTypes[] = {"ROOT files", "*.root", "All files", "*", nullptr, nullptr};
 
-static const char* gSaveAsTypes[] = {"PDF",    "*.pdf", "PostScript", "*.ps",       "Encapsulated PostScript",
-                                     "*.eps",  "SVG",   "*.svg",       "TeX",       "*.tex",
-                                     "GIF",    "*.gif", "ROOT macros", "*.C",       "ROOT files",
-                                     "*.root", "XML",   "*.xml",       "PNG",       "*.png",
-                                     "XPM",    "*.xpm", "JPEG",        "*.jpg",     "TIFF",
-                                     "*.tiff", "XCF",   "*.xcf",       "All files", "*",
+static const char* gSaveAsTypes[] = {"PDF", "*.pdf", "PostScript", "*.ps", "Encapsulated PostScript",
+                                     "*.eps", "SVG", "*.svg", "TeX", "*.tex",
+                                     "GIF", "*.gif", "ROOT macros", "*.C", "ROOT files",
+                                     "*.root", "XML", "*.xml", "PNG", "*.png",
+                                     "XPM", "*.xpm", "JPEG", "*.jpg", "TIFF",
+                                     "*.tiff", "XCF", "*.xcf", "All files", "*",
                                      nullptr, nullptr};
 
 static ToolBarData_t gToolBarData[] = {

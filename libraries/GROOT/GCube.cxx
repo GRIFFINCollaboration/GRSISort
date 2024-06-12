@@ -653,7 +653,7 @@ void GCube::FillRandom(const char* fname, Int_t ntimes, TRandom* rng)
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 24, 0)
 void GCube::FillRandom(TH1* h, Int_t ntimes, TRandom*)
 #else
-void     GCube::FillRandom(TH1* h, Int_t ntimes, TRandom* rng)
+void GCube::FillRandom(TH1* h, Int_t ntimes, TRandom* rng)
 #endif
 {
    ///*-*-*-*-*-*-*Fill histogram following distribution in histogram h*-*-*-*
@@ -1305,7 +1305,7 @@ Double_t GCube::IntegralAndError(Int_t firstxbin, Int_t lastxbin, Int_t firstybi
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 20, 0)
 Double_t GCube::Interpolate(Double_t)
 #else
-    Double_t GCube::Interpolate(Double_t) const
+Double_t GCube::Interpolate(Double_t) const
 #endif
 {
    // illegal for a TH3

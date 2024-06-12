@@ -40,8 +40,8 @@ public:
    void FillRandom(const char* fname, Int_t ntimes = 5000, TRandom* rng = nullptr);
    void FillRandom(TH1* h, Int_t ntimes = 5000, TRandom* rng = nullptr);
 #else
-   void     FillRandom(const char* fname, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
-   void     FillRandom(TH1* h, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
+   void FillRandom(const char* fname, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
+   void FillRandom(TH1* h, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
 #endif
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 18, 0)
    Int_t FindFirstBinAbove(Double_t threshold = 0, Int_t axis = 1) const override
@@ -52,8 +52,8 @@ public:
    Int_t FindFirstBinAbove(Double_t threshold = 0, Int_t axis = 1, Int_t firstBin = 1, Int_t lastBin = -1) const;
    Int_t FindLastBinAbove(Double_t threshold = 0, Int_t axis = 1, Int_t firstBin = 1, Int_t lastBin = -1) const;
 #else
-   Int_t    FindFirstBinAbove(Double_t threshold = 0, Int_t axis = 1, Int_t firstBin = 1, Int_t lastBin = -1) const override;
-   Int_t    FindLastBinAbove(Double_t threshold = 0, Int_t axis = 1, Int_t firstBin = 1, Int_t lastBin = -1) const override;
+   Int_t FindFirstBinAbove(Double_t threshold = 0, Int_t axis = 1, Int_t firstBin = 1, Int_t lastBin = -1) const override;
+   Int_t FindLastBinAbove(Double_t threshold = 0, Int_t axis = 1, Int_t firstBin = 1, Int_t lastBin = -1) const override;
 #endif
    virtual void     FitSlicesZ(TF1* f1 = nullptr, Int_t binminx = 0, Int_t binmaxx = -1, Int_t binminy = 0,
                                Int_t binmaxy = -1, Int_t cut = 0, Option_t* option = "QNR");
