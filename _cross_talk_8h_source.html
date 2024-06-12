@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -130,8 +130,8 @@ $(document).ready(function(){initNavTree('_cross_talk_8h_source.html',''); initR
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="class_cross_talk.html">   25</a></span><span class="keyword">class </span><a class="code hl_class" href="class_cross_talk.html">CrossTalk</a> : <span class="keyword">public</span> <a class="code hl_class" href="class_t_g_r_s_i_selector.html">TGRSISelector</a> {</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="class_cross_talk.html#ab7f0dee84446e7d8e7622eff0e4a8efb">   28</a></span>   <a class="code hl_class" href="class_t_griffin.html">TGriffin</a>* <a class="code hl_variable" href="class_cross_talk.html#ab7f0dee84446e7d8e7622eff0e4a8efb">fGrif</a>;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_cross_talk.html#adb5b6f7f2004b75a262bcff85ce23bd0">   29</a></span>   <a class="code hl_class" href="class_t_sceptar.html">TSceptar</a>* <a class="code hl_variable" href="class_cross_talk.html#adb5b6f7f2004b75a262bcff85ce23bd0">fScep</a>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="class_cross_talk.html#ab7f0dee84446e7d8e7622eff0e4a8efb">   28</a></span>   <a class="code hl_class" href="class_t_griffin.html">TGriffin</a>*    <a class="code hl_variable" href="class_cross_talk.html#ab7f0dee84446e7d8e7622eff0e4a8efb">fGrif</a>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_cross_talk.html#adb5b6f7f2004b75a262bcff85ce23bd0">   29</a></span>   <a class="code hl_class" href="class_t_sceptar.html">TSceptar</a>*    <a class="code hl_variable" href="class_cross_talk.html#adb5b6f7f2004b75a262bcff85ce23bd0">fScep</a>;</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="class_cross_talk.html#a886e11d9e78392aed664c4e148811744">   30</a></span>   <a class="code hl_class" href="class_t_griffin_bgo.html">TGriffinBgo</a>* <a class="code hl_variable" href="class_cross_talk.html#a886e11d9e78392aed664c4e148811744">fGriffinBgo</a>;</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="class_cross_talk.html#a49f7c7d5f253e578790756c5ac254093">   32</a></span>   <a class="code hl_function" href="class_cross_talk.html#a49f7c7d5f253e578790756c5ac254093">CrossTalk</a>(TTree* <span class="comment">/*tree*/</span> = 0) : <a class="code hl_class" href="class_t_g_r_s_i_selector.html">TGRSISelector</a>(), <a class="code hl_variable" href="class_cross_talk.html#ab7f0dee84446e7d8e7622eff0e4a8efb">fGrif</a>(0), <a class="code hl_variable" href="class_cross_talk.html#adb5b6f7f2004b75a262bcff85ce23bd0">fScep</a>(0), <a class="code hl_variable" href="class_cross_talk.html#a886e11d9e78392aed664c4e148811744">fGriffinBgo</a>(0) { <a class="code hl_function" href="class_t_g_r_s_i_selector.html#a7c93561fc0f34db9f5c3381b9aa6fe67">SetOutputPrefix</a>(<span class="stringliteral">&quot;Crosstalk&quot;</span>); }</div>
@@ -139,7 +139,7 @@ $(document).ready(function(){initNavTree('_cross_talk_8h_source.html',''); initR
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="class_cross_talk.html#aa9e93c1ca2662e179128cb9d519772e9">   34</a></span>   <span class="keyword">virtual</span> Int_t <a class="code hl_function" href="class_cross_talk.html#aa9e93c1ca2662e179128cb9d519772e9">Version</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> 2; }</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>   <span class="keywordtype">void</span>          <a class="code hl_function" href="class_cross_talk.html#ac9cc4df79bb746ea6c00fd90e444d579">CreateHistograms</a>();</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>   <span class="keywordtype">void</span>          <a class="code hl_function" href="class_cross_talk.html#a8dc668dbc60225dd42cb67f9fc7fe238">FillHistograms</a>();</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="class_cross_talk.html#a4c63306fc0b6f402e926953654305de9">   37</a></span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_cross_talk.html#a4c63306fc0b6f402e926953654305de9">InitializeBranches</a>(TTree* tree);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="class_cross_talk.html#a4c63306fc0b6f402e926953654305de9">   37</a></span>   <span class="keywordtype">void</span>          <a class="code hl_function" href="class_cross_talk.html#a4c63306fc0b6f402e926953654305de9">InitializeBranches</a>(TTree* tree);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="class_cross_talk.html#a416ae50cb4abe45ac8a4b1ba5590724b">   39</a></span>   <a class="code hl_function" href="class_cross_talk.html#a416ae50cb4abe45ac8a4b1ba5590724b">ClassDef</a>(<a class="code hl_class" href="class_cross_talk.html">CrossTalk</a>, 2);</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>};</div>
@@ -162,7 +162,7 @@ $(document).ready(function(){initNavTree('_cross_talk_8h_source.html',''); initR
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>   }</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>}</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#endif </span><span class="comment">// #ifdef CrossTalk_cxx</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#endif   </span><span class="comment">// #ifdef CrossTalk_cxx</span></div>
 <div class="ttc" id="a_t_g_r_s_i_selector_8h_html"><div class="ttname"><a href="_t_g_r_s_i_selector_8h.html">TGRSISelector.h</a></div></div>
 <div class="ttc" id="a_t_griffin_8h_html"><div class="ttname"><a href="_t_griffin_8h.html">TGriffin.h</a></div></div>
 <div class="ttc" id="a_t_griffin_bgo_8h_html"><div class="ttname"><a href="_t_griffin_bgo_8h.html">TGriffinBgo.h</a></div></div>
@@ -172,7 +172,7 @@ $(document).ready(function(){initNavTree('_cross_talk_8h_source.html',''); initR
 <div class="ttc" id="aclass_cross_talk_html_a49f7c7d5f253e578790756c5ac254093"><div class="ttname"><a href="class_cross_talk.html#a49f7c7d5f253e578790756c5ac254093">CrossTalk::CrossTalk</a></div><div class="ttdeci">CrossTalk(TTree *=0)</div><div class="ttdef"><b>Definition</b> <a href="_cross_talk_8h_source.html#l00032">CrossTalk.h:32</a></div></div>
 <div class="ttc" id="aclass_cross_talk_html_a4c63306fc0b6f402e926953654305de9"><div class="ttname"><a href="class_cross_talk.html#a4c63306fc0b6f402e926953654305de9">CrossTalk::InitializeBranches</a></div><div class="ttdeci">void InitializeBranches(TTree *tree)</div></div>
 <div class="ttc" id="aclass_cross_talk_html_a886e11d9e78392aed664c4e148811744"><div class="ttname"><a href="class_cross_talk.html#a886e11d9e78392aed664c4e148811744">CrossTalk::fGriffinBgo</a></div><div class="ttdeci">TGriffinBgo * fGriffinBgo</div><div class="ttdef"><b>Definition</b> <a href="_cross_talk_8h_source.html#l00030">CrossTalk.h:30</a></div></div>
-<div class="ttc" id="aclass_cross_talk_html_a8dc668dbc60225dd42cb67f9fc7fe238"><div class="ttname"><a href="class_cross_talk.html#a8dc668dbc60225dd42cb67f9fc7fe238">CrossTalk::FillHistograms</a></div><div class="ttdeci">void FillHistograms()</div><div class="ttdef"><b>Definition</b> <a href="_cross_talk_8_c_source.html#l00067">CrossTalk.C:67</a></div></div>
+<div class="ttc" id="aclass_cross_talk_html_a8dc668dbc60225dd42cb67f9fc7fe238"><div class="ttname"><a href="class_cross_talk.html#a8dc668dbc60225dd42cb67f9fc7fe238">CrossTalk::FillHistograms</a></div><div class="ttdeci">void FillHistograms()</div><div class="ttdef"><b>Definition</b> <a href="_cross_talk_8_c_source.html#l00068">CrossTalk.C:68</a></div></div>
 <div class="ttc" id="aclass_cross_talk_html_aa9e93c1ca2662e179128cb9d519772e9"><div class="ttname"><a href="class_cross_talk.html#aa9e93c1ca2662e179128cb9d519772e9">CrossTalk::Version</a></div><div class="ttdeci">virtual Int_t Version() const</div><div class="ttdef"><b>Definition</b> <a href="_cross_talk_8h_source.html#l00034">CrossTalk.h:34</a></div></div>
 <div class="ttc" id="aclass_cross_talk_html_ab7f0dee84446e7d8e7622eff0e4a8efb"><div class="ttname"><a href="class_cross_talk.html#ab7f0dee84446e7d8e7622eff0e4a8efb">CrossTalk::fGrif</a></div><div class="ttdeci">TGriffin * fGrif</div><div class="ttdef"><b>Definition</b> <a href="_cross_talk_8h_source.html#l00028">CrossTalk.h:28</a></div></div>
 <div class="ttc" id="aclass_cross_talk_html_ac9cc4df79bb746ea6c00fd90e444d579"><div class="ttname"><a href="class_cross_talk.html#ac9cc4df79bb746ea6c00fd90e444d579">CrossTalk::CreateHistograms</a></div><div class="ttdeci">void CreateHistograms()</div><div class="ttdef"><b>Definition</b> <a href="_cross_talk_8_c_source.html#l00030">CrossTalk.C:30</a></div></div>
@@ -190,7 +190,7 @@ $(document).ready(function(){initNavTree('_cross_talk_8h_source.html',''); initR
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_9898311765dba9e8b5ad6a9c9b1db5d5.html">GRSIProof</a></li><li class="navelem"><a class="el" href="_cross_talk_8h.html">CrossTalk.h</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:13.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:18.</li>
   </ul>
 </div>
 </body>

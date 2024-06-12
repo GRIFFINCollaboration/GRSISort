@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -101,6 +101,11 @@ $(document).ready(function(){initNavTree('_t_source_calibration_8cxx.html',''); 
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>&quot;</code><br />
 <code>#include &lt;chrono&gt;</code><br />
+<code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;iomanip&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;cstring&gt;</code><br />
 <code>#include &quot;TSystem.h&quot;</code><br />
 <code>#include &quot;TGTableLayout.h&quot;</code><br />
 <code>#include &quot;TCanvas.h&quot;</code><br />
@@ -164,9 +169,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00254">254</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00262">262</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01591">TSourceCalibration::FitEfficiency()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01624">TSourceCalibration::FitEfficiency()</a>.</p>
 
 </div>
 </div>
@@ -196,9 +201,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00263">263</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00271">271</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00625">TSourceCalibration::TSourceCalibration()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01242">TSourceCalibration::BuildThirdInterface()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00631">TSourceCalibration::TSourceCalibration()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01275">TSourceCalibration::BuildThirdInterface()</a>.</p>
 
 </div>
 </div>
@@ -234,9 +239,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00020">20</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00028">28</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00418">TChannelTab::FindPeaks()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00425">TChannelTab::FindPeaks()</a>.</p>
 
 </div>
 </div>
@@ -266,9 +271,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00245">245</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00253">253</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00390">TChannelTab::Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01149">TSourceCalibration::FinalWindow()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01539">TSourceCalibration::FitFinal()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00397">TChannelTab::Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01182">TSourceCalibration::FinalWindow()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01572">TSourceCalibration::FitFinal()</a>.</p>
 
 </div>
 </div>
@@ -304,9 +309,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00131">131</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00139">139</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00418">TChannelTab::FindPeaks()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00425">TChannelTab::FindPeaks()</a>.</p>
 
 </div>
 </div>
@@ -317,7 +322,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_af8759249976916949d3211b2e3ed5df.html">TGUI</a></li><li class="navelem"><a class="el" href="_t_source_calibration_8cxx.html">TSourceCalibration.cxx</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:16.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:21.</li>
   </ul>
 </div>
 </body>

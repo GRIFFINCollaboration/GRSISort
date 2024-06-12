@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -133,23 +133,23 @@ $(document).ready(function(){initNavTree('_t_cal_graph_8h_source.html',''); init
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="class_t_cal_graph.html">   28</a></span><span class="keyword">class </span><a class="code hl_class" href="class_t_cal_graph.html">TCalGraph</a> : <span class="keyword">public</span> TGraphErrors {</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   <a class="code hl_function" href="class_t_cal_graph.html#a972cff0b6f6e4d9c5d0ecc7cb90db9a7">TCalGraph</a>();</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="class_t_cal_graph.html#a56b9e606221088955bc55c4f9c9cdbcd">   31</a></span>   <a class="code hl_function" href="class_t_cal_graph.html#a56b9e606221088955bc55c4f9c9cdbcd">TCalGraph</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keyword">const</span> <span class="keywordtype">char</span>* title) : TGraphErrors(name, title) {};</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="class_t_cal_graph.html#a56b9e606221088955bc55c4f9c9cdbcd">   31</a></span>   <a class="code hl_function" href="class_t_cal_graph.html#a56b9e606221088955bc55c4f9c9cdbcd">TCalGraph</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keyword">const</span> <span class="keywordtype">char</span>* title) : TGraphErrors(name, title){};</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="class_t_cal_graph.html#ab655194af97e058a07ecf9cc8580e1d2">   32</a></span>   <a class="code hl_function" href="class_t_cal_graph.html#ab655194af97e058a07ecf9cc8580e1d2">~TCalGraph</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="class_t_cal_graph.html#a7817f671759bf183b9c63509a5cc0dbb">   34</a></span>   <a class="code hl_class" href="class_t_cal_graph.html">TCalGraph</a>&amp; <a class="code hl_function" href="class_t_cal_graph.html#a7817f671759bf183b9c63509a5cc0dbb">operator=</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_cal_graph.html">TCalGraph</a>&amp;) = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>   <a class="code hl_function" href="class_t_cal_graph.html#a972cff0b6f6e4d9c5d0ecc7cb90db9a7">TCalGraph</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_cal_graph.html">TCalGraph</a>&amp; copy);</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#if ROOT_VERSION_CODE &gt;= ROOT_VERSION(6,24,0)</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#if ROOT_VERSION_CODE &gt;= ROOT_VERSION(6, 24, 0)</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>   <span class="keyword">using </span>TGraph::AddPoint;</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_cal_graph.html#a6739222df2e5575317745ee577586cee">AddPoint</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_cal_point.html">TCalPoint</a>&amp; cal_point);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>   Int_t <a class="code hl_function" href="class_t_cal_graph.html#a47f89d938dda985de140a68938c5b7ee">FindClosestPointX</a>(<span class="keyword">const</span> Double_t&amp; x_val);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>   <span class="keywordtype">void</span>     <a class="code hl_function" href="class_t_cal_graph.html#a6739222df2e5575317745ee577586cee">AddPoint</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_cal_point.html">TCalPoint</a>&amp; cal_point);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>   Int_t    <a class="code hl_function" href="class_t_cal_graph.html#a47f89d938dda985de140a68938c5b7ee">FindClosestPointX</a>(<span class="keyword">const</span> Double_t&amp; x_val);</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>   Double_t <a class="code hl_function" href="class_t_cal_graph.html#a58bbb764c38968aa937f08c08a8c4b69">FindDistToClosestPointX</a>(<span class="keyword">const</span> Double_t&amp; x_val);</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>   Int_t <a class="code hl_function" href="class_t_cal_graph.html#a2ae0de5a2e0e85345b5c40544f1b3354">AddLists</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_cal_list.html">TCalList</a>&amp; cal_list, <span class="keyword">const</span> <a class="code hl_class" href="class_t_source_list.html">TSourceList</a>&amp; src_list);</div>
 <div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="class_t_cal_graph.html#a18e8b637414c8b6f2c698a3ce9208460">   46</a></span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_cal_graph.html#a18e8b637414c8b6f2c698a3ce9208460">Draw</a>(Option_t* opt = <span class="stringliteral">&quot;&quot;</span>)<span class="keyword"> override</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="class_t_cal_graph.html#a18e8b637414c8b6f2c698a3ce9208460">   46</a></span>   <span class="keywordtype">void</span>  <a class="code hl_function" href="class_t_cal_graph.html#a18e8b637414c8b6f2c698a3ce9208460">Draw</a>(Option_t* opt = <span class="stringliteral">&quot;&quot;</span>)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">   </span>{</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <a class="code hl_function" href="class_t_cal_graph.html#ad2c72d3a4f47d9eff327e0b58ebc2e6a">BuildGraph</a>();</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      TGraphErrors::Draw(opt);</div>
@@ -170,7 +170,7 @@ $(document).ready(function(){initNavTree('_t_cal_graph_8h_source.html',''); init
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="class_t_cal_graph.html#ad2c72d3a4f47d9eff327e0b58ebc2e6a">   63</a></span>   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_cal_graph.html#ad2c72d3a4f47d9eff327e0b58ebc2e6a">BuildGraph</a>() = 0;</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment"></span> </div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">   /// \cond CLASSIMP</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment"></span>   ClassDefOverride(<a class="code hl_class" href="class_t_cal_graph.html">TCalGraph</a>, 1); <span class="comment">// Graph Class for Calibrations</span><span class="comment"></span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment"></span>   ClassDefOverride(<a class="code hl_class" href="class_t_cal_graph.html">TCalGraph</a>, 1);   <span class="comment">// Graph Class for Calibrations</span><span class="comment"></span></div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">   /// \endcond</span></div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment"></span>};<span class="comment"></span></div>
 </div>
@@ -205,7 +205,7 @@ $(document).ready(function(){initNavTree('_t_cal_graph_8h_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_cal_graph_8h.html">TCalGraph.h</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:14.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:18.</li>
   </ul>
 </div>
 </body>

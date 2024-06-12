@@ -1,5 +1,6 @@
 var NAVTREEINDEX33 =
 {
+"class_t_gain_match.html#acbec79bbd276a1a82be4ee92087300e9":[7,1,10,32],
 "class_t_gain_match.html#acc5aedbaca3dfc61bab08825f21709ad":[7,1,10,24],
 "class_t_gain_match.html#ad0060a22683cfa00c711a6f05fbc9349":[7,1,10,40],
 "class_t_gain_match.html#ad3a29c8369ce14d84dd39e13fa4fccde":[7,1,10,21],
@@ -248,6 +249,5 @@ var NAVTREEINDEX33 =
 "class_t_griffin_angles.html#afc9a8c2ec5d2cf70f9256da5033b544a":[7,0,0,6],
 "class_t_griffin_angles.html#afd646dd0beca73b9b2ba03b13746a3d6":[7,0,0,4],
 "class_t_griffin_bgo.html":[7,2,26],
-"class_t_griffin_bgo.html#a085bc6ed53bf021937b04ced8c87f6d6":[7,2,26,1],
-"class_t_griffin_bgo.html#a13ea06ba385aabcf09c1ea5a70d8145b":[7,2,26,17]
+"class_t_griffin_bgo.html#a085bc6ed53bf021937b04ced8c87f6d6":[7,2,26,1]
 };

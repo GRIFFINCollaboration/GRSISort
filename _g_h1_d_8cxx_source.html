@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -158,9 +158,9 @@ $(document).ready(function(){initNavTree('_g_h1_d_8cxx_source.html',''); initRes
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>   }</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; GetNbinsX(); i++) {</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      out&lt;&lt;GetXaxis()-&gt;GetBinCenter(i)&lt;&lt;<span class="stringliteral">&quot;\t&quot;</span>&lt;&lt;GetBinContent(i)&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      out &lt;&lt; GetXaxis()-&gt;GetBinCenter(i) &lt;&lt; <span class="stringliteral">&quot;\t&quot;</span> &lt;&lt; GetBinContent(i) &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>   }</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>   out&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>   out &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>   out.close();</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>   <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
@@ -203,7 +203,7 @@ $(document).ready(function(){initNavTree('_g_h1_d_8cxx_source.html',''); initRes
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="class_g_h1_d.html#a649816e326bb11c5483a6d6482bfa8d9">   90</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_g_h1_d.html#a649816e326bb11c5483a6d6482bfa8d9">GH1D::Print</a>(Option_t* opt)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>   TH1D::Print(opt);</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;\tParent: &quot;</span>&lt;&lt;<a class="code hl_variable" href="class_g_h1_d.html#a682f81bca22f439ffd0bf86a725132ee">parent</a>.GetObject()&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;\tParent: &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_g_h1_d.html#a682f81bca22f439ffd0bf86a725132ee">parent</a>.GetObject() &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>}</div>
 </div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
@@ -271,7 +271,7 @@ $(document).ready(function(){initNavTree('_g_h1_d_8cxx_source.html',''); initRes
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>      <span class="keywordtype">int</span>   last  = GetXaxis()-&gt;GetLast();</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>      <a class="code hl_class" href="class_g_h1_d.html">GH1D</a>* prev  = gpar-&gt;<a class="code hl_function" href="class_g_h2_base.html#a12bcd949607ca434f0de9813cc831548">GetPrevious</a>(<span class="keyword">this</span>, DrawEmpty);</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>      prev-&gt;GetXaxis()-&gt;SetRange(first, last);</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>      <span class="keywordflow">return</span> prev; <span class="comment">// gpar-&gt;GetPrevious(this,DrawEmpty);</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>      <span class="keywordflow">return</span> prev;   <span class="comment">// gpar-&gt;GetPrevious(this,DrawEmpty);</span></div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>   }</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>   <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>}</div>
@@ -286,7 +286,7 @@ $(document).ready(function(){initNavTree('_g_h1_d_8cxx_source.html',''); initRes
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>      <span class="keywordtype">int</span>   last  = GetXaxis()-&gt;GetLast();</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>      <a class="code hl_class" href="class_g_h1_d.html">GH1D</a>* next  = gpar-&gt;<a class="code hl_function" href="class_g_h2_base.html#aa698eb3a082c00dd13ab4d42ba04175b">GetNext</a>(<span class="keyword">this</span>, DrawEmpty);</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>      next-&gt;GetXaxis()-&gt;SetRange(first, last);</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>      <span class="keywordflow">return</span> next; <span class="comment">// gpar-&gt;GetNext(this,DrawEmpty);</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>      <span class="keywordflow">return</span> next;   <span class="comment">// gpar-&gt;GetNext(this,DrawEmpty);</span></div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>   }</div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>   <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>}</div>
@@ -373,7 +373,7 @@ $(document).ready(function(){initNavTree('_g_h1_d_8cxx_source.html',''); initRes
 <div class="ttc" id="a_g_h2_base_8h_html_a3c4ccf159a5f08659648fc1d6e3dceac"><div class="ttname"><a href="_g_h2_base_8h.html#a3c4ccf159a5f08659648fc1d6e3dceac">EBackgroundSubtraction</a></div><div class="ttdeci">EBackgroundSubtraction</div><div class="ttdef"><b>Definition</b> <a href="_g_h2_base_8h_source.html#l00014">GH2Base.h:14</a></div></div>
 <div class="ttc" id="a_g_h2_d_8h_html"><div class="ttname"><a href="_g_h2_d_8h.html">GH2D.h</a></div></div>
 <div class="ttc" id="a_g_h2_i_8h_html"><div class="ttname"><a href="_g_h2_i_8h.html">GH2I.h</a></div></div>
-<div class="ttc" id="aclass_g_canvas_html"><div class="ttname"><a href="class_g_canvas.html">GCanvas</a></div><div class="ttdef"><b>Definition</b> <a href="_g_canvas_8h_source.html#l00198">GCanvas.h:198</a></div></div>
+<div class="ttc" id="aclass_g_canvas_html"><div class="ttname"><a href="class_g_canvas.html">GCanvas</a></div><div class="ttdef"><b>Definition</b> <a href="_g_canvas_8h_source.html#l00231">GCanvas.h:231</a></div></div>
 <div class="ttc" id="aclass_g_h1_d_html"><div class="ttname"><a href="class_g_h1_d.html">GH1D</a></div><div class="ttdef"><b>Definition</b> <a href="_g_h1_d_8h_source.html#l00011">GH1D.h:11</a></div></div>
 <div class="ttc" id="aclass_g_h1_d_html_a096431f81f79dbd4387fe3b7e3275d34"><div class="ttname"><a href="class_g_h1_d.html#a096431f81f79dbd4387fe3b7e3275d34">GH1D::Project_Background</a></div><div class="ttdeci">GH1D * Project_Background(double value_low, double value_high, double bg_value_low, double bg_value_high, EBackgroundSubtraction mode=EBackgroundSubtraction::kRegionBackground) const</div><div class="ttdef"><b>Definition</b> <a href="_g_h1_d_8cxx_source.html#l00189">GH1D.cxx:189</a></div></div>
 <div class="ttc" id="aclass_g_h1_d_html_a2117671563db6377847c25b6525f382d"><div class="ttname"><a href="class_g_h1_d.html#a2117671563db6377847c25b6525f382d">GH1D::DrawNormalized</a></div><div class="ttdeci">TH1 * DrawNormalized(Option_t *opt=&quot;&quot;, Double_t norm=1) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_h1_d_8cxx_source.html#l00133">GH1D.cxx:133</a></div></div>
@@ -403,7 +403,7 @@ $(document).ready(function(){initNavTree('_g_h1_d_8cxx_source.html',''); initRes
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_47358ee868e3aed1e59cf9c2ead119a2.html">GROOT</a></li><li class="navelem"><a class="el" href="_g_h1_d_8cxx.html">GH1D.cxx</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:14.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:19.</li>
   </ul>
 </div>
 </body>

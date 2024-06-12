@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -158,10 +158,10 @@ $(document).ready(function(){initNavTree('grsisort_8cxx_source.html',''); initRe
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>   realTime -= hour * 3600;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>   <span class="keywordtype">int</span> min = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(realTime / 60);</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>   realTime -= min * 60;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>   std::cout&lt;&lt;<a class="code hl_define" href="_globals_8h.html#ae730fad7256d25796fff0f5daa94e52a">DMAGENTA</a>&lt;&lt;std::endl</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            &lt;&lt;<span class="stringliteral">&quot;bye,bye\t&quot;</span>&lt;&lt;<a class="code hl_define" href="_globals_8h.html#a9abe1243cfcf86c811d8321920b26fe2">DCYAN</a>&lt;&lt;getpwuid(getuid())-&gt;pw_name&lt;&lt;<a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>&lt;&lt;<span class="stringliteral">&quot; after &quot;</span>&lt;&lt;hour&lt;&lt;<span class="stringliteral">&quot;:&quot;</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            &lt;&lt;std::setfill(<span class="charliteral">&#39;0&#39;</span>)&lt;&lt;std::setw(2)&lt;&lt;min&lt;&lt;<span class="stringliteral">&quot;:&quot;</span>&lt;&lt;std::setprecision(3)&lt;&lt;std::fixed&lt;&lt;realTime</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            &lt;&lt;<span class="stringliteral">&quot; h:m:s&quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>   std::cout &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ae730fad7256d25796fff0f5daa94e52a">DMAGENTA</a> &lt;&lt; std::endl</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>             &lt;&lt; <span class="stringliteral">&quot;bye,bye\t&quot;</span> &lt;&lt; <a class="code hl_define" href="_globals_8h.html#a9abe1243cfcf86c811d8321920b26fe2">DCYAN</a> &lt;&lt; getpwuid(getuid())-&gt;pw_name &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a> &lt;&lt; <span class="stringliteral">&quot; after &quot;</span> &lt;&lt; hour &lt;&lt; <span class="stringliteral">&quot;:&quot;</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>             &lt;&lt; std::setfill(<span class="charliteral">&#39;0&#39;</span>) &lt;&lt; std::setw(2) &lt;&lt; min &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; std::setprecision(3) &lt;&lt; std::fixed &lt;&lt; realTime</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>             &lt;&lt; <span class="stringliteral">&quot; h:m:s&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}</div>
 </div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
@@ -186,11 +186,11 @@ $(document).ready(function(){initNavTree('grsisort_8cxx_source.html',''); initRe
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>      <span class="comment">// Run the code!</span></div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>      input-&gt;Run(<span class="keyword">true</span>);</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>   } <span class="keywordflow">catch</span>(<a class="code hl_struct" href="structgrsi_1_1exit__exception.html">grsi::exit_exception</a>&amp; e) {</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>      std::cerr&lt;&lt;e.<a class="code hl_variable" href="structgrsi_1_1exit__exception.html#acca63b1e9a57f9ad0375b4f63bdc38ca">message</a>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>      std::cerr &lt;&lt; e.<a class="code hl_variable" href="structgrsi_1_1exit__exception.html#acca63b1e9a57f9ad0375b4f63bdc38ca">message</a> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      <span class="comment">// Close files and clean up properly here</span></div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>   } <span class="keywordflow">catch</span>(std::runtime_error&amp; e) {</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>      std::cerr&lt;&lt;e.what()&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>      std::cout&lt;&lt;<span class="stringliteral">&quot;Don&#39;t know how to handle this error, exiting &quot;</span>&lt;&lt;argv[0]&lt;&lt;<span class="stringliteral">&quot;!&quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>      std::cerr &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Don&#39;t know how to handle this error, exiting &quot;</span> &lt;&lt; argv[0] &lt;&lt; <span class="stringliteral">&quot;!&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>   }</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>   <span class="keywordflow">return</span> 0;</div>
@@ -214,7 +214,7 @@ $(document).ready(function(){initNavTree('grsisort_8cxx_source.html',''); initRe
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>{</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>   FILE*       utmp;</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>   <span class="keyword">struct </span>stat file_stats;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>   <span class="keywordtype">size_t</span> n_read, size;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>   <span class="keywordtype">size_t</span>      n_read, size;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>   <a class="code hl_variable" href="grsisort_8cxx.html#a4fae8cc24254d1b4cb8136df73c0e4bf">gUtmpContents</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
@@ -271,15 +271,15 @@ $(document).ready(function(){initNavTree('grsisort_8cxx_source.html',''); initRe
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>   <span class="comment">// Set DISPLAY environment variable.</span></div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>   <span class="keywordflow">if</span>(getenv(<span class="stringliteral">&quot;DISPLAY&quot;</span>) == <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      <span class="keywordtype">char</span>* tty = ttyname(0); <span class="comment">// device user is logged in on</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      <span class="keywordtype">char</span>* tty = ttyname(0);   <span class="comment">// device user is logged in on</span></div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>      <span class="keywordflow">if</span>(tty != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>         tty += 5; <span class="comment">// remove &quot;/dev/&quot;</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>         tty += 5;   <span class="comment">// remove &quot;/dev/&quot;</span></div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>         <a class="code hl_define" href="grsisort_8cxx.html#a5c3ce11223ebbe626fea7d78c387137c">STRUCT_UTMP</a>* utmp_entry = <a class="code hl_function" href="grsisort_8cxx.html#a24a7be85440ebef4f06a2f25647f2a44">SearchEntry</a>(<a class="code hl_function" href="grsisort_8cxx.html#aa7e408ba1ba473ef3414809e37f08825">ReadUtmp</a>(), tty);</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>         <span class="keywordflow">if</span>(utmp_entry != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            <span class="keywordtype">size_t</span> length = <span class="keyword">sizeof</span>(utmp_entry-&gt;ut_host);</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            <span class="keywordtype">size_t</span>      length = <span class="keyword">sizeof</span>(utmp_entry-&gt;ut_host);</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>            std::string display;</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>            <span class="keyword">auto</span>* host    = <span class="keyword">new</span> <span class="keywordtype">char</span>[length + 1];</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>            strncpy(host, utmp_entry-&gt;ut_host, length); <span class="comment">// instead of using size of utmp_entry-&gt;ut_host to prevent warning from gcc 9.1</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>            <span class="keyword">auto</span>*       host = <span class="keyword">new</span> <span class="keywordtype">char</span>[length + 1];</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>            strncpy(host, utmp_entry-&gt;ut_host, length);   <span class="comment">// instead of using size of utmp_entry-&gt;ut_host to prevent warning from gcc 9.1</span></div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>            host[<span class="keyword">sizeof</span>(utmp_entry-&gt;ut_host)] = 0;</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>            <span class="keywordflow">if</span>(host[0] != 0) {</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>               display = host;</div>
@@ -336,7 +336,7 @@ $(document).ready(function(){initNavTree('grsisort_8cxx_source.html',''); initRe
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="grsisort_8cxx.html">grsisort.cxx</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:15.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:20.</li>
   </ul>
 </div>
 </body>

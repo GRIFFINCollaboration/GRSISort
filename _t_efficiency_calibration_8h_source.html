@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -134,8 +134,8 @@ $(document).ready(function(){initNavTree('_t_efficiency_calibration_8h_source.ht
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_efficiency_calibration.html#aec279330c664967728b1f0fc9cd9580b">Copy</a>(TObject&amp; copy) <span class="keyword">const override</span>;</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_efficiency_calibration.html#a5e289bb5df5edaa85f66c73078eaa8e6">Clear</a>(Option_t* opt = <span class="stringliteral">&quot;&quot;</span>) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_efficiency_calibration.html#a491ecf851a8257699c11849ae3c9bf4f">Print</a>(Option_t* opt = <span class="stringliteral">&quot;&quot;</span>) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>   <span class="keywordtype">void</span>          <a class="code hl_function" href="class_t_efficiency_calibration.html#a5e289bb5df5edaa85f66c73078eaa8e6">Clear</a>(Option_t* opt = <span class="stringliteral">&quot;&quot;</span>) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>   <span class="keywordtype">void</span>          <a class="code hl_function" href="class_t_efficiency_calibration.html#a491ecf851a8257699c11849ae3c9bf4f">Print</a>(Option_t* opt = <span class="stringliteral">&quot;&quot;</span>) <span class="keyword">const override</span>;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>   TFitResultPtr <a class="code hl_function" href="class_t_efficiency_calibration.html#a51977d01278dc717482072581db02688">Fit</a>(Option_t* opt = <span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_efficiency_calibration.html#a564f99d5e12306a4dcbd208b12d3f3dd">Draw</a>(Option_t* opt = <span class="stringliteral">&quot;&quot;</span>) <span class="keyword">override</span>;</div>
@@ -155,11 +155,11 @@ $(document).ready(function(){initNavTree('_t_efficiency_calibration_8h_source.ht
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="class_t_efficiency_calibration.html#a6558cdac9fbcbad4d24fcfe29e240733">   52</a></span>   std::map&lt;const char*, TEfficiencyGraph&gt; <a class="code hl_variable" href="class_t_efficiency_calibration.html#a6558cdac9fbcbad4d24fcfe29e240733">fGraphMap</a>;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="class_t_efficiency_calibration.html#abb79aaf69557db55534205ff1fbc9755">   53</a></span>   TMultiGraph* <a class="code hl_variable" href="class_t_efficiency_calibration.html#abb79aaf69557db55534205ff1fbc9755">fRelativeEffGraph</a>;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="class_t_efficiency_calibration.html#a583f5e87ca4d0af3b01aa6edfa7e5052">   54</a></span>   TMultiGraph* <a class="code hl_variable" href="class_t_efficiency_calibration.html#a583f5e87ca4d0af3b01aa6edfa7e5052">fAbsEffGraph</a>;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="class_t_efficiency_calibration.html#a58b077a9f206dfdfa603832c89bd13cc">   55</a></span>   <span class="keyword">mutable</span> <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_t_efficiency_calibration.html#a58b077a9f206dfdfa603832c89bd13cc">fFitting</a>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="class_t_efficiency_calibration.html#a569ac63b69b219cdd7ca0cc6cb1e992f">   56</a></span>   TF1*         <a class="code hl_variable" href="class_t_efficiency_calibration.html#a569ac63b69b219cdd7ca0cc6cb1e992f">fRelativeFit</a>;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="class_t_efficiency_calibration.html#a3885408a92f7e5dc858305537c07a449">   57</a></span>   TF1*         <a class="code hl_variable" href="class_t_efficiency_calibration.html#a3885408a92f7e5dc858305537c07a449">fAbsoluteFunc</a>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="class_t_efficiency_calibration.html#abb79aaf69557db55534205ff1fbc9755">   53</a></span>   TMultiGraph*                            <a class="code hl_variable" href="class_t_efficiency_calibration.html#abb79aaf69557db55534205ff1fbc9755">fRelativeEffGraph</a>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="class_t_efficiency_calibration.html#a583f5e87ca4d0af3b01aa6edfa7e5052">   54</a></span>   TMultiGraph*                            <a class="code hl_variable" href="class_t_efficiency_calibration.html#a583f5e87ca4d0af3b01aa6edfa7e5052">fAbsEffGraph</a>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="class_t_efficiency_calibration.html#a58b077a9f206dfdfa603832c89bd13cc">   55</a></span>   <span class="keyword">mutable</span> <span class="keywordtype">bool</span>                            <a class="code hl_variable" href="class_t_efficiency_calibration.html#a58b077a9f206dfdfa603832c89bd13cc">fFitting</a>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="class_t_efficiency_calibration.html#a569ac63b69b219cdd7ca0cc6cb1e992f">   56</a></span>   TF1*                                    <a class="code hl_variable" href="class_t_efficiency_calibration.html#a569ac63b69b219cdd7ca0cc6cb1e992f">fRelativeFit</a>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="class_t_efficiency_calibration.html#a3885408a92f7e5dc858305537c07a449">   57</a></span>   TF1*                                    <a class="code hl_variable" href="class_t_efficiency_calibration.html#a3885408a92f7e5dc858305537c07a449">fAbsoluteFunc</a>;</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment"></span> </div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">   /// \cond CLASSIMP</span></div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment"></span>   ClassDefOverride(<a class="code hl_class" href="class_t_efficiency_calibration.html">TEfficiencyCalibration</a>, 1);<span class="comment"></span></div>
@@ -201,7 +201,7 @@ $(document).ready(function(){initNavTree('_t_efficiency_calibration_8h_source.ht
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_efficiency_calibration_8h.html">TEfficiencyCalibration.h</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:14.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:18.</li>
   </ul>
 </div>
 </body>

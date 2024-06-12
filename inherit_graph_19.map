@@ -1,23 +1,29 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$class_stoppable_thread.html" title=" " alt="" coords="5,228,125,254"/>
-<area shape="rect" id="Node000001" href="$class_t_analysis_hist_loop.html" title=" " alt="" coords="180,5,312,31"/>
-<area shape="poly" id="edge178_Node000000_Node000001" title=" " alt="" coords="71,212,85,174,105,128,134,81,171,40,188,29,191,34,174,44,138,84,110,130,90,176,76,214"/>
-<area shape="rect" id="Node000002" href="$class_t_analysis_write_loop.html" title=" " alt="" coords="177,55,315,80"/>
-<area shape="poly" id="edge179_Node000000_Node000002" title=" " alt="" coords="76,213,113,151,140,118,171,89,190,79,193,83,174,94,144,122,118,154,81,215"/>
-<area shape="rect" id="Node000003" href="$class_t_data_loop.html" title=" " alt="" coords="203,104,289,130"/>
-<area shape="poly" id="edge180_Node000000_Node000003" title=" " alt="" coords="85,214,123,176,171,139,201,125,204,130,174,143,126,180,89,218"/>
-<area shape="rect" id="Node000004" href="$class_t_det_building_loop.html" title=" " alt="" coords="184,153,308,179"/>
-<area shape="poly" id="edge181_Node000000_Node000004" title=" " alt="" coords="105,218,172,188,200,177,202,182,174,193,107,223"/>
-<area shape="rect" id="Node000005" href="$class_t_event_building_loop.html" title=" " alt="" coords="177,203,315,228"/>
-<area shape="poly" id="edge182_Node000000_Node000005" title=" " alt="" coords="140,228,177,222,177,228,141,233"/>
-<area shape="rect" id="Node000006" href="$class_t_frag_hist_loop.html" title=" " alt="" coords="192,252,300,278"/>
-<area shape="poly" id="edge183_Node000000_Node000006" title=" " alt="" coords="140,248,191,255,191,260,140,253"/>
-<area shape="rect" id="Node000007" href="$class_t_frag_write_loop.html" title=" " alt="" coords="189,301,303,327"/>
-<area shape="poly" id="edge184_Node000000_Node000007" title=" " alt="" coords="108,258,174,288,203,298,201,303,172,293,105,263"/>
-<area shape="rect" id="Node000008" href="$class_t_fragment_chain_loop.html" title=" " alt="" coords="173,351,319,376"/>
-<area shape="poly" id="edge185_Node000000_Node000008" title=" " alt="" coords="89,264,127,301,174,337,196,348,194,352,171,342,123,305,85,267"/>
-<area shape="rect" id="Node000009" href="$class_t_terminal_loop.html" title=" " alt="" coords="177,400,315,426"/>
-<area shape="poly" id="edge186_Node000000_Node000009" title=" " alt="" coords="81,266,118,327,144,359,174,387,193,397,190,402,171,391,140,363,113,330,77,269"/>
-<area shape="rect" id="Node000010" href="$class_t_unpacking_loop.html" title=" " alt="" coords="186,449,306,475"/>
-<area shape="poly" id="edge187_Node000000_Node000010" title=" " alt="" coords="76,267,90,305,110,351,138,397,174,436,191,447,188,451,171,440,134,400,105,353,85,307,71,269"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,281,106,307"/>
+<area shape="rect" id="Node000001" href="$class_different_axis_limits.html" title=" " alt="" coords="180,5,310,31"/>
+<area shape="poly" id="edge165_Node000000_Node000001" title=" " alt="" coords="57,265,65,217,81,156,109,94,129,65,152,40,178,25,181,30,155,44,133,69,114,96,86,158,70,218,62,266"/>
+<area shape="rect" id="Node000002" href="$class_different_bin_limits.html" title=" " alt="" coords="183,55,307,80"/>
+<area shape="poly" id="edge166_Node000000_Node000002" title=" " alt="" coords="60,266,71,226,89,179,115,130,152,89,181,74,183,79,155,94,120,134,93,181,76,228,65,267"/>
+<area shape="rect" id="Node000003" href="$class_different_dimension.html" title=" " alt="" coords="180,104,310,130"/>
+<area shape="poly" id="edge167_Node000000_Node000003" title=" " alt="" coords="64,266,97,202,122,168,152,139,178,125,181,130,155,143,126,171,101,204,69,268"/>
+<area shape="rect" id="Node000004" href="$class_different_labels.html" title=" " alt="" coords="191,153,299,179"/>
+<area shape="poly" id="edge168_Node000000_Node000004" title=" " alt="" coords="72,267,106,226,128,205,152,188,189,173,191,178,155,192,131,210,110,230,76,270"/>
+<area shape="rect" id="Node000005" href="$class_different_number_of_bins.html" title=" " alt="" coords="167,203,323,228"/>
+<area shape="poly" id="edge169_Node000000_Node000005" title=" " alt="" coords="88,270,153,237,184,226,186,231,155,242,91,275"/>
+<area shape="rect" id="Node000006" href="$class_t_g_r_s_i_data_parser_exception.html" title=" " alt="" coords="154,252,336,278"/>
+<area shape="poly" id="edge170_Node000000_Node000006" title=" " alt="" coords="121,281,157,276,158,281,121,287"/>
+<area shape="rect" id="Node000007" href="$class_t_g_r_s_i_map_exception.html" title=" " alt="" coords="170,302,320,343"/>
+<area shape="poly" id="edge171_Node000000_Node000007" title=" " alt="" coords="121,301,170,308,169,314,121,306"/>
+<area shape="rect" id="Node000008" href="$class_t_h_i_l_data_parser_exception.html" title=" " alt="" coords="159,367,331,392"/>
+<area shape="poly" id="edge172_Node000000_Node000008" title=" " alt="" coords="89,314,120,334,155,352,187,364,186,369,153,357,117,338,86,318"/>
+<area shape="rect" id="Node000009" href="$class_t_i_l_l_data_parser_exception.html" title=" " alt="" coords="160,416,330,442"/>
+<area shape="poly" id="edge173_Node000000_Node000009" title=" " alt="" coords="75,318,109,362,130,384,155,403,177,413,175,418,152,407,127,388,105,366,71,322"/>
+<area shape="rect" id="Node000010" href="$class_t_tdr_data_parser_exception.html" title=" " alt="" coords="160,465,330,491"/>
+<area shape="poly" id="edge174_Node000000_Node000010" title=" " alt="" coords="68,320,81,351,100,387,125,422,155,452,174,463,171,467,152,456,121,426,95,390,76,353,63,322"/>
+<area shape="rect" id="Node000011" href="$structgrsi_1_1exit__exception.html" title=" " alt="" coords="180,515,310,540"/>
+<area shape="poly" id="edge175_Node000000_Node000011" title=" " alt="" coords="64,322,75,362,93,411,119,460,136,482,155,501,180,515,178,520,152,506,132,486,114,463,88,413,70,364,59,323"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="184,564,306,590"/>
+<area shape="poly" id="edge176_Node000000_Node000012" title=" " alt="" coords="62,322,69,372,85,433,113,497,132,526,155,551,185,567,183,572,152,555,128,529,109,499,80,435,64,373,56,323"/>
+<area shape="rect" id="Node000013" href="$struct_parse_error.html" title=" " alt="" coords="384,564,466,590"/>
+<area shape="poly" id="edge177_Node000012_Node000013" title=" " alt="" coords="321,574,384,574,384,580,321,580"/>
 </map>

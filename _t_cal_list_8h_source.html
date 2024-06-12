@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -125,11 +125,11 @@ $(document).ready(function(){initNavTree('_t_cal_list_8h_source.html',''); initR
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>   <a class="code hl_function" href="class_t_cal_list.html#af1ab56706ae0f14b2a86e62c9003bce2">TCalList</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_cal_list.html">TCalList</a>&amp; copy);</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_cal_list.html#a67729d4710974ace7ea6530963ee66e2">AddPoint</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_cal_point.html">TCalPoint</a>&amp; point);</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_cal_list.html#a67729d4710974ace7ea6530963ee66e2">AddPoint</a>(<span class="keyword">const</span> UInt_t&amp; idx, <span class="keyword">const</span> <a class="code hl_class" href="class_t_cal_point.html">TCalPoint</a>&amp; point);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>   <span class="keywordtype">void</span>  <a class="code hl_function" href="class_t_cal_list.html#a67729d4710974ace7ea6530963ee66e2">AddPoint</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_cal_point.html">TCalPoint</a>&amp; point);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>   <span class="keywordtype">void</span>  <a class="code hl_function" href="class_t_cal_list.html#a67729d4710974ace7ea6530963ee66e2">AddPoint</a>(<span class="keyword">const</span> UInt_t&amp; idx, <span class="keyword">const</span> <a class="code hl_class" href="class_t_cal_point.html">TCalPoint</a>&amp; point);</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="class_t_cal_list.html#a45cda32f9969bda19f138c477954e47c">   25</a></span>   Int_t <a class="code hl_function" href="class_t_cal_list.html#a45cda32f9969bda19f138c477954e47c">NPoints</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="class_t_cal_list.html#a741b56433be220af76ad091defc0d4b9">fCalList</a>.size(); }</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_cal_list.html#a62103ea90462dad225141d2f28b111a7">FillGraph</a>(TGraph* graph) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>   <span class="keywordtype">bool</span> <a class="code hl_function" href="class_t_cal_list.html#ad0ca7ccf858c8006c16b66096aa8df17">SetPointIndex</a>(<span class="keyword">const</span> UInt_t&amp; old_idx, <span class="keyword">const</span> UInt_t&amp; new_idx);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>   <span class="keywordtype">void</span>  <a class="code hl_function" href="class_t_cal_list.html#a62103ea90462dad225141d2f28b111a7">FillGraph</a>(TGraph* graph) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>   <span class="keywordtype">bool</span>  <a class="code hl_function" href="class_t_cal_list.html#ad0ca7ccf858c8006c16b66096aa8df17">SetPointIndex</a>(<span class="keyword">const</span> UInt_t&amp; old_idx, <span class="keyword">const</span> UInt_t&amp; new_idx);</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_cal_list.html#a46289fabb1b729f0d7fefbd75ff5932d">Copy</a>(TObject&amp; obj) <span class="keyword">const override</span>;</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_cal_list.html#af268e3ee2fea023660011af1ed3eb1d3">Clear</a>(Option_t* opt = <span class="stringliteral">&quot;&quot;</span>) <span class="keyword">override</span>;</div>
@@ -168,7 +168,7 @@ $(document).ready(function(){initNavTree('_t_cal_list_8h_source.html',''); initR
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_cal_list_8h.html">TCalList.h</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:14.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:18.</li>
   </ul>
 </div>
 </body>

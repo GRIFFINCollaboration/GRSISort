@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -132,10 +132,10 @@ $(document).ready(function(){initNavTree('_t_calibrator_8cxx_source.html',''); i
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment"></span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">/// \cond CLASSIMP</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"></span><a class="code hl_function" href="_t_griffin_angles_8cxx.html#af805acda91d6c5d558b18b0fc07255dc">ClassImp</a>(<a class="code hl_class" href="class_t_calibrator.html">TCalibrator</a>)<span class="comment"></span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">/// \endcond</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">   /// \endcond</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"></span> </div>
 <div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="class_t_calibrator.html#a4e36c179c8301a0872f7f548cb8a4be6">   33</a></span><a class="code hl_class" href="class_t_calibrator.html">TCalibrator</a>::<a class="code hl_class" href="class_t_calibrator.html">TCalibrator</a>()</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="class_t_calibrator.html#a4e36c179c8301a0872f7f548cb8a4be6">   33</a></span>   <a class="code hl_class" href="class_t_calibrator.html">TCalibrator</a>::<a class="code hl_class" href="class_t_calibrator.html">TCalibrator</a>()</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>   linfit = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>   efffit = <span class="keyword">nullptr</span>;</div>
@@ -165,14 +165,14 @@ $(document).ready(function(){initNavTree('_t_calibrator_8cxx_source.html',''); i
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="class_t_calibrator.html#acc348b917ad7cd97c009aa2ea9883dd1">   54</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_calibrator.html#acc348b917ad7cd97c009aa2ea9883dd1">TCalibrator::Print</a>(Option_t*)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>   <span class="keywordtype">int</span> counter = 0;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;\t  senergy          scent          scalc          sarea       snuc        sintensity&quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;\t  senergy          scent          scalc          sarea       snuc        sintensity&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span> it : <a class="code hl_variable" href="class_t_calibrator.html#af0bfb668005a86c504e9b87c1094ca64">fPeaks</a>) {</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      <span class="keywordtype">double</span> caleng = it.centroid * <a class="code hl_function" href="class_t_calibrator.html#a5110d26661b8d23a0b250e77e16e53ee">GetParameter</a>(1) + <a class="code hl_function" href="class_t_calibrator.html#a5110d26661b8d23a0b250e77e16e53ee">GetParameter</a>(0);</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      <span class="keywordtype">double</span> pdiff  = std::abs(caleng - it.energy) / it.energy;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      std::cout&lt;&lt;counter++&lt;&lt;<span class="stringliteral">&quot;:\t&quot;</span>&lt;&lt;std::setw(7)&lt;&lt;it.energy&lt;&lt;std::setw(16)&lt;&lt;it.centroid&lt;&lt;std::setw(8)&lt;&lt;caleng</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>               &lt;&lt;<span class="stringliteral">&quot;   [%%&quot;</span>&lt;&lt;std::setw(3)&lt;&lt;pdiff*100.&lt;&lt;<span class="stringliteral">&quot;]&quot;</span>&lt;&lt;std::setw(16)&lt;&lt;it.area&lt;&lt;std::setw(8)&lt;&lt;it.nucleus&lt;&lt;std::setw(16)&lt;&lt;it.intensity&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      std::cout &lt;&lt; counter++ &lt;&lt; <span class="stringliteral">&quot;:\t&quot;</span> &lt;&lt; std::setw(7) &lt;&lt; it.energy &lt;&lt; std::setw(16) &lt;&lt; it.centroid &lt;&lt; std::setw(8) &lt;&lt; caleng</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                &lt;&lt; <span class="stringliteral">&quot;   [%%&quot;</span> &lt;&lt; std::setw(3) &lt;&lt; pdiff * 100. &lt;&lt; <span class="stringliteral">&quot;]&quot;</span> &lt;&lt; std::setw(16) &lt;&lt; it.area &lt;&lt; std::setw(8) &lt;&lt; it.nucleus &lt;&lt; std::setw(16) &lt;&lt; it.intensity &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>   }</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;-------------------------------&quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;-------------------------------&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
 </div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
@@ -193,10 +193,10 @@ $(document).ready(function(){initNavTree('_t_calibrator_8cxx_source.html',''); i
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>   <span class="keywordflow">if</span>(file.length() != 0u) {</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      std::ofstream ofile;</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>      ofile.open(file.c_str());</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      ofile&lt;&lt;toprint;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      ofile &lt;&lt; toprint;</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      ofile.close();</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>   }</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   std::cout&lt;&lt;toprint&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   std::cout &lt;&lt; toprint &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>   <span class="keywordflow">return</span> toprint;</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>}</div>
 </div>
@@ -243,8 +243,8 @@ $(document).ready(function(){initNavTree('_t_calibrator_8cxx_source.html',''); i
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>      }</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>   }</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>   <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; energy.size(); i++) {</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>      std::cout&lt;&lt;<span class="stringliteral">&quot;[&quot;</span>&lt;&lt;energy.at(i)&lt;&lt;<span class="stringliteral">&quot;] Observed  = &quot;</span>&lt;&lt;observed.at(i)&lt;&lt;<span class="stringliteral">&quot;  | Calculated = &quot;</span>&lt;&lt;<a class="code hl_variable" href="class_t_calibrator.html#ab48ce860004627209ff567fb180ecc15">efffit</a>-&gt;Eval(energy.at(i))&lt;&lt;<span class="stringliteral">&quot;  |  per diff = &quot;</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>               &lt;&lt;(std::abs(observed.at(i) - <a class="code hl_variable" href="class_t_calibrator.html#ab48ce860004627209ff567fb180ecc15">efffit</a>-&gt;Eval(energy.at(i))) / observed.at(i)) * 100.&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[&quot;</span> &lt;&lt; energy.at(i) &lt;&lt; <span class="stringliteral">&quot;] Observed  = &quot;</span> &lt;&lt; observed.at(i) &lt;&lt; <span class="stringliteral">&quot;  | Calculated = &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_t_calibrator.html#ab48ce860004627209ff567fb180ecc15">efffit</a>-&gt;Eval(energy.at(i)) &lt;&lt; <span class="stringliteral">&quot;  |  per diff = &quot;</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                &lt;&lt; (std::abs(observed.at(i) - <a class="code hl_variable" href="class_t_calibrator.html#ab48ce860004627209ff567fb180ecc15">efffit</a>-&gt;Eval(energy.at(i))) / observed.at(i)) * 100. &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>   }</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>   <span class="keywordflow">return</span> <a class="code hl_variable" href="class_t_calibrator.html#a2a40d4f0c60370b9a594603a28f7d259">eff_graph</a>;</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>}</div>
@@ -361,7 +361,7 @@ $(document).ready(function(){initNavTree('_t_calibrator_8cxx_source.html',''); i
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno"><a class="line" href="class_t_calibrator.html#a1e8de6b7a3b5d75599a9bf6a2388f366">  230</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="class_t_calibrator.html#a1e8de6b7a3b5d75599a9bf6a2388f366">TCalibrator::AddData</a>(TH1* data, <span class="keyword">const</span> std::string&amp; source, <span class="keywordtype">double</span> sigma, <span class="keywordtype">double</span> threshold, <span class="keywordtype">double</span> error)</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>{</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>   <span class="keywordflow">if</span>((data == <span class="keyword">nullptr</span>) || (source.length() == 0u)) {</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>      std::cout&lt;&lt;<span class="stringliteral">&quot;data not added. data = &quot;</span>&lt;&lt;data&lt;&lt;<span class="stringliteral">&quot; \t source = &quot;</span>&lt;&lt;source&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;data not added. data = &quot;</span> &lt;&lt; data &lt;&lt; <span class="stringliteral">&quot; \t source = &quot;</span> &lt;&lt; source &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>      <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>   }</div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>   <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a> n(source.c_str());</div>
@@ -373,7 +373,7 @@ $(document).ready(function(){initNavTree('_t_calibrator_8cxx_source.html',''); i
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno"><a class="line" href="class_t_calibrator.html#a47c282a971d4a67435eefe3ce6edd9ca">  240</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="class_t_calibrator.html#a1e8de6b7a3b5d75599a9bf6a2388f366">TCalibrator::AddData</a>(TH1* data, <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>* source, <span class="keywordtype">double</span> sigma, <span class="keywordtype">double</span> threshold, <span class="keywordtype">double</span>)</div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>{</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>   <span class="keywordflow">if</span>((data == <span class="keyword">nullptr</span>) || (source == <span class="keyword">nullptr</span>)) {</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>      std::cout&lt;&lt;<span class="stringliteral">&quot;data not added. data = &quot;</span>&lt;&lt;data&lt;&lt;<span class="stringliteral">&quot; \t source = &quot;</span>&lt;&lt;source&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;data not added. data = &quot;</span> &lt;&lt; data &lt;&lt; <span class="stringliteral">&quot; \t source = &quot;</span> &lt;&lt; source &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>      <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>   }</div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>   <span class="keywordtype">int</span> actual_x_max    = std::floor(data-&gt;GetXaxis()-&gt;GetXmax());</div>
@@ -388,8 +388,8 @@ $(document).ready(function(){initNavTree('_t_calibrator_8cxx_source.html',''); i
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>      name = Form(<span class="stringliteral">&quot;%s_%i_%i&quot;</span>, source-&gt;GetName(), displayed_x_min, displayed_x_max);</div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>   }</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>   TIter               iter(source-&gt;<a class="code hl_function" href="class_t_nucleus.html#ab62f4ee9ab76506e6f86607525f1e86c">GetTransitionList</a>());</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>   std::vector&lt;double&gt; source_energy;</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>   TIter                    iter(source-&gt;<a class="code hl_function" href="class_t_nucleus.html#ab62f4ee9ab76506e6f86607525f1e86c">GetTransitionList</a>());</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>   std::vector&lt;double&gt;      source_energy;</div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>   std::map&lt;double, double&gt; src_eng_int;</div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>   <span class="keywordflow">while</span>(<a class="code hl_class" href="class_t_transition.html">TTransition</a>* transition = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_t_transition.html">TTransition</a>*<span class="keyword">&gt;</span>(iter.Next())) {</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>      source_energy.push_back(transition-&gt;GetEnergy());</div>
@@ -399,7 +399,7 @@ $(document).ready(function(){initNavTree('_t_calibrator_8cxx_source.html',''); i
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>   TSpectrum spectrum;</div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>   spectrum.Search(data, sigma, <span class="stringliteral">&quot;&quot;</span>, threshold);</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>   std::vector&lt;double&gt; data_channels;</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>   std::vector&lt;double&gt;      data_channels;</div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>   std::map&lt;double, double&gt; peak_area;</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> x = 0; x &lt; spectrum.GetNPeaks(); x++) {</div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>      <span class="keywordtype">double</span> range = 8 * data-&gt;GetXaxis()-&gt;GetBinWidth(1);</div>
@@ -424,7 +424,7 @@ $(document).ready(function(){initNavTree('_t_calibrator_8cxx_source.html',''); i
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>         counter++;</div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>      }</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>   }</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>   <span class="keywordflow">return</span> counter; <span class="comment">// CheckMap(datatosource);</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>   <span class="keywordflow">return</span> counter;   <span class="comment">// CheckMap(datatosource);</span></div>
 <div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>}</div>
 </div>
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
@@ -440,10 +440,10 @@ $(document).ready(function(){initNavTree('_t_calibrator_8cxx_source.html',''); i
 <div class="foldopen" id="foldopen00304" data-start="{" data-end="}">
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno"><a class="line" href="class_t_calibrator.html#a0368e2b7c5e6445e7db7f886523cc728">  304</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_calibrator.html#a0368e2b7c5e6445e7db7f886523cc728">TCalibrator::PrintMap</a>(std::map&lt;double, double&gt;&amp; inmap)</div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>{</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;\tfirst\tsecond&quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;\tfirst\tsecond&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>   <span class="keywordtype">int</span> counter = 0;</div>
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; it : inmap) {</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>      std::cout&lt;&lt;counter++&lt;&lt;<span class="stringliteral">&quot;\t&quot;</span>&lt;&lt;it.first&lt;&lt;<span class="stringliteral">&quot;\t&quot;</span>&lt;&lt;it.second&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>      std::cout &lt;&lt; counter++ &lt;&lt; <span class="stringliteral">&quot;\t&quot;</span> &lt;&lt; it.first &lt;&lt; <span class="stringliteral">&quot;\t&quot;</span> &lt;&lt; it.second &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>   }</div>
 <div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>}</div>
 </div>
@@ -574,8 +574,8 @@ $(document).ready(function(){initNavTree('_t_calibrator_8cxx_source.html',''); i
 <div class="ttc" id="a_t_griffin_angles_8cxx_html_af805acda91d6c5d558b18b0fc07255dc"><div class="ttname"><a href="_t_griffin_angles_8cxx.html#af805acda91d6c5d558b18b0fc07255dc">ClassImp</a></div><div class="ttdeci">ClassImp(TGriffinAngles) TGriffinAngles</div><div class="ttdef"><b>Definition</b> <a href="_t_griffin_angles_8cxx_source.html#l00005">TGriffinAngles.cxx:5</a></div></div>
 <div class="ttc" id="a_t_nucleus_8h_html"><div class="ttname"><a href="_t_nucleus_8h.html">TNucleus.h</a></div></div>
 <div class="ttc" id="a_t_transition_8h_html"><div class="ttname"><a href="_t_transition_8h.html">TTransition.h</a></div></div>
-<div class="ttc" id="aclass_g_canvas_html"><div class="ttname"><a href="class_g_canvas.html">GCanvas</a></div><div class="ttdef"><b>Definition</b> <a href="_g_canvas_8h_source.html#l00198">GCanvas.h:198</a></div></div>
-<div class="ttc" id="aclass_g_canvas_html_ab26865f0bf8cf2ed4664cbea1eebbc01"><div class="ttname"><a href="class_g_canvas.html#ab26865f0bf8cf2ed4664cbea1eebbc01">GCanvas::Draw</a></div><div class="ttdeci">void Draw(Option_t *opt=&quot;&quot;) override</div><div class="ttdef"><b>Definition</b> <a href="_g_canvas_8cxx_source.html#l00318">GCanvas.cxx:318</a></div></div>
+<div class="ttc" id="aclass_g_canvas_html"><div class="ttname"><a href="class_g_canvas.html">GCanvas</a></div><div class="ttdef"><b>Definition</b> <a href="_g_canvas_8h_source.html#l00231">GCanvas.h:231</a></div></div>
+<div class="ttc" id="aclass_g_canvas_html_ab26865f0bf8cf2ed4664cbea1eebbc01"><div class="ttname"><a href="class_g_canvas.html#ab26865f0bf8cf2ed4664cbea1eebbc01">GCanvas::Draw</a></div><div class="ttdeci">void Draw(Option_t *opt=&quot;&quot;) override</div><div class="ttdef"><b>Definition</b> <a href="_g_canvas_8cxx_source.html#l00321">GCanvas.cxx:321</a></div></div>
 <div class="ttc" id="aclass_g_peak_html"><div class="ttname"><a href="class_g_peak.html">GPeak</a></div><div class="ttdef"><b>Definition</b> <a href="_g_peak_8h_source.html#l00011">GPeak.h:11</a></div></div>
 <div class="ttc" id="aclass_g_peak_html_a8d25c14571c81004edacb46e1c75da97"><div class="ttname"><a href="class_g_peak.html#a8d25c14571c81004edacb46e1c75da97">GPeak::GetCentroid</a></div><div class="ttdeci">Double_t GetCentroid() const</div><div class="ttdef"><b>Definition</b> <a href="_g_peak_8h_source.html#l00030">GPeak.h:30</a></div></div>
 <div class="ttc" id="aclass_g_peak_html_aeee3b5aaf5af9fbcfc59f66e3e387193"><div class="ttname"><a href="class_g_peak.html#aeee3b5aaf5af9fbcfc59f66e3e387193">GPeak::GetSum</a></div><div class="ttdeci">Double_t GetSum() const</div><div class="ttdef"><b>Definition</b> <a href="_g_peak_8h_source.html#l00034">GPeak.h:34</a></div></div>
@@ -608,7 +608,7 @@ $(document).ready(function(){initNavTree('_t_calibrator_8cxx_source.html',''); i
 <div class="ttc" id="aclass_t_calibrator_html_afe11a260ffd3deea5411c15f842d55c1"><div class="ttname"><a href="class_t_calibrator.html#afe11a260ffd3deea5411c15f842d55c1">TCalibrator::eff_par</a></div><div class="ttdeci">double eff_par[4]</div><div class="ttdef"><b>Definition</b> <a href="_t_calibrator_8h_source.html#l00084">TCalibrator.h:84</a></div></div>
 <div class="ttc" id="aclass_t_channel_html"><div class="ttname"><a href="class_t_channel.html">TChannel</a></div><div class="ttdef"><b>Definition</b> <a href="_t_channel_8h_source.html#l00050">TChannel.h:50</a></div></div>
 <div class="ttc" id="aclass_t_nucleus_html"><div class="ttname"><a href="class_t_nucleus.html">TNucleus</a></div><div class="ttdef"><b>Definition</b> <a href="_t_nucleus_8h_source.html#l00027">TNucleus.h:27</a></div></div>
-<div class="ttc" id="aclass_t_nucleus_html_ab62f4ee9ab76506e6f86607525f1e86c"><div class="ttname"><a href="class_t_nucleus.html#ab62f4ee9ab76506e6f86607525f1e86c">TNucleus::GetTransitionList</a></div><div class="ttdeci">const TSortedList * GetTransitionList() const</div><div class="ttdef"><b>Definition</b> <a href="_t_nucleus_8h_source.html#l00078">TNucleus.h:78</a></div></div>
+<div class="ttc" id="aclass_t_nucleus_html_ab62f4ee9ab76506e6f86607525f1e86c"><div class="ttname"><a href="class_t_nucleus.html#ab62f4ee9ab76506e6f86607525f1e86c">TNucleus::GetTransitionList</a></div><div class="ttdeci">const TSortedList * GetTransitionList() const</div><div class="ttdef"><b>Definition</b> <a href="_t_nucleus_8h_source.html#l00086">TNucleus.h:86</a></div></div>
 <div class="ttc" id="aclass_t_transition_html"><div class="ttname"><a href="class_t_transition.html">TTransition</a></div><div class="ttdef"><b>Definition</b> <a href="_t_transition_8h_source.html#l00023">TTransition.h:23</a></div></div>
 <div class="ttc" id="aclasscombinations_html"><div class="ttname"><a href="classcombinations.html">combinations</a></div><div class="ttdef"><b>Definition</b> <a href="combinations_8h_source.html#l00004">combinations.h:4</a></div></div>
 <div class="ttc" id="acombinations_8h_html"><div class="ttname"><a href="combinations_8h.html">combinations.h</a></div></div>
@@ -628,7 +628,7 @@ $(document).ready(function(){initNavTree('_t_calibrator_8cxx_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_47358ee868e3aed1e59cf9c2ead119a2.html">GROOT</a></li><li class="navelem"><a class="el" href="_t_calibrator_8cxx.html">TCalibrator.cxx</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:15.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:19.</li>
   </ul>
 </div>
 </body>

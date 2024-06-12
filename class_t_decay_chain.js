@@ -13,7 +13,7 @@ var class_t_decay_chain =
     [ "GetChainFunc", "class_t_decay_chain.html#ae9cf25ab51747c8ea299b5a7206104f7", null ],
     [ "GetChainId", "class_t_decay_chain.html#ad69199a6d7a53689f7c078bbfcf71124", null ],
     [ "GetDecay", "class_t_decay_chain.html#a3e45c31840b28e7ad2b3fc43780ee854", null ],
-    [ "GetFitFunction", "class_t_decay_chain.html#a49f34af0ee6b24e9bba0e4fc2bf76401", null ],
+    [ "GetFitFunction", "class_t_decay_chain.html#aa917b511857fb4e7bca3601750110a45", null ],
     [ "Print", "class_t_decay_chain.html#a2b13fe782583dffb9cc2bd86a8fa37be", null ],
     [ "SetChainParameters", "class_t_decay_chain.html#a74b083a987519af8bc44afecbb096339", null ],
     [ "SetRange", "class_t_decay_chain.html#ad6bdefeb246983106c79d8f4d65ac462", null ],

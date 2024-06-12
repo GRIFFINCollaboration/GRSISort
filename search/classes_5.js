@@ -23,6 +23,7 @@ var searchData=
   ['grootcanvas_20',['GRootCanvas',['../class_g_root_canvas.html',1,'']]],
   ['grootcontainer_21',['GRootContainer',['../class_g_root_container.html',1,'']]],
   ['grootguifactory_22',['GRootGuiFactory',['../class_g_root_gui_factory.html',1,'']]],
-  ['gsnapshot_23',['GSnapshot',['../class_g_snapshot.html',1,'']]],
-  ['gvalue_24',['GValue',['../class_g_value.html',1,'']]]
+  ['grsixx_23',['GRSIxx',['../class_g_r_s_ixx.html',1,'']]],
+  ['gsnapshot_24',['GSnapshot',['../class_g_snapshot.html',1,'']]],
+  ['gvalue_25',['GValue',['../class_g_value.html',1,'']]]
 ];

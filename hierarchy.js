@@ -44,6 +44,7 @@ var hierarchy =
       [ "GH2D", "class_g_h2_d.html", null ],
       [ "GH2I", "class_g_h2_i.html", null ]
     ] ],
+    [ "GRSIxx", "class_g_r_s_ixx.html", null ],
     [ "GSnapshot", "class_g_snapshot.html", null ],
     [ "combinations::iterator", "classcombinations_1_1iterator.html", null ],
     [ "GH2Base::iterator", "class_g_h2_base_1_1iterator.html", null ],

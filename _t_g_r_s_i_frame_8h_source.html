@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_frame_8h_source.html',''); 
 <a href="_t_g_r_s_i_frame_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef TGRSIFRAME_H</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define TGRSIFRAME_H</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;RVersion.h&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#if ROOT_VERSION_CODE &gt;= ROOT_VERSION(6,14,0)</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#if ROOT_VERSION_CODE &gt;= ROOT_VERSION(6, 14, 0)</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;map&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;string&gt;</span></div>
@@ -131,14 +131,14 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_frame_8h_source.html',''); 
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_g_r_s_i_frame.html#a6122e69943c9da570d5bd823746a604a">Run</a>();</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_t_g_r_s_i_frame.html#a5f4f9205fca3fae7829ebdf7c83402a6">   29</a></span>   std::string <a class="code hl_variable" href="class_t_g_r_s_i_frame.html#a5f4f9205fca3fae7829ebdf7c83402a6">fOutputPrefix</a>{<span class="stringliteral">&quot;default&quot;</span>};</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_t_g_r_s_i_frame.html#a5f4f9205fca3fae7829ebdf7c83402a6">   29</a></span>   std::string                                         <a class="code hl_variable" href="class_t_g_r_s_i_frame.html#a5f4f9205fca3fae7829ebdf7c83402a6">fOutputPrefix</a>{<span class="stringliteral">&quot;default&quot;</span>};</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="class_t_g_r_s_i_frame.html#abf2f3fb79b9b56b4fc54eb6fdb06f88f">   30</a></span>   ROOT::RDF::RResultPtr&lt;std::map&lt;std::string, TList&gt;&gt; <a class="code hl_variable" href="class_t_g_r_s_i_frame.html#abf2f3fb79b9b56b4fc54eb6fdb06f88f">fOutput</a>;</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="class_t_g_r_s_i_frame.html#a6eef1a4d231fc55cbdfc25416645eefa">   32</a></span>   <a class="code hl_class" href="class_t_g_r_s_i_options.html">TGRSIOptions</a>* <a class="code hl_variable" href="class_t_g_r_s_i_frame.html#a6eef1a4d231fc55cbdfc25416645eefa">fOptions</a>{<span class="keyword">nullptr</span>};</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="class_t_g_r_s_i_frame.html#a10b0b09a75926371f54041f2a938f611">   33</a></span>   <a class="code hl_class" href="class_t_p_p_g.html">TPPG</a>* <a class="code hl_variable" href="class_t_g_r_s_i_frame.html#a10b0b09a75926371f54041f2a938f611">fPpg</a>{<span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="class_t_g_r_s_i_frame.html#a10b0b09a75926371f54041f2a938f611">   33</a></span>   <a class="code hl_class" href="class_t_p_p_g.html">TPPG</a>*         <a class="code hl_variable" href="class_t_g_r_s_i_frame.html#a10b0b09a75926371f54041f2a938f611">fPpg</a>{<span class="keyword">nullptr</span>};</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="class_t_g_r_s_i_frame.html#a9197e8fe257d4c378b645c7d6a0bc826">   35</a></span>   ROOT::RDataFrame* <a class="code hl_variable" href="class_t_g_r_s_i_frame.html#a9197e8fe257d4c378b645c7d6a0bc826">fDataFrame</a>{<span class="keyword">nullptr</span>};</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="class_t_g_r_s_i_frame.html#a82bfdf7ee5b528349ac68314f8bdfe04">   36</a></span>   Long64_t <a class="code hl_variable" href="class_t_g_r_s_i_frame.html#a82bfdf7ee5b528349ac68314f8bdfe04">fTotalEntries</a>{0};</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="class_t_g_r_s_i_frame.html#a82bfdf7ee5b528349ac68314f8bdfe04">   36</a></span>   Long64_t          <a class="code hl_variable" href="class_t_g_r_s_i_frame.html#a82bfdf7ee5b528349ac68314f8bdfe04">fTotalEntries</a>{0};</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#if ROOT_VERSION_CODE &gt;= ROOT_VERSION(6, 24, 0)</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="class_t_g_r_s_i_frame.html#a0d0e05018efa413ac13fd0cdee57d84d">   39</a></span>   ROOT::Experimental::RLogScopedVerbosity* <a class="code hl_variable" href="class_t_g_r_s_i_frame.html#a0d0e05018efa413ac13fd0cdee57d84d">fVerbosity</a>{<span class="keyword">nullptr</span>};</div>
@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_frame_8h_source.html',''); 
 <div class="ttc" id="aclass_t_g_r_s_i_frame_html_a9197e8fe257d4c378b645c7d6a0bc826"><div class="ttname"><a href="class_t_g_r_s_i_frame.html#a9197e8fe257d4c378b645c7d6a0bc826">TGRSIFrame::fDataFrame</a></div><div class="ttdeci">ROOT::RDataFrame * fDataFrame</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_frame_8h_source.html#l00035">TGRSIFrame.h:35</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_frame_html_abf2f3fb79b9b56b4fc54eb6fdb06f88f"><div class="ttname"><a href="class_t_g_r_s_i_frame.html#abf2f3fb79b9b56b4fc54eb6fdb06f88f">TGRSIFrame::fOutput</a></div><div class="ttdeci">ROOT::RDF::RResultPtr&lt; std::map&lt; std::string, TList &gt; &gt; fOutput</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_frame_8h_source.html#l00030">TGRSIFrame.h:30</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_options_html"><div class="ttname"><a href="class_t_g_r_s_i_options.html">TGRSIOptions</a></div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_options_8h_source.html#l00029">TGRSIOptions.h:29</a></div></div>
-<div class="ttc" id="aclass_t_p_p_g_html"><div class="ttname"><a href="class_t_p_p_g.html">TPPG</a></div><div class="ttdef"><b>Definition</b> <a href="_t_p_p_g_8h_source.html#l00122">TPPG.h:122</a></div></div>
+<div class="ttc" id="aclass_t_p_p_g_html"><div class="ttname"><a href="class_t_p_p_g.html">TPPG</a></div><div class="ttdef"><b>Definition</b> <a href="_t_p_p_g_8h_source.html#l00128">TPPG.h:128</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -173,7 +173,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_frame_8h_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_g_r_s_i_frame_8h.html">TGRSIFrame.h</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:14.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:18.</li>
   </ul>
 </div>
 </body>

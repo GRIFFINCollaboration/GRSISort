@@ -25,7 +25,7 @@ var class_t_single_decay =
     [ "GetDecayRateError", "class_t_single_decay.html#a2fbe5f7e084ae20c8b6b9c91337400c9", null ],
     [ "GetDecayRateLimits", "class_t_single_decay.html#a5a1426835a4236000f418fbb245c2be9", null ],
     [ "GetEfficiency", "class_t_single_decay.html#a71bf3260b486b648e6a7c56b6f5b3f20", null ],
-    [ "GetFitFunction", "class_t_single_decay.html#a7ee246d1959d7b47a7e4a7436fe7541c", null ],
+    [ "GetFitFunction", "class_t_single_decay.html#aaba425b5db660bae29982888134770e5", null ],
     [ "GetGeneration", "class_t_single_decay.html#ae25c3096aadae05090000176232c5cab", null ],
     [ "GetHalfLife", "class_t_single_decay.html#a1e7d9cb2e6ef536ff3a85d26d3fcf937", null ],
     [ "GetHalfLifeError", "class_t_single_decay.html#ad2d8e6c555c4b32373cdcb59a07ad591", null ],

@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -172,11 +172,11 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_proof_8h_source.html',''); 
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="stringliteral">      </span><span class="comment">// if we have a data parser/detector library load it</span></div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      std::string library = <a class="code hl_function" href="class_t_g_r_s_i_options.html#a1a8edf1ec3d24de78be268e1a12492f7">TGRSIOptions::Get</a>()-&gt;<a class="code hl_function" href="class_t_g_r_s_i_options.html#acc0b4f6f2c0d4725939997b1bde9e777">ParserLibrary</a>();</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      <span class="keywordflow">if</span>(library.empty()) {</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>         std::cout&lt;&lt;<a class="code hl_define" href="_globals_8h.html#a59524b4cf113f646696e5955023df6a4">DYELLOW</a>&lt;&lt;<span class="stringliteral">&quot;Not loading any parser library, this might not work!&quot;</span>&lt;&lt;<a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>         std::cout&lt;&lt;<span class="stringliteral">&quot;Loading library &#39;&quot;</span>&lt;&lt;pPath&lt;&lt;<span class="stringliteral">&quot;/lib/libGRSI.so&#39;&quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>         std::cout &lt;&lt; <a class="code hl_define" href="_globals_8h.html#a59524b4cf113f646696e5955023df6a4">DYELLOW</a> &lt;&lt; <span class="stringliteral">&quot;Not loading any parser library, this might not work!&quot;</span> &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>         std::cout &lt;&lt; <span class="stringliteral">&quot;Loading library &#39;&quot;</span> &lt;&lt; pPath &lt;&lt; <span class="stringliteral">&quot;/lib/libGRSI.so&#39;&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>         Exec(Form(R<span class="stringliteral">&quot;(gSystem-&gt;Load(&quot;%s/lib/libGRSI.so&quot;);)&quot;, pPath));</span></div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="stringliteral">      } </span><span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>         std::cout&lt;&lt;<span class="stringliteral">&quot;Loading parser library &#39;&quot;</span>&lt;&lt;library&lt;&lt;<span class="stringliteral">&quot;&#39;&quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>         std::cout &lt;&lt; <span class="stringliteral">&quot;Loading parser library &#39;&quot;</span> &lt;&lt; library &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>         Exec(Form(R<span class="stringliteral">&quot;(gSystem-&gt;Load(&quot;%s&quot;);)&quot;, library.c_str()));</span></div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="stringliteral">         <a class="code hl_function" href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TParserLibrary::Get</a>()-&gt;<a class="code hl_function" href="class_t_parser_library.html#a57fa09a8addf8b7c490706ced46d3394">Load</a>();</span></div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="stringliteral">      }</span></div>
@@ -184,12 +184,12 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_proof_8h_source.html',''); 
 </div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="stringliteral"></span><span class="comment"></span> </div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">   /// \cond CLASSIMP</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment"></span>   ClassDefOverride(<a class="code hl_class" href="class_t_g_r_s_i_proof.html">TGRSIProof</a>, 1); <span class="comment">// Event Fragments</span><span class="comment"></span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">   /// \endcond</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment"></span>   ClassDefOverride(<a class="code hl_class" href="class_t_g_r_s_i_proof.html">TGRSIProof</a>, 1);   <span class="comment">// Event Fragments</span><span class="comment"></span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">                                      /// \endcond</span></div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment"></span>};<span class="comment"></span></div>
 </div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">/*! @} */</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">#endif </span><span class="comment">// TGRSIProof_H</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">#endif   </span><span class="comment">// TGRSIProof_H</span></div>
 <div class="ttc" id="a_globals_8h_html"><div class="ttname"><a href="_globals_8h.html">Globals.h</a></div></div>
 <div class="ttc" id="a_globals_8h_html_a59524b4cf113f646696e5955023df6a4"><div class="ttname"><a href="_globals_8h.html#a59524b4cf113f646696e5955023df6a4">DYELLOW</a></div><div class="ttdeci">#define DYELLOW</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00015">Globals.h:15</a></div></div>
 <div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00004">Globals.h:4</a></div></div>
@@ -202,8 +202,8 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_proof_8h_source.html',''); 
 <div class="ttc" id="aclass_t_g_r_s_i_proof_html_a6637dd7113eb7af4acf8491a90151c87"><div class="ttname"><a href="class_t_g_r_s_i_proof.html#a6637dd7113eb7af4acf8491a90151c87">TGRSIProof::LoadLibsIntoProof</a></div><div class="ttdeci">void LoadLibsIntoProof()</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_proof_8h_source.html#l00054">TGRSIProof.h:54</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_proof_html_aa21567de747a279bf375508ee11991d9"><div class="ttname"><a href="class_t_g_r_s_i_proof.html#aa21567de747a279bf375508ee11991d9">TGRSIProof::~TGRSIProof</a></div><div class="ttdeci">~TGRSIProof() override=default</div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_proof_html_adbaaab098a752097041b7733b8a0679e"><div class="ttname"><a href="class_t_g_r_s_i_proof.html#adbaaab098a752097041b7733b8a0679e">TGRSIProof::Open</a></div><div class="ttdeci">static TGRSIProof * Open(const char *worker=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_proof_8h_source.html#l00048">TGRSIProof.h:48</a></div></div>
-<div class="ttc" id="aclass_t_parser_library_html_a57fa09a8addf8b7c490706ced46d3394"><div class="ttname"><a href="class_t_parser_library.html#a57fa09a8addf8b7c490706ced46d3394">TParserLibrary::Load</a></div><div class="ttdeci">void Load()</div><div class="ttdoc">if necessary loads shared object library and sets/initializes all other functions</div><div class="ttdef"><b>Definition</b> <a href="_t_parser_library_8cxx_source.html#l00019">TParserLibrary.cxx:19</a></div></div>
-<div class="ttc" id="aclass_t_singleton_html_a58e2a8e03fa6a7c20638044626add93a"><div class="ttname"><a href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TSingleton&lt; TParserLibrary &gt;::Get</a></div><div class="ttdeci">static TParserLibrary * Get(bool verbose=false)</div><div class="ttdef"><b>Definition</b> <a href="_t_singleton_8h_source.html#l00034">TSingleton.h:34</a></div></div>
+<div class="ttc" id="aclass_t_parser_library_html_a57fa09a8addf8b7c490706ced46d3394"><div class="ttname"><a href="class_t_parser_library.html#a57fa09a8addf8b7c490706ced46d3394">TParserLibrary::Load</a></div><div class="ttdeci">void Load()</div><div class="ttdoc">if necessary loads shared object library and sets/initializes all other functions</div><div class="ttdef"><b>Definition</b> <a href="_t_parser_library_8cxx_source.html#l00020">TParserLibrary.cxx:20</a></div></div>
+<div class="ttc" id="aclass_t_singleton_html_a58e2a8e03fa6a7c20638044626add93a"><div class="ttname"><a href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TSingleton&lt; TParserLibrary &gt;::Get</a></div><div class="ttdeci">static TParserLibrary * Get(bool verbose=false)</div><div class="ttdef"><b>Definition</b> <a href="_t_singleton_8h_source.html#l00033">TSingleton.h:33</a></div></div>
 <div class="ttc" id="agroup___sorting_html_ga09ef713eb9ba7e13963a94f4ef049bde"><div class="ttname"><a href="group___sorting.html#ga09ef713eb9ba7e13963a94f4ef049bde">nulFileName</a></div><div class="ttdeci">const char *const nulFileName</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_proof_8h_source.html#l00031">TGRSIProof.h:31</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -212,7 +212,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_proof_8h_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_g_r_s_i_proof_8h.html">TGRSIProof.h</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:14.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:18.</li>
   </ul>
 </div>
 </body>

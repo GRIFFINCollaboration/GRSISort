@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -116,9 +116,9 @@ $(document).ready(function(){initNavTree('_g_peak_8cxx_source.html',''); initRes
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"></span> </div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">/// \cond CLASSIMP</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"></span><a class="code hl_function" href="_t_griffin_angles_8cxx.html#af805acda91d6c5d558b18b0fc07255dc">ClassImp</a>(<a class="code hl_class" href="class_g_peak.html">GPeak</a>)<span class="comment"></span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">/// \endcond</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">   /// \endcond</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"></span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><a class="code hl_class" href="class_g_peak.html">GPeak</a>* <a class="code hl_variable" href="class_g_peak.html#a9149195aef0ee498dc4e41225dec676a">GPeak::fLastFit</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>   <a class="code hl_class" href="class_g_peak.html">GPeak</a>* <a class="code hl_variable" href="class_g_peak.html#a9149195aef0ee498dc4e41225dec676a">GPeak::fLastFit</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
 <div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="class_g_peak.html#a8bdcfdf7c9611198ac96b735a818001f">   19</a></span><a class="code hl_function" href="class_g_peak.html#a01655a4345aadd1a4f8f01e089d0b6db">GPeak::GPeak</a>(Double_t cent, Double_t xlow, Double_t xhigh, Option_t*)</div>
@@ -270,7 +270,7 @@ $(document).ready(function(){initNavTree('_g_peak_8cxx_source.html',''); initRes
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="class_g_peak.html#abd8aec7f14e57530042974e401fb15fa">  151</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="class_g_peak.html#abd8aec7f14e57530042974e401fb15fa">GPeak::InitParams</a>(TH1* fithist)</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>{</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>   <span class="keywordflow">if</span>(fithist == <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>      std::cout&lt;&lt;<span class="stringliteral">&quot;No histogram is associated yet, no initial guesses made&quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;No histogram is associated yet, no initial guesses made&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>   }</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>   <span class="comment">// Makes initial guesses at parameters for the fit. Uses the histogram to</span></div>
@@ -330,9 +330,9 @@ $(document).ready(function(){initNavTree('_g_peak_8cxx_source.html',''); initRes
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>   TF1::SetParLimits(6, offset - 0.5 * offset, offset + offset);</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>   <span class="comment">// Make initial guesses</span></div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>   TF1::SetParameter(0, largesty);                <span class="comment">// fithist-&gt;GetBinContent(bin));</span></div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>   TF1::SetParameter(1, largestx);                <span class="comment">// GetParameter(&quot;centroid&quot;));</span></div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>   TF1::SetParameter(2, (largestx * .01) / 2.35); <span class="comment">// 2,(xhigh-xlow));     //2.0/binWidth); //</span></div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>   TF1::SetParameter(0, largesty);                  <span class="comment">// fithist-&gt;GetBinContent(bin));</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>   TF1::SetParameter(1, largestx);                  <span class="comment">// GetParameter(&quot;centroid&quot;));</span></div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>   TF1::SetParameter(2, (largestx * .01) / 2.35);   <span class="comment">// 2,(xhigh-xlow));     //2.0/binWidth); //</span></div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>   TF1::SetParameter(3, 5.);</div>
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>   TF1::SetParameter(4, 1.);</div>
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>   TF1::SetParameter(5, step);</div>
@@ -364,8 +364,8 @@ $(document).ready(function(){initNavTree('_g_peak_8cxx_source.html',''); initRes
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>   }</div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>   TVirtualFitter::SetMaxIterations(100000);</div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>   <span class="keywordtype">bool</span> quiet = options.Contains(<span class="stringliteral">&quot;q&quot;</span>);</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>   <span class="keywordtype">bool</span> verbose = options.Contains(<span class="stringliteral">&quot;v&quot;</span>);</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>   <span class="keywordtype">bool</span> quiet    = options.Contains(<span class="stringliteral">&quot;q&quot;</span>);</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>   <span class="keywordtype">bool</span> verbose  = options.Contains(<span class="stringliteral">&quot;v&quot;</span>);</div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>   <span class="keywordtype">bool</span> retryFit = options.Contains(<span class="stringliteral">&quot;retryfit&quot;</span>);</div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>   options.ReplaceAll(<span class="stringliteral">&quot;retryfit&quot;</span>, <span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>   <span class="keywordflow">if</span>(!verbose &amp;&amp; !quiet) options.Append(<span class="stringliteral">&quot;q&quot;</span>);</div>
@@ -376,17 +376,17 @@ $(document).ready(function(){initNavTree('_g_peak_8cxx_source.html',''); initRes
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>   TFitResultPtr fitres = fithist-&gt;Fit(<span class="keyword">this</span>, Form(<span class="stringliteral">&quot;%sLRS&quot;</span>, options.Data()));</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>   <span class="keywordflow">if</span>(verbose) std::cout&lt;&lt;<span class="stringliteral">&quot;chi^2/NDF = &quot;</span>&lt;&lt;GetChisquare() / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(GetNDF())&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>   <span class="keywordflow">if</span>(verbose) std::cout &lt;&lt; <span class="stringliteral">&quot;chi^2/NDF = &quot;</span> &lt;&lt; GetChisquare() / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(GetNDF()) &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>   <span class="keywordflow">if</span>(!fitres.Get()-&gt;IsValid()) {</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>      <span class="keywordflow">if</span>(!quiet) std::cout&lt;&lt;<a class="code hl_define" href="_globals_8h.html#a8d23feea868a983c8c2b661e1e16972f">RED</a>&lt;&lt;<span class="stringliteral">&quot;fit has failed, trying refit... &quot;</span>&lt;&lt;<a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>      <span class="keywordflow">if</span>(!quiet) std::cout &lt;&lt; <a class="code hl_define" href="_globals_8h.html#a8d23feea868a983c8c2b661e1e16972f">RED</a> &lt;&lt; <span class="stringliteral">&quot;fit has failed, trying refit... &quot;</span> &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>      fithist-&gt;GetListOfFunctions()-&gt;Last()-&gt;Delete();</div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>      fitres = fithist-&gt;Fit(<span class="keyword">this</span>, Form(<span class="stringliteral">&quot;%sLRSME&quot;</span>, options.Data()));</div>
 <div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>      <span class="keywordflow">if</span>(!quiet) {</div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>         <span class="keywordflow">if</span>(fitres.Get()-&gt;IsValid()) {</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>            std::cout&lt;&lt;<a class="code hl_define" href="_globals_8h.html#a6d970e4c4769c52d19f321a08d531cf0">DGREEN</a>&lt;&lt;<span class="stringliteral">&quot; refit passed!&quot;</span>&lt;&lt;<a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>            std::cout &lt;&lt; <a class="code hl_define" href="_globals_8h.html#a6d970e4c4769c52d19f321a08d531cf0">DGREEN</a> &lt;&lt; <span class="stringliteral">&quot; refit passed!&quot;</span> &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>         } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>            std::cout&lt;&lt;<a class="code hl_define" href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a>&lt;&lt;<span class="stringliteral">&quot; refit also failed :( &quot;</span>&lt;&lt;<a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>            std::cout &lt;&lt; <a class="code hl_define" href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a> &lt;&lt; <span class="stringliteral">&quot; refit also failed :( &quot;</span> &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>         }</div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>      }</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>   }</div>
@@ -395,14 +395,14 @@ $(document).ready(function(){initNavTree('_g_peak_8cxx_source.html',''); initRes
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>   <span class="keywordflow">if</span>(!<a class="code hl_function" href="namespace_t_g_r_s_i_functions.html#a373e3958f45ce433d4adbc4ec18dfdfe">TGRSIFunctions::CheckParameterErrors</a>(fitres, options.Data())) {</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>      <span class="keywordflow">if</span>(retryFit) {</div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>         <span class="comment">// fit again with all parameters released</span></div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>         <span class="keywordflow">if</span>(!quiet) std::cout&lt;&lt;<a class="code hl_define" href="_globals_8h.html#acfbc006ea433ad708fdee3e82996e721">GREEN</a>&lt;&lt;<span class="stringliteral">&quot;Re-fitting with released parameters (without any limits):&quot;</span>&lt;&lt;<a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>         <span class="keywordflow">if</span>(!quiet) std::cout &lt;&lt; <a class="code hl_define" href="_globals_8h.html#acfbc006ea433ad708fdee3e82996e721">GREEN</a> &lt;&lt; <span class="stringliteral">&quot;Re-fitting with released parameters (without any limits):&quot;</span> &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; GetNpar(); ++i) {</div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>            ReleaseParameter(i);</div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>         }</div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>         fitres = fithist-&gt;Fit(<span class="keyword">this</span>, Form(<span class="stringliteral">&quot;%sLRSM&quot;</span>, options.Data()));</div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>      } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>         <span class="comment">// re-try using minos instead of minuit</span></div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>         <span class="keywordflow">if</span>(!quiet) std::cout&lt;&lt;<a class="code hl_define" href="_globals_8h.html#abf681265909adf3d3e8116c93c0ba179">YELLOW</a>&lt;&lt;<span class="stringliteral">&quot;Re-fitting with \&quot;E\&quot; option to get better error estimation using Minos technique.&quot;</span>&lt;&lt;<a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>         <span class="keywordflow">if</span>(!quiet) std::cout &lt;&lt; <a class="code hl_define" href="_globals_8h.html#abf681265909adf3d3e8116c93c0ba179">YELLOW</a> &lt;&lt; <span class="stringliteral">&quot;Re-fitting with \&quot;E\&quot; option to get better error estimation using Minos technique.&quot;</span> &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>         fitres = fithist-&gt;Fit(<span class="keyword">this</span>, Form(<span class="stringliteral">&quot;%sLRSME&quot;</span>, options.Data()));</div>
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>      }</div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>   }</div>
@@ -431,18 +431,18 @@ $(document).ready(function(){initNavTree('_g_peak_8cxx_source.html',''); initRes
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>      std::swap(xlow, xhigh);</div>
 <div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>   }</div>
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>   <a class="code hl_variable" href="class_g_peak.html#a505cb46f3acf17e5c0441c103c0bb3a0">fSum</a> = fithist-&gt;Integral(fithist-&gt;GetXaxis()-&gt;FindBin(xlow),</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>                            fithist-&gt;GetXaxis()-&gt;FindBin(xhigh)); <span class="comment">//* fithist-&gt;GetBinWidth(1);</span></div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>   <span class="keywordflow">if</span>(verbose) std::cout&lt;&lt;<span class="stringliteral">&quot;sum between markers: &quot;</span>&lt;&lt;<a class="code hl_variable" href="class_g_peak.html#a505cb46f3acf17e5c0441c103c0bb3a0">fSum</a>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>                            fithist-&gt;GetXaxis()-&gt;FindBin(xhigh));   <span class="comment">//* fithist-&gt;GetBinWidth(1);</span></div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>   <span class="keywordflow">if</span>(verbose) std::cout &lt;&lt; <span class="stringliteral">&quot;sum between markers: &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_g_peak.html#a505cb46f3acf17e5c0441c103c0bb3a0">fSum</a> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>   <a class="code hl_variable" href="class_g_peak.html#afb6737c712961a4029ef02efaf6a1e43">fDSum</a> = TMath::Sqrt(<a class="code hl_variable" href="class_g_peak.html#a505cb46f3acf17e5c0441c103c0bb3a0">fSum</a>);</div>
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>   <a class="code hl_variable" href="class_g_peak.html#a505cb46f3acf17e5c0441c103c0bb3a0">fSum</a> -= bgArea;</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>   <span class="keywordflow">if</span>(verbose) std::cout&lt;&lt;<span class="stringliteral">&quot;sum after subtraction: &quot;</span>&lt;&lt;<a class="code hl_variable" href="class_g_peak.html#a505cb46f3acf17e5c0441c103c0bb3a0">fSum</a>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>   <span class="keywordflow">if</span>(verbose) std::cout &lt;&lt; <span class="stringliteral">&quot;sum after subtraction: &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_g_peak.html#a505cb46f3acf17e5c0441c103c0bb3a0">fSum</a> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span> </div>
 <div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>   <span class="comment">// Make a function that does not include the background</span></div>
 <div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>   <span class="comment">// Intgrate the background.</span></div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>   <span class="comment">// TPeak* tmppeak = new TPeak(*this);</span></div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
 <div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>   Double_t range_low, range_high;</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>   GetRange(range_low,range_high);</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>   GetRange(range_low, range_high);</div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span> </div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>   <a class="code hl_class" href="class_g_peak.html">GPeak</a>* tmppeak = <span class="keyword">new</span> <a class="code hl_function" href="class_g_peak.html#a01655a4345aadd1a4f8f01e089d0b6db">GPeak</a>;</div>
 <div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>   <a class="code hl_function" href="class_g_peak.html#a0a558214f1a13a437d477c6adba3dc01">Copy</a>(*tmppeak);</div>
@@ -451,14 +451,14 @@ $(document).ready(function(){initNavTree('_g_peak_8cxx_source.html',''); initRes
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>   tmppeak-&gt;SetParameter(<span class="stringliteral">&quot;B&quot;</span>, 0.0);</div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>   tmppeak-&gt;SetParameter(<span class="stringliteral">&quot;C&quot;</span>, 0.0);</div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>   tmppeak-&gt;SetParameter(<span class="stringliteral">&quot;bg_offset&quot;</span>, 0.0);</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>   tmppeak-&gt;SetRange(range_low, range_high); <span class="comment">// This will help get the true area of the gaussian 200 ~ infinity in a gaus</span></div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>   tmppeak-&gt;SetRange(range_low, range_high);   <span class="comment">// This will help get the true area of the gaussian 200 ~ infinity in a gaus</span></div>
 <div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>   tmppeak-&gt;SetName(<span class="stringliteral">&quot;tmppeak&quot;</span>);</div>
 <div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
 <div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>   <span class="comment">// This is where we will do integrals and stuff.</span></div>
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>   TMatrixDSym CovMat = fitres-&gt;GetCovarianceMatrix();</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>   CovMat(5, 5) = 0.0;</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>   CovMat(6, 6) = 0.0;</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>   <a class="code hl_variable" href="class_g_peak.html#a1295621fa771fcdeab2f939c324c2b97">fDArea</a> = (tmppeak-&gt;IntegralError(xlow, xhigh, tmppeak-&gt;GetParameters(), CovMat.GetMatrixArray())) / fithist-&gt;GetBinWidth(1);</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>   CovMat(5, 5)       = 0.0;</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>   CovMat(6, 6)       = 0.0;</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>   <a class="code hl_variable" href="class_g_peak.html#a1295621fa771fcdeab2f939c324c2b97">fDArea</a>             = (tmppeak-&gt;IntegralError(xlow, xhigh, tmppeak-&gt;GetParameters(), CovMat.GetMatrixArray())) / fithist-&gt;GetBinWidth(1);</div>
 <div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span> </div>
 <div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>   <span class="keyword">delete</span> tmppeak;</div>
 <div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span> </div>
@@ -497,18 +497,18 @@ $(document).ready(function(){initNavTree('_g_peak_8cxx_source.html',''); initRes
 <div class="line"><a id="l00372" name="l00372"></a><span class="lineno"><a class="line" href="class_g_peak.html#a883c1eddea9989426160e34218db3193">  372</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_g_peak.html#a883c1eddea9989426160e34218db3193">GPeak::Print</a>(Option_t* opt)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>   TString options = opt;</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>   std::cout&lt;&lt;<a class="code hl_define" href="_globals_8h.html#acfbc006ea433ad708fdee3e82996e721">GREEN</a>;</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;Name: &quot;</span>&lt;&lt;GetName()&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;Centroid:  &quot;</span>&lt;&lt;GetParameter(<span class="stringliteral">&quot;centroid&quot;</span>)&lt;&lt;<span class="stringliteral">&quot; +- &quot;</span>&lt;&lt;GetParError(GetParNumber(<span class="stringliteral">&quot;centroid&quot;</span>))&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;Area:      &quot;</span>&lt;&lt;<a class="code hl_variable" href="class_g_peak.html#a3dffdad34e01c5965666d2ea71873802">fArea</a>&lt;&lt;<span class="stringliteral">&quot; +- &quot;</span>&lt;&lt;<a class="code hl_variable" href="class_g_peak.html#a1295621fa771fcdeab2f939c324c2b97">fDArea</a>&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;Sum:       &quot;</span>&lt;&lt;<a class="code hl_variable" href="class_g_peak.html#a505cb46f3acf17e5c0441c103c0bb3a0">fSum</a>&lt;&lt;<span class="stringliteral">&quot; +- &quot;</span>&lt;&lt;<a class="code hl_variable" href="class_g_peak.html#afb6737c712961a4029ef02efaf6a1e43">fDSum</a>&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;FWHM:      &quot;</span>&lt;&lt;<a class="code hl_function" href="class_g_peak.html#a16c64e15c99be23c1036ad42ae121cf1">GetFWHM</a>()&lt;&lt;<span class="stringliteral">&quot; +- &quot;</span>&lt;&lt;<a class="code hl_function" href="class_g_peak.html#a60ef3104dee12f4e667427ef2c437b76">GetFWHMErr</a>()&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;Reso:      &quot;</span>&lt;&lt;<a class="code hl_function" href="class_g_peak.html#a16c64e15c99be23c1036ad42ae121cf1">GetFWHM</a>()/GetParameter(<span class="stringliteral">&quot;centroid&quot;</span>) * 100.&lt;&lt;<span class="stringliteral">&quot;%%&quot;</span>&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;Chi^2/NDF: &quot;</span>&lt;&lt;<a class="code hl_variable" href="class_g_peak.html#abbc7149aa9b18f45fab175e092a85d33">fChi2</a>/<a class="code hl_variable" href="class_g_peak.html#a9f081c6aafeac8434691305ee5b11f29">fNdf</a>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>   std::cout &lt;&lt; <a class="code hl_define" href="_globals_8h.html#acfbc006ea433ad708fdee3e82996e721">GREEN</a>;</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;Name: &quot;</span> &lt;&lt; GetName() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;Centroid:  &quot;</span> &lt;&lt; GetParameter(<span class="stringliteral">&quot;centroid&quot;</span>) &lt;&lt; <span class="stringliteral">&quot; +- &quot;</span> &lt;&lt; GetParError(GetParNumber(<span class="stringliteral">&quot;centroid&quot;</span>)) &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;Area:      &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_g_peak.html#a3dffdad34e01c5965666d2ea71873802">fArea</a> &lt;&lt; <span class="stringliteral">&quot; +- &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_g_peak.html#a1295621fa771fcdeab2f939c324c2b97">fDArea</a> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;Sum:       &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_g_peak.html#a505cb46f3acf17e5c0441c103c0bb3a0">fSum</a> &lt;&lt; <span class="stringliteral">&quot; +- &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_g_peak.html#afb6737c712961a4029ef02efaf6a1e43">fDSum</a> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;FWHM:      &quot;</span> &lt;&lt; <a class="code hl_function" href="class_g_peak.html#a16c64e15c99be23c1036ad42ae121cf1">GetFWHM</a>() &lt;&lt; <span class="stringliteral">&quot; +- &quot;</span> &lt;&lt; <a class="code hl_function" href="class_g_peak.html#a60ef3104dee12f4e667427ef2c437b76">GetFWHMErr</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;Reso:      &quot;</span> &lt;&lt; <a class="code hl_function" href="class_g_peak.html#a16c64e15c99be23c1036ad42ae121cf1">GetFWHM</a>() / GetParameter(<span class="stringliteral">&quot;centroid&quot;</span>) * 100. &lt;&lt; <span class="stringliteral">&quot;%%&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;Chi^2/NDF: &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_g_peak.html#abbc7149aa9b18f45fab175e092a85d33">fChi2</a> / <a class="code hl_variable" href="class_g_peak.html#a9f081c6aafeac8434691305ee5b11f29">fNdf</a> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>   <span class="keywordflow">if</span>(options.Contains(<span class="stringliteral">&quot;all&quot;</span>)) {</div>
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>      TF1::Print(opt);</div>
 <div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>   }</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>   std::cout&lt;&lt;<a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>;</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>   std::cout &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>;</div>
 <div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>}</div>
 </div>
 <div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span> </div>
@@ -519,7 +519,7 @@ $(document).ready(function(){initNavTree('_g_peak_8cxx_source.html',''); initRes
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>      <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>   }</div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_g_peak.html#abbc7149aa9b18f45fab175e092a85d33">fChi2</a> &lt; 0.000000001) {</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>      std::cout&lt;&lt;<span class="stringliteral">&quot;No fit performed&quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;No fit performed&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>      <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>   }</div>
 <div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>   Double_t xlow, xhigh;</div>
@@ -556,7 +556,7 @@ $(document).ready(function(){initNavTree('_g_peak_8cxx_source.html',''); initRes
 <div class="ttc" id="a_t_g_r_s_i_functions_8h_html"><div class="ttname"><a href="_t_g_r_s_i_functions_8h.html">TGRSIFunctions.h</a></div></div>
 <div class="ttc" id="a_t_griffin_angles_8cxx_html_af805acda91d6c5d558b18b0fc07255dc"><div class="ttname"><a href="_t_griffin_angles_8cxx.html#af805acda91d6c5d558b18b0fc07255dc">ClassImp</a></div><div class="ttdeci">ClassImp(TGriffinAngles) TGriffinAngles</div><div class="ttdef"><b>Definition</b> <a href="_t_griffin_angles_8cxx_source.html#l00005">TGriffinAngles.cxx:5</a></div></div>
 <div class="ttc" id="a_user_fill_obj_8h_html_ac15e5a1de3bd77dc1ff2768e42dc9e8b"><div class="ttname"><a href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a></div><div class="ttdeci">TH1D * hist</div><div class="ttdef"><b>Definition</b> <a href="_user_fill_obj_8h_source.html#l00003">UserFillObj.h:3</a></div></div>
-<div class="ttc" id="aclass_g_canvas_html"><div class="ttname"><a href="class_g_canvas.html">GCanvas</a></div><div class="ttdef"><b>Definition</b> <a href="_g_canvas_8h_source.html#l00198">GCanvas.h:198</a></div></div>
+<div class="ttc" id="aclass_g_canvas_html"><div class="ttname"><a href="class_g_canvas.html">GCanvas</a></div><div class="ttdef"><b>Definition</b> <a href="_g_canvas_8h_source.html#l00231">GCanvas.h:231</a></div></div>
 <div class="ttc" id="aclass_g_peak_html"><div class="ttname"><a href="class_g_peak.html">GPeak</a></div><div class="ttdef"><b>Definition</b> <a href="_g_peak_8h_source.html#l00011">GPeak.h:11</a></div></div>
 <div class="ttc" id="aclass_g_peak_html_a01655a4345aadd1a4f8f01e089d0b6db"><div class="ttname"><a href="class_g_peak.html#a01655a4345aadd1a4f8f01e089d0b6db">GPeak::GPeak</a></div><div class="ttdeci">GPeak()</div><div class="ttdef"><b>Definition</b> <a href="_g_peak_8cxx_source.html#l00092">GPeak.cxx:92</a></div></div>
 <div class="ttc" id="aclass_g_peak_html_a0a558214f1a13a437d477c6adba3dc01"><div class="ttname"><a href="class_g_peak.html#a0a558214f1a13a437d477c6adba3dc01">GPeak::Copy</a></div><div class="ttdeci">void Copy(TObject &amp;) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_peak_8cxx_source.html#l00137">GPeak.cxx:137</a></div></div>
@@ -590,7 +590,7 @@ $(document).ready(function(){initNavTree('_g_peak_8cxx_source.html',''); initRes
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_47358ee868e3aed1e59cf9c2ead119a2.html">GROOT</a></li><li class="navelem"><a class="el" href="_g_peak_8cxx.html">GPeak.cxx</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:14.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:19.</li>
   </ul>
 </div>
 </body>

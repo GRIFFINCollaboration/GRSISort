@@ -80,6 +80,7 @@ var annotated_dup =
     [ "GRootCanvas", "class_g_root_canvas.html", "class_g_root_canvas" ],
     [ "GRootContainer", "class_g_root_container.html", "class_g_root_container" ],
     [ "GRootGuiFactory", "class_g_root_gui_factory.html", "class_g_root_gui_factory" ],
+    [ "GRSIxx", "class_g_r_s_ixx.html", null ],
     [ "GSnapshot", "class_g_snapshot.html", "class_g_snapshot" ],
     [ "GValue", "class_g_value.html", "class_g_value" ],
     [ "NRMat", "class_n_r_mat.html", "class_n_r_mat" ],

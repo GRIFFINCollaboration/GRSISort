@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -108,7 +108,7 @@ $(document).ready(function(){initNavTree('_globals_8cxx_source.html',''); initRe
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="namespacegrsi.html#abd76f00dd5bd14c9cc2ce0e5df75b52d">    3</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacegrsi.html#abd76f00dd5bd14c9cc2ce0e5df75b52d">grsi::SetGRSIEnv</a>()</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>{<span class="comment"></span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">   /// function to read user defined options first from the .grsirc file in $GRSISYS, then the .grsirc file in $HOME</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"></span>   std::string path = getenv(<span class="stringliteral">&quot;GRSISYS&quot;</span>); <span class="comment">// Finds the GRSISYS path to be used by other parts of the grsisort code</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"></span>   std::string path = getenv(<span class="stringliteral">&quot;GRSISYS&quot;</span>);   <span class="comment">// Finds the GRSISYS path to be used by other parts of the grsisort code</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>   <span class="keywordflow">if</span>(path.length() &gt; 0) {</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>      path += <span class="stringliteral">&quot;/&quot;</span>;</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>   }</div>
@@ -116,7 +116,7 @@ $(document).ready(function(){initNavTree('_globals_8cxx_source.html',''); initRe
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>   path += <span class="stringliteral">&quot;.grsirc&quot;</span>;</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>   gEnv-&gt;ReadFile(path.c_str(), kEnvChange);</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>   <span class="comment">// read from home directory for user-specific settings (in case $GRSISYS is a multi-user installation)</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>   path = getenv(<span class="stringliteral">&quot;HOME&quot;</span>); <span class="comment">// Finds the HOME path to be used by other parts of the grsisort code</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>   path = getenv(<span class="stringliteral">&quot;HOME&quot;</span>);   <span class="comment">// Finds the HOME path to be used by other parts of the grsisort code</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>   <span class="keywordflow">if</span>(path.length() &gt; 0) {</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>      path += <span class="stringliteral">&quot;/&quot;</span>;</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>   }</div>
@@ -125,7 +125,6 @@ $(document).ready(function(){initNavTree('_globals_8cxx_source.html',''); initRe
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>   gEnv-&gt;ReadFile(path.c_str(), kEnvChange);</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>}</div>
 </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="ttc" id="a_globals_8h_html"><div class="ttname"><a href="_globals_8h.html">Globals.h</a></div></div>
 <div class="ttc" id="anamespacegrsi_html_abd76f00dd5bd14c9cc2ce0e5df75b52d"><div class="ttname"><a href="namespacegrsi.html#abd76f00dd5bd14c9cc2ce0e5df75b52d">grsi::SetGRSIEnv</a></div><div class="ttdeci">void SetGRSIEnv()</div><div class="ttdef"><b>Definition</b> <a href="_globals_8cxx_source.html#l00003">Globals.cxx:3</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -135,7 +134,7 @@ $(document).ready(function(){initNavTree('_globals_8cxx_source.html',''); initRe
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_2b08b36851fcb6a7439555c8d93f536c.html">TFormat</a></li><li class="navelem"><a class="el" href="_globals_8cxx.html">Globals.cxx</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:15.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:19.</li>
   </ul>
 </div>
 </body>

@@ -7,14 +7,6 @@ var class_t_source_calibration =
       [ "kThresholdEntry", "class_t_source_calibration.html#a692165d80e615305fb4274df7dde9a89ac08d441b38b5b227ebd3b84448f114f8", null ],
       [ "kDegreeEntry", "class_t_source_calibration.html#a692165d80e615305fb4274df7dde9a89ae97a883af10bbfab632d3afedff37890", null ]
     ] ],
-    [ "ESources", "class_t_source_calibration.html#aa8b9f27a0d7ad4df4377b93f4f03e71f", [
-      [ "k22Na", "class_t_source_calibration.html#aa8b9f27a0d7ad4df4377b93f4f03e71fa850fe4a093c8a3d9e22f55cb408bb148", null ],
-      [ "k56Co", "class_t_source_calibration.html#aa8b9f27a0d7ad4df4377b93f4f03e71fa23d490d783c889d4f9cadb0df228a57d", null ],
-      [ "k60Co", "class_t_source_calibration.html#aa8b9f27a0d7ad4df4377b93f4f03e71fa4b1f4cb0bbab2229bc1a237fc3332a35", null ],
-      [ "k133Ba", "class_t_source_calibration.html#aa8b9f27a0d7ad4df4377b93f4f03e71fa90fa9d4d94ab26e69cf3eb0f83ad9d75", null ],
-      [ "k152Eu", "class_t_source_calibration.html#aa8b9f27a0d7ad4df4377b93f4f03e71fa106865694f584cf54c93b77b48b0179a", null ],
-      [ "k241Am", "class_t_source_calibration.html#aa8b9f27a0d7ad4df4377b93f4f03e71fa7ed78122d6c6af7d12b2728338c5bde8", null ]
-    ] ],
     [ "TSourceCalibration", "class_t_source_calibration.html#a77f285fb620c85f07c93418b52a1147f", null ],
     [ "~TSourceCalibration", "class_t_source_calibration.html#a1f87eafa75fd630af0a99cb2f5f85890", null ],
     [ "AcceptChannel", "class_t_source_calibration.html#a50ffa6badd689b09119cfec4df3643a8", null ],

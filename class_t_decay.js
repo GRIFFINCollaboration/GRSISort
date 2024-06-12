@@ -17,7 +17,7 @@ var class_t_decay =
     [ "GetBackgroundError", "class_t_decay.html#a25da75769cbdf299076c4abbf375bab1", null ],
     [ "GetChain", "class_t_decay.html#af6ebef2d82616514b1bd993d211cc169", null ],
     [ "GetFitFunc", "class_t_decay.html#a7da5de3e13c2ff25de1fda3338cc1cac", null ],
-    [ "GetFitFunction", "class_t_decay.html#a683463c96ae0fac75b6bcf738997236e", null ],
+    [ "GetFitFunction", "class_t_decay.html#a68e9de28fcc47f6f89b3f294d1e83b8e", null ],
     [ "GetResiduals", "class_t_decay.html#a4ae3edc1d30f2a51718d66193cda76a4", null ],
     [ "Print", "class_t_decay.html#a4e2e3c6be9ab652012fbe1a9bd479dd3", null ],
     [ "PrintMap", "class_t_decay.html#a0789793f1cb016c0f52b725eac639c1e", null ],

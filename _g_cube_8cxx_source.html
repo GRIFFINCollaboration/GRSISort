@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -145,7 +145,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="_g_cube_8cxx.html#a07239ddbd385de00a6c7e335d23f5247">   31</a></span><a class="code hl_function" href="_g_cube_8cxx.html#a07239ddbd385de00a6c7e335d23f5247">ClassImp</a>(<a class="code hl_class" href="class_g_cube.html">GCube</a>)</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><a class="code hl_function" href="class_g_cube.html#a16d0f4cdff2ced892aa104a3aee3e4a5">GCube::GCube</a>()</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>   <a class="code hl_function" href="class_g_cube.html#a16d0f4cdff2ced892aa104a3aee3e4a5">GCube::GCube</a>()</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>   fDimension = 3;</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>   <a class="code hl_variable" href="class_g_cube.html#a7a4d7dceeb2eb04b8064927485845a09">fTsumwy</a>    = 0;</div>
@@ -230,7 +230,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>   }</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>   <span class="keywordflow">if</span>(nbEntries &lt; 0 &amp;&amp; action == 0) {</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      <span class="keywordflow">return</span> 0; <span class="comment">// histogram has been already filled from the buffer</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      <span class="keywordflow">return</span> 0;   <span class="comment">// histogram has been already filled from the buffer</span></div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>   }</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>   Double_t* buffer = fBuffer;</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>   <span class="keywordflow">if</span>(nbEntries &lt; 0) {</div>
@@ -489,18 +489,18 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>      binx = fXaxis.FindBin(x);</div>
 <div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>      biny = fZaxis.FindBin(z);</div>
 <div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>      binz = fYaxis.FindBin(y);</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>   } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(y &lt;= x) { <span class="comment">// at this stage we know that z &gt; y and z &gt; x if y &lt;= x</span></div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>                       <span class="comment">// y, x, z</span></div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>   } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(y &lt;= x) {   <span class="comment">// at this stage we know that z &gt; y and z &gt; x if y &lt;= x</span></div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>                         <span class="comment">// y, x, z</span></div>
 <div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>      binx = fZaxis.FindBin(z);</div>
 <div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>      biny = fXaxis.FindBin(x);</div>
 <div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>      binz = fYaxis.FindBin(y);</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>   } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(z &lt;= x) { <span class="comment">// at this stage we know that y &gt; x</span></div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>                       <span class="comment">// z, x, y</span></div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>   } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(z &lt;= x) {   <span class="comment">// at this stage we know that y &gt; x</span></div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>                         <span class="comment">// z, x, y</span></div>
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>      binx = fYaxis.FindBin(y);</div>
 <div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>      biny = fXaxis.FindBin(x);</div>
 <div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>      binz = fZaxis.FindBin(z);</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>   } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(z &lt;= y) { <span class="comment">// at this stage we know that y &gt; x</span></div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>                       <span class="comment">// x, z, y</span></div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>   } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(z &lt;= y) {   <span class="comment">// at this stage we know that y &gt; x</span></div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>                         <span class="comment">// x, z, y</span></div>
 <div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>      binx = fYaxis.FindBin(y);</div>
 <div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>      biny = fZaxis.FindBin(z);</div>
 <div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>      binz = fXaxis.FindBin(x);</div>
@@ -517,11 +517,11 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>   bin = biny * (2 * fXaxis.GetNbins() - biny + 3) / 2 + binx - binz +</div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>         (fXaxis.GetNbins() + 2) * (fXaxis.GetNbins() + 3) * (fXaxis.GetNbins() + 4) / 6 -</div>
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>         (fXaxis.GetNbins() + 2 - binz) * (fXaxis.GetNbins() + 3 - binz) * (fXaxis.GetNbins() + 4 - binz) / 6 - biny;</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;binx,y,z = &quot;</span>&lt;&lt;binx&lt;&lt;<span class="stringliteral">&quot;,&quot;</span>&lt;&lt;biny&lt;&lt;<span class="stringliteral">&quot;,&quot;</span>&lt;&lt;binz&lt;&lt;<span class="stringliteral">&quot; =&gt; bin = &quot;</span>&lt;&lt;bin&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;binx,y,z = &quot;</span> &lt;&lt; binx &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; biny &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; binz &lt;&lt; <span class="stringliteral">&quot; =&gt; bin = &quot;</span> &lt;&lt; bin &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>   bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +</div>
 <div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>         binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +</div>
 <div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>                 10. / 3.);</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;binx,y,z = &quot;</span>&lt;&lt;binx&lt;&lt;<span class="stringliteral">&quot;,&quot;</span>&lt;&lt;biny&lt;&lt;<span class="stringliteral">&quot;,&quot;</span>&lt;&lt;binz&lt;&lt;<span class="stringliteral">&quot; =&gt; bin = &quot;</span>&lt;&lt;bin&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;binx,y,z = &quot;</span> &lt;&lt; binx &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; biny &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; binz &lt;&lt; <span class="stringliteral">&quot; =&gt; bin = &quot;</span> &lt;&lt; bin &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>   AddBinContent(bin);</div>
 <div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>   <span class="keywordflow">if</span>(fSumw2.fN != 0) {</div>
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>      ++fSumw2.fArray[bin];</div>
@@ -580,18 +580,18 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>      binx = fXaxis.FindBin(x);</div>
 <div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>      biny = fZaxis.FindBin(z);</div>
 <div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>      binz = fYaxis.FindBin(y);</div>
-<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>   } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(y &lt;= x) { <span class="comment">// at this stage we know that z &gt; y and z &gt; x if y &lt;= x</span></div>
-<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>                       <span class="comment">// y, x, z</span></div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>   } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(y &lt;= x) {   <span class="comment">// at this stage we know that z &gt; y and z &gt; x if y &lt;= x</span></div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>                         <span class="comment">// y, x, z</span></div>
 <div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>      binx = fZaxis.FindBin(z);</div>
 <div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>      biny = fXaxis.FindBin(x);</div>
 <div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>      binz = fYaxis.FindBin(y);</div>
-<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>   } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(z &lt;= x) { <span class="comment">// at this stage we know that y &gt; x</span></div>
-<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>                       <span class="comment">// z, x, y</span></div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>   } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(z &lt;= x) {   <span class="comment">// at this stage we know that y &gt; x</span></div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>                         <span class="comment">// z, x, y</span></div>
 <div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>      binx = fYaxis.FindBin(y);</div>
 <div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>      biny = fXaxis.FindBin(x);</div>
 <div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>      binz = fZaxis.FindBin(z);</div>
-<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>   } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(z &lt;= y) { <span class="comment">// at this stage we know that y &gt; x</span></div>
-<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>                       <span class="comment">// x, z, y</span></div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>   } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(z &lt;= y) {   <span class="comment">// at this stage we know that y &gt; x</span></div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>                         <span class="comment">// x, z, y</span></div>
 <div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>      binx = fYaxis.FindBin(y);</div>
 <div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>      biny = fZaxis.FindBin(z);</div>
 <div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>      binz = fXaxis.FindBin(x);</div>
@@ -796,7 +796,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span><span class="keywordtype">void</span> <a class="code hl_function" href="class_g_cube.html#a4631aa3c005343dea618c5ea39bde81f">GCube::FillRandom</a>(TH1* h, Int_t ntimes, TRandom*)</div>
 <div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span><span class="preprocessor">#else</span></div>
 <div class="foldopen" id="foldopen00656" data-start="{" data-end="}">
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno"><a class="line" href="class_g_cube.html#a498425e588a3b7fd343d6a9ccb1b6119">  656</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_g_cube.html#a4631aa3c005343dea618c5ea39bde81f">GCube::FillRandom</a>(TH1* h, Int_t ntimes, TRandom* rng)</div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno"><a class="line" href="class_g_cube.html#a498425e588a3b7fd343d6a9ccb1b6119">  656</a></span><span class="keywordtype">void</span>     <a class="code hl_function" href="class_g_cube.html#a4631aa3c005343dea618c5ea39bde81f">GCube::FillRandom</a>(TH1* h, Int_t ntimes, TRandom* rng)</div>
 <div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>{<span class="comment"></span></div>
 <div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span><span class="comment">   ///*-*-*-*-*-*-*Fill histogram following distribution in histogram h*-*-*-*</span></div>
@@ -1474,7 +1474,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l01306" name="l01306"></a><span class="lineno"> 1306</span>Double_t <a class="code hl_function" href="class_g_cube.html#a4b09b79c8d5bf98b431b47695737e6ba">GCube::Interpolate</a>(Double_t)</div>
 <div class="line"><a id="l01307" name="l01307"></a><span class="lineno"> 1307</span><span class="preprocessor">#else</span></div>
 <div class="foldopen" id="foldopen01308" data-start="{" data-end="}">
-<div class="line"><a id="l01308" name="l01308"></a><span class="lineno"><a class="line" href="class_g_cube.html#a4b09b79c8d5bf98b431b47695737e6ba"> 1308</a></span>Double_t <a class="code hl_function" href="class_g_cube.html#a4b09b79c8d5bf98b431b47695737e6ba">GCube::Interpolate</a>(Double_t) <span class="keyword">const</span></div>
+<div class="line"><a id="l01308" name="l01308"></a><span class="lineno"><a class="line" href="class_g_cube.html#a4b09b79c8d5bf98b431b47695737e6ba"> 1308</a></span>    Double_t <a class="code hl_function" href="class_g_cube.html#a4b09b79c8d5bf98b431b47695737e6ba">GCube::Interpolate</a>(Double_t) <span class="keyword">const</span></div>
 <div class="line"><a id="l01309" name="l01309"></a><span class="lineno"> 1309</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l01310" name="l01310"></a><span class="lineno"> 1310</span>{</div>
 <div class="line"><a id="l01311" name="l01311"></a><span class="lineno"> 1311</span>   <span class="comment">// illegal for a TH3</span></div>
@@ -1666,13 +1666,13 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l01491" name="l01491"></a><span class="lineno"> 1491</span>   <span class="keywordflow">if</span>(w1 &gt; 0) {</div>
 <div class="line"><a id="l01492" name="l01492"></a><span class="lineno"> 1492</span>      esum1 = sum1 * sum1 / w1;</div>
 <div class="line"><a id="l01493" name="l01493"></a><span class="lineno"> 1493</span>   } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l01494" name="l01494"></a><span class="lineno"> 1494</span>      afunc1 = kTRUE; <span class="comment">// use later for calculating z</span></div>
+<div class="line"><a id="l01494" name="l01494"></a><span class="lineno"> 1494</span>      afunc1 = kTRUE;   <span class="comment">// use later for calculating z</span></div>
 <div class="line"><a id="l01495" name="l01495"></a><span class="lineno"> 1495</span>   }</div>
 <div class="line"><a id="l01496" name="l01496"></a><span class="lineno"> 1496</span> </div>
 <div class="line"><a id="l01497" name="l01497"></a><span class="lineno"> 1497</span>   <span class="keywordflow">if</span>(w2 &gt; 0) {</div>
 <div class="line"><a id="l01498" name="l01498"></a><span class="lineno"> 1498</span>      esum2 = sum2 * sum2 / w2;</div>
 <div class="line"><a id="l01499" name="l01499"></a><span class="lineno"> 1499</span>   } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l01500" name="l01500"></a><span class="lineno"> 1500</span>      afunc2 = kTRUE; <span class="comment">// use later for calculating z</span></div>
+<div class="line"><a id="l01500" name="l01500"></a><span class="lineno"> 1500</span>      afunc2 = kTRUE;   <span class="comment">// use later for calculating z</span></div>
 <div class="line"><a id="l01501" name="l01501"></a><span class="lineno"> 1501</span>   }</div>
 <div class="line"><a id="l01502" name="l01502"></a><span class="lineno"> 1502</span> </div>
 <div class="line"><a id="l01503" name="l01503"></a><span class="lineno"> 1503</span>   <span class="keywordflow">if</span>(afunc2 &amp;&amp; afunc1) {</div>
@@ -1693,7 +1693,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l01518" name="l01518"></a><span class="lineno"> 1518</span>   binend[0] = iend;</div>
 <div class="line"><a id="l01519" name="l01519"></a><span class="lineno"> 1519</span>   binend[1] = iend;</div>
 <div class="line"><a id="l01520" name="l01520"></a><span class="lineno"> 1520</span>   binend[2] = iend;</div>
-<div class="line"><a id="l01521" name="l01521"></a><span class="lineno"> 1521</span>   Double_t vdfmax[6]; <span class="comment">// there are in total 6 combinations</span></div>
+<div class="line"><a id="l01521" name="l01521"></a><span class="lineno"> 1521</span>   Double_t vdfmax[6];   <span class="comment">// there are in total 6 combinations</span></div>
 <div class="line"><a id="l01522" name="l01522"></a><span class="lineno"> 1522</span>   <span class="keywordtype">int</span>      icomb = 0;</div>
 <div class="line"><a id="l01523" name="l01523"></a><span class="lineno"> 1523</span>   Double_t s1    = 1. / (6. * sum1);</div>
 <div class="line"><a id="l01524" name="l01524"></a><span class="lineno"> 1524</span>   Double_t s2    = 1. / (6. * sum2);</div>
@@ -1721,7 +1721,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l01546" name="l01546"></a><span class="lineno"> 1546</span>   <span class="comment">// get average of distances</span></div>
 <div class="line"><a id="l01547" name="l01547"></a><span class="lineno"> 1547</span>   Double_t dfmax = TMath::Mean(6, vdfmax);</div>
 <div class="line"><a id="l01548" name="l01548"></a><span class="lineno"> 1548</span> </div>
-<div class="line"><a id="l01549" name="l01549"></a><span class="lineno"> 1549</span>   <span class="comment">//    Get Kolmogorov probability</span></div>
+<div class="line"><a id="l01549" name="l01549"></a><span class="lineno"> 1549</span>   <span class="comment">//   Get Kolmogorov probability</span></div>
 <div class="line"><a id="l01550" name="l01550"></a><span class="lineno"> 1550</span>   Double_t factnm;</div>
 <div class="line"><a id="l01551" name="l01551"></a><span class="lineno"> 1551</span>   <span class="keywordflow">if</span>(afunc1) {</div>
 <div class="line"><a id="l01552" name="l01552"></a><span class="lineno"> 1552</span>      factnm = TMath::Sqrt(sum2);</div>
@@ -1742,7 +1742,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l01567" name="l01567"></a><span class="lineno"> 1567</span>      Double_t d12  = esum1 - esum2;</div>
 <div class="line"><a id="l01568" name="l01568"></a><span class="lineno"> 1568</span>      Double_t chi2 = d12 * d12 / (esum1 + esum2);</div>
 <div class="line"><a id="l01569" name="l01569"></a><span class="lineno"> 1569</span>      prb2          = TMath::Prob(chi2, 1);</div>
-<div class="line"><a id="l01570" name="l01570"></a><span class="lineno"> 1570</span>      <span class="comment">//     see Eadie et al., section 11.6.2</span></div>
+<div class="line"><a id="l01570" name="l01570"></a><span class="lineno"> 1570</span>      <span class="comment">//   see Eadie et al., section 11.6.2</span></div>
 <div class="line"><a id="l01571" name="l01571"></a><span class="lineno"> 1571</span>      <span class="keywordflow">if</span>(prb &gt; 0 &amp;&amp; prb2 &gt; 0) {</div>
 <div class="line"><a id="l01572" name="l01572"></a><span class="lineno"> 1572</span>         prb = prb * prb2 * (1 - TMath::Log(prb * prb2));</div>
 <div class="line"><a id="l01573" name="l01573"></a><span class="lineno"> 1573</span>      } <span class="keywordflow">else</span> {</div>
@@ -1750,13 +1750,13 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l01575" name="l01575"></a><span class="lineno"> 1575</span>      }</div>
 <div class="line"><a id="l01576" name="l01576"></a><span class="lineno"> 1576</span>   }</div>
 <div class="line"><a id="l01577" name="l01577"></a><span class="lineno"> 1577</span> </div>
-<div class="line"><a id="l01578" name="l01578"></a><span class="lineno"> 1578</span>   <span class="comment">//    debug printout</span></div>
+<div class="line"><a id="l01578" name="l01578"></a><span class="lineno"> 1578</span>   <span class="comment">//   debug printout</span></div>
 <div class="line"><a id="l01579" name="l01579"></a><span class="lineno"> 1579</span>   <span class="keywordflow">if</span>(opt.Contains(<span class="stringliteral">&quot;D&quot;</span>)) {</div>
-<div class="line"><a id="l01580" name="l01580"></a><span class="lineno"> 1580</span>      std::cout&lt;&lt;<span class="stringliteral">&quot; Kolmo Prob  h1 = &quot;</span>&lt;&lt;h1-&gt;GetName()&lt;&lt;<span class="stringliteral">&quot;, sum1 = &quot;</span>&lt;&lt;sum1&lt;&lt;std::endl;</div>
-<div class="line"><a id="l01581" name="l01581"></a><span class="lineno"> 1581</span>      std::cout&lt;&lt;<span class="stringliteral">&quot; Kolmo Prob  h2 = &quot;</span>&lt;&lt;h2-&gt;GetName()&lt;&lt;<span class="stringliteral">&quot;, sum2 = &quot;</span>&lt;&lt;sum2&lt;&lt;std::endl;</div>
-<div class="line"><a id="l01582" name="l01582"></a><span class="lineno"> 1582</span>      std::cout&lt;&lt;<span class="stringliteral">&quot; Kolmo Probabil = &quot;</span>&lt;&lt;prb&lt;&lt;<span class="stringliteral">&quot;, Max dist = &quot;</span>&lt;&lt;dfmax&lt;&lt;std::endl;</div>
+<div class="line"><a id="l01580" name="l01580"></a><span class="lineno"> 1580</span>      std::cout &lt;&lt; <span class="stringliteral">&quot; Kolmo Prob  h1 = &quot;</span> &lt;&lt; h1-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;, sum1 = &quot;</span> &lt;&lt; sum1 &lt;&lt; std::endl;</div>
+<div class="line"><a id="l01581" name="l01581"></a><span class="lineno"> 1581</span>      std::cout &lt;&lt; <span class="stringliteral">&quot; Kolmo Prob  h2 = &quot;</span> &lt;&lt; h2-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;, sum2 = &quot;</span> &lt;&lt; sum2 &lt;&lt; std::endl;</div>
+<div class="line"><a id="l01582" name="l01582"></a><span class="lineno"> 1582</span>      std::cout &lt;&lt; <span class="stringliteral">&quot; Kolmo Probabil = &quot;</span> &lt;&lt; prb &lt;&lt; <span class="stringliteral">&quot;, Max dist = &quot;</span> &lt;&lt; dfmax &lt;&lt; std::endl;</div>
 <div class="line"><a id="l01583" name="l01583"></a><span class="lineno"> 1583</span>      <span class="keywordflow">if</span>(opt.Contains(<span class="stringliteral">&quot;N&quot;</span>)) {</div>
-<div class="line"><a id="l01584" name="l01584"></a><span class="lineno"> 1584</span>         std::cout&lt;&lt;<span class="stringliteral">&quot; Kolmo Probabil = &quot;</span>&lt;&lt;prb1&lt;&lt;<span class="stringliteral">&quot; for shape alone, &quot;</span>&lt;&lt;prb2&lt;&lt;<span class="stringliteral">&quot; for normalisation alone&quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l01584" name="l01584"></a><span class="lineno"> 1584</span>         std::cout &lt;&lt; <span class="stringliteral">&quot; Kolmo Probabil = &quot;</span> &lt;&lt; prb1 &lt;&lt; <span class="stringliteral">&quot; for shape alone, &quot;</span> &lt;&lt; prb2 &lt;&lt; <span class="stringliteral">&quot; for normalisation alone&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l01585" name="l01585"></a><span class="lineno"> 1585</span>      }</div>
 <div class="line"><a id="l01586" name="l01586"></a><span class="lineno"> 1586</span>   }</div>
 <div class="line"><a id="l01587" name="l01587"></a><span class="lineno"> 1587</span>   <span class="comment">// This numerical error condition should never occur:</span></div>
@@ -1768,7 +1768,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l01593" name="l01593"></a><span class="lineno"> 1593</span>   }</div>
 <div class="line"><a id="l01594" name="l01594"></a><span class="lineno"> 1594</span> </div>
 <div class="line"><a id="l01595" name="l01595"></a><span class="lineno"> 1595</span>   <span class="keywordflow">if</span>(opt.Contains(<span class="stringliteral">&quot;M&quot;</span>)) {</div>
-<div class="line"><a id="l01596" name="l01596"></a><span class="lineno"> 1596</span>      <span class="keywordflow">return</span> dfmax; <span class="comment">// return avergae of max distance</span></div>
+<div class="line"><a id="l01596" name="l01596"></a><span class="lineno"> 1596</span>      <span class="keywordflow">return</span> dfmax;   <span class="comment">// return avergae of max distance</span></div>
 <div class="line"><a id="l01597" name="l01597"></a><span class="lineno"> 1597</span>   }</div>
 <div class="line"><a id="l01598" name="l01598"></a><span class="lineno"> 1598</span> </div>
 <div class="line"><a id="l01599" name="l01599"></a><span class="lineno"> 1599</span>   <span class="keywordflow">return</span> prb;</div>
@@ -1905,8 +1905,8 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l01728" name="l01728"></a><span class="lineno"> 1728</span>      <span class="keywordflow">if</span>(mustCleanup) {</div>
 <div class="line"><a id="l01729" name="l01729"></a><span class="lineno"> 1729</span>         SetBit(kMustCleanup);</div>
 <div class="line"><a id="l01730" name="l01730"></a><span class="lineno"> 1730</span>      }</div>
-<div class="line"><a id="l01731" name="l01731"></a><span class="lineno"> 1731</span>      <a class="code hl_function" href="class_g_cube.html#ac188fb4627c94b1f537ea682713755a5">BufferEmpty</a>(1); <span class="comment">// To remove buffer.</span></div>
-<div class="line"><a id="l01732" name="l01732"></a><span class="lineno"> 1732</span>      <a class="code hl_function" href="class_g_cube.html#ab4b65e0ce9dca20812e8cd1021fd860a">Reset</a>();        <span class="comment">// BufferEmpty sets limits so we can&#39;t use it later.</span></div>
+<div class="line"><a id="l01731" name="l01731"></a><span class="lineno"> 1731</span>      <a class="code hl_function" href="class_g_cube.html#ac188fb4627c94b1f537ea682713755a5">BufferEmpty</a>(1);   <span class="comment">// To remove buffer.</span></div>
+<div class="line"><a id="l01732" name="l01732"></a><span class="lineno"> 1732</span>      <a class="code hl_function" href="class_g_cube.html#ab4b65e0ce9dca20812e8cd1021fd860a">Reset</a>();          <span class="comment">// BufferEmpty sets limits so we can&#39;t use it later.</span></div>
 <div class="line"><a id="l01733" name="l01733"></a><span class="lineno"> 1733</span>      SetEntries(0);</div>
 <div class="line"><a id="l01734" name="l01734"></a><span class="lineno"> 1734</span>      inlist.AddFirst(hclone);</div>
 <div class="line"><a id="l01735" name="l01735"></a><span class="lineno"> 1735</span>   }</div>
@@ -1934,7 +1934,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l01757" name="l01757"></a><span class="lineno"> 1757</span>            inlist.Remove(hclone);</div>
 <div class="line"><a id="l01758" name="l01758"></a><span class="lineno"> 1758</span>            <span class="keyword">delete</span> hclone;</div>
 <div class="line"><a id="l01759" name="l01759"></a><span class="lineno"> 1759</span>         }</div>
-<div class="line"><a id="l01760" name="l01760"></a><span class="lineno"> 1760</span>         <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Long64_t<span class="keyword">&gt;</span>(GetEntries()); <span class="comment">// all histograms have been processed</span></div>
+<div class="line"><a id="l01760" name="l01760"></a><span class="lineno"> 1760</span>         <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Long64_t<span class="keyword">&gt;</span>(GetEntries());   <span class="comment">// all histograms have been processed</span></div>
 <div class="line"><a id="l01761" name="l01761"></a><span class="lineno"> 1761</span>      }</div>
 <div class="line"><a id="l01762" name="l01762"></a><span class="lineno"> 1762</span>      next.<a class="code hl_function" href="class_g_cube.html#ab4b65e0ce9dca20812e8cd1021fd860a">Reset</a>();</div>
 <div class="line"><a id="l01763" name="l01763"></a><span class="lineno"> 1763</span>   }</div>
@@ -1949,8 +1949,8 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l01772" name="l01772"></a><span class="lineno"> 1772</span>   Double_t nentries = GetEntries();</div>
 <div class="line"><a id="l01773" name="l01773"></a><span class="lineno"> 1773</span>   Int_t    binx, biny, binz, ix, iy, iz, nx, ny, nz, bin, ibin;</div>
 <div class="line"><a id="l01774" name="l01774"></a><span class="lineno"> 1774</span>   Double_t cu;</div>
-<div class="line"><a id="l01775" name="l01775"></a><span class="lineno"> 1775</span>   Bool_t canExtend = CanExtendAllAxes();</div>
-<div class="line"><a id="l01776" name="l01776"></a><span class="lineno"> 1776</span>   SetCanExtend(TH1::kNoAxis); <span class="comment">// reset, otherwise setting the under/overflow will extend the axis</span></div>
+<div class="line"><a id="l01775" name="l01775"></a><span class="lineno"> 1775</span>   Bool_t   canExtend = CanExtendAllAxes();</div>
+<div class="line"><a id="l01776" name="l01776"></a><span class="lineno"> 1776</span>   SetCanExtend(TH1::kNoAxis);   <span class="comment">// reset, otherwise setting the under/overflow will extend the axis</span></div>
 <div class="line"><a id="l01777" name="l01777"></a><span class="lineno"> 1777</span> </div>
 <div class="line"><a id="l01778" name="l01778"></a><span class="lineno"> 1778</span>   <span class="keywordflow">while</span>((h = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_g_cube.html">GCube</a>*<span class="keyword">&gt;</span>(next())) != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a id="l01779" name="l01779"></a><span class="lineno"> 1779</span>      <span class="comment">// process only if the histogram has limits; otherwise it was processed before</span></div>
@@ -2041,7 +2041,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l01862" name="l01862"></a><span class="lineno"> 1862</span>      Int_t i2 = opt.Index(<span class="stringliteral">&quot;]&quot;</span>);</div>
 <div class="line"><a id="l01863" name="l01863"></a><span class="lineno"> 1863</span>      cut      = opt(i1, i2 - i1 + 1);</div>
 <div class="line"><a id="l01864" name="l01864"></a><span class="lineno"> 1864</span>   }</div>
-<div class="line"><a id="l01865" name="l01865"></a><span class="lineno"> 1865</span>   opt.ToLower(); <span class="comment">// must be called after having parsed the cut name</span></div>
+<div class="line"><a id="l01865" name="l01865"></a><span class="lineno"> 1865</span>   opt.ToLower();   <span class="comment">// must be called after having parsed the cut name</span></div>
 <div class="line"><a id="l01866" name="l01866"></a><span class="lineno"> 1866</span>   <span class="keywordtype">bool</span> originalRange = opt.Contains(<span class="stringliteral">&quot;o&quot;</span>);</div>
 <div class="line"><a id="l01867" name="l01867"></a><span class="lineno"> 1867</span> </div>
 <div class="line"><a id="l01868" name="l01868"></a><span class="lineno"> 1868</span>   Int_t firstXBin = fXaxis.GetFirst();</div>
@@ -2250,7 +2250,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l02071" name="l02071"></a><span class="lineno"> 2071</span>      <span class="comment">// in case of error calculation (i.e. when Sumw2() is set)</span></div>
 <div class="line"><a id="l02072" name="l02072"></a><span class="lineno"> 2072</span>      <span class="comment">// use the effective entries for the entries</span></div>
 <div class="line"><a id="l02073" name="l02073"></a><span class="lineno"> 2073</span>      <span class="comment">// since this  is the only way to estimate them</span></div>
-<div class="line"><a id="l02074" name="l02074"></a><span class="lineno"> 2074</span>      Double_t entries = TMath::Floor(totcont + 0.5); <span class="comment">// to avoid numerical rounding</span></div>
+<div class="line"><a id="l02074" name="l02074"></a><span class="lineno"> 2074</span>      Double_t entries = TMath::Floor(totcont + 0.5);   <span class="comment">// to avoid numerical rounding</span></div>
 <div class="line"><a id="l02075" name="l02075"></a><span class="lineno"> 2075</span>      <span class="keywordflow">if</span>(h1-&gt;GetSumw2N() != 0) {</div>
 <div class="line"><a id="l02076" name="l02076"></a><span class="lineno"> 2076</span>         entries = h1-&gt;GetEffectiveEntries();</div>
 <div class="line"><a id="l02077" name="l02077"></a><span class="lineno"> 2077</span>      }</div>
@@ -2373,7 +2373,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l02190" name="l02190"></a><span class="lineno"> 2190</span>   <span class="comment">// change axis specs and rebuild bin contents array</span></div>
 <div class="line"><a id="l02191" name="l02191"></a><span class="lineno"> 2191</span>   <span class="keywordflow">if</span>(newbins * ngroup != nbins) {</div>
 <div class="line"><a id="l02192" name="l02192"></a><span class="lineno"> 2192</span>      max       = fXaxis.GetBinUpEdge(newbins * ngroup);</div>
-<div class="line"><a id="l02193" name="l02193"></a><span class="lineno"> 2193</span>      resetStat = <span class="keyword">true</span>; <span class="comment">// stats must be reset because top bins will be moved to overflow bin</span></div>
+<div class="line"><a id="l02193" name="l02193"></a><span class="lineno"> 2193</span>      resetStat = <span class="keyword">true</span>;   <span class="comment">// stats must be reset because top bins will be moved to overflow bin</span></div>
 <div class="line"><a id="l02194" name="l02194"></a><span class="lineno"> 2194</span>   }</div>
 <div class="line"><a id="l02195" name="l02195"></a><span class="lineno"> 2195</span>   <span class="comment">// save the TAttAxis members (reset by SetBins) for x axis</span></div>
 <div class="line"><a id="l02196" name="l02196"></a><span class="lineno"> 2196</span>   Int_t   nXdivisions  = fXaxis.GetNdivisions();</div>
@@ -2420,10 +2420,10 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l02237" name="l02237"></a><span class="lineno"> 2237</span>         <span class="keywordflow">for</span>(i = 0; i &lt;= newbins; ++i) {</div>
 <div class="line"><a id="l02238" name="l02238"></a><span class="lineno"> 2238</span>            bins[i] = fXaxis.GetBinLowEdge(1 + i * ngroup);</div>
 <div class="line"><a id="l02239" name="l02239"></a><span class="lineno"> 2239</span>         }</div>
-<div class="line"><a id="l02240" name="l02240"></a><span class="lineno"> 2240</span>         hnew-&gt;SetBins(newbins, bins, newbins, bins); <span class="comment">// changes also errors array (if any)</span></div>
+<div class="line"><a id="l02240" name="l02240"></a><span class="lineno"> 2240</span>         hnew-&gt;SetBins(newbins, bins, newbins, bins);   <span class="comment">// changes also errors array (if any)</span></div>
 <div class="line"><a id="l02241" name="l02241"></a><span class="lineno"> 2241</span>         <span class="keyword">delete</span>[] bins;</div>
 <div class="line"><a id="l02242" name="l02242"></a><span class="lineno"> 2242</span>      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l02243" name="l02243"></a><span class="lineno"> 2243</span>         hnew-&gt;SetBins(newbins, min, max, newbins, min, max); <span class="comment">// changes also errors array</span></div>
+<div class="line"><a id="l02243" name="l02243"></a><span class="lineno"> 2243</span>         hnew-&gt;SetBins(newbins, min, max, newbins, min, max);   <span class="comment">// changes also errors array</span></div>
 <div class="line"><a id="l02244" name="l02244"></a><span class="lineno"> 2244</span>      }</div>
 <div class="line"><a id="l02245" name="l02245"></a><span class="lineno"> 2245</span> </div>
 <div class="line"><a id="l02246" name="l02246"></a><span class="lineno"> 2246</span>      Double_t binContent, binError;</div>
@@ -3344,7 +3344,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="ttc" id="aclass_different_dimension_html"><div class="ttname"><a href="class_different_dimension.html">DifferentDimension</a></div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l00020">GCube.cxx:20</a></div></div>
 <div class="ttc" id="aclass_different_labels_html"><div class="ttname"><a href="class_different_labels.html">DifferentLabels</a></div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l00028">GCube.cxx:28</a></div></div>
 <div class="ttc" id="aclass_different_number_of_bins_html"><div class="ttname"><a href="class_different_number_of_bins.html">DifferentNumberOfBins</a></div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l00022">GCube.cxx:22</a></div></div>
-<div class="ttc" id="aclass_g_cube_d_html"><div class="ttname"><a href="class_g_cube_d.html">GCubeD</a></div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00153">GCube.h:153</a></div></div>
+<div class="ttc" id="aclass_g_cube_d_html"><div class="ttname"><a href="class_g_cube_d.html">GCubeD</a></div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00159">GCube.h:159</a></div></div>
 <div class="ttc" id="aclass_g_cube_d_html_a0d93b35265fb295aebd8c84c3b91c7c8"><div class="ttname"><a href="class_g_cube_d.html#a0d93b35265fb295aebd8c84c3b91c7c8">GCubeD::DrawCopy</a></div><div class="ttdeci">TH1 * DrawCopy(Option_t *option=&quot;&quot;, const char *name_postfix=&quot;_copy&quot;) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l02939">GCube.cxx:2939</a></div></div>
 <div class="ttc" id="aclass_g_cube_d_html_a126e9124f46418aad4eec4053039d8ba"><div class="ttname"><a href="class_g_cube_d.html#a126e9124f46418aad4eec4053039d8ba">GCubeD::Reset</a></div><div class="ttdeci">void Reset(Option_t *option=&quot;&quot;) override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l02974">GCube.cxx:2974</a></div></div>
 <div class="ttc" id="aclass_g_cube_d_html_a297c6df93a78fc72f01b9e0b0f7f2d80"><div class="ttname"><a href="class_g_cube_d.html#a297c6df93a78fc72f01b9e0b0f7f2d80">GCubeD::SetBinsLength</a></div><div class="ttdeci">void SetBinsLength(Int_t n=-1) override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l02997">GCube.cxx:2997</a></div></div>
@@ -3355,7 +3355,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="ttc" id="aclass_g_cube_d_html_a90721177ab50c4b116a100f5d5d6b34f"><div class="ttname"><a href="class_g_cube_d.html#a90721177ab50c4b116a100f5d5d6b34f">GCubeD::SetBinContent</a></div><div class="ttdeci">void SetBinContent(Int_t bin, Double_t content) override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l02983">GCube.cxx:2983</a></div></div>
 <div class="ttc" id="aclass_g_cube_d_html_a9781d16a5ac041f184dd7bd94f3ae08c"><div class="ttname"><a href="class_g_cube_d.html#a9781d16a5ac041f184dd7bd94f3ae08c">GCubeD::GetBinContent</a></div><div class="ttdeci">Double_t GetBinContent(Int_t bin) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l02956">GCube.cxx:2956</a></div></div>
 <div class="ttc" id="aclass_g_cube_d_html_aa9ad90c54b2737690dbc8d05e8d5847d"><div class="ttname"><a href="class_g_cube_d.html#aa9ad90c54b2737690dbc8d05e8d5847d">GCubeD::~GCubeD</a></div><div class="ttdeci">~GCubeD() override</div></div>
-<div class="ttc" id="aclass_g_cube_f_html"><div class="ttname"><a href="class_g_cube_f.html">GCubeF</a></div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00110">GCube.h:110</a></div></div>
+<div class="ttc" id="aclass_g_cube_f_html"><div class="ttname"><a href="class_g_cube_f.html">GCubeF</a></div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00116">GCube.h:116</a></div></div>
 <div class="ttc" id="aclass_g_cube_f_html_a09d6e9fab4adcfb1c340b3b9f7be1eb4"><div class="ttname"><a href="class_g_cube_f.html#a09d6e9fab4adcfb1c340b3b9f7be1eb4">GCubeF::operator=</a></div><div class="ttdeci">GCubeF &amp; operator=(const GCubeF &amp;h1)</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l02800">GCube.cxx:2800</a></div></div>
 <div class="ttc" id="aclass_g_cube_f_html_a2e77c245246da31214bce411b0632ebc"><div class="ttname"><a href="class_g_cube_f.html#a2e77c245246da31214bce411b0632ebc">GCubeF::Reset</a></div><div class="ttdeci">void Reset(Option_t *option=&quot;&quot;) override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l02765">GCube.cxx:2765</a></div></div>
 <div class="ttc" id="aclass_g_cube_f_html_a4a5f56ebe3858110c0d111c1c9d8c30b"><div class="ttname"><a href="class_g_cube_f.html#a4a5f56ebe3858110c0d111c1c9d8c30b">GCubeF::GCubeF</a></div><div class="ttdeci">GCubeF()</div></div>
@@ -3367,24 +3367,24 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="ttc" id="aclass_g_cube_f_html_ad72da69931caf050627543e3d6d35b99"><div class="ttname"><a href="class_g_cube_f.html#ad72da69931caf050627543e3d6d35b99">GCubeF::Copy</a></div><div class="ttdeci">void Copy(TObject &amp;rh) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l02724">GCube.cxx:2724</a></div></div>
 <div class="ttc" id="aclass_g_cube_f_html_ade02d4dfee65db1dcaeaec83a6565329"><div class="ttname"><a href="class_g_cube_f.html#ade02d4dfee65db1dcaeaec83a6565329">GCubeF::SetBinContent</a></div><div class="ttdeci">void SetBinContent(Int_t bin, Double_t content) override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l02774">GCube.cxx:2774</a></div></div>
 <div class="ttc" id="aclass_g_cube_html"><div class="ttname"><a href="class_g_cube.html">GCube</a></div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00013">GCube.h:13</a></div></div>
-<div class="ttc" id="aclass_g_cube_html_a016594702056df6fe88ea7b869263f35"><div class="ttname"><a href="class_g_cube.html#a016594702056df6fe88ea7b869263f35">GCube::fMatrix</a></div><div class="ttdeci">TH2 * fMatrix</div><div class="ttdoc">! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00101">GCube.h:101</a></div></div>
+<div class="ttc" id="aclass_g_cube_html_a016594702056df6fe88ea7b869263f35"><div class="ttname"><a href="class_g_cube.html#a016594702056df6fe88ea7b869263f35">GCube::fMatrix</a></div><div class="ttdeci">TH2 * fMatrix</div><div class="ttdoc">! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00107">GCube.h:107</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a02a864350e6f8ef567e1844a016c57c6"><div class="ttname"><a href="class_g_cube.html#a02a864350e6f8ef567e1844a016c57c6">GCube::Fill</a></div><div class="ttdeci">Int_t Fill(Double_t) override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l00330">GCube.cxx:330</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a15a1fef5500078cf61119b7790bb1783"><div class="ttname"><a href="class_g_cube.html#a15a1fef5500078cf61119b7790bb1783">GCube::GetCovariance</a></div><div class="ttdeci">virtual Double_t GetCovariance(Int_t axis1=1, Int_t axis2=2) const</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l01061">GCube.cxx:1061</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a16d0f4cdff2ced892aa104a3aee3e4a5"><div class="ttname"><a href="class_g_cube.html#a16d0f4cdff2ced892aa104a3aee3e4a5">GCube::GCube</a></div><div class="ttdeci">GCube()</div></div>
-<div class="ttc" id="aclass_g_cube_html_a1aa02d4084572f0a96b3907c0408186c"><div class="ttname"><a href="class_g_cube.html#a1aa02d4084572f0a96b3907c0408186c">GCube::fTsumwxz</a></div><div class="ttdeci">Double_t fTsumwxz</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00099">GCube.h:99</a></div></div>
+<div class="ttc" id="aclass_g_cube_html_a1aa02d4084572f0a96b3907c0408186c"><div class="ttname"><a href="class_g_cube.html#a1aa02d4084572f0a96b3907c0408186c">GCube::fTsumwxz</a></div><div class="ttdeci">Double_t fTsumwxz</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00105">GCube.h:105</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a1df30cdfbb03abbdf19e79a9553c045c"><div class="ttname"><a href="class_g_cube.html#a1df30cdfbb03abbdf19e79a9553c045c">GCube::~GCube</a></div><div class="ttdeci">~GCube() override</div></div>
-<div class="ttc" id="aclass_g_cube_html_a2539a9ad72040272bf82c70cbd7034f3"><div class="ttname"><a href="class_g_cube.html#a2539a9ad72040272bf82c70cbd7034f3">GCube::fTsumwz</a></div><div class="ttdeci">Double_t fTsumwz</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00097">GCube.h:97</a></div></div>
+<div class="ttc" id="aclass_g_cube_html_a2539a9ad72040272bf82c70cbd7034f3"><div class="ttname"><a href="class_g_cube.html#a2539a9ad72040272bf82c70cbd7034f3">GCube::fTsumwz</a></div><div class="ttdeci">Double_t fTsumwz</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00103">GCube.h:103</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a2b2b4d33f626b5ed944d684c7cf19dd0"><div class="ttname"><a href="class_g_cube.html#a2b2b4d33f626b5ed944d684c7cf19dd0">GCube::Rebin3D</a></div><div class="ttdeci">virtual GCube * Rebin3D(Int_t ngroup=2, const char *newname=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l02118">GCube.cxx:2118</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a30744cb2e9b2ae51fc31c94b0196db22"><div class="ttname"><a href="class_g_cube.html#a30744cb2e9b2ae51fc31c94b0196db22">GCube::ShowPeaks</a></div><div class="ttdeci">Int_t ShowPeaks(Double_t sigma=2, Option_t *option=&quot;&quot;, Double_t threshold=0.05) override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l02522">GCube.cxx:2522</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a392da57c5e9a733ea821ce20df0b4c93"><div class="ttname"><a href="class_g_cube.html#a392da57c5e9a733ea821ce20df0b4c93">GCube::FitSlicesZ</a></div><div class="ttdeci">virtual void FitSlicesZ(TF1 *f1=nullptr, Int_t binminx=0, Int_t binmaxx=-1, Int_t binminy=0, Int_t binmaxy=-1, Int_t cut=0, Option_t *option=&quot;QNR&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l00828">GCube.cxx:828</a></div></div>
-<div class="ttc" id="aclass_g_cube_html_a3f530527633205221da2dcd213b7b58a"><div class="ttname"><a href="class_g_cube.html#a3f530527633205221da2dcd213b7b58a">GCube::fTsumwy2</a></div><div class="ttdeci">Double_t fTsumwy2</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00095">GCube.h:95</a></div></div>
+<div class="ttc" id="aclass_g_cube_html_a3f530527633205221da2dcd213b7b58a"><div class="ttname"><a href="class_g_cube.html#a3f530527633205221da2dcd213b7b58a">GCube::fTsumwy2</a></div><div class="ttdeci">Double_t fTsumwy2</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00101">GCube.h:101</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a4631aa3c005343dea618c5ea39bde81f"><div class="ttname"><a href="class_g_cube.html#a4631aa3c005343dea618c5ea39bde81f">GCube::FillRandom</a></div><div class="ttdeci">void FillRandom(const char *fname, Int_t ntimes=5000, TRandom *rng=nullptr) override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l00573">GCube.cxx:573</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a49f133de92bc20c6d5beb89785de7333"><div class="ttname"><a href="class_g_cube.html#a49f133de92bc20c6d5beb89785de7333">GCube::Smooth</a></div><div class="ttdeci">void Smooth(Int_t ntimes=1, Option_t *option=&quot;&quot;) override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l02535">GCube.cxx:2535</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a4b09b79c8d5bf98b431b47695737e6ba"><div class="ttname"><a href="class_g_cube.html#a4b09b79c8d5bf98b431b47695737e6ba">GCube::Interpolate</a></div><div class="ttdeci">Double_t Interpolate(Double_t) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l01308">GCube.cxx:1308</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a507e6c5419da484e7d9ade586a222d90"><div class="ttname"><a href="class_g_cube.html#a507e6c5419da484e7d9ade586a222d90">GCube::IntegralAndError</a></div><div class="ttdeci">virtual Double_t IntegralAndError(Int_t firstxbin, Int_t lastxbin, Int_t firstybin, Int_t lastybin, Int_t firstzbin, Int_t lastzbin, Double_t &amp;error, Option_t *option=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l01292">GCube.cxx:1292</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a5241c5f641c6cc1cd758319ba14b9df0"><div class="ttname"><a href="class_g_cube.html#a5241c5f641c6cc1cd758319ba14b9df0">GCube::GetBin</a></div><div class="ttdeci">Int_t GetBin(Int_t binx, Int_t biny=0, Int_t binz=0) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l00928">GCube.cxx:928</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a7405915fc56cfd84dbe68904570d4ad5"><div class="ttname"><a href="class_g_cube.html#a7405915fc56cfd84dbe68904570d4ad5">GCube::SetShowProjection</a></div><div class="ttdeci">virtual void SetShowProjection(const char *option=&quot;xy&quot;, Int_t nbins=1)</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l02484">GCube.cxx:2484</a></div></div>
-<div class="ttc" id="aclass_g_cube_html_a7a4d7dceeb2eb04b8064927485845a09"><div class="ttname"><a href="class_g_cube.html#a7a4d7dceeb2eb04b8064927485845a09">GCube::fTsumwy</a></div><div class="ttdeci">Double_t fTsumwy</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00094">GCube.h:94</a></div></div>
+<div class="ttc" id="aclass_g_cube_html_a7a4d7dceeb2eb04b8064927485845a09"><div class="ttname"><a href="class_g_cube.html#a7a4d7dceeb2eb04b8064927485845a09">GCube::fTsumwy</a></div><div class="ttdeci">Double_t fTsumwy</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00100">GCube.h:100</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a88b5cfb1579033d8b411e550e5398406"><div class="ttname"><a href="class_g_cube.html#a88b5cfb1579033d8b411e550e5398406">GCube::GetRandom3</a></div><div class="ttdeci">virtual void GetRandom3(Double_t &amp;x, Double_t &amp;y, Double_t &amp;z)</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l01108">GCube.cxx:1108</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a8b1c0071fa9b678ece00ab928bf62f24"><div class="ttname"><a href="class_g_cube.html#a8b1c0071fa9b678ece00ab928bf62f24">GCube::ShowBackground</a></div><div class="ttdeci">TH1 * ShowBackground(Int_t niter=20, Option_t *option=&quot;same&quot;) override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l02512">GCube.cxx:2512</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_a96eb89ab6c387ca9a2d259135cbfb880"><div class="ttname"><a href="class_g_cube.html#a96eb89ab6c387ca9a2d259135cbfb880">GCube::FindLastBinAbove</a></div><div class="ttdeci">Int_t FindLastBinAbove(Double_t threshold=0, Int_t axis=1, Int_t firstBin=1, Int_t lastBin=-1) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l00747">GCube.cxx:747</a></div></div>
@@ -3398,12 +3398,12 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="ttc" id="aclass_g_cube_html_ad8c54ec93ba43f7d84ecf2564c82d297"><div class="ttname"><a href="class_g_cube.html#ad8c54ec93ba43f7d84ecf2564c82d297">GCube::DoIntegral</a></div><div class="ttdeci">Double_t DoIntegral(Int_t binx1, Int_t binx2, Int_t biny1, Int_t biny2, Int_t binz1, Int_t binz2, Double_t &amp;error, Option_t *option, Bool_t doError=kFALSE) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l00244">GCube.cxx:244</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_adcecbfc41046ec94fb7bca1292196cdb"><div class="ttname"><a href="class_g_cube.html#adcecbfc41046ec94fb7bca1292196cdb">GCube::Merge</a></div><div class="ttdeci">Long64_t Merge(TCollection *list) override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l01602">GCube.cxx:1602</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_ae1d4a3e896af8a6a08ca275b245cec2a"><div class="ttname"><a href="class_g_cube.html#ae1d4a3e896af8a6a08ca275b245cec2a">GCube::KolmogorovTest</a></div><div class="ttdeci">Double_t KolmogorovTest(const TH1 *h2, Option_t *option=&quot;&quot;) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l01391">GCube.cxx:1391</a></div></div>
-<div class="ttc" id="aclass_g_cube_html_ae68df79bf3cb9719e72ad93bafbd4c80"><div class="ttname"><a href="class_g_cube.html#ae68df79bf3cb9719e72ad93bafbd4c80">GCube::fTsumwz2</a></div><div class="ttdeci">Double_t fTsumwz2</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00098">GCube.h:98</a></div></div>
+<div class="ttc" id="aclass_g_cube_html_ae68df79bf3cb9719e72ad93bafbd4c80"><div class="ttname"><a href="class_g_cube.html#ae68df79bf3cb9719e72ad93bafbd4c80">GCube::fTsumwz2</a></div><div class="ttdeci">Double_t fTsumwz2</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00104">GCube.h:104</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_ae9d4daaa411fc643bbab0f86313d2c0a"><div class="ttname"><a href="class_g_cube.html#ae9d4daaa411fc643bbab0f86313d2c0a">GCube::FindFirstBinAbove</a></div><div class="ttdeci">Int_t FindFirstBinAbove(Double_t threshold=0, Int_t axis=1, Int_t firstBin=1, Int_t lastBin=-1) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l00698">GCube.cxx:698</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_aef66606557bd23197fbe12199478683c"><div class="ttname"><a href="class_g_cube.html#aef66606557bd23197fbe12199478683c">GCube::BufferFill</a></div><div class="ttdeci">Int_t BufferFill(Double_t, Double_t) override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00022">GCube.h:22</a></div></div>
-<div class="ttc" id="aclass_g_cube_html_af11e853fbea9644a72d6478598989bac"><div class="ttname"><a href="class_g_cube.html#af11e853fbea9644a72d6478598989bac">GCube::fTsumwyz</a></div><div class="ttdeci">Double_t fTsumwyz</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00100">GCube.h:100</a></div></div>
+<div class="ttc" id="aclass_g_cube_html_af11e853fbea9644a72d6478598989bac"><div class="ttname"><a href="class_g_cube.html#af11e853fbea9644a72d6478598989bac">GCube::fTsumwyz</a></div><div class="ttdeci">Double_t fTsumwyz</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00106">GCube.h:106</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_af9b2af5da814283c07a8848cb75aeb91"><div class="ttname"><a href="class_g_cube.html#af9b2af5da814283c07a8848cb75aeb91">GCube::Copy</a></div><div class="ttdeci">void Copy(TObject &amp;obj) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l00233">GCube.cxx:233</a></div></div>
-<div class="ttc" id="aclass_g_cube_html_afc12fb3a6fdf77e57463da1e972667b3"><div class="ttname"><a href="class_g_cube.html#afc12fb3a6fdf77e57463da1e972667b3">GCube::fTsumwxy</a></div><div class="ttdeci">Double_t fTsumwxy</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00096">GCube.h:96</a></div></div>
+<div class="ttc" id="aclass_g_cube_html_afc12fb3a6fdf77e57463da1e972667b3"><div class="ttname"><a href="class_g_cube.html#afc12fb3a6fdf77e57463da1e972667b3">GCube::fTsumwxy</a></div><div class="ttdeci">Double_t fTsumwxy</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8h_source.html#l00102">GCube.h:102</a></div></div>
 <div class="ttc" id="aclass_g_cube_html_afde883653c54f85807ac762d6e54588a"><div class="ttname"><a href="class_g_cube.html#afde883653c54f85807ac762d6e54588a">GCube::GetBinWithContent2</a></div><div class="ttdeci">virtual Double_t GetBinWithContent2(Double_t c, Int_t &amp;binx, Int_t &amp;biny, Int_t &amp;binz, Int_t firstxbin=1, Int_t lastxbin=-1, Int_t firstybin=1, Int_t lastybin=-1, Int_t firstzbin=1, Int_t lastzbin=-1, Double_t maxdiff=0) const</div><div class="ttdef"><b>Definition</b> <a href="_g_cube_8cxx_source.html#l00965">GCube.cxx:965</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -3412,7 +3412,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_47358ee868e3aed1e59cf9c2ead119a2.html">GROOT</a></li><li class="navelem"><a class="el" href="_g_cube_8cxx.html">GCube.cxx</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:14.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:19.</li>
   </ul>
 </div>
 </body>

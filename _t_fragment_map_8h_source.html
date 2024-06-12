@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -152,8 +152,8 @@ $(document).ready(function(){initNavTree('_t_fragment_map_8h_source.html',''); i
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                                                                 std::vector&lt;Short_t&gt;&gt;&gt;::iterator&gt;&amp; range);</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="class_t_fragment_map.html#ad74790fe55671b5f771dddf99f9f4e01">   49</a></span>   std::multimap&lt;UInt_t, std::tuple&lt;std::shared_ptr&lt;TFragment&gt;, std::vector&lt;Int_t&gt;, std::vector&lt;Short_t&gt;&gt;&gt; <a class="code hl_variable" href="class_t_fragment_map.html#ad74790fe55671b5f771dddf99f9f4e01">fMap</a>;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="class_t_fragment_map.html#a86b510511ba8bd97816f6271bd720703">   50</a></span>   std::vector&lt;std::shared_ptr&lt;ThreadsafeQueue&lt;std::shared_ptr&lt;const TFragment&gt;&gt;&gt;&gt;&amp; <a class="code hl_variable" href="class_t_fragment_map.html#a86b510511ba8bd97816f6271bd720703">fGoodOutputQueue</a>;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="class_t_fragment_map.html#a87ada3a85b765f3f69068221aaae0d20">   51</a></span>   std::shared_ptr&lt;ThreadsafeQueue&lt;std::shared_ptr&lt;const TBadFragment&gt;&gt;&gt;&amp;           <a class="code hl_variable" href="class_t_fragment_map.html#a87ada3a85b765f3f69068221aaae0d20">fBadOutputQueue</a>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="class_t_fragment_map.html#a86b510511ba8bd97816f6271bd720703">   50</a></span>   std::vector&lt;std::shared_ptr&lt;ThreadsafeQueue&lt;std::shared_ptr&lt;const TFragment&gt;&gt;&gt;&gt;&amp;                        <a class="code hl_variable" href="class_t_fragment_map.html#a86b510511ba8bd97816f6271bd720703">fGoodOutputQueue</a>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="class_t_fragment_map.html#a87ada3a85b765f3f69068221aaae0d20">   51</a></span>   std::shared_ptr&lt;ThreadsafeQueue&lt;std::shared_ptr&lt;const TBadFragment&gt;&gt;&gt;&amp;                                  <a class="code hl_variable" href="class_t_fragment_map.html#a87ada3a85b765f3f69068221aaae0d20">fBadOutputQueue</a>;</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>};<span class="comment"></span></div>
 </div>
@@ -164,7 +164,7 @@ $(document).ready(function(){initNavTree('_t_fragment_map_8h_source.html',''); i
 <div class="ttc" id="a_threadsafe_queue_8h_html"><div class="ttname"><a href="_threadsafe_queue_8h.html">ThreadsafeQueue.h</a></div></div>
 <div class="ttc" id="aclass_t_fragment_map_html"><div class="ttname"><a href="class_t_fragment_map.html">TFragmentMap</a></div><div class="ttdef"><b>Definition</b> <a href="_t_fragment_map_8h_source.html#l00028">TFragmentMap.h:28</a></div></div>
 <div class="ttc" id="aclass_t_fragment_map_html_a0caade1dda73a5577551de19e233fa7f"><div class="ttname"><a href="class_t_fragment_map.html#a0caade1dda73a5577551de19e233fa7f">TFragmentMap::~TFragmentMap</a></div><div class="ttdeci">~TFragmentMap()=default</div></div>
-<div class="ttc" id="aclass_t_fragment_map_html_a794a8078149e978912c302530425192e"><div class="ttname"><a href="class_t_fragment_map.html#a794a8078149e978912c302530425192e">TFragmentMap::DropFragments</a></div><div class="ttdeci">void DropFragments(std::pair&lt; std::multimap&lt; UInt_t, std::tuple&lt; std::shared_ptr&lt; TFragment &gt;, std::vector&lt; Int_t &gt;, std::vector&lt; Short_t &gt; &gt; &gt;::iterator, std::multimap&lt; UInt_t, std::tuple&lt; std::shared_ptr&lt; TFragment &gt;, std::vector&lt; Int_t &gt;, std::vector&lt; Short_t &gt; &gt; &gt;::iterator &gt; &amp;range)</div><div class="ttdef"><b>Definition</b> <a href="_t_fragment_map_8cxx_source.html#l00448">TFragmentMap.cxx:448</a></div></div>
+<div class="ttc" id="aclass_t_fragment_map_html_a794a8078149e978912c302530425192e"><div class="ttname"><a href="class_t_fragment_map.html#a794a8078149e978912c302530425192e">TFragmentMap::DropFragments</a></div><div class="ttdeci">void DropFragments(std::pair&lt; std::multimap&lt; UInt_t, std::tuple&lt; std::shared_ptr&lt; TFragment &gt;, std::vector&lt; Int_t &gt;, std::vector&lt; Short_t &gt; &gt; &gt;::iterator, std::multimap&lt; UInt_t, std::tuple&lt; std::shared_ptr&lt; TFragment &gt;, std::vector&lt; Int_t &gt;, std::vector&lt; Short_t &gt; &gt; &gt;::iterator &gt; &amp;range)</div><div class="ttdef"><b>Definition</b> <a href="_t_fragment_map_8cxx_source.html#l00454">TFragmentMap.cxx:454</a></div></div>
 <div class="ttc" id="aclass_t_fragment_map_html_a86b510511ba8bd97816f6271bd720703"><div class="ttname"><a href="class_t_fragment_map.html#a86b510511ba8bd97816f6271bd720703">TFragmentMap::fGoodOutputQueue</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; ThreadsafeQueue&lt; std::shared_ptr&lt; const TFragment &gt; &gt; &gt; &gt; &amp; fGoodOutputQueue</div><div class="ttdef"><b>Definition</b> <a href="_t_fragment_map_8h_source.html#l00050">TFragmentMap.h:50</a></div></div>
 <div class="ttc" id="aclass_t_fragment_map_html_a87ada3a85b765f3f69068221aaae0d20"><div class="ttname"><a href="class_t_fragment_map.html#a87ada3a85b765f3f69068221aaae0d20">TFragmentMap::fBadOutputQueue</a></div><div class="ttdeci">std::shared_ptr&lt; ThreadsafeQueue&lt; std::shared_ptr&lt; const TBadFragment &gt; &gt; &gt; &amp; fBadOutputQueue</div><div class="ttdef"><b>Definition</b> <a href="_t_fragment_map_8h_source.html#l00051">TFragmentMap.h:51</a></div></div>
 <div class="ttc" id="aclass_t_fragment_map_html_a8f18701472f5a567be736d8a8d0a1ed5"><div class="ttname"><a href="class_t_fragment_map.html#a8f18701472f5a567be736d8a8d0a1ed5">TFragmentMap::Add</a></div><div class="ttdeci">bool Add(std::shared_ptr&lt; TFragment &gt;, std::vector&lt; Int_t &gt;, std::vector&lt; Short_t &gt;)</div><div class="ttdef"><b>Definition</b> <a href="_t_fragment_map_8cxx_source.html#l00014">TFragmentMap.cxx:14</a></div></div>
@@ -179,7 +179,7 @@ $(document).ready(function(){initNavTree('_t_fragment_map_8h_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_fragment_map_8h.html">TFragmentMap.h</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:14.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:18.</li>
   </ul>
 </div>
 </body>

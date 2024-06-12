@@ -1,11 +1,5 @@
 var NAVTREEINDEX64 =
 {
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#ab1397e3b88c085ef465e1dc9ebd59c2d":[7,3,19,4,11],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#ab54767ebbbed3bf77f721359900b3b61":[7,3,19,4,26],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#abdf4ca731dde02aa8d328701591e8595":[7,3,19,4,41],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#ac0a1b28f3ed2fce17ffc45fa0aac8c32":[7,3,19,4,9],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#ac4b1969f5208ff30d97bd480afecbf33":[7,3,19,4,31],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#ac67fcd4d77d5c4674a040f1d7b504c81":[7,3,19,4,18],
 "struct_t_pulse_analyzer_1_1_wave_form_par.html#acb5477d7ed831fd968b9c1ea19cfa5c7":[7,3,19,4,35],
 "struct_t_pulse_analyzer_1_1_wave_form_par.html#ad01a7e794dcf90d7444a8a1930cf2482":[7,3,19,4,32],
 "struct_t_pulse_analyzer_1_1_wave_form_par.html#ad96bfbd38c4749a7eca0eef02b95d59c":[7,3,19,4,8],

@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -127,13 +127,13 @@ $(document).ready(function(){initNavTree('_t_unpacked_event_8h_source.html','');
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#ifndef __CINT__</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>   <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>   std::shared_ptr&lt;T&gt; <a class="code hl_function" href="class_t_unpacked_event.html#a7c3278b80d951ff1c414febf57fb1003">GetDetector</a>(<span class="keywordtype">bool</span> make_if_not_found = <span class="keyword">false</span>);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>   std::shared_ptr&lt;T&gt;         <a class="code hl_function" href="class_t_unpacked_event.html#a7c3278b80d951ff1c414febf57fb1003">GetDetector</a>(<span class="keywordtype">bool</span> make_if_not_found = <span class="keyword">false</span>);</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>   std::shared_ptr&lt;TDetector&gt; <a class="code hl_function" href="class_t_unpacked_event.html#a7c3278b80d951ff1c414febf57fb1003">GetDetector</a>(TClass* cls, <span class="keywordtype">bool</span> make_if_not_found = <span class="keyword">false</span>);</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#ad4fcb683131c79343006072f9ed6466a">   28</a></span>   std::vector&lt;std::shared_ptr&lt;TDetector&gt;&gt;&amp; <a class="code hl_function" href="class_t_unpacked_event.html#ad4fcb683131c79343006072f9ed6466a">GetDetectors</a>() { <span class="keywordflow">return</span> <a class="code hl_variable" href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">fDetectors</a>; }</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#a498ae974fb5e3e3442af64285ea5e650">   29</a></span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_unpacked_event.html#a498ae974fb5e3e3442af64285ea5e650">AddDetector</a>(<span class="keyword">const</span> std::shared_ptr&lt;TDetector&gt;&amp; det) { <a class="code hl_variable" href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">fDetectors</a>.push_back(det); }</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_unpacked_event.html#abf1d3298d6d7d285aad05410a171c6d4">AddRawData</a>(<span class="keyword">const</span> std::shared_ptr&lt;const TFragment&gt;&amp; frag);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#a24c417a58cfc201b1d2ced89d18da66d">   31</a></span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_unpacked_event.html#a24c417a58cfc201b1d2ced89d18da66d">SetRawData</a>(<span class="keyword">const</span> std::vector&lt;std::shared_ptr&lt;const TFragment&gt;&gt;&amp; fragments) { <a class="code hl_variable" href="class_t_unpacked_event.html#ad785aba59778188400b8b1a75afce23c">fFragments</a> = fragments; }</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#a498ae974fb5e3e3442af64285ea5e650">   29</a></span>   <span class="keywordtype">void</span>                                     <a class="code hl_function" href="class_t_unpacked_event.html#a498ae974fb5e3e3442af64285ea5e650">AddDetector</a>(<span class="keyword">const</span> std::shared_ptr&lt;TDetector&gt;&amp; det) { <a class="code hl_variable" href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">fDetectors</a>.push_back(det); }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   <span class="keywordtype">void</span>                                     <a class="code hl_function" href="class_t_unpacked_event.html#abf1d3298d6d7d285aad05410a171c6d4">AddRawData</a>(<span class="keyword">const</span> std::shared_ptr&lt;const TFragment&gt;&amp; frag);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#a24c417a58cfc201b1d2ced89d18da66d">   31</a></span>   <span class="keywordtype">void</span>                                     <a class="code hl_function" href="class_t_unpacked_event.html#a24c417a58cfc201b1d2ced89d18da66d">SetRawData</a>(<span class="keyword">const</span> std::vector&lt;std::shared_ptr&lt;const TFragment&gt;&gt;&amp; fragments) { <a class="code hl_variable" href="class_t_unpacked_event.html#ad785aba59778188400b8b1a75afce23c">fFragments</a> = fragments; }</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_unpacked_event.html#adc22f528e8b4e989671b295658f6bc58">ClearRawData</a>();</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
@@ -141,9 +141,9 @@ $(document).ready(function(){initNavTree('_t_unpacked_event_8h_source.html','');
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#aa12abad191b215a386606300f11f23cd">   37</a></span>   <span class="keywordtype">int</span> <a class="code hl_function" href="class_t_unpacked_event.html#aa12abad191b215a386606300f11f23cd">Size</a>() { <span class="keywordflow">return</span> <a class="code hl_variable" href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">fDetectors</a>.size(); }</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">   #if __GNUC__ &gt; 5</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#if __GNUC__ &gt; 5</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>   std::ostringstream Print();</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">   #endif</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_unpacked_event.html#ad9188d5ce70b53f1f40aa5e4c022bdbb">BuildHits</a>();</div>
@@ -203,7 +203,7 @@ $(document).ready(function(){initNavTree('_t_unpacked_event_8h_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_unpacked_event_8h.html">TUnpackedEvent.h</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:14.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:18.</li>
   </ul>
 </div>
 </body>

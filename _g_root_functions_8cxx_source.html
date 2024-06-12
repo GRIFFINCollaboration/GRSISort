@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="triumflogo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GRSISort<span id="projectnumber">&#160;v4.0.0.4</span>
+   <div id="projectname">GRSISort<span id="projectnumber">&#160;&quot;v4.0.0.5&quot;</span>
    </div>
    <div id="projectbrief">An extension of the ROOT analysis Framework</div>
   </td>
@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('_g_root_functions_8cxx_source.html',''
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#define PI TMATH::Pi()</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>Double_t <a class="code hl_function" href="namespace_g_root_functions.html#a9b9dd60ecf674e344ffc4f5ef8a2ea4b">GRootFunctions::PolyBg</a>(Double_t* dim, Double_t* par, Int_t order)</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>   Double_t <a class="code hl_function" href="namespace_g_root_functions.html#a9b9dd60ecf674e344ffc4f5ef8a2ea4b">GRootFunctions::PolyBg</a>(Double_t* dim, Double_t* par, Int_t order)</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>{</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>   Double_t result = 0.0;</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>   <span class="keywordtype">int</span>      j      = 0;</div>
@@ -196,12 +196,12 @@ $(document).ready(function(){initNavTree('_g_root_functions_8cxx_source.html',''
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>   <span class="comment">// - par[3]: relative height of skewed gaus to gaus</span></div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>   <span class="comment">// - par[4]: &quot;skewedness&quot; of the skewed gaussin</span></div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>   Double_t x      = dim[0]; <span class="comment">// channel number used for fitting</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>   Double_t height = par[0]; <span class="comment">// height of photopeak</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>   Double_t cent   = par[1]; <span class="comment">// Peak Centroid of non skew gaus</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>   Double_t sigma  = par[2]; <span class="comment">// standard deviation of gaussian</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   Double_t R      = par[3]; <span class="comment">// relative height of skewed gaussian</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>   Double_t beta   = par[4]; <span class="comment">//&quot;skewedness&quot; of the skewed gaussian</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>   Double_t x      = dim[0];   <span class="comment">// channel number used for fitting</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>   Double_t height = par[0];   <span class="comment">// height of photopeak</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>   Double_t cent   = par[1];   <span class="comment">// Peak Centroid of non skew gaus</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>   Double_t sigma  = par[2];   <span class="comment">// standard deviation of gaussian</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   Double_t R      = par[3];   <span class="comment">// relative height of skewed gaussian</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>   Double_t beta   = par[4];   <span class="comment">//&quot;skewedness&quot; of the skewed gaussian</span></div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>   <span class="keywordtype">double</span> scaling = R * height / 100.0;</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>   <span class="comment">// double x_rel = (x - cent)/sigma;</span></div>
@@ -238,7 +238,7 @@ $(document).ready(function(){initNavTree('_g_root_functions_8cxx_source.html',''
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>   spar[0] = par[0];</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>   spar[1] = par[1];</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>   spar[2] = par[2];</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>   spar[3] = par[5]; <span class="comment">// stepsize;</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>   spar[3] = par[5];   <span class="comment">// stepsize;</span></div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>   <span class="keywordflow">return</span> <a class="code hl_function" href="namespace_g_root_functions.html#a12e18cd0339508832ecdb492c09d20f4">Gaus</a>(dim, par) + <a class="code hl_function" href="namespace_g_root_functions.html#afc0a6fb05cb832b8b5aa228b5bf5a822">SkewedGaus</a>(dim, par) + <a class="code hl_function" href="namespace_g_root_functions.html#a51c0a841073716edc48668274794a78a">StepFunction</a>(dim, spar) + <a class="code hl_function" href="namespace_g_root_functions.html#a9b9dd60ecf674e344ffc4f5ef8a2ea4b">PolyBg</a>(dim, par + 6, 0);</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>}</div>
 </div>
@@ -293,18 +293,18 @@ $(document).ready(function(){initNavTree('_g_root_functions_8cxx_source.html',''
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>   conv = 0;</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; 10; i++) {</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>      dy = 5 * pars[2] / 10.0; <span class="comment">// truncate the convolution by decreasing number of evaluation points and decreasing</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>      dy = 5 * pars[2] / 10.0;   <span class="comment">// truncate the convolution by decreasing number of evaluation points and decreasing</span></div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>      <span class="comment">// range [2.5 sigma still covers 98.8% of gaussian]</span></div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>      y    = x[0] - 2.5 * pars[2] + dy * i;</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>      spec = pars[0] +</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>         pars[1] * y; <span class="comment">// define background SHOULD THIS BE CONVOLUTED ????? *************************************</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>             pars[1] * y;   <span class="comment">// define background SHOULD THIS BE CONVOLUTED ????? *************************************</span></div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>      <span class="comment">// for( int n=0; n&lt;(int)(pars[0]+0.5); n++) // the implementation of landau function should be done using the</span></div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>      <span class="comment">// landau function</span></div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>      spec += pars[3] * TMath::Landau(-y, -pars[4], pars[5]) /</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>         TMath::Landau(0, 0, 100); <span class="comment">// add peaks, dividing by max height of landau</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>              TMath::Landau(0, 0, 100);   <span class="comment">// add peaks, dividing by max height of landau</span></div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>      gaus = TMath::Gaus(-x[0], -y, pars[2]) /</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>         sqrt(2 * TMath::Pi() * pars[2] * pars[2]); <span class="comment">// gaus must be normalisd so there is no sigma weighting</span></div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>      conv += gaus * spec * dy; <span class="comment">// now convolve this [integrate the product] with a gaussian centered at x;</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>             sqrt(2 * TMath::Pi() * pars[2] * pars[2]);   <span class="comment">// gaus must be normalisd so there is no sigma weighting</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>      conv += gaus * spec * dy;                           <span class="comment">// now convolve this [integrate the product] with a gaussian centered at x;</span></div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>   }</div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>   <span class="keywordflow">return</span> conv;</div>
@@ -313,12 +313,12 @@ $(document).ready(function(){initNavTree('_g_root_functions_8cxx_source.html',''
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
 <div class="foldopen" id="foldopen00186" data-start="{" data-end="}">
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno"><a class="line" href="namespace_g_root_functions.html#adb01a470b7af801dd5819a462b814bb9">  186</a></span>Double_t <a class="code hl_function" href="namespace_g_root_functions.html#adb01a470b7af801dd5819a462b814bb9">GRootFunctions::LanGausHighRes</a>(Double_t* x, Double_t* pars)</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>{ <span class="comment">// 5x more convolution points with 1.6x larger range</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>{   <span class="comment">// 5x more convolution points with 1.6x larger range</span></div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>   <span class="keywordtype">double</span> dy, y, conv, spec, gaus;</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>   conv = 0;</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; 50; i++) {</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>      dy = 8 * pars[2] / 50.0; <span class="comment">// 4 sigma covers 99.99% of gaussian</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>      dy = 8 * pars[2] / 50.0;   <span class="comment">// 4 sigma covers 99.99% of gaussian</span></div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>      y  = x[0] - 4 * pars[2] + dy * i;</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>      spec = pars[0] + pars[1] * y;</div>
@@ -366,7 +366,7 @@ $(document).ready(function(){initNavTree('_g_root_functions_8cxx_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_47358ee868e3aed1e59cf9c2ead119a2.html">GROOT</a></li><li class="navelem"><a class="el" href="_g_root_functions_8cxx.html">GRootFunctions.cxx</a></li>
-    <li class="footer">GRSISort (v4.0.0.4) Reference Guide Generated on Tue May 28 2024 11:22:14.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jun 12 2024 19:17:19.</li>
   </ul>
 </div>
 </body>
