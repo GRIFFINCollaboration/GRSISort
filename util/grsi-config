@@ -154,7 +154,7 @@ while test $# -gt 0; do
 			lib=${lib#--};  # remove leading  --
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
-				out="$out $(GRSISYS/"$lib"/util/config --libs)"
+				out="$out $($GRSISYS/$lib/util/config --libs)"
 			fi
 			;;
 		--root)

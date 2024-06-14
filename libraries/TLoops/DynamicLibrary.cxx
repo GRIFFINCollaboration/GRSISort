@@ -61,12 +61,12 @@ DynamicLibrary::~DynamicLibrary()
    }
 }
 
-DynamicLibrary::DynamicLibrary(DynamicLibrary&& other) : fLibrary(nullptr)
+DynamicLibrary::DynamicLibrary(DynamicLibrary&& other) noexcept : fLibrary(nullptr)
 {
    swap(other);
 }
 
-DynamicLibrary& DynamicLibrary::operator=(DynamicLibrary&& other)
+DynamicLibrary& DynamicLibrary::operator=(DynamicLibrary&& other) noexcept
 {
    swap(other);
    return *this;

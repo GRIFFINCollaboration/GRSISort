@@ -34,7 +34,7 @@ public:
     */
    ~DynamicLibrary();
 
-   /// Moves constructor
+   /// Move constructor
    DynamicLibrary(DynamicLibrary&& other) noexcept ;
 
    /// Move assignment operator
