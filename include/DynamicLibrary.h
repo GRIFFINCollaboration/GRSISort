@@ -1,5 +1,5 @@
-#ifndef _DYNAMICLIBRARY_H_
-#define _DYNAMICLIBRARY_H_
+#ifndef DYNAMICLIBRARY_H
+#define DYNAMICLIBRARY_H
 
 #include <string>
 
@@ -23,7 +23,7 @@ public:
         then this caching works against us.
       In this case, "unique_name" should be set to true.
     */
-   DynamicLibrary(std::string libname_param, bool unique_name = false);
+   explicit DynamicLibrary(std::string libname_param, bool unique_name = false);
 
    /// Destructs the shared object library
    /**
@@ -35,10 +35,10 @@ public:
    ~DynamicLibrary();
 
    /// Moves constructor
-   DynamicLibrary(DynamicLibrary&& other);
+   DynamicLibrary(DynamicLibrary&& other) noexcept ;
 
    /// Move assignment operator
-   DynamicLibrary& operator=(DynamicLibrary&& other);
+   DynamicLibrary& operator=(DynamicLibrary&& other) noexcept ;
 
 #ifdef __CINT__
 private:
