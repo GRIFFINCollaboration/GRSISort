@@ -4,7 +4,7 @@ void AngularCorrelationHelper::CreateHistograms(unsigned int slot)
 {
    // set up the queue for event mixing by filling it with empty events
    // we chose 10 here as a reasonable compromise between statistics and computing power/memory needed
-   for(int i = 0; i < 10; ++i) {
+   for(int i = 0; i < fNofMixedEvents; ++i) {
       fGriffinDeque[slot].emplace_back(new TGriffin);
       fBgoDeque[slot].emplace_back(new TGriffinBgo);
    }
