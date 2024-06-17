@@ -44,7 +44,7 @@ var searchData=
   ['deletevariable_41',['DeleteVariable',['../classpygui_1_1variable__tab_1_1_variable_tab.html#aa314fcc31660fdf7f9cbd4ea23ea67c0',1,'pygui::variable_tab::VariableTab']]],
   ['descant_42',['Descant',['../class_t_g_r_s_i_detector_information.html#a135335a54b12545df50497b7c2e6bce1',1,'TGRSIDetectorInformation']]],
   ['descantancillary_43',['DescantAncillary',['../class_t_g_r_s_i_detector_information.html#a431efac0aad5d8753ae78c38e62600c3',1,'TGRSIDetectorInformation']]],
-  ['description_44',['description',['../class_arg_parse_config.html#afe4d986f055493d56c6d0443a831819b',1,'ArgParseConfig']]],
+  ['description_44',['description',['../class_arg_parse_config.html#a7189b226af49a9822af56b6e8e0e4010',1,'ArgParseConfig']]],
   ['destroycalibrations_45',['DestroyCalibrations',['../class_t_channel.html#aa7c8cda886b73e7331527528138a8144',1,'TChannel']]],
   ['destroycfdcal_46',['DestroyCFDCal',['../class_t_channel.html#aa0f91f25bb78c8292401d2f2aece05e4',1,'TChannel']]],
   ['destroyctcal_47',['DestroyCTCal',['../class_t_channel.html#ad91ee58ec46ac3de93653fb6b139c638',1,'TChannel']]],
@@ -149,7 +149,7 @@ var searchData=
   ['dword_5fswap_146',['dword_swap',['../_t_midas_event_8cxx.html#adb40ea04e4e009bbde68c027a8f95039',1,'DWORD_SWAP:&#160;TMidasEvent.cxx'],['../_t_lst_event_8cxx.html#adb40ea04e4e009bbde68c027a8f95039',1,'DWORD_SWAP:&#160;TLstEvent.cxx'],['../_t_tdr_event_8cxx.html#adb40ea04e4e009bbde68c027a8f95039',1,'DWORD_SWAP:&#160;TTdrEvent.cxx']]],
   ['dx_147',['dx',['../class_t_s_r_i_m.html#a5d04b47f67b079db783d561d4f589572',1,'TSRIM']]],
   ['dyellow_148',['DYELLOW',['../_globals_8h.html#a59524b4cf113f646696e5955023df6a4',1,'Globals.h']]],
-  ['dynamiclibrary_149',['dynamiclibrary',['../class_dynamic_library.html#a59fb7945e893625717cc37c8bc923236',1,'DynamicLibrary::DynamicLibrary()'],['../class_dynamic_library.html',1,'DynamicLibrary'],['../class_dynamic_library.html#a2584f92c7a0731924a83d18e0b9f458b',1,'DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name=false)'],['../class_dynamic_library.html#ab85b3de2ee345280ee66d1c0870e21dd',1,'DynamicLibrary::DynamicLibrary(DynamicLibrary &amp;&amp;other)']]],
+  ['dynamiclibrary_149',['dynamiclibrary',['../class_dynamic_library.html#a59fb7945e893625717cc37c8bc923236',1,'DynamicLibrary::DynamicLibrary()'],['../class_dynamic_library.html',1,'DynamicLibrary'],['../class_dynamic_library.html#a2584f92c7a0731924a83d18e0b9f458b',1,'DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name=false)'],['../class_dynamic_library.html#aae057a9ca2d72db6b7bae77626e88342',1,'DynamicLibrary::DynamicLibrary(DynamicLibrary &amp;&amp;other) noexcept']]],
   ['dynamiclibrary_2ecxx_150',['DynamicLibrary.cxx',['../_dynamic_library_8cxx.html',1,'']]],
   ['dynamiclibrary_2eh_151',['DynamicLibrary.h',['../_dynamic_library_8h.html',1,'']]]
 ];

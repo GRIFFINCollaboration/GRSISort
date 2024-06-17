@@ -47,7 +47,7 @@ var searchData=
   ['numberofbadfragments_44',['NumberOfBadFragments',['../class_t_parsing_diagnostics.html#aafd5d1f8d5ffecee5c15761a66ef8d24',1,'TParsingDiagnostics']]],
   ['numberofchannels_45',['NumberOfChannels',['../class_t_source_tab.html#adc498ec1675e6e9d55f4f2954fed9bad',1,'TSourceTab']]],
   ['numberofclients_46',['NumberOfClients',['../class_t_g_r_s_i_options.html#aa28b0e43ccb8f02875f514920ae85687',1,'TGRSIOptions']]],
-  ['numberofevents_47',['numberofevents',['../struct_rlmd_file_header.html#a7b6a34bb7a9443321c9b2a43cb89166f',1,'RlmdFileHeader::numberOfEvents'],['../class_t_g_r_s_i_options.html#a39ff57d79a969a2a217069edc68483f0',1,'TGRSIOptions::NumberOfEvents()']]],
+  ['numberofevents_47',['numberofevents',['../class_t_g_r_s_i_options.html#a39ff57d79a969a2a217069edc68483f0',1,'TGRSIOptions::NumberOfEvents()'],['../struct_rlmd_file_header.html#a7b6a34bb7a9443321c9b2a43cb89166f',1,'RlmdFileHeader::numberOfEvents']]],
   ['numberoffragments_48',['numberOfFragments',['../struct_rlmd_buffer_header.html#a32d302c0c5d23b494c1b7e431534b81e',1,'RlmdBufferHeader']]],
   ['numberoffragmentsoutoforder_49',['NumberOfFragmentsOutOfOrder',['../class_t_sorting_diagnostics.html#aec0291ff8fa3f25beb517bf114ff668c',1,'TSortingDiagnostics']]],
   ['numberoffragmentsoutoftimeorder_50',['NumberOfFragmentsOutOfTimeOrder',['../class_t_sorting_diagnostics.html#af3429963069b378f823fb29a9f9fd570',1,'TSortingDiagnostics']]],

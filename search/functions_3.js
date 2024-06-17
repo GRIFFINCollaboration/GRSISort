@@ -89,7 +89,7 @@ var searchData=
   ['coincidencetime_86',['CoincidenceTime',['../class_t_si_li.html#ad702833eec2cd947be6232cba28ba4c8',1,'TSiLi']]],
   ['collectedcharge_87',['CollectedCharge',['../class_t_mnemonic.html#ae7df9ad9f9503684225d7852f6803b7c',1,'TMnemonic']]],
   ['collectedchargestring_88',['CollectedChargeString',['../class_t_mnemonic.html#ae155e407e45361c6b2e49b0292d3710e',1,'TMnemonic']]],
-  ['colour_89',['colour',['../class_arg_parse_config.html#ac8f8c0d013c37862e9c7e78bec86d2f3',1,'ArgParseConfig']]],
+  ['colour_89',['colour',['../class_arg_parse_config.html#ab40d0d0f301decbef182562f81a1fefb',1,'ArgParseConfig']]],
   ['columnwidth_90',['columnwidth',['../class_stoppable_thread.html#abe60c16209394a97817fe33058a8c0ec',1,'StoppableThread::ColumnWidth(size_t val)'],['../class_stoppable_thread.html#aebf9c116849d86aa246233a5134d120d',1,'StoppableThread::ColumnWidth()'],['../class_t_g_r_s_i_options.html#ad89e04a8769d46e1defcaa91a8fe444b',1,'TGRSIOptions::ColumnWidth()']]],
   ['combinations_91',['combinations',['../classcombinations.html#aacde4d473d5720262dda9404334f8cdd',1,'combinations']]],
   ['combinehits_92',['combinehits',['../class_t_sharc.html#ae8f6204e4627a6790f40a676aa5947c6',1,'TSharc::CombineHits()'],['../class_t_c_s_m.html#a9b4690f806ff011d57a874e8bbb6cbbf',1,'TCSM::CombineHits()']]],

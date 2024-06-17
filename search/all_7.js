@@ -114,7 +114,7 @@ var searchData=
   ['collectedcharge_111',['CollectedCharge',['../class_t_mnemonic.html#ae7df9ad9f9503684225d7852f6803b7c',1,'TMnemonic']]],
   ['collectedchargestring_112',['CollectedChargeString',['../class_t_mnemonic.html#ae155e407e45361c6b2e49b0292d3710e',1,'TMnemonic']]],
   ['color_5fpat_113',['color_pat',['../classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#af4afa0187ef945b84d24fdd3ca37956f',1,'pygui::AnsiColorText::AnsiColorText']]],
-  ['colour_114',['colour',['../class_arg_parse_config.html#ac8f8c0d013c37862e9c7e78bec86d2f3',1,'ArgParseConfig']]],
+  ['colour_114',['colour',['../class_arg_parse_config.html#ab40d0d0f301decbef182562f81a1fefb',1,'ArgParseConfig']]],
   ['columnwidth_115',['columnwidth',['../class_stoppable_thread.html#abe60c16209394a97817fe33058a8c0ec',1,'StoppableThread::ColumnWidth(size_t val)'],['../class_stoppable_thread.html#aebf9c116849d86aa246233a5134d120d',1,'StoppableThread::ColumnWidth()'],['../class_t_g_r_s_i_options.html#ad89e04a8769d46e1defcaa91a8fe444b',1,'TGRSIOptions::ColumnWidth()']]],
   ['combinations_116',['combinations',['../classcombinations.html#aacde4d473d5720262dda9404334f8cdd',1,'combinations::combinations()'],['../classcombinations.html',1,'combinations']]],
   ['combinations_2eh_117',['combinations.h',['../combinations_8h.html',1,'']]],

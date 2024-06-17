@@ -33,7 +33,7 @@ var searchData=
   ['deletevariable_30',['DeleteVariable',['../classpygui_1_1variable__tab_1_1_variable_tab.html#aa314fcc31660fdf7f9cbd4ea23ea67c0',1,'pygui::variable_tab::VariableTab']]],
   ['descant_31',['Descant',['../class_t_g_r_s_i_detector_information.html#a135335a54b12545df50497b7c2e6bce1',1,'TGRSIDetectorInformation']]],
   ['descantancillary_32',['DescantAncillary',['../class_t_g_r_s_i_detector_information.html#a431efac0aad5d8753ae78c38e62600c3',1,'TGRSIDetectorInformation']]],
-  ['description_33',['description',['../class_arg_parse_config.html#afe4d986f055493d56c6d0443a831819b',1,'ArgParseConfig']]],
+  ['description_33',['description',['../class_arg_parse_config.html#a7189b226af49a9822af56b6e8e0e4010',1,'ArgParseConfig']]],
   ['destroycalibrations_34',['DestroyCalibrations',['../class_t_channel.html#aa7c8cda886b73e7331527528138a8144',1,'TChannel']]],
   ['destroycfdcal_35',['DestroyCFDCal',['../class_t_channel.html#aa0f91f25bb78c8292401d2f2aece05e4',1,'TChannel']]],
   ['destroyctcal_36',['DestroyCTCal',['../class_t_channel.html#ad91ee58ec46ac3de93653fb6b139c638',1,'TChannel']]],
@@ -112,5 +112,5 @@ var searchData=
   ['dropfragments_109',['DropFragments',['../class_t_fragment_map.html#a794a8078149e978912c302530425192e',1,'TFragmentMap']]],
   ['droppeddata_110',['DroppedData',['../_dropped_data_8_c.html#a1e14a81e3e320ca0b2af509cfd618fc0',1,'DroppedData.C']]],
   ['dummyfunctiontolocatetgrsiframelibrary_111',['dummyfunctiontolocatetgrsiframelibrary',['../_t_g_r_s_i_frame_8h.html#a2f729147420c4adc01d397fa945f4bcf',1,'DummyFunctionToLocateTGRSIFrameLibrary():&#160;TGRSIFrame.cxx'],['../_t_g_r_s_i_frame_8cxx.html#a2f729147420c4adc01d397fa945f4bcf',1,'DummyFunctionToLocateTGRSIFrameLibrary():&#160;TGRSIFrame.cxx']]],
-  ['dynamiclibrary_112',['dynamiclibrary',['../class_dynamic_library.html#a59fb7945e893625717cc37c8bc923236',1,'DynamicLibrary::DynamicLibrary(const DynamicLibrary &amp;)=delete'],['../class_dynamic_library.html#ab85b3de2ee345280ee66d1c0870e21dd',1,'DynamicLibrary::DynamicLibrary(DynamicLibrary &amp;&amp;other)'],['../class_dynamic_library.html#a2584f92c7a0731924a83d18e0b9f458b',1,'DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name=false)']]]
+  ['dynamiclibrary_112',['dynamiclibrary',['../class_dynamic_library.html#a59fb7945e893625717cc37c8bc923236',1,'DynamicLibrary::DynamicLibrary(const DynamicLibrary &amp;)=delete'],['../class_dynamic_library.html#aae057a9ca2d72db6b7bae77626e88342',1,'DynamicLibrary::DynamicLibrary(DynamicLibrary &amp;&amp;other) noexcept'],['../class_dynamic_library.html#a2584f92c7a0731924a83d18e0b9f458b',1,'DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name=false)']]]
 ];

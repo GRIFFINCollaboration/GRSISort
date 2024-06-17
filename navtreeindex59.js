@@ -1,5 +1,17 @@
 var NAVTREEINDEX59 =
 {
+"classcombinations_1_1iterator.html#a9a6749e53da40aee344fc1ff53bfa644":[9,0,13,0,0],
+"classcombinations_1_1iterator.html#a9e011b6db9c23c12283985960a82b343":[9,0,13,0,7],
+"classcombinations_1_1iterator.html#aca68df075d771728aef4221e8ef1506d":[9,0,13,0,4],
+"classcombinations_1_1iterator.html#acbbce32dee45d1e03f4992e6da2a457e":[9,0,13,0,1],
+"classcombinations_1_1iterator.html#aeeedc620c446b6357a9e7821b1951f76":[9,0,13,0,2],
+"classes.html":[9,1],
+"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html":[8,0,5,0,0],
+"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html":[9,0,1,0,0],
+"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#a12da6bda587d04f61ffebbcb00ba973b":[9,0,1,0,0,8],
+"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#a12da6bda587d04f61ffebbcb00ba973b":[8,0,5,0,0,8],
+"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#a317ec7dd6c24e17ef2b86c0e5b8e1020":[9,0,1,0,0,12],
+"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#a317ec7dd6c24e17ef2b86c0e5b8e1020":[8,0,5,0,0,12],
 "classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#a33743c38206670eaccf2811303a9a3da":[8,0,5,0,0,3],
 "classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#a33743c38206670eaccf2811303a9a3da":[9,0,1,0,0,3],
 "classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#a35882aac13240871913081888441a857":[8,0,5,0,0,1],
@@ -237,17 +249,5 @@ var NAVTREEINDEX59 =
 "classpygui_1_1status__widget_1_1_thread_vars.html#abb30961891102c5ee35af3f3e9410ca6":[9,0,1,3,1,1],
 "classpygui_1_1status__widget_1_1_thread_vars.html#abb30961891102c5ee35af3f3e9410ca6":[8,0,5,5,1,1],
 "classpygui_1_1status__widget_1_1_thread_vars.html#ac512c11cd7e10940ae71923f6c24b671":[9,0,1,3,1,4],
-"classpygui_1_1status__widget_1_1_thread_vars.html#ac512c11cd7e10940ae71923f6c24b671":[8,0,5,5,1,4],
-"classpygui_1_1tcut__tab_1_1_t_cut_tab.html":[8,0,5,6,0],
-"classpygui_1_1tcut__tab_1_1_t_cut_tab.html":[9,0,1,4,0],
-"classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a025b3c61f4ac69e3caaaf9b7afc99c49":[9,0,1,4,0,1],
-"classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a025b3c61f4ac69e3caaaf9b7afc99c49":[8,0,5,6,0,1],
-"classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a07820884021d9e5fc6c2d0f452e25ee6":[8,0,5,6,0,9],
-"classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a07820884021d9e5fc6c2d0f452e25ee6":[9,0,1,4,0,9],
-"classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a078fd779e4f4642df0c4b8b09307dc00":[9,0,1,4,0,0],
-"classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a078fd779e4f4642df0c4b8b09307dc00":[8,0,5,6,0,0],
-"classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a09ca95954c7b5608335d1cf1b2db58e6":[8,0,5,6,0,5],
-"classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a09ca95954c7b5608335d1cf1b2db58e6":[9,0,1,4,0,5],
-"classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a09ee1bb0f5ca099bb22ff0b4510f2310":[8,0,5,6,0,25],
-"classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a09ee1bb0f5ca099bb22ff0b4510f2310":[9,0,1,4,0,25]
+"classpygui_1_1status__widget_1_1_thread_vars.html#ac512c11cd7e10940ae71923f6c24b671":[8,0,5,5,1,4]
 };

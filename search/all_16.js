@@ -110,7 +110,7 @@ var searchData=
   ['resume_107',['Resume',['../class_stoppable_thread.html#a4fb4c7ce9c43caa1460c24c2ffd95162',1,'StoppableThread']]],
   ['resumeall_108',['ResumeAll',['../class_stoppable_thread.html#ae71ed7915b1d2db200dbcb4880e4c96b',1,'StoppableThread']]],
   ['retrievebincontent_109',['retrievebincontent',['../class_g_h_sym_d.html#a69ef58e6519f02c9cc34cf2f58c838ab',1,'GHSymD::RetrieveBinContent()'],['../class_g_h_sym_f.html#ab4870f710407fe44648a2bc40e7d1e20',1,'GHSymF::RetrieveBinContent()'],['../class_g_cube_d.html#af377bd9b734a37a98320877bc9756b51',1,'GCubeD::RetrieveBinContent()'],['../class_g_cube_f.html#a8d583c8d66d01158f8fb5d8fb060ae71',1,'GCubeF::RetrieveBinContent()']]],
-  ['rf_110',['rf',['../class_t_g_r_s_i_detector_information.html#ad63672c57d42516e964bfff26e92f766',1,'TGRSIDetectorInformation::RF()'],['../struct_t_pulse_analyzer_1_1_shape_par.html#a403ffd613dd5c6bdeb2fca2172c65695',1,'TPulseAnalyzer::ShapePar::rf']]],
+  ['rf_110',['rf',['../struct_t_pulse_analyzer_1_1_shape_par.html#a403ffd613dd5c6bdeb2fca2172c65695',1,'TPulseAnalyzer::ShapePar::rf'],['../class_t_g_r_s_i_detector_information.html#ad63672c57d42516e964bfff26e92f766',1,'TGRSIDetectorInformation::RF()']]],
   ['rfscalertofragment_111',['RFScalerToFragment',['../class_t_g_r_s_i_data_parser.html#a9e8e453a81f6d131de05a066f2710d76',1,'TGRSIDataParser']]],
   ['rlmd_5ffile_112',['RLMD_FILE',['../_t_g_r_s_i_types_8h.html#aa52857f83d8b7cda6be7f0bec0f45229abb7dd2645a88d869c199225533909373',1,'TGRSITypes.h']]],
   ['rlmdbufferheader_113',['RlmdBufferHeader',['../struct_rlmd_buffer_header.html',1,'']]],

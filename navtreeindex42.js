@@ -1,5 +1,17 @@
 var NAVTREEINDEX42 =
 {
+"class_t_paces_hit.html#ab5efce05747d2c39d501a16dc2382db5":[7,2,38,21],
+"class_t_paces_hit.html#ab6769845c97c3ab9f3173407ed724da9":[7,2,38,8],
+"class_t_paces_hit.html#ab6adf5ff1ffbcbb3b50c4559209f007a":[7,2,38,37],
+"class_t_paces_hit.html#aba5e96b2f172f0e12eb2b6e06af5a735":[7,2,38,38],
+"class_t_paces_hit.html#abab2f46047c824844baca0e7fae7eb03":[7,2,38,61],
+"class_t_paces_hit.html#abb29f0acb47e7e3a316f7ff998bce3a1":[7,2,38,76],
+"class_t_paces_hit.html#abc39d95961863ed1182a7de704d2af74":[7,2,38,44],
+"class_t_paces_hit.html#abc7425a9db654f7f3ba9d2cf330ebc4e":[7,2,38,5],
+"class_t_paces_hit.html#ac413ad26849c57ab229ed457be70daf5":[7,2,38,75],
+"class_t_paces_hit.html#ac9202e62116783982bac618bea13cbb7":[7,2,38,47],
+"class_t_paces_hit.html#acdb38ab68d5513dab900d3471e348270":[7,2,38,53],
+"class_t_paces_hit.html#ad046c38d7b93b87b7e169e3418c43a09":[7,2,38,68],
 "class_t_paces_hit.html#ad08e816347670259c6624a8be3ab6594":[7,2,38,58],
 "class_t_paces_hit.html#ad62673f38054fff81556da5aa2770a3b":[7,2,38,46],
 "class_t_paces_hit.html#ad722731c5fde16e444eccbc61a697dda":[7,2,38,20],
@@ -237,17 +249,5 @@ var NAVTREEINDEX42 =
 "class_t_peak_fitter.html#a372403c3b1c28757365aa6f88a16fec6":[7,3,18,0],
 "class_t_peak_fitter.html#a3ada2891b23f266bae5fbfbd901aaea6":[7,3,18,2],
 "class_t_peak_fitter.html#a435a5f2cfedfd8fcfc28fea9ea467aa0":[7,3,18,22],
-"class_t_peak_fitter.html#a4f95b728bfb00f2c67df1bb5b732875f":[7,3,18,14],
-"class_t_peak_fitter.html#a54c33a4a4bd7bc76b9fcd795443f3696":[7,3,18,11],
-"class_t_peak_fitter.html#a5a718c64429cf200f90ab70287a33171":[7,3,18,12],
-"class_t_peak_fitter.html#a6478d79668a46b81dd54a34ef6810df0":[7,3,18,1],
-"class_t_peak_fitter.html#a70699fe3b76c4a4273486dcd626a35a3":[7,3,18,8],
-"class_t_peak_fitter.html#a769767bd3757e21b210e9a2766427535":[7,3,18,31],
-"class_t_peak_fitter.html#a7cfdabd43cbec2a1f0d7068e8bd2f1fc":[7,3,18,13],
-"class_t_peak_fitter.html#a7f5d36a47f56aea415d28da377c6de51":[7,3,18,9],
-"class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691":[7,3,18,29],
-"class_t_peak_fitter.html#a8d47bc1e4639d1c290d09b6515d00cb8":[7,3,18,6],
-"class_t_peak_fitter.html#ab01279610797823455db2240052aa060":[7,3,18,18],
-"class_t_peak_fitter.html#ab4a8f50ffa063744edd20108060e9ce0":[7,3,18,4],
-"class_t_peak_fitter.html#abcbb69b750154441a8286aa0bd3fcbdc":[7,3,18,20]
+"class_t_peak_fitter.html#a4f95b728bfb00f2c67df1bb5b732875f":[7,3,18,14]
 };

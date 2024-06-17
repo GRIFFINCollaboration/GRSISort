@@ -1,5 +1,17 @@
 var NAVTREEINDEX14 =
 {
+"class_griffin_k_value_helper.html#aad7e7d8ceee2f9fa1d96256a4e15138b":[9,0,48,20],
+"class_griffin_k_value_helper.html#ac7ce3378d3b7c730f9cbd73dd2cf7ab3":[9,0,48,22],
+"class_griffin_k_value_helper.html#ac8e3b2c0233863390b3d8afd443b6241":[9,0,48,11],
+"class_griffin_k_value_helper.html#add19941df642bbd2f8994a3b799d4760":[9,0,48,8],
+"class_griffin_k_value_helper.html#ae5c188f3fc54bc1e7ee607421a46b678":[9,0,48,14],
+"class_griffin_k_value_helper.html#ae8293c18719d3e29c1d9afb74cc41d9a":[9,0,48,5],
+"class_griffin_k_value_helper.html#ae95111fa334deef7e49ea2050899e972":[9,0,48,24],
+"class_griffin_k_value_helper.html#af70ba099fb02f24961d985d47f7a568d":[9,0,48,19],
+"class_griffin_k_value_helper.html#afac73b2662988899869aa7d4c9926924":[9,0,48,2],
+"class_griffin_k_value_selector.html":[9,0,49],
+"class_griffin_k_value_selector.html#a095a925b9e0e9ae440a758300f082c9c":[9,0,49,29],
+"class_griffin_k_value_selector.html#a0a36b80b21d1c5fd0b2246943c28ebce":[9,0,49,38],
 "class_griffin_k_value_selector.html#a1935dbf4d7080d06bc59903daafca0ce":[9,0,49,19],
 "class_griffin_k_value_selector.html#a1e35e3147d9f14a04e4d0f9f30431074":[9,0,49,31],
 "class_griffin_k_value_selector.html#a27f1e817f8e16bca1d5ec4f793a03ac4":[9,0,49,22],
@@ -237,17 +249,5 @@ var NAVTREEINDEX14 =
 "class_t_analysis_hist_loop.html#a03504b9ac46d30fd0f2dc2b20ec46b4e":[7,9,1,32],
 "class_t_analysis_hist_loop.html#a0b8802826748503aab12dfd9a011d396":[7,9,1,49],
 "class_t_analysis_hist_loop.html#a111b945766cd9d2e58b853bf0dc292b2":[7,9,1,48],
-"class_t_analysis_hist_loop.html#a145499bbb554ad6ff9cbed4af14d4eb3":[7,9,1,35],
-"class_t_analysis_hist_loop.html#a14d1029d5d956a5f8cffcabb2e1c5e17":[7,9,1,56],
-"class_t_analysis_hist_loop.html#a292c5e3a19062bcc3d2a3b598327c175":[7,9,1,7],
-"class_t_analysis_hist_loop.html#a30e2bdefe7d239ea2abfe5da3e69f92e":[7,9,1,59],
-"class_t_analysis_hist_loop.html#a33897b2a9af9241851b3b735b35fed68":[7,9,1,33],
-"class_t_analysis_hist_loop.html#a345004678ce5aa33ddb539bad031c188":[7,9,1,36],
-"class_t_analysis_hist_loop.html#a34658723be83bff3f1b98e22488b1fce":[7,9,1,30],
-"class_t_analysis_hist_loop.html#a374402a1edaa416e51c6913efbd7391c":[7,9,1,10],
-"class_t_analysis_hist_loop.html#a3e7173edc5fcccaa6d1532d561f009db":[7,9,1,16],
-"class_t_analysis_hist_loop.html#a46c3d5574620ce01135a2692e9699be3":[7,9,1,19],
-"class_t_analysis_hist_loop.html#a4840cc99d5c5b369ab09ce277088deb5":[7,9,1,75],
-"class_t_analysis_hist_loop.html#a4b3f2917e7a3672fdb6f7bd5f4c86d90":[7,9,1,34],
-"class_t_analysis_hist_loop.html#a4dc75fea376080641dd0ab279c02c22c":[7,9,1,5]
+"class_t_analysis_hist_loop.html#a145499bbb554ad6ff9cbed4af14d4eb3":[7,9,1,35]
 };
