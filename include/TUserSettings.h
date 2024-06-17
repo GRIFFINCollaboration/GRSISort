@@ -70,13 +70,13 @@ public:
 
    ~TUserSettings() {}
 
-   bool ReadSettings(std::string settingsFile);
+   bool ReadSettings(const std::string& settingsFile);
 
    bool empty() { return fBool.empty() && fInt.empty() && fDouble.empty() && fString.empty() && fBoolVector.empty() && fIntVector.empty() && fDoubleVector.empty() && fStringVector.empty(); }
 
    // getter functions
    template <typename T>
-   T Get(std::string parameter) const
+   T Get(const std::string& parameter) const
    {
       if(std::is_same<T, bool>::value) return GetBool(parameter);
       if(std::is_same<T, int>::value) return GetInt(parameter);
@@ -89,18 +89,18 @@ public:
       throw std::runtime_error("Unknown type, only bool, int, double, std::string or vectors of those types allowed");
    }
 
-   bool                     GetBool(std::string parameter, bool quiet = false) const;
-   int                      GetInt(std::string parameter, bool quiet = false) const;
-   double                   GetDouble(std::string parameter, bool quiet = false) const;
-   std::string              GetString(std::string parameter, bool quiet = false) const;
-   std::vector<bool>        GetBoolVector(std::string parameter, bool quiet = false) const;
-   std::vector<int>         GetIntVector(std::string parameter, bool quiet = false) const;
-   std::vector<double>      GetDoubleVector(std::string parameter, bool quiet = false) const;
-   std::vector<std::string> GetStringVector(std::string parameter, bool quiet = false) const;
+   bool                     GetBool(const std::string& parameter, bool quiet = false) const;
+   int                      GetInt(const std::string& parameter, bool quiet = false) const;
+   double                   GetDouble(const std::string& parameter, bool quiet = false) const;
+   std::string              GetString(const std::string& parameter, bool quiet = false) const;
+   std::vector<bool>        GetBoolVector(const std::string& parameter, bool quiet = false) const;
+   std::vector<int>         GetIntVector(const std::string& parameter, bool quiet = false) const;
+   std::vector<double>      GetDoubleVector(const std::string& parameter, bool quiet = false) const;
+   std::vector<std::string> GetStringVector(const std::string& parameter, bool quiet = false) const;
 
    // getter functions with default value
    // can't do this for GetBool as the default bool would clash with the signature with the "quiet" bool
-   int GetInt(std::string parameter, int def) const
+   int GetInt(const std::string& parameter, int def) const
    {
       try {
          return fInt.at(parameter);
@@ -108,7 +108,7 @@ public:
          return def;
       }
    }
-   double GetDouble(std::string parameter, double def) const
+   double GetDouble(const std::string& parameter, double def) const
    {
       try {
          return fDouble.at(parameter);
@@ -116,7 +116,7 @@ public:
          return def;
       }
    }
-   std::string GetString(std::string parameter, std::string def) const
+   std::string GetString(const std::string& parameter, std::string def) const
    {
       try {
          return fString.at(parameter);
@@ -126,14 +126,14 @@ public:
    }
 
    // setter functions
-   void SetBool(std::string parameter, bool value) { fBool[parameter] = value; }
-   void SetInt(std::string parameter, int value) { fInt[parameter] = value; }
-   void SetDouble(std::string parameter, double value) { fDouble[parameter] = value; }
-   void SetString(std::string parameter, std::string value) { fString[parameter] = value; }
-   void SetBoolVector(std::string parameter, std::vector<bool> value) { fBoolVector[parameter] = value; }
-   void SetIntVector(std::string parameter, std::vector<int> value) { fIntVector[parameter] = value; }
-   void SetDoubleVector(std::string parameter, std::vector<double> value) { fDoubleVector[parameter] = value; }
-   void SetStringVector(std::string parameter, std::vector<std::string> value) { fStringVector[parameter] = value; }
+   void SetBool(const std::string& parameter, bool value) { fBool[parameter] = value; }
+   void SetInt(const std::string& parameter, int value) { fInt[parameter] = value; }
+   void SetDouble(const std::string& parameter, double value) { fDouble[parameter] = value; }
+   void SetString(const std::string& parameter, std::string value) { fString[parameter] = value; }
+   void SetBoolVector(const std::string& parameter, std::vector<bool> value) { fBoolVector[parameter] = value; }
+   void SetIntVector(const std::string& parameter, std::vector<int> value) { fIntVector[parameter] = value; }
+   void SetDoubleVector(const std::string& parameter, std::vector<double> value) { fDoubleVector[parameter] = value; }
+   void SetStringVector(const std::string& parameter, std::vector<std::string> value) { fStringVector[parameter] = value; }
 
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* = "") override
