@@ -35,10 +35,10 @@ public:
    ~DynamicLibrary();
 
    /// Move constructor
-   DynamicLibrary(DynamicLibrary&& other) noexcept ;
+   DynamicLibrary(DynamicLibrary&& other) noexcept;
 
    /// Move assignment operator
-   DynamicLibrary& operator=(DynamicLibrary&& other) noexcept ;
+   DynamicLibrary& operator=(DynamicLibrary&& other) noexcept;
 
 #ifdef __CINT__
 private:
