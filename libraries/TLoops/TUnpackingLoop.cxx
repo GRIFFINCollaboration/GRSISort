@@ -14,7 +14,7 @@ TUnpackingLoop* TUnpackingLoop::Get(std::string name)
       name = "unpacking_loop";
    }
 
-   TUnpackingLoop* loop = static_cast<TUnpackingLoop*>(StoppableThread::Get(name));
+   auto loop = static_cast<TUnpackingLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
       loop = new TUnpackingLoop(name);
    }
@@ -22,7 +22,7 @@ TUnpackingLoop* TUnpackingLoop::Get(std::string name)
 }
 
 TUnpackingLoop::TUnpackingLoop(std::string name)
-   : StoppableThread(name), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>()),
+   : StoppableThread(std::move(name)), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>()),
      fFragsReadFromRaw(0), fGoodFragsRead(0), fEvaluateDataType(true), fDataType(EDataType::kMidas)
 {
    // try and open dynamic library
@@ -34,10 +34,7 @@ TUnpackingLoop::TUnpackingLoop(std::string name)
    fParser = TParserLibrary::Get()->CreateDataParser();
 }
 
-TUnpackingLoop::~TUnpackingLoop()
-{
-   // TParserLibrary::Get()->DestroyDataParser(fParser);
-}
+TUnpackingLoop::~TUnpackingLoop() = default;
 
 void TUnpackingLoop::ClearQueue()
 {
@@ -78,13 +75,13 @@ bool TUnpackingLoop::Iteration()
 
 std::string TUnpackingLoop::EndStatus()
 {
-   std::stringstream ss;
+   std::stringstream str;
    if(fFragsReadFromRaw > 0) {
-      ss << "\r" << Name() << ":\t" << fGoodFragsRead << " good fragments out of " << fFragsReadFromRaw
-         << " fragments => " << (100. * fGoodFragsRead) / fFragsReadFromRaw << "% passed" << std::endl;
+      str << "\r" << Name() << ":\t" << fGoodFragsRead << " good fragments out of " << fFragsReadFromRaw
+          << " fragments => " << (100. * fGoodFragsRead) / fFragsReadFromRaw << "% passed" << std::endl;
    } else {
-      ss << "\rno fragments read from midas => none parsed!" << std::endl;
+      str << "\rno fragments read from midas => none parsed!" << std::endl;
    }
-   ss << fParser->OutputQueueStatus();
-   return ss.str();
+   str << fParser->OutputQueueStatus();
+   return str.str();
 }

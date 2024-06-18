@@ -1,5 +1,5 @@
-#ifndef _TUNPACKINGLOOP_H_
-#define _TUNPACKINGLOOP_H_
+#ifndef TUNPACKINGLOOP_H
+#define TUNPACKINGLOOP_H
 
 /** \addtogroup Loops
  *  @{
@@ -72,8 +72,8 @@ private:
 #endif
 
    TDataParser* fParser;
-   long         fFragsReadFromRaw;
-   long         fGoodFragsRead;
+   int64_t      fFragsReadFromRaw;
+   int64_t      fGoodFragsRead;
 
    bool      fEvaluateDataType;
    EDataType fDataType;
