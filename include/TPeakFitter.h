@@ -32,7 +32,7 @@ class TPeakFitter : public TObject {
 public:
    // ctors and dtors
    ~TPeakFitter() override{};
-   TPeakFitter();
+	TPeakFitter() : TPeakFitter(0., 0.) {}
    TPeakFitter(const Double_t& range_low, const Double_t& range_high);
 
 public:
