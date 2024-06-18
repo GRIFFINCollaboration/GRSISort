@@ -10,13 +10,13 @@
 #include "TH1F.h"
 
 ClassImp(TCalibrationGraph)
-   ClassImp(TCalibrationGraphSet)
+ClassImp(TCalibrationGraphSet)
 
-      Int_t TCalibrationGraph::RemovePoint()
+Int_t TCalibrationGraph::RemovePoint()
 {
-   if(fVerboseLevel > 1) std::cout << __PRETTY_FUNCTION__ << std::endl;
-   if(fIsResidual) return fParent->RemoveResidualPoint();
-   else return fParent->RemovePoint();
+	if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+	if(fIsResidual) { return fParent->RemoveResidualPoint(); }
+	else { return fParent->RemovePoint(); }
 }
 
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 26, 0)
@@ -43,17 +43,18 @@ void TCalibrationGraph::Streamer(TBuffer& R__b)
 }
 
 TCalibrationGraphSet::TCalibrationGraphSet(TGraphErrors* graph, const std::string& label)
+	: fTotalGraph(new TGraphErrors), fTotalResidualGraph(new TGraphErrors)
 {
-   fTotalGraph         = new TGraphErrors;
-   fTotalResidualGraph = new TGraphErrors;
    if(graph != nullptr) {
       Add(graph, label);
-      if(fVerboseLevel > 1) Print();
+      if(fVerboseLevel > 1) { Print(); }
    }
 }
 
 TCalibrationGraphSet::~TCalibrationGraphSet()
 {
+   if(fTotalGraph != nullptr) { delete fTotalGraph; }
+   if(fTotalResidualGraph != nullptr) { delete fTotalResidualGraph; }
 }
 
 int TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
@@ -82,8 +83,9 @@ int TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
    double* rhsEY = graph->GetEY();
 
    // create one vector with x, y, ex, ey, index of graph, and index of point that we can use to sort the data
+	// TODO: create a (private?) enum to reference to x, y, ex, ey, graph index, and point index
    std::vector<std::tuple<double, double, double, double, size_t, size_t>> data(fTotalGraph->GetN() + graph->GetN());
-   if(fVerboseLevel > 2) std::cout << "Filling vector of size " << data.size() << " with " << fTotalGraph->GetN() << " and " << graph->GetN() << " entries" << std::endl;
+   if(fVerboseLevel > 2) { std::cout << "Filling vector of size " << data.size() << " with " << fTotalGraph->GetN() << " and " << graph->GetN() << " entries" << std::endl; }
    for(int i = 0; i < fTotalGraph->GetN(); ++i) {
       data[i] = std::make_tuple(x[i], y[i], ex[i], ey[i], fGraphIndex[i], fPointIndex[i]);
    }
@@ -93,17 +95,17 @@ int TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
 
    std::sort(data.begin(), data.end());
 
-   if(fVerboseLevel > 2) std::cout << "sorted vector, setting graph sizes" << std::endl;
+   if(fVerboseLevel > 2) { std::cout << "sorted vector, setting graph sizes" << std::endl; }
 
-   fTotalGraph->Set(data.size());
-   fTotalResidualGraph->Set(data.size());
+   fTotalGraph->Set(static_cast<Int_t>(data.size()));
+   fTotalResidualGraph->Set(static_cast<Int_t>(data.size()));
    fGraphIndex.resize(data.size());
    fPointIndex.resize(data.size());
 
-   if(fVerboseLevel > 2) std::cout << "Filling fTotalGraph, fGraphIndex, and fPointIndex with " << data.size() << " points" << std::endl;
+   if(fVerboseLevel > 2) { std::cout << "Filling fTotalGraph, fGraphIndex, and fPointIndex with " << data.size() << " points" << std::endl; }
    for(size_t i = 0; i < data.size(); ++i) {
-      fTotalGraph->SetPoint(i, std::get<0>(data[i]), std::get<1>(data[i]));
-      fTotalGraph->SetPointError(i, std::get<2>(data[i]), std::get<3>(data[i]));
+      fTotalGraph->SetPoint(static_cast<Int_t>(i), std::get<0>(data[i]), std::get<1>(data[i]));
+      fTotalGraph->SetPointError(static_cast<Int_t>(i), std::get<2>(data[i]), std::get<3>(data[i]));
       fGraphIndex[i] = std::get<4>(data[i]);
       fPointIndex[i] = std::get<5>(data[i]);
    }
@@ -114,29 +116,29 @@ int TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
    // doesn't really make sense to calculate the residual here, as we don't have a fit of all the data yet
    fResidualSet = false;
 
-   if(fVerboseLevel > 2) std::cout << "Adding new calibration graph and label to vectors" << std::endl;
+   if(fVerboseLevel > 2) { std::cout << "Adding new calibration graph and label to vectors" << std::endl; }
    // add graph and label to our vectors
    fGraphs.emplace_back(this, graph);
    fResidualGraphs.emplace_back(this, 0, true);
    fLabel.push_back(label);
    // set initial color
-   fGraphs.back().SetLineColor(fGraphs.size());
-   fGraphs.back().SetMarkerColor(fGraphs.size());
-   fGraphs.back().SetMarkerStyle(fGraphs.size());
-   fResidualGraphs.back().SetLineColor(fResidualGraphs.size());
-   fResidualGraphs.back().SetMarkerColor(fResidualGraphs.size());
-   fResidualGraphs.back().SetMarkerStyle(fResidualGraphs.size());
+   fGraphs.back().SetLineColor(static_cast<Color_t>(fGraphs.size()));
+   fGraphs.back().SetMarkerColor(static_cast<Color_t>(fGraphs.size()));
+   fGraphs.back().SetMarkerStyle(static_cast<Style_t>(fGraphs.size()));
+   fResidualGraphs.back().SetLineColor(static_cast<Color_t>(fResidualGraphs.size()));
+   fResidualGraphs.back().SetMarkerColor(static_cast<Color_t>(fResidualGraphs.size()));
+   fResidualGraphs.back().SetMarkerStyle(static_cast<Style_t>(fResidualGraphs.size()));
 
    if(fVerboseLevel > 1) {
       std::cout << "done" << std::endl;
       Print();
    }
-   return fGraphs.size() - 1;
+   return static_cast<int>(fGraphs.size() - 1);
 }
 
 bool TCalibrationGraphSet::SetResidual(const bool& force)
 {
-   if(fVerboseLevel > 1) std::cout << __PRETTY_FUNCTION__ << " gpad " << gPad->GetName() << std::endl;
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " gpad " << gPad->GetName() << std::endl; }
    TF1* calibration = FitFunction();
    if(calibration != nullptr && (!fResidualSet || force)) {
       double* x  = fTotalGraph->GetX();
@@ -160,20 +162,20 @@ bool TCalibrationGraphSet::SetResidual(const bool& force)
          }
       }
       fResidualSet = true;
-      auto mother  = gPad->GetMother();
+      auto* mother = gPad->GetMother();
       int  pad     = 0;
       while(mother->GetPad(pad) != nullptr) {
          mother->GetPad(pad)->Modified();
          mother->GetPad(pad)->Update();
          mother->cd(pad);
-         if(fVerboseLevel > 2) std::cout << "Modified and updated pad " << pad << " = " << mother->GetPad(pad)->GetName() << std::endl;
+         if(fVerboseLevel > 2) { std::cout << "Modified and updated pad " << pad << " = " << mother->GetPad(pad)->GetName() << std::endl; }
          pad++;
       }
    } else {
-      if(fVerboseLevel > 2) std::cout << __PRETTY_FUNCTION__ << ": didn't find calibration (" << calibration << "), or the residual was already set (" << (fResidualSet ? "true" : "false") << ") and we don't force it (" << (force ? "true" : "false") << ")" << std::endl;
-      if(calibration == nullptr) fResidualSet = false;
+      if(fVerboseLevel > 2) { std::cout << __PRETTY_FUNCTION__ << ": didn't find calibration (" << calibration << "), or the residual was already set (" << (fResidualSet ? "true" : "false") << ") and we don't force it (" << (force ? "true" : "false") << ")" << std::endl; }
+      if(calibration == nullptr) { fResidualSet = false; }
    }
-   if(fVerboseLevel > 2) Print();
+   if(fVerboseLevel > 2) { Print(); }
    return fResidualSet;
 }
 
@@ -199,7 +201,7 @@ void TCalibrationGraphSet::DrawCalibration(Option_t* opt, TLegend* legend)
    fTotalGraph->Draw(options.Data());
 
    for(size_t i = 0; i < fGraphs.size(); ++i) {
-      if(fVerboseLevel > 1) std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". graph with option \"" << opt << "\", marker color " << fGraphs[i].GetMarkerColor() << std::endl;
+      if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". graph with option \"" << opt << "\", marker color " << fGraphs[i].GetMarkerColor() << std::endl; }
       fGraphs[i].Draw(opt);
       if(legend != nullptr) {
          legend->AddEntry(&(fGraphs[i]), fLabel[i].c_str());
@@ -213,7 +215,7 @@ void TCalibrationGraphSet::DrawResidual(Option_t* opt, TLegend* legend)
    options.ToLower();
    options.Append("a");
    fTotalResidualGraph->Draw(options.Data());
-   auto hist = fTotalResidualGraph->GetHistogram();
+   auto* hist = fTotalResidualGraph->GetHistogram();
    if(hist != nullptr) {
       hist->GetXaxis()->SetLabelSize(0.06);
    } else {
@@ -222,7 +224,7 @@ void TCalibrationGraphSet::DrawResidual(Option_t* opt, TLegend* legend)
    }
 
    for(size_t i = 0; i < fResidualGraphs.size(); ++i) {
-      if(fVerboseLevel > 1) std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". residual graph with option \"" << opt << "\", marker color " << fResidualGraphs[i].GetMarkerColor() << std::endl;
+      if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". residual graph with option \"" << opt << "\", marker color " << fResidualGraphs[i].GetMarkerColor() << std::endl; }
       fResidualGraphs[i].Draw(opt);
       if(legend != nullptr) {
          legend->AddEntry(&(fResidualGraphs[i]), fLabel[i].c_str());
@@ -243,13 +245,14 @@ Int_t TCalibrationGraphSet::RemovePoint()
 
    // localize point to be deleted
    Int_t ipoint = -2;
-   Int_t i;
+   Int_t i = 0;
    // start with a small window (in case the mouse is very close to one point)
    double* x = fTotalGraph->GetX();
    double* y = fTotalGraph->GetY();
    for(i = 0; i < fTotalGraph->GetN(); i++) {
       Int_t dpx = px - gPad->XtoAbsPixel(gPad->XtoPad(x[i]));
       Int_t dpy = py - gPad->YtoAbsPixel(gPad->YtoPad(y[i]));
+		// TODO replace 100 with member variable?
       if(dpx * dpx + dpy * dpy < 100) {
          ipoint = i;
          break;
@@ -270,11 +273,11 @@ Int_t TCalibrationGraphSet::RemovePoint()
    if(fTotalResidualGraph->RemovePoint(ipoint) < 0) {
       // we failed to remove the point in the residual, so we assume it's out of whack
       fResidualSet = false;
-      if(fVerboseLevel > 2) std::cout << ipoint << " didn't removed residual point" << std::endl;
-   } else if(fVerboseLevel > 2) std::cout << ipoint << " removed residual point" << std::endl;
+      if(fVerboseLevel > 2) { std::cout << ipoint << " didn't removed residual point" << std::endl; }
+   } else if(fVerboseLevel > 2) { std::cout << ipoint << " removed residual point" << std::endl; }
    // need to find which of the graphs we have to remove this point from -> use fGraphIndex[ipoint]
    // and also which point this is of the graph -> use fPointIndex[ipoint]
-   if(fVerboseLevel > 2) std::cout << ipoint << " - " << fGraphIndex[ipoint] << ", " << fPointIndex[ipoint] << std::endl;
+   if(fVerboseLevel > 2) { std::cout << ipoint << " - " << fGraphIndex[ipoint] << ", " << fPointIndex[ipoint] << std::endl; }
    if(fGraphs[fGraphIndex[ipoint]].RemovePoint(fPointIndex[ipoint]) == -1 || fResidualGraphs[fGraphIndex[ipoint]].RemovePoint(fPointIndex[ipoint]) == -1) {
       std::cout << "point " << ipoint << " out of range?" << std::endl;
    }
@@ -288,8 +291,8 @@ Int_t TCalibrationGraphSet::RemovePoint()
          --fPointIndex[p];
       }
    }
-   auto mother = gPad->GetMother();
-   int  pad    = 0;
+   auto* mother = gPad->GetMother();
+   int  pad     = 0;
    while(mother->GetPad(pad) != nullptr) {
       mother->GetPad(pad)->Modified();
       mother->GetPad(pad)->Update();
@@ -309,13 +312,14 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint()
 
    // localize point to be deleted
    Int_t ipoint = -2;
-   Int_t i;
+   Int_t i = 0;
    // start with a small window (in case the mouse is very close to one point)
    double* x = fTotalResidualGraph->GetX();
    double* y = fTotalResidualGraph->GetY();
    for(i = 0; i < fTotalResidualGraph->GetN(); i++) {
       Int_t dpx = px - gPad->XtoAbsPixel(gPad->XtoPad(x[i]));
       Int_t dpy = py - gPad->YtoAbsPixel(gPad->YtoPad(y[i]));
+		// TODO replace 100 with member variable?
       if(dpx * dpx + dpy * dpy < 100) {
          ipoint = i;
          break;
@@ -338,7 +342,7 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint()
    // and also which point this is of the graph -> use fPointIndex[ipoint]
    fTotalGraph->RemovePoint(ipoint);
    fTotalResidualGraph->RemovePoint(ipoint);
-   if(fVerboseLevel > 2) std::cout << ipoint << " - " << fGraphIndex[ipoint] << ", " << fPointIndex[ipoint] << std::endl;
+   if(fVerboseLevel > 2) { std::cout << ipoint << " - " << fGraphIndex[ipoint] << ", " << fPointIndex[ipoint] << std::endl; }
    if(fGraphs[fGraphIndex[ipoint]].RemovePoint(fPointIndex[ipoint]) == -1 || fResidualGraphs[fGraphIndex[ipoint]].RemovePoint(fPointIndex[ipoint]) == -1) {
       std::cout << "point " << ipoint << " out of range?" << std::endl;
    }
@@ -353,11 +357,11 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint()
       }
    }
    auto mother = gPad->GetMother();
-   if(fVerboseLevel > 2) std::cout << "Got mother pad " << mother->GetName() << " from pad " << gPad->GetName() << std::endl;
+   if(fVerboseLevel > 2) { std::cout << "Got mother pad " << mother->GetName() << " from pad " << gPad->GetName() << std::endl; }
    int pad = 0;
    while(mother->GetPad(pad) != nullptr) {
       mother->GetPad(pad)->Modified();
-      if(fVerboseLevel > 2) std::cout << "Modified pad " << pad << " = " << mother->GetPad(pad)->GetName() << std::endl;
+      if(fVerboseLevel > 2) { std::cout << "Modified pad " << pad << " = " << mother->GetPad(pad)->GetName() << std::endl; }
       pad++;
    }
    if(fVerboseLevel > 1) Print();

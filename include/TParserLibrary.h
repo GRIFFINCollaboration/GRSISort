@@ -49,9 +49,9 @@ public:
    }
 
 private:
-   TParserLibrary() { fHandle = nullptr; }
+   TParserLibrary() = default;
 
-   void* fHandle;   ///< handle for shared object library
+   void* fHandle{nullptr};   ///< handle for shared object library
 
    void (*fInitLibrary)();
    std::string (*fLibraryVersion)();
@@ -64,7 +64,7 @@ private:
 
    /// \cond CLASSIMP
    ClassDefOverride(TParserLibrary, 1);   // parser library class
-                                          /// \endcond
+	/// \endcond
 };
 
 #endif

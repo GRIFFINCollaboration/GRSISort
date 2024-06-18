@@ -161,7 +161,7 @@ void TParsingDiagnostics::Draw(Option_t* opt)
    UInt_t minChannel = fChannelAddressData.begin()->first;
    UInt_t maxChannel = fChannelAddressData.begin()->first;
 
-   for(cinst auto& iter : fChannelAddressData) {
+   for(const auto& iter : fChannelAddressData) {
       if(iter.first < minChannel) { minChannel = iter.first; }
       if(iter.first > maxChannel) { maxChannel = iter.first; }
    }

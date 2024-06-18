@@ -1,5 +1,5 @@
-#ifndef TTREEFILLMUTEX_H_
-#define TTREEFILLMUTEX_H_
+#ifndef TTREEFILLMUTEX_H
+#define TTREEFILLMUTEX_H
 
 #include <mutex>
 

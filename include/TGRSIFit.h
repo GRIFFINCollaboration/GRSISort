@@ -32,21 +32,26 @@ protected:
    TGRSIFit(const char* name, const char* formula, Double_t xmin = 0, Double_t xmax = 1)
       : TF1(name, formula, xmin, xmax)
    {
-      this->Clear();
+      Clear();
    }
    TGRSIFit(const char* name, Double_t xmin, Double_t xmax, Int_t npar) : TF1(name, xmin, xmax, npar) { this->Clear(); }
-   TGRSIFit(const char* name, ROOT::Math::ParamFunctor f, Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0)
-      : TF1(name, f, xmin, xmax, npar)
+   TGRSIFit(const char* name, const ROOT::Math::ParamFunctor& func, Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0)
+      : TF1(name, func, xmin, xmax, npar)
    {
-      this->Clear();
+      Clear();
    }
    template <class PtrObj, typename MemFn>
-   TGRSIFit(const char* name, const PtrObj& p, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar, const char* class_name, const char* fcn_name) : TF1(name, p, memFn, xmin, xmax, npar, class_name, fcn_name)
+   TGRSIFit(const char* name, const PtrObj& pointer, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar, const char* class_name, const char* fcn_name) 
+		: TF1(name, pointer, memFn, xmin, xmax, npar, class_name, fcn_name)
    {
-      this->Clear();
+      Clear();
    }
 
    TGRSIFit(const TGRSIFit& copy);
+
+   TGRSIFit(TGRSIFit&&) noexcept            = default;
+   TGRSIFit& operator=(const TGRSIFit&)     = default;
+   TGRSIFit& operator=(TGRSIFit&&) noexcept = default;
 
 public:
    void Copy(TObject& obj) const override;
