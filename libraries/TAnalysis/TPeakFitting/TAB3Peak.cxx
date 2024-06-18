@@ -3,15 +3,7 @@
 
 /// \cond CLASSIMP
 ClassImp(TAB3Peak)
-   /// \endcond
-
-   TAB3Peak::TAB3Peak() : TSinglePeak()
-{}
-
-TAB3Peak::TAB3Peak(Double_t centroid) : TSinglePeak()
-{
-   Centroid(centroid);
-}
+/// \endcond
 
 void TAB3Peak::Centroid(const Double_t& centroid)
 {
@@ -19,7 +11,7 @@ void TAB3Peak::Centroid(const Double_t& centroid)
    fPeakFunction  = new TF1("ab_peak", this, &TAB3Peak::PeakFunction, 0, 1, 7, "TAB3Peak", "PeakFunction");
    InitParNames();
    fTotalFunction->SetParameter(1, centroid);
-   SetListOfBGPar(std::vector<bool>{0, 0, 0, 0, 0, 0, 0, 1});
+   SetListOfBGPar(std::vector<bool>{false, false, false, false, false, false, false, true});
    fTotalFunction->SetLineColor(kMagenta);
 }
 
@@ -105,36 +97,36 @@ Double_t TAB3Peak::PeakFunction(Double_t* dim, Double_t* par)
 
 Double_t TAB3Peak::OneHitPeakFunction(Double_t* dim, Double_t* par)
 {
-   Double_t x      = dim[0];   // channel number used for fitting
-   Double_t height = par[0];   // height of photopeak
-   Double_t c      = par[1];   // Peak Centroid of non skew gaus
-   Double_t sigma  = par[2];   // standard deviation of gaussian
+   Double_t x        = dim[0];   // channel number used for fitting
+   Double_t height   = par[0];   // height of photopeak
+   Double_t centroid = par[1];   // Peak Centroid of non skew gaus
+   Double_t sigma    = par[2];   // standard deviation of gaussian
 
-   return height * TMath::Gaus(x, c, sigma);
+   return height * TMath::Gaus(x, centroid, sigma);
 }
 
 Double_t TAB3Peak::TwoHitPeakFunction(Double_t* dim, Double_t* par)
 {
    Double_t x          = dim[0];   // channel number used for fitting
    Double_t height     = par[0];   // height of photopeak
-   Double_t c          = par[1];   // Peak Centroid of non skew gaus
+   Double_t centroid   = par[1];   // Peak Centroid of non skew gaus
    Double_t sigma      = par[2];   // standard deviation of gaussian
    Double_t rel_height = par[3];   // relative height of 2-hit peak
    Double_t rel_sigma  = par[4];   // relative sigma of 2-hit peak
 
-   return height * rel_height * TMath::Gaus(x, c, rel_sigma * sigma);
+   return height * rel_height * TMath::Gaus(x, centroid, rel_sigma * sigma);
 }
 
 Double_t TAB3Peak::ThreeHitPeakFunction(Double_t* dim, Double_t* par)
 {
    Double_t x          = dim[0];   // channel number used for fitting
    Double_t height     = par[0];   // height of photopeak
-   Double_t c          = par[1];   // Peak Centroid of non skew gaus
+   Double_t centroid   = par[1];   // Peak Centroid of non skew gaus
    Double_t sigma      = par[2];   // standard deviation of gaussian
    Double_t rel_height = par[5];   // relative height of 2-hit peak
    Double_t rel_sigma  = par[6];   // relative sigma of 2-hit peak
 
-   return height * rel_height * TMath::Gaus(x, c, rel_sigma * sigma);
+   return height * rel_height * TMath::Gaus(x, centroid, rel_sigma * sigma);
 }
 
 Double_t TAB3Peak::OneHitPeakOnGlobalFunction(Double_t* dim, Double_t* par)
@@ -154,13 +146,13 @@ Double_t TAB3Peak::ThreeHitPeakOnGlobalFunction(Double_t* dim, Double_t* par)
 
 Double_t TAB3Peak::BackgroundFunction(Double_t* dim, Double_t* par)
 {
-   Double_t x      = dim[0];   // channel number used for fitting
-   Double_t height = par[0];   // height of photopeak
-   Double_t c      = par[1];   // Peak Centroid of non skew gaus
-   Double_t sigma  = par[2];   // standard deviation of gaussian
-   Double_t step   = par[7];   // Size of the step function;
+   Double_t x        = dim[0];   // channel number used for fitting
+   Double_t height   = par[0];   // height of photopeak
+   Double_t centroid = par[1];   // Peak Centroid of non skew gaus
+   Double_t sigma    = par[2];   // standard deviation of gaussian
+   Double_t step     = par[7];   // Size of the step function;
 
-   Double_t step_func = TMath::Abs(step) * height / 100.0 * TMath::Erfc((x - c) / (TMath::Sqrt(2.0) * sigma));
+   Double_t step_func = TMath::Abs(step) * height / 100.0 * TMath::Erfc((x - centroid) / (TMath::Sqrt(2.0) * sigma));
 
    return step_func;
 }
@@ -168,14 +160,14 @@ Double_t TAB3Peak::BackgroundFunction(Double_t* dim, Double_t* par)
 void TAB3Peak::DrawComponents(Option_t* opt)
 {
    // We need to draw this on top of the global background. Probably easiest to make another temporary TF1?
-   if(!fGlobalBackground)
-      return;
+   if(fGlobalBackground == nullptr) { return; }
 
-   Double_t low, high;
+   Double_t low = 0;
+	Double_t high = 0;
    fGlobalBackground->GetRange(low, high);
-   if(fOneHitOnGlobal) fOneHitOnGlobal->Delete();
-   if(fTwoHitOnGlobal) fTwoHitOnGlobal->Delete();
-   if(fThreeHitOnGlobal) fThreeHitOnGlobal->Delete();
+   if(fOneHitOnGlobal != nullptr) { fOneHitOnGlobal->Delete(); }
+   if(fTwoHitOnGlobal != nullptr) { fTwoHitOnGlobal->Delete(); }
+   if(fThreeHitOnGlobal != nullptr) { fThreeHitOnGlobal->Delete(); }
    // Make a copy of the total function, and then tack on the global background parameters.
    fOneHitOnGlobal   = new TF1("draw_component1", this, &TAB3Peak::OneHitPeakOnGlobalFunction, low, high, fTotalFunction->GetNpar() + fGlobalBackground->GetNpar(), "TAB3Peak", "OneHitPeakOnGlobalFunction");
    fTwoHitOnGlobal   = new TF1("draw_component2", this, &TAB3Peak::TwoHitPeakOnGlobalFunction, low, high, fTotalFunction->GetNpar() + fGlobalBackground->GetNpar(), "TAB3Peak", "TwoHitPeakOnGlobalFunction");

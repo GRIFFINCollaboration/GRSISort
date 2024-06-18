@@ -27,9 +27,9 @@
 class TABPeak : public TSinglePeak {
 public:
    // ctors and dtors
-   ~TABPeak() override{};
-   TABPeak();
-   TABPeak(Double_t centroid);
+   TABPeak() = default;
+   explicit TABPeak(Double_t centroid) { Centroid(centroid); }
+   ~TABPeak() = default;
 
    void InitParNames() override;
    void InitializeParameters(TH1* hist, const double& rangeLow, const double& rangeHigh) override;
@@ -48,8 +48,8 @@ protected:
    Double_t BackgroundFunction(Double_t* dim, Double_t* par) override;
 
 private:
-   Double_t OneHitPeakFunction(Double_t* dim, Double_t* par);
-   Double_t TwoHitPeakFunction(Double_t* dim, Double_t* par);
+   static Double_t OneHitPeakFunction(Double_t* dim, Double_t* par);
+   static Double_t TwoHitPeakFunction(Double_t* dim, Double_t* par);
    Double_t OneHitPeakOnGlobalFunction(Double_t* dim, Double_t* par);
    Double_t TwoHitPeakOnGlobalFunction(Double_t* dim, Double_t* par);
 
