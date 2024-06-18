@@ -1,5 +1,5 @@
-#ifndef _TTRANSIENTBITS_H_
-#define _TTRANSIENTBITS_H_
+#ifndef TTRANSIENTBITS_H
+#define TTRANSIENTBITS_H
 
 /** \addtogroup Sorting
  *  @{
@@ -25,24 +25,30 @@ template <typename T>
 class TTransientBits {
 public:
    TTransientBits() : fBits(0) {}
-   TTransientBits(const T& tmp) : fBits(tmp) {}
+   explicit TTransientBits(const T& tmp) : fBits(tmp) {}
    ~TTransientBits() = default;
 
-   void   SetBit(T f, Bool_t flag) { flag ? SetBit(f) : ClearBit(f); }
-   void   SetBit(T f) { fBits |= f; }
-   void   ClearBit(T f) { fBits &= ~f; }
-   Bool_t TestBit(T f) const { return fBits & f; }
-   T      TestBits(T f) const { return (fBits & f); }
+   TTransientBits(const TTransientBits&)     = default;
+   TTransientBits(TTransientBits&&) noexcept = default;
+
+   TTransientBits& operator=(const TTransientBits&)     = default;
+   TTransientBits& operator=(TTransientBits&&) noexcept = default;
+
+   void   SetBit(T bit, Bool_t flag) { flag ? SetBit(bit) : ClearBit(bit); }
+   void   SetBit(T bit) { fBits |= bit; }
+   void   ClearBit(T bit) { fBits &= ~bit; }
+   Bool_t TestBit(T bit) const { return fBits & bit; }
+   T      TestBits(T bit) const { return (fBits & bit); }
    template <typename U>
-   void SetBit(U f, Bool_t flag) { flag ? SetBit(f) : ClearBit(f); }
+   void SetBit(U bit, Bool_t flag) { flag ? SetBit(bit) : ClearBit(bit); }
    template <typename U>
-   void SetBit(U f) { fBits |= static_cast<typename std::underlying_type<U>::type>(f); }
+   void SetBit(U bit) { fBits |= static_cast<typename std::underlying_type<U>::type>(bit); }
    template <typename U>
-   void ClearBit(U f) { fBits &= ~static_cast<typename std::underlying_type<U>::type>(f); }
+   void ClearBit(U bit) { fBits &= ~static_cast<typename std::underlying_type<U>::type>(bit); }
    template <typename U>
-   Bool_t TestBit(U f) const { return fBits & static_cast<typename std::underlying_type<U>::type>(f); }
+   Bool_t TestBit(U bit) const { return fBits & static_cast<typename std::underlying_type<U>::type>(bit); }
    template <typename U>
-   T TestBits(U f) const { return (fBits & static_cast<typename std::underlying_type<U>::type>(f)); }
+   T TestBits(U bit) const { return (fBits & static_cast<typename std::underlying_type<U>::type>(bit)); }
 
    TTransientBits& operator=(const T& rhs)
    {
