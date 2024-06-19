@@ -37,14 +37,14 @@ class TSinglePeak : public TObject {
 public:
    friend class TPeakFitter;
    // ctors and dtors
-   ~TSinglePeak() override{};
-   TSinglePeak();
+   TSinglePeak() = default;
+   ~TSinglePeak() override = default;
 
    virtual void InitParNames() {}
    virtual void InitializeParameters(TH1*, const double&, const double&) {}
    bool         IsBackgroundParameter(const Int_t& par) const;
    bool         IsPeakParameter(const Int_t& par) const;
-   void         SetListOfBGPar(std::vector<bool> list_of_bg_par) { fListOfBGPars = list_of_bg_par; }
+   void         SetListOfBGPar(const std::vector<bool>& list_of_bg_par) { fListOfBGPars = list_of_bg_par; }
    Int_t        GetNParameters() const;
 
    void SetArea(const Double_t& area) { fArea = area; }
@@ -60,11 +60,11 @@ public:
    virtual Double_t Sigma() const                      = 0;
    virtual Double_t FWHM();   // not constant because we have to update the parmeters of the peak function
 
-   virtual void Print(Option_t* = "") const override;
-   virtual void Draw(Option_t* opt = "") override;
+   void Print(Option_t* = "") const override;
+   void Draw(Option_t* opt = "") override;
    virtual void DrawBackground(Option_t* opt = "")
    {
-      if(fGlobalBackground) fGlobalBackground->Draw(opt);
+      if(fGlobalBackground != nullptr) { fGlobalBackground->Draw(opt); }
    }
    virtual void DrawComponents(Option_t* opt = "");
    virtual void PrintParameters() const;
@@ -72,9 +72,9 @@ public:
    TF1* GetFitFunction() { return fTotalFunction; }
    TF1* GetPeakFunction() { return fPeakFunction; }
    TF1* GetBackgroundFunction();
-   void SetGlobalBackground(TF1* bg)
+   void SetGlobalBackground(TF1* background)
    {
-      fGlobalBackground = bg;
+      fGlobalBackground = background;
       fGlobalBackground->SetLineStyle(kDashed);
    }
 
@@ -96,7 +96,7 @@ protected:
    void SetChi2(const Double_t& chi2) { fChi2 = chi2; }
    void SetNDF(const Int_t& ndf) { fNDF = ndf; }
 
-protected:
+private:
    TF1* fTotalFunction{nullptr};
    TF1* fBackgroundFunction{nullptr};
    TF1* fGlobalBackground{nullptr};

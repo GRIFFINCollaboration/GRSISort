@@ -65,9 +65,9 @@ private:
    TF1*                fBackground;
    bool                fConstrainWidths;
 
-   Double_t MultiPhotoPeakBG(Double_t* dim, Double_t* par);
-   Double_t MultiStepBG(Double_t* dim, Double_t* par);
-   Double_t SinglePeakBG(Double_t* dim, Double_t* par);
+   static Double_t MultiPhotoPeakBG(Double_t* dim, Double_t* par);
+   static Double_t MultiStepBG(Double_t* dim, Double_t* par);
+   static Double_t SinglePeakBG(Double_t* dim, Double_t* par);
 
    /// \cond CLASSIMP
    ClassDefOverride(TMultiPeak, 2);

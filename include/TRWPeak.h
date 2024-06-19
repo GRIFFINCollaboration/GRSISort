@@ -30,9 +30,9 @@
 class TRWPeak : public TSinglePeak {
 public:
    // ctors and dtors
-   ~TRWPeak() override{};
-   TRWPeak();
-   TRWPeak(Double_t centroid);
+   TRWPeak() = default;
+   explicit TRWPeak(Double_t centroid) { Centroid(centroid); }
+   ~TRWPeak() override = default;
 
    void InitParNames() override;
    void InitializeParameters(TH1* hist, const double& rangeLow, const double& rangeHigh) override;

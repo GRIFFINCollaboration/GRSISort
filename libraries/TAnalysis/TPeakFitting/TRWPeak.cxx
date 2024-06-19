@@ -2,15 +2,7 @@
 
 /// \cond CLASSIMP
 ClassImp(TRWPeak)
-   /// \endcond
-
-   TRWPeak::TRWPeak() : TSinglePeak()
-{}
-
-TRWPeak::TRWPeak(Double_t centroid) : TSinglePeak()
-{
-   Centroid(centroid);
-}
+/// \endcond
 
 void TRWPeak::Centroid(const Double_t& centroid)
 {
@@ -18,7 +10,7 @@ void TRWPeak::Centroid(const Double_t& centroid)
    fPeakFunction  = new TF1("rw_peak", this, &TRWPeak::PeakFunction, 0, 1, 5, "TRWPeak", "PeakFunction");
    InitParNames();
    fTotalFunction->SetParameter(1, centroid);
-   SetListOfBGPar(std::vector<bool>{0, 0, 0, 0, 0, 1});
+   SetListOfBGPar(std::vector<bool>{false, false, false, false, false, true});
    fTotalFunction->SetLineColor(kMagenta);
 }
 
@@ -81,31 +73,31 @@ Double_t TRWPeak::CentroidErr() const
 
 Double_t TRWPeak::PeakFunction(Double_t* dim, Double_t* par)
 {
-   Double_t x      = dim[0];   // channel number used for fitting
-   Double_t height = par[0];   // height of photopeak
-   Double_t c      = par[1];   // Peak Centroid of non skew gaus
-   Double_t sigma  = par[2];   // standard deviation of gaussian
-   Double_t beta   = par[3];   // Skewness parameter
-   Double_t R      = par[4];   // relative height of skewed gaussian
+   Double_t x        = dim[0];   // channel number used for fitting
+   Double_t height   = par[0];   // height of photopeak
+   Double_t centroid = par[1];   // Peak Centroid of non skew gaus
+   Double_t sigma    = par[2];   // standard deviation of gaussian
+   Double_t beta     = par[3];   // Skewness parameter
+   Double_t relative = par[4];   // relative height of skewed gaussian
 
-   Double_t gauss = height * (1.0 - R / 100.0) * TMath::Gaus(x, c, sigma);
+   Double_t gauss = height * (1.0 - relative / 100.0) * TMath::Gaus(x, centroid, sigma);
 
-   if(beta == 0.0)
+   if(beta == 0.0) {
       return gauss;
-   else
-      return gauss + R * height / 100.0 * (TMath::Exp((x - c) / beta)) *
-                        (TMath::Erfc(((x - c) / (TMath::Sqrt(2.0) * sigma)) + sigma / (TMath::Sqrt(2.0) * beta)));
+	}
+   return gauss + relative * height / 100.0 * (TMath::Exp((x - centroid) / beta)) *
+                  (TMath::Erfc(((x - centroid) / (TMath::Sqrt(2.0) * sigma)) + sigma / (TMath::Sqrt(2.0) * beta)));
 }
 
 Double_t TRWPeak::BackgroundFunction(Double_t* dim, Double_t* par)
 {
-   Double_t x      = dim[0];   // channel number used for fitting
-   Double_t height = par[0];   // height of photopeak
-   Double_t c      = par[1];   // Peak Centroid of non skew gaus
-   Double_t sigma  = par[2];   // standard deviation of gaussian
-   Double_t step   = par[5];   // Size of the step function;
+   Double_t x        = dim[0];   // channel number used for fitting
+   Double_t height   = par[0];   // height of photopeak
+   Double_t centroid = par[1];   // Peak Centroid of non skew gaus
+   Double_t sigma    = par[2];   // standard deviation of gaussian
+   Double_t step     = par[5];   // Size of the step function;
 
-   Double_t step_func = TMath::Abs(step) * height / 100.0 * TMath::Erfc((x - c) / (TMath::Sqrt(2.0) * sigma));
+   Double_t step_func = TMath::Abs(step) * height / 100.0 * TMath::Erfc((x - centroid) / (TMath::Sqrt(2.0) * sigma));
 
    return step_func;
 }
