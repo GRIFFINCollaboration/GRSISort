@@ -5,9 +5,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TMnemonic)
-   /// \endcond
+/// \endcond
 
-   bool TMnemonic::fPrint = true;
+bool TMnemonic::fPrint = true;
 
 void TMnemonic::Clear(Option_t*)
 {

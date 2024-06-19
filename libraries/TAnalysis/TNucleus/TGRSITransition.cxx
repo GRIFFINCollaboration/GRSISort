@@ -4,9 +4,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TGRSITransition)
-   /// \endcond
+/// \endcond
 
-   TGRSITransition::TGRSITransition()
+TGRSITransition::TGRSITransition()
 {
    // Default constructor for TGRSITransition
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)

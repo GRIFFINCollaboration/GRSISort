@@ -7,11 +7,11 @@
 
 /// \cond CLASSIMP
 ClassImp(TPPGData)
-   ClassImp(TPPG)
-   /// \endcond
+ClassImp(TPPG)
+/// \endcond
 
-   short TPPGData::fTimestampUnits = 10;
-TPPG* TPPG::fPPG                   = nullptr;   // not used anywhere?
+short TPPGData::fTimestampUnits = 10;
+TPPG* TPPG::fPPG                = nullptr;   // not used anywhere?
 
 TPPGData::TPPGData()
 {

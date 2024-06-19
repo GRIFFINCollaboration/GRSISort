@@ -7,9 +7,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TEfficiencyCalibration)
-   /// \endcond
+/// \endcond
 
-   TEfficiencyCalibration::TEfficiencyCalibration()
+TEfficiencyCalibration::TEfficiencyCalibration()
    : TNamed(), fRelativeEffGraph(nullptr), fAbsEffGraph(nullptr), fFitting(false), fRelativeFit(nullptr),
      fAbsoluteFunc(nullptr)
 {

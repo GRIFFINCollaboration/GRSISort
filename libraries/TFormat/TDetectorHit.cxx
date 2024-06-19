@@ -6,11 +6,11 @@
 
 /// \cond CLASSIMP
 ClassImp(TDetectorHit)
-   /// \endcond
+/// \endcond
 
-   // TPPG* TDetectorHit::fPPG = nullptr;
+// TPPG* TDetectorHit::fPPG = nullptr;
 
-   TVector3 TDetectorHit::fBeamDirection(0, 0, 1);
+TVector3 TDetectorHit::fBeamDirection(0, 0, 1);
 
 TDetectorHit::TDetectorHit(const int& Address) : TObject()
 {

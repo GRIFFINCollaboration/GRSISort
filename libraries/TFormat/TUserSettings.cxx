@@ -34,7 +34,7 @@ bool TUserSettings::ReadSettings(const std::string& settingsFile)
    std::string line;
    while(std::getline(settings, line)) {
       // skip lines with too few character, starting with '#' or "//", or w/o colon
-      if(line.length() < 3) { continue; } // need at least three characters
+      if(line.length() < 3) { continue; }   // need at least three characters
       if(line[0] == '#') { continue; }
       if(line[0] == '/' && line[1] == '/') { continue; }
       auto colon = line.find(':');

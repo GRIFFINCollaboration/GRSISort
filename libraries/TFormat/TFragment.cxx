@@ -8,9 +8,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TFragment)
-   /// \endcond
+/// \endcond
 
-   Long64_t TFragment::fNumberOfFragments = 0;
+Long64_t TFragment::fNumberOfFragments = 0;
 
 TFragment::TFragment() : TDetectorHit()
 {

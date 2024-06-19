@@ -50,8 +50,8 @@ protected:
 private:
    static Double_t OneHitPeakFunction(Double_t* dim, Double_t* par);
    static Double_t TwoHitPeakFunction(Double_t* dim, Double_t* par);
-   Double_t OneHitPeakOnGlobalFunction(Double_t* dim, Double_t* par);
-   Double_t TwoHitPeakOnGlobalFunction(Double_t* dim, Double_t* par);
+   Double_t        OneHitPeakOnGlobalFunction(Double_t* dim, Double_t* par);
+   Double_t        TwoHitPeakOnGlobalFunction(Double_t* dim, Double_t* par);
 
    TF1* fOneHitOnGlobal{nullptr};
    TF1* fTwoHitOnGlobal{nullptr};

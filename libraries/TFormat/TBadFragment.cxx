@@ -2,7 +2,7 @@
 
 ClassImp(TBadFragment)
 
-   TBadFragment::TBadFragment() : TFragment()
+TBadFragment::TBadFragment() : TFragment()
 {
    /// Default constructor
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)

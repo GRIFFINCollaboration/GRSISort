@@ -25,9 +25,9 @@
 
 /// \cond CLASSIMP
 ClassImp(GRootGuiFactory)
-   /// \endcond
+/// \endcond
 
-   void GRootGuiFactory::Init()
+void GRootGuiFactory::Init()
 {
    if(gROOT->IsBatch()) {
       return;

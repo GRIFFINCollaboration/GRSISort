@@ -56,7 +56,7 @@ int TTransition::Compare(const TObject* obj) const
    if(fCompareIntensity) {
       return CompareIntensity(obj);
    }
-	return CompareEnergy(obj);
+   return CompareEnergy(obj);
 }
 
 int TTransition::CompareIntensity(const TObject* obj) const

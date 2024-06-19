@@ -40,9 +40,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TGRSIint)
-   /// \endcond
+/// \endcond
 
-   extern void PopupLogo(bool);
+extern void PopupLogo(bool);
 extern void WaitLogo();
 
 TGRSIint* TGRSIint::fTGRSIint = nullptr;

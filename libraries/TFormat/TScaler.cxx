@@ -6,10 +6,10 @@
 
 /// \cond CLASSIMP
 ClassImp(TScalerData)
-   ClassImp(TScaler)
-   /// \endcond
+ClassImp(TScaler)
+/// \endcond
 
-   TScalerData::TScalerData()
+TScalerData::TScalerData()
 {
    Clear();
    fScaler.resize(4);   // we expect to have four scaler values

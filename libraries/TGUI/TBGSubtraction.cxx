@@ -12,9 +12,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TBGSubtraction)
-   /// \endcond
+/// \endcond
 
-   TBGSubtraction::TBGSubtraction(TH2* mat, const char* gate_axis, int maxBinning)
+TBGSubtraction::TBGSubtraction(TH2* mat, const char* gate_axis, int maxBinning)
    : TGMainFrame(nullptr, 10, 10, kHorizontalFrame), fProjectionCanvas(nullptr), fGateCanvas(nullptr), fMatrix(mat),
      fProjection(nullptr), fGateHist(nullptr), fBGHist1(nullptr), fBGHist2(nullptr), fSubtractedHist(nullptr), fSubtractedBinHist(nullptr), fGateSlider(nullptr),
      fBGSlider1(nullptr), fBGSlider2(nullptr), fPeakSlider(nullptr), fBinningSlider(nullptr), fBGParamEntry(nullptr), fBGCheckButton1(nullptr), fBGCheckButton2(nullptr),

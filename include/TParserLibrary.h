@@ -64,7 +64,7 @@ private:
 
    /// \cond CLASSIMP
    ClassDefOverride(TParserLibrary, 1);   // parser library class
-	/// \endcond
+                                          /// \endcond
 };
 
 #endif

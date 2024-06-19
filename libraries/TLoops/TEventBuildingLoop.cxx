@@ -8,7 +8,7 @@
 
 ClassImp(TEventBuildingLoop)
 
-   TEventBuildingLoop* TEventBuildingLoop::Get(std::string name, EBuildMode mode, long buildWindow)
+TEventBuildingLoop* TEventBuildingLoop::Get(std::string name, EBuildMode mode, long buildWindow)
 {
    if(name.length() == 0) {
       name = "build_loop";
