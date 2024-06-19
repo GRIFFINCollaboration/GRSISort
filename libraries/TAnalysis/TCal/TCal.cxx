@@ -2,9 +2,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TCal)
-   /// \endcond
+/// \endcond
 
-   TCal::TCal()
+TCal::TCal()
 {
    /// Default constructor
    InitTCal();

@@ -9,9 +9,9 @@
 
 /// \cond CLASSIMP
 ClassImp(GH2Base)
-   /// \endcond
+/// \endcond
 
-   GH2Base::~GH2Base()
+GH2Base::~GH2Base()
 {
    fProjections->Delete();
    fSummaryProjections->Delete();

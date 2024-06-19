@@ -9,8 +9,8 @@
 ClassImp(TPeakFitter)
 /// \endcond
 
-TPeakFitter::TPeakFitter(const Double_t& rangeLow, const Double_t& rangeHigh) 
-	: TObject(), fRangeLow(rangeLow), fRangeHigh(rangeHigh)
+TPeakFitter::TPeakFitter(const Double_t& rangeLow, const Double_t& rangeHigh)
+   : TObject(), fRangeLow(rangeLow), fRangeHigh(rangeHigh)
 {
    fBGToFit = new TF1("fbg", this, &TPeakFitter::DefaultBackgroundFunction, fRangeLow, fRangeHigh, 4, "TPeakFitter", "DefaultBackgroundFunction");
    fBGToFit->FixParameter(3, 0);
@@ -111,7 +111,7 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
    }
    fTotalFitFunction->SetLineColor(kMagenta + fIndex);
    fTotalFitFunction->SetRange(fRangeLow, fRangeHigh);
-	fBGToFit->SetRange(fRangeLow, fRangeHigh);
+   fBGToFit->SetRange(fRangeLow, fRangeHigh);
    // We need to initialize all of the parameters based on the peak parameters
    if(fit_hist != nullptr && (!fInitFlag || fit_hist != fLastHistFit)) {
       if(verbose) std::cout << "Initializing Fit...." << std::endl;

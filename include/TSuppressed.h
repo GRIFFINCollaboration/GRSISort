@@ -21,7 +21,7 @@
 class TSuppressed : public TDetector {
 public:
    TSuppressed() : TDetector() {}
-   ~TSuppressed()  = default;
+   ~TSuppressed() = default;
 
    virtual bool AddbackCriterion(const TDetectorHit*, const TDetectorHit*) { return false; }
    virtual bool SuppressionCriterion(const TDetectorHit*, const TDetectorHit*) { return false; }
@@ -92,7 +92,7 @@ protected:
       /// This funxtion always(!) re-creates the vectors of suppressed addback hits and number of fragments per suppressed addback hit based on the provided TBgo and vector of hits
       addbacks.clear();
       nofFragments.clear();
-      size_t j = 0;
+      size_t            j = 0;
       std::vector<bool> suppressed;
       for(auto hit : hits) {
          // check if this hit is suppressed

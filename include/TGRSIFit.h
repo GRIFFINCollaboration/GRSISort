@@ -41,8 +41,8 @@ protected:
       Clear();
    }
    template <class PtrObj, typename MemFn>
-   TGRSIFit(const char* name, const PtrObj& pointer, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar, const char* class_name, const char* fcn_name) 
-		: TF1(name, pointer, memFn, xmin, xmax, npar, class_name, fcn_name)
+   TGRSIFit(const char* name, const PtrObj& pointer, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar, const char* class_name, const char* fcn_name)
+      : TF1(name, pointer, memFn, xmin, xmax, npar, class_name, fcn_name)
    {
       Clear();
    }

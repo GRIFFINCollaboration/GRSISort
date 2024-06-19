@@ -14,9 +14,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TSRIM)
-   /// \endcond
+/// \endcond
 
-   const double TSRIM::dx = 1.0;   // um [sets accuracy of energy loss E vs X functions]
+const double TSRIM::dx = 1.0;   // um [sets accuracy of energy loss E vs X functions]
 
 TSRIM::TSRIM()
 {

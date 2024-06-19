@@ -34,9 +34,9 @@
 #include "TStyle.h"
 /// \cond CLASSIMP
 ClassImp(TGRSISelector)
-   /// \endcond
+/// \endcond
 
-   void TGRSISelector::Begin(TTree* /*tree*/)
+void TGRSISelector::Begin(TTree* /*tree*/)
 {
    /// The Begin() function is called at the start of the query.
    /// When running with PROOF Begin() is only called on the client.

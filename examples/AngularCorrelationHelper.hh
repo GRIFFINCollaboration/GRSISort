@@ -8,7 +8,7 @@
 
 class AngularCorrelationHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<AngularCorrelationHelper> {
 private:
-	int              fNofMixedEvents{10};
+   int              fNofMixedEvents{10};
    double           fGriffinDistance{145.};
    bool             fFolding{false};
    bool             fGrouping{false};
@@ -50,7 +50,7 @@ public:
       Prefix("AngularCorrelation");
 
       if(fUserSettings != nullptr) {
-			fNofMixedEvents  = fUserSettings->GetInt("NumberOfMixedEvents", 10);
+         fNofMixedEvents  = fUserSettings->GetInt("NumberOfMixedEvents", 10);
          fGriffinDistance = fUserSettings->GetDouble("GriffinDistance", 145.);
          fAddback         = fUserSettings->GetBool("Addback", true);
          fFolding         = fUserSettings->GetBool("Folding", false);

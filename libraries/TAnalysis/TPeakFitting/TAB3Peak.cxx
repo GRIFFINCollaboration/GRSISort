@@ -162,8 +162,8 @@ void TAB3Peak::DrawComponents(Option_t* opt)
    // We need to draw this on top of the global background. Probably easiest to make another temporary TF1?
    if(GetGlobalBackground() == nullptr) { return; }
 
-   Double_t low = 0;
-	Double_t high = 0;
+   Double_t low  = 0;
+   Double_t high = 0;
    GetGlobalBackground()->GetRange(low, high);
    if(fOneHitOnGlobal != nullptr) { fOneHitOnGlobal->Delete(); }
    if(fTwoHitOnGlobal != nullptr) { fTwoHitOnGlobal->Delete(); }

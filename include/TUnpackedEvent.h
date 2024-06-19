@@ -20,8 +20,8 @@ public:
    TUnpackedEvent();
    ~TUnpackedEvent();
 
-   TUnpackedEvent(const TUnpackedEvent&)     = default;
-   TUnpackedEvent(TUnpackedEvent&&) noexcept = default;
+   TUnpackedEvent(const TUnpackedEvent&)                = default;
+   TUnpackedEvent(TUnpackedEvent&&) noexcept            = default;
    TUnpackedEvent& operator=(const TUnpackedEvent&)     = default;
    TUnpackedEvent& operator=(TUnpackedEvent&&) noexcept = default;
 
@@ -70,8 +70,8 @@ std::shared_ptr<T> TUnpackedEvent::GetDetector(bool make_if_not_found)
       std::shared_ptr<T> output = std::make_shared<T>();
       fDetectors.push_back(output);
       return output;
-	}
-	return nullptr;
+   }
+   return nullptr;
 }
 #endif
 

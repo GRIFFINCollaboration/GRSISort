@@ -15,7 +15,7 @@ class TCalibrationGraphSet;
 
 class TCalibrationGraph : public TGraphErrors {
 public:
-   TCalibrationGraph()                                        = default;
+   TCalibrationGraph() = default;
    TCalibrationGraph(TCalibrationGraphSet* parent, const int& size, const bool& isResidual = false) : TGraphErrors(size), fParent(parent), fIsResidual(isResidual) {}
    TCalibrationGraph(TCalibrationGraphSet* parent, TGraphErrors* graph) : TGraphErrors(*graph), fParent(parent) {}
    ~TCalibrationGraph()                                       = default;
@@ -54,8 +54,8 @@ class TCalibrationGraphSet : public TNamed {
 public:
    explicit TCalibrationGraphSet(TGraphErrors* graph = nullptr, const std::string& label = "");
    ~TCalibrationGraphSet();
-   TCalibrationGraphSet(const TCalibrationGraphSet&)                = default;
-   TCalibrationGraphSet(TCalibrationGraphSet&&) noexcept            = default;
+   TCalibrationGraphSet(const TCalibrationGraphSet&)     = default;
+   TCalibrationGraphSet(TCalibrationGraphSet&&) noexcept = default;
    TCalibrationGraphSet& operator=(const TCalibrationGraphSet& rhs)
    {
       /// Assignment operator that takes care of properly cloning all the pointers to objects.
@@ -127,7 +127,7 @@ public:
    double GetMinimumY() const { return fMinimumY; }   ///< Return minimum y-value.
    double GetMaximumY() const { return fMaximumY; }   ///< Return maximum y-value.
 
-   void               Fit(TF1* function, Option_t* opt = "") { fTotalGraph->Fit(function, opt); }                                 ///< Fits the provided function to the total graph.
+   void               Fit(TF1* function, Option_t* opt = "") { fTotalGraph->Fit(function, opt); }                                      ///< Fits the provided function to the total graph.
    TF1*               FitFunction() { return reinterpret_cast<TF1*>(fTotalGraph->GetListOfFunctions()->FindObject("fitfunction")); }   ///< Gets the calibration from the total graph (might be nullptr!).
    TGraphErrors*      TotalGraph() { return fTotalGraph; }
    size_t             NumberOfGraphs() { return fGraphs.size(); }
@@ -155,11 +155,11 @@ public:
    {
       fVerboseLevel = val;
       for(auto& graph : fGraphs) {
-			graph.VerboseLevel(val);
-		}
+         graph.VerboseLevel(val);
+      }
       for(auto& graph : fResidualGraphs) {
-			graph.VerboseLevel(val);
-		}
+         graph.VerboseLevel(val);
+      }
    }
 
 private:

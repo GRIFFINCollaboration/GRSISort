@@ -5,7 +5,7 @@ NamespaceImp(GRootFunctions)
 
 #define PI TMATH::Pi()
 
-   Double_t GRootFunctions::PolyBg(Double_t* dim, Double_t* par, Int_t order)
+Double_t GRootFunctions::PolyBg(Double_t* dim, Double_t* par, Int_t order)
 {
    Double_t result = 0.0;
    int      j      = 0;

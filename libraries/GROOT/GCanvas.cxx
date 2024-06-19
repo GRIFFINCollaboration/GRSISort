@@ -55,9 +55,9 @@ enum MyArrowPress { kMyArrowLeft  = 0x1012,
 
 /// \cond CLASSIMP
 ClassImp(GMarker)
-   /// \endcond
+/// \endcond
 
-   GMarker::GMarker(int x, int y, TH1* hist)
+GMarker::GMarker(int x, int y, TH1* hist)
    : fHist(hist)
 {
    if(fHist->GetDimension() == 1) {
