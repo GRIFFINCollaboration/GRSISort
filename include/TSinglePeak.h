@@ -69,8 +69,9 @@ public:
    virtual void DrawComponents(Option_t* opt = "");
    virtual void PrintParameters() const;
 
-   TF1* GetFitFunction() { return fTotalFunction; }
-   TF1* GetPeakFunction() { return fPeakFunction; }
+   TF1* GetFitFunction() const { return fTotalFunction; }
+   TF1* GetPeakFunction() const { return fPeakFunction; }
+   TF1* GetGlobalBackground() const { return fGlobalBackground; }
    TF1* GetBackgroundFunction();
    void SetGlobalBackground(TF1* background)
    {
@@ -95,6 +96,9 @@ protected:
 
    void SetChi2(const Double_t& chi2) { fChi2 = chi2; }
    void SetNDF(const Int_t& ndf) { fNDF = ndf; }
+
+   void SetFitFunction(TF1* function) { fTotalFunction = function; }
+   void SetPeakFunction(TF1* function) { fPeakFunction = function; }
 
 private:
    TF1* fTotalFunction{nullptr};

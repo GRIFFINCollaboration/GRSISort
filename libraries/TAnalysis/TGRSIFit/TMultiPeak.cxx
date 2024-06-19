@@ -369,7 +369,7 @@ Double_t TMultiPeak::MultiPhotoPeakBG(Double_t* dim, Double_t* par)
       tmp_par[3] = par[6 * i + 8];    //"skewedness" of the skewed gaussian
       tmp_par[4] = par[6 * i + 9];    // relative height of skewed gaussian
       tmp_par[5] = par[6 * i + 10];   // Size of step in background
-      result += TGRSIFunctions::PhotoPeak(dim, tmp_par) + TGRSIFunctions::StepFunction(dim, tmp_par);
+      result += TGRSIFunctions::PhotoPeak(dim, tmp_par.data()) + TGRSIFunctions::StepFunction(dim, tmp_par.data());
    }
    return result;
 }
@@ -389,7 +389,7 @@ Double_t TMultiPeak::MultiStepBG(Double_t* dim, Double_t* par)
       tmp_par[3] = par[6 * i + 8];    //"skewedness" of the skewed gaussian
       tmp_par[4] = par[6 * i + 9];    // relative height of skewed gaussian
       tmp_par[5] = par[6 * i + 10];   // Size of step in background
-      result += TGRSIFunctions::StepFunction(dim, tmp_par);
+      result += TGRSIFunctions::StepFunction(dim, tmp_par.data());
    }
    return result;
 }
@@ -403,14 +403,14 @@ Double_t TMultiPeak::SinglePeakBG(Double_t* dim, Double_t* par)
    int    npeaks = static_cast<int>(par[0] + 0.5);
    double result = TGRSIFunctions::PolyBg(dim, &par[1], 2);   // polynomial background. uses par[1->4]
    for(int i = 0; i < npeaks; i++) {                          // par[0] is number of peaks
-      Double_t tmp_par[6];
+		std::array<Double_t, 6> tmp_par;
       tmp_par[0] = par[6 * i + 5];    // height of photopeak
       tmp_par[1] = par[6 * i + 6];    // Peak Centroid of non skew gaus
       tmp_par[2] = par[6 * i + 7];    // standard deviation  of gaussian
       tmp_par[3] = par[6 * i + 8];    //"skewedness" of the skewed gaussian
       tmp_par[4] = par[6 * i + 9];    // relative height of skewed gaussian
       tmp_par[5] = par[6 * i + 10];   // Size of step in background
-      result += TGRSIFunctions::StepFunction(dim, tmp_par);
+      result += TGRSIFunctions::StepFunction(dim, tmp_par.data());
    }
    result += TGRSIFunctions::PhotoPeak(dim, &par[npeaks * 6 + 5]);
    return result;

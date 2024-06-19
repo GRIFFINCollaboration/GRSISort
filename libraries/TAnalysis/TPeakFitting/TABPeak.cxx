@@ -7,22 +7,22 @@ ClassImp(TABPeak)
 
 void TABPeak::Centroid(const Double_t& centroid)
 {
-   fTotalFunction = new TF1("ab_fit", this, &TABPeak::TotalFunction, 0, 1, 6, "TABPeak", "TotalFunction");
-   fPeakFunction  = new TF1("ab_peak", this, &TABPeak::PeakFunction, 0, 1, 5, "TABPeak", "PeakFunction");
+   SetFitFunction(new TF1("ab_fit", this, &TABPeak::TotalFunction, 0, 1, 6, "TABPeak", "TotalFunction"));
+   SetPeakFunction(new TF1("ab_peak", this, &TABPeak::PeakFunction, 0, 1, 5, "TABPeak", "PeakFunction"));
    InitParNames();
-   fTotalFunction->SetParameter(1, centroid);
+   GetFitFunction()->SetParameter(1, centroid);
    SetListOfBGPar(std::vector<bool>{false, false, false, false, false, true});
-   fTotalFunction->SetLineColor(kMagenta);
+   GetFitFunction()->SetLineColor(kMagenta);
 }
 
 void TABPeak::InitParNames()
 {
-   fTotalFunction->SetParName(0, "Height");
-   fTotalFunction->SetParName(1, "centroid");
-   fTotalFunction->SetParName(2, "sigma");
-   fTotalFunction->SetParName(3, "rel_height");
-   fTotalFunction->SetParName(4, "rel_sigma");
-   fTotalFunction->SetParName(5, "step");
+   GetFitFunction()->SetParName(0, "Height");
+   GetFitFunction()->SetParName(1, "centroid");
+   GetFitFunction()->SetParName(2, "sigma");
+   GetFitFunction()->SetParName(3, "rel_height");
+   GetFitFunction()->SetParName(4, "rel_sigma");
+   GetFitFunction()->SetParName(5, "step");
 }
 
 void TABPeak::InitializeParameters(TH1* fit_hist, const double& rangeLow, const double& rangeHigh)
@@ -33,51 +33,51 @@ void TABPeak::InitializeParameters(TH1* fit_hist, const double& rangeLow, const 
    // Fixing has to come after setting
    // Might have to include bin widths eventually
    // The centroid should already be set by this point in the ctor
-   Int_t bin = fit_hist->FindBin(fTotalFunction->GetParameter(1));
+   Int_t bin = fit_hist->FindBin(GetFitFunction()->GetParameter(1));
    if(!ParameterSetByUser(0)) {
-      fTotalFunction->SetParameter("Height", fit_hist->GetBinContent(bin));
-      fTotalFunction->SetParLimits(0, 0, fit_hist->GetMaximum() * 1.5);
+      GetFitFunction()->SetParameter("Height", fit_hist->GetBinContent(bin));
+      GetFitFunction()->SetParLimits(0, 0, fit_hist->GetMaximum() * 1.5);
    }
    if(!ParameterSetByUser(1)) {
-      fTotalFunction->SetParLimits(1, rangeLow, rangeHigh);
+      GetFitFunction()->SetParLimits(1, rangeLow, rangeHigh);
    }
    if(!ParameterSetByUser(2)) {
-      fTotalFunction->SetParameter("sigma", TMath::Sqrt(2.25 + 1.33 * fTotalFunction->GetParameter("centroid") / 1000. + 0.9 * TMath::Power(fTotalFunction->GetParameter("centroid") / 1000., 2)) / 2.35);
-      fTotalFunction->SetParLimits(2, 0.1, 8);
+      GetFitFunction()->SetParameter("sigma", TMath::Sqrt(2.25 + 1.33 * GetFitFunction()->GetParameter("centroid") / 1000. + 0.9 * TMath::Power(GetFitFunction()->GetParameter("centroid") / 1000., 2)) / 2.35);
+      GetFitFunction()->SetParLimits(2, 0.1, 8);
    }
    if(!ParameterSetByUser(3)) {
-      fTotalFunction->SetParameter("rel_height", 0.25);
-      fTotalFunction->SetParLimits(3, 0.000001, 1.0);
+      GetFitFunction()->SetParameter("rel_height", 0.25);
+      GetFitFunction()->SetParLimits(3, 0.000001, 1.0);
    }
    if(!ParameterSetByUser(4)) {
-      fTotalFunction->SetParameter("rel_sigma", 2.);
-      fTotalFunction->SetParLimits(4, 1.0, 100);
+      GetFitFunction()->SetParameter("rel_sigma", 2.);
+      GetFitFunction()->SetParLimits(4, 1.0, 100);
    }
    if(!ParameterSetByUser(5)) {
       // Step size is allow to vary to anything. If it goes below 0, the code will fix it to 0
-      fTotalFunction->SetParameter("step", 1.0);
-      fTotalFunction->SetParLimits(5, 0.0, 1.0E2);
+      GetFitFunction()->SetParameter("step", 1.0);
+      GetFitFunction()->SetParLimits(5, 0.0, 1.0E2);
    }
 }
 
 Double_t TABPeak::Centroid() const
 {
-   return fTotalFunction->GetParameter("centroid");
+   return GetFitFunction()->GetParameter("centroid");
 }
 
 Double_t TABPeak::CentroidErr() const
 {
-   return fTotalFunction->GetParError(1);
+   return GetFitFunction()->GetParError(1);
 }
 
 Double_t TABPeak::Width() const
 {
-   return fTotalFunction->GetParameter("sigma") * fTotalFunction->GetParameter("rel_sigma");
+   return GetFitFunction()->GetParameter("sigma") * GetFitFunction()->GetParameter("rel_sigma");
 }
 
 Double_t TABPeak::Sigma() const
 {
-   return fTotalFunction->GetParameter("sigma");
+   return GetFitFunction()->GetParameter("sigma");
 }
 
 Double_t TABPeak::PeakFunction(Double_t* dim, Double_t* par)
@@ -109,12 +109,12 @@ Double_t TABPeak::TwoHitPeakFunction(Double_t* dim, Double_t* par)
 
 Double_t TABPeak::OneHitPeakOnGlobalFunction(Double_t* dim, Double_t* par)
 {
-   return OneHitPeakFunction(dim, par) + fGlobalBackground->EvalPar(dim, &par[fTotalFunction->GetNpar()]);
+   return OneHitPeakFunction(dim, par) + GetGlobalBackground()->EvalPar(dim, &par[GetFitFunction()->GetNpar()]);
 }
 
 Double_t TABPeak::TwoHitPeakOnGlobalFunction(Double_t* dim, Double_t* par)
 {
-   return TwoHitPeakFunction(dim, par) + fGlobalBackground->EvalPar(dim, &par[fTotalFunction->GetNpar()]);
+   return TwoHitPeakFunction(dim, par) + GetGlobalBackground()->EvalPar(dim, &par[GetFitFunction()->GetNpar()]);
 }
 
 Double_t TABPeak::BackgroundFunction(Double_t* dim, Double_t* par)
@@ -133,27 +133,27 @@ Double_t TABPeak::BackgroundFunction(Double_t* dim, Double_t* par)
 void TABPeak::DrawComponents(Option_t* opt)
 {
    // We need to draw this on top of the global background. Probably easiest to make another temporary TF1?
-   if(fGlobalBackground == nullptr) return;
+   if(GetGlobalBackground() == nullptr) return;
 
    Double_t low = 0;
 	Double_t high = 0;
-   fGlobalBackground->GetRange(low, high);
+   GetGlobalBackground()->GetRange(low, high);
    if(fOneHitOnGlobal != nullptr) { fOneHitOnGlobal->Delete(); }
    if(fTwoHitOnGlobal != nullptr) { fTwoHitOnGlobal->Delete(); }
    // Make a copy of the total function, and then tack on the global background parameters.
-   fOneHitOnGlobal = new TF1("draw_component1", this, &TABPeak::OneHitPeakOnGlobalFunction, low, high, fTotalFunction->GetNpar() + fGlobalBackground->GetNpar(), "TABPeak", "OneHitPeakOnGlobalFunction");
-   fTwoHitOnGlobal = new TF1("draw_component2", this, &TABPeak::TwoHitPeakOnGlobalFunction, low, high, fTotalFunction->GetNpar() + fGlobalBackground->GetNpar(), "TABPeak", "TwoHitPeakOnGlobalFunction");
-   for(int i = 0; i < fTotalFunction->GetNpar(); ++i) {
-      fOneHitOnGlobal->SetParameter(i, fTotalFunction->GetParameter(i));
-      fTwoHitOnGlobal->SetParameter(i, fTotalFunction->GetParameter(i));
+   fOneHitOnGlobal = new TF1("draw_component1", this, &TABPeak::OneHitPeakOnGlobalFunction, low, high, GetFitFunction()->GetNpar() + GetGlobalBackground()->GetNpar(), "TABPeak", "OneHitPeakOnGlobalFunction");
+   fTwoHitOnGlobal = new TF1("draw_component2", this, &TABPeak::TwoHitPeakOnGlobalFunction, low, high, GetFitFunction()->GetNpar() + GetGlobalBackground()->GetNpar(), "TABPeak", "TwoHitPeakOnGlobalFunction");
+   for(int i = 0; i < GetFitFunction()->GetNpar(); ++i) {
+      fOneHitOnGlobal->SetParameter(i, GetFitFunction()->GetParameter(i));
+      fTwoHitOnGlobal->SetParameter(i, GetFitFunction()->GetParameter(i));
    }
-   for(int i = 0; i < fGlobalBackground->GetNpar(); ++i) {
-      fOneHitOnGlobal->SetParameter(i + fTotalFunction->GetNpar(), fGlobalBackground->GetParameter(i));
-      fTwoHitOnGlobal->SetParameter(i + fTotalFunction->GetNpar(), fGlobalBackground->GetParameter(i));
+   for(int i = 0; i < GetGlobalBackground()->GetNpar(); ++i) {
+      fOneHitOnGlobal->SetParameter(i + GetFitFunction()->GetNpar(), GetGlobalBackground()->GetParameter(i));
+      fTwoHitOnGlobal->SetParameter(i + GetFitFunction()->GetNpar(), GetGlobalBackground()->GetParameter(i));
    }
    // Draw a copy of this function
-   fOneHitOnGlobal->SetLineColor(fTotalFunction->GetLineColor());
-   fTwoHitOnGlobal->SetLineColor(fTotalFunction->GetLineColor());
+   fOneHitOnGlobal->SetLineColor(GetFitFunction()->GetLineColor());
+   fTwoHitOnGlobal->SetLineColor(GetFitFunction()->GetLineColor());
    fOneHitOnGlobal->SetLineStyle(8);
    fTwoHitOnGlobal->SetLineStyle(3);
    fOneHitOnGlobal->Draw(opt);
