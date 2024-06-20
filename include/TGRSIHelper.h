@@ -49,7 +49,7 @@ public:
    /// This type is a requirement for every helper.
    using Result_t = std::map<std::string, TList>;
 
-   TGRSIHelper(TList* input);
+   explicit TGRSIHelper(TList* input);
 
    /// This function builds the vectors of TLists and maps for 1D- and 2D-histograms.
    /// It calls the overloaded CreateHistograms functions in which the user can define
@@ -64,7 +64,7 @@ public:
    virtual ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame*)
    {
       std::cout << this << " - " << __PRETTY_FUNCTION__ << ", " << Prefix() << ": This function should not get called, the user's code should replace it. Returning empty list!" << std::endl;
-      return ROOT::RDF::RResultPtr<std::map<std::string, TList>>();
+      return {};
    }
 
    TGRSIHelper(TGRSIHelper&&)      = default;

@@ -18,7 +18,7 @@ class ExampleEventHelper : public TGRSIHelper, public ROOT::Detail::RDF::RAction
 public:
    // constructor sets the prefix (which is used for the output file as well)
    // and calls Setup which in turn also calls CreateHistograms
-   ExampleEventHelper(TList* list) : TGRSIHelper(list)
+   explicit ExampleEventHelper(TList* list) : TGRSIHelper(list)
    {
       Prefix("ExampleEventHelper");
       Setup();
