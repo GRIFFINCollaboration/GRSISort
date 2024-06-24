@@ -15,7 +15,7 @@ TAnalysisHistLoop* TAnalysisHistLoop::Get(std::string name)
    if(name.length() == 0) {
       name = "histo_loop";
    }
-   TAnalysisHistLoop* loop = static_cast<TAnalysisHistLoop*>(StoppableThread::Get(name));
+   auto* loop = static_cast<TAnalysisHistLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
       loop = new TAnalysisHistLoop(name);
    }
@@ -23,7 +23,7 @@ TAnalysisHistLoop* TAnalysisHistLoop::Get(std::string name)
 }
 
 TAnalysisHistLoop::TAnalysisHistLoop(std::string name)
-   : StoppableThread(name), fOutputFile(nullptr), fOutputFilename("last.root"),
+   : StoppableThread(std::move(name)), fOutputFile(nullptr), fOutputFilename("last.root"),
      fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>())
 {
    LoadLibrary(TGRSIOptions::Get()->AnalysisHistogramLib());

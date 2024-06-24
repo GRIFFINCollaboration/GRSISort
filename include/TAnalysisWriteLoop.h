@@ -1,5 +1,5 @@
-#ifndef _TANALYSISWRITELOOP_H_
-#define _TANALYSISWRITELOOP_H_
+#ifndef TANALYSISWRITELOOP_H
+#define TANALYSISWRITELOOP_H
 
 /** \addtogroup Loops
  *  @{
@@ -25,7 +25,7 @@
 
 class TAnalysisWriteLoop : public StoppableThread {
 public:
-   static TAnalysisWriteLoop* Get(std::string name = "", std::string output_filename = "");
+   static TAnalysisWriteLoop* Get(std::string name = "", std::string outputFilename = "");
 
    ~TAnalysisWriteLoop() override;
 
@@ -53,7 +53,7 @@ protected:
    bool Iteration() override;
 
 private:
-   TAnalysisWriteLoop(std::string name, std::string output_filename);
+   TAnalysisWriteLoop(std::string name, const std::string& outputFilename);
    void AddBranch(TClass* cls);
    void WriteEvent(std::shared_ptr<TUnpackedEvent>& event);
 

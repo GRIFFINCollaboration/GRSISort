@@ -29,7 +29,7 @@ TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string output
       name = "write_loop";
    }
 
-   TAnalysisWriteLoop* loop = static_cast<TAnalysisWriteLoop*>(StoppableThread::Get(name));
+   auto* loop = static_cast<TAnalysisWriteLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
       if(outputFilename.length() == 0) {
          outputFilename = "temp.root";
@@ -40,12 +40,12 @@ TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string output
    return loop;
 }
 
-TAnalysisWriteLoop::TAnalysisWriteLoop(std::string name, std::string outputFilename)
-   : StoppableThread(name),
+TAnalysisWriteLoop::TAnalysisWriteLoop(std::string name, const std::string& outputFilename)
+   : StoppableThread(std::move(name)),
+	  fOutputFile(TFile::Open(outputFilename.c_str(), "recreate")),
      fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>()),
      fOutOfOrderQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>())
 {
-   fOutputFile = TFile::Open(outputFilename.c_str(), "recreate");
    if(fOutputFile == nullptr || !fOutputFile->IsOpen()) {
       std::cerr << "Failed to open '" << outputFilename << "'" << std::endl;
       throw;
@@ -77,10 +77,10 @@ void TAnalysisWriteLoop::ClearQueue()
 
 std::string TAnalysisWriteLoop::EndStatus()
 {
-   std::stringstream ss;
-   ss << Name() << ":\t" << std::setw(8) << fItemsPopped << "/" << fInputSize + fItemsPopped << ", "
+   std::stringstream str;
+   str << Name() << ":\t" << std::setw(8) << fItemsPopped << "/" << fInputSize + fItemsPopped << ", "
       << "??? good events" << std::endl;
-   return ss.str();
+   return str.str();
 }
 
 void TAnalysisWriteLoop::OnEnd()
@@ -115,20 +115,16 @@ bool TAnalysisWriteLoop::Iteration()
       return true;
    }
 
-   if(fInputQueue->IsFinished()) {
-      return false;
-   }
-   return true;
+	return !(fInputQueue->IsFinished());
 }
 
 void TAnalysisWriteLoop::Write()
 {
    if(fOutputFile != nullptr) {
       gROOT->cd();
-      TRunInfo*            runInfo = TRunInfo::Get();
-      TGRSIOptions*        options = TGRSIOptions::Get();
-      TPPG*                ppg     = TPPG::Get();
-      TSortingDiagnostics* diag    = TSortingDiagnostics::Get();
+      auto* options = TGRSIOptions::Get();
+      auto* ppg     = TPPG::Get();
+      auto* diag    = TSortingDiagnostics::Get();
 
       fOutputFile->cd();
       if(GValue::Size() != 0) {
@@ -137,8 +133,8 @@ void TAnalysisWriteLoop::Write()
       if(TChannel::GetNumberOfChannels() != 0) {
          TChannel::WriteToRoot();
       }
-      runInfo->WriteToRoot(fOutputFile);
-      options->AnalysisOptions()->WriteToFile(fOutputFile);
+		TRunInfo::WriteToRoot(fOutputFile);
+		TGRSIOptions::AnalysisOptions()->WriteToFile(fOutputFile);
       ppg->Write("PPG");
 
       if(options->WriteDiagnostics()) {
@@ -158,11 +154,11 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls)
       TThread::Lock();
 
       // Make a default detector of that type.
-      TDetector* det_p  = reinterpret_cast<TDetector*>(cls->New());
+      auto* det_p  = reinterpret_cast<TDetector*>(cls->New());
       fDefaultDets[cls] = det_p;
 
       // Add to our local map
-      auto det_pp  = new TDetector*;
+      auto* det_pp  = new TDetector*;
       *det_pp      = det_p;
       fDetMap[cls] = det_pp;
 
@@ -209,10 +205,10 @@ void TAnalysisWriteLoop::WriteEvent(std::shared_ptr<TUnpackedEvent>& event)
       for(const auto& det : event->GetDetectors()) {
          TClass* cls = det->IsA();
          try {
-            **fDetMap.at(cls) = *(det.get());
+            **fDetMap.at(cls) = *det;//(det.get());
          } catch(std::out_of_range& e) {
             AddBranch(cls);
-            **fDetMap.at(cls) = *(det.get());
+            **fDetMap.at(cls) = *det;//(det.get());
          }
          (*fDetMap.at(cls))->ClearTransients();
       }

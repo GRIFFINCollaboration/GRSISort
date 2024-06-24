@@ -1,5 +1,5 @@
-#ifndef _TANALYSISHISTOGRAMLOOP_H_
-#define _TANALYSISHISTOGRAMLOOP_H_
+#ifndef TANALYSISHISTOGRAMLOOP_H
+#define TANALYSISHISTOGRAMLOOP_H
 
 /** \addtogroup Loops
  *  @{
@@ -61,7 +61,7 @@ protected:
    bool Iteration() override;
 
 private:
-   TAnalysisHistLoop(std::string name);
+   explicit TAnalysisHistLoop(std::string name);
 
    TCompiledHistograms fCompiledHistograms;
 
