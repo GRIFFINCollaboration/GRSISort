@@ -1,5 +1,5 @@
-#ifndef _TDATALOOP_H_
-#define _TDATALOOP_H_
+#ifndef TDATALOOP_H
+#define TDATALOOP_H
 
 /** \addtogroup Loops
  *  @{
