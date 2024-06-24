@@ -38,7 +38,7 @@ public:
          if((gDirectory->GetFile()) != nullptr) {
             TList* list = gDirectory->GetFile()->GetListOfKeys();
             TIter  iter(list);
-            if(verbose) std::cout << "Reading " << T::Class()->GetName() << R"( from file ")" << CYAN << gDirectory->GetFile()->GetName() << RESET_COLOR << R"(")" << std::endl;
+            if(verbose) { std::cout << "Reading " << T::Class()->GetName() << R"( from file ")" << CYAN << gDirectory->GetFile()->GetName() << RESET_COLOR << R"(")" << std::endl; }
             while(TKey* key = static_cast<TKey*>(iter.Next())) {
                if(strcmp(key->GetClassName(), T::Class()->GetName()) != 0) {
                   continue;
@@ -81,7 +81,7 @@ public:
       int runNumber    = atoi(fileName.substr(underscore - 5).c_str());
       int subrunNumber = atoi(fileName.substr(dot - 3).c_str());
       if(runNumber > 0 || subrunNumber > 0) {
-         TFile* prevSubRun;
+         TFile* prevSubRun = nullptr;
          if(subrunNumber > 0) {
             prevSubRun = new TFile(Form("%s%05d_%03d.root", filebase.c_str(), runNumber, subrunNumber - 1));
          } else {
@@ -169,11 +169,12 @@ public:
    }
 
 protected:
-   TSingleton();
-   // TSingleton(TSingleton const &) = delete;
-   //  note, we can't delete this, because that wouldn't allow us to use the Set function above!
-   // TSingleton& operator=(TSingleton const &) = delete;
-   ~TSingleton();
+   TSingleton()                             = default;
+   TSingleton(const TSingleton&)            = default;
+   TSingleton(TSingleton&&)                 = default;
+   TSingleton& operator=(const TSingleton&) = default;
+   TSingleton& operator=(TSingleton&&)      = default;
+   ~TSingleton()                            = default;
 
 private:
    static T*          fSingleton;
@@ -186,24 +187,13 @@ private:
 
 /// \cond CLASSIMP
 templateClassImp(TSingleton)
-   /// \endcond
+/// \endcond
 
-   template <class T>
-   T* TSingleton<T>::fSingleton = nullptr;
+template <class T>
+T* TSingleton<T>::fSingleton = nullptr;
 
 template <class T>
 TDirectory* TSingleton<T>::fDir = nullptr;
-
-template <class T>
-TSingleton<T>::TSingleton()
-{
-}
-
-template <class T>
-TSingleton<T>::~TSingleton()
-{
-   // if(fSingleton != this) delete fSingleton;
-}
 
 template <class T>
 void TSingleton<T>::Streamer(TBuffer& R__b)
