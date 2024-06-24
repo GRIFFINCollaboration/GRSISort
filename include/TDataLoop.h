@@ -32,7 +32,7 @@
 class TDataLoop : public StoppableThread {
 public:
    static TDataLoop* Get(std::string name = "", TRawFile* source = nullptr);
-   ~TDataLoop() override;
+   ~TDataLoop() override = default;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>& OutputQueue()
@@ -57,7 +57,6 @@ public:
    size_t GetRate() override { return 0; }
 
    void ReplaceSource(TRawFile* new_source);
-   void ResetSource();
 
    void SetSelfStopping(bool self_stopping) { fSelfStopping = self_stopping; }
    bool GetSelfStopping() const { return fSelfStopping; }
