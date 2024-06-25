@@ -63,7 +63,7 @@ protected:
 private:
    TFragmentChainLoop(std::string name, TChain* chain);
 
-   long fEntriesTotal;
+   int64_t fEntriesTotal;
 
    TChain* fInputChain;
 #ifndef __CINT__
