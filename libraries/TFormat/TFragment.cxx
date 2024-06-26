@@ -6,51 +6,15 @@
 
 #include <TClass.h>
 
-/// \cond CLASSIMP
-ClassImp(TFragment)
-   /// \endcond
+Long64_t TFragment::fNumberOfFragments = 0;
 
-   Long64_t TFragment::fNumberOfFragments = 0;
-
-TFragment::TFragment() : TDetectorHit()
+TFragment::TFragment()
 {
 /// Default constructor
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
    Clear();
-}
-
-TFragment::TFragment(const TFragment& rhs) : TDetectorHit(rhs)
-{
-   /// Copy constructor
-   // first copy all "normal" data members
-   fDaqTimeStamp        = rhs.fDaqTimeStamp;
-   fDaqId               = rhs.fDaqId;
-   fFragmentId          = rhs.fFragmentId;
-   fTriggerBitPattern   = rhs.fTriggerBitPattern;
-   fNetworkPacketNumber = rhs.fNetworkPacketNumber;
-   fChannelId           = rhs.fChannelId;
-   fAcceptedChannelId   = rhs.fAcceptedChannelId;
-
-   fDeadTime        = rhs.fDeadTime;
-   fModuleType      = rhs.fModuleType;
-   fDetectorType    = rhs.fDetectorType;
-   fNumberOfPileups = rhs.fNumberOfPileups;
-
-   fTriggerId = rhs.fTriggerId;
-
-   // copy transient data members
-   fPPG           = rhs.fPPG;
-   fZc            = rhs.fZc;
-   fCcShort       = rhs.fCcShort;
-   fCcLong        = rhs.fCcLong;
-   fNumberOfWords = rhs.fNumberOfWords;
-}
-
-TFragment::~TFragment()
-{
-   /// Default destructor does nothing right now
 }
 
 void TFragment::Clear(Option_t* opt)
@@ -147,8 +111,8 @@ void TFragment::Print(std::ostream& out) const
    str << "DaqTimeStamp:        " << ctime(&fDaqTimeStamp) << std::endl
        << "DaqId:               " << fDaqId << std::endl
        << "\tTriggerId[" << fTriggerId.size() << "]";
-   for(auto id : fTriggerId) {
-      str << "    0x" << std::hex << id << std::dec;
+   for(auto triggerId : fTriggerId) {
+      str << "    0x" << std::hex << triggerId << std::dec;
    }
    str << std::endl
        << "FragmentId:           " << fFragmentId << std::endl
