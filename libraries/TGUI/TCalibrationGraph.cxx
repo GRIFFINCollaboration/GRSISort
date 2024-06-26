@@ -9,14 +9,11 @@
 #include "TBuffer.h"
 #include "TH1F.h"
 
-ClassImp(TCalibrationGraph)
-ClassImp(TCalibrationGraphSet)
-
 Int_t TCalibrationGraph::RemovePoint()
 {
 	if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }
 	if(fIsResidual) { return fParent->RemoveResidualPoint(); }
-	else { return fParent->RemovePoint(); }
+	return fParent->RemovePoint();
 }
 
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 26, 0)
@@ -53,8 +50,8 @@ TCalibrationGraphSet::TCalibrationGraphSet(TGraphErrors* graph, const std::strin
 
 TCalibrationGraphSet::~TCalibrationGraphSet()
 {
-   if(fTotalGraph != nullptr) { delete fTotalGraph; }
-   if(fTotalResidualGraph != nullptr) { delete fTotalResidualGraph; }
+   delete fTotalGraph;
+   delete fTotalResidualGraph;
 }
 
 int TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
