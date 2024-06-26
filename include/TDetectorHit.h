@@ -46,8 +46,6 @@ class TDetector;
 /////////////////////////////////////////////////////////////////
 
 class TDetectorHit : public TObject {
-
-   //
 public:
    enum class EBitFlag {
       kIsEnergySet  = BIT(0),   // same as BIT(0);
@@ -82,11 +80,10 @@ public:
                           kOffset  = BIT(3),
                           kAll     = 0xFFFF };
 
-public:
-   TDetectorHit(const int& Address = 0xffffffff);
+   explicit TDetectorHit(const int& Address = 0xffffffff);
    TDetectorHit(const TDetectorHit&, bool copywave = true);
-   // TDetectorHit(const TFragment& frag) { Class()->IgnoreTObjectStreamer(); this->CopyFragment(frag); }
-   // void CopyFragment(const TFragment&);
+	//TDetectorHit(const TFragment& frag) { Class()->IgnoreTObjectStreamer(); CopyFragment(frag); }
+   //void CopyFragment(const TFragment&);
    // void CopyWaveform(const TFragment&);
    ~TDetectorHit() override;
 
@@ -96,7 +93,6 @@ public:
 
    bool operator<(const TDetectorHit& rhs) const { return GetEnergy() > rhs.GetEnergy(); }   // sorts large->small
 
-public:
    void                 Copy(TObject&) const override;         //!<!
    virtual void         Copy(TObject&, bool copywave) const;   //!<!
    virtual void         CopyWave(TObject&) const;              //!<!
@@ -109,7 +105,7 @@ public:
       hit.Print(out);
       return out;
    }
-   virtual bool HasWave() const { return (fWaveform.size() > 0); }   //!<!
+   virtual bool HasWave() const { return !fWaveform.empty(); }   //!<!
 
    static bool CompareEnergy(TDetectorHit* lhs, TDetectorHit* rhs);
    // We need a common function for all detectors in here
@@ -119,17 +115,17 @@ public:
    void         SetKValue(const Short_t& temp_kval) { fKValue = temp_kval; }                          //!<!
    void         SetCharge(const Float_t& temp_charge) { fCharge = temp_charge; }                      //!<!
    void         SetCharge(const Int_t& temp_charge) { fCharge = temp_charge + gRandom->Uniform(); }   //!<! this function automatically randomizes the integer provided
-   virtual void SetCfd(const Float_t& x) { fCfd = x; }                                                //!<!
-   virtual void SetCfd(const uint32_t& x) { fCfd = x + gRandom->Uniform(); }                          //!<! this function automatically randomizes the integer provided
-   virtual void SetCfd(const Int_t& x) { fCfd = x + gRandom->Uniform(); }                             //!<! this function automatically randomizes the integer provided
-   void         SetWaveform(const std::vector<Short_t>& x) { fWaveform = x; }                         //!<!
-   void         AddWaveformSample(const Short_t& x) { fWaveform.push_back(x); }                       //!<!
-   virtual void SetTimeStamp(const Long64_t& x) { fTimeStamp = x; }                                   //!<!
-   virtual void AppendTimeStamp(const Long64_t& x) { fTimeStamp += x; }                               //!<!
+   virtual void SetCfd(const Float_t& val) { fCfd = val; }                                            //!<!
+   virtual void SetCfd(const uint32_t& val) { fCfd = val + gRandom->Uniform(); }                      //!<! this function automatically randomizes the integer provided
+   virtual void SetCfd(const Int_t& val) { fCfd = val + gRandom->Uniform(); }                         //!<! this function automatically randomizes the integer provided
+   void         SetWaveform(const std::vector<Short_t>& val) { fWaveform = val; }                     //!<!
+   void         AddWaveformSample(const Short_t& val) { fWaveform.push_back(val); }                   //!<!
+   virtual void SetTimeStamp(const Long64_t& val) { fTimeStamp = val; }                               //!<!
+   virtual void AppendTimeStamp(const Long64_t& val) { fTimeStamp += val; }                           //!<!
 
-   Double_t SetEnergy(const double& en) const
+   Double_t SetEnergy(const double& energy) const
    {
-      fEnergy = en;
+      fEnergy = energy;
       SetHitBit(EBitFlag::kIsEnergySet, true);
       return fEnergy;
    }
@@ -141,7 +137,7 @@ public:
    }
 
    virtual TVector3            GetPosition(Double_t) const { return GetPosition(); }   //!<!
-   virtual TVector3            GetPosition() const { return TVector3(0., 0., 0.); }    //!<!
+   virtual TVector3            GetPosition() const { return {0., 0., 0.}; }    //!<!
    virtual double              GetEnergy(Option_t* opt = "") const;
    virtual Double_t            GetEnergyNonlinearity(double energy) const;
    virtual Long64_t            GetTimeStamp(Option_t* = "") const { return fTimeStamp; }
@@ -164,7 +160,7 @@ public:
    }   //!<!
 
    // stored in the tchannel (things common to all hits of this address)
-   virtual Short_t  GetChannelNumber() const;                          //!<!
+   virtual int      GetChannelNumber() const;                          //!<!
    virtual Int_t    GetDetector() const;                               //!<!
    virtual Int_t    GetSegment() const;                                //!<!
    virtual Int_t    GetCrystal() const;                                //!<!

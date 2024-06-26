@@ -25,17 +25,23 @@ class TBgoHit : public TDetectorHit {
 public:
    TBgoHit();
    TBgoHit(const TBgoHit&);
-   TBgoHit(const TFragment& frag) : TDetectorHit(frag) {}
+   TBgoHit(TBgoHit&&);
+	// this is problematic as this means we're slicing the TFragment object to fit the 
+	// TDetectorHit argument of the base constructor
+   explicit TBgoHit(const TFragment& frag) : TDetectorHit(frag) {}
    ~TBgoHit() override;
+
+   TBgoHit& operator=(const TBgoHit&);
+   TBgoHit& operator=(TBgoHit&&);
 
    /////////////////////////		/////////////////////////////////////
    inline UShort_t GetArrayNumber() const override { return (20 * (GetDetector() - 1) + 5 * GetCrystal() + GetSegment()); }   //!<!
 
    using TObject::Copy;
-   virtual void Copy(TObject&, bool copywave) const override;   //!<!
-   virtual void Clear(Option_t* opt = "all") override;          //!<!
-   virtual void Print(Option_t* opt = "") const override;       //!<!
-   virtual void Print(std::ostream& out) const override;        //!<!
+   void Copy(TObject&, bool copywave) const override;   //!<!
+   void Clear(Option_t* opt = "all") override;          //!<!
+   void Print(Option_t* opt = "") const override;       //!<!
+   void Print(std::ostream& out) const override;        //!<!
 
    /// \cond CLASSIMP
    ClassDefOverride(TBgoHit, 1)
