@@ -62,9 +62,9 @@ public:
    std::string        AnalysisHistogramLib() const { return fAnalysisHistogramLib; }
    std::string        CompiledFilterFile() const { return fCompiledFilterFile; }
 
-   const std::vector<std::string>& OptionFiles() { return fOptionsFile; }
+   const std::vector<std::string>& OptionFiles() const { return fOptionsFile; }
 
-   std::string LogFile() { return fLogFile; }
+   std::string LogFile() const { return fLogFile; }
    void        LogFile(const std::string& val) { fLogFile = val; }
 
    static TAnalysisOptions* AnalysisOptions() { return fAnalysisOptions; }
