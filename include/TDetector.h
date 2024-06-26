@@ -35,6 +35,7 @@ class TDetector : public TObject {
 public:
    TDetector();
    TDetector(const TDetector&);
+   TDetector(TDetector&&);
    ~TDetector() override;
    TDetector& operator=(const TDetector& other)
    {
@@ -43,8 +44,14 @@ public:
       }
       return *this;
    }
+   TDetector& operator=(TDetector&& other)
+   {
+      if(this != &other) {
+         other.Copy(*this);
+      }
+      return *this;
+   }
 
-public:
    virtual void BuildHits() { AbstractMethod("BuildHits()"); }   //!<!
 #ifndef __CINT__
    virtual void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*)
@@ -57,14 +64,14 @@ public:
    {
       fHits.push_back(hit);
    }
-   virtual void Copy(TObject&) const override;                      //!<!
+   void         Copy(TObject&) const override;                      //!<!
    void         Clear(Option_t* = "") override { fHits.clear(); }   //!<!
    virtual void ClearTransients();                                  //!<!
    void         Print(Option_t* opt = "") const override;           //!<!
    virtual void Print(std::ostream& out) const;
 
-   virtual Short_t                           GetMultiplicity() const { return fHits.size(); }
-   virtual TDetectorHit*                     GetHit(const int&) const;
+   virtual Short_t                           GetMultiplicity() const { return static_cast<Short_t>(fHits.size()); }
+   virtual TDetectorHit*                     GetHit(const int& index) const;
    virtual const std::vector<TDetectorHit*>& GetHitVector() const { return fHits; }
 
    friend std::ostream& operator<<(std::ostream& out, const TDetector& det)
