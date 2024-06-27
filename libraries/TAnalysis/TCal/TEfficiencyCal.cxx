@@ -1,12 +1,6 @@
 #include "TEfficiencyCal.h"
 
-/// \cond CLASSIMP
-ClassImp(TEfficiencyCal)
-   /// \endcond
-
-   TEfficiencyCal::TEfficiencyCal()
-{
-}
+TEfficiencyCal::TEfficiencyCal() = default;
 
 TEfficiencyCal::~TEfficiencyCal() = default;
 

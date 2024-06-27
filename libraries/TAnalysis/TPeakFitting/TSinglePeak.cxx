@@ -1,10 +1,6 @@
 #include "TSinglePeak.h"
 #include "TClass.h"
 
-/// \cond CLASSIMP
-ClassImp(TSinglePeak)
-/// \endcond
-
 bool TSinglePeak::IsBackgroundParameter(const Int_t& par) const
 {
    try {

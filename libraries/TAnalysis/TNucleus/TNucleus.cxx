@@ -10,11 +10,7 @@
 #include <TClass.h>
 #include <TGraph.h>
 
-/// \cond CLASSIMP
-ClassImp(TNucleus)
-   /// \endcond
-
-   static double amu = 931.494043;
+static double amu = 931.494043;
 
 std::string& TNucleus::massfile()
 {

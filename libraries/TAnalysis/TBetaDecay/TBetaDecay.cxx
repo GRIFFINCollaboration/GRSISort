@@ -1,10 +1,6 @@
 #include "TBetaDecay.h"
 
-/// \cond CLASSIMP
-ClassImp(TBetaDecay)
-   /// \endcond
-
-   TBetaDecay::TBetaDecay()
+TBetaDecay::TBetaDecay()
 {
    fParentAllocated = false;
    fParent          = nullptr;

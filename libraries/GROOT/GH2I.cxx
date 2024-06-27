@@ -6,10 +6,8 @@
 
 #include "GH1D.h"
 
-ClassImp(GH2I)
-
-   GH2I::GH2I(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins, Int_t nbinsy,
-              const Double_t* ybins)
+GH2I::GH2I(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins, Int_t nbinsy,
+           const Double_t* ybins)
    : TH2I(name, title, nbinsx, xbins, nbinsy, ybins), GH2Base()
 {
 }

@@ -5,8 +5,6 @@
 
 #include "TUnpackedEvent.h"
 
-ClassImp(TDetBuildingLoop)
-
 TDetBuildingLoop* TDetBuildingLoop::Get(std::string name)
 {
    if(name.length() == 0) {

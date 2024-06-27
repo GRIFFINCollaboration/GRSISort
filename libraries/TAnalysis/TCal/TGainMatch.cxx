@@ -9,11 +9,7 @@
 #include "Math/Factory.h"
 #include "Math/Functor.h"
 
-/// \cond CLASSIMP
-ClassImp(TGainMatch)
-   /// \endcond
-
-   Double_t TGainMatch::gDefaultCoarseRange = 40.;
+Double_t TGainMatch::gDefaultCoarseRange = 40.;
 
 TGainMatch::TGainMatch(const TGainMatch& copy) : TCal(copy), fCoarseRange(gDefaultCoarseRange)
 {

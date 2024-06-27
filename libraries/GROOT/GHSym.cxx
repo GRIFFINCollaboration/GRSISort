@@ -27,11 +27,7 @@ class DifferentBinLimits : public std::exception {
 class DifferentLabels : public std::exception {
 };
 
-/// \cond CLASSIMP
-ClassImp(GHSym)
-   /// \endcond
-
-   GHSym::GHSym()
+GHSym::GHSym()
 {
    fDimension = 2;
    fTsumwy    = 0;

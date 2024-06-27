@@ -5,12 +5,7 @@
 
 #include "TRunInfo.h"
 
-/// \cond CLASSIMP
-ClassImp(TPPGData)
-   ClassImp(TPPG)
-   /// \endcond
-
-   short TPPGData::fTimestampUnits = 10;
+short TPPGData::fTimestampUnits = 10;
 TPPG* TPPG::fPPG                   = nullptr;   // not used anywhere?
 
 TPPGData::TPPGData()

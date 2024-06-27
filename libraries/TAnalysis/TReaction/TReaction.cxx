@@ -5,12 +5,8 @@
 
 #include <TStyle.h>
 
-/// \cond CLASSIMP
-ClassImp(TReaction)
-   /// \endcond
-
-   TReaction::TReaction(const char* beam, const char* targ, const char* ejec, const char* reco, double beame,
-                        double ex3, bool inverse)
+TReaction::TReaction(const char* beam, const char* targ, const char* ejec, const char* reco, double beame,
+                     double ex3, bool inverse)
 {
 
    Clear();

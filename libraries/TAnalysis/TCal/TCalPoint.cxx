@@ -2,11 +2,7 @@
 
 #include <iostream>
 
-/// \cond CLASSIMP
-ClassImp(TCalPoint)
-   /// \endcond
-
-   TCalPoint::TCalPoint()
+TCalPoint::TCalPoint()
 {
    Clear();
 }

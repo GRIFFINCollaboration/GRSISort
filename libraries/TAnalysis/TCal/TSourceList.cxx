@@ -3,11 +3,7 @@
 
 #include <iostream>
 
-/// \cond CLASSIMP
-ClassImp(TSourceList)
-   /// \endcond
-
-   TSourceList::TSourceList()
+TSourceList::TSourceList()
    : TCalList()
 {
    Clear();

@@ -266,10 +266,8 @@ Bool_t GRootContainer::HandleButton(Event_t* event)
    return fCanvas->HandleContainerButton(event);
 }
 
-ClassImp(GRootCanvas)
-
-   //______________________________________________________________________________
-   GRootCanvas::GRootCanvas(GCanvas* c, const char* name, UInt_t width, UInt_t height)
+//______________________________________________________________________________
+GRootCanvas::GRootCanvas(GCanvas* c, const char* name, UInt_t width, UInt_t height)
    : TGMainFrame(gClient->GetRoot(), width, height), TCanvasImp(c)
 {
    /// Create a basic ROOT canvas.

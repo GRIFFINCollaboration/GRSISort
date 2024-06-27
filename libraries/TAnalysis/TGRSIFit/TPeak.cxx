@@ -3,10 +3,6 @@
 
 #include "Math/Minimizer.h"
 
-/// \cond CLASSIMP
-ClassImp(TPeak)
-/// \endcond
-
 Bool_t TPeak::fLogLikelihoodFlag = true;
 TPeak* TPeak::fLastFit           = nullptr;
 

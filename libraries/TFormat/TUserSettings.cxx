@@ -9,8 +9,6 @@
 
 #include "TGRSIUtilities.h"
 
-ClassImp(TUserSettings)
-
 bool TUserSettings::ReadSettings(const std::string& settingsFile)
 {
    /// Read user settings from text file.

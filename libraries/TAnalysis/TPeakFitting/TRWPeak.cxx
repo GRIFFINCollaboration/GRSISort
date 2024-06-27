@@ -1,9 +1,5 @@
 #include "TRWPeak.h"
 
-/// \cond CLASSIMP
-ClassImp(TRWPeak)
-/// \endcond
-
 void TRWPeak::Centroid(const Double_t& centroid)
 {
    SetFitFunction(new TF1("rw_total", this, &TRWPeak::TotalFunction, 0, 1, 6, "TRWPeak", "TotalFunction"));

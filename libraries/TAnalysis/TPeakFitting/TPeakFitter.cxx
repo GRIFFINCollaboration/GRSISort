@@ -5,10 +5,6 @@
 
 #include "Globals.h"
 
-/// \cond CLASSIMP
-ClassImp(TPeakFitter)
-/// \endcond
-
 TPeakFitter::TPeakFitter(const Double_t& rangeLow, const Double_t& rangeHigh) 
 	: TObject(), fRangeLow(rangeLow), fRangeHigh(rangeHigh)
 {

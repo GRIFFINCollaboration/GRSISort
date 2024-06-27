@@ -6,10 +6,6 @@
 
 #include <algorithm>
 
-/// \cond CLASSIMP
-ClassImp(TMultiPeak)
-/// \endcond
-
 Bool_t TMultiPeak::fLogLikelihoodFlag = false;
 
 TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t>& centroids, Option_t*)

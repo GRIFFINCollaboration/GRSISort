@@ -12,11 +12,7 @@
 #include "GVersion.h"
 #include "TGRSIUtilities.h"
 
-/// \cond CLASSIMP
-ClassImp(TRunInfo)
-   /// \endcond
-
-   std::string TRunInfo::fVersion;
+std::string TRunInfo::fVersion;
 std::string TRunInfo::fFullVersion;
 std::string TRunInfo::fDate;
 std::string TRunInfo::fLibraryVersion;
@@ -279,7 +275,6 @@ Long64_t TRunInfo::Merge(TCollection* list)
    TRunInfo* runinfo = nullptr;
 
    while((runinfo = static_cast<TRunInfo*>(it.Next())) != nullptr) {
-      // Now we want to loop through each TGRSISortList and find the TGRSISortInfo's stored in there.
       Add(runinfo);
    }
    return 0;

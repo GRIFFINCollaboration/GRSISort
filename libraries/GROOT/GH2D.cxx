@@ -6,10 +6,8 @@
 
 #include "GH1D.h"
 
-ClassImp(GH2D)
-
-   GH2D::GH2D(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins, Int_t nbinsy,
-              const Double_t* ybins)
+GH2D::GH2D(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins, Int_t nbinsy,
+           const Double_t* ybins)
    : TH2D(name, title, nbinsx, xbins, nbinsy, ybins), GH2Base()
 {
 }
