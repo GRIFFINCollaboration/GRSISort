@@ -221,11 +221,11 @@ void TGRSIHelper::CheckSizes(unsigned int slot, const char* usage)
    for(auto& list : *fLists[slot]) {
       // loop over each object in the list
       for(const auto&& obj : list.second) {
-         TBufferFile b(TBuffer::kWrite, 10000);
-         obj->IsA()->WriteBuffer(b, obj);
-         if(b.Length() > SIZE_LIMIT) {
+         TBufferFile buf(TBuffer::kWrite, 10000);
+         obj->IsA()->WriteBuffer(buf, obj);
+			if(buf.Length() > fSizeLimit) {
             std::stringstream str;
-            str << DRED << slot << ". slot: " << obj->ClassName() << " '" << obj->GetName() << "' too large to " << usage << ": " << b.Length() << " bytes = " << b.Length() / 1024. / 1024. / 1024. << " GB, removing it!" << RESET_COLOR << std::endl;
+            str << DRED << slot << ". slot: " << obj->ClassName() << " '" << obj->GetName() << "' too large to " << usage << ": " << buf.Length() << " bytes = " << buf.Length() / 1024. / 1024. / 1024. << " GB, removing it!" << RESET_COLOR << std::endl;
             std::cout << str.str();
             // we only remove it from the output list, not deleting the object itself
             // this way the filling of that histogram will still work, it just won't get written to file

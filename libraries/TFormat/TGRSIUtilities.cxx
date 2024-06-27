@@ -13,24 +13,19 @@
 bool file_exists(const char* filename)
 {
    /// This checks if the path exist, and if it is a file and not a directory!
-   struct stat buffer;
+   struct stat buffer{};
    int         state = stat(filename, &buffer);
    // state != 0 means we couldn't get file attributes. This doesn't necessary mean the file
    // does not exist, we might just be missing permission to access it. But for our purposes
    // this is the same as the file not existing.
-   if(state != 0) return false;
+   if(state != 0) { return false; }
    // we got the file attributes, so it exsist, we just need to check if it is a directory.
    return !S_ISDIR(buffer.st_mode);
 }
 
 bool all_files_exist(const std::vector<std::string>& filenames)
 {
-   for(auto& filename : filenames) {
-      if(!file_exists(filename.c_str())) {
-         return false;
-      }
-   }
-   return true;
+	return std::all_of(filenames.begin(), filenames.end(), [](auto filename) { return file_exists(filename.c_str()); });
 }
 
 void trim(std::string& line, const std::string& trimChars)
@@ -47,19 +42,13 @@ void trim(std::string& line, const std::string& trimChars)
    if(found != std::string::npos) {
       line = line.substr(0, found + 1);
    }
-   return;
 }
 
 void trimWS(std::string& line)
 {
    /// Removes whitespace from the string 'line'
-   line.erase(line.begin(), std::find_if(line.begin(), line.end(), [](int ch) {
-                 return !std::isspace(ch);
-              }));
-   line.erase(std::find_if(line.rbegin(), line.rend(), [](int ch) {
-                 return !std::isspace(ch);
-              }).base(),
-              line.end());
+   line.erase(line.begin(), std::find_if(line.begin(), line.end(), [](int ch) { return std::isspace(ch) == 0; }));
+   line.erase(std::find_if(line.rbegin(), line.rend(), [](int ch) { return std::isspace(ch) == 0; }).base(), line.end());
 }
 
 int GetRunNumber(const std::string& fileName)

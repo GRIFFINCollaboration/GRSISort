@@ -25,7 +25,7 @@ class TGRSITransition : public TObject {
 
 public:
    TGRSITransition();
-   ~TGRSITransition() override;
+   ~TGRSITransition() override = default;
 
    bool IsSortable() const override { return true; }
    int  Compare(const TObject* obj) const override;
@@ -43,9 +43,9 @@ public:
    void Clear(Option_t* opt = "") override;
    void Print(Option_t* opt = "") const override;
 
-   std::string PrintToString();
+   std::string PrintToString() const;
 
-protected:
+private:
    double fEnergy{0.};                 // Energy of the transition
    double fEnergyUncertainty{0.};      // Uncertainty in the energy of the transition
    double fIntensity{0.};              // Intensity of the transition

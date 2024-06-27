@@ -1,10 +1,10 @@
-#ifndef _TGRSITYPES_H_
-#define _TGRSITYPES_H_
+#ifndef TGRSITYPES_H
+#define TGRSITYPES_H
 
 #include <map>
 #include <string>
 
-#include <Rtypes.h>
+#include "Rtypes.h"
 
 enum class kFileType {
    UNKNOWN_FILETYPE,

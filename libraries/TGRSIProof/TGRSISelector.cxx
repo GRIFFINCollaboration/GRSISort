@@ -32,11 +32,8 @@
 #include "TSystem.h"
 #include "TH2.h"
 #include "TStyle.h"
-/// \cond CLASSIMP
-ClassImp(TGRSISelector)
-   /// \endcond
 
-   void TGRSISelector::Begin(TTree* /*tree*/)
+void TGRSISelector::Begin(TTree* /*tree*/)
 {
    /// The Begin() function is called at the start of the query.
    /// When running with PROOF Begin() is only called on the client.
@@ -89,9 +86,9 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    if(fInput->FindObject("pwd") != nullptr) {
       workingDirectory = fInput->FindObject("pwd")->GetTitle();
    }
-   int i = 0;
-   while(fInput->FindObject(Form("calFile%d", i)) != nullptr) {
-      const char* fileName = static_cast<TNamed*>(fInput->FindObject(Form("calFile%d", i)))->GetTitle();
+   int index = 0;
+   while(fInput->FindObject(Form("calFile%d", index)) != nullptr) {
+      const char* fileName = static_cast<TNamed*>(fInput->FindObject(Form("calFile%d", index)))->GetTitle();
       if(fileName[0] == 0) {
          std::cout << "Error, empty file name!" << std::endl;
          break;
@@ -102,11 +99,11 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
       } else {
          TChannel::ReadCalFile(fileName);
       }
-      ++i;
+      ++index;
    }
-   i = 0;
-   while(fInput->FindObject(Form("valFile%d", i)) != nullptr) {
-      const char* fileName = static_cast<TNamed*>(fInput->FindObject(Form("valFile%d", i)))->GetTitle();
+   index = 0;
+   while(fInput->FindObject(Form("valFile%d", index)) != nullptr) {
+      const char* fileName = static_cast<TNamed*>(fInput->FindObject(Form("valFile%d", index)))->GetTitle();
       if(fileName[0] == 0) {
          std::cout << "Error, empty file name!" << std::endl;
          break;
@@ -117,12 +114,12 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
       } else {
          GValue::ReadValFile(fileName);
       }
-      ++i;
+      ++index;
    }
-   i = 0;
-   while(fInput->FindObject(Form("cutFile%d", i)) != nullptr) {
-      std::cout << "trying to open " << Form("cutFile%d", i) << std::flush << " = " << fInput->FindObject(Form("cutFile%d", i)) << std::flush << " with title " << static_cast<TNamed*>(fInput->FindObject(Form("cutFile%d", i)))->GetTitle() << std::endl;
-      const char* fileName = static_cast<TNamed*>(fInput->FindObject(Form("cutFile%d", i)))->GetTitle();
+   index = 0;
+   while(fInput->FindObject(Form("cutFile%d", index)) != nullptr) {
+      std::cout << "trying to open " << Form("cutFile%d", index) << std::flush << " = " << fInput->FindObject(Form("cutFile%d", index)) << std::flush << " with title " << static_cast<TNamed*>(fInput->FindObject(Form("cutFile%d", index)))->GetTitle() << std::endl;
+      const char* fileName = static_cast<TNamed*>(fInput->FindObject(Form("cutFile%d", index)))->GetTitle();
       if(fileName[0] == 0) {
          std::cout << "Error, empty file name!" << std::endl;
          break;
@@ -141,7 +138,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
             if(strcmp(key->GetClassName(), "TCutG") != 0) {
                continue;
             }
-            TCutG* tmpCut = static_cast<TCutG*>(key->ReadObj());
+            auto* tmpCut = static_cast<TCutG*>(key->ReadObj());
             if(tmpCut != nullptr) {
                fCuts[tmpCut->GetName()] = tmpCut;
             }
@@ -150,9 +147,9 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
          std::cout << "Error, failed to open file " << fileName << "!" << std::endl;
          break;
       }
-      ++i;
+      ++index;
    }
-   for(auto cut : fCuts) {
+   for(const auto& cut : fCuts) {
       std::cout << cut.first << " = " << cut.second << std::endl;
    }
 
@@ -233,33 +230,32 @@ void TGRSISelector::Terminate()
       std::cout << "replaced null run info with:" << std::endl;
       fRunInfo->Print();
    }
-   Int_t runNumber    = fRunInfo->RunNumber();
-   Int_t subRunNumber = fRunInfo->SubRunNumber();
+   Int_t runNumber    = TRunInfo::RunNumber();
+   Int_t subRunNumber = TRunInfo::SubRunNumber();
 
    if(fOutput->FindObject("prefix") != nullptr) {
       fOutputPrefix = static_cast<TNamed*>(fOutput->FindObject("prefix"))->GetTitle();
    }
 
-   TFile*      outputFile;
    std::string outputFileName;
    if(runNumber != 0 && subRunNumber != -1) {
       // both run and subrun number set => single file processed
       outputFileName = Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runNumber, subRunNumber);
    } else if(runNumber != 0) {
       // multiple subruns of a single run
-      outputFileName = Form("%s%05d_%03d-%03d.root", fOutputPrefix.c_str(), runNumber, fRunInfo->FirstSubRunNumber(), fRunInfo->LastSubRunNumber());
+      outputFileName = Form("%s%05d_%03d-%03d.root", fOutputPrefix.c_str(), runNumber, TRunInfo::FirstSubRunNumber(), TRunInfo::LastSubRunNumber());
    } else {
       // multiple runs
-      outputFileName = Form("%s%05d-%05d.root", fOutputPrefix.c_str(), fRunInfo->FirstRunNumber(), fRunInfo->LastRunNumber());
+      outputFileName = Form("%s%05d-%05d.root", fOutputPrefix.c_str(), TRunInfo::FirstRunNumber(), TRunInfo::LastRunNumber());
    }
-   outputFile = new TFile(outputFileName.c_str(), "recreate");
+   auto* outputFile = new TFile(outputFileName.c_str(), "recreate");
    if(!outputFile->IsOpen()) {
       std::cerr << "Failed to open output file " << outputFileName << "!" << std::endl
                 << std::endl;
       return;
    }
    outputFileName = outputFileName.substr(0, outputFileName.find_last_of('.')) + ".log";
-   options->LogFile(outputFileName.c_str());
+   options->LogFile(outputFileName);
    std::cout << "Opened '" << outputFile->GetName() << "' for writing:" << std::endl;
 
    outputFile->cd();
@@ -270,7 +266,7 @@ void TGRSISelector::Terminate()
    } else {
       std::cerr << "failed to find TPPG, can't write it!" << std::endl;
    }
-   options->AnalysisOptions()->WriteToFile(outputFile);
+	TGRSIOptions::AnalysisOptions()->WriteToFile(outputFile);
    TChannel::WriteToRoot();
    outputFile->Close();
    std::cout << "Closed '" << outputFile->GetName() << "'" << std::endl;
@@ -308,15 +304,13 @@ void TGRSISelector::CheckSizes(const char* usage)
 {
    // check size of each object in the output list
    for(const auto&& obj : *fOutput) {
-      TBufferFile b(TBuffer::kWrite, 10000);
-      obj->IsA()->WriteBuffer(b, obj);
-      if(b.Length() > SIZE_LIMIT) {
-         std::cout << DRED << obj->ClassName() << " '" << obj->GetName() << "' too large to " << usage << ": " << b.Length() << " bytes = " << b.Length() / 1024. / 1024. / 1024. << " GB, removing it!" << RESET_COLOR << std::endl;
+      TBufferFile buf(TBuffer::kWrite, 10000);
+      obj->IsA()->WriteBuffer(buf, obj);
+      if(buf.Length() > fSizeLimit) {
+         std::cout << DRED << obj->ClassName() << " '" << obj->GetName() << "' too large to " << usage << ": " << buf.Length() << " bytes = " << buf.Length() / 1024. / 1024. / 1024. << " GB, removing it!" << RESET_COLOR << std::endl;
          // we only remove it from the output list, not deleting the object itself
          // this way the selector will still work and fill that histogram, it just won't get written to file
          fOutput->Remove(obj);
-         //} else {
-         // std::cout<<GREEN<<obj->ClassName()<<" '"<<obj->GetName()<<"' okay to "<<usage<<": "<<b.Length()<<" bytes = "<<b.Length()/1024./1024./1024.<<" GB"<<RESET_COLOR<<std::endl;
       }
    }
 }
