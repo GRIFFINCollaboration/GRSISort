@@ -13,6 +13,7 @@ TPPGData::TPPGData()
 }
 
 TPPGData::TPPGData(const TPPGData& rhs)
+	: TObject(rhs)
 {
    rhs.Copy(*this);
 }
@@ -42,7 +43,7 @@ void TPPGData::Clear(Option_t*)
    fTimeStamp       = 0;
    fOldPpg          = EPpgPattern::kJunk;
    fNewPpg          = EPpgPattern::kJunk;
-   fNetworkPacketId = -1;
+   fNetworkPacketId = 0;
    fLowTimeStamp    = 0;
    fHighTimeStamp   = 0;
 }
@@ -67,25 +68,26 @@ TPPG::TPPG(const TPPG& rhs)
 TPPG::~TPPG()
 {
    Clear();
-   PPGMap_t::iterator ppgit;
    if(fPPGStatusMap != nullptr) {
-      for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
+      for(auto ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
 			delete ppgit->second;
       }
       delete fPPGStatusMap;
    }
 }
 
-TPPG::operator=(const TPPG& rhs)
+TPPG& TPPG::operator=(const TPPG& rhs)
 {
    if(fPPGStatusMap != nullptr) {
-      for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
+      for(auto ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
 			delete ppgit->second;
       }
       delete fPPGStatusMap;
    }
 	fPPGStatusMap = new PPGMap_t;
    rhs.Copy(*this);
+
+	return *this;
 }
 
 

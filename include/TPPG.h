@@ -120,7 +120,7 @@ private:
    ULong64_t    fTimeStamp{0};        ///< time stamp in ns
    EPpgPattern  fOldPpg{EPpgPattern::kJunk};
    EPpgPattern  fNewPpg{EPpgPattern::kJunk};
-   UInt_t       fNetworkPacketId{-1};
+   UInt_t       fNetworkPacketId{0};
    UInt_t       fLowTimeStamp{0};    ///< low bits of time stamp in 10 ns
    UInt_t       fHighTimeStamp{0};   ///< high bits of time stamp in 10 ns
 
@@ -167,7 +167,7 @@ public:
    std::size_t PPGSize() const { return fPPGStatusMap->size() - 1; }
    std::size_t OdbPPGSize() const { return fOdbPPGCodes.size(); }
    int16_t     OdbPPGCode(size_t index) const { return fOdbPPGCodes.at(index); }
-   int16_t     OdbDuration(size_t index) const { return fOdbDurations.at(index); }
+   int         OdbDuration(size_t index) const { return fOdbDurations.at(index); }
    Long64_t    OdbCycleLength() const
    {
       Long64_t result = 0;
@@ -194,7 +194,7 @@ public:
    const TPPGData* First();
    const TPPGData* Last();
 
-   void SetOdbCycle(std::vector<int16_t> ppgCodes, std::vector<int16_t> durations)
+   void SetOdbCycle(std::vector<int16_t> ppgCodes, std::vector<int> durations)
    {
       fOdbPPGCodes  = std::move(ppgCodes);
       fOdbDurations = std::move(durations);
@@ -215,7 +215,7 @@ private:
    std::map<ULong64_t, int> fNumberOfCycleLengths;
 
    std::vector<int16_t> fOdbPPGCodes;    ///< ppg state codes read from odb
-   std::vector<int16_t> fOdbDurations;   ///< duration of ppg state as read from odb
+   std::vector<int> fOdbDurations;   ///< duration of ppg state as read from odb
 
    bool                   fCycleSet{false};                //!<! flag to indicate whether the codes and durations have been calculated from the data
    std::vector<int16_t>   fPPGCodes{0x8, 0x2, 0x1, 0x4};   //!<! ppg state codes (these are always set)
