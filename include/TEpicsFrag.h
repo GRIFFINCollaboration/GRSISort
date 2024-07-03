@@ -56,6 +56,21 @@ public:
 
    static TEpicsFrag* GetScalerAtTime(Long64_t time);
 
+   // setters
+   void DaqTimeStamp(time_t val)           { fDaqTimeStamp = val; }
+   void DaqId(Int_t val)                   { fDaqId = val; }
+   void Data(std::vector<float> val)       { fData = val; }
+   void Name(std::vector<std::string> val) { fName = val; }
+
+   void AddData(float val)       { fData.push_back(val); }
+   void AddName(std::string val) { fName.push_back(val); }
+
+	// getters
+   time_t DaqTimeStamp()           { return fDaqTimeStamp; }
+	Int_t DaqId()                   { return fDaqId; }
+   std::vector<float> Data()       { return fData; }
+   std::vector<std::string> Name() { return fName; }
+
 private:
    static std::vector<std::string>       fNameList;   // This stuff should potentially move to a run info of some sort
    static std::map<Long64_t, TEpicsFrag> fScalerMap;
