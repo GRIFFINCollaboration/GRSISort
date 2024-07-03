@@ -21,7 +21,6 @@
 #include "TGRSIOptions.h"
 #include "TTreeFillMutex.h"
 #include "TSortingDiagnostics.h"
-#include "TParallelFileMerger.h"
 
 TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string outputFilename)
 {
