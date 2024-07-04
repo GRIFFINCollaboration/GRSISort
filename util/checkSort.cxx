@@ -55,16 +55,16 @@ int main(int argc, char** argv)
 
          tree->GetEntry(entry);
 
-         if(e % 1000 == 0) {
-            std::cout << "\r" << (100 * e) / nEntries << "% done" << std::flush;
+         if(entry % 1000 == 0) {
+            std::cout << "\r" << (100 * entry) / nEntries << "% done" << std::flush;
          }
 
          // re-using the d-variable from above
-         for(d = 0; d < det.size(); ++d) {
+         for(index = 0; index < det.size(); ++index) {
             // skip empty detectors
-            if(det[d]->GetMultiplicity() < 1) { continue; }
-            auto*         cls = det[d]->IsA();
-            TDetectorHit* hit = det[d]->GetHit(0);
+            if(det[index]->GetMultiplicity() < 1) { continue; }
+            auto*         cls = det[index]->IsA();
+            TDetectorHit* hit = det[index]->GetHit(0);
             if(hit != nullptr) {
                bool sameE = true;
                for(auto energy : lastEn[cls]) {
@@ -91,9 +91,9 @@ int main(int argc, char** argv)
             }
          }
          // if we broke out of the previous loop, break out of this one as well
-         if(d != det.size()) { break; }
+         if(index != det.size()) { break; }
       }   // loop over entries
-      if(e == nEntries) {
+      if(entry == nEntries) {
          std::cerr << "\r" << GREEN << "File " << BLUE << argv[file] << GREEN << " is good!" << RESET_COLOR << std::endl;
       }
 
