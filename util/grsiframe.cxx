@@ -19,7 +19,7 @@
 
 int main(int argc, char** argv)
 {
-   auto stopwatch = new TStopwatch;
+   auto* stopwatch = new TStopwatch;
 
    TGRSIOptions* opt = nullptr;
    try {

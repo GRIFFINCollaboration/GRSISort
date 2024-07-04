@@ -23,7 +23,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <signal.h>
+#include <csignal>
 #include <libgen.h>
 
 TGRSIProof*   gGRSIProof;
@@ -101,10 +101,7 @@ void Analyze(const char* treeType)
    }
 
    // Delete the proof chain now that we are done with it.
-   if(proofChain != nullptr) {
-      delete proofChain;
-      proofChain = nullptr;
-   }
+	delete proofChain;
 }
 
 void AtExitHandler()
@@ -117,12 +114,11 @@ void AtExitHandler()
       std::cout << "getting session logs ..." << std::endl;
       TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
       if(pl != nullptr) {
-         TRunInfo* runInfo      = TRunInfo::Get();
-         Int_t     runNumber    = runInfo->RunNumber();
-         Int_t     subRunNumber = runInfo->SubRunNumber();
+         Int_t     runNumber    = TRunInfo::RunNumber();
+         Int_t     subRunNumber = TRunInfo::SubRunNumber();
 
          std::string firstMacro;
-         if(!gGRSIOpt->MacroInputFiles().empty()) firstMacro = gGRSIOpt->MacroInputFiles().at(0);
+         if(!gGRSIOpt->MacroInputFiles().empty()) { firstMacro = gGRSIOpt->MacroInputFiles().at(0); }
          firstMacro = basename(const_cast<char*>(firstMacro.c_str()));      // remove path
          firstMacro = firstMacro.substr(0, firstMacro.find_last_of('.'));   // remove extension
 
@@ -132,12 +128,12 @@ void AtExitHandler()
             std::cout << "Wrote logs to '" << Form("%s%05d_%03d.log", firstMacro.c_str(), runNumber, subRunNumber) << "'" << std::endl;
          } else if(runNumber != 0) {
             // multiple subruns of a single run
-            pl->Save("*", Form("%s%05d_%03d-%03d.log", firstMacro.c_str(), runNumber, runInfo->FirstSubRunNumber(), runInfo->LastSubRunNumber()));
-            std::cout << "Wrote logs to '" << Form("%s%05d_%03d-%03d.log", firstMacro.c_str(), runNumber, runInfo->FirstSubRunNumber(), runInfo->LastSubRunNumber()) << "'" << std::endl;
+            pl->Save("*", Form("%s%05d_%03d-%03d.log", firstMacro.c_str(), runNumber, TRunInfo::FirstSubRunNumber(), TRunInfo::LastSubRunNumber()));
+            std::cout << "Wrote logs to '" << Form("%s%05d_%03d-%03d.log", firstMacro.c_str(), runNumber, TRunInfo::FirstSubRunNumber(), TRunInfo::LastSubRunNumber()) << "'" << std::endl;
          } else {
             // multiple runs
-            pl->Save("*", Form("%s%05d-%05d.log", firstMacro.c_str(), runInfo->FirstRunNumber(), runInfo->LastRunNumber()));
-            std::cout << "Wrote logs to '" << Form("%s%05d-%05d.log", firstMacro.c_str(), runInfo->FirstRunNumber(), runInfo->LastRunNumber()) << "'" << std::endl;
+            pl->Save("*", Form("%s%05d-%05d.log", firstMacro.c_str(), TRunInfo::FirstRunNumber(), TRunInfo::LastRunNumber()));
+            std::cout << "Wrote logs to '" << Form("%s%05d-%05d.log", firstMacro.c_str(), TRunInfo::FirstRunNumber(), TRunInfo::LastRunNumber()) << "'" << std::endl;
          }
       } else {
          std::cout << "Failed to get logs!" << std::endl;
@@ -168,12 +164,12 @@ void HandleSignal(int)
 
 static void CatchSignals()
 {
-   struct sigaction action;
+   struct sigaction action{};
    action.sa_handler = HandleSignal;
    action.sa_flags   = 0;
    sigemptyset(&action.sa_mask);
-   sigaction(SIGINT, &action, NULL);
-   sigaction(SIGTERM, &action, NULL);
+   sigaction(SIGINT, &action, nullptr);
+   sigaction(SIGTERM, &action, nullptr);
 }
 
 void SetGRSIEnv()
@@ -274,7 +270,7 @@ int main(int argc, char** argv)
 
    // set some proof parameters
    // average rate, can also be set via Proof.RateEstimation in gEnv ("current" or "average)
-   if(gGRSIOpt->AverageRateEstimation()) gGRSIProof->SetParameter("PROOF_RateEstimation", "average");
+   if(gGRSIOpt->AverageRateEstimation()) { gGRSIProof->SetParameter("PROOF_RateEstimation", "average"); }
 
    // Parallel unzip, can also be set via ProofPlayer.UseParallelUnzip
    if(gGRSIOpt->ParallelUnzip()) {
@@ -313,24 +309,24 @@ int main(int argc, char** argv)
    }
 
    gGRSIProof->SetBit(TProof::kUsingSessionGui);
-   gGRSIProof->AddEnvVar("GRSISYS", pPath);
+	TGRSIProof::AddEnvVar("GRSISYS", pPath);
    gInterpreter->AddIncludePath(Form("%s/include", pPath));
    gGRSIProof->AddIncludePath(Form("%s/include", pPath));
    gGRSIProof->AddDynamicPath(Form("%s/lib", pPath));
 
-   gGRSIProof->AddInput(gGRSIOpt->AnalysisOptions());
+   gGRSIProof->AddInput(TGRSIOptions::AnalysisOptions());
    gGRSIProof->AddInput(new TNamed("pwd", getenv("PWD")));
-   int i = 0;
+   int index = 0;
    for(const auto& valFile : gGRSIOpt->ValInputFiles()) {
-      gGRSIProof->AddInput(new TNamed(Form("valFile%d", i++), valFile.c_str()));
+      gGRSIProof->AddInput(new TNamed(Form("valFile%d", index++), valFile.c_str()));
    }
-   i = 0;
+   index = 0;
    for(const auto& calFile : gGRSIOpt->CalInputFiles()) {
-      gGRSIProof->AddInput(new TNamed(Form("calFile%d", i++), calFile.c_str()));
+      gGRSIProof->AddInput(new TNamed(Form("calFile%d", index++), calFile.c_str()));
    }
-   i = 0;
+   index = 0;
    for(const auto& cutFile : gGRSIOpt->InputCutFiles()) {
-      gGRSIProof->AddInput(new TNamed(Form("cutFile%d", i++), cutFile.c_str()));
+      gGRSIProof->AddInput(new TNamed(Form("cutFile%d", index++), cutFile.c_str()));
    }
    gGRSIProof->AddInput(new TNamed("ParserLibrary", library.c_str()));
 
