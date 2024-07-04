@@ -14,13 +14,13 @@ public:
                           kRootFile = 2,
                           kDefault  = 999999 };
 
-   GValue();
-   GValue(const char* name);
+   GValue() = default;
+   explicit GValue(const char* name);
    GValue(const char* name, double value, EPriority priority = EPriority::kUser);
    GValue(const GValue& val);
 
-   double      GetValue() { return fValue; }
-   const char* GetInfo() const { return info.c_str(); }
+   double      GetValue() const { return fValue; }
+   const char* GetInfo()  const { return info.c_str(); }
 
    void SetValue(double value) { fValue = value; }
    void SetInfo(const char* temp) { info.assign(temp); }
@@ -32,7 +32,7 @@ public:
    // Search fValueVector for GValue with name given by string
    static GValue* FindValue(const std::string& = "");
    static void    SetReplaceValue(const std::string& name, double value, EPriority priority = EPriority::kUser);
-   static GValue* Get(std::string name = "") { return FindValue(std::move(name)); }
+   static GValue* Get(const std::string& name = "") { return FindValue(name); }
    static double  Value(const std::string&);                  // get the named value, returns sqrt(-1) = NaN
    static double  Value(const std::string&, const double&);   // try and find the named value, otherwise return the provided default
    static TList*  AllValues()
@@ -56,14 +56,14 @@ public:
    void Copy(TObject& obj) const override;
    // virtual bool Notify();
 
-   static int         Size() { return fValueVector.size(); }
+   static int         Size() { return static_cast<int>(fValueVector.size()); }
    std::string        PrintToString() const;
    static std::string WriteToBuffer(Option_t* opt = "");
    static void        Clear();
 
 private:
    double                                fValue{0.};
-   EPriority                             fPriority;
+   EPriority                             fPriority{EPriority::kDefault};
    std::string                           info;
    static GValue*                        fDefaultValue;
    static std::map<std::string, GValue*> fValueVector;
