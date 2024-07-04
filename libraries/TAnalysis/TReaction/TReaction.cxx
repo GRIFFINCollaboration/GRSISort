@@ -5,10 +5,9 @@
 
 #include <TStyle.h>
 
-TReaction::TReaction(const char* beam, const char* targ, const char* ejec, const char* reco, double beame,
-                     double ex3, bool inverse)
+TReaction::TReaction(const char* beam, const char* targ, const char* ejec, const char* reco, double eBeam, double ex3, bool inverse)
+	: fTBeam(eBeam), fInverse(inverse), fExc(ex3)
 {
-
    Clear();
    // I THINK INVERSE KINEMATICS NECESSITATES THE BEAM<->TARGET ENTIRELY ?
    fNuc[0] = new TNucleus(beam);
@@ -20,10 +19,7 @@ TReaction::TReaction(const char* beam, const char* targ, const char* ejec, const
       fM[i] = fNuc[i]->GetMass();
    }
 
-   fTBeam   = beame;
    fQVal    = (fM[0] + fM[1]) - (fM[2] + fM[3]) - ex3;   // effective Q value (includes excitation)
-   fExc     = ex3;
-   fInverse = inverse;
 
    if(inverse) {
       SetName(Form("%s(%s,%s)%s", beam, targ, ejec, reco));
@@ -72,7 +68,7 @@ void TReaction::InitReaction()
    gStyle->SetDrawOption("AC");
 }
 
-double TReaction::GetTBeam(bool inverse)
+double TReaction::GetTBeam(bool inverse) const
 {
    if(fInverse || inverse) {
       return (fGLab[0] - 1) * fM[1];
@@ -113,7 +109,7 @@ void TReaction::SetCmFrame(double exc)
 
 // particle properties in LAB frame
 // These guys do the math to get lab frame values using CM angles
-double TReaction::GetELabFromThetaCm(double theta_cm, int part)
+double TReaction::GetELabFromThetaCm(double theta_cm, int part) const
 {
    if(part == 0 || part == 1) {
       return fTLab[part];
@@ -122,7 +118,7 @@ double TReaction::GetELabFromThetaCm(double theta_cm, int part)
    return fCmG * (fECm[part] - fCmV * fPCm[part] * cos(theta_cm));
 }
 
-double TReaction::GetTLabFromThetaCm(double theta_cm, int part)
+double TReaction::GetTLabFromThetaCm(double theta_cm, int part) const
 {
    if(part == 0 || part == 1) {
       return fTLab[part];
@@ -132,7 +128,7 @@ double TReaction::GetTLabFromThetaCm(double theta_cm, int part)
    return ELab - fM[part];   // T = E - M
 }
 
-double TReaction::GetVLabFromThetaCm(double theta_cm, int part)
+double TReaction::GetVLabFromThetaCm(double theta_cm, int part) const
 {
    if(part == 0 || part == 1) {
       return fTLab[part];
@@ -143,7 +139,7 @@ double TReaction::GetVLabFromThetaCm(double theta_cm, int part)
    return PLab / ELab;   // V = P / E
 }
 
-double TReaction::GetPLabFromThetaCm(double theta_cm, int part)
+double TReaction::GetPLabFromThetaCm(double theta_cm, int part) const
 {
    if(part == 0 || part == 1) {
       return fTLab[part];
@@ -154,7 +150,7 @@ double TReaction::GetPLabFromThetaCm(double theta_cm, int part)
    return sqrt(pow(Pperp, 2) + pow(Pz, 2));
 }
 
-double TReaction::GetGLabFromThetaCm(double theta_cm, int part)
+double TReaction::GetGLabFromThetaCm(double theta_cm, int part) const
 {
    if(part == 0 || part == 1) {
       return fTLab[part];
@@ -164,7 +160,7 @@ double TReaction::GetGLabFromThetaCm(double theta_cm, int part)
    return 1 / sqrt(1 - pow(VLab, 2));
 }
 
-double TReaction::GetExcEnergy(double ekin, double theta_lab, int)
+double TReaction::GetExcEnergy(double ekin, double theta_lab, int) const
 {
    if(ekin == 0.00 && theta_lab == 0.00) {
       return fExc;
@@ -177,10 +173,8 @@ double TReaction::GetExcEnergy(double ekin, double theta_lab, int)
    return sqrt(val1 - val2 * val3) - fM[3];
 }
 
-void TReaction::AnalysisAngDist(double ekin, double theta_lab, int part, double& exc, double& theta_cm,
-                                double& omega_lab2cm)
+void TReaction::AnalysisAngDist(double ekin, double theta_lab, int part, double& exc, double& theta_cm, double& omega_lab2cm)
 {
-
    exc = GetExcEnergy(ekin, theta_lab, part);
 
    // adjust cm frame to include the excited state
@@ -193,16 +187,15 @@ void TReaction::AnalysisAngDist(double ekin, double theta_lab, int part, double&
    SetCmFrame(fExc);
 }
 
-double TReaction::AnalysisBeta(double ekin, int part)
+double TReaction::AnalysisBeta(double ekin, int part) const
 {
-
    return sqrt(pow(ekin, 2) + 2 * fM[part] * ekin) / (ekin + fM[part]);
 }
 
 // THIS IS ACTUALLY MOTT SCATTERING (RELATIVISTIC RUTHERFORD)
 // taken from http://www7b.biglobe.ne.jp/~kcy05t/rathef.html (eqn. 61)
 // alpha obtained from http://www.pas.rochester.edu/~cline/Gosia/Gosia_Manual_20120510.pdf
-double TReaction::GetRutherfordCm(double theta_cm, int, bool Units_mb)
+double TReaction::GetRutherfordCm(double theta_cm, int, bool Units_mb) const
 {
    static const double alpha = 1.29596;   // 0.359994;
    double              scale = 1;
@@ -211,16 +204,11 @@ double TReaction::GetRutherfordCm(double theta_cm, int, bool Units_mb)
    }
    // motion is described in lab frame (so TLab instead of TCm) because
    // Rutherford scattering approximates lab frame == cm frame
-   /*
-double a = pow(fNuc[0]->GetZ()*fNuc[1]->GetZ()/(fPCm[0]*fVCm[0]/2),2);
-double b = 1 - pow(fVCm[0]*sin(theta_cm/2),2);
-return scale*alpha*a*b/pow(sin(theta_cm/2),4); // ?
-*/
    double a = pow(fNuc[0]->GetZ() * fNuc[1]->GetZ() / fTLab[0], 2);
    return scale * alpha * a / pow(sin(theta_cm / 2), 4);   // ?
 }
 
-double TReaction::GetRutherfordLab(double theta_lab, int part, bool Units_mb)
+double TReaction::GetRutherfordLab(double theta_lab, int part, bool Units_mb) const
 {
    double theta_cm = ConvertThetaLabToCm(theta_lab, part);
    double jacobian = ConvertOmegaCmToLab(theta_cm, part);
@@ -229,9 +217,8 @@ double TReaction::GetRutherfordLab(double theta_lab, int part, bool Units_mb)
 }
 
 // Conversion from LAB frame to CM frame
-double TReaction::ConvertThetaLabToCm(double theta_lab, int part)
+double TReaction::ConvertThetaLabToCm(double theta_lab, int part) const
 {
-
    if(theta_lab > fThetaMax[part]) {
       theta_lab = fThetaMax[part];
    }
@@ -240,7 +227,7 @@ double TReaction::ConvertThetaLabToCm(double theta_lab, int part)
    double gtan2 = pow(tan(theta_lab) * fCmG, 2);
    double x     = fCmV / fVCm[part];
    double expr  = sqrt(1 + gtan2 * (1 - pow(x, 2)));
-   double theta_cm;
+   double theta_cm = 0.;
 
    // deals with double valued thetas in lab frame
    if(tan(theta_lab) >= 0) {
@@ -261,23 +248,22 @@ double TReaction::ConvertThetaLabToCm(double theta_lab, int part)
 }
 
 // dOmegaLab/dOmegaCm[ThetaLab,ThetaCm]
-double TReaction::ConvertOmegaLabToCm(double theta_lab, int part)
+double TReaction::ConvertOmegaLabToCm(double theta_lab, int part) const
 {
    // the way to test this function is to use the known 4*cos(theta_lab) for elastics
    double theta_cm = ConvertThetaLabToCm(theta_lab, part);
    return 1 / ConvertOmegaCmToLab(theta_cm, part);
 }
 
-void TReaction::ConvertLabToCm(double theta_lab, double omega_lab, double& theta_cm, double& omega_cm, int part)
+void TReaction::ConvertLabToCm(double theta_lab, double omega_lab, double& theta_cm, double& omega_cm, int part) const
 {
    theta_cm = ConvertThetaLabToCm(theta_lab, part);
    omega_cm = ConvertOmegaLabToCm(omega_lab, part);
 }
 
 // Conversion from CM frame to LAB frame
-double TReaction::ConvertThetaCmToLab(double theta_cm, int part)
+double TReaction::ConvertThetaCmToLab(double theta_cm, int part) const
 {
-
    if(fInverse) {
       theta_cm = PI - theta_cm;
    }
@@ -290,9 +276,8 @@ double TReaction::ConvertThetaCmToLab(double theta_cm, int part)
    return theta_lab;
 }
 
-double TReaction::ConvertOmegaCmToLab(double theta_cm, int part)
+double TReaction::ConvertOmegaCmToLab(double theta_cm, int part) const
 {
-
    // the way to test this function is to use the known 4*cos(theta_lab) for elastics
    double x = fCmV / fVCm[part];
    if(fInverse) {
@@ -304,7 +289,7 @@ double TReaction::ConvertOmegaCmToLab(double theta_cm, int part)
    return val1 / val2;
 }
 
-void TReaction::ConvertCmToLab(double theta_cm, double omega_cm, double& theta_lab, double& omega_lab, int part)
+void TReaction::ConvertCmToLab(double theta_cm, double omega_cm, double& theta_lab, double& omega_lab, int part) const
 {
    theta_lab = ConvertThetaCmToLab(theta_cm, part);
    omega_lab = ConvertOmegaCmToLab(omega_cm, part);
@@ -315,7 +300,7 @@ void TReaction::ConvertCmToLab(double theta_cm, double omega_cm, double& theta_l
 ////////////////////////////////////////////////////////////////////////////////////
 
 // Kinetic energy (lab frame) versus theta (either frame)
-TGraph* TReaction::KinVsTheta(double thmin, double thmax, int part, bool Frame_Lab, bool Units_keV)
+TGraph* TReaction::KinVsTheta(double thmin, double thmax, int part, bool Frame_Lab, bool Units_keV) const
 {
    auto*       g     = new TGraph();
    const char* frame = Form("%s", Frame_Lab ? "Lab" : "Cm");
@@ -324,7 +309,8 @@ TGraph* TReaction::KinVsTheta(double thmin, double thmax, int part, bool Frame_L
    g->SetTitle(
       Form("Kinematics for %s; Theta_{%s} [deg]; Kinetic energy [%s]", GetName(), frame, Units_keV ? "keV" : "MeV"));
 
-   double theta, T;
+   double theta = 0.;
+	double T = 0.;
 
    for(int i = 0; i <= 180; i++) {
       theta = static_cast<double>(i);   // always in CM frame since function is continuous
@@ -350,7 +336,7 @@ TGraph* TReaction::KinVsTheta(double thmin, double thmax, int part, bool Frame_L
 }
 
 // Frame_Lab -> ThetaCm[ThetaLab] 	and 	Frame_Cm -> ThetaLab[ThetaCm]
-TGraph* TReaction::ThetaVsTheta(double thmin, double thmax, int part, bool Frame_Lab)
+TGraph* TReaction::ThetaVsTheta(double thmin, double thmax, int part, bool Frame_Lab) const
 {
    auto*       g     = new TGraph();
    const char* frame = Form("%s", Frame_Lab ? "Lab" : "Cm");
@@ -359,7 +345,8 @@ TGraph* TReaction::ThetaVsTheta(double thmin, double thmax, int part, bool Frame
    g->SetName(Form("ThetaVsTheta%s_%s", frame, GetName()));
    g->SetTitle(Form("Angle conversion for %s; Theta_{%s} [deg]; Theta_{%s} [deg]", GetName(), frame, other));
 
-   double theta_cm, theta_lab;
+   double theta_cm = 0.;
+	double theta_lab = 0.;
 
    for(int i = 0; i <= 180; i++) {
       theta_cm  = static_cast<double>(i);   // always in CM frame
@@ -367,7 +354,8 @@ TGraph* TReaction::ThetaVsTheta(double thmin, double thmax, int part, bool Frame
 
       if((Frame_Lab && (theta_lab < thmin || theta_lab > thmax))) {
          continue;
-      } else if(!Frame_Lab && (theta_cm < thmin || theta_cm > thmax)) {
+      }
+		if(!Frame_Lab && (theta_cm < thmin || theta_cm > thmax)) {
          continue;
       }
       // set angular range
@@ -383,7 +371,7 @@ TGraph* TReaction::ThetaVsTheta(double thmin, double thmax, int part, bool Frame
 }
 
 // Frame_Lab -> dOmegaCm/dOmegaLab[ThetaLab] 	and 	Frame_Cm -> dOmegaLab/dOmegaCm[ThetaCm]
-TGraph* TReaction::OmegaVsTheta(double thmin, double thmax, int part, bool Frame_Lab)
+TGraph* TReaction::OmegaVsTheta(double thmin, double thmax, int part, bool Frame_Lab) const
 {
    auto*       g     = new TGraph();
    const char* frame = Form("%s", Frame_Lab ? "Lab" : "Cm");
@@ -393,7 +381,8 @@ TGraph* TReaction::OmegaVsTheta(double thmin, double thmax, int part, bool Frame
    g->SetTitle(Form("Solid angle conversion for %s; Theta_{%s} [deg]; dOmega_{%s} / dOmega_{%s}", GetName(), frame,
                     other, frame));
 
-   double theta, Om;
+   double theta = 0.;
+	double Om = 0.;
    for(int i = 0; i <= 180; i++) {
 
       theta = static_cast<double>(i);   // always in CM frame
@@ -414,7 +403,7 @@ TGraph* TReaction::OmegaVsTheta(double thmin, double thmax, int part, bool Frame
 }
 
 // Frame_Lab -> dSigma/dOmegaLab[ThetaLab] 	and 	Frame_Cm -> dSigma/dOmegaCm[ThetaCm]
-TGraph* TReaction::RutherfordVsTheta(double thmin, double thmax, int part, bool Frame_Lab, bool Units_mb)
+TGraph* TReaction::RutherfordVsTheta(double thmin, double thmax, int part, bool Frame_Lab, bool Units_mb) const
 {
    auto*       g     = new TGraph();
    const char* frame = Form("%s", Frame_Lab ? "Lab" : "Cm");
@@ -423,7 +412,8 @@ TGraph* TReaction::RutherfordVsTheta(double thmin, double thmax, int part, bool 
    g->SetTitle(Form("Rutherford cross section for %s; Theta_{%s} [deg]; dSigma / dOmega_{%s} [%s/sr]", GetName(), frame,
                     frame, Units_mb ? "mb" : "fm^2"));
 
-   double theta, R;
+   double theta = 0.;
+	double R = 0.;
 
    for(int i = 1; i <= 180; i++) {
       theta = static_cast<double>(i);   // always in CM frame
@@ -446,7 +436,6 @@ TGraph* TReaction::RutherfordVsTheta(double thmin, double thmax, int part, bool 
 
 void TReaction::Print(Option_t* opt) const
 {
-
    std::string pstring;
    pstring.assign(opt);
 
