@@ -7,7 +7,7 @@ Bool_t TPeak::fLogLikelihoodFlag = true;
 TPeak* TPeak::fLastFit           = nullptr;
 
 TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
-   : TGRSIFit("photopeakbg", TGRSIFunctions::PhotoPeakBG, xlow, xhigh, 10)
+   : TGRSIFit("photopeakbg", TGRSIFunctions::PhotoPeakBG, xlow, xhigh, 10), fResiduals(new TGraph)
 {
    Clear();
    Bool_t outOfRangeFlag = false;
@@ -64,11 +64,9 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
    fBackground->SetNpx(1000);
    fBackground->SetLineStyle(2);
    fBackground->SetLineColor(kBlack);
-
-   fResiduals = new TGraph;
 }
 
-TPeak::TPeak() : TGRSIFit("photopeakbg", TGRSIFunctions::PhotoPeakBG, 0, 1000, 10)
+TPeak::TPeak() : TGRSIFit("photopeakbg", TGRSIFunctions::PhotoPeakBG, 0, 1000, 10), fResiduals(new TGraph)
 {
    InitNames();
    fBackground = new TF1("background", TGRSIFunctions::StepBG, 0, 1000, 10);
@@ -76,8 +74,6 @@ TPeak::TPeak() : TGRSIFit("photopeakbg", TGRSIFunctions::PhotoPeakBG, 0, 1000, 1
    fBackground->SetLineStyle(2);
    fBackground->SetLineColor(kBlack);
    TGRSIFit::AddToGlobalList(fBackground, kFALSE);
-
-   fResiduals = new TGraph;
 }
 
 TPeak::~TPeak()
