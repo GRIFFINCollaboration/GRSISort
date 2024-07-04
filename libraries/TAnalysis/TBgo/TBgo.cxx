@@ -23,75 +23,75 @@
 
 /// \cond CLASSIMP
 ClassImp(TBgo)
-   /// \endcond
+/// \endcond
 
-   // This seems unnecessary, and why 17?;//  they are static members, and need
-   //  to be defined outside the header
-   //  17 is to have the detectors go from 1-16
-   //  plus we can use position zero
-   //  when the detector winds up back in
-   //  one of the stands like Alex used in the
-   //  gps run. pcb.
-   // Initiallizes the HPGe Clover positions as per the wiki
-   // <https://www.triumf.info/wiki/tigwiki/index.php/HPGe_Coordinate_Table>
-   //                                                                             theta                                 phi
-   //                                                                             theta                                phi
-   //                                                                             theta
-   TVector3 TBgo::gScintPosition[17] = {
-      TVector3(TMath::Sin(TMath::DegToRad() * (0.0)) * TMath::Cos(TMath::DegToRad() * (0.0)),
-               TMath::Sin(TMath::DegToRad() * (0.0)) * TMath::Sin(TMath::DegToRad() * (0.0)),
-               TMath::Cos(TMath::DegToRad() * (0.0))),
-      // Downstream lampshade
-      TVector3(TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Cos(TMath::DegToRad() * (67.5)),
-               TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Sin(TMath::DegToRad() * (67.5)),
-               TMath::Cos(TMath::DegToRad() * (45.0))),
-      TVector3(TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Cos(TMath::DegToRad() * (157.5)),
-               TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Sin(TMath::DegToRad() * (157.5)),
-               TMath::Cos(TMath::DegToRad() * (45.0))),
-      TVector3(TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Cos(TMath::DegToRad() * (247.5)),
-               TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Sin(TMath::DegToRad() * (247.5)),
-               TMath::Cos(TMath::DegToRad() * (45.0))),
-      TVector3(TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Cos(TMath::DegToRad() * (337.5)),
-               TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Sin(TMath::DegToRad() * (337.5)),
-               TMath::Cos(TMath::DegToRad() * (45.0))),
-      // Corona
-      TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (22.5)),
-               TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (22.5)),
-               TMath::Cos(TMath::DegToRad() * (90.0))),
-      TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (67.5)),
-               TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (67.5)),
-               TMath::Cos(TMath::DegToRad() * (90.0))),
-      TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (112.5)),
-               TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (112.5)),
-               TMath::Cos(TMath::DegToRad() * (90.0))),
-      TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (157.5)),
-               TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (157.5)),
-               TMath::Cos(TMath::DegToRad() * (90.0))),
-      TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (202.5)),
-               TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (202.5)),
-               TMath::Cos(TMath::DegToRad() * (90.0))),
-      TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (247.5)),
-               TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (247.5)),
-               TMath::Cos(TMath::DegToRad() * (90.0))),
-      TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (292.5)),
-               TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (292.5)),
-               TMath::Cos(TMath::DegToRad() * (90.0))),
-      TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (337.5)),
-               TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (337.5)),
-               TMath::Cos(TMath::DegToRad() * (90.0))),
-      // Upstream lampshade
-      TVector3(TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Cos(TMath::DegToRad() * (67.5)),
-               TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Sin(TMath::DegToRad() * (67.5)),
-               TMath::Cos(TMath::DegToRad() * (135.0))),
-      TVector3(TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Cos(TMath::DegToRad() * (157.5)),
-               TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Sin(TMath::DegToRad() * (157.5)),
-               TMath::Cos(TMath::DegToRad() * (135.0))),
-      TVector3(TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Cos(TMath::DegToRad() * (247.5)),
-               TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Sin(TMath::DegToRad() * (247.5)),
-               TMath::Cos(TMath::DegToRad() * (135.0))),
-      TVector3(TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Cos(TMath::DegToRad() * (337.5)),
-               TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Sin(TMath::DegToRad() * (337.5)),
-               TMath::Cos(TMath::DegToRad() * (135.0)))};
+// This seems unnecessary, and why 17?;//  they are static members, and need
+//  to be defined outside the header
+//  17 is to have the detectors go from 1-16
+//  plus we can use position zero
+//  when the detector winds up back in
+//  one of the stands like Alex used in the
+//  gps run. pcb.
+// Initiallizes the HPGe Clover positions as per the wiki
+// <https://www.triumf.info/wiki/tigwiki/index.php/HPGe_Coordinate_Table>
+//                                                                             theta                                 phi
+//                                                                             theta                                phi
+//                                                                             theta
+TVector3 TBgo::gScintPosition[17] = {
+   TVector3(TMath::Sin(TMath::DegToRad() * (0.0)) * TMath::Cos(TMath::DegToRad() * (0.0)),
+            TMath::Sin(TMath::DegToRad() * (0.0)) * TMath::Sin(TMath::DegToRad() * (0.0)),
+            TMath::Cos(TMath::DegToRad() * (0.0))),
+   // Downstream lampshade
+   TVector3(TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Cos(TMath::DegToRad() * (67.5)),
+            TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Sin(TMath::DegToRad() * (67.5)),
+            TMath::Cos(TMath::DegToRad() * (45.0))),
+   TVector3(TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Cos(TMath::DegToRad() * (157.5)),
+            TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Sin(TMath::DegToRad() * (157.5)),
+            TMath::Cos(TMath::DegToRad() * (45.0))),
+   TVector3(TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Cos(TMath::DegToRad() * (247.5)),
+            TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Sin(TMath::DegToRad() * (247.5)),
+            TMath::Cos(TMath::DegToRad() * (45.0))),
+   TVector3(TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Cos(TMath::DegToRad() * (337.5)),
+            TMath::Sin(TMath::DegToRad() * (45.0)) * TMath::Sin(TMath::DegToRad() * (337.5)),
+            TMath::Cos(TMath::DegToRad() * (45.0))),
+   // Corona
+   TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (22.5)),
+            TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (22.5)),
+            TMath::Cos(TMath::DegToRad() * (90.0))),
+   TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (67.5)),
+            TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (67.5)),
+            TMath::Cos(TMath::DegToRad() * (90.0))),
+   TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (112.5)),
+            TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (112.5)),
+            TMath::Cos(TMath::DegToRad() * (90.0))),
+   TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (157.5)),
+            TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (157.5)),
+            TMath::Cos(TMath::DegToRad() * (90.0))),
+   TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (202.5)),
+            TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (202.5)),
+            TMath::Cos(TMath::DegToRad() * (90.0))),
+   TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (247.5)),
+            TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (247.5)),
+            TMath::Cos(TMath::DegToRad() * (90.0))),
+   TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (292.5)),
+            TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (292.5)),
+            TMath::Cos(TMath::DegToRad() * (90.0))),
+   TVector3(TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Cos(TMath::DegToRad() * (337.5)),
+            TMath::Sin(TMath::DegToRad() * (90.0)) * TMath::Sin(TMath::DegToRad() * (337.5)),
+            TMath::Cos(TMath::DegToRad() * (90.0))),
+   // Upstream lampshade
+   TVector3(TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Cos(TMath::DegToRad() * (67.5)),
+            TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Sin(TMath::DegToRad() * (67.5)),
+            TMath::Cos(TMath::DegToRad() * (135.0))),
+   TVector3(TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Cos(TMath::DegToRad() * (157.5)),
+            TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Sin(TMath::DegToRad() * (157.5)),
+            TMath::Cos(TMath::DegToRad() * (135.0))),
+   TVector3(TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Cos(TMath::DegToRad() * (247.5)),
+            TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Sin(TMath::DegToRad() * (247.5)),
+            TMath::Cos(TMath::DegToRad() * (135.0))),
+   TVector3(TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Cos(TMath::DegToRad() * (337.5)),
+            TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Sin(TMath::DegToRad() * (337.5)),
+            TMath::Cos(TMath::DegToRad() * (135.0)))};
 
 TBgo::TBgo() : TDetector()
 {

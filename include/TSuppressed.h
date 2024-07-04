@@ -21,7 +21,7 @@
 class TSuppressed : public TDetector {
 public:
    TSuppressed() : TDetector() {}
-   ~TSuppressed() {}
+   ~TSuppressed() = default;
 
    virtual bool AddbackCriterion(const TDetectorHit*, const TDetectorHit*) { return false; }
    virtual bool SuppressionCriterion(const TDetectorHit*, const TDetectorHit*) { return false; }
@@ -36,7 +36,7 @@ protected:
       /// This funxtion always(!) re-creates the vectors of addback hits and number of fragments per addback hit based on the provided vector of hits
       addbacks.clear();
       nofFragments.clear();
-      size_t j;
+      size_t j = 0;
       for(auto hit : hits) {
          // check for each existing addback hit if this hit should be added to it
          for(j = 0; j < addbacks.size(); ++j) {
@@ -69,7 +69,7 @@ protected:
       for(auto hit : hits) {
          bool suppress = false;
          if(bgo != nullptr) {
-            for(auto b : bgo->GetHitVector()) {
+            for(auto* b : bgo->GetHitVector()) {
                if(SuppressionCriterion(hit, b)) {
                   suppress = true;
                   break;
@@ -92,13 +92,13 @@ protected:
       /// This funxtion always(!) re-creates the vectors of suppressed addback hits and number of fragments per suppressed addback hit based on the provided TBgo and vector of hits
       addbacks.clear();
       nofFragments.clear();
-      size_t            j;
+      size_t            j = 0;
       std::vector<bool> suppressed;
       for(auto hit : hits) {
          // check if this hit is suppressed
          bool suppress = false;
          if(bgo != nullptr) {
-            for(auto b : bgo->GetHitVector()) {
+            for(auto* b : bgo->GetHitVector()) {
                if(SuppressionCriterion(hit, b)) {
                   suppress = true;
                   break;

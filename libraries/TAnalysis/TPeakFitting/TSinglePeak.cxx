@@ -3,11 +3,7 @@
 
 /// \cond CLASSIMP
 ClassImp(TSinglePeak)
-   /// \endcond
-
-   TSinglePeak::TSinglePeak() : TObject()
-{
-}
+/// \endcond
 
 bool TSinglePeak::IsBackgroundParameter(const Int_t& par) const
 {
@@ -27,15 +23,15 @@ bool TSinglePeak::IsPeakParameter(const Int_t& par) const
 
 Int_t TSinglePeak::GetNParameters() const
 {
-   if(fTotalFunction != nullptr)
+   if(fTotalFunction != nullptr) {
       return fTotalFunction->GetNpar();
-   else
-      return 0;
+   }
+   return 0;
 }
 
 TF1* TSinglePeak::GetBackgroundFunction()
 {
-   if(!fBackgroundFunction) {
+   if(fBackgroundFunction == nullptr) {
       fBackgroundFunction = new TF1("peak_bg", this, &TSinglePeak::BackgroundFunction, 0, 1, fTotalFunction->GetNpar(), "TSinglePeak", "BackgroundFunction");
       fBackgroundFunction->SetLineStyle(9);
    }
@@ -99,7 +95,7 @@ Double_t TSinglePeak::FWHM()
 
 Double_t TSinglePeak::PeakOnGlobalFunction(Double_t* dim, Double_t* par)
 {
-   if(fGlobalBackground == nullptr) return 0.0;
+   if(fGlobalBackground == nullptr) { return 0.0; }
 
    return PeakFunction(dim, par) + fGlobalBackground->EvalPar(dim, &par[fTotalFunction->GetNpar()]);
 }
@@ -107,11 +103,12 @@ Double_t TSinglePeak::PeakOnGlobalFunction(Double_t* dim, Double_t* par)
 void TSinglePeak::Draw(Option_t* opt)
 {
    // We need to draw this on top of the global background. Probably easiest to make another temporary TF1?
-   if(fGlobalBackground == nullptr) return;
+   if(fGlobalBackground == nullptr) { return; }
 
-   Double_t low, high;
+   Double_t low  = 0.;
+   Double_t high = 0.;
    fGlobalBackground->GetRange(low, high);
-   if(fPeakOnGlobal) fPeakOnGlobal->Delete();
+   if(fPeakOnGlobal != nullptr) { fPeakOnGlobal->Delete(); }
    // Make a copy of the total function, and then tack on the global background parameters.
    fPeakOnGlobal = new TF1("draw_peak", this, &TSinglePeak::PeakOnGlobalFunction, low, high, fTotalFunction->GetNpar() + fGlobalBackground->GetNpar(), "TSinglePeak", "PeakOnGlobalFunction");
    for(int i = 0; i < fTotalFunction->GetNpar(); ++i) {
@@ -130,8 +127,8 @@ bool TSinglePeak::ParameterSetByUser(int par)
 {
    /// This function checks if a parameter or its limits have been set to a non-zero value.
    /// In case that the user fixed a parameter to be zero, the limits are non-zero, so this case is covered as well.
-   Double_t lowLimit;
-   Double_t highLimit;
+   Double_t lowLimit  = 0.;
+   Double_t highLimit = 0.;
 
    fTotalFunction->GetParLimits(par, lowLimit, highLimit);
    double value = fTotalFunction->GetParameter(par);

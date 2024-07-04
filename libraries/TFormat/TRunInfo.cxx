@@ -14,9 +14,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TRunInfo)
-   /// \endcond
+/// \endcond
 
-   std::string TRunInfo::fVersion;
+std::string TRunInfo::fVersion;
 std::string TRunInfo::fFullVersion;
 std::string TRunInfo::fDate;
 std::string TRunInfo::fLibraryVersion;

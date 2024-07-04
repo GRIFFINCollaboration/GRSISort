@@ -5,9 +5,7 @@
 #include "TChannel.h"
 #include "TSortingDiagnostics.h"
 
-TUnpackedEvent::TUnpackedEvent()
-{
-}
+TUnpackedEvent::TUnpackedEvent() = default;
 
 TUnpackedEvent::~TUnpackedEvent() = default;
 

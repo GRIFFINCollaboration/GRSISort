@@ -12,9 +12,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TNucleus)
-   /// \endcond
+/// \endcond
 
-   static double amu = 931.494043;
+static double amu = 931.494043;
 
 std::string& TNucleus::massfile()
 {

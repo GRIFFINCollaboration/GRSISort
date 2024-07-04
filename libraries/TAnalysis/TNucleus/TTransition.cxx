@@ -4,17 +4,14 @@
 
 /// \cond CLASSIMP
 ClassImp(TTransition)
-   /// \endcond
+/// \endcond
 
-   TTransition::TTransition()
+TTransition::TTransition()
 {
    Clear();
 }
 
-TTransition::~TTransition()
-{
-   // empty
-}
+TTransition::~TTransition() = default;
 
 void TTransition::Clear(Option_t*)
 {
@@ -43,7 +40,7 @@ void TTransition::Print(Option_t*) const
    }
 }
 
-std::string TTransition::PrintToString()
+std::string TTransition::PrintToString() const
 {
    std::string toString;
    toString.append(Form("%f\t", fEnergy));
@@ -58,9 +55,8 @@ int TTransition::Compare(const TObject* obj) const
 {
    if(fCompareIntensity) {
       return CompareIntensity(obj);
-   } else {
-      return CompareEnergy(obj);
    }
+   return CompareEnergy(obj);
 }
 
 int TTransition::CompareIntensity(const TObject* obj) const

@@ -32,8 +32,7 @@ public:
    // ctors and dtors
    ~TPeak() override;
    TPeak(const TPeak& copy);
-   TPeak(Double_t cent, Double_t xlow, Double_t xhigh);
-   TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background);
+   TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background = nullptr);
    TPeak();   // I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
 
 protected:
@@ -79,12 +78,12 @@ public:
    const TF1* FitFunction() const { return GetFitFunction(); }
 
 protected:
-   void SetArea(Double_t a) { fArea = a; }
-   void SetAreaErr(Double_t d_a) { fDArea = d_a; }
-   void SetArea(Double_t a, Double_t dA)
+   void SetArea(Double_t area) { fArea = area; }
+   void SetAreaErr(Double_t areaErr) { fDArea = areaErr; }
+   void SetArea(Double_t area, Double_t areaErr)
    {
-      SetArea(a);
-      SetAreaErr(dA);
+      SetArea(area);
+      SetAreaErr(areaErr);
    }
    void SetChi2(Double_t chi2) { fChi2 = chi2; }
    void SetNdf(Double_t Ndf) { fNdf = Ndf; }
@@ -107,7 +106,6 @@ public:
 
    static TPeak* GetLastFit() { return fLastFit; }
 
-public:
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
 
@@ -123,8 +121,8 @@ private:
    static bool   fLogLikelihoodFlag;   //!<!
    static TPeak* fLastFit;             //!<!
 
-   TF1*    fBackground;
-   TGraph* fResiduals;
+   TF1*    fBackground{nullptr};
+   TGraph* fResiduals{nullptr};
 
    /// \cond CLASSIMP
    ClassDefOverride(TPeak, 2);

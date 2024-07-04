@@ -8,13 +8,13 @@
 
 /// \cond CLASSIMP
 ClassImp(TSingleDecay)
-   ClassImp(TDecayChain)
-      ClassImp(TDecayFit)
-         ClassImp(TDecay)
-            ClassImp(TVirtualDecay)
-   /// \endcond
+ClassImp(TDecayChain)
+ClassImp(TDecayFit)
+ClassImp(TDecay)
+ClassImp(TVirtualDecay)
+/// \endcond
 
-   UInt_t TSingleDecay::fCounter  = 0;
+UInt_t TSingleDecay::fCounter     = 0;
 UInt_t TDecayChain::fChainCounter = 0;
 
 TDecayFit::~TDecayFit() = default;

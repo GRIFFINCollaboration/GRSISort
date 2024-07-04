@@ -317,15 +317,15 @@ public:
    ArgParser(const ArgParser&)     = default;
    ArgParser(ArgParser&&) noexcept = default;
 
+   ArgParser& operator=(const ArgParser&)     = default;
+   ArgParser& operator=(ArgParser&&) noexcept = default;
+
    ~ArgParser()
    {
       for(auto* val : values) {
          delete val;
       }
    }
-
-   ArgParser& operator=(const ArgParser&)     = default;
-   ArgParser& operator=(ArgParser&&) noexcept = default;
 
    void parse(int argc, char** argv, bool firstPass)
    {

@@ -2,9 +2,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TEnergyCal)
-   /// \endcond
+/// \endcond
 
-   TEnergyCal::TEnergyCal()
+TEnergyCal::TEnergyCal()
 {
    // Default Constructor
    SetDefaultTitles();

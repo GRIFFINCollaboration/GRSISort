@@ -7,7 +7,7 @@
 
 ClassImp(TDetBuildingLoop)
 
-   TDetBuildingLoop* TDetBuildingLoop::Get(std::string name)
+TDetBuildingLoop* TDetBuildingLoop::Get(std::string name)
 {
    if(name.length() == 0) {
       name = "unpack_loop";

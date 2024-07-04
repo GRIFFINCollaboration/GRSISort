@@ -2,4 +2,4 @@
 
 /// \cond CLASSIMP
 ClassImp(TDetectorInformation)
-   /// \endcond
+/// \endcond

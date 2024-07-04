@@ -3,16 +3,16 @@
 // Without this macro the THtml doc for TGRSIFunctions can't be generated
 NamespaceImp(TGRSIFunctions)
 
-   //////////////////////////////////////////////////////////////////////
-   //
-   // TGRSIFunctions
-   //
-   // This namespace is where we store all of our commonly used functions.
-   // This makes it easier to create fits etc.
-   //
-   ///////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+//
+// TGRSIFunctions
+//
+// This namespace is where we store all of our commonly used functions.
+// This makes it easier to create fits etc.
+//
+///////////////////////////////////////////////////////////////////////
 
-   bool TGRSIFunctions::CheckParameterErrors(const TFitResultPtr& fitres, std::string opt)
+bool TGRSIFunctions::CheckParameterErrors(const TFitResultPtr& fitres, std::string opt)
 {
    /// This function compares the parameter error with the square root of the corresponding
    /// diagonal entry of the covariance matrix. If the difference between the two is larger

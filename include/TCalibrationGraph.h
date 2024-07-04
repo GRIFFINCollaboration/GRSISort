@@ -15,16 +15,20 @@ class TCalibrationGraphSet;
 
 class TCalibrationGraph : public TGraphErrors {
 public:
-   TCalibrationGraph() {}
+   TCalibrationGraph() = default;
    TCalibrationGraph(TCalibrationGraphSet* parent, const int& size, const bool& isResidual = false) : TGraphErrors(size), fParent(parent), fIsResidual(isResidual) {}
-   TCalibrationGraph(TCalibrationGraphSet* parent, TGraphErrors* graph) : TGraphErrors(*graph), fParent(parent), fIsResidual(false) {}
-   ~TCalibrationGraph() {}
+   TCalibrationGraph(TCalibrationGraphSet* parent, TGraphErrors* graph) : TGraphErrors(*graph), fParent(parent) {}
+   ~TCalibrationGraph()                                       = default;
+   TCalibrationGraph(const TCalibrationGraph&)                = default;
+   TCalibrationGraph(TCalibrationGraph&&) noexcept            = default;
+   TCalibrationGraph& operator=(const TCalibrationGraph&)     = default;
+   TCalibrationGraph& operator=(TCalibrationGraph&&) noexcept = default;
 
    using TGraph::RemovePoint;      // to use the function with integer index as argument
    Int_t RemovePoint() override;   // *MENU*
 
    void IsResidual(bool val) { fIsResidual = val; }
-   bool IsResidual() { return fIsResidual; }
+   bool IsResidual() const { return fIsResidual; }
 
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 26, 0)
    void Scale(const double& scale);
@@ -48,82 +52,10 @@ private:
 
 class TCalibrationGraphSet : public TNamed {
 public:
-   TCalibrationGraphSet(TGraphErrors* graph = nullptr, const std::string& label = "");
+   explicit TCalibrationGraphSet(TGraphErrors* graph = nullptr, const std::string& label = "");
    ~TCalibrationGraphSet();
-
-   bool SetResidual(const bool& force = false);
-   int  Add(TGraphErrors*, const std::string& label);   ///< Add new graph to set, using the label when creating legends during plotting
-
-   void SetLineColor(int index, int color)
-   {
-      /// Set the line color of the graph and residuals at index
-      fGraphs[index].SetLineColor(color);
-      fResidualGraphs[index].SetLineColor(color);
-   }
-   void SetMarkerColor(int index, int color)
-   {
-      /// Set the marker color of the graph and residuals at index
-      if(fVerboseLevel > 3) std::cout << "setting marker color of graph " << index << " to " << color << std::endl;
-      fGraphs[index].SetMarkerColor(color);
-      fResidualGraphs[index].SetMarkerColor(color);
-   }
-   void SetMarkerStyle(int index, int style)
-   {
-      /// Set the marker style of the graph and residuals at index
-      fGraphs[index].SetMarkerStyle(style);
-      fResidualGraphs[index].SetMarkerStyle(style);
-   }
-   void SetColor(int index, int color)
-   {
-      /// Set the line and marker color of the graph and residuals at index
-      SetLineColor(index, color);
-      SetMarkerColor(index, color);
-   }
-   void SetColorStyle(int index, int val)
-   {
-      /// Set the line and marker color and marker style of the graph and residuals at index
-      SetLineColor(index, val);
-      SetMarkerColor(index, val);
-      SetMarkerStyle(index, val);
-   }
-
-   void SetAxisTitle(const char* title);   ///< Set axis title for the graph (form "x-axis title;y-axis title")
-
-   int     GetN() { return fTotalGraph->GetN(); }     ///< Returns GetN(), i.e. number of points of the total graph.
-   double* GetX() { return fTotalGraph->GetX(); }     ///< Returns an array of x-values of the total graph.
-   double* GetY() { return fTotalGraph->GetY(); }     ///< Returns an array of y-values of the total graph.
-   double* GetEX() { return fTotalGraph->GetEX(); }   ///< Returns an array of x-errors of the total graph.
-   double* GetEY() { return fTotalGraph->GetEY(); }   ///< Returns an array of y-errors of the total graph.
-
-   double GetMinimumX() { return fMinimumX; }   ///< Return minimum x-value.
-   double GetMaximumX() { return fMaximumX; }   ///< Return maximum x-value.
-   double GetMinimumY() { return fMinimumY; }   ///< Return minimum y-value.
-   double GetMaximumY() { return fMaximumY; }   ///< Return maximum y-value.
-
-   void               Fit(TF1* function, Option_t* opt = "") { fTotalGraph->Fit(function, opt); }                                      ///< Fits the provided function to the total graph.
-   TF1*               FitFunction() { return reinterpret_cast<TF1*>(fTotalGraph->GetListOfFunctions()->FindObject("fitfunction")); }   ///< Gets the calibration from the total graph (might be nullptr!).
-   TGraphErrors*      TotalGraph() { return fTotalGraph; }
-   size_t             NumberOfGraphs() { return fGraphs.size(); }
-   TCalibrationGraph* Graph(size_t i) { return &(fGraphs.at(i)); }
-   TCalibrationGraph* Residual(size_t i) { return &(fResidualGraphs.at(i)); }
-
-   void DrawCalibration(Option_t* opt = "", TLegend* legend = nullptr);
-   void DrawResidual(Option_t* opt = "", TLegend* legend = nullptr);
-
-   void RemoveGraph(size_t i)
-   {
-      fGraphs.erase(fGraphs.begin() + i);
-      ResetTotalGraph();
-   }
-   Int_t RemovePoint();
-   Int_t RemoveResidualPoint();
-
-   void Scale(bool useAllPrevious = true);
-
-   void Print(Option_t* opt = "") const override;
-
-   void ResetTotalGraph();   ///< reset the total graph and add the individual ones again (used e.g. after scaling of individual graphs is done)
-
+   TCalibrationGraphSet(const TCalibrationGraphSet&)     = default;
+   TCalibrationGraphSet(TCalibrationGraphSet&&) noexcept = default;
    TCalibrationGraphSet& operator=(const TCalibrationGraphSet& rhs)
    {
       /// Assignment operator that takes care of properly cloning all the pointers to objects.
@@ -144,12 +76,90 @@ public:
       fName               = rhs.fName;
       return *this;
    }
+   TCalibrationGraphSet& operator=(TCalibrationGraphSet&&) noexcept = default;
+
+   bool SetResidual(const bool& force = false);
+   int  Add(TGraphErrors*, const std::string& label);   ///< Add new graph to set, using the label when creating legends during plotting
+
+   void SetLineColor(int index, Color_t color)
+   {
+      /// Set the line color of the graph and residuals at index
+      fGraphs[index].SetLineColor(color);
+      fResidualGraphs[index].SetLineColor(color);
+   }
+   void SetMarkerColor(int index, Color_t color)
+   {
+      /// Set the marker color of the graph and residuals at index
+      if(fVerboseLevel > 3) std::cout << "setting marker color of graph " << index << " to " << color << std::endl;
+      fGraphs[index].SetMarkerColor(color);
+      fResidualGraphs[index].SetMarkerColor(color);
+   }
+   void SetMarkerStyle(int index, Style_t style)
+   {
+      /// Set the marker style of the graph and residuals at index
+      fGraphs[index].SetMarkerStyle(style);
+      fResidualGraphs[index].SetMarkerStyle(style);
+   }
+   void SetColor(int index, Color_t color)
+   {
+      /// Set the line and marker color of the graph and residuals at index
+      SetLineColor(index, color);
+      SetMarkerColor(index, color);
+   }
+   void SetColorStyle(int index, int val)
+   {
+      /// Set the line and marker color and marker style of the graph and residuals at index
+      SetLineColor(index, static_cast<Color_t>(val));
+      SetMarkerColor(index, static_cast<Color_t>(val));
+      SetMarkerStyle(index, static_cast<Style_t>(val));
+   }
+
+   void SetAxisTitle(const char* title);   ///< Set axis title for the graph (form "x-axis title;y-axis title")
+
+   int     GetN() { return fTotalGraph->GetN(); }     ///< Returns GetN(), i.e. number of points of the total graph.
+   double* GetX() { return fTotalGraph->GetX(); }     ///< Returns an array of x-values of the total graph.
+   double* GetY() { return fTotalGraph->GetY(); }     ///< Returns an array of y-values of the total graph.
+   double* GetEX() { return fTotalGraph->GetEX(); }   ///< Returns an array of x-errors of the total graph.
+   double* GetEY() { return fTotalGraph->GetEY(); }   ///< Returns an array of y-errors of the total graph.
+
+   double GetMinimumX() const { return fMinimumX; }   ///< Return minimum x-value.
+   double GetMaximumX() const { return fMaximumX; }   ///< Return maximum x-value.
+   double GetMinimumY() const { return fMinimumY; }   ///< Return minimum y-value.
+   double GetMaximumY() const { return fMaximumY; }   ///< Return maximum y-value.
+
+   void               Fit(TF1* function, Option_t* opt = "") { fTotalGraph->Fit(function, opt); }                                      ///< Fits the provided function to the total graph.
+   TF1*               FitFunction() { return reinterpret_cast<TF1*>(fTotalGraph->GetListOfFunctions()->FindObject("fitfunction")); }   ///< Gets the calibration from the total graph (might be nullptr!).
+   TGraphErrors*      TotalGraph() { return fTotalGraph; }
+   size_t             NumberOfGraphs() { return fGraphs.size(); }
+   TCalibrationGraph* Graph(size_t index) { return &(fGraphs.at(index)); }
+   TCalibrationGraph* Residual(size_t index) { return &(fResidualGraphs.at(index)); }
+
+   void DrawCalibration(Option_t* opt = "", TLegend* legend = nullptr);
+   void DrawResidual(Option_t* opt = "", TLegend* legend = nullptr);
+
+   void RemoveGraph(long index)
+   {
+      fGraphs.erase(fGraphs.begin() + index);
+      ResetTotalGraph();
+   }
+   Int_t RemovePoint();
+   Int_t RemoveResidualPoint();
+
+   void Scale(bool useAllPrevious = true);
+
+   void Print(Option_t* opt = "") const override;
+
+   void ResetTotalGraph();   ///< reset the total graph and add the individual ones again (used e.g. after scaling of individual graphs is done)
 
    void VerboseLevel(int val)
    {
       fVerboseLevel = val;
-      for(auto& graph : fGraphs) graph.VerboseLevel(val);
-      for(auto& graph : fResidualGraphs) graph.VerboseLevel(val);
+      for(auto& graph : fGraphs) {
+         graph.VerboseLevel(val);
+      }
+      for(auto& graph : fResidualGraphs) {
+         graph.VerboseLevel(val);
+      }
    }
 
 private:

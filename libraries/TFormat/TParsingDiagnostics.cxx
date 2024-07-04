@@ -4,34 +4,18 @@
 
 #include "TChannel.h"
 
-TParsingDiagnosticsData::TParsingDiagnosticsData()
-{
-   fMinChannelId = 0;
-   fMaxChannelId = 0;
-
-   fNumberOfHits = 0;
-
-   fDeadTime     = 0;
-   fMinTimeStamp = 0;
-   fMaxTimeStamp = 0;
-}
+TParsingDiagnosticsData::TParsingDiagnosticsData() = default;
 
 TParsingDiagnosticsData::TParsingDiagnosticsData(const std::shared_ptr<const TFragment>& frag)
+   : fMinChannelId(frag->GetChannelId()), fMaxChannelId(frag->GetChannelId()), fNumberOfHits(1),
+     fDeadTime(frag->GetDeadTime()), fMinTimeStamp(frag->GetTimeStampNs()), fMaxTimeStamp(frag->GetTimeStampNs())
 {
-   fMinChannelId = frag->GetChannelId();
-   fMaxChannelId = frag->GetChannelId();
-
-   fNumberOfHits = 1;
-
-   fDeadTime     = frag->GetDeadTime();
-   fMinTimeStamp = frag->GetTimeStampNs();
-   fMaxTimeStamp = frag->GetTimeStampNs();
 }
 
 void TParsingDiagnosticsData::Update(const std::shared_ptr<const TFragment>& frag)
 {
    UInt_t channelId = frag->GetChannelId();
-   long   timeStamp = frag->GetTimeStampNs();
+   auto   timeStamp = frag->GetTimeStampNs();
 
    // update minimum and maximum channel id if necessary
    if(channelId < fMinChannelId) {
@@ -67,13 +51,11 @@ void TParsingDiagnosticsData::Print(UInt_t address) const
 
 TParsingDiagnostics::TParsingDiagnostics() : TSingleton<TParsingDiagnostics>()
 {
-   fIdHist = nullptr;   // need to initial this
    Clear();
 }
 
 TParsingDiagnostics::TParsingDiagnostics(const TParsingDiagnostics&) : TSingleton<TParsingDiagnostics>()
 {
-   fIdHist = nullptr;   // need to initial this
    Clear();
 }
 
@@ -129,8 +111,8 @@ void TParsingDiagnostics::Print(Option_t*) const
       }
       std::cout << " bad fragments." << std::endl;
    }
-   for(const auto& it : fChannelAddressData) {
-      it.second.Print(it.first);
+   for(const auto& iter : fChannelAddressData) {
+      iter.second.Print(iter.first);
    }
 }
 
@@ -179,9 +161,9 @@ void TParsingDiagnostics::Draw(Option_t* opt)
    UInt_t minChannel = fChannelAddressData.begin()->first;
    UInt_t maxChannel = fChannelAddressData.begin()->first;
 
-   for(auto it : fChannelAddressData) {
-      if(it.first < minChannel) minChannel = it.first;
-      if(it.first > maxChannel) maxChannel = it.first;
+   for(const auto& iter : fChannelAddressData) {
+      if(iter.first < minChannel) { minChannel = iter.first; }
+      if(iter.first > maxChannel) { maxChannel = iter.first; }
    }
 
    // check that the histogram (if it already exists) has the right number of bins
@@ -197,10 +179,10 @@ void TParsingDiagnostics::Draw(Option_t* opt)
       fIdHist->SetAxisRange(minChannel, maxChannel + 1);
    }
 
-   for(auto it : fChannelAddressData) {
-      if(it.second.MinChannelId() != 0 || it.second.MinChannelId() != it.second.MaxChannelId()) {
-         fIdHist->SetBinContent(fIdHist->GetXaxis()->FindBin(it.first),
-                                (100. * it.second.NumberOfHits()) / (it.second.MaxChannelId() - it.second.MinChannelId() + 1.));
+   for(const auto& iter : fChannelAddressData) {
+      if(iter.second.MinChannelId() != 0 || iter.second.MinChannelId() != iter.second.MaxChannelId()) {
+         fIdHist->SetBinContent(fIdHist->GetXaxis()->FindBin(iter.first),
+                                (100. * iter.second.NumberOfHits()) / (iter.second.MaxChannelId() - iter.second.MinChannelId() + 1.));
       }
    }
 
@@ -215,24 +197,24 @@ void TParsingDiagnostics::WriteToFile(const char* fileName) const
             << std::endl;
 
    statsOut << "Good fragments:";
-   for(auto it : fNumberOfGoodFragments) {
-      statsOut << " " << it.second << " of type " << it.first;
+   for(const auto& iter : fNumberOfGoodFragments) {
+      statsOut << " " << iter.second << " of type " << iter.first;
    }
    statsOut << std::endl;
 
    statsOut << "Bad fragments:";
-   for(auto it : fNumberOfBadFragments) {
-      statsOut << " " << it.second << " of type " << it.first;
+   for(const auto& iter : fNumberOfBadFragments) {
+      statsOut << " " << iter.second << " of type " << iter.first;
    }
    statsOut << std::endl;
 
-   for(auto it : fChannelAddressData) {
-      TChannel* chan = TChannel::GetChannel(it.first, false);
+   for(const auto& iter : fChannelAddressData) {
+      TChannel* chan = TChannel::GetChannel(iter.first, false);
       if(chan == nullptr) {
          continue;
       }
-      statsOut << hex(it.first, 4) << ":\t" << chan->GetName()
-               << "\tdead time: " << static_cast<float>(it.second.DeadTime()) / 1e9 << " seconds." << std::endl;
+      statsOut << hex(iter.first, 4) << ":\t" << chan->GetName()
+               << "\tdead time: " << static_cast<float>(iter.second.DeadTime()) / 1e9 << " seconds." << std::endl;
    }
    statsOut << std::endl;
 

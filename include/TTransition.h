@@ -26,6 +26,11 @@ class TTransition : public TObject {
 public:
    TTransition();
    ~TTransition() override;
+   TTransition(const TTransition&)     = default;
+   TTransition(TTransition&&) noexcept = default;
+
+   TTransition& operator=(const TTransition&)     = default;
+   TTransition& operator=(TTransition&&) noexcept = default;
 
    bool IsSortable() const override { return true; }
    int  Compare(const TObject* obj) const override;
@@ -46,7 +51,7 @@ public:
    void Clear(Option_t* opt = "") override;
    void Print(Option_t* opt = "") const override;
 
-   std::string PrintToString();
+   std::string PrintToString() const;
 
    bool operator>(const TTransition& rhs) const { return GetEnergy() > rhs.GetEnergy(); }
    bool operator<(const TTransition& rhs) const { return GetEnergy() < rhs.GetEnergy(); }

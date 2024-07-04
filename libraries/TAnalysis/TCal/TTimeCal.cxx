@@ -4,9 +4,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TTimeCal)
-   /// \endcond
+/// \endcond
 
-   void TTimeCal::Clear(Option_t* opt)
+void TTimeCal::Clear(Option_t* opt)
 {
    fParameters.clear();
    TCal::Clear(opt);

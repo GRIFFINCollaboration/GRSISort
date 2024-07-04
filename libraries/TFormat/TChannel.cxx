@@ -32,11 +32,11 @@
 
 /// \cond CLASSIMP
 ClassImp(TChannel)
-   /// \endcond
+/// \endcond
 
-   std::unordered_map<unsigned int, TChannel*>* TChannel::fChannelMap = new std::unordered_map<unsigned int, TChannel*>;   // global maps of channels
-std::unordered_map<unsigned int, int>* TChannel::fMissingChannelMap   = new std::unordered_map<unsigned int, int>;         // global map of missing channels
-std::unordered_map<int, TChannel*>*    TChannel::fChannelNumberMap    = new std::unordered_map<int, TChannel*>;
+std::unordered_map<unsigned int, TChannel*>* TChannel::fChannelMap        = new std::unordered_map<unsigned int, TChannel*>;   // global maps of channels
+std::unordered_map<unsigned int, int>*       TChannel::fMissingChannelMap = new std::unordered_map<unsigned int, int>;         // global map of missing channels
+std::unordered_map<int, TChannel*>*          TChannel::fChannelNumberMap  = new std::unordered_map<int, TChannel*>;
 
 // TClass* TChannel::fMnemonicClass = TMnemonic::Class();
 TClassRef TChannel::fMnemonicClass = TClassRef("TMnemonic");

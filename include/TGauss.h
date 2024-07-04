@@ -30,8 +30,8 @@
 class TGauss : public TSinglePeak {
 public:
    // ctors and dtors
-   ~TGauss() override{};
-   TGauss();
+   ~TGauss() override = default;
+   TGauss()           = default;
    TGauss(Double_t centroid, Double_t relativeLimit = -1.);
 
    void InitParNames() override;
@@ -42,7 +42,7 @@ public:
    Double_t Centroid() const override;
    Double_t CentroidErr() const override;
    Double_t Width() const override { return Sigma(); }
-   Double_t Sigma() const override { return fTotalFunction->GetParameter("sigma"); }
+   Double_t Sigma() const override { return GetFitFunction()->GetParameter("sigma"); }
 
 protected:
    Double_t PeakFunction(Double_t* dim, Double_t* par) override;

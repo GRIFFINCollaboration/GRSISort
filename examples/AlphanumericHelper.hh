@@ -24,7 +24,7 @@ public:
    {
       return d->Book<TGriffin>(std::move(*this), {"TGriffin"});
    }
-   void CreateHistograms(unsigned int slot);
+   void CreateHistograms(unsigned int slot) override;
    void Exec(unsigned int slot, TGriffin& grif);
 };
 

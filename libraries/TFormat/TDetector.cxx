@@ -3,9 +3,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TDetector)
-   /// \endcond
+/// \endcond
 
-   TDetector::TDetector()
+TDetector::TDetector()
    : TObject()
 {
    /// Default constructor.

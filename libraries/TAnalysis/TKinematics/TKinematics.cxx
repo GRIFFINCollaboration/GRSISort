@@ -5,10 +5,10 @@
 
 /// \cond CLASSIMP
 ClassImp(TKinematics)
-   /// \endcond
+/// \endcond
 
-   TKinematics::TKinematics(double beame, const char* beam, const char* targ, const char* ejec, const char* reco,
-                            const char* name)
+TKinematics::TKinematics(double beame, const char* beam, const char* targ, const char* ejec, const char* reco,
+                         const char* name)
 {
    InitKin();
 

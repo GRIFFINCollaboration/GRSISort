@@ -2,9 +2,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TEfficiencyCal)
-   /// \endcond
+/// \endcond
 
-   TEfficiencyCal::TEfficiencyCal()
+TEfficiencyCal::TEfficiencyCal()
 {
 }
 
