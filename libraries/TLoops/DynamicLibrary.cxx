@@ -27,9 +27,9 @@ int incremental_id()
 DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name) : fLibName(std::move(libname_param))
 {
    if(unique_name) {
-      std::stringstream ss;
-      ss << "/tmp/temp_dynlib_" << getpid() << "_" << incremental_id() << ".so";
-      fTempName = ss.str();
+      std::stringstream str;
+      str << "/tmp/temp_dynlib_" << getpid() << "_" << incremental_id() << ".so";
+      fTempName = str.str();
 
       // Need to symlink to full path, not a relative path.
       // If a relative path is given, then the symlink will look for that library
