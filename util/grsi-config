@@ -138,7 +138,7 @@ while test $# -gt 0; do
 			lib=${lib#--};  # remove leading  --
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
-				out="$out $(GRSISYS/"$lib"/util/config --cflags)"
+				out="$out $($GRSISYS/$lib/util/config --cflags)"
 			fi
 			;;
 		--*-incdir)
@@ -146,7 +146,7 @@ while test $# -gt 0; do
 			lib=${lib#--};  # remove leading  --
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
-				out="$out $(GRSISYS/"$lib"/util/config --incdir)"
+				out="$out $($GRSISYS/$lib/util/config --incdir)"
 			fi
 			;;
 		--*-libs)
