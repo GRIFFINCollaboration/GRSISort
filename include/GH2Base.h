@@ -90,8 +90,8 @@ public:
          return current;
       }
 
-      bool operator==(const iterator& b) const { return (fMat == b.fMat && fFirst == b.fFirst && fCurr == b.fCurr); }
-      bool operator!=(const iterator& b) const { return !(*this == b); }
+      bool operator==(const iterator& rhs) const { return (fMat == rhs.fMat && fFirst == rhs.fFirst && fCurr == rhs.fCurr); }
+      bool operator!=(const iterator& rhs) const { return !(*this == rhs); }
 
    private:
       GH2Base* fMat;
@@ -99,8 +99,8 @@ public:
       GH1D*    fCurr;
    };
 
-   iterator begin() { return iterator(this, false); }
-   iterator end() { return iterator(this, true); }
+   iterator begin() { return {this, false}; }
+   iterator end()   { return {this, true}; }
 
 private:
    void   Init();
@@ -108,7 +108,7 @@ private:
 
    TList*     fSummaryProjections{nullptr};   //!
    bool       fIsSummary{false};
-   EDirection fSummaryDirection;
+   EDirection fSummaryDirection{EDirection::kXDirection};
 
    ClassDef(GH2Base, 1);
 };

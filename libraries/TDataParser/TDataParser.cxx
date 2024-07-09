@@ -18,11 +18,10 @@ TGRSIOptions* TDataParser::fOptions = nullptr;
 TDataParser::TDataParser()
    : fBadOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>("bad_frag_queue")),
      fScalerOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>("scaler_queue")),
-     fNoWaveforms(false), fRecordDiag(true), fMaxTriggerId(1024 * 1024 * 16), fLastDaqId(0), fLastTriggerId(0),
-     fLastNetworkPacket(0), fFragmentHasWaveform(false), fFragmentMap(fGoodOutputQueues, fBadOutputQueue),
-     fItemsPopped(nullptr), fInputSize(nullptr)
+     fNoWaveforms(false), fRecordDiag(true), fChannel(new TChannel), fMaxTriggerId(1024 * 1024 * 16),
+	  fLastDaqId(0), fLastTriggerId(0), fLastNetworkPacket(0), fFragmentHasWaveform(false),
+	  fFragmentMap(fGoodOutputQueues, fBadOutputQueue), fItemsPopped(nullptr), fInputSize(nullptr)
 {
-   fChannel = new TChannel;
 }
 
 TDataParser::~TDataParser()
@@ -78,12 +77,12 @@ void TDataParser::Push(ThreadsafeQueue<std::shared_ptr<const TBadFragment>>& que
 
 std::string TDataParser::OutputQueueStatus()
 {
-   std::stringstream ss;
-   ss << "********************************************************************************" << std::endl;
+   std::stringstream str;
+   str << "********************************************************************************" << std::endl;
    for(const auto& queue : fGoodOutputQueues) {
-      ss << queue->Name() << ": " << queue->ItemsPushed() << " pushed, " << queue->ItemsPopped() << " popped, "
-         << queue->Size() << " left" << std::endl;
+      str << queue->Name() << ": " << queue->ItemsPushed() << " pushed, " << queue->ItemsPopped() << " popped, "
+          << queue->Size() << " left" << std::endl;
    }
-   ss << "********************************************************************************" << std::endl;
-   return ss.str();
+   str << "********************************************************************************" << std::endl;
+   return str.str();
 }

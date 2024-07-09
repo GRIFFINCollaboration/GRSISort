@@ -1,5 +1,5 @@
-#ifndef _TGRSIOPTIONS_H_
-#define _TGRSIOPTIONS_H_
+#ifndef TGRSIOPTIONS_H
+#define TGRSIOPTIONS_H
 
 /** \addtogroup Sorting
  *  @{
@@ -28,7 +28,7 @@
 
 class TGRSIOptions : public TObject {
 public:
-   TGRSIOptions(){};   /// Do not use!
+   TGRSIOptions() = default;   /// Do not use!
    static TGRSIOptions* Get(int argc = 0, char** argv = nullptr);
 
    void Clear(Option_t* opt = "") override;
@@ -39,32 +39,32 @@ public:
    static void   SetOptions(TGRSIOptions* tmp);
    static Bool_t ReadFromFile(TFile* file = nullptr);
 
-   bool                            ShouldExit() { return fShouldExit; }
-   const std::vector<std::string>& InputFiles() { return fInputFiles; }
-   const std::vector<std::string>& RootInputFiles() { return fInputRootFiles; }
-   const std::vector<std::string>& CalInputFiles() { return fInputCalFiles; }
-   const std::vector<std::string>& ValInputFiles() { return fInputValFiles; }
-   const std::vector<std::string>& InputOdbFiles() { return fInputOdbFiles; }
-   const std::vector<std::string>& ExternalRunInfo() { return fExternalRunInfo; }
-   const std::vector<std::string>& InputCutFiles() { return fInputCutFiles; }
-   const std::vector<std::string>& WinInputFiles() { return fInputWinFiles; }
-   const std::vector<std::string>& MacroInputFiles() { return fMacroFiles; }
-   const std::string&              DataFrameLibrary() { return fDataFrameLibrary; }
+   bool                            ShouldExit() const { return fShouldExit; }
+   const std::vector<std::string>& InputFiles() const { return fInputFiles; }
+   const std::vector<std::string>& RootInputFiles() const { return fInputRootFiles; }
+   const std::vector<std::string>& CalInputFiles() const { return fInputCalFiles; }
+   const std::vector<std::string>& ValInputFiles() const { return fInputValFiles; }
+   const std::vector<std::string>& InputOdbFiles() const { return fInputOdbFiles; }
+   const std::vector<std::string>& ExternalRunInfo() const { return fExternalRunInfo; }
+   const std::vector<std::string>& InputCutFiles() const { return fInputCutFiles; }
+   const std::vector<std::string>& WinInputFiles() const { return fInputWinFiles; }
+   const std::vector<std::string>& MacroInputFiles() const { return fMacroFiles; }
+   const std::string&              DataFrameLibrary() const { return fDataFrameLibrary; }
 
-   const std::string& OutputFragmentFile() { return fOutputFragmentFile; }
-   const std::string& OutputAnalysisFile() { return fOutputAnalysisFile; }
+   const std::string& OutputFragmentFile() const { return fOutputFragmentFile; }
+   const std::string& OutputAnalysisFile() const { return fOutputAnalysisFile; }
 
-   const std::string& OutputFilteredFile() { return fOutputFilteredFile; }
-   const std::string& OutputFragmentHistogramFile() { return fOutputFragmentHistogramFile; }
-   const std::string& OutputAnalysisHistogramFile() { return fOutputAnalysisHistogramFile; }
-   std::string        InputRing() { return fInputRing; }
-   std::string        FragmentHistogramLib() { return fFragmentHistogramLib; }
-   std::string        AnalysisHistogramLib() { return fAnalysisHistogramLib; }
-   std::string        CompiledFilterFile() { return fCompiledFilterFile; }
+   const std::string& OutputFilteredFile() const { return fOutputFilteredFile; }
+   const std::string& OutputFragmentHistogramFile() const { return fOutputFragmentHistogramFile; }
+   const std::string& OutputAnalysisHistogramFile() const { return fOutputAnalysisHistogramFile; }
+   std::string        InputRing() const { return fInputRing; }
+   std::string        FragmentHistogramLib() const { return fFragmentHistogramLib; }
+   std::string        AnalysisHistogramLib() const { return fAnalysisHistogramLib; }
+   std::string        CompiledFilterFile() const { return fCompiledFilterFile; }
 
-   const std::vector<std::string>& OptionFiles() { return fOptionsFile; }
+   const std::vector<std::string>& OptionFiles() const { return fOptionsFile; }
 
-   std::string LogFile() { return fLogFile; }
+   std::string LogFile() const { return fLogFile; }
    void        LogFile(const std::string& val) { fLogFile = val; }
 
    static TAnalysisOptions* AnalysisOptions() { return fAnalysisOptions; }
@@ -110,8 +110,6 @@ public:
    size_t FragmentWriteQueueSize() const { return fFragmentWriteQueueSize; }
    size_t AnalysisWriteQueueSize() const { return fAnalysisWriteQueueSize; }
 
-   size_t NumberOfClients() const { return fNumberOfClients; }
-
    size_t NumberOfEvents() const { return fNumberOfEvents; }
 
    bool IgnoreMissingChannel() const { return fIgnoreMissingChannel; }
@@ -120,10 +118,7 @@ public:
 
    bool ShouldExitImmediately() const { return fShouldExit; }
 
-   kFileType DetermineFileType(const std::string& filename) const;
-
-   std::string GenerateOutputFilename(const std::string& filename);
-   std::string GenerateOutputFilename(const std::vector<std::string>& filename);
+   static kFileType DetermineFileType(const std::string& filename);
 
    size_t       ColumnWidth() const { return fColumnWidth; }
    size_t       StatusWidth() const { return fStatusWidth; }
@@ -180,71 +175,69 @@ private:
 
    std::string fLogFile;   ///< The name of the output log file
 
-   bool fCloseAfterSort;         ///< Flag to close after sorting (-q)
-   bool fLogErrors;              ///< Flag to log errors (--log-errors)
-   bool fUseMidFileOdb;          ///< Flag to read odb from midas
-   bool fSuppressErrors;         ///< Flag to suppress errors (--suppress-errors)
-   bool fReconstructTimeStamp;   ///< Flag to reconstruct missing high bits of time stamps (--reconstruct-timestamp)
+   bool fCloseAfterSort{false};         ///< Flag to close after sorting (-q)
+   bool fLogErrors{false};              ///< Flag to log errors (--log-errors)
+   bool fUseMidFileOdb{false};          ///< Flag to read odb from midas
+   bool fSuppressErrors{false};         ///< Flag to suppress errors (--suppress-errors)
+   bool fReconstructTimeStamp{false};   ///< Flag to reconstruct missing high bits of time stamps (--reconstruct-timestamp)
 
-   bool fMakeAnalysisTree;    ///< Flag to make analysis tree (-a)
-   bool fReadingMaterial;     ///< Flag to show reading material (--reading-material)
-   bool fIgnoreFileOdb;       ///< Flag to ignore midas file odb
-   bool fIgnoreOdbChannels;   ///< Flag to ignore channels from midas file odb (but do use EPICS from ODB)
-   int  fDownscaling;         ///< Downscaling factor for raw events to be processed
+   bool fMakeAnalysisTree{false};    ///< Flag to make analysis tree (-a)
+   bool fReadingMaterial{false};     ///< Flag to show reading material (--reading-material)
+   bool fIgnoreFileOdb{false};       ///< Flag to ignore midas file odb
+   bool fIgnoreOdbChannels{false};   ///< Flag to ignore channels from midas file odb (but do use EPICS from ODB)
+   int  fDownscaling{1};             ///< Downscaling factor for raw events to be processed
 
-   bool fIgnoreScaler;        ///< Flag to ignore scalers in GRIFFIN
-   bool fIgnoreEpics;         ///< Flag to ignore epics
-   bool fWriteFragmentTree;   ///< Flag to write fragment tree
-   bool fWriteBadFrags;       ///< Flag to write bad fragments
-   bool fWriteDiagnostics;    ///< Flag to write diagnostics
-   int  fWordOffset;          ///< Offset for word count in GRIFFIN header (default 1)
+   bool fIgnoreScaler{false};        ///< Flag to ignore scalers in GRIFFIN
+   bool fIgnoreEpics{false};         ///< Flag to ignore epics
+   bool fWriteFragmentTree{false};   ///< Flag to write fragment tree
+   bool fWriteBadFrags{false};       ///< Flag to write bad fragments
+   bool fWriteDiagnostics{false};    ///< Flag to write diagnostics
+   int  fWordOffset{-1};             ///< Offset for word count in GRIFFIN header (default 1)
 
-   bool fBatch;   ///< Flag to use batch mode (-b)
+   bool fBatch{false};   ///< Flag to use batch mode (-b)
 
-   bool fShowedVersion;   ///< Flag to show version
-   bool fShowLogo;        ///< Flag to show logo (suppress with -l)
-   bool fSortRaw;         ///< Flag to sort raw file
-   bool fExtractWaves;    ///< Flag to keep waveforms (suppress with --no-waveforms)
-   bool fIsOnline;        ///< Flag to sort online data
-   bool fStartGui;        ///< Flag to start GUI (-g)
-   bool fMakeHistos;      ///< Flag to make histograms (-H)
-   bool fSortMultiple;    ///< Flag to sort multiple files
-   bool fDebug;           ///< Flag for debug mode
+   bool fShowedVersion{false};   ///< Flag to show version
+   bool fShowLogo{false};        ///< Flag to show logo (suppress with -l)
+   bool fSortRaw{true};          ///< Flag to sort raw file
+   bool fExtractWaves{false};    ///< Flag to keep waveforms (suppress with --no-waveforms)
+   bool fIsOnline{false};        ///< Flag to sort online data
+   bool fStartGui{false};        ///< Flag to start GUI (-g)
+   bool fMakeHistos{false};      ///< Flag to make histograms (-H)
+   bool fSortMultiple{false};    ///< Flag to sort multiple files
+   bool fDebug{false};           ///< Flag for debug mode
 
-   size_t fFragmentWriteQueueSize;   ///< Size of the Fragment write Q
-   size_t fAnalysisWriteQueueSize;   ///< Size of the analysis write Q
+   size_t fFragmentWriteQueueSize{100000};   ///< Size of the Fragment write Q
+   size_t fAnalysisWriteQueueSize{100000};   ///< Size of the analysis write Q
 
-   size_t fNumberOfClients;   ///< Number of analysis write loop clients
+   size_t fNumberOfEvents{0};   ///< Number of events, fragments, etc. to process (0 - all)
 
-   size_t fNumberOfEvents;   ///< Number of events, fragments, etc. to process (0 - all)
-
-   bool fIgnoreMissingChannel;   ///< Flag to completely ignore missing channels
-   bool fSkipInputSort;          ///< Flag to sort on time or triggers
-   int  fSortDepth;              ///< Size of Q that stores fragments to be built into events
+   bool fIgnoreMissingChannel{false};   ///< Flag to completely ignore missing channels
+   bool fSkipInputSort{false};          ///< Flag to sort on time or triggers
+   int  fSortDepth{200000};             ///< Size of Q that stores fragments to be built into events
 
    static TAnalysisOptions* fAnalysisOptions;   ///< contains all options for analysis
    static TUserSettings*    fUserSettings;      ///< contains user settings read from text-file
 
-   bool fSeparateOutOfOrder;   ///< Flag to build out of order into seperate event tree
+   bool fSeparateOutOfOrder{false};   ///< Flag to build out of order into seperate event tree
 
-   bool fShouldExit;   ///< Flag to exit sorting
+   bool fShouldExit{false};   ///< Flag to exit sorting
 
-   bool fHelp;   ///< help requested?
+   bool fHelp{false};   ///< help requested?
 
-   size_t       fColumnWidth;      ///< Size of verbose columns
-   size_t       fStatusWidth;      ///< Size of total verbose status
-   unsigned int fStatusInterval;   ///< Time between status updates
-   bool         fLongFileDescription;
+   size_t       fColumnWidth{20};      ///< Size of verbose columns
+   size_t       fStatusWidth{120};     ///< Size of total verbose status
+   unsigned int fStatusInterval{10};   ///< Time between status updates
+   bool         fLongFileDescription{false};
 
    // Proof only
-   int         fMaxWorkers;              ///< Max workers used in grsiproof
-   bool        fSelectorOnly;            ///< Flag to turn PROOF off in grsiproof
-   std::string fTreeName;                ///< Name of tree to be analyzed (default is empty, i.e. FragmentTree, AnalysisTree, and Lst2RootTree are checked)
-   bool        fAverageRateEstimation;   ///< enable average rate estimation
-   bool        fParallelUnzip;           ///< enable use of parallel unzipping
-   int         fCacheSize;               ///< set tree cache size, default is -1 (off)
-   int         fSubmergers;              ///< set number of sub-mergers (0 = automatic), default is -1 (off)
-   bool        fProofStats;              ///< enable proof stats
+   int         fMaxWorkers{-1};                 ///< Max workers used in grsiproof
+   bool        fSelectorOnly{false};            ///< Flag to turn PROOF off in grsiproof
+   std::string fTreeName;                       ///< Name of tree to be analyzed (default is empty, i.e. FragmentTree, AnalysisTree, and Lst2RootTree are checked)
+   bool        fAverageRateEstimation{false};   ///< enable average rate estimation
+   bool        fParallelUnzip{false};           ///< enable use of parallel unzipping
+   int         fCacheSize{-1};                  ///< set tree cache size, default is -1 (off)
+   int         fSubmergers{-1};                 ///< set number of sub-mergers (0 = automatic), default is -1 (off)
+   bool        fProofStats{false};              ///< enable proof stats
 
    // shared object libraries
    std::string fParserLibrary;   ///< location of shared object library for data parser and files

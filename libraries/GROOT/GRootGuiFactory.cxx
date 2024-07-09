@@ -23,11 +23,7 @@
 
 #include "GCanvas.h"
 
-/// \cond CLASSIMP
-ClassImp(GRootGuiFactory)
-   /// \endcond
-
-   void GRootGuiFactory::Init()
+void GRootGuiFactory::Init()
 {
    if(gROOT->IsBatch()) {
       return;

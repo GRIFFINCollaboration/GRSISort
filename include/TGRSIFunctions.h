@@ -24,7 +24,7 @@
 namespace TGRSIFunctions {
 
 // Function to check parameter erros to see if any parameter is near its limit
-bool CheckParameterErrors(const TFitResultPtr& fit_res, std::string opt = "");
+bool CheckParameterErrors(const TFitResultPtr& fitres, std::string opt = "");
 
 // Fitting Functions
 Double_t PolyBg(Double_t* x, Double_t* par, Int_t order);
@@ -48,7 +48,7 @@ Double_t SkewedGaus2(Double_t* x, Double_t* par);
 Double_t MultiSkewedGausWithBG2(Double_t* dim, Double_t* par);
 
 // CSI FIT FUNCTION
-Double_t CsIFitFunction(Double_t* i, Double_t* p);
+Double_t CsIFitFunction(Double_t* time, Double_t* par);
 
 // Common corrections
 Double_t DeadTimeCorrect(Double_t* dim, Double_t deadtime, Double_t binWidth = 1.0);

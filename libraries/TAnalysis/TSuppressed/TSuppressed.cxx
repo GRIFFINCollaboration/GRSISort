@@ -1,8 +1,6 @@
 #include "TSuppressed.h"
 
-ClassImp(TSuppressed)
-
-   void TSuppressed::Copy(TObject& rhs) const
+void TSuppressed::Copy(TObject& rhs) const
 {
    // Copy function.
    TDetector::Copy(rhs);

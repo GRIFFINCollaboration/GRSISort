@@ -6,17 +6,10 @@
 #include "TChannel.h"
 #include "TGRSIOptions.h"
 
-TSortingDiagnostics::TSortingDiagnostics() : TSingleton<TSortingDiagnostics>()
+TSortingDiagnostics::TSortingDiagnostics()
 {
    Clear();
 }
-
-TSortingDiagnostics::TSortingDiagnostics(const TSortingDiagnostics&) : TSingleton<TSortingDiagnostics>()
-{
-   Clear();
-}
-
-TSortingDiagnostics::~TSortingDiagnostics() = default;
 
 void TSortingDiagnostics::Copy(TObject& obj) const
 {
@@ -32,7 +25,7 @@ void TSortingDiagnostics::Clear(Option_t*)
    fMissingDetectorClasses.clear();
 }
 
-void TSortingDiagnostics::OutOfTimeOrder(double newFragTime, double oldFragTime, long newEntry)
+void TSortingDiagnostics::OutOfTimeOrder(double newFragTime, double oldFragTime, int64_t newEntry)
 {
    fFragmentsOutOfTimeOrder[oldFragTime] = std::make_pair(oldFragTime - newFragTime, newEntry);
    // try and find a time before newFragTime
@@ -44,13 +37,13 @@ void TSortingDiagnostics::OutOfTimeOrder(double newFragTime, double oldFragTime,
          }
       }
    }
-   long entryDiff = newEntry - (entry * TGRSIOptions::Get()->SortDepth());
+   int64_t entryDiff = newEntry - (entry * TGRSIOptions::Get()->SortDepth());
    if(entryDiff > fMaxEntryDiff) {
       fMaxEntryDiff = entryDiff;
    }
 }
 
-void TSortingDiagnostics::OutOfOrder(long newFragTS, long oldFragTS, long newEntry)
+void TSortingDiagnostics::OutOfOrder(int64_t newFragTS, int64_t oldFragTS, int64_t newEntry)
 {
    fFragmentsOutOfOrder[oldFragTS] = std::make_pair(oldFragTS - newFragTS, newEntry);
    // try and find a timestamp before newFragTS
@@ -62,7 +55,7 @@ void TSortingDiagnostics::OutOfOrder(long newFragTS, long oldFragTS, long newEnt
          }
       }
    }
-   long entryDiff = newEntry - (entry * TGRSIOptions::Get()->SortDepth());
+   int64_t entryDiff = newEntry - (entry * TGRSIOptions::Get()->SortDepth());
    if(entryDiff > fMaxEntryDiff) {
       fMaxEntryDiff = entryDiff;
    }
@@ -94,14 +87,14 @@ void TSortingDiagnostics::Print(Option_t* opt) const
    option.ToUpper();
    if(!fMissingChannels.empty()) {
       std::cout << "Missing channels:" << std::endl;
-      for(auto it : fMissingChannels) {
-         std::cout << hex(it.first, 4) << ": " << it.second << std::endl;
+      for(auto iter : fMissingChannels) {
+         std::cout << hex(iter.first, 4) << ": " << iter.second << std::endl;
       }
    }
    if(!fMissingDetectorClasses.empty()) {
       std::cout << "Missing detector classes:" << std::endl;
-      for(auto it : fMissingDetectorClasses) {
-         std::cout << (it.first == nullptr ? "nullptr" : it.first->GetName()) << ": " << it.second << std::endl;
+      for(auto iter : fMissingDetectorClasses) {
+         std::cout << (iter.first == nullptr ? "nullptr" : iter.first->GetName()) << ": " << iter.second << std::endl;
       }
    }
    std::string color;
@@ -110,8 +103,8 @@ void TSortingDiagnostics::Print(Option_t* opt) const
          color = DRED;
       }
       std::cout << color << "Removed hits per detector class:" << RESET_COLOR << std::endl;
-      for(auto it : fHitsRemoved) {
-         std::cout << it.first->GetName() << ": " << it.second.first << "/" << it.second.second << " = " << (100. * it.second.first) / it.second.second << "%" << std::endl;
+      for(auto iter : fHitsRemoved) {
+         std::cout << iter.first->GetName() << ": " << iter.second.first << "/" << iter.second.second << " = " << (100. * iter.second.first) / iter.second.second << "%" << std::endl;
       }
    } else {
       if(option.EqualTo("ERROR")) {
@@ -158,7 +151,7 @@ void TSortingDiagnostics::WriteToFile(const char* fileName) const
             << std::endl;
 }
 
-void TSortingDiagnostics::RemovedHits(TClass* detClass, long removed, long total)
+void TSortingDiagnostics::RemovedHits(TClass* detClass, int64_t removed, int64_t total)
 {
    if(fHitsRemoved.find(detClass) == fHitsRemoved.end()) {
       fHitsRemoved[detClass] = std::make_pair(removed, total);

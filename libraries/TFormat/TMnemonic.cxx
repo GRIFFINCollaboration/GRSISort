@@ -3,11 +3,7 @@
 #include <algorithm>
 #include <iostream>
 
-/// \cond CLASSIMP
-ClassImp(TMnemonic)
-   /// \endcond
-
-   bool TMnemonic::fPrint = true;
+bool TMnemonic::fPrint = true;
 
 void TMnemonic::Clear(Option_t*)
 {
@@ -75,9 +71,9 @@ void TMnemonic::Parse(std::string* name)
    EnumerateMnemonic(fSubSystemString, fSubSystem);
    buf.clear();
    buf.assign(*name, 3, 2);
-   fArrayPosition = static_cast<uint16_t>(atoi(buf.c_str()));
+   fArrayPosition = static_cast<int16_t>(atoi(buf.c_str()));
    // TIP is a Bad Mnemonic and uses 3 characters for array position this may be changed in the future - S. Gillespie
-   if(fSystemString.compare("TP") == 0) {
+   if(fSystemString == "TP") {
       fArraySubPositionString.assign(*name, 5, 2);
    } else {
       fArraySubPositionString.assign(*name, 5, 1);
@@ -87,7 +83,7 @@ void TMnemonic::Parse(std::string* name)
    EnumerateMnemonic(fCollectedChargeString, fCollectedCharge);
    buf.clear();
    buf.assign(*name, 7, 2);
-   fSegment = static_cast<uint16_t>(atoi(buf.c_str()));
+   fSegment = static_cast<int16_t>(atoi(buf.c_str()));
    fOutputSensorString.assign(*name, 9, 1);
    EnumerateMnemonic(fOutputSensorString, fOutputSensor);
 }

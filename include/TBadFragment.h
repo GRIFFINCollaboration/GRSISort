@@ -23,11 +23,13 @@ class TBadFragment : public TFragment {
 public:
    TBadFragment();
    TBadFragment(TFragment& fragment, uint32_t* data, int size, int failedWord, bool multipleErrors);
-   TBadFragment(TFragment& fragment);
-   TBadFragment(const TBadFragment&);
-   ~TBadFragment() override;
+   explicit TBadFragment(TFragment& fragment);
+   TBadFragment(const TBadFragment&) = default;
+   TBadFragment(TBadFragment&&) = default;
+   ~TBadFragment() = default;
 
-   TBadFragment& operator=(const TBadFragment&);
+   TBadFragment& operator=(const TBadFragment&) = default;
+   TBadFragment& operator=(TBadFragment&&) = default;
 
    std::vector<uint32_t> GetData() const { return fData; }
    int                   GetFailedWord() const { return fFailedWord; }
@@ -38,8 +40,8 @@ public:
 
 private:
    std::vector<uint32_t> fData;
-   int                   fFailedWord;
-   bool                  fMultipleErrors;
+   int                   fFailedWord{-1};
+   bool                  fMultipleErrors{false};
 
    /// \cond CLASSIMP
    ClassDefOverride(TBadFragment, 1);

@@ -1,5 +1,5 @@
-#ifndef __TGRSIUTILITIES_H_
-#define __TGRSIUTILITIES_H_
+#ifndef TGRSIUTILITIES_H
+#define TGRSIUTILITIES_H
 
 #include <fstream>
 #include <string>
@@ -18,8 +18,7 @@ int GetSubRunNumber(const std::string&);
 
 inline size_t FindFileSize(const char* fname)
 {
-   std::ifstream temp;
-   temp.open(fname, std::ios::in | std::ios::ate);
+   std::ifstream temp(fname, std::ios::in | std::ios::ate);
    size_t fsize = temp.tellg();
    temp.close();
    return fsize;

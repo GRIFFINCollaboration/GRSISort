@@ -15,10 +15,6 @@
 GValue*                        GValue::fDefaultValue = new GValue("GValue", sqrt(-1));
 std::map<std::string, GValue*> GValue::fValueVector;
 
-GValue::GValue() : fValue(0.00), fPriority(EPriority::kDefault)
-{
-}
-
 GValue::GValue(const char* name, double value, EPriority priority)
    : TNamed(name, name), fValue(value), fPriority(priority)
 {
@@ -113,7 +109,7 @@ bool GValue::AddValue(GValue* value, Option_t*)
       return false;
    }
    std::string temp_string = value->GetName();
-   if(temp_string.compare("") == 0) {
+   if(temp_string == "") {
       // default value, get rid of it and ignore;
       delete value;
       return false;
@@ -152,7 +148,6 @@ void GValue::Print(Option_t*) const
 
 int GValue::WriteValFile(const std::string& filename, Option_t*)
 {
-   std::map<std::string, GValue*>::iterator it;
    // std::string filebuffer;
    if(filename.length() != 0u) {
       std::ofstream outfile;
@@ -160,13 +155,12 @@ int GValue::WriteValFile(const std::string& filename, Option_t*)
       if(!outfile.is_open()) {
          return -1;
       }
-      for(it = fValueVector.begin(); it != fValueVector.end(); it++) {
-         outfile << it->second->PrintToString();
-         outfile << "\n\n";
+      for(auto iter = fValueVector.begin(); iter != fValueVector.end(); iter++) {
+         outfile << iter->second->PrintToString() << std::endl << std::endl;
       }
    } else {
-      for(it = fValueVector.begin(); it != fValueVector.end(); it++) {
-         std::cout << it->second->PrintToString() << "\n\n";
+      for(auto iter = fValueVector.begin(); iter != fValueVector.end(); iter++) {
+			std::cout << iter->second->PrintToString() << std::endl << std::endl;
       }
    }
    return fValueVector.size();
@@ -178,9 +172,8 @@ std::string GValue::WriteToBuffer(Option_t*)
    if(GValue::Size() == 0) {
       return buffer;
    }
-   std::map<std::string, GValue*>::iterator it;
-   for(it = fValueVector.begin(); it != fValueVector.end(); it++) {
-      buffer.append(it->second->PrintToString());
+   for(auto iter = fValueVector.begin(); iter != fValueVector.end(); iter++) {
+      buffer.append(iter->second->PrintToString());
       buffer.append("\n");
    }
    return buffer;
@@ -189,7 +182,7 @@ std::string GValue::WriteToBuffer(Option_t*)
 void GValue::Clear()
 {
    // loop over all values and delete them
-   for(auto value : fValueVector) {
+   for(const auto& value : fValueVector) {
       delete value.second;
    }
    // delete map
@@ -280,18 +273,13 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
             line = line.substr(colon + 1, line.length());
             trim(line);   // strip beginning whitespace (not needed for value itself, but for the readability of info)
             trim(type);
-            int j = 0;
-            while(type[j] != 0) {
-               char c    = *(type.c_str() + j);
-               c         = toupper(c);
-               type[j++] = c;
-            }
-            if(type.compare("NAME") == 0) {
+				std::transform(type.begin(), type.end(), type.begin(), ::toupper);
+            if(type == "NAME") {
                value->SetName(line.c_str());
-            } else if(type.compare("VALUE") == 0) {
+            } else if(type == "VALUE") {
                value->SetValue(std::atof(line.c_str()));
                value->fPriority = priority;
-            } else if(type.compare("INFO") == 0) {
+            } else if(type == "INFO") {
                value->SetInfo(line.c_str());
             }
          }
@@ -324,7 +312,8 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
 void GValue::Streamer(TBuffer& R__b)
 {
    SetBit(kCanDelete);
-   UInt_t R__s, R__c;
+   UInt_t R__s = 0;
+	UInt_t R__c = 0;
    if(R__b.IsReading()) {
       Version_t R__v = R__b.ReadVersion(&R__s, &R__c);
       TNamed::Streamer(R__b);

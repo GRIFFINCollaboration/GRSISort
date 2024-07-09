@@ -8,6 +8,7 @@
 
 class AngularCorrelationHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<AngularCorrelationHelper> {
 private:
+   int              fNofMixedEvents{10};
    double           fGriffinDistance{145.};
    bool             fFolding{false};
    bool             fGrouping{false};
@@ -49,6 +50,7 @@ public:
       Prefix("AngularCorrelation");
 
       if(fUserSettings != nullptr) {
+         fNofMixedEvents  = fUserSettings->GetInt("NumberOfMixedEvents", 10);
          fGriffinDistance = fUserSettings->GetDouble("GriffinDistance", 145.);
          fAddback         = fUserSettings->GetBool("Addback", true);
          fFolding         = fUserSettings->GetBool("Folding", false);
@@ -75,7 +77,7 @@ public:
       } else {
          std::cout << "No user settings provided, using default settings: ";
       }
-      std::cout << std::boolalpha << "distance " << fGriffinDistance << " mm, addback " << fAddback << ", folding " << fFolding << ", and grouping " << fGrouping << std::endl;
+      std::cout << std::boolalpha << "# of mixed events " << fNofMixedEvents << ", distance " << fGriffinDistance << " mm, addback " << fAddback << ", folding " << fFolding << ", and grouping " << fGrouping << std::endl;
 
       fAngles = new TGriffinAngles(fGriffinDistance, fFolding, fGrouping, fAddback);
       fAngles->Print();
@@ -89,7 +91,7 @@ public:
       return d->Book<TGriffin, TGriffinBgo>(std::move(*this), {"TGriffin", "TGriffinBgo"});
    }
 
-   void CreateHistograms(unsigned int slot);
+   void CreateHistograms(unsigned int slot) override;
    void Exec(unsigned int slot, TGriffin& fGriffin, TGriffinBgo& fGriffinBgo);
 };
 

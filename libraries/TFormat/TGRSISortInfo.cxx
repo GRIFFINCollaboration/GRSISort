@@ -2,14 +2,7 @@
 
 #include <iostream>
 
-/// \cond CLASSIMP
-ClassImp(TGRSISortInfo)
-   /// \endcond
-   /// \cond CLASSIMP
-   ClassImp(TGRSISortList)
-   /// \endcond
-
-   Bool_t TGRSISortList::AddSortInfo(TGRSISortInfo* info, Option_t* opt)
+Bool_t TGRSISortList::AddSortInfo(TGRSISortInfo* info, Option_t* opt)
 {
    TString opt1 = opt;
    opt1.ToUpper();
@@ -37,13 +30,11 @@ TGRSISortInfo* TGRSISortList::GetSortInfo(Int_t RunNumber, Int_t SubRunNumber)
 
 void TGRSISortList::Print(Option_t*) const
 {
-   info_map::const_iterator                        it;
-   std::map<Int_t, TGRSISortInfo*>::const_iterator lil_it;
-   for(it = fSortInfoList.begin(); it != fSortInfoList.end(); it++) {
-      for(lil_it = it->second.begin(); lil_it != it->second.end(); lil_it++) {
-         lil_it->second->Print();
-      }
-   }
+	for(auto map : fSortInfoList) {
+		for(auto item : map.second) {
+			item.second->Print();
+		}
+	}
 }
 
 void TGRSISortList::Clear(Option_t*)
@@ -53,17 +44,14 @@ void TGRSISortList::Clear(Option_t*)
 
 Bool_t TGRSISortList::AddSortList(TGRSISortList* rhslist, Option_t*)
 {
-   // Adds another TGRSISortList to the current Sort list.
-   info_map::iterator                        it;
-   std::map<Int_t, TGRSISortInfo*>::iterator lil_it;
-   info_map*                                 rhsmap = rhslist->GetMap();
-   for(it = rhsmap->begin(); it != rhsmap->end(); it++) {
-      for(lil_it = it->second.begin(); lil_it != it->second.end(); lil_it++) {
+   /// Adds another TGRSISortList to the current Sort list.
+	for(auto map : rhslist->fSortInfoList) {
+		for(auto item : map.second) {
          // We need to clone the TGRSISortInfo so that we have ownership in the new list
-         AddSortInfo(static_cast<TGRSISortInfo*>(lil_it->second->Clone()));
+         AddSortInfo(static_cast<TGRSISortInfo*>(item.second->Clone()));
          // We might not need the clone, but that will take some checking.
-      }
-   }
+		}
+	}
    return true;
 }
 
@@ -84,23 +72,18 @@ Long64_t TGRSISortList::Merge(TCollection* list)
    //  fRunInfoList.AddAll(list);
 }
 
-TGRSISortInfo::TGRSISortInfo(const TRunInfo* info)
-{
-   Clear();
-   SetRunInfo(info);
-}
-
 TGRSISortInfo::TGRSISortInfo()
 {
    Clear();
+	SetRunInfo();
 }
 
 TGRSISortInfo::~TGRSISortInfo() = default;
 
-void TGRSISortInfo::SetRunInfo(const TRunInfo* info)
+void TGRSISortInfo::SetRunInfo()
 {
-   fRunNumber    = info->RunNumber();
-   fSubRunNumber = info->SubRunNumber();
+	fRunNumber = TRunInfo::RunNumber();
+	fSubRunNumber = TRunInfo::SubRunNumber();
 }
 
 void TGRSISortInfo::Print(Option_t*) const

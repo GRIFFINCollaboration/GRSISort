@@ -17,7 +17,7 @@ TFragmentChainLoop* TFragmentChainLoop::Get(std::string name, TChain* chain)
       name = "chain_loop";
    }
 
-   TFragmentChainLoop* loop = static_cast<TFragmentChainLoop*>(StoppableThread::Get(name));
+   auto* loop = static_cast<TFragmentChainLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
       if((chain == nullptr) && (gFragment == nullptr)) {
          return nullptr;
@@ -31,8 +31,8 @@ TFragmentChainLoop* TFragmentChainLoop::Get(std::string name, TChain* chain)
 }
 
 TFragmentChainLoop::TFragmentChainLoop(std::string name, TChain* chain)
-   : StoppableThread(name), fEntriesTotal(chain->GetEntries()), fInputChain(chain), fFragment(nullptr),
-     fSelfStopping(true)
+   : StoppableThread(std::move(name)), fEntriesTotal(chain->GetEntries()), 
+	  fInputChain(chain), fFragment(nullptr), fSelfStopping(true)
 {
    SetupChain();
 }
@@ -73,7 +73,7 @@ void TFragmentChainLoop::OnEnd()
 
 bool TFragmentChainLoop::Iteration()
 {
-   if(static_cast<long>(fItemsPopped) >= fEntriesTotal) {
+   if(static_cast<int64_t>(fItemsPopped) >= fEntriesTotal) {
       if(fSelfStopping) {
          return false;
       }

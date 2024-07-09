@@ -20,22 +20,9 @@
 ///
 ///////////////////////////////////////////////////////////////
 
-/// \cond CLASSIMP
-ClassImp(TEpicsFrag)
-   /// \endcond
-
-   std::vector<std::string> TEpicsFrag::fNameList;
+std::vector<std::string>       TEpicsFrag::fNameList;
 std::map<Long64_t, TEpicsFrag> TEpicsFrag::fScalerMap;
 Long64_t                       TEpicsFrag::fSmallestTime = std::numeric_limits<Long64_t>::max();
-
-TEpicsFrag::TEpicsFrag()
-{
-   // Default Constructor.
-   fDaqTimeStamp = 0;
-   fDaqId        = -1;
-}
-
-TEpicsFrag::~TEpicsFrag() = default;
 
 void TEpicsFrag::Clear(Option_t*)
 {
@@ -54,6 +41,7 @@ void TEpicsFrag::Print(Option_t*) const
    size_t largest = fData.size();
    std::cout << "------ EPICS " << largest << " Varibles Found ------" << std::endl;
 
+	// TODO maybe we can change this to std::array?
    char buff[20];
    ctime(&fDaqTimeStamp);
    struct tm* timeInfo = localtime(&fDaqTimeStamp);
@@ -74,12 +62,12 @@ void TEpicsFrag::AddEpicsVariable(const char* name)
    fNameList.emplace_back(name);
 }
 
-std::string TEpicsFrag::GetEpicsVariableName(const int& i)
+std::string TEpicsFrag::GetEpicsVariableName(const int& index)
 {
    try {
-      return fNameList.at(i);
+      return fNameList.at(index);
    } catch(const std::out_of_range& oor) {
-      std::cout << DRED << "Could not find variable at position " << i << ", returning nothing" << std::endl;
+      std::cout << DRED << "Could not find variable at position " << index << ", returning nothing" << std::endl;
       return "";
    }
 }
@@ -87,16 +75,16 @@ std::string TEpicsFrag::GetEpicsVariableName(const int& i)
 void TEpicsFrag::PrintVariableNames()
 {
    int idx = 0;
-   for(const auto& i : fNameList) {
-      std::cout << idx++ << ":  " << i << std::endl;
+   for(const auto& name : fNameList) {
+      std::cout << idx++ << ":  " << name << std::endl;
    }
 }
 
-void TEpicsFrag::SetEpicsNameList(const std::vector<std::string>& name_vec)
+void TEpicsFrag::SetEpicsNameList(const std::vector<std::string>& names)
 {
    fNameList.clear();
-   for(const auto& i : name_vec) {
-      fNameList.push_back(i);
+   for(const auto& name : names) {
+      fNameList.push_back(name);
    }
 }
 
@@ -111,11 +99,11 @@ void TEpicsFrag::BuildScalerMap(TTree* tree)
    if(tree->SetBranchAddress("TEpicsFrag", &my_frag) == 0) {
       for(int i = 0; i < tree->GetEntries(); ++i) {
          tree->GetEntry(i);
-         if((static_cast<Long64_t>(my_frag->fDaqTimeStamp) - static_cast<Long64_t>(TRunInfo::Get()->RunStart())) < fSmallestTime) {
-            fSmallestTime = static_cast<Long64_t>(my_frag->fDaqTimeStamp) - static_cast<Long64_t>(TRunInfo::Get()->RunStart());
+         if((static_cast<Long64_t>(my_frag->fDaqTimeStamp) - static_cast<Long64_t>(TRunInfo::RunStart())) < fSmallestTime) {
+            fSmallestTime = static_cast<Long64_t>(my_frag->fDaqTimeStamp) - static_cast<Long64_t>(TRunInfo::RunStart());
          }
          fScalerMap[static_cast<Long64_t>(my_frag->fDaqTimeStamp) -
-                    static_cast<Long64_t>(TRunInfo::Get()->RunStart())] = *my_frag;
+                    static_cast<Long64_t>(TRunInfo::RunStart())] = *my_frag;
       }
    } else {
       std::cout << DRED << "Could not build map from tree" << RESET_COLOR << std::endl;
@@ -156,7 +144,7 @@ void TEpicsFrag::PrintScalerMap()
          return;
       }
    }
-   for(auto i : fScalerMap) {
-      std::cout << i.first << "    " << i.second.fDaqTimeStamp << std::endl;
+   for(const auto& item : fScalerMap) {
+      std::cout << item.first << "    " << item.second.fDaqTimeStamp << std::endl;
    }
 }

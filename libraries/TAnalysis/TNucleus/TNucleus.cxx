@@ -10,13 +10,9 @@
 #include <TClass.h>
 #include <TGraph.h>
 
-/// \cond CLASSIMP
-ClassImp(TNucleus)
-   /// \endcond
+static double amu = 931.494043;
 
-   static double amu = 931.494043;
-
-std::string& TNucleus::massfile()
+std::string& TNucleus::Massfile()
 {
    static std::string output = std::string(getenv("GRSISYS")) + "/libraries/TAnalysis/SourceData/mass.dat";
    return output;
@@ -28,16 +24,17 @@ TNucleus::TNucleus(const char* name)
    int           number = 0;
    std::string   symbol;
    std::string   element;
-   int           z, n;
+   int           z = 0;
+	int           n = 0;
    std::string   sym_name;
-   double        mass;
+   double        mass = 0.;
    bool          found = false;
    std::string   line;
    std::ifstream infile;
    std::string   massFile;
    ParseName(name, symbol, number, element);
    try {
-      massFile = massfile();
+      massFile = Massfile();
       infile.open(massFile.c_str());
       while(!getline(infile, line).fail()) {
          if(line.length() < 1) {
@@ -74,27 +71,25 @@ TNucleus::TNucleus(const char* name)
 }
 
 TNucleus::TNucleus(int charge, int neutrons, double mass, const char* symbol)
+	: fN(neutrons), fZ(charge), fMass(mass), fSymbol(symbol)
 {
-   // Creates a nucleus with Z, N, mass, and symbol
-   fZ      = charge;
-   fN      = neutrons;
-   fSymbol = symbol;
-   fMass   = mass;
+   /// Creates a nucleus with Z, N, mass, and symbol
    SetName();
    LoadTransitionFile();
 }
 
 TNucleus::TNucleus(int charge, int neutrons, const char* MassFile)
+	: fN(neutrons), fZ(charge)
 {
-   // Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
+   /// Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
    if(MassFile == nullptr) {
-      MassFile = massfile().c_str();
+      MassFile = Massfile().c_str();
    }
-   fZ              = charge;
-   fN              = neutrons;
-   int           i = 0, n, z;
-   double        emass;
-   char          tmp[256];
+   int           i     = 0;
+   int           n     = 0;
+   int           z     = 0;
+   double        emass = 0.;
+	std::string   tmp;
    std::ifstream mass_file;
    mass_file.open(MassFile, std::ios::in);
    while(!mass_file.bad() && !mass_file.eof() && i < 3008) {
@@ -106,7 +101,7 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile)
          fMassExcess = emass / 1000.;
          fSymbol     = tmp;
 #ifdef debug
-         cout << "Symbol " << fSymbol << " tmp " << tmp << endl;
+			std::cout << "Symbol " << fSymbol << " tmp " << tmp << std::endl;
 #endif
          SetMass();
          SetSymbol(fSymbol.c_str());
@@ -150,7 +145,7 @@ void TNucleus::ParseName(std::string name, std::string& symbol, int& number, std
    /// element simply is the combined string of number and element.
 
    // remove any characters that aren't alphanumeric
-   name.erase(std::remove_if(name.begin(), name.end(), [](char c) { return !std::isalnum(c); }), name.end());
+   name.erase(std::remove_if(name.begin(), name.end(), [](char c) { return std::isalnum(c) == 0; }), name.end());
 
    // special single letter cases
    if(name.length() == 1) {
@@ -173,8 +168,8 @@ void TNucleus::ParseName(std::string name, std::string& symbol, int& number, std
       };
    }
 
-   int firstDigit  = name.find_first_of("0123456789");
-   int firstLetter = name.find_first_not_of("0123456789");
+   size_t firstDigit  = name.find_first_of("0123456789");
+   size_t firstLetter = name.find_first_not_of("0123456789");
    if(firstDigit > firstLetter) {
       number = atoi(name.substr(firstDigit).c_str());
       symbol.append(name.substr(firstLetter, firstDigit - firstLetter));
@@ -185,7 +180,7 @@ void TNucleus::ParseName(std::string name, std::string& symbol, int& number, std
    // make certain the symbol starts with upper case and rest is lower case by first transforming everything to lower case and then the first character to upper case.
    std::transform(symbol.begin(), symbol.end(), symbol.begin(), ::tolower);
    symbol[0] = toupper(symbol[0]);
-   element.append(std::to_string(static_cast<long long>(number)));
+   element.append(std::to_string(number));
    element.append(symbol);
 }
 
@@ -197,7 +192,7 @@ std::string TNucleus::SortName(std::string input)
    int         number = 0;
    std::string symbol;
    std::string element;
-   ParseName(input, symbol, number, element);
+   ParseName(std::move(input), symbol, number, element);
 
    return element;
 }
@@ -246,10 +241,9 @@ int TNucleus::GetZfromSymbol(char* symbol)
                            "PM", "SM", "EU", "GD", "TB", "DY", "HO", "ER", "TM", "YB", "LU", "HF", "TA", "W", "RE",
                            "OS", "IR", "PT", "AU", "HG", "TI", "PB", "BI", "PO", "AT", "RN", "FR", "RA", "AC", "TH",
                            "PA", "U", "NP", "PU", "AM", "CM", "BK", "CF", "ES", "FM", "MD", "NO", "LR", "RF", "HA"};
-   int  length          = strlen(symbol);
-   // cout<<symbol<<"   "<<length<<endl;
+   size_t  length       = strlen(symbol);
    auto* search = new char[length + 1];
-   for(int i = 0; i < length; i++) {
+   for(size_t i = 0; i < length; i++) {
       search[i] = toupper(symbol[i]);   // make sure symbol is in uppercase
    }
    search[length] = '\0';
@@ -295,7 +289,7 @@ void TNucleus::AddTransition(TTransition* tran)
 
 TTransition* TNucleus::GetTransitionByIntensity(Int_t idx)
 {
-   TTransition* tran = static_cast<TTransition*>(fTransitionListByIntensity.At(idx));
+   auto* tran = static_cast<TTransition*>(fTransitionListByIntensity.At(idx));
    if(tran == nullptr) {
       std::cout << "Out of Range" << std::endl;
    }
@@ -305,7 +299,7 @@ TTransition* TNucleus::GetTransitionByIntensity(Int_t idx)
 
 TTransition* TNucleus::GetTransitionByEnergy(Int_t idx)
 {
-   TTransition* tran = static_cast<TTransition*>(fTransitionListByEnergy.At(idx));
+   auto* tran = static_cast<TTransition*>(fTransitionListByEnergy.At(idx));
    if(tran == nullptr) {
       std::cout << "Out of Range" << std::endl;
    }
@@ -319,7 +313,7 @@ void TNucleus::Print(Option_t*) const
    std::cout << "Nucleus: " << GetName() << std::endl;
    TIter next(&fTransitionListByIntensity);
    int   counter = 0;
-   while(TTransition* tran = static_cast<TTransition*>(next())) {
+   while(auto* tran = static_cast<TTransition*>(next())) {
       std::cout << "\t" << counter++ << "\t";
       tran->Print();
    }
@@ -368,11 +362,11 @@ bool TNucleus::LoadTransitionFile()
       if(line.compare(0, 1, "#") == 0) {
          continue;
       }
-      double            temp;
+      double            temp = 0.;
       auto*             tran = new TTransition;
-      std::stringstream ss(line);
+      std::stringstream str(line);
       int               counter = 0;
-      while(!(ss >> temp).fail()) {
+      while(!(str >> temp).fail()) {
          counter++;
          if(counter == 1) {
             tran->SetEnergy(temp);
@@ -394,13 +388,13 @@ bool TNucleus::LoadTransitionFile()
    return true;
 }
 
-double TNucleus::GetEnergyFromBeta(double beta)
+double TNucleus::GetEnergyFromBeta(double beta) const
 {
    double gamma = 1 / std::sqrt(1 - beta * beta);
    return fMass * (gamma - 1);
 }
 
-double TNucleus::GetBetaFromEnergy(double energy_MeV)
+double TNucleus::GetBetaFromEnergy(double energy_MeV) const
 {
    double gamma = energy_MeV / fMass + 1;
    double beta  = std::sqrt(1 - 1 / (gamma * gamma));

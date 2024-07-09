@@ -28,17 +28,10 @@
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-// 1 GB size limit for objects in ROOT
-#define SIZE_LIMIT 1073741822
-
 class TGRSISelector : public TSelector {
 public:
-   TTree* fChain;   //! pointer to the analyzed TTree or TChain
-
-   // Declaration of leaf types
-
    // Methods are purposely not virtual so that TGRSISelector has control
-   TGRSISelector(TTree* /*tree*/ = nullptr) : fChain(nullptr) { SetOutputPrefix(ClassName()); }
+   TGRSISelector(TTree* /*tree*/ = nullptr) { SetOutputPrefix(ClassName()); }
    ~TGRSISelector() override = default;
    Int_t  Version() const override { return 2; }
    void   Begin(TTree* tree) override;
@@ -48,7 +41,7 @@ public:
    Bool_t Process(Long64_t entry) override;
    Int_t  GetEntry(Long64_t entry, Int_t getall = 0) override
    {
-      return fChain ? fChain->GetTree()->GetEntry(entry, getall) : 0;
+      return ((fChain != nullptr) ? fChain->GetTree()->GetEntry(entry, getall) : 0);
    }
    void SetOption(const char* option) override { fOption = option; }
    void SetObject(TObject* obj) override { fObject = obj; }
@@ -72,19 +65,23 @@ protected:
    TGRSIMap<std::string, GCube*>      fCube;               //!<! map for GRSISort's 3-D histograms
    TGRSIMap<std::string, THnSparseF*> fHSparse;            //!<! map for sparse n-D histograms
    TGRSIMap<std::string, TTree*>      fTree;               //!<! map for trees
+   std::map<std::string, TCutG*>      fCuts;               //!<! map of cuts
    TPPG*                              fPpg{nullptr};       //!<! pointer to the PPG
    TRunInfo*                          fRunInfo{nullptr};   //!<! pointer to the run info
-   std::map<std::string, TCutG*>      fCuts;               //!<! map of cuts
-   int64_t                            fEntry;              //!<! entry number currently being processed
+   int64_t                            fEntry{0};           //!<! entry number currently being processed
 
 private:
+	static constexpr int fSizeLimit = 1073741822;             //!<! 1 GB size limit for objects in ROOT
+
+   TTree* fChain{nullptr};   //!<! pointer to the analyzed TTree or TChain
+
    void              CheckSizes(const char* usage);   ///< Function to check size of objects in output list
    std::string       fOutputPrefix;                   //!<! pre-fix for output files
    TAnalysisOptions* fAnalysisOptions{nullptr};       //!<! pointer to analysis options
-   Int_t             fFirstRunNumber;                 //!<! run number of first file
-   Int_t             fFirstSubRunNumber;              //!<! sub-run number of first file
+   Int_t             fFirstRunNumber{-1};                 //!<! run number of first file
+   Int_t             fFirstSubRunNumber{-1};              //!<! sub-run number of first file
 
-   ClassDefOverride(TGRSISelector, 2);
+   ClassDefOverride(TGRSISelector, 3);
 };
 
 #endif

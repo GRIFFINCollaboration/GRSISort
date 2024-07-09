@@ -15,7 +15,7 @@ TFragHistLoop* TFragHistLoop::Get(std::string name)
    if(name.length() == 0) {
       name = "histo_loop";
    }
-   TFragHistLoop* loop = static_cast<TFragHistLoop*>(StoppableThread::Get(name));
+   auto* loop = static_cast<TFragHistLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
       loop = new TFragHistLoop(name);
    }
@@ -23,7 +23,7 @@ TFragHistLoop* TFragHistLoop::Get(std::string name)
 }
 
 TFragHistLoop::TFragHistLoop(std::string name)
-   : StoppableThread(name), fOutputFile(nullptr), fOutputFilename("last.root"),
+   : StoppableThread(std::move(name)), fOutputFile(nullptr), fOutputFilename("last.root"),
      fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>())
 {
    LoadLibrary(TGRSIOptions::Get()->FragmentHistogramLib());

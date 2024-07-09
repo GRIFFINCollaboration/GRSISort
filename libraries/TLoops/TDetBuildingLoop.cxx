@@ -5,14 +5,12 @@
 
 #include "TUnpackedEvent.h"
 
-ClassImp(TDetBuildingLoop)
-
-   TDetBuildingLoop* TDetBuildingLoop::Get(std::string name)
+TDetBuildingLoop* TDetBuildingLoop::Get(std::string name)
 {
    if(name.length() == 0) {
       name = "unpack_loop";
    }
-   TDetBuildingLoop* loop = static_cast<TDetBuildingLoop*>(StoppableThread::Get(name));
+   auto* loop = static_cast<TDetBuildingLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
       loop = new TDetBuildingLoop(name);
    }
@@ -20,7 +18,7 @@ ClassImp(TDetBuildingLoop)
 }
 
 TDetBuildingLoop::TDetBuildingLoop(std::string name)
-   : StoppableThread(name),
+   : StoppableThread(std::move(name)),
      fInputQueue(std::make_shared<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment>>>>())
 {
 }

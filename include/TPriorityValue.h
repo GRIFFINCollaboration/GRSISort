@@ -3,6 +3,7 @@
 
 #include <ostream>
 #include <string>
+#include <vector>
 
 /** \addtogroup Sorting
  *  @{
@@ -29,35 +30,15 @@ enum class EPriority { kDefault,
 template <class T>
 class TPriorityValue {
 public:
-   TPriorityValue()
-   {
-      fPriority = EPriority::kDefault;
-   }
+   TPriorityValue() : fPriority(EPriority::kDefault) {}
+   TPriorityValue(T value, EPriority priority = EPriority::kDefault) : fValue(value), fPriority(priority) {}
+   TPriorityValue(const TPriorityValue& rhs) : fPriority(EPriority::kDefault) { *this     = rhs; }
+   TPriorityValue(TPriorityValue&& rhs) noexcept : fPriority(EPriority::kDefault) { *this = rhs; }
 
-   TPriorityValue(T value, EPriority priority = EPriority::kDefault)
-   {
-      fValue    = value;
-      fPriority = priority;
-   }
-
-   TPriorityValue(const TPriorityValue& rhs)
-   {
-      fPriority = EPriority::kDefault;
-      *this     = rhs;
-   }
-
-   TPriorityValue(TPriorityValue&& rhs)
-   {
-      fPriority = EPriority::kDefault;
-      *this     = rhs;
-   }
-
-   ~TPriorityValue()
-   {
-   }
+   ~TPriorityValue() = default;
 
    // setter
-   void Set(T val, EPriority priority)
+   void Set(const T& val, EPriority priority)
    {
       if(priority >= fPriority) {
          fValue = val;
@@ -103,10 +84,10 @@ public:
       return *this;
    }
 
-   TPriorityValue<T>& operator=(TPriorityValue<T>&& rhs)
+   TPriorityValue<T>& operator=(TPriorityValue<T>&& rhs) noexcept
    {
       if(rhs.fPriority >= fPriority) {
-         fValue    = rhs.fValue;
+         fValue    = std::move(rhs.fValue);
          fPriority = rhs.fPriority;
       }
       return *this;
@@ -205,36 +186,15 @@ public:
 
    // copy-paste of original class (with 'T ' replace by 'std::vector<T> ', 'T>' by 'std::vector<T> >', 'T& ' by 'std::vector<T>& ', and 'T* ' by 'std::vector<T>* '):
    // minus the boolean conversion operator
-public:
-   TPriorityValue()
-   {
-      fPriority = EPriority::kDefault;
-   }
+   TPriorityValue() : fPriority(EPriority::kDefault) {}
+   TPriorityValue(std::vector<T> value, EPriority priority = EPriority::kDefault) : fValue(value), fPriority(priority) {}
+   TPriorityValue(const TPriorityValue& rhs) : fPriority(EPriority::kDefault) { *this     = rhs; }
+   TPriorityValue(TPriorityValue&& rhs) noexcept : fPriority(EPriority::kDefault) { *this = rhs; }
 
-   TPriorityValue(std::vector<T> value, EPriority priority)
-   {
-      fValue    = value;
-      fPriority = priority;
-   }
-
-   TPriorityValue(const TPriorityValue& rhs)
-   {
-      fPriority = EPriority::kDefault;
-      *this     = rhs;
-   }
-
-   TPriorityValue(TPriorityValue&& rhs)
-   {
-      fPriority = EPriority::kDefault;
-      *this     = rhs;
-   }
-
-   ~TPriorityValue()
-   {
-   }
+   ~TPriorityValue() = default;
 
    // setter
-   void Set(std::vector<T> val, EPriority priority)
+   void Set(const std::vector<T>& val, EPriority priority)
    {
       if(priority >= fPriority) {
          fValue = val;
@@ -253,7 +213,7 @@ public:
    }
 
    // reset functions
-   void Reset(std::vector<T> val)
+   void Reset(const std::vector<T>& val)
    {
       fValue = val;
       ResetPriority();
@@ -280,11 +240,11 @@ public:
       return *this;
    }
 
-   TPriorityValue<std::vector<T>>& operator=(TPriorityValue<std::vector<T>>&& rhs)
+   TPriorityValue<std::vector<T>>& operator=(TPriorityValue<std::vector<T>>&& rhs) noexcept
    {
       if(rhs.fPriority >= fPriority) {
          fValue    = std::move(rhs.fValue);
-         fPriority = std::move(rhs.fPriority);
+         fPriority = rhs.fPriority; // this is trivially copyable, so std::move has no effect
       }
       return *this;
    }
@@ -416,35 +376,15 @@ public:
    // copy-paste of original class (with 'T ' replace by 'std::string ', 'T>' by 'std::string>', 'T& ' by 'std::string& ', and 'T* ' by 'std::string* '):
    // minus the boolean conversion operator
 public:
-   TPriorityValue()
-   {
-      fPriority = EPriority::kDefault;
-   }
+   TPriorityValue() : fPriority(EPriority::kDefault) {}
+   TPriorityValue(std::string value, EPriority priority = EPriority::kDefault) : fValue(value), fPriority(priority) {}
+   TPriorityValue(const TPriorityValue& rhs) : fPriority(EPriority::kDefault) { *this     = rhs; }
+   TPriorityValue(TPriorityValue&& rhs) noexcept : fPriority(EPriority::kDefault) { *this = rhs; }
 
-   TPriorityValue(std::string value, EPriority priority)
-   {
-      fValue    = value;
-      fPriority = priority;
-   }
-
-   TPriorityValue(const TPriorityValue& rhs)
-   {
-      fPriority = EPriority::kDefault;
-      *this     = rhs;
-   }
-
-   TPriorityValue(TPriorityValue&& rhs)
-   {
-      fPriority = EPriority::kDefault;
-      *this     = rhs;
-   }
-
-   ~TPriorityValue()
-   {
-   }
+   ~TPriorityValue() = default;
 
    // setter
-   void Set(std::string val, EPriority priority)
+   void Set(const std::string& val, EPriority priority)
    {
       if(priority >= fPriority) {
          fValue = val;
@@ -463,7 +403,7 @@ public:
    }
 
    // reset functions
-   void Reset(std::string val)
+   void Reset(const std::string& val)
    {
       fValue = val;
       ResetPriority();
@@ -490,11 +430,11 @@ public:
       return *this;
    }
 
-   TPriorityValue<std::string>& operator=(TPriorityValue<std::string>&& rhs)
+   TPriorityValue<std::string>& operator=(TPriorityValue<std::string>&& rhs) noexcept
    {
       if(rhs.fPriority >= fPriority) {
          fValue    = std::move(rhs.fValue);
-         fPriority = std::move(rhs.fPriority);
+         fPriority = rhs.fPriority; // this is trivially copyable, so std::move has no effect
       }
       return *this;
    }

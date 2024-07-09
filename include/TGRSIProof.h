@@ -1,11 +1,11 @@
 // Author: Ryan Dunlop    10/16
 
+#ifndef TGRSIPROOF_H
+#define TGRSIPROOF_H
+
 /** \addtogroup Sorting
  *  @{
  */
-
-#ifndef TGRSIPROOF_H
-#define TGRSIPROOF_H
 
 #include "Globals.h"
 #include "TGRSIOptions.h"
@@ -41,16 +41,16 @@ const char* const nulFileName = "/dev/null";
 
 class TGRSIProof : public TProof {
 public:
-   TGRSIProof() : TProof() {}
-   // TGRSIProof(const TObject& rhs) : TProof(rhs) {}
+   TGRSIProof() = default;
    ~TGRSIProof() override = default;
 
    static TGRSIProof* Open(const char* worker = "")
    {
-      TGRSIProof* p = static_cast<TGRSIProof*>(TProof::Open(worker));
-      if(p != nullptr) p->LoadLibsIntoProof();
-      return p;
+      auto* proof = static_cast<TGRSIProof*>(TProof::Open(worker));
+      if(proof != nullptr) { proof->LoadLibsIntoProof(); }
+      return proof;
    }
+
    void LoadLibsIntoProof()
    {
       // This function Loops through all libraries in GRSISort, and brute-force loads them into proof
@@ -75,8 +75,8 @@ public:
    }
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSIProof, 1);   // Event Fragments
-                                      /// \endcond
+   ClassDefOverride(TGRSIProof, 1);
+   /// \endcond
 };
 /*! @} */
 #endif   // TGRSIProof_H

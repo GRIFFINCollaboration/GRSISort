@@ -5,29 +5,20 @@
 
 #include "Globals.h"
 
-/// \cond CLASSIMP
-ClassImp(TPeakFitter)
-   /// \endcond
-
-   TPeakFitter::TPeakFitter() : TObject()
+TPeakFitter::TPeakFitter(const Double_t& rangeLow, const Double_t& rangeHigh) 
+	: fTotalFitFunction(nullptr), fRangeLow(rangeLow), fRangeHigh(rangeHigh)
 {
    fBGToFit = new TF1("fbg", this, &TPeakFitter::DefaultBackgroundFunction, fRangeLow, fRangeHigh, 4, "TPeakFitter", "DefaultBackgroundFunction");
    fBGToFit->FixParameter(3, 0);
-   fTotalFitFunction = nullptr;
-   fBGToFit->SetLineColor(kRed + fIndex);
-}
-
-TPeakFitter::TPeakFitter(const Double_t& range_low, const Double_t& range_high) : TPeakFitter()
-{
-   fRangeLow  = range_low;
-   fRangeHigh = range_high;
+   fBGToFit->SetLineColor(static_cast<Color_t>(kRed + fColorIndex));
 }
 
 void TPeakFitter::Print(Option_t* opt) const
 {
    /// Print information from the fit, opt is passed along to each individual peaks Print function.
    if(fTotalFitFunction != nullptr) {
-      double xMin, xMax;
+      double xMin = 0.;
+		double xMax = 0.;
       fTotalFitFunction->GetRange(xMin, xMax);
       std::cout << "Fitting range: " << xMin << " to " << xMax << std::endl;
    } else {
@@ -36,15 +27,15 @@ void TPeakFitter::Print(Option_t* opt) const
    Int_t counter = 0;
    if(!fPeaksToFit.empty()) {
       std::cout << "Peaks: " << std::endl;
-      for(auto i : fPeaksToFit) {
+      for(auto* peak : fPeaksToFit) {
          std::cout << "Peak #" << counter++ << " - ";
-         i->Print(opt);
+         peak->Print(opt);
       }
       std::cout << "Chi2/Ndf = " << fPeaksToFit.front()->GetChi2() << "/" << fPeaksToFit.front()->GetNDF() << " = " << fPeaksToFit.front()->GetReducedChi2() << std::endl;
    } else {
       std::cout << "Could not find peak to print" << std::endl;
    }
-   if(fBGToFit) {
+   if(fBGToFit != nullptr) {
       std::cout << "BG: " << std::endl;
       fBGToFit->Print(opt);
    } else {
@@ -88,7 +79,7 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
    /// call to TH1::Fit.
    if(fPeaksToFit.empty()) {
       std::cout << "No peaks provided!" << std::endl;
-      return TFitResultPtr();
+      return {};
    }
 
    TString options = opt;
@@ -114,18 +105,19 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
    if(fTotalFitFunction == nullptr) {
       fTotalFitFunction = new TF1("total_fit", this, &TPeakFitter::FitFunction, fRangeLow, fRangeHigh, GetNParameters(), "TPeakFitter", "FitFunction");
    }
-   fTotalFitFunction->SetLineColor(kMagenta + fIndex);
+   fTotalFitFunction->SetLineColor(static_cast<Color_t>(kMagenta + fColorIndex));
    fTotalFitFunction->SetRange(fRangeLow, fRangeHigh);
+   fBGToFit->SetRange(fRangeLow, fRangeHigh);
    // We need to initialize all of the parameters based on the peak parameters
    if(fit_hist != nullptr && (!fInitFlag || fit_hist != fLastHistFit)) {
-      if(verbose) std::cout << "Initializing Fit...." << std::endl;
+      if(verbose) { std::cout << "Initializing Fit...." << std::endl; }
       InitializeBackgroundParameters(fit_hist);
       InitializeParameters(fit_hist);
       fInitFlag    = true;
       fLastHistFit = fit_hist;
    }
    UpdateFitterParameters();
-   if(verbose) PrintParameters();
+   if(verbose) { PrintParameters(); }
    // Do a first fit to get closer on the parameters
    fit_hist->Fit(fTotalFitFunction, "RNQ0");
    // Now try the fit with the options provided
@@ -137,16 +129,16 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
    if(!TGRSIFunctions::CheckParameterErrors(fit_res, options.Data())) {
       if(retryFit) {
          // fit again with all parameters released
-         if(!quiet) std::cout << GREEN << "Re-fitting with released parameters (without any limits)" << RESET_COLOR << std::endl;
+         if(!quiet) { std::cout << GREEN << "Re-fitting with released parameters (without any limits)" << RESET_COLOR << std::endl; }
          for(int i = 0; i < fTotalFitFunction->GetNpar(); ++i) {
-            if(i == 1) continue;   // skipping centroid, which should always be parameter 1
+            if(i == 1) { continue; }  // skipping centroid, which should always be parameter 1
             fTotalFitFunction->ReleaseParameter(i);
          }
          fit_res = fit_hist->Fit(fTotalFitFunction, Form("SRI%s", options.Data()));
          TGRSIFunctions::CheckParameterErrors(fit_res, options.Data());
       } else {
          // re-try using minos instead of minuit (only thing from opt that might play a role it 'q' or 'v')
-         if(!quiet) std::cout << YELLOW << "Re-fitting with \"E\" option to get better error estimation using Minos technique." << RESET_COLOR << std::endl;
+         if(!quiet) { std::cout << YELLOW << "Re-fitting with \"E\" option to get better error estimation using Minos technique." << RESET_COLOR << std::endl; }
          fit_res = fit_hist->Fit(fTotalFitFunction, Form("SRIE%s", options.Data()));
       }
    }
@@ -187,7 +179,7 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
    global_bg->SetParameters(fTotalFitFunction->GetParameters());
 
    // Start by looping through all of the peaks in the fitter.
-   for(auto p_it : fPeaksToFit) {
+   for(auto* p_it : fPeaksToFit) {
       TF1* peak_func = p_it->GetFitFunction();
       // We need to make a clone of the main fit function, and set all of the non-peak parameters to 0.
       // This will allow us to do the proper integrals. We have to do the same with the covariance matrix
@@ -202,7 +194,7 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
       // This would be the diagonals of the background, and all of the other peaks.
       Int_t              param_to_zero_counter = 0;
       std::vector<Int_t> param_to_zero_list;
-      for(auto other_p_it : fPeaksToFit) {
+      for(auto* other_p_it : fPeaksToFit) {
          if(other_p_it != p_it) {
             for(int i = 0; i < other_p_it->GetFitFunction()->GetNpar(); ++i) {
                param_to_zero_list.push_back(param_to_zero_counter);
@@ -215,7 +207,8 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
                }
                ++param_to_zero_counter;
             }
-            Double_t low_range, high_range;
+            Double_t low_range = 0.;
+				Double_t high_range = 0.;
             fTotalFitFunction->GetRange(low_range, high_range);
             peak_func->SetRange(low_range, high_range);
          }
@@ -228,28 +221,28 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
       // zero other non-peak portions of matrix
       for(auto i : param_to_zero_list) {
          for(auto j : param_to_zero_list) {
-            if(goodCovarianceMatrix) covariance_matrix(i, j) = 0.0;
+            if(goodCovarianceMatrix) { covariance_matrix(i, j) = 0.0; }
          }
          total_function_copy->SetParameter(i, 0.0);
       }
-      if(peak_func) {
+      if(peak_func != nullptr) {
          for(int i = 0; i < peak_func->GetNpar(); ++i) {
             peak_func->SetParameter(i, fTotalFitFunction->GetParameter(param_counter));
             peak_func->SetParError(i, fTotalFitFunction->GetParError(param_counter));
-            Double_t low, high;
+            Double_t low = 0.;
+				Double_t high = 0.;;
             fTotalFitFunction->GetParLimits(param_counter, low, high);
             peak_func->SetParLimits(i, low, high);
             ++param_counter;
             // Lets do some integrals meow.
          }
          p_it->SetArea(total_function_copy->Integral(p_it->Centroid() - p_it->Width() * 5., p_it->Centroid() + p_it->Width() * 5., 1e-8) / fit_hist->GetBinWidth(1));
-         if(goodCovarianceMatrix) p_it->SetAreaErr(total_function_copy->IntegralError(p_it->Centroid() - p_it->Width() * 5., p_it->Centroid() + p_it->Width() * 5., total_function_copy->GetParameters(), covariance_matrix.GetMatrixArray(), 1E-5) / fit_hist->GetBinWidth(1));
-         else std::cout << "Not setting area error because we don't have a good covariance matrix!" << std::endl;
-         // std::cout<<"Integrating from: "<<p_it->Centroid()-p_it->Width()*5.<<" to "<<p_it->Centroid()+p_it->Width()*5.<<std::endl;
+         if(goodCovarianceMatrix) { p_it->SetAreaErr(total_function_copy->IntegralError(p_it->Centroid() - p_it->Width() * 5., p_it->Centroid() + p_it->Width() * 5., total_function_copy->GetParameters(), covariance_matrix.GetMatrixArray(), 1E-5) / fit_hist->GetBinWidth(1)); }
+         else { std::cout << "Not setting area error because we don't have a good covariance matrix!" << std::endl; }
       }
       total_function_copy->Delete();
    }
-   if(fBGToFit) {
+   if(fBGToFit != nullptr) {
       for(int i = 0; i < fBGToFit->GetNpar(); ++i) {
          fBGToFit->SetParameter(i, fTotalFitFunction->GetParameter(param_counter));
          fBGToFit->SetParError(i, fTotalFitFunction->GetParError(param_counter));
@@ -257,7 +250,7 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
       }
    }
    // We now have a copy of the global background. Copy and send to every peak
-   for(auto p_it : fPeaksToFit) {
+   for(auto* p_it : fPeaksToFit) {
       p_it->SetGlobalBackground(new TF1(*global_bg));
       p_it->SetChi2(fTotalFitFunction->GetChisquare());
       p_it->SetNDF(fTotalFitFunction->GetNDF());
@@ -267,7 +260,7 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
 
 void TPeakFitter::InitializeParameters(TH1* fit_hist)
 {
-   for(auto p_it : fPeaksToFit) {
+   for(auto* p_it : fPeaksToFit) {
       p_it->InitializeParameters(fit_hist, fRangeLow, fRangeHigh);
    }
 }
@@ -278,14 +271,15 @@ void TPeakFitter::UpdateFitterParameters()
    /// sets them for the total fit function
    Int_t param_counter = 0;
    Int_t peak_counter  = 0;
-   for(auto p_it : fPeaksToFit) {
+   for(auto* p_it : fPeaksToFit) {
       TF1* peak_func = p_it->GetFitFunction();
-      if(peak_func) {
+      if(peak_func != nullptr) {
          for(int i = 0; i < peak_func->GetNpar(); ++i) {
             fTotalFitFunction->SetParName(param_counter, Form("%s_%i", peak_func->GetParName(i), peak_counter));
             fTotalFitFunction->SetParameter(param_counter, peak_func->GetParameter(i));
             fTotalFitFunction->SetParError(param_counter, peak_func->GetParError(i));
-            Double_t limit_low, limit_high;
+            Double_t limit_low  = 0.;
+            Double_t limit_high = 0.;
             peak_func->GetParLimits(i, limit_low, limit_high);
             fTotalFitFunction->SetParLimits(param_counter, limit_low, limit_high);
             ++param_counter;
@@ -293,12 +287,13 @@ void TPeakFitter::UpdateFitterParameters()
          ++peak_counter;
       }
    }
-   if(fBGToFit) {
+   if(fBGToFit != nullptr) {
       for(int i = 0; i < fBGToFit->GetNpar(); ++i) {
          fTotalFitFunction->SetParName(param_counter, fBGToFit->GetParName(i));
          fTotalFitFunction->SetParameter(param_counter, fBGToFit->GetParameter(i));
          fTotalFitFunction->SetParError(param_counter, fBGToFit->GetParError(i));
-         Double_t limit_low, limit_high;
+			Double_t limit_low  = 0.;
+			Double_t limit_high = 0.;
          fBGToFit->GetParLimits(i, limit_low, limit_high);
          fTotalFitFunction->SetParLimits(param_counter, limit_low, limit_high);
          ++param_counter;
@@ -311,7 +306,7 @@ Double_t TPeakFitter::FitFunction(Double_t* dim, Double_t* par)
    // I want to use the EvalPar command here in order to ge the individual peaks
    Double_t sum           = 0;
    Int_t    params_so_far = 0;
-   for(auto p_it : fPeaksToFit) {
+   for(auto* p_it : fPeaksToFit) {
       TF1* peak_func = p_it->GetFitFunction();
       sum += peak_func->EvalPar(dim, &par[params_so_far]);
       params_so_far += peak_func->GetNpar();
@@ -325,7 +320,7 @@ Double_t TPeakFitter::BackgroundFunction(Double_t* dim, Double_t* par)
 {
    Double_t sum           = 0;
    Int_t    params_so_far = 0;
-   for(auto p_it : fPeaksToFit) {
+   for(auto* p_it : fPeaksToFit) {
       TF1* peak_func = p_it->GetBackgroundFunction();
       sum += peak_func->EvalPar(dim, &par[params_so_far]);
       params_so_far += peak_func->GetNpar();
@@ -337,33 +332,35 @@ Double_t TPeakFitter::BackgroundFunction(Double_t* dim, Double_t* par)
 
 void TPeakFitter::InitializeBackgroundParameters(TH1* fit_hist)
 {
-   Double_t lowLimit;
-   Double_t highLimit;
-   double   value;
-
    fBGToFit->SetParName(0, "A");
    fBGToFit->SetParName(1, "B");
    fBGToFit->SetParName(2, "C");
    fBGToFit->SetParName(3, "bg_offset");
 
+   Double_t lowLimit = 0.;
+   Double_t highLimit = 0.;
    fBGToFit->GetParLimits(0, lowLimit, highLimit);
-   value = fBGToFit->GetParameter(0);
+
+   double value = fBGToFit->GetParameter(0);
    if(value == 0 && lowLimit == 0 && highLimit == 0) {
       fBGToFit->SetParLimits(0, 0.0, fit_hist->GetBinContent(fit_hist->FindBin(fRangeHigh)) * 100.);
       fBGToFit->SetParameter("A", fit_hist->GetBinContent(fit_hist->FindBin(fRangeHigh)));
    }
    fBGToFit->GetParLimits(1, lowLimit, highLimit);
+
    value = fBGToFit->GetParameter(1);
    if(value == 0 && lowLimit == 0 && highLimit == 0) {
       fBGToFit->SetParameter("B", fit_hist->GetBinWidth(1) * ((fit_hist->GetBinContent(fit_hist->FindBin(fRangeLow)) - fit_hist->GetBinContent(fit_hist->FindBin(fRangeHigh))) / (fRangeLow - fRangeHigh)));
    }
    fBGToFit->GetParLimits(2, lowLimit, highLimit);
+
    value = fBGToFit->GetParameter(2);
    if(value == 0 && lowLimit == 0 && highLimit == 0) {
       fBGToFit->SetParameter("C", 0.0000);
       fBGToFit->FixParameter(2, 0.00);
    }
    fBGToFit->GetParLimits(3, lowLimit, highLimit);
+
    value = fBGToFit->GetParameter(3);
    if(value == 0 && lowLimit == 0 && highLimit == 0) {
       fBGToFit->SetParLimits(3, fRangeLow, fRangeHigh);
@@ -391,16 +388,16 @@ void TPeakFitter::DrawPeaks(Option_t*) const
    // First we are going to draw the background
    TF1* bg_to_draw = new TF1;
    fTotalFitFunction->Copy(*bg_to_draw);
-   bg_to_draw->SetLineColor(kRed + fIndex);
+   bg_to_draw->SetLineColor(static_cast<Color_t>(kRed + fColorIndex));
 
-   for(auto p_it : fPeaksToFit) {
+   for(auto* p_it : fPeaksToFit) {
       TF1* peak_func           = p_it->GetFitFunction();
       TF1* total_function_copy = new TF1;
       fTotalFitFunction->Copy(*total_function_copy);
       // Now we need to remove all of the parts of the covariance peak that has nothing to do with this particular peak
       // This would be the diagonals of the background, and all of the other peaks.
       Int_t param_to_zero_counter = 0;
-      for(auto other_p_it : fPeaksToFit) {
+      for(auto* other_p_it : fPeaksToFit) {
          if(other_p_it != p_it) {
             for(int i = 0; i < other_p_it->GetFitFunction()->GetNpar(); ++i) {
                total_function_copy->SetParameter(param_to_zero_counter, 0.0);

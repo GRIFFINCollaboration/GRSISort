@@ -13,14 +13,9 @@
 #include "TRunInfo.h"
 
 TDataLoop::TDataLoop(std::string name, TRawFile* source)
-   : StoppableThread(name), fSource(source), fSelfStopping(true), fEventsRead(0),
+   : StoppableThread(std::move(name)), fSource(source), fSelfStopping(true), fEventsRead(0),
      fOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>("midas_queue"))
 {
-}
-
-TDataLoop::~TDataLoop()
-{
-   // delete source;
 }
 
 TDataLoop* TDataLoop::Get(std::string name, TRawFile* source)
@@ -28,7 +23,7 @@ TDataLoop* TDataLoop::Get(std::string name, TRawFile* source)
    if(name.length() == 0) {
       name = "input_loop";
    }
-   TDataLoop* loop = static_cast<TDataLoop*>(StoppableThread::Get(name));
+   auto* loop = static_cast<TDataLoop*>(StoppableThread::Get(name));
    if((loop == nullptr) && (source != nullptr)) {
       loop = new TDataLoop(name, source);
    }
@@ -50,13 +45,6 @@ void TDataLoop::ReplaceSource(TRawFile* new_source)
    fSource = new_source;
 }
 
-void TDataLoop::ResetSource()
-{
-   std::cerr << "Reset not implemented for TRawFile" << std::endl;
-   // std::lock_guard<std::mutex> lock(fSourceMutex);
-   // source->Reset();
-}
-
 void TDataLoop::OnEnd()
 {
    fOutputQueue->SetFinished();
@@ -69,7 +57,7 @@ bool TDataLoop::Iteration()
    {
       std::lock_guard<std::mutex> lock(fSourceMutex);
       bytesRead    = fSource->Read(evt);
-      fItemsPopped = fSource->GetBytesRead() / 1000;
+      fItemsPopped = fSource->GetBytesRead() / 1000; // should this be / 1024 ?
       fInputSize   = fSource->GetFileSize() / 1000 - fItemsPopped;   // this way fInputSize+fItemsPopped give the file size
       ++fEventsRead;
       if(TGRSIOptions::Get()->Downscaling() > 1) {
@@ -95,6 +83,6 @@ bool TDataLoop::Iteration()
       return true;
    }
    // Nothing returned this time, but I might get something next time.
-   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+   std::this_thread::sleep_for(std::chrono::milliseconds(500));
    return true;
 }

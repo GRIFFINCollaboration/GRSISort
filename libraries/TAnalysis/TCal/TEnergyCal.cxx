@@ -1,10 +1,6 @@
 #include "TEnergyCal.h"
 
-/// \cond CLASSIMP
-ClassImp(TEnergyCal)
-   /// \endcond
-
-   TEnergyCal::TEnergyCal()
+TEnergyCal::TEnergyCal()
 {
    // Default Constructor
    SetDefaultTitles();

@@ -30,9 +30,9 @@
 class TRWPeak : public TSinglePeak {
 public:
    // ctors and dtors
-   ~TRWPeak() override{};
-   TRWPeak();
-   TRWPeak(Double_t centroid);
+   TRWPeak() = default;
+   explicit TRWPeak(Double_t centroid) { Centroid(centroid); }
+   ~TRWPeak() override = default;
 
    void InitParNames() override;
    void InitializeParameters(TH1* hist, const double& rangeLow, const double& rangeHigh) override;
@@ -41,8 +41,8 @@ public:
 
    Double_t Centroid() const override;
    Double_t CentroidErr() const override;
-   Double_t Width() const override { return fTotalFunction->GetParameter("sigma"); }
-   Double_t Sigma() const override { return fTotalFunction->GetParameter("sigma"); }
+   Double_t Width() const override { return GetFitFunction()->GetParameter("sigma"); }
+   Double_t Sigma() const override { return GetFitFunction()->GetParameter("sigma"); }
 
 protected:
    Double_t PeakFunction(Double_t* dim, Double_t* par) override;

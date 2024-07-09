@@ -90,7 +90,7 @@ private:
 
 class TSourceTab {
 public:
-   TSourceTab(TSourceCalibration* parent, TNucleus* nucleus, TH2* matrix, TGCompositeFrame* frame, const double& sigma, const double& threshold, const int& degree, const std::vector<std::tuple<double, double, double, double>>& sourceEnergy, TGHProgressBar* progressBar);
+	TSourceTab(TSourceCalibration* parent, TNucleus* nucleus, TH2* matrix, TGCompositeFrame* frame, double sigma, double threshold, int degree, std::vector<std::tuple<double, double, double, double>> sourceEnergy, TGHProgressBar* progressBar);
    ~TSourceTab();
 
    void CreateChannelTab(int bin);
@@ -108,7 +108,7 @@ public:
    void VerboseLevel(int val)
    {
       fVerboseLevel = val;
-      for(auto channel : fChannel) channel->VerboseLevel(val);
+      for(auto* channel : fChannel) { channel->VerboseLevel(val); }
    }
 
 private:
@@ -132,7 +132,7 @@ private:
 
 class TSourceCalibration : public TGMainFrame {
 public:
-   enum EEntry {
+   enum EEntry : int {
       kStartButton,
       kSourceBox      = 100,
       kSigmaEntry     = 200,
@@ -140,9 +140,8 @@ public:
       kDegreeEntry    = 400
    };
 
-public:
-   TSourceCalibration(double sigma, double threshold, int degree, int n...);
-   ~TSourceCalibration();
+   TSourceCalibration(double sigma, double threshold, int degree, int count...);
+   ~TSourceCalibration() override;
 
    void SetSource(Int_t windowId, Int_t entryId);
    void Start();
@@ -171,7 +170,7 @@ public:
    double Threshold() { return fThresholdEntry->GetNumber(); }
    int    Degree()
    {
-      if(fDegreeEntry != nullptr) fDefaultDegree = fDegreeEntry->GetNumber();
+      if(fDegreeEntry != nullptr) { fDefaultDegree = fDegreeEntry->GetNumber(); }
       return fDefaultDegree;
    }
    std::vector<std::tuple<double, double, double, double>> SourceEnergy(const size_t& i) { return fSourceEnergy.at(i); }
@@ -185,7 +184,7 @@ public:
    void VerboseLevel(int val)
    {
       fVerboseLevel = val;
-      for(auto source : fSourceTab) source->VerboseLevel(val);
+      for(auto* source : fSourceTab) { source->VerboseLevel(val); }
    }
 
    static void ZoomX();
@@ -277,7 +276,7 @@ private:
 
    TFile* fOutput{nullptr};
 
-   ClassDef(TSourceCalibration, 1);
+   ClassDefOverride(TSourceCalibration, 1);
 };
 
 #endif

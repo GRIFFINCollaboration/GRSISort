@@ -5,20 +5,15 @@
 
 #include "TRunInfo.h"
 
-/// \cond CLASSIMP
-ClassImp(TPPGData)
-   ClassImp(TPPG)
-   /// \endcond
-
-   short TPPGData::fTimestampUnits = 10;
-TPPG* TPPG::fPPG                   = nullptr;   // not used anywhere?
+int16_t TPPGData::fTimestampUnits = 10;
 
 TPPGData::TPPGData()
 {
    Clear();
 }
 
-TPPGData::TPPGData(const TPPGData& rhs) : TObject()
+TPPGData::TPPGData(const TPPGData& rhs)
+	: TObject(rhs)
 {
    rhs.Copy(*this);
 }
@@ -48,7 +43,7 @@ void TPPGData::Clear(Option_t*)
    fTimeStamp       = 0;
    fOldPpg          = EPpgPattern::kJunk;
    fNewPpg          = EPpgPattern::kJunk;
-   fNetworkPacketId = -1;
+   fNetworkPacketId = 0;
    fLowTimeStamp    = 0;
    fHighTimeStamp   = 0;
 }
@@ -59,31 +54,42 @@ void TPPGData::Print(Option_t*) const
 }
 
 TPPG::TPPG()
+	: fPPGStatusMap(new PPGMap_t)
 {
-   fPPGStatusMap = new PPGMap_t;
    Clear();
 }
 
-TPPG::TPPG(const TPPG& rhs) : TSingleton<TPPG>()
+TPPG::TPPG(const TPPG& rhs)
+	: fPPGStatusMap(new PPGMap_t)
 {
-   fPPGStatusMap = new PPGMap_t;
    rhs.Copy(*this);
 }
 
 TPPG::~TPPG()
 {
    Clear();
-   PPGMap_t::iterator ppgit;
    if(fPPGStatusMap != nullptr) {
-      for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
-         if(ppgit->second != nullptr) {
-            delete (ppgit->second);
-         }
-         ppgit->second = nullptr;
+      for(auto ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
+			delete ppgit->second;
       }
       delete fPPGStatusMap;
    }
 }
+
+TPPG& TPPG::operator=(const TPPG& rhs)
+{
+   if(fPPGStatusMap != nullptr) {
+      for(auto ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
+			delete ppgit->second;
+      }
+      delete fPPGStatusMap;
+   }
+	fPPGStatusMap = new PPGMap_t;
+   rhs.Copy(*this);
+
+	return *this;
+}
+
 
 void TPPG::Copy(TObject& obj) const
 {
@@ -110,10 +116,7 @@ Bool_t TPPG::MapIsEmpty() const
    /// Checks to see if the ppg map is empty. We need this because we need to put a default
    /// PPG in at time T=0 to prevent bad things from happening. This function says the map
    /// is empty when only the default is there, which it essentially is.
-   if(fPPGStatusMap->size() == 1) {   // We check for size 1 because we always start with a Junk event at time 0.
-      return true;
-   }
-   return false;
+   return (fPPGStatusMap->size() == 1); // We check for size 1 because we always start with a Junk event at time 0.
 }
 
 void TPPG::AddData(TPPGData* pat)
@@ -245,15 +248,15 @@ void TPPG::Print(Option_t* opt) const
    }
    // print only an overview of the ppg
    // can't call non-const GetCycleLength here, so we do the calculation with local variables here
-   std::map<EPpgPattern, int> status;                    // to calculate how often each different status occured
-   std::map<ULong64_t, int>   numberOfCycleLengths;      // to calculate the length of the whole cycle
-   std::map<ULong64_t, int>   numberOfStateLengths[4];   // to calculate the length of each state (tape move, background, beam on, and decay)
-   std::map<int, int>         numberOfOffsets;           // to calculate the offset on each timestamp
-   for(PPGMap_t::iterator ppgIt = MapBegin(); ppgIt != MapEnd(); ++ppgIt) {
+   std::map<EPpgPattern, int>              status;                    // to calculate how often each different status occured
+   std::map<ULong64_t, int>                numberOfCycleLengths;      // to calculate the length of the whole cycle
+   std::array<std::map<ULong64_t, int>, 4> numberOfStateLengths;      // to calculate the length of each state (tape move, background, beam on, and decay)
+   std::map<int, int>                      numberOfOffsets;           // to calculate the offset on each timestamp
+   for(auto ppgIt = MapBegin(); ppgIt != MapEnd(); ++ppgIt) {
       status[ppgIt->second->GetNewPPG()]++;
       ULong64_t diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp());
       numberOfCycleLengths[diff]++;
-      numberOfOffsets[(ppgIt->second->GetTimeStamp()) % 1000]++;   // let's assume our offset is less than 10 us
+      numberOfOffsets[static_cast<int>(ppgIt->second->GetTimeStamp() % 1000)]++;   // let's assume our offset is less than 10 us
       switch(ppgIt->second->GetNewPPG()) {
       case EPpgPattern::kBackground:
          diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kTapeMove);
@@ -313,9 +316,9 @@ void TPPG::Print(Option_t* opt) const
    if(TString(opt).Contains("missing", TString::ECaseCompare::kIgnoreCase)) {
       // go through all expected ppg words
       ULong64_t time = offset;
-      auto      it   = MapEnd();
-      --it;
-      ULong64_t lastTimeStamp = it->second->GetTimeStamp();
+      auto      iter = MapEnd();
+      --iter;
+      ULong64_t lastTimeStamp = iter->second->GetTimeStamp();
       for(int cycle = 1; time < lastTimeStamp; ++cycle) {
          if(GetLastStatusTime(time, EPpgPattern::kTapeMove) != time) {
             std::cout << "Missing tape move status at " << std::setw(12) << time << " in " << cycle << ". cycle, last tape move status came at " << GetLastStatusTime(time, EPpgPattern::kTapeMove) << "." << std::endl;
@@ -336,7 +339,7 @@ void TPPG::Print(Option_t* opt) const
 
 bool TPPG::OdbMatchesData(bool verbose)
 {
-   if(!CalculateCycleFromData(verbose)) return false;
+   if(!CalculateCycleFromData(verbose)) { return false; }
 
    // we got a cycle from the data, so we can compare it
    if(fPPGCodes.size() != fOdbPPGCodes.size()) {
@@ -377,10 +380,10 @@ void TPPG::SetOdbFromData(bool verbose)
 bool TPPG::CalculateCycleFromData(bool verbose)
 {
    /// Calculate the cycle from the data and store it.
-   if(fCycleSet) return true;
+   if(fCycleSet) { return true; }
 
    // loop over all data and count how often we get each time difference between one state and the previous state
-   std::map<ULong64_t, int> numberOfStateLengths[4];   // to calculate the length of each state (tape move, background, beam on, and decay)
+	std::array<std::map<ULong64_t, int>, 4> numberOfStateLengths;   // to calculate the length of each state (tape move, background, beam on, and decay)
    ULong64_t                diff;
    for(PPGMap_t::iterator ppgIt = MapBegin(); ppgIt != MapEnd(); ++ppgIt) {
       switch(ppgIt->second->GetNewPPG()) {
@@ -430,10 +433,7 @@ void TPPG::Clear(Option_t*)
    if(fPPGStatusMap != nullptr) {
       PPGMap_t::iterator ppgit;
       for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
-         if(ppgit->second != nullptr) {
-            delete (ppgit->second);
-         }
-         ppgit->second = nullptr;
+			delete ppgit->second;
       }
       fPPGStatusMap->clear();
    }
@@ -449,7 +449,7 @@ void TPPG::Clear(Option_t*)
 
 Int_t TPPG::Write(const char* name, Int_t, Int_t) const
 {
-   if(name == nullptr) name = "TPPG";
+   if(name == nullptr) { name = "TPPG"; }
    if(PPGSize() > 0 || OdbPPGSize() > 0) {
       std::cout << "Writing PPG with " << PPGSize() << " events and " << OdbPPGSize() << " ODB settings" << std::endl;
       return TObject::Write(name, TObject::kSingleKey);
@@ -657,10 +657,10 @@ ULong64_t TPPG::GetNumberOfCycles()
 
 Long64_t TPPG::Merge(TCollection* list)
 {
-   TIter it(list);
+   TIter iter(list);
    TPPG* ppg = nullptr;
 
-   while((ppg = static_cast<TPPG*>(it.Next())) != nullptr) {
+   while((ppg = static_cast<TPPG*>(iter.Next())) != nullptr) {
       *this += *ppg;
    }
 

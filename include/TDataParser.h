@@ -83,7 +83,7 @@ public:
    virtual void   ClearQueue();
    virtual size_t ItemsPushed()
    {
-      if(fGoodOutputQueues.size() > 0) {
+      if(!fGoodOutputQueues.empty()) {
          return fGoodOutputQueues.back()->ItemsPushed();
       }
       return std::numeric_limits<std::size_t>::max();
@@ -92,6 +92,7 @@ public:
    virtual std::string OutputQueueStatus();
 
 protected:
+	// TODO consider making all of these private with protected access functions
 #ifndef __CINT__
    std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>> fGoodOutputQueues;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>           fBadOutputQueue;
@@ -102,13 +103,13 @@ protected:
    bool      fRecordDiag;    ///< The flag to turn on diagnostics recording
    TChannel* fChannel;
 
-   const unsigned long fMaxTriggerId;        ///< The last trigger ID Called
-   unsigned long       fLastDaqId;           ///< The last daq ID in the raw file
-   unsigned long       fLastTriggerId;       ///< The last Trigged ID in the raw File
-   unsigned long       fLastNetworkPacket;   ///< The last network packet recieved.
+   const uint64_t fMaxTriggerId;        ///< The last trigger ID Called
+   uint64_t       fLastDaqId;           ///< The last daq ID in the raw file
+   uint64_t       fLastTriggerId;       ///< The last Trigged ID in the raw File
+   uint64_t       fLastNetworkPacket;   ///< The last network packet recieved.
 
-   std::map<int, int> fFragmentIdMap;
-   bool               fFragmentHasWaveform;
+   std::map<Long_t, int> fFragmentIdMap;
+   bool                  fFragmentHasWaveform;
 
    TFragmentMap fFragmentMap;   ///< Class that holds a map of fragments per address, takes care of calculating charges for GRF4 banks
 

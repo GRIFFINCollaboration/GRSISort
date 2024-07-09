@@ -28,9 +28,7 @@ class DifferentBinLimits : public std::exception {
 class DifferentLabels : public std::exception {
 };
 
-ClassImp(GCube)
-
-   GCube::GCube()
+GCube::GCube()
 {
    fDimension = 3;
    fTsumwy    = 0;
@@ -2654,7 +2652,7 @@ void GCube::Smooth(Int_t ntimes, Option_t* option)
 
 ClassImp(GCubeF)
 
-   GCubeF::GCubeF()
+GCubeF::GCubeF()
    : GCube(), TArrayF()
 {
    SetBinsLength(9);
@@ -2863,7 +2861,7 @@ GCubeF operator/(GCubeF& h1, GCubeF& h2)
 
 ClassImp(GCubeD)
 
-   GCubeD::GCubeD()
+GCubeD::GCubeD()
    : GCube(), TArrayD()
 {
    SetBinsLength(9);

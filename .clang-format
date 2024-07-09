@@ -197,6 +197,11 @@ StatementAttributeLikeMacros:
 StatementMacros:
   - Q_UNUSED
   - QT_REQUIRE_VERSION
+  - ClassImp
+  - ClassDef
+  - ClassDefOverride
+  - NamespaceImp
+  - templateClassImp
 TabWidth:        3
 UseCRLF:         false
 UseTab:          Never

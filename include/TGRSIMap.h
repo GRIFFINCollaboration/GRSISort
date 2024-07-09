@@ -2,6 +2,7 @@
 #define TGRSIMAP_H
 
 #include <map>
+#include <iostream>
 #include <vector>
 #include <string>
 #include <sstream>
@@ -25,37 +26,37 @@ template <typename key_type, typename mapped_type, typename key_compare = std::l
           typename allocator_type = std::allocator<std::pair<const key_type, mapped_type>>>
 class TGRSIMap {
 public:
-   TGRSIMap() {}
-   ~TGRSIMap() {}
+   TGRSIMap() = default;
+   ~TGRSIMap() = default;
 
    void Print()
    {
-      for(auto it : fMap) {
-         std::cout << it.first << " - " << it.second << std::endl;
+      for(auto iter : fMap) {
+         std::cout << iter.first << " - " << iter.second << std::endl;
       }
    }
 
-   mapped_type& at(const key_type& k)
+   mapped_type& at(const key_type& key)
    {
       try {
-         return fMap.at(k);
+         return fMap.at(key);
       } catch(std::exception& e) {
-         throw TGRSIMapException<key_type>(k, fMap);
+         throw TGRSIMapException<key_type>(key, fMap);
       }
    }
-   const mapped_type& at(const key_type& k) const
+   const mapped_type& at(const key_type& key) const
    {
       try {
-         return fMap.at(k);
+         return fMap.at(key);
       } catch(std::exception& e) {
-         throw TGRSIMapException<key_type>(k, fMap);
+         throw TGRSIMapException<key_type>(key, fMap);
       }
    }
 
-   mapped_type&       operator[](const key_type& k) { return fMap[k]; }
-   const mapped_type& operator[](const key_type& k) const { return fMap[k]; }
+   mapped_type&       operator[](const key_type& key) { return fMap[key]; }
+   const mapped_type& operator[](const key_type& key) const { return fMap[key]; }
 
-   typedef std::map<key_type, mapped_type, key_compare, allocator_type> map_t;
+   using map_t = std::map<key_type, mapped_type, key_compare, allocator_type>;
    typename map_t::iterator                                             begin() { return fMap.begin(); }
    typename map_t::const_iterator                                       begin() const { return fMap.begin(); }
    typename map_t::iterator                                             end() { return fMap.end(); }
@@ -99,8 +100,8 @@ public:
    TGRSIMapException(const key_type key, const std::map<key_type, mapped_type, key_compare, allocator_type>& map)
       : std::exception(), fKey(key)
    {
-      for(auto it : map) {
-         fKeys.push_back(it.first);
+      for(auto iter : map) {
+         fKeys.push_back(iter.first);
       }
    }
 
@@ -118,7 +119,7 @@ public:
       return str.str();
    }
 
-   const char* what() const noexcept { return strdup(detail().c_str()); }
+   const char* what() const noexcept override { return strdup(detail().c_str()); }
 
 private:
    key_type              fKey;

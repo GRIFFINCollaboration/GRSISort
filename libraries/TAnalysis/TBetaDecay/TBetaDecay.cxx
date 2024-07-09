@@ -1,30 +1,19 @@
 #include "TBetaDecay.h"
 
-/// \cond CLASSIMP
-ClassImp(TBetaDecay)
-   /// \endcond
-
-   TBetaDecay::TBetaDecay()
+TBetaDecay::TBetaDecay() : fParentAllocated(false), fParent(nullptr)
 {
-   fParentAllocated = false;
-   fParent          = nullptr;
 }
 
-TBetaDecay::TBetaDecay(TNucleus* parent) : fParent(parent)
+TBetaDecay::TBetaDecay(TNucleus* parent) : fParentAllocated(false), fParent(parent)
 {
-   fParentAllocated = false;
 }
 
-TBetaDecay::TBetaDecay(char* name)
+TBetaDecay::TBetaDecay(char* name) : fParentAllocated(true), fParent(new TNucleus(name))
 {
-   fParentAllocated = true;
-   fParent          = new TNucleus(name);
 }
 
-TBetaDecay::TBetaDecay(Int_t Z, Int_t N)
+TBetaDecay::TBetaDecay(Int_t Z, Int_t N) : fParentAllocated(true), fParent(new TNucleus(Z, N))
 {
-   fParentAllocated = true;
-   fParent          = new TNucleus(Z, N);
 }
 
 TBetaDecay::~TBetaDecay()

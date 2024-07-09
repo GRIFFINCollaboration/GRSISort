@@ -53,14 +53,14 @@ public:
    long MaxTimeStamp() const { return fMaxTimeStamp; }
 
 private:
-   UInt_t fMinChannelId;   ///< minimum channel id per channel address
-   UInt_t fMaxChannelId;   ///< maximum channel id per channel address
+   UInt_t fMinChannelId{0};   ///< minimum channel id per channel address
+   UInt_t fMaxChannelId{0};   ///< maximum channel id per channel address
 
-   Long_t fNumberOfHits;   ///< number of hits per channel address
+   Long_t fNumberOfHits{0};   ///< number of hits per channel address
 
-   long fDeadTime;       ///< deadtime per channel address
-   long fMinTimeStamp;   ///< minimum timestamp per channel address
-   long fMaxTimeStamp;   ///< maximum timestamp per channel address
+   long fDeadTime{0};       ///< deadtime per channel address
+   long fMinTimeStamp{0};   ///< minimum timestamp per channel address
+   long fMaxTimeStamp{0};   ///< maximum timestamp per channel address
 
    /// \cond CLASSIMP
    ClassDefOverride(TParsingDiagnosticsData, 1);
@@ -84,19 +84,18 @@ private:
    // channel address unordered_maps
    std::unordered_map<UInt_t, TParsingDiagnosticsData> fChannelAddressData;   ///< unordered_map of data per channel address
 
-   time_t fMinDaqTimeStamp;   ///< minimum daq timestamp
-   time_t fMaxDaqTimeStamp;   ///< maximum daq timestamp
+   time_t fMinDaqTimeStamp{0};   ///< minimum daq timestamp
+   time_t fMaxDaqTimeStamp{0};   ///< maximum daq timestamp
 
-   Int_t fMinNetworkPacketNumber;   ///< minimum network packet id
-   Int_t fMaxNetworkPacketNumber;   ///< maximum network packet id
+   Int_t fMinNetworkPacketNumber{0x7fffffff};   ///< minimum network packet id
+   Int_t fMaxNetworkPacketNumber{0};            ///< maximum network packet id
 
-   Long_t fNumberOfNetworkPackets;
+   Long_t fNumberOfNetworkPackets{0};
 
    // ppg diagnostics
-   ULong64_t fPPGCycleLength;
+   ULong64_t fPPGCycleLength{0};
 
-   //
-   TH1F* fIdHist;   ///< histogram of event survival
+   TH1F* fIdHist{nullptr};   ///< histogram of event survival
 
 public:
 //"setter" functions

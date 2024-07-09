@@ -8,7 +8,7 @@
 
 class CrossTalkHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<CrossTalkHelper> {
 public:
-   CrossTalkHelper(TList* list) : TGRSIHelper(list)
+   explicit CrossTalkHelper(TList* list) : TGRSIHelper(list)
    {
       Prefix("Crosstalk");
       Setup();
@@ -17,7 +17,7 @@ public:
    {
       return d->Book<TGriffin, TGriffinBgo>(std::move(*this), {"TGriffin", "TGriffinBgo"});
    }
-   void CreateHistograms(unsigned int slot);
+   void CreateHistograms(unsigned int slot) override;
    void Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo);
 };
 

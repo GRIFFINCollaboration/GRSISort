@@ -17,28 +17,23 @@ TGRSIHelper::TGRSIHelper(TList* input)
       throw std::runtime_error(str.str());
    }
    // loop over all cal-files, val-files, and cut-files we might have (these are full paths!)
-   int i = 0;
-   while(input->FindObject(Form("calFile%d", i)) != nullptr) {
+   for(int i = 0; input->FindObject(Form("calFile%d", i)) != nullptr; ++i) {
       const char* fileName = static_cast<TNamed*>(input->FindObject(Form("calFile%d", i)))->GetTitle();
       if(fileName[0] == 0) {
          std::cout << "Error, empty file name!" << std::endl;
          break;
       }
       TChannel::ReadCalFile(fileName);
-      ++i;
    }
-   i = 0;
-   while(input->FindObject(Form("valFile%d", i)) != nullptr) {
+   for(int i = 0; input->FindObject(Form("valFile%d", i)) != nullptr; ++i) {
       const char* fileName = static_cast<TNamed*>(input->FindObject(Form("valFile%d", i)))->GetTitle();
       if(fileName[0] == 0) {
          std::cout << "Error, empty file name!" << std::endl;
          break;
       }
       GValue::ReadValFile(fileName);
-      ++i;
    }
-   i = 0;
-   while(input->FindObject(Form("cutFile%d", i)) != nullptr) {
+   for(int i = 0; input->FindObject(Form("cutFile%d", i)) != nullptr; ++i) {
       std::cout << "trying to open " << Form("cutFile%d", i) << std::flush << " = " << input->FindObject(Form("cutFile%d", i)) << std::flush << " with title " << static_cast<TNamed*>(input->FindObject(Form("cutFile%d", i)))->GetTitle() << std::endl;
       const char* fileName = static_cast<TNamed*>(input->FindObject(Form("cutFile%d", i)))->GetTitle();
       if(fileName[0] == 0) {
@@ -46,7 +41,7 @@ TGRSIHelper::TGRSIHelper(TList* input)
          break;
       }
       // if we have a relative path and a working directory, combine them
-      auto file = new TFile(fileName);
+      auto* file = new TFile(fileName);
       if(file != nullptr && file->IsOpen()) {
          TIter iter(file->GetListOfKeys());
          TKey* key = nullptr;
@@ -54,7 +49,7 @@ TGRSIHelper::TGRSIHelper(TList* input)
             if(strcmp(key->GetClassName(), "TCutG") != 0) {
                continue;
             }
-            TCutG* tmpCut = static_cast<TCutG*>(key->ReadObj());
+            auto* tmpCut = static_cast<TCutG*>(key->ReadObj());
             if(tmpCut != nullptr) {
                fCuts[tmpCut->GetName()] = tmpCut;
             }
@@ -63,7 +58,6 @@ TGRSIHelper::TGRSIHelper(TList* input)
          std::cout << "Error, failed to open file " << fileName << "!" << std::endl;
          break;
       }
-      ++i;
    }
    for(auto& cut : fCuts) {
       std::cout << cut.first << " = " << cut.second << std::endl;
@@ -182,7 +176,7 @@ void TGRSIHelper::Finalize()
                   static_cast<TH1*>(obj)->Add(static_cast<TH1*>((*fLists[slot]).at(list.first).FindObject(obj->GetName())));
                } else if(obj->InheritsFrom(TTree::Class())) {
                   // trees are added to the list and merged later
-                  TTree* tree = static_cast<TTree*>(obj);
+                  auto* tree = static_cast<TTree*>(obj);
                   // std::cout<<slot<<" copied "<<tree->CopyEntries(static_cast<TTree*>((*fLists[slot]).at(list.first).FindObject(obj->GetName())))<<" bytes to tree "<<tree->GetName()<<std::endl;
                   treeList.emplace(tree, new TList);   // emplace does not overwrite existing elements!
                   treeList.at(tree)->Add((*fLists[slot]).at(list.first).FindObject(obj->GetName()));
@@ -209,7 +203,7 @@ void TGRSIHelper::Finalize()
          entries += static_cast<TTree*>(obj)->GetEntries();
       }
       std::cout << "total of " << entries << " entries" << std::endl;
-      auto newTree = TTree::MergeTrees(tree.second);
+      auto* newTree = TTree::MergeTrees(tree.second);
       std::cout << "Got new tree with " << newTree->GetEntries() << " => " << entries - newTree->GetEntries() << " less than total" << std::endl;
       (*res).at("").Remove(tree.first);
       (*res).at("").Add(newTree);
@@ -227,11 +221,11 @@ void TGRSIHelper::CheckSizes(unsigned int slot, const char* usage)
    for(auto& list : *fLists[slot]) {
       // loop over each object in the list
       for(const auto&& obj : list.second) {
-         TBufferFile b(TBuffer::kWrite, 10000);
-         obj->IsA()->WriteBuffer(b, obj);
-         if(b.Length() > SIZE_LIMIT) {
+         TBufferFile buf(TBuffer::kWrite, 10000);
+         obj->IsA()->WriteBuffer(buf, obj);
+			if(buf.Length() > fSizeLimit) {
             std::stringstream str;
-            str << DRED << slot << ". slot: " << obj->ClassName() << " '" << obj->GetName() << "' too large to " << usage << ": " << b.Length() << " bytes = " << b.Length() / 1024. / 1024. / 1024. << " GB, removing it!" << RESET_COLOR << std::endl;
+            str << DRED << slot << ". slot: " << obj->ClassName() << " '" << obj->GetName() << "' too large to " << usage << ": " << buf.Length() << " bytes = " << buf.Length() / 1024. / 1024. / 1024. << " GB, removing it!" << RESET_COLOR << std::endl;
             std::cout << str.str();
             // we only remove it from the output list, not deleting the object itself
             // this way the filling of that histogram will still work, it just won't get written to file

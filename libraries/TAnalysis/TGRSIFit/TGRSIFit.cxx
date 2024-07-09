@@ -1,10 +1,6 @@
 #include "TGRSIFit.h"
 
-/// \cond CLASSIMP
-ClassImp(TGRSIFit)
-   /// \endcond
-
-   TString TGRSIFit::fDefaultFitType("");
+TString TGRSIFit::fDefaultFitType("");
 
 TGRSIFit::TGRSIFit()
 {
@@ -63,7 +59,7 @@ void TGRSIFit::CopyParameters(TF1* copy) const
    }
 }
 
-Bool_t TGRSIFit::AddToGlobalList(Bool_t on)
+Bool_t TGRSIFit::AddToGlobalList(Bool_t yes)
 {
    // Add to global list of functions (gROOT->GetListOfFunctions() )
    // return previous status (true of functions was already in the list false if not)
@@ -71,7 +67,7 @@ Bool_t TGRSIFit::AddToGlobalList(Bool_t on)
       return false;
    }
 
-   if(on) {
+   if(yes) {
       if(gROOT->GetListOfFunctions()->FindObject(this) != nullptr) {
          return true;
       }
@@ -89,11 +85,9 @@ Bool_t TGRSIFit::AddToGlobalList(Bool_t on)
    }
    gROOT->GetListOfFunctions()->Remove(this);
    return true;
-
-   return true;
 }
 
-Bool_t TGRSIFit::AddToGlobalList(TF1* func, Bool_t on)
+Bool_t TGRSIFit::AddToGlobalList(TF1* func, Bool_t yes)
 {
    // Add to global list of functions (gROOT->GetListOfFunctions() )
    // return previous status (true of functions was already in the list false if not)
@@ -102,7 +96,7 @@ Bool_t TGRSIFit::AddToGlobalList(TF1* func, Bool_t on)
       return false;
    }
 
-   if(on) {
+   if(yes) {
       if(gROOT->GetListOfFunctions()->FindObject(func) != nullptr) {
          return true;
       }

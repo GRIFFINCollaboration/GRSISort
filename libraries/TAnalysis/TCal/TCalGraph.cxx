@@ -3,11 +3,7 @@
 #include <iostream>
 #include "Globals.h"
 
-/// \cond CLASSIMP
-ClassImp(TCalGraph)
-   /// \endcond
-
-   TCalGraph::TCalGraph()
+TCalGraph::TCalGraph()
    : TGraphErrors()
 {
    Clear();

@@ -1,10 +1,6 @@
 #include "TCal.h"
 
-/// \cond CLASSIMP
-ClassImp(TCal)
-   /// \endcond
-
-   TCal::TCal()
+TCal::TCal()
 {
    /// Default constructor
    InitTCal();

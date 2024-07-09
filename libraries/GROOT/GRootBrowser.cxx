@@ -40,13 +40,9 @@ static const char* gOpenFileTypes[] = {"ROOT files", "*.root", "All files", "*",
 
 static const char* gPluginFileTypes[] = {"ROOT files", "*.C", "All files", "*", nullptr, nullptr};
 
-/// \cond CLASSIMP
-ClassImp(GRootBrowser)
-   /// \endcond
-
-   //______________________________________________________________________________
-   GRootBrowser::GRootBrowser(TBrowser* b, const char* name, UInt_t width, UInt_t height, Option_t* opt,
-                              Bool_t initshow)
+//______________________________________________________________________________
+GRootBrowser::GRootBrowser(TBrowser* b, const char* name, UInt_t width, UInt_t height, Option_t* opt,
+                           Bool_t initshow)
    : TGMainFrame(gClient->GetDefaultRoot(), width, height), TBrowserImp(b)
 {
    /// Create browser with a specified width and height.

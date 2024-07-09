@@ -1,4 +1,3 @@
-
 #include "Globals.h"
 
 #include "TSRIM.h"
@@ -12,20 +11,11 @@
 
 #include <cstdio>
 
-/// \cond CLASSIMP
-ClassImp(TSRIM)
-   /// \endcond
-
-   const double TSRIM::dx = 1.0;   // um [sets accuracy of energy loss E vs X functions]
-
-TSRIM::TSRIM()
-{
-   fEnergyLoss = nullptr;
-}
+const double TSRIM::dx = 1.0;   // um [sets accuracy of energy loss E vs X functions]
 
 TSRIM::TSRIM(const char* infilename, double emax, double emin, bool printfile)
+	: fEnergyLoss(nullptr)
 {
-   fEnergyLoss = nullptr;
    ReadEnergyLossFile(infilename, emax, emin, printfile);
 }
 
@@ -41,14 +31,14 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
    }
 
    std::string        grsipath = getenv("GRSISYS");
-   std::ostringstream str;
-   str << grsipath << "/libraries/TAnalysis/SRIMData/" << fname;
+   std::ostringstream ostr;
+   ostr << grsipath << "/libraries/TAnalysis/SRIMData/" << fname;
    if(printfile) {
       std::cout << std::endl
-                << "Searching for " << str.str() << "..." << std::endl;
+                << "Searching for " << ostr.str() << "..." << std::endl;
    }
 
-   infile.open(str.str().c_str());
+   infile.open(ostr.str().c_str());
    if(!infile.good()) {
       std::cout << "{TSRIM} Warning : Couldn't find the file '" << filename << "' ..." << std::endl;
       return;
@@ -56,9 +46,10 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
    std::string line;
    std::string word;
    double      density_scale = 0.;
-   double      temp;
+   double      temp = 0.;
 
-   std::vector<double>      number_input, dEdX_temp;
+   std::vector<double>      number_input;
+   std::vector<double>      dEdX_temp;
    std::vector<std::string> string_input;
 
    while(!std::getline(infile, line).fail()) {
@@ -69,11 +60,11 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
       number_input.clear();
       string_input.clear();
       while(!(linestream >> word).fail()) {
-         std::stringstream ss(word);
-         if(!(ss >> temp).fail()) {   // if it's a number
+         std::stringstream str(word);
+         if(!(str >> temp).fail()) {   // if it's a number
             number_input.push_back(temp);
          } else {
-            string_input.push_back(ss.str());
+            string_input.push_back(str.str());
          }
       }
 
@@ -86,13 +77,13 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
       }
 
       if(string_input[0].compare(0, 3, "eV") == 0 && string_input[1].compare(0, 1, "/") != 0) {
-         IonEnergy.push_back(number_input[0] * 1e-3);   // convert eV to keV.
+         fIonEnergy.push_back(number_input[0] * 1e-3);   // convert eV to keV.
       } else if(string_input[0].compare(0, 3, "keV") == 0 && string_input[1].compare(0, 1, "/") != 0) {
-         IonEnergy.push_back(number_input[0]);   // already in keV.
+         fIonEnergy.push_back(number_input[0]);   // already in keV.
       } else if(string_input[0].compare(0, 3, "MeV") == 0 && string_input[1].compare(0, 1, "/") != 0) {
-         IonEnergy.push_back(number_input[0] * 1e3);   // convert MeV to keV.
+         fIonEnergy.push_back(number_input[0] * 1e3);   // convert MeV to keV.
       } else if(string_input[0].compare(0, 3, "GeV") == 0 && string_input[1].compare(0, 1, "/") != 0) {
-         IonEnergy.push_back(number_input[0] * 1e6);   // convert GeV to keV.
+         fIonEnergy.push_back(number_input[0] * 1e6);   // convert GeV to keV.
       } else {
          continue;
       }
@@ -106,17 +97,17 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
          density_scale = 1.;
       }
 
-      for(double i : dEdX_temp) {
-         dEdX.push_back(i * density_scale);
+      for(double index : dEdX_temp) {
+         fdEdX.push_back(index * density_scale);
       }
 
-      fEnergyLoss = new TGraph(IonEnergy.size(), &IonEnergy[0], &dEdX[0]);
+      fEnergyLoss = new TGraph(static_cast<Int_t>(fIonEnergy.size()), fIonEnergy.data(), fdEdX.data());
       fEnergyLoss->GetXaxis()->SetTitle("Energy (keV)");
       fEnergyLoss->GetYaxis()->SetTitle("dE/dx (keV/um)");
-      sEnergyLoss = new TSpline3("dEdX_vs_E", fEnergyLoss);
+      fsEnergyLoss = new TSpline3("dEdX_vs_E", fEnergyLoss);
 
-      double dataEmax = TMath::MaxElement(IonEnergy.size(), &IonEnergy[0]);
-      double dataEmin = TMath::MinElement(IonEnergy.size(), &IonEnergy[0]);
+      double dataEmax = TMath::MaxElement(static_cast<Int_t>(fIonEnergy.size()), fIonEnergy.data());
+      double dataEmin = TMath::MinElement(static_cast<Int_t>(fIonEnergy.size()), fIonEnergy.data());
 
       if(emax == -1.0) {
          emax = dataEmax;   // default to highest available energy in data table
@@ -139,82 +130,82 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
       }
 
       // Use linear multistep method (order 3) - Adams-Bashford method (explicit).
-      double xtemp = 0, xstep = dx;
-      double etemp = emax;
-      double k[4]  = {0, 0, 0, 0};
+      double                xtemp = 0;
+      double                xstep = dx;
+      double                etemp = emax;
+      std::array<double, 4> k     = {0, 0, 0, 0};
 
       for(int i = 0; i < 3; i++) {   // start by using euler step on first few points
-         X.push_back(xtemp);
-         E.push_back(etemp);
-         k[i] = sEnergyLoss->Eval(etemp);   // contains gradient at previous steps
+         fX.push_back(xtemp);
+         fE.push_back(etemp);
+         k[i] = fsEnergyLoss->Eval(etemp);   // contains gradient at previous steps
 
          xtemp += xstep;
-         etemp -= xstep * sEnergyLoss->Eval(etemp);
+         etemp -= xstep * fsEnergyLoss->Eval(etemp);
       }
 
-      while(E.back() > 0) {   // keep going until E goes negative
-         X.push_back(xtemp);
-         E.push_back(etemp);
+      while(fE.back() > 0) {   // keep going until E goes negative
+         fX.push_back(xtemp);
+         fE.push_back(etemp);
 
          xtemp += xstep;
          k[3] = k[2];
          k[2] = k[1];
          k[1] = k[0];
-         k[0] = sEnergyLoss->Eval(etemp);
+         k[0] = fsEnergyLoss->Eval(etemp);
          // extrapolate to new energy using weighted average of gradients at previous points
          etemp -= xstep * (55 / 24 * k[0] - 59 / 24 * k[1] + 37 / 24 * k[2] - 8 / 24 * k[3]);
       }
       // force the last element to be emin (linear interpolation, small error)
-      X.back() =
-         X[X.size() - 2] + (X.back() - X[X.size() - 2]) * (emin - E[E.size() - 2]) / (E.back() - E[E.size() - 2]);
-      E.back() = emin;
+      fX.back() = fX[fX.size() - 2] + (fX.back() - fX[fX.size() - 2]) * (emin - fE[fE.size() - 2]) / (fE.back() - fE[fE.size() - 2]);
+      fE.back() = emin;
 
-      Emin = TMath::MinElement(E.size(), &E[0]);
-      Emax = TMath::MaxElement(E.size(), &E[0]);
-      Xmin = TMath::MinElement(X.size(), &X[0]);
-      Xmax = TMath::MaxElement(X.size(), &X[0]);
+      fEmin = TMath::MinElement(static_cast<Long64_t>(fE.size()), fE.data());
+      fEmax = TMath::MaxElement(static_cast<Long64_t>(fE.size()), fE.data());
+      fXmin = TMath::MinElement(static_cast<Long64_t>(fX.size()), fX.data());
+      fXmax = TMath::MaxElement(static_cast<Long64_t>(fX.size()), fX.data());
 
-      fXgetE = new TGraph(X.size(), &X[0], &E[0]);
+      fXgetE = new TGraph(static_cast<Int_t>(fX.size()), fX.data(), fE.data());
       fXgetE->SetName("XgetE");
       fXgetE->SetTitle(filename);
       fXgetE->GetXaxis()->SetTitle("Distance (um)");
       fXgetE->GetYaxis()->SetTitle("Energy (keV)");
-      sXgetE = new TSpline3(Form("%s_Xspline", filename), fXgetE);
-      sXgetE->SetName(Form("%s_Xspline", filename));
+      fsXgetE = new TSpline3(Form("%s_Xspline", filename), fXgetE);
+      fsXgetE->SetName(Form("%s_Xspline", filename));
 
-      fEgetX = new TGraph(E.size());
-      for(int x = E.size() - 1; x >= 0; x--) {   // make sure x data is increasing
-         fEgetX->SetPoint(E.size() - x - 1, E.at(x), X.at(x));
+      fEgetX = new TGraph(static_cast<Int_t>(fE.size()));
+      for(int x = fE.size() - 1; x >= 0; x--) {   // make sure x data is increasing
+         fEgetX->SetPoint(fE.size() - x - 1, fE.at(x), fX.at(x));
       }
       fEgetX->SetName("EgetX");
       fEgetX->SetTitle(filename);
       fEgetX->GetYaxis()->SetTitle("Distance (um)");
       fEgetX->GetXaxis()->SetTitle("Energy (keV)");
-      sEgetX = new TSpline3(Form("%s_Espline", filename), fEgetX);
-      sEgetX->SetName(Form("%s_Espline", filename));
+      fsEgetX = new TSpline3(Form("%s_Espline", filename), fEgetX);
+      fsEgetX->SetName(Form("%s_Espline", filename));
    }
 
    if(printfile) {
       std::cout << std::endl
-                << "\t" << fname << " file read in, " << dEdX.size() << " entries found." << std::endl;
-      std::cout << "[Energy loss range = " << Emax << " - " << Emin << " keV & total range = " << Xmin << " - " << Xmax << " um ]" << std::endl;
+                << "\t" << fname << " file read in, " << fdEdX.size() << " entries found." << std::endl;
+      std::cout << "[Energy loss range = " << fEmax << " - " << fEmin << " keV & total range = " << fXmin << " - " << fXmax << " um ]" << std::endl;
    }
 }
 
 double TSRIM::GetEnergy(double energy, double dist)
 {
-   double xbegin = sEgetX->Eval(energy);
+   double xbegin = fsEgetX->Eval(energy);
 
-   if(energy > Emax || xbegin + dist < Xmin) {
+   if(energy > fEmax || xbegin + dist < fXmin) {
       std::cout << std::endl
                 << " {TSRIM} WARNING: data is out of range. Results may be unpredictable." << std::endl
                 << DRED "\t\tenergy = " << energy << " keV \txbegin = " << xbegin << " um\t dist = " << dist << " um\t xend = " << xbegin + dist << " um" << std::endl
-                << DYELLOW << "\t\tErange = [" << Emin << ", " << Emax << "] keV \t\t Xrange = [0 , " << Xmax << " um" << RESET_COLOR << std::endl;
-   } else if(xbegin > Xmax || xbegin + dist > Xmax) {
+                << DYELLOW << "\t\tErange = [" << fEmin << ", " << fEmax << "] keV \t\t Xrange = [0 , " << fXmax << " um" << RESET_COLOR << std::endl;
+   } else if(xbegin > fXmax || xbegin + dist > fXmax) {
       return 0.0;
    }
 
-   return sXgetE->Eval(xbegin + dist);
+   return fsXgetE->Eval(xbegin + dist);
 }
 
 // THIS FUNCTION DOES A MORE ACCURATE ENERGY LOSS CALCULATION BASED ON SMALL EXTRAPOLATIONS
@@ -226,17 +217,14 @@ double TSRIM::GetAdjustedEnergy(double energy, double thickness, double stepsize
    }
 
    double energy_temp = energy;
-   double xstep       = stepsize,
-          xtot =
-             0.0;                                                            // MAKE XSTEP SMALLER FOR BETTER RESULTS. 1UM SHOULD BE FINE ... UNLESS YOU ARE AT THE BRAGG PEAK ??
-   energy_temp -= fmod(thickness, xstep) * sEnergyLoss->Eval(energy_temp);   // get rid of fractional distance
+   double xstep       = stepsize;
+   double xtot        = 0.0;                                                 // MAKE XSTEP SMALLER FOR BETTER RESULTS. 1UM SHOULD BE FINE ... UNLESS YOU ARE AT THE BRAGG PEAK ??
+   energy_temp -= fmod(thickness, xstep) * fsEnergyLoss->Eval(energy_temp);   // get rid of fractional distance
    xtot += fmod(thickness, xstep);
 
    if(thickness >= xstep) {
-
       while(xtot < thickness) {
-         energy_temp -=
-            xstep * sEnergyLoss->Eval(energy_temp);   // update energy recursively so that it decreases each step
+         energy_temp -= xstep * fsEnergyLoss->Eval(energy_temp);   // update energy recursively so that it decreases each step
          xtot += xstep;
          if(energy_temp <= 0.0) {
             return 0.0;   // if no energy is remaining then final energy is zero

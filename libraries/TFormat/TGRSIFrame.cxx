@@ -15,11 +15,10 @@
 #include "TPPG.h"
 #include "TDataFrameLibrary.h"
 
+// This assumes the options have been set from argc and argv before! That's true when using grsiframe, other programs need to ensure this happens.
 TGRSIFrame::TGRSIFrame()
+	: fOptions(TGRSIOptions::Get())
 {
-   // this assumes the options have been set from argc and argv before!
-   fOptions = TGRSIOptions::Get();
-
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6, 24, 0)
    // this increases RDF's verbosity level as long as the `fVerbosity` variable is in scope, i.e. until TGRSIFrame is destroyed
    if(fOptions->Debug()) {
@@ -31,8 +30,8 @@ TGRSIFrame::TGRSIFrame()
    std::string treeName = fOptions->TreeName();
    if(treeName.empty()) {
       TFile check(fOptions->RootInputFiles()[0].c_str());
-      if(check.Get("AnalysisTree") != nullptr) treeName = "AnalysisTree";
-      else if(check.Get("FragmentTree") != nullptr) treeName = "FragmentTree";
+      if(check.Get("AnalysisTree") != nullptr)      { treeName = "AnalysisTree"; }
+      else if(check.Get("FragmentTree") != nullptr) { treeName = "FragmentTree"; }
       check.Close();
    }
    if(treeName.empty()) {
@@ -46,7 +45,7 @@ TGRSIFrame::TGRSIFrame()
       ROOT::EnableImplicitMT(fOptions->GetMaxWorkers());
    }
 
-   auto chain = new TChain(treeName.c_str());
+   auto* chain = new TChain(treeName.c_str());
 
    fPpg = new TPPG;
 
@@ -55,7 +54,7 @@ TGRSIFrame::TGRSIFrame()
       if(chain->Add(fileName.c_str(), 0) >= 1) {   // setting nentries parameter to zero make TChain load the file header and return a 1 if the file was opened successfully
          TFile* file = TFile::Open(fileName.c_str());
          TRunInfo::AddCurrent();
-         auto ppg = static_cast<TPPG*>(file->Get("PPG"));
+         auto* ppg = static_cast<TPPG*>(file->Get("PPG"));
          if(ppg != nullptr) {
             fPpg->Add(ppg);
          }
@@ -75,28 +74,28 @@ TGRSIFrame::TGRSIFrame()
    fDataFrame = new ROOT::RDataFrame(*chain);
 
    // create an input list to pass to the helper
-   auto inputList = new TList;
+   auto* inputList = new TList;
    inputList->Add(fPpg);
    inputList->Add(TRunInfo::Get());
-   inputList->Add(fOptions->AnalysisOptions());
-   inputList->Add(fOptions->UserSettings());
-   int i = 0;
+   inputList->Add(TGRSIOptions::AnalysisOptions());
+   inputList->Add(TGRSIOptions::UserSettings());
+   int index = 0;
    for(const auto& valFile : fOptions->ValInputFiles()) {
-      inputList->Add(new TNamed(Form("valFile%d", i++), valFile.c_str()));
+      inputList->Add(new TNamed(Form("valFile%d", index++), valFile.c_str()));
    }
-   i = 0;
+   index = 0;
    for(const auto& calFile : fOptions->CalInputFiles()) {
-      inputList->Add(new TNamed(Form("calFile%d", i++), calFile.c_str()));
+      inputList->Add(new TNamed(Form("calFile%d", index++), calFile.c_str()));
    }
-   i = 0;
+   index = 0;
    for(const auto& cutFile : fOptions->InputCutFiles()) {
-      inputList->Add(new TNamed(Form("cutFile%d", i++), cutFile.c_str()));
+      inputList->Add(new TNamed(Form("cutFile%d", index++), cutFile.c_str()));
    }
 
    /// Try to load an external library with the correct function in it.
    /// If that library does not exist, try to compile it.
    /// To handle all that we use the class TDataFrameLibrary (very similar to TParserLibrary)
-   auto helper   = TDataFrameLibrary::Get()->CreateHelper(inputList);
+   auto* helper   = TDataFrameLibrary::Get()->CreateHelper(inputList);
    fOutputPrefix = helper->Prefix();
    // this actually moves the helper to the data frame, so from here on "helper" doesn't refer to the object we created anymore
    // aka don't use helper after this!
@@ -106,10 +105,10 @@ TGRSIFrame::TGRSIFrame()
 void TGRSIFrame::Run()
 {
    // get runinfo and get run and sub-run number
-   auto runInfo = TRunInfo::Get();
+   auto* runInfo = TRunInfo::Get();
 
    // get output file name
-   std::string outputFileName = Form("%s%s.root", fOutputPrefix.c_str(), runInfo->CreateLabel(true).c_str());
+   std::string outputFileName = Form("%s%s.root", fOutputPrefix.c_str(), TRunInfo::CreateLabel(true).c_str());
    std::cout << "Writing to " << outputFileName << std::endl;
 
    TFile outputFile(outputFileName.c_str(), "recreate");
@@ -124,7 +123,7 @@ void TGRSIFrame::Run()
       const auto everyN = fTotalEntries / barWidth;
       // entries.OnPartialResultSlot(everyN, [&everyN, &fTotalEntries = fTotalEntries, &barWidth, &progressBar, &barMutex](unsigned int /*slot*/, ULong64_t& /*partialList*/) {
       entries.OnPartialResultSlot(everyN, [&everyN, &fTotalEntries = fTotalEntries, &progressBar, &barMutex](unsigned int /*slot*/, ULong64_t& /*partialList*/) {
-         std::lock_guard<std::mutex> l(barMutex);   // lock_guard locks the mutex at construction, releases it at destruction
+         std::lock_guard<std::mutex> lock(barMutex);   // lock_guard locks the mutex at construction, releases it at destruction
          static int                  counter = 1;
          progressBar.push_back('#');
          // re-print the line with the progress bar
@@ -172,8 +171,8 @@ void TGRSIFrame::Run()
    } else {
       std::cerr << "failed to find TPPG, can't write it!" << std::endl;
    }
-   fOptions->AnalysisOptions()->WriteToFile(&outputFile);
-   fOptions->UserSettings()->Write("UserSettings", TObject::kOverwrite);
+	TGRSIOptions::AnalysisOptions()->WriteToFile(&outputFile);
+	TGRSIOptions::UserSettings()->Write("UserSettings", TObject::kOverwrite);
    TChannel::WriteToRoot();
    outputFile.Close();
    std::cout << "Closed '" << outputFile.GetName() << "'" << std::endl;

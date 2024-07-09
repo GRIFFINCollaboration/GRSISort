@@ -1,20 +1,16 @@
+#include "GPeak.h"
 
-#include <GPeak.h>
-#include <TGraph.h>
-#include <TVirtualFitter.h>
-#include <TFitResult.h>
-#include <TFitResultPtr.h>
+#include "TGraph.h"
+#include "TVirtualFitter.h"
+#include "TFitResult.h"
+#include "TFitResultPtr.h"
 
 #include "Globals.h"
 #include "GRootFunctions.h"
 #include "TGRSIFunctions.h"
 #include "GCanvas.h"
 
-/// \cond CLASSIMP
-ClassImp(GPeak)
-   /// \endcond
-
-   GPeak* GPeak::fLastFit = nullptr;
+GPeak* GPeak::fLastFit = nullptr;
 
 GPeak::GPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t*)
    : TF1("photopeakbg", GRootFunctions::PhotoPeakBG, xlow, xhigh, 7),

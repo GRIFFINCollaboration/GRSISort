@@ -22,25 +22,25 @@ class TSRIM {
 public:
    virtual ~TSRIM() = default;
 
-   TSRIM();
+   TSRIM() : fEnergyLoss(nullptr) {}
    // looks like the emax-min inputs don't work right now for 94Sr and maybe other high mass nuclei
-   TSRIM(const char* infilename, double emax = -1.0, double emin = 0.0, bool printfile = true);
+   explicit TSRIM(const char* infilename, double emax = -1.0, double emin = 0.0, bool printfile = true);
 
 private:
-   std::vector<double> IonEnergy;
-   std::vector<double> dEdX;
-   TGraph*             fEnergyLoss;
+   std::vector<double> fIonEnergy;
+   std::vector<double> fdEdX;
+   TGraph*             fEnergyLoss{nullptr};
    TGraph*             fEgetX{nullptr};
    TGraph*             fXgetE{nullptr};
-   TSpline3*           sEnergyLoss{nullptr};
-   TSpline3*           sEgetX{nullptr};
-   TSpline3*           sXgetE{nullptr};
-   std::vector<double> E;   // units of keV
-   std::vector<double> X;   // units of um
-   double              Emin{0.};
-   double              Emax{0.};
-   double              Xmin{0.};
-   double              Xmax{0.};
+   TSpline3*           fsEnergyLoss{nullptr};
+   TSpline3*           fsEgetX{nullptr};
+   TSpline3*           fsXgetE{nullptr};
+   std::vector<double> fE;   // units of keV
+   std::vector<double> fX;   // units of um
+   double              fEmin{0.};
+   double              fEmax{0.};
+   double              fXmin{0.};
+   double              fXmax{0.};
    static const double dx;   // um [sets accuracy of energy loss E vs X functions]
 
    std::map<std::pair<double, double>, double> AdjustedEnergyMap;
@@ -57,16 +57,17 @@ public:
    double GetEnergy(double energy, double dist);
    double GetEnergyChange(double energy, double dist) { return GetEnergy(energy, dist) - energy; };
 
-   double GetEmax() { return Emax; };
-   double GetEmin() { return Emin; };
-   double GetXmax() { return Xmax; };
-   double GetXmin() { return Xmin; };
+   double GetEmax() const { return fEmax; };
+   double GetEmin() const { return fEmin; };
+   double GetXmax() const { return fXmax; };
+   double GetXmin() const { return fXmin; };
 
-   TGraph*   GetEnergyLossGraph() { return fEnergyLoss; };
-   TGraph*   GetEvsXGraph() { return fXgetE; };
-   TGraph*   GetXvsEGraph() { return fEgetX; };
-   TSpline3* GetEvsXSpline() { return sXgetE; };
-   TSpline3* GetXvsESpline() { return sEgetX; };
+   TGraph*   GetEnergyLossGraph() const { return fEnergyLoss; };
+   TGraph*   GetEvsXGraph() const { return fXgetE; };
+   TGraph*   GetXvsEGraph() const { return fEgetX; };
+   TSpline3* GetEvsXSpline() const { return fsXgetE; };
+   TSpline3* GetXvsESpline() const { return fsEgetX; };
+
    /// \cond CLASSIMP
    ClassDef(TSRIM, 0)
    /// \endcond

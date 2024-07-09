@@ -9,9 +9,7 @@
 
 #include "TGRSIUtilities.h"
 
-ClassImp(TUserSettings)
-
-   bool TUserSettings::ReadSettings(std::string settingsFile)
+bool TUserSettings::ReadSettings(const std::string& settingsFile)
 {
    /// Read user settings from text file.
    /// The file is expected to have the format
@@ -34,11 +32,11 @@ ClassImp(TUserSettings)
    std::string line;
    while(std::getline(settings, line)) {
       // skip lines with too few character, starting with '#' or "//", or w/o colon
-      if(line.length() < 3) continue;   // need at least three characters
-      if(line[0] == '#') continue;
-      if(line[0] == '/' && line[1] == '/') continue;
+      if(line.length() < 3) { continue; }   // need at least three characters
+      if(line[0] == '#') { continue; }
+      if(line[0] == '/' && line[1] == '/') { continue; }
       auto colon = line.find(':');
-      if(colon == std::string::npos) continue;
+      if(colon == std::string::npos) { continue; }
       // split line at colon
       auto name  = line.substr(0, colon);
       auto value = line.substr(colon + 1);
@@ -64,7 +62,7 @@ void TUserSettings::ParseValue(const std::string& name, const std::string& value
 {
    // try and parse as integer, if pos is equal to the length of the string we were successful:
    // add it to the map and go to the next line
-   size_t pos;
+   size_t pos = 0;
    try {
       auto intVal = std::stoi(value, &pos);
       if(pos == value.length()) {
@@ -98,7 +96,7 @@ void TUserSettings::ParseValue(const std::string& name, const std::string& value
    // try and parse as bool: convert a copy to lower case and use stringstream with std::boolalpha
    std::string copy = value;
    std::transform(copy.begin(), copy.end(), copy.begin(), ::tolower);
-   bool              boolVal;
+   bool              boolVal = false;
    std::stringstream str(copy);
    str >> std::boolalpha >> boolVal;
    if(str.good()) {
@@ -118,7 +116,7 @@ void TUserSettings::ParseValue(const std::string& name, const std::string& value
    }
 }
 
-bool TUserSettings::GetBool(std::string parameter, bool quiet) const
+bool TUserSettings::GetBool(const std::string& parameter, bool quiet) const
 {
    try {
       return fBool.at(parameter);
@@ -131,7 +129,7 @@ bool TUserSettings::GetBool(std::string parameter, bool quiet) const
    }
 }
 
-int TUserSettings::GetInt(std::string parameter, bool quiet) const
+int TUserSettings::GetInt(const std::string& parameter, bool quiet) const
 {
    try {
       return fInt.at(parameter);
@@ -144,7 +142,7 @@ int TUserSettings::GetInt(std::string parameter, bool quiet) const
    }
 }
 
-double TUserSettings::GetDouble(std::string parameter, bool quiet) const
+double TUserSettings::GetDouble(const std::string& parameter, bool quiet) const
 {
    try {
       return fDouble.at(parameter);
@@ -157,7 +155,7 @@ double TUserSettings::GetDouble(std::string parameter, bool quiet) const
    }
 }
 
-std::string TUserSettings::GetString(std::string parameter, bool quiet) const
+std::string TUserSettings::GetString(const std::string& parameter, bool quiet) const
 {
    try {
       return fString.at(parameter);
@@ -170,7 +168,7 @@ std::string TUserSettings::GetString(std::string parameter, bool quiet) const
    }
 }
 
-std::vector<bool> TUserSettings::GetBoolVector(std::string parameter, bool quiet) const
+std::vector<bool> TUserSettings::GetBoolVector(const std::string& parameter, bool quiet) const
 {
    try {
       return fBoolVector.at(parameter);
@@ -183,7 +181,7 @@ std::vector<bool> TUserSettings::GetBoolVector(std::string parameter, bool quiet
    }
 }
 
-std::vector<int> TUserSettings::GetIntVector(std::string parameter, bool quiet) const
+std::vector<int> TUserSettings::GetIntVector(const std::string& parameter, bool quiet) const
 {
    try {
       return fIntVector.at(parameter);
@@ -196,7 +194,7 @@ std::vector<int> TUserSettings::GetIntVector(std::string parameter, bool quiet) 
    }
 }
 
-std::vector<double> TUserSettings::GetDoubleVector(std::string parameter, bool quiet) const
+std::vector<double> TUserSettings::GetDoubleVector(const std::string& parameter, bool quiet) const
 {
    try {
       return fDoubleVector.at(parameter);
@@ -209,7 +207,7 @@ std::vector<double> TUserSettings::GetDoubleVector(std::string parameter, bool q
    }
 }
 
-std::vector<std::string> TUserSettings::GetStringVector(std::string parameter, bool quiet) const
+std::vector<std::string> TUserSettings::GetStringVector(const std::string& parameter, bool quiet) const
 {
    try {
       return fStringVector.at(parameter);
@@ -225,52 +223,52 @@ std::vector<std::string> TUserSettings::GetStringVector(std::string parameter, b
 void TUserSettings::Print(Option_t*) const
 {
    std::cout << "Settings read from";
-   for(auto file : fSettingsFiles) std::cout << " " << file;
+   for(const auto& file : fSettingsFiles) { std::cout << " " << file; }
    std::cout << ":" << std::endl;
-   if(!fBool.empty()) std::cout << "---------- booleans ----------" << std::endl;
-   for(auto val : fBool) {
+   if(!fBool.empty()) { std::cout << "---------- booleans ----------" << std::endl; }
+   for(const auto& val : fBool) {
       std::cout << std::boolalpha << val.first << ": " << val.second << std::endl;
    }
-   if(!fInt.empty()) std::cout << "---------- integers ----------" << std::endl;
-   for(auto val : fInt) {
+   if(!fInt.empty()) { std::cout << "---------- integers ----------" << std::endl; }
+   for(const auto& val : fInt) {
       std::cout << val.first << ": " << val.second << std::endl;
    }
-   if(!fDouble.empty()) std::cout << "---------- doubles ----------" << std::endl;
-   for(auto val : fDouble) {
+   if(!fDouble.empty()) { std::cout << "---------- doubles ----------" << std::endl; }
+   for(const auto& val : fDouble) {
       std::cout << val.first << ": " << val.second << std::endl;
    }
-   if(!fString.empty()) std::cout << "---------- strings ----------" << std::endl;
-   for(auto val : fString) {
+   if(!fString.empty()) { std::cout << "---------- strings ----------" << std::endl; }
+   for(const auto& val : fString) {
       std::cout << val.first << ": " << val.second << std::endl;
    }
-   if(!fBoolVector.empty()) std::cout << "---------- boolean vectors ----------" << std::endl;
-   for(auto val : fBoolVector) {
+   if(!fBoolVector.empty()) { std::cout << "---------- boolean vectors ----------" << std::endl; }
+   for(const auto& val : fBoolVector) {
       std::cout << std::boolalpha << val.first << ": ";
-      for(auto item : val.second) {
+      for(const auto& item : val.second) {
          std::cout << item << " ";
       }
       std::cout << std::endl;
    }
-   if(!fIntVector.empty()) std::cout << "---------- integer vectors ----------" << std::endl;
-   for(auto val : fIntVector) {
+   if(!fIntVector.empty()) { std::cout << "---------- integer vectors ----------" << std::endl; }
+   for(const auto& val : fIntVector) {
       std::cout << val.first << ": ";
-      for(auto item : val.second) {
+      for(const auto& item : val.second) {
          std::cout << item << " ";
       }
       std::cout << std::endl;
    }
-   if(!fDoubleVector.empty()) std::cout << "---------- double vectors ----------" << std::endl;
-   for(auto val : fDoubleVector) {
+   if(!fDoubleVector.empty()) { std::cout << "---------- double vectors ----------" << std::endl; }
+   for(const auto& val : fDoubleVector) {
       std::cout << val.first << ": ";
-      for(auto item : val.second) {
+      for(const auto& item : val.second) {
          std::cout << item << " ";
       }
       std::cout << std::endl;
    }
-   if(!fStringVector.empty()) std::cout << "---------- string vectors ----------" << std::endl;
-   for(auto val : fStringVector) {
+   if(!fStringVector.empty()) { std::cout << "---------- string vectors ----------" << std::endl; }
+   for(const auto& val : fStringVector) {
       std::cout << val.first << ": ";
-      for(auto item : val.second) {
+      for(const auto& item : val.second) {
          std::cout << item << " ";
       }
       std::cout << std::endl;
