@@ -81,7 +81,7 @@ TPeak::~TPeak()
    if(fOwnBgFlag) {
       delete fBackground;
    }
-	delete fResiduals;
+   delete fResiduals;
 }
 
 TPeak::TPeak(const TPeak& copy) : TGRSIFit(), fBackground(nullptr), fResiduals(nullptr)
@@ -134,15 +134,15 @@ Bool_t TPeak::InitParams(TH1* fitHist)
    if(fitHist == nullptr) {
       return false;
    }
-   Double_t xlow = 0.;
-	Double_t xhigh = 0.;
+   Double_t xlow  = 0.;
+   Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
    Int_t bin     = fitHist->FindBin(GetParameter("centroid"));
    Int_t binlow  = fitHist->GetXaxis()->FindBin(xlow);
    Int_t binhigh = fitHist->GetXaxis()->FindBin(xhigh);
    SetParLimits(0, 0, fitHist->GetMaximum());
-   Double_t low = 0.;
-	Double_t high = 0.;
+   Double_t low  = 0.;
+   Double_t high = 0.;
    GetParLimits(1, low, high);
    if(low == high && low == 0.) {
       SetParLimits(1, xlow, xhigh);
@@ -305,10 +305,10 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    if(verbose) {
       std::cout << "Chi^2/NDF = " << fitres->Chi2() / fitres->Ndf() << std::endl;
    }
-   fChi2 = fitres->Chi2();
-   fNdf  = fitres->Ndf();
-   Double_t xlow = 0.;
-	Double_t xhigh = 0.;
+   fChi2          = fitres->Chi2();
+   fNdf           = fitres->Ndf();
+   Double_t xlow  = 0.;
+   Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
    Double_t int_low  = xlow - 10. * width;   // making the integration bounds a bit smaller, but still large enough. -JKS
    Double_t int_high = xhigh + 10. * width;
@@ -396,8 +396,8 @@ void TPeak::DrawResiduals()
       return;
    }
 
-   Double_t xlow = 0.;
-	Double_t xhigh = 0.;
+   Double_t xlow  = 0.;
+   Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
    Int_t nbins  = GetHist()->GetXaxis()->GetNbins();
    auto* res    = new Double_t[nbins];
@@ -502,8 +502,8 @@ Double_t TPeak::GetIntegralAreaErr()
    if(!GoodStatus()) { return 0.; }
 
    Double_t width = GetParameter("sigma");
-   Double_t xlow = 0.;
-	Double_t xhigh = 0.;
+   Double_t xlow  = 0.;
+   Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
    Double_t int_low  = xlow - 10. * width;   // making the integration bounds a bit smaller, but still large enough. -JKS
    Double_t int_high = xhigh + 10. * width;

@@ -21,7 +21,7 @@ TReaction::TReaction(const char* beam, const char* targ, const char* ejec, const
 
    fQVal    = (fM[0] + fM[1]) - (fM[2] + fM[3]) - ex3;   // effective Q value (includes excitation)
 
-   if(inverse) {
+   if(fInverse) {
       SetName(Form("%s(%s,%s)%s", beam, targ, ejec, reco));
    } else {
       SetName(Form("%s(%s,%s)%s", targ, beam, ejec, reco));

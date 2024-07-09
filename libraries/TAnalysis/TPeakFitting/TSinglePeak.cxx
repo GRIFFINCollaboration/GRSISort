@@ -21,8 +21,8 @@ Int_t TSinglePeak::GetNParameters() const
 {
    if(fTotalFunction != nullptr) {
       return fTotalFunction->GetNpar();
-	}
-	return 0;
+   }
+   return 0;
 }
 
 TF1* TSinglePeak::GetBackgroundFunction()
@@ -101,8 +101,8 @@ void TSinglePeak::Draw(Option_t* opt)
    // We need to draw this on top of the global background. Probably easiest to make another temporary TF1?
    if(fGlobalBackground == nullptr) { return; }
 
-   Double_t low = 0.;
-	Double_t high = 0.;
+   Double_t low  = 0.;
+   Double_t high = 0.;
    fGlobalBackground->GetRange(low, high);
    if(fPeakOnGlobal != nullptr) { fPeakOnGlobal->Delete(); }
    // Make a copy of the total function, and then tack on the global background parameters.
@@ -123,7 +123,7 @@ bool TSinglePeak::ParameterSetByUser(int par)
 {
    /// This function checks if a parameter or its limits have been set to a non-zero value.
    /// In case that the user fixed a parameter to be zero, the limits are non-zero, so this case is covered as well.
-   Double_t lowLimit = 0.;
+   Double_t lowLimit  = 0.;
    Double_t highLimit = 0.;
 
    fTotalFunction->GetParLimits(par, lowLimit, highLimit);

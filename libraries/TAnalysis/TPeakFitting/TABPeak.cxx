@@ -83,10 +83,10 @@ Double_t TABPeak::PeakFunction(Double_t* dim, Double_t* par)
 
 Double_t TABPeak::OneHitPeakFunction(Double_t* dim, Double_t* par)
 {
-   Double_t x      = dim[0];   // channel number used for fitting
-   Double_t height = par[0];   // height of photopeak
+   Double_t x        = dim[0];   // channel number used for fitting
+   Double_t height   = par[0];   // height of photopeak
    Double_t centroid = par[1];   // Peak Centroid of non skew gaus
-   Double_t sigma  = par[2];   // standard deviation of gaussian
+   Double_t sigma    = par[2];   // standard deviation of gaussian
 
    return height * TMath::Gaus(x, centroid, sigma);
 }
@@ -131,8 +131,8 @@ void TABPeak::DrawComponents(Option_t* opt)
    // We need to draw this on top of the global background. Probably easiest to make another temporary TF1?
    if(GetGlobalBackground() == nullptr) return;
 
-   Double_t low = 0;
-	Double_t high = 0;
+   Double_t low  = 0;
+   Double_t high = 0;
    GetGlobalBackground()->GetRange(low, high);
    if(fOneHitOnGlobal != nullptr) { fOneHitOnGlobal->Delete(); }
    if(fTwoHitOnGlobal != nullptr) { fTwoHitOnGlobal->Delete(); }

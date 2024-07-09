@@ -59,10 +59,10 @@ TMultiPeak::TMultiPeak() : TGRSIFit("multipeakbg", this, &TMultiPeak::MultiPhoto
 
 TMultiPeak::~TMultiPeak()
 {
-	delete fBackground;
+   delete fBackground;
 
    for(auto& peak : fPeakVec) {
-		delete peak;
+      delete peak;
    }
 }
 
@@ -129,8 +129,8 @@ Bool_t TMultiPeak::InitParams(TH1* fithist)
 
    FixParameter(0, fPeakVec.size());
    // This is the range for the fit.
-   Double_t xlow = 0;
-	Double_t xhigh = 0;
+   Double_t xlow  = 0;
+   Double_t xhigh = 0;
    GetRange(xlow, xhigh);
    Int_t binlow  = fithist->GetXaxis()->FindBin(xlow);
    Int_t binhigh = fithist->GetXaxis()->FindBin(xhigh);
@@ -219,8 +219,8 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
    std::sort(sigma_list.begin(), sigma_list.end(), std::greater<Double_t>());
    Double_t median = sigma_list.at(static_cast<int>(sigma_list.size() / 2.));
 
-   Double_t range_low = 0.;
-	Double_t range_high = 0.;
+   Double_t range_low  = 0.;
+   Double_t range_high = 0.;
    for(int i = 0; i < static_cast<int>(GetParameter(0) + 0.5); ++i) {
       GetParLimits(6 * i + 7, range_low, range_high);
       if(range_low != range_high) {
@@ -300,8 +300,8 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
       tmpMp->SetParameter(Form("R_%i", i), GetParameter(Form("R_%i", i)));
 
       Double_t width = GetParameter(Form("Sigma_%i", i));
-      Double_t xlow = 0.;
-		Double_t xhigh = 0.;
+      Double_t xlow  = 0.;
+      Double_t xhigh = 0.;
       GetRange(xlow, xhigh);
       Double_t int_low  = xlow - 10. * width;   // making the integration bounds a bit smaller, but still large enough. -JKS
       Double_t int_high = xhigh + 10. * width;
@@ -331,8 +331,8 @@ void TMultiPeak::Clear(Option_t* opt)
 {
    TGRSIFit::Clear(opt);
    for(auto& peak : fPeakVec) {
-		delete peak;
-		peak = nullptr;
+      delete peak;
+      peak = nullptr;
    }
    fPeakVec.clear();
 }
@@ -358,7 +358,7 @@ Double_t TMultiPeak::MultiPhotoPeakBG(Double_t* dim, Double_t* par)
    int    npeaks = static_cast<int>(par[0] + 0.5);
    double result = TGRSIFunctions::PolyBg(dim, &par[1], 2);   // polynomial background. uses par[1->4]
    for(int i = 0; i < npeaks; ++i) {                          // par[0] is number of peaks
-		std::array<Double_t, 6> tmp_par;
+      std::array<Double_t, 6> tmp_par;
       tmp_par[0] = par[6 * i + 5];    // height of photopeak
       tmp_par[1] = par[6 * i + 6];    // Peak Centroid of non skew gaus
       tmp_par[2] = par[6 * i + 7];    // standard deviation  of gaussian
@@ -378,7 +378,7 @@ Double_t TMultiPeak::MultiStepBG(Double_t* dim, Double_t* par)
    int    npeaks = static_cast<int>(par[0] + 0.5);
    double result = TGRSIFunctions::PolyBg(dim, &par[1], 2);   // polynomial background. uses par[1->4]
    for(int i = 0; i < npeaks; i++) {                          // par[0] is number of peaks
-		std::array<Double_t, 6> tmp_par;
+      std::array<Double_t, 6> tmp_par;
       tmp_par[0] = par[6 * i + 5];    // height of photopeak
       tmp_par[1] = par[6 * i + 6];    // Peak Centroid of non skew gaus
       tmp_par[2] = par[6 * i + 7];    // standard deviation  of gaussian
@@ -399,7 +399,7 @@ Double_t TMultiPeak::SinglePeakBG(Double_t* dim, Double_t* par)
    int    npeaks = static_cast<int>(par[0] + 0.5);
    double result = TGRSIFunctions::PolyBg(dim, &par[1], 2);   // polynomial background. uses par[1->4]
    for(int i = 0; i < npeaks; i++) {                          // par[0] is number of peaks
-		std::array<Double_t, 6> tmp_par;
+      std::array<Double_t, 6> tmp_par;
       tmp_par[0] = par[6 * i + 5];    // height of photopeak
       tmp_par[1] = par[6 * i + 6];    // Peak Centroid of non skew gaus
       tmp_par[2] = par[6 * i + 7];    // standard deviation  of gaussian
@@ -440,8 +440,8 @@ void TMultiPeak::DrawPeaks()
 {
    // Draws the individual TPeaks that make up the TMultiPeak. ROOT makes this a complicated process. The result on the
    // histogram might have memory issues.
-   Double_t xlow = 0.;
-	Double_t xhigh = 0.;
+   Double_t xlow  = 0.;
+   Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
    Double_t npeaks = fPeakVec.size();
    for(size_t i = 0; i < fPeakVec.size(); ++i) {

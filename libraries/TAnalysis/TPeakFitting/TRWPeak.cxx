@@ -81,7 +81,7 @@ Double_t TRWPeak::PeakFunction(Double_t* dim, Double_t* par)
    if(beta == 0.0) { return gauss; }
 
    return gauss + relative * height / 100.0 * (TMath::Exp((x - centroid) / beta)) *
-                  (TMath::Erfc(((x - centroid) / (TMath::Sqrt(2.0) * sigma)) + sigma / (TMath::Sqrt(2.0) * beta)));
+                     (TMath::Erfc(((x - centroid) / (TMath::Sqrt(2.0) * sigma)) + sigma / (TMath::Sqrt(2.0) * beta)));
 }
 
 Double_t TRWPeak::BackgroundFunction(Double_t* dim, Double_t* par)

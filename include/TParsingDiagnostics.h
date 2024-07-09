@@ -88,7 +88,7 @@ private:
    time_t fMaxDaqTimeStamp{0};   ///< maximum daq timestamp
 
    Int_t fMinNetworkPacketNumber{0x7fffffff};   ///< minimum network packet id
-   Int_t fMaxNetworkPacketNumber{0};   ///< maximum network packet id
+   Int_t fMaxNetworkPacketNumber{0};            ///< maximum network packet id
 
    Long_t fNumberOfNetworkPackets{0};
 

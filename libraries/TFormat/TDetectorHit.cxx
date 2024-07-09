@@ -4,8 +4,6 @@
 
 #include "TClass.h"
 
-// TPPG* TDetectorHit::fPPG = nullptr;
-
 TVector3 TDetectorHit::fBeamDirection(0, 0, 1);
 
 TDetectorHit::TDetectorHit(const int& address)

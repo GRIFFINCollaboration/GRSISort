@@ -37,7 +37,7 @@ class TSinglePeak : public TObject {
 public:
    friend class TPeakFitter;
    // ctors and dtors
-   TSinglePeak() = default;
+   TSinglePeak()           = default;
    ~TSinglePeak() override = default;
 
    virtual void InitParNames() {}
@@ -60,8 +60,8 @@ public:
    virtual Double_t Sigma() const                      = 0;
    virtual Double_t FWHM();   // not constant because we have to update the parmeters of the peak function
 
-   void Print(Option_t* = "") const override;
-   void Draw(Option_t* opt = "") override;
+   void         Print(Option_t* = "") const override;
+   void         Draw(Option_t* opt = "") override;
    virtual void DrawBackground(Option_t* opt = "")
    {
       if(fGlobalBackground != nullptr) { fGlobalBackground->Draw(opt); }

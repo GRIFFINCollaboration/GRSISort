@@ -33,8 +33,8 @@ protected:
    TGRSIFit(const char* name, Double_t xmin, Double_t xmax, Int_t npar) : TF1(name, xmin, xmax, npar) { Clear(); }
    TGRSIFit(const char* name, const ROOT::Math::ParamFunctor& func, Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0) : TF1(name, func, xmin, xmax, npar) { Clear(); }
    template <class PtrObj, typename MemFn>
-   TGRSIFit(const char* name, const PtrObj& pointer, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar, const char* class_name, const char* fcn_name) 
-		: TF1(name, pointer, memFn, xmin, xmax, npar, class_name, fcn_name)
+   TGRSIFit(const char* name, const PtrObj& pointer, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar, const char* class_name, const char* fcn_name)
+      : TF1(name, pointer, memFn, xmin, xmax, npar, class_name, fcn_name)
    {
       Clear();
    }

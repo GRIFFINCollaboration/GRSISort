@@ -2726,7 +2726,7 @@ void GHSym::Smooth(Int_t ntimes, Option_t* option)
 
 ClassImp(GHSymF)
 
-   GHSymF::GHSymF()
+GHSymF::GHSymF()
    : GHSym(), TArrayF()
 {
    SetBinsLength(9);
@@ -2933,7 +2933,7 @@ GHSymF operator/(GHSymF& h1, GHSymF& h2)
 
 ClassImp(GHSymD)
 
-   GHSymD::GHSymD()
+GHSymD::GHSymD()
    : GHSym(), TArrayD()
 {
    SetBinsLength(9);

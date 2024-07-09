@@ -20,7 +20,7 @@
 ///
 ///////////////////////////////////////////////////////////////
 
-std::vector<std::string> TEpicsFrag::fNameList;
+std::vector<std::string>       TEpicsFrag::fNameList;
 std::map<Long64_t, TEpicsFrag> TEpicsFrag::fScalerMap;
 Long64_t                       TEpicsFrag::fSmallestTime = std::numeric_limits<Long64_t>::max();
 

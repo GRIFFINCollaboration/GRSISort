@@ -7,8 +7,8 @@
 TParsingDiagnosticsData::TParsingDiagnosticsData() = default;
 
 TParsingDiagnosticsData::TParsingDiagnosticsData(const std::shared_ptr<const TFragment>& frag)
-	: fMinChannelId(frag->GetChannelId()), fMaxChannelId(frag->GetChannelId()), fNumberOfHits(1),
-	fDeadTime(frag->GetDeadTime()), fMinTimeStamp(frag->GetTimeStampNs()), fMaxTimeStamp(frag->GetTimeStampNs())
+   : fMinChannelId(frag->GetChannelId()), fMaxChannelId(frag->GetChannelId()), fNumberOfHits(1),
+     fDeadTime(frag->GetDeadTime()), fMinTimeStamp(frag->GetTimeStampNs()), fMaxTimeStamp(frag->GetTimeStampNs())
 {
 }
 

@@ -40,7 +40,7 @@ void TCalibrationGraph::Streamer(TBuffer& R__b)
 }
 
 TCalibrationGraphSet::TCalibrationGraphSet(TGraphErrors* graph, const std::string& label)
-	: fTotalGraph(new TGraphErrors), fTotalResidualGraph(new TGraphErrors)
+   : fTotalGraph(new TGraphErrors), fTotalResidualGraph(new TGraphErrors)
 {
    if(graph != nullptr) {
       Add(graph, label);
@@ -80,7 +80,7 @@ int TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
    double* rhsEY = graph->GetEY();
 
    // create one vector with x, y, ex, ey, index of graph, and index of point that we can use to sort the data
-	// TODO: create a (private?) enum to reference to x, y, ex, ey, graph index, and point index
+   // TODO: create a (private?) enum to reference to x, y, ex, ey, graph index, and point index
    std::vector<std::tuple<double, double, double, double, size_t, size_t>> data(fTotalGraph->GetN() + graph->GetN());
    if(fVerboseLevel > 2) { std::cout << "Filling vector of size " << data.size() << " with " << fTotalGraph->GetN() << " and " << graph->GetN() << " entries" << std::endl; }
    for(int i = 0; i < fTotalGraph->GetN(); ++i) {
@@ -160,7 +160,7 @@ bool TCalibrationGraphSet::SetResidual(const bool& force)
       }
       fResidualSet = true;
       auto* mother = gPad->GetMother();
-      int  pad     = 0;
+      int   pad    = 0;
       while(mother->GetPad(pad) != nullptr) {
          mother->GetPad(pad)->Modified();
          mother->GetPad(pad)->Update();
@@ -242,14 +242,14 @@ Int_t TCalibrationGraphSet::RemovePoint()
 
    // localize point to be deleted
    Int_t ipoint = -2;
-   Int_t i = 0;
+   Int_t i      = 0;
    // start with a small window (in case the mouse is very close to one point)
    double* x = fTotalGraph->GetX();
    double* y = fTotalGraph->GetY();
    for(i = 0; i < fTotalGraph->GetN(); i++) {
       Int_t dpx = px - gPad->XtoAbsPixel(gPad->XtoPad(x[i]));
       Int_t dpy = py - gPad->YtoAbsPixel(gPad->YtoPad(y[i]));
-		// TODO replace 100 with member variable?
+      // TODO replace 100 with member variable?
       if(dpx * dpx + dpy * dpy < 100) {
          ipoint = i;
          break;
@@ -271,7 +271,9 @@ Int_t TCalibrationGraphSet::RemovePoint()
       // we failed to remove the point in the residual, so we assume it's out of whack
       fResidualSet = false;
       if(fVerboseLevel > 2) { std::cout << ipoint << " didn't removed residual point" << std::endl; }
-   } else if(fVerboseLevel > 2) { std::cout << ipoint << " removed residual point" << std::endl; }
+   } else if(fVerboseLevel > 2) {
+      std::cout << ipoint << " removed residual point" << std::endl;
+   }
    // need to find which of the graphs we have to remove this point from -> use fGraphIndex[ipoint]
    // and also which point this is of the graph -> use fPointIndex[ipoint]
    if(fVerboseLevel > 2) { std::cout << ipoint << " - " << fGraphIndex[ipoint] << ", " << fPointIndex[ipoint] << std::endl; }
@@ -289,7 +291,7 @@ Int_t TCalibrationGraphSet::RemovePoint()
       }
    }
    auto* mother = gPad->GetMother();
-   int  pad     = 0;
+   int   pad    = 0;
    while(mother->GetPad(pad) != nullptr) {
       mother->GetPad(pad)->Modified();
       mother->GetPad(pad)->Update();
@@ -309,14 +311,14 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint()
 
    // localize point to be deleted
    Int_t ipoint = -2;
-   Int_t i = 0;
+   Int_t i      = 0;
    // start with a small window (in case the mouse is very close to one point)
    double* x = fTotalResidualGraph->GetX();
    double* y = fTotalResidualGraph->GetY();
    for(i = 0; i < fTotalResidualGraph->GetN(); i++) {
       Int_t dpx = px - gPad->XtoAbsPixel(gPad->XtoPad(x[i]));
       Int_t dpy = py - gPad->YtoAbsPixel(gPad->YtoPad(y[i]));
-		// TODO replace 100 with member variable?
+      // TODO replace 100 with member variable?
       if(dpx * dpx + dpy * dpy < 100) {
          ipoint = i;
          break;

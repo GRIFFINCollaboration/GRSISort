@@ -107,7 +107,7 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
    }
    fTotalFitFunction->SetLineColor(static_cast<Color_t>(kMagenta + fColorIndex));
    fTotalFitFunction->SetRange(fRangeLow, fRangeHigh);
-	fBGToFit->SetRange(fRangeLow, fRangeHigh);
+   fBGToFit->SetRange(fRangeLow, fRangeHigh);
    // We need to initialize all of the parameters based on the peak parameters
    if(fit_hist != nullptr && (!fInitFlag || fit_hist != fLastHistFit)) {
       if(verbose) { std::cout << "Initializing Fit...." << std::endl; }
