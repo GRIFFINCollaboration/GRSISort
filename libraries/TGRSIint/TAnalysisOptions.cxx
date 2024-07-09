@@ -12,11 +12,6 @@
 #include "TGRSIUtilities.h"
 #include "GRootCommands.h"
 
-TAnalysisOptions::TAnalysisOptions()
-{
-   Clear();
-}
-
 void TAnalysisOptions::Clear(Option_t*)
 {
    /// Clears all of the variables in the TAnalysisOptions
@@ -44,13 +39,13 @@ void TAnalysisOptions::Print(Option_t*) const
              << RESET_COLOR << std::endl;
 }
 
-bool TAnalysisOptions::WriteToFile(const std::string& file)
+bool TAnalysisOptions::WriteToFile(const std::string& fileName)
 {
-   TFile f(file.c_str(), "update");
-   if(f.IsOpen()) {
-      return WriteToFile(&f);
+   TFile file(fileName.c_str(), "update");
+   if(file.IsOpen()) {
+      return WriteToFile(&file);
    }
-   std::cout << R"(Failed to open file ")" << file << R"(" in update mode!)" << std::endl;
+   std::cout << R"(Failed to open file ")" << fileName << R"(" in update mode!)" << std::endl;
    return false;
 }
 
@@ -98,13 +93,13 @@ bool TAnalysisOptions::WriteToFile(TFile* file)
    return success;
 }
 
-void TAnalysisOptions::ReadFromFile(const std::string& file)
+void TAnalysisOptions::ReadFromFile(const std::string& fileName)
 {
-   TFile f(file.c_str(), "read");
-   if(f.IsOpen()) {
-      return ReadFromFile(&f);
+   TFile file(fileName.c_str(), "read");
+   if(file.IsOpen()) {
+      return ReadFromFile(&file);
    }
-   std::cout << R"(Failed to open file ")" << file << R"(" in read mode!)" << std::endl;
+   std::cout << R"(Failed to open file ")" << fileName << R"(" in read mode!)" << std::endl;
 }
 
 void TAnalysisOptions::ReadFromFile(TFile* file)
@@ -129,7 +124,7 @@ void TAnalysisOptions::ReadFromFile(TFile* file)
    oldDir->cd();
 }
 
-void TAnalysisOptions::SetCorrectCrossTalk(const bool flag, Option_t* opt)
+void TAnalysisOptions::SetCorrectCrossTalk(const bool& flag, Option_t* opt)
 {
    fIsCorrectingCrossTalk = flag;
    TString opt1           = opt;

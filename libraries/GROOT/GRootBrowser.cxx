@@ -40,10 +40,6 @@ static const char* gOpenFileTypes[] = {"ROOT files", "*.root", "All files", "*",
 
 static const char* gPluginFileTypes[] = {"ROOT files", "*.C", "All files", "*", nullptr, nullptr};
 
-/// \cond CLASSIMP
-ClassImp(GRootBrowser)
-/// \endcond
-
 //______________________________________________________________________________
 GRootBrowser::GRootBrowser(TBrowser* b, const char* name, UInt_t width, UInt_t height, Option_t* opt,
                            Bool_t initshow)

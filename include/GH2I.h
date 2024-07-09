@@ -17,15 +17,13 @@ class GH1D;
 class GH2I : public TH2I, public GH2Base {
 
 public:
-   GH2I() {}
-   GH2I(const TObject&);
+   GH2I() = default;
+   explicit GH2I(const TObject&);
    GH2I(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins, Int_t nbinsy, const Double_t* ybins);
    GH2I(const char* name, const char* title, Int_t nbinsx, const Float_t* xbins, Int_t nbinsy, const Float_t* ybins);
-   GH2I(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins, Int_t nbinsy, Double_t ylow,
-        Double_t yup);
+   GH2I(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins, Int_t nbinsy, Double_t ylow, Double_t yup);
    GH2I(const char* name, const char* title, Int_t nbinsx, Double_t xlow, Double_t xup, Int_t nbinsy, Double_t* ybins);
-   GH2I(const char* name, const char* title, Int_t nbinsx, Double_t xlow, Double_t xup, Int_t nbinsy, Double_t ylow,
-        Double_t yup);
+   GH2I(const char* name, const char* title, Int_t nbinsx, Double_t xlow, Double_t xup, Int_t nbinsy, Double_t ylow, Double_t yup);
    ~GH2I() override;
 
    void Draw(Option_t* opt = "") override;

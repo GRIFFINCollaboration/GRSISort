@@ -26,24 +26,23 @@
 ///
 /////////////////////////////////////////////////////////////////
 class TSinglePeak;
-typedef std::list<TSinglePeak*> MultiplePeak_t;
+using MultiplePeak_t=std::list<TSinglePeak*>;
 
 class TPeakFitter : public TObject {
 public:
    // ctors and dtors
-   ~TPeakFitter() override{};
-   TPeakFitter() : TPeakFitter(0., 0.) {}
+   ~TPeakFitter() override = default;
+	TPeakFitter() : TPeakFitter(0., 0.) {}
    TPeakFitter(const Double_t& range_low, const Double_t& range_high);
 
-public:
-   void AddPeak(TSinglePeak* p)
+   void AddPeak(TSinglePeak* peak)
    {
-      fPeaksToFit.push_back(p);
+      fPeaksToFit.push_back(peak);
       ResetTotalFitFunction();
    }
-   void RemovePeak(TSinglePeak* p)
+   void RemovePeak(TSinglePeak* peak)
    {
-      fPeaksToFit.remove(p);
+      fPeaksToFit.remove(peak);
       ResetTotalFitFunction();
    }
    void RemoveAllPeaks()
@@ -56,8 +55,8 @@ public:
    void InitializeParameters(TH1* fit_hist);
    void InitializeBackgroundParameters(TH1* fit_hist);
 
-   virtual void Print(Option_t* opt = "") const override;
-   void         PrintParameters() const;
+   void          Print(Option_t* opt = "") const override;
+   void          PrintParameters() const;
 
    TF1*          GetBackground() { return fBGToFit; }
    TF1*          GetFitFunction() { return fTotalFitFunction; }
@@ -68,7 +67,7 @@ public:
 
    void ResetInitFlag() { fInitFlag = false; }
 
-   void SetIndex(const int& index) { fIndex = index; }
+   void SetColorIndex(const int& index) { fColorIndex = index; }
 
 private:
    void     UpdateFitterParameters();
@@ -82,15 +81,13 @@ private:
       }
    }
 
-private:
-   //   TMultiplePeak* fPeaksToFit{nullptr};
    MultiplePeak_t fPeaksToFit;
    TF1*           fBGToFit{nullptr};
 
    TF1* fTotalFitFunction{nullptr};
 
-   Double_t fRangeLow;
-   Double_t fRangeHigh;
+   Double_t fRangeLow{0.};
+   Double_t fRangeHigh{0.};
 
    Double_t FitFunction(Double_t* dim, Double_t* par);
    Double_t BackgroundFunction(Double_t* dim, Double_t* par);
@@ -99,7 +96,8 @@ private:
 
    TH1* fLastHistFit{nullptr};
 
-   int fIndex{0};   ///< this index is added to the colors kRed for the total function and kMagenta for the individual peaks
+   int fColorIndex{0};   ///< this index is added to the colors kRed for the total function and kMagenta for the individual peaks
+
    /// \cond CLASSIMP
    ClassDefOverride(TPeakFitter, 2);
    /// \endcond

@@ -1,18 +1,14 @@
+#include "GPeak.h"
 
-#include <GPeak.h>
-#include <TGraph.h>
-#include <TVirtualFitter.h>
-#include <TFitResult.h>
-#include <TFitResultPtr.h>
+#include "TGraph.h"
+#include "TVirtualFitter.h"
+#include "TFitResult.h"
+#include "TFitResultPtr.h"
 
 #include "Globals.h"
 #include "GRootFunctions.h"
 #include "TGRSIFunctions.h"
 #include "GCanvas.h"
-
-/// \cond CLASSIMP
-ClassImp(GPeak)
-/// \endcond
 
 GPeak* GPeak::fLastFit = nullptr;
 

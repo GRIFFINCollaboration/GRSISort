@@ -28,8 +28,6 @@ class DifferentBinLimits : public std::exception {
 class DifferentLabels : public std::exception {
 };
 
-ClassImp(GCube)
-
 GCube::GCube()
 {
    fDimension = 3;

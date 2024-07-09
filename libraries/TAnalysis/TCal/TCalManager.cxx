@@ -2,10 +2,6 @@
 
 #include <stdexcept>
 
-/// \cond CLASSIMP
-ClassImp(TCalManager)
-/// \endcond
-
 TCalManager::TCalManager()
 {
    fClass = nullptr;   // fClass will point to a TClass which is made persistant through a root session within gROOT.

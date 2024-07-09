@@ -31,8 +31,8 @@ class TGauss : public TSinglePeak {
 public:
    // ctors and dtors
    ~TGauss() override = default;
-   TGauss()           = default;
-   TGauss(Double_t centroid, Double_t relativeLimit = -1.);
+   TGauss() = default;
+   explicit TGauss(Double_t centroid, Double_t relativeLimit = -1.);
 
    void InitParNames() override;
    void InitializeParameters(TH1* hist, const double& rangeLow, const double& rangeHigh) override;

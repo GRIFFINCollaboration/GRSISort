@@ -6,23 +6,21 @@
 #include <chrono>
 #include <thread>
 
-ClassImp(TEventBuildingLoop)
-
-TEventBuildingLoop* TEventBuildingLoop::Get(std::string name, EBuildMode mode, long buildWindow)
+TEventBuildingLoop* TEventBuildingLoop::Get(std::string name, EBuildMode mode, uint64_t buildWindow)
 {
    if(name.length() == 0) {
       name = "build_loop";
    }
 
-   TEventBuildingLoop* loop = static_cast<TEventBuildingLoop*>(StoppableThread::Get(name));
+   auto* loop = static_cast<TEventBuildingLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
       loop = new TEventBuildingLoop(name, mode, buildWindow);
    }
    return loop;
 }
 
-TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode, long buildWindow)
-   : StoppableThread(name), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>()),
+TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode, uint64_t buildWindow)
+   : StoppableThread(std::move(name)), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>()),
      fOutputQueue(std::make_shared<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment>>>>()),
      fOutOfOrderQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>()), fBuildMode(mode),
      fSortingDepth(10000), fBuildWindow(buildWindow), fPreviousSortingDepthError(false), fSkipInputSort(TGRSIOptions::Get()->SkipInputSort())
@@ -30,26 +28,26 @@ TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode, long b
    std::cout << DYELLOW << (fSkipInputSort ? "Not sorting " : "Sorting ") << "input by time: ";
    switch(fBuildMode) {
    case EBuildMode::kTime:
-      fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
+      fOrdered = decltype(fOrdered)([](const std::shared_ptr<const TFragment>& a, const std::shared_ptr<const TFragment>& b) {
          return a->GetTime() < b->GetTime();
       });
       std::cout << DYELLOW << "sorting by time, using build window of " << fBuildWindow << "!" << RESET_COLOR << std::endl;
       break;
    case EBuildMode::kTimestamp:
-      fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
+      fOrdered = decltype(fOrdered)([](const std::shared_ptr<const TFragment>& a, const std::shared_ptr<const TFragment>& b) {
          return a->GetTimeStampNs() < b->GetTimeStampNs();
       });
       std::cout << DYELLOW << "sorting by timestamp, using build window of " << fBuildWindow << "!" << RESET_COLOR << std::endl;
       break;
    case EBuildMode::kTriggerId:
-      fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
+      fOrdered = decltype(fOrdered)([](const std::shared_ptr<const TFragment>& a, const std::shared_ptr<const TFragment>& b) {
          return a->GetTriggerId() < b->GetTriggerId();
       });
       std::cout << DYELLOW << "sorting by trigger ID!" << RESET_COLOR << std::endl;
       break;
    case EBuildMode::kSkip:
       // no need for ordering, always return true
-      fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment>, std::shared_ptr<const TFragment>) {
+      fOrdered = decltype(fOrdered)([](const std::shared_ptr<const TFragment>&, const std::shared_ptr<const TFragment>&) {
          return true;
       });
       std::cout << DYELLOW << "not sorting!" << RESET_COLOR << std::endl;
@@ -187,10 +185,10 @@ bool TEventBuildingLoop::CheckTimeCondition(const std::shared_ptr<const TFragmen
 
 bool TEventBuildingLoop::CheckTimestampCondition(const std::shared_ptr<const TFragment>& frag)
 {
-   long timestamp   = frag->GetTimeStampNs();
-   long event_start = (!fNextEvent.empty() ? (TGRSIOptions::Get()->AnalysisOptions()->StaticWindow() ? fNextEvent[0]->GetTimeStampNs()
-                                                                                                     : fNextEvent.back()->GetTimeStampNs())
-                                           : timestamp);
+   uint64_t timestamp   = frag->GetTimeStampNs();
+   uint64_t event_start = (!fNextEvent.empty() ? (TGRSIOptions::Get()->AnalysisOptions()->StaticWindow() ? fNextEvent[0]->GetTimeStampNs()
+                                                                                                         : fNextEvent.back()->GetTimeStampNs())
+                                               : timestamp);
 
    // save timestamp every <BuildWindow> fragments
    if(frag->GetEntryNumber() % (TGRSIOptions::Get()->SortDepth()) == 0) {
@@ -222,9 +220,8 @@ bool TEventBuildingLoop::CheckTimestampCondition(const std::shared_ptr<const TFr
 
 bool TEventBuildingLoop::CheckTriggerIdCondition(const std::shared_ptr<const TFragment>& frag)
 {
-   long trigger_id = frag->GetTriggerId();
-   long current_trigger_id =
-      (!fNextEvent.empty() ? fNextEvent[0]->GetTriggerId() : trigger_id);
+   int64_t trigger_id = frag->GetTriggerId();
+   int64_t current_trigger_id = (!fNextEvent.empty() ? fNextEvent[0]->GetTriggerId() : trigger_id);
 
    // save trigger id every <BuildWindow> fragments
    if(frag->GetEntryNumber() % (TGRSIOptions::Get()->SortDepth()) == 0) {
@@ -258,9 +255,9 @@ bool TEventBuildingLoop::CheckTriggerIdCondition(const std::shared_ptr<const TFr
 
 std::string TEventBuildingLoop::EndStatus()
 {
-   std::stringstream ss;
-   ss << fInputQueue->Name() << ": " << fItemsPopped << "/" << fInputQueue->ItemsPopped() << " items popped"
-      << std::endl;
+   std::stringstream str;
+   str << fInputQueue->Name() << ": " << fItemsPopped << "/" << fInputQueue->ItemsPopped() << " items popped"
+       << std::endl;
 
-   return ss.str();
+   return str.str();
 }

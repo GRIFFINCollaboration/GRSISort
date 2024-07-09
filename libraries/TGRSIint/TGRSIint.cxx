@@ -38,10 +38,6 @@
 
 #include <pwd.h>
 
-/// \cond CLASSIMP
-ClassImp(TGRSIint)
-/// \endcond
-
 extern void PopupLogo(bool);
 extern void WaitLogo();
 
@@ -73,8 +69,8 @@ TGRSIint::TGRSIint(int argc, char** argv, void*, int, bool noLogo, const char* a
    fGRSIEnv = gEnv;
 
    GetSignalHandler()->Remove();
-   auto* ih = new TGRSIInterruptHandler();
-   ih->Add();
+   auto* interruptHandler = new TGRSIInterruptHandler();
+   interruptHandler->Add();
 
    try {
       TGRSIOptions* opt = TGRSIOptions::Get(argc, argv);
@@ -104,9 +100,7 @@ void TGRSIint::ApplyOptions()
 
    bool missing_raw_file = !all_files_exist(opt->InputFiles());
 
-   if(!false) {   // this will be change to something like, if(!ClassicRoot)
-      LoadGROOTGraphics();
-   }
+	LoadGROOTGraphics();
 
    if(opt->ReadingMaterial()) {
       std::thread fnews = std::thread(ReadTheNews);
@@ -138,7 +132,7 @@ void TGRSIint::ApplyOptions()
    TRunInfo::ClearDate();
    TRunInfo::SetDate(GRSI_GIT_COMMIT_TIME);
 
-   for(auto& rawFile : opt->InputFiles()) {
+   for(const auto& rawFile : opt->InputFiles()) {
       OpenRawFile(rawFile);
    }
 
@@ -155,7 +149,7 @@ void TGRSIint::ApplyOptions()
       StartGUI();
    }
 
-   for(auto& filename : opt->MacroInputFiles()) {
+   for(const auto& filename : opt->MacroInputFiles()) {
       RunMacroFile(filename);
    }
 
@@ -190,10 +184,7 @@ void TGRSIint::LoopUntilDone()
    std::cout << std::endl;
 }
 
-TGRSIint::~TGRSIint()
-{
-   /// Default dtor.
-}
+TGRSIint::~TGRSIint() = default;
 
 bool TGRSIint::HandleTermInput()
 {
@@ -220,7 +211,7 @@ void TGRSIint::Terminate(Int_t status)
 
    if((clock() % 60) == 0) {
       std::cout << "DING!" << std::flush;
-      gSystem->Sleep(500);
+      gSystem->Sleep(500); // 500 ms
       std::cout << "\r              \r" << std::flush;
    }
 
@@ -242,7 +233,7 @@ Int_t TGRSIint::TabCompletionHook(char* buf, int* pLoc, std::ostream& out)
    return result;
 }
 
-Long_t TGRSIint::ProcessLine(const char* line, Bool_t sync, Int_t* error)
+Long_t TGRSIint::ProcessLine(const char* inputLine, Bool_t sync, Int_t* error)
 {
    /// This takes over the native root command line. There are two main reasons for this
    /// 1. To keep the command line thread-safe.
@@ -251,20 +242,22 @@ Long_t TGRSIint::ProcessLine(const char* line, Bool_t sync, Int_t* error)
    // If you print while fIsTabComplete is true, you will break tab complete.
    // Any diagnostic print statements should be done after this if statement.
    if(fIsTabComplete) {
-      long res = TRint::ProcessLine(line, sync, error);
+      Long_t res = TRint::ProcessLine(inputLine, sync, error);
       return res;
    }
 
-   const char* canvas = strstr(line, "TCanvas");
-   if(canvas != nullptr) {
-      const_cast<char*>(canvas)[0] = 'G';
-   }
+	// loop over the input line and replace all instances of "TCanvas" with "GCanvas"
+	std::string line(inputLine);
+	size_t pos = 0;
+	while((pos = line.find("TCanvas", pos)) != std::string::npos) {
+		line[pos] = 'G';
+	}
 
    if(std::this_thread::get_id() != main_thread_id) {
-      return DelayedProcessLine(line);
+      return DelayedProcessLine(line.c_str());
    }
 
-   return TRint::ProcessLine(line, sync, error);
+   return TRint::ProcessLine(line.c_str(), sync, error);
 }
 
 void ReadTheNews()
@@ -298,7 +291,7 @@ void TGRSIint::PrintLogo(bool print)
       printf("\t*%*s%*s*\n", width / 2 + 9, "version " GRSI_RELEASE, width / 2 - 9, "");
       printf("\t*%s*\n", std::string(width, '*').c_str());
 
-      std::thread drawlogo(&TGRSIint::DrawLogo, this);
+      std::thread drawlogo(&TGRSIint::DrawLogo);//, this);
       drawlogo.detach();
    } else {
       std::cout << "\tgrsisort version " << GRSI_RELEASE << std::endl;
@@ -320,7 +313,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
       file = new TFile(filename.c_str(), "RECREATE");
       if(file != nullptr && file->IsOpen()) {
          // Give access to the file inside the interpreter.
-         const char* command = Form("TFile* _file%i = (TFile*)%luL;", fRootFilesOpened, (unsigned long)file);
+         const char* command = Form("TFile* _file%i = (TFile*)%luL;", fRootFilesOpened, reinterpret_cast<unsigned long>(file));
          TRint::ProcessLine(command);
          fRootFilesOpened++;
       } else {
@@ -331,7 +324,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
       file = new TFile(filename.c_str(), opt);
       if(file != nullptr && file->IsOpen()) {
          // Give access to the file inside the interpreter.
-         const char* command = Form("TFile* _file%i = (TFile*)%luL;", fRootFilesOpened, (unsigned long)file);
+         const char* command = Form("TFile* _file%i = (TFile*)%luL;", fRootFilesOpened, reinterpret_cast<unsigned long>(file));
          TRint::ProcessLine(command);
          std::cout << "\tfile " << BLUE << file->GetName() << RESET_COLOR << " opened as " << BLUE << "_file"
                    << fRootFilesOpened << RESET_COLOR << std::endl;
@@ -424,7 +417,7 @@ void TGRSIint::SetupPipeline()
    // Determining which parts of the pipeline need to be set up.
 
    bool missing_raw_file = false;
-   for(auto& filename : opt->InputFiles()) {
+   for(const auto& filename : opt->InputFiles()) {
       if(!file_exists(filename.c_str())) {
          missing_raw_file = true;
          std::cerr << "File not found: " << filename << std::endl;
@@ -473,13 +466,13 @@ void TGRSIint::SetupPipeline()
       run_number     = fRawFiles[0]->GetRunNumber();
       sub_run_number = fRawFiles[0]->GetSubRunNumber();
    } else if(read_from_fragment_tree) {
-      auto run_title = gFragment->GetListOfFiles()->At(0)->GetTitle();
-      run_number     = GetRunNumber(run_title);
-      sub_run_number = GetSubRunNumber(run_title);
+      const auto* run_title = gFragment->GetListOfFiles()->At(0)->GetTitle();
+      run_number            = GetRunNumber(run_title);
+      sub_run_number        = GetSubRunNumber(run_title);
    } else if(read_from_analysis_tree) {
-      auto run_title = gAnalysis->GetListOfFiles()->At(0)->GetTitle();
-      run_number     = GetRunNumber(run_title);
-      sub_run_number = GetSubRunNumber(run_title);
+      const auto* run_title = gAnalysis->GetListOfFiles()->At(0)->GetTitle();
+      run_number            = GetRunNumber(run_title);
+      sub_run_number        = GetSubRunNumber(run_title);
    }
 
    // Choose output file names for the 4 possible output files
@@ -536,7 +529,7 @@ void TGRSIint::SetupPipeline()
          GValue::ReadValFile(val_filename.c_str());
       }
       for(const auto& info_filename : opt->ExternalRunInfo()) {
-         TRunInfo::Get()->ReadInfoFile(info_filename.c_str());
+         TRunInfo::ReadInfoFile(info_filename.c_str());
       }
       return;
    }
@@ -582,23 +575,23 @@ void TGRSIint::SetupPipeline()
    }
    // Set the run number and sub-run number
    if(!fRawFiles.empty()) {
-      TRunInfo::Get()->SetRunInfo(fRawFiles[0]->GetRunNumber(), fRawFiles[0]->GetSubRunNumber());
+      TRunInfo::SetRunInfo(fRawFiles[0]->GetRunNumber(), fRawFiles[0]->GetSubRunNumber());
    } else {
-      TRunInfo::Get()->SetRunInfo(0, -1);
+      TRunInfo::SetRunInfo(0, -1);
    }
 
    for(const auto& val_filename : opt->ValInputFiles()) {
       GValue::ReadValFile(val_filename.c_str());
    }
    for(const auto& info_filename : opt->ExternalRunInfo()) {
-      TRunInfo::Get()->ReadInfoFile(info_filename.c_str());
+      TRunInfo::ReadInfoFile(info_filename.c_str());
    }
 
    TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::EBuildMode::kDefault;
-   if(TRunInfo::Get()->GetDetectorInformation() != nullptr) {
+   if(TRunInfo::GetDetectorInformation() != nullptr) {
       // call DetectorInformation::Set again, in case the calibration files we've loaded now changed things
-      TRunInfo::Get()->GetDetectorInformation()->Set();
-      event_build_mode = TRunInfo::Get()->GetDetectorInformation()->BuildMode();
+      TRunInfo::GetDetectorInformation()->Set();
+      event_build_mode = TRunInfo::GetDetectorInformation()->BuildMode();
    } else {
       std::cout << "no detector information, can't set build mode" << std::endl;
    }
@@ -635,7 +628,7 @@ void TGRSIint::SetupPipeline()
    // If needed, generate the individual detectors from the TFragments
    if(generate_analysis_data) {
       TGRSIOptions::AnalysisOptions()->Print();
-      eventBuildingLoop = TEventBuildingLoop::Get("5_event_build_loop", event_build_mode, opt->AnalysisOptions()->BuildWindow());
+      eventBuildingLoop = TEventBuildingLoop::Get("5_event_build_loop", event_build_mode, TGRSIOptions::AnalysisOptions()->BuildWindow());
       eventBuildingLoop->SetSortDepth(opt->SortDepth());
       if(unpackLoop != nullptr) {
          eventBuildingLoop->InputQueue() = unpackLoop->AddGoodOutputQueue();
@@ -728,7 +721,6 @@ void TGRSIint::PrintHelp(bool print)
       std::cout << DRED << BG_WHITE << "     Sending Help!!     " << RESET_COLOR << std::endl;
       new TGHtmlBrowser(gSystem->ExpandPathName("${GRSISYS}/README.html"));
    }
-   return;
 }
 
 bool TGRSIInterruptHandler::Notify()

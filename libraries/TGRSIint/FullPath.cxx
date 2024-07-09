@@ -4,13 +4,14 @@
 
 #include <cstdlib>
 #include <climits>
+#include <array>
 
 std::string full_path(const std::string& path)
 {
-   char  buff[PATH_MAX + 1];
-   char* success = realpath(path.c_str(), buff);
+	std::array<char, PATH_MAX + 1> buff;
+   char* success = realpath(path.c_str(), buff.data());
    if(success != nullptr) {
-      return buff;
+      return std::string(std::begin(buff), std::end(buff));
    }
    // TODO: Give some sort of error message.
    return "";

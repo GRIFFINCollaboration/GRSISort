@@ -13,7 +13,6 @@
 #include "TChannel.h"
 #include "TRunInfo.h"
 #include "TGRSIOptions.h"
-#include "TThread.h"
 #include "TTreeFillMutex.h"
 #include "TParsingDiagnostics.h"
 
@@ -26,7 +25,7 @@ TFragWriteLoop* TFragWriteLoop::Get(std::string name, std::string fOutputFilenam
       name = "write_loop";
    }
 
-   TFragWriteLoop* loop = static_cast<TFragWriteLoop*>(StoppableThread::Get(name));
+   auto* loop = static_cast<TFragWriteLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
       if(fOutputFilename.length() == 0) {
          fOutputFilename = "temp.root";
@@ -36,8 +35,8 @@ TFragWriteLoop* TFragWriteLoop::Get(std::string name, std::string fOutputFilenam
    return loop;
 }
 
-TFragWriteLoop::TFragWriteLoop(std::string name, std::string fOutputFilename)
-   : StoppableThread(name), fOutputFile(nullptr), fEventTree(nullptr), fBadEventTree(nullptr), fScalerTree(nullptr),
+TFragWriteLoop::TFragWriteLoop(std::string name, const std::string& fOutputFilename)
+   : StoppableThread(std::move(name)), fOutputFile(nullptr), fEventTree(nullptr), fBadEventTree(nullptr), fScalerTree(nullptr),
      fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>()),
      fBadInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>()),
      fScalerInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>())
@@ -81,14 +80,12 @@ void TFragWriteLoop::ClearQueue()
 
 std::string TFragWriteLoop::EndStatus()
 {
-   std::stringstream ss;
-   // ss<<"\r"<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputSize>0 ?
-   // fInputSize+GetItemsPushed():GetItemsPushed())<<std::endl;
-   ss << std::endl
-      << Name() << ": " << std::setw(8) << fItemsPopped << "/" << fItemsPopped + fInputSize << ", "
-      << fEventTree->GetEntries() << " good fragments, " << fBadEventTree->GetEntries() << " bad fragments"
-      << std::endl;
-   return ss.str();
+   std::stringstream str;
+   str << std::endl
+       << Name() << ": " << std::setw(8) << fItemsPopped << "/" << fItemsPopped + fInputSize << ", "
+       << fEventTree->GetEntries() << " good fragments, " << fBadEventTree->GetEntries() << " bad fragments"
+       << std::endl;
+   return str.str();
 }
 
 bool TFragWriteLoop::Iteration()
@@ -136,7 +133,6 @@ void TFragWriteLoop::Write()
    if(fOutputFile != nullptr) {
       // get all singletons before switching to the output file
       gROOT->cd();
-      TRunInfo*            runInfo            = TRunInfo::Get();
       TGRSIOptions*        options            = TGRSIOptions::Get();
       TPPG*                ppg                = TPPG::Get();
       TParsingDiagnostics* parsingDiagnostics = TParsingDiagnostics::Get();
@@ -154,8 +150,8 @@ void TFragWriteLoop::Write()
          TChannel::WriteToRoot();
       }
 
-      runInfo->WriteToRoot(fOutputFile);
-      options->WriteToFile(fOutputFile);
+		TRunInfo::WriteToRoot(fOutputFile);
+		TGRSIOptions::WriteToFile(fOutputFile);
       ppg->Write("PPG");
 
       if(options->WriteDiagnostics()) {
@@ -165,9 +161,9 @@ void TFragWriteLoop::Write()
 
       if(!options->IgnoreScaler()) {
          std::cout << "Starting to write dead time scalers" << std::endl;
-         auto         deadtimeQueue = TDeadtimeScalerQueue::Get();
-         auto         scalerTree    = new TTree("DeadtimeScaler", "DeadtimeScaler");
-         TScalerData* scalerData    = new TScalerData;
+         auto* deadtimeQueue = TDeadtimeScalerQueue::Get();
+         auto* scalerTree    = new TTree("DeadtimeScaler", "DeadtimeScaler");
+         auto* scalerData    = new TScalerData;
          scalerTree->Branch("ScalerData", &scalerData);
          while(deadtimeQueue->Size() > 0) {
             scalerData = deadtimeQueue->PopScaler();
@@ -176,9 +172,9 @@ void TFragWriteLoop::Write()
          scalerTree->Write();
 
          std::cout << "Starting to write rate scalers" << std::endl;
-         auto rateQueue = TRateScalerQueue::Get();
-         scalerTree     = new TTree("RateScaler", "RateScaler");
-         scalerData     = new TScalerData;
+         auto* rateQueue = TRateScalerQueue::Get();
+         scalerTree      = new TTree("RateScaler", "RateScaler");
+         scalerData      = new TScalerData;
          scalerTree->Branch("ScalerData", &scalerData);
          while(rateQueue->Size() > 0) {
             scalerData = rateQueue->PopScaler();

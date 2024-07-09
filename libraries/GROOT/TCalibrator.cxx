@@ -1,5 +1,4 @@
-
-#include <TCalibrator.h>
+#include "TCalibrator.h"
 
 #include <cmath>
 #include <cstdio>
@@ -9,26 +8,22 @@
 #include <algorithm>
 #include <fstream>
 
-#include <TH1.h>
-#include <TSpectrum.h>
-#include <TLinearFitter.h>
-#include <TGraphErrors.h>
+#include "TH1.h"
+#include "TSpectrum.h"
+#include "TLinearFitter.h"
+#include "TGraphErrors.h"
 
-#include <TChannel.h>
-#include <TNucleus.h>
-#include <TTransition.h>
+#include "TChannel.h"
+#include "TNucleus.h"
+#include "TTransition.h"
 
-#include <GRootFunctions.h>
-#include <GRootCommands.h>
-#include <GCanvas.h>
-#include <GPeak.h>
-#include <Globals.h>
+#include "GRootFunctions.h"
+#include "GRootCommands.h"
+#include "GCanvas.h"
+#include "GPeak.h"
+#include "Globals.h"
 
 #include "combinations.h"
-
-/// \cond CLASSIMP
-ClassImp(TCalibrator)
-/// \endcond
 
 TCalibrator::TCalibrator()
 {

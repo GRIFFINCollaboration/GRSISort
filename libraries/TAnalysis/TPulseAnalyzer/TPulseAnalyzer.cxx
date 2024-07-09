@@ -2,10 +2,6 @@
 
 #include "TPulseAnalyzer.h"
 
-/// \cond CLASSIMP
-ClassImp(TPulseAnalyzer)
-/// \endcond
-
 TPulseAnalyzer::TPulseAnalyzer()
    : cWpar(nullptr), spar(nullptr), shpar(nullptr)
 {

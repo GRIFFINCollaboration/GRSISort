@@ -44,7 +44,7 @@ void ExampleEventHelper::CreateHistograms(unsigned int slot)
    fH2[slot]["griffinGriffinTime"] = new TH2F("griffinGriffinTime", "GRIFFIN crystal vs. GRIFFIN-GRIFFIN timing (suppressed addback);#Deltat_{GRIFFIN-GRIFFIN}", 2000, -1000., 1000., 64, 0.5, 64.5);
 
    // cycle spectra
-   if(fCycleLength > 0.) {
+   if(fCycleLength > 0) {
       fH2[slot]["griffinCycle"] = new TH2F("griffinCycle", "GRIFFIN suppressed addback energy w/ #beta-tag vs. time in cycle;time in cycle [s];energy [keV]", 100 * fCycleLength / 1e6, 0., fCycleLength / 1e6, energyBins / 5, lowEnergy, highEnergy);
       fH1[slot]["zdsCycle"]     = new TH1F("zdsCycle", "ZDS hits in cycle;time in cycle [s]", 100 * fCycleLength / 1e6, 0., fCycleLength / 1e6);
    }

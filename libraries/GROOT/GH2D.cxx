@@ -2,38 +2,32 @@
 
 #include <iostream>
 
-#include <TDirectory.h>
+#include "TDirectory.h"
 
 #include "GH1D.h"
 
-ClassImp(GH2D)
-
-GH2D::GH2D(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins, Int_t nbinsy,
-           const Double_t* ybins)
-   : TH2D(name, title, nbinsx, xbins, nbinsy, ybins), GH2Base()
+GH2D::GH2D(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins, Int_t nbinsy, const Double_t* ybins)
+   : TH2D(name, title, nbinsx, xbins, nbinsy, ybins)
 {
 }
 
 GH2D::GH2D(const char* name, const char* title, Int_t nbinsx, const Float_t* xbins, Int_t nbinsy, const Float_t* ybins)
-   : TH2D(name, title, nbinsx, xbins, nbinsy, ybins), GH2Base()
+   : TH2D(name, title, nbinsx, xbins, nbinsy, ybins)
 {
 }
 
-GH2D::GH2D(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins, Int_t nbinsy, Double_t ylow,
-           Double_t yup)
-   : TH2D(name, title, nbinsx, xbins, nbinsy, ylow, yup), GH2Base()
+GH2D::GH2D(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins, Int_t nbinsy, Double_t ylow, Double_t yup)
+   : TH2D(name, title, nbinsx, xbins, nbinsy, ylow, yup)
 {
 }
 
-GH2D::GH2D(const char* name, const char* title, Int_t nbinsx, Double_t xlow, Double_t xup, Int_t nbinsy,
-           Double_t* ybins)
-   : TH2D(name, title, nbinsx, xlow, xup, nbinsy, ybins), GH2Base()
+GH2D::GH2D(const char* name, const char* title, Int_t nbinsx, Double_t xlow, Double_t xup, Int_t nbinsy, Double_t* ybins)
+   : TH2D(name, title, nbinsx, xlow, xup, nbinsy, ybins)
 {
 }
 
-GH2D::GH2D(const char* name, const char* title, Int_t nbinsx, Double_t xlow, Double_t xup, Int_t nbinsy, Double_t ylow,
-           Double_t yup)
-   : TH2D(name, title, nbinsx, xlow, xup, nbinsy, ylow, yup), GH2Base()
+GH2D::GH2D(const char* name, const char* title, Int_t nbinsx, Double_t xlow, Double_t xup, Int_t nbinsy, Double_t ylow, Double_t yup)
+   : TH2D(name, title, nbinsx, xlow, xup, nbinsy, ylow, yup)
 {
 }
 
@@ -78,11 +72,11 @@ void GH2D::Print(Option_t*) const
 void GH2D::Draw(Option_t* opt)
 {
    std::string option = opt;
-   if(option == "") {
+   if(option.empty()) {
       option = "colz";
    }
    TH2D::Draw(option.c_str());
-   if(gPad) {
+   if(gPad != nullptr) {
       gPad->Update();
       gPad->GetFrame()->SetBit(TBox::kCannotMove);
    }
@@ -100,27 +94,27 @@ void GH2D::Draw(TCutG* cut)
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
 TH1* GH2D::DrawCopy(Option_t* opt) const
 {
-   TH1* h = TH2D::DrawCopy(opt);
+   TH1* hist = TH2D::DrawCopy(opt);
 #else
 TH1* GH2D::DrawCopy(Option_t* opt, const char* name_postfix) const
 {
-   TH1* h = TH2D::DrawCopy(opt, name_postfix);
+   TH1* hist = TH2D::DrawCopy(opt, name_postfix);
 #endif
-   if(gPad) {
+   if(gPad != nullptr) {
       gPad->Update();
       gPad->GetFrame()->SetBit(TBox::kCannotMove);
    }
-   return h;
+   return hist;
 }
 
 TH1* GH2D::DrawNormalized(Option_t* opt, Double_t norm) const
 {
-   TH1* h = TH2D::DrawNormalized(opt, norm);
-   if(gPad) {
+   TH1* hist = TH2D::DrawNormalized(opt, norm);
+   if(gPad != nullptr) {
       gPad->Update();
       gPad->GetFrame()->SetBit(TBox::kCannotMove);
    }
-   return h;
+   return hist;
 }
 
 GH1D* GH2D::ProjectionX(const char* name, int firstbin, int lastbin, Option_t* option)

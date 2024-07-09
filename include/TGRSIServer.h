@@ -35,12 +35,12 @@ public:
 
    void StopServer()
    {
-      if(fRunning) fRunning = false;
+      if(fRunning) { fRunning = false; }
    }
 
 private:
    static TGRSIServer* fGRSIServer;
-   TGRSIServer(int port);
+   explicit TGRSIServer(int port);
    bool fRunning;
 
    TMonitor* fMonitor;

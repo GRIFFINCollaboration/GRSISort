@@ -2,10 +2,6 @@
 
 #include "TCFDCal.h"
 
-/// \cond CLASSIMP
-ClassImp(TCFDCal)
-/// \endcond
-
 void TCFDCal::Clear(Option_t* opt)
 {
    fParameters.clear();

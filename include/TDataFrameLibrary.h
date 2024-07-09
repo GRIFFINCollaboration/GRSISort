@@ -14,7 +14,7 @@ class TDataFrameLibrary : public TSingleton<TDataFrameLibrary> {
 public:
    friend class TSingleton<TDataFrameLibrary>;
 
-   ~TDataFrameLibrary();
+   ~TDataFrameLibrary() override;
 
    void Load();   ///< if necessary loads shared object library and sets/initializes all other functions
 
@@ -32,12 +32,15 @@ public:
    }
 
 private:
-   TDataFrameLibrary() { fHandle = nullptr; }
-   /// compile user code into shared object library, dot is the positions of the last dot (guaranteed to be after the last slash!)
-   /// slash is the position of the last slash (could be npos)
-   void Compile(std::string& path, const size_t& dot, const size_t& slash);
+   TDataFrameLibrary() = default;
+   TDataFrameLibrary(const TDataFrameLibrary&) = default;
+   TDataFrameLibrary(TDataFrameLibrary&&) = default;
+	TDataFrameLibrary& operator=(const TDataFrameLibrary&) = default;
+	TDataFrameLibrary& operator=(TDataFrameLibrary&&) = default;
 
-   void* fHandle;   ///< handle for shared object library
+   static void Compile(std::string& path, const size_t& dot, const size_t& slash);
+
+   void* fHandle{nullptr};   ///< handle for shared object library
 
    TGRSIHelper* (*fCreateHelper)(TList*);
    void (*fDestroyHelper)(TGRSIHelper*);

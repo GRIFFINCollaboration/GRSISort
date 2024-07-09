@@ -2,10 +2,6 @@
 
 #include "TTimeCal.h"
 
-/// \cond CLASSIMP
-ClassImp(TTimeCal)
-/// \endcond
-
 void TTimeCal::Clear(Option_t* opt)
 {
    fParameters.clear();

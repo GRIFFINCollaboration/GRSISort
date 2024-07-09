@@ -3,10 +3,6 @@
 
 #include <iostream>
 
-/// \cond CLASSIMP
-ClassImp(TCalList)
-/// \endcond
-
 TCalList::TCalList()
    : TNamed()
 {

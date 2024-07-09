@@ -25,25 +25,19 @@
 /////////////////////////////////////////////////////////////////
 
 class TNucleus : public TNamed {
-
-private:
-   static const char*  grsipath;
-   static std::string& massfile();   ///< The massfile to be used, which includes Z, N, atomic symbol, and mass excess
-
 public:
-   TNucleus(){};                                                          ///< Should not be used, here so we can write things to a root file.
-   TNucleus(const char* name);                                            ///< Creates a nucleus based on symbol and sets all parameters from mass.dat
+   TNucleus() = default;                                                  ///< Should not be used, here so we can write things to a root file.
+   explicit TNucleus(const char* name);                                            ///< Creates a nucleus based on symbol and sets all parameters from mass.dat
    TNucleus(int charge, int neutrons, double mass, const char* symbol);   ///< Creates a nucleus with Z, N, mass, and symbol
    TNucleus(int charge, int neutrons, const char* MassFile = nullptr);    ///< Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
 
    ~TNucleus() override;
 
-   static void ParseName(const char* input, std::string& symbol, int& number, std::string& element)
+   static void ParseName(const char* name, std::string& symbol, int& number, std::string& element)
    {
-      std::string tmp(input);
-      return ParseName(tmp, symbol, number, element);
+      return ParseName(std::string(name), symbol, number, element);
    }
-   static void        ParseName(std::string input, std::string& symbol, int& number, std::string& element);
+   static void        ParseName(std::string name, std::string& symbol, int& number, std::string& element);
    static std::string SortName(const char* input)
    {
       std::string tmp(input);
@@ -68,8 +62,8 @@ public:
    const char* GetSymbol() const { return fSymbol.c_str(); }   ///< Gets the atomic symbol of the nucleus
 
    // Returns total kinetic energy in MeV
-   double GetEnergyFromBeta(double beta);
-   double GetBetaFromEnergy(double energy_MeV);
+   double GetEnergyFromBeta(double beta) const;
+   double GetBetaFromEnergy(double energy_MeV) const;
 
    TTransition* GetTransition(Int_t idx) { return GetTransitionByIntensity(idx); }
    TTransition* GetTransitionByIntensity(Int_t idx);
@@ -91,7 +85,10 @@ public:
    bool operator!=(const TNucleus& rhs) const { return !(*this == rhs); }
 
 private:
-   void SetName(const char* c = "") override;
+   static const char*  grsipath;
+
+   static std::string& Massfile();   ///< Returns the massfile to be used, which includes Z, N, atomic symbol, and mass excess
+   void SetName(const char* name = "") override;
 
    int         fA{0};             ///< Number of nucleons (Z + N)
    int         fN{0};             ///< Number of neutrons (N)

@@ -2,10 +2,6 @@
 #include <iomanip>
 #include <iostream>
 
-/// \cond CLASSIMP
-ClassImp(TLMFitter)
-/// \endcond
-
 /* DEFINITIONS */
 /*******************************************************************/
 /* alamda = parameter switches between curve and gradient method   */

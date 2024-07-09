@@ -52,9 +52,9 @@ static struct timeval gPopupTime;
 
 static const char* gConception[] = {"P. C. Bender", nullptr};
 
-static const char* gLeadDevelopers[] = {"P. C. Bender", "R. Dunlop", nullptr};
+static const char* gLeadDevelopers[] = {"V. Bildstein", "P. C. Bender", nullptr};
 
-static const char* gKeyContributors[] = {"V. Bildstein", "D. Miller", nullptr};
+static const char* gKeyContributors[] = {"R. Dunlop", "D. Miller", nullptr};
 
 static char** gContributors = nullptr;
 
@@ -63,7 +63,10 @@ static bool StayUp(int milliSec)
    /// Returns false if milliSec milliseconds have passed since logo
    /// was popped up, true otherwise.
 
-   struct timeval ctv, dtv, tv, ptv = gPopupTime;
+   struct timeval ctv{};
+	struct timeval dtv{};
+	struct timeval tv{};
+	struct timeval ptv = gPopupTime;
 
    tv.tv_sec  = milliSec / 1000;
    tv.tv_usec = (milliSec % 1000) * 1000;
@@ -89,7 +92,7 @@ static void Sleep(int milliSec)
    /// Sleep for specified amount of milli seconds.
 
    // get current time
-   struct timeval tv;
+   struct timeval tv{};
 
    tv.tv_sec  = milliSec / 1000;
    tv.tv_usec = (milliSec % 1000) * 1000;
@@ -297,11 +300,10 @@ void PopupLogo(bool about)
 
    gAbout = about;
 
-   Pixel back, fore;
    int   screen = DefaultScreen(gDisplay);
 
-   back = WhitePixel(gDisplay, screen);
-   fore = BlackPixel(gDisplay, screen);
+   Pixel back = WhitePixel(gDisplay, screen);
+   Pixel fore = BlackPixel(gDisplay, screen);
 
    gLogoWindow = XCreateSimpleWindow(gDisplay, DefaultRootWindow(gDisplay), -100, -100, 50, 50, 0, fore, back);
 
@@ -313,9 +315,11 @@ void PopupLogo(bool about)
       return;
    }
 
-   Window       root;
-   int          x, y;
-   unsigned int bw, depth;
+   Window       root  = 0;
+   int          x     = 0;
+   int          y     = 0;
+   unsigned int bw    = 0;
+   unsigned int depth = 0;
    XGetGeometry(gDisplay, gLogoPixmap, &root, &x, &y, &gWidth, &gHeight, &bw, &depth);
 
    Screen* xscreen = XDefaultScreenOfDisplay(gDisplay);
@@ -331,11 +335,10 @@ void PopupLogo(bool about)
    XMoveResizeWindow(gDisplay, gLogoWindow, x, y, gWidth, gHeight);
    XSync(gDisplay, False);   // make sure move & resize is done before mapping
 
-   unsigned long        valmask;
    XSetWindowAttributes xswa;
-   valmask                = CWBackPixmap | CWOverrideRedirect;
-   xswa.background_pixmap = gLogoPixmap;
-   xswa.override_redirect = True;
+   uint64_t             valmask = CWBackPixmap | CWOverrideRedirect;
+   xswa.background_pixmap       = gLogoPixmap;
+   xswa.override_redirect       = True;
    XChangeWindowAttributes(gDisplay, gLogoWindow, valmask, &xswa);
 
    gGC   = XCreateGC(gDisplay, gLogoWindow, 0, nullptr);

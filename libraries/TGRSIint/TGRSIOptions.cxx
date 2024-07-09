@@ -99,8 +99,6 @@ void TGRSIOptions::Clear(Option_t*)
    fFragmentWriteQueueSize = 100000;
    fAnalysisWriteQueueSize = 100000;
 
-   fNumberOfClients = 2;
-
    fNumberOfEvents = 0;
 
    fIgnoreMissingChannel = false;
@@ -228,8 +226,8 @@ void TGRSIOptions::Load(int argc, char** argv)
 
    // Get name of the program calling this function (removing any path from the name)
    std::string program;
-   if(argc > 0) program = argv[0];
-   else program = "unknown";
+   if(argc > 0) { program = argv[0]; }
+   else { program = "unknown"; }
    size_t lastSlash = program.rfind('/');
    if(lastSlash != std::string::npos) {
       program.erase(0, lastSlash + 1);
@@ -276,7 +274,7 @@ void TGRSIOptions::Load(int argc, char** argv)
       .colour(DCYAN);
 
    // program specific options
-   if(program.compare("grsisort") == 0) {
+   if(program == "grsisort") {
       // grsisort only options
       parser.option("recommended", &useRecommendedFlags, true).description("Use recommended flags (those in " DGREEN "dark green" GREEN ")").colour(GREEN);
       parser.option("output-fragment-tree", &fOutputFragmentFile, true).description("Filename of output fragment tree");
@@ -353,11 +351,7 @@ void TGRSIOptions::Load(int argc, char** argv)
          .description(
             "Seconds between each detailed status output (each a new line), non-positive numbers mean no detailed status")
          .default_value(10);
-
-      parser.option("write-clients", &fNumberOfClients, true)
-         .description("Number of clients used to write analysis tree")
-         .default_value(2);
-   } else if(program.compare("grsiproof") == 0) {
+   } else if(program == "grsiproof") {
       // Proof only parser options
       parser.option("max-workers", &fMaxWorkers, true)
          .description("Max number of nodes to use when running a grsiproof session")
@@ -379,7 +373,7 @@ void TGRSIOptions::Load(int argc, char** argv)
          .description("use sub mergers to merge result from workers (default = -1 = off, 0 = automatic number of mergers)");
       parser.option("proof-stats", &fProofStats, true)
          .description("enable proof stats");
-   } else if(program.compare("grsiframe") == 0) {
+   } else if(program == "grsiframe") {
       // grsiframe only parser options
       parser.option("max-workers", &fMaxWorkers, true)
          .description("Maximum number of nodes to use when running a grsiframe session")
@@ -391,7 +385,7 @@ void TGRSIOptions::Load(int argc, char** argv)
          .default_value(false);
    }
 
-   if(program.compare("grsiframe") != 0) {
+   if(program == "grsiframe") {
       // grsisort or grsiproof options
       parser.option("max-events", &fNumberOfEvents, true)
          .description("Maximum number of (midas, lst, rlmd, or tdr) events read")
@@ -475,21 +469,21 @@ void TGRSIOptions::Load(int argc, char** argv)
    }
 }
 
-kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const
+kFileType TGRSIOptions::DetermineFileType(const std::string& filename)
 {
-   size_t dot_pos   = filename.find_last_of('.');
-   size_t slash_pos = filename.find_last_of('/');
+   size_t dotPos   = filename.find_last_of('.');
+   size_t slashPos = filename.find_last_of('/');
    // if we didn't find a . (or if it was before the last /) we don't have any extension
    // => so it's a TDR file
-   if(dot_pos == std::string::npos || (dot_pos < slash_pos && slash_pos != std::string::npos)) {
+   if(dotPos == std::string::npos || (dotPos < slashPos && slashPos != std::string::npos)) {
       return kFileType::TDR_FILE;
    }
-   std::string ext = filename.substr(dot_pos + 1);
+   std::string ext = filename.substr(dotPos + 1);
 
    // check if this is a zipped file and if so get the extension before the zip-extension
    bool isZipped = (ext == "gz") || (ext == "bz2") || (ext == "zip");
    if(isZipped) {
-      std::string remaining = filename.substr(0, dot_pos);
+      std::string remaining = filename.substr(0, dotPos);
       ext                   = remaining.substr(remaining.find_last_of('.') + 1);
    }
 
@@ -549,9 +543,9 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const
    }
 
    // strip possible parenthese with arguments for the script from the extension
-   size_t opening_pos = ext.find_first_of('(');
-   if(opening_pos != std::string::npos) {
-      ext = ext.substr(0, opening_pos);
+   size_t openingPos = ext.find_first_of('(');
+   if(openingPos != std::string::npos) {
+      ext = ext.substr(0, openingPos);
       if((ext == "c") || (ext == "C") || (ext == "c+") || (ext == "C+") || (ext == "c++") || (ext == "C++")) {
          return kFileType::ROOT_MACRO;
       }
@@ -613,7 +607,7 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
 
    case kFileType::USERSETTINGS:
       // if we haven't read any user setting create new ones and read the file, otherwise just read the file
-      if(fUserSettings == nullptr) fUserSettings = new TUserSettings(filename);
+      if(fUserSettings == nullptr) { fUserSettings = new TUserSettings(filename); }
       else fUserSettings->ReadSettings(filename);
       return true;
 
@@ -628,18 +622,6 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
    case kFileType::UNKNOWN_FILETYPE:
    default: std::cout << "\tDiscarding unknown file: " << filename << std::endl; return false;
    }
-}
-
-std::string TGRSIOptions::GenerateOutputFilename(const std::string&)
-{
-   /// Currently does nothing
-   return "temp.root";
-}
-
-std::string TGRSIOptions::GenerateOutputFilename(const std::vector<std::string>&)
-{
-   /// Currently does nothing
-   return "temp_from_multi.root";
 }
 
 bool TGRSIOptions::WriteToFile(TFile* file)
@@ -663,7 +645,7 @@ bool TGRSIOptions::WriteToFile(TFile* file)
    } else {
       Get()->Write("GRSIOptions", TObject::kOverwrite);
       fAnalysisOptions->WriteToFile(file);
-      if(!fUserSettings->empty()) fUserSettings->Write("UserSettings", TObject::kOverwrite);
+      if(!fUserSettings->empty()) { fUserSettings->Write("UserSettings", TObject::kOverwrite); }
    }
 
    std::cout << "Writing TGRSIOptions to " << gDirectory->GetFile()->GetName() << std::endl;

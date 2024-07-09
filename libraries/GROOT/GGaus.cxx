@@ -8,8 +8,6 @@
 #include "GRootFunctions.h"
 #include "GCanvas.h"
 
-ClassImp(GGaus)
-
 GGaus::GGaus(Double_t xlow, Double_t xhigh, Option_t*)
    : TF1("gausbg", "gaus(0)+pol1(3)", xlow, xhigh), fBGFit("background", "pol1", xlow, xhigh)
 {

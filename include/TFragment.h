@@ -29,10 +29,12 @@
 class TFragment : public TDetectorHit {
 public:
    TFragment();
-   TFragment(const TFragment&);
-   ~TFragment();
+   TFragment(const TFragment&) = default;
+   TFragment(TFragment&&) = default;
+   ~TFragment() = default;
 
    TFragment& operator=(const TFragment&) = default;   // use default assignment operator (to shut up gcc 9.1)
+   TFragment& operator=(TFragment&&) = default;   // use default move assignment operator (to shut up gcc 9.1)
 
    //////////////////// basic setter functions ////////////////////
 
@@ -50,8 +52,7 @@ public:
    void SetNetworkPacketNumber(Int_t value) { fNetworkPacketNumber = value; }
    void SetNumberOfFilters(UShort_t)
    {
-      std::cerr << "Error, " << __PRETTY_FUNCTION__ << " called, TFragment shouldn't have a number of filters."
-                << std::endl;
+      std::cerr << "Error, " << __PRETTY_FUNCTION__ << " called, TFragment shouldn't have a number of filters." << std::endl;
    }
    void SetNumberOfPileups(Short_t value) { fNumberOfPileups = value; }
    void SetNumberOfWords(UShort_t value) { fNumberOfWords = value; }
@@ -74,7 +75,6 @@ public:
    time_t   GetDaqTimeStamp() const { return fDaqTimeStamp; }
    Int_t    GetNetworkPacketNumber() const { return fNetworkPacketNumber; }
    UShort_t GetNumberOfFilters() const { return fNumberOfWords - 9; }
-   Int_t    GetNumberOfHits() const { return 1; }
    Short_t  GetNumberOfPileups() const { return fNumberOfPileups; }
    UShort_t GetNumberOfWords() const { return fNumberOfWords; }
    Int_t    GetTriggerBitPattern() const { return fTriggerBitPattern; }
@@ -93,7 +93,6 @@ public:
    double    GetTZero() const;
    ULong64_t GetTimeInCycle();
    ULong64_t GetCycleNumber();
-   size_t    GetNumberOfCharges() { return 1; }
    Int_t     Get4GCfd() const;
 
    //////////////////// misc. functions ////////////////////
@@ -102,7 +101,7 @@ public:
    void Clear(Option_t* opt = "") override;
    void Print(Option_t* opt = "") const override;
 
-   virtual void Print(std::ostream& out) const override;
+   void Print(std::ostream& out) const override;
 
    TObject* Clone(const char* name = "") const override;
 
@@ -145,7 +144,7 @@ private:
    // int HitIndex;    //!<! transient member indicating which pile-up hit this is in the original fragment
 
    /// \cond CLASSIMP
-   ClassDefOverride(TFragment, 7);   // Event Fragments
+   ClassDefOverride(TFragment, 8);   // Event Fragments
    /// \endcond
 };
 /*! @} */

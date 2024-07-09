@@ -15,11 +15,6 @@
 #include "GCanvas.h"
 #include "TGRSIUtilities.h"
 
-ClassImp(TGamma)
-ClassImp(TLevel)
-ClassImp(TBand)
-ClassImp(TLevelScheme)
-
 double TGamma::gTextSize = 0.020;
 double TLevel::gTextSize = 0.025;
 

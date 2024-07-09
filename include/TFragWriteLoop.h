@@ -1,5 +1,5 @@
-#ifndef _TWRITELOOP_H_
-#define _TWRITELOOP_H_
+#ifndef TWRITELOOP_H
+#define TWRITELOOP_H
 
 /** \addtogroup Loops
  *  @{
@@ -57,7 +57,7 @@ protected:
    bool Iteration() override;
 
 private:
-   TFragWriteLoop(std::string name, std::string fOutputFilename);
+   TFragWriteLoop(std::string name, const std::string& fOutputFilename);
 #ifndef __CINT__
    void WriteEvent(const std::shared_ptr<const TFragment>& event);
    void WriteBadEvent(const std::shared_ptr<const TBadFragment>& event);

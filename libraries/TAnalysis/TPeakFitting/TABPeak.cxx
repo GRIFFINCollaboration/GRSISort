@@ -1,10 +1,6 @@
 #include "TABPeak.h"
 #include "TH1.h"
 
-/// \cond CLASSIMP
-ClassImp(TABPeak)
-/// \endcond
-
 void TABPeak::Centroid(const Double_t& centroid)
 {
    SetFitFunction(new TF1("ab_fit", this, &TABPeak::TotalFunction, 0, 1, 6, "TABPeak", "TotalFunction"));

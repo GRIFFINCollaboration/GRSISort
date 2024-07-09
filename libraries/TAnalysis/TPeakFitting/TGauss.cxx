@@ -1,9 +1,5 @@
 #include "TGauss.h"
 
-/// \cond CLASSIMP
-ClassImp(TGauss)
-/// \endcond
-
 TGauss::TGauss(Double_t centroid, Double_t relativeLimit)
 {
    Centroid(centroid);
@@ -18,7 +14,7 @@ void TGauss::Centroid(const Double_t& centroid)
    SetPeakFunction(new TF1("gauss_peak", this, &TGauss::PeakFunction, 0, 1, 3, "TGauss", "TotalFunction"));   // peak = total function
    InitParNames();
    GetFitFunction()->SetParameter(1, centroid);
-   SetListOfBGPar(std::vector<bool>{0, 0, 0, 0, 0, 1});
+   SetListOfBGPar(std::vector<bool>{false, false, false, false, false, true});
    GetFitFunction()->SetLineColor(kMagenta);
 }
 

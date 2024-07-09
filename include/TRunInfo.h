@@ -57,7 +57,7 @@ class TRunInfo : public TSingleton<TRunInfo> {
 public:
    friend class TSingleton<TRunInfo>;
 
-   ~TRunInfo() override;
+   ~TRunInfo() override = default;
    TRunInfo();   // This should not be used.
    // root forces me have this here instead
    // of a private class member in
@@ -127,11 +127,11 @@ public:
 
    static inline void SetRunTitle(const char* run_title)
    {
-      if(run_title != nullptr) Get()->fRunTitle.assign(run_title);
+      if(run_title != nullptr) { Get()->fRunTitle.assign(run_title); }
    }
    static inline void SetRunComment(const char* run_comment)
    {
-      if(run_comment != nullptr) Get()->fRunComment.assign(run_comment);
+      if(run_comment != nullptr) { Get()->fRunComment.assign(run_comment); }
    }
 
    static inline std::string RunTitle() { return Get()->fRunTitle; }
@@ -175,10 +175,10 @@ public:
 
    virtual TEventBuildingLoop::EBuildMode BuildMode() const;
 
-   void PrintBadCycles() const;
-   void AddBadCycle(int bad_cycle);
-   void RemoveBadCycle(int cycle);
-   bool IsBadCycle(int cycle) const;
+   static void PrintBadCycles();
+   static void AddBadCycle(int bad_cycle);
+   static void RemoveBadCycle(int cycle);
+   static bool IsBadCycle(int cycle);
 
    void PrintRunList();
 
@@ -190,8 +190,8 @@ public:
 private:
    std::string                      fRunTitle;                ///< The title of the run
    std::string                      fRunComment;              ///< The comment on the run
-   int                              fRunNumber;               ///< The current run number
-   int                              fSubRunNumber;            ///< The current sub run number
+   int                              fRunNumber{0};            ///< The current run number
+   int                              fSubRunNumber{-1};        ///< The current sub run number
    int                              fFirstRunNumber{0};       ///< The first run number (for combined runs)
    int                              fFirstSubRunNumber{-1};   ///< The first sub run number (for combined subruns)
    int                              fLastRunNumber{0};        ///< The last run number (for combined runs)
@@ -220,9 +220,8 @@ private:
    std::string fRunInfoFileName;   // The name of the Run info file
    std::string fRunInfoFile;       // The contents of the run info file
 
-   double fHPGeArrayPosition;   // Position of the HPGe Array (default = 110.0 mm );
+   double fHPGeArrayPosition{110.};   // Position of the HPGe Array (default = 110.0 mm );
 
-   unsigned int     fBadCycleListSize;
    std::vector<int> fBadCycleList;   //!<!List of bad cycles to be used for cycle rejection
 
    TDetectorInformation* fDetectorInformation;   //!<! pointer to detector specific information (set by each parser library)
@@ -233,7 +232,7 @@ public:
 
    static bool WriteToRoot(TFile* fileptr = nullptr);
    static bool WriteInfoFile(const std::string& filename);
-   std::string PrintToString(Option_t* opt = "");
+   static std::string PrintToString(Option_t* opt = "");
 
    /// \cond CLASSIMP
    ClassDefOverride(TRunInfo, 16);   // Contains the run-dependent information.

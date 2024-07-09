@@ -1,5 +1,5 @@
-#ifndef _TDETBUILDINGLOOP_H_
-#define _TDETBUILDINGLOOP_H_
+#ifndef TDETBUILDINGLOOP_H
+#define TDETBUILDINGLOOP_H
 
 /** \addtogroup Loops
  *  @{
@@ -53,7 +53,7 @@ public:
 
    size_t GetItemsPushed() override
    {
-      if(fOutputQueues.size() > 0) {
+      if(!fOutputQueues.empty()) {
          return fOutputQueues.back()->ItemsPushed();
       }
       return std::numeric_limits<size_t>::max();
@@ -63,7 +63,7 @@ public:
    size_t GetRate() override { return 0; }
 
 private:
-   TDetBuildingLoop(std::string name);
+   explicit TDetBuildingLoop(std::string name);
    TDetBuildingLoop(const TDetBuildingLoop& other);
    TDetBuildingLoop& operator=(const TDetBuildingLoop& other);
 

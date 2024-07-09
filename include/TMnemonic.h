@@ -18,8 +18,13 @@ class TChannel;
 class TMnemonic : public TObject {
 public:
    TMnemonic() : fClassType(nullptr) { Clear(); }
-   TMnemonic(const char* name) : TMnemonic() { Parse(name); }
+   explicit TMnemonic(const char* name) : TMnemonic() { Parse(name); }
+	TMnemonic(const TMnemonic&) = default;
+	TMnemonic(TMnemonic&&) = default;
    ~TMnemonic() override = default;
+
+	TMnemonic& operator=(const TMnemonic&) = default;
+	TMnemonic& operator=(TMnemonic&&) = default;
 
    // standard C++ makes these enumerations global to the class. ie, the name of the enumeration
    // EMnemonic or ESystem has no effect on the clashing of enumerated variable names.
@@ -84,8 +89,8 @@ public:
 
    virtual double GetTime(Long64_t timestamp, Float_t cfd, double energy, const TChannel* channel) const;
 
-   virtual void Print(Option_t* opt = "") const override;
-   virtual void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
    void        SetName(const char* val) { fName = val; }
    void        SetName(const std::string& val) { fName = val; }

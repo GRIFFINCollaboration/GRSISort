@@ -30,10 +30,6 @@
 
 // NOTE: The fChannelMap is unordered. The easiest way to order it is using std::map<int, int> ordered(unordered.begin(), unordered.end());
 
-/// \cond CLASSIMP
-ClassImp(TChannel)
-/// \endcond
-
 std::unordered_map<unsigned int, TChannel*>* TChannel::fChannelMap        = new std::unordered_map<unsigned int, TChannel*>;   // global maps of channels
 std::unordered_map<unsigned int, int>*       TChannel::fMissingChannelMap = new std::unordered_map<unsigned int, int>;         // global map of missing channels
 std::unordered_map<int, TChannel*>*          TChannel::fChannelNumberMap  = new std::unordered_map<int, TChannel*>;
@@ -54,7 +50,7 @@ TChannel::TChannel(const char* tempName)
 {
    Clear();
    // only set name if it's not empty
-   if(strlen(tempName) > 0) SetName(tempName);
+   if(strlen(tempName) > 0) { SetName(tempName); }
 }
 
 TChannel::TChannel(const TChannel& chan) : TNamed(chan)
@@ -66,7 +62,43 @@ TChannel::TChannel(const TChannel& chan) : TNamed(chan)
    SetIntegration(chan.fIntegration);
    SetNumber(chan.fNumber);
    SetStream(chan.fStream);
-   SetUserInfoNumber(chan.fUserInfoNumber);
+   SetName(chan.GetName());
+   SetDigitizerType(chan.fDigitizerTypeString);
+   SetTimeOffset(chan.fTimeOffset);
+   SetTimeDrift(chan.fTimeDrift);
+   SetAllENGCoefficients(chan.fENGCoefficients);
+   SetENGRanges(chan.fENGRanges);
+   SetAllENGChi2(chan.fENGChi2);
+   SetENGDriftCoefficents(chan.fENGDriftCoefficents);
+   SetCFDCoefficients(chan.fCFDCoefficients);
+   SetLEDCoefficients(chan.fLEDCoefficients);
+   SetTIMECoefficients(chan.fTIMECoefficients);
+   SetEFFCoefficients(chan.fEFFCoefficients);
+   SetCTCoefficients(chan.fCTCoefficients);
+   SetEnergyNonlinearity(chan.fEnergyNonlinearity);
+   SetCFDChi2(chan.fCFDChi2);
+   SetLEDChi2(chan.fLEDChi2);
+   SetTIMEChi2(chan.fTIMEChi2);
+   SetEFFChi2(chan.fEFFChi2);
+   SetUseCalFileIntegration(chan.fUseCalFileInt);
+   SetWaveParam(chan.GetWaveParam());
+   SetDetectorNumber(chan.GetDetectorNumber());
+   SetSegmentNumber(chan.GetSegmentNumber());
+   SetCrystalNumber(chan.GetCrystalNumber());
+
+   SetClassType(chan.GetClassType());
+}
+
+TChannel::TChannel(TChannel&& chan) : TNamed(chan)
+{
+   /// Moves chan to this.
+	/// Just a copy of the copy constructor right now, needs to be changed.
+   Clear();
+   *(fMnemonic.Value()) = *(chan.fMnemonic.Value());
+   SetAddress(chan.GetAddress());
+   SetIntegration(chan.fIntegration);
+   SetNumber(chan.fNumber);
+   SetStream(chan.fStream);
    SetName(chan.GetName());
    SetDigitizerType(chan.fDigitizerTypeString);
    SetTimeOffset(chan.fTimeOffset);
@@ -103,7 +135,6 @@ TChannel::TChannel(TChannel* chan)
    SetIntegration(chan->fIntegration);
    SetNumber(chan->fNumber);
    SetStream(chan->fStream);
-   SetUserInfoNumber(chan->fUserInfoNumber);
    SetName(chan->GetName());
    SetDigitizerType(chan->fDigitizerTypeString);
    SetTimeOffset(chan->fTimeOffset);
@@ -131,9 +162,88 @@ TChannel::TChannel(TChannel* chan)
    SetClassType(chan->GetClassType());
 }
 
+TChannel& TChannel::operator=(const TChannel& rhs)
+{
+   /// copy assignment operator
+	/// Simply a copy of the copy constructor code (plus returing *this).
+   Clear();
+   *(fMnemonic.Value()) = *(rhs.fMnemonic.Value());
+   SetAddress(rhs.GetAddress());
+   SetIntegration(rhs.fIntegration);
+   SetNumber(rhs.fNumber);
+   SetStream(rhs.fStream);
+   SetName(rhs.GetName());
+   SetDigitizerType(rhs.fDigitizerTypeString);
+   SetTimeOffset(rhs.fTimeOffset);
+   SetTimeDrift(rhs.fTimeDrift);
+   SetAllENGCoefficients(rhs.fENGCoefficients);
+   SetENGRanges(rhs.fENGRanges);
+   SetAllENGChi2(rhs.fENGChi2);
+   SetENGDriftCoefficents(rhs.fENGDriftCoefficents);
+   SetCFDCoefficients(rhs.fCFDCoefficients);
+   SetLEDCoefficients(rhs.fLEDCoefficients);
+   SetTIMECoefficients(rhs.fTIMECoefficients);
+   SetEFFCoefficients(rhs.fEFFCoefficients);
+   SetCTCoefficients(rhs.fCTCoefficients);
+   SetEnergyNonlinearity(rhs.fEnergyNonlinearity);
+   SetCFDChi2(rhs.fCFDChi2);
+   SetLEDChi2(rhs.fLEDChi2);
+   SetTIMEChi2(rhs.fTIMEChi2);
+   SetEFFChi2(rhs.fEFFChi2);
+   SetUseCalFileIntegration(rhs.fUseCalFileInt);
+   SetWaveParam(rhs.GetWaveParam());
+   SetDetectorNumber(rhs.GetDetectorNumber());
+   SetSegmentNumber(rhs.GetSegmentNumber());
+   SetCrystalNumber(rhs.GetCrystalNumber());
+
+   SetClassType(rhs.GetClassType());
+
+	return *this;
+}
+
+TChannel& TChannel::operator=(TChannel&& rhs)
+{
+   /// move assignment operator
+	/// Doesn't really move anything yet, it's just a copy of the copy assignment operator.
+	/// This needs to be changed.
+   Clear();
+   *(fMnemonic.Value()) = *(rhs.fMnemonic.Value());
+   SetAddress(rhs.GetAddress());
+   SetIntegration(rhs.fIntegration);
+   SetNumber(rhs.fNumber);
+   SetStream(rhs.fStream);
+   SetName(rhs.GetName());
+   SetDigitizerType(rhs.fDigitizerTypeString);
+   SetTimeOffset(rhs.fTimeOffset);
+   SetTimeDrift(rhs.fTimeDrift);
+   SetAllENGCoefficients(rhs.fENGCoefficients);
+   SetENGRanges(rhs.fENGRanges);
+   SetAllENGChi2(rhs.fENGChi2);
+   SetENGDriftCoefficents(rhs.fENGDriftCoefficents);
+   SetCFDCoefficients(rhs.fCFDCoefficients);
+   SetLEDCoefficients(rhs.fLEDCoefficients);
+   SetTIMECoefficients(rhs.fTIMECoefficients);
+   SetEFFCoefficients(rhs.fEFFCoefficients);
+   SetCTCoefficients(rhs.fCTCoefficients);
+   SetEnergyNonlinearity(rhs.fEnergyNonlinearity);
+   SetCFDChi2(rhs.fCFDChi2);
+   SetLEDChi2(rhs.fLEDChi2);
+   SetTIMEChi2(rhs.fTIMEChi2);
+   SetEFFChi2(rhs.fEFFChi2);
+   SetUseCalFileIntegration(rhs.fUseCalFileInt);
+   SetWaveParam(rhs.GetWaveParam());
+   SetDetectorNumber(rhs.GetDetectorNumber());
+   SetSegmentNumber(rhs.GetSegmentNumber());
+   SetCrystalNumber(rhs.GetCrystalNumber());
+
+   SetClassType(rhs.GetClassType());
+
+	return *this;
+}
+
 void TChannel::SetName(const char* tmpName)
 {
-   if(strlen(tmpName) == 0) return;
+   if(strlen(tmpName) == 0) { return; }
    TNamed::SetName(tmpName);
    // do not parse the default name
    if(strcmp(tmpName, "DefaultTChannel") != 0) {
@@ -151,14 +261,13 @@ void TChannel::InitChannelInput()
    }
 }
 
-bool TChannel::CompareChannels(const TChannel& chana, const TChannel& chanb)
+bool TChannel::CompareChannels(const TChannel* chana, const TChannel* chanb)
 {
-   /// Compares the names of the two TChannels. Returns true if the names are the
-   /// same, false if different.
-   std::string namea;
-   namea.assign(static_cast<TChannel>(chana).GetName());
+   /// Compares the names of the two TChannels.
+	/// Returns true if the name of chana goes lexicographically before the name of chanb.
+   std::string namea(chana->GetName());
 
-   return namea.compare(static_cast<TChannel>(chanb).GetName()) < 0;
+   return namea.compare(chanb->GetName()) < 0;
 }
 
 void TChannel::DeleteAllChannels()
@@ -222,7 +331,6 @@ void TChannel::OverWriteChannel(TChannel* chan)
    SetIntegration(TPriorityValue<int>(chan->GetIntegration(), EPriority::kForce));
    SetNumber(TPriorityValue<int>(chan->GetNumber(), EPriority::kForce));
    SetStream(TPriorityValue<int>(chan->GetStream(), EPriority::kForce));
-   SetUserInfoNumber(TPriorityValue<int>(chan->GetUserInfoNumber(), EPriority::kForce));
    SetDigitizerType(TPriorityValue<std::string>(chan->GetDigitizerTypeString(), EPriority::kForce));
    SetName(chan->GetName());
 
@@ -260,8 +368,7 @@ void TChannel::AppendChannel(TChannel* chan)
    SetIntegration(chan->fIntegration);
    SetNumber(chan->fNumber);
    SetStream(chan->fStream);
-   SetUserInfoNumber(chan->fUserInfoNumber);
-   if(strcmp(chan->GetName(), "DefaultTChannel") != 0) SetName(chan->GetName());   // don't overwrite an existing name by the default name
+   if(strcmp(chan->GetName(), "DefaultTChannel") != 0) { SetName(chan->GetName()); }  // don't overwrite an existing name by the default name
    SetDigitizerType(chan->fDigitizerTypeString);
    SetTimeOffset(chan->fTimeOffset);
    SetTimeDrift(chan->fTimeDrift);
@@ -320,7 +427,6 @@ void TChannel::Clear(Option_t*)
    // fDigitizerType.Reset(EDigitizer::kDefault);
    fNumber.Reset(0);
    fStream.Reset(0);
-   fUserInfoNumber.Reset(0xffffffff);
    fUseCalFileInt.Reset(false);
 
    fDetectorNumber = -1;
@@ -419,7 +525,7 @@ std::vector<TChannel*> TChannel::FindChannelByRegEx(const char* ccName)
 
    std::regex regex(ccName);
 
-   TChannel* chan;
+   TChannel* chan = nullptr;
    for(auto iter : *fChannelMap) {
       chan                    = iter.second;
       std::string channelName = chan->GetName();
@@ -558,8 +664,9 @@ double TChannel::CalibrateENG(double charge) const
          // check if the current range covers this charge
          if(fENGRanges.Value()[currentRange].first < charge && charge < fENGRanges.Value()[currentRange].second) {
             // check if there is an overlap with the next range in which case we select that one in 50% of the cases
-            if(fENGRanges.Value()[currentRange + 1].first < charge && charge < fENGRanges.Value()[currentRange + 1].second) {
-               if(gRandom->Uniform() > 0.5) ++currentRange;
+            if(fENGRanges.Value()[currentRange + 1].first < charge && charge < fENGRanges.Value()[currentRange + 1].second &&
+               gRandom->Uniform() > 0.5) {
+               ++currentRange;
             }
             foundRange = true;
             break;
@@ -577,14 +684,14 @@ double TChannel::CalibrateENG(double charge) const
    if(!fENGDriftCoefficents.empty()) {
       double corrCharge = -fENGDriftCoefficents[0];   // ILL subtracts the offset instead of adding it
       for(size_t i = 1; i < fENGDriftCoefficents.size(); i++) {
-         corrCharge += fENGDriftCoefficents[i] * pow(charge, i);
+         corrCharge += fENGDriftCoefficents[i] * pow(charge, static_cast<double>(i));
       }
       charge = corrCharge;
    }
    // if we had drift correction charge is now the corrected charge, otherwise it is still the charge
    double cal_chg = fENGCoefficients[currentRange][0];
    for(size_t i = 1; i < fENGCoefficients[currentRange].size(); i++) {
-      cal_chg += fENGCoefficients[currentRange][i] * pow((charge), i);
+      cal_chg += fENGCoefficients[currentRange][i] * pow((charge), static_cast<double>(i));
    }
    return cal_chg;
 }
@@ -606,7 +713,7 @@ double TChannel::CalibrateCFD(double cfd) const
    double cal_cfd = 0.0;
    // std::cout<<cfd<<":";
    for(size_t i = 0; i < fCFDCoefficients.size(); i++) {
-      cal_cfd += fCFDCoefficients[i] * pow(cfd, i);
+      cal_cfd += fCFDCoefficients[i] * pow(cfd, static_cast<double>(i));
       // std::cout<<" "<<i<<" - "<<fCFDCoefficients[i]<<" = "<<cal_cfd;
    }
    // std::cout<<std::endl;
@@ -630,7 +737,7 @@ double TChannel::CalibrateLED(double led) const
 
    double cal_led = 0.0;
    for(size_t i = 0; i < fLEDCoefficients.size(); i++) {
-      cal_led += fLEDCoefficients[i] * pow(led, i);
+      cal_led += fLEDCoefficients[i] * pow(led, static_cast<double>(i));
    }
    return cal_led;
 }
@@ -666,7 +773,7 @@ double TChannel::CalibrateEFF(double) const
    return 1.0;
 }
 
-void TChannel::SetUseCalFileIntegration(const std::string& mnemonic, bool flag, EPriority pr)
+void TChannel::SetUseCalFileIntegration(const std::string& mnemonic, bool flag, EPriority prio)
 {
    /// Writes this UseCalFileIntegration to all channels in the current TChannel Map
    /// that starts with the mnemonic. Use "" to write to ALL channels
@@ -675,12 +782,12 @@ void TChannel::SetUseCalFileIntegration(const std::string& mnemonic, bool flag, 
    std::unordered_map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
    for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++) {
       if(mnemonic.empty() || (strncmp(mapit->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
-         mapit->second->SetUseCalFileIntegration(TPriorityValue<bool>(flag, pr));
+         mapit->second->SetUseCalFileIntegration(TPriorityValue<bool>(flag, prio));
       }
    }
 }
 
-void TChannel::SetIntegration(const std::string& mnemonic, int tmpint, EPriority pr)
+void TChannel::SetIntegration(const std::string& mnemonic, int tmpint, EPriority prio)
 {
    // Writes this integration to all channels in the current TChannel Map
    // that starts with the mnemonic. Use "" to write to ALL channels
@@ -689,12 +796,12 @@ void TChannel::SetIntegration(const std::string& mnemonic, int tmpint, EPriority
    std::unordered_map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
    for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++) {
       if(mnemonic.empty() || (strncmp(mapit->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
-         mapit->second->SetIntegration(TPriorityValue<int>(tmpint, pr));
+         mapit->second->SetIntegration(TPriorityValue<int>(tmpint, prio));
       }
    }
 }
 
-void TChannel::SetDigitizerType(const std::string& mnemonic, const char* tmpstr, EPriority pr)
+void TChannel::SetDigitizerType(const std::string& mnemonic, const char* tmpstr, EPriority prio)
 {
    // Writes this digitizer type to all channels in the current TChannel Map
    // that starts with the mnemonic. Use "" to write to ALL channels
@@ -703,7 +810,7 @@ void TChannel::SetDigitizerType(const std::string& mnemonic, const char* tmpstr,
    std::unordered_map<unsigned int, TChannel*>*          chanmap = TChannel::GetChannelMap();
    for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++) {
       if(mnemonic.empty() || (strncmp(mapit->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
-         mapit->second->SetDigitizerType(TPriorityValue<std::string>(tmpstr, pr));
+         mapit->second->SetDigitizerType(TPriorityValue<std::string>(tmpstr, prio));
       }
    }
 }
@@ -884,17 +991,17 @@ std::vector<TChannel*> TChannel::SortedChannels()
 
 void TChannel::WriteCalFile(const std::string& outfilename)
 {
-   /// prints the context of addresschannelmap formatted correctly to stdout if
+   /// Prints the context of addresschannelmap formatted correctly to stdout if
    /// no file name is passed to the function.  If a file name is passed to the function
    /// prints the context of addresschannelmap formatted correctly to a file with the given
-   /// name.  This will earse and rewrite the file if the file already exisits!
+   /// name. This will earse and rewrite the file if the file already exisits!
 
    std::vector<TChannel*> chanVec = SortedChannels();
 
    if(outfilename.length() > 0) {
       std::ofstream calout;
       calout.open(outfilename.c_str());
-      for(auto iter_vec : chanVec) {
+      for(auto* iter_vec : chanVec) {
          std::string chanstr = iter_vec->PrintToString();
          calout << chanstr.c_str();
          calout << std::endl;
@@ -902,7 +1009,7 @@ void TChannel::WriteCalFile(const std::string& outfilename)
       calout << std::endl;
       calout.close();
    } else {
-      for(auto iter_vec : chanVec) {
+      for(auto* iter_vec : chanVec) {
          iter_vec->Print();
       }
    }
@@ -915,8 +1022,8 @@ void TChannel::WriteCTCorrections(const std::string& outfilename)
    if(outfilename.length() > 0) {
       std::ofstream calout;
       calout.open(outfilename.c_str());
-      for(auto iter_vec : chanVec) {
-         if(iter_vec->fCTCoefficients.empty()) continue;
+      for(auto* iter_vec : chanVec) {
+         if(iter_vec->fCTCoefficients.empty()) { continue; }
          std::string chanstr = iter_vec->PrintCTToString();
          calout << chanstr.c_str();
          calout << std::endl;
@@ -924,7 +1031,7 @@ void TChannel::WriteCTCorrections(const std::string& outfilename)
       calout << std::endl;
       calout.close();
    } else {
-      for(auto iter_vec : chanVec) {
+      for(auto* iter_vec : chanVec) {
          iter_vec->PrintCTCoeffs();
       }
    }
@@ -940,7 +1047,7 @@ void TChannel::WriteCalBuffer(Option_t*)
 
    std::string data;
 
-   for(auto iter_vec : chanVec) {
+   for(auto* iter_vec : chanVec) {
       data.append(iter_vec->PrintToString());
    }
    fFileData.clear();
@@ -1002,7 +1109,7 @@ Int_t TChannel::ReadCalFile(std::ifstream& infile)
    }
 
    infile.seekg(0, std::ios::end);
-   int length = infile.tellg();
+   long length = infile.tellg();
    if(length < 1) {
       return -2;
    }
@@ -1055,7 +1162,7 @@ void TChannel::SaveToSelf()
    std::cout.rdbuf(std_out);
 }
 
-Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority pr)
+Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority prio)
 {
    std::istringstream infile(inputdata);
 
@@ -1115,7 +1222,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
          name       = line.substr(0, openbrace);
          trimWS(name);
          channel = new TChannel("");
-         if(!name.empty()) channel->SetName(name.c_str());
+         if(!name.empty()) { channel->SetName(name.c_str()); }
       }
       //*************************************//
       if(brace_open) {
@@ -1124,14 +1231,14 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
             std::string type = line.substr(0, ntype);
             line             = line.substr(ntype + 1, line.length());
             trimWS(line);
-            std::istringstream ss(line);
+            std::istringstream str(line);
             // transform type to upper case
             std::transform(type.begin(), type.end(), type.begin(), ::toupper);
-            if(type.compare("NAME") == 0) {
+            if(type == "NAME") {
                channel->SetName(line.c_str());
-            } else if(type.compare("ADDRESS") == 0) {
+            } else if(type == "ADDRESS") {
                unsigned int tempadd = 0;
-               ss >> tempadd;
+               str >> tempadd;
                if(tempadd == 0) {   // maybe it is in hex...
                   std::stringstream newss;
                   newss << std::hex << line;
@@ -1139,149 +1246,150 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                }
                tempadd = tempadd & 0x00ffffff;   // front end number is not included in the odb...
                channel->SetAddress(tempadd);
-            } else if(type.compare("INTEGRATION") == 0) {
-               int tempint;
-               ss >> tempint;
-               channel->SetIntegration(TPriorityValue<int>(tempint, pr));
-            } else if(type.compare("NUMBER") == 0) {
-               int tempnum;
-               ss >> tempnum;
-               channel->SetNumber(TPriorityValue<int>(tempnum, pr));
-            } else if(type.compare("TIMEOFFSET") == 0) {
-               Long64_t tempoff;
-               ss >> tempoff;
-               channel->SetTimeOffset(TPriorityValue<Long64_t>(tempoff, pr));
-            } else if(type.compare("TIMEDRIFT") == 0.0) {
-               double tempdrift;
-               ss >> tempdrift;
-               channel->SetTimeDrift(TPriorityValue<double>(tempdrift, pr));
-            } else if(type.compare("STREAM") == 0) {
-               int tempstream;
-               ss >> tempstream;
-               channel->SetStream(TPriorityValue<int>(tempstream, pr));
-            } else if(type.compare("DIGITIZER") == 0) {
-               channel->SetDigitizerType(TPriorityValue<std::string>(line, pr));
-            } else if(type.compare("ENGCHI2") == 0) {
+            } else if(type == "INTEGRATION") {
+               int tempint = 0;
+               str >> tempint;
+               channel->SetIntegration(TPriorityValue<int>(tempint, prio));
+            } else if(type == "NUMBER") {
+               int tempnum = 0;
+               str >> tempnum;
+               channel->SetNumber(TPriorityValue<int>(tempnum, prio));
+            } else if(type == "TIMEOFFSET") {
+               Long64_t tempoff = 0;
+               str >> tempoff;
+               channel->SetTimeOffset(TPriorityValue<Long64_t>(tempoff, prio));
+            } else if(type == "TIMEDRIFT") {
+               double tempdrift = 0.;
+               str >> tempdrift;
+               channel->SetTimeDrift(TPriorityValue<double>(tempdrift, prio));
+            } else if(type == "STREAM") {
+               int tempstream = 0;
+               str >> tempstream;
+               channel->SetStream(TPriorityValue<int>(tempstream, prio));
+            } else if(type == "DIGITIZER") {
+               channel->SetDigitizerType(TPriorityValue<std::string>(line, prio));
+            } else if(type == "ENGCHI2") {
                size_t range = line.find("range");
                if(range != std::string::npos) {
                   line = line.substr(range + 5, line.length());
                   trimWS(line);
-                  ss.str(line);
-                  ss >> range;
+                  str.str(line);
+                  str >> range;
                } else {
                   range = 0;
                }
-               double tempdbl;
-               ss >> tempdbl;
-               channel->SetENGChi2(TPriorityValue<double>(tempdbl, pr), range);
-            } else if(type.compare("CFDCHI2") == 0) {
-               double tempdbl;
-               ss >> tempdbl;
-               channel->SetCFDChi2(TPriorityValue<double>(tempdbl, pr));
-            } else if(type.compare("LEDCHI2") == 0) {
-               double tempdbl;
-               ss >> tempdbl;
-               channel->SetLEDChi2(TPriorityValue<double>(tempdbl, pr));
-            } else if(type.compare("TIMECHI2") == 0) {
-               double tempdbl;
-               ss >> tempdbl;
-               channel->SetTIMEChi2(TPriorityValue<double>(tempdbl, pr));
-            } else if(type.compare("EFFCHI2") == 0) {
-               double tempdbl;
-               ss >> tempdbl;
-               channel->SetEFFChi2(TPriorityValue<double>(tempdbl, pr));
-            } else if(type.compare("ENGCOEFF") == 0) {
+               double tempdbl = 0.;
+               str >> tempdbl;
+               channel->SetENGChi2(TPriorityValue<double>(tempdbl, prio), range);
+            } else if(type == "CFDCHI2") {
+               double tempdbl = 0.;
+               str >> tempdbl;
+               channel->SetCFDChi2(TPriorityValue<double>(tempdbl, prio));
+            } else if(type == "LEDCHI2") {
+               double tempdbl = 0.;
+               str >> tempdbl;
+               channel->SetLEDChi2(TPriorityValue<double>(tempdbl, prio));
+            } else if(type == "TIMECHI2") {
+               double tempdbl = 0.;
+               str >> tempdbl;
+               channel->SetTIMEChi2(TPriorityValue<double>(tempdbl, prio));
+            } else if(type == "EFFCHI2") {
+               double tempdbl = 0.;
+               str >> tempdbl;
+               channel->SetEFFChi2(TPriorityValue<double>(tempdbl, prio));
+            } else if(type == "ENGCOEFF") {
                size_t range = line.find("range");
                if(range != std::string::npos) {
                   line = line.substr(range + 5, line.length());
                   trimWS(line);
-                  ss.str(line);
-                  ss >> range;
+                  str.str(line);
+                  str >> range;
                } else {
                   range = 0;
                }
                if(range == 0) {
                   channel->DestroyENGCal();
-                  channel->fENGCoefficients.SetPriority(pr);
+                  channel->fENGCoefficients.SetPriority(prio);
                }
-               double value;
-               while(!(ss >> value).fail()) {
+               float value = 0.;
+               while(!(str >> value).fail()) {
                   channel->AddENGCoefficient(value, range);
                }
-            } else if(type.compare("ENGRANGE") == 0) {
-               size_t range;
-               double low;
-               double high;
-               ss >> range >> low >> high;
+            } else if(type == "ENGRANGE") {
+               size_t range = 0;
+               double low = 0.;
+               double high = 0.;
+               str >> range >> low >> high;
                channel->SetENGRange(std::make_pair(low, high), range);
-            } else if(type.compare("ENGDRIFT") == 0) {
-               channel->fENGDriftCoefficents.SetPriority(pr);
-               double value;
-               while(!(ss >> value).fail()) {
+            } else if(type == "ENGDRIFT") {
+               channel->fENGDriftCoefficents.SetPriority(prio);
+               float value = 0.;
+               while(!(str >> value).fail()) {
                   channel->AddENGDriftCoefficent(value);
                }
-            } else if(type.compare("LEDCOEFF") == 0) {
+            } else if(type == "LEDCOEFF") {
                channel->DestroyLEDCal();
-               channel->fLEDCoefficients.SetPriority(pr);
-               double value;
-               while(!(ss >> value).fail()) {
+               channel->fLEDCoefficients.SetPriority(prio);
+               double value = 0.;
+               while(!(str >> value).fail()) {
                   channel->AddLEDCoefficient(value);
                }
-            } else if(type.compare("CFDCOEFF") == 0) {
+            } else if(type == "CFDCOEFF") {
                channel->DestroyCFDCal();
-               channel->fCFDCoefficients.SetPriority(pr);
-               double value;
-               while(!(ss >> value).fail()) {
+               channel->fCFDCoefficients.SetPriority(prio);
+               double value = 0.;
+               while(!(str >> value).fail()) {
                   channel->AddCFDCoefficient(value);
                }
-            } else if((type.compare("TIMECOEFF") == 0) || (type.compare("WALK") == 0)) {
+            } else if(type == "TIMECOEFF" || type == "WALK") {
                channel->DestroyTIMECal();
-               channel->fTIMECoefficients.SetPriority(pr);
-               double value;
-               while(!(ss >> value).fail()) {
+               channel->fTIMECoefficients.SetPriority(prio);
+               double value = 0.;
+               while(!(str >> value).fail()) {
                   channel->AddTIMECoefficient(value);
                }
-            } else if(type.compare("CTCOEFF") == 0) {
+            } else if(type == "CTCOEFF") {
                channel->DestroyCTCal();
-               channel->fCTCoefficients.SetPriority(pr);
-               double value;
-               while(!(ss >> value).fail()) {
+               channel->fCTCoefficients.SetPriority(prio);
+               double value = 0.;
+               while(!(str >> value).fail()) {
                   channel->AddCTCoefficient(value);
                }
-            } else if(type.compare("ENERGYNONLINEARITY") == 0) {
+            } else if(type == "ENERGYNONLINEARITY") {
                channel->DestroyEnergyNonlinearity();
-               channel->fEnergyNonlinearity.SetPriority(pr);
-               double x, y;
-               while(!(ss >> x >> y).fail()) {
+               channel->fEnergyNonlinearity.SetPriority(prio);
+               double x = 0.;
+					double y = 0.;
+               while(!(str >> x >> y).fail()) {
                   channel->AddEnergyNonlinearityPoint(x, y);
                }
                channel->SetupEnergyNonlinearity();
-            } else if(type.compare("EFFCOEFF") == 0) {
+            } else if(type == "EFFCOEFF") {
                channel->DestroyEFFCal();
-               channel->fEFFCoefficients.SetPriority(pr);
-               double value;
-               while(!(ss >> value).fail()) {
+               channel->fEFFCoefficients.SetPriority(prio);
+               double value = 0.;
+               while(!(str >> value).fail()) {
                   channel->AddEFFCoefficient(value);
                }
-            } else if(type.compare("FILEINT") == 0) {
-               int tempstream;
-               ss >> tempstream;
+            } else if(type == "FILEINT") {
+               int tempstream = 0;
+               str >> tempstream;
                if(tempstream > 0) {
-                  channel->SetUseCalFileIntegration(TPriorityValue<bool>(true, pr));
+                  channel->SetUseCalFileIntegration(TPriorityValue<bool>(true, prio));
                } else {
-                  channel->SetUseCalFileIntegration(TPriorityValue<bool>(false, pr));
+                  channel->SetUseCalFileIntegration(TPriorityValue<bool>(false, prio));
                }
-            } else if(type.compare("RISETIME") == 0) {
-               double tempdbl;
-               ss >> tempdbl;
+            } else if(type == "RISETIME") {
+               double tempdbl = 0.;
+               str >> tempdbl;
                channel->SetWaveRise(tempdbl);
-            } else if(type.compare("DECAYTIME") == 0) {
-               double tempdbl;
-               ss >> tempdbl;
+            } else if(type == "DECAYTIME") {
+               double tempdbl = 0.;
+               str >> tempdbl;
                channel->SetWaveDecay(tempdbl);
-            } else if(type.compare("BASELINE") == 0) {
-               double tempdbl;
-               ss >> tempdbl;
+            } else if(type == "BASELINE") {
+               double tempdbl = 0.;
+               str >> tempdbl;
                channel->SetWaveBaseLine(tempdbl);
             } else {
             }
@@ -1298,7 +1406,8 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
 void TChannel::Streamer(TBuffer& R__b)
 {
    SetBit(kCanDelete);
-   UInt_t R__s, R__c;
+   UInt_t R__s = 0;
+	UInt_t R__c = 0;
    if(R__b.IsReading()) {   // reading from file
       Version_t R__v = R__b.ReadVersion(&R__s, &R__c);
       if(R__v != 0) {
@@ -1310,7 +1419,6 @@ void TChannel::Streamer(TBuffer& R__b)
       if(R__v <= 5) {
          TString R__str;
          R__str.Streamer(R__b);
-         // fFileName.assign(R__str.Data());
       }
       {
          TString R__str;
@@ -1337,11 +1445,11 @@ int TChannel::WriteToRoot(TFile* fileptr)
 {
    /// Writes Cal File information to the tree
 
-   TChannel* c = GetDefaultChannel();
+   TChannel* chan = GetDefaultChannel();
    // Maintain old gDirectory info
    TDirectory* savdir = gDirectory;
 
-   if(c == nullptr) {
+   if(chan == nullptr) {
       std::cout << "No TChannels found to write." << std::endl;
       return 0;
    }
@@ -1381,9 +1489,9 @@ int TChannel::WriteToRoot(TFile* fileptr)
       }
       if(!found) {
          found        = true;
-         TChannel* ch = static_cast<TChannel*>(key->ReadObj());
-         defaultName.assign(ch->GetName());
-         defaultTitle.assign(ch->GetTitle());
+         auto* curCh = static_cast<TChannel*>(key->ReadObj());
+         defaultName.assign(curCh->GetName());
+         defaultTitle.assign(curCh->GetTitle());
       }
       std::string cname = key->ReadObj()->GetName();
       cname.append(";*");
@@ -1396,9 +1504,9 @@ int TChannel::WriteToRoot(TFile* fileptr)
    ParseInputData(savedata.c_str(), "q", EPriority::kRootFile);
    SaveToSelf();
    TChannel::ParseInputData(channelbuffer.c_str(), "q", EPriority::kRootFile);
-   c = TChannel::GetDefaultChannel();
-   c->SetNameTitle(defaultName.c_str(), defaultTitle.c_str());
-   c->Write("Channel", TObject::kOverwrite);
+   chan = TChannel::GetDefaultChannel();
+   chan->SetNameTitle(defaultName.c_str(), defaultTitle.c_str());
+   chan->Write("Channel", TObject::kOverwrite);
 
    ParseInputData(savedata.c_str(), "q", EPriority::kRootFile);
    SaveToSelf();
@@ -1438,7 +1546,7 @@ int TChannel::GetSegmentNumber() const
          std::string buf;
          buf.clear();
          buf.assign(name, 7, 3);
-         fSegmentNumber = (int32_t)atoi(buf.c_str());
+         fSegmentNumber = static_cast<int32_t>(atoi(buf.c_str()));
       } else {
          fSegmentNumber = static_cast<int32_t>(fMnemonic.Value()->Segment());
       }
@@ -1458,12 +1566,11 @@ int TChannel::GetCrystalNumber() const
    return fCrystalNumber;
 }
 
-double TChannel::GetEnergyNonlinearity(double en) const
+double TChannel::GetEnergyNonlinearity(double eng) const
 {
    int nPoints = fEnergyNonlinearity.Value().GetN();
-   if(nPoints < 1) return 0.;
-   if(en < fEnergyNonlinearity.Value().GetX()[0] || fEnergyNonlinearity.Value().GetX()[nPoints - 1] < en) return 0.;
-   return fEnergyNonlinearity.Value().Eval(en);
+   if(nPoints < 1 || eng < fEnergyNonlinearity.Value().GetX()[0] || fEnergyNonlinearity.Value().GetX()[nPoints - 1] < eng) { return 0.; }
+   return fEnergyNonlinearity.Value().Eval(eng);
 }
 
 void TChannel::SetupEnergyNonlinearity()
@@ -1480,20 +1587,20 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName, bool
    TList* list = file->GetListOfKeys();
    TIter  iter(list);
    while(TKey* key = static_cast<TKey*>(iter.Next())) {
-      TClass* cl = TClass::GetClass(key->GetClassName());
-      if(!cl->InheritsFrom(TGraph::Class()) || strncmp(key->GetName(), graphName, strlen(graphName)) != 0) {
+      TClass* cls = TClass::GetClass(key->GetClassName());
+      if(!cls->InheritsFrom(TGraph::Class()) || strncmp(key->GetName(), graphName, strlen(graphName)) != 0) {
          continue;
       }
       // get address from keys name
       std::stringstream str;
       str << std::hex << key->GetName() + strlen(graphName);
-      unsigned int address;
+      unsigned int address = 0;
       str >> address;
       if(GetChannel(address) != nullptr) {
          GetChannel(address)->fEnergyNonlinearity.Set(*(static_cast<TGraph*>(key->ReadObj())), EPriority::kRootFile);
          GetChannel(address)->SetupEnergyNonlinearity();
       } else if(all) {
-         TChannel* newChannel = new TChannel("");
+         auto* newChannel = new TChannel("");
          newChannel->SetAddress(address);
          newChannel->fEnergyNonlinearity.Set(*(static_cast<TGraph*>(key->ReadObj())), EPriority::kRootFile);
          newChannel->SetupEnergyNonlinearity();
@@ -1502,7 +1609,7 @@ void TChannel::ReadEnergyNonlinearities(TFile* file, const char* graphName, bool
    }
 }
 
-void TChannel::SetDigitizerType(TPriorityValue<std::string> tmp)
+void TChannel::SetDigitizerType(const TPriorityValue<std::string>& tmp)
 {
    fDigitizerTypeString = tmp;
    if(fMnemonic.Value() != nullptr) {

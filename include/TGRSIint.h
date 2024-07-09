@@ -54,8 +54,7 @@ public:
 
    ~TGRSIint() override;
 
-   // void GetOptions(int* argc,char** argv);
-   void PrintHelp(bool);
+   static void PrintHelp(bool);
    void PrintLogo(bool) override;
    bool HandleTermInput() override;
    int  TabCompletionHook(char*, int*, std::ostream&) override;
@@ -75,11 +74,9 @@ public:
 private:
    void SetupPipeline();
    void LoopUntilDone();
-   // bool FileAutoDetect(std::string fileName, long fileSize);
-   // void InitFlags();
    void ApplyOptions();
-   void DrawLogo();
-   void LoadGROOTGraphics();
+   static void DrawLogo();
+   static void LoadGROOTGraphics();
    void LoadExtraClasses();
 
    Long_t DelayedProcessLine(std::string command);
@@ -89,7 +86,6 @@ private:
    std::thread::id main_thread_id;   ///< Main sorting thread id
 #endif
 
-private:
    bool        fIsTabComplete;        ///< Flag for tab completion hook
    bool        fAllowedToTerminate;   ///< Flag for shutting down GRSISort
    int         fRootFilesOpened;      ///< Number of ROOT files opened

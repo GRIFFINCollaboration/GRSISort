@@ -1,5 +1,5 @@
-#ifndef _TBGSUBTRACTION_H
-#define _TBGSUBTRACTION_H
+#ifndef TBGSUBTRACTION_H
+#define TBGSUBTRACTION_H
 #include "TGClient.h"
 #include "TCanvas.h"
 #include "TF1.h"
@@ -148,24 +148,29 @@ private:
 
    TFile* fCurrentFile{nullptr};
 
-   Int_t fGateAxis;
+   Int_t fGateAxis{0};
 
-   Bool_t   fForceUpdate;
-   Double_t fPeakLowLimit;    ///< lower limit for peak slider range
-   Double_t fPeakHighLimit;   ///< upper limit for peak slider range
-   Double_t fPeakLowValue;    ///< low range for fit
-   Double_t fPeakHighValue;   ///< high range for fit
-   Double_t fPeakValue;       ///< centroid for fit
+   Bool_t   fForceUpdate{true};
+   Double_t fPeakLowLimit{0.};    ///< lower limit for peak slider range
+   Double_t fPeakHighLimit{0.};   ///< upper limit for peak slider range
+   Double_t fPeakLowValue{0.};    ///< low range for fit
+   Double_t fPeakHighValue{0.};   ///< high range for fit
+   Double_t fPeakValue{0.};       ///< centroid for fit
 
    TSinglePeak* fPeak{nullptr};         ///< the peak to be fit (will be a class that inherits from TSinglePeak)
    TPeakFitter* fPeakFitter{nullptr};   ///< the peak fitter that fPeak is added to
-   Int_t        fPeakId;                ///< the current ID of the peak
 
    Int_t fMaxBinning{20};   ///< maximum binning possible with binning slider (hard-coded, for now?)
 
 public:
-   TBGSubtraction(TH2* mat, const char* gate_axis = "x", int maxBinning = 20);
+   explicit TBGSubtraction(TH2* mat, const char* gate_axis = "x", int maxBinning = 20);
+	TBGSubtraction(const TBGSubtraction&) = delete;
+	TBGSubtraction(TBGSubtraction&&) = delete;
    ~TBGSubtraction() override;
+
+	TBGSubtraction& operator=(const TBGSubtraction&) = delete;
+	TBGSubtraction& operator=(TBGSubtraction&&) = delete;
+
    void AxisComboSelected();
    void PeakComboSelected();
    void ClickedBGButton1();
@@ -206,7 +211,7 @@ private:
    void Disconnect();
    void InitializeInterface();
    void StatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected);
-   void DrawBGMarkers(TGCheckButton*& check_button, GMarker*& low_marker, GMarker*& high_marker, TGNumberEntry*& low_entry, TGNumberEntry*& high_entry, Int_t color = kBlue);
+   void DrawBGMarkers(TGCheckButton*& check_button, GMarker*& low_marker, GMarker*& high_marker, TGNumberEntry*& low_entry, TGNumberEntry*& high_entry, Color_t color = kBlue);
    void UpdateGateSlider();
    void UpdateBGSlider1();
    void UpdateBGSlider2();

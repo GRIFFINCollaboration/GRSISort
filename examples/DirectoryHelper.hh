@@ -15,7 +15,7 @@ class DirectoryHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImp
 public:
    // constructor sets the prefix (which is used for the output file as well)
    // and calls Setup which in turn also calls CreateHistograms
-   DirectoryHelper(TList* list) : TGRSIHelper(list)
+   explicit DirectoryHelper(TList* list) : TGRSIHelper(list)
    {
       Prefix("DirectoryHelper");
       Setup();

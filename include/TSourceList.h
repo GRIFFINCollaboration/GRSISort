@@ -16,13 +16,12 @@ class TSourceList : public TCalList {
 public:
    TSourceList();
    TSourceList(const TNucleus& nuc, const char* name, const char* title = "");
-   TSourceList(const char* name, const char* title = "");
+   explicit TSourceList(const char* name, const char* title = "");
    TSourceList(const TNucleus& nuc);
-   ~TSourceList() override;
+   ~TSourceList() override = default;
 
    TSourceList(const TSourceList& copy);
 
-public:
    void Copy(TObject& obj) const override;
    void Clear(Option_t* opt = "") override;
    void Print(Option_t* opt = "") const override;
@@ -33,7 +32,6 @@ public:
 private:
    bool AddTransition(TTransition* tran);
 
-private:
    std::string fNucleusName;
 
    /// \cond CLASSIMP

@@ -3,17 +3,10 @@
 
 #include <iostream>
 
-/// \cond CLASSIMP
-ClassImp(TSourceList)
-/// \endcond
-
 TSourceList::TSourceList()
-   : TCalList()
 {
    Clear();
 }
-
-TSourceList::~TSourceList() = default;
 
 TSourceList::TSourceList(const char* name, const char* title) : TCalList(name, title)
 {

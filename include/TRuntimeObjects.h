@@ -1,5 +1,5 @@
-#ifndef _RUNTIMEOBJECTS_H_
-#define _RUNTIMEOBJECTS_H_
+#ifndef RUNTIMEOBJECTS_H
+#define RUNTIMEOBJECTS_H
 
 #include <string>
 #include <map>
@@ -112,11 +112,11 @@ public:
       return FillHistogramSym(dirname.c_str(), name.c_str(), Xbins, Xlow, Xhigh, Xvalue, Ybins, Ylow, Yhigh, Yvalue);
    }
 
-   double GetVariable(const char* name);
+   double GetVariable(const char* name) const;
 
    static TRuntimeObjects* Get(const std::string& name = "default")
    {
-      if(fRuntimeMap.count(name)) {
+      if(fRuntimeMap.count(name) != 0) {
          return fRuntimeMap.at(name);
       }
       return nullptr;
@@ -143,11 +143,11 @@ private:
    std::shared_ptr<TUnpackedEvent>  fDetectors;
    std::shared_ptr<const TFragment> fFrag;
 #endif
-   TList*               fObjects;
-   TList*               fGates;
+   TList*               fObjects{nullptr};
+   TList*               fGates{nullptr};
    std::vector<TFile*>& fCut_files;
 
-   TDirectory* fDirectory;
+   TDirectory* fDirectory{nullptr};
 
    ClassDefOverride(TRuntimeObjects, 0);
 };

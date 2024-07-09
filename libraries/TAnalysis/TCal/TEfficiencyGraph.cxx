@@ -3,10 +3,6 @@
 #include <iostream>
 #include "Globals.h"
 
-/// \cond CLASSIMP
-ClassImp(TEfficiencyGraph)
-/// \endcond
-
 TEfficiencyGraph::TEfficiencyGraph()
    : TCalGraph(), fIsAbsolute(false)
 {

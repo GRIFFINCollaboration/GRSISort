@@ -33,8 +33,8 @@ public:
    enum class EOpenType { kRead,
                           kWrite };
 
-   TRawFile() {}   ///< default constructor
-   TRawFile(const char*, EOpenType = EOpenType::kRead) {}
+   TRawFile() = default;   ///< default constructor
+   explicit TRawFile(const char*, EOpenType = EOpenType::kRead) {}
    ~TRawFile() override = default;   ///< destructor
 
    virtual bool Open(const char* filename) = 0;   ///< Open input file

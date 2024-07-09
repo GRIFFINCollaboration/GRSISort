@@ -2,10 +2,6 @@
 
 #include <iostream>
 
-/// \cond CLASSIMP
-ClassImp(TTransition)
-/// \endcond
-
 TTransition::TTransition()
 {
    Clear();

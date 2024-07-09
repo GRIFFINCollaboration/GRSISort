@@ -29,12 +29,16 @@
 
 template <typename T>
 class TObjectWrapper : public TObject {
+public:
+   explicit TObjectWrapper(T* ptr) : pT(ptr) {}
+   T* operator->() { return pT; }
+	
+private:
    T* pT;
 
-public:
-   TObjectWrapper(T* ptr) : pT(ptr) {}
-   T* operator->() { return pT; }
+   /// \cond CLASSIMP
    ClassDefOverride(TObjectWrapper, 1);
+   /// \endcond
 };
 /*! @} */
 #endif

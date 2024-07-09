@@ -2,10 +2,6 @@
 
 #include <iostream>
 
-/// \cond CLASSIMP
-ClassImp(TGRSITransition)
-/// \endcond
-
 TGRSITransition::TGRSITransition()
 {
    // Default constructor for TGRSITransition
@@ -13,11 +9,6 @@ TGRSITransition::TGRSITransition()
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
    Clear();
-}
-
-TGRSITransition::~TGRSITransition()
-{
-   // Default Destructor
 }
 
 void TGRSITransition::Print(Option_t*) const
@@ -30,7 +21,7 @@ void TGRSITransition::Print(Option_t*) const
    std::cout << "**************************" << std::endl;
 }
 
-std::string TGRSITransition::PrintToString()
+std::string TGRSITransition::PrintToString() const
 {
    // Writes transitions in a way that is nicer to ourput.
    std::string buffer;

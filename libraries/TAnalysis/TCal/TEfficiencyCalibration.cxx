@@ -5,10 +5,6 @@
 #include "TMath.h"
 #include "Math/Minimizer.h"
 
-/// \cond CLASSIMP
-ClassImp(TEfficiencyCalibration)
-/// \endcond
-
 TEfficiencyCalibration::TEfficiencyCalibration()
    : TNamed(), fRelativeEffGraph(nullptr), fAbsEffGraph(nullptr), fFitting(false), fRelativeFit(nullptr),
      fAbsoluteFunc(nullptr)

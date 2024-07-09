@@ -8,7 +8,7 @@
 
 class TimeWalkHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<TimeWalkHelper> {
 public:
-   TimeWalkHelper(TList* list) : TGRSIHelper(list)
+   explicit TimeWalkHelper(TList* list) : TGRSIHelper(list)
    {
       Prefix("TimeWalk");   // Changes prefix of output file
       Setup();
@@ -18,7 +18,7 @@ public:
    {
       return d->Book<TGriffin, TSceptar>(std::move(*this), {"TGriffin", "TSceptar"});
    }
-   void CreateHistograms(unsigned int slot);
+   void CreateHistograms(unsigned int slot) override;
    void Exec(unsigned int slot, TGriffin& grif, TSceptar& scep);
 };
 

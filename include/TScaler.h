@@ -69,9 +69,8 @@ public:
    {
       if(index < fScaler.size()) {
          return fScaler[index];
-      } else {
-         return 0;
       }
+		return 0;
    }
 
    ULong64_t GetTimeStamp() const
@@ -88,11 +87,11 @@ public:
    void Clear(Option_t* opt = "") override;
 
 private:
-   UInt_t              fNetworkPacketId;
-   UInt_t              fAddress;
+   UInt_t              fNetworkPacketId{0};
+   UInt_t              fAddress{0};
    std::vector<UInt_t> fScaler;
-   UInt_t              fLowTimeStamp;
-   UInt_t              fHighTimeStamp;
+   UInt_t              fLowTimeStamp{0};
+   UInt_t              fHighTimeStamp{0};
 
    /// \cond CLASSIMP
    ClassDefOverride(TScalerData, 2)   // Contains scaler data information
@@ -142,13 +141,13 @@ public:
 
       for(Long64_t entry = tree->GetEntries() - 1; entry >= 0; --entry) {
          tree->GetEntry(entry);
-         if(scalerData->GetAddress() != address) continue;
+         if(scalerData->GetAddress() != address) { continue; }
          auto scalers = scalerData->GetScaler();
          if(nominator >= scalers.size() || denominator >= scalers.size()) {
             std::cerr << __PRETTY_FUNCTION__ << ": trying to get nominator " << nominator << " and denominator " << denominator << " from vector of size " << scalers.size() << std::endl;
             return -1.;
          }
-         return ((double)scalers[nominator]) / scalers[denominator];
+         return static_cast<double>(scalers[nominator]) / scalers[denominator];
       }
       std::cerr << __PRETTY_FUNCTION__ << ": failed to find any entry for address " << hex(address, 4) << std::endl;
       return -1.;

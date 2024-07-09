@@ -4,18 +4,13 @@
 
 #include "TROOT.h"
 
-/// \cond CLASSIMP
-ClassImp(TScalerData)
-ClassImp(TScaler)
-/// \endcond
-
 TScalerData::TScalerData()
 {
    Clear();
    fScaler.resize(4);   // we expect to have four scaler values
 }
 
-TScalerData::TScalerData(const TScalerData& rhs) : TObject()
+TScalerData::TScalerData(const TScalerData& rhs) : TObject(rhs)
 {
    rhs.Copy(*this);
 }
@@ -32,7 +27,7 @@ void TScalerData::Copy(TObject& rhs) const
 void TScalerData::Clear(Option_t*)
 {
    /// Clears the TScalerData.
-   fNetworkPacketId = -1;
+   fNetworkPacketId = 0;
    fAddress         = 0;
    fScaler.clear();
    fLowTimeStamp  = 0;
@@ -49,18 +44,16 @@ void TScalerData::Print(Option_t*) const
 }
 
 TScaler::TScaler(bool loadIntoMap)
+   : fTree(static_cast<TTree*>(gROOT->FindObject("ScalerTree")))
 {
    /// This constructor tries to find the "ScalerTree" and uses it (if requested) to load the scaler data into the map.
    ///\param[in] loadIntoMap Flag telling TScaler to load all scaler data into fScalerMap.
-   Clear();
-   fTree = static_cast<TTree*>(gROOT->FindObject("ScalerTree"));
    ReadTree(loadIntoMap);
 }
 
 TScaler::TScaler(TTree* tree, bool loadIntoMap)
+   : fTree(tree)
 {
-   Clear();
-   fTree = tree;
    ReadTree(loadIntoMap);
 }
 
@@ -124,7 +117,7 @@ std::vector<UInt_t> TScaler::GetScaler(UInt_t address, ULong64_t time) const
    if(!fScalerMap.empty()) {
       // Check that this address exists
       if(fScalerMap.find(address) == fScalerMap.end()) {
-         return std::vector<UInt_t>();
+         return {};
       }
       auto currIt = fScalerMap.find(address)->second.lower_bound(time);
       // if the time is after our last entry, we return the last entry
@@ -150,7 +143,7 @@ std::vector<UInt_t> TScaler::GetScaler(UInt_t address, ULong64_t time) const
             }
          }
          // if we failed to find any previous data we return a vector of zeros
-         return std::vector<UInt_t>(4, 0);
+         return {0, 0, 0, 0};
       }
    }
    // failed to find any matching time so we just return the very last value (or should we search for the last value of
@@ -290,11 +283,9 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t* option)
       // re-use the existing histogram
       if(fHist[address] == nullptr) {
          int nofBins = fPPG->GetCycleLength() / GetTimePeriod(address);
-         fHist[address] =
-            new TH1D(Form("TScalerHist_%04x", address),
-                     Form("scaler %d vs time in cycle for address 0x%04x; time in cycle [ms]; counts/%.0f ms",
-                          static_cast<int>(index), address, fPPG->GetCycleLength() / 1e5 / nofBins),
-                     nofBins, 0., fPPG->GetCycleLength() / 1e5);
+         fHist[address] = new TH1D(Form("TScalerHist_%04x", address),
+                                   Form("scaler %d vs time in cycle for address 0x%04x; time in cycle [ms]; counts/%.0f ms", static_cast<int>(index), address, fPPG->GetCycleLength() / 1e5 / nofBins),
+                                   nofBins, 0., fPPG->GetCycleLength() / 1e5);
          // fHist[address]->ResetBit(kMustCleanup);
       }
       // we have to skip the first data point in case this is a sub-run
@@ -360,12 +351,10 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
          fHistRange[std::make_pair(lowAddress, highAddress)] = nullptr;
       }
       if(fHistRange[std::make_pair(lowAddress, highAddress)] == nullptr || draw_index >= 0) {
-         int nofBins =
-            fPPG->GetCycleLength() / GetTimePeriod(lowAddress);   // the time period should be the same for all channels
+         int nofBins = fPPG->GetCycleLength() / GetTimePeriod(lowAddress);   // the time period should be the same for all channels
          fHistRange[std::make_pair(lowAddress, highAddress)] =
             new TH1D(Form("TScalerHist_%04x_%04x", lowAddress, highAddress),
-                     Form("scaler %d vs time in cycle for address 0x%04x - 0x%04x; time in cycle [ms]; counts/%.0f ms",
-                          static_cast<int>(index), lowAddress, highAddress, fPPG->GetCycleLength() / 1e5 / nofBins),
+                     Form("scaler %d vs time in cycle for address 0x%04x - 0x%04x; time in cycle [ms]; counts/%.0f ms", static_cast<int>(index), lowAddress, highAddress, fPPG->GetCycleLength() / 1e5 / nofBins),
                      nofBins, 0., fPPG->GetCycleLength() / 1e5);
          // fHistRange[std::make_pair(lowAddress, highAddress)]->ResetBit(kMustCleanup);
          // we have to skip the first data point in case this is a sub-run
@@ -418,7 +407,7 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
          // if the histogram already exist, reset it
          fHist[address]->Reset();
       }
-      fHist[address]->SetLineColor(address - lowAddress + 1);
+      fHist[address]->SetLineColor(static_cast<Color_t>(address - lowAddress + 1));
    }
    // now we have all histograms, so we loop through the tree (once) and create all that are in the range
    std::map<UInt_t, UInt_t> previousValue;   // we could make this a vector, since we know there can only be
@@ -532,12 +521,12 @@ ULong64_t TScaler::GetTimePeriod(UInt_t address)
 void TScaler::ListHistograms()
 {
    std::cout << "single address histograms:" << std::endl;
-   for(auto& it : fHist) {
-      std::cout << "\t" << hex(it.first, 4) << ": " << it.second->GetName() << ", " << it.second->GetTitle() << std::endl;
+   for(auto& iter : fHist) {
+      std::cout << "\t" << hex(iter.first, 4) << ": " << iter.second->GetName() << ", " << iter.second->GetTitle() << std::endl;
    }
 
    std::cout << "range histograms:" << std::endl;
-   for(auto& it : fHistRange) {
-      std::cout << "\t" << hex(it.first.first, 4) << ", " << it.first.second << ": " << it.second->GetName() << ", " << it.second->GetTitle() << std::endl;
+   for(auto& iter : fHistRange) {
+      std::cout << "\t" << hex(iter.first.first, 4) << ", " << iter.first.second << ": " << iter.second->GetName() << ", " << iter.second->GetTitle() << std::endl;
    }
 }

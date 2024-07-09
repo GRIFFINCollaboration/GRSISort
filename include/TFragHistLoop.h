@@ -1,5 +1,5 @@
-#ifndef _TFRAGHISTOGRAMLOOP_H_
-#define _TFRAGHISTOGRAMLOOP_H_
+#ifndef TFRAGHISTOGRAMLOOP_H
+#define TFRAGHISTOGRAMLOOP_H
 
 /** \addtogroup Loops
  *  @{
@@ -60,7 +60,7 @@ protected:
    bool Iteration() override;
 
 private:
-   TFragHistLoop(std::string name);
+   explicit TFragHistLoop(std::string name);
 
    TCompiledHistograms fCompiledHistograms;
 

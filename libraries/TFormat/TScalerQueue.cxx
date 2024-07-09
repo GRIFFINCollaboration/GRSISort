@@ -25,19 +25,14 @@ TDeadtimeScalerQueue* TDeadtimeScalerQueue::Get()
 }
 
 TDeadtimeScalerQueue::TDeadtimeScalerQueue()
+	: fScalersInQueue(0), fStop(false), fStopwatch(new TStopwatch())
 {
    fDeadtimeScalerQueueClassPointer = this;
-   fScalersInQueue                  = 0;
    // When the Global Q is created, start a timer to see how long we are using it.
-   fStopwatch = new TStopwatch();
    fStopwatch->Start();
-
-   fStop = false;
 
    Clear();
 }
-
-TDeadtimeScalerQueue::~TDeadtimeScalerQueue() = default;
 
 void TDeadtimeScalerQueue::Print(Option_t*) const
 {
@@ -76,7 +71,6 @@ void TDeadtimeScalerQueue::Clear(Option_t*)
    if(locked) {
       TDeadtimeScalerQueue::All.unlock();
    }
-   return;
 }
 
 void TDeadtimeScalerQueue::StartStatusUpdate()
@@ -227,19 +221,14 @@ TRateScalerQueue* TRateScalerQueue::Get()
 }
 
 TRateScalerQueue::TRateScalerQueue()
+	: fScalersInQueue(0), fStop(false), fStopwatch(new TStopwatch())
 {
    fRateScalerQueueClassPointer = this;
-   fScalersInQueue              = 0;
    // When the Global Q is created, start a timer to see how long we are using it.
-   fStopwatch = new TStopwatch();
    fStopwatch->Start();
-
-   fStop = false;
 
    Clear();
 }
-
-TRateScalerQueue::~TRateScalerQueue() = default;
 
 void TRateScalerQueue::Print(Option_t*) const
 {
@@ -277,7 +266,6 @@ void TRateScalerQueue::Clear(Option_t*)
    if(locked) {
       TRateScalerQueue::All.unlock();
    }
-   return;
 }
 
 void TRateScalerQueue::StartStatusUpdate()

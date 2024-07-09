@@ -55,25 +55,29 @@ public:
    static std::vector<TChannel*> FindChannelByRegEx(const char* ccName);
 
    TChannel();
-   TChannel(const char*);
-   TChannel(TChannel*);
+   explicit TChannel(const char*);
+   explicit TChannel(TChannel*);
    TChannel(const TChannel&);
+   TChannel(TChannel&&);
+
+	TChannel& operator=(const TChannel& rhs);
+	TChannel& operator=(TChannel&&);
 
    ~TChannel() override;
 
-   static int  GetNumberOfChannels() { return fChannelMap->size(); }
-   static void AddChannel(TChannel*, Option_t* opt = "");
-   static int  UpdateChannel(TChannel*, Option_t* opt = "");
+   static size_t GetNumberOfChannels() { return fChannelMap->size(); }
+   static void   AddChannel(TChannel*, Option_t* opt = "");
+   static int    UpdateChannel(TChannel*, Option_t* opt = "");
 
    static std::unordered_map<unsigned int, TChannel*>* GetChannelMap() { return fChannelMap; }
    static std::unordered_map<unsigned int, int>*       GetMissingChannelMap() { return fMissingChannelMap; }
    static void                                         DeleteAllChannels();
 
-   static bool CompareChannels(const TChannel&, const TChannel&);
+   static bool CompareChannels(const TChannel*, const TChannel*);
 
    static TChannel* GetDefaultChannel();
 
-   static void      SetMnemonicClass(TClassRef cl) { fMnemonicClass = cl; }
+   static void      SetMnemonicClass(const TClassRef& cls) { fMnemonicClass = cls; }
    static TClassRef GetMnemonicClass() { return fMnemonicClass; }
 
 private:
@@ -84,12 +88,11 @@ private:
    TPriorityValue<int>         fTimeStampUnit{0};
    TPriorityValue<int>         fNumber{0};
    TPriorityValue<int>         fStream{0};
-   TPriorityValue<int>         fUserInfoNumber{0};
    TPriorityValue<bool>        fUseCalFileInt{false};
 
-   mutable int fDetectorNumber;
-   mutable int fSegmentNumber;
-   mutable int fCrystalNumber;
+   mutable int fDetectorNumber{-1};
+   mutable int fSegmentNumber{-1};
+   mutable int fCrystalNumber{-1};
 
    TPriorityValue<Long64_t>   fTimeOffset;
    TPriorityValue<double>     fTimeDrift;   ///< Time drift factor
@@ -118,7 +121,7 @@ private:
       double TauRise;
    };
 
-   WaveFormShapePar WaveFormShape;
+   WaveFormShapePar WaveFormShape{};
 
    static std::unordered_map<unsigned int, TChannel*>* fChannelMap;          // A map to all of the channels based on address
    static std::unordered_map<unsigned int, int>*       fMissingChannelMap;   // A map to all of the missing channels based on address
@@ -133,9 +136,9 @@ private:
 public:
    void        SetName(const char* tmpName) override;
    void        SetAddress(unsigned int tmpadd);
-   inline void SetNumber(TPriorityValue<int> tmp)
+   inline void SetNumber(const TPriorityValue<int>& tmp)
    {
-      if(fNumber == tmp) return;
+      if(fNumber == tmp) { return; }
       // channel number has changed so we need to delete the old one and insert the new one
       fChannelNumberMap->erase(fNumber.Value());
       fNumber = tmp;
@@ -143,14 +146,13 @@ public:
          fChannelNumberMap->insert(std::make_pair(fNumber.Value(), this));
       }
    }
-   inline void SetIntegration(TPriorityValue<int> tmp) { fIntegration = tmp; }
+   inline void SetIntegration(const TPriorityValue<int>& tmp) { fIntegration = tmp; }
    static void SetIntegration(const std::string& mnemonic, int tmpint, EPriority pr);
-   inline void SetStream(TPriorityValue<int> tmp) { fStream = tmp; }
-   inline void SetUserInfoNumber(TPriorityValue<int> tmp) { fUserInfoNumber = tmp; }
-   void        SetDigitizerType(TPriorityValue<std::string> tmp);
-   static void SetDigitizerType(const std::string& mnemonic, const char* tmpstr, EPriority pr);
-   inline void SetTimeOffset(TPriorityValue<Long64_t> tmp) { fTimeOffset = tmp; }
-   inline void SetTimeDrift(TPriorityValue<double> tmp) { fTimeDrift = tmp; }
+   inline void SetStream(const TPriorityValue<int>& tmp) { fStream = tmp; }
+   void        SetDigitizerType(const TPriorityValue<std::string>& tmp);
+   static void SetDigitizerType(const std::string& mnemonic, const char* tmpstr, EPriority prio);
+   inline void SetTimeOffset(const TPriorityValue<Long64_t>& tmp) { fTimeOffset = tmp; }
+   inline void SetTimeDrift(const TPriorityValue<double>& tmp) { fTimeDrift = tmp; }
 
    void SetDetectorNumber(int tempint) { fDetectorNumber = tempint; }
    void SetSegmentNumber(int tempint) { fSegmentNumber = tempint; }
@@ -168,7 +170,6 @@ public:
    unsigned int GetAddress() const { return fAddress; }
    int          GetIntegration() const { return fIntegration.Value(); }
    int          GetStream() const { return fStream.Value(); }
-   int          GetUserInfoNumber() const { return fUserInfoNumber.Value(); }
    const char*  GetDigitizerTypeString() const { return fDigitizerTypeString.c_str(); }
    EDigitizer   GetDigitizerType() const { return fDigitizerType.Value(); }
    int          GetTimeStampUnit() const { return fTimeStampUnit.Value(); }
@@ -183,7 +184,7 @@ public:
    double              GetTIMEChi2() const { return fTIMEChi2.Value(); }
    double              GetEFFChi2() const { return fEFFChi2.Value(); }
 
-   void        SetUseCalFileIntegration(TPriorityValue<bool> tmp = TPriorityValue<bool>(true, EPriority::kUser)) { fUseCalFileInt = tmp; }
+   void        SetUseCalFileIntegration(const TPriorityValue<bool>& tmp = TPriorityValue<bool>(true, EPriority::kUser)) { fUseCalFileInt = tmp; }
    static void SetUseCalFileIntegration(const std::string& mnemonic, bool flag, EPriority pr);
    bool        UseCalFileIntegration() { return fUseCalFileInt.Value(); }
 
@@ -195,7 +196,7 @@ public:
    std::vector<double>                    GetEFFCoeff() const { return fEFFCoefficients.Value(); }
    std::vector<double>                    GetCTCoeff() const { return fCTCoefficients.Value(); }
    TGraph                                 GetEnergyNonlinearity() const { return fEnergyNonlinearity.Value(); }
-   double                                 GetEnergyNonlinearity(double en) const;
+   double                                 GetEnergyNonlinearity(double eng) const;
    std::vector<std::pair<double, double>> GetENGRanges() const { return fENGRanges.Value(); }
    std::pair<double, double>              GetENGRange(size_t range) const { return fENGRanges.Value()[range]; }
    std::vector<Float_t>                   GetENGDriftCoefficents() const { return fENGDriftCoefficents.Value(); }
@@ -220,45 +221,45 @@ public:
       fENGRanges.resize(size);
    }
 
-   void SetAllENGCoefficients(TPriorityValue<std::vector<std::vector<Float_t>>> tmp) { fENGCoefficients = tmp; }
+   void SetAllENGCoefficients(const TPriorityValue<std::vector<std::vector<Float_t>>>& tmp) { fENGCoefficients = tmp; }
    void SetENGCoefficients(std::vector<Float_t> tmp, size_t range = 0)
    {
-      if(range >= fENGCoefficients.size()) fENGCoefficients.resize(range + 1);
+      if(range >= fENGCoefficients.size()) { fENGCoefficients.resize(range + 1); }
       fENGCoefficients.Address()->at(range) = tmp;
    }
-   void SetENGRanges(TPriorityValue<std::vector<std::pair<double, double>>> tmp) { fENGRanges = tmp; }
-   void SetENGRange(std::pair<double, double> tmp, size_t range)
+   void SetENGRanges(const TPriorityValue<std::vector<std::pair<double, double>>>& tmp) { fENGRanges = tmp; }
+   void SetENGRange(const std::pair<double, double>& tmp, const size_t& range)
    {
-      if(range >= fENGRanges.size()) fENGRanges.resize(range + 1);
+      if(range >= fENGRanges.size()) { fENGRanges.resize(range + 1); }
       fENGRanges.Address()->at(range) = tmp;
    }
-   void SetENGDriftCoefficents(TPriorityValue<std::vector<Float_t>> tmp) { fENGDriftCoefficents = tmp; }
-   void SetCFDCoefficients(TPriorityValue<std::vector<double>> tmp) { fCFDCoefficients = tmp; }
-   void SetLEDCoefficients(TPriorityValue<std::vector<double>> tmp) { fLEDCoefficients = tmp; }
-   void SetTIMECoefficients(TPriorityValue<std::vector<double>> tmp) { fTIMECoefficients = tmp; }
-   void SetEFFCoefficients(TPriorityValue<std::vector<double>> tmp) { fEFFCoefficients = tmp; }
-   void SetCTCoefficients(TPriorityValue<std::vector<double>> tmp) { fCTCoefficients = tmp; }
-   void SetEnergyNonlinearity(TPriorityValue<TGraph> tmp) { fEnergyNonlinearity = tmp; }
+   void SetENGDriftCoefficents(const TPriorityValue<std::vector<Float_t>>& tmp) { fENGDriftCoefficents = tmp; }
+   void SetCFDCoefficients(const TPriorityValue<std::vector<double>>& tmp) { fCFDCoefficients = tmp; }
+   void SetLEDCoefficients(const TPriorityValue<std::vector<double>>& tmp) { fLEDCoefficients = tmp; }
+   void SetTIMECoefficients(const TPriorityValue<std::vector<double>>& tmp) { fTIMECoefficients = tmp; }
+   void SetEFFCoefficients(const TPriorityValue<std::vector<double>>& tmp) { fEFFCoefficients = tmp; }
+   void SetCTCoefficients(const TPriorityValue<std::vector<double>>& tmp) { fCTCoefficients = tmp; }
+   void SetEnergyNonlinearity(const TPriorityValue<TGraph>& tmp) { fEnergyNonlinearity = tmp; }
 
-   inline void SetAllENGChi2(TPriorityValue<std::vector<double>> tmp) { fENGChi2 = tmp; }
-   inline void SetENGChi2(TPriorityValue<double> tmp, size_t range = 0)
+   inline void SetAllENGChi2(const TPriorityValue<std::vector<double>>& tmp) { fENGChi2 = tmp; }
+   inline void SetENGChi2(const TPriorityValue<double>& tmp, const size_t& range = 0)
    {
       if(tmp.Priority() >= fENGChi2.Priority()) {
-         if(range >= fENGChi2.size()) fENGChi2.resize(range + 1);
+         if(range >= fENGChi2.size()) { fENGChi2.resize(range + 1); }
          fENGChi2.Address()->at(range) = tmp.Value();
       }
    }
-   inline void SetCFDChi2(TPriorityValue<double> tmp) { fCFDChi2 = tmp; }
-   inline void SetLEDChi2(TPriorityValue<double> tmp) { fLEDChi2 = tmp; }
-   inline void SetTIMEChi2(TPriorityValue<double> tmp) { fTIMEChi2 = tmp; }
-   inline void SetEFFChi2(TPriorityValue<double> tmp) { fEFFChi2 = tmp; }
+   inline void SetCFDChi2(const TPriorityValue<double>& tmp)  { fCFDChi2 = tmp; }
+   inline void SetLEDChi2(const TPriorityValue<double>& tmp)  { fLEDChi2 = tmp; }
+   inline void SetTIMEChi2(const TPriorityValue<double>& tmp) { fTIMEChi2 = tmp; }
+   inline void SetEFFChi2(const TPriorityValue<double>& tmp)  { fEFFChi2 = tmp; }
 
-   inline void SetWaveRise(double temp)
+   inline void SetWaveRise(const double& temp)
    {
       WaveFormShape.TauRise = temp;
       SetUseWaveParam();
    }
-   inline void SetWaveDecay(double temp)
+   inline void SetWaveDecay(const double& temp)
    {
       WaveFormShape.TauDecay = temp;
       SetUseWaveParam();
@@ -310,7 +311,7 @@ public:
    static Int_t ReadCalFromFile(TFile* tempf, Option_t* opt = "overwrite");
    static Int_t ReadCalFile(std::ifstream& infile);
    static Int_t ReadCalFile(const char* filename = "");
-   static Int_t ParseInputData(const char* inputdata = "", Option_t* opt = "", EPriority pr = EPriority::kUser);
+   static Int_t ParseInputData(const char* inputdata = "", Option_t* opt = "", EPriority prio = EPriority::kUser);
    static void  WriteCalFile(const std::string& outfilename = "");
    static void  WriteCTCorrections(const std::string& outfilename = "");
    static void  WriteCalBuffer(Option_t* opt = "");
@@ -337,7 +338,7 @@ private:
 
    /// \cond CLASSIMP
    ClassDefOverride(TChannel, 6)   // Contains the Digitizer Information
-                                   /// \endcond
+   /// \endcond
 };
 /*! @} */
 #endif

@@ -23,24 +23,24 @@
 class TDeadtimeScalerQueue : public TObject {
 public:
    static TDeadtimeScalerQueue* Get();   // Returns the Queue
-   ~TDeadtimeScalerQueue() override;
+   ~TDeadtimeScalerQueue() override = default;
 
 private:
    TDeadtimeScalerQueue();
    static TDeadtimeScalerQueue* fDeadtimeScalerQueueClassPointer;   // Pointer to the scaler Q singleton
 
    std::queue<TScalerData*> fDeadtimeScalerQueue;   // The scaler Queue itself
-   int                      fScalersInQueue;        // The current number of scalers in the Q
+   int                      fScalersInQueue{0};     // The current number of scalers in the Q
 
    void StatusUpdate();
    bool fStatusUpdateOn{false};   // flag that determines whether the Q status should be read out
 
-   bool fStop;
+   bool fStop{false};
 
    int fScalersIn{0};
    int fScalersOut{0};
 
-   TStopwatch* fStopwatch;   // The stop watch used for timing in the status
+   TStopwatch* fStopwatch{nullptr};   // The stop watch used for timing in the status
    void        ResetRateCounter();
 
    unsigned int fTotalScalersIn{0};
@@ -48,15 +48,14 @@ private:
 
    static std::map<int, int> fScalerIdMap;
 
+public:
 #if !defined(__CINT__) && !defined(__CLING__)
 #ifndef NO_MUTEX
-public:
    static std::mutex All;
    static std::mutex Sorted;
 #endif
 #endif
 
-public:
    void Add(TScalerData*);
 
    void         Pop() override;
@@ -68,10 +67,10 @@ public:
    void StopStatusUpdate();
    void CheckStatus() const;
 
-   unsigned int GetTotalScalersIn() { return fTotalScalersIn; }
-   unsigned int GetTotalScalersOut() { return fTotalScalersOut; }
+   unsigned int GetTotalScalersIn() const { return fTotalScalersIn; }
+   unsigned int GetTotalScalersOut() const { return fTotalScalersOut; }
 
-   bool Running() { return !fStop; }
+   bool Running() const { return !fStop; }
    void Stop() { fStop = true; }
 
    void Print(Option_t* opt = "") const override;
@@ -81,24 +80,24 @@ public:
 class TRateScalerQueue : public TObject {
 public:
    static TRateScalerQueue* Get();   // Returns the Queue
-   ~TRateScalerQueue() override;
+   ~TRateScalerQueue() override = default;
 
 private:
    TRateScalerQueue();
    static TRateScalerQueue* fRateScalerQueueClassPointer;   // Pointer to the scaler Q singleton
 
    std::queue<TScalerData*> fRateScalerQueue;   // The scaler Queue itself
-   int                      fScalersInQueue;    // The current number of scalers in the Q
+   int                      fScalersInQueue{0}; // The current number of scalers in the Q
 
    void StatusUpdate();
    bool fStatusUpdateOn{false};   // flag that determines whether the Q status should be read out
 
-   bool fStop;
+   bool fStop{false};
 
    int fScalersIn{0};
    int fScalersOut{0};
 
-   TStopwatch* fStopwatch;   // The stop watch used for timing in the status
+   TStopwatch* fStopwatch{nullptr};   // The stop watch used for timing in the status
    void        ResetRateCounter();
 
    unsigned int fTotalScalersIn{0};
@@ -106,15 +105,14 @@ private:
 
    static std::map<int, int> fScalerIdMap;
 
+public:
 #if !defined(__CINT__) && !defined(__CLING__)
 #ifndef NO_MUTEX
-public:
    static std::mutex All;
    static std::mutex Sorted;
 #endif
 #endif
 
-public:
    void Add(TScalerData*);
 
    void         Pop() override;
@@ -126,10 +124,10 @@ public:
    void StopStatusUpdate();
    void CheckStatus() const;
 
-   unsigned int GetTotalScalersIn() { return fTotalScalersIn; }
-   unsigned int GetTotalScalersOut() { return fTotalScalersOut; }
+   unsigned int GetTotalScalersIn() const { return fTotalScalersIn; }
+   unsigned int GetTotalScalersOut() const { return fTotalScalersOut; }
 
-   bool Running() { return !fStop; }
+   bool Running() const { return !fStop; }
    void Stop() { fStop = true; }
 
    void Print(Option_t* opt = "") const override;
