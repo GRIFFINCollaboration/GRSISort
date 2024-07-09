@@ -1,11 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"_gain_match_g_r_i_f_f_i_n_8cxx.html#a60cb4cbdb2abf6bfbf5560947248da9c":[10,0,2,4,5,21],
-"_gain_match_g_r_i_f_f_i_n_8cxx.html#a6d678e8b9bdc757d6e34052d24cfaca2":[10,0,2,4,5,3],
-"_gain_match_g_r_i_f_f_i_n_8cxx.html#a7ad6d53132b33444a8fbcabfb42ad0b5":[10,0,2,4,5,20],
-"_gain_match_g_r_i_f_f_i_n_8cxx.html#a92c1d7cd69241dc11d03fdddda92f097":[10,0,2,4,5,5],
-"_gain_match_g_r_i_f_f_i_n_8cxx.html#a9749e9c4781edcd4283b06c806d8a100":[10,0,2,4,5,7],
-"_gain_match_g_r_i_f_f_i_n_8cxx.html#ab8ea64c800795749a6cdd23625129a64":[10,0,2,4,5,23],
 "_gain_match_g_r_i_f_f_i_n_8cxx.html#ac675f324f4d6dc12bc9e2e0579fe77dc":[10,0,2,4,5,10],
 "_gain_match_g_r_i_f_f_i_n_8cxx.html#ad37d3cead1aa0e6cbb6f3601bd834cc4":[10,0,2,4,5,16],
 "_gain_match_g_r_i_f_f_i_n_8cxx.html#ad5d0e87f61ba99c47a539492df7917a1":[10,0,2,4,5,0],
@@ -202,7 +196,6 @@ var NAVTREEINDEX2 =
 "_t_b_g_subtraction_8h.html":[10,0,7,34],
 "_t_b_g_subtraction_8h_source.html":[10,0,7,34],
 "_t_bad_fragment_8cxx.html":[10,0,9,3,4],
-"_t_bad_fragment_8cxx.html#a645e12090460350ccf2280ae0fb96ea7":[10,0,9,3,4,0],
 "_t_bad_fragment_8cxx_source.html":[10,0,9,3,4],
 "_t_bad_fragment_8h.html":[10,0,7,30],
 "_t_bad_fragment_8h_source.html":[10,0,7,30],
@@ -249,5 +242,12 @@ var NAVTREEINDEX2 =
 "_t_cal_manager_8h.html":[10,0,7,41],
 "_t_cal_manager_8h_source.html":[10,0,7,41],
 "_t_cal_point_8cxx.html":[10,0,9,1,2,5],
-"_t_cal_point_8cxx_source.html":[10,0,9,1,2,5]
+"_t_cal_point_8cxx_source.html":[10,0,9,1,2,5],
+"_t_cal_point_8h.html":[10,0,7,42],
+"_t_cal_point_8h_source.html":[10,0,7,42],
+"_t_calibrate_descant_8cxx.html":[10,0,9,6,2],
+"_t_calibrate_descant_8cxx_source.html":[10,0,9,6,2],
+"_t_calibrate_descant_8h.html":[10,0,7,37],
+"_t_calibrate_descant_8h_source.html":[10,0,7,37],
+"_t_calibration_graph_8cxx.html":[10,0,9,6,3]
 };

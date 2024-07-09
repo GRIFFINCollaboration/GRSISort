@@ -108,23 +108,24 @@ $(document).ready(function(){initNavTree('_full_path_8cxx_source.html',''); init
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;climits&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="foldopen" id="foldopen00008" data-start="{" data-end="}">
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="_full_path_8h.html#a982cd2e46d2d6840268fe88761a7d655">    8</a></span>std::string <a class="code hl_function" href="_full_path_8cxx.html#a982cd2e46d2d6840268fe88761a7d655">full_path</a>(<span class="keyword">const</span> std::string&amp; path)</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>{</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>   <span class="keywordtype">char</span>  buff[PATH_MAX + 1];</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>   <span class="keywordtype">char</span>* success = realpath(path.c_str(), buff);</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>   <span class="keywordflow">if</span>(success != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>      <span class="keywordflow">return</span> buff;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>   }</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>   <span class="comment">// TODO: Give some sort of error message.</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>   <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>}</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="foldopen" id="foldopen00009" data-start="{" data-end="}">
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="_full_path_8h.html#a982cd2e46d2d6840268fe88761a7d655">    9</a></span>std::string <a class="code hl_function" href="_full_path_8cxx.html#a982cd2e46d2d6840268fe88761a7d655">full_path</a>(<span class="keyword">const</span> std::string&amp; path)</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>{</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>   std::array&lt;char, PATH_MAX + 1&gt; buff;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>   <span class="keywordtype">char</span>* success = realpath(path.c_str(), buff.data());</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>   <span class="keywordflow">if</span>(success != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>      <span class="keywordflow">return</span> std::string(std::begin(buff), std::end(buff));</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>   }</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>   <span class="comment">// TODO: Give some sort of error message.</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>   <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}</div>
 </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">//#endif</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">// TODO: Make a windows version.</span></div>
-<div class="ttc" id="a_full_path_8cxx_html_a982cd2e46d2d6840268fe88761a7d655"><div class="ttname"><a href="_full_path_8cxx.html#a982cd2e46d2d6840268fe88761a7d655">full_path</a></div><div class="ttdeci">std::string full_path(const std::string &amp;path)</div><div class="ttdef"><b>Definition</b> <a href="_full_path_8cxx_source.html#l00008">FullPath.cxx:8</a></div></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">//#endif</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">// TODO: Make a windows version.</span></div>
+<div class="ttc" id="a_full_path_8cxx_html_a982cd2e46d2d6840268fe88761a7d655"><div class="ttname"><a href="_full_path_8cxx.html#a982cd2e46d2d6840268fe88761a7d655">full_path</a></div><div class="ttdeci">std::string full_path(const std::string &amp;path)</div><div class="ttdef"><b>Definition</b> <a href="_full_path_8cxx_source.html#l00009">FullPath.cxx:9</a></div></div>
 <div class="ttc" id="a_full_path_8h_html"><div class="ttname"><a href="_full_path_8h.html">FullPath.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -133,7 +134,7 @@ $(document).ready(function(){initNavTree('_full_path_8cxx_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_1f2c117abb9c439347e5eda4f80f97eb.html">TGRSIint</a></li><li class="navelem"><a class="el" href="_full_path_8cxx.html">FullPath.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 03:00:46.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:33.</li>
   </ul>
 </div>
 </body>

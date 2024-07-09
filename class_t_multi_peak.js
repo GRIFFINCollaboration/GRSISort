@@ -33,7 +33,6 @@ var class_t_multi_peak =
     [ "SinglePeakBG", "class_t_multi_peak.html#a391e6a3873757d0cfa4f5208bf1ab1d2", null ],
     [ "SortPeaks", "class_t_multi_peak.html#addcc9edc0ed8fd9951cd2f8f45993882", null ],
     [ "fBackground", "class_t_multi_peak.html#a0b416a2126deebee10296f9dff87f065", null ],
-    [ "fConstrainWidths", "class_t_multi_peak.html#a3e29b86fce6ea251493dce0f9b7ec948", null ],
     [ "fDefaultFitType", "class_t_multi_peak.html#a47d59e27fc1c60b19e1cc9b57b4ebac2", null ],
     [ "fGoodFitFlag", "class_t_multi_peak.html#a640883fed55b87410bebbbb046344d11", null ],
     [ "fHist", "class_t_multi_peak.html#a81633cfe185df160cb4cf4f52cc517e4", null ],

@@ -5,7 +5,7 @@ var class_time_walk_selector =
     [ "Begin", "class_time_walk_selector.html#ab93493c658b7214c7b98b755d85586bd", null ],
     [ "CheckSizes", "class_time_walk_selector.html#a3ee3614749d1369487299802d7e18364", null ],
     [ "ClassDef", "class_time_walk_selector.html#ad1bf368ebd1c62f00876e11bf5ccba14", null ],
-    [ "ClassDefOverride", "class_time_walk_selector.html#aa765a39a9983768ce6475ab6e6c76e3a", null ],
+    [ "ClassDefOverride", "class_time_walk_selector.html#aac34947a3e9bcf869d26c3ce7ddf24c2", null ],
     [ "CreateHistograms", "class_time_walk_selector.html#a729bcd0459c673bf3c341feb3810a063", null ],
     [ "EndOfSort", "class_time_walk_selector.html#aefe521b4e1ad5569b7e2809fb7f7e411", null ],
     [ "FillHistograms", "class_time_walk_selector.html#af0d0e9f3aca543ccb38bbbdecb127ce2", null ],
@@ -39,6 +39,7 @@ var class_time_walk_selector =
     [ "fPpg", "class_time_walk_selector.html#abc598ed268f33d122fba95b9e4af89a0", null ],
     [ "fRunInfo", "class_time_walk_selector.html#a6179997d65c5c6e3a0d6edec42180405", null ],
     [ "fScep", "class_time_walk_selector.html#aca568640c7c5c129b3f74530888d1371", null ],
+    [ "fSizeLimit", "class_time_walk_selector.html#a613ab2575ae93c6001aa09235c454546", null ],
     [ "fSym", "class_time_walk_selector.html#a0a36b80b21d1c5fd0b2246943c28ebce", null ],
     [ "fTree", "class_time_walk_selector.html#a97fe8cf742166fa3aad077a249586181", null ]
 ];

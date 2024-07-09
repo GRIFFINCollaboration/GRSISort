@@ -307,7 +307,7 @@ var group___calibration =
       [ "TSourceList", "class_t_source_list.html#a930fbe485f2b4aafd04f5426054132b2", null ],
       [ "TSourceList", "class_t_source_list.html#a7edf60bf40d8990e4b646535bedb8250", null ],
       [ "TSourceList", "class_t_source_list.html#a1bb67cbcdc3a65ed301fab235ba8dd02", null ],
-      [ "~TSourceList", "class_t_source_list.html#a06bc17bafa3e8a6e5cc2b278b1310eea", null ],
+      [ "~TSourceList", "class_t_source_list.html#a57068fea0c12af0560ba1408e3b85780", null ],
       [ "TSourceList", "class_t_source_list.html#a0fe097d4c0de2d3588815abdca357e16", null ],
       [ "AddPoint", "class_t_source_list.html#a67729d4710974ace7ea6530963ee66e2", null ],
       [ "AddPoint", "class_t_source_list.html#aeca38d14045fe88a4346859617a7438f", null ],

@@ -5,7 +5,7 @@ var class_alphanumeric_selector =
     [ "Begin", "class_alphanumeric_selector.html#ab93493c658b7214c7b98b755d85586bd", null ],
     [ "CheckSizes", "class_alphanumeric_selector.html#a3ee3614749d1369487299802d7e18364", null ],
     [ "ClassDef", "class_alphanumeric_selector.html#ad3fb269b964969be1f5cb2cb0fb85c78", null ],
-    [ "ClassDefOverride", "class_alphanumeric_selector.html#aa765a39a9983768ce6475ab6e6c76e3a", null ],
+    [ "ClassDefOverride", "class_alphanumeric_selector.html#aac34947a3e9bcf869d26c3ce7ddf24c2", null ],
     [ "CreateHistograms", "class_alphanumeric_selector.html#a1d59e4374d4ab9545e87e05e45467131", null ],
     [ "EndOfSort", "class_alphanumeric_selector.html#aefe521b4e1ad5569b7e2809fb7f7e411", null ],
     [ "FillHistograms", "class_alphanumeric_selector.html#a21b4ed735f1d17cb6a232510ca430339", null ],
@@ -38,6 +38,7 @@ var class_alphanumeric_selector =
     [ "fOutputPrefix", "class_alphanumeric_selector.html#a85adb81750e8073e6935b8d1f3a79fd8", null ],
     [ "fPpg", "class_alphanumeric_selector.html#abc598ed268f33d122fba95b9e4af89a0", null ],
     [ "fRunInfo", "class_alphanumeric_selector.html#a6179997d65c5c6e3a0d6edec42180405", null ],
+    [ "fSizeLimit", "class_alphanumeric_selector.html#a613ab2575ae93c6001aa09235c454546", null ],
     [ "fSym", "class_alphanumeric_selector.html#a0a36b80b21d1c5fd0b2246943c28ebce", null ],
     [ "fTree", "class_alphanumeric_selector.html#a97fe8cf742166fa3aad077a249586181", null ]
 ];

@@ -4,7 +4,7 @@ var class_t_raw_file =
       [ "kRead", "class_t_raw_file.html#a4ef0129feb73111852d5592fdeb4fff2a8604cf55a79d6bfdcb30f77d1622839b", null ],
       [ "kWrite", "class_t_raw_file.html#a4ef0129feb73111852d5592fdeb4fff2ad3ac0ba447a9859ad2db8e498056429f", null ]
     ] ],
-    [ "TRawFile", "class_t_raw_file.html#ad895e18a352a4c9683f768fc121be010", null ],
+    [ "TRawFile", "class_t_raw_file.html#a0cf3989c3f1ba246b3489a8f235a3372", null ],
     [ "TRawFile", "class_t_raw_file.html#a99e4bd8c55bcd2327349ce3607c8a69d", null ],
     [ "~TRawFile", "class_t_raw_file.html#a16897232d0cc8474e87c077dedbbc827", null ],
     [ "Close", "class_t_raw_file.html#a2f38125808bba90fd8bb5b61b1d9c5bb", null ],

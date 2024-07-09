@@ -41,7 +41,7 @@ var class_t_tigress =
     [ "GetCoreWave", "class_t_tigress.html#a6455cf61568b71417a5f2a16c8f9c61e", null ],
     [ "GetFaceDistance", "class_t_tigress.html#a38ed144d7786afabf30e1bd22d002084", null ],
     [ "GetForceCrystal", "class_t_tigress.html#a789502aa31e7fead546377ca5e5f837e", null ],
-    [ "GetHit", "class_t_tigress.html#abb7c88ad69c596f7c183a82a746e2542", null ],
+    [ "GetHit", "class_t_tigress.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_tigress.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_tigress.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetNAddbackFrags", "class_t_tigress.html#a4cb7f7c8fcd1c6f833259590dfe55f8e", null ],

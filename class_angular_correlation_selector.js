@@ -5,7 +5,7 @@ var class_angular_correlation_selector =
     [ "Begin", "class_angular_correlation_selector.html#ab93493c658b7214c7b98b755d85586bd", null ],
     [ "CheckSizes", "class_angular_correlation_selector.html#a3ee3614749d1369487299802d7e18364", null ],
     [ "ClassDef", "class_angular_correlation_selector.html#af348211dcf7c024bea288092377c8305", null ],
-    [ "ClassDefOverride", "class_angular_correlation_selector.html#aa765a39a9983768ce6475ab6e6c76e3a", null ],
+    [ "ClassDefOverride", "class_angular_correlation_selector.html#aac34947a3e9bcf869d26c3ce7ddf24c2", null ],
     [ "CreateHistograms", "class_angular_correlation_selector.html#a7ef14b50145c5d03ad533fe2ec22fae4", null ],
     [ "EndOfSort", "class_angular_correlation_selector.html#aefe521b4e1ad5569b7e2809fb7f7e411", null ],
     [ "FillHistograms", "class_angular_correlation_selector.html#a0dd459c4cf93b1088b7c86f0d6133d1d", null ],
@@ -45,6 +45,7 @@ var class_angular_correlation_selector =
     [ "fPpg", "class_angular_correlation_selector.html#abc598ed268f33d122fba95b9e4af89a0", null ],
     [ "fRunInfo", "class_angular_correlation_selector.html#a6179997d65c5c6e3a0d6edec42180405", null ],
     [ "fScep", "class_angular_correlation_selector.html#acf8a664456baeac0ef835a0b350a5db2", null ],
+    [ "fSizeLimit", "class_angular_correlation_selector.html#a613ab2575ae93c6001aa09235c454546", null ],
     [ "fSym", "class_angular_correlation_selector.html#a0a36b80b21d1c5fd0b2246943c28ebce", null ],
     [ "fTree", "class_angular_correlation_selector.html#a97fe8cf742166fa3aad077a249586181", null ]
 ];

@@ -136,9 +136,9 @@ $(document).ready(function(){initNavTree('_dynamic_library_8cxx_source.html','')
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="class_dynamic_library.html#a2584f92c7a0731924a83d18e0b9f458b">   27</a></span><a class="code hl_function" href="class_dynamic_library.html#a2584f92c7a0731924a83d18e0b9f458b">DynamicLibrary::DynamicLibrary</a>(std::string libname_param, <span class="keywordtype">bool</span> unique_name) : fLibName(std::move(libname_param))</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>   <span class="keywordflow">if</span>(unique_name) {</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>      std::stringstream ss;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      ss &lt;&lt; <span class="stringliteral">&quot;/tmp/temp_dynlib_&quot;</span> &lt;&lt; getpid() &lt;&lt; <span class="stringliteral">&quot;_&quot;</span> &lt;&lt; incremental_id() &lt;&lt; <span class="stringliteral">&quot;.so&quot;</span>;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>      <a class="code hl_variable" href="class_dynamic_library.html#a67560a007668a7c512605f36c208a74f">fTempName</a> = ss.str();</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>      std::stringstream str;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      str &lt;&lt; <span class="stringliteral">&quot;/tmp/temp_dynlib_&quot;</span> &lt;&lt; getpid() &lt;&lt; <span class="stringliteral">&quot;_&quot;</span> &lt;&lt; incremental_id() &lt;&lt; <span class="stringliteral">&quot;.so&quot;</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>      <a class="code hl_variable" href="class_dynamic_library.html#a67560a007668a7c512605f36c208a74f">fTempName</a> = str.str();</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      <span class="comment">// Need to symlink to full path, not a relative path.</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      <span class="comment">// If a relative path is given, then the symlink will look for that library</span></div>
@@ -205,7 +205,7 @@ $(document).ready(function(){initNavTree('_dynamic_library_8cxx_source.html','')
 </div>
 <div class="ttc" id="a_dynamic_library_8h_html"><div class="ttname"><a href="_dynamic_library_8h.html">DynamicLibrary.h</a></div></div>
 <div class="ttc" id="a_full_path_8h_html"><div class="ttname"><a href="_full_path_8h.html">FullPath.h</a></div></div>
-<div class="ttc" id="a_full_path_8h_html_a982cd2e46d2d6840268fe88761a7d655"><div class="ttname"><a href="_full_path_8h.html#a982cd2e46d2d6840268fe88761a7d655">full_path</a></div><div class="ttdeci">std::string full_path(const std::string &amp;path)</div><div class="ttdef"><b>Definition</b> <a href="_full_path_8cxx_source.html#l00008">FullPath.cxx:8</a></div></div>
+<div class="ttc" id="a_full_path_8h_html_a982cd2e46d2d6840268fe88761a7d655"><div class="ttname"><a href="_full_path_8h.html#a982cd2e46d2d6840268fe88761a7d655">full_path</a></div><div class="ttdeci">std::string full_path(const std::string &amp;path)</div><div class="ttdef"><b>Definition</b> <a href="_full_path_8cxx_source.html#l00009">FullPath.cxx:9</a></div></div>
 <div class="ttc" id="a_t_data_frame_library_8cxx_html_a2de9130dd2f83273f96944eda6e8b05c"><div class="ttname"><a href="_t_data_frame_library_8cxx.html#a2de9130dd2f83273f96944eda6e8b05c">dlsym</a></div><div class="ttdeci">#define dlsym</div><div class="ttdef"><b>Definition</b> <a href="_t_data_frame_library_8cxx_source.html#l00005">TDataFrameLibrary.cxx:5</a></div></div>
 <div class="ttc" id="aclass_dynamic_library_html"><div class="ttname"><a href="class_dynamic_library.html">DynamicLibrary</a></div><div class="ttdoc">Loads a Shared Object library.</div><div class="ttdef"><b>Definition</b> <a href="_dynamic_library_8h_source.html#l00013">DynamicLibrary.h:13</a></div></div>
 <div class="ttc" id="aclass_dynamic_library_html_a2584f92c7a0731924a83d18e0b9f458b"><div class="ttname"><a href="class_dynamic_library.html#a2584f92c7a0731924a83d18e0b9f458b">DynamicLibrary::DynamicLibrary</a></div><div class="ttdeci">DynamicLibrary(std::string libname_param, bool unique_name=false)</div><div class="ttdoc">Loads a shared object library.</div><div class="ttdef"><b>Definition</b> <a href="_dynamic_library_8cxx_source.html#l00027">DynamicLibrary.cxx:27</a></div></div>
@@ -224,7 +224,7 @@ $(document).ready(function(){initNavTree('_dynamic_library_8cxx_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_cd3c6700b09e85b3c422529c0dd23545.html">TLoops</a></li><li class="navelem"><a class="el" href="_dynamic_library_8cxx.html">DynamicLibrary.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 03:00:46.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:34.</li>
   </ul>
 </div>
 </body>

@@ -1,8 +1,7 @@
 var class_t_fragment_map =
 [
-    [ "TFragmentMap", "class_t_fragment_map.html#a65655117110f34a9c956cc80ba99e629", null ],
-    [ "~TFragmentMap", "class_t_fragment_map.html#a0caade1dda73a5577551de19e233fa7f", null ],
-    [ "Add", "class_t_fragment_map.html#a8f18701472f5a567be736d8a8d0a1ed5", null ],
+    [ "TFragmentMap", "class_t_fragment_map.html#a0a1a01116bb048c572a660f832b17f47", null ],
+    [ "Add", "class_t_fragment_map.html#a41a9e0d9720640e1cf8653a65ee59069", null ],
     [ "DropFragments", "class_t_fragment_map.html#a794a8078149e978912c302530425192e", null ],
     [ "Solve", "class_t_fragment_map.html#a9f722865678b66b4cccc6cb4712d133d", null ],
     [ "fBadOutputQueue", "class_t_fragment_map.html#a87ada3a85b765f3f69068221aaae0d20", null ],

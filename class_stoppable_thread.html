@@ -97,9 +97,7 @@ $(document).ready(function(){initNavTree('class_stoppable_thread.html',''); init
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
@@ -202,26 +200,12 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a14d1029d5d956a5f8cffcabb2e1c5e17" id="r_a14d1029d5d956a5f8cffcabb2e1c5e17"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#a14d1029d5d956a5f8cffcabb2e1c5e17">StopAll</a> ()</td></tr>
 <tr class="separator:a14d1029d5d956a5f8cffcabb2e1c5e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:aa800a6e0f78cf80dae65a2e3a7d7e4f5" id="r_aa800a6e0f78cf80dae65a2e3a7d7e4f5"><td class="memItemLeft" align="right" valign="top">static std::thread&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#aa800a6e0f78cf80dae65a2e3a7d7e4f5">fStatusThread</a></td></tr>
-<tr class="separator:aa800a6e0f78cf80dae65a2e3a7d7e4f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f314bd7b92f42589c785385f7ffc141" id="r_a4f314bd7b92f42589c785385f7ffc141"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#a4f314bd7b92f42589c785385f7ffc141">fStatusThreadOn</a> = false</td></tr>
-<tr class="separator:a4f314bd7b92f42589c785385f7ffc141"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:af2fbb178759f1b05df24f33b3a7a6233" id="r_af2fbb178759f1b05df24f33b3a7a6233"><td class="memItemLeft" align="right" valign="top">std::atomic_long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#af2fbb178759f1b05df24f33b3a7a6233">fInputSize</a> {0}</td></tr>
 <tr class="separator:af2fbb178759f1b05df24f33b3a7a6233"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac20a4c3f69442f30470288ca6e169a67" id="r_ac20a4c3f69442f30470288ca6e169a67"><td class="memItemLeft" align="right" valign="top">std::atomic_size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#ac20a4c3f69442f30470288ca6e169a67">fItemsPopped</a> {0}</td></tr>
 <tr class="separator:ac20a4c3f69442f30470288ca6e169a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68215d46ffa29d2a86d00a88bc28df50" id="r_a68215d46ffa29d2a86d00a88bc28df50"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#a68215d46ffa29d2a86d00a88bc28df50">fName</a></td></tr>
-<tr class="separator:a68215d46ffa29d2a86d00a88bc28df50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
-Static Protected Attributes</h2></td></tr>
-<tr class="memitem:a4840cc99d5c5b369ab09ce277088deb5" id="r_a4840cc99d5c5b369ab09ce277088deb5"><td class="memItemLeft" align="right" valign="top">static std::map&lt; std::string, <a class="el" href="class_stoppable_thread.html">StoppableThread</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#a4840cc99d5c5b369ab09ce277088deb5">fThreadMap</a></td></tr>
-<tr class="separator:a4840cc99d5c5b369ab09ce277088deb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -238,6 +222,8 @@ Private Member Functions</h2></td></tr>
 Private Attributes</h2></td></tr>
 <tr class="memitem:ad54db1cd59d084a858e069e3ea90fda9" id="r_ad54db1cd59d084a858e069e3ea90fda9"><td class="memItemLeft" align="right" valign="top">std::atomic_bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#ad54db1cd59d084a858e069e3ea90fda9">fForceStop</a> {false}</td></tr>
 <tr class="separator:ad54db1cd59d084a858e069e3ea90fda9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68215d46ffa29d2a86d00a88bc28df50" id="r_a68215d46ffa29d2a86d00a88bc28df50"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#a68215d46ffa29d2a86d00a88bc28df50">fName</a></td></tr>
+<tr class="separator:a68215d46ffa29d2a86d00a88bc28df50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafd1f35e1f13f97cf8cac9bc8a160e04" id="r_aafd1f35e1f13f97cf8cac9bc8a160e04"><td class="memItemLeft" align="right" valign="top">std::atomic_bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#aafd1f35e1f13f97cf8cac9bc8a160e04">fPaused</a> {false}</td></tr>
 <tr class="separator:aafd1f35e1f13f97cf8cac9bc8a160e04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a699e4f775b7797fddf1237418cc236f6" id="r_a699e4f775b7797fddf1237418cc236f6"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#a699e4f775b7797fddf1237418cc236f6">fPausedWait</a></td></tr>
@@ -253,8 +239,14 @@ Private Attributes</h2></td></tr>
 Static Private Attributes</h2></td></tr>
 <tr class="memitem:a4e6e493ea525d7bdee066fae3412d5db" id="r_a4e6e493ea525d7bdee066fae3412d5db"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#a4e6e493ea525d7bdee066fae3412d5db">fColumnWidth</a> = 20</td></tr>
 <tr class="separator:a4e6e493ea525d7bdee066fae3412d5db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa800a6e0f78cf80dae65a2e3a7d7e4f5" id="r_aa800a6e0f78cf80dae65a2e3a7d7e4f5"><td class="memItemLeft" align="right" valign="top">static std::thread&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#aa800a6e0f78cf80dae65a2e3a7d7e4f5">fStatusThread</a></td></tr>
+<tr class="separator:aa800a6e0f78cf80dae65a2e3a7d7e4f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f314bd7b92f42589c785385f7ffc141" id="r_a4f314bd7b92f42589c785385f7ffc141"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#a4f314bd7b92f42589c785385f7ffc141">fStatusThreadOn</a> = false</td></tr>
+<tr class="separator:a4f314bd7b92f42589c785385f7ffc141"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5adea80df0b09304fab3703b89b0c663" id="r_a5adea80df0b09304fab3703b89b0c663"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#a5adea80df0b09304fab3703b89b0c663">fStatusWidth</a> = 80</td></tr>
 <tr class="separator:a5adea80df0b09304fab3703b89b0c663"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4840cc99d5c5b369ab09ce277088deb5" id="r_a4840cc99d5c5b369ab09ce277088deb5"><td class="memItemLeft" align="right" valign="top">static std::map&lt; std::string, <a class="el" href="class_stoppable_thread.html">StoppableThread</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stoppable_thread.html#a4840cc99d5c5b369ab09ce277088deb5">fThreadMap</a></td></tr>
+<tr class="separator:a4840cc99d5c5b369ab09ce277088deb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for StoppableThread:</div>
@@ -268,7 +260,7 @@ Static Private Attributes</h2></td></tr>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_stoppable_thread__coll__graph.svg" width="464" height="246"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_stoppable_thread__coll__graph.svg" width="516" height="246"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a33a026ea19f5c7b103c20334b9fba76c" name="a33a026ea19f5c7b103c20334b9fba76c"></a>
@@ -276,6 +268,9 @@ Static Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">StoppableThread::StoppableThread </td>
@@ -285,11 +280,16 @@ Static Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00026">26</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00099">fName</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00083">fStatusThreadOn</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00111">fThread</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00237">Loop()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00265">start_status_thread()</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00100">fName</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00109">fStatusThreadOn</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00112">fThread</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00237">Loop()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00265">start_status_thread()</a>.</p>
 
 </div>
 </div>
@@ -318,7 +318,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00182">182</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00099">fName</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00081">fStatusThread</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00083">fStatusThreadOn</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00100">fName</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00111">fStatusThread</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00109">fStatusThreadOn</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>.</p>
 
 </div>
 </div>
@@ -346,7 +346,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00102">102</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00097">97</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
 </div>
 </div>
@@ -376,9 +376,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00073">73</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00105">fColumnWidth</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00106">fStatusWidth</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00102">fColumnWidth</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00103">fStatusWidth</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00094">TGRSIint::ApplyOptions()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>.</p>
 
 </div>
 </div>
@@ -407,9 +407,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00059">59</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00105">fColumnWidth</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00106">fStatusWidth</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00102">fColumnWidth</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00103">fStatusWidth</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00170">TGRSIint::LoopUntilDone()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00164">TGRSIint::LoopUntilDone()</a>.</p>
 
 </div>
 </div>
@@ -438,9 +438,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00083">83</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00105">fColumnWidth</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00106">fStatusWidth</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00102">fColumnWidth</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00103">fStatusWidth</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00170">TGRSIint::LoopUntilDone()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00164">TGRSIint::LoopUntilDone()</a>.</p>
 
 </div>
 </div>
@@ -469,9 +469,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00037">37</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_channel_8cxx_source.html#l00353">TChannel::GetChannel()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00170">TGRSIint::LoopUntilDone()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00734">TGRSIInterruptHandler::Notify()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_channel_8cxx_source.html#l00459">TChannel::GetChannel()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00164">TGRSIint::LoopUntilDone()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00726">TGRSIInterruptHandler::Notify()</a>.</p>
 
 </div>
 </div>
@@ -500,7 +500,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00047">47</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>.</p>
 
 </div>
 </div>
@@ -565,9 +565,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00166">166</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00734">TGRSIInterruptHandler::Notify()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00726">TGRSIInterruptHandler::Notify()</a>.</p>
 
 </div>
 </div>
@@ -596,7 +596,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_t_analysis_hist_loop.html#a907d0ef88aa1860f8c1283a4243a5308">TAnalysisHistLoop</a>, <a class="el" href="class_t_analysis_write_loop.html#aae6724bf7086ce646c1740eb18866a90">TAnalysisWriteLoop</a>, <a class="el" href="class_t_data_loop.html#ab8267d866e2205697ee318e8c5af7aa5">TDataLoop</a>, <a class="el" href="class_t_det_building_loop.html#a0a6a6bc11431ad98942eb645c6d8ef25">TDetBuildingLoop</a>, <a class="el" href="class_t_event_building_loop.html#af5c87d13a28665cd0b401d8268e1ea9a">TEventBuildingLoop</a>, <a class="el" href="class_t_frag_hist_loop.html#a2c8be1f681b6d4b27e75ccc4c30ffdd2">TFragHistLoop</a>, <a class="el" href="class_t_fragment_chain_loop.html#a877baaa288d16d23cb2e0cf336cfcebf">TFragmentChainLoop</a>, <a class="el" href="class_t_frag_write_loop.html#a0c043513a2bc446dc5160966220ea43e">TFragWriteLoop</a>, <a class="el" href="class_t_terminal_loop.html#a0cc2660d5d7521baaff0cdd1508cb6da">TTerminalLoop&lt; T &gt;</a>, and <a class="el" href="class_t_unpacking_loop.html#a831a889707b607760bef489694cf9b27">TUnpackingLoop</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00060">60</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00061">61</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
 </div>
 </div>
@@ -623,11 +623,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00077">77</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00078">78</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00105">fColumnWidth</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00102">fColumnWidth</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00416">TGRSIint::SetupPipeline()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00409">TGRSIint::SetupPipeline()</a>.</p>
 
 </div>
 </div>
@@ -655,9 +655,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00075">75</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00076">76</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00105">fColumnWidth</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00102">fColumnWidth</a>.</p>
 
 </div>
 </div>
@@ -686,7 +686,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_t_analysis_write_loop.html#a4e19c3f36c1b7236addbef5182b38562">TAnalysisWriteLoop</a>, <a class="el" href="class_t_event_building_loop.html#a115f3c1dc4dfbaf182f2f1a985f6b142">TEventBuildingLoop</a>, <a class="el" href="class_t_frag_write_loop.html#a2dc1f3f8598a2f6ea54f416665d793cd">TFragWriteLoop</a>, and <a class="el" href="class_t_unpacking_loop.html#ada8fb0f95c8b85c145fba9407b62aa1f">TUnpackingLoop</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00057">57</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00058">58</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00229">Join()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00209">Stop()</a>.</p>
 
@@ -718,9 +718,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00173">173</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_det_building_loop_8cxx_source.html#l00008">ClassImp()</a>, <a class="el" href="_t_event_building_loop_8cxx_source.html#l00009">ClassImp()</a>, <a class="el" href="_t_analysis_hist_loop_8cxx_source.html#l00013">TAnalysisHistLoop::Get()</a>, <a class="el" href="_t_frag_hist_loop_8cxx_source.html#l00013">TFragHistLoop::Get()</a>, <a class="el" href="_t_terminal_loop_8h_source.html#l00022">TTerminalLoop&lt; T &gt;::Get()</a>, <a class="el" href="_t_unpacking_loop_8cxx_source.html#l00011">TUnpackingLoop::Get()</a>, <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00023">TFragWriteLoop::Get()</a>, <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00026">TAnalysisWriteLoop::Get()</a>, <a class="el" href="_t_fragment_chain_loop_8cxx_source.html#l00014">TFragmentChainLoop::Get()</a>, and <a class="el" href="_t_data_loop_8cxx_source.html#l00026">TDataLoop::Get()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_analysis_hist_loop_8cxx_source.html#l00013">TAnalysisHistLoop::Get()</a>, <a class="el" href="_t_det_building_loop_8cxx_source.html#l00008">TDetBuildingLoop::Get()</a>, <a class="el" href="_t_frag_hist_loop_8cxx_source.html#l00013">TFragHistLoop::Get()</a>, <a class="el" href="_t_terminal_loop_8h_source.html#l00022">TTerminalLoop&lt; T &gt;::Get()</a>, <a class="el" href="_t_unpacking_loop_8cxx_source.html#l00011">TUnpackingLoop::Get()</a>, <a class="el" href="_t_event_building_loop_8cxx_source.html#l00009">TEventBuildingLoop::Get()</a>, <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00022">TFragWriteLoop::Get()</a>, <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00025">TAnalysisWriteLoop::Get()</a>, <a class="el" href="_t_fragment_chain_loop_8cxx_source.html#l00014">TFragmentChainLoop::Get()</a>, and <a class="el" href="_t_data_loop_8cxx_source.html#l00021">TDataLoop::Get()</a>.</p>
 
 </div>
 </div>
@@ -749,7 +749,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00315">315</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>.</p>
 
 </div>
 </div>
@@ -865,7 +865,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00021">21</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00254">Print()</a>.</p>
 
@@ -917,7 +917,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00224">224</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00114">fPaused</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00115">fPaused</a>.</p>
 
 </div>
 </div>
@@ -938,7 +938,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00219">219</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00112">fRunning</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00113">fRunning</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00297">status_out()</a>.</p>
 
@@ -990,7 +990,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00229">229</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00057">EndStatus()</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00111">fThread</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00058">EndStatus()</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00112">fThread</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00147">StopAll()</a>.</p>
 
@@ -1021,7 +1021,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00280">280</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00081">fStatusThread</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00273">stop_status_thread()</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00111">fStatusThread</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00273">stop_status_thread()</a>.</p>
 
 </div>
 </div>
@@ -1050,7 +1050,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00237">237</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00114">fPaused</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00115">fPausedWait</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00116">fPauseMutex</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00112">fRunning</a>, <a class="el" href="class_stoppable_thread.html#afeb34fff4155683116a473cade35f054">Iteration()</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00054">OnEnd()</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00115">fPaused</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00116">fPausedWait</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00117">fPauseMutex</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00113">fRunning</a>, <a class="el" href="class_stoppable_thread.html#afeb34fff4155683116a473cade35f054">Iteration()</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00055">OnEnd()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00026">StoppableThread()</a>.</p>
 
@@ -1079,11 +1079,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00058">58</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00059">59</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00099">fName</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00100">fName</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00154">TAnalysisWriteLoop::AddBranch()</a>, <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00078">TAnalysisWriteLoop::EndStatus()</a>, <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00082">TFragWriteLoop::EndStatus()</a>, <a class="el" href="_t_unpacking_loop_8cxx_source.html#l00079">TUnpackingLoop::EndStatus()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00297">status_out()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00149">TAnalysisWriteLoop::AddBranch()</a>, <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00077">TAnalysisWriteLoop::EndStatus()</a>, <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00081">TFragWriteLoop::EndStatus()</a>, <a class="el" href="_t_unpacking_loop_8cxx_source.html#l00076">TUnpackingLoop::EndStatus()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00297">status_out()</a>.</p>
 
 </div>
 </div>
@@ -1112,7 +1112,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_t_analysis_write_loop.html#ad409bfcf9dbc6e74d6502a1c7799ec04">TAnalysisWriteLoop</a>, <a class="el" href="class_t_data_loop.html#aa368945e7032ea5c9d4b587a76347022">TDataLoop</a>, and <a class="el" href="class_t_fragment_chain_loop.html#a77a03d8922ac0b0326f50b70fdfe2915">TFragmentChainLoop</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00054">54</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00055">55</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00237">Loop()</a>.</p>
 
@@ -1142,7 +1142,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00103">103</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00098">98</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
 </div>
 </div>
@@ -1163,7 +1163,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00202">202</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00114">fPaused</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00112">fRunning</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00115">fPaused</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00113">fRunning</a>.</p>
 
 </div>
 </div>
@@ -1192,7 +1192,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00097">97</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>.</p>
 
 </div>
 </div>
@@ -1221,7 +1221,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00254">254</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00105">fColumnWidth</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00106">fStatusWidth</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00021">GetNThreads()</a>, and <a class="el" href="_globals_8h_source.html#l00137">hex()</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00102">fColumnWidth</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00103">fStatusWidth</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00021">GetNThreads()</a>, and <a class="el" href="_globals_8h_source.html#l00137">hex()</a>.</p>
 
 </div>
 </div>
@@ -1250,7 +1250,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00119">119</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00105">fColumnWidth</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00095">fInputSize</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00094">fItemsPopped</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00102">fColumnWidth</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00092">fInputSize</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00091">fItemsPopped</a>.</p>
 
 </div>
 </div>
@@ -1271,7 +1271,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00193">193</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00114">fPaused</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00115">fPausedWait</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00116">fPauseMutex</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00112">fRunning</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00115">fPaused</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00116">fPausedWait</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00117">fPauseMutex</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00113">fRunning</a>.</p>
 
 </div>
 </div>
@@ -1300,9 +1300,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00104">104</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00416">TGRSIint::SetupPipeline()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00409">TGRSIint::SetupPipeline()</a>.</p>
 
 </div>
 </div>
@@ -1331,9 +1331,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00135">135</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00209">Stop()</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00209">Stop()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00147">StopAll()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00204">TGRSIint::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00147">StopAll()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00195">TGRSIint::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -1362,7 +1362,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00265">265</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00081">fStatusThread</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00083">fStatusThreadOn</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00286">status_out_loop()</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00111">fStatusThread</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00109">fStatusThreadOn</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00286">status_out_loop()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00026">StoppableThread()</a>.</p>
 
@@ -1393,7 +1393,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00111">111</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00105">fColumnWidth</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00095">fInputSize</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00094">fItemsPopped</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00102">fColumnWidth</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00092">fInputSize</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00091">fItemsPopped</a>.</p>
 
 </div>
 </div>
@@ -1422,7 +1422,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00297">297</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>, <a class="el" href="class_stoppable_thread.html#afa0821ee14bd2d715314aac752cd0329">GetItemsCurrent()</a>, <a class="el" href="class_stoppable_thread.html#a79b5f83b46bce43b091a98a953cd4623">GetItemsPopped()</a>, <a class="el" href="class_stoppable_thread.html#a4685b7d00f32acd831b5118972146f7d">GetItemsPushed()</a>, <a class="el" href="class_stoppable_thread.html#a0d5d111555283501066808fc81eebeba">GetRate()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00219">IsRunning()</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00058">Name()</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>, <a class="el" href="class_stoppable_thread.html#afa0821ee14bd2d715314aac752cd0329">GetItemsCurrent()</a>, <a class="el" href="class_stoppable_thread.html#a79b5f83b46bce43b091a98a953cd4623">GetItemsPopped()</a>, <a class="el" href="class_stoppable_thread.html#a4685b7d00f32acd831b5118972146f7d">GetItemsPushed()</a>, <a class="el" href="class_stoppable_thread.html#a0d5d111555283501066808fc81eebeba">GetRate()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00219">IsRunning()</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00059">Name()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00286">status_out_loop()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00147">StopAll()</a>.</p>
 
@@ -1453,7 +1453,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00286">286</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00083">fStatusThreadOn</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00297">status_out()</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00109">fStatusThreadOn</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00297">status_out()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00265">start_status_thread()</a>.</p>
 
@@ -1482,11 +1482,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00078">78</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00079">79</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00106">fStatusWidth</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00103">fStatusWidth</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00416">TGRSIint::SetupPipeline()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00409">TGRSIint::SetupPipeline()</a>.</p>
 
 </div>
 </div>
@@ -1514,9 +1514,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00076">76</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00077">77</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00106">fStatusWidth</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00103">fStatusWidth</a>.</p>
 
 </div>
 </div>
@@ -1537,7 +1537,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00209">209</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00057">EndStatus()</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00114">fPaused</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00115">fPausedWait</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00116">fPauseMutex</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00112">fRunning</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00058">EndStatus()</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00115">fPaused</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00116">fPausedWait</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00117">fPauseMutex</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00113">fRunning</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00135">SendStop()</a>.</p>
 
@@ -1568,7 +1568,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00273">273</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00083">fStatusThreadOn</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00109">fStatusThreadOn</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00280">join_status_thread()</a>.</p>
 
@@ -1599,9 +1599,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_stoppable_thread_8cxx_source.html#l00147">147</a> of file <a class="el" href="_stoppable_thread_8cxx_source.html">StoppableThread.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00091">fThreadMap</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00229">Join()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00135">SendStop()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00297">status_out()</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8h_source.html#l00107">fThreadMap</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00229">Join()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00135">SendStop()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00297">status_out()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00204">TGRSIint::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00195">TGRSIint::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -1626,9 +1626,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00105">105</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00102">102</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00073">AllThreadHeader()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00059">AllThreadProgress()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00083">AllThreadStatus()</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00077">ColumnWidth()</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00075">ColumnWidth()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00254">Print()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00119">Progress()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00111">Status()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00073">AllThreadHeader()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00059">AllThreadProgress()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00083">AllThreadStatus()</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00078">ColumnWidth()</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00076">ColumnWidth()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00254">Print()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00119">Progress()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00111">Status()</a>.</p>
 
 </div>
 </div>
@@ -1652,7 +1652,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00113">113</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00114">114</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
 </div>
 </div>
@@ -1677,9 +1677,9 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>number of items in the input (queue), only updated within <a class="el" href="class_stoppable_thread.html#afeb34fff4155683116a473cade35f054">Iteration()</a>, so not always fully up-to-date (signed to hold error from queue::pop) </p>
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00095">95</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00092">92</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00078">TAnalysisWriteLoop::EndStatus()</a>, <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00082">TFragWriteLoop::EndStatus()</a>, <a class="el" href="_t_analysis_hist_loop_8cxx_source.html#l00045">TAnalysisHistLoop::Iteration()</a>, <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00091">TAnalysisWriteLoop::Iteration()</a>, <a class="el" href="_t_data_loop_8cxx_source.html#l00065">TDataLoop::Iteration()</a>, <a class="el" href="_t_det_building_loop_8cxx_source.html#l00030">TDetBuildingLoop::Iteration()</a>, <a class="el" href="_t_event_building_loop_8cxx_source.html#l00079">TEventBuildingLoop::Iteration()</a>, <a class="el" href="_t_frag_hist_loop_8cxx_source.html#l00045">TFragHistLoop::Iteration()</a>, <a class="el" href="_t_fragment_chain_loop_8cxx_source.html#l00074">TFragmentChainLoop::Iteration()</a>, <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00094">TFragWriteLoop::Iteration()</a>, <a class="el" href="_t_unpacking_loop_8cxx_source.html#l00052">TUnpackingLoop::Iteration()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00119">Progress()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00111">Status()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00077">TAnalysisWriteLoop::EndStatus()</a>, <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00081">TFragWriteLoop::EndStatus()</a>, <a class="el" href="_t_analysis_hist_loop_8cxx_source.html#l00045">TAnalysisHistLoop::Iteration()</a>, <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00090">TAnalysisWriteLoop::Iteration()</a>, <a class="el" href="_t_data_loop_8cxx_source.html#l00053">TDataLoop::Iteration()</a>, <a class="el" href="_t_det_building_loop_8cxx_source.html#l00028">TDetBuildingLoop::Iteration()</a>, <a class="el" href="_t_event_building_loop_8cxx_source.html#l00077">TEventBuildingLoop::Iteration()</a>, <a class="el" href="_t_frag_hist_loop_8cxx_source.html#l00045">TFragHistLoop::Iteration()</a>, <a class="el" href="_t_fragment_chain_loop_8cxx_source.html#l00074">TFragmentChainLoop::Iteration()</a>, <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00091">TFragWriteLoop::Iteration()</a>, <a class="el" href="_t_unpacking_loop_8cxx_source.html#l00049">TUnpackingLoop::Iteration()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00119">Progress()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00111">Status()</a>.</p>
 
 </div>
 </div>
@@ -1705,9 +1705,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>number of items popped from input queue </p>
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00094">94</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00091">91</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00078">TAnalysisWriteLoop::EndStatus()</a>, <a class="el" href="_t_event_building_loop_8cxx_source.html#l00259">TEventBuildingLoop::EndStatus()</a>, <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00082">TFragWriteLoop::EndStatus()</a>, <a class="el" href="_t_fragment_chain_loop_8h_source.html#l00048">TFragmentChainLoop::GetItemsPopped()</a>, <a class="el" href="_t_frag_write_loop_8h_source.html#l00050">TFragWriteLoop::GetItemsPopped()</a>, <a class="el" href="_t_analysis_write_loop_8h_source.html#l00044">TAnalysisWriteLoop::GetItemsPushed()</a>, <a class="el" href="_t_fragment_chain_loop_8h_source.html#l00044">TFragmentChainLoop::GetItemsPushed()</a>, <a class="el" href="_t_frag_write_loop_8h_source.html#l00049">TFragWriteLoop::GetItemsPushed()</a>, <a class="el" href="_t_analysis_hist_loop_8cxx_source.html#l00045">TAnalysisHistLoop::Iteration()</a>, <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00091">TAnalysisWriteLoop::Iteration()</a>, <a class="el" href="_t_data_loop_8cxx_source.html#l00065">TDataLoop::Iteration()</a>, <a class="el" href="_t_det_building_loop_8cxx_source.html#l00030">TDetBuildingLoop::Iteration()</a>, <a class="el" href="_t_event_building_loop_8cxx_source.html#l00079">TEventBuildingLoop::Iteration()</a>, <a class="el" href="_t_frag_hist_loop_8cxx_source.html#l00045">TFragHistLoop::Iteration()</a>, <a class="el" href="_t_fragment_chain_loop_8cxx_source.html#l00074">TFragmentChainLoop::Iteration()</a>, <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00094">TFragWriteLoop::Iteration()</a>, <a class="el" href="_t_unpacking_loop_8cxx_source.html#l00052">TUnpackingLoop::Iteration()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00119">Progress()</a>, <a class="el" href="_t_fragment_chain_loop_8cxx_source.html#l00062">TFragmentChainLoop::Restart()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00111">Status()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00077">TAnalysisWriteLoop::EndStatus()</a>, <a class="el" href="_t_event_building_loop_8cxx_source.html#l00256">TEventBuildingLoop::EndStatus()</a>, <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00081">TFragWriteLoop::EndStatus()</a>, <a class="el" href="_t_fragment_chain_loop_8h_source.html#l00048">TFragmentChainLoop::GetItemsPopped()</a>, <a class="el" href="_t_frag_write_loop_8h_source.html#l00050">TFragWriteLoop::GetItemsPopped()</a>, <a class="el" href="_t_analysis_write_loop_8h_source.html#l00044">TAnalysisWriteLoop::GetItemsPushed()</a>, <a class="el" href="_t_fragment_chain_loop_8h_source.html#l00044">TFragmentChainLoop::GetItemsPushed()</a>, <a class="el" href="_t_frag_write_loop_8h_source.html#l00049">TFragWriteLoop::GetItemsPushed()</a>, <a class="el" href="_t_analysis_hist_loop_8cxx_source.html#l00045">TAnalysisHistLoop::Iteration()</a>, <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00090">TAnalysisWriteLoop::Iteration()</a>, <a class="el" href="_t_data_loop_8cxx_source.html#l00053">TDataLoop::Iteration()</a>, <a class="el" href="_t_det_building_loop_8cxx_source.html#l00028">TDetBuildingLoop::Iteration()</a>, <a class="el" href="_t_event_building_loop_8cxx_source.html#l00077">TEventBuildingLoop::Iteration()</a>, <a class="el" href="_t_frag_hist_loop_8cxx_source.html#l00045">TFragHistLoop::Iteration()</a>, <a class="el" href="_t_fragment_chain_loop_8cxx_source.html#l00074">TFragmentChainLoop::Iteration()</a>, <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00091">TFragWriteLoop::Iteration()</a>, <a class="el" href="_t_unpacking_loop_8cxx_source.html#l00049">TUnpackingLoop::Iteration()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00119">Progress()</a>, <a class="el" href="_t_fragment_chain_loop_8cxx_source.html#l00062">TFragmentChainLoop::Restart()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00111">Status()</a>.</p>
 
 </div>
 </div>
@@ -1726,14 +1726,14 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00099">99</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00100">100</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00026">StoppableThread()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00182">~StoppableThread()</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00058">Name()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00026">StoppableThread()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00182">~StoppableThread()</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00059">Name()</a>.</p>
 
 </div>
 </div>
@@ -1757,7 +1757,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00114">114</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00115">115</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00224">IsPaused()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00237">Loop()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00202">Pause()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00193">Resume()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00209">Stop()</a>.</p>
 
@@ -1783,7 +1783,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00115">115</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00116">116</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00237">Loop()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00193">Resume()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00209">Stop()</a>.</p>
 
@@ -1809,7 +1809,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00116">116</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00117">117</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00237">Loop()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00193">Resume()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00209">Stop()</a>.</p>
 
@@ -1835,7 +1835,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00112">112</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00113">113</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00219">IsRunning()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00237">Loop()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00202">Pause()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00193">Resume()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00209">Stop()</a>.</p>
 
@@ -1856,12 +1856,12 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00081">81</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00111">111</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00182">~StoppableThread()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00280">join_status_thread()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00265">start_status_thread()</a>.</p>
 
@@ -1882,12 +1882,12 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00083">83</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00109">109</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00026">StoppableThread()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00182">~StoppableThread()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00265">start_status_thread()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00286">status_out_loop()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00273">stop_status_thread()</a>.</p>
 
@@ -1913,9 +1913,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00106">106</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00103">103</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00073">AllThreadHeader()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00059">AllThreadProgress()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00083">AllThreadStatus()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00254">Print()</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00078">StatusWidth()</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00076">StatusWidth()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00073">AllThreadHeader()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00059">AllThreadProgress()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00083">AllThreadStatus()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00254">Print()</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00079">StatusWidth()</a>, and <a class="el" href="_stoppable_thread_8h_source.html#l00077">StatusWidth()</a>.</p>
 
 </div>
 </div>
@@ -1939,7 +1939,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00111">111</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00112">112</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00026">StoppableThread()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00229">Join()</a>.</p>
 
@@ -1960,12 +1960,12 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00091">91</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_stoppable_thread_8h_source.html#l00107">107</a> of file <a class="el" href="_stoppable_thread_8h_source.html">StoppableThread.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_stoppable_thread_8cxx_source.html#l00026">StoppableThread()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00182">~StoppableThread()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00073">AllThreadHeader()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00059">AllThreadProgress()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00083">AllThreadStatus()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00037">AnyThreadRunning()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00047">AnyThreadStatus()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00166">ClearAllQueues()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00173">Get()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00315">GetAll()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00021">GetNThreads()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00097">PauseAll()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00254">Print()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00104">ResumeAll()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00135">SendStop()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00297">status_out()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00147">StopAll()</a>.</p>
 
@@ -1978,7 +1978,7 @@ Static Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_stoppable_thread.html">StoppableThread</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 03:00:48.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:35.</li>
   </ul>
 </div>
 </body>

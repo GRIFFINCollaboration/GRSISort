@@ -4,7 +4,7 @@ var class_alphanumeric_helper =
     [ "AlphanumericHelper", "class_alphanumeric_helper.html#aced3bcc0f9193a67028afeb412146fa0", null ],
     [ "Book", "class_alphanumeric_helper.html#a9c0db166fc7075e23efe93cd6327e823", null ],
     [ "CheckSizes", "class_alphanumeric_helper.html#a49c88825285ac0920b4af055ddbd0fbb", null ],
-    [ "CreateHistograms", "class_alphanumeric_helper.html#ae6035ec24f2e70def55e959ec4d9a341", null ],
+    [ "CreateHistograms", "class_alphanumeric_helper.html#a3b8f0c6a602cf1d3895dbe0bdfc6c239", null ],
     [ "EndOfSort", "class_alphanumeric_helper.html#ae8293c18719d3e29c1d9afb74cc41d9a", null ],
     [ "Exec", "class_alphanumeric_helper.html#a67d625e92f1838f716f4b73574fb44d7", null ],
     [ "Finalize", "class_alphanumeric_helper.html#a0e505d1c617db78984dd90345c10d50e", null ],
@@ -25,6 +25,7 @@ var class_alphanumeric_helper =
     [ "fPpg", "class_alphanumeric_helper.html#ac7ce3378d3b7c730f9cbd73dd2cf7ab3", null ],
     [ "fPrefix", "class_alphanumeric_helper.html#a67b6f5f70635c0bd67ae1b8bf1c1197a", null ],
     [ "fRunInfo", "class_alphanumeric_helper.html#ae95111fa334deef7e49ea2050899e972", null ],
+    [ "fSizeLimit", "class_alphanumeric_helper.html#adba49a09a6ebe50ebb9b33e051c0a3c0", null ],
     [ "fSym", "class_alphanumeric_helper.html#a210872f6be03540044b9e1e190fde8f6", null ],
     [ "fTree", "class_alphanumeric_helper.html#a0b2861b9e607129c2d996f46d871baa6", null ],
     [ "fUserSettings", "class_alphanumeric_helper.html#a559c82856eb597c7951c63b61a7802fc", null ]

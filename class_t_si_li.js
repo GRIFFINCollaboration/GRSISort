@@ -26,7 +26,7 @@ var class_t_si_li =
     [ "fRejectCriterion", "class_t_si_li.html#a263648d1ebb78fa51038225c194d85e9", null ],
     [ "GetAddbackHit", "class_t_si_li.html#a98e0f74b48a9272f9b37d6e6af5f2be6", null ],
     [ "GetAddbackMultiplicity", "class_t_si_li.html#a0143cc8bc411638e460d236e73a26e81", null ],
-    [ "GetHit", "class_t_si_li.html#abb7c88ad69c596f7c183a82a746e2542", null ],
+    [ "GetHit", "class_t_si_li.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_si_li.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_si_li.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetPin", "class_t_si_li.html#a378b1e7f2679b9f24539e02434d90250", null ],

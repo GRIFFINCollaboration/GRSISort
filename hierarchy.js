@@ -10,7 +10,6 @@ var hierarchy =
       ] ]
     ] ],
     [ "ArgParser", "class_arg_parser.html", null ],
-    [ "ClientInfo", "struct_client_info.html", null ],
     [ "combinations", "classcombinations.html", null ],
     [ "dict", null, [
       [ "pygui.util.TKeyDict", "classpygui_1_1util_1_1_t_key_dict.html", null ]
@@ -352,7 +351,6 @@ var hierarchy =
       ] ],
       [ "TObjectWrapper< T >", "class_t_object_wrapper.html", null ],
       [ "TPPGData", "class_t_p_p_g_data.html", null ],
-      [ "TParallelFileMerger", "class_t_parallel_file_merger.html", null ],
       [ "TParsingDiagnosticsData", "class_t_parsing_diagnostics_data.html", null ],
       [ "TPeakFitter", "class_t_peak_fitter.html", null ],
       [ "TRateScalerQueue", "class_t_rate_scaler_queue.html", null ],

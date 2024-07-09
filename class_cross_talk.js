@@ -5,7 +5,7 @@ var class_cross_talk =
     [ "Begin", "class_cross_talk.html#ab93493c658b7214c7b98b755d85586bd", null ],
     [ "CheckSizes", "class_cross_talk.html#a3ee3614749d1369487299802d7e18364", null ],
     [ "ClassDef", "class_cross_talk.html#a416ae50cb4abe45ac8a4b1ba5590724b", null ],
-    [ "ClassDefOverride", "class_cross_talk.html#aa765a39a9983768ce6475ab6e6c76e3a", null ],
+    [ "ClassDefOverride", "class_cross_talk.html#aac34947a3e9bcf869d26c3ce7ddf24c2", null ],
     [ "CreateHistograms", "class_cross_talk.html#ac9cc4df79bb746ea6c00fd90e444d579", null ],
     [ "EndOfSort", "class_cross_talk.html#aefe521b4e1ad5569b7e2809fb7f7e411", null ],
     [ "FillHistograms", "class_cross_talk.html#a8dc668dbc60225dd42cb67f9fc7fe238", null ],
@@ -40,6 +40,7 @@ var class_cross_talk =
     [ "fPpg", "class_cross_talk.html#abc598ed268f33d122fba95b9e4af89a0", null ],
     [ "fRunInfo", "class_cross_talk.html#a6179997d65c5c6e3a0d6edec42180405", null ],
     [ "fScep", "class_cross_talk.html#adb5b6f7f2004b75a262bcff85ce23bd0", null ],
+    [ "fSizeLimit", "class_cross_talk.html#a613ab2575ae93c6001aa09235c454546", null ],
     [ "fSym", "class_cross_talk.html#a0a36b80b21d1c5fd0b2246943c28ebce", null ],
     [ "fTree", "class_cross_talk.html#a97fe8cf742166fa3aad077a249586181", null ]
 ];

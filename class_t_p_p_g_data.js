@@ -2,6 +2,7 @@ var class_t_p_p_g_data =
 [
     [ "TPPGData", "class_t_p_p_g_data.html#a06f12c41efedada2ceb2960bb6b1b0ff", null ],
     [ "TPPGData", "class_t_p_p_g_data.html#a5a12b04038420d95a7c90d42ea14c24c", null ],
+    [ "TPPGData", "class_t_p_p_g_data.html#a27cdb4242f1b27411a4b87b89e7a4c9e", null ],
     [ "~TPPGData", "class_t_p_p_g_data.html#a19a93e2596279554c6e276249a0a64b2", null ],
     [ "Clear", "class_t_p_p_g_data.html#a399f61c72fa8cf0584d0771572a4ea56", null ],
     [ "Copy", "class_t_p_p_g_data.html#a23aabc00a30169a425d2e69bd2c4feb1", null ],
@@ -10,7 +11,9 @@ var class_t_p_p_g_data =
     [ "GetNetworkPacketId", "class_t_p_p_g_data.html#aefd8f96d8f11dd03add5e47326814e7f", null ],
     [ "GetNewPPG", "class_t_p_p_g_data.html#ab821775b59ac6b60c0a551169ef4a9ee", null ],
     [ "GetOldPPG", "class_t_p_p_g_data.html#a720fd78f13706e7f3b929060d9a183d9", null ],
-    [ "GetTimeStamp", "class_t_p_p_g_data.html#a14063c1745eb923719b86de3c30d20bc", null ],
+    [ "GetTimeStamp", "class_t_p_p_g_data.html#a0874c658bab5c48f0e15c08b18de2138", null ],
+    [ "operator=", "class_t_p_p_g_data.html#ac8e0a6ee9edffd5ecddbc75a7a7a8a48", null ],
+    [ "operator=", "class_t_p_p_g_data.html#aa82502b5a1d98fae65fdcb81a56f4134", null ],
     [ "Print", "class_t_p_p_g_data.html#a94ab2709faa12710e5be72ae52dd29b6", null ],
     [ "SetHighTimeStamp", "class_t_p_p_g_data.html#a4e43f132a65f509a8145db5912342b52", null ],
     [ "SetLowTimeStamp", "class_t_p_p_g_data.html#afc03ef7c9dada76ba27d3270c998bdb2", null ],
@@ -26,5 +29,5 @@ var class_t_p_p_g_data =
     [ "fNewPpg", "class_t_p_p_g_data.html#ac709239f036201e09eb501bea0c63d0c", null ],
     [ "fOldPpg", "class_t_p_p_g_data.html#ac53ff52d276e403550634be5b38f2f65", null ],
     [ "fTimeStamp", "class_t_p_p_g_data.html#a159895bf544b149ec55f1a2b01b745a5", null ],
-    [ "fTimestampUnits", "class_t_p_p_g_data.html#abd588265a9f3fdd5dd83a9310892b9d8", null ]
+    [ "fTimestampUnits", "class_t_p_p_g_data.html#aca56f00e83f250706042e110287ccae6", null ]
 ];

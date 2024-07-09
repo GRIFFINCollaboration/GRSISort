@@ -9,7 +9,7 @@ var class_t_zero_degree =
     [ "Clear", "class_t_zero_degree.html#ab8efddea3e6e15f1f400237340d7c8a0", null ],
     [ "ClearTransients", "class_t_zero_degree.html#a5157695811c23caccbc71ce62b9cacd0", null ],
     [ "Copy", "class_t_zero_degree.html#a5bb705bebefab8cfb039ecb67ec0f9da", null ],
-    [ "GetHit", "class_t_zero_degree.html#abb7c88ad69c596f7c183a82a746e2542", null ],
+    [ "GetHit", "class_t_zero_degree.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_zero_degree.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_zero_degree.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetPosition", "class_t_zero_degree.html#a426a7e6eb1845c79e4d1c9712993ff43", null ],

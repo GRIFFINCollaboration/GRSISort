@@ -19,7 +19,7 @@ var class_t_trific =
     [ "Clear", "class_t_trific.html#a45f57f5ec878f3e857b54839dfe908fc", null ],
     [ "ClearTransients", "class_t_trific.html#ae77c63b34a1df7dbfe64cd13dfc7c62c", null ],
     [ "Copy", "class_t_trific.html#a0df87a4a6077082b8ec50ce2eb3a41e9", null ],
-    [ "GetHit", "class_t_trific.html#abb7c88ad69c596f7c183a82a746e2542", null ],
+    [ "GetHit", "class_t_trific.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_trific.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_trific.html#ad3f8c4fa9690ee9d52481f31d70b5ab0", null ],
     [ "GetPosition", "class_t_trific.html#a59e917079a2bc561fa8ccc3fbd0b1f00", null ],

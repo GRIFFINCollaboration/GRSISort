@@ -29,7 +29,7 @@ var class_t_runtime_objects =
     [ "GetGatesPtr", "class_t_runtime_objects.html#af75276b07f841d74c2517733d1d92d59", null ],
     [ "GetObjects", "class_t_runtime_objects.html#ad7c5c71d87c1589b37ec0a9d2cb3d7bf", null ],
     [ "GetObjectsPtr", "class_t_runtime_objects.html#aa91b69997abbbaf1bc7dc4dd715c0082", null ],
-    [ "GetVariable", "class_t_runtime_objects.html#a26a4f321145efb4594e190723e15a9ba", null ],
+    [ "GetVariable", "class_t_runtime_objects.html#a88be1034f9a33d93d30fe6cf659a0992", null ],
     [ "SetDetectors", "class_t_runtime_objects.html#ad734be8ff51b6ffe45a1093751214abd", null ],
     [ "SetDirectory", "class_t_runtime_objects.html#adb391b14fe8dc096cbb7968a916a59da", null ],
     [ "SetFragment", "class_t_runtime_objects.html#a021cd2ae7ad1e879ac96d03fe134d598", null ],

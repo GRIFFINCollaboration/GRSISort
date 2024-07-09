@@ -109,116 +109,112 @@ $(document).ready(function(){initNavTree('_t_unpacked_event_8cxx_source.html',''
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="_t_channel_8h.html">TChannel.h</a>&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="_t_sorting_diagnostics_8h.html">TSortingDiagnostics.h</a>&quot;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="foldopen" id="foldopen00008" data-start="{" data-end="}">
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#a7719a814c1ad7c7670354a3d0c587006">    8</a></span><a class="code hl_function" href="class_t_unpacked_event.html#a7719a814c1ad7c7670354a3d0c587006">TUnpackedEvent::TUnpackedEvent</a>()</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>{</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>}</div>
-</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><a class="code hl_function" href="class_t_unpacked_event.html#a7719a814c1ad7c7670354a3d0c587006">TUnpackedEvent::TUnpackedEvent</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><a class="code hl_function" href="class_t_unpacked_event.html#ab6e9b7b3001265ca7d20956028ddfaaf">TUnpackedEvent::~TUnpackedEvent</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><a class="code hl_function" href="class_t_unpacked_event.html#ab6e9b7b3001265ca7d20956028ddfaaf">TUnpackedEvent::~TUnpackedEvent</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="foldopen" id="foldopen00014" data-start="{" data-end="}">
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#a6a5918c68e0a8e425a8de75d49eb24ca">   14</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_unpacked_event.html#a6a5918c68e0a8e425a8de75d49eb24ca">TUnpackedEvent::Build</a>()</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>{</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>   <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; frag : <a class="code hl_variable" href="class_t_unpacked_event.html#ad785aba59778188400b8b1a75afce23c">fFragments</a>) {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      <a class="code hl_class" href="class_t_channel.html">TChannel</a>* channel = <a class="code hl_function" href="class_t_channel.html#a824895e07aaab07b39e3c0034b93b559">TChannel::GetChannel</a>(frag-&gt;GetAddress(), <span class="keyword">true</span>);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>      <span class="keywordflow">if</span>(channel == <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>         <span class="comment">// add to diagnostics, one time printing of error message is already taken care of by TChannel::GetChannel</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>         <a class="code hl_function" href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TSortingDiagnostics::Get</a>()-&gt;<a class="code hl_function" href="class_t_sorting_diagnostics.html#a931e2d0309558c922b2f9c0192418ffe">MissingChannel</a>(frag-&gt;GetAddress());</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>         <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>      }</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      TClass* detClass = channel-&gt;<a class="code hl_function" href="class_t_channel.html#a9b22c3a1709f82c8a908ae120ec2ba00">GetClassType</a>();</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>      <span class="keywordflow">if</span>(detClass == <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>         <a class="code hl_function" href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TSortingDiagnostics::Get</a>()-&gt;<a class="code hl_function" href="class_t_sorting_diagnostics.html#af8940d61ea67e1c38ffacff81c9b17b6">AddDetectorClass</a>(channel);</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>         <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      }</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>      <a class="code hl_function" href="class_t_unpacked_event.html#a7c3278b80d951ff1c414febf57fb1003">GetDetector</a>(detClass, <span class="keyword">true</span>)-&gt;AddFragment(frag, channel);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>   }</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>   <a class="code hl_function" href="class_t_unpacked_event.html#ad9188d5ce70b53f1f40aa5e4c022bdbb">BuildHits</a>();</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>   <a class="code hl_function" href="class_t_unpacked_event.html#adc22f528e8b4e989671b295658f6bc58">ClearRawData</a>();</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>}</div>
+<div class="foldopen" id="foldopen00012" data-start="{" data-end="}">
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#a6a5918c68e0a8e425a8de75d49eb24ca">   12</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_unpacked_event.html#a6a5918c68e0a8e425a8de75d49eb24ca">TUnpackedEvent::Build</a>()</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>{</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>   <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; frag : <a class="code hl_variable" href="class_t_unpacked_event.html#ad785aba59778188400b8b1a75afce23c">fFragments</a>) {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>      <a class="code hl_class" href="class_t_channel.html">TChannel</a>* channel = <a class="code hl_function" href="class_t_channel.html#a824895e07aaab07b39e3c0034b93b559">TChannel::GetChannel</a>(frag-&gt;GetAddress(), <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>      <span class="keywordflow">if</span>(channel == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>         <span class="comment">// add to diagnostics, one time printing of error message is already taken care of by TChannel::GetChannel</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>         <a class="code hl_function" href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TSortingDiagnostics::Get</a>()-&gt;<a class="code hl_function" href="class_t_sorting_diagnostics.html#a931e2d0309558c922b2f9c0192418ffe">MissingChannel</a>(frag-&gt;GetAddress());</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>         <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>      }</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>      TClass* detClass = channel-&gt;<a class="code hl_function" href="class_t_channel.html#a9b22c3a1709f82c8a908ae120ec2ba00">GetClassType</a>();</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>      <span class="keywordflow">if</span>(detClass == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>         <a class="code hl_function" href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TSortingDiagnostics::Get</a>()-&gt;<a class="code hl_function" href="class_t_sorting_diagnostics.html#af8940d61ea67e1c38ffacff81c9b17b6">AddDetectorClass</a>(channel);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>         <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      }</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      <a class="code hl_function" href="class_t_unpacked_event.html#a7c3278b80d951ff1c414febf57fb1003">GetDetector</a>(detClass, <span class="keyword">true</span>)-&gt;AddFragment(frag, channel);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>   }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>   <a class="code hl_function" href="class_t_unpacked_event.html#ad9188d5ce70b53f1f40aa5e4c022bdbb">BuildHits</a>();</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>   <a class="code hl_function" href="class_t_unpacked_event.html#adc22f528e8b4e989671b295658f6bc58">ClearRawData</a>();</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>}</div>
 </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#abf1d3298d6d7d285aad05410a171c6d4">   37</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_unpacked_event.html#abf1d3298d6d7d285aad05410a171c6d4">TUnpackedEvent::AddRawData</a>(<span class="keyword">const</span> std::shared_ptr&lt;const TFragment&gt;&amp; frag)</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>{</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>   <a class="code hl_variable" href="class_t_unpacked_event.html#ad785aba59778188400b8b1a75afce23c">fFragments</a>.push_back(frag);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>}</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#abf1d3298d6d7d285aad05410a171c6d4">   35</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_unpacked_event.html#abf1d3298d6d7d285aad05410a171c6d4">TUnpackedEvent::AddRawData</a>(<span class="keyword">const</span> std::shared_ptr&lt;const TFragment&gt;&amp; frag)</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>   <a class="code hl_variable" href="class_t_unpacked_event.html#ad785aba59778188400b8b1a75afce23c">fFragments</a>.push_back(frag);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
 </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="foldopen" id="foldopen00042" data-start="{" data-end="}">
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#adc22f528e8b4e989671b295658f6bc58">   42</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_unpacked_event.html#adc22f528e8b4e989671b295658f6bc58">TUnpackedEvent::ClearRawData</a>()</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>{</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>   <a class="code hl_variable" href="class_t_unpacked_event.html#ad785aba59778188400b8b1a75afce23c">fFragments</a>.clear();</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="foldopen" id="foldopen00040" data-start="{" data-end="}">
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#adc22f528e8b4e989671b295658f6bc58">   40</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_unpacked_event.html#adc22f528e8b4e989671b295658f6bc58">TUnpackedEvent::ClearRawData</a>()</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>{</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>   <a class="code hl_variable" href="class_t_unpacked_event.html#ad785aba59778188400b8b1a75afce23c">fFragments</a>.clear();</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
 </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="foldopen" id="foldopen00047" data-start="{" data-end="}">
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#ad9188d5ce70b53f1f40aa5e4c022bdbb">   47</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_unpacked_event.html#ad9188d5ce70b53f1f40aa5e4c022bdbb">TUnpackedEvent::BuildHits</a>()</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>{</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>   <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; det : <a class="code hl_variable" href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">fDetectors</a>) {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      det-&gt;BuildHits();</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>   }</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="foldopen" id="foldopen00045" data-start="{" data-end="}">
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#ad9188d5ce70b53f1f40aa5e4c022bdbb">   45</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_unpacked_event.html#ad9188d5ce70b53f1f40aa5e4c022bdbb">TUnpackedEvent::BuildHits</a>()</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>{</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>   <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; det : <a class="code hl_variable" href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">fDetectors</a>) {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      det-&gt;BuildHits();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>   }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
 </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="foldopen" id="foldopen00054" data-start="{" data-end="}">
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#a42c9be8d62b135c8f45382c7b3b85610">   54</a></span>std::shared_ptr&lt;TDetector&gt; <a class="code hl_function" href="class_t_unpacked_event.html#a7c3278b80d951ff1c414febf57fb1003">TUnpackedEvent::GetDetector</a>(TClass* cls, <span class="keywordtype">bool</span> make_if_not_found)</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>{</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span> det : <a class="code hl_variable" href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">fDetectors</a>) {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      <span class="keywordflow">if</span>(det-&gt;IsA() == cls) {</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>         <span class="keywordflow">return</span> det;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      }</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>   }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>   <span class="keywordflow">if</span>(make_if_not_found) {</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>      std::shared_ptr&lt;TDetector&gt; output(<span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_t_detector.html">TDetector</a>*<span class="keyword">&gt;</span>(cls-&gt;New()));</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      <a class="code hl_variable" href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">fDetectors</a>.push_back(output);</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      <span class="keywordflow">return</span> output;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>   }</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>   <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="foldopen" id="foldopen00052" data-start="{" data-end="}">
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="class_t_unpacked_event.html#a42c9be8d62b135c8f45382c7b3b85610">   52</a></span>std::shared_ptr&lt;TDetector&gt; <a class="code hl_function" href="class_t_unpacked_event.html#a7c3278b80d951ff1c414febf57fb1003">TUnpackedEvent::GetDetector</a>(TClass* cls, <span class="keywordtype">bool</span> make_if_not_found)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>{</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span> det : <a class="code hl_variable" href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">fDetectors</a>) {</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <span class="keywordflow">if</span>(det-&gt;IsA() == cls) {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>         <span class="keywordflow">return</span> det;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>   }</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>   <span class="keywordflow">if</span>(make_if_not_found) {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      std::shared_ptr&lt;TDetector&gt; output(<span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_t_detector.html">TDetector</a>*<span class="keyword">&gt;</span>(cls-&gt;New()));</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      <a class="code hl_variable" href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">fDetectors</a>.push_back(output);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>      <span class="keywordflow">return</span> output;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>   }</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>   <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}</div>
 </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#if __GNUC__ &gt; 5</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>std::ostringstream TUnpackedEvent::Print()</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>{</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>   std::ostringstream str;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>   str &lt;&lt; <a class="code hl_variable" href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">fDetectors</a>.size() &lt;&lt; <span class="stringliteral">&quot; detector types:&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>   <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; det : <a class="code hl_variable" href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">fDetectors</a>) {</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>      str &lt;&lt; <span class="stringliteral">&quot;detector type &quot;</span> &lt;&lt; det-&gt;ClassName() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>      <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; det-&gt;GetMultiplicity(); ++i) {</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>         <span class="keyword">auto</span> hit = det-&gt;GetHit(i);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>         str &lt;&lt; hit &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <a class="code hl_function" href="_globals_8h.html#ab37ad6f1cf4c93e161b5caaeae971ef4">hex</a>(hit-&gt;GetAddress(), 4) &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; std::setw(16) &lt;&lt; hit-&gt;GetTimeStamp() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; std::setw(16) &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(hit-&gt;Charge()) &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; std::setw(16) &lt;&lt; hit-&gt;GetEnergy() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>      }</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>   }</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>   <span class="keywordflow">return</span> str;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>}</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#if __GNUC__ &gt; 5</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>std::ostringstream TUnpackedEvent::Print()</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>{</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>   std::ostringstream str;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>   str &lt;&lt; <a class="code hl_variable" href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">fDetectors</a>.size() &lt;&lt; <span class="stringliteral">&quot; detector types:&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>   <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; det : <a class="code hl_variable" href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">fDetectors</a>) {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>      str &lt;&lt; <span class="stringliteral">&quot;detector type &quot;</span> &lt;&lt; det-&gt;ClassName() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>      <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; det-&gt;GetMultiplicity(); ++i) {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>         <span class="keyword">auto</span> hit = det-&gt;GetHit(i);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>         str &lt;&lt; hit &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <a class="code hl_function" href="_globals_8h.html#ab37ad6f1cf4c93e161b5caaeae971ef4">hex</a>(hit-&gt;GetAddress(), 4) &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; std::setw(16) &lt;&lt; hit-&gt;GetTimeStamp() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; std::setw(16) &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(hit-&gt;Charge()) &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; std::setw(16) &lt;&lt; hit-&gt;GetEnergy() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      }</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>   }</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>   <span class="keywordflow">return</span> str;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>}</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_globals_8h_html_ab37ad6f1cf4c93e161b5caaeae971ef4"><div class="ttname"><a href="_globals_8h.html#ab37ad6f1cf4c93e161b5caaeae971ef4">hex</a></div><div class="ttdeci">std::string hex(T val, int width=-1)</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00137">Globals.h:137</a></div></div>
 <div class="ttc" id="a_t_channel_8h_html"><div class="ttname"><a href="_t_channel_8h.html">TChannel.h</a></div></div>
 <div class="ttc" id="a_t_detector_8h_html"><div class="ttname"><a href="_t_detector_8h.html">TDetector.h</a></div></div>
 <div class="ttc" id="a_t_sorting_diagnostics_8h_html"><div class="ttname"><a href="_t_sorting_diagnostics_8h.html">TSortingDiagnostics.h</a></div></div>
 <div class="ttc" id="a_t_unpacked_event_8h_html"><div class="ttname"><a href="_t_unpacked_event_8h.html">TUnpackedEvent.h</a></div></div>
 <div class="ttc" id="aclass_t_channel_html"><div class="ttname"><a href="class_t_channel.html">TChannel</a></div><div class="ttdef"><b>Definition</b> <a href="_t_channel_8h_source.html#l00050">TChannel.h:50</a></div></div>
-<div class="ttc" id="aclass_t_channel_html_a824895e07aaab07b39e3c0034b93b559"><div class="ttname"><a href="class_t_channel.html#a824895e07aaab07b39e3c0034b93b559">TChannel::GetChannel</a></div><div class="ttdeci">static TChannel * GetChannel(unsigned int temp_address, bool warn=false)</div><div class="ttdef"><b>Definition</b> <a href="_t_channel_8cxx_source.html#l00353">TChannel.cxx:353</a></div></div>
-<div class="ttc" id="aclass_t_channel_html_a9b22c3a1709f82c8a908ae120ec2ba00"><div class="ttname"><a href="class_t_channel.html#a9b22c3a1709f82c8a908ae120ec2ba00">TChannel::GetClassType</a></div><div class="ttdeci">TClass * GetClassType() const</div><div class="ttdef"><b>Definition</b> <a href="_t_channel_8cxx_source.html#l01525">TChannel.cxx:1525</a></div></div>
+<div class="ttc" id="aclass_t_channel_html_a824895e07aaab07b39e3c0034b93b559"><div class="ttname"><a href="class_t_channel.html#a824895e07aaab07b39e3c0034b93b559">TChannel::GetChannel</a></div><div class="ttdeci">static TChannel * GetChannel(unsigned int temp_address, bool warn=false)</div><div class="ttdef"><b>Definition</b> <a href="_t_channel_8cxx_source.html#l00459">TChannel.cxx:459</a></div></div>
+<div class="ttc" id="aclass_t_channel_html_a9b22c3a1709f82c8a908ae120ec2ba00"><div class="ttname"><a href="class_t_channel.html#a9b22c3a1709f82c8a908ae120ec2ba00">TChannel::GetClassType</a></div><div class="ttdeci">TClass * GetClassType() const</div><div class="ttdef"><b>Definition</b> <a href="_t_channel_8cxx_source.html#l01632">TChannel.cxx:1632</a></div></div>
 <div class="ttc" id="aclass_t_detector_html"><div class="ttname"><a href="class_t_detector.html">TDetector</a></div><div class="ttdef"><b>Definition</b> <a href="_t_detector_8h_source.html#l00034">TDetector.h:34</a></div></div>
 <div class="ttc" id="aclass_t_singleton_html_a58e2a8e03fa6a7c20638044626add93a"><div class="ttname"><a href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TSingleton&lt; TSortingDiagnostics &gt;::Get</a></div><div class="ttdeci">static TSortingDiagnostics * Get(bool verbose=false)</div><div class="ttdef"><b>Definition</b> <a href="_t_singleton_8h_source.html#l00033">TSingleton.h:33</a></div></div>
-<div class="ttc" id="aclass_t_sorting_diagnostics_html_a931e2d0309558c922b2f9c0192418ffe"><div class="ttname"><a href="class_t_sorting_diagnostics.html#a931e2d0309558c922b2f9c0192418ffe">TSortingDiagnostics::MissingChannel</a></div><div class="ttdeci">void MissingChannel(const UInt_t &amp;address)</div><div class="ttdef"><b>Definition</b> <a href="_t_sorting_diagnostics_8cxx_source.html#l00071">TSortingDiagnostics.cxx:71</a></div></div>
-<div class="ttc" id="aclass_t_sorting_diagnostics_html_af8940d61ea67e1c38ffacff81c9b17b6"><div class="ttname"><a href="class_t_sorting_diagnostics.html#af8940d61ea67e1c38ffacff81c9b17b6">TSortingDiagnostics::AddDetectorClass</a></div><div class="ttdeci">void AddDetectorClass(TChannel *)</div><div class="ttdef"><b>Definition</b> <a href="_t_sorting_diagnostics_8cxx_source.html#l00080">TSortingDiagnostics.cxx:80</a></div></div>
-<div class="ttc" id="aclass_t_unpacked_event_html_a49817fa08d75507a565029f5f8c83a8f"><div class="ttname"><a href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">TUnpackedEvent::fDetectors</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; TDetector &gt; &gt; fDetectors</div><div class="ttdef"><b>Definition</b> <a href="_t_unpacked_event_8h_source.html#l00048">TUnpackedEvent.h:48</a></div></div>
-<div class="ttc" id="aclass_t_unpacked_event_html_a6a5918c68e0a8e425a8de75d49eb24ca"><div class="ttname"><a href="class_t_unpacked_event.html#a6a5918c68e0a8e425a8de75d49eb24ca">TUnpackedEvent::Build</a></div><div class="ttdeci">void Build()</div><div class="ttdef"><b>Definition</b> <a href="_t_unpacked_event_8cxx_source.html#l00014">TUnpackedEvent.cxx:14</a></div></div>
-<div class="ttc" id="aclass_t_unpacked_event_html_a7719a814c1ad7c7670354a3d0c587006"><div class="ttname"><a href="class_t_unpacked_event.html#a7719a814c1ad7c7670354a3d0c587006">TUnpackedEvent::TUnpackedEvent</a></div><div class="ttdeci">TUnpackedEvent()</div><div class="ttdef"><b>Definition</b> <a href="_t_unpacked_event_8cxx_source.html#l00008">TUnpackedEvent.cxx:8</a></div></div>
-<div class="ttc" id="aclass_t_unpacked_event_html_a7c3278b80d951ff1c414febf57fb1003"><div class="ttname"><a href="class_t_unpacked_event.html#a7c3278b80d951ff1c414febf57fb1003">TUnpackedEvent::GetDetector</a></div><div class="ttdeci">std::shared_ptr&lt; T &gt; GetDetector(bool make_if_not_found=false)</div><div class="ttdef"><b>Definition</b> <a href="_t_unpacked_event_8h_source.html#l00054">TUnpackedEvent.h:54</a></div></div>
+<div class="ttc" id="aclass_t_sorting_diagnostics_html_a931e2d0309558c922b2f9c0192418ffe"><div class="ttname"><a href="class_t_sorting_diagnostics.html#a931e2d0309558c922b2f9c0192418ffe">TSortingDiagnostics::MissingChannel</a></div><div class="ttdeci">void MissingChannel(const UInt_t &amp;address)</div><div class="ttdef"><b>Definition</b> <a href="_t_sorting_diagnostics_8cxx_source.html#l00064">TSortingDiagnostics.cxx:64</a></div></div>
+<div class="ttc" id="aclass_t_sorting_diagnostics_html_af8940d61ea67e1c38ffacff81c9b17b6"><div class="ttname"><a href="class_t_sorting_diagnostics.html#af8940d61ea67e1c38ffacff81c9b17b6">TSortingDiagnostics::AddDetectorClass</a></div><div class="ttdeci">void AddDetectorClass(TChannel *)</div><div class="ttdef"><b>Definition</b> <a href="_t_sorting_diagnostics_8cxx_source.html#l00073">TSortingDiagnostics.cxx:73</a></div></div>
+<div class="ttc" id="aclass_t_unpacked_event_html_a49817fa08d75507a565029f5f8c83a8f"><div class="ttname"><a href="class_t_unpacked_event.html#a49817fa08d75507a565029f5f8c83a8f">TUnpackedEvent::fDetectors</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; TDetector &gt; &gt; fDetectors</div><div class="ttdef"><b>Definition</b> <a href="_t_unpacked_event_8h_source.html#l00053">TUnpackedEvent.h:53</a></div></div>
+<div class="ttc" id="aclass_t_unpacked_event_html_a6a5918c68e0a8e425a8de75d49eb24ca"><div class="ttname"><a href="class_t_unpacked_event.html#a6a5918c68e0a8e425a8de75d49eb24ca">TUnpackedEvent::Build</a></div><div class="ttdeci">void Build()</div><div class="ttdef"><b>Definition</b> <a href="_t_unpacked_event_8cxx_source.html#l00012">TUnpackedEvent.cxx:12</a></div></div>
+<div class="ttc" id="aclass_t_unpacked_event_html_a7719a814c1ad7c7670354a3d0c587006"><div class="ttname"><a href="class_t_unpacked_event.html#a7719a814c1ad7c7670354a3d0c587006">TUnpackedEvent::TUnpackedEvent</a></div><div class="ttdeci">TUnpackedEvent()</div></div>
+<div class="ttc" id="aclass_t_unpacked_event_html_a7c3278b80d951ff1c414febf57fb1003"><div class="ttname"><a href="class_t_unpacked_event.html#a7c3278b80d951ff1c414febf57fb1003">TUnpackedEvent::GetDetector</a></div><div class="ttdeci">std::shared_ptr&lt; T &gt; GetDetector(bool make_if_not_found=false)</div><div class="ttdef"><b>Definition</b> <a href="_t_unpacked_event_8h_source.html#l00059">TUnpackedEvent.h:59</a></div></div>
 <div class="ttc" id="aclass_t_unpacked_event_html_ab6e9b7b3001265ca7d20956028ddfaaf"><div class="ttname"><a href="class_t_unpacked_event.html#ab6e9b7b3001265ca7d20956028ddfaaf">TUnpackedEvent::~TUnpackedEvent</a></div><div class="ttdeci">~TUnpackedEvent()</div></div>
-<div class="ttc" id="aclass_t_unpacked_event_html_abf1d3298d6d7d285aad05410a171c6d4"><div class="ttname"><a href="class_t_unpacked_event.html#abf1d3298d6d7d285aad05410a171c6d4">TUnpackedEvent::AddRawData</a></div><div class="ttdeci">void AddRawData(const std::shared_ptr&lt; const TFragment &gt; &amp;frag)</div><div class="ttdef"><b>Definition</b> <a href="_t_unpacked_event_8cxx_source.html#l00037">TUnpackedEvent.cxx:37</a></div></div>
-<div class="ttc" id="aclass_t_unpacked_event_html_ad785aba59778188400b8b1a75afce23c"><div class="ttname"><a href="class_t_unpacked_event.html#ad785aba59778188400b8b1a75afce23c">TUnpackedEvent::fFragments</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; const TFragment &gt; &gt; fFragments</div><div class="ttdef"><b>Definition</b> <a href="_t_unpacked_event_8h_source.html#l00047">TUnpackedEvent.h:47</a></div></div>
-<div class="ttc" id="aclass_t_unpacked_event_html_ad9188d5ce70b53f1f40aa5e4c022bdbb"><div class="ttname"><a href="class_t_unpacked_event.html#ad9188d5ce70b53f1f40aa5e4c022bdbb">TUnpackedEvent::BuildHits</a></div><div class="ttdeci">void BuildHits()</div><div class="ttdef"><b>Definition</b> <a href="_t_unpacked_event_8cxx_source.html#l00047">TUnpackedEvent.cxx:47</a></div></div>
-<div class="ttc" id="aclass_t_unpacked_event_html_adc22f528e8b4e989671b295658f6bc58"><div class="ttname"><a href="class_t_unpacked_event.html#adc22f528e8b4e989671b295658f6bc58">TUnpackedEvent::ClearRawData</a></div><div class="ttdeci">void ClearRawData()</div><div class="ttdef"><b>Definition</b> <a href="_t_unpacked_event_8cxx_source.html#l00042">TUnpackedEvent.cxx:42</a></div></div>
+<div class="ttc" id="aclass_t_unpacked_event_html_abf1d3298d6d7d285aad05410a171c6d4"><div class="ttname"><a href="class_t_unpacked_event.html#abf1d3298d6d7d285aad05410a171c6d4">TUnpackedEvent::AddRawData</a></div><div class="ttdeci">void AddRawData(const std::shared_ptr&lt; const TFragment &gt; &amp;frag)</div><div class="ttdef"><b>Definition</b> <a href="_t_unpacked_event_8cxx_source.html#l00035">TUnpackedEvent.cxx:35</a></div></div>
+<div class="ttc" id="aclass_t_unpacked_event_html_ad785aba59778188400b8b1a75afce23c"><div class="ttname"><a href="class_t_unpacked_event.html#ad785aba59778188400b8b1a75afce23c">TUnpackedEvent::fFragments</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; const TFragment &gt; &gt; fFragments</div><div class="ttdef"><b>Definition</b> <a href="_t_unpacked_event_8h_source.html#l00052">TUnpackedEvent.h:52</a></div></div>
+<div class="ttc" id="aclass_t_unpacked_event_html_ad9188d5ce70b53f1f40aa5e4c022bdbb"><div class="ttname"><a href="class_t_unpacked_event.html#ad9188d5ce70b53f1f40aa5e4c022bdbb">TUnpackedEvent::BuildHits</a></div><div class="ttdeci">void BuildHits()</div><div class="ttdef"><b>Definition</b> <a href="_t_unpacked_event_8cxx_source.html#l00045">TUnpackedEvent.cxx:45</a></div></div>
+<div class="ttc" id="aclass_t_unpacked_event_html_adc22f528e8b4e989671b295658f6bc58"><div class="ttname"><a href="class_t_unpacked_event.html#adc22f528e8b4e989671b295658f6bc58">TUnpackedEvent::ClearRawData</a></div><div class="ttdeci">void ClearRawData()</div><div class="ttdef"><b>Definition</b> <a href="_t_unpacked_event_8cxx_source.html#l00040">TUnpackedEvent.cxx:40</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -226,7 +222,7 @@ $(document).ready(function(){initNavTree('_t_unpacked_event_8cxx_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_cd3c6700b09e85b3c422529c0dd23545.html">TLoops</a></li><li class="navelem"><a class="el" href="_t_unpacked_event_8cxx.html">TUnpackedEvent.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 03:00:46.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:34.</li>
   </ul>
 </div>
 </body>

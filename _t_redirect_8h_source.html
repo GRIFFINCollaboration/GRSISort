@@ -104,77 +104,94 @@ $(document).ready(function(){initNavTree('_t_redirect_8h_source.html',''); initR
 <div class="contents">
 <a href="_t_redirect_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef TREDIRECT_H</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define TREDIRECT_H</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"></span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">/////////////////////////////////////////////////////////////////</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">///</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">/// \class TRedirect</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">///</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">/// A simple class to redirect stdout and stderr to file(s). To</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">/// use it, create it, providing the path of the files stdout and</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">/// stderr should be redirected to, and an (optional) flag whether</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">/// to append to those files (default) or not.</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">/// If only one file is provided, both stdout and stderr are</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">/// redirected to it.</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">/// The redirection ends when the TRedirect object is destroyed.</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">///</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">/////////////////////////////////////////////////////////////////</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"></span> </div>
-<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="class_t_redirect.html">   18</a></span><span class="keyword">class </span><a class="code hl_class" href="class_t_redirect.html">TRedirect</a> {</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00020" data-start="{" data-end="}">
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="class_t_redirect.html#a0deb43df52f90cd29144d9ba6a0e9659">   20</a></span>   <a class="code hl_function" href="class_t_redirect.html#a0deb43df52f90cd29144d9ba6a0e9659">TRedirect</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* newOut, <span class="keyword">const</span> <span class="keywordtype">char</span>* newErr, <span class="keywordtype">bool</span> append = <span class="keyword">true</span>)</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>   {</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>      <a class="code hl_function" href="class_t_redirect.html#a8a087bdd437aab45bc5719489fc81b7d">Redirect</a>(newOut, newErr, append);</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>   }</div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;cstdio&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;fcntl.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"></span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">/////////////////////////////////////////////////////////////////</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">///</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">/// \class TRedirect</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">///</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">/// A simple class to redirect stdout and stderr to file(s). To</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">/// use it, create it, providing the path of the files stdout and</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">/// stderr should be redirected to, and an (optional) flag whether</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">/// to append to those files (default) or not.</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">/// If only one file is provided, both stdout and stderr are</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">/// redirected to it.</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">/// The redirection ends when the TRedirect object is destroyed.</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">///</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">/////////////////////////////////////////////////////////////////</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"></span> </div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="};">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="class_t_redirect.html">   25</a></span><span class="keyword">class </span><a class="code hl_class" href="class_t_redirect.html">TRedirect</a> {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="class_t_redirect.html#a0deb43df52f90cd29144d9ba6a0e9659">   27</a></span>   <a class="code hl_function" href="class_t_redirect.html#a0deb43df52f90cd29144d9ba6a0e9659">TRedirect</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* newOut, <span class="keyword">const</span> <span class="keywordtype">char</span>* newErr, <span class="keywordtype">bool</span> append = <span class="keyword">true</span>)</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>   {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      <a class="code hl_function" href="class_t_redirect.html#a8a087bdd437aab45bc5719489fc81b7d">Redirect</a>(newOut, newErr, append);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   }</div>
 </div>
-<div class="foldopen" id="foldopen00024" data-start="{" data-end="}">
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="class_t_redirect.html#a830b6914eb6b92088e0b3e8d4680339a">   24</a></span>   <a class="code hl_function" href="class_t_redirect.html#a830b6914eb6b92088e0b3e8d4680339a">TRedirect</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* newOut, <span class="keywordtype">bool</span> append = <span class="keyword">true</span>)</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>   {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      <a class="code hl_function" href="class_t_redirect.html#a8a087bdd437aab45bc5719489fc81b7d">Redirect</a>(newOut, newOut, append);</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>   }</div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="class_t_redirect.html#a830b6914eb6b92088e0b3e8d4680339a">   31</a></span>   <a class="code hl_function" href="class_t_redirect.html#a830b6914eb6b92088e0b3e8d4680339a">TRedirect</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* newOut, <span class="keywordtype">bool</span> append = <span class="keyword">true</span>)</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>   {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      <a class="code hl_function" href="class_t_redirect.html#a8a087bdd437aab45bc5719489fc81b7d">Redirect</a>(newOut, newOut, append);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>   }</div>
 </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_t_redirect.html#a9e07a7737c8bb58319c85f6f2e79e505">   29</a></span>   <a class="code hl_function" href="class_t_redirect.html#a9e07a7737c8bb58319c85f6f2e79e505">~TRedirect</a>()</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   {</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      fflush(stdout);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>      dup2(<a class="code hl_variable" href="class_t_redirect.html#aef4ab0252d817e6a353a5b9330a83e48">fStdOutFileDescriptor</a>, fileno(stdout));</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      fflush(stderr);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      dup2(<a class="code hl_variable" href="class_t_redirect.html#ab05b4078fd1c438993b8a8c7b5cdd275">fStdErrFileDescriptor</a>, fileno(stderr));</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>   }</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="}">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="class_t_redirect.html#a9e07a7737c8bb58319c85f6f2e79e505">   36</a></span>   <a class="code hl_function" href="class_t_redirect.html#a9e07a7737c8bb58319c85f6f2e79e505">~TRedirect</a>()</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>   {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      fflush(stdout);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>      dup2(<a class="code hl_variable" href="class_t_redirect.html#aef4ab0252d817e6a353a5b9330a83e48">fStdOutFileDescriptor</a>, fileno(stdout));</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>      fflush(stderr);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      dup2(<a class="code hl_variable" href="class_t_redirect.html#ab05b4078fd1c438993b8a8c7b5cdd275">fStdErrFileDescriptor</a>, fileno(stderr));</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>   }</div>
 </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">private</span>:</div>
-<div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="class_t_redirect.html#a8a087bdd437aab45bc5719489fc81b7d">   38</a></span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_redirect.html#a8a087bdd437aab45bc5719489fc81b7d">Redirect</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* newOut, <span class="keyword">const</span> <span class="keywordtype">char</span>* newErr, <span class="keywordtype">bool</span> append)</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>   {</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>      <a class="code hl_variable" href="class_t_redirect.html#aef4ab0252d817e6a353a5b9330a83e48">fStdOutFileDescriptor</a> = dup(fileno(stdout));</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      fflush(stdout);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <span class="keywordtype">int</span> newStdOut = open(newOut, (append ? O_WRONLY | O_CREAT | O_APPEND : O_WRONLY | O_CREAT), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      dup2(newStdOut, fileno(stdout));</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      close(newStdOut);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      <a class="code hl_variable" href="class_t_redirect.html#ab05b4078fd1c438993b8a8c7b5cdd275">fStdErrFileDescriptor</a> = dup(fileno(stderr));</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      fflush(stderr);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <span class="keywordtype">int</span> newStdErr = open(newErr, (append ? O_WRONLY | O_CREAT | O_APPEND : O_WRONLY | O_CREAT), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      dup2(newStdErr, fileno(stderr));</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      close(newStdErr);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>   }</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="class_t_redirect.html#a85d367a21828762764179ec2b4be8064">   44</a></span>   <a class="code hl_function" href="class_t_redirect.html#a85d367a21828762764179ec2b4be8064">TRedirect</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_redirect.html">TRedirect</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="class_t_redirect.html#acaf1a3f0ec51730510cf5248d1ed86d1">   45</a></span>   <a class="code hl_function" href="class_t_redirect.html#acaf1a3f0ec51730510cf5248d1ed86d1">TRedirect</a>(<a class="code hl_class" href="class_t_redirect.html">TRedirect</a>&amp;&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="class_t_redirect.html#aba3334052e29a6277c41b08c88f9a1f6">   47</a></span>   <a class="code hl_class" href="class_t_redirect.html">TRedirect</a>&amp; <a class="code hl_function" href="class_t_redirect.html#aba3334052e29a6277c41b08c88f9a1f6">operator=</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_redirect.html">TRedirect</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="class_t_redirect.html#ac9637de0fed5ab8dff42f8d9c2c0d360">   48</a></span>   <a class="code hl_class" href="class_t_redirect.html">TRedirect</a>&amp; <a class="code hl_function" href="class_t_redirect.html#ac9637de0fed5ab8dff42f8d9c2c0d360">operator=</a>(<a class="code hl_class" href="class_t_redirect.html">TRedirect</a>&amp;&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keyword">private</span>:</div>
+<div class="foldopen" id="foldopen00051" data-start="{" data-end="}">
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="class_t_redirect.html#a8a087bdd437aab45bc5719489fc81b7d">   51</a></span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_redirect.html#a8a087bdd437aab45bc5719489fc81b7d">Redirect</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* newOut, <span class="keyword">const</span> <span class="keywordtype">char</span>* newErr, <span class="keywordtype">bool</span> append)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>   {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <a class="code hl_variable" href="class_t_redirect.html#aef4ab0252d817e6a353a5b9330a83e48">fStdOutFileDescriptor</a> = dup(fileno(stdout));</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      fflush(stdout);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <span class="keywordtype">int</span> newStdOut = open(newOut, (append ? O_WRONLY | O_CREAT | O_APPEND : O_WRONLY | O_CREAT), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      dup2(newStdOut, fileno(stdout));</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      close(newStdOut);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      <a class="code hl_variable" href="class_t_redirect.html#ab05b4078fd1c438993b8a8c7b5cdd275">fStdErrFileDescriptor</a> = dup(fileno(stderr));</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      fflush(stderr);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      <span class="keywordtype">int</span> newStdErr = open(newErr, (append ? O_WRONLY | O_CREAT | O_APPEND : O_WRONLY | O_CREAT), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      dup2(newStdErr, fileno(stderr));</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      close(newStdErr);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>   }</div>
 </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="class_t_redirect.html#aef4ab0252d817e6a353a5b9330a83e48">   52</a></span>   <span class="keywordtype">int</span> <a class="code hl_variable" href="class_t_redirect.html#aef4ab0252d817e6a353a5b9330a83e48">fStdOutFileDescriptor</a>{0};</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="class_t_redirect.html#ab05b4078fd1c438993b8a8c7b5cdd275">   53</a></span>   <span class="keywordtype">int</span> <a class="code hl_variable" href="class_t_redirect.html#ab05b4078fd1c438993b8a8c7b5cdd275">fStdErrFileDescriptor</a>{0};</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>};</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="class_t_redirect.html#aef4ab0252d817e6a353a5b9330a83e48">   65</a></span>   <span class="keywordtype">int</span> <a class="code hl_variable" href="class_t_redirect.html#aef4ab0252d817e6a353a5b9330a83e48">fStdOutFileDescriptor</a>{0};</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="class_t_redirect.html#ab05b4078fd1c438993b8a8c7b5cdd275">   66</a></span>   <span class="keywordtype">int</span> <a class="code hl_variable" href="class_t_redirect.html#ab05b4078fd1c438993b8a8c7b5cdd275">fStdErrFileDescriptor</a>{0};</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>};</div>
 </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclass_t_redirect_html"><div class="ttname"><a href="class_t_redirect.html">TRedirect</a></div><div class="ttdef"><b>Definition</b> <a href="_t_redirect_8h_source.html#l00018">TRedirect.h:18</a></div></div>
-<div class="ttc" id="aclass_t_redirect_html_a0deb43df52f90cd29144d9ba6a0e9659"><div class="ttname"><a href="class_t_redirect.html#a0deb43df52f90cd29144d9ba6a0e9659">TRedirect::TRedirect</a></div><div class="ttdeci">TRedirect(const char *newOut, const char *newErr, bool append=true)</div><div class="ttdef"><b>Definition</b> <a href="_t_redirect_8h_source.html#l00020">TRedirect.h:20</a></div></div>
-<div class="ttc" id="aclass_t_redirect_html_a830b6914eb6b92088e0b3e8d4680339a"><div class="ttname"><a href="class_t_redirect.html#a830b6914eb6b92088e0b3e8d4680339a">TRedirect::TRedirect</a></div><div class="ttdeci">TRedirect(const char *newOut, bool append=true)</div><div class="ttdef"><b>Definition</b> <a href="_t_redirect_8h_source.html#l00024">TRedirect.h:24</a></div></div>
-<div class="ttc" id="aclass_t_redirect_html_a8a087bdd437aab45bc5719489fc81b7d"><div class="ttname"><a href="class_t_redirect.html#a8a087bdd437aab45bc5719489fc81b7d">TRedirect::Redirect</a></div><div class="ttdeci">void Redirect(const char *newOut, const char *newErr, bool append)</div><div class="ttdef"><b>Definition</b> <a href="_t_redirect_8h_source.html#l00038">TRedirect.h:38</a></div></div>
-<div class="ttc" id="aclass_t_redirect_html_a9e07a7737c8bb58319c85f6f2e79e505"><div class="ttname"><a href="class_t_redirect.html#a9e07a7737c8bb58319c85f6f2e79e505">TRedirect::~TRedirect</a></div><div class="ttdeci">~TRedirect()</div><div class="ttdef"><b>Definition</b> <a href="_t_redirect_8h_source.html#l00029">TRedirect.h:29</a></div></div>
-<div class="ttc" id="aclass_t_redirect_html_ab05b4078fd1c438993b8a8c7b5cdd275"><div class="ttname"><a href="class_t_redirect.html#ab05b4078fd1c438993b8a8c7b5cdd275">TRedirect::fStdErrFileDescriptor</a></div><div class="ttdeci">int fStdErrFileDescriptor</div><div class="ttdef"><b>Definition</b> <a href="_t_redirect_8h_source.html#l00053">TRedirect.h:53</a></div></div>
-<div class="ttc" id="aclass_t_redirect_html_aef4ab0252d817e6a353a5b9330a83e48"><div class="ttname"><a href="class_t_redirect.html#aef4ab0252d817e6a353a5b9330a83e48">TRedirect::fStdOutFileDescriptor</a></div><div class="ttdeci">int fStdOutFileDescriptor</div><div class="ttdef"><b>Definition</b> <a href="_t_redirect_8h_source.html#l00052">TRedirect.h:52</a></div></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclass_t_redirect_html"><div class="ttname"><a href="class_t_redirect.html">TRedirect</a></div><div class="ttdef"><b>Definition</b> <a href="_t_redirect_8h_source.html#l00025">TRedirect.h:25</a></div></div>
+<div class="ttc" id="aclass_t_redirect_html_a0deb43df52f90cd29144d9ba6a0e9659"><div class="ttname"><a href="class_t_redirect.html#a0deb43df52f90cd29144d9ba6a0e9659">TRedirect::TRedirect</a></div><div class="ttdeci">TRedirect(const char *newOut, const char *newErr, bool append=true)</div><div class="ttdef"><b>Definition</b> <a href="_t_redirect_8h_source.html#l00027">TRedirect.h:27</a></div></div>
+<div class="ttc" id="aclass_t_redirect_html_a830b6914eb6b92088e0b3e8d4680339a"><div class="ttname"><a href="class_t_redirect.html#a830b6914eb6b92088e0b3e8d4680339a">TRedirect::TRedirect</a></div><div class="ttdeci">TRedirect(const char *newOut, bool append=true)</div><div class="ttdef"><b>Definition</b> <a href="_t_redirect_8h_source.html#l00031">TRedirect.h:31</a></div></div>
+<div class="ttc" id="aclass_t_redirect_html_a85d367a21828762764179ec2b4be8064"><div class="ttname"><a href="class_t_redirect.html#a85d367a21828762764179ec2b4be8064">TRedirect::TRedirect</a></div><div class="ttdeci">TRedirect(const TRedirect &amp;)=delete</div></div>
+<div class="ttc" id="aclass_t_redirect_html_a8a087bdd437aab45bc5719489fc81b7d"><div class="ttname"><a href="class_t_redirect.html#a8a087bdd437aab45bc5719489fc81b7d">TRedirect::Redirect</a></div><div class="ttdeci">void Redirect(const char *newOut, const char *newErr, bool append)</div><div class="ttdef"><b>Definition</b> <a href="_t_redirect_8h_source.html#l00051">TRedirect.h:51</a></div></div>
+<div class="ttc" id="aclass_t_redirect_html_a9e07a7737c8bb58319c85f6f2e79e505"><div class="ttname"><a href="class_t_redirect.html#a9e07a7737c8bb58319c85f6f2e79e505">TRedirect::~TRedirect</a></div><div class="ttdeci">~TRedirect()</div><div class="ttdef"><b>Definition</b> <a href="_t_redirect_8h_source.html#l00036">TRedirect.h:36</a></div></div>
+<div class="ttc" id="aclass_t_redirect_html_ab05b4078fd1c438993b8a8c7b5cdd275"><div class="ttname"><a href="class_t_redirect.html#ab05b4078fd1c438993b8a8c7b5cdd275">TRedirect::fStdErrFileDescriptor</a></div><div class="ttdeci">int fStdErrFileDescriptor</div><div class="ttdef"><b>Definition</b> <a href="_t_redirect_8h_source.html#l00066">TRedirect.h:66</a></div></div>
+<div class="ttc" id="aclass_t_redirect_html_aba3334052e29a6277c41b08c88f9a1f6"><div class="ttname"><a href="class_t_redirect.html#aba3334052e29a6277c41b08c88f9a1f6">TRedirect::operator=</a></div><div class="ttdeci">TRedirect &amp; operator=(const TRedirect &amp;)=delete</div></div>
+<div class="ttc" id="aclass_t_redirect_html_ac9637de0fed5ab8dff42f8d9c2c0d360"><div class="ttname"><a href="class_t_redirect.html#ac9637de0fed5ab8dff42f8d9c2c0d360">TRedirect::operator=</a></div><div class="ttdeci">TRedirect &amp; operator=(TRedirect &amp;&amp;)=delete</div></div>
+<div class="ttc" id="aclass_t_redirect_html_acaf1a3f0ec51730510cf5248d1ed86d1"><div class="ttname"><a href="class_t_redirect.html#acaf1a3f0ec51730510cf5248d1ed86d1">TRedirect::TRedirect</a></div><div class="ttdeci">TRedirect(TRedirect &amp;&amp;)=delete</div></div>
+<div class="ttc" id="aclass_t_redirect_html_aef4ab0252d817e6a353a5b9330a83e48"><div class="ttname"><a href="class_t_redirect.html#aef4ab0252d817e6a353a5b9330a83e48">TRedirect::fStdOutFileDescriptor</a></div><div class="ttdeci">int fStdOutFileDescriptor</div><div class="ttdef"><b>Definition</b> <a href="_t_redirect_8h_source.html#l00065">TRedirect.h:65</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -182,7 +199,7 @@ $(document).ready(function(){initNavTree('_t_redirect_8h_source.html',''); initR
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_redirect_8h.html">TRedirect.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 03:00:45.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:33.</li>
   </ul>
 </div>
 </body>

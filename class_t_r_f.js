@@ -9,7 +9,7 @@ var class_t_r_f =
     [ "Clear", "class_t_r_f.html#a0c5be0715eefca68a1d6c68845c7de54", null ],
     [ "ClearTransients", "class_t_r_f.html#a5157695811c23caccbc71ce62b9cacd0", null ],
     [ "Copy", "class_t_r_f.html#a636a20c11c35a8d01da6324b9fef34bf", null ],
-    [ "GetHit", "class_t_r_f.html#abb7c88ad69c596f7c183a82a746e2542", null ],
+    [ "GetHit", "class_t_r_f.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_r_f.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_r_f.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetTimeFitCfd", "class_t_r_f.html#a8f06cee669d9d72317b00e84249a226d", null ],

@@ -5,7 +5,7 @@ var class_example_fragment_selector =
     [ "Begin", "class_example_fragment_selector.html#ab93493c658b7214c7b98b755d85586bd", null ],
     [ "CheckSizes", "class_example_fragment_selector.html#a3ee3614749d1369487299802d7e18364", null ],
     [ "ClassDef", "class_example_fragment_selector.html#a4c6a02007627071fcae4e2f9f4e2436f", null ],
-    [ "ClassDefOverride", "class_example_fragment_selector.html#aa765a39a9983768ce6475ab6e6c76e3a", null ],
+    [ "ClassDefOverride", "class_example_fragment_selector.html#aac34947a3e9bcf869d26c3ce7ddf24c2", null ],
     [ "CreateHistograms", "class_example_fragment_selector.html#aac287634410c47d3c3c0eb6aa8e3543a", null ],
     [ "EndOfSort", "class_example_fragment_selector.html#aefe521b4e1ad5569b7e2809fb7f7e411", null ],
     [ "FillHistograms", "class_example_fragment_selector.html#a9b560ea5c2d3499facc843d192738b94", null ],
@@ -38,6 +38,7 @@ var class_example_fragment_selector =
     [ "fOutputPrefix", "class_example_fragment_selector.html#a85adb81750e8073e6935b8d1f3a79fd8", null ],
     [ "fPpg", "class_example_fragment_selector.html#abc598ed268f33d122fba95b9e4af89a0", null ],
     [ "fRunInfo", "class_example_fragment_selector.html#a6179997d65c5c6e3a0d6edec42180405", null ],
+    [ "fSizeLimit", "class_example_fragment_selector.html#a613ab2575ae93c6001aa09235c454546", null ],
     [ "fSym", "class_example_fragment_selector.html#a0a36b80b21d1c5fd0b2246943c28ebce", null ],
     [ "fTree", "class_example_fragment_selector.html#a97fe8cf742166fa3aad077a249586181", null ]
 ];

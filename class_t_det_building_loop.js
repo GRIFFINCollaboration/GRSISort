@@ -17,7 +17,7 @@ var class_t_det_building_loop =
     [ "ColumnWidth", "class_t_det_building_loop.html#abe60c16209394a97817fe33058a8c0ec", null ],
     [ "EndStatus", "class_t_det_building_loop.html#a3e7173edc5fcccaa6d1532d561f009db", null ],
     [ "Get", "class_t_det_building_loop.html#a95125f7225e246004fc7b5e9bf535963", null ],
-    [ "Get", "class_t_det_building_loop.html#a0ea6b5c0ead329ba9310014527822f80", null ],
+    [ "Get", "class_t_det_building_loop.html#af6ade4ec5c4299bc5fdb2fc322432af2", null ],
     [ "GetAll", "class_t_det_building_loop.html#a46c3d5574620ce01135a2692e9699be3", null ],
     [ "GetItemsCurrent", "class_t_det_building_loop.html#a5b7ad6de1381a432af627f9a8ca46729", null ],
     [ "GetItemsPopped", "class_t_det_building_loop.html#abfe1543692efb1e4eb2d43cdbfce6f5f", null ],

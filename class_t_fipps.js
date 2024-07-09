@@ -33,7 +33,7 @@ var class_t_fipps =
     [ "GetAddbackVector", "class_t_fipps.html#a00b71c8eca3c6ff045fb5b1bafb13fba", null ],
     [ "GetColorFromNumber", "class_t_fipps.html#a6f66905e3707231865fbc5630235f905", null ],
     [ "GetFippsHit", "class_t_fipps.html#a4eb1c7d2e9196acfbc7be1ef21a09e2d", null ],
-    [ "GetHit", "class_t_fipps.html#abb7c88ad69c596f7c183a82a746e2542", null ],
+    [ "GetHit", "class_t_fipps.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_fipps.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_fipps.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetNAddbackFrags", "class_t_fipps.html#a0cf24435a14688fe449a206006d41ece", null ],

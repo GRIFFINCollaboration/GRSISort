@@ -115,9 +115,11 @@ $(document).ready(function(){initNavTree('class_t_transition.html',''); initResi
   <tr class="even"><td class="entry"><a class="el" href="class_t_transition.html#a2b04c42e59253ad0cf9db2f2883562cf">GetIntensityUncertainty</a>() const</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_transition.html#ae047a3335407cdf40dcbc9ad9c513764">IsSortable</a>() const override</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_transition.html#a33033b84ca1e3fa66aaa6f7dec3ba3c2">operator&lt;</a>(const TTransition &amp;rhs) const</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_transition.html#a9a96ce12549baf030c4178d861a913a3">operator=</a>(const TTransition &amp;)=default</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_transition.html#a4a6ba2625f0604cd1fe7442de40cc36c">operator=</a>(TTransition &amp;&amp;) noexcept=default</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_transition.html#a831d7fa75916064aae38c4ebe21f74a4">operator&gt;</a>(const TTransition &amp;rhs) const</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_transition.html#a380fa636e06380474f69d7d910bf3f43">Print</a>(Option_t *opt=&quot;&quot;) const override</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_t_transition.html#a80d317be17eddd2b6e1e7ffbafa06c98">PrintToString</a>()</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_transition.html#ae36efa14560b68489d44fdb7d70f6d21">PrintToString</a>() const</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_transition.html#acbe7b8430fa2b966f783ad621a3f568e">SetCompareIntensity</a>(const bool &amp;val)</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_transition.html#afaf7a63fe2822b059828df6f93a15d55">SetEnergy</a>(const double &amp;tmpenergy)</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_transition.html#ac717aa95d7604a8a79d23119f948c096">SetEnergyUncertainty</a>(const double &amp;tmperror)</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
@@ -125,6 +127,8 @@ $(document).ready(function(){initNavTree('class_t_transition.html',''); initResi
   <tr class="even"><td class="entry"><a class="el" href="class_t_transition.html#ae3c381d14e8480dd6e5eb9a6e3cab9b1">SetIntensityUncertainty</a>(const double &amp;tmpinterror)</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_transition.html#a7261ff7697162ea0cbdd32b99636288f">TNucleus</a></td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"><span class="mlabel">friend</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_transition.html#a3eea01975bb40c72a1c16716a525697e">TTransition</a>()</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_transition.html#a7d051041b8901830179037776ffad847">TTransition</a>(const TTransition &amp;)=default</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_transition.html#a4f829e2ab2db3550bf47148e6f289fe9">TTransition</a>(TTransition &amp;&amp;) noexcept=default</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_transition.html#a71a7a71db8c5b08cdf1482d748d452a4">~TTransition</a>() override</td><td class="entry"><a class="el" href="class_t_transition.html">TTransition</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
@@ -132,7 +136,7 @@ $(document).ready(function(){initNavTree('class_t_transition.html',''); initResi
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 03:00:53.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:40.</li>
   </ul>
 </div>
 </body>

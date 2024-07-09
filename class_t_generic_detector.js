@@ -11,7 +11,7 @@ var class_t_generic_detector =
     [ "ClearTransients", "class_t_generic_detector.html#a5157695811c23caccbc71ce62b9cacd0", null ],
     [ "Copy", "class_t_generic_detector.html#a5bb705bebefab8cfb039ecb67ec0f9da", null ],
     [ "GetGenericDetectorHit", "class_t_generic_detector.html#a07d0d2175b8dbcd94ddbf3b8d5bbe051", null ],
-    [ "GetHit", "class_t_generic_detector.html#abb7c88ad69c596f7c183a82a746e2542", null ],
+    [ "GetHit", "class_t_generic_detector.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_generic_detector.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_generic_detector.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "operator=", "class_t_generic_detector.html#a85c95c1a93e4e8dc9e38e52da7f96974", null ],

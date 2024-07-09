@@ -90,7 +90,6 @@ var dir_d44c64559bbebec7f509842c48db8b23 =
     [ "TMultiPeak.h", "_t_multi_peak_8h.html", null ],
     [ "TNucleus.h", "_t_nucleus_8h.html", "_t_nucleus_8h" ],
     [ "TObjectWrapper.h", "_t_object_wrapper_8h.html", null ],
-    [ "TParallelFileMerger.h", "_t_parallel_file_merger_8h.html", "_t_parallel_file_merger_8h" ],
     [ "TParserLibrary.h", "_t_parser_library_8h.html", "_t_parser_library_8h" ],
     [ "TParsingDiagnostics.h", "_t_parsing_diagnostics_8h.html", null ],
     [ "TPeak.h", "_t_peak_8h.html", null ],

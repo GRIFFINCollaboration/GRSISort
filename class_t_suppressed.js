@@ -1,7 +1,7 @@
 var class_t_suppressed =
 [
     [ "TSuppressed", "class_t_suppressed.html#a2ead56a15b4f754db6bdafcbd684baa2", null ],
-    [ "~TSuppressed", "class_t_suppressed.html#a0f2975c0814c4509b79d59f8f87da5cb", null ],
+    [ "~TSuppressed", "class_t_suppressed.html#a8c5b83edfdbb7ab31078729e7ca024a6", null ],
     [ "AddbackCriterion", "class_t_suppressed.html#a60817f357b7b432072114248ec5e8a55", null ],
     [ "AddFragment", "class_t_suppressed.html#ace91f1e86d601edd8986f191fbc2ae8d", null ],
     [ "AddHit", "class_t_suppressed.html#af83ad943618a30f7d1639675e18fc5b8", null ],
@@ -12,7 +12,7 @@ var class_t_suppressed =
     [ "CreateAddback", "class_t_suppressed.html#a59f557c2b1b8e17e8c8d9ecb0ce59f36", null ],
     [ "CreateSuppressed", "class_t_suppressed.html#a68d78a79808314414994e25285fe5cb6", null ],
     [ "CreateSuppressedAddback", "class_t_suppressed.html#abcc6366a598a7641ab93ceada912dfad", null ],
-    [ "GetHit", "class_t_suppressed.html#abb7c88ad69c596f7c183a82a746e2542", null ],
+    [ "GetHit", "class_t_suppressed.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_suppressed.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_suppressed.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "Print", "class_t_suppressed.html#a16143affb8db86547ab1ee1d37f5704c", null ],

@@ -10,7 +10,7 @@ var class_t_eagle_pulser =
     [ "ClearStatus", "class_t_eagle_pulser.html#ad66f0bbed0959a821a7fffded5919a22", null ],
     [ "ClearTransients", "class_t_eagle_pulser.html#a5157695811c23caccbc71ce62b9cacd0", null ],
     [ "Copy", "class_t_eagle_pulser.html#a5bb705bebefab8cfb039ecb67ec0f9da", null ],
-    [ "GetHit", "class_t_eagle_pulser.html#abb7c88ad69c596f7c183a82a746e2542", null ],
+    [ "GetHit", "class_t_eagle_pulser.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_eagle_pulser.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_eagle_pulser.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "operator=", "class_t_eagle_pulser.html#aef854f14ee3ca5f5d30a7b063aabc620", null ],

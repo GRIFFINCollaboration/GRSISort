@@ -10,7 +10,7 @@ var class_t_tri_foil =
     [ "Clear", "class_t_tri_foil.html#a1ca42648c9f08a7181699d4eb2bdb429", null ],
     [ "ClearTransients", "class_t_tri_foil.html#a5157695811c23caccbc71ce62b9cacd0", null ],
     [ "Copy", "class_t_tri_foil.html#a4f4f3117e2102ba8a71bd9dd268bf4c1", null ],
-    [ "GetHit", "class_t_tri_foil.html#abb7c88ad69c596f7c183a82a746e2542", null ],
+    [ "GetHit", "class_t_tri_foil.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_tri_foil.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_tri_foil.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetTimeStamp", "class_t_tri_foil.html#a9edb04118ce566f0718ae85179953045", null ],

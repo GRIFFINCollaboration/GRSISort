@@ -4,7 +4,7 @@ var class_time_walk_helper =
     [ "TimeWalkHelper", "class_time_walk_helper.html#a11499e49023f480a13c0949fe42a96f6", null ],
     [ "Book", "class_time_walk_helper.html#ae831de4a785c33e55f889b2406ab8430", null ],
     [ "CheckSizes", "class_time_walk_helper.html#a49c88825285ac0920b4af055ddbd0fbb", null ],
-    [ "CreateHistograms", "class_time_walk_helper.html#a1dcd4170e9ca35c8e0f583e6a1f1643d", null ],
+    [ "CreateHistograms", "class_time_walk_helper.html#a103273b3875a54e7ed61df63048ff895", null ],
     [ "EndOfSort", "class_time_walk_helper.html#ae8293c18719d3e29c1d9afb74cc41d9a", null ],
     [ "Exec", "class_time_walk_helper.html#a13d75eb98256ae11e6bd917de6eb10aa", null ],
     [ "Finalize", "class_time_walk_helper.html#a0e505d1c617db78984dd90345c10d50e", null ],
@@ -25,6 +25,7 @@ var class_time_walk_helper =
     [ "fPpg", "class_time_walk_helper.html#ac7ce3378d3b7c730f9cbd73dd2cf7ab3", null ],
     [ "fPrefix", "class_time_walk_helper.html#a67b6f5f70635c0bd67ae1b8bf1c1197a", null ],
     [ "fRunInfo", "class_time_walk_helper.html#ae95111fa334deef7e49ea2050899e972", null ],
+    [ "fSizeLimit", "class_time_walk_helper.html#adba49a09a6ebe50ebb9b33e051c0a3c0", null ],
     [ "fSym", "class_time_walk_helper.html#a210872f6be03540044b9e1e190fde8f6", null ],
     [ "fTree", "class_time_walk_helper.html#a0b2861b9e607129c2d996f46d871baa6", null ],
     [ "fUserSettings", "class_time_walk_helper.html#a559c82856eb597c7951c63b61a7802fc", null ]

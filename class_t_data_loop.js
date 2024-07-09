@@ -1,6 +1,6 @@
 var class_t_data_loop =
 [
-    [ "~TDataLoop", "class_t_data_loop.html#ab37c8703e83c9eaad3449a6e232bd220", null ],
+    [ "~TDataLoop", "class_t_data_loop.html#a1fc4df0e6ffbf8192526371325420979", null ],
     [ "TDataLoop", "class_t_data_loop.html#a8fe819627d821ee8db764bd06aac08f0", null ],
     [ "TDataLoop", "class_t_data_loop.html#a0558ebea52e3567d4e6e3dfcf7b2dc4e", null ],
     [ "TDataLoop", "class_t_data_loop.html#a2398fd6624b43a339424dd509863a2a2", null ],
@@ -41,7 +41,6 @@ var class_t_data_loop =
     [ "Print", "class_t_data_loop.html#ac3e4f4d5ade78f955f1ea763798d625a", null ],
     [ "Progress", "class_t_data_loop.html#a57dfca04579bd53ad000bf93cd050ce6", null ],
     [ "ReplaceSource", "class_t_data_loop.html#a2d73c4d4510f6835fc94d8349d1f4014", null ],
-    [ "ResetSource", "class_t_data_loop.html#a788ebb4b25e56f1be9b35dd523b65596", null ],
     [ "Resume", "class_t_data_loop.html#a4fb4c7ce9c43caa1460c24c2ffd95162", null ],
     [ "ResumeAll", "class_t_data_loop.html#ae71ed7915b1d2db200dbcb4880e4c96b", null ],
     [ "SendStop", "class_t_data_loop.html#adbbeb55000be3796cfb4096dee3bb254", null ],

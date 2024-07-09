@@ -24,7 +24,7 @@ var class_t_la_br =
     [ "CreateAddback", "class_t_la_br.html#a59f557c2b1b8e17e8c8d9ecb0ce59f36", null ],
     [ "CreateSuppressed", "class_t_la_br.html#a68d78a79808314414994e25285fe5cb6", null ],
     [ "CreateSuppressedAddback", "class_t_la_br.html#abcc6366a598a7641ab93ceada912dfad", null ],
-    [ "GetHit", "class_t_la_br.html#abb7c88ad69c596f7c183a82a746e2542", null ],
+    [ "GetHit", "class_t_la_br.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_la_br.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetLaBrHit", "class_t_la_br.html#ac7eb733496b0b6a1688c3ef2b83af52a", null ],
     [ "GetMultiplicity", "class_t_la_br.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],

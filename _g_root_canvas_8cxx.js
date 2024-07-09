@@ -80,7 +80,6 @@ var _g_root_canvas_8cxx =
       [ "kToolMarker", "_g_root_canvas_8cxx.html#a05b56d948b7fcb369490fafff19e529daf5fe3cbdc046f167669fcbf5b5420bb0", null ],
       [ "kToolCutG", "_g_root_canvas_8cxx.html#a05b56d948b7fcb369490fafff19e529daf4a834744f6164ba740ed2b97ce6cb69", null ]
     ] ],
-    [ "ClassImp", "_g_root_canvas_8cxx.html#afb2704fb69376a9eb2df8ff80f79afc5", null ],
     [ "gOpenTypes", "_g_root_canvas_8cxx.html#a7547772cfe4479a73baa5eb46674ec67", null ],
     [ "gSaveAsTypes", "_g_root_canvas_8cxx.html#a32427ebdce1b709934a807c15ff4afa4", null ],
     [ "gToolBarData", "_g_root_canvas_8cxx.html#a564acb9dca4bf0c74b3d07d43a2d8e07", null ],

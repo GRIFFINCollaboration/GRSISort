@@ -100,6 +100,7 @@ $(document).ready(function(){initNavTree('class_cross_talk.html',''); initResiza
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="class_cross_talk-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">CrossTalk Class Reference</div></div>
 </div><!--header-->
@@ -155,8 +156,6 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a5d4c3f5aef64c23330e2f80b017d9e42" id="r_a5d4c3f5aef64c23330e2f80b017d9e42"><td class="memItemLeft" align="right" valign="top">TTree *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#a5d4c3f5aef64c23330e2f80b017d9e42">fChain</a></td></tr>
-<tr class="separator:a5d4c3f5aef64c23330e2f80b017d9e42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7f0dee84446e7d8e7622eff0e4a8efb" id="r_ab7f0dee84446e7d8e7622eff0e4a8efb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_griffin.html">TGriffin</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cross_talk.html#ab7f0dee84446e7d8e7622eff0e4a8efb">fGrif</a></td></tr>
 <tr class="separator:ab7f0dee84446e7d8e7622eff0e4a8efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a886e11d9e78392aed664c4e148811744" id="r_a886e11d9e78392aed664c4e148811744"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_griffin_bgo.html">TGriffinBgo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cross_talk.html#a886e11d9e78392aed664c4e148811744">fGriffinBgo</a></td></tr>
@@ -170,7 +169,7 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:afea3f5043d0e02c2fa56cbd4c1018b4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9682bae598efaab0cd904ae74204e167" id="r_a9682bae598efaab0cd904ae74204e167"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, TCutG * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#a9682bae598efaab0cd904ae74204e167">fCuts</a></td></tr>
 <tr class="separator:a9682bae598efaab0cd904ae74204e167"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94a4d82d4c87c826d97b69e7fbb522db" id="r_a94a4d82d4c87c826d97b69e7fbb522db"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#a94a4d82d4c87c826d97b69e7fbb522db">fEntry</a></td></tr>
+<tr class="memitem:a94a4d82d4c87c826d97b69e7fbb522db" id="r_a94a4d82d4c87c826d97b69e7fbb522db"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#a94a4d82d4c87c826d97b69e7fbb522db">fEntry</a> {0}</td></tr>
 <tr class="separator:a94a4d82d4c87c826d97b69e7fbb522db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e35e3147d9f14a04e4d0f9f30431074" id="r_a1e35e3147d9f14a04e4d0f9f30431074"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_g_r_s_i_map.html">TGRSIMap</a>&lt; std::string, TH1 * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#a1e35e3147d9f14a04e4d0f9f30431074">fH1</a></td></tr>
 <tr class="separator:a1e35e3147d9f14a04e4d0f9f30431074"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -193,19 +192,26 @@ Protected Attributes</h2></td></tr>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a3ee3614749d1369487299802d7e18364" id="r_a3ee3614749d1369487299802d7e18364"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#a3ee3614749d1369487299802d7e18364">CheckSizes</a> (const char *usage)</td></tr>
 <tr class="separator:a3ee3614749d1369487299802d7e18364"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa765a39a9983768ce6475ab6e6c76e3a" id="r_aa765a39a9983768ce6475ab6e6c76e3a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#aa765a39a9983768ce6475ab6e6c76e3a">ClassDefOverride</a> (<a class="el" href="class_t_g_r_s_i_selector.html">TGRSISelector</a>, 2)</td></tr>
-<tr class="separator:aa765a39a9983768ce6475ab6e6c76e3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac34947a3e9bcf869d26c3ce7ddf24c2" id="r_aac34947a3e9bcf869d26c3ce7ddf24c2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#aac34947a3e9bcf869d26c3ce7ddf24c2">ClassDefOverride</a> (<a class="el" href="class_t_g_r_s_i_selector.html">TGRSISelector</a>, 3)</td></tr>
+<tr class="separator:aac34947a3e9bcf869d26c3ce7ddf24c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:af9d2891e9ca020a9b1161de9496236c0" id="r_af9d2891e9ca020a9b1161de9496236c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_analysis_options.html">TAnalysisOptions</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#af9d2891e9ca020a9b1161de9496236c0">fAnalysisOptions</a> {nullptr}</td></tr>
 <tr class="separator:af9d2891e9ca020a9b1161de9496236c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a399ba322e2eef95dfcc3f2d21d27fbac" id="r_a399ba322e2eef95dfcc3f2d21d27fbac"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#a399ba322e2eef95dfcc3f2d21d27fbac">fFirstRunNumber</a></td></tr>
+<tr class="memitem:a5d4c3f5aef64c23330e2f80b017d9e42" id="r_a5d4c3f5aef64c23330e2f80b017d9e42"><td class="memItemLeft" align="right" valign="top">TTree *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#a5d4c3f5aef64c23330e2f80b017d9e42">fChain</a> {nullptr}</td></tr>
+<tr class="separator:a5d4c3f5aef64c23330e2f80b017d9e42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a399ba322e2eef95dfcc3f2d21d27fbac" id="r_a399ba322e2eef95dfcc3f2d21d27fbac"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#a399ba322e2eef95dfcc3f2d21d27fbac">fFirstRunNumber</a> {-1}</td></tr>
 <tr class="separator:a399ba322e2eef95dfcc3f2d21d27fbac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a095a925b9e0e9ae440a758300f082c9c" id="r_a095a925b9e0e9ae440a758300f082c9c"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#a095a925b9e0e9ae440a758300f082c9c">fFirstSubRunNumber</a></td></tr>
+<tr class="memitem:a095a925b9e0e9ae440a758300f082c9c" id="r_a095a925b9e0e9ae440a758300f082c9c"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#a095a925b9e0e9ae440a758300f082c9c">fFirstSubRunNumber</a> {-1}</td></tr>
 <tr class="separator:a095a925b9e0e9ae440a758300f082c9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85adb81750e8073e6935b8d1f3a79fd8" id="r_a85adb81750e8073e6935b8d1f3a79fd8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#a85adb81750e8073e6935b8d1f3a79fd8">fOutputPrefix</a></td></tr>
 <tr class="separator:a85adb81750e8073e6935b8d1f3a79fd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:a613ab2575ae93c6001aa09235c454546" id="r_a613ab2575ae93c6001aa09235c454546"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_selector.html#a613ab2575ae93c6001aa09235c454546">fSizeLimit</a> = 1073741822</td></tr>
+<tr class="separator:a613ab2575ae93c6001aa09235c454546"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for CrossTalk:</div>
@@ -248,7 +254,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_cross_talk_8h_source.html#l00032">32</a> of file <a class="el" href="_cross_talk_8h_source.html">CrossTalk.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00064">TGRSISelector::SetOutputPrefix()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00057">TGRSISelector::SetOutputPrefix()</a>.</p>
 
 </div>
 </div>
@@ -305,7 +311,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>The <a class="el" href="class_t_g_r_s_i_selector.html#ab93493c658b7214c7b98b755d85586bd">Begin()</a> function is called at the start of the query. When running with PROOF <a class="el" href="class_t_g_r_s_i_selector.html#ab93493c658b7214c7b98b755d85586bd">Begin()</a> is only called on the client. The tree argument is deprecated (on PROOF 0 is passed).</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00039">39</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00036">36</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
 
 </div>
 </div>
@@ -335,11 +341,11 @@ Private Attributes</h2></td></tr>
 
 <p>Function to check size of objects in output list. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00307">307</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00303">303</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00017">DRED</a>, <a class="el" href="_globals_8h_source.html#l00004">RESET_COLOR</a>, and <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00032">SIZE_LIMIT</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00017">DRED</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00074">TGRSISelector::fSizeLimit</a>, and <a class="el" href="_globals_8h_source.html#l00004">RESET_COLOR</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00047">TGRSISelector::SlaveBegin()</a>, <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00209">TGRSISelector::SlaveTerminate()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00222">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00044">TGRSISelector::SlaveBegin()</a>, <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00206">TGRSISelector::SlaveTerminate()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -371,8 +377,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa765a39a9983768ce6475ab6e6c76e3a" name="aa765a39a9983768ce6475ab6e6c76e3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa765a39a9983768ce6475ab6e6c76e3a">&#9670;&#160;</a></span>ClassDefOverride()</h2>
+<a id="aac34947a3e9bcf869d26c3ce7ddf24c2" name="aac34947a3e9bcf869d26c3ce7ddf24c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac34947a3e9bcf869d26c3ce7ddf24c2">&#9670;&#160;</a></span>ClassDefOverride()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -389,7 +395,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">2&#160;</td>
+          <td class="paramtype">3&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -434,7 +440,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_cross_talk_8_c_source.html#l00030">30</a> of file <a class="el" href="_cross_talk_8_c_source.html">CrossTalk.C</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00068">TGRSISelector::fH1</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00069">TGRSISelector::fH2</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00073">TGRSISelector::fHSparse</a>, and <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00056">TGRSISelector::GetOutputList()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00061">TGRSISelector::fH1</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00062">TGRSISelector::fH2</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00066">TGRSISelector::fHSparse</a>, and <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00049">TGRSISelector::GetOutputList()</a>.</p>
 
 </div>
 </div>
@@ -461,9 +467,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00063">63</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00056">56</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00209">TGRSISelector::SlaveTerminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00206">TGRSISelector::SlaveTerminate()</a>.</p>
 
 </div>
 </div>
@@ -494,7 +500,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_cross_talk_8_c_source.html#l00068">68</a> of file <a class="el" href="_cross_talk_8_c_source.html">CrossTalk.C</a>.</p>
 
-<p class="reference">References <a class="el" href="_cross_talk_helper_8cxx_source.html#l00015">Addback()</a>, <a class="el" href="_cross_talk_helper_8cxx_source.html#l00013">defaultKValue</a>, <a class="el" href="_cross_talk_8h_source.html#l00028">fGrif</a>, <a class="el" href="_cross_talk_8h_source.html#l00030">fGriffinBgo</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00068">TGRSISelector::fH1</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00069">TGRSISelector::fH2</a>, <a class="el" href="_t_griffin_hit_8h_source.html#l00061">TGriffinHit::GetArrayNumber()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00210">TDetectorHit::GetCrystal()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00192">TDetectorHit::GetDetector()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00084">TDetectorHit::GetEnergy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00155">TDetectorHit::GetKValue()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00170">TGriffinHit::GetNoCTEnergy()</a>, <a class="el" href="_t_griffin_8h_source.html#l00128">TGriffin::GetNSuppressedAddbackFrags()</a>, <a class="el" href="_t_griffin_8h_source.html#l00121">TGriffin::GetSuppressedAddbackHit()</a>, <a class="el" href="_t_griffin_8h_source.html#l00118">TGriffin::GetSuppressedAddbackMultiplicity()</a>, <a class="el" href="_t_griffin_8h_source.html#l00107">TGriffin::GetSuppressedHit()</a>, <a class="el" href="_t_griffin_8h_source.html#l00110">TGriffin::GetSuppressedMultiplicity()</a>, and <a class="el" href="_cross_talk_helper_8cxx_source.html#l00003">pileup_reject</a>.</p>
+<p class="reference">References <a class="el" href="_cross_talk_helper_8cxx_source.html#l00015">Addback()</a>, <a class="el" href="_cross_talk_helper_8cxx_source.html#l00013">defaultKValue</a>, <a class="el" href="_cross_talk_8h_source.html#l00028">fGrif</a>, <a class="el" href="_cross_talk_8h_source.html#l00030">fGriffinBgo</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00061">TGRSISelector::fH1</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00062">TGRSISelector::fH2</a>, <a class="el" href="_t_griffin_hit_8h_source.html#l00061">TGriffinHit::GetArrayNumber()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00208">TDetectorHit::GetCrystal()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00190">TDetectorHit::GetDetector()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00077">TDetectorHit::GetEnergy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00151">TDetectorHit::GetKValue()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00170">TGriffinHit::GetNoCTEnergy()</a>, <a class="el" href="_t_griffin_8h_source.html#l00128">TGriffin::GetNSuppressedAddbackFrags()</a>, <a class="el" href="_t_griffin_8h_source.html#l00121">TGriffin::GetSuppressedAddbackHit()</a>, <a class="el" href="_t_griffin_8h_source.html#l00118">TGriffin::GetSuppressedAddbackMultiplicity()</a>, <a class="el" href="_t_griffin_8h_source.html#l00107">TGriffin::GetSuppressedHit()</a>, <a class="el" href="_t_griffin_8h_source.html#l00110">TGriffin::GetSuppressedMultiplicity()</a>, and <a class="el" href="_cross_talk_helper_8cxx_source.html#l00003">pileup_reject</a>.</p>
 
 </div>
 </div>
@@ -532,9 +538,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00049">49</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00042">42</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00036">TGRSISelector::fChain</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00076">TGRSISelector::fChain</a>.</p>
 
 </div>
 </div>
@@ -563,7 +569,7 @@ Private Attributes</h2></td></tr>
 
 <p>this does the same as TSelector::GetOutputList() </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00056">56</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00049">49</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_alphanumeric_selector_8_c_source.html#l00005">AlphanumericSelector::CreateHistograms()</a>, <a class="el" href="_angular_correlation_selector_8_c_source.html#l00011">AngularCorrelationSelector::CreateHistograms()</a>, <a class="el" href="_cross_talk_8_c_source.html#l00030">CreateHistograms()</a>, <a class="el" href="_example_event_selector_8_c_source.html#l00005">ExampleEventSelector::CreateHistograms()</a>, <a class="el" href="_example_fragment_selector_8_c_source.html#l00005">ExampleFragmentSelector::CreateHistograms()</a>, <a class="el" href="_example_tree_selector_8_c_source.html#l00005">ExampleTreeSelector::CreateHistograms()</a>, <a class="el" href="_fast_timing_hist_selector_8_c_source.html#l00005">FastTimingHistSelector::CreateHistograms()</a>, <a class="el" href="_griffin_k_value_selector_8_c_source.html#l00007">GriffinKValueSelector::CreateHistograms()</a>, and <a class="el" href="_time_walk_selector_8_c_source.html#l00005">TimeWalkSelector::CreateHistograms()</a>.</p>
 
@@ -592,11 +598,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00065">65</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00058">58</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00082">TGRSISelector::fOutputPrefix</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00079">TGRSISelector::fOutputPrefix</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00209">TGRSISelector::SlaveTerminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00206">TGRSISelector::SlaveTerminate()</a>.</p>
 
 </div>
 </div>
@@ -625,9 +631,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>The <a class="el" href="class_t_g_r_s_i_selector.html#ad06938ce0485325129d3d6c131ca6cc3">Init()</a> function is called when the selector needs to initialize a new tree or chain. Typically here the branch addresses and branch pointers of the tree will be set. It is normally not necessary to make changes to the generated code, but the routine can be extended by the user if needed. <a class="el" href="class_t_g_r_s_i_selector.html#ad06938ce0485325129d3d6c131ca6cc3">Init()</a> will be called many times when running on PROOF (once per file to be processed). Set branch addresses and branch pointers</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00279">279</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00275">275</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00036">TGRSISelector::fChain</a>, and <a class="el" href="class_t_g_r_s_i_selector.html#a687a3ec542b81591d085dadf208cef16">TGRSISelector::InitializeBranches()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00076">TGRSISelector::fChain</a>, and <a class="el" href="class_t_g_r_s_i_selector.html#a687a3ec542b81591d085dadf208cef16">TGRSISelector::InitializeBranches()</a>.</p>
 
 </div>
 </div>
@@ -683,7 +689,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>The <a class="el" href="class_t_g_r_s_i_selector.html#a301316e1b796a58ca2abd5339ff35e29">Notify()</a> function is called when a new file is opened. This can be either for a new TTree in a TChain or when when a new TTree is started when using PROOF. It is normally not necessary to make changes to the generated code, but the routine can be extended by the user if needed. The return value is currently not used.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00296">296</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00292">292</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
 
 </div>
 </div>
@@ -716,9 +722,9 @@ Private Attributes</h2></td></tr>
 <p>Use fStatus to set the return value of TTree::Process().</p>
 <p>The return value is currently not used</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00169">169</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00166">166</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00070">TGRSIOptions::AnalysisOptions()</a>, <a class="el" href="_t_g_r_s_i_map_8h_source.html#l00107">TGRSIMapException&lt; key_type &gt;::detail()</a>, <a class="el" href="_globals_8h_source.html#l00017">DRED</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00036">TGRSISelector::fChain</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00078">TGRSISelector::fEntry</a>, <a class="el" href="class_t_g_r_s_i_selector.html#a372eb1a67bc3cc2348d38e5f623f514b">TGRSISelector::FillHistograms()</a>, <a class="el" href="_t_channel_8cxx_source.html#l00961">TChannel::ReadCalFromFile()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00101">TAnalysisOptions::ReadFromFile()</a>, and <a class="el" href="_globals_8h_source.html#l00004">RESET_COLOR</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00070">TGRSIOptions::AnalysisOptions()</a>, <a class="el" href="_t_g_r_s_i_map_8h_source.html#l00108">TGRSIMapException&lt; key_type &gt;::detail()</a>, <a class="el" href="_globals_8h_source.html#l00017">DRED</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00076">TGRSISelector::fChain</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00071">TGRSISelector::fEntry</a>, <a class="el" href="class_t_g_r_s_i_selector.html#a372eb1a67bc3cc2348d38e5f623f514b">TGRSISelector::FillHistograms()</a>, <a class="el" href="_t_channel_8cxx_source.html#l01068">TChannel::ReadCalFromFile()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00096">TAnalysisOptions::ReadFromFile()</a>, and <a class="el" href="_globals_8h_source.html#l00004">RESET_COLOR</a>.</p>
 
 </div>
 </div>
@@ -746,7 +752,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00054">54</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00047">47</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
 </div>
 </div>
@@ -774,7 +780,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00053">53</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00046">46</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
 </div>
 </div>
@@ -802,11 +808,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00064">64</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00057">57</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00082">TGRSISelector::fOutputPrefix</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00079">TGRSISelector::fOutputPrefix</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_alphanumeric_selector_8h_source.html#l00029">AlphanumericSelector::AlphanumericSelector()</a>, <a class="el" href="_angular_correlation_selector_8h_source.html#l00039">AngularCorrelationSelector::AngularCorrelationSelector()</a>, <a class="el" href="_cross_talk_8h_source.html#l00032">CrossTalk()</a>, <a class="el" href="_example_event_selector_8h_source.html#l00033">ExampleEventSelector::ExampleEventSelector()</a>, <a class="el" href="_example_fragment_selector_8h_source.html#l00025">ExampleFragmentSelector::ExampleFragmentSelector()</a>, <a class="el" href="_example_tree_selector_8h_source.html#l00035">ExampleTreeSelector::ExampleTreeSelector()</a>, <a class="el" href="_fast_timing_hist_selector_8h_source.html#l00049">FastTimingHistSelector::FastTimingHistSelector()</a>, <a class="el" href="_griffin_k_value_selector_8h_source.html#l00025">GriffinKValueSelector::GriffinKValueSelector()</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00041">TGRSISelector::TGRSISelector()</a>, <a class="el" href="_time_walk_selector_8h_source.html#l00031">TimeWalkSelector::TimeWalkSelector()</a>, and <a class="el" href="_fast_timing_hist_selector_8_c_source.html#l00005">FastTimingHistSelector::CreateHistograms()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_alphanumeric_selector_8h_source.html#l00029">AlphanumericSelector::AlphanumericSelector()</a>, <a class="el" href="_angular_correlation_selector_8h_source.html#l00039">AngularCorrelationSelector::AngularCorrelationSelector()</a>, <a class="el" href="_cross_talk_8h_source.html#l00032">CrossTalk()</a>, <a class="el" href="_example_event_selector_8h_source.html#l00033">ExampleEventSelector::ExampleEventSelector()</a>, <a class="el" href="_example_fragment_selector_8h_source.html#l00025">ExampleFragmentSelector::ExampleFragmentSelector()</a>, <a class="el" href="_example_tree_selector_8h_source.html#l00035">ExampleTreeSelector::ExampleTreeSelector()</a>, <a class="el" href="_fast_timing_hist_selector_8h_source.html#l00049">FastTimingHistSelector::FastTimingHistSelector()</a>, <a class="el" href="_griffin_k_value_selector_8h_source.html#l00025">GriffinKValueSelector::GriffinKValueSelector()</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00034">TGRSISelector::TGRSISelector()</a>, <a class="el" href="_time_walk_selector_8h_source.html#l00031">TimeWalkSelector::TimeWalkSelector()</a>, and <a class="el" href="_fast_timing_hist_selector_8_c_source.html#l00005">FastTimingHistSelector::CreateHistograms()</a>.</p>
 
 </div>
 </div>
@@ -835,9 +841,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>The <a class="el" href="class_t_g_r_s_i_selector.html#a1935dbf4d7080d06bc59903daafca0ce">SlaveBegin()</a> function is called after the <a class="el" href="class_t_g_r_s_i_selector.html#ab93493c658b7214c7b98b755d85586bd">Begin()</a> function. When running with PROOF <a class="el" href="class_t_g_r_s_i_selector.html#a1935dbf4d7080d06bc59903daafca0ce">SlaveBegin()</a> is called on each slave server. The tree argument is deprecated (on PROOF 0 is passed).</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00047">47</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00044">44</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00070">TGRSIOptions::AnalysisOptions()</a>, <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00307">TGRSISelector::CheckSizes()</a>, <a class="el" href="class_t_g_r_s_i_selector.html#a70a054a0df3c035c323b6c5fd089ca26">TGRSISelector::CreateHistograms()</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00083">TGRSISelector::fAnalysisOptions</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00077">TGRSISelector::fCuts</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00075">TGRSISelector::fPpg</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00076">TGRSISelector::fRunInfo</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TParserLibrary &gt;::Get()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00022">TGRSIOptions::Get()</a>, <a class="el" href="_t_parser_library_8cxx_source.html#l00020">TParserLibrary::Load()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00147">TGRSIOptions::ParserLibrary()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00136">TGRSIOptions::Print()</a>, <a class="el" href="_t_channel_8cxx_source.html#l00997">TChannel::ReadCalFile()</a>, <a class="el" href="_g_value_8cxx_source.html#l00199">GValue::ReadValFile()</a>, and <a class="el" href="_g_value_8h_source.html#l00059">GValue::Size()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00070">TGRSIOptions::AnalysisOptions()</a>, <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00303">TGRSISelector::CheckSizes()</a>, <a class="el" href="class_t_g_r_s_i_selector.html#a70a054a0df3c035c323b6c5fd089ca26">TGRSISelector::CreateHistograms()</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00080">TGRSISelector::fAnalysisOptions</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00068">TGRSISelector::fCuts</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00069">TGRSISelector::fPpg</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00070">TGRSISelector::fRunInfo</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TParserLibrary &gt;::Get()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00022">TGRSIOptions::Get()</a>, <a class="el" href="_t_parser_library_8cxx_source.html#l00020">TParserLibrary::Load()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00142">TGRSIOptions::ParserLibrary()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00134">TGRSIOptions::Print()</a>, <a class="el" href="_t_channel_8cxx_source.html#l01104">TChannel::ReadCalFile()</a>, <a class="el" href="_g_value_8cxx_source.html#l00192">GValue::ReadValFile()</a>, and <a class="el" href="_g_value_8h_source.html#l00059">GValue::Size()</a>.</p>
 
 </div>
 </div>
@@ -865,9 +871,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>The <a class="el" href="class_t_g_r_s_i_selector.html#a4ede910b47837cd5cdc611154973b5a5">SlaveTerminate()</a> function is called after all entries or objects have been processed. When running with PROOF <a class="el" href="class_t_g_r_s_i_selector.html#a4ede910b47837cd5cdc611154973b5a5">SlaveTerminate()</a> is called on each slave server.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00209">209</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00206">206</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00307">TGRSISelector::CheckSizes()</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00063">TGRSISelector::EndOfSort()</a>, <a class="el" href="_t_channel_8h_source.html#l00068">TChannel::GetChannelMap()</a>, and <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00065">TGRSISelector::GetOutputPrefix()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00303">TGRSISelector::CheckSizes()</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00056">TGRSISelector::EndOfSort()</a>, <a class="el" href="_t_channel_8h_source.html#l00072">TChannel::GetChannelMap()</a>, and <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00058">TGRSISelector::GetOutputPrefix()</a>.</p>
 
 </div>
 </div>
@@ -895,9 +901,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>The <a class="el" href="class_t_g_r_s_i_selector.html#aae3dc926bf88bfffde5b2aec509ad90e">Terminate()</a> function is the last function to be called during a query. It always runs on the client, it can be used to present the results graphically or save the results to file.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00222">222</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">219</a> of file <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html">TGRSISelector.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00070">TGRSIOptions::AnalysisOptions()</a>, <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00307">TGRSISelector::CheckSizes()</a>, <a class="el" href="_t_run_info_8h_source.html#l00122">TRunInfo::FirstRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00123">TRunInfo::FirstSubRunNumber()</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00082">TGRSISelector::fOutputPrefix</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00075">TGRSISelector::fPpg</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00076">TGRSISelector::fRunInfo</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00022">TGRSIOptions::Get()</a>, <a class="el" href="_t_run_info_8h_source.html#l00125">TRunInfo::LastRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00126">TRunInfo::LastSubRunNumber()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00067">TGRSIOptions::LogFile()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00084">TRunInfo::Print()</a>, <a class="el" href="_t_run_info_8h_source.html#l00119">TRunInfo::RunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00120">TRunInfo::SubRunNumber()</a>, <a class="el" href="_t_p_p_g_8h_source.html#l00141">TPPG::Write()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00047">TAnalysisOptions::WriteToFile()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01336">TChannel::WriteToRoot()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00070">TGRSIOptions::AnalysisOptions()</a>, <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00303">TGRSISelector::CheckSizes()</a>, <a class="el" href="_t_run_info_8h_source.html#l00122">TRunInfo::FirstRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00123">TRunInfo::FirstSubRunNumber()</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00079">TGRSISelector::fOutputPrefix</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00069">TGRSISelector::fPpg</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00070">TGRSISelector::fRunInfo</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00022">TGRSIOptions::Get()</a>, <a class="el" href="_t_run_info_8h_source.html#l00125">TRunInfo::LastRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00126">TRunInfo::LastSubRunNumber()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00067">TGRSIOptions::LogFile()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00077">TRunInfo::Print()</a>, <a class="el" href="_t_run_info_8h_source.html#l00119">TRunInfo::RunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00120">TRunInfo::SubRunNumber()</a>, <a class="el" href="_t_p_p_g_8h_source.html#l00149">TPPG::Write()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00042">TAnalysisOptions::WriteToFile()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01444">TChannel::WriteToRoot()</a>.</p>
 
 </div>
 </div>
@@ -951,9 +957,9 @@ Private Attributes</h2></td></tr>
 
 <p>! pointer to analysis options </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00083">83</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00080">80</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00047">TGRSISelector::SlaveBegin()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00044">TGRSISelector::SlaveBegin()</a>.</p>
 
 </div>
 </div>
@@ -967,19 +973,21 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">TTree* TGRSISelector::fChain</td>
+          <td class="memname">TTree* TGRSISelector::fChain {nullptr}</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00036">36</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p>! pointer to the analyzed TTree or TChain </p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00049">TGRSISelector::GetEntry()</a>, <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00279">TGRSISelector::Init()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00169">TGRSISelector::Process()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00076">76</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00042">TGRSISelector::GetEntry()</a>, <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00275">TGRSISelector::Init()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00166">TGRSISelector::Process()</a>.</p>
 
 </div>
 </div>
@@ -1005,7 +1013,7 @@ Private Attributes</h2></td></tr>
 
 <p>! map for GRSISort's 3-D histograms </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00072">72</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00065">65</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
 </div>
 </div>
@@ -1031,9 +1039,9 @@ Private Attributes</h2></td></tr>
 
 <p>! map of cuts </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00077">77</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00068">68</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00047">TGRSISelector::SlaveBegin()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00044">TGRSISelector::SlaveBegin()</a>.</p>
 
 </div>
 </div>
@@ -1047,7 +1055,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int64_t TGRSISelector::fEntry</td>
+          <td class="memname">int64_t TGRSISelector::fEntry {0}</td>
         </tr>
       </table>
   </td>
@@ -1059,9 +1067,9 @@ Private Attributes</h2></td></tr>
 
 <p>! entry number currently being processed </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00078">78</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00071">71</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_example_tree_selector_8_c_source.html#l00005">ExampleTreeSelector::CreateHistograms()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00169">TGRSISelector::Process()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_example_tree_selector_8_c_source.html#l00005">ExampleTreeSelector::CreateHistograms()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00166">TGRSISelector::Process()</a>.</p>
 
 </div>
 </div>
@@ -1075,7 +1083,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Int_t TGRSISelector::fFirstRunNumber</td>
+          <td class="memname">Int_t TGRSISelector::fFirstRunNumber {-1}</td>
         </tr>
       </table>
   </td>
@@ -1087,7 +1095,7 @@ Private Attributes</h2></td></tr>
 
 <p>! run number of first file </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00084">84</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00081">81</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
 </div>
 </div>
@@ -1101,7 +1109,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Int_t TGRSISelector::fFirstSubRunNumber</td>
+          <td class="memname">Int_t TGRSISelector::fFirstSubRunNumber {-1}</td>
         </tr>
       </table>
   </td>
@@ -1113,7 +1121,7 @@ Private Attributes</h2></td></tr>
 
 <p>! sub-run number of first file </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00085">85</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00082">82</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
 </div>
 </div>
@@ -1175,7 +1183,7 @@ Private Attributes</h2></td></tr>
 
 <p>! map for 1-D histograms </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00068">68</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00061">61</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_alphanumeric_selector_8_c_source.html#l00005">AlphanumericSelector::CreateHistograms()</a>, <a class="el" href="_angular_correlation_selector_8_c_source.html#l00011">AngularCorrelationSelector::CreateHistograms()</a>, <a class="el" href="_cross_talk_8_c_source.html#l00030">CreateHistograms()</a>, <a class="el" href="_example_event_selector_8_c_source.html#l00005">ExampleEventSelector::CreateHistograms()</a>, <a class="el" href="_example_fragment_selector_8_c_source.html#l00005">ExampleFragmentSelector::CreateHistograms()</a>, <a class="el" href="_example_tree_selector_8_c_source.html#l00005">ExampleTreeSelector::CreateHistograms()</a>, <a class="el" href="_fast_timing_hist_selector_8_c_source.html#l00005">FastTimingHistSelector::CreateHistograms()</a>, <a class="el" href="_griffin_k_value_selector_8_c_source.html#l00007">GriffinKValueSelector::CreateHistograms()</a>, <a class="el" href="_time_walk_selector_8_c_source.html#l00005">TimeWalkSelector::CreateHistograms()</a>, <a class="el" href="_angular_correlation_selector_8_c_source.html#l00157">AngularCorrelationSelector::FillHistograms()</a>, <a class="el" href="_cross_talk_8_c_source.html#l00068">FillHistograms()</a>, <a class="el" href="_example_event_selector_8_c_source.html#l00040">ExampleEventSelector::FillHistograms()</a>, <a class="el" href="_example_tree_selector_8_c_source.html#l00057">ExampleTreeSelector::FillHistograms()</a>, <a class="el" href="_fast_timing_hist_selector_8_c_source.html#l00053">FastTimingHistSelector::FillHistograms()</a>, and <a class="el" href="_griffin_k_value_selector_8_c_source.html#l00037">GriffinKValueSelector::FillHistograms()</a>.</p>
 
@@ -1203,7 +1211,7 @@ Private Attributes</h2></td></tr>
 
 <p>! map for 2-D histograms </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00069">69</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00062">62</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_alphanumeric_selector_8_c_source.html#l00005">AlphanumericSelector::CreateHistograms()</a>, <a class="el" href="_angular_correlation_selector_8_c_source.html#l00011">AngularCorrelationSelector::CreateHistograms()</a>, <a class="el" href="_cross_talk_8_c_source.html#l00030">CreateHistograms()</a>, <a class="el" href="_example_event_selector_8_c_source.html#l00005">ExampleEventSelector::CreateHistograms()</a>, <a class="el" href="_example_fragment_selector_8_c_source.html#l00005">ExampleFragmentSelector::CreateHistograms()</a>, <a class="el" href="_example_tree_selector_8_c_source.html#l00005">ExampleTreeSelector::CreateHistograms()</a>, <a class="el" href="_fast_timing_hist_selector_8_c_source.html#l00005">FastTimingHistSelector::CreateHistograms()</a>, <a class="el" href="_griffin_k_value_selector_8_c_source.html#l00007">GriffinKValueSelector::CreateHistograms()</a>, <a class="el" href="_time_walk_selector_8_c_source.html#l00005">TimeWalkSelector::CreateHistograms()</a>, <a class="el" href="_alphanumeric_selector_8_c_source.html#l00049">AlphanumericSelector::FillHistograms()</a>, <a class="el" href="_angular_correlation_selector_8_c_source.html#l00157">AngularCorrelationSelector::FillHistograms()</a>, <a class="el" href="_cross_talk_8_c_source.html#l00068">FillHistograms()</a>, <a class="el" href="_example_event_selector_8_c_source.html#l00040">ExampleEventSelector::FillHistograms()</a>, <a class="el" href="_example_fragment_selector_8_c_source.html#l00021">ExampleFragmentSelector::FillHistograms()</a>, <a class="el" href="_example_tree_selector_8_c_source.html#l00057">ExampleTreeSelector::FillHistograms()</a>, <a class="el" href="_griffin_k_value_selector_8_c_source.html#l00037">GriffinKValueSelector::FillHistograms()</a>, and <a class="el" href="_time_walk_selector_8_c_source.html#l00074">TimeWalkSelector::FillHistograms()</a>.</p>
 
@@ -1231,7 +1239,7 @@ Private Attributes</h2></td></tr>
 
 <p>! map for 3-D histograms </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00070">70</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00063">63</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_time_walk_selector_8_c_source.html#l00005">TimeWalkSelector::CreateHistograms()</a>, and <a class="el" href="_time_walk_selector_8_c_source.html#l00074">TimeWalkSelector::FillHistograms()</a>.</p>
 
@@ -1259,7 +1267,7 @@ Private Attributes</h2></td></tr>
 
 <p>! map for sparse n-D histograms </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00073">73</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00066">66</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_alphanumeric_selector_8_c_source.html#l00005">AlphanumericSelector::CreateHistograms()</a>, <a class="el" href="_angular_correlation_selector_8_c_source.html#l00011">AngularCorrelationSelector::CreateHistograms()</a>, <a class="el" href="_cross_talk_8_c_source.html#l00030">CreateHistograms()</a>, <a class="el" href="_example_event_selector_8_c_source.html#l00005">ExampleEventSelector::CreateHistograms()</a>, <a class="el" href="_example_fragment_selector_8_c_source.html#l00005">ExampleFragmentSelector::CreateHistograms()</a>, <a class="el" href="_fast_timing_hist_selector_8_c_source.html#l00005">FastTimingHistSelector::CreateHistograms()</a>, <a class="el" href="_griffin_k_value_selector_8_c_source.html#l00007">GriffinKValueSelector::CreateHistograms()</a>, and <a class="el" href="_time_walk_selector_8_c_source.html#l00005">TimeWalkSelector::CreateHistograms()</a>.</p>
 
@@ -1287,9 +1295,9 @@ Private Attributes</h2></td></tr>
 
 <p>! pre-fix for output files </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00082">82</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00079">79</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00065">TGRSISelector::GetOutputPrefix()</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00064">TGRSISelector::SetOutputPrefix()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00222">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00058">TGRSISelector::GetOutputPrefix()</a>, <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00057">TGRSISelector::SetOutputPrefix()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -1315,9 +1323,9 @@ Private Attributes</h2></td></tr>
 
 <p>! pointer to the PPG </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00075">75</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00069">69</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00047">TGRSISelector::SlaveBegin()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00222">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00044">TGRSISelector::SlaveBegin()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -1343,9 +1351,9 @@ Private Attributes</h2></td></tr>
 
 <p>! pointer to the run info </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00076">76</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00070">70</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00047">TGRSISelector::SlaveBegin()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00222">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00044">TGRSISelector::SlaveBegin()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -1362,6 +1370,34 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_cross_talk_8h_source.html#l00029">29</a> of file <a class="el" href="_cross_talk_8h_source.html">CrossTalk.h</a>.</p>
+
+</div>
+</div>
+<a id="a613ab2575ae93c6001aa09235c454546" name="a613ab2575ae93c6001aa09235c454546"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a613ab2575ae93c6001aa09235c454546">&#9670;&#160;</a></span>fSizeLimit</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int TGRSISelector::fSizeLimit = 1073741822</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">private</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! 1 GB size limit for objects in ROOT </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00074">74</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00303">TGRSISelector::CheckSizes()</a>.</p>
 
 </div>
 </div>
@@ -1387,7 +1423,7 @@ Private Attributes</h2></td></tr>
 
 <p>! map for GRSISort's symmetric 2-D histograms </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00071">71</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00064">64</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
 </div>
 </div>
@@ -1413,7 +1449,7 @@ Private Attributes</h2></td></tr>
 
 <p>! map for trees </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00074">74</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_selector_8h_source.html#l00067">67</a> of file <a class="el" href="_t_g_r_s_i_selector_8h_source.html">TGRSISelector.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_example_tree_selector_8_c_source.html#l00005">ExampleTreeSelector::CreateHistograms()</a>, and <a class="el" href="_example_tree_selector_8_c_source.html#l00057">ExampleTreeSelector::FillHistograms()</a>.</p>
 
@@ -1426,7 +1462,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_cross_talk.html">CrossTalk</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 03:00:48.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:35.</li>
   </ul>
 </div>
 </body>

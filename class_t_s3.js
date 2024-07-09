@@ -27,7 +27,7 @@ var class_t_s3 =
     [ "ClearStatus", "class_t_s3.html#a53092584a2003651fa8288d1f4e0f798", null ],
     [ "ClearTransients", "class_t_s3.html#a68a9218d47353c09b5cef9e5dd2a354e", null ],
     [ "Copy", "class_t_s3.html#af756f2cbf2f6864e85c6087a93c4b2db", null ],
-    [ "GetHit", "class_t_s3.html#abb7c88ad69c596f7c183a82a746e2542", null ],
+    [ "GetHit", "class_t_s3.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_s3.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_s3.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetPixelHit", "class_t_s3.html#a8f7a5a6b81b8bda0f25490c099e79f4c", null ],

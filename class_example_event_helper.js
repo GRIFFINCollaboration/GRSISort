@@ -26,6 +26,7 @@ var class_example_event_helper =
     [ "fPpg", "class_example_event_helper.html#ac7ce3378d3b7c730f9cbd73dd2cf7ab3", null ],
     [ "fPrefix", "class_example_event_helper.html#a67b6f5f70635c0bd67ae1b8bf1c1197a", null ],
     [ "fRunInfo", "class_example_event_helper.html#ae95111fa334deef7e49ea2050899e972", null ],
+    [ "fSizeLimit", "class_example_event_helper.html#adba49a09a6ebe50ebb9b33e051c0a3c0", null ],
     [ "fSym", "class_example_event_helper.html#a210872f6be03540044b9e1e190fde8f6", null ],
     [ "fTree", "class_example_event_helper.html#a0b2861b9e607129c2d996f46d871baa6", null ],
     [ "fUserSettings", "class_example_event_helper.html#a559c82856eb597c7951c63b61a7802fc", null ]

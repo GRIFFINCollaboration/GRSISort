@@ -52,7 +52,7 @@ var class_t_fragment_chain_loop =
     [ "StopAll", "class_t_fragment_chain_loop.html#a14d1029d5d956a5f8cffcabb2e1c5e17", null ],
     [ "fColumnWidth", "class_t_fragment_chain_loop.html#a4e6e493ea525d7bdee066fae3412d5db", null ],
     [ "fDetMap", "class_t_fragment_chain_loop.html#aed36c8756730ebba0e9a9247fbc9b14b", null ],
-    [ "fEntriesTotal", "class_t_fragment_chain_loop.html#a0da2fc759c2db4e9cbe908467f122a62", null ],
+    [ "fEntriesTotal", "class_t_fragment_chain_loop.html#a5251e63ed3c7cec68099a6705be35be6", null ],
     [ "fForceStop", "class_t_fragment_chain_loop.html#ad54db1cd59d084a858e069e3ea90fda9", null ],
     [ "fFragment", "class_t_fragment_chain_loop.html#af391a065b1aaa1eb59f067c48c0d678b", null ],
     [ "fInputChain", "class_t_fragment_chain_loop.html#ae4a2e98d8f53bbbc79ecd8e4542c1acc", null ],

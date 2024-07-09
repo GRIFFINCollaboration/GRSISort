@@ -30,7 +30,7 @@ var class_t_tdr_tigress =
     [ "GetAddbackMultiplicity", "class_t_tdr_tigress.html#a3d769541d0065bd7595c77b83990c2ce", null ],
     [ "GetAddbackVector", "class_t_tdr_tigress.html#aaa5e2698a65b825d8ff8c21ecad23dc4", null ],
     [ "GetColorFromNumber", "class_t_tdr_tigress.html#a5a12f6808802a93d99e8b449c63a775e", null ],
-    [ "GetHit", "class_t_tdr_tigress.html#abb7c88ad69c596f7c183a82a746e2542", null ],
+    [ "GetHit", "class_t_tdr_tigress.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_tdr_tigress.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_tdr_tigress.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetNAddbackFrags", "class_t_tdr_tigress.html#a5754b2480d8d47a1c3a07eb11252a908", null ],

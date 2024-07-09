@@ -102,8 +102,8 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_utilities_8h_source.html','
   <div class="headertitle"><div class="title">TGRSIUtilities.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="_t_g_r_s_i_utilities_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef __TGRSIUTILITIES_H_</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define __TGRSIUTILITIES_H_</span></div>
+<a href="_t_g_r_s_i_utilities_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef TGRSIUTILITIES_H</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define TGRSIUTILITIES_H</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;fstream&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;string&gt;</span></div>
@@ -123,23 +123,22 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_utilities_8h_source.html','
 <div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="_t_g_r_s_i_utilities_8h.html#ad6a3bf8b918fb893c5b59b6b397a8f7c">   19</a></span><span class="keyword">inline</span> <span class="keywordtype">size_t</span> <a class="code hl_function" href="_t_g_r_s_i_utilities_8h.html#ad6a3bf8b918fb893c5b59b6b397a8f7c">FindFileSize</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* fname)</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>{</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>   std::ifstream temp;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>   temp.open(fname, std::ios::in | std::ios::ate);</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>   <span class="keywordtype">size_t</span> fsize = temp.tellg();</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>   temp.close();</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>   <span class="keywordflow">return</span> fsize;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>}</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>   std::ifstream temp(fname, std::ios::in | std::ios::ate);</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>   <span class="keywordtype">size_t</span> fsize = temp.tellg();</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>   temp.close();</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>   <span class="keywordflow">return</span> fsize;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>}</div>
 </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_t_g_r_s_i_types_8h_html"><div class="ttname"><a href="_t_g_r_s_i_types_8h.html">TGRSITypes.h</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a0038df898c35b6a483fa874b3671735b"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a0038df898c35b6a483fa874b3671735b">file_exists</a></div><div class="ttdeci">bool file_exists(const char *filename)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00013">TGRSIUtilities.cxx:13</a></div></div>
-<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a1008fed86c55cc25e469e675935e35e0"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a1008fed86c55cc25e469e675935e35e0">GetRunNumber</a></div><div class="ttdeci">int GetRunNumber(const std::string &amp;)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00065">TGRSIUtilities.cxx:65</a></div></div>
-<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a2b628a6a962b2611ffc6a0b6ee4d4ab2"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a2b628a6a962b2611ffc6a0b6ee4d4ab2">trim</a></div><div class="ttdeci">void trim(std::string &amp;line, const std::string &amp;trimChars=&quot; \f\n\r\t\v&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00036">TGRSIUtilities.cxx:36</a></div></div>
+<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a1008fed86c55cc25e469e675935e35e0"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a1008fed86c55cc25e469e675935e35e0">GetRunNumber</a></div><div class="ttdeci">int GetRunNumber(const std::string &amp;)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00054">TGRSIUtilities.cxx:54</a></div></div>
+<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a2b628a6a962b2611ffc6a0b6ee4d4ab2"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a2b628a6a962b2611ffc6a0b6ee4d4ab2">trim</a></div><div class="ttdeci">void trim(std::string &amp;line, const std::string &amp;trimChars=&quot; \f\n\r\t\v&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00031">TGRSIUtilities.cxx:31</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a2d34081667925a93e752c0846bf3337d"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a2d34081667925a93e752c0846bf3337d">all_files_exist</a></div><div class="ttdeci">bool all_files_exist(const std::vector&lt; std::string &gt; &amp;filenames)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00026">TGRSIUtilities.cxx:26</a></div></div>
-<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a3618a4ab6c3f933fa7a76619ea3bf8f1"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a3618a4ab6c3f933fa7a76619ea3bf8f1">trimWS</a></div><div class="ttdeci">void trimWS(std::string &amp;line)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00053">TGRSIUtilities.cxx:53</a></div></div>
+<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a3618a4ab6c3f933fa7a76619ea3bf8f1"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a3618a4ab6c3f933fa7a76619ea3bf8f1">trimWS</a></div><div class="ttdeci">void trimWS(std::string &amp;line)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00047">TGRSIUtilities.cxx:47</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_ad6a3bf8b918fb893c5b59b6b397a8f7c"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#ad6a3bf8b918fb893c5b59b6b397a8f7c">FindFileSize</a></div><div class="ttdeci">size_t FindFileSize(const char *fname)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8h_source.html#l00019">TGRSIUtilities.h:19</a></div></div>
-<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_aedb03157a44dff3274454bbf5c04b47d"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#aedb03157a44dff3274454bbf5c04b47d">GetSubRunNumber</a></div><div class="ttdeci">int GetSubRunNumber(const std::string &amp;)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00088">TGRSIUtilities.cxx:88</a></div></div>
+<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_aedb03157a44dff3274454bbf5c04b47d"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#aedb03157a44dff3274454bbf5c04b47d">GetSubRunNumber</a></div><div class="ttdeci">int GetSubRunNumber(const std::string &amp;)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00077">TGRSIUtilities.cxx:77</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -147,7 +146,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_utilities_8h_source.html','
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_g_r_s_i_utilities_8h.html">TGRSIUtilities.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 03:00:45.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:32.</li>
   </ul>
 </div>
 </body>

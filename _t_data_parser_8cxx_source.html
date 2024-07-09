@@ -123,87 +123,86 @@ $(document).ready(function(){initNavTree('_t_data_parser_8cxx_source.html',''); 
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="class_t_data_parser.html#abf0bcd6e1a12af1bae73339437ade8f9">   18</a></span><a class="code hl_function" href="class_t_data_parser.html#abf0bcd6e1a12af1bae73339437ade8f9">TDataParser::TDataParser</a>()</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>   : fBadOutputQueue(std::make_shared&lt;<a class="code hl_class" href="class_threadsafe_queue.html">ThreadsafeQueue</a>&lt;std::shared_ptr&lt;const <a class="code hl_class" href="class_t_bad_fragment.html">TBadFragment</a>&gt;&gt;&gt;(<span class="stringliteral">&quot;bad_frag_queue&quot;</span>)),</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>     fScalerOutputQueue(std::make_shared&lt;<a class="code hl_class" href="class_threadsafe_queue.html">ThreadsafeQueue</a>&lt;std::shared_ptr&lt;<a class="code hl_class" href="class_t_epics_frag.html">TEpicsFrag</a>&gt;&gt;&gt;(<span class="stringliteral">&quot;scaler_queue&quot;</span>)),</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>     fNoWaveforms(false), fRecordDiag(true), fMaxTriggerId(1024 * 1024 * 16), fLastDaqId(0), fLastTriggerId(0),</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>     fLastNetworkPacket(0), fFragmentHasWaveform(false), fFragmentMap(fGoodOutputQueues, fBadOutputQueue),</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>     fItemsPopped(nullptr), fInputSize(nullptr)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>     fNoWaveforms(false), fRecordDiag(true), fChannel(new <a class="code hl_class" href="class_t_channel.html">TChannel</a>), fMaxTriggerId(1024 * 1024 * 16),</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>     fLastDaqId(0), fLastTriggerId(0), fLastNetworkPacket(0), fFragmentHasWaveform(false),</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>     fFragmentMap(fGoodOutputQueues, fBadOutputQueue), fItemsPopped(nullptr), fInputSize(nullptr)</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>   <a class="code hl_variable" href="class_t_data_parser.html#af9b87888b6b8c221128ace3bbd836b3d">fChannel</a> = <span class="keyword">new</span> <a class="code hl_class" href="class_t_channel.html">TChannel</a>;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>}</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>}</div>
 </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="foldopen" id="foldopen00028" data-start="{" data-end="}">
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="class_t_data_parser.html#abf6a12ea0cf5e8e8222e69af5094c90a">   28</a></span><a class="code hl_function" href="class_t_data_parser.html#abf6a12ea0cf5e8e8222e69af5094c90a">TDataParser::~TDataParser</a>()</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   <span class="keyword">delete</span> <a class="code hl_variable" href="class_t_data_parser.html#af9b87888b6b8c221128ace3bbd836b3d">fChannel</a>;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>}</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="class_t_data_parser.html#abf6a12ea0cf5e8e8222e69af5094c90a">   27</a></span><a class="code hl_function" href="class_t_data_parser.html#abf6a12ea0cf5e8e8222e69af5094c90a">TDataParser::~TDataParser</a>()</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>   <span class="keyword">delete</span> <a class="code hl_variable" href="class_t_data_parser.html#af9b87888b6b8c221128ace3bbd836b3d">fChannel</a>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
 </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="class_t_data_parser.html#aa452247c3d8c3897caa440bfbdff65b6">   33</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_data_parser.html#aa452247c3d8c3897caa440bfbdff65b6">TDataParser::ClearQueue</a>()</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>   std::shared_ptr&lt;const TFragment&gt; frag;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>   <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; outQueue : <a class="code hl_variable" href="class_t_data_parser.html#ac09a169ef95b7bc7b80eeccaac285d5d">fGoodOutputQueues</a>) {</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      <span class="keywordflow">while</span>(outQueue-&gt;Size() != 0u) {</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>         outQueue-&gt;Pop(frag);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>      }</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>   }</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>   std::shared_ptr&lt;const TBadFragment&gt; badFrag;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>   <span class="keywordflow">while</span>(<a class="code hl_variable" href="class_t_data_parser.html#a3561426682ff95b142b8463ee528b8ef">fBadOutputQueue</a>-&gt;Size() != 0u) {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      <a class="code hl_variable" href="class_t_data_parser.html#a3561426682ff95b142b8463ee528b8ef">fBadOutputQueue</a>-&gt;Pop(badFrag);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>   }</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>   std::shared_ptr&lt;TEpicsFrag&gt; epicsFrag;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>   <span class="keywordflow">while</span>(<a class="code hl_variable" href="class_t_data_parser.html#a38a48714bdd19302fc1afe41ee511017">fScalerOutputQueue</a>-&gt;Size() != 0u) {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <a class="code hl_variable" href="class_t_data_parser.html#a38a48714bdd19302fc1afe41ee511017">fScalerOutputQueue</a>-&gt;Pop(epicsFrag);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>   }</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="class_t_data_parser.html#aa452247c3d8c3897caa440bfbdff65b6">   32</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_data_parser.html#aa452247c3d8c3897caa440bfbdff65b6">TDataParser::ClearQueue</a>()</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>   std::shared_ptr&lt;const TFragment&gt; frag;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>   <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; outQueue : <a class="code hl_variable" href="class_t_data_parser.html#ac09a169ef95b7bc7b80eeccaac285d5d">fGoodOutputQueues</a>) {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      <span class="keywordflow">while</span>(outQueue-&gt;Size() != 0u) {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>         outQueue-&gt;Pop(frag);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      }</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>   }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>   std::shared_ptr&lt;const TBadFragment&gt; badFrag;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>   <span class="keywordflow">while</span>(<a class="code hl_variable" href="class_t_data_parser.html#a3561426682ff95b142b8463ee528b8ef">fBadOutputQueue</a>-&gt;Size() != 0u) {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <a class="code hl_variable" href="class_t_data_parser.html#a3561426682ff95b142b8463ee528b8ef">fBadOutputQueue</a>-&gt;Pop(badFrag);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>   }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>   std::shared_ptr&lt;TEpicsFrag&gt; epicsFrag;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>   <span class="keywordflow">while</span>(<a class="code hl_variable" href="class_t_data_parser.html#a38a48714bdd19302fc1afe41ee511017">fScalerOutputQueue</a>-&gt;Size() != 0u) {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      <a class="code hl_variable" href="class_t_data_parser.html#a38a48714bdd19302fc1afe41ee511017">fScalerOutputQueue</a>-&gt;Pop(epicsFrag);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>   }</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>}</div>
 </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="foldopen" id="foldopen00051" data-start="{" data-end="}">
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="class_t_data_parser.html#a2b4da169e70a53a475e2f61e5b01f8d9">   51</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_data_parser.html#a2b4da169e70a53a475e2f61e5b01f8d9">TDataParser::SetFinished</a>()</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>{</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>   <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; outQueue : <a class="code hl_variable" href="class_t_data_parser.html#ac09a169ef95b7bc7b80eeccaac285d5d">fGoodOutputQueues</a>) {</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      outQueue-&gt;SetFinished();</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>   }</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>   <a class="code hl_variable" href="class_t_data_parser.html#a3561426682ff95b142b8463ee528b8ef">fBadOutputQueue</a>-&gt;SetFinished();</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>   <a class="code hl_variable" href="class_t_data_parser.html#a38a48714bdd19302fc1afe41ee511017">fScalerOutputQueue</a>-&gt;SetFinished();</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="foldopen" id="foldopen00050" data-start="{" data-end="}">
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="class_t_data_parser.html#a2b4da169e70a53a475e2f61e5b01f8d9">   50</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_data_parser.html#a2b4da169e70a53a475e2f61e5b01f8d9">TDataParser::SetFinished</a>()</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>{</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>   <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; outQueue : <a class="code hl_variable" href="class_t_data_parser.html#ac09a169ef95b7bc7b80eeccaac285d5d">fGoodOutputQueues</a>) {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      outQueue-&gt;SetFinished();</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>   }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>   <a class="code hl_variable" href="class_t_data_parser.html#a3561426682ff95b142b8463ee528b8ef">fBadOutputQueue</a>-&gt;SetFinished();</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>   <a class="code hl_variable" href="class_t_data_parser.html#a38a48714bdd19302fc1afe41ee511017">fScalerOutputQueue</a>-&gt;SetFinished();</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>}</div>
 </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="class_t_data_parser.html#a0c10b12625aaf3d79f74bad6b11eb69a">   60</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_data_parser.html#a31f06711c72bdb5f4e117ce5a2b016a3">TDataParser::Push</a>(std::vector&lt;std::shared_ptr&lt;<a class="code hl_class" href="class_threadsafe_queue.html">ThreadsafeQueue</a>&lt;std::shared_ptr&lt;const TFragment&gt;&gt;&gt;&gt;&amp; queues,</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                       <span class="keyword">const</span> std::shared_ptr&lt;TFragment&gt;&amp;                                                frag)</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>{</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>   frag-&gt;SetFragmentId(<a class="code hl_variable" href="class_t_data_parser.html#a08607f54fcf6e8ab8e752706f9aaf8d6">fFragmentIdMap</a>[frag-&gt;GetTriggerId()]);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>   <a class="code hl_variable" href="class_t_data_parser.html#a08607f54fcf6e8ab8e752706f9aaf8d6">fFragmentIdMap</a>[frag-&gt;GetTriggerId()]++;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>   frag-&gt;SetEntryNumber();</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>   <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; queue : queues) {</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      queue-&gt;Push(frag);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>   }</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>}</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="foldopen" id="foldopen00059" data-start="{" data-end="}">
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="class_t_data_parser.html#a0c10b12625aaf3d79f74bad6b11eb69a">   59</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_data_parser.html#a31f06711c72bdb5f4e117ce5a2b016a3">TDataParser::Push</a>(std::vector&lt;std::shared_ptr&lt;<a class="code hl_class" href="class_threadsafe_queue.html">ThreadsafeQueue</a>&lt;std::shared_ptr&lt;const TFragment&gt;&gt;&gt;&gt;&amp; queues,</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                       <span class="keyword">const</span> std::shared_ptr&lt;TFragment&gt;&amp;                                                frag)</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>{</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>   frag-&gt;SetFragmentId(<a class="code hl_variable" href="class_t_data_parser.html#a2352df1bbb82a7f11c434ac4e121bd5e">fFragmentIdMap</a>[frag-&gt;GetTriggerId()]);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>   <a class="code hl_variable" href="class_t_data_parser.html#a2352df1bbb82a7f11c434ac4e121bd5e">fFragmentIdMap</a>[frag-&gt;GetTriggerId()]++;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>   frag-&gt;SetEntryNumber();</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>   <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; queue : queues) {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      queue-&gt;Push(frag);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>   }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
 </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="foldopen" id="foldopen00071" data-start="{" data-end="}">
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="class_t_data_parser.html#a31f06711c72bdb5f4e117ce5a2b016a3">   71</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_data_parser.html#a31f06711c72bdb5f4e117ce5a2b016a3">TDataParser::Push</a>(<a class="code hl_class" href="class_threadsafe_queue.html">ThreadsafeQueue</a>&lt;std::shared_ptr&lt;const TBadFragment&gt;&gt;&amp; queue, <span class="keyword">const</span> std::shared_ptr&lt;TBadFragment&gt;&amp; frag)</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>{</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>   frag-&gt;SetFragmentId(<a class="code hl_variable" href="class_t_data_parser.html#a08607f54fcf6e8ab8e752706f9aaf8d6">fFragmentIdMap</a>[frag-&gt;GetTriggerId()]);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>   <a class="code hl_variable" href="class_t_data_parser.html#a08607f54fcf6e8ab8e752706f9aaf8d6">fFragmentIdMap</a>[frag-&gt;GetTriggerId()]++;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>   frag-&gt;SetEntryNumber();</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>   queue.Push(frag);</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>}</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="class_t_data_parser.html#a31f06711c72bdb5f4e117ce5a2b016a3">   70</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_data_parser.html#a31f06711c72bdb5f4e117ce5a2b016a3">TDataParser::Push</a>(<a class="code hl_class" href="class_threadsafe_queue.html">ThreadsafeQueue</a>&lt;std::shared_ptr&lt;const TBadFragment&gt;&gt;&amp; queue, <span class="keyword">const</span> std::shared_ptr&lt;TBadFragment&gt;&amp; frag)</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>{</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>   frag-&gt;SetFragmentId(<a class="code hl_variable" href="class_t_data_parser.html#a2352df1bbb82a7f11c434ac4e121bd5e">fFragmentIdMap</a>[frag-&gt;GetTriggerId()]);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>   <a class="code hl_variable" href="class_t_data_parser.html#a2352df1bbb82a7f11c434ac4e121bd5e">fFragmentIdMap</a>[frag-&gt;GetTriggerId()]++;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>   frag-&gt;SetEntryNumber();</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>   queue.Push(frag);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>}</div>
 </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="class_t_data_parser.html#a1123119e280fb2031e33dc256fbcbd2a">   79</a></span>std::string <a class="code hl_function" href="class_t_data_parser.html#a1123119e280fb2031e33dc256fbcbd2a">TDataParser::OutputQueueStatus</a>()</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>{</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>   std::stringstream ss;</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>   ss &lt;&lt; <span class="stringliteral">&quot;********************************************************************************&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>   <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; queue : <a class="code hl_variable" href="class_t_data_parser.html#ac09a169ef95b7bc7b80eeccaac285d5d">fGoodOutputQueues</a>) {</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      ss &lt;&lt; queue-&gt;Name() &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; queue-&gt;ItemsPushed() &lt;&lt; <span class="stringliteral">&quot; pushed, &quot;</span> &lt;&lt; queue-&gt;ItemsPopped() &lt;&lt; <span class="stringliteral">&quot; popped, &quot;</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>         &lt;&lt; queue-&gt;Size() &lt;&lt; <span class="stringliteral">&quot; left&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   }</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>   ss &lt;&lt; <span class="stringliteral">&quot;********************************************************************************&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>   <span class="keywordflow">return</span> ss.str();</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>}</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="foldopen" id="foldopen00078" data-start="{" data-end="}">
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="class_t_data_parser.html#a1123119e280fb2031e33dc256fbcbd2a">   78</a></span>std::string <a class="code hl_function" href="class_t_data_parser.html#a1123119e280fb2031e33dc256fbcbd2a">TDataParser::OutputQueueStatus</a>()</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>{</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>   std::stringstream str;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>   str &lt;&lt; <span class="stringliteral">&quot;********************************************************************************&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>   <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; queue : <a class="code hl_variable" href="class_t_data_parser.html#ac09a169ef95b7bc7b80eeccaac285d5d">fGoodOutputQueues</a>) {</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      str &lt;&lt; queue-&gt;Name() &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; queue-&gt;ItemsPushed() &lt;&lt; <span class="stringliteral">&quot; pushed, &quot;</span> &lt;&lt; queue-&gt;ItemsPopped() &lt;&lt; <span class="stringliteral">&quot; popped, &quot;</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>          &lt;&lt; queue-&gt;Size() &lt;&lt; <span class="stringliteral">&quot; left&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>   }</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   str &lt;&lt; <span class="stringliteral">&quot;********************************************************************************&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>   <span class="keywordflow">return</span> str.str();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>}</div>
 </div>
 <div class="ttc" id="a_globals_8h_html"><div class="ttname"><a href="_globals_8h.html">Globals.h</a></div></div>
 <div class="ttc" id="a_t_bad_fragment_8h_html"><div class="ttname"><a href="_t_bad_fragment_8h.html">TBadFragment.h</a></div></div>
@@ -215,21 +214,21 @@ $(document).ready(function(){initNavTree('_t_data_parser_8cxx_source.html',''); 
 <div class="ttc" id="a_t_scaler_queue_8h_html"><div class="ttname"><a href="_t_scaler_queue_8h.html">TScalerQueue.h</a></div></div>
 <div class="ttc" id="aclass_t_bad_fragment_html"><div class="ttname"><a href="class_t_bad_fragment.html">TBadFragment</a></div><div class="ttdef"><b>Definition</b> <a href="_t_bad_fragment_8h_source.html#l00022">TBadFragment.h:22</a></div></div>
 <div class="ttc" id="aclass_t_channel_html"><div class="ttname"><a href="class_t_channel.html">TChannel</a></div><div class="ttdef"><b>Definition</b> <a href="_t_channel_8h_source.html#l00050">TChannel.h:50</a></div></div>
-<div class="ttc" id="aclass_t_data_parser_html_a08607f54fcf6e8ab8e752706f9aaf8d6"><div class="ttname"><a href="class_t_data_parser.html#a08607f54fcf6e8ab8e752706f9aaf8d6">TDataParser::fFragmentIdMap</a></div><div class="ttdeci">std::map&lt; int, int &gt; fFragmentIdMap</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8h_source.html#l00110">TDataParser.h:110</a></div></div>
-<div class="ttc" id="aclass_t_data_parser_html_a1123119e280fb2031e33dc256fbcbd2a"><div class="ttname"><a href="class_t_data_parser.html#a1123119e280fb2031e33dc256fbcbd2a">TDataParser::OutputQueueStatus</a></div><div class="ttdeci">virtual std::string OutputQueueStatus()</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8cxx_source.html#l00079">TDataParser.cxx:79</a></div></div>
-<div class="ttc" id="aclass_t_data_parser_html_a2b4da169e70a53a475e2f61e5b01f8d9"><div class="ttname"><a href="class_t_data_parser.html#a2b4da169e70a53a475e2f61e5b01f8d9">TDataParser::SetFinished</a></div><div class="ttdeci">virtual void SetFinished()</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8cxx_source.html#l00051">TDataParser.cxx:51</a></div></div>
-<div class="ttc" id="aclass_t_data_parser_html_a31f06711c72bdb5f4e117ce5a2b016a3"><div class="ttname"><a href="class_t_data_parser.html#a31f06711c72bdb5f4e117ce5a2b016a3">TDataParser::Push</a></div><div class="ttdeci">void Push(ThreadsafeQueue&lt; std::shared_ptr&lt; const TBadFragment &gt; &gt; &amp;queue, const std::shared_ptr&lt; TBadFragment &gt; &amp;frag)</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8cxx_source.html#l00071">TDataParser.cxx:71</a></div></div>
-<div class="ttc" id="aclass_t_data_parser_html_a3561426682ff95b142b8463ee528b8ef"><div class="ttname"><a href="class_t_data_parser.html#a3561426682ff95b142b8463ee528b8ef">TDataParser::fBadOutputQueue</a></div><div class="ttdeci">std::shared_ptr&lt; ThreadsafeQueue&lt; std::shared_ptr&lt; const TBadFragment &gt; &gt; &gt; fBadOutputQueue</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8h_source.html#l00097">TDataParser.h:97</a></div></div>
-<div class="ttc" id="aclass_t_data_parser_html_a38a48714bdd19302fc1afe41ee511017"><div class="ttname"><a href="class_t_data_parser.html#a38a48714bdd19302fc1afe41ee511017">TDataParser::fScalerOutputQueue</a></div><div class="ttdeci">std::shared_ptr&lt; ThreadsafeQueue&lt; std::shared_ptr&lt; TEpicsFrag &gt; &gt; &gt; fScalerOutputQueue</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8h_source.html#l00098">TDataParser.h:98</a></div></div>
-<div class="ttc" id="aclass_t_data_parser_html_a7a6675829e0510f4dd00df042cedecd4"><div class="ttname"><a href="class_t_data_parser.html#a7a6675829e0510f4dd00df042cedecd4">TDataParser::fOptions</a></div><div class="ttdeci">static TGRSIOptions * fOptions</div><div class="ttdoc">Static pointer to TGRSIOptions, gets set on the first call of GriffinDataToFragment.</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8h_source.html#l00117">TDataParser.h:117</a></div></div>
-<div class="ttc" id="aclass_t_data_parser_html_aa452247c3d8c3897caa440bfbdff65b6"><div class="ttname"><a href="class_t_data_parser.html#aa452247c3d8c3897caa440bfbdff65b6">TDataParser::ClearQueue</a></div><div class="ttdeci">virtual void ClearQueue()</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8cxx_source.html#l00033">TDataParser.cxx:33</a></div></div>
+<div class="ttc" id="aclass_t_data_parser_html_a1123119e280fb2031e33dc256fbcbd2a"><div class="ttname"><a href="class_t_data_parser.html#a1123119e280fb2031e33dc256fbcbd2a">TDataParser::OutputQueueStatus</a></div><div class="ttdeci">virtual std::string OutputQueueStatus()</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8cxx_source.html#l00078">TDataParser.cxx:78</a></div></div>
+<div class="ttc" id="aclass_t_data_parser_html_a2352df1bbb82a7f11c434ac4e121bd5e"><div class="ttname"><a href="class_t_data_parser.html#a2352df1bbb82a7f11c434ac4e121bd5e">TDataParser::fFragmentIdMap</a></div><div class="ttdeci">std::map&lt; Long_t, int &gt; fFragmentIdMap</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8h_source.html#l00111">TDataParser.h:111</a></div></div>
+<div class="ttc" id="aclass_t_data_parser_html_a2b4da169e70a53a475e2f61e5b01f8d9"><div class="ttname"><a href="class_t_data_parser.html#a2b4da169e70a53a475e2f61e5b01f8d9">TDataParser::SetFinished</a></div><div class="ttdeci">virtual void SetFinished()</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8cxx_source.html#l00050">TDataParser.cxx:50</a></div></div>
+<div class="ttc" id="aclass_t_data_parser_html_a31f06711c72bdb5f4e117ce5a2b016a3"><div class="ttname"><a href="class_t_data_parser.html#a31f06711c72bdb5f4e117ce5a2b016a3">TDataParser::Push</a></div><div class="ttdeci">void Push(ThreadsafeQueue&lt; std::shared_ptr&lt; const TBadFragment &gt; &gt; &amp;queue, const std::shared_ptr&lt; TBadFragment &gt; &amp;frag)</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8cxx_source.html#l00070">TDataParser.cxx:70</a></div></div>
+<div class="ttc" id="aclass_t_data_parser_html_a3561426682ff95b142b8463ee528b8ef"><div class="ttname"><a href="class_t_data_parser.html#a3561426682ff95b142b8463ee528b8ef">TDataParser::fBadOutputQueue</a></div><div class="ttdeci">std::shared_ptr&lt; ThreadsafeQueue&lt; std::shared_ptr&lt; const TBadFragment &gt; &gt; &gt; fBadOutputQueue</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8h_source.html#l00098">TDataParser.h:98</a></div></div>
+<div class="ttc" id="aclass_t_data_parser_html_a38a48714bdd19302fc1afe41ee511017"><div class="ttname"><a href="class_t_data_parser.html#a38a48714bdd19302fc1afe41ee511017">TDataParser::fScalerOutputQueue</a></div><div class="ttdeci">std::shared_ptr&lt; ThreadsafeQueue&lt; std::shared_ptr&lt; TEpicsFrag &gt; &gt; &gt; fScalerOutputQueue</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8h_source.html#l00099">TDataParser.h:99</a></div></div>
+<div class="ttc" id="aclass_t_data_parser_html_a7a6675829e0510f4dd00df042cedecd4"><div class="ttname"><a href="class_t_data_parser.html#a7a6675829e0510f4dd00df042cedecd4">TDataParser::fOptions</a></div><div class="ttdeci">static TGRSIOptions * fOptions</div><div class="ttdoc">Static pointer to TGRSIOptions, gets set on the first call of GriffinDataToFragment.</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8h_source.html#l00118">TDataParser.h:118</a></div></div>
+<div class="ttc" id="aclass_t_data_parser_html_aa452247c3d8c3897caa440bfbdff65b6"><div class="ttname"><a href="class_t_data_parser.html#aa452247c3d8c3897caa440bfbdff65b6">TDataParser::ClearQueue</a></div><div class="ttdeci">virtual void ClearQueue()</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8cxx_source.html#l00032">TDataParser.cxx:32</a></div></div>
 <div class="ttc" id="aclass_t_data_parser_html_abf0bcd6e1a12af1bae73339437ade8f9"><div class="ttname"><a href="class_t_data_parser.html#abf0bcd6e1a12af1bae73339437ade8f9">TDataParser::TDataParser</a></div><div class="ttdeci">TDataParser()</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8cxx_source.html#l00018">TDataParser.cxx:18</a></div></div>
-<div class="ttc" id="aclass_t_data_parser_html_abf6a12ea0cf5e8e8222e69af5094c90a"><div class="ttname"><a href="class_t_data_parser.html#abf6a12ea0cf5e8e8222e69af5094c90a">TDataParser::~TDataParser</a></div><div class="ttdeci">virtual ~TDataParser()</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8cxx_source.html#l00028">TDataParser.cxx:28</a></div></div>
-<div class="ttc" id="aclass_t_data_parser_html_ac09a169ef95b7bc7b80eeccaac285d5d"><div class="ttname"><a href="class_t_data_parser.html#ac09a169ef95b7bc7b80eeccaac285d5d">TDataParser::fGoodOutputQueues</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; ThreadsafeQueue&lt; std::shared_ptr&lt; const TFragment &gt; &gt; &gt; &gt; fGoodOutputQueues</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8h_source.html#l00096">TDataParser.h:96</a></div></div>
-<div class="ttc" id="aclass_t_data_parser_html_af9b87888b6b8c221128ace3bbd836b3d"><div class="ttname"><a href="class_t_data_parser.html#af9b87888b6b8c221128ace3bbd836b3d">TDataParser::fChannel</a></div><div class="ttdeci">TChannel * fChannel</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8h_source.html#l00103">TDataParser.h:103</a></div></div>
+<div class="ttc" id="aclass_t_data_parser_html_abf6a12ea0cf5e8e8222e69af5094c90a"><div class="ttname"><a href="class_t_data_parser.html#abf6a12ea0cf5e8e8222e69af5094c90a">TDataParser::~TDataParser</a></div><div class="ttdeci">virtual ~TDataParser()</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8cxx_source.html#l00027">TDataParser.cxx:27</a></div></div>
+<div class="ttc" id="aclass_t_data_parser_html_ac09a169ef95b7bc7b80eeccaac285d5d"><div class="ttname"><a href="class_t_data_parser.html#ac09a169ef95b7bc7b80eeccaac285d5d">TDataParser::fGoodOutputQueues</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; ThreadsafeQueue&lt; std::shared_ptr&lt; const TFragment &gt; &gt; &gt; &gt; fGoodOutputQueues</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8h_source.html#l00097">TDataParser.h:97</a></div></div>
+<div class="ttc" id="aclass_t_data_parser_html_af9b87888b6b8c221128ace3bbd836b3d"><div class="ttname"><a href="class_t_data_parser.html#af9b87888b6b8c221128ace3bbd836b3d">TDataParser::fChannel</a></div><div class="ttdeci">TChannel * fChannel</div><div class="ttdef"><b>Definition</b> <a href="_t_data_parser_8h_source.html#l00104">TDataParser.h:104</a></div></div>
 <div class="ttc" id="aclass_t_epics_frag_html"><div class="ttname"><a href="class_t_epics_frag.html">TEpicsFrag</a></div><div class="ttdef"><b>Definition</b> <a href="_t_epics_frag_8h_source.html#l00031">TEpicsFrag.h:31</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_options_html"><div class="ttname"><a href="class_t_g_r_s_i_options.html">TGRSIOptions</a></div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_options_8h_source.html#l00029">TGRSIOptions.h:29</a></div></div>
-<div class="ttc" id="aclass_threadsafe_queue_html"><div class="ttname"><a href="class_threadsafe_queue.html">ThreadsafeQueue</a></div><div class="ttdef"><b>Definition</b> <a href="_threadsafe_queue_8h_source.html#l00027">ThreadsafeQueue.h:27</a></div></div>
+<div class="ttc" id="aclass_threadsafe_queue_html"><div class="ttname"><a href="class_threadsafe_queue.html">ThreadsafeQueue</a></div><div class="ttdef"><b>Definition</b> <a href="_threadsafe_queue_8h_source.html#l00028">ThreadsafeQueue.h:28</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -237,7 +236,7 @@ $(document).ready(function(){initNavTree('_t_data_parser_8cxx_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_4bb6f76668d6d9582c2c8d16c7151ac7.html">TDataParser</a></li><li class="navelem"><a class="el" href="_t_data_parser_8cxx.html">TDataParser.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 03:00:46.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:33.</li>
   </ul>
 </div>
 </body>

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['map_5ft_0',['map_t',['../class_t_g_r_s_i_map.html#ab1f3454c64ed390e2c452274fc8d9096',1,'TGRSIMap']]],
+  ['map_5ft_0',['map_t',['../class_t_g_r_s_i_map.html#af9a98f3173424aeabc28401ab454a0f6',1,'TGRSIMap']]],
   ['mat3d_5fdouble_1',['Mat3D_double',['../group___fitting.html#ga9634ead62d49f79c1bb8c2e3ddfcf561',1,'TLMFitter.h']]],
   ['mat3d_5fi_5fdouble_2',['Mat3D_I_double',['../group___fitting.html#gae76b5802028b1aa7805055e8425b3fcf',1,'TLMFitter.h']]],
   ['mat3d_5fio_5fdouble_3',['Mat3D_IO_double',['../group___fitting.html#ga4a5901328a237dcc49105d1c643aca67',1,'TLMFitter.h']]],
@@ -49,5 +49,5 @@ var searchData=
   ['mat_5fuchr_46',['Mat_UCHR',['../group___fitting.html#gaf70ddecea4bfe19dc3ef063487092ff0',1,'TLMFitter.h']]],
   ['mat_5fuint_47',['Mat_UINT',['../group___fitting.html#gaf6dc3489b19633aed94e9e98451b6914',1,'TLMFitter.h']]],
   ['mat_5fulng_48',['Mat_ULNG',['../group___fitting.html#gaa14d18d02451d80f313ada25b2459f97',1,'TLMFitter.h']]],
-  ['multiplepeak_5ft_49',['MultiplePeak_t',['../group___fitting.html#ga6798f937f90250d05f6c5adad7175ae1',1,'TPeakFitter.h']]]
+  ['multiplepeak_5ft_49',['MultiplePeak_t',['../group___fitting.html#ga02754ed31b0865dabdd6d236f779b3a5',1,'TPeakFitter.h']]]
 ];
