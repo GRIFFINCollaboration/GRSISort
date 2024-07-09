@@ -56,14 +56,23 @@ else()
 	message(CONFIGURE_LOG "${Yellow}Python version found is ${Python_VERSION} and not 2.7, GUI won't be active${ColourReset}")
 endif()
 
+# check the root version (ROOT_VERSION=6.32.02, ROOT_VERSION_COUNT=3, ROOT_VERSION_MAJOR=6, ROOT_VERSION_MINOR=32, ROOT_VERSION_PATCH=2, ROOT_VERSION_TWEAK=0)
+if(NOT ${ROOT_VERSION_MAJOR} EQUAL "6")
+	message(FATAL_ERROR "The ROOT version installed (${ROOT_VERSION}) is wront, the major version needs to be 6 for GRSISort to work (ROOT_VERSION_MAJOR=${ROOT_VERSION_MAJOR})!")
+endif()
+
 #----------------------------------------------------------------------------
 # set c++ standard to the one used for root (adopted from agataselector's CMakeLists.txt)
 if(NOT ROOT_CXX_VERSION)
-	string(REGEX REPLACE ".*-std=.+\\+\\+([0-9][0-9]).*" "\\1" ROOT_CXX_VERSION ${ROOT_CXX_FLAGS})
-	if(${CMAKE_MATCH_COUNT} EQUAL "1")
-		message("Got ROOT_CXX_VERSION=${ROOT_CXX_VERSION} from \"${ROOT_CXX_FLAGS}\"")
+	if(ROOT_CXX_STANDARD)
+      set(ROOT_CXX_VERSION ${ROOT_CXX_STANDARD})
 	else()
-		message(FATAL_ERROR "The ROOT cxx flags seem to be misformed (${ROOT_CXX_FLAGS}) (CMAKE_MATCH_COUNT=${CMAKE_MATCH_COUNT}), consider providing a cxx version by hand using \"-DROOT_CXX_VERSION=??\"")
+		string(REGEX REPLACE ".*-std=.+\\+\\+([0-9][0-9]).*" "\\1" ROOT_CXX_VERSION ${ROOT_CXX_FLAGS})
+		if(${CMAKE_MATCH_COUNT} EQUAL "1")
+			message("Got ROOT_CXX_VERSION=${ROOT_CXX_VERSION} from \"${ROOT_CXX_FLAGS}\"")
+		else()
+			message(FATAL_ERROR "The ROOT cxx flags seem to be misformed (${ROOT_CXX_FLAGS}) (CMAKE_MATCH_COUNT=${CMAKE_MATCH_COUNT}), consider providing a cxx version by hand using \"-DROOT_CXX_VERSION=??\"")
+		endif()
 	endif()
 else()
 	message("Got user provided ROOT_CXX_VERSION=${ROOT_CXX_VERSION}")
@@ -225,11 +234,13 @@ root_generate_dictionary(G__TFormat TSingleton.h TFragment.h TBadFragment.h TCha
 target_link_libraries(TFormat TGRSIFit TNucleus ${ROOT_LIBRARIES} ${X11_LIBRARIES} ${X11_Xpm_LIB})
 add_dependencies(TFormat GVersion)
 
-add_library(TGRSIProof SHARED
-	${PROJECT_SOURCE_DIR}/libraries/TGRSIProof/TGRSISelector.cxx
-	)
-root_generate_dictionary(G__TGRSIProof TGRSIProof.h TObjectWrapper.h TGRSISelector.h MODULE TGRSIProof LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TGRSIProof/LinkDef.h)
-target_link_libraries(TGRSIProof TFormat ${ROOT_LIBRARIES})
+if(${ROOT_proof_FOUND})
+	add_library(TGRSIProof SHARED
+		${PROJECT_SOURCE_DIR}/libraries/TGRSIProof/TGRSISelector.cxx
+		)
+	root_generate_dictionary(G__TGRSIProof TGRSIProof.h TObjectWrapper.h TGRSISelector.h MODULE TGRSIProof LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TGRSIProof/LinkDef.h)
+	target_link_libraries(TGRSIProof TFormat ${ROOT_LIBRARIES})
+endif()
 
 add_library(TGUI SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TGUI/TCalibrationGraph.cxx
@@ -312,7 +323,11 @@ target_link_libraries(TRawFile ${ROOT_LIBRARIES})
 # Add the executable, and link it to the generated libraries and the ROOT libraries
 add_executable(grsisort ${PROJECT_SOURCE_DIR}/src/grsisort.cxx)
 
-set(GRSI_LIBRARIES TFormat TPulseAnalyzer TSuppressed TReaction TPeakFitting TGRSIFit TKinematics TNucleus TBgo TBetaDecay TSRIM TCal TGUI TGRSIProof TDataParser TRawFile MakeFragmentHistograms)
+if(${ROOT_proof_FOUND})
+	set(GRSI_LIBRARIES TFormat TPulseAnalyzer TSuppressed TReaction TPeakFitting TGRSIFit TKinematics TNucleus TBgo TBetaDecay TSRIM TCal TGUI TGRSIProof TDataParser TRawFile MakeFragmentHistograms)
+else()
+	set(GRSI_LIBRARIES TFormat TPulseAnalyzer TSuppressed TReaction TPeakFitting TGRSIFit TKinematics TNucleus TBgo TBetaDecay TSRIM TCal TGUI TDataParser TRawFile MakeFragmentHistograms)
+endif()
 target_link_libraries(grsisort ${GRSI_LIBRARIES} ${ROOT_LIBRARIES} ${X11_LIBRARIES} ${X11_Xpm_LIB})
 
 #----------------------------------------------------------------------------
@@ -358,8 +373,10 @@ add_custom_target(GVersion
 
 #----------------------------------------------------------------------------
 # add grsiproof (but exclude it from target all)
-add_executable(grsiproof EXCLUDE_FROM_ALL ${PROJECT_SOURCE_DIR}/GRSIProof/grsiproof.cxx)
-target_link_libraries(grsiproof ${GRSI_LIBRARIES} ${ROOT_LIBRARIES} ${X11_LIBRARIES} ${X11_Xpm_LIB})
+if(${ROOT_proof_FOUND})
+	add_executable(grsiproof EXCLUDE_FROM_ALL ${PROJECT_SOURCE_DIR}/GRSIProof/grsiproof.cxx)
+	target_link_libraries(grsiproof ${GRSI_LIBRARIES} ${ROOT_LIBRARIES} ${X11_LIBRARIES} ${X11_Xpm_LIB})
+endif()
 
 #----------------------------------------------------------------------------
 # all parser libraries
