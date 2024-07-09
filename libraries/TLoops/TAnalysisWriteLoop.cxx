@@ -209,11 +209,11 @@ void TAnalysisWriteLoop::WriteEvent(std::shared_ptr<TUnpackedEvent>& event)
             AddBranch(cls);
             **fDetMap.at(cls) = *det;//(det.get());
          }
-         (*fDetMap.at(cls))->ClearTransients();
-      }
+			(*fDetMap.at(cls))->ClearTransients();
+		}
 
-      // Fill
-      std::lock_guard<std::mutex> lock(ttree_fill_mutex);
-      fEventTree->Fill();
-   }
+		// Fill
+		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
+		fEventTree->Fill();
+	}
 }

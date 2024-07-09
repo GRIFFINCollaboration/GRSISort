@@ -29,12 +29,16 @@ public:
    TBetaDecay(Int_t Z, Int_t N);
    ~TBetaDecay() override;
 
-public:
+	TBetaDecay(const TBetaDecay&) = delete;
+   TBetaDecay(TBetaDecay&&)      = delete;
+   TBetaDecay& operator=(const TBetaDecay&) = delete;
+   TBetaDecay& operator=(TBetaDecay&&)      = delete;
+
    TNucleus* GetParent() const { return fParent; }
 
 private:
-   Bool_t    fParentAllocated;   ///< true if TNucleus was instantiated in TBetaDecay
-   TNucleus* fParent;            ///< The parent nucleus beta decaying
+   Bool_t    fParentAllocated{false};   ///< true if TNucleus was instantiated in TBetaDecay
+   TNucleus* fParent{nullptr};          ///< The parent nucleus beta decaying
 
    /// \cond CLASSIMP
    ClassDefOverride(TBetaDecay, 1);   // Information about beta decays

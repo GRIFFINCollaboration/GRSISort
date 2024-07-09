@@ -1,5 +1,5 @@
-#ifndef _FULLPATH_H_
-#define _FULLPATH_H_
+#ifndef FULLPATH_H
+#define FULLPATH_H
 
 #include <string>
 
