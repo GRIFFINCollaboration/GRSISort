@@ -201,6 +201,7 @@ StatementMacros:
   - ClassDef
   - ClassDefOverride
   - NamespaceImp
+  - templateClassImp
 TabWidth:        3
 UseCRLF:         false
 UseTab:          Never
