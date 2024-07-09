@@ -169,7 +169,6 @@ add_library(TFormat SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TFormat/Globals.cxx
 	${PROJECT_SOURCE_DIR}/libraries/TFormat/TGRSIUtilities.cxx
 	${PROJECT_SOURCE_DIR}/libraries/TFormat/TGRSISortInfo.cxx
-	${PROJECT_SOURCE_DIR}/libraries/TFormat/TDetectorInformation.cxx
 	${PROJECT_SOURCE_DIR}/libraries/TFormat/TSortingDiagnostics.cxx
 	${PROJECT_SOURCE_DIR}/libraries/TFormat/TDataFrameLibrary.cxx
 	${PROJECT_SOURCE_DIR}/libraries/TFormat/TPPG.cxx
@@ -312,8 +311,6 @@ target_link_libraries(TSRIM ${ROOT_LIBRARIES})
 
 #add_library(TRawFile INTERFACE)
 add_library(TRawFile SHARED
-	${PROJECT_SOURCE_DIR}/libraries/TRawFile/TRawFile.cxx
-	${PROJECT_SOURCE_DIR}/libraries/TRawFile/TRawEvent.cxx
 	)
 root_generate_dictionary(G__TRawFile TRawFile.h TRawEvent.h MODULE TRawFile LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TRawFile/LinkDef.h)
 target_link_libraries(TRawFile ${ROOT_LIBRARIES})
