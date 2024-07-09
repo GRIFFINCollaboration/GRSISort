@@ -108,8 +108,11 @@ void TRunInfo::Print(Option_t* opt) const
       str << std::endl;
       str << "\t==============================" << std::endl;
       str << DBLUE "\t\tArray Position (mm) = " << DRED << TRunInfo::HPGeArrayPosition() << RESET_COLOR << std::endl;
-      if(fDetectorInformation != nullptr) { fDetectorInformation->Print(opt); }
-      else { str << "no detector information" << std::endl; }
+      if(fDetectorInformation != nullptr) {
+         fDetectorInformation->Print(opt);
+      } else {
+         str << "no detector information" << std::endl;
+      }
       str << "\t==============================" << std::endl;
    }
    std::cout << str.str();
@@ -229,7 +232,7 @@ Bool_t TRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
       std::string type = line.substr(0, ntype);
       line             = line.substr(ntype + 1, line.length());
       trim(line);
-		std::transform(type.begin(), type.end(), type.begin(), ::toupper);
+      std::transform(type.begin(), type.end(), type.begin(), ::toupper);
       if(type == "CAL" || type == "CALFILE") {
          // TODO Make this work again, using priorities
          // TGRSIOptions::AddInputCalFile(line);
@@ -437,36 +440,36 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
       } else if(fFirstRunNumber != 0 && fLastRunNumber != 0 && fFirstRunNumber != fLastRunNumber) {
          // if we already have a (good) range of runs, check if runinfo fits at the beginning or the end
          if(runinfo->fRunNumber + 1 == fFirstRunNumber) {
-				if(verbose) { std::cout << "found another run (" << runinfo->fRunNumber << ") before first run (" << fFirstRunNumber << ")" << std::endl; }
-				// use runinfo as first run
-				fFirstRunNumber = runinfo->fRunNumber;
-				fRunStart       = runinfo->fRunStart;
-			} else if(runinfo->fRunNumber - 1 == fLastRunNumber) {
-				if(verbose) { std::cout << "found another run (" << runinfo->fRunNumber << ") after last run (" << fLastRunNumber << ")" << std::endl; }
-				// use runinfo as last run
-				fLastRunNumber = runinfo->fRunNumber;
-				fRunStop       = runinfo->fRunStop;
-			} else if(runinfo->fRunNumber == fFirstRunNumber || runinfo->fRunNumber == fLastRunNumber) {
-				if(verbose) { std::cout << "found another sub(?) run part of runs (" << fFirstRunNumber << " - " << fLastRunNumber << ")" << std::endl; }
-				// found probably another subrun of a run already added
-				// since we do not keep track of all subruns we have to assume this is in order
-				// so we only update the run start or stop if necessary
-				if(verbose) { std::cout << "changing run start/stop from " << std::setw(16) << fRunStart << "/" << std::setw(16) << fRunStop << " to "; }
-				if(fRunStop < runinfo->fRunStop) { fRunStop = runinfo->fRunStop; }
-				if(fRunStart > runinfo->fRunStart) { fRunStart = runinfo->fRunStart; }
-				if(verbose) { std::cout << std::setw(16) << fRunStart << "/" << std::setw(16) << fRunStop << std::endl; }
-			} else {
-				if(verbose) { std::cout << "found another run (" << runinfo->fRunNumber << ") non-consecutive to runs (" << fFirstRunNumber << " - " << fLastRunNumber << ")" << std::endl; }
-				// run start and stop don't make a lot of sense with non-consecutive runs (?)
-				fRunStart = 0.;
-				fRunStop  = 0.;
-				// still need to keep some kind of information about the runs (e.g. to create filenames)
-				// by keeping first and last the exact same it is still obvious that these are not consecutive runs
-				fLastRunNumber = fFirstRunNumber;
-			}
+            if(verbose) { std::cout << "found another run (" << runinfo->fRunNumber << ") before first run (" << fFirstRunNumber << ")" << std::endl; }
+            // use runinfo as first run
+            fFirstRunNumber = runinfo->fRunNumber;
+            fRunStart       = runinfo->fRunStart;
+         } else if(runinfo->fRunNumber - 1 == fLastRunNumber) {
+            if(verbose) { std::cout << "found another run (" << runinfo->fRunNumber << ") after last run (" << fLastRunNumber << ")" << std::endl; }
+            // use runinfo as last run
+            fLastRunNumber = runinfo->fRunNumber;
+            fRunStop       = runinfo->fRunStop;
+         } else if(runinfo->fRunNumber == fFirstRunNumber || runinfo->fRunNumber == fLastRunNumber) {
+            if(verbose) { std::cout << "found another sub(?) run part of runs (" << fFirstRunNumber << " - " << fLastRunNumber << ")" << std::endl; }
+            // found probably another subrun of a run already added
+            // since we do not keep track of all subruns we have to assume this is in order
+            // so we only update the run start or stop if necessary
+            if(verbose) { std::cout << "changing run start/stop from " << std::setw(16) << fRunStart << "/" << std::setw(16) << fRunStop << " to "; }
+            if(fRunStop < runinfo->fRunStop) { fRunStop = runinfo->fRunStop; }
+            if(fRunStart > runinfo->fRunStart) { fRunStart = runinfo->fRunStart; }
+            if(verbose) { std::cout << std::setw(16) << fRunStart << "/" << std::setw(16) << fRunStop << std::endl; }
+         } else {
+            if(verbose) { std::cout << "found another run (" << runinfo->fRunNumber << ") non-consecutive to runs (" << fFirstRunNumber << " - " << fLastRunNumber << ")" << std::endl; }
+            // run start and stop don't make a lot of sense with non-consecutive runs (?)
+            fRunStart = 0.;
+            fRunStop  = 0.;
+            // still need to keep some kind of information about the runs (e.g. to create filenames)
+            // by keeping first and last the exact same it is still obvious that these are not consecutive runs
+            fLastRunNumber = fFirstRunNumber;
+         }
       } else {
          // the run number is zero, and we do not have a (good) range, so there is nothing to do.
-			if(verbose) { std::cout << "found another run (" << runinfo->fRunNumber << ") non-consecutive run (" << fFirstRunNumber << " - " << fLastRunNumber << ")" << std::endl; }
+         if(verbose) { std::cout << "found another run (" << runinfo->fRunNumber << ") non-consecutive run (" << fFirstRunNumber << " - " << fLastRunNumber << ")" << std::endl; }
       }
    } else if(fSubRunNumber != -1) {
       // check if the added sub run is an increment of the current run number

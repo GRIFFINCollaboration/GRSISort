@@ -13,7 +13,7 @@
 bool file_exists(const char* filename)
 {
    /// This checks if the path exist, and if it is a file and not a directory!
-   struct stat buffer{};
+   struct stat buffer {};
    int         state = stat(filename, &buffer);
    // state != 0 means we couldn't get file attributes. This doesn't necessary mean the file
    // does not exist, we might just be missing permission to access it. But for our purposes
@@ -25,7 +25,7 @@ bool file_exists(const char* filename)
 
 bool all_files_exist(const std::vector<std::string>& filenames)
 {
-	return std::all_of(filenames.begin(), filenames.end(), [](auto filename) { return file_exists(filename.c_str()); });
+   return std::all_of(filenames.begin(), filenames.end(), [](auto filename) { return file_exists(filename.c_str()); });
 }
 
 void trim(std::string& line, const std::string& trimChars)

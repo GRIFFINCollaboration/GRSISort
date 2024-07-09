@@ -19,7 +19,7 @@ int GetSubRunNumber(const std::string&);
 inline size_t FindFileSize(const char* fname)
 {
    std::ifstream temp(fname, std::ios::in | std::ios::ate);
-   size_t fsize = temp.tellg();
+   size_t        fsize = temp.tellg();
    temp.close();
    return fsize;
 }

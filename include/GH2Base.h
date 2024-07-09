@@ -100,7 +100,7 @@ public:
    };
 
    iterator begin() { return {this, false}; }
-   iterator end()   { return {this, true}; }
+   iterator end() { return {this, true}; }
 
 private:
    void   Init();

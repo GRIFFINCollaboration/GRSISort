@@ -11,9 +11,9 @@
 
 Int_t TCalibrationGraph::RemovePoint()
 {
-	if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }
-	if(fIsResidual) { return fParent->RemoveResidualPoint(); }
-	return fParent->RemovePoint();
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+   if(fIsResidual) { return fParent->RemoveResidualPoint(); }
+   return fParent->RemovePoint();
 }
 
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 26, 0)

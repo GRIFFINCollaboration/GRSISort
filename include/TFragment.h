@@ -30,11 +30,11 @@ class TFragment : public TDetectorHit {
 public:
    TFragment();
    TFragment(const TFragment&) = default;
-   TFragment(TFragment&&) = default;
-   ~TFragment() = default;
+   TFragment(TFragment&&)      = default;
+   ~TFragment()                = default;
 
    TFragment& operator=(const TFragment&) = default;   // use default assignment operator (to shut up gcc 9.1)
-   TFragment& operator=(TFragment&&) = default;   // use default move assignment operator (to shut up gcc 9.1)
+   TFragment& operator=(TFragment&&)      = default;   // use default move assignment operator (to shut up gcc 9.1)
 
    //////////////////// basic setter functions ////////////////////
 

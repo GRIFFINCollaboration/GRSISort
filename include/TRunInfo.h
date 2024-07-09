@@ -230,8 +230,8 @@ public:
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
 
-   static bool WriteToRoot(TFile* fileptr = nullptr);
-   static bool WriteInfoFile(const std::string& filename);
+   static bool        WriteToRoot(TFile* fileptr = nullptr);
+   static bool        WriteInfoFile(const std::string& filename);
    static std::string PrintToString(Option_t* opt = "");
 
    /// \cond CLASSIMP

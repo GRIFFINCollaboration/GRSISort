@@ -4,22 +4,22 @@
 #include "Globals.h"
 
 TKinematics::TKinematics(double beamE, const char* beam, const char* targ, const char* ejec, const char* reco, const char* name)
-	: fEBeam(beamE), fCm2LabSpline(nullptr)
+   : fEBeam(beamE), fCm2LabSpline(nullptr)
 {
-   auto projectile    = new TNucleus(beam);
-   auto target        = new TNucleus(targ);
-   TNucleus* ejectile = nullptr;
-   TNucleus* recoil   = nullptr;
+   auto      projectile = new TNucleus(beam);
+   auto      target     = new TNucleus(targ);
+   TNucleus* ejectile   = nullptr;
+   TNucleus* recoil     = nullptr;
 
    name = Form("%s(%s,%s)%s", targ, beam, ejec, reco);
 
    if((ejec == nullptr) || (reco == nullptr)) {
       // without ejectile or recoil, elastic scattering is assumed
       ejectile = projectile;
-      recoil = target;
+      recoil   = target;
    } else {
       ejectile = new TNucleus(ejec);
-      recoil = new TNucleus(reco);
+      recoil   = new TNucleus(reco);
    }
 
    fParticle[0] = projectile;
@@ -37,7 +37,7 @@ TKinematics::TKinematics(double beamE, const char* beam, const char* targ, const
 }
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, double eBeam, const char* name)
-	: fEBeam(eBeam), fQValue(0), fCm2LabSpline(nullptr)
+   : fEBeam(eBeam), fQValue(0), fCm2LabSpline(nullptr)
 {
    // By not providing the ejectile (only prociding projectile, target, and beam energy) elestic scattering is assumed
    fParticle[0] = projectile;
@@ -52,7 +52,7 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, double eBeam, c
 }
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double eBeam, const char* name)
-	: fEBeam(eBeam), fCm2LabSpline(nullptr)
+   : fEBeam(eBeam), fCm2LabSpline(nullptr)
 {
    // Kinematics using the provided projectile, target, recoil, and ejectile, as well as beam energy
    fParticle[0] = projectile;
@@ -70,7 +70,7 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoi
 }
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double eBeam, double ex3, const char* name)
-	: fEBeam(eBeam), fCm2LabSpline(nullptr)
+   : fEBeam(eBeam), fCm2LabSpline(nullptr)
 {
    // Kinematics using the provided projectile, target, recoil, ejectile, beam energy, and excited state of the recoil
    fParticle[0] = projectile;
@@ -88,22 +88,22 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoi
 }
 
 TKinematics::TKinematics(const char* beam, const char* targ, const char* ejec, const char* reco, double eBeam, double ex3, const char* name)
-	: fEBeam(eBeam), fCm2LabSpline(nullptr)
+   : fEBeam(eBeam), fCm2LabSpline(nullptr)
 {
-   auto projectile    = new TNucleus(beam);
-   auto target        = new TNucleus(targ);
-   TNucleus* ejectile = nullptr;
-   TNucleus* recoil   = nullptr;
+   auto      projectile = new TNucleus(beam);
+   auto      target     = new TNucleus(targ);
+   TNucleus* ejectile   = nullptr;
+   TNucleus* recoil     = nullptr;
 
    name = Form("%s(%s,%s)%s", targ, beam, ejec, reco);
 
    if((ejec == nullptr) || (reco == nullptr)) {
       // without ejectile or recoil, elastic scattering is assumed
       ejectile = projectile;
-      recoil = target;
+      recoil   = target;
    } else {
       ejectile = new TNucleus(ejec);
-      recoil = new TNucleus(reco);
+      recoil   = new TNucleus(reco);
    }
 
    fParticle[0] = projectile;
@@ -562,8 +562,8 @@ double TKinematics::Sigma_cm2lab(double angle_cm, double sigma_cm) const
 
 double TKinematics::Sigma_lab2cm(double angle_cm, double sigma_lab) const
 {
-   double gam2 = fM[0] * fM[2] / fM[1] / fM[3] * fTCm_i / fTCm_f;
-   gam2        = sqrt(gam2);
+   double gam2   = fM[0] * fM[2] / fM[1] / fM[3] * fTCm_i / fTCm_f;
+   gam2          = sqrt(gam2);
    double wurzel = 1. + gam2 * gam2 + 2. * gam2 * cos(PI - angle_cm);
    wurzel        = sqrt(wurzel);
    return sigma_lab / (1 / fGamma_cm * wurzel * wurzel * wurzel / (1 + gam2 * cos(PI - angle_cm)));

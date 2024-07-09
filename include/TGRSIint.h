@@ -55,9 +55,9 @@ public:
    ~TGRSIint() override;
 
    static void PrintHelp(bool);
-   void PrintLogo(bool) override;
-   bool HandleTermInput() override;
-   int  TabCompletionHook(char*, int*, std::ostream&) override;
+   void        PrintLogo(bool) override;
+   bool        HandleTermInput() override;
+   int         TabCompletionHook(char*, int*, std::ostream&) override;
 
    TFile*    OpenRootFile(const std::string& filename, Option_t* opt = "read");
    TRawFile* OpenRawFile(const std::string& filename);
@@ -72,12 +72,12 @@ public:
    void DelayedProcessLine_Action();
 
 private:
-   void SetupPipeline();
-   void LoopUntilDone();
-   void ApplyOptions();
+   void        SetupPipeline();
+   void        LoopUntilDone();
+   void        ApplyOptions();
    static void DrawLogo();
    static void LoadGROOTGraphics();
-   void LoadExtraClasses();
+   void        LoadExtraClasses();
 
    Long_t DelayedProcessLine(std::string command);
 

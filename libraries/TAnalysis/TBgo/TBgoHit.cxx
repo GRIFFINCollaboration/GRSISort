@@ -25,14 +25,14 @@ TBgoHit& TBgoHit::operator=(const TBgoHit& rhs)
 {
    rhs.Copy(*this, true);
 
-	return *this;
+   return *this;
 }
 
 TBgoHit& TBgoHit::operator=(TBgoHit&& rhs)
 {
    rhs.Copy(*this, true);
 
-	return *this;
+   return *this;
 }
 
 void TBgoHit::Copy(TObject& rhs, bool copywave) const

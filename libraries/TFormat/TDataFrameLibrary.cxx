@@ -79,37 +79,37 @@ void TDataFrameLibrary::Load()
 
 void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size_t& slash)
 {
-	/// \brief
+   /// \brief
    /// Try and compile the provided .cxx file into a shared object library using the provided
-	/// path, position of the last dot, and the position of the last slash.
-	/// \detail
-	/// The name of the parser library used is determined from it's path and used to add
-	/// `grsiconfig --<parser library name>-cflags` to the compile command.
-	/// Other flags used are "-c -fPIC -g", `root-config --cflags --glibs`, and the directory
-	/// the path points to as include directory.
-	/// \param[in] path path of the .cxx file
-	/// \param[in] dot position of the last dot (guaranteed to be after the last slash!)
-	/// \param[in] slash position of the last slash (can be std::string::npos)
-	
+   /// path, position of the last dot, and the position of the last slash.
+   /// \detail
+   /// The name of the parser library used is determined from it's path and used to add
+   /// `grsiconfig --<parser library name>-cflags` to the compile command.
+   /// Other flags used are "-c -fPIC -g", `root-config --cflags --glibs`, and the directory
+   /// the path points to as include directory.
+   /// \param[in] path path of the .cxx file
+   /// \param[in] dot position of the last dot (guaranteed to be after the last slash!)
+   /// \param[in] slash position of the last slash (can be std::string::npos)
+
    // first we create the paths for the header file, and shared library
    // we know dot != npos and either dot > slash or slash = npos
    std::string sourceFile    = path;
    std::string headerFile    = path.replace(dot, std::string::npos, ".hh");
    std::string sharedLibrary = path.replace(dot, std::string::npos, ".so");
    // first we get the stats of the file's involved (.cxx, .hh, .so, and the libTGRSIFrame.so)
-   struct stat sourceStat{};
+   struct stat sourceStat {};
    if(stat(sourceFile.c_str(), &sourceStat) != 0) {
       std::stringstream str;
       str << "Unable to access stat of source file " << sourceFile << std::endl;
       throw std::runtime_error(str.str());
    }
-   struct stat headerStat{};
+   struct stat headerStat {};
    if(stat(headerFile.c_str(), &headerStat) != 0) {
       std::stringstream str;
       str << "Unable to access stat of header file " << headerFile << std::endl;
       throw std::runtime_error(str.str());
    }
-   struct stat frameLibStat{};
+   struct stat frameLibStat {};
    // get path of libTGRSIFrame via
    Dl_info info;
    if(dladdr(reinterpret_cast<void*>(DummyFunctionToLocateTGRSIFrameLibrary), &info) == 0) {
@@ -122,7 +122,7 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
       str << "Unable to access stat of " << info.dli_fname << std::endl;
       throw std::runtime_error(str.str());
    }
-   struct stat sharedLibStat{};
+   struct stat sharedLibStat {};
    if(stat(sharedLibrary.c_str(), &sharedLibStat) == 0 &&
       sharedLibStat.st_atime > sourceStat.st_atime &&
       sharedLibStat.st_atime > headerStat.st_atime &&

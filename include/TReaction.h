@@ -154,7 +154,7 @@ public:
 private:
    void SetCmFrame(double exc);   // enables the reaction to be modified using excitation energy
 
-	// same as in TKinematics, should probably change from arrays to individual members
+   // same as in TKinematics, should probably change from arrays to individual members
    // USER INPUTS
    TNucleus* fNuc[4]{nullptr};
    double    fTBeam{0.};

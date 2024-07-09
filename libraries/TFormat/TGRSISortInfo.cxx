@@ -30,11 +30,11 @@ TGRSISortInfo* TGRSISortList::GetSortInfo(Int_t RunNumber, Int_t SubRunNumber)
 
 void TGRSISortList::Print(Option_t*) const
 {
-	for(auto map : fSortInfoList) {
-		for(auto item : map.second) {
-			item.second->Print();
-		}
-	}
+   for(auto map : fSortInfoList) {
+      for(auto item : map.second) {
+         item.second->Print();
+      }
+   }
 }
 
 void TGRSISortList::Clear(Option_t*)
@@ -45,13 +45,13 @@ void TGRSISortList::Clear(Option_t*)
 Bool_t TGRSISortList::AddSortList(TGRSISortList* rhslist, Option_t*)
 {
    /// Adds another TGRSISortList to the current Sort list.
-	for(auto map : rhslist->fSortInfoList) {
-		for(auto item : map.second) {
+   for(auto map : rhslist->fSortInfoList) {
+      for(auto item : map.second) {
          // We need to clone the TGRSISortInfo so that we have ownership in the new list
          AddSortInfo(static_cast<TGRSISortInfo*>(item.second->Clone()));
          // We might not need the clone, but that will take some checking.
-		}
-	}
+      }
+   }
    return true;
 }
 
@@ -75,15 +75,15 @@ Long64_t TGRSISortList::Merge(TCollection* list)
 TGRSISortInfo::TGRSISortInfo()
 {
    Clear();
-	SetRunInfo();
+   SetRunInfo();
 }
 
 TGRSISortInfo::~TGRSISortInfo() = default;
 
 void TGRSISortInfo::SetRunInfo()
 {
-	fRunNumber = TRunInfo::RunNumber();
-	fSubRunNumber = TRunInfo::SubRunNumber();
+   fRunNumber    = TRunInfo::RunNumber();
+   fSubRunNumber = TRunInfo::SubRunNumber();
 }
 
 void TGRSISortInfo::Print(Option_t*) const

@@ -85,8 +85,7 @@ public:
    static void status_out();
 
 protected:
-
-	// these are used directly by the various loops, but we could provided setters and getters and make them private?
+   // these are used directly by the various loops, but we could provided setters and getters and make them private?
 #ifndef __CINT__
    std::atomic_size_t fItemsPopped{0};   ///< number of items popped from input queue
    std::atomic_long   fInputSize{0};     ///< number of items in the input (queue), only updated within Iteration(), so not
@@ -106,7 +105,7 @@ private:
 
    static std::map<std::string, StoppableThread*> fThreadMap;
 
-   static bool             fStatusThreadOn;
+   static bool fStatusThreadOn;
 #ifndef __CINT__
    static std::thread      fStatusThread;
    std::thread             fThread;

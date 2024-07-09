@@ -37,10 +37,10 @@ GH1D* GH2Base::Projection_Background(int axis, int firstbin, int lastbin, int fi
    TH1D*       proj    = nullptr;
    TH1D*       bg_proj = nullptr;
 
-   double xlow = 0.;
-	double xhigh = 0.;
-	double bg_xlow = 0.;
-	double bg_xhigh = 0.;
+   double xlow     = 0.;
+   double xhigh    = 0.;
+   double bg_xlow  = 0.;
+   double bg_xhigh = 0.;
 
    SuppressTH1GDirectory sup;
 
@@ -264,30 +264,30 @@ GH1D* GH2Base::GetNextSummary(const GH1D* curr, bool DrawEmpty)
    }
    GH1D* hist      = nullptr;
    int   start_bin = binnum;
-	while(true) {
-		std::string hist_name = Form("%s_%d", GetTH2()->GetName(), binnum);
-		hist                  = static_cast<GH1D*>(fSummaryProjections->FindObject(hist_name.c_str()));
-		if((hist != nullptr) && hist->Integral() > 0) {
-			return hist;
-		}
+   while(true) {
+      std::string hist_name = Form("%s_%d", GetTH2()->GetName(), binnum);
+      hist                  = static_cast<GH1D*>(fSummaryProjections->FindObject(hist_name.c_str()));
+      if((hist != nullptr) && hist->Integral() > 0) {
+         return hist;
+      }
 
-		switch(fSummaryDirection) {
-			case EDirection::kXDirection:
-				hist = GH2ProjectionY(hist_name.c_str(), binnum, binnum, "", DrawEmpty);
-				break;
-			case EDirection::kYDirection:
-				hist = GH2ProjectionX(hist_name.c_str(), binnum, binnum, "", DrawEmpty);
-				break;
-		}
-		if((hist != nullptr) && hist->Integral() > 0) {
-			return hist;
-		}
-		binnum++;
-		if(binnum == start_bin) {
-			break;
-		}
-		binnum = 1;
-	}
+      switch(fSummaryDirection) {
+      case EDirection::kXDirection:
+         hist = GH2ProjectionY(hist_name.c_str(), binnum, binnum, "", DrawEmpty);
+         break;
+      case EDirection::kYDirection:
+         hist = GH2ProjectionX(hist_name.c_str(), binnum, binnum, "", DrawEmpty);
+         break;
+      }
+      if((hist != nullptr) && hist->Integral() > 0) {
+         return hist;
+      }
+      binnum++;
+      if(binnum == start_bin) {
+         break;
+      }
+      binnum = 1;
+   }
    return hist;
 }
 
@@ -322,23 +322,23 @@ GH1D* GH2Base::GetPrevSummary(const GH1D* curr, bool DrawEmpty)
    GH1D* hist      = nullptr;
    int   start_bin = binnum;
    while(true) {
-		std::string hist_name2 = Form("%s_%d", GetTH2()->GetName(), binnum);
+      std::string hist_name2 = Form("%s_%d", GetTH2()->GetName(), binnum);
       switch(fSummaryDirection) {
-			case EDirection::kXDirection:
-            hist = GH2ProjectionY(hist_name2.c_str(), binnum, binnum, "", DrawEmpty);
-            break;
-			case EDirection::kYDirection:
-            hist = GH2ProjectionX(hist_name2.c_str(), binnum, binnum, "", DrawEmpty);
-            break;
-		}
-		if((hist != nullptr) && hist->Integral() > 0) {
-			return hist;
-		}
-		binnum--;
-		if(binnum == start_bin) {
-			break;
-		}
-		binnum = max_binnum;
-	}
+      case EDirection::kXDirection:
+         hist = GH2ProjectionY(hist_name2.c_str(), binnum, binnum, "", DrawEmpty);
+         break;
+      case EDirection::kYDirection:
+         hist = GH2ProjectionX(hist_name2.c_str(), binnum, binnum, "", DrawEmpty);
+         break;
+      }
+      if((hist != nullptr) && hist->Integral() > 0) {
+         return hist;
+      }
+      binnum--;
+      if(binnum == start_bin) {
+         break;
+      }
+      binnum = max_binnum;
+   }
    return hist;
 }

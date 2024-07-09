@@ -70,7 +70,7 @@ public:
       if(index < fScaler.size()) {
          return fScaler[index];
       }
-		return 0;
+      return 0;
    }
 
    ULong64_t GetTimeStamp() const

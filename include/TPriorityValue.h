@@ -32,7 +32,7 @@ class TPriorityValue {
 public:
    TPriorityValue() : fPriority(EPriority::kDefault) {}
    TPriorityValue(T value, EPriority priority = EPriority::kDefault) : fValue(value), fPriority(priority) {}
-   TPriorityValue(const TPriorityValue& rhs) : fPriority(EPriority::kDefault) { *this     = rhs; }
+   TPriorityValue(const TPriorityValue& rhs) : fPriority(EPriority::kDefault) { *this = rhs; }
    TPriorityValue(TPriorityValue&& rhs) noexcept : fPriority(EPriority::kDefault) { *this = rhs; }
 
    ~TPriorityValue() = default;
@@ -188,7 +188,7 @@ public:
    // minus the boolean conversion operator
    TPriorityValue() : fPriority(EPriority::kDefault) {}
    TPriorityValue(std::vector<T> value, EPriority priority = EPriority::kDefault) : fValue(value), fPriority(priority) {}
-   TPriorityValue(const TPriorityValue& rhs) : fPriority(EPriority::kDefault) { *this     = rhs; }
+   TPriorityValue(const TPriorityValue& rhs) : fPriority(EPriority::kDefault) { *this = rhs; }
    TPriorityValue(TPriorityValue&& rhs) noexcept : fPriority(EPriority::kDefault) { *this = rhs; }
 
    ~TPriorityValue() = default;
@@ -244,7 +244,7 @@ public:
    {
       if(rhs.fPriority >= fPriority) {
          fValue    = std::move(rhs.fValue);
-         fPriority = rhs.fPriority; // this is trivially copyable, so std::move has no effect
+         fPriority = rhs.fPriority;   // this is trivially copyable, so std::move has no effect
       }
       return *this;
    }
@@ -378,7 +378,7 @@ public:
 public:
    TPriorityValue() : fPriority(EPriority::kDefault) {}
    TPriorityValue(std::string value, EPriority priority = EPriority::kDefault) : fValue(value), fPriority(priority) {}
-   TPriorityValue(const TPriorityValue& rhs) : fPriority(EPriority::kDefault) { *this     = rhs; }
+   TPriorityValue(const TPriorityValue& rhs) : fPriority(EPriority::kDefault) { *this = rhs; }
    TPriorityValue(TPriorityValue&& rhs) noexcept : fPriority(EPriority::kDefault) { *this = rhs; }
 
    ~TPriorityValue() = default;
@@ -434,7 +434,7 @@ public:
    {
       if(rhs.fPriority >= fPriority) {
          fValue    = std::move(rhs.fValue);
-         fPriority = rhs.fPriority; // this is trivially copyable, so std::move has no effect
+         fPriority = rhs.fPriority;   // this is trivially copyable, so std::move has no effect
       }
       return *this;
    }

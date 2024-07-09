@@ -26,13 +26,13 @@
 ///
 /////////////////////////////////////////////////////////////////
 class TSinglePeak;
-using MultiplePeak_t=std::list<TSinglePeak*>;
+using MultiplePeak_t = std::list<TSinglePeak*>;
 
 class TPeakFitter : public TObject {
 public:
    // ctors and dtors
    ~TPeakFitter() override = default;
-	TPeakFitter() : TPeakFitter(0., 0.) {}
+   TPeakFitter() : TPeakFitter(0., 0.) {}
    TPeakFitter(const Double_t& range_low, const Double_t& range_high);
 
    void AddPeak(TSinglePeak* peak)
@@ -55,8 +55,8 @@ public:
    void InitializeParameters(TH1* fit_hist);
    void InitializeBackgroundParameters(TH1* fit_hist);
 
-   void          Print(Option_t* opt = "") const override;
-   void          PrintParameters() const;
+   void Print(Option_t* opt = "") const override;
+   void PrintParameters() const;
 
    TF1*          GetBackground() { return fBGToFit; }
    TF1*          GetFitFunction() { return fTotalFitFunction; }

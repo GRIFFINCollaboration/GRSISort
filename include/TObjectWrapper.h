@@ -32,7 +32,7 @@ class TObjectWrapper : public TObject {
 public:
    explicit TObjectWrapper(T* ptr) : pT(ptr) {}
    T* operator->() { return pT; }
-	
+
 private:
    T* pT;
 

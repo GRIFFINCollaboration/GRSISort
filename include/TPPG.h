@@ -47,12 +47,12 @@ enum class EPpgPattern {
 class TPPGData : public TObject {
 public:
    TPPGData();
-   TPPGData(const TPPGData&); 
+   TPPGData(const TPPGData&);
    TPPGData(TPPGData&&) = default;
    ~TPPGData() override = default;
 
-   TPPGData& operator=(const TPPGData&) = default; 
-   TPPGData& operator=(TPPGData&&) = default;
+   TPPGData& operator=(const TPPGData&) = default;
+   TPPGData& operator=(TPPGData&&)      = default;
 
    void Copy(TObject& rhs) const override;
 
@@ -117,12 +117,12 @@ public:
 
 private:
    static int16_t fTimestampUnits;   ///< timestamp units of the PPG (10 ns)
-   ULong64_t    fTimeStamp{0};        ///< time stamp in ns
-   EPpgPattern  fOldPpg{EPpgPattern::kJunk};
-   EPpgPattern  fNewPpg{EPpgPattern::kJunk};
-   UInt_t       fNetworkPacketId{0};
-   UInt_t       fLowTimeStamp{0};    ///< low bits of time stamp in 10 ns
-   UInt_t       fHighTimeStamp{0};   ///< high bits of time stamp in 10 ns
+   ULong64_t      fTimeStamp{0};     ///< time stamp in ns
+   EPpgPattern    fOldPpg{EPpgPattern::kJunk};
+   EPpgPattern    fNewPpg{EPpgPattern::kJunk};
+   UInt_t         fNetworkPacketId{0};
+   UInt_t         fLowTimeStamp{0};    ///< low bits of time stamp in 10 ns
+   UInt_t         fHighTimeStamp{0};   ///< high bits of time stamp in 10 ns
 
    /// \cond CLASSIMP
    ClassDefOverride(TPPGData, 3)   // Contains PPG data information
@@ -136,12 +136,12 @@ public:
    using PPGMap_t = std::map<ULong_t, TPPGData*>;
 
    TPPG();
-   TPPG(const TPPG&); // the copy constructor needs to create a deep-copy
-   TPPG(TPPG&&) = default; // the move constructor can be default?
+   TPPG(const TPPG&);        // the copy constructor needs to create a deep-copy
+   TPPG(TPPG&&) = default;   // the move constructor can be default?
    ~TPPG() override;
 
-   TPPG& operator=(const TPPG&); // the copy assignment needs to create a deep-copy
-   TPPG& operator=(TPPG&&) = default; // the move assignment can be default?
+   TPPG& operator=(const TPPG&);        // the copy assignment needs to create a deep-copy
+   TPPG& operator=(TPPG&&) = default;   // the move assignment can be default?
 
    void Copy(TObject& obj) const override;
    // why do we have a non-const version that just calls the const version?
@@ -215,7 +215,7 @@ private:
    std::map<ULong64_t, int> fNumberOfCycleLengths;
 
    std::vector<int16_t> fOdbPPGCodes;    ///< ppg state codes read from odb
-   std::vector<int> fOdbDurations;   ///< duration of ppg state as read from odb
+   std::vector<int>     fOdbDurations;   ///< duration of ppg state as read from odb
 
    bool                   fCycleSet{false};                //!<! flag to indicate whether the codes and durations have been calculated from the data
    std::vector<int16_t>   fPPGCodes{0x8, 0x2, 0x1, 0x4};   //!<! ppg state codes (these are always set)

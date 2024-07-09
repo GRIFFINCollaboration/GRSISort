@@ -92,7 +92,7 @@ TChannel::TChannel(const TChannel& chan) : TNamed(chan)
 TChannel::TChannel(TChannel&& chan) : TNamed(chan)
 {
    /// Moves chan to this.
-	/// Just a copy of the copy constructor right now, needs to be changed.
+   /// Just a copy of the copy constructor right now, needs to be changed.
    Clear();
    *(fMnemonic.Value()) = *(chan.fMnemonic.Value());
    SetAddress(chan.GetAddress());
@@ -165,7 +165,7 @@ TChannel::TChannel(TChannel* chan)
 TChannel& TChannel::operator=(const TChannel& rhs)
 {
    /// copy assignment operator
-	/// Simply a copy of the copy constructor code (plus returing *this).
+   /// Simply a copy of the copy constructor code (plus returing *this).
    Clear();
    *(fMnemonic.Value()) = *(rhs.fMnemonic.Value());
    SetAddress(rhs.GetAddress());
@@ -198,14 +198,14 @@ TChannel& TChannel::operator=(const TChannel& rhs)
 
    SetClassType(rhs.GetClassType());
 
-	return *this;
+   return *this;
 }
 
 TChannel& TChannel::operator=(TChannel&& rhs)
 {
    /// move assignment operator
-	/// Doesn't really move anything yet, it's just a copy of the copy assignment operator.
-	/// This needs to be changed.
+   /// Doesn't really move anything yet, it's just a copy of the copy assignment operator.
+   /// This needs to be changed.
    Clear();
    *(fMnemonic.Value()) = *(rhs.fMnemonic.Value());
    SetAddress(rhs.GetAddress());
@@ -238,7 +238,7 @@ TChannel& TChannel::operator=(TChannel&& rhs)
 
    SetClassType(rhs.GetClassType());
 
-	return *this;
+   return *this;
 }
 
 void TChannel::SetName(const char* tmpName)
@@ -264,7 +264,7 @@ void TChannel::InitChannelInput()
 bool TChannel::CompareChannels(const TChannel* chana, const TChannel* chanb)
 {
    /// Compares the names of the two TChannels.
-	/// Returns true if the name of chana goes lexicographically before the name of chanb.
+   /// Returns true if the name of chana goes lexicographically before the name of chanb.
    std::string namea(chana->GetName());
 
    return namea.compare(chanb->GetName()) < 0;
@@ -368,7 +368,7 @@ void TChannel::AppendChannel(TChannel* chan)
    SetIntegration(chan->fIntegration);
    SetNumber(chan->fNumber);
    SetStream(chan->fStream);
-   if(strcmp(chan->GetName(), "DefaultTChannel") != 0) { SetName(chan->GetName()); }  // don't overwrite an existing name by the default name
+   if(strcmp(chan->GetName(), "DefaultTChannel") != 0) { SetName(chan->GetName()); }   // don't overwrite an existing name by the default name
    SetDigitizerType(chan->fDigitizerTypeString);
    SetTimeOffset(chan->fTimeOffset);
    SetTimeDrift(chan->fTimeDrift);
@@ -1317,8 +1317,8 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                }
             } else if(type == "ENGRANGE") {
                size_t range = 0;
-               double low = 0.;
-               double high = 0.;
+               double low   = 0.;
+               double high  = 0.;
                str >> range >> low >> high;
                channel->SetENGRange(std::make_pair(low, high), range);
             } else if(type == "ENGDRIFT") {
@@ -1359,7 +1359,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                channel->DestroyEnergyNonlinearity();
                channel->fEnergyNonlinearity.SetPriority(prio);
                double x = 0.;
-					double y = 0.;
+               double y = 0.;
                while(!(str >> x >> y).fail()) {
                   channel->AddEnergyNonlinearityPoint(x, y);
                }
@@ -1407,7 +1407,7 @@ void TChannel::Streamer(TBuffer& R__b)
 {
    SetBit(kCanDelete);
    UInt_t R__s = 0;
-	UInt_t R__c = 0;
+   UInt_t R__c = 0;
    if(R__b.IsReading()) {   // reading from file
       Version_t R__v = R__b.ReadVersion(&R__s, &R__c);
       if(R__v != 0) {
@@ -1488,7 +1488,7 @@ int TChannel::WriteToRoot(TFile* fileptr)
          continue;
       }
       if(!found) {
-         found        = true;
+         found       = true;
          auto* curCh = static_cast<TChannel*>(key->ReadObj());
          defaultName.assign(curCh->GetName());
          defaultTitle.assign(curCh->GetTitle());

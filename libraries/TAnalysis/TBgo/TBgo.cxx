@@ -112,7 +112,7 @@ TBgo& TBgo::operator=(const TBgo& rhs)
    /// Copy assignment.
    rhs.Copy(*this);
 
-	return *this;
+   return *this;
 }
 
 TBgo& TBgo::operator=(TBgo&& rhs)
@@ -120,7 +120,7 @@ TBgo& TBgo::operator=(TBgo&& rhs)
    /// Move assignment. Does the same as the copy assignment atm.
    rhs.Copy(*this);
 
-	return *this;
+   return *this;
 }
 
 void TBgo::Copy(TObject& rhs) const
@@ -172,14 +172,14 @@ TVector3 TBgo::GetPosition(int DetNbr, int CryNbr, double dist)
 
    // Interaction points may eventually be set externally. May make these members of each crystal, or pass from
    // waveforms.
-   Double_t crystalCenter = 26.0;    // Crystal Center Point in mm.
-   Double_t interactionDepth = 45.0; //Crystal interaction depth in mm.
+   Double_t crystalCenter    = 26.0;   // Crystal Center Point in mm.
+   Double_t interactionDepth = 45.0;   //Crystal interaction depth in mm.
    // Set Theta's of the center of each DETECTOR face
    TVector3 shift;
    switch(CryNbr) {
-   case 0: shift.SetXYZ(-crystalCenter,  crystalCenter, interactionDepth); break;
-   case 1: shift.SetXYZ( crystalCenter,  crystalCenter, interactionDepth); break;
-   case 2: shift.SetXYZ( crystalCenter, -crystalCenter, interactionDepth); break;
+   case 0: shift.SetXYZ(-crystalCenter, crystalCenter, interactionDepth); break;
+   case 1: shift.SetXYZ(crystalCenter, crystalCenter, interactionDepth); break;
+   case 2: shift.SetXYZ(crystalCenter, -crystalCenter, interactionDepth); break;
    case 3: shift.SetXYZ(-crystalCenter, -crystalCenter, interactionDepth); break;
    default: shift.SetXYZ(0, 0, 1); break;
    };

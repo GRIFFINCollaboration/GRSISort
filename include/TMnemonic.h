@@ -19,12 +19,12 @@ class TMnemonic : public TObject {
 public:
    TMnemonic() : fClassType(nullptr) { Clear(); }
    explicit TMnemonic(const char* name) : TMnemonic() { Parse(name); }
-	TMnemonic(const TMnemonic&) = default;
-	TMnemonic(TMnemonic&&) = default;
-   ~TMnemonic() override = default;
+   TMnemonic(const TMnemonic&) = default;
+   TMnemonic(TMnemonic&&)      = default;
+   ~TMnemonic() override       = default;
 
-	TMnemonic& operator=(const TMnemonic&) = default;
-	TMnemonic& operator=(TMnemonic&&) = default;
+   TMnemonic& operator=(const TMnemonic&) = default;
+   TMnemonic& operator=(TMnemonic&&)      = default;
 
    // standard C++ makes these enumerations global to the class. ie, the name of the enumeration
    // EMnemonic or ESystem has no effect on the clashing of enumerated variable names.

@@ -315,7 +315,7 @@ void StoppableThread::status_out()
 std::vector<StoppableThread*> StoppableThread::GetAll()
 {
    std::vector<StoppableThread*> output(fThreadMap.size(), nullptr);
-	int index = 0;
+   int                           index = 0;
    for(auto& elem : fThreadMap) {
       output[index++] = elem.second;
    }

@@ -56,7 +56,7 @@ public:
    size_t GetItemsCurrent() override { return fOutputQueue->Size(); }
    size_t GetRate() override { return 0; }
 
-   void          SetBuildWindow(uint64_t val) { fBuildWindow = val; }
+   void     SetBuildWindow(uint64_t val) { fBuildWindow = val; }
    uint64_t GetBuildWindow() const { return fBuildWindow; }
 
    void         SetSortDepth(unsigned int val) { fSortingDepth = val; }

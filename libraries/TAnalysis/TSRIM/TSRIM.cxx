@@ -14,7 +14,7 @@
 const double TSRIM::dx = 1.0;   // um [sets accuracy of energy loss E vs X functions]
 
 TSRIM::TSRIM(const char* infilename, double emax, double emin, bool printfile)
-	: fEnergyLoss(nullptr)
+   : fEnergyLoss(nullptr)
 {
    ReadEnergyLossFile(infilename, emax, emin, printfile);
 }
@@ -46,7 +46,7 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
    std::string line;
    std::string word;
    double      density_scale = 0.;
-   double      temp = 0.;
+   double      temp          = 0.;
 
    std::vector<double>      number_input;
    std::vector<double>      dEdX_temp;
@@ -218,7 +218,7 @@ double TSRIM::GetAdjustedEnergy(double energy, double thickness, double stepsize
 
    double energy_temp = energy;
    double xstep       = stepsize;
-   double xtot        = 0.0;                                                 // MAKE XSTEP SMALLER FOR BETTER RESULTS. 1UM SHOULD BE FINE ... UNLESS YOU ARE AT THE BRAGG PEAK ??
+   double xtot        = 0.0;                                                  // MAKE XSTEP SMALLER FOR BETTER RESULTS. 1UM SHOULD BE FINE ... UNLESS YOU ARE AT THE BRAGG PEAK ??
    energy_temp -= fmod(thickness, xstep) * fsEnergyLoss->Eval(energy_temp);   // get rid of fractional distance
    xtot += fmod(thickness, xstep);
 

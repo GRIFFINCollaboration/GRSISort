@@ -102,7 +102,7 @@ void SetGRSIPluginHandlers()
 static int ReadUtmp()
 {
    FILE*       utmp = nullptr;
-   struct stat file_stats{};
+   struct stat file_stats {};
    size_t      n_read = 0;
    size_t      size   = 0;
 
@@ -179,7 +179,7 @@ static void SetDisplay()
 #ifndef UTMP_NO_ADDR
             } else if(utmp_entry->ut_addr != 0) {
                struct hostent* he = gethostbyaddr(reinterpret_cast<const char*>(&utmp_entry->ut_addr), sizeof(utmp_entry->ut_addr), AF_INET);
-					if(he != nullptr) {
+               if(he != nullptr) {
                   fprintf(stderr, "*** DISPLAY not set, setting it to %s:0.0\n", he->h_name);
                   display = he->h_name;
                   display += ":0.0";

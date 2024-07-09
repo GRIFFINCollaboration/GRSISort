@@ -100,7 +100,7 @@ void TGRSIint::ApplyOptions()
 
    bool missing_raw_file = !all_files_exist(opt->InputFiles());
 
-	LoadGROOTGraphics();
+   LoadGROOTGraphics();
 
    if(opt->ReadingMaterial()) {
       std::thread fnews = std::thread(ReadTheNews);
@@ -211,7 +211,7 @@ void TGRSIint::Terminate(Int_t status)
 
    if((clock() % 60) == 0) {
       std::cout << "DING!" << std::flush;
-      gSystem->Sleep(500); // 500 ms
+      gSystem->Sleep(500);   // 500 ms
       std::cout << "\r              \r" << std::flush;
    }
 
@@ -246,12 +246,12 @@ Long_t TGRSIint::ProcessLine(const char* inputLine, Bool_t sync, Int_t* error)
       return res;
    }
 
-	// loop over the input line and replace all instances of "TCanvas" with "GCanvas"
-	std::string line(inputLine);
-	size_t pos = 0;
-	while((pos = line.find("TCanvas", pos)) != std::string::npos) {
-		line[pos] = 'G';
-	}
+   // loop over the input line and replace all instances of "TCanvas" with "GCanvas"
+   std::string line(inputLine);
+   size_t      pos = 0;
+   while((pos = line.find("TCanvas", pos)) != std::string::npos) {
+      line[pos] = 'G';
+   }
 
    if(std::this_thread::get_id() != main_thread_id) {
       return DelayedProcessLine(line.c_str());
@@ -291,7 +291,7 @@ void TGRSIint::PrintLogo(bool print)
       printf("\t*%*s%*s*\n", width / 2 + 9, "version " GRSI_RELEASE, width / 2 - 9, "");
       printf("\t*%s*\n", std::string(width, '*').c_str());
 
-      std::thread drawlogo(&TGRSIint::DrawLogo);//, this);
+      std::thread drawlogo(&TGRSIint::DrawLogo);   //, this);
       drawlogo.detach();
    } else {
       std::cout << "\tgrsisort version " << GRSI_RELEASE << std::endl;
