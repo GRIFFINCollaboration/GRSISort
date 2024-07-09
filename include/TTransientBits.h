@@ -59,7 +59,7 @@ public:
    T Value() const { return fBits; }
 
    void Clear() { fBits = 0; }
-   void Print() const { std::count << fBits << std::endl; }
+   void Print() const { std::cout << fBits << std::endl; }
 
    T fBits;
 
