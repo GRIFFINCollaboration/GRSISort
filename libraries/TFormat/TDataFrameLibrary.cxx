@@ -38,7 +38,7 @@ void TDataFrameLibrary::Load()
       throw std::runtime_error(str.str());
    }
 
-   // check if the provided file ends in .c (which means we should compile it into a library) otherwise we just try to load it
+   // check if the provided file ends in .cxx (which means we should compile it into a library) otherwise we just try to load it
    // if there is no dot in the path or the dot is before a slash in the path we just try to load this weirdly named library
    size_t dot   = libraryPath.find_last_of('.');
    size_t slash = libraryPath.find_last_of('/');
