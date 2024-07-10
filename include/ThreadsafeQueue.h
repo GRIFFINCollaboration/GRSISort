@@ -30,7 +30,7 @@ public:
    explicit ThreadsafeQueue(std::string name = "default", size_t maxSize = 100000);
    ~ThreadsafeQueue() = default;
 #ifndef __CINT__
-   int  Push(T obj);
+   int    Push(T obj);
    size_t Pop(T& output, int millisecond_wait = 1000);
 
    size_t ItemsPushed() const;

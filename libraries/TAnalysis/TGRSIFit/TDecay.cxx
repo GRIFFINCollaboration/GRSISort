@@ -6,7 +6,7 @@
 #include "TBuffer.h"
 #include "TLMFitter.h"
 
-UInt_t TSingleDecay::fCounter  = 0;
+UInt_t TSingleDecay::fCounter     = 0;
 UInt_t TDecayChain::fChainCounter = 0;
 
 TDecayFit::~TDecayFit() = default;

@@ -71,15 +71,15 @@ protected:
    int64_t                            fEntry{0};           //!<! entry number currently being processed
 
 private:
-	static constexpr int fSizeLimit = 1073741822;             //!<! 1 GB size limit for objects in ROOT
+   static constexpr int fSizeLimit = 1073741822;   //!<! 1 GB size limit for objects in ROOT
 
    TTree* fChain{nullptr};   //!<! pointer to the analyzed TTree or TChain
 
    void              CheckSizes(const char* usage);   ///< Function to check size of objects in output list
    std::string       fOutputPrefix;                   //!<! pre-fix for output files
    TAnalysisOptions* fAnalysisOptions{nullptr};       //!<! pointer to analysis options
-   Int_t             fFirstRunNumber{-1};                 //!<! run number of first file
-   Int_t             fFirstSubRunNumber{-1};              //!<! sub-run number of first file
+   Int_t             fFirstRunNumber{-1};             //!<! run number of first file
+   Int_t             fFirstSubRunNumber{-1};          //!<! sub-run number of first file
 
    ClassDefOverride(TGRSISelector, 3);
 };

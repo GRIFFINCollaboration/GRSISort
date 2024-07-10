@@ -19,8 +19,8 @@ TDataParser::TDataParser()
    : fBadOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>("bad_frag_queue")),
      fScalerOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>("scaler_queue")),
      fNoWaveforms(false), fRecordDiag(true), fChannel(new TChannel), fMaxTriggerId(1024 * 1024 * 16),
-	  fLastDaqId(0), fLastTriggerId(0), fLastNetworkPacket(0), fFragmentHasWaveform(false),
-	  fFragmentMap(fGoodOutputQueues, fBadOutputQueue), fItemsPopped(nullptr), fInputSize(nullptr)
+     fLastDaqId(0), fLastTriggerId(0), fLastNetworkPacket(0), fFragmentHasWaveform(false),
+     fFragmentMap(fGoodOutputQueues, fBadOutputQueue), fItemsPopped(nullptr), fInputSize(nullptr)
 {
 }
 

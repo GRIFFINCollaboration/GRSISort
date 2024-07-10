@@ -90,7 +90,7 @@ private:
 
 class TSourceTab {
 public:
-	TSourceTab(TSourceCalibration* parent, TNucleus* nucleus, TH2* matrix, TGCompositeFrame* frame, double sigma, double threshold, int degree, std::vector<std::tuple<double, double, double, double>> sourceEnergy, TGHProgressBar* progressBar);
+   TSourceTab(TSourceCalibration* parent, TNucleus* nucleus, TH2* matrix, TGCompositeFrame* frame, double sigma, double threshold, int degree, std::vector<std::tuple<double, double, double, double>> sourceEnergy, TGHProgressBar* progressBar);
    ~TSourceTab();
 
    void CreateChannelTab(int bin);

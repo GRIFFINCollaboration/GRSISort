@@ -57,7 +57,7 @@ bool TDataLoop::Iteration()
    {
       std::lock_guard<std::mutex> lock(fSourceMutex);
       bytesRead    = fSource->Read(evt);
-      fItemsPopped = fSource->GetBytesRead() / 1000; // should this be / 1024 ?
+      fItemsPopped = fSource->GetBytesRead() / 1000;                 // should this be / 1024 ?
       fInputSize   = fSource->GetFileSize() / 1000 - fItemsPopped;   // this way fInputSize+fItemsPopped give the file size
       ++fEventsRead;
       if(TGRSIOptions::Get()->Downscaling() > 1) {

@@ -63,10 +63,10 @@ static bool StayUp(int milliSec)
    /// Returns false if milliSec milliseconds have passed since logo
    /// was popped up, true otherwise.
 
-   struct timeval ctv{};
-	struct timeval dtv{};
-	struct timeval tv{};
-	struct timeval ptv = gPopupTime;
+   struct timeval ctv {};
+   struct timeval dtv {};
+   struct timeval tv {};
+   struct timeval ptv = gPopupTime;
 
    tv.tv_sec  = milliSec / 1000;
    tv.tv_usec = (milliSec % 1000) * 1000;
@@ -92,7 +92,7 @@ static void Sleep(int milliSec)
    /// Sleep for specified amount of milli seconds.
 
    // get current time
-   struct timeval tv{};
+   struct timeval tv {};
 
    tv.tv_sec  = milliSec / 1000;
    tv.tv_usec = (milliSec % 1000) * 1000;
@@ -300,7 +300,7 @@ void PopupLogo(bool about)
 
    gAbout = about;
 
-   int   screen = DefaultScreen(gDisplay);
+   int screen = DefaultScreen(gDisplay);
 
    Pixel back = WhitePixel(gDisplay, screen);
    Pixel fore = BlackPixel(gDisplay, screen);

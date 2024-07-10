@@ -31,8 +31,8 @@ TFragmentChainLoop* TFragmentChainLoop::Get(std::string name, TChain* chain)
 }
 
 TFragmentChainLoop::TFragmentChainLoop(std::string name, TChain* chain)
-   : StoppableThread(std::move(name)), fEntriesTotal(chain->GetEntries()), 
-	  fInputChain(chain), fFragment(nullptr), fSelfStopping(true)
+   : StoppableThread(std::move(name)), fEntriesTotal(chain->GetEntries()),
+     fInputChain(chain), fFragment(nullptr), fSelfStopping(true)
 {
    SetupChain();
 }

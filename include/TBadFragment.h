@@ -25,11 +25,11 @@ public:
    TBadFragment(TFragment& fragment, uint32_t* data, int size, int failedWord, bool multipleErrors);
    explicit TBadFragment(TFragment& fragment);
    TBadFragment(const TBadFragment&) = default;
-   TBadFragment(TBadFragment&&) = default;
-   ~TBadFragment() = default;
+   TBadFragment(TBadFragment&&)      = default;
+   ~TBadFragment()                   = default;
 
    TBadFragment& operator=(const TBadFragment&) = default;
-   TBadFragment& operator=(TBadFragment&&) = default;
+   TBadFragment& operator=(TBadFragment&&)      = default;
 
    std::vector<uint32_t> GetData() const { return fData; }
    int                   GetFailedWord() const { return fFailedWord; }

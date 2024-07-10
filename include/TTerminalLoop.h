@@ -67,12 +67,12 @@ protected:
 
       if(event) {
          return true;
-		}
+      }
       if(fInputQueue->IsFinished()) {
          return false;
       }
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-		return true;
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+      return true;
    }
 #endif
 

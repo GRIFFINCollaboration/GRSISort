@@ -174,9 +174,9 @@ void TBGSubtraction::ResetInterface()
 
    // Set Up entry and sliders for doing gating.
    Double_t xmin = 0.;
-	Double_t ymin = 0.;
-	Double_t xmax = 0.;
-	Double_t ymax = 0.;
+   Double_t ymin = 0.;
+   Double_t xmax = 0.;
+   Double_t ymax = 0.;
    fProjectionCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
    Double_t x_width = xmax - xmin;
 
@@ -255,9 +255,9 @@ void TBGSubtraction::BuildInterface()
    fGateEntryFrame = new TGHorizontalFrame(fProjectionFrame, 400, 400);
 
    Double_t xmin = 0.;
-	Double_t ymin = 0.;
-	Double_t xmax = 0.;
-	Double_t ymax = 0.;
+   Double_t ymin = 0.;
+   Double_t xmax = 0.;
+   Double_t ymax = 0.;
    fProjectionCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
 
    // We are going to start the limits off at a specific ratio of the frame
@@ -289,15 +289,15 @@ void TBGSubtraction::BuildInterface()
 
    fGateFrame   = new TGVerticalFrame(this, 200, 200);
    fGateCanvas  = new TRootEmbeddedCanvas("GateCanvas", fGateFrame, 200, 200);
-   auto* canvas  = fGateCanvas->GetCanvas();
-	// according to clang-tidy the second and third arguments should be Int_t, but the Getters return UInt_t?
-	// might not be true for all root versions though?
+   auto* canvas = fGateCanvas->GetCanvas();
+   // according to clang-tidy the second and third arguments should be Int_t, but the Getters return UInt_t?
+   // might not be true for all root versions though?
    auto* gcanvas = new GCanvas(canvas->GetName(), canvas->GetWindowWidth(), canvas->GetWindowHeight(), canvas->GetCanvasID());
    fGateCanvas->AdoptCanvas(gcanvas);
 
    // Status Bars
-	std::array<Int_t, 2> parts = {20, 50};
-   fProjectionStatus = new TGStatusBar(fProjectionFrame, 50, 10, kHorizontalFrame);
+   std::array<Int_t, 2> parts = {20, 50};
+   fProjectionStatus          = new TGStatusBar(fProjectionFrame, 50, 10, kHorizontalFrame);
    fProjectionStatus->SetParts(parts.data(), parts.size());
 
    fPeakSlider = new TGTripleHSlider(fGateFrame, 100, kDoubleScaleBoth, kPeakSlider, kHorizontalFrame);
@@ -408,105 +408,105 @@ TBGSubtraction::~TBGSubtraction()
    Disconnect();
    // Clean up used widgets: frames, buttons, layout hints
    Cleanup();
-	delete fLowBGMarker1;
-	delete fHighBGMarker1;
-	delete fLowBGMarker2;
-	delete fHighBGMarker2;
-	delete fLowGateMarker;
-	delete fHighGateMarker;
-	delete fHighPeakMarker;
-	delete fLowPeakMarker;
-	delete fPeakMarker;
+   delete fLowBGMarker1;
+   delete fHighBGMarker1;
+   delete fLowBGMarker2;
+   delete fHighBGMarker2;
+   delete fLowGateMarker;
+   delete fHighGateMarker;
+   delete fHighPeakMarker;
+   delete fLowPeakMarker;
+   delete fPeakMarker;
 }
 
 void TBGSubtraction::UpdateBackground()
 {
-	// Draws function graphics in randomly chosen interval
-	TCanvas* fCanvas = fProjectionCanvas->GetCanvas();
-	fCanvas->cd();
-	fProjection->Draw();
-	DrawAllMarkers();
-	if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()) {
-		DoGateProjection();
-	}
-	if(((fBGCheckButton1 != nullptr) && fBGCheckButton1->IsDown()) || ((fBGCheckButton2 != nullptr) && fBGCheckButton2->IsDown())) {
-		fProjection->ShowBackground(static_cast<Int_t>(fBGParamEntry->GetNumberEntry()->GetIntNumber()));
-	}
-	fCanvas->Update();
-	fGateCanvas->GetCanvas()->cd();
+   // Draws function graphics in randomly chosen interval
+   TCanvas* fCanvas = fProjectionCanvas->GetCanvas();
+   fCanvas->cd();
+   fProjection->Draw();
+   DrawAllMarkers();
+   if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()) {
+      DoGateProjection();
+   }
+   if(((fBGCheckButton1 != nullptr) && fBGCheckButton1->IsDown()) || ((fBGCheckButton2 != nullptr) && fBGCheckButton2->IsDown())) {
+      fProjection->ShowBackground(static_cast<Int_t>(fBGParamEntry->GetNumberEntry()->GetIntNumber()));
+   }
+   fCanvas->Update();
+   fGateCanvas->GetCanvas()->cd();
 }
 
 void TBGSubtraction::DoPeakFit()
 {
-	if(fPeak == nullptr) {
-		std::cerr << "Something went wrong and the peak is a nullptr?" << std::endl;
-		return;
-	}
-	fPeakFitter->ResetInitFlag();
-	fPeak->Centroid(fPeakValue);
-	fPeakFitter->SetRange(fPeakLowValue, fPeakHighValue);
-	fGateCanvas->GetCanvas()->cd();
-	fPeakFitter->Fit(fSubtractedBinHist);
-	DrawPeak();
-	fGateCanvas->GetCanvas()->Update();
+   if(fPeak == nullptr) {
+      std::cerr << "Something went wrong and the peak is a nullptr?" << std::endl;
+      return;
+   }
+   fPeakFitter->ResetInitFlag();
+   fPeak->Centroid(fPeakValue);
+   fPeakFitter->SetRange(fPeakLowValue, fPeakHighValue);
+   fGateCanvas->GetCanvas()->cd();
+   fPeakFitter->Fit(fSubtractedBinHist);
+   DrawPeak();
+   fGateCanvas->GetCanvas()->Update();
 }
 
 void TBGSubtraction::DrawPeak()
 {
-	if(fPeak != nullptr) { fPeak->Draw("same"); }
+   if(fPeak != nullptr) { fPeak->Draw("same"); }
 }
 
 void TBGSubtraction::ClickedBGButton1()
 {
-	if((fBGCheckButton1 != nullptr) && fBGCheckButton1->IsDown()) {
-		fBGParamEntry->SetState(true);
-	} else {
-		fBGParamEntry->SetState(false);
-	}
+   if((fBGCheckButton1 != nullptr) && fBGCheckButton1->IsDown()) {
+      fBGParamEntry->SetState(true);
+   } else {
+      fBGParamEntry->SetState(false);
+   }
 }
 
 void TBGSubtraction::UpdateGateSlider()
 {
-	fGateSlider->SetPosition(fGateEntryLow->GetNumber(), fGateEntryHigh->GetNumber());
-	fGateSlider->SetRange(fGateEntryLow->GetNumMin(), fGateEntryHigh->GetNumMax());
+   fGateSlider->SetPosition(fGateEntryLow->GetNumber(), fGateEntryHigh->GetNumber());
+   fGateSlider->SetRange(fGateEntryLow->GetNumMin(), fGateEntryHigh->GetNumMax());
 }
 
 void TBGSubtraction::UpdateBGSlider1()
 {
-	fBGSlider1->SetPosition(fBGEntryLow1->GetNumber(), fBGEntryHigh1->GetNumber());
-	fBGSlider1->SetRange(fBGEntryLow1->GetNumMin(), fBGEntryHigh1->GetNumMax());
+   fBGSlider1->SetPosition(fBGEntryLow1->GetNumber(), fBGEntryHigh1->GetNumber());
+   fBGSlider1->SetRange(fBGEntryLow1->GetNumMin(), fBGEntryHigh1->GetNumMax());
 }
 
 void TBGSubtraction::UpdateBGSlider2()
 {
-	fBGSlider2->SetPosition(fBGEntryLow2->GetNumber(), fBGEntryHigh2->GetNumber());
-	fBGSlider2->SetRange(fBGEntryLow2->GetNumMin(), fBGEntryHigh2->GetNumMax());
+   fBGSlider2->SetPosition(fBGEntryLow2->GetNumber(), fBGEntryHigh2->GetNumber());
+   fBGSlider2->SetRange(fBGEntryLow2->GetNumMin(), fBGEntryHigh2->GetNumMax());
 }
 
 void TBGSubtraction::UpdateProjectionSliders()
 {
-	// Something has happened, so we have to let the sliders know about it
-	// This is as simple as checking the status of the "main" entry boxes
-	UpdateGateSlider();
-	UpdateBGSlider1();
-	UpdateBGSlider2();
+   // Something has happened, so we have to let the sliders know about it
+   // This is as simple as checking the status of the "main" entry boxes
+   UpdateGateSlider();
+   UpdateBGSlider1();
+   UpdateBGSlider2();
 }
 
 void TBGSubtraction::UpdatePeakSliders()
 {
-	// Something has happened, so we have to let the sliders know about it
-	// This is as simple as checking the status of the "main" entry boxes
-	// The range has to be set first so that the other slider pieces don't get confused.
-	fPeakSlider->SetRange(fPeakLowLimit, fPeakHighLimit);
-	fPeakSlider->SetPosition(fPeakLowValue, fPeakHighValue);
-	fPeakSlider->SetPointerPosition(fPeakValue);
+   // Something has happened, so we have to let the sliders know about it
+   // This is as simple as checking the status of the "main" entry boxes
+   // The range has to be set first so that the other slider pieces don't get confused.
+   fPeakSlider->SetRange(fPeakLowLimit, fPeakHighLimit);
+   fPeakSlider->SetPosition(fPeakLowValue, fPeakHighValue);
+   fPeakSlider->SetPointerPosition(fPeakValue);
 }
 
 void TBGSubtraction::UpdateBinningSlider()
 {
-	// for now this is hard coded from 1 to 10, might want to change the upper limit somehow?
-	fBinningSlider->SetRange(1, fMaxBinning);
-	fBinningSlider->SetPosition(1);
+   // for now this is hard coded from 1 to 10, might want to change the upper limit somehow?
+   fBinningSlider->SetRange(1, fMaxBinning);
+   fBinningSlider->SetPosition(1);
 }
 
 void TBGSubtraction::DoSlider(Int_t)
@@ -523,227 +523,227 @@ void TBGSubtraction::DoSlider(Int_t)
    }
 
    switch(index) {
-		case kGateSlider:
-			fGateEntryLow->SetNumber(fGateSlider->GetMinPosition());
-			fGateEntryHigh->SetNumber(fGateSlider->GetMaxPosition());
-			DrawGateMarkers();
-			if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()) {
-				MakeGateHisto();
-				DoGateProjection();
-			}
-			break;
-		case kBGSlider1:
-			fBGEntryLow1->SetNumber(fBGSlider1->GetMinPosition());
-			fBGEntryHigh1->SetNumber(fBGSlider1->GetMaxPosition());
-			DrawBGMarkers1();
-			if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()) {
-				MakeBGHisto1();
-				DoGateProjection();
-			}
-			break;
-		case kBGSlider2:
-			fBGEntryLow2->SetNumber(fBGSlider2->GetMinPosition());
-			fBGEntryHigh2->SetNumber(fBGSlider2->GetMaxPosition());
-			DrawBGMarkers2();
-			if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()) {
-				MakeBGHisto2();
-				DoGateProjection();
-			}
-			break;
-		case kPeakSlider:
-			fPeakLowValue  = fPeakSlider->GetMinPosition();
-			fPeakHighValue = fPeakSlider->GetMaxPosition();
-			fPeakValue     = fPeakSlider->GetPointerPosition();
-			DrawPeakMarkers();
-			break;
-		case kBinningSlider:
-			RebinProjection();
-			break;
-	};
+   case kGateSlider:
+      fGateEntryLow->SetNumber(fGateSlider->GetMinPosition());
+      fGateEntryHigh->SetNumber(fGateSlider->GetMaxPosition());
+      DrawGateMarkers();
+      if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()) {
+         MakeGateHisto();
+         DoGateProjection();
+      }
+      break;
+   case kBGSlider1:
+      fBGEntryLow1->SetNumber(fBGSlider1->GetMinPosition());
+      fBGEntryHigh1->SetNumber(fBGSlider1->GetMaxPosition());
+      DrawBGMarkers1();
+      if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()) {
+         MakeBGHisto1();
+         DoGateProjection();
+      }
+      break;
+   case kBGSlider2:
+      fBGEntryLow2->SetNumber(fBGSlider2->GetMinPosition());
+      fBGEntryHigh2->SetNumber(fBGSlider2->GetMaxPosition());
+      DrawBGMarkers2();
+      if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()) {
+         MakeBGHisto2();
+         DoGateProjection();
+      }
+      break;
+   case kPeakSlider:
+      fPeakLowValue  = fPeakSlider->GetMinPosition();
+      fPeakHighValue = fPeakSlider->GetMaxPosition();
+      fPeakValue     = fPeakSlider->GetPointerPosition();
+      DrawPeakMarkers();
+      break;
+   case kBinningSlider:
+      RebinProjection();
+      break;
+   };
 }
 
 void TBGSubtraction::AxisComboSelected()
 {
-	static int old_selection = -1;
-	fGateAxis                = fAxisCombo->GetSelected();
+   static int old_selection = -1;
+   fGateAxis                = fAxisCombo->GetSelected();
 
-	if(old_selection != fGateAxis) {
-		old_selection = fGateAxis;
-		delete fProjection;
-		if(fGateAxis == 0) {
-			std::cout << "Selecting the x axis" << std::endl;
-			fProjection = fMatrix->ProjectionY();
-		} else {
-			std::cout << "Selecting the y axis" << std::endl;
-			fProjection = fMatrix->ProjectionX();
-		}
+   if(old_selection != fGateAxis) {
+      old_selection = fGateAxis;
+      delete fProjection;
+      if(fGateAxis == 0) {
+         std::cout << "Selecting the x axis" << std::endl;
+         fProjection = fMatrix->ProjectionY();
+      } else {
+         std::cout << "Selecting the y axis" << std::endl;
+         fProjection = fMatrix->ProjectionX();
+      }
 
-		fProjectionCanvas->GetCanvas()->cd();
-		fProjection->Draw("HIST");
-		ResetInterface();
-		fProjectionCanvas->GetCanvas()->Update();
-	}
+      fProjectionCanvas->GetCanvas()->cd();
+      fProjection->Draw("HIST");
+      ResetInterface();
+      fProjectionCanvas->GetCanvas()->Update();
+   }
 }
 
 void TBGSubtraction::PeakComboSelected()
 {
-	static int oldPeakId = -1;
-	int peakId              = fPeakCombo->GetSelected();
+   static int oldPeakId = -1;
+   int        peakId    = fPeakCombo->GetSelected();
 
-	if(oldPeakId != peakId) {
-		oldPeakId = peakId;
-		if(fPeak != nullptr) { fPeakFitter->RemovePeak(fPeak); }
-		switch(peakId) {
-			case kGauss:
-				std::cout << "Selecting gaussian peak" << std::endl;
-				fPeak = static_cast<TSinglePeak*>(TGauss::Class()->New());
-				std::cout << "fPeak = " << fPeak << std::endl;
-				break;
-			case kRWPeak:
-				std::cout << "Selecting radware peak" << std::endl;
-				fPeak = static_cast<TSinglePeak*>(TRWPeak::Class()->New());
-				break;
-			case kABPeak:
-				std::cout << "Selecting two hit addback peak" << std::endl;
-				fPeak = static_cast<TSinglePeak*>(TABPeak::Class()->New());
-				break;
-			case kAB3Peak:
-				std::cout << "Selecting three hit addback peak" << std::endl;
-				fPeak = static_cast<TSinglePeak*>(TAB3Peak::Class()->New());
-				break;
-			default:
-				std::cerr << "Unknown peak id " << peakId << ", only know kGauss (" << kGauss << "), kRWPeak (" << kRWPeak << "), kABPeak (" << kABPeak << "), and kAB3Peak (" << kAB3Peak << ")" << std::endl;
-				break;
-		}
-		fPeakFitter->ResetInitFlag();
-		fPeakFitter->AddPeak(fPeak);
-	}
+   if(oldPeakId != peakId) {
+      oldPeakId = peakId;
+      if(fPeak != nullptr) { fPeakFitter->RemovePeak(fPeak); }
+      switch(peakId) {
+      case kGauss:
+         std::cout << "Selecting gaussian peak" << std::endl;
+         fPeak = static_cast<TSinglePeak*>(TGauss::Class()->New());
+         std::cout << "fPeak = " << fPeak << std::endl;
+         break;
+      case kRWPeak:
+         std::cout << "Selecting radware peak" << std::endl;
+         fPeak = static_cast<TSinglePeak*>(TRWPeak::Class()->New());
+         break;
+      case kABPeak:
+         std::cout << "Selecting two hit addback peak" << std::endl;
+         fPeak = static_cast<TSinglePeak*>(TABPeak::Class()->New());
+         break;
+      case kAB3Peak:
+         std::cout << "Selecting three hit addback peak" << std::endl;
+         fPeak = static_cast<TSinglePeak*>(TAB3Peak::Class()->New());
+         break;
+      default:
+         std::cerr << "Unknown peak id " << peakId << ", only know kGauss (" << kGauss << "), kRWPeak (" << kRWPeak << "), kABPeak (" << kABPeak << "), and kAB3Peak (" << kAB3Peak << ")" << std::endl;
+         break;
+      }
+      fPeakFitter->ResetInitFlag();
+      fPeakFitter->AddPeak(fPeak);
+   }
 }
 
 void TBGSubtraction::DrawPeakMarkers()
 {
-	if(fLowPeakMarker == nullptr) {
-		fLowPeakMarker = new GMarker();
-	}
-	if(fHighPeakMarker == nullptr) {
-		fHighPeakMarker = new GMarker();
-	}
-	if(fPeakMarker == nullptr) {
-		fPeakMarker = new GMarker();
-	}
-	if(fSubtractedBinHist != nullptr) {
-		fLowPeakMarker->SetHist(fSubtractedBinHist);
-		fHighPeakMarker->SetHist(fSubtractedBinHist);
-		fPeakMarker->SetHist(fSubtractedBinHist);
+   if(fLowPeakMarker == nullptr) {
+      fLowPeakMarker = new GMarker();
+   }
+   if(fHighPeakMarker == nullptr) {
+      fHighPeakMarker = new GMarker();
+   }
+   if(fPeakMarker == nullptr) {
+      fPeakMarker = new GMarker();
+   }
+   if(fSubtractedBinHist != nullptr) {
+      fLowPeakMarker->SetHist(fSubtractedBinHist);
+      fHighPeakMarker->SetHist(fSubtractedBinHist);
+      fPeakMarker->SetHist(fSubtractedBinHist);
 
-		fLowPeakMarker->SetLocalX(fPeakLowValue);
-		fHighPeakMarker->SetLocalX(fPeakHighValue);
-		fPeakMarker->SetLocalX(fPeakValue);
-		fLowPeakMarker->SetBinX(fSubtractedBinHist->GetXaxis()->FindBin(fLowPeakMarker->GetLocalX()));
-		fHighPeakMarker->SetBinX(fSubtractedBinHist->GetXaxis()->FindBin(fHighPeakMarker->GetLocalX()));
-		fPeakMarker->SetBinX(fSubtractedBinHist->GetXaxis()->FindBin(fPeakMarker->GetLocalX()));
+      fLowPeakMarker->SetLocalX(fPeakLowValue);
+      fHighPeakMarker->SetLocalX(fPeakHighValue);
+      fPeakMarker->SetLocalX(fPeakValue);
+      fLowPeakMarker->SetBinX(fSubtractedBinHist->GetXaxis()->FindBin(fLowPeakMarker->GetLocalX()));
+      fHighPeakMarker->SetBinX(fSubtractedBinHist->GetXaxis()->FindBin(fHighPeakMarker->GetLocalX()));
+      fPeakMarker->SetBinX(fSubtractedBinHist->GetXaxis()->FindBin(fPeakMarker->GetLocalX()));
 
-		double low_peak_bin_edge  = fSubtractedBinHist->GetXaxis()->GetBinLowEdge(fLowPeakMarker->GetBinX());
-		double high_peak_bin_edge = fSubtractedBinHist->GetXaxis()->GetBinLowEdge(fHighPeakMarker->GetBinX());
-		double peak_bin_edge      = fSubtractedBinHist->GetXaxis()->GetBinLowEdge(fPeakMarker->GetBinX());
+      double low_peak_bin_edge  = fSubtractedBinHist->GetXaxis()->GetBinLowEdge(fLowPeakMarker->GetBinX());
+      double high_peak_bin_edge = fSubtractedBinHist->GetXaxis()->GetBinLowEdge(fHighPeakMarker->GetBinX());
+      double peak_bin_edge      = fSubtractedBinHist->GetXaxis()->GetBinLowEdge(fPeakMarker->GetBinX());
 
-		fLowPeakMarker->SetLineX(low_peak_bin_edge, low_peak_bin_edge, fSubtractedBinHist->GetMinimum(), fSubtractedBinHist->GetMaximum());
-		fLowPeakMarker->SetColor(kMagenta);
+      fLowPeakMarker->SetLineX(low_peak_bin_edge, low_peak_bin_edge, fSubtractedBinHist->GetMinimum(), fSubtractedBinHist->GetMaximum());
+      fLowPeakMarker->SetColor(kMagenta);
 
-		fHighPeakMarker->SetLineX(high_peak_bin_edge, high_peak_bin_edge, fSubtractedBinHist->GetMinimum(), fSubtractedBinHist->GetMaximum());
-		fHighPeakMarker->SetColor(kMagenta);
+      fHighPeakMarker->SetLineX(high_peak_bin_edge, high_peak_bin_edge, fSubtractedBinHist->GetMinimum(), fSubtractedBinHist->GetMaximum());
+      fHighPeakMarker->SetColor(kMagenta);
 
-		fPeakMarker->SetLineX(peak_bin_edge, peak_bin_edge, fSubtractedBinHist->GetMinimum(), fSubtractedBinHist->GetMaximum());
-		fPeakMarker->SetColor(kMagenta);
-		fPeakMarker->SetStyle(kDashed);
+      fPeakMarker->SetLineX(peak_bin_edge, peak_bin_edge, fSubtractedBinHist->GetMinimum(), fSubtractedBinHist->GetMaximum());
+      fPeakMarker->SetColor(kMagenta);
+      fPeakMarker->SetStyle(kDashed);
 
-		fGateCanvas->GetCanvas()->cd();
-		fLowPeakMarker->Draw();
-		fHighPeakMarker->Draw();
-		fPeakMarker->Draw();
-		fGateCanvas->GetCanvas()->Update();
-	}
+      fGateCanvas->GetCanvas()->cd();
+      fLowPeakMarker->Draw();
+      fHighPeakMarker->Draw();
+      fPeakMarker->Draw();
+      fGateCanvas->GetCanvas()->Update();
+   }
 }
 
 void TBGSubtraction::DrawBGMarkers(TGCheckButton*& check_button, GMarker*& low_marker, GMarker*& high_marker, TGNumberEntry*& low_entry, TGNumberEntry*& high_entry, Color_t color)
 {
-	// Only Draw the BG Markers if BG is applied.
-	if((check_button != nullptr) && check_button->IsDown()) {
-		if(low_marker == nullptr) {
-			low_marker = new GMarker();
-			low_marker->SetHist(fProjection);
-		}
-		if(high_marker == nullptr) {
-			high_marker = new GMarker();
-			high_marker->SetHist(fProjection);
-		}
-		low_marker->SetLocalX(low_entry->GetNumber());
-		high_marker->SetLocalX(high_entry->GetNumber());
-		low_marker->SetBinX(fProjection->GetXaxis()->FindBin(low_marker->GetLocalX()));
-		high_marker->SetBinX(fProjection->GetXaxis()->FindBin(high_marker->GetLocalX()));
-		double low_bg_bin_edge  = fProjection->GetXaxis()->GetBinLowEdge(low_marker->GetBinX());
-		double high_bg_bin_edge = fProjection->GetXaxis()->GetBinLowEdge(high_marker->GetBinX());
+   // Only Draw the BG Markers if BG is applied.
+   if((check_button != nullptr) && check_button->IsDown()) {
+      if(low_marker == nullptr) {
+         low_marker = new GMarker();
+         low_marker->SetHist(fProjection);
+      }
+      if(high_marker == nullptr) {
+         high_marker = new GMarker();
+         high_marker->SetHist(fProjection);
+      }
+      low_marker->SetLocalX(low_entry->GetNumber());
+      high_marker->SetLocalX(high_entry->GetNumber());
+      low_marker->SetBinX(fProjection->GetXaxis()->FindBin(low_marker->GetLocalX()));
+      high_marker->SetBinX(fProjection->GetXaxis()->FindBin(high_marker->GetLocalX()));
+      double low_bg_bin_edge  = fProjection->GetXaxis()->GetBinLowEdge(low_marker->GetBinX());
+      double high_bg_bin_edge = fProjection->GetXaxis()->GetBinLowEdge(high_marker->GetBinX());
 
-		low_marker->SetLineX(low_bg_bin_edge, low_bg_bin_edge, fProjection->GetMinimum(), fProjection->GetMaximum());
-		low_marker->SetColor(color);
+      low_marker->SetLineX(low_bg_bin_edge, low_bg_bin_edge, fProjection->GetMinimum(), fProjection->GetMaximum());
+      low_marker->SetColor(color);
 
-		high_marker->SetLineX(high_bg_bin_edge, high_bg_bin_edge, fProjection->GetMinimum(), fProjection->GetMaximum());
-		high_marker->SetColor(color);
+      high_marker->SetLineX(high_bg_bin_edge, high_bg_bin_edge, fProjection->GetMinimum(), fProjection->GetMaximum());
+      high_marker->SetColor(color);
 
-		fProjectionCanvas->GetCanvas()->cd();
-		low_marker->Draw();
-		high_marker->Draw();
-		fProjectionCanvas->GetCanvas()->Update();
-	}
+      fProjectionCanvas->GetCanvas()->cd();
+      low_marker->Draw();
+      high_marker->Draw();
+      fProjectionCanvas->GetCanvas()->Update();
+   }
 }
 
 void TBGSubtraction::DrawBGMarkers1()
 {
-	DrawBGMarkers(fBGCheckButton1, fLowBGMarker1, fHighBGMarker1, fBGEntryLow1, fBGEntryHigh1);
+   DrawBGMarkers(fBGCheckButton1, fLowBGMarker1, fHighBGMarker1, fBGEntryLow1, fBGEntryHigh1);
 }
 
 void TBGSubtraction::DrawBGMarkers2()
 {
-	DrawBGMarkers(fBGCheckButton2, fLowBGMarker2, fHighBGMarker2, fBGEntryLow2, fBGEntryHigh2, kMagenta);
+   DrawBGMarkers(fBGCheckButton2, fLowBGMarker2, fHighBGMarker2, fBGEntryLow2, fBGEntryHigh2, kMagenta);
 }
 
 void TBGSubtraction::DrawAllMarkers()
 {
-	DrawGateMarkers();
-	DrawBGMarkers1();
-	DrawBGMarkers2();
+   DrawGateMarkers();
+   DrawBGMarkers1();
+   DrawBGMarkers2();
 }
 
 void TBGSubtraction::DrawGateMarkers()
 {
-	if(fLowGateMarker == nullptr) {
-		fLowGateMarker = new GMarker();
-		fLowGateMarker->SetHist(fProjection);
-	}
-	if(fHighGateMarker == nullptr) {
-		fHighGateMarker = new GMarker();
-		fHighGateMarker->SetHist(fProjection);
-	}
+   if(fLowGateMarker == nullptr) {
+      fLowGateMarker = new GMarker();
+      fLowGateMarker->SetHist(fProjection);
+   }
+   if(fHighGateMarker == nullptr) {
+      fHighGateMarker = new GMarker();
+      fHighGateMarker->SetHist(fProjection);
+   }
 
-	fLowGateMarker->SetLocalX(fGateEntryLow->GetNumber());
-	fHighGateMarker->SetLocalX(fGateEntryHigh->GetNumber());
-	fLowGateMarker->SetBinX(fProjection->GetXaxis()->FindBin(fLowGateMarker->GetLocalX()));
-	fHighGateMarker->SetBinX(fProjection->GetXaxis()->FindBin(fHighGateMarker->GetLocalX()));
+   fLowGateMarker->SetLocalX(fGateEntryLow->GetNumber());
+   fHighGateMarker->SetLocalX(fGateEntryHigh->GetNumber());
+   fLowGateMarker->SetBinX(fProjection->GetXaxis()->FindBin(fLowGateMarker->GetLocalX()));
+   fHighGateMarker->SetBinX(fProjection->GetXaxis()->FindBin(fHighGateMarker->GetLocalX()));
 
-	double low_gate_bin_edge  = fProjection->GetXaxis()->GetBinLowEdge(fLowGateMarker->GetBinX());
-	double high_gate_bin_edge = fProjection->GetXaxis()->GetBinLowEdge(fHighGateMarker->GetBinX());
+   double low_gate_bin_edge  = fProjection->GetXaxis()->GetBinLowEdge(fLowGateMarker->GetBinX());
+   double high_gate_bin_edge = fProjection->GetXaxis()->GetBinLowEdge(fHighGateMarker->GetBinX());
 
-	fLowGateMarker->SetLineX(low_gate_bin_edge, low_gate_bin_edge, fProjection->GetMinimum(), fProjection->GetMaximum());
-	fLowGateMarker->SetColor(kGreen);
+   fLowGateMarker->SetLineX(low_gate_bin_edge, low_gate_bin_edge, fProjection->GetMinimum(), fProjection->GetMaximum());
+   fLowGateMarker->SetColor(kGreen);
 
-	fHighGateMarker->SetLineX(high_gate_bin_edge, high_gate_bin_edge, fProjection->GetMinimum(), fProjection->GetMaximum());
-	fHighGateMarker->SetColor(kGreen);
+   fHighGateMarker->SetLineX(high_gate_bin_edge, high_gate_bin_edge, fProjection->GetMinimum(), fProjection->GetMaximum());
+   fHighGateMarker->SetColor(kGreen);
 
-	fProjectionCanvas->GetCanvas()->cd();
-	fLowGateMarker->Draw();
-	fHighGateMarker->Draw();
+   fProjectionCanvas->GetCanvas()->cd();
+   fLowGateMarker->Draw();
+   fHighGateMarker->Draw();
 
-	fProjectionCanvas->GetCanvas()->Update();
+   fProjectionCanvas->GetCanvas()->Update();
 }
 
 void TBGSubtraction::DoEntry(Long_t)
@@ -752,252 +752,252 @@ void TBGSubtraction::DoEntry(Long_t)
    int   index = entry->WidgetId();
 
    // When we do an entry, update the corresponding slider...this then performs the gating.
-	switch(index) {
-		case kGateLowEntry:
-			if(fGateEntryLow->GetNumber() > fGateEntryHigh->GetNumber()) {
-				fGateEntryLow->SetNumber(fGateEntryHigh->GetNumber());
-				UpdateGateSlider();
-				fGateSlider->PositionChanged();
-			}
-			break;
-		case kGateHighEntry:
-			if(fGateEntryHigh->GetNumber() < fGateEntryLow->GetNumber()) {
-				fGateEntryHigh->SetNumber(fGateEntryLow->GetNumber());
-				UpdateGateSlider();
-			}
-			break;
-		case kBGLowEntry1:
-			if(fBGEntryLow1->GetNumber() > fBGEntryHigh1->GetNumber()) {
-				fBGEntryLow1->SetNumber(fBGEntryHigh1->GetNumber());
-				UpdateBGSlider1();
-			}
-			break;
-		case kBGHighEntry1:
-			if(fBGEntryHigh1->GetNumber() < fBGEntryLow1->GetNumber()) {
-				fBGEntryHigh1->SetNumber(fBGEntryLow1->GetNumber());
-				UpdateBGSlider1();
-			}
-			break;
-		case kBGLowEntry2:
-			if(fBGEntryLow2->GetNumber() > fBGEntryHigh2->GetNumber()) {
-				fBGEntryLow2->SetNumber(fBGEntryHigh2->GetNumber());
-				UpdateBGSlider2();
-			}
-			break;
-		case kBGHighEntry2:
-			if(fBGEntryHigh2->GetNumber() < fBGEntryLow2->GetNumber()) {
-				fBGEntryHigh2->SetNumber(fBGEntryLow2->GetNumber());
-				UpdateBGSlider2();
-			}
-			break;
-	};
+   switch(index) {
+   case kGateLowEntry:
+      if(fGateEntryLow->GetNumber() > fGateEntryHigh->GetNumber()) {
+         fGateEntryLow->SetNumber(fGateEntryHigh->GetNumber());
+         UpdateGateSlider();
+         fGateSlider->PositionChanged();
+      }
+      break;
+   case kGateHighEntry:
+      if(fGateEntryHigh->GetNumber() < fGateEntryLow->GetNumber()) {
+         fGateEntryHigh->SetNumber(fGateEntryLow->GetNumber());
+         UpdateGateSlider();
+      }
+      break;
+   case kBGLowEntry1:
+      if(fBGEntryLow1->GetNumber() > fBGEntryHigh1->GetNumber()) {
+         fBGEntryLow1->SetNumber(fBGEntryHigh1->GetNumber());
+         UpdateBGSlider1();
+      }
+      break;
+   case kBGHighEntry1:
+      if(fBGEntryHigh1->GetNumber() < fBGEntryLow1->GetNumber()) {
+         fBGEntryHigh1->SetNumber(fBGEntryLow1->GetNumber());
+         UpdateBGSlider1();
+      }
+      break;
+   case kBGLowEntry2:
+      if(fBGEntryLow2->GetNumber() > fBGEntryHigh2->GetNumber()) {
+         fBGEntryLow2->SetNumber(fBGEntryHigh2->GetNumber());
+         UpdateBGSlider2();
+      }
+      break;
+   case kBGHighEntry2:
+      if(fBGEntryHigh2->GetNumber() < fBGEntryLow2->GetNumber()) {
+         fBGEntryHigh2->SetNumber(fBGEntryLow2->GetNumber());
+         UpdateBGSlider2();
+      }
+      break;
+   };
 }
 
 void TBGSubtraction::DoGateCanvasZoomed()
 {
-	// If we zoom in on this canvas, we need to update the sliders and Number boxes appropriately.
-	Double_t xmin = 0.;
-	Double_t ymin = 0.;
-	Double_t xmax = 0.;
-	Double_t ymax = 0.;
-	fGateCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
-	// The first thing we need to do is set new limits on the number entries
-	// Start by getting the old limits, this should be the same as the old histo range
-	Double_t old_limit_min = fPeakLowLimit;
-	Double_t old_limit_max = fPeakHighLimit;
+   // If we zoom in on this canvas, we need to update the sliders and Number boxes appropriately.
+   Double_t xmin = 0.;
+   Double_t ymin = 0.;
+   Double_t xmax = 0.;
+   Double_t ymax = 0.;
+   fGateCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
+   // The first thing we need to do is set new limits on the number entries
+   // Start by getting the old limits, this should be the same as the old histo range
+   Double_t old_limit_min = fPeakLowLimit;
+   Double_t old_limit_max = fPeakHighLimit;
 
-	// Get the old value
-	Double_t old_lower_peak_val = fPeakLowValue;
-	Double_t old_upper_peak_val = fPeakHighValue;
-	Double_t old_peak_val       = fPeakValue;
-	// Now maintain the ratio of the position
-	Double_t rel_lower_peak_val = (old_lower_peak_val - old_limit_min) / (old_limit_max - old_limit_min);
-	Double_t rel_upper_peak_val = (old_upper_peak_val - old_limit_min) / (old_limit_max - old_limit_min);
-	Double_t rel_peak_val       = (old_peak_val - old_limit_min) / (old_limit_max - old_limit_min);
-	// set the new positions
-	fPeakLowValue  = xmin + rel_lower_peak_val * (xmax - xmin);
-	fPeakHighValue = xmin + rel_upper_peak_val * (xmax - xmin);
-	fPeakValue     = xmin + rel_peak_val * (xmax - xmin);
-	// Set the new limits
-	fPeakLowLimit  = xmin;
-	fPeakHighLimit = xmax;
+   // Get the old value
+   Double_t old_lower_peak_val = fPeakLowValue;
+   Double_t old_upper_peak_val = fPeakHighValue;
+   Double_t old_peak_val       = fPeakValue;
+   // Now maintain the ratio of the position
+   Double_t rel_lower_peak_val = (old_lower_peak_val - old_limit_min) / (old_limit_max - old_limit_min);
+   Double_t rel_upper_peak_val = (old_upper_peak_val - old_limit_min) / (old_limit_max - old_limit_min);
+   Double_t rel_peak_val       = (old_peak_val - old_limit_min) / (old_limit_max - old_limit_min);
+   // set the new positions
+   fPeakLowValue  = xmin + rel_lower_peak_val * (xmax - xmin);
+   fPeakHighValue = xmin + rel_upper_peak_val * (xmax - xmin);
+   fPeakValue     = xmin + rel_peak_val * (xmax - xmin);
+   // Set the new limits
+   fPeakLowLimit  = xmin;
+   fPeakHighLimit = xmax;
 
-	UpdatePeakSliders();
-	DrawPeakMarkers();
+   UpdatePeakSliders();
+   DrawPeakMarkers();
 }
 
 void TBGSubtraction::DoProjectionCanvasZoomed()
 {
-	// If we zoom in on this canvas, we need to update the sliders and Number boxes appropriately.
-	Double_t xmin = 0.;
-	Double_t ymin = 0.;
-	Double_t xmax = 0.;
-	Double_t ymax = 0.;
-	fProjectionCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
-	// The first thing we need to do is set new limits on the number entries
-	// Start by getting the old limits, this should be the same as the old histo range
-	Double_t old_limit_min = fGateEntryLow->GetNumMin();
-	Double_t old_limit_max = fGateEntryLow->GetNumMax();
+   // If we zoom in on this canvas, we need to update the sliders and Number boxes appropriately.
+   Double_t xmin = 0.;
+   Double_t ymin = 0.;
+   Double_t xmax = 0.;
+   Double_t ymax = 0.;
+   fProjectionCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
+   // The first thing we need to do is set new limits on the number entries
+   // Start by getting the old limits, this should be the same as the old histo range
+   Double_t old_limit_min = fGateEntryLow->GetNumMin();
+   Double_t old_limit_max = fGateEntryLow->GetNumMax();
 
-	// Get the old value
-	Double_t old_lower_gate_val = fGateEntryLow->GetNumber();
-	Double_t old_upper_gate_val = fGateEntryHigh->GetNumber();
-	Double_t old_lower_bg1_val  = fBGEntryLow1->GetNumber();
-	Double_t old_upper_bg1_val  = fBGEntryHigh1->GetNumber();
-	Double_t old_lower_bg2_val  = fBGEntryLow2->GetNumber();
-	Double_t old_upper_bg2_val  = fBGEntryHigh2->GetNumber();
-	// Now maintain the ratio of the position
-	Double_t rel_lower_gate_val = (old_lower_gate_val - old_limit_min) / (old_limit_max - old_limit_min);
-	Double_t rel_upper_gate_val = (old_upper_gate_val - old_limit_min) / (old_limit_max - old_limit_min);
-	Double_t rel_lower_bg1_val  = (old_lower_bg1_val - old_limit_min) / (old_limit_max - old_limit_min);
-	Double_t rel_upper_bg1_val  = (old_upper_bg1_val - old_limit_min) / (old_limit_max - old_limit_min);
-	Double_t rel_lower_bg2_val  = (old_lower_bg2_val - old_limit_min) / (old_limit_max - old_limit_min);
-	Double_t rel_upper_bg2_val  = (old_upper_bg2_val - old_limit_min) / (old_limit_max - old_limit_min);
-	// set the new positions
-	fGateEntryLow->SetNumber(xmin + rel_lower_gate_val * (xmax - xmin));
-	fGateEntryHigh->SetNumber(xmin + rel_upper_gate_val * (xmax - xmin));
-	fBGEntryLow1->SetNumber(xmin + rel_lower_bg1_val * (xmax - xmin));
-	fBGEntryHigh1->SetNumber(xmin + rel_upper_bg1_val * (xmax - xmin));
-	fBGEntryLow2->SetNumber(xmin + rel_lower_bg2_val * (xmax - xmin));
-	fBGEntryHigh2->SetNumber(xmin + rel_upper_bg2_val * (xmax - xmin));
-	// Set the new limits
-	fGateEntryLow->SetLimitValues(xmin, xmax);
-	fGateEntryHigh->SetLimitValues(xmin, xmax);
-	fBGEntryLow1->SetLimitValues(xmin, xmax);
-	fBGEntryHigh1->SetLimitValues(xmin, xmax);
-	fBGEntryLow2->SetLimitValues(xmin, xmax);
-	fBGEntryHigh2->SetLimitValues(xmin, xmax);
+   // Get the old value
+   Double_t old_lower_gate_val = fGateEntryLow->GetNumber();
+   Double_t old_upper_gate_val = fGateEntryHigh->GetNumber();
+   Double_t old_lower_bg1_val  = fBGEntryLow1->GetNumber();
+   Double_t old_upper_bg1_val  = fBGEntryHigh1->GetNumber();
+   Double_t old_lower_bg2_val  = fBGEntryLow2->GetNumber();
+   Double_t old_upper_bg2_val  = fBGEntryHigh2->GetNumber();
+   // Now maintain the ratio of the position
+   Double_t rel_lower_gate_val = (old_lower_gate_val - old_limit_min) / (old_limit_max - old_limit_min);
+   Double_t rel_upper_gate_val = (old_upper_gate_val - old_limit_min) / (old_limit_max - old_limit_min);
+   Double_t rel_lower_bg1_val  = (old_lower_bg1_val - old_limit_min) / (old_limit_max - old_limit_min);
+   Double_t rel_upper_bg1_val  = (old_upper_bg1_val - old_limit_min) / (old_limit_max - old_limit_min);
+   Double_t rel_lower_bg2_val  = (old_lower_bg2_val - old_limit_min) / (old_limit_max - old_limit_min);
+   Double_t rel_upper_bg2_val  = (old_upper_bg2_val - old_limit_min) / (old_limit_max - old_limit_min);
+   // set the new positions
+   fGateEntryLow->SetNumber(xmin + rel_lower_gate_val * (xmax - xmin));
+   fGateEntryHigh->SetNumber(xmin + rel_upper_gate_val * (xmax - xmin));
+   fBGEntryLow1->SetNumber(xmin + rel_lower_bg1_val * (xmax - xmin));
+   fBGEntryHigh1->SetNumber(xmin + rel_upper_bg1_val * (xmax - xmin));
+   fBGEntryLow2->SetNumber(xmin + rel_lower_bg2_val * (xmax - xmin));
+   fBGEntryHigh2->SetNumber(xmin + rel_upper_bg2_val * (xmax - xmin));
+   // Set the new limits
+   fGateEntryLow->SetLimitValues(xmin, xmax);
+   fGateEntryHigh->SetLimitValues(xmin, xmax);
+   fBGEntryLow1->SetLimitValues(xmin, xmax);
+   fBGEntryHigh1->SetLimitValues(xmin, xmax);
+   fBGEntryLow2->SetLimitValues(xmin, xmax);
+   fBGEntryHigh2->SetLimitValues(xmin, xmax);
 
-	UpdateProjectionSliders();
-	DrawAllMarkers();
+   UpdateProjectionSliders();
+   DrawAllMarkers();
 
-	if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()) {
-		DoAllGates();   // Figure out how to make this happen on histo zooms and not scaling canvas
-	}
-	// DoGateProjection();
+   if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()) {
+      DoAllGates();   // Figure out how to make this happen on histo zooms and not scaling canvas
+   }
+   // DoGateProjection();
 }
 
 void TBGSubtraction::DoAllGates()
 {
-	MakeGateHisto();
-	MakeBGHisto1();
-	MakeBGHisto2();
+   MakeGateHisto();
+   MakeBGHisto1();
+   MakeBGHisto2();
 }
 
 void TBGSubtraction::MakeGateHisto()
 {
-	delete fGateHist;
+   delete fGateHist;
 
-	const char* proj_name = Form("gate_%d_%d", static_cast<Int_t>(fGateEntryLow->GetNumber()),
-			static_cast<Int_t>(fGateEntryHigh->GetNumber()));
+   const char* proj_name = Form("gate_%d_%d", static_cast<Int_t>(fGateEntryLow->GetNumber()),
+                                static_cast<Int_t>(fGateEntryHigh->GetNumber()));
 
-	fGateAxis = fAxisCombo->GetSelected();
+   fGateAxis = fAxisCombo->GetSelected();
 
-	if(fGateAxis == 0) {
-		fGateHist = fMatrix->ProjectionX(proj_name, fMatrix->GetYaxis()->FindBin(fGateSlider->GetMinPosition()),
-				fMatrix->GetYaxis()->FindBin(fGateSlider->GetMaxPosition()));
-	} else {
-		fGateHist = fMatrix->ProjectionY(proj_name, fMatrix->GetXaxis()->FindBin(fGateSlider->GetMinPosition()),
-				fMatrix->GetXaxis()->FindBin(fGateSlider->GetMaxPosition()));
-	}
-	fGateHist->Sumw2();
+   if(fGateAxis == 0) {
+      fGateHist = fMatrix->ProjectionX(proj_name, fMatrix->GetYaxis()->FindBin(fGateSlider->GetMinPosition()),
+                                       fMatrix->GetYaxis()->FindBin(fGateSlider->GetMaxPosition()));
+   } else {
+      fGateHist = fMatrix->ProjectionY(proj_name, fMatrix->GetXaxis()->FindBin(fGateSlider->GetMinPosition()),
+                                       fMatrix->GetXaxis()->FindBin(fGateSlider->GetMaxPosition()));
+   }
+   fGateHist->Sumw2();
 }
 
 void TBGSubtraction::MakeBGHisto1()
 {
-	Double_t xmin = 0.;
-	Double_t ymin = 0.;
-	Double_t xmax = 0.;
-	Double_t ymax = 0.;
-	fProjectionCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
+   Double_t xmin = 0.;
+   Double_t ymin = 0.;
+   Double_t xmax = 0.;
+   Double_t ymax = 0.;
+   fProjectionCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
 
-	delete fBGHist1;
+   delete fBGHist1;
 
-	const char* bg_name1 =
-		Form("bg1_%d_%d", static_cast<Int_t>(fBGEntryLow1->GetNumber()), static_cast<Int_t>(fBGEntryHigh1->GetNumber()));
+   const char* bg_name1 =
+      Form("bg1_%d_%d", static_cast<Int_t>(fBGEntryLow1->GetNumber()), static_cast<Int_t>(fBGEntryHigh1->GetNumber()));
 
-	if(fGateAxis == 0) {
-		fBGHist1 = fMatrix->ProjectionX(bg_name1, fMatrix->GetYaxis()->FindBin(fBGSlider1->GetMinPosition()),
-				fMatrix->GetYaxis()->FindBin(fBGSlider1->GetMaxPosition()));
-	} else {
-		fBGHist1 = fMatrix->ProjectionY(bg_name1, fMatrix->GetXaxis()->FindBin(fBGSlider1->GetMinPosition()),
-				fMatrix->GetXaxis()->FindBin(fBGSlider1->GetMaxPosition()));
-	}
+   if(fGateAxis == 0) {
+      fBGHist1 = fMatrix->ProjectionX(bg_name1, fMatrix->GetYaxis()->FindBin(fBGSlider1->GetMinPosition()),
+                                      fMatrix->GetYaxis()->FindBin(fBGSlider1->GetMaxPosition()));
+   } else {
+      fBGHist1 = fMatrix->ProjectionY(bg_name1, fMatrix->GetXaxis()->FindBin(fBGSlider1->GetMinPosition()),
+                                      fMatrix->GetXaxis()->FindBin(fBGSlider1->GetMaxPosition()));
+   }
 
-	fBGHist1->Sumw2();
+   fBGHist1->Sumw2();
 }
 
 void TBGSubtraction::MakeBGHisto2()
 {
-	delete fBGHist2;
+   delete fBGHist2;
 
-	const char* bg_name2 =
-		Form("bg2_%d_%d", static_cast<Int_t>(fBGEntryLow2->GetNumber()), static_cast<Int_t>(fBGEntryHigh2->GetNumber()));
+   const char* bg_name2 =
+      Form("bg2_%d_%d", static_cast<Int_t>(fBGEntryLow2->GetNumber()), static_cast<Int_t>(fBGEntryHigh2->GetNumber()));
 
-	if(fGateAxis == 0) {
-		fBGHist2 = fMatrix->ProjectionX(bg_name2, fMatrix->GetYaxis()->FindBin(fBGSlider2->GetMinPosition()),
-				fMatrix->GetYaxis()->FindBin(fBGSlider2->GetMaxPosition()));
-	} else {
-		fBGHist2 = fMatrix->ProjectionY(bg_name2, fMatrix->GetXaxis()->FindBin(fBGSlider2->GetMinPosition()),
-				fMatrix->GetXaxis()->FindBin(fBGSlider2->GetMaxPosition()));
-	}
+   if(fGateAxis == 0) {
+      fBGHist2 = fMatrix->ProjectionX(bg_name2, fMatrix->GetYaxis()->FindBin(fBGSlider2->GetMinPosition()),
+                                      fMatrix->GetYaxis()->FindBin(fBGSlider2->GetMaxPosition()));
+   } else {
+      fBGHist2 = fMatrix->ProjectionY(bg_name2, fMatrix->GetXaxis()->FindBin(fBGSlider2->GetMinPosition()),
+                                      fMatrix->GetXaxis()->FindBin(fBGSlider2->GetMaxPosition()));
+   }
 
-	fBGHist2->Sumw2();
+   fBGHist2->Sumw2();
 }
 
 void TBGSubtraction::DoGateProjection()
 {
-	TH1*     bg_hist       = nullptr;
-	Double_t under_peak_bg = 0.0;
-	// Make sure one of the two buttons are checked
-	if(((fBGCheckButton1 != nullptr) && fBGCheckButton1->IsDown()) || ((fBGCheckButton2 != nullptr) && fBGCheckButton2->IsDown())) {
-		bg_hist       = fProjection->ShowBackground(static_cast<Int_t>(fBGParamEntry->GetNumberEntry()->GetIntNumber()));
-		under_peak_bg = bg_hist->Integral(bg_hist->FindBin(fGateSlider->GetMinPosition()),
-				bg_hist->FindBin(fGateSlider->GetMaxPosition()));
-	}
+   TH1*     bg_hist       = nullptr;
+   Double_t under_peak_bg = 0.0;
+   // Make sure one of the two buttons are checked
+   if(((fBGCheckButton1 != nullptr) && fBGCheckButton1->IsDown()) || ((fBGCheckButton2 != nullptr) && fBGCheckButton2->IsDown())) {
+      bg_hist       = fProjection->ShowBackground(static_cast<Int_t>(fBGParamEntry->GetNumberEntry()->GetIntNumber()));
+      under_peak_bg = bg_hist->Integral(bg_hist->FindBin(fGateSlider->GetMinPosition()),
+                                        bg_hist->FindBin(fGateSlider->GetMaxPosition()));
+   }
 
-	// Add the two background regions together;
-	Double_t bg_region = 0.0;
-	if((fBGCheckButton1 != nullptr) && fBGCheckButton1->IsDown()) {
-		bg_region += fProjection->Integral(fProjection->FindBin(fBGSlider1->GetMinPosition()),
-				fProjection->FindBin(fBGSlider1->GetMaxPosition()));
-	}
-	if((fBGCheckButton2 != nullptr) && fBGCheckButton2->IsDown()) {
-		bg_region += fProjection->Integral(fProjection->FindBin(fBGSlider2->GetMinPosition()),
-				fProjection->FindBin(fBGSlider2->GetMaxPosition()));
-	}
-	Double_t ratio = 0;
+   // Add the two background regions together;
+   Double_t bg_region = 0.0;
+   if((fBGCheckButton1 != nullptr) && fBGCheckButton1->IsDown()) {
+      bg_region += fProjection->Integral(fProjection->FindBin(fBGSlider1->GetMinPosition()),
+                                         fProjection->FindBin(fBGSlider1->GetMaxPosition()));
+   }
+   if((fBGCheckButton2 != nullptr) && fBGCheckButton2->IsDown()) {
+      bg_region += fProjection->Integral(fProjection->FindBin(fBGSlider2->GetMinPosition()),
+                                         fProjection->FindBin(fBGSlider2->GetMaxPosition()));
+   }
+   Double_t ratio = 0;
 
-	if(bg_region != 0) {
-		ratio = under_peak_bg / bg_region;
-	}
+   if(bg_region != 0) {
+      ratio = under_peak_bg / bg_region;
+   }
 
-	Int_t first_bin = -1;
-	Int_t last_bin = -1;
-	if(fSubtractedBinHist != nullptr) {
-		// Get old axis range
-		first_bin = fSubtractedBinHist->GetXaxis()->GetFirst();
-		last_bin  = fSubtractedBinHist->GetXaxis()->GetLast();
-		delete fSubtractedBinHist;
-		delete fSubtractedHist;
-	}
-	// create new subtracted hist
-	const char* sub_name = Form("%s_%s", fGateHist->GetName(), fBGHist1->GetName());   // TO DO: Come up with better naming
-	fSubtractedHist      = static_cast<TH1*>(fGateHist->Clone(sub_name));
-	if((fBGCheckButton1 != nullptr) && fBGCheckButton1->IsDown()) {
-		fSubtractedHist->Add(fBGHist1, -ratio);
-	}
-	if((fBGCheckButton2 != nullptr) && fBGCheckButton2->IsDown()) {
-		fSubtractedHist->Add(fBGHist2, -ratio);
-	}
-	fSubtractedBinHist = static_cast<TH1*>(fSubtractedHist->Clone(Form("%s_bin", sub_name)));
-	fGateCanvas->GetCanvas()->cd();
-	if(fSubtractedBinHist != nullptr) {
-		fSubtractedBinHist->GetXaxis()->SetRange(first_bin, last_bin);
-		fSubtractedBinHist->Draw("hist");
-	}
-	DrawPeakMarkers();
-	fGateCanvas->GetCanvas()->Update();
+   Int_t first_bin = -1;
+   Int_t last_bin  = -1;
+   if(fSubtractedBinHist != nullptr) {
+      // Get old axis range
+      first_bin = fSubtractedBinHist->GetXaxis()->GetFirst();
+      last_bin  = fSubtractedBinHist->GetXaxis()->GetLast();
+      delete fSubtractedBinHist;
+      delete fSubtractedHist;
+   }
+   // create new subtracted hist
+   const char* sub_name = Form("%s_%s", fGateHist->GetName(), fBGHist1->GetName());   // TO DO: Come up with better naming
+   fSubtractedHist      = static_cast<TH1*>(fGateHist->Clone(sub_name));
+   if((fBGCheckButton1 != nullptr) && fBGCheckButton1->IsDown()) {
+      fSubtractedHist->Add(fBGHist1, -ratio);
+   }
+   if((fBGCheckButton2 != nullptr) && fBGCheckButton2->IsDown()) {
+      fSubtractedHist->Add(fBGHist2, -ratio);
+   }
+   fSubtractedBinHist = static_cast<TH1*>(fSubtractedHist->Clone(Form("%s_bin", sub_name)));
+   fGateCanvas->GetCanvas()->cd();
+   if(fSubtractedBinHist != nullptr) {
+      fSubtractedBinHist->GetXaxis()->SetRange(first_bin, last_bin);
+      fSubtractedBinHist->Draw("hist");
+   }
+   DrawPeakMarkers();
+   fGateCanvas->GetCanvas()->Update();
 }
 
 // void TBGSubtraction::DoProjection()
@@ -1098,122 +1098,122 @@ void TBGSubtraction::DoGateProjection()
 
 void TBGSubtraction::DrawOnNewCanvas()
 {
-	if(fSubtractedBinHist != nullptr) {
-		auto* canvas = new TCanvas;
-		canvas->cd();
-		fSubtractedBinHist->DrawCopy();
-		canvas->Update();
-	}
+   if(fSubtractedBinHist != nullptr) {
+      auto* canvas = new TCanvas;
+      canvas->cd();
+      fSubtractedBinHist->DrawCopy();
+      canvas->Update();
+   }
 }
 
 void TBGSubtraction::WriteHistograms()
 {
-	// Find if there is a file name
-	const char* file_name = fWrite2FileName->GetText();
+   // Find if there is a file name
+   const char* file_name = fWrite2FileName->GetText();
 
-	if(file_name == nullptr) {
-		std::cout << "Please enter a file name" << std::endl;
-		return;
-	}
+   if(file_name == nullptr) {
+      std::cout << "Please enter a file name" << std::endl;
+      return;
+   }
 
-	TFile f(file_name, "Update");
-	std::cout << "Writing " << fHistogramDescription->GetText() << " histograms to " << f.GetName() << std::endl;
-	if(fSubtractedHist != nullptr) {
-		if(fHistogramDescription->GetText() != nullptr) {
-			fSubtractedHist->SetTitle(fHistogramDescription->GetText());
-		}
-		fSubtractedHist->Write();
-	}
+   TFile f(file_name, "Update");
+   std::cout << "Writing " << fHistogramDescription->GetText() << " histograms to " << f.GetName() << std::endl;
+   if(fSubtractedHist != nullptr) {
+      if(fHistogramDescription->GetText() != nullptr) {
+         fSubtractedHist->SetTitle(fHistogramDescription->GetText());
+      }
+      fSubtractedHist->Write();
+   }
 
-	if(fBGHist1 != nullptr) {
-		if(fHistogramDescription->GetText() != nullptr) {
-			fBGHist1->SetTitle(Form("%s Background 1", fHistogramDescription->GetText()));
-		}
+   if(fBGHist1 != nullptr) {
+      if(fHistogramDescription->GetText() != nullptr) {
+         fBGHist1->SetTitle(Form("%s Background 1", fHistogramDescription->GetText()));
+      }
 
-		fBGHist1->Write();
-	}
+      fBGHist1->Write();
+   }
 
-	if(fBGHist2 != nullptr) {
-		if(fHistogramDescription->GetText() != nullptr) {
-			fBGHist2->SetTitle(Form("%s Background 2", fHistogramDescription->GetText()));
-		}
+   if(fBGHist2 != nullptr) {
+      if(fHistogramDescription->GetText() != nullptr) {
+         fBGHist2->SetTitle(Form("%s Background 2", fHistogramDescription->GetText()));
+      }
 
-		fBGHist2->Write();
-	}
+      fBGHist2->Write();
+   }
 
-	if(fGateHist != nullptr) {
-		if(fHistogramDescription->GetText() != nullptr) {
-			fGateHist->SetTitle(Form("%s Gate only", fHistogramDescription->GetText()));
-		}
+   if(fGateHist != nullptr) {
+      if(fHistogramDescription->GetText() != nullptr) {
+         fGateHist->SetTitle(Form("%s Gate only", fHistogramDescription->GetText()));
+      }
 
-		fGateHist->Write();
-	}
+      fGateHist->Write();
+   }
 }
 
 void TBGSubtraction::GateStatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected)
 {
-	fGateCanvas->GetCanvas()->cd();
-	StatusInfo(event, px, py, selected);
+   fGateCanvas->GetCanvas()->cd();
+   StatusInfo(event, px, py, selected);
 }
 
 void TBGSubtraction::ProjectionStatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected)
 {
-	fProjectionCanvas->GetCanvas()->cd();
-	StatusInfo(event, px, py, selected);
+   fProjectionCanvas->GetCanvas()->cd();
+   StatusInfo(event, px, py, selected);
 }
 
 void TBGSubtraction::StatusInfo(Int_t, Int_t px, Int_t py, TObject* selected)
 {
-	fProjectionStatus->SetText(selected->GetName(), 0);
-	fProjectionStatus->SetText(selected->GetObjectInfo(px, py), 1);
+   fProjectionStatus->SetText(selected->GetName(), 0);
+   fProjectionStatus->SetText(selected->GetObjectInfo(px, py), 1);
 }
 
 void TBGSubtraction::SetStatusFromUpdateCheckButton()
 {
-	// Here we want to check the status of the update checkbox, and then do the following:
-	if((fAutoUpdateCheckButton == nullptr) || !fAutoUpdateCheckButton->IsDown()) {
-		// 1. the checkbox has been turned off, this means we want to disable anything that can
-		// mess with the user.
-		fPeakFitButton->SetEnabled(false);
-		fWrite2FileButton->SetEnabled(false);
-	} else {
-		// 2. the checkbox has been turned on, this means we want to enable features as well as take all
-		// of the current gates
-		fPeakFitButton->SetEnabled(true);
-		fWrite2FileButton->SetEnabled(true);
-		DoAllGates();
-		DoGateProjection();
-	}
+   // Here we want to check the status of the update checkbox, and then do the following:
+   if((fAutoUpdateCheckButton == nullptr) || !fAutoUpdateCheckButton->IsDown()) {
+      // 1. the checkbox has been turned off, this means we want to disable anything that can
+      // mess with the user.
+      fPeakFitButton->SetEnabled(false);
+      fWrite2FileButton->SetEnabled(false);
+   } else {
+      // 2. the checkbox has been turned on, this means we want to enable features as well as take all
+      // of the current gates
+      fPeakFitButton->SetEnabled(true);
+      fWrite2FileButton->SetEnabled(true);
+      DoAllGates();
+      DoGateProjection();
+   }
 }
 
 void TBGSubtraction::RebinProjection()
 {
-	// first get the min. and max. of the old histogram and calculate where
-	// they are in percent of the unzoomed range
-	double minimumRatio = 0.;
-	double maximumRatio = 1.;
-	if(fSubtractedBinHist != nullptr) {
-		double oldMinimum = fSubtractedBinHist->GetMinimum();
-		double oldMaximum = fSubtractedBinHist->GetMaximum();
-		fSubtractedBinHist->GetYaxis()->UnZoom();
-		double unZoomedMinimum = fSubtractedBinHist->GetMinimum();
-		double unZoomedMaximum = fSubtractedBinHist->GetMaximum();
-		minimumRatio           = (oldMinimum - unZoomedMinimum) / (unZoomedMaximum - unZoomedMinimum);
-		maximumRatio           = (oldMaximum - unZoomedMinimum) / (unZoomedMaximum - unZoomedMinimum);
-		delete fSubtractedBinHist;
-	}
-	fSubtractedBinHist = fSubtractedHist->Rebin(fBinningSlider->GetPosition(), Form("%s_bin", fSubtractedHist->GetName()));
-	fSubtractedBinHist->SetDirectory(nullptr);
-	fGateCanvas->GetCanvas()->cd();
-	fSubtractedBinHist->GetXaxis()->SetRangeUser(fGateCanvas->GetCanvas()->GetUxmin(), fGateCanvas->GetCanvas()->GetUxmax());
-	// we only need (and want) to set the range of the y-axis if it was zoomed in
-	if(minimumRatio != 0. || maximumRatio != 1.) {
-		double unZoomedMinimum = fSubtractedBinHist->GetMinimum();
-		double unZoomedMaximum = fSubtractedBinHist->GetMaximum();
-		fSubtractedBinHist->GetYaxis()->SetRangeUser(unZoomedMinimum + minimumRatio * (unZoomedMaximum - unZoomedMinimum),
-				unZoomedMinimum + maximumRatio * (unZoomedMaximum - unZoomedMinimum));
-	}
-	fSubtractedBinHist->Draw("hist");
-	DrawPeakMarkers();
-	fGateCanvas->GetCanvas()->Update();
+   // first get the min. and max. of the old histogram and calculate where
+   // they are in percent of the unzoomed range
+   double minimumRatio = 0.;
+   double maximumRatio = 1.;
+   if(fSubtractedBinHist != nullptr) {
+      double oldMinimum = fSubtractedBinHist->GetMinimum();
+      double oldMaximum = fSubtractedBinHist->GetMaximum();
+      fSubtractedBinHist->GetYaxis()->UnZoom();
+      double unZoomedMinimum = fSubtractedBinHist->GetMinimum();
+      double unZoomedMaximum = fSubtractedBinHist->GetMaximum();
+      minimumRatio           = (oldMinimum - unZoomedMinimum) / (unZoomedMaximum - unZoomedMinimum);
+      maximumRatio           = (oldMaximum - unZoomedMinimum) / (unZoomedMaximum - unZoomedMinimum);
+      delete fSubtractedBinHist;
+   }
+   fSubtractedBinHist = fSubtractedHist->Rebin(fBinningSlider->GetPosition(), Form("%s_bin", fSubtractedHist->GetName()));
+   fSubtractedBinHist->SetDirectory(nullptr);
+   fGateCanvas->GetCanvas()->cd();
+   fSubtractedBinHist->GetXaxis()->SetRangeUser(fGateCanvas->GetCanvas()->GetUxmin(), fGateCanvas->GetCanvas()->GetUxmax());
+   // we only need (and want) to set the range of the y-axis if it was zoomed in
+   if(minimumRatio != 0. || maximumRatio != 1.) {
+      double unZoomedMinimum = fSubtractedBinHist->GetMinimum();
+      double unZoomedMaximum = fSubtractedBinHist->GetMaximum();
+      fSubtractedBinHist->GetYaxis()->SetRangeUser(unZoomedMinimum + minimumRatio * (unZoomedMaximum - unZoomedMinimum),
+                                                   unZoomedMinimum + maximumRatio * (unZoomedMaximum - unZoomedMinimum));
+   }
+   fSubtractedBinHist->Draw("hist");
+   DrawPeakMarkers();
+   fGateCanvas->GetCanvas()->Update();
 }

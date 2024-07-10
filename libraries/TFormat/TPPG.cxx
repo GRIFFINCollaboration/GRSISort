@@ -13,7 +13,7 @@ TPPGData::TPPGData()
 }
 
 TPPGData::TPPGData(const TPPGData& rhs)
-	: TObject(rhs)
+   : TObject(rhs)
 {
    rhs.Copy(*this);
 }
@@ -54,13 +54,13 @@ void TPPGData::Print(Option_t*) const
 }
 
 TPPG::TPPG()
-	: fPPGStatusMap(new PPGMap_t)
+   : fPPGStatusMap(new PPGMap_t)
 {
    Clear();
 }
 
 TPPG::TPPG(const TPPG& rhs)
-	: fPPGStatusMap(new PPGMap_t)
+   : fPPGStatusMap(new PPGMap_t)
 {
    rhs.Copy(*this);
 }
@@ -70,7 +70,7 @@ TPPG::~TPPG()
    Clear();
    if(fPPGStatusMap != nullptr) {
       for(auto ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
-			delete ppgit->second;
+         delete ppgit->second;
       }
       delete fPPGStatusMap;
    }
@@ -80,16 +80,15 @@ TPPG& TPPG::operator=(const TPPG& rhs)
 {
    if(fPPGStatusMap != nullptr) {
       for(auto ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
-			delete ppgit->second;
+         delete ppgit->second;
       }
       delete fPPGStatusMap;
    }
-	fPPGStatusMap = new PPGMap_t;
+   fPPGStatusMap = new PPGMap_t;
    rhs.Copy(*this);
 
-	return *this;
+   return *this;
 }
-
 
 void TPPG::Copy(TObject& obj) const
 {
@@ -116,7 +115,7 @@ Bool_t TPPG::MapIsEmpty() const
    /// Checks to see if the ppg map is empty. We need this because we need to put a default
    /// PPG in at time T=0 to prevent bad things from happening. This function says the map
    /// is empty when only the default is there, which it essentially is.
-   return (fPPGStatusMap->size() == 1); // We check for size 1 because we always start with a Junk event at time 0.
+   return (fPPGStatusMap->size() == 1);   // We check for size 1 because we always start with a Junk event at time 0.
 }
 
 void TPPG::AddData(TPPGData* pat)
@@ -248,10 +247,10 @@ void TPPG::Print(Option_t* opt) const
    }
    // print only an overview of the ppg
    // can't call non-const GetCycleLength here, so we do the calculation with local variables here
-   std::map<EPpgPattern, int>              status;                    // to calculate how often each different status occured
-   std::map<ULong64_t, int>                numberOfCycleLengths;      // to calculate the length of the whole cycle
-   std::array<std::map<ULong64_t, int>, 4> numberOfStateLengths;      // to calculate the length of each state (tape move, background, beam on, and decay)
-   std::map<int, int>                      numberOfOffsets;           // to calculate the offset on each timestamp
+   std::map<EPpgPattern, int>              status;                 // to calculate how often each different status occured
+   std::map<ULong64_t, int>                numberOfCycleLengths;   // to calculate the length of the whole cycle
+   std::array<std::map<ULong64_t, int>, 4> numberOfStateLengths;   // to calculate the length of each state (tape move, background, beam on, and decay)
+   std::map<int, int>                      numberOfOffsets;        // to calculate the offset on each timestamp
    for(auto ppgIt = MapBegin(); ppgIt != MapEnd(); ++ppgIt) {
       status[ppgIt->second->GetNewPPG()]++;
       ULong64_t diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp());
@@ -383,8 +382,8 @@ bool TPPG::CalculateCycleFromData(bool verbose)
    if(fCycleSet) { return true; }
 
    // loop over all data and count how often we get each time difference between one state and the previous state
-	std::array<std::map<ULong64_t, int>, 4> numberOfStateLengths;   // to calculate the length of each state (tape move, background, beam on, and decay)
-   ULong64_t                diff;
+   std::array<std::map<ULong64_t, int>, 4> numberOfStateLengths;   // to calculate the length of each state (tape move, background, beam on, and decay)
+   ULong64_t                               diff;
    for(PPGMap_t::iterator ppgIt = MapBegin(); ppgIt != MapEnd(); ++ppgIt) {
       switch(ppgIt->second->GetNewPPG()) {
       case EPpgPattern::kBackground:
@@ -433,7 +432,7 @@ void TPPG::Clear(Option_t*)
    if(fPPGStatusMap != nullptr) {
       PPGMap_t::iterator ppgit;
       for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
-			delete ppgit->second;
+         delete ppgit->second;
       }
       fPPGStatusMap->clear();
    }

@@ -26,8 +26,8 @@ public:
    TBgoHit();
    TBgoHit(const TBgoHit&);
    TBgoHit(TBgoHit&&);
-	// this is problematic as this means we're slicing the TFragment object to fit the 
-	// TDetectorHit argument of the base constructor
+   // this is problematic as this means we're slicing the TFragment object to fit the
+   // TDetectorHit argument of the base constructor
    explicit TBgoHit(const TFragment& frag) : TDetectorHit(frag) {}
    ~TBgoHit() override;
 

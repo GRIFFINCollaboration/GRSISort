@@ -220,7 +220,7 @@ bool TEventBuildingLoop::CheckTimestampCondition(const std::shared_ptr<const TFr
 
 bool TEventBuildingLoop::CheckTriggerIdCondition(const std::shared_ptr<const TFragment>& frag)
 {
-   int64_t trigger_id = frag->GetTriggerId();
+   int64_t trigger_id         = frag->GetTriggerId();
    int64_t current_trigger_id = (!fNextEvent.empty() ? fNextEvent[0]->GetTriggerId() : trigger_id);
 
    // save trigger id every <BuildWindow> fragments

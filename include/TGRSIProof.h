@@ -41,7 +41,7 @@ const char* const nulFileName = "/dev/null";
 
 class TGRSIProof : public TProof {
 public:
-   TGRSIProof() = default;
+   TGRSIProof()           = default;
    ~TGRSIProof() override = default;
 
    static TGRSIProof* Open(const char* worker = "")

@@ -150,8 +150,8 @@ void TFragWriteLoop::Write()
          TChannel::WriteToRoot();
       }
 
-		TRunInfo::WriteToRoot(fOutputFile);
-		TGRSIOptions::WriteToFile(fOutputFile);
+      TRunInfo::WriteToRoot(fOutputFile);
+      TGRSIOptions::WriteToFile(fOutputFile);
       ppg->Write("PPG");
 
       if(options->WriteDiagnostics()) {

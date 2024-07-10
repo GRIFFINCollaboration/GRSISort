@@ -41,11 +41,11 @@ public:
       dup2(fStdErrFileDescriptor, fileno(stderr));
    }
 
-	TRedirect(const TRedirect&) = delete;
-	TRedirect(TRedirect&&) = delete;
+   TRedirect(const TRedirect&) = delete;
+   TRedirect(TRedirect&&)      = delete;
 
-	TRedirect& operator=(const TRedirect&) = delete;
-	TRedirect& operator=(TRedirect&&) = delete;
+   TRedirect& operator=(const TRedirect&) = delete;
+   TRedirect& operator=(TRedirect&&)      = delete;
 
 private:
    void Redirect(const char* newOut, const char* newErr, bool append)

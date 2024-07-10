@@ -119,9 +119,9 @@ std::map<std::tuple<double, double, double, double>, std::tuple<double, double, 
       // copy all values from the vectors to the result map
       if(!tmpMap.empty()) {
          for(auto iter : tmpMap) {
-				result[*(std::find_if(peaks.begin(),   peaks.end(),   [&iter] (auto& item) { return iter.first  == std::get<0>(item); }))] =
-					    *(std::find_if(sources.begin(), sources.end(), [&iter] (auto& item) { return iter.second == std::get<0>(item); }));
-				// apparently c++14 is needed to use auto in a lambda so for now we spell it out
+            result[*(std::find_if(peaks.begin(), peaks.end(), [&iter](auto& item) { return iter.first == std::get<0>(item); }))] =
+               *(std::find_if(sources.begin(), sources.end(), [&iter](auto& item) { return iter.second == std::get<0>(item); }));
+            // apparently c++14 is needed to use auto in a lambda so for now we spell it out
             //result[*(std::find_if(peaks.begin(),   peaks.end(),   [&iter](std::tuple<double, double, double, double>& item) { return iter.first  == std::get<0>(item); }))] =
             //       *(std::find_if(sources.begin(), sources.end(), [&iter](std::tuple<double, double, double, double>& item) { return iter.second == std::get<0>(item); }));
          }
@@ -238,9 +238,9 @@ std::map<std::tuple<double, double, double, double>, std::tuple<double, double, 
          //	for(auto it : tmpMap) result[*(std::find_if(peaks.begin(),   peaks.end(),   [&it] (auto& item) { return it.first  == std::get<0>(item); }))] =
          //		                          *(std::find_if(sources.begin(), sources.end(), [&it] (auto& item) { return it.second == std::get<0>(item); }));
          for(auto iter : tmpMap) {
-				result[*(std::find_if(peaks.begin(),   peaks.end(),   [&iter](std::tuple<double, double, double, double>& item) { return iter.first  == std::get<0>(item); }))] =
-					    *(std::find_if(sources.begin(), sources.end(), [&iter](std::tuple<double, double, double, double>& item) { return iter.second == std::get<0>(item); }));
-			}
+            result[*(std::find_if(peaks.begin(), peaks.end(), [&iter](std::tuple<double, double, double, double>& item) { return iter.first == std::get<0>(item); }))] =
+               *(std::find_if(sources.begin(), sources.end(), [&iter](std::tuple<double, double, double, double>& item) { return iter.second == std::get<0>(item); }));
+         }
          if(verboseLevel > 2) {
             std::cout << "Smart matched " << num_data_points << " data points from " << peaks.size() << " peaks with " << sources.size() << " source energies" << std::endl;
             std::cout << "Returning map with " << result.size() << " points: ";
@@ -405,8 +405,8 @@ void TChannelTab::Calibrate(const int& degree, const bool& force)
 
    if(degree != fDegree || force) {
       if(fVerboseLevel > 2) {
-			std::cout << __PRETTY_FUNCTION__ << ": degree (" << degree << "/" << fDegree << ") has changed, fitting " << fData->GetN() << " peaks with ploynomial of " << degree << " degree" << std::endl;
-		}
+         std::cout << __PRETTY_FUNCTION__ << ": degree (" << degree << "/" << fDegree << ") has changed, fitting " << fData->GetN() << " peaks with ploynomial of " << degree << " degree" << std::endl;
+      }
       if(fData->GetN() > degree) {
          fDegree = degree;
       } else {
@@ -437,8 +437,8 @@ void TChannelTab::FindPeaks(const double& sigma, const double& threshold, const 
 
    if(fPeaks.empty() || fData == nullptr || sigma != fSigma || threshold != fThreshold || force) {
       if(fVerboseLevel > 2) {
-			std::cout << __PRETTY_FUNCTION__ << ": no peaks " << fPeaks.size() << ", sigma (" << sigma << "/" << fSigma << "), or threshold (" << threshold << "/" << fThreshold << ") have changed" << std::endl;
-		}
+         std::cout << __PRETTY_FUNCTION__ << ": no peaks " << fPeaks.size() << ", sigma (" << sigma << "/" << fSigma << "), or threshold (" << threshold << "/" << fThreshold << ") have changed" << std::endl;
+      }
       fSigma     = sigma;
       fThreshold = threshold;
       fPeaks.clear();
@@ -456,8 +456,8 @@ void TChannelTab::FindPeaks(const double& sigma, const double& threshold, const 
          if(peak->Area() > 0) {
             fPeaks.push_back(peak);
             if(fVerboseLevel > 2) {
-					std::cout << "Fitted peak " << spectrum.GetPositionX()[i] - range << " - " << spectrum.GetPositionX()[i] + range << " -> centroid " << peak->Centroid() << ", area " << peak->Area() << std::endl;
-				}
+               std::cout << "Fitted peak " << spectrum.GetPositionX()[i] - range << " - " << spectrum.GetPositionX()[i] + range << " -> centroid " << peak->Centroid() << ", area " << peak->Area() << std::endl;
+            }
          } else if(fVerboseLevel > 2) {
             std::cout << "Ignoring peak at " << peak->Centroid() << " with negative area " << peak->Area() << std::endl;
          }
@@ -518,8 +518,8 @@ void TChannelTab::Add(std::map<std::tuple<double, double, double, double>, std::
       // drop this peak if the uncertainties in area or position are too large
       if(peakPosErr > 0.1 * peakPos || peakAreaErr > peakArea) {
          if(fVerboseLevel > 1) {
-				std::cout << "Dropping peak with position " << peakPos << " +- " << peakPosErr << ", area " << peakArea << " +- " << peakAreaErr << ", energy " << energy << ", intensity " << intensity << std::endl;
-			}
+            std::cout << "Dropping peak with position " << peakPos << " +- " << peakPosErr << ", area " << peakArea << " +- " << peakAreaErr << ", energy " << energy << ", intensity " << intensity << std::endl;
+         }
          map.erase(iter++);
       } else {
          fData->SetPoint(i, peakPos, energy);
@@ -528,8 +528,8 @@ void TChannelTab::Add(std::map<std::tuple<double, double, double, double>, std::
          fEfficiency->SetPoint(i, energy, peakArea / intensity);
          fEfficiency->SetPointError(i, energyErr, peakArea / intensity * TMath::Sqrt(TMath::Power(peakAreaErr / peakArea, 2) + TMath::Power(intensityErr / intensity, 2)));
          if(fVerboseLevel > 2) {
-				std::cout << "Using peak with position " << peakPos << " +- " << peakPosErr << ", area " << peakArea << " +- " << peakAreaErr << ", energy " << energy << ", intensity " << intensity << std::endl;
-			}
+            std::cout << "Using peak with position " << peakPos << " +- " << peakPosErr << ", area " << peakArea << " +- " << peakAreaErr << ", energy " << energy << ", intensity " << intensity << std::endl;
+         }
          ++iter;
          ++i;
       }
@@ -561,8 +561,11 @@ void TChannelTab::Add(std::map<std::tuple<double, double, double, double>, std::
    while((item = iter.Next()) != nullptr) {
       if(item->IsA() == TF1::Class() || item->IsA() == GPeak::Class()) {   // if the item is a TF1 or GPeak we see if we can find the centroid in the map of used peaks
          double centroid = 0.;
-			if(item->IsA() == TF1::Class()) { centroid = static_cast<TF1*>(item)->GetParameter(1); }
-			else { centroid = static_cast<GPeak*>(item)->Centroid(); }
+         if(item->IsA() == TF1::Class()) {
+            centroid = static_cast<TF1*>(item)->GetParameter(1);
+         } else {
+            centroid = static_cast<GPeak*>(item)->Centroid();
+         }
          bool found = false;
          for(auto point : map) {
             if(TMath::Abs(centroid - std::get<0>(point.first)) < fSigma) {
@@ -700,8 +703,8 @@ TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degre
                std::stringstream str;
                str << "Mismatch in " << i << ". matrix (" << fMatrices[i]->GetName() << "), bin " << bin << " is " << tmpBins << ". filled bin, but should be " << (fChannelToIndex.find(bin) == fChannelToIndex.end() ? "not filled" : Form("%d", fChannelToIndex[bin])) << std::endl;
                throw std::invalid_argument(str.str());
-            } 
-				if(strcmp(fMatrices[0]->GetXaxis()->GetBinLabel(bin), fMatrices[i]->GetXaxis()->GetBinLabel(bin)) != 0) {   // bin is full and matches the bin in the first matrix so we check the labels
+            }
+            if(strcmp(fMatrices[0]->GetXaxis()->GetBinLabel(bin), fMatrices[i]->GetXaxis()->GetBinLabel(bin)) != 0) {   // bin is full and matches the bin in the first matrix so we check the labels
                std::stringstream str;
                str << i << ". matrix, " << bin << ". bin: label (" << fMatrices[i]->GetXaxis()->GetBinLabel(bin) << ") doesn't match bin label of the first matrix (" << fMatrices[0]->GetXaxis()->GetBinLabel(bin) << ")" << std::endl;
                throw std::invalid_argument(str.str());
@@ -1128,11 +1131,17 @@ void TSourceCalibration::SelectedTab(Int_t id)
 {
    /// Simple function that enables and disables the previous and next buttons depending on which tab was selected
    if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << ": id " << id << std::endl; }
-   if(id == 0) { fPreviousButton->SetEnabled(false); }
-   else { fPreviousButton->SetEnabled(true); }
+   if(id == 0) {
+      fPreviousButton->SetEnabled(false);
+   } else {
+      fPreviousButton->SetEnabled(true);
+   }
 
-   if(id == fSourceTab[fTab->GetCurrent()]->ChannelTab()->GetNumberOfTabs() - 1) { fNextButton->SetEnabled(false); }
-   else { fNextButton->SetEnabled(true); }
+   if(id == fSourceTab[fTab->GetCurrent()]->ChannelTab()->GetNumberOfTabs() - 1) {
+      fNextButton->SetEnabled(false);
+   } else {
+      fNextButton->SetEnabled(true);
+   }
 }
 
 void TSourceCalibration::AcceptChannel(const int& channelId)
@@ -1286,7 +1295,7 @@ void TSourceCalibration::BuildThirdInterface()
    if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }
 
    SetLayoutManager(new TGVerticalLayout(this));
-   fTab        = new TGTab(this, 600, 600);
+   fTab         = new TGTab(this, 600, 600);
    auto* calTab = fTab->AddTab("Calibration");
    fFinalTabs.push_back(new TGTab(calTab, 600, 600));
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6, 26, 11)
@@ -1311,9 +1320,9 @@ void TSourceCalibration::BuildThirdInterface()
    fEfficiencyLegend.resize(fNofBins, nullptr);
    fChi2Label.resize(fNofBins, nullptr);
    fEfficiencyChi2Label.resize(fNofBins, nullptr);
-   int tmpBin     = 0;
-	std::array<int, 3> parts = {20, 50, 30};
-	std::array<int, 2> partsEff = {60, 40};
+   int                tmpBin   = 0;
+   std::array<int, 3> parts    = {20, 50, 30};
+   std::array<int, 2> partsEff = {60, 40};
    for(int bin = 1; bin <= fMatrices[0]->GetNbinsX(); ++bin) {
       // check if we use this bin
       if(!FilledBin(fMatrices[0], bin)) {
@@ -1329,10 +1338,10 @@ void TSourceCalibration::BuildThirdInterface()
       fFinalEfficiency[tmpBin] = new TCalibrationGraphSet;
       fFinalEfficiency[tmpBin]->VerboseLevel(fVerboseLevel - 4);
       fFinalEfficiency[tmpBin]->SetName(Form("eff%s", fMatrices[0]->GetXaxis()->GetBinLabel(bin)));
-      if(fVerboseLevel > 2) { 
-			std::cout << "set name of fFinalEfficiency[" << tmpBin << "] to " << fMatrices[0]->GetXaxis()->GetBinLabel(bin) << " = " << fFinalEfficiency[tmpBin]->GetName() << std::endl;
-			std::cout << "fFinalData[" << tmpBin << "] " << fFinalData[tmpBin] << ": " << (fFinalData[tmpBin] ? fFinalData[tmpBin]->GetN() : -1) << " data points after creation" << std::endl;
-		}
+      if(fVerboseLevel > 2) {
+         std::cout << "set name of fFinalEfficiency[" << tmpBin << "] to " << fMatrices[0]->GetXaxis()->GetBinLabel(bin) << " = " << fFinalEfficiency[tmpBin]->GetName() << std::endl;
+         std::cout << "fFinalData[" << tmpBin << "] " << fFinalData[tmpBin] << ": " << (fFinalData[tmpBin] ? fFinalData[tmpBin]->GetN() : -1) << " data points after creation" << std::endl;
+      }
       for(size_t source = 0; source < fSource.size(); ++source) {
          if(fData[source][tmpBin]->GetN() > 0) {
             int index = fFinalData[tmpBin]->Add(fData[source][tmpBin], fSource[source]->GetName());
@@ -1527,22 +1536,34 @@ void TSourceCalibration::SelectedFinalTab(Int_t id)
 {
    /// Simple function that enables and disables the previous and next buttons depending on which tab was selected
    if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << ": id " << id << std::endl; }
-   if(id == 0) { fPreviousButton->SetEnabled(false); }
-   else { fPreviousButton->SetEnabled(true); }
+   if(id == 0) {
+      fPreviousButton->SetEnabled(false);
+   } else {
+      fPreviousButton->SetEnabled(true);
+   }
 
-   if(id == fFinalTabs[fTab->GetCurrent()]->GetNumberOfTabs() - 1) { fNextButton->SetEnabled(false); }
-   else { fNextButton->SetEnabled(true); }
+   if(id == fFinalTabs[fTab->GetCurrent()]->GetNumberOfTabs() - 1) {
+      fNextButton->SetEnabled(false);
+   } else {
+      fNextButton->SetEnabled(true);
+   }
 }
 
 void TSourceCalibration::SelectedFinalMainTab(Int_t)
 {
    /// Simple function that enables and disables the previous and next buttons depending on which tab was selected
    if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << ": main current " << fTab->GetCurrent() << " current " << fFinalTabs[fTab->GetCurrent()]->GetCurrent() << std::endl; }
-   if(fFinalTabs[fTab->GetCurrent()]->GetCurrent() == 0) { fPreviousButton->SetEnabled(false); }
-   else { fPreviousButton->SetEnabled(true); }
+   if(fFinalTabs[fTab->GetCurrent()]->GetCurrent() == 0) {
+      fPreviousButton->SetEnabled(false);
+   } else {
+      fPreviousButton->SetEnabled(true);
+   }
 
-   if(fFinalTabs[fTab->GetCurrent()]->GetCurrent() == fFinalTabs[fTab->GetCurrent()]->GetNumberOfTabs() - 1) { fNextButton->SetEnabled(false); }
-   else { fNextButton->SetEnabled(true); }
+   if(fFinalTabs[fTab->GetCurrent()]->GetCurrent() == fFinalTabs[fTab->GetCurrent()]->GetNumberOfTabs() - 1) {
+      fNextButton->SetEnabled(false);
+   } else {
+      fNextButton->SetEnabled(true);
+   }
 }
 
 void TSourceCalibration::AcceptFinalChannel(const int& channelId)

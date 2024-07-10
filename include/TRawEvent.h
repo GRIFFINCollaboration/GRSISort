@@ -23,13 +23,13 @@
 class TRawEvent : public TObject {
 public:
    // houskeeping functions
-   TRawEvent() = default;                                             ///< default constructor
-   TRawEvent(const TRawEvent& rhs) : TObject(rhs) {}                  ///< copy constructor
-   ~TRawEvent() override = default;                                   ///< destructor
-   TRawEvent&         operator=(const TRawEvent&) { return *this; }   ///< assignement operator
-   void               Clear(Option_t* = "") override {}               ///< clear event for reuse
-   void               Copy(TObject&) const override {}                ///< copy helper
-   void               Print(const char* = "") const override {}       ///< show all event information
+   TRawEvent() = default;                                     ///< default constructor
+   TRawEvent(const TRawEvent& rhs) : TObject(rhs) {}          ///< copy constructor
+   ~TRawEvent() override = default;                           ///< destructor
+   TRawEvent& operator=(const TRawEvent&) { return *this; }   ///< assignement operator
+   void       Clear(Option_t* = "") override {}               ///< clear event for reuse
+   void       Copy(TObject&) const override {}                ///< copy helper
+   void       Print(const char* = "") const override {}       ///< show all event information
 
    // get event information
 

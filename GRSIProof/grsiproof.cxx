@@ -101,7 +101,7 @@ void Analyze(const char* treeType)
    }
 
    // Delete the proof chain now that we are done with it.
-	delete proofChain;
+   delete proofChain;
 }
 
 void AtExitHandler()
@@ -114,8 +114,8 @@ void AtExitHandler()
       std::cout << "getting session logs ..." << std::endl;
       TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
       if(pl != nullptr) {
-         Int_t     runNumber    = TRunInfo::RunNumber();
-         Int_t     subRunNumber = TRunInfo::SubRunNumber();
+         Int_t runNumber    = TRunInfo::RunNumber();
+         Int_t subRunNumber = TRunInfo::SubRunNumber();
 
          std::string firstMacro;
          if(!gGRSIOpt->MacroInputFiles().empty()) { firstMacro = gGRSIOpt->MacroInputFiles().at(0); }
@@ -164,7 +164,7 @@ void HandleSignal(int)
 
 static void CatchSignals()
 {
-   struct sigaction action{};
+   struct sigaction action {};
    action.sa_handler = HandleSignal;
    action.sa_flags   = 0;
    sigemptyset(&action.sa_mask);
@@ -309,7 +309,7 @@ int main(int argc, char** argv)
    }
 
    gGRSIProof->SetBit(TProof::kUsingSessionGui);
-	TGRSIProof::AddEnvVar("GRSISYS", pPath);
+   TGRSIProof::AddEnvVar("GRSISYS", pPath);
    gInterpreter->AddIncludePath(Form("%s/include", pPath));
    gGRSIProof->AddIncludePath(Form("%s/include", pPath));
    gGRSIProof->AddDynamicPath(Form("%s/lib", pPath));

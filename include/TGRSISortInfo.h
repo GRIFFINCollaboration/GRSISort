@@ -19,7 +19,7 @@ class TGRSISortList : public TObject {
    using infoMap = std::map<Int_t, std::map<Int_t, TGRSISortInfo*>>;
 
 public:
-   TGRSISortList() = default;
+   TGRSISortList()           = default;
    ~TGRSISortList() override = default;
 
    Bool_t         AddSortInfo(TGRSISortInfo* info, Option_t* opt = "");

@@ -29,8 +29,8 @@ public:
    TBetaDecay(Int_t Z, Int_t N);
    ~TBetaDecay() override;
 
-	TBetaDecay(const TBetaDecay&) = delete;
-   TBetaDecay(TBetaDecay&&)      = delete;
+   TBetaDecay(const TBetaDecay&)            = delete;
+   TBetaDecay(TBetaDecay&&)                 = delete;
    TBetaDecay& operator=(const TBetaDecay&) = delete;
    TBetaDecay& operator=(TBetaDecay&&)      = delete;
 

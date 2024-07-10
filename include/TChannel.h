@@ -60,8 +60,8 @@ public:
    TChannel(const TChannel&);
    TChannel(TChannel&&);
 
-	TChannel& operator=(const TChannel& rhs);
-	TChannel& operator=(TChannel&&);
+   TChannel& operator=(const TChannel& rhs);
+   TChannel& operator=(TChannel&&);
 
    ~TChannel() override;
 
@@ -249,10 +249,10 @@ public:
          fENGChi2.Address()->at(range) = tmp.Value();
       }
    }
-   inline void SetCFDChi2(const TPriorityValue<double>& tmp)  { fCFDChi2 = tmp; }
-   inline void SetLEDChi2(const TPriorityValue<double>& tmp)  { fLEDChi2 = tmp; }
+   inline void SetCFDChi2(const TPriorityValue<double>& tmp) { fCFDChi2 = tmp; }
+   inline void SetLEDChi2(const TPriorityValue<double>& tmp) { fLEDChi2 = tmp; }
    inline void SetTIMEChi2(const TPriorityValue<double>& tmp) { fTIMEChi2 = tmp; }
-   inline void SetEFFChi2(const TPriorityValue<double>& tmp)  { fEFFChi2 = tmp; }
+   inline void SetEFFChi2(const TPriorityValue<double>& tmp) { fEFFChi2 = tmp; }
 
    inline void SetWaveRise(const double& temp)
    {
