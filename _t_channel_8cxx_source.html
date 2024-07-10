@@ -499,7 +499,7 @@ $(document).ready(function(){initNavTree('_t_channel_8cxx_source.html',''); init
 <div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span><span class="comment"></span>   <a class="code hl_function" href="class_t_channel.html#aa9ec6b5a7f20daa6fb0923c7e94db574">SetIntegration</a>(chan-&gt;<a class="code hl_variable" href="class_t_channel.html#aa6acc32fe63a5523647cd64af6f39e6c">fIntegration</a>);</div>
 <div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>   <a class="code hl_function" href="class_t_channel.html#abe666c7e760564859d30ad1817e66484">SetNumber</a>(chan-&gt;<a class="code hl_variable" href="class_t_channel.html#ae4050b43f4991b0cd9e3b2e08a44df3f">fNumber</a>);</div>
 <div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>   <a class="code hl_function" href="class_t_channel.html#a4cb7e467b712f29843e727caf452f3ac">SetStream</a>(chan-&gt;<a class="code hl_variable" href="class_t_channel.html#a9d4723d9622926e1836872112872e14c">fStream</a>);</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>   <span class="keywordflow">if</span>(strcmp(chan-&gt;GetName(), <span class="stringliteral">&quot;DefaultTChannel&quot;</span>) != 0) { <a class="code hl_function" href="class_t_channel.html#ad45102f0d26d3ca968f778ae60a3aa54">SetName</a>(chan-&gt;GetName()); }  <span class="comment">// don&#39;t overwrite an existing name by the default name</span></div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>   <span class="keywordflow">if</span>(strcmp(chan-&gt;GetName(), <span class="stringliteral">&quot;DefaultTChannel&quot;</span>) != 0) { <a class="code hl_function" href="class_t_channel.html#ad45102f0d26d3ca968f778ae60a3aa54">SetName</a>(chan-&gt;GetName()); }   <span class="comment">// don&#39;t overwrite an existing name by the default name</span></div>
 <div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>   <a class="code hl_function" href="class_t_channel.html#af38610e490fc85ced8317ac0a6034383">SetDigitizerType</a>(chan-&gt;<a class="code hl_variable" href="class_t_channel.html#a05ad25f7630d0f90e1701842a23f95ba">fDigitizerTypeString</a>);</div>
 <div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>   <a class="code hl_function" href="class_t_channel.html#a59049c4c933c7b6ad79d8a1c2e6dcfcb">SetTimeOffset</a>(chan-&gt;<a class="code hl_variable" href="class_t_channel.html#a345f6a04c7f7c5b4fe272d3001779328">fTimeOffset</a>);</div>
 <div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>   <a class="code hl_function" href="class_t_channel.html#a4054d77ec7e9a9933abdc9b567e79481">SetTimeDrift</a>(chan-&gt;<a class="code hl_variable" href="class_t_channel.html#a9e73b3d2f4256890ea993140ee575ddc">fTimeDrift</a>);</div>
@@ -1538,8 +1538,8 @@ $(document).ready(function(){initNavTree('_t_channel_8cxx_source.html',''); init
 <div class="line"><a id="l01317" name="l01317"></a><span class="lineno"> 1317</span>               }</div>
 <div class="line"><a id="l01318" name="l01318"></a><span class="lineno"> 1318</span>            } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(type == <span class="stringliteral">&quot;ENGRANGE&quot;</span>) {</div>
 <div class="line"><a id="l01319" name="l01319"></a><span class="lineno"> 1319</span>               <span class="keywordtype">size_t</span> range = 0;</div>
-<div class="line"><a id="l01320" name="l01320"></a><span class="lineno"> 1320</span>               <span class="keywordtype">double</span> low = 0.;</div>
-<div class="line"><a id="l01321" name="l01321"></a><span class="lineno"> 1321</span>               <span class="keywordtype">double</span> high = 0.;</div>
+<div class="line"><a id="l01320" name="l01320"></a><span class="lineno"> 1320</span>               <span class="keywordtype">double</span> low   = 0.;</div>
+<div class="line"><a id="l01321" name="l01321"></a><span class="lineno"> 1321</span>               <span class="keywordtype">double</span> high  = 0.;</div>
 <div class="line"><a id="l01322" name="l01322"></a><span class="lineno"> 1322</span>               str &gt;&gt; range &gt;&gt; low &gt;&gt; high;</div>
 <div class="line"><a id="l01323" name="l01323"></a><span class="lineno"> 1323</span>               channel-&gt;<a class="code hl_function" href="class_t_channel.html#af11df677c43acc2d267b64d80ee2a684">SetENGRange</a>(std::make_pair(low, high), range);</div>
 <div class="line"><a id="l01324" name="l01324"></a><span class="lineno"> 1324</span>            } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(type == <span class="stringliteral">&quot;ENGDRIFT&quot;</span>) {</div>
@@ -1711,7 +1711,7 @@ $(document).ready(function(){initNavTree('_t_channel_8cxx_source.html',''); init
 <div class="line"><a id="l01488" name="l01488"></a><span class="lineno"> 1488</span>         <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l01489" name="l01489"></a><span class="lineno"> 1489</span>      }</div>
 <div class="line"><a id="l01490" name="l01490"></a><span class="lineno"> 1490</span>      <span class="keywordflow">if</span>(!found) {</div>
-<div class="line"><a id="l01491" name="l01491"></a><span class="lineno"> 1491</span>         found        = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01491" name="l01491"></a><span class="lineno"> 1491</span>         found       = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l01492" name="l01492"></a><span class="lineno"> 1492</span>         <span class="keyword">auto</span>* curCh = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_t_channel.html">TChannel</a>*<span class="keyword">&gt;</span>(key-&gt;ReadObj());</div>
 <div class="line"><a id="l01493" name="l01493"></a><span class="lineno"> 1493</span>         defaultName.assign(curCh-&gt;GetName());</div>
 <div class="line"><a id="l01494" name="l01494"></a><span class="lineno"> 1494</span>         defaultTitle.assign(curCh-&gt;GetTitle());</div>
@@ -2080,7 +2080,7 @@ $(document).ready(function(){initNavTree('_t_channel_8cxx_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_2b08b36851fcb6a7439555c8d93f536c.html">TFormat</a></li><li class="navelem"><a class="el" href="_t_channel_8cxx.html">TChannel.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:33.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jul 10 2024 00:09:38.</li>
   </ul>
 </div>
 </body>

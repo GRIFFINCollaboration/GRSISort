@@ -221,8 +221,8 @@ $(document).ready(function(){initNavTree('grsiproof_8cxx_source.html',''); initR
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;getting session logs ...&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>      TProofLog* pl = TProof::Mgr(<span class="stringliteral">&quot;proof://__lite__&quot;</span>)-&gt;GetSessionLogs();</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>      <span class="keywordflow">if</span>(pl != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>         Int_t     runNumber    = <a class="code hl_function" href="class_t_run_info.html#a58ad08b4a74a64a1af8a7adab027def3">TRunInfo::RunNumber</a>();</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>         Int_t     subRunNumber = <a class="code hl_function" href="class_t_run_info.html#a3cd9ba734843cc6185730aa31db236d3">TRunInfo::SubRunNumber</a>();</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>         Int_t runNumber    = <a class="code hl_function" href="class_t_run_info.html#a58ad08b4a74a64a1af8a7adab027def3">TRunInfo::RunNumber</a>();</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>         Int_t subRunNumber = <a class="code hl_function" href="class_t_run_info.html#a3cd9ba734843cc6185730aa31db236d3">TRunInfo::SubRunNumber</a>();</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>         std::string firstMacro;</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>         <span class="keywordflow">if</span>(!<a class="code hl_variable" href="grsiproof_8cxx.html#a71a74b9c177ff01097d993110a2b92be">gGRSIOpt</a>-&gt;<a class="code hl_function" href="class_t_g_r_s_i_options.html#ad0aae8e1e4beba6a0400da5c11b64ff1">MacroInputFiles</a>().empty()) { firstMacro = <a class="code hl_variable" href="grsiproof_8cxx.html#a71a74b9c177ff01097d993110a2b92be">gGRSIOpt</a>-&gt;<a class="code hl_function" href="class_t_g_r_s_i_options.html#ad0aae8e1e4beba6a0400da5c11b64ff1">MacroInputFiles</a>().at(0); }</div>
@@ -275,7 +275,7 @@ $(document).ready(function(){initNavTree('grsiproof_8cxx_source.html',''); initR
 <div class="foldopen" id="foldopen00165" data-start="{" data-end="}">
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="grsiproof_8cxx.html#a411d2a9f7240d2d45ee4888efbefbf83">  165</a></span><span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="grsiproof_8cxx.html#a411d2a9f7240d2d45ee4888efbefbf83">CatchSignals</a>()</div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>{</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>   <span class="keyword">struct </span>sigaction action{};</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>   <span class="keyword">struct </span>sigaction action {};</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>   action.sa_handler = <a class="code hl_function" href="grsiproof_8cxx.html#a995a22a8c9044c9bb20b398f5ad9d675">HandleSignal</a>;</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>   action.sa_flags   = 0;</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>   sigemptyset(&amp;action.sa_mask);</div>
@@ -496,7 +496,7 @@ $(document).ready(function(){initNavTree('grsiproof_8cxx_source.html',''); initR
 <div class="ttc" id="aclass_t_g_r_s_i_proof_html"><div class="ttname"><a href="class_t_g_r_s_i_proof.html">TGRSIProof</a></div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_proof_8h_source.html#l00042">TGRSIProof.h:42</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_proof_html_adbaaab098a752097041b7733b8a0679e"><div class="ttname"><a href="class_t_g_r_s_i_proof.html#adbaaab098a752097041b7733b8a0679e">TGRSIProof::Open</a></div><div class="ttdeci">static TGRSIProof * Open(const char *worker=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_proof_8h_source.html#l00047">TGRSIProof.h:47</a></div></div>
 <div class="ttc" id="aclass_t_p_p_g_html"><div class="ttname"><a href="class_t_p_p_g.html">TPPG</a></div><div class="ttdef"><b>Definition</b> <a href="_t_p_p_g_8h_source.html#l00132">TPPG.h:132</a></div></div>
-<div class="ttc" id="aclass_t_p_p_g_html_a9442404326ddc97dad4e09578f649fb2"><div class="ttname"><a href="class_t_p_p_g.html#a9442404326ddc97dad4e09578f649fb2">TPPG::Add</a></div><div class="ttdeci">void Add(const TPPG *ppg)</div><div class="ttdef"><b>Definition</b> <a href="_t_p_p_g_8cxx_source.html#l00681">TPPG.cxx:681</a></div></div>
+<div class="ttc" id="aclass_t_p_p_g_html_a9442404326ddc97dad4e09578f649fb2"><div class="ttname"><a href="class_t_p_p_g.html#a9442404326ddc97dad4e09578f649fb2">TPPG::Add</a></div><div class="ttdeci">void Add(const TPPG *ppg)</div><div class="ttdef"><b>Definition</b> <a href="_t_p_p_g_8cxx_source.html#l00680">TPPG.cxx:680</a></div></div>
 <div class="ttc" id="aclass_t_run_info_html_a20cccf816529378a4c343f4ef6eb11bf"><div class="ttname"><a href="class_t_run_info.html#a20cccf816529378a4c343f4ef6eb11bf">TRunInfo::LastRunNumber</a></div><div class="ttdeci">static int LastRunNumber()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00125">TRunInfo.h:125</a></div></div>
 <div class="ttc" id="aclass_t_run_info_html_a3cd9ba734843cc6185730aa31db236d3"><div class="ttname"><a href="class_t_run_info.html#a3cd9ba734843cc6185730aa31db236d3">TRunInfo::SubRunNumber</a></div><div class="ttdeci">static int SubRunNumber()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00120">TRunInfo.h:120</a></div></div>
 <div class="ttc" id="aclass_t_run_info_html_a4edee99716a0e561383427e944adf82e"><div class="ttname"><a href="class_t_run_info.html#a4edee99716a0e561383427e944adf82e">TRunInfo::LastSubRunNumber</a></div><div class="ttdeci">static int LastSubRunNumber()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00126">TRunInfo.h:126</a></div></div>
@@ -526,7 +526,7 @@ $(document).ready(function(){initNavTree('grsiproof_8cxx_source.html',''); initR
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_9898311765dba9e8b5ad6a9c9b1db5d5.html">GRSIProof</a></li><li class="navelem"><a class="el" href="grsiproof_8cxx.html">grsiproof.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:32.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jul 10 2024 00:09:36.</li>
   </ul>
 </div>
 </body>

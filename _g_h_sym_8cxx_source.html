@@ -135,7 +135,7 @@ $(document).ready(function(){initNavTree('_g_h_sym_8cxx_source.html',''); initRe
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="class_g_h_sym.html#af0a5d6d79a3244194ae916f531ff485d">   30</a></span><a class="code hl_function" href="class_g_h_sym.html#af0a5d6d79a3244194ae916f531ff485d">GHSym::GHSym</a>()</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>   : fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>   fDimension = 2; </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>   fDimension = 2;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>}</div>
 </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
@@ -145,7 +145,7 @@ $(document).ready(function(){initNavTree('_g_h_sym_8cxx_source.html',''); initRe
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="class_g_h_sym.html#a8111aeb3bdd71128da5515ee66915e8c">   38</a></span><a class="code hl_function" href="class_g_h_sym.html#af0a5d6d79a3244194ae916f531ff485d">GHSym::GHSym</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keyword">const</span> <span class="keywordtype">char</span>* title, Int_t nbins, Double_t low, Double_t up)</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>   : TH1(name, title, nbins, low, up), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>{</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>   fDimension = 2; </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>   fDimension = 2;</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>   fYaxis.Set(nbins, low, up);</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>   <span class="comment">// TH1 constructor sets fNcells to nbins+2</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>   <span class="comment">// we need (nbins+2)*((nbins+2)+1)/2 cells</span></div>
@@ -157,7 +157,7 @@ $(document).ready(function(){initNavTree('_g_h_sym_8cxx_source.html',''); initRe
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="class_g_h_sym.html#a68df446b18bdc94c3e32565173a4bd05">   48</a></span><a class="code hl_function" href="class_g_h_sym.html#af0a5d6d79a3244194ae916f531ff485d">GHSym::GHSym</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keyword">const</span> <span class="keywordtype">char</span>* title, Int_t nbins, <span class="keyword">const</span> Double_t* bins)</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>   : TH1(name, title, nbins, bins), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>{</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>   fDimension = 2; </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>   fDimension = 2;</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>   fYaxis.Set(nbins, bins);</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>   <span class="comment">// TH1 constructor sets fNcells to nbins+2</span></div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>   <span class="comment">// we need (nbins+2)*((nbins+2)+1)/2 cells</span></div>
@@ -169,7 +169,7 @@ $(document).ready(function(){initNavTree('_g_h_sym_8cxx_source.html',''); initRe
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="class_g_h_sym.html#a61ab19b443cc73dada3bc787df3f89bb">   58</a></span><a class="code hl_function" href="class_g_h_sym.html#af0a5d6d79a3244194ae916f531ff485d">GHSym::GHSym</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keyword">const</span> <span class="keywordtype">char</span>* title, Int_t nbins, <span class="keyword">const</span> Float_t* bins)</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>   : TH1(name, title, nbins, bins), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>{</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>   fDimension = 2; </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>   fDimension = 2;</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>   fYaxis.Set(nbins, bins);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>   <span class="comment">// TH1 constructor sets fNcells to nbins+2</span></div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>   <span class="comment">// we need (nbins+2)*((nbins+2)+1)/2 cells</span></div>
@@ -623,7 +623,7 @@ $(document).ready(function(){initNavTree('_g_h_sym_8cxx_source.html',''); initRe
 <div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>   Int_t nbins  = nbinsx * nbinsy;</div>
 <div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span> </div>
 <div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span>   <span class="keyword">auto</span>* integral = <span class="keyword">new</span> Double_t[nbins + 1];</div>
-<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>   Int_t ibin           = 0;</div>
+<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>   Int_t ibin     = 0;</div>
 <div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span>   integral[ibin] = 0;</div>
 <div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span>   <span class="keywordflow">for</span>(Int_t biny = 1; biny &lt;= nbinsy; ++biny) {</div>
 <div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span>      <span class="keywordflow">for</span>(Int_t binx = 1; binx &lt;= nbinsx; ++binx) {</div>
@@ -646,10 +646,10 @@ $(document).ready(function(){initNavTree('_g_h_sym_8cxx_source.html',''); initRe
 <div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span> </div>
 <div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>   <span class="comment">//*-*--------------Start main loop ntimes</span></div>
 <div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> loop = 0; loop &lt; ntimes; ++loop) {</div>
-<div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>      Double_t r1   = (rng != <span class="keyword">nullptr</span>) ? rng-&gt;Rndm(loop) : gRandom-&gt;Rndm(loop);</div>
-<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>      ibin = TMath::BinarySearch(nbins, &amp;integral[0], r1);</div>
-<div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>      Int_t biny = ibin / nbinsx;</div>
-<div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>      Int_t binx = 1 + ibin - nbinsx * biny;</div>
+<div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>      Double_t r1 = (rng != <span class="keyword">nullptr</span>) ? rng-&gt;Rndm(loop) : gRandom-&gt;Rndm(loop);</div>
+<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>      ibin        = TMath::BinarySearch(nbins, &amp;integral[0], r1);</div>
+<div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>      Int_t biny  = ibin / nbinsx;</div>
+<div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>      Int_t binx  = 1 + ibin - nbinsx * biny;</div>
 <div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>      ++biny;</div>
 <div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>      <a class="code hl_function" href="class_g_h_sym.html#aa62b0459e1b57c8204f7463b0de7e577">Fill</a>(fXaxis.GetBinCenter(binx), fYaxis.GetBinCenter(biny));</div>
 <div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>   }</div>
@@ -691,8 +691,8 @@ $(document).ready(function(){initNavTree('_g_h_sym_8cxx_source.html',''); initRe
 <div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>      <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>   }</div>
 <div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span> </div>
-<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>   Double_t x = 0.;</div>
-<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>   Double_t y = 0.;</div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>   Double_t x  = 0.;</div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>   Double_t y  = 0.;</div>
 <div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>   TH2*     h2 = <span class="keyword">static_cast&lt;</span>TH2*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a>);</div>
 <div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> loop = 0; loop &lt; ntimes; ++loop) {</div>
 <div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span><span class="preprocessor">#if ROOT_VERSION_CODE &lt; ROOT_VERSION(6, 24, 0)</span></div>
@@ -3488,7 +3488,7 @@ $(document).ready(function(){initNavTree('_g_h_sym_8cxx_source.html',''); initRe
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_47358ee868e3aed1e59cf9c2ead119a2.html">GROOT</a></li><li class="navelem"><a class="el" href="_g_h_sym_8cxx.html">GHSym.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:33.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jul 10 2024 00:09:37.</li>
   </ul>
 </div>
 </body>

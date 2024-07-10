@@ -199,26 +199,26 @@ $(document).ready(function(){initNavTree('_t_data_frame_library_8cxx_source.html
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">   /// \param[in] path path of the .cxx file</span></div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">   /// \param[in] dot position of the last dot (guaranteed to be after the last slash!)</span></div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">   /// \param[in] slash position of the last slash (can be std::string::npos)</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment"></span>   </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment"></span> </div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>   <span class="comment">// first we create the paths for the header file, and shared library</span></div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>   <span class="comment">// we know dot != npos and either dot &gt; slash or slash = npos</span></div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>   std::string sourceFile    = path;</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>   std::string headerFile    = path.replace(dot, std::string::npos, <span class="stringliteral">&quot;.hh&quot;</span>);</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>   std::string sharedLibrary = path.replace(dot, std::string::npos, <span class="stringliteral">&quot;.so&quot;</span>);</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>   <span class="comment">// first we get the stats of the file&#39;s involved (.cxx, .hh, .so, and the libTGRSIFrame.so)</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>   <span class="keyword">struct </span>stat sourceStat{};</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>   <span class="keyword">struct </span>stat sourceStat {};</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>   <span class="keywordflow">if</span>(stat(sourceFile.c_str(), &amp;sourceStat) != 0) {</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>      std::stringstream str;</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      str &lt;&lt; <span class="stringliteral">&quot;Unable to access stat of source file &quot;</span> &lt;&lt; sourceFile &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>      <span class="keywordflow">throw</span> std::runtime_error(str.str());</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>   }</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>   <span class="keyword">struct </span>stat headerStat{};</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>   <span class="keyword">struct </span>stat headerStat {};</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>   <span class="keywordflow">if</span>(stat(headerFile.c_str(), &amp;headerStat) != 0) {</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      std::stringstream str;</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>      str &lt;&lt; <span class="stringliteral">&quot;Unable to access stat of header file &quot;</span> &lt;&lt; headerFile &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>      <span class="keywordflow">throw</span> std::runtime_error(str.str());</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>   }</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>   <span class="keyword">struct </span>stat frameLibStat{};</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>   <span class="keyword">struct </span>stat frameLibStat {};</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>   <span class="comment">// get path of libTGRSIFrame via</span></div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>   Dl_info info;</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>   <span class="keywordflow">if</span>(dladdr(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(<a class="code hl_function" href="_t_g_r_s_i_frame_8h.html#a2f729147420c4adc01d397fa945f4bcf">DummyFunctionToLocateTGRSIFrameLibrary</a>), &amp;info) == 0) {</div>
@@ -231,7 +231,7 @@ $(document).ready(function(){initNavTree('_t_data_frame_library_8cxx_source.html
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      str &lt;&lt; <span class="stringliteral">&quot;Unable to access stat of &quot;</span> &lt;&lt; info.dli_fname &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      <span class="keywordflow">throw</span> std::runtime_error(str.str());</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>   }</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>   <span class="keyword">struct </span>stat sharedLibStat{};</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>   <span class="keyword">struct </span>stat sharedLibStat {};</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>   <span class="keywordflow">if</span>(stat(sharedLibrary.c_str(), &amp;sharedLibStat) == 0 &amp;&amp;</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>      sharedLibStat.st_atime &gt; sourceStat.st_atime &amp;&amp;</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>      sharedLibStat.st_atime &gt; headerStat.st_atime &amp;&amp;</div>
@@ -275,7 +275,7 @@ $(document).ready(function(){initNavTree('_t_data_frame_library_8cxx_source.html
 <div class="ttc" id="a_t_data_frame_library_8cxx_html_a2de9130dd2f83273f96944eda6e8b05c"><div class="ttname"><a href="_t_data_frame_library_8cxx.html#a2de9130dd2f83273f96944eda6e8b05c">dlsym</a></div><div class="ttdeci">#define dlsym</div><div class="ttdef"><b>Definition</b> <a href="_t_data_frame_library_8cxx_source.html#l00005">TDataFrameLibrary.cxx:5</a></div></div>
 <div class="ttc" id="a_t_data_frame_library_8h_html"><div class="ttname"><a href="_t_data_frame_library_8h.html">TDataFrameLibrary.h</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_frame_8h_html"><div class="ttname"><a href="_t_g_r_s_i_frame_8h.html">TGRSIFrame.h</a></div></div>
-<div class="ttc" id="a_t_g_r_s_i_frame_8h_html_a2f729147420c4adc01d397fa945f4bcf"><div class="ttname"><a href="_t_g_r_s_i_frame_8h.html#a2f729147420c4adc01d397fa945f4bcf">DummyFunctionToLocateTGRSIFrameLibrary</a></div><div class="ttdeci">void DummyFunctionToLocateTGRSIFrameLibrary()</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_frame_8cxx_source.html#l00181">TGRSIFrame.cxx:181</a></div></div>
+<div class="ttc" id="a_t_g_r_s_i_frame_8h_html_a2f729147420c4adc01d397fa945f4bcf"><div class="ttname"><a href="_t_g_r_s_i_frame_8h.html#a2f729147420c4adc01d397fa945f4bcf">DummyFunctionToLocateTGRSIFrameLibrary</a></div><div class="ttdeci">void DummyFunctionToLocateTGRSIFrameLibrary()</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_frame_8cxx_source.html#l00184">TGRSIFrame.cxx:184</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_options_8h_html"><div class="ttname"><a href="_t_g_r_s_i_options_8h.html">TGRSIOptions.h</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_utilities_8h_html"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html">TGRSIUtilities.h</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a0038df898c35b6a483fa874b3671735b"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a0038df898c35b6a483fa874b3671735b">file_exists</a></div><div class="ttdeci">bool file_exists(const char *filename)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00013">TGRSIUtilities.cxx:13</a></div></div>
@@ -296,7 +296,7 @@ $(document).ready(function(){initNavTree('_t_data_frame_library_8cxx_source.html
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_2b08b36851fcb6a7439555c8d93f536c.html">TFormat</a></li><li class="navelem"><a class="el" href="_t_data_frame_library_8cxx.html">TDataFrameLibrary.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:33.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jul 10 2024 00:09:38.</li>
   </ul>
 </div>
 </body>

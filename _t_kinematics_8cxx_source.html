@@ -111,20 +111,20 @@ $(document).ready(function(){initNavTree('_t_kinematics_8cxx_source.html',''); i
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="class_t_kinematics.html#a87cd7ba5fe0298e29c90d3c6e6ac24a4">    6</a></span><a class="code hl_function" href="class_t_kinematics.html#a87cd7ba5fe0298e29c90d3c6e6ac24a4">TKinematics::TKinematics</a>(<span class="keywordtype">double</span> beamE, <span class="keyword">const</span> <span class="keywordtype">char</span>* beam, <span class="keyword">const</span> <span class="keywordtype">char</span>* targ, <span class="keyword">const</span> <span class="keywordtype">char</span>* ejec, <span class="keyword">const</span> <span class="keywordtype">char</span>* reco, <span class="keyword">const</span> <span class="keywordtype">char</span>* name)</div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>   : fEBeam(beamE), fCm2LabSpline(nullptr)</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>{</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>   <span class="keyword">auto</span> projectile    = <span class="keyword">new</span> <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(beam);</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>   <span class="keyword">auto</span> target        = <span class="keyword">new</span> <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(targ);</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>   <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>* ejectile = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>   <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>* recoil   = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>   <span class="keyword">auto</span>      projectile = <span class="keyword">new</span> <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(beam);</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>   <span class="keyword">auto</span>      target     = <span class="keyword">new</span> <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(targ);</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>   <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>* ejectile   = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>   <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>* recoil     = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>   name = Form(<span class="stringliteral">&quot;%s(%s,%s)%s&quot;</span>, targ, beam, ejec, reco);</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>   <span class="keywordflow">if</span>((ejec == <span class="keyword">nullptr</span>) || (reco == <span class="keyword">nullptr</span>)) {</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      <span class="comment">// without ejectile or recoil, elastic scattering is assumed</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>      ejectile = projectile;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      recoil = target;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      recoil   = target;</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>   } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>      ejectile = <span class="keyword">new</span> <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(ejec);</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>      recoil = <span class="keyword">new</span> <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(reco);</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>      recoil   = <span class="keyword">new</span> <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(reco);</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>   }</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>   <a class="code hl_variable" href="class_t_kinematics.html#a9b67a8c0a669253363f3e3069363f6ac">fParticle</a>[0] = projectile;</div>
@@ -203,20 +203,20 @@ $(document).ready(function(){initNavTree('_t_kinematics_8cxx_source.html',''); i
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="class_t_kinematics.html#a48245634650bab66025af337cca0fff8">   90</a></span><a class="code hl_function" href="class_t_kinematics.html#a87cd7ba5fe0298e29c90d3c6e6ac24a4">TKinematics::TKinematics</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* beam, <span class="keyword">const</span> <span class="keywordtype">char</span>* targ, <span class="keyword">const</span> <span class="keywordtype">char</span>* ejec, <span class="keyword">const</span> <span class="keywordtype">char</span>* reco, <span class="keywordtype">double</span> eBeam, <span class="keywordtype">double</span> ex3, <span class="keyword">const</span> <span class="keywordtype">char</span>* name)</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>   : fEBeam(eBeam), fCm2LabSpline(nullptr)</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>{</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>   <span class="keyword">auto</span> projectile    = <span class="keyword">new</span> <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(beam);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>   <span class="keyword">auto</span> target        = <span class="keyword">new</span> <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(targ);</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>   <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>* ejectile = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>   <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>* recoil   = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>   <span class="keyword">auto</span>      projectile = <span class="keyword">new</span> <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(beam);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>   <span class="keyword">auto</span>      target     = <span class="keyword">new</span> <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(targ);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>   <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>* ejectile   = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>   <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>* recoil     = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>   name = Form(<span class="stringliteral">&quot;%s(%s,%s)%s&quot;</span>, targ, beam, ejec, reco);</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>   <span class="keywordflow">if</span>((ejec == <span class="keyword">nullptr</span>) || (reco == <span class="keyword">nullptr</span>)) {</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>      <span class="comment">// without ejectile or recoil, elastic scattering is assumed</span></div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>      ejectile = projectile;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      recoil = target;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      recoil   = target;</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>   } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      ejectile = <span class="keyword">new</span> <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(ejec);</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      recoil = <span class="keyword">new</span> <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(reco);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      recoil   = <span class="keyword">new</span> <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(reco);</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>   }</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>   <a class="code hl_variable" href="class_t_kinematics.html#a9b67a8c0a669253363f3e3069363f6ac">fParticle</a>[0] = projectile;</div>
@@ -733,8 +733,8 @@ $(document).ready(function(){initNavTree('_t_kinematics_8cxx_source.html',''); i
 <div class="foldopen" id="foldopen00563" data-start="{" data-end="}">
 <div class="line"><a id="l00563" name="l00563"></a><span class="lineno"><a class="line" href="class_t_kinematics.html#a148d41fd3242fcedf9e7ef09acc6273e">  563</a></span><span class="keywordtype">double</span> <a class="code hl_function" href="class_t_kinematics.html#a148d41fd3242fcedf9e7ef09acc6273e">TKinematics::Sigma_lab2cm</a>(<span class="keywordtype">double</span> angle_cm, <span class="keywordtype">double</span> sigma_lab)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>   <span class="keywordtype">double</span> gam2 = <a class="code hl_variable" href="class_t_kinematics.html#a5592a191fba18d74df1c4bc159eb4849">fM</a>[0] * <a class="code hl_variable" href="class_t_kinematics.html#a5592a191fba18d74df1c4bc159eb4849">fM</a>[2] / <a class="code hl_variable" href="class_t_kinematics.html#a5592a191fba18d74df1c4bc159eb4849">fM</a>[1] / <a class="code hl_variable" href="class_t_kinematics.html#a5592a191fba18d74df1c4bc159eb4849">fM</a>[3] * <a class="code hl_variable" href="class_t_kinematics.html#a00f49001a8c1c8a43346883b7d0c8d89">fTCm_i</a> / <a class="code hl_variable" href="class_t_kinematics.html#acaa90315ddaec047614e3b3bd9bc456c">fTCm_f</a>;</div>
-<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>   gam2        = sqrt(gam2);</div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>   <span class="keywordtype">double</span> gam2   = <a class="code hl_variable" href="class_t_kinematics.html#a5592a191fba18d74df1c4bc159eb4849">fM</a>[0] * <a class="code hl_variable" href="class_t_kinematics.html#a5592a191fba18d74df1c4bc159eb4849">fM</a>[2] / <a class="code hl_variable" href="class_t_kinematics.html#a5592a191fba18d74df1c4bc159eb4849">fM</a>[1] / <a class="code hl_variable" href="class_t_kinematics.html#a5592a191fba18d74df1c4bc159eb4849">fM</a>[3] * <a class="code hl_variable" href="class_t_kinematics.html#a00f49001a8c1c8a43346883b7d0c8d89">fTCm_i</a> / <a class="code hl_variable" href="class_t_kinematics.html#acaa90315ddaec047614e3b3bd9bc456c">fTCm_f</a>;</div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>   gam2          = sqrt(gam2);</div>
 <div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>   <span class="keywordtype">double</span> wurzel = 1. + gam2 * gam2 + 2. * gam2 * cos(<a class="code hl_define" href="group___fitting.html#ga598a3330b3c21701223ee0ca14316eca">PI</a> - angle_cm);</div>
 <div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>   wurzel        = sqrt(wurzel);</div>
 <div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>   <span class="keywordflow">return</span> sigma_lab / (1 / <a class="code hl_variable" href="class_t_kinematics.html#ab4788bd2d899cf31ec87c4673297d8cf">fGamma_cm</a> * wurzel * wurzel * wurzel / (1 + gam2 * cos(<a class="code hl_define" href="group___fitting.html#ga598a3330b3c21701223ee0ca14316eca">PI</a> - angle_cm)));</div>
@@ -966,7 +966,7 @@ $(document).ready(function(){initNavTree('_t_kinematics_8cxx_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_ffe9e0fcf26f96bc53aa7b2fce78662c.html">TKinematics</a></li><li class="navelem"><a class="el" href="_t_kinematics_8cxx.html">TKinematics.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:33.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jul 10 2024 00:09:37.</li>
   </ul>
 </div>
 </body>

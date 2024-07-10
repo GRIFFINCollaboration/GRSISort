@@ -364,15 +364,15 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_functions_8cxx_source.html'
 <div class="foldopen" id="foldopen00236" data-start="{" data-end="}">
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno"><a class="line" href="namespace_t_g_r_s_i_functions.html#afeba76f4ea51cb86865d42d6d886cf92">  236</a></span>Double_t <a class="code hl_function" href="namespace_t_g_r_s_i_functions.html#afeba76f4ea51cb86865d42d6d886cf92">TGRSIFunctions::LanGaus</a>(Double_t* x, Double_t* pars)</div>
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>{</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>   <span class="keywordtype">double</span> dy = 0.;</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>   <span class="keywordtype">double</span> y = 0.;</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>   <span class="keywordtype">double</span> dy   = 0.;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>   <span class="keywordtype">double</span> y    = 0.;</div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>   <span class="keywordtype">double</span> conv = 0.;</div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>   <span class="keywordtype">double</span> spec = 0.;</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>   <span class="keywordtype">double</span> gaus = 0.;</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; 10; i++) {</div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>      dy = 5 * pars[3] / 10.;   <span class="comment">// truncate the convolution by decreasing number of evaluation points and decreasing</span></div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                                 <span class="comment">// range [2.5 sigma still covers 98.8% of gaussian]</span></div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                                <span class="comment">// range [2.5 sigma still covers 98.8% of gaussian]</span></div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>      y = x[0] - 2.5 * pars[3] + dy * i;</div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>      spec = pars[1] +</div>
@@ -395,8 +395,8 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_functions_8cxx_source.html'
 <div class="foldopen" id="foldopen00265" data-start="{" data-end="}">
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno"><a class="line" href="namespace_t_g_r_s_i_functions.html#a608e2b1aa6bb92909af5c231c585fe1b">  265</a></span>Double_t <a class="code hl_function" href="namespace_t_g_r_s_i_functions.html#a608e2b1aa6bb92909af5c231c585fe1b">TGRSIFunctions::LanGausHighRes</a>(Double_t* x, Double_t* pars)</div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>{   <span class="comment">// 5x more convolution points with 1.6x larger range</span></div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>   <span class="keywordtype">double</span> dy = 0.;</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>   <span class="keywordtype">double</span> y = 0.;</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>   <span class="keywordtype">double</span> dy   = 0.;</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>   <span class="keywordtype">double</span> y    = 0.;</div>
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>   <span class="keywordtype">double</span> conv = 0.;</div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>   <span class="keywordtype">double</span> spec = 0.;</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>   <span class="keywordtype">double</span> gaus = 0.;</div>
@@ -424,9 +424,9 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_functions_8cxx_source.html'
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>   <span class="comment">//</span></div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>   <span class="comment">// Limits need to be impossed or error states may occour.</span></div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>   <span class="keywordtype">double</span> amp = 0.;</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>   <span class="keywordtype">double</span> mean = 0.;</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>   <span class="keywordtype">double</span> sigma = 0.;</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>   <span class="keywordtype">double</span> amp    = 0.;</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>   <span class="keywordtype">double</span> mean   = 0.;</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>   <span class="keywordtype">double</span> sigma  = 0.;</div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>   <span class="keywordtype">double</span> result = par[1] + dim[0] * par[2];   <span class="comment">// background.</span></div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; static_cast&lt;int&gt;(par[0] + 0.5); i++) {</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>      amp   = par[3 * i + 3];</div>
@@ -611,7 +611,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_functions_8cxx_source.html'
 <div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>      <span class="keywordflow">if</span>((j1 + j2 - j - k &lt; 0) || (j1 - m1 - k &lt; 0) || (j2 + m2 - k &lt; 0)) {</div>
 <div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>         <span class="comment">// no further terms will contribute to sum, exit loop</span></div>
 <div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>         <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>      } </div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>      }</div>
 <div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>      <span class="keywordflow">if</span>((j - j1 - m2 + k &lt; 0) || (j - j2 + m1 + k &lt; 0)) {</div>
 <div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>         <span class="comment">// jump ahead to next term that will contribute</span></div>
 <div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>         <span class="keyword">const</span> Int_t a1 = (j - j1 - m2);</div>
@@ -740,7 +740,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_functions_8cxx_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_c27fb4ff404115d281d3c6aa730dcb72.html">TGRSIFit</a></li><li class="navelem"><a class="el" href="_t_g_r_s_i_functions_8cxx.html">TGRSIFunctions.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:33.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jul 10 2024 00:09:37.</li>
   </ul>
 </div>
 </body>

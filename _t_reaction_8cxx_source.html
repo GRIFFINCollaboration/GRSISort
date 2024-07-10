@@ -124,7 +124,7 @@ $(document).ready(function(){initNavTree('_t_reaction_8cxx_source.html',''); ini
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      <a class="code hl_variable" href="class_t_reaction.html#a3462d6e857a53820f154267988ccc269">fM</a>[i] = <a class="code hl_variable" href="class_t_reaction.html#ae85579ddbbf924466b94c2430c29a7a2">fNuc</a>[i]-&gt;<a class="code hl_function" href="class_t_nucleus.html#a8bf6127a39f8eb11ab1b169208f47501">GetMass</a>();</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>   }</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>   <a class="code hl_variable" href="class_t_reaction.html#a3de5ea31cdb54fd5557c3ffce42d67a4">fQVal</a>    = (<a class="code hl_variable" href="class_t_reaction.html#a3462d6e857a53820f154267988ccc269">fM</a>[0] + <a class="code hl_variable" href="class_t_reaction.html#a3462d6e857a53820f154267988ccc269">fM</a>[1]) - (<a class="code hl_variable" href="class_t_reaction.html#a3462d6e857a53820f154267988ccc269">fM</a>[2] + <a class="code hl_variable" href="class_t_reaction.html#a3462d6e857a53820f154267988ccc269">fM</a>[3]) - ex3;   <span class="comment">// effective Q value (includes excitation)</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>   <a class="code hl_variable" href="class_t_reaction.html#a3de5ea31cdb54fd5557c3ffce42d67a4">fQVal</a> = (<a class="code hl_variable" href="class_t_reaction.html#a3462d6e857a53820f154267988ccc269">fM</a>[0] + <a class="code hl_variable" href="class_t_reaction.html#a3462d6e857a53820f154267988ccc269">fM</a>[1]) - (<a class="code hl_variable" href="class_t_reaction.html#a3462d6e857a53820f154267988ccc269">fM</a>[2] + <a class="code hl_variable" href="class_t_reaction.html#a3462d6e857a53820f154267988ccc269">fM</a>[3]) - ex3;   <span class="comment">// effective Q value (includes excitation)</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_reaction.html#ac8bd260917d0ee423b37ce09cbec3876">fInverse</a>) {</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>      SetName(Form(<span class="stringliteral">&quot;%s(%s,%s)%s&quot;</span>, beam, targ, ejec, reco));</div>
@@ -357,9 +357,9 @@ $(document).ready(function(){initNavTree('_t_reaction_8cxx_source.html',''); ini
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>   }</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> </div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>   <span class="comment">// Uses the particle velocity in the CM frame, which makes it more complex</span></div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>   <span class="keywordtype">double</span> gtan2 = pow(tan(theta_lab) * <a class="code hl_variable" href="class_t_reaction.html#a00a377c4e2a9d50bc49914e3808b4eb5">fCmG</a>, 2);</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>   <span class="keywordtype">double</span> x     = <a class="code hl_variable" href="class_t_reaction.html#a42f691edc453a830690b47cc5666331c">fCmV</a> / <a class="code hl_variable" href="class_t_reaction.html#a5abd88c20bd7bd4596c6d317ac50040a">fVCm</a>[part];</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>   <span class="keywordtype">double</span> expr  = sqrt(1 + gtan2 * (1 - pow(x, 2)));</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>   <span class="keywordtype">double</span> gtan2    = pow(tan(theta_lab) * <a class="code hl_variable" href="class_t_reaction.html#a00a377c4e2a9d50bc49914e3808b4eb5">fCmG</a>, 2);</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>   <span class="keywordtype">double</span> x        = <a class="code hl_variable" href="class_t_reaction.html#a42f691edc453a830690b47cc5666331c">fCmV</a> / <a class="code hl_variable" href="class_t_reaction.html#a5abd88c20bd7bd4596c6d317ac50040a">fVCm</a>[part];</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>   <span class="keywordtype">double</span> expr     = sqrt(1 + gtan2 * (1 - pow(x, 2)));</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>   <span class="keywordtype">double</span> theta_cm = 0.;</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>   <span class="comment">// deals with double valued thetas in lab frame</span></div>
@@ -455,7 +455,7 @@ $(document).ready(function(){initNavTree('_t_reaction_8cxx_source.html',''); ini
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>      Form(<span class="stringliteral">&quot;Kinematics for %s; Theta_{%s} [deg]; Kinetic energy [%s]&quot;</span>, GetName(), frame, Units_keV ? <span class="stringliteral">&quot;keV&quot;</span> : <span class="stringliteral">&quot;MeV&quot;</span>));</div>
 <div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span> </div>
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>   <span class="keywordtype">double</span> theta = 0.;</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>   <span class="keywordtype">double</span> T = 0.;</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>   <span class="keywordtype">double</span> T     = 0.;</div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span> </div>
 <div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt;= 180; i++) {</div>
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>      theta = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(i);   <span class="comment">// always in CM frame since function is continuous</span></div>
@@ -492,7 +492,7 @@ $(document).ready(function(){initNavTree('_t_reaction_8cxx_source.html',''); ini
 <div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>   g-&gt;SetName(Form(<span class="stringliteral">&quot;ThetaVsTheta%s_%s&quot;</span>, frame, GetName()));</div>
 <div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>   g-&gt;SetTitle(Form(<span class="stringliteral">&quot;Angle conversion for %s; Theta_{%s} [deg]; Theta_{%s} [deg]&quot;</span>, GetName(), frame, other));</div>
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span> </div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>   <span class="keywordtype">double</span> theta_cm = 0.;</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>   <span class="keywordtype">double</span> theta_cm  = 0.;</div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>   <span class="keywordtype">double</span> theta_lab = 0.;</div>
 <div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt;= 180; i++) {</div>
@@ -531,7 +531,7 @@ $(document).ready(function(){initNavTree('_t_reaction_8cxx_source.html',''); ini
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>                    other, frame));</div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span> </div>
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>   <span class="keywordtype">double</span> theta = 0.;</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>   <span class="keywordtype">double</span> Om = 0.;</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>   <span class="keywordtype">double</span> Om    = 0.;</div>
 <div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt;= 180; i++) {</div>
 <div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span> </div>
 <div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>      theta = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(i);   <span class="comment">// always in CM frame</span></div>
@@ -564,7 +564,7 @@ $(document).ready(function(){initNavTree('_t_reaction_8cxx_source.html',''); ini
 <div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>                    frame, Units_mb ? <span class="stringliteral">&quot;mb&quot;</span> : <span class="stringliteral">&quot;fm^2&quot;</span>));</div>
 <div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span> </div>
 <div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>   <span class="keywordtype">double</span> theta = 0.;</div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>   <span class="keywordtype">double</span> R = 0.;</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>   <span class="keywordtype">double</span> R     = 0.;</div>
 <div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span> </div>
 <div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 1; i &lt;= 180; i++) {</div>
 <div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>      theta = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(i);   <span class="comment">// always in CM frame</span></div>
@@ -753,7 +753,7 @@ $(document).ready(function(){initNavTree('_t_reaction_8cxx_source.html',''); ini
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_ac005b97cd125e8cf83993aa10ba4c96.html">TReaction</a></li><li class="navelem"><a class="el" href="_t_reaction_8cxx.html">TReaction.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:33.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jul 10 2024 00:09:37.</li>
   </ul>
 </div>
 </body>

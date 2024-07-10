@@ -168,9 +168,9 @@ $(document).ready(function(){initNavTree('grsixx_8cxx_source.html',''); initResi
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">   /// Returns false if milliSec milliseconds have passed since logo</span></div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">   /// was popped up, true otherwise.</span></div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment"></span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>   <span class="keyword">struct </span>timeval ctv{};</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>   <span class="keyword">struct </span>timeval dtv{};</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>   <span class="keyword">struct </span>timeval tv{};</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>   <span class="keyword">struct </span>timeval ctv {};</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>   <span class="keyword">struct </span>timeval dtv {};</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>   <span class="keyword">struct </span>timeval tv {};</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>   <span class="keyword">struct </span>timeval ptv = <a class="code hl_variable" href="grsixx_8cxx.html#a9c7f6aec61e71bdf5b8fc62ccf91984d">gPopupTime</a>;</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>   tv.tv_sec  = milliSec / 1000;</div>
@@ -199,7 +199,7 @@ $(document).ready(function(){initNavTree('grsixx_8cxx_source.html',''); initResi
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">   /// Sleep for specified amount of milli seconds.</span></div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment"></span> </div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>   <span class="comment">// get current time</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>   <span class="keyword">struct </span>timeval tv{};</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>   <span class="keyword">struct </span>timeval tv {};</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>   tv.tv_sec  = milliSec / 1000;</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>   tv.tv_usec = (milliSec % 1000) * 1000;</div>
@@ -423,7 +423,7 @@ $(document).ready(function(){initNavTree('grsixx_8cxx_source.html',''); initResi
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span> </div>
 <div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>   <a class="code hl_variable" href="grsixx_8cxx.html#a4054c861e003f4c6319f6bf48c8b0b68">gAbout</a> = about;</div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>   <span class="keywordtype">int</span>   screen = DefaultScreen(<a class="code hl_variable" href="grsixx_8cxx.html#a7f3ee460dfb90f33371c92a5c091f8f4">gDisplay</a>);</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>   <span class="keywordtype">int</span> screen = DefaultScreen(<a class="code hl_variable" href="grsixx_8cxx.html#a7f3ee460dfb90f33371c92a5c091f8f4">gDisplay</a>);</div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>   Pixel back = WhitePixel(<a class="code hl_variable" href="grsixx_8cxx.html#a7f3ee460dfb90f33371c92a5c091f8f4">gDisplay</a>, screen);</div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>   Pixel fore = BlackPixel(<a class="code hl_variable" href="grsixx_8cxx.html#a7f3ee460dfb90f33371c92a5c091f8f4">gDisplay</a>, screen);</div>
@@ -651,7 +651,7 @@ $(document).ready(function(){initNavTree('grsixx_8cxx_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_1f2c117abb9c439347e5eda4f80f97eb.html">TGRSIint</a></li><li class="navelem"><a class="el" href="grsixx_8cxx.html">grsixx.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:33.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jul 10 2024 00:09:38.</li>
   </ul>
 </div>
 </body>

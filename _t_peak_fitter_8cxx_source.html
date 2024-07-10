@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('_t_peak_fitter_8cxx_source.html',''); 
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="_globals_8h.html">Globals.h</a>&quot;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="foldopen" id="foldopen00008" data-start="{" data-end="}">
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#a3ada2891b23f266bae5fbfbd901aaea6">    8</a></span><a class="code hl_function" href="class_t_peak_fitter.html#a6478d79668a46b81dd54a34ef6810df0">TPeakFitter::TPeakFitter</a>(<span class="keyword">const</span> Double_t&amp; rangeLow, <span class="keyword">const</span> Double_t&amp; rangeHigh) </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#a3ada2891b23f266bae5fbfbd901aaea6">    8</a></span><a class="code hl_function" href="class_t_peak_fitter.html#a6478d79668a46b81dd54a34ef6810df0">TPeakFitter::TPeakFitter</a>(<span class="keyword">const</span> Double_t&amp; rangeLow, <span class="keyword">const</span> Double_t&amp; rangeHigh)</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>   : fTotalFitFunction(nullptr), fRangeLow(rangeLow), fRangeHigh(rangeHigh)</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>{</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a> = <span class="keyword">new</span> TF1(<span class="stringliteral">&quot;fbg&quot;</span>, <span class="keyword">this</span>, &amp;<a class="code hl_function" href="class_t_peak_fitter.html#ae95d29fadef5c12577e020ac02275e1c">TPeakFitter::DefaultBackgroundFunction</a>, <a class="code hl_variable" href="class_t_peak_fitter.html#a769767bd3757e21b210e9a2766427535">fRangeLow</a>, <a class="code hl_variable" href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">fRangeHigh</a>, 4, <span class="stringliteral">&quot;TPeakFitter&quot;</span>, <span class="stringliteral">&quot;DefaultBackgroundFunction&quot;</span>);</div>
@@ -246,7 +246,7 @@ $(document).ready(function(){initNavTree('_t_peak_fitter_8cxx_source.html',''); 
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>         <span class="comment">// fit again with all parameters released</span></div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>         <span class="keywordflow">if</span>(!quiet) { std::cout &lt;&lt; <a class="code hl_define" href="_globals_8h.html#acfbc006ea433ad708fdee3e82996e721">GREEN</a> &lt;&lt; <span class="stringliteral">&quot;Re-fitting with released parameters (without any limits)&quot;</span> &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a> &lt;&lt; std::endl; }</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;GetNpar(); ++i) {</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>            <span class="keywordflow">if</span>(i == 1) { <span class="keywordflow">continue</span>; }  <span class="comment">// skipping centroid, which should always be parameter 1</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>            <span class="keywordflow">if</span>(i == 1) { <span class="keywordflow">continue</span>; }   <span class="comment">// skipping centroid, which should always be parameter 1</span></div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>            <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;ReleaseParameter(i);</div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>         }</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>         fit_res = fit_hist-&gt;Fit(<a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>, Form(<span class="stringliteral">&quot;SRI%s&quot;</span>, options.Data()));</div>
@@ -324,7 +324,7 @@ $(document).ready(function(){initNavTree('_t_peak_fitter_8cxx_source.html',''); 
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>               }</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>               ++param_to_zero_counter;</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>            }</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>            Double_t low_range = 0.;</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>            Double_t low_range  = 0.;</div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>            Double_t high_range = 0.;</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>            <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;GetRange(low_range, high_range);</div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>            peak_func-&gt;SetRange(low_range, high_range);</div>
@@ -346,207 +346,211 @@ $(document).ready(function(){initNavTree('_t_peak_fitter_8cxx_source.html',''); 
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; peak_func-&gt;GetNpar(); ++i) {</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>            peak_func-&gt;SetParameter(i, <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;GetParameter(param_counter));</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>            peak_func-&gt;SetParError(i, <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;GetParError(param_counter));</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>            Double_t low = 0.;</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>            Double_t high = 0.;;</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>            <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;GetParLimits(param_counter, low, high);</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>            peak_func-&gt;SetParLimits(i, low, high);</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>            ++param_counter;</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>            <span class="comment">// Lets do some integrals meow.</span></div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>         }</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>         p_it-&gt;SetArea(total_function_copy-&gt;Integral(p_it-&gt;Centroid() - p_it-&gt;Width() * 5., p_it-&gt;Centroid() + p_it-&gt;Width() * 5., 1e-8) / fit_hist-&gt;GetBinWidth(1));</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>         <span class="keywordflow">if</span>(goodCovarianceMatrix) { p_it-&gt;SetAreaErr(total_function_copy-&gt;IntegralError(p_it-&gt;Centroid() - p_it-&gt;Width() * 5., p_it-&gt;Centroid() + p_it-&gt;Width() * 5., total_function_copy-&gt;GetParameters(), covariance_matrix.GetMatrixArray(), 1E-5) / fit_hist-&gt;GetBinWidth(1)); }</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>         <span class="keywordflow">else</span> { std::cout &lt;&lt; <span class="stringliteral">&quot;Not setting area error because we don&#39;t have a good covariance matrix!&quot;</span> &lt;&lt; std::endl; }</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>      }</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>      total_function_copy-&gt;Delete();</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>   }</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a> != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>      <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetNpar(); ++i) {</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParameter(i, <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;GetParameter(param_counter));</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParError(i, <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;GetParError(param_counter));</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>         ++param_counter;</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>      }</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>   }</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>   <span class="comment">// We now have a copy of the global background. Copy and send to every peak</span></div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span>* p_it : <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>) {</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>      p_it-&gt;SetGlobalBackground(<span class="keyword">new</span> TF1(*global_bg));</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>      p_it-&gt;SetChi2(<a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;GetChisquare());</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>      p_it-&gt;SetNDF(<a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;GetNDF());</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>   }</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>   global_bg-&gt;Delete();</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>}</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>            Double_t low  = 0.;</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>            Double_t high = 0.;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>            ;</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>            <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;GetParLimits(param_counter, low, high);</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>            peak_func-&gt;SetParLimits(i, low, high);</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>            ++param_counter;</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>            <span class="comment">// Lets do some integrals meow.</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>         }</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>         p_it-&gt;SetArea(total_function_copy-&gt;Integral(p_it-&gt;Centroid() - p_it-&gt;Width() * 5., p_it-&gt;Centroid() + p_it-&gt;Width() * 5., 1e-8) / fit_hist-&gt;GetBinWidth(1));</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>         <span class="keywordflow">if</span>(goodCovarianceMatrix) {</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>            p_it-&gt;SetAreaErr(total_function_copy-&gt;IntegralError(p_it-&gt;Centroid() - p_it-&gt;Width() * 5., p_it-&gt;Centroid() + p_it-&gt;Width() * 5., total_function_copy-&gt;GetParameters(), covariance_matrix.GetMatrixArray(), 1E-5) / fit_hist-&gt;GetBinWidth(1));</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>         } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;Not setting area error because we don&#39;t have a good covariance matrix!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>         }</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>      }</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>      total_function_copy-&gt;Delete();</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>   }</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a> != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>      <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetNpar(); ++i) {</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParameter(i, <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;GetParameter(param_counter));</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParError(i, <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;GetParError(param_counter));</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>         ++param_counter;</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>      }</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>   }</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>   <span class="comment">// We now have a copy of the global background. Copy and send to every peak</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span>* p_it : <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>) {</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>      p_it-&gt;SetGlobalBackground(<span class="keyword">new</span> TF1(*global_bg));</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>      p_it-&gt;SetChi2(<a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;GetChisquare());</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>      p_it-&gt;SetNDF(<a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;GetNDF());</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>   }</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>   global_bg-&gt;Delete();</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>}</div>
 </div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
-<div class="foldopen" id="foldopen00261" data-start="{" data-end="}">
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#a7cfdabd43cbec2a1f0d7068e8bd2f1fc">  261</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_peak_fitter.html#a7cfdabd43cbec2a1f0d7068e8bd2f1fc">TPeakFitter::InitializeParameters</a>(TH1* fit_hist)</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>{</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span>* p_it : <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>) {</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>      p_it-&gt;InitializeParameters(fit_hist, <a class="code hl_variable" href="class_t_peak_fitter.html#a769767bd3757e21b210e9a2766427535">fRangeLow</a>, <a class="code hl_variable" href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">fRangeHigh</a>);</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>   }</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>}</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
+<div class="foldopen" id="foldopen00265" data-start="{" data-end="}">
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#a7cfdabd43cbec2a1f0d7068e8bd2f1fc">  265</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_peak_fitter.html#a7cfdabd43cbec2a1f0d7068e8bd2f1fc">TPeakFitter::InitializeParameters</a>(TH1* fit_hist)</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>{</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span>* p_it : <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>) {</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>      p_it-&gt;InitializeParameters(fit_hist, <a class="code hl_variable" href="class_t_peak_fitter.html#a769767bd3757e21b210e9a2766427535">fRangeLow</a>, <a class="code hl_variable" href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">fRangeHigh</a>);</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>   }</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>}</div>
 </div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
-<div class="foldopen" id="foldopen00268" data-start="{" data-end="}">
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#afbe704f7732f4ca38d73bc0692bf3304">  268</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_peak_fitter.html#afbe704f7732f4ca38d73bc0692bf3304">TPeakFitter::UpdateFitterParameters</a>()</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>{<span class="comment"></span></div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="comment">   /// This functions gets the parameters and their limits from the peak functions and</span></div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="comment">   /// sets them for the total fit function</span></div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="comment"></span>   Int_t param_counter = 0;</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>   Int_t peak_counter  = 0;</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span>* p_it : <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>) {</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>      TF1* peak_func = p_it-&gt;GetFitFunction();</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>      <span class="keywordflow">if</span>(peak_func != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; peak_func-&gt;GetNpar(); ++i) {</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>            <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParName(param_counter, Form(<span class="stringliteral">&quot;%s_%i&quot;</span>, peak_func-&gt;GetParName(i), peak_counter));</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>            <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParameter(param_counter, peak_func-&gt;GetParameter(i));</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>            <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParError(param_counter, peak_func-&gt;GetParError(i));</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>            Double_t limit_low  = 0.;</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>            Double_t limit_high = 0.;</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>            peak_func-&gt;GetParLimits(i, limit_low, limit_high);</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>            <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParLimits(param_counter, limit_low, limit_high);</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>            ++param_counter;</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>         }</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>         ++peak_counter;</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>      }</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>   }</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a> != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>      <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetNpar(); ++i) {</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParName(param_counter, <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParName(i));</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParameter(param_counter, <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParameter(i));</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParError(param_counter, <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParError(i));</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>         Double_t limit_low  = 0.;</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>         Double_t limit_high = 0.;</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParLimits(i, limit_low, limit_high);</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParLimits(param_counter, limit_low, limit_high);</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>         ++param_counter;</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>      }</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>   }</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>}</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
+<div class="foldopen" id="foldopen00272" data-start="{" data-end="}">
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#afbe704f7732f4ca38d73bc0692bf3304">  272</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_peak_fitter.html#afbe704f7732f4ca38d73bc0692bf3304">TPeakFitter::UpdateFitterParameters</a>()</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>{<span class="comment"></span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span><span class="comment">   /// This functions gets the parameters and their limits from the peak functions and</span></div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="comment">   /// sets them for the total fit function</span></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="comment"></span>   Int_t param_counter = 0;</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>   Int_t peak_counter  = 0;</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span>* p_it : <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>) {</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>      TF1* peak_func = p_it-&gt;GetFitFunction();</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>      <span class="keywordflow">if</span>(peak_func != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; peak_func-&gt;GetNpar(); ++i) {</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>            <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParName(param_counter, Form(<span class="stringliteral">&quot;%s_%i&quot;</span>, peak_func-&gt;GetParName(i), peak_counter));</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>            <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParameter(param_counter, peak_func-&gt;GetParameter(i));</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>            <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParError(param_counter, peak_func-&gt;GetParError(i));</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>            Double_t limit_low  = 0.;</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>            Double_t limit_high = 0.;</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>            peak_func-&gt;GetParLimits(i, limit_low, limit_high);</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>            <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParLimits(param_counter, limit_low, limit_high);</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>            ++param_counter;</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>         }</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>         ++peak_counter;</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>      }</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>   }</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a> != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>      <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetNpar(); ++i) {</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParName(param_counter, <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParName(i));</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParameter(param_counter, <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParameter(i));</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParError(param_counter, <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParError(i));</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>         Double_t limit_low  = 0.;</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>         Double_t limit_high = 0.;</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParLimits(i, limit_low, limit_high);</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;SetParLimits(param_counter, limit_low, limit_high);</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>         ++param_counter;</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>      }</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>   }</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>}</div>
 </div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
-<div class="foldopen" id="foldopen00304" data-start="{" data-end="}">
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#a70699fe3b76c4a4273486dcd626a35a3">  304</a></span>Double_t <a class="code hl_function" href="class_t_peak_fitter.html#a70699fe3b76c4a4273486dcd626a35a3">TPeakFitter::FitFunction</a>(Double_t* dim, Double_t* par)</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>{</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>   <span class="comment">// I want to use the EvalPar command here in order to ge the individual peaks</span></div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>   Double_t sum           = 0;</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>   Int_t    params_so_far = 0;</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span>* p_it : <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>) {</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>      TF1* peak_func = p_it-&gt;GetFitFunction();</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>      sum += peak_func-&gt;EvalPar(dim, &amp;par[params_so_far]);</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>      params_so_far += peak_func-&gt;GetNpar();</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>   }</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>   sum += <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;EvalPar(dim, &amp;par[params_so_far]);</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span> </div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>   <span class="keywordflow">return</span> sum;</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>}</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span> </div>
+<div class="foldopen" id="foldopen00308" data-start="{" data-end="}">
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#a70699fe3b76c4a4273486dcd626a35a3">  308</a></span>Double_t <a class="code hl_function" href="class_t_peak_fitter.html#a70699fe3b76c4a4273486dcd626a35a3">TPeakFitter::FitFunction</a>(Double_t* dim, Double_t* par)</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>{</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>   <span class="comment">// I want to use the EvalPar command here in order to ge the individual peaks</span></div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>   Double_t sum           = 0;</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>   Int_t    params_so_far = 0;</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span>* p_it : <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>) {</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>      TF1* peak_func = p_it-&gt;GetFitFunction();</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>      sum += peak_func-&gt;EvalPar(dim, &amp;par[params_so_far]);</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>      params_so_far += peak_func-&gt;GetNpar();</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>   }</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>   sum += <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;EvalPar(dim, &amp;par[params_so_far]);</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span> </div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>   <span class="keywordflow">return</span> sum;</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>}</div>
 </div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span> </div>
-<div class="foldopen" id="foldopen00319" data-start="{" data-end="}">
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#ab4a8f50ffa063744edd20108060e9ce0">  319</a></span>Double_t <a class="code hl_function" href="class_t_peak_fitter.html#ab4a8f50ffa063744edd20108060e9ce0">TPeakFitter::BackgroundFunction</a>(Double_t* dim, Double_t* par)</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>{</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>   Double_t sum           = 0;</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>   Int_t    params_so_far = 0;</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span>* p_it : <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>) {</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>      TF1* peak_func = p_it-&gt;GetBackgroundFunction();</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>      sum += peak_func-&gt;EvalPar(dim, &amp;par[params_so_far]);</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>      params_so_far += peak_func-&gt;GetNpar();</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>   }</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>   sum += <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;EvalPar(dim, &amp;par[params_so_far]);</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>   <span class="keywordflow">return</span> sum;</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>}</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
+<div class="foldopen" id="foldopen00323" data-start="{" data-end="}">
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#ab4a8f50ffa063744edd20108060e9ce0">  323</a></span>Double_t <a class="code hl_function" href="class_t_peak_fitter.html#ab4a8f50ffa063744edd20108060e9ce0">TPeakFitter::BackgroundFunction</a>(Double_t* dim, Double_t* par)</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>{</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>   Double_t sum           = 0;</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>   Int_t    params_so_far = 0;</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span>* p_it : <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>) {</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>      TF1* peak_func = p_it-&gt;GetBackgroundFunction();</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>      sum += peak_func-&gt;EvalPar(dim, &amp;par[params_so_far]);</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>      params_so_far += peak_func-&gt;GetNpar();</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>   }</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>   sum += <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;EvalPar(dim, &amp;par[params_so_far]);</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span> </div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>   <span class="keywordflow">return</span> sum;</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>}</div>
 </div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span> </div>
-<div class="foldopen" id="foldopen00333" data-start="{" data-end="}">
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#a5a718c64429cf200f90ab70287a33171">  333</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_peak_fitter.html#a5a718c64429cf200f90ab70287a33171">TPeakFitter::InitializeBackgroundParameters</a>(TH1* fit_hist)</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>{</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParName(0, <span class="stringliteral">&quot;A&quot;</span>);</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParName(1, <span class="stringliteral">&quot;B&quot;</span>);</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParName(2, <span class="stringliteral">&quot;C&quot;</span>);</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParName(3, <span class="stringliteral">&quot;bg_offset&quot;</span>);</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>   Double_t lowLimit = 0.;</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>   Double_t highLimit = 0.;</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParLimits(0, lowLimit, highLimit);</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span> </div>
+<div class="foldopen" id="foldopen00337" data-start="{" data-end="}">
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#a5a718c64429cf200f90ab70287a33171">  337</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_peak_fitter.html#a5a718c64429cf200f90ab70287a33171">TPeakFitter::InitializeBackgroundParameters</a>(TH1* fit_hist)</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>{</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParName(0, <span class="stringliteral">&quot;A&quot;</span>);</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParName(1, <span class="stringliteral">&quot;B&quot;</span>);</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParName(2, <span class="stringliteral">&quot;C&quot;</span>);</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParName(3, <span class="stringliteral">&quot;bg_offset&quot;</span>);</div>
 <div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span> </div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>   <span class="keywordtype">double</span> value = <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParameter(0);</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>   <span class="keywordflow">if</span>(value == 0 &amp;&amp; lowLimit == 0 &amp;&amp; highLimit == 0) {</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>      <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParLimits(0, 0.0, fit_hist-&gt;GetBinContent(fit_hist-&gt;FindBin(<a class="code hl_variable" href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">fRangeHigh</a>)) * 100.);</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>      <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParameter(<span class="stringliteral">&quot;A&quot;</span>, fit_hist-&gt;GetBinContent(fit_hist-&gt;FindBin(<a class="code hl_variable" href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">fRangeHigh</a>)));</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>   }</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParLimits(1, lowLimit, highLimit);</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>   value = <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParameter(1);</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>   <span class="keywordflow">if</span>(value == 0 &amp;&amp; lowLimit == 0 &amp;&amp; highLimit == 0) {</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>      <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParameter(<span class="stringliteral">&quot;B&quot;</span>, fit_hist-&gt;GetBinWidth(1) * ((fit_hist-&gt;GetBinContent(fit_hist-&gt;FindBin(<a class="code hl_variable" href="class_t_peak_fitter.html#a769767bd3757e21b210e9a2766427535">fRangeLow</a>)) - fit_hist-&gt;GetBinContent(fit_hist-&gt;FindBin(<a class="code hl_variable" href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">fRangeHigh</a>))) / (<a class="code hl_variable" href="class_t_peak_fitter.html#a769767bd3757e21b210e9a2766427535">fRangeLow</a> - <a class="code hl_variable" href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">fRangeHigh</a>)));</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>   }</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParLimits(2, lowLimit, highLimit);</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span> </div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>   value = <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParameter(2);</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>   <span class="keywordflow">if</span>(value == 0 &amp;&amp; lowLimit == 0 &amp;&amp; highLimit == 0) {</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>      <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParameter(<span class="stringliteral">&quot;C&quot;</span>, 0.0000);</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>      <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;FixParameter(2, 0.00);</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>   }</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParLimits(3, lowLimit, highLimit);</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>   value = <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParameter(3);</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>   <span class="keywordflow">if</span>(value == 0 &amp;&amp; lowLimit == 0 &amp;&amp; highLimit == 0) {</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>      <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParLimits(3, <a class="code hl_variable" href="class_t_peak_fitter.html#a769767bd3757e21b210e9a2766427535">fRangeLow</a>, <a class="code hl_variable" href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">fRangeHigh</a>);</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>      <span class="keywordflow">if</span>(!<a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>.empty()) {</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParameter(<span class="stringliteral">&quot;bg_offset&quot;</span>, <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>.front()-&gt;Centroid());</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParameter(<span class="stringliteral">&quot;bg_offset&quot;</span>, (<a class="code hl_variable" href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">fRangeHigh</a> + <a class="code hl_variable" href="class_t_peak_fitter.html#a769767bd3757e21b210e9a2766427535">fRangeLow</a>) / 2.);</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>      }</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>   }</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>}</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>   Double_t lowLimit  = 0.;</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>   Double_t highLimit = 0.;</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParLimits(0, lowLimit, highLimit);</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span> </div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>   <span class="keywordtype">double</span> value = <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParameter(0);</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>   <span class="keywordflow">if</span>(value == 0 &amp;&amp; lowLimit == 0 &amp;&amp; highLimit == 0) {</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>      <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParLimits(0, 0.0, fit_hist-&gt;GetBinContent(fit_hist-&gt;FindBin(<a class="code hl_variable" href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">fRangeHigh</a>)) * 100.);</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>      <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParameter(<span class="stringliteral">&quot;A&quot;</span>, fit_hist-&gt;GetBinContent(fit_hist-&gt;FindBin(<a class="code hl_variable" href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">fRangeHigh</a>)));</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>   }</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParLimits(1, lowLimit, highLimit);</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>   value = <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParameter(1);</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>   <span class="keywordflow">if</span>(value == 0 &amp;&amp; lowLimit == 0 &amp;&amp; highLimit == 0) {</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>      <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParameter(<span class="stringliteral">&quot;B&quot;</span>, fit_hist-&gt;GetBinWidth(1) * ((fit_hist-&gt;GetBinContent(fit_hist-&gt;FindBin(<a class="code hl_variable" href="class_t_peak_fitter.html#a769767bd3757e21b210e9a2766427535">fRangeLow</a>)) - fit_hist-&gt;GetBinContent(fit_hist-&gt;FindBin(<a class="code hl_variable" href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">fRangeHigh</a>))) / (<a class="code hl_variable" href="class_t_peak_fitter.html#a769767bd3757e21b210e9a2766427535">fRangeLow</a> - <a class="code hl_variable" href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">fRangeHigh</a>)));</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>   }</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParLimits(2, lowLimit, highLimit);</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>   value = <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParameter(2);</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>   <span class="keywordflow">if</span>(value == 0 &amp;&amp; lowLimit == 0 &amp;&amp; highLimit == 0) {</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>      <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParameter(<span class="stringliteral">&quot;C&quot;</span>, 0.0000);</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>      <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;FixParameter(2, 0.00);</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>   }</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParLimits(3, lowLimit, highLimit);</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span> </div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>   value = <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;GetParameter(3);</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>   <span class="keywordflow">if</span>(value == 0 &amp;&amp; lowLimit == 0 &amp;&amp; highLimit == 0) {</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>      <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParLimits(3, <a class="code hl_variable" href="class_t_peak_fitter.html#a769767bd3757e21b210e9a2766427535">fRangeLow</a>, <a class="code hl_variable" href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">fRangeHigh</a>);</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>      <span class="keywordflow">if</span>(!<a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>.empty()) {</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParameter(<span class="stringliteral">&quot;bg_offset&quot;</span>, <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>.front()-&gt;Centroid());</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>         <a class="code hl_variable" href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">fBGToFit</a>-&gt;SetParameter(<span class="stringliteral">&quot;bg_offset&quot;</span>, (<a class="code hl_variable" href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">fRangeHigh</a> + <a class="code hl_variable" href="class_t_peak_fitter.html#a769767bd3757e21b210e9a2766427535">fRangeLow</a>) / 2.);</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>      }</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>   }</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>}</div>
 </div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span> </div>
-<div class="foldopen" id="foldopen00375" data-start="{" data-end="}">
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#ae95d29fadef5c12577e020ac02275e1c">  375</a></span>Double_t <a class="code hl_function" href="class_t_peak_fitter.html#ae95d29fadef5c12577e020ac02275e1c">TPeakFitter::DefaultBackgroundFunction</a>(Double_t* dim, Double_t* par)</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>{</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>   Double_t x         = dim[0];</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>   Double_t A         = par[0];</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>   Double_t B         = par[1];</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>   Double_t C         = par[2];</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>   Double_t bg_offset = par[3];</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span> </div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>   <span class="keywordflow">return</span> A + B * (x - bg_offset) + C * TMath::Power(x - bg_offset, 2.);</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>}</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span> </div>
+<div class="foldopen" id="foldopen00379" data-start="{" data-end="}">
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#ae95d29fadef5c12577e020ac02275e1c">  379</a></span>Double_t <a class="code hl_function" href="class_t_peak_fitter.html#ae95d29fadef5c12577e020ac02275e1c">TPeakFitter::DefaultBackgroundFunction</a>(Double_t* dim, Double_t* par)</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>{</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>   Double_t x         = dim[0];</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>   Double_t A         = par[0];</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>   Double_t B         = par[1];</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>   Double_t C         = par[2];</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>   Double_t bg_offset = par[3];</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span> </div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>   <span class="keywordflow">return</span> A + B * (x - bg_offset) + C * TMath::Power(x - bg_offset, 2.);</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>}</div>
 </div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span> </div>
-<div class="foldopen" id="foldopen00386" data-start="{" data-end="}">
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#a8d47bc1e4639d1c290d09b6515d00cb8">  386</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_peak_fitter.html#a8d47bc1e4639d1c290d09b6515d00cb8">TPeakFitter::DrawPeaks</a>(Option_t*)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>   <span class="comment">// First we are going to draw the background</span></div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>   TF1* bg_to_draw = <span class="keyword">new</span> TF1;</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;Copy(*bg_to_draw);</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>   bg_to_draw-&gt;SetLineColor(<span class="keyword">static_cast&lt;</span>Color_t<span class="keyword">&gt;</span>(kRed + <a class="code hl_variable" href="class_t_peak_fitter.html#a829e0c7d03d802565b0b0f11d4e50394">fColorIndex</a>));</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span> </div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span>* p_it : <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>) {</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>      TF1* peak_func           = p_it-&gt;GetFitFunction();</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>      TF1* total_function_copy = <span class="keyword">new</span> TF1;</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>      <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;Copy(*total_function_copy);</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>      <span class="comment">// Now we need to remove all of the parts of the covariance peak that has nothing to do with this particular peak</span></div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>      <span class="comment">// This would be the diagonals of the background, and all of the other peaks.</span></div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>      Int_t param_to_zero_counter = 0;</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>      <span class="keywordflow">for</span>(<span class="keyword">auto</span>* other_p_it : <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>) {</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>         <span class="keywordflow">if</span>(other_p_it != p_it) {</div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>            <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; other_p_it-&gt;GetFitFunction()-&gt;GetNpar(); ++i) {</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>               total_function_copy-&gt;SetParameter(param_to_zero_counter, 0.0);</div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>               ++param_to_zero_counter;</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>            }</div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>         } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>            <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; peak_func-&gt;GetNpar(); ++i) {</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>               <span class="keywordflow">if</span>(!p_it-&gt;IsBackgroundParameter(i)) {</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>                  bg_to_draw-&gt;SetParameter(param_to_zero_counter, 0.0);</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>               }</div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>               ++param_to_zero_counter;</div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>            }</div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>         }</div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>      }</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>      total_function_copy-&gt;Draw(<span class="stringliteral">&quot;same&quot;</span>);</div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>   }</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>   bg_to_draw-&gt;Draw(<span class="stringliteral">&quot;same&quot;</span>);</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>}</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span> </div>
+<div class="foldopen" id="foldopen00390" data-start="{" data-end="}">
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#a8d47bc1e4639d1c290d09b6515d00cb8">  390</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_peak_fitter.html#a8d47bc1e4639d1c290d09b6515d00cb8">TPeakFitter::DrawPeaks</a>(Option_t*)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>   <span class="comment">// First we are going to draw the background</span></div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>   TF1* bg_to_draw = <span class="keyword">new</span> TF1;</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>   <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;Copy(*bg_to_draw);</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>   bg_to_draw-&gt;SetLineColor(<span class="keyword">static_cast&lt;</span>Color_t<span class="keyword">&gt;</span>(kRed + <a class="code hl_variable" href="class_t_peak_fitter.html#a829e0c7d03d802565b0b0f11d4e50394">fColorIndex</a>));</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span> </div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span>* p_it : <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>) {</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>      TF1* peak_func           = p_it-&gt;GetFitFunction();</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>      TF1* total_function_copy = <span class="keyword">new</span> TF1;</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>      <a class="code hl_variable" href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">fTotalFitFunction</a>-&gt;Copy(*total_function_copy);</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>      <span class="comment">// Now we need to remove all of the parts of the covariance peak that has nothing to do with this particular peak</span></div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>      <span class="comment">// This would be the diagonals of the background, and all of the other peaks.</span></div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>      Int_t param_to_zero_counter = 0;</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>      <span class="keywordflow">for</span>(<span class="keyword">auto</span>* other_p_it : <a class="code hl_variable" href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">fPeaksToFit</a>) {</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>         <span class="keywordflow">if</span>(other_p_it != p_it) {</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>            <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; other_p_it-&gt;GetFitFunction()-&gt;GetNpar(); ++i) {</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>               total_function_copy-&gt;SetParameter(param_to_zero_counter, 0.0);</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>               ++param_to_zero_counter;</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>            }</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>         } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>            <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; peak_func-&gt;GetNpar(); ++i) {</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>               <span class="keywordflow">if</span>(!p_it-&gt;IsBackgroundParameter(i)) {</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>                  bg_to_draw-&gt;SetParameter(param_to_zero_counter, 0.0);</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>               }</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>               ++param_to_zero_counter;</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>            }</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>         }</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>      }</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>      total_function_copy-&gt;Draw(<span class="stringliteral">&quot;same&quot;</span>);</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>   }</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>   bg_to_draw-&gt;Draw(<span class="stringliteral">&quot;same&quot;</span>);</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>}</div>
 </div>
 <div class="ttc" id="a_globals_8h_html"><div class="ttname"><a href="_globals_8h.html">Globals.h</a></div></div>
 <div class="ttc" id="a_globals_8h_html_a8d23feea868a983c8c2b661e1e16972f"><div class="ttname"><a href="_globals_8h.html#a8d23feea868a983c8c2b661e1e16972f">RED</a></div><div class="ttdeci">#define RED</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00008">Globals.h:8</a></div></div>
@@ -560,22 +564,22 @@ $(document).ready(function(){initNavTree('_t_peak_fitter_8cxx_source.html',''); 
 <div class="ttc" id="aclass_t_peak_fitter_html_a435a5f2cfedfd8fcfc28fea9ea467aa0"><div class="ttname"><a href="class_t_peak_fitter.html#a435a5f2cfedfd8fcfc28fea9ea467aa0">TPeakFitter::SetRange</a></div><div class="ttdeci">void SetRange(const Double_t &amp;low, const Double_t &amp;high)</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00069">TPeakFitter.cxx:69</a></div></div>
 <div class="ttc" id="aclass_t_peak_fitter_html_a4f95b728bfb00f2c67df1bb5b732875f"><div class="ttname"><a href="class_t_peak_fitter.html#a4f95b728bfb00f2c67df1bb5b732875f">TPeakFitter::Print</a></div><div class="ttdeci">void Print(Option_t *opt=&quot;&quot;) const override</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00016">TPeakFitter.cxx:16</a></div></div>
 <div class="ttc" id="aclass_t_peak_fitter_html_a54c33a4a4bd7bc76b9fcd795443f3696"><div class="ttname"><a href="class_t_peak_fitter.html#a54c33a4a4bd7bc76b9fcd795443f3696">TPeakFitter::GetNParameters</a></div><div class="ttdeci">Int_t GetNParameters() const</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00058">TPeakFitter.cxx:58</a></div></div>
-<div class="ttc" id="aclass_t_peak_fitter_html_a5a718c64429cf200f90ab70287a33171"><div class="ttname"><a href="class_t_peak_fitter.html#a5a718c64429cf200f90ab70287a33171">TPeakFitter::InitializeBackgroundParameters</a></div><div class="ttdeci">void InitializeBackgroundParameters(TH1 *fit_hist)</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00333">TPeakFitter.cxx:333</a></div></div>
+<div class="ttc" id="aclass_t_peak_fitter_html_a5a718c64429cf200f90ab70287a33171"><div class="ttname"><a href="class_t_peak_fitter.html#a5a718c64429cf200f90ab70287a33171">TPeakFitter::InitializeBackgroundParameters</a></div><div class="ttdeci">void InitializeBackgroundParameters(TH1 *fit_hist)</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00337">TPeakFitter.cxx:337</a></div></div>
 <div class="ttc" id="aclass_t_peak_fitter_html_a6478d79668a46b81dd54a34ef6810df0"><div class="ttname"><a href="class_t_peak_fitter.html#a6478d79668a46b81dd54a34ef6810df0">TPeakFitter::TPeakFitter</a></div><div class="ttdeci">TPeakFitter()</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8h_source.html#l00035">TPeakFitter.h:35</a></div></div>
-<div class="ttc" id="aclass_t_peak_fitter_html_a70699fe3b76c4a4273486dcd626a35a3"><div class="ttname"><a href="class_t_peak_fitter.html#a70699fe3b76c4a4273486dcd626a35a3">TPeakFitter::FitFunction</a></div><div class="ttdeci">Double_t FitFunction(Double_t *dim, Double_t *par)</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00304">TPeakFitter.cxx:304</a></div></div>
+<div class="ttc" id="aclass_t_peak_fitter_html_a70699fe3b76c4a4273486dcd626a35a3"><div class="ttname"><a href="class_t_peak_fitter.html#a70699fe3b76c4a4273486dcd626a35a3">TPeakFitter::FitFunction</a></div><div class="ttdeci">Double_t FitFunction(Double_t *dim, Double_t *par)</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00308">TPeakFitter.cxx:308</a></div></div>
 <div class="ttc" id="aclass_t_peak_fitter_html_a769767bd3757e21b210e9a2766427535"><div class="ttname"><a href="class_t_peak_fitter.html#a769767bd3757e21b210e9a2766427535">TPeakFitter::fRangeLow</a></div><div class="ttdeci">Double_t fRangeLow</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8h_source.html#l00089">TPeakFitter.h:89</a></div></div>
-<div class="ttc" id="aclass_t_peak_fitter_html_a7cfdabd43cbec2a1f0d7068e8bd2f1fc"><div class="ttname"><a href="class_t_peak_fitter.html#a7cfdabd43cbec2a1f0d7068e8bd2f1fc">TPeakFitter::InitializeParameters</a></div><div class="ttdeci">void InitializeParameters(TH1 *fit_hist)</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00261">TPeakFitter.cxx:261</a></div></div>
+<div class="ttc" id="aclass_t_peak_fitter_html_a7cfdabd43cbec2a1f0d7068e8bd2f1fc"><div class="ttname"><a href="class_t_peak_fitter.html#a7cfdabd43cbec2a1f0d7068e8bd2f1fc">TPeakFitter::InitializeParameters</a></div><div class="ttdeci">void InitializeParameters(TH1 *fit_hist)</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00265">TPeakFitter.cxx:265</a></div></div>
 <div class="ttc" id="aclass_t_peak_fitter_html_a829e0c7d03d802565b0b0f11d4e50394"><div class="ttname"><a href="class_t_peak_fitter.html#a829e0c7d03d802565b0b0f11d4e50394">TPeakFitter::fColorIndex</a></div><div class="ttdeci">int fColorIndex</div><div class="ttdoc">this index is added to the colors kRed for the total function and kMagenta for the individual peaks</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8h_source.html#l00099">TPeakFitter.h:99</a></div></div>
 <div class="ttc" id="aclass_t_peak_fitter_html_a8c646211a6c07da6b5da76dfad44e691"><div class="ttname"><a href="class_t_peak_fitter.html#a8c646211a6c07da6b5da76dfad44e691">TPeakFitter::fPeaksToFit</a></div><div class="ttdeci">MultiplePeak_t fPeaksToFit</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8h_source.html#l00084">TPeakFitter.h:84</a></div></div>
-<div class="ttc" id="aclass_t_peak_fitter_html_a8d47bc1e4639d1c290d09b6515d00cb8"><div class="ttname"><a href="class_t_peak_fitter.html#a8d47bc1e4639d1c290d09b6515d00cb8">TPeakFitter::DrawPeaks</a></div><div class="ttdeci">void DrawPeaks(Option_t *=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00386">TPeakFitter.cxx:386</a></div></div>
-<div class="ttc" id="aclass_t_peak_fitter_html_ab4a8f50ffa063744edd20108060e9ce0"><div class="ttname"><a href="class_t_peak_fitter.html#ab4a8f50ffa063744edd20108060e9ce0">TPeakFitter::BackgroundFunction</a></div><div class="ttdeci">Double_t BackgroundFunction(Double_t *dim, Double_t *par)</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00319">TPeakFitter.cxx:319</a></div></div>
+<div class="ttc" id="aclass_t_peak_fitter_html_a8d47bc1e4639d1c290d09b6515d00cb8"><div class="ttname"><a href="class_t_peak_fitter.html#a8d47bc1e4639d1c290d09b6515d00cb8">TPeakFitter::DrawPeaks</a></div><div class="ttdeci">void DrawPeaks(Option_t *=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00390">TPeakFitter.cxx:390</a></div></div>
+<div class="ttc" id="aclass_t_peak_fitter_html_ab4a8f50ffa063744edd20108060e9ce0"><div class="ttname"><a href="class_t_peak_fitter.html#ab4a8f50ffa063744edd20108060e9ce0">TPeakFitter::BackgroundFunction</a></div><div class="ttdeci">Double_t BackgroundFunction(Double_t *dim, Double_t *par)</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00323">TPeakFitter.cxx:323</a></div></div>
 <div class="ttc" id="aclass_t_peak_fitter_html_abfab15c36c5aad7aaa9b3b7647d9abb4"><div class="ttname"><a href="class_t_peak_fitter.html#abfab15c36c5aad7aaa9b3b7647d9abb4">TPeakFitter::fInitFlag</a></div><div class="ttdeci">bool fInitFlag</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8h_source.html#l00095">TPeakFitter.h:95</a></div></div>
 <div class="ttc" id="aclass_t_peak_fitter_html_aceca2f7274ec1ff158a2a63b82b35964"><div class="ttname"><a href="class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964">TPeakFitter::fRangeHigh</a></div><div class="ttdeci">Double_t fRangeHigh</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8h_source.html#l00090">TPeakFitter.h:90</a></div></div>
 <div class="ttc" id="aclass_t_peak_fitter_html_ad935d4d851ac3bbe0fe0ba95285aed27"><div class="ttname"><a href="class_t_peak_fitter.html#ad935d4d851ac3bbe0fe0ba95285aed27">TPeakFitter::Fit</a></div><div class="ttdeci">TFitResultPtr Fit(TH1 *fit_hist, Option_t *opt=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00075">TPeakFitter.cxx:75</a></div></div>
-<div class="ttc" id="aclass_t_peak_fitter_html_ae95d29fadef5c12577e020ac02275e1c"><div class="ttname"><a href="class_t_peak_fitter.html#ae95d29fadef5c12577e020ac02275e1c">TPeakFitter::DefaultBackgroundFunction</a></div><div class="ttdeci">Double_t DefaultBackgroundFunction(Double_t *dim, Double_t *par)</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00375">TPeakFitter.cxx:375</a></div></div>
+<div class="ttc" id="aclass_t_peak_fitter_html_ae95d29fadef5c12577e020ac02275e1c"><div class="ttname"><a href="class_t_peak_fitter.html#ae95d29fadef5c12577e020ac02275e1c">TPeakFitter::DefaultBackgroundFunction</a></div><div class="ttdeci">Double_t DefaultBackgroundFunction(Double_t *dim, Double_t *par)</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00379">TPeakFitter.cxx:379</a></div></div>
 <div class="ttc" id="aclass_t_peak_fitter_html_aeeae6afdd508fc8c1bdbbc4e3754faa7"><div class="ttname"><a href="class_t_peak_fitter.html#aeeae6afdd508fc8c1bdbbc4e3754faa7">TPeakFitter::fLastHistFit</a></div><div class="ttdeci">TH1 * fLastHistFit</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8h_source.html#l00097">TPeakFitter.h:97</a></div></div>
 <div class="ttc" id="aclass_t_peak_fitter_html_af3cb8abb424bc30197e2597979e0eac1"><div class="ttname"><a href="class_t_peak_fitter.html#af3cb8abb424bc30197e2597979e0eac1">TPeakFitter::fBGToFit</a></div><div class="ttdeci">TF1 * fBGToFit</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8h_source.html#l00085">TPeakFitter.h:85</a></div></div>
-<div class="ttc" id="aclass_t_peak_fitter_html_afbe704f7732f4ca38d73bc0692bf3304"><div class="ttname"><a href="class_t_peak_fitter.html#afbe704f7732f4ca38d73bc0692bf3304">TPeakFitter::UpdateFitterParameters</a></div><div class="ttdeci">void UpdateFitterParameters()</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00268">TPeakFitter.cxx:268</a></div></div>
+<div class="ttc" id="aclass_t_peak_fitter_html_afbe704f7732f4ca38d73bc0692bf3304"><div class="ttname"><a href="class_t_peak_fitter.html#afbe704f7732f4ca38d73bc0692bf3304">TPeakFitter::UpdateFitterParameters</a></div><div class="ttdeci">void UpdateFitterParameters()</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00272">TPeakFitter.cxx:272</a></div></div>
 <div class="ttc" id="anamespace_t_g_r_s_i_functions_html_a558f80b4965f5038faf44c4ebebcb556"><div class="ttname"><a href="namespace_t_g_r_s_i_functions.html#a558f80b4965f5038faf44c4ebebcb556">TGRSIFunctions::CheckParameterErrors</a></div><div class="ttdeci">bool CheckParameterErrors(const TFitResultPtr &amp;fitres, std::string opt=&quot;&quot;)</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -584,7 +588,7 @@ $(document).ready(function(){initNavTree('_t_peak_fitter_8cxx_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_359637ddf5ff0dd5705446986a14d7e9.html">TPeakFitting</a></li><li class="navelem"><a class="el" href="_t_peak_fitter_8cxx.html">TPeakFitter.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:33.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jul 10 2024 00:09:37.</li>
   </ul>
 </div>
 </body>

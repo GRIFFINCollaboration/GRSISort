@@ -2178,12 +2178,12 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_data_parser_8cxx_source.htm
 <div class="line"><a id="l01999" name="l01999"></a><span class="lineno"> 1999</span>   <span class="keywordtype">int</span>                         NumFragsFound = 1;</div>
 <div class="line"><a id="l02000" name="l02000"></a><span class="lineno"> 2000</span>   std::shared_ptr&lt;TEpicsFrag&gt; EXfrag        = std::make_shared&lt;TEpicsFrag&gt;();</div>
 <div class="line"><a id="l02001" name="l02001"></a><span class="lineno"> 2001</span> </div>
-<div class="line"><a id="l02002" name="l02002"></a><span class="lineno"> 2002</span>   EXfrag-&gt;fDaqTimeStamp = midasTime;</div>
-<div class="line"><a id="l02003" name="l02003"></a><span class="lineno"> 2003</span>   EXfrag-&gt;fDaqId        = midasSerialNumber;</div>
+<div class="line"><a id="l02002" name="l02002"></a><span class="lineno"> 2002</span>   EXfrag-&gt;DaqTimeStamp(midasTime);</div>
+<div class="line"><a id="l02003" name="l02003"></a><span class="lineno"> 2003</span>   EXfrag-&gt;DaqId(midasSerialNumber);</div>
 <div class="line"><a id="l02004" name="l02004"></a><span class="lineno"> 2004</span> </div>
 <div class="line"><a id="l02005" name="l02005"></a><span class="lineno"> 2005</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> x = 0; x &lt; size; x++) {</div>
-<div class="line"><a id="l02006" name="l02006"></a><span class="lineno"> 2006</span>      EXfrag-&gt;fData.push_back(data[x]);</div>
-<div class="line"><a id="l02007" name="l02007"></a><span class="lineno"> 2007</span>      EXfrag-&gt;fName.push_back(<a class="code hl_function" href="class_t_epics_frag.html#aec67935b3665146721abd319ed056afe">TEpicsFrag::GetEpicsVariableName</a>(x));</div>
+<div class="line"><a id="l02006" name="l02006"></a><span class="lineno"> 2006</span>      EXfrag-&gt;AddData(data[x]);</div>
+<div class="line"><a id="l02007" name="l02007"></a><span class="lineno"> 2007</span>      EXfrag-&gt;AddName(<a class="code hl_function" href="class_t_epics_frag.html#aec67935b3665146721abd319ed056afe">TEpicsFrag::GetEpicsVariableName</a>(x));</div>
 <div class="line"><a id="l02008" name="l02008"></a><span class="lineno"> 2008</span>   }</div>
 <div class="line"><a id="l02009" name="l02009"></a><span class="lineno"> 2009</span> </div>
 <div class="line"><a id="l02010" name="l02010"></a><span class="lineno"> 2010</span>   <a class="code hl_variable" href="class_t_data_parser.html#a38a48714bdd19302fc1afe41ee511017">fScalerOutputQueue</a>-&gt;Push(EXfrag);</div>
@@ -2581,7 +2581,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_data_parser_8cxx_source.htm
 <div class="ttc" id="aclass_t_p_p_g_data_html_a7d327d10d9acc506a78cefd56b84d49e"><div class="ttname"><a href="class_t_p_p_g_data.html#a7d327d10d9acc506a78cefd56b84d49e">TPPGData::SetNewPPG</a></div><div class="ttdeci">void SetNewPPG(EPpgPattern newPpg)</div><div class="ttdef"><b>Definition</b> <a href="_t_p_p_g_8h_source.html#l00073">TPPG.h:73</a></div></div>
 <div class="ttc" id="aclass_t_p_p_g_data_html_a9d56fa82ab58b5e018f86e7e4308bf71"><div class="ttname"><a href="class_t_p_p_g_data.html#a9d56fa82ab58b5e018f86e7e4308bf71">TPPGData::SetOldPPG</a></div><div class="ttdeci">void SetOldPPG(EPpgPattern oldPpg)</div><div class="ttdef"><b>Definition</b> <a href="_t_p_p_g_8h_source.html#l00089">TPPG.h:89</a></div></div>
 <div class="ttc" id="aclass_t_p_p_g_data_html_afc03ef7c9dada76ba27d3270c998bdb2"><div class="ttname"><a href="class_t_p_p_g_data.html#afc03ef7c9dada76ba27d3270c998bdb2">TPPGData::SetLowTimeStamp</a></div><div class="ttdeci">void SetLowTimeStamp(UInt_t lowTime)</div><div class="ttdef"><b>Definition</b> <a href="_t_p_p_g_8h_source.html#l00063">TPPG.h:63</a></div></div>
-<div class="ttc" id="aclass_t_p_p_g_html_ab5044d9e5187a06be9d3726ffb51c6ec"><div class="ttname"><a href="class_t_p_p_g.html#ab5044d9e5187a06be9d3726ffb51c6ec">TPPG::AddData</a></div><div class="ttdeci">void AddData(TPPGData *pat)</div><div class="ttdef"><b>Definition</b> <a href="_t_p_p_g_8cxx_source.html#l00122">TPPG.cxx:122</a></div></div>
+<div class="ttc" id="aclass_t_p_p_g_html_ab5044d9e5187a06be9d3726ffb51c6ec"><div class="ttname"><a href="class_t_p_p_g.html#ab5044d9e5187a06be9d3726ffb51c6ec">TPPG::AddData</a></div><div class="ttdeci">void AddData(TPPGData *pat)</div><div class="ttdef"><b>Definition</b> <a href="_t_p_p_g_8cxx_source.html#l00121">TPPG.cxx:121</a></div></div>
 <div class="ttc" id="aclass_t_parsing_diagnostics_html_ac9f929b1087f37a3b0502ce8bb17de8c"><div class="ttname"><a href="class_t_parsing_diagnostics.html#ac9f929b1087f37a3b0502ce8bb17de8c">TParsingDiagnostics::BadFragment</a></div><div class="ttdeci">void BadFragment(Short_t detType)</div><div class="ttdef"><b>Definition</b> <a href="_t_parsing_diagnostics_8h_source.html#l00109">TParsingDiagnostics.h:109</a></div></div>
 <div class="ttc" id="aclass_t_parsing_diagnostics_html_adfacb29ac8d420fcc4a7f51cfc392a14"><div class="ttname"><a href="class_t_parsing_diagnostics.html#adfacb29ac8d420fcc4a7f51cfc392a14">TParsingDiagnostics::GoodFragment</a></div><div class="ttdeci">void GoodFragment(const std::shared_ptr&lt; const TFragment &gt; &amp;)</div><div class="ttdef"><b>Definition</b> <a href="_t_parsing_diagnostics_8cxx_source.html#l00119">TParsingDiagnostics.cxx:119</a></div></div>
 <div class="ttc" id="aclass_t_rate_scaler_queue_html_a4ccd126ea8155992c7d8c364051a9862"><div class="ttname"><a href="class_t_rate_scaler_queue.html#a4ccd126ea8155992c7d8c364051a9862">TRateScalerQueue::Add</a></div><div class="ttdeci">void Add(TScalerData *)</div><div class="ttdef"><b>Definition</b> <a href="_t_scaler_queue_8cxx_source.html#l00286">TScalerQueue.cxx:286</a></div></div>
@@ -2598,7 +2598,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_data_parser_8cxx_source.htm
 <div class="ttc" id="aclass_t_scaler_data_html_afe998545838540dc416c5b7f58f1f951"><div class="ttname"><a href="class_t_scaler_data.html#afe998545838540dc416c5b7f58f1f951">TScalerData::SetHighTimeStamp</a></div><div class="ttdeci">void SetHighTimeStamp(UInt_t highTime)</div><div class="ttdef"><b>Definition</b> <a href="_t_scaler_8h_source.html#l00048">TScaler.h:48</a></div></div>
 <div class="ttc" id="aclass_t_singleton_html_a58e2a8e03fa6a7c20638044626add93a"><div class="ttname"><a href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TSingleton&lt; TRunInfo &gt;::Get</a></div><div class="ttdeci">static TRunInfo * Get(bool verbose=false)</div><div class="ttdef"><b>Definition</b> <a href="_t_singleton_8h_source.html#l00033">TSingleton.h:33</a></div></div>
 <div class="ttc" id="aclass_t_x_m_l_odb_html"><div class="ttname"><a href="class_t_x_m_l_odb.html">TXMLOdb</a></div><div class="ttdef"><b>Definition</b> <a href="_t_x_m_l_odb_8h_source.html#l00031">TXMLOdb.h:31</a></div></div>
-<div class="ttc" id="aclass_t_x_m_l_odb_html_a650d3711c5b68269118df36889f3f087"><div class="ttname"><a href="class_t_x_m_l_odb.html#a650d3711c5b68269118df36889f3f087">TXMLOdb::FindPath</a></div><div class="ttdeci">TXMLNode * FindPath(const char *path, TXMLNode *node=nullptr)</div><div class="ttdef"><b>Definition</b> <a href="_t_x_m_l_odb_8cxx_source.html#l00077">TXMLOdb.cxx:77</a></div></div>
+<div class="ttc" id="aclass_t_x_m_l_odb_html_a650d3711c5b68269118df36889f3f087"><div class="ttname"><a href="class_t_x_m_l_odb.html#a650d3711c5b68269118df36889f3f087">TXMLOdb::FindPath</a></div><div class="ttdeci">TXMLNode * FindPath(const char *path, TXMLNode *node=nullptr)</div><div class="ttdef"><b>Definition</b> <a href="_t_x_m_l_odb_8cxx_source.html#l00075">TXMLOdb.cxx:75</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -2606,7 +2606,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_data_parser_8cxx_source.htm
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_04ded5cb9506aadc0b6d1c08d3b0ca72.html">libraries</a></li><li class="navelem"><a class="el" href="dir_34f699861ee5810f4e10c4eefa95da9a.html">TGRSIDataParser</a></li><li class="navelem"><a class="el" href="_t_g_r_s_i_data_parser_8cxx.html">TGRSIDataParser.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:32.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jul 10 2024 00:09:36.</li>
   </ul>
 </div>
 </body>

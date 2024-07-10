@@ -153,7 +153,7 @@ $(document).ready(function(){initNavTree('_t_s_r_i_m_8cxx_source.html',''); init
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>   std::string line;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>   std::string word;</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>   <span class="keywordtype">double</span>      density_scale = 0.;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>   <span class="keywordtype">double</span>      temp = 0.;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>   <span class="keywordtype">double</span>      temp          = 0.;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>   std::vector&lt;double&gt;      number_input;</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>   std::vector&lt;double&gt;      dEdX_temp;</div>
@@ -329,7 +329,7 @@ $(document).ready(function(){initNavTree('_t_s_r_i_m_8cxx_source.html',''); init
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>   <span class="keywordtype">double</span> energy_temp = energy;</div>
 <div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>   <span class="keywordtype">double</span> xstep       = stepsize;</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>   <span class="keywordtype">double</span> xtot        = 0.0;                                                 <span class="comment">// MAKE XSTEP SMALLER FOR BETTER RESULTS. 1UM SHOULD BE FINE ... UNLESS YOU ARE AT THE BRAGG PEAK ??</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>   <span class="keywordtype">double</span> xtot        = 0.0;                                                  <span class="comment">// MAKE XSTEP SMALLER FOR BETTER RESULTS. 1UM SHOULD BE FINE ... UNLESS YOU ARE AT THE BRAGG PEAK ??</span></div>
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>   energy_temp -= fmod(thickness, xstep) * <a class="code hl_variable" href="class_t_s_r_i_m.html#ad7e65d17ef1f70683d31f5b356048ba0">fsEnergyLoss</a>-&gt;Eval(energy_temp);   <span class="comment">// get rid of fractional distance</span></div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>   xtot += fmod(thickness, xstep);</div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
@@ -377,7 +377,7 @@ $(document).ready(function(){initNavTree('_t_s_r_i_m_8cxx_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_b8a6b11093ec7fc73cd5fa39ac4363df.html">TSRIM</a></li><li class="navelem"><a class="el" href="_t_s_r_i_m_8cxx.html">TSRIM.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 9 2024 22:58:33.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jul 10 2024 00:09:37.</li>
   </ul>
 </div>
 </body>
