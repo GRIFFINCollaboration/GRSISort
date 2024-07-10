@@ -348,7 +348,7 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
 
    // all k's are needed squared so we square all elements of k
    std::vector<Long_t> kSquared = kValues;
-   for(int64_t& item : kSquared) {
+   for(auto& item : kSquared) {
       item = item * item;
    }
 
