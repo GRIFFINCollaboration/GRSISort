@@ -3,9 +3,9 @@ name: CMake using downloaded binary of ROOT
 on: 
   workflow_dispatch:
   push:
-    branches: [ "cmake" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "cmake" ]
+    branches: [ "main" ]
 
 jobs:
   build:
