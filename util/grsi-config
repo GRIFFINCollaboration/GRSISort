@@ -47,10 +47,11 @@ fi
 libdir=$GRSISYS/lib
 incdir=$GRSISYS/include
 
-# the repetition of '-lTGRSIint -lTFormat' is needed for debian-style OSes like ubuntu (see issue #979) - hopefully not needed anymore with the resolving of circular dependencies for cmake?
-grsilibs="-lTFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction -lTPeakFitting"
-detlibs="-lTSuppressed -lTBgo -lTPulseAnalyzer -lGROOT -lTGRSIFit -lTNucleus"
-grsimore="-lTRawFile -lTDataParser -lTGUI"
+# lists of libraries, these are used to form the "-l<library name>" flags for the linker
+grsilibs="TGRSIInt TFormat TLoops TKinematics TSRIM TBetaDecay TCal TReaction TPeakFitting"
+detlibs="TSuppressed TBgo TPulseAnalyzer GROOT TGRSIFit TNucleus"
+grsimore="TRawFile TDataParser TGUI"
+
 if [ "$(root-config --has-xml)" == "yes" ]
 then XMLlib="-lXMLParser -lXMLIO"
 else XMLlib=""
@@ -117,10 +118,11 @@ while test $# -gt 0; do
 				continue
 			fi
 			out=$"$out -L${libdir}"
-			if [ -e ${libdir}/libTGRSIint.so ] || [ -e ${libdir}/libTGRSIint.dylib ] ; then
-				out=$"$out -lTGRSIint"
-			fi
-			out=$"$out $grsilibs $detlibs "
+			for library in $grsilibs $detlibs ; do
+				if [ -e ${libdir}/lib${library}.so ] || [ -e ${libdir}/lib${library}.dylib ] ; then
+					out=$"$out -l${library}"
+				fi
+			done
 			;;
 		--all-libs)
 			if test "$alllibsout" = "yes" ; then
@@ -129,13 +131,20 @@ while test $# -gt 0; do
 			fi
 			alllibsout="yes"
 			if test "$libsout" = "yes" ; then
-				out="$out $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
+				for library in $grsimore ; do
+					if [ -e ${libdir}/lib${library}.so ] || [ -e ${libdir}/lib${library}.dylib ] ; then
+						out=$"$out -l${library}"
+					fi
+				done
+				out="$out $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
 			else
 				out=$"$out -L${libdir}"
-				if [ -e ${libdir}/libTGRSIint.so ] || [ -e ${libdir}/libTGRSIint.dylib ] ; then
-					out=$"$out -lTGRSIint"
-				fi
-				out=$"$out $grsilibs $detlibs $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
+				for library in $grsilibs $detlibs $grsimore ; do
+					if [ -e ${libdir}/lib${library}.so ] || [ -e ${libdir}/lib${library}.dylib ] ; then
+						out=$"$out -l${library}"
+					fi
+				done
+				out=$"$out $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
 			fi
 			if [ "$(root-config --has-mathmore)" == "yes" ]; then
 				out="$out -lMathMore"
