@@ -47,8 +47,8 @@ fi
 libdir=$GRSISYS/lib
 incdir=$GRSISYS/include
 
-# the repitition of '-lTGRSIint -lTFormat' is needed for debian-style OSes like ubuntu (see issue #979)
-grsilibs="-lTGRSIint -lTFormat -lTGRSIint -lTFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction -lTPeakFitting"
+# the repetition of '-lTGRSIint -lTFormat' is needed for debian-style OSes like ubuntu (see issue #979) - hopefully not needed anymore with the resolving of circular dependencies for cmake?
+grsilibs="-lTFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction -lTPeakFitting"
 detlibs="-lTSuppressed -lTBgo -lTPulseAnalyzer -lGROOT -lTGRSIFit -lTNucleus"
 grsimore="-lTRawFile -lTDataParser -lTGUI"
 if [ "$(root-config --has-xml)" == "yes" ]
@@ -116,7 +116,11 @@ while test $# -gt 0; do
 				shift
 				continue
 			fi
-			out=$"$out -L${libdir} $grsilibs $detlibs "
+			out=$"$out -L${libdir}"
+			if [ -e ${libdir}/libTGRSIint.so ] || [ -e ${libdir}/libTGRSIint.dylib ] ; then
+				out=$"$out -lTGRSIint"
+			fi
+			out=$"$out $grsilibs $detlibs "
 			;;
 		--all-libs)
 			if test "$alllibsout" = "yes" ; then
@@ -127,7 +131,11 @@ while test $# -gt 0; do
 			if test "$libsout" = "yes" ; then
 				out="$out $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
 			else
-				out="$out -L${libdir} $grsilibs $detlibs $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
+				out=$"$out -L${libdir}"
+				if [ -e ${libdir}/libTGRSIint.so ] || [ -e ${libdir}/libTGRSIint.dylib ] ; then
+					out=$"$out -lTGRSIint"
+				fi
+				out=$"$out $grsilibs $detlibs $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
 			fi
 			if [ "$(root-config --has-mathmore)" == "yes" ]; then
 				out="$out -lMathMore"
@@ -139,6 +147,8 @@ while test $# -gt 0; do
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
 				out="$out $($GRSISYS/$lib/util/config --cflags)"
+			elif [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
+				out="$out $($GRSISYS/_deps/$lib-src/util/config --cflags)"
 			fi
 			;;
 		--*-incdir)
@@ -147,6 +157,8 @@ while test $# -gt 0; do
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
 				out="$out $($GRSISYS/$lib/util/config --incdir)"
+			elif [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
+				out="$out $($GRSISYS/_deps/$lib-src/util/config --incdir)"
 			fi
 			;;
 		--*-libs)
@@ -155,6 +167,8 @@ while test $# -gt 0; do
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
 				out="$out $($GRSISYS/$lib/util/config --libs)"
+			elif [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
+				out="$out $($GRSISYS/_deps/$lib-src/util/config --libs)"
 			fi
 			;;
 		--root)
