@@ -262,7 +262,7 @@ $(document).ready(function(){initNavTree('_t_data_frame_library_8cxx_source.html
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>      <span class="keywordflow">throw</span> std::runtime_error(str.str());</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>   }</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>   std::cout &lt;&lt; <a class="code hl_define" href="_globals_8h.html#a9abe1243cfcf86c811d8321920b26fe2">DCYAN</a> &lt;&lt; <span class="stringliteral">&quot;----------  starting linking user code  -----------------&quot;</span> &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>   std::stringstream().swap(command); <span class="comment">// create new (empty) stringstream and swap it with command this resets the underlying string and all error flags</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>   std::stringstream().swap(command);   <span class="comment">// create new (empty) stringstream and swap it with command this resets the underlying string and all error flags</span></div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>   command &lt;&lt; <span class="stringliteral">&quot;g++ -fPIC -g -shared $(grsi-config --libs --&quot;</span> &lt;&lt; parserLibraryName &lt;&lt; <span class="stringliteral">&quot;-libs) $(root-config --glibs) -o &quot;</span> &lt;&lt; sharedLibrary &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; objectFile;</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>   <span class="keywordflow">if</span>(std::system(command.str().c_str()) != 0) {</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      std::stringstream str;</div>
@@ -301,7 +301,7 @@ $(document).ready(function(){initNavTree('_t_data_frame_library_8cxx_source.html
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_2b08b36851fcb6a7439555c8d93f536c.html">TFormat</a></li><li class="navelem"><a class="el" href="_t_data_frame_library_8cxx.html">TDataFrameLibrary.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 12 2024 00:24:00.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 12 2024 00:34:25.</li>
   </ul>
 </div>
 </body>
