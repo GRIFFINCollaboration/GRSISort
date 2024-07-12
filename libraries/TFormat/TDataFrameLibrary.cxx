@@ -142,18 +142,22 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
    std::string       parserLibraryName = parserLibraryPath.substr(parserLibraryPath.find_last_of('/') + 4, parserLibraryPath.find_last_of('.') - parserLibraryPath.find_last_of('/') - 4);
    std::string       objectFile        = path.replace(dot, std::string::npos, ".o");
    std::stringstream command;
-   command << "g++ -c -fPIC -g `grsi-config --cflags --" << parserLibraryName << "-cflags` `root-config --cflags --glibs` -I" << includePath << " -o " << objectFile << " " << sourceFile << std::endl;
+   command << "g++ -c -fPIC -g $(grsi-config --cflags --" << parserLibraryName << "-cflags) $(root-config --cflags) -I" << includePath;
+#ifdef OS_DARWIN
+	command << " -I/opt/local/include ";
+#endif
+   command << " -o " << objectFile << " " << sourceFile;
    if(std::system(command.str().c_str()) != 0) {
       std::stringstream str;
-      str << "Unable to compile source file " << sourceFile << " using '" << command.str() << "'" << std::endl;
+      str << "Unable to compile source file " << sourceFile << " using " << DBLUE << "'" << command.str() << "'" << RESET_COLOR << std::endl;
       throw std::runtime_error(str.str());
    }
    std::cout << DCYAN << "----------  starting linking user code  -----------------" << RESET_COLOR << std::endl;
-   command.clear();
-   command << "g++ -fPIC -g -shared -o " << sharedLibrary << " " << objectFile << std::endl;
+	std::stringstream().swap(command); // create new (empty) stringstream and swap it with command this resets the underlying string and all error flags
+   command << "g++ -fPIC -g -shared $(grsi-config --libs --" << parserLibraryName << "-libs) $(root-config --glibs) -o " << sharedLibrary << " " << objectFile;
    if(std::system(command.str().c_str()) != 0) {
       std::stringstream str;
-      str << "Unable to link shared object library " << sharedLibrary << " using '" << command.str() << "'" << std::endl;
+      str << "Unable to link shared object library " << sharedLibrary << " using " << DBLUE << "'" << command.str() << "'" << RESET_COLOR << std::endl;
       throw std::runtime_error(str.str());
    }
    std::cout << DCYAN << "----------  done compiling user code  -------------------" << RESET_COLOR << std::endl;
