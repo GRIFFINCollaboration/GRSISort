@@ -394,7 +394,10 @@ FetchContent_MakeAvailable(
 #set_property(TARGET GRSIData APPEND PROPERTY ADDITIONAL_CLEAN_FILES
 #	${CMAKE_CURRENT_BINARY_DIR}/_deps
 #	)
-add_dependencies(GRSIData grsisort)
+add_dependencies(GRSIData grsisort ${UTIL_NAMES})
+if(${ROOT_proof_FOUND})
+	add_dependencies(GRSIData grsiproof)
+endif()
 
 #----------------------------------------------------------------------------
 FetchContent_Declare(
@@ -407,7 +410,10 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(
 	ILLData
 	)
-add_dependencies(ILLData grsisort)
+add_dependencies(ILLData grsisort ${UTIL_NAMES})
+if(${ROOT_proof_FOUND})
+	add_dependencies(ILLData grsiproof)
+endif()
 
 #----------------------------------------------------------------------------
 FetchContent_Declare(
@@ -420,7 +426,10 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(
 	HILData
 	)
-add_dependencies(HILData grsisort)
+add_dependencies(HILData grsisort ${UTIL_NAMES})
+if(${ROOT_proof_FOUND})
+	add_dependencies(HILData grsiproof)
+endif()
 
 #----------------------------------------------------------------------------
 FetchContent_Declare(
@@ -433,7 +442,10 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(
 	iThembaData
 	)
-add_dependencies(iThembaData grsisort)
+add_dependencies(iThembaData grsisort ${UTIL_NAMES})
+if(${ROOT_proof_FOUND})
+	add_dependencies(iThembaData grsiproof)
+endif()
 
 #----------------------------------------------------------------------------
 # create a compile_commands.json file which can be used for clang-tidy
