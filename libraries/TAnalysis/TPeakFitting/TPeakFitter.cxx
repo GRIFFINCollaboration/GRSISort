@@ -230,7 +230,7 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
             peak_func->SetParameter(i, fTotalFitFunction->GetParameter(param_counter));
             peak_func->SetParError(i, fTotalFitFunction->GetParError(param_counter));
             Double_t low = 0.;
-				Double_t high = 0.;;
+				Double_t high = 0.;
             fTotalFitFunction->GetParLimits(param_counter, low, high);
             peak_func->SetParLimits(i, low, high);
             ++param_counter;
