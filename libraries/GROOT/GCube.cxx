@@ -29,62 +29,43 @@ class DifferentLabels : public std::exception {
 };
 
 GCube::GCube()
+   : fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
 {
-   fDimension = 3;
-   fTsumwy    = 0;
-   fTsumwy2   = 0;
-   fTsumwxy   = 0;
-   fMatrix    = nullptr;
 }
 
 // we have to repeat the code from the default constructor here, because calling the TH1 constructor and the GCube
 // default constructor gives an error
 GCube::GCube(const char* name, const char* title, Int_t nbins, Double_t low, Double_t up)
-   : TH1(name, title, nbins, low, up)
+   : TH1(name, title, nbins, low, up), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
 {
-   fDimension = 3;
-   fTsumwy    = 0;
-   fTsumwy2   = 0;
-   fTsumwxy   = 0;
-   fMatrix    = nullptr;
    fYaxis.Set(nbins, low, up);
    // TH1 constructor sets fNcells to nbins+2
    // we need (nbins+2)*((nbins+2)+1)*((nbins+2)+2)/6 cells
    fNcells = (fNcells * (nbins + 3) * (nbins + 4)) / 6;
 }
 
-GCube::GCube(const char* name, const char* title, Int_t nbins, const Double_t* bins) : TH1(name, title, nbins, bins)
+GCube::GCube(const char* name, const char* title, Int_t nbins, const Double_t* bins)
+	: TH1(name, title, nbins, bins), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
 {
-   fDimension = 3;
-   fTsumwy    = 0;
-   fTsumwy2   = 0;
-   fTsumwxy   = 0;
-   fMatrix    = nullptr;
    fYaxis.Set(nbins, bins);
    // TH1 constructor sets fNcells to nbins+2
    // we need (nbins+2)*((nbins+2)+1)*((nbins+2)+2)/6 cells
    fNcells = (fNcells * (nbins + 3) * (nbins + 4)) / 6;
 }
 
-GCube::GCube(const char* name, const char* title, Int_t nbins, const Float_t* bins) : TH1(name, title, nbins, bins)
+GCube::GCube(const char* name, const char* title, Int_t nbins, const Float_t* bins)
+	: TH1(name, title, nbins, bins), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
 {
-   fDimension = 3;
-   fTsumwy    = 0;
-   fTsumwy2   = 0;
-   fTsumwxy   = 0;
-   fMatrix    = nullptr;
    fYaxis.Set(nbins, bins);
    // TH1 constructor sets fNcells to nbins+2
    // we need (nbins+2)*((nbins+2)+1)*((nbins+2)+2)/6 cells
    fNcells = (fNcells * (nbins + 3) * (nbins + 4)) / 6;
 }
 
-GCube::GCube(const GCube& rhs) : TH1()
+GCube::GCube(const GCube& rhs) : TH1() // calling TH1 constuctor to shut up g++, can't call TH1(rhs) because it's private for some reason
 {
    rhs.Copy(*this);
 }
-
-GCube::~GCube() = default;
 
 Int_t GCube::BufferEmpty(Int_t action)
 {
@@ -98,7 +79,7 @@ Int_t GCube::BufferEmpty(Int_t action)
       return 0;
    }
 
-   Int_t nbEntries = static_cast<Int_t>(fBuffer[0]);
+   auto nbEntries = static_cast<Int_t>(fBuffer[0]);
    if(nbEntries == 0) {
       return 0;
    }
@@ -204,7 +185,7 @@ Int_t GCube::BufferFill(Double_t x, Double_t y, Double_t z, Double_t w)
       return -3;
    }
 
-   Int_t nbEntries = static_cast<Int_t>(fBuffer[0]);
+   auto nbEntries = static_cast<Int_t>(fBuffer[0]);
    if(nbEntries < 0) {
       nbEntries  = -nbEntries;
       fBuffer[0] = nbEntries;
@@ -339,7 +320,9 @@ Int_t GCube::Fill(Double_t x, Double_t y, Double_t z)
       return BufferFill(x, y, z, 1);
    }
 
-   Int_t binx, biny, binz, bin;
+   Int_t binx = 0;
+	Int_t biny = 0;
+	Int_t binz = 0;
    fEntries++;
    // go through all orderings of x,y,z to find right combination
    if(z <= y && y <= x) {
@@ -377,9 +360,9 @@ Int_t GCube::Fill(Double_t x, Double_t y, Double_t z)
    if(binx < 0 || biny < 0 || binz < 0) {
       return -1;
    }
-   bin = biny * (2 * fXaxis.GetNbins() - biny + 3) / 2 + binx - binz +
-         (fXaxis.GetNbins() + 2) * (fXaxis.GetNbins() + 3) * (fXaxis.GetNbins() + 4) / 6 -
-         (fXaxis.GetNbins() + 2 - binz) * (fXaxis.GetNbins() + 3 - binz) * (fXaxis.GetNbins() + 4 - binz) / 6 - biny;
+   Int_t bin = biny * (2 * fXaxis.GetNbins() - biny + 3) / 2 + binx - binz +
+               (fXaxis.GetNbins() + 2) * (fXaxis.GetNbins() + 3) * (fXaxis.GetNbins() + 4) / 6 -
+               (fXaxis.GetNbins() + 2 - binz) * (fXaxis.GetNbins() + 3 - binz) * (fXaxis.GetNbins() + 4 - binz) / 6 - biny;
    std::cout << "binx,y,z = " << binx << "," << biny << "," << binz << " => bin = " << bin << std::endl;
    bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
          binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
@@ -428,7 +411,9 @@ Int_t GCube::Fill(Double_t x, Double_t y, Double_t z, Double_t w)
       return BufferFill(x, y, z, 1);
    }
 
-   Int_t binx, biny, binz, bin;
+   Int_t binx = 0;
+	Int_t biny = 0;
+	Int_t binz = 0;
    fEntries++;
    // go through all orderings of x,y,z to find right combination
    if(z <= y && y <= x) {
@@ -466,9 +451,9 @@ Int_t GCube::Fill(Double_t x, Double_t y, Double_t z, Double_t w)
    if(binx < 0 || biny < 0 || binz < 0) {
       return -1;
    }
-   bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
-         binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
-                 10. / 3.);
+   Int_t bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
+               binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
+                       10. / 3.);
    AddBinContent(bin, w);
    if(fSumw2.fN != 0) {
       fSumw2.fArray[bin] += w * w;
@@ -519,7 +504,9 @@ Int_t GCube::Fill(const char* namex, const char* namey, const char* namez, Doubl
    // by w^2 in the cell corresponding to x,y.
    //
 
-   Int_t binx, biny, binz, bin;
+   Int_t binx = 0;
+	Int_t biny = 0;
+	Int_t binz = 0;
    fEntries++;
    binx = fXaxis.FindBin(namex);
    biny = fYaxis.FindBin(namey);
@@ -538,9 +525,9 @@ Int_t GCube::Fill(const char* namex, const char* namey, const char* namez, Doubl
       std::swap(biny, binz);
    }
 
-   bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
-         binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
-                 10. / 3.);
+   Int_t bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
+               binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
+                       10. / 3.);
    AddBinContent(bin, w);
    if(fSumw2.fN != 0) {
       fSumw2.fArray[bin] += w * w;
@@ -586,15 +573,13 @@ void GCube::FillRandom(const char* fname, Int_t ntimes, TRandom* rng)
    ///*-*
    ///*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*
 
-   Int_t    bin, binx, biny, binz, ibin;
-   Double_t r1, x, y, z;
    //*-*- Search for fname in the list of ROOT defined functions
    TObject* fobj = gROOT->GetFunction(fname);
    if(fobj == nullptr) {
       Error("FillRandom", "Unknown function: %s", fname);
       return;
    }
-   TF3* f1 = static_cast<TF3*>(fobj);
+   auto* f1 = static_cast<TF3*>(fobj);
    if(f1 == nullptr) {
       Error("FillRandom", "Function: %s is not a TF3", fname);
       return;
@@ -608,15 +593,14 @@ void GCube::FillRandom(const char* fname, Int_t ntimes, TRandom* rng)
    Int_t nbins  = nxy * nbinsz;
 
    auto* integral = new Double_t[nbins + 1];
-   ibin           = 0;
+   Int_t ibin     = 0;
    integral[ibin] = 0;
-   for(binz = 1; binz <= nbinsz; ++binz) {
-      for(biny = 1; biny <= nbinsy; ++biny) {
-         for(binx = 1; binx <= nbinsx; ++binx) {
+   for(Int_t binz = 1; binz <= nbinsz; ++binz) {
+      for(Int_t biny = 1; biny <= nbinsy; ++biny) {
+         for(Int_t binx = 1; binx <= nbinsx; ++binx) {
             ++ibin;
-            Double_t fint =
-               f1->Integral(fXaxis.GetBinLowEdge(binx), fXaxis.GetBinUpEdge(binx), fYaxis.GetBinLowEdge(biny),
-                            fYaxis.GetBinUpEdge(biny), fZaxis.GetBinLowEdge(binz), fZaxis.GetBinUpEdge(binz));
+            Double_t fint  = f1->Integral(fXaxis.GetBinLowEdge(binx), fXaxis.GetBinUpEdge(binx), fYaxis.GetBinLowEdge(biny),
+                                          fYaxis.GetBinUpEdge(biny), fZaxis.GetBinLowEdge(binz), fZaxis.GetBinUpEdge(binz));
             integral[ibin] = integral[ibin - 1] + fint;
          }
       }
@@ -628,21 +612,21 @@ void GCube::FillRandom(const char* fname, Int_t ntimes, TRandom* rng)
       Error("FillRandom", "Integral = zero");
       return;
    }
-   for(bin = 1; bin <= nbins; ++bin) {
+   for(Int_t bin = 1; bin <= nbins; ++bin) {
       integral[bin] /= integral[nbins];
    }
 
    //*-*--------------Start main loop ntimes
    for(int loop = 0; loop < ntimes; ++loop) {
-      r1   = (rng != nullptr) ? rng->Rndm(loop) : gRandom->Rndm(loop);
+      Double_t r1   = (rng != nullptr) ? rng->Rndm(loop) : gRandom->Rndm(loop);
       ibin = TMath::BinarySearch(nbins, &integral[0], r1);
-      binz = ibin / nxy;
-      biny = (ibin - nxy * binz) / nbinsx;
-      binx = 1 + ibin - nbinsx * (biny + nbinsy * binz);
+      Int_t binz = ibin / nxy;
+      Int_t biny = (ibin - nxy * binz) / nbinsx;
+      Int_t binx = 1 + ibin - nbinsx * (biny + nbinsy * binz);
       ++biny;
-      x = fXaxis.GetBinCenter(binx);
-      y = fYaxis.GetBinCenter(biny);
-      z = fZaxis.GetBinCenter(binz);
+      Double_t x = fXaxis.GetBinCenter(binx);
+      Double_t y = fYaxis.GetBinCenter(biny);
+      Double_t z = fZaxis.GetBinCenter(binz);
       Fill(x, y, z);
    }
    delete[] integral;
@@ -681,8 +665,10 @@ void GCube::FillRandom(TH1* h, Int_t ntimes, TRandom* rng)
       return;
    }
 
-   Double_t x, y, z;
-   TH3*     h3 = static_cast<TH3*>(h);
+   Double_t x = 0.;
+	Double_t y = 0.;
+	Double_t z = 0.;
+   auto*     h3 = static_cast<TH3*>(h);
    for(int loop = 0; loop < ntimes; ++loop) {
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 24, 0)
       h3->GetRandom3(x, y, z);
@@ -703,11 +689,11 @@ Int_t GCube::FindFirstBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, I
       axis = 1;
    }
    Int_t nbinsx = fXaxis.GetNbins();
-   if(lastBin > firstBin && lastBin < nbinsx) nbinsx = lastBin;
+   if(lastBin > firstBin && lastBin < nbinsx) { nbinsx = lastBin; }
    Int_t nbinsy = fYaxis.GetNbins();
-   if(lastBin > firstBin && lastBin < nbinsy) nbinsy = lastBin;
+   if(lastBin > firstBin && lastBin < nbinsy) { nbinsy = lastBin; }
    Int_t nbinsz = fZaxis.GetNbins();
-   if(lastBin > firstBin && lastBin < nbinsz) nbinsz = lastBin;
+   if(lastBin > firstBin && lastBin < nbinsz) { nbinsz = lastBin; }
    if(axis == 1) {
       for(Int_t binx = firstBin; binx <= nbinsx; ++binx) {
          for(Int_t biny = firstBin; biny <= nbinsy; ++biny) {
@@ -752,11 +738,11 @@ Int_t GCube::FindLastBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, In
       axis = 1;
    }
    Int_t nbinsx = fXaxis.GetNbins();
-   if(lastBin > firstBin && lastBin < nbinsx) nbinsx = lastBin;
+   if(lastBin > firstBin && lastBin < nbinsx) { nbinsx = lastBin; }
    Int_t nbinsy = fYaxis.GetNbins();
-   if(lastBin > firstBin && lastBin < nbinsy) nbinsy = lastBin;
+   if(lastBin > firstBin && lastBin < nbinsy) { nbinsy = lastBin; }
    Int_t nbinsz = fZaxis.GetNbins();
-   if(lastBin > firstBin && lastBin < nbinsz) nbinsz = lastBin;
+   if(lastBin > firstBin && lastBin < nbinsz) { nbinsz = lastBin; }
    if(axis == 1) {
       for(Int_t binx = nbinsx; binx >= firstBin; --binx) {
          for(Int_t biny = firstBin; biny <= nbinsy; ++biny) {
@@ -864,17 +850,16 @@ void GCube::FitSlicesZ(TF1* f1, Int_t binminx, Int_t binmaxx, Int_t binminy, Int
    f1->GetParameters(parsave);
 
    // Create one 2-d histogram for each function parameter
-   Int_t          ipar;
-   char           name[80], title[80];
+   char           name[80];
+	char           title[80];
    TH2D*          hlist[25];
    const TArrayD* xbins = fXaxis.GetXbins();
    const TArrayD* ybins = fYaxis.GetXbins();
-   for(ipar = 0; ipar < npar; ++ipar) {
+   for(Int_t ipar = 0; ipar < npar; ++ipar) {
       snprintf(name, 80, "%s_%d", GetName(), ipar);
       snprintf(title, 80, "Fitted value of par[%d]=%s", ipar, f1->GetParName(ipar));
       if(xbins->fN == 0) {
-         hlist[ipar] = new TH2D(name, title, nbinsx, fXaxis.GetXmin(), fXaxis.GetXmax(), nbinsy, fYaxis.GetXmin(),
-                                fYaxis.GetXmax());
+         hlist[ipar] = new TH2D(name, title, nbinsx, fXaxis.GetXmin(), fXaxis.GetXmax(), nbinsy, fYaxis.GetXmin(), fYaxis.GetXmax());
       } else {
          hlist[ipar] = new TH2D(name, title, nbinsx, xbins->fArray, nbinsy, ybins->fArray);
       }
@@ -882,20 +867,18 @@ void GCube::FitSlicesZ(TF1* f1, Int_t binminx, Int_t binmaxx, Int_t binminy, Int
       hlist[ipar]->GetYaxis()->SetTitle(fYaxis.GetTitle());
    }
    snprintf(name, 80, "%s_chi2", GetName());
-   auto* hchi2 = new TH2D(name, "chisquare", nbinsx, fXaxis.GetXmin(), fXaxis.GetXmax(), nbinsy, fYaxis.GetXmin(),
-                          fYaxis.GetXmax());
+   auto* hchi2 = new TH2D(name, "chisquare", nbinsx, fXaxis.GetXmin(), fXaxis.GetXmax(), nbinsy, fYaxis.GetXmin(), fYaxis.GetXmax());
 
    // Loop on all cells in X,Y generate a projection along Z
    auto* hpz = new TH1D("R_temp", "_temp", nbinsz, fZaxis.GetXmin(), fZaxis.GetXmax());
-   Int_t bin, binx, biny, binz;
-   for(biny = binminy; biny <= binmaxy; biny++) {
+   for(Int_t biny = binminy; biny <= binmaxy; biny++) {
       Float_t y = fYaxis.GetBinCenter(biny);
-      for(binx = binminx; binx <= binmaxx; binx++) {
+      for(Int_t binx = binminx; binx <= binmaxx; binx++) {
          Float_t x = fXaxis.GetBinCenter(binx);
          hpz->Reset();
          Int_t nfill = 0;
-         for(binz = 1; binz <= nbinsz; binz++) {
-            bin       = GetBin(binx, biny, binz);
+         for(Int_t binz = 1; binz <= nbinsz; binz++) {
+            Int_t bin = GetBin(binx, biny, binz);
             Float_t w = RetrieveBinContent(bin);
             if(w == 0) {
                continue;
@@ -911,7 +894,7 @@ void GCube::FitSlicesZ(TF1* f1, Int_t binminx, Int_t binmaxx, Int_t binminy, Int
          hpz->Fit(fname, option);
          Int_t npfits = f1->GetNumberFitPoints();
          if(npfits > npar && npfits >= cut) {
-            for(ipar = 0; ipar < npar; ipar++) {
+            for(Int_t ipar = 0; ipar < npar; ipar++) {
                hlist[ipar]->Fill(x, y, f1->GetParameter(ipar));
                hlist[ipar]->SetBinError(binx, biny, f1->GetParError(ipar));
             }
@@ -1011,11 +994,11 @@ Double_t GCube::GetBinWithContent2(Double_t c, Int_t& binx, Int_t& biny, Int_t& 
    if(lastzbin < firstzbin) {
       lastzbin = fZaxis.GetNbins();
    }
-   Double_t diff, curmax = 1.e240;
+   Double_t curmax = 1.e240;
    for(Int_t k = firstzbin; k <= lastzbin; k++) {
       for(Int_t j = firstybin; j <= lastybin; j++) {
          for(Int_t i = firstxbin; i <= lastxbin; i++) {
-            diff = TMath::Abs(GetBinContent(i, j, k) - c);
+            Double_t diff = TMath::Abs(GetBinContent(i, j, k) - c);
             if(diff <= 0) {
                binx = i;
                biny = j;
@@ -1065,8 +1048,8 @@ Double_t GCube::GetCovariance(Int_t axis1, Int_t axis2) const
       Error("GetCovariance", "Wrong parameters");
       return 0;
    }
-   Double_t stats[kNstat];
-   GetStats(stats);
+	std::array<Double_t, kNstat> stats;
+   GetStats(stats.data());
    Double_t sumw   = stats[0];
    Double_t sumw2  = stats[1];
    Double_t sumwx  = stats[2];
@@ -1114,7 +1097,7 @@ void GCube::GetRandom3(Double_t& x, Double_t& y, Double_t& z)
    Int_t    nbinsz = GetNbinsZ();
    Int_t    nxy    = nbinsx * nbinsy;
    Int_t    nbins  = nxy * nbinsz;
-   Double_t integral;
+   Double_t integral = 0.;
    // compute integral checking that all bins have positive content (see ROOT-5894)
    if(fIntegral != nullptr) {
       if(fIntegral[nbins + 1] != fEntries) {
@@ -1184,12 +1167,9 @@ void GCube::GetStats(Double_t* stats) const
       const_cast<GCube*>(this)->BufferEmpty();
    }
 
-   Int_t    bin, binx, biny, binz;
-   Double_t w, err;
-   Double_t x, y, z;
    if((fTsumw == 0 && fEntries > 0) || fXaxis.TestBit(TAxis::kAxisRange) || fYaxis.TestBit(TAxis::kAxisRange) ||
       fZaxis.TestBit(TAxis::kAxisRange)) {
-      for(bin = 0; bin < 7; ++bin) {
+      for(Int_t bin = 0; bin < 7; ++bin) {
          stats[bin] = 0;
       }
 
@@ -1226,15 +1206,15 @@ void GCube::GetStats(Double_t* stats) const
             }
          }
       }
-      for(binz = firstBinZ; binz <= lastBinZ; ++binz) {
-         z = fZaxis.GetBinCenter(binz);
-         for(biny = firstBinY; biny <= lastBinY; ++biny) {
-            y = fYaxis.GetBinCenter(biny);
-            for(binx = firstBinX; binx <= lastBinX; ++binx) {
-               bin = GetBin(binx, biny, binz);
-               x   = fXaxis.GetBinCenter(binx);
-               w   = GetBinContent(bin);
-               err = TMath::Abs(GetBinError(bin));
+      for(Int_t binz = firstBinZ; binz <= lastBinZ; ++binz) {
+         Double_t z = fZaxis.GetBinCenter(binz);
+         for(Int_t biny = firstBinY; biny <= lastBinY; ++biny) {
+            Double_t y = fYaxis.GetBinCenter(biny);
+            for(Int_t binx = firstBinX; binx <= lastBinX; ++binx) {
+               Int_t bin = GetBin(binx, biny, binz);
+               Double_t x   = fXaxis.GetBinCenter(binx);
+               Double_t w   = GetBinContent(bin);
+               Double_t err = TMath::Abs(GetBinError(bin));
                stats[0] += w;
                stats[1] += err * err;
                stats[2] += w * x;
@@ -1413,12 +1393,12 @@ Double_t GCube::KolmogorovTest(const TH1* h2, Option_t* option) const
    opt.ToUpper();
 
    Double_t prb = 0;
-   TH1*     h1  = const_cast<TH1*>(static_cast<const TH1*>(this));
+   auto*    h1  = const_cast<TH1*>(static_cast<const TH1*>(this));
    if(h2 == nullptr) {
       return 0;
    }
    TAxis* xaxis1 = h1->GetXaxis();
-   TAxis* xaxis2 = const_cast<TAxis*>(h2->GetXaxis());
+   auto*  xaxis2 = const_cast<TAxis*>(h2->GetXaxis());
    Int_t  nc1    = xaxis1->GetNbins();
    Int_t  nc2    = xaxis2->GetNbins();
 
@@ -1455,14 +1435,13 @@ Double_t GCube::KolmogorovTest(const TH1* h2, Option_t* option) const
       iend = nc1 + 1;
    }
 
-   Int_t    i, j, k;
    Double_t sum1 = 0;
    Double_t sum2 = 0;
    Double_t w1   = 0;
    Double_t w2   = 0;
-   for(i = ibeg; i <= iend; ++i) {
-      for(j = ibeg; j <= iend; ++j) {
-         for(k = ibeg; k <= iend; ++k) {
+   for(Int_t i = ibeg; i <= iend; ++i) {
+      for(Int_t j = ibeg; j <= iend; ++j) {
+         for(Int_t k = ibeg; k <= iend; ++k) {
             sum1 += h1->GetBinContent(i, j, k);
             sum2 += h2->GetBinContent(i, j, k);
             Double_t ew1 = h1->GetBinError(i, j, k);
@@ -1505,11 +1484,10 @@ Double_t GCube::KolmogorovTest(const TH1* h2, Option_t* option) const
 
    //   Find Kolmogorov distance
    //   order is arbitrary take average of all possible 6 starting orders x,y,z
-   int order[3] = {0, 1, 2};
-   int binbeg[3];
-   int binend[3];
+	std::array<int, 3> order = {0, 1, 2};
+	std::array<int, 3> binbeg;
+	std::array<int, 3> binend;
    int ibin[3];
-   int bin;
    binbeg[0] = ibeg;
    binbeg[1] = ibeg;
    binbeg[2] = ibeg;
@@ -1520,17 +1498,18 @@ Double_t GCube::KolmogorovTest(const TH1* h2, Option_t* option) const
    int      icomb = 0;
    Double_t s1    = 1. / (6. * sum1);
    Double_t s2    = 1. / (6. * sum2);
-   Double_t rsum1 = 0, rsum2 = 0;
+	Double_t rsum1 = 0.;
+	Double_t rsum2 = 0.;
    do {
       // loop on bins
       Double_t dmax = 0;
-      for(i = binbeg[order[0]]; i <= binend[order[0]]; i++) {
-         for(j = binbeg[order[1]]; j <= binend[order[1]]; j++) {
-            for(k = binbeg[order[2]]; k <= binend[order[2]]; k++) {
+      for(Int_t i = binbeg[order[0]]; i <= binend[order[0]]; i++) {
+         for(Int_t j = binbeg[order[1]]; j <= binend[order[1]]; j++) {
+            for(Int_t k = binbeg[order[2]]; k <= binend[order[2]]; k++) {
                ibin[order[0]] = i;
                ibin[order[1]] = j;
                ibin[order[2]] = k;
-               bin            = h1->GetBin(ibin[0], ibin[1], ibin[2]);
+               int bin            = h1->GetBin(ibin[0], ibin[1], ibin[2]);
                rsum1 += s1 * h1->GetBinContent(bin);
                rsum2 += s2 * h2->GetBinContent(bin);
                dmax = TMath::Max(dmax, TMath::Abs(rsum1 - rsum2));
@@ -1539,13 +1518,13 @@ Double_t GCube::KolmogorovTest(const TH1* h2, Option_t* option) const
       }
       vdfmax[icomb] = dmax;
       icomb++;
-   } while(TMath::Permute(3, order));
+   } while(TMath::Permute(3, order.data()));
 
    // get average of distances
    Double_t dfmax = TMath::Mean(6, vdfmax);
 
    //   Get Kolmogorov probability
-   Double_t factnm;
+   Double_t factnm = 0.;
    if(afunc1) {
       factnm = TMath::Sqrt(sum2);
    } else if(afunc2) {
@@ -1742,7 +1721,7 @@ Long64_t GCube::Merge(TCollection* list)
       while((h = static_cast<GCube*>(next())) != nullptr) {
          if(h->GetXaxis()->GetXmin() >= h->GetXaxis()->GetXmax() && (h->fBuffer != nullptr)) {
             // no limits
-            Int_t nbentries = static_cast<Int_t>(h->fBuffer[0]);
+            auto nbentries = static_cast<Int_t>(h->fBuffer[0]);
             for(Int_t i = 0; i < nbentries; i++) {
                Fill(h->fBuffer[4 * i + 2], h->fBuffer[4 * i + 3], h->fBuffer[4 * i + 4], h->fBuffer[4 * i + 1]);
             }
@@ -1761,15 +1740,16 @@ Long64_t GCube::Merge(TCollection* list)
    }
 
    // merge bin contents and errors
-   Double_t stats[kNstat];
-   Double_t totstats[kNstat];
+	std::array<Double_t, kNstat> stats;
+   std::array<Double_t, kNstat> totstats;
    for(Int_t i = 0; i < kNstat; ++i) {
       totstats[i] = stats[i] = 0;
    }
-   GetStats(totstats);
+   GetStats(totstats.data());
    Double_t nentries = GetEntries();
-   Int_t    binx, biny, binz, ix, iy, iz, nx, ny, nz, bin, ibin;
-   Double_t cu;
+   Int_t    ix = 0;
+	Int_t    iy = 0;
+	Int_t    iz = 0;
    Bool_t   canExtend = CanExtendAllAxes();
    SetCanExtend(TH1::kNoAxis);   // reset, otherwise setting the under/overflow will extend the axis
 
@@ -1777,34 +1757,34 @@ Long64_t GCube::Merge(TCollection* list)
       // process only if the histogram has limits; otherwise it was processed before
       if(h->GetXaxis()->GetXmin() < h->GetXaxis()->GetXmax()) {
          // import statistics
-         h->GetStats(stats);
+         h->GetStats(stats.data());
          for(Int_t i = 0; i < kNstat; ++i) {
             totstats[i] += stats[i];
          }
          nentries += h->GetEntries();
 
-         nx = h->GetXaxis()->GetNbins();
-         ny = h->GetYaxis()->GetNbins();
-         nz = h->GetZaxis()->GetNbins();
+         Int_t nx = h->GetXaxis()->GetNbins();
+         Int_t ny = h->GetYaxis()->GetNbins();
+         Int_t nz = h->GetZaxis()->GetNbins();
 
          // mantain loop in separate binz, biny and binz to avoid
          // callinig FindBin(x,y,z) for every bin
-         for(binz = 0; binz <= nz + 1; ++binz) {
+         for(Int_t binz = 0; binz <= nz + 1; ++binz) {
             if(!allSameLimits) {
                iz = fZaxis.FindBin(h->GetZaxis()->GetBinCenter(binz));
             } else {
                iz = binz;
             }
 
-            for(biny = 0; biny <= ny + 1; ++biny) {
+            for(Int_t biny = 0; biny <= ny + 1; ++biny) {
                if(!allSameLimits) {
                   iy = fYaxis.FindBin(h->GetYaxis()->GetBinCenter(biny));
                } else {
                   iy = biny;
                }
-               for(binx = 0; binx <= nx + 1; ++binx) {
-                  bin = binx + (nx + 2) * (biny + (ny + 2) * binz);
-                  cu  = h->GetBinContent(bin);
+               for(Int_t binx = 0; binx <= nx + 1; ++binx) {
+                  Int_t bin = binx + (nx + 2) * (biny + (ny + 2) * binz);
+                  Double_t cu  = h->GetBinContent(bin);
                   if(!allSameLimits) {
                      // look at non-empty unerflow/overflows
                      if(cu != 0 && (h->IsBinUnderflow(bin) || h->IsBinOverflow(bin))) {
@@ -1818,7 +1798,7 @@ Long64_t GCube::Merge(TCollection* list)
                      // case histograms with the same limits
                      ix = binx;
                   }
-                  ibin = GetBin(ix, iy, iz);
+                  Int_t ibin = GetBin(ix, iy, iz);
 
                   if(ibin < 0) {
                      continue;
@@ -1838,7 +1818,7 @@ Long64_t GCube::Merge(TCollection* list)
    }
 
    // copy merged stats
-   PutStats(totstats);
+   PutStats(totstats.data());
    SetEntries(nentries);
    if(hclone != nullptr) {
       inlist.Remove(hclone);
@@ -1916,7 +1896,7 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
    // Create the projection histogram
    char* pname = const_cast<char*>(name);
    if(name != nullptr && strcmp(name, expectedName) == 0) {
-      Int_t nch = strlen(GetName()) + 4;
+      auto  nch = strlen(GetName()) + 4;
       pname     = new char[nch];
       snprintf(pname, nch, "%s%s", GetName(), name);
    }
@@ -1996,16 +1976,15 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
    h1->SetMarkerStyle(GetMarkerStyle());
 
    // Fill the projected histogram
-   Double_t cont, err2;
-   Double_t totcont       = 0;
+   Double_t totcont       = 0.;
    Bool_t   computeErrors = h1->GetSumw2N() != 0;
 
    // implement filling of projected histogram
    // xbin is bin number of xAxis (the projected axis). Loop is done on all bin of TH2 histograms
    // inbin is the axis being integrated. Loop is done only on the selected bins
    for(Int_t xbin = 0; xbin <= fXaxis.GetNbins() + 1; ++xbin) {
-      err2 = 0;
-      cont = 0;
+      Double_t err2 = 0;
+      Double_t cont = 0;
       if(fXaxis.TestBit(TAxis::kAxisRange) && (xbin < firstXBin || xbin > lastXBin)) {
          continue;
       }
@@ -2138,7 +2117,6 @@ GCube* GCube::Rebin3D(Int_t ngroup, const char* newname)
    ///          the overflow bin.
    ///          Statistics will be recomputed from the new bin contents.
 
-   Int_t    i, j, xbin, ybin, zbin;
    Int_t    nbins = fXaxis.GetNbins();
    Double_t min   = fXaxis.GetXmin();
    Double_t max   = fXaxis.GetXmax();
@@ -2152,9 +2130,9 @@ GCube* GCube::Rebin3D(Int_t ngroup, const char* newname)
    // Save old bin contents into a new array
    Double_t entries = fEntries;
    auto*    oldBins = new Double_t[(nbins + 2) * (nbins + 3) * (nbins + 4) / 6];
-   for(xbin = 0; xbin < nbins + 2; xbin++) {
-      for(ybin = 0; ybin <= xbin; ybin++) {
-         for(zbin = 0; zbin <= ybin; zbin++) {
+   for(Int_t xbin = 0; xbin < nbins + 2; xbin++) {
+      for(Int_t ybin = 0; ybin <= xbin; ybin++) {
+         for(Int_t zbin = 0; zbin <= ybin; zbin++) {
             Int_t bin    = GetBin(xbin, ybin, zbin);
             oldBins[bin] = GetBinContent(bin);
          }
@@ -2163,9 +2141,9 @@ GCube* GCube::Rebin3D(Int_t ngroup, const char* newname)
    Double_t* oldErrors = nullptr;
    if(fSumw2.fN != 0) {
       oldErrors = new Double_t[(nbins + 2) * (nbins + 3) * (nbins + 4) / 6];
-      for(xbin = 0; xbin < nbins + 2; xbin++) {
-         for(ybin = 0; ybin <= xbin; ybin++) {
-            for(zbin = 0; zbin <= ybin; zbin++) {
+      for(Int_t xbin = 0; xbin < nbins + 2; xbin++) {
+         for(Int_t ybin = 0; ybin <= xbin; ybin++) {
+            for(Int_t zbin = 0; zbin <= ybin; zbin++) {
                Int_t bin      = GetBin(xbin, ybin, zbin);
                oldErrors[bin] = GetBinError(bin);
             }
@@ -2181,8 +2159,9 @@ GCube* GCube::Rebin3D(Int_t ngroup, const char* newname)
    }
 
    // save original statistics
-   Double_t stat[kNstat];
-   GetStats(stat);
+	std::array<Double_t, kNstat> stat;
+   GetStats(stat.data());
+
    bool resetStat = false;
 
    // change axis specs and rebuild bin contents array
@@ -2232,7 +2211,7 @@ GCube* GCube::Rebin3D(Int_t ngroup, const char* newname)
       if(fXaxis.GetXbins()->GetSize() > 0 || fYaxis.GetXbins()->GetSize() > 0 || fZaxis.GetXbins()->GetSize() > 0) {
          // variable bin sizes in x or y, don't treat both cases separately
          auto* bins = new Double_t[newbins + 1];
-         for(i = 0; i <= newbins; ++i) {
+         for(Int_t i = 0; i <= newbins; ++i) {
             bins[i] = fXaxis.GetBinLowEdge(1 + i * ngroup);
          }
          hnew->SetBins(newbins, bins, newbins, bins);   // changes also errors array (if any)
@@ -2241,20 +2220,19 @@ GCube* GCube::Rebin3D(Int_t ngroup, const char* newname)
          hnew->SetBins(newbins, min, max, newbins, min, max);   // changes also errors array
       }
 
-      Double_t binContent, binError;
       Int_t    oldxbin = 1;
       Int_t    oldybin = 1;
-      Int_t    bin;
-      for(xbin = 1; xbin <= newbins; ++xbin) {
+      Int_t    bin     = 0;
+      for(Int_t xbin = 1; xbin <= newbins; ++xbin) {
          oldybin = 1;
-         for(ybin = 1; ybin <= xbin; ++ybin) {
-            binContent = 0;
-            binError   = 0;
-            for(i = 0; i < ngroup; ++i) {
+         for(Int_t ybin = 1; ybin <= xbin; ++ybin) {
+            Double_t binContent = 0;
+            Double_t binError   = 0;
+            for(Int_t i = 0; i < ngroup; ++i) {
                if(oldxbin + i > nbins) {
                   break;
                }
-               for(j = 0; j < ngroup; ++j) {
+               for(Int_t j = 0; j < ngroup; ++j) {
                   if(oldybin + j > nbins) {
                      break;
                   }
@@ -2288,10 +2266,10 @@ GCube* GCube::Rebin3D(Int_t ngroup, const char* newname)
       }
 
       // calculate new overflow bin in x and y (newbins+1,newbins+1)
-      binContent = 0;
-      binError   = 0;
-      for(xbin = oldxbin; xbin <= nbins + 1; ++xbin) {
-         for(ybin = oldybin; ybin <= xbin; ++ybin) {
+      Double_t binContent = 0.;
+      Double_t binError   = 0.;
+      for(Int_t xbin = oldxbin; xbin <= nbins + 1; ++xbin) {
+         for(Int_t ybin = oldybin; ybin <= xbin; ++ybin) {
             bin = xbin + ybin * (2 * nbins - ybin + 3) / 2;
             binContent += oldBins[bin];
             if(oldErrors != nullptr) {
@@ -2305,9 +2283,9 @@ GCube* GCube::Rebin3D(Int_t ngroup, const char* newname)
       }
 
       // calculate new underflow bin in x and overflow in y (0,newbins+1)
-      binContent = 0;
-      binError   = 0;
-      for(ybin = oldybin; ybin <= nbins + 1; ++ybin) {
+      binContent = 0.;
+      binError   = 0.;
+      for(Int_t ybin = oldybin; ybin <= nbins + 1; ++ybin) {
          bin = ybin * (2 * nbins - ybin + 3) / 2;
          binContent += oldBins[bin];
          if(oldErrors != nullptr) {
@@ -2320,9 +2298,9 @@ GCube* GCube::Rebin3D(Int_t ngroup, const char* newname)
       }
 
       // calculate new overflow bin in x and underflow in y (newbins+1,0)
-      binContent = 0;
-      binError   = 0;
-      for(xbin = oldxbin; xbin <= nbins + 1; ++xbin) {
+      binContent = 0.;
+      binError   = 0.;
+      for(Int_t xbin = oldxbin; xbin <= nbins + 1; ++xbin) {
          bin = xbin;
          binContent += oldBins[bin];
          if(oldErrors != nullptr) {
@@ -2335,27 +2313,25 @@ GCube* GCube::Rebin3D(Int_t ngroup, const char* newname)
       }
 
       //  recompute under/overflow contents in y for the new  x bins
-      Double_t binContent0, binContent2;
-      Double_t binError0, binError2;
-      Int_t    oldxbin2, oldybin2;
-      Int_t    ufbin, ofbin;
-      oldxbin2 = 1;
-      for(xbin = 1; xbin <= newbins; ++xbin) {
-         binContent0 = binContent2 = 0;
-         binError0 = binError2 = 0;
-         for(i = 0; i < ngroup; ++i) {
+      Int_t oldxbin2 = 1;
+      for(Int_t xbin = 1; xbin <= newbins; ++xbin) {
+         Double_t binContent0 = 0.;
+			Double_t binContent2 = 0.;
+         Double_t binError0 = 0.;
+			Double_t binError2 = 0.;
+         for(Int_t i = 0; i < ngroup; ++i) {
             if(oldxbin2 + i > nbins) {
                break;
             }
             // old underflow bin (in y)
-            ufbin = oldxbin2 + i;
+            Int_t ufbin = oldxbin2 + i;
             binContent0 += oldBins[ufbin];
             if(oldErrors != nullptr) {
                binError0 += oldErrors[ufbin] * oldErrors[ufbin];
             }
-            for(ybin = oldybin; ybin <= nbins + 1; ++ybin) {
+            for(Int_t ybin = oldybin; ybin <= nbins + 1; ++ybin) {
                // old overflow bin (in y)
-               ofbin = ufbin + ybin * (nbins + 2);
+               Int_t ofbin = ufbin + ybin * (nbins + 2);
                binContent2 += oldBins[ofbin];
                if(oldErrors != nullptr) {
                   binError2 += oldErrors[ofbin] * oldErrors[ofbin];
@@ -2372,22 +2348,24 @@ GCube* GCube::Rebin3D(Int_t ngroup, const char* newname)
       }
 
       //  recompute under/overflow contents in x for the new y bins
-      oldybin2 = 1;
-      for(ybin = 1; ybin <= newbins; ++ybin) {
-         binContent0 = binContent2 = 0;
-         binError0 = binError2 = 0;
-         for(i = 0; i < ngroup; ++i) {
+      Int_t oldybin2 = 1;
+      for(Int_t ybin = 1; ybin <= newbins; ++ybin) {
+         Double_t binContent0 = 0.;
+			Double_t binContent2 = 0.;
+         Double_t binError0 = 0.;
+			Double_t binError2 = 0.;
+         for(Int_t i = 0; i < ngroup; ++i) {
             if(oldybin2 + i > nbins) {
                break;
             }
             // old underflow bin (in x)
-            ufbin = (oldybin2 + i) * (nbins + 2);
+            Int_t ufbin = (oldybin2 + i) * (nbins + 2);
             binContent0 += oldBins[ufbin];
             if(oldErrors != nullptr) {
                binError0 += oldErrors[ufbin] * oldErrors[ufbin];
             }
-            for(xbin = oldxbin; xbin <= nbins + 1; ++xbin) {
-               ofbin = ufbin + xbin;
+            for(Int_t xbin = oldxbin; xbin <= nbins + 1; ++xbin) {
+               Int_t ofbin = ufbin + xbin;
                binContent2 += oldBins[ofbin];
                if(oldErrors != nullptr) {
                   binError2 += oldErrors[ofbin] * oldErrors[ofbin];
@@ -2444,13 +2422,11 @@ GCube* GCube::Rebin3D(Int_t ngroup, const char* newname)
    // restore statistics and entries  modified by SetBinContent
    hnew->SetEntries(entries);
    if(!resetStat) {
-      hnew->PutStats(stat);
+      hnew->PutStats(stat.data());
    }
 
    delete[] oldBins;
-   if(oldErrors != nullptr) {
-      delete[] oldErrors;
-   }
+	delete[] oldErrors;
    return hnew;
 }
 
@@ -2591,10 +2567,9 @@ void GCube::Smooth(Int_t ntimes, Option_t* option)
    }
 
    // Copy all the data to the temporary buffers
-   Int_t i, j, bin;
-   for(i = ifirst; i <= ilast; ++i) {
-      for(j = jfirst; j <= jlast; ++j) {
-         bin      = GetBin(i, j);
+   for(Int_t i = ifirst; i <= ilast; ++i) {
+      for(Int_t j = jfirst; j <= jlast; ++j) {
+         Int_t bin      = GetBin(i, j);
          buf[bin] = GetBinContent(bin);
          if(ebuf != nullptr) {
             ebuf[bin] = GetBinError(bin);
@@ -2607,8 +2582,8 @@ void GCube::Smooth(Int_t ntimes, Option_t* option)
    Int_t y_push = (ksize_y - 1) / 2;
 
    // main work loop
-   for(i = ifirst; i <= ilast; ++i) {
-      for(j = jfirst; j <= jlast; ++j) {
+   for(Int_t i = ifirst; i <= ilast; ++i) {
+      for(Int_t j = jfirst; j <= jlast; ++j) {
          Double_t content = 0.0;
          Double_t error   = 0.0;
          Double_t norm    = 0.0;
@@ -2618,7 +2593,7 @@ void GCube::Smooth(Int_t ntimes, Option_t* option)
                Int_t xb = i + (n - x_push);
                Int_t yb = j + (m - y_push);
                if((xb >= 1) && (xb <= nx) && (yb >= 1) && (yb <= ny)) {
-                  bin        = GetBin(xb, yb);
+                  Int_t bin        = GetBin(xb, yb);
                   Double_t k = kernel[n * ksize_y + m];
                   if(k != 0.0) {
                      norm += k;
@@ -2650,10 +2625,7 @@ void GCube::Smooth(Int_t ntimes, Option_t* option)
 // GCubeF methods (float = four bytes per cell)
 //------------------------------------------------------------
 
-ClassImp(GCubeF)
-
 GCubeF::GCubeF()
-   : GCube(), TArrayF()
 {
    SetBinsLength(9);
    if(fgDefaultSumw2) {
@@ -2690,7 +2662,8 @@ GCubeF::GCubeF(const char* name, const char* title, Int_t nbins, const Float_t* 
    }
 }
 
-GCubeF::GCubeF(const GCubeF& rhs) : GCube(), TArrayF()
+GCubeF::GCubeF(const GCubeF& rhs)
+	: GCube(rhs), TArrayF(rhs)
 {
    rhs.Copy(*this);
 }
@@ -2706,8 +2679,7 @@ TH2F* GCubeF::GetMatrix(bool force)
       delete fMatrix;
    }
 
-   fMatrix = new TH2F(Form("%s_mat", GetName()), GetTitle(), fXaxis.GetNbins(), fXaxis.GetXmin(), fXaxis.GetXmax(),
-                      fYaxis.GetNbins(), fYaxis.GetXmin(), fYaxis.GetXmax());
+   fMatrix = new TH2F(Form("%s_mat", GetName()), GetTitle(), fXaxis.GetNbins(), fXaxis.GetXmin(), fXaxis.GetXmax(), fYaxis.GetNbins(), fYaxis.GetXmin(), fYaxis.GetXmax());
    // copy cell contents (including all overflow and underflow cells)
    for(int i = 0; i < fXaxis.GetNbins() + 2; ++i) {
       for(int j = 0; j < fXaxis.GetNbins() + 2; ++j) {
@@ -2780,7 +2752,7 @@ void GCubeF::SetBinContent(Int_t bin, Double_t content)
    if(bin >= fNcells) {
       return;
    }
-   fArray[bin] = Float_t(content);
+   fArray[bin] = static_cast<Float_t>(content);
 }
 
 void GCubeF::SetBinsLength(Int_t n)
@@ -2859,10 +2831,7 @@ GCubeF operator/(GCubeF& h1, GCubeF& h2)
 // GCubeD methods (double = eight bytes per cell)
 //------------------------------------------------------------
 
-ClassImp(GCubeD)
-
 GCubeD::GCubeD()
-   : GCube(), TArrayD()
 {
    SetBinsLength(9);
    if(fgDefaultSumw2) {
@@ -2899,7 +2868,8 @@ GCubeD::GCubeD(const char* name, const char* title, Int_t nbins, const Float_t* 
    }
 }
 
-GCubeD::GCubeD(const GCubeD& rhs) : GCube(), TArrayD()
+GCubeD::GCubeD(const GCubeD& rhs)
+	: GCube(rhs), TArrayD(rhs)
 {
    rhs.Copy(*this);
 }
@@ -2966,7 +2936,7 @@ Double_t GCubeD::GetBinContent(Int_t bin) const
    if(fArray == nullptr) {
       return 0;
    }
-   return Double_t(fArray[bin]);
+   return static_cast<Double_t>(fArray[bin]);
 }
 
 void GCubeD::Reset(Option_t* option)

@@ -1,5 +1,7 @@
-#ifndef _COMBINATIONS_H_
-#define _COMBINATIONS_H_
+#ifndef COMBINATIONS_H
+#define COMBINATIONS_H
+#include <vector>
+#include <algorithm>
 
 class combinations {
 public:

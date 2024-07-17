@@ -80,7 +80,7 @@ TBrowserImp* GRootGuiFactory::CreateBrowserImp(TBrowser* b, const char* title, U
 
    // TString browserVersion(gEnv->GetValue("Browser.Name", "TRootBrowserLite"));
    TString         browserVersion(gEnv->GetValue("Browser.Name", "GRootBrowser"));
-   TPluginHandler* ph = gROOT->GetPluginManager()->FindHandler("TBrowserImp", browserVersion);
+   TPluginHandler* pluginHandler = gROOT->GetPluginManager()->FindHandler("TBrowserImp", browserVersion);
    // gROOT->GetPluginManager()->Print();
 
    TString browserOptions(gEnv->GetValue("Browser.Options", "FECI"));
@@ -95,8 +95,8 @@ TBrowserImp* GRootGuiFactory::CreateBrowserImp(TBrowser* b, const char* title, U
    if(browserOptions.Contains("LITE")) {
       return new TRootBrowserLite(b, title, width, height);
    }
-   if((ph != nullptr) && ph->LoadPlugin() != -1) {
-      TBrowserImp* imp = (TBrowserImp*)ph->ExecPlugin(5, b, title, width, height, browserOptions.Data());
+   if(pluginHandler != nullptr && pluginHandler->LoadPlugin() != -1) {
+      auto* imp = reinterpret_cast<TBrowserImp*>(pluginHandler->ExecPlugin(5, b, title, width, height, browserOptions.Data()));
       if(imp != nullptr) {
 
          return imp;
@@ -112,7 +112,7 @@ TBrowserImp* GRootGuiFactory::CreateBrowserImp(TBrowser* b, const char* title, I
    // Create a ROOT native GUI version of TBrowserImp
 
    TString         browserVersion(gEnv->GetValue("Browser.Name", "TRootBrowserLite"));
-   TPluginHandler* ph = gROOT->GetPluginManager()->FindHandler("TBrowserImp", browserVersion);
+   TPluginHandler* pluginHandler = gROOT->GetPluginManager()->FindHandler("TBrowserImp", browserVersion);
    TString         browserOptions(gEnv->GetValue("Browser.Options", "FECI"));
    if((opt != nullptr) && (strlen(opt) != 0u)) {
       browserOptions = opt;
@@ -121,8 +121,8 @@ TBrowserImp* GRootGuiFactory::CreateBrowserImp(TBrowser* b, const char* title, I
    if(browserOptions.Contains("LITE")) {
       return new TRootBrowserLite(b, title, width, height);
    }
-   if((ph != nullptr) && ph->LoadPlugin() != -1) {
-      TBrowserImp* imp = (TBrowserImp*)ph->ExecPlugin(7, b, title, x, y, width, height, browserOptions.Data());
+   if(pluginHandler != nullptr && pluginHandler->LoadPlugin() != -1) {
+      auto* imp = reinterpret_cast<TBrowserImp*>(pluginHandler->ExecPlugin(7, b, title, x, y, width, height, browserOptions.Data()));
       if(imp != nullptr) {
          return imp;
       }

@@ -16,7 +16,10 @@ public:
    GCube(const char* name, const char* title, Int_t nbins, Double_t low, Double_t up);
    GCube(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GCube(const char* name, const char* title, Int_t nbins, const Float_t* bins);
-   ~GCube() override;
+   GCube(const GCube&);
+   GCube& operator=(const GCube&);
+
+   ~GCube() override = default;
 
    Int_t         BufferEmpty(Int_t action = 0) override;
    Int_t         BufferFill(Double_t, Double_t) override { return -2; }   // MayNotUse
@@ -97,18 +100,14 @@ protected:
    using TH1::DoIntegral;
    Double_t DoIntegral(Int_t binx1, Int_t binx2, Int_t biny1, Int_t biny2, Int_t binz1, Int_t binz2, Double_t& error,
                        Option_t* option, Bool_t doError = kFALSE) const override;
-   Double_t fTsumwy{0};    // Total Sum of weight*Y
-   Double_t fTsumwy2{0};   // Total Sum of weight*Y*Y
-   Double_t fTsumwxy{0};   // Total Sum of weight*X*Y
-   Double_t fTsumwz{0};    // Total Sum of weight*Z
-   Double_t fTsumwz2{0};   // Total Sum of weight*Z*Z
-   Double_t fTsumwxz{0};   // Total Sum of weight*X*Z
-   Double_t fTsumwyz{0};   // Total Sum of weight*Y*Z
-   TH2*     fMatrix{0};    //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
-
-private:
-   GCube(const GCube&);
-   GCube& operator=(const GCube&);
+   Double_t fTsumwy{0};         // Total Sum of weight*Y
+   Double_t fTsumwy2{0};        // Total Sum of weight*Y*Y
+   Double_t fTsumwxy{0};        // Total Sum of weight*X*Y
+   Double_t fTsumwz{0};         // Total Sum of weight*Z
+   Double_t fTsumwz2{0};        // Total Sum of weight*Z*Z
+   Double_t fTsumwxz{0};        // Total Sum of weight*X*Z
+   Double_t fTsumwyz{0};        // Total Sum of weight*Y*Z
+   TH2*     fMatrix{nullptr};   //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
 
    ClassDefOverride(GCube, 1);
 };
@@ -125,7 +124,7 @@ public:
    TH2F* GetMatrix(bool force = false);
 
    void     AddBinContent(Int_t bin) override { ++fArray[bin]; }
-   void     AddBinContent(Int_t bin, Double_t w) override { fArray[bin] += Float_t(w); }
+   void     AddBinContent(Int_t bin, Double_t w) override { fArray[bin] += static_cast<Float_t>(w); }
    void     Copy(TObject& rh) const override;
    void     Draw(Option_t* option = "") override { GetMatrix()->Draw(option); }
    TH1*     DrawCopy(Option_t* option = "", const char* name_postfix = "_copy") const override;
@@ -179,7 +178,7 @@ public:
       return GetBinContent(GetBin(binx, biny, binz));
    }
    void     Reset(Option_t* option = "") override;
-   Double_t RetrieveBinContent(Int_t bin) const override { return Double_t(fArray[bin]); }
+   Double_t RetrieveBinContent(Int_t bin) const override { return static_cast<Double_t>(fArray[bin]); }
    void     SetBinContent(Int_t bin, Double_t content) override;
    void     SetBinContent(Int_t bin, Int_t, Double_t content) override { SetBinContent(bin, content); }
    void     SetBinContent(Int_t binx, Int_t biny, Int_t binz, Double_t content) override

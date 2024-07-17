@@ -30,7 +30,7 @@ class GRootGuiFactory : public TGuiFactory {
 public:
    static void Init();
 
-   GRootGuiFactory(const char* name = "Root", const char* title = "GRUT GUI Factory");
+   explicit GRootGuiFactory(const char* name = "Root", const char* title = "GRUT GUI Factory");
    ~GRootGuiFactory() override = default;
 
    TApplicationImp* CreateApplicationImp(const char* classname, int* argc, char** argv) override;

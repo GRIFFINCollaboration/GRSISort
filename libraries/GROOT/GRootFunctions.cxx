@@ -43,8 +43,7 @@ Double_t GRootFunctions::StepFunction(Double_t* dim, Double_t* par)
    // Double_t R       = par[4];
    Double_t step = par[3];
 
-   // return TMath::Abs(step)*height/100.0*TMath::Erfc((x-cent)/(TMath::Sqrt(2.0)*sigma));
-   return height * (step / 100.0) * TMath::Erfc((x - cent) / (TMath::Sqrt(2.0) * sigma));
+   return height * (step / 100.0) * TMath::Erfc((x - cent) / (TMath::Sqrt(2.) * sigma));
 }
 
 Double_t GRootFunctions::StepBG(Double_t* dim, Double_t* par)
@@ -113,12 +112,8 @@ Double_t GRootFunctions::PhotoPeakBG(Double_t* dim, Double_t* par)
    // - par[6]: base bg height.
    // - par[7]: slope of bg.
 
-   double spar[4];
-   spar[0] = par[0];
-   spar[1] = par[1];
-   spar[2] = par[2];
-   spar[3] = par[5];   // stepsize;
-   return Gaus(dim, par) + SkewedGaus(dim, par) + StepFunction(dim, spar) + PolyBg(dim, par + 6, 0);
+	std::array<double, 4> spar = { par[0],  par[1],  par[2],  par[5] };
+   return Gaus(dim, par) + SkewedGaus(dim, par) + StepFunction(dim, spar.data()) + PolyBg(dim, par + 6, 0);
 }
 
 // For fitting Ge detector efficiencies.
@@ -138,16 +133,13 @@ Double_t GRootFunctions::Efficiency(Double_t* dim, Double_t* par)
    Double_t p3 = par[3];
 
    if(x != 0) {
-      return pow(10.0, (p0 + p1 * TMath::Log10(x) + p2 * std::pow(TMath::Log10(x), 2.0) + p3 / (std::pow(x, 2.0))));
+      return pow(10., p0 + p1 * TMath::Log10(x) + p2 * std::pow(TMath::Log10(x), 2.) + p3 / std::pow(x, 2.));
    }
    return 0;
 }
 
 Double_t GRootFunctions::GausExpo(Double_t* x, Double_t* pars)
 {
-
-   double result;
-
    // gaus + step*expo conv with a gaus.
 
    // par[0] = height
@@ -155,27 +147,24 @@ Double_t GRootFunctions::GausExpo(Double_t* x, Double_t* pars)
    // par[2] = sigma
    // par[3] = decay parameter
 
-   result =
-      TMath::Gaus(pars[0], pars[1], pars[2]) + static_cast<double>(x[0] > pars[1]) * pars[0] * TMath::Exp(-pars[3]);
-   return result;
+	return TMath::Gaus(pars[0], pars[1], pars[2]) + static_cast<double>(x[0] > pars[1]) * pars[0] * TMath::Exp(-pars[3]);
 }
 
 Double_t GRootFunctions::LanGaus(Double_t* x, Double_t* pars)
 {
-   double dy, y, conv, spec, gaus;
-   conv = 0;
+   double conv = 0.;
 
    for(int i = 0; i < 10; i++) {
-      dy = 5 * pars[2] / 10.0;   // truncate the convolution by decreasing number of evaluation points and decreasing
+      double dy = 5 * pars[2] / 10.0;   // truncate the convolution by decreasing number of evaluation points and decreasing
       // range [2.5 sigma still covers 98.8% of gaussian]
-      y    = x[0] - 2.5 * pars[2] + dy * i;
-      spec = pars[0] +
+      double y    = x[0] - 2.5 * pars[2] + dy * i;
+      double spec = pars[0] +
              pars[1] * y;   // define background SHOULD THIS BE CONVOLUTED ????? *************************************
       // for( int n=0; n<(int)(pars[0]+0.5); n++) // the implementation of landau function should be done using the
       // landau function
       spec += pars[3] * TMath::Landau(-y, -pars[4], pars[5]) /
               TMath::Landau(0, 0, 100);   // add peaks, dividing by max height of landau
-      gaus = TMath::Gaus(-x[0], -y, pars[2]) /
+      double gaus = TMath::Gaus(-x[0], -y, pars[2]) /
              sqrt(2 * TMath::Pi() * pars[2] * pars[2]);   // gaus must be normalisd so there is no sigma weighting
       conv += gaus * spec * dy;                           // now convolve this [integrate the product] with a gaussian centered at x;
    }
@@ -185,18 +174,17 @@ Double_t GRootFunctions::LanGaus(Double_t* x, Double_t* pars)
 
 Double_t GRootFunctions::LanGausHighRes(Double_t* x, Double_t* pars)
 {   // 5x more convolution points with 1.6x larger range
-   double dy, y, conv, spec, gaus;
-   conv = 0;
+   double conv = 0.;
 
    for(int i = 0; i < 50; i++) {
-      dy = 8 * pars[2] / 50.0;   // 4 sigma covers 99.99% of gaussian
-      y  = x[0] - 4 * pars[2] + dy * i;
+      double dy = 8 * pars[2] / 50.0;   // 4 sigma covers 99.99% of gaussian
+      double y  = x[0] - 4 * pars[2] + dy * i;
 
-      spec = pars[0] + pars[1] * y;
+      double spec = pars[0] + pars[1] * y;
       // for( int n=0; n<(int)(pars[0]+0.5); n++)
       spec += pars[3] * TMath::Landau(-y, -pars[4], pars[5]) / TMath::Landau(0, 0, 100);
 
-      gaus = TMath::Gaus(-x[0], -y, pars[2]) / sqrt(2 * TMath::Pi() * pars[2] * pars[2]);
+      double gaus = TMath::Gaus(-x[0], -y, pars[2]) / sqrt(2 * TMath::Pi() * pars[2] * pars[2]);
       conv += gaus * spec * dy;
    }
    return conv;

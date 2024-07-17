@@ -16,12 +16,6 @@ GNotifier* GNotifier::Get()
    return fGNotifier;
 }
 
-GNotifier::GNotifier()
-{
-}
-
-GNotifier::~GNotifier() = default;
-
 bool GNotifier::Notify()
 {
    // Loads the GValues from the current file of the chain.
@@ -29,7 +23,7 @@ bool GNotifier::Notify()
    // TFile *f = gChain->GetCurrentFile();
    // f->Get("GValue");
 
-   for(auto& callback : callbacks) {
+   for(auto& callback : fCallbacks) {
       callback();
    }
 

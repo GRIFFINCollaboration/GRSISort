@@ -15,6 +15,9 @@ public:
    GHSym(const char* name, const char* title, Int_t nbins, Double_t low, Double_t up);
    GHSym(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GHSym(const char* name, const char* title, Int_t nbins, const Float_t* bins);
+   GHSym(const GHSym&);
+   GHSym& operator=(const GHSym&);
+
    ~GHSym() override;
 
    Int_t         BufferEmpty(Int_t action = 0) override;
@@ -105,10 +108,6 @@ protected:
    Double_t         fTsumwy2{0.};       ///< Total Sum of weight*Y*Y
    Double_t         fTsumwxy{0.};       ///< Total Sum of weight*X*Y
    TH2*             fMatrix{nullptr};   //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
-
-private:
-   GHSym(const GHSym&);
-   GHSym& operator=(const GHSym&);
 
    ClassDefOverride(GHSym, 1);
 };

@@ -1,6 +1,5 @@
-
-#ifndef __GPOPUP_H__
-#define __GPOPUP_H__
+#ifndef GPOPUP_H
+#define GPOPUP_H
 
 #include "TGFrame.h"
 

@@ -222,17 +222,13 @@ public:
 };
 
 //______________________________________________________________________________
-GRootContainer::GRootContainer(GRootCanvas* c, Window_t id, const TGWindow* p) : TGCompositeFrame(gClient, id, p)
+GRootContainer::GRootContainer(GRootCanvas* canvas, Window_t id, const TGWindow* p) : TGCompositeFrame(gClient, id, p), fCanvas(canvas)
 {
    /// Create a canvas container.
 
-   fCanvas = c;
+   gVirtualX->GrabButton(fId, kAnyButton, kAnyModifier, kButtonPressMask | kButtonReleaseMask | kPointerMotionMask, kNone, kNone);
 
-   gVirtualX->GrabButton(fId, kAnyButton, kAnyModifier, kButtonPressMask | kButtonReleaseMask | kPointerMotionMask,
-                         kNone, kNone);
-
-   AddInput(kKeyPressMask | kKeyReleaseMask | kPointerMotionMask | kExposureMask | kStructureNotifyMask |
-            kLeaveWindowMask);
+   AddInput(kKeyPressMask | kKeyReleaseMask | kPointerMotionMask | kExposureMask | kStructureNotifyMask | kLeaveWindowMask);
    fEditDisabled = kEditDisable;
 }
 
@@ -242,33 +238,27 @@ Bool_t GRootContainer::HandleButton(Event_t* event)
    /// Directly handle scroll mouse buttons (4 and 5), only pass buttons
    /// 1, 2 and 3 on to the TCanvas.
 
-   const TGViewPort* vp   = static_cast<const TGViewPort*>(fParent);
-   UInt_t            page = vp->GetHeight() / 4;
-   Int_t             newpos;
+   const auto* viewPort = static_cast<const TGViewPort*>(fParent);
+   UInt_t      page     = viewPort->GetHeight() / 4;
 
    gVirtualX->SetInputFocus(GetMainFrame()->GetId());
 
    if(event->fCode == kButton4) {
       // scroll up
-      newpos = fCanvas->fCanvasWindow->GetVsbPosition() - page;
-      if(newpos < 0) {
-         newpos = 0;
-      }
+      auto newpos = fCanvas->fCanvasWindow->GetVsbPosition() - page;
       fCanvas->fCanvasWindow->SetVsbPosition(newpos);
-      //      return kTRUE;
    }
    if(event->fCode == kButton5) {
       // scroll down
-      newpos = fCanvas->fCanvasWindow->GetVsbPosition() + page;
+      auto newpos = fCanvas->fCanvasWindow->GetVsbPosition() + page;
       fCanvas->fCanvasWindow->SetVsbPosition(newpos);
-      //      return kTRUE;
    }
    return fCanvas->HandleContainerButton(event);
 }
 
 //______________________________________________________________________________
-GRootCanvas::GRootCanvas(GCanvas* c, const char* name, UInt_t width, UInt_t height)
-   : TGMainFrame(gClient->GetRoot(), width, height), TCanvasImp(c)
+GRootCanvas::GRootCanvas(GCanvas* canvas, const char* name, UInt_t width, UInt_t height)
+   : TGMainFrame(gClient->GetRoot(), width, height), TCanvasImp(canvas)
 {
    /// Create a basic ROOT canvas.
    CreateCanvas(name);
@@ -280,8 +270,8 @@ GRootCanvas::GRootCanvas(GCanvas* c, const char* name, UInt_t width, UInt_t heig
 }
 
 //______________________________________________________________________________
-GRootCanvas::GRootCanvas(GCanvas* c, const char* name, Int_t x, Int_t y, UInt_t width, UInt_t height)
-   : TGMainFrame(gClient->GetRoot(), width, height), TCanvasImp(c)
+GRootCanvas::GRootCanvas(GCanvas* canvas, const char* name, Int_t x, Int_t y, UInt_t width, UInt_t height)
+   : TGMainFrame(gClient->GetRoot(), width, height), TCanvasImp(canvas)
 {
    /// Create a basic ROOT canvas.
    CreateCanvas(name);
@@ -495,24 +485,22 @@ void GRootCanvas::CreateCanvas(const char* name)
    if(fCanvas->UseGL()) {
       fCanvas->SetSupportGL(kFALSE);
       // first, initialize GL (if not yet)
-      if(!gGLManager) {
-         TString x = "win32";
+      if(gGLManager == nullptr) {
+         TString osString = "win32";
          if(gVirtualX->InheritsFrom("TGX11")) {
-            x = "x11";
+            osString = "x11";
          } else if(gVirtualX->InheritsFrom("TGCocoa")) {
-            x = "osx";
+            osString = "osx";
          }
-         TPluginHandler* ph = gROOT->GetPluginManager()->FindHandler("TGLManager", x);
+         TPluginHandler* pluginHandler = gROOT->GetPluginManager()->FindHandler("TGLManager", osString);
 
-         if((ph != nullptr) && ph->LoadPlugin() != -1) {
-            if(ph->ExecPlugin(0) == 0) {
+         if(pluginHandler != nullptr && pluginHandler->LoadPlugin() != -1) {
+            if(pluginHandler->ExecPlugin(0) == 0) {
                Error("CreateCanvas", "GL manager plugin failed");
             }
          }
-      }
-
-      if(gGLManager) {
-         fCanvasID = gGLManager->InitGLWindow((ULong_t)fCanvasWindow->GetViewPort()->GetId());
+      } else {
+         fCanvasID = gGLManager->InitGLWindow(static_cast<ULong_t>(fCanvasWindow->GetViewPort()->GetId()));
          if(fCanvasID != -1) {
             // Create gl context.
             const Int_t glCtx = gGLManager->CreateGLContext(fCanvasID);
@@ -529,7 +517,7 @@ void GRootCanvas::CreateCanvas(const char* name)
    }
 
    if(fCanvasID == -1) {
-      fCanvasID = gVirtualX->InitWindow((ULong_t)fCanvasWindow->GetViewPort()->GetId());
+      fCanvasID = gVirtualX->InitWindow(static_cast<ULong_t>(fCanvasWindow->GetViewPort()->GetId()));
    }
 
    Window_t win     = gVirtualX->GetWindowID(fCanvasID);
@@ -547,9 +535,9 @@ void GRootCanvas::CreateCanvas(const char* name)
                     "EventInfo(Int_t, Int_t, Int_t, TObject*)");
 
    // Create status bar
-   int parts[] = {33, 10, 10, 47};
+	std::array<int, 4> parts = {33, 10, 10, 47};
    fStatusBar  = new TGStatusBar(this, 10, 10);
-   fStatusBar->SetParts(parts, 4);
+   fStatusBar->SetParts(parts.data(), parts.size());
 
    fStatusBarLayout = new TGLayoutHints(kLHintsBottom | kLHintsLeft | kLHintsExpandX, 2, 2, 1, 1);
 
@@ -711,7 +699,7 @@ UInt_t GRootCanvas::GetWindowGeometry(Int_t& x, Int_t& y, UInt_t& w, UInt_t& h)
 
    gVirtualX->GetWindowSize(fId, x, y, w, h);
 
-   Window_t childdum;
+   Window_t childdum = 0;
    gVirtualX->TranslateCoordinates(fId, gClient->GetDefaultRoot()->GetId(), 0, 0, x, y, childdum);
    if(!fCanvas->GetShowEditor()) {
       return 0;
@@ -731,9 +719,6 @@ void GRootCanvas::SetStatusText(const char* txt, Int_t partidx)
 Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
 {
    /// Handle menu and other command generated by the user.
-
-   TRootHelpDialog* hd;
-   TList*           lc;
 
    switch(GET_MSG(msg)) {
 
@@ -773,22 +758,22 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             break;
          case kFileOpen: {
             static TString dir(".");
-            TGFileInfo     fi;
-            fi.fFileTypes = gOpenTypes;
-            fi.fIniDir    = StrDup(dir);
-            new TGFileDialog(fClient->GetDefaultRoot(), this, kFDOpen, &fi);
-            if(fi.fFilename == nullptr) {
+            TGFileInfo     fileInfo;
+            fileInfo.fFileTypes = gOpenTypes;
+            fileInfo.fIniDir    = StrDup(dir);
+            new TGFileDialog(fClient->GetDefaultRoot(), this, kFDOpen, &fileInfo);
+            if(fileInfo.fFilename == nullptr) {
                return kTRUE;
             }
-            dir = fi.fIniDir;
-            new TFile(fi.fFilename, "update");
+            dir = fileInfo.fIniDir;
+            new TFile(fileInfo.fFilename, "update");
          } break;
          case kFileSaveAs: {
             TString        workdir = gSystem->WorkingDirectory();
             static TString dir(".");
             static Int_t   typeidx = 0;
             static Bool_t  overwr  = kFALSE;
-            TGFileInfo     fi;
+            TGFileInfo     fileInfo;
             TString        defaultType = gEnv->GetValue("Canvas.SaveAsDefaultType", ".pdf");
             if(typeidx == 0) {
                for(int i = 1; gSaveAsTypes[i] != nullptr; i += 2) {
@@ -799,21 +784,21 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
                   }
                }
             }
-            fi.fFileTypes   = gSaveAsTypes;
-            fi.fIniDir      = StrDup(dir);
-            fi.fFileTypeIdx = typeidx;
-            fi.fOverwrite   = overwr;
-            new TGFileDialog(fClient->GetDefaultRoot(), this, kFDSave, &fi);
+            fileInfo.fFileTypes   = gSaveAsTypes;
+            fileInfo.fIniDir      = StrDup(dir);
+            fileInfo.fFileTypeIdx = typeidx;
+            fileInfo.fOverwrite   = overwr;
+            new TGFileDialog(fClient->GetDefaultRoot(), this, kFDSave, &fileInfo);
             gSystem->ChangeDirectory(workdir.Data());
-            if(fi.fFilename == nullptr) {
+            if(fileInfo.fFilename == nullptr) {
                return kTRUE;
             }
             Bool_t  appendedType = kFALSE;
-            TString fn           = fi.fFilename;
-            TString ft           = fi.fFileTypes[fi.fFileTypeIdx + 1];
-            dir                  = fi.fIniDir;
-            typeidx              = fi.fFileTypeIdx;
-            overwr               = fi.fOverwrite;
+            TString fn           = fileInfo.fFilename;
+            TString ft           = fileInfo.fFileTypes[fileInfo.fFileTypeIdx + 1];
+            dir                  = fileInfo.fIniDir;
+            typeidx              = fileInfo.fFileTypeIdx;
+            overwr               = fileInfo.fOverwrite;
          again:
             if(fn.EndsWith(".root") || fn.EndsWith(".ps") || fn.EndsWith(".eps") || fn.EndsWith(".pdf") ||
                fn.EndsWith(".svg") || fn.EndsWith(".tex") || fn.EndsWith(".gif") || fn.EndsWith(".xml") ||
@@ -830,7 +815,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
                      goto again;
                   }
                }
-               Warning("ProcessMessage", "file %s cannot be saved with this extension", fi.fFilename);
+               Warning("ProcessMessage", "file %s cannot be saved with this extension", fileInfo.fFilename);
             }
             for(int i = 1; gSaveAsTypes[i] != nullptr; i += 2) {
                TString ftype = gSaveAsTypes[i];
@@ -952,7 +937,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             break;
          case kOptionAutoResize: {
             fAutoFit = fAutoFit ? kFALSE : kTRUE;
-            int opt  = fCanvasContainer->GetOptions();
+            unsigned int opt  = fCanvasContainer->GetOptions();
             if(fAutoFit) {
                opt &= ~kFixedSize;
                fOptionMenu->CheckEntry(kOptionAutoResize);
@@ -1052,9 +1037,9 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
          // Handle Tools menu items...
          case kClassesTree: {
             TString cdef;
-            lc = static_cast<TList*>(gROOT->GetListOfCanvases());
-            if(lc->FindObject("ClassTree") != nullptr) {
-               cdef = TString::Format("ClassTree_%d", lc->GetSize() + 1);
+            auto* canvasList = static_cast<TList*>(gROOT->GetListOfCanvases());
+            if(canvasList->FindObject("ClassTree") != nullptr) {
+               cdef = TString::Format("ClassTree_%d", canvasList->GetSize() + 1);
             } else {
                cdef = "ClassTree";
             }
@@ -1095,45 +1080,51 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
 
             std::ostringstream str;
             str << "About ROOT " << gROOT->GetVersion() << "...";
-            hd = new GRootHelpDialog(this, str.str(), 600, 400);
-            hd->SetText(gHelpAbout);
-            hd->Popup();
+            helperDialog = new GRootHelpDialog(this, str.str(), 600, 400);
+            helperDialog->SetText(gHelpAbout);
+            helperDialog->Popup();
 #endif   // WIN32
 #endif   // R__UNIX
          } break;
-         case kHelpOnCanvas:
-            hd = new TRootHelpDialog(this, "Help on Canvas...", 600, 400);
-            hd->SetText(gHelpCanvas);
-            hd->Popup();
-            break;
-         case kHelpOnMenus:
-            hd = new TRootHelpDialog(this, "Help on Menus...", 600, 400);
-            hd->SetText(gHelpPullDownMenus);
-            hd->Popup();
-            break;
-         case kHelpOnGraphicsEd:
-            hd = new TRootHelpDialog(this, "Help on Graphics Editor...", 600, 400);
-            hd->SetText(gHelpGraphicsEditor);
-            hd->Popup();
-            break;
-         case kHelpOnBrowser:
-            hd = new TRootHelpDialog(this, "Help on Browser...", 600, 400);
-            hd->SetText(gHelpBrowser);
-            hd->Popup();
-            break;
-         case kHelpOnObjects:
-            hd = new TRootHelpDialog(this, "Help on Objects...", 600, 400);
-            hd->SetText(gHelpObjects);
-            hd->Popup();
-            break;
-         case kHelpOnPS:
-            hd = new TRootHelpDialog(this, "Help on PostScript...", 600, 400);
-            hd->SetText(gHelpPostscript);
-            hd->Popup();
-            break;
-         }
-      default: break;
-      }
+         case kHelpOnCanvas: {
+										  auto helperDialog = new TRootHelpDialog(this, "Help on Canvas...", 600, 400);
+										  helperDialog->SetText(gHelpCanvas);
+										  helperDialog->Popup();
+									  break;
+									  }
+         case kHelpOnMenus: {
+										 auto helperDialog = new TRootHelpDialog(this, "Help on Menus...", 600, 400);
+										 helperDialog->SetText(gHelpPullDownMenus);
+										 helperDialog->Popup();
+										 break;
+									 }
+			case kHelpOnGraphicsEd: {
+												auto helperDialog = new TRootHelpDialog(this, "Help on Graphics Editor...", 600, 400);
+												helperDialog->SetText(gHelpGraphicsEditor);
+												helperDialog->Popup();
+												break;
+											}
+			case kHelpOnBrowser: {
+											auto helperDialog = new TRootHelpDialog(this, "Help on Browser...", 600, 400);
+											helperDialog->SetText(gHelpBrowser);
+											helperDialog->Popup();
+											break;
+										}
+			case kHelpOnObjects: {
+											auto helperDialog = new TRootHelpDialog(this, "Help on Objects...", 600, 400);
+											helperDialog->SetText(gHelpObjects);
+											helperDialog->Popup();
+											break;
+										}
+			case kHelpOnPS: {
+									 auto helperDialog = new TRootHelpDialog(this, "Help on PostScript...", 600, 400);
+									 helperDialog->SetText(gHelpPostscript);
+									 helperDialog->Popup();
+									 break;
+								 }
+			}
+		default: break;
+		}
    default: break;
    }
    return kTRUE;
@@ -1162,7 +1153,7 @@ void GRootCanvas::SetCanvasSize(UInt_t w, UInt_t h)
    // turn off autofit, we want to stay at the given size
    fAutoFit = kFALSE;
    fOptionMenu->UnCheckEntry(kOptionAutoResize);
-   int opt = fCanvasContainer->GetOptions();
+   unsigned int opt = fCanvasContainer->GetOptions();
    opt |= kFixedSize;   // turn on fixed size mode
    fCanvasContainer->ChangeOptions(opt);
    fCanvasContainer->SetWidth(w);
@@ -1219,8 +1210,8 @@ void GRootCanvas::FitCanvas()
    /// Fit canvas container to current window size.
 
    if(!fAutoFit) {
-      int opt  = fCanvasContainer->GetOptions();
-      int oopt = opt;
+      unsigned int opt  = fCanvasContainer->GetOptions();
+      unsigned int oopt = opt;
       opt &= ~kFixedSize;   // turn off fixed size mode
       fCanvasContainer->ChangeOptions(opt);
       Layout();   // force layout
@@ -1237,8 +1228,10 @@ void GRootCanvas::PrintCanvas()
 
    Int_t          ret   = 0;
    Bool_t         pname = kTRUE;
-   char *         printer, *printCmd;
-   static TString sprinter, sprintCmd;
+   char *         printer = nullptr;
+	char*          printCmd = nullptr;
+   static TString sprinter;
+	static TString sprintCmd;
 
    if(sprinter == "") {
       printer = StrDup(gEnv->GetValue("Print.Printer", ""));
@@ -1387,10 +1380,10 @@ void GRootCanvas::ShowEditor(Bool_t show)
    UInt_t s = fHorizontal1->GetHeight();
 
    if((fParent != nullptr) && fParent != fClient->GetDefaultRoot()) {
-      const TGMainFrame* main = static_cast<const TGMainFrame*>(fParent->GetMainFrame());
+      const auto* main = static_cast<const TGMainFrame*>(fParent->GetMainFrame());
       fMainFrame->HideFrame(fEditorFrame);
       if((main != nullptr) && main->InheritsFrom("TRootBrowser")) {
-         TRootBrowser* browser = const_cast<TRootBrowser*>(static_cast<const TRootBrowser*>(main));
+         auto* browser = const_cast<TRootBrowser*>(static_cast<const TRootBrowser*>(main));
          if(!fEmbedded) {
             browser->GetTabRight()->Connect("Selected(Int_t)", "GRootCanvas", this, "Activated(Int_t)");
          }
@@ -1488,8 +1481,8 @@ void GRootCanvas::ShowToolBar(Bool_t show)
       fToolBar = new TGToolBar(fToolDock, 60, 20, kHorizontalFrame);
       fToolDock->AddFrame(fToolBar, fHorizontal1Layout);
 
-      Int_t spacing = 6, i;
-      for(i = 0; gToolBarData[i].fPixmap != nullptr; i++) {
+      Int_t spacing = 6;
+      for(Int_t i = 0; gToolBarData[i].fPixmap != nullptr; i++) {
          if(strlen(gToolBarData[i].fPixmap) == 0) {
             spacing = 6;
             continue;
@@ -1505,7 +1498,7 @@ void GRootCanvas::ShowToolBar(Bool_t show)
       fToolBar->AddFrame(fVertical2, fVertical2Layout);
 
       spacing = 6;
-      for(i = 0; gToolBarData1[i].fPixmap != nullptr; i++) {
+      for(Int_t i = 0; gToolBarData1[i].fPixmap != nullptr; i++) {
          if(strlen(gToolBarData1[i].fPixmap) == 0) {
             spacing = 6;
             continue;
@@ -1641,9 +1634,9 @@ Bool_t GRootCanvas::HandleContainerButton(Event_t* event)
 {
    /// Handle mouse button events in the canvas container.
 
-   Int_t button = event->fCode;
-   Int_t x      = event->fX;
-   Int_t y      = event->fY;
+   UInt_t button = event->fCode;
+   Int_t  x      = event->fX;
+   Int_t  y      = event->fY;
 
    if(event->fType == kButtonPress) {
       if((fToolTip != nullptr) && fCanvas->GetShowToolTips()) {
@@ -1697,7 +1690,7 @@ Bool_t GRootCanvas::HandleContainerDoubleClick(Event_t* event)
 {
    /// Handle mouse button double click events in the canvas container.
 
-   Int_t button = event->fCode;
+   UInt_t button = event->fCode;
    Int_t x      = event->fX;
    Int_t y      = event->fY;
 
@@ -1725,7 +1718,7 @@ Bool_t GRootCanvas::HandleContainerConfigure(Event_t*)
 
    if(fCanvas->HasFixedAspectRatio()) {
       // get menu height
-      static Int_t dh = 0;
+      static UInt_t dh = 0;
       if(dh == 0) {
          dh = GetHeight() - fCanvasContainer->GetHeight();
       }
@@ -1751,16 +1744,17 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
    static EGEventType previous_event  = kOtherEvent;
    static UInt_t      previous_keysym = 0;
 
+	UInt_t keysym = 0;
+	std::array<char, 2> str;
+	gVirtualX->LookupString(event, str.data(), str.size(), keysym);
+
    if(event->fType == kGKeyPress) {
       fButton = event->fCode;
-      UInt_t keysym;
-      char   str[2];
-      gVirtualX->LookupString(event, str, sizeof(str), keysym);
 
       if(str[0] == kESC) {   // ESC sets the escape flag
          gROOT->SetEscape();
-         (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Up, 0, 0);
-         (static_cast<GCanvas*>(fCanvas))->HandleInput(kMouseMotion, 0, 0);
+         static_cast<GCanvas*>(fCanvas)->HandleInput(kButton1Up, 0, 0);
+         static_cast<GCanvas*>(fCanvas)->HandleInput(kMouseMotion, 0, 0);
          gPad->Modified();
          return kTRUE;
       }
@@ -1770,16 +1764,20 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
 
       // handle arrow keys
       if(keysym > 0x1011 && keysym < 0x1016) {
-         Window_t dum1, dum2, wid;
+         Window_t dum1 = 0;
+         Window_t dum2 = 0;
+         Window_t wid  = 0;
          UInt_t   mask = 0;
-         Int_t    mx, my, tx, ty;
+         Int_t    mx = 0;
+         Int_t    my = 0;
+         Int_t    tx = 0;
+         Int_t    ty = 0;
          wid = gVirtualX->GetDefaultRootWindow();
          gVirtualX->QueryPointer(wid, dum1, dum2, mx, my, mx, my, mask);
-         gVirtualX->TranslateCoordinates(gClient->GetDefaultRoot()->GetId(), fCanvasContainer->GetId(), mx, my, tx, ty,
-                                         dum1);
+         gVirtualX->TranslateCoordinates(gClient->GetDefaultRoot()->GetId(), fCanvasContainer->GetId(), mx, my, tx, ty, dum1);
 
          //((GCanvas*)fCanvas)->HandleInput(kArrowKeyPress, tx, ty);
-         (static_cast<GCanvas*>(fCanvas))->HandleInput(static_cast<EEventType>(kArrowKeyPress), tx, keysym);
+         static_cast<GCanvas*>(fCanvas)->HandleInput(static_cast<EEventType>(kArrowKeyPress), tx, keysym);
          // handle case where we got consecutive same keypressed events coming
          // from auto-repeat on Windows (as it fires only successive keydown events)
          if((previous_keysym == keysym) && (previous_event == kGKeyPress)) {
@@ -1798,32 +1796,33 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
                break;
             default: break;
             }
-            (static_cast<GCanvas*>(fCanvas))->HandleInput(static_cast<EEventType>(kArrowKeyRelease), tx, ty);
+            static_cast<GCanvas*>(fCanvas)->HandleInput(static_cast<EEventType>(kArrowKeyRelease), tx, ty);
          }
          previous_keysym = keysym;
       } else {
-         (static_cast<GCanvas*>(fCanvas))->HandleInput(kKeyPress, str[0], keysym);
+         static_cast<GCanvas*>(fCanvas)->HandleInput(kKeyPress, str[0], keysym);
       }
    } else if(event->fType == kKeyRelease) {
-      UInt_t keysym;
-      char   str[2];
-      gVirtualX->LookupString(event, str, sizeof(str), keysym);
-
       if(keysym > 0x1011 && keysym < 0x1016) {
-         Window_t dum1, dum2, wid;
+         Window_t dum1 = 0;
+         Window_t dum2 = 0;
+         Window_t wid  = 0;
          UInt_t   mask = 0;
-         Int_t    mx, my, tx, ty;
+         Int_t    mx = 0;
+         Int_t    my = 0;
+         Int_t    tx = 0;
+         Int_t    ty = 0;
          wid = gVirtualX->GetDefaultRootWindow();
          gVirtualX->QueryPointer(wid, dum1, dum2, mx, my, mx, my, mask);
 
-         GCanvas* gCanvas = static_cast<GCanvas*>(gPad->GetCanvas());
+         auto* gCanvas = static_cast<GCanvas*>(gPad->GetCanvas());
          gCanvas->HandleArrowKeyPress(event, &keysym);
          gVirtualX->TranslateCoordinates(gClient->GetDefaultRoot()->GetId(), fCanvasContainer->GetId(), mx, my, tx, ty,
                                          dum1);
-         (static_cast<GCanvas*>(fCanvas))->HandleInput(static_cast<EEventType>(kArrowKeyRelease), tx, ty);
+         static_cast<GCanvas*>(fCanvas)->HandleInput(static_cast<EEventType>(kArrowKeyRelease), tx, ty);
          previous_keysym = keysym;
       } else {
-         GCanvas* gCanvas = static_cast<GCanvas*>(gPad->GetCanvas());
+         auto* gCanvas = static_cast<GCanvas*>(gPad->GetCanvas());
          gCanvas->HandleKeyboardPress(event, &keysym);
       }
 
@@ -1842,17 +1841,17 @@ Bool_t GRootCanvas::HandleContainerMotion(Event_t* event)
    Int_t y = event->fY;
 
    if(fButton == 0) {
-      (static_cast<GCanvas*>(fCanvas))->HandleInput(kMouseMotion, x, y);
+      static_cast<GCanvas*>(fCanvas)->HandleInput(kMouseMotion, x, y);
    }
    if(fButton == kButton1) {
       if((event->fState & kKeyShiftMask) != 0u) {
-         (static_cast<GCanvas*>(fCanvas))->HandleInput(EEventType(8), x, y);
+         static_cast<GCanvas*>(fCanvas)->HandleInput(static_cast<EEventType>(8), x, y);
       } else {
-         (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Motion, x, y);
+         static_cast<GCanvas*>(fCanvas)->HandleInput(kButton1Motion, x, y);
       }
    }
    if(fButton == kButton2) {
-      (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton2Motion, x, y);
+      static_cast<GCanvas*>(fCanvas)->HandleInput(kButton2Motion, x, y);
    }
 
    return kTRUE;
@@ -1898,13 +1897,13 @@ Bool_t GRootCanvas::HandleDNDDrop(TDNDData* data)
    if(data->fDataType == rootObj) {
       TBufferFile buf(TBuffer::kRead, data->fDataLength, data->fData);
       buf.SetReadMode();
-      TObject* obj = reinterpret_cast<TObject*>(buf.ReadObjectAny(TObject::Class()));
+      auto* obj = reinterpret_cast<TObject*>(buf.ReadObjectAny(TObject::Class()));
       if(obj == nullptr) {
          return kTRUE;
       }
       gPad->Clear();
       if(obj->InheritsFrom("TKey")) {
-         TObject* object = (TObject*)gROOT->ProcessLine(Form("((TKey *)0x%lx)->ReadObj();", (ULong_t)obj));
+         auto* object = reinterpret_cast<TObject*>(gROOT->ProcessLine(Form("((TKey *)0x%lx)->ReadObj();", reinterpret_cast<ULong_t>(obj))));
          if(object == nullptr) {
             return kTRUE;
          }
@@ -1994,14 +1993,14 @@ void GRootCanvas::Activated(Int_t id)
    /// and the model to the editor.
 
    if(fEmbedded) {
-      TGTab* sender = reinterpret_cast<TGTab*>(gTQSender);
+      auto* sender = reinterpret_cast<TGTab*>(gTQSender);
       if(sender != nullptr) {
          TGCompositeFrame* cont = sender->GetTabContainer(id);
          if(cont == fParent) {
             if(fEditor == nullptr) {
                fEditor = TVirtualPadEditor::GetPadEditor(kFALSE);
             }
-            if((fEditor != nullptr) && static_cast<TGedEditor*>(fEditor)->IsMapped()) {
+            if(fEditor != nullptr && static_cast<TGedEditor*>(fEditor)->IsMapped()) {
                static_cast<TGedEditor*>(fEditor)->SetCanvas(fCanvas);
                static_cast<TGedEditor*>(fEditor)->SetModel(fCanvas, fCanvas, kButton1Down);
             }

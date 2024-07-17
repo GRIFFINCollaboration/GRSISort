@@ -2329,6 +2329,7 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
                      break;
                   }
                   // get global bin (same conventions as in GHSym::GetBin(xbin,ybin)
+						Int_t bin = 0;
                   if(oldybin + j <= oldxbin + i) {
                      bin = oldxbin + i + (oldybin + j) * (2 * fXaxis.GetNbins() - (oldybin + j) + 3) / 2;
                   } else {
@@ -2362,7 +2363,7 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
       Double_t binError   = 0.;
       for(Int_t xbin = oldxbin; xbin <= nbins + 1; ++xbin) {
          for(Int_t ybin = oldybin; ybin <= xbin; ++ybin) {
-            bin = xbin + ybin * (2 * nbins - ybin + 3) / 2;
+            Int_t bin = xbin + ybin * (2 * nbins - ybin + 3) / 2;
             binContent += oldBins[bin];
             if(oldErrors != nullptr) {
                binError += oldErrors[bin] * oldErrors[bin];
@@ -2378,7 +2379,7 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
       binContent = 0.;
       binError   = 0.;
       for(Int_t ybin = oldybin; ybin <= nbins + 1; ++ybin) {
-         bin = ybin * (2 * nbins - ybin + 3) / 2;
+         Int_t bin = ybin * (2 * nbins - ybin + 3) / 2;
          binContent += oldBins[bin];
          if(oldErrors != nullptr) {
             binError += oldErrors[bin] * oldErrors[bin];
@@ -2393,7 +2394,7 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
       binContent = 0.;
       binError   = 0.;
       for(Int_t xbin = oldxbin; xbin <= nbins + 1; ++xbin) {
-         bin = xbin;
+         Int_t bin = xbin;
          binContent += oldBins[bin];
          if(oldErrors != nullptr) {
             binError += oldErrors[bin] * oldErrors[bin];
@@ -2659,7 +2660,7 @@ void GHSym::Smooth(Int_t ntimes, Option_t* option)
    // Copy all the data to the temporary buffers
    for(Int_t i = ifirst; i <= ilast; ++i) {
       for(Int_t j = jfirst; j <= jlast; ++j) {
-         bin      = GetBin(i, j);
+         Int_t bin      = GetBin(i, j);
          buf[bin] = GetBinContent(bin);
          if(ebuf != nullptr) {
             ebuf[bin] = GetBinError(bin);
@@ -2683,7 +2684,7 @@ void GHSym::Smooth(Int_t ntimes, Option_t* option)
                Int_t xb = i + (n - x_push);
                Int_t yb = j + (m - y_push);
                if((xb >= 1) && (xb <= nx) && (yb >= 1) && (yb <= ny)) {
-                  bin        = GetBin(xb, yb);
+                  Int_t bin        = GetBin(xb, yb);
                   Double_t k = kernel[n * ksize_y + m];
                   if(k != 0.0) {
                      norm += k;
@@ -2753,6 +2754,7 @@ GHSymF::GHSymF(const char* name, const char* title, Int_t nbins, const Float_t* 
 }
 
 GHSymF::GHSymF(const GHSymF& rhs)
+	: GHSym(rhs), TArrayF(rhs)
 {
    rhs.Copy(*this);
 }
@@ -2957,6 +2959,7 @@ GHSymD::GHSymD(const char* name, const char* title, Int_t nbins, const Float_t* 
 }
 
 GHSymD::GHSymD(const GHSymD& rhs)
+	: GHSym(rhs), TArrayD(rhs)
 {
    rhs.Copy(*this);
 }
