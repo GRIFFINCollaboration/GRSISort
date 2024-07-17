@@ -77,7 +77,7 @@ double FullEdge(double* x, double* par)
       par[i] = TMath::Abs(par[i]);
    }
 
-   if(x[0] < par[15]) return 0.;
+   if(x[0] < par[15]) { return 0.; }
 
    double thresholdFactor = (1. + TMath::Erf((x[0] - par[10]) / par[11])) / 2.;
 
@@ -230,8 +230,8 @@ void TCalibrateDescant::BuildInterface()
 
    // create status bar
    fStatusBar    = new TGStatusBar(fLeftFrame, 400, 10, kHorizontalFrame);
-   Int_t parts[] = {25, 25, 50};
-   fStatusBar->SetParts(parts, 3);
+	std::array<Int_t, 3> parts = {25, 25, 50};
+   fStatusBar->SetParts(parts.data(), parts.size());
 
    // build parameter entries
    fAmplitude = new TParameterInput(fRightFrame);
@@ -387,9 +387,9 @@ void TCalibrateDescant::CreateGraphicMembers()
 {
    fProjections.resize(fMatrix->GetXaxis()->GetNbins());
    fCalibrations.resize(fMatrix->GetXaxis()->GetNbins());
-   for(size_t i = 0; i < fProjections.size(); ++i) {
-      fProjections[i] = fMatrix->ProjectionY(Form("%s_py%ld", fMatrix->GetName(), i + 1), i + 1, i + 1);
-      fProjections[i]->SetStats(0);
+   for(int i = 0; i < static_cast<int>(fProjections.size()); ++i) {
+      fProjections[i] = fMatrix->ProjectionY(Form("%s_py%d", fMatrix->GetName(), i + 1), i + 1, i + 1);
+      fProjections[i]->SetStats(false);
       fCalibrations[i] = new TGraphErrors;
    }
    double xmin = fMatrix->GetYaxis()->GetBinLowEdge(1);
@@ -484,7 +484,7 @@ void TCalibrateDescant::InitializeParameters()
    double xmax = fProjections[fCurrentProjection]->GetXaxis()->GetBinLowEdge(nBins + 1);
 
    // first find the threshold (aka first bin with more than 2 counts)
-   int threshold;
+   int threshold = 0;
    for(threshold = firstBin; threshold < nBins; ++threshold) {
       if(fProjections[fCurrentProjection]->GetBinContent(threshold) > 2) {
          break;
@@ -497,9 +497,9 @@ void TCalibrateDescant::InitializeParameters()
    int    maxBin  = fProjections[fCurrentProjection]->GetMaximumBin();
    if(xmin + (xmax - xmin) * 0.1 < fProjections[fCurrentProjection]->GetXaxis()->GetBinCenter(maxBin) &&
       fProjections[fCurrentProjection]->GetXaxis()->GetBinCenter(maxBin) < xmax - (xmax - xmin) * 0.1) {
-      average = fProjections[fCurrentProjection]->Integral(maxBin - (xmax - xmin) * 0.1, maxBin + (xmax - xmin) * 0.1) / ((xmax - xmin) * 0.2);
+      average = fProjections[fCurrentProjection]->Integral(static_cast<Int_t>(maxBin - (xmax - xmin) * 0.1), static_cast<Int_t>(maxBin + (xmax - xmin) * 0.1)) / ((xmax - xmin) * 0.2);
    }
-   int roughBin;
+   int roughBin = 0;
    for(roughBin = nBins; roughBin >= firstBin; --roughBin) {
       if(fProjections[fCurrentProjection]->GetBinContent(roughBin) > 10. * average) {
          break;
@@ -568,14 +568,14 @@ void TCalibrateDescant::InitializeParameters()
 void TCalibrateDescant::Previous()
 {
    std::cout << __PRETTY_FUNCTION__ << std::endl;
-   if(fCurrentProjection > 0) --fCurrentProjection;
+   if(fCurrentProjection > 0) { --fCurrentProjection; }
    UpdateInterface();
 }
 
 void TCalibrateDescant::Next()
 {
    std::cout << __PRETTY_FUNCTION__ << std::endl;
-   if(fCurrentProjection + 1 < static_cast<int>(fProjections.size())) ++fCurrentProjection;
+   if(fCurrentProjection + 1 < static_cast<int>(fProjections.size())) { ++fCurrentProjection; }
    UpdateInterface();
 }
 
@@ -743,7 +743,7 @@ void TCalibrateDescant::Save()
 void TCalibrateDescant::AddCalibrationPoint(double value, double uncertainty)
 {
    // check if point already exists for this energy and update it if so
-   int       i;
+   int       i = 0;
    Double_t* x = fCalibrations[fCurrentProjection]->GetX();
    for(i = 0; i < fCalibrations[fCurrentProjection]->GetN(); ++i) {
       if(x[i] == SourceEnergy(fSource)) {
@@ -761,7 +761,10 @@ void TCalibrateDescant::FitCanvasZoomed()
 {
    std::cout << __PRETTY_FUNCTION__ << std::endl;
    // update range of fit functions
-   Double_t xmin, ymin, xmax, ymax;
+   Double_t xmin = 0.;
+	Double_t ymin = 0.;
+	Double_t xmax = 0.;
+	Double_t ymax = 0.;
    fFitCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
 
    std::cout << "updating ranges to " << xmin << " - " << xmax << std::endl;

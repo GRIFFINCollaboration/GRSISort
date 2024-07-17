@@ -1,5 +1,5 @@
-#ifndef TCALMANAGER_H__
-#define TCALMANAGER_H__
+#ifndef TCALMANAGER_H
+#define TCALMANAGER_H
 
 /** \addtogroup Calibration
  *  @{
@@ -12,7 +12,7 @@
 class TCalManager : public TNamed {
 public:
    TCalManager();
-   TCalManager(const char* classname);
+   explicit TCalManager(const char* classname);
    ~TCalManager() override;
 
 public:
@@ -21,8 +21,8 @@ public:
    Bool_t      AddToManager(TCal* cal, Option_t* opt = "");
    void        RemoveCal(UInt_t channum, Option_t* opt = "");
    void        SetClass(const char* className);
-   void        SetClass(const TClass* cl);
-   const char* GetClass() { return fClass ? fClass->GetName() : nullptr; }
+   void        SetClass(const TClass* cls);
+   const char* GetClass() { return (fClass != nullptr) ? fClass->GetName() : nullptr; }
    void        WriteToChannel() const;
 
    void Print(Option_t* opt = "") const override;
@@ -31,9 +31,8 @@ public:
    TCal* operator[](UInt_t channum) { return GetCal(channum); }
 
 private:
-   typedef std::map<UInt_t, TCal*> CalMap;
-   CalMap                          fCalMap;
-   TClass*                         fClass;
+   std::map<UInt_t, TCal*> fCalMap;
+   TClass*                 fClass{nullptr};
 
    /// \cond CLASSIMP
    ClassDefOverride(TCalManager, 1);

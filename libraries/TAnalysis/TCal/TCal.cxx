@@ -14,11 +14,6 @@ TCal::TCal(const char* name, const char* title)
    // fgraph->SetNameTitle(name,title);
 }
 
-TCal::~TCal()
-{
-   /// Default dtor
-}
-
 TCal::TCal(const TCal& copy) : TGraphErrors(copy)
 {
    /// Copy constructor
@@ -115,7 +110,7 @@ Bool_t TCal::SetChannel(UInt_t chanNum)
 {
    /// Sets the channel for the calibration to the channel number channum. Returns
    /// 0 if the channel does not exist
-   TChannel* chan = TChannel::GetChannelByNumber(chanNum);
+   TChannel* chan = TChannel::GetChannelByNumber(static_cast<Int_t>(chanNum));
    if(chan == nullptr) {
       Error("SetChannel", "Channel Number %d does not exist in current memory.", chanNum);
       return false;

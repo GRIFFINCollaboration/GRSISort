@@ -1,5 +1,5 @@
-#ifndef _TCALIBRATEDESCANT_H
-#define _TCALIBRATEDESCANT_H
+#ifndef TCALIBRATEDESCANT_H
+#define TCALIBRATEDESCANT_H
 #include "TGFrame.h"
 #include "TRootEmbeddedCanvas.h"
 #include "TGStatusBar.h"
@@ -31,8 +31,8 @@ class TCalibrateDescant;
 
 class TParameterInput : public TGHorizontalFrame {
 public:
-   TParameterInput(TGVerticalFrame*& frame) : TGHorizontalFrame(frame, 400, 400) {}
-   ~TParameterInput() {}
+   explicit TParameterInput(TGVerticalFrame*& frame) : TGHorizontalFrame(frame, 400, 400) {}
+   ~TParameterInput() override = default;
    TGHorizontalFrame* Build(const std::string& name, const Int_t& baseId, const Double_t& xmin, const Double_t& xmax);
 
    Bool_t ProcessMessage(Long_t msg, Long_t parameter1, Long_t parameter2) override;
@@ -44,7 +44,7 @@ public:
    const char* Name() const { return fLabel->GetTitle(); }
 
    void Set(double val);
-   void Set(double val, double min, double max);
+   void Set(double val, double low, double high);
 
    void UpdateSlider();
    void UpdateEntries();
@@ -93,7 +93,7 @@ public:
                      kBgDecayConst   = 42,
                      kCutoff         = 45 };
 
-   TCalibrateDescant(TH2* hist, const ESourceType& source = ESourceType::k137Cs);
+   explicit TCalibrateDescant(TH2* hist, const ESourceType& source = ESourceType::k137Cs);
 
    Bool_t ProcessMessage(Long_t msg, Long_t parameter1, Long_t parameter2) override;
 

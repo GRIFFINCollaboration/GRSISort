@@ -1,5 +1,5 @@
-#ifndef TCAL_H__
-#define TCAL_H__
+#ifndef TCAL_H
+#define TCAL_H
 
 /** \addtogroup Calibration
  *  @{
@@ -45,14 +45,13 @@ class TCal : public TGraphErrors {
 public:
    TCal();
    TCal(const char* name, const char* title);
-   ~TCal() override;
+   ~TCal() override = default;
 
    TCal(const TCal& copy);
 
    // pure virtual functions
    virtual Bool_t IsGroupable() const = 0;
 
-public:
    void                          Copy(TObject& obj) const override;
    virtual void                  WriteToChannel() const { Error("WriteToChannel", "Not defined for %s", ClassName()); }
    virtual TF1*                  GetFitFunction() const { return fFitFunc; }
@@ -78,10 +77,10 @@ protected:
    void InitTCal();
 
 private:
-   TRef      fChan;      ///< This points at the TChannel
-   TF1*      fFitFunc;   ///< Fit function representing calibration
-   TH1*      fHist;      ///< Histogram that was fit by the TPeak.
-   TNucleus* fNuc;       ///< Nucleus that we are calibrating against
+   TRef      fChan{nullptr};      ///< This points at the TChannel
+   TF1*      fFitFunc{nullptr};   ///< Fit function representing calibration
+   TH1*      fHist{nullptr};      ///< Histogram that was fit by the TPeak.
+   TNucleus* fNuc{nullptr};       ///< Nucleus that we are calibrating against
 
    /// \cond CLASSIMP
    ClassDefOverride(TCal, 2);   // Abstract Class for Calibrations

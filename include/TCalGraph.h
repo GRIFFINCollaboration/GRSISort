@@ -1,5 +1,5 @@
-#ifndef TCALGRAPH_H__
-#define TCALGRAPH_H__
+#ifndef TCALGRAPH_H
+#define TCALGRAPH_H
 
 /** \addtogroup Calibration
  *  @{
@@ -50,7 +50,6 @@ public:
    }
    void ClearAllPoints(Option_t* opt = "");
 
-public:
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
 

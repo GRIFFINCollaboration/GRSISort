@@ -14,15 +14,14 @@
 class TCalList : public TNamed {
 public:
    TCalList();
-   TCalList(const char* name, const char* title = "");
-   ~TCalList() override;
+   explicit TCalList(const char* name, const char* title = "");
+   ~TCalList() override = default;
 
    TCalList(const TCalList& copy);
 
-public:
    void  AddPoint(const TCalPoint& point);
    void  AddPoint(const UInt_t& idx, const TCalPoint& point);
-   Int_t NPoints() const { return fCalList.size(); }
+   Int_t NPoints() const { return static_cast<Int_t>(fCalList.size()); }
    void  FillGraph(TGraph* graph) const;
    bool  SetPointIndex(const UInt_t& old_idx, const UInt_t& new_idx);
 
