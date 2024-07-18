@@ -8,9 +8,9 @@ public:
    TPreserveGDirectory() : bak(gDirectory) {}
    ~TPreserveGDirectory() { bak->cd(); }
 
-	TPreserveGDirectory(const TPreserveGDirectory&) = delete;
-   TPreserveGDirectory(TPreserveGDirectory&&)      = delete;
-	TPreserveGDirectory& operator=(const TPreserveGDirectory&) = delete;
+   TPreserveGDirectory(const TPreserveGDirectory&)            = delete;
+   TPreserveGDirectory(TPreserveGDirectory&&)                 = delete;
+   TPreserveGDirectory& operator=(const TPreserveGDirectory&) = delete;
    TPreserveGDirectory& operator=(TPreserveGDirectory&&)      = delete;
 
 private:

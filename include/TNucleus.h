@@ -27,7 +27,7 @@
 class TNucleus : public TNamed {
 public:
    TNucleus() = default;                                                  ///< Should not be used, here so we can write things to a root file.
-   explicit TNucleus(const char* name);                                            ///< Creates a nucleus based on symbol and sets all parameters from mass.dat
+   explicit TNucleus(const char* name);                                   ///< Creates a nucleus based on symbol and sets all parameters from mass.dat
    TNucleus(int charge, int neutrons, double mass, const char* symbol);   ///< Creates a nucleus with Z, N, mass, and symbol
    TNucleus(int charge, int neutrons, const char* MassFile = nullptr);    ///< Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
 
@@ -85,10 +85,10 @@ public:
    bool operator!=(const TNucleus& rhs) const { return !(*this == rhs); }
 
 private:
-   static const char*  grsipath;
+   static const char* grsipath;
 
    static std::string& Massfile();   ///< Returns the massfile to be used, which includes Z, N, atomic symbol, and mass excess
-   void SetName(const char* name = "") override;
+   void                SetName(const char* name = "") override;
 
    int         fA{0};             ///< Number of nucleons (Z + N)
    int         fN{0};             ///< Number of neutrons (N)

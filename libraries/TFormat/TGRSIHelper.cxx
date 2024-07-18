@@ -223,7 +223,7 @@ void TGRSIHelper::CheckSizes(unsigned int slot, const char* usage)
       for(const auto&& obj : list.second) {
          TBufferFile buf(TBuffer::kWrite, 10000);
          obj->IsA()->WriteBuffer(buf, obj);
-			if(buf.Length() > fSizeLimit) {
+         if(buf.Length() > fSizeLimit) {
             std::stringstream str;
             str << DRED << slot << ". slot: " << obj->ClassName() << " '" << obj->GetName() << "' too large to " << usage << ": " << buf.Length() << " bytes = " << buf.Length() / 1024. / 1024. / 1024. << " GB, removing it!" << RESET_COLOR << std::endl;
             std::cout << str.str();

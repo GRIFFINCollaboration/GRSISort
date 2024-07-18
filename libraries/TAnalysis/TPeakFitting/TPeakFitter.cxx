@@ -5,8 +5,8 @@
 
 #include "Globals.h"
 
-TPeakFitter::TPeakFitter(const Double_t& rangeLow, const Double_t& rangeHigh) 
-	: fTotalFitFunction(nullptr), fRangeLow(rangeLow), fRangeHigh(rangeHigh)
+TPeakFitter::TPeakFitter(const Double_t& rangeLow, const Double_t& rangeHigh)
+   : fTotalFitFunction(nullptr), fRangeLow(rangeLow), fRangeHigh(rangeHigh)
 {
    fBGToFit = new TF1("fbg", this, &TPeakFitter::DefaultBackgroundFunction, fRangeLow, fRangeHigh, 4, "TPeakFitter", "DefaultBackgroundFunction");
    fBGToFit->FixParameter(3, 0);
@@ -18,7 +18,7 @@ void TPeakFitter::Print(Option_t* opt) const
    /// Print information from the fit, opt is passed along to each individual peaks Print function.
    if(fTotalFitFunction != nullptr) {
       double xMin = 0.;
-		double xMax = 0.;
+      double xMax = 0.;
       fTotalFitFunction->GetRange(xMin, xMax);
       std::cout << "Fitting range: " << xMin << " to " << xMax << std::endl;
    } else {
@@ -131,7 +131,7 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
          // fit again with all parameters released
          if(!quiet) { std::cout << GREEN << "Re-fitting with released parameters (without any limits)" << RESET_COLOR << std::endl; }
          for(int i = 0; i < fTotalFitFunction->GetNpar(); ++i) {
-            if(i == 1) { continue; }  // skipping centroid, which should always be parameter 1
+            if(i == 1) { continue; }   // skipping centroid, which should always be parameter 1
             fTotalFitFunction->ReleaseParameter(i);
          }
          fit_res = fit_hist->Fit(fTotalFitFunction, Form("SRI%s", options.Data()));
@@ -207,8 +207,8 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
                }
                ++param_to_zero_counter;
             }
-            Double_t low_range = 0.;
-				Double_t high_range = 0.;
+            Double_t low_range  = 0.;
+            Double_t high_range = 0.;
             fTotalFitFunction->GetRange(low_range, high_range);
             peak_func->SetRange(low_range, high_range);
          }
@@ -237,8 +237,11 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
             // Lets do some integrals meow.
          }
          p_it->SetArea(total_function_copy->Integral(p_it->Centroid() - p_it->Width() * 5., p_it->Centroid() + p_it->Width() * 5., 1e-8) / fit_hist->GetBinWidth(1));
-         if(goodCovarianceMatrix) { p_it->SetAreaErr(total_function_copy->IntegralError(p_it->Centroid() - p_it->Width() * 5., p_it->Centroid() + p_it->Width() * 5., total_function_copy->GetParameters(), covariance_matrix.GetMatrixArray(), 1E-5) / fit_hist->GetBinWidth(1)); }
-         else { std::cout << "Not setting area error because we don't have a good covariance matrix!" << std::endl; }
+         if(goodCovarianceMatrix) {
+            p_it->SetAreaErr(total_function_copy->IntegralError(p_it->Centroid() - p_it->Width() * 5., p_it->Centroid() + p_it->Width() * 5., total_function_copy->GetParameters(), covariance_matrix.GetMatrixArray(), 1E-5) / fit_hist->GetBinWidth(1));
+         } else {
+            std::cout << "Not setting area error because we don't have a good covariance matrix!" << std::endl;
+         }
       }
       total_function_copy->Delete();
    }
@@ -292,8 +295,8 @@ void TPeakFitter::UpdateFitterParameters()
          fTotalFitFunction->SetParName(param_counter, fBGToFit->GetParName(i));
          fTotalFitFunction->SetParameter(param_counter, fBGToFit->GetParameter(i));
          fTotalFitFunction->SetParError(param_counter, fBGToFit->GetParError(i));
-			Double_t limit_low  = 0.;
-			Double_t limit_high = 0.;
+         Double_t limit_low  = 0.;
+         Double_t limit_high = 0.;
          fBGToFit->GetParLimits(i, limit_low, limit_high);
          fTotalFitFunction->SetParLimits(param_counter, limit_low, limit_high);
          ++param_counter;
@@ -337,7 +340,7 @@ void TPeakFitter::InitializeBackgroundParameters(TH1* fit_hist)
    fBGToFit->SetParName(2, "C");
    fBGToFit->SetParName(3, "bg_offset");
 
-   Double_t lowLimit = 0.;
+   Double_t lowLimit  = 0.;
    Double_t highLimit = 0.;
    fBGToFit->GetParLimits(0, lowLimit, highLimit);
 

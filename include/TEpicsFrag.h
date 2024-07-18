@@ -30,7 +30,7 @@
 
 class TEpicsFrag : public TObject {
 public:
-   TEpicsFrag() = default;
+   TEpicsFrag()           = default;
    ~TEpicsFrag() override = default;
 
    size_t       GetSize() const { return fData.size(); }
@@ -39,7 +39,7 @@ public:
       if(index >= fData.size()) {
          return fData.back();
       }
-		return fData[index];
+      return fData[index];
    }
 
    void Clear(Option_t* opt = "") override;         //!<!
@@ -57,18 +57,18 @@ public:
    static TEpicsFrag* GetScalerAtTime(Long64_t time);
 
    // setters
-   void DaqTimeStamp(time_t val)           { fDaqTimeStamp = val; }
-   void DaqId(Int_t val)                   { fDaqId = val; }
-   void Data(std::vector<float> val)       { fData = val; }
+   void DaqTimeStamp(time_t val) { fDaqTimeStamp = val; }
+   void DaqId(Int_t val) { fDaqId = val; }
+   void Data(std::vector<float> val) { fData = val; }
    void Name(std::vector<std::string> val) { fName = val; }
 
-   void AddData(float val)       { fData.push_back(val); }
+   void AddData(float val) { fData.push_back(val); }
    void AddName(std::string val) { fName.push_back(val); }
 
-	// getters
-   time_t DaqTimeStamp()           { return fDaqTimeStamp; }
-	Int_t DaqId()                   { return fDaqId; }
-   std::vector<float> Data()       { return fData; }
+   // getters
+   time_t                   DaqTimeStamp() { return fDaqTimeStamp; }
+   Int_t                    DaqId() { return fDaqId; }
+   std::vector<float>       Data() { return fData; }
    std::vector<std::string> Name() { return fName; }
 
 private:

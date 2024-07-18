@@ -35,19 +35,19 @@ public:
    TSortingDiagnostics();
    //TSortingDiagnostics(const TSortingDiagnostics&);
    //TSortingDiagnostics(TSortingDiagnostics&&);
-	//TSortingDiagnostics& operator=(const TSortingDiagnostics&);
-	//TSortingDiagnostics& operator=(TSortingDiagnostics&&);
+   //TSortingDiagnostics& operator=(const TSortingDiagnostics&);
+   //TSortingDiagnostics& operator=(TSortingDiagnostics&&);
    //~TSortingDiagnostics() override;
 
 private:
    // analysis tree diagnostics
-   std::unordered_map<int64_t, std::pair<int64_t, int64_t>>       fFragmentsOutOfOrder;
-   std::unordered_map<double, std::pair<double, double>>          fFragmentsOutOfTimeOrder;
-   std::vector<Long_t>                                            fPreviousTimeStamps;   ///< timestamps of previous fragments, saved every 'BuildWindow' entries
-   std::vector<double>                                            fPreviousTimes;        ///< times of previous fragments, saved every 'BuildWindow' entries
-   int64_t                                                        fMaxEntryDiff{0};
-   std::unordered_map<UInt_t, int64_t>                            fMissingChannels;          ///< counts of missing channels
-   std::unordered_map<TClass*, int64_t>                           fMissingDetectorClasses;   ///< counts of missing detector classes
+   std::unordered_map<int64_t, std::pair<int64_t, int64_t>> fFragmentsOutOfOrder;
+   std::unordered_map<double, std::pair<double, double>>    fFragmentsOutOfTimeOrder;
+   std::vector<Long_t>                                      fPreviousTimeStamps;   ///< timestamps of previous fragments, saved every 'BuildWindow' entries
+   std::vector<double>                                      fPreviousTimes;        ///< times of previous fragments, saved every 'BuildWindow' entries
+   int64_t                                                  fMaxEntryDiff{0};
+   std::unordered_map<UInt_t, int64_t>                      fMissingChannels;          ///< counts of missing channels
+   std::unordered_map<TClass*, int64_t>                     fMissingDetectorClasses;   ///< counts of missing detector classes
 
    std::unordered_map<TClass*, std::pair<int64_t, int64_t>> fHitsRemoved;   ///< removed hits and total hits per detector class
 

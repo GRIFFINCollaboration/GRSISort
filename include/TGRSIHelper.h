@@ -40,8 +40,8 @@ protected:
    std::string                                                fPrefix{"TGRSIHelper"};   //!<! name of this action (used as prefix)
 
 private:
-	static constexpr int fSizeLimit = 1073741822;             //!<! 1 GB size limit for objects in ROOT
-   void CheckSizes(unsigned int slot, const char* usage);
+   static constexpr int fSizeLimit = 1073741822;   //!<! 1 GB size limit for objects in ROOT
+   void                 CheckSizes(unsigned int slot, const char* usage);
 
 public:
    /// This type is a requirement for every helper.

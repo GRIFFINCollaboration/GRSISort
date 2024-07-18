@@ -26,6 +26,7 @@ ROOT_PYTHON_VERSION=$(shell root-config --python-version)
 
 MATHMORE_INSTALLED:=$(shell root-config --has-mathmore)
 XML_INSTALLED:=$(shell root-config --has-xml)
+PROOF_INSTALLED:=$(shell root-config --has-proof)
 
 ifeq ($(ROOT_PYTHON_VERSION),2.7)
   CFLAGS += -DHAS_CORRECT_PYTHON_VERSION
@@ -75,14 +76,18 @@ BLD_STRING= "Building\ "
 COPY_STRING="Copying\ \ "
 FIN_STRING="Finished Building"
 
-LIBRARY_NAMES  := $(notdir $(LIBRARY_DIRS))
+ifeq ($(PROOF_INSTALLED),yes)
+	LIBRARY_NAMES  := $(notdir $(LIBRARY_DIRS))
+else
+	LIBRARY_NAMES  := $(filter-out TGRSIProof,$(notdir $(LIBRARY_DIRS)))
+endif
 LIBRARY_OUTPUT := $(patsubst %,lib/lib%.so,$(LIBRARY_NAMES))
 
 INCLUDES  := $(addprefix -I$(PWD)/,$(INCLUDES))
 CFLAGS    += $(shell root-config --cflags)
 CFLAGS    += -MMD -MP $(INCLUDES)
 LINKFLAGS += -Llib $(addprefix -l,$(LIBRARY_NAMES)) -Wl,-rpath,\$$ORIGIN/../lib
-LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lMinuit -lGuiHtml -lTreePlayer -lX11 -lXpm -lProof -lTMVA
+LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lMinuit -lGuiHtml -lTreePlayer -lX11 -lXpm -lTMVA
 
 # RCFLAGS are being used for rootcint
 ifeq ($(MATHMORE_INSTALLED),yes)
@@ -97,6 +102,10 @@ ifeq ($(XML_INSTALLED),yes)
   LINKFLAGS += -lXMLParser -lXMLIO
 endif
 
+ifeq ($(PROOF_INSTALLED),yes)
+	LINKFLAGS += -lProof
+endif
+
 LINKFLAGS := $(LINKFLAGS_PREFIX) $(LINKFLAGS) $(LINKFLAGS_SUFFIX) $(CFLAGS)
 
 ROOT_LIBFLAGS := $(shell root-config --cflags --glibs)
@@ -107,7 +116,10 @@ SCRIPT_O_FILES   := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard scripts/*.$
 PROOF_O_FILES    := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard GRSIProof/grsiproof.$(SRC_SUFFIX)))
 ANALYSIS_O_FILES := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard myAnalysis/*.$(SRC_SUFFIX)))
 MAIN_O_FILES     := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard src/*.$(SRC_SUFFIX)))
-EXE_O_FILES      := $(UTIL_O_FILES) $(SANDBOX_O_FILES) $(SCRIPT_O_FILES) $(ANALYSIS_O_FILES) $(PROOF_O_FILES)
+EXE_O_FILES      := $(UTIL_O_FILES) $(SANDBOX_O_FILES) $(SCRIPT_O_FILES) $(ANALYSIS_O_FILES)
+ifeq ($(PROOF_INSTALLED),yes)
+	EXE_O_FILES   += $(PROOF_O_FILES)
+endif
 EXECUTABLES      := $(patsubst %.o,bin/%,$(notdir $(EXE_O_FILES))) bin/grsisort
 TEST_O_FILES     := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard UnitTests/*.$(SRC_SUFFIX)))
 
@@ -155,8 +167,10 @@ bin/%: .build/Sandbox/%.o | $(LIBRARY_OUTPUT) bin include/GVersion.h
 bin/%: .build/scripts/%.o | $(LIBRARY_OUTPUT) bin include/GVersion.h
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
+ifeq ($(PROOF_INSTALLED),yes)
 bin/%: .build/GRSIProof/%.o | $(LIBRARY_OUTPUT) bin include/GVersion.h
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
+endif
 
 bin/%: .build/myAnalysis/%.o | $(LIBRARY_OUTPUT) bin include/GVersion.h
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )

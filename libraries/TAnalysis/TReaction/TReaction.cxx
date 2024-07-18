@@ -6,7 +6,7 @@
 #include <TStyle.h>
 
 TReaction::TReaction(const char* beam, const char* targ, const char* ejec, const char* reco, double eBeam, double ex3, bool inverse)
-	: fTBeam(eBeam), fInverse(inverse), fExc(ex3)
+   : fTBeam(eBeam), fInverse(inverse), fExc(ex3)
 {
    Clear();
    // I THINK INVERSE KINEMATICS NECESSITATES THE BEAM<->TARGET ENTIRELY ?
@@ -19,7 +19,7 @@ TReaction::TReaction(const char* beam, const char* targ, const char* ejec, const
       fM[i] = fNuc[i]->GetMass();
    }
 
-   fQVal    = (fM[0] + fM[1]) - (fM[2] + fM[3]) - ex3;   // effective Q value (includes excitation)
+   fQVal = (fM[0] + fM[1]) - (fM[2] + fM[3]) - ex3;   // effective Q value (includes excitation)
 
    if(fInverse) {
       SetName(Form("%s(%s,%s)%s", beam, targ, ejec, reco));
@@ -224,9 +224,9 @@ double TReaction::ConvertThetaLabToCm(double theta_lab, int part) const
    }
 
    // Uses the particle velocity in the CM frame, which makes it more complex
-   double gtan2 = pow(tan(theta_lab) * fCmG, 2);
-   double x     = fCmV / fVCm[part];
-   double expr  = sqrt(1 + gtan2 * (1 - pow(x, 2)));
+   double gtan2    = pow(tan(theta_lab) * fCmG, 2);
+   double x        = fCmV / fVCm[part];
+   double expr     = sqrt(1 + gtan2 * (1 - pow(x, 2)));
    double theta_cm = 0.;
 
    // deals with double valued thetas in lab frame
@@ -310,7 +310,7 @@ TGraph* TReaction::KinVsTheta(double thmin, double thmax, int part, bool Frame_L
       Form("Kinematics for %s; Theta_{%s} [deg]; Kinetic energy [%s]", GetName(), frame, Units_keV ? "keV" : "MeV"));
 
    double theta = 0.;
-	double T = 0.;
+   double T     = 0.;
 
    for(int i = 0; i <= 180; i++) {
       theta = static_cast<double>(i);   // always in CM frame since function is continuous
@@ -345,8 +345,8 @@ TGraph* TReaction::ThetaVsTheta(double thmin, double thmax, int part, bool Frame
    g->SetName(Form("ThetaVsTheta%s_%s", frame, GetName()));
    g->SetTitle(Form("Angle conversion for %s; Theta_{%s} [deg]; Theta_{%s} [deg]", GetName(), frame, other));
 
-   double theta_cm = 0.;
-	double theta_lab = 0.;
+   double theta_cm  = 0.;
+   double theta_lab = 0.;
 
    for(int i = 0; i <= 180; i++) {
       theta_cm  = static_cast<double>(i);   // always in CM frame
@@ -355,7 +355,7 @@ TGraph* TReaction::ThetaVsTheta(double thmin, double thmax, int part, bool Frame
       if((Frame_Lab && (theta_lab < thmin || theta_lab > thmax))) {
          continue;
       }
-		if(!Frame_Lab && (theta_cm < thmin || theta_cm > thmax)) {
+      if(!Frame_Lab && (theta_cm < thmin || theta_cm > thmax)) {
          continue;
       }
       // set angular range
@@ -382,7 +382,7 @@ TGraph* TReaction::OmegaVsTheta(double thmin, double thmax, int part, bool Frame
                     other, frame));
 
    double theta = 0.;
-	double Om = 0.;
+   double Om    = 0.;
    for(int i = 0; i <= 180; i++) {
 
       theta = static_cast<double>(i);   // always in CM frame
@@ -413,7 +413,7 @@ TGraph* TReaction::RutherfordVsTheta(double thmin, double thmax, int part, bool 
                     frame, Units_mb ? "mb" : "fm^2"));
 
    double theta = 0.;
-	double R = 0.;
+   double R     = 0.;
 
    for(int i = 1; i <= 180; i++) {
       theta = static_cast<double>(i);   // always in CM frame

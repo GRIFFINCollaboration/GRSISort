@@ -20,7 +20,7 @@ public:
    GValue(const GValue& val);
 
    double      GetValue() const { return fValue; }
-   const char* GetInfo()  const { return info.c_str(); }
+   const char* GetInfo() const { return info.c_str(); }
 
    void SetValue(double value) { fValue = value; }
    void SetInfo(const char* temp) { info.assign(temp); }

@@ -41,7 +41,7 @@ void TEpicsFrag::Print(Option_t*) const
    size_t largest = fData.size();
    std::cout << "------ EPICS " << largest << " Varibles Found ------" << std::endl;
 
-	// TODO maybe we can change this to std::array?
+   // TODO maybe we can change this to std::array?
    char buff[20];
    ctime(&fDaqTimeStamp);
    struct tm* timeInfo = localtime(&fDaqTimeStamp);

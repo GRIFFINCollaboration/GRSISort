@@ -226,8 +226,11 @@ void TGRSIOptions::Load(int argc, char** argv)
 
    // Get name of the program calling this function (removing any path from the name)
    std::string program;
-   if(argc > 0) { program = argv[0]; }
-   else { program = "unknown"; }
+   if(argc > 0) {
+      program = argv[0];
+   } else {
+      program = "unknown";
+   }
    size_t lastSlash = program.rfind('/');
    if(lastSlash != std::string::npos) {
       program.erase(0, lastSlash + 1);
@@ -607,8 +610,9 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
 
    case kFileType::USERSETTINGS:
       // if we haven't read any user setting create new ones and read the file, otherwise just read the file
-      if(fUserSettings == nullptr) { fUserSettings = new TUserSettings(filename); }
-      else fUserSettings->ReadSettings(filename);
+      if(fUserSettings == nullptr) {
+         fUserSettings = new TUserSettings(filename);
+      } else fUserSettings->ReadSettings(filename);
       return true;
 
    case kFileType::PRESETWINDOW: fInputWinFiles.push_back(filename); return true;

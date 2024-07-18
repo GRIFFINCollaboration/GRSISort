@@ -86,8 +86,8 @@ bool TFragmentMap::Add(const std::shared_ptr<TFragment>& frag, const std::vector
    // last fragment:
    // now we can loop over the stored fragments and the current fragment and calculate all charges
    std::vector<std::shared_ptr<TFragment>> frags;            // all fragments
-   std::vector<Long_t>                     kValues;                // all integration lengths
-   std::vector<Float_t>                    charges;                // all charges (not integrated charges, but integrated charge divided by integration length!)
+   std::vector<Long_t>                     kValues;          // all integration lengths
+   std::vector<Float_t>                    charges;          // all charges (not integrated charges, but integrated charge divided by integration length!)
    int                                     situation = -1;   // flag to select different scenarios for the time sequence of multiple hits
    switch(nofFrags) {
    case 2:   // only one option: (2, 1)
@@ -216,7 +216,7 @@ bool TFragmentMap::Add(const std::shared_ptr<TFragment>& frag, const std::vector
          std::cout << "inserting second ... " << std::endl;
       }
       kValues.insert(kValues.end(), std::get<2>((*std::next(range.first)).second).begin(),
-               std::get<2>((*std::next(range.first)).second).end());
+                     std::get<2>((*std::next(range.first)).second).end());
       if(fDebug) {
          std::cout << "done" << std::endl;
       }
@@ -384,7 +384,7 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
       if(situation == 3) {   //(3, 1, 1)
          frag[0]->SetCharge(
             (charges[0] * (kSquared[0] * kSquared[1] * kSquared[2] + kSquared[0] * kSquared[1] * kSquared[3] + kSquared[0] * kSquared[1] * kSquared[4] + kSquared[0] * kSquared[2] * kSquared[4] +
-                     kSquared[0] * kSquared[3] * kSquared[4]) +
+                           kSquared[0] * kSquared[3] * kSquared[4]) +
              (charges[1] + charges[4]) * kSquared[1] * kSquared[3] * kSquared[4] + charges[2] * (kSquared[1] * kSquared[2] * kSquared[3] + kSquared[2] * kSquared[3] * kSquared[4]) -
              charges[3] * (kSquared[1] * kSquared[2] * kSquared[3] + kSquared[1] * kSquared[3] * kSquared[4] + kSquared[2] * kSquared[3] * kSquared[4])) /
             (kSquared[0] * kSquared[1] * kSquared[2] + kSquared[0] * kSquared[1] * kSquared[3] + kSquared[0] * kSquared[1] * kSquared[4] + kSquared[0] * kSquared[2] * kSquared[4] +
@@ -403,7 +403,7 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
                              charges[1] * (kSquared[0] * kSquared[1] * kSquared[2] + kSquared[0] * kSquared[1] * kSquared[3] + kSquared[1] * kSquared[2] * kSquared[3]) +
                              charges[2] * (kSquared[0] * kSquared[1] * kSquared[2] + kSquared[1] * kSquared[2] * kSquared[3]) +
                              charges[4] * (kSquared[0] * kSquared[1] * kSquared[4] + kSquared[0] * kSquared[2] * kSquared[4] + kSquared[0] * kSquared[3] * kSquared[4] +
-                                     kSquared[1] * kSquared[3] * kSquared[4] + kSquared[2] * kSquared[3] * kSquared[4])) /
+                                           kSquared[1] * kSquared[3] * kSquared[4] + kSquared[2] * kSquared[3] * kSquared[4])) /
                             (kSquared[0] * kSquared[1] * kSquared[2] + kSquared[0] * kSquared[1] * kSquared[3] + kSquared[0] * kSquared[1] * kSquared[4] +
                              kSquared[0] * kSquared[2] * kSquared[4] + kSquared[0] * kSquared[3] * kSquared[4] + kSquared[1] * kSquared[2] * kSquared[3] +
                              kSquared[1] * kSquared[3] * kSquared[4] + kSquared[2] * kSquared[3] * kSquared[4]) *
@@ -411,7 +411,7 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
       } else {   //(2, 2, 1)
          frag[0]->SetCharge(
             (charges[0] * (kSquared[0] * kSquared[1] * kSquared[3] + kSquared[0] * kSquared[1] * kSquared[4] + kSquared[0] * kSquared[2] * kSquared[3] + kSquared[0] * kSquared[2] * kSquared[4] +
-                     kSquared[0] * kSquared[3] * kSquared[4]) +
+                           kSquared[0] * kSquared[3] * kSquared[4]) +
              charges[1] * (kSquared[1] * kSquared[2] * kSquared[3] + kSquared[1] * kSquared[2] * kSquared[4] + kSquared[1] * kSquared[3] * kSquared[4]) -
              charges[2] * (kSquared[1] * kSquared[2] * kSquared[3] + kSquared[1] * kSquared[2] * kSquared[4]) - (charges[3] - charges[4]) * kSquared[1] * kSquared[3] * kSquared[4]) /
             (kSquared[0] * kSquared[1] * kSquared[3] + kSquared[0] * kSquared[1] * kSquared[4] + kSquared[0] * kSquared[2] * kSquared[3] + kSquared[0] * kSquared[2] * kSquared[4] +
@@ -451,8 +451,8 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
 }
 
 void TFragmentMap::DropFragments(std::pair<
-      std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>>>::iterator,
-      std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>>>::iterator>& range)
+                                 std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>>>::iterator,
+                                 std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>>>::iterator>& range)
 {
    /// put the fragments within the range of the two iterators into the bad output queue
    for(auto it = range.first; it != range.second; ++it) {

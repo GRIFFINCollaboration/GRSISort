@@ -156,11 +156,13 @@ int GValue::WriteValFile(const std::string& filename, Option_t*)
          return -1;
       }
       for(auto iter = fValueVector.begin(); iter != fValueVector.end(); iter++) {
-         outfile << iter->second->PrintToString() << std::endl << std::endl;
+         outfile << iter->second->PrintToString() << std::endl
+                 << std::endl;
       }
    } else {
       for(auto iter = fValueVector.begin(); iter != fValueVector.end(); iter++) {
-			std::cout << iter->second->PrintToString() << std::endl << std::endl;
+         std::cout << iter->second->PrintToString() << std::endl
+                   << std::endl;
       }
    }
    return fValueVector.size();
@@ -273,7 +275,7 @@ int GValue::ParseInputData(const std::string& input, EPriority priority, Option_
             line = line.substr(colon + 1, line.length());
             trim(line);   // strip beginning whitespace (not needed for value itself, but for the readability of info)
             trim(type);
-				std::transform(type.begin(), type.end(), type.begin(), ::toupper);
+            std::transform(type.begin(), type.end(), type.begin(), ::toupper);
             if(type == "NAME") {
                value->SetName(line.c_str());
             } else if(type == "VALUE") {
@@ -313,7 +315,7 @@ void GValue::Streamer(TBuffer& R__b)
 {
    SetBit(kCanDelete);
    UInt_t R__s = 0;
-	UInt_t R__c = 0;
+   UInt_t R__c = 0;
    if(R__b.IsReading()) {
       Version_t R__v = R__b.ReadVersion(&R__s, &R__c);
       TNamed::Streamer(R__b);

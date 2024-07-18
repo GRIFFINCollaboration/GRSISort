@@ -92,7 +92,7 @@ public:
    virtual std::string OutputQueueStatus();
 
 protected:
-	// TODO consider making all of these private with protected access functions
+   // TODO consider making all of these private with protected access functions
 #ifndef __CINT__
    std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>> fGoodOutputQueues;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>           fBadOutputQueue;

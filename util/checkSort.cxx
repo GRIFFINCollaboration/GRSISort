@@ -37,8 +37,8 @@ int main(int argc, char** argv)
 
       size_t index = 0;
       for(auto branch : *(branches)) {
-         auto cls = TClass::GetClass(branch->GetName());
-         det[index]  = static_cast<TDetector*>(cls->New());
+         auto cls   = TClass::GetClass(branch->GetName());
+         det[index] = static_cast<TDetector*>(cls->New());
          tree->SetBranchAddress(branch->GetName(), &det[index]);
          lastTS[cls] = std::deque<int64_t>(3, 0);
          lastEn[cls] = std::deque<double>(3, 0.);
@@ -46,12 +46,15 @@ int main(int argc, char** argv)
       }
 
       Long64_t nEntries = tree->GetEntries();
-      Long64_t entry        = 0;
+      Long64_t entry    = 0;
 
       for(entry = 0; entry < nEntries; ++entry) {
          // check if we can advance 100 events, otherwise read last event
-         if(entry + 100 < nEntries) { entry += 100; }
-         else                       { entry = nEntries - 1; }
+         if(entry + 100 < nEntries) {
+            entry += 100;
+         } else {
+            entry = nEntries - 1;
+         }
 
          tree->GetEntry(entry);
 

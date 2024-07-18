@@ -82,7 +82,7 @@ public:
 
    explicit TDetectorHit(const int& Address = 0xffffffff);
    TDetectorHit(const TDetectorHit&, bool copywave = true);
-	//TDetectorHit(const TFragment& frag) { Class()->IgnoreTObjectStreamer(); CopyFragment(frag); }
+   //TDetectorHit(const TFragment& frag) { Class()->IgnoreTObjectStreamer(); CopyFragment(frag); }
    //void CopyFragment(const TFragment&);
    // void CopyWaveform(const TFragment&);
    ~TDetectorHit() override;
@@ -137,7 +137,7 @@ public:
    }
 
    virtual TVector3            GetPosition(Double_t) const { return GetPosition(); }   //!<!
-   virtual TVector3            GetPosition() const { return {0., 0., 0.}; }    //!<!
+   virtual TVector3            GetPosition() const { return {0., 0., 0.}; }            //!<!
    virtual double              GetEnergy(Option_t* opt = "") const;
    virtual Double_t            GetEnergyNonlinearity(double energy) const;
    virtual Long64_t            GetTimeStamp(Option_t* = "") const { return fTimeStamp; }

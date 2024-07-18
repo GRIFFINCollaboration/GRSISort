@@ -26,7 +26,7 @@ template <typename key_type, typename mapped_type, typename key_compare = std::l
           typename allocator_type = std::allocator<std::pair<const key_type, mapped_type>>>
 class TGRSIMap {
 public:
-   TGRSIMap() = default;
+   TGRSIMap()  = default;
    ~TGRSIMap() = default;
 
    void Print()
@@ -57,10 +57,10 @@ public:
    const mapped_type& operator[](const key_type& key) const { return fMap[key]; }
 
    using map_t = std::map<key_type, mapped_type, key_compare, allocator_type>;
-   typename map_t::iterator                                             begin() { return fMap.begin(); }
-   typename map_t::const_iterator                                       begin() const { return fMap.begin(); }
-   typename map_t::iterator                                             end() { return fMap.end(); }
-   typename map_t::const_iterator                                       end() const { return fMap.end(); }
+   typename map_t::iterator       begin() { return fMap.begin(); }
+   typename map_t::const_iterator begin() const { return fMap.begin(); }
+   typename map_t::iterator       end() { return fMap.end(); }
+   typename map_t::const_iterator end() const { return fMap.end(); }
 
    // capacity functions of std::map
    bool   empty() const noexcept { return fMap.empty(); }

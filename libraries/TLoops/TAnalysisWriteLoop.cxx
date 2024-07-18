@@ -41,7 +41,7 @@ TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string output
 
 TAnalysisWriteLoop::TAnalysisWriteLoop(std::string name, const std::string& outputFilename)
    : StoppableThread(std::move(name)),
-	  fOutputFile(TFile::Open(outputFilename.c_str(), "recreate")),
+     fOutputFile(TFile::Open(outputFilename.c_str(), "recreate")),
      fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>()),
      fOutOfOrderQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>())
 {
@@ -78,7 +78,7 @@ std::string TAnalysisWriteLoop::EndStatus()
 {
    std::stringstream str;
    str << Name() << ":\t" << std::setw(8) << fItemsPopped << "/" << fInputSize + fItemsPopped << ", "
-      << "??? good events" << std::endl;
+       << "??? good events" << std::endl;
    return str.str();
 }
 
@@ -114,7 +114,7 @@ bool TAnalysisWriteLoop::Iteration()
       return true;
    }
 
-	return !(fInputQueue->IsFinished());
+   return !(fInputQueue->IsFinished());
 }
 
 void TAnalysisWriteLoop::Write()
@@ -132,8 +132,8 @@ void TAnalysisWriteLoop::Write()
       if(TChannel::GetNumberOfChannels() != 0) {
          TChannel::WriteToRoot();
       }
-		TRunInfo::WriteToRoot(fOutputFile);
-		TGRSIOptions::AnalysisOptions()->WriteToFile(fOutputFile);
+      TRunInfo::WriteToRoot(fOutputFile);
+      TGRSIOptions::AnalysisOptions()->WriteToFile(fOutputFile);
       ppg->Write("PPG");
 
       if(options->WriteDiagnostics()) {
@@ -153,11 +153,11 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls)
       TThread::Lock();
 
       // Make a default detector of that type.
-      auto* det_p  = reinterpret_cast<TDetector*>(cls->New());
+      auto* det_p       = reinterpret_cast<TDetector*>(cls->New());
       fDefaultDets[cls] = det_p;
 
       // Add to our local map
-      auto* det_pp  = new TDetector*;
+      auto* det_pp = new TDetector*;
       *det_pp      = det_p;
       fDetMap[cls] = det_pp;
 
@@ -204,16 +204,16 @@ void TAnalysisWriteLoop::WriteEvent(std::shared_ptr<TUnpackedEvent>& event)
       for(const auto& det : event->GetDetectors()) {
          TClass* cls = det->IsA();
          try {
-            **fDetMap.at(cls) = *det;//(det.get());
+            **fDetMap.at(cls) = *det;   //(det.get());
          } catch(std::out_of_range& e) {
             AddBranch(cls);
-            **fDetMap.at(cls) = *det;//(det.get());
+            **fDetMap.at(cls) = *det;   //(det.get());
          }
-			(*fDetMap.at(cls))->ClearTransients();
-		}
+         (*fDetMap.at(cls))->ClearTransients();
+      }
 
-		// Fill
-		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
-		fEventTree->Fill();
-	}
+      // Fill
+      std::lock_guard<std::mutex> lock(ttree_fill_mutex);
+      fEventTree->Fill();
+   }
 }

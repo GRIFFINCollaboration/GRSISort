@@ -86,8 +86,8 @@ private:
    TRateScalerQueue();
    static TRateScalerQueue* fRateScalerQueueClassPointer;   // Pointer to the scaler Q singleton
 
-   std::queue<TScalerData*> fRateScalerQueue;   // The scaler Queue itself
-   int                      fScalersInQueue{0}; // The current number of scalers in the Q
+   std::queue<TScalerData*> fRateScalerQueue;     // The scaler Queue itself
+   int                      fScalersInQueue{0};   // The current number of scalers in the Q
 
    void StatusUpdate();
    bool fStatusUpdateOn{false};   // flag that determines whether the Q status should be read out

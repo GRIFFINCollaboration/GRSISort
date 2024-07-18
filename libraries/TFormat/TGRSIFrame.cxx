@@ -17,7 +17,7 @@
 
 // This assumes the options have been set from argc and argv before! That's true when using grsiframe, other programs need to ensure this happens.
 TGRSIFrame::TGRSIFrame()
-	: fOptions(TGRSIOptions::Get())
+   : fOptions(TGRSIOptions::Get())
 {
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6, 24, 0)
    // this increases RDF's verbosity level as long as the `fVerbosity` variable is in scope, i.e. until TGRSIFrame is destroyed
@@ -30,8 +30,11 @@ TGRSIFrame::TGRSIFrame()
    std::string treeName = fOptions->TreeName();
    if(treeName.empty()) {
       TFile check(fOptions->RootInputFiles()[0].c_str());
-      if(check.Get("AnalysisTree") != nullptr)      { treeName = "AnalysisTree"; }
-      else if(check.Get("FragmentTree") != nullptr) { treeName = "FragmentTree"; }
+      if(check.Get("AnalysisTree") != nullptr) {
+         treeName = "AnalysisTree";
+      } else if(check.Get("FragmentTree") != nullptr) {
+         treeName = "FragmentTree";
+      }
       check.Close();
    }
    if(treeName.empty()) {
@@ -95,7 +98,7 @@ TGRSIFrame::TGRSIFrame()
    /// Try to load an external library with the correct function in it.
    /// If that library does not exist, try to compile it.
    /// To handle all that we use the class TDataFrameLibrary (very similar to TParserLibrary)
-   auto* helper   = TDataFrameLibrary::Get()->CreateHelper(inputList);
+   auto* helper  = TDataFrameLibrary::Get()->CreateHelper(inputList);
    fOutputPrefix = helper->Prefix();
    // this actually moves the helper to the data frame, so from here on "helper" doesn't refer to the object we created anymore
    // aka don't use helper after this!
@@ -171,8 +174,8 @@ void TGRSIFrame::Run()
    } else {
       std::cerr << "failed to find TPPG, can't write it!" << std::endl;
    }
-	TGRSIOptions::AnalysisOptions()->WriteToFile(&outputFile);
-	TGRSIOptions::UserSettings()->Write("UserSettings", TObject::kOverwrite);
+   TGRSIOptions::AnalysisOptions()->WriteToFile(&outputFile);
+   TGRSIOptions::UserSettings()->Write("UserSettings", TObject::kOverwrite);
    TChannel::WriteToRoot();
    outputFile.Close();
    std::cout << "Closed '" << outputFile.GetName() << "'" << std::endl;

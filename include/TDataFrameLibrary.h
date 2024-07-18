@@ -32,11 +32,11 @@ public:
    }
 
 private:
-   TDataFrameLibrary() = default;
-   TDataFrameLibrary(const TDataFrameLibrary&) = default;
-   TDataFrameLibrary(TDataFrameLibrary&&) = default;
-	TDataFrameLibrary& operator=(const TDataFrameLibrary&) = default;
-	TDataFrameLibrary& operator=(TDataFrameLibrary&&) = default;
+   TDataFrameLibrary()                                    = default;
+   TDataFrameLibrary(const TDataFrameLibrary&)            = default;
+   TDataFrameLibrary(TDataFrameLibrary&&)                 = default;
+   TDataFrameLibrary& operator=(const TDataFrameLibrary&) = default;
+   TDataFrameLibrary& operator=(TDataFrameLibrary&&)      = default;
 
    static void Compile(std::string& path, const size_t& dot, const size_t& slash);
 

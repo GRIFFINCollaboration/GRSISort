@@ -282,7 +282,7 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t* option)
       // we only need to create a new histogram if this is the first time drawing it, if we're just re-drawing we can
       // re-use the existing histogram
       if(fHist[address] == nullptr) {
-         int nofBins = fPPG->GetCycleLength() / GetTimePeriod(address);
+         int nofBins    = fPPG->GetCycleLength() / GetTimePeriod(address);
          fHist[address] = new TH1D(Form("TScalerHist_%04x", address),
                                    Form("scaler %d vs time in cycle for address 0x%04x; time in cycle [ms]; counts/%.0f ms", static_cast<int>(index), address, fPPG->GetCycleLength() / 1e5 / nofBins),
                                    nofBins, 0., fPPG->GetCycleLength() / 1e5);

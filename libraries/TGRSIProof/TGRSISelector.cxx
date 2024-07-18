@@ -266,7 +266,7 @@ void TGRSISelector::Terminate()
    } else {
       std::cerr << "failed to find TPPG, can't write it!" << std::endl;
    }
-	TGRSIOptions::AnalysisOptions()->WriteToFile(outputFile);
+   TGRSIOptions::AnalysisOptions()->WriteToFile(outputFile);
    TChannel::WriteToRoot();
    outputFile->Close();
    std::cout << "Closed '" << outputFile->GetName() << "'" << std::endl;

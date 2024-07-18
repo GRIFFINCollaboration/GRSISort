@@ -122,7 +122,7 @@ Double_t TGRSIFunctions::MultiPhotoPeakBG(Double_t* dim, Double_t* par)
    int    nPeaks = static_cast<int>(par[0] + 0.5);
    double result = PolyBg(dim, &par[1], 2);   // polynomial background. uses par[1->4]
    for(int i = 0; i < nPeaks; i++) {          // par[0] is number of peaks
-		std::array<Double_t, 6> tmpPar;
+      std::array<Double_t, 6> tmpPar;
       tmpPar[0] = par[6 * i + 5];    // height of photopeak
       tmpPar[1] = par[6 * i + 6];    // Peak Centroid of non skew gaus
       tmpPar[2] = par[6 * i + 7];    // standard deviation  of gaussian
@@ -188,7 +188,7 @@ Double_t TGRSIFunctions::MultiSkewedGausWithBG(Double_t* dim, Double_t* par)
    //
    double result = par[1] + dim[0] * par[2];   // background.
    for(int i = 0; i < par[0]; i++) {           // par[0] is number of peaks
-		std::array<Double_t, 5> tmpPar;
+      std::array<Double_t, 5> tmpPar;
       tmpPar[0] = par[5 * i + 3];   // height of photopeak
       tmpPar[1] = par[5 * i + 4];   // Peak Centroid of non skew gaus
       tmpPar[2] = par[5 * i + 5];   // standard deviation  of gaussian
@@ -222,7 +222,7 @@ Double_t TGRSIFunctions::MultiSkewedGausWithBG2(Double_t* dim, Double_t* par)
    //
    double result = par[1] + dim[0] * par[2];                   // background.
    for(int i = 0; i < static_cast<int>(par[0] + 0.5); i++) {   // par[0] is number of peaks
-		std::array<Double_t, 4> tmpPar;
+      std::array<Double_t, 4> tmpPar;
       tmpPar[0] = par[4 * i + 3];   // height of photopeak
       tmpPar[1] = par[4 * i + 4];   // Peak Centroid of non skew gaus
       tmpPar[2] = par[4 * i + 5];   // standard deviation  of gaussian
@@ -235,21 +235,21 @@ Double_t TGRSIFunctions::MultiSkewedGausWithBG2(Double_t* dim, Double_t* par)
 
 Double_t TGRSIFunctions::LanGaus(Double_t* x, Double_t* pars)
 {
-   double dy = 0.;
-	double y = 0.;
-	double conv = 0.;
-	double spec = 0.;
-	double gaus = 0.;
+   double dy   = 0.;
+   double y    = 0.;
+   double conv = 0.;
+   double spec = 0.;
+   double gaus = 0.;
 
    for(int i = 0; i < 10; i++) {
       dy = 5 * pars[3] / 10.;   // truncate the convolution by decreasing number of evaluation points and decreasing
-                                 // range [2.5 sigma still covers 98.8% of gaussian]
+                                // range [2.5 sigma still covers 98.8% of gaussian]
       y = x[0] - 2.5 * pars[3] + dy * i;
 
       spec = pars[1] +
              pars[2] * y;   // define background SHOULD THIS BE CONVOLUTED ????? *************************************
       for(int n = 0; n < static_cast<int>(pars[0] + 0.5); n++) {
-			// the implementation of landau function should be done using the landau function
+         // the implementation of landau function should be done using the landau function
          spec += pars[3 * n + 4] * TMath::Landau(-y, -pars[3 * n + 5], pars[3 * n + 6]) /
                  TMath::Landau(0, 0, 100);   // add peaks, dividing by max height of landau
       }
@@ -264,11 +264,11 @@ Double_t TGRSIFunctions::LanGaus(Double_t* x, Double_t* pars)
 
 Double_t TGRSIFunctions::LanGausHighRes(Double_t* x, Double_t* pars)
 {   // 5x more convolution points with 1.6x larger range
-   double dy = 0.;
-	double y = 0.;
-	double conv = 0.;
-	double spec = 0.;
-	double gaus = 0.;
+   double dy   = 0.;
+   double y    = 0.;
+   double conv = 0.;
+   double spec = 0.;
+   double gaus = 0.;
 
    for(int i = 0; i < 50; i++) {
       dy = 8 * pars[3] / 50.;   // 4 sigma covers 99.99% of gaussian
@@ -291,9 +291,9 @@ Double_t TGRSIFunctions::MultiGausWithBG(Double_t* dim, Double_t* par)
    //
    // Limits need to be impossed or error states may occour.
    //
-   double amp = 0.;
-	double mean = 0.;
-	double sigma = 0.;
+   double amp    = 0.;
+   double mean   = 0.;
+   double sigma  = 0.;
    double result = par[1] + dim[0] * par[2];   // background.
    for(int i = 0; i < static_cast<int>(par[0] + 0.5); i++) {
       amp   = par[3 * i + 3];
@@ -462,8 +462,8 @@ double TGRSIFunctions::ClebschGordan(double j1, double m1, double j2, double m2,
       if((j1 + j2 - j - k < 0) || (j1 - m1 - k < 0) || (j2 + m2 - k < 0)) {
          // no further terms will contribute to sum, exit loop
          break;
-      } 
-		if((j - j1 - m2 + k < 0) || (j - j2 + m1 + k < 0)) {
+      }
+      if((j - j1 - m2 + k < 0) || (j - j2 + m1 + k < 0)) {
          // jump ahead to next term that will contribute
          const Int_t a1 = (j - j1 - m2);
          const Int_t a2 = (j - j2 + m1);
@@ -485,7 +485,7 @@ double TGRSIFunctions::ClebschGordan(double j1, double m1, double j2, double m2,
 double TGRSIFunctions::RacahW(double a, double b, double c, double d, double e, double f)
 {
 #ifdef HAS_MATHMORE
-	// not sure why these are out of order in calling wigner_6j(a, b, e, d, c, f)
+   // not sure why these are out of order in calling wigner_6j(a, b, e, d, c, f)
    return TMath::Power(-1., static_cast<int>(a + b + d + c)) * ::ROOT::Math::wigner_6j(static_cast<int>(2 * a), static_cast<int>(2 * b), static_cast<int>(2 * e), static_cast<int>(2 * d), static_cast<int>(2 * c), static_cast<int>(2 * f));
 #else
    std::cout << "Mathmore feature of ROOT is missing, " << __PRETTY_FUNCTION__ << " will always return 1!" << std::endl;

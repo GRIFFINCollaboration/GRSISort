@@ -32,7 +32,7 @@ public:
 #ifndef __CINT__
    void AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan) override;   //!<!
 #endif
-   void BuildHits() override {} // no need to build any hits, everything already done in AddFragment
+   void BuildHits() override {}   // no need to build any hits, everything already done in AddFragment
 
    TBgo& operator=(const TBgo&);   //!<!
    TBgo& operator=(TBgo&&);        //!<!

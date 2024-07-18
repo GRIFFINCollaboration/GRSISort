@@ -47,10 +47,11 @@ fi
 libdir=$GRSISYS/lib
 incdir=$GRSISYS/include
 
-# the repitition of '-lTGRSIint -lTFormat' is needed for debian-style OSes like ubuntu (see issue #979)
-grsilibs="-lTGRSIint -lTFormat -lTGRSIint -lTFormat -lTLoops -lTKinematics -lTSRIM -lTBetaDecay -lTCal -lTReaction -lTPeakFitting"
-detlibs="-lTSuppressed -lTBgo -lTPulseAnalyzer -lGROOT -lTGRSIFit -lTNucleus"
-grsimore="-lTRawFile -lTDataParser -lTGUI"
+# lists of libraries, these are used to form the "-l<library name>" flags for the linker
+grsilibs="TGRSIInt TFormat TLoops TKinematics TSRIM TBetaDecay TCal TReaction TPeakFitting"
+detlibs="TSuppressed TBgo TPulseAnalyzer GROOT TGRSIFit TNucleus"
+grsimore="TRawFile TDataParser TGUI"
+
 if [ "$(root-config --has-xml)" == "yes" ]
 then XMLlib="-lXMLParser -lXMLIO"
 else XMLlib=""
@@ -116,7 +117,12 @@ while test $# -gt 0; do
 				shift
 				continue
 			fi
-			out=$"$out -L${libdir} $grsilibs $detlibs "
+			out=$"$out -L${libdir}"
+			for library in $grsilibs $detlibs ; do
+				if [ -e ${libdir}/lib${library}.so ] || [ -e ${libdir}/lib${library}.dylib ] ; then
+					out=$"$out -l${library}"
+				fi
+			done
 			;;
 		--all-libs)
 			if test "$alllibsout" = "yes" ; then
@@ -125,9 +131,20 @@ while test $# -gt 0; do
 			fi
 			alllibsout="yes"
 			if test "$libsout" = "yes" ; then
-				out="$out $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
+				for library in $grsimore ; do
+					if [ -e ${libdir}/lib${library}.so ] || [ -e ${libdir}/lib${library}.dylib ] ; then
+						out=$"$out -l${library}"
+					fi
+				done
+				out="$out $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
 			else
-				out="$out -L${libdir} $grsilibs $detlibs $grsimore $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
+				out=$"$out -L${libdir}"
+				for library in $grsilibs $detlibs $grsimore ; do
+					if [ -e ${libdir}/lib${library}.so ] || [ -e ${libdir}/lib${library}.dylib ] ; then
+						out=$"$out -l${library}"
+					fi
+				done
+				out=$"$out $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
 			fi
 			if [ "$(root-config --has-mathmore)" == "yes" ]; then
 				out="$out -lMathMore"
@@ -139,6 +156,8 @@ while test $# -gt 0; do
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
 				out="$out $($GRSISYS/$lib/util/config --cflags)"
+			elif [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
+				out="$out $($GRSISYS/_deps/$lib-src/util/config --cflags)"
 			fi
 			;;
 		--*-incdir)
@@ -147,6 +166,8 @@ while test $# -gt 0; do
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
 				out="$out $($GRSISYS/$lib/util/config --incdir)"
+			elif [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
+				out="$out $($GRSISYS/_deps/$lib-src/util/config --incdir)"
 			fi
 			;;
 		--*-libs)
@@ -155,6 +176,8 @@ while test $# -gt 0; do
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
 				out="$out $($GRSISYS/$lib/util/config --libs)"
+			elif [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
+				out="$out $($GRSISYS/_deps/$lib-src/util/config --libs)"
 			fi
 			;;
 		--root)

@@ -30,7 +30,7 @@ class DifferentLabels : public std::exception {
 GHSym::GHSym()
    : fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
 {
-	fDimension = 2; 
+   fDimension = 2;
 }
 
 // we have to repeat the code from the default constructor here, because calling the TH1 constructor and the GHSym
@@ -38,7 +38,7 @@ GHSym::GHSym()
 GHSym::GHSym(const char* name, const char* title, Int_t nbins, Double_t low, Double_t up)
    : TH1(name, title, nbins, low, up), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
 {
-	fDimension = 2; 
+   fDimension = 2;
    fYaxis.Set(nbins, low, up);
    // TH1 constructor sets fNcells to nbins+2
    // we need (nbins+2)*((nbins+2)+1)/2 cells
@@ -46,9 +46,9 @@ GHSym::GHSym(const char* name, const char* title, Int_t nbins, Double_t low, Dou
 }
 
 GHSym::GHSym(const char* name, const char* title, Int_t nbins, const Double_t* bins)
-	: TH1(name, title, nbins, bins), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
+   : TH1(name, title, nbins, bins), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
 {
-	fDimension = 2; 
+   fDimension = 2;
    fYaxis.Set(nbins, bins);
    // TH1 constructor sets fNcells to nbins+2
    // we need (nbins+2)*((nbins+2)+1)/2 cells
@@ -56,9 +56,9 @@ GHSym::GHSym(const char* name, const char* title, Int_t nbins, const Double_t* b
 }
 
 GHSym::GHSym(const char* name, const char* title, Int_t nbins, const Float_t* bins)
-	: TH1(name, title, nbins, bins), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
+   : TH1(name, title, nbins, bins), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
 {
-	fDimension = 2; 
+   fDimension = 2;
    fYaxis.Set(nbins, bins);
    // TH1 constructor sets fNcells to nbins+2
    // we need (nbins+2)*((nbins+2)+1)/2 cells
@@ -291,7 +291,7 @@ Int_t GHSym::Fill(Double_t x, Double_t y)
    }
 
    Int_t binx = 0;
-	Int_t biny = 0;
+   Int_t biny = 0;
    fEntries++;
    if(y <= x) {
       binx = fXaxis.FindBin(x);
@@ -338,7 +338,7 @@ Int_t GHSym::Fill(Double_t x, Double_t y, Double_t w)
    }
 
    Int_t binx = 0;
-	Int_t biny = 0;
+   Int_t biny = 0;
    fEntries++;
    if(y <= x) {
       binx = fXaxis.FindBin(x);
@@ -392,7 +392,7 @@ Int_t GHSym::Fill(const char* namex, const char* namey, Double_t w)
    //
 
    Int_t binx = 0;
-	Int_t biny = 0;
+   Int_t biny = 0;
    fEntries++;
    binx = fXaxis.FindBin(namex);
    biny = fYaxis.FindBin(namey);
@@ -400,7 +400,7 @@ Int_t GHSym::Fill(const char* namex, const char* namey, Double_t w)
       return -1;
    }
    if(biny >= binx) {
-		std::swap(binx, biny);
+      std::swap(binx, biny);
    }
    Int_t bin = biny * (2 * fXaxis.GetNbins() - biny + 3) / 2 + binx;
    AddBinContent(bin, w);
@@ -490,7 +490,7 @@ void GHSym::FillRandom(const char* fname, Int_t ntimes, TRandom* rng)
    Int_t nbins  = nbinsx * nbinsy;
 
    auto* integral = new Double_t[nbins + 1];
-   Int_t ibin           = 0;
+   Int_t ibin     = 0;
    integral[ibin] = 0;
    for(Int_t biny = 1; biny <= nbinsy; ++biny) {
       for(Int_t binx = 1; binx <= nbinsx; ++binx) {
@@ -513,10 +513,10 @@ void GHSym::FillRandom(const char* fname, Int_t ntimes, TRandom* rng)
 
    //*-*--------------Start main loop ntimes
    for(int loop = 0; loop < ntimes; ++loop) {
-      Double_t r1   = (rng != nullptr) ? rng->Rndm(loop) : gRandom->Rndm(loop);
-      ibin = TMath::BinarySearch(nbins, &integral[0], r1);
-      Int_t biny = ibin / nbinsx;
-      Int_t binx = 1 + ibin - nbinsx * biny;
+      Double_t r1 = (rng != nullptr) ? rng->Rndm(loop) : gRandom->Rndm(loop);
+      ibin        = TMath::BinarySearch(nbins, &integral[0], r1);
+      Int_t biny  = ibin / nbinsx;
+      Int_t binx  = 1 + ibin - nbinsx * biny;
       ++biny;
       Fill(fXaxis.GetBinCenter(binx), fYaxis.GetBinCenter(biny));
    }
@@ -556,8 +556,8 @@ void GHSym::FillRandom(TH1* hist, Int_t ntimes, TRandom* rng)
       return;
    }
 
-   Double_t x = 0.;
-	Double_t y = 0.;
+   Double_t x  = 0.;
+   Double_t y  = 0.;
    TH2*     h2 = static_cast<TH2*>(hist);
    for(int loop = 0; loop < ntimes; ++loop) {
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 24, 0)
@@ -926,7 +926,7 @@ Double_t GHSym::GetCovariance(Int_t axis1, Int_t axis2) const
       Error("GetCovariance", "Wrong parameters");
       return 0;
    }
-	std::array<Double_t, kNstat> stats;
+   std::array<Double_t, kNstat> stats;
    GetStats(stats.data());
    Double_t sumw = stats[0];
    // Double_t sumw2  = stats[1];

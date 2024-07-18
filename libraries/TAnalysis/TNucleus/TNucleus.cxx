@@ -25,9 +25,9 @@ TNucleus::TNucleus(const char* name)
    std::string   symbol;
    std::string   element;
    int           z = 0;
-	int           n = 0;
+   int           n = 0;
    std::string   sym_name;
-   double        mass = 0.;
+   double        mass  = 0.;
    bool          found = false;
    std::string   line;
    std::ifstream infile;
@@ -71,7 +71,7 @@ TNucleus::TNucleus(const char* name)
 }
 
 TNucleus::TNucleus(int charge, int neutrons, double mass, const char* symbol)
-	: fN(neutrons), fZ(charge), fMass(mass), fSymbol(symbol)
+   : fN(neutrons), fZ(charge), fMass(mass), fSymbol(symbol)
 {
    /// Creates a nucleus with Z, N, mass, and symbol
    SetName();
@@ -79,7 +79,7 @@ TNucleus::TNucleus(int charge, int neutrons, double mass, const char* symbol)
 }
 
 TNucleus::TNucleus(int charge, int neutrons, const char* MassFile)
-	: fN(neutrons), fZ(charge)
+   : fN(neutrons), fZ(charge)
 {
    /// Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
    if(MassFile == nullptr) {
@@ -89,7 +89,7 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile)
    int           n     = 0;
    int           z     = 0;
    double        emass = 0.;
-	std::string   tmp;
+   std::string   tmp;
    std::ifstream mass_file;
    mass_file.open(MassFile, std::ios::in);
    while(!mass_file.bad() && !mass_file.eof() && i < 3008) {
@@ -101,7 +101,7 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile)
          fMassExcess = emass / 1000.;
          fSymbol     = tmp;
 #ifdef debug
-			std::cout << "Symbol " << fSymbol << " tmp " << tmp << std::endl;
+         std::cout << "Symbol " << fSymbol << " tmp " << tmp << std::endl;
 #endif
          SetMass();
          SetSymbol(fSymbol.c_str());
@@ -234,15 +234,15 @@ void TNucleus::SetSymbol(const char* symbol)
 int TNucleus::GetZfromSymbol(char* symbol)
 {
    // Figures out the Z of the nucleus based on the atomic symbol
-   char symbols[105][3] = {"H", "HE", "LI", "BE", "B", "C", "N", "O", "F", "NE", "NA", "MG", "AL", "SI", "P",
-                           "S", "CL", "AR", "K", "CA", "SC", "TI", "V", "CR", "MN", "FE", "CO", "NI", "CU", "ZN",
-                           "GA", "GE", "AS", "SE", "BR", "KR", "RB", "SR", "Y", "ZR", "NB", "MO", "TC", "RU", "RH",
-                           "PD", "AG", "CD", "IN", "SN", "SB", "TE", "F", "XE", "CS", "BA", "LA", "CE", "PR", "ND",
-                           "PM", "SM", "EU", "GD", "TB", "DY", "HO", "ER", "TM", "YB", "LU", "HF", "TA", "W", "RE",
-                           "OS", "IR", "PT", "AU", "HG", "TI", "PB", "BI", "PO", "AT", "RN", "FR", "RA", "AC", "TH",
-                           "PA", "U", "NP", "PU", "AM", "CM", "BK", "CF", "ES", "FM", "MD", "NO", "LR", "RF", "HA"};
-   size_t  length       = strlen(symbol);
-   auto* search = new char[length + 1];
+   char   symbols[105][3] = {"H", "HE", "LI", "BE", "B", "C", "N", "O", "F", "NE", "NA", "MG", "AL", "SI", "P",
+                             "S", "CL", "AR", "K", "CA", "SC", "TI", "V", "CR", "MN", "FE", "CO", "NI", "CU", "ZN",
+                             "GA", "GE", "AS", "SE", "BR", "KR", "RB", "SR", "Y", "ZR", "NB", "MO", "TC", "RU", "RH",
+                             "PD", "AG", "CD", "IN", "SN", "SB", "TE", "F", "XE", "CS", "BA", "LA", "CE", "PR", "ND",
+                             "PM", "SM", "EU", "GD", "TB", "DY", "HO", "ER", "TM", "YB", "LU", "HF", "TA", "W", "RE",
+                             "OS", "IR", "PT", "AU", "HG", "TI", "PB", "BI", "PO", "AT", "RN", "FR", "RA", "AC", "TH",
+                             "PA", "U", "NP", "PU", "AM", "CM", "BK", "CF", "ES", "FM", "MD", "NO", "LR", "RF", "HA"};
+   size_t length          = strlen(symbol);
+   auto*  search          = new char[length + 1];
    for(size_t i = 0; i < length; i++) {
       search[i] = toupper(symbol[i]);   // make sure symbol is in uppercase
    }
