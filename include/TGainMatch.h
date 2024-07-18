@@ -1,5 +1,5 @@
-#ifndef TGAINMATCH_H__
-#define TGAINMATCH_H__
+#ifndef TGAINMATCH_H
+#define TGAINMATCH_H
 
 /** \addtogroup Calibration
  *  @{
@@ -14,13 +14,12 @@
 
 class TGainMatch : public TCal {
 public:
-   TGainMatch() : fHist(nullptr), fCoarseRange(gDefaultCoarseRange) {}
+   TGainMatch() : fCoarseRange(gDefaultCoarseRange) {}
    TGainMatch(const char* name, const char* title) : TCal(name, title), fCoarseRange(gDefaultCoarseRange) { Clear(); }
    ~TGainMatch() override = default;
 
    TGainMatch(const TGainMatch& copy);
 
-public:
    void Copy(TObject& obj) const override;
 
    void CalculateGain(Double_t cent1, Double_t cent2, Double_t eng1, Double_t eng2);
@@ -80,9 +79,9 @@ private:
    Bool_t   fCoarseMatch{false};
    Bool_t   fAligned{false};
    TH1*     fHist{nullptr};
-   Double_t fAlignCoeffs[2]{0.};
-   Double_t fGainCoeffs[2]{0.};
-   Double_t fCoarseRange;
+	std::array<Double_t, 2> fAlignCoeffs{0.};
+   std::array<Double_t, 2> fGainCoeffs{0.};
+   Double_t fCoarseRange{0.};
    Double_t HistCompare(Double_t* x, Double_t* par);
 
    static Double_t gDefaultCoarseRange;

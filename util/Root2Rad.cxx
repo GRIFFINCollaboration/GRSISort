@@ -208,7 +208,7 @@ void ProcessKeys(TList* keys, TList* histsToWrite, TList* matsToWrite, TList* m4
       }
    }
    // loop over directories and process keys in them
-   for(auto dir : directories) {
+   for(auto* dir : directories) {
       TList* dir_keys = dir->GetListOfKeys();
       dir_keys->Sort();
       ProcessKeys(dir_keys, histsToWrite, matsToWrite, m4bsToWrite, split, compress);
@@ -278,11 +278,9 @@ void WriteMat(TH2* mat, std::fstream* outfile)
 
    for(int y = 1; y <= 4096; ++y) {
       uint16_t buffer[4096] = {0};
-      TH1D*    proj;
+      TH1D*    proj = empty;
       if(y <= ybins) {
          proj = mat->ProjectionX("proj", y, y);
-      } else {
-         proj = empty;
       }
       for(int x = 1; x <= 4096; ++x) {
          if(x <= xbins) {
@@ -305,11 +303,9 @@ void WriteM4b(TH2* mat, std::fstream* outfile)
 
    for(int y = 1; y <= 4096; ++y) {
       uint32_t buffer[4096] = {0};
-      TH1D*    proj;
+      TH1D*    proj = empty;
       if(y <= ybins) {
          proj = mat->ProjectionX("proj", y, y);
-      } else {
-         proj = empty;
       }
       for(int x = 1; x <= 4096; ++x) {
          if(x <= xbins) {
@@ -352,7 +348,7 @@ void WriteM8k(TH2* mat, std::fstream* outfile)
 
 void WriteHist(TH1* hist, std::fstream* outfile)
 {
-   SpeHeader spehead;
+   SpeHeader spehead{};
    spehead.buffsize = 24;
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstringop-truncation"

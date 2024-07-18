@@ -35,7 +35,7 @@ template <class T>
 int WriteHistogram(T* histogram, std::string& fileName, std::string& format);
 template <class T>
 int WriteGraph(T* graph, std::string& fileName, std::string& format);
-int WriteSpline(TSpline3* s, std::string& fileName);
+int WriteSpline(TSpline3* spline, std::string& fileName);
 
 int main(int argc, char** argv)
 {
@@ -78,7 +78,7 @@ int main(int argc, char** argv)
    TObject* object = nullptr;
    TKey*    key    = nullptr;
    // look for histogram names to add
-   for(auto name : histNames) {
+   for(const auto& name : histNames) {
       std::cout << "looking for " << name << " in " << infile->GetName() << std::endl;
       object = infile->Get(name.c_str());
       // if we couldn't find the object, loop through all object in the file, and if they're folders search in those
@@ -87,8 +87,8 @@ int main(int argc, char** argv)
          while((key = static_cast<TKey*>(next())) != nullptr) {
             object = key->ReadObj();
             if(strcmp(object->ClassName(), "TFolder") == 0) {
-               TFolder* folder = static_cast<TFolder*>(object);
-               object          = folder->FindObject(folder->FindFullPathName(name.c_str()));
+               auto* folder = static_cast<TFolder*>(object);
+               object       = folder->FindObject(folder->FindFullPathName(name.c_str()));
                break;
             }
          }
@@ -110,11 +110,11 @@ int main(int argc, char** argv)
          WriteHistogram(static_cast<TH2*>(object), fileName, format);
       } else if(keyType.compare(0, 7, "TSpline") == 0) {
          WriteSpline(static_cast<TSpline3*>(object), fileName);
-      } else if(keyType.compare("TGraph") == 0) {
+      } else if(keyType == "TGraph") {
          WriteGraph(static_cast<TGraph*>(object), fileName, format);
-      } else if(keyType.compare("TGraphErrors") == 0) {
+      } else if(keyType == "TGraphErrors") {
          WriteGraph(static_cast<TGraphErrors*>(object), fileName, format);
-      } else if(keyType.compare("TGraphAsymmErrors") == 0) {
+      } else if(keyType == "TGraphAsymmErrors") {
          WriteGraph(static_cast<TGraphAsymmErrors*>(object), fileName, format);
       } else if(keyType.compare(0, 5, "GHSym") == 0) {
          if(keyType.compare(5, 1, "F") == 0) {
@@ -146,11 +146,11 @@ int main(int argc, char** argv)
             WriteHistogram(static_cast<TH2*>(object), fileName, format);
          } else if(keyType.compare(0, 7, "TSpline") == 0) {
             WriteSpline(static_cast<TSpline3*>(object), fileName);
-         } else if(keyType.compare("TGraph") == 0) {
+         } else if(keyType == "TGraph") {
             WriteGraph(static_cast<TGraph*>(object), fileName, format);
-         } else if(keyType.compare("TGraphErrors") == 0) {
+         } else if(keyType == "TGraphErrors") {
             WriteGraph(static_cast<TGraphErrors*>(object), fileName, format);
-         } else if(keyType.compare("TGraphAsymmErrors") == 0) {
+         } else if(keyType == "TGraphAsymmErrors") {
             WriteGraph(static_cast<TGraphAsymmErrors*>(object), fileName, format);
          } else if(keyType.compare(0, 5, "GHSym") == 0) {
             if(keyType.compare(5, 1, "F") == 0) {
@@ -194,16 +194,16 @@ int WriteHistogram(T* histogram, std::string& fileName, std::string& format)
    // check the format
    std::transform(format.begin(), format.end(), format.begin(), ::tolower);
 
-   if(format.find("e") != std::string::npos) {
+   if(format.find('e') != std::string::npos) {
       writeErrors = true;
    }
-   if(format.find("z") != std::string::npos) {
+   if(format.find('z') != std::string::npos) {
       writeZeros = false;
    }
-   if(format.find("v") != std::string::npos) {
+   if(format.find('v') != std::string::npos) {
       writeValuesOnly = true;
    }
-   if(format.find("p") != std::string::npos) {
+   if(format.find('p') != std::string::npos) {
       writePm3d = true;
    }
 
@@ -232,14 +232,17 @@ int WriteHistogram(T* histogram, std::string& fileName, std::string& format)
                if(writeZeros || histogram->GetBinContent(i, j, k) > 0) {
                   if(!writeValuesOnly) {
                      output << std::setw(8) << histogram->GetXaxis()->GetBinCenter(i);
-                     if(yNumberOfBins > 1)
+                     if(yNumberOfBins > 1) {
                         output << " " << std::setw(8) << histogram->GetYaxis()->GetBinCenter(j);
-                     if(zNumberOfBins > 1)
+							}
+                     if(zNumberOfBins > 1) {
                         output << " " << std::setw(8) << histogram->GetZaxis()->GetBinCenter(k);
+							}
                   }
                   output << " " << std::setw(8) << histogram->GetBinContent(i, j, k);
-                  if(writeErrors)
+                  if(writeErrors) {
                      output << " " << std::setw(8) << histogram->GetBinError(i, j, k);
+						}
                   output << std::endl;
                }
             }
@@ -352,16 +355,16 @@ int WriteGraph(T* graph, std::string& fileName, std::string& format)
    // check the format
    std::transform(format.begin(), format.end(), format.begin(), ::tolower);
 
-   if(format.find("e") != std::string::npos) {
+   if(format.find('e') != std::string::npos) {
       writeErrors = true;
    }
-   if(format.find("z") != std::string::npos) {
+   if(format.find('z') != std::string::npos) {
       writeZeros = true;
    }
-   if(format.find("g") != std::string::npos) {
+   if(format.find('g') != std::string::npos) {
       gnuplot = true;
    }
-   if(format.find("f") != std::string::npos) {
+   if(format.find('f') != std::string::npos) {
       fresco = true;
    }
 
@@ -370,7 +373,8 @@ int WriteGraph(T* graph, std::string& fileName, std::string& format)
       return 1;
    }
 
-   double x, y;
+   double x = 0.;
+	double y = 0.;
 
    for(int point = 0; point < graph->GetN(); point++) {
       graph->GetPoint(point, x, y);
@@ -399,7 +403,7 @@ int WriteGraph(T* graph, std::string& fileName, std::string& format)
    return 0;
 }
 
-int WriteSpline(TSpline3* s, std::string& fileName)
+int WriteSpline(TSpline3* spline, std::string& fileName)
 {
    std::ofstream output(fileName);
    output.open(fileName);
@@ -408,9 +412,8 @@ int WriteSpline(TSpline3* s, std::string& fileName)
       return 1;
    }
 
-   for(double x = s->GetXmin(); x <= s->GetXmax(); x += (s->GetXmax() - s->GetXmin()) / s->GetNp()) {
-      output << x << " " << s->Eval(x) << std::endl;
-      ;
+   for(double x = spline->GetXmin(); x <= spline->GetXmax(); x += (spline->GetXmax() - spline->GetXmin()) / spline->GetNp()) {
+      output << x << " " << spline->Eval(x) << std::endl;
    }
 
    output.close();

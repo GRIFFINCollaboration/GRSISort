@@ -1,5 +1,5 @@
-#ifndef TEFFICIENCYCALIBRATION_H__
-#define TEFFICIENCYCALIBRATION_H__
+#ifndef TEFFICIENCYCALIBRATION_H
+#define TEFFICIENCYCALIBRATION_H
 
 /** \addtogroup Calibration
  *  @{
@@ -21,12 +21,10 @@ public:
 
    TEfficiencyCalibration(const TEfficiencyCalibration& copy);
 
-public:
    void AddEfficiencyGraph(const TEfficiencyGraph& graph);
    void AddEfficiencyGraph(const TEfficiencyGraph& graph, const char* name);
    void ScaleGuess();
 
-public:
    void Copy(TObject& copy) const override;
 
    void          Clear(Option_t* opt = "") override;
@@ -40,21 +38,19 @@ public:
    Double_t GetEfficiency(const Double_t& eng);
    Double_t GetEfficiencyErr(const Double_t& eng);
 
+   bool ScaleToAbsolute();
+
 private:
    void     BuildMultiGraph();
    Double_t PhotoPeakEfficiency(Double_t* x, Double_t* par);
    Double_t AbsoluteEfficiency(Double_t* x, Double_t* par);
 
-public:
-   bool ScaleToAbsolute();
-
-private:
    std::map<const char*, TEfficiencyGraph> fGraphMap;
-   TMultiGraph*                            fRelativeEffGraph;
-   TMultiGraph*                            fAbsEffGraph;
-   mutable bool                            fFitting;
-   TF1*                                    fRelativeFit;
-   TF1*                                    fAbsoluteFunc;
+   TMultiGraph*                            fRelativeEffGraph{nullptr};
+   TMultiGraph*                            fAbsEffGraph{nullptr};
+   mutable bool                            fFitting{false};
+   TF1*                                    fRelativeFit{nullptr};
+   TF1*                                    fAbsoluteFunc{nullptr};
 
    /// \cond CLASSIMP
    ClassDefOverride(TEfficiencyCalibration, 1);

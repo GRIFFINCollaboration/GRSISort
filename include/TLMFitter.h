@@ -193,13 +193,12 @@ NRMat<T>::NRMat(int n, int m) : nn(n), mm(m), v(new T*[n]())
 template <class T>
 NRMat<T>::NRMat(const T& a, int n, int m) : nn(n), mm(m), v(new T*[n]())
 {
-   int i, j;
    v[0] = new T[m * n]();
-   for(i = 1; i < n; i++) {
+   for(int i = 1; i < n; i++) {
       v[i] = v[i - 1] + m;
    }
-   for(i = 0; i < n; i++) {
-      for(j = 0; j < m; j++) {
+   for(int i = 0; i < n; i++) {
+      for(int j = 0; j < m; j++) {
          v[i][j] = a;
       }
    }
@@ -208,13 +207,12 @@ NRMat<T>::NRMat(const T& a, int n, int m) : nn(n), mm(m), v(new T*[n]())
 template <class T>
 NRMat<T>::NRMat(const T* a, int n, int m) : nn(n), mm(m), v(new T*[n]())
 {
-   int i, j;
    v[0] = new T[m * n]();
-   for(i = 1; i < n; i++) {
+   for(int i = 1; i < n; i++) {
       v[i] = v[i - 1] + m;
    }
-   for(i = 0; i < n; i++) {
-      for(j = 0; j < m; j++) {
+   for(int i = 0; i < n; i++) {
+      for(int j = 0; j < m; j++) {
          v[i][j] = *a++;
       }
    }
@@ -223,13 +221,12 @@ NRMat<T>::NRMat(const T* a, int n, int m) : nn(n), mm(m), v(new T*[n]())
 template <class T>
 NRMat<T>::NRMat(const NRMat& rhs) : nn(rhs.nn), mm(rhs.mm), v(new T*[nn]())
 {
-   int i, j;
    v[0] = new T[mm * nn]();
-   for(i = 1; i < nn; i++) {
+   for(int i = 1; i < nn; i++) {
       v[i] = v[i - 1] + mm;
    }
-   for(i = 0; i < nn; i++) {
-      for(j = 0; j < mm; j++) {
+   for(int i = 0; i < nn; i++) {
+      for(int j = 0; j < mm; j++) {
          v[i][j] = rhs[i][j];
       }
    }
@@ -242,7 +239,6 @@ NRMat<T>& NRMat<T>::operator=(const NRMat<T>& rhs)
 //		has been resized to match the size of rhs
 {
    if(this != &rhs) {
-      int i, j;
       if(nn != rhs.nn || mm != rhs.mm) {
          if(v != 0) {
             delete[] (v[0]);
@@ -253,11 +249,11 @@ NRMat<T>& NRMat<T>::operator=(const NRMat<T>& rhs)
          v    = new T*[nn];
          v[0] = new T[mm * nn];
       }
-      for(i = 1; i < nn; i++) {
+      for(int i = 1; i < nn; i++) {
          v[i] = v[i - 1] + mm;
       }
-      for(i = 0; i < nn; i++) {
-         for(j = 0; j < mm; j++) {
+      for(int i = 0; i < nn; i++) {
+         for(int j = 0; j < mm; j++) {
             v[i][j] = rhs[i][j];
          }
       }
@@ -336,16 +332,15 @@ NRMat3d<T>::NRMat3d() : nn(0), mm(0), kk(0), v(0)
 template <class T>
 NRMat3d<T>::NRMat3d(int n, int m, int k) : nn(n), mm(m), kk(k), v(new T**[n])
 {
-   int i, j;
    v[0]    = new T*[n * m];
    v[0][0] = new T[n * m * k];
-   for(j = 1; j < m; j++) {
+   for(int j = 1; j < m; j++) {
       v[0][j] = v[0][j - 1] + k;
    }
-   for(i = 1; i < n; i++) {
+   for(int i = 1; i < n; i++) {
       v[i]    = v[i - 1] + m;
       v[i][0] = v[i - 1][0] + m * k;
-      for(j = 1; j < m; j++) {
+      for(int j = 1; j < m; j++) {
          v[i][j] = v[i][j - 1] + k;
       }
    }
@@ -484,12 +479,12 @@ inline const T MAX(const T& a, const T& b)
 
 inline float MAX(const double& a, const float& b)
 {
-   return b > a ? (b) : float(a);
+   return b > a ? (b) : static_cast<float>(a);
 }
 
 inline float MAX(const float& a, const double& b)
 {
-   return b > a ? float(b) : (a);
+   return b > a ? static_cast<float>(b) : (a);
 }
 
 template <class T>

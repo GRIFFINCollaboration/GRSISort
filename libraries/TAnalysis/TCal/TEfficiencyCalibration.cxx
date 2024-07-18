@@ -6,8 +6,6 @@
 #include "Math/Minimizer.h"
 
 TEfficiencyCalibration::TEfficiencyCalibration()
-   : TNamed(), fRelativeEffGraph(nullptr), fAbsEffGraph(nullptr), fFitting(false), fRelativeFit(nullptr),
-     fAbsoluteFunc(nullptr)
 {
    if(fRelativeEffGraph == nullptr) {
       fRelativeEffGraph = new TMultiGraph;
@@ -19,8 +17,7 @@ TEfficiencyCalibration::TEfficiencyCalibration()
 }
 
 TEfficiencyCalibration::TEfficiencyCalibration(const char* name, const char* title)
-   : TNamed(name, title), fRelativeEffGraph(nullptr), fAbsEffGraph(nullptr), fFitting(false), fRelativeFit(nullptr),
-     fAbsoluteFunc(nullptr)
+   : TNamed(name, title)
 {
    if(fRelativeEffGraph == nullptr) {
       fRelativeEffGraph = new TMultiGraph;
@@ -32,28 +29,14 @@ TEfficiencyCalibration::TEfficiencyCalibration(const char* name, const char* tit
 
 TEfficiencyCalibration::~TEfficiencyCalibration()
 {
-   if(fRelativeEffGraph != nullptr) {
-      delete fRelativeEffGraph;
-   }
-   if(fAbsEffGraph != nullptr) {
-      delete fAbsEffGraph;
-   }
-   if(fRelativeFit != nullptr) {
-      delete fRelativeFit;
-   }
-   if(fAbsoluteFunc != nullptr) {
-      delete fAbsoluteFunc;
-   }
-
-   fRelativeEffGraph = nullptr;
-   fAbsEffGraph      = nullptr;
-   fRelativeFit      = nullptr;
-   fAbsoluteFunc     = nullptr;
+	delete fRelativeEffGraph;
+	delete fAbsEffGraph;
+	delete fRelativeFit;
+	delete fAbsoluteFunc;
 }
 
 TEfficiencyCalibration::TEfficiencyCalibration(const TEfficiencyCalibration& copy)
-   : TNamed(copy), fRelativeEffGraph(nullptr), fAbsEffGraph(nullptr), fFitting(false), fRelativeFit(nullptr),
-     fAbsoluteFunc(nullptr)
+   : TNamed(copy)
 {
    copy.Copy(*this);
 }
@@ -70,7 +53,7 @@ void TEfficiencyCalibration::Copy(TObject& copy) const
 void TEfficiencyCalibration::Print(Option_t*) const
 {
    std::cout << "Graphs included: " << std::endl;
-   for(auto it : fGraphMap) {
+   for(const auto& it : fGraphMap) {
       std::cout << "Name: " << it.first << " N of points: " << it.second.GetN();
       if(it.second.IsAbsolute()) {
          std::cout << "  Absolute calibration ";
@@ -160,12 +143,12 @@ void TEfficiencyCalibration::ScaleGuess()
    // We want to loop through the list and find the best scale factor
    for(int graph_idx = 1; graph_idx < graph_list->GetSize();
        ++graph_idx) {   // Start at 1 because we don't want to change 0
-      Double_t          closest_dist      = 99999.;
-      Int_t             closest_loop_idx  = 0;
-      Int_t             closest_fixed_idx = 0;
-      TEfficiencyGraph* fixed_graph       = static_cast<TEfficiencyGraph*>(graph_list->At(0));
-      TEfficiencyGraph* loop_graph        = static_cast<TEfficiencyGraph*>(graph_list->At(graph_idx));
-      Double_t*         fixed_x           = fixed_graph->GetX();
+      Double_t  closest_dist      = 99999.;
+      Int_t     closest_loop_idx  = 0;
+      Int_t     closest_fixed_idx = 0;
+      auto*     fixed_graph       = static_cast<TEfficiencyGraph*>(graph_list->At(0));
+      auto*     loop_graph        = static_cast<TEfficiencyGraph*>(graph_list->At(graph_idx));
+      Double_t* fixed_x           = fixed_graph->GetX();
       for(int i = 0; i < fixed_graph->GetN(); ++i) {
          if(loop_graph->FindDistToClosestPointX(fixed_x[i]) < closest_dist) {
             closest_dist      = loop_graph->FindDistToClosestPointX(fixed_x[i]);
@@ -184,11 +167,8 @@ TFitResultPtr TEfficiencyCalibration::Fit(Option_t*)
 {
    // This fits the relative efficiency curve
    UInt_t n_rel_graphs = fRelativeEffGraph->GetListOfGraphs()->GetSize();
-   if(fRelativeFit != nullptr) {
-      delete fRelativeFit;
-   }
-   fRelativeFit = new TF1("fRelativeFit", this, &TEfficiencyCalibration::PhotoPeakEfficiency, 0, 8000, 8 + n_rel_graphs,
-                          "TEfficiencyCalibration", "PhotoPeakEfficiency");
+	delete fRelativeFit;
+   fRelativeFit = new TF1("fRelativeFit", this, &TEfficiencyCalibration::PhotoPeakEfficiency, 0, 8000, 8 + n_rel_graphs, "TEfficiencyCalibration", "PhotoPeakEfficiency");
 
    // Start by naming the parameters of the fit
    for(int mapIdx = 0; mapIdx < static_cast<int>(fGraphMap.size()); ++mapIdx) {
@@ -204,8 +184,8 @@ TFitResultPtr TEfficiencyCalibration::Fit(Option_t*)
    ScaleGuess();
 
    // Make initial guesses for the fit parameters
-   for(size_t i = 0; i < 8; ++i) {
-      fRelativeFit->SetParName(i + n_rel_graphs, Form("a_%lu", i));
+   for(Int_t i = 0; i < 8; ++i) {
+      fRelativeFit->SetParName(i + n_rel_graphs, Form("a_%d", i));
       fRelativeFit->SetParameter(i + n_rel_graphs, 0.00001);
    }
    fRelativeFit->SetParameter(n_rel_graphs, 5.0);
@@ -310,7 +290,6 @@ Double_t TEfficiencyCalibration::PhotoPeakEfficiency(Double_t* x, Double_t* par)
 
 Double_t TEfficiencyCalibration::AbsoluteEfficiency(Double_t* x, Double_t* par)
 {
-
    double sum = 0.0;
    for(int i = 0; i < 9; ++i) {
       sum += par[i + 1] * TMath::Power(TMath::Log(x[0]), i);
@@ -340,7 +319,7 @@ bool TEfficiencyCalibration::ScaleToAbsolute()
       Double_t w_avg_numer   = 0.0;
       Double_t w_avg_denom   = 0.0;
       Double_t semi_w_uncert = 0.0;
-      while(TEfficiencyGraph* abs_graph = static_cast<TEfficiencyGraph*>(next())) {
+      while(auto* abs_graph = static_cast<TEfficiencyGraph*>(next())) {
          Double_t* y_val  = abs_graph->GetY();
          Double_t* ey_val = abs_graph->GetEY();
          Double_t* x_val  = abs_graph->GetX();

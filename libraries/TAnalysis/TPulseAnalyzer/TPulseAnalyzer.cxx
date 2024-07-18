@@ -3,20 +3,18 @@
 #include "TPulseAnalyzer.h"
 
 TPulseAnalyzer::TPulseAnalyzer()
-   : cWpar(nullptr), spar(nullptr), shpar(nullptr)
 {
    Clear();
 }
 
 TPulseAnalyzer::TPulseAnalyzer(const TFragment& fragment, double noise_fac)
-   : cWpar(nullptr), spar(nullptr), shpar(nullptr)
 {
    Clear();
    SetData(fragment, noise_fac);
 }
 
 TPulseAnalyzer::TPulseAnalyzer(const std::vector<Short_t>& wave, double noise_fac, std::string name)
-   : cWpar(nullptr), spar(nullptr), shpar(nullptr), fName(std::move(name))
+   : fName(std::move(name))
 {
    Clear();
    SetData(wave, noise_fac);
@@ -24,15 +22,9 @@ TPulseAnalyzer::TPulseAnalyzer(const std::vector<Short_t>& wave, double noise_fa
 
 TPulseAnalyzer::~TPulseAnalyzer()
 {
-   if(cWpar != nullptr) {
-      delete cWpar;
-   }
-   if(spar != nullptr) {
-      delete spar;
-   }
-   if(shpar != nullptr) {
-      delete shpar;
-   }
+	delete cWpar;
+	delete spar;
+	delete shpar;
 }
 
 void TPulseAnalyzer::Clear(Option_t*)
@@ -97,7 +89,6 @@ int TPulseAnalyzer::solve_lin_eq()
 // solve the determinant of the currently stored copy_matrix for dimentions m
 long double TPulseAnalyzer::determinant(int m)
 {
-   long double s;
    if(m == 1) {
       return copy_matrix[0][0];
    }
@@ -111,7 +102,7 @@ long double TPulseAnalyzer::determinant(int m)
          return 0.;
       }
       for(int i = 0; i < m; i++) {
-         s                     = copy_matrix[i][m - 1];
+         long double s         = copy_matrix[i][m - 1];
          copy_matrix[i][m - 1] = copy_matrix[i][j];
          copy_matrix[i][j]     = s;
       }
@@ -131,26 +122,23 @@ long double TPulseAnalyzer::determinant(int m)
 
 int TPulseAnalyzer::fit_smooth_parabola(int low, int high, double x0, ParPar* pp)
 {
-   int    i, ndf, k;
-   double chisq;
-   double x;
    memset(pp, 0, sizeof(ParPar));
    memset(lineq_matrix, 0, sizeof(lineq_matrix));
    memset(lineq_vector, 0, sizeof(lineq_vector));
    lineq_dim = 2;
-   chisq     = 0.;
-   ndf       = 0;
-   k         = static_cast<int>(rint(x0));
+   double chisq     = 0.;
+   int ndf       = 0;
+   int k         = static_cast<int>(rint(x0));
 
-   for(i = low; i < k; i++) {
+   for(int i = low; i < k; i++) {
       lineq_matrix[0][0] += 1;
       lineq_vector[0] += cWavebuffer[i];
       ndf++;
       chisq += cWavebuffer[i] * cWavebuffer[i];
    }
 
-   for(i = k; i < high; i++) {
-      x = (i - x0) * (i - x0);
+   for(int i = k; i < high; i++) {
+      double x = (i - x0) * (i - x0);
       lineq_matrix[0][0] += 1;
       lineq_matrix[0][1] += x;
       lineq_matrix[1][1] += x * x;
@@ -175,8 +163,6 @@ int TPulseAnalyzer::fit_smooth_parabola(int low, int high, double x0, ParPar* pp
    pp->ndf       = ndf;
 
    return 1;
-
-   return -1;
 }
 
 ////////////////////////////////////////
@@ -188,9 +174,7 @@ double TPulseAnalyzer::fit_rf(double T)
    if(!set || cN < 10) {
       return -1;
    }
-   if(spar != nullptr) {
-      delete spar;
-   }
+	delete spar;
    spar = new SinPar;
 
    spar->t0 = -1;
@@ -209,22 +193,16 @@ double TPulseAnalyzer::fit_newT0()
       return -1;
    }
 
-   if(cWpar != nullptr) {
-      delete cWpar;
-   }
+	delete cWpar;
    cWpar     = new WaveFormPar;
    cWpar->t0 = -1;
 
-   double      chisq[3], chimin;
+   double      chisq[3];
    WaveFormPar w[3];
-   int         i, imin;
 
    cWpar->baseline_range = T0RANGE;   // default only 8 samples!
    get_baseline();
    get_tmax();
-
-   // if(cWpar->tmax<PIN_BASELINE_RANGE)
-   //	return -1;
 
    if(good_baseline() == 0) {
       return -1;
@@ -238,8 +216,7 @@ double TPulseAnalyzer::fit_newT0()
       chisq[i] = LARGECHISQ;
    }
 
-   size_t swp;
-   swp      = sizeof(WaveFormPar);
+   size_t swp = sizeof(WaveFormPar);
    chisq[0] = get_smooth_T0();
    memcpy(&w[0], cWpar, swp);
    chisq[1] = get_parabolic_T0();
@@ -247,10 +224,10 @@ double TPulseAnalyzer::fit_newT0()
    chisq[2] = get_linear_T0();
    memcpy(&w[2], cWpar, swp);
 
-   chimin = LARGECHISQ;
-   imin   = 0;
+   double chimin = LARGECHISQ;
+   int imin   = 0;
 
-   for(i = 0; i < 3; i++) {
+   for(int i = 0; i < 3; i++) {
       if(chisq[i] < chimin && chisq[i] > 0) {
          chimin = chisq[i];
          imin   = i;
@@ -269,15 +246,13 @@ double TPulseAnalyzer::fit_newT0()
 /*================================================================*/
 int TPulseAnalyzer::fit_parabola(int low, int high, ParPar* pp)
 {
-   int    i, ndf;
-   double chisq;
    memset(pp, 0, sizeof(ParPar));
    memset(lineq_matrix, 0, sizeof(lineq_matrix));
    memset(lineq_vector, 0, sizeof(lineq_vector));
    lineq_dim = 3;
-   chisq     = 0.;
-   ndf       = 0;
-   for(i = low; i < high; i++) {
+   double chisq     = 0.;
+   int ndf       = 0;
+   for(int i = low; i < high; i++) {
       lineq_matrix[0][0] += 1;
       lineq_matrix[0][1] += i;
       lineq_matrix[0][2] += i * i;
@@ -308,18 +283,17 @@ int TPulseAnalyzer::fit_parabola(int low, int high, ParPar* pp)
    pp->ndf       = ndf;
    return 1;
 }
+
 /*================================================================*/
 int TPulseAnalyzer::fit_line(int low, int high, LinePar* lp)
 {
-   int    i, ndf;
-   double chisq;
    memset(lp, 0, sizeof(LinePar));
    memset(lineq_matrix, 0, sizeof(lineq_matrix));
    memset(lineq_vector, 0, sizeof(lineq_vector));
    lineq_dim = 2;
-   chisq     = 0.;
-   ndf       = 0;
-   for(i = low; i < high; i++) {
+   double chisq     = 0.;
+   int ndf       = 0;
+   for(int i = low; i < high; i++) {
       lineq_matrix[0][0] += 1;
       lineq_matrix[0][1] += i;
       lineq_matrix[1][1] += i * i;

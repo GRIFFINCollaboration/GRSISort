@@ -1,5 +1,5 @@
-#ifndef TCFDCAL_H__
-#define TCFDCAL_H__
+#ifndef TCFDCAL_H
+#define TCFDCAL_H
 
 /** \addtogroup Calibration
  *  @{
@@ -9,14 +9,13 @@
 
 class TCFDCal : public TCal {
 public:
-   TCFDCal(){};
+   TCFDCal() = default;
    TCFDCal(const char* name, const char* title) : TCal(name, title){};
    ~TCFDCal() override = default;
 
    // pure virtual functions
    Bool_t IsGroupable() const override { return false; }
 
-public:
    void                  WriteToChannel() const override;
    virtual void          ReadFromChannel();
    std::vector<Double_t> GetParameters() const override;

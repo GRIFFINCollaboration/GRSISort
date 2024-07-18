@@ -24,7 +24,7 @@ class TDecayChain;
 
 class TDecayFit : public TF1 {
 public:
-   TDecayFit() : TF1(), fDecay(nullptr){};
+   TDecayFit() : fDecay(nullptr) {}
    TDecayFit(const char* name, const char* formula, Double_t xmin = 0, Double_t xmax = 1)
       : TF1(name, formula, xmin, xmax), fDecay(nullptr)
    {
@@ -34,7 +34,7 @@ public:
    {
       DefaultGraphs();
    }
-   TDecayFit(const char* name, ROOT::Math::ParamFunctor f, Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0)
+   TDecayFit(const char* name, const ROOT::Math::ParamFunctor& f, Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0)
       : TF1(name, f, xmin, xmax, npar), fDecay(nullptr)
    {
       DefaultGraphs();
@@ -68,7 +68,7 @@ public:
    {
       DefaultGraphs();
    }
-   ~TDecayFit() override;
+   ~TDecayFit() override = default;
 
    void           SetDecay(TVirtualDecay* decay);
    TVirtualDecay* GetDecay() const;
@@ -83,8 +83,7 @@ public:
 private:
    void DefaultGraphs();
 
-private:
-   TVirtualDecay* fDecay;       // VirtualDecay that made this fit
+   TVirtualDecay* fDecay{nullptr};       // VirtualDecay that made this fit
    TGraph         fResiduals;   // Last histogram fit by this function
 
    /// \cond CLASSIMP
@@ -121,22 +120,21 @@ public:
    {
    }
    TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlow = 0, Double_t thigh = 10);
-   TSingleDecay(TSingleDecay* parent, Double_t tlow = 0, Double_t thigh = 10);
+   explicit TSingleDecay(TSingleDecay* parent, Double_t tlow = 0, Double_t thigh = 10);
    ~TSingleDecay() override;
 
-public:
    ///// TF1 Helpers ////
    UInt_t   GetGeneration() const { return fGeneration; }
    Double_t GetHalfLife() const
    {
-      return (fDecayFunc->GetParameter(1) > 0.0) ? std::log(2.0) / fDecayFunc->GetParameter(1) : 0.0;
+      return (fDecayFunc->GetParameter(1) > 0.) ? std::log(2.0) / fDecayFunc->GetParameter(1) : 0.0;
    }
    Double_t GetDecayRate() const { return fDecayFunc->GetParameter(1); }
    Double_t GetIntensity() const { return fDecayFunc->GetParameter(0); }
    Double_t GetEfficiency() const { return fDetectionEfficiency; }
    Double_t GetHalfLifeError() const
    {
-      return GetDecayRate() ? GetHalfLife() * GetDecayRateError() / GetDecayRate() : 0.0;
+      return (GetDecayRate() > 0.) ? GetHalfLife() * GetDecayRateError() / GetDecayRate() : 0.0;
    }
    Double_t GetDecayRateError() const { return fDecayFunc->GetParError(1); }
    Double_t GetIntensityError() const { return fDecayFunc->GetParError(0); }
@@ -245,17 +243,16 @@ private:
       return fTotalDecayFunc;
    }
 
-private:
-   UInt_t        fGeneration{0};         // Generation from the primary
-   Double_t      fDetectionEfficiency;   // The probability that this decay can be detected
-   TDecayFit*    fDecayFunc;             // Function describing decay
-   TDecayFit*    fTotalDecayFunc;        // Function used to access other fits
-   TSingleDecay* fParent;                // Parent Decay
-   TSingleDecay* fDaughter;              // Daughter Decay
-   TSingleDecay* fFirstParent;           // FirstParent in the decay
-   Int_t         fUnId{0};               // The Unique ID of the Decay
-   static UInt_t fCounter;               // Helps set unique Id's
-   Int_t         fChainId;               // The chain that the single decay belongs to
+   UInt_t        fGeneration{0};             // Generation from the primary
+   Double_t      fDetectionEfficiency{0.};   // The probability that this decay can be detected
+   TDecayFit*    fDecayFunc{nullptr};        // Function describing decay
+   TDecayFit*    fTotalDecayFunc{nullptr};   // Function used to access other fits
+   TSingleDecay* fParent{nullptr};           // Parent Decay
+   TSingleDecay* fDaughter{nullptr};         // Daughter Decay
+   TSingleDecay* fFirstParent{nullptr};      // FirstParent in the decay
+   Int_t         fUnId{0};                   // The Unique ID of the Decay
+   static UInt_t fCounter;                   // Helps set unique Id's
+   Int_t         fChainId{0};                // The chain that the single decay belongs to
 
    /// \cond CLASSIMP
    ClassDefOverride(TSingleDecay, 1)   // Class containing Single Decay information
@@ -265,13 +262,13 @@ private:
 class TDecayChain : public TVirtualDecay {
 public:
    TDecayChain();
-   TDecayChain(UInt_t generations);
+   explicit TDecayChain(UInt_t generations);
    ~TDecayChain() override;
 
    TSingleDecay* GetDecay(UInt_t generation);
    Double_t      Eval(Double_t t) const;
    void          Draw(Option_t* opt = "") override;
-   Int_t         Size() const { return fDecayChain.size(); }
+   Int_t         Size() const { return static_cast<Int_t>(fDecayChain.size()); }
 
    void Print(Option_t* option = "") const override;
 
@@ -298,9 +295,8 @@ private:
       return fChainFunc;
    }
 
-private:
-   std::vector<TSingleDecay*> fDecayChain;   // The Decays in the Decay Chain
-   TDecayFit*                 fChainFunc;    // Function describing the total chain activity
+   std::vector<TSingleDecay*> fDecayChain;            // The Decays in the Decay Chain
+   TDecayFit*                 fChainFunc{nullptr};    // Function describing the total chain activity
    Int_t                      fChainId{0};
 
    /// \cond CLASSIMP
@@ -331,8 +327,8 @@ private:
 class TDecay : public TVirtualDecay {
 public:
    TDecay() : fFitFunc(nullptr) {}
-   TDecay(std::vector<TDecayChain*> chainlist);
-   ~TDecay() override;
+   explicit TDecay(std::vector<TDecayChain*> chainList);
+   ~TDecay() override = default;
 
    void         AddChain(TDecayChain* chain) { fChainList.push_back(chain); }
    Double_t     DecayFit(Double_t* dim, Double_t* par);
@@ -373,7 +369,7 @@ private:
 
 private:
    std::vector<TDecayChain*>                   fChainList;
-   TDecayFit*                                  fFitFunc;
+   TDecayFit*                                  fFitFunc{nullptr};
    std::map<Int_t, std::vector<TSingleDecay*>> fDecayMap;   //
 
    /// \cond CLASSIMP

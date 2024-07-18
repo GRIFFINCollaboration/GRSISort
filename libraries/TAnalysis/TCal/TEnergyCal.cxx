@@ -6,8 +6,6 @@ TEnergyCal::TEnergyCal()
    SetDefaultTitles();
 }
 
-TEnergyCal::~TEnergyCal() = default;
-
 void TEnergyCal::SetDefaultTitles()
 {
    // Sets the default titles of the TGraph in the TEnergyCal
@@ -21,11 +19,11 @@ void TEnergyCal::SetDefaultTitles()
 std::vector<Double_t> TEnergyCal::GetParameters() const
 {
    // WILL NEED TO CHANGE THIS APPROPRIATELY
-   std::vector<Double_t> paramList;
    Int_t                 nParams = GetFunction("energy")->GetNpar();
+   std::vector<Double_t> paramList(nParams);
 
    for(int i = 0; i < nParams; i++) {
-      paramList.push_back(GetParameter(i));
+      paramList[i] = GetParameter(i);
    }
 
    return paramList;
@@ -76,14 +74,15 @@ Bool_t TEnergyCal::SetPoint(Int_t idx, Double_t measured)
       return false;
    }
 
-   Double_t x, y;
-   Double_t dx, dy;
+   Double_t x = 0.;
+	Double_t y = 0.;
+   Double_t dx = 0.;
+	Double_t dy = 0.;
    GetPoint(idx, x, y);
    dx = GetErrorX(idx);
    dy = GetErrorY(idx);
    TGraphErrors::SetPoint(idx, measured, y);
    TGraphErrors::SetPointError(idx, dx, dy);
-   //  Sort();
 
    return true;
 }

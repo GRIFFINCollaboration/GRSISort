@@ -1,5 +1,5 @@
-#ifndef TEFFICIENCYGRAPH_H__
-#define TEFFICIENCYGRAPH_H__
+#ifndef TEFFICIENCYGRAPH_H
+#define TEFFICIENCYGRAPH_H
 
 /** \addtogroup Calibration
  *  @{
@@ -37,24 +37,20 @@ public:
 
    TEfficiencyGraph& operator=(const TEfficiencyGraph&) = default;   // use default to stop gcc 9.1 warning
 
-public:
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
 
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 26, 0)
    void Scale(const double& scale);
 #endif
-   void SetAbsolute(const bool& flag)
-   {
-      fIsAbsolute = flag;
-   }
+   void SetAbsolute(const bool& flag) { fIsAbsolute = flag; }
    bool IsAbsolute() const { return fIsAbsolute; }
 
 protected:
    void BuildGraph() override;
 
 private:
-   bool fIsAbsolute;
+   bool fIsAbsolute{false};
 
    /// \cond CLASSIMP
    ClassDefOverride(TEfficiencyGraph, 1);   // Graph Class for Calibrations

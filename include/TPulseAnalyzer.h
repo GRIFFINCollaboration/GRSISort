@@ -164,15 +164,15 @@ public:
    int    GetCsIFitType();
 
 private:
-   bool         set;
-   WaveFormPar* cWpar;
-   int          cN;
+   bool         set{false};
+   WaveFormPar* cWpar{nullptr};
+   int          cN{0};
    // TFragment* frag;
    std::vector<Short_t> cWavebuffer;
-   SinPar*              spar;
-   ShapePar*            shpar;
-   WaveFormPar*         csiTestWpar[4];    // used for testing different CsI fit types
-   ShapePar*            csiTestShpar[4];   // used for testing different CsI fit types
+   SinPar*              spar{nullptr};
+   ShapePar*            shpar{nullptr};
+   WaveFormPar*         csiTestWpar[4]{nullptr};    // used for testing different CsI fit types
+   ShapePar*            csiTestShpar[4]{nullptr};   // used for testing different CsI fit types
 
    std::string fName;
 
