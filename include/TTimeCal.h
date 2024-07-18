@@ -1,5 +1,5 @@
-#ifndef TTIMECAL_H__
-#define TTIMECAL_H__
+#ifndef TTIMECAL_H
+#define TTIMECAL_H
 
 /** \addtogroup Calibration
  *  @{
@@ -9,14 +9,13 @@
 
 class TTimeCal : public TCal {
 public:
-   TTimeCal(){};
+   TTimeCal() = default;
    TTimeCal(const char* name, const char* title) : TCal(name, title){};
    ~TTimeCal() override = default;
 
    // pure virtual functions
    Bool_t IsGroupable() const override { return false; }
 
-public:
    void                  WriteToChannel() const override;
    virtual void          ReadFromChannel();
    std::vector<Double_t> GetParameters() const override;
