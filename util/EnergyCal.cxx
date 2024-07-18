@@ -1,3 +1,6 @@
+#include <map>
+#include <vector>
+
 #include "TH1.h"
 #include "TF1.h"
 #include "TList.h"
@@ -8,8 +11,6 @@
 #include "TVirtualFitter.h"
 #include "TMath.h"
 #include "TCanvas.h"
-#include <map>
-#include <vector>
 #include "TROOT.h"
 #include "TMultiGraph.h"
 #include "TFile.h"
@@ -17,38 +18,13 @@
 #include "TGraphErrors.h"
 #include "TPeak.h"
 #include "Math/Minimizer.h"
-//#include "../include/TNucleus.h"
-#include "../include/TGRSITransition.h"
+
+#include "TGRSITransition.h"
 
 const int ntrans = 15;
 
-// double transition[8][2] = {
 double transition[ntrans][2] = {{121.783, 0.002}, {244.692, 0.002}, {295.939, 0.008}, {344.276, 0.004}, {367.789, 0.005}, {411.115, 0.005}, {443.976, 0.005}, {688.678, 0.006}, {778.903, 0.006}, {867.388, 0.008}, {964.131, 0.009}, {1005.279, 0.017}, {1212.95, 0.012}, {1299.124, 0.012}, {1408.011, 0.140}};
-/*
-   {131.6 , 0.2},
-   {212.8 , 0.1},
-   {229.1 , 0.1},
-//   {326.1 , 0.1},
-   {336.241,0.025},
-//   {372.2 , 0.1},
-//   {388.9 , 0.3},
-   {472.7 , 0.1},
-   {649.1 , 0.1},
-   {698.1 , 0.1}};
-*/
 double tranrange[ntrans][2] = {{15, 15}, {15, 15}, {10, 10}, {15, 15}, {10, 10}, {15, 15}, {15, 15}, {5, 15}, {15, 15}, {15, 15}, {15, 15}, {10, 10}, {15, 15}, {15, 15}, {15, 15}};
-
-/*   {10,10},
-{10,10},
-{10,5},
-//   5,
-{7,16},
-//   {8,7},
-//   4,
-{20,9},
-{10,10},
-{20,15}};
-*/
 
 void GetCal(TH1* hist, TGraphErrors* ge, TGraphErrors* fwhm)
 {
@@ -57,16 +33,14 @@ void GetCal(TH1* hist, TGraphErrors* ge, TGraphErrors* fwhm)
       double    denergy   = transition[i][1];
       double    rangelow  = tranrange[i][0];
       double    rangehigh = tranrange[i][1];
-      TSpectrum s;
+      TSpectrum spec;
       hist->GetXaxis()->SetRangeUser(energy - rangelow, energy + rangehigh);
-      s.Search(hist);
+      spec.Search(hist);
 
-      Double_t peak_pos = s.GetPositionX()[0];
+      Double_t peak_pos = spec.GetPositionX()[0];
       hist->GetXaxis()->UnZoom();
       std::cout << "PEAK POS " << peak_pos << std::endl;
       auto* peak = new TPeak(peak_pos, peak_pos - rangelow, peak_pos + rangehigh);
-      //   peak->Clear();
-      // peak->InitParams(hist);
       peak->Fit(hist, "+");
       ge->SetPoint(i, energy, energy - peak->GetCentroid());
       ge->SetPointError(i, denergy, TMath::Sqrt(TMath::Power(denergy, 2) + TMath::Power(peak->GetCentroidErr(), 2)));
@@ -84,7 +58,7 @@ int main(int argc, char** argv)
    TVirtualFitter::SetMaxIterations(10000);
    if(argc != 2) {
       printf("try again (usage: %s <hist file>.\n", argv[0]);
-      return 0;
+      return 1;
    }
 
    auto* file = new TFile(argv[1]);
@@ -143,5 +117,5 @@ int main(int argc, char** argv)
 
    file->Close();
    outfile->Close();
-   return 1;
+   return 0;
 }

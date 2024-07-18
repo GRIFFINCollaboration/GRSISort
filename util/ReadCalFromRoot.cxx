@@ -44,26 +44,27 @@ int main(int argc, char** argv)
          continue;
       }
 
-      TFile f(argv[i]);
-      if(!f.IsOpen()) {
+      TFile file(argv[i]);
+      if(!file.IsOpen()) {
          std::cout << DRED << "Could not open " << argv[i] << "." << RESET_COLOR << std::endl;
          badFile.push_back(argv[i]);
          continue;
       }
 
-      if((f.Get("Channel") == nullptr) || (f.Get("RunInfo") == nullptr)) {
+      if((file.Get("Channel") == nullptr) || (file.Get("RunInfo") == nullptr)) {
          std::cout << DRED << "Could not find Channel or RunInfo in " << argv[i] << "." << RESET_COLOR << std::endl;
          badChannel.push_back(argv[i]);
          continue;
       }
 
-      int runNumber    = TRunInfo::Get()->RunNumber();
-      int subRunNumber = TRunInfo::Get()->SubRunNumber();
+      int runNumber    = TRunInfo::RunNumber();
+      int subRunNumber = TRunInfo::SubRunNumber();
 
       // This ensures that no information from the previous file is written to the cal-file for this file.
       TChannel::DeleteAllChannels();
       TChannel::ReadCalFromCurrentFile();
       TChannel::WriteCalFile(Form("%05d_%03d.cal", runNumber, subRunNumber));
+		file.Close();
    }
 
    if(!badFile.empty()) {

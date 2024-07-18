@@ -23,29 +23,29 @@ int main(int argc, char** argv)
    for(int i = 1; i < argc; ++i) {
       if(gSystem->AccessPathName(argv[i])) {
          std::cerr << DRED << "No file " << argv[i] << " found." << RESET_COLOR << std::endl;
-         badFiles.push_back(argv[i]);
+         badFiles.emplace_back(argv[i]);
          continue;
       }
 
-      TFile f(argv[i], "update");
-      if(!f.IsOpen()) {
+      TFile file(argv[i], "update");
+      if(!file.IsOpen()) {
          std::cerr << DRED << "Unable to open " << argv[i] << "." << RESET_COLOR << std::endl;
-         badFiles.push_back(argv[i]);
+         badFiles.emplace_back(argv[i]);
          continue;
       }
 
-      auto opt = static_cast<TAnalysisOptions*>(f.Get("AnalysisOptions"));
+      auto* opt = static_cast<TAnalysisOptions*>(file.Get("AnalysisOptions"));
 
       if(opt == nullptr) {
          std::cerr << DRED << "Failed to find AnalysisOptions in " << argv[i] << "." << RESET_COLOR << std::endl;
-         badFiles.push_back(argv[i]);
-         f.Close();
+         badFiles.emplace_back(argv[i]);
+         file.Close();
          continue;
       }
 
       opt->SetCorrectCrossTalk(true, "q");
-      opt->WriteToFile(&f);
-      f.Close();
+      opt->WriteToFile(&file);
+      file.Close();
    }
 
    if(!badFiles.empty()) {

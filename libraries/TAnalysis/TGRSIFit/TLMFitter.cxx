@@ -254,7 +254,7 @@ void TLMFitter::mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
          covar[j][k] = alpha[j][k];
       }
       covar[j][j] = alpha[j][j] * (1.0 + alamda);
-      for(k = 0; k < mfit; k++) {
+      for(int k = 0; k < mfit; k++) {
          temp[j][k] = covar[j][k];
       }
       oneda[j][0] = beta[j];

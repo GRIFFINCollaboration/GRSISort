@@ -5,13 +5,14 @@
 // C libraries
 #include <cstdio>
 #include <cstdlib>
+#include <sstream>
 
-#include <TApplication.h>
-#include <TBox.h>
-#include <TFile.h>
-#include <TH1.h>
-#include <TLatex.h>
-#include <TPaveStats.h>
+#include "TApplication.h"
+#include "TBox.h"
+#include "TFile.h"
+#include "TH1.h"
+#include "TLatex.h"
+#include "TPaveStats.h"
 
 // ****** Compilation command *************************************************
 // g++ -o convertTH1 `root-config --cflags` convertTH1.cpp `root-config --glibs`
@@ -53,28 +54,23 @@ int main(int argc, char* argv[])
 
    TApplication app("App", &argc, argv);
 
-   // cout<<file_name<<endl;
-   // cout<<hist_name<<endl;
-
    TFile file(file_name, "READ");
    if(file.IsZombie()) {
       std::cout << "Error opening file.  " << file_name << std::endl;
       std::cout << "Perhaps file not there or not closed correctly" << std::endl;
       return (1);
    }
-   TH1* hist;
-   //  file.ls();
+   TH1* hist = nullptr;
    file.GetObject(hist_name, hist);
    if(hist == nullptr) {
       std::cout << "Sorry, histogram " << hist_name << " not found in file" << std::endl;
       return (1);
    }
 
-   char out_file_name[500];
-   snprintf(out_file_name, sizeof(out_file_name), "%s.hist", hist->GetName());
-   FILE* out_file;
-   out_file = fopen(out_file_name, "w");
-   std::cout << "Making output file: " << out_file_name << std::endl;
+	std::stringstream str;
+	str << hist->GetName() << ".hist";
+   FILE* out_file = fopen(str.str().c_str(), "w");
+   std::cout << "Making output file: " << str.str() << std::endl;
    fprintf(out_file, "%s\t%s\t%d\n", file_name, hist_name, hist->GetNbinsX());
    for(int i = 1; i <= hist->GetNbinsX(); i++) {
       fprintf(out_file, "%g\t%g\n", hist->GetBinCenter(i), hist->GetBinContent(i));

@@ -30,9 +30,9 @@ based on the runnumber set in the definition section just below includes.
 ______________________________________________________________________________________________
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 #include <vector>
 #include <algorithm>
 #include <fstream>
@@ -98,7 +98,7 @@ int main(int argc, char** argv)
    TStopwatch w;
    w.Start();
 
-   TFile* file = new TFile(argv[1]);
+   auto* file = new TFile(argv[1]);
 
    if(file == nullptr || !file->IsOpen()) {
       printf("Failed to open file '%s'!\n", argv[1]);
@@ -107,14 +107,13 @@ int main(int argc, char** argv)
 
    printf("Analyzing file:" DBLUE " %s" RESET_COLOR "\n", file->GetName());
 
-   TFile* outfile;
-   outfile = new TFile(Form("./CompPlots_%05d.root", RUNNUMBER), "recreate");
+   auto* outfile = new TFile(Form("./CompPlots_%05d.root", RUNNUMBER), "recreate");
 
    std::cout << argv[0] << ": starting Analysis after " << w.RealTime() << " seconds" << std::endl;
    w.Continue();
-   TList* outlist = new TList();
-   outlist        = ComptonPol(file, &w);
-   outlist        = AGATATheory(outlist, AGATA_Q * ScaleQ(E_Q_Measure, E_Q_Use));
+   auto* outlist = new TList();
+   outlist       = ComptonPol(file, &w);
+   outlist       = AGATATheory(outlist, AGATA_Q * ScaleQ(E_Q_Measure, E_Q_Use));
    if(outlist == nullptr) {
       std::cout << "ComptonPol returned TList* nullptr!" << std::endl;
       return 1;
@@ -157,42 +156,42 @@ TList* ComptonPol(TFile* f, TStopwatch* w)
    //--------------------- Loading/Making histograms --------------------------------//
    ////////////////////////////////////////////////////////////////////////////////////
 
-   TList* list = new TList;   // Output list
+   auto* list = new TList;   // Output list
 
-   TH2D* XiHist2D_DetDet = (TH2D*)f->Get("XiHist2D_DetDetCoincidenceTheta");
+   auto* XiHist2D_DetDet = static_cast<TH2D*(f->Get("XiHist2D_DetDetCoincidenceTheta"));
    list->Add(XiHist2D_DetDet);
-   TH2D* XiHist2D_CryCry = (TH2D*)f->Get("XiHist2D_CryCryCoincidenceTheta");
+   auto* XiHist2D_CryCry = static_cast<TH2D*(f->Get("XiHist2D_CryCryCoincidenceTheta"));
    list->Add(XiHist2D_CryCry);
 
-   TH2D* XiHist2DGeo_DetDet = (TH2D*)f->Get("XiHist2D_DetDetCoincidenceTheta_Geo");
+   auto* XiHist2DGeo_DetDet = static_cast<TH2D*(f->Get("XiHist2D_DetDetCoincidenceTheta_Geo"));
    list->Add(XiHist2DGeo_DetDet);
-   TH2D* XiHist2DGeo_CryCry = (TH2D*)f->Get("XiHist2D_CryCryCoincidenceTheta_Geo");
+   auto* XiHist2DGeo_CryCry = static_cast<TH2D*(f->Get("XiHist2D_CryCryCoincidenceTheta_Geo"));
    list->Add(XiHist2DGeo_CryCry);
 
-   TH2D* XiHist2DNonCo_DetDet = (TH2D*)f->Get("XiHist2D_DetDetCoincidenceTheta_NonCo");
+   auto* XiHist2DNonCo_DetDet = static_cast<TH2D*(f->Get("XiHist2D_DetDetCoincidenceTheta_NonCo"));
    list->Add(XiHist2DNonCo_DetDet);
-   TH2D* XiHist2DNonCo_CryCry = (TH2D*)f->Get("XiHist2D_CryCryCoincidenceTheta_NonCo");
+   auto* XiHist2DNonCo_CryCry = static_cast<TH2D*(f->Get("XiHist2D_CryCryCoincidenceTheta_NonCo"));
    list->Add(XiHist2DNonCo_CryCry);
 
    int ThetaBins = XiHist2D_DetDet->GetNbinsY();   // Binsize = 180deg / bins
    int XiBins    = XiHist2D_DetDet->GetNbinsX();
 
-   char* XiHistTitle      = Form("Measured #xi Angles for Real Triplets ( %.1f <= #theta <= %.1f ) -> UseDetCoincidenceAngle = %d;Experimental Angle #xi (#circ);Counts", RestrictCoincidenceAngleMin, RestrictCoincidenceAngleMax, UseDetCoincidenceAngle);
-   char* XiHistGeoTitle   = Form("Possible #xi Angles in GRIFFIN Array ( %.1f <= #theta <= %.1f ) -> UseDetCoincidenceAngle = %d;Experimental Angle #xi (#circ);Counts", RestrictCoincidenceAngleMin, RestrictCoincidenceAngleMax, UseDetCoincidenceAngle);
-   char* XiHistNonCoTitle = Form("Measured #xi Angles for Non-Coincident #gamma_{1} and #gamma_{2} ( %.1f <= #theta <= %.1f ) -> UseDetCoincidenceAngle = %d;Experimental Angle #xi (#circ);Counts", RestrictCoincidenceAngleMin, RestrictCoincidenceAngleMax, UseDetCoincidenceAngle);
+   char* XiHistTitle      = Form("Measured #xi Angles for Real Triplets ( %.1f <= #theta <= %.1f ) -> UseDetCoincidenceAngle = %d;Experimental Angle #xi (#circ);Counts", RestrictCoincidenceAngleMin, RestrictCoincidenceAngleMax, static_cast<int>(UseDetCoincidenceAngle));
+   char* XiHistGeoTitle   = Form("Possible #xi Angles in GRIFFIN Array ( %.1f <= #theta <= %.1f ) -> UseDetCoincidenceAngle = %d;Experimental Angle #xi (#circ);Counts", RestrictCoincidenceAngleMin, RestrictCoincidenceAngleMax, static_cast<int>(UseDetCoincidenceAngle));
+   char* XiHistNonCoTitle = Form("Measured #xi Angles for Non-Coincident #gamma_{1} and #gamma_{2} ( %.1f <= #theta <= %.1f ) -> UseDetCoincidenceAngle = %d;Experimental Angle #xi (#circ);Counts", RestrictCoincidenceAngleMin, RestrictCoincidenceAngleMax, static_cast<int>(UseDetCoincidenceAngle));
 
-   TH1D* XiHist = new TH1D("XiHist", XiHistTitle, XiBins, XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(1), XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(XiBins + 1));
+   auto* XiHist = new TH1D("XiHist", XiHistTitle, XiBins, XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(1), XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(XiBins + 1));
    list->Add(XiHist);
-   TH1D* XiHistGeo = new TH1D("XiHist_Geo", XiHistGeoTitle, XiBins, XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(1), XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(XiBins + 1));
+   auto* XiHistGeo = new TH1D("XiHist_Geo", XiHistGeoTitle, XiBins, XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(1), XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(XiBins + 1));
    list->Add(XiHistGeo);
-   TH1D* XiHistNonCo = new TH1D("XiHist_NonCo", XiHistNonCoTitle, XiBins, XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(1), XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(XiBins + 1));
+   auto* XiHistNonCo = new TH1D("XiHist_NonCo", XiHistNonCoTitle, XiBins, XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(1), XiHist2D_DetDet->GetXaxis()->GetBinLowEdge(XiBins + 1));
    list->Add(XiHistNonCo);
 
-   TGraphErrors* AsymmetryNonCo = new TGraphErrors();
+   auto* AsymmetryNonCo = new TGraphErrors();
    list->Add(AsymmetryNonCo);
-   TGraphErrors* AsymmetryBinnedNonCo = new TGraphErrors();
+   auto* AsymmetryBinnedNonCo = new TGraphErrors();
    list->Add(AsymmetryBinnedNonCo);
-   TGraphErrors* AsymmetryBinFoldNonCo = new TGraphErrors();
+   auto* AsymmetryBinFoldNonCo = new TGraphErrors();
    list->Add(AsymmetryBinFoldNonCo);
 
    /////////////////////////////////////////////////////////////////////////////////////
@@ -221,7 +220,6 @@ TList* ComptonPol(TFile* f, TStopwatch* w)
    fun1->SetParLimits(0, -10.0, 10.0);
 
    int                 nPoints = 0;
-   double              Ace, ex, ey, XiBinCount, UnPolBinCount;
    std::vector<double> AsymmetryX, AsymmetryY, AsymmetryYerr;
    std::vector<double> XiBinEdges = {0.0, 2.0, 3.0, 6.0, 14.0, 31.0, 39.0, 50.0, 61., 74., 87., 93., 106., 119., 130., 141., 149., 166., 174., 177., 178., 180.0};   // Assymetric
 
@@ -232,18 +230,18 @@ TList* ComptonPol(TFile* f, TStopwatch* w)
    AsymmetryY.clear();
    AsymmetryYerr.clear();
    for(int bin = 1; bin < XiHist->GetXaxis()->GetNbins(); bin++) {
-      printf("%d %d\n", bin, (int)(XiHist->GetBinCenter(bin)));
-      if(XiHist->GetBinContent(bin) == 0 || XiHistNonCo->GetBinContent(bin) == 0) continue;
+      printf("%d %d\n", bin, static_cast<int>(XiHist->GetBinCenter(bin)));
+      if(XiHist->GetBinContent(bin) == 0 || XiHistNonCo->GetBinContent(bin) == 0) { continue; }
 
       // Exclude specific bins which are isolated as single bins in the plot -they have low statistics because cannot group with anything else
-      if((int)(XiHist->GetBinCenter(bin)) == 2 || (int)(XiHist->GetBinCenter(bin)) == 43 || (int)(XiHist->GetBinCenter(bin)) == 48 || (int)(XiHist->GetBinCenter(bin)) == 89 || (int)(XiHist->GetBinCenter(bin)) == 90 || (int)(XiHist->GetBinCenter(bin)) == 131 || (int)(XiHist->GetBinCenter(bin)) == 136 || (int)(XiHist->GetBinCenter(bin)) == 177) continue;
+      if(static_cast<int>(XiHist->GetBinCenter(bin)) == 2 || static_cast<int>(XiHist->GetBinCenter(bin)) == 43 || static_cast<int>(XiHist->GetBinCenter(bin)) == 48 || static_cast<int>(XiHist->GetBinCenter(bin)) == 89 || static_cast<int>(XiHist->GetBinCenter(bin)) == 90 || static_cast<int>(XiHist->GetBinCenter(bin)) == 131 || static_cast<int>(XiHist->GetBinCenter(bin)) == 136 || static_cast<int>(XiHist->GetBinCenter(bin)) == 177) { continue; }
 
-      Ace = 1 - (XiHist->GetBinContent(bin) / XiHist->Integral()) / (XiHistNonCo->GetBinContent(bin) / XiHistNonCo->Integral());
+      double Ace = 1 - (XiHist->GetBinContent(bin) / XiHist->Integral()) / (XiHistNonCo->GetBinContent(bin) / XiHistNonCo->Integral());
       AsymmetryNonCo->SetPoint(nPoints, XiHist->GetBinCenter(bin), Ace);
       AsymmetryX.push_back(XiHist->GetBinCenter(bin));
       AsymmetryY.push_back(Ace);
-      ex = XiHist->GetBinWidth(bin) / 2.0;
-      ey = Ace * TMath::Sqrt(1.0 / XiHist->GetBinContent(bin) + 1.0 / XiHist->Integral() + 1.0 / XiHistNonCo->GetBinContent(bin) + 1.0 / XiHistNonCo->Integral());
+      double ex = XiHist->GetBinWidth(bin) / 2.0;
+      double ey = Ace * TMath::Sqrt(1.0 / XiHist->GetBinContent(bin) + 1.0 / XiHist->Integral() + 1.0 / XiHistNonCo->GetBinContent(bin) + 1.0 / XiHistNonCo->Integral());
       AsymmetryYerr.push_back(ey);
       AsymmetryNonCo->SetPointError(nPoints, ex, ey);
       nPoints++;
@@ -252,24 +250,23 @@ TList* ComptonPol(TFile* f, TStopwatch* w)
    //--------Binned NonCo Asymm Plot-------//
    nPoints = 0;
    for(size_t loop = 1; loop < XiBinEdges.size(); ++loop) {
-      XiBinCount    = 0.0;
-      UnPolBinCount = 0.0;
-      ey            = 0;
+      double XiBinCount    = 0.0;
+      double UnPolBinCount = 0.0;
       for(int bin = 1; bin < XiHist->GetXaxis()->GetNbins(); bin++) {
-         if(XiHist->GetBinContent(bin) == 0 || XiHistNonCo->GetBinContent(bin) == 0) continue;
+         if(XiHist->GetBinContent(bin) == 0 || XiHistNonCo->GetBinContent(bin) == 0) { continue; }
 
          // Exclude specific bins which are isolated as single bins in the plot -they have low statistics because cannot group with anything else
-         if((int)(XiHist->GetBinCenter(bin)) == 2 || (int)(XiHist->GetBinCenter(bin)) == 43 || (int)(XiHist->GetBinCenter(bin)) == 48 || (int)(XiHist->GetBinCenter(bin)) == 89 || (int)(XiHist->GetBinCenter(bin)) == 90 || (int)(XiHist->GetBinCenter(bin)) == 131 || (int)(XiHist->GetBinCenter(bin)) == 136 || (int)(XiHist->GetBinCenter(bin)) == 177) continue;
+         if(static_cast<int>(XiHist->GetBinCenter(bin)) == 2 || static_cast<int>(XiHist->GetBinCenter(bin)) == 43 || static_cast<int>(XiHist->GetBinCenter(bin)) == 48 || static_cast<int>(XiHist->GetBinCenter(bin)) == 89 || static_cast<int>(XiHist->GetBinCenter(bin)) == 90 || static_cast<int>(XiHist->GetBinCenter(bin)) == 131 || static_cast<int>(XiHist->GetBinCenter(bin)) == 136 || static_cast<int>(XiHist->GetBinCenter(bin)) == 177) { continue; }
 
          if(XiHist->GetBinCenter(bin) >= XiBinEdges[loop - 1] && XiHist->GetBinCenter(bin) < XiBinEdges[loop]) {
             XiBinCount += XiHist->GetBinContent(bin);
             UnPolBinCount += XiHistNonCo->GetBinContent(bin);
          }
       }
-      if(XiBinCount == 0.0 || UnPolBinCount == 0.0) continue;
-      Ace = 1.0 - (XiBinCount / XiHist->Integral()) / (UnPolBinCount / XiHistNonCo->Integral());
-      ey  = TMath::Sqrt(1.0 / XiBinCount + 1.0 / UnPolBinCount);
-      ex  = (XiBinEdges[loop] - XiBinEdges[loop - 1]) / 2.0;
+      if(XiBinCount == 0.0 || UnPolBinCount == 0.0) { continue; }
+      double Ace = 1.0 - (XiBinCount / XiHist->Integral()) / (UnPolBinCount / XiHistNonCo->Integral());
+      double ey  = TMath::Sqrt(1.0 / XiBinCount + 1.0 / UnPolBinCount);
+      double ex  = (XiBinEdges[loop] - XiBinEdges[loop - 1]) / 2.0;
       AsymmetryBinnedNonCo->SetPoint(nPoints, (XiBinEdges[loop] + XiBinEdges[loop - 1]) / 2.0, Ace);
       AsymmetryBinnedNonCo->SetPointError(nPoints, ex, ey);
       nPoints++;
@@ -279,27 +276,24 @@ TList* ComptonPol(TFile* f, TStopwatch* w)
    //--------Binned and Folded NonCo Asymm Plot-------//
    nPoints = 0;
    for(size_t loop = 1; loop < XiBinEdges.size(); ++loop) {
-      XiBinCount    = 0.0;
-      UnPolBinCount = 0.0;
-      ey            = 0;
-      double FoldedCenter;
+      double XiBinCount    = 0.0;
+      double UnPolBinCount = 0.0;
       for(int bin = 1; bin < XiHist->GetXaxis()->GetNbins(); bin++) {
-
          // Exclude specific bins which are isolated as single bins in the plot -they have low statistics because cannot group with anything else
-         if((int)(XiHist->GetBinCenter(bin)) == 2 || (int)(XiHist->GetBinCenter(bin)) == 43 || (int)(XiHist->GetBinCenter(bin)) == 48 || (int)(XiHist->GetBinCenter(bin)) == 89 || (int)(XiHist->GetBinCenter(bin)) == 90 || (int)(XiHist->GetBinCenter(bin)) == 131 || (int)(XiHist->GetBinCenter(bin)) == 136 || (int)(XiHist->GetBinCenter(bin)) == 177) continue;
+         if(static_cast<int>(XiHist->GetBinCenter(bin)) == 2 || static_cast<int>(XiHist->GetBinCenter(bin)) == 43 || static_cast<int>(XiHist->GetBinCenter(bin)) == 48 || static_cast<int>(XiHist->GetBinCenter(bin)) == 89 || static_cast<int>(XiHist->GetBinCenter(bin)) == 90 || static_cast<int>(XiHist->GetBinCenter(bin)) == 131 || static_cast<int>(XiHist->GetBinCenter(bin)) == 136 || static_cast<int>(XiHist->GetBinCenter(bin)) == 177) { continue; }
 
-         FoldedCenter = std::min(XiHist->GetBinCenter(bin), 180.0 - XiHist->GetBinCenter(bin));
-         if(XiHist->GetBinContent(bin) == 0 || XiHistNonCo->GetBinContent(bin) == 0) continue;
+         double FoldedCenter = std::min(XiHist->GetBinCenter(bin), 180.0 - XiHist->GetBinCenter(bin));
+         if(XiHist->GetBinContent(bin) == 0 || XiHistNonCo->GetBinContent(bin) == 0) { continue; }
 
          if(FoldedCenter >= XiBinEdges[loop - 1] && FoldedCenter < XiBinEdges[loop]) {
             XiBinCount += XiHist->GetBinContent(bin);
             UnPolBinCount += XiHistNonCo->GetBinContent(bin);
          }
       }
-      if(XiBinCount == 0.0 || UnPolBinCount == 0.0) continue;
-      Ace = 1.0 - (XiBinCount / XiHist->Integral()) / (UnPolBinCount / XiHistNonCo->Integral());
-      ey  = TMath::Sqrt(1.0 / XiBinCount + 1.0 / UnPolBinCount);
-      ex  = (XiBinEdges[loop] - XiBinEdges[loop - 1]) / 2.0;
+      if(XiBinCount == 0.0 || UnPolBinCount == 0.0) { continue; }
+      double Ace = 1.0 - (XiBinCount / XiHist->Integral()) / (UnPolBinCount / XiHistNonCo->Integral());
+      double ey  = TMath::Sqrt(1.0 / XiBinCount + 1.0 / UnPolBinCount);
+      double ex  = (XiBinEdges[loop] - XiBinEdges[loop - 1]) / 2.0;
       AsymmetryBinFoldNonCo->SetPoint(nPoints, (XiBinEdges[loop] + XiBinEdges[loop - 1]) / 2.0, Ace);
       AsymmetryBinFoldNonCo->SetPointError(nPoints, ex, ey);
       nPoints++;
@@ -351,9 +345,9 @@ TList* ComptonPol(TFile* f, TStopwatch* w)
 
 TList* AGATATheory(TList* list, double Q)
 {
-   TGraph* PredictedAsymmetry = new TGraph();
-   int     MaxPoints          = 100;
-   double  P                  = PolarizationCalculation();
+   auto*  PredictedAsymmetry = new TGraph();
+   int    MaxPoints          = 100;
+   double P                  = PolarizationCalculation();
    for(int loop = 0; loop <= MaxPoints; loop++) {
       PredictedAsymmetry->SetPoint(loop, loop * (180.0 / MaxPoints), 0.5 * Q * P * TMath::Cos(2.0 * TMath::DegToRad() * (loop * (180.0 / MaxPoints))));
    }
@@ -546,15 +540,14 @@ double PolarizationCalculation()
 
 double Kcoefficents(int mu, int L1, int L2)
 {
-   double k;
-   double l1, l2;
-   l1 = L1;
-   l2 = L2;
+   double k = 0.;
+   double l1 = L1;
+   double l2 = L2;
    L1 = std::max(l1, l2);
    L2 = std::min(l1, l2);
 
    if((L1 + L2) % 2 == 0) {
-      k = ((double)mu * (mu + 1.0) * (L1 * (L1 + 1.0) + L2 * (L2 + 1.0)) - TMath::Power(L2 * (L2 + 1.0) - L1 * (L1 + 1.0), 2)) / (L1 * (L1 + 1.0) + L2 * (L2 + 1.0) - mu * (mu + 1.0));
+      k = (static_cast<double>(mu) * (mu + 1.0) * (L1 * (L1 + 1.0) + L2 * (L2 + 1.0)) - TMath::Power(L2 * (L2 + 1.0) - L1 * (L1 + 1.0), 2)) / (L1 * (L1 + 1.0) + L2 * (L2 + 1.0) - mu * (mu + 1.0));
    } else {
       k = L2 * (L2 + 1.0) - L1 * (L1 + 1.);
    }
@@ -566,21 +559,19 @@ double ScaleQ(double E1, double E2)
    // E1 is the energy of the scattering gamma used to determine the Q you wish to scale.  E2 is the
    // energy  of the gamma you are trying to examine now.
    int    nDiv = 1000;
-   double E1p, E2p, theta, sigma1, sigma2;
    double m_eC2 = 510.9989;   // keV
    double Q1    = 0.0;
    double Q2    = 0.0;
    for(int loop = 0; loop < nDiv; loop++) {
-      theta = loop * (180.0 / nDiv);
+      double theta = loop * (180.0 / nDiv);
 
-      E1p = E1 / (1.0 + E1 / m_eC2 * (1 - TMath::Cos(TMath::DegToRad() * theta)));
-      E2p = E2 / (1.0 + E2 / m_eC2 * (1 - TMath::Cos(TMath::DegToRad() * theta)));
+      double E1p = E1 / (1.0 + E1 / m_eC2 * (1 - TMath::Cos(TMath::DegToRad() * theta)));
+      double E2p = E2 / (1.0 + E2 / m_eC2 * (1 - TMath::Cos(TMath::DegToRad() * theta)));
 
-      sigma1 = TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2) / (E1p / E1 + E1 / E1p - TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2));
-      sigma2 = TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2) / (E2p / E2 + E2 / E2p - TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2));
+      double sigma1 = TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2) / (E1p / E1 + E1 / E1p - TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2));
+      double sigma2 = TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2) / (E2p / E2 + E2 / E2p - TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2));
       Q1 += (180.0 / nDiv) * (sigma1);
       Q2 += (180.0 / nDiv) * (sigma2);
-      // std::cout<<"theta = "<<theta<<"\tsig1 = "<<sigma1<<"\tsig2 = "<<sigma2<<std::endl;
    }
    Q1 /= 180.0;
    Q2 /= 180.0;

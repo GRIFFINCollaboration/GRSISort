@@ -4,6 +4,7 @@
 /** \addtogroup Fitting Fitting & Analysis
  *  @{
  */
+#include <utility>
 
 #include "TGRSIFunctions.h"
 #include "TObject.h"
@@ -18,7 +19,6 @@
 #include "TMath.h"
 #include "TNamed.h"
 #include "TROOT.h"
-#include <utility>
 #include "TRef.h"
 #include "TString.h"
 #include "Globals.h"

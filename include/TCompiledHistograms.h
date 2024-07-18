@@ -1,5 +1,5 @@
-#ifndef _TCOMPILEDHISTOGRAMS_H_
-#define _TCOMPILEDHISTOGRAMS_H_
+#ifndef TCOMPILEDHISTOGRAMS_H
+#define TCOMPILEDHISTOGRAMS_H
 
 #ifndef __CINT__
 #include <mutex>
@@ -21,19 +21,19 @@ class TFile;
 class TCompiledHistograms : public TObject {
 public:
    TCompiledHistograms();
-   TCompiledHistograms(std::string input_lib, std::string func_name);
+   TCompiledHistograms(const std::string& inputLib, const std::string& funcName);
 
-   void Load(std::string libname, std::string func_name);
+   void Load(std::string libName, std::string funcName);
 #ifndef __CINT__
    void Fill(std::shared_ptr<const TFragment> frag);
    void Fill(std::shared_ptr<TUnpackedEvent> detectors);
 #endif
    void Reload();
 
-   std::string GetLibraryName() const { return fLibname; }
+   std::string GetLibraryName() const { return fLibName; }
 
    void        SetDefaultDirectory(TDirectory* dir);
-   TDirectory* GetDefaultDirectory() { return fDefault_directory; }
+   TDirectory* GetDefaultDirectory() { return fDefaultDirectory; }
 
    void ClearHistograms();
 
@@ -49,23 +49,23 @@ private:
    time_t get_timestamp();
    bool   file_exists();
 
-   std::string fLibname;
-   std::string fFunc_name;
+   std::string fLibName;
+   std::string fFuncName;
 #ifndef __CINT__
-   std::shared_ptr<DynamicLibrary> fLibrary;
+   std::shared_ptr<DynamicLibrary> fLibrary{nullptr};
    std::mutex                      fMutex;
 #endif
    void (*fFunc)(TRuntimeObjects&);
-   time_t fLast_modified;
-   time_t fLast_checked;
+   time_t fLastModified{0};
+   time_t fLastChecked{0};
 
-   int fCheck_every;
+   int fCheckEvery{5};
 
    TList               fObjects;
    TList               fGates;
-   std::vector<TFile*> fCut_files;
+   std::vector<TFile*> fCutFiles;
 
-   TDirectory* fDefault_directory;
+   TDirectory* fDefaultDirectory{nullptr};
 
    TRuntimeObjects fObj;
 

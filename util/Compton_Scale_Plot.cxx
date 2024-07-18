@@ -30,9 +30,9 @@ based on the runnumber set in the definition section just below includes.
 ______________________________________________________________________________________________
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 
 #include <vector>
 #include <algorithm>
@@ -55,7 +55,7 @@ ________________________________________________________________________________
 
 // Functions
 
-double ScaleQ(double E1, double E2);
+double ScaleQ(double En1, double En2);
 
 // Main
 int main(int argc, char** argv)
@@ -76,29 +76,27 @@ int main(int argc, char** argv)
 // ********************* FUNCTION DEFINITIONS *********************** //
 // ****************************************************************** //
 
-double ScaleQ(double E1, double E2)
+double ScaleQ(double En1, double En2)
 {
-   // E1 is the energy of the scattering gamma used to determine the Q you wish to scale.  E2 is the
+   // En1 is the energy of the scattering gamma used to determine the Q you wish to scale.  En2 is the
    // energy  of the gamma you are trying to examine now.
    int    nDiv = 1000;
-   double E1p, E2p, theta, sigma1, sigma2;
    double m_eC2 = 510.9989;   // keV
-   double Q1    = 0.0;
-   double Q2    = 0.0;
+   double Q1    = 0.;
+   double Q2    = 0.;
    for(int loop = 0; loop < nDiv; loop++) {
-      theta = loop * (180.0 / nDiv);
+      double theta = loop * (180. / nDiv);
 
-      E1p = E1 / (1.0 + E1 / m_eC2 * (1 - cos(TMath::DegToRad() * theta)));
-      E2p = E2 / (1.0 + E2 / m_eC2 * (1 - cos(TMath::DegToRad() * theta)));
+      double E1p = En1 / (1. + En1 / m_eC2 * (1. - cos(TMath::DegToRad() * theta)));
+      double E2p = En2 / (1. + En2 / m_eC2 * (1. - cos(TMath::DegToRad() * theta)));
 
-      sigma1 = TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2) / (E1p / E1 + E1 / E1p - TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2));
-      sigma2 = TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2) / (E2p / E2 + E2 / E2p - TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2));
-      Q1 += (180.0 / nDiv) * (sigma1);
-      Q2 += (180.0 / nDiv) * (sigma2);
-      // std::cout<<"theta = "<<theta<<"\tsig1 = "<<sigma1<<"\tsig2 = "<<sigma2<<std::endl;
+      double sigma1 = TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2) / (E1p / En1 + En1 / E1p - TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2));
+      double sigma2 = TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2) / (E2p / En2 + En2 / E2p - TMath::Power(TMath::Sin(TMath::DegToRad() * theta), 2));
+      Q1 += (180. / nDiv) * (sigma1);
+      Q2 += (180. / nDiv) * (sigma2);
    }
-   Q1 /= 180.0;
-   Q2 /= 180.0;
+   Q1 /= 180.;
+   Q2 /= 180.;
 
    return Q2 / Q1;
 }
