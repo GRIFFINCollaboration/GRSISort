@@ -144,7 +144,7 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
    std::stringstream command;
    command << "g++ -c -fPIC -g $(grsi-config --cflags --" << parserLibraryName << "-cflags) $(root-config --cflags) -I" << includePath;
 #ifdef OS_DARWIN
-	command << " -I/opt/local/include ";
+   command << " -I/opt/local/include ";
 #endif
    command << " -o " << objectFile << " " << sourceFile;
    if(std::system(command.str().c_str()) != 0) {
@@ -153,7 +153,7 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
       throw std::runtime_error(str.str());
    }
    std::cout << DCYAN << "----------  starting linking user code  -----------------" << RESET_COLOR << std::endl;
-	std::stringstream().swap(command); // create new (empty) stringstream and swap it with command this resets the underlying string and all error flags
+   std::stringstream().swap(command);   // create new (empty) stringstream and swap it with command this resets the underlying string and all error flags
    command << "g++ -fPIC -g -shared $(grsi-config --libs --" << parserLibraryName << "-libs) $(root-config --glibs) -o " << sharedLibrary << " " << objectFile;
    if(std::system(command.str().c_str()) != 0) {
       std::stringstream str;
