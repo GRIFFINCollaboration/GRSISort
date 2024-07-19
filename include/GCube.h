@@ -137,7 +137,7 @@ public:
       return GetBinContent(GetBin(binx, biny, binz));
    }
    void     Reset(Option_t* option = "") override;
-   Double_t RetrieveBinContent(Int_t bin) const override { return Double_t(fArray[bin]); }
+   Double_t RetrieveBinContent(Int_t bin) const override { return static_cast<Double_t>(fArray[bin]); }
    void     SetBinContent(Int_t bin, Double_t content) override;
    void     SetBinContent(Int_t bin, Int_t, Double_t content) override { SetBinContent(bin, content); }
    void     SetBinContent(Int_t binx, Int_t biny, Int_t binz, Double_t content) override

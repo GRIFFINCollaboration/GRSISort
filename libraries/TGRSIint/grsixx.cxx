@@ -430,7 +430,7 @@ void WaitLogo()
          }
          ypos++;
          if(ypos > static_cast<int>(gCreditsHeight - gCreditsRect.height - 50)) {
-            ypos = -int(gCreditsRect.height);
+            ypos = -static_cast<int>(gCreditsRect.height);
          }
          ScrollCredits(ypos);
          XFlush(gDisplay);

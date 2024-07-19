@@ -513,42 +513,42 @@ inline void SWAP(T& a, T& b)
 
 inline const std::complex<float> operator+(const double& a, const std::complex<float>& b)
 {
-   return float(a) + b;
+   return static_cast<float>(a) + b;
 }
 
 inline const std::complex<float> operator+(const std::complex<float>& a, const double& b)
 {
-   return a + float(b);
+   return a + static_cast<float>(b);
 }
 
 inline const std::complex<float> operator-(const double& a, const std::complex<float>& b)
 {
-   return float(a) - b;
+   return static_cast<float>(a) - b;
 }
 
 inline const std::complex<float> operator-(const std::complex<float>& a, const double& b)
 {
-   return a - float(b);
+   return a - static_cast<float>(b);
 }
 
 inline const std::complex<float> operator*(const double& a, const std::complex<float>& b)
 {
-   return float(a) * b;
+   return static_cast<float>(a) * b;
 }
 
 inline const std::complex<float> operator*(const std::complex<float>& a, const double& b)
 {
-   return a * float(b);
+   return a * static_cast<float>(b);
 }
 
 inline const std::complex<float> operator/(const double& a, const std::complex<float>& b)
 {
-   return float(a) / b;
+   return static_cast<float>(a) / b;
 }
 
 inline const std::complex<float> operator/(const std::complex<float>& a, const double& b)
 {
-   return a / float(b);
+   return a / static_cast<float>(b);
 }
 
 class TLMFitter : public TObject {

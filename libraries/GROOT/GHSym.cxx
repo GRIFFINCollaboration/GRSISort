@@ -2581,7 +2581,7 @@ TH1* GHSym::ShowBackground(Int_t niter, Option_t* option)
    //   to be implemented (may be)
 
    return reinterpret_cast<TH1*>(gROOT->ProcessLineFast(
-      Form(R"(TSpectrum2::StaticBackground((TH1*)0x%lx,%d,"%s"))", (ULong_t)this, niter, option)));
+      Form(R"(TSpectrum2::StaticBackground((TH1*)0x%lx,%d,"%s"))", static_cast<ULong_t>(this), niter, option)));
 }
 
 Int_t GHSym::ShowPeaks(Double_t sigma, Option_t* option, Double_t threshold)
@@ -2594,7 +2594,7 @@ Int_t GHSym::ShowPeaks(Double_t sigma, Option_t* option, Double_t threshold)
    // option="" by default (instead of "goff")
 
    return static_cast<Int_t>(gROOT->ProcessLineFast(
-      Form(R"(TSpectrum2::StaticSearch((TH1*)0x%lx,%g,"%s",%g))", (ULong_t)this, sigma, option, threshold)));
+      Form(R"(TSpectrum2::StaticSearch((TH1*)0x%lx,%g,"%s",%g))", static_cast<ULong_t>(this), sigma, option, threshold)));
 }
 
 void GHSym::Smooth(Int_t ntimes, Option_t* option)

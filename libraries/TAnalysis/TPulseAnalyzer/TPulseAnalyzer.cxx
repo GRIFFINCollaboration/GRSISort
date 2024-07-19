@@ -1139,7 +1139,7 @@ int TPulseAnalyzer::FitCsIShape(int dim, ShapePar* par, WaveFormPar* wpar)
       tau             = GetCsITau(i, par);
       lineq_vector[i] = 0;
       for(int j = q; j < cN; j++) {
-         lineq_vector[i] += cWavebuffer[j] * exp(-(double(j)) / tau);
+         lineq_vector[i] += cWavebuffer[j] * exp(-(static_cast<double>(j)) / tau);
       }
    }
 
@@ -1586,13 +1586,13 @@ bool TPulseAnalyzer::GetSiliShape(double tauDecay, double tauRise)
       // create matrix for linearized fit
       // setting elements M[0,1] M[1,0] M[1,1]
       long double sum;
-      sum = -((double)exclusion) / tauRise + log(1. - exp(-((double)(cN - exclusion)) / tauRise));
+      sum = -static_cast<double>(exclusion) / tauRise + log(1. - exp(-(static_cast<double>(cN - exclusion)) / tauRise));
       sum -= log(1. - exp(-1. / tauRise));   // finishing the geometric sequence sum
       lineq_matrix[1][0] = -exp(sum);
       lineq_matrix[0][1] = -exp(sum);
 
       double tauRise_2 = tauRise / 2.;
-      sum              = -((double)exclusion) / tauRise_2 + log(1. - exp(-((double)(cN - exclusion)) / tauRise_2));
+      sum              = -static_cast<double>(exclusion) / tauRise_2 + log(1. - exp(-(static_cast<double>(cN - exclusion)) / tauRise_2));
       sum -= log(1. - exp(-1. / tauRise_2));
       lineq_matrix[1][1] = exp(sum);
 
