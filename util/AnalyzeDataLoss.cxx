@@ -58,15 +58,15 @@ TList* AnalyzeDataLoss(TTree* tree, int64_t entries = 0, TStopwatch* w = nullptr
    unsigned int rollingthreshold  = 1000;
    int          rollnum_threshold = 20;   // if we have this many numbers above the threshold, turn rolling on or off
 
-   int64_t int channelIds[channels][3];
-   int64_t int acceptedChannelIds[channels][3];
-   int64_t int timestamp[channels][3];
-   int         networkPacketNumber[3] = {0, 0, 0};
-   int64_t int networkPacketTS[3]     = {0, 0, 0};
-   int         timebins               = 10000;
-   double      timemin                = 0;      // in seconds
-   double      timemax                = 1000;   // in seconds
-   auto*       accepted_hst = new TH2D("accepted_hst", "Accepted Channel Id vs. Channel Number;Channel Number;Accepted Channel Id", channels, 0, channels, 10000, 0, 10e5);
+   int64_t channelIds[channels][3];
+   int64_t acceptedChannelIds[channels][3];
+   int64_t timestamp[channels][3];
+   int     networkPacketNumber[3] = {0, 0, 0};
+   int64_t networkPacketTS[3]     = {0, 0, 0};
+   int     timebins               = 10000;
+   double  timemin                = 0;      // in seconds
+   double  timemax                = 1000;   // in seconds
+   auto*   accepted_hst           = new TH2D("accepted_hst", "Accepted Channel Id vs. Channel Number;Channel Number;Accepted Channel Id", channels, 0, channels, 10000, 0, 10e5);
    list->Add(accepted_hst);
    auto* lostNetworkPackets = new TH1D("lostNetworkPackets", "lost network packets;time [s];lost network packets", timebins, timemin, timemax);
    list->Add(lostNetworkPackets);
