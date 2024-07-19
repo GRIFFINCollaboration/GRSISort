@@ -48,9 +48,9 @@ public:
 
    Long_t NumberOfHits() const { return fNumberOfHits; }
 
-   long DeadTime() const { return fDeadTime; }
-   long MinTimeStamp() const { return fMinTimeStamp; }
-   long MaxTimeStamp() const { return fMaxTimeStamp; }
+   int64_t DeadTime() const { return fDeadTime; }
+   int64_t MinTimeStamp() const { return fMinTimeStamp; }
+   int64_t MaxTimeStamp() const { return fMaxTimeStamp; }
 
 private:
    UInt_t fMinChannelId{0};   ///< minimum channel id per channel address
@@ -58,9 +58,9 @@ private:
 
    Long_t fNumberOfHits{0};   ///< number of hits per channel address
 
-   long fDeadTime{0};       ///< deadtime per channel address
-   long fMinTimeStamp{0};   ///< minimum timestamp per channel address
-   long fMaxTimeStamp{0};   ///< maximum timestamp per channel address
+   int64_t fDeadTime{0};       ///< deadtime per channel address
+   int64_t fMinTimeStamp{0};   ///< minimum timestamp per channel address
+   int64_t fMaxTimeStamp{0};   ///< maximum timestamp per channel address
 
    /// \cond CLASSIMP
    ClassDefOverride(TParsingDiagnosticsData, 1) // NOLINT

@@ -401,11 +401,11 @@ typedef NRVec<int> Vec_INT, Vec_O_INT, Vec_IO_INT;
 using Vec_I_UINT = const NRVec<unsigned int>;
 typedef NRVec<unsigned int> Vec_UINT, Vec_O_UINT, Vec_IO_UINT;
 
-using Vec_I_LNG = const NRVec<long>;
-typedef NRVec<long> Vec_LNG, Vec_O_LNG, Vec_IO_LNG;
+using Vec_I_LNG = const NRVec<int64_t>;
+typedef NRVec<int64_t> Vec_LNG, Vec_O_LNG, Vec_IO_LNG;
 
-using Vec_I_ULNG = const NRVec<unsigned long>;
-typedef NRVec<unsigned long> Vec_ULNG, Vec_O_ULNG, Vec_IO_ULNG;
+using Vec_I_ULNG = const NRVec<uint64_t>;
+typedef NRVec<uint64_t> Vec_ULNG, Vec_O_ULNG, Vec_IO_ULNG;
 
 using Vec_I_SP = const NRVec<float>;
 typedef NRVec<float> Vec_SP, Vec_O_SP, Vec_IO_SP;
@@ -436,11 +436,11 @@ typedef NRMat<int> Mat_INT, Mat_O_INT, Mat_IO_INT;
 using Mat_I_UINT = const NRMat<unsigned int>;
 typedef NRMat<unsigned int> Mat_UINT, Mat_O_UINT, Mat_IO_UINT;
 
-using Mat_I_LNG = const NRMat<long>;
-typedef NRMat<long> Mat_LNG, Mat_O_LNG, Mat_IO_LNG;
+using Mat_I_LNG = const NRMat<int64_t>;
+typedef NRMat<int64_t> Mat_LNG, Mat_O_LNG, Mat_IO_LNG;
 
-using Mat_I_ULNG = const NRMat<unsigned long>;
-typedef NRMat<unsigned long> Mat_ULNG, Mat_O_ULNG, Mat_IO_ULNG;
+using Mat_I_ULNG = const NRMat<uint64_t>;
+typedef NRMat<uint64_t> Mat_ULNG, Mat_O_ULNG, Mat_IO_ULNG;
 
 using Mat_I_SP = const NRMat<float>;
 typedef NRMat<float> Mat_SP, Mat_O_SP, Mat_IO_SP;
@@ -461,7 +461,7 @@ typedef NRMat3d<double> Mat3D_double, Mat3D_O_double, Mat3D_IO_double;
 
 // Miscellaneous Types
 
-using Vec_ULNG_p       = NRVec<unsigned long*>;
+using Vec_ULNG_p       = NRVec<uint64_t*>;
 using Vec_Mat_double_p = NRVec<NRMat<double>*>;
 using Vec_FSTREAM_p    = NRVec<std::fstream*>;
 

@@ -1109,7 +1109,7 @@ Int_t TChannel::ReadCalFile(std::ifstream& infile)
    }
 
    infile.seekg(0, std::ios::end);
-   long length = infile.tellg();
+   int64_t length = infile.tellg();
    if(length < 1) {
       return -2;
    }

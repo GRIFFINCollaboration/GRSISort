@@ -137,7 +137,7 @@ public:
    void DrawCalibration(Option_t* opt = "", TLegend* legend = nullptr);
    void DrawResidual(Option_t* opt = "", TLegend* legend = nullptr);
 
-   void RemoveGraph(long index)
+   void RemoveGraph(int64_t index)
    {
       fGraphs.erase(fGraphs.begin() + index);
       ResetTotalGraph();

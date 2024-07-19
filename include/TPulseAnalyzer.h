@@ -146,7 +146,7 @@ public:
    double     fit_newT0();
    double     fit_rf(double = 2 * 8.48409);
    double     get_sig2noise();
-   short      good_baseline();
+   int16_t    good_baseline();
    void       print_WavePar();
    TH1I*      GetWaveHist();
    TGraph*    GetWaveGraph();

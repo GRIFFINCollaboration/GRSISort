@@ -563,12 +563,6 @@ void TPulseAnalyzer::get_tmax()
 /*===========================================================*/
 double TPulseAnalyzer::get_tfrac(double frac, double fraclow, double frachigh)
 {
-   int           t;
-   double        f, flow, fhigh;
-   int           i, imax, imin;
-   long long int a;
-   double        p, q, r, d;
-
    if(cWpar->bflag != 1) {
       std::cout << "Baseline not deterimned for the tfraction" << std::endl;
       exit(1);
@@ -579,11 +573,11 @@ double TPulseAnalyzer::get_tfrac(double frac, double fraclow, double frachigh)
       exit(1);
    }
 
-   t = cWpar->tmax;
+   int t = cWpar->tmax;
 
-   f     = cWpar->baseline + frac * (cWpar->max - cWpar->baseline);
-   flow  = cWpar->baseline + fraclow * (cWpar->max - cWpar->baseline);
-   fhigh = cWpar->baseline + frachigh * (cWpar->max - cWpar->baseline);
+   double f     = cWpar->baseline + frac * (cWpar->max - cWpar->baseline);
+   double flow  = cWpar->baseline + fraclow * (cWpar->max - cWpar->baseline);
+   double fhigh = cWpar->baseline + frachigh * (cWpar->max - cWpar->baseline);
 
    while(cWavebuffer[t] > f) {
       t--;
@@ -591,7 +585,7 @@ double TPulseAnalyzer::get_tfrac(double frac, double fraclow, double frachigh)
          break;
       }
    }
-   imin = t;
+   int imin = t;
    while(cWavebuffer[imin] > flow) {
       imin--;
       if(imin <= 1) {
@@ -599,7 +593,7 @@ double TPulseAnalyzer::get_tfrac(double frac, double fraclow, double frachigh)
       }
    }
 
-   imax = t;
+   int imax = t;
 
    while(cWavebuffer[imax] < fhigh) {
       imax++;
@@ -612,8 +606,8 @@ double TPulseAnalyzer::get_tfrac(double frac, double fraclow, double frachigh)
    memset(lineq_vector, 0, sizeof(lineq_vector));
    lineq_dim = 3;
 
-   i                  = imax - imin;
-   a                  = i;
+   int i                  = imax - imin;
+   int64_t a                  = i;
    lineq_matrix[0][0] = a + 1;
    lineq_matrix[0][1] = 0.5 * a;
    lineq_matrix[2][0] = a / 6.;
@@ -651,12 +645,12 @@ double TPulseAnalyzer::get_tfrac(double frac, double fraclow, double frachigh)
    if(solve_lin_eq() == 0) {
       return -4;
    }
-   p = lineq_solution[0] - f;
-   q = lineq_solution[1];
-   r = lineq_solution[2];
+   double p = lineq_solution[0] - f;
+   double q = lineq_solution[1];
+   double r = lineq_solution[2];
 
    if(r != 0) {
-      d = q * q - 4 * r * p;
+      double d = q * q - 4 * r * p;
       if(d < 0) {
          return -5;
       }
@@ -815,7 +809,7 @@ double TPulseAnalyzer::get_sig2noise()
    return -1;
 }
 
-short TPulseAnalyzer::good_baseline()
+int16_t TPulseAnalyzer::good_baseline()
 {
    if(set && (cWpar != nullptr)) {
       if(cWpar->tmax < T0RANGE) {
