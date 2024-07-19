@@ -69,8 +69,8 @@ TPPG::~TPPG()
 {
    Clear();
    if(fPPGStatusMap != nullptr) {
-      for(auto ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
-         delete ppgit->second;
+		for(auto& ppgit : fPPGStatusMap) {
+         delete ppgit.second;
       }
       delete fPPGStatusMap;
    }
@@ -79,8 +79,8 @@ TPPG::~TPPG()
 TPPG& TPPG::operator=(const TPPG& rhs)
 {
    if(fPPGStatusMap != nullptr) {
-      for(auto ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
-         delete ppgit->second;
+		for(auto& ppgit : fPPGStatusMap) {
+         delete ppgit.second;
       }
       delete fPPGStatusMap;
    }

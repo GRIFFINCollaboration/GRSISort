@@ -155,13 +155,13 @@ int GValue::WriteValFile(const std::string& filename, Option_t*)
       if(!outfile.is_open()) {
          return -1;
       }
-      for(auto iter = fValueVector.begin(); iter != fValueVector.end(); iter++) {
-         outfile << iter->second->PrintToString() << std::endl
+      for(auto& iter : fValueVector) {
+         outfile << iter.second->PrintToString() << std::endl
                  << std::endl;
       }
    } else {
-      for(auto iter = fValueVector.begin(); iter != fValueVector.end(); iter++) {
-         std::cout << iter->second->PrintToString() << std::endl
+      for(auto& iter : fValueVector) {
+         std::cout << iter.second->PrintToString() << std::endl
                    << std::endl;
       }
    }
@@ -174,8 +174,8 @@ std::string GValue::WriteToBuffer(Option_t*)
    if(GValue::Size() == 0) {
       return buffer;
    }
-   for(auto iter = fValueVector.begin(); iter != fValueVector.end(); iter++) {
-      buffer.append(iter->second->PrintToString());
+   for(auto& iter : fValueVector) {
+      buffer.append(iter.second->PrintToString());
       buffer.append("\n");
    }
    return buffer;

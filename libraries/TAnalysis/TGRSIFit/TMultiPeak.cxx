@@ -444,8 +444,7 @@ void TMultiPeak::DrawPeaks()
    Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
    Double_t npeaks = fPeakVec.size();
-   for(size_t i = 0; i < fPeakVec.size(); ++i) {
-      TPeak* peak = fPeakVec.at(i);
+	for(auto* peak : fPeakVec) {
       // Should be good enough to draw between -2 and +2 fwhm
       Double_t centroid = peak->GetCentroid();
       Double_t range    = 2. * peak->GetFWHM();

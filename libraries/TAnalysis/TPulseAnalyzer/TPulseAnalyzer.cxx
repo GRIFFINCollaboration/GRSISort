@@ -212,8 +212,8 @@ double TPulseAnalyzer::fit_newT0()
    get_t50();
    cWpar->thigh = cWpar->t50;
 
-   for(int i = 0; i < 3; i++) {
-      chisq[i] = LARGECHISQ;
+   for(double& i : chisq) {
+      i = LARGECHISQ;
    }
 
    size_t swp = sizeof(WaveFormPar);

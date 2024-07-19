@@ -422,17 +422,17 @@ void TCalibrationGraphSet::Scale(bool useAllPrevious)
 
 void TCalibrationGraphSet::ResetTotalGraph()
 {
-   if(fVerboseLevel > 1) std::cout << __PRETTY_FUNCTION__ << std::endl;
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }
    if(fGraphs.empty()) {
       std::cerr << "No graphs added yet, makes no sense to reset total graph?" << std::endl;
       return;
    }
 
    size_t newSize = 0;
-   for(size_t i = 0; i < fGraphs.size(); ++i) {
-      newSize += fGraphs[i].GetN();
+	for(auto& graph : fGraphs) {
+      newSize += graph.GetN();
    }
-   if(fVerboseLevel > 2) std::cout << "creating graph with " << newSize << " points" << std::endl;
+   if(fVerboseLevel > 2) { std::cout << "creating graph with " << newSize << " points" << std::endl; }
    // create one vector with x, y, ex, ey, index of graph, and index of point that we can use to sort the data
    std::vector<std::tuple<double, double, double, double, size_t, size_t>> data(newSize);
    size_t                                                                  counter = 0;
@@ -443,21 +443,21 @@ void TCalibrationGraphSet::ResetTotalGraph()
       double* eX = fGraphs[i].GetEX();
       double* eY = fGraphs[i].GetEY();
       for(int p = 0; p < fGraphs[i].GetN(); ++p, ++counter) {
-         if(fVerboseLevel > 3) std::cout << "filling point " << counter << " of vector of size " << newSize << std::endl;
+         if(fVerboseLevel > 3) { std::cout << "filling point " << counter << " of vector of size " << newSize << std::endl; }
          data[counter] = std::make_tuple(x[p], y[p], eX[p], eY[p], i, p);
       }
    }
 
    std::sort(data.begin(), data.end());
 
-   if(fVerboseLevel > 2) std::cout << "sorted vector, setting graph sizes" << std::endl;
+   if(fVerboseLevel > 2) { std::cout << "sorted vector, setting graph sizes" << std::endl; }
 
    fTotalGraph->Set(data.size());
    fTotalResidualGraph->Set(data.size());
    fGraphIndex.resize(data.size());
    fPointIndex.resize(data.size());
 
-   if(fVerboseLevel > 2) std::cout << "Filling fTotalGraph, fGraphIndex, and fPointIndex with " << data.size() << " points" << std::endl;
+   if(fVerboseLevel > 2) { std::cout << "Filling fTotalGraph, fGraphIndex, and fPointIndex with " << data.size() << " points" << std::endl; }
    for(size_t i = 0; i < data.size(); ++i) {
       fTotalGraph->SetPoint(i, std::get<0>(data[i]), std::get<1>(data[i]));
       fTotalGraph->SetPointError(i, std::get<2>(data[i]), std::get<3>(data[i]));

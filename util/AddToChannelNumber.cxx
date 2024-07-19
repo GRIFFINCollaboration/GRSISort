@@ -23,8 +23,8 @@ int main(int argc, char** argv)
 
    std::vector<TChannel*> chanlist;
 
-   for(auto iter = chanmap->begin(); iter != chanmap->end(); ++iter) {
-      TChannel* chan    = iter->second;
+   for(auto& iter : *chanmap) {
+      TChannel* chan    = iter.second;
       auto*     newchan = new TChannel(chan);
       chanlist.push_back(newchan);
       newchan->SetNumber(TPriorityValue<int>(newchan->GetNumber() + num_to_add, EPriority::kUser));
