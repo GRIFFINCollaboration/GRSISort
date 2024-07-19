@@ -46,7 +46,7 @@ public:
    double fGeLow;
    double fGeHigh;
 
-   FastTimingHistSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGeEnergies(nullptr)
+   explicit FastTimingHistSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGeEnergies(nullptr)
    {
       SetOutputPrefix("FastTimingHist");
    }

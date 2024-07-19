@@ -25,7 +25,8 @@
 
 class ExampleTreeHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<ExampleTreeHelper> {
 public:
-   ExampleTreeHelper(TList* list) : TGRSIHelper(list)
+   explicit ExampleTreeHelper(TList* list)
+		: TGRSIHelper(list)
    {
       Prefix("ExampleTree");
       Setup();

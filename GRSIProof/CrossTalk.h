@@ -29,7 +29,7 @@ public:
    TSceptar*    fScep;
    TGriffinBgo* fGriffinBgo;
 
-   CrossTalk(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(0), fScep(0), fGriffinBgo(0) { SetOutputPrefix("Crosstalk"); }
+   explicit CrossTalk(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(0), fScep(0), fGriffinBgo(0) { SetOutputPrefix("Crosstalk"); }
    virtual ~CrossTalk() {}
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();

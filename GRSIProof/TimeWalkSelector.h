@@ -28,7 +28,7 @@ public:
    TGriffin* fGrif;   // Pointers to spot that events will be
    TSceptar* fScep;
 
-   TimeWalkSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(0), fScep(0)
+   explicit TimeWalkSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(0), fScep(0)
    {
       SetOutputPrefix("TimeWalk");   // Changes prefix of output file
    }

@@ -36,7 +36,7 @@ public:
    TGriffin fLastGrif;
    TSceptar fLastScep;
 
-   AngularCorrelationSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(nullptr), fScep(nullptr)
+   explicit AngularCorrelationSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(nullptr), fScep(nullptr)
    {
       SetOutputPrefix("AngularCorrelation");
       // calculate angle combinations

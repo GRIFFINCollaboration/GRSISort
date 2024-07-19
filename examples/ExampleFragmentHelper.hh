@@ -7,7 +7,8 @@
 
 class ExampleFragmentHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<ExampleFragmentHelper> {
 public:
-   ExampleFragmentHelper(TList* list) : TGRSIHelper(list)
+   explicit ExampleFragmentHelper(TList* list)
+		: TGRSIHelper(list)
    {
       Prefix("ExampleFragment");
       Setup();

@@ -45,7 +45,8 @@ private:
    }
 
 public:
-   AngularCorrelationHelper(TList* list) : TGRSIHelper(list)
+   explicit AngularCorrelationHelper(TList* list)
+		: TGRSIHelper(list)
    {
       Prefix("AngularCorrelation");
 

@@ -9,7 +9,8 @@
 
 class GriffinKValueHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<GriffinKValueHelper> {
 public:
-   GriffinKValueHelper(TList* list) : TGRSIHelper(list)
+   explicit GriffinKValueHelper(TList* list)
+		: TGRSIHelper(list)
    {
       Prefix("GriffinKValue");
       Setup();

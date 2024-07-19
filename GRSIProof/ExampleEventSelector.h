@@ -30,7 +30,7 @@ public:
    TSceptar*    fScep;
    TGriffinBgo* fGriffinBgo;
 
-   ExampleEventSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(nullptr), fScep(nullptr), fGriffinBgo(nullptr)
+   explicit ExampleEventSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(nullptr), fScep(nullptr), fGriffinBgo(nullptr)
    {
       SetOutputPrefix("ExampleEvent");   // Changes prefix of output file
    }
