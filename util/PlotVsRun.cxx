@@ -57,7 +57,16 @@ int main(int argc, char** argv)
    // open first root file and check which histograms are in it and whether they are 1D or 2D
    auto* input = new TFile(inputFiles[0].c_str());
 
-   auto* output = new TFile("test.root", "recreate");
+	// determine output file name and open output file 
+	std::stringstream outputFileName;
+	outputFileName<<"plotVsRun";
+	if(histogramNames.size() == 1) {
+		outputFileName<<"_"<<histogramNames[0];
+	} else {
+		//TODO: find a way to determine the run numbers (maybe add all files to TRunInfo?)
+	}
+	outputFileName<<".root";
+   auto* output = new TFile(outputFileName.str().c_str(), "recreate");
 
    TObject*           obj = nullptr;
    std::vector<TH2F*> outputHistograms;
@@ -89,7 +98,7 @@ int main(int argc, char** argv)
             auto* yAxis = hist->GetYaxis();
             outputIndex.push_back(index);
             for(int bin = 1; bin <= xAxis->GetNbins(); ++bin) {
-               outputHistograms.emplace_back(new TH2F(Form("%s_%.0fVsFile", histogramName.c_str(), xAxis->GetBinCenter(bin)), Form("Bin %d, center %.0f of %s vs. file #", bin, xAxis->GetBinCenter(bin), histogramName.c_str()), nofInputFiles, 0.5, nofInputFiles + 0.5, yAxis->GetNbins(), yAxis->GetBinLowEdge(1), yAxis->GetBinLowEdge(yAxis->GetNbins() + 1)));
+               outputHistograms.emplace_back(new TH2F(Form("%s_%dVsFile", histogramName.c_str(), bin), Form("Bin %d, center %.0f of %s vs. file #", bin, xAxis->GetBinCenter(bin), histogramName.c_str()), nofInputFiles, 0.5, nofInputFiles + 0.5, yAxis->GetNbins(), yAxis->GetBinLowEdge(1), yAxis->GetBinLowEdge(yAxis->GetNbins() + 1)));
                index++;
             }
          }
@@ -140,7 +149,7 @@ int main(int argc, char** argv)
                for(int xBin = 1; xBin <= xAxis->GetNbins(); ++xBin) {
                   hist = static_cast<TH1*>(static_cast<TH2*>(obj)->ProjectionY(Form("%s_py%d", histogramNames[j].c_str(), xBin), xBin, xBin));
                   for(int yBin = 0; yBin <= hist->GetNbinsX() + 1; ++yBin) {
-                     outputHistograms[outputIndex[j]]->SetBinContent(i + 1, yBin, hist->GetBinContent(yBin));
+                     outputHistograms[outputIndex[j] + xBin - 1]->SetBinContent(i + 1, yBin, hist->GetBinContent(yBin));
                   }
                   outputHistograms[outputIndex[j] + xBin - 1]->GetXaxis()->SetBinLabel(i + 1, label.c_str());
                }
