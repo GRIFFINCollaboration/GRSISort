@@ -64,7 +64,12 @@ public:
 
    class iterator {
    public:
-      iterator(GH2Base* mat, bool at_end = false)
+      explicit iterator(GH2Base* mat)
+         : fMat(mat), fFirst(mat->GetNext(nullptr)), fCurr(fFirst)
+      {
+      }
+
+      iterator(GH2Base* mat, bool at_end)
          : fMat(mat), fFirst(mat->GetNext(nullptr)), fCurr(at_end ? nullptr : fFirst)
       {
       }
