@@ -392,7 +392,7 @@ TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
       fRawFiles.push_back(file);
 
       if(file != nullptr) {
-         const char* command = Form("TRawFile* _raw%i = (TRawFile*)%luL;", fRawFilesOpened, static_cast<uint64_t>(file));
+         const char* command = Form("TRawFile* _raw%i = (TRawFile*)%luL;", fRawFilesOpened, reinterpret_cast<uint64_t>(file));
          ProcessLine(command);
 
          std::cout << "\tfile " << BLUE << filename << RESET_COLOR << " opened as "
