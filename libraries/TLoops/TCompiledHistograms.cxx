@@ -26,7 +26,7 @@ TCompiledHistograms::TCompiledHistograms()
 }
 
 TCompiledHistograms::TCompiledHistograms(const std::string& inputLib, const std::string& funcName)
-   : fFunc(nullptr), fObj(&fObjects, &fGates, fCutFiles), fLibName(inputLib), fFuncName(funcName)
+   : fLibName(inputLib), fFuncName(funcName), fFunc(nullptr), fObj(&fObjects, &fGates, fCutFiles)
 {
    fLibrary   = std::make_shared<DynamicLibrary>(fLibName.c_str(), true);
    // Casting required to keep gcc from complaining.
