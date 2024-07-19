@@ -998,11 +998,12 @@ int TPulseAnalyzer::GetCsIShape()
    // find minimum chisq
    imin   = -1;
    chimin = LARGECHISQ;
-   for(i = 0; i < 4; i++)
+   for(i = 0; i < 4; i++) {
       if((chisq[i] < chimin) && (chisq[i] > 0)) {
          chimin = chisq[i];
          imin   = i;
       }
+	}
 
    // std::cout<<"minimum chisq["<<imin<<"]/ndf "<<chisq[imin]<<", t0min "<<csiTestShpar[imin]->t[0]<<std::endl;
 

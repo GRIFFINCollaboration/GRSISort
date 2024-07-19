@@ -58,10 +58,12 @@ void TPeakFitter::PrintParameters() const
 Int_t TPeakFitter::GetNParameters() const
 {
    Int_t n_par = 0;
-   for(auto i : fPeaksToFit)
+   for(auto i : fPeaksToFit) {
       n_par += i->GetNParameters();
-   if(fBGToFit)
+	}
+   if(fBGToFit) {
       n_par += fBGToFit->GetNpar();
+	}
 
    return n_par;
 }

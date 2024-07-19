@@ -484,8 +484,8 @@ void TCalibrationGraphSet::Print(Option_t* opt) const
       double* ex = g.GetEX();
       double* ey = g.GetEY();
       for(int p = 0; p < g.GetN(); ++p) {
-         if(errors) std::cout << p << " - " << x[p] << "(" << ex[p] << "), " << y[p] << "(" << ey[p] << "); ";
-         else std::cout << p << " - " << x[p] << ", " << y[p] << "; ";
+         if(errors) { std::cout << p << " - " << x[p] << "(" << ex[p] << "), " << y[p] << "(" << ey[p] << "); "; }
+         else       { std::cout << p << " - " << x[p] << ", " << y[p] << "; "; }
       }
       std::cout << std::endl;
    }
