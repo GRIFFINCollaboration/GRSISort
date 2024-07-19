@@ -33,7 +33,7 @@ public:
    TEfficiencyGraph(const char* name, const char* title) : TCalGraph(name, title) {}
    ~TEfficiencyGraph() override;
 
-   TEfficiencyGraph(const TEfficiencyGraph& copy);
+   TEfficiencyGraph(const TEfficiencyGraph& copy) : TCalGraph(copy), fIsAbsolute(copy.fIsAbsolute) = default;
 
    TEfficiencyGraph& operator=(const TEfficiencyGraph&) = default;   // use default to stop gcc 9.1 warning
 

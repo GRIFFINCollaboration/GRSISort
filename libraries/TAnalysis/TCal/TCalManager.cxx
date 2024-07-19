@@ -2,12 +2,6 @@
 
 #include <stdexcept>
 
-TCalManager::TCalManager()
-{
-   // fClass will point to a TClass which is made persistant through a root session within gROOT.
-   // So we don't need to worry about allocating it.
-}
-
 TCalManager::TCalManager(const char* classname)
 {
    SetClass(classname);

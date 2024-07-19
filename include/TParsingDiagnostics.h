@@ -35,8 +35,8 @@
 class TParsingDiagnosticsData : public TObject {
 public:
    TParsingDiagnosticsData();
-   TParsingDiagnosticsData(const std::shared_ptr<const TFragment>& frag);
-   ~TParsingDiagnosticsData() {}
+   explicit TParsingDiagnosticsData(const std::shared_ptr<const TFragment>& frag);
+   ~TParsingDiagnosticsData() = default;
 
    void Update(const std::shared_ptr<const TFragment>& frag);
    using TObject::Print;

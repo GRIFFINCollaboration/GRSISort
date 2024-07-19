@@ -30,7 +30,7 @@ public:
    TGriffinBgo* fGriffinBgo;
 
    explicit CrossTalk(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(0), fScep(0), fGriffinBgo(0) { SetOutputPrefix("Crosstalk"); }
-   virtual ~CrossTalk() {}
+   virtual ~CrossTalk() = default;
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();
    void          FillHistograms();

@@ -31,7 +31,7 @@ public:
       SetOutputPrefix("Alphanumeric");   // Changes prefix of output file
    }
    // These functions are expected to exist
-   virtual ~AlphanumericSelector() {}
+   virtual ~AlphanumericSelector() = default;
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();
    void          FillHistograms();

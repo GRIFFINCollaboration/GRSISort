@@ -51,7 +51,7 @@ public:
       SetOutputPrefix("FastTimingHist");
    }
    // These functions are expected to exist
-   virtual ~FastTimingHistSelector() {}
+   virtual ~FastTimingHistSelector() = default;
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();
    void          FillHistograms();

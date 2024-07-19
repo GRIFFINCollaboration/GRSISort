@@ -35,7 +35,7 @@ public:
       SetOutputPrefix("ExampleEvent");   // Changes prefix of output file
    }
    // These functions are expected to exist
-   virtual ~ExampleEventSelector() {}
+   virtual ~ExampleEventSelector() = default;
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();
    void          FillHistograms();

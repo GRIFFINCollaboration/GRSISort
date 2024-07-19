@@ -62,13 +62,13 @@
 
 class TUserSettings : public TNamed {
 public:
-   TUserSettings() {}
-   TUserSettings(std::string settingsFile)
+   TUserSettings() = default;
+   explicit TUserSettings(std::string settingsFile)
    {
-      if(!ReadSettings(settingsFile)) throw std::runtime_error("Failed to read user settings file!");
+      if(!ReadSettings(settingsFile)) { throw std::runtime_error("Failed to read user settings file!"); }
    }
 
-   ~TUserSettings() {}
+   ~TUserSettings() = default;
 
    bool ReadSettings(const std::string& settingsFile);
 
@@ -78,14 +78,14 @@ public:
    template <typename T>
    T Get(const std::string& parameter) const
    {
-      if(std::is_same<T, bool>::value) return GetBool(parameter);
-      if(std::is_same<T, int>::value) return GetInt(parameter);
-      if(std::is_same<T, double>::value) return GetDouble(parameter);
-      if(std::is_same<T, std::string>::value) return GetString(parameter);
-      if(std::is_same<T, std::vector<bool>>::value) return GetBoolVector(parameter);
-      if(std::is_same<T, std::vector<int>>::value) return GetIntVector(parameter);
-      if(std::is_same<T, std::vector<double>>::value) return GetDoubleVector(parameter);
-      if(std::is_same<T, std::vector<std::string>>::value) return GetStringVector(parameter);
+      if(std::is_same<T, bool>::value) { return GetBool(parameter); }
+      if(std::is_same<T, int>::value) { return GetInt(parameter); }
+      if(std::is_same<T, double>::value) { return GetDouble(parameter); }
+      if(std::is_same<T, std::string>::value) { return GetString(parameter); }
+      if(std::is_same<T, std::vector<bool>>::value) { return GetBoolVector(parameter); }
+      if(std::is_same<T, std::vector<int>>::value) { return GetIntVector(parameter); }
+      if(std::is_same<T, std::vector<double>>::value) { return GetDoubleVector(parameter); }
+      if(std::is_same<T, std::vector<std::string>>::value) { return GetStringVector(parameter); }
       throw std::runtime_error("Unknown type, only bool, int, double, std::string or vectors of those types allowed");
    }
 

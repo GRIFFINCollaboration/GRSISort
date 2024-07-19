@@ -37,7 +37,7 @@ public:
       SetOutputPrefix("ExampleTree");   // Changes prefix of output file
    }
    // These functions are expected to exist
-   virtual ~ExampleTreeSelector() {}
+   virtual ~ExampleTreeSelector() = default;
    virtual Int_t Version() const { return 1; }
    void          CreateHistograms();
    void          FillHistograms();

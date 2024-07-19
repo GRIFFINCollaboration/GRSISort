@@ -23,7 +23,7 @@ public:
    TFragment* fFragment{nullptr};
 
    explicit GriffinKValueSelector(TTree* /*tree*/ = 0) : TGRSISelector() { SetOutputPrefix("GriffinKValue"); }
-   virtual ~GriffinKValueSelector() {}
+   virtual ~GriffinKValueSelector() = default;
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();
    void          FillHistograms();

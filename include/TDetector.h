@@ -33,7 +33,7 @@
 
 class TDetector : public TObject {
 public:
-   TDetector();
+   TDetector() = default;
    TDetector(const TDetector&);
    TDetector(TDetector&&);
    ~TDetector() override;

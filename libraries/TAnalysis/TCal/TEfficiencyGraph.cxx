@@ -10,11 +10,6 @@ TEfficiencyGraph::TEfficiencyGraph()
 
 TEfficiencyGraph::~TEfficiencyGraph() = default;
 
-TEfficiencyGraph::TEfficiencyGraph(const TEfficiencyGraph& copy)
-	: TCalGraph(copy), fIsAbsolute(copy.fIsAbsolute)
-{
-}
-
 void TEfficiencyGraph::Print(Option_t* opt) const
 {
    TCalGraph::Print(opt);

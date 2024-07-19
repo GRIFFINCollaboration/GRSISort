@@ -91,7 +91,7 @@ private:
 
 class TVirtualDecay : public TNamed {
 public:
-   TVirtualDecay() {}
+   TVirtualDecay() = default;
    ~TVirtualDecay() override = default;
 
    virtual void DrawComponents(Option_t* opt = "", Bool_t color_flag = true);

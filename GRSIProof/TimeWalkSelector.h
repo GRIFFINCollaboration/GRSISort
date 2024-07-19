@@ -33,7 +33,7 @@ public:
       SetOutputPrefix("TimeWalk");   // Changes prefix of output file
    }
    // These functions are expected to exist
-   virtual ~TimeWalkSelector() {}
+   virtual ~TimeWalkSelector() = default;
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();
    void          FillHistograms();

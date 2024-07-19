@@ -49,7 +49,7 @@ public:
          fAngleMapAddback.insert(std::make_pair(fAngleCombinationsAddback[i].first, i));
       }
    }
-   virtual ~AngularCorrelationSelector() {}
+   virtual ~AngularCorrelationSelector() = default;
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();
    void          FillHistograms();

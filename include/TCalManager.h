@@ -11,7 +11,7 @@
 
 class TCalManager : public TNamed {
 public:
-   TCalManager();
+   TCalManager() = default;
    explicit TCalManager(const char* classname);
    ~TCalManager() override;
 
