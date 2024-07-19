@@ -224,7 +224,7 @@ private:
 
    std::vector<int> fBadCycleList;   //!<!List of bad cycles to be used for cycle rejection
 
-   TDetectorInformation* fDetectorInformation;   //!<! pointer to detector specific information (set by each parser library)
+   TDetectorInformation* fDetectorInformation{nullptr};   //!<! pointer to detector specific information (set by each parser library)
 
 public:
    void Print(Option_t* opt = "") const override;

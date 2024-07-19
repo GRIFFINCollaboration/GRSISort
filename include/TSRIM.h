@@ -22,7 +22,7 @@ class TSRIM {
 public:
    virtual ~TSRIM() = default;
 
-   TSRIM() : fEnergyLoss(nullptr) {}
+   TSRIM() = default;
    // looks like the emax-min inputs don't work right now for 94Sr and maybe other high mass nuclei
    explicit TSRIM(const char* infilename, double emax = -1.0, double emin = 0.0, bool printfile = true);
 

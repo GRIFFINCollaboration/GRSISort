@@ -31,7 +31,7 @@ TGRSIOptions* TGRSIOptions::Get(int argc, char** argv)
    return fGRSIOptions;
 }
 
-TGRSIOptions::TGRSIOptions(int argc, char** argv) : fShouldExit(false)
+TGRSIOptions::TGRSIOptions(int argc, char** argv)
 {
    /// Ctor used when interpreter is initialized
    Load(argc, argv);

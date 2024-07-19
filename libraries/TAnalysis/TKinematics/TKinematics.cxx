@@ -4,7 +4,7 @@
 #include "Globals.h"
 
 TKinematics::TKinematics(double beamE, const char* beam, const char* targ, const char* ejec, const char* reco, const char* name)
-   : fEBeam(beamE), fCm2LabSpline(nullptr)
+   : fEBeam(beamE)
 {
    auto      projectile = new TNucleus(beam);
    auto      target     = new TNucleus(targ);
@@ -37,7 +37,7 @@ TKinematics::TKinematics(double beamE, const char* beam, const char* targ, const
 }
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, double eBeam, const char* name)
-   : fEBeam(eBeam), fQValue(0), fCm2LabSpline(nullptr)
+   : fEBeam(eBeam)
 {
    // By not providing the ejectile (only prociding projectile, target, and beam energy) elestic scattering is assumed
    fParticle[0] = projectile;
@@ -52,7 +52,7 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, double eBeam, c
 }
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double eBeam, const char* name)
-   : fEBeam(eBeam), fCm2LabSpline(nullptr)
+   : fEBeam(eBeam)
 {
    // Kinematics using the provided projectile, target, recoil, and ejectile, as well as beam energy
    fParticle[0] = projectile;
@@ -70,7 +70,7 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoi
 }
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double eBeam, double ex3, const char* name)
-   : fEBeam(eBeam), fCm2LabSpline(nullptr)
+   : fEBeam(eBeam)
 {
    // Kinematics using the provided projectile, target, recoil, ejectile, beam energy, and excited state of the recoil
    fParticle[0] = projectile;
@@ -88,7 +88,7 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoi
 }
 
 TKinematics::TKinematics(const char* beam, const char* targ, const char* ejec, const char* reco, double eBeam, double ex3, const char* name)
-   : fEBeam(eBeam), fCm2LabSpline(nullptr)
+   : fEBeam(eBeam)
 {
    auto      projectile = new TNucleus(beam);
    auto      target     = new TNucleus(targ);

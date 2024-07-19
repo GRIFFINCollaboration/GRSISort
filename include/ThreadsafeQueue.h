@@ -66,8 +66,7 @@ private:
 #ifndef __CINT__
 template <typename T>
 ThreadsafeQueue<T>::ThreadsafeQueue(std::string name, size_t maxSize)
-   : fName(std::move(name)), max_queue_size(maxSize), items_in_queue(0), items_pushed(0), items_popped(0),
-     is_finished(false)
+   : fName(std::move(name)), max_queue_size(maxSize), is_finished(false)
 {
 }
 

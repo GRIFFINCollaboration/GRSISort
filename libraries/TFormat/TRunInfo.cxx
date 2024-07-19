@@ -65,7 +65,7 @@ Bool_t TRunInfo::ReadInfoFromFile(TFile* tempf)
    return false;
 }
 
-TRunInfo::TRunInfo() : fRunNumber(0), fSubRunNumber(-1), fDetectorInformation(nullptr)
+TRunInfo::TRunInfo()
 {
    /// Default ctor for TRunInfo. The default values are:
    ///

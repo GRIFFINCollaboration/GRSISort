@@ -20,7 +20,7 @@ GValue::GValue(const char* name, double value, EPriority priority)
 {
 }
 
-GValue::GValue(const char* name) : TNamed(name, name), fValue(0.00), fPriority(EPriority::kDefault)
+GValue::GValue(const char* name) : TNamed(name, name)
 {
 }
 

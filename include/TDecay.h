@@ -24,9 +24,9 @@ class TDecayChain;
 
 class TDecayFit : public TF1 {
 public:
-   TDecayFit() : fDecay(nullptr) {}
+   TDecayFit() = default;
    TDecayFit(const char* name, const char* formula, Double_t xmin = 0, Double_t xmax = 1)
-      : TF1(name, formula, xmin, xmax), fDecay(nullptr)
+      : TF1(name, formula, xmin, xmax)
    {
       DefaultGraphs();
    }
@@ -35,20 +35,18 @@ public:
       DefaultGraphs();
    }
    TDecayFit(const char* name, const ROOT::Math::ParamFunctor& f, Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0)
-      : TF1(name, f, xmin, xmax, npar), fDecay(nullptr)
+      : TF1(name, f, xmin, xmax, npar)
    {
       DefaultGraphs();
    }
 #if !defined(__CINT__) && !defined(__CLING__)
-   TDecayFit(const char* name, Double_t (*fcn)(Double_t*, Double_t*), Double_t xmin = 0, Double_t xmax = 1,
-             Int_t npar = 0)
-      : TF1(name, fcn, xmin, xmax, npar), fDecay(nullptr)
+   TDecayFit(const char* name, Double_t (*fcn)(Double_t*, Double_t*), Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0)
+      : TF1(name, fcn, xmin, xmax, npar)
    {
       DefaultGraphs();
    }
-   TDecayFit(const char* name, Double_t (*fcn)(const Double_t*, const Double_t*), Double_t xmin = 0, Double_t xmax = 1,
-             Int_t npar = 0)
-      : TF1(name, fcn, xmin, xmax, npar), fDecay(nullptr)
+   TDecayFit(const char* name, Double_t (*fcn)(const Double_t*, const Double_t*), Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0)
+      : TF1(name, fcn, xmin, xmax, npar)
    {
       DefaultGraphs();
    }
@@ -57,14 +55,14 @@ public:
    template <class PtrObj, typename MemFn>
    TDecayFit(const char* name, const PtrObj& p, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar,
              const char* className = nullptr, const char* methodName = nullptr)
-      : TF1(name, p, memFn, xmin, xmax, npar, className, methodName), fDecay(nullptr)
+      : TF1(name, p, memFn, xmin, xmax, npar, className, methodName)
    {
       DefaultGraphs();
    }
 
    template <typename Func>
    TDecayFit(const char* name, Func f, Double_t xmin, Double_t xmax, Int_t npar, const char* className = nullptr)
-      : TF1(name, f, xmin, xmax, npar, className), fDecay(nullptr)
+      : TF1(name, f, xmin, xmax, npar, className)
    {
       DefaultGraphs();
    }
@@ -115,8 +113,7 @@ class TSingleDecay : public TVirtualDecay {
 
 public:
    TSingleDecay()
-      : fDetectionEfficiency(1.0), fDecayFunc(nullptr), fTotalDecayFunc(nullptr), fParent(nullptr), fDaughter(nullptr),
-        fFirstParent(nullptr), fChainId(-1)
+      : fDetectionEfficiency(1.0)
    {
    }
    TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlow = 0, Double_t thigh = 10);
@@ -252,7 +249,7 @@ private:
    TSingleDecay* fFirstParent{nullptr};      // FirstParent in the decay
    Int_t         fUnId{0};                   // The Unique ID of the Decay
    static UInt_t fCounter;                   // Helps set unique Id's
-   Int_t         fChainId{0};                // The chain that the single decay belongs to
+   Int_t         fChainId{-1};                // The chain that the single decay belongs to
 
    /// \cond CLASSIMP
    ClassDefOverride(TSingleDecay, 1)   // Class containing Single Decay information
@@ -261,7 +258,7 @@ private:
 
 class TDecayChain : public TVirtualDecay {
 public:
-   TDecayChain();
+   TDecayChain() = default;
    explicit TDecayChain(UInt_t generations);
    ~TDecayChain() override;
 
@@ -297,7 +294,7 @@ private:
 
    std::vector<TSingleDecay*> fDecayChain;            // The Decays in the Decay Chain
    TDecayFit*                 fChainFunc{nullptr};    // Function describing the total chain activity
-   Int_t                      fChainId{0};
+   Int_t                      fChainId{-1};
 
    /// \cond CLASSIMP
    ClassDefOverride(TDecayChain, 1)   // Class representing a decay chain

@@ -28,15 +28,10 @@ class DifferentBinLimits : public std::exception {
 class DifferentLabels : public std::exception {
 };
 
-GCube::GCube()
-   : fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
-{
-}
-
 // we have to repeat the code from the default constructor here, because calling the TH1 constructor and the GCube
 // default constructor gives an error
 GCube::GCube(const char* name, const char* title, Int_t nbins, Double_t low, Double_t up)
-   : TH1(name, title, nbins, low, up), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
+   : TH1(name, title, nbins, low, up)
 {
    fYaxis.Set(nbins, low, up);
    // TH1 constructor sets fNcells to nbins+2
@@ -45,7 +40,7 @@ GCube::GCube(const char* name, const char* title, Int_t nbins, Double_t low, Dou
 }
 
 GCube::GCube(const char* name, const char* title, Int_t nbins, const Double_t* bins)
-	: TH1(name, title, nbins, bins), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
+	: TH1(name, title, nbins, bins)
 {
    fYaxis.Set(nbins, bins);
    // TH1 constructor sets fNcells to nbins+2
@@ -54,7 +49,7 @@ GCube::GCube(const char* name, const char* title, Int_t nbins, const Double_t* b
 }
 
 GCube::GCube(const char* name, const char* title, Int_t nbins, const Float_t* bins)
-	: TH1(name, title, nbins, bins), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
+	: TH1(name, title, nbins, bins)
 {
    fYaxis.Set(nbins, bins);
    // TH1 constructor sets fNcells to nbins+2

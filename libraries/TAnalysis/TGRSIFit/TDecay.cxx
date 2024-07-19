@@ -124,8 +124,7 @@ void TVirtualDecay::Streamer(TBuffer& R__b)
 }
 
 TSingleDecay::TSingleDecay(TSingleDecay* parent, Double_t tlow, Double_t thigh)
-   : fDetectionEfficiency(1.0), fDecayFunc(nullptr), fTotalDecayFunc(nullptr), fParent(nullptr), fDaughter(nullptr),
-     fFirstParent(nullptr), fChainId(-1)
+   : fDetectionEfficiency(1.0)
 {
    if(parent != nullptr) {
       fParent = parent;
@@ -167,8 +166,7 @@ TSingleDecay::TSingleDecay(TSingleDecay* parent, Double_t tlow, Double_t thigh)
 }
 
 TSingleDecay::TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlow, Double_t thigh)
-   : fDetectionEfficiency(1.0), fDecayFunc(nullptr), fTotalDecayFunc(nullptr), fParent(nullptr), fDaughter(nullptr),
-     fFirstParent(nullptr), fChainId(-1)
+   : fDetectionEfficiency(1.0)
 {
    if(parent != nullptr) {
       fParent = parent;
@@ -480,11 +478,7 @@ void TSingleDecay::Print(Option_t*) const
    std::cout << "First Parent: " << fFirstParent << std::endl;
 }
 
-TDecayChain::TDecayChain() : fChainFunc(nullptr)
-{
-}
-
-TDecayChain::TDecayChain(UInt_t generations) : fChainFunc(nullptr)
+TDecayChain::TDecayChain(UInt_t generations)
 {
    if(generations == 0u) {
       generations = 1;
@@ -645,7 +639,7 @@ void TDecayChain::SetRange(Double_t xlow, Double_t xhigh)
 }
 
 TDecay::TDecay(std::vector<TDecayChain*> chainList)
-	: fChainList(chainList), fFitFunc(nullptr)
+	: fChainList(chainList)
 {
    fFitFunc = new TDecayFit("tmpfit", this, &TDecay::DecayFit, 0, 10, 1, "TDecay", "DecayFit");
    fFitFunc->SetDecay(this);

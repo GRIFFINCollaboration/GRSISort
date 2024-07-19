@@ -20,9 +20,9 @@
 class GriffinKValueSelector : public TGRSISelector {
 
 public:
-   TFragment* fFragment;
+   TFragment* fFragment{nullptr};
 
-   explicit GriffinKValueSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fFragment(0) { SetOutputPrefix("GriffinKValue"); }
+   explicit GriffinKValueSelector(TTree* /*tree*/ = 0) : TGRSISelector() { SetOutputPrefix("GriffinKValue"); }
    virtual ~GriffinKValueSelector() {}
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();

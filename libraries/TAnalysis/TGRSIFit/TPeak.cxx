@@ -84,7 +84,7 @@ TPeak::~TPeak()
    delete fResiduals;
 }
 
-TPeak::TPeak(const TPeak& copy) : TGRSIFit(), fBackground(nullptr), fResiduals(nullptr)
+TPeak::TPeak(const TPeak& copy) : TGRSIFit()
 {
    copy.Copy(*this);
 }

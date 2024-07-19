@@ -6,7 +6,7 @@
 #include "Globals.h"
 
 TPeakFitter::TPeakFitter(const Double_t& rangeLow, const Double_t& rangeHigh)
-   : fTotalFitFunction(nullptr), fRangeLow(rangeLow), fRangeHigh(rangeHigh)
+   : fRangeLow(rangeLow), fRangeHigh(rangeHigh)
 {
    fBGToFit = new TF1("fbg", this, &TPeakFitter::DefaultBackgroundFunction, fRangeLow, fRangeHigh, 4, "TPeakFitter", "DefaultBackgroundFunction");
    fBGToFit->FixParameter(3, 0);

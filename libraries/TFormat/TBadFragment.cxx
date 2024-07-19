@@ -33,7 +33,7 @@ TBadFragment::TBadFragment(TFragment& fragment, uint32_t* data, int size, int fa
 }
 
 TBadFragment::TBadFragment(TFragment& fragment)
-   : TFragment(fragment), fFailedWord(-2), fMultipleErrors(false)
+   : TFragment(fragment), fFailedWord(-2)
 {
    /// Construct a bad fragment from a fragment.
    /// The data is left empty, failed word set to -2, and multiple errors set to false.

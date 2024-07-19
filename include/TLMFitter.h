@@ -553,14 +553,14 @@ inline const std::complex<float> operator/(const std::complex<float>& a, const d
 
 class TLMFitter : public TObject {
 public:
-   TLMFitter() : fIntegrationSteps(100), fInitChi2Number(3){};
+   TLMFitter() = default;
    ~TLMFitter() override = default;
 
 private:
-   int  fIntegrationSteps;
+   int  fIntegrationSteps{100};
    TH1* fHist{nullptr};
    TF1* fFunction{nullptr};
-   int  fInitChi2Number;
+   int  fInitChi2Number{3};
    int  fRangeMin{0};
    int  fRangeMax{0};
 

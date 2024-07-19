@@ -30,7 +30,7 @@
 class TEfficiencyGraph : public TCalGraph {
 public:
    TEfficiencyGraph();
-   TEfficiencyGraph(const char* name, const char* title) : TCalGraph(name, title), fIsAbsolute(false){};
+   TEfficiencyGraph(const char* name, const char* title) : TCalGraph(name, title) {}
    ~TEfficiencyGraph() override;
 
    TEfficiencyGraph(const TEfficiencyGraph& copy);
