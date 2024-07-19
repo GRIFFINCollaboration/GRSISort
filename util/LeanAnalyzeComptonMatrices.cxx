@@ -158,19 +158,19 @@ TList* ComptonPol(TFile* f, TStopwatch* w)
 
    auto* list = new TList;   // Output list
 
-   auto* XiHist2D_DetDet = static_cast<TH2D*(f->Get("XiHist2D_DetDetCoincidenceTheta"));
+   auto* XiHist2D_DetDet = static_cast<TH2D*>(f->Get("XiHist2D_DetDetCoincidenceTheta"));
    list->Add(XiHist2D_DetDet);
-   auto* XiHist2D_CryCry = static_cast<TH2D*(f->Get("XiHist2D_CryCryCoincidenceTheta"));
+   auto* XiHist2D_CryCry = static_cast<TH2D*>(f->Get("XiHist2D_CryCryCoincidenceTheta"));
    list->Add(XiHist2D_CryCry);
 
-   auto* XiHist2DGeo_DetDet = static_cast<TH2D*(f->Get("XiHist2D_DetDetCoincidenceTheta_Geo"));
+   auto* XiHist2DGeo_DetDet = static_cast<TH2D*>(f->Get("XiHist2D_DetDetCoincidenceTheta_Geo"));
    list->Add(XiHist2DGeo_DetDet);
-   auto* XiHist2DGeo_CryCry = static_cast<TH2D*(f->Get("XiHist2D_CryCryCoincidenceTheta_Geo"));
+   auto* XiHist2DGeo_CryCry = static_cast<TH2D*>(f->Get("XiHist2D_CryCryCoincidenceTheta_Geo"));
    list->Add(XiHist2DGeo_CryCry);
 
-   auto* XiHist2DNonCo_DetDet = static_cast<TH2D*(f->Get("XiHist2D_DetDetCoincidenceTheta_NonCo"));
+   auto* XiHist2DNonCo_DetDet = static_cast<TH2D*>(f->Get("XiHist2D_DetDetCoincidenceTheta_NonCo"));
    list->Add(XiHist2DNonCo_DetDet);
-   auto* XiHist2DNonCo_CryCry = static_cast<TH2D*(f->Get("XiHist2D_CryCryCoincidenceTheta_NonCo"));
+   auto* XiHist2DNonCo_CryCry = static_cast<TH2D*>(f->Get("XiHist2D_CryCryCoincidenceTheta_NonCo"));
    list->Add(XiHist2DNonCo_CryCry);
 
    int ThetaBins = XiHist2D_DetDet->GetNbinsY();   // Binsize = 180deg / bins
