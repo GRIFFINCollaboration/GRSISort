@@ -117,7 +117,7 @@ private:
 #endif
 
    /// \cond CLASSIMP
-   ClassDefOverride(StoppableThread, 0)   // NOLINT
+   ClassDef(StoppableThread, 0)   // NOLINT
    /// \endcond
 };
 
