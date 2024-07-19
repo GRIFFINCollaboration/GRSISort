@@ -72,7 +72,9 @@ private:
    std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>>  fOutputQueues;
 #endif
 
-   ClassDefOverride(TDetBuildingLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TDetBuildingLoop, 0) // NOLINT
+   /// \endcond
 };
 
 /*! @} */

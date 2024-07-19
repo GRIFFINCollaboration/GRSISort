@@ -224,7 +224,7 @@ protected:
    static TVector3                 fBeamDirection;   //!
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDetectorHit, 1)   // Stores the information for a detector hit
+   ClassDefOverride(TDetectorHit, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

@@ -69,7 +69,9 @@ private:
 
    TRuntimeObjects fObj;
 
-   ClassDefOverride(TCompiledHistograms, 0);
+	// \cond CLASSIMP
+   ClassDefOverride(TCompiledHistograms, 0) // NOLINT
+	// \endcond
 };
 
 #endif /* _TCOMPILEDHISTOGRAMS_H_ */

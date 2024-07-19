@@ -118,7 +118,7 @@ protected:
    static bool fPrint;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TMnemonic, 1)
+   ClassDefOverride(TMnemonic, 1) // NOLINT
    /// \endcond
 };
 

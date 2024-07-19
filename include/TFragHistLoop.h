@@ -74,7 +74,9 @@ private:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fInputQueue;
 #endif
 
-   ClassDefOverride(TFragHistLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TFragHistLoop, 0) // NOLINT
+   /// \endcond
 };
 
 /*! @} */

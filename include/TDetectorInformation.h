@@ -30,7 +30,7 @@ public:
    void Clear(Option_t* = "") override{};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDetectorInformation, 1);
+   ClassDefOverride(TDetectorInformation, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

@@ -62,8 +62,6 @@ public:
    void Print() const { std::cout << fBits << std::endl; }
 
    T fBits;
-
-   //	ClassDefT(TTransientBits<T>,0);
 };
 
 /*! @} */

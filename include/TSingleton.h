@@ -181,7 +181,7 @@ private:
    static TDirectory* fDir;
 
    /// \cond CLASSIMP
-   ClassDef(TSingleton, 1)
+   ClassDef(TSingleton, 1) // NOLINT
    /// \endcond
 };
 

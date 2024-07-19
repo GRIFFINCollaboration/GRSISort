@@ -95,7 +95,7 @@ private:
    std::vector<TRawFile*> fRawFiles;   ///< List of Raw files opened
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSIint, 0);   // Interpreter for GRSISort
+   ClassDefOverride(TGRSIint, 0) // NOLINT
    /// \endcond
 };
 

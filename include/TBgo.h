@@ -47,7 +47,7 @@ public:
    void Print(std::ostream& out) const override;    //!<!
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBgo, 1)   // Bgo Physics structure
+   ClassDefOverride(TBgo, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

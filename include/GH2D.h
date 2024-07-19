@@ -50,7 +50,9 @@ public:
    TH2* GetTH2() override { return this; }
 
 private:
-   ClassDefOverride(GH2D, 1)
+	/// /cond CLASSIMP
+   ClassDefOverride(GH2D, 1) // NOLINT
+	/// /endcond
 };
 
 #endif

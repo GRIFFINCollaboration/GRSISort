@@ -87,7 +87,7 @@ private:
    static Double_t gDefaultCoarseRange;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGainMatch, 1);
+   ClassDefOverride(TGainMatch, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

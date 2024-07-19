@@ -94,7 +94,9 @@ private:
       fOrdered;
 #endif
 
-   ClassDefOverride(TEventBuildingLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TEventBuildingLoop, 0) // NOLINT
+   /// \endcond
 };
 
 /*! @} */

@@ -109,7 +109,9 @@ protected:
    Double_t fTsumwyz{0};        // Total Sum of weight*Y*Z
    TH2*     fMatrix{nullptr};   //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
 
-   ClassDefOverride(GCube, 1);
+	/// /cond CLASSIMP
+   ClassDefOverride(GCube, 1) // NOLINT
+	/// /endcond
 };
 
 class GCubeF : public GCube, public TArrayF {
@@ -152,7 +154,9 @@ public:
    friend GCubeF operator*(GCubeF& h1, GCubeF& h2);
    friend GCubeF operator/(GCubeF& h1, GCubeF& h2);
 
-   ClassDefOverride(GCubeF, 1);
+	/// /cond CLASSIMP
+   ClassDefOverride(GCubeF, 1) // NOLINT
+	/// /endcond
 };
 
 class GCubeD : public GCube, public TArrayD {
@@ -195,6 +199,8 @@ public:
    friend GCubeD operator*(GCubeD& h1, GCubeD& h2);
    friend GCubeD operator/(GCubeD& h1, GCubeD& h2);
 
-   ClassDefOverride(GCubeD, 1);
+	/// /cond CLASSIMP
+   ClassDefOverride(GCubeD, 1) // NOLINT
+	/// /endcond
 };
 #endif

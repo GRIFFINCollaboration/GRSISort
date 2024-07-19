@@ -61,7 +61,7 @@ private:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TAB3Peak, 2);
+   ClassDefOverride(TAB3Peak, 2) // NOLINT
    /// \endcond
 };
 /*! @} */

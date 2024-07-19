@@ -99,7 +99,7 @@ private:
    int fColorIndex{0};   ///< this index is added to the colors kRed for the total function and kMagenta for the individual peaks
 
    /// \cond CLASSIMP
-   ClassDefOverride(TPeakFitter, 2);
+   ClassDefOverride(TPeakFitter, 2) // NOLINT
    /// \endcond
 };
 /*! @} */

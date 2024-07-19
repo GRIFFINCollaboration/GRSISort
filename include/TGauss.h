@@ -49,7 +49,7 @@ protected:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TGauss, 2);
+   ClassDefOverride(TGauss, 2) // NOLINT
    /// \endcond
 };
 /*! @} */

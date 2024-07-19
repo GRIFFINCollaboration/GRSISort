@@ -58,7 +58,7 @@ private:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TABPeak, 2);
+   ClassDefOverride(TABPeak, 2) // NOLINT
    /// \endcond
 };
 /*! @} */

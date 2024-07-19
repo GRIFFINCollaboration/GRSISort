@@ -75,7 +75,7 @@ public:
    }
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSIProof, 1);
+   ClassDefOverride(TGRSIProof, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

@@ -143,7 +143,7 @@ protected:
    }
 
    /// \cond CLASSIMP
-   ClassDefOverride(TSuppressed, 1)
+   ClassDefOverride(TSuppressed, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

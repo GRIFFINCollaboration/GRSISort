@@ -81,8 +81,6 @@ private:
    TUnpackingLoop(std::string name);
    TUnpackingLoop(const TUnpackingLoop& other);
    TUnpackingLoop& operator=(const TUnpackingLoop& other);
-
-   // ClassDefOverride(TUnpackingLoop, 0);
 };
 
 /*! @} */

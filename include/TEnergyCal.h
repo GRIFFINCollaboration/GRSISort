@@ -49,7 +49,7 @@ public:
 
 private:
    /// \cond CLASSIMP
-   ClassDefOverride(TEnergyCal, 1);
+   ClassDefOverride(TEnergyCal, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

@@ -158,7 +158,7 @@ public:
    void   ReallyDelete() override;
 
    /// \cond CLASSIMP
-   ClassDefOverride(GRootCanvas, 0)   // GRSI native GUI version of main window with menubar and drawing area
+   ClassDefOverride(GRootCanvas, 0)   // NOLINT
    /// \endcond
 };
 /*! @} */

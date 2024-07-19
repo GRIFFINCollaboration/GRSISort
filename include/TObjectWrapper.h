@@ -37,7 +37,7 @@ private:
    T* pT;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TObjectWrapper, 1);
+   ClassDefOverride(TObjectWrapper, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

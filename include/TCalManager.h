@@ -35,7 +35,7 @@ private:
    TClass*                 fClass{nullptr};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalManager, 1);
+   ClassDefOverride(TCalManager, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

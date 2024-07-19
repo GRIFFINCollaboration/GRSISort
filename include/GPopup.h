@@ -15,7 +15,9 @@ public:
 
    void Print(Option_t* opt = "") const override;
 
-   ClassDefOverride(GPopup, 0)
+	/// /cond CLASSIMP
+   ClassDefOverride(GPopup, 0) // NOLINT
+	/// /endcond
 };
 
 #endif

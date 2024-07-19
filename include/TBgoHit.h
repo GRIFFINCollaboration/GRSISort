@@ -44,7 +44,7 @@ public:
    void Print(std::ostream& out) const override;        //!<!
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBgoHit, 1)
+   ClassDefOverride(TBgoHit, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

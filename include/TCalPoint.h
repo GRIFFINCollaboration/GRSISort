@@ -39,7 +39,7 @@ private:
    Double_t fAreaErr{0.};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalPoint, 1);
+   ClassDefOverride(TCalPoint, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

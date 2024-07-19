@@ -190,7 +190,7 @@ private:
    double fThetaMax[4]{0.};   // only nonzero for ejectile and recoil
 
    /// \cond CLASSIMP
-   ClassDefOverride(TReaction, 1)   // Calculates reaction parameters for scattering experiments
+   ClassDefOverride(TReaction, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

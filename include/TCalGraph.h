@@ -62,7 +62,7 @@ private:
    virtual void BuildGraph() = 0;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalGraph, 1);   // Graph Class for Calibrations
+   ClassDefOverride(TCalGraph, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

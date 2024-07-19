@@ -219,7 +219,7 @@ private:
    void RebinProjection();
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBGSubtraction, 7);   // Background subtractor GUI
+   ClassDefOverride(TBGSubtraction, 7) // NOLINT
    /// \endcond
 };
 /*! @} */

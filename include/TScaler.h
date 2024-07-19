@@ -94,7 +94,7 @@ private:
    UInt_t              fHighTimeStamp{0};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TScalerData, 2)   // Contains scaler data information
+   ClassDefOverride(TScalerData, 2) // NOLINT
    /// \endcond
 };
 
@@ -169,7 +169,7 @@ private:
    std::map<std::pair<UInt_t, UInt_t>, TH1D*>                 fHistRange;                  //!<! map to store histograms for address-ranges
 
    /// \cond CLASSIMP
-   ClassDefOverride(TScaler, 2)   // Contains scaler information
+   ClassDefOverride(TScaler, 2) // NOLINT
                                   /// \endcond
 };
 /*! @} */

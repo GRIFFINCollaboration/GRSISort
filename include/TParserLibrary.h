@@ -63,8 +63,8 @@ private:
    void (*fDestroyDataParser)(TDataParser*);
 
    /// \cond CLASSIMP
-   ClassDefOverride(TParserLibrary, 1);   // parser library class
-                                          /// \endcond
+   ClassDefOverride(TParserLibrary, 1) // NOLINT
+   /// \endcond
 };
 
 #endif

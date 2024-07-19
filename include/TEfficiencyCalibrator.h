@@ -325,7 +325,7 @@ private:
    TGTextButton*            fStartButton{nullptr};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEfficiencyCalibrator, 1);   // Class to determine efficiency calibrations
+   ClassDefOverride(TEfficiencyCalibrator, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

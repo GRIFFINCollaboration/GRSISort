@@ -86,7 +86,9 @@ private:
    static void PrintMap(std::map<double, double>& inmap);
    static bool CheckMap(const std::map<double, double>& inmap);
 
-   ClassDefOverride(TCalibrator, 1)
+	/// \cond CLASSIMP
+   ClassDefOverride(TCalibrator, 1) // NOLINT
+	/// \endcond
 };
 
 #endif

@@ -81,7 +81,9 @@ private:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>    fOutputQueue;
 #endif
 
-   ClassDefOverride(TFragWriteLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TFragWriteLoop, 0) // NOLINT
+   /// \endcond
 };
 
 /*! @} */

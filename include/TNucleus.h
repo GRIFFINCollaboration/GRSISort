@@ -102,7 +102,7 @@ private:
    bool        LoadTransitionFile();
 
    /// \cond CLASSIMP
-   ClassDefOverride(TNucleus, 2);   // Creates a nucleus with corresponding nuclear information
+   ClassDefOverride(TNucleus, 2) // NOLINT
    /// \endcond
 };
 

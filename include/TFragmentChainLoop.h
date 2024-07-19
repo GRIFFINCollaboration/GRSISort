@@ -75,8 +75,6 @@ private:
 
    int                            SetupChain();
    std::map<TClass*, TDetector**> fDetMap;
-
-   // ClassDefOverride(TFragmentChainLoop, 0);
 };
 
 /*! @} */

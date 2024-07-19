@@ -373,7 +373,7 @@ private:
    std::map<Int_t, std::vector<TSingleDecay*>> fDecayMap;   //
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDecay, 1)   // Contains all decay chains in a fit
+   ClassDefOverride(TDecay, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

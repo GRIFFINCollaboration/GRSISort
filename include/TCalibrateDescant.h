@@ -164,7 +164,7 @@ private:
    TGTextButton* fSaveButton{nullptr};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalibrateDescant, 1);
+   ClassDefOverride(TCalibrateDescant, 1) // NOLINT
    /// \endcond
 };
 

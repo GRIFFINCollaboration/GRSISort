@@ -69,7 +69,9 @@ private:
    static std::map<std::string, GValue*> fValueVector;
    static int                            ParseInputData(const std::string& input, EPriority priority, Option_t* opt = "");
 
-   ClassDefOverride(GValue, 1);
+   /// \cond CLASSIMP
+   ClassDefOverride(GValue, 1)   // NOLINT
+   /// \endcond
 };
 
 #endif

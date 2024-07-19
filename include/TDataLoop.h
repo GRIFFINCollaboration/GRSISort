@@ -76,7 +76,9 @@ private:
    std::mutex                                                   fSourceMutex;
 #endif
 
-   ClassDefOverride(TDataLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TDataLoop, 0) // NOLINT
+   /// \endcond
 };
 
 /*! @} */

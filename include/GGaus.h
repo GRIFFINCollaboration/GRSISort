@@ -76,7 +76,9 @@ private:
    TF1 fBGFit;
    TF1 fBGHist;
 
-   ClassDefOverride(GGaus, 2)
+	/// /cond CLASSIMP
+   ClassDefOverride(GGaus, 2) // NOLINT
+	/// /endcond
 };
 
 #endif

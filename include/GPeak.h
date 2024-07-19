@@ -80,7 +80,9 @@ private:
 
    TF1 fBGFit;
 
-   ClassDefOverride(GPeak, 3)
+	/// /cond CLASSIMP
+   ClassDefOverride(GPeak, 3) // NOLINT
+	/// /endcond
 };
 
 #endif

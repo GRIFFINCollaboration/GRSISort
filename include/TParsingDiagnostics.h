@@ -63,7 +63,7 @@ private:
    long fMaxTimeStamp{0};   ///< maximum timestamp per channel address
 
    /// \cond CLASSIMP
-   ClassDefOverride(TParsingDiagnosticsData, 1);
+   ClassDefOverride(TParsingDiagnosticsData, 1) // NOLINT
    /// \endcond
 };
 

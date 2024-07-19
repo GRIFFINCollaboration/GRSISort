@@ -116,7 +116,9 @@ private:
    std::mutex              fPauseMutex;
 #endif
 
-   ClassDef(StoppableThread, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(StoppableThread, 0)   // NOLINT
+   /// \endcond
 };
 
 /*! @} */

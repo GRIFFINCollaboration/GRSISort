@@ -69,7 +69,9 @@ private:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fOutOfOrderQueue;
 #endif
 
-   ClassDefOverride(TAnalysisWriteLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TAnalysisWriteLoop, 0) // NOLINT
+   /// \endcond
 };
 
 /*! @} */

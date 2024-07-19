@@ -276,7 +276,9 @@ private:
 
    TFile* fOutput{nullptr};
 
-   ClassDefOverride(TSourceCalibration, 1);
+	/// \cond CLASSIMP
+   ClassDefOverride(TSourceCalibration, 1) // NOLINT
+	/// \endcond
 };
 
 #endif

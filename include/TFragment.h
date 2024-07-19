@@ -144,7 +144,7 @@ private:
    // int HitIndex;    //!<! transient member indicating which pile-up hit this is in the original fragment
 
    /// \cond CLASSIMP
-   ClassDefOverride(TFragment, 8);   // Event Fragments
+   ClassDefOverride(TFragment, 8) // NOLINT
    /// \endcond
 };
 /*! @} */

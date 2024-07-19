@@ -46,7 +46,7 @@ private:
    void (*fDestroyHelper)(TGRSIHelper*);
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDataFrameLibrary, 1);   // parser library class
+   ClassDefOverride(TDataFrameLibrary, 1) // NOLINT
    /// \endcond
 };
 

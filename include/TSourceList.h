@@ -35,7 +35,7 @@ private:
    std::string fNucleusName;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TSourceList, 1);
+   ClassDefOverride(TSourceList, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

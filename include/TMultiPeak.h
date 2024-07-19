@@ -67,7 +67,7 @@ private:
    Double_t SinglePeakBG(Double_t* dim, Double_t* par);
 
    /// \cond CLASSIMP
-   ClassDefOverride(TMultiPeak, 2);
+   ClassDefOverride(TMultiPeak, 2) // NOLINT
    /// \endcond
 };
 /*! @} */

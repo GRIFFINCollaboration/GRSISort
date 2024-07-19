@@ -81,7 +81,7 @@ public:
    virtual void CopyParameters(TF1* copy) const;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSIFit, 0);
+   ClassDefOverride(TGRSIFit, 0) // NOLINT
    /// \endcond
 };
 /*! @} */

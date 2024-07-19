@@ -48,7 +48,7 @@ public:
 protected:
    int fGoodFrags{0};   ///< number of good fragments parsed
    /// \cond CLASSIMP
-   ClassDefOverride(TRawEvent, 0)   // All of the data contained in a raw Event
+   ClassDefOverride(TRawEvent, 0) // NOLINT
    /// \endcond
 };
 /*! @} */

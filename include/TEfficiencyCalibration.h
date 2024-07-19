@@ -53,7 +53,7 @@ private:
    TF1*                                    fAbsoluteFunc{nullptr};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEfficiencyCalibration, 1);
+   ClassDefOverride(TEfficiencyCalibration, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

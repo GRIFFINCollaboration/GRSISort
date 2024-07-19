@@ -53,7 +53,7 @@ public:
    void SetCommand(const char* cmd) { fCommand = cmd; }   ///< simple setter function for the command to be executed
 
    /// \cond CLASSIMP
-   ClassDefOverride(GBrowserPlugin, 0)   // basic plugin description class
+   ClassDefOverride(GBrowserPlugin, 0)   // NOLINT
    /// \endcond
 };
 
@@ -235,7 +235,7 @@ public:
                                   Option_t* opt = "");
 
    /// \cond CLASSIMP
-   ClassDefOverride(GRootBrowser, 0)   // New ROOT Browser
+   ClassDefOverride(GRootBrowser, 0)   // NOLINT
    /// \endcond
 };
 /*! @} */

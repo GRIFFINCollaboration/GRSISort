@@ -603,7 +603,9 @@ protected:
                    Vec_double& dyda, int chisqnumber, const double& bin_width, Vec_double& yfit, const int& bin);
 
 public:
-   ClassDefOverride(TLMFitter, 1);
+   /// \cond CLASSIMP
+   ClassDefOverride(TLMFitter, 1) // NOLINT
+   /// \endcond
 };
 /*! @} */
 #endif   // TLMFitter_H

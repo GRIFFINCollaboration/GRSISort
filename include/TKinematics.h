@@ -145,7 +145,7 @@ private:
    double T_final(int) const;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TKinematics, 1);
+   ClassDefOverride(TKinematics, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

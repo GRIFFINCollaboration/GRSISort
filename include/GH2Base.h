@@ -110,7 +110,9 @@ private:
    bool       fIsSummary{false};
    EDirection fSummaryDirection{EDirection::kXDirection};
 
-   ClassDef(GH2Base, 1);
+	/// /cond CLASSIMP
+   ClassDef(GH2Base, 1) // NOLINT
+	/// /endcond
 };
 
 #endif

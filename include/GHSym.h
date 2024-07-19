@@ -109,7 +109,9 @@ protected:
    Double_t         fTsumwxy{0.};       ///< Total Sum of weight*X*Y
    TH2*             fMatrix{nullptr};   //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
 
-   ClassDefOverride(GHSym, 1);
+	/// /cond CLASSIMP
+   ClassDefOverride(GHSym, 1) // NOLINT
+	/// /endcond
 };
 
 class GHSymF : public GHSym, public TArrayF {
@@ -149,7 +151,9 @@ public:
    friend GHSymF operator*(GHSymF& h1, GHSymF& h2);
    friend GHSymF operator/(GHSymF& h1, GHSymF& h2);
 
-   ClassDefOverride(GHSymF, 1);
+	/// /cond CLASSIMP
+   ClassDefOverride(GHSymF, 1) // NOLINT
+	/// /endcond
 };
 
 class GHSymD : public GHSym, public TArrayD {
@@ -189,6 +193,8 @@ public:
    friend GHSymD operator*(GHSymD& h1, GHSymD& h2);
    friend GHSymD operator/(GHSymD& h1, GHSymD& h2);
 
-   ClassDefOverride(GHSymD, 1);
+	/// /cond CLASSIMP
+   ClassDefOverride(GHSymD, 1) // NOLINT
+	/// /endcond
 };
 #endif

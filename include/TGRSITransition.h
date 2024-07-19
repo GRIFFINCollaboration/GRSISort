@@ -52,7 +52,7 @@ private:
    double fIntensityUncertainty{0.};   // Uncertainty in the intensity
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSITransition, 1)   // Information about a TNucleus transition
+   ClassDefOverride(TGRSITransition, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

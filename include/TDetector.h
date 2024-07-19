@@ -84,7 +84,7 @@ protected:
    std::vector<TDetectorHit*> fHits;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDetector, 1)   // Abstract class for detector systems
+   ClassDefOverride(TDetector, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

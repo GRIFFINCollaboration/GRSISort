@@ -81,7 +81,9 @@ private:
    Int_t             fFirstRunNumber{-1};             //!<! run number of first file
    Int_t             fFirstSubRunNumber{-1};          //!<! sub-run number of first file
 
-   ClassDefOverride(TGRSISelector, 3);
+   /// \cond CLASSIMP
+   ClassDefOverride(TGRSISelector, 3) // NOLINT
+   /// \endcond
 };
 
 #endif

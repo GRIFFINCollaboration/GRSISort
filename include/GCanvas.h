@@ -157,7 +157,9 @@ public:
       if(fLineX != nullptr && rhs.fLineX != nullptr) { return fLineX->GetX1() < rhs.fLineX->GetX1(); }
       return false;
    }
-   ClassDefOverride(GMarker, 0)
+	/// \cond CLASSIMP
+   ClassDefOverride(GMarker, 0) // NOLINT
+	/// \endcond
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -298,7 +300,9 @@ private:
 
    TRootCanvas* fRootCanvas{nullptr};
 
-   ClassDefOverride(GCanvas, 2);
+	/// \cond CLASSIMP
+   ClassDefOverride(GCanvas, 2) // NOLINT
+	/// \endcond
 };
 /*! @} */
 #endif

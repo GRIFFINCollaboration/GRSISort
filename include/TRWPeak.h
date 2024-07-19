@@ -50,7 +50,7 @@ protected:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TRWPeak, 2);
+   ClassDefOverride(TRWPeak, 2) // NOLINT
    /// \endcond
 };
 /*! @} */

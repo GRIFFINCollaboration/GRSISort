@@ -32,7 +32,7 @@ private:
    std::vector<Double_t> fParameters;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TTimeCal, 1);
+   ClassDefOverride(TTimeCal, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

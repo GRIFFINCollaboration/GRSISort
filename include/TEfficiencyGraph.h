@@ -53,7 +53,7 @@ private:
    bool fIsAbsolute{false};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEfficiencyGraph, 1);   // Graph Class for Calibrations
+   ClassDefOverride(TEfficiencyGraph, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

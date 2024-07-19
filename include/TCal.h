@@ -83,7 +83,7 @@ private:
    TNucleus* fNuc{nullptr};       ///< Nucleus that we are calibrating against
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCal, 2);   // Abstract Class for Calibrations
+   ClassDefOverride(TCal, 2) // NOLINT
    /// \endcond
 };
 /*! @} */

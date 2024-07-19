@@ -39,7 +39,9 @@ private:
 
    static GNotifier* fGNotifier;
 
-   ClassDefOverride(GNotifier, 0)
+	/// /cond CLASSIMP
+   ClassDefOverride(GNotifier, 0) // NOLINT
+	/// /endcond
 };
 
 #endif

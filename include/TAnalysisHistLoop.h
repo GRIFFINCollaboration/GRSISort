@@ -75,7 +75,9 @@ private:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>> fInputQueue;
 #endif
 
-   ClassDefOverride(TAnalysisHistLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TAnalysisHistLoop, 0) // NOLINT
+   /// \endcond
 };
 
 /*! @} */

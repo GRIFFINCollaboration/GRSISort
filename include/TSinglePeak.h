@@ -115,7 +115,7 @@ private:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TSinglePeak, 2);
+   ClassDefOverride(TSinglePeak, 2) // NOLINT
    /// \endcond
 };
 /*! @} */

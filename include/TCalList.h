@@ -35,7 +35,7 @@ private:
    std::map<UInt_t, TCalPoint> fCalList;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalList, 1);
+   ClassDefOverride(TCalList, 1) // NOLINT
    /// \endcond
 };
 /*! @} */

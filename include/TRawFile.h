@@ -74,7 +74,7 @@ protected:
    size_t fFileSize{0};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TRawFile, 0)   // Used to open and write raw files
+   ClassDefOverride(TRawFile, 0) // NOLINT
    /// \endcond
 };
 /*! @} */

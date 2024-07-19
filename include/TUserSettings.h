@@ -164,7 +164,7 @@ private:
    std::vector<std::string> fSettingsFiles;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TUserSettings, 5)
+   ClassDefOverride(TUserSettings, 5) // NOLINT
    /// \endcond
 };
 /*! @} */
