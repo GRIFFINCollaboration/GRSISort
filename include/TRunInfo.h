@@ -235,8 +235,8 @@ public:
    static std::string PrintToString(Option_t* opt = "");
 
    /// \cond CLASSIMP
-   ClassDefOverride(TRunInfo, 16);   // Contains the run-dependent information.
-                                     /// \endcond
+   ClassDefOverride(TRunInfo, 17);
+	/// \endcond
 };
 /*! @} */
 #endif
