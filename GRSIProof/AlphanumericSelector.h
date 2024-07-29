@@ -26,7 +26,7 @@ class AlphanumericSelector : public TGRSISelector {   // Must be same name as .C
 public:
    TGriffin* fGrif;   // Pointers to spot that events will be
 
-   explicit AlphanumericSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(nullptr)
+   explicit AlphanumericSelector(TTree* /*tree*/ = nullptr) : TGRSISelector(), fGrif(nullptr)
    {
       SetOutputPrefix("Alphanumeric");   // Changes prefix of output file
    }

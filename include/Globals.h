@@ -274,7 +274,7 @@ static inline void PrintGdbStacktrace()
       execl("/usr/bin/gdb", "gdb", "--batch", "-n", "-ex", "thread", "-ex", "bt", name_buf.data(), pid_buf.data(), nullptr);
       abort(); /* If gdb failed to start */
    } else {
-      waitpid(child_pid, NULL, 0);
+      waitpid(child_pid, nullptr, 0);
    }
 }
 #endif

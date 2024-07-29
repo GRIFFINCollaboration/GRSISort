@@ -1,4 +1,7 @@
 #include "TDecay.h"
+
+#include <utility>
+
 #include "Math/Minimizer.h"
 #include "Math/Factory.h"
 #include "Math/Functor.h"
@@ -639,7 +642,7 @@ void TDecayChain::SetRange(Double_t xlow, Double_t xhigh)
 }
 
 TDecay::TDecay(std::vector<TDecayChain*> chainList)
-	: fChainList(chainList)
+	: fChainList(std::move(chainList))
 {
    fFitFunc = new TDecayFit("tmpfit", this, &TDecay::DecayFit, 0, 10, 1, "TDecay", "DecayFit");
    fFitFunc->SetDecay(this);

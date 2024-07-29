@@ -386,78 +386,101 @@ NRMat3d<T>::~NRMat3d()
    }
 }
 
+using Vec_BOOL = const NRVec<bool>;
 using Vec_I_BOOL = const NRVec<bool>;
-typedef NRVec<bool> Vec_BOOL, Vec_O_BOOL, Vec_IO_BOOL;
+using Vec_IO_BOOL = const NRVec<bool>;
 
+using Vec_CHR = const NRVec<char>;
 using Vec_I_CHR = const NRVec<char>;
-typedef NRVec<char> Vec_CHR, Vec_O_CHR, Vec_IO_CHR;
+using Vec_IO_CHR = const NRVec<char>;
 
+using Vec_UCHR = const NRVec<unsigned char>;
 using Vec_I_UCHR = const NRVec<unsigned char>;
-typedef NRVec<unsigned char> Vec_UCHR, Vec_O_UCHR, Vec_IO_UCHR;
+using Vec_IO_UCHR = const NRVec<unsigned char>;
 
+using Vec_INT = const NRVec<int>;
 using Vec_I_INT = const NRVec<int>;
-typedef NRVec<int> Vec_INT, Vec_O_INT, Vec_IO_INT;
+using Vec_IO_INT = const NRVec<int>;
 
+using Vec_UINT = const NRVec<unsigned int>;
 using Vec_I_UINT = const NRVec<unsigned int>;
-typedef NRVec<unsigned int> Vec_UINT, Vec_O_UINT, Vec_IO_UINT;
+using Vec_IO_UINT = const NRVec<unsigned int>;
 
+using Vec_LNG = const NRVec<int64_t>;
 using Vec_I_LNG = const NRVec<int64_t>;
-typedef NRVec<int64_t> Vec_LNG, Vec_O_LNG, Vec_IO_LNG;
+using Vec_IO_LNG = const NRVec<int64_t>;
 
+using Vec_ULNG = const NRVec<uint64_t>;
 using Vec_I_ULNG = const NRVec<uint64_t>;
-typedef NRVec<uint64_t> Vec_ULNG, Vec_O_ULNG, Vec_IO_ULNG;
+using Vec_IO_ULNG = const NRVec<uint64_t>;
 
+using Vec_SP = const NRVec<float>;
 using Vec_I_SP = const NRVec<float>;
-typedef NRVec<float> Vec_SP, Vec_O_SP, Vec_IO_SP;
+using Vec_IO_SP = const NRVec<float>;
 
+using Vec_double = const NRVec<double>;
 using Vec_I_double = const NRVec<double>;
-typedef NRVec<double> Vec_double, Vec_O_double, Vec_IO_double;
+using Vec_IO_double = const NRVec<double>;
 
+using Vec_CPLX_SP = const NRVec<std::complex<float>>;
 using Vec_I_CPLX_SP = const NRVec<std::complex<float>>;
-typedef NRVec<std::complex<float>> Vec_CPLX_SP, Vec_O_CPLX_SP, Vec_IO_CPLX_SP;
+using Vec_IO_CPLX_SP = const NRVec<std::complex<float>>;
 
+using Vec_CPLX_double = const NRVec<std::complex<double>>;
 using Vec_I_CPLX_double = const NRVec<std::complex<double>>;
-typedef NRVec<std::complex<double>> Vec_CPLX_double, Vec_O_CPLX_double, Vec_IO_CPLX_double;
+using Vec_IO_CPLX_double = const NRVec<std::complex<double>>;
 
 // Matrix Types
 
+using Mat_BOOL = const NRMat<bool>;
 using Mat_I_BOOL = const NRMat<bool>;
-typedef NRMat<bool> Mat_BOOL, Mat_O_BOOL, Mat_IO_BOOL;
+using Mat_IO_BOOL = const NRMat<bool>;
 
+using Mat_CHR = const NRMat<char>;
 using Mat_I_CHR = const NRMat<char>;
-typedef NRMat<char> Mat_CHR, Mat_O_CHR, Mat_IO_CHR;
+using Mat_IO_CHR = const NRMat<char>;
 
+using Mat_UCHR = const NRMat<unsigned char>;
 using Mat_I_UCHR = const NRMat<unsigned char>;
-typedef NRMat<unsigned char> Mat_UCHR, Mat_O_UCHR, Mat_IO_UCHR;
+using Mat_IO_UCHR = const NRMat<unsigned char>;
 
+using Mat_INT = const NRMat<int>;
 using Mat_I_INT = const NRMat<int>;
-typedef NRMat<int> Mat_INT, Mat_O_INT, Mat_IO_INT;
+using Mat_IO_INT = const NRMat<int>;
 
+using Mat_UINT = const NRMat<unsigned int>;
 using Mat_I_UINT = const NRMat<unsigned int>;
-typedef NRMat<unsigned int> Mat_UINT, Mat_O_UINT, Mat_IO_UINT;
+using Mat_IO_UINT = const NRMat<unsigned int>;
 
+using Mat_LNG = const NRMat<int64_t>;
 using Mat_I_LNG = const NRMat<int64_t>;
-typedef NRMat<int64_t> Mat_LNG, Mat_O_LNG, Mat_IO_LNG;
+using Mat_IO_LNG = const NRMat<int64_t>;
 
+using Mat_ULNG = const NRMat<uint64_t>;
 using Mat_I_ULNG = const NRMat<uint64_t>;
-typedef NRMat<uint64_t> Mat_ULNG, Mat_O_ULNG, Mat_IO_ULNG;
+using Mat_IO_ULNG = const NRMat<uint64_t>;
 
+using Mat_SP = const NRMat<float>;
 using Mat_I_SP = const NRMat<float>;
-typedef NRMat<float> Mat_SP, Mat_O_SP, Mat_IO_SP;
+using Mat_IO_SP = const NRMat<float>;
 
+using Mat_double = const NRMat<double>;
 using Mat_I_double = const NRMat<double>;
-typedef NRMat<double> Mat_double, Mat_O_double, Mat_IO_double;
+using Mat_IO_double = const NRMat<double>;
 
+using Mat_CPLX_SP = const NRMat<std::complex<float>>;
 using Mat_I_CPLX_SP = const NRMat<std::complex<float>>;
-typedef NRMat<std::complex<float>> Mat_CPLX_SP, Mat_O_CPLX_SP, Mat_IO_CPLX_SP;
+using Mat_IO_CPLX_SP = const NRMat<std::complex<float>>;
 
+using Mat_CPLX_double = const NRMat<std::complex<double>>;
 using Mat_I_CPLX_double = const NRMat<std::complex<double>>;
-typedef NRMat<std::complex<double>> Mat_CPLX_double, Mat_O_CPLX_double, Mat_IO_CPLX_double;
+using Mat_IO_CPLX_double = const NRMat<std::complex<double>>;
 
 // 3D Matrix Types
 
+using Mat3D_double = const NRMat3d<double>;
 using Mat3D_I_double = const NRMat3d<double>;
-typedef NRMat3d<double> Mat3D_double, Mat3D_O_double, Mat3D_IO_double;
+using Mat3D_IO_double = const NRMat3d<double>;
 
 // Miscellaneous Types
 

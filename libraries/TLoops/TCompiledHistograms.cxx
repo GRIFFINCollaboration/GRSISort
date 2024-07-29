@@ -25,8 +25,8 @@ TCompiledHistograms::TCompiledHistograms()
 {
 }
 
-TCompiledHistograms::TCompiledHistograms(const std::string& inputLib, const std::string& funcName)
-   : fLibName(inputLib), fFuncName(funcName), fFunc(nullptr), fObj(&fObjects, &fGates, fCutFiles)
+TCompiledHistograms::TCompiledHistograms(std::string inputLib, std::string funcName)
+   : fLibName(std::move(inputLib)), fFuncName(std::move(funcName)), fFunc(nullptr), fObj(&fObjects, &fGates, fCutFiles)
 {
    fLibrary   = std::make_shared<DynamicLibrary>(fLibName.c_str(), true);
    // Casting required to keep gcc from complaining.
@@ -107,9 +107,9 @@ Int_t TCompiledHistograms::Write(const char*, Int_t, Int_t)
    // variables.Write();
 }
 
-void TCompiledHistograms::Load(std::string libname, std::string func_name)
+void TCompiledHistograms::Load(const std::string& libName, const std::string& funcName)
 {
-   TCompiledHistograms other(std::move(libname), std::move(func_name));
+   TCompiledHistograms other(libName, funcName);
    swap_lib(other);
 }
 

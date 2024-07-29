@@ -22,7 +22,7 @@ class ExampleFragmentSelector : public TGRSISelector {
 public:
    TFragment* fFragment{nullptr};
 
-   explicit ExampleFragmentSelector(TTree* /*tree*/ = 0) : TGRSISelector() { SetOutputPrefix("ExampleFragment"); }
+   explicit ExampleFragmentSelector(TTree* /*tree*/ = nullptr) : TGRSISelector() { SetOutputPrefix("ExampleFragment"); }
    virtual ~ExampleFragmentSelector() = default;
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();

@@ -216,7 +216,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
       // Get Median sigma
       sigma_list[i] = GetParameter(6 * i + 7);
    }
-   std::sort(sigma_list.begin(), sigma_list.end(), std::greater<Double_t>());
+   std::sort(sigma_list.begin(), sigma_list.end(), std::greater<>());
    Double_t median = sigma_list.at(static_cast<int>(sigma_list.size() / 2.));
 
    Double_t range_low  = 0.;

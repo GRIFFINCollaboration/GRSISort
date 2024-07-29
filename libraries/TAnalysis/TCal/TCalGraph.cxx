@@ -87,7 +87,7 @@ Int_t TCalGraph::AddLists(const TCalList& cal_list, const TSourceList& src_list)
       const auto& cal_it = cal_map.find(src_it.first);
       if(cal_it == cal_map.end()) {   // we couldn't find the src data
          missing_src_values.AddPoint(src_it.second);
-         missing_src_values_vec.push_back(std::make_pair(src_it.first, src_it.second.Centroid()));
+         missing_src_values_vec.emplace_back(src_it.first, src_it.second.Centroid());
       }
    }
 

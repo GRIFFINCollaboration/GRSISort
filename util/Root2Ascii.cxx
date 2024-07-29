@@ -53,7 +53,7 @@ int main(int argc, char** argv)
       if(argv[i][0] == '-') {
          format = &argv[i][1];
       } else {
-         histNames.push_back(argv[i]);
+         histNames.emplace_back(argv[i]);
       }
    }
 

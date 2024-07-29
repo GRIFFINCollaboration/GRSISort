@@ -377,7 +377,7 @@ public:
    // minus the boolean conversion operator
 public:
    TPriorityValue() : fPriority(EPriority::kDefault) {}
-   explicit TPriorityValue(std::string value, EPriority priority = EPriority::kDefault) : fValue(value), fPriority(priority) {}
+   explicit TPriorityValue(std::string value, EPriority priority = EPriority::kDefault) : fValue(std::move(value)), fPriority(std::move(priority)) {}
    TPriorityValue(const TPriorityValue& rhs) : fPriority(EPriority::kDefault) { *this = rhs; }
    TPriorityValue(TPriorityValue&& rhs) noexcept : fPriority(EPriority::kDefault) { *this = rhs; }
 
