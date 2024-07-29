@@ -21,9 +21,9 @@ class TFile;
 class TCompiledHistograms : public TObject {
 public:
    TCompiledHistograms();
-   TCompiledHistograms(const std::string& inputLib, const std::string& funcName);
+   TCompiledHistograms(std::string inputLib, std::string funcName);
 
-   void Load(std::string libName, std::string funcName);
+   void Load(const std::string& libName, const std::string& funcName);
 #ifndef __CINT__
    void Fill(std::shared_ptr<const TFragment> frag);
    void Fill(std::shared_ptr<TUnpackedEvent> detectors);
