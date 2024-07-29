@@ -778,8 +778,8 @@ Double_t TDecay::ComponentFunc(Double_t* dim, Double_t* par)
    /// Function for drawing summed components.
    Double_t result = 0;
    /// This function takes 1 parameter, the decay Id.
-   Int_t id = static_cast<Int_t>(par[0]);
-   auto  iter = fDecayMap.find(id);
+   auto id = static_cast<Int_t>(par[0]);
+   auto iter = fDecayMap.find(id);
 
    for(auto* decay : iter->second) {
       result += decay->Eval(dim[0]);

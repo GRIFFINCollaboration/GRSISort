@@ -12,7 +12,7 @@
 
 class GCube : public TH1 {
 public:
-   GCube();
+   GCube() = default;
    GCube(const char* name, const char* title, Int_t nbins, Double_t low, Double_t up);
    GCube(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GCube(const char* name, const char* title, Int_t nbins, const Float_t* bins);

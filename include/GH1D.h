@@ -27,7 +27,7 @@ public:
 
    GH1D(const TF1& function, Int_t nbinsx, Double_t xlow, Double_t xup);
 
-   GH1D(const TH1& source);
+   explicit GH1D(const TH1& source);
    // GH1D(const TH1 *source);
    // virtual void SetOption(Option_t* option=" ");
 

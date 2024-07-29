@@ -232,8 +232,8 @@ public:
 
 class GCanvas : public TCanvas {
 public:
-   GCanvas(Bool_t build = kTRUE);
-   GCanvas(const char* name, const char* title = "", Int_t form = 1);
+   explicit GCanvas(Bool_t build = kTRUE);
+   explicit GCanvas(const char* name, const char* title = "", Int_t form = 1);
    GCanvas(const char* name, const char* title, Int_t winw, Int_t winh);
    GCanvas(const char* name, Int_t winw, Int_t winh, Int_t winid);
    GCanvas(const char* name, const char* title, Int_t wtopx, Int_t wtopy, Int_t winw, Int_t winh, bool gui = false);

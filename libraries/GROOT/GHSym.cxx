@@ -1617,7 +1617,7 @@ Long64_t GHSym::Merge(TCollection* list)
       while((h = static_cast<GHSym*>(next())) != nullptr) {
          if(h->GetXaxis()->GetXmin() >= h->GetXaxis()->GetXmax() && (h->fBuffer != nullptr)) {
             // no limits
-            Int_t nbentries = static_cast<Int_t>(h->fBuffer[0]);
+            auto nbentries = static_cast<Int_t>(h->fBuffer[0]);
             for(Int_t i = 0; i < nbentries; i++) {
                Fill(h->fBuffer[3 * i + 2], h->fBuffer[3 * i + 3], h->fBuffer[3 * i + 1]);
             }

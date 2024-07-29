@@ -80,7 +80,7 @@ const std::string& ProgramName();
 namespace grsi {
 struct exit_exception : public std::exception {
 public:
-   exit_exception(int c, const char* msg = "") : code(c), message(msg) {}
+   explicit exit_exception(int c, const char* msg = "") : code(c), message(msg) {}
    ~exit_exception() noexcept override = default;
    /*     virtual const char* what() const throw {
            //  LOG(what); // write to log file

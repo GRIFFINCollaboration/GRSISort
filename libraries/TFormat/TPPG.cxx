@@ -384,7 +384,7 @@ bool TPPG::CalculateCycleFromData(bool verbose)
    // loop over all data and count how often we get each time difference between one state and the previous state
    std::array<std::map<ULong64_t, int>, 4> numberOfStateLengths;   // to calculate the length of each state (tape move, background, beam on, and decay)
    ULong64_t                               diff;
-   for(PPGMap_t::iterator ppgIt = MapBegin(); ppgIt != MapEnd(); ++ppgIt) {
+   for(auto ppgIt = MapBegin(); ppgIt != MapEnd(); ++ppgIt) {
       switch(ppgIt->second->GetNewPPG()) {
       case EPpgPattern::kBackground:
          diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), EPpgPattern::kTapeMove);

@@ -23,9 +23,9 @@
 
 class TBetaDecay : public TNamed {
 public:
-   TBetaDecay();
-   TBetaDecay(TNucleus* parent);
-   TBetaDecay(char* name);
+   TBetaDecay() = default;
+   explicit TBetaDecay(TNucleus* parent);
+   explicit TBetaDecay(char* name);
    TBetaDecay(Int_t Z, Int_t N);
    ~TBetaDecay() override;
 

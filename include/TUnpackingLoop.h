@@ -78,7 +78,7 @@ private:
    bool      fEvaluateDataType;
    EDataType fDataType;
 
-   TUnpackingLoop(std::string name);
+   explicit TUnpackingLoop(std::string name);
    TUnpackingLoop(const TUnpackingLoop& other);
    TUnpackingLoop& operator=(const TUnpackingLoop& other);
 };

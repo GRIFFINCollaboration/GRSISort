@@ -17,7 +17,7 @@ public:
    TSourceList();
    TSourceList(const TNucleus& nuc, const char* name, const char* title = "");
    explicit TSourceList(const char* name, const char* title = "");
-   TSourceList(const TNucleus& nuc);
+   explicit TSourceList(const TNucleus& nuc);
    ~TSourceList() override = default;
 
    TSourceList(const TSourceList& copy);

@@ -100,8 +100,8 @@ private:
 
 class TScaler : public TObject {
 public:
-   TScaler(bool loadIntoMap = false);
-   TScaler(TTree*, bool loadIntoMap = false);
+   explicit TScaler(bool loadIntoMap = false);
+   explicit TScaler(TTree*, bool loadIntoMap = false);
    TScaler(const TScaler&);
    ~TScaler() override;
 

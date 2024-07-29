@@ -31,7 +31,7 @@
 class TGRSISelector : public TSelector {
 public:
    // Methods are purposely not virtual so that TGRSISelector has control
-   TGRSISelector(TTree* /*tree*/ = nullptr) { SetOutputPrefix(ClassName()); }
+   explicit TGRSISelector(TTree* /*tree*/ = nullptr) { SetOutputPrefix(ClassName()); }
    ~TGRSISelector() override = default;
    Int_t  Version() const override { return 2; }
    void   Begin(TTree* tree) override;

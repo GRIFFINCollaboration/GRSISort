@@ -284,14 +284,14 @@ int main(int argc, char** argv)
       return 1;
    }
 
-   TTree* tree = dynamic_cast<TTree*>(file->Get("FragmentTree"));
+   auto* tree = dynamic_cast<TTree*>(file->Get("FragmentTree"));
 
    if(tree == nullptr) {
       printf("Failed to find fragment tree in file '%s'!\n", argv[1]);
       return 1;
    }
 
-   TTree* badtree = dynamic_cast<TTree*>(file->Get("BadFragmentTree"));
+   auto* badtree = dynamic_cast<TTree*>(file->Get("BadFragmentTree"));
 
    if(badtree == nullptr) {
       printf("Failed to find bad fragment tree in file '%s'!\n", argv[1]);
@@ -301,7 +301,7 @@ int main(int argc, char** argv)
                 << "% of the good entries" << std::endl;
    }
 
-   TTree* epicstree = dynamic_cast<TTree*>(file->Get("EpicsTree"));
+   auto* epicstree = dynamic_cast<TTree*>(file->Get("EpicsTree"));
 
    if(epicstree == nullptr) {
       printf("Failed to find epics tree in file '%s'!\n", argv[1]);

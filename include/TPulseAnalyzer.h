@@ -118,8 +118,8 @@ private:
 
 public:
    TPulseAnalyzer();
-   TPulseAnalyzer(const TFragment& fragment, double = 0);
-   TPulseAnalyzer(const std::vector<Short_t>& wave, double = 0, std::string name = "");
+   explicit TPulseAnalyzer(const TFragment& fragment, double = 0);
+   explicit TPulseAnalyzer(const std::vector<Short_t>& wave, double = 0, std::string name = "");
    virtual ~TPulseAnalyzer();
 
    void SetData(const TFragment& fragment, double = 0);

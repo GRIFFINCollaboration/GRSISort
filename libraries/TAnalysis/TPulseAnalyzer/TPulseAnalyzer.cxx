@@ -1628,8 +1628,7 @@ bool TPulseAnalyzer::GetSiliShape(double tauDecay, double tauRise)
 bool TPulseAnalyzer::GetSiliShapeTF1(double tauDecay, double tauRise, double baseline, double basefreq)
 {
    TGraph* h = GetWaveGraph();
-   if(h) {   // Graph better than hist for stats and simplicity
-
+   if(h != nullptr) {   // Graph better than hist for stats and simplicity
       SiliShapePrepare(tauDecay, tauRise);
       TF1 g = Getsilifit();
 

@@ -605,7 +605,7 @@ void GRootBrowser::HandleMenu(Int_t id)
 															 newfile = kTRUE;
 														 }
 														 if((fActBrowser != nullptr) && newfile) {
-															 TGFileBrowser* fileBrowser = static_cast<TGFileBrowser*>(fActBrowser);
+															 auto* fileBrowser = static_cast<TGFileBrowser*>(fActBrowser);
 															 if(fileBrowser != nullptr) {
 																 fileBrowser->Selected(nullptr);
 															 }
@@ -1069,7 +1069,7 @@ void GRootBrowser::SwitchMenus(TGCompositeFrame* from)
       }
       return;
    }
-   TGCompositeFrame* embed   = static_cast<TGCompositeFrame*>(frameElement->fFrame);
+   auto* embed   = static_cast<TGCompositeFrame*>(frameElement->fFrame);
    TGFrameElement*   element = nullptr;
    if(embed != nullptr && embed->GetList() != nullptr) {
       TIter next(embed->GetList());
