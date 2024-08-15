@@ -1,5 +1,5 @@
-#ifndef TCALLIST_H__
-#define TCALLIST_H__
+#ifndef TCALLIST_H
+#define TCALLIST_H
 
 /** \addtogroup Calibration
  *  @{
@@ -15,9 +15,11 @@ class TCalList : public TNamed {
 public:
    TCalList();
    explicit TCalList(const char* name, const char* title = "");
-   ~TCalList() override = default;
-
-   TCalList(const TCalList& copy);
+	TCalList(const TCalList&);
+	TCalList(TCalList&&) noexcept = default;
+	TCalList& operator=(const TCalList&) = default;
+	TCalList& operator=(TCalList&&) noexcept = default;
+   ~TCalList() = default;
 
    void  AddPoint(const TCalPoint& point);
    void  AddPoint(const UInt_t& idx, const TCalPoint& point);

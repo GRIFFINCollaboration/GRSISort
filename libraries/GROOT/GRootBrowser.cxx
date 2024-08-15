@@ -11,7 +11,6 @@
 #include "TGStatusBar.h"
 #include "Varargs.h"
 #include "TInterpreter.h"
-#include "TBrowser.h"
 #include "TGFileDialog.h"
 #include "TObjString.h"
 #include "TVirtualPad.h"
@@ -36,9 +35,9 @@
 #include <TWin32SplashThread.h>
 #endif
 
-static const char* gOpenFileTypes[] = {"ROOT files", "*.root", "All files", "*", nullptr, nullptr};
+static std::array<const char*, 6> gOpenFileTypes = {"ROOT files", "*.root", "All files", "*", nullptr, nullptr};
 
-static const char* gPluginFileTypes[] = {"ROOT files", "*.C", "All files", "*", nullptr, nullptr};
+static std::array<const char*, 6> gPluginFileTypes = {"ROOT files", "*.C", "All files", "*", nullptr, nullptr};
 
 //______________________________________________________________________________
 GRootBrowser::GRootBrowser(TBrowser* b, const char* name, UInt_t width, UInt_t height, Option_t* opt, Bool_t initshow)
@@ -226,7 +225,7 @@ void GRootBrowser::CreateBrowser(const char* name)
 GRootBrowser::~GRootBrowser()
 {
    /// Clean up all widgets, frames and layouthints that were used
-   std::cout << __PRETTY_FUNCTION__ << std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT
    fflush(stdout);
 
    if(fIconPic != nullptr) {
@@ -446,7 +445,7 @@ void GRootBrowser::EventInfo(Int_t event, Int_t px, Int_t py, TObject* selected)
    /// Display a tooltip with infos about the primitive below the cursor.
 
    const Int_t kTMAX = 256;
-   static char atext[kTMAX];
+   static std::array<char, kTMAX> atext;
    if(selected == nullptr || event == kMouseLeave) {
       SetStatusText("", 0);
       SetStatusText("", 1);
@@ -457,11 +456,11 @@ void GRootBrowser::EventInfo(Int_t event, Int_t px, Int_t py, TObject* selected)
    SetStatusText(selected->GetTitle(), 0);
    SetStatusText(selected->GetName(), 1);
    if(event == kKeyPress) {
-      snprintf(atext, kTMAX, "%c", static_cast<char>(px));
+      snprintf(atext.data(), atext.size(), "%c", static_cast<char>(px));
    } else {
-      snprintf(atext, kTMAX, "%d,%d", px, py);
+      snprintf(atext.data(), atext.size(), "%d,%d", px, py);
    }
-   SetStatusText(atext, 2);
+   SetStatusText(atext.data(), 2);
    SetStatusText(selected->GetObjectInfo(px, py), 3);
 }
 
@@ -589,7 +588,7 @@ void GRootBrowser::HandleMenu(Int_t id)
 														 Bool_t         newfile = kFALSE;
 														 static TString dir(".");
 														 TGFileInfo     fileInfo;
-														 fileInfo.fFileTypes = gOpenFileTypes;
+														 fileInfo.fFileTypes = gOpenFileTypes.data();
 														 fileInfo.fIniDir    = StrDup(dir);
 														 new TGFileDialog(gClient->GetDefaultRoot(), this, kFDOpen, &fileInfo);
 														 dir = fileInfo.fIniDir;
@@ -639,37 +638,37 @@ void GRootBrowser::HandleMenu(Int_t id)
 													  } break;
 	case ENewBrowserMessages::kHelpOnCanvas:
 													  helperDialog = new TRootHelpDialog(this, "Help on Canvas...", 600, 400);
-													  helperDialog->SetText(gHelpCanvas);
+													  helperDialog->SetText(gHelpCanvas); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 													  helperDialog->Popup();
 													  break;
 	case ENewBrowserMessages::kHelpOnMenus:
 													  helperDialog = new TRootHelpDialog(this, "Help on Menus...", 600, 400);
-													  helperDialog->SetText(gHelpPullDownMenus);
+													  helperDialog->SetText(gHelpPullDownMenus); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 													  helperDialog->Popup();
 													  break;
 	case ENewBrowserMessages::kHelpOnGraphicsEd:
 													  helperDialog = new TRootHelpDialog(this, "Help on Graphics Editor...", 600, 400);
-													  helperDialog->SetText(gHelpGraphicsEditor);
+													  helperDialog->SetText(gHelpGraphicsEditor); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 													  helperDialog->Popup();
 													  break;
 	case ENewBrowserMessages::kHelpOnBrowser:
 													  helperDialog = new TRootHelpDialog(this, "Help on Browser...", 600, 400);
-													  helperDialog->SetText(gHelpBrowser);
+													  helperDialog->SetText(gHelpBrowser); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 													  helperDialog->Popup();
 													  break;
 	case ENewBrowserMessages::kHelpOnObjects:
 													  helperDialog = new TRootHelpDialog(this, "Help on Objects...", 600, 400);
-													  helperDialog->SetText(gHelpObjects);
+													  helperDialog->SetText(gHelpObjects); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 													  helperDialog->Popup();
 													  break;
 	case ENewBrowserMessages::kHelpOnPS:
 													  helperDialog = new TRootHelpDialog(this, "Help on PostScript...", 600, 400);
-													  helperDialog->SetText(gHelpPostscript);
+													  helperDialog->SetText(gHelpPostscript); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 													  helperDialog->Popup();
 													  break;
 	case ENewBrowserMessages::kHelpOnRemote:
 													  helperDialog = new TRootHelpDialog(this, "Help on Browser...", 600, 400);
-													  helperDialog->SetText(gHelpRemote);
+													  helperDialog->SetText(gHelpRemote); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 													  helperDialog->Popup();
 													  break;
 	case ENewBrowserMessages::kClone: CloneBrowser(); break;
@@ -687,7 +686,7 @@ void GRootBrowser::HandleMenu(Int_t id)
 	case ENewBrowserMessages::kExecPluginMacro: {
 																  static TString dir(".");
 																  TGFileInfo     fileInfo;
-																  fileInfo.fFileTypes = gPluginFileTypes;
+																  fileInfo.fFileTypes = gPluginFileTypes.data();
 																  fileInfo.fIniDir    = StrDup(dir);
 																  new TGFileDialog(gClient->GetDefaultRoot(), this, kFDOpen, &fileInfo);
 																  dir = fileInfo.fIniDir;
@@ -1087,8 +1086,8 @@ void GRootBrowser::SwitchMenus(TGCompositeFrame* from)
                   return;
                }
             }
-            const_cast<TGCompositeFrame*>(static_cast<const TGCompositeFrame*>(menu->GetParent()))->HideFrame(menu);
-            const_cast<TGCompositeFrame*>(static_cast<const TGCompositeFrame*>(menu->GetParent()))->SetCleanup(kNoCleanup);
+            const_cast<TGCompositeFrame*>(static_cast<const TGCompositeFrame*>(menu->GetParent()))->HideFrame(menu); // NOLINT
+            const_cast<TGCompositeFrame*>(static_cast<const TGCompositeFrame*>(menu->GetParent()))->SetCleanup(kNoCleanup); // NOLINT
             menu->ReparentWindow(fMenuFrame);
             fMenuFrame->AddFrame(menu, fLH2);
             TGFrameElement* mel = nullptr;

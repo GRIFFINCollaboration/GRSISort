@@ -10,7 +10,7 @@ class TF1;
 
 class GH1D : public TH1D {
 public:
-   GH1D() : TH1D(), parent(nullptr), projection_axis(-1) {}
+   GH1D() : parent(nullptr), projection_axis(-1) {}
    explicit GH1D(const TVectorD& vec) : TH1D(vec), parent(nullptr), projection_axis(-1) {}
    GH1D(const char* name, const char* title, Int_t nbinsx, const Float_t* xbins)
       : TH1D(name, title, nbinsx, xbins), parent(nullptr), projection_axis(-1)

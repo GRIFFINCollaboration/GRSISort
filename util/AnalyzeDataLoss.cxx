@@ -44,28 +44,28 @@ TList* AnalyzeDataLoss(TTree* tree, int64_t entries = 0, TStopwatch* w = nullptr
    int fEntries = tree->GetEntries();
 
    tree->GetEntry(0);
-   int64_t   entry;
+   int64_t   entry    = 0;
    int64_t   skip     = 1000;   // skip this many entries before beginning
    const int channels = 150;    // number of channels
    // int64_t lasttime = 0;
 
    //--------------- parameters for dealing with the roll-over of the AcceptedChannelId ----------------------//
-   uint64_t acceptedMax = TMath::Power(2, 14);   // this is the maximum number that the AcceptedChannelId can be
-   int      rollovers[channels];                 // this is how many roll-overs we have had
-   // int64_t int lastAccepted[channels];
-   bool         rolling[channels];   // array that tells us if we're rolling over in that channel
-   int          rollnum[channels];   // array that tells us how many times we've had accepted ID over the threshold
-   unsigned int rollingthreshold  = 1000;
-   int          rollnum_threshold = 20;   // if we have this many numbers above the threshold, turn rolling on or off
+   uint64_t                   acceptedMax = TMath::Power(2, 14);   // this is the maximum number that the AcceptedChannelId can be
+   std::array<int, channels>  rollovers;                           // this is how many roll-overs we have had
+   std::array<bool, channels> rolling;                             // array that tells us if we're rolling over in that channel
+   std::array<int, channels>  rollnum;                             // array that tells us how many times we've had accepted ID over the threshold
+   unsigned int               rollingthreshold  = 1000;
+   int                        rollnum_threshold = 20;   // if we have this many numbers above the threshold, turn rolling on or off
 
-   int64_t channelIds[channels][3];
-   int64_t acceptedChannelIds[channels][3];
-   int64_t timestamp[channels][3];
-   int     networkPacketNumber[3] = {0, 0, 0};
-   int64_t networkPacketTS[3]     = {0, 0, 0};
-   int     timebins               = 10000;
-   double  timemin                = 0;      // in seconds
-   double  timemax                = 1000;   // in seconds
+   std::array<std::array<int64_t, 3>, channels> channelIds;
+   std::array<std::array<int64_t, 3>, channels> acceptedChannelIds;
+   std::array<std::array<int64_t, 3>, channels> timestamp;
+   std::array<int, 3>                           networkPacketNumber = {0, 0, 0};
+   std::array<int64_t, 3>                       networkPacketTS     = {0, 0, 0};
+   int                                          timebins            = 10000;
+   double                                       timemin             = 0;      // in seconds
+   double                                       timemax             = 1000;   // in seconds
+
    auto*   accepted_hst           = new TH2D("accepted_hst", "Accepted Channel Id vs. Channel Number;Channel Number;Accepted Channel Id", channels, 0, channels, 10000, 0, 10e5);
    list->Add(accepted_hst);
    auto* lostNetworkPackets = new TH1D("lostNetworkPackets", "lost network packets;time [s];lost network packets", timebins, timemin, timemax);

@@ -29,6 +29,10 @@ public:
    // ctors and dtors
    TAB3Peak() = default;
    explicit TAB3Peak(Double_t centroid) { Centroid(centroid); }
+	TAB3Peak(const TAB3Peak&) = default;
+	TAB3Peak(TAB3Peak&&) noexcept = default;
+	TAB3Peak& operator=(const TAB3Peak&) = default;
+	TAB3Peak& operator=(TAB3Peak&&) noexcept = default;
    ~TAB3Peak() = default;
 
    void InitParNames() override;

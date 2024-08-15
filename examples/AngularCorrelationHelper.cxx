@@ -15,14 +15,14 @@ void AngularCorrelationHelper::CreateHistograms(unsigned int slot)
 
    for(auto angle = fAngles->begin(); angle != fAngles->end(); ++angle) {
       int i                                           = std::distance(fAngles->begin(), angle);
-      fH2[slot][Form("AngularCorrelation%d", i)]      = new TH2D(Form("AngularCorrelation%d", i), Form("%.1f^{o}: Suppressed #gamma-#gamma %s, |#Deltat_{#gamma-#gamma}| < %.1f", *angle, conditions.c_str(), fPrompt), fBins, fMinEnergy, fMaxEnergy, fBins, fMinEnergy, fMaxEnergy);
-      fH2[slot][Form("AngularCorrelationBG%d", i)]    = new TH2D(Form("AngularCorrelationBG%d", i), Form("%.1f^{o}: Suppressed #gamma-#gamma %s, |#Deltat_{#gamma-#gamma}| = %.1f - %.1f", *angle, conditions.c_str(), fTimeRandomLow, fTimeRandomHigh), fBins, fMinEnergy, fMaxEnergy, fBins, fMinEnergy, fMaxEnergy);
-      fH2[slot][Form("AngularCorrelationMixed%d", i)] = new TH2D(Form("AngularCorrelationMixed%d", i), Form("%.1f^{o}: Event mixed suppressed #gamma-#gamma %s", *angle, conditions.c_str()), fBins, fMinEnergy, fMaxEnergy, fBins, fMinEnergy, fMaxEnergy);
+      H2()[slot][Form("AngularCorrelation%d", i)]      = new TH2D(Form("AngularCorrelation%d", i), Form("%.1f^{o}: Suppressed #gamma-#gamma %s, |#Deltat_{#gamma-#gamma}| < %.1f", *angle, conditions.c_str(), fPrompt), fBins, fMinEnergy, fMaxEnergy, fBins, fMinEnergy, fMaxEnergy);
+      H2()[slot][Form("AngularCorrelationBG%d", i)]    = new TH2D(Form("AngularCorrelationBG%d", i), Form("%.1f^{o}: Suppressed #gamma-#gamma %s, |#Deltat_{#gamma-#gamma}| = %.1f - %.1f", *angle, conditions.c_str(), fTimeRandomLow, fTimeRandomHigh), fBins, fMinEnergy, fMaxEnergy, fBins, fMinEnergy, fMaxEnergy);
+      H2()[slot][Form("AngularCorrelationMixed%d", i)] = new TH2D(Form("AngularCorrelationMixed%d", i), Form("%.1f^{o}: Event mixed suppressed #gamma-#gamma %s", *angle, conditions.c_str()), fBins, fMinEnergy, fMaxEnergy, fBins, fMinEnergy, fMaxEnergy);
    }
 
-   fH2[slot]["AngularCorrelation"]      = new TH2D("AngularCorrelation", Form("Suppressed #gamma-#gamma %s, |#Deltat_{#gamma-#gamma}| < %.1f", conditions.c_str(), fPrompt), fBins, fMinEnergy, fMaxEnergy, fBins, fMinEnergy, fMaxEnergy);
-   fH2[slot]["AngularCorrelationBG"]    = new TH2D("AngularCorrelationBG", Form("Suppressed #gamma-#gamma %s, #Deltat_{#gamma-#gamma} = %.1f - %.1f", conditions.c_str(), fTimeRandomLow, fTimeRandomHigh), fBins, fMinEnergy, fMaxEnergy, fBins, fMinEnergy, fMaxEnergy);
-   fH2[slot]["AngularCorrelationMixed"] = new TH2D("AngularCorrelationMixed", Form("Event mixed suppressed #gamma-#gamma %s", conditions.c_str()), fBins, fMinEnergy, fMaxEnergy, fBins, fMinEnergy, fMaxEnergy);
+   H2()[slot]["AngularCorrelation"]      = new TH2D("AngularCorrelation", Form("Suppressed #gamma-#gamma %s, |#Deltat_{#gamma-#gamma}| < %.1f", conditions.c_str(), fPrompt), fBins, fMinEnergy, fMaxEnergy, fBins, fMinEnergy, fMaxEnergy);
+   H2()[slot]["AngularCorrelationBG"]    = new TH2D("AngularCorrelationBG", Form("Suppressed #gamma-#gamma %s, #Deltat_{#gamma-#gamma} = %.1f - %.1f", conditions.c_str(), fTimeRandomLow, fTimeRandomHigh), fBins, fMinEnergy, fMaxEnergy, fBins, fMinEnergy, fMaxEnergy);
+   H2()[slot]["AngularCorrelationMixed"] = new TH2D("AngularCorrelationMixed", Form("Event mixed suppressed #gamma-#gamma %s", conditions.c_str()), fBins, fMinEnergy, fMaxEnergy, fBins, fMinEnergy, fMaxEnergy);
 
    // for the first slot we also write the griffin angles
    if(slot == 0) {
@@ -57,11 +57,11 @@ void AngularCorrelationHelper::Exec(unsigned int slot, TGriffin& fGriffin, TGrif
          // check the timing to see if these are coincident or time-random hits
          double ggTime = TMath::Abs(grif2->GetTime() - grif1->GetTime());
          if(ggTime <= fPrompt) {
-            fH2[slot].at("AngularCorrelation")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-            fH2[slot].at(Form("AngularCorrelation%d", angleIndex))->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+            H2()[slot].at("AngularCorrelation")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+            H2()[slot].at(Form("AngularCorrelation%d", angleIndex))->Fill(grif1->GetEnergy(), grif2->GetEnergy());
          } else if(fTimeRandomLow <= ggTime && ggTime <= fTimeRandomHigh) {
-            fH2[slot].at("AngularCorrelationBG")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-            fH2[slot].at(Form("AngularCorrelationBG%d", angleIndex))->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+            H2()[slot].at("AngularCorrelationBG")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+            H2()[slot].at(Form("AngularCorrelationBG%d", angleIndex))->Fill(grif1->GetEnergy(), grif2->GetEnergy());
          }
       }
 
@@ -84,8 +84,8 @@ void AngularCorrelationHelper::Exec(unsigned int slot, TGriffin& fGriffin, TGrif
             auto angleIndex = fAngles->Index(angle);
             if(angleIndex < 0) continue;
             // no point in checking the time here, the two hits are from different events
-            fH2[slot].at("AngularCorrelationMixed")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-            fH2[slot].at(Form("AngularCorrelationMixed%d", angleIndex))->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+            H2()[slot].at("AngularCorrelationMixed")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+            H2()[slot].at(Form("AngularCorrelationMixed%d", angleIndex))->Fill(grif1->GetEnergy(), grif2->GetEnergy());
          }
       }
    }

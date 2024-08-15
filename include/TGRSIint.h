@@ -52,7 +52,11 @@ public:
    static TGRSIint* instance(int argc = 0, char** argv = nullptr, void* options = nullptr, int numOptions = -1,
                              bool noLogo = false, const char* appClassName = "grsisort");
 
-   ~TGRSIint() override;
+   TGRSIint(const TGRSIint&)                = delete;
+   TGRSIint(TGRSIint&&) noexcept            = delete;
+   TGRSIint& operator=(const TGRSIint&)     = delete;
+   TGRSIint& operator=(TGRSIint&&) noexcept = delete;
+   ~TGRSIint()                              = default;
 
    static void PrintHelp(bool);
    void        PrintLogo(bool) override;

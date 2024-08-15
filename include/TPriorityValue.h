@@ -375,9 +375,8 @@ public:
 
    // copy-paste of original class (with 'T ' replace by 'std::string ', 'T>' by 'std::string>', 'T& ' by 'std::string& ', and 'T* ' by 'std::string* '):
    // minus the boolean conversion operator
-public:
    TPriorityValue() : fPriority(EPriority::kDefault) {}
-   explicit TPriorityValue(std::string value, EPriority priority = EPriority::kDefault) : fValue(std::move(value)), fPriority(std::move(priority)) {}
+   explicit TPriorityValue(std::string value, EPriority priority = EPriority::kDefault) : fValue(std::move(value)), fPriority(priority) {}
    TPriorityValue(const TPriorityValue& rhs) : fPriority(EPriority::kDefault) { *this = rhs; }
    TPriorityValue(TPriorityValue&& rhs) noexcept : fPriority(EPriority::kDefault) { *this = rhs; }
 

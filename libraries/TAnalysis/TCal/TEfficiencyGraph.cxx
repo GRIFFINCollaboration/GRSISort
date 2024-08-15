@@ -23,7 +23,7 @@ void TEfficiencyGraph::Clear(Option_t* opt)
 void TEfficiencyGraph::BuildGraph()
 {
    ClearAllPoints();
-   for(const auto& iter : fCompareMap) {
+   for(const auto& iter : CompareMap()) {
       auto     pair              = iter.second;
       Double_t src_energy        = pair.second.Centroid();
       Double_t src_energy_err    = pair.second.CentroidErr();
@@ -44,7 +44,7 @@ void TEfficiencyGraph::BuildGraph()
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 26, 0)
 void TEfficiencyGraph::Scale(const Double_t& scale)
 {
-   for(auto& iter : fCompareMap) {
+   for(auto& iter : CompareMap()) {
       auto& pair = iter.second;
       pair.first.SetArea(pair.first.Area() * scale, pair.first.AreaErr() * scale);
    }

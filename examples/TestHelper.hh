@@ -46,7 +46,7 @@ public:
    // TODO: edit the function arguments to match the detectors you want to use!
    void Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo, TZeroDegree& zds, TSceptar& scep);
    // this function is optional and is called after the output lists off all slots/workers have been merged
-   void EndOfSort(std::shared_ptr<std::map<std::string, TList>> list) override;
+   void EndOfSort(std::shared_ptr<std::map<std::string, TList>>& list) override;
 
 private:
    // any constants that are set in the CreateHistograms function and used in the Exec function can be stored here
@@ -55,14 +55,8 @@ private:
 };
 
 // These are needed functions used by TDataFrameLibrary to create and destroy the instance of this helper
-extern "C" TestHelper* CreateHelper(TList* list)
-{
-   return new TestHelper(list);
-}
+extern "C" TestHelper* CreateHelper(TList* list) { return new TestHelper(list); }
 
-extern "C" void DestroyHelper(TGRSIHelper* helper)
-{
-   delete helper;
-}
+extern "C" void DestroyHelper(TGRSIHelper* helper) { delete helper; }
 
 #endif

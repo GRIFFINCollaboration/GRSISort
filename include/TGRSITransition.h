@@ -25,7 +25,11 @@ class TGRSITransition : public TObject {
 
 public:
    TGRSITransition();
-   ~TGRSITransition() override = default;
+	TGRSITransition(const TGRSITransition&) = default;
+	TGRSITransition(TGRSITransition&&) noexcept = default;
+	TGRSITransition& operator=(const TGRSITransition&) = default;
+	TGRSITransition& operator=(TGRSITransition&&) noexcept = default;
+   ~TGRSITransition() = default;
 
    bool IsSortable() const override { return true; }
    int  Compare(const TObject* obj) const override;

@@ -24,6 +24,10 @@ class GH2Base {
 
 public:
    GH2Base() { Init(); }
+	GH2Base(const GH2Base&) = default;
+	GH2Base(GH2Base&&) noexcept = default;
+	GH2Base& operator=(const GH2Base&) = default;
+	GH2Base& operator=(GH2Base&&) noexcept = default;
 
    virtual ~GH2Base();
 
@@ -62,7 +66,7 @@ public:
    void       SetSummaryDirection(EDirection dir) { fSummaryDirection = dir; }
    EDirection GetSummaryDirection() const { return fSummaryDirection; }
 
-   class iterator {
+   class iterator { // NOLINT(readability-identifier-naming)
    public:
       explicit iterator(GH2Base* mat)
          : fMat(mat), fFirst(mat->GetNext(nullptr)), fCurr(fFirst)

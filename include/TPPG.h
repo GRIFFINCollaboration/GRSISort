@@ -49,7 +49,7 @@ public:
    TPPGData();
    TPPGData(const TPPGData&);
    TPPGData(TPPGData&&) = default;
-   ~TPPGData() override = default;
+   ~TPPGData()          = default;
 
    TPPGData& operator=(const TPPGData&) = default;
    TPPGData& operator=(TPPGData&&)      = default;
@@ -138,7 +138,7 @@ public:
    TPPG();
    TPPG(const TPPG&);        // the copy constructor needs to create a deep-copy
    TPPG(TPPG&&) = default;   // the move constructor can be default?
-   ~TPPG() override;
+   ~TPPG();
 
    TPPG& operator=(const TPPG&);        // the copy assignment needs to create a deep-copy
    TPPG& operator=(TPPG&&) = default;   // the move assignment can be default?

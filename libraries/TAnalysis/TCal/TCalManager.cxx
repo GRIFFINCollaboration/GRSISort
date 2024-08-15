@@ -29,7 +29,7 @@ void TCalManager::SetClass(const char* className)
    SetClass(TClass::GetClass(className));
 }
 
-void TCalManager::SetClass(const TClass* cls)
+void TCalManager::SetClass(TClass* cls)
 {
    /// Sets the Derived class of the TCal being held in the TCalManager
    if(fClass != nullptr) {
@@ -37,7 +37,7 @@ void TCalManager::SetClass(const TClass* cls)
       return;
    }
 
-   fClass = const_cast<TClass*>(cls);
+   fClass = cls;
    if(fClass == nullptr) {
       MakeZombie();
       Error("SetClass", "called with a null pointer");

@@ -90,7 +90,7 @@ public:
    void SetMarkerColor(int index, Color_t color)
    {
       /// Set the marker color of the graph and residuals at index
-      if(fVerboseLevel > 3) std::cout << "setting marker color of graph " << index << " to " << color << std::endl;
+      if(fVerboseLevel > 3) { std::cout << "setting marker color of graph " << index << " to " << color << std::endl; }
       fGraphs[index].SetMarkerColor(color);
       fResidualGraphs[index].SetMarkerColor(color);
    }

@@ -57,7 +57,7 @@ GCube::GCube(const char* name, const char* title, Int_t nbins, const Float_t* bi
    fNcells = (fNcells * (nbins + 3) * (nbins + 4)) / 6;
 }
 
-GCube::GCube(const GCube& rhs) : TH1() // calling TH1 constuctor to shut up g++, can't call TH1(rhs) because it's private for some reason
+GCube::GCube(const GCube& rhs) : TH1() // NOLINT calling TH1 constuctor to shut up g++, can't call TH1(rhs) because it's private
 {
    rhs.Copy(*this);
 }
@@ -845,24 +845,24 @@ void GCube::FitSlicesZ(TF1* f1, Int_t binminx, Int_t binmaxx, Int_t binminy, Int
    f1->GetParameters(parsave);
 
    // Create one 2-d histogram for each function parameter
-   char           name[80];
-	char           title[80];
-   TH2D*          hlist[25];
-   const TArrayD* xbins = fXaxis.GetXbins();
-   const TArrayD* ybins = fYaxis.GetXbins();
+   std::array<char, 80> name;
+   std::array<char, 80> title;
+   std::vector<TH2D*>   hlist(npar);
+   const TArrayD*       xbins = fXaxis.GetXbins();
+   const TArrayD*       ybins = fYaxis.GetXbins();
    for(Int_t ipar = 0; ipar < npar; ++ipar) {
-      snprintf(name, 80, "%s_%d", GetName(), ipar);
-      snprintf(title, 80, "Fitted value of par[%d]=%s", ipar, f1->GetParName(ipar));
+      snprintf(name.data(), name.size(), "%s_%d", GetName(), ipar);
+      snprintf(title.data(), title.size(), "Fitted value of par[%d]=%s", ipar, f1->GetParName(ipar));
       if(xbins->fN == 0) {
-         hlist[ipar] = new TH2D(name, title, nbinsx, fXaxis.GetXmin(), fXaxis.GetXmax(), nbinsy, fYaxis.GetXmin(), fYaxis.GetXmax());
+         hlist[ipar] = new TH2D(name.data(), title.data(), nbinsx, fXaxis.GetXmin(), fXaxis.GetXmax(), nbinsy, fYaxis.GetXmin(), fYaxis.GetXmax());
       } else {
-         hlist[ipar] = new TH2D(name, title, nbinsx, xbins->fArray, nbinsy, ybins->fArray);
+         hlist[ipar] = new TH2D(name.data(), title.data(), nbinsx, xbins->fArray, nbinsy, ybins->fArray);
       }
       hlist[ipar]->GetXaxis()->SetTitle(fXaxis.GetTitle());
       hlist[ipar]->GetYaxis()->SetTitle(fYaxis.GetTitle());
    }
-   snprintf(name, 80, "%s_chi2", GetName());
-   auto* hchi2 = new TH2D(name, "chisquare", nbinsx, fXaxis.GetXmin(), fXaxis.GetXmax(), nbinsy, fYaxis.GetXmin(), fYaxis.GetXmax());
+   snprintf(name.data(), name.size(), "%s_chi2", GetName());
+   auto* hchi2 = new TH2D(name.data(), "chisquare", nbinsx, fXaxis.GetXmin(), fXaxis.GetXmax(), nbinsy, fYaxis.GetXmin(), fYaxis.GetXmax());
 
    // Loop on all cells in X,Y generate a projection along Z
    auto* hpz = new TH1D("R_temp", "_temp", nbinsz, fZaxis.GetXmin(), fZaxis.GetXmax());
@@ -1159,7 +1159,7 @@ void GCube::GetStats(Double_t* stats) const
    ///  the histogram.
 
    if(fBuffer != nullptr) {
-      const_cast<GCube*>(this)->BufferEmpty();
+      const_cast<GCube*>(this)->BufferEmpty(); // NOLINT
    }
 
    if((fTsumw == 0 && fEntries > 0) || fXaxis.TestBit(TAxis::kAxisRange) || fYaxis.TestBit(TAxis::kAxisRange) ||
@@ -1344,9 +1344,9 @@ Double_t GCube::Interpolate(Double_t x, Double_t y, Double_t z) const
    Double_t yd = (y - fYaxis.GetBinCenter(uby)) / yw;
    Double_t zd = (z - fZaxis.GetBinCenter(ubz)) / zw;
 
-   Double_t v[] = {GetBinContent(ubx, uby, ubz), GetBinContent(ubx, uby, obz), GetBinContent(ubx, oby, ubz),
-                   GetBinContent(ubx, oby, obz), GetBinContent(obx, uby, ubz), GetBinContent(obx, uby, obz),
-                   GetBinContent(obx, oby, ubz), GetBinContent(obx, oby, obz)};
+   std::array<Double_t, 8> v = {GetBinContent(ubx, uby, ubz), GetBinContent(ubx, uby, obz), GetBinContent(ubx, oby, ubz),
+                                GetBinContent(ubx, oby, obz), GetBinContent(obx, uby, ubz), GetBinContent(obx, uby, obz),
+                                GetBinContent(obx, oby, ubz), GetBinContent(obx, oby, obz)};
 
    Double_t i1 = v[0] * (1 - zd) + v[1] * zd;
    Double_t i2 = v[2] * (1 - zd) + v[3] * zd;
@@ -1388,12 +1388,12 @@ Double_t GCube::KolmogorovTest(const TH1* h2, Option_t* option) const
    opt.ToUpper();
 
    Double_t prb = 0;
-   auto*    h1  = const_cast<TH1*>(static_cast<const TH1*>(this));
+   auto*    h1  = const_cast<TH1*>(static_cast<const TH1*>(this)); // NOLINT
    if(h2 == nullptr) {
       return 0;
    }
    TAxis* xaxis1 = h1->GetXaxis();
-   auto*  xaxis2 = const_cast<TAxis*>(h2->GetXaxis());
+   auto*  xaxis2 = const_cast<TAxis*>(h2->GetXaxis()); // NOLINT
    Int_t  nc1    = xaxis1->GetNbins();
    Int_t  nc2    = xaxis2->GetNbins();
 
@@ -1459,7 +1459,8 @@ Double_t GCube::KolmogorovTest(const TH1* h2, Option_t* option) const
    // calculate the effective entries.
    // the case when errors are zero (w1 == 0 or w2 ==0) are equivalent to
    // compare to a function. In that case the rescaling is done only on sqrt(esum2) or sqrt(esum1)
-   Double_t esum1 = 0, esum2 = 0;
+   Double_t esum1 = 0.;
+	Double_t esum2 = 0.;
    if(w1 > 0) {
       esum1 = sum1 * sum1 / w1;
    } else {
@@ -1482,14 +1483,14 @@ Double_t GCube::KolmogorovTest(const TH1* h2, Option_t* option) const
 	std::array<int, 3> order = {0, 1, 2};
 	std::array<int, 3> binbeg;
 	std::array<int, 3> binend;
-   int ibin[3];
+	std::array<int, 3> ibin;
    binbeg[0] = ibeg;
    binbeg[1] = ibeg;
    binbeg[2] = ibeg;
    binend[0] = iend;
    binend[1] = iend;
    binend[2] = iend;
-   Double_t vdfmax[6];   // there are in total 6 combinations
+	std::array<Double_t, 6> vdfmax;   // there are in total 6 combinations
    int      icomb = 0;
    Double_t s1    = 1. / (6. * sum1);
    Double_t s2    = 1. / (6. * sum2);
@@ -1516,7 +1517,7 @@ Double_t GCube::KolmogorovTest(const TH1* h2, Option_t* option) const
    } while(TMath::Permute(3, order.data()));
 
    // get average of distances
-   Double_t dfmax = TMath::Mean(6, vdfmax);
+   Double_t dfmax = TMath::Mean(vdfmax.size(), vdfmax.data());
 
    //   Get Kolmogorov probability
    Double_t factnm = 0.;
@@ -1531,7 +1532,8 @@ Double_t GCube::KolmogorovTest(const TH1* h2, Option_t* option) const
 
    prb = TMath::KolmogorovProb(z);
 
-   Double_t prb1 = 0, prb2 = 0;
+   Double_t prb1 = 0.;
+	Double_t prb2 = 0.;
    // option N to combine normalization makes sense if both afunc1 and afunc2 are false
    if(opt.Contains("N") && !(afunc1 || afunc2)) {
       // Combine probabilities for shape and normalization
@@ -1889,7 +1891,7 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
    }
 
    // Create the projection histogram
-   char* pname = const_cast<char*>(name);
+   char* pname = const_cast<char*>(name); // NOLINT
    if(name != nullptr && strcmp(name, expectedName) == 0) {
       auto  nch = strlen(GetName()) + 4;
       pname     = new char[nch];
@@ -1954,10 +1956,10 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
 
    // Copy the axis attributes and the axis labels if needed.
    h1->GetXaxis()->ImportAttributes(&fXaxis);
-   THashList* labels = const_cast<TAxis*>(&fXaxis)->GetLabels();
+   THashList* labels = const_cast<TAxis*>(&fXaxis)->GetLabels(); // NOLINT
    if(labels != nullptr) {
       TIter       iL(labels);
-      TObjString* lb;
+      TObjString* lb = nullptr;
       Int_t       i = 1;
       while((lb = static_cast<TObjString*>(iL())) != nullptr) {
          h1->GetXaxis()->SetBinLabel(i, lb->String().Data());
@@ -2027,9 +2029,9 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
    reuseEntries &= static_cast<int>(firstBiny == 0 && lastBiny == fYaxis.GetLast() + 1 && firstBinz == 0 &&
                                     lastBinz == fYaxis.GetLast() + 1);
    if(reuseStats) {
-      Double_t stats[kNstat];
-      GetStats(stats);
-      h1->PutStats(stats);
+		std::array<Double_t, kNstat> stat;
+		GetStats(stat.data());
+      h1->PutStats(stat.data());
    } else {
       // the statistics is automatically recalulated since it is reset by the call to SetBinContent
       // we just need to set the entries since they have not been correctly calculated during the projection
@@ -2440,13 +2442,12 @@ void GCube::Reset(Option_t* option)
    fTsumwy  = 0;
    fTsumwy2 = 0;
    fTsumwxy = 0;
-   if(fMatrix != nullptr) {
+   if(Matrix() != nullptr) {
       try {
-         delete fMatrix;
-         fMatrix = nullptr;
+         delete Matrix();
       } catch(std::exception& e) {
-         fMatrix = nullptr;
       }
+		Matrix(nullptr);
    }
 }
 
@@ -2484,7 +2485,7 @@ TH1* GCube::ShowBackground(Int_t niter, Option_t* option)
    //   The background is returned as a histogram.
    //   to be implemented (may be)
 
-   return reinterpret_cast<TH1*>(gROOT->ProcessLineFast(
+   return reinterpret_cast<TH1*>(gROOT->ProcessLineFast( // NOLINT
       Form(R"(TSpectrum2::StaticBackground((TH1*)0x%lx,%d,"%s"))", reinterpret_cast<ULong_t>(this), niter, option)));
 }
 
@@ -2523,25 +2524,25 @@ void GCube::Smooth(Int_t ntimes, Option_t* option)
    //
    // implementation by David McKee (dmckee@bama.ua.edu). Extended by Rene Brun
 
-   Double_t k5a[5][5] = {{0, 0, 1, 0, 0}, {0, 2, 2, 2, 0}, {1, 2, 5, 2, 1}, {0, 2, 2, 2, 0}, {0, 0, 1, 0, 0}};
-   Double_t k5b[5][5] = {{0, 1, 2, 1, 0}, {1, 2, 4, 2, 1}, {2, 4, 8, 4, 2}, {1, 2, 4, 2, 1}, {0, 1, 2, 1, 0}};
-   Double_t k3a[3][3] = {{0, 1, 0}, {1, 2, 1}, {0, 1, 0}};
+	std::array<std::array<Double_t, 5>, 5> k5a = {{{0, 0, 1, 0, 0}, {0, 2, 2, 2, 0}, {1, 2, 5, 2, 1}, {0, 2, 2, 2, 0}, {0, 0, 1, 0, 0}}};
+   std::array<std::array<Double_t, 5>, 5> k5b = {{{0, 1, 2, 1, 0}, {1, 2, 4, 2, 1}, {2, 4, 8, 4, 2}, {1, 2, 4, 2, 1}, {0, 1, 2, 1, 0}}};
+   std::array<std::array<Double_t, 3>, 3> k3a = {{{0, 1, 0}, {1, 2, 1}, {0, 1, 0}}};
 
    if(ntimes > 1) {
       Warning("Smooth", "Currently only ntimes=1 is supported");
    }
    TString opt = option;
    opt.ToLower();
-   Int_t     ksize_x = 5;
-   Int_t     ksize_y = 5;
-   Double_t* kernel  = &k5a[0][0];
+   Int_t     ksize_x = k5a.size();
+   Int_t     ksize_y = k5a.size();
+   Double_t* kernel  = k5a.data()->data();
    if(opt.Contains("k5b")) {
-      kernel = &k5b[0][0];
+      kernel = k5b.data()->data();
    }
    if(opt.Contains("k3a")) {
-      kernel  = &k3a[0][0];
-      ksize_x = 3;
-      ksize_y = 3;
+      kernel  = k3a.data()->data();
+      ksize_x = k3a.size();
+      ksize_y = k3a.size();
    }
 
    // find i,j ranges
@@ -2667,23 +2668,23 @@ GCubeF::~GCubeF() = default;
 
 TH2F* GCubeF::GetMatrix(bool force)
 {
-   if(fMatrix != nullptr && !force) {
-      return static_cast<TH2F*>(fMatrix);
+   if(Matrix() != nullptr && !force) {
+      return static_cast<TH2F*>(Matrix());
    }
-   if(force && fMatrix != nullptr) {
-      delete fMatrix;
+   if(force) {
+      delete Matrix();
    }
 
-   fMatrix = new TH2F(Form("%s_mat", GetName()), GetTitle(), fXaxis.GetNbins(), fXaxis.GetXmin(), fXaxis.GetXmax(), fYaxis.GetNbins(), fYaxis.GetXmin(), fYaxis.GetXmax());
+   Matrix(new TH2F(Form("%s_mat", GetName()), GetTitle(), fXaxis.GetNbins(), fXaxis.GetXmin(), fXaxis.GetXmax(), fYaxis.GetNbins(), fYaxis.GetXmin(), fYaxis.GetXmax()));
    // copy cell contents (including all overflow and underflow cells)
    for(int i = 0; i < fXaxis.GetNbins() + 2; ++i) {
       for(int j = 0; j < fXaxis.GetNbins() + 2; ++j) {
          for(int k = 0; k < fXaxis.GetNbins() + 2; ++k) {
-            fMatrix->SetBinContent(i, j, k, GetBinContent(i, j, k));
+            Matrix()->SetBinContent(i, j, k, GetBinContent(i, j, k));
          }
       }
    }
-   return static_cast<TH2F*>(fMatrix);
+   return static_cast<TH2F*>(Matrix());
 }
 
 void GCubeF::Copy(TObject& rh) const
@@ -2713,7 +2714,7 @@ Double_t GCubeF::GetBinContent(Int_t bin) const
    // Get bin content.
 
    if(fBuffer != nullptr) {
-      const_cast<GCubeF*>(this)->BufferEmpty();
+      const_cast<GCubeF*>(this)->BufferEmpty(); // NOLINT
    }
    if(bin < 0) {
       bin = 0;
@@ -2767,7 +2768,7 @@ GCubeF& GCubeF::operator=(const GCubeF& h1)
    // Operator =
 
    if(this != &h1) {
-      const_cast<GCubeF&>(h1).Copy(*this);
+      const_cast<GCubeF&>(h1).Copy(*this); // NOLINT
    }
    return *this;
 }
@@ -2873,25 +2874,25 @@ GCubeD::~GCubeD() = default;
 
 TH2D* GCubeD::GetMatrix(bool force)
 {
-   if(fMatrix != nullptr && !force) {
-      return static_cast<TH2D*>(fMatrix);
+   if(Matrix() != nullptr && !force) {
+      return static_cast<TH2D*>(Matrix());
    }
-   if(force && fMatrix != nullptr) {
-      delete fMatrix;
+   if(force) {
+      delete Matrix();
    }
 
-   fMatrix = new TH2D(Form("%s_mat", GetName()), Form("%s;%s;%s", GetTitle(), fXaxis.GetTitle(), fYaxis.GetTitle()),
-                      fXaxis.GetNbins(), fXaxis.GetXmin(), fXaxis.GetXmax(), fYaxis.GetNbins(), fYaxis.GetXmin(),
-                      fYaxis.GetXmax());
+   Matrix(new TH2D(Form("%s_mat", GetName()), Form("%s;%s;%s", GetTitle(), fXaxis.GetTitle(), fYaxis.GetTitle()),
+                   fXaxis.GetNbins(), fXaxis.GetXmin(), fXaxis.GetXmax(), fYaxis.GetNbins(), fYaxis.GetXmin(),
+                   fYaxis.GetXmax()));
    // copy cell contents (including all overflow and underflow cells)
    for(int i = 0; i < fXaxis.GetNbins() + 2; ++i) {
       for(int j = 0; j < fXaxis.GetNbins() + 2; ++j) {
          for(int k = 0; k < fXaxis.GetNbins() + 2; ++k) {
-            fMatrix->SetBinContent(i, j, k, GetBinContent(i, j, k));
+            Matrix()->SetBinContent(i, j, k, GetBinContent(i, j, k));
          }
       }
    }
-   return static_cast<TH2D*>(fMatrix);
+   return static_cast<TH2D*>(Matrix());
 }
 
 void GCubeD::Copy(TObject& rh) const
@@ -2920,7 +2921,7 @@ Double_t GCubeD::GetBinContent(Int_t bin) const
 {
    // Get bin content.
    if(fBuffer != nullptr) {
-      const_cast<GCubeD*>(this)->BufferEmpty();
+      const_cast<GCubeD*>(this)->BufferEmpty(); // NOLINT
    }
    if(bin < 0) {
       bin = 0;
@@ -2974,7 +2975,7 @@ GCubeD& GCubeD::operator=(const GCubeD& h1)
    // Operator =
 
    if(this != &h1) {
-      const_cast<GCubeD&>(h1).Copy(*this);
+      const_cast<GCubeD&>(h1).Copy(*this); // NOLINT
    }
    return *this;
 }

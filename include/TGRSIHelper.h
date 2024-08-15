@@ -24,7 +24,23 @@
 #include "TUserSettings.h"
 
 class TGRSIHelper : public TObject {
+public:
+   std::string&                                                Prefix() { return fPrefix; }
 protected:
+   std::vector<std::shared_ptr<std::map<std::string, TList>>>& Lists() { return fLists; }
+   std::vector<TGRSIMap<std::string, TH1*>>&                   H1() { return fH1; }
+   std::vector<TGRSIMap<std::string, TH2*>>&                   H2() { return fH2; }
+   std::vector<TGRSIMap<std::string, TH3*>>&                   H3() { return fH3; }
+   std::vector<TGRSIMap<std::string, GHSym*>>&                 Sym() { return fSym; }
+   std::vector<TGRSIMap<std::string, GCube*>>&                 Cube() { return fCube; }
+   std::vector<TGRSIMap<std::string, TTree*>>&                 Tree() { return fTree; }
+   std::vector<TGRSIMap<std::string, TObject*>>&               Object() { return fObject; }
+   std::map<std::string, TCutG*>&                              Cuts() { return fCuts; }
+   TPPG*                                                       Ppg() { return fPpg; }
+   TRunInfo*                                                   RunInfo() { return fRunInfo; }
+   TUserSettings*                                              UserSettings() { return fUserSettings; }
+
+private:
    std::vector<std::shared_ptr<std::map<std::string, TList>>> fLists;                   //!<! one map of lists and directories per data processing slot to hold all output objects
    std::vector<TGRSIMap<std::string, TH1*>>                   fH1;                      //!<! one map per data processing slot for 1D histograms
    std::vector<TGRSIMap<std::string, TH2*>>                   fH2;                      //!<! one map per data processing slot for 2D histograms
@@ -39,7 +55,6 @@ protected:
    TUserSettings*                                             fUserSettings{nullptr};   //!<! pointer to the user settings
    std::string                                                fPrefix{"TGRSIHelper"};   //!<! name of this action (used as prefix)
 
-private:
    static constexpr int fSizeLimit = 1073741822;   //!<! 1 GB size limit for objects in ROOT
    void                 CheckSizes(unsigned int slot, const char* usage);
 
@@ -56,17 +71,20 @@ public:
    /// Virtual helper function that the user uses to create their histograms
    virtual void CreateHistograms(unsigned int)
    {
-      std::cout << this << " - " << __PRETTY_FUNCTION__ << ", " << Prefix() << ": This function should not get called, the user's code should replace it. Not creating any histograms!" << std::endl;
+      std::cout << this << " - " << __PRETTY_FUNCTION__ << ", " << Prefix() << ": This function should not get called, the user's code should replace it. Not creating any histograms!" << std::endl; // NOLINT
    }
    /// This method will call the Book action on the provided dataframe
    virtual ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame*)
    {
-      std::cout << this << " - " << __PRETTY_FUNCTION__ << ", " << Prefix() << ": This function should not get called, the user's code should replace it. Returning empty list!" << std::endl;
+      std::cout << this << " - " << __PRETTY_FUNCTION__ << ", " << Prefix() << ": This function should not get called, the user's code should replace it. Returning empty list!" << std::endl; // NOLINT
       return {};
    }
 
-   TGRSIHelper(TGRSIHelper&&)      = default;
-   TGRSIHelper(const TGRSIHelper&) = delete;
+   TGRSIHelper(const TGRSIHelper&)                                             = delete;
+   TGRSIHelper(TGRSIHelper&&)                                                  = default;
+   TGRSIHelper&                                  operator=(const TGRSIHelper&) = delete;
+   TGRSIHelper&                                  operator=(TGRSIHelper&&)      = default;
+   ~TGRSIHelper()                                                              = default;
    std::shared_ptr<std::map<std::string, TList>> GetResultPtr() const { return fLists[0]; }
    void                                          InitTask(TTreeReader*, unsigned int) {}
    void                                          Initialize() {}   // required method, gets called once before starting the event loop
@@ -75,7 +93,7 @@ public:
    void Finalize();
 
    /// This method gets called at the end of Finalize()
-   virtual void EndOfSort(std::shared_ptr<std::map<std::string, TList>>) {}
+   virtual void EndOfSort(std::shared_ptr<std::map<std::string, TList>>&) {}
 
    std::string Prefix() const { return fPrefix; }
    void        Prefix(const std::string& val) { fPrefix = val; }

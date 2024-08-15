@@ -91,8 +91,10 @@ private:
    Bool_t             fAutoFit{true};    ///< when true canvas container keeps same size as canvas
    Int_t              fButton{0};     ///< currently pressed button
 
-   GRootCanvas(const GRootCanvas&);              // Not implemented
-   GRootCanvas& operator=(const GRootCanvas&);   // Not implemented
+   GRootCanvas(const GRootCanvas&);                  // Not implemented
+   GRootCanvas(GRootCanvas&&) noexcept;              // Not implemented
+   GRootCanvas& operator=(const GRootCanvas&);       // Not implemented
+   GRootCanvas& operator=(GRootCanvas&&) noexcept;   // Not implemented
    void         CreateCanvas(const char* name);
    void         CreateEditor();
 
@@ -112,7 +114,7 @@ private:
 public:
    explicit GRootCanvas(GCanvas* c = nullptr, const char* name = "ROOT Canvas", UInt_t width = 500, UInt_t height = 300);
    GRootCanvas(GCanvas* c, const char* name, Int_t x, Int_t y, UInt_t width, UInt_t height);
-   ~GRootCanvas() override;
+   ~GRootCanvas();
 
    void   AdjustSize();
    void   Close() override;

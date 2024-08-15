@@ -220,7 +220,7 @@ void TLMFitter::mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
 
    int ma = a.size();
    if(ma <= 0) {
-      std::cerr << __PRETTY_FUNCTION__ << ": vector a is empty, not doing anything!" << std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ": vector a is empty, not doing anything!" << std::endl; // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       return;
    }
    static Mat_double* oneda_p;
@@ -246,7 +246,9 @@ void TLMFitter::mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
       }
    }
    Mat_double& oneda = *oneda_p;
-   Vec_double &atry = *atry_p, &beta = *beta_p, &da = *da_p;
+   Vec_double& atry = *atry_p;
+	Vec_double& beta = *beta_p;
+	Vec_double& da = *da_p;
    Mat_double  temp(mfit, mfit);
    // After linearized fitting matrix, by augmenting diagonal elements
    for(int j = 0; j < mfit; j++) {

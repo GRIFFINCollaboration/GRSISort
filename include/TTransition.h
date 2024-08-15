@@ -25,7 +25,7 @@ class TTransition : public TObject {
 
 public:
    TTransition();
-   ~TTransition() override;
+   ~TTransition();
    TTransition(const TTransition&)     = default;
    TTransition(TTransition&&) noexcept = default;
 

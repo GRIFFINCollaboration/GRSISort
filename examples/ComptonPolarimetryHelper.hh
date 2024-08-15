@@ -27,30 +27,28 @@ private:
 
    std::map<unsigned int, std::deque<TGriffin*>> fGriffinDeque;
 
-   bool ExcludeDetector(int detector)
+   bool ExcludeDetector(int detector) const
    {
-      if(std::binary_search(fExcludedDetectors.begin(), fExcludedDetectors.end(), detector)) { return true; }
-      return false;
+      return std::binary_search(fExcludedDetectors.begin(), fExcludedDetectors.end(), detector);
    }
-   bool ExcludeCrystal(int arraynumber)
+   bool ExcludeCrystal(int arraynumber) const
    {
-      if(std::binary_search(fExcludedCrystals.begin(), fExcludedCrystals.end(), arraynumber)) { return true; }
-      return false;
+      return std::binary_search(fExcludedCrystals.begin(), fExcludedCrystals.end(), arraynumber);
    }
 
-   double TimeDiff(TGriffinHit* grif1, TGriffinHit* grif2)
+   double TimeDiff(TGriffinHit* grif1, TGriffinHit* grif2) const
    {
       if(fUseTimestamps) { return TMath::Abs(grif1->GetTimeStampNs() - grif2->GetTimeStampNs()); }
       else               { return TMath::Abs(grif1->GetTime()        - grif2->GetTime()); }
    }
 
-   bool Coincident(TGriffinHit* grif1, TGriffinHit* grif2)
+   bool Coincident(TGriffinHit* grif1, TGriffinHit* grif2) const
    {
       if(fUseTimestamps) { return TMath::Abs(grif1->GetTimeStampNs() - grif2->GetTimeStampNs()) < fPrompt; }
       else               { return TMath::Abs(grif1->GetTime()        - grif2->GetTime())        < fPrompt; }
    }
 
-   int CheckEnergy(double energy, int index = -1)
+   int CheckEnergy(double energy, int index = -1) const
    {
       // if index is -1 return index of gamma gate this energy falls into or return -1
       if(index < 0 || index > 1) {
@@ -108,12 +106,6 @@ public:
 
 #endif
 
-extern "C" ComptonPolarimetryHelper* CreateHelper(TList* list)
-{
-   return new ComptonPolarimetryHelper(list);
-}
+extern "C" ComptonPolarimetryHelper* CreateHelper(TList* list) { return new ComptonPolarimetryHelper(list); }
 
-extern "C" void DestroyHelper(TGRSIHelper* helper)
-{
-   delete helper;
-}
+extern "C" void DestroyHelper(TGRSIHelper* helper) { delete helper; }

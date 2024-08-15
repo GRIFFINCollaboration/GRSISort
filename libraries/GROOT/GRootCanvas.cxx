@@ -146,48 +146,47 @@ enum ERootCanvasCommands {
 #define kButton1Ctrl 9
 #define kButton1CtrlMotion 10
 
-static const char* gOpenTypes[] = {"ROOT files", "*.root", "All files", "*", nullptr, nullptr};
+static std::array<const char*, 6> gOpenTypes = {"ROOT files", "*.root", "All files", "*", nullptr, nullptr};
 
-static const char* gSaveAsTypes[] = {"PDF", "*.pdf", "PostScript", "*.ps", "Encapsulated PostScript",
-                                     "*.eps", "SVG", "*.svg", "TeX", "*.tex",
-                                     "GIF", "*.gif", "ROOT macros", "*.C", "ROOT files",
-                                     "*.root", "XML", "*.xml", "PNG", "*.png",
-                                     "XPM", "*.xpm", "JPEG", "*.jpg", "TIFF",
-                                     "*.tiff", "XCF", "*.xcf", "All files", "*",
-                                     nullptr, nullptr};
+static std::array<const char*, 32> gSaveAsTypes = {"PDF", "*.pdf", "PostScript", "*.ps", "Encapsulated PostScript",
+                                                   "*.eps", "SVG", "*.svg", "TeX", "*.tex",
+                                                   "GIF", "*.gif", "ROOT macros", "*.C", "ROOT files",
+                                                   "*.root", "XML", "*.xml", "PNG", "*.png",
+                                                   "XPM", "*.xpm", "JPEG", "*.jpg", "TIFF",
+                                                   "*.tiff", "XCF", "*.xcf", "All files", "*",
+                                                   nullptr, nullptr};
 
-static ToolBarData_t gToolBarData[] = {
-   // { filename,      tooltip,            staydown,  id,              button}
-   {"newcanvas.xpm", "New", kFALSE, kFileNewCanvas, nullptr},
-   {"open.xpm", "Open", kFALSE, kFileOpen, nullptr},
-   {"save.xpm", "Save As", kFALSE, kFileSaveAs, nullptr},
-   {"printer.xpm", "Print", kFALSE, kFilePrint, nullptr},
-   {"", "", kFALSE, -1, nullptr},
-   {"interrupt.xpm", "Interrupt", kFALSE, kOptionInterrupt, nullptr},
-   {"refresh2.xpm", "Refresh", kFALSE, kOptionRefresh, nullptr},
-   {"", "", kFALSE, -1, nullptr},
-   {"inspect.xpm", "Inspect", kFALSE, kInspectRoot, nullptr},
-   {"browser.xpm", "Browser", kFALSE, kToolsBrowser, nullptr},
-   {nullptr, nullptr, kFALSE, 0, nullptr}};
+static std::array<ToolBarData_t, 11> gToolBarData = {{//{ filename, tooltip, staydown,id, button}
+                                                      {"newcanvas.xpm", "New", kFALSE, kFileNewCanvas, nullptr},
+                                                      {"open.xpm", "Open", kFALSE, kFileOpen, nullptr},
+                                                      {"save.xpm", "Save As", kFALSE, kFileSaveAs, nullptr},
+                                                      {"printer.xpm", "Print", kFALSE, kFilePrint, nullptr},
+                                                      {"", "", kFALSE, -1, nullptr},
+                                                      {"interrupt.xpm", "Interrupt", kFALSE, kOptionInterrupt, nullptr},
+                                                      {"refresh2.xpm", "Refresh", kFALSE, kOptionRefresh, nullptr},
+                                                      {"", "", kFALSE, -1, nullptr},
+                                                      {"inspect.xpm", "Inspect", kFALSE, kInspectRoot, nullptr},
+                                                      {"browser.xpm", "Browser", kFALSE, kToolsBrowser, nullptr},
+                                                      {nullptr, nullptr, kFALSE, 0, nullptr}}};
 
-static ToolBarData_t gToolBarData1[] = {{"pointer.xpm", "Modify", kFALSE, kToolModify, nullptr},
-                                        {"arc.xpm", "Arc", kFALSE, kToolArc, nullptr},
-                                        {"line.xpm", "Line", kFALSE, kToolLine, nullptr},
-                                        {"arrow.xpm", "Arrow", kFALSE, kToolArrow, nullptr},
-                                        {"diamond.xpm", "Diamond", kFALSE, kToolDiamond, nullptr},
-                                        {"ellipse.xpm", "Ellipse", kFALSE, kToolEllipse, nullptr},
-                                        {"pad.xpm", "Pad", kFALSE, kToolPad, nullptr},
-                                        {"pave.xpm", "Pave", kFALSE, kToolPave, nullptr},
-                                        {"pavelabel.xpm", "Pave Label", kFALSE, kToolPLabel, nullptr},
-                                        {"pavetext.xpm", "Pave Text", kFALSE, kToolPText, nullptr},
-                                        {"pavestext.xpm", "Paves Text", kFALSE, kToolPsText, nullptr},
-                                        {"graph.xpm", "Graph", kFALSE, kToolGraph, nullptr},
-                                        {"curlyline.xpm", "Curly Line", kFALSE, kToolCurlyLine, nullptr},
-                                        {"curlyarc.xpm", "Curly Arc", kFALSE, kToolCurlyArc, nullptr},
-                                        {"latex.xpm", "Text/Latex", kFALSE, kToolLatex, nullptr},
-                                        {"marker.xpm", "Marker", kFALSE, kToolMarker, nullptr},
-                                        {"cut.xpm", "Graphical Cut", kFALSE, kToolCutG, nullptr},
-                                        {nullptr, nullptr, kFALSE, 0, nullptr}};
+static std::array<ToolBarData_t, 18> gToolBarData1 = {{{"pointer.xpm", "Modify", kFALSE, kToolModify, nullptr},
+                                                       {"arc.xpm", "Arc", kFALSE, kToolArc, nullptr},
+                                                       {"line.xpm", "Line", kFALSE, kToolLine, nullptr},
+                                                       {"arrow.xpm", "Arrow", kFALSE, kToolArrow, nullptr},
+                                                       {"diamond.xpm", "Diamond", kFALSE, kToolDiamond, nullptr},
+                                                       {"ellipse.xpm", "Ellipse", kFALSE, kToolEllipse, nullptr},
+                                                       {"pad.xpm", "Pad", kFALSE, kToolPad, nullptr},
+                                                       {"pave.xpm", "Pave", kFALSE, kToolPave, nullptr},
+                                                       {"pavelabel.xpm", "Pave Label", kFALSE, kToolPLabel, nullptr},
+                                                       {"pavetext.xpm", "Pave Text", kFALSE, kToolPText, nullptr},
+                                                       {"pavestext.xpm", "Paves Text", kFALSE, kToolPsText, nullptr},
+                                                       {"graph.xpm", "Graph", kFALSE, kToolGraph, nullptr},
+                                                       {"curlyline.xpm", "Curly Line", kFALSE, kToolCurlyLine, nullptr},
+                                                       {"curlyarc.xpm", "Curly Arc", kFALSE, kToolCurlyArc, nullptr},
+                                                       {"latex.xpm", "Text/Latex", kFALSE, kToolLatex, nullptr},
+                                                       {"marker.xpm", "Marker", kFALSE, kToolMarker, nullptr},
+                                                       {"cut.xpm", "Graphical Cut", kFALSE, kToolCutG, nullptr},
+                                                       {nullptr, nullptr, kFALSE, 0, nullptr}}};
 
 /////////////////////////////////////////////////////////////////////////
 ///
@@ -759,7 +758,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
          case kFileOpen: {
             static TString dir(".");
             TGFileInfo     fileInfo;
-            fileInfo.fFileTypes = gOpenTypes;
+            fileInfo.fFileTypes = gOpenTypes.data();
             fileInfo.fIniDir    = StrDup(dir);
             new TGFileDialog(fClient->GetDefaultRoot(), this, kFDOpen, &fileInfo);
             if(fileInfo.fFilename == nullptr) {
@@ -784,7 +783,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
                   }
                }
             }
-            fileInfo.fFileTypes   = gSaveAsTypes;
+            fileInfo.fFileTypes   = gSaveAsTypes.data();
             fileInfo.fIniDir      = StrDup(dir);
             fileInfo.fFileTypeIdx = typeidx;
             fileInfo.fOverwrite   = overwr;
@@ -812,7 +811,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
                   if(ft.Index(".") != kNPOS) {
                      fn += ft(ft.Index("."), ft.Length());
                      appendedType = kTRUE;
-                     goto again;
+                     goto again; // NOLINT
                   }
                }
                Warning("ProcessMessage", "file %s cannot be saved with this extension", fileInfo.fFilename);
@@ -1087,38 +1086,38 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
 #endif   // R__UNIX
          } break;
          case kHelpOnCanvas: {
-										  auto helperDialog = new TRootHelpDialog(this, "Help on Canvas...", 600, 400);
-										  helperDialog->SetText(gHelpCanvas);
+										  auto* helperDialog = new TRootHelpDialog(this, "Help on Canvas...", 600, 400);
+										  helperDialog->SetText(gHelpCanvas); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 										  helperDialog->Popup();
 									  break;
 									  }
          case kHelpOnMenus: {
-										 auto helperDialog = new TRootHelpDialog(this, "Help on Menus...", 600, 400);
-										 helperDialog->SetText(gHelpPullDownMenus);
+										 auto* helperDialog = new TRootHelpDialog(this, "Help on Menus...", 600, 400);
+										 helperDialog->SetText(gHelpPullDownMenus); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 										 helperDialog->Popup();
 										 break;
 									 }
 			case kHelpOnGraphicsEd: {
-												auto helperDialog = new TRootHelpDialog(this, "Help on Graphics Editor...", 600, 400);
-												helperDialog->SetText(gHelpGraphicsEditor);
+												auto* helperDialog = new TRootHelpDialog(this, "Help on Graphics Editor...", 600, 400);
+												helperDialog->SetText(gHelpGraphicsEditor); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 												helperDialog->Popup();
 												break;
 											}
 			case kHelpOnBrowser: {
-											auto helperDialog = new TRootHelpDialog(this, "Help on Browser...", 600, 400);
-											helperDialog->SetText(gHelpBrowser);
+											auto* helperDialog = new TRootHelpDialog(this, "Help on Browser...", 600, 400);
+											helperDialog->SetText(gHelpBrowser); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 											helperDialog->Popup();
 											break;
 										}
 			case kHelpOnObjects: {
-											auto helperDialog = new TRootHelpDialog(this, "Help on Objects...", 600, 400);
-											helperDialog->SetText(gHelpObjects);
+											auto* helperDialog = new TRootHelpDialog(this, "Help on Objects...", 600, 400);
+											helperDialog->SetText(gHelpObjects); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 											helperDialog->Popup();
 											break;
 										}
 			case kHelpOnPS: {
-									 auto helperDialog = new TRootHelpDialog(this, "Help on PostScript...", 600, 400);
-									 helperDialog->SetText(gHelpPostscript);
+									 auto* helperDialog = new TRootHelpDialog(this, "Help on PostScript...", 600, 400);
+									 helperDialog->SetText(gHelpPostscript); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 									 helperDialog->Popup();
 									 break;
 								 }
@@ -1380,10 +1379,10 @@ void GRootCanvas::ShowEditor(Bool_t show)
    UInt_t s = fHorizontal1->GetHeight();
 
    if((fParent != nullptr) && fParent != fClient->GetDefaultRoot()) {
-      const auto* main = static_cast<const TGMainFrame*>(fParent->GetMainFrame());
+      const auto* main = static_cast<const TGMainFrame*>(fParent->GetMainFrame()); // fParent is of type TGWindow, so GetMainFrame returns "const TGWindow*"
       fMainFrame->HideFrame(fEditorFrame);
       if((main != nullptr) && main->InheritsFrom("TRootBrowser")) {
-         auto* browser = const_cast<TRootBrowser*>(static_cast<const TRootBrowser*>(main));
+         auto* browser = const_cast<TRootBrowser*>(static_cast<const TRootBrowser*>(main)); // NOLINT
          if(!fEmbedded) {
             browser->GetTabRight()->Connect("Selected(Int_t)", "GRootCanvas", this, "Activated(Int_t)");
          }
@@ -1903,7 +1902,7 @@ Bool_t GRootCanvas::HandleDNDDrop(TDNDData* data)
       }
       gPad->Clear();
       if(obj->InheritsFrom("TKey")) {
-         auto* object = reinterpret_cast<TObject*>(gROOT->ProcessLine(Form("((TKey *)0x%lx)->ReadObj();", reinterpret_cast<ULong_t>(obj))));
+         auto* object = reinterpret_cast<TObject*>(gROOT->ProcessLine(Form("((TKey *)0x%lx)->ReadObj();", reinterpret_cast<ULong_t>(obj)))); // NOLINT
          if(object == nullptr) {
             return kTRUE;
          }

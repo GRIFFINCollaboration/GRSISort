@@ -13,15 +13,18 @@ class TCalManager : public TNamed {
 public:
    TCalManager() = default;
    explicit TCalManager(const char* classname);
-   ~TCalManager() override;
+	TCalManager(const TCalManager&) = default;
+	TCalManager(TCalManager&&) noexcept = default;
+	TCalManager& operator=(const TCalManager&) = default;
+	TCalManager& operator=(TCalManager&&) noexcept = default;
+   ~TCalManager();
 
-public:
    TCal*       GetCal(UInt_t chanNum);
    Bool_t      AddToManager(TCal* cal, UInt_t chanNum, Option_t* opt = "");
    Bool_t      AddToManager(TCal* cal, Option_t* opt = "");
    void        RemoveCal(UInt_t channum, Option_t* opt = "");
    void        SetClass(const char* className);
-   void        SetClass(const TClass* cls);
+   void        SetClass(TClass* cls);
    const char* GetClass() { return (fClass != nullptr) ? fClass->GetName() : nullptr; }
    void        WriteToChannel() const;
 

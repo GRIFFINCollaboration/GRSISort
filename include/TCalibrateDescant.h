@@ -32,7 +32,11 @@ class TCalibrateDescant;
 class TParameterInput : public TGHorizontalFrame {
 public:
    explicit TParameterInput(TGVerticalFrame*& frame) : TGHorizontalFrame(frame, 400, 400) {}
-   ~TParameterInput() override = default;
+	TParameterInput(const TParameterInput&) = delete;
+	TParameterInput(TParameterInput&&) noexcept = delete;
+	TParameterInput& operator=(const TParameterInput&) = delete;
+	TParameterInput& operator=(TParameterInput&&) noexcept = delete;
+   ~TParameterInput() = default;
    TGHorizontalFrame* Build(const std::string& name, const Int_t& baseId, const Double_t& xmin, const Double_t& xmax);
 
    Bool_t ProcessMessage(Long_t msg, Long_t parameter1, Long_t parameter2) override;
@@ -94,6 +98,10 @@ public:
                      kCutoff         = 45 };
 
    explicit TCalibrateDescant(TH2* hist, const ESourceType& source = ESourceType::k137Cs);
+	TCalibrateDescant(const TCalibrateDescant&) = delete;
+	TCalibrateDescant(TCalibrateDescant&&) noexcept = delete;
+	TCalibrateDescant& operator=(const TCalibrateDescant&) = delete;
+	TCalibrateDescant& operator=(TCalibrateDescant&&) noexcept = delete;
 
    Bool_t ProcessMessage(Long_t msg, Long_t parameter1, Long_t parameter2) override;
 

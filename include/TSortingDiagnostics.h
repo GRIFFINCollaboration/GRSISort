@@ -37,7 +37,7 @@ public:
    //TSortingDiagnostics(TSortingDiagnostics&&);
    //TSortingDiagnostics& operator=(const TSortingDiagnostics&);
    //TSortingDiagnostics& operator=(TSortingDiagnostics&&);
-   //~TSortingDiagnostics() override;
+   //~TSortingDiagnostics();
 
 private:
    // analysis tree diagnostics

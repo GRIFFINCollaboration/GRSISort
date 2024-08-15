@@ -30,10 +30,13 @@ class TPeak : public TGRSIFit {
 
 public:
    // ctors and dtors
-   ~TPeak() override;
-   TPeak(const TPeak& copy);
    TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background = nullptr);
    TPeak();   // I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
+   TPeak(const TPeak& copy);
+	TPeak(TPeak&&) noexcept = default;
+	TPeak& operator=(const TPeak&) = default;
+	TPeak& operator=(TPeak&&) noexcept = default;
+   ~TPeak();
 
 protected:
    void InitNames();

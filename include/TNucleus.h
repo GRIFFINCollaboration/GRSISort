@@ -30,8 +30,12 @@ public:
    explicit TNucleus(const char* name);                                   ///< Creates a nucleus based on symbol and sets all parameters from mass.dat
    TNucleus(int charge, int neutrons, double mass, const char* symbol);   ///< Creates a nucleus with Z, N, mass, and symbol
    TNucleus(int charge, int neutrons, const char* MassFile = nullptr);    ///< Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
+	TNucleus(const TNucleus&) = delete;
+	TNucleus(TNucleus&&) noexcept = delete;
+	TNucleus& operator=(const TNucleus&) = delete;
+	TNucleus& operator=(TNucleus&&) noexcept = delete;
 
-   ~TNucleus() override;
+   ~TNucleus();
 
    static void ParseName(const char* name, std::string& symbol, int& number, std::string& element)
    {
@@ -85,8 +89,6 @@ public:
    bool operator!=(const TNucleus& rhs) const { return !(*this == rhs); }
 
 private:
-   static const char* grsipath;
-
    static std::string& Massfile();   ///< Returns the massfile to be used, which includes Z, N, atomic symbol, and mass excess
    void                SetName(const char* name = "") override;
 

@@ -63,11 +63,15 @@
 class TUserSettings : public TNamed {
 public:
    TUserSettings() = default;
-   explicit TUserSettings(std::string settingsFile)
+   explicit TUserSettings(const std::string& settingsFile)
    {
       if(!ReadSettings(settingsFile)) { throw std::runtime_error("Failed to read user settings file!"); }
    }
 
+	TUserSettings(const TUserSettings&) = default;
+	TUserSettings(TUserSettings&&) noexcept = default;
+	TUserSettings& operator=(const TUserSettings&) = default;
+	TUserSettings& operator=(TUserSettings&&) noexcept = default;
    ~TUserSettings() = default;
 
    bool ReadSettings(const std::string& settingsFile);
@@ -129,11 +133,11 @@ public:
    void SetBool(const std::string& parameter, bool value) { fBool[parameter] = value; }
    void SetInt(const std::string& parameter, int value) { fInt[parameter] = value; }
    void SetDouble(const std::string& parameter, double value) { fDouble[parameter] = value; }
-   void SetString(const std::string& parameter, std::string value) { fString[parameter] = value; }
-   void SetBoolVector(const std::string& parameter, std::vector<bool> value) { fBoolVector[parameter] = value; }
-   void SetIntVector(const std::string& parameter, std::vector<int> value) { fIntVector[parameter] = value; }
-   void SetDoubleVector(const std::string& parameter, std::vector<double> value) { fDoubleVector[parameter] = value; }
-   void SetStringVector(const std::string& parameter, std::vector<std::string> value) { fStringVector[parameter] = value; }
+   void SetString(const std::string& parameter, const std::string& value) { fString[parameter] = value; }
+   void SetBoolVector(const std::string& parameter, const std::vector<bool>& value) { fBoolVector[parameter] = value; }
+   void SetIntVector(const std::string& parameter, const std::vector<int>& value) { fIntVector[parameter] = value; }
+   void SetDoubleVector(const std::string& parameter, const std::vector<double>& value) { fDoubleVector[parameter] = value; }
+   void SetStringVector(const std::string& parameter, const std::vector<std::string>& value) { fStringVector[parameter] = value; }
 
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* = "") override

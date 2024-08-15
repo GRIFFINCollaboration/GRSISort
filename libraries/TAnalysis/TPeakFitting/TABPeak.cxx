@@ -81,7 +81,7 @@ Double_t TABPeak::PeakFunction(Double_t* dim, Double_t* par)
    return OneHitPeakFunction(dim, par) + TwoHitPeakFunction(dim, par);
 }
 
-Double_t TABPeak::OneHitPeakFunction(Double_t* dim, Double_t* par)
+Double_t TABPeak::OneHitPeakFunction(Double_t* dim, Double_t* par) // NOLINT
 {
    Double_t x        = dim[0];   // channel number used for fitting
    Double_t height   = par[0];   // height of photopeak
@@ -91,7 +91,7 @@ Double_t TABPeak::OneHitPeakFunction(Double_t* dim, Double_t* par)
    return height * TMath::Gaus(x, centroid, sigma);
 }
 
-Double_t TABPeak::TwoHitPeakFunction(Double_t* dim, Double_t* par)
+Double_t TABPeak::TwoHitPeakFunction(Double_t* dim, Double_t* par) // NOLINT
 {
    Double_t x          = dim[0];   // channel number used for fitting
    Double_t height     = par[0];   // height of photopeak
@@ -129,7 +129,7 @@ Double_t TABPeak::BackgroundFunction(Double_t* dim, Double_t* par)
 void TABPeak::DrawComponents(Option_t* opt)
 {
    // We need to draw this on top of the global background. Probably easiest to make another temporary TF1?
-   if(GetGlobalBackground() == nullptr) return;
+   if(GetGlobalBackground() == nullptr) { return; }
 
    Double_t low  = 0;
    Double_t high = 0;

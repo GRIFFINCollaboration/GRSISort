@@ -32,7 +32,7 @@ class TDetector;
 class TDetBuildingLoop : public StoppableThread {
 public:
    static TDetBuildingLoop* Get(std::string name = "");
-   ~TDetBuildingLoop() override;
+   ~TDetBuildingLoop();
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment>>>>& InputQueue()
@@ -64,8 +64,10 @@ public:
 
 private:
    explicit TDetBuildingLoop(std::string name);
-   TDetBuildingLoop(const TDetBuildingLoop& other);
-   TDetBuildingLoop& operator=(const TDetBuildingLoop& other);
+	TDetBuildingLoop(const TDetBuildingLoop&) = delete;
+	TDetBuildingLoop(TDetBuildingLoop&&) noexcept = delete;
+	TDetBuildingLoop& operator=(const TDetBuildingLoop&) = delete;
+	TDetBuildingLoop& operator=(TDetBuildingLoop&&) noexcept = delete;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment>>>> fInputQueue;

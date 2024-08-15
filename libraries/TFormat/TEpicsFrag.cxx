@@ -42,12 +42,12 @@ void TEpicsFrag::Print(Option_t*) const
    std::cout << "------ EPICS " << largest << " Varibles Found ------" << std::endl;
 
    // TODO maybe we can change this to std::array?
-   char buff[20];
+	std::array<char, 20> buff;
    ctime(&fDaqTimeStamp);
    struct tm* timeInfo = localtime(&fDaqTimeStamp);
-   strftime(buff, 20, "%b %d %H:%M:%S", timeInfo);
+   strftime(buff.data(), buff.size(), "%b %d %H:%M:%S", timeInfo);
 
-   std::cout << "  DaqTimeStamp: " << buff << std::endl;
+   std::cout << "  DaqTimeStamp: " << buff.data() << std::endl;
    std::cout << "  DaqId:    	 " << fDaqId << std::endl;
    for(size_t i = 0; i < largest; i++) {
       std::cout << std::setw(3) << i << ":  ";

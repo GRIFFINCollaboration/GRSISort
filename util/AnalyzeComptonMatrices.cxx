@@ -74,7 +74,7 @@ int main(int argc, char** argv)
       return 1;
    }
 
-   auto settings = static_cast<TUserSettings*>(input.Get("UserSettings"));
+   auto* settings = static_cast<TUserSettings*>(input.Get("UserSettings"));
 
    // if we have a path for a settings file provided on command line, we either add it to the ones read
    // from the root file or (if there weren't any) create a new instance from it
@@ -140,19 +140,19 @@ int main(int argc, char** argv)
    // --------------------------------------------------------------------------------
 
    // get the histograms we need
-   auto prompt = static_cast<TH2*>(input.Get(useDetectorAngle ? "xiThetaDet" : "xiThetaCry"));
+   auto* prompt = static_cast<TH2*>(input.Get(useDetectorAngle ? "xiThetaDet" : "xiThetaCry"));
    if(prompt == nullptr) {
       std::cerr << "Failed to find histogram '" << (useDetectorAngle ? "xiThetaDet" : "xiThetaCry") << "'!"
                 << std::endl;
       return 1;
    }
-   auto mixed = static_cast<TH2*>(input.Get(useDetectorAngle ? "xiThetaDetMixed" : "xiThetaCryMixed"));
+   auto* mixed = static_cast<TH2*>(input.Get(useDetectorAngle ? "xiThetaDetMixed" : "xiThetaCryMixed"));
    if(mixed == nullptr) {
       std::cerr << "Failed to find histogram '" << (useDetectorAngle ? "xiThetaDetMixed" : "xiThetaCryMixed") << "'!"
                 << std::endl;
       return 1;
    }
-   auto count = static_cast<TH2*>(input.Get(useDetectorAngle ? "xiThetaDetCount" : "xiThetaCryCount"));
+   auto* count = static_cast<TH2*>(input.Get(useDetectorAngle ? "xiThetaDetCount" : "xiThetaCryCount"));
    if(count == nullptr) {
       std::cerr << "Failed to find histogram '" << (useDetectorAngle ? "xiThetaDetCount" : "xiThetaCryCount") << "'!"
                 << std::endl;
@@ -160,31 +160,28 @@ int main(int argc, char** argv)
    }
 
    // create projections onto xi (x-axis)
-   auto xiPrompt =
-      prompt->ProjectionX("xiPrompt", prompt->GetYaxis()->FindBin(minTheta), prompt->GetYaxis()->FindBin(maxTheta));
-   auto xiMixed =
-      mixed->ProjectionX("xiMixed", mixed->GetYaxis()->FindBin(minTheta), mixed->GetYaxis()->FindBin(maxTheta));
-   auto xiCount =
-      count->ProjectionX("xiCount", count->GetYaxis()->FindBin(minTheta), count->GetYaxis()->FindBin(maxTheta));
+   auto* xiPrompt = prompt->ProjectionX("xiPrompt", prompt->GetYaxis()->FindBin(minTheta), prompt->GetYaxis()->FindBin(maxTheta));
+   auto* xiMixed = mixed->ProjectionX("xiMixed", mixed->GetYaxis()->FindBin(minTheta), mixed->GetYaxis()->FindBin(maxTheta));
+   auto* xiCount = count->ProjectionX("xiCount", count->GetYaxis()->FindBin(minTheta), count->GetYaxis()->FindBin(maxTheta));
 
    // open output file and create graphs
    TFile output(outputFile.c_str(), "recreate");
 
-   auto asymmetry = new TGraphErrors();
+   auto* asymmetry = new TGraphErrors();
    asymmetry->SetName("asymmetry");
    asymmetry->SetTitle("Asymmetry A^{CE}");
    asymmetry->GetXaxis()->SetTitle("Azimuthal Compton Scattering Angle #xi (#circ)");
    asymmetry->GetXaxis()->CenterTitle();
    asymmetry->GetYaxis()->SetTitle("Asymmetry A^{CE}");
    asymmetry->GetYaxis()->CenterTitle();
-   auto asymmetryGrouped = new TGraphErrors();
+   auto* asymmetryGrouped = new TGraphErrors();
    asymmetryGrouped->SetName("asymmetryGrouped");
    asymmetryGrouped->SetTitle("Asymmetry A^{CE}, grouped");
    asymmetryGrouped->GetXaxis()->SetTitle("Azimuthal Compton Scattering Angle #xi (#circ)");
    asymmetryGrouped->GetXaxis()->CenterTitle();
    asymmetryGrouped->GetYaxis()->SetTitle("Asymmetry A^{CE}");
    asymmetryGrouped->GetYaxis()->CenterTitle();
-   auto asymmetryFolded = new TGraphErrors();
+   auto* asymmetryFolded = new TGraphErrors();
    asymmetryFolded->SetName("asymmetryFolded");
    asymmetryFolded->SetTitle("Asymmetry A^{CE}, grouped and folded");
    asymmetryFolded->GetXaxis()->SetTitle("Azimuthal Compton Scattering Angle #xi (#circ)");
@@ -233,7 +230,7 @@ int main(int argc, char** argv)
    }
    // grouped and folded
    for(size_t i = 0; i < xiBinEdges.size() - 1; ++i) {
-      if(xiBinEdges[i] > 90.) break;
+      if(xiBinEdges[i] > 90.) { break; }
       // original code excluded bins 2, 42, 48, 89, 131, 136, and 177 because they "are isolated as single bins in the
       // plot" (which plot?)
       auto tmp      = xiPrompt->Integral(xiPrompt->FindBin(xiBinEdges[i]), xiPrompt->FindBin(xiBinEdges[i + 1]));
@@ -268,7 +265,7 @@ int main(int argc, char** argv)
    // calculate predicted asymmetry
    auto p                  = Polarization(settings);
    int  nPoints            = settings->GetInt("NumberOfPoints", 100);
-   auto predictedAsymmetry = new TGraph(nPoints + 1);
+   auto* predictedAsymmetry = new TGraph(nPoints + 1);
    predictedAsymmetry->SetName("PredictedAsymmetry");
    predictedAsymmetry->SetTitle(Form("Predicted Asymmetry A^{CE} for Q = %f, P = %f", qValue, p));
    predictedAsymmetry->GetXaxis()->SetTitle("Azimuthal Compton Scattering Angle #xi (#circ)");
@@ -301,7 +298,7 @@ double KCoefficent(int mu, int L1, int L2)
    auto l1 = std::max(L1, L2);
    auto l2 = std::min(L1, L2);
 
-   double k;
+   double k = 0.;
    if((l1 + l2) % 2 == 0) {
       k = (mu * (mu + 1.) * (l1 * (l1 + 1.) + l2 * (l2 + 1.)) - TMath::Power(l2 * (l2 + 1.) - l1 * (l1 + 1.), 2.)) /
           (l1 * (l1 + 1.) + l2 * (l2 + 1.) - mu * (mu + 1.));
@@ -337,6 +334,6 @@ double Polarization(TUserSettings* settings)
       denominator += a * b * ROOT::Math::legendre(2 * (i + 1), TMath::Cos(theta * TMath::DegToRad()));
    }
 
-   if(settings->GetBool("Negative")) return -nominator / denominator;
+   if(settings->GetBool("Negative")) { return -nominator / denominator; }
    return nominator / denominator;
 }

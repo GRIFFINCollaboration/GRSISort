@@ -109,7 +109,7 @@ bool GValue::AddValue(GValue* value, Option_t*)
       return false;
    }
    std::string temp_string = value->GetName();
-   if(temp_string == "") {
+   if(temp_string.empty()) {
       // default value, get rid of it and ignore;
       delete value;
       return false;
@@ -201,13 +201,13 @@ int GValue::ReadValFile(const char* filename, Option_t* opt)
    std::ifstream infile;
    infile.open(infilename.c_str());
    if(!infile) {
-      std::cerr << __PRETTY_FUNCTION__ << ":  could not open infile " << infilename << std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ":  could not open infile " << infilename << std::endl; // NOLINT
       return -2;
    }
    infile.seekg(0, std::ios::end);
    size_t length = infile.tellg();
    if(length == 0) {
-      std::cerr << __PRETTY_FUNCTION__ << ":  infile " << infilename << " appears to be empty." << std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ":  infile " << infilename << " appears to be empty." << std::endl; // NOLINT
       return -2;
    }
 

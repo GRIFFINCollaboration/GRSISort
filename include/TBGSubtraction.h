@@ -166,7 +166,7 @@ public:
    explicit TBGSubtraction(TH2* mat, const char* gate_axis = "x", int maxBinning = 20);
    TBGSubtraction(const TBGSubtraction&) = delete;
    TBGSubtraction(TBGSubtraction&&)      = delete;
-   ~TBGSubtraction() override;
+   ~TBGSubtraction();
 
    TBGSubtraction& operator=(const TBGSubtraction&) = delete;
    TBGSubtraction& operator=(TBGSubtraction&&)      = delete;

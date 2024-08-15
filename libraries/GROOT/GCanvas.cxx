@@ -83,8 +83,8 @@ void GMarker::Copy(TObject& object) const
    (static_cast<GMarker&>(object)).fHist  = fHist;
 }
 
-double GCanvas::gLastX = 0;
-double GCanvas::gLastY = 0;
+double GCanvas::fLastX = 0;
+double GCanvas::fLastY = 0;
 
 GCanvas::GCanvas(Bool_t build) : TCanvas(build)
 {
@@ -106,14 +106,14 @@ GCanvas::GCanvas(const char* name, Int_t winw, Int_t winh, Int_t winid) : TCanva
    // this constructor is used to create an embedded canvas
    // I see no reason for us to support this here.  pcb.
    GCanvasInit();
-   fGuiEnabled = true;
+   fGuiEnabled = true; // NOLINT
 }
 
 GCanvas::GCanvas(const char* name, const char* title, Int_t wtopx, Int_t wtopy, Int_t winw, Int_t winh, bool gui)
    : TCanvas(name, title, wtopx, wtopy, winw, winh)
 {
    GCanvasInit();
-   fGuiEnabled = gui;
+   fGuiEnabled = gui; // NOLINT
 }
 
 GCanvas::~GCanvas()
@@ -348,7 +348,7 @@ std::vector<TH1*> GCanvas::FindAllHists()
    return tempvec;
 }
 
-bool GCanvas::HandleArrowKeyPress(Event_t* event, UInt_t* keysym)
+bool GCanvas::HandleArrowKeyPress(Event_t* event, const UInt_t* keysym)
 {
 
    bool edited = Process1DArrowKeyPress(event, keysym);
@@ -363,7 +363,7 @@ bool GCanvas::HandleArrowKeyPress(Event_t* event, UInt_t* keysym)
    return true;
 }
 
-bool GCanvas::HandleKeyboardPress(Event_t* event, UInt_t* keysym)
+bool GCanvas::HandleKeyboardPress(Event_t* event, const UInt_t* keysym)
 {
    bool edited = false;
 
@@ -481,8 +481,8 @@ bool GCanvas::StorePosition(Int_t, Int_t px, Int_t py)
    /// Store the position the mouse button was pressed at.
    if(std::strcmp(GetName(), "LevelScheme") != 0) { return false; }
 
-   gLastX = PixeltoX(px);
-   gLastY = PixeltoY(py - GetWh());   // see https:://root.cern.ch/root/htmldoc/guides/users-guide/Graphics.html 11.3.3 "Converting between Coordinate Systems"
+   fLastX = PixeltoX(px);
+   fLastY = PixeltoY(py - GetWh());   // see https:://root.cern.ch/root/htmldoc/guides/users-guide/Graphics.html 11.3.3 "Converting between Coordinate Systems"
 
    return true;
 }
@@ -496,9 +496,9 @@ bool GCanvas::Zoom(Int_t, Int_t px, Int_t py)
    double x = PixeltoX(px);
    double y = PixeltoY(py - GetWh());   // see https:://root.cern.ch/root/htmldoc/guides/users-guide/Graphics.html 11.3.3 "Converting between Coordinate Systems"
    // ensure x,y is the second point of the range
-   if(gLastX > x) { std::swap(gLastX, x); }
-   if(gLastY > y) { std::swap(gLastY, y); }
-   Range(gLastX, gLastY, x, y);
+   if(fLastX > x) { std::swap(fLastX, x); }
+   if(fLastY > y) { std::swap(fLastY, y); }
+   Range(fLastX, fLastY, x, y);
    Modified();
    Update();
 
@@ -569,7 +569,7 @@ TF1* GCanvas::GetLastFit()
    return nullptr;
 }
 
-bool GCanvas::Process1DArrowKeyPress(Event_t*, UInt_t* keysym)
+bool GCanvas::Process1DArrowKeyPress(Event_t*, const UInt_t* keysym)
 {
    /// Moves displayed 1D histograms by 50% of the visible range left, right, or selects the next (up) or previous (down) GH1D histogram.
    bool              edited = false;
@@ -674,7 +674,7 @@ bool GCanvas::Process1DArrowKeyPress(Event_t*, UInt_t* keysym)
    return edited;
 }
 
-bool GCanvas::ProcessNonHistKeyboardPress(Event_t*, UInt_t* keysym)
+bool GCanvas::ProcessNonHistKeyboardPress(Event_t*, const UInt_t* keysym)
 {
    bool edited = false;
 
@@ -740,7 +740,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, const UInt_t* keysym)
    case kKey_E:
       // GetListOfPrimitives()->Print();
       GetContextMenu()->Action(hists.back()->GetXaxis(),
-                               hists.back()->GetXaxis()->Class()->GetMethodAny("SetRangeUser"));
+                               TAxis::Class()->GetMethodAny("SetRangeUser"));
       {
          double x1 = hists.back()->GetXaxis()->GetBinCenter(hists.back()->GetXaxis()->GetFirst());
          double x2 = hists.back()->GetXaxis()->GetBinCenter(hists.back()->GetXaxis()->GetLast());
@@ -1390,7 +1390,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, const UInt_t* keysym)
    case kKey_R:
       // GetListOfPrimitives()->Print();
       GetContextMenu()->Action(hists.back()->GetYaxis(),
-                               hists.back()->GetYaxis()->Class()->GetMethodAny("SetRangeUser"));
+                               TAxis::Class()->GetMethodAny("SetRangeUser"));
       {
          double y1 = hists.back()->GetXaxis()->GetBinCenter(hists.back()->GetYaxis()->GetFirst());
          double y2 = hists.back()->GetXaxis()->GetBinCenter(hists.back()->GetYaxis()->GetLast());

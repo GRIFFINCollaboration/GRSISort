@@ -58,12 +58,12 @@ public:
    explicit TChannel(const char*);
    explicit TChannel(TChannel*);
    TChannel(const TChannel&);
-   TChannel(TChannel&&);
+   TChannel(TChannel&&) noexcept;
 
    TChannel& operator=(const TChannel& rhs);
-   TChannel& operator=(TChannel&&);
+   TChannel& operator=(TChannel&&) noexcept;
 
-   ~TChannel() override;
+   ~TChannel();
 
    static size_t GetNumberOfChannels() { return fChannelMap->size(); }
    static void   AddChannel(TChannel*, Option_t* opt = "");
@@ -222,7 +222,7 @@ public:
    }
 
    void SetAllENGCoefficients(const TPriorityValue<std::vector<std::vector<Float_t>>>& tmp) { fENGCoefficients = tmp; }
-   void SetENGCoefficients(std::vector<Float_t> tmp, size_t range = 0)
+   void SetENGCoefficients(const std::vector<Float_t>& tmp, size_t range = 0)
    {
       if(range >= fENGCoefficients.size()) { fENGCoefficients.resize(range + 1); }
       fENGCoefficients.Address()->at(range) = tmp;

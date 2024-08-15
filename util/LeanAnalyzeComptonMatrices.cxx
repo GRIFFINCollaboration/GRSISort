@@ -220,7 +220,9 @@ TList* ComptonPol(TFile* f, TStopwatch* w)
    fun1->SetParLimits(0, -10.0, 10.0);
 
    int                 nPoints = 0;
-   std::vector<double> AsymmetryX, AsymmetryY, AsymmetryYerr;
+   std::vector<double> AsymmetryX;
+   std::vector<double> AsymmetryY;
+   std::vector<double> AsymmetryYerr;
    std::vector<double> XiBinEdges = {0.0, 2.0, 3.0, 6.0, 14.0, 31.0, 39.0, 50.0, 61., 74., 87., 93., 106., 119., 130., 141., 149., 166., 174., 177., 178., 180.0};   // Assymetric
 
    //--------NonCo Asymm Plot-------//
@@ -444,8 +446,8 @@ double PolarizationCalculation()
 
    // 62Ga 1388->954   0-2-0 E2-E2
    //  Scattering of the 1388 keV gamma ray
-   double F_JiJx[12]  = {-0.5976, 0.0, 0.0, -1.0690, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};   // 0->2
-   double F_JfJx[12]  = {-0.5976, 0.0, 0.0, -1.0690, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};   // 2->0
+	std::array<double, 12> F_JiJx = {-0.5976, 0.0, 0.0, -1.0690, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};   // 0->2
+   std::array<double, 12> F_JfJx = {-0.5976, 0.0, 0.0, -1.0690, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};   // 2->0
    double PlusOrMinus = 1.0;                                                                    // either 1.0 or -1.0 depending on (+-)_L2.
    double Mixing1     = 0.5;                                                                    // The mixing ratio of the first transition
    double Mixing2     = 0.0;                                                                    // The mixing ratio of the second transition
@@ -516,15 +518,15 @@ double PolarizationCalculation()
 
    //---- Calculations ----//
 
-   double A[4];
-   double Ap[4];
-   double B[4];
-   double Pnum        = 0.0;
-   double Pdenom      = 1.0;
-   int    MuValues[4] = {2, 4, 6, 8};   // When making this initally I was not 100% certain these indices
-                                        // would always be just the even ones, as I found the paper unclear
-                                        // on that point.  That is why they are placed here, rather tha just
-                                        // multiplying the current index by two or whatever to give the appropriate number.
+   std::array<double, 4> A;
+   std::array<double, 4> Ap;
+   std::array<double, 4> B;
+   double                Pnum     = 0.0;
+   double                Pdenom   = 1.0;
+   std::array<int, 4>    MuValues = {2, 4, 6, 8};   // When making this initally I was not 100% certain these indices
+                                                    // would always be just the even ones, as I found the paper unclear
+                                                    // on that point.  That is why they are placed here, rather tha just
+                                                    // multiplying the current index by two or whatever to give the appropriate number.
 
    for(int loop = 0; loop < 4; loop++) {
       A[loop]  = (1.0 / (1.0 + TMath::Power(Mixing1, 2.0))) * (F_JiJx[3 * loop + 0] - 2.0 * Mixing1 * F_JiJx[3 * loop + 1] + TMath::Power(Mixing1, 2) * F_JiJx[3 * loop + 2]);

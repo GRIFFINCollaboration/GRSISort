@@ -54,7 +54,7 @@ void TBadFragment::Print(Option_t*) const
    TFragment::Print();
 
    std::cout << "Raw data with " << (fMultipleErrors ? "multiple errors" : "single error") << " failed on word " << fFailedWord << ":" << std::endl;
-   size_t index;
+   size_t index = 0;
    for(index = 0; index < fData.size(); ++index) {
       if(index == static_cast<size_t>(fFailedWord)) {
          std::cout << ALERTTEXT;

@@ -26,8 +26,12 @@ template <typename key_type, typename mapped_type, typename key_compare = std::l
           typename allocator_type = std::allocator<std::pair<const key_type, mapped_type>>>
 class TGRSIMap {
 public:
-   TGRSIMap()  = default;
-   ~TGRSIMap() = default;
+   TGRSIMap()                               = default;
+   TGRSIMap(const TGRSIMap&)                = default;
+   TGRSIMap(TGRSIMap&&) noexcept            = default;
+   TGRSIMap& operator=(const TGRSIMap&)     = default;
+   TGRSIMap& operator=(TGRSIMap&&) noexcept = default;
+   ~TGRSIMap()                              = default;
 
    void Print()
    {

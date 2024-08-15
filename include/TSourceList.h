@@ -1,5 +1,5 @@
-#ifndef TSOURCECALLIST_H__
-#define TSOURCECALLIST_H__
+#ifndef TSOURCECALLIST_H
+#define TSOURCECALLIST_H
 
 /** \addtogroup Calibration
  *  @{
@@ -18,9 +18,11 @@ public:
    TSourceList(const TNucleus& nuc, const char* name, const char* title = "");
    explicit TSourceList(const char* name, const char* title = "");
    explicit TSourceList(const TNucleus& nuc);
-   ~TSourceList() override = default;
-
-   TSourceList(const TSourceList& copy);
+	TSourceList(const TSourceList&);
+	TSourceList(TSourceList&&) noexcept = default;
+	TSourceList& operator=(const TSourceList&) = default;
+	TSourceList& operator=(TSourceList&&) noexcept = default;
+   ~TSourceList() = default;
 
    void Copy(TObject& obj) const override;
    void Clear(Option_t* opt = "") override;

@@ -10,7 +10,9 @@
 #include <map>
 
 #if !defined(__CINT__) && !defined(__CLING__)
+// NOLINTBEGIN(readability-identifier-naming)
 #define _GLIBCXX_USE_NANOSLEEP 1
+// NOLINTEND(readability-identifier-naming)
 #include <thread>
 #include <mutex>
 #endif
@@ -23,7 +25,11 @@
 class TDeadtimeScalerQueue : public TObject {
 public:
    static TDeadtimeScalerQueue* Get();   // Returns the Queue
-   ~TDeadtimeScalerQueue() override = default;
+	TDeadtimeScalerQueue(const TDeadtimeScalerQueue&) = default;
+	TDeadtimeScalerQueue(TDeadtimeScalerQueue&&) noexcept = default;
+	TDeadtimeScalerQueue& operator=(const TDeadtimeScalerQueue&) = default;
+	TDeadtimeScalerQueue& operator=(TDeadtimeScalerQueue&&) noexcept = default;
+   ~TDeadtimeScalerQueue() = default;
 
 private:
    TDeadtimeScalerQueue();
@@ -51,8 +57,8 @@ private:
 public:
 #if !defined(__CINT__) && !defined(__CLING__)
 #ifndef NO_MUTEX
-   static std::mutex All;
-   static std::mutex Sorted;
+   static std::mutex All; // NOLINT(readability-identifier-naming)
+   static std::mutex Sorted; // NOLINT(readability-identifier-naming)
 #endif
 #endif
 
@@ -80,7 +86,11 @@ public:
 class TRateScalerQueue : public TObject {
 public:
    static TRateScalerQueue* Get();   // Returns the Queue
-   ~TRateScalerQueue() override = default;
+	TRateScalerQueue(const TRateScalerQueue&) = default;
+	TRateScalerQueue(TRateScalerQueue&&) noexcept = default;
+	TRateScalerQueue& operator=(const TRateScalerQueue&) = default;
+	TRateScalerQueue& operator=(TRateScalerQueue&&) noexcept = default;
+   ~TRateScalerQueue() = default;
 
 private:
    TRateScalerQueue();
@@ -108,8 +118,8 @@ private:
 public:
 #if !defined(__CINT__) && !defined(__CLING__)
 #ifndef NO_MUTEX
-   static std::mutex All;
-   static std::mutex Sorted;
+   static std::mutex All; // NOLINT(readability-identifier-naming)
+   static std::mutex Sorted; // NOLINT(readability-identifier-naming)
 #endif
 #endif
 

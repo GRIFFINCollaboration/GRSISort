@@ -90,7 +90,7 @@ void TMultiPeak::InitNames()
    FixParameter(0, fPeakVec.size());
 }
 
-TMultiPeak::TMultiPeak(const TMultiPeak& copy) : TGRSIFit()
+TMultiPeak::TMultiPeak(const TMultiPeak& copy) : TGRSIFit(copy)
 {
    copy.Copy(*this);
 }

@@ -78,7 +78,7 @@ Double_t TSinglePeak::FWHM()
 {
    /// Return the full width at half-maximum.
    if(fPeakFunction == nullptr) {
-      std::cerr << __PRETTY_FUNCTION__ << ": peak function (" << fPeakFunction << ") is null" << std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ": peak function (" << fPeakFunction << ") is null" << std::endl; // NOLINT
       return 0.;
    }
    UpdatePeakParameters();

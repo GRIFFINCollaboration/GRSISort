@@ -11,7 +11,11 @@ class TTimeCal : public TCal {
 public:
    TTimeCal() = default;
    TTimeCal(const char* name, const char* title) : TCal(name, title){};
-   ~TTimeCal() override = default;
+	TTimeCal(const TTimeCal&) = default;
+	TTimeCal(TTimeCal&&) noexcept = default;
+	TTimeCal& operator=(const TTimeCal&) = default;
+	TTimeCal& operator=(TTimeCal&&) noexcept = default;
+   ~TTimeCal() = default;
 
    // pure virtual functions
    Bool_t IsGroupable() const override { return false; }

@@ -21,6 +21,10 @@
 class TDetectorInformation : public TObject {
 public:
    TDetectorInformation()  = default;
+	TDetectorInformation(const TDetectorInformation&) = default;
+	TDetectorInformation(TDetectorInformation&&) noexcept = default;
+	TDetectorInformation& operator=(const TDetectorInformation&) = default;
+	TDetectorInformation& operator=(TDetectorInformation&&) noexcept = default;
    ~TDetectorInformation() = default;
 
    virtual void                           Set(){};                                                                 ///< Set the detector information based on the available TChannels

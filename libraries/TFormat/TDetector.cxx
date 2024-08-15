@@ -7,7 +7,7 @@ TDetector::TDetector(const TDetector& rhs) : TObject(rhs)
    rhs.Copy(*this);
 }
 
-TDetector::TDetector(TDetector&& rhs) : TObject(rhs)
+TDetector::TDetector(TDetector&& rhs) noexcept : TObject(rhs)
 {
    /// Default Move constructor.
    rhs.Copy(*this);

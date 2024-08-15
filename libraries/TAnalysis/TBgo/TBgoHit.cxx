@@ -16,9 +16,20 @@ TBgoHit::TBgoHit(const TBgoHit& rhs) : TDetectorHit(rhs)
    rhs.Copy(*this, true);
 }
 
-TBgoHit::TBgoHit(TBgoHit&& rhs)
+TBgoHit::TBgoHit(TBgoHit&& rhs) noexcept
 {
    rhs.Copy(*this, true);
+}
+
+// The first version of this simply called the TDetectorHit constructor with the fragment.
+// This was problematic as this meant we're slicing the TFragment object to fit the
+// TDetectorHit argument of the base constructor
+// Now we simply do the same thing as the TDetectorHit constructor would be doing.
+TBgoHit::TBgoHit(const TFragment& frag)
+{
+   static_cast<const TDetectorHit*>(&frag)->Copy(*this);
+	static_cast<const TDetectorHit*>(&frag)->CopyWave(*this);
+   ClearTransients();
 }
 
 TBgoHit& TBgoHit::operator=(const TBgoHit& rhs)
@@ -28,7 +39,7 @@ TBgoHit& TBgoHit::operator=(const TBgoHit& rhs)
    return *this;
 }
 
-TBgoHit& TBgoHit::operator=(TBgoHit&& rhs)
+TBgoHit& TBgoHit::operator=(TBgoHit&& rhs) noexcept
 {
    rhs.Copy(*this, true);
 

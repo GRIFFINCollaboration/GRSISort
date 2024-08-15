@@ -14,7 +14,11 @@ class TNucleus;
 class TCalibrator : public TNamed {
 public:
    TCalibrator();
-   ~TCalibrator() override;
+	TCalibrator(const TCalibrator&) = default;
+	TCalibrator(TCalibrator&&) noexcept = default;
+	TCalibrator& operator=(const TCalibrator&) = default;
+	TCalibrator& operator=(TCalibrator&&) noexcept = default;
+   ~TCalibrator();
 
    void   Copy(TObject& obj) const override;
    void   Print(Option_t* opt = "") const override;

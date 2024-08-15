@@ -82,7 +82,7 @@ std::string TFragWriteLoop::EndStatus()
 {
    std::stringstream str;
    str << std::endl
-       << Name() << ": " << std::setw(8) << fItemsPopped << "/" << fItemsPopped + fInputSize << ", "
+       << Name() << ": " << std::setw(8) << ItemsPopped() << "/" << ItemsPopped() + InputSize() << ", "
        << fEventTree->GetEntries() << " good fragments, " << fBadEventTree->GetEntries() << " bad fragments"
        << std::endl;
    return str.str();
@@ -91,9 +91,9 @@ std::string TFragWriteLoop::EndStatus()
 bool TFragWriteLoop::Iteration()
 {
    std::shared_ptr<const TFragment> event;
-   fInputSize = fInputQueue->Pop(event, 0);
-   if(fInputSize < 0) {
-      fInputSize = 0;
+   InputSize(fInputQueue->Pop(event, 0));
+   if(InputSize() < 0) {
+      InputSize(0);
    }
 
    std::shared_ptr<const TBadFragment> badEvent;
@@ -107,7 +107,7 @@ bool TFragWriteLoop::Iteration()
 
    if(event != nullptr) {
       WriteEvent(event);
-      ++fItemsPopped;
+      IncrementItemsPopped();
    }
 
    if(badEvent != nullptr) {
@@ -199,7 +199,7 @@ void TFragWriteLoop::WriteEvent(const std::shared_ptr<const TFragment>& event)
       fEventTree->Fill();
       // fEventAddress = nullptr;
    } else {
-      std::cout << __PRETTY_FUNCTION__ << ": no fragment tree!" << std::endl;
+      std::cout << __PRETTY_FUNCTION__ << ": no fragment tree!" << std::endl; // NOLINT
    }
 }
 

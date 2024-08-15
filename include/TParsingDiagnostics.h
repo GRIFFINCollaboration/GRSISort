@@ -36,6 +36,10 @@ class TParsingDiagnosticsData : public TObject {
 public:
    TParsingDiagnosticsData();
    explicit TParsingDiagnosticsData(const std::shared_ptr<const TFragment>& frag);
+	TParsingDiagnosticsData(const TParsingDiagnosticsData&) = default;
+	TParsingDiagnosticsData(TParsingDiagnosticsData&&) noexcept = default;
+	TParsingDiagnosticsData& operator=(const TParsingDiagnosticsData&) = default;
+	TParsingDiagnosticsData& operator=(TParsingDiagnosticsData&&) noexcept = default;
    ~TParsingDiagnosticsData() = default;
 
    void Update(const std::shared_ptr<const TFragment>& frag);
@@ -73,7 +77,10 @@ public:
 
    TParsingDiagnostics();
    TParsingDiagnostics(const TParsingDiagnostics&);
-   ~TParsingDiagnostics() override;
+	TParsingDiagnostics(TParsingDiagnostics&&) noexcept = default;
+	TParsingDiagnostics& operator=(const TParsingDiagnostics&) = default;
+	TParsingDiagnostics& operator=(TParsingDiagnostics&&) noexcept = default;
+   ~TParsingDiagnostics();
 
 private:
    // fragment tree diagnostics (should these all be static?)
@@ -126,7 +133,7 @@ public:
       return 0;
    }
 
-   ULong64_t PPGCycleLength() { return fPPGCycleLength; }
+   ULong64_t PPGCycleLength() const { return fPPGCycleLength; }
 
    // other functions
    void WriteToFile(const char*) const;
@@ -137,7 +144,7 @@ public:
    void Draw(Option_t* opt = "") override;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TParsingDiagnostics, 2);
+   ClassDefOverride(TParsingDiagnostics, 2); // NOLINT
    /// \endcond
 };
 /*! @} */

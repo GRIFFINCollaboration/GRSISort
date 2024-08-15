@@ -81,7 +81,6 @@ namespace grsi {
 struct exit_exception : public std::exception {
 public:
    explicit exit_exception(int c, const char* msg = "") : code(c), message(msg) {}
-   ~exit_exception() noexcept override = default;
    /*     virtual const char* what() const throw {
            //  LOG(what); // write to log file
            return what.c_str();
@@ -152,7 +151,7 @@ static inline std::string getexepath()
 {
 	std::array<char, 1024> result{};
    ssize_t count = readlink("/proc/self/exe", result.data(), sizeof(result) - 1);
-   return {result.data(), (count > 0) ? count : 0};
+   return {result.data(), static_cast<size_t>((count > 0) ? count : 0)};
 }
 
 static inline std::string sh(const std::string& cmd)
@@ -193,7 +192,7 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, int maxFrames 
 
    // allocate string which will be filled with the demangled function name
    size_t funcnamesize = 256;
-   char*  funcname     = new char[funcnamesize];
+   auto*  funcname     = new char[funcnamesize];
 
    // iterate over the returned symbol lines. skip the first, it is the
    // address of this function.
@@ -234,7 +233,7 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, int maxFrames 
          // offset in [begin_offset, end_offset). now apply
          // __cxa_demangle():
 
-         int   status;
+         int   status = 0;
          char* ret = abi::__cxa_demangle(begin_name, funcname, &funcnamesize, &status);
          if(status == 0) {
             funcname = ret;   // use possibly realloc()-ed string
@@ -251,14 +250,12 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, int maxFrames 
       // str<<line;
    }
 
-   free(funcname);
-   free(symbollist);
+   delete[] funcname;
+   delete symbollist;
    out << str.str();
 }
 
 #if !__APPLE__
-#include <cstdio>
-#include <cstdlib>
 #include <sys/wait.h>
 #include <sys/prctl.h>
 static inline void PrintGdbStacktrace()

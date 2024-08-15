@@ -27,7 +27,7 @@ public:
    explicit TBetaDecay(TNucleus* parent);
    explicit TBetaDecay(char* name);
    TBetaDecay(Int_t Z, Int_t N);
-   ~TBetaDecay() override;
+   ~TBetaDecay();
 
    TBetaDecay(const TBetaDecay&)            = delete;
    TBetaDecay(TBetaDecay&&)                 = delete;

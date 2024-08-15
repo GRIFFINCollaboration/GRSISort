@@ -13,9 +13,11 @@ public:
    TCalPoint();
    TCalPoint(const Double_t& centroid, const Double_t& area, const Double_t& dcentroid = 0.0, const Double_t& darea = 0.0);
    explicit TCalPoint(const TPeak& peak);
-   ~TCalPoint() override = default;
-
-   TCalPoint(const TCalPoint& copy);
+	TCalPoint(const TCalPoint&);
+	TCalPoint(TCalPoint&&) noexcept = default;
+	TCalPoint& operator=(const TCalPoint&) = default;
+	TCalPoint& operator=(TCalPoint&&) noexcept = default;
+   ~TCalPoint() = default;
 
    void Copy(TObject& obj) const override;
    void SetPoint(const Double_t& centroid, const Double_t& area, const Double_t& dcentroid = 0.0,

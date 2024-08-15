@@ -192,15 +192,13 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
    Double_t xhigh = 0.;
    TF1::GetRange(xlow, xhigh);
 
-   double bgpars[2];
-   bgpars[0] = TF1::GetParameters()[3];
-   bgpars[1] = TF1::GetParameters()[4];
+	std::array<double, 2> bgpars = { TF1::GetParameters()[3], TF1::GetParameters()[4] };
 
-   fBGFit.SetParameters(bgpars);
+   fBGFit.SetParameters(bgpars.data());
 
    fArea         = Integral(xlow, xhigh) / fithist->GetBinWidth(1);
    double bgArea = fBGFit.Integral(xlow, xhigh) / fithist->GetBinWidth(1);
-   ;
+   
    fArea -= bgArea;
 
    if(xlow > xhigh) {
@@ -265,7 +263,8 @@ void GGaus::DrawResiduals(TH1* hist) const
       std::cout << "No fit performed" << std::endl;
       return;
    }
-   Double_t xlow, xhigh;
+   Double_t xlow  = 0.;
+   Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
    Int_t nbins  = hist->GetXaxis()->GetNbins();
    auto* res    = new Double_t[nbins];

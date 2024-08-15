@@ -13,7 +13,7 @@ class TEfficiencyCal : public TCal {
 public:
    TEfficiencyCal() = default;
    TEfficiencyCal(const char* name, const char* title) : TCal(name, title) {}
-   ~TEfficiencyCal() override = default;
+   ~TEfficiencyCal() = default;
 
    TEfficiencyCal(const TEfficiencyCal& copy);
 

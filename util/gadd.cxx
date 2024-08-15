@@ -163,10 +163,10 @@ int main(int argc, char** argv)
          }
          ++ffirst;
       } else if(argv[a][0] == '-') {
-         char ft[5];
+			std::array<char, 5> ft;
          for(int j = 0; j <= 9; ++j) {
-            snprintf(ft, 5, "-f%d", j);
-            if(strcmp(argv[a], ft) == 0) {
+            snprintf(ft.data(), ft.size(), "-f%d", j);
+            if(strcmp(argv[a], ft.data()) == 0) {
                force   = kTRUE;
                newcomp = j;
                ++ffirst;

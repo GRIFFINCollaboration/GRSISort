@@ -9,10 +9,10 @@
 #include "Math/Factory.h"
 #include "Math/Functor.h"
 
-Double_t TGainMatch::gDefaultCoarseRange = 40.;
+Double_t TGainMatch::fDefaultCoarseRange = 40.;
 
 TGainMatch::TGainMatch(const TGainMatch& copy)
-	: TCal(copy), fCoarseRange(gDefaultCoarseRange)
+	: TCal(copy), fCoarseRange(fDefaultCoarseRange)
 {
    std::cout << "THIS ---> " << fCoarseRange << std::endl;
    copy.Copy(*this);
@@ -837,7 +837,7 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    return true;
 }
 
-Double_t TGainMatch::HistCompare(Double_t* x, Double_t* par)
+Double_t TGainMatch::HistCompare(Double_t* x, Double_t* par) // NOLINT
 {
    Int_t    bin     = fHist->GetXaxis()->FindBin(x[0] * par[2] + par[1]);
    Double_t content = fHist->GetBinContent(bin);

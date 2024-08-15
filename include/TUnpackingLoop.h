@@ -31,7 +31,7 @@ public:
                           kTdr };
 
    static TUnpackingLoop* Get(std::string name = "");
-   ~TUnpackingLoop() override;
+   ~TUnpackingLoop();
 
    void SetNoWaveForms(bool temp = true) { fParser->SetNoWaveForms(temp); }
    void SetRecordDiag(bool temp = true) { fParser->SetRecordDiag(temp); }
@@ -79,8 +79,10 @@ private:
    EDataType fDataType;
 
    explicit TUnpackingLoop(std::string name);
-   TUnpackingLoop(const TUnpackingLoop& other);
-   TUnpackingLoop& operator=(const TUnpackingLoop& other);
+	TUnpackingLoop(const TUnpackingLoop&) = delete;
+	TUnpackingLoop(TUnpackingLoop&&) noexcept = delete;
+	TUnpackingLoop& operator=(const TUnpackingLoop&) = delete;
+	TUnpackingLoop& operator=(TUnpackingLoop&&) noexcept = delete;
 };
 
 /*! @} */

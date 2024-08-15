@@ -33,7 +33,7 @@ public:
                            kSkip };
 
    static TEventBuildingLoop* Get(std::string name = "", EBuildMode mode = EBuildMode::kTimestamp, uint64_t buildWindow = 2000);
-   ~TEventBuildingLoop() override;
+   ~TEventBuildingLoop();
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& InputQueue()
@@ -66,8 +66,10 @@ public:
 
 private:
    TEventBuildingLoop(std::string name, EBuildMode mode, uint64_t buildWindow);
-   TEventBuildingLoop(const TEventBuildingLoop& other);
-   TEventBuildingLoop& operator=(const TEventBuildingLoop& other);
+	TEventBuildingLoop(const TEventBuildingLoop&) = delete;
+	TEventBuildingLoop(TEventBuildingLoop&&) noexcept = delete;
+	TEventBuildingLoop& operator=(const TEventBuildingLoop&) = delete;
+	TEventBuildingLoop& operator=(TEventBuildingLoop&&) noexcept = delete;
 
 #ifndef __CINT__
    bool CheckBuildCondition(const std::shared_ptr<const TFragment>&);

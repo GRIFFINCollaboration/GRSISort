@@ -14,11 +14,13 @@
 
 class TGainMatch : public TCal {
 public:
-   TGainMatch() : fCoarseRange(gDefaultCoarseRange) {}
-   TGainMatch(const char* name, const char* title) : TCal(name, title), fCoarseRange(gDefaultCoarseRange) { Clear(); }
-   ~TGainMatch() override = default;
-
-   TGainMatch(const TGainMatch& copy);
+   TGainMatch() : fCoarseRange(fDefaultCoarseRange) {}
+   TGainMatch(const char* name, const char* title) : TCal(name, title), fCoarseRange(fDefaultCoarseRange) { Clear(); }
+	TGainMatch(const TGainMatch&);
+	TGainMatch(TGainMatch&&) noexcept = default;
+	TGainMatch& operator=(const TGainMatch&) = default;
+	TGainMatch& operator=(TGainMatch&&) noexcept = default;
+   ~TGainMatch() = default;
 
    void Copy(TObject& obj) const override;
 
@@ -71,9 +73,9 @@ public:
    static void SetDefaultCoarseRange(Double_t coarseRange)
    {
       std::cout << "All new TGainMatch objects will have their range set to " << coarseRange << std::endl;
-      gDefaultCoarseRange = coarseRange;
+      fDefaultCoarseRange = coarseRange;
    }
-   static Double_t GetDefaultCoarseRange() { return gDefaultCoarseRange; }
+   static Double_t GetDefaultCoarseRange() { return fDefaultCoarseRange; }
 
 private:
    Bool_t   fCoarseMatch{false};
@@ -84,7 +86,7 @@ private:
    Double_t fCoarseRange{0.};
    Double_t HistCompare(Double_t* x, Double_t* par);
 
-   static Double_t gDefaultCoarseRange;
+   static Double_t fDefaultCoarseRange;
 
    /// \cond CLASSIMP
    ClassDefOverride(TGainMatch, 1) // NOLINT

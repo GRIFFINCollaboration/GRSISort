@@ -57,7 +57,11 @@ class TRunInfo : public TSingleton<TRunInfo> {
 public:
    friend class TSingleton<TRunInfo>;
 
-   ~TRunInfo() override = default;
+	TRunInfo(const TRunInfo&) = default;
+	TRunInfo(TRunInfo&&) noexcept = default;
+	TRunInfo& operator=(const TRunInfo&) = default;
+	TRunInfo& operator=(TRunInfo&&) noexcept = default;
+   ~TRunInfo() = default;
    TRunInfo();   // This should not be used.
    // root forces me have this here instead
    // of a private class member in

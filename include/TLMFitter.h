@@ -49,8 +49,8 @@ public:
    NRVec(const NRVec& rhs);                       // Copy constructor
    NRVec&          operator=(const NRVec& rhs);   // assignment
    NRVec&          operator=(const T& a);         // assign a to every element
-   inline T&       operator[](const int i);       // i'th element
-   inline const T& operator[](const int i) const;
+   inline T&       operator[](int i);       // i'th element
+   inline const T& operator[](int i) const;
    inline int      size() const;
    ~NRVec();
 };
@@ -163,8 +163,8 @@ public:
    NRMat(const NRMat& rhs);                       // Copy constructor
    NRMat&          operator=(const NRMat& rhs);   // assignment
    NRMat&          operator=(const T& a);         // assign a to every element
-   inline T*       operator[](const int i);       // subscripting: pointer to row i
-   inline const T* operator[](const int i) const;
+   inline T*       operator[](int i);       // subscripting: pointer to row i
+   inline const T* operator[](int i) const;
    inline int      nrows() const;
    inline int      ncols() const;
    ~NRMat();
@@ -316,8 +316,8 @@ private:
 public:
    NRMat3d();
    NRMat3d(int n, int m, int k);
-   inline T**             operator[](const int i);   // subscripting: pointer to row i
-   inline const T* const* operator[](const int i) const;
+   inline T**             operator[](int i);   // subscripting: pointer to row i
+   inline const T* const* operator[](int i) const;
    inline int             dim1() const;
    inline int             dim2() const;
    inline int             dim3() const;
@@ -512,13 +512,13 @@ using Vec_Mat_double_p = NRVec<NRMat<double>*>;
 using Vec_FSTREAM_p    = NRVec<std::fstream*>;
 
 template <class T>
-inline const T SQR(const T a)
+inline T SQR(const T a)
 {
    return a * a;
 }
 
 template <class T>
-inline const T MAX(const T& a, const T& b)
+inline T MAX(const T& a, const T& b)
 {
    return b > a ? (b) : (a);
 }
@@ -534,7 +534,7 @@ inline float MAX(const float& a, const double& b)
 }
 
 template <class T>
-inline const T SIGN(const T& a, const T& b)
+inline T SIGN(const T& a, const T& b)
 {
    return b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a);
 }
@@ -557,50 +557,50 @@ inline void SWAP(T& a, T& b)
    b     = dum;
 }
 
-inline const std::complex<float> operator+(const double& a, const std::complex<float>& b)
+inline std::complex<float> operator+(const double& a, const std::complex<float>& b)
 {
    return static_cast<float>(a) + b;
 }
 
-inline const std::complex<float> operator+(const std::complex<float>& a, const double& b)
+inline std::complex<float> operator+(const std::complex<float>& a, const double& b)
 {
    return a + static_cast<float>(b);
 }
 
-inline const std::complex<float> operator-(const double& a, const std::complex<float>& b)
+inline std::complex<float> operator-(const double& a, const std::complex<float>& b)
 {
    return static_cast<float>(a) - b;
 }
 
-inline const std::complex<float> operator-(const std::complex<float>& a, const double& b)
+inline std::complex<float> operator-(const std::complex<float>& a, const double& b)
 {
    return a - static_cast<float>(b);
 }
 
-inline const std::complex<float> operator*(const double& a, const std::complex<float>& b)
+inline std::complex<float> operator*(const double& a, const std::complex<float>& b)
 {
    return static_cast<float>(a) * b;
 }
 
-inline const std::complex<float> operator*(const std::complex<float>& a, const double& b)
+inline std::complex<float> operator*(const std::complex<float>& a, const double& b)
 {
    return a * static_cast<float>(b);
 }
 
-inline const std::complex<float> operator/(const double& a, const std::complex<float>& b)
+inline std::complex<float> operator/(const double& a, const std::complex<float>& b)
 {
    return static_cast<float>(a) / b;
 }
 
-inline const std::complex<float> operator/(const std::complex<float>& a, const double& b)
+inline std::complex<float> operator/(const std::complex<float>& a, const double& b)
 {
    return a / static_cast<float>(b);
 }
 
 class TLMFitter : public TObject {
 public:
-   TLMFitter() = default;
-   ~TLMFitter() override = default;
+   TLMFitter()  = default;
+   ~TLMFitter() = default;
 
 private:
    int  fIntegrationSteps{100};
@@ -618,7 +618,6 @@ public:
    template <class T>
    class NRMat3d;
 
-public:
    void Fit(TH1* hist, TF1* func);
 
 protected:
@@ -644,7 +643,7 @@ protected:
    void mrqcof(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO_double& a, Vec_I_BOOL& ia, Mat_O_double& alpha,
                Vec_O_double& beta, double& chisq, Vec_I_double& W, double& chisqexp);
    void gaussj(Mat_IO_double& a, Mat_IO_double& b);
-   void covsrt(Mat_IO_double& covar, Vec_I_BOOL& ia, const int mfit);
+   void covsrt(Mat_IO_double& covar, Vec_I_BOOL& ia, int mfit);
    int  integrator(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_I_double& W, Vec_IO_double& a,
                    Vec_double& dyda, int chisqnumber, const double& bin_width, Vec_double& yfit, const int& bin);
 

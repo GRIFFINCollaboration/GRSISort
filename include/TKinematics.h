@@ -33,10 +33,10 @@
 class TKinematics : public TNamed {
 public:
    TKinematics(double eBeam, const char* beam, const char* targ, const char* ejec = nullptr, const char* reco = nullptr, const char* name = "");
-   TKinematics(const char* beam, const char* targ, const char* ejec, const char* reco, double eBeam, double ex3 = 0.0, const char* name = "");
-   TKinematics(TNucleus* projectile, TNucleus* target, double eBeam, const char* name = "");
-   TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double eBeam, const char* name = "");
-   TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double eBeam, double ex3, const char* name = "");
+	TKinematics(TNucleus* projectile, TNucleus* target, double eBeam, const char* name = "");
+	TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double eBeam, const char* name = "");
+	TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double eBeam, double ex3, const char* name = "");
+	TKinematics(const char* beam, const char* targ, const char* ejec, const char* reco, double eBeam, double ex3 = 0.0, const char* name = "");
 
    void Initial();
    void FinalCm();
@@ -113,22 +113,22 @@ private:
 
    // I don't think it makes sense to have these as arrays, we never use these as arrays (apart from setting the masses)
    // and it would make it easier to understand to see fProjectile or fRecoil instead of fParticle[0] or fParticle[2]
-   TNucleus* fParticle[4]{nullptr};
-   double    fM[4]{0.};
+   TNucleus* fParticle[4]{nullptr};  // NOLINT(*-avoid-c-arrays)
+   double    fM[4]{0.};  // NOLINT(*-avoid-c-arrays)
    double    fEBeam{0.};
    double    fQValue{0.};
-   double    fT[4]{0.};
-   double    fE[4]{0.};
-   double    fP[4]{0.};
-   double    fV[4]{0.};
-   double    fTheta[4]{0.};
+   double    fT[4]{0.};  // NOLINT(*-avoid-c-arrays)
+   double    fE[4]{0.};  // NOLINT(*-avoid-c-arrays)
+   double    fP[4]{0.};  // NOLINT(*-avoid-c-arrays)
+   double    fV[4]{0.};  // NOLINT(*-avoid-c-arrays)
+   double    fTheta[4]{0.};  // NOLINT(*-avoid-c-arrays)
 
-   double fTcm[4]{0.};
-   double fEcm[4]{0.};
-   double fPcm[4]{0.};
-   double fVcm[4]{0.};
-   double fBetacm[4]{0.};
-   double fThetacm[4]{0.};
+   double fTcm[4]{0.};  // NOLINT(*-avoid-c-arrays)
+   double fEcm[4]{0.};  // NOLINT(*-avoid-c-arrays)
+   double fPcm[4]{0.};  // NOLINT(*-avoid-c-arrays)
+   double fVcm[4]{0.};  // NOLINT(*-avoid-c-arrays)
+   double fBetacm[4]{0.};  // NOLINT(*-avoid-c-arrays)
+   double fThetacm[4]{0.};  // NOLINT(*-avoid-c-arrays)
 
    double fBeta_cm{0.};
    double fGamma_cm{0.};

@@ -26,7 +26,10 @@ public:
    GMarker() = default;
    GMarker(int tmpX, int tmpY, TH1* hist);
    GMarker(const GMarker& marker) : TObject(marker) { static_cast<const GMarker>(marker).Copy(*this); }
-   ~GMarker() override
+	GMarker(GMarker&&) noexcept = default;
+	GMarker& operator=(const GMarker&) = default;
+	GMarker& operator=(GMarker&&) noexcept = default;
+   ~GMarker()
    {
       if(fLineX != nullptr) { fLineX->Delete(); }
       if(fLineY != nullptr) { fLineY->Delete(); }
@@ -237,7 +240,11 @@ public:
    GCanvas(const char* name, const char* title, Int_t winw, Int_t winh);
    GCanvas(const char* name, Int_t winw, Int_t winh, Int_t winid);
    GCanvas(const char* name, const char* title, Int_t wtopx, Int_t wtopy, Int_t winw, Int_t winh, bool gui = false);
-   ~GCanvas() override;
+	GCanvas(const GCanvas&) = delete;
+	GCanvas(GCanvas&&) noexcept = delete;
+	GCanvas& operator=(const GCanvas&) = delete;
+	GCanvas& operator=(GCanvas&&) noexcept = delete;
+   ~GCanvas();
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Woverloaded-virtual"
@@ -257,8 +264,8 @@ private:
 
    void UpdateStatsInfo(int, int);
 
-   static double gLastX;
-   static double gLastY;
+   static double fLastX;
+   static double fLastY;
 
    bool fGuiEnabled{false};
 
@@ -279,8 +286,8 @@ private:
    static std::vector<TH1*> FindAllHists();
 
 public:
-   bool HandleArrowKeyPress(Event_t* event, UInt_t* keysym);
-   bool HandleKeyboardPress(Event_t* event, UInt_t* keysym);
+   bool HandleArrowKeyPress(Event_t* event, const UInt_t* keysym);
+   bool HandleKeyboardPress(Event_t* event, const UInt_t* keysym);
    bool HandleMousePress(Int_t event, Int_t x, Int_t y);
    bool HandleMouseShiftPress(Int_t event, Int_t x, Int_t y);
    bool HandleMouseControlPress(Int_t event, Int_t x, Int_t y);
@@ -289,8 +296,8 @@ public:
    bool Zoom(Int_t event, Int_t x, Int_t y);
 
 private:
-   bool ProcessNonHistKeyboardPress(Event_t* event, UInt_t* keysym);
-   bool Process1DArrowKeyPress(Event_t* event, UInt_t* keysym);
+   bool ProcessNonHistKeyboardPress(Event_t* event, const UInt_t* keysym);
+   bool Process1DArrowKeyPress(Event_t* event, const UInt_t* keysym);
    bool Process1DKeyboardPress(Event_t* event, const UInt_t* keysym);
    bool Process1DMousePress(Int_t event, Int_t x, Int_t y);
 

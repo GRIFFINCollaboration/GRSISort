@@ -46,7 +46,6 @@ public:
       : TNamed(name, cmd), fTab(tab), fSubTab(sub), fCommand(cmd)
    {
    }
-   ~GBrowserPlugin() override = default;
 
    void SetTab(Int_t tab) { fTab = tab; }                 ///< simple setter function for the tab number
    void SetSubTab(Int_t sub) { fSubTab = sub; }           ///< simple setter function for the tab element number
@@ -100,10 +99,11 @@ public:
 
 class GRootBrowser : public TGMainFrame, public TBrowserImp {
 private:
-   GRootBrowser(const GRootBrowser&);              // Not implemented
-   GRootBrowser& operator=(const GRootBrowser&);   // Not implemented
+   GRootBrowser(const GRootBrowser&);                  // Not implemented
+   GRootBrowser(GRootBrowser&&) noexcept;              // Not implemented
+   GRootBrowser& operator=(const GRootBrowser&);       // Not implemented
+   GRootBrowser& operator=(GRootBrowser&&) noexcept;   // Not implemented
 
-protected:
    TGLayoutHints*       fLH0{nullptr};              ///< Layout hints, part 1
    TGLayoutHints*       fLH1{nullptr};              ///< Layout hints, part 2
    TGLayoutHints*       fLH2{nullptr};              ///< Layout hints, part 3
@@ -176,7 +176,7 @@ public:
 
    explicit GRootBrowser(TBrowser* b = nullptr, const char* name = "ROOT Browser", UInt_t width = 800, UInt_t height = 500, Option_t* opt = "", Bool_t initshow = kTRUE);
    GRootBrowser(TBrowser* b, const char* name, Int_t x, Int_t y, UInt_t width, UInt_t height, Option_t* opt = "", Bool_t initshow = kTRUE);
-   ~GRootBrowser() override;
+   ~GRootBrowser();
 
    void InitPlugins(Option_t* opt = "");
 
@@ -211,12 +211,12 @@ public:
    virtual void DoubleClicked(TObject* obj);                   //*SIGNAL*
    virtual void Checked(TObject* obj, Bool_t checked);         //*SIGNAL*
 
-   void         Add(TObject* obj, const char* name = nullptr, Int_t check = -1) override;
-   void         RecursiveRemove(TObject* obj) override;
-   void         Refresh(Bool_t force = kFALSE) override;
-   void         Show() override { MapRaised(); }
-   Option_t*    GetDrawOption() const override;
-   TGMainFrame* GetMainFrame() const override { return const_cast<TGMainFrame*>(static_cast<const TGMainFrame*>(this)); }
+   void            Add(TObject* obj, const char* name = nullptr, Int_t check = -1) override;
+   void            RecursiveRemove(TObject* obj) override;
+   void            Refresh(Bool_t force = kFALSE) override;
+   void            Show() override { MapRaised(); }
+   Option_t*       GetDrawOption() const override;
+   TGMainFrame* GetMainFrame() const override { return const_cast<TGMainFrame*>(static_cast<const TGMainFrame*>(this)); } // NOLINT
 
    Long_t ExecPlugin(const char* name = nullptr, const char* fname = nullptr, const char* cmd = nullptr,
                      Int_t pos = static_cast<Int_t>(EInsertPosition::kRight), Int_t subpos = -1) override;

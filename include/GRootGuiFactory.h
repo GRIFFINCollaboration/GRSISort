@@ -1,4 +1,3 @@
-
 #ifndef ROOT_GRootGuiFactory
 #define ROOT_GRootGuiFactory
 
@@ -31,7 +30,11 @@ public:
    static void Init();
 
    explicit GRootGuiFactory(const char* name = "Root", const char* title = "GRUT GUI Factory");
-   ~GRootGuiFactory() override = default;
+	GRootGuiFactory(const GRootGuiFactory&) = default;
+	GRootGuiFactory(GRootGuiFactory&&) noexcept = default;
+	GRootGuiFactory& operator=(const GRootGuiFactory&) = default;
+	GRootGuiFactory& operator=(GRootGuiFactory&&) noexcept = default;
+	~GRootGuiFactory() = default;
 
    TApplicationImp* CreateApplicationImp(const char* classname, int* argc, char** argv) override;
 

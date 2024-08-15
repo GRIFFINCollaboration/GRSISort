@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <sstream>
 
 #include "TObject.h"
 #include "TClass.h"
@@ -21,7 +22,7 @@ public:
    explicit TMnemonic(const char* name) : TMnemonic() { Parse(name); }
    TMnemonic(const TMnemonic&) = default;
    TMnemonic(TMnemonic&&)      = default;
-   ~TMnemonic() override       = default;
+   ~TMnemonic()                = default;
 
    TMnemonic& operator=(const TMnemonic&) = default;
    TMnemonic& operator=(TMnemonic&&)      = default;
@@ -82,21 +83,26 @@ public:
       }
    }
 
+   virtual void Segment(int16_t val) { fSegment = val; }
    virtual void SetRFMnemonic(std::string* name);
-
-   virtual void    SetClassType(TClass* classType) { fClassType = classType; }
+	
+	// this needs to be const because we call this from GetClassType as well, which is const
+	// that is also why fClassType is mutable (?)
+	// but does GetClassType need to be const?
+   virtual void    SetClassType(TClass* classType) const { fClassType = classType; }
    virtual TClass* GetClassType() const;
 
    virtual double GetTime(Long64_t timestamp, Float_t cfd, double energy, const TChannel* channel) const;
 
    void Print(Option_t* opt = "") const override;
+	void Print(std::ostringstream& str) const;
    void Clear(Option_t* opt = "") override;
 
    void        SetName(const char* val) { fName = val; }
    void        SetName(const std::string& val) { fName = val; }
    const char* GetName() const override { return fName.c_str(); }
 
-protected:
+private:
    std::string fName;
    int16_t     fArrayPosition;
    int16_t     fSegment;

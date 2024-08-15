@@ -48,7 +48,7 @@ void TCal::Copy(TObject& obj) const
    TNamed::Copy(static_cast<TGraphErrors&>(obj));
 }
 
-Bool_t TCal::SetChannel(const TChannel* chan)
+Bool_t TCal::SetChannel(TChannel* chan)
 {
    /// Sets the channel being calibrated
    if(chan == nullptr) {
@@ -56,7 +56,7 @@ Bool_t TCal::SetChannel(const TChannel* chan)
       return false;
    }
    // Set our TRef to point at the TChannel
-   fChan = const_cast<TChannel*>(chan);
+   fChan = chan;
    return true;
 }
 

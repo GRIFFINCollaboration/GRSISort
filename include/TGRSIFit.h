@@ -25,7 +25,7 @@
 
 class TGRSIFit : public TF1 {
 public:
-   ~TGRSIFit() override;
+   ~TGRSIFit();
 
 protected:
    TGRSIFit();
@@ -60,8 +60,8 @@ public:
 
    // These are only to be called in the Dtor of classes to protect from ROOT's insane garbage collection system
    // They can be called anywhere though as long as new classes are carefully destructed.
-   Bool_t        AddToGlobalList(Bool_t on = kTRUE) override;
-   static Bool_t AddToGlobalList(TF1* func, Bool_t on = kTRUE);
+   Bool_t        AddToGlobalList(Bool_t yes = kTRUE) override;
+   static Bool_t AddToGlobalList(TF1* func, Bool_t yes = kTRUE);
 
 protected:
    Bool_t IsInitialized() const { return fInitFlag; }

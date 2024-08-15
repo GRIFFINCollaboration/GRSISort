@@ -3,9 +3,9 @@
 #include <vector>
 #include <algorithm>
 
-class combinations {
+class combinations { // NOLINT(readability-identifier-naming)
 public:
-   class iterator {
+   class iterator { // NOLINT(readability-identifier-naming)
    public:
       iterator(std::vector<double>& points, size_t n, bool at_beginning)
          : fPoints(points), fPointsUsed(fPoints.size())

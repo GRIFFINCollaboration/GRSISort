@@ -17,9 +17,11 @@ public:
    GCube(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GCube(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    GCube(const GCube&);
+   GCube(GCube&&) noexcept = delete;
    GCube& operator=(const GCube&);
+   GCube& operator=(GCube&&) noexcept = delete;
 
-   ~GCube() override = default;
+   ~GCube() = default;
 
    Int_t         BufferEmpty(Int_t action = 0) override;
    Int_t         BufferFill(Double_t, Double_t) override { return -2; }   // MayNotUse
@@ -100,6 +102,11 @@ protected:
    using TH1::DoIntegral;
    Double_t DoIntegral(Int_t binx1, Int_t binx2, Int_t biny1, Int_t biny2, Int_t binz1, Int_t binz2, Double_t& error,
                        Option_t* option, Bool_t doError = kFALSE) const override;
+
+	void Matrix(TH2* val) { fMatrix = val; }
+	TH2* Matrix() { return fMatrix; }
+
+private:
    Double_t fTsumwy{0};         // Total Sum of weight*Y
    Double_t fTsumwy2{0};        // Total Sum of weight*Y*Y
    Double_t fTsumwxy{0};        // Total Sum of weight*X*Y
@@ -121,7 +128,8 @@ public:
    GCubeF(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GCubeF(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    GCubeF(const GCubeF&);
-   ~GCubeF() override;
+   GCubeF(GCubeF&&) noexcept = delete;
+   ~GCubeF();
 
    TH2F* GetMatrix(bool force = false);
 
@@ -147,6 +155,7 @@ public:
    void          SetBinsLength(Int_t n = -1) override;
    void          UpdateBinContent(Int_t bin, Double_t content) override { fArray[bin] = static_cast<Float_t>(content); }
    GCubeF&       operator=(const GCubeF& h1);
+   GCubeF&       operator=(GCubeF&&) noexcept = delete;
    friend GCubeF operator*(Float_t c1, GCubeF& h1);
    friend GCubeF operator*(GCubeF& h1, Float_t c1) { return operator*(c1, h1); }
    friend GCubeF operator+(GCubeF& h1, GCubeF& h2);
@@ -166,7 +175,8 @@ public:
    GCubeD(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GCubeD(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    GCubeD(const GCubeD&);
-   ~GCubeD() override;
+   GCubeD(GCubeD&&) noexcept = delete;
+   ~GCubeD();
 
    TH2D* GetMatrix(bool force = false);
 
@@ -192,6 +202,7 @@ public:
    void          SetBinsLength(Int_t n = -1) override;
    void          UpdateBinContent(Int_t bin, Double_t content) override { fArray[bin] = content; }
    GCubeD&       operator=(const GCubeD& h1);
+   GCubeD&       operator=(GCubeD&& h1) noexcept = delete;
    friend GCubeD operator*(Float_t c1, GCubeD& h1);
    friend GCubeD operator*(GCubeD& h1, Float_t c1) { return operator*(c1, h1); }
    friend GCubeD operator+(GCubeD& h1, GCubeD& h2);

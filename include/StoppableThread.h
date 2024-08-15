@@ -85,16 +85,24 @@ public:
    static void status_out();
 
 protected:
-   // these are used directly by the various loops, but we could provided setters and getters and make them private?
+#ifndef __CINT__
+	void ItemsPopped(size_t val) { fItemsPopped = val; }
+	void InputSize(int64_t val)   { fInputSize = val; }
+	std::atomic_size_t& ItemsPopped() { return fItemsPopped; }
+	std::atomic_long&   InputSize()   { return fInputSize; }
+	void IncrementItemsPopped() { ++fItemsPopped; }
+#endif
+private:
 #ifndef __CINT__
    std::atomic_size_t fItemsPopped{0};   ///< number of items popped from input queue
    std::atomic_long   fInputSize{0};     ///< number of items in the input (queue), only updated within Iteration(), so not
                                          ///< always fully up-to-date (signed to hold error from queue::pop)
 #endif
 
-private:
-   StoppableThread(const StoppableThread&) {}
-   StoppableThread& operator=(const StoppableThread&) { return *this; }
+	StoppableThread(const StoppableThread&) = delete;
+	StoppableThread(StoppableThread&&) noexcept = delete;
+	StoppableThread& operator=(const StoppableThread&) = delete;
+	StoppableThread& operator=(StoppableThread&&) noexcept = delete;
 
    std::string fName;
 

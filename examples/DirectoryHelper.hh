@@ -31,7 +31,7 @@ public:
    // this function gets called for every single event and fills the histograms
    void Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo);
    // this function is optional and is called after the output lists off all slots/workers have been merged
-   void EndOfSort(std::shared_ptr<std::map<std::string, TList>> list) override;
+   void EndOfSort(std::shared_ptr<std::map<std::string, TList>>& list) override;
 
 private:
    // any constants that are set in the CreateHistograms function and used in the Exec function can be stored here

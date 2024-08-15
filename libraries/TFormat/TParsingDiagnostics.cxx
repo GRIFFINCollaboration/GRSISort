@@ -49,12 +49,12 @@ void TParsingDiagnosticsData::Print(UInt_t address) const
    }
 }
 
-TParsingDiagnostics::TParsingDiagnostics() : TSingleton<TParsingDiagnostics>()
+TParsingDiagnostics::TParsingDiagnostics()
 {
    Clear();
 }
 
-TParsingDiagnostics::TParsingDiagnostics(const TParsingDiagnostics&) : TSingleton<TParsingDiagnostics>()
+TParsingDiagnostics::TParsingDiagnostics(const TParsingDiagnostics&)
 {
    Clear();
 }

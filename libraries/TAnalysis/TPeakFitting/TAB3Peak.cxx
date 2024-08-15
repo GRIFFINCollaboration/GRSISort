@@ -91,7 +91,7 @@ Double_t TAB3Peak::PeakFunction(Double_t* dim, Double_t* par)
    return OneHitPeakFunction(dim, par) + TwoHitPeakFunction(dim, par) + ThreeHitPeakFunction(dim, par);
 }
 
-Double_t TAB3Peak::OneHitPeakFunction(Double_t* dim, Double_t* par)
+Double_t TAB3Peak::OneHitPeakFunction(Double_t* dim, Double_t* par) // NOLINT
 {
    Double_t x        = dim[0];   // channel number used for fitting
    Double_t height   = par[0];   // height of photopeak
@@ -101,7 +101,7 @@ Double_t TAB3Peak::OneHitPeakFunction(Double_t* dim, Double_t* par)
    return height * TMath::Gaus(x, centroid, sigma);
 }
 
-Double_t TAB3Peak::TwoHitPeakFunction(Double_t* dim, Double_t* par)
+Double_t TAB3Peak::TwoHitPeakFunction(Double_t* dim, Double_t* par) // NOLINT
 {
    Double_t x          = dim[0];   // channel number used for fitting
    Double_t height     = par[0];   // height of photopeak
@@ -113,7 +113,7 @@ Double_t TAB3Peak::TwoHitPeakFunction(Double_t* dim, Double_t* par)
    return height * rel_height * TMath::Gaus(x, centroid, rel_sigma * sigma);
 }
 
-Double_t TAB3Peak::ThreeHitPeakFunction(Double_t* dim, Double_t* par)
+Double_t TAB3Peak::ThreeHitPeakFunction(Double_t* dim, Double_t* par) // NOLINT
 {
    Double_t x          = dim[0];   // channel number used for fitting
    Double_t height     = par[0];   // height of photopeak

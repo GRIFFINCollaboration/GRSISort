@@ -36,7 +36,7 @@ public:
    {
       return d->Book<TGriffin, TGriffinBgo, TZeroDegree, TSceptar>(std::move(*this), {"TGriffin", "TGriffinBgo", "TZeroDegree", "TSceptar"});
    }
-   void CreateHistograms(unsigned int slot);
+   void CreateHistograms(unsigned int slot) override;
    void Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo, TZeroDegree& zds, TSceptar& scep);
 
 private:

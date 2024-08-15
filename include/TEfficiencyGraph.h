@@ -31,11 +31,11 @@ class TEfficiencyGraph : public TCalGraph {
 public:
    TEfficiencyGraph();
    TEfficiencyGraph(const char* name, const char* title) : TCalGraph(name, title) {}
-   ~TEfficiencyGraph() override;
-
-   TEfficiencyGraph(const TEfficiencyGraph& copy) : TCalGraph(copy), fIsAbsolute(copy.fIsAbsolute) {}
-
-   TEfficiencyGraph& operator=(const TEfficiencyGraph&) = default;   // use default to stop gcc 9.1 warning
+	TEfficiencyGraph(const TEfficiencyGraph&) = default;
+	TEfficiencyGraph(TEfficiencyGraph&&) noexcept = default;
+	TEfficiencyGraph& operator=(const TEfficiencyGraph&) = default;
+	TEfficiencyGraph& operator=(TEfficiencyGraph&&) noexcept = default;
+   ~TEfficiencyGraph();
 
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;

@@ -71,7 +71,7 @@ void TScaler::ReadTree(bool loadIntoMap)
    }
 }
 
-TScaler::TScaler(const TScaler& rhs) : TObject()
+TScaler::TScaler(const TScaler& rhs) : TObject(rhs)
 {
    rhs.Copy(*this);
 }
