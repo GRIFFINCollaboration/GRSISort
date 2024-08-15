@@ -152,7 +152,7 @@ static inline std::string getexepath()
 {
 	std::array<char, 1024> result{};
    ssize_t count = readlink("/proc/self/exe", result.data(), sizeof(result) - 1);
-   return std::string(result.data(), (count > 0) ? count : 0);
+   return {result.data(), (count > 0) ? count : 0};
 }
 
 static inline std::string sh(const std::string& cmd)

@@ -1727,7 +1727,7 @@ TF1 TPulseAnalyzer::Getsilifit()
       return g;
    }
 
-   return TF1();
+   return {};
 }
 
 double TPulseAnalyzer::GetsiliSmirnov()

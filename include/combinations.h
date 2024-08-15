@@ -69,9 +69,9 @@ public:
 
    combinations(std::vector<double>& points, size_t n) : fPoints(points), fN(n) {}
 
-   iterator begin() const { return iterator(fPoints, fN, true); }
+   iterator begin() const { return {fPoints, fN, true}; }
 
-   iterator end() const { return iterator(fPoints, fN, false); }
+   iterator end() const { return {fPoints, fN, false}; }
 
 private:
    std::vector<double>& fPoints;
