@@ -17,9 +17,9 @@ public:
    GCube(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GCube(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    GCube(const GCube&);
-   GCube(GCube&&) noexcept = delete;
+   GCube(GCube&&) noexcept;
    GCube& operator=(const GCube&);
-   GCube& operator=(GCube&&) noexcept = delete;
+   GCube& operator=(GCube&&) noexcept;
 
    ~GCube() = default;
 
@@ -128,7 +128,7 @@ public:
    GCubeF(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GCubeF(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    GCubeF(const GCubeF&);
-   GCubeF(GCubeF&&) noexcept = delete;
+   GCubeF(GCubeF&&) noexcept;
    ~GCubeF();
 
    TH2F* GetMatrix(bool force = false);
@@ -155,7 +155,7 @@ public:
    void          SetBinsLength(Int_t n = -1) override;
    void          UpdateBinContent(Int_t bin, Double_t content) override { fArray[bin] = static_cast<Float_t>(content); }
    GCubeF&       operator=(const GCubeF& h1);
-   GCubeF&       operator=(GCubeF&&) noexcept = delete;
+   GCubeF&       operator=(GCubeF&&) noexcept;
    friend GCubeF operator*(Float_t c1, GCubeF& h1);
    friend GCubeF operator*(GCubeF& h1, Float_t c1) { return operator*(c1, h1); }
    friend GCubeF operator+(GCubeF& h1, GCubeF& h2);
@@ -175,7 +175,7 @@ public:
    GCubeD(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GCubeD(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    GCubeD(const GCubeD&);
-   GCubeD(GCubeD&&) noexcept = delete;
+   GCubeD(GCubeD&&) noexcept;
    ~GCubeD();
 
    TH2D* GetMatrix(bool force = false);
@@ -202,7 +202,7 @@ public:
    void          SetBinsLength(Int_t n = -1) override;
    void          UpdateBinContent(Int_t bin, Double_t content) override { fArray[bin] = content; }
    GCubeD&       operator=(const GCubeD& h1);
-   GCubeD&       operator=(GCubeD&& h1) noexcept = delete;
+   GCubeD&       operator=(GCubeD&& h1) noexcept;
    friend GCubeD operator*(Float_t c1, GCubeD& h1);
    friend GCubeD operator*(GCubeD& h1, Float_t c1) { return operator*(c1, h1); }
    friend GCubeD operator+(GCubeD& h1, GCubeD& h2);

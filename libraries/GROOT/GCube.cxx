@@ -62,6 +62,11 @@ GCube::GCube(const GCube& rhs) : TH1() // NOLINT calling TH1 constuctor to shut 
    rhs.Copy(*this);
 }
 
+GCube::GCube(GCube&& rhs) noexcept : TH1() // NOLINT
+{
+   rhs.Copy(*this);
+}
+
 Int_t GCube::BufferEmpty(Int_t action)
 {
    /// Fill histogram with all entries in the buffer.
@@ -2664,6 +2669,12 @@ GCubeF::GCubeF(const GCubeF& rhs)
    rhs.Copy(*this);
 }
 
+GCubeF::GCubeF(GCubeF&& rhs) noexcept
+	: GCube(rhs), TArrayF(rhs)
+{
+   rhs.Copy(*this);
+}
+
 GCubeF::~GCubeF() = default;
 
 TH2F* GCubeF::GetMatrix(bool force)
@@ -2768,7 +2779,17 @@ GCubeF& GCubeF::operator=(const GCubeF& h1)
    // Operator =
 
    if(this != &h1) {
-      const_cast<GCubeF&>(h1).Copy(*this); // NOLINT
+      h1.Copy(*this);
+   }
+   return *this;
+}
+
+GCubeF& GCubeF::operator=(GCubeF&& h1) noexcept
+{
+   // Operator =
+
+   if(this != &h1) {
+      h1.Copy(*this);
    }
    return *this;
 }
@@ -2865,6 +2886,12 @@ GCubeD::GCubeD(const char* name, const char* title, Int_t nbins, const Float_t* 
 }
 
 GCubeD::GCubeD(const GCubeD& rhs)
+	: GCube(rhs), TArrayD(rhs)
+{
+   rhs.Copy(*this);
+}
+
+GCubeD::GCubeD(GCubeD&& rhs) noexcept
 	: GCube(rhs), TArrayD(rhs)
 {
    rhs.Copy(*this);
@@ -2975,7 +3002,17 @@ GCubeD& GCubeD::operator=(const GCubeD& h1)
    // Operator =
 
    if(this != &h1) {
-      const_cast<GCubeD&>(h1).Copy(*this); // NOLINT
+      h1.Copy(*this);
+   }
+   return *this;
+}
+
+GCubeD& GCubeD::operator=(GCubeD&& h1) noexcept
+{
+   // Operator =
+
+   if(this != &h1) {
+      h1.Copy(*this);
    }
    return *this;
 }

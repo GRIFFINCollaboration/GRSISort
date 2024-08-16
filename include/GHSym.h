@@ -17,6 +17,8 @@ public:
    GHSym(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    GHSym(const GHSym&);
 	GHSym(GHSym&&) noexcept;
+   GHSym& operator=(const GHSym&);
+	GHSym& operator=(GHSym&&) noexcept;
 
    ~GHSym() = default;
 
