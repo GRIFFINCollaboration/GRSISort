@@ -67,8 +67,8 @@ int main(int argc, char* argv[])
       return (1);
    }
 
-	std::stringstream str;
-	str << hist->GetName() << ".hist";
+   std::stringstream str;
+   str << hist->GetName() << ".hist";
    FILE* out_file = fopen(str.str().c_str(), "w");
    std::cout << "Making output file: " << str.str() << std::endl;
    fprintf(out_file, "%s\t%s\t%d\n", file_name, hist_name, hist->GetNbinsX());

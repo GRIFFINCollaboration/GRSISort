@@ -28,10 +28,10 @@ class TFragWriteLoop : public StoppableThread {
 public:
    static TFragWriteLoop* Get(std::string name = "", std::string fOutputFilename = "");
 
-	TFragWriteLoop(const TFragWriteLoop&) = delete;
-	TFragWriteLoop(TFragWriteLoop&&) noexcept = delete;
-	TFragWriteLoop& operator=(const TFragWriteLoop&) = delete;
-	TFragWriteLoop& operator=(TFragWriteLoop&&) noexcept = delete;
+   TFragWriteLoop(const TFragWriteLoop&)                = delete;
+   TFragWriteLoop(TFragWriteLoop&&) noexcept            = delete;
+   TFragWriteLoop& operator=(const TFragWriteLoop&)     = delete;
+   TFragWriteLoop& operator=(TFragWriteLoop&&) noexcept = delete;
    ~TFragWriteLoop();
 
 #ifndef __CINT__
@@ -86,7 +86,7 @@ private:
 #endif
 
    /// \cond CLASSIMP
-   ClassDefOverride(TFragWriteLoop, 0) // NOLINT
+   ClassDefOverride(TFragWriteLoop, 0)   // NOLINT
    /// \endcond
 };
 

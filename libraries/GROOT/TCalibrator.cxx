@@ -32,8 +32,8 @@ TCalibrator::TCalibrator()
 
 TCalibrator::~TCalibrator()
 {
-	delete fLinFit;
-	delete fEffFit;
+   delete fLinFit;
+   delete fEffFit;
 }
 
 void TCalibrator::Copy(TObject&) const
@@ -104,7 +104,7 @@ TGraphErrors& TCalibrator::MakeEffGraph(double seconds, double bq, Option_t* opt
       fEffFit->Delete();
    }
    static int counter = 0;
-   fEffFit             = new TF1(Form("eff_fit_%i", counter++), GRootFunctions::GammaEff, 0, 1500, 4);
+   fEffFit            = new TF1(Form("eff_fit_%i", counter++), GRootFunctions::GammaEff, 0, 1500, 4);
    fEffGraph.Fit(fEffFit, fitopt.Data());
 
    if(option.Contains("draw", TString::kIgnoreCase)) {
@@ -244,7 +244,7 @@ int TCalibrator::AddData(TH1* data, TNucleus* source, double sigma, double thres
    TIter                    iter(source->GetTransitionList());
    std::vector<double>      source_energy;
    std::map<double, double> src_eng_int;
-	while(auto* transition = static_cast<TTransition*>(iter.Next())) {
+   while(auto* transition = static_cast<TTransition*>(iter.Next())) {
       source_energy.push_back(transition->GetEnergy());
       src_eng_int[transition->GetEnergy()] = transition->GetIntensity();
    }
@@ -381,9 +381,9 @@ std::map<double, double> TCalibrator::Match(std::vector<double> peaks, std::vect
 
 bool TCalibrator::CheckMap(const std::map<double, double>& inmap)
 {
-	/// Return false if any member of map is nan (not a number).
-	// all_of returns false if the condition is false for any member
-	return std::all_of(inmap.begin(), inmap.end(), [](auto iter) { return !std::isnan(iter.second); });
+   /// Return false if any member of map is nan (not a number).
+   // all_of returns false if the condition is false for any member
+   return std::all_of(inmap.begin(), inmap.end(), [](auto iter) { return !std::isnan(iter.second); });
 }
 
 void TCalibrator::UpdateTChannel(TChannel*)

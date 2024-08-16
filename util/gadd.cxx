@@ -163,7 +163,7 @@ int main(int argc, char** argv)
          }
          ++ffirst;
       } else if(argv[a][0] == '-') {
-			std::array<char, 5> ft;
+         std::array<char, 5> ft;
          for(int j = 0; j <= 9; ++j) {
             snprintf(ft.data(), ft.size(), "-f%d", j);
             if(strcmp(argv[a], ft.data()) == 0) {

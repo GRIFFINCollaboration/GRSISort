@@ -9,7 +9,7 @@ TCalPoint::TCalPoint()
 
 TCalPoint::TCalPoint(const Double_t& centroid, const Double_t& area, const Double_t& dcentroid, const Double_t& darea)
 {
-	SetPoint(centroid, area, dcentroid, darea);
+   SetPoint(centroid, area, dcentroid, darea);
 }
 
 TCalPoint::TCalPoint(const TPeak& peak)

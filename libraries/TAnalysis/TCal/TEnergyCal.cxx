@@ -74,10 +74,10 @@ Bool_t TEnergyCal::SetPoint(Int_t idx, Double_t measured)
       return false;
    }
 
-   Double_t x = 0.;
-	Double_t y = 0.;
+   Double_t x  = 0.;
+   Double_t y  = 0.;
    Double_t dx = 0.;
-	Double_t dy = 0.;
+   Double_t dy = 0.;
    GetPoint(idx, x, y);
    dx = GetErrorX(idx);
    dy = GetErrorY(idx);

@@ -66,7 +66,7 @@ TList* AnalyzeDataLoss(TTree* tree, int64_t entries = 0, TStopwatch* w = nullptr
    double                                       timemin             = 0;      // in seconds
    double                                       timemax             = 1000;   // in seconds
 
-   auto*   accepted_hst           = new TH2D("accepted_hst", "Accepted Channel Id vs. Channel Number;Channel Number;Accepted Channel Id", channels, 0, channels, 10000, 0, 10e5);
+   auto* accepted_hst = new TH2D("accepted_hst", "Accepted Channel Id vs. Channel Number;Channel Number;Accepted Channel Id", channels, 0, channels, 10000, 0, 10e5);
    list->Add(accepted_hst);
    auto* lostNetworkPackets = new TH1D("lostNetworkPackets", "lost network packets;time [s];lost network packets", timebins, timemin, timemax);
    list->Add(lostNetworkPackets);

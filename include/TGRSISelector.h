@@ -62,17 +62,17 @@ public:
    std::string  GetOutputPrefix() const { return fOutputPrefix; }
 
 protected:
-   TGRSIMap<std::string, TH1*>        fH1;               // NOLINT  //!<! map for 1-D histograms
-   TGRSIMap<std::string, TH2*>        fH2;               // NOLINT  //!<! map for 2-D histograms
-   TGRSIMap<std::string, TH3*>        fH3;               // NOLINT  //!<! map for 3-D histograms
-   TGRSIMap<std::string, GHSym*>      fSym;              // NOLINT  //!<! map for GRSISort's symmetric 2-D histograms
-   TGRSIMap<std::string, GCube*>      fCube;             // NOLINT  //!<! map for GRSISort's 3-D histograms
-   TGRSIMap<std::string, THnSparseF*> fHSparse;          // NOLINT  //!<! map for sparse n-D histograms
-   TGRSIMap<std::string, TTree*>      fTree;             // NOLINT  //!<! map for trees
-   std::map<std::string, TCutG*>      fCuts;             // NOLINT  //!<! map of cuts
-   TPPG*                              fPpg{nullptr};     // NOLINT  //!<! pointer to the PPG
-   TRunInfo*                          fRunInfo{nullptr}; // NOLINT  //!<! pointer to the run info
-   int64_t                            fEntry{0};         // NOLINT  //!<! entry number currently being processed
+   TGRSIMap<std::string, TH1*>        fH1;                 // NOLINT  //!<! map for 1-D histograms
+   TGRSIMap<std::string, TH2*>        fH2;                 // NOLINT  //!<! map for 2-D histograms
+   TGRSIMap<std::string, TH3*>        fH3;                 // NOLINT  //!<! map for 3-D histograms
+   TGRSIMap<std::string, GHSym*>      fSym;                // NOLINT  //!<! map for GRSISort's symmetric 2-D histograms
+   TGRSIMap<std::string, GCube*>      fCube;               // NOLINT  //!<! map for GRSISort's 3-D histograms
+   TGRSIMap<std::string, THnSparseF*> fHSparse;            // NOLINT  //!<! map for sparse n-D histograms
+   TGRSIMap<std::string, TTree*>      fTree;               // NOLINT  //!<! map for trees
+   std::map<std::string, TCutG*>      fCuts;               // NOLINT  //!<! map of cuts
+   TPPG*                              fPpg{nullptr};       // NOLINT  //!<! pointer to the PPG
+   TRunInfo*                          fRunInfo{nullptr};   // NOLINT  //!<! pointer to the run info
+   int64_t                            fEntry{0};           // NOLINT  //!<! entry number currently being processed
 
 private:
    static constexpr int fSizeLimit = 1073741822;   //!<! 1 GB size limit for objects in ROOT
@@ -86,7 +86,7 @@ private:
    Int_t             fFirstSubRunNumber{-1};          //!<! sub-run number of first file
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSISelector, 3) // NOLINT
+   ClassDefOverride(TGRSISelector, 3)   // NOLINT
    /// \endcond
 };
 

@@ -69,7 +69,7 @@ TPPG::~TPPG()
 {
    Clear();
    if(fPPGStatusMap != nullptr) {
-		for(auto& ppgit : *fPPGStatusMap) {
+      for(auto& ppgit : *fPPGStatusMap) {
          delete ppgit.second;
       }
       delete fPPGStatusMap;
@@ -79,7 +79,7 @@ TPPG::~TPPG()
 TPPG& TPPG::operator=(const TPPG& rhs)
 {
    if(fPPGStatusMap != nullptr) {
-		for(auto& ppgit : *fPPGStatusMap) {
+      for(auto& ppgit : *fPPGStatusMap) {
          delete ppgit.second;
       }
       delete fPPGStatusMap;
@@ -284,7 +284,7 @@ void TPPG::Print(Option_t* opt) const
          cycleLength = numberOfCycleLength.first;
       }
    }
-	std::array<ULong64_t, 4> stateLength = {0, 0, 0, 0};
+   std::array<ULong64_t, 4> stateLength = {0, 0, 0, 0};
    for(int i = 0; i < 4; ++i) {
       counter = 0;
       for(auto it = numberOfStateLengths[i].begin(); it != numberOfStateLengths[i].end(); ++it) {

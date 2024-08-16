@@ -57,15 +57,15 @@ int main(int argc, char** argv)
    // open first root file and check which histograms are in it and whether they are 1D or 2D
    auto* input = new TFile(inputFiles[0].c_str());
 
-	// determine output file name and open output file 
-	std::stringstream outputFileName;
-	outputFileName<<"plotVsRun";
-	if(histogramNames.size() == 1) {
-		outputFileName<<"_"<<histogramNames[0];
-	} else {
-		//TODO: find a way to determine the run numbers (maybe add all files to TRunInfo?)
-	}
-	outputFileName<<".root";
+   // determine output file name and open output file
+   std::stringstream outputFileName;
+   outputFileName << "plotVsRun";
+   if(histogramNames.size() == 1) {
+      outputFileName << "_" << histogramNames[0];
+   } else {
+      //TODO: find a way to determine the run numbers (maybe add all files to TRunInfo?)
+   }
+   outputFileName << ".root";
    auto* output = new TFile(outputFileName.str().c_str(), "recreate");
 
    TObject*           obj = nullptr;
@@ -73,8 +73,8 @@ int main(int argc, char** argv)
    // since we might split one 2D histogram into multiple histograms, we need to keep track of the index
    // so that we can use outputIndex[histogram name index] to find the right output histogram
    std::vector<int> outputIndex;
-   int              index = 0;
-	int              nofInputFiles = static_cast<int>(inputFiles.size());
+   int              index         = 0;
+   int              nofInputFiles = static_cast<int>(inputFiles.size());
 
    for(const auto& histogramName : histogramNames) {
       obj = input->Get(histogramName.c_str());

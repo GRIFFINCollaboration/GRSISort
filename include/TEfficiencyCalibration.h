@@ -17,10 +17,10 @@ class TEfficiencyCalibration : public TNamed {
 public:
    TEfficiencyCalibration();
    TEfficiencyCalibration(const char* name, const char* title);
-	TEfficiencyCalibration(const TEfficiencyCalibration&);
-	TEfficiencyCalibration(TEfficiencyCalibration&&) noexcept = default;
-	TEfficiencyCalibration& operator=(const TEfficiencyCalibration&) = default;
-	TEfficiencyCalibration& operator=(TEfficiencyCalibration&&) noexcept = default;
+   TEfficiencyCalibration(const TEfficiencyCalibration&);
+   TEfficiencyCalibration(TEfficiencyCalibration&&) noexcept            = default;
+   TEfficiencyCalibration& operator=(const TEfficiencyCalibration&)     = default;
+   TEfficiencyCalibration& operator=(TEfficiencyCalibration&&) noexcept = default;
    ~TEfficiencyCalibration();
 
    void AddEfficiencyGraph(const TEfficiencyGraph& graph);
@@ -55,7 +55,7 @@ private:
    TF1*                                    fAbsoluteFunc{nullptr};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEfficiencyCalibration, 1) // NOLINT
+   ClassDefOverride(TEfficiencyCalibration, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

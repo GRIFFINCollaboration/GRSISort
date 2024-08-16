@@ -25,11 +25,12 @@
 
 class TGRSIHelper : public TObject {
 public:
-   std::string&                                                Prefix() { return fPrefix; }
+   std::string& Prefix() { return fPrefix; }
+
 protected:
-   TPPG*                                                       Ppg() { return fPpg; }
-   TRunInfo*                                                   RunInfo() { return fRunInfo; }
-   TUserSettings*                                              UserSettings() { return fUserSettings; }
+   TPPG*          Ppg() { return fPpg; }
+   TRunInfo*      RunInfo() { return fRunInfo; }
+   TUserSettings* UserSettings() { return fUserSettings; }
 
    std::vector<std::shared_ptr<std::map<std::string, TList>>> fLists;                   // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes) //!<! one map of lists and directories per data processing slot to hold all output objects
    std::vector<TGRSIMap<std::string, TH1*>>                   fH1;                      // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes) //!<! one map per data processing slot for 1D histograms
@@ -62,20 +63,20 @@ public:
    /// Virtual helper function that the user uses to create their histograms
    virtual void CreateHistograms(unsigned int)
    {
-      std::cout << this << " - " << __PRETTY_FUNCTION__ << ", " << Prefix() << ": This function should not get called, the user's code should replace it. Not creating any histograms!" << std::endl; // NOLINT
+      std::cout << this << " - " << __PRETTY_FUNCTION__ << ", " << Prefix() << ": This function should not get called, the user's code should replace it. Not creating any histograms!" << std::endl;   // NOLINT
    }
    /// This method will call the Book action on the provided dataframe
    virtual ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame*)
    {
-      std::cout << this << " - " << __PRETTY_FUNCTION__ << ", " << Prefix() << ": This function should not get called, the user's code should replace it. Returning empty list!" << std::endl; // NOLINT
+      std::cout << this << " - " << __PRETTY_FUNCTION__ << ", " << Prefix() << ": This function should not get called, the user's code should replace it. Returning empty list!" << std::endl;   // NOLINT
       return {};
    }
 
-   TGRSIHelper(const TGRSIHelper&)                                             = delete;
-   TGRSIHelper(TGRSIHelper&&)                                                  = default;
-   TGRSIHelper&                                  operator=(const TGRSIHelper&) = delete;
-   TGRSIHelper&                                  operator=(TGRSIHelper&&)      = default;
-   ~TGRSIHelper()                                                              = default;
+   TGRSIHelper(const TGRSIHelper&)            = delete;
+   TGRSIHelper(TGRSIHelper&&)                 = default;
+   TGRSIHelper& operator=(const TGRSIHelper&) = delete;
+   TGRSIHelper& operator=(TGRSIHelper&&)      = default;
+   ~TGRSIHelper()                             = default;
    std::shared_ptr<std::map<std::string, TList>> GetResultPtr() const { return fLists[0]; }
    void                                          InitTask(TTreeReader*, unsigned int) {}
    void                                          Initialize() {}   // required method, gets called once before starting the event loop

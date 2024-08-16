@@ -32,10 +32,10 @@ class TDetector;
 class TDetBuildingLoop : public StoppableThread {
 public:
    static TDetBuildingLoop* Get(std::string name = "");
-	TDetBuildingLoop(const TDetBuildingLoop&) = delete;
-	TDetBuildingLoop(TDetBuildingLoop&&) noexcept = delete;
-	TDetBuildingLoop& operator=(const TDetBuildingLoop&) = delete;
-	TDetBuildingLoop& operator=(TDetBuildingLoop&&) noexcept = delete;
+   TDetBuildingLoop(const TDetBuildingLoop&)                = delete;
+   TDetBuildingLoop(TDetBuildingLoop&&) noexcept            = delete;
+   TDetBuildingLoop& operator=(const TDetBuildingLoop&)     = delete;
+   TDetBuildingLoop& operator=(TDetBuildingLoop&&) noexcept = delete;
    ~TDetBuildingLoop();
 
 #ifndef __CINT__
@@ -75,7 +75,7 @@ private:
 #endif
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDetBuildingLoop, 0) // NOLINT
+   ClassDefOverride(TDetBuildingLoop, 0)   // NOLINT
    /// \endcond
 };
 

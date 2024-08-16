@@ -11,11 +11,11 @@ class TCFDCal : public TCal {
 public:
    TCFDCal() = default;
    TCFDCal(const char* name, const char* title) : TCal(name, title){};
-	TCFDCal(const TCFDCal&) = default;
-	TCFDCal(TCFDCal&&) noexcept = default;
-	TCFDCal& operator=(const TCFDCal&) = default;
-	TCFDCal& operator=(TCFDCal&&) noexcept = default;
-   ~TCFDCal() = default;
+   TCFDCal(const TCFDCal&)                = default;
+   TCFDCal(TCFDCal&&) noexcept            = default;
+   TCFDCal& operator=(const TCFDCal&)     = default;
+   TCFDCal& operator=(TCFDCal&&) noexcept = default;
+   ~TCFDCal()                             = default;
 
    // pure virtual functions
    Bool_t IsGroupable() const override { return false; }
@@ -36,7 +36,7 @@ private:
    std::vector<Double_t> fParameters;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCFDCal, 1) // NOLINT
+   ClassDefOverride(TCFDCal, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

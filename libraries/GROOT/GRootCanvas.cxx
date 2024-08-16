@@ -534,8 +534,8 @@ void GRootCanvas::CreateCanvas(const char* name)
                     "EventInfo(Int_t, Int_t, Int_t, TObject*)");
 
    // Create status bar
-	std::array<int, 4> parts = {33, 10, 10, 47};
-   fStatusBar  = new TGStatusBar(this, 10, 10);
+   std::array<int, 4> parts = {33, 10, 10, 47};
+   fStatusBar               = new TGStatusBar(this, 10, 10);
    fStatusBar->SetParts(parts.data(), parts.size());
 
    fStatusBarLayout = new TGLayoutHints(kLHintsBottom | kLHintsLeft | kLHintsExpandX, 2, 2, 1, 1);
@@ -811,7 +811,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
                   if(ft.Index(".") != kNPOS) {
                      fn += ft(ft.Index("."), ft.Length());
                      appendedType = kTRUE;
-                     goto again; // NOLINT
+                     goto again;   // NOLINT
                   }
                }
                Warning("ProcessMessage", "file %s cannot be saved with this extension", fileInfo.fFilename);
@@ -935,8 +935,8 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             }
             break;
          case kOptionAutoResize: {
-            fAutoFit = fAutoFit ? kFALSE : kTRUE;
-            unsigned int opt  = fCanvasContainer->GetOptions();
+            fAutoFit         = fAutoFit ? kFALSE : kTRUE;
+            unsigned int opt = fCanvasContainer->GetOptions();
             if(fAutoFit) {
                opt &= ~kFixedSize;
                fOptionMenu->CheckEntry(kOptionAutoResize);
@@ -1036,7 +1036,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
          // Handle Tools menu items...
          case kClassesTree: {
             TString cdef;
-            auto* canvasList = static_cast<TList*>(gROOT->GetListOfCanvases());
+            auto*   canvasList = static_cast<TList*>(gROOT->GetListOfCanvases());
             if(canvasList->FindObject("ClassTree") != nullptr) {
                cdef = TString::Format("ClassTree_%d", canvasList->GetSize() + 1);
             } else {
@@ -1086,44 +1086,44 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
 #endif   // R__UNIX
          } break;
          case kHelpOnCanvas: {
-										  auto* helperDialog = new TRootHelpDialog(this, "Help on Canvas...", 600, 400);
-										  helperDialog->SetText(gHelpCanvas); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-										  helperDialog->Popup();
-									  break;
-									  }
+            auto* helperDialog = new TRootHelpDialog(this, "Help on Canvas...", 600, 400);
+            helperDialog->SetText(gHelpCanvas);   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+            helperDialog->Popup();
+            break;
+         }
          case kHelpOnMenus: {
-										 auto* helperDialog = new TRootHelpDialog(this, "Help on Menus...", 600, 400);
-										 helperDialog->SetText(gHelpPullDownMenus); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-										 helperDialog->Popup();
-										 break;
-									 }
-			case kHelpOnGraphicsEd: {
-												auto* helperDialog = new TRootHelpDialog(this, "Help on Graphics Editor...", 600, 400);
-												helperDialog->SetText(gHelpGraphicsEditor); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-												helperDialog->Popup();
-												break;
-											}
-			case kHelpOnBrowser: {
-											auto* helperDialog = new TRootHelpDialog(this, "Help on Browser...", 600, 400);
-											helperDialog->SetText(gHelpBrowser); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-											helperDialog->Popup();
-											break;
-										}
-			case kHelpOnObjects: {
-											auto* helperDialog = new TRootHelpDialog(this, "Help on Objects...", 600, 400);
-											helperDialog->SetText(gHelpObjects); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-											helperDialog->Popup();
-											break;
-										}
-			case kHelpOnPS: {
-									 auto* helperDialog = new TRootHelpDialog(this, "Help on PostScript...", 600, 400);
-									 helperDialog->SetText(gHelpPostscript); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-									 helperDialog->Popup();
-									 break;
-								 }
-			}
-		default: break;
-		}
+            auto* helperDialog = new TRootHelpDialog(this, "Help on Menus...", 600, 400);
+            helperDialog->SetText(gHelpPullDownMenus);   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+            helperDialog->Popup();
+            break;
+         }
+         case kHelpOnGraphicsEd: {
+            auto* helperDialog = new TRootHelpDialog(this, "Help on Graphics Editor...", 600, 400);
+            helperDialog->SetText(gHelpGraphicsEditor);   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+            helperDialog->Popup();
+            break;
+         }
+         case kHelpOnBrowser: {
+            auto* helperDialog = new TRootHelpDialog(this, "Help on Browser...", 600, 400);
+            helperDialog->SetText(gHelpBrowser);   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+            helperDialog->Popup();
+            break;
+         }
+         case kHelpOnObjects: {
+            auto* helperDialog = new TRootHelpDialog(this, "Help on Objects...", 600, 400);
+            helperDialog->SetText(gHelpObjects);   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+            helperDialog->Popup();
+            break;
+         }
+         case kHelpOnPS: {
+            auto* helperDialog = new TRootHelpDialog(this, "Help on PostScript...", 600, 400);
+            helperDialog->SetText(gHelpPostscript);   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+            helperDialog->Popup();
+            break;
+         }
+         }
+      default: break;
+      }
    default: break;
    }
    return kTRUE;
@@ -1225,12 +1225,12 @@ void GRootCanvas::PrintCanvas()
 {
    /// Print the canvas.
 
-   Int_t          ret   = 0;
-   Bool_t         pname = kTRUE;
-   char *         printer = nullptr;
-	char*          printCmd = nullptr;
+   Int_t          ret      = 0;
+   Bool_t         pname    = kTRUE;
+   char*          printer  = nullptr;
+   char*          printCmd = nullptr;
    static TString sprinter;
-	static TString sprintCmd;
+   static TString sprintCmd;
 
    if(sprinter == "") {
       printer = StrDup(gEnv->GetValue("Print.Printer", ""));
@@ -1379,10 +1379,10 @@ void GRootCanvas::ShowEditor(Bool_t show)
    UInt_t s = fHorizontal1->GetHeight();
 
    if((fParent != nullptr) && fParent != fClient->GetDefaultRoot()) {
-      const auto* main = static_cast<const TGMainFrame*>(fParent->GetMainFrame()); // fParent is of type TGWindow, so GetMainFrame returns "const TGWindow*"
+      const auto* main = static_cast<const TGMainFrame*>(fParent->GetMainFrame());   // fParent is of type TGWindow, so GetMainFrame returns "const TGWindow*"
       fMainFrame->HideFrame(fEditorFrame);
       if((main != nullptr) && main->InheritsFrom("TRootBrowser")) {
-         auto* browser = const_cast<TRootBrowser*>(static_cast<const TRootBrowser*>(main)); // NOLINT
+         auto* browser = const_cast<TRootBrowser*>(static_cast<const TRootBrowser*>(main));   // NOLINT
          if(!fEmbedded) {
             browser->GetTabRight()->Connect("Selected(Int_t)", "GRootCanvas", this, "Activated(Int_t)");
          }
@@ -1690,8 +1690,8 @@ Bool_t GRootCanvas::HandleContainerDoubleClick(Event_t* event)
    /// Handle mouse button double click events in the canvas container.
 
    UInt_t button = event->fCode;
-   Int_t x      = event->fX;
-   Int_t y      = event->fY;
+   Int_t  x      = event->fX;
+   Int_t  y      = event->fY;
 
    if(button == kButton1) {
       (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Double, x, y);
@@ -1743,9 +1743,9 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
    static EGEventType previous_event  = kOtherEvent;
    static UInt_t      previous_keysym = 0;
 
-	UInt_t keysym = 0;
-	std::array<char, 2> str;
-	gVirtualX->LookupString(event, str.data(), str.size(), keysym);
+   UInt_t              keysym = 0;
+   std::array<char, 2> str;
+   gVirtualX->LookupString(event, str.data(), str.size(), keysym);
 
    if(event->fType == kGKeyPress) {
       fButton = event->fCode;
@@ -1767,11 +1767,11 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
          Window_t dum2 = 0;
          Window_t wid  = 0;
          UInt_t   mask = 0;
-         Int_t    mx = 0;
-         Int_t    my = 0;
-         Int_t    tx = 0;
-         Int_t    ty = 0;
-         wid = gVirtualX->GetDefaultRootWindow();
+         Int_t    mx   = 0;
+         Int_t    my   = 0;
+         Int_t    tx   = 0;
+         Int_t    ty   = 0;
+         wid           = gVirtualX->GetDefaultRootWindow();
          gVirtualX->QueryPointer(wid, dum1, dum2, mx, my, mx, my, mask);
          gVirtualX->TranslateCoordinates(gClient->GetDefaultRoot()->GetId(), fCanvasContainer->GetId(), mx, my, tx, ty, dum1);
 
@@ -1807,11 +1807,11 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
          Window_t dum2 = 0;
          Window_t wid  = 0;
          UInt_t   mask = 0;
-         Int_t    mx = 0;
-         Int_t    my = 0;
-         Int_t    tx = 0;
-         Int_t    ty = 0;
-         wid = gVirtualX->GetDefaultRootWindow();
+         Int_t    mx   = 0;
+         Int_t    my   = 0;
+         Int_t    tx   = 0;
+         Int_t    ty   = 0;
+         wid           = gVirtualX->GetDefaultRootWindow();
          gVirtualX->QueryPointer(wid, dum1, dum2, mx, my, mx, my, mask);
 
          auto* gCanvas = static_cast<GCanvas*>(gPad->GetCanvas());
@@ -1902,7 +1902,7 @@ Bool_t GRootCanvas::HandleDNDDrop(TDNDData* data)
       }
       gPad->Clear();
       if(obj->InheritsFrom("TKey")) {
-         auto* object = reinterpret_cast<TObject*>(gROOT->ProcessLine(Form("((TKey *)0x%lx)->ReadObj();", reinterpret_cast<ULong_t>(obj)))); // NOLINT
+         auto* object = reinterpret_cast<TObject*>(gROOT->ProcessLine(Form("((TKey *)0x%lx)->ReadObj();", reinterpret_cast<ULong_t>(obj))));   // NOLINT
          if(object == nullptr) {
             return kTRUE;
          }

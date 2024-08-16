@@ -57,11 +57,11 @@ class TRunInfo : public TSingleton<TRunInfo> {
 public:
    friend class TSingleton<TRunInfo>;
 
-	TRunInfo(const TRunInfo&) = default;
-	TRunInfo(TRunInfo&&) noexcept = default;
-	TRunInfo& operator=(const TRunInfo&) = default;
-	TRunInfo& operator=(TRunInfo&&) noexcept = default;
-   ~TRunInfo() = default;
+   TRunInfo(const TRunInfo&)                = default;
+   TRunInfo(TRunInfo&&) noexcept            = default;
+   TRunInfo& operator=(const TRunInfo&)     = default;
+   TRunInfo& operator=(TRunInfo&&) noexcept = default;
+   ~TRunInfo()                              = default;
    TRunInfo();   // This should not be used.
    // root forces me have this here instead
    // of a private class member in
@@ -239,8 +239,8 @@ public:
    static std::string PrintToString(Option_t* opt = "");
 
    /// \cond CLASSIMP
-   ClassDefOverride(TRunInfo, 17) // NOLINT
-	/// \endcond
+   ClassDefOverride(TRunInfo, 17)   // NOLINT
+                                    /// \endcond
 };
 /*! @} */
 #endif

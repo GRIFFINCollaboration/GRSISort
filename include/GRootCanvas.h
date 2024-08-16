@@ -85,11 +85,11 @@ private:
    const TGPicture*    fIconPic{nullptr};             ///< icon picture
    TGToolTip*          fToolTip{nullptr};             ///< tooltip for object info
 
-   TVirtualPadEditor* fEditor{nullptr};     ///< pointer to currently loaded pad editor
+   TVirtualPadEditor* fEditor{nullptr};   ///< pointer to currently loaded pad editor
    Bool_t             fEmbedded{false};   ///< true if embedded in any other frame (e.g. in the browser)
-   Int_t              fCanvasID{0};   ///< index in fWindows array of TGX11
-   Bool_t             fAutoFit{true};    ///< when true canvas container keeps same size as canvas
-   Int_t              fButton{0};     ///< currently pressed button
+   Int_t              fCanvasID{0};       ///< index in fWindows array of TGX11
+   Bool_t             fAutoFit{true};     ///< when true canvas container keeps same size as canvas
+   Int_t              fButton{0};         ///< currently pressed button
 
    GRootCanvas(const GRootCanvas&);                  // Not implemented
    GRootCanvas(GRootCanvas&&) noexcept;              // Not implemented

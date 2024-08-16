@@ -80,7 +80,7 @@ public:
    TDetectorHit(TDetectorHit&&) noexcept = default;
    ~TDetectorHit();
 
-   TDetectorHit& operator=(const TDetectorHit&) = default;
+   TDetectorHit& operator=(const TDetectorHit&)     = default;
    TDetectorHit& operator=(TDetectorHit&&) noexcept = default;
 
    // static void SetPPGPtr(TPPG* ptr) { fPPG = ptr; }
@@ -99,8 +99,8 @@ public:
       hit.Print(out);
       return out;
    }
-   virtual bool HasWave() const { return !fWaveform.empty(); }   //!<!
-   virtual size_t WaveSize() const { return fWaveform.size(); }   //!<!
+   virtual bool   HasWave() const { return !fWaveform.empty(); }   //!<!
+   virtual size_t WaveSize() const { return fWaveform.size(); }    //!<!
 
    static bool CompareEnergy(TDetectorHit* lhs, TDetectorHit* rhs);
    // We need a common function for all detectors in here
@@ -210,10 +210,10 @@ private:
    //  flags
    mutable TTransientBits<UChar_t> fBitFlags;
 
-   static TVector3                 fBeamDirection;   //!
+   static TVector3 fBeamDirection;   //!
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDetectorHit, 1) // NOLINT
+   ClassDefOverride(TDetectorHit, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

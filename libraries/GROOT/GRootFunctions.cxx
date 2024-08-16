@@ -5,7 +5,7 @@ NamespaceImp(GRootFunctions)
 
 #define PI TMATH::Pi()
 
-Double_t GRootFunctions::PolyBg(Double_t* dim, Double_t* par, Int_t order) // NOLINT
+Double_t GRootFunctions::PolyBg(Double_t* dim, Double_t* par, Int_t order)   // NOLINT
 {
    Double_t result = 0.0;
    int      j      = 0;
@@ -27,7 +27,7 @@ Double_t GRootFunctions::QuadFit(Double_t* dim, Double_t* par)
    return PolyBg(dim, par, 2);
 }
 
-Double_t GRootFunctions::StepFunction(Double_t* dim, Double_t* par) // NOLINT
+Double_t GRootFunctions::StepFunction(Double_t* dim, Double_t* par)   // NOLINT
 {
    //  -dim[0]: channels to fit
    //  -par[0]: height of peak
@@ -51,7 +51,7 @@ Double_t GRootFunctions::StepBG(Double_t* dim, Double_t* par)
    return StepFunction(dim, par) + PolyBg(dim, (par + 4), 0);
 }
 
-Double_t GRootFunctions::Gaus(Double_t* dim, Double_t* par) // NOLINT
+Double_t GRootFunctions::Gaus(Double_t* dim, Double_t* par)   // NOLINT
 {
    // - dim[0]: channels to fit
    // - par[0]: height of peak
@@ -68,7 +68,7 @@ Double_t GRootFunctions::Gaus(Double_t* dim, Double_t* par) // NOLINT
    return height * (1.0 - R / 100.0) * TMath::Gaus(x, cent, sigma);
 }
 
-Double_t GRootFunctions::SkewedGaus(Double_t* dim, Double_t* par) // NOLINT
+Double_t GRootFunctions::SkewedGaus(Double_t* dim, Double_t* par)   // NOLINT
 {
 
    // StepFunction(dim,par) + PolyBg
@@ -112,12 +112,12 @@ Double_t GRootFunctions::PhotoPeakBG(Double_t* dim, Double_t* par)
    // - par[6]: base bg height.
    // - par[7]: slope of bg.
 
-	std::array<double, 4> spar = { par[0],  par[1],  par[2],  par[5] };
+   std::array<double, 4> spar = {par[0], par[1], par[2], par[5]};
    return Gaus(dim, par) + SkewedGaus(dim, par) + StepFunction(dim, spar.data()) + PolyBg(dim, par + 6, 0);
 }
 
 // For fitting Ge detector efficiencies.
-Double_t GRootFunctions::Efficiency(Double_t* dim, Double_t* par) // NOLINT
+Double_t GRootFunctions::Efficiency(Double_t* dim, Double_t* par)   // NOLINT
 {
    // - dim[0]: energy.
    // - par[0]: zeroth order
@@ -138,7 +138,7 @@ Double_t GRootFunctions::Efficiency(Double_t* dim, Double_t* par) // NOLINT
    return 0;
 }
 
-Double_t GRootFunctions::GausExpo(Double_t* x, Double_t* pars) // NOLINT
+Double_t GRootFunctions::GausExpo(Double_t* x, Double_t* pars)   // NOLINT
 {
    // gaus + step*expo conv with a gaus.
 
@@ -147,7 +147,7 @@ Double_t GRootFunctions::GausExpo(Double_t* x, Double_t* pars) // NOLINT
    // par[2] = sigma
    // par[3] = decay parameter
 
-	return TMath::Gaus(pars[0], pars[1], pars[2]) + static_cast<double>(x[0] > pars[1]) * pars[0] * TMath::Exp(-pars[3]);
+   return TMath::Gaus(pars[0], pars[1], pars[2]) + static_cast<double>(x[0] > pars[1]) * pars[0] * TMath::Exp(-pars[3]);
 }
 
 Double_t GRootFunctions::LanGaus(Double_t* x, Double_t* pars)
@@ -159,14 +159,14 @@ Double_t GRootFunctions::LanGaus(Double_t* x, Double_t* pars)
       // range [2.5 sigma still covers 98.8% of gaussian]
       double y    = x[0] - 2.5 * pars[2] + dy * i;
       double spec = pars[0] +
-             pars[1] * y;   // define background SHOULD THIS BE CONVOLUTED ????? *************************************
+                    pars[1] * y;   // define background SHOULD THIS BE CONVOLUTED ????? *************************************
       // for( int n=0; n<(int)(pars[0]+0.5); n++) // the implementation of landau function should be done using the
       // landau function
       spec += pars[3] * TMath::Landau(-y, -pars[4], pars[5]) /
               TMath::Landau(0, 0, 100);   // add peaks, dividing by max height of landau
       double gaus = TMath::Gaus(-x[0], -y, pars[2]) /
-             sqrt(2 * TMath::Pi() * pars[2] * pars[2]);   // gaus must be normalisd so there is no sigma weighting
-      conv += gaus * spec * dy;                           // now convolve this [integrate the product] with a gaussian centered at x;
+                    sqrt(2 * TMath::Pi() * pars[2] * pars[2]);   // gaus must be normalisd so there is no sigma weighting
+      conv += gaus * spec * dy;                                  // now convolve this [integrate the product] with a gaussian centered at x;
    }
 
    return conv;
@@ -190,7 +190,7 @@ Double_t GRootFunctions::LanGausHighRes(Double_t* x, Double_t* pars)
    return conv;
 }
 
-Double_t GRootFunctions::GammaEff(Double_t* x, Double_t* par) // NOLINT
+Double_t GRootFunctions::GammaEff(Double_t* x, Double_t* par)   // NOLINT
 {
    // LOG(EFF) = A0 + A1*LOG(E) + A2*LOG(E)^2 + A3/E^2
 

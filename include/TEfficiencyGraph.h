@@ -31,10 +31,10 @@ class TEfficiencyGraph : public TCalGraph {
 public:
    TEfficiencyGraph();
    TEfficiencyGraph(const char* name, const char* title) : TCalGraph(name, title) {}
-	TEfficiencyGraph(const TEfficiencyGraph&) = default;
-	TEfficiencyGraph(TEfficiencyGraph&&) noexcept = default;
-	TEfficiencyGraph& operator=(const TEfficiencyGraph&) = default;
-	TEfficiencyGraph& operator=(TEfficiencyGraph&&) noexcept = default;
+   TEfficiencyGraph(const TEfficiencyGraph&)                = default;
+   TEfficiencyGraph(TEfficiencyGraph&&) noexcept            = default;
+   TEfficiencyGraph& operator=(const TEfficiencyGraph&)     = default;
+   TEfficiencyGraph& operator=(TEfficiencyGraph&&) noexcept = default;
    ~TEfficiencyGraph();
 
    void Print(Option_t* opt = "") const override;
@@ -53,7 +53,7 @@ private:
    bool fIsAbsolute{false};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEfficiencyGraph, 1) // NOLINT
+   ClassDefOverride(TEfficiencyGraph, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

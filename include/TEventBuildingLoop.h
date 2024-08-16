@@ -33,10 +33,10 @@ public:
                            kSkip };
 
    static TEventBuildingLoop* Get(std::string name = "", EBuildMode mode = EBuildMode::kTimestamp, uint64_t buildWindow = 2000);
-	TEventBuildingLoop(const TEventBuildingLoop&) = delete;
-	TEventBuildingLoop(TEventBuildingLoop&&) noexcept = delete;
-	TEventBuildingLoop& operator=(const TEventBuildingLoop&) = delete;
-	TEventBuildingLoop& operator=(TEventBuildingLoop&&) noexcept = delete;
+   TEventBuildingLoop(const TEventBuildingLoop&)                = delete;
+   TEventBuildingLoop(TEventBuildingLoop&&) noexcept            = delete;
+   TEventBuildingLoop& operator=(const TEventBuildingLoop&)     = delete;
+   TEventBuildingLoop& operator=(TEventBuildingLoop&&) noexcept = delete;
    ~TEventBuildingLoop();
 
 #ifndef __CINT__
@@ -97,7 +97,7 @@ private:
 #endif
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEventBuildingLoop, 0) // NOLINT
+   ClassDefOverride(TEventBuildingLoop, 0)   // NOLINT
    /// \endcond
 };
 

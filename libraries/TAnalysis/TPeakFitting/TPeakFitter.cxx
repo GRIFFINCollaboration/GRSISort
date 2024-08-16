@@ -60,10 +60,10 @@ Int_t TPeakFitter::GetNParameters() const
    Int_t n_par = 0;
    for(auto* peak : fPeaksToFit) {
       n_par += peak->GetNParameters();
-	}
+   }
    if(fBGToFit != nullptr) {
       n_par += fBGToFit->GetNpar();
-	}
+   }
 
    return n_par;
 }
@@ -231,8 +231,8 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
          for(int i = 0; i < peak_func->GetNpar(); ++i) {
             peak_func->SetParameter(i, fTotalFitFunction->GetParameter(param_counter));
             peak_func->SetParError(i, fTotalFitFunction->GetParError(param_counter));
-            Double_t low = 0.;
-				Double_t high = 0.;
+            Double_t low  = 0.;
+            Double_t high = 0.;
             fTotalFitFunction->GetParLimits(param_counter, low, high);
             peak_func->SetParLimits(i, low, high);
             ++param_counter;
@@ -377,7 +377,7 @@ void TPeakFitter::InitializeBackgroundParameters(TH1* fit_hist)
    }
 }
 
-Double_t TPeakFitter::DefaultBackgroundFunction(Double_t* dim, Double_t* par) // NOLINT
+Double_t TPeakFitter::DefaultBackgroundFunction(Double_t* dim, Double_t* par)   // NOLINT
 {
    Double_t x         = dim[0];
    Double_t A         = par[0];

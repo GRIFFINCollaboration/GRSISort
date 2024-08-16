@@ -53,7 +53,7 @@ private:
    void MonitorConnectionsThread();
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSIServer, 0) // NOLINT
+   ClassDefOverride(TGRSIServer, 0)   // NOLINT
    /// \endcond
 };
 /*! @} */

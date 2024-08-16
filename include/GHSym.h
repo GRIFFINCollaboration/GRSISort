@@ -16,9 +16,9 @@ public:
    GHSym(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GHSym(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    GHSym(const GHSym&);
-	GHSym(GHSym&&) noexcept;
+   GHSym(GHSym&&) noexcept;
    GHSym& operator=(const GHSym&);
-	GHSym& operator=(GHSym&&) noexcept;
+   GHSym& operator=(GHSym&&) noexcept;
 
    ~GHSym() = default;
 
@@ -111,14 +111,14 @@ protected:
    void Matrix(TH2* val) { fMatrix = val; }
 
 private:
-   Double_t         fTsumwy{0.};        ///< Total Sum of weight*Y
-   Double_t         fTsumwy2{0.};       ///< Total Sum of weight*Y*Y
-   Double_t         fTsumwxy{0.};       ///< Total Sum of weight*X*Y
-   TH2*             fMatrix{nullptr};   //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
+   Double_t fTsumwy{0.};        ///< Total Sum of weight*Y
+   Double_t fTsumwy2{0.};       ///< Total Sum of weight*Y*Y
+   Double_t fTsumwxy{0.};       ///< Total Sum of weight*X*Y
+   TH2*     fMatrix{nullptr};   //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
 
-	/// /cond CLASSIMP
-   ClassDefOverride(GHSym, 1) // NOLINT
-	/// /endcond
+   /// /cond CLASSIMP
+   ClassDefOverride(GHSym, 1)   // NOLINT
+                                /// /endcond
 };
 
 class GHSymF : public GHSym, public TArrayF {
@@ -160,9 +160,9 @@ public:
    friend GHSymF operator*(GHSymF& h1, GHSymF& h2);
    friend GHSymF operator/(GHSymF& h1, GHSymF& h2);
 
-	/// /cond CLASSIMP
-   ClassDefOverride(GHSymF, 1) // NOLINT
-	/// /endcond
+   /// /cond CLASSIMP
+   ClassDefOverride(GHSymF, 1)   // NOLINT
+                                 /// /endcond
 };
 
 class GHSymD : public GHSym, public TArrayD {
@@ -204,8 +204,8 @@ public:
    friend GHSymD operator*(GHSymD& h1, GHSymD& h2);
    friend GHSymD operator/(GHSymD& h1, GHSymD& h2);
 
-	/// /cond CLASSIMP
-   ClassDefOverride(GHSymD, 1) // NOLINT
-	/// /endcond
+   /// /cond CLASSIMP
+   ClassDefOverride(GHSymD, 1)   // NOLINT
+                                 /// /endcond
 };
 #endif

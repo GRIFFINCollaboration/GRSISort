@@ -95,26 +95,26 @@ int main(int argc, char** argv)
    // set all variables from settings if they haven't been set from command line
    if(qValue == -1.) {
       qValue = settings->GetDouble("QValue");
-	} else {
+   } else {
       settings->SetDouble("QValue", qValue);
-	}
+   }
    if(measuredQEnergy == -1.) {
       measuredQEnergy = settings->GetDouble("QValue.MeasuredEnergy");
-	} else {
+   } else {
       settings->SetDouble("QValue.MeasuredEnergy", measuredQEnergy);
-	}
+   }
    if(usedQEnergy == -1.) {
       usedQEnergy = settings->GetDouble("QValue.UsedEnergy");
-	} else {
+   } else {
       settings->SetDouble("QValue.UsedEnergy", usedQEnergy);
-	}
+   }
 
    if(xiBinEdges.empty()) {
       xiBinEdges = {0., 2., 3., 6., 14., 31., 39., 50., 61., 74., 87.,
                     93., 106., 119., 130., 141., 149., 166., 174., 177., 178., 180.};
-	} else {
+   } else {
       settings->SetDoubleVector("XiBinEdges", xiBinEdges);
-	}
+   }
 
    // check if all necessary settings have been provided
    if(qValue == -1.) {
@@ -161,8 +161,8 @@ int main(int argc, char** argv)
 
    // create projections onto xi (x-axis)
    auto* xiPrompt = prompt->ProjectionX("xiPrompt", prompt->GetYaxis()->FindBin(minTheta), prompt->GetYaxis()->FindBin(maxTheta));
-   auto* xiMixed = mixed->ProjectionX("xiMixed", mixed->GetYaxis()->FindBin(minTheta), mixed->GetYaxis()->FindBin(maxTheta));
-   auto* xiCount = count->ProjectionX("xiCount", count->GetYaxis()->FindBin(minTheta), count->GetYaxis()->FindBin(maxTheta));
+   auto* xiMixed  = mixed->ProjectionX("xiMixed", mixed->GetYaxis()->FindBin(minTheta), mixed->GetYaxis()->FindBin(maxTheta));
+   auto* xiCount  = count->ProjectionX("xiCount", count->GetYaxis()->FindBin(minTheta), count->GetYaxis()->FindBin(maxTheta));
 
    // open output file and create graphs
    TFile output(outputFile.c_str(), "recreate");
@@ -263,8 +263,8 @@ int main(int argc, char** argv)
    asymmetryFolded->Fit(&fitFunction, "R");
 
    // calculate predicted asymmetry
-   auto p                  = Polarization(settings);
-   int  nPoints            = settings->GetInt("NumberOfPoints", 100);
+   auto  p                  = Polarization(settings);
+   int   nPoints            = settings->GetInt("NumberOfPoints", 100);
    auto* predictedAsymmetry = new TGraph(nPoints + 1);
    predictedAsymmetry->SetName("PredictedAsymmetry");
    predictedAsymmetry->SetTitle(Form("Predicted Asymmetry A^{CE} for Q = %f, P = %f", qValue, p));

@@ -23,10 +23,10 @@ public:
    TSRIM() = default;
    // looks like the emax-min inputs don't work right now for 94Sr and maybe other high mass nuclei
    explicit TSRIM(const char* infilename, double emax = -1.0, double emin = 0.0, bool printfile = true);
-	TSRIM(const TSRIM&) = default;
-	TSRIM(TSRIM&&) noexcept = default;
-	TSRIM& operator=(const TSRIM&) = default;
-	TSRIM& operator=(TSRIM&&) noexcept = default;
+   TSRIM(const TSRIM&)                = default;
+   TSRIM(TSRIM&&) noexcept            = default;
+   TSRIM& operator=(const TSRIM&)     = default;
+   TSRIM& operator=(TSRIM&&) noexcept = default;
 
    virtual ~TSRIM() = default;
 
@@ -73,7 +73,7 @@ public:
    TSpline3* GetXvsESpline() const { return fsEgetX; };
 
    /// \cond CLASSIMP
-   ClassDef(TSRIM, 0) // NOLINT
+   ClassDef(TSRIM, 0)   // NOLINT
    /// \endcond
 };
 /*! @} */

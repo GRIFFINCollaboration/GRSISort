@@ -28,7 +28,7 @@ TCompiledHistograms::TCompiledHistograms()
 TCompiledHistograms::TCompiledHistograms(std::string inputLib, std::string funcName)
    : fLibName(std::move(inputLib)), fFuncName(std::move(funcName)), fFunc(nullptr), fObj(&fObjects, &fGates, fCutFiles)
 {
-   fLibrary   = std::make_shared<DynamicLibrary>(fLibName.c_str(), true);
+   fLibrary = std::make_shared<DynamicLibrary>(fLibName.c_str(), true);
    // Casting required to keep gcc from complaining.
    *reinterpret_cast<void_alias*>(&fFunc) = fLibrary->GetSymbol(fFuncName.c_str());
 
@@ -51,9 +51,9 @@ void TCompiledHistograms::ClearHistograms()
          auto* hist = static_cast<TH1*>(obj);
          hist->Reset();
       } else if(obj->InheritsFrom(TDirectory::Class())) {
-         auto* dir = static_cast<TDirectory*>(obj);
-         TIter       dirnext(dir->GetList());
-         TObject*    dirobj = nullptr;
+         auto*    dir = static_cast<TDirectory*>(obj);
+         TIter    dirnext(dir->GetList());
+         TObject* dirobj = nullptr;
          while((dirobj = dirnext()) != nullptr) {
             if(dirobj->InheritsFrom(TH1::Class())) {
                auto* hist = static_cast<TH1*>(dirobj);
@@ -67,7 +67,7 @@ void TCompiledHistograms::ClearHistograms()
 
 time_t TCompiledHistograms::get_timestamp()
 {
-   struct stat buf{};
+   struct stat buf {};
    stat(fLibName.c_str(), &buf);
    return buf.st_mtime;
 }
@@ -88,7 +88,7 @@ Int_t TCompiledHistograms::Write(const char*, Int_t, Int_t)
       if(obj->InheritsFrom(TDirectory::Class())) {
          // WATCH OUT: THIS DOESN'T SEEM THREAD-SAFE DUE TO gDIRECTORY BEING USED.
          TPreserveGDirectory preserve;
-         auto*         dir = static_cast<TDirectory*>(obj);
+         auto*               dir = static_cast<TDirectory*>(obj);
          gDirectory->mkdir(dir->GetName())->cd();
          TIter    dir_next(dir->GetList());
          TObject* dir_obj = nullptr;

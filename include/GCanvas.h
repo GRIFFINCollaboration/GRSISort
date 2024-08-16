@@ -26,9 +26,9 @@ public:
    GMarker() = default;
    GMarker(int tmpX, int tmpY, TH1* hist);
    GMarker(const GMarker& marker) : TObject(marker) { static_cast<const GMarker>(marker).Copy(*this); }
-	GMarker(GMarker&&) noexcept = default;
-	GMarker& operator=(const GMarker&) = default;
-	GMarker& operator=(GMarker&&) noexcept = default;
+   GMarker(GMarker&&) noexcept            = default;
+   GMarker& operator=(const GMarker&)     = default;
+   GMarker& operator=(GMarker&&) noexcept = default;
    ~GMarker()
    {
       if(fLineX != nullptr) { fLineX->Delete(); }
@@ -88,8 +88,9 @@ public:
 
    void SetLineX(double x1, double x2, double y1, double y2)
    {
-      if(fLineX == nullptr) { fLineX = new TLine(x1, y1, x2, y2); }
-      else {
+      if(fLineX == nullptr) {
+         fLineX = new TLine(x1, y1, x2, y2);
+      } else {
          fLineX->SetX1(x1);
          fLineX->SetX2(x2);
          fLineX->SetY1(y1);
@@ -99,8 +100,9 @@ public:
 
    void SetLineY(double x1, double x2, double y1, double y2)
    {
-      if(fLineY == nullptr) { fLineY = new TLine(x1, y1, x2, y2); }
-      else {
+      if(fLineY == nullptr) {
+         fLineY = new TLine(x1, y1, x2, y2);
+      } else {
          fLineY->SetX1(x1);
          fLineY->SetX2(x2);
          fLineY->SetY1(y1);
@@ -160,9 +162,9 @@ public:
       if(fLineX != nullptr && rhs.fLineX != nullptr) { return fLineX->GetX1() < rhs.fLineX->GetX1(); }
       return false;
    }
-	/// \cond CLASSIMP
-   ClassDefOverride(GMarker, 0) // NOLINT
-	/// \endcond
+   /// \cond CLASSIMP
+   ClassDefOverride(GMarker, 0)   // NOLINT
+                                  /// \endcond
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -240,10 +242,10 @@ public:
    GCanvas(const char* name, const char* title, Int_t winw, Int_t winh);
    GCanvas(const char* name, Int_t winw, Int_t winh, Int_t winid);
    GCanvas(const char* name, const char* title, Int_t wtopx, Int_t wtopy, Int_t winw, Int_t winh, bool gui = false);
-	GCanvas(const GCanvas&) = delete;
-	GCanvas(GCanvas&&) noexcept = delete;
-	GCanvas& operator=(const GCanvas&) = delete;
-	GCanvas& operator=(GCanvas&&) noexcept = delete;
+   GCanvas(const GCanvas&)                = delete;
+   GCanvas(GCanvas&&) noexcept            = delete;
+   GCanvas& operator=(const GCanvas&)     = delete;
+   GCanvas& operator=(GCanvas&&) noexcept = delete;
    ~GCanvas();
 
 #pragma GCC diagnostic push
@@ -307,9 +309,9 @@ private:
 
    TRootCanvas* fRootCanvas{nullptr};
 
-	/// \cond CLASSIMP
-   ClassDefOverride(GCanvas, 2) // NOLINT
-	/// \endcond
+   /// \cond CLASSIMP
+   ClassDefOverride(GCanvas, 2)   // NOLINT
+                                  /// \endcond
 };
 /*! @} */
 #endif

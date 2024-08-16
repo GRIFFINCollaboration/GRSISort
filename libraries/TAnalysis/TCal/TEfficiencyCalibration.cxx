@@ -29,10 +29,10 @@ TEfficiencyCalibration::TEfficiencyCalibration(const char* name, const char* tit
 
 TEfficiencyCalibration::~TEfficiencyCalibration()
 {
-	delete fRelativeEffGraph;
-	delete fAbsEffGraph;
-	delete fRelativeFit;
-	delete fAbsoluteFunc;
+   delete fRelativeEffGraph;
+   delete fAbsEffGraph;
+   delete fRelativeFit;
+   delete fAbsoluteFunc;
 }
 
 TEfficiencyCalibration::TEfficiencyCalibration(const TEfficiencyCalibration& copy)
@@ -167,7 +167,7 @@ TFitResultPtr TEfficiencyCalibration::Fit(Option_t*)
 {
    // This fits the relative efficiency curve
    UInt_t n_rel_graphs = fRelativeEffGraph->GetListOfGraphs()->GetSize();
-	delete fRelativeFit;
+   delete fRelativeFit;
    fRelativeFit = new TF1("fRelativeFit", this, &TEfficiencyCalibration::PhotoPeakEfficiency, 0, 8000, 8 + n_rel_graphs, "TEfficiencyCalibration", "PhotoPeakEfficiency");
 
    // Start by naming the parameters of the fit
@@ -263,7 +263,7 @@ TFitResultPtr TEfficiencyCalibration::Fit(Option_t*)
    return res;
 }
 
-Double_t TEfficiencyCalibration::PhotoPeakEfficiency(Double_t* x, Double_t* par) // NOLINT
+Double_t TEfficiencyCalibration::PhotoPeakEfficiency(Double_t* x, Double_t* par)   // NOLINT
 {
 
    Int_t    closest_graph   = 0;
@@ -288,7 +288,7 @@ Double_t TEfficiencyCalibration::PhotoPeakEfficiency(Double_t* x, Double_t* par)
    return TMath::Exp(sum);
 }
 
-Double_t TEfficiencyCalibration::AbsoluteEfficiency(Double_t* x, Double_t* par) // NOLINT
+Double_t TEfficiencyCalibration::AbsoluteEfficiency(Double_t* x, Double_t* par)   // NOLINT
 {
    double sum = 0.0;
    for(int i = 0; i < 9; ++i) {

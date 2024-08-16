@@ -14,10 +14,10 @@ public:
    TEfficiencyCal() = default;
    TEfficiencyCal(const char* name, const char* title) : TCal(name, title) {}
    TEfficiencyCal(const TEfficiencyCal&);
-   TEfficiencyCal(TEfficiencyCal&&) noexcept = default;
-   TEfficiencyCal& operator=(const TEfficiencyCal&) = default;
+   TEfficiencyCal(TEfficiencyCal&&) noexcept            = default;
+   TEfficiencyCal& operator=(const TEfficiencyCal&)     = default;
    TEfficiencyCal& operator=(TEfficiencyCal&&) noexcept = default;
-   ~TEfficiencyCal() = default;
+   ~TEfficiencyCal()                                    = default;
 
    void Copy(TObject& obj) const override;
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6, 24, 0)
@@ -37,7 +37,7 @@ private:
    Double_t fScaleFactor{1.};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEfficiencyCal, 1) // NOLINT
+   ClassDefOverride(TEfficiencyCal, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

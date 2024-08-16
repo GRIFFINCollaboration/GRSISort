@@ -243,12 +243,12 @@ Bool_t TRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
          std::istringstream str(line);
          double             temp_double = 0.;
          str >> temp_double;
-			TRunInfo::SetHPGeArrayPosition(temp_double);
+         TRunInfo::SetHPGeArrayPosition(temp_double);
       } else if(type == "BADCYCLE") {
          std::istringstream str(line);
          int                tmp_int = 0;
          while(!(str >> tmp_int).fail()) {
-				TRunInfo::AddBadCycle(tmp_int);
+            TRunInfo::AddBadCycle(tmp_int);
          }
       }
    }

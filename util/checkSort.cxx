@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 
       size_t index = 0;
       for(auto* branch : *(branches)) {
-         auto* cls   = TClass::GetClass(branch->GetName());
+         auto* cls  = TClass::GetClass(branch->GetName());
          det[index] = static_cast<TDetector*>(cls->New());
          tree->SetBranchAddress(branch->GetName(), &det[index]);
          lastTS[cls] = std::deque<int64_t>(3, 0);

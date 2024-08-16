@@ -74,7 +74,7 @@ private:
    bool    fStaticWindow{true};              ///< Flag to use static window (default moving)
 
    /// \cond CLASSIMP
-   ClassDefOverride(TAnalysisOptions, 5) // NOLINT
+   ClassDefOverride(TAnalysisOptions, 5)   // NOLINT
    /// \endcond
 };
 /*! @} */

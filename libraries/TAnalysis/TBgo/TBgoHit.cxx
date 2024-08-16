@@ -28,7 +28,7 @@ TBgoHit::TBgoHit(TBgoHit&& rhs) noexcept
 TBgoHit::TBgoHit(const TFragment& frag)
 {
    static_cast<const TDetectorHit*>(&frag)->Copy(*this);
-	static_cast<const TDetectorHit*>(&frag)->CopyWave(*this);
+   static_cast<const TDetectorHit*>(&frag)->CopyWave(*this);
    ClearTransients();
 }
 

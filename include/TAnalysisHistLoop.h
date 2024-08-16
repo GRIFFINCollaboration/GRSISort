@@ -27,10 +27,10 @@ class TAnalysisHistLoop : public StoppableThread {
 public:
    static TAnalysisHistLoop* Get(std::string name = "");
 
-	TAnalysisHistLoop(const TAnalysisHistLoop&) = delete;
-	TAnalysisHistLoop(TAnalysisHistLoop&&) noexcept = delete;
-	TAnalysisHistLoop& operator=(const TAnalysisHistLoop&) = delete;
-	TAnalysisHistLoop& operator=(TAnalysisHistLoop&&) noexcept = delete;
+   TAnalysisHistLoop(const TAnalysisHistLoop&)                = delete;
+   TAnalysisHistLoop(TAnalysisHistLoop&&) noexcept            = delete;
+   TAnalysisHistLoop& operator=(const TAnalysisHistLoop&)     = delete;
+   TAnalysisHistLoop& operator=(TAnalysisHistLoop&&) noexcept = delete;
    ~TAnalysisHistLoop();
 
 #ifndef __CINT__
@@ -80,7 +80,7 @@ private:
 #endif
 
    /// \cond CLASSIMP
-   ClassDefOverride(TAnalysisHistLoop, 0) // NOLINT
+   ClassDefOverride(TAnalysisHistLoop, 0)   // NOLINT
    /// \endcond
 };
 

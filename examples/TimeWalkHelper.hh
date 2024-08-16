@@ -9,7 +9,7 @@
 class TimeWalkHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<TimeWalkHelper> {
 public:
    explicit TimeWalkHelper(TList* list)
-		: TGRSIHelper(list)
+      : TGRSIHelper(list)
    {
       Prefix("TimeWalk");   // Changes prefix of output file
       Setup();

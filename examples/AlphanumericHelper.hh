@@ -15,7 +15,7 @@ class AlphanumericHelper : public TGRSIHelper, public ROOT::Detail::RDF::RAction
 
 public:
    explicit AlphanumericHelper(TList* list)
-		: TGRSIHelper(list)
+      : TGRSIHelper(list)
    {
       Prefix("Alphanumeric");   // Changes prefix of output file
       Setup();

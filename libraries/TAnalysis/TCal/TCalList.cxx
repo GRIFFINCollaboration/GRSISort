@@ -71,7 +71,7 @@ void TCalList::Clear(Option_t*)
 void TCalList::FillGraph(TGraph* graph) const
 {
    graph->Clear();
-   Int_t         i  = 0;
+   Int_t i  = 0;
    auto* ge = static_cast<TGraphErrors*>(graph);
 
    for(const auto& it : fCalList) {

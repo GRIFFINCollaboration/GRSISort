@@ -6,8 +6,8 @@
 TKinematics::TKinematics(double eBeam, const char* beam, const char* targ, const char* ejec, const char* reco, const char* name)
    : fEBeam(eBeam)
 {
-   auto*      projectile = new TNucleus(beam);
-   auto*      target     = new TNucleus(targ);
+   auto*     projectile = new TNucleus(beam);
+   auto*     target     = new TNucleus(targ);
    TNucleus* ejectile   = nullptr;
    TNucleus* recoil     = nullptr;
 
@@ -90,8 +90,8 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoi
 TKinematics::TKinematics(const char* beam, const char* targ, const char* ejec, const char* reco, double eBeam, double ex3, const char* name)
    : fEBeam(eBeam)
 {
-   auto*      projectile = new TNucleus(beam);
-   auto*      target     = new TNucleus(targ);
+   auto*     projectile = new TNucleus(beam);
+   auto*     target     = new TNucleus(targ);
    TNucleus* ejectile   = nullptr;
    TNucleus* recoil     = nullptr;
 

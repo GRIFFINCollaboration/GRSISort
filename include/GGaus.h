@@ -12,10 +12,10 @@ public:
    GGaus(Double_t xlow, Double_t xhigh, Option_t* opt = "gsc");
    GGaus(Double_t xlow, Double_t xhigh, TF1* bg, Option_t* opt = "gsc");
    GGaus(const GGaus&);
-   GGaus(GGaus&&) noexcept = default;
-   GGaus& operator=(const GGaus&) = default;
+   GGaus(GGaus&&) noexcept            = default;
+   GGaus& operator=(const GGaus&)     = default;
    GGaus& operator=(GGaus&&) noexcept = default;
-   ~GGaus() = default;
+   ~GGaus()                           = default;
 
    void Copy(TObject&) const override;
    void Print(Option_t* opt = "") const override;
@@ -75,9 +75,9 @@ private:
    TF1 fBGFit;
    TF1 fBGHist;
 
-	/// /cond CLASSIMP
-   ClassDefOverride(GGaus, 2) // NOLINT
-	/// /endcond
+   /// /cond CLASSIMP
+   ClassDefOverride(GGaus, 2)   // NOLINT
+                                /// /endcond
 };
 
 #endif

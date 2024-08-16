@@ -32,11 +32,11 @@ public:
    // ctors and dtors
    TRWPeak() = default;
    explicit TRWPeak(Double_t centroid) { Centroid(centroid); }
-	TRWPeak(const TRWPeak&) = default;
-	TRWPeak(TRWPeak&&) noexcept = default;
-	TRWPeak& operator=(const TRWPeak&) = default;
-	TRWPeak& operator=(TRWPeak&&) noexcept = default;
-   ~TRWPeak() = default;
+   TRWPeak(const TRWPeak&)                = default;
+   TRWPeak(TRWPeak&&) noexcept            = default;
+   TRWPeak& operator=(const TRWPeak&)     = default;
+   TRWPeak& operator=(TRWPeak&&) noexcept = default;
+   ~TRWPeak()                             = default;
 
    void InitParNames() override;
    void InitializeParameters(TH1* hist, const double& rangeLow, const double& rangeHigh) override;
@@ -54,7 +54,7 @@ protected:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TRWPeak, 2) // NOLINT
+   ClassDefOverride(TRWPeak, 2)   // NOLINT
    /// \endcond
 };
 /*! @} */

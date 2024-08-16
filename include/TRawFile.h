@@ -35,11 +35,11 @@ public:
 
    TRawFile() = default;   ///< default constructor
    explicit TRawFile(const char*, EOpenType = EOpenType::kRead) {}
-	TRawFile(const TRawFile&) = default;
-	TRawFile(TRawFile&&) noexcept = default;
-	TRawFile& operator=(const TRawFile&) = default;
-	TRawFile& operator=(TRawFile&&) noexcept = default;
-   ~TRawFile() = default;   ///< destructor
+   TRawFile(const TRawFile&)                = default;
+   TRawFile(TRawFile&&) noexcept            = default;
+   TRawFile& operator=(const TRawFile&)     = default;
+   TRawFile& operator=(TRawFile&&) noexcept = default;
+   ~TRawFile()                              = default;   ///< destructor
 
    virtual bool Open(const char* filename) = 0;   ///< Open input file
 
@@ -59,17 +59,17 @@ public:
    virtual int GetSubRunNumber() = 0;
 
    virtual size_t BytesRead() { return fBytesRead; }
-	void IncrementBytesRead(size_t val = 1) { fBytesRead += val; }
+   void           IncrementBytesRead(size_t val = 1) { fBytesRead += val; }
    virtual size_t FileSize() { return fFileSize; }
-	void FileSize(size_t fileSize) { fFileSize = fileSize; }
+   void           FileSize(size_t fileSize) { fFileSize = fileSize; }
 
    virtual std::string Filename() const { return fFilename; }   ///< Get the name of this file
-	virtual void Filename(const char* val) { fFilename = val; }
+   virtual void        Filename(const char* val) { fFilename = val; }
 
-	size_t BufferSize() const { return fReadBuffer.size(); }
-	char* BufferData() { return fReadBuffer.data(); }
-	void ClearBuffer() { fReadBuffer.clear(); }
-	void ResizeBuffer(size_t newSize) { fReadBuffer.resize(newSize); }
+   size_t BufferSize() const { return fReadBuffer.size(); }
+   char*  BufferData() { return fReadBuffer.data(); }
+   void   ClearBuffer() { fReadBuffer.clear(); }
+   void   ResizeBuffer(size_t newSize) { fReadBuffer.resize(newSize); }
 
 #ifndef __CINT__
    virtual std::shared_ptr<TRawEvent> GetOdbEvent()
@@ -88,7 +88,7 @@ private:
    size_t fFileSize{0};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TRawFile, 0) // NOLINT
+   ClassDefOverride(TRawFile, 0)   // NOLINT
    /// \endcond
 };
 /*! @} */

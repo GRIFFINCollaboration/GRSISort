@@ -64,7 +64,7 @@ private:
    bool   fCompareIntensity{true};   ///< Whether to sort by intensity or energy
 
    /// \cond CLASSIMP
-   ClassDefOverride(TTransition, 0) // NOLINT
+   ClassDefOverride(TTransition, 0)   // NOLINT
    /// \endcond
 };
 /*! @} */

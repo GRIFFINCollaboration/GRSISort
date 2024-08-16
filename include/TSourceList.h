@@ -18,11 +18,11 @@ public:
    TSourceList(const TNucleus& nuc, const char* name, const char* title = "");
    explicit TSourceList(const char* name, const char* title = "");
    explicit TSourceList(const TNucleus& nuc);
-	TSourceList(const TSourceList&);
-	TSourceList(TSourceList&&) noexcept = default;
-	TSourceList& operator=(const TSourceList&) = default;
-	TSourceList& operator=(TSourceList&&) noexcept = default;
-   ~TSourceList() = default;
+   TSourceList(const TSourceList&);
+   TSourceList(TSourceList&&) noexcept            = default;
+   TSourceList& operator=(const TSourceList&)     = default;
+   TSourceList& operator=(TSourceList&&) noexcept = default;
+   ~TSourceList()                                 = default;
 
    void Copy(TObject& obj) const override;
    void Clear(Option_t* opt = "") override;
@@ -37,7 +37,7 @@ private:
    std::string fNucleusName;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TSourceList, 1) // NOLINT
+   ClassDefOverride(TSourceList, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

@@ -28,7 +28,7 @@
 ///////////////////////////////////////////////////////////////
 
 template <class T>
-class TSingleton : public TObject { // NOLINT(cppcoreguidelines-virtual-class-destructor)
+class TSingleton : public TObject {   // NOLINT(cppcoreguidelines-virtual-class-destructor)
 public:
    static T* Get(bool verbose = false)
    {
@@ -174,15 +174,15 @@ protected:
    TSingleton(TSingleton&&) noexcept            = default;
    TSingleton& operator=(const TSingleton&)     = default;
    TSingleton& operator=(TSingleton&&) noexcept = default;
-	// seems like clang-tidy thinks this destructor is protected and virtual?
-   ~TSingleton()                                = default; // NOLINT(cppcoreguidelines-virtual-class-destructor)
+   // seems like clang-tidy thinks this destructor is protected and virtual?
+   ~TSingleton() = default;   // NOLINT(cppcoreguidelines-virtual-class-destructor)
 
 private:
    static T*          fSingleton;
    static TDirectory* fDir;
 
    /// \cond CLASSIMP
-   ClassDef(TSingleton, 1) // NOLINT
+   ClassDef(TSingleton, 1)   // NOLINT
    /// \endcond
 };
 

@@ -18,10 +18,10 @@ public:
    explicit GValue(const char* name);
    GValue(const char* name, double value, EPriority priority = EPriority::kUser);
    GValue(const GValue& val);
-   GValue(GValue&& val) noexcept = default;
-   GValue& operator=(const GValue& val) = default;
+   GValue(GValue&& val) noexcept            = default;
+   GValue& operator=(const GValue& val)     = default;
    GValue& operator=(GValue&& val) noexcept = default;
-   ~GValue() = default;
+   ~GValue()                                = default;
 
    double      GetValue() const { return fValue; }
    const char* GetInfo() const { return info.c_str(); }

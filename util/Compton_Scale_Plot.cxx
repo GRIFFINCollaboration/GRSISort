@@ -80,7 +80,7 @@ double ScaleQ(double En1, double En2)
 {
    // En1 is the energy of the scattering gamma used to determine the Q you wish to scale.  En2 is the
    // energy  of the gamma you are trying to examine now.
-   int    nDiv = 1000;
+   int    nDiv  = 1000;
    double m_eC2 = 510.9989;   // keV
    double Q1    = 0.;
    double Q2    = 0.;

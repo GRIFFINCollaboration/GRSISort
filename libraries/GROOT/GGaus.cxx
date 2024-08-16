@@ -192,13 +192,13 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
    Double_t xhigh = 0.;
    TF1::GetRange(xlow, xhigh);
 
-	std::array<double, 2> bgpars = { TF1::GetParameters()[3], TF1::GetParameters()[4] };
+   std::array<double, 2> bgpars = {TF1::GetParameters()[3], TF1::GetParameters()[4]};
 
    fBGFit.SetParameters(bgpars.data());
 
    fArea         = Integral(xlow, xhigh) / fithist->GetBinWidth(1);
    double bgArea = fBGFit.Integral(xlow, xhigh) / fithist->GetBinWidth(1);
-   
+
    fArea -= bgArea;
 
    if(xlow > xhigh) {

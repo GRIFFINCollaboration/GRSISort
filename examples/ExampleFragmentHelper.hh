@@ -8,7 +8,7 @@
 class ExampleFragmentHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<ExampleFragmentHelper> {
 public:
    explicit ExampleFragmentHelper(TList* list)
-		: TGRSIHelper(list)
+      : TGRSIHelper(list)
    {
       Prefix("ExampleFragment");
       Setup();
@@ -23,8 +23,8 @@ public:
 };
 
 // These are needed functions used by TDataFrameLibrary to create and destroy the instance of this helper
-extern "C" ExampleFragmentHelper* CreateHelper(TList* list) { return new ExampleFragmentHelper(list); } // NOLINT(misc-definitions-in-headers)
+extern "C" ExampleFragmentHelper* CreateHelper(TList* list) { return new ExampleFragmentHelper(list); }   // NOLINT(misc-definitions-in-headers)
 
-extern "C" void DestroyHelper(TGRSIHelper* helper) { delete helper; } // NOLINT(misc-definitions-in-headers)
+extern "C" void DestroyHelper(TGRSIHelper* helper) { delete helper; }   // NOLINT(misc-definitions-in-headers)
 
 #endif
