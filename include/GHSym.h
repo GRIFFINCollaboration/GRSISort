@@ -16,11 +16,9 @@ public:
    GHSym(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GHSym(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    GHSym(const GHSym&);
-	GHSym(GHSym&&) noexcept = delete;
-   GHSym& operator=(const GHSym&);
-	GHSym& operator=(GHSym&&) noexcept = delete;
+	GHSym(GHSym&&) noexcept;
 
-   ~GHSym();
+   ~GHSym() = default;
 
    Int_t         BufferEmpty(Int_t action = 0) override;
    Int_t         BufferFill(Double_t, Double_t) override { return -2; }   // MayNotUse
@@ -152,7 +150,7 @@ public:
    void          SetBinsLength(Int_t n = -1) override;
    void          UpdateBinContent(Int_t bin, Double_t content) override { fArray[bin] = static_cast<Float_t>(content); }
    GHSymF&       operator=(const GHSymF& h1);
-   GHSymF&       operator=(GHSymF&&) noexcept = delete;
+   GHSymF&       operator=(GHSymF&&) noexcept;
    friend GHSymF operator*(Float_t c1, GHSymF& h1);
    friend GHSymF operator*(GHSymF& h1, Float_t c1) { return operator*(c1, h1); }
    friend GHSymF operator+(GHSymF& h1, GHSymF& h2);
@@ -196,7 +194,7 @@ public:
    void          SetBinsLength(Int_t n = -1) override;
    void          UpdateBinContent(Int_t bin, Double_t content) override { fArray[bin] = content; }
    GHSymD&       operator=(const GHSymD& h1);
-   GHSymD&       operator=(GHSymD&&) noexcept = delete;
+   GHSymD&       operator=(GHSymD&&) noexcept;
    friend GHSymD operator*(Float_t c1, GHSymD& h1);
    friend GHSymD operator*(GHSymD& h1, Float_t c1) { return operator*(c1, h1); }
    friend GHSymD operator+(GHSymD& h1, GHSymD& h2);

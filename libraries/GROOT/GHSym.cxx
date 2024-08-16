@@ -69,7 +69,10 @@ GHSym::GHSym(const GHSym& rhs) : TH1() // NOLINT
    rhs.Copy(*this);
 }
 
-GHSym::~GHSym() = default;
+GHSym::GHSym(GHSym&& rhs) noexcept : TH1() // NOLINT
+{
+   rhs.Copy(*this);
+}
 
 Int_t GHSym::BufferEmpty(Int_t action)
 {
@@ -2861,7 +2864,17 @@ GHSymF& GHSymF::operator=(const GHSymF& h1)
    // Operator =
 
    if(this != &h1) {
-      const_cast<GHSymF&>(h1).Copy(*this); // NOLINT
+      h1.Copy(*this);
+   }
+   return *this;
+}
+
+GHSymF& GHSymF::operator=(GHSymF&& h1) noexcept
+{
+   // Operator =
+
+   if(this != &h1) {
+      h1.Copy(*this);
    }
    return *this;
 }
@@ -3066,7 +3079,17 @@ GHSymD& GHSymD::operator=(const GHSymD& h1)
    // Operator =
 
    if(this != &h1) {
-      const_cast<GHSymD&>(h1).Copy(*this); // NOLINT
+      h1.Copy(*this);
+   }
+   return *this;
+}
+
+GHSymD& GHSymD::operator=(GHSymD&& h1) noexcept
+{
+   // Operator =
+
+   if(this != &h1) {
+      h1.Copy(*this);
    }
    return *this;
 }
