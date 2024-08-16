@@ -32,6 +32,10 @@
 class TDataLoop : public StoppableThread {
 public:
    static TDataLoop* Get(std::string name = "", TRawFile* source = nullptr);
+	TDataLoop(const TDataLoop&) = delete;
+	TDataLoop(TDataLoop&&) noexcept = delete;
+	TDataLoop& operator=(const TDataLoop&) = delete;
+	TDataLoop& operator=(TDataLoop&&) noexcept = delete;
    ~TDataLoop() = default;
 
 #ifndef __CINT__
@@ -64,10 +68,6 @@ public:
 private:
    TDataLoop(std::string name, TRawFile* source);
    TDataLoop();
-	TDataLoop(const TDataLoop&) = delete;
-	TDataLoop(TDataLoop&&) noexcept = delete;
-	TDataLoop& operator=(const TDataLoop&) = delete;
-	TDataLoop& operator=(TDataLoop&&) noexcept = delete;
 
    TRawFile* fSource;
    bool      fSelfStopping;

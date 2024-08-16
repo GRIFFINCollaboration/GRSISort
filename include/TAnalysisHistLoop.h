@@ -27,6 +27,10 @@ class TAnalysisHistLoop : public StoppableThread {
 public:
    static TAnalysisHistLoop* Get(std::string name = "");
 
+	TAnalysisHistLoop(const TAnalysisHistLoop&) = delete;
+	TAnalysisHistLoop(TAnalysisHistLoop&&) noexcept = delete;
+	TAnalysisHistLoop& operator=(const TAnalysisHistLoop&) = delete;
+	TAnalysisHistLoop& operator=(TAnalysisHistLoop&&) noexcept = delete;
    ~TAnalysisHistLoop();
 
 #ifndef __CINT__
@@ -62,10 +66,6 @@ protected:
 
 private:
    explicit TAnalysisHistLoop(std::string name);
-	TAnalysisHistLoop(const TAnalysisHistLoop&) = delete;
-	TAnalysisHistLoop(TAnalysisHistLoop&&) noexcept = delete;
-	TAnalysisHistLoop& operator=(const TAnalysisHistLoop&) = delete;
-	TAnalysisHistLoop& operator=(TAnalysisHistLoop&&) noexcept = delete;
 
    TCompiledHistograms fCompiledHistograms;
 

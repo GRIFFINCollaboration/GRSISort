@@ -28,6 +28,10 @@ class TFragWriteLoop : public StoppableThread {
 public:
    static TFragWriteLoop* Get(std::string name = "", std::string fOutputFilename = "");
 
+	TFragWriteLoop(const TFragWriteLoop&) = delete;
+	TFragWriteLoop(TFragWriteLoop&&) noexcept = delete;
+	TFragWriteLoop& operator=(const TFragWriteLoop&) = delete;
+	TFragWriteLoop& operator=(TFragWriteLoop&&) noexcept = delete;
    ~TFragWriteLoop();
 
 #ifndef __CINT__
@@ -58,10 +62,6 @@ protected:
 
 private:
    TFragWriteLoop(std::string name, const std::string& fOutputFilename);
-	TFragWriteLoop(const TFragWriteLoop&) = delete;
-	TFragWriteLoop(TFragWriteLoop&&) noexcept = delete;
-	TFragWriteLoop& operator=(const TFragWriteLoop&) = delete;
-	TFragWriteLoop& operator=(TFragWriteLoop&&) noexcept = delete;
 #ifndef __CINT__
    void WriteEvent(const std::shared_ptr<const TFragment>& event);
    void WriteBadEvent(const std::shared_ptr<const TBadFragment>& event);

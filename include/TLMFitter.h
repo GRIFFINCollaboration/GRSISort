@@ -43,13 +43,15 @@ private:
 
 public:
    NRVec();
-   explicit NRVec(int n);                         // Zero-based array
-   NRVec(const T& a, int n);                      // initialize to constant value
-   NRVec(const T* a, int n);                      // Initialize to array
-   NRVec(const NRVec& rhs);                       // Copy constructor
-   NRVec&          operator=(const NRVec& rhs);   // assignment
-   NRVec&          operator=(const T& a);         // assign a to every element
-   inline T&       operator[](int i);       // i'th element
+   explicit NRVec(int n);                                       // Zero-based array
+   NRVec(const T& a, int n);                                    // initialize to constant value
+   NRVec(const T* a, int n);                                    // Initialize to array
+   NRVec(const NRVec& rhs);                                     // Copy constructor
+   NRVec(NRVec&& rhs) noexcept = default;                       // Move constructor
+   NRVec&          operator=(const NRVec& rhs);                 // copy assignment
+   NRVec&          operator=(NRVec&& rhs) noexcept = default;   // move assignment
+   NRVec&          operator=(const T& a);                       // assign a to every element
+   inline T&       operator[](int i);                           // i'th element
    inline const T& operator[](int i) const;
    inline int      size() const;
    ~NRVec();
@@ -100,9 +102,7 @@ NRVec<T>& NRVec<T>::operator=(const NRVec<T>& rhs)
 {
    if(this != &rhs) {
       if(nn != rhs.nn) {
-         if(v != 0) {
-            delete[] (v);
-         }
+			delete[] v;
          nn = rhs.nn;
          v  = new T[nn];
       }
@@ -157,13 +157,15 @@ private:
 
 public:
    NRMat();
-   NRMat(int n, int m);                           // Zero-based array
-   NRMat(const T& a, int n, int m);               // Initialize to constant
-   NRMat(const T* a, int n, int m);               // Initialize to array
-   NRMat(const NRMat& rhs);                       // Copy constructor
-   NRMat&          operator=(const NRMat& rhs);   // assignment
-   NRMat&          operator=(const T& a);         // assign a to every element
-   inline T*       operator[](int i);       // subscripting: pointer to row i
+   NRMat(int n, int m);                                         // Zero-based array
+   NRMat(const T& a, int n, int m);                             // Initialize to constant
+   NRMat(const T* a, int n, int m);                             // Initialize to array
+   NRMat(const NRMat& rhs);                                     // Copy constructor
+   NRMat(NRMat&& rhs) noexcept = default;                       // Move constructor
+   NRMat&          operator=(const NRMat& rhs);                 // copy assignment
+   NRMat&          operator=(NRMat&& rhs) noexcept = default;   // move assignment
+   NRMat&          operator=(const T& a);                       // assign a to every element
+   inline T*       operator[](int i);                           // subscripting: pointer to row i
    inline const T* operator[](int i) const;
    inline int      nrows() const;
    inline int      ncols() const;
@@ -240,10 +242,8 @@ NRMat<T>& NRMat<T>::operator=(const NRMat<T>& rhs)
 {
    if(this != &rhs) {
       if(nn != rhs.nn || mm != rhs.mm) {
-         if(v != 0) {
-            delete[] (v[0]);
-            delete[] (v);
-         }
+			delete[] v[0];
+			delete[] v;
          nn   = rhs.nn;
          mm   = rhs.mm;
          v    = new T*[nn];
@@ -321,6 +321,10 @@ public:
    inline int             dim1() const;
    inline int             dim2() const;
    inline int             dim3() const;
+   NRMat3d(const NRMat3d&)                = default;
+   NRMat3d(NRMat3d&&) noexcept            = default;
+   NRMat3d& operator=(const NRMat3d&)     = default;
+   NRMat3d& operator=(NRMat3d&&) noexcept = default;
    ~NRMat3d();
 };
 
@@ -599,8 +603,12 @@ inline std::complex<float> operator/(const std::complex<float>& a, const double&
 
 class TLMFitter : public TObject {
 public:
-   TLMFitter()  = default;
-   ~TLMFitter() = default;
+   TLMFitter()                                = default;
+   TLMFitter(const TLMFitter&)                = default;
+   TLMFitter(TLMFitter&&) noexcept            = default;
+   TLMFitter& operator=(const TLMFitter&)     = default;
+   TLMFitter& operator=(TLMFitter&&) noexcept = default;
+   ~TLMFitter()                               = default;
 
 private:
    int  fIntegrationSteps{100};

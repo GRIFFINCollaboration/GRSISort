@@ -102,6 +102,7 @@ public:
 	TCalibrateDescant(TCalibrateDescant&&) noexcept = delete;
 	TCalibrateDescant& operator=(const TCalibrateDescant&) = delete;
 	TCalibrateDescant& operator=(TCalibrateDescant&&) noexcept = delete;
+	~TCalibrateDescant() = default;
 
    Bool_t ProcessMessage(Long_t msg, Long_t parameter1, Long_t parameter2) override;
 

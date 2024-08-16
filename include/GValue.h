@@ -21,6 +21,7 @@ public:
    GValue(GValue&& val) noexcept = default;
    GValue& operator=(const GValue& val) = default;
    GValue& operator=(GValue&& val) noexcept = default;
+   ~GValue() = default;
 
    double      GetValue() const { return fValue; }
    const char* GetInfo() const { return info.c_str(); }

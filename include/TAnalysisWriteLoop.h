@@ -27,6 +27,10 @@ class TAnalysisWriteLoop : public StoppableThread {
 public:
    static TAnalysisWriteLoop* Get(std::string name = "", std::string outputFilename = "");
 
+	TAnalysisWriteLoop(const TAnalysisWriteLoop&) = delete;
+	TAnalysisWriteLoop(TAnalysisWriteLoop&&) noexcept = delete;
+	TAnalysisWriteLoop& operator=(const TAnalysisWriteLoop&) = delete;
+	TAnalysisWriteLoop& operator=(TAnalysisWriteLoop&&) noexcept = delete;
    ~TAnalysisWriteLoop();
 
 #ifndef __CINT__
@@ -54,10 +58,6 @@ protected:
 
 private:
    TAnalysisWriteLoop(std::string name, const std::string& outputFilename);
-	TAnalysisWriteLoop(const TAnalysisWriteLoop&) = delete;
-	TAnalysisWriteLoop(TAnalysisWriteLoop&&) noexcept = delete;
-	TAnalysisWriteLoop& operator=(const TAnalysisWriteLoop&) = delete;
-	TAnalysisWriteLoop& operator=(TAnalysisWriteLoop&&) noexcept = delete;
 
    void AddBranch(TClass* cls);
    void WriteEvent(std::shared_ptr<TUnpackedEvent>& event);

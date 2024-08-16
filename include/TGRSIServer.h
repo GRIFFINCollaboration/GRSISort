@@ -31,6 +31,10 @@
 class TGRSIServer : public TServerSocket {
 public:
    static TGRSIServer* instance(int port = 9099);
+   TGRSIServer(const TGRSIServer&)                = default;
+   TGRSIServer(TGRSIServer&&) noexcept            = default;
+   TGRSIServer& operator=(const TGRSIServer&)     = default;
+   TGRSIServer& operator=(TGRSIServer&&) noexcept = default;
    ~TGRSIServer();
 
    void StopServer()
@@ -41,10 +45,6 @@ public:
 private:
    static TGRSIServer* fGRSIServer;
    explicit TGRSIServer(int port);
-   TGRSIServer(const TGRSIServer&)                = default;
-   TGRSIServer(TGRSIServer&&) noexcept            = default;
-   TGRSIServer& operator=(const TGRSIServer&)     = default;
-   TGRSIServer& operator=(TGRSIServer&&) noexcept = default;
    bool fRunning;
 
    TMonitor* fMonitor;

@@ -29,6 +29,10 @@
 class StoppableThread {
 public:
    explicit StoppableThread(std::string name);
+	StoppableThread(const StoppableThread&) = delete;
+	StoppableThread(StoppableThread&&) noexcept = delete;
+	StoppableThread& operator=(const StoppableThread&) = delete;
+	StoppableThread& operator=(StoppableThread&&) noexcept = delete;
    virtual ~StoppableThread();
 
    static void        SendStop();
@@ -98,11 +102,6 @@ private:
    std::atomic_long   fInputSize{0};     ///< number of items in the input (queue), only updated within Iteration(), so not
                                          ///< always fully up-to-date (signed to hold error from queue::pop)
 #endif
-
-	StoppableThread(const StoppableThread&) = delete;
-	StoppableThread(StoppableThread&&) noexcept = delete;
-	StoppableThread& operator=(const StoppableThread&) = delete;
-	StoppableThread& operator=(StoppableThread&&) noexcept = delete;
 
    std::string fName;
 

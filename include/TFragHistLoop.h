@@ -26,6 +26,10 @@ class TFragHistLoop : public StoppableThread {
 public:
    static TFragHistLoop* Get(std::string name = "");
 
+	TFragHistLoop(const TFragHistLoop&) = delete;
+	TFragHistLoop(TFragHistLoop&&) noexcept = delete;
+	TFragHistLoop& operator=(const TFragHistLoop&) = delete;
+	TFragHistLoop& operator=(TFragHistLoop&&) noexcept = delete;
    ~TFragHistLoop();
 
 #ifndef __CINT__
@@ -61,10 +65,6 @@ protected:
 
 private:
    explicit TFragHistLoop(std::string name);
-	TFragHistLoop(const TFragHistLoop&) = delete;
-	TFragHistLoop(TFragHistLoop&&) noexcept = delete;
-	TFragHistLoop& operator=(const TFragHistLoop&) = delete;
-	TFragHistLoop& operator=(TFragHistLoop&&) noexcept = delete;
 
    TCompiledHistograms fCompiledHistograms;
 

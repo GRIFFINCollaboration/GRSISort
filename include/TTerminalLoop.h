@@ -33,6 +33,10 @@ public:
       return dynamic_cast<TTerminalLoop*>(thread);
    }
 
+	TTerminalLoop(const TTerminalLoop&) = delete;
+	TTerminalLoop(TTerminalLoop&&) noexcept = delete;
+	TTerminalLoop& operator=(const TTerminalLoop&) = delete;
+	TTerminalLoop& operator=(TTerminalLoop&&) noexcept = delete;
    ~TTerminalLoop() = default;
 
 #ifndef __CINT__
@@ -81,10 +85,6 @@ private:
       : StoppableThread(std::move(name)), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<T>>>())
    {
    }
-	TTerminalLoop(const TTerminalLoop&) = delete;
-	TTerminalLoop(TTerminalLoop&&) noexcept = delete;
-	TTerminalLoop& operator=(const TTerminalLoop&) = delete;
-	TTerminalLoop& operator=(TTerminalLoop&&) noexcept = delete;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<T>>> fInputQueue;
