@@ -2761,6 +2761,12 @@ GHSymF::GHSymF(const GHSymF& rhs)
    rhs.Copy(*this);
 }
 
+GHSymF::GHSymF(GHSymF&& rhs) noexcept
+	: GHSym(rhs), TArrayF(rhs)
+{
+   rhs.Copy(*this);
+}
+
 GHSymF::~GHSymF() = default;
 
 TH2F* GHSymF::GetMatrix(bool force)
@@ -2971,6 +2977,12 @@ GHSymD::GHSymD(const char* name, const char* title, Int_t nbins, const Float_t* 
 }
 
 GHSymD::GHSymD(const GHSymD& rhs)
+	: GHSym(rhs), TArrayD(rhs)
+{
+   rhs.Copy(*this);
+}
+
+GHSymD::GHSymD(GHSymD&& rhs) noexcept
 	: GHSym(rhs), TArrayD(rhs)
 {
    rhs.Copy(*this);

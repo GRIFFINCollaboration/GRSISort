@@ -126,7 +126,7 @@ public:
    GHSymF(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GHSymF(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    GHSymF(const GHSymF&);
-   GHSymF(GHSymF&&) noexcept = delete;
+   GHSymF(GHSymF&&) noexcept;
    ~GHSymF();
 
    TH2F* GetMatrix(bool force = false);
@@ -170,7 +170,7 @@ public:
    GHSymD(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GHSymD(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    GHSymD(const GHSymD&);
-   GHSymD(GHSymD&&) noexcept = delete;
+   GHSymD(GHSymD&&) noexcept;
    ~GHSymD();
 
    TH2D* GetMatrix(bool force = false);
