@@ -27,35 +27,26 @@ class TGRSIHelper : public TObject {
 public:
    std::string&                                                Prefix() { return fPrefix; }
 protected:
-   std::vector<std::shared_ptr<std::map<std::string, TList>>>& Lists() { return fLists; }
-   std::vector<TGRSIMap<std::string, TH1*>>&                   H1() { return fH1; }
-   std::vector<TGRSIMap<std::string, TH2*>>&                   H2() { return fH2; }
-   std::vector<TGRSIMap<std::string, TH3*>>&                   H3() { return fH3; }
-   std::vector<TGRSIMap<std::string, GHSym*>>&                 Sym() { return fSym; }
-   std::vector<TGRSIMap<std::string, GCube*>>&                 Cube() { return fCube; }
-   std::vector<TGRSIMap<std::string, TTree*>>&                 Tree() { return fTree; }
-   std::vector<TGRSIMap<std::string, TObject*>>&               Object() { return fObject; }
-   std::map<std::string, TCutG*>&                              Cuts() { return fCuts; }
    TPPG*                                                       Ppg() { return fPpg; }
    TRunInfo*                                                   RunInfo() { return fRunInfo; }
    TUserSettings*                                              UserSettings() { return fUserSettings; }
 
-private:
-   std::vector<std::shared_ptr<std::map<std::string, TList>>> fLists;                   //!<! one map of lists and directories per data processing slot to hold all output objects
-   std::vector<TGRSIMap<std::string, TH1*>>                   fH1;                      //!<! one map per data processing slot for 1D histograms
-   std::vector<TGRSIMap<std::string, TH2*>>                   fH2;                      //!<! one map per data processing slot for 2D histograms
-   std::vector<TGRSIMap<std::string, TH3*>>                   fH3;                      //!<! one map per data processing slot for 3D histograms
-   std::vector<TGRSIMap<std::string, GHSym*>>                 fSym;                     //!<! one map per data processing slot for GRSISort's symmectric 2D histograms
-   std::vector<TGRSIMap<std::string, GCube*>>                 fCube;                    //!<! one map per data processing slot for GRSISort's 3D histograms
-   std::vector<TGRSIMap<std::string, TTree*>>                 fTree;                    //!<! one map per data processing slot for trees
-   std::vector<TGRSIMap<std::string, TObject*>>               fObject;                  //!<! one map per data processing slot for any TObjects
-   std::map<std::string, TCutG*>                              fCuts;                    //!<! map of cuts
-   TPPG*                                                      fPpg{nullptr};            //!<! pointer to the PPG
-   TRunInfo*                                                  fRunInfo{nullptr};        //!<! pointer to the run info
-   TUserSettings*                                             fUserSettings{nullptr};   //!<! pointer to the user settings
-   std::string                                                fPrefix{"TGRSIHelper"};   //!<! name of this action (used as prefix)
+   std::vector<std::shared_ptr<std::map<std::string, TList>>> fLists;                   // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes) //!<! one map of lists and directories per data processing slot to hold all output objects
+   std::vector<TGRSIMap<std::string, TH1*>>                   fH1;                      // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes) //!<! one map per data processing slot for 1D histograms
+   std::vector<TGRSIMap<std::string, TH2*>>                   fH2;                      // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes) //!<! one map per data processing slot for 2D histograms
+   std::vector<TGRSIMap<std::string, TH3*>>                   fH3;                      // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes) //!<! one map per data processing slot for 3D histograms
+   std::vector<TGRSIMap<std::string, GHSym*>>                 fSym;                     // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes) //!<! one map per data processing slot for GRSISort's symmectric 2D histograms
+   std::vector<TGRSIMap<std::string, GCube*>>                 fCube;                    // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes) //!<! one map per data processing slot for GRSISort's 3D histograms
+   std::vector<TGRSIMap<std::string, TTree*>>                 fTree;                    // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes) //!<! one map per data processing slot for trees
+   std::vector<TGRSIMap<std::string, TObject*>>               fObject;                  // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes) //!<! one map per data processing slot for any TObjects
+   std::map<std::string, TCutG*>                              fCuts;                    // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes) //!<! map of cuts
+   TPPG*                                                      fPpg{nullptr};            // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes) //!<! pointer to the PPG
+   TRunInfo*                                                  fRunInfo{nullptr};        // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes) //!<! pointer to the run info
+   TUserSettings*                                             fUserSettings{nullptr};   // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes) //!<! pointer to the user settings
+   std::string                                                fPrefix{"TGRSIHelper"};   // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes) //!<! name of this action (used as prefix)
 
-   static constexpr int fSizeLimit = 1073741822;   //!<! 1 GB size limit for objects in ROOT
+private:
+   static constexpr int fSizeLimit = 1073741822;   //!<! 1 GiB size limit for objects in ROOT
    void                 CheckSizes(unsigned int slot, const char* usage);
 
 public:

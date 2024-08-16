@@ -3,23 +3,23 @@
 void ExampleTreeHelper::CreateHistograms(unsigned int slot)
 {
    // define Trees
-   Tree()[slot].emplace("coinc", new TTree("coinc", "coincident events"));
-   Tree()[slot]["timebg"] = new TTree("timebg", "time random events");
+   fTree[slot].emplace("coinc", new TTree("coinc", "coincident events"));
+   fTree[slot]["timebg"] = new TTree("timebg", "time random events");
 
    fSuppressedAddback2[slot] = new double[3];
    // set branch addresses for output tree (these can be different for different trees)
    // four coincident gammas a,b,c,d will be saved as a,b,c, a,b,d, a,c,d, and b,c,d
-   Tree()[slot]["coinc"]->Branch("energy", &(fSuppressedAddback2[slot]), "energy[3]/D");
-   // Tree()[slot]["coinc"]->Branch("timing", &(fBetaGammaTiming[slot]));
-   Tree()[slot]["coinc"]->Branch("mult", &(fGriffinMultiplicity[slot]), "mult/I");
+   fTree[slot]["coinc"]->Branch("energy", &(fSuppressedAddback2[slot]), "energy[3]/D");
+   // fTree[slot]["coinc"]->Branch("timing", &(fBetaGammaTiming[slot]));
+   fTree[slot]["coinc"]->Branch("mult", &(fGriffinMultiplicity[slot]), "mult/I");
 
-   Tree()[slot]["timebg"]->Branch("energy", &(fSuppressedAddback[slot]));
-   Tree()[slot]["timebg"]->Branch("timing", &(fBetaGammaTiming[slot]));
+   fTree[slot]["timebg"]->Branch("energy", &(fSuppressedAddback[slot]));
+   fTree[slot]["timebg"]->Branch("timing", &(fBetaGammaTiming[slot]));
 
    // We can also create histograms at the same time, maybe for some diagnostics or simple checks
-   H1()[slot]["asE"]         = new TH1D("asE", "suppressed Addback Singles", 12000, 0, 3000);
-   H2()[slot]["sceptarMult"] = new TH2D("sceptarMult", "Sceptar multiplicity vs. Griffin multiplicity", 64, 0, 64, 40, 0, 40);
-   H2()[slot]["zdsMult"]     = new TH2D("zdsMult", "ZeroDegree multiplicity vs. Griffin multiplicity", 64, 0, 64, 10, 0, 10);
+   fH1[slot]["asE"]         = new TH1D("asE", "suppressed Addback Singles", 12000, 0, 3000);
+   fH2[slot]["sceptarMult"] = new TH2D("sceptarMult", "Sceptar multiplicity vs. Griffin multiplicity", 64, 0, 64, 40, 0, 40);
+   fH2[slot]["zdsMult"]     = new TH2D("zdsMult", "ZeroDegree multiplicity vs. Griffin multiplicity", 64, 0, 64, 10, 0, 10);
 }
 
 bool PromptCoincidence(TGriffinHit* g, TZeroDegreeHit* z)
@@ -51,15 +51,15 @@ void ExampleTreeHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gri
    fBetaGammaTiming[slot].resize(3, -1e6);
    for(int i = 0; i < 3; ++i) fSuppressedAddback2[slot][i] = 0.;
 
-   H2()[slot].at("sceptarMult")->Fill(grif.GetSuppressedAddbackMultiplicity(&grifBgo), scep.GetMultiplicity());
-   H2()[slot].at("zdsMult")->Fill(grif.GetSuppressedAddbackMultiplicity(&grifBgo), zds.GetMultiplicity());
+   fH2[slot].at("sceptarMult")->Fill(grif.GetSuppressedAddbackMultiplicity(&grifBgo), scep.GetMultiplicity());
+   fH2[slot].at("zdsMult")->Fill(grif.GetSuppressedAddbackMultiplicity(&grifBgo), zds.GetMultiplicity());
 
    // Loop over all suppressed addback Griffin Hits
    fGriffinMultiplicity[slot] = grif.GetSuppressedAddbackMultiplicity(&grifBgo);
    if(fGriffinMultiplicity[slot] < 3) { return; }
    for(auto i = 0; i < fGriffinMultiplicity[slot]; ++i) {
       auto grif1 = grif.GetSuppressedAddbackHit(i);
-      H1()[slot].at("asE")->Fill(grif1->GetEnergy());
+      fH1[slot].at("asE")->Fill(grif1->GetEnergy());
       fSuppressedAddback[slot][0]  = grif1->GetEnergy();
       fSuppressedAddback2[slot][0] = grif1->GetEnergy();
       for(auto j = i + 1; j < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++j) {
@@ -107,9 +107,9 @@ void ExampleTreeHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gri
             }
 
             if(foundBeta) {
-               Tree()[slot].at("coinc")->Fill();
+               fTree[slot].at("coinc")->Fill();
             } else {
-               Tree()[slot].at("timebg")->Fill();
+               fTree[slot].at("timebg")->Fill();
             }
          }
       }

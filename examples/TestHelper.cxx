@@ -1,6 +1,6 @@
-#include "ExampleEventHelper.hh"
+#include "TestHelper.hh"
 
-void ExampleEventHelper::CreateHistograms(unsigned int slot)
+void TestHelper::CreateHistograms(unsigned int slot)
 {
    // try and get the cycle length if we have a PPG provided
    // only necessary for the first worker, this is shared with all other workers
@@ -23,30 +23,67 @@ void ExampleEventHelper::CreateHistograms(unsigned int slot)
    double lowEnergy  = 0.;
    double highEnergy = 2000.;
 
-   fH2[slot]["zdsMultGriffinMult"] = new TH2I("zdsMultGriffinMult", "ZDS multiplicity vs. GRIFFIN multiplicity (unsuppressed)", 65, -0.5, 64.5, 10, -0.5, 9.5);
+   fH2[slot]["zdsMultGriffinMult"] = new TH2I(
+      "zdsMultGriffinMult", "ZDS multiplicity vs. GRIFFIN multiplicity (unsuppressed)", 65, -0.5, 64.5, 10, -0.5, 9.5);
 
    // unsuppressed spectra
-   fH1[slot]["griffinE"] = new TH1F("griffinE", Form("Unsuppressed griffin energy;energy [keV];counts/%.1f keV", (highEnergy - lowEnergy) / energyBins), energyBins, lowEnergy, highEnergy);
+   fH1[slot]["griffinE"] =
+      new TH1F("griffinE",
+               Form("Unsuppressed griffin energy;energy [keV];counts/%.1f keV", (highEnergy - lowEnergy) / energyBins),
+               energyBins, lowEnergy, highEnergy);
    // suppressed spectra
-   fH1[slot]["griffinESupp"] = new TH1F("griffinESupp", Form("Suppressed griffin energy;energy [keV];counts/%.1f keV", (highEnergy - lowEnergy) / energyBins), energyBins, lowEnergy, highEnergy);
+   fH1[slot]["griffinESupp"] =
+      new TH1F("griffinESupp",
+               Form("Suppressed griffin energy;energy [keV];counts/%.1f keV", (highEnergy - lowEnergy) / energyBins),
+               energyBins, lowEnergy, highEnergy);
    // unsuppressed addback spectra
-   fH1[slot]["griffinEAddback"] = new TH1F("griffinEAddback", Form("Unsuppressed griffin addback energy;energy [keV];counts/%.1f keV", (highEnergy - lowEnergy) / energyBins), energyBins, lowEnergy, highEnergy);
+   fH1[slot]["griffinEAddback"] = new TH1F(
+      "griffinEAddback",
+      Form("Unsuppressed griffin addback energy;energy [keV];counts/%.1f keV", (highEnergy - lowEnergy) / energyBins),
+      energyBins, lowEnergy, highEnergy);
    // suppressed addback spectra
-   fH1[slot]["griffinESuppAddback"]             = new TH1F("griffinESuppAddback", Form("Suppressed griffin addback energy;energy [keV];counts/%.1f keV", (highEnergy - lowEnergy) / energyBins), energyBins, lowEnergy, highEnergy);
-   fH1[slot]["griffinESuppAddbackBeta"]         = new TH1F("griffinESuppAddbackBeta", Form("Suppressed griffin addback energy w/ #beta-tag;energy [keV];counts/%.1f keV", (highEnergy - lowEnergy) / energyBins), energyBins, lowEnergy, highEnergy);
-   fH2[slot]["griffinESuppAddbackMatrixBeta"]   = new TH2F("griffinESuppAddbackMatrixBeta", "Suppressed griffin addback energy matrix w/ #beta-tag;energy [keV];energy [keV]", energyBins / 5, lowEnergy, highEnergy, energyBins / 5, lowEnergy, highEnergy);
-   fH2[slot]["griffinESuppAddbackMatrixBetaBg"] = new TH2F("griffinESuppAddbackMatrixBetaBg", "Suppressed griffin addback energy matrix w/ #beta-tag (time random BG);energy [keV];energy [keV]", energyBins / 5, lowEnergy, highEnergy, energyBins / 5, lowEnergy, highEnergy);
+   fH1[slot]["griffinESuppAddback"] = new TH1F(
+      "griffinESuppAddback",
+      Form("Suppressed griffin addback energy;energy [keV];counts/%.1f keV", (highEnergy - lowEnergy) / energyBins),
+      energyBins, lowEnergy, highEnergy);
+   fH1[slot]["griffinESuppAddbackBeta"] =
+      new TH1F("griffinESuppAddbackBeta",
+               Form("Suppressed griffin addback energy w/ #beta-tag;energy [keV];counts/%.1f keV",
+                    (highEnergy - lowEnergy) / energyBins),
+               energyBins, lowEnergy, highEnergy);
+   fH2[slot]["griffinESuppAddbackMatrixBeta"] =
+      new TH2F("griffinESuppAddbackMatrixBeta",
+               "Suppressed griffin addback energy matrix w/ #beta-tag;energy [keV];energy [keV]", energyBins / 5,
+               lowEnergy, highEnergy, energyBins / 5, lowEnergy, highEnergy);
+   fH2[slot]["griffinESuppAddbackMatrixBetaBg"] =
+      new TH2F("griffinESuppAddbackMatrixBetaBg",
+               "Suppressed griffin addback energy matrix w/ #beta-tag (time random BG);energy [keV];energy [keV]",
+               energyBins / 5, lowEnergy, highEnergy, energyBins / 5, lowEnergy, highEnergy);
 
    // timing spectra
-   fH2[slot]["griffinZdsTS"]       = new TH2F("griffinZdsTS", "GRIFFIN crystal vs. GRIFFIN-ZDS timestamp difference (suppressed addback);#DeltaTS_{GRIFFIN-ZDS}", 200, -1000., 1000., 64, 0.5, 64.5);
-   fH2[slot]["griffinZdsTime"]     = new TH2F("griffinZdsTime", "GRIFFIN crystal vs. GRIFFIN-ZDS timing (suppressed addback);#Deltat_{GRIFFIN-ZDS}", 2000, -1000., 1000., 64, 0.5, 64.5);
-   fH2[slot]["griffinGriffinTS"]   = new TH2F("griffinGriffinTS", "GRIFFIN crystal vs. GRIFFIN-GRIFFIN timestamp difference (suppressed addback);#DeltaTS_{GRIFFIN-GRIFFIN}", 2000, -1000., 1000., 64, 0.5, 64.5);
-   fH2[slot]["griffinGriffinTime"] = new TH2F("griffinGriffinTime", "GRIFFIN crystal vs. GRIFFIN-GRIFFIN timing (suppressed addback);#Deltat_{GRIFFIN-GRIFFIN}", 2000, -1000., 1000., 64, 0.5, 64.5);
+   fH2[slot]["griffinZdsTS"] =
+      new TH2F("griffinZdsTS",
+               "GRIFFIN crystal vs. GRIFFIN-ZDS timestamp difference (suppressed addback);#DeltaTS_{GRIFFIN-ZDS}", 200,
+               -1000., 1000., 64, 0.5, 64.5);
+   fH2[slot]["griffinZdsTime"] =
+      new TH2F("griffinZdsTime", "GRIFFIN crystal vs. GRIFFIN-ZDS timing (suppressed addback);#Deltat_{GRIFFIN-ZDS}",
+               2000, -1000., 1000., 64, 0.5, 64.5);
+   fH2[slot]["griffinGriffinTS"] = new TH2F(
+      "griffinGriffinTS",
+      "GRIFFIN crystal vs. GRIFFIN-GRIFFIN timestamp difference (suppressed addback);#DeltaTS_{GRIFFIN-GRIFFIN}", 2000,
+      -1000., 1000., 64, 0.5, 64.5);
+   fH2[slot]["griffinGriffinTime"] = new TH2F(
+      "griffinGriffinTime", "GRIFFIN crystal vs. GRIFFIN-GRIFFIN timing (suppressed addback);#Deltat_{GRIFFIN-GRIFFIN}",
+      2000, -1000., 1000., 64, 0.5, 64.5);
 
    // cycle spectra
-   if(fCycleLength > 0) {
-      fH2[slot]["griffinCycle"] = new TH2F("griffinCycle", "GRIFFIN suppressed addback energy w/ #beta-tag vs. time in cycle;time in cycle [s];energy [keV]", 100 * fCycleLength / 1e6, 0., fCycleLength / 1e6, energyBins / 5, lowEnergy, highEnergy);
-      fH1[slot]["zdsCycle"]     = new TH1F("zdsCycle", "ZDS hits in cycle;time in cycle [s]", 100 * fCycleLength / 1e6, 0., fCycleLength / 1e6);
+   if(fCycleLength > 0.) {
+      fH2[slot]["griffinCycle"] =
+         new TH2F("griffinCycle",
+                  "GRIFFIN suppressed addback energy w/ #beta-tag vs. time in cycle;time in cycle [s];energy [keV]",
+                  100 * fCycleLength / 1e6, 0., fCycleLength / 1e6, energyBins / 5, lowEnergy, highEnergy);
+      fH1[slot]["zdsCycle"] =
+         new TH1F("zdsCycle", "ZDS hits in cycle;time in cycle [s]", 100 * fCycleLength / 1e6, 0., fCycleLength / 1e6);
    }
 }
 
@@ -57,7 +94,8 @@ bool PromptCoincidence(TGriffinHit* h1, TGriffinHit* h2)
 }
 bool TimeRandom(TGriffinHit* h1, TGriffinHit* h2)
 {
-   return (-500. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= -250.) || (250. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= 500.);
+   return (-500. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= -250.) ||
+          (250. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= 500.);
 }
 bool PromptCoincidence(TGriffinHit* h1, TZeroDegreeHit* h2)
 {   // Griffin-Zds
@@ -65,14 +103,15 @@ bool PromptCoincidence(TGriffinHit* h1, TZeroDegreeHit* h2)
 }
 bool TimeRandom(TGriffinHit* h1, TZeroDegreeHit* h2)
 {
-   return (-310. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= -200.) || (20. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= 130.);
+   return (-310. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= -200.) ||
+          (20. <= h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() <= 130.);
 }
 
 // TODO: Change the function arguments to match the detectors you want to use and the declaration in the header file!
-void ExampleEventHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo, TZeroDegree& zds) // NOLINT
+void TestHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo, TZeroDegree& zds, TSceptar& scep) // NOLINT
 {
-   // we use .at() here instead of [] so that we get meaningful error message if a histogram we try to fill wasn't created
-   // e.g. because of a typo
+   // we use .at() here instead of [] so that we get meaningful error message if a histogram we try to fill wasn't
+   // created e.g. because of a typo
 
    // multiplicities
    fH2[slot].at("zdsMultGriffinMult")->Fill(grif.GetMultiplicity(), zds.GetMultiplicity());
@@ -116,7 +155,9 @@ void ExampleEventHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gr
          }
          for(int g2 = g + 1; g2 < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++g2) {
             auto grif2 = grif.GetSuppressedAddbackHit(g2);
-            fH2[slot].at("griffinGriffinTS")->Fill(grif1->GetTimeStampNs() - grif2->GetTimeStampNs(), grif1->GetArrayNumber());
+            fH2[slot]
+               .at("griffinGriffinTS")
+               ->Fill(grif1->GetTimeStampNs() - grif2->GetTimeStampNs(), grif1->GetArrayNumber());
             fH2[slot].at("griffinGriffinTime")->Fill(grif1->GetTime() - grif2->GetTime(), grif1->GetArrayNumber());
             if(PromptCoincidence(grif1, grif2)) {
                // fill twice to get a symmetric matrix
@@ -138,7 +179,7 @@ void ExampleEventHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gr
    }
 }
 
-void ExampleEventHelper::EndOfSort(std::shared_ptr<std::map<std::string, TList>>& list)
+void TestHelper::EndOfSort(std::shared_ptr<std::map<std::string, TList>>& list)
 {
    auto coincident = static_cast<TH2*>(list->at("").FindObject(fH2[0].at("griffinESuppAddbackMatrixBeta")));
    if(coincident == nullptr) {

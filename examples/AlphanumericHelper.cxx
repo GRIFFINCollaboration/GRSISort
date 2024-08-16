@@ -21,16 +21,16 @@ void AlphanumericHelper::CreateHistograms(unsigned int slot)
    std::cout << "x-axis: " << address.rbegin()->first - address.begin()->first + 1 << " bins from " << address.begin()->first << " to " << address.rbegin()->first + 1 << std::endl;
 
    // Define Histograms
-   H2()[slot]["EnergyVsChannel"] = new TH2D("EnergyVsChannel", "#gamma singles energy vs. channel", address.rbegin()->first - address.begin()->first + 1, address.begin()->first, address.rbegin()->first + 1, 4000, 0, 2000);
-   H2()[slot]["ChargeVsChannel"] = new TH2D("ChargeVsChannel", "#gamma singles charge vs. channel", address.rbegin()->first - address.begin()->first + 1, address.begin()->first, address.rbegin()->first + 1, 4000, 0, 4000);
+   fH2[slot]["EnergyVsChannel"] = new TH2D("EnergyVsChannel", "#gamma singles energy vs. channel", address.rbegin()->first - address.begin()->first + 1, address.begin()->first, address.rbegin()->first + 1, 4000, 0, 2000);
+   fH2[slot]["ChargeVsChannel"] = new TH2D("ChargeVsChannel", "#gamma singles charge vs. channel", address.rbegin()->first - address.begin()->first + 1, address.begin()->first, address.rbegin()->first + 1, 4000, 0, 4000);
 
-   for(int bin = 1; bin <= H2()[slot]["EnergyVsChannel"]->GetNbinsX(); ++bin) {
+   for(int bin = 1; bin <= fH2[slot]["EnergyVsChannel"]->GetNbinsX(); ++bin) {
       if(address.find(bin) == address.end()) {
          std::cout << "Couldn't find array number " << bin << " in address map" << std::endl;
          continue;
       }
-      H2()[slot]["EnergyVsChannel"]->GetXaxis()->SetBinLabel(bin, Form("0x%x", address.at(bin)));
-      H2()[slot]["ChargeVsChannel"]->GetXaxis()->SetBinLabel(bin, Form("0x%x", address.at(bin)));
+      fH2[slot]["EnergyVsChannel"]->GetXaxis()->SetBinLabel(bin, Form("0x%x", address.at(bin)));
+      fH2[slot]["ChargeVsChannel"]->GetXaxis()->SetBinLabel(bin, Form("0x%x", address.at(bin)));
    }
 }
 
@@ -39,7 +39,7 @@ void AlphanumericHelper::Exec(unsigned int slot, TGriffin& grif)
    // Loop over all Griffin Hits
    for(auto i = 0; i < grif.GetMultiplicity(); ++i) {
       auto grif1 = grif.GetGriffinHit(i);
-      H2()[slot].at("EnergyVsChannel")->Fill(grif1->GetArrayNumber(), grif1->GetEnergy());
-      H2()[slot].at("ChargeVsChannel")->Fill(grif1->GetArrayNumber(), grif1->GetCharge());
+      fH2[slot].at("EnergyVsChannel")->Fill(grif1->GetArrayNumber(), grif1->GetEnergy());
+      fH2[slot].at("ChargeVsChannel")->Fill(grif1->GetArrayNumber(), grif1->GetCharge());
    }
 }
