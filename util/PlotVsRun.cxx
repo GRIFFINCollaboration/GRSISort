@@ -55,18 +55,28 @@ int main(int argc, char** argv)
    }
 
    // open first root file and check which histograms are in it and whether they are 1D or 2D
-   auto input = new TFile(inputFiles[0].c_str());
+   auto* input = new TFile(inputFiles[0].c_str());
 
-   auto output = new TFile("test.root", "recreate");
+   // determine output file name and open output file
+   std::stringstream outputFileName;
+   outputFileName << "plotVsRun";
+   if(histogramNames.size() == 1) {
+      outputFileName << "_" << histogramNames[0];
+   } else {
+      //TODO: find a way to determine the run numbers (maybe add all files to TRunInfo?)
+   }
+   outputFileName << ".root";
+   auto* output = new TFile(outputFileName.str().c_str(), "recreate");
 
    TObject*           obj = nullptr;
    std::vector<TH2F*> outputHistograms;
    // since we might split one 2D histogram into multiple histograms, we need to keep track of the index
    // so that we can use outputIndex[histogram name index] to find the right output histogram
    std::vector<int> outputIndex;
-   int              index = 0;
+   int              index         = 0;
+   int              nofInputFiles = static_cast<int>(inputFiles.size());
 
-   for(auto histogramName : histogramNames) {
+   for(const auto& histogramName : histogramNames) {
       obj = input->Get(histogramName.c_str());
       if(obj == nullptr) {
          std::cerr << "Failed to find \"" << histogramName << "\" in file \"" << input->GetName() << "\"" << std::endl;
@@ -74,28 +84,28 @@ int main(int argc, char** argv)
       }
       // first check if this is a 2D-histogram because every 2D-histogram inherits from TH1 as well!
       if(obj->InheritsFrom(TH2::Class())) {
-         auto hist = static_cast<TH2*>(obj);
+         auto* hist = static_cast<TH2*>(obj);
          if(projectX) {
-            auto axis = hist->GetXaxis();
-            outputHistograms.emplace_back(new TH2F(Form("%sPxVsFile", histogramName.c_str()), Form("Projection of %s on the x-axis vs. file #", histogramName.c_str()), inputFiles.size() + 1, 0.5, inputFiles.size() + 0.5, axis->GetNbins(), axis->GetBinLowEdge(1), axis->GetBinLowEdge(axis->GetNbins() + 1)));
+            auto* axis = hist->GetXaxis();
+            outputHistograms.emplace_back(new TH2F(Form("%sPxVsFile", histogramName.c_str()), Form("Projection of %s on the x-axis vs. file #", histogramName.c_str()), nofInputFiles, 0.5, nofInputFiles + 0.5, axis->GetNbins(), axis->GetBinLowEdge(1), axis->GetBinLowEdge(axis->GetNbins() + 1)));
             outputIndex.push_back(index++);
          } else if(projectY) {
-            auto axis = hist->GetYaxis();
-            outputHistograms.emplace_back(new TH2F(Form("%sPyVsFile", histogramName.c_str()), Form("Projection of %s on the y-axis vs. file #", histogramName.c_str()), inputFiles.size() + 1, 0.5, inputFiles.size() + 0.5, axis->GetNbins(), axis->GetBinLowEdge(1), axis->GetBinLowEdge(axis->GetNbins() + 1)));
+            auto* axis = hist->GetYaxis();
+            outputHistograms.emplace_back(new TH2F(Form("%sPyVsFile", histogramName.c_str()), Form("Projection of %s on the y-axis vs. file #", histogramName.c_str()), nofInputFiles, 0.5, nofInputFiles + 0.5, axis->GetNbins(), axis->GetBinLowEdge(1), axis->GetBinLowEdge(axis->GetNbins() + 1)));
             outputIndex.push_back(index++);
          } else {
-            auto xAxis = hist->GetXaxis();
-            auto yAxis = hist->GetYaxis();
+            auto* xAxis = hist->GetXaxis();
+            auto* yAxis = hist->GetYaxis();
             outputIndex.push_back(index);
             for(int bin = 1; bin <= xAxis->GetNbins(); ++bin) {
-               outputHistograms.emplace_back(new TH2F(Form("%s_%.0fVsFile", histogramName.c_str(), xAxis->GetBinCenter(bin)), Form("Bin %d, center %.0f of %s vs. file #", bin, xAxis->GetBinCenter(bin), histogramName.c_str()), inputFiles.size() + 1, 0.5, inputFiles.size() + 0.5, yAxis->GetNbins(), yAxis->GetBinLowEdge(1), yAxis->GetBinLowEdge(yAxis->GetNbins() + 1)));
+               outputHistograms.emplace_back(new TH2F(Form("%s_%dVsFile", histogramName.c_str(), bin), Form("Bin %d, center %.0f of %s vs. file #", bin, xAxis->GetBinCenter(bin), histogramName.c_str()), nofInputFiles, 0.5, nofInputFiles + 0.5, yAxis->GetNbins(), yAxis->GetBinLowEdge(1), yAxis->GetBinLowEdge(yAxis->GetNbins() + 1)));
                index++;
             }
          }
       } else if(obj->InheritsFrom(TH1::Class())) {
-         auto hist = static_cast<TH1*>(obj);
-         auto axis = hist->GetXaxis();   // not strictly needed, we could just use hist in its place
-         outputHistograms.emplace_back(new TH2F(Form("%sVsFile", histogramName.c_str()), Form("%s vs. file #", histogramName.c_str()), inputFiles.size() + 1, 0.5, inputFiles.size() + 0.5, axis->GetNbins(), axis->GetBinLowEdge(1), axis->GetBinLowEdge(axis->GetNbins() + 1)));
+         auto* hist = static_cast<TH1*>(obj);
+         auto* axis = hist->GetXaxis();   // not strictly needed, we could just use hist in its place
+         outputHistograms.emplace_back(new TH2F(Form("%sVsFile", histogramName.c_str()), Form("%s vs. file #", histogramName.c_str()), nofInputFiles, 0.5, nofInputFiles + 0.5, axis->GetNbins(), axis->GetBinLowEdge(1), axis->GetBinLowEdge(axis->GetNbins() + 1)));
          outputIndex.push_back(index++);
       } else {
          std::cerr << "Found object \"" << histogramName << "\" in file \"" << input->GetName() << "\", but it's neither a TH1 nor a TH2, it's a " << obj->ClassName() << std::endl;
@@ -120,7 +130,7 @@ int main(int argc, char** argv)
          input->cd();
       }
       // get run info from this file and create a label for the bins from it
-      auto label = TRunInfo::Get()->CreateLabel(true);
+      auto label = TRunInfo::CreateLabel(true);
       std::cout << "working on " << i << "/" << inputFiles.size() - 1 << " = " << label << "\r" << std::flush;
       // we need to loop through the histogramNames and the outputHistograms at the same time
       for(size_t j = 0; j < histogramNames.size(); ++j) {
@@ -135,11 +145,11 @@ int main(int argc, char** argv)
             } else if(projectY) {
                hist = static_cast<TH1*>(static_cast<TH2*>(obj)->ProjectionY());
             } else {
-               auto xAxis = static_cast<TH2*>(obj)->GetXaxis();
+               auto* xAxis = static_cast<TH2*>(obj)->GetXaxis();
                for(int xBin = 1; xBin <= xAxis->GetNbins(); ++xBin) {
                   hist = static_cast<TH1*>(static_cast<TH2*>(obj)->ProjectionY(Form("%s_py%d", histogramNames[j].c_str(), xBin), xBin, xBin));
                   for(int yBin = 0; yBin <= hist->GetNbinsX() + 1; ++yBin) {
-                     outputHistograms[outputIndex[j]]->SetBinContent(i + 1, yBin, hist->GetBinContent(yBin));
+                     outputHistograms[outputIndex[j] + xBin - 1]->SetBinContent(i + 1, yBin, hist->GetBinContent(yBin));
                   }
                   outputHistograms[outputIndex[j] + xBin - 1]->GetXaxis()->SetBinLabel(i + 1, label.c_str());
                }
@@ -163,7 +173,7 @@ int main(int argc, char** argv)
    std::cout << "writing generated histograms to file " << output->GetName() << std::endl;
 
    output->cd();
-   for(auto outputHistogram : outputHistograms) {
+   for(auto* outputHistogram : outputHistograms) {
       outputHistogram->Write("", TObject::kOverwrite);
    }
 
@@ -177,8 +187,8 @@ int ReadArgs(int index, int argc, char** argv, std::vector<std::string>& output)
    /// This function reads arguments starting from <index> up to argc until it encounters one with leading '-'.
    /// Returns index of last argument pushed back onto the vector (which is argc-1 if no '-' is encountered).
    for(int i = index; i < argc; ++i) {
-      if(argv[i][0] == '-') return i - 1;
-      output.push_back(argv[i]);
+      if(argv[i][0] == '-') { return i - 1; }
+      output.emplace_back(argv[i]);
    }
    return argc - 1;
 }

@@ -27,7 +27,11 @@ class TAnalysisWriteLoop : public StoppableThread {
 public:
    static TAnalysisWriteLoop* Get(std::string name = "", std::string outputFilename = "");
 
-   ~TAnalysisWriteLoop() override;
+   TAnalysisWriteLoop(const TAnalysisWriteLoop&)                = delete;
+   TAnalysisWriteLoop(TAnalysisWriteLoop&&) noexcept            = delete;
+   TAnalysisWriteLoop& operator=(const TAnalysisWriteLoop&)     = delete;
+   TAnalysisWriteLoop& operator=(TAnalysisWriteLoop&&) noexcept = delete;
+   ~TAnalysisWriteLoop();
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>& InputQueue()
@@ -41,7 +45,7 @@ public:
 
    void Write();
 
-   size_t GetItemsPushed() override { return fItemsPopped; }
+   size_t GetItemsPushed() override { return ItemsPopped(); }
    size_t GetItemsPopped() override { return 0; }
    size_t GetItemsCurrent() override { return 0; }
    size_t GetRate() override { return 0; }
@@ -54,6 +58,7 @@ protected:
 
 private:
    TAnalysisWriteLoop(std::string name, const std::string& outputFilename);
+
    void AddBranch(TClass* cls);
    void WriteEvent(std::shared_ptr<TUnpackedEvent>& event);
 
@@ -69,7 +74,9 @@ private:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fOutOfOrderQueue;
 #endif
 
-   ClassDefOverride(TAnalysisWriteLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TAnalysisWriteLoop, 0)   // NOLINT
+   /// \endcond
 };
 
 /*! @} */

@@ -1,10 +1,6 @@
 #include "TBetaDecay.h"
 
-TBetaDecay::TBetaDecay() : fParentAllocated(false), fParent(nullptr)
-{
-}
-
-TBetaDecay::TBetaDecay(TNucleus* parent) : fParentAllocated(false), fParent(parent)
+TBetaDecay::TBetaDecay(TNucleus* parent) : fParent(parent)
 {
 }
 

@@ -77,7 +77,7 @@ void TAnalysisWriteLoop::ClearQueue()
 std::string TAnalysisWriteLoop::EndStatus()
 {
    std::stringstream str;
-   str << Name() << ":\t" << std::setw(8) << fItemsPopped << "/" << fInputSize + fItemsPopped << ", "
+   str << Name() << ":\t" << std::setw(8) << ItemsPopped() << "/" << InputSize() + ItemsPopped() << ", "
        << "??? good events" << std::endl;
    return str.str();
 }
@@ -90,12 +90,12 @@ void TAnalysisWriteLoop::OnEnd()
 bool TAnalysisWriteLoop::Iteration()
 {
    std::shared_ptr<TUnpackedEvent> event;
-   fInputSize = fInputQueue->Pop(event);
-   if(fInputSize < 0) {
-      fInputSize = 0;
+   InputSize(fInputQueue->Pop(event));
+   if(InputSize() < 0) {
+      InputSize(0);
       std::this_thread::sleep_for(std::chrono::milliseconds(100));
    } else {
-      ++fItemsPopped;
+      IncrementItemsPopped();
    }
 
    if(fOutOfOrder) {

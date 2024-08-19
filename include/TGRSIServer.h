@@ -31,7 +31,11 @@
 class TGRSIServer : public TServerSocket {
 public:
    static TGRSIServer* instance(int port = 9099);
-   ~TGRSIServer() override;
+   TGRSIServer(const TGRSIServer&)                = default;
+   TGRSIServer(TGRSIServer&&) noexcept            = default;
+   TGRSIServer& operator=(const TGRSIServer&)     = default;
+   TGRSIServer& operator=(TGRSIServer&&) noexcept = default;
+   ~TGRSIServer();
 
    void StopServer()
    {
@@ -49,7 +53,7 @@ private:
    void MonitorConnectionsThread();
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSIServer, 0)
+   ClassDefOverride(TGRSIServer, 0)   // NOLINT
    /// \endcond
 };
 /*! @} */

@@ -32,7 +32,11 @@
 class TDataLoop : public StoppableThread {
 public:
    static TDataLoop* Get(std::string name = "", TRawFile* source = nullptr);
-   ~TDataLoop() override = default;
+   TDataLoop(const TDataLoop&)                = delete;
+   TDataLoop(TDataLoop&&) noexcept            = delete;
+   TDataLoop& operator=(const TDataLoop&)     = delete;
+   TDataLoop& operator=(TDataLoop&&) noexcept = delete;
+   ~TDataLoop()                               = default;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>& OutputQueue()
@@ -64,8 +68,6 @@ public:
 private:
    TDataLoop(std::string name, TRawFile* source);
    TDataLoop();
-   TDataLoop(const TDataLoop& other);
-   TDataLoop& operator=(const TDataLoop& other);
 
    TRawFile* fSource;
    bool      fSelfStopping;
@@ -76,7 +78,9 @@ private:
    std::mutex                                                   fSourceMutex;
 #endif
 
-   ClassDefOverride(TDataLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TDataLoop, 0)   // NOLINT
+   /// \endcond
 };
 
 /*! @} */

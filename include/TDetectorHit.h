@@ -68,11 +68,6 @@ public:
       kBase       = BIT(9),
       kIsAllSet   = 0xFFFF
    };
-   // EBitFlag operator &(EBitFlag lhs, EBitFlag rhs)
-   //{
-   //	return static_cast<EBitFlag>(static_cast<std::underlying_type<EBitFlag>::type>(lhs) &
-   //		                          static_cast<std::underlying_type<EBitFlag>::type>(rhs));
-   // }
 
    enum class ETimeFlag { kNoneSet = BIT(0),
                           kCFD     = BIT(1),
@@ -82,12 +77,11 @@ public:
 
    explicit TDetectorHit(const int& Address = 0xffffffff);
    TDetectorHit(const TDetectorHit&, bool copywave = true);
-   //TDetectorHit(const TFragment& frag) { Class()->IgnoreTObjectStreamer(); CopyFragment(frag); }
-   //void CopyFragment(const TFragment&);
-   // void CopyWaveform(const TFragment&);
-   ~TDetectorHit() override;
+   TDetectorHit(TDetectorHit&&) noexcept = default;
+   ~TDetectorHit();
 
-   TDetectorHit& operator=(const TDetectorHit&) = default;   // use default assignment operator (to shut up gcc 9.1)
+   TDetectorHit& operator=(const TDetectorHit&)     = default;
+   TDetectorHit& operator=(TDetectorHit&&) noexcept = default;
 
    // static void SetPPGPtr(TPPG* ptr) { fPPG = ptr; }
 
@@ -105,7 +99,8 @@ public:
       hit.Print(out);
       return out;
    }
-   virtual bool HasWave() const { return !fWaveform.empty(); }   //!<!
+   virtual bool   HasWave() const { return !fWaveform.empty(); }   //!<!
+   virtual size_t WaveSize() const { return fWaveform.size(); }    //!<!
 
    static bool CompareEnergy(TDetectorHit* lhs, TDetectorHit* rhs);
    // We need a common function for all detectors in here
@@ -187,9 +182,9 @@ public:
    static TVector3* GetBeamDirection() { return &fBeamDirection; }
 
    virtual void Add(const TDetectorHit*) {}   //!<!
-private:
-   //   virtual TVector3 GetChannelPosition(Double_t dist) const { AbstractMethod("GetChannelPosition"); return
-   //   TVector3(0., 0., 0.); }
+
+   void SetHitBit(EBitFlag, Bool_t set = true) const;   // const here is dirty
+   bool TestHitBit(EBitFlag flag) const { return fBitFlags.TestBit(flag); }
 
 protected:
    Bool_t IsEnergySet() const { return (fBitFlags.TestBit(EBitFlag::kIsEnergySet)); }
@@ -197,11 +192,7 @@ protected:
    Bool_t IsTimeSet() const { return (fBitFlags.TestBit(EBitFlag::kIsTimeSet)); }
    Bool_t IsPPGSet() const { return (fBitFlags.TestBit(EBitFlag::kIsPPGSet)); }
 
-public:
-   void SetHitBit(EBitFlag, Bool_t set = true) const;   // const here is dirty
-   bool TestHitBit(EBitFlag flag) const { return fBitFlags.TestBit(flag); }
-
-protected:
+private:
    UInt_t               fAddress{0};     ///< address of the the channel in the DAQ.
    Float_t              fCharge{0.};     ///< charge collected from the hit
    Short_t              fKValue{0};      ///< integration value.
@@ -210,21 +201,19 @@ protected:
    std::vector<Short_t> fWaveform;       ///<
    mutable Double_t     fTime{0.};       //!<! Calibrated Time of the hit
 
-private:
    mutable Double_t    fEnergy{0.};                      //!<! Energy of the Hit.
    mutable EPpgPattern fPPGStatus{EPpgPattern::kJunk};   //!<!
 
    mutable Long64_t  fCycleTimeStamp{0};   //!<!
    mutable TChannel* fChannel{nullptr};    //!<!
 
-protected:
-   // static TPPG* fPPG;
    //  flags
    mutable TTransientBits<UChar_t> fBitFlags;
-   static TVector3                 fBeamDirection;   //!
+
+   static TVector3 fBeamDirection;   //!
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDetectorHit, 1)   // Stores the information for a detector hit
+   ClassDefOverride(TDetectorHit, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

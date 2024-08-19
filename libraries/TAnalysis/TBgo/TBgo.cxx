@@ -33,7 +33,7 @@
 //                                                                             theta                                 phi
 //                                                                             theta                                phi
 //                                                                             theta
-TVector3 TBgo::gScintPosition[17] = {
+std::array<TVector3, 17> TBgo::fScintPosition = {
    TVector3(TMath::Sin(TMath::DegToRad() * (0.0)) * TMath::Cos(TMath::DegToRad() * (0.0)),
             TMath::Sin(TMath::DegToRad() * (0.0)) * TMath::Sin(TMath::DegToRad() * (0.0)),
             TMath::Cos(TMath::DegToRad() * (0.0))),
@@ -101,7 +101,7 @@ TBgo::TBgo(const TBgo& rhs) : TDetector(rhs)
    rhs.Copy(*this);
 }
 
-TBgo::TBgo(TBgo&& rhs)
+TBgo::TBgo(TBgo&& rhs) noexcept
 {
    /// Move ctor. Does the same as the copy constructor atm.
    rhs.Copy(*this);
@@ -115,7 +115,7 @@ TBgo& TBgo::operator=(const TBgo& rhs)
    return *this;
 }
 
-TBgo& TBgo::operator=(TBgo&& rhs)
+TBgo& TBgo::operator=(TBgo&& rhs) noexcept
 {
    /// Move assignment. Does the same as the copy assignment atm.
    rhs.Copy(*this);
@@ -159,7 +159,7 @@ void TBgo::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* c
    }
 
    auto* hit = new TBgoHit(*frag);
-   fHits.push_back(hit);
+   AddHit(hit);
 }
 
 TVector3 TBgo::GetPosition(int DetNbr, int CryNbr, double dist)
@@ -168,7 +168,7 @@ TVector3 TBgo::GetPosition(int DetNbr, int CryNbr, double dist)
    // This is calculated to the most likely interaction point within the crystal.
    if(DetNbr > 16) { return {0, 0, 1}; }
 
-   TVector3 temp_pos(gScintPosition[DetNbr]);
+   TVector3 temp_pos(fScintPosition[DetNbr]);
 
    // Interaction points may eventually be set externally. May make these members of each crystal, or pass from
    // waveforms.

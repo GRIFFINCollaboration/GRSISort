@@ -31,9 +31,13 @@ using MultiplePeak_t = std::list<TSinglePeak*>;
 class TPeakFitter : public TObject {
 public:
    // ctors and dtors
-   ~TPeakFitter() override = default;
    TPeakFitter() : TPeakFitter(0., 0.) {}
-   TPeakFitter(const Double_t& range_low, const Double_t& range_high);
+   TPeakFitter(const Double_t& rangeLow, const Double_t& rangeHigh);
+   TPeakFitter(const TPeakFitter&)                = default;
+   TPeakFitter(TPeakFitter&&) noexcept            = default;
+   TPeakFitter& operator=(const TPeakFitter&)     = default;
+   TPeakFitter& operator=(TPeakFitter&&) noexcept = default;
+   ~TPeakFitter()                                 = default;
 
    void AddPeak(TSinglePeak* peak)
    {
@@ -99,7 +103,7 @@ private:
    int fColorIndex{0};   ///< this index is added to the colors kRed for the total function and kMagenta for the individual peaks
 
    /// \cond CLASSIMP
-   ClassDefOverride(TPeakFitter, 2);
+   ClassDefOverride(TPeakFitter, 2)   // NOLINT
    /// \endcond
 };
 /*! @} */

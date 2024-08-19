@@ -28,12 +28,12 @@ public:
    TGriffin* fGrif;   // Pointers to spot that events will be
    TSceptar* fScep;
 
-   TimeWalkSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(0), fScep(0)
+   explicit TimeWalkSelector(TTree* /*tree*/ = nullptr) : TGRSISelector(), fGrif(nullptr), fScep(nullptr)
    {
       SetOutputPrefix("TimeWalk");   // Changes prefix of output file
    }
    // These functions are expected to exist
-   virtual ~TimeWalkSelector() {}
+   virtual ~TimeWalkSelector() = default;
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();
    void          FillHistograms();

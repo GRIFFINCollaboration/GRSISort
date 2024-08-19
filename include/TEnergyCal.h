@@ -1,5 +1,5 @@
-#ifndef TENERGYCAL_H__
-#define TENERGYCAL_H__
+#ifndef TENERGYCAL_H
+#define TENERGYCAL_H
 
 /** \addtogroup Calibration
  *  @{
@@ -22,9 +22,12 @@ class TEnergyCal : public TCal {
 public:
    TEnergyCal();
    TEnergyCal(const char* name, const char* title) : TCal(name, title) {}
-   ~TEnergyCal() override;
+   TEnergyCal(const TEnergyCal&)                = default;
+   TEnergyCal(TEnergyCal&&) noexcept            = default;
+   TEnergyCal& operator=(const TEnergyCal&)     = default;
+   TEnergyCal& operator=(TEnergyCal&&) noexcept = default;
+   ~TEnergyCal()                                = default;
 
-public:
    std::vector<Double_t> GetParameters() const override;
    Double_t              GetParameter(size_t parameter) const override;
    void                  WriteToChannel() const override;
@@ -50,8 +53,8 @@ public:
 
 private:
    /// \cond CLASSIMP
-   ClassDefOverride(TEnergyCal, 1);   // Class used for Energy Calibrations
-                                      /// \endcond
+   ClassDefOverride(TEnergyCal, 1)   // NOLINT
+   /// \endcond
 };
 /*! @} */
 #endif

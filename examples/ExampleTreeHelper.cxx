@@ -56,7 +56,7 @@ void ExampleTreeHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gri
 
    // Loop over all suppressed addback Griffin Hits
    fGriffinMultiplicity[slot] = grif.GetSuppressedAddbackMultiplicity(&grifBgo);
-   if(fGriffinMultiplicity[slot] < 3) return;
+   if(fGriffinMultiplicity[slot] < 3) { return; }
    for(auto i = 0; i < fGriffinMultiplicity[slot]; ++i) {
       auto grif1 = grif.GetSuppressedAddbackHit(i);
       fH1[slot].at("asE")->Fill(grif1->GetEnergy());

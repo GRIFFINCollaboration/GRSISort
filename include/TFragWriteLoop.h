@@ -28,7 +28,11 @@ class TFragWriteLoop : public StoppableThread {
 public:
    static TFragWriteLoop* Get(std::string name = "", std::string fOutputFilename = "");
 
-   ~TFragWriteLoop() override;
+   TFragWriteLoop(const TFragWriteLoop&)                = delete;
+   TFragWriteLoop(TFragWriteLoop&&) noexcept            = delete;
+   TFragWriteLoop& operator=(const TFragWriteLoop&)     = delete;
+   TFragWriteLoop& operator=(TFragWriteLoop&&) noexcept = delete;
+   ~TFragWriteLoop();
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& InputQueue()
@@ -46,8 +50,8 @@ public:
 
    // there is no output queue for this loop, so we assume that all items handled (= all good fragments written)
    // are also the number of items popped and that we have no current items
-   size_t GetItemsPushed() override { return fItemsPopped; }
-   size_t GetItemsPopped() override { return fItemsPopped; }
+   size_t GetItemsPushed() override { return ItemsPopped(); }
+   size_t GetItemsPopped() override { return ItemsPopped(); }
    size_t GetItemsCurrent() override { return 0; }
    size_t GetRate() override { return 0; }
 
@@ -81,7 +85,9 @@ private:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>    fOutputQueue;
 #endif
 
-   ClassDefOverride(TFragWriteLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TFragWriteLoop, 0)   // NOLINT
+   /// \endcond
 };
 
 /*! @} */

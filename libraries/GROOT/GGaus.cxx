@@ -64,10 +64,6 @@ GGaus::GGaus(const GGaus& peak) : TF1(peak)
    peak.Copy(*this);
 }
 
-GGaus::~GGaus()
-{
-}
-
 void GGaus::InitNames()
 {
    TF1::SetParName(0, "Height");
@@ -80,7 +76,7 @@ void GGaus::InitNames()
 void GGaus::Copy(TObject& obj) const
 {
    TF1::Copy(obj);
-   (static_cast<GGaus&>(obj)).init_flag = init_flag;
+   (static_cast<GGaus&>(obj)).fInitFlag = fInitFlag;
    (static_cast<GGaus&>(obj)).fArea     = fArea;
    (static_cast<GGaus&>(obj)).fDArea    = fDArea;
    (static_cast<GGaus&>(obj)).fSum      = fSum;
@@ -98,7 +94,8 @@ bool GGaus::InitParams(TH1* fithist)
       return false;
    }
    // Makes initial guesses at parameters for the fit. Uses the histogram to
-   Double_t xlow, xhigh;
+   Double_t xlow  = 0.;
+   Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
 
    Int_t binlow  = fithist->GetXaxis()->FindBin(xlow);
@@ -191,18 +188,17 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
       }
    }
 
-   Double_t xlow, xhigh;
+   Double_t xlow  = 0.;
+   Double_t xhigh = 0.;
    TF1::GetRange(xlow, xhigh);
 
-   double bgpars[2];
-   bgpars[0] = TF1::GetParameters()[3];
-   bgpars[1] = TF1::GetParameters()[4];
+   std::array<double, 2> bgpars = {TF1::GetParameters()[3], TF1::GetParameters()[4]};
 
-   fBGFit.SetParameters(bgpars);
+   fBGFit.SetParameters(bgpars.data());
 
    fArea         = Integral(xlow, xhigh) / fithist->GetBinWidth(1);
    double bgArea = fBGFit.Integral(xlow, xhigh) / fithist->GetBinWidth(1);
-   ;
+
    fArea -= bgArea;
 
    if(xlow > xhigh) {
@@ -232,7 +228,7 @@ void GGaus::Clear(Option_t* opt)
    if(options.Contains("all")) {
       TF1::Clear();
    }
-   init_flag = false;
+   fInitFlag = false;
    fArea     = 0.0;
    fDArea    = 0.0;
    fSum      = 0.0;
@@ -267,7 +263,8 @@ void GGaus::DrawResiduals(TH1* hist) const
       std::cout << "No fit performed" << std::endl;
       return;
    }
-   Double_t xlow, xhigh;
+   Double_t xlow  = 0.;
+   Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
    Int_t nbins  = hist->GetXaxis()->GetNbins();
    auto* res    = new Double_t[nbins];

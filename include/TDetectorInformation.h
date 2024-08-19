@@ -20,8 +20,12 @@
 
 class TDetectorInformation : public TObject {
 public:
-   TDetectorInformation()  = default;
-   ~TDetectorInformation() = default;
+   TDetectorInformation()                                           = default;
+   TDetectorInformation(const TDetectorInformation&)                = default;
+   TDetectorInformation(TDetectorInformation&&) noexcept            = default;
+   TDetectorInformation& operator=(const TDetectorInformation&)     = default;
+   TDetectorInformation& operator=(TDetectorInformation&&) noexcept = default;
+   ~TDetectorInformation()                                          = default;
 
    virtual void                           Set(){};                                                                 ///< Set the detector information based on the available TChannels
    virtual TEventBuildingLoop::EBuildMode BuildMode() const { return TEventBuildingLoop::EBuildMode::kDefault; }   ///< Select build mode based on available detectors
@@ -30,7 +34,7 @@ public:
    void Clear(Option_t* = "") override{};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDetectorInformation, 1);
+   ClassDefOverride(TDetectorInformation, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

@@ -33,7 +33,7 @@ TBadFragment::TBadFragment(TFragment& fragment, uint32_t* data, int size, int fa
 }
 
 TBadFragment::TBadFragment(TFragment& fragment)
-   : TFragment(fragment), fFailedWord(-2), fMultipleErrors(false)
+   : TFragment(fragment), fFailedWord(-2)
 {
    /// Construct a bad fragment from a fragment.
    /// The data is left empty, failed word set to -2, and multiple errors set to false.
@@ -54,7 +54,7 @@ void TBadFragment::Print(Option_t*) const
    TFragment::Print();
 
    std::cout << "Raw data with " << (fMultipleErrors ? "multiple errors" : "single error") << " failed on word " << fFailedWord << ":" << std::endl;
-   size_t index;
+   size_t index = 0;
    for(index = 0; index < fData.size(); ++index) {
       if(index == static_cast<size_t>(fFailedWord)) {
          std::cout << ALERTTEXT;

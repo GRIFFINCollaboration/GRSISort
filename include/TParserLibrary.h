@@ -49,7 +49,11 @@ public:
    }
 
 private:
-   TParserLibrary() = default;
+   TParserLibrary()                                     = default;
+   TParserLibrary(const TParserLibrary&)                = default;
+   TParserLibrary(TParserLibrary&&) noexcept            = default;
+   TParserLibrary& operator=(const TParserLibrary&)     = default;
+   TParserLibrary& operator=(TParserLibrary&&) noexcept = default;
 
    void* fHandle{nullptr};   ///< handle for shared object library
 
@@ -63,8 +67,8 @@ private:
    void (*fDestroyDataParser)(TDataParser*);
 
    /// \cond CLASSIMP
-   ClassDefOverride(TParserLibrary, 1);   // parser library class
-                                          /// \endcond
+   ClassDefOverride(TParserLibrary, 1)   // NOLINT
+   /// \endcond
 };
 
 #endif

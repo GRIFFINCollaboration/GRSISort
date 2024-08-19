@@ -25,7 +25,11 @@ class TGRSITransition : public TObject {
 
 public:
    TGRSITransition();
-   ~TGRSITransition() override = default;
+   TGRSITransition(const TGRSITransition&)                = default;
+   TGRSITransition(TGRSITransition&&) noexcept            = default;
+   TGRSITransition& operator=(const TGRSITransition&)     = default;
+   TGRSITransition& operator=(TGRSITransition&&) noexcept = default;
+   ~TGRSITransition()                                     = default;
 
    bool IsSortable() const override { return true; }
    int  Compare(const TObject* obj) const override;
@@ -52,7 +56,7 @@ private:
    double fIntensityUncertainty{0.};   // Uncertainty in the intensity
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSITransition, 1)   // Information about a TNucleus transition
+   ClassDefOverride(TGRSITransition, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

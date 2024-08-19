@@ -31,8 +31,12 @@
 class TGRSISelector : public TSelector {
 public:
    // Methods are purposely not virtual so that TGRSISelector has control
-   TGRSISelector(TTree* /*tree*/ = nullptr) { SetOutputPrefix(ClassName()); }
-   ~TGRSISelector() override = default;
+   explicit TGRSISelector(TTree* /*tree*/ = nullptr) { SetOutputPrefix(ClassName()); }
+   TGRSISelector(const TGRSISelector&)                = delete;
+   TGRSISelector(TGRSISelector&&) noexcept            = delete;
+   TGRSISelector& operator=(const TGRSISelector&)     = delete;
+   TGRSISelector& operator=(TGRSISelector&&) noexcept = delete;
+   ~TGRSISelector()                                   = default;
    Int_t  Version() const override { return 2; }
    void   Begin(TTree* tree) override;
    void   SlaveBegin(TTree* tree) override;
@@ -58,17 +62,17 @@ public:
    std::string  GetOutputPrefix() const { return fOutputPrefix; }
 
 protected:
-   TGRSIMap<std::string, TH1*>        fH1;                 //!<! map for 1-D histograms
-   TGRSIMap<std::string, TH2*>        fH2;                 //!<! map for 2-D histograms
-   TGRSIMap<std::string, TH3*>        fH3;                 //!<! map for 3-D histograms
-   TGRSIMap<std::string, GHSym*>      fSym;                //!<! map for GRSISort's symmetric 2-D histograms
-   TGRSIMap<std::string, GCube*>      fCube;               //!<! map for GRSISort's 3-D histograms
-   TGRSIMap<std::string, THnSparseF*> fHSparse;            //!<! map for sparse n-D histograms
-   TGRSIMap<std::string, TTree*>      fTree;               //!<! map for trees
-   std::map<std::string, TCutG*>      fCuts;               //!<! map of cuts
-   TPPG*                              fPpg{nullptr};       //!<! pointer to the PPG
-   TRunInfo*                          fRunInfo{nullptr};   //!<! pointer to the run info
-   int64_t                            fEntry{0};           //!<! entry number currently being processed
+   TGRSIMap<std::string, TH1*>        fH1;                 // NOLINT  //!<! map for 1-D histograms
+   TGRSIMap<std::string, TH2*>        fH2;                 // NOLINT  //!<! map for 2-D histograms
+   TGRSIMap<std::string, TH3*>        fH3;                 // NOLINT  //!<! map for 3-D histograms
+   TGRSIMap<std::string, GHSym*>      fSym;                // NOLINT  //!<! map for GRSISort's symmetric 2-D histograms
+   TGRSIMap<std::string, GCube*>      fCube;               // NOLINT  //!<! map for GRSISort's 3-D histograms
+   TGRSIMap<std::string, THnSparseF*> fHSparse;            // NOLINT  //!<! map for sparse n-D histograms
+   TGRSIMap<std::string, TTree*>      fTree;               // NOLINT  //!<! map for trees
+   std::map<std::string, TCutG*>      fCuts;               // NOLINT  //!<! map of cuts
+   TPPG*                              fPpg{nullptr};       // NOLINT  //!<! pointer to the PPG
+   TRunInfo*                          fRunInfo{nullptr};   // NOLINT  //!<! pointer to the run info
+   int64_t                            fEntry{0};           // NOLINT  //!<! entry number currently being processed
 
 private:
    static constexpr int fSizeLimit = 1073741822;   //!<! 1 GB size limit for objects in ROOT
@@ -81,7 +85,9 @@ private:
    Int_t             fFirstRunNumber{-1};             //!<! run number of first file
    Int_t             fFirstSubRunNumber{-1};          //!<! sub-run number of first file
 
-   ClassDefOverride(TGRSISelector, 3);
+   /// \cond CLASSIMP
+   ClassDefOverride(TGRSISelector, 3)   // NOLINT
+   /// \endcond
 };
 
 #endif

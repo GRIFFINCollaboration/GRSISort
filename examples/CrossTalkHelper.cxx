@@ -54,9 +54,9 @@ void CrossTalkHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifB
 {
    // find the multiplicity in each clover over the entire event
    // we do this because we want to force a multiplicity of 2
-   Int_t det_multiplicity[17] = {0};
+   std::array<Int_t, 17> detMultiplicity = {0};
    for(auto gr1 = 0; gr1 < grif.GetSuppressedMultiplicity(&grifBgo); ++gr1) {
-      ++(det_multiplicity[grif.GetSuppressedHit(gr1)->GetDetector()]);
+      ++(detMultiplicity[grif.GetSuppressedHit(gr1)->GetDetector()]);
    }
 
    for(auto gr1 = 0; gr1 < grif.GetSuppressedMultiplicity(&grifBgo); ++gr1) {
@@ -69,7 +69,7 @@ void CrossTalkHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifB
       for(auto gr2 = gr1 + 1; gr2 < grif.GetSuppressedMultiplicity(&grifBgo); ++gr2) {
          auto grif2 = grif.GetSuppressedHit(gr2);
          if(pileup_reject && grif2->GetKValue() != defaultKValue) continue;   // This pileup number might have to change for other expmnts
-         if((det_multiplicity[grif1->GetDetector()] == 2) && Addback(grif1, grif2)) {
+         if((detMultiplicity[grif1->GetDetector()] == 2) && Addback(grif1, grif2)) {
             TGriffinHit *low_crys_hit, *high_crys_hit;
             if(grif1->GetCrystal() < grif2->GetCrystal()) {
                low_crys_hit  = grif1;

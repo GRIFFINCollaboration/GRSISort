@@ -196,7 +196,7 @@ Bool_t TGRSISelector::Process(Long64_t entry)
    try {
       FillHistograms();
    } catch(TGRSIMapException<std::string>& e) {
-      std::cout << DRED << "Exception in " << __PRETTY_FUNCTION__ << ": " << e.detail() << RESET_COLOR << std::endl;
+      std::cout << DRED << "Exception in " << __PRETTY_FUNCTION__ << ": " << e.detail() << RESET_COLOR << std::endl;   // NOLINT
       throw e;
    }
 

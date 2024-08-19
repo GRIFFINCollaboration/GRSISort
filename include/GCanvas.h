@@ -23,13 +23,16 @@
 
 class GMarker : public TObject {
 public:
-   GMarker() : fLineX(nullptr), fLineY(nullptr) {}
+   GMarker() = default;
    GMarker(int tmpX, int tmpY, TH1* hist);
-   GMarker(const GMarker& m) : TObject(m) { ((GMarker&)m).Copy(*this); }
-   ~GMarker() override
+   GMarker(const GMarker& marker) : TObject(marker) { static_cast<const GMarker>(marker).Copy(*this); }
+   GMarker(GMarker&&) noexcept            = default;
+   GMarker& operator=(const GMarker&)     = default;
+   GMarker& operator=(GMarker&&) noexcept = default;
+   ~GMarker()
    {
-      if(fLineX != nullptr) fLineX->Delete();
-      if(fLineY != nullptr) fLineY->Delete();
+      if(fLineX != nullptr) { fLineX->Delete(); }
+      if(fLineY != nullptr) { fLineY->Delete(); }
    }
    void Draw(Option_t* opt = "") override
    {
@@ -47,8 +50,8 @@ public:
       TString opt = option;
       opt.ToLower();
       if(opt.Contains("a")) {
-         if(fLineX != nullptr) fLineX->Print();
-         if(fLineY != nullptr) fLineY->Print();
+         if(fLineX != nullptr) { fLineX->Print(); }
+         if(fLineY != nullptr) { fLineY->Print(); }
       }
    }
 
@@ -85,8 +88,9 @@ public:
 
    void SetLineX(double x1, double x2, double y1, double y2)
    {
-      if(fLineX == nullptr) fLineX = new TLine(x1, y1, x2, y2);
-      else {
+      if(fLineX == nullptr) {
+         fLineX = new TLine(x1, y1, x2, y2);
+      } else {
          fLineX->SetX1(x1);
          fLineX->SetX2(x2);
          fLineX->SetY1(y1);
@@ -96,8 +100,9 @@ public:
 
    void SetLineY(double x1, double x2, double y1, double y2)
    {
-      if(fLineY == nullptr) fLineY = new TLine(x1, y1, x2, y2);
-      else {
+      if(fLineY == nullptr) {
+         fLineY = new TLine(x1, y1, x2, y2);
+      } else {
          fLineY->SetX1(x1);
          fLineY->SetX2(x2);
          fLineY->SetY1(y1);
@@ -124,29 +129,29 @@ public:
 
    double GetLocalX() const
    {
-      if(fLineX == nullptr) return 0.;
+      if(fLineX == nullptr) { return 0.; }
       return fLineX->GetX1();
    }
    double GetLocalY() const
    {
-      if(fLineY == nullptr) return 0.;
+      if(fLineY == nullptr) { return 0.; }
       return fLineY->GetY1();
    }
    int GetBinX() const
    {
-      if(fLineX == nullptr) return -1;
+      if(fLineX == nullptr) { return -1; }
       return fHist->GetXaxis()->FindBin(fLineX->GetX1());
    }
    int GetBinY() const
    {
-      if(fLineY == nullptr) return -1;
+      if(fLineY == nullptr) { return -1; }
       return fHist->GetYaxis()->FindBin(fLineY->GetY1());
    }
 
    void SetHist(const TH1* val) { fHist = val; }
 
 private:
-   const TH1* fHist;
+   const TH1* fHist{nullptr};
    TLine*     fLineX{nullptr};
    TLine*     fLineY{nullptr};
 
@@ -154,10 +159,12 @@ public:
    void Copy(TObject& object) const override;
    bool operator<(const GMarker& rhs) const
    {
-      if(fLineX != nullptr && rhs.fLineX != nullptr) return fLineX->GetX1() < rhs.fLineX->GetX1();
+      if(fLineX != nullptr && rhs.fLineX != nullptr) { return fLineX->GetX1() < rhs.fLineX->GetX1(); }
       return false;
    }
-   ClassDefOverride(GMarker, 0)
+   /// \cond CLASSIMP
+   ClassDefOverride(GMarker, 0)   // NOLINT
+                                  /// \endcond
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -230,12 +237,16 @@ public:
 
 class GCanvas : public TCanvas {
 public:
-   GCanvas(Bool_t build = kTRUE);
-   GCanvas(const char* name, const char* title = "", Int_t form = 1);
-   GCanvas(const char* name, const char* title, Int_t ww, Int_t wh);
-   GCanvas(const char* name, Int_t ww, Int_t wh, Int_t winid);
-   GCanvas(const char* name, const char* title, Int_t wtopx, Int_t wtopy, Int_t ww, Int_t wh, bool gui = false);
-   ~GCanvas() override;
+   explicit GCanvas(Bool_t build = kTRUE);
+   explicit GCanvas(const char* name, const char* title = "", Int_t form = 1);
+   GCanvas(const char* name, const char* title, Int_t winw, Int_t winh);
+   GCanvas(const char* name, Int_t winw, Int_t winh, Int_t winid);
+   GCanvas(const char* name, const char* title, Int_t wtopx, Int_t wtopy, Int_t winw, Int_t winh, bool gui = false);
+   GCanvas(const GCanvas&)                = delete;
+   GCanvas(GCanvas&&) noexcept            = delete;
+   GCanvas& operator=(const GCanvas&)     = delete;
+   GCanvas& operator=(GCanvas&&) noexcept = delete;
+   ~GCanvas();
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Woverloaded-virtual"
@@ -245,27 +256,27 @@ public:
 
    static GCanvas* MakeDefCanvas();
 
-   Int_t GetNMarkers() { return fMarkers.size(); }
+   Int_t GetNMarkers() { return static_cast<Int_t>(fMarkers.size()); }
    void  SetMarkerMode(bool flag = true) { fMarkerMode = flag; }
 
-   TF1* GetLastFit();
+   static TF1* GetLastFit();
 
 private:
    void GCanvasInit();
 
    void UpdateStatsInfo(int, int);
 
-   static double gLastX;
-   static double gLastY;
+   static double fLastX;
+   static double fLastY;
 
    bool fGuiEnabled{false};
 
    bool                   fMarkerMode{false};
    std::vector<GMarker*>  fMarkers;
    std::vector<GMarker*>  fBackgroundMarkers;
-   EBackgroundSubtraction fBackgroundMode;
+   EBackgroundSubtraction fBackgroundMode = EBackgroundSubtraction::kNoBackground;
    std::vector<TCutG*>    fCuts;
-   char*                  fCutName;
+   char*                  fCutName{nullptr};
    void                   AddMarker(int, int, TH1* hist);
    void                   RemoveMarker(Option_t* opt = "");
    void                   OrderMarkers();
@@ -273,12 +284,12 @@ private:
    bool                   SetBackgroundMarkers();
    bool                   CycleBackgroundSubtraction();
 
-   std::vector<TH1*> FindHists(int dim = 1);
-   std::vector<TH1*> FindAllHists();
+   static std::vector<TH1*> FindHists(int dim = 1);
+   static std::vector<TH1*> FindAllHists();
 
 public:
-   bool HandleArrowKeyPress(Event_t* event, UInt_t* keysym);
-   bool HandleKeyboardPress(Event_t* event, UInt_t* keysym);
+   bool HandleArrowKeyPress(Event_t* event, const UInt_t* keysym);
+   bool HandleKeyboardPress(Event_t* event, const UInt_t* keysym);
    bool HandleMousePress(Int_t event, Int_t x, Int_t y);
    bool HandleMouseShiftPress(Int_t event, Int_t x, Int_t y);
    bool HandleMouseControlPress(Int_t event, Int_t x, Int_t y);
@@ -287,19 +298,20 @@ public:
    bool Zoom(Int_t event, Int_t x, Int_t y);
 
 private:
-   bool ProcessNonHistKeyboardPress(Event_t* event, UInt_t* keysym);
-   bool Process1DArrowKeyPress(Event_t* event, UInt_t* keysym);
-   bool Process1DKeyboardPress(Event_t* event, UInt_t* keysym);
+   bool ProcessNonHistKeyboardPress(Event_t* event, const UInt_t* keysym);
+   bool Process1DArrowKeyPress(Event_t* event, const UInt_t* keysym);
+   bool Process1DKeyboardPress(Event_t* event, const UInt_t* keysym);
    bool Process1DMousePress(Int_t event, Int_t x, Int_t y);
 
-   bool Process2DArrowKeyPress(Event_t* event, UInt_t* keysym);
-   bool Process2DKeyboardPress(Event_t* event, UInt_t* keysym);
+   bool Process2DArrowKeyPress(Event_t* event, const UInt_t* keysym);
+   bool Process2DKeyboardPress(Event_t* event, const UInt_t* keysym);
    bool Process2DMousePress(Int_t event, Int_t x, Int_t y);
 
-private:
    TRootCanvas* fRootCanvas{nullptr};
 
-   ClassDefOverride(GCanvas, 2);
+   /// \cond CLASSIMP
+   ClassDefOverride(GCanvas, 2)   // NOLINT
+                                  /// \endcond
 };
 /*! @} */
 #endif

@@ -56,16 +56,16 @@ bool TDataLoop::Iteration()
    int                        bytesRead = 0;
    {
       std::lock_guard<std::mutex> lock(fSourceMutex);
-      bytesRead    = fSource->Read(evt);
-      fItemsPopped = fSource->GetBytesRead() / 1000;                 // should this be / 1024 ?
-      fInputSize   = fSource->GetFileSize() / 1000 - fItemsPopped;   // this way fInputSize+fItemsPopped give the file size
+      bytesRead = fSource->Read(evt);
+      ItemsPopped(fSource->BytesRead() / 1000);                // should this be / 1024 ?
+      InputSize(fSource->FileSize() / 1000 - ItemsPopped());   // this way fInputSize+fItemsPopped give the file size
       ++fEventsRead;
       if(TGRSIOptions::Get()->Downscaling() > 1) {
          // if we use downscaling we skip n-1 events without updating bytesRead
          // that way all further checks work as usual on the single event we read
          fSource->Skip(TGRSIOptions::Get()->Downscaling() - 1);
-         fItemsPopped = fSource->GetBytesRead() / 1000;
-         fInputSize   = fSource->GetFileSize() / 1000 - fItemsPopped;   // this way fInputSize+fItemsPopped give the file size
+         ItemsPopped(fSource->BytesRead() / 1000);
+         InputSize(fSource->FileSize() / 1000 - ItemsPopped());   // this way fInputSize+fItemsPopped give the file size
          fEventsRead += TGRSIOptions::Get()->Downscaling() - 1;
       }
    }
@@ -77,10 +77,7 @@ bool TDataLoop::Iteration()
    if(bytesRead > 0) {
       // A good event was returned
       fOutputQueue->Push(evt);
-      if(fEventsRead == TGRSIOptions::Get()->NumberOfEvents()) {
-         return false;
-      }
-      return true;
+      return (fEventsRead != TGRSIOptions::Get()->NumberOfEvents());   // false if fEventsRead == number of events, true otherwise
    }
    // Nothing returned this time, but I might get something next time.
    std::this_thread::sleep_for(std::chrono::milliseconds(500));

@@ -65,7 +65,7 @@ Bool_t TRunInfo::ReadInfoFromFile(TFile* tempf)
    return false;
 }
 
-TRunInfo::TRunInfo() : fRunNumber(0), fSubRunNumber(-1), fDetectorInformation(nullptr)
+TRunInfo::TRunInfo()
 {
    /// Default ctor for TRunInfo. The default values are:
    ///
@@ -84,8 +84,8 @@ void TRunInfo::Print(Option_t* opt) const
    str << "Comment: " << RunComment() << std::endl;
    auto      tmpStart = static_cast<time_t>(RunStart());
    auto      tmpStop  = static_cast<time_t>(RunStop());
-   struct tm runStart = *localtime(const_cast<const time_t*>(&tmpStart));
-   struct tm runStop  = *localtime(const_cast<const time_t*>(&tmpStop));
+   struct tm runStart = *localtime(&tmpStart);
+   struct tm runStop  = *localtime(&tmpStop);
    str << std::setfill('0');
    if(RunNumber() != 0 && SubRunNumber() != -1) {
       str << "\t\tRunNumber:          " << std::setw(5) << RunNumber() << std::endl;
@@ -201,7 +201,7 @@ Bool_t TRunInfo::ReadInfoFile(const char* filename)
    SetRunInfoFileName(filename);
    SetRunInfoFile(buffer);
 
-   return ParseInputData(const_cast<const char*>(buffer));
+   return ParseInputData(buffer);
 }
 
 Bool_t TRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
@@ -243,12 +243,12 @@ Bool_t TRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
          std::istringstream str(line);
          double             temp_double = 0.;
          str >> temp_double;
-         Get()->SetHPGeArrayPosition(temp_double);
+         TRunInfo::SetHPGeArrayPosition(temp_double);
       } else if(type == "BADCYCLE") {
          std::istringstream str(line);
          int                tmp_int = 0;
          while(!(str >> tmp_int).fail()) {
-            Get()->AddBadCycle(tmp_int);
+            TRunInfo::AddBadCycle(tmp_int);
          }
       }
    }
@@ -347,7 +347,7 @@ bool TRunInfo::WriteInfoFile(const std::string& filename)
    if(filename.length() > 0) {
       std::ofstream infoout;
       infoout.open(filename.c_str());
-      std::string infostr = Get()->PrintToString();
+      std::string infostr = TRunInfo::PrintToString();
       infoout << infostr.c_str();
       infoout << std::endl;
       infoout << std::endl;

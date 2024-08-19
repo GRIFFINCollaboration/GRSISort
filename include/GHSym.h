@@ -15,7 +15,12 @@ public:
    GHSym(const char* name, const char* title, Int_t nbins, Double_t low, Double_t up);
    GHSym(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GHSym(const char* name, const char* title, Int_t nbins, const Float_t* bins);
-   ~GHSym() override;
+   GHSym(const GHSym&);
+   GHSym(GHSym&&) noexcept;
+   GHSym& operator=(const GHSym&);
+   GHSym& operator=(GHSym&&) noexcept;
+
+   ~GHSym() = default;
 
    Int_t         BufferEmpty(Int_t action = 0) override;
    Int_t         BufferFill(Double_t, Double_t) override { return -2; }   // MayNotUse
@@ -101,16 +106,19 @@ protected:
    using TH1::DoIntegral;
    virtual Double_t DoIntegral(Int_t binx1, Int_t binx2, Int_t biny1, Int_t biny2, Double_t& error, Option_t* option,
                                Bool_t doError = kFALSE) const;
-   Double_t         fTsumwy{0.};        ///< Total Sum of weight*Y
-   Double_t         fTsumwy2{0.};       ///< Total Sum of weight*Y*Y
-   Double_t         fTsumwxy{0.};       ///< Total Sum of weight*X*Y
-   TH2*             fMatrix{nullptr};   //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
+
+   TH2* Matrix() { return fMatrix; }
+   void Matrix(TH2* val) { fMatrix = val; }
 
 private:
-   GHSym(const GHSym&);
-   GHSym& operator=(const GHSym&);
+   Double_t fTsumwy{0.};        ///< Total Sum of weight*Y
+   Double_t fTsumwy2{0.};       ///< Total Sum of weight*Y*Y
+   Double_t fTsumwxy{0.};       ///< Total Sum of weight*X*Y
+   TH2*     fMatrix{nullptr};   //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
 
-   ClassDefOverride(GHSym, 1);
+   /// /cond CLASSIMP
+   ClassDefOverride(GHSym, 1)   // NOLINT
+                                /// /endcond
 };
 
 class GHSymF : public GHSym, public TArrayF {
@@ -120,12 +128,13 @@ public:
    GHSymF(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GHSymF(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    GHSymF(const GHSymF&);
-   ~GHSymF() override;
+   GHSymF(GHSymF&&) noexcept;
+   ~GHSymF();
 
    TH2F* GetMatrix(bool force = false);
 
    void     AddBinContent(Int_t bin) override { ++fArray[bin]; }
-   void     AddBinContent(Int_t bin, Double_t w) override { fArray[bin] += Float_t(w); }
+   void     AddBinContent(Int_t bin, Double_t w) override { fArray[bin] += static_cast<Float_t>(w); }
    void     Copy(TObject& rh) const override;
    void     Draw(Option_t* option = "") override { GetMatrix()->Draw(option); }
    TH1*     DrawCopy(Option_t* option = "", const char* name_postfix = "_copy") const override;
@@ -133,7 +142,7 @@ public:
    Double_t GetBinContent(Int_t binx, Int_t biny) const override { return GetBinContent(GetBin(binx, biny)); }
    Double_t GetBinContent(Int_t binx, Int_t biny, Int_t) const override { return GetBinContent(GetBin(binx, biny)); }
    void     Reset(Option_t* option = "") override;
-   Double_t RetrieveBinContent(Int_t bin) const override { return Double_t(fArray[bin]); }
+   Double_t RetrieveBinContent(Int_t bin) const override { return static_cast<Double_t>(fArray[bin]); }
    void     SetBinContent(Int_t bin, Double_t content) override;
    void     SetBinContent(Int_t binx, Int_t biny, Double_t content) override { SetBinContent(GetBin(binx, biny), content); }
    void     SetBinContent(Int_t binx, Int_t biny, Int_t, Double_t content) override
@@ -143,6 +152,7 @@ public:
    void          SetBinsLength(Int_t n = -1) override;
    void          UpdateBinContent(Int_t bin, Double_t content) override { fArray[bin] = static_cast<Float_t>(content); }
    GHSymF&       operator=(const GHSymF& h1);
+   GHSymF&       operator=(GHSymF&&) noexcept;
    friend GHSymF operator*(Float_t c1, GHSymF& h1);
    friend GHSymF operator*(GHSymF& h1, Float_t c1) { return operator*(c1, h1); }
    friend GHSymF operator+(GHSymF& h1, GHSymF& h2);
@@ -150,7 +160,9 @@ public:
    friend GHSymF operator*(GHSymF& h1, GHSymF& h2);
    friend GHSymF operator/(GHSymF& h1, GHSymF& h2);
 
-   ClassDefOverride(GHSymF, 1);
+   /// /cond CLASSIMP
+   ClassDefOverride(GHSymF, 1)   // NOLINT
+                                 /// /endcond
 };
 
 class GHSymD : public GHSym, public TArrayD {
@@ -160,7 +172,8 @@ public:
    GHSymD(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GHSymD(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    GHSymD(const GHSymD&);
-   ~GHSymD() override;
+   GHSymD(GHSymD&&) noexcept;
+   ~GHSymD();
 
    TH2D* GetMatrix(bool force = false);
 
@@ -173,7 +186,7 @@ public:
    Double_t GetBinContent(Int_t binx, Int_t biny) const override { return GetBinContent(GetBin(binx, biny)); }
    Double_t GetBinContent(Int_t binx, Int_t biny, Int_t) const override { return GetBinContent(GetBin(binx, biny)); }
    void     Reset(Option_t* option = "") override;
-   Double_t RetrieveBinContent(Int_t bin) const override { return Double_t(fArray[bin]); }
+   Double_t RetrieveBinContent(Int_t bin) const override { return static_cast<Double_t>(fArray[bin]); }
    void     SetBinContent(Int_t bin, Double_t content) override;
    void     SetBinContent(Int_t binx, Int_t biny, Double_t content) override { SetBinContent(GetBin(binx, biny), content); }
    void     SetBinContent(Int_t binx, Int_t biny, Int_t, Double_t content) override
@@ -183,6 +196,7 @@ public:
    void          SetBinsLength(Int_t n = -1) override;
    void          UpdateBinContent(Int_t bin, Double_t content) override { fArray[bin] = content; }
    GHSymD&       operator=(const GHSymD& h1);
+   GHSymD&       operator=(GHSymD&&) noexcept;
    friend GHSymD operator*(Float_t c1, GHSymD& h1);
    friend GHSymD operator*(GHSymD& h1, Float_t c1) { return operator*(c1, h1); }
    friend GHSymD operator+(GHSymD& h1, GHSymD& h2);
@@ -190,6 +204,8 @@ public:
    friend GHSymD operator*(GHSymD& h1, GHSymD& h2);
    friend GHSymD operator/(GHSymD& h1, GHSymD& h2);
 
-   ClassDefOverride(GHSymD, 1);
+   /// /cond CLASSIMP
+   ClassDefOverride(GHSymD, 1)   // NOLINT
+                                 /// /endcond
 };
 #endif

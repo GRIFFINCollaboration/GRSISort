@@ -37,7 +37,7 @@ public:
    //TSortingDiagnostics(TSortingDiagnostics&&);
    //TSortingDiagnostics& operator=(const TSortingDiagnostics&);
    //TSortingDiagnostics& operator=(TSortingDiagnostics&&);
-   //~TSortingDiagnostics() override;
+   //~TSortingDiagnostics();
 
 private:
    // analysis tree diagnostics
@@ -77,7 +77,7 @@ public:
    void Draw(Option_t* opt = "") override;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TSortingDiagnostics, 4);
+   ClassDefOverride(TSortingDiagnostics, 4)   // NOLINT
    /// \endcond
 };
 /*! @} */

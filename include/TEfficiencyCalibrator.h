@@ -1,5 +1,5 @@
-#ifndef TEFFICIENCYCALIBRATOR_H__
-#define TEFFICIENCYCALIBRATOR_H__
+#ifndef TEFFICIENCYCALIBRATOR_H
+#define TEFFICIENCYCALIBRATOR_H
 
 #if __cplusplus >= 201703L
 
@@ -325,7 +325,7 @@ private:
    TGTextButton*            fStartButton{nullptr};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEfficiencyCalibrator, 1);   // Class to determine efficiency calibrations
+   ClassDefOverride(TEfficiencyCalibrator, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

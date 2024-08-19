@@ -18,6 +18,10 @@ public:
    explicit GValue(const char* name);
    GValue(const char* name, double value, EPriority priority = EPriority::kUser);
    GValue(const GValue& val);
+   GValue(GValue&& val) noexcept            = default;
+   GValue& operator=(const GValue& val)     = default;
+   GValue& operator=(GValue&& val) noexcept = default;
+   ~GValue()                                = default;
 
    double      GetValue() const { return fValue; }
    const char* GetInfo() const { return info.c_str(); }
@@ -69,7 +73,9 @@ private:
    static std::map<std::string, GValue*> fValueVector;
    static int                            ParseInputData(const std::string& input, EPriority priority, Option_t* opt = "");
 
-   ClassDefOverride(GValue, 1);
+   /// \cond CLASSIMP
+   ClassDefOverride(GValue, 1)   // NOLINT
+   /// \endcond
 };
 
 #endif

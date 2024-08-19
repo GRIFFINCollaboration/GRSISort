@@ -25,7 +25,7 @@ class TTransition : public TObject {
 
 public:
    TTransition();
-   ~TTransition() override;
+   ~TTransition();
    TTransition(const TTransition&)     = default;
    TTransition(TTransition&&) noexcept = default;
 
@@ -64,7 +64,7 @@ private:
    bool   fCompareIntensity{true};   ///< Whether to sort by intensity or energy
 
    /// \cond CLASSIMP
-   ClassDefOverride(TTransition, 0)   // Information about a TNucleus transition
+   ClassDefOverride(TTransition, 0)   // NOLINT
    /// \endcond
 };
 /*! @} */

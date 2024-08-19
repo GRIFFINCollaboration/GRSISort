@@ -89,7 +89,7 @@ TChannel::TChannel(const TChannel& chan) : TNamed(chan)
    SetClassType(chan.GetClassType());
 }
 
-TChannel::TChannel(TChannel&& chan) : TNamed(chan)
+TChannel::TChannel(TChannel&& chan) noexcept : TNamed(chan)
 {
    /// Moves chan to this.
    /// Just a copy of the copy constructor right now, needs to be changed.
@@ -201,7 +201,7 @@ TChannel& TChannel::operator=(const TChannel& rhs)
    return *this;
 }
 
-TChannel& TChannel::operator=(TChannel&& rhs)
+TChannel& TChannel::operator=(TChannel&& rhs) noexcept
 {
    /// move assignment operator
    /// Doesn't really move anything yet, it's just a copy of the copy assignment operator.
@@ -1109,7 +1109,7 @@ Int_t TChannel::ReadCalFile(std::ifstream& infile)
    }
 
    infile.seekg(0, std::ios::end);
-   long length = infile.tellg();
+   int64_t length = infile.tellg();
    if(length < 1) {
       return -2;
    }
@@ -1119,7 +1119,7 @@ Int_t TChannel::ReadCalFile(std::ifstream& infile)
    infile.read(buffer, length);
    buffer[length] = '\0';
 
-   int channelsFound = ParseInputData(const_cast<const char*>(buffer), "q", EPriority::kInputFile);
+   int channelsFound = ParseInputData(buffer, "q", EPriority::kInputFile);
    SaveToSelf();
 
    fChannelNumberMap->clear();   // This isn't the nicest way to do this but will keep us consistent.
@@ -1615,7 +1615,7 @@ void TChannel::SetDigitizerType(const TPriorityValue<std::string>& tmp)
    if(fMnemonic.Value() != nullptr) {
       fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType, fTimeStampUnit);
    } else {
-      std::cerr << __PRETTY_FUNCTION__ << ": mnemonic not set, can't set digitizer type and timestamp unit from " << fDigitizerTypeString << std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ": mnemonic not set, can't set digitizer type and timestamp unit from " << fDigitizerTypeString << std::endl;   // NOLINT
    }
 }
 

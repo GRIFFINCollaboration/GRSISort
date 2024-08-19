@@ -3,9 +3,8 @@
 
 #include <iostream>
 #include <cstdio>
-#include <stdio.h>
+#include <cstdlib>
 #include <fcntl.h>
-#include <stdlib.h>
 #include <unistd.h>
 
 /////////////////////////////////////////////////////////////////
@@ -28,7 +27,7 @@ public:
    {
       Redirect(newOut, newErr, append);
    }
-   TRedirect(const char* newOut, bool append = true)
+   explicit TRedirect(const char* newOut, bool append = true)
    {
       Redirect(newOut, newOut, append);
    }

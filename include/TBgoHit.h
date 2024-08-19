@@ -24,15 +24,13 @@
 class TBgoHit : public TDetectorHit {
 public:
    TBgoHit();
-   TBgoHit(const TBgoHit&);
-   TBgoHit(TBgoHit&&);
-   // this is problematic as this means we're slicing the TFragment object to fit the
-   // TDetectorHit argument of the base constructor
-   explicit TBgoHit(const TFragment& frag) : TDetectorHit(frag) {}
-   ~TBgoHit() override;
+   TBgoHit(const TBgoHit& rhs);
+   TBgoHit(TBgoHit&& rhs) noexcept;
+   explicit TBgoHit(const TFragment& frag);
+   ~TBgoHit();
 
-   TBgoHit& operator=(const TBgoHit&);
-   TBgoHit& operator=(TBgoHit&&);
+   TBgoHit& operator=(const TBgoHit& rhs);
+   TBgoHit& operator=(TBgoHit&& rhs) noexcept;
 
    /////////////////////////		/////////////////////////////////////
    inline UShort_t GetArrayNumber() const override { return (20 * (GetDetector() - 1) + 5 * GetCrystal() + GetSegment()); }   //!<!
@@ -44,7 +42,7 @@ public:
    void Print(std::ostream& out) const override;        //!<!
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBgoHit, 1)
+   ClassDefOverride(TBgoHit, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

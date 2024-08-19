@@ -184,8 +184,6 @@ void TGRSIint::LoopUntilDone()
    std::cout << std::endl;
 }
 
-TGRSIint::~TGRSIint() = default;
-
 bool TGRSIint::HandleTermInput()
 {
    /// Handles terminal input via TRint
@@ -254,7 +252,7 @@ Long_t TGRSIint::ProcessLine(const char* inputLine, Bool_t sync, Int_t* error)
    }
 
    if(std::this_thread::get_id() != main_thread_id) {
-      return DelayedProcessLine(line.c_str());
+      return DelayedProcessLine(line);
    }
 
    return TRint::ProcessLine(line.c_str(), sync, error);
@@ -392,7 +390,7 @@ TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
       fRawFiles.push_back(file);
 
       if(file != nullptr) {
-         const char* command = Form("TRawFile* _raw%i = (TRawFile*)%luL;", fRawFilesOpened, (unsigned long)file);
+         const char* command = Form("TRawFile* _raw%i = (TRawFile*)%luL;", fRawFilesOpened, reinterpret_cast<uint64_t>(file));
          ProcessLine(command);
 
          std::cout << "\tfile " << BLUE << filename << RESET_COLOR << " opened as "

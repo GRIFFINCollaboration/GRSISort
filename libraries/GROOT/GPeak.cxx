@@ -111,14 +111,6 @@ GPeak::GPeak(const GPeak& peak) : TF1(peak)
    peak.Copy(*this);
 }
 
-GPeak::~GPeak()
-{
-   // gROOT->RecursiveRemove(&fBGFit);
-   // gROOT->RecursiveRemove(this);
-   // if(background)
-   //  delete background;
-}
-
 void GPeak::InitNames()
 {
    TF1::SetParName(0, "Height");
@@ -133,7 +125,7 @@ void GPeak::InitNames()
 void GPeak::Copy(TObject& obj) const
 {
    TF1::Copy(obj);
-   (static_cast<GPeak&>(obj)).init_flag = init_flag;
+   (static_cast<GPeak&>(obj)).fInitFlag = fInitFlag;
    (static_cast<GPeak&>(obj)).fArea     = fArea;
    (static_cast<GPeak&>(obj)).fDArea    = fDArea;
    (static_cast<GPeak&>(obj)).fSum      = fSum;
@@ -151,7 +143,8 @@ bool GPeak::InitParams(TH1* fithist)
       return false;
    }
    // Makes initial guesses at parameters for the fit. Uses the histogram to
-   Double_t xlow, xhigh;
+   Double_t xlow  = 0.;
+   Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
 
    // Int_t bin = fithist->GetXaxis()->FindBin(GetParameter("centroid"));
@@ -243,7 +236,7 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    bool verbose  = options.Contains("v");
    bool retryFit = options.Contains("retryfit");
    options.ReplaceAll("retryfit", "");
-   if(!verbose && !quiet) options.Append("q");
+   if(!verbose && !quiet) { options.Append("q"); }
 
    if(fithist->GetSumw2()->fN != fithist->GetNbinsX() + 2) {
       fithist->Sumw2();
@@ -251,10 +244,10 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
 
    TFitResultPtr fitres = fithist->Fit(this, Form("%sLRS", options.Data()));
 
-   if(verbose) std::cout << "chi^2/NDF = " << GetChisquare() / static_cast<double>(GetNDF()) << std::endl;
+   if(verbose) { std::cout << "chi^2/NDF = " << GetChisquare() / static_cast<double>(GetNDF()) << std::endl; }
 
    if(!fitres.Get()->IsValid()) {
-      if(!quiet) std::cout << RED << "fit has failed, trying refit... " << RESET_COLOR << std::endl;
+      if(!quiet) { std::cout << RED << "fit has failed, trying refit... " << RESET_COLOR << std::endl; }
       fithist->GetListOfFunctions()->Last()->Delete();
       fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
       if(!quiet) {
@@ -270,30 +263,31 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    if(!TGRSIFunctions::CheckParameterErrors(fitres, options.Data())) {
       if(retryFit) {
          // fit again with all parameters released
-         if(!quiet) std::cout << GREEN << "Re-fitting with released parameters (without any limits):" << RESET_COLOR << std::endl;
+         if(!quiet) { std::cout << GREEN << "Re-fitting with released parameters (without any limits):" << RESET_COLOR << std::endl; }
          for(int i = 0; i < GetNpar(); ++i) {
             ReleaseParameter(i);
          }
          fitres = fithist->Fit(this, Form("%sLRSM", options.Data()));
       } else {
          // re-try using minos instead of minuit
-         if(!quiet) std::cout << YELLOW << "Re-fitting with \"E\" option to get better error estimation using Minos technique." << RESET_COLOR << std::endl;
+         if(!quiet) { std::cout << YELLOW << "Re-fitting with \"E\" option to get better error estimation using Minos technique." << RESET_COLOR << std::endl; }
          fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
       }
    }
    TGRSIFunctions::CheckParameterErrors(fitres, options.Data());
 
-   Double_t xlow, xhigh;
+   Double_t xlow  = 0.;
+   Double_t xhigh = 0.;
    TF1::GetRange(xlow, xhigh);
 
-   double bgpars[5];
+   std::array<double, 5> bgpars;
    bgpars[0] = TF1::GetParameters()[0];
    bgpars[1] = TF1::GetParameters()[1];
    bgpars[2] = TF1::GetParameters()[2];
    bgpars[3] = TF1::GetParameters()[5];
    bgpars[4] = TF1::GetParameters()[6];
 
-   fBGFit.SetParameters(bgpars);
+   fBGFit.SetParameters(bgpars.data());
 
    fChi2 = GetChisquare();
    fNdf  = GetNDF();
@@ -307,19 +301,20 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    }
    fSum = fithist->Integral(fithist->GetXaxis()->FindBin(xlow),
                             fithist->GetXaxis()->FindBin(xhigh));   //* fithist->GetBinWidth(1);
-   if(verbose) std::cout << "sum between markers: " << fSum << std::endl;
+   if(verbose) { std::cout << "sum between markers: " << fSum << std::endl; }
    fDSum = TMath::Sqrt(fSum);
    fSum -= bgArea;
-   if(verbose) std::cout << "sum after subtraction: " << fSum << std::endl;
+   if(verbose) { std::cout << "sum after subtraction: " << fSum << std::endl; }
 
    // Make a function that does not include the background
    // Intgrate the background.
    // TPeak* tmppeak = new TPeak(*this);
 
-   Double_t range_low, range_high;
+   Double_t range_low  = 0.;
+   Double_t range_high = 0.;
    GetRange(range_low, range_high);
 
-   GPeak* tmppeak = new GPeak;
+   auto* tmppeak = new GPeak;
    Copy(*tmppeak);
    tmppeak->SetParameter("step", 0.0);
    tmppeak->SetParameter("A", 0.0);
@@ -338,7 +333,7 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    delete tmppeak;
 
    // always print the results of the fit even if not verbose
-   if(!quiet) Print();
+   if(!quiet) { Print(); }
 
    Copy(*fithist->GetListOfFunctions()->FindObject(GetName()));
    fithist->GetListOfFunctions()->Add(fBGFit.Clone());
@@ -356,7 +351,7 @@ void GPeak::Clear(Option_t* opt)
    if(options.Contains("all")) {
       TF1::Clear();
    }
-   init_flag = false;
+   fInitFlag = false;
    fArea     = 0.0;
    fDArea    = 0.0;
    fSum      = 0.0;
@@ -391,7 +386,8 @@ void GPeak::DrawResiduals(TH1* hist) const
       std::cout << "No fit performed" << std::endl;
       return;
    }
-   Double_t xlow, xhigh;
+   Double_t xlow  = 0.;
+   Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
    Int_t nbins  = hist->GetXaxis()->GetNbins();
    auto* res    = new Double_t[nbins];

@@ -46,7 +46,7 @@ private:
    int fVerboseLevel{0};   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalibrationGraph, 1)
+   ClassDefOverride(TCalibrationGraph, 1)   // NOLINT
    /// \endcond
 };
 
@@ -90,7 +90,7 @@ public:
    void SetMarkerColor(int index, Color_t color)
    {
       /// Set the marker color of the graph and residuals at index
-      if(fVerboseLevel > 3) std::cout << "setting marker color of graph " << index << " to " << color << std::endl;
+      if(fVerboseLevel > 3) { std::cout << "setting marker color of graph " << index << " to " << color << std::endl; }
       fGraphs[index].SetMarkerColor(color);
       fResidualGraphs[index].SetMarkerColor(color);
    }
@@ -137,7 +137,7 @@ public:
    void DrawCalibration(Option_t* opt = "", TLegend* legend = nullptr);
    void DrawResidual(Option_t* opt = "", TLegend* legend = nullptr);
 
-   void RemoveGraph(long index)
+   void RemoveGraph(int64_t index)
    {
       fGraphs.erase(fGraphs.begin() + index);
       ResetTotalGraph();
@@ -179,7 +179,7 @@ private:
    int fVerboseLevel{0};   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalibrationGraphSet, 3)
+   ClassDefOverride(TCalibrationGraphSet, 3)   // NOLINT
    /// \endcond
 };
 #endif

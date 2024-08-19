@@ -302,7 +302,7 @@ GH1D* GH2Base::GetPrevSummary(const GH1D* curr, bool DrawEmpty)
       binnum--;
    }
 
-   int max_binnum;
+   int max_binnum = 0;
    if(fSummaryDirection == EDirection::kXDirection) {
       max_binnum = GetTH2()->GetXaxis()->GetNbins();
    } else {

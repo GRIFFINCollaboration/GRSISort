@@ -49,7 +49,7 @@ public:
    TPPGData();
    TPPGData(const TPPGData&);
    TPPGData(TPPGData&&) = default;
-   ~TPPGData() override = default;
+   ~TPPGData()          = default;
 
    TPPGData& operator=(const TPPGData&) = default;
    TPPGData& operator=(TPPGData&&)      = default;
@@ -125,7 +125,7 @@ private:
    UInt_t         fHighTimeStamp{0};   ///< high bits of time stamp in 10 ns
 
    /// \cond CLASSIMP
-   ClassDefOverride(TPPGData, 3)   // Contains PPG data information
+   ClassDefOverride(TPPGData, 3)   // NOLINT
    /// \endcond
 };
 
@@ -138,7 +138,7 @@ public:
    TPPG();
    TPPG(const TPPG&);        // the copy constructor needs to create a deep-copy
    TPPG(TPPG&&) = default;   // the move constructor can be default?
-   ~TPPG() override;
+   ~TPPG();
 
    TPPG& operator=(const TPPG&);        // the copy assignment needs to create a deep-copy
    TPPG& operator=(TPPG&&) = default;   // the move assignment can be default?
@@ -222,7 +222,7 @@ private:
    std::vector<ULong64_t> fDurations{0, 0, 0, 0};          //!<! duration of ppg state calculated from data
 
    /// \cond CLASSIMP
-   ClassDefOverride(TPPG, 5)   // Contains PPG information
+   ClassDefOverride(TPPG, 5)   // NOLINT
    /// \endcond
 };
 /*! @} */

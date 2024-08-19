@@ -38,7 +38,10 @@ class TScalerData : public TObject {
 public:
    TScalerData();
    TScalerData(const TScalerData&);
-   ~TScalerData() override = default;
+   TScalerData(TScalerData&&) noexcept            = default;
+   TScalerData& operator=(const TScalerData&)     = default;
+   TScalerData& operator=(TScalerData&&) noexcept = default;
+   ~TScalerData()                                 = default;
 
    void Copy(TObject& rhs) const override;
 
@@ -94,16 +97,19 @@ private:
    UInt_t              fHighTimeStamp{0};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TScalerData, 2)   // Contains scaler data information
+   ClassDefOverride(TScalerData, 2)   // NOLINT
    /// \endcond
 };
 
 class TScaler : public TObject {
 public:
-   TScaler(bool loadIntoMap = false);
-   TScaler(TTree*, bool loadIntoMap = false);
+   explicit TScaler(bool loadIntoMap = false);
+   explicit TScaler(TTree*, bool loadIntoMap = false);
    TScaler(const TScaler&);
-   ~TScaler() override;
+   TScaler(TScaler&&) noexcept            = default;
+   TScaler& operator=(const TScaler&)     = default;
+   TScaler& operator=(TScaler&&) noexcept = default;
+   ~TScaler();
 
    void Copy(TObject& obj) const override;
 
@@ -132,7 +138,7 @@ public:
       if(tree == nullptr) {
          tree = static_cast<TTree*>(gDirectory->Get("RateScaler"));
          if(tree == nullptr) {
-            std::cerr << __PRETTY_FUNCTION__ << ": no tree provided and failed to find \"RateScaler\" in " << gDirectory->GetName() << std::endl;
+            std::cerr << __PRETTY_FUNCTION__ << ": no tree provided and failed to find \"RateScaler\" in " << gDirectory->GetName() << std::endl;   // NOLINT
             return -1.;
          }
       }
@@ -144,12 +150,12 @@ public:
          if(scalerData->GetAddress() != address) { continue; }
          auto scalers = scalerData->GetScaler();
          if(nominator >= scalers.size() || denominator >= scalers.size()) {
-            std::cerr << __PRETTY_FUNCTION__ << ": trying to get nominator " << nominator << " and denominator " << denominator << " from vector of size " << scalers.size() << std::endl;
+            std::cerr << __PRETTY_FUNCTION__ << ": trying to get nominator " << nominator << " and denominator " << denominator << " from vector of size " << scalers.size() << std::endl;   // NOLINT
             return -1.;
          }
          return static_cast<double>(scalers[nominator]) / scalers[denominator];
       }
-      std::cerr << __PRETTY_FUNCTION__ << ": failed to find any entry for address " << hex(address, 4) << std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ": failed to find any entry for address " << hex(address, 4) << std::endl;   // NOLINT
       return -1.;
    }
 
@@ -169,7 +175,7 @@ private:
    std::map<std::pair<UInt_t, UInt_t>, TH1D*>                 fHistRange;                  //!<! map to store histograms for address-ranges
 
    /// \cond CLASSIMP
-   ClassDefOverride(TScaler, 2)   // Contains scaler information
+   ClassDefOverride(TScaler, 2)   // NOLINT
                                   /// \endcond
 };
 /*! @} */

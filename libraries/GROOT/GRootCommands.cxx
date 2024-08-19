@@ -1,4 +1,3 @@
-
 #include "GRootCommands.h"
 #include "Globals.h"
 #include <cstdio>
@@ -149,35 +148,32 @@ bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg
 int LabelPeaks(TH1* hist, double sigma, double thresh, Option_t*)
 {
    TSpectrum::StaticSearch(hist, sigma, "Qnodraw", thresh);
-   TPolyMarker* pm = static_cast<TPolyMarker*>(hist->GetListOfFunctions()->FindObject("TPolyMarker"));
-   if(pm == nullptr) {
+   auto* polyMarker = static_cast<TPolyMarker*>(hist->GetListOfFunctions()->FindObject("TPolyMarker"));
+   if(polyMarker == nullptr) {
       // something has gone wrong....
       return 0;
    }
-   TObjArray* array = static_cast<TObjArray*>(hist->GetListOfFunctions()->FindObject("PeakLabels"));
+   auto* array = static_cast<TObjArray*>(hist->GetListOfFunctions()->FindObject("PeakLabels"));
    if(array != nullptr) {
-      hist->GetListOfFunctions()->Remove((TObject*)array);
+      hist->GetListOfFunctions()->Remove(static_cast<TObject*>(array));
       array->Delete();
    }
    array = new TObjArray();
    array->SetName("PeakLabels");
-   int n = pm->GetN();
+   int n = polyMarker->GetN();
    if(n == 0) {
       return n;
    }
-   TText*  text;
-   double* x = pm->GetX();
-   //  double *y = pm->GetY();
+   double* markerX = polyMarker->GetX();
    for(int i = 0; i < n; i++) {
-      // y[i] += y[i]*0.15;
       double y = 0;
-      for(int i_x = x[i] - 3; i_x < x[i] + 3; i_x++) {
+      for(double i_x = markerX[i] - 3; i_x < markerX[i] + 3; i_x++) {
          if((hist->GetBinContent(hist->GetXaxis()->FindBin(i_x))) > y) {
             y = hist->GetBinContent(hist->GetXaxis()->FindBin(i_x));
          }
       }
       y += y * 0.1;
-      text = new TText(x[i], y, Form("%.1f", x[i]));
+      auto* text = new TText(markerX[i], y, Form("%.1f", markerX[i]));
       text->SetTextSize(0.025);
       text->SetTextAngle(90);
       text->SetTextAlign(12);
@@ -185,8 +181,8 @@ int LabelPeaks(TH1* hist, double sigma, double thresh, Option_t*)
       text->SetTextColor(hist->GetLineColor());
       array->Add(text);
    }
-   hist->GetListOfFunctions()->Remove(pm);
-   pm->Delete();
+   hist->GetListOfFunctions()->Remove(polyMarker);
+   polyMarker->Delete();
    hist->GetListOfFunctions()->Add(array);
    return n;
 }

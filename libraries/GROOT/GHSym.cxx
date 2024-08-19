@@ -28,7 +28,6 @@ class DifferentLabels : public std::exception {
 };
 
 GHSym::GHSym()
-   : fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
 {
    fDimension = 2;
 }
@@ -36,7 +35,7 @@ GHSym::GHSym()
 // we have to repeat the code from the default constructor here, because calling the TH1 constructor and the GHSym
 // default constructor gives an error
 GHSym::GHSym(const char* name, const char* title, Int_t nbins, Double_t low, Double_t up)
-   : TH1(name, title, nbins, low, up), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
+   : TH1(name, title, nbins, low, up)
 {
    fDimension = 2;
    fYaxis.Set(nbins, low, up);
@@ -46,7 +45,7 @@ GHSym::GHSym(const char* name, const char* title, Int_t nbins, Double_t low, Dou
 }
 
 GHSym::GHSym(const char* name, const char* title, Int_t nbins, const Double_t* bins)
-   : TH1(name, title, nbins, bins), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
+   : TH1(name, title, nbins, bins)
 {
    fDimension = 2;
    fYaxis.Set(nbins, bins);
@@ -56,7 +55,7 @@ GHSym::GHSym(const char* name, const char* title, Int_t nbins, const Double_t* b
 }
 
 GHSym::GHSym(const char* name, const char* title, Int_t nbins, const Float_t* bins)
-   : TH1(name, title, nbins, bins), fTsumwy(0), fTsumwy2(0), fTsumwxy(0), fMatrix(nullptr)
+   : TH1(name, title, nbins, bins)
 {
    fDimension = 2;
    fYaxis.Set(nbins, bins);
@@ -65,12 +64,15 @@ GHSym::GHSym(const char* name, const char* title, Int_t nbins, const Float_t* bi
    fNcells = (fNcells * (nbins + 3)) / 2;
 }
 
-GHSym::GHSym(const GHSym& rhs) : TH1()
+GHSym::GHSym(const GHSym& rhs) : TH1()   // NOLINT
 {
    rhs.Copy(*this);
 }
 
-GHSym::~GHSym() = default;
+GHSym::GHSym(GHSym&& rhs) noexcept : TH1()   // NOLINT
+{
+   rhs.Copy(*this);
+}
 
 Int_t GHSym::BufferEmpty(Int_t action)
 {
@@ -579,9 +581,9 @@ Int_t GHSym::FindFirstBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, I
       axis = 1;
    }
    Int_t nbinsx = fXaxis.GetNbins();
-   if(lastBin > firstBin && lastBin < nbinsx) nbinsx = lastBin;
+   if(lastBin > firstBin && lastBin < nbinsx) { nbinsx = lastBin; }
    Int_t nbinsy = fYaxis.GetNbins();
-   if(lastBin > firstBin && lastBin < nbinsy) nbinsy = lastBin;
+   if(lastBin > firstBin && lastBin < nbinsy) { nbinsy = lastBin; }
    if(axis == 1) {
       for(Int_t binx = firstBin; binx <= nbinsx; ++binx) {
          for(Int_t biny = firstBin; biny <= nbinsy; ++biny) {
@@ -612,9 +614,9 @@ Int_t GHSym::FindLastBinAbove(Double_t threshold, Int_t axis, Int_t firstBin, In
       axis = 1;
    }
    Int_t nbinsx = fXaxis.GetNbins();
-   if(lastBin > firstBin && lastBin < nbinsx) nbinsx = lastBin;
+   if(lastBin > firstBin && lastBin < nbinsx) { nbinsx = lastBin; }
    Int_t nbinsy = fYaxis.GetNbins();
-   if(lastBin > firstBin && lastBin < nbinsy) nbinsy = lastBin;
+   if(lastBin > firstBin && lastBin < nbinsy) { nbinsy = lastBin; }
    if(axis == 1) {
       for(Int_t binx = nbinsx; binx >= firstBin; --binx) {
          for(Int_t biny = firstBin; biny <= nbinsy; ++biny) {
@@ -780,17 +782,17 @@ void GHSym::FitSlices(TF1* f1, Int_t firstbin, Int_t lastbin, Int_t cut, Option_
    // in case of sliding merge nstep=1, i.e. do slices starting for every bin
    // now do not slices case with overflow (makes more sense)
    for(Int_t bin = firstbin; bin + ngroup - 1 <= lastbin; bin += nstep) {
-      TH1D* hp = Projection("_temp", bin, bin + ngroup - 1, "e");
-      if(hp == nullptr) {
+      TH1D* proj = Projection("_temp", bin, bin + ngroup - 1, "e");
+      if(proj == nullptr) {
          continue;
       }
-      auto nentries = static_cast<Long64_t>(hp->GetEntries());
+      auto nentries = static_cast<Long64_t>(proj->GetEntries());
       if(nentries == 0 || nentries < cut) {
-         delete hp;
+         delete proj;
          continue;
       }
       f1->SetParameters(parsave);
-      hp->Fit(f1, opt.Data());
+      proj->Fit(f1, opt.Data());
       Int_t npfits = f1->GetNumberFitPoints();
       if(npfits > npar && npfits >= cut) {
          Int_t binOn = bin + ngroup / 2;
@@ -800,7 +802,7 @@ void GHSym::FitSlices(TF1* f1, Int_t firstbin, Int_t lastbin, Int_t cut, Option_
          }
          hchi2->Fill(fYaxis.GetBinCenter(binOn), f1->GetChisquare() / (npfits - npar));
       }
-      delete hp;
+      delete proj;
    }
    delete[] parsave;
    delete[] name;
@@ -810,18 +812,18 @@ void GHSym::FitSlices(TF1* f1, Int_t firstbin, Int_t lastbin, Int_t cut, Option_
 
 Int_t GHSym::GetBin(Int_t binx, Int_t biny, Int_t) const
 {
-   Int_t n = fXaxis.GetNbins() + 2;
+   Int_t nBin = fXaxis.GetNbins() + 2;
    if(binx < 0) {
       binx = 0;
    }
-   if(binx >= n) {
-      binx = n - 1;
+   if(binx >= nBin) {
+      binx = nBin - 1;
    }
    if(biny < 0) {
       biny = 0;
    }
-   if(biny >= n) {
-      biny = n - 1;
+   if(biny >= nBin) {
+      biny = nBin - 1;
    }
    if(biny <= binx) {
       return binx + biny * (2 * fXaxis.GetNbins() - biny + 3) / 2;
@@ -829,8 +831,7 @@ Int_t GHSym::GetBin(Int_t binx, Int_t biny, Int_t) const
    return biny + binx * (2 * fXaxis.GetNbins() - binx + 3) / 2;
 }
 
-Double_t GHSym::GetBinWithContent2(Double_t c, Int_t& binx, Int_t& biny, Int_t firstxbin, Int_t lastxbin,
-                                   Int_t firstybin, Int_t lastybin, Double_t maxdiff) const
+Double_t GHSym::GetBinWithContent2(Double_t content, Int_t& binx, Int_t& biny, Int_t firstxbin, Int_t lastxbin, Int_t firstybin, Int_t lastybin, Double_t maxdiff) const
 {
    // compute first cell (binx,biny) in the range [firstxbin,lastxbin][firstybin,lastybin] for which
    // diff = abs(cell_content-c) <= maxdiff
@@ -871,7 +872,7 @@ Double_t GHSym::GetBinWithContent2(Double_t c, Int_t& binx, Int_t& biny, Int_t f
    Double_t curmax = 1e240;
    for(Int_t j = firstybin; j <= lastybin; j++) {
       for(Int_t i = firstxbin; i <= lastxbin; i++) {
-         Double_t diff = TMath::Abs(GetBinContent(i, j) - c);
+         Double_t diff = TMath::Abs(GetBinContent(i, j) - content);
          if(diff <= 0) {
             binx = i;
             biny = j;
@@ -955,10 +956,10 @@ void GHSym::GetRandom2(Double_t& x, Double_t& y)
    // the cellcontents of a 2-dim histogram
    // return a NaN if the histogram has a bin with negative content
 
-   Int_t    nbinsx = GetNbinsX();
-   Int_t    nbinsy = GetNbinsY();
-   Int_t    nbins  = nbinsx * nbinsy;
-   Double_t integral;
+   Int_t    nbinsx   = GetNbinsX();
+   Int_t    nbinsy   = GetNbinsY();
+   Int_t    nbins    = nbinsx * nbinsy;
+   Double_t integral = 0.;
    // compute integral checking that all bins have positive content (see ROOT-5894)
    if(fIntegral != nullptr) {
       if(fIntegral[nbins + 1] != fEntries) {
@@ -1017,14 +1018,11 @@ void GHSym::GetStats(Double_t* stats) const
    //  the histogram.
 
    if(fBuffer != nullptr) {
-      const_cast<GHSym*>(this)->BufferEmpty();
+      const_cast<GHSym*>(this)->BufferEmpty();   // NOLINT
    }
 
-   Int_t    bin, binx, biny;
-   Double_t w, err;
-   Double_t x, y;
    if((fTsumw == 0 && fEntries > 0) || fXaxis.TestBit(TAxis::kAxisRange) || fYaxis.TestBit(TAxis::kAxisRange)) {
-      for(bin = 0; bin < 7; ++bin) {
+      for(Int_t bin = 0; bin < 7; ++bin) {
          stats[bin] = 0;
       }
 
@@ -1051,13 +1049,13 @@ void GHSym::GetStats(Double_t* stats) const
             }
          }
       }
-      for(biny = firstBinY; biny <= lastBinY; ++biny) {
-         y = fYaxis.GetBinCenter(biny);
-         for(binx = firstBinX; binx <= lastBinX; ++binx) {
-            bin = GetBin(binx, biny);
-            x   = fXaxis.GetBinCenter(binx);
-            w   = GetBinContent(bin);
-            err = TMath::Abs(GetBinError(bin));
+      for(Int_t biny = firstBinY; biny <= lastBinY; ++biny) {
+         Double_t y = fYaxis.GetBinCenter(biny);
+         for(Int_t binx = firstBinX; binx <= lastBinX; ++binx) {
+            Int_t    bin = GetBin(binx, biny);
+            Double_t x   = fXaxis.GetBinCenter(binx);
+            Double_t w   = GetBinContent(bin);
+            Double_t err = TMath::Abs(GetBinError(bin));
             stats[0] += w;
             stats[1] += err * err;
             stats[2] += w * x;
@@ -1135,12 +1133,13 @@ Double_t GHSym::Interpolate(Double_t x, Double_t y) const
    // Andy Mastbaum 10/8/2008
    // vaguely based on R.Raja 6-Sep-2008
 
-   Double_t f  = 0;
-   Double_t x1 = 0;
-   Double_t x2 = 0;
-   Double_t y1 = 0;
-   Double_t y2 = 0;
-   Double_t dx, dy;
+   Double_t f     = 0;
+   Double_t x1    = 0;
+   Double_t x2    = 0;
+   Double_t y1    = 0;
+   Double_t y2    = 0;
+   Double_t dx    = 0.;
+   Double_t dy    = 0.;
    Int_t    bin_x = fXaxis.FindBin(x);
    Int_t    bin_y = fYaxis.FindBin(y);
    if(bin_x < 1 || bin_x > GetNbinsX() || bin_y < 1 || bin_y > GetNbinsY()) {
@@ -1258,14 +1257,14 @@ Double_t GHSym::KolmogorovTest(const TH1* h2, Option_t* option) const
    opt.ToUpper();
 
    Double_t prb = 0;
-   TH1*     h1  = const_cast<TH1*>(static_cast<const TH1*>(this));
+   TH1*     h1  = const_cast<TH1*>(static_cast<const TH1*>(this));   // NOLINT
    if(h2 == nullptr) {
       return 0;
    }
    TAxis* xaxis1 = h1->GetXaxis();
-   TAxis* xaxis2 = const_cast<TAxis*>(h2->GetXaxis());
+   auto*  xaxis2 = const_cast<TAxis*>(h2->GetXaxis());   // NOLINT
    TAxis* yaxis1 = h1->GetYaxis();
-   TAxis* yaxis2 = const_cast<TAxis*>(h2->GetYaxis());
+   auto*  yaxis2 = const_cast<TAxis*>(h2->GetYaxis());   // NOLINT
    Int_t  ncx1   = xaxis1->GetNbins();
    Int_t  ncx2   = xaxis2->GetNbins();
    Int_t  ncy1   = yaxis1->GetNbins();
@@ -1318,13 +1317,12 @@ Double_t GHSym::KolmogorovTest(const TH1* h2, Option_t* option) const
       jend = ncy1 + 1;
    }
 
-   Int_t    i, j;
    Double_t sum1 = 0;
    Double_t sum2 = 0;
    Double_t w1   = 0;
    Double_t w2   = 0;
-   for(i = ibeg; i <= iend; ++i) {
-      for(j = jbeg; j <= jend; ++j) {
+   for(Int_t i = ibeg; i <= iend; ++i) {
+      for(Int_t j = jbeg; j <= jend; ++j) {
          sum1 += h1->GetBinContent(i, j);
          sum2 += h2->GetBinContent(i, j);
          Double_t ew1 = h1->GetBinError(i, j);
@@ -1346,7 +1344,8 @@ Double_t GHSym::KolmogorovTest(const TH1* h2, Option_t* option) const
    // calculate the effective entries.
    // the case when errors are zero (w1 == 0 or w2 ==0) are equivalent to
    // compare to a function. In that case the rescaling is done only on sqrt(esum2) or sqrt(esum1)
-   Double_t esum1 = 0, esum2 = 0;
+   Double_t esum1 = 0.;
+   Double_t esum2 = 0.;
    if(w1 > 0) {
       esum1 = sum1 * sum1 / w1;
    } else {
@@ -1368,9 +1367,10 @@ Double_t GHSym::KolmogorovTest(const TH1* h2, Option_t* option) const
    Double_t s1     = 1 / sum1;
    Double_t s2     = 1 / sum2;
    Double_t dfmax1 = 0;
-   Double_t rsum1 = 0, rsum2 = 0;
-   for(i = ibeg; i <= iend; ++i) {
-      for(j = jbeg; j <= jend; ++j) {
+   Double_t rsum1  = 0.;
+   Double_t rsum2  = 0.;
+   for(Int_t i = ibeg; i <= iend; ++i) {
+      for(Int_t j = jbeg; j <= jend; ++j) {
          rsum1 += s1 * h1->GetCellContent(i, j);
          rsum2 += s2 * h2->GetCellContent(i, j);
          dfmax1 = TMath::Max(dfmax1, TMath::Abs(rsum1 - rsum2));
@@ -1379,9 +1379,10 @@ Double_t GHSym::KolmogorovTest(const TH1* h2, Option_t* option) const
 
    //   Find second Kolmogorov distance
    Double_t dfmax2 = 0;
-   rsum1 = 0, rsum2 = 0;
-   for(j = jbeg; j <= jend; ++j) {
-      for(i = ibeg; i <= iend; ++i) {
+   rsum1           = 0.;
+   rsum2           = 0.;
+   for(Int_t j = jbeg; j <= jend; ++j) {
+      for(Int_t i = ibeg; i <= iend; ++i) {
          rsum1 += s1 * h1->GetCellContent(i, j);
          rsum2 += s2 * h2->GetCellContent(i, j);
          dfmax2 = TMath::Max(dfmax2, TMath::Abs(rsum1 - rsum2));
@@ -1389,7 +1390,7 @@ Double_t GHSym::KolmogorovTest(const TH1* h2, Option_t* option) const
    }
 
    //   Get Kolmogorov probability: use effective entries, esum1 or esum2,  for normalizing it
-   Double_t factnm;
+   Double_t factnm = 0.;
    if(afunc1) {
       factnm = TMath::Sqrt(esum2);
    } else if(afunc2) {
@@ -1618,7 +1619,7 @@ Long64_t GHSym::Merge(TCollection* list)
       while((h = static_cast<GHSym*>(next())) != nullptr) {
          if(h->GetXaxis()->GetXmin() >= h->GetXaxis()->GetXmax() && (h->fBuffer != nullptr)) {
             // no limits
-            Int_t nbentries = static_cast<Int_t>(h->fBuffer[0]);
+            auto nbentries = static_cast<Int_t>(h->fBuffer[0]);
             for(Int_t i = 0; i < nbentries; i++) {
                Fill(h->fBuffer[3 * i + 2], h->fBuffer[3 * i + 3], h->fBuffer[3 * i + 1]);
             }
@@ -1637,15 +1638,16 @@ Long64_t GHSym::Merge(TCollection* list)
    }
 
    // merge bin contents and errors
-   Double_t stats[kNstat];
-   Double_t totstats[kNstat];
+   std::array<Double_t, kNstat> stats;
+   std::array<Double_t, kNstat> totstats;
    for(Int_t i = 0; i < kNstat; ++i) {
       totstats[i] = stats[i] = 0;
    }
-   GetStats(totstats);
-   Double_t nentries = GetEntries();
-   Int_t    binx, biny, ix, iy, nx, ny, ibin;
-   Double_t cu;
+   GetStats(totstats.data());
+   Double_t nentries  = GetEntries();
+   Int_t    ix        = 0;
+   Int_t    iy        = 0;
+   Double_t cu        = 0.;
    Bool_t   canExtend = CanExtendAllAxes();
    SetCanExtend(TH1::kNoAxis);   // reset, otherwise setting the under/overflow will extend the axis
 
@@ -1659,22 +1661,22 @@ Long64_t GHSym::Merge(TCollection* list)
       // process only if the histogram has limits; otherwise it was processed before
       if(h->GetXaxis()->GetXmin() < h->GetXaxis()->GetXmax()) {
          // import statistics
-         h->GetStats(stats);
+         h->GetStats(stats.data());
          for(Int_t i = 0; i < kNstat; ++i) {
             totstats[i] += stats[i];
          }
          nentries += histEntries;
 
-         nx = h->GetXaxis()->GetNbins();
-         ny = h->GetYaxis()->GetNbins();
+         Int_t nx = h->GetXaxis()->GetNbins();
+         Int_t ny = h->GetYaxis()->GetNbins();
 
-         for(biny = 0; biny <= ny + 1; ++biny) {
+         for(Int_t biny = 0; biny <= ny + 1; ++biny) {
             if(!allSameLimits) {
                iy = fYaxis.FindBin(h->GetYaxis()->GetBinCenter(biny));
             } else {
                iy = biny;
             }
-            for(binx = 0; binx <= nx + 1; ++binx) {
+            for(Int_t binx = 0; binx <= nx + 1; ++binx) {
                cu = h->GetBinContent(binx, biny);
                if(!allSameLimits) {
                   if(cu != 0 && ((!sameLimitsX && (binx == 0 || binx == nx + 1)) ||
@@ -1689,7 +1691,7 @@ Long64_t GHSym::Merge(TCollection* list)
                   // case histograms with the same limits
                   ix = binx;
                }
-               ibin = GetBin(ix, iy);
+               Int_t ibin = GetBin(ix, iy);
 
                if(ibin < 0) {
                   continue;
@@ -1706,7 +1708,7 @@ Long64_t GHSym::Merge(TCollection* list)
    SetCanExtend(static_cast<UInt_t>(canExtend));
 
    // copy merged stats
-   PutStats(totstats);
+   PutStats(totstats.data());
    SetEntries(nentries);
    if(hclone != nullptr) {
       inlist.Remove(hclone);
@@ -1769,9 +1771,8 @@ TProfile* GHSym::Profile(const char* name, Int_t firstbin, Int_t lastbin, Option
    Int_t       inN          = fYaxis.GetNbins();
    const char* expectedName = "_pf";
 
-   Int_t firstOutBin, lastOutBin;
-   firstOutBin = fXaxis.GetFirst();
-   lastOutBin  = fXaxis.GetLast();
+   Int_t firstOutBin = fXaxis.GetFirst();
+   Int_t lastOutBin  = fXaxis.GetLast();
    if(firstOutBin == 0 && lastOutBin == 0) {
       firstOutBin = 1;
       lastOutBin  = fXaxis.GetNbins();
@@ -1799,10 +1800,10 @@ TProfile* GHSym::Profile(const char* name, Int_t firstbin, Int_t lastbin, Option
    }
 
    // Create the profile histogram
-   char* pname = const_cast<char*>(name);
+   char* pname = const_cast<char*>(name);   // NOLINT
    if((name != nullptr) && strcmp(name, expectedName) == 0) {
-      Int_t nch = strlen(GetName()) + 5;
-      pname     = new char[nch];
+      auto nch = strlen(GetName()) + 5;
+      pname    = new char[nch];
       snprintf(pname, nch, "%s%s", GetName(), name);
    }
    TProfile* h1 = nullptr;
@@ -1839,9 +1840,9 @@ TProfile* GHSym::Profile(const char* name, Int_t firstbin, Int_t lastbin, Option
 
    Int_t ncuts = 0;
    if(opt.Contains("[")) {
-      const_cast<GHSym*>(this)->GetPainter();
+      const_cast<GHSym*>(this)->GetPainter();   // NOLINT
       if(fPainter != nullptr) {
-         ncuts = fPainter->MakeCuts(const_cast<char*>(cut.Data()));
+         ncuts = fPainter->MakeCuts(const_cast<char*>(cut.Data()));   // NOLINT
       }
    }
 
@@ -1901,9 +1902,8 @@ TProfile* GHSym::Profile(const char* name, Int_t firstbin, Int_t lastbin, Option
       }
 
       for(Int_t inbin = firstbin; inbin <= lastbin; ++inbin) {
-         Int_t binx, biny;
-         binx = outbin;
-         biny = inbin;
+         Int_t binx = outbin;
+         Int_t biny = inbin;
 
          if(ncuts != 0) {
             if(!fPainter->IsInside(binx, biny)) {
@@ -2000,10 +2000,10 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
    }
 
    // Create the projection histogram
-   char* pname = const_cast<char*>(name);
+   char* pname = const_cast<char*>(name);   // NOLINT
    if(name != nullptr && strcmp(name, expectedName) == 0) {
-      Int_t nch = strlen(GetName()) + 4;
-      pname     = new char[nch];
+      auto nch = strlen(GetName()) + 4;
+      pname    = new char[nch];
       snprintf(pname, nch, "%s%s", GetName(), name);
    }
    TH1D* h1 = nullptr;
@@ -2039,9 +2039,9 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
    }
    Int_t ncuts = 0;
    if(opt.Contains("[")) {
-      const_cast<GHSym*>(this)->GetPainter();
+      const_cast<GHSym*>(this)->GetPainter();   // NOLINT
       if(fPainter != nullptr) {
-         ncuts = fPainter->MakeCuts(const_cast<char*>(cut.Data()));
+         ncuts = fPainter->MakeCuts(const_cast<char*>(cut.Data()));   // NOLINT
       }
    }
 
@@ -2072,11 +2072,11 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
 
    // Copy the axis attributes and the axis labels if needed.
    h1->GetXaxis()->ImportAttributes(&fXaxis);
-   THashList* labels = const_cast<TAxis*>(&fXaxis)->GetLabels();
+   THashList* labels = const_cast<TAxis*>(&fXaxis)->GetLabels();   // NOLINT
    if(labels != nullptr) {
       TIter       iL(labels);
-      TObjString* lb;
-      Int_t       i = 1;
+      TObjString* lb = nullptr;
+      Int_t       i  = 1;
       while((lb = static_cast<TObjString*>(iL())) != nullptr) {
          h1->GetXaxis()->SetBinLabel(i, lb->String().Data());
          i++;
@@ -2089,7 +2089,6 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
    h1->SetMarkerStyle(GetMarkerStyle());
 
    // Fill the projected histogram
-   Double_t cont, err2;
    Double_t totcont       = 0;
    Bool_t   computeErrors = h1->GetSumw2N() != 0;
 
@@ -2097,8 +2096,8 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
    // xbin is bin number of xAxis (the projected axis). Loop is done on all bin of TH2 histograms
    // inbin is the axis being integrated. Loop is done only on the selected bins
    for(Int_t xbin = 0; xbin <= fXaxis.GetNbins() + 1; ++xbin) {
-      err2 = 0;
-      cont = 0;
+      Double_t err2 = 0.;
+      Double_t cont = 0.;
       if(fXaxis.TestBit(TAxis::kAxisRange) && (xbin < firstXBin || xbin > lastXBin)) {
          continue;
       }
@@ -2149,9 +2148,9 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
    // can re-use entries if underflow/overflow are included
    reuseEntries &= static_cast<int>(firstBin == 0 && lastBin == fYaxis.GetLast() + 1);
    if(reuseStats) {
-      Double_t stats[kNstat];
-      GetStats(stats);
-      h1->PutStats(stats);
+      std::array<Double_t, kNstat> stats;
+      GetStats(stats.data());
+      h1->PutStats(stats.data());
    } else {
       // the statistics is automatically recalulated since it is reset by the call to SetBinContent
       // we just need to set the entries since they have not been correctly calculated during the projection
@@ -2230,7 +2229,6 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
    //          the overflow bin.
    //          Statistics will be recomputed from the new bin contents.
 
-   Int_t    i, j, xbin, ybin;
    Int_t    nbins = fXaxis.GetNbins();
    Double_t min   = fXaxis.GetXmin();
    Double_t max   = fXaxis.GetXmax();
@@ -2244,8 +2242,8 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
    // Save old bin contents into a new array
    Double_t entries = fEntries;
    auto*    oldBins = new Double_t[(nbins + 2) * (nbins + 3) / 2];
-   for(xbin = 0; xbin < nbins + 2; xbin++) {
-      for(ybin = 0; ybin <= xbin; ybin++) {
+   for(Int_t xbin = 0; xbin < nbins + 2; xbin++) {
+      for(Int_t ybin = 0; ybin <= xbin; ybin++) {
          Int_t bin    = GetBin(xbin, ybin);
          oldBins[bin] = GetBinContent(bin);
       }
@@ -2253,8 +2251,8 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
    Double_t* oldErrors = nullptr;
    if(fSumw2.fN != 0) {
       oldErrors = new Double_t[(nbins + 2) * (nbins + 3) / 2];
-      for(xbin = 0; xbin < nbins + 2; xbin++) {
-         for(ybin = 0; ybin <= xbin; ybin++) {
+      for(Int_t xbin = 0; xbin < nbins + 2; xbin++) {
+         for(Int_t ybin = 0; ybin <= xbin; ybin++) {
             Int_t bin      = GetBin(xbin, ybin);
             oldErrors[bin] = GetBinError(bin);
          }
@@ -2269,8 +2267,8 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
    }
 
    // save original statistics
-   Double_t stat[kNstat];
-   GetStats(stat);
+   std::array<Double_t, kNstat> stats;
+   GetStats(stats.data());
    bool resetStat = false;
 
    // change axis specs and rebuild bin contents array
@@ -2308,7 +2306,7 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
       if(fXaxis.GetXbins()->GetSize() > 0 || fYaxis.GetXbins()->GetSize() > 0) {
          // variable bin sizes in x or y, don't treat both cases separately
          auto* bins = new Double_t[newbins + 1];
-         for(i = 0; i <= newbins; ++i) {
+         for(Int_t i = 0; i <= newbins; ++i) {
             bins[i] = fXaxis.GetBinLowEdge(1 + i * ngroup);
          }
          hnew->SetBins(newbins, bins, newbins, bins);   // changes also errors array (if any)
@@ -2317,24 +2315,23 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
          hnew->SetBins(newbins, min, max, newbins, min, max);   // changes also errors array
       }
 
-      Double_t binContent, binError;
-      Int_t    oldxbin = 1;
-      Int_t    oldybin = 1;
-      Int_t    bin;
-      for(xbin = 1; xbin <= newbins; ++xbin) {
+      Int_t oldxbin = 1;
+      Int_t oldybin = 1;
+      for(Int_t xbin = 1; xbin <= newbins; ++xbin) {
          oldybin = 1;
-         for(ybin = 1; ybin <= xbin; ++ybin) {
-            binContent = 0;
-            binError   = 0;
-            for(i = 0; i < ngroup; ++i) {
+         for(Int_t ybin = 1; ybin <= xbin; ++ybin) {
+            Double_t binContent = 0.;
+            Double_t binError   = 0.;
+            for(Int_t i = 0; i < ngroup; ++i) {
                if(oldxbin + i > nbins) {
                   break;
                }
-               for(j = 0; j < ngroup; ++j) {
+               for(Int_t j = 0; j < ngroup; ++j) {
                   if(oldybin + j > nbins) {
                      break;
                   }
                   // get global bin (same conventions as in GHSym::GetBin(xbin,ybin)
+                  Int_t bin = 0;
                   if(oldybin + j <= oldxbin + i) {
                      bin = oldxbin + i + (oldybin + j) * (2 * fXaxis.GetNbins() - (oldybin + j) + 3) / 2;
                   } else {
@@ -2364,11 +2361,11 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
       }
 
       // calculate new overflow bin in x and y (newbins+1,newbins+1)
-      binContent = 0;
-      binError   = 0;
-      for(xbin = oldxbin; xbin <= nbins + 1; ++xbin) {
-         for(ybin = oldybin; ybin <= xbin; ++ybin) {
-            bin = xbin + ybin * (2 * nbins - ybin + 3) / 2;
+      Double_t binContent = 0.;
+      Double_t binError   = 0.;
+      for(Int_t xbin = oldxbin; xbin <= nbins + 1; ++xbin) {
+         for(Int_t ybin = oldybin; ybin <= xbin; ++ybin) {
+            Int_t bin = xbin + ybin * (2 * nbins - ybin + 3) / 2;
             binContent += oldBins[bin];
             if(oldErrors != nullptr) {
                binError += oldErrors[bin] * oldErrors[bin];
@@ -2381,10 +2378,10 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
       }
 
       // calculate new underflow bin in x and overflow in y (0,newbins+1)
-      binContent = 0;
-      binError   = 0;
-      for(ybin = oldybin; ybin <= nbins + 1; ++ybin) {
-         bin = ybin * (2 * nbins - ybin + 3) / 2;
+      binContent = 0.;
+      binError   = 0.;
+      for(Int_t ybin = oldybin; ybin <= nbins + 1; ++ybin) {
+         Int_t bin = ybin * (2 * nbins - ybin + 3) / 2;
          binContent += oldBins[bin];
          if(oldErrors != nullptr) {
             binError += oldErrors[bin] * oldErrors[bin];
@@ -2396,10 +2393,10 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
       }
 
       // calculate new overflow bin in x and underflow in y (newbins+1,0)
-      binContent = 0;
-      binError   = 0;
-      for(xbin = oldxbin; xbin <= nbins + 1; ++xbin) {
-         bin = xbin;
+      binContent = 0.;
+      binError   = 0.;
+      for(Int_t xbin = oldxbin; xbin <= nbins + 1; ++xbin) {
+         Int_t bin = xbin;
          binContent += oldBins[bin];
          if(oldErrors != nullptr) {
             binError += oldErrors[bin] * oldErrors[bin];
@@ -2411,27 +2408,25 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
       }
 
       //  recompute under/overflow contents in y for the new  x bins
-      Double_t binContent0, binContent2;
-      Double_t binError0, binError2;
-      Int_t    oldxbin2, oldybin2;
-      Int_t    ufbin, ofbin;
-      oldxbin2 = 1;
-      for(xbin = 1; xbin <= newbins; ++xbin) {
-         binContent0 = binContent2 = 0;
-         binError0 = binError2 = 0;
-         for(i = 0; i < ngroup; ++i) {
+      Int_t oldxbin2 = 1;
+      for(Int_t xbin = 1; xbin <= newbins; ++xbin) {
+         Double_t binContent0 = 0.;
+         Double_t binContent2 = 0.;
+         Double_t binError0   = 0.;
+         Double_t binError2   = 0.;
+         for(Int_t i = 0; i < ngroup; ++i) {
             if(oldxbin2 + i > nbins) {
                break;
             }
             // old underflow bin (in y)
-            ufbin = oldxbin2 + i;
+            Int_t ufbin = oldxbin2 + i;
             binContent0 += oldBins[ufbin];
             if(oldErrors != nullptr) {
                binError0 += oldErrors[ufbin] * oldErrors[ufbin];
             }
-            for(ybin = oldybin; ybin <= nbins + 1; ++ybin) {
+            for(Int_t ybin = oldybin; ybin <= nbins + 1; ++ybin) {
                // old overflow bin (in y)
-               ofbin = ufbin + ybin * (nbins + 2);
+               Int_t ofbin = ufbin + ybin * (nbins + 2);
                binContent2 += oldBins[ofbin];
                if(oldErrors != nullptr) {
                   binError2 += oldErrors[ofbin] * oldErrors[ofbin];
@@ -2448,22 +2443,24 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
       }
 
       //  recompute under/overflow contents in x for the new y bins
-      oldybin2 = 1;
-      for(ybin = 1; ybin <= newbins; ++ybin) {
-         binContent0 = binContent2 = 0;
-         binError0 = binError2 = 0;
-         for(i = 0; i < ngroup; ++i) {
+      Int_t oldybin2 = 1;
+      for(Int_t ybin = 1; ybin <= newbins; ++ybin) {
+         Double_t binContent0 = 0.;
+         Double_t binContent2 = 0.;
+         Double_t binError0   = 0.;
+         Double_t binError2   = 0.;
+         for(Int_t i = 0; i < ngroup; ++i) {
             if(oldybin2 + i > nbins) {
                break;
             }
             // old underflow bin (in x)
-            ufbin = (oldybin2 + i) * (nbins + 2);
+            Int_t ufbin = (oldybin2 + i) * (nbins + 2);
             binContent0 += oldBins[ufbin];
             if(oldErrors != nullptr) {
                binError0 += oldErrors[ufbin] * oldErrors[ufbin];
             }
-            for(xbin = oldxbin; xbin <= nbins + 1; ++xbin) {
-               ofbin = ufbin + xbin;
+            for(Int_t xbin = oldxbin; xbin <= nbins + 1; ++xbin) {
+               Int_t ofbin = ufbin + xbin;
                binContent2 += oldBins[ofbin];
                if(oldErrors != nullptr) {
                   binError2 += oldErrors[ofbin] * oldErrors[ofbin];
@@ -2508,13 +2505,11 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
    // restore statistics and entries  modified by SetBinContent
    hnew->SetEntries(entries);
    if(!resetStat) {
-      hnew->PutStats(stat);
+      hnew->PutStats(stats.data());
    }
 
    delete[] oldBins;
-   if(oldErrors != nullptr) {
-      delete[] oldErrors;
-   }
+   delete[] oldErrors;
    return hnew;
 }
 
@@ -2587,8 +2582,8 @@ TH1* GHSym::ShowBackground(Int_t niter, Option_t* option)
    //   The background is returned as a histogram.
    //   to be implemented (may be)
 
-   return reinterpret_cast<TH1*>(gROOT->ProcessLineFast(
-      Form(R"(TSpectrum2::StaticBackground((TH1*)0x%lx,%d,"%s"))", (ULong_t)this, niter, option)));
+   return reinterpret_cast<TH1*>(gROOT->ProcessLineFast(   // NOLINT
+      Form(R"(TSpectrum2::StaticBackground((TH1*)0x%lx,%d,"%s"))", reinterpret_cast<ULong_t>(this), niter, option)));
 }
 
 Int_t GHSym::ShowPeaks(Double_t sigma, Option_t* option, Double_t threshold)
@@ -2601,7 +2596,7 @@ Int_t GHSym::ShowPeaks(Double_t sigma, Option_t* option, Double_t threshold)
    // option="" by default (instead of "goff")
 
    return static_cast<Int_t>(gROOT->ProcessLineFast(
-      Form(R"(TSpectrum2::StaticSearch((TH1*)0x%lx,%g,"%s",%g))", (ULong_t)this, sigma, option, threshold)));
+      Form(R"(TSpectrum2::StaticSearch((TH1*)0x%lx,%g,"%s",%g))", reinterpret_cast<ULong_t>(this), sigma, option, threshold)));
 }
 
 void GHSym::Smooth(Int_t ntimes, Option_t* option)
@@ -2626,25 +2621,25 @@ void GHSym::Smooth(Int_t ntimes, Option_t* option)
    //
    // implementation by David McKee (dmckee@bama.ua.edu). Extended by Rene Brun
 
-   Double_t k5a[5][5] = {{0, 0, 1, 0, 0}, {0, 2, 2, 2, 0}, {1, 2, 5, 2, 1}, {0, 2, 2, 2, 0}, {0, 0, 1, 0, 0}};
-   Double_t k5b[5][5] = {{0, 1, 2, 1, 0}, {1, 2, 4, 2, 1}, {2, 4, 8, 4, 2}, {1, 2, 4, 2, 1}, {0, 1, 2, 1, 0}};
-   Double_t k3a[3][3] = {{0, 1, 0}, {1, 2, 1}, {0, 1, 0}};
+   std::array<std::array<Double_t, 5>, 5> k5a = {{{0, 0, 1, 0, 0}, {0, 2, 2, 2, 0}, {1, 2, 5, 2, 1}, {0, 2, 2, 2, 0}, {0, 0, 1, 0, 0}}};
+   std::array<std::array<Double_t, 5>, 5> k5b = {{{0, 1, 2, 1, 0}, {1, 2, 4, 2, 1}, {2, 4, 8, 4, 2}, {1, 2, 4, 2, 1}, {0, 1, 2, 1, 0}}};
+   std::array<std::array<Double_t, 3>, 3> k3a = {{{0, 1, 0}, {1, 2, 1}, {0, 1, 0}}};
 
    if(ntimes > 1) {
       Warning("Smooth", "Currently only ntimes=1 is supported");
    }
    TString opt = option;
    opt.ToLower();
-   Int_t     ksize_x = 5;
-   Int_t     ksize_y = 5;
-   Double_t* kernel  = &k5a[0][0];
+   Int_t     ksize_x = k5a.size();
+   Int_t     ksize_y = k5a.size();
+   Double_t* kernel  = k5a.data()->data();
    if(opt.Contains("k5b")) {
-      kernel = &k5b[0][0];
+      kernel = k5b.data()->data();
    }
    if(opt.Contains("k3a")) {
-      kernel  = &k3a[0][0];
-      ksize_x = 3;
-      ksize_y = 3;
+      kernel  = k3a.data()->data();
+      ksize_x = k3a.size();
+      ksize_y = k3a.size();
    }
 
    // find i,j ranges
@@ -2665,11 +2660,10 @@ void GHSym::Smooth(Int_t ntimes, Option_t* option)
    }
 
    // Copy all the data to the temporary buffers
-   Int_t i, j, bin;
-   for(i = ifirst; i <= ilast; ++i) {
-      for(j = jfirst; j <= jlast; ++j) {
-         bin      = GetBin(i, j);
-         buf[bin] = GetBinContent(bin);
+   for(Int_t i = ifirst; i <= ilast; ++i) {
+      for(Int_t j = jfirst; j <= jlast; ++j) {
+         Int_t bin = GetBin(i, j);
+         buf[bin]  = GetBinContent(bin);
          if(ebuf != nullptr) {
             ebuf[bin] = GetBinError(bin);
          }
@@ -2681,8 +2675,8 @@ void GHSym::Smooth(Int_t ntimes, Option_t* option)
    Int_t y_push = (ksize_y - 1) / 2;
 
    // main work loop
-   for(i = ifirst; i <= ilast; ++i) {
-      for(j = jfirst; j <= jlast; ++j) {
+   for(Int_t i = ifirst; i <= ilast; ++i) {
+      for(Int_t j = jfirst; j <= jlast; ++j) {
          Double_t content = 0.0;
          Double_t error   = 0.0;
          Double_t norm    = 0.0;
@@ -2692,8 +2686,8 @@ void GHSym::Smooth(Int_t ntimes, Option_t* option)
                Int_t xb = i + (n - x_push);
                Int_t yb = j + (m - y_push);
                if((xb >= 1) && (xb <= nx) && (yb >= 1) && (yb <= ny)) {
-                  bin        = GetBin(xb, yb);
-                  Double_t k = kernel[n * ksize_y + m];
+                  Int_t    bin = GetBin(xb, yb);
+                  Double_t k   = kernel[n * ksize_y + m];
                   if(k != 0.0) {
                      norm += k;
                      content += k * buf[bin];
@@ -2724,10 +2718,7 @@ void GHSym::Smooth(Int_t ntimes, Option_t* option)
 // GHSymF methods (float = four bytes per cell)
 //------------------------------------------------------------
 
-ClassImp(GHSymF)
-
 GHSymF::GHSymF()
-   : GHSym(), TArrayF()
 {
    SetBinsLength(9);
    if(fgDefaultSumw2) {
@@ -2764,7 +2755,14 @@ GHSymF::GHSymF(const char* name, const char* title, Int_t nbins, const Float_t* 
    }
 }
 
-GHSymF::GHSymF(const GHSymF& rhs) : GHSym(), TArrayF()
+GHSymF::GHSymF(const GHSymF& rhs)
+   : GHSym(rhs), TArrayF(rhs)
+{
+   rhs.Copy(*this);
+}
+
+GHSymF::GHSymF(GHSymF&& rhs) noexcept
+   : GHSym(rhs), TArrayF(rhs)
 {
    rhs.Copy(*this);
 }
@@ -2773,27 +2771,27 @@ GHSymF::~GHSymF() = default;
 
 TH2F* GHSymF::GetMatrix(bool force)
 {
-   if(fMatrix != nullptr && !force) {
-      return static_cast<TH2F*>(fMatrix);
+   if(Matrix() != nullptr && !force) {
+      return static_cast<TH2F*>(Matrix());
    }
-   if(force && fMatrix != nullptr) {
-      delete fMatrix;
+   if(force) {
+      delete Matrix();
    }
 
-   fMatrix = new TH2F(Form("%s_mat", GetName()), GetTitle(), fXaxis.GetNbins(), fXaxis.GetXmin(), fXaxis.GetXmax(),
-                      fYaxis.GetNbins(), fYaxis.GetXmin(), fYaxis.GetXmax());
+   Matrix(new TH2F(Form("%s_mat", GetName()), GetTitle(), fXaxis.GetNbins(), fXaxis.GetXmin(), fXaxis.GetXmax(),
+                   fYaxis.GetNbins(), fYaxis.GetXmin(), fYaxis.GetXmax()));
    // copy cell contents (including all overflow and underflow cells)
    for(int i = 0; i < fXaxis.GetNbins() + 2; ++i) {
       for(int j = 0; j < fXaxis.GetNbins() + 2; ++j) {
-         fMatrix->SetBinContent(i, j, GetBinContent(i, j));
+         Matrix()->SetBinContent(i, j, GetBinContent(i, j));
       }
    }
-   return static_cast<TH2F*>(fMatrix);
+   return static_cast<TH2F*>(Matrix());
 }
 
-void GHSymF::Copy(TObject& rh) const
+void GHSymF::Copy(TObject& rhs) const
 {
-   GHSym::Copy(static_cast<GHSymF&>(rh));
+   GHSym::Copy(static_cast<GHSymF&>(rhs));
 }
 
 TH1* GHSymF::DrawCopy(Option_t* option, const char* name_postfix) const
@@ -2818,7 +2816,7 @@ Double_t GHSymF::GetBinContent(Int_t bin) const
    // Get bin content.
 
    if(fBuffer != nullptr) {
-      const_cast<GHSymF*>(this)->BufferEmpty();
+      const_cast<GHSymF*>(this)->BufferEmpty();   // NOLINT
    }
    if(bin < 0) {
       bin = 0;
@@ -2829,7 +2827,7 @@ Double_t GHSymF::GetBinContent(Int_t bin) const
    if(fArray == nullptr) {
       return 0;
    }
-   return Double_t(fArray[bin]);
+   return static_cast<Double_t>(fArray[bin]);
 }
 
 void GHSymF::Reset(Option_t* option)
@@ -2852,7 +2850,7 @@ void GHSymF::SetBinContent(Int_t bin, Double_t content)
    if(bin >= fNcells) {
       return;
    }
-   fArray[bin] = Float_t(content);
+   fArray[bin] = static_cast<Float_t>(content);
 }
 
 void GHSymF::SetBinsLength(Int_t n)
@@ -2872,7 +2870,17 @@ GHSymF& GHSymF::operator=(const GHSymF& h1)
    // Operator =
 
    if(this != &h1) {
-      const_cast<GHSymF&>(h1).Copy(*this);
+      h1.Copy(*this);
+   }
+   return *this;
+}
+
+GHSymF& GHSymF::operator=(GHSymF&& h1) noexcept
+{
+   // Operator =
+
+   if(this != &h1) {
+      h1.Copy(*this);
    }
    return *this;
 }
@@ -2931,10 +2939,7 @@ GHSymF operator/(GHSymF& h1, GHSymF& h2)
 // GHSymD methods (double = eight bytes per cell)
 //------------------------------------------------------------
 
-ClassImp(GHSymD)
-
 GHSymD::GHSymD()
-   : GHSym(), TArrayD()
 {
    SetBinsLength(9);
    if(fgDefaultSumw2) {
@@ -2971,7 +2976,14 @@ GHSymD::GHSymD(const char* name, const char* title, Int_t nbins, const Float_t* 
    }
 }
 
-GHSymD::GHSymD(const GHSymD& rhs) : GHSym(), TArrayD()
+GHSymD::GHSymD(const GHSymD& rhs)
+   : GHSym(rhs), TArrayD(rhs)
+{
+   rhs.Copy(*this);
+}
+
+GHSymD::GHSymD(GHSymD&& rhs) noexcept
+   : GHSym(rhs), TArrayD(rhs)
 {
    rhs.Copy(*this);
 }
@@ -2980,28 +2992,28 @@ GHSymD::~GHSymD() = default;
 
 TH2D* GHSymD::GetMatrix(bool force)
 {
-   if(fMatrix != nullptr && !force) {
-      return static_cast<TH2D*>(fMatrix);
+   if(Matrix() != nullptr && !force) {
+      return static_cast<TH2D*>(Matrix());
    }
-   if(force && fMatrix != nullptr) {
-      delete fMatrix;
+   if(force) {
+      delete Matrix();
    }
 
-   fMatrix = new TH2D(Form("%s_mat", GetName()), Form("%s;%s;%s", GetTitle(), fXaxis.GetTitle(), fYaxis.GetTitle()),
-                      fXaxis.GetNbins(), fXaxis.GetXmin(), fXaxis.GetXmax(), fYaxis.GetNbins(), fYaxis.GetXmin(),
-                      fYaxis.GetXmax());
+   Matrix(new TH2D(Form("%s_mat", GetName()), Form("%s;%s;%s", GetTitle(), fXaxis.GetTitle(), fYaxis.GetTitle()),
+                   fXaxis.GetNbins(), fXaxis.GetXmin(), fXaxis.GetXmax(), fYaxis.GetNbins(), fYaxis.GetXmin(),
+                   fYaxis.GetXmax()));
    // copy cell contents (including all overflow and underflow cells)
    for(int i = 0; i < fXaxis.GetNbins() + 2; ++i) {
       for(int j = 0; j < fXaxis.GetNbins() + 2; ++j) {
-         fMatrix->SetBinContent(i, j, GetBinContent(i, j));
+         Matrix()->SetBinContent(i, j, GetBinContent(i, j));
       }
    }
-   return static_cast<TH2D*>(fMatrix);
+   return static_cast<TH2D*>(Matrix());
 }
 
-void GHSymD::Copy(TObject& rh) const
+void GHSymD::Copy(TObject& rhs) const
 {
-   GHSym::Copy(static_cast<GHSymD&>(rh));
+   GHSym::Copy(static_cast<GHSymD&>(rhs));
 }
 
 TH1* GHSymD::DrawCopy(Option_t* option, const char* name_postfix) const
@@ -3025,7 +3037,7 @@ Double_t GHSymD::GetBinContent(Int_t bin) const
 {
    // Get bin content.
    if(fBuffer != nullptr) {
-      const_cast<GHSymD*>(this)->BufferEmpty();
+      const_cast<GHSymD*>(this)->BufferEmpty();   // NOLINT
    }
    if(bin < 0) {
       bin = 0;
@@ -3036,7 +3048,7 @@ Double_t GHSymD::GetBinContent(Int_t bin) const
    if(fArray == nullptr) {
       return 0;
    }
-   return Double_t(fArray[bin]);
+   return static_cast<Double_t>(fArray[bin]);
 }
 
 void GHSymD::Reset(Option_t* option)
@@ -3059,7 +3071,7 @@ void GHSymD::SetBinContent(Int_t bin, Double_t content)
    if(bin >= fNcells) {
       return;
    }
-   fArray[bin] = Float_t(content);
+   fArray[bin] = static_cast<Float_t>(content);
 }
 
 void GHSymD::SetBinsLength(Int_t n)
@@ -3079,7 +3091,17 @@ GHSymD& GHSymD::operator=(const GHSymD& h1)
    // Operator =
 
    if(this != &h1) {
-      const_cast<GHSymD&>(h1).Copy(*this);
+      h1.Copy(*this);
+   }
+   return *this;
+}
+
+GHSymD& GHSymD::operator=(GHSymD&& h1) noexcept
+{
+   // Operator =
+
+   if(this != &h1) {
+      h1.Copy(*this);
    }
    return *this;
 }

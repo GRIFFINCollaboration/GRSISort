@@ -42,6 +42,10 @@ class TRawEvent;
 class TDataParser {
 public:
    TDataParser();
+   TDataParser(const TDataParser&)                = default;
+   TDataParser(TDataParser&&) noexcept            = default;
+   TDataParser& operator=(const TDataParser&)     = delete;
+   TDataParser& operator=(TDataParser&&) noexcept = delete;
    virtual ~TDataParser();
    virtual void SetNoWaveForms(bool temp = true) { fNoWaveforms = temp; }
    virtual void SetRecordDiag(bool temp = true) { fRecordDiag = temp; }
@@ -92,6 +96,34 @@ public:
    virtual std::string OutputQueueStatus();
 
 protected:
+   // getters
+#ifndef __CINT__
+   std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& GoodOutputQueues() { return fGoodOutputQueues; }
+#endif
+   bool      NoWaveforms() const { return fNoWaveforms; }
+   bool      RecordDiag() const { return fRecordDiag; }
+   TChannel* Channel() const { return fChannel; }
+
+   uint64_t MaxTriggerId() const { return fMaxTriggerId; }
+   uint64_t LastDaqId() const { return fLastDaqId; }
+   uint64_t LastTriggerId() const { return fLastTriggerId; }
+   uint64_t LastNetworkPacket() const { return fLastNetworkPacket; }
+
+   bool FragmentHasWaveform() const { return fFragmentHasWaveform; }
+
+   TFragmentMap               FragmentMap() const { return fFragmentMap; }
+   std::map<UInt_t, Long64_t> LastTimeStampMap() const { return fLastTimeStampMap; }
+
+   static TGRSIOptions* Options() { return fOptions; }
+
+   // setters
+   void LastTriggerId(const uint64_t& val) { fLastTriggerId = val; }
+
+   void FragmentHasWaveform(const bool& val) { fFragmentHasWaveform = val; }
+
+   static void Options(TGRSIOptions* val) { fOptions = val; }
+
+private:
    // TODO consider making all of these private with protected access functions
 #ifndef __CINT__
    std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>> fGoodOutputQueues;

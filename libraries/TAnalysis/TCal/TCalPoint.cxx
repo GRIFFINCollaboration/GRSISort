@@ -9,16 +9,13 @@ TCalPoint::TCalPoint()
 
 TCalPoint::TCalPoint(const Double_t& centroid, const Double_t& area, const Double_t& dcentroid, const Double_t& darea)
 {
-   SetCentroid(centroid, dcentroid);
-   SetArea(area, darea);
+   SetPoint(centroid, area, dcentroid, darea);
 }
 
 TCalPoint::TCalPoint(const TPeak& peak)
 {
    SetPoint(&peak);
 }
-
-TCalPoint::~TCalPoint() = default;
 
 TCalPoint::TCalPoint(const TCalPoint& copy) : TObject(copy)
 {
@@ -34,8 +31,7 @@ void TCalPoint::Copy(TObject& obj) const
    static_cast<TCalPoint&>(obj).fAreaErr     = fAreaErr;
 }
 
-void TCalPoint::SetPoint(const Double_t& centroid, const Double_t& area, const Double_t& dcentroid,
-                         const Double_t& darea)
+void TCalPoint::SetPoint(const Double_t& centroid, const Double_t& area, const Double_t& dcentroid, const Double_t& darea)
 {
    SetCentroid(centroid, dcentroid);
    SetArea(area, darea);

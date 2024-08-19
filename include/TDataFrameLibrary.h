@@ -14,7 +14,7 @@ class TDataFrameLibrary : public TSingleton<TDataFrameLibrary> {
 public:
    friend class TSingleton<TDataFrameLibrary>;
 
-   ~TDataFrameLibrary() override;
+   ~TDataFrameLibrary();
 
    void Load();   ///< if necessary loads shared object library and sets/initializes all other functions
 
@@ -46,7 +46,7 @@ private:
    void (*fDestroyHelper)(TGRSIHelper*);
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDataFrameLibrary, 1);   // parser library class
+   ClassDefOverride(TDataFrameLibrary, 1)   // NOLINT
    /// \endcond
 };
 

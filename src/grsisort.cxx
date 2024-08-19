@@ -120,7 +120,7 @@ static int ReadUtmp()
       return 0;
    }
 
-   gUtmpContents = static_cast<STRUCT_UTMP*>(malloc(size));
+   gUtmpContents = new STRUCT_UTMP;   //static_cast<STRUCT_UTMP*>(malloc(size));
    if(gUtmpContents == nullptr) {
       fclose(utmp);
       return 0;
@@ -135,7 +135,7 @@ static int ReadUtmp()
       fclose(utmp);
    }
 
-   free(gUtmpContents);
+   delete gUtmpContents;
    gUtmpContents = nullptr;
    return 0;
 }
@@ -144,7 +144,7 @@ static STRUCT_UTMP* SearchEntry(int n, const char* tty)
 {
    STRUCT_UTMP* ue = gUtmpContents;
    while((n--) != 0) {
-      if((ue->ut_name[0] != 0) && (strncmp(tty, ue->ut_line, sizeof(ue->ut_line)) == 0)) {
+      if((ue->ut_name[0] != 0) && (strncmp(tty, ue->ut_line, sizeof(ue->ut_line)) == 0)) {   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
          return ue;
       }
       ue++;
@@ -165,7 +165,8 @@ static void SetDisplay()
             size_t      length = sizeof(utmp_entry->ut_host);
             std::string display;
             auto*       host = new char[length + 1];
-            strncpy(host, utmp_entry->ut_host, length);   // instead of using size of utmp_entry->ut_host to prevent warning from gcc 9.1
+            // instead of using size of utmp_entry->ut_host to prevent warning from gcc 9.1
+            strncpy(host, utmp_entry->ut_host, length);   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
             host[sizeof(utmp_entry->ut_host)] = 0;
             if(host[0] != 0) {
                display = host;
@@ -189,7 +190,7 @@ static void SetDisplay()
             }
             delete[] host;
          }
-         free(gUtmpContents);
+         delete gUtmpContents;
       }
    }
 }

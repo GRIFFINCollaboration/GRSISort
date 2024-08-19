@@ -48,7 +48,7 @@ libdir=$GRSISYS/lib
 incdir=$GRSISYS/include
 
 # lists of libraries, these are used to form the "-l<library name>" flags for the linker
-grsilibs="TGRSIInt TFormat TLoops TKinematics TSRIM TBetaDecay TCal TReaction TPeakFitting"
+grsilibs="TGRSIint TFormat TLoops TKinematics TSRIM TBetaDecay TCal TReaction TPeakFitting"
 detlibs="TSuppressed TBgo TPulseAnalyzer GROOT TGRSIFit TNucleus"
 grsimore="TRawFile TDataParser TGUI"
 

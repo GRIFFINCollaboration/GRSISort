@@ -12,11 +12,16 @@
 
 class GCube : public TH1 {
 public:
-   GCube();
+   GCube() = default;
    GCube(const char* name, const char* title, Int_t nbins, Double_t low, Double_t up);
    GCube(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GCube(const char* name, const char* title, Int_t nbins, const Float_t* bins);
-   ~GCube() override;
+   GCube(const GCube&);
+   GCube(GCube&&) noexcept;
+   GCube& operator=(const GCube&);
+   GCube& operator=(GCube&&) noexcept;
+
+   ~GCube() = default;
 
    Int_t         BufferEmpty(Int_t action = 0) override;
    Int_t         BufferFill(Double_t, Double_t) override { return -2; }   // MayNotUse
@@ -97,20 +102,23 @@ protected:
    using TH1::DoIntegral;
    Double_t DoIntegral(Int_t binx1, Int_t binx2, Int_t biny1, Int_t biny2, Int_t binz1, Int_t binz2, Double_t& error,
                        Option_t* option, Bool_t doError = kFALSE) const override;
-   Double_t fTsumwy{0};    // Total Sum of weight*Y
-   Double_t fTsumwy2{0};   // Total Sum of weight*Y*Y
-   Double_t fTsumwxy{0};   // Total Sum of weight*X*Y
-   Double_t fTsumwz{0};    // Total Sum of weight*Z
-   Double_t fTsumwz2{0};   // Total Sum of weight*Z*Z
-   Double_t fTsumwxz{0};   // Total Sum of weight*X*Z
-   Double_t fTsumwyz{0};   // Total Sum of weight*Y*Z
-   TH2*     fMatrix{0};    //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
+
+   void Matrix(TH2* val) { fMatrix = val; }
+   TH2* Matrix() { return fMatrix; }
 
 private:
-   GCube(const GCube&);
-   GCube& operator=(const GCube&);
+   Double_t fTsumwy{0};         // Total Sum of weight*Y
+   Double_t fTsumwy2{0};        // Total Sum of weight*Y*Y
+   Double_t fTsumwxy{0};        // Total Sum of weight*X*Y
+   Double_t fTsumwz{0};         // Total Sum of weight*Z
+   Double_t fTsumwz2{0};        // Total Sum of weight*Z*Z
+   Double_t fTsumwxz{0};        // Total Sum of weight*X*Z
+   Double_t fTsumwyz{0};        // Total Sum of weight*Y*Z
+   TH2*     fMatrix{nullptr};   //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
 
-   ClassDefOverride(GCube, 1);
+   /// /cond CLASSIMP
+   ClassDefOverride(GCube, 1)   // NOLINT
+                                /// /endcond
 };
 
 class GCubeF : public GCube, public TArrayF {
@@ -120,12 +128,13 @@ public:
    GCubeF(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GCubeF(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    GCubeF(const GCubeF&);
-   ~GCubeF() override;
+   GCubeF(GCubeF&&) noexcept;
+   ~GCubeF();
 
    TH2F* GetMatrix(bool force = false);
 
    void     AddBinContent(Int_t bin) override { ++fArray[bin]; }
-   void     AddBinContent(Int_t bin, Double_t w) override { fArray[bin] += Float_t(w); }
+   void     AddBinContent(Int_t bin, Double_t w) override { fArray[bin] += static_cast<Float_t>(w); }
    void     Copy(TObject& rh) const override;
    void     Draw(Option_t* option = "") override { GetMatrix()->Draw(option); }
    TH1*     DrawCopy(Option_t* option = "", const char* name_postfix = "_copy") const override;
@@ -136,7 +145,7 @@ public:
       return GetBinContent(GetBin(binx, biny, binz));
    }
    void     Reset(Option_t* option = "") override;
-   Double_t RetrieveBinContent(Int_t bin) const override { return Double_t(fArray[bin]); }
+   Double_t RetrieveBinContent(Int_t bin) const override { return static_cast<Double_t>(fArray[bin]); }
    void     SetBinContent(Int_t bin, Double_t content) override;
    void     SetBinContent(Int_t bin, Int_t, Double_t content) override { SetBinContent(bin, content); }
    void     SetBinContent(Int_t binx, Int_t biny, Int_t binz, Double_t content) override
@@ -146,6 +155,7 @@ public:
    void          SetBinsLength(Int_t n = -1) override;
    void          UpdateBinContent(Int_t bin, Double_t content) override { fArray[bin] = static_cast<Float_t>(content); }
    GCubeF&       operator=(const GCubeF& h1);
+   GCubeF&       operator=(GCubeF&&) noexcept;
    friend GCubeF operator*(Float_t c1, GCubeF& h1);
    friend GCubeF operator*(GCubeF& h1, Float_t c1) { return operator*(c1, h1); }
    friend GCubeF operator+(GCubeF& h1, GCubeF& h2);
@@ -153,7 +163,9 @@ public:
    friend GCubeF operator*(GCubeF& h1, GCubeF& h2);
    friend GCubeF operator/(GCubeF& h1, GCubeF& h2);
 
-   ClassDefOverride(GCubeF, 1);
+   /// /cond CLASSIMP
+   ClassDefOverride(GCubeF, 1)   // NOLINT
+                                 /// /endcond
 };
 
 class GCubeD : public GCube, public TArrayD {
@@ -163,7 +175,8 @@ public:
    GCubeD(const char* name, const char* title, Int_t nbins, const Double_t* bins);
    GCubeD(const char* name, const char* title, Int_t nbins, const Float_t* bins);
    GCubeD(const GCubeD&);
-   ~GCubeD() override;
+   GCubeD(GCubeD&&) noexcept;
+   ~GCubeD();
 
    TH2D* GetMatrix(bool force = false);
 
@@ -179,7 +192,7 @@ public:
       return GetBinContent(GetBin(binx, biny, binz));
    }
    void     Reset(Option_t* option = "") override;
-   Double_t RetrieveBinContent(Int_t bin) const override { return Double_t(fArray[bin]); }
+   Double_t RetrieveBinContent(Int_t bin) const override { return static_cast<Double_t>(fArray[bin]); }
    void     SetBinContent(Int_t bin, Double_t content) override;
    void     SetBinContent(Int_t bin, Int_t, Double_t content) override { SetBinContent(bin, content); }
    void     SetBinContent(Int_t binx, Int_t biny, Int_t binz, Double_t content) override
@@ -189,6 +202,7 @@ public:
    void          SetBinsLength(Int_t n = -1) override;
    void          UpdateBinContent(Int_t bin, Double_t content) override { fArray[bin] = content; }
    GCubeD&       operator=(const GCubeD& h1);
+   GCubeD&       operator=(GCubeD&& h1) noexcept;
    friend GCubeD operator*(Float_t c1, GCubeD& h1);
    friend GCubeD operator*(GCubeD& h1, Float_t c1) { return operator*(c1, h1); }
    friend GCubeD operator+(GCubeD& h1, GCubeD& h2);
@@ -196,6 +210,8 @@ public:
    friend GCubeD operator*(GCubeD& h1, GCubeD& h2);
    friend GCubeD operator/(GCubeD& h1, GCubeD& h2);
 
-   ClassDefOverride(GCubeD, 1);
+   /// /cond CLASSIMP
+   ClassDefOverride(GCubeD, 1)   // NOLINT
+                                 /// /endcond
 };
 #endif

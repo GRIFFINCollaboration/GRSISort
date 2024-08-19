@@ -26,12 +26,12 @@ class AlphanumericSelector : public TGRSISelector {   // Must be same name as .C
 public:
    TGriffin* fGrif;   // Pointers to spot that events will be
 
-   AlphanumericSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(nullptr)
+   explicit AlphanumericSelector(TTree* /*tree*/ = nullptr) : TGRSISelector(), fGrif(nullptr)
    {
       SetOutputPrefix("Alphanumeric");   // Changes prefix of output file
    }
    // These functions are expected to exist
-   virtual ~AlphanumericSelector() {}
+   virtual ~AlphanumericSelector() = default;
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();
    void          FillHistograms();

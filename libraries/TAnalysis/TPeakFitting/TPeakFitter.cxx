@@ -6,7 +6,7 @@
 #include "Globals.h"
 
 TPeakFitter::TPeakFitter(const Double_t& rangeLow, const Double_t& rangeHigh)
-   : fTotalFitFunction(nullptr), fRangeLow(rangeLow), fRangeHigh(rangeHigh)
+   : fRangeLow(rangeLow), fRangeHigh(rangeHigh)
 {
    fBGToFit = new TF1("fbg", this, &TPeakFitter::DefaultBackgroundFunction, fRangeLow, fRangeHigh, 4, "TPeakFitter", "DefaultBackgroundFunction");
    fBGToFit->FixParameter(3, 0);
@@ -48,7 +48,7 @@ void TPeakFitter::PrintParameters() const
    /// Print the range of the fit and the parameters of each peak on a single line.
    std::cout << "Range: " << fRangeLow << " to " << fRangeHigh << " - ";
    int i = 0;
-   for(auto peak : fPeaksToFit) {
+   for(auto* peak : fPeaksToFit) {
       std::cout << peak->IsA()->GetName() << " #" << i++ << " ";
       peak->PrintParameters();
    }
@@ -58,10 +58,12 @@ void TPeakFitter::PrintParameters() const
 Int_t TPeakFitter::GetNParameters() const
 {
    Int_t n_par = 0;
-   for(auto i : fPeaksToFit)
-      n_par += i->GetNParameters();
-   if(fBGToFit)
+   for(auto* peak : fPeaksToFit) {
+      n_par += peak->GetNParameters();
+   }
+   if(fBGToFit != nullptr) {
       n_par += fBGToFit->GetNpar();
+   }
 
    return n_par;
 }
@@ -231,7 +233,6 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
             peak_func->SetParError(i, fTotalFitFunction->GetParError(param_counter));
             Double_t low  = 0.;
             Double_t high = 0.;
-            ;
             fTotalFitFunction->GetParLimits(param_counter, low, high);
             peak_func->SetParLimits(i, low, high);
             ++param_counter;
@@ -376,7 +377,7 @@ void TPeakFitter::InitializeBackgroundParameters(TH1* fit_hist)
    }
 }
 
-Double_t TPeakFitter::DefaultBackgroundFunction(Double_t* dim, Double_t* par)
+Double_t TPeakFitter::DefaultBackgroundFunction(Double_t* dim, Double_t* par)   // NOLINT
 {
    Double_t x         = dim[0];
    Double_t A         = par[0];

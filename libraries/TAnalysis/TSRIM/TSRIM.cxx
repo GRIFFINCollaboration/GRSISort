@@ -14,7 +14,6 @@
 const double TSRIM::dx = 1.0;   // um [sets accuracy of energy loss E vs X functions]
 
 TSRIM::TSRIM(const char* infilename, double emax, double emin, bool printfile)
-   : fEnergyLoss(nullptr)
 {
    ReadEnergyLossFile(infilename, emax, emin, printfile);
 }

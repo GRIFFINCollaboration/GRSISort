@@ -24,6 +24,8 @@ void EfficiencyHelper::CreateHistograms(unsigned int slot)
 
    // five histograms for each type: 1D singles, coincident and time random 2D matrix (unsuppressed on y-axis for suppressed data)
    // and coincident and time random E_1 vs E_1+E_2, all 2D histograms are at 180 degree
+   // 180 degree means for addback that the detectors are opposite, so the crystal angles are 158 degrees and larger!
+   // (for 145 mm distance)
 
    // unsuppressed spectra
    fH1[slot]["griffinE"]                   = new TH1F("griffinE", Form("Unsuppressed griffin energy;energy [keV];counts/%.1f keV", (highEnergy - lowEnergy) / energyBins), energyBins, lowEnergy, highEnergy);
@@ -109,7 +111,7 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
       fH1[slot].at("griffinEAddback")->Fill(grif1->GetEnergy());
       for(int g2 = g + 1; g2 < grif.GetAddbackMultiplicity(); ++g2) {
          auto grif2 = grif.GetAddbackHit(g2);
-         if(grif1->GetPosition().Angle(grif2->GetPosition()) * 180. > 179.) {
+         if(grif1->GetPosition().Angle(grif2->GetPosition()) * 180. > 157.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinEAddback180Coinc")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
                fH2[slot].at("griffinGriffinEAddback180Coinc")->Fill(grif2->GetEnergy(), grif1->GetEnergy());
@@ -129,7 +131,7 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
       fH1[slot].at("griffinESuppAddback")->Fill(grif1->GetEnergy());
       for(int g2 = g + 1; g2 < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++g2) {
          auto grif2 = grif.GetSuppressedAddbackHit(g2);
-         if(grif1->GetPosition().Angle(grif2->GetPosition()) * 180. > 179.) {
+         if(grif1->GetPosition().Angle(grif2->GetPosition()) * 180. > 157.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinESuppAddbackSum180Coinc")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy());
             } else if(TimeRandom(grif1, grif2)) {
@@ -140,7 +142,7 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
       for(int g2 = 0; g2 < grif.GetAddbackMultiplicity(); ++g2) {
          if(g == g2) continue;
          auto grif2 = grif.GetAddbackHit(g2);
-         if(grif1->GetPosition().Angle(grif2->GetPosition()) * 180. > 179.) {
+         if(grif1->GetPosition().Angle(grif2->GetPosition()) * 180. > 157.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinEMixedAddback180Coinc")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
             } else if(TimeRandom(grif1, grif2)) {
@@ -151,7 +153,7 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
    }
 }
 
-void EfficiencyHelper::EndOfSort(std::shared_ptr<std::map<std::string, TList>> list)
+void EfficiencyHelper::EndOfSort(std::shared_ptr<std::map<std::string, TList>>& list)
 {
    std::cout << std::endl;
    for(auto obj : list->at("")) {
