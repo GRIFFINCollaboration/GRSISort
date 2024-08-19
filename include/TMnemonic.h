@@ -124,7 +124,7 @@ private:
    static bool fPrint;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TMnemonic, 1)   // NOLINT
+   ClassDefOverride(TMnemonic, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 

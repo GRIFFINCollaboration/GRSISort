@@ -135,7 +135,7 @@ private:
    static double gTextSize;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGamma, 1)   // NOLINT
+   ClassDefOverride(TGamma, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
@@ -222,7 +222,7 @@ private:
    static double gTextSize;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TLevel, 1)   // NOLINT
+   ClassDefOverride(TLevel, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
@@ -269,7 +269,7 @@ private:
    TLevelScheme*            fLevelScheme{nullptr};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBand, 1)   // NOLINT
+   ClassDefOverride(TBand, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
@@ -392,7 +392,7 @@ private:
    double fY2{0.};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TLevelScheme, 1)   // NOLINT
+   ClassDefOverride(TLevelScheme, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

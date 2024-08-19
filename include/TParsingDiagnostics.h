@@ -67,7 +67,7 @@ private:
    int64_t fMaxTimeStamp{0};   ///< maximum timestamp per channel address
 
    /// \cond CLASSIMP
-   ClassDefOverride(TParsingDiagnosticsData, 1)   // NOLINT
+   ClassDefOverride(TParsingDiagnosticsData, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
@@ -144,7 +144,7 @@ public:
    void Draw(Option_t* opt = "") override;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TParsingDiagnostics, 2);   // NOLINT
+   ClassDefOverride(TParsingDiagnostics, 2);   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

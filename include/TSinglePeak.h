@@ -119,7 +119,7 @@ private:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TSinglePeak, 2)   // NOLINT
+   ClassDefOverride(TSinglePeak, 2)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

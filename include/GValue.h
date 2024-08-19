@@ -74,7 +74,7 @@ private:
    static int                            ParseInputData(const std::string& input, EPriority priority, Option_t* opt = "");
 
    /// \cond CLASSIMP
-   ClassDefOverride(GValue, 1)   // NOLINT
+   ClassDefOverride(GValue, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 

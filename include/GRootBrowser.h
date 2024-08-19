@@ -52,7 +52,7 @@ public:
    void SetCommand(const char* cmd) { fCommand = cmd; }   ///< simple setter function for the command to be executed
 
    /// \cond CLASSIMP
-   ClassDefOverride(GBrowserPlugin, 0)   // NOLINT
+   ClassDefOverride(GBrowserPlugin, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
@@ -216,7 +216,7 @@ public:
    void         Refresh(Bool_t force = kFALSE) override;
    void         Show() override { MapRaised(); }
    Option_t*    GetDrawOption() const override;
-   TGMainFrame* GetMainFrame() const override { return const_cast<TGMainFrame*>(static_cast<const TGMainFrame*>(this)); }   // NOLINT
+   TGMainFrame* GetMainFrame() const override { return const_cast<TGMainFrame*>(static_cast<const TGMainFrame*>(this)); }   // NOLINT(cppcoreguidelines-pro-type-const-cast)
 
    Long_t ExecPlugin(const char* name = nullptr, const char* fname = nullptr, const char* cmd = nullptr,
                      Int_t pos = static_cast<Int_t>(EInsertPosition::kRight), Int_t subpos = -1) override;
@@ -235,7 +235,7 @@ public:
                                   Option_t* opt = "");
 
    /// \cond CLASSIMP
-   ClassDefOverride(GRootBrowser, 0)   // NOLINT
+   ClassDefOverride(GRootBrowser, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

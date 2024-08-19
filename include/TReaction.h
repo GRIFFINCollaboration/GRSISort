@@ -190,7 +190,7 @@ private:
    double fThetaMax[4]{0.};   // NOLINT(*-avoid-c-arrays)
 
    /// \cond CLASSIMP
-   ClassDefOverride(TReaction, 1)   // NOLINT
+   ClassDefOverride(TReaction, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

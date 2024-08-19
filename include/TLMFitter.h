@@ -657,7 +657,7 @@ protected:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TLMFitter, 1)   // NOLINT
+   ClassDefOverride(TLMFitter, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

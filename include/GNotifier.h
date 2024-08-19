@@ -44,8 +44,8 @@ private:
    static GNotifier* fGNotifier;
 
    /// /cond CLASSIMP
-   ClassDefOverride(GNotifier, 0)   // NOLINT
-                                    /// /endcond
+   ClassDefOverride(GNotifier, 0)   // NOLINT(readability-else-after-return)
+	/// /endcond
 };
 
 #endif

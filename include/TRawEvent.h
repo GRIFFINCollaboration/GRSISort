@@ -50,7 +50,7 @@ public:
 private:
    int fGoodFrags{0};   ///< number of good fragments parsed
    /// \cond CLASSIMP
-   ClassDefOverride(TRawEvent, 0)   // NOLINT
+   ClassDefOverride(TRawEvent, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

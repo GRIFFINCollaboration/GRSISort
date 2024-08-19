@@ -66,7 +66,7 @@ private:
    int  projection_axis;
 
    /// /cond CLASSIMP
-   ClassDefOverride(GH1D, 1)   // NOLINT
+   ClassDefOverride(GH1D, 1)   // NOLINT(readability-else-after-return)
                                /// /endcond
 };
 

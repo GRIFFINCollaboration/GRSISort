@@ -325,7 +325,7 @@ private:
    TGTextButton*            fStartButton{nullptr};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEfficiencyCalibrator, 1)   // NOLINT
+   ClassDefOverride(TEfficiencyCalibrator, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

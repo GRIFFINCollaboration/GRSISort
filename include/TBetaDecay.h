@@ -41,7 +41,7 @@ private:
    TNucleus* fParent{nullptr};          ///< The parent nucleus beta decaying
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBetaDecay, 1)   // NOLINT
+   ClassDefOverride(TBetaDecay, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

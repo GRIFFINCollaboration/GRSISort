@@ -70,7 +70,7 @@ private:
    Double_t SinglePeakBG(Double_t* dim, Double_t* par);
 
    /// \cond CLASSIMP
-   ClassDefOverride(TMultiPeak, 2)   // NOLINT
+   ClassDefOverride(TMultiPeak, 2)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

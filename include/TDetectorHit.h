@@ -213,7 +213,7 @@ private:
    static TVector3 fBeamDirection;   //!
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDetectorHit, 1)   // NOLINT
+   ClassDefOverride(TDetectorHit, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

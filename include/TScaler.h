@@ -97,7 +97,7 @@ private:
    UInt_t              fHighTimeStamp{0};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TScalerData, 2)   // NOLINT
+   ClassDefOverride(TScalerData, 2)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
@@ -138,7 +138,7 @@ public:
       if(tree == nullptr) {
          tree = static_cast<TTree*>(gDirectory->Get("RateScaler"));
          if(tree == nullptr) {
-            std::cerr << __PRETTY_FUNCTION__ << ": no tree provided and failed to find \"RateScaler\" in " << gDirectory->GetName() << std::endl;   // NOLINT
+            std::cerr << __PRETTY_FUNCTION__ << ": no tree provided and failed to find \"RateScaler\" in " << gDirectory->GetName() << std::endl;   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
             return -1.;
          }
       }
@@ -150,12 +150,12 @@ public:
          if(scalerData->GetAddress() != address) { continue; }
          auto scalers = scalerData->GetScaler();
          if(nominator >= scalers.size() || denominator >= scalers.size()) {
-            std::cerr << __PRETTY_FUNCTION__ << ": trying to get nominator " << nominator << " and denominator " << denominator << " from vector of size " << scalers.size() << std::endl;   // NOLINT
+            std::cerr << __PRETTY_FUNCTION__ << ": trying to get nominator " << nominator << " and denominator " << denominator << " from vector of size " << scalers.size() << std::endl;   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
             return -1.;
          }
          return static_cast<double>(scalers[nominator]) / scalers[denominator];
       }
-      std::cerr << __PRETTY_FUNCTION__ << ": failed to find any entry for address " << hex(address, 4) << std::endl;   // NOLINT
+      std::cerr << __PRETTY_FUNCTION__ << ": failed to find any entry for address " << hex(address, 4) << std::endl;   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       return -1.;
    }
 
@@ -175,7 +175,7 @@ private:
    std::map<std::pair<UInt_t, UInt_t>, TH1D*>                 fHistRange;                  //!<! map to store histograms for address-ranges
 
    /// \cond CLASSIMP
-   ClassDefOverride(TScaler, 2)   // NOLINT
+   ClassDefOverride(TScaler, 2)   // NOLINT(readability-else-after-return)
                                   /// \endcond
 };
 /*! @} */

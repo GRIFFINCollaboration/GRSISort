@@ -91,7 +91,7 @@ private:
    static bool CheckMap(const std::map<double, double>& inmap);
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalibrator, 1)   // NOLINT
+   ClassDefOverride(TCalibrator, 1)   // NOLINT(readability-else-after-return)
                                       /// \endcond
 };
 

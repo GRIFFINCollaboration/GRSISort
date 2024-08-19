@@ -182,7 +182,7 @@ private:
    static TDirectory* fDir;
 
    /// \cond CLASSIMP
-   ClassDef(TSingleton, 1)   // NOLINT
+   ClassDef(TSingleton, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 

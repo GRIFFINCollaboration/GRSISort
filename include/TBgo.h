@@ -47,7 +47,7 @@ public:
    void Print(std::ostream& out) const override;    //!<!
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBgo, 1)   // NOLINT
+   ClassDefOverride(TBgo, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

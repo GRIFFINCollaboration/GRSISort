@@ -256,7 +256,7 @@ private:
    const static int BADCHISQ_AMPL = -1024 - 6;
 
    /// \cond CLASSIMP
-   ClassDef(TPulseAnalyzer, 4)   // NOLINT
+   ClassDef(TPulseAnalyzer, 4)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

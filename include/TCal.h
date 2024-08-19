@@ -85,7 +85,7 @@ private:
    TNucleus* fNuc{nullptr};       ///< Nucleus that we are calibrating against
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCal, 2)   // NOLINT
+   ClassDefOverride(TCal, 2)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

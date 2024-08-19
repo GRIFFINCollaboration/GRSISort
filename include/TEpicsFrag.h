@@ -87,7 +87,7 @@ private:
    std::vector<std::string> fName;   ///< The name of the scaler
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEpicsFrag, 2)   // NOLINT
+   ClassDefOverride(TEpicsFrag, 2)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

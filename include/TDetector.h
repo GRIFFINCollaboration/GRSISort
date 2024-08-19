@@ -88,7 +88,7 @@ private:
    std::vector<TDetectorHit*> fHits;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDetector, 1)   // NOLINT
+   ClassDefOverride(TDetector, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

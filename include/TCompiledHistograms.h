@@ -70,7 +70,7 @@ private:
    TRuntimeObjects fObj;
 
    // \cond CLASSIMP
-   ClassDefOverride(TCompiledHistograms, 0)   // NOLINT
+   ClassDefOverride(TCompiledHistograms, 0)   // NOLINT(readability-else-after-return)
                                               // \endcond
 };
 
