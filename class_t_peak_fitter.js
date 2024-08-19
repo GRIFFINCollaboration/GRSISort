@@ -1,8 +1,10 @@
 var class_t_peak_fitter =
 [
-    [ "~TPeakFitter", "class_t_peak_fitter.html#aa49c93fdbe7277436de4e0ced6caade1", null ],
     [ "TPeakFitter", "class_t_peak_fitter.html#a6478d79668a46b81dd54a34ef6810df0", null ],
-    [ "TPeakFitter", "class_t_peak_fitter.html#a3ada2891b23f266bae5fbfbd901aaea6", null ],
+    [ "TPeakFitter", "class_t_peak_fitter.html#a495168546e5c3d59c299870b5036d196", null ],
+    [ "TPeakFitter", "class_t_peak_fitter.html#adf54e84a0e07c43616274d9fc811bff6", null ],
+    [ "TPeakFitter", "class_t_peak_fitter.html#a85d537006ce946b22625b81db1144b10", null ],
+    [ "~TPeakFitter", "class_t_peak_fitter.html#ac4c35937f46b53eaa5d9cfe8e8a5500a", null ],
     [ "AddPeak", "class_t_peak_fitter.html#acf4e5439a0e86dc1869b49090e129321", null ],
     [ "BackgroundFunction", "class_t_peak_fitter.html#ab4a8f50ffa063744edd20108060e9ce0", null ],
     [ "DefaultBackgroundFunction", "class_t_peak_fitter.html#ae95d29fadef5c12577e020ac02275e1c", null ],
@@ -14,6 +16,8 @@ var class_t_peak_fitter =
     [ "GetNParameters", "class_t_peak_fitter.html#a54c33a4a4bd7bc76b9fcd795443f3696", null ],
     [ "InitializeBackgroundParameters", "class_t_peak_fitter.html#a5a718c64429cf200f90ab70287a33171", null ],
     [ "InitializeParameters", "class_t_peak_fitter.html#a7cfdabd43cbec2a1f0d7068e8bd2f1fc", null ],
+    [ "operator=", "class_t_peak_fitter.html#a17e5020c304a9c60ebb1e38e100547bb", null ],
+    [ "operator=", "class_t_peak_fitter.html#a26c7c5aed36d7cdc82d5846e6e9e7aa0", null ],
     [ "Print", "class_t_peak_fitter.html#a4f95b728bfb00f2c67df1bb5b732875f", null ],
     [ "PrintParameters", "class_t_peak_fitter.html#a2c519e69cc72379f01ca3012df0c35ef", null ],
     [ "RemoveAllPeaks", "class_t_peak_fitter.html#a2bd5ac92474d2fb4d371c061563d4255", null ],

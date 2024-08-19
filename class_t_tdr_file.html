@@ -98,6 +98,7 @@ $(document).ready(function(){initNavTree('class_t_tdr_file.html',''); initResiza
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_t_tdr_file-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">TTdrFile Class Reference<div class="ingroups"><a class="el" href="group___sorting.html">Sorting</a></div></div></div>
 </div><!--header-->
@@ -123,26 +124,42 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a14700d47abc1ec2c587b15bb4a931a84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6c157a4ec12d1c81de50368115bddff" id="r_af6c157a4ec12d1c81de50368115bddff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tdr_file.html#af6c157a4ec12d1c81de50368115bddff">~TTdrFile</a> () override</td></tr>
 <tr class="separator:af6c157a4ec12d1c81de50368115bddff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e9bc2e6c2cec7c8a756fc83bfafab7c" id="r_a7e9bc2e6c2cec7c8a756fc83bfafab7c"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#a7e9bc2e6c2cec7c8a756fc83bfafab7c">BufferData</a> ()</td></tr>
+<tr class="separator:a7e9bc2e6c2cec7c8a756fc83bfafab7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44351018afd09da6d229dac41005f5e9" id="r_a44351018afd09da6d229dac41005f5e9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#a44351018afd09da6d229dac41005f5e9">BufferSize</a> () const</td></tr>
+<tr class="separator:a44351018afd09da6d229dac41005f5e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8ab628f45f6416de2654d38afb339ef" id="r_aa8ab628f45f6416de2654d38afb339ef"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#aa8ab628f45f6416de2654d38afb339ef">BytesRead</a> ()</td></tr>
+<tr class="separator:aa8ab628f45f6416de2654d38afb339ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2feb977f7f28aa5fc8f515e999ce35f6" id="r_a2feb977f7f28aa5fc8f515e999ce35f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#a2feb977f7f28aa5fc8f515e999ce35f6">ClearBuffer</a> ()</td></tr>
+<tr class="separator:a2feb977f7f28aa5fc8f515e999ce35f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fba26dd0195e4870ff20b4a4db9b247" id="r_a2fba26dd0195e4870ff20b4a4db9b247"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tdr_file.html#a2fba26dd0195e4870ff20b4a4db9b247">Close</a> () override</td></tr>
 <tr class="separator:a2fba26dd0195e4870ff20b4a4db9b247"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae88fc11afb08895a1e14bcd5bb0b2d3b" id="r_ae88fc11afb08895a1e14bcd5bb0b2d3b"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#ae88fc11afb08895a1e14bcd5bb0b2d3b">GetBytesRead</a> ()</td></tr>
-<tr class="separator:ae88fc11afb08895a1e14bcd5bb0b2d3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4d8c634b3290d6891bd300a9be9bf62" id="r_aa4d8c634b3290d6891bd300a9be9bf62"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a> () const</td></tr>
+<tr class="separator:aa4d8c634b3290d6891bd300a9be9bf62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4cfd6155c514215525a6fdafa34a241" id="r_aa4cfd6155c514215525a6fdafa34a241"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#aa4cfd6155c514215525a6fdafa34a241">Filename</a> (const char *val)</td></tr>
+<tr class="separator:aa4cfd6155c514215525a6fdafa34a241"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92f7f63635aa48319bd2d055116e82e8" id="r_a92f7f63635aa48319bd2d055116e82e8"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#a92f7f63635aa48319bd2d055116e82e8">FileSize</a> ()</td></tr>
+<tr class="separator:a92f7f63635aa48319bd2d055116e82e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af86125e0a4f210dc0c2e78c118f59c55" id="r_af86125e0a4f210dc0c2e78c118f59c55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#af86125e0a4f210dc0c2e78c118f59c55">FileSize</a> (size_t fileSize)</td></tr>
+<tr class="separator:af86125e0a4f210dc0c2e78c118f59c55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37d73ab1087c2a9c8df0bc838010e688" id="r_a37d73ab1087c2a9c8df0bc838010e688"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#a37d73ab1087c2a9c8df0bc838010e688">GetFilename</a> () const</td></tr>
 <tr class="separator:a37d73ab1087c2a9c8df0bc838010e688"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa18ebbb673a3678db73e3c4564ecc363" id="r_aa18ebbb673a3678db73e3c4564ecc363"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#aa18ebbb673a3678db73e3c4564ecc363">GetFileSize</a> ()</td></tr>
-<tr class="separator:aa18ebbb673a3678db73e3c4564ecc363"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a729abdc1a0ec28bd37fba187e6f4fad9" id="r_a729abdc1a0ec28bd37fba187e6f4fad9"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="class_t_raw_event.html">TRawEvent</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#a729abdc1a0ec28bd37fba187e6f4fad9">GetOdbEvent</a> ()</td></tr>
 <tr class="separator:a729abdc1a0ec28bd37fba187e6f4fad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a968404f8c481ae7bb1ce735953c38716" id="r_a968404f8c481ae7bb1ce735953c38716"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tdr_file.html#a968404f8c481ae7bb1ce735953c38716">GetRunNumber</a> () override</td></tr>
 <tr class="separator:a968404f8c481ae7bb1ce735953c38716"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad520fe049804b291f87813c9b6ac137f" id="r_ad520fe049804b291f87813c9b6ac137f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tdr_file.html#ad520fe049804b291f87813c9b6ac137f">GetSubRunNumber</a> () override</td></tr>
 <tr class="separator:ad520fe049804b291f87813c9b6ac137f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa51e00bf11b13d2724b57e6e79cf8cf3" id="r_aa51e00bf11b13d2724b57e6e79cf8cf3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#aa51e00bf11b13d2724b57e6e79cf8cf3">IncrementBytesRead</a> (size_t val=1)</td></tr>
+<tr class="separator:aa51e00bf11b13d2724b57e6e79cf8cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65e6d83d6d9b83004f16cec612c17ba5" id="r_a65e6d83d6d9b83004f16cec612c17ba5"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_t_raw_event.html">TRawEvent</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tdr_file.html#a65e6d83d6d9b83004f16cec612c17ba5">NewEvent</a> () override</td></tr>
 <tr class="separator:a65e6d83d6d9b83004f16cec612c17ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56124106fd48c5c83d973b1e2cf80eaa" id="r_a56124106fd48c5c83d973b1e2cf80eaa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tdr_file.html#a56124106fd48c5c83d973b1e2cf80eaa">Open</a> (const char *filename) override</td></tr>
 <tr class="separator:a56124106fd48c5c83d973b1e2cf80eaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20258d00ba10388c3c99df42ffb4ec12" id="r_a20258d00ba10388c3c99df42ffb4ec12"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tdr_file.html#a20258d00ba10388c3c99df42ffb4ec12">Read</a> (std::shared_ptr&lt; <a class="el" href="class_t_raw_event.html">TRawEvent</a> &gt; lstEvent) override</td></tr>
 <tr class="separator:a20258d00ba10388c3c99df42ffb4ec12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac930b008d5305c325ac4c0bcc27bcb22" id="r_ac930b008d5305c325ac4c0bcc27bcb22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#ac930b008d5305c325ac4c0bcc27bcb22">ResizeBuffer</a> (size_t newSize)</td></tr>
+<tr class="separator:ac930b008d5305c325ac4c0bcc27bcb22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4fbabcf4ff8ac7b67a8fc991941acc6" id="r_af4fbabcf4ff8ac7b67a8fc991941acc6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tdr_file.html#af4fbabcf4ff8ac7b67a8fc991941acc6">Skip</a> (size_t nofEvents) override</td></tr>
 <tr class="separator:af4fbabcf4ff8ac7b67a8fc991941acc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42f8fbab6f3053550f3c23f4b71d0126" id="r_a42f8fbab6f3053550f3c23f4b71d0126"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tdr_file.html#a42f8fbab6f3053550f3c23f4b71d0126">Status</a> (bool long_file_description=true) override</td></tr>
@@ -150,14 +167,17 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
+<tr class="memitem:a70c4dc998a405a9bec4e35f881d3d9ba" id="r_a70c4dc998a405a9bec4e35f881d3d9ba"><td class="memItemLeft" align="right" valign="top">std::ifstream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a></td></tr>
+<tr class="separator:a70c4dc998a405a9bec4e35f881d3d9ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
 <tr class="memitem:a763e3e596b45ef81e1762894adb99dd0" id="r_a763e3e596b45ef81e1762894adb99dd0"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#a763e3e596b45ef81e1762894adb99dd0">fBytesRead</a> {0}</td></tr>
 <tr class="separator:a763e3e596b45ef81e1762894adb99dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa67a2b187d313e70935b834f72b11c31" id="r_aa67a2b187d313e70935b834f72b11c31"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a></td></tr>
 <tr class="separator:aa67a2b187d313e70935b834f72b11c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07b8745110f5b35e60ccec07070ac557" id="r_a07b8745110f5b35e60ccec07070ac557"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#a07b8745110f5b35e60ccec07070ac557">fFileSize</a> {0}</td></tr>
 <tr class="separator:a07b8745110f5b35e60ccec07070ac557"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70c4dc998a405a9bec4e35f881d3d9ba" id="r_a70c4dc998a405a9bec4e35f881d3d9ba"><td class="memItemLeft" align="right" valign="top">std::ifstream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a></td></tr>
-<tr class="separator:a70c4dc998a405a9bec4e35f881d3d9ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ae6c0e5b3f20eff5031bb0a017eed9c" id="r_a8ae6c0e5b3f20eff5031bb0a017eed9c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; char &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_raw_file.html#a8ae6c0e5b3f20eff5031bb0a017eed9c">fReadBuffer</a></td></tr>
 <tr class="separator:a8ae6c0e5b3f20eff5031bb0a017eed9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -290,6 +310,130 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7e9bc2e6c2cec7c8a756fc83bfafab7c" name="a7e9bc2e6c2cec7c8a756fc83bfafab7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e9bc2e6c2cec7c8a756fc83bfafab7c">&#9670;&#160;</a></span>BufferData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char * TRawFile::BufferData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00070">70</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00085">TRawFile::fReadBuffer</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_midas_file_8cxx_source.html#l00334">TMidasFile::Read()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00436">TMidasFile::ReadMoreBytes()</a>, and <a class="el" href="_t_midas_file_8cxx_source.html#l00382">TMidasFile::Skip()</a>.</p>
+
+</div>
+</div>
+<a id="a44351018afd09da6d229dac41005f5e9" name="a44351018afd09da6d229dac41005f5e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44351018afd09da6d229dac41005f5e9">&#9670;&#160;</a></span>BufferSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t TRawFile::BufferSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00069">69</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00085">TRawFile::fReadBuffer</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_midas_file_8cxx_source.html#l00334">TMidasFile::Read()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00436">TMidasFile::ReadMoreBytes()</a>, and <a class="el" href="_t_midas_file_8cxx_source.html#l00382">TMidasFile::Skip()</a>.</p>
+
+</div>
+</div>
+<a id="aa8ab628f45f6416de2654d38afb339ef" name="aa8ab628f45f6416de2654d38afb339ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8ab628f45f6416de2654d38afb339ef">&#9670;&#160;</a></span>BytesRead()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual size_t TRawFile::BytesRead </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00061">61</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00087">TRawFile::fBytesRead</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_data_loop_8cxx_source.html#l00053">TDataLoop::Iteration()</a>, and <a class="el" href="_t_midas_file_8cxx_source.html#l00082">TMidasFile::Status()</a>.</p>
+
+</div>
+</div>
+<a id="a2feb977f7f28aa5fc8f515e999ce35f6" name="a2feb977f7f28aa5fc8f515e999ce35f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2feb977f7f28aa5fc8f515e999ce35f6">&#9670;&#160;</a></span>ClearBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TRawFile::ClearBuffer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00071">71</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00085">TRawFile::fReadBuffer</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_midas_file_8cxx_source.html#l00334">TMidasFile::Read()</a>, and <a class="el" href="_t_midas_file_8cxx_source.html#l00382">TMidasFile::Skip()</a>.</p>
+
+</div>
+</div>
 <a id="a2fba26dd0195e4870ff20b4a4db9b247" name="a2fba26dd0195e4870ff20b4a4db9b247"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2fba26dd0195e4870ff20b4a4db9b247">&#9670;&#160;</a></span>Close()</h2>
 
@@ -323,8 +467,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae88fc11afb08895a1e14bcd5bb0b2d3b" name="ae88fc11afb08895a1e14bcd5bb0b2d3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae88fc11afb08895a1e14bcd5bb0b2d3b">&#9670;&#160;</a></span>GetBytesRead()</h2>
+<a id="aa4d8c634b3290d6891bd300a9be9bf62" name="aa4d8c634b3290d6891bd300a9be9bf62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4d8c634b3290d6891bd300a9be9bf62">&#9670;&#160;</a></span>Filename() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -333,7 +477,70 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual size_t TRawFile::GetBytesRead </td>
+          <td class="memname">virtual std::string TRawFile::Filename </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the name of this file. </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00066">66</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00083">TRawFile::fFilename</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_midas_file_8cxx_source.html#l00571">TMidasFile::Close()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00612">TMidasFile::GetRunNumber()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00640">TMidasFile::GetSubRunNumber()</a>, and <a class="el" href="_t_midas_file_8cxx_source.html#l00120">TMidasFile::Open()</a>.</p>
+
+</div>
+</div>
+<a id="aa4cfd6155c514215525a6fdafa34a241" name="aa4cfd6155c514215525a6fdafa34a241"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4cfd6155c514215525a6fdafa34a241">&#9670;&#160;</a></span>Filename() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void TRawFile::Filename </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>val</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00067">67</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00083">TRawFile::fFilename</a>.</p>
+
+</div>
+</div>
+<a id="a92f7f63635aa48319bd2d055116e82e8" name="a92f7f63635aa48319bd2d055116e82e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92f7f63635aa48319bd2d055116e82e8">&#9670;&#160;</a></span>FileSize() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual size_t TRawFile::FileSize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -346,11 +553,41 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00057">57</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00063">63</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00073">TRawFile::fBytesRead</a>.</p>
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00088">TRawFile::fFileSize</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_loop_8cxx_source.html#l00053">TDataLoop::Iteration()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_loop_8cxx_source.html#l00053">TDataLoop::Iteration()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00120">TMidasFile::Open()</a>, and <a class="el" href="_t_midas_file_8cxx_source.html#l00082">TMidasFile::Status()</a>.</p>
+
+</div>
+</div>
+<a id="af86125e0a4f210dc0c2e78c118f59c55" name="af86125e0a4f210dc0c2e78c118f59c55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af86125e0a4f210dc0c2e78c118f59c55">&#9670;&#160;</a></span>FileSize() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TRawFile::FileSize </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>fileSize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00064">64</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00088">TRawFile::fFileSize</a>.</p>
 
 </div>
 </div>
@@ -379,44 +616,11 @@ Protected Attributes</h2></td></tr>
 
 <p>Get the name of this file. </p>
 
-<p>Reimplemented in <a class="el" href="class_t_midas_file.html#af12181d63dad85ffee09ec4e09b643c2">TMidasFile</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00056">56</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00052">52</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00083">TRawFile::fFilename</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00069">TRawFile::fFilename</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_rlmd_file_8cxx_source.html#l00081">TRlmdFile::Open()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00083">TLstFile::Open()</a>, and <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">Open()</a>.</p>
-
-</div>
-</div>
-<a id="aa18ebbb673a3678db73e3c4564ecc363" name="aa18ebbb673a3678db73e3c4564ecc363"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa18ebbb673a3678db73e3c4564ecc363">&#9670;&#160;</a></span>GetFileSize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual size_t TRawFile::GetFileSize </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00058">58</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
-
-<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00074">TRawFile::fFileSize</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_data_loop_8cxx_source.html#l00053">TDataLoop::Iteration()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_midas_file_8cxx_source.html#l00120">TMidasFile::Open()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00081">TRlmdFile::Open()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00083">TLstFile::Open()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">Open()</a>, and <a class="el" href="offsetfix_8cxx_source.html#l00723">WriteEvents()</a>.</p>
 
 </div>
 </div>
@@ -445,7 +649,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_t_midas_file.html#ab0b0aee7f8b5bbcbb3ff36b7f6ebb1f8">TMidasFile</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00061">61</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00075">75</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
 
 </div>
 </div>
@@ -476,7 +680,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_tdr_file_8cxx_source.html#l00168">168</a> of file <a class="el" href="_t_tdr_file_8cxx_source.html">TTdrFile.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00069">TRawFile::fFilename</a>.</p>
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00083">TRawFile::fFilename</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">Open()</a>.</p>
 
@@ -509,9 +713,41 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_tdr_file_8cxx_source.html#l00200">200</a> of file <a class="el" href="_t_tdr_file_8cxx_source.html">TTdrFile.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00069">TRawFile::fFilename</a>.</p>
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00083">TRawFile::fFilename</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">Open()</a>.</p>
+
+</div>
+</div>
+<a id="aa51e00bf11b13d2724b57e6e79cf8cf3" name="aa51e00bf11b13d2724b57e6e79cf8cf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa51e00bf11b13d2724b57e6e79cf8cf3">&#9670;&#160;</a></span>IncrementBytesRead()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TRawFile::IncrementBytesRead </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>val</em> = <code>1</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00062">62</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00087">TRawFile::fBytesRead</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_midas_file_8cxx_source.html#l00334">TMidasFile::Read()</a>, and <a class="el" href="_t_midas_file_8cxx_source.html#l00382">TMidasFile::Skip()</a>.</p>
 
 </div>
 </div>
@@ -582,7 +818,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">61</a> of file <a class="el" href="_t_tdr_file_8cxx_source.html">TTdrFile.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00070">TRunInfo::ClearVersion()</a>, <a class="el" href="_t_raw_file_8h_source.html#l00069">TRawFile::fFilename</a>, <a class="el" href="_t_raw_file_8h_source.html#l00074">TRawFile::fFileSize</a>, <a class="el" href="_t_tdr_file_8h_source.html#l00058">fInputFile</a>, <a class="el" href="_t_raw_file_8h_source.html#l00071">TRawFile::fReadBuffer</a>, <a class="el" href="_t_raw_file_8h_source.html#l00052">TRawFile::GetFilename()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00168">GetRunNumber()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00200">GetSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00187">TRunInfo::SetDetectorInformation()</a>, <a class="el" href="_t_channel_8h_source.html#l00080">TChannel::SetMnemonicClass()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00134">TRunInfo::SetRunInfo()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00071">TRunInfo::SetVersion()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00074">TRunInfo::ClearVersion()</a>, <a class="el" href="_t_raw_file_8h_source.html#l00083">TRawFile::fFilename</a>, <a class="el" href="_t_raw_file_8h_source.html#l00088">TRawFile::fFileSize</a>, <a class="el" href="_t_tdr_file_8h_source.html#l00058">fInputFile</a>, <a class="el" href="_t_raw_file_8h_source.html#l00085">TRawFile::fReadBuffer</a>, <a class="el" href="_t_raw_file_8h_source.html#l00056">TRawFile::GetFilename()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00168">GetRunNumber()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00200">GetSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00191">TRunInfo::SetDetectorInformation()</a>, <a class="el" href="_t_channel_8h_source.html#l00080">TChannel::SetMnemonicClass()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00134">TRunInfo::SetRunInfo()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00075">TRunInfo::SetVersion()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_tdr_file_8cxx_source.html#l00036">TTdrFile()</a>.</p>
 
@@ -626,7 +862,39 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_tdr_file_8cxx_source.html#l00116">116</a> of file <a class="el" href="_t_tdr_file_8cxx_source.html">TTdrFile.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00073">TRawFile::fBytesRead</a>, <a class="el" href="_t_raw_file_8h_source.html#l00074">TRawFile::fFileSize</a>, <a class="el" href="_t_tdr_file_8h_source.html#l00058">fInputFile</a>, and <a class="el" href="_t_raw_file_8h_source.html#l00071">TRawFile::fReadBuffer</a>.</p>
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00087">TRawFile::fBytesRead</a>, <a class="el" href="_t_raw_file_8h_source.html#l00088">TRawFile::fFileSize</a>, <a class="el" href="_t_tdr_file_8h_source.html#l00058">fInputFile</a>, and <a class="el" href="_t_raw_file_8h_source.html#l00085">TRawFile::fReadBuffer</a>.</p>
+
+</div>
+</div>
+<a id="ac930b008d5305c325ac4c0bcc27bcb22" name="ac930b008d5305c325ac4c0bcc27bcb22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac930b008d5305c325ac4c0bcc27bcb22">&#9670;&#160;</a></span>ResizeBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TRawFile::ResizeBuffer </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>newSize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00072">72</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00085">TRawFile::fReadBuffer</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_midas_file_8cxx_source.html#l00436">TMidasFile::ReadMoreBytes()</a>.</p>
 
 </div>
 </div>
@@ -660,7 +928,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_tdr_file_8cxx_source.html#l00154">154</a> of file <a class="el" href="_t_tdr_file_8cxx_source.html">TTdrFile.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00073">TRawFile::fBytesRead</a>, <a class="el" href="_t_raw_file_8h_source.html#l00074">TRawFile::fFileSize</a>, and <a class="el" href="_t_tdr_file_8h_source.html#l00058">fInputFile</a>.</p>
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00087">TRawFile::fBytesRead</a>, <a class="el" href="_t_raw_file_8h_source.html#l00088">TRawFile::fFileSize</a>, and <a class="el" href="_t_tdr_file_8h_source.html#l00058">fInputFile</a>.</p>
 
 </div>
 </div>
@@ -692,7 +960,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_tdr_file_8cxx_source.html#l00051">51</a> of file <a class="el" href="_t_tdr_file_8cxx_source.html">TTdrFile.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00073">TRawFile::fBytesRead</a>, <a class="el" href="_t_raw_file_8h_source.html#l00074">TRawFile::fFileSize</a>, <a class="el" href="_globals_8h_source.html#l00031">HIDE_CURSOR</a>, and <a class="el" href="_globals_8h_source.html#l00032">SHOW_CURSOR</a>.</p>
+<p class="reference">References <a class="el" href="_t_raw_file_8h_source.html#l00087">TRawFile::fBytesRead</a>, <a class="el" href="_t_raw_file_8h_source.html#l00088">TRawFile::fFileSize</a>, <a class="el" href="_globals_8h_source.html#l00031">HIDE_CURSOR</a>, and <a class="el" href="_globals_8h_source.html#l00032">SHOW_CURSOR</a>.</p>
 
 </div>
 </div>
@@ -712,14 +980,14 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00073">73</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00087">87</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_rlmd_file_8cxx_source.html#l00129">TRlmdFile::Close()</a>, <a class="el" href="_t_raw_file_8h_source.html#l00057">TRawFile::GetBytesRead()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00081">TRlmdFile::Open()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00336">TMidasFile::Read()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00198">TLstFile::Read()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00116">Read()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00140">TRlmdFile::Read()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00384">TMidasFile::Skip()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00154">Skip()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00084">TMidasFile::Status()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00056">TLstFile::Status()</a>, and <a class="el" href="_t_tdr_file_8cxx_source.html#l00051">Status()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_raw_file_8h_source.html#l00061">TRawFile::BytesRead()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00129">TRlmdFile::Close()</a>, <a class="el" href="_t_raw_file_8h_source.html#l00062">TRawFile::IncrementBytesRead()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00081">TRlmdFile::Open()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00198">TLstFile::Read()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00116">Read()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00140">TRlmdFile::Read()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00154">Skip()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00056">TLstFile::Status()</a>, and <a class="el" href="_t_tdr_file_8cxx_source.html#l00051">Status()</a>.</p>
 
 </div>
 </div>
@@ -738,16 +1006,16 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>name of the currently open file </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00069">69</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00083">83</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_midas_file_8cxx_source.html#l00573">TMidasFile::Close()</a>, <a class="el" href="_t_raw_file_8h_source.html#l00052">TRawFile::GetFilename()</a>, <a class="el" href="_t_midas_file_8h_source.html#l00061">TMidasFile::GetFilename()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00614">TMidasFile::GetRunNumber()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00204">TRlmdFile::GetRunNumber()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00240">TLstFile::GetRunNumber()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00168">GetRunNumber()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00642">TMidasFile::GetSubRunNumber()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00200">GetSubRunNumber()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00122">TMidasFile::Open()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00081">TRlmdFile::Open()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00083">TLstFile::Open()</a>, and <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">Open()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_raw_file_8h_source.html#l00066">TRawFile::Filename()</a>, <a class="el" href="_t_raw_file_8h_source.html#l00067">TRawFile::Filename()</a>, <a class="el" href="_t_raw_file_8h_source.html#l00056">TRawFile::GetFilename()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00204">TRlmdFile::GetRunNumber()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00240">TLstFile::GetRunNumber()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00168">GetRunNumber()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00200">GetSubRunNumber()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00081">TRlmdFile::Open()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00083">TLstFile::Open()</a>, and <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">Open()</a>.</p>
 
 </div>
 </div>
@@ -766,14 +1034,14 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00074">74</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00088">88</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_rlmd_file_8cxx_source.html#l00129">TRlmdFile::Close()</a>, <a class="el" href="_t_raw_file_8h_source.html#l00058">TRawFile::GetFileSize()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00122">TMidasFile::Open()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00081">TRlmdFile::Open()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00083">TLstFile::Open()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">Open()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00198">TLstFile::Read()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00116">Read()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00140">TRlmdFile::Read()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00154">Skip()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00084">TMidasFile::Status()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00054">TRlmdFile::Status()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00056">TLstFile::Status()</a>, and <a class="el" href="_t_tdr_file_8cxx_source.html#l00051">Status()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_rlmd_file_8cxx_source.html#l00129">TRlmdFile::Close()</a>, <a class="el" href="_t_raw_file_8h_source.html#l00063">TRawFile::FileSize()</a>, <a class="el" href="_t_raw_file_8h_source.html#l00064">TRawFile::FileSize()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00081">TRlmdFile::Open()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00083">TLstFile::Open()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">Open()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00198">TLstFile::Read()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00116">Read()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00140">TRlmdFile::Read()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00154">Skip()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00054">TRlmdFile::Status()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00056">TLstFile::Status()</a>, and <a class="el" href="_t_tdr_file_8cxx_source.html#l00051">Status()</a>.</p>
 
 </div>
 </div>
@@ -818,14 +1086,14 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00071">71</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_raw_file_8h_source.html#l00085">85</a> of file <a class="el" href="_t_raw_file_8h_source.html">TRawFile.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_lst_file_8cxx_source.html#l00083">TLstFile::Open()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">Open()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00336">TMidasFile::Read()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00198">TLstFile::Read()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00116">Read()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00140">TRlmdFile::Read()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00438">TMidasFile::ReadMoreBytes()</a>, and <a class="el" href="_t_midas_file_8cxx_source.html#l00384">TMidasFile::Skip()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_raw_file_8h_source.html#l00070">TRawFile::BufferData()</a>, <a class="el" href="_t_raw_file_8h_source.html#l00069">TRawFile::BufferSize()</a>, <a class="el" href="_t_raw_file_8h_source.html#l00071">TRawFile::ClearBuffer()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00083">TLstFile::Open()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">Open()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00198">TLstFile::Read()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00116">Read()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00140">TRlmdFile::Read()</a>, and <a class="el" href="_t_raw_file_8h_source.html#l00072">TRawFile::ResizeBuffer()</a>.</p>
 
 </div>
 </div>
@@ -836,7 +1104,7 @@ Protected Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_tdr_file.html">TTdrFile</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 12 2024 00:34:31.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Aug 19 2024 19:08:47.</li>
   </ul>
 </div>
 </body>

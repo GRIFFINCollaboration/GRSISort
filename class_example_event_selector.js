@@ -1,11 +1,10 @@
 var class_example_event_selector =
 [
-    [ "ExampleEventSelector", "class_example_event_selector.html#a1cc33dcf5b688e3f288a34067251dc92", null ],
-    [ "~ExampleEventSelector", "class_example_event_selector.html#a7a7611f4f3e9dd7a640824b0516fc30a", null ],
+    [ "ExampleEventSelector", "class_example_event_selector.html#ae27191feabb5e076bf89df70ce9a1ec6", null ],
+    [ "~ExampleEventSelector", "class_example_event_selector.html#a7724c0bb7a104f2214c754ee3f2dd835", null ],
     [ "Begin", "class_example_event_selector.html#ab93493c658b7214c7b98b755d85586bd", null ],
     [ "CheckSizes", "class_example_event_selector.html#a3ee3614749d1369487299802d7e18364", null ],
     [ "ClassDef", "class_example_event_selector.html#a66b43606576f4a4c8cd68cd68bf2662f", null ],
-    [ "ClassDefOverride", "class_example_event_selector.html#aac34947a3e9bcf869d26c3ce7ddf24c2", null ],
     [ "CreateHistograms", "class_example_event_selector.html#a75d8d4b7dba55d9c34c543df2b7dfb28", null ],
     [ "EndOfSort", "class_example_event_selector.html#aefe521b4e1ad5569b7e2809fb7f7e411", null ],
     [ "FillHistograms", "class_example_event_selector.html#a149f95eff09cf13edda2429e1c4e4028", null ],

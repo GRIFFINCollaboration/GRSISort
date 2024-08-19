@@ -20,7 +20,7 @@ var searchData=
   ['updateinitialparameters_17',['UpdateInitialParameters',['../class_t_calibrate_descant.html#a45c69e08825a31c6657777e9d45afef3',1,'TCalibrateDescant']]],
   ['updateinterface_18',['UpdateInterface',['../class_t_calibrate_descant.html#a6d002739d50cbd8276a3d721ff0ee03a',1,'TCalibrateDescant']]],
   ['updatepeak_19',['UpdatePeak',['../class_t_angular_correlation.html#aa52f7d7eb2ea6908f5a05e1d5924430d',1,'TAngularCorrelation']]],
-  ['updatepeakparameters_20',['updatepeakparameters',['../class_t_single_peak.html#afa420f687a46bc14ac8bcc67c33ab71d',1,'TSinglePeak::UpdatePeakParameters()'],['../class_t_peak_fitter.html#a182efaa6bfdd684158cdbc8da8735257',1,'TPeakFitter::UpdatePeakParameters()']]],
+  ['updatepeakparameters_20',['updatepeakparameters',['../class_t_peak_fitter.html#a182efaa6bfdd684158cdbc8da8735257',1,'TPeakFitter::UpdatePeakParameters()'],['../class_t_single_peak.html#afa420f687a46bc14ac8bcc67c33ab71d',1,'TSinglePeak::UpdatePeakParameters()']]],
   ['updatepeaksliders_21',['UpdatePeakSliders',['../class_t_b_g_subtraction.html#a7b5abc6d885deea86733de0c55c0bdbf',1,'TBGSubtraction']]],
   ['updateprojectionsliders_22',['UpdateProjectionSliders',['../class_t_b_g_subtraction.html#a44eb2165b06f648116d5beab5ce69fe0',1,'TBGSubtraction']]],
   ['updateresiduals_23',['UpdateResiduals',['../class_t_decay_fit.html#acc3eab9285e53c51ed8793310d11a827',1,'TDecayFit']]],
@@ -31,6 +31,6 @@ var searchData=
   ['usecalfileintegration_28',['UseCalFileIntegration',['../class_t_channel.html#a7e51083212cc92c3a08e55016a749dea',1,'TChannel']]],
   ['usefitcharge_29',['usefitcharge',['../class_t_si_li.html#a1a16f1bb3fb8dc2548fdb19969fe7706',1,'TSiLi::UseFitCharge()'],['../class_t_si_li_hit.html#a6e8260a389a83de642b76ee50218a259',1,'TSiLiHit::UseFitCharge()']]],
   ['usemidfileodb_30',['UseMidFileOdb',['../class_t_g_r_s_i_options.html#acfe394194614ccec3c25caae23c8a769',1,'TGRSIOptions']]],
-  ['usersettings_31',['UserSettings',['../class_t_g_r_s_i_options.html#a3f5f82869ca2a90c392dbfa2acd16290',1,'TGRSIOptions']]],
+  ['usersettings_31',['usersettings',['../class_t_g_r_s_i_helper.html#a01803cc3aee74715892f7478b7158f4e',1,'TGRSIHelper::UserSettings()'],['../class_t_g_r_s_i_options.html#a3f5f82869ca2a90c392dbfa2acd16290',1,'TGRSIOptions::UserSettings()']]],
   ['usewaveparam_32',['UseWaveParam',['../class_t_channel.html#ae4629bd1d70f0bd5ce4f7122359907f9',1,'TChannel']]]
 ];

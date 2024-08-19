@@ -1,6 +1,6 @@
 var class_t_g_r_s_i_fit =
 [
-    [ "~TGRSIFit", "class_t_g_r_s_i_fit.html#a3302b90805742a8eb41e4563bb8a489a", null ],
+    [ "~TGRSIFit", "class_t_g_r_s_i_fit.html#a5c27353cad73a41c83bf8baaa6c97c3f", null ],
     [ "TGRSIFit", "class_t_g_r_s_i_fit.html#a9270f75d732f332cc262e8f2b54652db", null ],
     [ "TGRSIFit", "class_t_g_r_s_i_fit.html#a7d93311828256feb2f2527c53118659e", null ],
     [ "TGRSIFit", "class_t_g_r_s_i_fit.html#a95693fb756db8fdb2fee2b7a2d2020c0", null ],
@@ -8,8 +8,8 @@ var class_t_g_r_s_i_fit =
     [ "TGRSIFit", "class_t_g_r_s_i_fit.html#a1b8415969ef5b3ad2cd1e27b371bc8b8", null ],
     [ "TGRSIFit", "class_t_g_r_s_i_fit.html#ac2c725a228aeedfee165c394179ee948", null ],
     [ "TGRSIFit", "class_t_g_r_s_i_fit.html#a0a02ea6d51a048cb39c977a1de8f7a39", null ],
-    [ "AddToGlobalList", "class_t_g_r_s_i_fit.html#a158ddec29c7653a036d0949e2ce79658", null ],
-    [ "AddToGlobalList", "class_t_g_r_s_i_fit.html#ad15f0dcb58eeb7f13713aca3086b188c", null ],
+    [ "AddToGlobalList", "class_t_g_r_s_i_fit.html#a205d2aa1eee5ededdbd4a6f11c576ec5", null ],
+    [ "AddToGlobalList", "class_t_g_r_s_i_fit.html#a15057c186af02abd0668ad7f8e635d0e", null ],
     [ "Clear", "class_t_g_r_s_i_fit.html#a28b0f4e5a075262aa024309c01377263", null ],
     [ "ClearParameters", "class_t_g_r_s_i_fit.html#a13aab88b19132959a9dff1666f77dcd4", null ],
     [ "Copy", "class_t_g_r_s_i_fit.html#a993c09a8180e6b5ce311af85b59258eb", null ],

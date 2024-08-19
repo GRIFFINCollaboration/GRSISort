@@ -1,8 +1,10 @@
 var class_t_s_r_i_m =
 [
-    [ "~TSRIM", "class_t_s_r_i_m.html#a3885477d847cfe8eeca7c7b9bb075d69", null ],
-    [ "TSRIM", "class_t_s_r_i_m.html#a6ee5dac398d21980c70e47e0cbd56fb9", null ],
+    [ "TSRIM", "class_t_s_r_i_m.html#ab3a1a11d5f3c5853371db14e59b4c885", null ],
     [ "TSRIM", "class_t_s_r_i_m.html#a62da89960b895bade70abdcf1b9ece5d", null ],
+    [ "TSRIM", "class_t_s_r_i_m.html#ac7e3699754743224ad525fd4d72ac084", null ],
+    [ "TSRIM", "class_t_s_r_i_m.html#a70aeade1304759a5b0ea1ac88b116c9d", null ],
+    [ "~TSRIM", "class_t_s_r_i_m.html#a3885477d847cfe8eeca7c7b9bb075d69", null ],
     [ "GetAdjustedEnergy", "class_t_s_r_i_m.html#a93115eb6cb488db73657276c5bbb6707", null ],
     [ "GetEmax", "class_t_s_r_i_m.html#a31e53c534089ed710f5b1e93a2c61093", null ],
     [ "GetEmin", "class_t_s_r_i_m.html#a8aec0462059cf524d13656b1073b89be", null ],
@@ -16,6 +18,8 @@ var class_t_s_r_i_m =
     [ "GetXmin", "class_t_s_r_i_m.html#abb6635cad0f651da5bf4b62c07ec6e7e", null ],
     [ "GetXvsEGraph", "class_t_s_r_i_m.html#a39b5ee884d20591f5b84ea5dc93a2ab6", null ],
     [ "GetXvsESpline", "class_t_s_r_i_m.html#a8f5b11a3a67b2f61a460e1eda34f7fd7", null ],
+    [ "operator=", "class_t_s_r_i_m.html#a90653984eb84a3e597ae30d95700a92c", null ],
+    [ "operator=", "class_t_s_r_i_m.html#aa8b3f9ec88ca13fd8f21d7545cbde6e8", null ],
     [ "ReadEnergyLossFile", "class_t_s_r_i_m.html#a73d8c3cda6b36851e5905e90d8e3e446", null ],
     [ "AdjustedEnergyMap", "class_t_s_r_i_m.html#a36e72cf5f632c76eb631498dc06dc5f2", null ],
     [ "dx", "class_t_s_r_i_m.html#a5d04b47f67b079db783d561d4f589572", null ],

@@ -3,7 +3,7 @@ var searchData=
   ['handle_5fdefault_5foption_0',['handle_default_option',['../class_arg_parser.html#ab0bfe4b1159d68a472475eeb3f1ccbdf',1,'ArgParser']]],
   ['handle_5flong_5fflag_1',['handle_long_flag',['../class_arg_parser.html#a30099b327099a76590b72a3077b38117',1,'ArgParser']]],
   ['handle_5fshort_5fflag_2',['handle_short_flag',['../class_arg_parser.html#aed7119fd57148dbe3ac3d34e8649c0f3',1,'ArgParser']]],
-  ['handlearrowkeypress_3',['HandleArrowKeyPress',['../class_g_canvas.html#a78c2db92c86e006636b303a418c8b3a0',1,'GCanvas']]],
+  ['handlearrowkeypress_3',['HandleArrowKeyPress',['../class_g_canvas.html#a1afed58f78223e93c9ee3a94d19bd4ae',1,'GCanvas']]],
   ['handlebutton_4',['HandleButton',['../class_g_root_container.html#a20f8f8c74970f34e0edb26dada2ad037',1,'GRootContainer']]],
   ['handleconfigurenotify_5',['HandleConfigureNotify',['../class_g_root_container.html#affc7a5651ba3ee707141f1f40f75ec19',1,'GRootContainer']]],
   ['handlecontainerbutton_6',['HandleContainerButton',['../class_g_root_canvas.html#aa9175b7ced91f6657ae26502395ab2b6',1,'GRootCanvas']]],
@@ -22,7 +22,7 @@ var searchData=
   ['handleexpose_19',['HandleExpose',['../class_g_root_container.html#aca20815987c71a41d7a8016d3d1714f2',1,'GRootContainer']]],
   ['handleinput_20',['HandleInput',['../class_g_canvas.html#aa8d9ca59d1c12cc94afc4e415d46213a',1,'GCanvas']]],
   ['handlekey_21',['handlekey',['../class_g_root_browser.html#ae6f08e2ea603b62cab7d4b2735a75345',1,'GRootBrowser::HandleKey()'],['../class_g_root_container.html#a35e4e3875b2990161baa98f260c7aa53',1,'GRootContainer::HandleKey()']]],
-  ['handlekeyboardpress_22',['HandleKeyboardPress',['../class_g_canvas.html#af528ed8b32b5b3aeed8c34f8fb2833e7',1,'GCanvas']]],
+  ['handlekeyboardpress_22',['HandleKeyboardPress',['../class_g_canvas.html#ab7990e98f928dda1f674ea57b8374e05',1,'GCanvas']]],
   ['handlemenu_23',['HandleMenu',['../class_g_root_browser.html#a10b0a636a3a1a331ae4769cd3d59879f',1,'GRootBrowser']]],
   ['handlemotion_24',['HandleMotion',['../class_g_root_container.html#a2e828761d11fbeb604c9e4ae0a0e5477',1,'GRootContainer']]],
   ['handlemousecontrolpress_25',['HandleMouseControlPress',['../class_g_canvas.html#a1940269d2bc2fe6d570cfa27f6e75787',1,'GCanvas']]],
@@ -61,7 +61,8 @@ var searchData=
   ['histogram_20grouping_20ngroup_20ngroup_20bins_20along_20the_20xaxis_20yaxis_20zaxis_20together_58',['-*-*-*Rebin this histogram grouping ngroup/ngroup bins along the xaxis/yaxis/zaxis together*-*-*-*-',['..//github/workspace/libraries/GROOT/GCube.cxx#autotoc_md24',1,'']]],
   ['histtab_59',['HistTab',['../classpygui_1_1hist__tab_1_1_hist_tab.html',1,'pygui::hist_tab']]],
   ['hit_60',['Hit',['../class_t_descant.html#a59e20cadd48790ef7303074d28c65388',1,'TDescant']]],
-  ['hpgearrayposition_61',['HPGeArrayPosition',['../class_t_run_info.html#a78477456fbbce2128f574359a34a1416',1,'TRunInfo']]],
-  ['html_5fgenerator_62',['html_generator',['../html__generator_8_c.html#a7ec523269c3c5812661f6503de35b2f2',1,'html_generator.C']]],
-  ['html_5fgenerator_2ec_63',['html_generator.C',['../html__generator_8_c.html',1,'']]]
+  ['hits_61',['hits',['../class_t_detector.html#ab907981ce861ab147879469064748ae2',1,'TDetector::Hits() const'],['../class_t_detector.html#acbf359f899b738719e19bb326e45c790',1,'TDetector::Hits()']]],
+  ['hpgearrayposition_62',['HPGeArrayPosition',['../class_t_run_info.html#a78477456fbbce2128f574359a34a1416',1,'TRunInfo']]],
+  ['html_5fgenerator_63',['html_generator',['../html__generator_8_c.html#a7ec523269c3c5812661f6503de35b2f2',1,'html_generator.C']]],
+  ['html_5fgenerator_2ec_64',['html_generator.C',['../html__generator_8_c.html',1,'']]]
 ];

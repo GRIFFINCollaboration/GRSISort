@@ -1,11 +1,10 @@
 var class_example_tree_selector =
 [
-    [ "ExampleTreeSelector", "class_example_tree_selector.html#ad8647dc004b8d04061c20db1b9c28471", null ],
-    [ "~ExampleTreeSelector", "class_example_tree_selector.html#aefbf6964fe0e6e05ea322acc5d112cfb", null ],
+    [ "ExampleTreeSelector", "class_example_tree_selector.html#ac20a1e3d9cbb0c38342114110482c7fa", null ],
+    [ "~ExampleTreeSelector", "class_example_tree_selector.html#af219770ebea4d1b6eab19d8f0567f5b3", null ],
     [ "Begin", "class_example_tree_selector.html#ab93493c658b7214c7b98b755d85586bd", null ],
     [ "CheckSizes", "class_example_tree_selector.html#a3ee3614749d1369487299802d7e18364", null ],
     [ "ClassDef", "class_example_tree_selector.html#a3c3c38f2ed4303894382eefdbe5edbd8", null ],
-    [ "ClassDefOverride", "class_example_tree_selector.html#aac34947a3e9bcf869d26c3ce7ddf24c2", null ],
     [ "CreateHistograms", "class_example_tree_selector.html#a867de57165fff9051a2394800e07cb69", null ],
     [ "EndOfSort", "class_example_tree_selector.html#aefe521b4e1ad5569b7e2809fb7f7e411", null ],
     [ "FillHistograms", "class_example_tree_selector.html#aef7d4844d7654f33cf728d470432b2c0", null ],

@@ -35,7 +35,7 @@ var class_t_b_g_subtraction =
     [ "TBGSubtraction", "class_t_b_g_subtraction.html#a68fccc6625a2bfdc6e5f2f03fdeefc0e", null ],
     [ "TBGSubtraction", "class_t_b_g_subtraction.html#a791c50a4121d416fb48cb090411e9b30", null ],
     [ "TBGSubtraction", "class_t_b_g_subtraction.html#a2a2cd11fe8989a1d74300b87f84266d9", null ],
-    [ "~TBGSubtraction", "class_t_b_g_subtraction.html#a5a844900f441c771aaf1ce4ba4938e17", null ],
+    [ "~TBGSubtraction", "class_t_b_g_subtraction.html#a8edd390461ef8ff6bb5aa4f266092e26", null ],
     [ "AxisComboSelected", "class_t_b_g_subtraction.html#ad353baa32a1a03becedd02c4d1c7df01", null ],
     [ "BuildInterface", "class_t_b_g_subtraction.html#aeaba16acd311bed38b43917d64fa1415", null ],
     [ "ClickedBGButton1", "class_t_b_g_subtraction.html#a2f2a593f4ce5ace427699a786add4a8a", null ],

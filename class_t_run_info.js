@@ -1,6 +1,8 @@
 var class_t_run_info =
 [
-    [ "~TRunInfo", "class_t_run_info.html#a4ed61062846b3af4823ff118a94275a9", null ],
+    [ "TRunInfo", "class_t_run_info.html#a017fc575cff6c304509df481069bb1e1", null ],
+    [ "TRunInfo", "class_t_run_info.html#ae482901319cd8600ca9540cc719b7af0", null ],
+    [ "~TRunInfo", "class_t_run_info.html#aebd42e1b7529b5b40f855a87e60761bd", null ],
     [ "TRunInfo", "class_t_run_info.html#aeb8bf11a7cd1691381d02e9fdc569197", null ],
     [ "Add", "class_t_run_info.html#a49dfec43ee4fca966369fd252f409d92", null ],
     [ "AddBadCycle", "class_t_run_info.html#a625ac6923dffa661e881799bb9923936", null ],
@@ -32,6 +34,8 @@ var class_t_run_info =
     [ "LastRunNumber", "class_t_run_info.html#a20cccf816529378a4c343f4ef6eb11bf", null ],
     [ "LastSubRunNumber", "class_t_run_info.html#a4edee99716a0e561383427e944adf82e", null ],
     [ "Merge", "class_t_run_info.html#a3bdc8dc688f4b328bcdc47fe2ea59443", null ],
+    [ "operator=", "class_t_run_info.html#af2779d5ede61a2b88095a693d1e0ca0f", null ],
+    [ "operator=", "class_t_run_info.html#ac4851c0f4b6a2e75420a585465d27bf7", null ],
     [ "ParseInputData", "class_t_run_info.html#a436455185ec6eecdf800bbc2e7348733", null ],
     [ "Print", "class_t_run_info.html#a6f4b87b7830a3a52af27f6f852085954", null ],
     [ "PrintBadCycles", "class_t_run_info.html#af74a4ced0bac61d52bed51ead1fe3d33", null ],

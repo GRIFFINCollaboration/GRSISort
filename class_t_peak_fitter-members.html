@@ -119,6 +119,8 @@ $(document).ready(function(){initNavTree('class_t_peak_fitter.html',''); initRes
   <tr class="even"><td class="entry"><a class="el" href="class_t_peak_fitter.html#a54c33a4a4bd7bc76b9fcd795443f3696">GetNParameters</a>() const</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_peak_fitter.html#a5a718c64429cf200f90ab70287a33171">InitializeBackgroundParameters</a>(TH1 *fit_hist)</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_peak_fitter.html#a7cfdabd43cbec2a1f0d7068e8bd2f1fc">InitializeParameters</a>(TH1 *fit_hist)</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_peak_fitter.html#a17e5020c304a9c60ebb1e38e100547bb">operator=</a>(const TPeakFitter &amp;)=default</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_peak_fitter.html#a26c7c5aed36d7cdc82d5846e6e9e7aa0">operator=</a>(TPeakFitter &amp;&amp;) noexcept=default</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_peak_fitter.html#a4f95b728bfb00f2c67df1bb5b732875f">Print</a>(Option_t *opt=&quot;&quot;) const override</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_peak_fitter.html#a2c519e69cc72379f01ca3012df0c35ef">PrintParameters</a>() const</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_peak_fitter.html#a2bd5ac92474d2fb4d371c061563d4255">RemoveAllPeaks</a>()</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
@@ -129,17 +131,19 @@ $(document).ready(function(){initNavTree('class_t_peak_fitter.html',''); initRes
   <tr class="even"><td class="entry"><a class="el" href="class_t_peak_fitter.html#a5dccb41fc2212e11916d3dca074dd499">SetColorIndex</a>(const int &amp;index)</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_peak_fitter.html#a435a5f2cfedfd8fcfc28fea9ea467aa0">SetRange</a>(const Double_t &amp;low, const Double_t &amp;high)</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_peak_fitter.html#a6478d79668a46b81dd54a34ef6810df0">TPeakFitter</a>()</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_t_peak_fitter.html#a3ada2891b23f266bae5fbfbd901aaea6">TPeakFitter</a>(const Double_t &amp;range_low, const Double_t &amp;range_high)</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_peak_fitter.html#a495168546e5c3d59c299870b5036d196">TPeakFitter</a>(const Double_t &amp;rangeLow, const Double_t &amp;rangeHigh)</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_peak_fitter.html#adf54e84a0e07c43616274d9fc811bff6">TPeakFitter</a>(const TPeakFitter &amp;)=default</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_peak_fitter.html#a85d537006ce946b22625b81db1144b10">TPeakFitter</a>(TPeakFitter &amp;&amp;) noexcept=default</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_peak_fitter.html#afbe704f7732f4ca38d73bc0692bf3304">UpdateFitterParameters</a>()</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_peak_fitter.html#a182efaa6bfdd684158cdbc8da8735257">UpdatePeakParameters</a>(const TFitResultPtr &amp;fit_res, TH1 *fit_hist)</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_t_peak_fitter.html#aa49c93fdbe7277436de4e0ced6caade1">~TPeakFitter</a>() override=default</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_peak_fitter.html#ac4c35937f46b53eaa5d9cfe8e8a5500a">~TPeakFitter</a>()=default</td><td class="entry"><a class="el" href="class_t_peak_fitter.html">TPeakFitter</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 12 2024 00:34:30.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Aug 19 2024 19:08:46.</li>
   </ul>
 </div>
 </body>

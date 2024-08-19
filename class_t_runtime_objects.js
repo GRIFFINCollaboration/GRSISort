@@ -2,7 +2,6 @@ var class_t_runtime_objects =
 [
     [ "TRuntimeObjects", "class_t_runtime_objects.html#a61367b0d4a359c1c3dcf1607db788051", null ],
     [ "TRuntimeObjects", "class_t_runtime_objects.html#a1df7449a8c7f6689b82ee657ffa0e2ba", null ],
-    [ "ClassDefOverride", "class_t_runtime_objects.html#a006ca7f4d6c6a6167699abbd97368d60", null ],
     [ "FillHistogram", "class_t_runtime_objects.html#aeee62104b4e1772dd0ee82666908acaa", null ],
     [ "FillHistogram", "class_t_runtime_objects.html#a89e582a65ddd271c37ba2748e8206491", null ],
     [ "FillHistogram", "class_t_runtime_objects.html#ae298cd9e7566461e968aec6a190805c6", null ],

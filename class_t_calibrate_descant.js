@@ -32,6 +32,9 @@ var class_t_calibrate_descant =
       [ "k241Am", "class_t_calibrate_descant.html#a298a052dabd68552ecaab640e8472a75a9eaacff515e3575fad968fc76d09079e", null ]
     ] ],
     [ "TCalibrateDescant", "class_t_calibrate_descant.html#a115aaea56129bcf52d5a09cd681f705b", null ],
+    [ "TCalibrateDescant", "class_t_calibrate_descant.html#a7dca99adb0f35789176138e6b95567d4", null ],
+    [ "TCalibrateDescant", "class_t_calibrate_descant.html#a19310015b9df1ae0dfb7b4bb70a5757d", null ],
+    [ "~TCalibrateDescant", "class_t_calibrate_descant.html#af2878a8691b916de3433a76ba0de3476", null ],
     [ "AddCalibrationPoint", "class_t_calibrate_descant.html#a35ae915b1238424d0fcae8f1b3f2f5d1", null ],
     [ "BuildInterface", "class_t_calibrate_descant.html#acb0b77d25cb0ecad28191102be23cd38", null ],
     [ "CalibrationCanvasZoomed", "class_t_calibrate_descant.html#a09c38997f63ac3376677349ba6b14369", null ],
@@ -41,6 +44,8 @@ var class_t_calibrate_descant =
     [ "InitializeParameters", "class_t_calibrate_descant.html#aa77783f2efc25a49103eb0e5f9d4b61e", null ],
     [ "MakeConnections", "class_t_calibrate_descant.html#a293ef3cb46081ed9f1b48b93f5b2ec99", null ],
     [ "Next", "class_t_calibrate_descant.html#a1f19b5e8a30eec99b20465c280d28ae1", null ],
+    [ "operator=", "class_t_calibrate_descant.html#a9c95cb801d3d52bbadbc1ee16b4a03cf", null ],
+    [ "operator=", "class_t_calibrate_descant.html#a73230078379be7fb3ea7648f0d7bf2f6", null ],
     [ "Previous", "class_t_calibrate_descant.html#a1bbf1fa0c8c99bd7aa82dd514ba0c846", null ],
     [ "ProcessMessage", "class_t_calibrate_descant.html#ac72b4d4d21df4ea35f8c43a7b856e136", null ],
     [ "ResetFit", "class_t_calibrate_descant.html#a2f8263023017f41b3ea3325ffedaa246", null ],

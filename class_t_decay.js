@@ -1,8 +1,10 @@
 var class_t_decay =
 [
-    [ "TDecay", "class_t_decay.html#a44d7b888a3f2136b1f087ac0fe1caa3f", null ],
-    [ "TDecay", "class_t_decay.html#abad826a9077ef4c83f95d39b0cb61acf", null ],
-    [ "~TDecay", "class_t_decay.html#aa4cd45b9447f973f08ab8af678b5b802", null ],
+    [ "TDecay", "class_t_decay.html#a8698317bff23ffe3f2a14a6241fb3116", null ],
+    [ "TDecay", "class_t_decay.html#ad385f7d10135e018f65f26154b90cac5", null ],
+    [ "TDecay", "class_t_decay.html#a8d4d1452f69c87ebaf884339238bb8dd", null ],
+    [ "TDecay", "class_t_decay.html#a19f4b5c2820c3b4a9d2d150d0311b55e", null ],
+    [ "~TDecay", "class_t_decay.html#af4062c13a865616004ae5e91f10377ee", null ],
     [ "AddChain", "class_t_decay.html#afd96ff57995b363bbae805df4b3b52e5", null ],
     [ "ComponentFunc", "class_t_decay.html#a99326c7676f475a9baa692eaffef4b5b", null ],
     [ "DecayFit", "class_t_decay.html#a0fcca66c065020e8b5c88b189dd2ac68", null ],
@@ -19,6 +21,8 @@ var class_t_decay =
     [ "GetFitFunc", "class_t_decay.html#a7da5de3e13c2ff25de1fda3338cc1cac", null ],
     [ "GetFitFunction", "class_t_decay.html#a68e9de28fcc47f6f89b3f294d1e83b8e", null ],
     [ "GetResiduals", "class_t_decay.html#a4ae3edc1d30f2a51718d66193cda76a4", null ],
+    [ "operator=", "class_t_decay.html#a42857caef6c3edf58991b300e093aed1", null ],
+    [ "operator=", "class_t_decay.html#a077a27769bb79604f163cea32b54b687", null ],
     [ "Print", "class_t_decay.html#a4e2e3c6be9ab652012fbe1a9bd479dd3", null ],
     [ "PrintMap", "class_t_decay.html#a0789793f1cb016c0f52b725eac639c1e", null ],
     [ "ReleaseBackground", "class_t_decay.html#abed3fa27a3b021a24c434c31d5902f92", null ],

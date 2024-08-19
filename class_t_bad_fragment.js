@@ -141,6 +141,7 @@ var class_t_bad_fragment =
     [ "SetWaveform", "class_t_bad_fragment.html#a39dd0e70e98e507cfe0afc0bdab2b9a0", null ],
     [ "SetZc", "class_t_bad_fragment.html#a0de9e862eef6013a6dd6baf911fc3c10", null ],
     [ "TestHitBit", "class_t_bad_fragment.html#a7e9a8c84424c66455f9c21b99f06216e", null ],
+    [ "WaveSize", "class_t_bad_fragment.html#ac62835a3dd9025e0908385fd95bff958", null ],
     [ "fAcceptedChannelId", "class_t_bad_fragment.html#abb7691c4e0912c1fb5f276cd26542a7c", null ],
     [ "fAddress", "class_t_bad_fragment.html#a8e84f6a505d936502a0096a749522094", null ],
     [ "fBeamDirection", "class_t_bad_fragment.html#ad046c38d7b93b87b7e169e3418c43a09", null ],

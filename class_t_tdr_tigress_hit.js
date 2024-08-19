@@ -113,6 +113,7 @@ var class_t_tdr_tigress_hit =
     [ "SetTimeStamp", "class_t_tdr_tigress_hit.html#af8d5245a46498534f224f84619ff2f56", null ],
     [ "SetWaveform", "class_t_tdr_tigress_hit.html#a39dd0e70e98e507cfe0afc0bdab2b9a0", null ],
     [ "TestHitBit", "class_t_tdr_tigress_hit.html#a7e9a8c84424c66455f9c21b99f06216e", null ],
+    [ "WaveSize", "class_t_tdr_tigress_hit.html#ac62835a3dd9025e0908385fd95bff958", null ],
     [ "fAddress", "class_t_tdr_tigress_hit.html#a8e84f6a505d936502a0096a749522094", null ],
     [ "fBeamDirection", "class_t_tdr_tigress_hit.html#ad046c38d7b93b87b7e169e3418c43a09", null ],
     [ "fBitFlags", "class_t_tdr_tigress_hit.html#a49a028ad730d54e161eb580bbcabc813", null ],

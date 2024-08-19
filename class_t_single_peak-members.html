@@ -132,6 +132,8 @@ $(document).ready(function(){initNavTree('class_t_single_peak.html',''); initRes
   <tr class="odd"><td class="entry"><a class="el" href="class_t_single_peak.html#af8a2b016029163055d71de7f60c4ffa8">InitParNames</a>()</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_single_peak.html#a7d18aa1b624a9678436eca30c5e1931c">IsBackgroundParameter</a>(const Int_t &amp;par) const</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_single_peak.html#a42b9e80dd695ac5ebddd0caee15dd4d7">IsPeakParameter</a>(const Int_t &amp;par) const</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_single_peak.html#a7e9b920d8fc920e946cb26dd720c0698">operator=</a>(const TSinglePeak &amp;)=default</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_single_peak.html#a9fd32f174ce1356c0eb87e80a62e7f81">operator=</a>(TSinglePeak &amp;&amp;) noexcept=default</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_single_peak.html#a218c7f58e791a44dfabce7aa9dac78c2">ParameterSetByUser</a>(int par)</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_single_peak.html#a8b6d5344170e02ed4a2aa95f55f860d0">PeakFunction</a>(Double_t *, Double_t *)</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_single_peak.html#a74df97e2ff48f64b2bf6f9067d259b38">PeakOnGlobalFunction</a>(Double_t *dim, Double_t *par)</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
@@ -149,17 +151,19 @@ $(document).ready(function(){initNavTree('class_t_single_peak.html',''); initRes
   <tr class="even"><td class="entry"><a class="el" href="class_t_single_peak.html#a94d3f320c91a98ae5eaffdd20453e2f6">TotalFunction</a>(Double_t *dim, Double_t *par)</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_single_peak.html#a1b974ba9485b7f22ff87fa8744096911">TPeakFitter</a></td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"><span class="mlabel">friend</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_single_peak.html#a0e1ad9f508d334ed9f18802a8a3a4a9f">TSinglePeak</a>()=default</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_single_peak.html#a1475c0ec0da87b6524afa819ffac5f5f">TSinglePeak</a>(const TSinglePeak &amp;)=default</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_single_peak.html#a4c9fd295ae37f921e192b28e1a6d9799">TSinglePeak</a>(TSinglePeak &amp;&amp;) noexcept=default</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_single_peak.html#a12e18865d8ad745616a2357de6610590">UpdateBackgroundParameters</a>()</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_single_peak.html#afa420f687a46bc14ac8bcc67c33ab71d">UpdatePeakParameters</a>()</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_single_peak.html#ad6998c89cdd18ec1a8f42357ec144866">Width</a>() const =0</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_t_single_peak.html#a607c9192bc87c96c7f976067a6307880">~TSinglePeak</a>() override=default</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_single_peak.html#a9ae14b6d2e8142c8999ad143ccdb90a7">~TSinglePeak</a>()=default</td><td class="entry"><a class="el" href="class_t_single_peak.html">TSinglePeak</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 12 2024 00:34:31.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Aug 19 2024 19:08:47.</li>
   </ul>
 </div>
 </body>

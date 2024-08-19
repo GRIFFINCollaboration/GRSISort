@@ -5,8 +5,6 @@ var _g_cube_8cxx =
     [ "DifferentDimension", "class_different_dimension.html", null ],
     [ "DifferentLabels", "class_different_labels.html", null ],
     [ "DifferentNumberOfBins", "class_different_number_of_bins.html", null ],
-    [ "ClassImp", "_g_cube_8cxx.html#af34be020165febde0d56b3e6740b2f27", null ],
-    [ "ClassImp", "_g_cube_8cxx.html#a35e2b85baa98956cfc89d2bd15b5a6ca", null ],
     [ "operator*", "_g_cube_8cxx.html#ab5dd6a977b49fb42b97b9c0a103ebd34", null ],
     [ "operator*", "_g_cube_8cxx.html#af65dea5d0529201e7eb302c0e7257adb", null ],
     [ "operator*", "_g_cube_8cxx.html#a1dfaa39c1aff26f77f285016a617a11c", null ],

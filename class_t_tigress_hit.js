@@ -114,6 +114,7 @@ var class_t_tigress_hit =
     [ "SortSegments", "class_t_tigress_hit.html#a2211d2e287da5f867fa462ef8f647867", null ],
     [ "SumHit", "class_t_tigress_hit.html#a69c360aff6f6f048a478fad1f606efc4", null ],
     [ "TestHitBit", "class_t_tigress_hit.html#a7e9a8c84424c66455f9c21b99f06216e", null ],
+    [ "WaveSize", "class_t_tigress_hit.html#ac62835a3dd9025e0908385fd95bff958", null ],
     [ "fAddress", "class_t_tigress_hit.html#a8e84f6a505d936502a0096a749522094", null ],
     [ "fBeamDirection", "class_t_tigress_hit.html#ad046c38d7b93b87b7e169e3418c43a09", null ],
     [ "fBgoFired", "class_t_tigress_hit.html#a2d2b2bdd04fd5c881ffb2c4ff56b9760", null ],

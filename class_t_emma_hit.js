@@ -105,6 +105,7 @@ var class_t_emma_hit =
     [ "SetTop", "class_t_emma_hit.html#a76a2cd8a2c1bfb69ca0381b68396ef24", null ],
     [ "SetWaveform", "class_t_emma_hit.html#a39dd0e70e98e507cfe0afc0bdab2b9a0", null ],
     [ "TestHitBit", "class_t_emma_hit.html#a7e9a8c84424c66455f9c21b99f06216e", null ],
+    [ "WaveSize", "class_t_emma_hit.html#ac62835a3dd9025e0908385fd95bff958", null ],
     [ "fAddress", "class_t_emma_hit.html#a8e84f6a505d936502a0096a749522094", null ],
     [ "fAnodeTrigger", "class_t_emma_hit.html#ac33fb27bb07fdce0886c1d36386a8f23", null ],
     [ "fBdelay", "class_t_emma_hit.html#af69bf87c56602455da868e71966962c8", null ],

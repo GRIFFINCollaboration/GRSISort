@@ -1,6 +1,8 @@
 var class_t_source_tab =
 [
     [ "TSourceTab", "class_t_source_tab.html#ab0cd96b1dea045568bd6ff75d0177310", null ],
+    [ "TSourceTab", "class_t_source_tab.html#a2011b0509b0f79112bf78e0e2468bc7e", null ],
+    [ "TSourceTab", "class_t_source_tab.html#a1c73c02998a6aab5cfef9dbb9e42af4e", null ],
     [ "~TSourceTab", "class_t_source_tab.html#a10a12f62ff40089d14f5765edf219ea8", null ],
     [ "Calibrate", "class_t_source_tab.html#a2dde2a3e2f0221aa98d3ff860fb88e47", null ],
     [ "ChannelTab", "class_t_source_tab.html#a41ed3d099b5bf5e4cc30b8768a391c2a", null ],
@@ -11,6 +13,8 @@ var class_t_source_tab =
     [ "FindPeaks", "class_t_source_tab.html#a4253852a7dfada724414655993bd74a2", null ],
     [ "MakeConnections", "class_t_source_tab.html#aff0111f504fa513d2bf7da1d60c496f0", null ],
     [ "NumberOfChannels", "class_t_source_tab.html#adc498ec1675e6e9d55f4f2954fed9bad", null ],
+    [ "operator=", "class_t_source_tab.html#af58e6cdcefa4c22cfdc6d21fed0df1e8", null ],
+    [ "operator=", "class_t_source_tab.html#ab9b929e88636098f724bd540c949b469", null ],
     [ "VerboseLevel", "class_t_source_tab.html#a0748c46f9106970b74bf21c8e6477318", null ],
     [ "fChannel", "class_t_source_tab.html#a7f6332b6102ca59333bee4c0df537cac", null ],
     [ "fChannelTab", "class_t_source_tab.html#a26127f8d18a313e93daf2615814b0f8c", null ],

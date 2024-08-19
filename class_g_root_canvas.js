@@ -1,9 +1,10 @@
 var class_g_root_canvas =
 [
     [ "GRootCanvas", "class_g_root_canvas.html#a7c8f08008bdc547b4b2def67fe411353", null ],
+    [ "GRootCanvas", "class_g_root_canvas.html#a39b566d675b7f0b14c5c14c6d86f97b4", null ],
     [ "GRootCanvas", "class_g_root_canvas.html#a9e9f2dae659e99cf68490c8dddf2337b", null ],
     [ "GRootCanvas", "class_g_root_canvas.html#af945a2ffa8723f5f3f0136fd12b1e36d", null ],
-    [ "~GRootCanvas", "class_g_root_canvas.html#a2543914eebe7b5222b331e559d1294cf", null ],
+    [ "~GRootCanvas", "class_g_root_canvas.html#a9d59c526cc35f6880c154695f27702ad", null ],
     [ "Activated", "class_g_root_canvas.html#a480dcad3d2eb40bc89fda399979e2ba0", null ],
     [ "AdjustSize", "class_g_root_canvas.html#a5a3faa4bfd7a45d89d959584c10b0572", null ],
     [ "Close", "class_g_root_canvas.html#ac40934a5a745a514f28e156c7428a747", null ],
@@ -39,6 +40,7 @@ var class_g_root_canvas =
     [ "Iconify", "class_g_root_canvas.html#ab1447666f96ef83af3c09752337629ef", null ],
     [ "InitWindow", "class_g_root_canvas.html#a981d907b5159df37530593faa858e3b9", null ],
     [ "operator=", "class_g_root_canvas.html#a80996f773b7c658a741837eda720c04f", null ],
+    [ "operator=", "class_g_root_canvas.html#a7ef3cc0b2bd3ec089740a173af805406", null ],
     [ "PrintCanvas", "class_g_root_canvas.html#ae07f2198bf80b35cac1258aeb8eefb97", null ],
     [ "ProcessMessage", "class_g_root_canvas.html#a9bb3ba115773ce524d2ab87bfe295fb4", null ],
     [ "RaiseWindow", "class_g_root_canvas.html#aa3bf3d7bf5558d2cffd2846e7f3a53f8", null ],

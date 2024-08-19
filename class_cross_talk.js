@@ -1,11 +1,10 @@
 var class_cross_talk =
 [
     [ "CrossTalk", "class_cross_talk.html#a49f7c7d5f253e578790756c5ac254093", null ],
-    [ "~CrossTalk", "class_cross_talk.html#af7c77eebdfc48337a2d47756a6236c4c", null ],
+    [ "~CrossTalk", "class_cross_talk.html#ab5bd603dae257ec638a9513f8b4c8d71", null ],
     [ "Begin", "class_cross_talk.html#ab93493c658b7214c7b98b755d85586bd", null ],
     [ "CheckSizes", "class_cross_talk.html#a3ee3614749d1369487299802d7e18364", null ],
     [ "ClassDef", "class_cross_talk.html#a416ae50cb4abe45ac8a4b1ba5590724b", null ],
-    [ "ClassDefOverride", "class_cross_talk.html#aac34947a3e9bcf869d26c3ce7ddf24c2", null ],
     [ "CreateHistograms", "class_cross_talk.html#ac9cc4df79bb746ea6c00fd90e444d579", null ],
     [ "EndOfSort", "class_cross_talk.html#aefe521b4e1ad5569b7e2809fb7f7e411", null ],
     [ "FillHistograms", "class_cross_talk.html#a8dc668dbc60225dd42cb67f9fc7fe238", null ],

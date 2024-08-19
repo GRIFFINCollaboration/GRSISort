@@ -2,6 +2,8 @@ var class_t_parser_library =
 [
     [ "~TParserLibrary", "class_t_parser_library.html#a172fe14d2dd56d6f2c8c0dcff9bd369b", null ],
     [ "TParserLibrary", "class_t_parser_library.html#afd2637eef4774db69d89de9c9061944f", null ],
+    [ "TParserLibrary", "class_t_parser_library.html#a8ed76e45dd203d9b2dafd53c92cca8d0", null ],
+    [ "TParserLibrary", "class_t_parser_library.html#a5456de9835d0da0a28c1426ebe9de5fe", null ],
     [ "AddCurrent", "class_t_parser_library.html#a25568e49214ec73aa40a19f7da64870f", null ],
     [ "CreateDataParser", "class_t_parser_library.html#ae82158a07ee1cf5fe93a30f1a35385d0", null ],
     [ "CreateRawFile", "class_t_parser_library.html#ad8eee715dc76897885b8a22629df3e6b", null ],
@@ -11,6 +13,8 @@ var class_t_parser_library =
     [ "GetAll", "class_t_parser_library.html#a6a8cba893da4114aa47cf7bdf24c853a", null ],
     [ "LibraryVersion", "class_t_parser_library.html#af199ad4e37c242775ea9e0f9d666fd64", null ],
     [ "Load", "class_t_parser_library.html#a57fa09a8addf8b7c490706ced46d3394", null ],
+    [ "operator=", "class_t_parser_library.html#a0814c00a17af587252aaa5088bace590", null ],
+    [ "operator=", "class_t_parser_library.html#ab46e4bb83f651e81d75e7c5f73a8a86c", null ],
     [ "PrintDirectory", "class_t_parser_library.html#a2f3382a25957ab5bad96a9f083d6e176", null ],
     [ "Set", "class_t_parser_library.html#ab3f625c1553ed57a8af3eae3bb92781c", null ],
     [ "TSingleton< TParserLibrary >", "class_t_parser_library.html#aaa19608ea951d25ac6348309b3a6c1d3", null ],

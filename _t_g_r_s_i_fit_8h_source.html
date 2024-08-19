@@ -108,21 +108,21 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_fit_8h_source.html',''); in
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">/** \addtogroup Fitting Fitting &amp; Analysis</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> *  @{</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="_t_g_r_s_i_functions_8h.html">TGRSIFunctions.h</a>&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;TObject.h&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;TH1.h&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;TF1.h&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;TList.h&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;TFitResult.h&quot;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;TFitResultPtr.h&quot;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;TRandom.h&quot;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;TSpectrum.h&quot;</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;TVirtualFitter.h&quot;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;TMath.h&quot;</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;TNamed.h&quot;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;TROOT.h&quot;</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;utility&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;utility&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="_t_g_r_s_i_functions_8h.html">TGRSIFunctions.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;TObject.h&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;TH1.h&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;TF1.h&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;TList.h&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;TFitResult.h&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;TFitResultPtr.h&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;TRandom.h&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;TSpectrum.h&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;TVirtualFitter.h&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;TMath.h&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;TNamed.h&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;TROOT.h&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;TRef.h&quot;</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;TString.h&quot;</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="_globals_8h.html">Globals.h</a>&quot;</span></div>
@@ -130,7 +130,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_fit_8h_source.html',''); in
 <div class="foldopen" id="foldopen00026" data-start="{" data-end="};">
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="class_t_g_r_s_i_fit.html">   26</a></span><span class="keyword">class </span><a class="code hl_class" href="class_t_g_r_s_i_fit.html">TGRSIFit</a> : <span class="keyword">public</span> TF1 {</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>   <a class="code hl_function" href="class_t_g_r_s_i_fit.html#a3302b90805742a8eb41e4563bb8a489a">~TGRSIFit</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>   <a class="code hl_function" href="class_t_g_r_s_i_fit.html#a5c27353cad73a41c83bf8baaa6c97c3f">~TGRSIFit</a>();</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">protected</span>:</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>   <a class="code hl_function" href="class_t_g_r_s_i_fit.html#a9270f75d732f332cc262e8f2b54652db">TGRSIFit</a>();</div>
@@ -169,8 +169,8 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_fit_8h_source.html',''); in
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>   <span class="comment">// These are only to be called in the Dtor of classes to protect from ROOT&#39;s insane garbage collection system</span></div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>   <span class="comment">// They can be called anywhere though as long as new classes are carefully destructed.</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>   Bool_t        <a class="code hl_function" href="class_t_g_r_s_i_fit.html#a158ddec29c7653a036d0949e2ce79658">AddToGlobalList</a>(Bool_t on = kTRUE) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>   <span class="keyword">static</span> Bool_t <a class="code hl_function" href="class_t_g_r_s_i_fit.html#a158ddec29c7653a036d0949e2ce79658">AddToGlobalList</a>(TF1* func, Bool_t on = kTRUE);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>   Bool_t        <a class="code hl_function" href="class_t_g_r_s_i_fit.html#a205d2aa1eee5ededdbd4a6f11c576ec5">AddToGlobalList</a>(Bool_t yes = kTRUE) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>   <span class="keyword">static</span> Bool_t <a class="code hl_function" href="class_t_g_r_s_i_fit.html#a205d2aa1eee5ededdbd4a6f11c576ec5">AddToGlobalList</a>(TF1* func, Bool_t yes = kTRUE);</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword">protected</span>:</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="class_t_g_r_s_i_fit.html#a5d417cabf5b93e3fd56b7ce28732540d">   67</a></span>   Bool_t <a class="code hl_function" href="class_t_g_r_s_i_fit.html#a5d417cabf5b93e3fd56b7ce28732540d">IsInitialized</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="class_t_g_r_s_i_fit.html#a1581c4ad1beebe352a39b9d2ab9dbb6a">fInitFlag</a>; }</div>
@@ -190,7 +190,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_fit_8h_source.html',''); in
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_g_r_s_i_fit.html#a427efb1805858829e0da75f64a19db1a">CopyParameters</a>(TF1* copy) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment"></span> </div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">   /// \cond CLASSIMP</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment"></span>   ClassDefOverride(<a class="code hl_class" href="class_t_g_r_s_i_fit.html">TGRSIFit</a>, 0);<span class="comment"></span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment"></span>   ClassDefOverride(<a class="code hl_class" href="class_t_g_r_s_i_fit.html">TGRSIFit</a>, 0)   <span class="comment">// NOLINT</span><span class="comment"></span></div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">   /// \endcond</span></div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment"></span>};<span class="comment"></span></div>
 </div>
@@ -204,15 +204,15 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_fit_8h_source.html',''); in
 <div class="ttc" id="aclass_t_g_r_s_i_fit_html_a13aab88b19132959a9dff1666f77dcd4"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a13aab88b19132959a9dff1666f77dcd4">TGRSIFit::ClearParameters</a></div><div class="ttdeci">virtual void ClearParameters(Option_t *opt=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8cxx_source.html#l00043">TGRSIFit.cxx:43</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_fit_html_a140e191a0dcd722c02bc6a222527fb8b"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a140e191a0dcd722c02bc6a222527fb8b">TGRSIFit::TGRSIFit</a></div><div class="ttdeci">TGRSIFit(const char *name, const ROOT::Math::ParamFunctor &amp;func, Double_t xmin=0, Double_t xmax=1, Int_t npar=0)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8h_source.html#l00034">TGRSIFit.h:34</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_fit_html_a1581c4ad1beebe352a39b9d2ab9dbb6a"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a1581c4ad1beebe352a39b9d2ab9dbb6a">TGRSIFit::fInitFlag</a></div><div class="ttdeci">Bool_t fInitFlag</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8h_source.html#l00072">TGRSIFit.h:72</a></div></div>
-<div class="ttc" id="aclass_t_g_r_s_i_fit_html_a158ddec29c7653a036d0949e2ce79658"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a158ddec29c7653a036d0949e2ce79658">TGRSIFit::AddToGlobalList</a></div><div class="ttdeci">Bool_t AddToGlobalList(Bool_t on=kTRUE) override</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8cxx_source.html#l00062">TGRSIFit.cxx:62</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_fit_html_a1b8415969ef5b3ad2cd1e27b371bc8b8"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a1b8415969ef5b3ad2cd1e27b371bc8b8">TGRSIFit::TGRSIFit</a></div><div class="ttdeci">TGRSIFit(const char *name, const PtrObj &amp;pointer, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar, const char *class_name, const char *fcn_name)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8h_source.html#l00036">TGRSIFit.h:36</a></div></div>
+<div class="ttc" id="aclass_t_g_r_s_i_fit_html_a205d2aa1eee5ededdbd4a6f11c576ec5"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a205d2aa1eee5ededdbd4a6f11c576ec5">TGRSIFit::AddToGlobalList</a></div><div class="ttdeci">Bool_t AddToGlobalList(Bool_t yes=kTRUE) override</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8cxx_source.html#l00062">TGRSIFit.cxx:62</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_fit_html_a2874ffcf8fb7daf49c2a993f487858b0"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a2874ffcf8fb7daf49c2a993f487858b0">TGRSIFit::SetHist</a></div><div class="ttdeci">virtual void SetHist(TH1 *hist)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8h_source.html#l00053">TGRSIFit.h:53</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_fit_html_a28b0f4e5a075262aa024309c01377263"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a28b0f4e5a075262aa024309c01377263">TGRSIFit::Clear</a></div><div class="ttdeci">void Clear(Option_t *opt=&quot;&quot;) override</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8cxx_source.html#l00036">TGRSIFit.cxx:36</a></div></div>
-<div class="ttc" id="aclass_t_g_r_s_i_fit_html_a3302b90805742a8eb41e4563bb8a489a"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a3302b90805742a8eb41e4563bb8a489a">TGRSIFit::~TGRSIFit</a></div><div class="ttdeci">~TGRSIFit() override</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8cxx_source.html#l00015">TGRSIFit.cxx:15</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_fit_html_a34e022c72ae119d76e6be79e15470d3f"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a34e022c72ae119d76e6be79e15470d3f">TGRSIFit::IsGoodFit</a></div><div class="ttdeci">Bool_t IsGoodFit() const</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8h_source.html#l00052">TGRSIFit.h:52</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_fit_html_a36c628a35420ebea04b2891321e72afb"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a36c628a35420ebea04b2891321e72afb">TGRSIFit::GetDefaultFitType</a></div><div class="ttdeci">static const char * GetDefaultFitType()</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8h_source.html#l00058">TGRSIFit.h:58</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_fit_html_a427efb1805858829e0da75f64a19db1a"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a427efb1805858829e0da75f64a19db1a">TGRSIFit::CopyParameters</a></div><div class="ttdeci">virtual void CopyParameters(TF1 *copy) const</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8cxx_source.html#l00050">TGRSIFit.cxx:50</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_fit_html_a47d59e27fc1c60b19e1cc9b57b4ebac2"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a47d59e27fc1c60b19e1cc9b57b4ebac2">TGRSIFit::fDefaultFitType</a></div><div class="ttdeci">static TString fDefaultFitType</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8h_source.html#l00075">TGRSIFit.h:75</a></div></div>
+<div class="ttc" id="aclass_t_g_r_s_i_fit_html_a5c27353cad73a41c83bf8baaa6c97c3f"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a5c27353cad73a41c83bf8baaa6c97c3f">TGRSIFit::~TGRSIFit</a></div><div class="ttdeci">~TGRSIFit()</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8cxx_source.html#l00015">TGRSIFit.cxx:15</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_fit_html_a5d417cabf5b93e3fd56b7ce28732540d"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a5d417cabf5b93e3fd56b7ce28732540d">TGRSIFit::IsInitialized</a></div><div class="ttdeci">Bool_t IsInitialized() const</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8h_source.html#l00067">TGRSIFit.h:67</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_fit_html_a640883fed55b87410bebbbb046344d11"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a640883fed55b87410bebbbb046344d11">TGRSIFit::fGoodFitFlag</a></div><div class="ttdeci">Bool_t fGoodFitFlag</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8h_source.html#l00073">TGRSIFit.h:73</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_fit_html_a6588239378f6e2877999e61e4ba4f31d"><div class="ttname"><a href="class_t_g_r_s_i_fit.html#a6588239378f6e2877999e61e4ba4f31d">TGRSIFit::GoodFit</a></div><div class="ttdeci">void GoodFit(Bool_t flag=true)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8h_source.html#l00069">TGRSIFit.h:69</a></div></div>
@@ -233,7 +233,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_fit_8h_source.html',''); in
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_g_r_s_i_fit_8h.html">TGRSIFit.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 12 2024 00:34:24.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Aug 19 2024 19:08:39.</li>
   </ul>
 </div>
 </body>

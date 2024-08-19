@@ -140,89 +140,94 @@ $(document).ready(function(){initNavTree('_t_terminal_loop_8h_source.html',''); 
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>   }</div>
 </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#af672d72a458eb95070a71154020781fb">   36</a></span>   <a class="code hl_function" href="class_t_terminal_loop.html#af672d72a458eb95070a71154020781fb">~TTerminalLoop</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#ifndef __CINT__</span></div>
-<div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#a40400124e445433d80d9928696698f4f">   39</a></span>   std::shared_ptr&lt;ThreadsafeQueue&lt;std::shared_ptr&lt;T&gt;&gt;&gt;&amp; <a class="code hl_function" href="class_t_terminal_loop.html#a40400124e445433d80d9928696698f4f">InputQueue</a>()</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>   {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">fInputQueue</a>;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>   }</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#a78a13ee96a5f6f31882406a3c3090374">   36</a></span>   <a class="code hl_function" href="class_t_terminal_loop.html#a78a13ee96a5f6f31882406a3c3090374">TTerminalLoop</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_terminal_loop.html">TTerminalLoop</a>&amp;)                = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#aa2babde245a9820dc940ac33cf429d81">   37</a></span>   <a class="code hl_function" href="class_t_terminal_loop.html#aa2babde245a9820dc940ac33cf429d81">TTerminalLoop</a>(<a class="code hl_class" href="class_t_terminal_loop.html">TTerminalLoop</a>&amp;&amp;) noexcept            = delete;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#a230eab112120dbf5f863994c58a3a3a9">   38</a></span>   <a class="code hl_class" href="class_t_terminal_loop.html">TTerminalLoop</a>&amp; operator=(const <a class="code hl_class" href="class_t_terminal_loop.html">TTerminalLoop</a>&amp;)     = delete;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#aaeb5fb447a0bffa572658ca1f9617cdd">   39</a></span>   <a class="code hl_class" href="class_t_terminal_loop.html">TTerminalLoop</a>&amp; operator=(<a class="code hl_class" href="class_t_terminal_loop.html">TTerminalLoop</a>&amp;&amp;) noexcept = delete;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#a6da84958a2ae9121fd30eeb1181418df">   40</a></span>   ~<a class="code hl_class" href="class_t_terminal_loop.html">TTerminalLoop</a>()                                   = default;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#ifndef __CINT__</span></div>
+<div class="foldopen" id="foldopen00043" data-start="{" data-end="}">
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#a40400124e445433d80d9928696698f4f">   43</a></span>   std::shared_ptr&lt;ThreadsafeQueue&lt;std::shared_ptr&lt;T&gt;&gt;&gt;&amp; <a class="code hl_function" href="class_t_terminal_loop.html#a40400124e445433d80d9928696698f4f">InputQueue</a>()</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>   {</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">fInputQueue</a>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>   }</div>
 </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#a0cc2660d5d7521baaff0cdd1508cb6da">   44</a></span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_terminal_loop.html#a0cc2660d5d7521baaff0cdd1508cb6da">ClearQueue</a>()<span class="keyword"> override</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">   </span>{</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      <span class="keywordflow">while</span>(<a class="code hl_variable" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">fInputQueue</a>-&gt;Size()) {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>         std::shared_ptr&lt;T&gt; event;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>         <a class="code hl_variable" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">fInputQueue</a>-&gt;Pop(event);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      }</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>   }</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="foldopen" id="foldopen00048" data-start="{" data-end="}">
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#a0cc2660d5d7521baaff0cdd1508cb6da">   48</a></span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_terminal_loop.html#a0cc2660d5d7521baaff0cdd1508cb6da">ClearQueue</a>()<span class="keyword"> override</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">   </span>{</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      <span class="keywordflow">while</span>(<a class="code hl_variable" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">fInputQueue</a>-&gt;Size()) {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>         std::shared_ptr&lt;T&gt; event;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>         <a class="code hl_variable" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">fInputQueue</a>-&gt;Pop(event);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>   }</div>
 </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="foldopen" id="foldopen00053" data-start="{" data-end="}">
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#a4710e783e797a778f62e2c3efbbce09b">   53</a></span>   <span class="keywordtype">size_t</span> <a class="code hl_function" href="class_t_terminal_loop.html#a4710e783e797a778f62e2c3efbbce09b">GetItemsPopped</a>()<span class="keyword"> override</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">   </span>{</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>   }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#a4710e783e797a778f62e2c3efbbce09b">   57</a></span>   <span class="keywordtype">size_t</span> <a class="code hl_function" href="class_t_terminal_loop.html#a4710e783e797a778f62e2c3efbbce09b">GetItemsPopped</a>()<span class="keyword"> override</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keyword">   </span>{</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>   }</div>
 </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#a23a8b4fe0d5a0113b18571e693133ec9">   57</a></span>   <span class="keywordtype">size_t</span> <a class="code hl_function" href="class_t_terminal_loop.html#a23a8b4fe0d5a0113b18571e693133ec9">GetItemsPushed</a>()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> 0; }</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#ab207f4172b15a5308537acac21327fc6">   58</a></span>   <span class="keywordtype">size_t</span> <a class="code hl_function" href="class_t_terminal_loop.html#ab207f4172b15a5308537acac21327fc6">GetItemsCurrent</a>()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> 0; }</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#a771f79c2f405834b6b16a4bfefbb6fe4">   59</a></span>   <span class="keywordtype">size_t</span> <a class="code hl_function" href="class_t_terminal_loop.html#a771f79c2f405834b6b16a4bfefbb6fe4">GetRate</a>()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> 0; }</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">#ifndef __CINT__</span></div>
-<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#aa71b1a23d3afa2907be26a20e1887ce3">   63</a></span>   <span class="keywordtype">bool</span> <a class="code hl_function" href="class_t_terminal_loop.html#aa71b1a23d3afa2907be26a20e1887ce3">Iteration</a>()<span class="keyword"> override</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">   </span>{</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      std::shared_ptr&lt;T&gt; event;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      <a class="code hl_variable" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">fInputQueue</a>-&gt;Pop(event);</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      <span class="keywordflow">if</span>(event) {</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>         <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      }</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">fInputQueue</a>-&gt;IsFinished()) {</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>         <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      }</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>      std::this_thread::sleep_for(std::chrono::milliseconds(1000));</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>   }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#a23a8b4fe0d5a0113b18571e693133ec9">   61</a></span>   <span class="keywordtype">size_t</span> <a class="code hl_function" href="class_t_terminal_loop.html#a23a8b4fe0d5a0113b18571e693133ec9">GetItemsPushed</a>()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> 0; }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#ab207f4172b15a5308537acac21327fc6">   62</a></span>   <span class="keywordtype">size_t</span> <a class="code hl_function" href="class_t_terminal_loop.html#ab207f4172b15a5308537acac21327fc6">GetItemsCurrent</a>()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> 0; }</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#a771f79c2f405834b6b16a4bfefbb6fe4">   63</a></span>   <span class="keywordtype">size_t</span> <a class="code hl_function" href="class_t_terminal_loop.html#a771f79c2f405834b6b16a4bfefbb6fe4">GetRate</a>()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> 0; }</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#ifndef __CINT__</span></div>
+<div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#aa71b1a23d3afa2907be26a20e1887ce3">   67</a></span>   <span class="keywordtype">bool</span> <a class="code hl_function" href="class_t_terminal_loop.html#aa71b1a23d3afa2907be26a20e1887ce3">Iteration</a>()<span class="keyword"> override</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword">   </span>{</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      std::shared_ptr&lt;T&gt; event;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      <a class="code hl_variable" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">fInputQueue</a>-&gt;Pop(event);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      <span class="keywordflow">if</span>(event) {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>         <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>      }</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">fInputQueue</a>-&gt;IsFinished()) {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>         <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>      }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      std::this_thread::sleep_for(std::chrono::milliseconds(1000));</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>   }</div>
 </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="keyword">private</span>:</div>
-<div class="foldopen" id="foldopen00080" data-start="{" data-end="}">
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#ab3761348a0c6920f28dc5e11e8276622">   80</a></span>   <span class="keyword">explicit</span> <a class="code hl_function" href="class_t_terminal_loop.html#ab3761348a0c6920f28dc5e11e8276622">TTerminalLoop</a>(std::string name)</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      : <a class="code hl_class" href="class_stoppable_thread.html">StoppableThread</a>(std::move(name)), <a class="code hl_variable" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">fInputQueue</a>(std::make_shared&lt;<a class="code hl_class" href="class_threadsafe_queue.html">ThreadsafeQueue</a>&lt;std::shared_ptr&lt;T&gt;&gt;&gt;())</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>   {</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>   }</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="keyword">private</span>:</div>
+<div class="foldopen" id="foldopen00084" data-start="{" data-end="}">
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#ab3761348a0c6920f28dc5e11e8276622">   84</a></span>   <span class="keyword">explicit</span> <a class="code hl_function" href="class_t_terminal_loop.html#ab3761348a0c6920f28dc5e11e8276622">TTerminalLoop</a>(std::string name)</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>      : <a class="code hl_class" href="class_stoppable_thread.html">StoppableThread</a>(std::move(name)), <a class="code hl_variable" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">fInputQueue</a>(std::make_shared&lt;<a class="code hl_class" href="class_threadsafe_queue.html">ThreadsafeQueue</a>&lt;std::shared_ptr&lt;T&gt;&gt;&gt;())</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>   }</div>
 </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">#ifndef __CINT__</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">   86</a></span>   std::shared_ptr&lt;ThreadsafeQueue&lt;std::shared_ptr&lt;T&gt;&gt;&gt; <a class="code hl_variable" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">fInputQueue</a>;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>};</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="preprocessor">#ifndef __CINT__</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">   90</a></span>   std::shared_ptr&lt;ThreadsafeQueue&lt;std::shared_ptr&lt;T&gt;&gt;&gt; <a class="code hl_variable" href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">fInputQueue</a>;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>};</div>
 </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment"></span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">/*! @} */</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="preprocessor">#endif </span><span class="comment">/* _TTERMINALLOOP_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment"></span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment">/*! @} */</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">#endif </span><span class="comment">/* _TTERMINALLOOP_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="a_stoppable_thread_8h_html"><div class="ttname"><a href="_stoppable_thread_8h.html">StoppableThread.h</a></div></div>
 <div class="ttc" id="a_threadsafe_queue_8h_html"><div class="ttname"><a href="_threadsafe_queue_8h.html">ThreadsafeQueue.h</a></div></div>
 <div class="ttc" id="aclass_stoppable_thread_html"><div class="ttname"><a href="class_stoppable_thread.html">StoppableThread</a></div><div class="ttdef"><b>Definition</b> <a href="_stoppable_thread_8h_source.html#l00029">StoppableThread.h:29</a></div></div>
 <div class="ttc" id="aclass_stoppable_thread_html_a95125f7225e246004fc7b5e9bf535963"><div class="ttname"><a href="class_stoppable_thread.html#a95125f7225e246004fc7b5e9bf535963">StoppableThread::Get</a></div><div class="ttdeci">static StoppableThread * Get(const std::string &amp;name)</div><div class="ttdef"><b>Definition</b> <a href="_stoppable_thread_8cxx_source.html#l00173">StoppableThread.cxx:173</a></div></div>
 <div class="ttc" id="aclass_t_terminal_loop_html"><div class="ttname"><a href="class_t_terminal_loop.html">TTerminalLoop</a></div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00020">TTerminalLoop.h:20</a></div></div>
-<div class="ttc" id="aclass_t_terminal_loop_html_a0cc2660d5d7521baaff0cdd1508cb6da"><div class="ttname"><a href="class_t_terminal_loop.html#a0cc2660d5d7521baaff0cdd1508cb6da">TTerminalLoop::ClearQueue</a></div><div class="ttdeci">void ClearQueue() override</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00044">TTerminalLoop.h:44</a></div></div>
+<div class="ttc" id="aclass_t_terminal_loop_html_a0cc2660d5d7521baaff0cdd1508cb6da"><div class="ttname"><a href="class_t_terminal_loop.html#a0cc2660d5d7521baaff0cdd1508cb6da">TTerminalLoop::ClearQueue</a></div><div class="ttdeci">void ClearQueue() override</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00048">TTerminalLoop.h:48</a></div></div>
 <div class="ttc" id="aclass_t_terminal_loop_html_a15fa953d5f542568e4b3b9153c0b6039"><div class="ttname"><a href="class_t_terminal_loop.html#a15fa953d5f542568e4b3b9153c0b6039">TTerminalLoop::Get</a></div><div class="ttdeci">static TTerminalLoop * Get(std::string name=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00022">TTerminalLoop.h:22</a></div></div>
-<div class="ttc" id="aclass_t_terminal_loop_html_a23a8b4fe0d5a0113b18571e693133ec9"><div class="ttname"><a href="class_t_terminal_loop.html#a23a8b4fe0d5a0113b18571e693133ec9">TTerminalLoop::GetItemsPushed</a></div><div class="ttdeci">size_t GetItemsPushed() override</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00057">TTerminalLoop.h:57</a></div></div>
-<div class="ttc" id="aclass_t_terminal_loop_html_a40400124e445433d80d9928696698f4f"><div class="ttname"><a href="class_t_terminal_loop.html#a40400124e445433d80d9928696698f4f">TTerminalLoop::InputQueue</a></div><div class="ttdeci">std::shared_ptr&lt; ThreadsafeQueue&lt; std::shared_ptr&lt; T &gt; &gt; &gt; &amp; InputQueue()</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00039">TTerminalLoop.h:39</a></div></div>
-<div class="ttc" id="aclass_t_terminal_loop_html_a4710e783e797a778f62e2c3efbbce09b"><div class="ttname"><a href="class_t_terminal_loop.html#a4710e783e797a778f62e2c3efbbce09b">TTerminalLoop::GetItemsPopped</a></div><div class="ttdeci">size_t GetItemsPopped() override</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00053">TTerminalLoop.h:53</a></div></div>
-<div class="ttc" id="aclass_t_terminal_loop_html_a771f79c2f405834b6b16a4bfefbb6fe4"><div class="ttname"><a href="class_t_terminal_loop.html#a771f79c2f405834b6b16a4bfefbb6fe4">TTerminalLoop::GetRate</a></div><div class="ttdeci">size_t GetRate() override</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00059">TTerminalLoop.h:59</a></div></div>
-<div class="ttc" id="aclass_t_terminal_loop_html_aa71b1a23d3afa2907be26a20e1887ce3"><div class="ttname"><a href="class_t_terminal_loop.html#aa71b1a23d3afa2907be26a20e1887ce3">TTerminalLoop::Iteration</a></div><div class="ttdeci">bool Iteration() override</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00063">TTerminalLoop.h:63</a></div></div>
-<div class="ttc" id="aclass_t_terminal_loop_html_ab207f4172b15a5308537acac21327fc6"><div class="ttname"><a href="class_t_terminal_loop.html#ab207f4172b15a5308537acac21327fc6">TTerminalLoop::GetItemsCurrent</a></div><div class="ttdeci">size_t GetItemsCurrent() override</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00058">TTerminalLoop.h:58</a></div></div>
-<div class="ttc" id="aclass_t_terminal_loop_html_ab3761348a0c6920f28dc5e11e8276622"><div class="ttname"><a href="class_t_terminal_loop.html#ab3761348a0c6920f28dc5e11e8276622">TTerminalLoop::TTerminalLoop</a></div><div class="ttdeci">TTerminalLoop(std::string name)</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00080">TTerminalLoop.h:80</a></div></div>
-<div class="ttc" id="aclass_t_terminal_loop_html_adc657e2eddae8e2199f3047d3773c588"><div class="ttname"><a href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">TTerminalLoop::fInputQueue</a></div><div class="ttdeci">std::shared_ptr&lt; ThreadsafeQueue&lt; std::shared_ptr&lt; T &gt; &gt; &gt; fInputQueue</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00086">TTerminalLoop.h:86</a></div></div>
-<div class="ttc" id="aclass_t_terminal_loop_html_af672d72a458eb95070a71154020781fb"><div class="ttname"><a href="class_t_terminal_loop.html#af672d72a458eb95070a71154020781fb">TTerminalLoop::~TTerminalLoop</a></div><div class="ttdeci">~TTerminalLoop() override=default</div></div>
+<div class="ttc" id="aclass_t_terminal_loop_html_a23a8b4fe0d5a0113b18571e693133ec9"><div class="ttname"><a href="class_t_terminal_loop.html#a23a8b4fe0d5a0113b18571e693133ec9">TTerminalLoop::GetItemsPushed</a></div><div class="ttdeci">size_t GetItemsPushed() override</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00061">TTerminalLoop.h:61</a></div></div>
+<div class="ttc" id="aclass_t_terminal_loop_html_a40400124e445433d80d9928696698f4f"><div class="ttname"><a href="class_t_terminal_loop.html#a40400124e445433d80d9928696698f4f">TTerminalLoop::InputQueue</a></div><div class="ttdeci">std::shared_ptr&lt; ThreadsafeQueue&lt; std::shared_ptr&lt; T &gt; &gt; &gt; &amp; InputQueue()</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00043">TTerminalLoop.h:43</a></div></div>
+<div class="ttc" id="aclass_t_terminal_loop_html_a4710e783e797a778f62e2c3efbbce09b"><div class="ttname"><a href="class_t_terminal_loop.html#a4710e783e797a778f62e2c3efbbce09b">TTerminalLoop::GetItemsPopped</a></div><div class="ttdeci">size_t GetItemsPopped() override</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00057">TTerminalLoop.h:57</a></div></div>
+<div class="ttc" id="aclass_t_terminal_loop_html_a771f79c2f405834b6b16a4bfefbb6fe4"><div class="ttname"><a href="class_t_terminal_loop.html#a771f79c2f405834b6b16a4bfefbb6fe4">TTerminalLoop::GetRate</a></div><div class="ttdeci">size_t GetRate() override</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00063">TTerminalLoop.h:63</a></div></div>
+<div class="ttc" id="aclass_t_terminal_loop_html_a78a13ee96a5f6f31882406a3c3090374"><div class="ttname"><a href="class_t_terminal_loop.html#a78a13ee96a5f6f31882406a3c3090374">TTerminalLoop::TTerminalLoop</a></div><div class="ttdeci">TTerminalLoop(const TTerminalLoop &amp;)=delete</div></div>
+<div class="ttc" id="aclass_t_terminal_loop_html_aa2babde245a9820dc940ac33cf429d81"><div class="ttname"><a href="class_t_terminal_loop.html#aa2babde245a9820dc940ac33cf429d81">TTerminalLoop::TTerminalLoop</a></div><div class="ttdeci">TTerminalLoop(TTerminalLoop &amp;&amp;) noexcept=delete</div></div>
+<div class="ttc" id="aclass_t_terminal_loop_html_aa71b1a23d3afa2907be26a20e1887ce3"><div class="ttname"><a href="class_t_terminal_loop.html#aa71b1a23d3afa2907be26a20e1887ce3">TTerminalLoop::Iteration</a></div><div class="ttdeci">bool Iteration() override</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00067">TTerminalLoop.h:67</a></div></div>
+<div class="ttc" id="aclass_t_terminal_loop_html_ab207f4172b15a5308537acac21327fc6"><div class="ttname"><a href="class_t_terminal_loop.html#ab207f4172b15a5308537acac21327fc6">TTerminalLoop::GetItemsCurrent</a></div><div class="ttdeci">size_t GetItemsCurrent() override</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00062">TTerminalLoop.h:62</a></div></div>
+<div class="ttc" id="aclass_t_terminal_loop_html_ab3761348a0c6920f28dc5e11e8276622"><div class="ttname"><a href="class_t_terminal_loop.html#ab3761348a0c6920f28dc5e11e8276622">TTerminalLoop::TTerminalLoop</a></div><div class="ttdeci">TTerminalLoop(std::string name)</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00084">TTerminalLoop.h:84</a></div></div>
+<div class="ttc" id="aclass_t_terminal_loop_html_adc657e2eddae8e2199f3047d3773c588"><div class="ttname"><a href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">TTerminalLoop::fInputQueue</a></div><div class="ttdeci">std::shared_ptr&lt; ThreadsafeQueue&lt; std::shared_ptr&lt; T &gt; &gt; &gt; fInputQueue</div><div class="ttdef"><b>Definition</b> <a href="_t_terminal_loop_8h_source.html#l00090">TTerminalLoop.h:90</a></div></div>
 <div class="ttc" id="aclass_threadsafe_queue_html"><div class="ttname"><a href="class_threadsafe_queue.html">ThreadsafeQueue</a></div><div class="ttdef"><b>Definition</b> <a href="_threadsafe_queue_8h_source.html#l00028">ThreadsafeQueue.h:28</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -231,7 +236,7 @@ $(document).ready(function(){initNavTree('_t_terminal_loop_8h_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_terminal_loop_8h.html">TTerminalLoop.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 12 2024 00:34:24.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Aug 19 2024 19:08:40.</li>
   </ul>
 </div>
 </body>

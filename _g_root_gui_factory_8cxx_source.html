@@ -195,7 +195,7 @@ $(document).ready(function(){initNavTree('_g_root_gui_factory_8cxx_source.html',
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>   <span class="comment">// TString browserVersion(gEnv-&gt;GetValue(&quot;Browser.Name&quot;, &quot;TRootBrowserLite&quot;));</span></div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>   TString         browserVersion(gEnv-&gt;GetValue(<span class="stringliteral">&quot;Browser.Name&quot;</span>, <span class="stringliteral">&quot;GRootBrowser&quot;</span>));</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>   TPluginHandler* ph = gROOT-&gt;GetPluginManager()-&gt;FindHandler(<span class="stringliteral">&quot;TBrowserImp&quot;</span>, browserVersion);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>   TPluginHandler* pluginHandler = gROOT-&gt;GetPluginManager()-&gt;FindHandler(<span class="stringliteral">&quot;TBrowserImp&quot;</span>, browserVersion);</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>   <span class="comment">// gROOT-&gt;GetPluginManager()-&gt;Print();</span></div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   TString browserOptions(gEnv-&gt;GetValue(<span class="stringliteral">&quot;Browser.Options&quot;</span>, <span class="stringliteral">&quot;FECI&quot;</span>));</div>
@@ -210,8 +210,8 @@ $(document).ready(function(){initNavTree('_g_root_gui_factory_8cxx_source.html',
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>   <span class="keywordflow">if</span>(browserOptions.Contains(<span class="stringliteral">&quot;LITE&quot;</span>)) {</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      <span class="keywordflow">return</span> <span class="keyword">new</span> TRootBrowserLite(b, title, width, height);</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>   }</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>   <span class="keywordflow">if</span>((ph != <span class="keyword">nullptr</span>) &amp;&amp; ph-&gt;LoadPlugin() != -1) {</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>      TBrowserImp* imp = (TBrowserImp*)ph-&gt;ExecPlugin(5, b, title, width, height, browserOptions.Data());</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>   <span class="keywordflow">if</span>(pluginHandler != <span class="keyword">nullptr</span> &amp;&amp; pluginHandler-&gt;LoadPlugin() != -1) {</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>      <span class="keyword">auto</span>* imp = <span class="keyword">reinterpret_cast&lt;</span>TBrowserImp*<span class="keyword">&gt;</span>(pluginHandler-&gt;ExecPlugin(5, b, title, width, height, browserOptions.Data()));   <span class="comment">// NOLINT</span></div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>      <span class="keywordflow">if</span>(imp != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>         <span class="keywordflow">return</span> imp;</div>
@@ -229,7 +229,7 @@ $(document).ready(function(){initNavTree('_g_root_gui_factory_8cxx_source.html',
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>   <span class="comment">// Create a ROOT native GUI version of TBrowserImp</span></div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>   TString         browserVersion(gEnv-&gt;GetValue(<span class="stringliteral">&quot;Browser.Name&quot;</span>, <span class="stringliteral">&quot;TRootBrowserLite&quot;</span>));</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>   TPluginHandler* ph = gROOT-&gt;GetPluginManager()-&gt;FindHandler(<span class="stringliteral">&quot;TBrowserImp&quot;</span>, browserVersion);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>   TPluginHandler* pluginHandler = gROOT-&gt;GetPluginManager()-&gt;FindHandler(<span class="stringliteral">&quot;TBrowserImp&quot;</span>, browserVersion);</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>   TString         browserOptions(gEnv-&gt;GetValue(<span class="stringliteral">&quot;Browser.Options&quot;</span>, <span class="stringliteral">&quot;FECI&quot;</span>));</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>   <span class="keywordflow">if</span>((opt != <span class="keyword">nullptr</span>) &amp;&amp; (strlen(opt) != 0u)) {</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>      browserOptions = opt;</div>
@@ -238,8 +238,8 @@ $(document).ready(function(){initNavTree('_g_root_gui_factory_8cxx_source.html',
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>   <span class="keywordflow">if</span>(browserOptions.Contains(<span class="stringliteral">&quot;LITE&quot;</span>)) {</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      <span class="keywordflow">return</span> <span class="keyword">new</span> TRootBrowserLite(b, title, width, height);</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>   }</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>   <span class="keywordflow">if</span>((ph != <span class="keyword">nullptr</span>) &amp;&amp; ph-&gt;LoadPlugin() != -1) {</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      TBrowserImp* imp = (TBrowserImp*)ph-&gt;ExecPlugin(7, b, title, x, y, width, height, browserOptions.Data());</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>   <span class="keywordflow">if</span>(pluginHandler != <span class="keyword">nullptr</span> &amp;&amp; pluginHandler-&gt;LoadPlugin() != -1) {</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      <span class="keyword">auto</span>* imp = <span class="keyword">reinterpret_cast&lt;</span>TBrowserImp*<span class="keyword">&gt;</span>(pluginHandler-&gt;ExecPlugin(7, b, title, x, y, width, height, browserOptions.Data()));   <span class="comment">// NOLINT</span></div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      <span class="keywordflow">if</span>(imp != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>         <span class="keywordflow">return</span> imp;</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>      }</div>
@@ -280,9 +280,9 @@ $(document).ready(function(){initNavTree('_g_root_gui_factory_8cxx_source.html',
 <div class="ttc" id="a_g_canvas_8h_html"><div class="ttname"><a href="_g_canvas_8h.html">GCanvas.h</a></div></div>
 <div class="ttc" id="a_g_root_canvas_8h_html"><div class="ttname"><a href="_g_root_canvas_8h.html">GRootCanvas.h</a></div></div>
 <div class="ttc" id="a_g_root_gui_factory_8h_html"><div class="ttname"><a href="_g_root_gui_factory_8h.html">GRootGuiFactory.h</a></div></div>
-<div class="ttc" id="aclass_g_canvas_html"><div class="ttname"><a href="class_g_canvas.html">GCanvas</a></div><div class="ttdef"><b>Definition</b> <a href="_g_canvas_8h_source.html#l00231">GCanvas.h:231</a></div></div>
+<div class="ttc" id="aclass_g_canvas_html"><div class="ttname"><a href="class_g_canvas.html">GCanvas</a></div><div class="ttdef"><b>Definition</b> <a href="_g_canvas_8h_source.html#l00238">GCanvas.h:238</a></div></div>
 <div class="ttc" id="aclass_g_root_canvas_html"><div class="ttname"><a href="class_g_root_canvas.html">GRootCanvas</a></div><div class="ttdef"><b>Definition</b> <a href="_g_root_canvas_8h_source.html#l00046">GRootCanvas.h:46</a></div></div>
-<div class="ttc" id="aclass_g_root_gui_factory_html"><div class="ttname"><a href="class_g_root_gui_factory.html">GRootGuiFactory</a></div><div class="ttdef"><b>Definition</b> <a href="_g_root_gui_factory_8h_source.html#l00028">GRootGuiFactory.h:28</a></div></div>
+<div class="ttc" id="aclass_g_root_gui_factory_html"><div class="ttname"><a href="class_g_root_gui_factory.html">GRootGuiFactory</a></div><div class="ttdef"><b>Definition</b> <a href="_g_root_gui_factory_8h_source.html#l00027">GRootGuiFactory.h:27</a></div></div>
 <div class="ttc" id="aclass_g_root_gui_factory_html_a56eab479909897b3965ee0853877c106"><div class="ttname"><a href="class_g_root_gui_factory.html#a56eab479909897b3965ee0853877c106">GRootGuiFactory::CreateBrowserImp</a></div><div class="ttdeci">TBrowserImp * CreateBrowserImp(TBrowser *b, const char *title, UInt_t width, UInt_t height, Option_t *opt=&quot;&quot;) override</div><div class="ttdef"><b>Definition</b> <a href="_g_root_gui_factory_8cxx_source.html#l00076">GRootGuiFactory.cxx:76</a></div></div>
 <div class="ttc" id="aclass_g_root_gui_factory_html_a61b3b06bbe5f529b977fd08514d7d488"><div class="ttname"><a href="class_g_root_gui_factory.html#a61b3b06bbe5f529b977fd08514d7d488">GRootGuiFactory::GRootGuiFactory</a></div><div class="ttdeci">GRootGuiFactory(const char *name=&quot;Root&quot;, const char *title=&quot;GRUT GUI Factory&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_g_root_gui_factory_8cxx_source.html#l00036">GRootGuiFactory.cxx:36</a></div></div>
 <div class="ttc" id="aclass_g_root_gui_factory_html_ab753ad78f22df2f75c08005fa9a04184"><div class="ttname"><a href="class_g_root_gui_factory.html#ab753ad78f22df2f75c08005fa9a04184">GRootGuiFactory::CreateCanvasImp</a></div><div class="ttdeci">TCanvasImp * CreateCanvasImp(TCanvas *c, const char *title, UInt_t width, UInt_t height) override</div><div class="ttdef"><b>Definition</b> <a href="_g_root_gui_factory_8cxx_source.html#l00055">GRootGuiFactory.cxx:55</a></div></div>
@@ -297,7 +297,7 @@ $(document).ready(function(){initNavTree('_g_root_gui_factory_8cxx_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_47358ee868e3aed1e59cf9c2ead119a2.html">GROOT</a></li><li class="navelem"><a class="el" href="_g_root_gui_factory_8cxx.html">GRootGuiFactory.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 12 2024 00:34:24.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Aug 19 2024 19:08:40.</li>
   </ul>
 </div>
 </body>

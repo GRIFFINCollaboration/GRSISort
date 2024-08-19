@@ -97,7 +97,6 @@ $(document).ready(function(){initNavTree('class_t_c_s_m.html',''); initResizable
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
@@ -135,6 +134,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac5a25bee6d5fff8d30f929f3aaceb2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d5c07abd73ec148fe0adbee0c7c1eec" id="r_a9d5c07abd73ec148fe0adbee0c7c1eec"><td class="memItemLeft" align="right" valign="top">virtual Short_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_detector.html#a9d5c07abd73ec148fe0adbee0c7c1eec">GetMultiplicity</a> () const</td></tr>
 <tr class="separator:a9d5c07abd73ec148fe0adbee0c7c1eec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbf359f899b738719e19bb326e45c790" id="r_acbf359f899b738719e19bb326e45c790"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_t_detector_hit.html">TDetectorHit</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_detector.html#acbf359f899b738719e19bb326e45c790">Hits</a> ()</td></tr>
+<tr class="separator:acbf359f899b738719e19bb326e45c790"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab907981ce861ab147879469064748ae2" id="r_ab907981ce861ab147879469064748ae2"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="class_t_detector_hit.html">TDetectorHit</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_detector.html#ab907981ce861ab147879469064748ae2">Hits</a> () const</td></tr>
+<tr class="separator:ab907981ce861ab147879469064748ae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64ad8e69427c3719f15c3d400021ab1f" id="r_a64ad8e69427c3719f15c3d400021ab1f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_detector.html#a64ad8e69427c3719f15c3d400021ab1f">NoHits</a> () const</td></tr>
+<tr class="separator:a64ad8e69427c3719f15c3d400021ab1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16143affb8db86547ab1ee1d37f5704c" id="r_a16143affb8db86547ab1ee1d37f5704c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_detector.html#a16143affb8db86547ab1ee1d37f5704c">Print</a> (Option_t *opt=&quot;&quot;) const override</td></tr>
 <tr class="separator:a16143affb8db86547ab1ee1d37f5704c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d7a4f9d8b48783b9c53ef1177270cc9" id="r_a1d7a4f9d8b48783b9c53ef1177270cc9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_detector.html#a1d7a4f9d8b48783b9c53ef1177270cc9">Print</a> (std::ostream &amp;out) const</td></tr>
@@ -144,11 +149,6 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a22040a759804b227944ef9d45b666b10" id="r_a22040a759804b227944ef9d45b666b10"><td class="memItemLeft" align="right" valign="top">static TVector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_c_s_m.html#a22040a759804b227944ef9d45b666b10">GetPosition</a> (int detector, char pos, int horizontalstrip, int verticalstrip, double X=0.00, double Y=0.00, double Z=0.00)</td></tr>
 <tr class="separator:a22040a759804b227944ef9d45b666b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a13ea06ba385aabcf09c1ea5a70d8145b" id="r_a13ea06ba385aabcf09c1ea5a70d8145b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_t_detector_hit.html">TDetectorHit</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_detector.html#a13ea06ba385aabcf09c1ea5a70d8145b">fHits</a></td></tr>
-<tr class="separator:a13ea06ba385aabcf09c1ea5a70d8145b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -179,6 +179,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a65ca7bc4ca27a5aaf8572fbf926f184b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fb28210efcef9c2ed6ffa7356b0405e" id="r_a3fb28210efcef9c2ed6ffa7356b0405e"><td class="memItemLeft" align="right" valign="top">std::map&lt; int16_t, std::vector&lt; std::vector&lt; std::vector&lt; std::pair&lt; <a class="el" href="class_t_fragment.html">TFragment</a>, <a class="el" href="class_t_g_r_s_i_mnemonic.html">TGRSIMnemonic</a> &gt; &gt; &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_c_s_m.html#a3fb28210efcef9c2ed6ffa7356b0405e">fFragments</a></td></tr>
 <tr class="separator:a3fb28210efcef9c2ed6ffa7356b0405e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13ea06ba385aabcf09c1ea5a70d8145b" id="r_a13ea06ba385aabcf09c1ea5a70d8145b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_t_detector_hit.html">TDetectorHit</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_detector.html#a13ea06ba385aabcf09c1ea5a70d8145b">fHits</a></td></tr>
+<tr class="separator:a13ea06ba385aabcf09c1ea5a70d8145b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
@@ -288,7 +290,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_c_s_m_8cxx_source.html#l00023">23</a> of file <a class="el" href="_t_c_s_m_8cxx_source.html">TCSM.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_mnemonic_8h_source.html#l00065">TMnemonic::ArrayPosition()</a>, <a class="el" href="_t_mnemonic_8h_source.html#l00070">TMnemonic::ArraySubPositionString()</a>, <a class="el" href="_t_mnemonic_8h_source.html#l00071">TMnemonic::CollectedChargeString()</a>, <a class="el" href="_t_c_s_m_8h_source.html#l00053">fFragments</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01627">TChannel::GetMnemonic()</a>.</p>
+<p class="reference">References <a class="el" href="_t_mnemonic_8h_source.html#l00066">TMnemonic::ArrayPosition()</a>, <a class="el" href="_t_mnemonic_8h_source.html#l00071">TMnemonic::ArraySubPositionString()</a>, <a class="el" href="_t_mnemonic_8h_source.html#l00072">TMnemonic::CollectedChargeString()</a>, <a class="el" href="_t_c_s_m_8h_source.html#l00053">fFragments</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01627">TChannel::GetMnemonic()</a>.</p>
 
 </div>
 </div>
@@ -318,7 +320,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_8h_source.html#l00063">63</a> of file <a class="el" href="_t_detector_8h_source.html">TDetector.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00084">TDetector::fHits</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_descant_8cxx_source.html#l00132">TDescant::AddFragment()</a>, <a class="el" href="_t_generic_detector_8cxx_source.html#l00032">TGenericDetector::AddFragment()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00153">TLaBr::AddFragment()</a>, <a class="el" href="_t_paces_8cxx_source.html#l00076">TPaces::AddFragment()</a>, <a class="el" href="_t_sceptar_8cxx_source.html#l00067">TSceptar::AddFragment()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00072">TSiLi::AddFragment()</a>, <a class="el" href="_t_t_a_c_8cxx_source.html#l00052">TTAC::AddFragment()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00230">TTigress::AddFragment()</a>, <a class="el" href="_t_tip_8cxx_source.html#l00168">TTip::AddFragment()</a>, <a class="el" href="_t_zero_degree_8cxx_source.html#l00057">TZeroDegree::AddFragment()</a>, <a class="el" href="_t_trific_8cxx_source.html#l00098">TTrific::AddFragment()</a>, <a class="el" href="_t_bgo_8cxx_source.html#l00153">TBgo::AddFragment()</a>, <a class="el" href="_t_emma_8cxx_source.html#l00210">TEmma::BuildHits()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00116">TSharc::BuildHits()</a>, and <a class="el" href="_t_sharc2_8cxx_source.html#l00095">TSharc2::BuildHits()</a>.</p>
 
 </div>
 </div>
@@ -476,7 +480,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_c_s_m_8cxx_source.html#l00061">61</a> of file <a class="el" href="_t_c_s_m_8cxx_source.html">TCSM.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_c_s_m_8cxx_source.html#l00342">BuilddEE()</a>, <a class="el" href="_t_c_s_m_8cxx_source.html#l00131">BuildVH()</a>, <a class="el" href="_t_c_s_m_8h_source.html#l00053">fFragments</a>, and <a class="el" href="_t_detector_8h_source.html#l00084">TDetector::fHits</a>.</p>
+<p class="reference">References <a class="el" href="_t_c_s_m_8cxx_source.html#l00342">BuilddEE()</a>, <a class="el" href="_t_c_s_m_8cxx_source.html#l00131">BuildVH()</a>, <a class="el" href="_t_c_s_m_8h_source.html#l00053">fFragments</a>, and <a class="el" href="_t_detector_8h_source.html#l00078">TDetector::Hits()</a>.</p>
 
 </div>
 </div>
@@ -551,9 +555,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_8h_source.html#l00068">68</a> of file <a class="el" href="_t_detector_8h_source.html">TDetector.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00084">TDetector::fHits</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_paces_8cxx_source.html#l00029">TPaces::TPaces()</a>, <a class="el" href="_t_sceptar_8cxx_source.html#l00036">TSceptar::TSceptar()</a>, <a class="el" href="_t_zero_degree_8cxx_source.html#l00015">TZeroDegree::TZeroDegree()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00165">TSharc::Clear()</a>, <a class="el" href="_t_trific_8cxx_source.html#l00122">TTrific::Clear()</a>, <a class="el" href="_t_descant_8cxx_source.html#l00106">TDescant::Clear()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00046">TSiLi::Clear()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00107">TTigress::Clear()</a>, <a class="el" href="_t_tri_foil_8cxx_source.html#l00014">TTriFoil::Clear()</a>, <a class="el" href="_t_tdr_plastic_8cxx_source.html#l00061">TTdrPlastic::Clear()</a>, <a class="el" href="_t_emma_8cxx_source.html#l00255">TEmma::Clear()</a>, <a class="el" href="_t_s3_8cxx_source.html#l00420">TS3::Clear()</a>, <a class="el" href="_t_eagle_8cxx_source.html#l00130">TEagle::Clear()</a>, <a class="el" href="_t_bgo_8cxx_source.html#l00134">TBgo::Clear()</a>, <a class="el" href="_t_suppressed_8cxx_source.html#l00009">TSuppressed::Clear()</a>, and <a class="el" href="_t_tdr_si_li_8cxx_source.html#l00049">TTdrSiLi::Clear()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_paces_8cxx_source.html#l00029">TPaces::TPaces()</a>, <a class="el" href="_t_sceptar_8cxx_source.html#l00036">TSceptar::TSceptar()</a>, <a class="el" href="_t_zero_degree_8cxx_source.html#l00015">TZeroDegree::TZeroDegree()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00165">TSharc::Clear()</a>, <a class="el" href="_t_sharc2_8cxx_source.html#l00134">TSharc2::Clear()</a>, <a class="el" href="_t_trific_8cxx_source.html#l00122">TTrific::Clear()</a>, <a class="el" href="_t_descant_8cxx_source.html#l00106">TDescant::Clear()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00046">TSiLi::Clear()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00107">TTigress::Clear()</a>, <a class="el" href="_t_tri_foil_8cxx_source.html#l00014">TTriFoil::Clear()</a>, <a class="el" href="_t_tdr_plastic_8cxx_source.html#l00061">TTdrPlastic::Clear()</a>, <a class="el" href="_t_emma_8cxx_source.html#l00255">TEmma::Clear()</a>, <a class="el" href="_t_rcmp_8cxx_source.html#l00080">TRcmp::Clear()</a>, <a class="el" href="_t_s3_8cxx_source.html#l00420">TS3::Clear()</a>, <a class="el" href="_t_eagle_8cxx_source.html#l00130">TEagle::Clear()</a>, <a class="el" href="_t_bgo_8cxx_source.html#l00134">TBgo::Clear()</a>, <a class="el" href="_t_suppressed_8cxx_source.html#l00009">TSuppressed::Clear()</a>, and <a class="el" href="_t_tdr_si_li_8cxx_source.html#l00049">TTdrSiLi::Clear()</a>.</p>
 
 </div>
 </div>
@@ -584,9 +588,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_t_griffin.html#a8501122e5d6312c51b3aab786dacbc3d">TGriffin</a>, <a class="el" href="class_t_s3.html#a68a9218d47353c09b5cef9e5dd2a354e">TS3</a>, <a class="el" href="class_t_tigress.html#acc9f1183fd75a5efafbc86e93a493345">TTigress</a>, and <a class="el" href="class_t_trific.html#ae77c63b34a1df7dbfe64cd13dfc7c62c">TTrific</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_8cxx_source.html#l00068">68</a> of file <a class="el" href="_t_detector_8cxx_source.html">TDetector.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_8cxx_source.html#l00054">54</a> of file <a class="el" href="_t_detector_8cxx_source.html">TDetector.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00084">TDetector::fHits</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_tigress_8h_source.html#l00079">TTigress::ClearTransients()</a>, and <a class="el" href="_t_trific_8h_source.html#l00060">TTrific::ClearTransients()</a>.</p>
 
@@ -660,11 +664,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_8cxx_source.html#l00038">38</a> of file <a class="el" href="_t_detector_8cxx_source.html">TDetector.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_8cxx_source.html#l00024">24</a> of file <a class="el" href="_t_detector_8cxx_source.html">TDetector.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00109">TDetectorHit::Copy()</a>, and <a class="el" href="_t_detector_8h_source.html#l00084">TDetector::fHits</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00109">TDetectorHit::Copy()</a>, and <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_8cxx_source.html#l00012">TDetector::TDetector()</a>, <a class="el" href="_t_eagle_pulser_8cxx_source.html#l00027">TEaglePulser::TEaglePulser()</a>, <a class="el" href="_t_fipps_pulser_8cxx_source.html#l00027">TFippsPulser::TFippsPulser()</a>, <a class="el" href="_t_fipps_t_a_c_8cxx_source.html#l00024">TFippsTAC::TFippsTAC()</a>, <a class="el" href="_t_generic_detector_8cxx_source.html#l00027">TGenericDetector::TGenericDetector()</a>, <a class="el" href="_t_sceptar_8cxx_source.html#l00052">TSceptar::TSceptar()</a>, <a class="el" href="_t_t_a_c_8cxx_source.html#l00024">TTAC::TTAC()</a>, <a class="el" href="_t_tdr_plastic_8cxx_source.html#l00052">TTdrPlastic::TTdrPlastic()</a>, <a class="el" href="_t_tip_8cxx_source.html#l00154">TTip::TTip()</a>, <a class="el" href="_t_zero_degree_8cxx_source.html#l00029">TZeroDegree::TZeroDegree()</a>, <a class="el" href="_t_descant_8cxx_source.html#l00091">TDescant::Copy()</a>, <a class="el" href="_t_emma_8cxx_source.html#l00046">TEmma::Copy()</a>, <a class="el" href="_t_paces_8cxx_source.html#l00045">TPaces::Copy()</a>, <a class="el" href="_t_r_f_8cxx_source.html#l00012">TRF::Copy()</a>, <a class="el" href="_t_s3_8cxx_source.html#l00048">TS3::Copy()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00194">TSharc::Copy()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00034">TSiLi::Copy()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00095">TTigress::Copy()</a>, <a class="el" href="_t_trific_8cxx_source.html#l00057">TTrific::Copy()</a>, <a class="el" href="_t_eagle_8cxx_source.html#l00118">TEagle::Copy()</a>, <a class="el" href="_t_bgo_8cxx_source.html#l00126">TBgo::Copy()</a>, <a class="el" href="_t_suppressed_8cxx_source.html#l00003">TSuppressed::Copy()</a>, <a class="el" href="_t_tdr_si_li_8cxx_source.html#l00037">TTdrSiLi::Copy()</a>, <a class="el" href="_t_tri_foil_8cxx_source.html#l00024">TTriFoil::Copy()</a>, <a class="el" href="_t_detector_8h_source.html#l00040">TDetector::operator=()</a>, <a class="el" href="_t_eagle_pulser_8cxx_source.html#l00021">TEaglePulser::operator=()</a>, <a class="el" href="_t_fipps_pulser_8cxx_source.html#l00021">TFippsPulser::operator=()</a>, <a class="el" href="_t_fipps_t_a_c_8cxx_source.html#l00033">TFippsTAC::operator=()</a>, <a class="el" href="_t_generic_detector_8cxx_source.html#l00021">TGenericDetector::operator=()</a>, <a class="el" href="_t_sceptar_8cxx_source.html#l00061">TSceptar::operator=()</a>, <a class="el" href="_t_t_a_c_8cxx_source.html#l00033">TTAC::operator=()</a>, <a class="el" href="_t_tdr_plastic_8cxx_source.html#l00068">TTdrPlastic::operator=()</a>, <a class="el" href="_t_tip_8cxx_source.html#l00162">TTip::operator=()</a>, <a class="el" href="_t_zero_degree_8cxx_source.html#l00038">TZeroDegree::operator=()</a>, and <a class="el" href="_t_detector_8h_source.html#l00047">TDetector::operator=()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_8cxx_source.html#l00004">TDetector::TDetector()</a>, <a class="el" href="_t_eagle_pulser_8cxx_source.html#l00027">TEaglePulser::TEaglePulser()</a>, <a class="el" href="_t_fipps_pulser_8cxx_source.html#l00027">TFippsPulser::TFippsPulser()</a>, <a class="el" href="_t_fipps_t_a_c_8cxx_source.html#l00024">TFippsTAC::TFippsTAC()</a>, <a class="el" href="_t_generic_detector_8cxx_source.html#l00027">TGenericDetector::TGenericDetector()</a>, <a class="el" href="_t_sceptar_8cxx_source.html#l00052">TSceptar::TSceptar()</a>, <a class="el" href="_t_t_a_c_8cxx_source.html#l00024">TTAC::TTAC()</a>, <a class="el" href="_t_tdr_plastic_8cxx_source.html#l00052">TTdrPlastic::TTdrPlastic()</a>, <a class="el" href="_t_tip_8cxx_source.html#l00154">TTip::TTip()</a>, <a class="el" href="_t_zero_degree_8cxx_source.html#l00029">TZeroDegree::TZeroDegree()</a>, <a class="el" href="_t_descant_8cxx_source.html#l00091">TDescant::Copy()</a>, <a class="el" href="_t_emma_8cxx_source.html#l00046">TEmma::Copy()</a>, <a class="el" href="_t_paces_8cxx_source.html#l00045">TPaces::Copy()</a>, <a class="el" href="_t_rcmp_8cxx_source.html#l00049">TRcmp::Copy()</a>, <a class="el" href="_t_r_f_8cxx_source.html#l00012">TRF::Copy()</a>, <a class="el" href="_t_s3_8cxx_source.html#l00048">TS3::Copy()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00193">TSharc::Copy()</a>, <a class="el" href="_t_sharc2_8cxx_source.html#l00161">TSharc2::Copy()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00034">TSiLi::Copy()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00095">TTigress::Copy()</a>, <a class="el" href="_t_trific_8cxx_source.html#l00057">TTrific::Copy()</a>, <a class="el" href="_t_eagle_8cxx_source.html#l00118">TEagle::Copy()</a>, <a class="el" href="_t_bgo_8cxx_source.html#l00126">TBgo::Copy()</a>, <a class="el" href="_t_suppressed_8cxx_source.html#l00003">TSuppressed::Copy()</a>, <a class="el" href="_t_tdr_si_li_8cxx_source.html#l00037">TTdrSiLi::Copy()</a>, <a class="el" href="_t_tri_foil_8cxx_source.html#l00024">TTriFoil::Copy()</a>, <a class="el" href="_t_detector_8h_source.html#l00040">TDetector::operator=()</a>, <a class="el" href="_t_eagle_pulser_8cxx_source.html#l00021">TEaglePulser::operator=()</a>, <a class="el" href="_t_fipps_pulser_8cxx_source.html#l00021">TFippsPulser::operator=()</a>, <a class="el" href="_t_fipps_t_a_c_8cxx_source.html#l00033">TFippsTAC::operator=()</a>, <a class="el" href="_t_generic_detector_8cxx_source.html#l00021">TGenericDetector::operator=()</a>, <a class="el" href="_t_sceptar_8cxx_source.html#l00061">TSceptar::operator=()</a>, <a class="el" href="_t_t_a_c_8cxx_source.html#l00033">TTAC::operator=()</a>, <a class="el" href="_t_tdr_plastic_8cxx_source.html#l00068">TTdrPlastic::operator=()</a>, <a class="el" href="_t_tip_8cxx_source.html#l00162">TTip::operator=()</a>, <a class="el" href="_t_zero_degree_8cxx_source.html#l00038">TZeroDegree::operator=()</a>, and <a class="el" href="_t_detector_8h_source.html#l00047">TDetector::operator=()</a>.</p>
 
 </div>
 </div>
@@ -694,7 +698,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_c_s_m_8h_source.html#l00042">42</a> of file <a class="el" href="_t_c_s_m_8h_source.html">TCSM.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_8cxx_source.html#l00075">TDetector::GetHit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_8cxx_source.html#l00061">TDetector::GetHit()</a>.</p>
 
 </div>
 </div>
@@ -724,11 +728,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_t_griffin.html#a9fb5bed513f435084094b92fb6a5b296">TGriffin</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_8cxx_source.html#l00075">75</a> of file <a class="el" href="_t_detector_8cxx_source.html">TDetector.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_8cxx_source.html#l00061">61</a> of file <a class="el" href="_t_detector_8cxx_source.html">TDetector.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00084">TDetector::fHits</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_bgo_8h_source.html#l00029">TBgo::GetBgoHit()</a>, <a class="el" href="_t_c_s_m_8h_source.html#l00042">GetCSMHit()</a>, <a class="el" href="_t_descant_8h_source.html#l00034">TDescant::GetDescantHit()</a>, <a class="el" href="_t_eagle_8h_source.html#l00034">TEagle::GetEagleHit()</a>, <a class="el" href="_t_emma_8h_source.html#l00027">TEmma::GetEmmaHit()</a>, <a class="el" href="_t_generic_detector_8h_source.html#l00026">TGenericDetector::GetGenericDetectorHit()</a>, <a class="el" href="_t_la_br_bgo_8h_source.html#l00018">TLaBrBgo::GetLaBrBgoHit()</a>, <a class="el" href="_t_la_br_8h_source.html#l00046">TLaBr::GetLaBrHit()</a>, <a class="el" href="_t_fipps_la_br_8h_source.html#l00046">TFippsLaBr::GetLaBrHit()</a>, <a class="el" href="_t_paces_8h_source.html#l00026">TPaces::GetPacesHit()</a>, <a class="el" href="_t_s3_8h_source.html#l00064">TS3::GetS3Hit()</a>, <a class="el" href="_t_sceptar_8h_source.html#l00034">TSceptar::GetSceptarHit()</a>, <a class="el" href="_t_sharc_8h_source.html#l00027">TSharc::GetSharcHit()</a>, <a class="el" href="_t_si_li_8h_source.html#l00045">TSiLi::GetSiLiHit()</a>, <a class="el" href="_t_t_a_c_8h_source.html#l00034">TTAC::GetTACHit()</a>, <a class="el" href="_t_fipps_t_a_c_8h_source.html#l00034">TFippsTAC::GetTACHit()</a>, <a class="el" href="_t_tdr_clover_8h_source.html#l00044">TTdrClover::GetTdrCloverHit()</a>, <a class="el" href="_t_tdr_plastic_8h_source.html#l00034">TTdrPlastic::GetTdrPlasticHit()</a>, <a class="el" href="_t_tdr_si_li_8h_source.html#l00026">TTdrSiLi::GetTdrSiLiHit()</a>, <a class="el" href="_t_tdr_tigress_8h_source.html#l00044">TTdrTigress::GetTdrTigressHit()</a>, <a class="el" href="_t_tigress_8h_source.html#l00058">TTigress::GetTigressHit()</a>, <a class="el" href="_t_tip_8h_source.html#l00032">TTip::GetTipHit()</a>, <a class="el" href="_t_trific_8h_source.html#l00050">TTrific::GetTrificHit()</a>, <a class="el" href="_t_zero_degree_8h_source.html#l00034">TZeroDegree::GetZeroDegreeHit()</a>, and <a class="el" href="_make_griffin_histograms_8cxx_source.html#l00049">MakeAnalysisHistograms()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_si_li_8cxx_source.html#l00278">TSiLi::AddCluster()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00139">TTigress::GetAddbackMultiplicity()</a>, <a class="el" href="_t_bgo_8h_source.html#l00029">TBgo::GetBgoHit()</a>, <a class="el" href="_t_c_s_m_8h_source.html#l00042">GetCSMHit()</a>, <a class="el" href="_t_descant_8h_source.html#l00034">TDescant::GetDescantHit()</a>, <a class="el" href="_t_eagle_8h_source.html#l00034">TEagle::GetEagleHit()</a>, <a class="el" href="_t_emma_8h_source.html#l00027">TEmma::GetEmmaHit()</a>, <a class="el" href="_t_generic_detector_8h_source.html#l00026">TGenericDetector::GetGenericDetectorHit()</a>, <a class="el" href="_t_la_br_bgo_8h_source.html#l00018">TLaBrBgo::GetLaBrBgoHit()</a>, <a class="el" href="_t_la_br_8h_source.html#l00046">TLaBr::GetLaBrHit()</a>, <a class="el" href="_t_fipps_la_br_8h_source.html#l00046">TFippsLaBr::GetLaBrHit()</a>, <a class="el" href="_t_paces_8h_source.html#l00026">TPaces::GetPacesHit()</a>, <a class="el" href="_t_s3_8h_source.html#l00064">TS3::GetS3Hit()</a>, <a class="el" href="_t_sceptar_8h_source.html#l00034">TSceptar::GetSceptarHit()</a>, <a class="el" href="_t_sharc2_8h_source.html#l00027">TSharc2::GetSharc2Hit()</a>, <a class="el" href="_t_sharc_8h_source.html#l00027">TSharc::GetSharcHit()</a>, <a class="el" href="_t_si_li_8h_source.html#l00045">TSiLi::GetSiLiHit()</a>, <a class="el" href="_t_t_a_c_8h_source.html#l00034">TTAC::GetTACHit()</a>, <a class="el" href="_t_fipps_t_a_c_8h_source.html#l00034">TFippsTAC::GetTACHit()</a>, <a class="el" href="_t_tdr_clover_8h_source.html#l00044">TTdrClover::GetTdrCloverHit()</a>, <a class="el" href="_t_tdr_plastic_8h_source.html#l00034">TTdrPlastic::GetTdrPlasticHit()</a>, <a class="el" href="_t_tdr_si_li_8h_source.html#l00026">TTdrSiLi::GetTdrSiLiHit()</a>, <a class="el" href="_t_tdr_tigress_8h_source.html#l00044">TTdrTigress::GetTdrTigressHit()</a>, <a class="el" href="_t_tigress_8h_source.html#l00058">TTigress::GetTigressHit()</a>, <a class="el" href="_t_tip_8h_source.html#l00032">TTip::GetTipHit()</a>, <a class="el" href="_t_trific_8h_source.html#l00050">TTrific::GetTrificHit()</a>, <a class="el" href="_t_zero_degree_8h_source.html#l00034">TZeroDegree::GetZeroDegreeHit()</a>, <a class="el" href="_make_griffin_histograms_8cxx_source.html#l00049">MakeAnalysisHistograms()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00123">TTigress::Print()</a>.</p>
 
 </div>
 </div>
@@ -759,9 +763,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_8h_source.html#l00075">75</a> of file <a class="el" href="_t_detector_8h_source.html">TDetector.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00084">TDetector::fHits</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_suppressed_8h_source.html#l00065">TSuppressed::CreateSuppressed()</a>, <a class="el" href="_t_suppressed_8h_source.html#l00090">TSuppressed::CreateSuppressedAddback()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00562">TFipps::FixCrossTalk()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00575">TIfin::FixCrossTalk()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00314">TFipps::GetAddbackMultiplicity()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00328">TIfin::GetAddbackMultiplicity()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00263">TTdrClover::GetAddbackMultiplicity()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00263">TTdrTigress::GetAddbackMultiplicity()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00345">TFipps::GetSuppressedAddbackMultiplicity()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00359">TIfin::GetSuppressedAddbackMultiplicity()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00328">TTdrClover::GetSuppressedAddbackMultiplicity()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00328">TTdrTigress::GetSuppressedAddbackMultiplicity()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00287">TFipps::GetSuppressedMultiplicity()</a>, and <a class="el" href="_t_ifin_8cxx_source.html#l00300">TIfin::GetSuppressedMultiplicity()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_suppressed_8h_source.html#l00069">TSuppressed::CreateSuppressed()</a>, <a class="el" href="_t_suppressed_8h_source.html#l00094">TSuppressed::CreateSuppressedAddback()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00562">TFipps::FixCrossTalk()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00575">TIfin::FixCrossTalk()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00314">TFipps::GetAddbackMultiplicity()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00328">TIfin::GetAddbackMultiplicity()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00263">TTdrClover::GetAddbackMultiplicity()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00263">TTdrTigress::GetAddbackMultiplicity()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00345">TFipps::GetSuppressedAddbackMultiplicity()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00359">TIfin::GetSuppressedAddbackMultiplicity()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00328">TTdrClover::GetSuppressedAddbackMultiplicity()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00328">TTdrTigress::GetSuppressedAddbackMultiplicity()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00287">TFipps::GetSuppressedMultiplicity()</a>, and <a class="el" href="_t_ifin_8cxx_source.html#l00300">TIfin::GetSuppressedMultiplicity()</a>.</p>
 
 </div>
 </div>
@@ -788,13 +792,13 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_t_griffin.html#a838e7c8756b7dcff3239b9ceb105f4ab">TGriffin</a>, and <a class="el" href="class_t_trific.html#ad3f8c4fa9690ee9d52481f31d70b5ab0">TTrific</a>.</p>
+<p>Reimplemented in <a class="el" href="class_t_griffin.html#a838e7c8756b7dcff3239b9ceb105f4ab">TGriffin</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_8h_source.html#l00073">73</a> of file <a class="el" href="_t_detector_8h_source.html">TDetector.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00084">TDetector::fHits</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_example_event_helper_8cxx_source.html#l00072">ExampleEventHelper::Exec()</a>, <a class="el" href="_example_tree_helper_8cxx_source.html#l00043">ExampleTreeHelper::Exec()</a>, <a class="el" href="_time_walk_helper_8cxx_source.html#l00058">TimeWalkHelper::Exec()</a>, <a class="el" href="_angular_correlation_selector_8_c_source.html#l00157">AngularCorrelationSelector::FillHistograms()</a>, <a class="el" href="_example_event_selector_8_c_source.html#l00040">ExampleEventSelector::FillHistograms()</a>, <a class="el" href="_example_tree_selector_8_c_source.html#l00057">ExampleTreeSelector::FillHistograms()</a>, <a class="el" href="_time_walk_selector_8_c_source.html#l00074">TimeWalkSelector::FillHistograms()</a>, <a class="el" href="_get_tree_entries_8cxx_source.html#l00030">main()</a>, <a class="el" href="_make_griffin_histograms_8cxx_source.html#l00049">MakeAnalysisHistograms()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00123">TTigress::Print()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00167">TFipps::Print()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00180">TIfin::Print()</a>, <a class="el" href="_t_bgo_8cxx_source.html#l00145">TBgo::Print()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00174">TTdrClover::Print()</a>, and <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00174">TTdrTigress::Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00230">TTigress::AddFragment()</a>, <a class="el" href="_example_event_helper_8cxx_source.html#l00072">ExampleEventHelper::Exec()</a>, <a class="el" href="_example_tree_helper_8cxx_source.html#l00043">ExampleTreeHelper::Exec()</a>, <a class="el" href="_test_helper_8cxx_source.html#l00111">TestHelper::Exec()</a>, <a class="el" href="_time_walk_helper_8cxx_source.html#l00058">TimeWalkHelper::Exec()</a>, <a class="el" href="_angular_correlation_selector_8_c_source.html#l00157">AngularCorrelationSelector::FillHistograms()</a>, <a class="el" href="_example_event_selector_8_c_source.html#l00040">ExampleEventSelector::FillHistograms()</a>, <a class="el" href="_example_tree_selector_8_c_source.html#l00057">ExampleTreeSelector::FillHistograms()</a>, <a class="el" href="_time_walk_selector_8_c_source.html#l00074">TimeWalkSelector::FillHistograms()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00165">TSiLi::GetAddbackMultiplicity()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00139">TTigress::GetAddbackMultiplicity()</a>, <a class="el" href="_t_griffin_8h_source.html#l00047">TGriffin::GetLowGainMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00305">TGriffin::GetMultiplicity()</a>, <a class="el" href="_t_sharc_8h_source.html#l00041">TSharc::GetSize()</a>, <a class="el" href="_get_tree_entries_8cxx_source.html#l00030">main()</a>, <a class="el" href="_make_griffin_histograms_8cxx_source.html#l00049">MakeAnalysisHistograms()</a>, <a class="el" href="_t_descant_8cxx_source.html#l00125">TDescant::Print()</a>, <a class="el" href="_t_emma_8cxx_source.html#l00068">TEmma::Print()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00095">TLaBr::Print()</a>, <a class="el" href="_t_paces_8cxx_source.html#l00063">TPaces::Print()</a>, <a class="el" href="_t_sceptar_8cxx_source.html#l00079">TSceptar::Print()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00064">TSiLi::Print()</a>, <a class="el" href="_t_t_a_c_8cxx_source.html#l00045">TTAC::Print()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00123">TTigress::Print()</a>, <a class="el" href="_t_tip_8cxx_source.html#l00185">TTip::Print()</a>, <a class="el" href="_t_trific_8cxx_source.html#l00082">TTrific::Print()</a>, <a class="el" href="_t_zero_degree_8cxx_source.html#l00050">TZeroDegree::Print()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00167">TFipps::Print()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00180">TIfin::Print()</a>, <a class="el" href="_t_bgo_8cxx_source.html#l00145">TBgo::Print()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00174">TTdrClover::Print()</a>, and <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00174">TTdrTigress::Print()</a>.</p>
 
 </div>
 </div>
@@ -865,6 +869,66 @@ Static Private Attributes</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_t_c_s_m_8cxx_source.html#l00078">78</a> of file <a class="el" href="_t_c_s_m_8cxx_source.html">TCSM.cxx</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_c_s_m_8cxx_source.html#l00197">MakeHit()</a>, <a class="el" href="_t_c_s_m_8cxx_source.html#l00241">MakeHit()</a>, and <a class="el" href="_t_c_s_m_8cxx_source.html#l00521">RecoverHit()</a>.</p>
+
+</div>
+</div>
+<a id="acbf359f899b738719e19bb326e45c790" name="acbf359f899b738719e19bb326e45c790"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbf359f899b738719e19bb326e45c790">&#9670;&#160;</a></span>Hits() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="class_t_detector_hit.html">TDetectorHit</a> * &gt; &amp; TDetector::Hits </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_detector_8h_source.html#l00078">78</a> of file <a class="el" href="_t_detector_8h_source.html">TDetector.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_c_s_m_8cxx_source.html#l00061">BuildHits()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00116">TSharc::BuildHits()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00195">TTigress::BuildHits()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00323">TGriffin::GetHitVector()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00314">TGriffin::GetHitVector()</a>, <a class="el" href="_t_sharc2_8h_source.html#l00041">TSharc2::GetSize()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00121">TLaBr::GetSuppressedMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00254">TGriffin::Print()</a>, and <a class="el" href="_t_si_li_8h_source.html#l00058">TSiLi::UseFitCharge()</a>.</p>
+
+</div>
+</div>
+<a id="ab907981ce861ab147879469064748ae2" name="ab907981ce861ab147879469064748ae2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab907981ce861ab147879469064748ae2">&#9670;&#160;</a></span>Hits() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; <a class="el" href="class_t_detector_hit.html">TDetectorHit</a> * &gt; &amp; TDetector::Hits </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_detector_8h_source.html#l00079">79</a> of file <a class="el" href="_t_detector_8h_source.html">TDetector.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
 
 </div>
 </div>
@@ -998,6 +1062,37 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a64ad8e69427c3719f15c3d400021ab1f" name="a64ad8e69427c3719f15c3d400021ab1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64ad8e69427c3719f15c3d400021ab1f">&#9670;&#160;</a></span>NoHits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool TDetector::NoHits </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_detector_8h_source.html#l00076">76</a> of file <a class="el" href="_t_detector_8h_source.html">TDetector.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00195">TTigress::BuildHits()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00139">TTigress::GetAddbackMultiplicity()</a>, and <a class="el" href="_t_la_br_8cxx_source.html#l00121">TLaBr::GetSuppressedMultiplicity()</a>.</p>
+
+</div>
+</div>
 <a id="a08f031984716e2f215bbcfe6a1b7fd99" name="a08f031984716e2f215bbcfe6a1b7fd99"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a08f031984716e2f215bbcfe6a1b7fd99">&#9670;&#160;</a></span>OldBuilddEE()</h2>
 
@@ -1071,11 +1166,11 @@ Static Private Attributes</h2></td></tr>
 <p>! </p>
 <p>Default print statement for <a class="el" href="class_t_detector.html">TDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_8cxx_source.html#l00051">51</a> of file <a class="el" href="_t_detector_8cxx_source.html">TDetector.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_8cxx_source.html#l00037">37</a> of file <a class="el" href="_t_detector_8cxx_source.html">TDetector.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_8cxx_source.html#l00051">TDetector::Print()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_8cxx_source.html#l00037">TDetector::Print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_8cxx_source.html#l00051">TDetector::Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_8cxx_source.html#l00037">TDetector::Print()</a>.</p>
 
 </div>
 </div>
@@ -1104,11 +1199,11 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Print detector to stream out. Iterates over hits and prints them.</p>
 
-<p>Reimplemented in <a class="el" href="class_t_descant.html#a635a236f6542332f246d7ea45c688846">TDescant</a>, <a class="el" href="class_t_emma.html#a389ef0720e76126d2dcc548737e8629f">TEmma</a>, <a class="el" href="class_t_generic_detector.html#ad1285507822e0d8dc1b2067d6817dc15">TGenericDetector</a>, <a class="el" href="class_t_griffin.html#a1806fec26e17dbef9d74b3793495ffed">TGriffin</a>, <a class="el" href="class_t_la_br.html#a98e355cb07698045af9ab9afe9b77246">TLaBr</a>, <a class="el" href="class_t_paces.html#a070f87c2407776f314056cda2a65f9f0">TPaces</a>, <a class="el" href="class_t_r_f.html#a17a4d4521c7b21d398c4345d77f8003d">TRF</a>, <a class="el" href="class_t_s3.html#a874a92f25d92183502afa74bd2930d26">TS3</a>, <a class="el" href="class_t_sceptar.html#a4cb1d691f7b88ad465da86c948a53087">TSceptar</a>, <a class="el" href="class_t_sharc.html#ae87a1718d91004e835ac35987c1b1975">TSharc</a>, <a class="el" href="class_t_si_li.html#a707fbf6a1402350eac510118fc1157c6">TSiLi</a>, <a class="el" href="class_t_t_a_c.html#aac88d3b2e6612260749078758392ed14">TTAC</a>, <a class="el" href="class_t_tigress.html#a4ac30f3ef6590950dc44ed31b954e705">TTigress</a>, <a class="el" href="class_t_tip.html#a71e421455506c52d2225d8aab2d5dddc">TTip</a>, <a class="el" href="class_t_trific.html#a9ebc8b15e65c15455ba92904ce567e20">TTrific</a>, <a class="el" href="class_t_tri_foil.html#a5e1eb87cae06ced183fa1bf2446a260d">TTriFoil</a>, <a class="el" href="class_t_zero_degree.html#a7130d318a44a127734673fb300fdaefe">TZeroDegree</a>, <a class="el" href="class_t_eagle.html#a64c8b1abf7ad6acef184f9dc9cc96894">TEagle</a>, <a class="el" href="class_t_eagle_pulser.html#ae8d0faa1dbf05d8ecc27b4c5cc4913e5">TEaglePulser</a>, <a class="el" href="class_t_fipps.html#a32cb6f5485ca34a807a6ad7553ad3e2f">TFipps</a>, <a class="el" href="class_t_fipps_la_br.html#ab7109fa0f03e4e95b4e5916542a775bc">TFippsLaBr</a>, <a class="el" href="class_t_fipps_pulser.html#a3074183facf72fbc1c6b0c1b8be28188">TFippsPulser</a>, <a class="el" href="class_t_fipps_t_a_c.html#a7e03475040f0b80a2fa591eb622faceb">TFippsTAC</a>, <a class="el" href="class_t_ifin.html#a1f856acf0055ed7fabc2e205993a16a9">TIfin</a>, <a class="el" href="class_t_bgo.html#a58c8bd71049b0aa355bb3d8ded28ddcb">TBgo</a>, <a class="el" href="class_t_tdr_clover.html#a8c0cc4e6978bf5918bcad23959ad32ec">TTdrClover</a>, <a class="el" href="class_t_tdr_plastic.html#a6ea965679cef649e4697bc32fa9e6c49">TTdrPlastic</a>, <a class="el" href="class_t_tdr_si_li.html#a9e292f1f22a0564d4b119161eafd96ed">TTdrSiLi</a>, and <a class="el" href="class_t_tdr_tigress.html#af3fc3f87a2f999d973051335fcbe9ac0">TTdrTigress</a>.</p>
+<p>Reimplemented in <a class="el" href="class_t_descant.html#a635a236f6542332f246d7ea45c688846">TDescant</a>, <a class="el" href="class_t_emma.html#a389ef0720e76126d2dcc548737e8629f">TEmma</a>, <a class="el" href="class_t_generic_detector.html#ad1285507822e0d8dc1b2067d6817dc15">TGenericDetector</a>, <a class="el" href="class_t_griffin.html#a1806fec26e17dbef9d74b3793495ffed">TGriffin</a>, <a class="el" href="class_t_la_br.html#a98e355cb07698045af9ab9afe9b77246">TLaBr</a>, <a class="el" href="class_t_paces.html#a070f87c2407776f314056cda2a65f9f0">TPaces</a>, <a class="el" href="class_t_rcmp.html#a0c794cb2154755ed513afc99c6306fba">TRcmp</a>, <a class="el" href="class_t_r_f.html#a17a4d4521c7b21d398c4345d77f8003d">TRF</a>, <a class="el" href="class_t_s3.html#a874a92f25d92183502afa74bd2930d26">TS3</a>, <a class="el" href="class_t_sceptar.html#a4cb1d691f7b88ad465da86c948a53087">TSceptar</a>, <a class="el" href="class_t_sharc.html#ae87a1718d91004e835ac35987c1b1975">TSharc</a>, <a class="el" href="class_t_sharc2.html#ad829b99120596566fb353d2af25a3a9b">TSharc2</a>, <a class="el" href="class_t_si_li.html#a707fbf6a1402350eac510118fc1157c6">TSiLi</a>, <a class="el" href="class_t_t_a_c.html#aac88d3b2e6612260749078758392ed14">TTAC</a>, <a class="el" href="class_t_tigress.html#a4ac30f3ef6590950dc44ed31b954e705">TTigress</a>, <a class="el" href="class_t_tip.html#a71e421455506c52d2225d8aab2d5dddc">TTip</a>, <a class="el" href="class_t_trific.html#a9ebc8b15e65c15455ba92904ce567e20">TTrific</a>, <a class="el" href="class_t_tri_foil.html#a5e1eb87cae06ced183fa1bf2446a260d">TTriFoil</a>, <a class="el" href="class_t_zero_degree.html#a7130d318a44a127734673fb300fdaefe">TZeroDegree</a>, <a class="el" href="class_t_eagle.html#a64c8b1abf7ad6acef184f9dc9cc96894">TEagle</a>, <a class="el" href="class_t_eagle_pulser.html#ae8d0faa1dbf05d8ecc27b4c5cc4913e5">TEaglePulser</a>, <a class="el" href="class_t_fipps.html#a32cb6f5485ca34a807a6ad7553ad3e2f">TFipps</a>, <a class="el" href="class_t_fipps_la_br.html#ab7109fa0f03e4e95b4e5916542a775bc">TFippsLaBr</a>, <a class="el" href="class_t_fipps_pulser.html#a3074183facf72fbc1c6b0c1b8be28188">TFippsPulser</a>, <a class="el" href="class_t_fipps_t_a_c.html#a7e03475040f0b80a2fa591eb622faceb">TFippsTAC</a>, <a class="el" href="class_t_ifin.html#a1f856acf0055ed7fabc2e205993a16a9">TIfin</a>, <a class="el" href="class_t_bgo.html#a58c8bd71049b0aa355bb3d8ded28ddcb">TBgo</a>, <a class="el" href="class_t_tdr_clover.html#a8c0cc4e6978bf5918bcad23959ad32ec">TTdrClover</a>, <a class="el" href="class_t_tdr_plastic.html#a6ea965679cef649e4697bc32fa9e6c49">TTdrPlastic</a>, <a class="el" href="class_t_tdr_si_li.html#a9e292f1f22a0564d4b119161eafd96ed">TTdrSiLi</a>, and <a class="el" href="class_t_tdr_tigress.html#af3fc3f87a2f999d973051335fcbe9ac0">TTdrTigress</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_8cxx_source.html#l00057">57</a> of file <a class="el" href="_t_detector_8cxx_source.html">TDetector.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_8cxx_source.html#l00043">43</a> of file <a class="el" href="_t_detector_8cxx_source.html">TDetector.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00084">TDetector::fHits</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
 
 </div>
 </div>
@@ -1256,14 +1351,14 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_8h_source.html#l00084">84</a> of file <a class="el" href="_t_detector_8h_source.html">TDetector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_8h_source.html#l00088">88</a> of file <a class="el" href="_t_detector_8h_source.html">TDetector.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_8cxx_source.html#l00030">TDetector::~TDetector()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00278">TSiLi::AddCluster()</a>, <a class="el" href="_t_descant_8cxx_source.html#l00132">TDescant::AddFragment()</a>, <a class="el" href="_t_generic_detector_8cxx_source.html#l00032">TGenericDetector::AddFragment()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00153">TLaBr::AddFragment()</a>, <a class="el" href="_t_paces_8cxx_source.html#l00076">TPaces::AddFragment()</a>, <a class="el" href="_t_sceptar_8cxx_source.html#l00067">TSceptar::AddFragment()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00072">TSiLi::AddFragment()</a>, <a class="el" href="_t_t_a_c_8cxx_source.html#l00052">TTAC::AddFragment()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00230">TTigress::AddFragment()</a>, <a class="el" href="_t_tip_8cxx_source.html#l00168">TTip::AddFragment()</a>, <a class="el" href="_t_zero_degree_8cxx_source.html#l00057">TZeroDegree::AddFragment()</a>, <a class="el" href="_t_eagle_8cxx_source.html#l00139">TEagle::AddFragment()</a>, <a class="el" href="_t_eagle_pulser_8cxx_source.html#l00032">TEaglePulser::AddFragment()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00409">TFipps::AddFragment()</a>, <a class="el" href="_t_fipps_la_br_8cxx_source.html#l00149">TFippsLaBr::AddFragment()</a>, <a class="el" href="_t_fipps_pulser_8cxx_source.html#l00032">TFippsPulser::AddFragment()</a>, <a class="el" href="_t_fipps_t_a_c_8cxx_source.html#l00052">TFippsTAC::AddFragment()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00423">TIfin::AddFragment()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00365">TTdrClover::AddFragment()</a>, <a class="el" href="_t_tdr_plastic_8cxx_source.html#l00074">TTdrPlastic::AddFragment()</a>, <a class="el" href="_t_tdr_si_li_8cxx_source.html#l00074">TTdrSiLi::AddFragment()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00364">TTdrTigress::AddFragment()</a>, <a class="el" href="_t_trific_8cxx_source.html#l00098">TTrific::AddFragment()</a>, <a class="el" href="_t_bgo_8cxx_source.html#l00153">TBgo::AddFragment()</a>, <a class="el" href="_t_detector_8h_source.html#l00063">TDetector::AddHit()</a>, <a class="el" href="_t_c_s_m_8cxx_source.html#l00061">BuildHits()</a>, <a class="el" href="_t_emma_8cxx_source.html#l00210">TEmma::BuildHits()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00116">TSharc::BuildHits()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00195">TTigress::BuildHits()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00165">TSharc::Clear()</a>, <a class="el" href="_t_trific_8cxx_source.html#l00122">TTrific::Clear()</a>, <a class="el" href="_t_detector_8h_source.html#l00068">TDetector::Clear()</a>, <a class="el" href="_t_emma_8cxx_source.html#l00255">TEmma::Clear()</a>, <a class="el" href="_t_detector_8cxx_source.html#l00068">TDetector::ClearTransients()</a>, <a class="el" href="_t_detector_8cxx_source.html#l00038">TDetector::Copy()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00165">TSiLi::GetAddbackMultiplicity()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00139">TTigress::GetAddbackMultiplicity()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00255">TFipps::GetFippsHit()</a>, <a class="el" href="_t_detector_8cxx_source.html#l00075">TDetector::GetHit()</a>, <a class="el" href="_t_detector_8h_source.html#l00075">TDetector::GetHitVector()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00268">TIfin::GetIfinHit()</a>, <a class="el" href="_t_detector_8h_source.html#l00073">TDetector::GetMultiplicity()</a>, <a class="el" href="_t_trific_8h_source.html#l00068">TTrific::GetMultiplicity()</a>, <a class="el" href="_t_sharc_8h_source.html#l00041">TSharc::GetSize()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00121">TLaBr::GetSuppressedMultiplicity()</a>, <a class="el" href="_t_fipps_la_br_8cxx_source.html#l00115">TFippsLaBr::GetSuppressedMultiplicity()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00296">TTdrClover::GetSuppressedMultiplicity()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00296">TTdrTigress::GetSuppressedMultiplicity()</a>, <a class="el" href="_t_detector_8cxx_source.html#l00057">TDetector::Print()</a>, <a class="el" href="_t_descant_8cxx_source.html#l00125">TDescant::Print()</a>, <a class="el" href="_t_emma_8cxx_source.html#l00068">TEmma::Print()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00095">TLaBr::Print()</a>, <a class="el" href="_t_paces_8cxx_source.html#l00063">TPaces::Print()</a>, <a class="el" href="_t_sceptar_8cxx_source.html#l00079">TSceptar::Print()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00064">TSiLi::Print()</a>, <a class="el" href="_t_t_a_c_8cxx_source.html#l00045">TTAC::Print()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00123">TTigress::Print()</a>, <a class="el" href="_t_tip_8cxx_source.html#l00185">TTip::Print()</a>, <a class="el" href="_t_trific_8cxx_source.html#l00082">TTrific::Print()</a>, <a class="el" href="_t_zero_degree_8cxx_source.html#l00050">TZeroDegree::Print()</a>, <a class="el" href="_t_eagle_8cxx_source.html#l00174">TEagle::Print()</a>, <a class="el" href="_t_eagle_pulser_8cxx_source.html#l00050">TEaglePulser::Print()</a>, <a class="el" href="_t_fipps_la_br_8cxx_source.html#l00091">TFippsLaBr::Print()</a>, <a class="el" href="_t_fipps_t_a_c_8cxx_source.html#l00045">TFippsTAC::Print()</a>, <a class="el" href="_t_tdr_plastic_8cxx_source.html#l00086">TTdrPlastic::Print()</a>, <a class="el" href="_t_tdr_si_li_8cxx_source.html#l00061">TTdrSiLi::Print()</a>, and <a class="el" href="_t_si_li_8h_source.html#l00058">TSiLi::UseFitCharge()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_8cxx_source.html#l00016">TDetector::~TDetector()</a>, <a class="el" href="_t_eagle_8cxx_source.html#l00139">TEagle::AddFragment()</a>, <a class="el" href="_t_eagle_pulser_8cxx_source.html#l00032">TEaglePulser::AddFragment()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00409">TFipps::AddFragment()</a>, <a class="el" href="_t_fipps_la_br_8cxx_source.html#l00149">TFippsLaBr::AddFragment()</a>, <a class="el" href="_t_fipps_pulser_8cxx_source.html#l00032">TFippsPulser::AddFragment()</a>, <a class="el" href="_t_fipps_t_a_c_8cxx_source.html#l00052">TFippsTAC::AddFragment()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00423">TIfin::AddFragment()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00365">TTdrClover::AddFragment()</a>, <a class="el" href="_t_tdr_plastic_8cxx_source.html#l00074">TTdrPlastic::AddFragment()</a>, <a class="el" href="_t_tdr_si_li_8cxx_source.html#l00074">TTdrSiLi::AddFragment()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00364">TTdrTigress::AddFragment()</a>, <a class="el" href="_t_detector_8h_source.html#l00063">TDetector::AddHit()</a>, <a class="el" href="_t_detector_8h_source.html#l00068">TDetector::Clear()</a>, <a class="el" href="_t_detector_8cxx_source.html#l00054">TDetector::ClearTransients()</a>, <a class="el" href="_t_detector_8cxx_source.html#l00024">TDetector::Copy()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00255">TFipps::GetFippsHit()</a>, <a class="el" href="_t_detector_8cxx_source.html#l00061">TDetector::GetHit()</a>, <a class="el" href="_t_detector_8h_source.html#l00075">TDetector::GetHitVector()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00268">TIfin::GetIfinHit()</a>, <a class="el" href="_t_detector_8h_source.html#l00073">TDetector::GetMultiplicity()</a>, <a class="el" href="_t_fipps_la_br_8cxx_source.html#l00115">TFippsLaBr::GetSuppressedMultiplicity()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00296">TTdrClover::GetSuppressedMultiplicity()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00296">TTdrTigress::GetSuppressedMultiplicity()</a>, <a class="el" href="_t_detector_8h_source.html#l00078">TDetector::Hits()</a>, <a class="el" href="_t_detector_8h_source.html#l00079">TDetector::Hits()</a>, <a class="el" href="_t_detector_8h_source.html#l00076">TDetector::NoHits()</a>, <a class="el" href="_t_detector_8cxx_source.html#l00043">TDetector::Print()</a>, <a class="el" href="_t_eagle_8cxx_source.html#l00174">TEagle::Print()</a>, <a class="el" href="_t_eagle_pulser_8cxx_source.html#l00050">TEaglePulser::Print()</a>, <a class="el" href="_t_fipps_la_br_8cxx_source.html#l00091">TFippsLaBr::Print()</a>, <a class="el" href="_t_fipps_t_a_c_8cxx_source.html#l00045">TFippsTAC::Print()</a>, <a class="el" href="_t_tdr_plastic_8cxx_source.html#l00086">TTdrPlastic::Print()</a>, and <a class="el" href="_t_tdr_si_li_8cxx_source.html#l00061">TTdrSiLi::Print()</a>.</p>
 
 </div>
 </div>
@@ -1274,7 +1369,7 @@ Static Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_c_s_m.html">TCSM</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 12 2024 00:34:27.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Aug 19 2024 19:08:43.</li>
   </ul>
 </div>
 </body>

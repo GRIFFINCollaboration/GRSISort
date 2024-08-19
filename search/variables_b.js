@@ -9,7 +9,6 @@ var searchData=
   ['lineq_5fmatrix_6',['lineq_matrix',['../class_t_pulse_analyzer.html#aac42418dcbcaf6324d469ab3e2e297f8',1,'TPulseAnalyzer']]],
   ['lineq_5fsolution_7',['lineq_solution',['../class_t_pulse_analyzer.html#a09ab50939166bedea44b564684bde317',1,'TPulseAnalyzer']]],
   ['lineq_5fvector_8',['lineq_vector',['../class_t_pulse_analyzer.html#a5e9177fcbeaac9758573bc40d462cc5f',1,'TPulseAnalyzer']]],
-  ['linfit_9',['linfit',['../class_t_calibrator.html#ac7b5f4c7ed552981ea2330d1c0505d83',1,'TCalibrator']]],
-  ['low_5ftimemidas_10',['low_timemidas',['../class_t_event_time.html#aa4aaa9f3b891aa7af59e4e388951032b',1,'TEventTime']]],
-  ['lowest_5ftime_11',['lowest_time',['../class_t_event_time.html#aba61fd23dce44103e7452dccbaaa2e14',1,'TEventTime::lowest_time'],['../class_t_event_time.html#aba61fd23dce44103e7452dccbaaa2e14',1,'TEventTime::lowest_time']]]
+  ['low_5ftimemidas_9',['low_timemidas',['../class_t_event_time.html#aa4aaa9f3b891aa7af59e4e388951032b',1,'TEventTime']]],
+  ['lowest_5ftime_10',['lowest_time',['../class_t_event_time.html#aba61fd23dce44103e7452dccbaaa2e14',1,'TEventTime::lowest_time'],['../class_t_event_time.html#aba61fd23dce44103e7452dccbaaa2e14',1,'TEventTime::lowest_time']]]
 ];

@@ -1,6 +1,7 @@
 var class_g_h2_base_1_1iterator =
 [
-    [ "iterator", "class_g_h2_base_1_1iterator.html#a3afe67f6c18ebc2bbd4f8b1f75a7e91a", null ],
+    [ "iterator", "class_g_h2_base_1_1iterator.html#ae921e8118acfc0ca6c10b07a68c3b5e0", null ],
+    [ "iterator", "class_g_h2_base_1_1iterator.html#a3a8a72f493c5d409f71793996432829d", null ],
     [ "operator!=", "class_g_h2_base_1_1iterator.html#a2fe47fe81fe279e00d0f2c49c7518472", null ],
     [ "operator*", "class_g_h2_base_1_1iterator.html#ab8b888bfed7dd6b17936275cf2bbd747", null ],
     [ "operator++", "class_g_h2_base_1_1iterator.html#a37a70d019a2b921806d23bbd80be2c49", null ],

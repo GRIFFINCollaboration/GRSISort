@@ -2,7 +2,8 @@ var class_t_scaler_data =
 [
     [ "TScalerData", "class_t_scaler_data.html#a9e66aec29d2abb7cd59ff257c1d16552", null ],
     [ "TScalerData", "class_t_scaler_data.html#abb0e370ce1ee2ec23ec7d805087c618d", null ],
-    [ "~TScalerData", "class_t_scaler_data.html#a8334081a64f630dad5ea501c28d99a29", null ],
+    [ "TScalerData", "class_t_scaler_data.html#af14e4ebdc5d21acd552fdcfe8b394ab7", null ],
+    [ "~TScalerData", "class_t_scaler_data.html#adb0da2998893a6acc23a046c2ee44659", null ],
     [ "Clear", "class_t_scaler_data.html#a00684c9880e4cd11bbabe30b5f45fae8", null ],
     [ "Copy", "class_t_scaler_data.html#a36f85d9832b7df21270bff1a394cb797", null ],
     [ "GetAddress", "class_t_scaler_data.html#a9fd4774f75572c9de31ea691d68899ad", null ],
@@ -12,6 +13,8 @@ var class_t_scaler_data =
     [ "GetScaler", "class_t_scaler_data.html#a618c9091f6ad13b84e401fe73e465660", null ],
     [ "GetScaler", "class_t_scaler_data.html#a10b7aa984ba17c3208b515563e259d1f", null ],
     [ "GetTimeStamp", "class_t_scaler_data.html#a1b4bc9ad30f6964f306f97b9e07c1f1a", null ],
+    [ "operator=", "class_t_scaler_data.html#a20f2c666772ec8ee85285e10f84d8bfb", null ],
+    [ "operator=", "class_t_scaler_data.html#ac1db903199a5f02b8f265c7a934f7759", null ],
     [ "Print", "class_t_scaler_data.html#a664ae88a4e5b7a91dc42772b932c5a38", null ],
     [ "ResizeScaler", "class_t_scaler_data.html#ac1e21a68af9acc2e711840d0e3f18ec5", null ],
     [ "SetAddress", "class_t_scaler_data.html#a84e5ba936aeda4dc35161a82956d0824", null ],

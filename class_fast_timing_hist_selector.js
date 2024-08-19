@@ -1,11 +1,10 @@
 var class_fast_timing_hist_selector =
 [
-    [ "FastTimingHistSelector", "class_fast_timing_hist_selector.html#ae6469546b9fcd85f533bb892e36cb6bb", null ],
-    [ "~FastTimingHistSelector", "class_fast_timing_hist_selector.html#a7e0dfc49da6c27a37f4e3fb75cf45233", null ],
+    [ "FastTimingHistSelector", "class_fast_timing_hist_selector.html#afdd8573d2d68b1809d57ede2f7729ef9", null ],
+    [ "~FastTimingHistSelector", "class_fast_timing_hist_selector.html#a1aff072b4fe3741dc2cdfcc802d57a64", null ],
     [ "Begin", "class_fast_timing_hist_selector.html#ab93493c658b7214c7b98b755d85586bd", null ],
     [ "CheckSizes", "class_fast_timing_hist_selector.html#a3ee3614749d1369487299802d7e18364", null ],
     [ "ClassDef", "class_fast_timing_hist_selector.html#ac5101b5031c5decf99939f7d8eb839ae", null ],
-    [ "ClassDefOverride", "class_fast_timing_hist_selector.html#aac34947a3e9bcf869d26c3ce7ddf24c2", null ],
     [ "CreateHistograms", "class_fast_timing_hist_selector.html#a8dd42692e9880f8d675015cfcf93e74e", null ],
     [ "EndOfSort", "class_fast_timing_hist_selector.html#aefe521b4e1ad5569b7e2809fb7f7e411", null ],
     [ "FillHistograms", "class_fast_timing_hist_selector.html#ab31769787115b1dabae78aebe666dfd5", null ],

@@ -38,9 +38,9 @@ var _globals_8h =
     [ "getexepath", "_globals_8h.html#a00b72893c17bcb4e05586f5e42f9854d", null ],
     [ "hex", "_globals_8h.html#ab37ad6f1cf4c93e161b5caaeae971ef4", null ],
     [ "PrintGdbStacktrace", "_globals_8h.html#a52b20d1a0ce0cf354138dd47ae9a5f46", null ],
-    [ "PrintStacktrace", "_globals_8h.html#a3f0930614f3ea2f2f153242657b08ba0", null ],
+    [ "PrintStacktrace", "_globals_8h.html#a892ab854c2a3b8622797099d79eef4f5", null ],
     [ "ProgramName", "_globals_8h.html#adabe8b638495d5c9a0a84c40b66ca111", null ],
     [ "SetGRSIEnv", "_globals_8h.html#abd76f00dd5bd14c9cc2ce0e5df75b52d", null ],
-    [ "sh", "_globals_8h.html#a9ed1d6946c2794ab146f9bc05578e1de", null ],
+    [ "sh", "_globals_8h.html#a446b981c75bfc4865a6b0b75ae9c65a0", null ],
     [ "Stringify", "_globals_8h.html#ab3ab6dab442708543d2a71ba522bad21", null ]
 ];

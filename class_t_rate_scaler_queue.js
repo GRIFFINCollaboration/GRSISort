@@ -1,6 +1,8 @@
 var class_t_rate_scaler_queue =
 [
-    [ "~TRateScalerQueue", "class_t_rate_scaler_queue.html#a73a48c96bf3e3ffd8748f218e8d6aedb", null ],
+    [ "TRateScalerQueue", "class_t_rate_scaler_queue.html#afbeb30331e5ed3a4c5362d8d1981228e", null ],
+    [ "TRateScalerQueue", "class_t_rate_scaler_queue.html#adeb4019129609b84a8643707274352bc", null ],
+    [ "~TRateScalerQueue", "class_t_rate_scaler_queue.html#a2ea329d339ec1f1f55399192a2bc85ba", null ],
     [ "TRateScalerQueue", "class_t_rate_scaler_queue.html#acda4f4970a29d5a954488214073fcec8", null ],
     [ "Add", "class_t_rate_scaler_queue.html#a4ccd126ea8155992c7d8c364051a9862", null ],
     [ "CheckStatus", "class_t_rate_scaler_queue.html#a21a6582143ad0b46a4653ae1f711ab0f", null ],
@@ -8,6 +10,8 @@ var class_t_rate_scaler_queue =
     [ "Get", "class_t_rate_scaler_queue.html#addf9165eb1312fab2261e464464d3b9f", null ],
     [ "GetTotalScalersIn", "class_t_rate_scaler_queue.html#a0dd1ea28b1356c5ce4ad2fbc8483dbc8", null ],
     [ "GetTotalScalersOut", "class_t_rate_scaler_queue.html#a00e2e497de843c269db04d037454c5ef", null ],
+    [ "operator=", "class_t_rate_scaler_queue.html#a9eb474b23d7e8b9b9aed6c28dac586bf", null ],
+    [ "operator=", "class_t_rate_scaler_queue.html#a693ef70a16668097a9f5af716cd6c759", null ],
     [ "Pop", "class_t_rate_scaler_queue.html#acfa70cbf87e3c5d10b845eedde66c70a", null ],
     [ "PopScaler", "class_t_rate_scaler_queue.html#a33bf871d288b526909dcc996de28b291", null ],
     [ "Print", "class_t_rate_scaler_queue.html#a0476b7e48d583358321c45d9c3531ce3", null ],

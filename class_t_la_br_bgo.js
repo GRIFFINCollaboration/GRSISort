@@ -15,9 +15,12 @@ var class_t_la_br_bgo =
     [ "GetLaBrBgoHit", "class_t_la_br_bgo.html#a6bc96a2a7200e15a4b6ab7dfbaff2773", null ],
     [ "GetMultiplicity", "class_t_la_br_bgo.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetPosition", "class_t_la_br_bgo.html#a202127adcc280ddb063ff7429822ce30", null ],
+    [ "Hits", "class_t_la_br_bgo.html#acbf359f899b738719e19bb326e45c790", null ],
+    [ "Hits", "class_t_la_br_bgo.html#ab907981ce861ab147879469064748ae2", null ],
+    [ "NoHits", "class_t_la_br_bgo.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
     [ "operator=", "class_t_la_br_bgo.html#a9b614e7d1c9dff5d0cbd2a309a75707c", null ],
     [ "Print", "class_t_la_br_bgo.html#af5918349419ed07c832590d122e73a2e", null ],
     [ "Print", "class_t_la_br_bgo.html#a58c8bd71049b0aa355bb3d8ded28ddcb", null ],
     [ "fHits", "class_t_la_br_bgo.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ],
-    [ "gScintPosition", "class_t_la_br_bgo.html#aa24552a6c25b1817ef6afc1d80f2fa1c", null ]
+    [ "fScintPosition", "class_t_la_br_bgo.html#a68b40bb14a0852eae493c56404f90c21", null ]
 ];

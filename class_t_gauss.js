@@ -1,8 +1,10 @@
 var class_t_gauss =
 [
-    [ "~TGauss", "class_t_gauss.html#a6359f3e352fc3c79b29480e07bbd5196", null ],
     [ "TGauss", "class_t_gauss.html#a215c9ad384bdc4505a70785e8449242e", null ],
     [ "TGauss", "class_t_gauss.html#a4cbcc475d88e1539a12cc49cb254721c", null ],
+    [ "TGauss", "class_t_gauss.html#a25146414905017d43ff2e0a6c3eeb75f", null ],
+    [ "TGauss", "class_t_gauss.html#a39609d05978b2d881c96b840ff504759", null ],
+    [ "~TGauss", "class_t_gauss.html#aab11526323696941dce39a8ff2305a88", null ],
     [ "Area", "class_t_gauss.html#afdc64b7a8d5315d282201cd3950c43b9", null ],
     [ "AreaErr", "class_t_gauss.html#a51b186071d30bb318455325d85d48649", null ],
     [ "BackgroundFunction", "class_t_gauss.html#a345dd2b47314015e1b42b8ae2e7edf5f", null ],
@@ -25,6 +27,8 @@ var class_t_gauss =
     [ "InitParNames", "class_t_gauss.html#a364c633f38ecb102c45a34840fd85989", null ],
     [ "IsBackgroundParameter", "class_t_gauss.html#a7d18aa1b624a9678436eca30c5e1931c", null ],
     [ "IsPeakParameter", "class_t_gauss.html#a42b9e80dd695ac5ebddd0caee15dd4d7", null ],
+    [ "operator=", "class_t_gauss.html#ad2a4565f0586c21bb7ca087af04f5b1c", null ],
+    [ "operator=", "class_t_gauss.html#a5dac604a9770cb627fae8d2cd775ef47", null ],
     [ "ParameterSetByUser", "class_t_gauss.html#a218c7f58e791a44dfabce7aa9dac78c2", null ],
     [ "PeakFunction", "class_t_gauss.html#a356b1d5cbec750faa2185532d3b866b8", null ],
     [ "PeakOnGlobalFunction", "class_t_gauss.html#a74df97e2ff48f64b2bf6f9067d259b38", null ],

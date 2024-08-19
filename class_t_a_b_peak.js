@@ -2,6 +2,8 @@ var class_t_a_b_peak =
 [
     [ "TABPeak", "class_t_a_b_peak.html#ac534b5ed7b13b4af4ce4556eb2820210", null ],
     [ "TABPeak", "class_t_a_b_peak.html#ac9985283cc9808861ae786bd4724d3c5", null ],
+    [ "TABPeak", "class_t_a_b_peak.html#ae552595c19b715648b76b8bb4656c350", null ],
+    [ "TABPeak", "class_t_a_b_peak.html#affc6e6e37d3b7570c023244dd7788bd7", null ],
     [ "~TABPeak", "class_t_a_b_peak.html#ae296922bfb2dfadd391916ba59e128fb", null ],
     [ "Area", "class_t_a_b_peak.html#afdc64b7a8d5315d282201cd3950c43b9", null ],
     [ "AreaErr", "class_t_a_b_peak.html#a51b186071d30bb318455325d85d48649", null ],
@@ -27,6 +29,8 @@ var class_t_a_b_peak =
     [ "IsPeakParameter", "class_t_a_b_peak.html#a42b9e80dd695ac5ebddd0caee15dd4d7", null ],
     [ "OneHitPeakFunction", "class_t_a_b_peak.html#a80987dd4320696fcd7734bdf7858d5ac", null ],
     [ "OneHitPeakOnGlobalFunction", "class_t_a_b_peak.html#af09ed3bd2bd5103975d28fd36a01185b", null ],
+    [ "operator=", "class_t_a_b_peak.html#a68974ad4f60f2a657c948bdd17a0f731", null ],
+    [ "operator=", "class_t_a_b_peak.html#a5ccd5377c9e7a8f7dabf973189ed6fb1", null ],
     [ "ParameterSetByUser", "class_t_a_b_peak.html#a218c7f58e791a44dfabce7aa9dac78c2", null ],
     [ "PeakFunction", "class_t_a_b_peak.html#ae954ca6c08a5975591143fcd2480c425", null ],
     [ "PeakOnGlobalFunction", "class_t_a_b_peak.html#a74df97e2ff48f64b2bf6f9067d259b38", null ],

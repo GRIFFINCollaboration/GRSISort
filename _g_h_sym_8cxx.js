@@ -5,8 +5,6 @@ var _g_h_sym_8cxx =
     [ "DifferentDimension", "class_different_dimension.html", null ],
     [ "DifferentLabels", "class_different_labels.html", null ],
     [ "DifferentNumberOfBins", "class_different_number_of_bins.html", null ],
-    [ "ClassImp", "_g_h_sym_8cxx.html#abf1b096897e6ad535f6393aa442c208d", null ],
-    [ "ClassImp", "_g_h_sym_8cxx.html#a5a30effecc33d1eadb7345add922cc6e", null ],
     [ "operator*", "_g_h_sym_8cxx.html#abe005fb5c6add1c87b832ff5541e4b24", null ],
     [ "operator*", "_g_h_sym_8cxx.html#aec771ed66a6c39889a1b622ab4f85a34", null ],
     [ "operator*", "_g_h_sym_8cxx.html#a50cda1e41c8faa92bf485659e267caad", null ],

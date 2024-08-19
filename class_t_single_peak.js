@@ -1,7 +1,9 @@
 var class_t_single_peak =
 [
     [ "TSinglePeak", "class_t_single_peak.html#a0e1ad9f508d334ed9f18802a8a3a4a9f", null ],
-    [ "~TSinglePeak", "class_t_single_peak.html#a607c9192bc87c96c7f976067a6307880", null ],
+    [ "TSinglePeak", "class_t_single_peak.html#a1475c0ec0da87b6524afa819ffac5f5f", null ],
+    [ "TSinglePeak", "class_t_single_peak.html#a4c9fd295ae37f921e192b28e1a6d9799", null ],
+    [ "~TSinglePeak", "class_t_single_peak.html#a9ae14b6d2e8142c8999ad143ccdb90a7", null ],
     [ "Area", "class_t_single_peak.html#afdc64b7a8d5315d282201cd3950c43b9", null ],
     [ "AreaErr", "class_t_single_peak.html#a51b186071d30bb318455325d85d48649", null ],
     [ "BackgroundFunction", "class_t_single_peak.html#a345dd2b47314015e1b42b8ae2e7edf5f", null ],
@@ -24,6 +26,8 @@ var class_t_single_peak =
     [ "InitParNames", "class_t_single_peak.html#af8a2b016029163055d71de7f60c4ffa8", null ],
     [ "IsBackgroundParameter", "class_t_single_peak.html#a7d18aa1b624a9678436eca30c5e1931c", null ],
     [ "IsPeakParameter", "class_t_single_peak.html#a42b9e80dd695ac5ebddd0caee15dd4d7", null ],
+    [ "operator=", "class_t_single_peak.html#a7e9b920d8fc920e946cb26dd720c0698", null ],
+    [ "operator=", "class_t_single_peak.html#a9fd32f174ce1356c0eb87e80a62e7f81", null ],
     [ "ParameterSetByUser", "class_t_single_peak.html#a218c7f58e791a44dfabce7aa9dac78c2", null ],
     [ "PeakFunction", "class_t_single_peak.html#a8b6d5344170e02ed4a2aa95f55f860d0", null ],
     [ "PeakOnGlobalFunction", "class_t_single_peak.html#a74df97e2ff48f64b2bf6f9067d259b38", null ],

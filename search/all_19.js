@@ -36,7 +36,7 @@ var searchData=
   ['usemidfileodb_33',['UseMidFileOdb',['../class_t_g_r_s_i_options.html#acfe394194614ccec3c25caae23c8a769',1,'TGRSIOptions']]],
   ['userfillobj_2eh_34',['UserFillObj.h',['../_user_fill_obj_8h.html',1,'']]],
   ['userinitobj_2eh_35',['UserInitObj.h',['../_user_init_obj_8h.html',1,'']]],
-  ['usersettings_36',['usersettings',['../class_t_g_r_s_i_options.html#a3f5f82869ca2a90c392dbfa2acd16290',1,'TGRSIOptions::UserSettings()'],['../_t_g_r_s_i_types_8h.html#aa52857f83d8b7cda6be7f0bec0f45229a3f22fceb493dbff3d5e6d162787a2a64',1,'USERSETTINGS:&#160;TGRSITypes.h']]],
+  ['usersettings_36',['usersettings',['../class_t_g_r_s_i_options.html#a3f5f82869ca2a90c392dbfa2acd16290',1,'TGRSIOptions::UserSettings()'],['../class_t_g_r_s_i_helper.html#a01803cc3aee74715892f7478b7158f4e',1,'TGRSIHelper::UserSettings()'],['../_t_g_r_s_i_types_8h.html#aa52857f83d8b7cda6be7f0bec0f45229a3f22fceb493dbff3d5e6d162787a2a64',1,'USERSETTINGS:&#160;TGRSITypes.h']]],
   ['usewaveparam_37',['UseWaveParam',['../class_t_channel.html#ae4629bd1d70f0bd5ce4f7122359907f9',1,'TChannel']]],
   ['util_2epy_38',['util.py',['../util_8py.html',1,'']]]
 ];

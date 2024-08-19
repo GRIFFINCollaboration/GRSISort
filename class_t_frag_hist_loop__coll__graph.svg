@@ -127,8 +127,8 @@ var sectionId = 'dynsection-1';
 <polygon fill="#9a32cd" stroke="#9a32cd" points="324.74,-318.76 317.46,-326.45 327.95,-324.98 324.74,-318.76"/>
 </a>
 </g>
-<text text-anchor="middle" x="409.62" y="-314.25" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> fFunc_name</text>
-<text text-anchor="middle" x="409.62" y="-303" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">fLibname</text>
+<text text-anchor="middle" x="409.62" y="-314.25" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> fFuncName</text>
+<text text-anchor="middle" x="409.62" y="-303" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">fLibName</text>
 </g>
 <!-- Node4 -->
 <g id="Node000004" class="node">
@@ -283,7 +283,7 @@ var sectionId = 'dynsection-1';
 <polygon fill="#9a32cd" stroke="#9a32cd" points="133.5,-184.76 123.75,-188.92 133.96,-191.74 133.5,-184.76"/>
 </a>
 </g>
-<text text-anchor="middle" x="297" y="-207" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> fCut_files</text>
+<text text-anchor="middle" x="297" y="-207" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> fCutFiles</text>
 </g>
 <!-- Node12 -->
 <g id="Node000012" class="node">

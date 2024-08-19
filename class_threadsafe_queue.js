@@ -1,11 +1,15 @@
 var class_threadsafe_queue =
 [
     [ "ThreadsafeQueue", "class_threadsafe_queue.html#aa95f1b9a4f6b06f905513ed015a6f26f", null ],
+    [ "ThreadsafeQueue", "class_threadsafe_queue.html#a2ed252b6fb023203a5fea16237642f70", null ],
+    [ "ThreadsafeQueue", "class_threadsafe_queue.html#aee880bad24de3d00389520d9382b8b8b", null ],
     [ "~ThreadsafeQueue", "class_threadsafe_queue.html#af8eb8543b7987ffdd4df2cf7c7a0a433", null ],
     [ "IsFinished", "class_threadsafe_queue.html#a529d7403bdf35ccb4c1082b058361324", null ],
     [ "ItemsPopped", "class_threadsafe_queue.html#a68c64c6f066133588cdc73afd11ce091", null ],
     [ "ItemsPushed", "class_threadsafe_queue.html#a44a908b2fb383461969ee1e306149748", null ],
     [ "Name", "class_threadsafe_queue.html#ad30473be690aedca6f0714397fb43e3b", null ],
+    [ "operator=", "class_threadsafe_queue.html#a537bdc712d54a10f7e992fd561507b60", null ],
+    [ "operator=", "class_threadsafe_queue.html#a2bd9a2683c33ef4af634e671d0bc7506", null ],
     [ "Pop", "class_threadsafe_queue.html#af98d619d2972e90f1130ec7f4a1cac3b", null ],
     [ "Push", "class_threadsafe_queue.html#afa3be4a4ba1ac62d0cc441e3ffb6111e", null ],
     [ "SetFinished", "class_threadsafe_queue.html#a2729f344cd4e3daf0abb6811b7964991", null ],

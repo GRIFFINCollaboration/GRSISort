@@ -122,6 +122,7 @@ var class_t_si_li_hit =
     [ "SumHit", "class_t_si_li_hit.html#ae9b29d3f25b89eecce8442695f6ce415", null ],
     [ "TestHitBit", "class_t_si_li_hit.html#a7e9a8c84424c66455f9c21b99f06216e", null ],
     [ "UseFitCharge", "class_t_si_li_hit.html#a6e8260a389a83de642b76ee50218a259", null ],
+    [ "WaveSize", "class_t_si_li_hit.html#ac62835a3dd9025e0908385fd95bff958", null ],
     [ "fAddBackEnergy", "class_t_si_li_hit.html#ae5656a770c5c7e1438f96cf53ef688ec", null ],
     [ "fAddBackSegments", "class_t_si_li_hit.html#a58293ae2d99aff08c758f891a260a4f3", null ],
     [ "fAddress", "class_t_si_li_hit.html#a8e84f6a505d936502a0096a749522094", null ],

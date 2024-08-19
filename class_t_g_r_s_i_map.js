@@ -2,6 +2,8 @@ var class_t_g_r_s_i_map =
 [
     [ "map_t", "class_t_g_r_s_i_map.html#af9a98f3173424aeabc28401ab454a0f6", null ],
     [ "TGRSIMap", "class_t_g_r_s_i_map.html#ab7c247c560ebf9a5cae74a58f757c5e1", null ],
+    [ "TGRSIMap", "class_t_g_r_s_i_map.html#ab1dd5dc76f794d1657391e6308b4a064", null ],
+    [ "TGRSIMap", "class_t_g_r_s_i_map.html#a74cc46a9ff93531a1eb3af34bc0c8403", null ],
     [ "~TGRSIMap", "class_t_g_r_s_i_map.html#acc78c940ee98a45cbd60c8ad84d6b299", null ],
     [ "at", "class_t_g_r_s_i_map.html#a5dcd264d838be594665c9ccddd17aeab", null ],
     [ "at", "class_t_g_r_s_i_map.html#ab1dc3096a1dff42dcda0acbf54a591cc", null ],
@@ -18,6 +20,8 @@ var class_t_g_r_s_i_map =
     [ "find", "class_t_g_r_s_i_map.html#ae505f51733cad4deb819418345cf0717", null ],
     [ "find", "class_t_g_r_s_i_map.html#aae01d0ff87d2aef9d11c891d4765d9bc", null ],
     [ "max_size", "class_t_g_r_s_i_map.html#a9123239f787f98e970c3c6aeaafc9d02", null ],
+    [ "operator=", "class_t_g_r_s_i_map.html#a56fa20a16bb0b961ea97cc9c0c2bf0a2", null ],
+    [ "operator=", "class_t_g_r_s_i_map.html#aa83ef903e0f43491013dadcb210c7af9", null ],
     [ "operator[]", "class_t_g_r_s_i_map.html#a6a4a3c564a53edd2069d9f391d9a335d", null ],
     [ "operator[]", "class_t_g_r_s_i_map.html#a1c2342321eed65cdea97c1573a407a51", null ],
     [ "Print", "class_t_g_r_s_i_map.html#ae759c68c3332ed3db513ff6cbe57d5d9", null ],

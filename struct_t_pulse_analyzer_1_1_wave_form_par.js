@@ -15,7 +15,7 @@ var struct_t_pulse_analyzer_1_1_wave_form_par =
     [ "baselineStDevfin", "struct_t_pulse_analyzer_1_1_wave_form_par.html#a02cb22a0bdf9d779921b5df355077895", null ],
     [ "basephase", "struct_t_pulse_analyzer_1_1_wave_form_par.html#a7e7ecd005e562e2af19fe108813a9b61", null ],
     [ "bfit", "struct_t_pulse_analyzer_1_1_wave_form_par.html#a1838e85000f5bff0b6db57833d047b67", null ],
-    [ "bflag", "struct_t_pulse_analyzer_1_1_wave_form_par.html#a1314b00629b31e1b1135e8a03599955f", null ],
+    [ "bflag", "struct_t_pulse_analyzer_1_1_wave_form_par.html#a7b94171d19b16c964d9985782d138118", null ],
     [ "max", "struct_t_pulse_analyzer_1_1_wave_form_par.html#a76ca8e3e30a75645a0f2a74f57e42dbb", null ],
     [ "mflag", "struct_t_pulse_analyzer_1_1_wave_form_par.html#a98a33945bd49205b87d790cfa04ffcad", null ],
     [ "osciflag", "struct_t_pulse_analyzer_1_1_wave_form_par.html#ac67fcd4d77d5c4674a040f1d7b504c81", null ],

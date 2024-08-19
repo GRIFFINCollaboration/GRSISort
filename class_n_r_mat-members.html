@@ -108,11 +108,13 @@ $(document).ready(function(){initNavTree('class_n_r_mat.html',''); initResizable
   <tr class="odd"><td class="entry"><a class="el" href="group___fitting.html#gab7e5747ce28ec13e19885907cdac60f4">NRMat</a>(const T &amp;a, int n, int m)</td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="group___fitting.html#ga223fc0d7bfb1a12e48b87072034d3912">NRMat</a>(const T *a, int n, int m)</td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="group___fitting.html#ga5a99f340753f4791a31de756ad1e3524">NRMat</a>(const NRMat &amp;rhs)</td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="group___fitting.html#ga10475233c8657903b0e07e9b26711c99">nrows</a>() const</td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="group___fitting.html#ga83b7a22bc216f3b75aca356b077d3eb0">operator=</a>(const NRMat &amp;rhs)</td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_n_r_mat.html#ae1b509395ecf9223b38664d431e82027">NRMat</a>(NRMat &amp;&amp;rhs) noexcept=default</td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="group___fitting.html#ga10475233c8657903b0e07e9b26711c99">nrows</a>() const</td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="group___fitting.html#ga83b7a22bc216f3b75aca356b077d3eb0">operator=</a>(const NRMat &amp;rhs)</td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_n_r_mat.html#af1f6a91156f07658d91c5f24894b2323">operator=</a>(NRMat &amp;&amp;rhs) noexcept=default</td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="group___fitting.html#ga5c0ef740d322d4a8a6b21d4da1053e2f">operator=</a>(const T &amp;a)</td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="group___fitting.html#ga947ff7588b1eed80fed633e8b001838b">operator[]</a>(const int i)</td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="group___fitting.html#ga8ae8abcf7c56932b621a90f7898131c4">operator[]</a>(const int i) const</td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="group___fitting.html#ga540d4eba804d4fe60b489ad897e2d4de">operator[]</a>(int i)</td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="group___fitting.html#ga31f874da486899767fc576b44df21c39">operator[]</a>(int i) const</td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_n_r_mat.html#a9f11fba17ad81873f2bed5f7624e4740">v</a></td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="group___fitting.html#ga19e2e7c55418ac52c871e89d37783a47">~NRMat</a>()</td><td class="entry"><a class="el" href="class_n_r_mat.html">NRMat&lt; T &gt;</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
@@ -121,7 +123,7 @@ $(document).ready(function(){initNavTree('class_n_r_mat.html',''); initResizable
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 12 2024 00:34:27.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Aug 19 2024 19:08:43.</li>
   </ul>
 </div>
 </body>

@@ -102,68 +102,74 @@ $(document).ready(function(){initNavTree('_g_root_gui_factory_8h_source.html',''
   <div class="headertitle"><div class="title">GRootGuiFactory.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="_g_root_gui_factory_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#ifndef ROOT_GRootGuiFactory</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#define ROOT_GRootGuiFactory</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"></span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">///////////////////////////////////////////////////////////////////////////</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">///</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">/// \class GRootGuiFactory</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">///</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">/// This class is a factory for ROOT GUI components. It overrides</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">/// the member functions of the ABS TGuiFactory.  This is necessary</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">/// in order to override the native root canvas and fully take control</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">/// of the users interface with objects drawn to the screen   pcb.</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">///</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">///////////////////////////////////////////////////////////////////////////</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"></span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#ifndef ROOT_TGuiFactory</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;TGuiFactory.h&quot;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">class </span>TApplicationImp;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">class </span>TCanvasImp;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">class </span>TBrowserImp;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">class </span>TContextMenuImp;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">class </span>TContextMenu;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">class </span>TControlBarImp;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">class </span>TControlBar;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="class_g_root_gui_factory.html">   28</a></span><span class="keyword">class </span><a class="code hl_class" href="class_g_root_gui_factory.html">GRootGuiFactory</a> : <span class="keyword">public</span> TGuiFactory {</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_g_root_gui_factory.html#acf060937926b71e5e16b27742b717b13">Init</a>();</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>   <a class="code hl_class" href="class_g_root_gui_factory.html">GRootGuiFactory</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name = <span class="stringliteral">&quot;Root&quot;</span>, <span class="keyword">const</span> <span class="keywordtype">char</span>* title = <span class="stringliteral">&quot;GRUT GUI Factory&quot;</span>);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="class_g_root_gui_factory.html#a6ff1f9155d7735f2cfaa08be11462b2b">   34</a></span>   <a class="code hl_function" href="class_g_root_gui_factory.html#a6ff1f9155d7735f2cfaa08be11462b2b">~GRootGuiFactory</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>   TApplicationImp* <a class="code hl_function" href="class_g_root_gui_factory.html#aba1edb9f6c629e2b243c4caefc2cea65">CreateApplicationImp</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* classname, <span class="keywordtype">int</span>* argc, <span class="keywordtype">char</span>** argv) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>   TCanvasImp* <a class="code hl_function" href="class_g_root_gui_factory.html#ab753ad78f22df2f75c08005fa9a04184">CreateCanvasImp</a>(TCanvas* c, <span class="keyword">const</span> <span class="keywordtype">char</span>* title, UInt_t width, UInt_t height) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>   TCanvasImp* <a class="code hl_function" href="class_g_root_gui_factory.html#ab753ad78f22df2f75c08005fa9a04184">CreateCanvasImp</a>(TCanvas* c, <span class="keyword">const</span> <span class="keywordtype">char</span>* title, Int_t x, Int_t y, UInt_t width, UInt_t height) <span class="keyword">override</span>;</div>
+<a href="_g_root_gui_factory_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef ROOT_GRootGuiFactory</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define ROOT_GRootGuiFactory</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"></span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">///////////////////////////////////////////////////////////////////////////</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">///</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">/// \class GRootGuiFactory</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">///</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">/// This class is a factory for ROOT GUI components. It overrides</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">/// the member functions of the ABS TGuiFactory.  This is necessary</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">/// in order to override the native root canvas and fully take control</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">/// of the users interface with objects drawn to the screen   pcb.</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">///</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">///////////////////////////////////////////////////////////////////////////</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"></span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#ifndef ROOT_TGuiFactory</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;TGuiFactory.h&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">class </span>TApplicationImp;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">class </span>TCanvasImp;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">class </span>TBrowserImp;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">class </span>TContextMenuImp;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">class </span>TContextMenu;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">class </span>TControlBarImp;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">class </span>TControlBar;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="};">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="class_g_root_gui_factory.html">   27</a></span><span class="keyword">class </span><a class="code hl_class" href="class_g_root_gui_factory.html">GRootGuiFactory</a> : <span class="keyword">public</span> TGuiFactory {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_g_root_gui_factory.html#acf060937926b71e5e16b27742b717b13">Init</a>();</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>   <span class="keyword">explicit</span> <a class="code hl_class" href="class_g_root_gui_factory.html">GRootGuiFactory</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name = <span class="stringliteral">&quot;Root&quot;</span>, <span class="keyword">const</span> <span class="keywordtype">char</span>* title = <span class="stringliteral">&quot;GRUT GUI Factory&quot;</span>);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="class_g_root_gui_factory.html#af8ad3a1a57b34bb9f3a6debde13eb8bd">   33</a></span>   <a class="code hl_function" href="class_g_root_gui_factory.html#af8ad3a1a57b34bb9f3a6debde13eb8bd">GRootGuiFactory</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_g_root_gui_factory.html">GRootGuiFactory</a>&amp;)                = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="class_g_root_gui_factory.html#a420d174ab2e5516994a3017453a01e21">   34</a></span>   <a class="code hl_function" href="class_g_root_gui_factory.html#a420d174ab2e5516994a3017453a01e21">GRootGuiFactory</a>(<a class="code hl_class" href="class_g_root_gui_factory.html">GRootGuiFactory</a>&amp;&amp;) noexcept            = default;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="class_g_root_gui_factory.html#aeea106ae67ed31763fd7d3c536a12d6f">   35</a></span>   <a class="code hl_class" href="class_g_root_gui_factory.html">GRootGuiFactory</a>&amp; operator=(const <a class="code hl_class" href="class_g_root_gui_factory.html">GRootGuiFactory</a>&amp;)     = default;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="class_g_root_gui_factory.html#aaaad5067d6b6e70a2084eac40106cc11">   36</a></span>   <a class="code hl_class" href="class_g_root_gui_factory.html">GRootGuiFactory</a>&amp; operator=(<a class="code hl_class" href="class_g_root_gui_factory.html">GRootGuiFactory</a>&amp;&amp;) noexcept = default;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="class_g_root_gui_factory.html#a6f567030d43f77adacdb226c5d4dd4e5">   37</a></span>   ~<a class="code hl_class" href="class_g_root_gui_factory.html">GRootGuiFactory</a>()                                     = default;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>   TApplicationImp* <a class="code hl_function" href="class_g_root_gui_factory.html#aba1edb9f6c629e2b243c4caefc2cea65">CreateApplicationImp</a>(const <span class="keywordtype">char</span>* classname, <span class="keywordtype">int</span>* argc, <span class="keywordtype">char</span>** argv) override;</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>   TBrowserImp* <a class="code hl_function" href="class_g_root_gui_factory.html#a56eab479909897b3965ee0853877c106">CreateBrowserImp</a>(TBrowser* b, <span class="keyword">const</span> <span class="keywordtype">char</span>* title, UInt_t width, UInt_t height,</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                                 Option_t* opt = <span class="stringliteral">&quot;&quot;</span>) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>   TBrowserImp* <a class="code hl_function" href="class_g_root_gui_factory.html#a56eab479909897b3965ee0853877c106">CreateBrowserImp</a>(TBrowser* b, <span class="keyword">const</span> <span class="keywordtype">char</span>* title, Int_t x, Int_t y, UInt_t width, UInt_t height,</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                                 Option_t* opt = <span class="stringliteral">&quot;&quot;</span>) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>   TContextMenuImp* <a class="code hl_function" href="class_g_root_gui_factory.html#afbabc7eea5fb876f00bb815d591d487d">CreateContextMenuImp</a>(TContextMenu* c, <span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keyword">const</span> <span class="keywordtype">char</span>* title) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>   TControlBarImp* <a class="code hl_function" href="class_g_root_gui_factory.html#afa3db02c987bc9a4ef30750f690f48ea">CreateControlBarImp</a>(TControlBar* c, <span class="keyword">const</span> <span class="keywordtype">char</span>* title) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>   TControlBarImp* <a class="code hl_function" href="class_g_root_gui_factory.html#afa3db02c987bc9a4ef30750f690f48ea">CreateControlBarImp</a>(TControlBar* c, <span class="keyword">const</span> <span class="keywordtype">char</span>* title, Int_t x, Int_t y) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>   TCanvasImp* <a class="code hl_function" href="class_g_root_gui_factory.html#ab753ad78f22df2f75c08005fa9a04184">CreateCanvasImp</a>(TCanvas* c, const <span class="keywordtype">char</span>* title, UInt_t width, UInt_t height) override;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>   TCanvasImp* <a class="code hl_function" href="class_g_root_gui_factory.html#ab753ad78f22df2f75c08005fa9a04184">CreateCanvasImp</a>(TCanvas* c, const <span class="keywordtype">char</span>* title, Int_t x, Int_t y, UInt_t width, UInt_t height) override;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>   TBrowserImp* <a class="code hl_function" href="class_g_root_gui_factory.html#a56eab479909897b3965ee0853877c106">CreateBrowserImp</a>(TBrowser* b, const <span class="keywordtype">char</span>* title, UInt_t width, UInt_t height,</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                                 Option_t* opt = &quot;&quot;) override;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>   TBrowserImp* <a class="code hl_function" href="class_g_root_gui_factory.html#a56eab479909897b3965ee0853877c106">CreateBrowserImp</a>(TBrowser* b, const <span class="keywordtype">char</span>* title, Int_t x, Int_t y, UInt_t width, UInt_t height,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                                 Option_t* opt = &quot;&quot;) override;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>   TContextMenuImp* <a class="code hl_function" href="class_g_root_gui_factory.html#afbabc7eea5fb876f00bb815d591d487d">CreateContextMenuImp</a>(TContextMenu* c, const <span class="keywordtype">char</span>* name, const <span class="keywordtype">char</span>* title) override;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>   ClassDefOverride(<a class="code hl_class" href="class_g_root_gui_factory.html">GRootGuiFactory</a>, 0)   <span class="comment">// Factory for ROOT GUI components</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>   TControlBarImp* <a class="code hl_function" href="class_g_root_gui_factory.html#afa3db02c987bc9a4ef30750f690f48ea">CreateControlBarImp</a>(TControlBar* c, const <span class="keywordtype">char</span>* title) override;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>   TControlBarImp* <a class="code hl_function" href="class_g_root_gui_factory.html#afa3db02c987bc9a4ef30750f690f48ea">CreateControlBarImp</a>(TControlBar* c, const <span class="keywordtype">char</span>* title, Int_t x, Int_t y) override;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment"></span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">   /// \cond CLASSIMP</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment"></span>   ClassDefOverride(<a class="code hl_class" href="class_g_root_gui_factory.html">GRootGuiFactory</a>, 0)   <span class="comment">// NOLINT</span><span class="comment"></span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">   /// \endcond</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment"></span>};</div>
 </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclass_g_root_gui_factory_html"><div class="ttname"><a href="class_g_root_gui_factory.html">GRootGuiFactory</a></div><div class="ttdef"><b>Definition</b> <a href="_g_root_gui_factory_8h_source.html#l00028">GRootGuiFactory.h:28</a></div></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclass_g_root_gui_factory_html"><div class="ttname"><a href="class_g_root_gui_factory.html">GRootGuiFactory</a></div><div class="ttdef"><b>Definition</b> <a href="_g_root_gui_factory_8h_source.html#l00027">GRootGuiFactory.h:27</a></div></div>
+<div class="ttc" id="aclass_g_root_gui_factory_html_a420d174ab2e5516994a3017453a01e21"><div class="ttname"><a href="class_g_root_gui_factory.html#a420d174ab2e5516994a3017453a01e21">GRootGuiFactory::GRootGuiFactory</a></div><div class="ttdeci">GRootGuiFactory(GRootGuiFactory &amp;&amp;) noexcept=default</div></div>
 <div class="ttc" id="aclass_g_root_gui_factory_html_a56eab479909897b3965ee0853877c106"><div class="ttname"><a href="class_g_root_gui_factory.html#a56eab479909897b3965ee0853877c106">GRootGuiFactory::CreateBrowserImp</a></div><div class="ttdeci">TBrowserImp * CreateBrowserImp(TBrowser *b, const char *title, UInt_t width, UInt_t height, Option_t *opt=&quot;&quot;) override</div><div class="ttdef"><b>Definition</b> <a href="_g_root_gui_factory_8cxx_source.html#l00076">GRootGuiFactory.cxx:76</a></div></div>
-<div class="ttc" id="aclass_g_root_gui_factory_html_a6ff1f9155d7735f2cfaa08be11462b2b"><div class="ttname"><a href="class_g_root_gui_factory.html#a6ff1f9155d7735f2cfaa08be11462b2b">GRootGuiFactory::~GRootGuiFactory</a></div><div class="ttdeci">~GRootGuiFactory() override=default</div></div>
 <div class="ttc" id="aclass_g_root_gui_factory_html_ab753ad78f22df2f75c08005fa9a04184"><div class="ttname"><a href="class_g_root_gui_factory.html#ab753ad78f22df2f75c08005fa9a04184">GRootGuiFactory::CreateCanvasImp</a></div><div class="ttdeci">TCanvasImp * CreateCanvasImp(TCanvas *c, const char *title, UInt_t width, UInt_t height) override</div><div class="ttdef"><b>Definition</b> <a href="_g_root_gui_factory_8cxx_source.html#l00055">GRootGuiFactory.cxx:55</a></div></div>
 <div class="ttc" id="aclass_g_root_gui_factory_html_aba1edb9f6c629e2b243c4caefc2cea65"><div class="ttname"><a href="class_g_root_gui_factory.html#aba1edb9f6c629e2b243c4caefc2cea65">GRootGuiFactory::CreateApplicationImp</a></div><div class="ttdeci">TApplicationImp * CreateApplicationImp(const char *classname, int *argc, char **argv) override</div><div class="ttdef"><b>Definition</b> <a href="_g_root_gui_factory_8cxx_source.html#l00042">GRootGuiFactory.cxx:42</a></div></div>
 <div class="ttc" id="aclass_g_root_gui_factory_html_acf060937926b71e5e16b27742b717b13"><div class="ttname"><a href="class_g_root_gui_factory.html#acf060937926b71e5e16b27742b717b13">GRootGuiFactory::Init</a></div><div class="ttdeci">static void Init()</div><div class="ttdef"><b>Definition</b> <a href="_g_root_gui_factory_8cxx_source.html#l00026">GRootGuiFactory.cxx:26</a></div></div>
+<div class="ttc" id="aclass_g_root_gui_factory_html_af8ad3a1a57b34bb9f3a6debde13eb8bd"><div class="ttname"><a href="class_g_root_gui_factory.html#af8ad3a1a57b34bb9f3a6debde13eb8bd">GRootGuiFactory::GRootGuiFactory</a></div><div class="ttdeci">GRootGuiFactory(const GRootGuiFactory &amp;)=default</div></div>
 <div class="ttc" id="aclass_g_root_gui_factory_html_afa3db02c987bc9a4ef30750f690f48ea"><div class="ttname"><a href="class_g_root_gui_factory.html#afa3db02c987bc9a4ef30750f690f48ea">GRootGuiFactory::CreateControlBarImp</a></div><div class="ttdeci">TControlBarImp * CreateControlBarImp(TControlBar *c, const char *title) override</div><div class="ttdef"><b>Definition</b> <a href="_g_root_gui_factory_8cxx_source.html#l00142">GRootGuiFactory.cxx:142</a></div></div>
 <div class="ttc" id="aclass_g_root_gui_factory_html_afbabc7eea5fb876f00bb815d591d487d"><div class="ttname"><a href="class_g_root_gui_factory.html#afbabc7eea5fb876f00bb815d591d487d">GRootGuiFactory::CreateContextMenuImp</a></div><div class="ttdeci">TContextMenuImp * CreateContextMenuImp(TContextMenu *c, const char *name, const char *title) override</div><div class="ttdef"><b>Definition</b> <a href="_g_root_gui_factory_8cxx_source.html#l00134">GRootGuiFactory.cxx:134</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -173,7 +179,7 @@ $(document).ready(function(){initNavTree('_g_root_gui_factory_8h_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_g_root_gui_factory_8h.html">GRootGuiFactory.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 12 2024 00:34:24.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Aug 19 2024 19:08:39.</li>
   </ul>
 </div>
 </body>

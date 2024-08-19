@@ -4,6 +4,8 @@ var dir_d28a4824dc47e487b107a5db32ef43c4 =
     [ "AlphanumericHelper.hh", "_alphanumeric_helper_8hh.html", "_alphanumeric_helper_8hh" ],
     [ "AngularCorrelationHelper.cxx", "_angular_correlation_helper_8cxx.html", null ],
     [ "AngularCorrelationHelper.hh", "_angular_correlation_helper_8hh.html", "_angular_correlation_helper_8hh" ],
+    [ "ComptonPolarimetryHelper.cxx", "_compton_polarimetry_helper_8cxx.html", null ],
+    [ "ComptonPolarimetryHelper.hh", "_compton_polarimetry_helper_8hh.html", "_compton_polarimetry_helper_8hh" ],
     [ "CrossTalkHelper.cxx", "_cross_talk_helper_8cxx.html", "_cross_talk_helper_8cxx" ],
     [ "CrossTalkHelper.hh", "_cross_talk_helper_8hh.html", "_cross_talk_helper_8hh" ],
     [ "DirectoryHelper.cxx", "_directory_helper_8cxx.html", "_directory_helper_8cxx" ],
@@ -18,6 +20,8 @@ var dir_d28a4824dc47e487b107a5db32ef43c4 =
     [ "ExampleTreeHelper.hh", "_example_tree_helper_8hh.html", "_example_tree_helper_8hh" ],
     [ "GriffinKValueHelper.cxx", "_griffin_k_value_helper_8cxx.html", "_griffin_k_value_helper_8cxx" ],
     [ "GriffinKValueHelper.hh", "_griffin_k_value_helper_8hh.html", "_griffin_k_value_helper_8hh" ],
+    [ "TestHelper.cxx", "_test_helper_8cxx.html", "_test_helper_8cxx" ],
+    [ "TestHelper.hh", "_test_helper_8hh.html", "_test_helper_8hh" ],
     [ "TimeWalkHelper.cxx", "_time_walk_helper_8cxx.html", "_time_walk_helper_8cxx" ],
     [ "TimeWalkHelper.hh", "_time_walk_helper_8hh.html", "_time_walk_helper_8hh" ]
 ];

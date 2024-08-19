@@ -2,6 +2,7 @@ var class_t_channel_tab =
 [
     [ "TChannelTab", "class_t_channel_tab.html#a8a9aa03d28fa8f5a5efd6c0f702c9998", null ],
     [ "TChannelTab", "class_t_channel_tab.html#aaf3527415bbe7ee3e0c671e86840d1b5", null ],
+    [ "TChannelTab", "class_t_channel_tab.html#af331fd7cdd3f1ff92911a71b6e5c04b7", null ],
     [ "~TChannelTab", "class_t_channel_tab.html#a15108b74db904942566860d4b66ccc5b", null ],
     [ "Add", "class_t_channel_tab.html#a2a3234be4d7dbfd6302121360ade4da3", null ],
     [ "BuildInterface", "class_t_channel_tab.html#a13d63f4404807d2e0a351b438b166ba6", null ],
@@ -12,6 +13,8 @@ var class_t_channel_tab =
     [ "Efficiency", "class_t_channel_tab.html#abea26baa32648ef12d4204b2f99aa006", null ],
     [ "FindPeaks", "class_t_channel_tab.html#aea21b497a9a1e410dee577556d8ba923", null ],
     [ "MakeConnections", "class_t_channel_tab.html#aa5f807f1ec4eedf7814238faaf8e053b", null ],
+    [ "operator=", "class_t_channel_tab.html#a753e01f2184b203935486adb188bd46a", null ],
+    [ "operator=", "class_t_channel_tab.html#a2954eaae3207c62bf03d0629c2a7b0a4", null ],
     [ "ProjectionStatus", "class_t_channel_tab.html#af8d2e1b19cb37b5263143d47e73ad765", null ],
     [ "VerboseLevel", "class_t_channel_tab.html#a0d6258b68c3e605760fe145201a01ffb", null ],
     [ "fCalibrationCanvas", "class_t_channel_tab.html#afb68c203fc06e900363b58f44ae1b5e8", null ],

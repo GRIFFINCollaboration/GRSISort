@@ -3,7 +3,7 @@ var class_arg_parse_config =
     [ "ArgParseConfig", "class_arg_parse_config.html#add781afab7bab5d17b297dec830b6d49", null ],
     [ "ArgParseConfig", "class_arg_parse_config.html#a1e5adcf008cff2c056a5842c17d8d3e7", null ],
     [ "ArgParseConfig", "class_arg_parse_config.html#a2d3ba0311830e56c25cc3f1f6430dcd7", null ],
-    [ "~ArgParseConfig", "class_arg_parse_config.html#a3f0a478052d48c3e5fa5e68822fe6ab1", null ],
+    [ "~ArgParseConfig", "class_arg_parse_config.html#ac110a163010fbfcbffacd411f28c250a", null ],
     [ "colour", "class_arg_parse_config.html#ab40d0d0f301decbef182562f81a1fefb", null ],
     [ "default_value", "class_arg_parse_config.html#a0058f302cb3a5529a01c781ffa4999fd", null ],
     [ "description", "class_arg_parse_config.html#a7189b226af49a9822af56b6e8e0e4010", null ],

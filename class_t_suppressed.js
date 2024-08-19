@@ -1,6 +1,8 @@
 var class_t_suppressed =
 [
-    [ "TSuppressed", "class_t_suppressed.html#a2ead56a15b4f754db6bdafcbd684baa2", null ],
+    [ "TSuppressed", "class_t_suppressed.html#a3262bd36b75fbba2cc355b0c2404541c", null ],
+    [ "TSuppressed", "class_t_suppressed.html#ae705bc0012c5ce7084ad9f9c024cbd81", null ],
+    [ "TSuppressed", "class_t_suppressed.html#a418a804c165f55d1fa5df89c88840a52", null ],
     [ "~TSuppressed", "class_t_suppressed.html#a8c5b83edfdbb7ab31078729e7ca024a6", null ],
     [ "AddbackCriterion", "class_t_suppressed.html#a60817f357b7b432072114248ec5e8a55", null ],
     [ "AddFragment", "class_t_suppressed.html#ace91f1e86d601edd8986f191fbc2ae8d", null ],
@@ -15,6 +17,11 @@ var class_t_suppressed =
     [ "GetHit", "class_t_suppressed.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_suppressed.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_suppressed.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
+    [ "Hits", "class_t_suppressed.html#acbf359f899b738719e19bb326e45c790", null ],
+    [ "Hits", "class_t_suppressed.html#ab907981ce861ab147879469064748ae2", null ],
+    [ "NoHits", "class_t_suppressed.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
+    [ "operator=", "class_t_suppressed.html#ae61ca0a188ebd4ea245f52e9dc460502", null ],
+    [ "operator=", "class_t_suppressed.html#a82458169dffc990f9963ca803c165c57", null ],
     [ "Print", "class_t_suppressed.html#a16143affb8db86547ab1ee1d37f5704c", null ],
     [ "Print", "class_t_suppressed.html#a1d7a4f9d8b48783b9c53ef1177270cc9", null ],
     [ "SuppressionCriterion", "class_t_suppressed.html#acf476f552774e10dbd87d1377d4e1a00", null ],

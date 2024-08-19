@@ -1,11 +1,10 @@
 var class_griffin_k_value_selector =
 [
-    [ "GriffinKValueSelector", "class_griffin_k_value_selector.html#accf34f6032608d7a747be730e4248a28", null ],
-    [ "~GriffinKValueSelector", "class_griffin_k_value_selector.html#adee90d5a1e3d544cef6ac55fd4061a36", null ],
+    [ "GriffinKValueSelector", "class_griffin_k_value_selector.html#aa949be134b6edf1659a73626da26e7e1", null ],
+    [ "~GriffinKValueSelector", "class_griffin_k_value_selector.html#afdd939272be07febb9831e6a29b7cb5e", null ],
     [ "Begin", "class_griffin_k_value_selector.html#ab93493c658b7214c7b98b755d85586bd", null ],
     [ "CheckSizes", "class_griffin_k_value_selector.html#a3ee3614749d1369487299802d7e18364", null ],
     [ "ClassDef", "class_griffin_k_value_selector.html#a6fe6219027116e8450fc0c49e0d054bf", null ],
-    [ "ClassDefOverride", "class_griffin_k_value_selector.html#aac34947a3e9bcf869d26c3ce7ddf24c2", null ],
     [ "CreateHistograms", "class_griffin_k_value_selector.html#aeecec3722db6c522ff6a8cf6627faae0", null ],
     [ "EndOfSort", "class_griffin_k_value_selector.html#aefe521b4e1ad5569b7e2809fb7f7e411", null ],
     [ "FillHistograms", "class_griffin_k_value_selector.html#adc086cb7e4da0d6d1b4812a59aaa2e85", null ],

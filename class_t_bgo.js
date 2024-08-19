@@ -2,8 +2,8 @@ var class_t_bgo =
 [
     [ "TBgo", "class_t_bgo.html#a02285d85182fa3c0cd527ad9573bec49", null ],
     [ "TBgo", "class_t_bgo.html#a4b1206539f129d44f16a9ede9fab2fec", null ],
-    [ "TBgo", "class_t_bgo.html#a37e218e173ee24d7d76239a5ffb1b80b", null ],
-    [ "~TBgo", "class_t_bgo.html#ad61c7f29a1b4894961a6aa034d3326f6", null ],
+    [ "TBgo", "class_t_bgo.html#ae72b757aacdb8e94a5fc27fcbe68bc25", null ],
+    [ "~TBgo", "class_t_bgo.html#a9559a3b01aada1955db1acc28034dddb", null ],
     [ "AddFragment", "class_t_bgo.html#ab166053f5852e7dde433fc7170d99977", null ],
     [ "AddHit", "class_t_bgo.html#af83ad943618a30f7d1639675e18fc5b8", null ],
     [ "BuildHits", "class_t_bgo.html#ae1cca8f81805c84b1025cede9f0c1e1c", null ],
@@ -15,10 +15,13 @@ var class_t_bgo =
     [ "GetHitVector", "class_t_bgo.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_bgo.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetPosition", "class_t_bgo.html#a202127adcc280ddb063ff7429822ce30", null ],
+    [ "Hits", "class_t_bgo.html#acbf359f899b738719e19bb326e45c790", null ],
+    [ "Hits", "class_t_bgo.html#ab907981ce861ab147879469064748ae2", null ],
+    [ "NoHits", "class_t_bgo.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
     [ "operator=", "class_t_bgo.html#a3912c491450ed1564dead68529bc34b1", null ],
-    [ "operator=", "class_t_bgo.html#a2fa768801ff80f8d9c9be6c8d909b558", null ],
+    [ "operator=", "class_t_bgo.html#a9f0dbdb29090ab633ae6b2c653c4e77d", null ],
     [ "Print", "class_t_bgo.html#af5918349419ed07c832590d122e73a2e", null ],
     [ "Print", "class_t_bgo.html#a58c8bd71049b0aa355bb3d8ded28ddcb", null ],
     [ "fHits", "class_t_bgo.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ],
-    [ "gScintPosition", "class_t_bgo.html#aa24552a6c25b1817ef6afc1d80f2fa1c", null ]
+    [ "fScintPosition", "class_t_bgo.html#a68b40bb14a0852eae493c56404f90c21", null ]
 ];

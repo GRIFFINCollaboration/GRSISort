@@ -1,9 +1,10 @@
 var class_g_marker =
 [
-    [ "GMarker", "class_g_marker.html#ae0ab4c54842b80661c22f693f06d72a1", null ],
+    [ "GMarker", "class_g_marker.html#afd61f9d779b711232147464350ee5e23", null ],
     [ "GMarker", "class_g_marker.html#a33b6d59d46fdcf449b6dbe77eb6c8729", null ],
-    [ "GMarker", "class_g_marker.html#a4bdf587b86ee12d54ca160ac0e7e6e5e", null ],
-    [ "~GMarker", "class_g_marker.html#ac6b20e17d023fadcdf0f7e13d8833f54", null ],
+    [ "GMarker", "class_g_marker.html#ab4ed903de3bd929586795220b4391786", null ],
+    [ "GMarker", "class_g_marker.html#a0081b1426d5acaa9229956c1f4793505", null ],
+    [ "~GMarker", "class_g_marker.html#a8c280042dd803633eaeb62c5e3c4c2c4", null ],
     [ "Copy", "class_g_marker.html#a8657ec1af93546ca1ad5820060c9b432", null ],
     [ "Draw", "class_g_marker.html#a3c887f1e9ca6583df15ddf19331f9b97", null ],
     [ "GetBinX", "class_g_marker.html#a2137a73801bca696f5cc680841114e82", null ],
@@ -11,6 +12,8 @@ var class_g_marker =
     [ "GetLocalX", "class_g_marker.html#aeb5815824d432769186af119e8d9e3de", null ],
     [ "GetLocalY", "class_g_marker.html#aa1812a52efc112267bb7b4de7e839385", null ],
     [ "operator<", "class_g_marker.html#acc8d066512ee8b0309018e082528174c", null ],
+    [ "operator=", "class_g_marker.html#ac50dbefb4b85370bbfa6a1eefe723b4f", null ],
+    [ "operator=", "class_g_marker.html#aa7692fa2f9e0893c9634ba693b41a427", null ],
     [ "Print", "class_g_marker.html#adbacdbb5ef2ce7d08c00e286a03f6f4a", null ],
     [ "SetBinX", "class_g_marker.html#ab8e8009057040a0f4db5348b48945b2f", null ],
     [ "SetBinY", "class_g_marker.html#a5d17df4216a96d5e7778e50a2bff220c", null ],

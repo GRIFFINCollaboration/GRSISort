@@ -105,41 +105,35 @@ $(document).ready(function(){initNavTree('_t_beta_decay_8cxx_source.html',''); i
 <a href="_t_beta_decay_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="_t_beta_decay_8h.html">TBetaDecay.h</a>&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="foldopen" id="foldopen00003" data-start="{" data-end="}">
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="class_t_beta_decay.html#a1bcf62c888519e187f7975654bbfa9da">    3</a></span><a class="code hl_function" href="class_t_beta_decay.html#a1bcf62c888519e187f7975654bbfa9da">TBetaDecay::TBetaDecay</a>() : fParentAllocated(false), fParent(nullptr)</div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="class_t_beta_decay.html#a7ddf1e85e8bd4bab5ce6eae5655eaeac">    3</a></span><a class="code hl_function" href="class_t_beta_decay.html#a38c03bdc58ee39c430b8afab870de86d">TBetaDecay::TBetaDecay</a>(<a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>* parent) : fParent(parent)</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>{</div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>}</div>
 </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="foldopen" id="foldopen00007" data-start="{" data-end="}">
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="class_t_beta_decay.html#a7ddf1e85e8bd4bab5ce6eae5655eaeac">    7</a></span><a class="code hl_function" href="class_t_beta_decay.html#a1bcf62c888519e187f7975654bbfa9da">TBetaDecay::TBetaDecay</a>(<a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>* parent) : fParentAllocated(false), fParent(parent)</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="class_t_beta_decay.html#ab2fb135310b6cd29e5a3d889b9328459">    7</a></span><a class="code hl_function" href="class_t_beta_decay.html#a38c03bdc58ee39c430b8afab870de86d">TBetaDecay::TBetaDecay</a>(<span class="keywordtype">char</span>* name) : fParentAllocated(true), fParent(new <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(name))</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>{</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>}</div>
 </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="foldopen" id="foldopen00011" data-start="{" data-end="}">
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="class_t_beta_decay.html#ab2fb135310b6cd29e5a3d889b9328459">   11</a></span><a class="code hl_function" href="class_t_beta_decay.html#a1bcf62c888519e187f7975654bbfa9da">TBetaDecay::TBetaDecay</a>(<span class="keywordtype">char</span>* name) : fParentAllocated(true), fParent(new <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(name))</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="class_t_beta_decay.html#acce2fb6ee4b139d129585e26ada6611b">   11</a></span><a class="code hl_function" href="class_t_beta_decay.html#a38c03bdc58ee39c430b8afab870de86d">TBetaDecay::TBetaDecay</a>(Int_t Z, Int_t N) : fParentAllocated(true), fParent(new <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(Z, N))</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>{</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>}</div>
 </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
 <div class="foldopen" id="foldopen00015" data-start="{" data-end="}">
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="class_t_beta_decay.html#acce2fb6ee4b139d129585e26ada6611b">   15</a></span><a class="code hl_function" href="class_t_beta_decay.html#a1bcf62c888519e187f7975654bbfa9da">TBetaDecay::TBetaDecay</a>(Int_t Z, Int_t N) : fParentAllocated(true), fParent(new <a class="code hl_class" href="class_t_nucleus.html">TNucleus</a>(Z, N))</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="class_t_beta_decay.html#a322c88ddc19c55da6650754dede2d872">   15</a></span><a class="code hl_function" href="class_t_beta_decay.html#a322c88ddc19c55da6650754dede2d872">TBetaDecay::~TBetaDecay</a>()</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>{</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>}</div>
-</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="class_t_beta_decay.html#a6ae415cff5334f69908d6b5332b84cac">   19</a></span><a class="code hl_function" href="class_t_beta_decay.html#a6ae415cff5334f69908d6b5332b84cac">TBetaDecay::~TBetaDecay</a>()</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>{</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_beta_decay.html#a3d954116703d4445f6b121f688e14e8c">fParentAllocated</a>) {</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>      <span class="keyword">delete</span> <a class="code hl_variable" href="class_t_beta_decay.html#a93441da4340714ce5d120525bd405c1e">fParent</a>;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>   }</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>}</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_beta_decay.html#a3d954116703d4445f6b121f688e14e8c">fParentAllocated</a>) {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>      <span class="keyword">delete</span> <a class="code hl_variable" href="class_t_beta_decay.html#a93441da4340714ce5d120525bd405c1e">fParent</a>;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>   }</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>}</div>
 </div>
 <div class="ttc" id="a_t_beta_decay_8h_html"><div class="ttname"><a href="_t_beta_decay_8h.html">TBetaDecay.h</a></div></div>
-<div class="ttc" id="aclass_t_beta_decay_html_a1bcf62c888519e187f7975654bbfa9da"><div class="ttname"><a href="class_t_beta_decay.html#a1bcf62c888519e187f7975654bbfa9da">TBetaDecay::TBetaDecay</a></div><div class="ttdeci">TBetaDecay()</div><div class="ttdef"><b>Definition</b> <a href="_t_beta_decay_8cxx_source.html#l00003">TBetaDecay.cxx:3</a></div></div>
+<div class="ttc" id="aclass_t_beta_decay_html_a322c88ddc19c55da6650754dede2d872"><div class="ttname"><a href="class_t_beta_decay.html#a322c88ddc19c55da6650754dede2d872">TBetaDecay::~TBetaDecay</a></div><div class="ttdeci">~TBetaDecay()</div><div class="ttdef"><b>Definition</b> <a href="_t_beta_decay_8cxx_source.html#l00015">TBetaDecay.cxx:15</a></div></div>
+<div class="ttc" id="aclass_t_beta_decay_html_a38c03bdc58ee39c430b8afab870de86d"><div class="ttname"><a href="class_t_beta_decay.html#a38c03bdc58ee39c430b8afab870de86d">TBetaDecay::TBetaDecay</a></div><div class="ttdeci">TBetaDecay()=default</div></div>
 <div class="ttc" id="aclass_t_beta_decay_html_a3d954116703d4445f6b121f688e14e8c"><div class="ttname"><a href="class_t_beta_decay.html#a3d954116703d4445f6b121f688e14e8c">TBetaDecay::fParentAllocated</a></div><div class="ttdeci">Bool_t fParentAllocated</div><div class="ttdoc">true if TNucleus was instantiated in TBetaDecay</div><div class="ttdef"><b>Definition</b> <a href="_t_beta_decay_8h_source.html#l00040">TBetaDecay.h:40</a></div></div>
-<div class="ttc" id="aclass_t_beta_decay_html_a6ae415cff5334f69908d6b5332b84cac"><div class="ttname"><a href="class_t_beta_decay.html#a6ae415cff5334f69908d6b5332b84cac">TBetaDecay::~TBetaDecay</a></div><div class="ttdeci">~TBetaDecay() override</div><div class="ttdef"><b>Definition</b> <a href="_t_beta_decay_8cxx_source.html#l00019">TBetaDecay.cxx:19</a></div></div>
 <div class="ttc" id="aclass_t_beta_decay_html_a93441da4340714ce5d120525bd405c1e"><div class="ttname"><a href="class_t_beta_decay.html#a93441da4340714ce5d120525bd405c1e">TBetaDecay::fParent</a></div><div class="ttdeci">TNucleus * fParent</div><div class="ttdoc">The parent nucleus beta decaying.</div><div class="ttdef"><b>Definition</b> <a href="_t_beta_decay_8h_source.html#l00041">TBetaDecay.h:41</a></div></div>
 <div class="ttc" id="aclass_t_nucleus_html"><div class="ttname"><a href="class_t_nucleus.html">TNucleus</a></div><div class="ttdef"><b>Definition</b> <a href="_t_nucleus_8h_source.html#l00027">TNucleus.h:27</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -149,7 +143,7 @@ $(document).ready(function(){initNavTree('_t_beta_decay_8cxx_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_16322b79b07970120666562f0d5b6374.html">TBetaDecay</a></li><li class="navelem"><a class="el" href="_t_beta_decay_8cxx.html">TBetaDecay.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 12 2024 00:34:24.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Aug 19 2024 19:08:40.</li>
   </ul>
 </div>
 </body>

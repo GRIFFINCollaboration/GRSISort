@@ -102,21 +102,25 @@ $(document).ready(function(){initNavTree('class_g_notifier.html',''); initResiza
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="class_g_notifier.html#ae9774d9cf3c9c149686612629952d24c">AddCallback</a>(T callback)</td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_g_notifier.html#a336ded57f98c3d97ca7b5dbb33f5dab3">AddCallback</a>(void(*func)())</td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_g_notifier.html#a630c0945b037e813ee49a97c2db2b8d0">callbacks</a></td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_g_notifier.html#aa244e9b6447ea762f12226f1cf038e31">Clear</a>(Option_t *=&quot;&quot;) override</td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_g_notifier.html#aa244e9b6447ea762f12226f1cf038e31">Clear</a>(Option_t *=&quot;&quot;) override</td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_g_notifier.html#a8922a2ffee91cd5df36580d7760b2698">fCallbacks</a></td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_g_notifier.html#acf9a11f3a687752e779b8bd604e7d562">fGNotifier</a></td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"><span class="mlabel">private</span><span class="mlabel">static</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_g_notifier.html#a8ff9cb15bcaffccdf7417624f8824ab1">Get</a>()</td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_g_notifier.html#a4d35772d9f3d521ad651dc818034eb64">GNotifier</a>()</td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_g_notifier.html#a8f9b113241f92b3616c596c2f52ebcd7">GNotifier</a>()=default</td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_g_notifier.html#a366f57555fec28c6be6988ce1e12b9c8">GNotifier</a>(const GNotifier &amp;)=default</td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_g_notifier.html#a69e3b0de76d4e3854a81775c84e66ea6">GNotifier</a>(GNotifier &amp;&amp;) noexcept=default</td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_g_notifier.html#abd9caa80a738b080f29db45f41ab165e">Notify</a>() override</td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_g_notifier.html#a9751bbf3ac568c33508e2fd29cfe0e53">operator=</a>(const GNotifier &amp;)=default</td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_g_notifier.html#a67bd3d8453f1df20926a627b98ca71b6">operator=</a>(GNotifier &amp;&amp;) noexcept=default</td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_g_notifier.html#a05c9480e93f9c5f6c4be15102e8e88b1">Print</a>(Option_t *=&quot;&quot;) const override</td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_g_notifier.html#ae029ec0f96ad68c438fb771360223e04">~GNotifier</a>() override</td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_g_notifier.html#ab05752ae88ee3e9e4139ecad08653ac4">~GNotifier</a>()=default</td><td class="entry"><a class="el" href="class_g_notifier.html">GNotifier</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 12 2024 00:34:27.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Aug 19 2024 19:08:42.</li>
   </ul>
 </div>
 </body>

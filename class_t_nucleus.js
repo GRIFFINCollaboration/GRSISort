@@ -4,7 +4,9 @@ var class_t_nucleus =
     [ "TNucleus", "class_t_nucleus.html#aab5998da47f64b9a3761be0242c8e74b", null ],
     [ "TNucleus", "class_t_nucleus.html#ac15cf3c158021a5b57595e5eb3f82cef", null ],
     [ "TNucleus", "class_t_nucleus.html#a1496e814deeecd67f00b97b9bcff19f8", null ],
-    [ "~TNucleus", "class_t_nucleus.html#a26eed56879f494c46600428d812fa67e", null ],
+    [ "TNucleus", "class_t_nucleus.html#a561740e75871194ea14b0ed320613d76", null ],
+    [ "TNucleus", "class_t_nucleus.html#a9f9b72060362d7122d6d2b4c39d05ce7", null ],
+    [ "~TNucleus", "class_t_nucleus.html#a7d7d9fafa66e90cb5f188065519d5489", null ],
     [ "AddTransition", "class_t_nucleus.html#a1cab34c0c268d938bb23a3e6a839d0c8", null ],
     [ "AddTransition", "class_t_nucleus.html#ae1199d58bee397cced8f137656414e9a", null ],
     [ "GetA", "class_t_nucleus.html#a026a4d84b67b80b7c9f1f893d35d1cdf", null ],
@@ -28,6 +30,8 @@ var class_t_nucleus =
     [ "Massfile", "class_t_nucleus.html#a8fe27324d94a769839ed2267551cc23e", null ],
     [ "NTransitions", "class_t_nucleus.html#a1881155a53739493cba9b9d29f975521", null ],
     [ "operator!=", "class_t_nucleus.html#ae2a99b72a3e7c3f395fabd2719843cf1", null ],
+    [ "operator=", "class_t_nucleus.html#a33fe536f981310409ffebe22d8f48e1a", null ],
+    [ "operator=", "class_t_nucleus.html#ac6b47bd59083872e5a0d689ad106939e", null ],
     [ "operator==", "class_t_nucleus.html#a3ffe5b1249aff4f9ea708f330f0dad54", null ],
     [ "ParseName", "class_t_nucleus.html#a978f53e7ee22c0f34109c7f450fb62e2", null ],
     [ "ParseName", "class_t_nucleus.html#a8ffec698f590234f470fbc7562098c46", null ],
@@ -49,6 +53,5 @@ var class_t_nucleus =
     [ "fSymbol", "class_t_nucleus.html#ac82a615c06c8463d5fb8bdf49b4c12c6", null ],
     [ "fTransitionListByEnergy", "class_t_nucleus.html#ab6b559e2c14d12d7bb16d7f27e898f3e", null ],
     [ "fTransitionListByIntensity", "class_t_nucleus.html#a00efd34f54edfbfc5c917220566b9a4f", null ],
-    [ "fZ", "class_t_nucleus.html#a595894a4a56bad04e8845f311f3f37ad", null ],
-    [ "grsipath", "class_t_nucleus.html#a9ae5ee13bccd5c44be116fe19b552df1", null ]
+    [ "fZ", "class_t_nucleus.html#a595894a4a56bad04e8845f311f3f37ad", null ]
 ];

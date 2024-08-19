@@ -286,7 +286,7 @@ $(document).ready(function(){initNavTree('_t_tip_8cxx_source.html',''); initResi
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>   <a class="code hl_class" href="class_t_tip_hit.html">TTipHit</a>* hit = <span class="keyword">new</span> <a class="code hl_class" href="class_t_tip_hit.html">TTipHit</a>(*frag);</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>   hit-&gt;<a class="code hl_function" href="class_t_tip_hit.html#af3a5060b1334b2a766f08949fd49522b">SetUpNumbering</a>(chan);          <span class="comment">// Think about moving this to ctor</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>   <a class="code hl_variable" href="class_t_detector.html#a13ea06ba385aabcf09c1ea5a70d8145b">fHits</a>.push_back(hit);</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>   <a class="code hl_function" href="class_t_detector.html#af83ad943618a30f7d1639675e18fc5b8">AddHit</a>(hit);</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>}</div>
 </div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
@@ -302,7 +302,7 @@ $(document).ready(function(){initNavTree('_t_tip_8cxx_source.html',''); initResi
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno"><a class="line" href="class_t_tip.html#a71e421455506c52d2225d8aab2d5dddc">  185</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_tip.html#a6cd55247a69135e384a34d1faca015a9">TTip::Print</a>(std::ostream&amp; out)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>   std::ostringstream str;</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>   str&lt;&lt;<a class="code hl_variable" href="class_t_detector.html#a13ea06ba385aabcf09c1ea5a70d8145b">fHits</a>.size()&lt;&lt;<span class="stringliteral">&quot; fHits&quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>   str&lt;&lt;<a class="code hl_function" href="class_t_detector.html#a9d5c07abd73ec148fe0adbee0c7c1eec">GetMultiplicity</a>()&lt;&lt;<span class="stringliteral">&quot; hits&quot;</span>&lt;&lt;std::endl;</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>   out&lt;&lt;str.str();</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>}</div>
 </div>
@@ -327,8 +327,9 @@ $(document).ready(function(){initNavTree('_t_tip_8cxx_source.html',''); initResi
 <div class="ttc" id="a_t_tip_8h_html"><div class="ttname"><a href="_t_tip_8h.html">TTip.h</a></div></div>
 <div class="ttc" id="aclass_t_channel_html"><div class="ttname"><a href="class_t_channel.html">TChannel</a></div><div class="ttdef"><b>Definition</b> <a href="_t_channel_8h_source.html#l00050">TChannel.h:50</a></div></div>
 <div class="ttc" id="aclass_t_detector_html"><div class="ttname"><a href="class_t_detector.html">TDetector</a></div><div class="ttdef"><b>Definition</b> <a href="_t_detector_8h_source.html#l00034">TDetector.h:34</a></div></div>
-<div class="ttc" id="aclass_t_detector_html_a13ea06ba385aabcf09c1ea5a70d8145b"><div class="ttname"><a href="class_t_detector.html#a13ea06ba385aabcf09c1ea5a70d8145b">TDetector::fHits</a></div><div class="ttdeci">std::vector&lt; TDetectorHit * &gt; fHits</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_8h_source.html#l00084">TDetector.h:84</a></div></div>
-<div class="ttc" id="aclass_t_detector_html_a5bb705bebefab8cfb039ecb67ec0f9da"><div class="ttname"><a href="class_t_detector.html#a5bb705bebefab8cfb039ecb67ec0f9da">TDetector::Copy</a></div><div class="ttdeci">void Copy(TObject &amp;) const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_8cxx_source.html#l00038">TDetector.cxx:38</a></div></div>
+<div class="ttc" id="aclass_t_detector_html_a5bb705bebefab8cfb039ecb67ec0f9da"><div class="ttname"><a href="class_t_detector.html#a5bb705bebefab8cfb039ecb67ec0f9da">TDetector::Copy</a></div><div class="ttdeci">void Copy(TObject &amp;) const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_8cxx_source.html#l00024">TDetector.cxx:24</a></div></div>
+<div class="ttc" id="aclass_t_detector_html_a9d5c07abd73ec148fe0adbee0c7c1eec"><div class="ttname"><a href="class_t_detector.html#a9d5c07abd73ec148fe0adbee0c7c1eec">TDetector::GetMultiplicity</a></div><div class="ttdeci">virtual Short_t GetMultiplicity() const</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_8h_source.html#l00073">TDetector.h:73</a></div></div>
+<div class="ttc" id="aclass_t_detector_html_af83ad943618a30f7d1639675e18fc5b8"><div class="ttname"><a href="class_t_detector.html#af83ad943618a30f7d1639675e18fc5b8">TDetector::AddHit</a></div><div class="ttdeci">virtual void AddHit(TDetectorHit *hit)</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_8h_source.html#l00063">TDetector.h:63</a></div></div>
 <div class="ttc" id="aclass_t_tip_hit_html"><div class="ttname"><a href="class_t_tip_hit.html">TTipHit</a></div><div class="ttdef"><b>Definition</b> <a href="_t_tip_hit_8h_source.html#l00019">TTipHit.h:19</a></div></div>
 <div class="ttc" id="aclass_t_tip_hit_html_a49b72b1e056acaeb16ef53750ea435c5"><div class="ttname"><a href="class_t_tip_hit.html#a49b72b1e056acaeb16ef53750ea435c5">TTipHit::GetTipChannel</a></div><div class="ttdeci">Int_t GetTipChannel() const</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_tip_hit_8h_source.html#l00055">TTipHit.h:55</a></div></div>
 <div class="ttc" id="aclass_t_tip_hit_html_af3a5060b1334b2a766f08949fd49522b"><div class="ttname"><a href="class_t_tip_hit.html#af3a5060b1334b2a766f08949fd49522b">TTipHit::SetUpNumbering</a></div><div class="ttdeci">void SetUpNumbering(TChannel *)</div><div class="ttdef"><b>Definition</b> <a href="_t_tip_hit_8h_source.html#l00068">TTipHit.h:68</a></div></div>
@@ -347,7 +348,7 @@ $(document).ready(function(){initNavTree('_t_tip_8cxx_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_04ded5cb9506aadc0b6d1c08d3b0ca72.html">libraries</a></li><li class="navelem"><a class="el" href="dir_f1ca9974b6d60d8551858194bc4a7b28.html">TGRSIAnalysis</a></li><li class="navelem"><a class="el" href="dir_5e08983b1f3b33eef3f396fa87b3843f.html">TTip</a></li><li class="navelem"><a class="el" href="_t_tip_8cxx.html">TTip.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 12 2024 00:34:23.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Aug 19 2024 19:08:39.</li>
   </ul>
 </div>
 </body>

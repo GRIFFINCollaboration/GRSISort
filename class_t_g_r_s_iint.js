@@ -1,7 +1,9 @@
 var class_t_g_r_s_iint =
 [
     [ "TGRSIint", "class_t_g_r_s_iint.html#a57c9783cb8a8bcab62dca77b231207ae", null ],
-    [ "~TGRSIint", "class_t_g_r_s_iint.html#abd492915c23981827d4f503aa06fdd62", null ],
+    [ "TGRSIint", "class_t_g_r_s_iint.html#a627af0725e930599b2ca9bcfd2f209d4", null ],
+    [ "TGRSIint", "class_t_g_r_s_iint.html#ab4fc8a870a3c594313ea500c8f2c3978", null ],
+    [ "~TGRSIint", "class_t_g_r_s_iint.html#a4cbad9df7e5163e9b6c48f83c0339daa", null ],
     [ "ApplyOptions", "class_t_g_r_s_iint.html#af4bb153acb3cf3a869f74fd4eb4b8412", null ],
     [ "DelayedProcessLine", "class_t_g_r_s_iint.html#a45f3da527a664d379a404d7306806334", null ],
     [ "DelayedProcessLine_Action", "class_t_g_r_s_iint.html#a88e9f19df251c60358643788f5cb880c", null ],
@@ -14,6 +16,8 @@ var class_t_g_r_s_iint =
     [ "LoopUntilDone", "class_t_g_r_s_iint.html#ac0400ba3fcee244893302518b4b5f12c", null ],
     [ "OpenRawFile", "class_t_g_r_s_iint.html#a19f85d6d43caf266ae5e729b9c9015a6", null ],
     [ "OpenRootFile", "class_t_g_r_s_iint.html#a5be775fb7acfb9a00903957d85a9c7a3", null ],
+    [ "operator=", "class_t_g_r_s_iint.html#a503cd396e8016691a40de4f9bb16fa61", null ],
+    [ "operator=", "class_t_g_r_s_iint.html#ae76600f0b97b9042fa68a710acba60ef", null ],
     [ "PrintHelp", "class_t_g_r_s_iint.html#a2f65e27966a2849319be45219829b507", null ],
     [ "PrintLogo", "class_t_g_r_s_iint.html#acdcd923012fb30202adfa1f6b14d790a", null ],
     [ "ProcessLine", "class_t_g_r_s_iint.html#ad0538f3d5195b2df8172dedd60d29025", null ],

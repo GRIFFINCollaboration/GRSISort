@@ -23,7 +23,7 @@ var class_t_calibration_graph_set =
     [ "operator=", "class_t_calibration_graph_set.html#a16aa5d3f94391efc53567b0fb69108d6", null ],
     [ "operator=", "class_t_calibration_graph_set.html#a0a5b46f1da38a8495e507528319cb61f", null ],
     [ "Print", "class_t_calibration_graph_set.html#a7118a744a3f1c5caf2924e9f8c91a44c", null ],
-    [ "RemoveGraph", "class_t_calibration_graph_set.html#aa1980462ff572eaa371238e15e118739", null ],
+    [ "RemoveGraph", "class_t_calibration_graph_set.html#a0f88511caba49bb5426099494feea613", null ],
     [ "RemovePoint", "class_t_calibration_graph_set.html#aaab393b7e61f7f6d6599fc2c43d6467d", null ],
     [ "RemoveResidualPoint", "class_t_calibration_graph_set.html#aace256e20ee8806c538714f7b2a59c49", null ],
     [ "ResetTotalGraph", "class_t_calibration_graph_set.html#a08a8dd703480269efbc72d5f596a7b98", null ],

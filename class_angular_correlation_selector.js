@@ -1,11 +1,10 @@
 var class_angular_correlation_selector =
 [
-    [ "AngularCorrelationSelector", "class_angular_correlation_selector.html#aaabbf9ff9aa822a37e01ee455335057a", null ],
-    [ "~AngularCorrelationSelector", "class_angular_correlation_selector.html#a291c6857446898a1779c91fb056f7712", null ],
+    [ "AngularCorrelationSelector", "class_angular_correlation_selector.html#abda0cb99967d9babea51bc5b6844bc74", null ],
+    [ "~AngularCorrelationSelector", "class_angular_correlation_selector.html#af541c841a5d793203c562644223f2f3c", null ],
     [ "Begin", "class_angular_correlation_selector.html#ab93493c658b7214c7b98b755d85586bd", null ],
     [ "CheckSizes", "class_angular_correlation_selector.html#a3ee3614749d1369487299802d7e18364", null ],
     [ "ClassDef", "class_angular_correlation_selector.html#af348211dcf7c024bea288092377c8305", null ],
-    [ "ClassDefOverride", "class_angular_correlation_selector.html#aac34947a3e9bcf869d26c3ce7ddf24c2", null ],
     [ "CreateHistograms", "class_angular_correlation_selector.html#a7ef14b50145c5d03ad533fe2ec22fae4", null ],
     [ "EndOfSort", "class_angular_correlation_selector.html#aefe521b4e1ad5569b7e2809fb7f7e411", null ],
     [ "FillHistograms", "class_angular_correlation_selector.html#a0dd459c4cf93b1088b7c86f0d6133d1d", null ],

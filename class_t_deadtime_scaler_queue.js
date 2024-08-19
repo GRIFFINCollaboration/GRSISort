@@ -1,6 +1,8 @@
 var class_t_deadtime_scaler_queue =
 [
-    [ "~TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html#a2fcc7c9c6361114193d4a431588087a5", null ],
+    [ "TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html#ab9ec9446d9c62a44e06e1272e6a00fb5", null ],
+    [ "TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html#a25c97b7b447e54b9fb73c637bae3ff1b", null ],
+    [ "~TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html#a89b0de0251496302eef290066a138b27", null ],
     [ "TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html#a2a911ac9400b9f8f33e6477cdac9f46f", null ],
     [ "Add", "class_t_deadtime_scaler_queue.html#a4033905eca3cd260122764464428f859", null ],
     [ "CheckStatus", "class_t_deadtime_scaler_queue.html#acf83f650d5a578a970dc453ef2308de0", null ],
@@ -8,6 +10,8 @@ var class_t_deadtime_scaler_queue =
     [ "Get", "class_t_deadtime_scaler_queue.html#a9e8096c1376e6eeec0ca104034234e36", null ],
     [ "GetTotalScalersIn", "class_t_deadtime_scaler_queue.html#a498280b53373e56afe04a940937db87e", null ],
     [ "GetTotalScalersOut", "class_t_deadtime_scaler_queue.html#ab79ffc7bc147089663202630c7f4adac", null ],
+    [ "operator=", "class_t_deadtime_scaler_queue.html#a66380e6de4c9031c60ba81e8c604f2be", null ],
+    [ "operator=", "class_t_deadtime_scaler_queue.html#a89c0a725dd574fc31e05858866beeba3", null ],
     [ "Pop", "class_t_deadtime_scaler_queue.html#a4aa7c66004110cf40ac61fb288e0647c", null ],
     [ "PopScaler", "class_t_deadtime_scaler_queue.html#a6f71427893eabec6ceec264ea42fd503", null ],
     [ "Print", "class_t_deadtime_scaler_queue.html#ac86dd112b06d1d401824bf405b58169d", null ],

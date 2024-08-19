@@ -1,10 +1,10 @@
 var class_t_kinematics =
 [
     [ "TKinematics", "class_t_kinematics.html#a87cd7ba5fe0298e29c90d3c6e6ac24a4", null ],
-    [ "TKinematics", "class_t_kinematics.html#a48245634650bab66025af337cca0fff8", null ],
     [ "TKinematics", "class_t_kinematics.html#a2c65284e4e017ea1aa19f997db7eb377", null ],
     [ "TKinematics", "class_t_kinematics.html#aff98ec9f2fb9b3e17bc1da17777cdb98", null ],
     [ "TKinematics", "class_t_kinematics.html#ac44cf0c783ab7650c9fcff7efadd8234", null ],
+    [ "TKinematics", "class_t_kinematics.html#a48245634650bab66025af337cca0fff8", null ],
     [ "Angle_cm2lab", "class_t_kinematics.html#a11eae9640160d3eab66bac4d22509e0e", null ],
     [ "Angle_lab2cm", "class_t_kinematics.html#afb707f92c00b0369334432b0c00a06d5", null ],
     [ "Angle_lab2cminverse", "class_t_kinematics.html#a6583863178ddcc6b99f5362a8aff520f", null ],

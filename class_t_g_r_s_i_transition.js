@@ -1,7 +1,9 @@
 var class_t_g_r_s_i_transition =
 [
     [ "TGRSITransition", "class_t_g_r_s_i_transition.html#a2713493298053f6d4633f9ec54b7ebcb", null ],
-    [ "~TGRSITransition", "class_t_g_r_s_i_transition.html#aba85d784488c7a0740332a3dfc3f663a", null ],
+    [ "TGRSITransition", "class_t_g_r_s_i_transition.html#a0f5b253dafe5df7e82ae218a1ed5d161", null ],
+    [ "TGRSITransition", "class_t_g_r_s_i_transition.html#aa1a7d705d1e84b5ba54f770f30817acc", null ],
+    [ "~TGRSITransition", "class_t_g_r_s_i_transition.html#a1305f2ff4264003e63475df4b7496b1a", null ],
     [ "Clear", "class_t_g_r_s_i_transition.html#a2c6fbdb1cc04a09ce4939cb4f6d850a0", null ],
     [ "Compare", "class_t_g_r_s_i_transition.html#a6f0477430bc49a4f7e9fd20417ae665b", null ],
     [ "GetEnergy", "class_t_g_r_s_i_transition.html#a88d74a18f3b543deb14ebb43483b9a38", null ],
@@ -9,6 +11,8 @@ var class_t_g_r_s_i_transition =
     [ "GetIntensity", "class_t_g_r_s_i_transition.html#a857f1023803be1e7cf83743b725b61d7", null ],
     [ "GetIntensityUncertainty", "class_t_g_r_s_i_transition.html#a3231f2df39a06c1acc34b129eb4afd6d", null ],
     [ "IsSortable", "class_t_g_r_s_i_transition.html#abf20ab6d9a90adcae22bfbe94399df32", null ],
+    [ "operator=", "class_t_g_r_s_i_transition.html#a20c962d923d7b05223c60c9a7712fb9a", null ],
+    [ "operator=", "class_t_g_r_s_i_transition.html#ac55ee32ff319b2ba2a5bd2c4824d96c0", null ],
     [ "Print", "class_t_g_r_s_i_transition.html#a79492415996aa702cd66956d1cd8589a", null ],
     [ "PrintToString", "class_t_g_r_s_i_transition.html#af30b5a228b4e1a8f9ca2914fcac1328d", null ],
     [ "SetEnergy", "class_t_g_r_s_i_transition.html#a8d56e5d0dca58757c570477b09d5081d", null ],

@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('_t_bad_fragment_8cxx_source.html','');
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="class_t_bad_fragment.html#afa50669a2c97091f22d4aad76324567c">   35</a></span><a class="code hl_function" href="class_t_bad_fragment.html#a85a7417fbc187867dc14bfc215a5b6d9">TBadFragment::TBadFragment</a>(<a class="code hl_class" href="class_t_fragment.html">TFragment</a>&amp; fragment)</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>   : <a class="code hl_class" href="class_t_fragment.html">TFragment</a>(fragment), fFailedWord(-2), fMultipleErrors(false)</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>   : <a class="code hl_class" href="class_t_fragment.html">TFragment</a>(fragment), fFailedWord(-2)</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>{<span class="comment"></span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">   /// Construct a bad fragment from a fragment.</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">   /// The data is left empty, failed word set to -2, and multiple errors set to false.</span></div>
@@ -167,7 +167,7 @@ $(document).ready(function(){initNavTree('_t_bad_fragment_8cxx_source.html','');
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment"></span>   <a class="code hl_function" href="class_t_fragment.html#a46eb3fd3f98de2fd7376aa03b91e857c">TFragment::Print</a>();</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;Raw data with &quot;</span> &lt;&lt; (<a class="code hl_variable" href="class_t_bad_fragment.html#ac901d0588390314f74b91753b54aca52">fMultipleErrors</a> ? <span class="stringliteral">&quot;multiple errors&quot;</span> : <span class="stringliteral">&quot;single error&quot;</span>) &lt;&lt; <span class="stringliteral">&quot; failed on word &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_t_bad_fragment.html#a379738f660df4bd1d900bbb3e71ec438">fFailedWord</a> &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>   <span class="keywordtype">size_t</span> index;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>   <span class="keywordtype">size_t</span> index = 0;</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>   <span class="keywordflow">for</span>(index = 0; index &lt; <a class="code hl_variable" href="class_t_bad_fragment.html#a88372da98e3dad432fec3e35fc9685fa">fData</a>.size(); ++index) {</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      <span class="keywordflow">if</span>(index == <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="class_t_bad_fragment.html#a379738f660df4bd1d900bbb3e71ec438">fFailedWord</a>)) {</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>         std::cout &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ade3b398d4c616608495b2d29e309badb">ALERTTEXT</a>;</div>
@@ -187,7 +187,7 @@ $(document).ready(function(){initNavTree('_t_bad_fragment_8cxx_source.html','');
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>   }</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>
 </div>
-<div class="ttc" id="a_globals_8h_html_ab37ad6f1cf4c93e161b5caaeae971ef4"><div class="ttname"><a href="_globals_8h.html#ab37ad6f1cf4c93e161b5caaeae971ef4">hex</a></div><div class="ttdeci">std::string hex(T val, int width=-1)</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00137">Globals.h:137</a></div></div>
+<div class="ttc" id="a_globals_8h_html_ab37ad6f1cf4c93e161b5caaeae971ef4"><div class="ttname"><a href="_globals_8h.html#ab37ad6f1cf4c93e161b5caaeae971ef4">hex</a></div><div class="ttdeci">std::string hex(T val, int width=-1)</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00136">Globals.h:136</a></div></div>
 <div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00004">Globals.h:4</a></div></div>
 <div class="ttc" id="a_globals_8h_html_ade3b398d4c616608495b2d29e309badb"><div class="ttname"><a href="_globals_8h.html#ade3b398d4c616608495b2d29e309badb">ALERTTEXT</a></div><div class="ttdeci">#define ALERTTEXT</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00034">Globals.h:34</a></div></div>
 <div class="ttc" id="a_t_bad_fragment_8h_html"><div class="ttname"><a href="_t_bad_fragment_8h.html">TBadFragment.h</a></div></div>
@@ -207,7 +207,7 @@ $(document).ready(function(){initNavTree('_t_bad_fragment_8cxx_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_2b08b36851fcb6a7439555c8d93f536c.html">TFormat</a></li><li class="navelem"><a class="el" href="_t_bad_fragment_8cxx.html">TBadFragment.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 12 2024 00:34:25.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Aug 19 2024 19:08:40.</li>
   </ul>
 </div>
 </body>

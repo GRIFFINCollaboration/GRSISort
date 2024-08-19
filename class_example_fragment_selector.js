@@ -1,11 +1,10 @@
 var class_example_fragment_selector =
 [
-    [ "ExampleFragmentSelector", "class_example_fragment_selector.html#afa091da5cf57cb958c91dddc65a629a5", null ],
-    [ "~ExampleFragmentSelector", "class_example_fragment_selector.html#ac65897b05085adb09e0cdb692478ec83", null ],
+    [ "ExampleFragmentSelector", "class_example_fragment_selector.html#a3ce45cdb8ecc8f16d51a949e2e77367f", null ],
+    [ "~ExampleFragmentSelector", "class_example_fragment_selector.html#a15fa6e1992325c0f4606d74294e725da", null ],
     [ "Begin", "class_example_fragment_selector.html#ab93493c658b7214c7b98b755d85586bd", null ],
     [ "CheckSizes", "class_example_fragment_selector.html#a3ee3614749d1369487299802d7e18364", null ],
     [ "ClassDef", "class_example_fragment_selector.html#a4c6a02007627071fcae4e2f9f4e2436f", null ],
-    [ "ClassDefOverride", "class_example_fragment_selector.html#aac34947a3e9bcf869d26c3ce7ddf24c2", null ],
     [ "CreateHistograms", "class_example_fragment_selector.html#aac287634410c47d3c3c0eb6aa8e3543a", null ],
     [ "EndOfSort", "class_example_fragment_selector.html#aefe521b4e1ad5569b7e2809fb7f7e411", null ],
     [ "FillHistograms", "class_example_fragment_selector.html#a9b560ea5c2d3499facc843d192738b94", null ],

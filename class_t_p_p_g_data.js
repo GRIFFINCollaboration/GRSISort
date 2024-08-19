@@ -3,7 +3,7 @@ var class_t_p_p_g_data =
     [ "TPPGData", "class_t_p_p_g_data.html#a06f12c41efedada2ceb2960bb6b1b0ff", null ],
     [ "TPPGData", "class_t_p_p_g_data.html#a5a12b04038420d95a7c90d42ea14c24c", null ],
     [ "TPPGData", "class_t_p_p_g_data.html#a27cdb4242f1b27411a4b87b89e7a4c9e", null ],
-    [ "~TPPGData", "class_t_p_p_g_data.html#a19a93e2596279554c6e276249a0a64b2", null ],
+    [ "~TPPGData", "class_t_p_p_g_data.html#af4c72254b59a230a6ba984e1a9ab7149", null ],
     [ "Clear", "class_t_p_p_g_data.html#a399f61c72fa8cf0584d0771572a4ea56", null ],
     [ "Copy", "class_t_p_p_g_data.html#a23aabc00a30169a425d2e69bd2c4feb1", null ],
     [ "GetHighTimeStamp", "class_t_p_p_g_data.html#ae6981668def198af35010a0f0bc896a7", null ],

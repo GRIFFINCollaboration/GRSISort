@@ -1,11 +1,10 @@
 var class_time_walk_selector =
 [
-    [ "TimeWalkSelector", "class_time_walk_selector.html#ac42f170bc5f066f3104b4b34672ab2b7", null ],
-    [ "~TimeWalkSelector", "class_time_walk_selector.html#adcab53c4ccd5c2b1210059029150c812", null ],
+    [ "TimeWalkSelector", "class_time_walk_selector.html#aaa634746be408c8687181a461b6713a8", null ],
+    [ "~TimeWalkSelector", "class_time_walk_selector.html#a6c83aa83669a68dd7d0968198ef9e2ac", null ],
     [ "Begin", "class_time_walk_selector.html#ab93493c658b7214c7b98b755d85586bd", null ],
     [ "CheckSizes", "class_time_walk_selector.html#a3ee3614749d1369487299802d7e18364", null ],
     [ "ClassDef", "class_time_walk_selector.html#ad1bf368ebd1c62f00876e11bf5ccba14", null ],
-    [ "ClassDefOverride", "class_time_walk_selector.html#aac34947a3e9bcf869d26c3ce7ddf24c2", null ],
     [ "CreateHistograms", "class_time_walk_selector.html#a729bcd0459c673bf3c341feb3810a063", null ],
     [ "EndOfSort", "class_time_walk_selector.html#aefe521b4e1ad5569b7e2809fb7f7e411", null ],
     [ "FillHistograms", "class_time_walk_selector.html#af0d0e9f3aca543ccb38bbbdecb127ce2", null ],
