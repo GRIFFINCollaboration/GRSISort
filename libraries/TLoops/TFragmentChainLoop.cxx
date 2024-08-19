@@ -83,7 +83,7 @@ bool TFragmentChainLoop::Iteration()
 
    std::shared_ptr<TFragment> frag = std::make_shared<TFragment>();
    fInputChain->GetEntry(ItemsPopped());
-	IncrementItemsPopped();
+   IncrementItemsPopped();
    *frag = *fFragment;
    frag->SetEntryNumber();
    for(const auto& outQueue : fOutputQueues) {

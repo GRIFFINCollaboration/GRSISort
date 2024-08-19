@@ -25,10 +25,10 @@ public:
    GH2D(const char* name, const char* title, Int_t nbinsx, Double_t xlow, Double_t xup, Int_t nbinsy, Double_t* ybins);
    GH2D(const char* name, const char* title, Int_t nbinsx, Double_t xlow, Double_t xup, Int_t nbinsy, Double_t ylow, Double_t yup);
    explicit GH2D(const TObject&);
-	GH2D(const GH2D&) = default;
-	GH2D(GH2D&&) noexcept = default;
-	GH2D& operator=(const GH2D&) = default;
-	GH2D& operator=(GH2D&&) noexcept = default;
+   GH2D(const GH2D&)                = default;
+   GH2D(GH2D&&) noexcept            = default;
+   GH2D& operator=(const GH2D&)     = default;
+   GH2D& operator=(GH2D&&) noexcept = default;
    ~GH2D();
 
    void         Draw(Option_t* opt = "") override;
@@ -54,9 +54,9 @@ public:
    TH2* GetTH2() override { return this; }
 
 private:
-	/// /cond CLASSIMP
-   ClassDefOverride(GH2D, 1) // NOLINT
-	/// /endcond
+   /// /cond CLASSIMP
+   ClassDefOverride(GH2D, 1)   // NOLINT
+                               /// /endcond
 };
 
 #endif

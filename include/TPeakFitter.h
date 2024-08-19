@@ -33,11 +33,11 @@ public:
    // ctors and dtors
    TPeakFitter() : TPeakFitter(0., 0.) {}
    TPeakFitter(const Double_t& rangeLow, const Double_t& rangeHigh);
-	TPeakFitter(const TPeakFitter&) = default;
-	TPeakFitter(TPeakFitter&&) noexcept = default;
-	TPeakFitter& operator=(const TPeakFitter&) = default;
-	TPeakFitter& operator=(TPeakFitter&&) noexcept = default;
-   ~TPeakFitter() = default;
+   TPeakFitter(const TPeakFitter&)                = default;
+   TPeakFitter(TPeakFitter&&) noexcept            = default;
+   TPeakFitter& operator=(const TPeakFitter&)     = default;
+   TPeakFitter& operator=(TPeakFitter&&) noexcept = default;
+   ~TPeakFitter()                                 = default;
 
    void AddPeak(TSinglePeak* peak)
    {
@@ -103,7 +103,7 @@ private:
    int fColorIndex{0};   ///< this index is added to the colors kRed for the total function and kMagenta for the individual peaks
 
    /// \cond CLASSIMP
-   ClassDefOverride(TPeakFitter, 2) // NOLINT
+   ClassDefOverride(TPeakFitter, 2)   // NOLINT
    /// \endcond
 };
 /*! @} */

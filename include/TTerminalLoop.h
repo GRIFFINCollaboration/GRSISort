@@ -33,11 +33,11 @@ public:
       return dynamic_cast<TTerminalLoop*>(thread);
    }
 
-	TTerminalLoop(const TTerminalLoop&) = delete;
-	TTerminalLoop(TTerminalLoop&&) noexcept = delete;
-	TTerminalLoop& operator=(const TTerminalLoop&) = delete;
-	TTerminalLoop& operator=(TTerminalLoop&&) noexcept = delete;
-   ~TTerminalLoop() = default;
+   TTerminalLoop(const TTerminalLoop&)                = delete;
+   TTerminalLoop(TTerminalLoop&&) noexcept            = delete;
+   TTerminalLoop& operator=(const TTerminalLoop&)     = delete;
+   TTerminalLoop& operator=(TTerminalLoop&&) noexcept = delete;
+   ~TTerminalLoop()                                   = default;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<T>>>& InputQueue()

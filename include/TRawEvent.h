@@ -23,15 +23,15 @@
 class TRawEvent : public TObject {
 public:
    // houskeeping functions
-   TRawEvent() = default;                                                                                  ///< default constructor
-   TRawEvent(const TRawEvent& rhs) : TObject(rhs) {}                                                       ///< copy constructor
-	TRawEvent(TRawEvent&&) noexcept = default;
-	TRawEvent& operator=(const TRawEvent&) = default;
-	TRawEvent& operator=(TRawEvent&&) noexcept = default;
-   ~TRawEvent() = default;                                                                                 ///< destructor
-   void       Clear(Option_t* = "") override { fGoodFrags = 0; }                                           ///< clear event for reuse
-   void       Copy(TObject& obj) const override { static_cast<TRawEvent&>(obj).fGoodFrags = fGoodFrags; }   ///< copy helper
-   void       Print(const char* = "") const override {}                                                    ///< show all event information
+   TRawEvent() = default;                              ///< default constructor
+   TRawEvent(const TRawEvent& rhs) : TObject(rhs) {}   ///< copy constructor
+   TRawEvent(TRawEvent&&) noexcept            = default;
+   TRawEvent& operator=(const TRawEvent&)     = default;
+   TRawEvent& operator=(TRawEvent&&) noexcept = default;
+   ~TRawEvent()                               = default;                                              ///< destructor
+   void Clear(Option_t* = "") override { fGoodFrags = 0; }                                            ///< clear event for reuse
+   void Copy(TObject& obj) const override { static_cast<TRawEvent&>(obj).fGoodFrags = fGoodFrags; }   ///< copy helper
+   void Print(const char* = "") const override {}                                                     ///< show all event information
 
    // get event information
 
@@ -50,7 +50,7 @@ public:
 private:
    int fGoodFrags{0};   ///< number of good fragments parsed
    /// \cond CLASSIMP
-   ClassDefOverride(TRawEvent, 0) // NOLINT
+   ClassDefOverride(TRawEvent, 0)   // NOLINT
    /// \endcond
 };
 /*! @} */

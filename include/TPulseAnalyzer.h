@@ -102,14 +102,14 @@ private:
    };
 
    struct ShapePar {
-      double      chisq;
-      int         ndf;
-      int         type;
-		// decay constants for the fits
-      long double t[5]; // NOLINT(*-avoid-c-arrays)
-		// associated aplitudes for the decay constants
-      long double am[5]; // NOLINT(*-avoid-c-arrays)
-      double      rf[5]; // NOLINT(*-avoid-c-arrays)
+      double chisq;
+      int    ndf;
+      int    type;
+      // decay constants for the fits
+      long double t[5];    // NOLINT(*-avoid-c-arrays)
+                           // associated aplitudes for the decay constants
+      long double am[5];   // NOLINT(*-avoid-c-arrays)
+      double      rf[5];   // NOLINT(*-avoid-c-arrays)
 
       // new stuff necessary for compiliation of Kris' waveform analyzer changes
       long double chisq_ex;
@@ -122,10 +122,10 @@ public:
    TPulseAnalyzer();
    explicit TPulseAnalyzer(const TFragment& fragment, double = 0);
    explicit TPulseAnalyzer(const std::vector<Short_t>& wave, double = 0, std::string name = "");
-	TPulseAnalyzer(const TPulseAnalyzer&) = default;
-	TPulseAnalyzer(TPulseAnalyzer&&) noexcept = default;
-	TPulseAnalyzer& operator=(const TPulseAnalyzer&) = default;
-	TPulseAnalyzer& operator=(TPulseAnalyzer&&) noexcept = default;
+   TPulseAnalyzer(const TPulseAnalyzer&)                = default;
+   TPulseAnalyzer(TPulseAnalyzer&&) noexcept            = default;
+   TPulseAnalyzer& operator=(const TPulseAnalyzer&)     = default;
+   TPulseAnalyzer& operator=(TPulseAnalyzer&&) noexcept = default;
    virtual ~TPulseAnalyzer();
 
    void SetData(const TFragment& fragment, double = 0);
@@ -189,10 +189,10 @@ private:
 
    // linear equation dataholders
    int         lineq_dim;
-   long double lineq_matrix[20][20];  // NOLINT(*-avoid-c-arrays)
-   long double lineq_vector[20];  // NOLINT(*-avoid-c-arrays)
-   long double lineq_solution[20];  // NOLINT(*-avoid-c-arrays)
-   long double copy_matrix[20][20];  // NOLINT(*-avoid-c-arrays)
+   long double lineq_matrix[20][20];   // NOLINT(*-avoid-c-arrays)
+   long double lineq_vector[20];       // NOLINT(*-avoid-c-arrays)
+   long double lineq_solution[20];     // NOLINT(*-avoid-c-arrays)
+   long double copy_matrix[20][20];    // NOLINT(*-avoid-c-arrays)
 
    // CsI functions
    void   GetCsIExclusionZone();
@@ -256,7 +256,7 @@ private:
    const static int BADCHISQ_AMPL = -1024 - 6;
 
    /// \cond CLASSIMP
-   ClassDef(TPulseAnalyzer, 4) // NOLINT
+   ClassDef(TPulseAnalyzer, 4)   // NOLINT
    /// \endcond
 };
 /*! @} */

@@ -22,11 +22,11 @@ class TEnergyCal : public TCal {
 public:
    TEnergyCal();
    TEnergyCal(const char* name, const char* title) : TCal(name, title) {}
-	TEnergyCal(const TEnergyCal&) = default;
-	TEnergyCal(TEnergyCal&&) noexcept = default;
-	TEnergyCal& operator=(const TEnergyCal&) = default;
-	TEnergyCal& operator=(TEnergyCal&&) noexcept = default;
-   ~TEnergyCal() = default;
+   TEnergyCal(const TEnergyCal&)                = default;
+   TEnergyCal(TEnergyCal&&) noexcept            = default;
+   TEnergyCal& operator=(const TEnergyCal&)     = default;
+   TEnergyCal& operator=(TEnergyCal&&) noexcept = default;
+   ~TEnergyCal()                                = default;
 
    std::vector<Double_t> GetParameters() const override;
    Double_t              GetParameter(size_t parameter) const override;
@@ -53,7 +53,7 @@ public:
 
 private:
    /// \cond CLASSIMP
-   ClassDefOverride(TEnergyCal, 1) // NOLINT
+   ClassDefOverride(TEnergyCal, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

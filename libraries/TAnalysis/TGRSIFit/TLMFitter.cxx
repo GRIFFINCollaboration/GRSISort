@@ -53,8 +53,8 @@ void TLMFitter::Fit(TH1* hist, TF1* func)
    for(int i = 0; i < func->GetNpar(); ++i) {
       a[i] = func->GetParameter(i);
 
-		Double_t min = 0.;
-		Double_t max = 0.;
+      Double_t min = 0.;
+      Double_t max = 0.;
       func->GetParLimits(i, min, max);
       if(min == max) {
          if(min != 0) {
@@ -69,14 +69,14 @@ void TLMFitter::Fit(TH1* hist, TF1* func)
       std::cout << "par[" << i << "] = " << fFunction->GetParameter(i) << std::endl;
    }
    double func_range_min = 0.;
-	double func_range_max = 0.;
+   double func_range_max = 0.;
    func->GetRange(func_range_min, func_range_max);
    std::cout << "function range: " << func_range_min << " to " << func_range_max << std::endl;
    SetFitterRange(func_range_min, func_range_max);
    int bin_min = hist->FindBin(func_range_min);
    int bin_max = hist->FindBin(func_range_max);
 
-   int nBins = hist->GetNbinsX();
+   int        nBins = hist->GetNbinsX();
    Vec_double x(nBins);
    Vec_double y(nBins);
    Vec_double sig(nBins);
@@ -220,7 +220,7 @@ void TLMFitter::mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
 
    int ma = a.size();
    if(ma <= 0) {
-      std::cerr << __PRETTY_FUNCTION__ << ": vector a is empty, not doing anything!" << std::endl; // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+      std::cerr << __PRETTY_FUNCTION__ << ": vector a is empty, not doing anything!" << std::endl;   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       return;
    }
    static Mat_double* oneda_p;
@@ -246,9 +246,9 @@ void TLMFitter::mrqmin(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
       }
    }
    Mat_double& oneda = *oneda_p;
-   Vec_double& atry = *atry_p;
-	Vec_double& beta = *beta_p;
-	Vec_double& da = *da_p;
+   Vec_double& atry  = *atry_p;
+   Vec_double& beta  = *beta_p;
+   Vec_double& da    = *da_p;
    Mat_double  temp(mfit, mfit);
    // After linearized fitting matrix, by augmenting diagonal elements
    for(int j = 0; j < mfit; j++) {
@@ -314,7 +314,7 @@ void TLMFitter::mrqcof(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_IO
 
    int        ndata = x.size();
    int        ma    = a.size();
-	int        mfit  = 0;
+   int        mfit  = 0;
    Vec_double dyda(ma);
    Vec_double yfit(ndata);
    for(int j = 0; j < ma; j++) {
@@ -435,8 +435,8 @@ void TLMFitter::gaussj(Mat_IO_double& a, Mat_IO_double& b)
    for(int j = 0; j < n; j++) {
       ipiv[j] = 0;
    }
-	int icol = 0;
-	int irow = 0;
+   int icol = 0;
+   int irow = 0;
    for(int i = 0; i < n; i++) {
       double big = 0.0;
       for(int j = 0; j < n; j++) {
@@ -466,7 +466,7 @@ void TLMFitter::gaussj(Mat_IO_double& a, Mat_IO_double& b)
       if(a[icol][icol] == 0.0) {
          nrerror("gaussj: Singular Matrix");
       }
-      double pivinv        = 1.0 / a[icol][icol];
+      double pivinv = 1.0 / a[icol][icol];
       a[icol][icol] = 1.0;
       for(int l = 0; l < n; l++) {
          a[icol][l] *= pivinv;
@@ -476,7 +476,7 @@ void TLMFitter::gaussj(Mat_IO_double& a, Mat_IO_double& b)
       }
       for(int ll = 0; ll < n; ll++) {
          if(ll != icol) {
-            double dum         = a[ll][icol];
+            double dum  = a[ll][icol];
             a[ll][icol] = 0.0;
             for(int l = 0; l < n; l++) {
                a[ll][l] -= a[icol][l] * dum;

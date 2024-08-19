@@ -11,7 +11,7 @@
 
 Int_t TCalibrationGraph::RemovePoint()
 {
-   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; } // NOLINT
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT
    if(fIsResidual) { return fParent->RemoveResidualPoint(); }
    return fParent->RemovePoint();
 }
@@ -57,11 +57,11 @@ TCalibrationGraphSet::~TCalibrationGraphSet()
 int TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
 {
    if(fVerboseLevel > 1) {
-      std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT
+      std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
       Print();
    }
    if(graph->GetN() == 0) {
-      std::cout << __PRETTY_FUNCTION__ << ": graph \"" << graph->GetName() << "\", label \"" << label << "\" is empty, not adding it" << std::endl; // NOLINT
+      std::cout << __PRETTY_FUNCTION__ << ": graph \"" << graph->GetName() << "\", label \"" << label << "\" is empty, not adding it" << std::endl;   // NOLINT
       return -1;
    }
 
@@ -135,7 +135,7 @@ int TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
 
 bool TCalibrationGraphSet::SetResidual(const bool& force)
 {
-   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " gpad " << gPad->GetName() << std::endl; } // NOLINT
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " gpad " << gPad->GetName() << std::endl; }   // NOLINT
    TF1* calibration = FitFunction();
    if(calibration != nullptr && (!fResidualSet || force)) {
       double* x  = fTotalGraph->GetX();
@@ -169,7 +169,7 @@ bool TCalibrationGraphSet::SetResidual(const bool& force)
          pad++;
       }
    } else {
-      if(fVerboseLevel > 2) { std::cout << __PRETTY_FUNCTION__ << ": didn't find calibration (" << calibration << "), or the residual was already set (" << (fResidualSet ? "true" : "false") << ") and we don't force it (" << (force ? "true" : "false") << ")" << std::endl; } // NOLINT
+      if(fVerboseLevel > 2) { std::cout << __PRETTY_FUNCTION__ << ": didn't find calibration (" << calibration << "), or the residual was already set (" << (fResidualSet ? "true" : "false") << ") and we don't force it (" << (force ? "true" : "false") << ")" << std::endl; }   // NOLINT
       if(calibration == nullptr) { fResidualSet = false; }
    }
    if(fVerboseLevel > 2) { Print(); }
@@ -198,7 +198,7 @@ void TCalibrationGraphSet::DrawCalibration(Option_t* opt, TLegend* legend)
    fTotalGraph->Draw(options.Data());
 
    for(size_t i = 0; i < fGraphs.size(); ++i) {
-      if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". graph with option \"" << opt << "\", marker color " << fGraphs[i].GetMarkerColor() << std::endl; } // NOLINT
+      if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". graph with option \"" << opt << "\", marker color " << fGraphs[i].GetMarkerColor() << std::endl; }   // NOLINT
       fGraphs[i].Draw(opt);
       if(legend != nullptr) {
          legend->AddEntry(&(fGraphs[i]), fLabel[i].c_str());
@@ -221,7 +221,7 @@ void TCalibrationGraphSet::DrawResidual(Option_t* opt, TLegend* legend)
    }
 
    for(size_t i = 0; i < fResidualGraphs.size(); ++i) {
-      if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". residual graph with option \"" << opt << "\", marker color " << fResidualGraphs[i].GetMarkerColor() << std::endl; } // NOLINT
+      if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". residual graph with option \"" << opt << "\", marker color " << fResidualGraphs[i].GetMarkerColor() << std::endl; }   // NOLINT
       fResidualGraphs[i].Draw(opt);
       if(legend != nullptr) {
          legend->AddEntry(&(fResidualGraphs[i]), fLabel[i].c_str());
@@ -236,7 +236,7 @@ Int_t TCalibrationGraphSet::RemovePoint()
    Int_t py = gPad->GetEventY();
 
    if(fVerboseLevel > 1) {
-      std::cout << __PRETTY_FUNCTION__ << ": point " << px << ", " << py << std::endl; // NOLINT
+      std::cout << __PRETTY_FUNCTION__ << ": point " << px << ", " << py << std::endl;   // NOLINT
       Print();
    }
 
@@ -258,7 +258,7 @@ Int_t TCalibrationGraphSet::RemovePoint()
    if(ipoint < 0) {
       std::cout << "Failed to find point close to " << px << ", " << py << std::endl;
       if(fVerboseLevel > 2) {
-         std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT
+         std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
          Print();
       }
       return ipoint;
@@ -327,13 +327,13 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint()
    if(ipoint < 0) {
       if(fVerboseLevel > 1) { std::cout << "Failed to find point close to " << px << ", " << py << std::endl; }
       if(fVerboseLevel > 2) {
-         std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT
+         std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
          Print();
       }
       return ipoint;
    }
    if(fVerboseLevel > 2) {
-      std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT
+      std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
       Print();
    }
    // no need to check if we can remove the residual point in this case
@@ -373,7 +373,7 @@ void TCalibrationGraphSet::Scale(bool useAllPrevious)
    /// If no overlap is being found between the graph that is being scaled and the first graph (or all graphs before this one),
    /// the current graph isn't being scaled and we continue with the next graph.
    if(fVerboseLevel > 1) {
-      std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT
+      std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
       Print();
    }
    for(size_t g = 1; g < fGraphs.size(); ++g) {
@@ -422,14 +422,14 @@ void TCalibrationGraphSet::Scale(bool useAllPrevious)
 
 void TCalibrationGraphSet::ResetTotalGraph()
 {
-   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; } // NOLINT
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT
    if(fGraphs.empty()) {
       std::cerr << "No graphs added yet, makes no sense to reset total graph?" << std::endl;
       return;
    }
 
    size_t newSize = 0;
-	for(auto& graph : fGraphs) {
+   for(auto& graph : fGraphs) {
       newSize += graph.GetN();
    }
    if(fVerboseLevel > 2) { std::cout << "creating graph with " << newSize << " points" << std::endl; }
@@ -484,8 +484,11 @@ void TCalibrationGraphSet::Print(Option_t* opt) const
       double* ex = g.GetEX();
       double* ey = g.GetEY();
       for(int p = 0; p < g.GetN(); ++p) {
-         if(errors) { std::cout << p << " - " << x[p] << "(" << ex[p] << "), " << y[p] << "(" << ey[p] << "); "; }
-         else       { std::cout << p << " - " << x[p] << ", " << y[p] << "; "; }
+         if(errors) {
+            std::cout << p << " - " << x[p] << "(" << ex[p] << "), " << y[p] << "(" << ey[p] << "); ";
+         } else {
+            std::cout << p << " - " << x[p] << ", " << y[p] << "; ";
+         }
       }
       std::cout << std::endl;
    }

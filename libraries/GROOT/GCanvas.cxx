@@ -106,14 +106,14 @@ GCanvas::GCanvas(const char* name, Int_t winw, Int_t winh, Int_t winid) : TCanva
    // this constructor is used to create an embedded canvas
    // I see no reason for us to support this here.  pcb.
    GCanvasInit();
-   fGuiEnabled = true; // NOLINT
+   fGuiEnabled = true;   // NOLINT
 }
 
 GCanvas::GCanvas(const char* name, const char* title, Int_t wtopx, Int_t wtopy, Int_t winw, Int_t winh, bool gui)
    : TCanvas(name, title, wtopx, wtopy, winw, winh)
 {
    GCanvasInit();
-   fGuiEnabled = gui; // NOLINT
+   fGuiEnabled = gui;   // NOLINT
 }
 
 GCanvas::~GCanvas()
@@ -263,8 +263,8 @@ GCanvas* GCanvas::MakeDefCanvas()
    // Static function to build a default canvas.
 
    const char* defcanvas = gROOT->GetDefCanvasName();
-   char*       cdef = nullptr;
-   auto*       lc = static_cast<TList*>(gROOT->GetListOfCanvases());
+   char*       cdef      = nullptr;
+   auto*       lc        = static_cast<TList*>(gROOT->GetListOfCanvases());
    if(lc->FindObject(defcanvas) != nullptr) {
       Int_t n = lc->GetSize() + 1;
       cdef    = new char[strlen(defcanvas) + 15];
@@ -518,9 +518,9 @@ bool GCanvas::HandleWheel(Int_t event, Int_t px, Int_t py)
 
    // get the current range
    double x1 = 0.;
-	double y1 = 0.;
-	double x2 = 0.;
-	double y2 = 0.;
+   double y1 = 0.;
+   double x2 = 0.;
+   double y2 = 0.;
    GetRange(x1, y1, x2, y2);
 
    // calculate the new range

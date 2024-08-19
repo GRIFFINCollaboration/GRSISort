@@ -243,7 +243,7 @@ private:
    std::string fParserLibrary;   ///< location of shared object library for data parser and files
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSIOptions, 5) // NOLINT
+   ClassDefOverride(TGRSIOptions, 5)   // NOLINT
    /// \endcond
 };
 /*! @} */

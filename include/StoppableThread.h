@@ -29,10 +29,10 @@
 class StoppableThread {
 public:
    explicit StoppableThread(std::string name);
-	StoppableThread(const StoppableThread&) = delete;
-	StoppableThread(StoppableThread&&) noexcept = delete;
-	StoppableThread& operator=(const StoppableThread&) = delete;
-	StoppableThread& operator=(StoppableThread&&) noexcept = delete;
+   StoppableThread(const StoppableThread&)                = delete;
+   StoppableThread(StoppableThread&&) noexcept            = delete;
+   StoppableThread& operator=(const StoppableThread&)     = delete;
+   StoppableThread& operator=(StoppableThread&&) noexcept = delete;
    virtual ~StoppableThread();
 
    static void        SendStop();
@@ -90,11 +90,11 @@ public:
 
 protected:
 #ifndef __CINT__
-	void ItemsPopped(size_t val) { fItemsPopped = val; }
-	void InputSize(int64_t val)   { fInputSize = val; }
-	std::atomic_size_t& ItemsPopped() { return fItemsPopped; }
-	std::atomic_long&   InputSize()   { return fInputSize; }
-	void IncrementItemsPopped() { ++fItemsPopped; }
+   void                ItemsPopped(size_t val) { fItemsPopped = val; }
+   void                InputSize(int64_t val) { fInputSize = val; }
+   std::atomic_size_t& ItemsPopped() { return fItemsPopped; }
+   std::atomic_long&   InputSize() { return fInputSize; }
+   void                IncrementItemsPopped() { ++fItemsPopped; }
 #endif
 private:
 #ifndef __CINT__

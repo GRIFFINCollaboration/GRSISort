@@ -162,7 +162,7 @@ static void ReadContributors()
    /// Read the file $ROOTSYS/README/CREDITS for the names of the
    /// contributors.
 
-	std::array<char, 2048> buf;
+   std::array<char, 2048> buf;
 #ifdef ROOTDOCDIR
    snprintf(buf.data(), buf.size(), "%s/CREDITS", ROOTDOCDIR);
 #else
@@ -205,7 +205,7 @@ static void DrawVersion()
 {
    /// Draw version string.
 
-	std::array<char, 80> version;
+   std::array<char, 80> version;
    snprintf(version.data(), version.size(), "Version %s", GRSI_RELEASE);
 
    XDrawString(gDisplay, gLogoWindow, gGC, 15, gHeight - 20, version.data(), strlen(version.data()));
@@ -224,8 +224,8 @@ static int DrawCreditItem(const char* creditItem, const char** members, int y, b
 {
    /// Draw credit item.
 
-	std::array<char, 1024> credit;
-   int  lineSpacing = gFont->max_bounds.ascent + gFont->max_bounds.descent;
+   std::array<char, 1024> credit;
+   int                    lineSpacing = gFont->max_bounds.ascent + gFont->max_bounds.descent;
 
    strlcpy(credit.data(), creditItem, credit.size());
    for(int i = 0; (members != nullptr) && (members[i] != nullptr); i++) {

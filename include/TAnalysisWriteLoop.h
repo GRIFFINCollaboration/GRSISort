@@ -27,10 +27,10 @@ class TAnalysisWriteLoop : public StoppableThread {
 public:
    static TAnalysisWriteLoop* Get(std::string name = "", std::string outputFilename = "");
 
-	TAnalysisWriteLoop(const TAnalysisWriteLoop&) = delete;
-	TAnalysisWriteLoop(TAnalysisWriteLoop&&) noexcept = delete;
-	TAnalysisWriteLoop& operator=(const TAnalysisWriteLoop&) = delete;
-	TAnalysisWriteLoop& operator=(TAnalysisWriteLoop&&) noexcept = delete;
+   TAnalysisWriteLoop(const TAnalysisWriteLoop&)                = delete;
+   TAnalysisWriteLoop(TAnalysisWriteLoop&&) noexcept            = delete;
+   TAnalysisWriteLoop& operator=(const TAnalysisWriteLoop&)     = delete;
+   TAnalysisWriteLoop& operator=(TAnalysisWriteLoop&&) noexcept = delete;
    ~TAnalysisWriteLoop();
 
 #ifndef __CINT__
@@ -75,7 +75,7 @@ private:
 #endif
 
    /// \cond CLASSIMP
-   ClassDefOverride(TAnalysisWriteLoop, 0) // NOLINT
+   ClassDefOverride(TAnalysisWriteLoop, 0)   // NOLINT
    /// \endcond
 };
 

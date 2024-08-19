@@ -37,12 +37,12 @@ class TSinglePeak : public TObject {
 public:
    friend class TPeakFitter;
    // ctors and dtors
-   TSinglePeak()  = default;
-	TSinglePeak(const TSinglePeak&) = default;
-	TSinglePeak(TSinglePeak&&) noexcept = default;
-	TSinglePeak& operator=(const TSinglePeak&) = default;
-	TSinglePeak& operator=(TSinglePeak&&) noexcept = default;
-   ~TSinglePeak() = default;
+   TSinglePeak()                                  = default;
+   TSinglePeak(const TSinglePeak&)                = default;
+   TSinglePeak(TSinglePeak&&) noexcept            = default;
+   TSinglePeak& operator=(const TSinglePeak&)     = default;
+   TSinglePeak& operator=(TSinglePeak&&) noexcept = default;
+   ~TSinglePeak()                                 = default;
 
    virtual void InitParNames() {}
    virtual void InitializeParameters(TH1*, const double&, const double&) {}
@@ -119,7 +119,7 @@ private:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TSinglePeak, 2) // NOLINT
+   ClassDefOverride(TSinglePeak, 2)   // NOLINT
    /// \endcond
 };
 /*! @} */

@@ -9,9 +9,9 @@ TCalManager::TCalManager(const char* classname)
 
 TCalManager::~TCalManager()
 {
-	for(auto& iter : fCalMap) {
-		delete iter.second;
-	}
+   for(auto& iter : fCalMap) {
+      delete iter.second;
+   }
 }
 
 void TCalManager::RemoveCal(UInt_t channum, Option_t*)
@@ -55,7 +55,7 @@ void TCalManager::SetClass(TClass* cls)
       return;
    }
    std::cout << "Changing TCalManager to type: " << className << std::endl;
-   auto nch  = strlen(className) + 2;
+   auto  nch  = strlen(className) + 2;
    auto* name = new char[nch];
    snprintf(name, nch, "%ss", className);
    SetName(name);
@@ -153,7 +153,7 @@ void TCalManager::Clear(Option_t*)
    /// This deletes all of the current TCal's. It also resets the class
    /// type to 0.
    for(auto& iter : fCalMap) {
-		delete iter.second;
+      delete iter.second;
    }
    fCalMap.clear();
    fClass = nullptr;

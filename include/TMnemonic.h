@@ -85,17 +85,17 @@ public:
 
    virtual void Segment(int16_t val) { fSegment = val; }
    virtual void SetRFMnemonic(std::string* name);
-	
-	// this needs to be const because we call this from GetClassType as well, which is const
-	// that is also why fClassType is mutable (?)
-	// but does GetClassType need to be const?
+
+   // this needs to be const because we call this from GetClassType as well, which is const
+   // that is also why fClassType is mutable (?)
+   // but does GetClassType need to be const?
    virtual void    SetClassType(TClass* classType) const { fClassType = classType; }
    virtual TClass* GetClassType() const;
 
    virtual double GetTime(Long64_t timestamp, Float_t cfd, double energy, const TChannel* channel) const;
 
    void Print(Option_t* opt = "") const override;
-	void Print(std::ostringstream& str) const;
+   void Print(std::ostringstream& str) const;
    void Clear(Option_t* opt = "") override;
 
    void        SetName(const char* val) { fName = val; }
@@ -124,7 +124,7 @@ private:
    static bool fPrint;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TMnemonic, 1) // NOLINT
+   ClassDefOverride(TMnemonic, 1)   // NOLINT
    /// \endcond
 };
 

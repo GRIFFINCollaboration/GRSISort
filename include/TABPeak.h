@@ -29,11 +29,11 @@ public:
    // ctors and dtors
    TABPeak() = default;
    explicit TABPeak(Double_t centroid) { Centroid(centroid); }
-	TABPeak(const TABPeak&) = default;
-	TABPeak(TABPeak&&) noexcept = default;
-	TABPeak& operator=(const TABPeak&) = default;
-	TABPeak& operator=(TABPeak&&) noexcept = default;
-   ~TABPeak() = default;
+   TABPeak(const TABPeak&)                = default;
+   TABPeak(TABPeak&&) noexcept            = default;
+   TABPeak& operator=(const TABPeak&)     = default;
+   TABPeak& operator=(TABPeak&&) noexcept = default;
+   ~TABPeak()                             = default;
 
    void InitParNames() override;
    void InitializeParameters(TH1* hist, const double& rangeLow, const double& rangeHigh) override;
@@ -62,7 +62,7 @@ private:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TABPeak, 2) // NOLINT
+   ClassDefOverride(TABPeak, 2)   // NOLINT
    /// \endcond
 };
 /*! @} */

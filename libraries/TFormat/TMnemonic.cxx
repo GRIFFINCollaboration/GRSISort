@@ -122,11 +122,11 @@ void TMnemonic::Print(std::ostringstream& str) const
 
 void TMnemonic::Print(Option_t*) const
 {
-	std::ostringstream str;
+   std::ostringstream str;
    str << "====== MNEMONIC ======" << std::endl;
-	Print(str);
+   Print(str);
    str << "===============================" << std::endl;
-	std::cout << str.str();
+   std::cout << str.str();
 }
 
 int TMnemonic::NumericArraySubPosition() const

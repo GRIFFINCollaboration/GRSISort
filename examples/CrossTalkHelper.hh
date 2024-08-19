@@ -9,7 +9,7 @@
 class CrossTalkHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<CrossTalkHelper> {
 public:
    explicit CrossTalkHelper(TList* list)
-		: TGRSIHelper(list)
+      : TGRSIHelper(list)
    {
       Prefix("Crosstalk");
       Setup();

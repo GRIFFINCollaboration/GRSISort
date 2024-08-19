@@ -12,7 +12,7 @@
 Double_t TGainMatch::fDefaultCoarseRange = 40.;
 
 TGainMatch::TGainMatch(const TGainMatch& copy)
-	: TCal(copy), fCoarseRange(fDefaultCoarseRange)
+   : TCal(copy), fCoarseRange(fDefaultCoarseRange)
 {
    std::cout << "THIS ---> " << fCoarseRange << std::endl;
    copy.Copy(*this);
@@ -90,7 +90,7 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
    Int_t high = hist->GetXaxis()->GetLast();
    hist->GetXaxis()->SetRangeUser(100, hist->GetXaxis()->GetBinCenter(high));
    // Use a TSpectrum to find the two largest peaks in the spectrum
-   auto* spec   = new TSpectrum;                  // This might not have to be allocated
+   auto* spec   = new TSpectrum;                     // This might not have to be allocated
    Int_t nFound = spec->Search(hist, 2, "", 0.50);   // This returns peaks in order of their height in the spectrum.
 
    // return histogram to proper range
@@ -163,8 +163,8 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* pe
 
    // See if the channel exists. There is no point in finding the gains if we don't have anywhere to write it
    Double_t  gain   = 0.;
-   Double_t offset = 0.;
-   TChannel* chan = TChannel::GetChannelByNumber(channelNum);
+   Double_t  offset = 0.;
+   TChannel* chan   = TChannel::GetChannelByNumber(channelNum);
    if(chan == nullptr) {
       if(channelNum != 9999) {
          Warning("FineMatchFast", "Channel Number %d does not exist in current memory.", channelNum);
@@ -198,7 +198,7 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* pe
    Set(2);
 
    // Find the energy of the peak that we want to use
-	std::array<Double_t, 2> energy = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
+   std::array<Double_t, 2> energy = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
    std::cout << peak1->GetParameter("centroid") << " ENERGIES " << energy[1] << std::endl;
    // Offsets are very small right now so I'm not including them until they become a problem.
    peak1->SetParameter("centroid", (energy[0] - offset) / gain);
@@ -262,7 +262,7 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* pe
    peak1->Draw("same");
    peak2->Draw("same");
 
-	std::array<Double_t, 2> centroid = { peak1->GetCentroid(), peak2->GetCentroid() };
+   std::array<Double_t, 2> centroid = {peak1->GetCentroid(), peak2->GetCentroid()};
 
    // Put the peaks in order for ease (if the user put them in the wrong order)
    // Apparantly there is a TGraph Sort method. Might look into this later.
@@ -693,9 +693,9 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    }
 
    // See if the channel exists. There is no point in finding the gains if we don't have anywhere to write it
-   Double_t gain   = 0.;
-	Double_t offset = 0.;
-   TChannel* chan = TChannel::GetChannelByNumber(channelNum);
+   Double_t  gain   = 0.;
+   Double_t  offset = 0.;
+   TChannel* chan   = TChannel::GetChannelByNumber(channelNum);
    if(chan == nullptr) {
       if(channelNum != 9999) {
          Warning("FineMatch", "Channel Number %d does not exist in current memory.", channelNum);
@@ -726,7 +726,7 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    Set(2);
 
    // Find the energy of the peak that we want to use
-	std::array<Double_t, 2> energy = { peak1->GetParameter("centroid"), peak2->GetParameter("centroid") };
+   std::array<Double_t, 2> energy = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
    std::cout << peak1->GetParameter("centroid") << " ENERGIES " << energy[1] << std::endl;
    // Offsets are very small right now so I'm not including them until they become a problem.
    //   peak1->SetParameter("centroid",((energy[0]-offset)/gain)*fAlignCoeffs[1] + fAlignCoeffs[0]);
@@ -810,7 +810,7 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    peak1->Draw("same");
    peak2->Draw("same");
 
-	std::array<Double_t, 2> centroid = { peak1->GetCentroid(), peak2->GetCentroid() };
+   std::array<Double_t, 2> centroid = {peak1->GetCentroid(), peak2->GetCentroid()};
 
    // Put the peaks in order for ease (if the user put them in the wrong order)
    // Apparantly there is a TGraph Sort method. Might look into this later.
@@ -837,7 +837,7 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    return true;
 }
 
-Double_t TGainMatch::HistCompare(Double_t* x, Double_t* par) // NOLINT
+Double_t TGainMatch::HistCompare(Double_t* x, Double_t* par)   // NOLINT
 {
    Int_t    bin     = fHist->GetXaxis()->FindBin(x[0] * par[2] + par[1]);
    Double_t content = fHist->GetBinContent(bin);

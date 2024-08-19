@@ -15,11 +15,11 @@ class TCalList : public TNamed {
 public:
    TCalList();
    explicit TCalList(const char* name, const char* title = "");
-	TCalList(const TCalList&);
-	TCalList(TCalList&&) noexcept = default;
-	TCalList& operator=(const TCalList&) = default;
-	TCalList& operator=(TCalList&&) noexcept = default;
-   ~TCalList() = default;
+   TCalList(const TCalList&);
+   TCalList(TCalList&&) noexcept            = default;
+   TCalList& operator=(const TCalList&)     = default;
+   TCalList& operator=(TCalList&&) noexcept = default;
+   ~TCalList()                              = default;
 
    void  AddPoint(const TCalPoint& point);
    void  AddPoint(const UInt_t& idx, const TCalPoint& point);
@@ -37,7 +37,7 @@ private:
    std::map<UInt_t, TCalPoint> fCalList;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalList, 1) // NOLINT
+   ClassDefOverride(TCalList, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

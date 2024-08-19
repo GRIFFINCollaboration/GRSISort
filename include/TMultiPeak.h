@@ -37,9 +37,9 @@ public:
    // TMultiPeak(double xlow, double xhigh, int n, ...);
    TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t>& centroids, Option_t* type = "gsc");
    TMultiPeak(const TMultiPeak& copy);
-	TMultiPeak(TMultiPeak&&) noexcept = default;
-	TMultiPeak& operator=(const TMultiPeak&) = default;
-	TMultiPeak& operator=(TMultiPeak&&) noexcept = default;
+   TMultiPeak(TMultiPeak&&) noexcept            = default;
+   TMultiPeak& operator=(const TMultiPeak&)     = default;
+   TMultiPeak& operator=(TMultiPeak&&) noexcept = default;
    TMultiPeak();   // I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
 
    Bool_t Fit(TH1* fithist, Option_t* opt = "");
@@ -70,7 +70,7 @@ private:
    Double_t SinglePeakBG(Double_t* dim, Double_t* par);
 
    /// \cond CLASSIMP
-   ClassDefOverride(TMultiPeak, 2) // NOLINT
+   ClassDefOverride(TMultiPeak, 2)   // NOLINT
    /// \endcond
 };
 /*! @} */

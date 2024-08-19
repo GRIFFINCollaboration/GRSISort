@@ -65,7 +65,7 @@ double SourceEnergyUncertainty(const TCalibrateDescant::ESourceType& source)
    return 0.;
 }
 
-double FullEdge(double* x, double* par) // NOLINT
+double FullEdge(double* x, double* par)   // NOLINT
 {
    // 0 - amplitude, 1 - position, 2 - sigma of the upper part (low x), 3 - dSigma of the lower part (high x)
    // 4 - amplitude of gaussian peak, 5 - difference of peak position from edge position (par[2]), 6 - sigma of gaussian
@@ -120,7 +120,7 @@ TGHorizontalFrame* TParameterInput::Build(const std::string& name, const Int_t& 
 
 void TParameterInput::Set(double val)
 {
-   std::cout << __PRETTY_FUNCTION__ << ": " << val << std::endl; // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << ": " << val << std::endl;   // NOLINT
    PrintStatus("Set single initial");
    fEntry->SetNumber(val);
    UpdateSlider();
@@ -129,7 +129,7 @@ void TParameterInput::Set(double val)
 
 void TParameterInput::Set(double val, double low, double high)
 {
-   std::cout << __PRETTY_FUNCTION__ << ": " << val << ", " << low << ", " << high << std::endl; // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << ": " << val << ", " << low << ", " << high << std::endl;   // NOLINT
    PrintStatus("Set initial");
    fEntry->SetNumber(val);
    fEntry->SetLimits(TGNumberFormat::kNELLimitMinMax, low, high);
@@ -180,7 +180,7 @@ void TParameterInput::Connect(TCalibrateDescant* parent)
 Bool_t TParameterInput::ProcessMessage(Long_t msg, Long_t parameter1, Long_t parameter2)
 {
    /// This functions deals with changes in the text fields of the TGNumberEntry as those don't seem to emit signals?
-   std::cout << __PRETTY_FUNCTION__ << ": msg " << msg << ", parameter 1 " << parameter1 << ", parameter 2 " << parameter2 << std::endl; // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << ": msg " << msg << ", parameter 1 " << parameter1 << ", parameter 2 " << parameter2 << std::endl;   // NOLINT
    switch(GET_MSG(msg)) {
    case kC_TEXTENTRY:
       switch(GET_SUBMSG(msg)) {
@@ -229,8 +229,8 @@ void TCalibrateDescant::BuildInterface()
    // maybe add splitter between canvases?
 
    // create status bar
-   fStatusBar    = new TGStatusBar(fLeftFrame, 400, 10, kHorizontalFrame);
-	std::array<Int_t, 3> parts = {25, 25, 50};
+   fStatusBar                 = new TGStatusBar(fLeftFrame, 400, 10, kHorizontalFrame);
+   std::array<Int_t, 3> parts = {25, 25, 50};
    fStatusBar->SetParts(parts.data(), parts.size());
 
    // build parameter entries
@@ -362,7 +362,7 @@ void TCalibrateDescant::MakeConnections()
 Bool_t TCalibrateDescant::ProcessMessage(Long_t msg, Long_t parameter1, Long_t parameter2)
 {
    /// This functions deals with changes in the text fields of the TGNumberEntry as those don't seem to emit signals?
-   std::cout << __PRETTY_FUNCTION__ << ": msg " << msg << ", parameter 1 " << parameter1 << ", parameter 2 " << parameter2 << std::endl; // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << ": msg " << msg << ", parameter 1 " << parameter1 << ", parameter 2 " << parameter2 << std::endl;   // NOLINT
    switch(GET_MSG(msg)) {
    case kC_TEXTENTRY:
       switch(GET_SUBMSG(msg)) {
@@ -438,7 +438,7 @@ void TCalibrateDescant::UpdateInterface()
 
 void TCalibrateDescant::UpdateInitialFunction()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
    fInitial->FixParameter(0, fAmplitude->Value());
    fInitial->FixParameter(1, fPosition->Value());
    fInitial->FixParameter(2, fSigma->Value());
@@ -567,14 +567,14 @@ void TCalibrateDescant::InitializeParameters()
 
 void TCalibrateDescant::Previous()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
    if(fCurrentProjection > 0) { --fCurrentProjection; }
    UpdateInterface();
 }
 
 void TCalibrateDescant::Next()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
    if(fCurrentProjection + 1 < static_cast<int>(fProjections.size())) { ++fCurrentProjection; }
    UpdateInterface();
 }
@@ -706,7 +706,7 @@ void TCalibrateDescant::Fit()
 
 void TCalibrateDescant::UpdateInitialParameters()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
    fAmplitude->Set(fFit->GetParameter(0));
    fPosition->Set(fFit->GetParameter(1));
    fSigma->Set(fFit->GetParameter(2));
@@ -727,7 +727,7 @@ void TCalibrateDescant::UpdateInitialParameters()
 
 void TCalibrateDescant::ResetFit()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
    fInitial->Copy(*fFit);
    fFit->SetLineColor(2);
    fFit->SetLineStyle(1);
@@ -737,7 +737,7 @@ void TCalibrateDescant::ResetFit()
 
 void TCalibrateDescant::Save()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
 }
 
 void TCalibrateDescant::AddCalibrationPoint(double value, double uncertainty)
@@ -759,12 +759,12 @@ void TCalibrateDescant::AddCalibrationPoint(double value, double uncertainty)
 
 void TCalibrateDescant::FitCanvasZoomed()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
    // update range of fit functions
    Double_t xmin = 0.;
-	Double_t ymin = 0.;
-	Double_t xmax = 0.;
-	Double_t ymax = 0.;
+   Double_t ymin = 0.;
+   Double_t xmax = 0.;
+   Double_t ymax = 0.;
    fFitCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
 
    std::cout << "updating ranges to " << xmin << " - " << xmax << std::endl;
@@ -782,7 +782,7 @@ void TCalibrateDescant::FitCanvasZoomed()
 
 void TCalibrateDescant::CalibrationCanvasZoomed()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
    // nothing to do for this one?
 }
 

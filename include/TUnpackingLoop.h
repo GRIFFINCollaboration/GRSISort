@@ -31,10 +31,10 @@ public:
                           kTdr };
 
    static TUnpackingLoop* Get(std::string name = "");
-	TUnpackingLoop(const TUnpackingLoop&) = delete;
-	TUnpackingLoop(TUnpackingLoop&&) noexcept = delete;
-	TUnpackingLoop& operator=(const TUnpackingLoop&) = delete;
-	TUnpackingLoop& operator=(TUnpackingLoop&&) noexcept = delete;
+   TUnpackingLoop(const TUnpackingLoop&)                = delete;
+   TUnpackingLoop(TUnpackingLoop&&) noexcept            = delete;
+   TUnpackingLoop& operator=(const TUnpackingLoop&)     = delete;
+   TUnpackingLoop& operator=(TUnpackingLoop&&) noexcept = delete;
    ~TUnpackingLoop();
 
    void SetNoWaveForms(bool temp = true) { fParser->SetNoWaveForms(temp); }

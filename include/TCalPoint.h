@@ -13,11 +13,11 @@ public:
    TCalPoint();
    TCalPoint(const Double_t& centroid, const Double_t& area, const Double_t& dcentroid = 0.0, const Double_t& darea = 0.0);
    explicit TCalPoint(const TPeak& peak);
-	TCalPoint(const TCalPoint&);
-	TCalPoint(TCalPoint&&) noexcept = default;
-	TCalPoint& operator=(const TCalPoint&) = default;
-	TCalPoint& operator=(TCalPoint&&) noexcept = default;
-   ~TCalPoint() = default;
+   TCalPoint(const TCalPoint&);
+   TCalPoint(TCalPoint&&) noexcept            = default;
+   TCalPoint& operator=(const TCalPoint&)     = default;
+   TCalPoint& operator=(TCalPoint&&) noexcept = default;
+   ~TCalPoint()                               = default;
 
    void Copy(TObject& obj) const override;
    void SetPoint(const Double_t& centroid, const Double_t& area, const Double_t& dcentroid = 0.0,
@@ -41,7 +41,7 @@ private:
    Double_t fAreaErr{0.};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalPoint, 1) // NOLINT
+   ClassDefOverride(TCalPoint, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

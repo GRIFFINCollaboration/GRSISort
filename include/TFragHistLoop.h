@@ -26,10 +26,10 @@ class TFragHistLoop : public StoppableThread {
 public:
    static TFragHistLoop* Get(std::string name = "");
 
-	TFragHistLoop(const TFragHistLoop&) = delete;
-	TFragHistLoop(TFragHistLoop&&) noexcept = delete;
-	TFragHistLoop& operator=(const TFragHistLoop&) = delete;
-	TFragHistLoop& operator=(TFragHistLoop&&) noexcept = delete;
+   TFragHistLoop(const TFragHistLoop&)                = delete;
+   TFragHistLoop(TFragHistLoop&&) noexcept            = delete;
+   TFragHistLoop& operator=(const TFragHistLoop&)     = delete;
+   TFragHistLoop& operator=(TFragHistLoop&&) noexcept = delete;
    ~TFragHistLoop();
 
 #ifndef __CINT__
@@ -79,7 +79,7 @@ private:
 #endif
 
    /// \cond CLASSIMP
-   ClassDefOverride(TFragHistLoop, 0) // NOLINT
+   ClassDefOverride(TFragHistLoop, 0)   // NOLINT
    /// \endcond
 };
 

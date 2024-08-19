@@ -36,11 +36,11 @@ class TParsingDiagnosticsData : public TObject {
 public:
    TParsingDiagnosticsData();
    explicit TParsingDiagnosticsData(const std::shared_ptr<const TFragment>& frag);
-	TParsingDiagnosticsData(const TParsingDiagnosticsData&) = default;
-	TParsingDiagnosticsData(TParsingDiagnosticsData&&) noexcept = default;
-	TParsingDiagnosticsData& operator=(const TParsingDiagnosticsData&) = default;
-	TParsingDiagnosticsData& operator=(TParsingDiagnosticsData&&) noexcept = default;
-   ~TParsingDiagnosticsData() = default;
+   TParsingDiagnosticsData(const TParsingDiagnosticsData&)                = default;
+   TParsingDiagnosticsData(TParsingDiagnosticsData&&) noexcept            = default;
+   TParsingDiagnosticsData& operator=(const TParsingDiagnosticsData&)     = default;
+   TParsingDiagnosticsData& operator=(TParsingDiagnosticsData&&) noexcept = default;
+   ~TParsingDiagnosticsData()                                             = default;
 
    void Update(const std::shared_ptr<const TFragment>& frag);
    using TObject::Print;
@@ -67,7 +67,7 @@ private:
    int64_t fMaxTimeStamp{0};   ///< maximum timestamp per channel address
 
    /// \cond CLASSIMP
-   ClassDefOverride(TParsingDiagnosticsData, 1) // NOLINT
+   ClassDefOverride(TParsingDiagnosticsData, 1)   // NOLINT
    /// \endcond
 };
 
@@ -77,9 +77,9 @@ public:
 
    TParsingDiagnostics();
    TParsingDiagnostics(const TParsingDiagnostics&);
-	TParsingDiagnostics(TParsingDiagnostics&&) noexcept = default;
-	TParsingDiagnostics& operator=(const TParsingDiagnostics&) = default;
-	TParsingDiagnostics& operator=(TParsingDiagnostics&&) noexcept = default;
+   TParsingDiagnostics(TParsingDiagnostics&&) noexcept            = default;
+   TParsingDiagnostics& operator=(const TParsingDiagnostics&)     = default;
+   TParsingDiagnostics& operator=(TParsingDiagnostics&&) noexcept = default;
    ~TParsingDiagnostics();
 
 private:
@@ -144,7 +144,7 @@ public:
    void Draw(Option_t* opt = "") override;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TParsingDiagnostics, 2); // NOLINT
+   ClassDefOverride(TParsingDiagnostics, 2);   // NOLINT
    /// \endcond
 };
 /*! @} */

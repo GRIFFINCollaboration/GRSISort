@@ -9,23 +9,23 @@ void ComptonPolarimetryHelper::CreateHistograms(unsigned int slot)
    }
 
    fH2[slot]["xiThetaDetCount"] = new TH2D("xiThetaDetCount",
-               "Possible #xi Angles in GRIFFIN Array for coincidence angle #theta (measured from clover faces);Experimental Angle #xi (#circ);Coincidence Angle #theta (#circ);Counts",
-               fXiBins, 0., 180.000001, fThetaBins, 0., 180.000001);
-   fH2[slot]["xiThetaDet"] = new TH2D("xiThetaDet",
-               "Measured #xi Angles in GRIFFIN Array for coincidence angle #theta (measured from clover faces);Experimental Angle #xi (#circ);Coincidence Angle #theta (#circ);Counts",
-               fXiBins, 0., 180.000001, fThetaBins, 0., 180.000001);
+                                           "Possible #xi Angles in GRIFFIN Array for coincidence angle #theta (measured from clover faces);Experimental Angle #xi (#circ);Coincidence Angle #theta (#circ);Counts",
+                                           fXiBins, 0., 180.000001, fThetaBins, 0., 180.000001);
+   fH2[slot]["xiThetaDet"]      = new TH2D("xiThetaDet",
+                                           "Measured #xi Angles in GRIFFIN Array for coincidence angle #theta (measured from clover faces);Experimental Angle #xi (#circ);Coincidence Angle #theta (#circ);Counts",
+                                           fXiBins, 0., 180.000001, fThetaBins, 0., 180.000001);
    fH2[slot]["xiThetaDetMixed"] = new TH2D("xiThetaDetMixed",
-               "Measured #xi Angles in GRIFFIN Array for mixed angle #theta (measured from clover faces);Experimental Angle #xi (#circ);Coincidence Angle #theta (#circ);Counts",
-               fXiBins, 0., 180.000001, fThetaBins, 0., 180.000001);
+                                           "Measured #xi Angles in GRIFFIN Array for mixed angle #theta (measured from clover faces);Experimental Angle #xi (#circ);Coincidence Angle #theta (#circ);Counts",
+                                           fXiBins, 0., 180.000001, fThetaBins, 0., 180.000001);
    fH2[slot]["xiThetaCryCount"] = new TH2D("xiThetaCryCount",
-               "Possible #xi Angles in GRIFFIN Array for coincidence angle #theta (measured from crystal positions);Experimental Angle #xi (#circ);Coincidence Angle #theta (#circ);Counts",
-               fXiBins, 0., 180.000001, fThetaBins, 0., 180.000001);
-   fH2[slot]["xiThetaCry"] = new TH2D("xiThetaCry",
-               "Measured #xi Angles in GRIFFIN Array for coincidence angle #theta (measured from crystal positions);Experimental Angle #xi (#circ);Coincidence Angle #theta (#circ);Counts",
-               fXiBins, 0., 180.000001, fThetaBins, 0., 180.000001);
+                                           "Possible #xi Angles in GRIFFIN Array for coincidence angle #theta (measured from crystal positions);Experimental Angle #xi (#circ);Coincidence Angle #theta (#circ);Counts",
+                                           fXiBins, 0., 180.000001, fThetaBins, 0., 180.000001);
+   fH2[slot]["xiThetaCry"]      = new TH2D("xiThetaCry",
+                                           "Measured #xi Angles in GRIFFIN Array for coincidence angle #theta (measured from crystal positions);Experimental Angle #xi (#circ);Coincidence Angle #theta (#circ);Counts",
+                                           fXiBins, 0., 180.000001, fThetaBins, 0., 180.000001);
    fH2[slot]["xiThetaCryMixed"] = new TH2D("xiThetaCryMixed",
-               "Measured #xi Angles in GRIFFIN Array for mixed angle #theta (measured from crystal positions);Experimental Angle #xi (#circ);Coincidence Angle #theta (#circ);Counts",
-               fXiBins, 0., 180.000001, fThetaBins, 0., 180.000001);
+                                           "Measured #xi Angles in GRIFFIN Array for mixed angle #theta (measured from crystal positions);Experimental Angle #xi (#circ);Coincidence Angle #theta (#circ);Counts",
+                                           fXiBins, 0., 180.000001, fThetaBins, 0., 180.000001);
 
    fH1[slot]["gammaSingles"]   = new TH1D("gammaSingles", "#gamma singles (All Events);Energy [keV]", fBins, fMinEnergy, fMaxEnergy);
    fH2[slot]["gammagamma"]     = new TH2D("gammagamma", "#gamma - #gamma (All Events);Energy [keV];Energy [keV]", fBins,
@@ -62,7 +62,7 @@ void ComptonPolarimetryHelper::CreateHistograms(unsigned int slot)
 
    // fill histograms with counts of occurance of angles (only once for the first slot)
    if(slot == 0) {
-		//TODO rewrite as detector and crystal loops
+      //TODO rewrite as detector and crystal loops
       for(int one = 0; one < 64; ++one) {
          // loop over each crystal
          if(ExcludeDetector(one / 4 + 1) || ExcludeCrystal(one)) { continue; }
@@ -115,8 +115,8 @@ void ComptonPolarimetryHelper::Exec(unsigned int slot, TGriffin& fGriffin, TGrif
          // looped over again), or not coincident
          if(grif1->GetDetector() != grif2->GetDetector() || grif1->GetCrystal() == grif2->GetCrystal() ||
             grif1->GetEnergy() < grif2->GetEnergy() || !Coincident(grif1, grif2)) {
-				continue;
-			}
+            continue;
+         }
 
          // check that the sum energy of the two hits matches one of our gamma gates
          int index = CheckEnergy(grif1->GetEnergy() + grif2->GetEnergy());

@@ -22,8 +22,8 @@ private:
    int    fThetaBins{180};
 
    // not using vectors here because we need to ensure anyway that there are exactly two gates
-	std::array<double, 2> fGammaGateLow  = {1170., 1329.};
-	std::array<double, 2> fGammaGateHigh = {1176., 1335.};
+   std::array<double, 2> fGammaGateLow  = {1170., 1329.};
+   std::array<double, 2> fGammaGateHigh = {1176., 1335.};
 
    std::map<unsigned int, std::deque<TGriffin*>> fGriffinDeque;
 
@@ -38,14 +38,20 @@ private:
 
    double TimeDiff(TGriffinHit* grif1, TGriffinHit* grif2) const
    {
-      if(fUseTimestamps) { return TMath::Abs(grif1->GetTimeStampNs() - grif2->GetTimeStampNs()); }
-      else               { return TMath::Abs(grif1->GetTime()        - grif2->GetTime()); }
+      if(fUseTimestamps) {
+         return TMath::Abs(grif1->GetTimeStampNs() - grif2->GetTimeStampNs());
+      } else {
+         return TMath::Abs(grif1->GetTime() - grif2->GetTime());
+      }
    }
 
    bool Coincident(TGriffinHit* grif1, TGriffinHit* grif2) const
    {
-      if(fUseTimestamps) { return TMath::Abs(grif1->GetTimeStampNs() - grif2->GetTimeStampNs()) < fPrompt; }
-      else               { return TMath::Abs(grif1->GetTime()        - grif2->GetTime())        < fPrompt; }
+      if(fUseTimestamps) {
+         return TMath::Abs(grif1->GetTimeStampNs() - grif2->GetTimeStampNs()) < fPrompt;
+      } else {
+         return TMath::Abs(grif1->GetTime() - grif2->GetTime()) < fPrompt;
+      }
    }
 
    int CheckEnergy(double energy, int index = -1) const

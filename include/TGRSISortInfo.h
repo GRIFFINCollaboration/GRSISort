@@ -19,12 +19,12 @@ class TGRSISortList : public TObject {
    using infoMap = std::map<Int_t, std::map<Int_t, TGRSISortInfo*>>;
 
 public:
-   TGRSISortList()  = default;
-	TGRSISortList(const TGRSISortList&) = default;
-	TGRSISortList(TGRSISortList&&) noexcept = default;
-	TGRSISortList& operator=(const TGRSISortList&) = default;
-	TGRSISortList& operator=(TGRSISortList&&) noexcept = default;
-   ~TGRSISortList() = default;
+   TGRSISortList()                                    = default;
+   TGRSISortList(const TGRSISortList&)                = default;
+   TGRSISortList(TGRSISortList&&) noexcept            = default;
+   TGRSISortList& operator=(const TGRSISortList&)     = default;
+   TGRSISortList& operator=(TGRSISortList&&) noexcept = default;
+   ~TGRSISortList()                                   = default;
 
    Bool_t         AddSortInfo(TGRSISortInfo* info, Option_t* opt = "");
    Bool_t         AddSortList(TGRSISortList* rhslist, Option_t* opt = "");
@@ -38,17 +38,17 @@ private:
    infoMap fSortInfoList;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSISortList, 2) // NOLINT
+   ClassDefOverride(TGRSISortList, 2)   // NOLINT
    /// \endcond
 };
 
 class TGRSISortInfo : public TObject {
 public:
    TGRSISortInfo();
-	TGRSISortInfo(const TGRSISortInfo&) = default;
-	TGRSISortInfo(TGRSISortInfo&&) noexcept = default;
-	TGRSISortInfo& operator=(const TGRSISortInfo&) = default;
-	TGRSISortInfo& operator=(TGRSISortInfo&&) noexcept = default;
+   TGRSISortInfo(const TGRSISortInfo&)                = default;
+   TGRSISortInfo(TGRSISortInfo&&) noexcept            = default;
+   TGRSISortInfo& operator=(const TGRSISortInfo&)     = default;
+   TGRSISortInfo& operator=(TGRSISortInfo&&) noexcept = default;
    ~TGRSISortInfo();
 
    void    SetRunInfo();
@@ -70,7 +70,7 @@ private:
    TString fComment;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSISortInfo, 2) // NOLINT
+   ClassDefOverride(TGRSISortInfo, 2)   // NOLINT
    /// \endcond
 };
 /*! @} */

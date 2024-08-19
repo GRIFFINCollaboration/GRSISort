@@ -71,14 +71,14 @@ void GetCal(TH1* hist, TGraphErrors* ge, bool abs_flag)
    int start = 0;
    int end   = 0;
 
-	if(abs_flag) {
-		start = 18;
-		end   = 19;
-	} else {
-		start = 0;
-		end   = 19;
-	}
-	for(int i = start; i < end; i++) {
+   if(abs_flag) {
+      start = 18;
+      end   = 19;
+   } else {
+      start = 0;
+      end   = 19;
+   }
+   for(int i = start; i < end; i++) {
       double    energy     = transition[i][0];
       double    intensity  = transition[i][1];
       double    dintensity = transition[i][2];
@@ -88,97 +88,97 @@ void GetCal(TH1* hist, TGraphErrors* ge, bool abs_flag)
       hist->GetXaxis()->SetRangeUser(energy - rangelow, energy + rangehigh);
       spec.Search(hist);
 
-		Double_t peak_pos = spec.GetPositionX()[0];
-		hist->GetXaxis()->UnZoom();
-		std::cout << "PEAK POS " << peak_pos << std::endl;
-		auto* peak = new TPeak(peak_pos, peak_pos - rangelow, peak_pos + rangehigh);
-		//   peak->Clear();
-		peak->InitParams(hist);
-		peak->Fit(hist, "+");
-		double effic  = 0.0;
-		double deffic = 0.0;
+      Double_t peak_pos = spec.GetPositionX()[0];
+      hist->GetXaxis()->UnZoom();
+      std::cout << "PEAK POS " << peak_pos << std::endl;
+      auto* peak = new TPeak(peak_pos, peak_pos - rangelow, peak_pos + rangehigh);
+      //   peak->Clear();
+      peak->InitParams(hist);
+      peak->Fit(hist, "+");
+      double effic  = 0.0;
+      double deffic = 0.0;
 
-		effic  = peak->GetArea() / intensity;
-		deffic = effic * TMath::Sqrt(TMath::Power((peak->GetAreaErr() / peak->GetArea()), 2) + TMath::Power((dintensity / intensity), 2));
+      effic  = peak->GetArea() / intensity;
+      deffic = effic * TMath::Sqrt(TMath::Power((peak->GetAreaErr() / peak->GetArea()), 2) + TMath::Power((dintensity / intensity), 2));
 
-		ge->SetPoint(i, energy, effic);
-		ge->SetPointError(i, 0.0, deffic);
+      ge->SetPoint(i, energy, effic);
+      ge->SetPointError(i, 0.0, deffic);
 
-		delete peak;
-	}
+      delete peak;
+   }
 }
 
 int main(int argc, char** argv)
 {
-	ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2", "MIGRAD");
-	TVirtualFitter::SetPrecision(1.0e-5);
-	TVirtualFitter::SetMaxIterations(10000);
-	if(argc != 3) {
-		printf("try again (usage: %s <hist file>. (0/1 = eu/co)\n", argv[0]);
-		return 1;
-	}
+   ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2", "MIGRAD");
+   TVirtualFitter::SetPrecision(1.0e-5);
+   TVirtualFitter::SetMaxIterations(10000);
+   if(argc != 3) {
+      printf("try again (usage: %s <hist file>. (0/1 = eu/co)\n", argv[0]);
+      return 1;
+   }
 
-	bool abs_flag = (atoi(argv[2]) != 0);
+   bool abs_flag = (atoi(argv[2]) != 0);
 
-	auto* file = new TFile(argv[1]);
-	if(file == nullptr) {
-		printf("Failed to open file '%s'!\n", argv[1]);
-		return 1;
-	}
-	if(!file->IsOpen()) {
-		printf("Failed to open file '%s'!\n", argv[1]);
-		return 1;
-	}
+   auto* file = new TFile(argv[1]);
+   if(file == nullptr) {
+      printf("Failed to open file '%s'!\n", argv[1]);
+      return 1;
+   }
+   if(!file->IsOpen()) {
+      printf("Failed to open file '%s'!\n", argv[1]);
+      return 1;
+   }
 
-	auto* eng_mat = new TH2D;
-	auto* eng_sum = new TH1D;
-	file->GetObject("hp_energy", eng_mat);
-	file->GetObject("EnergySum", eng_sum);
+   auto* eng_mat = new TH2D;
+   auto* eng_sum = new TH1D;
+   file->GetObject("hp_energy", eng_mat);
+   file->GetObject("EnergySum", eng_sum);
 
-	std::string type;
-	if(abs_flag) {
-		type = "abs";
-	} else {
-		type = "rel";
-	}
+   std::string type;
+   if(abs_flag) {
+      type = "abs";
+   } else {
+      type = "rel";
+   }
 
-	const char* suff = type.c_str();
+   const char* suff = type.c_str();
 
-	auto* outfile = new TFile(Form("calibration%s.root", suff), "RECREATE");
+   auto* outfile = new TFile(Form("calibration%s.root", suff), "RECREATE");
 
-	auto* current_hist = new TH1D;
-	auto* ge           = new TGraphErrors;
-	for(int i = 1; i <= 64; i++) {
-		printf("NOW FITTING CHANNEL: %d \n", i);
-		ge->Clear();
-		current_hist = eng_mat->ProjectionY(Form("chan%d_py", i), i + 1, i + 1);
-		GetCal(current_hist, ge, abs_flag);
-		if(abs_flag) {
-			ge->SetName(Form("chan%d_abs", i));
-		} else {
-			ge->SetName(Form("chan%d_rel", i));
-		}
+   auto* current_hist = new TH1D;
+   auto* ge           = new TGraphErrors;
+   for(int i = 1; i <= 64; i++) {
+      printf("NOW FITTING CHANNEL: %d \n", i);
+      ge->Clear();
+      current_hist = eng_mat->ProjectionY(Form("chan%d_py", i), i + 1, i + 1);
+      GetCal(current_hist, ge, abs_flag);
+      if(abs_flag) {
+         ge->SetName(Form("chan%d_abs", i));
+      } else {
+         ge->SetName(Form("chan%d_rel", i));
+      }
 
-		ge->GetXaxis()->SetTitle("Energy (keV)");
-		ge->GetYaxis()->SetTitle("Effic");
-		current_hist->GetXaxis()->SetRangeUser(100, 1500);
-		current_hist->Write();
-		ge->Write();
-	}
-	// Now do sum
-	ge->Clear();
-	GetCal(eng_sum, ge, abs_flag);
-	if(abs_flag) {
-		ge->SetName("sum_abs");
-	} else {
-		ge->SetName("sum_rel");
-	}
-	ge->GetXaxis()->SetTitle("Energy (keV)");
-	ge->GetYaxis()->SetTitle("Effic");
-	eng_sum->Write();
-	ge->Write();
+      ge->GetXaxis()->SetTitle("Energy (keV)");
+      ge->GetYaxis()->SetTitle("Effic");
+      current_hist->GetXaxis()->SetRangeUser(100, 1500);
+      current_hist->Write();
+      ge->Write();
+   }
+   // Now do sum
+   ge->Clear();
+   GetCal(eng_sum, ge, abs_flag);
+   if(abs_flag) {
+      ge->SetName("sum_abs");
+   } else {
+      ge->SetName("sum_rel");
+   }
+   ge->GetXaxis()->SetTitle("Energy (keV)");
+   ge->GetYaxis()->SetTitle("Effic");
+   eng_sum->Write();
+   ge->Write();
 
-	file->Close();
-	outfile->Close();
-	return 0;
+   file->Close();
+   outfile->Close();
+   return 0;
 }

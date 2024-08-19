@@ -24,10 +24,10 @@ public:
    GH2I(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins, Int_t nbinsy, Double_t ylow, Double_t yup);
    GH2I(const char* name, const char* title, Int_t nbinsx, Double_t xlow, Double_t xup, Int_t nbinsy, Double_t* ybins);
    GH2I(const char* name, const char* title, Int_t nbinsx, Double_t xlow, Double_t xup, Int_t nbinsy, Double_t ylow, Double_t yup);
-	GH2I(const GH2I&) = default;
-	GH2I(GH2I&&) noexcept = default;
-	GH2I& operator=(const GH2I&) = default;
-	GH2I& operator=(GH2I&&) noexcept = default;
+   GH2I(const GH2I&)                = default;
+   GH2I(GH2I&&) noexcept            = default;
+   GH2I& operator=(const GH2I&)     = default;
+   GH2I& operator=(GH2I&&) noexcept = default;
    ~GH2I();
 
    void Draw(Option_t* opt = "") override;
@@ -52,8 +52,8 @@ public:
    TH2* GetTH2() override { return this; }
 
 private:
-	/// /cond CLASSIMP
-   ClassDefOverride(GH2I, 2) // NOLINT
-	/// /endcond
+   /// /cond CLASSIMP
+   ClassDefOverride(GH2I, 2)   // NOLINT
+                               /// /endcond
 };
 #endif

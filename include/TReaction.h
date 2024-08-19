@@ -156,11 +156,11 @@ private:
 
    // same as in TKinematics, should probably change from arrays to individual members
    // USER INPUTS
-   TNucleus* fNuc[4]{nullptr};  // NOLINT(*-avoid-c-arrays)
+   TNucleus* fNuc[4]{nullptr};   // NOLINT(*-avoid-c-arrays)
    double    fTBeam{0.};
    bool      fInverse{false};
    double    fExc{0.};
-   double    fM[4]{0.};  // NOLINT(*-avoid-c-arrays)
+   double    fM[4]{0.};   // NOLINT(*-avoid-c-arrays)
 
    // CM FRAME MOTION
    double fQVal{0.};   // effective Q value (includes excitation)
@@ -174,23 +174,23 @@ private:
    double fCmG{0.};
 
    // PARTICLES IN CM FRAME
-   double fTCm[4]{0.};  // NOLINT(*-avoid-c-arrays)
-   double fECm[4]{0.};  // NOLINT(*-avoid-c-arrays)
-   double fPCm[4]{0.};  // NOLINT(*-avoid-c-arrays)
-   double fVCm[4]{0.};  // NOLINT(*-avoid-c-arrays)
-   double fGCm[4]{0.};  // NOLINT(*-avoid-c-arrays)
+   double fTCm[4]{0.};   // NOLINT(*-avoid-c-arrays)
+   double fECm[4]{0.};   // NOLINT(*-avoid-c-arrays)
+   double fPCm[4]{0.};   // NOLINT(*-avoid-c-arrays)
+   double fVCm[4]{0.};   // NOLINT(*-avoid-c-arrays)
+   double fGCm[4]{0.};   // NOLINT(*-avoid-c-arrays)
 
    // PARTICLE IN LAB FRAME
    // Note that in the lab frame only the initial state (beam/targ) is fixed in the reaction
-   double fTLab[2]{0.};  // NOLINT(*-avoid-c-arrays)
-   double fELab[2]{0.};  // NOLINT(*-avoid-c-arrays)
-   double fPLab[2]{0.};  // NOLINT(*-avoid-c-arrays)
-   double fVLab[2]{0.};  // NOLINT(*-avoid-c-arrays)
-   double fGLab[2]{0.};  // NOLINT(*-avoid-c-arrays)
+   double fTLab[2]{0.};       // NOLINT(*-avoid-c-arrays)
+   double fELab[2]{0.};       // NOLINT(*-avoid-c-arrays)
+   double fPLab[2]{0.};       // NOLINT(*-avoid-c-arrays)
+   double fVLab[2]{0.};       // NOLINT(*-avoid-c-arrays)
+   double fGLab[2]{0.};       // NOLINT(*-avoid-c-arrays)
    double fThetaMax[4]{0.};   // NOLINT(*-avoid-c-arrays)
 
    /// \cond CLASSIMP
-   ClassDefOverride(TReaction, 1) // NOLINT
+   ClassDefOverride(TReaction, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

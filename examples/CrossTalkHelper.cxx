@@ -54,7 +54,7 @@ void CrossTalkHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifB
 {
    // find the multiplicity in each clover over the entire event
    // we do this because we want to force a multiplicity of 2
-	std::array<Int_t, 17> detMultiplicity = {0};
+   std::array<Int_t, 17> detMultiplicity = {0};
    for(auto gr1 = 0; gr1 < grif.GetSuppressedMultiplicity(&grifBgo); ++gr1) {
       ++(detMultiplicity[grif.GetSuppressedHit(gr1)->GetDetector()]);
    }

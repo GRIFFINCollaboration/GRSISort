@@ -234,15 +234,15 @@ int WriteHistogram(T* histogram, std::string& fileName, std::string& format)
                      output << std::setw(8) << histogram->GetXaxis()->GetBinCenter(i);
                      if(yNumberOfBins > 1) {
                         output << " " << std::setw(8) << histogram->GetYaxis()->GetBinCenter(j);
-							}
+                     }
                      if(zNumberOfBins > 1) {
                         output << " " << std::setw(8) << histogram->GetZaxis()->GetBinCenter(k);
-							}
+                     }
                   }
                   output << " " << std::setw(8) << histogram->GetBinContent(i, j, k);
                   if(writeErrors) {
                      output << " " << std::setw(8) << histogram->GetBinError(i, j, k);
-						}
+                  }
                   output << std::endl;
                }
             }
@@ -374,7 +374,7 @@ int WriteGraph(T* graph, std::string& fileName, std::string& format)
    }
 
    double x = 0.;
-	double y = 0.;
+   double y = 0.;
 
    for(int point = 0; point < graph->GetN(); point++) {
       graph->GetPoint(point, x, y);

@@ -440,9 +440,9 @@ Double_t TPeak::GetIntegralArea()
 {
    if(!GoodStatus()) { return 0.; }
 
-   Double_t width    = GetParameter("sigma");
-   Double_t xlow     = 0.;
-   Double_t xhigh    = 0.;
+   Double_t width = GetParameter("sigma");
+   Double_t xlow  = 0.;
+   Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
    Double_t int_low  = xlow - 10. * width;   // making the integration bounds a bit smaller, but still large enough. -JKS
    Double_t int_high = xhigh + 10. * width;

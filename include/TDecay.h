@@ -66,11 +66,11 @@ public:
    {
       DefaultGraphs();
    }
-	TDecayFit(const TDecayFit&) = default;
-	TDecayFit(TDecayFit&&) noexcept = default;
-	TDecayFit& operator=(const TDecayFit&) = default;
-	TDecayFit& operator=(TDecayFit&&) noexcept = default;
-   ~TDecayFit() = default;
+   TDecayFit(const TDecayFit&)                = default;
+   TDecayFit(TDecayFit&&) noexcept            = default;
+   TDecayFit& operator=(const TDecayFit&)     = default;
+   TDecayFit& operator=(TDecayFit&&) noexcept = default;
+   ~TDecayFit()                               = default;
 
    void           SetDecay(TVirtualDecay* decay);
    TVirtualDecay* GetDecay() const;
@@ -85,8 +85,8 @@ public:
 private:
    void DefaultGraphs();
 
-   TVirtualDecay* fDecay{nullptr};       // VirtualDecay that made this fit
-   TGraph         fResiduals;   // Last histogram fit by this function
+   TVirtualDecay* fDecay{nullptr};   // VirtualDecay that made this fit
+   TGraph         fResiduals;        // Last histogram fit by this function
 
    /// \cond CLASSIMP
    ClassDefOverride(TDecayFit, 1);   // NOLINT
@@ -95,12 +95,12 @@ private:
 
 class TVirtualDecay : public TNamed {
 public:
-   TVirtualDecay() = default;
-	TVirtualDecay(const TVirtualDecay&) = default;
-	TVirtualDecay(TVirtualDecay&&) noexcept = default;
-	TVirtualDecay& operator=(const TVirtualDecay&) = default;
-	TVirtualDecay& operator=(TVirtualDecay&&) noexcept = default;
-   ~TVirtualDecay() = default;
+   TVirtualDecay()                                    = default;
+   TVirtualDecay(const TVirtualDecay&)                = default;
+   TVirtualDecay(TVirtualDecay&&) noexcept            = default;
+   TVirtualDecay& operator=(const TVirtualDecay&)     = default;
+   TVirtualDecay& operator=(TVirtualDecay&&) noexcept = default;
+   ~TVirtualDecay()                                   = default;
 
    virtual void DrawComponents(Option_t* opt = "", Bool_t color_flag = true);
    void         Print(Option_t* opt = "") const override = 0;
@@ -126,10 +126,10 @@ public:
    }
    TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlow = 0, Double_t thigh = 10);
    explicit TSingleDecay(TSingleDecay* parent, Double_t tlow = 0, Double_t thigh = 10);
-	TSingleDecay(const TSingleDecay&) = default;
-	TSingleDecay(TSingleDecay&&) noexcept = default;
-	TSingleDecay& operator=(const TSingleDecay&) = default;
-	TSingleDecay& operator=(TSingleDecay&&) noexcept = default;
+   TSingleDecay(const TSingleDecay&)                = default;
+   TSingleDecay(TSingleDecay&&) noexcept            = default;
+   TSingleDecay& operator=(const TSingleDecay&)     = default;
+   TSingleDecay& operator=(TSingleDecay&&) noexcept = default;
    ~TSingleDecay();
 
    ///// TF1 Helpers ////
@@ -259,7 +259,7 @@ private:
    TSingleDecay* fFirstParent{nullptr};      // FirstParent in the decay
    Int_t         fUnId{0};                   // The Unique ID of the Decay
    static UInt_t fCounter;                   // Helps set unique Id's
-   Int_t         fChainId{-1};                // The chain that the single decay belongs to
+   Int_t         fChainId{-1};               // The chain that the single decay belongs to
 
    /// \cond CLASSIMP
    ClassDefOverride(TSingleDecay, 1)   // NOLINT
@@ -270,10 +270,10 @@ class TDecayChain : public TVirtualDecay {
 public:
    TDecayChain() = default;
    explicit TDecayChain(UInt_t generations);
-	TDecayChain(const TDecayChain&) = default;
-	TDecayChain(TDecayChain&&) noexcept = default;
-	TDecayChain& operator=(const TDecayChain&) = default;
-	TDecayChain& operator=(TDecayChain&&) noexcept = default;
+   TDecayChain(const TDecayChain&)                = default;
+   TDecayChain(TDecayChain&&) noexcept            = default;
+   TDecayChain& operator=(const TDecayChain&)     = default;
+   TDecayChain& operator=(TDecayChain&&) noexcept = default;
    ~TDecayChain();
 
    TSingleDecay* GetDecay(UInt_t generation);
@@ -306,8 +306,8 @@ private:
       return fChainFunc;
    }
 
-   std::vector<TSingleDecay*> fDecayChain;            // The Decays in the Decay Chain
-   TDecayFit*                 fChainFunc{nullptr};    // Function describing the total chain activity
+   std::vector<TSingleDecay*> fDecayChain;           // The Decays in the Decay Chain
+   TDecayFit*                 fChainFunc{nullptr};   // Function describing the total chain activity
    Int_t                      fChainId{-1};
 
    /// \cond CLASSIMP
@@ -339,11 +339,11 @@ class TDecay : public TVirtualDecay {
 public:
    TDecay() = default;
    explicit TDecay(std::vector<TDecayChain*> chainList);
-	TDecay(const TDecay&) = default;
-	TDecay(TDecay&&) noexcept = default;
-	TDecay& operator=(const TDecay&) = default;
-	TDecay& operator=(TDecay&&) noexcept = default;
-   ~TDecay() = default;
+   TDecay(const TDecay&)                = default;
+   TDecay(TDecay&&) noexcept            = default;
+   TDecay& operator=(const TDecay&)     = default;
+   TDecay& operator=(TDecay&&) noexcept = default;
+   ~TDecay()                            = default;
 
    void         AddChain(TDecayChain* chain) { fChainList.push_back(chain); }
    Double_t     DecayFit(Double_t* dim, Double_t* par);
@@ -387,7 +387,7 @@ private:
    std::map<Int_t, std::vector<TSingleDecay*>> fDecayMap;   //
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDecay, 1) // NOLINT
+   ClassDefOverride(TDecay, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

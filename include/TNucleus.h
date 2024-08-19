@@ -30,10 +30,10 @@ public:
    explicit TNucleus(const char* name);                                   ///< Creates a nucleus based on symbol and sets all parameters from mass.dat
    TNucleus(int charge, int neutrons, double mass, const char* symbol);   ///< Creates a nucleus with Z, N, mass, and symbol
    TNucleus(int charge, int neutrons, const char* MassFile = nullptr);    ///< Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
-	TNucleus(const TNucleus&) = delete;
-	TNucleus(TNucleus&&) noexcept = delete;
-	TNucleus& operator=(const TNucleus&) = delete;
-	TNucleus& operator=(TNucleus&&) noexcept = delete;
+   TNucleus(const TNucleus&)                = delete;
+   TNucleus(TNucleus&&) noexcept            = delete;
+   TNucleus& operator=(const TNucleus&)     = delete;
+   TNucleus& operator=(TNucleus&&) noexcept = delete;
 
    ~TNucleus();
 
@@ -104,7 +104,7 @@ private:
    bool        LoadTransitionFile();
 
    /// \cond CLASSIMP
-   ClassDefOverride(TNucleus, 2) // NOLINT
+   ClassDefOverride(TNucleus, 2)   // NOLINT
    /// \endcond
 };
 

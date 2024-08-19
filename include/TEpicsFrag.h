@@ -30,12 +30,12 @@
 
 class TEpicsFrag : public TObject {
 public:
-   TEpicsFrag()           = default;
-	TEpicsFrag(const TEpicsFrag&) = default;
-	TEpicsFrag(TEpicsFrag&&) noexcept = default;
-	TEpicsFrag& operator=(const TEpicsFrag&) = default;
-	TEpicsFrag& operator=(TEpicsFrag&&) noexcept = default;
-   ~TEpicsFrag() = default;
+   TEpicsFrag()                                 = default;
+   TEpicsFrag(const TEpicsFrag&)                = default;
+   TEpicsFrag(TEpicsFrag&&) noexcept            = default;
+   TEpicsFrag& operator=(const TEpicsFrag&)     = default;
+   TEpicsFrag& operator=(TEpicsFrag&&) noexcept = default;
+   ~TEpicsFrag()                                = default;
 
    size_t       GetSize() const { return fData.size(); }
    inline float GetData(const unsigned int& index) const
@@ -87,7 +87,7 @@ private:
    std::vector<std::string> fName;   ///< The name of the scaler
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEpicsFrag, 2) // NOLINT
+   ClassDefOverride(TEpicsFrag, 2)   // NOLINT
    /// \endcond
 };
 /*! @} */

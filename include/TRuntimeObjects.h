@@ -150,8 +150,8 @@ private:
    TDirectory* fDirectory{nullptr};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TRuntimeObjects, 0) // NOLINT
-	/// \endcond
+   ClassDefOverride(TRuntimeObjects, 0)   // NOLINT
+                                          /// \endcond
 };
 
 #endif /* _RUNTIMEOBJECTS_H_ */

@@ -103,8 +103,8 @@ protected:
    Double_t DoIntegral(Int_t binx1, Int_t binx2, Int_t biny1, Int_t biny2, Int_t binz1, Int_t binz2, Double_t& error,
                        Option_t* option, Bool_t doError = kFALSE) const override;
 
-	void Matrix(TH2* val) { fMatrix = val; }
-	TH2* Matrix() { return fMatrix; }
+   void Matrix(TH2* val) { fMatrix = val; }
+   TH2* Matrix() { return fMatrix; }
 
 private:
    Double_t fTsumwy{0};         // Total Sum of weight*Y
@@ -116,9 +116,9 @@ private:
    Double_t fTsumwyz{0};        // Total Sum of weight*Y*Z
    TH2*     fMatrix{nullptr};   //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
 
-	/// /cond CLASSIMP
-   ClassDefOverride(GCube, 1) // NOLINT
-	/// /endcond
+   /// /cond CLASSIMP
+   ClassDefOverride(GCube, 1)   // NOLINT
+                                /// /endcond
 };
 
 class GCubeF : public GCube, public TArrayF {
@@ -163,9 +163,9 @@ public:
    friend GCubeF operator*(GCubeF& h1, GCubeF& h2);
    friend GCubeF operator/(GCubeF& h1, GCubeF& h2);
 
-	/// /cond CLASSIMP
-   ClassDefOverride(GCubeF, 1) // NOLINT
-	/// /endcond
+   /// /cond CLASSIMP
+   ClassDefOverride(GCubeF, 1)   // NOLINT
+                                 /// /endcond
 };
 
 class GCubeD : public GCube, public TArrayD {
@@ -210,8 +210,8 @@ public:
    friend GCubeD operator*(GCubeD& h1, GCubeD& h2);
    friend GCubeD operator/(GCubeD& h1, GCubeD& h2);
 
-	/// /cond CLASSIMP
-   ClassDefOverride(GCubeD, 1) // NOLINT
-	/// /endcond
+   /// /cond CLASSIMP
+   ClassDefOverride(GCubeD, 1)   // NOLINT
+                                 /// /endcond
 };
 #endif

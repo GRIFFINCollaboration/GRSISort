@@ -14,10 +14,10 @@ public:
    GPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* opt = "gsc");
    GPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* bg, Option_t* opt = "gsc");
    GPeak(const GPeak&);
-   GPeak(GPeak&&) noexcept = default;
-   GPeak& operator=(const GPeak&) = default;
+   GPeak(GPeak&&) noexcept            = default;
+   GPeak& operator=(const GPeak&)     = default;
    GPeak& operator=(GPeak&&) noexcept = default;
-   ~GPeak() = default;
+   ~GPeak()                           = default;
 
    void Copy(TObject&) const override;
    void Print(Option_t* opt = "") const override;
@@ -83,9 +83,9 @@ private:
 
    TF1 fBGFit;
 
-	/// /cond CLASSIMP
-   ClassDefOverride(GPeak, 3) // NOLINT
-	/// /endcond
+   /// /cond CLASSIMP
+   ClassDefOverride(GPeak, 3)   // NOLINT
+                                /// /endcond
 };
 
 #endif

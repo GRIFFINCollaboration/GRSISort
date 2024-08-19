@@ -20,12 +20,12 @@
 
 class TSuppressed : public TDetector {
 public:
-   TSuppressed() = default;
-	TSuppressed(const TSuppressed&) = default;
-	TSuppressed(TSuppressed&&) noexcept = default;
-	TSuppressed& operator=(const TSuppressed&) = default;
-	TSuppressed& operator=(TSuppressed&&) noexcept = default;
-   ~TSuppressed() = default;
+   TSuppressed()                                  = default;
+   TSuppressed(const TSuppressed&)                = default;
+   TSuppressed(TSuppressed&&) noexcept            = default;
+   TSuppressed& operator=(const TSuppressed&)     = default;
+   TSuppressed& operator=(TSuppressed&&) noexcept = default;
+   ~TSuppressed()                                 = default;
 
    virtual bool AddbackCriterion(const TDetectorHit*, const TDetectorHit*) { return false; }
    virtual bool SuppressionCriterion(const TDetectorHit*, const TDetectorHit*) { return false; }
@@ -147,7 +147,7 @@ protected:
    }
 
    /// \cond CLASSIMP
-   ClassDefOverride(TSuppressed, 1) // NOLINT
+   ClassDefOverride(TSuppressed, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

@@ -24,8 +24,8 @@ void EfficiencyHelper::CreateHistograms(unsigned int slot)
 
    // five histograms for each type: 1D singles, coincident and time random 2D matrix (unsuppressed on y-axis for suppressed data)
    // and coincident and time random E_1 vs E_1+E_2, all 2D histograms are at 180 degree
-	// 180 degree means for addback that the detectors are opposite, so the crystal angles are 158 degrees and larger!
-	// (for 145 mm distance)
+   // 180 degree means for addback that the detectors are opposite, so the crystal angles are 158 degrees and larger!
+   // (for 145 mm distance)
 
    // unsuppressed spectra
    fH1[slot]["griffinE"]                   = new TH1F("griffinE", Form("Unsuppressed griffin energy;energy [keV];counts/%.1f keV", (highEnergy - lowEnergy) / energyBins), energyBins, lowEnergy, highEnergy);

@@ -125,7 +125,7 @@ private:
    UInt_t         fHighTimeStamp{0};   ///< high bits of time stamp in 10 ns
 
    /// \cond CLASSIMP
-   ClassDefOverride(TPPGData, 3) // NOLINT
+   ClassDefOverride(TPPGData, 3)   // NOLINT
    /// \endcond
 };
 
@@ -222,7 +222,7 @@ private:
    std::vector<ULong64_t> fDurations{0, 0, 0, 0};          //!<! duration of ppg state calculated from data
 
    /// \cond CLASSIMP
-   ClassDefOverride(TPPG, 5) // NOLINT
+   ClassDefOverride(TPPG, 5)   // NOLINT
    /// \endcond
 };
 /*! @} */

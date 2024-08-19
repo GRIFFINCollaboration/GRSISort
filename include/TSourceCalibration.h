@@ -45,9 +45,9 @@ class TChannelTab {
 public:
    TChannelTab(TGTab* parent, TH1* projection, TGCompositeFrame* frame, const double& sigma, const double& threshold, const int& degree, const std::vector<std::tuple<double, double, double, double>>& sourceEnergy);
    TChannelTab(const TChannelTab& rhs);
-	TChannelTab(TChannelTab&&) noexcept = default;
-	TChannelTab& operator=(const TChannelTab&) = default;
-	TChannelTab& operator=(TChannelTab&&) noexcept = default;
+   TChannelTab(TChannelTab&&) noexcept            = default;
+   TChannelTab& operator=(const TChannelTab&)     = default;
+   TChannelTab& operator=(TChannelTab&&) noexcept = default;
    ~TChannelTab();
 
    void MakeConnections();
@@ -94,10 +94,10 @@ private:
 class TSourceTab {
 public:
    TSourceTab(TSourceCalibration* parent, TNucleus* nucleus, TH2* matrix, TGCompositeFrame* frame, double sigma, double threshold, int degree, std::vector<std::tuple<double, double, double, double>> sourceEnergy, TGHProgressBar* progressBar);
-	TSourceTab(const TSourceTab&) = default;
-	TSourceTab(TSourceTab&&) noexcept = default;
-	TSourceTab& operator=(const TSourceTab&) = default;
-	TSourceTab& operator=(TSourceTab&&) noexcept = default;
+   TSourceTab(const TSourceTab&)                = default;
+   TSourceTab(TSourceTab&&) noexcept            = default;
+   TSourceTab& operator=(const TSourceTab&)     = default;
+   TSourceTab& operator=(TSourceTab&&) noexcept = default;
    ~TSourceTab();
 
    void CreateChannelTab(int bin);
@@ -148,10 +148,10 @@ public:
    };
 
    TSourceCalibration(double sigma, double threshold, int degree, int count...);
-	TSourceCalibration(const TSourceCalibration&) = delete;
-	TSourceCalibration(TSourceCalibration&&) noexcept = delete;
-	TSourceCalibration& operator=(const TSourceCalibration&) = delete;
-	TSourceCalibration& operator=(TSourceCalibration&&) noexcept = delete;
+   TSourceCalibration(const TSourceCalibration&)                = delete;
+   TSourceCalibration(TSourceCalibration&&) noexcept            = delete;
+   TSourceCalibration& operator=(const TSourceCalibration&)     = delete;
+   TSourceCalibration& operator=(TSourceCalibration&&) noexcept = delete;
    ~TSourceCalibration();
 
    void SetSource(Int_t windowId, Int_t entryId);
@@ -287,9 +287,9 @@ private:
 
    TFile* fOutput{nullptr};
 
-	/// \cond CLASSIMP
-   ClassDefOverride(TSourceCalibration, 1) // NOLINT
-	/// \endcond
+   /// \cond CLASSIMP
+   ClassDefOverride(TSourceCalibration, 1)   // NOLINT
+                                             /// \endcond
 };
 
 #endif

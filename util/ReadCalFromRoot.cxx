@@ -64,7 +64,7 @@ int main(int argc, char** argv)
       TChannel::DeleteAllChannels();
       TChannel::ReadCalFromCurrentFile();
       TChannel::WriteCalFile(Form("%05d_%03d.cal", runNumber, subRunNumber));
-		file.Close();
+      file.Close();
    }
 
    if(!badFile.empty()) {

@@ -144,7 +144,7 @@ bool GPeak::InitParams(TH1* fithist)
    }
    // Makes initial guesses at parameters for the fit. Uses the histogram to
    Double_t xlow  = 0.;
-	Double_t xhigh = 0.;
+   Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
 
    // Int_t bin = fithist->GetXaxis()->FindBin(GetParameter("centroid"));
@@ -277,10 +277,10 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    TGRSIFunctions::CheckParameterErrors(fitres, options.Data());
 
    Double_t xlow  = 0.;
-	Double_t xhigh = 0.;
+   Double_t xhigh = 0.;
    TF1::GetRange(xlow, xhigh);
 
-	std::array<double, 5> bgpars;
+   std::array<double, 5> bgpars;
    bgpars[0] = TF1::GetParameters()[0];
    bgpars[1] = TF1::GetParameters()[1];
    bgpars[2] = TF1::GetParameters()[2];
@@ -311,7 +311,7 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    // TPeak* tmppeak = new TPeak(*this);
 
    Double_t range_low  = 0.;
-	Double_t range_high = 0.;
+   Double_t range_high = 0.;
    GetRange(range_low, range_high);
 
    auto* tmppeak = new GPeak;
@@ -387,11 +387,11 @@ void GPeak::DrawResiduals(TH1* hist) const
       return;
    }
    Double_t xlow  = 0.;
-	Double_t xhigh = 0.;
+   Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
    Int_t nbins  = hist->GetXaxis()->GetNbins();
-	auto* res = new Double_t[nbins];
-	auto* bin = new Double_t[nbins];
+   auto* res    = new Double_t[nbins];
+   auto* bin    = new Double_t[nbins];
    Int_t points = 0;
    for(int i = 1; i <= nbins; i++) {
       if(hist->GetBinCenter(i) <= xlow || hist->GetBinCenter(i) >= xhigh) {
@@ -404,6 +404,6 @@ void GPeak::DrawResiduals(TH1* hist) const
    new GCanvas();
    auto* residuals = new TGraph(points, bin, res);
    residuals->Draw("*AC");
-	delete[] res;
-	delete[] bin;
+   delete[] res;
+   delete[] bin;
 }

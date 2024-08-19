@@ -12,7 +12,7 @@
 class GNotifier : public TNamed {
 public:
    static GNotifier* Get();
-	~GNotifier() = default;
+   ~GNotifier() = default;
 
    void Print(Option_t* = "") const override {}
    void Clear(Option_t* = "") override {}
@@ -31,11 +31,11 @@ public:
 #endif
 
 private:
-   GNotifier() = default;
-	GNotifier(const GNotifier&) = default;
-	GNotifier(GNotifier&&) noexcept = default;
-	GNotifier& operator=(const GNotifier&) = default;
-	GNotifier& operator=(GNotifier&&) noexcept = default;
+   GNotifier()                                = default;
+   GNotifier(const GNotifier&)                = default;
+   GNotifier(GNotifier&&) noexcept            = default;
+   GNotifier& operator=(const GNotifier&)     = default;
+   GNotifier& operator=(GNotifier&&) noexcept = default;
 
 #ifndef __CINT__
    std::vector<std::function<void()>> fCallbacks;
@@ -43,9 +43,9 @@ private:
 
    static GNotifier* fGNotifier;
 
-	/// /cond CLASSIMP
-   ClassDefOverride(GNotifier, 0) // NOLINT
-	/// /endcond
+   /// /cond CLASSIMP
+   ClassDefOverride(GNotifier, 0)   // NOLINT
+                                    /// /endcond
 };
 
 #endif

@@ -65,9 +65,9 @@ private:
    TRef parent;
    int  projection_axis;
 
-	/// /cond CLASSIMP
-   ClassDefOverride(GH1D, 1) // NOLINT
-	/// /endcond
+   /// /cond CLASSIMP
+   ClassDefOverride(GH1D, 1)   // NOLINT
+                               /// /endcond
 };
 
 #endif /* GH1D_H */

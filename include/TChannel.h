@@ -337,7 +337,7 @@ private:
    static Int_t ReadFile(TFile* tempf);
 
    /// \cond CLASSIMP
-   ClassDefOverride(TChannel, 6) // NOLINT
+   ClassDefOverride(TChannel, 6)   // NOLINT
    /// \endcond
 };
 /*! @} */

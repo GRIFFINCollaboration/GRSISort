@@ -14,10 +14,10 @@ class TNucleus;
 class TCalibrator : public TNamed {
 public:
    TCalibrator();
-	TCalibrator(const TCalibrator&) = default;
-	TCalibrator(TCalibrator&&) noexcept = default;
-	TCalibrator& operator=(const TCalibrator&) = default;
-	TCalibrator& operator=(TCalibrator&&) noexcept = default;
+   TCalibrator(const TCalibrator&)                = default;
+   TCalibrator(TCalibrator&&) noexcept            = default;
+   TCalibrator& operator=(const TCalibrator&)     = default;
+   TCalibrator& operator=(TCalibrator&&) noexcept = default;
    ~TCalibrator();
 
    void   Copy(TObject& obj) const override;
@@ -84,15 +84,15 @@ private:
 
    int fFitOrder{0};
 
-	std::array<double, 4> fEffPar{0.};
+   std::array<double, 4> fEffPar{0.};
 
    static void ResetMap(std::map<double, double>& inmap);
    static void PrintMap(std::map<double, double>& inmap);
    static bool CheckMap(const std::map<double, double>& inmap);
 
-	/// \cond CLASSIMP
-   ClassDefOverride(TCalibrator, 1) // NOLINT
-	/// \endcond
+   /// \cond CLASSIMP
+   ClassDefOverride(TCalibrator, 1)   // NOLINT
+                                      /// \endcond
 };
 
 #endif

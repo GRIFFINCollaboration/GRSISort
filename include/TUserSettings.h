@@ -68,11 +68,11 @@ public:
       if(!ReadSettings(settingsFile)) { throw std::runtime_error("Failed to read user settings file!"); }
    }
 
-	TUserSettings(const TUserSettings&) = default;
-	TUserSettings(TUserSettings&&) noexcept = default;
-	TUserSettings& operator=(const TUserSettings&) = default;
-	TUserSettings& operator=(TUserSettings&&) noexcept = default;
-   ~TUserSettings() = default;
+   TUserSettings(const TUserSettings&)                = default;
+   TUserSettings(TUserSettings&&) noexcept            = default;
+   TUserSettings& operator=(const TUserSettings&)     = default;
+   TUserSettings& operator=(TUserSettings&&) noexcept = default;
+   ~TUserSettings()                                   = default;
 
    bool ReadSettings(const std::string& settingsFile);
 
@@ -168,7 +168,7 @@ private:
    std::vector<std::string> fSettingsFiles;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TUserSettings, 5) // NOLINT
+   ClassDefOverride(TUserSettings, 5)   // NOLINT
    /// \endcond
 };
 /*! @} */

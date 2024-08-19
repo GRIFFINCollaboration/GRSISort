@@ -10,7 +10,7 @@
 class GriffinKValueHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<GriffinKValueHelper> {
 public:
    explicit GriffinKValueHelper(TList* list)
-		: TGRSIHelper(list)
+      : TGRSIHelper(list)
    {
       Prefix("GriffinKValue");
       Setup();
@@ -24,8 +24,8 @@ public:
 };
 
 // These are needed functions used by TDataFrameLibrary to create and destroy the instance of this helper
-extern "C" GriffinKValueHelper* CreateHelper(TList* list) { return new GriffinKValueHelper(list); } // NOLINT(misc-definitions-in-headers)
+extern "C" GriffinKValueHelper* CreateHelper(TList* list) { return new GriffinKValueHelper(list); }   // NOLINT(misc-definitions-in-headers)
 
-extern "C" void DestroyHelper(TGRSIHelper* helper) { delete helper; } // NOLINT(misc-definitions-in-headers)
+extern "C" void DestroyHelper(TGRSIHelper* helper) { delete helper; }   // NOLINT(misc-definitions-in-headers)
 
 #endif

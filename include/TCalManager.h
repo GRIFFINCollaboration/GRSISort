@@ -13,10 +13,10 @@ class TCalManager : public TNamed {
 public:
    TCalManager() = default;
    explicit TCalManager(const char* classname);
-	TCalManager(const TCalManager&) = default;
-	TCalManager(TCalManager&&) noexcept = default;
-	TCalManager& operator=(const TCalManager&) = default;
-	TCalManager& operator=(TCalManager&&) noexcept = default;
+   TCalManager(const TCalManager&)                = default;
+   TCalManager(TCalManager&&) noexcept            = default;
+   TCalManager& operator=(const TCalManager&)     = default;
+   TCalManager& operator=(TCalManager&&) noexcept = default;
    ~TCalManager();
 
    TCal*       GetCal(UInt_t chanNum);
@@ -38,7 +38,7 @@ private:
    TClass*                 fClass{nullptr};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalManager, 1) // NOLINT
+   ClassDefOverride(TCalManager, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

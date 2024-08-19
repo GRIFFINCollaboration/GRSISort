@@ -31,10 +31,10 @@
 class TFragmentChainLoop : public StoppableThread {
 public:
    static TFragmentChainLoop* Get(std::string name = "", TChain* chain = nullptr);
-	TFragmentChainLoop(const TFragmentChainLoop&) = delete;
-	TFragmentChainLoop(TFragmentChainLoop&&) noexcept = delete;
-	TFragmentChainLoop& operator=(const TFragmentChainLoop&) = delete;
-	TFragmentChainLoop& operator=(TFragmentChainLoop&&) noexcept = delete;
+   TFragmentChainLoop(const TFragmentChainLoop&)                = delete;
+   TFragmentChainLoop(TFragmentChainLoop&&) noexcept            = delete;
+   TFragmentChainLoop& operator=(const TFragmentChainLoop&)     = delete;
+   TFragmentChainLoop& operator=(TFragmentChainLoop&&) noexcept = delete;
    ~TFragmentChainLoop();
 
 #ifndef __CINT__

@@ -29,11 +29,11 @@ class TCalGraph : public TGraphErrors {
 public:
    TCalGraph();
    TCalGraph(const char* name, const char* title) : TGraphErrors(name, title){};
-	TCalGraph(const TCalGraph&);
-	TCalGraph(TCalGraph&&) noexcept = default;
-	TCalGraph& operator=(const TCalGraph&) = default;
-	TCalGraph& operator=(TCalGraph&&) noexcept = default;
-   ~TCalGraph() = default;
+   TCalGraph(const TCalGraph&);
+   TCalGraph(TCalGraph&&) noexcept            = default;
+   TCalGraph& operator=(const TCalGraph&)     = default;
+   TCalGraph& operator=(TCalGraph&&) noexcept = default;
+   ~TCalGraph()                               = default;
 
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6, 24, 0)
    using TGraph::AddPoint;
@@ -54,7 +54,7 @@ public:
    void Clear(Option_t* opt = "") override;
 
 protected:
-	std::map<UInt_t, std::pair<TCalPoint, TCalPoint>>& CompareMap() { return fCompareMap; }
+   std::map<UInt_t, std::pair<TCalPoint, TCalPoint>>& CompareMap() { return fCompareMap; }
 
 private:
    void CorrectMissingPoints(TCalList& cal_list, TCalList& src_list);
@@ -64,7 +64,7 @@ private:
    std::map<UInt_t, std::pair<TCalPoint, TCalPoint>> fCompareMap;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalGraph, 1) // NOLINT
+   ClassDefOverride(TCalGraph, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

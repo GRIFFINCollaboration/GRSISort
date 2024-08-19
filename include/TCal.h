@@ -45,11 +45,11 @@ class TCal : public TGraphErrors {
 public:
    TCal();
    TCal(const char* name, const char* title);
-	TCal(const TCal&);
-	TCal(TCal&&) noexcept = default;
-	TCal& operator=(const TCal&) = default;
-	TCal& operator=(TCal&&) noexcept = default;
-   ~TCal() = default;
+   TCal(const TCal&);
+   TCal(TCal&&) noexcept            = default;
+   TCal& operator=(const TCal&)     = default;
+   TCal& operator=(TCal&&) noexcept = default;
+   ~TCal()                          = default;
 
    // pure virtual functions
    virtual Bool_t IsGroupable() const = 0;
@@ -85,7 +85,7 @@ private:
    TNucleus* fNuc{nullptr};       ///< Nucleus that we are calibrating against
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCal, 2) // NOLINT
+   ClassDefOverride(TCal, 2)   // NOLINT
    /// \endcond
 };
 /*! @} */
