@@ -27,10 +27,10 @@ GSnapshot::GSnapshot(const char* snapshot_dir)
    bool dir_exists = !gSystem->AccessPathName(fSnapshotDir.c_str());
 
    if(dir_exists) {
-      int64_t id      = 0;
-      int64_t size    = 0;
-      int64_t flags   = 0;
-      int64_t modtime = 0;
+      Long_t id      = 0;
+      Long_t size    = 0;
+      Long_t flags   = 0;
+      Long_t modtime = 0;
       gSystem->GetPathInfo(fSnapshotDir.c_str(), &id, &size, &flags, &modtime);
       bool output_dir_is_dir = (flags & 2) != 0;
       fCanWriteHere          = output_dir_is_dir;
