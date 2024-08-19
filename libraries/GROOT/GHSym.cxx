@@ -960,7 +960,6 @@ void GHSym::GetRandom2(Double_t& x, Double_t& y)
    Int_t    nbinsy   = GetNbinsY();
    Int_t    nbins    = nbinsx * nbinsy;
    Double_t integral = 0.;
-   ;
    // compute integral checking that all bins have positive content (see ROOT-5894)
    if(fIntegral != nullptr) {
       if(fIntegral[nbins + 1] != fEntries) {
