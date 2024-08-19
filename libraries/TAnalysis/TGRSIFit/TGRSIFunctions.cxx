@@ -50,7 +50,7 @@ bool TGRSIFunctions::CheckParameterErrors(const TFitResultPtr& fitres, std::stri
    return result;
 }
 
-Double_t TGRSIFunctions::CsIFitFunction(Double_t* time, Double_t* par)   // NOLINT
+Double_t TGRSIFunctions::CsIFitFunction(Double_t* time, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    ///   p[0]-p[4] are t0, tRC, tF, TS, TGamma
    ///   p[5]-p[8] are baseline, AF, AS, AGamma
@@ -78,7 +78,7 @@ Double_t TGRSIFunctions::PolyBg(Double_t* x, Double_t* par, Int_t order)
    return result;
 }
 
-Double_t TGRSIFunctions::StepFunction(Double_t* dim, Double_t* par)   // NOLINT
+Double_t TGRSIFunctions::StepFunction(Double_t* dim, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    /// This function uses the same parameters as the photopeak and gaussian. This is because in the photopeak, the shapes are correlated.
    /// Requires the following parameters:
@@ -134,7 +134,7 @@ Double_t TGRSIFunctions::MultiPhotoPeakBG(Double_t* dim, Double_t* par)
    return result;
 }
 
-Double_t TGRSIFunctions::Gaus(Double_t* dim, Double_t* par)   // NOLINT
+Double_t TGRSIFunctions::Gaus(Double_t* dim, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    /// This is a gaussian that has been scaled to match up with Radware photopeak results.
    /// It contains a scaling factor for the relative height of the skewed gaussian to the
@@ -154,7 +154,7 @@ Double_t TGRSIFunctions::Gaus(Double_t* dim, Double_t* par)   // NOLINT
    return height * (1. - relHeight / 100.) * TMath::Gaus(x, centroid, sigma);
 }
 
-Double_t TGRSIFunctions::SkewedGaus(Double_t* dim, Double_t* par)   // NOLINT
+Double_t TGRSIFunctions::SkewedGaus(Double_t* dim, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    /// This function uses the same parameters as the photopeak and gaussian. This is because in the photopeak,
    /// the shapes are correlated.
@@ -180,7 +180,7 @@ Double_t TGRSIFunctions::SkewedGaus(Double_t* dim, Double_t* par)   // NOLINT
           (TMath::Erfc(((x - centroid) / (TMath::Sqrt(2.) * sigma)) + sigma / (TMath::Sqrt(2.) * beta)));
 }
 
-Double_t TGRSIFunctions::MultiSkewedGausWithBG(Double_t* dim, Double_t* par)   // NOLINT
+Double_t TGRSIFunctions::MultiSkewedGausWithBG(Double_t* dim, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    // TGRSIFunctions::Set(int num);
    //
@@ -201,7 +201,7 @@ Double_t TGRSIFunctions::MultiSkewedGausWithBG(Double_t* dim, Double_t* par)   /
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Double_t TGRSIFunctions::SkewedGaus2(Double_t* x, Double_t* par)   // NOLINT
+Double_t TGRSIFunctions::SkewedGaus2(Double_t* x, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    /// This function is derived from the convolution of a gaussian with an exponential
    /// Requires the following parameters:
@@ -214,7 +214,7 @@ Double_t TGRSIFunctions::SkewedGaus2(Double_t* x, Double_t* par)   // NOLINT
           (TMath::Erfc(((x[0] - par[1]) / (TMath::Sqrt(2.) * par[2])) + par[2] / (TMath::Sqrt(2.) * par[3])));
 }
 
-Double_t TGRSIFunctions::MultiSkewedGausWithBG2(Double_t* dim, Double_t* par)   // NOLINT
+Double_t TGRSIFunctions::MultiSkewedGausWithBG2(Double_t* dim, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    // TGRSIFunctions::Set(int num);
    //
@@ -285,7 +285,7 @@ Double_t TGRSIFunctions::LanGausHighRes(Double_t* x, Double_t* pars)
    return conv;
 }
 
-Double_t TGRSIFunctions::MultiGausWithBG(Double_t* dim, Double_t* par)   // NOLINT
+Double_t TGRSIFunctions::MultiGausWithBG(Double_t* dim, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    // TGRSIFunctions::Set(int num);
    //
@@ -354,7 +354,7 @@ Double_t TGRSIFunctions::Bateman(std::vector<Double_t>& dim, std::vector<Double_
    return totalActivity;
 }
 
-Double_t TGRSIFunctions::DeadTimeCorrect(Double_t* dim, Double_t deadtime, Double_t binWidth)   // NOLINT
+Double_t TGRSIFunctions::DeadTimeCorrect(Double_t* dim, Double_t deadtime, Double_t binWidth)   // NOLINT(readability-non-const-parameter)
 {
    // This function deadtime corrects data. Not to be confused with dead time affecting of fit functions
    // Dead time is in us.
@@ -373,14 +373,14 @@ Double_t TGRSIFunctions::DeadTimeAffect(Double_t function, Double_t deadtime, Do
 }
 
 #ifdef HAS_MATHMORE
-Double_t TGRSIFunctions::LegendrePolynomial(Double_t* x, Double_t* p)   // NOLINT
+Double_t TGRSIFunctions::LegendrePolynomial(Double_t* x, Double_t* p)   // NOLINT(readability-non-const-parameter)
 {
    Double_t val = p[0] * (1 + p[1] * ::ROOT::Math::legendre(2, x[0]) + p[2] * ::ROOT::Math::legendre(4, x[0]));
    return val;
 }
 #endif
 
-Double_t TGRSIFunctions::PhotoEfficiency(Double_t* dim, Double_t* par)   // NOLINT
+Double_t TGRSIFunctions::PhotoEfficiency(Double_t* dim, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    double sum = 0.;
    for(int i = 0; i < 9; ++i) {
@@ -391,7 +391,7 @@ Double_t TGRSIFunctions::PhotoEfficiency(Double_t* dim, Double_t* par)   // NOLI
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Double_t TGRSIFunctions::ConvolutedDecay(Double_t* x, Double_t* par)   // NOLINT
+Double_t TGRSIFunctions::ConvolutedDecay(Double_t* x, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    /// This function is derived from the convolution of a gaussian with an exponential decay, to fit TAC spectra of long half-lives (above 100 ps)
    /// Requires the following parameters:
@@ -403,7 +403,7 @@ Double_t TGRSIFunctions::ConvolutedDecay(Double_t* x, Double_t* par)   // NOLINT
    return TMath::Sqrt(TMath::Pi()) * par[0] * par[3] / 2 * TMath::Exp(par[3] / 2 * (2 * par[1] + par[3] * TMath::Power(par[2], 2) - 2 * x[0])) * TMath::Erfc((par[1] + par[3] * TMath::Power(par[2], 2) - x[0]) / (TMath::Sqrt(2) * par[2])) + par[4];
 }
 
-Double_t TGRSIFunctions::ConvolutedDecay2(Double_t* x, Double_t* par)   // NOLINT
+Double_t TGRSIFunctions::ConvolutedDecay2(Double_t* x, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    /// This function is the same as ConvolutedDecay but should be use when the lifetime has two different components.
    /// Requires the following parameters:
@@ -488,7 +488,7 @@ double TGRSIFunctions::RacahW(double a, double b, double c, double d, double e, 
    // not sure why these are out of order in calling wigner_6j(a, b, e, d, c, f)
    return TMath::Power(-1., static_cast<int>(a + b + d + c)) * ::ROOT::Math::wigner_6j(static_cast<int>(2 * a), static_cast<int>(2 * b), static_cast<int>(2 * e), static_cast<int>(2 * d), static_cast<int>(2 * c), static_cast<int>(2 * f));
 #else
-   std::cout << "Mathmore feature of ROOT is missing, " << __PRETTY_FUNCTION__ << " will always return 1!" << std::endl;
+   std::cout << "Mathmore feature of ROOT is missing, " << __PRETTY_FUNCTION__ << " will always return 1!" << std::endl;(cppcoreguidelines-pro-type-const-cast)
    return 1.;
 #endif
 }

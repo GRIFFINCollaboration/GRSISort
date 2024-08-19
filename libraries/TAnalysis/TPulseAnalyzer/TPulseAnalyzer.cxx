@@ -1692,7 +1692,7 @@ bool TPulseAnalyzer::GetSiliShapeTF1(double tauDecay, double tauRise, double bas
    return false;
 }
 
-double TPulseAnalyzer::SiLiFitFunction(double* i, double* p)   // NOLINT
+double TPulseAnalyzer::SiLiFitFunction(double* i, double* p)   // NOLINT(readability-non-const-parameter)
 {
    // p[0]-p[2] are t0, RC, Tau
    // p[3]-p[4] are baseline, A0

@@ -96,7 +96,7 @@ TBrowserImp* GRootGuiFactory::CreateBrowserImp(TBrowser* b, const char* title, U
       return new TRootBrowserLite(b, title, width, height);
    }
    if(pluginHandler != nullptr && pluginHandler->LoadPlugin() != -1) {
-      auto* imp = reinterpret_cast<TBrowserImp*>(pluginHandler->ExecPlugin(5, b, title, width, height, browserOptions.Data()));   // NOLINT
+      auto* imp = reinterpret_cast<TBrowserImp*>(pluginHandler->ExecPlugin(5, b, title, width, height, browserOptions.Data()));   // NOLINT(performance-no-int-to-ptr)
       if(imp != nullptr) {
 
          return imp;
@@ -122,7 +122,7 @@ TBrowserImp* GRootGuiFactory::CreateBrowserImp(TBrowser* b, const char* title, I
       return new TRootBrowserLite(b, title, width, height);
    }
    if(pluginHandler != nullptr && pluginHandler->LoadPlugin() != -1) {
-      auto* imp = reinterpret_cast<TBrowserImp*>(pluginHandler->ExecPlugin(7, b, title, x, y, width, height, browserOptions.Data()));   // NOLINT
+      auto* imp = reinterpret_cast<TBrowserImp*>(pluginHandler->ExecPlugin(7, b, title, x, y, width, height, browserOptions.Data()));   // NOLINT(performance-no-int-to-ptr)
       if(imp != nullptr) {
          return imp;
       }
