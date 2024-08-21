@@ -47,7 +47,7 @@
 
 struct SpeHeader {
    int32_t buffsize; /*fortran file, each record starts with record size */   // 14
-   char    label[8];
+   char    label[8];                                                          // NOLINT
    int32_t size;
    int32_t junk1;
    int32_t junk2;
@@ -208,7 +208,7 @@ void ProcessKeys(TList* keys, TList* histsToWrite, TList* matsToWrite, TList* m4
       }
    }
    // loop over directories and process keys in them
-   for(auto dir : directories) {
+   for(auto* dir : directories) {
       TList* dir_keys = dir->GetListOfKeys();
       dir_keys->Sort();
       ProcessKeys(dir_keys, histsToWrite, matsToWrite, m4bsToWrite, split, compress);
@@ -238,7 +238,8 @@ void AddToList(TList* list, TH2* hist, bool split, bool compress)
       std::cout << "rebinning " << hist->GetName() << " by " << rebin << std::endl;
       list->Add(hist->Rebin2D(rebin, rebin));
       return;
-   } else if(split) {
+   }
+   if(split) {
       int  nofSplits = (hist->GetXaxis()->GetNbins() + 4095) / 4096;
       TH2* splitHist = static_cast<TH2*>(hist->IsA()->New());
       splitHist->SetBins(4096, 0., 4096., 4096, 0., 4096.);
@@ -277,12 +278,10 @@ void WriteMat(TH2* mat, std::fstream* outfile)
    auto* empty = new TH1D("empty", "empty", 4096, 0., 4096.);
 
    for(int y = 1; y <= 4096; ++y) {
-      uint16_t buffer[4096] = {0};
-      TH1D*    proj;
+      std::array<uint16_t, 4096> buffer = {0};
+      TH1D*                      proj   = empty;
       if(y <= ybins) {
          proj = mat->ProjectionX("proj", y, y);
-      } else {
-         proj = empty;
       }
       for(int x = 1; x <= 4096; ++x) {
          if(x <= xbins) {
@@ -291,7 +290,7 @@ void WriteMat(TH2* mat, std::fstream* outfile)
             buffer[x - 1] = 0;
          }
       }
-      outfile->write(reinterpret_cast<char*>(&buffer), sizeof(buffer));
+      outfile->write(reinterpret_cast<char*>(buffer.data()), buffer.size() * 2);   // each uint16_t corresponds to two bytes
    }
    delete empty;
 }
@@ -304,12 +303,10 @@ void WriteM4b(TH2* mat, std::fstream* outfile)
    auto* empty = new TH1D("empty", "empty", 4096, 0., 4096.);
 
    for(int y = 1; y <= 4096; ++y) {
-      uint32_t buffer[4096] = {0};
-      TH1D*    proj;
+      std::array<uint32_t, 4096> buffer = {0};
+      TH1D*                      proj   = empty;
       if(y <= ybins) {
          proj = mat->ProjectionX("proj", y, y);
-      } else {
-         proj = empty;
       }
       for(int x = 1; x <= 4096; ++x) {
          if(x <= xbins) {
@@ -318,7 +315,7 @@ void WriteM4b(TH2* mat, std::fstream* outfile)
             buffer[x - 1] = 0;
          }
       }
-      outfile->write(reinterpret_cast<char*>(&buffer), sizeof(buffer));
+      outfile->write(reinterpret_cast<char*>(buffer.data()), buffer.size() * 4);   // each uint32_t corresponds to four bytes
    }
    delete empty;
 }
@@ -331,8 +328,8 @@ void WriteM8k(TH2* mat, std::fstream* outfile)
    auto* empty = new TH1D("empty", "empty", 8192, 0., 8192.);
 
    for(int y = 1; y <= 8192; ++y) {
-      uint32_t buffer[8192] = {0};
-      TH1D*    proj;
+      std::array<uint32_t, 8192> buffer = {0};
+      TH1D*                      proj   = nullptr;
       if(y <= ybins) {
          proj = mat->ProjectionX("proj", y, y);
       } else {
@@ -345,18 +342,18 @@ void WriteM8k(TH2* mat, std::fstream* outfile)
             buffer[x - 1] = 0;
          }
       }
-      outfile->write(reinterpret_cast<char*>(&buffer), sizeof(buffer));
+      outfile->write(reinterpret_cast<char*>(buffer.data()), buffer.size() * 4);   // each uint32_t corresponds to four bytes
    }
    delete empty;
 }
 
 void WriteHist(TH1* hist, std::fstream* outfile)
 {
-   SpeHeader spehead;
+   SpeHeader spehead{};
    spehead.buffsize = 24;
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstringop-truncation"
-   strncpy(spehead.label, hist->GetName(), 8);
+   strncpy(spehead.label, hist->GetName(), 8);   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 #pragma GCC diagnostic pop
 
    if(hist->GetRMS() > 16384 / 2) {

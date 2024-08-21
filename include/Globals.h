@@ -80,8 +80,7 @@ const std::string& ProgramName();
 namespace grsi {
 struct exit_exception : public std::exception {
 public:
-   exit_exception(int c, const char* msg = "") : code(c), message(msg) {}
-   ~exit_exception() throw() override = default;
+   explicit exit_exception(int c, const char* msg = "") : code(c), message(msg) {}
    /*     virtual const char* what() const throw {
            //  LOG(what); // write to log file
            return what.c_str();
@@ -150,18 +149,18 @@ inline std::string hex(T val, int width = -1)
 
 static inline std::string getexepath()
 {
-   char    result[1024];
-   ssize_t count = readlink("/proc/self/exe", result, sizeof(result) - 1);
-   return std::string(result, (count > 0) ? count : 0);
+   std::array<char, 1024> result{};
+   ssize_t                count = readlink("/proc/self/exe", result.data(), sizeof(result) - 1);
+   return {result.data(), static_cast<size_t>((count > 0) ? count : 0)};
 }
 
-static inline std::string sh(std::string cmd)
+static inline std::string sh(const std::string& cmd)
 {
-   std::array<char, 128> buffer;
+   std::array<char, 128> buffer{};
    std::string           result;
    std::shared_ptr<FILE> pipe(popen(cmd.c_str(), "r"), pclose);
-   if(!pipe) throw std::runtime_error("popen() failed!");
-   while(!feof(pipe.get())) {
+   if(!pipe) { throw std::runtime_error("popen() failed!"); }
+   while(feof(pipe.get()) == 0) {
       if(fgets(buffer.data(), 128, pipe.get()) != nullptr) {
          result += buffer.data();
       }
@@ -170,7 +169,7 @@ static inline std::string sh(std::string cmd)
 }
 
 // print a demangled stack backtrace of the caller function (copied from https://panthema.net/2008/0901-stacktrace-demangled/)
-static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int maxFrames = 63)
+static inline void PrintStacktrace(std::ostream& out = std::cout, int maxFrames = 63)
 {
    std::stringstream str;
    str << "stack trace:" << std::endl;
@@ -193,7 +192,7 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int m
 
    // allocate string which will be filled with the demangled function name
    size_t funcnamesize = 256;
-   char*  funcname     = new char[funcnamesize];
+   auto*  funcname     = new char[funcnamesize];
 
    // iterate over the returned symbol lines. skip the first, it is the
    // address of this function.
@@ -204,12 +203,12 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int m
 
       // find parentheses and +address offset surrounding the mangled name:
       // ./module(function+0x15c) [0x8048a6d]
-      for(char* p = symbollist[i]; *p; ++p) {
+      for(char* p = symbollist[i]; *p != 0; ++p) {
          if(*p == '(') {
             begin_name = p;
          } else if(*p == '+') {
             begin_offset = p;
-         } else if(*p == ')' && begin_offset) {
+         } else if(*p == ')' && begin_offset != nullptr) {
             end_offset = p;
             break;
          }
@@ -225,7 +224,7 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int m
       //	line = sh(command.str());
       //}
 
-      if(begin_name && begin_offset && end_offset && begin_name < begin_offset) {
+      if(begin_name != nullptr && begin_offset != nullptr && end_offset != nullptr && begin_name < begin_offset) {
          *begin_name++   = '\0';
          *begin_offset++ = '\0';
          *end_offset     = '\0';
@@ -234,8 +233,8 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int m
          // offset in [begin_offset, end_offset). now apply
          // __cxa_demangle():
 
-         int   status;
-         char* ret = abi::__cxa_demangle(begin_name, funcname, &funcnamesize, &status);
+         int   status = 0;
+         char* ret    = abi::__cxa_demangle(begin_name, funcname, &funcnamesize, &status);
          if(status == 0) {
             funcname = ret;   // use possibly realloc()-ed string
             str << "  " << symbollist[i] << ": " << funcname << "+" << begin_offset << std::endl;
@@ -251,30 +250,28 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, unsigned int m
       // str<<line;
    }
 
-   free(funcname);
-   free(symbollist);
+   delete[] funcname;
+   delete symbollist;
    out << str.str();
 }
 
 #if !__APPLE__
-#include <stdio.h>
-#include <stdlib.h>
 #include <sys/wait.h>
 #include <sys/prctl.h>
 static inline void PrintGdbStacktrace()
 {
-   char pid_buf[30];
-   sprintf(pid_buf, "%d", getpid());
-   char name_buf[512];
-   name_buf[readlink("/proc/self/exe", name_buf, 511)] = 0;
+   std::array<char, 30> pid_buf{};
+   sprintf(pid_buf.data(), "%d", getpid());
+   std::array<char, 512> name_buf{};
+   name_buf[readlink("/proc/self/exe", name_buf.data(), 511)] = 0;
    prctl(PR_SET_PTRACER, PR_SET_PTRACER_ANY, 0, 0, 0);
    int child_pid = fork();
-   if(!child_pid) {
+   if(child_pid == 0) {
       dup2(2, 1);   // redirect output to stderr - edit: unnecessary?
-      execl("/usr/bin/gdb", "gdb", "--batch", "-n", "-ex", "thread", "-ex", "bt", name_buf, pid_buf, NULL);
+      execl("/usr/bin/gdb", "gdb", "--batch", "-n", "-ex", "thread", "-ex", "bt", name_buf.data(), pid_buf.data(), nullptr);
       abort(); /* If gdb failed to start */
    } else {
-      waitpid(child_pid, NULL, 0);
+      waitpid(child_pid, nullptr, 0);
    }
 }
 #endif

@@ -108,7 +108,7 @@ void AtExitHandler()
 {
    // this function is called on normal exits (via std::atexit) or
    // if the programm is killed with ctrl-c (via sigaction and HandleSignal)
-   if(controlC) return;
+   if(controlC) { return; }
    controlC = true;
    if(startedProof) {
       std::cout << "getting session logs ..." << std::endl;

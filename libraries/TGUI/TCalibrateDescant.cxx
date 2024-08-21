@@ -65,7 +65,7 @@ double SourceEnergyUncertainty(const TCalibrateDescant::ESourceType& source)
    return 0.;
 }
 
-double FullEdge(double* x, double* par)
+double FullEdge(double* x, double* par)   // NOLINT
 {
    // 0 - amplitude, 1 - position, 2 - sigma of the upper part (low x), 3 - dSigma of the lower part (high x)
    // 4 - amplitude of gaussian peak, 5 - difference of peak position from edge position (par[2]), 6 - sigma of gaussian
@@ -77,7 +77,7 @@ double FullEdge(double* x, double* par)
       par[i] = TMath::Abs(par[i]);
    }
 
-   if(x[0] < par[15]) return 0.;
+   if(x[0] < par[15]) { return 0.; }
 
    double thresholdFactor = (1. + TMath::Erf((x[0] - par[10]) / par[11])) / 2.;
 
@@ -120,7 +120,7 @@ TGHorizontalFrame* TParameterInput::Build(const std::string& name, const Int_t& 
 
 void TParameterInput::Set(double val)
 {
-   std::cout << __PRETTY_FUNCTION__ << ": " << val << std::endl;
+   std::cout << __PRETTY_FUNCTION__ << ": " << val << std::endl;   // NOLINT
    PrintStatus("Set single initial");
    fEntry->SetNumber(val);
    UpdateSlider();
@@ -129,7 +129,7 @@ void TParameterInput::Set(double val)
 
 void TParameterInput::Set(double val, double low, double high)
 {
-   std::cout << __PRETTY_FUNCTION__ << ": " << val << ", " << low << ", " << high << std::endl;
+   std::cout << __PRETTY_FUNCTION__ << ": " << val << ", " << low << ", " << high << std::endl;   // NOLINT
    PrintStatus("Set initial");
    fEntry->SetNumber(val);
    fEntry->SetLimits(TGNumberFormat::kNELLimitMinMax, low, high);
@@ -180,7 +180,7 @@ void TParameterInput::Connect(TCalibrateDescant* parent)
 Bool_t TParameterInput::ProcessMessage(Long_t msg, Long_t parameter1, Long_t parameter2)
 {
    /// This functions deals with changes in the text fields of the TGNumberEntry as those don't seem to emit signals?
-   std::cout << __PRETTY_FUNCTION__ << ": msg " << msg << ", parameter 1 " << parameter1 << ", parameter 2 " << parameter2 << std::endl;
+   std::cout << __PRETTY_FUNCTION__ << ": msg " << msg << ", parameter 1 " << parameter1 << ", parameter 2 " << parameter2 << std::endl;   // NOLINT
    switch(GET_MSG(msg)) {
    case kC_TEXTENTRY:
       switch(GET_SUBMSG(msg)) {
@@ -229,9 +229,9 @@ void TCalibrateDescant::BuildInterface()
    // maybe add splitter between canvases?
 
    // create status bar
-   fStatusBar    = new TGStatusBar(fLeftFrame, 400, 10, kHorizontalFrame);
-   Int_t parts[] = {25, 25, 50};
-   fStatusBar->SetParts(parts, 3);
+   fStatusBar                 = new TGStatusBar(fLeftFrame, 400, 10, kHorizontalFrame);
+   std::array<Int_t, 3> parts = {25, 25, 50};
+   fStatusBar->SetParts(parts.data(), parts.size());
 
    // build parameter entries
    fAmplitude = new TParameterInput(fRightFrame);
@@ -362,7 +362,7 @@ void TCalibrateDescant::MakeConnections()
 Bool_t TCalibrateDescant::ProcessMessage(Long_t msg, Long_t parameter1, Long_t parameter2)
 {
    /// This functions deals with changes in the text fields of the TGNumberEntry as those don't seem to emit signals?
-   std::cout << __PRETTY_FUNCTION__ << ": msg " << msg << ", parameter 1 " << parameter1 << ", parameter 2 " << parameter2 << std::endl;
+   std::cout << __PRETTY_FUNCTION__ << ": msg " << msg << ", parameter 1 " << parameter1 << ", parameter 2 " << parameter2 << std::endl;   // NOLINT
    switch(GET_MSG(msg)) {
    case kC_TEXTENTRY:
       switch(GET_SUBMSG(msg)) {
@@ -387,9 +387,9 @@ void TCalibrateDescant::CreateGraphicMembers()
 {
    fProjections.resize(fMatrix->GetXaxis()->GetNbins());
    fCalibrations.resize(fMatrix->GetXaxis()->GetNbins());
-   for(size_t i = 0; i < fProjections.size(); ++i) {
-      fProjections[i] = fMatrix->ProjectionY(Form("%s_py%ld", fMatrix->GetName(), i + 1), i + 1, i + 1);
-      fProjections[i]->SetStats(0);
+   for(int i = 0; i < static_cast<int>(fProjections.size()); ++i) {
+      fProjections[i] = fMatrix->ProjectionY(Form("%s_py%d", fMatrix->GetName(), i + 1), i + 1, i + 1);
+      fProjections[i]->SetStats(false);
       fCalibrations[i] = new TGraphErrors;
    }
    double xmin = fMatrix->GetYaxis()->GetBinLowEdge(1);
@@ -438,7 +438,7 @@ void TCalibrateDescant::UpdateInterface()
 
 void TCalibrateDescant::UpdateInitialFunction()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
    fInitial->FixParameter(0, fAmplitude->Value());
    fInitial->FixParameter(1, fPosition->Value());
    fInitial->FixParameter(2, fSigma->Value());
@@ -484,7 +484,7 @@ void TCalibrateDescant::InitializeParameters()
    double xmax = fProjections[fCurrentProjection]->GetXaxis()->GetBinLowEdge(nBins + 1);
 
    // first find the threshold (aka first bin with more than 2 counts)
-   int threshold;
+   int threshold = 0;
    for(threshold = firstBin; threshold < nBins; ++threshold) {
       if(fProjections[fCurrentProjection]->GetBinContent(threshold) > 2) {
          break;
@@ -497,9 +497,9 @@ void TCalibrateDescant::InitializeParameters()
    int    maxBin  = fProjections[fCurrentProjection]->GetMaximumBin();
    if(xmin + (xmax - xmin) * 0.1 < fProjections[fCurrentProjection]->GetXaxis()->GetBinCenter(maxBin) &&
       fProjections[fCurrentProjection]->GetXaxis()->GetBinCenter(maxBin) < xmax - (xmax - xmin) * 0.1) {
-      average = fProjections[fCurrentProjection]->Integral(maxBin - (xmax - xmin) * 0.1, maxBin + (xmax - xmin) * 0.1) / ((xmax - xmin) * 0.2);
+      average = fProjections[fCurrentProjection]->Integral(static_cast<Int_t>(maxBin - (xmax - xmin) * 0.1), static_cast<Int_t>(maxBin + (xmax - xmin) * 0.1)) / ((xmax - xmin) * 0.2);
    }
-   int roughBin;
+   int roughBin = 0;
    for(roughBin = nBins; roughBin >= firstBin; --roughBin) {
       if(fProjections[fCurrentProjection]->GetBinContent(roughBin) > 10. * average) {
          break;
@@ -567,15 +567,15 @@ void TCalibrateDescant::InitializeParameters()
 
 void TCalibrateDescant::Previous()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;
-   if(fCurrentProjection > 0) --fCurrentProjection;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
+   if(fCurrentProjection > 0) { --fCurrentProjection; }
    UpdateInterface();
 }
 
 void TCalibrateDescant::Next()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;
-   if(fCurrentProjection + 1 < static_cast<int>(fProjections.size())) ++fCurrentProjection;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
+   if(fCurrentProjection + 1 < static_cast<int>(fProjections.size())) { ++fCurrentProjection; }
    UpdateInterface();
 }
 
@@ -706,7 +706,7 @@ void TCalibrateDescant::Fit()
 
 void TCalibrateDescant::UpdateInitialParameters()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
    fAmplitude->Set(fFit->GetParameter(0));
    fPosition->Set(fFit->GetParameter(1));
    fSigma->Set(fFit->GetParameter(2));
@@ -727,7 +727,7 @@ void TCalibrateDescant::UpdateInitialParameters()
 
 void TCalibrateDescant::ResetFit()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
    fInitial->Copy(*fFit);
    fFit->SetLineColor(2);
    fFit->SetLineStyle(1);
@@ -737,13 +737,13 @@ void TCalibrateDescant::ResetFit()
 
 void TCalibrateDescant::Save()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
 }
 
 void TCalibrateDescant::AddCalibrationPoint(double value, double uncertainty)
 {
    // check if point already exists for this energy and update it if so
-   int       i;
+   int       i = 0;
    Double_t* x = fCalibrations[fCurrentProjection]->GetX();
    for(i = 0; i < fCalibrations[fCurrentProjection]->GetN(); ++i) {
       if(x[i] == SourceEnergy(fSource)) {
@@ -759,9 +759,12 @@ void TCalibrateDescant::AddCalibrationPoint(double value, double uncertainty)
 
 void TCalibrateDescant::FitCanvasZoomed()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
    // update range of fit functions
-   Double_t xmin, ymin, xmax, ymax;
+   Double_t xmin = 0.;
+   Double_t ymin = 0.;
+   Double_t xmax = 0.;
+   Double_t ymax = 0.;
    fFitCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
 
    std::cout << "updating ranges to " << xmin << " - " << xmax << std::endl;
@@ -779,13 +782,13 @@ void TCalibrateDescant::FitCanvasZoomed()
 
 void TCalibrateDescant::CalibrationCanvasZoomed()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
    // nothing to do for this one?
 }
 
 void TCalibrateDescant::Status(Int_t px, Int_t py, Int_t, TObject* selected)
 {
-   // std::cout<<__PRETTY_FUNCTION__<<std::endl;
+   // std::cout<<__PRETTY_FUNCTION__<<std::endl; // NOLINT
    fStatusBar->SetText(selected->GetName(), 0);
    fStatusBar->SetText(selected->GetTitle(), 1);
    fStatusBar->SetText(selected->GetObjectInfo(px, py), 2);

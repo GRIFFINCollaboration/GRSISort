@@ -27,7 +27,11 @@ class TAnalysisHistLoop : public StoppableThread {
 public:
    static TAnalysisHistLoop* Get(std::string name = "");
 
-   ~TAnalysisHistLoop() override;
+   TAnalysisHistLoop(const TAnalysisHistLoop&)                = delete;
+   TAnalysisHistLoop(TAnalysisHistLoop&&) noexcept            = delete;
+   TAnalysisHistLoop& operator=(const TAnalysisHistLoop&)     = delete;
+   TAnalysisHistLoop& operator=(TAnalysisHistLoop&&) noexcept = delete;
+   ~TAnalysisHistLoop();
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>& InputQueue()
@@ -39,7 +43,7 @@ public:
    void        SetOutputFilename(const std::string& name);
    std::string GetOutputFilename() const;
 
-   void        LoadLibrary(std::string library);
+   void        LoadLibrary(const std::string& library);
    std::string GetLibraryName() const;
    void        ClearHistograms();
 
@@ -75,7 +79,9 @@ private:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>> fInputQueue;
 #endif
 
-   ClassDefOverride(TAnalysisHistLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TAnalysisHistLoop, 0)   // NOLINT
+   /// \endcond
 };
 
 /*! @} */

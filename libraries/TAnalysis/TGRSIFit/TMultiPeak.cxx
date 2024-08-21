@@ -90,7 +90,7 @@ void TMultiPeak::InitNames()
    FixParameter(0, fPeakVec.size());
 }
 
-TMultiPeak::TMultiPeak(const TMultiPeak& copy) : TGRSIFit(), fBackground(nullptr)
+TMultiPeak::TMultiPeak(const TMultiPeak& copy) : TGRSIFit(copy)
 {
    copy.Copy(*this);
 }
@@ -216,7 +216,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
       // Get Median sigma
       sigma_list[i] = GetParameter(6 * i + 7);
    }
-   std::sort(sigma_list.begin(), sigma_list.end(), std::greater<Double_t>());
+   std::sort(sigma_list.begin(), sigma_list.end(), std::greater<>());
    Double_t median = sigma_list.at(static_cast<int>(sigma_list.size() / 2.));
 
    Double_t range_low  = 0.;
@@ -444,8 +444,7 @@ void TMultiPeak::DrawPeaks()
    Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
    Double_t npeaks = fPeakVec.size();
-   for(size_t i = 0; i < fPeakVec.size(); ++i) {
-      TPeak* peak = fPeakVec.at(i);
+   for(auto* peak : fPeakVec) {
       // Should be good enough to draw between -2 and +2 fwhm
       Double_t centroid = peak->GetCentroid();
       Double_t range    = 2. * peak->GetFWHM();

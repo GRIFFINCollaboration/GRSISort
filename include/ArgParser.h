@@ -85,7 +85,7 @@ public:
    ArgParseConfig(ArgParseConfig&&) noexcept            = default;
    ArgParseConfig& operator=(const ArgParseConfig&)     = default;
    ArgParseConfig& operator=(ArgParseConfig&&) noexcept = default;
-   ~ArgParseConfig() override                           = default;
+   ~ArgParseConfig()                                    = default;
 
    std::string flag_name() const override
    {

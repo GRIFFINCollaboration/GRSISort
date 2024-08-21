@@ -32,12 +32,12 @@
 
 class ExampleTreeSelector : public TGRSISelector {   // Must be same name as .C and .h
 public:
-   ExampleTreeSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(nullptr), fScep(nullptr), fZds(nullptr), fGriffinBgo(nullptr)
+   explicit ExampleTreeSelector(TTree* /*tree*/ = nullptr) : TGRSISelector(), fGrif(nullptr), fScep(nullptr), fZds(nullptr), fGriffinBgo(nullptr)
    {
       SetOutputPrefix("ExampleTree");   // Changes prefix of output file
    }
    // These functions are expected to exist
-   virtual ~ExampleTreeSelector() {}
+   virtual ~ExampleTreeSelector() = default;
    virtual Int_t Version() const { return 1; }
    void          CreateHistograms();
    void          FillHistograms();

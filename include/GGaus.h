@@ -8,12 +8,14 @@
 
 class GGaus : public TF1 {
 public:
+   GGaus();
    GGaus(Double_t xlow, Double_t xhigh, Option_t* opt = "gsc");
-   // GGaus(Double_t xlow,Double_t xhigh,int bg_order=1,Option_t *opt="gsc");  make this a thing.  pcb.
    GGaus(Double_t xlow, Double_t xhigh, TF1* bg, Option_t* opt = "gsc");
    GGaus(const GGaus&);
-   GGaus();
-   ~GGaus() override;
+   GGaus(GGaus&&) noexcept            = default;
+   GGaus& operator=(const GGaus&)     = default;
+   GGaus& operator=(GGaus&&) noexcept = default;
+   ~GGaus()                           = default;
 
    void Copy(TObject&) const override;
    void Print(Option_t* opt = "") const override;
@@ -41,6 +43,9 @@ public:
    // Double_t GetIntegralAreaErr();
    // Double_t GetIntegralAreaErr(Double_t int_low, Double_t int_high);
 
+   static Bool_t CompareEnergy(const GGaus& lhs, const GGaus& rhs) { return lhs.GetCentroid() < rhs.GetCentroid(); }
+   static Bool_t CompareArea(const GGaus& lhs, const GGaus& rhs) { return lhs.GetArea() < rhs.GetArea(); }
+
 protected:
    void SetArea(Double_t a) { fArea = a; }
    void SetAreaErr(Double_t d_a) { fDArea = d_a; }
@@ -54,12 +59,6 @@ protected:
    void SetChi2(Double_t chi2) { fChi2 = chi2; }
    void SetNdf(Double_t Ndf) { fNdf = Ndf; }
 
-public:
-   // void CheckArea();
-   // void CheckArea(Double_t int_low, Double_t int_high);
-   static Bool_t CompareEnergy(const GGaus& lhs, const GGaus& rhs) { return lhs.GetCentroid() < rhs.GetCentroid(); }
-   static Bool_t CompareArea(const GGaus& lhs, const GGaus& rhs) { return lhs.GetArea() < rhs.GetArea(); }
-
 private:
    double fArea{0.};
    double fDArea{0.};
@@ -69,14 +68,16 @@ private:
    double fSum{0.};
    double fDSum{0.};
 
-   Bool_t IsInitialized() const { return init_flag; }
-   void   SetInitialized(Bool_t flag = true) { init_flag = flag; }
-   bool   init_flag{false};
+   Bool_t IsInitialized() const { return fInitFlag; }
+   void   SetInitialized(Bool_t flag = true) { fInitFlag = flag; }
+   bool   fInitFlag{false};
 
    TF1 fBGFit;
    TF1 fBGHist;
 
-   ClassDefOverride(GGaus, 2)
+   /// /cond CLASSIMP
+   ClassDefOverride(GGaus, 2)   // NOLINT
+                                /// /endcond
 };
 
 #endif

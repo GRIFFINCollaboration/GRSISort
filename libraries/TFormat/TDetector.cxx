@@ -1,29 +1,15 @@
 #include "TDetector.h"
 #include "TClass.h"
 
-TDetector::TDetector()
-{
-   /// Default constructor.
-#if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
-   Class()->IgnoreTObjectStreamer(kTRUE);
-#endif
-}
-
 TDetector::TDetector(const TDetector& rhs) : TObject(rhs)
 {
    /// Default Copy constructor.
-#if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
-   Class()->IgnoreTObjectStreamer(kTRUE);
-#endif
    rhs.Copy(*this);
 }
 
-TDetector::TDetector(TDetector&& rhs) : TObject(rhs)
+TDetector::TDetector(TDetector&& rhs) noexcept : TObject(rhs)
 {
    /// Default Move constructor.
-#if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
-   Class()->IgnoreTObjectStreamer(kTRUE);
-#endif
    rhs.Copy(*this);
 }
 

@@ -1,5 +1,5 @@
-#ifndef TCAL_H__
-#define TCAL_H__
+#ifndef TCAL_H
+#define TCAL_H
 
 /** \addtogroup Calibration
  *  @{
@@ -45,23 +45,24 @@ class TCal : public TGraphErrors {
 public:
    TCal();
    TCal(const char* name, const char* title);
-   ~TCal() override;
-
-   TCal(const TCal& copy);
+   TCal(const TCal&);
+   TCal(TCal&&) noexcept            = default;
+   TCal& operator=(const TCal&)     = default;
+   TCal& operator=(TCal&&) noexcept = default;
+   ~TCal()                          = default;
 
    // pure virtual functions
    virtual Bool_t IsGroupable() const = 0;
 
-public:
    void                          Copy(TObject& obj) const override;
    virtual void                  WriteToChannel() const { Error("WriteToChannel", "Not defined for %s", ClassName()); }
    virtual TF1*                  GetFitFunction() const { return fFitFunc; }
-   virtual void                  SetFitFunction(const TF1* func) { fFitFunc = const_cast<TF1*>(func); };
+   virtual void                  SetFitFunction(TF1* func) { fFitFunc = func; }
    virtual std::vector<Double_t> GetParameters() const;
    virtual Double_t              GetParameter(size_t parameter) const;
 
    TChannel* GetChannel() const;
-   Bool_t    SetChannel(const TChannel* chan);
+   Bool_t    SetChannel(TChannel* chan);
    Bool_t    SetChannel(UInt_t chanNum);
    void      Print(Option_t* opt = "") const override;
    void      Clear(Option_t* opt = "") override;
@@ -78,13 +79,13 @@ protected:
    void InitTCal();
 
 private:
-   TRef      fChan;      ///< This points at the TChannel
-   TF1*      fFitFunc;   ///< Fit function representing calibration
-   TH1*      fHist;      ///< Histogram that was fit by the TPeak.
-   TNucleus* fNuc;       ///< Nucleus that we are calibrating against
+   TRef      fChan{nullptr};      ///< This points at the TChannel
+   TF1*      fFitFunc{nullptr};   ///< Fit function representing calibration
+   TH1*      fHist{nullptr};      ///< Histogram that was fit by the TPeak.
+   TNucleus* fNuc{nullptr};       ///< Nucleus that we are calibrating against
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCal, 2);   // Abstract Class for Calibrations
+   ClassDefOverride(TCal, 2)   // NOLINT
    /// \endcond
 };
 /*! @} */

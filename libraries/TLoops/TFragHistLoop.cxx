@@ -45,7 +45,7 @@ void TFragHistLoop::ClearQueue()
 bool TFragHistLoop::Iteration()
 {
    std::shared_ptr<const TFragment> event;
-   fInputSize = fInputQueue->Pop(event);
+   InputSize(fInputQueue->Pop(event));
 
    if(event) {
       if(fOutputFile == nullptr) {
@@ -53,7 +53,7 @@ bool TFragHistLoop::Iteration()
       }
 
       fCompiledHistograms.Fill(event);
-      ++fItemsPopped;
+      IncrementItemsPopped();
       return true;
    }
    if(fInputQueue->IsFinished()) {
@@ -108,9 +108,9 @@ void TFragHistLoop::Write()
    }
 }
 
-void TFragHistLoop::LoadLibrary(std::string library)
+void TFragHistLoop::LoadLibrary(const std::string& library)
 {
-   fCompiledHistograms.Load(std::move(library), "MakeFragmentHistograms");
+   fCompiledHistograms.Load(library, "MakeFragmentHistograms");
 }
 
 std::string TFragHistLoop::GetLibraryName() const

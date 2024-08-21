@@ -50,11 +50,11 @@ static unsigned int gCreditsHeight = 0;
 
 static struct timeval gPopupTime;
 
-static const char* gConception[] = {"P. C. Bender", nullptr};
+static std::array<const char*, 2> gConception = {"P. C. Bender", nullptr};
 
-static const char* gLeadDevelopers[] = {"V. Bildstein", "P. C. Bender", nullptr};
+static std::array<const char*, 3> gLeadDevelopers = {"V. Bildstein", "P. C. Bender", nullptr};
 
-static const char* gKeyContributors[] = {"R. Dunlop", "D. Miller", nullptr};
+static std::array<const char*, 3> gKeyContributors = {"R. Dunlop", "D. Miller", nullptr};
 
 static char** gContributors = nullptr;
 
@@ -140,7 +140,7 @@ static Pixmap GetRootLogo()
    file.append(getenv("GRSISYS"));
    file.append("/libraries/TGRSIint/grsisplash_bw.xpm");
 
-   int ret = XpmReadFileToPixmap(gDisplay, gLogoWindow, const_cast<char*>(file.c_str()), &logo, nullptr, &attr);
+   int ret = XpmReadFileToPixmap(gDisplay, gLogoWindow, file.data(), &logo, nullptr, &attr);
    XpmFreeAttributes(&attr);
 
    if(ret == XpmSuccess || ret == XpmColorError) {
@@ -162,23 +162,23 @@ static void ReadContributors()
    /// Read the file $ROOTSYS/README/CREDITS for the names of the
    /// contributors.
 
-   char buf[2048];
+   std::array<char, 2048> buf;
 #ifdef ROOTDOCDIR
-   snprintf(buf, sizeof(buf), "%s/CREDITS", ROOTDOCDIR);
+   snprintf(buf.data(), buf.size(), "%s/CREDITS", ROOTDOCDIR);
 #else
-   snprintf(buf, sizeof(buf), "%s/README/CREDITS", getenv("ROOTSYS"));
+   snprintf(buf.data(), buf.size(), "%s/README/CREDITS", getenv("ROOTSYS"));
 #endif
 
    gContributors = nullptr;
 
-   FILE* f = fopen(buf, "r");
+   FILE* f = fopen(buf.data(), "r");
    if(f == nullptr) {
       return;
    }
 
    int cnt = 0;
-   while(fgets(buf, sizeof(buf), f) != nullptr) {
-      if(strncmp(buf, "N: ", 3) == 0) {
+   while(fgets(buf.data(), buf.size(), f) != nullptr) {
+      if(strncmp(buf.data(), "N: ", 3) == 0) {
          cnt++;
       }
    }
@@ -186,13 +186,13 @@ static void ReadContributors()
 
    cnt = 0;
    rewind(f);
-   while(fgets(buf, sizeof(buf), f) != nullptr) {
-      if(strncmp(buf, "N: ", 3) == 0) {
-         int len      = strlen(buf);
+   while(fgets(buf.data(), buf.size(), f) != nullptr) {
+      if(strncmp(buf.data(), "N: ", 3) == 0) {
+         int len      = strlen(buf.data());
          buf[len - 1] = 0;   // remove \n
          len -= 3;           // remove "N: "
          gContributors[cnt] = new char[len];
-         strncpy(gContributors[cnt], buf + 3, len);
+         strncpy(gContributors[cnt], &(buf[3]), len);
          cnt++;
       }
    }
@@ -205,10 +205,10 @@ static void DrawVersion()
 {
    /// Draw version string.
 
-   char version[80];
-   snprintf(version, 80, "Version %s", GRSI_RELEASE);
+   std::array<char, 80> version;
+   snprintf(version.data(), version.size(), "Version %s", GRSI_RELEASE);
 
-   XDrawString(gDisplay, gLogoWindow, gGC, 15, gHeight - 20, version, strlen(version));
+   XDrawString(gDisplay, gLogoWindow, gGC, 15, gHeight - 20, version.data(), strlen(version.data()));
 }
 
 static void DrawROOTCredit()
@@ -224,27 +224,26 @@ static int DrawCreditItem(const char* creditItem, const char** members, int y, b
 {
    /// Draw credit item.
 
-   char credit[1024];
-   int  i;
-   int  lineSpacing = gFont->max_bounds.ascent + gFont->max_bounds.descent;
+   std::array<char, 1024> credit;
+   int                    lineSpacing = gFont->max_bounds.ascent + gFont->max_bounds.descent;
 
-   strlcpy(credit, creditItem, sizeof(credit));
-   for(i = 0; (members != nullptr) && (members[i] != nullptr); i++) {
+   strlcpy(credit.data(), creditItem, credit.size());
+   for(int i = 0; (members != nullptr) && (members[i] != nullptr); i++) {
       if(i != 0) {
-         strlcat(credit, ", ", sizeof(credit));
+         strlcat(credit.data(), ", ", credit.size());
       }
-      if(XTextWidth(gFont, credit, strlen(credit)) + XTextWidth(gFont, members[i], strlen(members[i])) >
+      if(XTextWidth(gFont, credit.data(), strlen(credit.data())) + XTextWidth(gFont, members[i], strlen(members[i])) >
          static_cast<int>(gCreditsWidth)) {
          if(draw) {
-            XDrawString(gDisplay, gCreditsPixmap, gGC, 0, y, credit, strlen(credit));
+            XDrawString(gDisplay, gCreditsPixmap, gGC, 0, y, credit.data(), strlen(credit.data()));
          }
          y += lineSpacing;
-         strlcpy(credit, "   ", sizeof(credit));
+         strlcpy(credit.data(), "   ", credit.size());
       }
-      strlcat(credit, members[i], sizeof(credit));
+      strlcat(credit.data(), members[i], credit.size());
    }
    if(draw) {
-      XDrawString(gDisplay, gCreditsPixmap, gGC, 0, y, credit, strlen(credit));
+      XDrawString(gDisplay, gCreditsPixmap, gGC, 0, y, credit.data(), strlen(credit.data()));
    }
 
    return y;
@@ -262,15 +261,15 @@ static int DrawCredits(bool draw, bool)
    int lineSpacing = gFont->max_bounds.ascent + gFont->max_bounds.descent;
    int y           = lineSpacing;
 
-   y = DrawCreditItem("Conception: ", gConception, y, draw);
+   y = DrawCreditItem("Conception: ", gConception.data(), y, draw);
 
    y += 2 * lineSpacing - 1;
 
-   y = DrawCreditItem("Lead Developers: ", gLeadDevelopers, y, draw);
+   y = DrawCreditItem("Lead Developers: ", gLeadDevelopers.data(), y, draw);
 
    y += 2 * lineSpacing - 1;   // special layout tweak
 
-   y = DrawCreditItem("Key Contributions: ", gKeyContributors, y, draw);
+   y = DrawCreditItem("Key Contributions: ", gKeyContributors.data(), y, draw);
 
    y += 2 * lineSpacing - 1;   // special layout tweak
 
@@ -280,12 +279,9 @@ static int DrawCredits(bool draw, bool)
 
 void ScrollCredits(int ypos)
 {
-   XRectangle crect[1];
-   crect[0] = gCreditsRect;
-   XSetClipRectangles(gDisplay, gGC, 0, 0, crect, 1, Unsorted);
+   XSetClipRectangles(gDisplay, gGC, 0, 0, &gCreditsRect, 1, Unsorted);
 
-   XCopyArea(gDisplay, gCreditsPixmap, gLogoWindow, gGC, 0, ypos, gCreditsWidth, gCreditsHeight, gCreditsRect.x,
-             gCreditsRect.y);
+   XCopyArea(gDisplay, gCreditsPixmap, gLogoWindow, gGC, 0, ypos, gCreditsWidth, gCreditsHeight, gCreditsRect.x, gCreditsRect.y);
 
    XSetClipMask(gDisplay, gGC, None);
 }
@@ -430,7 +426,7 @@ void WaitLogo()
          }
          ypos++;
          if(ypos > static_cast<int>(gCreditsHeight - gCreditsRect.height - 50)) {
-            ypos = -int(gCreditsRect.height);
+            ypos = -static_cast<int>(gCreditsRect.height);
          }
          ScrollCredits(ypos);
          XFlush(gDisplay);

@@ -29,9 +29,9 @@ bool TDetBuildingLoop::Iteration()
 {
    std::vector<std::shared_ptr<const TFragment>> frags;
 
-   fInputSize = fInputQueue->Pop(frags);
-   if(fInputSize < 0) {
-      fInputSize = 0;
+   InputSize(fInputQueue->Pop(frags));
+   if(InputSize() < 0) {
+      InputSize(0);
    }
 
    if(frags.empty()) {
@@ -44,7 +44,7 @@ bool TDetBuildingLoop::Iteration()
       std::this_thread::sleep_for(std::chrono::milliseconds(100));
       return true;
    }
-   ++fItemsPopped;
+   IncrementItemsPopped();
 
    std::shared_ptr<TUnpackedEvent> outputEvent = std::make_shared<TUnpackedEvent>();
    outputEvent->SetRawData(frags);

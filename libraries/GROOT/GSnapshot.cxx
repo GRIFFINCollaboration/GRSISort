@@ -27,7 +27,10 @@ GSnapshot::GSnapshot(const char* snapshot_dir)
    bool dir_exists = !gSystem->AccessPathName(fSnapshotDir.c_str());
 
    if(dir_exists) {
-      long id, size, flags, modtime;
+      Long_t id      = 0;
+      Long_t size    = 0;
+      Long_t flags   = 0;
+      Long_t modtime = 0;
       gSystem->GetPathInfo(fSnapshotDir.c_str(), &id, &size, &flags, &modtime);
       bool output_dir_is_dir = (flags & 2) != 0;
       fCanWriteHere          = output_dir_is_dir;
@@ -60,7 +63,8 @@ void GSnapshot::Snapshot(TCanvas* can)
       ext = "pdf";   // TODO, make this smarter again...
    }
 
-   int date, time;
+   int date = 0;
+   int time = 0;
    TDatime::GetDateTime(TDatime().Get(), date, time);
 
    can->SaveAs(Form("%s/%s_%d_%d.%s", fSnapshotDir.c_str(), can->GetName(), date, time, ext.c_str()));

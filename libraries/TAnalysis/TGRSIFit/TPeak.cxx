@@ -66,10 +66,10 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
    fBackground->SetLineColor(kBlack);
 }
 
-TPeak::TPeak() : TGRSIFit("photopeakbg", TGRSIFunctions::PhotoPeakBG, 0, 1000, 10), fResiduals(new TGraph)
+TPeak::TPeak() : TGRSIFit("photopeakbg", TGRSIFunctions::PhotoPeakBG, 0, 1000, 10),
+                 fBackground(new TF1("background", TGRSIFunctions::StepBG, 0, 1000, 10)), fResiduals(new TGraph)
 {
    InitNames();
-   fBackground = new TF1("background", TGRSIFunctions::StepBG, 0, 1000, 10);
    fBackground->SetNpx(1000);
    fBackground->SetLineStyle(2);
    fBackground->SetLineColor(kBlack);
@@ -84,7 +84,7 @@ TPeak::~TPeak()
    delete fResiduals;
 }
 
-TPeak::TPeak(const TPeak& copy) : TGRSIFit(), fBackground(nullptr), fResiduals(nullptr)
+TPeak::TPeak(const TPeak& copy) : TGRSIFit(copy)
 {
    copy.Copy(*this);
 }
@@ -441,11 +441,11 @@ Double_t TPeak::GetIntegralArea()
    if(!GoodStatus()) { return 0.; }
 
    Double_t width = GetParameter("sigma");
-   Double_t xlow, xhigh;
-   Double_t int_low, int_high;
+   Double_t xlow  = 0.;
+   Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
-   int_low  = xlow - 10. * width;   // making the integration bounds a bit smaller, but still large enough. -JKS
-   int_high = xhigh + 10. * width;
+   Double_t int_low  = xlow - 10. * width;   // making the integration bounds a bit smaller, but still large enough. -JKS
+   Double_t int_high = xhigh + 10. * width;
    return GetIntegralArea(int_low, int_high);
 }
 

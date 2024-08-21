@@ -7,7 +7,8 @@
 
 class ExampleFragmentHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<ExampleFragmentHelper> {
 public:
-   ExampleFragmentHelper(TList* list) : TGRSIHelper(list)
+   explicit ExampleFragmentHelper(TList* list)
+      : TGRSIHelper(list)
    {
       Prefix("ExampleFragment");
       Setup();
@@ -17,13 +18,13 @@ public:
       return d->Book<TFragment>(std::move(*this), {"TFragment"});
    }
 
-   void CreateHistograms(unsigned int slot);
+   void CreateHistograms(unsigned int slot) override;
    void Exec(unsigned int slot, TFragment& frag);
 };
 
 // These are needed functions used by TDataFrameLibrary to create and destroy the instance of this helper
-extern "C" ExampleFragmentHelper* CreateHelper(TList* list) { return new ExampleFragmentHelper(list); }
+extern "C" ExampleFragmentHelper* CreateHelper(TList* list) { return new ExampleFragmentHelper(list); }   // NOLINT(misc-definitions-in-headers)
 
-extern "C" void DestroyHelper(TGRSIHelper* helper) { delete helper; }
+extern "C" void DestroyHelper(TGRSIHelper* helper) { delete helper; }   // NOLINT(misc-definitions-in-headers)
 
 #endif

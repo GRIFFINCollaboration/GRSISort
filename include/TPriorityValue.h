@@ -31,7 +31,7 @@ template <class T>
 class TPriorityValue {
 public:
    TPriorityValue() : fPriority(EPriority::kDefault) {}
-   TPriorityValue(T value, EPriority priority = EPriority::kDefault) : fValue(value), fPriority(priority) {}
+   explicit TPriorityValue(T value, EPriority priority = EPriority::kDefault) : fValue(value), fPriority(priority) {}
    TPriorityValue(const TPriorityValue& rhs) : fPriority(EPriority::kDefault) { *this = rhs; }
    TPriorityValue(TPriorityValue&& rhs) noexcept : fPriority(EPriority::kDefault) { *this = rhs; }
 
@@ -187,7 +187,7 @@ public:
    // copy-paste of original class (with 'T ' replace by 'std::vector<T> ', 'T>' by 'std::vector<T> >', 'T& ' by 'std::vector<T>& ', and 'T* ' by 'std::vector<T>* '):
    // minus the boolean conversion operator
    TPriorityValue() : fPriority(EPriority::kDefault) {}
-   TPriorityValue(std::vector<T> value, EPriority priority = EPriority::kDefault) : fValue(value), fPriority(priority) {}
+   explicit TPriorityValue(std::vector<T> value, EPriority priority = EPriority::kDefault) : fValue(value), fPriority(priority) {}
    TPriorityValue(const TPriorityValue& rhs) : fPriority(EPriority::kDefault) { *this = rhs; }
    TPriorityValue(TPriorityValue&& rhs) noexcept : fPriority(EPriority::kDefault) { *this = rhs; }
 
@@ -375,9 +375,8 @@ public:
 
    // copy-paste of original class (with 'T ' replace by 'std::string ', 'T>' by 'std::string>', 'T& ' by 'std::string& ', and 'T* ' by 'std::string* '):
    // minus the boolean conversion operator
-public:
    TPriorityValue() : fPriority(EPriority::kDefault) {}
-   TPriorityValue(std::string value, EPriority priority = EPriority::kDefault) : fValue(value), fPriority(priority) {}
+   explicit TPriorityValue(std::string value, EPriority priority = EPriority::kDefault) : fValue(std::move(value)), fPriority(priority) {}
    TPriorityValue(const TPriorityValue& rhs) : fPriority(EPriority::kDefault) { *this = rhs; }
    TPriorityValue(TPriorityValue&& rhs) noexcept : fPriority(EPriority::kDefault) { *this = rhs; }
 

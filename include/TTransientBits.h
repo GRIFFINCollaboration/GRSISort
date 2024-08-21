@@ -14,6 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <sstream>
+#include <iostream>
 #include <iomanip>
 #include <string>
 #include <map>
@@ -25,8 +26,7 @@ template <typename T>
 class TTransientBits {
 public:
    TTransientBits() : fBits(0) {}
-   //using explicit here (as recommended by clang-tidy breaks things like TS3.cxx line 24)
-   TTransientBits(const T& tmp) : fBits(tmp) {}
+   explicit TTransientBits(const T& tmp) : fBits(tmp) {}
    ~TTransientBits() = default;
 
    TTransientBits(const TTransientBits&)     = default;
@@ -62,8 +62,6 @@ public:
    void Print() const { std::cout << fBits << std::endl; }
 
    T fBits;
-
-   //	ClassDefT(TTransientBits<T>,0);
 };
 
 /*! @} */

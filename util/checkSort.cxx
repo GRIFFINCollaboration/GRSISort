@@ -36,8 +36,8 @@ int main(int argc, char** argv)
       std::map<TClass*, std::deque<double>>  lastEn;
 
       size_t index = 0;
-      for(auto branch : *(branches)) {
-         auto cls   = TClass::GetClass(branch->GetName());
+      for(auto* branch : *(branches)) {
+         auto* cls  = TClass::GetClass(branch->GetName());
          det[index] = static_cast<TDetector*>(cls->New());
          tree->SetBranchAddress(branch->GetName(), &det[index]);
          lastTS[cls] = std::deque<int64_t>(3, 0);

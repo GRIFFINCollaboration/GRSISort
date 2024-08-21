@@ -44,7 +44,7 @@ private:
    bool                  fMultipleErrors{false};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBadFragment, 1);
+   ClassDefOverride(TBadFragment, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

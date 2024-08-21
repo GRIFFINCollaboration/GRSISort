@@ -41,8 +41,12 @@ const char* const nulFileName = "/dev/null";
 
 class TGRSIProof : public TProof {
 public:
-   TGRSIProof()           = default;
-   ~TGRSIProof() override = default;
+   TGRSIProof()                                 = default;
+   TGRSIProof(const TGRSIProof&)                = delete;
+   TGRSIProof(TGRSIProof&&) noexcept            = delete;
+   TGRSIProof& operator=(const TGRSIProof&)     = delete;
+   TGRSIProof& operator=(TGRSIProof&&) noexcept = delete;
+   ~TGRSIProof()                                = default;
 
    static TGRSIProof* Open(const char* worker = "")
    {
@@ -75,7 +79,7 @@ public:
    }
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSIProof, 1);
+   ClassDefOverride(TGRSIProof, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

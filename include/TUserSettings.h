@@ -62,13 +62,17 @@
 
 class TUserSettings : public TNamed {
 public:
-   TUserSettings() {}
-   TUserSettings(std::string settingsFile)
+   TUserSettings() = default;
+   explicit TUserSettings(const std::string& settingsFile)
    {
-      if(!ReadSettings(settingsFile)) throw std::runtime_error("Failed to read user settings file!");
+      if(!ReadSettings(settingsFile)) { throw std::runtime_error("Failed to read user settings file!"); }
    }
 
-   ~TUserSettings() {}
+   TUserSettings(const TUserSettings&)                = default;
+   TUserSettings(TUserSettings&&) noexcept            = default;
+   TUserSettings& operator=(const TUserSettings&)     = default;
+   TUserSettings& operator=(TUserSettings&&) noexcept = default;
+   ~TUserSettings()                                   = default;
 
    bool ReadSettings(const std::string& settingsFile);
 
@@ -78,14 +82,14 @@ public:
    template <typename T>
    T Get(const std::string& parameter) const
    {
-      if(std::is_same<T, bool>::value) return GetBool(parameter);
-      if(std::is_same<T, int>::value) return GetInt(parameter);
-      if(std::is_same<T, double>::value) return GetDouble(parameter);
-      if(std::is_same<T, std::string>::value) return GetString(parameter);
-      if(std::is_same<T, std::vector<bool>>::value) return GetBoolVector(parameter);
-      if(std::is_same<T, std::vector<int>>::value) return GetIntVector(parameter);
-      if(std::is_same<T, std::vector<double>>::value) return GetDoubleVector(parameter);
-      if(std::is_same<T, std::vector<std::string>>::value) return GetStringVector(parameter);
+      if(std::is_same<T, bool>::value) { return GetBool(parameter); }
+      if(std::is_same<T, int>::value) { return GetInt(parameter); }
+      if(std::is_same<T, double>::value) { return GetDouble(parameter); }
+      if(std::is_same<T, std::string>::value) { return GetString(parameter); }
+      if(std::is_same<T, std::vector<bool>>::value) { return GetBoolVector(parameter); }
+      if(std::is_same<T, std::vector<int>>::value) { return GetIntVector(parameter); }
+      if(std::is_same<T, std::vector<double>>::value) { return GetDoubleVector(parameter); }
+      if(std::is_same<T, std::vector<std::string>>::value) { return GetStringVector(parameter); }
       throw std::runtime_error("Unknown type, only bool, int, double, std::string or vectors of those types allowed");
    }
 
@@ -129,11 +133,11 @@ public:
    void SetBool(const std::string& parameter, bool value) { fBool[parameter] = value; }
    void SetInt(const std::string& parameter, int value) { fInt[parameter] = value; }
    void SetDouble(const std::string& parameter, double value) { fDouble[parameter] = value; }
-   void SetString(const std::string& parameter, std::string value) { fString[parameter] = value; }
-   void SetBoolVector(const std::string& parameter, std::vector<bool> value) { fBoolVector[parameter] = value; }
-   void SetIntVector(const std::string& parameter, std::vector<int> value) { fIntVector[parameter] = value; }
-   void SetDoubleVector(const std::string& parameter, std::vector<double> value) { fDoubleVector[parameter] = value; }
-   void SetStringVector(const std::string& parameter, std::vector<std::string> value) { fStringVector[parameter] = value; }
+   void SetString(const std::string& parameter, const std::string& value) { fString[parameter] = value; }
+   void SetBoolVector(const std::string& parameter, const std::vector<bool>& value) { fBoolVector[parameter] = value; }
+   void SetIntVector(const std::string& parameter, const std::vector<int>& value) { fIntVector[parameter] = value; }
+   void SetDoubleVector(const std::string& parameter, const std::vector<double>& value) { fDoubleVector[parameter] = value; }
+   void SetStringVector(const std::string& parameter, const std::vector<std::string>& value) { fStringVector[parameter] = value; }
 
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* = "") override
@@ -164,7 +168,7 @@ private:
    std::vector<std::string> fSettingsFiles;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TUserSettings, 5)
+   ClassDefOverride(TUserSettings, 5)   // NOLINT
    /// \endcond
 };
 /*! @} */

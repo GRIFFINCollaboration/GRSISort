@@ -35,8 +35,12 @@
 class TParsingDiagnosticsData : public TObject {
 public:
    TParsingDiagnosticsData();
-   TParsingDiagnosticsData(const std::shared_ptr<const TFragment>& frag);
-   ~TParsingDiagnosticsData() {}
+   explicit TParsingDiagnosticsData(const std::shared_ptr<const TFragment>& frag);
+   TParsingDiagnosticsData(const TParsingDiagnosticsData&)                = default;
+   TParsingDiagnosticsData(TParsingDiagnosticsData&&) noexcept            = default;
+   TParsingDiagnosticsData& operator=(const TParsingDiagnosticsData&)     = default;
+   TParsingDiagnosticsData& operator=(TParsingDiagnosticsData&&) noexcept = default;
+   ~TParsingDiagnosticsData()                                             = default;
 
    void Update(const std::shared_ptr<const TFragment>& frag);
    using TObject::Print;
@@ -48,9 +52,9 @@ public:
 
    Long_t NumberOfHits() const { return fNumberOfHits; }
 
-   long DeadTime() const { return fDeadTime; }
-   long MinTimeStamp() const { return fMinTimeStamp; }
-   long MaxTimeStamp() const { return fMaxTimeStamp; }
+   int64_t DeadTime() const { return fDeadTime; }
+   int64_t MinTimeStamp() const { return fMinTimeStamp; }
+   int64_t MaxTimeStamp() const { return fMaxTimeStamp; }
 
 private:
    UInt_t fMinChannelId{0};   ///< minimum channel id per channel address
@@ -58,12 +62,12 @@ private:
 
    Long_t fNumberOfHits{0};   ///< number of hits per channel address
 
-   long fDeadTime{0};       ///< deadtime per channel address
-   long fMinTimeStamp{0};   ///< minimum timestamp per channel address
-   long fMaxTimeStamp{0};   ///< maximum timestamp per channel address
+   int64_t fDeadTime{0};       ///< deadtime per channel address
+   int64_t fMinTimeStamp{0};   ///< minimum timestamp per channel address
+   int64_t fMaxTimeStamp{0};   ///< maximum timestamp per channel address
 
    /// \cond CLASSIMP
-   ClassDefOverride(TParsingDiagnosticsData, 1);
+   ClassDefOverride(TParsingDiagnosticsData, 1)   // NOLINT
    /// \endcond
 };
 
@@ -73,7 +77,10 @@ public:
 
    TParsingDiagnostics();
    TParsingDiagnostics(const TParsingDiagnostics&);
-   ~TParsingDiagnostics() override;
+   TParsingDiagnostics(TParsingDiagnostics&&) noexcept            = default;
+   TParsingDiagnostics& operator=(const TParsingDiagnostics&)     = default;
+   TParsingDiagnostics& operator=(TParsingDiagnostics&&) noexcept = default;
+   ~TParsingDiagnostics();
 
 private:
    // fragment tree diagnostics (should these all be static?)
@@ -126,7 +133,7 @@ public:
       return 0;
    }
 
-   ULong64_t PPGCycleLength() { return fPPGCycleLength; }
+   ULong64_t PPGCycleLength() const { return fPPGCycleLength; }
 
    // other functions
    void WriteToFile(const char*) const;
@@ -137,7 +144,7 @@ public:
    void Draw(Option_t* opt = "") override;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TParsingDiagnostics, 2);
+   ClassDefOverride(TParsingDiagnostics, 2);   // NOLINT
    /// \endcond
 };
 /*! @} */

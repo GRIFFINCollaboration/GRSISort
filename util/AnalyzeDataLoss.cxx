@@ -24,7 +24,7 @@
 
 #include "TFragment.h"
 
-TList* AnalyzeDataLoss(TTree* tree, long entries = 0, TStopwatch* w = nullptr)
+TList* AnalyzeDataLoss(TTree* tree, int64_t entries = 0, TStopwatch* w = nullptr)
 {
 
    if(w == nullptr) {
@@ -44,50 +44,39 @@ TList* AnalyzeDataLoss(TTree* tree, long entries = 0, TStopwatch* w = nullptr)
    int fEntries = tree->GetEntries();
 
    tree->GetEntry(0);
-   long      entry;
-   long      skip     = 1000;   // skip this many entries before beginning
+   int64_t   entry    = 0;
+   int64_t   skip     = 1000;   // skip this many entries before beginning
    const int channels = 150;    // number of channels
-   // long lasttime = 0;
+   // int64_t lasttime = 0;
 
    //--------------- parameters for dealing with the roll-over of the AcceptedChannelId ----------------------//
-   unsigned long int acceptedMax = TMath::Power(2, 14);   // this is the maximum number that the AcceptedChannelId can be
-   int               rollovers[channels];                 // this is how many roll-overs we have had
-   // long int lastAccepted[channels];
-   bool         rolling[channels];   // array that tells us if we're rolling over in that channel
-   int          rollnum[channels];   // array that tells us how many times we've had accepted ID over the threshold
-   unsigned int rollingthreshold  = 1000;
-   int          rollnum_threshold = 20;   // if we have this many numbers above the threshold, turn rolling on or off
+   uint64_t                   acceptedMax = TMath::Power(2, 14);   // this is the maximum number that the AcceptedChannelId can be
+   std::array<int, channels>  rollovers;                           // this is how many roll-overs we have had
+   std::array<bool, channels> rolling;                             // array that tells us if we're rolling over in that channel
+   std::array<int, channels>  rollnum;                             // array that tells us how many times we've had accepted ID over the threshold
+   unsigned int               rollingthreshold  = 1000;
+   int                        rollnum_threshold = 20;   // if we have this many numbers above the threshold, turn rolling on or off
 
-   long int channelIds[channels][3];
-   long int acceptedChannelIds[channels][3];
-   long int timestamp[channels][3];
-   int      networkPacketNumber[3] = {0, 0, 0};
-   long int networkPacketTS[3]     = {0, 0, 0};
-   int      timebins               = 10000;
-   double   timemin                = 0;      // in seconds
-   double   timemax                = 1000;   // in seconds
-   auto*    accepted_hst =
-      new TH2D("accepted_hst", "Accepted Channel Id vs. Channel Number;Channel Number;Accepted Channel Id", channels, 0,
-               channels, 10000, 0, 10e5);
+   std::array<std::array<int64_t, 3>, channels> channelIds;
+   std::array<std::array<int64_t, 3>, channels> acceptedChannelIds;
+   std::array<std::array<int64_t, 3>, channels> timestamp;
+   std::array<int, 3>                           networkPacketNumber = {0, 0, 0};
+   std::array<int64_t, 3>                       networkPacketTS     = {0, 0, 0};
+   int                                          timebins            = 10000;
+   double                                       timemin             = 0;      // in seconds
+   double                                       timemax             = 1000;   // in seconds
+
+   auto* accepted_hst = new TH2D("accepted_hst", "Accepted Channel Id vs. Channel Number;Channel Number;Accepted Channel Id", channels, 0, channels, 10000, 0, 10e5);
    list->Add(accepted_hst);
-   auto* lostNetworkPackets =
-      new TH1D("lostNetworkPackets", "lost network packets;time [s];lost network packets", timebins, timemin, timemax);
+   auto* lostNetworkPackets = new TH1D("lostNetworkPackets", "lost network packets;time [s];lost network packets", timebins, timemin, timemax);
    list->Add(lostNetworkPackets);
-   auto* lostChannelIds =
-      new TH2D("lostChannelIds", "Lost Channel Id vs. Channel Number;Channel Number;Lost Channel Id", channels, 0,
-               channels, 10000, 0, 10e5);
+   auto* lostChannelIds = new TH2D("lostChannelIds", "Lost Channel Id vs. Channel Number;Channel Number;Lost Channel Id", channels, 0, channels, 10000, 0, 10e5);
    list->Add(lostChannelIds);
-   auto* lostAcceptedIds =
-      new TH2D("lostAcceptedIds", "Lost Accepted Channel Id vs. Channel Number;Channel Number;Lost Accepted Channel Id",
-               channels, 0, channels, 10000, 0, 10e5);
+   auto* lostAcceptedIds = new TH2D("lostAcceptedIds", "Lost Accepted Channel Id vs. Channel Number;Channel Number;Lost Accepted Channel Id", channels, 0, channels, 10000, 0, 10e5);
    list->Add(lostAcceptedIds);
-   auto* lostChannelIdsTime =
-      new TH2D("lostChannelIdsTime", "Lost Channel Id time vs. Channel Number;Channel Number;time [s]", channels, 0,
-               channels, timebins, timemin, timemax);
+   auto* lostChannelIdsTime = new TH2D("lostChannelIdsTime", "Lost Channel Id time vs. Channel Number;Channel Number;time [s]", channels, 0, channels, timebins, timemin, timemax);
    list->Add(lostChannelIdsTime);
-   auto* lostAcceptedIdsTime =
-      new TH2D("lostAcceptedIdsTime", "Lost Accepted Channel Id time vs. Channel Number;Channel Number;time [s]",
-               channels, 0, channels, timebins, timemin, timemax);
+   auto* lostAcceptedIdsTime = new TH2D("lostAcceptedIdsTime", "Lost Accepted Channel Id time vs. Channel Number;Channel Number;time [s]", channels, 0, channels, timebins, timemin, timemax);
    list->Add(lostAcceptedIdsTime);
 
    // initialize acceptedID array
@@ -106,7 +95,7 @@ TList* AnalyzeDataLoss(TTree* tree, long entries = 0, TStopwatch* w = nullptr)
    }
    // initialize timestamp array
    for(auto& i : timestamp) {
-      for(long& j : i) {
+      for(int64_t& j : i) {
          j = 0;
       }
    }
@@ -124,11 +113,11 @@ TList* AnalyzeDataLoss(TTree* tree, long entries = 0, TStopwatch* w = nullptr)
          continue;
       }
 
-      long          time      = currentFrag->GetTimeStamp();   // Get the timestamp of the x'th fragment
-      int           chan      = currentFrag->GetChannelNumber();
-      unsigned long accepted  = currentFrag->GetAcceptedChannelId();
-      unsigned long chanid    = currentFrag->GetChannelId();
-      unsigned long netpacket = currentFrag->GetNetworkPacketNumber();
+      int64_t  time      = currentFrag->GetTimeStamp();   // Get the timestamp of the x'th fragment
+      int      chan      = currentFrag->GetChannelNumber();
+      uint64_t accepted  = currentFrag->GetAcceptedChannelId();
+      uint64_t chanid    = currentFrag->GetChannelId();
+      uint64_t netpacket = currentFrag->GetNetworkPacketNumber();
 
       //---------------- this section deals with the rolling over of the AcceptedChannelId. -------------------//
       if(!rolling[chan] && accepted > (acceptedMax - rollingthreshold)) {
@@ -295,14 +284,14 @@ int main(int argc, char** argv)
       return 1;
    }
 
-   TTree* tree = dynamic_cast<TTree*>(file->Get("FragmentTree"));
+   auto* tree = dynamic_cast<TTree*>(file->Get("FragmentTree"));
 
    if(tree == nullptr) {
       printf("Failed to find fragment tree in file '%s'!\n", argv[1]);
       return 1;
    }
 
-   TTree* badtree = dynamic_cast<TTree*>(file->Get("BadFragmentTree"));
+   auto* badtree = dynamic_cast<TTree*>(file->Get("BadFragmentTree"));
 
    if(badtree == nullptr) {
       printf("Failed to find bad fragment tree in file '%s'!\n", argv[1]);
@@ -312,7 +301,7 @@ int main(int argc, char** argv)
                 << "% of the good entries" << std::endl;
    }
 
-   TTree* epicstree = dynamic_cast<TTree*>(file->Get("EpicsTree"));
+   auto* epicstree = dynamic_cast<TTree*>(file->Get("EpicsTree"));
 
    if(epicstree == nullptr) {
       printf("Failed to find epics tree in file '%s'!\n", argv[1]);
@@ -331,13 +320,12 @@ int main(int argc, char** argv)
    std::cout << argv[0] << ": starting AnalyzeDataLoss after " << w.RealTime() << " seconds" << std::endl;
    w.Continue();
 
-   TList* list;
-   long   entries = tree->GetEntries();
+   int64_t entries = tree->GetEntries();
    if(argc == 4 && atoi(argv[3]) < entries) {
       entries = atoi(argv[3]);
       std::cout << "Limiting processing of fragment tree to " << entries << " entries!" << std::endl;
    }
-   list = AnalyzeDataLoss(tree, entries, &w);
+   TList* list = AnalyzeDataLoss(tree, entries, &w);
 
    auto* outfile = new TFile(fileName.c_str(), "recreate");
    list->Write();

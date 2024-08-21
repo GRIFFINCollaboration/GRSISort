@@ -2,26 +2,15 @@
 
 #include <stdexcept>
 
-TCalManager::TCalManager()
-{
-   fClass = nullptr;   // fClass will point to a TClass which is made persistant through a root session within gROOT.
-   // So we don't need to worry about allocating it.
-}
-
 TCalManager::TCalManager(const char* classname)
 {
-   fClass = nullptr;
    SetClass(classname);
 }
 
 TCalManager::~TCalManager()
 {
-   CalMap::iterator iter;
-   for(iter = fCalMap.begin(); iter != fCalMap.end(); iter++) {
-      if(iter->second != nullptr) {
-         delete iter->second;
-      }
-      iter->second = nullptr;
+   for(auto& iter : fCalMap) {
+      delete iter.second;
    }
 }
 
@@ -40,7 +29,7 @@ void TCalManager::SetClass(const char* className)
    SetClass(TClass::GetClass(className));
 }
 
-void TCalManager::SetClass(const TClass* cl)
+void TCalManager::SetClass(TClass* cls)
 {
    /// Sets the Derived class of the TCal being held in the TCalManager
    if(fClass != nullptr) {
@@ -48,7 +37,7 @@ void TCalManager::SetClass(const TClass* cl)
       return;
    }
 
-   fClass = const_cast<TClass*>(cl);
+   fClass = cls;
    if(fClass == nullptr) {
       MakeZombie();
       Error("SetClass", "called with a null pointer");
@@ -66,7 +55,7 @@ void TCalManager::SetClass(const TClass* cl)
       return;
    }
    std::cout << "Changing TCalManager to type: " << className << std::endl;
-   Int_t nch  = strlen(className) + 2;
+   auto  nch  = strlen(className) + 2;
    auto* name = new char[nch];
    snprintf(name, nch, "%ss", className);
    SetName(name);
@@ -164,10 +153,7 @@ void TCalManager::Clear(Option_t*)
    /// This deletes all of the current TCal's. It also resets the class
    /// type to 0.
    for(auto& iter : fCalMap) {
-      if(iter.second != nullptr) {
-         delete iter.second;
-      }
-      iter.second = nullptr;
+      delete iter.second;
    }
    fCalMap.clear();
    fClass = nullptr;

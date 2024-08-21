@@ -36,7 +36,7 @@ public:
    TGriffin fLastGrif;
    TSceptar fLastScep;
 
-   AngularCorrelationSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(nullptr), fScep(nullptr)
+   explicit AngularCorrelationSelector(TTree* /*tree*/ = nullptr) : TGRSISelector(), fGrif(nullptr), fScep(nullptr)
    {
       SetOutputPrefix("AngularCorrelation");
       // calculate angle combinations
@@ -49,7 +49,7 @@ public:
          fAngleMapAddback.insert(std::make_pair(fAngleCombinationsAddback[i].first, i));
       }
    }
-   virtual ~AngularCorrelationSelector() {}
+   virtual ~AngularCorrelationSelector() = default;
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();
    void          FillHistograms();

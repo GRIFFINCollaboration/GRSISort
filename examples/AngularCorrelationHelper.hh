@@ -31,21 +31,16 @@ private:
 
    bool ExcludeDetector(int detector)
    {
-      for(auto exclude : fExcludedDetectors) {
-         if(detector == exclude) return true;
-      }
-      return false;
+      return std::binary_search(fExcludedDetectors.begin(), fExcludedDetectors.end(), detector);
    }
    bool ExcludeCrystal(int arraynumber)
    {
-      for(auto exclude : fExcludedCrystals) {
-         if(arraynumber == exclude) return true;
-      }
-      return false;
+      return std::binary_search(fExcludedCrystals.begin(), fExcludedCrystals.end(), arraynumber);
    }
 
 public:
-   AngularCorrelationHelper(TList* list) : TGRSIHelper(list)
+   explicit AngularCorrelationHelper(TList* list)
+      : TGRSIHelper(list)
    {
       Prefix("AngularCorrelation");
 
@@ -97,9 +92,6 @@ public:
 
 #endif
 
-extern "C" AngularCorrelationHelper* CreateHelper(TList* list)
-{
-   return new AngularCorrelationHelper(list);
-}
+extern "C" AngularCorrelationHelper* CreateHelper(TList* list) { return new AngularCorrelationHelper(list); }
 
 extern "C" void DestroyHelper(TGRSIHelper* helper) { delete helper; }

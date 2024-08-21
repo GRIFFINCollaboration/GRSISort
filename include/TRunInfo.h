@@ -57,7 +57,11 @@ class TRunInfo : public TSingleton<TRunInfo> {
 public:
    friend class TSingleton<TRunInfo>;
 
-   ~TRunInfo() override = default;
+   TRunInfo(const TRunInfo&)                = default;
+   TRunInfo(TRunInfo&&) noexcept            = default;
+   TRunInfo& operator=(const TRunInfo&)     = default;
+   TRunInfo& operator=(TRunInfo&&) noexcept = default;
+   ~TRunInfo()                              = default;
    TRunInfo();   // This should not be used.
    // root forces me have this here instead
    // of a private class member in
@@ -224,7 +228,7 @@ private:
 
    std::vector<int> fBadCycleList;   //!<!List of bad cycles to be used for cycle rejection
 
-   TDetectorInformation* fDetectorInformation;   //!<! pointer to detector specific information (set by each parser library)
+   TDetectorInformation* fDetectorInformation{nullptr};   //!<! pointer to detector specific information (set by each parser library)
 
 public:
    void Print(Option_t* opt = "") const override;
@@ -235,8 +239,8 @@ public:
    static std::string PrintToString(Option_t* opt = "");
 
    /// \cond CLASSIMP
-   ClassDefOverride(TRunInfo, 16);   // Contains the run-dependent information.
-                                     /// \endcond
+   ClassDefOverride(TRunInfo, 17)   // NOLINT
+                                    /// \endcond
 };
 /*! @} */
 #endif

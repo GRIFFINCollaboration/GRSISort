@@ -1,5 +1,5 @@
-#ifndef GSNAPSHOT_H_
-#define GSNAPSHOT_H_
+#ifndef GSNAPSHOT_H
+#define GSNAPSHOT_H
 
 #include <string>
 
@@ -11,8 +11,12 @@ class GSnapshot {
 public:
    static GSnapshot& Get();
 
-   GSnapshot(const char* snapshot_dir = nullptr);
-   ~GSnapshot() = default;
+   explicit GSnapshot(const char* snapshot_dir = nullptr);
+   GSnapshot(const GSnapshot&)                = default;
+   GSnapshot(GSnapshot&&) noexcept            = default;
+   GSnapshot& operator=(const GSnapshot&)     = default;
+   GSnapshot& operator=(GSnapshot&&) noexcept = default;
+   ~GSnapshot()                               = default;
 
    void Snapshot(TCanvas* can = nullptr);
 

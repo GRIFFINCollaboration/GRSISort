@@ -68,7 +68,6 @@ TGamma& TGamma::operator=(const TGamma& rhs)
    }
 
    if(this != &rhs) {
-      TArrow::operator=(rhs);
       fDebug                            = rhs.fDebug;
       fEnergy                           = rhs.fEnergy;
       fEnergyUncertainty                = rhs.fEnergyUncertainty;

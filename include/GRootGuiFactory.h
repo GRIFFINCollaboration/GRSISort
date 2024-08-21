@@ -1,4 +1,3 @@
-
 #ifndef ROOT_GRootGuiFactory
 #define ROOT_GRootGuiFactory
 
@@ -30,8 +29,12 @@ class GRootGuiFactory : public TGuiFactory {
 public:
    static void Init();
 
-   GRootGuiFactory(const char* name = "Root", const char* title = "GRUT GUI Factory");
-   ~GRootGuiFactory() override = default;
+   explicit GRootGuiFactory(const char* name = "Root", const char* title = "GRUT GUI Factory");
+   GRootGuiFactory(const GRootGuiFactory&)                = default;
+   GRootGuiFactory(GRootGuiFactory&&) noexcept            = default;
+   GRootGuiFactory& operator=(const GRootGuiFactory&)     = default;
+   GRootGuiFactory& operator=(GRootGuiFactory&&) noexcept = default;
+   ~GRootGuiFactory()                                     = default;
 
    TApplicationImp* CreateApplicationImp(const char* classname, int* argc, char** argv) override;
 
@@ -48,7 +51,9 @@ public:
    TControlBarImp* CreateControlBarImp(TControlBar* c, const char* title) override;
    TControlBarImp* CreateControlBarImp(TControlBar* c, const char* title, Int_t x, Int_t y) override;
 
-   ClassDefOverride(GRootGuiFactory, 0)   // Factory for ROOT GUI components
+   /// \cond CLASSIMP
+   ClassDefOverride(GRootGuiFactory, 0)   // NOLINT
+   /// \endcond
 };
 
 #endif

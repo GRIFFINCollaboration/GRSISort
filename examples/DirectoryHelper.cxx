@@ -101,6 +101,6 @@ void DirectoryHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifB
    }
 }
 
-void DirectoryHelper::EndOfSort(std::shared_ptr<std::map<std::string, TList>> list)
+void DirectoryHelper::EndOfSort(std::shared_ptr<std::map<std::string, TList>>& list)
 {
 }

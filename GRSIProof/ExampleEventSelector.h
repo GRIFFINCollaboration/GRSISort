@@ -30,12 +30,12 @@ public:
    TSceptar*    fScep;
    TGriffinBgo* fGriffinBgo;
 
-   ExampleEventSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fGrif(nullptr), fScep(nullptr), fGriffinBgo(nullptr)
+   explicit ExampleEventSelector(TTree* /*tree*/ = nullptr) : TGRSISelector(), fGrif(nullptr), fScep(nullptr), fGriffinBgo(nullptr)
    {
       SetOutputPrefix("ExampleEvent");   // Changes prefix of output file
    }
    // These functions are expected to exist
-   virtual ~ExampleEventSelector() {}
+   virtual ~ExampleEventSelector() = default;
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();
    void          FillHistograms();

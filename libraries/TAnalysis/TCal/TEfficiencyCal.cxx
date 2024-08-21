@@ -1,9 +1,5 @@
 #include "TEfficiencyCal.h"
 
-TEfficiencyCal::TEfficiencyCal() = default;
-
-TEfficiencyCal::~TEfficiencyCal() = default;
-
 TEfficiencyCal::TEfficiencyCal(const TEfficiencyCal& copy) : TCal(copy)
 {
    copy.Copy(*this);
@@ -47,11 +43,10 @@ void TEfficiencyCal::AddPoint(Double_t energy, Double_t area, Double_t dEnergy, 
    }
    // Will eventually write a method that doesn't need a nucleus
 
-   Double_t efficiency, dEfficiency;
    Double_t intensity = 1.0;   // nuc;
 
-   efficiency  = area / intensity;
-   dEfficiency = dArea / intensity;
+   Double_t efficiency  = area / intensity;
+   Double_t dEfficiency = dArea / intensity;
    // dEfficiency = efficiency*TMath::Sqrt(TMath::Power(dEfficiency/efficiency,2.0) + TMath::Power(dArea/area,2.0));
 
    SetPoint(GetN(), energy, efficiency);

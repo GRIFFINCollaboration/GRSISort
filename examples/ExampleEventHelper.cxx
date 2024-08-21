@@ -4,9 +4,9 @@ void ExampleEventHelper::CreateHistograms(unsigned int slot)
 {
    // try and get the cycle length if we have a PPG provided
    // only necessary for the first worker, this is shared with all other workers
-   if(fPpg != nullptr) {
+   if(Ppg() != nullptr) {
       // the ODB cycle length is in microseconds!
-      fCycleLength = fPpg->OdbCycleLength();
+      fCycleLength = Ppg()->OdbCycleLength();
       if(slot == 0) {
          std::stringstream str;
          str << "Got ODB cycle length " << fCycleLength << " us = " << fCycleLength / 1e6 << " s" << std::endl;
@@ -69,7 +69,7 @@ bool TimeRandom(TGriffinHit* h1, TZeroDegreeHit* h2)
 }
 
 // TODO: Change the function arguments to match the detectors you want to use and the declaration in the header file!
-void ExampleEventHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo, TZeroDegree& zds)
+void ExampleEventHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo, TZeroDegree& zds)   // NOLINT
 {
    // we use .at() here instead of [] so that we get meaningful error message if a histogram we try to fill wasn't created
    // e.g. because of a typo
@@ -138,7 +138,7 @@ void ExampleEventHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gr
    }
 }
 
-void ExampleEventHelper::EndOfSort(std::shared_ptr<std::map<std::string, TList>> list)
+void ExampleEventHelper::EndOfSort(std::shared_ptr<std::map<std::string, TList>>& list)
 {
    auto coincident = static_cast<TH2*>(list->at("").FindObject(fH2[0].at("griffinESuppAddbackMatrixBeta")));
    if(coincident == nullptr) {

@@ -25,7 +25,7 @@ TDeadtimeScalerQueue* TDeadtimeScalerQueue::Get()
 }
 
 TDeadtimeScalerQueue::TDeadtimeScalerQueue()
-   : fScalersInQueue(0), fStop(false), fStopwatch(new TStopwatch())
+   : fStopwatch(new TStopwatch())
 {
    fDeadtimeScalerQueueClassPointer = this;
    // When the Global Q is created, start a timer to see how long we are using it.
@@ -221,7 +221,7 @@ TRateScalerQueue* TRateScalerQueue::Get()
 }
 
 TRateScalerQueue::TRateScalerQueue()
-   : fScalersInQueue(0), fStop(false), fStopwatch(new TStopwatch())
+   : fStopwatch(new TStopwatch())
 {
    fRateScalerQueueClassPointer = this;
    // When the Global Q is created, start a timer to see how long we are using it.

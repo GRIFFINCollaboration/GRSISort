@@ -31,7 +31,7 @@ TGRSIOptions* TGRSIOptions::Get(int argc, char** argv)
    return fGRSIOptions;
 }
 
-TGRSIOptions::TGRSIOptions(int argc, char** argv) : fShouldExit(false)
+TGRSIOptions::TGRSIOptions(int argc, char** argv)
 {
    /// Ctor used when interpreter is initialized
    Load(argc, argv);
@@ -612,7 +612,9 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
       // if we haven't read any user setting create new ones and read the file, otherwise just read the file
       if(fUserSettings == nullptr) {
          fUserSettings = new TUserSettings(filename);
-      } else fUserSettings->ReadSettings(filename);
+      } else {
+         fUserSettings->ReadSettings(filename);
+      }
       return true;
 
    case kFileType::PRESETWINDOW: fInputWinFiles.push_back(filename); return true;

@@ -23,11 +23,11 @@
 
 class TBetaDecay : public TNamed {
 public:
-   TBetaDecay();
-   TBetaDecay(TNucleus* parent);
-   TBetaDecay(char* name);
+   TBetaDecay() = default;
+   explicit TBetaDecay(TNucleus* parent);
+   explicit TBetaDecay(char* name);
    TBetaDecay(Int_t Z, Int_t N);
-   ~TBetaDecay() override;
+   ~TBetaDecay();
 
    TBetaDecay(const TBetaDecay&)            = delete;
    TBetaDecay(TBetaDecay&&)                 = delete;
@@ -41,7 +41,7 @@ private:
    TNucleus* fParent{nullptr};          ///< The parent nucleus beta decaying
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBetaDecay, 1);   // Information about beta decays
+   ClassDefOverride(TBetaDecay, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

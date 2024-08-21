@@ -45,7 +45,7 @@ void TAnalysisHistLoop::ClearQueue()
 bool TAnalysisHistLoop::Iteration()
 {
    std::shared_ptr<TUnpackedEvent> event;
-   fInputSize = fInputQueue->Pop(event);
+   InputSize(fInputQueue->Pop(event));
 
    if(event) {
       if(fOutputFile == nullptr) {
@@ -53,7 +53,7 @@ bool TAnalysisHistLoop::Iteration()
       }
 
       fCompiledHistograms.Fill(event);
-      ++fItemsPopped;
+      IncrementItemsPopped();
       return true;
    }
    if(fInputQueue->IsFinished()) {
@@ -108,9 +108,9 @@ void TAnalysisHistLoop::Write()
    }
 }
 
-void TAnalysisHistLoop::LoadLibrary(std::string library)
+void TAnalysisHistLoop::LoadLibrary(const std::string& library)
 {
-   fCompiledHistograms.Load(std::move(library), "MakeAnalysisHistograms");
+   fCompiledHistograms.Load(library, "MakeAnalysisHistograms");
 }
 
 std::string TAnalysisHistLoop::GetLibraryName() const

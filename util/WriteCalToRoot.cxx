@@ -51,15 +51,15 @@ int main(int argc, char** argv)
    bool        update = false;
    std::string option = argv[1];
    std::transform(option.begin(), option.end(), option.begin(), ::tolower);
-   if(option.compare("update") == 0) {
+   if(option == "update") {
       update = true;
-   } else if(option.compare("replace") != 0) {
+   } else if(option == "replace") {
       std::cout << R"(Wrong option ")" << option << R"(", should be either "update" or "replace")" << std::endl;
       return 1;
    }
 
    std::cout << (update ? "Updating" : "Replacing") << " calibration for " << argc - 3 << " file";
-   if(argc > 4) std::cout << "s from " << argv[3] << " to " << argv[argc - 1];
+   if(argc > 4) { std::cout << "s from " << argv[3] << " to " << argv[argc - 1]; }
    std::cout << std::endl;
 
    // Open cal-file so that we can re-use it in the loop instead of opening tons of files
@@ -75,14 +75,14 @@ int main(int argc, char** argv)
          continue;
       }
 
-      TFile f(argv[i], "update");
-      if(!f.IsOpen()) {
+      TFile file(argv[i], "update");
+      if(!file.IsOpen()) {
          std::cout << DRED << "Could not open " << argv[i] << "." << RESET_COLOR << std::endl;
          badFile.push_back(argv[i]);
          continue;
       }
 
-      if((f.Get("FragmentTree") == nullptr) && (f.Get("AnalysisTree") == nullptr)) {
+      if((file.Get("FragmentTree") == nullptr) && (file.Get("AnalysisTree") == nullptr)) {
          std::cout << DRED << "Could not find a fragment ot analysis tree in " << argv[i] << "." << RESET_COLOR << std::endl;
          badTree.push_back(argv[i]);
          continue;
@@ -94,7 +94,7 @@ int main(int argc, char** argv)
       }
       TChannel::ReadCalFile(calfile);
       TChannel::WriteToRoot();
-      f.Close();
+      file.Close();
    }
 
    calfile.close();

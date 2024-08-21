@@ -23,8 +23,8 @@ class TBgo : public TDetector {
 public:
    TBgo();
    TBgo(const TBgo&);
-   TBgo(TBgo&&);
-   ~TBgo() override;
+   TBgo(TBgo&&) noexcept;
+   ~TBgo();
 
    TBgoHit* GetBgoHit(const Int_t& index) { return static_cast<TBgoHit*>(GetHit(index)); }
 
@@ -34,11 +34,11 @@ public:
 #endif
    void BuildHits() override {}   // no need to build any hits, everything already done in AddFragment
 
-   TBgo& operator=(const TBgo&);   //!<!
-   TBgo& operator=(TBgo&&);        //!<!
+   TBgo& operator=(const TBgo&);       //!<!
+   TBgo& operator=(TBgo&&) noexcept;   //!<!
 
 private:
-   static TVector3 gScintPosition[17];   //!<! Position of each BGO scintillator
+   static std::array<TVector3, 17> fScintPosition;   //!<! Position of each BGO scintillator
 
 public:
    void Copy(TObject&) const override;              //!<!
@@ -47,7 +47,7 @@ public:
    void Print(std::ostream& out) const override;    //!<!
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBgo, 1)   // Bgo Physics structure
+   ClassDefOverride(TBgo, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

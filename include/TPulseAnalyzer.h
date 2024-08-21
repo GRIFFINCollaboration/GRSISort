@@ -39,7 +39,7 @@ private:
       double baselineStDev;      // baseline variance
       double baselinefin;        // baseline
       double baselineStDevfin;   // baseline variance
-      int    bflag;              // flag for baseline determiniation
+      bool   bflag;              // flag for baseline determiniation
       // paramaters for oscillation
       double baseamp;     // amplitude of baseline oscillations
       double basefreq;    // tick frequency of baseline oscillations
@@ -102,12 +102,14 @@ private:
    };
 
    struct ShapePar {
-      double      chisq;
-      int         ndf;
-      int         type;
-      long double t[5];    // decay constants for the fits
-      long double am[5];   // associated aplitudes for the decay constants
-      double      rf[5];
+      double chisq;
+      int    ndf;
+      int    type;
+      // decay constants for the fits
+      long double t[5];    // NOLINT(*-avoid-c-arrays)
+                           // associated aplitudes for the decay constants
+      long double am[5];   // NOLINT(*-avoid-c-arrays)
+      double      rf[5];   // NOLINT(*-avoid-c-arrays)
 
       // new stuff necessary for compiliation of Kris' waveform analyzer changes
       long double chisq_ex;
@@ -118,14 +120,18 @@ private:
 
 public:
    TPulseAnalyzer();
-   TPulseAnalyzer(const TFragment& fragment, double = 0);
-   TPulseAnalyzer(const std::vector<Short_t>& wave, double = 0, std::string name = "");
+   explicit TPulseAnalyzer(const TFragment& fragment, double = 0);
+   explicit TPulseAnalyzer(const std::vector<Short_t>& wave, double = 0, std::string name = "");
+   TPulseAnalyzer(const TPulseAnalyzer&)                = default;
+   TPulseAnalyzer(TPulseAnalyzer&&) noexcept            = default;
+   TPulseAnalyzer& operator=(const TPulseAnalyzer&)     = default;
+   TPulseAnalyzer& operator=(TPulseAnalyzer&&) noexcept = default;
    virtual ~TPulseAnalyzer();
 
    void SetData(const TFragment& fragment, double = 0);
    void SetData(const std::vector<Short_t>& wave, double = 0);
    void Clear(Option_t* opt = "");
-   bool IsSet() { return set; }
+   bool IsSet() const { return set; }
 
    inline double Get_wpar_T0() { return cWpar->t0; }
    inline double Get_wpar_baselinefin() { return cWpar->baselinefin; }
@@ -146,11 +152,11 @@ public:
    double     fit_newT0();
    double     fit_rf(double = 2 * 8.48409);
    double     get_sig2noise();
-   short      good_baseline();
+   int16_t    good_baseline();
    void       print_WavePar();
    TH1I*      GetWaveHist();
    TGraph*    GetWaveGraph();
-   static int nameiter;
+   static int fNameIter;
    void       DrawWave();
    void       DrawT0fit();
    void       DrawRFFit();
@@ -164,15 +170,15 @@ public:
    int    GetCsIFitType();
 
 private:
-   bool         set;
-   WaveFormPar* cWpar;
-   int          cN;
+   bool         set{false};
+   WaveFormPar* cWpar{nullptr};
+   int          cN{0};
    // TFragment* frag;
    std::vector<Short_t> cWavebuffer;
-   SinPar*              spar;
-   ShapePar*            shpar;
-   WaveFormPar*         csiTestWpar[4];    // used for testing different CsI fit types
-   ShapePar*            csiTestShpar[4];   // used for testing different CsI fit types
+   SinPar*              spar{nullptr};
+   ShapePar*            shpar{nullptr};
+   WaveFormPar*         csiTestWpar[4]{nullptr};    // NOLINT(*-avoid-c-arrays)
+   ShapePar*            csiTestShpar[4]{nullptr};   // NOLINT(*-avoid-c-arrays)
 
    std::string fName;
 
@@ -183,10 +189,10 @@ private:
 
    // linear equation dataholders
    int         lineq_dim;
-   long double lineq_matrix[20][20];
-   long double lineq_vector[20];
-   long double lineq_solution[20];
-   long double copy_matrix[20][20];
+   long double lineq_matrix[20][20];   // NOLINT(*-avoid-c-arrays)
+   long double lineq_vector[20];       // NOLINT(*-avoid-c-arrays)
+   long double lineq_solution[20];     // NOLINT(*-avoid-c-arrays)
+   long double copy_matrix[20][20];    // NOLINT(*-avoid-c-arrays)
 
    // CsI functions
    void   GetCsIExclusionZone();
@@ -198,8 +204,8 @@ private:
    bool   CsISet;
    double EPS;
 
-   void SetCsI(bool option = "true") { CsISet = option; }
-   bool CsIIsSet() { return CsISet; }
+   void SetCsI(bool option = true) { CsISet = option; }
+   bool CsIIsSet() const { return CsISet; }
 
    // internal methods
    int         solve_lin_eq();
@@ -250,7 +256,7 @@ private:
    const static int BADCHISQ_AMPL = -1024 - 6;
 
    /// \cond CLASSIMP
-   ClassDef(TPulseAnalyzer, 4)
+   ClassDef(TPulseAnalyzer, 4)   // NOLINT
    /// \endcond
 };
 /*! @} */

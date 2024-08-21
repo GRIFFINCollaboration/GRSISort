@@ -13,7 +13,7 @@ int main(int argc, char** argv)
    }
 
    // try to open the root file
-   TFile* input = new TFile(argv[1]);
+   auto* input = new TFile(argv[1]);
    if(!input->IsOpen()) {
       std::cout << "Failed to open '" << argv[1] << "'" << std::endl;
       return 1;

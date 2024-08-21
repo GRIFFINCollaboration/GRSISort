@@ -1,5 +1,5 @@
-#ifndef TEFFICIENCYCAL_H__
-#define TEFFICIENCYCAL_H__
+#ifndef TEFFICIENCYCAL_H
+#define TEFFICIENCYCAL_H
 
 /** \addtogroup Calibration
  *  @{
@@ -11,13 +11,14 @@
 
 class TEfficiencyCal : public TCal {
 public:
-   TEfficiencyCal();
+   TEfficiencyCal() = default;
    TEfficiencyCal(const char* name, const char* title) : TCal(name, title) {}
-   ~TEfficiencyCal() override;
+   TEfficiencyCal(const TEfficiencyCal&);
+   TEfficiencyCal(TEfficiencyCal&&) noexcept            = default;
+   TEfficiencyCal& operator=(const TEfficiencyCal&)     = default;
+   TEfficiencyCal& operator=(TEfficiencyCal&&) noexcept = default;
+   ~TEfficiencyCal()                                    = default;
 
-   TEfficiencyCal(const TEfficiencyCal& copy);
-
-public:
    void Copy(TObject& obj) const override;
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6, 24, 0)
    using TGraph::AddPoint;
@@ -36,7 +37,7 @@ private:
    Double_t fScaleFactor{1.};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEfficiencyCal, 1);
+   ClassDefOverride(TEfficiencyCal, 1)   // NOLINT
    /// \endcond
 };
 /*! @} */

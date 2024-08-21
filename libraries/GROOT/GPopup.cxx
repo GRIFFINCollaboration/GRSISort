@@ -42,11 +42,9 @@ GPopup::GPopup(const TGWindow* p, const TGWindow* main, UInt_t w, UInt_t h, UInt
    MapWindow();
 }
 
-GPopup::~GPopup() = default;
-
 void GPopup::Print(Option_t*) const
 {
-   std::cout << __PRETTY_FUNCTION__ << " was called." << std::endl;
+   std::cout << __PRETTY_FUNCTION__ << " was called." << std::endl;   // NOLINT
 }
 
 void GPopup::CloseWindow()

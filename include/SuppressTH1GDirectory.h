@@ -1,5 +1,5 @@
-#ifndef SUPPRESSTH1GDIRECTORY
-#define SUPPRESSTH1GDIRECTORY
+#ifndef SUPPRESSTH1GDIRECTORY_H
+#define SUPPRESSTH1GDIRECTORY_H
 
 #include "TH1.h"
 
@@ -9,6 +9,10 @@
 class SuppressTH1GDirectory {
 public:
    SuppressTH1GDirectory() : prev_status(TH1::AddDirectoryStatus()) { TH1::AddDirectory(false); }
+   SuppressTH1GDirectory(const SuppressTH1GDirectory&)            = delete;
+   SuppressTH1GDirectory(SuppressTH1GDirectory&&)                 = delete;
+   SuppressTH1GDirectory& operator=(const SuppressTH1GDirectory&) = delete;
+   SuppressTH1GDirectory& operator=(SuppressTH1GDirectory&&)      = delete;
 
    ~SuppressTH1GDirectory() { TH1::AddDirectory(prev_status); }
 

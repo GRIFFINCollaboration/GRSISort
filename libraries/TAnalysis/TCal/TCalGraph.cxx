@@ -4,12 +4,9 @@
 #include "Globals.h"
 
 TCalGraph::TCalGraph()
-   : TGraphErrors()
 {
    Clear();
 }
-
-TCalGraph::~TCalGraph() = default;
 
 TCalGraph::TCalGraph(const TCalGraph& copy) : TGraphErrors(copy)
 {
@@ -21,11 +18,11 @@ void TCalGraph::Print(Option_t* opt) const
    std::cout << DRED;
    TGraphErrors::Print(opt);
    std::cout << RESET_COLOR;
-   for(auto it : fCompareMap) {
+   for(const auto& iter : fCompareMap) {
       std::cout << DBLUE << " Data " << RESET_COLOR << std::endl;
-      it.second.first.Print();
+      iter.second.first.Print();
       std::cout << DGREEN << " Source " << RESET_COLOR << std::endl;
-      it.second.second.Print();
+      iter.second.second.Print();
       std::cout << std::endl;
    }
 }
@@ -75,13 +72,13 @@ Int_t TCalGraph::AddLists(const TCalList& cal_list, const TSourceList& src_list)
    TCalList                                 missing_src_values;
 
    // Look in cal_list for src_list entries
-   for(const auto& cl : cal_map) {
-      const auto& it = src_map.find(cl.first);
-      if(it != src_map.end()) {   // we found the matching data point
-         fCompareMap.insert(std::make_pair(cl.first, std::make_pair(cl.second, it->second)));
+   for(const auto& cal : cal_map) {
+      const auto& iter = src_map.find(cal.first);
+      if(iter != src_map.end()) {   // we found the matching data point
+         fCompareMap.insert(std::make_pair(cal.first, std::make_pair(cal.second, iter->second)));
       } else {
-         missing_cal_values.AddPoint(cl.second);
-         missing_cal_values_vec.push_back(std::make_pair(cl.first, cl.second.Centroid()));
+         missing_cal_values.AddPoint(cal.second);
+         missing_cal_values_vec.emplace_back(cal.first, cal.second.Centroid());
       }
    }
 
@@ -90,7 +87,7 @@ Int_t TCalGraph::AddLists(const TCalList& cal_list, const TSourceList& src_list)
       const auto& cal_it = cal_map.find(src_it.first);
       if(cal_it == cal_map.end()) {   // we couldn't find the src data
          missing_src_values.AddPoint(src_it.second);
-         missing_src_values_vec.push_back(std::make_pair(src_it.first, src_it.second.Centroid()));
+         missing_src_values_vec.emplace_back(src_it.first, src_it.second.Centroid());
       }
    }
 
@@ -110,7 +107,7 @@ Int_t TCalGraph::AddLists(const TCalList& cal_list, const TSourceList& src_list)
 
    CorrectMissingPoints(missing_cal_values, missing_src_values);
 
-   return fCompareMap.size();
+   return static_cast<Int_t>(fCompareMap.size());
 }
 
 void TCalGraph::CorrectMissingPoints(TCalList& cal_list, TCalList& src_list)
@@ -118,8 +115,8 @@ void TCalGraph::CorrectMissingPoints(TCalList& cal_list, TCalList& src_list)
    const auto& cal_map = cal_list.Map();
    const auto& src_map = src_list.Map();
    std::cout << "Attempting to match points within +/- 2 keV" << std::endl;
-   for(auto cal_it : cal_map) {
-      for(auto src_it : src_map) {
+   for(const auto& cal_it : cal_map) {
+      for(const auto& src_it : src_map) {
          if(std::abs(static_cast<Int_t>(cal_it.first - src_it.first)) < 3.0) {
             fCompareMap.insert(std::make_pair(src_it.first, std::make_pair(cal_it.second, src_it.second)));
             std::cout << "Matched: " << cal_it.first << " and " << src_it.first << std::endl;

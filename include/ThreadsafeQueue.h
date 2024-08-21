@@ -28,7 +28,11 @@ template <typename T>
 class ThreadsafeQueue {
 public:
    explicit ThreadsafeQueue(std::string name = "default", size_t maxSize = 100000);
-   ~ThreadsafeQueue() = default;
+   ThreadsafeQueue(const ThreadsafeQueue&)                = default;
+   ThreadsafeQueue(ThreadsafeQueue&&) noexcept            = default;
+   ThreadsafeQueue& operator=(const ThreadsafeQueue&)     = default;
+   ThreadsafeQueue& operator=(ThreadsafeQueue&&) noexcept = default;
+   ~ThreadsafeQueue()                                     = default;
 #ifndef __CINT__
    int    Push(T obj);
    size_t Pop(T& output, int millisecond_wait = 1000);
@@ -66,8 +70,7 @@ private:
 #ifndef __CINT__
 template <typename T>
 ThreadsafeQueue<T>::ThreadsafeQueue(std::string name, size_t maxSize)
-   : fName(std::move(name)), max_queue_size(maxSize), items_in_queue(0), items_pushed(0), items_popped(0),
-     is_finished(false)
+   : fName(std::move(name)), max_queue_size(maxSize), is_finished(false)
 {
 }
 

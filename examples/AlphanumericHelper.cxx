@@ -3,9 +3,10 @@
 void AlphanumericHelper::CreateHistograms(unsigned int slot)
 {
    // get the channel map and loop over it, building a map of array number to channel address
-   std::unordered_map<unsigned int, TChannel*>* channelMap = TChannel::GetChannelMap();
+   // the NOLINT is there to keep clang-tidy from wrongly complaining that these variables need to be initialized
+   std::unordered_map<unsigned int, TChannel*>* channelMap = TChannel::GetChannelMap();   // NOLINT(cppcoreguidelines-init-variables)
    std::cout << "Got " << channelMap->size() << " channels" << std::endl;
-   std::map<int, unsigned int> address;
+   std::map<int, unsigned int> address;   // NOLINT(cppcoreguidelines-init-variables)
 
    for(auto channel : *channelMap) {
       // use only GRIFFIN channels

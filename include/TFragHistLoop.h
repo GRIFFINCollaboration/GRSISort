@@ -26,7 +26,11 @@ class TFragHistLoop : public StoppableThread {
 public:
    static TFragHistLoop* Get(std::string name = "");
 
-   ~TFragHistLoop() override;
+   TFragHistLoop(const TFragHistLoop&)                = delete;
+   TFragHistLoop(TFragHistLoop&&) noexcept            = delete;
+   TFragHistLoop& operator=(const TFragHistLoop&)     = delete;
+   TFragHistLoop& operator=(TFragHistLoop&&) noexcept = delete;
+   ~TFragHistLoop();
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& InputQueue()
@@ -38,7 +42,7 @@ public:
    void        SetOutputFilename(const std::string& name);
    std::string GetOutputFilename() const;
 
-   void        LoadLibrary(std::string library);
+   void        LoadLibrary(const std::string& library);
    std::string GetLibraryName() const;
    void        ClearHistograms();
 
@@ -74,7 +78,9 @@ private:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fInputQueue;
 #endif
 
-   ClassDefOverride(TFragHistLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TFragHistLoop, 0)   // NOLINT
+   /// \endcond
 };
 
 /*! @} */

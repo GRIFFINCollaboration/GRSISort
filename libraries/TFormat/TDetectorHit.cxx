@@ -12,7 +12,7 @@ TDetectorHit::TDetectorHit(const int& address)
    Clear();
    // this needs to happen here, after we call Clear
    // otherwise if will be cleared as well
-   fAddress = address;
+   fAddress = address;   // NOLINT
 
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
    Class()->IgnoreTObjectStreamer(kTRUE);

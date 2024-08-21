@@ -20,7 +20,7 @@ GValue::GValue(const char* name, double value, EPriority priority)
 {
 }
 
-GValue::GValue(const char* name) : TNamed(name, name), fValue(0.00), fPriority(EPriority::kDefault)
+GValue::GValue(const char* name) : TNamed(name, name)
 {
 }
 
@@ -109,7 +109,7 @@ bool GValue::AddValue(GValue* value, Option_t*)
       return false;
    }
    std::string temp_string = value->GetName();
-   if(temp_string == "") {
+   if(temp_string.empty()) {
       // default value, get rid of it and ignore;
       delete value;
       return false;
@@ -155,13 +155,13 @@ int GValue::WriteValFile(const std::string& filename, Option_t*)
       if(!outfile.is_open()) {
          return -1;
       }
-      for(auto iter = fValueVector.begin(); iter != fValueVector.end(); iter++) {
-         outfile << iter->second->PrintToString() << std::endl
+      for(auto& iter : fValueVector) {
+         outfile << iter.second->PrintToString() << std::endl
                  << std::endl;
       }
    } else {
-      for(auto iter = fValueVector.begin(); iter != fValueVector.end(); iter++) {
-         std::cout << iter->second->PrintToString() << std::endl
+      for(auto& iter : fValueVector) {
+         std::cout << iter.second->PrintToString() << std::endl
                    << std::endl;
       }
    }
@@ -174,8 +174,8 @@ std::string GValue::WriteToBuffer(Option_t*)
    if(GValue::Size() == 0) {
       return buffer;
    }
-   for(auto iter = fValueVector.begin(); iter != fValueVector.end(); iter++) {
-      buffer.append(iter->second->PrintToString());
+   for(auto& iter : fValueVector) {
+      buffer.append(iter.second->PrintToString());
       buffer.append("\n");
    }
    return buffer;
@@ -201,13 +201,13 @@ int GValue::ReadValFile(const char* filename, Option_t* opt)
    std::ifstream infile;
    infile.open(infilename.c_str());
    if(!infile) {
-      std::cerr << __PRETTY_FUNCTION__ << ":  could not open infile " << infilename << std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ":  could not open infile " << infilename << std::endl;   // NOLINT
       return -2;
    }
    infile.seekg(0, std::ios::end);
    size_t length = infile.tellg();
    if(length == 0) {
-      std::cerr << __PRETTY_FUNCTION__ << ":  infile " << infilename << " appears to be empty." << std::endl;
+      std::cerr << __PRETTY_FUNCTION__ << ":  infile " << infilename << " appears to be empty." << std::endl;   // NOLINT
       return -2;
    }
 
