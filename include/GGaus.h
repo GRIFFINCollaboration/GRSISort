@@ -76,7 +76,7 @@ private:
    TF1 fBGHist;
 
    /// /cond CLASSIMP
-   ClassDefOverride(GGaus, 2)   // NOLINT
+   ClassDefOverride(GGaus, 2)   // NOLINT(readability-else-after-return)
                                 /// /endcond
 };
 

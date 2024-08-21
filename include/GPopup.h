@@ -20,7 +20,7 @@ public:
    void Print(Option_t* opt = "") const override;
 
    /// /cond CLASSIMP
-   ClassDefOverride(GPopup, 0)   // NOLINT
+   ClassDefOverride(GPopup, 0)   // NOLINT(readability-else-after-return)
                                  /// /endcond
 };
 

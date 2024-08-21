@@ -86,7 +86,7 @@ private:
 #endif
 
    /// \cond CLASSIMP
-   ClassDefOverride(TFragWriteLoop, 0)   // NOLINT
+   ClassDefOverride(TFragWriteLoop, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 

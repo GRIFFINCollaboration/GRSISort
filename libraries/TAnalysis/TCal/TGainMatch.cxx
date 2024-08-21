@@ -837,7 +837,7 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    return true;
 }
 
-Double_t TGainMatch::HistCompare(Double_t* x, Double_t* par)   // NOLINT
+Double_t TGainMatch::HistCompare(Double_t* x, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    Int_t    bin     = fHist->GetXaxis()->FindBin(x[0] * par[2] + par[1]);
    Double_t content = fHist->GetBinContent(bin);

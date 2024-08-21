@@ -37,7 +37,7 @@ private:
    Double_t fScaleFactor{1.};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEfficiencyCal, 1)   // NOLINT
+   ClassDefOverride(TEfficiencyCal, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

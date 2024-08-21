@@ -75,7 +75,7 @@ private:
 #endif
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDetBuildingLoop, 0)   // NOLINT
+   ClassDefOverride(TDetBuildingLoop, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 

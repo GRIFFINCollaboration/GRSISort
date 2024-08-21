@@ -88,7 +88,7 @@ private:
    size_t fFileSize{0};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TRawFile, 0)   // NOLINT
+   ClassDefOverride(TRawFile, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

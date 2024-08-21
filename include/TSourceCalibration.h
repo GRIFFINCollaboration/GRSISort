@@ -288,7 +288,7 @@ private:
    TFile* fOutput{nullptr};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TSourceCalibration, 1)   // NOLINT
+   ClassDefOverride(TSourceCalibration, 1)   // NOLINT(readability-else-after-return)
                                              /// \endcond
 };
 

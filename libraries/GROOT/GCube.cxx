@@ -57,12 +57,12 @@ GCube::GCube(const char* name, const char* title, Int_t nbins, const Float_t* bi
    fNcells = (fNcells * (nbins + 3) * (nbins + 4)) / 6;
 }
 
-GCube::GCube(const GCube& rhs) : TH1()   // NOLINT calling TH1 constuctor to shut up g++, can't call TH1(rhs) because it's private
+GCube::GCube(const GCube& rhs) : TH1()   // NOLINT(readability-redundant-member-init)
 {
    rhs.Copy(*this);
 }
 
-GCube::GCube(GCube&& rhs) noexcept : TH1()   // NOLINT
+GCube::GCube(GCube&& rhs) noexcept : TH1()   // NOLINT(readability-redundant-member-init)
 {
    rhs.Copy(*this);
 }
@@ -1164,7 +1164,7 @@ void GCube::GetStats(Double_t* stats) const
    ///  the histogram.
 
    if(fBuffer != nullptr) {
-      const_cast<GCube*>(this)->BufferEmpty();   // NOLINT
+      const_cast<GCube*>(this)->BufferEmpty();   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    }
 
    if((fTsumw == 0 && fEntries > 0) || fXaxis.TestBit(TAxis::kAxisRange) || fYaxis.TestBit(TAxis::kAxisRange) ||
@@ -1393,12 +1393,12 @@ Double_t GCube::KolmogorovTest(const TH1* h2, Option_t* option) const
    opt.ToUpper();
 
    Double_t prb = 0;
-   auto*    h1  = const_cast<TH1*>(static_cast<const TH1*>(this));   // NOLINT
+   auto*    h1  = const_cast<TH1*>(static_cast<const TH1*>(this));   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    if(h2 == nullptr) {
       return 0;
    }
    TAxis* xaxis1 = h1->GetXaxis();
-   auto*  xaxis2 = const_cast<TAxis*>(h2->GetXaxis());   // NOLINT
+   auto*  xaxis2 = const_cast<TAxis*>(h2->GetXaxis());   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    Int_t  nc1    = xaxis1->GetNbins();
    Int_t  nc2    = xaxis2->GetNbins();
 
@@ -1896,7 +1896,7 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
    }
 
    // Create the projection histogram
-   char* pname = const_cast<char*>(name);   // NOLINT
+   char* pname = const_cast<char*>(name);   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    if(name != nullptr && strcmp(name, expectedName) == 0) {
       auto nch = strlen(GetName()) + 4;
       pname    = new char[nch];
@@ -1961,7 +1961,7 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
 
    // Copy the axis attributes and the axis labels if needed.
    h1->GetXaxis()->ImportAttributes(&fXaxis);
-   THashList* labels = const_cast<TAxis*>(&fXaxis)->GetLabels();   // NOLINT
+   THashList* labels = const_cast<TAxis*>(&fXaxis)->GetLabels();   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    if(labels != nullptr) {
       TIter       iL(labels);
       TObjString* lb = nullptr;
@@ -2490,7 +2490,7 @@ TH1* GCube::ShowBackground(Int_t niter, Option_t* option)
    //   The background is returned as a histogram.
    //   to be implemented (may be)
 
-   return reinterpret_cast<TH1*>(gROOT->ProcessLineFast(   // NOLINT
+   return reinterpret_cast<TH1*>(gROOT->ProcessLineFast(   // NOLINT(performance-no-int-to-ptr)
       Form(R"(TSpectrum2::StaticBackground((TH1*)0x%lx,%d,"%s"))", reinterpret_cast<ULong_t>(this), niter, option)));
 }
 
@@ -2670,7 +2670,7 @@ GCubeF::GCubeF(const GCubeF& rhs)
 }
 
 GCubeF::GCubeF(GCubeF&& rhs) noexcept
-   : GCube(rhs), TArrayF(rhs)
+   : GCube(std::move(rhs)), TArrayF(rhs)
 {
    rhs.Copy(*this);
 }
@@ -2725,7 +2725,7 @@ Double_t GCubeF::GetBinContent(Int_t bin) const
    // Get bin content.
 
    if(fBuffer != nullptr) {
-      const_cast<GCubeF*>(this)->BufferEmpty();   // NOLINT
+      const_cast<GCubeF*>(this)->BufferEmpty();   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    }
    if(bin < 0) {
       bin = 0;
@@ -2892,7 +2892,7 @@ GCubeD::GCubeD(const GCubeD& rhs)
 }
 
 GCubeD::GCubeD(GCubeD&& rhs) noexcept
-   : GCube(rhs), TArrayD(rhs)
+   : GCube(std::move(rhs)), TArrayD(rhs)
 {
    rhs.Copy(*this);
 }
@@ -2948,7 +2948,7 @@ Double_t GCubeD::GetBinContent(Int_t bin) const
 {
    // Get bin content.
    if(fBuffer != nullptr) {
-      const_cast<GCubeD*>(this)->BufferEmpty();   // NOLINT
+      const_cast<GCubeD*>(this)->BufferEmpty();   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    }
    if(bin < 0) {
       bin = 0;

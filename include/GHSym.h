@@ -117,7 +117,7 @@ private:
    TH2*     fMatrix{nullptr};   //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
 
    /// /cond CLASSIMP
-   ClassDefOverride(GHSym, 1)   // NOLINT
+   ClassDefOverride(GHSym, 1)   // NOLINT(readability-else-after-return)
                                 /// /endcond
 };
 
@@ -161,7 +161,7 @@ public:
    friend GHSymF operator/(GHSymF& h1, GHSymF& h2);
 
    /// /cond CLASSIMP
-   ClassDefOverride(GHSymF, 1)   // NOLINT
+   ClassDefOverride(GHSymF, 1)   // NOLINT(readability-else-after-return)
                                  /// /endcond
 };
 
@@ -205,7 +205,7 @@ public:
    friend GHSymD operator/(GHSymD& h1, GHSymD& h2);
 
    /// /cond CLASSIMP
-   ClassDefOverride(GHSymD, 1)   // NOLINT
+   ClassDefOverride(GHSymD, 1)   // NOLINT(readability-else-after-return)
                                  /// /endcond
 };
 #endif

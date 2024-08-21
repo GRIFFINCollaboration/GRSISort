@@ -117,7 +117,7 @@ private:
    TH2*     fMatrix{nullptr};   //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
 
    /// /cond CLASSIMP
-   ClassDefOverride(GCube, 1)   // NOLINT
+   ClassDefOverride(GCube, 1)   // NOLINT(readability-else-after-return)
                                 /// /endcond
 };
 
@@ -164,7 +164,7 @@ public:
    friend GCubeF operator/(GCubeF& h1, GCubeF& h2);
 
    /// /cond CLASSIMP
-   ClassDefOverride(GCubeF, 1)   // NOLINT
+   ClassDefOverride(GCubeF, 1)   // NOLINT(readability-else-after-return)
                                  /// /endcond
 };
 
@@ -211,7 +211,7 @@ public:
    friend GCubeD operator/(GCubeD& h1, GCubeD& h2);
 
    /// /cond CLASSIMP
-   ClassDefOverride(GCubeD, 1)   // NOLINT
+   ClassDefOverride(GCubeD, 1)   // NOLINT(readability-else-after-return)
                                  /// /endcond
 };
 #endif

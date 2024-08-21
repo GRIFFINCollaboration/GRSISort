@@ -239,7 +239,7 @@ public:
    static std::string PrintToString(Option_t* opt = "");
 
    /// \cond CLASSIMP
-   ClassDefOverride(TRunInfo, 17)   // NOLINT
+   ClassDefOverride(TRunInfo, 17)   // NOLINT(readability-else-after-return)
                                     /// \endcond
 };
 /*! @} */

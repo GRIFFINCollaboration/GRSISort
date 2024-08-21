@@ -55,7 +55,7 @@ public:
 
 private:
    /// /cond CLASSIMP
-   ClassDefOverride(GH2D, 1)   // NOLINT
+   ClassDefOverride(GH2D, 1)   // NOLINT(readability-else-after-return)
                                /// /endcond
 };
 

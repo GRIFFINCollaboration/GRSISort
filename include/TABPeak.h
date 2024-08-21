@@ -62,7 +62,7 @@ private:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TABPeak, 2)   // NOLINT
+   ClassDefOverride(TABPeak, 2)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

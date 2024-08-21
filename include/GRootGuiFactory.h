@@ -52,7 +52,7 @@ public:
    TControlBarImp* CreateControlBarImp(TControlBar* c, const char* title, Int_t x, Int_t y) override;
 
    /// \cond CLASSIMP
-   ClassDefOverride(GRootGuiFactory, 0)   // NOLINT
+   ClassDefOverride(GRootGuiFactory, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 

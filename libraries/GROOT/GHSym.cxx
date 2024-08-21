@@ -64,12 +64,12 @@ GHSym::GHSym(const char* name, const char* title, Int_t nbins, const Float_t* bi
    fNcells = (fNcells * (nbins + 3)) / 2;
 }
 
-GHSym::GHSym(const GHSym& rhs) : TH1()   // NOLINT
+GHSym::GHSym(const GHSym& rhs) : TH1()   // NOLINT(readability-redundant-member-init)
 {
    rhs.Copy(*this);
 }
 
-GHSym::GHSym(GHSym&& rhs) noexcept : TH1()   // NOLINT
+GHSym::GHSym(GHSym&& rhs) noexcept : TH1()   // NOLINT(readability-redundant-member-init)
 {
    rhs.Copy(*this);
 }
@@ -516,7 +516,7 @@ void GHSym::FillRandom(const char* fname, Int_t ntimes, TRandom* rng)
    //*-*--------------Start main loop ntimes
    for(int loop = 0; loop < ntimes; ++loop) {
       Double_t r1 = (rng != nullptr) ? rng->Rndm(loop) : gRandom->Rndm(loop);
-      ibin        = TMath::BinarySearch(nbins, &integral[0], r1);
+      ibin        = static_cast<int>(TMath::BinarySearch(nbins, &integral[0], r1));
       Int_t biny  = ibin / nbinsx;
       Int_t binx  = 1 + ibin - nbinsx * biny;
       ++biny;
@@ -983,7 +983,7 @@ void GHSym::GetRandom2(Double_t& x, Double_t& y)
    }
 
    Double_t r1   = gRandom->Rndm();
-   Int_t    ibin = TMath::BinarySearch(nbins, fIntegral, r1);
+   auto     ibin = static_cast<int>(TMath::BinarySearch(nbins, fIntegral, r1));
    Int_t    biny = ibin / nbinsx;
    Int_t    binx = ibin - nbinsx * biny;
    x             = fXaxis.GetBinLowEdge(binx + 1);
@@ -1018,7 +1018,7 @@ void GHSym::GetStats(Double_t* stats) const
    //  the histogram.
 
    if(fBuffer != nullptr) {
-      const_cast<GHSym*>(this)->BufferEmpty();   // NOLINT
+      const_cast<GHSym*>(this)->BufferEmpty();   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    }
 
    if((fTsumw == 0 && fEntries > 0) || fXaxis.TestBit(TAxis::kAxisRange) || fYaxis.TestBit(TAxis::kAxisRange)) {
@@ -1257,14 +1257,14 @@ Double_t GHSym::KolmogorovTest(const TH1* h2, Option_t* option) const
    opt.ToUpper();
 
    Double_t prb = 0;
-   TH1*     h1  = const_cast<TH1*>(static_cast<const TH1*>(this));   // NOLINT
+   TH1*     h1  = const_cast<TH1*>(static_cast<const TH1*>(this));   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    if(h2 == nullptr) {
       return 0;
    }
    TAxis* xaxis1 = h1->GetXaxis();
-   auto*  xaxis2 = const_cast<TAxis*>(h2->GetXaxis());   // NOLINT
+   auto*  xaxis2 = const_cast<TAxis*>(h2->GetXaxis());   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    TAxis* yaxis1 = h1->GetYaxis();
-   auto*  yaxis2 = const_cast<TAxis*>(h2->GetYaxis());   // NOLINT
+   auto*  yaxis2 = const_cast<TAxis*>(h2->GetYaxis());   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    Int_t  ncx1   = xaxis1->GetNbins();
    Int_t  ncx2   = xaxis2->GetNbins();
    Int_t  ncy1   = yaxis1->GetNbins();
@@ -1800,7 +1800,7 @@ TProfile* GHSym::Profile(const char* name, Int_t firstbin, Int_t lastbin, Option
    }
 
    // Create the profile histogram
-   char* pname = const_cast<char*>(name);   // NOLINT
+   char* pname = const_cast<char*>(name);   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    if((name != nullptr) && strcmp(name, expectedName) == 0) {
       auto nch = strlen(GetName()) + 5;
       pname    = new char[nch];
@@ -1840,9 +1840,9 @@ TProfile* GHSym::Profile(const char* name, Int_t firstbin, Int_t lastbin, Option
 
    Int_t ncuts = 0;
    if(opt.Contains("[")) {
-      const_cast<GHSym*>(this)->GetPainter();   // NOLINT
+      const_cast<GHSym*>(this)->GetPainter();   // NOLINT(cppcoreguidelines-pro-type-const-cast)
       if(fPainter != nullptr) {
-         ncuts = fPainter->MakeCuts(const_cast<char*>(cut.Data()));   // NOLINT
+         ncuts = fPainter->MakeCuts(const_cast<char*>(cut.Data()));   // NOLINT(cppcoreguidelines-pro-type-const-cast)
       }
    }
 
@@ -2000,7 +2000,7 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
    }
 
    // Create the projection histogram
-   char* pname = const_cast<char*>(name);   // NOLINT
+   char* pname = const_cast<char*>(name);   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    if(name != nullptr && strcmp(name, expectedName) == 0) {
       auto nch = strlen(GetName()) + 4;
       pname    = new char[nch];
@@ -2039,9 +2039,9 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
    }
    Int_t ncuts = 0;
    if(opt.Contains("[")) {
-      const_cast<GHSym*>(this)->GetPainter();   // NOLINT
+      const_cast<GHSym*>(this)->GetPainter();   // NOLINT(cppcoreguidelines-pro-type-const-cast)
       if(fPainter != nullptr) {
-         ncuts = fPainter->MakeCuts(const_cast<char*>(cut.Data()));   // NOLINT
+         ncuts = fPainter->MakeCuts(const_cast<char*>(cut.Data()));   // NOLINT(cppcoreguidelines-pro-type-const-cast)
       }
    }
 
@@ -2072,7 +2072,7 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
 
    // Copy the axis attributes and the axis labels if needed.
    h1->GetXaxis()->ImportAttributes(&fXaxis);
-   THashList* labels = const_cast<TAxis*>(&fXaxis)->GetLabels();   // NOLINT
+   THashList* labels = const_cast<TAxis*>(&fXaxis)->GetLabels();   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    if(labels != nullptr) {
       TIter       iL(labels);
       TObjString* lb = nullptr;
@@ -2582,7 +2582,7 @@ TH1* GHSym::ShowBackground(Int_t niter, Option_t* option)
    //   The background is returned as a histogram.
    //   to be implemented (may be)
 
-   return reinterpret_cast<TH1*>(gROOT->ProcessLineFast(   // NOLINT
+   return reinterpret_cast<TH1*>(gROOT->ProcessLineFast(   // NOLINT(performance-no-int-to-ptr)
       Form(R"(TSpectrum2::StaticBackground((TH1*)0x%lx,%d,"%s"))", reinterpret_cast<ULong_t>(this), niter, option)));
 }
 
@@ -2762,7 +2762,7 @@ GHSymF::GHSymF(const GHSymF& rhs)
 }
 
 GHSymF::GHSymF(GHSymF&& rhs) noexcept
-   : GHSym(rhs), TArrayF(rhs)
+   : GHSym(std::move(rhs)), TArrayF(rhs)
 {
    rhs.Copy(*this);
 }
@@ -2816,7 +2816,7 @@ Double_t GHSymF::GetBinContent(Int_t bin) const
    // Get bin content.
 
    if(fBuffer != nullptr) {
-      const_cast<GHSymF*>(this)->BufferEmpty();   // NOLINT
+      const_cast<GHSymF*>(this)->BufferEmpty();   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    }
    if(bin < 0) {
       bin = 0;
@@ -2983,7 +2983,7 @@ GHSymD::GHSymD(const GHSymD& rhs)
 }
 
 GHSymD::GHSymD(GHSymD&& rhs) noexcept
-   : GHSym(rhs), TArrayD(rhs)
+   : GHSym(std::move(rhs)), TArrayD(rhs)
 {
    rhs.Copy(*this);
 }
@@ -3037,7 +3037,7 @@ Double_t GHSymD::GetBinContent(Int_t bin) const
 {
    // Get bin content.
    if(fBuffer != nullptr) {
-      const_cast<GHSymD*>(this)->BufferEmpty();   // NOLINT
+      const_cast<GHSymD*>(this)->BufferEmpty();   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    }
    if(bin < 0) {
       bin = 0;

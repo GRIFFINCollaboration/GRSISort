@@ -79,7 +79,7 @@ public:
    }
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSIProof, 1)   // NOLINT
+   ClassDefOverride(TGRSIProof, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

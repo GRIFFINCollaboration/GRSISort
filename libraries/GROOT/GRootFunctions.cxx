@@ -5,7 +5,7 @@ NamespaceImp(GRootFunctions)
 
 #define PI TMATH::Pi()
 
-Double_t GRootFunctions::PolyBg(Double_t* dim, Double_t* par, Int_t order)   // NOLINT
+Double_t GRootFunctions::PolyBg(Double_t* dim, Double_t* par, Int_t order)   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 {
    Double_t result = 0.0;
    int      j      = 0;
@@ -27,7 +27,7 @@ Double_t GRootFunctions::QuadFit(Double_t* dim, Double_t* par)
    return PolyBg(dim, par, 2);
 }
 
-Double_t GRootFunctions::StepFunction(Double_t* dim, Double_t* par)   // NOLINT
+Double_t GRootFunctions::StepFunction(Double_t* dim, Double_t* par)   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 {
    //  -dim[0]: channels to fit
    //  -par[0]: height of peak
@@ -51,7 +51,7 @@ Double_t GRootFunctions::StepBG(Double_t* dim, Double_t* par)
    return StepFunction(dim, par) + PolyBg(dim, (par + 4), 0);
 }
 
-Double_t GRootFunctions::Gaus(Double_t* dim, Double_t* par)   // NOLINT
+Double_t GRootFunctions::Gaus(Double_t* dim, Double_t* par)   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 {
    // - dim[0]: channels to fit
    // - par[0]: height of peak
@@ -68,7 +68,7 @@ Double_t GRootFunctions::Gaus(Double_t* dim, Double_t* par)   // NOLINT
    return height * (1.0 - R / 100.0) * TMath::Gaus(x, cent, sigma);
 }
 
-Double_t GRootFunctions::SkewedGaus(Double_t* dim, Double_t* par)   // NOLINT
+Double_t GRootFunctions::SkewedGaus(Double_t* dim, Double_t* par)   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 {
 
    // StepFunction(dim,par) + PolyBg
@@ -117,7 +117,7 @@ Double_t GRootFunctions::PhotoPeakBG(Double_t* dim, Double_t* par)
 }
 
 // For fitting Ge detector efficiencies.
-Double_t GRootFunctions::Efficiency(Double_t* dim, Double_t* par)   // NOLINT
+Double_t GRootFunctions::Efficiency(Double_t* dim, Double_t* par)   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 {
    // - dim[0]: energy.
    // - par[0]: zeroth order
@@ -138,7 +138,7 @@ Double_t GRootFunctions::Efficiency(Double_t* dim, Double_t* par)   // NOLINT
    return 0;
 }
 
-Double_t GRootFunctions::GausExpo(Double_t* x, Double_t* pars)   // NOLINT
+Double_t GRootFunctions::GausExpo(Double_t* x, Double_t* pars)   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 {
    // gaus + step*expo conv with a gaus.
 
@@ -190,7 +190,7 @@ Double_t GRootFunctions::LanGausHighRes(Double_t* x, Double_t* pars)
    return conv;
 }
 
-Double_t GRootFunctions::GammaEff(Double_t* x, Double_t* par)   // NOLINT
+Double_t GRootFunctions::GammaEff(Double_t* x, Double_t* par)   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 {
    // LOG(EFF) = A0 + A1*LOG(E) + A2*LOG(E)^2 + A3/E^2
 

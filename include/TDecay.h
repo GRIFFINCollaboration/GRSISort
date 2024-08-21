@@ -89,7 +89,7 @@ private:
    TGraph         fResiduals;        // Last histogram fit by this function
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDecayFit, 1);   // NOLINT
+   ClassDefOverride(TDecayFit, 1);   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
@@ -109,7 +109,7 @@ private:
    virtual const TDecayFit* GetFitFunction() = 0;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TVirtualDecay, 1)   // NOLINT
+   ClassDefOverride(TVirtualDecay, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
@@ -262,7 +262,7 @@ private:
    Int_t         fChainId{-1};               // The chain that the single decay belongs to
 
    /// \cond CLASSIMP
-   ClassDefOverride(TSingleDecay, 1)   // NOLINT
+   ClassDefOverride(TSingleDecay, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
@@ -311,7 +311,7 @@ private:
    Int_t                      fChainId{-1};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDecayChain, 1)   // NOLINT
+   ClassDefOverride(TDecayChain, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
@@ -387,7 +387,7 @@ private:
    std::map<Int_t, std::vector<TSingleDecay*>> fDecayMap;   //
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDecay, 1)   // NOLINT
+   ClassDefOverride(TDecay, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

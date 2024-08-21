@@ -104,7 +104,7 @@ private:
    bool        LoadTransitionFile();
 
    /// \cond CLASSIMP
-   ClassDefOverride(TNucleus, 2)   // NOLINT
+   ClassDefOverride(TNucleus, 2)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 

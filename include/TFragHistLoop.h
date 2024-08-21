@@ -79,7 +79,7 @@ private:
 #endif
 
    /// \cond CLASSIMP
-   ClassDefOverride(TFragHistLoop, 0)   // NOLINT
+   ClassDefOverride(TFragHistLoop, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 

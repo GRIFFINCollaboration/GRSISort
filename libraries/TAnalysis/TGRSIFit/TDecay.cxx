@@ -364,7 +364,7 @@ Double_t TSingleDecay::EvalPar(const Double_t* x, const Double_t* par)
    return fTotalDecayFunc->EvalPar(x, par);
 }
 
-Double_t TSingleDecay::ActivityFunc(Double_t* dim, Double_t* par)   // NOLINT
+Double_t TSingleDecay::ActivityFunc(Double_t* dim, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    /// The general function for a decay chain
    /// par[0] is the intensity
@@ -661,7 +661,7 @@ TDecayChain* TDecay::GetChain(UInt_t idx)
    return nullptr;
 }
 
-Double_t TDecay::DecayFit(Double_t* dim, Double_t* par)   // NOLINT
+Double_t TDecay::DecayFit(Double_t* dim, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    /// This fits the total activity caused by the entire chain.
    Double_t result = 0.0;
@@ -776,7 +776,7 @@ void TDecay::SetParameters()
    }
 }
 
-Double_t TDecay::ComponentFunc(Double_t* dim, Double_t* par)   // NOLINT
+Double_t TDecay::ComponentFunc(Double_t* dim, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    /// Function for drawing summed components.
    Double_t result = 0;

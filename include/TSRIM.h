@@ -73,7 +73,7 @@ public:
    TSpline3* GetXvsESpline() const { return fsEgetX; };
 
    /// \cond CLASSIMP
-   ClassDef(TSRIM, 0)   // NOLINT
+   ClassDef(TSRIM, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

@@ -80,7 +80,7 @@ private:
 #endif
 
    /// \cond CLASSIMP
-   ClassDefOverride(TAnalysisHistLoop, 0)   // NOLINT
+   ClassDefOverride(TAnalysisHistLoop, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 

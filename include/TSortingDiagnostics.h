@@ -77,7 +77,7 @@ public:
    void Draw(Option_t* opt = "") override;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TSortingDiagnostics, 4)   // NOLINT
+   ClassDefOverride(TSortingDiagnostics, 4)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

@@ -53,7 +53,7 @@ protected:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TGauss, 2)   // NOLINT
+   ClassDefOverride(TGauss, 2)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

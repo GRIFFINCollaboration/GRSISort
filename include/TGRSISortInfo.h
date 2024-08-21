@@ -38,7 +38,7 @@ private:
    infoMap fSortInfoList;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSISortList, 2)   // NOLINT
+   ClassDefOverride(TGRSISortList, 2)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
@@ -70,7 +70,7 @@ private:
    TString fComment;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSISortInfo, 2)   // NOLINT
+   ClassDefOverride(TGRSISortInfo, 2)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

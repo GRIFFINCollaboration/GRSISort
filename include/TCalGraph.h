@@ -64,7 +64,7 @@ private:
    std::map<UInt_t, std::pair<TCalPoint, TCalPoint>> fCompareMap;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalGraph, 1)   // NOLINT
+   ClassDefOverride(TCalGraph, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

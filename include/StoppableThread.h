@@ -124,7 +124,7 @@ private:
 #endif
 
    /// \cond CLASSIMP
-   ClassDef(StoppableThread, 0)   // NOLINT
+   ClassDef(StoppableThread, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 

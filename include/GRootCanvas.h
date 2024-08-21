@@ -160,7 +160,7 @@ public:
    void   ReallyDelete() override;
 
    /// \cond CLASSIMP
-   ClassDefOverride(GRootCanvas, 0)   // NOLINT
+   ClassDefOverride(GRootCanvas, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

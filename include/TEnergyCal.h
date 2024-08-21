@@ -53,7 +53,7 @@ public:
 
 private:
    /// \cond CLASSIMP
-   ClassDefOverride(TEnergyCal, 1)   // NOLINT
+   ClassDefOverride(TEnergyCal, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */
