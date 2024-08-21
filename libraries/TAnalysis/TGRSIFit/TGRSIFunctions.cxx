@@ -488,7 +488,7 @@ double TGRSIFunctions::RacahW(double a, double b, double c, double d, double e, 
    // not sure why these are out of order in calling wigner_6j(a, b, e, d, c, f)
    return TMath::Power(-1., static_cast<int>(a + b + d + c)) * ::ROOT::Math::wigner_6j(static_cast<int>(2 * a), static_cast<int>(2 * b), static_cast<int>(2 * e), static_cast<int>(2 * d), static_cast<int>(2 * c), static_cast<int>(2 * f));
 #else
-   std::cout << "Mathmore feature of ROOT is missing, " << __PRETTY_FUNCTION__ << " will always return 1!" << std::endl;(cppcoreguidelines-pro-type-const-cast)
+   std::cout << "Mathmore feature of ROOT is missing, " << __PRETTY_FUNCTION__ << " will always return 1!" << std::endl;// NOLINT(cppcoreguidelines-pro-type-const-cast)
    return 1.;
 #endif
 }

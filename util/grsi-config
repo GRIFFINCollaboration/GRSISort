@@ -136,7 +136,11 @@ while test $# -gt 0; do
 						out=$"$out -l${library}"
 					fi
 				done
-				out="$out $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
+				if [ "$(root-config --has-proof)" == "yes" ] ; then
+					out="$out $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
+				else
+					out="$out $XMLlib -lX11 -lXpm -lGuiHtml -lMinuit -lSpectrum"
+				fi
 			else
 				out=$"$out -L${libdir}"
 				for library in $grsilibs $detlibs $grsimore ; do
@@ -144,7 +148,11 @@ while test $# -gt 0; do
 						out=$"$out -l${library}"
 					fi
 				done
-				out=$"$out $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
+				if [ "$(root-config --has-proof)" == "yes" ] ; then
+					out=$"$out $XMLlib -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lSpectrum"
+				else
+					out=$"$out $XMLlib -lX11 -lXpm -lGuiHtml -lMinuit -lSpectrum"
+				fi
 			fi
 			if [ "$(root-config --has-mathmore)" == "yes" ]; then
 				out="$out -lMathMore"

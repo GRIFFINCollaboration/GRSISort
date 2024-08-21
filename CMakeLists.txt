@@ -110,12 +110,14 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/thisgrsi.sh  ${CMAKE_CURRENT_BINARY_D
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/thisgrsi.csh ${CMAKE_CURRENT_BINARY_DIR}/thisgrsi.csh COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/.grsi.mimes  ${CMAKE_CURRENT_BINARY_DIR}/.grsi.mimes  COPYONLY)
 if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/.grsirc")
-	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/.grsirc      ${CMAKE_CURRENT_BINARY_DIR}/.grsirc      COPYONLY)
+	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/.grsirc   ${CMAKE_CURRENT_BINARY_DIR}/.grsirc      COPYONLY)
 endif()
 
 #----------------------------------------------------------------------------
-# copy examples
+# copy includes, examples, and SourceData
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/include DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/examples DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/libraries/TAnalysis/SourceData DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 #----------------------------------------------------------------------------
 # define all libraries and root dictionaries
@@ -392,9 +394,12 @@ FetchContent_MakeAvailable(
 #set_property(TARGET GRSIData APPEND PROPERTY ADDITIONAL_CLEAN_FILES
 #	${CMAKE_CURRENT_BINARY_DIR}/_deps
 #	)
+add_dependencies(GRSIData grsisort ${UTIL_NAMES})
+if(${ROOT_proof_FOUND})
+	add_dependencies(GRSIData grsiproof)
+endif()
 
 #----------------------------------------------------------------------------
-include(FetchContent)
 FetchContent_Declare(
 	ILLData
 	EXCLUDE_FROM_ALL
@@ -405,9 +410,12 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(
 	ILLData
 	)
+add_dependencies(ILLData grsisort ${UTIL_NAMES})
+if(${ROOT_proof_FOUND})
+	add_dependencies(ILLData grsiproof)
+endif()
 
 #----------------------------------------------------------------------------
-include(FetchContent)
 FetchContent_Declare(
 	HILData
 	EXCLUDE_FROM_ALL
@@ -418,9 +426,12 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(
 	HILData
 	)
+add_dependencies(HILData grsisort ${UTIL_NAMES})
+if(${ROOT_proof_FOUND})
+	add_dependencies(HILData grsiproof)
+endif()
 
 #----------------------------------------------------------------------------
-include(FetchContent)
 FetchContent_Declare(
 	iThembaData
 	EXCLUDE_FROM_ALL
@@ -431,6 +442,10 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(
 	iThembaData
 	)
+add_dependencies(iThembaData grsisort ${UTIL_NAMES})
+if(${ROOT_proof_FOUND})
+	add_dependencies(iThembaData grsiproof)
+endif()
 
 #----------------------------------------------------------------------------
 # create a compile_commands.json file which can be used for clang-tidy
