@@ -807,15 +807,15 @@ TEfficiencyCalibrator::TEfficiencyCalibrator(int n...)
       // check if the file name matches any source
       if(std::strstr(name, "22Na") != nullptr) {
          fSources.back() = new TNucleus("22Na");
-      } else if(std::strstr(name, "56Co")) {
+      } else if(std::strstr(name, "56Co") != nullptr) {
          fSources.back() = new TNucleus("56Co");
-      } else if(std::strstr(name, "60Co")) {
+      } else if(std::strstr(name, "60Co") != nullptr) {
          fSources.back() = new TNucleus("60Co");
-      } else if(std::strstr(name, "133Ba")) {
+      } else if(std::strstr(name, "133Ba") != nullptr) {
          fSources.back() = new TNucleus("133Ba");
-      } else if(std::strstr(name, "152Eu")) {
+      } else if(std::strstr(name, "152Eu") != nullptr) {
          fSources.back() = new TNucleus("152Eu");
-      } else if(std::strstr(name, "241Am")) {
+      } else if(std::strstr(name, "241Am") != nullptr) {
          fSources.back() = new TNucleus("241Am");
       } else {
          allSourcesFound = false;
