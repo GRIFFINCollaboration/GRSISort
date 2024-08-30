@@ -145,8 +145,8 @@ public:
    TLevel(const TLevel& rhs);
    ~TLevel();
 
-   TGamma* AddGamma(const double levelEnergy, const char* label = "", double br = 100., double ts = 1.);   // *MENU*
-   TGamma* AddGamma(const double levelEnergy, const double energyUncertainty, const char* label = "", double br = 100., double ts = 1.);
+   TGamma* AddGamma(double levelEnergy, const char* label = "", double br = 100., double ts = 1.);   // *MENU*
+   TGamma* AddGamma(double levelEnergy, double energyUncertainty, const char* label = "", double br = 100., double ts = 1.);
 
    void Energy(const double val) { fEnergy = val; }                         // *MENU*
    void EnergyUncertainty(const double val) { fEnergyUncertainty = val; }   // *MENU*
@@ -232,7 +232,7 @@ public:
    TBand(const TBand& rhs);
    ~TBand() {}
 
-   TLevel* AddLevel(const double energy, const std::string& label);   // *MENU*
+   TLevel* AddLevel(double energy, const std::string& label);   // *MENU*
    TLevel* AddLevel(const double energy, const char* label)
    {
       std::string tmp(label);
@@ -287,7 +287,7 @@ public:
    static void          ListLevelSchemes();
    static TLevelScheme* GetLevelScheme(const char* name);
 
-   TLevel* AddLevel(const double energy, const std::string bandName, const std::string label);
+   TLevel* AddLevel(double energy, std::string bandName, std::string label);
    TLevel* AddLevel(const double energy, const char* bandName, const char* label) { return AddLevel(energy, std::string(bandName), std::string(label)); }   // *MENU*
    TLevel* GetLevel(double energy);
    TLevel* FindLevel(double energy, double energyUncertainty);
