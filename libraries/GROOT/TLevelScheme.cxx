@@ -21,7 +21,6 @@ double TLevel::gTextSize = 0.025;
 std::vector<TLevelScheme*> TLevelScheme::gLevelSchemes;
 
 TGamma::TGamma(TLevelScheme* levelScheme, const std::string& label, const double& br, const double& ts)
-   : TArrow()
 {
    fLevelScheme        = levelScheme;
    fBranchingRatio     = br;
@@ -228,7 +227,6 @@ void TGamma::PrintParallelGammas()
 }
 
 TLevel::TLevel(TLevelScheme* levelScheme, const double& energy, const std::string& label)
-   : TPolyLine()
 {
    if(fDebug && levelScheme == nullptr) {
       std::cout << "Warning, nullptr provided to new band \"" << label << "\" for parent level scheme, some functions might no be available" << std::endl;
@@ -1486,7 +1484,7 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
    // trimWS(fNuclide); // trim whitespace
    std::cout << "Reading level scheme for " << GetLabel() << std::endl;
    // check that data set ident is "ADOPTED LEVELS, GAMMAS" or at least "ADOPTED LEVELS"
-   if(line.substr(9, 14) == "ADOPTED LEVELS")) {
+   if(line.substr(9, 14) == "ADOPTED LEVELS") {
       std::cout << "Data set is not \"ADOPTED LEVELS\" or \"ADOPTED LEVELS, GAMMAS\", but \"" << line.substr(9, 14) << "\", don't know how to read that (" << line << ")" << std::endl;
       return;
    }
