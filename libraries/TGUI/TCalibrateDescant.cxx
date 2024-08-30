@@ -65,7 +65,7 @@ double SourceEnergyUncertainty(const TCalibrateDescant::ESourceType& source)
    return 0.;
 }
 
-double FullEdge(double* x, double* par)   // NOLINT(performance-no-int-to-ptr)
+double FullEdge(double* x, double* par)   // NOLINT(performance-no-int-to-ptr, readability-non-const-parameter)
 {
    // 0 - amplitude, 1 - position, 2 - sigma of the upper part (low x), 3 - dSigma of the lower part (high x)
    // 4 - amplitude of gaussian peak, 5 - difference of peak position from edge position (par[2]), 6 - sigma of gaussian

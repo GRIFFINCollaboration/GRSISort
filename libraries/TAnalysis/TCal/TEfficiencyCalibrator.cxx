@@ -621,13 +621,13 @@ int TEfficiencyDatatypeTab::Degree()
 /// ln(e(E)) = ((a1 + a2 x + a3 x^2)^-a7 + (a4 + a5 y + a6 y^2)^-a7)^-1/a7
 /// with x = ln(E/100), y = ln(E/1000)
 /// or a polynomial ln(e(E)) = sum i 0->8 a_i (ln(E))^i (Ryan's & Andrew's PhD theses)
-double TEfficiencyDatatypeTab::EfficiencyDebertin(double* x, double* par)
+double TEfficiencyDatatypeTab::EfficiencyDebertin(double* x, double* par) // NOLINT(readability-non-const-parameter)
 {
    double eff = par[0] * TMath::Log(x[0]) + par[1] * TMath::Log(x[0]) / x[0] + par[2] * TMath::Power(TMath::Log(x[0]) / x[0], 2) + par[3] * TMath::Power(TMath::Log(x[0]) / x[0], 4) + par[4] * TMath::Power(TMath::Log(x[0]) / x[0], 5);
    return eff;
 }
 
-double TEfficiencyDatatypeTab::EfficiencyRadware(double* val, double* par)
+double TEfficiencyDatatypeTab::EfficiencyRadware(double* val, double* par) // NOLINT(readability-non-const-parameter)
 {
    double x      = TMath::Log(val[0] / 100.);
    double y      = TMath::Log(val[0] / 1000.);
@@ -635,7 +635,7 @@ double TEfficiencyDatatypeTab::EfficiencyRadware(double* val, double* par)
    return TMath::Exp(logEff);
 }
 
-double TEfficiencyDatatypeTab::EfficiencyPolynomial(double* x, double* par)
+double TEfficiencyDatatypeTab::EfficiencyPolynomial(double* x, double* par) // NOLINT(readability-non-const-parameter)
 {
    // first parameter: degree of polynomial
    double logEff = 0;

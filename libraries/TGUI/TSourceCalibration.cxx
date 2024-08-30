@@ -254,7 +254,7 @@ std::map<std::tuple<double, double, double, double>, std::tuple<double, double, 
    return result;
 }
 
-double Polynomial(double* x, double* par)   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+double Polynomial(double* x, double* par)   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay, readability-non-const-parameter)
 {
    double result = par[1];
    for(int i = 1; i <= par[0]; ++i) {
@@ -263,7 +263,7 @@ double Polynomial(double* x, double* par)   // NOLINT(cppcoreguidelines-pro-boun
    return result;
 }
 
-double Efficiency(double* x, double* par)   // NOLINT(performance-no-int-to-ptr)
+double Efficiency(double* x, double* par)   // NOLINT(readability-non-const-parameter)
 {
    double sum = 0.0;
    for(int i = 0; i < 9; ++i) {
