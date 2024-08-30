@@ -152,7 +152,7 @@ public:
    TCalibrationGraphSet* EfficiencyGraph() { return fEfficiencyGraph; }
 
    static double EfficiencyDebertin(double* x, double* par);
-   static double EfficiencyRadware(double* x, double* par);
+   static double EfficiencyRadware(double* val, double* par);
    static double EfficiencyPolynomial(double* x, double* par);
 
 private:
