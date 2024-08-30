@@ -660,7 +660,7 @@ TLevelScheme::TLevelScheme(const std::string& filename, bool debug)
             std::cout << "Failed to find extension => unknown data format" << std::endl;
          } else {
             std::string ext = filename.substr(lastDot + 1);
-            if(ext.compare("ensdf") == 0) {
+            if(ext == "ensdf") {
                ParseENSDF(filename);
             } else {
                std::cout << "Unknown extension " << ext << " => unknown data format" << std::endl;
@@ -728,7 +728,7 @@ TLevel* TLevelScheme::AddLevel(const double energy, const std::string bandName, 
    if(fDebug) Print();
 
    for(auto& band : fBands) {
-      if(bandName.compare(band.GetLabel()) == 0) {
+      if(bandName == band.GetLabel()) {
          if(fDebug) {
             std::cout << "Found band \"" << band.GetLabel() << "\" (" << &band << ") with " << band.NofLevels() << " levels" << std::endl;
          }
@@ -1486,7 +1486,7 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
    // trimWS(fNuclide); // trim whitespace
    std::cout << "Reading level scheme for " << GetLabel() << std::endl;
    // check that data set ident is "ADOPTED LEVELS, GAMMAS" or at least "ADOPTED LEVELS"
-   if(line.substr(9, 14).compare("ADOPTED LEVELS") != 0) {
+   if(line.substr(9, 14) == "ADOPTED LEVELS")) {
       std::cout << "Data set is not \"ADOPTED LEVELS\" or \"ADOPTED LEVELS, GAMMAS\", but \"" << line.substr(9, 14) << "\", don't know how to read that (" << line << ")" << std::endl;
       return;
    }
@@ -1502,7 +1502,7 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
          // ignored
          break;
       case 'Q':   // q-value record (1-5 nuclide, 6-9 "  Q ", 10-19 beta- q-value, 20-21 uncert., 22-29 S_n, 30-31 uncert., 32-39 S_p, 40-41 uncert., 42-49 alpha q-value, 50-51 uncert., 56-80 refs.)
-         if(line.substr(5, 4).compare("  Q ") == 0) {
+         if(line.substr(5, 4) == "  Q ") {
             // we only read the beta- q-value and the neutron separation energy
             str.clear();
             str.str(line.substr(9, 10));
