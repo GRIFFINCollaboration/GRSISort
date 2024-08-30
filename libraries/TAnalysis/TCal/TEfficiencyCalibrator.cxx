@@ -548,8 +548,24 @@ void TEfficiencyDatatypeTab::UpdateEfficiencyGraph()
       // centroid, centroidErr, correctedArea, correctedAreaErr, peak->Area(), peak->AreaErr(), summingIn, summingOut
       auto                peaks = tab->Peaks();
       TTransition*        transition;
-      double              centroid, centroidErr, correctedArea, correctedAreaErr, peakArea, peakAreaErr, summingIn, summingOut;
-      std::vector<double> energy, energyErr, efficiency, efficiencyErr, uncorrEfficiency, uncorrEfficiencyErr, peakAreaVec, peakAreaErrVec, summingInVec, summingOutVec;
+      double              centroid         = 0.;
+      double              centroidErr      = 0.;
+      double              correctedArea    = 0.;
+      double              correctedAreaErr = 0.;
+      double              peakArea         = 0.;
+      double              peakAreaErr      = 0.;
+      double              summingIn        = 0.;
+      double              summingOut       = 0.;
+      std::vector<double> energy;
+      std::vector<double> energyErr;
+      std::vector<double> efficiency;
+      std::vector<double> efficiencyErr;
+      std::vector<double> uncorrEfficiency;
+      std::vector<double> uncorrEfficiencyErr;
+      std::vector<double> peakAreaVec;
+      std::vector<double> peakAreaErrVec;
+      std::vector<double> summingInVec;
+      std::vector<double> summingOutVec;
       int                 goodPeaks = 0;
       for(auto& peak : peaks) {
          std::tie(transition, centroid, centroidErr, correctedArea, correctedAreaErr, peakArea, peakAreaErr, summingIn, summingOut) = peak;
