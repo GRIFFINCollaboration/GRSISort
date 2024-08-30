@@ -85,7 +85,7 @@ void TEfficiencyTab::FindPeaks()
    // probably need to: change loop to using size and ->At(index), plus extra loop that finds all peaks within the range
    // maybe also change the creation of the peak to either a function or using TClass::New()
    for(int t = 0; t < fNucleus->GetTransitionListByEnergy()->GetSize(); ++t) {
-      auto transition = static_cast<TTransition*>(fNucleus->GetTransitionListByEnergy()->At(t));
+      auto* transition = static_cast<TTransition*>(fNucleus->GetTransitionListByEnergy()->At(t));
       auto energy     = transition->GetEnergy();
       if(energy > fSingles->GetXaxis()->GetXmax()) {
          // need to check if we also want to reject peaks whose fit range is partially outside the range of the histogram
@@ -102,7 +102,7 @@ void TEfficiencyTab::FindPeaks()
       peaks.push_back(NewPeak(energy));
       double lastEnergy = energy;
       for(int t2 = t + 1; t2 < fNucleus->GetTransitionListByEnergy()->GetSize(); ++t2) {
-         auto transition2 = static_cast<TTransition*>(fNucleus->GetTransitionListByEnergy()->At(t2));
+         auto* transition2 = static_cast<TTransition*>(fNucleus->GetTransitionListByEnergy()->At(t2));
          auto energy2     = transition2->GetEnergy();
          if(lastEnergy + TEfficiencyCalibrator::Range() > energy2 - TEfficiencyCalibrator::Range()) {
             if(fVerboseLevel > 2) {
@@ -175,7 +175,7 @@ void TEfficiencyTab::FindPeaks()
             std::cout << "Writing '" << Form("%s_%.0fkeV", fSummingOutProj.back()->GetName(), centroid) << "' to '" << gDirectory->GetName() << "'" << std::endl;
          }
          fSummingOutProj.back()->Write(Form("%s_%.0fkeV", fSummingOutProj.back()->GetName(), centroid), TObject::kOverwrite);
-         auto hist = static_cast<TH1*>(fSummingOutProj.back()->Clone(Form("%s_subtracted_%.0f", fSummingOutProj.back()->GetName(), 1000000 * ratio)));
+         auto* hist = static_cast<TH1*>(fSummingOutProj.back()->Clone(Form("%s_subtracted_%.0f", fSummingOutProj.back()->GetName(), 1000000 * ratio)));
          hist->Add(fSummingOutTotalProj, -ratio);
          if(fVerboseLevel > 2) {
             std::cout << "Writing '" << hist->GetName() << "' to '" << gDirectory->GetName() << "'" << std::endl;
@@ -196,7 +196,7 @@ void TEfficiencyTab::FindPeaks()
    Redraw();
    if(fVerboseLevel > 3) {
       std::cout << "Unsorted peak vector:";
-      for(auto& peak : fPeaks) std::cout << " " << std::get<0>(peak)->GetEnergy();
+      for(const auto& peak : fPeaks) std::cout << " " << std::get<0>(peak)->GetEnergy();
       std::cout << std::endl;
    }
    std::sort(fPeaks.begin(), fPeaks.end(), [](const std::tuple<TTransition*, double, double, double, double, double, double, double, double>& lhs, const std::tuple<TTransition*, double, double, double, double, double, double, double, double>& rhs) -> bool { return std::get<0>(lhs)->GetEnergy() < std::get<0>(rhs)->GetEnergy(); });
@@ -569,15 +569,15 @@ void TEfficiencyDatatypeTab::UpdateEfficiencyGraph()
             std::cout << "Rejecting centroid " << centroid << " +- " << centroidErr << " with area " << correctedArea << " +- " << correctedAreaErr << " for transition at " << transition->GetEnergy() << " +- " << transition->GetEnergyUncertainty() << " using calibration uncertainty " << TEfficiencyCalibrator::CalibrationUncertainty() << " (" << std::abs(transition->GetEnergy() - centroid) << " >= " << transition->GetEnergyUncertainty() + centroidErr + TEfficiencyCalibrator::CalibrationUncertainty() << ")" << std::endl;
          }
       }
-      auto effGraph = new TGraphErrors(goodPeaks, energy.data(), efficiency.data(), energyErr.data(), efficiencyErr.data());
+      auto* effGraph = new TGraphErrors(goodPeaks, energy.data(), efficiency.data(), energyErr.data(), efficiencyErr.data());
       fEfficiencyGraph->Add(effGraph, tab->GetName());
-      auto uncorrEffGraph = new TGraphErrors(goodPeaks, energy.data(), uncorrEfficiency.data());
+      auto* uncorrEffGraph = new TGraphErrors(goodPeaks, energy.data(), uncorrEfficiency.data());
       fUncorrEfficiencyGraph->Add(uncorrEffGraph, Form("%s uncorr. Eff.", tab->GetName()));
-      auto peakAreaGraph = new TGraphErrors(goodPeaks, energy.data(), peakAreaVec.data(), energyErr.data(), peakAreaErrVec.data());
+      auto* peakAreaGraph = new TGraphErrors(goodPeaks, energy.data(), peakAreaVec.data(), energyErr.data(), peakAreaErrVec.data());
       fPeakAreaGraph->Add(peakAreaGraph, tab->GetName());
-      auto summingInGraph = new TGraphErrors(goodPeaks, energy.data(), summingInVec.data());
+      auto* summingInGraph = new TGraphErrors(goodPeaks, energy.data(), summingInVec.data());
       fSummingInGraph->Add(summingInGraph, Form("%s summing in", tab->GetName()));
-      auto summingOutGraph = new TGraphErrors(goodPeaks, energy.data(), summingOutVec.data());
+      auto* summingOutGraph = new TGraphErrors(goodPeaks, energy.data(), summingOutVec.data());
       fSummingOutGraph->Add(summingOutGraph, Form("%s summing out", tab->GetName()));
    }
    fEfficiencyGraph->Scale();
@@ -889,7 +889,7 @@ void TEfficiencyCalibrator::BuildFirstInterface()
 {
    /// Build initial interface with histogram <-> source assignment
 
-   auto layoutManager = new TGTableLayout(this, fFiles.size() + 1, 2, true, 5);
+   auto* layoutManager = new TGTableLayout(this, fFiles.size() + 1, 2, true, 5);
    if(fVerboseLevel > 1) std::cout << "created table layout manager with 2 columns, " << fFiles.size() + 1 << " rows" << std::endl;
    SetLayoutManager(layoutManager);
 
@@ -932,7 +932,7 @@ void TEfficiencyCalibrator::MakeFirstConnections()
    /// Create connections for the file <-> source assignment interface
 
    // Connect the selection of the source
-   for(auto box : fSourceBox) {
+   for(auto* box : fSourceBox) {
       box->Connect("Selected(Int_t, Int_t)", "TEfficiencyCalibrator", this, "SetSource(Int_t, Int_t)");
    }
 
@@ -943,7 +943,7 @@ void TEfficiencyCalibrator::MakeFirstConnections()
 void TEfficiencyCalibrator::DisconnectFirst()
 {
    /// Disconnect all signals from the file <-> source assignment interface
-   for(auto box : fSourceBox) {
+   for(auto* box : fSourceBox) {
       box->Disconnect("Selected(Int_t, Int_t)", this, "SetSource(Int_t, Int_t)");
    }
    fStartButton->Disconnect("Clicked()", this, "Start()");
@@ -1065,7 +1065,7 @@ void TEfficiencyCalibrator::BuildSecondInterface()
    if(fVerboseLevel > 2) std::cout << __PRETTY_FUNCTION__ << " creating " << fHistograms.size() << " tabs" << std::endl;
    for(size_t i = 0; i < fHistograms.size(); ++i) {
       if(fVerboseLevel > 2) std::cout << i << ": Creating efficiency source tab using " << fHistograms[i].size() << " histograms, and " << fSources.size() << " sources, " << fRange << ", " << fThreshold << ", " << fProgressBar << std::endl;
-      auto frame = fDatatypeTab->AddTab(fDataType[i].c_str());
+      auto* frame = fDatatypeTab->AddTab(fDataType[i].c_str());
       std::replace(fDataType[i].begin(), fDataType[i].end(), ' ', '_');
       fEfficiencyDatatypeTab[i] = new TEfficiencyDatatypeTab(this, fSources, fHistograms[i], frame, fDataType[i], fProgressBar, fVerboseLevel);
       // fEfficiencyDatatypeTab[i]->UpdateEfficiencyGraph();
@@ -1080,7 +1080,7 @@ void TEfficiencyCalibrator::MakeSecondConnections()
 {
    if(fVerboseLevel > 1) std::cout << __PRETTY_FUNCTION__ << std::endl;
    // we don't need to connect the range, threshold, and degree number entries, those are automatically read when we start the calibration
-   for(auto sourceTab : fEfficiencyDatatypeTab) {
+   for(auto* sourceTab : fEfficiencyDatatypeTab) {
       sourceTab->MakeConnections();
    }
 }
@@ -1088,7 +1088,7 @@ void TEfficiencyCalibrator::MakeSecondConnections()
 void TEfficiencyCalibrator::DisconnectSecond()
 {
    if(fVerboseLevel > 1) std::cout << __PRETTY_FUNCTION__ << std::endl;
-   for(auto sourceTab : fEfficiencyDatatypeTab) {
+   for(auto* sourceTab : fEfficiencyDatatypeTab) {
       sourceTab->Disconnect();
    }
 }

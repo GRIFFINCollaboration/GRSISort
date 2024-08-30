@@ -303,7 +303,7 @@ TGamma* TLevel::AddGamma(const double levelEnergy, const double energyUncertaint
    /// Function to add gamma from this level to another level at "levelEnergy +- energyUncertainty".
    /// Adds a new gamma ray with specified branching ratio (default 100.), and transition strength (default 1.).
    /// Returns gamma if it doesn't exist yet and was successfully added, null pointer otherwise.
-   auto level = fLevelScheme->FindLevel(levelEnergy, energyUncertainty);
+   auto* level = fLevelScheme->FindLevel(levelEnergy, energyUncertainty);
    if(level == nullptr) {
       std::cerr << DRED << "Failed to find level at " << levelEnergy << " keV, can't add gamma!" << RESET_COLOR << std::endl;
       return nullptr;
@@ -358,7 +358,7 @@ std::pair<double, double> TLevel::GetMinMaxGamma() const
 {
    if(fGammas.empty()) return std::make_pair(-1., -1.);
    auto result = std::make_pair(fGammas.begin()->second.Width(), fGammas.begin()->second.Width());
-   for(auto& [energy, gamma] : fGammas) {
+   for(const auto& [energy, gamma] : fGammas) {
       if(gamma.Width() < result.first) result.first = gamma.Width();
       if(gamma.Width() > result.second) result.second = gamma.Width();
    }
@@ -434,7 +434,7 @@ void TLevel::Print(Option_t*) const
 {
    std::cout << "Level \"" << fLabel << "\" (" << this << ") at " << fEnergy << " keV has " << fGammas.size() << " draining gammas and " << fNofFeeding << " feeding gammas, debugging" << (fDebug ? "" : " not") << " enabled" << std::endl;
    if(fDebug) {
-      for(auto& [level, gamma] : fGammas) {
+      for(const auto& [level, gamma] : fGammas) {
          std::cout << "gamma to level " << level << " \"" << gamma.LabelText() << "\"" << std::endl;
       }
    }
@@ -541,7 +541,7 @@ std::pair<double, double> TBand::GetMinMaxGamma() const
 {
    if(fLevels.empty()) throw std::runtime_error("Trying to get min/max gamma width from empty band");
    auto result = fLevels.begin()->second.GetMinMaxGamma();
-   for(auto& [energy, level] : fLevels) {
+   for(const auto& [energy, level] : fLevels) {
       auto [min, max] = level.GetMinMaxGamma();
       if(min < result.first) result.first = min;
       if(max > result.second) result.second = max;
@@ -612,7 +612,7 @@ double TBand::Width(double distance) const
    if(fDebug) {
       std::cout << " (" << GetLabel() << " - " << fLevels.size() << ": ";
    }
-   for(auto& level : fLevels) {
+   for(const auto& level : fLevels) {
       nofGammas += level.second.NofDrainingGammas() + 1;   // plus 1 for the gap between the gammas from each level
       if(fDebug) {
          std::cout << " " << nofGammas << " ";
@@ -630,12 +630,12 @@ double TBand::Width(double distance) const
 void TBand::Print(Option_t*) const
 {
    std::cout << this << ": band \"" << GetLabel() << "\" " << fLevels.size() << " level(s):";
-   for(auto& level : fLevels) {
+   for(const auto& level : fLevels) {
       std::cout << " " << level.first;
    }
    std::cout << ", debugging" << (fDebug ? "" : " not") << " enabled" << std::endl;
    if(fDebug) {
-      for(auto& level : fLevels) {
+      for(const auto& level : fLevels) {
          level.second.Print();
       }
    }
@@ -749,7 +749,7 @@ TLevel* TLevelScheme::AddLevel(const double energy, const std::string bandName, 
 TLevel* TLevelScheme::GetLevel(double energy)
 {
    for(auto& band : fBands) {
-      auto level = band.GetLevel(energy);
+      auto* level = band.GetLevel(energy);
       if(level != nullptr) {
          return level;
       }
@@ -757,7 +757,7 @@ TLevel* TLevelScheme::GetLevel(double energy)
    // if we reach here we failed to find a level with this energy
    // output bands with min/max levels and return null pointer
    std::cout << "Failed to find level with energy " << energy << " in " << fBands.size() << " bands:" << std::endl;
-   for(auto& band : fBands) {
+   for(const auto& band : fBands) {
       band.Print();
    }
 
@@ -767,7 +767,7 @@ TLevel* TLevelScheme::GetLevel(double energy)
 TLevel* TLevelScheme::FindLevel(double energy, double energyUncertainty)
 {
    for(auto& band : fBands) {
-      auto level = band.FindLevel(energy, energyUncertainty);
+      auto* level = band.FindLevel(energy, energyUncertainty);
       if(level != nullptr) {
          return level;
       }
@@ -775,7 +775,7 @@ TLevel* TLevelScheme::FindLevel(double energy, double energyUncertainty)
    // if we reach here we failed to find a level with this energy
    // output bands with min/max levels and return null pointer
    std::cout << "Failed to find level with energy " << energy << " +- " << energyUncertainty << " in " << fBands.size() << " bands:" << std::endl;
-   for(auto& band : fBands) {
+   for(const auto& band : fBands) {
       band.Print();
    }
 
@@ -886,7 +886,7 @@ std::map<double, double> TLevelScheme::DrainingGammas(double levelEnergy, double
    // Since the branching ratio of a gamma ray cascades down to all gamma rays below it, we want to follow each
    // cascade until we reach the ground state. So we get the level whos energy was provided and loop over it's gamma rays
    // and for each gamma ray we get the next level and it's gamma rays
-   auto                     level = GetLevel(levelEnergy);
+   auto*                    level = GetLevel(levelEnergy);
    std::map<double, double> result;
    if(level == nullptr) {
       std::cerr << "Failed to find level at " << levelEnergy << " keV, returning empty list of gammas draining that level" << std::endl;
@@ -926,7 +926,7 @@ std::vector<std::tuple<double, std::vector<double>>> TLevelScheme::ParallelGamma
 {
    /// This (recursive) function returns the combined probability and energies of gamma rays that are connecting the levels at initial and final energy.
 
-   auto                                                 level = GetLevel(initialEnergy);
+   auto*                                                level = GetLevel(initialEnergy);
    std::vector<std::tuple<double, std::vector<double>>> result;
    if(level == nullptr) {
       std::cerr << "Failed to find level at " << initialEnergy << " keV, returning empty list of gammas" << std::endl;
@@ -1093,7 +1093,7 @@ void TLevelScheme::MoveToBand(const char* bandName, TLevel* level)
 void TLevelScheme::Refresh()
 {
    // only re-draw if we find a matching canvas
-   auto canvas = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
+   auto* canvas = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
    if(canvas != nullptr) {
       Draw();
    }
@@ -1101,7 +1101,7 @@ void TLevelScheme::Refresh()
 
 void TLevelScheme::UnZoom()
 {
-   auto canvas = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
+   auto* canvas = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
    if(canvas != nullptr) {
       canvas->Range(fX1, fY1, fX2, fY2);
       canvas->Modified();
@@ -1112,7 +1112,7 @@ void TLevelScheme::UnZoom()
 void TLevelScheme::Draw(Option_t*)
 {
    if(fDebug) std::cout << __PRETTY_FUNCTION__ << std::endl;
-   auto canvas = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
+   auto* canvas = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
    if(canvas == nullptr) {
       canvas = new GCanvas("LevelScheme", "Level Scheme");
    } else {
@@ -1451,7 +1451,7 @@ void TLevelScheme::Print(Option_t*) const
    }
    std::cout << ", debugging" << (fDebug ? "" : " not") << " enabled" << std::endl;
    if(fDebug) {
-      for(auto& band : fBands) {
+      for(const auto& band : fBands) {
          band.Print();
       }
    }
@@ -1640,7 +1640,7 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
                std::cout << "Adding gamma with energy " << energy << " +- " << energyUncertainty << ", " << photonIntensity << " +- " << photonIntensityUncertainty << ", " << multipolarity << ", " << mixingRatio << " +- " << mixingRatioUncertainty << ", " << conversionCoeff << " +- " << conversionCoeffUncertainty << ", " << totalIntensity << " +- " << totalIntensityUncertainty << ", final level energy " << currentLevel->Energy() - energy << std::endl;
                std::cout << "\"" << line.substr(9, 10) << "\", \"" << line.substr(19, 2) << "\", \"" << line.substr(21, 8) << "\", \"" << line.substr(29, 2) << "\", \"" << line.substr(31, 10) << "\", \"" << line.substr(41, 8) << "\", \"" << line.substr(49, 6) << "\", \"" << line.substr(55, 7) << "\", \"" << line.substr(62, 2) << "\", \"" << line.substr(64, 10) << "\", \"" << line.substr(74, 2) << "\"" << std::endl;
             }
-            auto gamma = currentLevel->AddGamma(currentLevel->Energy() - energy, energyUncertainty, multipolarity.c_str(), photonIntensity, totalIntensity);
+            auto* gamma = currentLevel->AddGamma(currentLevel->Energy() - energy, energyUncertainty, multipolarity.c_str(), photonIntensity, totalIntensity);
             if(gamma != nullptr) {
                gamma->BranchingRatioUncertainty(photonIntensityUncertainty);
                gamma->TransitionStrengthUncertainty(totalIntensityUncertainty);
