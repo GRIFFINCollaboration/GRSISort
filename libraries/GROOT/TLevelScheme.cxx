@@ -1099,7 +1099,7 @@ void TLevelScheme::Refresh()
    }
 }
 
-void TLevelScheme::UnZoom()
+void TLevelScheme::UnZoom() const
 {
    auto* canvas = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
    if(canvas != nullptr) {

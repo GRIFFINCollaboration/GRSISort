@@ -344,7 +344,7 @@ public:
    }   // *MENU*
 
    void Refresh();   // *MENU*
-   void UnZoom();
+   void UnZoom() const;
    void Draw(Option_t* option = "") override;
 
    void Print(Option_t* option = "") const override;
