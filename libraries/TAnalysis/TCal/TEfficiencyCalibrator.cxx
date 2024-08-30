@@ -517,30 +517,20 @@ void TEfficiencyDatatypeTab::UpdateEfficiencyGraph()
          std::cout << " = " << fSubDirectory->GetName() << ", main directory is " << fMainDirectory << " = " << (fMainDirectory == nullptr ? "" : fMainDirectory->GetName()) << std::endl;
       }
    }
-   if(fEfficiencyGraph != nullptr) {
-      delete fEfficiencyGraph;
-   }
+	delete fEfficiencyGraph;
    fEfficiencyGraph = new TCalibrationGraphSet();
-   fEfficiencyGraph->VerboseLevel(fVerboseLevel);
-   if(fUncorrEfficiencyGraph != nullptr) {
-      delete fUncorrEfficiencyGraph;
-   }
-   fUncorrEfficiencyGraph = new TCalibrationGraphSet();
-   fUncorrEfficiencyGraph->VerboseLevel(fVerboseLevel);
-   if(fPeakAreaGraph != nullptr) {
-      delete fPeakAreaGraph;
-   }
-   fPeakAreaGraph = new TCalibrationGraphSet();
-   fPeakAreaGraph->VerboseLevel(fVerboseLevel);
-   if(fSummingInGraph != nullptr) {
-      delete fSummingInGraph;
-   }
-   fSummingInGraph = new TCalibrationGraphSet();
-   fSummingInGraph->VerboseLevel(fVerboseLevel);
-   if(fSummingOutGraph != nullptr) {
-      delete fSummingOutGraph;
-   }
-   fSummingOutGraph = new TCalibrationGraphSet();
+	fEfficiencyGraph->VerboseLevel(fVerboseLevel);
+	delete fUncorrEfficiencyGraph;
+	fUncorrEfficiencyGraph = new TCalibrationGraphSet();
+	fUncorrEfficiencyGraph->VerboseLevel(fVerboseLevel);
+	delete fPeakAreaGraph;
+	fPeakAreaGraph = new TCalibrationGraphSet();
+	fPeakAreaGraph->VerboseLevel(fVerboseLevel);
+	delete fSummingInGraph;
+	fSummingInGraph = new TCalibrationGraphSet();
+	fSummingInGraph->VerboseLevel(fVerboseLevel);
+	delete fSummingOutGraph;
+	fSummingOutGraph = new TCalibrationGraphSet();
    fSummingOutGraph->VerboseLevel(fVerboseLevel);
 
    for(auto& tab : fEfficiencyTab) {
@@ -664,7 +654,7 @@ double TEfficiencyDatatypeTab::EfficiencyPolynomial(double* x, double* par) // N
 void TEfficiencyDatatypeTab::FitEfficiency()
 {
    ReadValues();
-   if(fEfficiency != nullptr) delete fEfficiency;
+   delete fEfficiency;
    // degree of fit function: 0 = ln(E)/E form, 1 = radware form, everything else polynomial ln(e(E)) = sum i 0->8 a_i (ln(E))^i (Ryan's & Andrew's PhD theses)
    switch(TEfficiencyCalibrator::Degree()) {
    case 0:
@@ -978,7 +968,7 @@ void TEfficiencyCalibrator::SetSource(Int_t windowId, Int_t entryId)
    int index = windowId - kSourceBox;
    if(fVerboseLevel > 1) std::cout << __PRETTY_FUNCTION__ << ": windowId " << windowId << ", entryId " << entryId << " => " << index << std::endl;
    TNucleus* nucleus = fSources[index];
-   if(nucleus != nullptr) delete nucleus;
+   delete nucleus;
    nucleus         = new TNucleus(fSourceBox[index]->GetListBox()->GetEntry(entryId)->GetTitle());
    fSources[index] = nucleus;
 }
