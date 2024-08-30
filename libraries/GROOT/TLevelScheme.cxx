@@ -719,7 +719,7 @@ TLevelScheme* TLevelScheme::GetLevelScheme(const char* name)
    return nullptr;
 }
 
-TLevel* TLevelScheme::AddLevel(const double energy, const std::string bandName, const std::string label)
+TLevel* TLevelScheme::AddLevel(const double energy, const std::string& bandName, const std::string& label)
 {
    /// Add level at specified energy to specified band and give it the provided label.
    /// Can be called from context menu using const char* instead of std::string.

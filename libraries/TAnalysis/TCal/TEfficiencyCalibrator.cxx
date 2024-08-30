@@ -263,7 +263,7 @@ void TEfficiencyTab::Status(Int_t, Int_t px, Int_t py, TObject* selected)
 }
 
 //////////////////////////////////////// TEfficiencyDatatypeTab ////////////////////////////////////////
-TEfficiencyDatatypeTab::TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, std::vector<TNucleus*> nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, TGHProgressBar* progressBar, const int& verboseLevel)
+TEfficiencyDatatypeTab::TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, const std::vector<TNucleus*>& nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, TGHProgressBar* progressBar, const int& verboseLevel)
    : fFrame(frame), fNucleus(nucleus), fParent(parent), fDataType(dataType), fVerboseLevel(verboseLevel)
 {
    if(fVerboseLevel > 1) {

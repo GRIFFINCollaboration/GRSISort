@@ -127,7 +127,7 @@ public:
                  kPlotSummingInCheck,
                  kPlotSummingOutCheck };
 
-   TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, std::vector<TNucleus*> nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, TGHProgressBar* progressBar, const int& verboseLevel = 0);
+   TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, const std::vector<TNucleus*>& nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, TGHProgressBar* progressBar, const int& verboseLevel = 0);
    ~TEfficiencyDatatypeTab();
 
    void CreateTabs();

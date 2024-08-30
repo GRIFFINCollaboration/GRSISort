@@ -287,7 +287,7 @@ public:
    static void          ListLevelSchemes();
    static TLevelScheme* GetLevelScheme(const char* name);
 
-   TLevel* AddLevel(double energy, std::string bandName, std::string label);
+   TLevel* AddLevel(double energy, const std::string& bandName, const std::string& label);
    TLevel* AddLevel(const double energy, const char* bandName, const char* label) { return AddLevel(energy, std::string(bandName), std::string(label)); }   // *MENU*
    TLevel* GetLevel(double energy);
    TLevel* FindLevel(double energy, double energyUncertainty);
