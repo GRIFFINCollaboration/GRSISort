@@ -15,10 +15,10 @@
 #include "GCanvas.h"
 #include "TGRSIUtilities.h"
 
-double TGamma::gTextSize = 0.020;
-double TLevel::gTextSize = 0.025;
+double TGamma::fTextSize = 0.020;
+double TLevel::fTextSize = 0.025;
 
-std::vector<TLevelScheme*> TLevelScheme::gLevelSchemes;
+std::vector<TLevelScheme*> TLevelScheme::fLevelSchemes;
 
 TGamma::TGamma(TLevelScheme* levelScheme, const std::string& label, const double& br, const double& ts)
 {
@@ -122,7 +122,7 @@ void TGamma::Draw(const double& x1, const double& y1, const double& x2, const do
    fLabel->SetTextColor(GetLineColor());
    fLabel->SetTextAlign(12);         // left and center adjusted
    fLabel->SetTextFont(42);          // helvetica-medium-r-normal (default is 62 = helvetica-bold-r-normal)
-   fLabel->SetTextSize(gTextSize);   // text size in fraction of window width/height in pixel (whichever is smaller)
+   fLabel->SetTextSize(fTextSize);   // text size in fraction of window width/height in pixel (whichever is smaller)
    fLabel->Draw();
    if(fDebug) Print();
 }
@@ -410,7 +410,7 @@ double TLevel::DrawLabel(const double& pos)
    fLevelLabel->SetTextColor(GetLineColor());
    fLevelLabel->SetTextAlign(12);         // left adjusted and vertically centered
    fLevelLabel->SetTextFont(42);          // helvetica-medium-r-normal (default is 62 = helvetica-bold-r-normal)
-   fLevelLabel->SetTextSize(gTextSize);   // text size in fraction of window width/height in pixel (whichever is smaller)
+   fLevelLabel->SetTextSize(fTextSize);   // text size in fraction of window width/height in pixel (whichever is smaller)
    fLevelLabel->Draw();
    return fLevelLabel->GetXsize();
 }
@@ -425,7 +425,7 @@ double TLevel::DrawEnergy(const double& pos)
    fEnergyLabel->SetTextColor(GetLineColor());
    fEnergyLabel->SetTextAlign(32);         // right adjusted and vertically centered
    fEnergyLabel->SetTextFont(42);          // helvetica-medium-r-normal (default is 62 = helvetica-bold-r-normal)
-   fEnergyLabel->SetTextSize(gTextSize);   // text size in fraction of window width/height in pixel (whichever is smaller)
+   fEnergyLabel->SetTextSize(fTextSize);   // text size in fraction of window width/height in pixel (whichever is smaller)
    fEnergyLabel->Draw();
    return fEnergyLabel->GetXsize();
 }
@@ -667,7 +667,7 @@ TLevelScheme::TLevelScheme(const std::string& filename, bool debug)
       }
    }
 
-   gLevelSchemes.push_back(this);
+   fLevelSchemes.push_back(this);
 }
 
 TLevelScheme::TLevelScheme(const TLevelScheme& rhs)
@@ -690,7 +690,7 @@ TLevelScheme::TLevelScheme(const TLevelScheme& rhs)
    fMinWidth                     = rhs.fMinWidth;
    fMaxWidth                     = rhs.fMaxWidth;
 
-   gLevelSchemes.push_back(this);
+   fLevelSchemes.push_back(this);
 }
 
 TLevelScheme::~TLevelScheme()
@@ -699,7 +699,7 @@ TLevelScheme::~TLevelScheme()
 
 void TLevelScheme::ListLevelSchemes()
 {
-   for(auto& scheme : gLevelSchemes) {
+   for(auto& scheme : fLevelSchemes) {
       std::cout << " \"" << scheme->GetLabel() << "\"";
    }
    std::cout << std::endl;
@@ -707,13 +707,13 @@ void TLevelScheme::ListLevelSchemes()
 
 TLevelScheme* TLevelScheme::GetLevelScheme(const char* name)
 {
-   for(auto& scheme : gLevelSchemes) {
+   for(auto& scheme : fLevelSchemes) {
       if(strcmp(name, scheme->GetLabel()) == 0) {
          return scheme;
       }
    }
 
-   std::cout << "Failed to find level scheme \"" << name << "\", " << gLevelSchemes.size() << " level schemes exist";
+   std::cout << "Failed to find level scheme \"" << name << "\", " << fLevelSchemes.size() << " level schemes exist";
    ListLevelSchemes();
 
    return nullptr;

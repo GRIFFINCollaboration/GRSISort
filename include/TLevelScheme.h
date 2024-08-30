@@ -110,8 +110,8 @@ public:
 
    TGamma& operator=(const TGamma& rhs);
 
-   static void   TextSize(double val) { gTextSize = val; }
-   static double TextSize() { return gTextSize; }
+   static void   TextSize(double val) { fTextSize = val; }
+   static double TextSize() { return fTextSize; }
 
 private:
    bool          fDebug{false};
@@ -132,7 +132,7 @@ private:
    double        fInitialEnergy{0.};   ///< Energy of initial level that emits this gamma ray
    double        fFinalEnergy{0.};     ///< Energy of final level that is populated by this gamma ray
 
-   static double gTextSize;
+   static double fTextSize;
 
    /// \cond CLASSIMP
    ClassDefOverride(TGamma, 1)   // NOLINT(readability-else-after-return)
@@ -201,8 +201,8 @@ public:
 
    TLevel& operator=(const TLevel& rhs);
 
-   static void   TextSize(double val) { gTextSize = val; }
-   static double TextSize() { return gTextSize; }
+   static void   TextSize(double val) { fTextSize = val; }
+   static double TextSize() { return fTextSize; }
 
 private:
    bool                     fDebug{false};
@@ -219,7 +219,7 @@ private:
 
    double fOffset{0.};   ///< y-offset for labels on right and left side of level
 
-   static double gTextSize;
+   static double fTextSize;
 
    /// \cond CLASSIMP
    ClassDefOverride(TLevel, 1)   // NOLINT(readability-else-after-return)
@@ -361,7 +361,7 @@ private:
    void BuildGammaMap(double levelEnergy);
 
    bool                              fDebug{false};
-   static std::vector<TLevelScheme*> gLevelSchemes;
+   static std::vector<TLevelScheme*> fLevelSchemes;
 
    std::vector<TBand>             fBands;
    std::multimap<double, TLine>   fAuxillaryLevels;
