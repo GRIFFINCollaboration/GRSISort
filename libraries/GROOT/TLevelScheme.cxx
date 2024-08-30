@@ -731,7 +731,8 @@ TLevel* TLevelScheme::AddLevel(const double energy, const std::string bandName, 
             std::cout << "Found band \"" << band.GetLabel() << "\" (" << &band << ") with " << band.NofLevels() << " levels" << std::endl;
          }
          return band.AddLevel(energy, label);
-      } else if(fDebug) {
+      }
+		if(fDebug) {
          std::cout << "Band \"" << band.GetLabel() << "\" does not match " << bandName << std::endl;
       }
    }
@@ -1051,7 +1052,8 @@ void TLevelScheme::MoveToBand(const char* bandName, TLevel* level)
          }
          fBands[i].AddLevel(level);
          break;
-      } else if(fDebug) {
+      }
+		if(fDebug) {
          std::cout << "Band \"" << fBands[i].GetLabel() << "\" does not match " << bandName << std::endl;
       }
    }
@@ -1231,7 +1233,8 @@ void TLevelScheme::Draw(Option_t*)
                   potentialGroups.push_back(i);
                   // break here since we already know this group is a match
                   break;
-               } else if(fDebug) {
+               }
+					if(fDebug) {
                   std::cout << energy - groups[i][j].first << " (" << energy << " - " << groups[i][j].first << ") >= " << labelSize * (index - groups[i][j].second) << " (" << labelSize << "*(" << index << "-" << groups[i][j].second << ")), NOT adding to group " << i << std::endl;
                }
             }
@@ -1322,11 +1325,12 @@ void TLevelScheme::Draw(Option_t*)
                      }
                      found = true;
                      break;
-                  } else if(fDebug) {
+                  }
+						if(fDebug) {
                      std::cout << "band " << b2 << ": " << finalEnergy << " != " << level2.Energy() << std::endl;
                   }
                }
-               if(found) break;
+               if(found) { break; }
             }
 
             if(!found) {
