@@ -91,14 +91,14 @@ TGamma& TGamma::operator=(const TGamma& rhs)
 
 void TGamma::UpdateWidth()
 {
-   if(fDebug) std::cout << __PRETTY_FUNCTION__ << std::endl;
+   if(fDebug) { std::cout << __PRETTY_FUNCTION__ << std::endl; }
    double arrowsize = (fUseTransitionStrength ? fTransitionStrength : fBranchingRatio) * fScalingGain + fScalingOffset;
    SetLineWidth(arrowsize);
 }
 
 void TGamma::UpdateLabel()
 {
-   if(fDebug) std::cout << __PRETTY_FUNCTION__ << std::endl;
+   if(fDebug) { std::cout << __PRETTY_FUNCTION__ << std::endl; }
    if(fLabel != nullptr) {
       fLabel->SetText(fLabel->GetX(), fLabel->GetY(), fLabelText.c_str());
    }
@@ -124,7 +124,7 @@ void TGamma::Draw(const double& x1, const double& y1, const double& x2, const do
    fLabel->SetTextFont(42);          // helvetica-medium-r-normal (default is 62 = helvetica-bold-r-normal)
    fLabel->SetTextSize(fTextSize);   // text size in fraction of window width/height in pixel (whichever is smaller)
    fLabel->Draw();
-   if(fDebug) Print();
+   if(fDebug) { Print(); }
 }
 
 void TGamma::Print(Option_t*) const
@@ -335,7 +335,7 @@ TGamma* TLevel::AddGamma(const double levelEnergy, const double energyUncertaint
       gamma.BranchingRatioPercentUncertainty(gamma.BranchingRatioUncertainty() / sum);
    }
 
-   if(fDebug) Print();
+   if(fDebug) { Print(); }
 
    fLevelScheme->Refresh();
 
@@ -359,8 +359,8 @@ std::pair<double, double> TLevel::GetMinMaxGamma() const
    if(fGammas.empty()) return std::make_pair(-1., -1.);
    auto result = std::make_pair(fGammas.begin()->second.Width(), fGammas.begin()->second.Width());
    for(const auto& [energy, gamma] : fGammas) {
-      if(gamma.Width() < result.first) result.first = gamma.Width();
-      if(gamma.Width() > result.second) result.second = gamma.Width();
+      if(gamma.Width() < result.first)  { result.first  = gamma.Width(); }
+      if(gamma.Width() > result.second) { result.second = gamma.Width(); }
    }
 
    return result;
@@ -380,7 +380,7 @@ void TLevel::Draw(const double& left, const double& right)
       y.push_back(fEnergy + fOffset);
       x.push_back(left + tickLength + std::fabs(fOffset) / 2.);
       y.push_back(fEnergy);
-      if(fDebug) std::cout << "Non-zero offset " << fOffset << " => left line " << left << ", " << fEnergy + fOffset << " via " << left + tickLength << ", " << fEnergy + fOffset << " to " << left + tickLength + std::fabs(fOffset) / 2. << ", " << fEnergy << std::endl;
+      if(fDebug) { std::cout << "Non-zero offset " << fOffset << " => left line " << left << ", " << fEnergy + fOffset << " via " << left + tickLength << ", " << fEnergy + fOffset << " to " << left + tickLength + std::fabs(fOffset) / 2. << ", " << fEnergy << std::endl; }
    }
    x.push_back(left + tickLength + std::fabs(fOffset) / 2.);
    y.push_back(fEnergy);
@@ -393,11 +393,11 @@ void TLevel::Draw(const double& left, const double& right)
       y.push_back(fEnergy + fOffset);
       x.push_back(right);
       y.push_back(fEnergy + fOffset);
-      if(fDebug) std::cout << "Non-zero offset " << fOffset << " => right line " << right - tickLength - std::fabs(fOffset) / 2. << ", " << fEnergy << " via " << right - tickLength << ", " << fEnergy + fOffset << " to " << right << ", " << fEnergy + fOffset << std::endl;
+      if(fDebug) { std::cout << "Non-zero offset " << fOffset << " => right line " << right - tickLength - std::fabs(fOffset) / 2. << ", " << fEnergy << " via " << right - tickLength << ", " << fEnergy + fOffset << " to " << right << ", " << fEnergy + fOffset << std::endl; }
    }
    SetPolyLine(x.size(), x.data(), y.data());
    TPolyLine::Draw();
-   if(fDebug) std::cout << "Drew TPolyLine using x " << left << "-" << right << " and y " << fEnergy << " with a width of " << GetLineWidth() << " and offset " << fOffset << std::endl;
+   if(fDebug) { std::cout << "Drew TPolyLine using x " << left << "-" << right << " and y " << fEnergy << " with a width of " << GetLineWidth() << " and offset " << fOffset << std::endl; }
 }
 
 double TLevel::DrawLabel(const double& pos)
@@ -539,12 +539,12 @@ TLevel* TBand::FindLevel(double energy, double energyUncertainty)
 
 std::pair<double, double> TBand::GetMinMaxGamma() const
 {
-   if(fLevels.empty()) throw std::runtime_error("Trying to get min/max gamma width from empty band");
+   if(fLevels.empty()) { throw std::runtime_error("Trying to get min/max gamma width from empty band"); }
    auto result = fLevels.begin()->second.GetMinMaxGamma();
    for(const auto& [energy, level] : fLevels) {
       auto [min, max] = level.GetMinMaxGamma();
-      if(min < result.first) result.first = min;
-      if(max > result.second) result.second = max;
+      if(min < result.first)  { result.first  = min; }
+      if(max > result.second) { result.second = max; }
    }
 
    return result;
@@ -618,7 +618,7 @@ double TBand::Width(double distance) const
          std::cout << " " << nofGammas << " ";
       }
    }
-   if(nofGammas == 0) nofGammas = 1;   // to get a minimum width
+   if(nofGammas == 0) { nofGammas = 1; }   // to get a minimum width
 
    if(fDebug) {
       std::cout << "=> width " << nofGammas * distance << ") ";
@@ -723,7 +723,7 @@ TLevel* TLevelScheme::AddLevel(const double energy, const std::string bandName, 
 {
    /// Add level at specified energy to specified band and give it the provided label.
    /// Can be called from context menu using const char* instead of std::string.
-   if(fDebug) Print();
+   if(fDebug) { Print(); }
 
    for(auto& band : fBands) {
       if(bandName == band.GetLabel()) {
@@ -796,7 +796,7 @@ TGamma* TLevelScheme::FindGamma(double energy, double energyUncertainty)
 
    auto result = list[0];
    for(size_t i = 1; i < list.size(); ++i) {
-      if(std::fabs(list[i]->Energy() - energy) < std::fabs(result->Energy() - energy)) result = list[i];
+      if(std::fabs(list[i]->Energy() - energy) < std::fabs(result->Energy() - energy)) { result = list[i]; }
    }
 
    return result;
@@ -827,7 +827,7 @@ void TLevelScheme::BuildGammaMap(double levelEnergy)
    /// Build a map of all gamma rays that populate levels equal and greater than levelEnergy.
    /// This map is used to determine all gammas feeding a specific level.
    /// Does nothing if the map isn't empty.
-   if(!fGammaMap.empty()) return;
+   if(!fGammaMap.empty()) { return; }
 
    for(auto& band : fBands) {
       for(auto& [energy, level] : band) {
@@ -1113,7 +1113,7 @@ void TLevelScheme::UnZoom() const
 
 void TLevelScheme::Draw(Option_t*)
 {
-   if(fDebug) std::cout << __PRETTY_FUNCTION__ << std::endl;
+   if(fDebug) { std::cout << __PRETTY_FUNCTION__ << std::endl; }
    auto* canvas = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("LevelScheme"));
    if(canvas == nullptr) {
       canvas = new GCanvas("LevelScheme", "Level Scheme");
@@ -1128,11 +1128,11 @@ void TLevelScheme::Draw(Option_t*)
    std::vector<std::pair<double, double>> minMaxGamma;
    for(auto& band : fBands) {
       auto minMax = band.GetMinMaxLevelEnergy();
-      if(minMax.first < minMaxLevel.first) minMaxLevel.first = minMax.first;
-      if(minMax.second > minMaxLevel.second) minMaxLevel.second = minMax.second;
-      if(fDebug) std::cout << "Incrementing width from " << width;
+      if(minMax.first < minMaxLevel.first)   { minMaxLevel.first  = minMax.first; }
+      if(minMax.second > minMaxLevel.second) { minMaxLevel.second = minMax.second; }
+      if(fDebug) { std::cout << "Incrementing width from " << width; }
       width += band.Width(fGammaDistance);
-      if(fDebug) std::cout << " to " << width << " using " << band.Width(fGammaDistance) << std::endl;
+      if(fDebug) { std::cout << " to " << width << " using " << band.Width(fGammaDistance) << std::endl; }
       minMaxGamma.push_back(band.GetMinMaxGamma());
    }
    width += (fBands.size() - 1) * fBandGap;
@@ -1142,21 +1142,21 @@ void TLevelScheme::Draw(Option_t*)
    fY2           = minMaxLevel.second;
    double height = fY2 - fY1;
    // if the margins haven't been set, we add 10% of the height
-   if(fBottomMargin < 0) fY1 -= height / 10.;
-   else fY1 -= fBottomMargin;
-   if(fTopMargin < 0) fY2 += height / 10.;
-   else fY2 += fTopMargin;
+   if(fBottomMargin < 0) { fY1 -= height / 10.; }
+	else { fY1 -= fBottomMargin; }
+   if(fTopMargin < 0) { fY2 += height / 10.; }
+   else { fY2 += fTopMargin; }
 
    // xs are calculated from the width of each band, plus the left and right margin, plus n-1 times the margin between bands
    fX1 = 0.;
    fX2 = width;
    // if the margins haven't been set, we add the band gap
-   if(fLeftMargin < 0) fX1 -= fBandGap;
-   else fX1 -= fLeftMargin;
-   if(fRightMargin < 0) fX2 += fBandGap;
-   else fX2 += fRightMargin;
+   if(fLeftMargin < 0) { fX1 -= fBandGap; }
+   else { fX1 -= fLeftMargin; }
+   if(fRightMargin < 0) { fX2 += fBandGap; }
+   else { fX2 += fRightMargin; }
 
-   if(fDebug) std::cout << "got x1 - x2 " << fX1 << " - " << fX2 << ", and y1 - y2 " << fY1 << " - " << fY2 << std::endl;
+   if(fDebug) { std::cout << "got x1 - x2 " << fX1 << " - " << fX2 << ", and y1 - y2 " << fY1 << " - " << fY2 << std::endl; }
    canvas->Range(fX1, fY1, fX2, fY2);
    canvas->cd();
 
@@ -1173,8 +1173,8 @@ void TLevelScheme::Draw(Option_t*)
       // if we want the gamma width to be on a global scale, i.e. across all bands, we need to find the minimum and maximum values
       // we store those in  the first entry
       for(auto& [min, max] : minMaxGamma) {
-         if(min < minMaxGamma[0].first) minMaxGamma[0].first = min;
-         if(max > minMaxGamma[0].second) minMaxGamma[0].second = max;
+         if(min < minMaxGamma[0].first)  { minMaxGamma[0].first  = min; }
+         if(max > minMaxGamma[0].second) { minMaxGamma[0].second = max; }
          std::cout << min << " - " << max << ": " << minMaxGamma[0].first << " - " << minMaxGamma[0].second << std::endl;
       }
    }
@@ -1184,7 +1184,7 @@ void TLevelScheme::Draw(Option_t*)
    double left = 0.;
    for(size_t b = 0; b < fBands.size(); ++b) {
       double right = left + fBands[b].Width(fGammaDistance);
-      if(fDebug) std::cout << b << ": Using width " << fBands[b].Width(fGammaDistance) << " and left " << left << " we get right " << right << std::endl;
+      if(fDebug) { std::cout << b << ": Using width " << fBands[b].Width(fGammaDistance) << " and left " << left << " we get right " << right << std::endl; }
       fBands[b].SetX1(left);
       fBands[b].SetY1(-1.5 * height / 20.);
       fBands[b].SetX2(right);
@@ -1310,7 +1310,7 @@ void TLevelScheme::Draw(Option_t*)
          // Should also adjust gaps between bands to be equal to their sum, but how?
          // If we call Draw recursively if we changed anything it will never stop (as that re-adjusts the text sizes).
          // Maybe only set a flag to re-draw when the change is larger than a minimum value?
-         if(fDebug) level.Print();
+         if(fDebug) { level.Print(); }
 
          // loop over all gammas from this level and draw them
          for(auto& [finalEnergy, gamma] : level) {
@@ -1350,58 +1350,58 @@ void TLevelScheme::Draw(Option_t*)
             double gX2;
             if(fRadwareStyle) {
                if(b == b2) {   // intra-band: for now just increment the position, later maybe search all previously added intra-band transitions for this band
-                  if(fDebug) std::cout << b << " == " << b2 << ": intra band " << g << " at position " << g * fGammaDistance << std::endl;
+                  if(fDebug) { std::cout << b << " == " << b2 << ": intra band " << g << " at position " << g * fGammaDistance << std::endl; }
                   gX1 = left + g * fGammaDistance;
                   gX2 = left + g * fGammaDistance;
                   ++g;
                } else if(b < b2) {   // inter-band to a band on the right
-                  if(fDebug) std::cout << b << " < " << b2 << ": inter band to right " << g << " at position " << g * fGammaDistance << std::endl;
+                  if(fDebug) { std::cout << b << " < " << b2 << ": inter band to right " << g << " at position " << g * fGammaDistance << std::endl; }
                   gX1          = left + g * fGammaDistance;
                   gX2          = left + g * fGammaDistance + (gY1 - gY2) / 10.;
                   double shift = right + fBandGap;
                   // sum the width of bands b+1 to b2-1 and the band gaps between them
-                  if(b + 1 < b2) shift = std::accumulate(fBands.begin() + b + 1, fBands.begin() + b2, right + fBandGap, [&](double r, TBand& el) { r += el.Width(fGammaDistance) + fBandGap; return r; });
+                  if(b + 1 < b2) { shift = std::accumulate(fBands.begin() + b + 1, fBands.begin() + b2, right + fBandGap, [&](double r, TBand& el) { r += el.Width(fGammaDistance) + fBandGap; return r; }); }
                   DrawAuxillaryLevel(gY2, right + g * fGammaDistance, shift - fBandGap / 2.);   // for now always a gap of fBandGap/2. for the label
                   ++g;
                } else {   // inter-band to a band on the left
-                  if(fDebug) std::cout << b << " > " << b2 << ": inter band to left " << g << " at position " << g * fGammaDistance << std::endl;
+                  if(fDebug) { std::cout << b << " > " << b2 << ": inter band to left " << g << " at position " << g * fGammaDistance << std::endl; }
                   gX1          = left + g * fGammaDistance;
                   gX2          = left + g * fGammaDistance - (gY1 - gY2) / 10.;
                   double shift = left - fBandGap;
                   // sum the width of bands b2+1 to b-1 and the band gaps between them
-                  if(b2 + 1 < b) shift = std::accumulate(fBands.begin() + b2 + 1, fBands.begin() + b, left - fBandGap, [&](double r, TBand& el) { r -= el.Width(fGammaDistance) + fBandGap; return r; });
+                  if(b2 + 1 < b) { shift = std::accumulate(fBands.begin() + b2 + 1, fBands.begin() + b, left - fBandGap, [&](double r, TBand& el) { r -= el.Width(fGammaDistance) + fBandGap; return r; }); }
                   DrawAuxillaryLevel(gY2, left + g * fGammaDistance, shift + fBandGap / 2.);
                   ++g;
                }
             } else {
                if(b == b2) {   // intra-band: for now just increment the position, later maybe search all previously added intra-band transitions for this band
-                  if(fDebug) std::cout << b << " == " << b2 << ": intra band " << g << " at position " << g * fGammaDistance << std::endl;
+                  if(fDebug) { std::cout << b << " == " << b2 << ": intra band " << g << " at position " << g * fGammaDistance << std::endl; }
                   gX1 = left + g * fGammaDistance;
                   gX2 = left + g * fGammaDistance;
                   ++g;
                } else if(b + 1 == b2) {   // inter-band from this band to the next band on the right
-                  if(fDebug) std::cout << b << "+1 == " << b2 << ": inter band " << g << " to right " << right << "-" << right + fBandGap << std::endl;
+                  if(fDebug) { std::cout << b << "+1 == " << b2 << ": inter band " << g << " to right " << right << "-" << right + fBandGap << std::endl; }
                   gX1 = right - fGammaDistance / 2.;
                   gX2 = right + fBandGap + fGammaDistance / 2.;
                } else if(b == b2 + 1) {   // inter-band from this band to the next band on the left
-                  if(fDebug) std::cout << b << " == " << b2 << "+1: inter band " << g << " to left " << left << "-" << left - fBandGap << std::endl;
+                  if(fDebug) { std::cout << b << " == " << b2 << "+1: inter band " << g << " to left " << left << "-" << left - fBandGap << std::endl; }
                   gX1 = left + fGammaDistance / 2.;
                   gX2 = left - fBandGap - fGammaDistance / 2.;
                } else if(b < b2) {   // inter-band to a band on the right that is not a direct neighbour
-                  if(fDebug) std::cout << b << " < " << b2 << ": inter band far " << g << " right " << right << ", band gap " << fBandGap << std::endl;
+                  if(fDebug) { std::cout << b << " < " << b2 << ": inter band far " << g << " right " << right << ", band gap " << fBandGap << std::endl; }
                   gX1          = right;
                   gX2          = right + fBandGap / 8.;
                   double shift = right + fBandGap;
                   // sum the width of bands b+1 to b2-1 and the band gaps between them
-                  if(b + 1 < b2) shift = std::accumulate(fBands.begin() + b + 1, fBands.begin() + b2, right + fBandGap, [&](double r, TBand& el) { r += el.Width(fGammaDistance) + fBandGap; return r; });
+                  if(b + 1 < b2) { shift = std::accumulate(fBands.begin() + b + 1, fBands.begin() + b2, right + fBandGap, [&](double r, TBand& el) { r += el.Width(fGammaDistance) + fBandGap; return r; }); }
                   DrawAuxillaryLevel(gY2, right, shift - fBandGap / 2.);
                } else {   // inter-band to a band on the left that is not a direct neighbour
-                  if(fDebug) std::cout << b << " > " << b2 << ": inter band far " << g << " left " << left << ", band gap " << fBandGap << std::endl;
+                  if(fDebug) { std::cout << b << " > " << b2 << ": inter band far " << g << " left " << left << ", band gap " << fBandGap << std::endl; }
                   gX1          = left;
                   gX2          = left - fBandGap / 8.;
                   double shift = left - fBandGap;
                   // sum the width of bands b2+1 to b-1 and the band gaps between them
-                  if(b2 + 1 < b) shift = std::accumulate(fBands.begin() + b2 + 1, fBands.begin() + b, left - fBandGap, [&](double r, TBand& el) { r -= el.Width(fGammaDistance) + fBandGap; return r; });
+                  if(b2 + 1 < b) { shift = std::accumulate(fBands.begin() + b2 + 1, fBands.begin() + b, left - fBandGap, [&](double r, TBand& el) { r -= el.Width(fGammaDistance) + fBandGap; return r; }); }
                   DrawAuxillaryLevel(gY2, left, shift + fBandGap / 2.);
                }
             }
@@ -1438,7 +1438,7 @@ void TLevelScheme::DrawAuxillaryLevel(const double& energy, const double& left, 
       // we have multiple auxillary levels => try and find one with matching left and right
       auto range = fAuxillaryLevels.equal_range(energy);
       for(auto it = range.first; it != range.second; ++it) {
-         if(it->second.GetX1() == left && it->second.GetX2() == right) return;
+         if(it->second.GetX1() == left && it->second.GetX2() == right) { return; }
       }
    }
    // haven't found a matching level, so we add a new one
@@ -1512,12 +1512,12 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
             str.clear();
             str.str(line.substr(19, 2));
             str >> fQValueUncertainty;
-            if(fDebug) std::cout << "reading S_n old \"" << str.str() << "\" @ " << str.tellg() << (str.fail() ? " failed" : " good");
+            if(fDebug) { std::cout << "reading S_n old \"" << str.str() << "\" @ " << str.tellg() << (str.fail() ? " failed" : " good"); }
             str.clear();
             str.str(line.substr(21, 8));   // TODO: doesn't work?
-            if(fDebug) std::cout << ", new \"" << str.str() << "\" @ " << str.tellg() << (str.fail() ? " failed" : " good");
+            if(fDebug) { std::cout << ", new \"" << str.str() << "\" @ " << str.tellg() << (str.fail() ? " failed" : " good"); }
             str >> fNeutronSeparation;
-            if(fDebug) std::cout << " => S_n " << fNeutronSeparation << std::endl;
+            if(fDebug) { std::cout << " => S_n " << fNeutronSeparation << std::endl; }
             str.clear();
             str.str(line.substr(29, 2));
             str >> fNeutronSeparationUncertainty;
@@ -1531,15 +1531,15 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
          break;
       case 'X':   // cross-reference record (1-5 nuclide, 6-7 blank, 8 'X', 9 identifier, 10-39 DSID used, 40-80 blank)
          // ignored
-         if(fDebug) std::cout << "Ignoring cross-reference \"" << line << "\"" << std::endl;
+         if(fDebug) { std::cout << "Ignoring cross-reference \"" << line << "\"" << std::endl; }
          break;
       case 'P':   // parent record (1-5 nuclide, 6-7 blank, 8 'P', 9 blank or integer, ...), seems to be for decay data sets only?
-         if(fDebug) std::cout << "Ignoring parent \"" << line << "\"" << std::endl;
+         if(fDebug) { std::cout << "Ignoring parent \"" << line << "\"" << std::endl; }
          break;
       case 'N':   // this can be one of two records, depending on whether 7 is blank or 'P'
          // normalization record (1-5 nuclide, 6-7 blank, 8 'N', 9 blank or integer, ...), seems to be for decay data sets only?
          // production normalization record (1-5 nuclide, 6-9 " PN ", ...) ignored
-         if(fDebug) std::cout << "Ignoring normalization \"" << line << "\"" << std::endl;
+         if(fDebug) { std::cout << "Ignoring normalization \"" << line << "\"" << std::endl; }
          break;
       case 'L':   // level record (1-5 nuclide, 6 blank or not '1' for cont., 7-9 " L ", 10-19 energy keV, 20-21 uncert., 22-39 spin and parity, 40-49 half life with units, 50-55 uncert.
                   // 56-74 angular momentum transfer in reaction, 75-76 uncert., 77 comment flag, 78-79 metastable as "M ", or "M1", "M2", etc., 80 '?' denotes uncertain level and 'S' denotes neutron, proton, alpha sep. en.)
@@ -1547,12 +1547,12 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
             // read energy and energy uncertainty
             double energy            = 0.;
             double energyUncertainty = 0.;
-            if(fDebug) std::cout << "reading level energy old \"" << str.str() << "\"";
+            if(fDebug) { std::cout << "reading level energy old \"" << str.str() << "\""; }
             str.clear();
             str.str(line.substr(9, 10));
-            if(fDebug) std::cout << ", new \"" << str.str() << "\"";
+            if(fDebug) { std::cout << ", new \"" << str.str() << "\""; }
             str >> energy;
-            if(fDebug) std::cout << " => energy " << energy << std::endl;
+            if(fDebug) { std::cout << " => energy " << energy << std::endl; }
             str.clear();
             str.str(line.substr(19, 2));
             str >> energyUncertainty;
@@ -1581,7 +1581,7 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
             // create new level and set it's energy uncertainty
             currentLevel = AddLevel(energy, GetLabel(), label);
             currentLevel->EnergyUncertainty(energyUncertainty);
-         } else if(fDebug) std::cout << "Ignoring level \"" << line << "\"" << std::endl;
+         } else if(fDebug) { std::cout << "Ignoring level \"" << line << "\"" << std::endl; }
          break;
       case 'G':   // gamma record (1-5 nuclide, 6 blank or not '1' for cont., 7-9 " G ", 10-19 energy in keV, 20-21 uncert. 22-29 relative photon intens., 30-31 uncert., 32-41 multipol.
          // 42-49 mixing ratio, 50-55 uncert., 56-62 conversion coeff., 63-64 uncert., 65-74 relative total intens., 75-76 uncert., 77 comment flag, 78 'C' confirmed coincidence, '?' questionable coincidence,
@@ -1650,34 +1650,34 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
                gamma->TransitionStrengthUncertainty(totalIntensityUncertainty);
                // currently ignoring mixing ratio and conversion coefficents
             }
-         } else if(fDebug) std::cout << "Ignoring gamma \"" << line << "\"" << std::endl;
+         } else if(fDebug) { std::cout << "Ignoring gamma \"" << line << "\"" << std::endl; }
          break;
       case 'B':   // beta record (1-5 nuclide, 6 blank or not '1' for cont., 7-9 " B ", ...), seems to be for decay data sets only?
-         if(fDebug) std::cout << "Ignoring beta \"" << line << "\"" << std::endl;
+         if(fDebug) { std::cout << "Ignoring beta \"" << line << "\"" << std::endl; }
          break;
       case 'E':   // EC record (1-5 nuclide, 6 blank or not '1' for cont., 7-9 " E ", ...), seems to be for decay data sets only?
-         if(fDebug) std::cout << "Ignoring EC \"" << line << "\"" << std::endl;
+         if(fDebug) { std::cout << "Ignoring EC \"" << line << "\"" << std::endl; }
          break;
       case 'A':   // alpha record (1-5 nuclide, 6 blank or not '1' for cont., 7-9 " A ", ...), seems to be for decay data sets only?
-         if(fDebug) std::cout << "Ignoring alpha \"" << line << "\"" << std::endl;
+         if(fDebug) { std::cout << "Ignoring alpha \"" << line << "\"" << std::endl; }
          break;
       case 'D':   // delayed particle record (1-5 nuclide, 6 blank or not '1' for cont., 7-8 " D", 9 particle N, P, or A, ...), seems to be for decay data sets only?
-         if(fDebug) std::cout << "Ignoring delayed \"" << line << "\"" << std::endl;
+         if(fDebug) { std::cout << "Ignoring delayed \"" << line << "\"" << std::endl; }
          break;
       case 'R':   // reference record (1-3 mass, 4-7 blank, 8 'R', 9 blank, ...) not present?
-         if(fDebug) std::cout << "Ignoring reference \"" << line << "\"" << std::endl;
+         if(fDebug) { std::cout << "Ignoring reference \"" << line << "\"" << std::endl; }
          break;
       case ' ':   // comment (if line[6] is 'c' or maybe 'C', 'd', 'D', 't', or 'T')
-         if(fDebug) std::cout << "Ignoring comment \"" << line << "\"" << std::endl;
+         if(fDebug) { std::cout << "Ignoring comment \"" << line << "\"" << std::endl; }
          break;
       default:
          // probably a comment record (1-5 nuclide, 6 blank or character not '1' for cont., 7 'c', 'D', 'T', or 't', plus other stuff we ignore)
-         if(fDebug) std::cout << "Skipping unknown character " << line[7] << " from line \"" << line << "\"" << std::endl;
+         if(fDebug) { std::cout << "Skipping unknown character " << line[7] << " from line \"" << line << "\"" << std::endl; }
          break;
       };
    } while(std::getline(input, line) && !line.empty());
 
-   if(fDebug) std::cout << "Done reading \"" << filename << "\"" << std::endl;
+   if(fDebug) { std::cout << "Done reading \"" << filename << "\"" << std::endl; }
 
    input.close();
 }
