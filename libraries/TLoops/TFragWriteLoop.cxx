@@ -199,7 +199,7 @@ void TFragWriteLoop::WriteEvent(const std::shared_ptr<const TFragment>& event)
       fEventTree->Fill();
       // fEventAddress = nullptr;
    } else {
-      std::cout << __PRETTY_FUNCTION__ << ": no fragment tree!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast)
+      std::cout << __PRETTY_FUNCTION__ << ": no fragment tree!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    }
 }
 

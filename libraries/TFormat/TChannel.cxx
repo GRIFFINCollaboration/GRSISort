@@ -1615,7 +1615,7 @@ void TChannel::SetDigitizerType(const TPriorityValue<std::string>& tmp)
    if(fMnemonic.Value() != nullptr) {
       fMnemonic.Value()->EnumerateDigitizer(fDigitizerTypeString, fDigitizerType, fTimeStampUnit);
    } else {
-      std::cerr << __PRETTY_FUNCTION__ << ": mnemonic not set, can't set digitizer type and timestamp unit from " << fDigitizerTypeString << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast)
+      std::cerr << __PRETTY_FUNCTION__ << ": mnemonic not set, can't set digitizer type and timestamp unit from " << fDigitizerTypeString << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    }
 }
 

@@ -162,7 +162,7 @@ void TGRSIFrame::Run()
          std::cout << "\r[" << std::left << std::setw(barWidth) << progressBar << ' ' << "100 %]" << std::flush;
 #endif
       } catch(TGRSIMapException<std::string>& e) {
-         std::cout << DRED << "Exception in " << __PRETTY_FUNCTION__ << ": " << e.detail() << RESET_COLOR << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast)
+         std::cout << DRED << "Exception in " << __PRETTY_FUNCTION__ << ": " << e.detail() << RESET_COLOR << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
          throw e;
       }
    } else {
