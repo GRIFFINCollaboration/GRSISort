@@ -953,7 +953,7 @@ void TSourceCalibration::SecondWindow()
 
    // create intermediate progress bar
    fProgressBar = new TGHProgressBar(this, TGProgressBar::kFancy, 600);
-   fProgressBar->SetRange(0., fMatrices.size() * fNofBins);
+   fProgressBar->SetRange(0., static_cast<Float_t>(fMatrices.size() * fNofBins));
    fProgressBar->Percent(true);
    if(fVerboseLevel > 2) { std::cout << "Set range of progress bar to 0. - " << fProgressBar->GetMax() << " = " << fMatrices.size() * fNofBins << " = " << fMatrices.size() << "*" << fNofBins << std::endl; }
    AddFrame(fProgressBar, new TGLayoutHints(kLHintsCenterX | kLHintsCenterY | kLHintsExpandX | kLHintsExpandY, 0, 0, 0, 0));
@@ -1378,7 +1378,7 @@ void TSourceCalibration::BuildThirdInterface()
       fCalibrationPad[tmpBin]->cd();
       fCalibrationPad[tmpBin]->AddExec("zoom", "TSourceCalibration::ZoomY()");
       //fCalibrationPad[tmpBin]->GetListOfExecs()->Print();
-      fLegend[tmpBin] = new TLegend(0.8, 0.3, 0.95, 0.3 + fMatrices.size() * 0.05);   // x1, y1, x2, y2
+      fLegend[tmpBin] = new TLegend(0.8, 0.3, 0.95, 0.3 + static_cast<double>(fMatrices.size()) * 0.05);   // x1, y1, x2, y2
       //fFinalData[tmpBin]->DrawCalibration("*", fLegend[tmpBin]);
       //fLegend[tmpBin]->Draw();
       fFinalCanvas.back()->GetCanvas()->cd();
@@ -1409,7 +1409,7 @@ void TSourceCalibration::BuildThirdInterface()
       fEfficiencyPad[tmpBin]->SetNumber(1);
       fEfficiencyPad[tmpBin]->Draw();
       fEfficiencyPad[tmpBin]->cd();
-      fEfficiencyLegend[tmpBin] = new TLegend(0.8, 0.3, 0.95, 0.3 + fMatrices.size() * 0.05);   // x1, y1, x2, y2
+      fEfficiencyLegend[tmpBin] = new TLegend(0.8, 0.3, 0.95, 0.3 + static_cast<double>(fMatrices.size()) * 0.05);   // x1, y1, x2, y2
       FitEfficiency(tmpBin);                                                                    // also scales different source to first source, creates residual, and chi^2 label
       fFinalEfficiency[tmpBin]->DrawCalibration("*", fEfficiencyLegend[tmpBin]);
       fEfficiencyLegend[tmpBin]->Draw();
@@ -1717,7 +1717,7 @@ void TSourceCalibration::UpdateChannel(const int& channelId)
    }
    std::vector<Float_t> parameters;
    for(int i = 0; i <= calibration->GetParameter(0); ++i) {
-      parameters.push_back(calibration->GetParameter(i + 1));
+      parameters.push_back(static_cast<Float_t>(calibration->GetParameter(i + 1)));
    }
    TChannel* channel = TChannel::GetChannel(address, false);
    if(channel == nullptr) {

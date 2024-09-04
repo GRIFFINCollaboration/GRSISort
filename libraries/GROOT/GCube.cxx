@@ -364,9 +364,9 @@ Int_t GCube::Fill(Double_t x, Double_t y, Double_t z)
                (fXaxis.GetNbins() + 2) * (fXaxis.GetNbins() + 3) * (fXaxis.GetNbins() + 4) / 6 -
                (fXaxis.GetNbins() + 2 - binz) * (fXaxis.GetNbins() + 3 - binz) * (fXaxis.GetNbins() + 4 - binz) / 6 - biny;
    std::cout << "binx,y,z = " << binx << "," << biny << "," << binz << " => bin = " << bin << std::endl;
-   bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
-         binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
-                 10. / 3.);
+   bin = static_cast<Int_t>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
+                            binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
+                                    10. / 3.));
    std::cout << "binx,y,z = " << binx << "," << biny << "," << binz << " => bin = " << bin << std::endl;
    AddBinContent(bin);
    if(fSumw2.fN != 0) {
@@ -451,9 +451,9 @@ Int_t GCube::Fill(Double_t x, Double_t y, Double_t z, Double_t w)
    if(binx < 0 || biny < 0 || binz < 0) {
       return -1;
    }
-   Int_t bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
-               binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
-                       10. / 3.);
+   Int_t bin = static_cast<Int_t>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
+                                  binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
+                                          10. / 3.));
    AddBinContent(bin, w);
    if(fSumw2.fN != 0) {
       fSumw2.fArray[bin] += w * w;
@@ -525,9 +525,9 @@ Int_t GCube::Fill(const char* namex, const char* namey, const char* namez, Doubl
       std::swap(biny, binz);
    }
 
-   Int_t bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
-               binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
-                       10. / 3.);
+   Int_t bin = static_cast<Int_t>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
+                                  binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
+                                          10. / 3.));
    AddBinContent(bin, w);
    if(fSumw2.fN != 0) {
       fSumw2.fArray[bin] += w * w;
@@ -872,14 +872,14 @@ void GCube::FitSlicesZ(TF1* f1, Int_t binminx, Int_t binmaxx, Int_t binminy, Int
    // Loop on all cells in X,Y generate a projection along Z
    auto* hpz = new TH1D("R_temp", "_temp", nbinsz, fZaxis.GetXmin(), fZaxis.GetXmax());
    for(Int_t biny = binminy; biny <= binmaxy; biny++) {
-      Float_t y = fYaxis.GetBinCenter(biny);
+      Double_t y = fYaxis.GetBinCenter(biny);
       for(Int_t binx = binminx; binx <= binmaxx; binx++) {
-         Float_t x = fXaxis.GetBinCenter(binx);
+         Double_t x = fXaxis.GetBinCenter(binx);
          hpz->Reset();
          Int_t nfill = 0;
          for(Int_t binz = 1; binz <= nbinsz; binz++) {
             Int_t   bin = GetBin(binx, biny, binz);
-            Float_t w   = RetrieveBinContent(bin);
+            Double_t w   = RetrieveBinContent(bin);
             if(w == 0) {
                continue;
             }
@@ -938,9 +938,9 @@ Int_t GCube::GetBin(Int_t binx, Int_t biny, Int_t binz) const
       std::swap(biny, binz);
    }
 
-   return binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
-          binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
-                  10. / 3.);
+   return static_cast<Int_t>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
+                             binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
+                                     10. / 3.));
 }
 
 Double_t GCube::GetBinWithContent2(Double_t c, Int_t& binx, Int_t& biny, Int_t& binz, Int_t firstxbin, Int_t lastxbin,

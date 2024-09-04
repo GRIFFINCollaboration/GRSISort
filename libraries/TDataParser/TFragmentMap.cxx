@@ -116,7 +116,7 @@ bool TFragmentMap::Add(const std::shared_ptr<TFragment>& frag, const std::vector
       int dropped = -1;
       for(size_t i = 0; i < std::get<1>((*(range.first)).second).size(); ++i) {
          if(kValues[i] > 0) {
-            charges.push_back((std::get<1>((*(range.first)).second)[i] + static_cast<float>(gRandom->Uniform())) / kValues[i]);
+            charges.push_back((static_cast<float>(std::get<1>((*(range.first)).second)[i]) + static_cast<float>(gRandom->Uniform())) / static_cast<float>(kValues[i]));
             if(fDebug) {
                std::cout << "2, " << i << ": " << hex(std::get<1>((*(range.first)).second)[i]) << "/" << hex(kValues[i])
                          << " = " << (std::get<1>((*(range.first)).second)[i] + gRandom->Uniform())
@@ -156,7 +156,7 @@ bool TFragmentMap::Add(const std::shared_ptr<TFragment>& frag, const std::vector
       }
       switch(dropped) {
       case 0:   // dropped e0, so only e0+e1 and e1 are left
-         frags[0]->SetCharge(charges[0] * integrationLength[0] - charge[0]);
+         frags[0]->SetCharge(charges[0] * static_cast<float>(integrationLength[0] - charge[0]));
          frags[1]->SetCharge(charge[0]);
          frags[0]->SetKValue(integrationLength[0]);
          frags[1]->SetKValue(integrationLength[1]);
@@ -164,7 +164,7 @@ bool TFragmentMap::Add(const std::shared_ptr<TFragment>& frag, const std::vector
          frags[1]->SetNumberOfPileups(-201);
          break;
       case 1:   // dropped e0+e1, so only e0 and e1 are left
-         frags[0]->SetCharge(charges[0] * integrationLength[0]);
+         frags[0]->SetCharge(charges[0] * static_cast<float>(integrationLength[0]));
          frags[1]->SetCharge(charge[0]);
          frags[0]->SetKValue(integrationLength[0]);
          frags[1]->SetKValue(integrationLength[1]);
@@ -172,15 +172,15 @@ bool TFragmentMap::Add(const std::shared_ptr<TFragment>& frag, const std::vector
          frags[1]->SetNumberOfPileups(-201);
          break;
       case 2:   // dropped e1, so only e0 and e0+e1 are left
-         frags[0]->SetCharge(charges[0] * integrationLength[0]);
-         frags[1]->SetCharge((charges[1] - charges[0]) * integrationLength[0]);
+         frags[0]->SetCharge(charges[0] * static_cast<float>(integrationLength[0]));
+         frags[1]->SetCharge((charges[1] - charges[0]) * static_cast<float>(integrationLength[0]));
          frags[0]->SetKValue(integrationLength[0]);
          frags[1]->SetKValue(integrationLength[1]);
          frags[0]->SetNumberOfPileups(-200);
          frags[1]->SetNumberOfPileups(-201);
          break;
       default:   // dropped none
-         charges.push_back((charge[0] + gRandom->Uniform()) / integrationLength[0]);
+         charges.push_back(static_cast<float>(charge[0] + gRandom->Uniform()) / static_cast<float>(integrationLength[0]));
          if(fDebug) {
             std::cout << "2, -: " << hex(charge[0]) << "/" << hex(integrationLength[0]) << " = "
                       << (charge[0] + gRandom->Uniform()) << "/" << integrationLength[0] << " = " << charges.back()
@@ -226,7 +226,7 @@ bool TFragmentMap::Add(const std::shared_ptr<TFragment>& frag, const std::vector
       std::vector<int> dropped;
       for(size_t i = 0; i < std::get<1>((*(range.first)).second).size(); ++i) {
          if(kValues[i] > 0) {
-            charges.push_back((std::get<1>((*(range.first)).second)[i] + gRandom->Uniform()) / kValues[i]);
+            charges.push_back(((static_cast<float>(std::get<1>((*(range.first)).second)[i]) + static_cast<float>(gRandom->Uniform())) / static_cast<float>(kValues[i]));
             if(fDebug) {
                std::cout << "3, " << i << ": " << hex(std::get<1>((*(range.first)).second)[i]) << "/"
                          << hex(kValues[i]) << " = " << (std::get<1>((*(range.first)).second)[i] + gRandom->Uniform())
@@ -241,7 +241,7 @@ bool TFragmentMap::Add(const std::shared_ptr<TFragment>& frag, const std::vector
       }
       for(size_t i = 0; i < std::get<1>((*std::next(range.first)).second).size(); ++i) {
          if(kValues[i + situation] > 0) {
-            charges.push_back((std::get<1>((*std::next(range.first)).second)[i] + gRandom->Uniform()) / kValues[i + situation]);
+            charges.push_back((static_cast<float>(std::get<1>((*std::next(range.first)).second)[i]) + static_cast<float>(gRandom->Uniform())) / static_cast<float>(kValues[i + situation]));
             if(fDebug) {
                std::cout << "3, " << i + situation << ": "
                          << hex(std::get<1>((*std::next(range.first)).second)[i]) << "/" << hex(kValues[i + situation])
@@ -260,7 +260,7 @@ bool TFragmentMap::Add(const std::shared_ptr<TFragment>& frag, const std::vector
       }
       switch(dropped.size()) {
       case 0:   // dropped none
-         charges.push_back((charge[0] + gRandom->Uniform()) / integrationLength[0]);
+         charges.push_back((static_cast<float>(charge[0]) + static_cast<float>(gRandom->Uniform())) / static_cast<float>(integrationLength[0]));
          if(fDebug) {
             std::cout << "3, -: " << hex(charge[0]) << "/" << hex(integrationLength[0]) << " = "
                       << (charge[0] + gRandom->Uniform()) << "/" << integrationLength[0] << " = " << charges.back()
@@ -346,18 +346,18 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
    /// The situation parameter distinguishes between the two different ways 3 hits can pile up with each other:
    /// 3 - both later hits pile up with the first, any other value - the third hit only piles up with the second hit not the first one.
 
-   // all k's are needed squared so we square all elements of k
-   std::vector<Long_t> kSquared = kValues;
-   for(auto& item : kSquared) {
-      item = item * item;
+   // all k's are needed squared so we square all elements of k, cast to float here, because that is what we use later on
+   std::vector<float> kSquared(kValues.size());
+   for(size_t i = 0; i < kValues.size(); ++i) {
+      kSquared[i] = static_cast<float>(kValues[i] * kValues[i]);
    }
 
    switch(frag.size()) {
    case 2:
       frag[0]->SetCharge((charges[0] * (kSquared[0] * kSquared[1] + kSquared[0] * kSquared[2]) + (charges[1] - charges[2]) * kSquared[1] * kSquared[2]) /
-                         (kSquared[0] * kSquared[1] + kSquared[0] * kSquared[2] + kSquared[1] * kSquared[2]) * kValues[0]);
+                         (kSquared[0] * kSquared[1] + kSquared[0] * kSquared[2] + kSquared[1] * kSquared[2]) * static_cast<float>(kValues[0]));
       frag[1]->SetCharge((charges[2] * (kSquared[0] * kSquared[2] + kSquared[1] * kSquared[2]) + (charges[1] - charges[0]) * kSquared[0] * kSquared[1]) /
-                         (kSquared[0] * kSquared[1] + kSquared[0] * kSquared[2] + kSquared[1] * kSquared[2]) * kValues[1]);
+                         (kSquared[0] * kSquared[1] + kSquared[0] * kSquared[2] + kSquared[1] * kSquared[2]) * static_cast<float>(kValues[1]));
       frag[0]->SetKValue(kValues[0]);
       frag[1]->SetKValue(kValues[1]);
       frag[0]->SetNumberOfPileups(-20);
@@ -389,7 +389,7 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
              charges[3] * (kSquared[1] * kSquared[2] * kSquared[3] + kSquared[1] * kSquared[3] * kSquared[4] + kSquared[2] * kSquared[3] * kSquared[4])) /
             (kSquared[0] * kSquared[1] * kSquared[2] + kSquared[0] * kSquared[1] * kSquared[3] + kSquared[0] * kSquared[1] * kSquared[4] + kSquared[0] * kSquared[2] * kSquared[4] +
              kSquared[0] * kSquared[3] * kSquared[4] + kSquared[1] * kSquared[2] * kSquared[3] + kSquared[1] * kSquared[3] * kSquared[4] + kSquared[2] * kSquared[3] * kSquared[4]) *
-            kValues[0]);
+            static_cast<float>(kValues[0]));
          frag[1]->SetCharge(
             (charges[0] * (kSquared[0] * kSquared[1] * kSquared[2] + kSquared[0] * kSquared[1] * kSquared[3] + kSquared[0] * kSquared[1] * kSquared[4] + kSquared[0] * kSquared[2] * kSquared[4]) -
              charges[1] * (kSquared[0] * kSquared[1] * kSquared[2] + kSquared[0] * kSquared[1] * kSquared[3] + kSquared[0] * kSquared[1] * kSquared[4] + kSquared[1] * kSquared[2] * kSquared[3]) +
@@ -398,7 +398,7 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
              charges[4] * (kSquared[0] * kSquared[2] * kSquared[4] + kSquared[0] * kSquared[3] * kSquared[4] + kSquared[1] * kSquared[3] * kSquared[4] + kSquared[2] * kSquared[3] * kSquared[4])) /
             (kSquared[0] * kSquared[1] * kSquared[2] + kSquared[0] * kSquared[1] * kSquared[3] + kSquared[0] * kSquared[1] * kSquared[4] + kSquared[0] * kSquared[2] * kSquared[4] +
              kSquared[0] * kSquared[3] * kSquared[4] + kSquared[1] * kSquared[2] * kSquared[3] + kSquared[1] * kSquared[3] * kSquared[4] + kSquared[2] * kSquared[3] * kSquared[4]) *
-            kValues[1]);
+            static_cast<float>(kValues[1]));
          frag[2]->SetCharge(((charges[0] + charges[3]) * kSquared[0] * kSquared[1] * kSquared[3] +
                              charges[1] * (kSquared[0] * kSquared[1] * kSquared[2] + kSquared[0] * kSquared[1] * kSquared[3] + kSquared[1] * kSquared[2] * kSquared[3]) +
                              charges[2] * (kSquared[0] * kSquared[1] * kSquared[2] + kSquared[1] * kSquared[2] * kSquared[3]) +
@@ -407,7 +407,7 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
                             (kSquared[0] * kSquared[1] * kSquared[2] + kSquared[0] * kSquared[1] * kSquared[3] + kSquared[0] * kSquared[1] * kSquared[4] +
                              kSquared[0] * kSquared[2] * kSquared[4] + kSquared[0] * kSquared[3] * kSquared[4] + kSquared[1] * kSquared[2] * kSquared[3] +
                              kSquared[1] * kSquared[3] * kSquared[4] + kSquared[2] * kSquared[3] * kSquared[4]) *
-                            kValues[2]);
+                            static_cast<float>(kValues[2]));
       } else {   //(2, 2, 1)
          frag[0]->SetCharge(
             (charges[0] * (kSquared[0] * kSquared[1] * kSquared[3] + kSquared[0] * kSquared[1] * kSquared[4] + kSquared[0] * kSquared[2] * kSquared[3] + kSquared[0] * kSquared[2] * kSquared[4] +
@@ -416,7 +416,7 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
              charges[2] * (kSquared[1] * kSquared[2] * kSquared[3] + kSquared[1] * kSquared[2] * kSquared[4]) - (charges[3] - charges[4]) * kSquared[1] * kSquared[3] * kSquared[4]) /
             (kSquared[0] * kSquared[1] * kSquared[3] + kSquared[0] * kSquared[1] * kSquared[4] + kSquared[0] * kSquared[2] * kSquared[3] + kSquared[0] * kSquared[2] * kSquared[4] +
              kSquared[0] * kSquared[3] * kSquared[4] + kSquared[1] * kSquared[2] * kSquared[3] + kSquared[1] * kSquared[2] * kSquared[4] + kSquared[1] * kSquared[3] * kSquared[4]) *
-            kValues[0]);
+            static_cast<float>(kValues[0]));
          frag[1]->SetCharge(
             -(charges[0] * kSquared[0] * kSquared[1] * kSquared[3] + charges[0] * kSquared[0] * kSquared[1] * kSquared[4] - charges[1] * kSquared[0] * kSquared[1] * kSquared[3] -
               charges[1] * kSquared[0] * kSquared[1] * kSquared[4] - charges[2] * kSquared[0] * kSquared[2] * kSquared[3] - charges[2] * kSquared[0] * kSquared[2] * kSquared[4] -
@@ -424,7 +424,7 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
               charges[3] * kSquared[1] * kSquared[3] * kSquared[4] + charges[4] * kSquared[0] * kSquared[3] * kSquared[4] + charges[4] * kSquared[1] * kSquared[3] * kSquared[4]) /
             (kSquared[0] * kSquared[1] * kSquared[3] + kSquared[0] * kSquared[1] * kSquared[4] + kSquared[0] * kSquared[2] * kSquared[3] + kSquared[0] * kSquared[2] * kSquared[4] +
              kSquared[0] * kSquared[3] * kSquared[4] + kSquared[1] * kSquared[2] * kSquared[3] + kSquared[1] * kSquared[2] * kSquared[4] + kSquared[1] * kSquared[3] * kSquared[4]) *
-            kValues[1]);
+            static_cast<float>(kValues[1]));
          frag[2]->SetCharge(
             (charges[0] * kSquared[0] * kSquared[1] * kSquared[3] - charges[1] * kSquared[0] * kSquared[1] * kSquared[3] - charges[2] * kSquared[0] * kSquared[2] * kSquared[3] -
              charges[2] * kSquared[1] * kSquared[2] * kSquared[3] + charges[3] * kSquared[0] * kSquared[1] * kSquared[3] + charges[3] * kSquared[0] * kSquared[2] * kSquared[3] +
@@ -432,7 +432,7 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment>> frag, std::vect
              charges[4] * kSquared[0] * kSquared[3] * kSquared[4] + charges[4] * kSquared[1] * kSquared[2] * kSquared[4] + charges[4] * kSquared[1] * kSquared[3] * kSquared[4]) /
             (kSquared[0] * kSquared[1] * kSquared[3] + kSquared[0] * kSquared[1] * kSquared[4] + kSquared[0] * kSquared[2] * kSquared[3] + kSquared[0] * kSquared[2] * kSquared[4] +
              kSquared[0] * kSquared[3] * kSquared[4] + kSquared[1] * kSquared[2] * kSquared[3] + kSquared[1] * kSquared[2] * kSquared[4] + kSquared[1] * kSquared[3] * kSquared[4]) *
-            kValues[2]);
+            static_cast<float>(kValues[2]));
       }
       frag[0]->SetKValue(kValues[0]);
       frag[1]->SetKValue(kValues[1]);

@@ -545,15 +545,15 @@ double Kcoefficents(int mu, int L1, int L2)
    double k  = 0.;
    double l1 = L1;
    double l2 = L2;
-   L1        = std::max(l1, l2);
-   L2        = std::min(l1, l2);
+   L1        = static_cast<int>(std::max(l1, l2));
+   L2        = static_cast<int>(std::min(l1, l2));
 
    if((L1 + L2) % 2 == 0) {
       k = (static_cast<double>(mu) * (mu + 1.0) * (L1 * (L1 + 1.0) + L2 * (L2 + 1.0)) - TMath::Power(L2 * (L2 + 1.0) - L1 * (L1 + 1.0), 2)) / (L1 * (L1 + 1.0) + L2 * (L2 + 1.0) - mu * (mu + 1.0));
    } else {
       k = L2 * (L2 + 1.0) - L1 * (L1 + 1.);
    }
-   return k * (TMath::Factorial(mu - 2.) / TMath::Factorial(mu + 2));
+   return k * (TMath::Factorial(mu - 2) / TMath::Factorial(mu + 2));
 }
 
 double ScaleQ(double E1, double E2)

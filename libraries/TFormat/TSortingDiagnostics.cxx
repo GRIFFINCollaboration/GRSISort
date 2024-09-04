@@ -104,7 +104,7 @@ void TSortingDiagnostics::Print(Option_t* opt) const
       }
       std::cout << color << "Removed hits per detector class:" << RESET_COLOR << std::endl;
       for(auto iter : fHitsRemoved) {
-         std::cout << iter.first->GetName() << ": " << iter.second.first << "/" << iter.second.second << " = " << (100. * iter.second.first) / iter.second.second << "%" << std::endl;
+         std::cout << iter.first->GetName() << ": " << iter.second.first << "/" << iter.second.second << " = " << 100. * static_cast<double>(iter.second.first) / static_cast<double>(iter.second.second) << "%" << std::endl;
       }
    } else {
       if(option.EqualTo("ERROR")) {

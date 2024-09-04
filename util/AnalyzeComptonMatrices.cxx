@@ -306,7 +306,7 @@ double KCoefficent(int mu, int L1, int L2)
       k = l2 * (l2 + 1.) - l1 * (l1 + 1.);
    }
 
-   return k * (TMath::Factorial(mu - 2.) / TMath::Factorial(mu + 2.));
+   return k * (TMath::Factorial(mu - 2) / TMath::Factorial(mu + 2));
 }
 
 double Polarization(TUserSettings* settings)

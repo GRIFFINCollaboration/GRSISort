@@ -39,12 +39,12 @@ void TParsingDiagnosticsData::Update(const std::shared_ptr<const TFragment>& fra
 
 void TParsingDiagnosticsData::Print(UInt_t address) const
 {
-   std::cout << "channel " << hex(address, 4) << ": " << fDeadTime / 1e5 << " ms deadtime out of ";
+   std::cout << "channel " << hex(address, 4) << ": " << fDeadTime / 100000 << " ms deadtime out of ";
    if(fMaxTimeStamp == fMinTimeStamp && fMaxChannelId == fMinChannelId) {
       std::cout << "empty channel" << std::endl;
    } else {
-      std::cout << std::setw(12) << (fMaxTimeStamp - fMinTimeStamp) / 1e5
-                << "ms = " << (100. * fDeadTime) / (fMaxTimeStamp - fMinTimeStamp) << " %"
+      std::cout << std::setw(12) << (fMaxTimeStamp - fMinTimeStamp) / 100000
+                << "ms = " << 100. * static_cast<double>(fDeadTime) / static_cast<double>(fMaxTimeStamp - fMinTimeStamp) << " %"
                 << std::endl;
    }
 }
@@ -92,10 +92,10 @@ void TParsingDiagnostics::Clear(Option_t*)
 void TParsingDiagnostics::Print(Option_t*) const
 {
    std::cout << "Total run time of this (sub-)run is " << fMaxDaqTimeStamp - fMinDaqTimeStamp << " s" << std::endl
-             << "PPG cycle is " << fPPGCycleLength / 1e5 << " ms long." << std::endl
+             << "PPG cycle is " << fPPGCycleLength / 100000 << " ms long." << std::endl
              << "Found " << fNumberOfNetworkPackets << " network packets in range " << fMinNetworkPacketNumber << " - "
              << fMaxNetworkPacketNumber << " => "
-             << 100. * fNumberOfNetworkPackets / (fMaxNetworkPacketNumber - fMinNetworkPacketNumber + 1.)
+             << 100. * static_cast<double>(fNumberOfNetworkPackets) / static_cast<double>(fMaxNetworkPacketNumber - fMinNetworkPacketNumber + 1)
              << " % packet survival." << std::endl;
    // loop over number of good fragments per detector type
    for(const auto& fNumberOfGoodFragment : fNumberOfGoodFragments) {
@@ -106,7 +106,7 @@ void TParsingDiagnostics::Print(Option_t*) const
          std::cout << "          no";
       } else {
          std::cout << std::setw(12) << fNumberOfBadFragments.at(fNumberOfGoodFragment.first) << " ("
-                   << (100. * fNumberOfBadFragments.at(fNumberOfGoodFragment.first)) / fNumberOfGoodFragment.second
+                   << 100. * static_cast<double>(fNumberOfBadFragments.at(fNumberOfGoodFragment.first)) / static_cast<double>(fNumberOfGoodFragment.second)
                    << " %)";
       }
       std::cout << " bad fragments." << std::endl;
@@ -182,7 +182,7 @@ void TParsingDiagnostics::Draw(Option_t* opt)
    for(const auto& iter : fChannelAddressData) {
       if(iter.second.MinChannelId() != 0 || iter.second.MinChannelId() != iter.second.MaxChannelId()) {
          fIdHist->SetBinContent(fIdHist->GetXaxis()->FindBin(iter.first),
-                                (100. * iter.second.NumberOfHits()) / (iter.second.MaxChannelId() - iter.second.MinChannelId() + 1.));
+                                100. * static_cast<double>(iter.second.NumberOfHits()) / static_cast<double>(iter.second.MaxChannelId() - iter.second.MinChannelId() + 1));
       }
    }
 

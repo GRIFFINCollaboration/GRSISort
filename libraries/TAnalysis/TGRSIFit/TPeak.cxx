@@ -300,7 +300,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    }
    TGRSIFunctions::CheckParameterErrors(fitres);
 
-   Double_t binWidth = fitHist->GetBinWidth(GetParameter("centroid"));
+   Double_t binWidth = fitHist->GetBinWidth(1);
    Double_t width    = GetParameter("sigma");
    if(verbose) {
       std::cout << "Chi^2/NDF = " << fitres->Chi2() / fitres->Ndf() << std::endl;

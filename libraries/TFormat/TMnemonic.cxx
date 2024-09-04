@@ -156,5 +156,5 @@ TClass* TMnemonic::GetClassType() const
 
 double TMnemonic::GetTime(Long64_t timestamp, Float_t, double, const TChannel* channel) const
 {
-   return static_cast<double>((timestamp + gRandom->Uniform()) * channel->GetTimeStampUnit());
+   return (static_cast<double>(timestamp) + gRandom->Uniform()) * static_cast<double>(channel->GetTimeStampUnit());
 }

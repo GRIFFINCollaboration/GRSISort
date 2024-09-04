@@ -456,7 +456,7 @@ double TGRSIFunctions::ClebschGordan(double j1, double m1, double j2, double m2,
       return 0;
    }
 
-   double term1 = TMath::Sqrt((((2 * j + 1) / TMath::Factorial(j1 + j2 + j + 1)) * TMath::Factorial(j2 + j - j1) * TMath::Factorial(j + j1 - j2) * TMath::Factorial(j1 + j2 - j) * TMath::Factorial(j1 + m1) * TMath::Factorial(j1 - m1) * TMath::Factorial(j2 + m2) * TMath::Factorial(j2 - m2) * TMath::Factorial(j + m) * TMath::Factorial(j - m)));
+   double term1 = TMath::Sqrt((((2 * j + 1) / TMath::Factorial(static_cast<Int_t>(j1 + j2 + j + 1))) * TMath::Factorial(static_cast<Int_t>(j2 + j - j1)) * TMath::Factorial(static_cast<Int_t>(j + j1 - j2)) * TMath::Factorial(static_cast<Int_t>(j1 + j2 - j)) * TMath::Factorial(static_cast<Int_t>(j1 + m1)) * TMath::Factorial(static_cast<Int_t>(j1 - m1)) * TMath::Factorial(static_cast<Int_t>(j2 + m2)) * TMath::Factorial(static_cast<Int_t>(j2 - m2)) * TMath::Factorial(static_cast<Int_t>(j + m)) * TMath::Factorial(static_cast<Int_t>(j - m))));
    double sum   = 0.;
    for(int k = 0; k <= 99; k++) {
       if((j1 + j2 - j - k < 0) || (j1 - m1 - k < 0) || (j2 + m2 - k < 0)) {
@@ -465,11 +465,11 @@ double TGRSIFunctions::ClebschGordan(double j1, double m1, double j2, double m2,
       }
       if((j - j1 - m2 + k < 0) || (j - j2 + m1 + k < 0)) {
          // jump ahead to next term that will contribute
-         const Int_t a1 = (j - j1 - m2);
-         const Int_t a2 = (j - j2 + m1);
-         k              = TMath::Max(-TMath::Min(a1, a2) - 1, k);
+         const auto a1 = static_cast<Int_t>(j - j1 - m2);
+         const auto a2 = static_cast<Int_t>(j - j2 + m1);
+         k             = TMath::Max(-TMath::Min(a1, a2) - 1, k);
       } else {
-         double term = TMath::Factorial(j1 + j2 - j - k) * TMath::Factorial(j - j1 - m2 + k) * TMath::Factorial(j - j2 + m1 + k) * TMath::Factorial(j1 - m1 - k) * TMath::Factorial(j2 + m2 - k) * TMath::Factorial(k);
+         double term = TMath::Factorial(static_cast<Int_t>(j1 + j2 - j - k)) * TMath::Factorial(static_cast<Int_t>(j - j1 - m2 + k)) * TMath::Factorial(static_cast<Int_t>(j - j2 + m1 + k)) * TMath::Factorial(static_cast<Int_t>(j1 - m1 - k)) * TMath::Factorial(static_cast<Int_t>(j2 + m2 - k)) * TMath::Factorial(k);
          if((k % 2) == 1) {
             term *= -1.;
          }

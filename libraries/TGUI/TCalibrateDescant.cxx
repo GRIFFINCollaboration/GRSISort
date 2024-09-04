@@ -509,11 +509,11 @@ void TCalibrateDescant::InitializeParameters()
 
    std::cout << "Initializing parameters for current projection " << fCurrentProjection << " based on threshold bin " << threshold << ", average " << average << ", rough bin " << roughBin << ", and rough position " << roughPos << std::endl;
 
-   fInitial->FixParameter(0, 0.9 * fProjections[fCurrentProjection]->GetBinContent((roughBin - threshold) / 2.));                             // amplitude
+   fInitial->FixParameter(0, 0.9 * fProjections[fCurrentProjection]->GetBinContent((roughBin - threshold) / 2));                              // amplitude
    fInitial->FixParameter(1, roughPos);                                                                                                       // position
    fInitial->FixParameter(2, 0.1 * roughPos);                                                                                                 // sigma
    fInitial->FixParameter(3, 0.2 * roughPos);                                                                                                 // d sigma
-   fInitial->FixParameter(4, 0.3 * fProjections[fCurrentProjection]->GetBinContent((roughBin - threshold) / 2.));                             // peak amp
+   fInitial->FixParameter(4, 0.3 * fProjections[fCurrentProjection]->GetBinContent((roughBin - threshold) / 2));                              // peak amp
    fInitial->FixParameter(5, 0.3 * roughPos);                                                                                                 // peak pos
    fInitial->FixParameter(6, 0.2 * roughPos);                                                                                                 // peak sigma
    fInitial->FixParameter(7, 0.1 * fProjections[fCurrentProjection]->Integral(threshold, threshold + 10) / TMath::Exp(-0.001 * threshold));   // noise amp

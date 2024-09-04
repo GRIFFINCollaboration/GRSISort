@@ -17,7 +17,7 @@ int main(int argc, char** argv)
    std::string calFileName(argv[2], 40);
    std::string outFileName = "out" + calFileName;
 
-   double num_to_scale = atof(argv[1]);
+   auto num_to_scale = static_cast<float>(atof(argv[1]));
 
    printf("Multiplying all channels by %lf\n", num_to_scale);
 

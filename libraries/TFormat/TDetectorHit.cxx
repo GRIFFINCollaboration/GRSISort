@@ -234,7 +234,7 @@ Long64_t TDetectorHit::GetTimeStampNs(Option_t*) const
    if(tmpChan == nullptr) {
       return GetTimeStamp();   // GetTimeStampUnit returns 1 of there is no channel
    }
-   return GetTimeStamp() * GetTimeStampUnit() * (1.0 - tmpChan->GetTimeDrift()) - static_cast<double>(tmpChan->GetTimeOffset());
+   return GetTimeStamp() * GetTimeStampUnit() * static_cast<Long64_t>((1.0 - tmpChan->GetTimeDrift()) - static_cast<double>(tmpChan->GetTimeOffset()));
 }
 
 Int_t TDetectorHit::GetTimeStampUnit() const
@@ -281,7 +281,7 @@ Long64_t TDetectorHit::GetCycleTimeStamp() const
 double TDetectorHit::GetTimeSinceTapeMove() const
 {
    /// returns time in ns, minus the time of the last tape move
-   return GetTime() - static_cast<Long64_t>(TPPG::Get()->GetLastStatusTime(GetTimeStampNs(), EPpgPattern::kTapeMove));
+   return GetTime() - static_cast<double>(TPPG::Get()->GetLastStatusTime(GetTimeStampNs(), EPpgPattern::kTapeMove));
 }
 
 // const here is rather dirty

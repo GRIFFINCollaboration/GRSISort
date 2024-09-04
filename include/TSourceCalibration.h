@@ -181,7 +181,7 @@ public:
    double Threshold() { return fThresholdEntry->GetNumber(); }
    int    Degree()
    {
-      if(fDegreeEntry != nullptr) { fDefaultDegree = fDegreeEntry->GetNumber(); }
+      if(fDegreeEntry != nullptr) { fDefaultDegree = static_cast<int>(fDegreeEntry->GetNumber()); }
       return fDefaultDegree;
    }
    std::vector<std::tuple<double, double, double, double>> SourceEnergy(const size_t& i) { return fSourceEnergy.at(i); }

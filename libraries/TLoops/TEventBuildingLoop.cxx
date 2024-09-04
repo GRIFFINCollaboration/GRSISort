@@ -156,7 +156,7 @@ bool TEventBuildingLoop::CheckTimeCondition(const std::shared_ptr<const TFragmen
    if(frag->GetEntryNumber() % (TGRSIOptions::Get()->SortDepth()) == 0) {
       TSortingDiagnostics::Get()->AddTime(event_start);
    }
-   if(time > event_start + fBuildWindow || time < event_start - fBuildWindow) {
+   if(time > event_start + static_cast<double>(fBuildWindow) || time < event_start - static_cast<double>(fBuildWindow)) {
       // std::cout.precision(12);
       // std::cout<<std::setw(12)<<time<<", "<<std::setw(12)<<event_start<<", "<<std::setw(12)<<fBuildWindow<<"; "<<std::setw(12)<<fabs(time - event_start)<<", "<<std::setw(12)<<event_start + fBuildWindow<<", "<<std::setw(12)<<event_start - fBuildWindow<<std::endl;
       fOutputQueue->Push(fNextEvent);
