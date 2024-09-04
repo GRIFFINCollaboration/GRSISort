@@ -878,7 +878,7 @@ void GCube::FitSlicesZ(TF1* f1, Int_t binminx, Int_t binmaxx, Int_t binminy, Int
          hpz->Reset();
          Int_t nfill = 0;
          for(Int_t binz = 1; binz <= nbinsz; binz++) {
-            Int_t   bin = GetBin(binx, biny, binz);
+            Int_t    bin = GetBin(binx, biny, binz);
             Double_t w   = RetrieveBinContent(bin);
             if(w == 0) {
                continue;

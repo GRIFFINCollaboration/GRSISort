@@ -39,7 +39,7 @@ public:
    TGamma(TGamma&& rhs) noexcept = default;
    TGamma& operator=(const TGamma& rhs);
    TGamma& operator=(TGamma&& rhs) noexcept = default;
-   ~TGamma() = default;
+   ~TGamma()                                = default;
 
    // setters
    void Energy(const double val) { fEnergy = val; }
@@ -235,7 +235,7 @@ public:
    TBand(TBand&& rhs) noexcept = default;
    TBand& operator=(const TBand& rhs);
    TBand& operator=(TBand&& rhs) noexcept = default;
-   ~TBand() = default;
+   ~TBand()                               = default;
 
    TLevel* AddLevel(double energy, const std::string& label);   // *MENU*
    TLevel* AddLevel(const double energy, const char* label)
@@ -285,10 +285,10 @@ public:
    explicit TLevelScheme(const std::string& filename = "", bool debug = false);
    explicit TLevelScheme(const char* filename, bool debug = false) : TLevelScheme(std::string(filename), debug) {}
    TLevelScheme(const TLevelScheme& rhs);
-   TLevelScheme(TLevelScheme&& rhs) noexcept = default;
-   TLevelScheme& operator=(const TLevelScheme& rhs) = default;
+   TLevelScheme(TLevelScheme&& rhs) noexcept            = default;
+   TLevelScheme& operator=(const TLevelScheme& rhs)     = default;
    TLevelScheme& operator=(TLevelScheme&& rhs) noexcept = default;
-   ~TLevelScheme() = default;
+   ~TLevelScheme()                                      = default;
 
    static void          ListLevelSchemes();
    static TLevelScheme* GetLevelScheme(const char* name);
