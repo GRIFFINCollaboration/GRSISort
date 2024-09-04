@@ -50,6 +50,7 @@ jobs:
           #thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
         thread-comments: 'update'
         ignore: '.github|root*|build|GRSIProof|examples|include/GVersion.h'
+        extensions: 'h,hh,cxx'
         files-changed-only: false
         step-summary: true
         file-annotations: true
