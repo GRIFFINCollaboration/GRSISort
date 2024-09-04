@@ -1410,7 +1410,7 @@ void TSourceCalibration::BuildThirdInterface()
       fEfficiencyPad[tmpBin]->Draw();
       fEfficiencyPad[tmpBin]->cd();
       fEfficiencyLegend[tmpBin] = new TLegend(0.8, 0.3, 0.95, 0.3 + static_cast<double>(fMatrices.size()) * 0.05);   // x1, y1, x2, y2
-      FitEfficiency(tmpBin);                                                                    // also scales different source to first source, creates residual, and chi^2 label
+      FitEfficiency(tmpBin);                                                                                         // also scales different source to first source, creates residual, and chi^2 label
       fFinalEfficiency[tmpBin]->DrawCalibration("*", fEfficiencyLegend[tmpBin]);
       fEfficiencyLegend[tmpBin]->Draw();
       fEfficiencyChi2Label[tmpBin]->Draw();

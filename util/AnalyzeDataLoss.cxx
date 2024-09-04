@@ -50,10 +50,10 @@ TList* AnalyzeDataLoss(TTree* tree, int64_t entries = 0, TStopwatch* w = nullptr
    // int64_t lasttime = 0;
 
    //--------------- parameters for dealing with the roll-over of the AcceptedChannelId ----------------------//
-   uint64_t                   acceptedMax = 0x1 << 14;             // = 2^14 = this is the maximum number that the AcceptedChannelId can be
-   std::array<int, channels>  rollovers;                           // this is how many roll-overs we have had
-   std::array<bool, channels> rolling;                             // array that tells us if we're rolling over in that channel
-   std::array<int, channels>  rollnum;                             // array that tells us how many times we've had accepted ID over the threshold
+   uint64_t                   acceptedMax = 0x1 << 14;   // = 2^14 = this is the maximum number that the AcceptedChannelId can be
+   std::array<int, channels>  rollovers;                 // this is how many roll-overs we have had
+   std::array<bool, channels> rolling;                   // array that tells us if we're rolling over in that channel
+   std::array<int, channels>  rollnum;                   // array that tells us how many times we've had accepted ID over the threshold
    unsigned int               rollingthreshold  = 1000;
    int                        rollnum_threshold = 20;   // if we have this many numbers above the threshold, turn rolling on or off
 
@@ -241,7 +241,7 @@ TList* AnalyzeDataLoss(TTree* tree, int64_t entries = 0, TStopwatch* w = nullptr
          w->Continue();
       }
    }
-	std::cout << "\t" << entry << " / " << entries << " = " << static_cast<float>(entry) / static_cast<float>(entries) * 100.0 << "%. "
+   std::cout << "\t" << entry << " / " << entries << " = " << static_cast<float>(entry) / static_cast<float>(entries) * 100.0 << "%. "
              << w->RealTime() << " seconds" << std::endl
              << std::endl;
    w->Continue();

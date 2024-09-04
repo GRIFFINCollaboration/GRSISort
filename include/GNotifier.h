@@ -45,7 +45,7 @@ private:
 
    /// /cond CLASSIMP
    ClassDefOverride(GNotifier, 0)   // NOLINT(readability-else-after-return)
-	/// /endcond
+                                    /// /endcond
 };
 
 #endif

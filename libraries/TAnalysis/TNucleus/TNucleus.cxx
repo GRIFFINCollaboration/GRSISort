@@ -234,13 +234,7 @@ void TNucleus::SetSymbol(const char* symbol)
 int TNucleus::GetZfromSymbol(char* symbol)
 {
    // Figures out the Z of the nucleus based on the atomic symbol
-   std::array<std::array<char, 3>, 105> symbols = {{{"H"}, {"HE"}, {"LI"}, {"BE"}, {"B"}, {"C"}, {"N"}, {"O"}, {"F"}, {"NE"}, {"NA"}, {"MG"}, {"AL"}, {"SI"}, {"P"},
-                                                    {"S"}, {"CL"}, {"AR"}, {"K"}, {"CA"}, {"SC"}, {"TI"}, {"V"}, {"CR"}, {"MN"}, {"FE"}, {"CO"}, {"NI"}, {"CU"}, {"ZN"},
-                                                    {"GA"}, {"GE"}, {"AS"}, {"SE"}, {"BR"}, {"KR"}, {"RB"}, {"SR"}, {"Y"}, {"ZR"}, {"NB"}, {"MO"}, {"TC"}, {"RU"}, {"RH"},
-                                                    {"PD"}, {"AG"}, {"CD"}, {"IN"}, {"SN"}, {"SB"}, {"TE"}, {"F"}, {"XE"}, {"CS"}, {"BA"}, {"LA"}, {"CE"}, {"PR"}, {"ND"},
-                                                    {"PM"}, {"SM"}, {"EU"}, {"GD"}, {"TB"}, {"DY"}, {"HO"}, {"ER"}, {"TM"}, {"YB"}, {"LU"}, {"HF"}, {"TA"}, {"W"}, {"RE"},
-                                                    {"OS"}, {"IR"}, {"PT"}, {"AU"}, {"HG"}, {"TI"}, {"PB"}, {"BI"}, {"PO"}, {"AT"}, {"RN"}, {"FR"}, {"RA"}, {"AC"}, {"TH"},
-                                                    {"PA"}, {"U"}, {"NP"}, {"PU"}, {"AM"}, {"CM"}, {"BK"}, {"CF"}, {"ES"}, {"FM"}, {"MD"}, {"NO"}, {"LR"}, {"RF"}, {"HA"}}};
+   std::array<std::array<char, 3>, 105> symbols = {{{"H"}, {"HE"}, {"LI"}, {"BE"}, {"B"}, {"C"}, {"N"}, {"O"}, {"F"}, {"NE"}, {"NA"}, {"MG"}, {"AL"}, {"SI"}, {"P"}, {"S"}, {"CL"}, {"AR"}, {"K"}, {"CA"}, {"SC"}, {"TI"}, {"V"}, {"CR"}, {"MN"}, {"FE"}, {"CO"}, {"NI"}, {"CU"}, {"ZN"}, {"GA"}, {"GE"}, {"AS"}, {"SE"}, {"BR"}, {"KR"}, {"RB"}, {"SR"}, {"Y"}, {"ZR"}, {"NB"}, {"MO"}, {"TC"}, {"RU"}, {"RH"}, {"PD"}, {"AG"}, {"CD"}, {"IN"}, {"SN"}, {"SB"}, {"TE"}, {"F"}, {"XE"}, {"CS"}, {"BA"}, {"LA"}, {"CE"}, {"PR"}, {"ND"}, {"PM"}, {"SM"}, {"EU"}, {"GD"}, {"TB"}, {"DY"}, {"HO"}, {"ER"}, {"TM"}, {"YB"}, {"LU"}, {"HF"}, {"TA"}, {"W"}, {"RE"}, {"OS"}, {"IR"}, {"PT"}, {"AU"}, {"HG"}, {"TI"}, {"PB"}, {"BI"}, {"PO"}, {"AT"}, {"RN"}, {"FR"}, {"RA"}, {"AC"}, {"TH"}, {"PA"}, {"U"}, {"NP"}, {"PU"}, {"AM"}, {"CM"}, {"BK"}, {"CF"}, {"ES"}, {"FM"}, {"MD"}, {"NO"}, {"LR"}, {"RF"}, {"HA"}}};
    size_t                               length  = strlen(symbol);
    auto*                                search  = new char[length + 1];
    for(size_t i = 0; i < length; i++) {
