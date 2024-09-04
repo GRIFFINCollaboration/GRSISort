@@ -3,11 +3,11 @@ name: Run clang-tidy
 on:
   workflow_dispatch:
   pull_request:
-    branches: [main, master, develop]
-    paths: ['**.C', '**.c', '**.cpp', '**.h', '**.hpp', '**.cxx', '**.hxx', '**.cc', '**.hh', '**CMakeLists.txt', '**.cmake']
+    branches: [main, develop]
+    paths: ['**.h', '**.hh', '**.cxx', '**CMakeLists.txt', '**.cmake']
   push:
-    branches: [main, master, develop]
-    paths: ['**.C', '**.c', '**.cpp', '**.h', '**.hpp', '**.cxx', '**.hxx', '**.cc', '**.hh', '**CMakeLists.txt',  '**.cmake']
+    branches: [main, develop]
+    paths: ['**.h', '**.hh', '**.cxx', '**CMakeLists.txt', '**.cmake']
 
 jobs:
   cpp-linter:
