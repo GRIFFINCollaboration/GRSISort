@@ -1,0 +1,30 @@
+name: cpp-linter
+on:
+  pull_request:
+    branches: [main, master, develop]
+    paths: ['**.C', '**.c', '**.cpp', '**.h', '**.hpp', '**.cxx', '**.hxx', '**.cc', '**.hh', '**CMakeLists.txt', '**.cmake']
+  push:
+    branches: [main, master, develop]
+    paths: ['**.C', '**.c', '**.cpp', '**.h', '**.hpp', '**.cxx', '**.hxx', '**.cc', '**.hh', '**CMakeLists.txt',  '**.cmake']
+
+jobs:
+  cpp-linter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cpp-linter/cpp-linter-action@v2
+        id: linter
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          style: ''  # disable clang-format checks.
+          tidy-checks: '' # Use .clang-tidy config file.
+          thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+          ignore: 'include/GVersion.h'
+
+      - name: Fail fast?!
+        if: steps.linter.outputs.clang-tidy-checks-failed > 0
+        run: exit 1
+
