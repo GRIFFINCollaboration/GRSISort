@@ -44,8 +44,10 @@
 #include "TLevelScheme.h"
 
 #ifndef kArrowKeyPress
+// NOLINTBEGIN(cppcoreguidelines-macro-usage)
 #define kArrowKeyPress 25
 #define kArrowKeyRelease 26
+// NOLINTEND(cppcoreguidelines-macro-usage)
 #endif
 
 enum MyArrowPress { kMyArrowLeft  = 0x1012,
