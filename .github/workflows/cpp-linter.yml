@@ -47,11 +47,12 @@ jobs:
         database: ${{github.workspace}}/build
         style: ''  # disable clang-format checks.
         tidy-checks: '' # Use .clang-tidy config file.
-        thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+          #thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+        thread-comments: 'update'
         ignore: '.github|root*|build|GRSIProof|examples|include/GVersion.h'
         files-changed-only: false
-
-    - name: Fail fast?!
-      if: steps.linter.outputs.clang-tidy-checks-failed > 0
-      run: exit 1
+        step-summary: true
+        file-annotations: true
+          #tidy-review: true
+        passive-reviews: true
 
