@@ -140,11 +140,8 @@ enum ERootCanvasCommands {
 
 };
 
-#define kArrowKeyPress 25
-#define kArrowKeyRelease 26
-
-#define kButton1Ctrl 9
-#define kButton1CtrlMotion 10
+constexpr int kButton1Ctrl = 9;
+constexpr int kButton1CtrlMotion = 10;
 
 static std::array<const char*, 6> gOpenTypes = {"ROOT files", "*.root", "All files", "*", nullptr, nullptr};
 
