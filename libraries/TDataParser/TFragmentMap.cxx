@@ -226,7 +226,7 @@ bool TFragmentMap::Add(const std::shared_ptr<TFragment>& frag, const std::vector
       std::vector<int> dropped;
       for(size_t i = 0; i < std::get<1>((*(range.first)).second).size(); ++i) {
          if(kValues[i] > 0) {
-            charges.push_back(((static_cast<float>(std::get<1>((*(range.first)).second)[i]) + static_cast<float>(gRandom->Uniform())) / static_cast<float>(kValues[i]));
+            charges.push_back((static_cast<float>(std::get<1>((*(range.first)).second)[i]) + static_cast<float>(gRandom->Uniform())) / static_cast<float>(kValues[i]));
             if(fDebug) {
                std::cout << "3, " << i << ": " << hex(std::get<1>((*(range.first)).second)[i]) << "/"
                          << hex(kValues[i]) << " = " << (std::get<1>((*(range.first)).second)[i] + gRandom->Uniform())
