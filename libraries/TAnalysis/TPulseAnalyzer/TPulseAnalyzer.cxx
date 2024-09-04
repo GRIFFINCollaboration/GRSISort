@@ -51,6 +51,7 @@ void TPulseAnalyzer::SetData(const TFragment& fragment, double noise_fac)
    }
 }
 
+// NOLINTBEGIN(cppcoreguidelines-narrowing-conversions)
 void TPulseAnalyzer::SetData(const std::vector<Short_t>& wave, double noise_fac)
 {
    SetCsI(false);
@@ -1911,6 +1912,7 @@ void TPulseAnalyzer::DrawCsIFit()
       shape.DrawCopy("same");
    }
 }
+// NOLINTEND(cppcoreguidelines-narrowing-conversions)
 
 /*======================================================*/
 void TPulseAnalyzer::print_WavePar()
