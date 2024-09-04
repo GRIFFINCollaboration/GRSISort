@@ -48,7 +48,7 @@ jobs:
         style: ''  # disable clang-format checks.
         tidy-checks: '' # Use .clang-tidy config file.
         thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
-        ignore: 'include/GVersion.h|.github|${{github.workspace}}/build/_deps'
+        ignore: '.github|root*|build|include/GVersion.h'
         files-changed-only: false
 
     - name: Fail fast?!
