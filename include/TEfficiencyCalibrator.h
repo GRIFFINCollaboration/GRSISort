@@ -62,7 +62,11 @@ public:
                     kGauss   = 3 };
 
    TEfficiencyTab(TEfficiencyDatatypeTab* parent, TNucleus* nucleus, std::tuple<TH1*, TH2*, TH2*> hists, TGCompositeFrame* frame, const int& verboseLevel = 0);
-   ~TEfficiencyTab();
+	TEfficiencyTab(const TEfficiencyTab&) = default;
+	TEfficiencyTab(TEfficiencyTab&&) noexcept = default;
+	TEfficiencyTab& operator=(const TEfficiencyTab&) = default;
+	TEfficiencyTab& operator=(TEfficiencyTab&&) noexcept = default;
+   ~TEfficiencyTab() = default;
 
    void         FindPeaks();
    TSinglePeak* NewPeak(const double& energy);
@@ -127,7 +131,11 @@ public:
                  kPlotSummingInCheck,
                  kPlotSummingOutCheck };
 
-   TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, const std::vector<TNucleus*>& nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, TGHProgressBar* progressBar, const int& verboseLevel = 0);
+   TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, std::vector<TNucleus*> nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, TGHProgressBar* progressBar, const int& verboseLevel = 0);
+	TEfficiencyDatatypeTab(const TEfficiencyDatatypeTab&) = default;
+	TEfficiencyDatatypeTab(TEfficiencyDatatypeTab&&) noexcept = default;
+	TEfficiencyDatatypeTab& operator=(const TEfficiencyDatatypeTab&) = default;
+	TEfficiencyDatatypeTab& operator=(TEfficiencyDatatypeTab&&) noexcept = default;
    ~TEfficiencyDatatypeTab();
 
    void CreateTabs();
@@ -152,7 +160,7 @@ public:
    TCalibrationGraphSet* EfficiencyGraph() { return fEfficiencyGraph; }
 
    static double EfficiencyDebertin(double* x, double* par);
-   static double EfficiencyRadware(double* val, double* par);
+   static double EfficiencyRadware(double* x, double* par);
    static double EfficiencyPolynomial(double* x, double* par);
 
 private:
@@ -244,7 +252,11 @@ public:
                  kSigmaEntry     = 200,
                  kThresholdEntry = 300 };
 
-   TEfficiencyCalibrator(int n...);
+   explicit TEfficiencyCalibrator(int n...);
+	TEfficiencyCalibrator(const TEfficiencyCalibrator&) = delete;
+	TEfficiencyCalibrator(TEfficiencyCalibrator&&) noexcept = delete;
+	TEfficiencyCalibrator& operator=(const TEfficiencyCalibrator&) = delete;
+	TEfficiencyCalibrator& operator=(TEfficiencyCalibrator&&) noexcept = delete;
    ~TEfficiencyCalibrator();
 
    void SetSource(Int_t windowId, Int_t entryId);

@@ -34,9 +34,12 @@ class TLevelScheme;
 
 class TGamma : public TArrow {
 public:
-   TGamma(TLevelScheme* levelScheme = nullptr, const std::string& label = "", const double& br = 100., const double& ts = 1.);
+   explicit TGamma(TLevelScheme* levelScheme = nullptr, std::string label = "", const double& br = 100., const double& ts = 1.);
    TGamma(const TGamma& rhs);
-   ~TGamma();
+   TGamma(TGamma&& rhs) noexcept = default;
+   TGamma& operator=(const TGamma& rhs);
+   TGamma& operator=(TGamma&& rhs) noexcept = default;
+   ~TGamma() = default;
 
    // setters
    void Energy(const double val) { fEnergy = val; }
@@ -108,10 +111,8 @@ public:
 
    void Debug(bool val) { fDebug = val; }
 
-   TGamma& operator=(const TGamma& rhs);
-
-   static void   TextSize(double val) { fTextSize = val; }
-   static double TextSize() { return fTextSize; }
+   static void  TextSize(float val) { fTextSize = val; }
+   static float TextSize() { return fTextSize; }
 
 private:
    bool          fDebug{false};
@@ -132,7 +133,7 @@ private:
    double        fInitialEnergy{0.};   ///< Energy of initial level that emits this gamma ray
    double        fFinalEnergy{0.};     ///< Energy of final level that is populated by this gamma ray
 
-   static double fTextSize;
+   static float fTextSize;
 
    /// \cond CLASSIMP
    ClassDefOverride(TGamma, 1)   // NOLINT(readability-else-after-return)
@@ -141,8 +142,11 @@ private:
 
 class TLevel : public TPolyLine {
 public:
-   TLevel(TLevelScheme* levelScheme = nullptr, const double& energy = -1., const std::string& label = "");
+   explicit TLevel(TLevelScheme* levelScheme = nullptr, const double& energy = -1., const std::string& label = "");
    TLevel(const TLevel& rhs);
+   TLevel(TLevel&& rhs) noexcept = default;
+   TLevel& operator=(const TLevel& rhs);
+   TLevel& operator=(TLevel&& rhs) noexcept = default;
    ~TLevel();
 
    TGamma* AddGamma(double levelEnergy, const char* label = "", double br = 100., double ts = 1.);   // *MENU*
@@ -199,10 +203,8 @@ public:
       for(auto& [level, gamma] : fGammas) { gamma.Debug(val); }
    }
 
-   TLevel& operator=(const TLevel& rhs);
-
-   static void   TextSize(double val) { fTextSize = val; }
-   static double TextSize() { return fTextSize; }
+   static void  TextSize(float val) { fTextSize = val; }
+   static float TextSize() { return fTextSize; }
 
 private:
    bool                     fDebug{false};
@@ -219,7 +221,7 @@ private:
 
    double fOffset{0.};   ///< y-offset for labels on right and left side of level
 
-   static double fTextSize;
+   static float fTextSize;
 
    /// \cond CLASSIMP
    ClassDefOverride(TLevel, 1)   // NOLINT(readability-else-after-return)
@@ -228,9 +230,12 @@ private:
 
 class TBand : public TPaveLabel {
 public:
-   TBand(TLevelScheme* levelScheme = nullptr, const std::string& label = "");
+   explicit TBand(TLevelScheme* levelScheme = nullptr, const std::string& label = "");
    TBand(const TBand& rhs);
-   ~TBand() {}
+   TBand(TBand&& rhs) noexcept = default;
+   TBand& operator=(const TBand& rhs);
+   TBand& operator=(TBand&& rhs) noexcept = default;
+   ~TBand() = default;
 
    TLevel* AddLevel(double energy, const std::string& label);   // *MENU*
    TLevel* AddLevel(const double energy, const char* label)
@@ -261,8 +266,6 @@ public:
       for(auto& [energy, level] : fLevels) { level.Debug(val); }
    }
 
-   TBand& operator=(const TBand& rhs);
-
 private:
    bool                     fDebug{false};
    std::map<double, TLevel> fLevels;
@@ -279,10 +282,13 @@ public:
                             kBand,
                             kGlobal };
 
-   TLevelScheme(const std::string& filename = "", bool debug = false);
-   TLevelScheme(const char* filename, bool debug = false) : TLevelScheme(std::string(filename), debug) {}
+   explicit TLevelScheme(const std::string& filename = "", bool debug = false);
+   explicit TLevelScheme(const char* filename, bool debug = false) : TLevelScheme(std::string(filename), debug) {}
    TLevelScheme(const TLevelScheme& rhs);
-   ~TLevelScheme();
+   TLevelScheme(TLevelScheme&& rhs) noexcept = default;
+   TLevelScheme& operator=(const TLevelScheme& rhs) = default;
+   TLevelScheme& operator=(TLevelScheme&& rhs) noexcept = default;
+   ~TLevelScheme() = default;
 
    static void          ListLevelSchemes();
    static TLevelScheme* GetLevelScheme(const char* name);
