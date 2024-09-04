@@ -451,9 +451,9 @@ Int_t GCube::Fill(Double_t x, Double_t y, Double_t z, Double_t w)
    if(binx < 0 || biny < 0 || binz < 0) {
       return -1;
    }
-   Int_t bin = static_cast<Int_t>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
-                                  binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
-                                          10. / 3.));
+   auto bin = static_cast<Int_t>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
+                                 binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
+                                         10. / 3.));
    AddBinContent(bin, w);
    if(fSumw2.fN != 0) {
       fSumw2.fArray[bin] += w * w;
@@ -525,9 +525,9 @@ Int_t GCube::Fill(const char* namex, const char* namey, const char* namez, Doubl
       std::swap(biny, binz);
    }
 
-   Int_t bin = static_cast<Int_t>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
-                                  binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
-                                          10. / 3.));
+   auto bin = static_cast<Int_t>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
+                                 binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
+                                         10. / 3.));
    AddBinContent(bin, w);
    if(fSumw2.fN != 0) {
       fSumw2.fArray[bin] += w * w;
