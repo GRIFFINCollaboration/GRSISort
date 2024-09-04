@@ -12,7 +12,7 @@ jobs:
   cpp-linter:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
     - name: Install packages
       run: |
@@ -29,27 +29,28 @@ jobs:
         source root/bin/thisroot.sh
         echo "using $(which root)"
       shell: bash
-      - name: Configure CMake
+
+    - name: Configure CMake
       run: >
         cmake -B ${{github.workspace}}/build
         -S ${{github.workspace}}
         -DCMAKE_PREFIX_PATH=root
         -DCMAKE_EXPORT_COMPILE_COMMANDS=TRUE
 
-      - uses: cpp-linter/cpp-linter-action@v2
-        id: linter
-        continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          database: ${{github.workspace}}/build
-          style: ''  # disable clang-format checks.
-          tidy-checks: '' # Use .clang-tidy config file.
-          thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
-          ignore: 'include/GVersion.h|.github|${{github.workspace}}/build/_deps'
-          files-changed-only: false
+    - uses: cpp-linter/cpp-linter-action@v2
+      id: linter
+      continue-on-error: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        database: ${{github.workspace}}/build
+        style: ''  # disable clang-format checks.
+        tidy-checks: '' # Use .clang-tidy config file.
+        thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+        ignore: 'include/GVersion.h|.github|${{github.workspace}}/build/_deps'
+        files-changed-only: false
 
-      - name: Fail fast?!
-        if: steps.linter.outputs.clang-tidy-checks-failed > 0
-        run: exit 1
+    - name: Fail fast?!
+      if: steps.linter.outputs.clang-tidy-checks-failed > 0
+      run: exit 1
 
