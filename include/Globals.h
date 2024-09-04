@@ -1,6 +1,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+// NOLINTBEGIN(cppcoreguidelines-macro-usage)
 #define RESET_COLOR "\033[m"
 #define BLUE "\033[1;34m"
 #define YELLOW "\033[1;33m"
@@ -32,15 +33,7 @@
 #define SHOW_CURSOR "\033[?25h"
 
 #define ALERTTEXT "\033[47m\033[0;31m"
-
-#define NUM_SIS_CHAN 8
-
-#define MAXSAMPLESIZE 8192
-
-#define FRAGMENTBUFFERSIZE 1000
-
-#define BUILDINGTIMECONDITION 2
-#define BUILDINGTRIGGERCONDITION 999
+// NOLINTEND(cppcoreguidelines-macro-usage)
 
 #if __APPLE__
 #ifdef __CINT__
