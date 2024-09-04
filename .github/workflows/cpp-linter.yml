@@ -1,4 +1,5 @@
-name: cpp-linter
+name: Run clang-tidy
+
 on:
   pull_request:
     branches: [main, master, develop]
