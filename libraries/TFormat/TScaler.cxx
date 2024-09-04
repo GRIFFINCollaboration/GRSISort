@@ -356,7 +356,7 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
          fHistRange[std::make_pair(lowAddress, highAddress)] =
             new TH1D(Form("TScalerHist_%04x_%04x", lowAddress, highAddress),
                      Form("scaler %d vs time in cycle for address 0x%04x - 0x%04x; time in cycle [ms]; counts/%.0f ms",
-								static_cast<int>(index), lowAddress, highAddress, static_cast<double>(fPPG->GetCycleLength()) / 1e5 / nofBins),
+                          static_cast<int>(index), lowAddress, highAddress, static_cast<double>(fPPG->GetCycleLength()) / 1e5 / nofBins),
                      nofBins, 0., static_cast<double>(fPPG->GetCycleLength()) / 1e5);
          // fHistRange[std::make_pair(lowAddress, highAddress)]->ResetBit(kMustCleanup);
          // we have to skip the first data point in case this is a sub-run

@@ -47,15 +47,15 @@ double ScaleQ(double En1, double En2);
 // Main
 int main(int argc, char** argv)
 {
-	// The quality factor for creating a predicted Asymmetry plot of 0.5*Q*P*Cos(2*Xi), where                 
-	// P is determined by PolarizationCalculation()  <- Parameters must be set internally for each transition 
-	// Dan measured 0.24492 with 12 clovers in Summer 2016.                                                   
-	// Adam measured 0.2509 with 16 clovers in Dec 2017.
-	constexpr double qualityFactor = 0.2509;
-	// The energy of the scattered gamma currently being examined.  Used for scaling Q
-	constexpr double energyUsed = 1332.;
-	// Maximum energy for plot.
-	constexpr int maxEnergy = 3000;
+   // The quality factor for creating a predicted Asymmetry plot of 0.5*Q*P*Cos(2*Xi), where
+   // P is determined by PolarizationCalculation()  <- Parameters must be set internally for each transition
+   // Dan measured 0.24492 with 12 clovers in Summer 2016.
+   // Adam measured 0.2509 with 16 clovers in Dec 2017.
+   constexpr double qualityFactor = 0.2509;
+   // The energy of the scattered gamma currently being examined.  Used for scaling Q
+   constexpr double energyUsed = 1332.;
+   // Maximum energy for plot.
+   constexpr int maxEnergy = 3000;
 
    if(argc != 2) {
       printf("try again (usage: %s <matrix file>).\n", argv[0]);
