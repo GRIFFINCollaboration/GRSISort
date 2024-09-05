@@ -13,7 +13,6 @@ jobs:
   cpp-linter:
     runs-on: ubuntu-latest
     permissions:
-      metadata: read
       contents: write
       pull-requests: write
     steps:
