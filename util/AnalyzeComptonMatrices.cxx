@@ -1,3 +1,4 @@
+#ifdef HAS_MATHMORE
 #include "TFile.h"
 #include "TH2.h"
 #include "TH1.h"
@@ -337,3 +338,12 @@ double Polarization(TUserSettings* settings)
    if(settings->GetBool("Negative")) { return -nominator / denominator; }
    return nominator / denominator;
 }
+#else
+#include <iostream>
+
+int main(int, char**)
+{
+	std::cerr<<"ROOT installation is missing mathmore support!"<<std::endl;
+	return 1;
+}
+#endif
