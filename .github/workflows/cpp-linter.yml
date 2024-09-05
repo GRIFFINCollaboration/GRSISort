@@ -42,6 +42,9 @@ jobs:
         -DCMAKE_PREFIX_PATH=root
         -DCMAKE_EXPORT_COMPILE_COMMANDS=TRUE
 
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build -j4
+
     - uses: cpp-linter/cpp-linter-action@v2
       id: linter
       continue-on-error: true
@@ -53,7 +56,7 @@ jobs:
         tidy-checks: '' # Use .clang-tidy config file.
           #thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
         thread-comments: 'update'
-        ignore: '.github|root*|build|GRSIProof|examples|include/GVersion.h'
+        ignore: '.github|root*|build|GRSIProof|examples|users|include/GVersion.h'
         extensions: 'h,hh,cxx'
         files-changed-only: false
         step-summary: true
