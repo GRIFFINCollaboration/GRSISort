@@ -120,7 +120,7 @@ private:
    EDirection fSummaryDirection{EDirection::kXDirection};
 
    /// /cond CLASSIMP
-   ClassDef(GH2Base, 1)   // NOLINT
+   ClassDef(GH2Base, 1)   // NOLINT(readability-else-after-return)
                           /// /endcond
 };
 

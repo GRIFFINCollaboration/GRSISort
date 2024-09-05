@@ -140,11 +140,8 @@ enum ERootCanvasCommands {
 
 };
 
-#define kArrowKeyPress 25
-#define kArrowKeyRelease 26
-
-#define kButton1Ctrl 9
-#define kButton1CtrlMotion 10
+constexpr int kButton1Ctrl       = 9;
+constexpr int kButton1CtrlMotion = 10;
 
 static std::array<const char*, 6> gOpenTypes = {"ROOT files", "*.root", "All files", "*", nullptr, nullptr};
 
@@ -811,7 +808,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
                   if(ft.Index(".") != kNPOS) {
                      fn += ft(ft.Index("."), ft.Length());
                      appendedType = kTRUE;
-                     goto again;   // NOLINT
+                     goto again;   // NOLINT(cppcoreguidelines-avoid-goto)
                   }
                }
                Warning("ProcessMessage", "file %s cannot be saved with this extension", fileInfo.fFilename);
@@ -1382,7 +1379,7 @@ void GRootCanvas::ShowEditor(Bool_t show)
       const auto* main = static_cast<const TGMainFrame*>(fParent->GetMainFrame());   // fParent is of type TGWindow, so GetMainFrame returns "const TGWindow*"
       fMainFrame->HideFrame(fEditorFrame);
       if((main != nullptr) && main->InheritsFrom("TRootBrowser")) {
-         auto* browser = const_cast<TRootBrowser*>(static_cast<const TRootBrowser*>(main));   // NOLINT
+         auto* browser = const_cast<TRootBrowser*>(static_cast<const TRootBrowser*>(main));   // NOLINT(cppcoreguidelines-pro-type-const-cast)
          if(!fEmbedded) {
             browser->GetTabRight()->Connect("Selected(Int_t)", "GRootCanvas", this, "Activated(Int_t)");
          }
@@ -1902,7 +1899,7 @@ Bool_t GRootCanvas::HandleDNDDrop(TDNDData* data)
       }
       gPad->Clear();
       if(obj->InheritsFrom("TKey")) {
-         auto* object = reinterpret_cast<TObject*>(gROOT->ProcessLine(Form("((TKey *)0x%lx)->ReadObj();", reinterpret_cast<ULong_t>(obj))));   // NOLINT
+         auto* object = reinterpret_cast<TObject*>(gROOT->ProcessLine(Form("((TKey *)0x%lx)->ReadObj();", reinterpret_cast<ULong_t>(obj))));   // NOLINT(performance-no-int-to-ptr)
          if(object == nullptr) {
             return kTRUE;
          }

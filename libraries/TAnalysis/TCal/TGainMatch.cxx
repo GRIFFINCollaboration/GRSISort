@@ -330,8 +330,8 @@ void TGainMatch::WriteToChannel() const
    std::cout << "Writing to channel " << GetChannel()->GetNumber() << std::endl;
    std::cout << "p0 = " << GetParameter(0) << " \t p1 = " << GetParameter(1) << std::endl;
    // Set the energy parameters based on the fitted gains.
-   GetChannel()->AddENGCoefficient(GetParameter(0));
-   GetChannel()->AddENGCoefficient(GetParameter(1));
+   GetChannel()->AddENGCoefficient(static_cast<float>(GetParameter(0)));
+   GetChannel()->AddENGCoefficient(static_cast<float>(GetParameter(1)));
 }
 
 void TGainMatch::Print(Option_t*) const
@@ -633,7 +633,7 @@ Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2* charge_mat, TH2* eng_mat, 
       gm->Error("FineMatchAll", "TH2 Pointer is nullptr");
       return false;
    }
-   Double_t binwidth = static_cast<Int_t>(0.5 + 1. / eng_mat->GetYaxis()->GetBinWidth(100));
+   auto binwidth = static_cast<Int_t>(0.5 + 1. / eng_mat->GetYaxis()->GetBinWidth(100));
    eng_mat->RebinY(binwidth);
 
    std::vector<Int_t> badlist;
@@ -837,7 +837,7 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    return true;
 }
 
-Double_t TGainMatch::HistCompare(Double_t* x, Double_t* par)   // NOLINT
+Double_t TGainMatch::HistCompare(Double_t* x, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    Int_t    bin     = fHist->GetXaxis()->FindBin(x[0] * par[2] + par[1]);
    Double_t content = fHist->GetBinContent(bin);

@@ -38,7 +38,7 @@ private:
    TClass*                 fClass{nullptr};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalManager, 1)   // NOLINT
+   ClassDefOverride(TCalManager, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

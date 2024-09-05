@@ -87,7 +87,7 @@ void TMultiPeak::InitNames()
       SetParName(6 * i + 9, Form("R_%i", i));
       SetParName(6 * i + 10, Form("Step_%i", i));
    }
-   FixParameter(0, fPeakVec.size());
+   FixParameter(0, static_cast<double>(fPeakVec.size()));
 }
 
 TMultiPeak::TMultiPeak(const TMultiPeak& copy) : TGRSIFit(copy)
@@ -127,7 +127,7 @@ Bool_t TMultiPeak::InitParams(TH1* fithist)
       return false;
    }
 
-   FixParameter(0, fPeakVec.size());
+   FixParameter(0, static_cast<double>(fPeakVec.size()));
    // This is the range for the fit.
    Double_t xlow  = 0;
    Double_t xhigh = 0;
@@ -217,7 +217,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
       sigma_list[i] = GetParameter(6 * i + 7);
    }
    std::sort(sigma_list.begin(), sigma_list.end(), std::greater<>());
-   Double_t median = sigma_list.at(static_cast<int>(sigma_list.size() / 2.));
+   Double_t median = sigma_list.at(sigma_list.size() / 2);
 
    Double_t range_low  = 0.;
    Double_t range_high = 0.;
@@ -268,8 +268,8 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
    // We will now set the parameters of each of the peaks based on the fits.
    for(int i = 0; i < static_cast<int>(fPeakVec.size()); ++i) {
       auto* tmpMp = new TMultiPeak(*this);
-      tmpMp->ClearParameters();   // We need to clear all of the parameters so that we can add the ones we want back in
-      Double_t    binWidth  = fithist->GetBinWidth(GetParameter(Form("Centroid_%i", i)));
+      tmpMp->ClearParameters();                          // We need to clear all of the parameters so that we can add the ones we want back in
+      Double_t    binWidth  = fithist->GetBinWidth(1);   // This assumes all bins are the same width, so we can just take the first bin instead of the bin of the centroid.
       TPeak*      peak      = fPeakVec.at(i);
       TMatrixDSym tmpCovMat = emptyCovMat;
       peak->SetParameter("Height", GetParameter(Form("Height_%i", i)));
@@ -443,7 +443,7 @@ void TMultiPeak::DrawPeaks()
    Double_t xlow  = 0.;
    Double_t xhigh = 0.;
    GetRange(xlow, xhigh);
-   Double_t npeaks = fPeakVec.size();
+   int npeaks = fPeakVec.size();
    for(auto* peak : fPeakVec) {
       // Should be good enough to draw between -2 and +2 fwhm
       Double_t centroid = peak->GetCentroid();

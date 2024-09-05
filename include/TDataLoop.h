@@ -79,7 +79,7 @@ private:
 #endif
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDataLoop, 0)   // NOLINT
+   ClassDefOverride(TDataLoop, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 

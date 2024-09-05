@@ -89,7 +89,7 @@ private:
    static Double_t fDefaultCoarseRange;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGainMatch, 1)   // NOLINT
+   ClassDefOverride(TGainMatch, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

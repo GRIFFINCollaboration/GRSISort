@@ -6,12 +6,10 @@ Part of this fact means that I no longer do any weighting other that event mixin
 include the metzger Nparallel/Nperpendicular method of Compton polarimetry.  This script only includes
 the portions that I believe would be useful for actual implementation of this code.  To use this you
 should:
-Set RUNNUMBER appropriately, as I do not have this information automatically pulled from input files.
 Set the correct parameters within the PolarizationCalculation() function, either use an appropriate template one or create the missing one for your cascade.
 Set things in Parameter Setup to what you want.
-For appropriate theory plot set AGATA_Q to a known quality factor (preferrably one you recently measured)
-Whatever scattering event was used to obtain AGATA_Q should be set as E_Q_Measure.  Q will then be scaled
-appropriately to predict a scatter for an event of energy E_Q_Use, which must also be set.
+For appropriate theory plot set qualityFactor to a known quality factor (preferrably one you recently measured)
+Q will then be scaled appropriately to predict a scatter for an event of energy energyUsed, which must also be set.
 
 Compile:
 g++ LeanAnalyzeComptonMatrices.c -std=c++0x -I$GRSISYS/include -L$GRSISYS/libraries `grsi-config --cflags --all-libs` `root-config --cflags --libs` -lTreePlayer -lMathMore -lSpectrum -o MakeComptonPlots
@@ -42,17 +40,6 @@ ________________________________________________________________________________
 
 #include "TMath.h"
 
-#define RUNNUMBER 10577
-
-#define AGATA_Q 0.2509     // The quality factor for creating a predicted Asymmetry plot of 0.5*Q*P*Cos(2*Xi), where                 \
-                           // P is determined by PolarizationCalculation()  <- Parameters must be set internally for each transition \
-                           // Dan measured 0.24492 with 12 clovers in Summer 2016.                                                   \
-                           // Adam measured 0.2509 with 16 clovers in Dec 2017.
-#define E_Q_Measure 1332   // The energy of the scattered gamma used to calculate AGATA_Q
-#define E_Q_Use 1332       // The energy of the scattered gamma currently being examined.  Used for scaling Q
-#define MaxE 3000          // Max energy for plot.
-#define PI 3.14159
-
 // Functions
 
 double ScaleQ(double En1, double En2);
@@ -60,13 +47,23 @@ double ScaleQ(double En1, double En2);
 // Main
 int main(int argc, char** argv)
 {
+   // The quality factor for creating a predicted Asymmetry plot of 0.5*Q*P*Cos(2*Xi), where
+   // P is determined by PolarizationCalculation()  <- Parameters must be set internally for each transition
+   // Dan measured 0.24492 with 12 clovers in Summer 2016.
+   // Adam measured 0.2509 with 16 clovers in Dec 2017.
+   constexpr double qualityFactor = 0.2509;
+   // The energy of the scattered gamma currently being examined.  Used for scaling Q
+   constexpr double energyUsed = 1332.;
+   // Maximum energy for plot.
+   constexpr int maxEnergy = 3000;
+
    if(argc != 2) {
       printf("try again (usage: %s <matrix file>).\n", argv[0]);
       return 0;
    }
 
-   for(int i = 100; i <= MaxE; i += 100) {
-      std::cout << i << " " << AGATA_Q * ScaleQ(i, E_Q_Use) << std::endl;
+   for(int i = 100; i <= maxEnergy; i += 100) {
+      std::cout << i << " " << qualityFactor * ScaleQ(i, energyUsed) << std::endl;
    }
 
    return 0;

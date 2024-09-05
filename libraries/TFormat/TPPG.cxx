@@ -220,7 +220,7 @@ void TPPG::Print(Option_t* opt) const
       if(fOdbPPGCodes.empty()) {
          std::cout << "No ODB cycle read!" << std::endl;
       } else {
-         std::cout << "ODB cycle: " << OdbCycleLength() / 1e6 << " s" << std::endl
+         std::cout << "ODB cycle: " << OdbCycleLength() / 1000000 << " s" << std::endl
                    << "Code   Duration" << std::endl;
          for(size_t i = 0; i < fOdbPPGCodes.size(); ++i) {
             std::cout << hex(fOdbPPGCodes[i], 4) << " " << fOdbDurations[i] << std::endl;
@@ -304,8 +304,8 @@ void TPPG::Print(Option_t* opt) const
    }
 
    // the print statement itself
-   std::cout << "Cycle length is " << cycleLength << " in ns = " << cycleLength / 1e9 << " seconds." << std::endl;
-   std::cout << "Cycle: " << stateLength[0] / 1e9 << " s tape move, " << stateLength[1] / 1e9 << " s background, " << stateLength[2] / 1e9 << " s beam on, and " << stateLength[3] / 1e9 << " s decay" << std::endl;
+   std::cout << "Cycle length is " << cycleLength << " in ns = " << cycleLength / 1000000000 << " seconds." << std::endl;
+   std::cout << "Cycle: " << stateLength[0] / 1000000000 << " s tape move, " << stateLength[1] / 1000000000 << " s background, " << stateLength[2] / 1000000000 << " s beam on, and " << stateLength[3] / 1000000000 << " s decay" << std::endl;
    std::cout << "Offset is " << offset << " [ns]" << std::endl;
    std::cout << "Got " << fPPGStatusMap->size() - 1 << " PPG words:" << std::endl;
    for(auto& statu : status) {

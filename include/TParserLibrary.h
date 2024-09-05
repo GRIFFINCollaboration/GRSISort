@@ -67,7 +67,7 @@ private:
    void (*fDestroyDataParser)(TDataParser*);
 
    /// \cond CLASSIMP
-   ClassDefOverride(TParserLibrary, 1)   // NOLINT
+   ClassDefOverride(TParserLibrary, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 

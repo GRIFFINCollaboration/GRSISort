@@ -44,7 +44,7 @@ GPopup::GPopup(const TGWindow* p, const TGWindow* main, UInt_t w, UInt_t h, UInt
 
 void GPopup::Print(Option_t*) const
 {
-   std::cout << __PRETTY_FUNCTION__ << " was called." << std::endl;   // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << " was called." << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 }
 
 void GPopup::CloseWindow()

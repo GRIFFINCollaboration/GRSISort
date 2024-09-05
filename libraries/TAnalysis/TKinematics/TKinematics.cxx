@@ -536,7 +536,7 @@ TSpline3* TKinematics::Steffen_labvscminverse(double thmin, double thmax, double
    auto* cm  = new double[static_cast<int>((thmax - thmin) / size) + 1];
    auto* lab = new double[static_cast<int>((thmax - thmin) / size) + 1];
    int   nr  = 0;
-   for(int i = ((thmax - thmin) / size); i > 0; i--) {
+   for(auto i = static_cast<int>((thmax - thmin) / size); i > 0; i--) {
       cm[nr]  = i;
       lab[nr] = Steffen_cm2labinverse(cm[nr] * PI / 180., part) * 180. / PI;
       if(lab[nr] > 0.01 && lab[nr] < 179.99) {

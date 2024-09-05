@@ -126,8 +126,8 @@ void TEnergyCal::WriteToChannel() const
    std::cout << "Writing to channel " << GetChannel()->GetNumber() << std::endl;
    std::cout << "p0 = " << GetParameter(0) << " \t p1 = " << GetParameter(1) << std::endl;
    // Set the energy parameters based on the fitted calibration.
-   GetChannel()->AddENGCoefficient(GetParameter(0));
-   GetChannel()->AddENGCoefficient(GetParameter(1));
+   GetChannel()->AddENGCoefficient(static_cast<Float_t>(GetParameter(0)));
+   GetChannel()->AddENGCoefficient(static_cast<Float_t>(GetParameter(1)));
 }
 
 void TEnergyCal::Print(Option_t*) const

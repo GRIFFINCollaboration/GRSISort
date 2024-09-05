@@ -10,9 +10,9 @@
 #include <map>
 
 #if !defined(__CINT__) && !defined(__CLING__)
-// NOLINTBEGIN(readability-identifier-naming)
+// NOLINTBEGIN(readability-identifier-naming, cppcoreguidelines-macro-usage)
 #define _GLIBCXX_USE_NANOSLEEP 1
-// NOLINTEND(readability-identifier-naming)
+// NOLINTEND(readability-identifier-naming, cppcoreguidelines-macro-usage)
 #include <thread>
 #include <mutex>
 #endif

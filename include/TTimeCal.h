@@ -36,7 +36,7 @@ private:
    std::vector<Double_t> fParameters;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TTimeCal, 1)   // NOLINT
+   ClassDefOverride(TTimeCal, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

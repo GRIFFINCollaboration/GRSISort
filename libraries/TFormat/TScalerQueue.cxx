@@ -164,14 +164,14 @@ void TDeadtimeScalerQueue::CheckStatus() const
 void TDeadtimeScalerQueue::StatusUpdate()
 {
    // Updates the status of the scaler Queue
-   float time            = 0;
-   float scaler_rate_in  = 0;
-   float scaler_rate_out = 0;
+   double time            = 0;
+   double scaler_rate_in  = 0;
+   double scaler_rate_out = 0;
 
    while(fStatusUpdateOn) {
       time            = fStopwatch->RealTime();
-      scaler_rate_in  = fScalersIn / time;
-      scaler_rate_out = fScalersOut / time;
+      scaler_rate_in  = static_cast<double>(fScalersIn) / time;
+      scaler_rate_out = static_cast<double>(fScalersOut) / time;
       while(!TDeadtimeScalerQueue::All.try_lock()) {
          // do nothing
       }
@@ -359,14 +359,14 @@ void TRateScalerQueue::CheckStatus() const
 void TRateScalerQueue::StatusUpdate()
 {
    // Updates the status of the scaler Queue
-   float time            = 0;
-   float scaler_rate_in  = 0;
-   float scaler_rate_out = 0;
+   double time            = 0;
+   double scaler_rate_in  = 0;
+   double scaler_rate_out = 0;
 
    while(fStatusUpdateOn) {
       time            = fStopwatch->RealTime();
-      scaler_rate_in  = fScalersIn / time;
-      scaler_rate_out = fScalersOut / time;
+      scaler_rate_in  = static_cast<double>(fScalersIn) / time;
+      scaler_rate_out = static_cast<double>(fScalersOut) / time;
       while(!TRateScalerQueue::All.try_lock()) {
          // do nothing
       }

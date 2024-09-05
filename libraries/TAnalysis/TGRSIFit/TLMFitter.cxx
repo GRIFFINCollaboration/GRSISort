@@ -72,7 +72,7 @@ void TLMFitter::Fit(TH1* hist, TF1* func)
    double func_range_max = 0.;
    func->GetRange(func_range_min, func_range_max);
    std::cout << "function range: " << func_range_min << " to " << func_range_max << std::endl;
-   SetFitterRange(func_range_min, func_range_max);
+   SetFitterRange(static_cast<int>(func_range_min), static_cast<int>(func_range_max));   // not sure why SetFitterRange takes int as arguments, is it expecting bins as input?
    int bin_min = hist->FindBin(func_range_min);
    int bin_max = hist->FindBin(func_range_max);
 

@@ -34,9 +34,12 @@ class TLevelScheme;
 
 class TGamma : public TArrow {
 public:
-   TGamma(TLevelScheme* levelScheme = nullptr, const std::string& label = "", const double& br = 100., const double& ts = 1.);
+   explicit TGamma(TLevelScheme* levelScheme = nullptr, std::string label = "", const double& br = 100., const double& ts = 1.);
    TGamma(const TGamma& rhs);
-   ~TGamma();
+   TGamma(TGamma&& rhs) noexcept = default;
+   TGamma& operator=(const TGamma& rhs);
+   TGamma& operator=(TGamma&& rhs) noexcept = default;
+   ~TGamma()                                = default;
 
    // setters
    void Energy(const double val) { fEnergy = val; }
@@ -108,10 +111,8 @@ public:
 
    void Debug(bool val) { fDebug = val; }
 
-   TGamma& operator=(const TGamma& rhs);
-
-   static void   TextSize(double val) { gTextSize = val; }
-   static double TextSize() { return gTextSize; }
+   static void  TextSize(float val) { fTextSize = val; }
+   static float TextSize() { return fTextSize; }
 
 private:
    bool          fDebug{false};
@@ -132,21 +133,24 @@ private:
    double        fInitialEnergy{0.};   ///< Energy of initial level that emits this gamma ray
    double        fFinalEnergy{0.};     ///< Energy of final level that is populated by this gamma ray
 
-   static double gTextSize;
+   static float fTextSize;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGamma, 1)   // NOLINT
+   ClassDefOverride(TGamma, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
 class TLevel : public TPolyLine {
 public:
-   TLevel(TLevelScheme* levelScheme = nullptr, const double& energy = -1., const std::string& label = "");
+   explicit TLevel(TLevelScheme* levelScheme = nullptr, const double& energy = -1., const std::string& label = "");
    TLevel(const TLevel& rhs);
+   TLevel(TLevel&& rhs) noexcept = default;
+   TLevel& operator=(const TLevel& rhs);
+   TLevel& operator=(TLevel&& rhs) noexcept = default;
    ~TLevel();
 
-   TGamma* AddGamma(const double levelEnergy, const char* label = "", double br = 100., double ts = 1.);   // *MENU*
-   TGamma* AddGamma(const double levelEnergy, const double energyUncertainty, const char* label = "", double br = 100., double ts = 1.);
+   TGamma* AddGamma(double levelEnergy, const char* label = "", double br = 100., double ts = 1.);   // *MENU*
+   TGamma* AddGamma(double levelEnergy, double energyUncertainty, const char* label = "", double br = 100., double ts = 1.);
 
    void Energy(const double val) { fEnergy = val; }                         // *MENU*
    void EnergyUncertainty(const double val) { fEnergyUncertainty = val; }   // *MENU*
@@ -199,10 +203,8 @@ public:
       for(auto& [level, gamma] : fGammas) { gamma.Debug(val); }
    }
 
-   TLevel& operator=(const TLevel& rhs);
-
-   static void   TextSize(double val) { gTextSize = val; }
-   static double TextSize() { return gTextSize; }
+   static void  TextSize(float val) { fTextSize = val; }
+   static float TextSize() { return fTextSize; }
 
 private:
    bool                     fDebug{false};
@@ -219,20 +221,23 @@ private:
 
    double fOffset{0.};   ///< y-offset for labels on right and left side of level
 
-   static double gTextSize;
+   static float fTextSize;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TLevel, 1)   // NOLINT
+   ClassDefOverride(TLevel, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
 class TBand : public TPaveLabel {
 public:
-   TBand(TLevelScheme* levelScheme = nullptr, const std::string& label = "");
+   explicit TBand(TLevelScheme* levelScheme = nullptr, const std::string& label = "");
    TBand(const TBand& rhs);
-   ~TBand() {}
+   TBand(TBand&& rhs) noexcept = default;
+   TBand& operator=(const TBand& rhs);
+   TBand& operator=(TBand&& rhs) noexcept = default;
+   ~TBand()                               = default;
 
-   TLevel* AddLevel(const double energy, const std::string& label);   // *MENU*
+   TLevel* AddLevel(double energy, const std::string& label);   // *MENU*
    TLevel* AddLevel(const double energy, const char* label)
    {
       std::string tmp(label);
@@ -261,15 +266,13 @@ public:
       for(auto& [energy, level] : fLevels) { level.Debug(val); }
    }
 
-   TBand& operator=(const TBand& rhs);
-
 private:
    bool                     fDebug{false};
    std::map<double, TLevel> fLevels;
    TLevelScheme*            fLevelScheme{nullptr};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBand, 1)   // NOLINT
+   ClassDefOverride(TBand, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
@@ -279,15 +282,18 @@ public:
                             kBand,
                             kGlobal };
 
-   TLevelScheme(const std::string& filename = "", bool debug = false);
-   TLevelScheme(const char* filename, bool debug = false) : TLevelScheme(std::string(filename), debug) {}
+   explicit TLevelScheme(const std::string& filename = "", bool debug = false);
+   explicit TLevelScheme(const char* filename, bool debug = false) : TLevelScheme(std::string(filename), debug) {}
    TLevelScheme(const TLevelScheme& rhs);
-   ~TLevelScheme();
+   TLevelScheme(TLevelScheme&& rhs) noexcept            = default;
+   TLevelScheme& operator=(const TLevelScheme& rhs)     = default;
+   TLevelScheme& operator=(TLevelScheme&& rhs) noexcept = default;
+   ~TLevelScheme()                                      = default;
 
    static void          ListLevelSchemes();
    static TLevelScheme* GetLevelScheme(const char* name);
 
-   TLevel* AddLevel(const double energy, const std::string bandName, const std::string label);
+   TLevel* AddLevel(double energy, const std::string& bandName, const std::string& label);
    TLevel* AddLevel(const double energy, const char* bandName, const char* label) { return AddLevel(energy, std::string(bandName), std::string(label)); }   // *MENU*
    TLevel* GetLevel(double energy);
    TLevel* FindLevel(double energy, double energyUncertainty);
@@ -344,7 +350,7 @@ public:
    }   // *MENU*
 
    void Refresh();   // *MENU*
-   void UnZoom();
+   void UnZoom() const;
    void Draw(Option_t* option = "") override;
 
    void Print(Option_t* option = "") const override;
@@ -361,7 +367,7 @@ private:
    void BuildGammaMap(double levelEnergy);
 
    bool                              fDebug{false};
-   static std::vector<TLevelScheme*> gLevelSchemes;
+   static std::vector<TLevelScheme*> fLevelSchemes;
 
    std::vector<TBand>             fBands;
    std::multimap<double, TLine>   fAuxillaryLevels;
@@ -392,7 +398,7 @@ private:
    double fY2{0.};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TLevelScheme, 1)   // NOLINT
+   ClassDefOverride(TLevelScheme, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

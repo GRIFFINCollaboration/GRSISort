@@ -44,8 +44,10 @@
 #include "TLevelScheme.h"
 
 #ifndef kArrowKeyPress
+// NOLINTBEGIN(cppcoreguidelines-macro-usage)
 #define kArrowKeyPress 25
 #define kArrowKeyRelease 26
+// NOLINTEND(cppcoreguidelines-macro-usage)
 #endif
 
 enum MyArrowPress { kMyArrowLeft  = 0x1012,
@@ -106,14 +108,14 @@ GCanvas::GCanvas(const char* name, Int_t winw, Int_t winh, Int_t winid) : TCanva
    // this constructor is used to create an embedded canvas
    // I see no reason for us to support this here.  pcb.
    GCanvasInit();
-   fGuiEnabled = true;   // NOLINT
+   fGuiEnabled = true;   // NOLINT(cppcoreguidelines-prefer-member-initializer)
 }
 
 GCanvas::GCanvas(const char* name, const char* title, Int_t wtopx, Int_t wtopy, Int_t winw, Int_t winh, bool gui)
    : TCanvas(name, title, wtopx, wtopy, winw, winh)
 {
    GCanvasInit();
-   fGuiEnabled = gui;   // NOLINT
+   fGuiEnabled = gui;   // NOLINT(cppcoreguidelines-prefer-member-initializer)
 }
 
 GCanvas::~GCanvas()

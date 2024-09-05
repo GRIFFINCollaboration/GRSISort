@@ -377,7 +377,7 @@ void TPeakFitter::InitializeBackgroundParameters(TH1* fit_hist)
    }
 }
 
-Double_t TPeakFitter::DefaultBackgroundFunction(Double_t* dim, Double_t* par)   // NOLINT
+Double_t TPeakFitter::DefaultBackgroundFunction(Double_t* dim, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    Double_t x         = dim[0];
    Double_t A         = par[0];

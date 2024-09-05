@@ -65,7 +65,7 @@ double SourceEnergyUncertainty(const TCalibrateDescant::ESourceType& source)
    return 0.;
 }
 
-double FullEdge(double* x, double* par)   // NOLINT
+double FullEdge(double* x, double* par)   // NOLINT(performance-no-int-to-ptr, readability-non-const-parameter)
 {
    // 0 - amplitude, 1 - position, 2 - sigma of the upper part (low x), 3 - dSigma of the lower part (high x)
    // 4 - amplitude of gaussian peak, 5 - difference of peak position from edge position (par[2]), 6 - sigma of gaussian
@@ -120,7 +120,7 @@ TGHorizontalFrame* TParameterInput::Build(const std::string& name, const Int_t& 
 
 void TParameterInput::Set(double val)
 {
-   std::cout << __PRETTY_FUNCTION__ << ": " << val << std::endl;   // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << ": " << val << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    PrintStatus("Set single initial");
    fEntry->SetNumber(val);
    UpdateSlider();
@@ -129,7 +129,7 @@ void TParameterInput::Set(double val)
 
 void TParameterInput::Set(double val, double low, double high)
 {
-   std::cout << __PRETTY_FUNCTION__ << ": " << val << ", " << low << ", " << high << std::endl;   // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << ": " << val << ", " << low << ", " << high << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    PrintStatus("Set initial");
    fEntry->SetNumber(val);
    fEntry->SetLimits(TGNumberFormat::kNELLimitMinMax, low, high);
@@ -180,7 +180,7 @@ void TParameterInput::Connect(TCalibrateDescant* parent)
 Bool_t TParameterInput::ProcessMessage(Long_t msg, Long_t parameter1, Long_t parameter2)
 {
    /// This functions deals with changes in the text fields of the TGNumberEntry as those don't seem to emit signals?
-   std::cout << __PRETTY_FUNCTION__ << ": msg " << msg << ", parameter 1 " << parameter1 << ", parameter 2 " << parameter2 << std::endl;   // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << ": msg " << msg << ", parameter 1 " << parameter1 << ", parameter 2 " << parameter2 << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    switch(GET_MSG(msg)) {
    case kC_TEXTENTRY:
       switch(GET_SUBMSG(msg)) {
@@ -362,7 +362,7 @@ void TCalibrateDescant::MakeConnections()
 Bool_t TCalibrateDescant::ProcessMessage(Long_t msg, Long_t parameter1, Long_t parameter2)
 {
    /// This functions deals with changes in the text fields of the TGNumberEntry as those don't seem to emit signals?
-   std::cout << __PRETTY_FUNCTION__ << ": msg " << msg << ", parameter 1 " << parameter1 << ", parameter 2 " << parameter2 << std::endl;   // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << ": msg " << msg << ", parameter 1 " << parameter1 << ", parameter 2 " << parameter2 << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    switch(GET_MSG(msg)) {
    case kC_TEXTENTRY:
       switch(GET_SUBMSG(msg)) {
@@ -438,7 +438,7 @@ void TCalibrateDescant::UpdateInterface()
 
 void TCalibrateDescant::UpdateInitialFunction()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    fInitial->FixParameter(0, fAmplitude->Value());
    fInitial->FixParameter(1, fPosition->Value());
    fInitial->FixParameter(2, fSigma->Value());
@@ -509,11 +509,11 @@ void TCalibrateDescant::InitializeParameters()
 
    std::cout << "Initializing parameters for current projection " << fCurrentProjection << " based on threshold bin " << threshold << ", average " << average << ", rough bin " << roughBin << ", and rough position " << roughPos << std::endl;
 
-   fInitial->FixParameter(0, 0.9 * fProjections[fCurrentProjection]->GetBinContent((roughBin - threshold) / 2.));                             // amplitude
+   fInitial->FixParameter(0, 0.9 * fProjections[fCurrentProjection]->GetBinContent((roughBin - threshold) / 2));                              // amplitude
    fInitial->FixParameter(1, roughPos);                                                                                                       // position
    fInitial->FixParameter(2, 0.1 * roughPos);                                                                                                 // sigma
    fInitial->FixParameter(3, 0.2 * roughPos);                                                                                                 // d sigma
-   fInitial->FixParameter(4, 0.3 * fProjections[fCurrentProjection]->GetBinContent((roughBin - threshold) / 2.));                             // peak amp
+   fInitial->FixParameter(4, 0.3 * fProjections[fCurrentProjection]->GetBinContent((roughBin - threshold) / 2));                              // peak amp
    fInitial->FixParameter(5, 0.3 * roughPos);                                                                                                 // peak pos
    fInitial->FixParameter(6, 0.2 * roughPos);                                                                                                 // peak sigma
    fInitial->FixParameter(7, 0.1 * fProjections[fCurrentProjection]->Integral(threshold, threshold + 10) / TMath::Exp(-0.001 * threshold));   // noise amp
@@ -567,14 +567,14 @@ void TCalibrateDescant::InitializeParameters()
 
 void TCalibrateDescant::Previous()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    if(fCurrentProjection > 0) { --fCurrentProjection; }
    UpdateInterface();
 }
 
 void TCalibrateDescant::Next()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    if(fCurrentProjection + 1 < static_cast<int>(fProjections.size())) { ++fCurrentProjection; }
    UpdateInterface();
 }
@@ -706,7 +706,7 @@ void TCalibrateDescant::Fit()
 
 void TCalibrateDescant::UpdateInitialParameters()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    fAmplitude->Set(fFit->GetParameter(0));
    fPosition->Set(fFit->GetParameter(1));
    fSigma->Set(fFit->GetParameter(2));
@@ -727,7 +727,7 @@ void TCalibrateDescant::UpdateInitialParameters()
 
 void TCalibrateDescant::ResetFit()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    fInitial->Copy(*fFit);
    fFit->SetLineColor(2);
    fFit->SetLineStyle(1);
@@ -737,7 +737,7 @@ void TCalibrateDescant::ResetFit()
 
 void TCalibrateDescant::Save()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 }
 
 void TCalibrateDescant::AddCalibrationPoint(double value, double uncertainty)
@@ -759,7 +759,7 @@ void TCalibrateDescant::AddCalibrationPoint(double value, double uncertainty)
 
 void TCalibrateDescant::FitCanvasZoomed()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    // update range of fit functions
    Double_t xmin = 0.;
    Double_t ymin = 0.;
@@ -782,13 +782,13 @@ void TCalibrateDescant::FitCanvasZoomed()
 
 void TCalibrateDescant::CalibrationCanvasZoomed()
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    // nothing to do for this one?
 }
 
 void TCalibrateDescant::Status(Int_t px, Int_t py, Int_t, TObject* selected)
 {
-   // std::cout<<__PRETTY_FUNCTION__<<std::endl; // NOLINT
+   // std::cout<<__PRETTY_FUNCTION__<<std::endl; // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    fStatusBar->SetText(selected->GetName(), 0);
    fStatusBar->SetText(selected->GetTitle(), 1);
    fStatusBar->SetText(selected->GetObjectInfo(px, py), 2);

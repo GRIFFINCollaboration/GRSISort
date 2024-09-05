@@ -56,7 +56,7 @@ private:
    double fIntensityUncertainty{0.};   // Uncertainty in the intensity
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSITransition, 1)   // NOLINT
+   ClassDefOverride(TGRSITransition, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

@@ -75,7 +75,7 @@ private:
 #endif
 
    /// \cond CLASSIMP
-   ClassDefOverride(TAnalysisWriteLoop, 0)   // NOLINT
+   ClassDefOverride(TAnalysisWriteLoop, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 

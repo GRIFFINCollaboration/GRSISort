@@ -550,7 +550,7 @@ inline float SIGN(const float& a, const double& b)
 
 inline float SIGN(const double& a, const float& b)
 {
-   return b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a);
+   return b >= 0 ? static_cast<float>(a >= 0 ? a : -a) : static_cast<float>(a >= 0 ? -a : a);
 }
 
 template <class T>
@@ -657,7 +657,7 @@ protected:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TLMFitter, 1)   // NOLINT
+   ClassDefOverride(TLMFitter, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

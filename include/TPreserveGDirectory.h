@@ -5,7 +5,7 @@
 
 class TPreserveGDirectory {
 public:
-   TPreserveGDirectory() : bak(gDirectory) {}
+   TPreserveGDirectory() = default;
    ~TPreserveGDirectory() { bak->cd(); }
 
    TPreserveGDirectory(const TPreserveGDirectory&)            = delete;
@@ -14,7 +14,7 @@ public:
    TPreserveGDirectory& operator=(TPreserveGDirectory&&)      = delete;
 
 private:
-   TDirectory* bak;
+   TDirectory* bak{gDirectory};
 };
 
 #endif /* _TPRESERVEGDIRECTORY_H_ */

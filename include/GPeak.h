@@ -84,7 +84,7 @@ private:
    TF1 fBGFit;
 
    /// /cond CLASSIMP
-   ClassDefOverride(GPeak, 3)   // NOLINT
+   ClassDefOverride(GPeak, 3)   // NOLINT(readability-else-after-return)
                                 /// /endcond
 };
 

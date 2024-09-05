@@ -2,9 +2,10 @@
 #define TCALIBRATORS_H
 
 #include <map>
+#include <array>
 
-#include <TNamed.h>
-#include <TGraphErrors.h>
+#include "TNamed.h"
+#include "TGraphErrors.h"
 
 class TH1;
 
@@ -91,7 +92,7 @@ private:
    static bool CheckMap(const std::map<double, double>& inmap);
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalibrator, 1)   // NOLINT
+   ClassDefOverride(TCalibrator, 1)   // NOLINT(readability-else-after-return)
                                       /// \endcond
 };
 

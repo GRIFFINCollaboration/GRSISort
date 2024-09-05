@@ -57,12 +57,12 @@ GCube::GCube(const char* name, const char* title, Int_t nbins, const Float_t* bi
    fNcells = (fNcells * (nbins + 3) * (nbins + 4)) / 6;
 }
 
-GCube::GCube(const GCube& rhs) : TH1()   // NOLINT calling TH1 constuctor to shut up g++, can't call TH1(rhs) because it's private
+GCube::GCube(const GCube& rhs) : TH1()   // NOLINT(readability-redundant-member-init)
 {
    rhs.Copy(*this);
 }
 
-GCube::GCube(GCube&& rhs) noexcept : TH1()   // NOLINT
+GCube::GCube(GCube&& rhs) noexcept : TH1()   // NOLINT(readability-redundant-member-init)
 {
    rhs.Copy(*this);
 }
@@ -364,9 +364,9 @@ Int_t GCube::Fill(Double_t x, Double_t y, Double_t z)
                (fXaxis.GetNbins() + 2) * (fXaxis.GetNbins() + 3) * (fXaxis.GetNbins() + 4) / 6 -
                (fXaxis.GetNbins() + 2 - binz) * (fXaxis.GetNbins() + 3 - binz) * (fXaxis.GetNbins() + 4 - binz) / 6 - biny;
    std::cout << "binx,y,z = " << binx << "," << biny << "," << binz << " => bin = " << bin << std::endl;
-   bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
-         binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
-                 10. / 3.);
+   bin = static_cast<Int_t>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
+                            binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
+                                    10. / 3.));
    std::cout << "binx,y,z = " << binx << "," << biny << "," << binz << " => bin = " << bin << std::endl;
    AddBinContent(bin);
    if(fSumw2.fN != 0) {
@@ -451,9 +451,9 @@ Int_t GCube::Fill(Double_t x, Double_t y, Double_t z, Double_t w)
    if(binx < 0 || biny < 0 || binz < 0) {
       return -1;
    }
-   Int_t bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
-               binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
-                       10. / 3.);
+   auto bin = static_cast<Int_t>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
+                                 binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
+                                         10. / 3.));
    AddBinContent(bin, w);
    if(fSumw2.fN != 0) {
       fSumw2.fArray[bin] += w * w;
@@ -525,9 +525,9 @@ Int_t GCube::Fill(const char* namex, const char* namey, const char* namez, Doubl
       std::swap(biny, binz);
    }
 
-   Int_t bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
-               binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
-                       10. / 3.);
+   auto bin = static_cast<Int_t>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
+                                 binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
+                                         10. / 3.));
    AddBinContent(bin, w);
    if(fSumw2.fN != 0) {
       fSumw2.fArray[bin] += w * w;
@@ -872,14 +872,14 @@ void GCube::FitSlicesZ(TF1* f1, Int_t binminx, Int_t binmaxx, Int_t binminy, Int
    // Loop on all cells in X,Y generate a projection along Z
    auto* hpz = new TH1D("R_temp", "_temp", nbinsz, fZaxis.GetXmin(), fZaxis.GetXmax());
    for(Int_t biny = binminy; biny <= binmaxy; biny++) {
-      Float_t y = fYaxis.GetBinCenter(biny);
+      Double_t y = fYaxis.GetBinCenter(biny);
       for(Int_t binx = binminx; binx <= binmaxx; binx++) {
-         Float_t x = fXaxis.GetBinCenter(binx);
+         Double_t x = fXaxis.GetBinCenter(binx);
          hpz->Reset();
          Int_t nfill = 0;
          for(Int_t binz = 1; binz <= nbinsz; binz++) {
-            Int_t   bin = GetBin(binx, biny, binz);
-            Float_t w   = RetrieveBinContent(bin);
+            Int_t    bin = GetBin(binx, biny, binz);
+            Double_t w   = RetrieveBinContent(bin);
             if(w == 0) {
                continue;
             }
@@ -938,9 +938,9 @@ Int_t GCube::GetBin(Int_t binx, Int_t biny, Int_t binz) const
       std::swap(biny, binz);
    }
 
-   return binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
-          binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
-                  10. / 3.);
+   return static_cast<Int_t>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +
+                             binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +
+                                     10. / 3.));
 }
 
 Double_t GCube::GetBinWithContent2(Double_t c, Int_t& binx, Int_t& biny, Int_t& binz, Int_t firstxbin, Int_t lastxbin,
@@ -1164,7 +1164,7 @@ void GCube::GetStats(Double_t* stats) const
    ///  the histogram.
 
    if(fBuffer != nullptr) {
-      const_cast<GCube*>(this)->BufferEmpty();   // NOLINT
+      const_cast<GCube*>(this)->BufferEmpty();   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    }
 
    if((fTsumw == 0 && fEntries > 0) || fXaxis.TestBit(TAxis::kAxisRange) || fYaxis.TestBit(TAxis::kAxisRange) ||
@@ -1393,12 +1393,12 @@ Double_t GCube::KolmogorovTest(const TH1* h2, Option_t* option) const
    opt.ToUpper();
 
    Double_t prb = 0;
-   auto*    h1  = const_cast<TH1*>(static_cast<const TH1*>(this));   // NOLINT
+   auto*    h1  = const_cast<TH1*>(static_cast<const TH1*>(this));   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    if(h2 == nullptr) {
       return 0;
    }
    TAxis* xaxis1 = h1->GetXaxis();
-   auto*  xaxis2 = const_cast<TAxis*>(h2->GetXaxis());   // NOLINT
+   auto*  xaxis2 = const_cast<TAxis*>(h2->GetXaxis());   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    Int_t  nc1    = xaxis1->GetNbins();
    Int_t  nc2    = xaxis2->GetNbins();
 
@@ -1896,7 +1896,7 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
    }
 
    // Create the projection histogram
-   char* pname = const_cast<char*>(name);   // NOLINT
+   char* pname = const_cast<char*>(name);   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    if(name != nullptr && strcmp(name, expectedName) == 0) {
       auto nch = strlen(GetName()) + 4;
       pname    = new char[nch];
@@ -1961,7 +1961,7 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
 
    // Copy the axis attributes and the axis labels if needed.
    h1->GetXaxis()->ImportAttributes(&fXaxis);
-   THashList* labels = const_cast<TAxis*>(&fXaxis)->GetLabels();   // NOLINT
+   THashList* labels = const_cast<TAxis*>(&fXaxis)->GetLabels();   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    if(labels != nullptr) {
       TIter       iL(labels);
       TObjString* lb = nullptr;
@@ -2490,7 +2490,7 @@ TH1* GCube::ShowBackground(Int_t niter, Option_t* option)
    //   The background is returned as a histogram.
    //   to be implemented (may be)
 
-   return reinterpret_cast<TH1*>(gROOT->ProcessLineFast(   // NOLINT
+   return reinterpret_cast<TH1*>(gROOT->ProcessLineFast(   // NOLINT(performance-no-int-to-ptr)
       Form(R"(TSpectrum2::StaticBackground((TH1*)0x%lx,%d,"%s"))", reinterpret_cast<ULong_t>(this), niter, option)));
 }
 
@@ -2670,7 +2670,7 @@ GCubeF::GCubeF(const GCubeF& rhs)
 }
 
 GCubeF::GCubeF(GCubeF&& rhs) noexcept
-   : GCube(rhs), TArrayF(rhs)
+   : GCube(std::move(rhs)), TArrayF(rhs)
 {
    rhs.Copy(*this);
 }
@@ -2725,7 +2725,7 @@ Double_t GCubeF::GetBinContent(Int_t bin) const
    // Get bin content.
 
    if(fBuffer != nullptr) {
-      const_cast<GCubeF*>(this)->BufferEmpty();   // NOLINT
+      const_cast<GCubeF*>(this)->BufferEmpty();   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    }
    if(bin < 0) {
       bin = 0;
@@ -2892,7 +2892,7 @@ GCubeD::GCubeD(const GCubeD& rhs)
 }
 
 GCubeD::GCubeD(GCubeD&& rhs) noexcept
-   : GCube(rhs), TArrayD(rhs)
+   : GCube(std::move(rhs)), TArrayD(rhs)
 {
    rhs.Copy(*this);
 }
@@ -2948,7 +2948,7 @@ Double_t GCubeD::GetBinContent(Int_t bin) const
 {
    // Get bin content.
    if(fBuffer != nullptr) {
-      const_cast<GCubeD*>(this)->BufferEmpty();   // NOLINT
+      const_cast<GCubeD*>(this)->BufferEmpty();   // NOLINT(cppcoreguidelines-pro-type-const-cast)
    }
    if(bin < 0) {
       bin = 0;

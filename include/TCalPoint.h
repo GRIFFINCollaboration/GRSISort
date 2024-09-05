@@ -41,7 +41,7 @@ private:
    Double_t fAreaErr{0.};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalPoint, 1)   // NOLINT
+   ClassDefOverride(TCalPoint, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

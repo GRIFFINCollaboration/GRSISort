@@ -6,12 +6,12 @@ Part of this fact means that I no longer do any weighting other that event mixin
 include the metzger Nparallel/Nperpendicular method of Compton polarimetry.  This script only includes
 the portions that I believe would be useful for actual implementation of this code.  To use this you
 should:
-Set RUNNUMBER appropriately, as I do not have this information automatically pulled form input files.
+Set runNumber appropriately, as I do not have this information automatically pulled form input files.
 Set the correct parameters within the PolarizationCalculation() function, either use an appropriate template one or create the missing one for your cascade.
 Set things in Parameter Setup to what you want.
-For appropriate theory plot set AGATA_Q to a known quality factor (preferrably one you recently measured)
-Whatever scattering event was used to obtain AGATA_Q should be set as E_Q_Measure.  Q will then be scaled
-appropriately to predict a scatter for an event of energy E_Q_Use, which must also be set.
+For appropriate theory plot set qualityFactor to a known quality factor (preferrably one you recently measured)
+Whatever scattering event was used to obtain qualityFactor should be set as energyMeasured.  Q will then be scaled
+appropriately to predict a scatter for an event of energy energyUsed, which must also be set.
 
 Compile:
 g++ LeanAnalyzeComptonMatrices.c -std=c++0x -I$GRSISYS/include -L$GRSISYS/libraries `grsi-config --cflags --all-libs` `root-config --cflags --libs` -lTreePlayer -lMathMore -lSpectrum -o MakeComptonPlots
@@ -69,15 +69,6 @@ ________________________________________________________________________________
 #include "TGRSISortInfo.h"
 #include "TGRSIFunctions.h"
 
-#define RUNNUMBER 10577
-
-#define AGATA_Q 0.2509     // The quality factor for creating a predicted Asymmetry plot of 0.5*Q*P*Cos(2*Xi), where                 \
-                           // P is determined by PolarizationCalculation()  <- Parameters must be set internally for each transition \
-                           // Dan measured 0.24492 with 12 clovers in Summer 2016.                                                   \
-                           // Adam measured 0.2509 with 16 clovers in Dec 2017.
-#define E_Q_Measure 1332   // The energy of the scattered gamma used to calculate AGATA_Q
-#define E_Q_Use 1332       // The energy of the scattered gamma currently being examined.  Used for scaling Q
-
 // Functions
 TList* ComptonPol(TFile* f, TStopwatch* w);
 
@@ -90,6 +81,17 @@ double ScaleQ(double E1, double E2);
 // Main
 int main(int argc, char** argv)
 {
+   constexpr int runNumber = 10577;
+   // The quality factor for creating a predicted Asymmetry plot of 0.5*Q*P*Cos(2*Xi), where
+   // P is determined by PolarizationCalculation()  <- Parameters must be set internally for each transition
+   // Dan measured 0.24492 with 12 clovers in Summer 2016.
+   // Adam measured 0.2509 with 16 clovers in Dec 2017.
+   constexpr double qualityFactor = 0.2509;
+   // The energy of the scattered gamma used to calculate qualityFactor
+   constexpr double energyMeasured = 1332.;
+   // The energy of the scattered gamma currently being examined.  Used for scaling Q
+   constexpr double energyUsed = 1332.;
+
    if(argc != 2) {
       printf("try again (usage: %s <matrix file>).\n", argv[0]);
       return 0;
@@ -107,13 +109,13 @@ int main(int argc, char** argv)
 
    printf("Analyzing file:" DBLUE " %s" RESET_COLOR "\n", file->GetName());
 
-   auto* outfile = new TFile(Form("./CompPlots_%05d.root", RUNNUMBER), "recreate");
+   auto* outfile = new TFile(Form("./CompPlots_%05d.root", runNumber), "recreate");
 
    std::cout << argv[0] << ": starting Analysis after " << w.RealTime() << " seconds" << std::endl;
    w.Continue();
    auto* outlist = new TList();
    outlist       = ComptonPol(file, &w);
-   outlist       = AGATATheory(outlist, AGATA_Q * ScaleQ(E_Q_Measure, E_Q_Use));
+   outlist       = AGATATheory(outlist, qualityFactor * ScaleQ(energyMeasured, energyUsed));
    if(outlist == nullptr) {
       std::cout << "ComptonPol returned TList* nullptr!" << std::endl;
       return 1;
@@ -123,7 +125,7 @@ int main(int argc, char** argv)
    std::cout << argv[0] << " done after " << w.RealTime() << " seconds" << std::endl
              << std::endl;
 
-   std::cout << "ScaleQ(" << E_Q_Measure << "," << E_Q_Use << ") = " << ScaleQ(E_Q_Measure, E_Q_Use) << "\nE_Q_Measure = " << AGATA_Q << "\nE_Q_Use = " << (AGATA_Q * ScaleQ(E_Q_Measure, E_Q_Use)) << std::endl;
+   std::cout << "ScaleQ(" << energyMeasured << "," << energyUsed << ") = " << ScaleQ(energyMeasured, energyUsed) << "\nenergyMeasured = " << qualityFactor << "\nenergyUsed = " << (qualityFactor * ScaleQ(energyMeasured, energyUsed)) << std::endl;
 
    return 0;
 }
@@ -545,15 +547,15 @@ double Kcoefficents(int mu, int L1, int L2)
    double k  = 0.;
    double l1 = L1;
    double l2 = L2;
-   L1        = std::max(l1, l2);
-   L2        = std::min(l1, l2);
+   L1        = static_cast<int>(std::max(l1, l2));
+   L2        = static_cast<int>(std::min(l1, l2));
 
    if((L1 + L2) % 2 == 0) {
       k = (static_cast<double>(mu) * (mu + 1.0) * (L1 * (L1 + 1.0) + L2 * (L2 + 1.0)) - TMath::Power(L2 * (L2 + 1.0) - L1 * (L1 + 1.0), 2)) / (L1 * (L1 + 1.0) + L2 * (L2 + 1.0) - mu * (mu + 1.0));
    } else {
       k = L2 * (L2 + 1.0) - L1 * (L1 + 1.);
    }
-   return k * (TMath::Factorial(mu - 2.) / TMath::Factorial(mu + 2));
+   return k * (TMath::Factorial(mu - 2) / TMath::Factorial(mu + 2));
 }
 
 double ScaleQ(double E1, double E2)

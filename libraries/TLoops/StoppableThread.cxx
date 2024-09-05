@@ -119,12 +119,12 @@ std::string StoppableThread::Status()
 std::string StoppableThread::Progress()
 {
    std::stringstream str;
-   float             percentDone = 100. * static_cast<double>(fItemsPopped);
+   float             percentDone = 100.f * static_cast<float>(fItemsPopped);
    if(fItemsPopped + fInputSize > 0) {
-      percentDone /= static_cast<double>(fItemsPopped + fInputSize);
-      while(percentDone > 100. / static_cast<double>(fColumnWidth - 1)) {
+      percentDone /= static_cast<float>(fItemsPopped + fInputSize);
+      while(percentDone > 100.f / static_cast<float>(fColumnWidth - 1)) {
          str << "*";
-         percentDone -= 100. / static_cast<double>(fColumnWidth - 1);
+         percentDone -= 100.f / static_cast<float>(fColumnWidth - 1);
       }
    } else {
       str << "N/A: " << percentDone;

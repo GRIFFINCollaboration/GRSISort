@@ -54,7 +54,7 @@ protected:
 
 public:
    /// \cond CLASSIMP
-   ClassDefOverride(TRWPeak, 2)   // NOLINT
+   ClassDefOverride(TRWPeak, 2)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

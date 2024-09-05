@@ -97,7 +97,7 @@ private:
 #endif
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEventBuildingLoop, 0)   // NOLINT
+   ClassDefOverride(TEventBuildingLoop, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 

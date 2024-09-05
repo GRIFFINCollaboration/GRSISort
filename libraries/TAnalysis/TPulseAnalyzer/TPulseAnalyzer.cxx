@@ -51,6 +51,7 @@ void TPulseAnalyzer::SetData(const TFragment& fragment, double noise_fac)
    }
 }
 
+// NOLINTBEGIN(cppcoreguidelines-narrowing-conversions)
 void TPulseAnalyzer::SetData(const std::vector<Short_t>& wave, double noise_fac)
 {
    SetCsI(false);
@@ -1692,7 +1693,7 @@ bool TPulseAnalyzer::GetSiliShapeTF1(double tauDecay, double tauRise, double bas
    return false;
 }
 
-double TPulseAnalyzer::SiLiFitFunction(double* i, double* p)   // NOLINT
+double TPulseAnalyzer::SiLiFitFunction(double* i, double* p)   // NOLINT(readability-non-const-parameter)
 {
    // p[0]-p[2] are t0, RC, Tau
    // p[3]-p[4] are baseline, A0
@@ -1911,6 +1912,7 @@ void TPulseAnalyzer::DrawCsIFit()
       shape.DrawCopy("same");
    }
 }
+// NOLINTEND(cppcoreguidelines-narrowing-conversions)
 
 /*======================================================*/
 void TPulseAnalyzer::print_WavePar()

@@ -225,7 +225,7 @@ void GRootBrowser::CreateBrowser(const char* name)
 GRootBrowser::~GRootBrowser()
 {
    /// Clean up all widgets, frames and layouthints that were used
-   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    fflush(stdout);
 
    if(fIconPic != nullptr) {
@@ -1086,8 +1086,8 @@ void GRootBrowser::SwitchMenus(TGCompositeFrame* from)
                   return;
                }
             }
-            const_cast<TGCompositeFrame*>(static_cast<const TGCompositeFrame*>(menu->GetParent()))->HideFrame(menu);          // NOLINT
-            const_cast<TGCompositeFrame*>(static_cast<const TGCompositeFrame*>(menu->GetParent()))->SetCleanup(kNoCleanup);   // NOLINT
+            const_cast<TGCompositeFrame*>(static_cast<const TGCompositeFrame*>(menu->GetParent()))->HideFrame(menu);          // NOLINT(cppcoreguidelines-pro-type-const-cast)
+            const_cast<TGCompositeFrame*>(static_cast<const TGCompositeFrame*>(menu->GetParent()))->SetCleanup(kNoCleanup);   // NOLINT(cppcoreguidelines-pro-type-const-cast)
             menu->ReparentWindow(fMenuFrame);
             fMenuFrame->AddFrame(menu, fLH2);
             TGFrameElement* mel = nullptr;

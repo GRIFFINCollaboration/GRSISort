@@ -55,6 +55,6 @@ int TGRSITransition::Compare(const TObject* obj) const
    }   //(fIntensity < static_cast<const TGRSITransition*>(obj)->fIntensity)
    return 1;
 
-   std::cout << __PRETTY_FUNCTION__ << ": Error, intensity neither greater, nor equal, nor smaller than provided intensity!" << std::endl;   // NOLINT
+   std::cout << __PRETTY_FUNCTION__ << ": Error, intensity neither greater, nor equal, nor smaller than provided intensity!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    return -9;
 }

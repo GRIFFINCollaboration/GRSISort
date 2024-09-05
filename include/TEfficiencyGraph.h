@@ -53,7 +53,7 @@ private:
    bool fIsAbsolute{false};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TEfficiencyGraph, 1)   // NOLINT
+   ClassDefOverride(TEfficiencyGraph, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

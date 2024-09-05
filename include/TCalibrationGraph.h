@@ -46,7 +46,7 @@ private:
    int fVerboseLevel{0};   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalibrationGraph, 1)   // NOLINT
+   ClassDefOverride(TCalibrationGraph, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
@@ -179,7 +179,7 @@ private:
    int fVerboseLevel{0};   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalibrationGraphSet, 3)   // NOLINT
+   ClassDefOverride(TCalibrationGraphSet, 3)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 #endif

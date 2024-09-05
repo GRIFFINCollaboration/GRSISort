@@ -17,22 +17,20 @@
 
 //////////////////////////////////////// TEfficiencyTab ////////////////////////////////////////
 TEfficiencyTab::TEfficiencyTab(TEfficiencyDatatypeTab* parent, TNucleus* nucleus, std::tuple<TH1*, TH2*, TH2*> hists, TGCompositeFrame* frame, const int& verboseLevel)
-   : fFrame(frame), fNucleus(nucleus), fParent(parent), fVerboseLevel(verboseLevel)
+   : fFrame(frame), fNucleus(nucleus), fParent(parent),
+     fSingles(std::get<0>(hists)), fSummingOut(std::get<1>(hists)), fSummingIn(std::get<2>(hists)),
+     // name *180Corr                 // name *Sum180Corr
+     fVerboseLevel(verboseLevel)
 {
-   fSingles    = std::get<0>(hists);
-   fSummingOut = std::get<1>(hists);   // name *180Corr
-   fSummingIn  = std::get<2>(hists);   // name *Sum180Corr
-   if(fVerboseLevel > 2) std::cout << "Assigned singles, summing out, and summing in histograms (" << fSingles->GetName() << ", " << fSummingOut->GetName() << ", " << fSummingIn->GetName() << ")" << std::endl;
+   if(fVerboseLevel > 2) {
+      std::cout << "Assigned singles, summing out, and summing in histograms (" << fSingles->GetName() << ", " << fSummingOut->GetName() << ", " << fSummingIn->GetName() << ")" << std::endl;
+   }
    BuildInterface();
    {
       TRedirect redirect("fitOutput.txt");
       std::cout << "======================================== Finding peaks in " << fSingles->GetName() << ", " << fSummingOut->GetName() << ", and " << fSummingIn->GetName() << std::endl;
       FindPeaks();
    }
-}
-
-TEfficiencyTab::~TEfficiencyTab()
-{
 }
 
 void TEfficiencyTab::BuildInterface()
@@ -45,12 +43,12 @@ void TEfficiencyTab::BuildInterface()
 
    fFrame->AddFrame(fTopFrame, new TGLayoutHints(kLHintsTop | kLHintsExpandX, 2, 2, 2, 2));
 
-   fStatusBar  = new TGStatusBar(fFrame, TEfficiencyCalibrator::WindowWidth() / 2, 50);
-   int parts[] = {35, 15, 20, 15, 15};
-   fStatusBar->SetParts(parts, 5);
+   fStatusBar               = new TGStatusBar(fFrame, TEfficiencyCalibrator::WindowWidth() / 2, 50);   // NOLINT(cppcoreguidelines-prefer-member-initializer)
+   std::array<int, 5> parts = {35, 15, 20, 15, 15};
+   fStatusBar->SetParts(parts.data(), parts.size());
 
    fFrame->AddFrame(fStatusBar, new TGLayoutHints(kLHintsBottom | kLHintsExpandX, 2, 2, 2, 2));
-   if(fVerboseLevel > 3) std::cout << "Done with " << __PRETTY_FUNCTION__ << std::endl;
+   if(fVerboseLevel > 3) { std::cout << "Done with " << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 }
 
 void TEfficiencyTab::FindPeaks()
@@ -58,7 +56,7 @@ void TEfficiencyTab::FindPeaks()
    /// Find and fit the peaks in the singles histogram, then checks for each peak how much summing in and summing out happens.
 
    if(fVerboseLevel > 3) {
-      std::cout << __PRETTY_FUNCTION__ << std::endl;
+      std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       std::cout << "Using parent " << fParent << " and transition list " << fNucleus->GetTransitionListByEnergy() << std::endl;
       fNucleus->GetTransitionListByEnergy()->Print();
       std::cout << "Using parent " << fParent << std::flush << ", trying to get peak type " << TEfficiencyCalibrator::PeakType() << std::endl;
@@ -85,8 +83,8 @@ void TEfficiencyTab::FindPeaks()
    // probably need to: change loop to using size and ->At(index), plus extra loop that finds all peaks within the range
    // maybe also change the creation of the peak to either a function or using TClass::New()
    for(int t = 0; t < fNucleus->GetTransitionListByEnergy()->GetSize(); ++t) {
-      auto transition = static_cast<TTransition*>(fNucleus->GetTransitionListByEnergy()->At(t));
-      auto energy     = transition->GetEnergy();
+      auto* transition = static_cast<TTransition*>(fNucleus->GetTransitionListByEnergy()->At(t));
+      auto  energy     = transition->GetEnergy();
       if(energy > fSingles->GetXaxis()->GetXmax()) {
          // need to check if we also want to reject peaks whose fit range is partially outside the range of the histogram
          std::cout << "Skipping peak at " << energy << " keV of " << fNucleus->GetA() << fNucleus->GetSymbol() << ", maximum range of histogram is " << fSingles->GetXaxis()->GetXmax() << std::endl;
@@ -102,8 +100,8 @@ void TEfficiencyTab::FindPeaks()
       peaks.push_back(NewPeak(energy));
       double lastEnergy = energy;
       for(int t2 = t + 1; t2 < fNucleus->GetTransitionListByEnergy()->GetSize(); ++t2) {
-         auto transition2 = static_cast<TTransition*>(fNucleus->GetTransitionListByEnergy()->At(t2));
-         auto energy2     = transition2->GetEnergy();
+         auto* transition2 = static_cast<TTransition*>(fNucleus->GetTransitionListByEnergy()->At(t2));
+         auto  energy2     = transition2->GetEnergy();
          if(lastEnergy + TEfficiencyCalibrator::Range() > energy2 - TEfficiencyCalibrator::Range()) {
             if(fVerboseLevel > 2) {
                std::cout << t << ". peak: Found " << peaks.size() << ". overlapping peak for " << lastEnergy << ", and " << energy2 << " with range " << TEfficiencyCalibrator::Range() << std::endl;
@@ -175,7 +173,7 @@ void TEfficiencyTab::FindPeaks()
             std::cout << "Writing '" << Form("%s_%.0fkeV", fSummingOutProj.back()->GetName(), centroid) << "' to '" << gDirectory->GetName() << "'" << std::endl;
          }
          fSummingOutProj.back()->Write(Form("%s_%.0fkeV", fSummingOutProj.back()->GetName(), centroid), TObject::kOverwrite);
-         auto hist = static_cast<TH1*>(fSummingOutProj.back()->Clone(Form("%s_subtracted_%.0f", fSummingOutProj.back()->GetName(), 1000000 * ratio)));
+         auto* hist = static_cast<TH1*>(fSummingOutProj.back()->Clone(Form("%s_subtracted_%.0f", fSummingOutProj.back()->GetName(), 1000000 * ratio)));
          hist->Add(fSummingOutTotalProj, -ratio);
          if(fVerboseLevel > 2) {
             std::cout << "Writing '" << hist->GetName() << "' to '" << gDirectory->GetName() << "'" << std::endl;
@@ -188,7 +186,7 @@ void TEfficiencyTab::FindPeaks()
          if(fVerboseLevel > 3) {
             std::cout << "Got summingIn " << summingIn << ", ratio " << ratio << ", summingOut " << summingOut << ", correctedArea " << correctedArea << " +- " << correctedAreaErr << std::endl;
          }
-         fPeaks.push_back(std::make_tuple(transition, centroid, centroidErr, correctedArea, correctedAreaErr, peak->Area(), peak->AreaErr(), summingIn, summingOut));
+         fPeaks.emplace_back(transition, centroid, centroidErr, correctedArea, correctedAreaErr, peak->Area(), peak->AreaErr(), summingIn, summingOut);
          fFitFunctions.push_back(fPeakFitter.GetFitFunction()->Clone(Form("fit_%.1f", centroid)));
       }
    }
@@ -196,13 +194,13 @@ void TEfficiencyTab::FindPeaks()
    Redraw();
    if(fVerboseLevel > 3) {
       std::cout << "Unsorted peak vector:";
-      for(auto& peak : fPeaks) std::cout << " " << std::get<0>(peak)->GetEnergy();
+      for(const auto& peak : fPeaks) { std::cout << " " << std::get<0>(peak)->GetEnergy(); }
       std::cout << std::endl;
    }
    std::sort(fPeaks.begin(), fPeaks.end(), [](const std::tuple<TTransition*, double, double, double, double, double, double, double, double>& lhs, const std::tuple<TTransition*, double, double, double, double, double, double, double, double>& rhs) -> bool { return std::get<0>(lhs)->GetEnergy() < std::get<0>(rhs)->GetEnergy(); });
    if(fVerboseLevel > 3) {
       std::cout << "Sorted peak vector:";
-      for(auto& peak : fPeaks) std::cout << " " << std::get<0>(peak)->GetEnergy();
+      for(auto& peak : fPeaks) { std::cout << " " << std::get<0>(peak)->GetEnergy(); }
       std::cout << std::endl;
    }
 }
@@ -264,7 +262,7 @@ void TEfficiencyTab::Status(Int_t, Int_t px, Int_t py, TObject* selected)
 
 //////////////////////////////////////// TEfficiencyDatatypeTab ////////////////////////////////////////
 TEfficiencyDatatypeTab::TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, std::vector<TNucleus*> nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, TGHProgressBar* progressBar, const int& verboseLevel)
-   : fFrame(frame), fNucleus(nucleus), fParent(parent), fDataType(dataType), fVerboseLevel(verboseLevel)
+   : fFrame(frame), fNucleus(std::move(nucleus)), fParent(parent), fDataType(dataType), fVerboseLevel(verboseLevel)
 {
    if(fVerboseLevel > 1) {
       std::cout << "======================================== creating tab for data type " << dataType << std::endl;
@@ -286,7 +284,7 @@ TEfficiencyDatatypeTab::TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, st
    fDataTab = new TGTab(fLeftFrame, TEfficiencyCalibrator::WindowWidth() / 2, 500);
    fEfficiencyTab.resize(hists.size(), nullptr);
    for(size_t i = 0; i < hists.size(); ++i) {
-      if(fVerboseLevel > 2) std::cout << i << ": Creating efficiency tab using " << fNucleus[i] << " = " << fNucleus[i]->GetName() << ", " << std::get<0>(hists[i])->GetName() << ", " << std::get<1>(hists[i])->GetName() << ", " << std::get<2>(hists[i])->GetName() << ", " << TEfficiencyCalibrator::Range() << ", " << TEfficiencyCalibrator::Threshold() << ", " << TEfficiencyCalibrator::BgParam() << std::endl;
+      if(fVerboseLevel > 2) { std::cout << i << ": Creating efficiency tab using " << fNucleus[i] << " = " << fNucleus[i]->GetName() << ", " << std::get<0>(hists[i])->GetName() << ", " << std::get<1>(hists[i])->GetName() << ", " << std::get<2>(hists[i])->GetName() << ", " << TEfficiencyCalibrator::Range() << ", " << TEfficiencyCalibrator::Threshold() << ", " << TEfficiencyCalibrator::BgParam() << std::endl; }
       fEfficiencyTab[i] = new TEfficiencyTab(this, fNucleus[i], hists[i], fDataTab->AddTab(fNucleus[i]->GetName()), fVerboseLevel);
       progressBar->Increment(1);
    }
@@ -324,11 +322,11 @@ TEfficiencyDatatypeTab::TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, st
    fLeftFrame->AddFrame(fFittingParameterFrame, new TGLayoutHints(kLHintsBottom | kLHintsExpandX, 2, 2, 2, 2));
 
    // right frame with canvas, status bar, and the degree entry
-   fRightFrame       = new TGVerticalFrame(fFrame, TEfficiencyCalibrator::WindowWidth() / 2, TEfficiencyCalibrator::WindowWidth() / 2);
-   fEfficiencyCanvas = new TRootEmbeddedCanvas("EfficiencyCanvas", fRightFrame, TEfficiencyCalibrator::WindowWidth() / 2, 450);
-   fStatusBar        = new TGStatusBar(fRightFrame, TEfficiencyCalibrator::WindowWidth() / 2, 50);
-   int parts[]       = {35, 65};
-   fStatusBar->SetParts(parts, 2);
+   fRightFrame              = new TGVerticalFrame(fFrame, TEfficiencyCalibrator::WindowWidth() / 2, TEfficiencyCalibrator::WindowWidth() / 2);
+   fEfficiencyCanvas        = new TRootEmbeddedCanvas("EfficiencyCanvas", fRightFrame, TEfficiencyCalibrator::WindowWidth() / 2, 450);
+   fStatusBar               = new TGStatusBar(fRightFrame, TEfficiencyCalibrator::WindowWidth() / 2, 50);
+   std::array<int, 2> parts = {35, 65};
+   fStatusBar->SetParts(parts.data(), parts.size());
    fGraphParameterFrame = new TGGroupFrame(fRightFrame, "Graph Parameters", kHorizontalFrame);
    fGraphParameterFrame->SetLayoutManager(new TGTableLayout(fGraphParameterFrame, 3, 4, false, 5));   // rows, columns, not homogenous cell sizes, 5 = interval between frames in pixel
    fDegreeEntry                 = new TGNumberEntry(fGraphParameterFrame, TEfficiencyCalibrator::Degree(), 2, kDegreeEntry, TGNumberFormat::EStyle::kNESInteger);
@@ -428,7 +426,7 @@ void TEfficiencyDatatypeTab::DrawGraph()
    UpdateEfficiencyGraph();
    FitEfficiency();
    if(fLegend == nullptr) {
-      fLegend = new TLegend(0.8, 0.95 - fNucleus.size() * 0.05, 0.95, 0.95);
+      fLegend = new TLegend(0.8, 0.95 - static_cast<double>(fNucleus.size()) * 0.05, 0.95, 0.95);
    } else {
       fLegend->Clear();
    }
@@ -455,8 +453,11 @@ void TEfficiencyDatatypeTab::DrawGraph()
       for(size_t g = 0; g < fUncorrEfficiencyGraph->NumberOfGraphs(); ++g) {
          fUncorrEfficiencyGraph->SetColorStyle(g, color++);
       }
-      if(firstPlot) fUncorrEfficiencyGraph->DrawCalibration("*", fLegend);
-      else fUncorrEfficiencyGraph->DrawCalibration("same*", fLegend);
+      if(firstPlot) {
+         fUncorrEfficiencyGraph->DrawCalibration("*", fLegend);
+      } else {
+         fUncorrEfficiencyGraph->DrawCalibration("same*", fLegend);
+      }
       firstPlot = false;
    }
    if(fPlotPeakAreaCheck->IsDown()) {
@@ -466,8 +467,11 @@ void TEfficiencyDatatypeTab::DrawGraph()
       for(size_t g = 0; g < fPeakAreaGraph->NumberOfGraphs(); ++g) {
          fPeakAreaGraph->SetColorStyle(g, color++);
       }
-      if(firstPlot) fPeakAreaGraph->DrawCalibration("*", fLegend);
-      else fPeakAreaGraph->DrawCalibration("same*", fLegend);
+      if(firstPlot) {
+         fPeakAreaGraph->DrawCalibration("*", fLegend);
+      } else {
+         fPeakAreaGraph->DrawCalibration("same*", fLegend);
+      }
       firstPlot = false;
    }
    if(fPlotSummingInCheck->IsDown()) {
@@ -477,8 +481,11 @@ void TEfficiencyDatatypeTab::DrawGraph()
       for(size_t g = 0; g < fSummingInGraph->NumberOfGraphs(); ++g) {
          fSummingInGraph->SetColorStyle(g, color++);
       }
-      if(firstPlot) fSummingInGraph->DrawCalibration("*", fLegend);
-      else fSummingInGraph->DrawCalibration("same*", fLegend);
+      if(firstPlot) {
+         fSummingInGraph->DrawCalibration("*", fLegend);
+      } else {
+         fSummingInGraph->DrawCalibration("same*", fLegend);
+      }
       firstPlot = false;
    }
    if(fPlotSummingInCheck->IsDown()) {
@@ -488,8 +495,11 @@ void TEfficiencyDatatypeTab::DrawGraph()
       for(size_t g = 0; g < fSummingOutGraph->NumberOfGraphs(); ++g) {
          fSummingOutGraph->SetColorStyle(g, color++);
       }
-      if(firstPlot) fSummingOutGraph->DrawCalibration("*", fLegend);
-      else fSummingOutGraph->DrawCalibration("same*", fLegend);
+      if(firstPlot) {
+         fSummingOutGraph->DrawCalibration("*", fLegend);
+      } else {
+         fSummingOutGraph->DrawCalibration("same*", fLegend);
+      }
       firstPlot = false;
    }
    fLegend->Draw();
@@ -503,53 +513,59 @@ void TEfficiencyDatatypeTab::UpdateEfficiencyGraph()
       exit(1);
    }
    if(fVerboseLevel > 2) {
-      std::cout << __PRETTY_FUNCTION__ << ": switching from gDirectory " << gDirectory->GetName() << " to main directory " << fMainDirectory << " = " << fMainDirectory->GetName() << std::endl;
+      std::cout << __PRETTY_FUNCTION__ << ": switching from gDirectory " << gDirectory->GetName() << " to main directory " << fMainDirectory << " = " << fMainDirectory->GetName() << std::endl;   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    }
    fMainDirectory->cd();
    if(fSubDirectory == nullptr) {
       std::cout << "No subdirectory open (" << fSubDirectory << "), main directory is " << fMainDirectory << ", gDirectory is " << gDirectory->GetName() << std::endl;
    } else {
       if(fVerboseLevel > 2) {
-         std::cout << __PRETTY_FUNCTION__ << ": switching from gDirectory " << gDirectory->GetName() << " to sub directory " << fSubDirectory;
+         std::cout << __PRETTY_FUNCTION__ << ": switching from gDirectory " << gDirectory->GetName() << " to sub directory " << fSubDirectory;   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       }
       fSubDirectory->cd();
       if(fVerboseLevel > 2) {
          std::cout << " = " << fSubDirectory->GetName() << ", main directory is " << fMainDirectory << " = " << (fMainDirectory == nullptr ? "" : fMainDirectory->GetName()) << std::endl;
       }
    }
-   if(fEfficiencyGraph != nullptr) {
-      delete fEfficiencyGraph;
-   }
+   delete fEfficiencyGraph;
    fEfficiencyGraph = new TCalibrationGraphSet();
    fEfficiencyGraph->VerboseLevel(fVerboseLevel);
-   if(fUncorrEfficiencyGraph != nullptr) {
-      delete fUncorrEfficiencyGraph;
-   }
+   delete fUncorrEfficiencyGraph;
    fUncorrEfficiencyGraph = new TCalibrationGraphSet();
    fUncorrEfficiencyGraph->VerboseLevel(fVerboseLevel);
-   if(fPeakAreaGraph != nullptr) {
-      delete fPeakAreaGraph;
-   }
+   delete fPeakAreaGraph;
    fPeakAreaGraph = new TCalibrationGraphSet();
    fPeakAreaGraph->VerboseLevel(fVerboseLevel);
-   if(fSummingInGraph != nullptr) {
-      delete fSummingInGraph;
-   }
+   delete fSummingInGraph;
    fSummingInGraph = new TCalibrationGraphSet();
    fSummingInGraph->VerboseLevel(fVerboseLevel);
-   if(fSummingOutGraph != nullptr) {
-      delete fSummingOutGraph;
-   }
+   delete fSummingOutGraph;
    fSummingOutGraph = new TCalibrationGraphSet();
    fSummingOutGraph->VerboseLevel(fVerboseLevel);
 
    for(auto& tab : fEfficiencyTab) {
       // vector of tuple with transition and 8 doubles:
       // centroid, centroidErr, correctedArea, correctedAreaErr, peak->Area(), peak->AreaErr(), summingIn, summingOut
-      auto                peaks = tab->Peaks();
-      TTransition*        transition;
-      double              centroid, centroidErr, correctedArea, correctedAreaErr, peakArea, peakAreaErr, summingIn, summingOut;
-      std::vector<double> energy, energyErr, efficiency, efficiencyErr, uncorrEfficiency, uncorrEfficiencyErr, peakAreaVec, peakAreaErrVec, summingInVec, summingOutVec;
+      auto                peaks            = tab->Peaks();
+      TTransition*        transition       = nullptr;
+      double              centroid         = 0.;
+      double              centroidErr      = 0.;
+      double              correctedArea    = 0.;
+      double              correctedAreaErr = 0.;
+      double              peakArea         = 0.;
+      double              peakAreaErr      = 0.;
+      double              summingIn        = 0.;
+      double              summingOut       = 0.;
+      std::vector<double> energy;
+      std::vector<double> energyErr;
+      std::vector<double> efficiency;
+      std::vector<double> efficiencyErr;
+      std::vector<double> uncorrEfficiency;
+      std::vector<double> uncorrEfficiencyErr;
+      std::vector<double> peakAreaVec;
+      std::vector<double> peakAreaErrVec;
+      std::vector<double> summingInVec;
+      std::vector<double> summingOutVec;
       int                 goodPeaks = 0;
       for(auto& peak : peaks) {
          std::tie(transition, centroid, centroidErr, correctedArea, correctedAreaErr, peakArea, peakAreaErr, summingIn, summingOut) = peak;
@@ -569,15 +585,15 @@ void TEfficiencyDatatypeTab::UpdateEfficiencyGraph()
             std::cout << "Rejecting centroid " << centroid << " +- " << centroidErr << " with area " << correctedArea << " +- " << correctedAreaErr << " for transition at " << transition->GetEnergy() << " +- " << transition->GetEnergyUncertainty() << " using calibration uncertainty " << TEfficiencyCalibrator::CalibrationUncertainty() << " (" << std::abs(transition->GetEnergy() - centroid) << " >= " << transition->GetEnergyUncertainty() + centroidErr + TEfficiencyCalibrator::CalibrationUncertainty() << ")" << std::endl;
          }
       }
-      auto effGraph = new TGraphErrors(goodPeaks, energy.data(), efficiency.data(), energyErr.data(), efficiencyErr.data());
+      auto* effGraph = new TGraphErrors(goodPeaks, energy.data(), efficiency.data(), energyErr.data(), efficiencyErr.data());
       fEfficiencyGraph->Add(effGraph, tab->GetName());
-      auto uncorrEffGraph = new TGraphErrors(goodPeaks, energy.data(), uncorrEfficiency.data());
+      auto* uncorrEffGraph = new TGraphErrors(goodPeaks, energy.data(), uncorrEfficiency.data());
       fUncorrEfficiencyGraph->Add(uncorrEffGraph, Form("%s uncorr. Eff.", tab->GetName()));
-      auto peakAreaGraph = new TGraphErrors(goodPeaks, energy.data(), peakAreaVec.data(), energyErr.data(), peakAreaErrVec.data());
+      auto* peakAreaGraph = new TGraphErrors(goodPeaks, energy.data(), peakAreaVec.data(), energyErr.data(), peakAreaErrVec.data());
       fPeakAreaGraph->Add(peakAreaGraph, tab->GetName());
-      auto summingInGraph = new TGraphErrors(goodPeaks, energy.data(), summingInVec.data());
+      auto* summingInGraph = new TGraphErrors(goodPeaks, energy.data(), summingInVec.data());
       fSummingInGraph->Add(summingInGraph, Form("%s summing in", tab->GetName()));
-      auto summingOutGraph = new TGraphErrors(goodPeaks, energy.data(), summingOutVec.data());
+      auto* summingOutGraph = new TGraphErrors(goodPeaks, energy.data(), summingOutVec.data());
       fSummingOutGraph->Add(summingOutGraph, Form("%s summing out", tab->GetName()));
    }
    fEfficiencyGraph->Scale();
@@ -610,7 +626,7 @@ void TEfficiencyDatatypeTab::UpdatePeakType()
 int TEfficiencyDatatypeTab::Degree()
 {
    if(fDegreeEntry != nullptr) {
-      TEfficiencyCalibrator::Degree(fDegreeEntry->GetNumber());
+      TEfficiencyCalibrator::Degree(static_cast<int>(fDegreeEntry->GetNumber()));
    }
    return TEfficiencyCalibrator::Degree();
 }
@@ -621,21 +637,21 @@ int TEfficiencyDatatypeTab::Degree()
 /// ln(e(E)) = ((a1 + a2 x + a3 x^2)^-a7 + (a4 + a5 y + a6 y^2)^-a7)^-1/a7
 /// with x = ln(E/100), y = ln(E/1000)
 /// or a polynomial ln(e(E)) = sum i 0->8 a_i (ln(E))^i (Ryan's & Andrew's PhD theses)
-double TEfficiencyDatatypeTab::EfficiencyDebertin(double* x, double* par)
+double TEfficiencyDatatypeTab::EfficiencyDebertin(double* x, double* par)   // NOLINT(readability-non-const-parameter)
 {
    double eff = par[0] * TMath::Log(x[0]) + par[1] * TMath::Log(x[0]) / x[0] + par[2] * TMath::Power(TMath::Log(x[0]) / x[0], 2) + par[3] * TMath::Power(TMath::Log(x[0]) / x[0], 4) + par[4] * TMath::Power(TMath::Log(x[0]) / x[0], 5);
    return eff;
 }
 
-double TEfficiencyDatatypeTab::EfficiencyRadware(double* val, double* par)
+double TEfficiencyDatatypeTab::EfficiencyRadware(double* x, double* par)   // NOLINT(readability-non-const-parameter)
 {
-   double x      = TMath::Log(val[0] / 100.);
-   double y      = TMath::Log(val[0] / 1000.);
-   double logEff = TMath::Power(par[0] + par[1] * x + par[2] * x * x, -par[6]) + TMath::Power(par[3] + par[4] * y + par[5] * y * y, -1. / par[6]);
+   double logX   = TMath::Log(x[0] / 100.);
+   double logY   = TMath::Log(x[0] / 1000.);
+   double logEff = TMath::Power(par[0] + par[1] * logX + par[2] * logX * logX, -par[6]) + TMath::Power(par[3] + par[4] * logY + par[5] * logY * logY, -1. / par[6]);
    return TMath::Exp(logEff);
 }
 
-double TEfficiencyDatatypeTab::EfficiencyPolynomial(double* x, double* par)
+double TEfficiencyDatatypeTab::EfficiencyPolynomial(double* x, double* par)   // NOLINT(readability-non-const-parameter)
 {
    // first parameter: degree of polynomial
    double logEff = 0;
@@ -648,7 +664,7 @@ double TEfficiencyDatatypeTab::EfficiencyPolynomial(double* x, double* par)
 void TEfficiencyDatatypeTab::FitEfficiency()
 {
    ReadValues();
-   if(fEfficiency != nullptr) delete fEfficiency;
+   delete fEfficiency;
    // degree of fit function: 0 = ln(E)/E form, 1 = radware form, everything else polynomial ln(e(E)) = sum i 0->8 a_i (ln(E))^i (Ryan's & Andrew's PhD theses)
    switch(TEfficiencyCalibrator::Degree()) {
    case 0:
@@ -669,7 +685,7 @@ void TEfficiencyDatatypeTab::FitEfficiency()
 void TEfficiencyDatatypeTab::FittingControl(Int_t id)
 {
    int currentTabId = fDataTab->GetCurrent();
-   if(fVerboseLevel > 1) std::cout << __PRETTY_FUNCTION__ << ": id " << id << ", current tab id " << currentTabId << std::endl;
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << ": id " << id << ", current tab id " << currentTabId << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    ReadValues();
    switch(id) {
    case 1:   // re-fit
@@ -721,10 +737,10 @@ TEfficiencyCalibrator::TEfficiencyCalibrator(int n...)
    fDataType = {"Unsuppressed Singles", "Suppressed Singles", "Unsuppressed Addback", "Suppressed Addback"};
 
    va_list args;
-   va_start(args, n);
+   va_start(args, n);   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    bool allSourcesFound = true;
    for(int i = 0; i < n; ++i) {
-      const char* name = va_arg(args, const char*);
+      const char* name = va_arg(args, const char*);   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       fFiles.push_back(new TFile(name));
       if(!fFiles.back()->IsOpen()) {
          std::cerr << "Failed to open " << i + 1 << ". file \"" << name << "\"" << std::endl;
@@ -791,21 +807,21 @@ TEfficiencyCalibrator::TEfficiencyCalibrator(int n...)
       // check if the file name matches any source
       if(std::strstr(name, "22Na") != nullptr) {
          fSources.back() = new TNucleus("22Na");
-      } else if(std::strstr(name, "56Co")) {
+      } else if(std::strstr(name, "56Co") != nullptr) {
          fSources.back() = new TNucleus("56Co");
-      } else if(std::strstr(name, "60Co")) {
+      } else if(std::strstr(name, "60Co") != nullptr) {
          fSources.back() = new TNucleus("60Co");
-      } else if(std::strstr(name, "133Ba")) {
+      } else if(std::strstr(name, "133Ba") != nullptr) {
          fSources.back() = new TNucleus("133Ba");
-      } else if(std::strstr(name, "152Eu")) {
+      } else if(std::strstr(name, "152Eu") != nullptr) {
          fSources.back() = new TNucleus("152Eu");
-      } else if(std::strstr(name, "241Am")) {
+      } else if(std::strstr(name, "241Am") != nullptr) {
          fSources.back() = new TNucleus("241Am");
       } else {
          allSourcesFound = false;
       }
    }
-   va_end(args);
+   va_end(args);   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 
    // now we remove any type from the histogram vector that has no entries
    auto type = fDataType.begin();
@@ -874,7 +890,7 @@ TEfficiencyCalibrator::~TEfficiencyCalibrator()
    for(auto& file : fFiles) {
       file->Close();
    }
-   if(fOutput != nullptr) fOutput->Close();
+   if(fOutput != nullptr) { fOutput->Close(); }
 }
 
 void TEfficiencyCalibrator::DeleteElement(TGFrame* element)
@@ -889,20 +905,20 @@ void TEfficiencyCalibrator::BuildFirstInterface()
 {
    /// Build initial interface with histogram <-> source assignment
 
-   auto layoutManager = new TGTableLayout(this, fFiles.size() + 1, 2, true, 5);
-   if(fVerboseLevel > 1) std::cout << "created table layout manager with 2 columns, " << fFiles.size() + 1 << " rows" << std::endl;
+   auto* layoutManager = new TGTableLayout(this, fFiles.size() + 1, 2, true, 5);
+   if(fVerboseLevel > 1) { std::cout << "created table layout manager with 2 columns, " << fFiles.size() + 1 << " rows" << std::endl; }
    SetLayoutManager(layoutManager);
 
    // The matrices and source selection boxes
    size_t i = 0;
    for(i = 0; i < fFiles.size(); ++i) {
       fSourceLabel.push_back(new TGLabel(this, fFiles[i]->GetName()));
-      if(fVerboseLevel > 2) std::cout << "Text height " << fSourceLabel.back()->GetFont()->TextHeight() << std::endl;
+      if(fVerboseLevel > 2) { std::cout << "Text height " << fSourceLabel.back()->GetFont()->TextHeight() << std::endl; }
       fSourceBox.push_back(new TGComboBox(this, "Select source", kSourceBox + fSourceBox.size()));
       if(fSources[i] != nullptr) {
          fSourceBox.back()->AddEntry(fSources[i]->GetName(), i);
          fSourceBox.back()->Select(0);
-         if(fVerboseLevel > 2) std::cout << "Found source, setting entry to " << fSources[i]->GetName() << " and selecting " << fSourceBox.back()->GetSelected() << std::endl;
+         if(fVerboseLevel > 2) { std::cout << "Found source, setting entry to " << fSources[i]->GetName() << " and selecting " << fSourceBox.back()->GetSelected() << std::endl; }
       } else {
          fSourceBox.back()->AddEntry("22Na", k22Na);
          fSourceBox.back()->AddEntry("56Co", k56Co);
@@ -910,19 +926,19 @@ void TEfficiencyCalibrator::BuildFirstInterface()
          fSourceBox.back()->AddEntry("133Ba", k133Ba);
          fSourceBox.back()->AddEntry("152Eu", k152Eu);
          fSourceBox.back()->AddEntry("241Am", k241Am);
-         if(fVerboseLevel > 2) std::cout << "Didn't find source, created source box with " << fSourceBox.back()->GetNumberOfEntries() << std::endl;
+         if(fVerboseLevel > 2) { std::cout << "Didn't find source, created source box with " << fSourceBox.back()->GetNumberOfEntries() << std::endl; }
       }
       fSourceBox.back()->SetMinHeight(200);
       fSourceBox.back()->Resize(100, LineHeight());
-      if(fVerboseLevel > 2) std::cout << "Attaching " << i << ". label to 0, 1, " << i << ", " << i + 1 << ", and box to 1, 2, " << i << ", " << i + 1 << std::endl;
+      if(fVerboseLevel > 2) { std::cout << "Attaching " << i << ". label to 0, 1, " << i << ", " << i + 1 << ", and box to 1, 2, " << i << ", " << i + 1 << std::endl; }
       AddFrame(fSourceLabel.back(), new TGTableLayoutHints(0, 1, i, i + 1, kLHintsRight | kLHintsCenterY));
       AddFrame(fSourceBox.back(), new TGTableLayoutHints(1, 2, i, i + 1, kLHintsLeft | kLHintsCenterY));
    }
 
    // The buttons
-   if(fVerboseLevel > 1) std::cout << "Attaching start button to 0, 2, " << i << ", " << i + 1 << std::endl;
+   if(fVerboseLevel > 1) { std::cout << "Attaching start button to 0, 2, " << i << ", " << i + 1 << std::endl; }
    fStartButton = new TGTextButton(this, "Accept && Continue", kStartButton);
-   if(fVerboseLevel > 1) std::cout << "start button " << fStartButton << std::endl;
+   if(fVerboseLevel > 1) { std::cout << "start button " << fStartButton << std::endl; }
    AddFrame(fStartButton, new TGTableLayoutHints(0, 2, i, i + 1, kLHintsCenterX | kLHintsCenterY));
    Layout();
 }
@@ -932,7 +948,7 @@ void TEfficiencyCalibrator::MakeFirstConnections()
    /// Create connections for the file <-> source assignment interface
 
    // Connect the selection of the source
-   for(auto box : fSourceBox) {
+   for(auto* box : fSourceBox) {
       box->Connect("Selected(Int_t, Int_t)", "TEfficiencyCalibrator", this, "SetSource(Int_t, Int_t)");
    }
 
@@ -943,7 +959,7 @@ void TEfficiencyCalibrator::MakeFirstConnections()
 void TEfficiencyCalibrator::DisconnectFirst()
 {
    /// Disconnect all signals from the file <-> source assignment interface
-   for(auto box : fSourceBox) {
+   for(auto* box : fSourceBox) {
       box->Disconnect("Selected(Int_t, Int_t)", this, "SetSource(Int_t, Int_t)");
    }
    fStartButton->Disconnect("Clicked()", this, "Start()");
@@ -954,23 +970,23 @@ void TEfficiencyCalibrator::DeleteFirst()
 
    fSourceBox.clear();
    DeleteElement(fStartButton);
-   if(fVerboseLevel > 2) std::cout << "Deleted start button " << fStartButton << std::endl;
+   if(fVerboseLevel > 2) { std::cout << "Deleted start button " << fStartButton << std::endl; }
 }
 
 void TEfficiencyCalibrator::SetSource(Int_t windowId, Int_t entryId)
 {
    int index = windowId - kSourceBox;
-   if(fVerboseLevel > 1) std::cout << __PRETTY_FUNCTION__ << ": windowId " << windowId << ", entryId " << entryId << " => " << index << std::endl;
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << ": windowId " << windowId << ", entryId " << entryId << " => " << index << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    TNucleus* nucleus = fSources[index];
-   if(nucleus != nullptr) delete nucleus;
+   delete nucleus;
    nucleus         = new TNucleus(fSourceBox[index]->GetListBox()->GetEntry(entryId)->GetTitle());
    fSources[index] = nucleus;
 }
 
 void TEfficiencyCalibrator::Start()
 {
-   if(fVerboseLevel > 1) std::cout << __PRETTY_FUNCTION__ << ": fEmitter " << fEmitter << ", fStartButton " << fStartButton << std::endl;
-   if(fEmitter == nullptr) {   // we only want to do this once at the beginning (after fEmitter was initialized to nullptr)
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << ": fEmitter " << fEmitter << ", fStartButton " << fStartButton << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(fEmitter == nullptr) {                                                                                                                    // we only want to do this once at the beginning (after fEmitter was initialized to nullptr)
       fEmitter = fStartButton;
       TTimer::SingleShot(100, "TEfficiencyCalibrator", this, "HandleTimer()");
    }
@@ -978,7 +994,7 @@ void TEfficiencyCalibrator::Start()
 
 void TEfficiencyCalibrator::HandleTimer()
 {
-   if(fVerboseLevel > 1) std::cout << __PRETTY_FUNCTION__ << ": fEmitter " << fEmitter << ", fStartButton " << fStartButton << std::endl;
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << ": fEmitter " << fEmitter << ", fStartButton " << fStartButton << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    if(fEmitter == fStartButton) {
       // disconnect signals of first screen and remove all elements
       DisconnectFirst();
@@ -991,7 +1007,7 @@ void TEfficiencyCalibrator::HandleTimer()
 
 void TEfficiencyCalibrator::SecondWindow()
 {
-   if(fVerboseLevel > 1) std::cout << __PRETTY_FUNCTION__ << std::endl;
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    // check that all sources have been set
    for(size_t i = 0; i < fSources.size(); ++i) {
       if(fSources[i] == nullptr) {
@@ -1021,9 +1037,9 @@ void TEfficiencyCalibrator::SecondWindow()
       nofHistograms += type.size();
    }
    nofHistograms *= 3;   // there are three histograms for each data type/source combo
-   fProgressBar->SetRange(0., nofHistograms);
+   fProgressBar->SetRange(0., static_cast<Float_t>(nofHistograms));
    fProgressBar->Percent(true);
-   if(fVerboseLevel > 2) std::cout << "Set range of progress bar to 0. - " << fProgressBar->GetMax() << " = " << fFiles.size() << std::endl;
+   if(fVerboseLevel > 2) { std::cout << "Set range of progress bar to 0. - " << fProgressBar->GetMax() << " = " << fFiles.size() << std::endl; }
    AddFrame(fProgressBar, new TGLayoutHints(kLHintsCenterX | kLHintsCenterY | kLHintsExpandX | kLHintsExpandY, 0, 0, 0, 0));
 
    // Map all subwindows of main frame
@@ -1036,7 +1052,7 @@ void TEfficiencyCalibrator::SecondWindow()
    MapWindow();
 
    // create second screen and its connections
-   if(fVerboseLevel > 2) std::cout << "Starting to build second interface:" << std::endl;
+   if(fVerboseLevel > 2) { std::cout << "Starting to build second interface:" << std::endl; }
    BuildSecondInterface();
    MakeSecondConnections();
 
@@ -1051,7 +1067,7 @@ void TEfficiencyCalibrator::SecondWindow()
 
    // Map main frame
    MapWindow();
-   if(fVerboseLevel > 2) std::cout << __PRETTY_FUNCTION__ << " done" << std::endl;
+   if(fVerboseLevel > 2) { std::cout << __PRETTY_FUNCTION__ << " done" << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 }
 
 void TEfficiencyCalibrator::BuildSecondInterface()
@@ -1062,10 +1078,10 @@ void TEfficiencyCalibrator::BuildSecondInterface()
    fDatatypeTab = new TGTab(this, WindowWidth(), WindowWidth() / 2);
    fEfficiencyDatatypeTab.resize(fHistograms.size());
    fEfficiencyGraph.resize(fHistograms.size());
-   if(fVerboseLevel > 2) std::cout << __PRETTY_FUNCTION__ << " creating " << fHistograms.size() << " tabs" << std::endl;
+   if(fVerboseLevel > 2) { std::cout << __PRETTY_FUNCTION__ << " creating " << fHistograms.size() << " tabs" << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    for(size_t i = 0; i < fHistograms.size(); ++i) {
-      if(fVerboseLevel > 2) std::cout << i << ": Creating efficiency source tab using " << fHistograms[i].size() << " histograms, and " << fSources.size() << " sources, " << fRange << ", " << fThreshold << ", " << fProgressBar << std::endl;
-      auto frame = fDatatypeTab->AddTab(fDataType[i].c_str());
+      if(fVerboseLevel > 2) { std::cout << i << ": Creating efficiency source tab using " << fHistograms[i].size() << " histograms, and " << fSources.size() << " sources, " << fRange << ", " << fThreshold << ", " << fProgressBar << std::endl; }
+      auto* frame = fDatatypeTab->AddTab(fDataType[i].c_str());
       std::replace(fDataType[i].begin(), fDataType[i].end(), ' ', '_');
       fEfficiencyDatatypeTab[i] = new TEfficiencyDatatypeTab(this, fSources, fHistograms[i], frame, fDataType[i], fProgressBar, fVerboseLevel);
       // fEfficiencyDatatypeTab[i]->UpdateEfficiencyGraph();
@@ -1073,22 +1089,22 @@ void TEfficiencyCalibrator::BuildSecondInterface()
    }
    AddFrame(fDatatypeTab, new TGLayoutHints(kLHintsTop | kLHintsCenterX | kLHintsExpandX, 0, 0, 0, 0));
 
-   if(fVerboseLevel > 2) std::cout << "Second interface done" << std::endl;
+   if(fVerboseLevel > 2) { std::cout << "Second interface done" << std::endl; }
 }
 
 void TEfficiencyCalibrator::MakeSecondConnections()
 {
-   if(fVerboseLevel > 1) std::cout << __PRETTY_FUNCTION__ << std::endl;
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    // we don't need to connect the range, threshold, and degree number entries, those are automatically read when we start the calibration
-   for(auto sourceTab : fEfficiencyDatatypeTab) {
+   for(auto* sourceTab : fEfficiencyDatatypeTab) {
       sourceTab->MakeConnections();
    }
 }
 
 void TEfficiencyCalibrator::DisconnectSecond()
 {
-   if(fVerboseLevel > 1) std::cout << __PRETTY_FUNCTION__ << std::endl;
-   for(auto sourceTab : fEfficiencyDatatypeTab) {
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   for(auto* sourceTab : fEfficiencyDatatypeTab) {
       sourceTab->Disconnect();
    }
 }

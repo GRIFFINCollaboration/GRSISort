@@ -263,7 +263,7 @@ TFitResultPtr TEfficiencyCalibration::Fit(Option_t*)
    return res;
 }
 
-Double_t TEfficiencyCalibration::PhotoPeakEfficiency(Double_t* x, Double_t* par)   // NOLINT
+Double_t TEfficiencyCalibration::PhotoPeakEfficiency(Double_t* x, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
 
    Int_t    closest_graph   = 0;
@@ -288,7 +288,7 @@ Double_t TEfficiencyCalibration::PhotoPeakEfficiency(Double_t* x, Double_t* par)
    return TMath::Exp(sum);
 }
 
-Double_t TEfficiencyCalibration::AbsoluteEfficiency(Double_t* x, Double_t* par)   // NOLINT
+Double_t TEfficiencyCalibration::AbsoluteEfficiency(Double_t* x, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
    double sum = 0.0;
    for(int i = 0; i < 9; ++i) {

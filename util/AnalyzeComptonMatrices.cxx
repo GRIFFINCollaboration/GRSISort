@@ -1,3 +1,4 @@
+#ifdef HAS_MATHMORE
 #include "TFile.h"
 #include "TH2.h"
 #include "TH1.h"
@@ -306,7 +307,7 @@ double KCoefficent(int mu, int L1, int L2)
       k = l2 * (l2 + 1.) - l1 * (l1 + 1.);
    }
 
-   return k * (TMath::Factorial(mu - 2.) / TMath::Factorial(mu + 2.));
+   return k * (TMath::Factorial(mu - 2) / TMath::Factorial(mu + 2));
 }
 
 double Polarization(TUserSettings* settings)
@@ -337,3 +338,12 @@ double Polarization(TUserSettings* settings)
    if(settings->GetBool("Negative")) { return -nominator / denominator; }
    return nominator / denominator;
 }
+#else
+#include <iostream>
+
+int main(int, char**)
+{
+	std::cerr<<"ROOT installation is missing mathmore support!"<<std::endl;
+	return 1;
+}
+#endif

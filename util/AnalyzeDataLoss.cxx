@@ -50,10 +50,10 @@ TList* AnalyzeDataLoss(TTree* tree, int64_t entries = 0, TStopwatch* w = nullptr
    // int64_t lasttime = 0;
 
    //--------------- parameters for dealing with the roll-over of the AcceptedChannelId ----------------------//
-   uint64_t                   acceptedMax = TMath::Power(2, 14);   // this is the maximum number that the AcceptedChannelId can be
-   std::array<int, channels>  rollovers;                           // this is how many roll-overs we have had
-   std::array<bool, channels> rolling;                             // array that tells us if we're rolling over in that channel
-   std::array<int, channels>  rollnum;                             // array that tells us how many times we've had accepted ID over the threshold
+   uint64_t                   acceptedMax = 0x1 << 14;   // = 2^14 = this is the maximum number that the AcceptedChannelId can be
+   std::array<int, channels>  rollovers;                 // this is how many roll-overs we have had
+   std::array<bool, channels> rolling;                   // array that tells us if we're rolling over in that channel
+   std::array<int, channels>  rollnum;                   // array that tells us how many times we've had accepted ID over the threshold
    unsigned int               rollingthreshold  = 1000;
    int                        rollnum_threshold = 20;   // if we have this many numbers above the threshold, turn rolling on or off
 
@@ -154,7 +154,7 @@ TList* AnalyzeDataLoss(TTree* tree, int64_t entries = 0, TStopwatch* w = nullptr
          networkPacketTS[2]     = time;
          if(networkPacketNumber[0] < networkPacketNumber[1] && networkPacketNumber[1] < networkPacketNumber[2]) {
             for(int packet = networkPacketNumber[0] + 1; packet < networkPacketNumber[1]; ++packet) {
-               lostNetworkPackets->Fill(networkPacketTS[1] / 1e8);
+               lostNetworkPackets->Fill(static_cast<double>(networkPacketTS[1]) / 1e8);
             }
             // things look fine, so prepare for next time
             networkPacketNumber[0] = networkPacketNumber[1];
@@ -185,7 +185,7 @@ TList* AnalyzeDataLoss(TTree* tree, int64_t entries = 0, TStopwatch* w = nullptr
             channelIds[chan][1] < channelIds[chan][2]) {
             for(int id = channelIds[chan][0] + 1; id < channelIds[chan][1]; ++id) {
                lostChannelIds->Fill(chan, id);
-               lostChannelIdsTime->Fill(chan, timestamp[chan][1] / 1e8);
+               lostChannelIdsTime->Fill(chan, static_cast<double>(timestamp[chan][1]) / 1e8);
             }
             timestamp[chan][0]  = timestamp[chan][1];
             timestamp[chan][1]  = timestamp[chan][2];
@@ -208,7 +208,7 @@ TList* AnalyzeDataLoss(TTree* tree, int64_t entries = 0, TStopwatch* w = nullptr
          acceptedChannelIds[chan][2] = accepted;
       }
 
-      accepted_hst->Fill(chan, accepted);
+      accepted_hst->Fill(chan, static_cast<double>(accepted));
 
       // check if the "middle" accepted channel ID is reasonable and fill all IDs we've missed between the first and
       // middle ID
@@ -218,7 +218,7 @@ TList* AnalyzeDataLoss(TTree* tree, int64_t entries = 0, TStopwatch* w = nullptr
             acceptedChannelIds[chan][1] < acceptedChannelIds[chan][2]) {
             for(int id = acceptedChannelIds[chan][0] + 1; id < acceptedChannelIds[chan][1]; ++id) {
                lostAcceptedIds->Fill(chan, id);
-               lostAcceptedIdsTime->Fill(chan, timestamp[chan][1] / 1e8);
+               lostAcceptedIdsTime->Fill(chan, static_cast<double>(timestamp[chan][1]) / 1e8);
             }
             acceptedChannelIds[chan][0] = acceptedChannelIds[chan][1];
             acceptedChannelIds[chan][1] = acceptedChannelIds[chan][2];
@@ -235,13 +235,13 @@ TList* AnalyzeDataLoss(TTree* tree, int64_t entries = 0, TStopwatch* w = nullptr
       }
 
       if(entry % 25000 == 0) {
-         std::cout << "\t" << entry << " / " << entries << " = " << static_cast<float>(entry) / entries * 100.0 << "%. "
+         std::cout << "\t" << entry << " / " << entries << " = " << static_cast<float>(entry) / static_cast<float>(entries) * 100.0 << "%. "
                    << w->RealTime() << " seconds"
                    << "\r" << std::flush;
          w->Continue();
       }
    }
-   std::cout << "\t" << entry << " / " << entries << " = " << static_cast<float>(entry) / entries * 100.0 << "%. "
+   std::cout << "\t" << entry << " / " << entries << " = " << static_cast<float>(entry) / static_cast<float>(entries) * 100.0 << "%. "
              << w->RealTime() << " seconds" << std::endl
              << std::endl;
    w->Continue();
@@ -297,7 +297,7 @@ int main(int argc, char** argv)
       printf("Failed to find bad fragment tree in file '%s'!\n", argv[1]);
    } else {
       std::cout << badtree->GetEntries()
-                << " bad entries in total = " << (100. * badtree->GetEntries()) / tree->GetEntries()
+                << " bad entries in total = " << (100. * static_cast<double>(badtree->GetEntries())) / static_cast<double>(tree->GetEntries())
                 << "% of the good entries" << std::endl;
    }
 

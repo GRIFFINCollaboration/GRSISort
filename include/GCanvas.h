@@ -163,7 +163,7 @@ public:
       return false;
    }
    /// \cond CLASSIMP
-   ClassDefOverride(GMarker, 0)   // NOLINT
+   ClassDefOverride(GMarker, 0)   // NOLINT(readability-else-after-return)
                                   /// \endcond
 };
 
@@ -310,7 +310,7 @@ private:
    TRootCanvas* fRootCanvas{nullptr};
 
    /// \cond CLASSIMP
-   ClassDefOverride(GCanvas, 2)   // NOLINT
+   ClassDefOverride(GCanvas, 2)   // NOLINT(readability-else-after-return)
                                   /// \endcond
 };
 /*! @} */

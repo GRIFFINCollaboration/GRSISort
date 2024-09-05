@@ -106,17 +106,17 @@ public:
    // We need a common function for all detectors in here
    // static bool Compare(TDetectorHit* lhs,TDetectorHit* rhs); //!<!
 
-   void         SetAddress(const UInt_t& temp_address) { fAddress = temp_address; }                   //!<!
-   void         SetKValue(const Short_t& temp_kval) { fKValue = temp_kval; }                          //!<!
-   void         SetCharge(const Float_t& temp_charge) { fCharge = temp_charge; }                      //!<!
-   void         SetCharge(const Int_t& temp_charge) { fCharge = temp_charge + gRandom->Uniform(); }   //!<! this function automatically randomizes the integer provided
-   virtual void SetCfd(const Float_t& val) { fCfd = val; }                                            //!<!
-   virtual void SetCfd(const uint32_t& val) { fCfd = val + gRandom->Uniform(); }                      //!<! this function automatically randomizes the integer provided
-   virtual void SetCfd(const Int_t& val) { fCfd = val + gRandom->Uniform(); }                         //!<! this function automatically randomizes the integer provided
-   void         SetWaveform(const std::vector<Short_t>& val) { fWaveform = val; }                     //!<!
-   void         AddWaveformSample(const Short_t& val) { fWaveform.push_back(val); }                   //!<!
-   virtual void SetTimeStamp(const Long64_t& val) { fTimeStamp = val; }                               //!<!
-   virtual void AppendTimeStamp(const Long64_t& val) { fTimeStamp += val; }                           //!<!
+   void         SetAddress(const UInt_t& temp_address) { fAddress = temp_address; }                                                               //!<!
+   void         SetKValue(const Short_t& temp_kval) { fKValue = temp_kval; }                                                                      //!<!
+   void         SetCharge(const Float_t& temp_charge) { fCharge = temp_charge; }                                                                  //!<!
+   void         SetCharge(const Int_t& temp_charge) { fCharge = static_cast<Float_t>(temp_charge) + static_cast<Float_t>(gRandom->Uniform()); }   //!<! this function automatically randomizes the integer provided
+   virtual void SetCfd(const Float_t& val) { fCfd = val; }                                                                                        //!<!
+   virtual void SetCfd(const uint32_t& val) { fCfd = static_cast<Float_t>(val) + static_cast<Float_t>(gRandom->Uniform()); }                      //!<! this function automatically randomizes the integer provided
+   virtual void SetCfd(const Int_t& val) { fCfd = static_cast<Float_t>(val) + static_cast<Float_t>(gRandom->Uniform()); }                         //!<! this function automatically randomizes the integer provided
+   void         SetWaveform(const std::vector<Short_t>& val) { fWaveform = val; }                                                                 //!<!
+   void         AddWaveformSample(const Short_t& val) { fWaveform.push_back(val); }                                                               //!<!
+   virtual void SetTimeStamp(const Long64_t& val) { fTimeStamp = val; }                                                                           //!<!
+   virtual void AppendTimeStamp(const Long64_t& val) { fTimeStamp += val; }                                                                       //!<!
 
    Double_t SetEnergy(const double& energy) const
    {
@@ -213,7 +213,7 @@ private:
    static TVector3 fBeamDirection;   //!
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDetectorHit, 1)   // NOLINT
+   ClassDefOverride(TDetectorHit, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

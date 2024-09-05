@@ -128,7 +128,7 @@ private:
    TGraph* fResiduals{nullptr};
 
    /// \cond CLASSIMP
-   ClassDefOverride(TPeak, 2)   // NOLINT
+   ClassDefOverride(TPeak, 2)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */
