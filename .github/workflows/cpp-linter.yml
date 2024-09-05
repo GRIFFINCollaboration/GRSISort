@@ -3,10 +3,10 @@ name: Run clang-tidy
 on:
   workflow_dispatch:
   pull_request:
-    branches: [main, develop]
+    branches: [main, dev]
     paths: ['**.h', '**.hh', '**.cxx', '**CMakeLists.txt', '**.cmake']
   push:
-    branches: [main, develop]
+    branches: [main, dev]
     paths: ['**.h', '**.hh', '**.cxx', '**CMakeLists.txt', '**.cmake']
 
 jobs:
@@ -43,6 +43,10 @@ jobs:
       continue-on-error: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      permissions:
+        metadata: read
+        contents: write
+        pull-requests: write
       with:
         database: ${{github.workspace}}/build
         style: ''  # disable clang-format checks.
@@ -56,4 +60,5 @@ jobs:
         file-annotations: true
           #tidy-review: true
         passive-reviews: true
+        version: 14
 
