@@ -343,7 +343,7 @@ double Polarization(TUserSettings* settings)
 
 int main(int, char**)
 {
-	std::cerr<<"ROOT installation is missing mathmore support!"<<std::endl;
-	return 1;
+   std::cerr << "ROOT installation is missing mathmore support!" << std::endl;
+   return 1;
 }
 #endif
