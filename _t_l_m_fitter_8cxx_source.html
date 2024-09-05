@@ -179,7 +179,7 @@ $(document).ready(function(){initNavTree('_t_l_m_fitter_8cxx_source.html',''); i
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>   <span class="keywordtype">double</span> func_range_max = 0.;</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>   func-&gt;GetRange(func_range_min, func_range_max);</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;function range: &quot;</span> &lt;&lt; func_range_min &lt;&lt; <span class="stringliteral">&quot; to &quot;</span> &lt;&lt; func_range_max &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>   <a class="code hl_function" href="class_t_l_m_fitter.html#a7ba728b3f8ea802a84a73391b516ceba">SetFitterRange</a>(func_range_min, func_range_max);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>   <a class="code hl_function" href="class_t_l_m_fitter.html#a7ba728b3f8ea802a84a73391b516ceba">SetFitterRange</a>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(func_range_min), <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(func_range_max));   <span class="comment">// not sure why SetFitterRange takes int as arguments, is it expecting bins as input?</span></div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>   <span class="keywordtype">int</span> bin_min = <a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a>-&gt;FindBin(func_range_min);</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>   <span class="keywordtype">int</span> bin_max = <a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a>-&gt;FindBin(func_range_max);</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
@@ -645,7 +645,7 @@ $(document).ready(function(){initNavTree('_t_l_m_fitter_8cxx_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_c27fb4ff404115d281d3c6aa730dcb72.html">TGRSIFit</a></li><li class="navelem"><a class="el" href="_t_l_m_fitter_8cxx.html">TLMFitter.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:45.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:54.</li>
   </ul>
 </div>
 </body>

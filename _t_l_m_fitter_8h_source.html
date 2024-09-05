@@ -735,7 +735,7 @@ $(document).ready(function(){initNavTree('_t_l_m_fitter_8h_source.html',''); ini
 <div class="foldopen" id="foldopen00551" data-start="{" data-end="}">
 <div class="line"><a id="l00551" name="l00551"></a><span class="lineno"><a class="line" href="group___fitting.html#gaae9be2b78e310ebaae80d3a980ef37c3">  551</a></span><span class="keyword">inline</span> <span class="keywordtype">float</span> <a class="code hl_function" href="group___fitting.html#gac5bb90632c74845e7dc3cb8c46a1fbdd">SIGN</a>(<span class="keyword">const</span> <span class="keywordtype">double</span>&amp; a, <span class="keyword">const</span> <span class="keywordtype">float</span>&amp; b)</div>
 <div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>{</div>
-<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>   <span class="keywordflow">return</span> b &gt;= 0 ? (a &gt;= 0 ? a : -a) : (a &gt;= 0 ? -a : a);</div>
+<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>   <span class="keywordflow">return</span> b &gt;= 0 ? <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a &gt;= 0 ? a : -a) : <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a &gt;= 0 ? -a : a);</div>
 <div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>}</div>
 </div>
 <div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span> </div>
@@ -866,7 +866,7 @@ $(document).ready(function(){initNavTree('_t_l_m_fitter_8h_source.html',''); ini
 <div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span> </div>
 <div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span><span class="keyword">public</span>:<span class="comment"></span></div>
 <div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span><span class="comment">   /// \cond CLASSIMP</span></div>
-<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span><span class="comment"></span>   ClassDefOverride(<a class="code hl_class" href="class_t_l_m_fitter.html">TLMFitter</a>, 1)   <span class="comment">// NOLINT</span><span class="comment"></span></div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span><span class="comment"></span>   ClassDefOverride(<a class="code hl_class" href="class_t_l_m_fitter.html">TLMFitter</a>, 1)   <span class="comment">// NOLINT(readability-else-after-return)</span><span class="comment"></span></div>
 <div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span><span class="comment">   /// \endcond</span></div>
 <div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span><span class="comment"></span>};<span class="comment"></span></div>
 </div>
@@ -946,7 +946,7 @@ $(document).ready(function(){initNavTree('_t_l_m_fitter_8h_source.html',''); ini
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_l_m_fitter_8h.html">TLMFitter.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:44.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:53.</li>
   </ul>
 </div>
 </body>

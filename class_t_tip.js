@@ -1,8 +1,9 @@
 var class_t_tip =
 [
-    [ "~TTip", "class_t_tip.html#ad09645482cdc22f7390c20ba641c5cdb", null ],
-    [ "TTip", "class_t_tip.html#a5c8ea79292e78ee8a11728cc11cb7bdf", null ],
+    [ "TTip", "class_t_tip.html#ada382f0805bbd017255cd5f8c23f7f2c", null ],
     [ "TTip", "class_t_tip.html#ae65dab03d1e33d2e00c7a10b39ae2a3b", null ],
+    [ "TTip", "class_t_tip.html#ab1cc786b4db76084bdb8800268c1d0f2", null ],
+    [ "~TTip", "class_t_tip.html#aa61311701327b41b66a6febc9dca6635", null ],
     [ "AddFragment", "class_t_tip.html#a763f4ccc17955c6632585f134655ebeb", null ],
     [ "AddHit", "class_t_tip.html#af83ad943618a30f7d1639675e18fc5b8", null ],
     [ "BuildHits", "class_t_tip.html#aa9e4ff9a8ae69d45bf32b867dbe9e980", null ],
@@ -19,8 +20,9 @@ var class_t_tip =
     [ "Hits", "class_t_tip.html#ab907981ce861ab147879469064748ae2", null ],
     [ "NoHits", "class_t_tip.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
     [ "operator=", "class_t_tip.html#a3d1718e60b94999013710884830ce937", null ],
+    [ "operator=", "class_t_tip.html#a93d660d4d2a3a6856572417d797f420d", null ],
     [ "Print", "class_t_tip.html#a6cd55247a69135e384a34d1faca015a9", null ],
     [ "Print", "class_t_tip.html#a71e421455506c52d2225d8aab2d5dddc", null ],
     [ "fHits", "class_t_tip.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ],
-    [ "fPositionVectors", "class_t_tip.html#ac68b0ab6c996be659f2b1ae53e6ff277", null ]
+    [ "fPositionVectors", "class_t_tip.html#a6c8f2829882f29371cdfb8cab4674b78", null ]
 ];

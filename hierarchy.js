@@ -76,7 +76,6 @@ var hierarchy =
       [ "ExampleFragmentHelper", "class_example_fragment_helper.html", null ],
       [ "ExampleTreeHelper", "class_example_tree_helper.html", null ],
       [ "GriffinKValueHelper", "class_griffin_k_value_helper.html", null ],
-      [ "TestHelper", "class_test_helper.html", null ],
       [ "TimeWalkHelper", "class_time_walk_helper.html", null ]
     ] ],
     [ "RlmdBufferHeader", "struct_rlmd_buffer_header.html", null ],
@@ -342,7 +341,6 @@ var hierarchy =
         [ "ExampleFragmentHelper", "class_example_fragment_helper.html", null ],
         [ "ExampleTreeHelper", "class_example_tree_helper.html", null ],
         [ "GriffinKValueHelper", "class_griffin_k_value_helper.html", null ],
-        [ "TestHelper", "class_test_helper.html", null ],
         [ "TimeWalkHelper", "class_time_walk_helper.html", null ]
       ] ],
       [ "TGRSIOptions", "class_t_g_r_s_i_options.html", null ],

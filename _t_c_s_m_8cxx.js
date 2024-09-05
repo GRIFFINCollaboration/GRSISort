@@ -1,5 +1,5 @@
 var _t_c_s_m_8cxx =
 [
-    [ "RECOVERHITS", "_t_c_s_m_8cxx.html#adafac5cb83a3c7552609d238c2ab7fc4", null ],
-    [ "SUMHITS", "_t_c_s_m_8cxx.html#a1919a92e37ca69c5b0a1f40645a9dd3c", null ]
+    [ "RecoverHits", "_t_c_s_m_8cxx.html#a40d2e154046246e080ebef9b7c82a127", null ],
+    [ "SumHits", "_t_c_s_m_8cxx.html#a28e3adafc74b9719a039cc26dd285e28", null ]
 ];

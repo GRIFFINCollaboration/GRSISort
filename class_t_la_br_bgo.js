@@ -2,7 +2,8 @@ var class_t_la_br_bgo =
 [
     [ "TLaBrBgo", "class_t_la_br_bgo.html#a4edb0caddbae8d28ce23231f8e6c7082", null ],
     [ "TLaBrBgo", "class_t_la_br_bgo.html#a5d3fb2bd18dfca626295b748fb208021", null ],
-    [ "~TLaBrBgo", "class_t_la_br_bgo.html#ad5ddad52259b5150a7718405787df07a", null ],
+    [ "TLaBrBgo", "class_t_la_br_bgo.html#a7367db08b080e04324119c4c5c422f38", null ],
+    [ "~TLaBrBgo", "class_t_la_br_bgo.html#a703d3ed2e8cd25575dd2da2669681f99", null ],
     [ "AddFragment", "class_t_la_br_bgo.html#ab166053f5852e7dde433fc7170d99977", null ],
     [ "AddHit", "class_t_la_br_bgo.html#af83ad943618a30f7d1639675e18fc5b8", null ],
     [ "BuildHits", "class_t_la_br_bgo.html#ae1cca8f81805c84b1025cede9f0c1e1c", null ],
@@ -19,6 +20,7 @@ var class_t_la_br_bgo =
     [ "Hits", "class_t_la_br_bgo.html#ab907981ce861ab147879469064748ae2", null ],
     [ "NoHits", "class_t_la_br_bgo.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
     [ "operator=", "class_t_la_br_bgo.html#a9b614e7d1c9dff5d0cbd2a309a75707c", null ],
+    [ "operator=", "class_t_la_br_bgo.html#aa77db94c7622095592da254ec2f92529", null ],
     [ "Print", "class_t_la_br_bgo.html#af5918349419ed07c832590d122e73a2e", null ],
     [ "Print", "class_t_la_br_bgo.html#a58c8bd71049b0aa355bb3d8ded28ddcb", null ],
     [ "fHits", "class_t_la_br_bgo.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ],

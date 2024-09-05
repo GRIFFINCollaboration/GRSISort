@@ -46,7 +46,7 @@
   </g>
 </defs>
 <script type="application/ecmascript">
-var viewWidth = 541;
+var viewWidth = 566;
 var viewHeight = 231;
 var sectionId = 'dynsection-1';
 </script>
@@ -109,9 +109,9 @@ var sectionId = 'dynsection-1';
 </g>
 </g>
 <!-- Node4&#45;&gt;Node1 -->
-<g id="edge8_Node000001_Node000004" class="edge">
+<g id="edge9_Node000001_Node000004" class="edge">
 <title>Node4&#45;&gt;Node1</title>
-<g id="a_edge8_Node000001_Node000004"><a xlink:title=" ">
+<g id="a_edge9_Node000001_Node000004"><a xlink:title=" ">
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M42.81,-124.61C41.07,-107.27 41.58,-82.63 54.75,-66.5 89.54,-23.86 157,-13.34 197.09,-10.99"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="39.33,-125.02 44.17,-134.45 46.27,-124.07 39.33,-125.02"/>
 </a>
@@ -158,9 +158,9 @@ var sectionId = 'dynsection-1';
 </g>
 </g>
 <!-- Node6&#45;&gt;Node1 -->
-<g id="edge9_Node000001_Node000006" class="edge">
+<g id="edge10_Node000001_Node000006" class="edge">
 <title>Node6&#45;&gt;Node1</title>
-<g id="a_edge9_Node000001_Node000006"><a xlink:title=" ">
+<g id="a_edge10_Node000001_Node000006"><a xlink:title=" ">
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M225,-124.7C226.1,-95.08 228.12,-41 228.91,-19.64"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="221.51,-124.43 224.63,-134.55 228.5,-124.69 221.51,-124.43"/>
 </a>
@@ -180,9 +180,9 @@ var sectionId = 'dynsection-1';
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="class_t_x_m_l_odb.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="361.75,-87.38 300.75,-87.38 300.75,-68.12 361.75,-68.12 361.75,-87.38"/>
-<text text-anchor="middle" x="331.25" y="-73.88" font-family="Helvetica,sans-Serif" font-size="10.00">TXMLOdb</text>
+<g id="a_Node000007"><a xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="453.88,-87.38 300.62,-87.38 300.62,-68.12 453.88,-68.12 453.88,-87.38"/>
+<text text-anchor="middle" x="377.25" y="-73.88" font-family="Helvetica,sans-Serif" font-size="10.00">std::shared_ptr&lt; TMidasEvent &gt;</text>
 </a>
 </g>
 </g>
@@ -190,18 +190,18 @@ var sectionId = 'dynsection-1';
 <g id="edge6_Node000001_Node000007" class="edge">
 <title>Node7&#45;&gt;Node1</title>
 <g id="a_edge6_Node000001_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M307.88,-61.6C287.87,-48.63 259.74,-30.39 243.11,-19.61"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="305.93,-64.51 316.22,-67.01 309.74,-58.63 305.93,-64.51"/>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M346.54,-63.03C317.34,-49.98 274.29,-30.75 249.27,-19.57"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="345.04,-66.19 355.6,-67.08 347.9,-59.8 345.04,-66.19"/>
 </a>
 </g>
-<text text-anchor="middle" x="298.88" y="-39" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> fOdb</text>
+<text text-anchor="middle" x="336.25" y="-39" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> fOdbEvent</text>
 </g>
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="532.88,-87.38 379.62,-87.38 379.62,-68.12 532.88,-68.12 532.88,-87.38"/>
-<text text-anchor="middle" x="456.25" y="-73.88" font-family="Helvetica,sans-Serif" font-size="10.00">std::shared_ptr&lt; TMidasEvent &gt;</text>
+<g id="a_Node000008"><a xlink:href="class_t_x_m_l_odb.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="532.75,-87.38 471.75,-87.38 471.75,-68.12 532.75,-68.12 532.75,-87.38"/>
+<text text-anchor="middle" x="502.25" y="-73.88" font-family="Helvetica,sans-Serif" font-size="10.00">TXMLOdb</text>
 </a>
 </g>
 </g>
@@ -209,11 +209,30 @@ var sectionId = 'dynsection-1';
 <g id="edge7_Node000001_Node000008" class="edge">
 <title>Node8&#45;&gt;Node1</title>
 <g id="a_edge7_Node000001_Node000008"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M414.12,-64.48C369.52,-51.49 300.2,-31.29 260.33,-19.68"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="413.13,-67.83 423.71,-67.27 415.09,-61.11 413.13,-67.83"/>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M462.36,-64.37C434.93,-56.09 397.57,-45.29 364.25,-37.25 329.42,-28.85 289.05,-21.15 261.6,-16.22"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="461.06,-67.63 471.65,-67.19 463.1,-60.94 461.06,-67.63"/>
 </a>
 </g>
-<text text-anchor="middle" x="380.25" y="-39" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> fOdbEvent</text>
+<text text-anchor="middle" x="418.88" y="-39" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> fOdb</text>
+</g>
+<!-- Node9 -->
+<g id="Node000009" class="node">
+<title>Node9</title>
+<g id="a_Node000009"><a xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="557.88,-155.5 446.62,-155.5 446.62,-136.25 557.88,-136.25 557.88,-155.5"/>
+<text text-anchor="middle" x="502.25" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">std::array&lt; char, 256 &gt;</text>
+</a>
+</g>
+</g>
+<!-- Node9&#45;&gt;Node8 -->
+<g id="edge8_Node000008_Node000009" class="edge">
+<title>Node9&#45;&gt;Node8</title>
+<g id="a_edge8_Node000008_Node000009"><a xlink:title=" ">
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M502.25,-124.81C502.25,-112.36 502.25,-96.99 502.25,-87.53"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="498.75,-124.44 502.25,-134.44 505.75,-124.44 498.75,-124.44"/>
+</a>
+</g>
+<text text-anchor="middle" x="527" y="-108.75" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> fTextBuffer</text>
 </g>
 </g>
 </svg>

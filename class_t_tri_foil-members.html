@@ -122,8 +122,10 @@ $(document).ready(function(){initNavTree('class_t_tri_foil.html',''); initResiza
   <tr class="odd"><td class="entry"><a class="el" href="class_t_detector.html#ab907981ce861ab147879469064748ae2">Hits</a>() const</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_detector.html#a64ad8e69427c3719f15c3d400021ab1f">NoHits</a>() const</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_tri_foil.html#a306e3c14bf5156317fee344831ae6662">NTBeam</a>() const</td><td class="entry"><a class="el" href="class_t_tri_foil.html">TTriFoil</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_t_detector.html#aefe744d6c9959822983171f2d4734137">operator=</a>(const TDetector &amp;other)</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_t_detector.html#a04e7c680616b34e4399630e092366b5e">operator=</a>(TDetector &amp;&amp;other) noexcept</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_tri_foil.html#a5467a65411bb7e634022b21da7c3aa4a">operator=</a>(const TTriFoil &amp;)=default</td><td class="entry"><a class="el" href="class_t_tri_foil.html">TTriFoil</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_tri_foil.html#abd0b499ff5a10d62208bbaa6059faa67">operator=</a>(TTriFoil &amp;&amp;) noexcept=default</td><td class="entry"><a class="el" href="class_t_tri_foil.html">TTriFoil</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_detector.html#aefe744d6c9959822983171f2d4734137">TDetector::operator=</a>(const TDetector &amp;other)</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_detector.html#a04e7c680616b34e4399630e092366b5e">TDetector::operator=</a>(TDetector &amp;&amp;other) noexcept</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_tri_foil.html#ab07ca56e67c19281d9389608e98564ee">Print</a>(Option_t *opt=&quot;&quot;) const override</td><td class="entry"><a class="el" href="class_t_tri_foil.html">TTriFoil</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_tri_foil.html#a5e1eb87cae06ced183fa1bf2446a260d">Print</a>(std::ostream &amp;out) const override</td><td class="entry"><a class="el" href="class_t_tri_foil.html">TTriFoil</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_tri_foil.html#a35104b0fdb4f4f2fa56e6ff077dc45e0">TBeam</a>(unsigned int n=0) const</td><td class="entry"><a class="el" href="class_t_tri_foil.html">TTriFoil</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
@@ -132,15 +134,16 @@ $(document).ready(function(){initNavTree('class_t_tri_foil.html',''); initResiza
   <tr class="odd"><td class="entry"><a class="el" href="class_t_detector.html#a300012ee1d479e3512c8e4070bba3c2e">TDetector</a>(TDetector &amp;&amp;) noexcept</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_tri_foil.html#a6fa3deaae0c575217a321fec638b1adf">TTriFoil</a>()</td><td class="entry"><a class="el" href="class_t_tri_foil.html">TTriFoil</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_tri_foil.html#a6337718b991c2f4725bc5821a4b11256">TTriFoil</a>(const TTriFoil &amp;rhs)</td><td class="entry"><a class="el" href="class_t_tri_foil.html">TTriFoil</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_t_detector.html#a712d5c527dd6383012c02ea316f2a897">~TDetector</a>()</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_t_tri_foil.html#adcf3cbc6b5f00fbc53c0714786c6e185">~TTriFoil</a>() override</td><td class="entry"><a class="el" href="class_t_tri_foil.html">TTriFoil</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_tri_foil.html#a4d5bb0903f96fc46e1e8364339ab40da">TTriFoil</a>(TTriFoil &amp;&amp;) noexcept=default</td><td class="entry"><a class="el" href="class_t_tri_foil.html">TTriFoil</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_detector.html#a712d5c527dd6383012c02ea316f2a897">~TDetector</a>()</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_tri_foil.html#adcf3cbc6b5f00fbc53c0714786c6e185">~TTriFoil</a>() override</td><td class="entry"><a class="el" href="class_t_tri_foil.html">TTriFoil</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:52.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:09:01.</li>
   </ul>
 </div>
 </body>

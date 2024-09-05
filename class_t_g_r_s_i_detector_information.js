@@ -1,6 +1,8 @@
 var class_t_g_r_s_i_detector_information =
 [
     [ "TGRSIDetectorInformation", "class_t_g_r_s_i_detector_information.html#adc9da5ff9e3d0c6e0b9554b9b695b88f", null ],
+    [ "TGRSIDetectorInformation", "class_t_g_r_s_i_detector_information.html#a20e299c44985e5d7eba7ae6b58c9ae25", null ],
+    [ "TGRSIDetectorInformation", "class_t_g_r_s_i_detector_information.html#a93d7d968ba166cfbe6b77295d635feaa", null ],
     [ "~TGRSIDetectorInformation", "class_t_g_r_s_i_detector_information.html#a7029e988e940e836f942d3c9a83c3b47", null ],
     [ "Bambino", "class_t_g_r_s_i_detector_information.html#a58f6dc6e708b93c7d59020ca4ad36166", null ],
     [ "Bgo", "class_t_g_r_s_i_detector_information.html#a0799e5555cd53d2705258fdf5eb9bde6", null ],
@@ -13,6 +15,8 @@ var class_t_g_r_s_i_detector_information =
     [ "Emma", "class_t_g_r_s_i_detector_information.html#a4409e1fa60e26e7c4e60927a1ae52255", null ],
     [ "Generic", "class_t_g_r_s_i_detector_information.html#abe5dc1f4d5bc3e7227c8d73404581b58", null ],
     [ "Griffin", "class_t_g_r_s_i_detector_information.html#a75db74b93e95d27c9e261c1659387e0e", null ],
+    [ "operator=", "class_t_g_r_s_i_detector_information.html#a65a4de7955319b95e5f03fec6824c4e2", null ],
+    [ "operator=", "class_t_g_r_s_i_detector_information.html#a838519f38025fe51d8ed2fa8f95fc878", null ],
     [ "Paces", "class_t_g_r_s_i_detector_information.html#adc91eea175031a287bd78b165f559389", null ],
     [ "Print", "class_t_g_r_s_i_detector_information.html#ad936b698206183c810258075179ae0fd", null ],
     [ "Rcmp", "class_t_g_r_s_i_detector_information.html#a1fb3497a0a2ea8bbce088883a2f75103", null ],

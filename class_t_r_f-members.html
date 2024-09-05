@@ -121,8 +121,10 @@ $(document).ready(function(){initNavTree('class_t_r_f.html',''); initResizable()
   <tr class="even"><td class="entry"><a class="el" href="class_t_detector.html#ab907981ce861ab147879469064748ae2">Hits</a>() const</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_r_f.html#a0a42dbe6b91035e32fed3d121064367f">MidasTime</a>() const</td><td class="entry"><a class="el" href="class_t_r_f.html">TRF</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_detector.html#a64ad8e69427c3719f15c3d400021ab1f">NoHits</a>() const</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_t_detector.html#aefe744d6c9959822983171f2d4734137">operator=</a>(const TDetector &amp;other)</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_t_detector.html#a04e7c680616b34e4399630e092366b5e">operator=</a>(TDetector &amp;&amp;other) noexcept</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_r_f.html#a4141dc6c1a5cd73185741ac281cd0ca1">operator=</a>(const TRF &amp;)=default</td><td class="entry"><a class="el" href="class_t_r_f.html">TRF</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_r_f.html#ae67df6697ad0b998e9de997c18392e67">operator=</a>(TRF &amp;&amp;) noexcept=default</td><td class="entry"><a class="el" href="class_t_r_f.html">TRF</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_detector.html#aefe744d6c9959822983171f2d4734137">TDetector::operator=</a>(const TDetector &amp;other)</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_detector.html#a04e7c680616b34e4399630e092366b5e">TDetector::operator=</a>(TDetector &amp;&amp;other) noexcept</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_r_f.html#a06bda4718a9540c5e1804c421f80fbb9">Period</a>() const</td><td class="entry"><a class="el" href="class_t_r_f.html">TRF</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_r_f.html#afeb7bc4c0be843688813b823ea99c3e6">Phase</a>() const</td><td class="entry"><a class="el" href="class_t_r_f.html">TRF</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_r_f.html#a3993c779a90434fe4ef78398b9139505">Print</a>(Option_t *opt=&quot;&quot;) const override</td><td class="entry"><a class="el" href="class_t_r_f.html">TRF</a></td><td class="entry"></td></tr>
@@ -134,15 +136,16 @@ $(document).ready(function(){initNavTree('class_t_r_f.html',''); initResizable()
   <tr class="odd"><td class="entry"><a class="el" href="class_t_r_f.html#aed7407dec1b71e7ae836f79bcb5a52ed">TimeStamp</a>() const</td><td class="entry"><a class="el" href="class_t_r_f.html">TRF</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_r_f.html#a5bc4a74dc295e4c50d3bde8bbd0995ae">TRF</a>()</td><td class="entry"><a class="el" href="class_t_r_f.html">TRF</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_r_f.html#a3dc131a5bbffbaf26176d66cd601d603">TRF</a>(const TRF &amp;)</td><td class="entry"><a class="el" href="class_t_r_f.html">TRF</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_t_detector.html#a712d5c527dd6383012c02ea316f2a897">~TDetector</a>()</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_t_r_f.html#af4b4e32a9f0b9be6f3eeaf791c621a01">~TRF</a>() override</td><td class="entry"><a class="el" href="class_t_r_f.html">TRF</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_r_f.html#a3af0472f70cd64495939965731ed3c5d">TRF</a>(TRF &amp;&amp;) noexcept=default</td><td class="entry"><a class="el" href="class_t_r_f.html">TRF</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_detector.html#a712d5c527dd6383012c02ea316f2a897">~TDetector</a>()</td><td class="entry"><a class="el" href="class_t_detector.html">TDetector</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_r_f.html#af4b4e32a9f0b9be6f3eeaf791c621a01">~TRF</a>() override</td><td class="entry"><a class="el" href="class_t_r_f.html">TRF</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:51.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:59.</li>
   </ul>
 </div>
 </body>

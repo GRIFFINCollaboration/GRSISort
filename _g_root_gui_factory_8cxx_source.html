@@ -211,7 +211,7 @@ $(document).ready(function(){initNavTree('_g_root_gui_factory_8cxx_source.html',
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      <span class="keywordflow">return</span> <span class="keyword">new</span> TRootBrowserLite(b, title, width, height);</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>   }</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>   <span class="keywordflow">if</span>(pluginHandler != <span class="keyword">nullptr</span> &amp;&amp; pluginHandler-&gt;LoadPlugin() != -1) {</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>      <span class="keyword">auto</span>* imp = <span class="keyword">reinterpret_cast&lt;</span>TBrowserImp*<span class="keyword">&gt;</span>(pluginHandler-&gt;ExecPlugin(5, b, title, width, height, browserOptions.Data()));   <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>      <span class="keyword">auto</span>* imp = <span class="keyword">reinterpret_cast&lt;</span>TBrowserImp*<span class="keyword">&gt;</span>(pluginHandler-&gt;ExecPlugin(5, b, title, width, height, browserOptions.Data()));   <span class="comment">// NOLINT(performance-no-int-to-ptr)</span></div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>      <span class="keywordflow">if</span>(imp != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>         <span class="keywordflow">return</span> imp;</div>
@@ -239,7 +239,7 @@ $(document).ready(function(){initNavTree('_g_root_gui_factory_8cxx_source.html',
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      <span class="keywordflow">return</span> <span class="keyword">new</span> TRootBrowserLite(b, title, width, height);</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>   }</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>   <span class="keywordflow">if</span>(pluginHandler != <span class="keyword">nullptr</span> &amp;&amp; pluginHandler-&gt;LoadPlugin() != -1) {</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      <span class="keyword">auto</span>* imp = <span class="keyword">reinterpret_cast&lt;</span>TBrowserImp*<span class="keyword">&gt;</span>(pluginHandler-&gt;ExecPlugin(7, b, title, x, y, width, height, browserOptions.Data()));   <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      <span class="keyword">auto</span>* imp = <span class="keyword">reinterpret_cast&lt;</span>TBrowserImp*<span class="keyword">&gt;</span>(pluginHandler-&gt;ExecPlugin(7, b, title, x, y, width, height, browserOptions.Data()));   <span class="comment">// NOLINT(performance-no-int-to-ptr)</span></div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      <span class="keywordflow">if</span>(imp != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>         <span class="keywordflow">return</span> imp;</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>      }</div>
@@ -297,7 +297,7 @@ $(document).ready(function(){initNavTree('_g_root_gui_factory_8cxx_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_47358ee868e3aed1e59cf9c2ead119a2.html">GROOT</a></li><li class="navelem"><a class="el" href="_g_root_gui_factory_8cxx.html">GRootGuiFactory.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:45.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:53.</li>
   </ul>
 </div>
 </body>

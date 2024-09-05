@@ -2,6 +2,7 @@ var class_t_midas_event =
 [
     [ "TMidasEvent", "class_t_midas_event.html#a9190d98299353eed902cabc15b9e9d3b", null ],
     [ "TMidasEvent", "class_t_midas_event.html#abd4a295d68cec6bdf234fae406f36abb", null ],
+    [ "TMidasEvent", "class_t_midas_event.html#ad29fc0d6855b3926e7fa16ea0acfa6b9", null ],
     [ "~TMidasEvent", "class_t_midas_event.html#a7ee79e321318defb61ea8ea87530c36a", null ],
     [ "AllocateData", "class_t_midas_event.html#a49f5869d31fb4f9ec1f6c9db12050fee", null ],
     [ "Clear", "class_t_midas_event.html#a40ec3a00575fe213dd6f90ebaf5b3c3b", null ],
@@ -23,6 +24,7 @@ var class_t_midas_event =
     [ "IterateBank32", "class_t_midas_event.html#a15f188752c00a7ec2847a278c67ccd4a", null ],
     [ "LocateBank", "class_t_midas_event.html#aa19f835a197a7ec88c145743f45a66db", null ],
     [ "operator=", "class_t_midas_event.html#a96d00e61ec48ac323804d0b7ea1472e3", null ],
+    [ "operator=", "class_t_midas_event.html#a27766bad91394cdcad787bfb72c6c992", null ],
     [ "Print", "class_t_midas_event.html#a65dc7a24f5c75262d0505893a58d39f4", null ],
     [ "SetBankList", "class_t_midas_event.html#a3a99e7a49d343d38c7c3395383fcd90e", null ],
     [ "SetData", "class_t_midas_event.html#a3ca3015244084d434d757d323722d38e", null ],

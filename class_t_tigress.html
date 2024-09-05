@@ -98,7 +98,6 @@ $(document).ready(function(){initNavTree('class_t_tigress.html',''); initResizab
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
@@ -145,6 +144,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2528a372cd6e7b7a415af2a2671b31ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b1a9cc54cebab806c07f2bf0fd387d3" id="r_a0b1a9cc54cebab806c07f2bf0fd387d3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a0b1a9cc54cebab806c07f2bf0fd387d3">TTigress</a> (const <a class="el" href="class_t_tigress.html">TTigress</a> &amp;)</td></tr>
 <tr class="separator:a0b1a9cc54cebab806c07f2bf0fd387d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aceb428bc10e20c026a21803b02006779" id="r_aceb428bc10e20c026a21803b02006779"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#aceb428bc10e20c026a21803b02006779">TTigress</a> (<a class="el" href="class_t_tigress.html">TTigress</a> &amp;&amp;) noexcept=default</td></tr>
+<tr class="separator:aceb428bc10e20c026a21803b02006779"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3cd7d43224d3aae41989503756e25eb" id="r_ab3cd7d43224d3aae41989503756e25eb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#ab3cd7d43224d3aae41989503756e25eb">~TTigress</a> () override</td></tr>
 <tr class="separator:ab3cd7d43224d3aae41989503756e25eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad24d92c19088d2bda3a878424f82d3fa" id="r_ad24d92c19088d2bda3a878424f82d3fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#ad24d92c19088d2bda3a878424f82d3fa">AddBGO</a> (<a class="el" href="class_t_bgo_hit.html">TBgoHit</a> &amp;bgo)</td></tr>
@@ -195,6 +196,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a64ad8e69427c3719f15c3d400021ab1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac41fc2ac871304f0f5a5c4edfdf1b414" id="r_ac41fc2ac871304f0f5a5c4edfdf1b414"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_tigress.html">TTigress</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#ac41fc2ac871304f0f5a5c4edfdf1b414">operator=</a> (const <a class="el" href="class_t_tigress.html">TTigress</a> &amp;)</td></tr>
 <tr class="separator:ac41fc2ac871304f0f5a5c4edfdf1b414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad022520aabfd15486b516bc02d4c6380" id="r_ad022520aabfd15486b516bc02d4c6380"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_tigress.html">TTigress</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#ad022520aabfd15486b516bc02d4c6380">operator=</a> (<a class="el" href="class_t_tigress.html">TTigress</a> &amp;&amp;) noexcept=default</td></tr>
+<tr class="separator:ad022520aabfd15486b516bc02d4c6380"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af010faa8c2265fb7be235bbf6b765341" id="r_af010faa8c2265fb7be235bbf6b765341"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#af010faa8c2265fb7be235bbf6b765341">Print</a> (Option_t *opt=&quot;&quot;) const override</td></tr>
 <tr class="separator:af010faa8c2265fb7be235bbf6b765341"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ac30f3ef6590950dc44ed31b954e705" id="r_a4ac30f3ef6590950dc44ed31b954e705"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a4ac30f3ef6590950dc44ed31b954e705">Print</a> (std::ostream &amp;out) const override</td></tr>
@@ -241,17 +244,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a8a83b64d0e46aa0abf2a956b9f0c7362" id="r_a8a83b64d0e46aa0abf2a956b9f0c7362"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a8a83b64d0e46aa0abf2a956b9f0c7362">SetTargetOffset</a> (double offset)</td></tr>
 <tr class="separator:a8a83b64d0e46aa0abf2a956b9f0c7362"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a151432cdceb8422799813240b324c4e3" id="r_a151432cdceb8422799813240b324c4e3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_t_bgo_hit.html">TBgoHit</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a151432cdceb8422799813240b324c4e3">fBgos</a></td></tr>
-<tr class="separator:a151432cdceb8422799813240b324c4e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaff2fd9ddb8b587c73fa0c3971fe87b7" id="r_aaff2fd9ddb8b587c73fa0c3971fe87b7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; std::shared_ptr&lt; const <a class="el" href="class_t_fragment.html">TFragment</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#aaff2fd9ddb8b587c73fa0c3971fe87b7">SegmentFragments</a></td></tr>
-<tr class="separator:aaff2fd9ddb8b587c73fa0c3971fe87b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a2a02d756a76fa91cec35bf3d58aa713b" id="r_a2a02d756a76fa91cec35bf3d58aa713b"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a2a02d756a76fa91cec35bf3d58aa713b">BGOSuppression</a> [4][4][5]</td></tr>
-<tr class="separator:a2a02d756a76fa91cec35bf3d58aa713b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdac93f79df141cbb2388e69699970d2" id="r_afdac93f79df141cbb2388e69699970d2"><td class="memItemLeft" align="right" valign="top">static std::array&lt; std::array&lt; std::array&lt; bool, 5 &gt;, 4 &gt;, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#afdac93f79df141cbb2388e69699970d2">fBGOSuppression</a></td></tr>
+<tr class="separator:afdac93f79df141cbb2388e69699970d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
@@ -268,45 +264,49 @@ Private Attributes</h2></td></tr>
 <tr class="separator:afd88a133f20d2690070a75454c18f3d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35783b52dd9ca31924fb4fb145131f4a" id="r_a35783b52dd9ca31924fb4fb145131f4a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_t_detector_hit.html">TDetectorHit</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a35783b52dd9ca31924fb4fb145131f4a">fAddbackHits</a></td></tr>
 <tr class="separator:a35783b52dd9ca31924fb4fb145131f4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a151432cdceb8422799813240b324c4e3" id="r_a151432cdceb8422799813240b324c4e3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_t_bgo_hit.html">TBgoHit</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a151432cdceb8422799813240b324c4e3">fBgos</a></td></tr>
+<tr class="separator:a151432cdceb8422799813240b324c4e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13ea06ba385aabcf09c1ea5a70d8145b" id="r_a13ea06ba385aabcf09c1ea5a70d8145b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_t_detector_hit.html">TDetectorHit</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_detector.html#a13ea06ba385aabcf09c1ea5a70d8145b">fHits</a></td></tr>
 <tr class="separator:a13ea06ba385aabcf09c1ea5a70d8145b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc0db5b6732b93f86fbc5a73d1e6b637" id="r_adc0db5b6732b93f86fbc5a73d1e6b637"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_transient_bits.html">TTransientBits</a>&lt; UShort_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#adc0db5b6732b93f86fbc5a73d1e6b637">fTigressBits</a></td></tr>
 <tr class="separator:adc0db5b6732b93f86fbc5a73d1e6b637"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaff2fd9ddb8b587c73fa0c3971fe87b7" id="r_aaff2fd9ddb8b587c73fa0c3971fe87b7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; std::shared_ptr&lt; const <a class="el" href="class_t_fragment.html">TFragment</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#aaff2fd9ddb8b587c73fa0c3971fe87b7">SegmentFragments</a></td></tr>
+<tr class="separator:aaff2fd9ddb8b587c73fa0c3971fe87b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
 <tr class="memitem:a361aefdf0bb48f017a391e72468f4974" id="r_a361aefdf0bb48f017a391e72468f4974"><td class="memItemLeft" align="right" valign="top">static std::function&lt; bool(<a class="el" href="class_t_detector_hit.html">TDetectorHit</a> *, <a class="el" href="class_t_detector_hit.html">TDetectorHit</a> *)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a361aefdf0bb48f017a391e72468f4974">fAddbackCriterion</a> = <a class="el" href="_t_tigress_8cxx.html#ab08e17b82b6f17f07e0d1b8cdd2c4713">DefaultAddback</a></td></tr>
 <tr class="separator:a361aefdf0bb48f017a391e72468f4974"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f285537f647ddc2283fdc16662c7132" id="r_a1f285537f647ddc2283fdc16662c7132"><td class="memItemLeft" align="right" valign="top">static TVector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a1f285537f647ddc2283fdc16662c7132">fCloverCross</a> [17][2]</td></tr>
-<tr class="separator:a1f285537f647ddc2283fdc16662c7132"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a621ee17f49b09c9265ef82863e8321b6" id="r_a621ee17f49b09c9265ef82863e8321b6"><td class="memItemLeft" align="right" valign="top">static TVector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a621ee17f49b09c9265ef82863e8321b6">fCloverRadial</a> [17]</td></tr>
-<tr class="separator:a621ee17f49b09c9265ef82863e8321b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf73d5fc9dbdcbd1594d62c0b0d1e2c9" id="r_aaf73d5fc9dbdcbd1594d62c0b0d1e2c9"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_t_transient_bits.html">TTransientBits</a>&lt; UShort_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#aaf73d5fc9dbdcbd1594d62c0b0d1e2c9">fgTigressBits</a></td></tr>
-<tr class="separator:aaf73d5fc9dbdcbd1594d62c0b0d1e2c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac05769706a11d7bfe4eaf9d29905cfaa" id="r_ac05769706a11d7bfe4eaf9d29905cfaa"><td class="memItemLeft" align="right" valign="top">static TVector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#ac05769706a11d7bfe4eaf9d29905cfaa">fPositionVectors</a> [2][17][4][9]</td></tr>
-<tr class="separator:ac05769706a11d7bfe4eaf9d29905cfaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f543e7ee6853ef1904c14e28376c07b" id="r_a6f543e7ee6853ef1904c14e28376c07b"><td class="memItemLeft" align="right" valign="top">static std::array&lt; std::array&lt; TVector3, 2 &gt;, 17 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a6f543e7ee6853ef1904c14e28376c07b">fCloverCross</a></td></tr>
+<tr class="separator:a6f543e7ee6853ef1904c14e28376c07b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a691993bb7d0525c2f3d5e1dadc2f3bd3" id="r_a691993bb7d0525c2f3d5e1dadc2f3bd3"><td class="memItemLeft" align="right" valign="top">static std::array&lt; TVector3, 17 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a691993bb7d0525c2f3d5e1dadc2f3bd3">fCloverRadial</a></td></tr>
+<tr class="separator:a691993bb7d0525c2f3d5e1dadc2f3bd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a738e379f39e8dbcb66de2f80660cc3eb" id="r_a738e379f39e8dbcb66de2f80660cc3eb"><td class="memItemLeft" align="right" valign="top">static std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a738e379f39e8dbcb66de2f80660cc3eb">fGeBluePosition</a></td></tr>
+<tr class="separator:a738e379f39e8dbcb66de2f80660cc3eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44fd462d479283d99f89b0b7af8a0a29" id="r_a44fd462d479283d99f89b0b7af8a0a29"><td class="memItemLeft" align="right" valign="top">static std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a44fd462d479283d99f89b0b7af8a0a29">fGeBluePositionBack</a></td></tr>
+<tr class="separator:a44fd462d479283d99f89b0b7af8a0a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e185823805a41c03dc5c61c405892f4" id="r_a9e185823805a41c03dc5c61c405892f4"><td class="memItemLeft" align="right" valign="top">static std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a9e185823805a41c03dc5c61c405892f4">fGeGreenPosition</a></td></tr>
+<tr class="separator:a9e185823805a41c03dc5c61c405892f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac58803d25f23bf14b213e95280a42710" id="r_ac58803d25f23bf14b213e95280a42710"><td class="memItemLeft" align="right" valign="top">static std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#ac58803d25f23bf14b213e95280a42710">fGeGreenPositionBack</a></td></tr>
+<tr class="separator:ac58803d25f23bf14b213e95280a42710"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4d2d1fe9822f9ed9d2ed99363012ce6" id="r_aa4d2d1fe9822f9ed9d2ed99363012ce6"><td class="memItemLeft" align="right" valign="top">static std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#aa4d2d1fe9822f9ed9d2ed99363012ce6">fGeRedPosition</a></td></tr>
+<tr class="separator:aa4d2d1fe9822f9ed9d2ed99363012ce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3d9ed2e2e14e12b9751f2a1136fecad" id="r_aa3d9ed2e2e14e12b9751f2a1136fecad"><td class="memItemLeft" align="right" valign="top">static std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#aa3d9ed2e2e14e12b9751f2a1136fecad">fGeRedPositionBack</a></td></tr>
+<tr class="separator:aa3d9ed2e2e14e12b9751f2a1136fecad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af95e880a848bd67be3e34922b60e8678" id="r_af95e880a848bd67be3e34922b60e8678"><td class="memItemLeft" align="right" valign="top">static std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#af95e880a848bd67be3e34922b60e8678">fGeWhitePosition</a></td></tr>
+<tr class="separator:af95e880a848bd67be3e34922b60e8678"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82242ce4eb7cb02c7a71fe0319dc6fd4" id="r_a82242ce4eb7cb02c7a71fe0319dc6fd4"><td class="memItemLeft" align="right" valign="top">static std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a82242ce4eb7cb02c7a71fe0319dc6fd4">fGeWhitePositionBack</a></td></tr>
+<tr class="separator:a82242ce4eb7cb02c7a71fe0319dc6fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af569cbf4730d0855f5c68523e391b527" id="r_af569cbf4730d0855f5c68523e391b527"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_t_transient_bits.html">TTransientBits</a>&lt; UShort_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#af569cbf4730d0855f5c68523e391b527">fGlobalTigressBits</a></td></tr>
+<tr class="separator:af569cbf4730d0855f5c68523e391b527"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb072c19649e040b89207f4dcf993b45" id="r_afb072c19649e040b89207f4dcf993b45"><td class="memItemLeft" align="right" valign="top">static std::array&lt; std::array&lt; std::array&lt; std::array&lt; TVector3, 9 &gt;, 4 &gt;, 17 &gt;, 2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#afb072c19649e040b89207f4dcf993b45">fPositionVectors</a></td></tr>
+<tr class="separator:afb072c19649e040b89207f4dcf993b45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd47cf886cd7e9bba0d4c975ef958479" id="r_afd47cf886cd7e9bba0d4c975ef958479"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#afd47cf886cd7e9bba0d4c975ef958479">fRadialOffset</a> = 0.</td></tr>
 <tr class="separator:afd47cf886cd7e9bba0d4c975ef958479"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcc6ee58834b4f9b37a2d96e680663ec" id="r_abcc6ee58834b4f9b37a2d96e680663ec"><td class="memItemLeft" align="right" valign="top">static std::function&lt; bool(<a class="el" href="class_t_detector_hit.html">TDetectorHit</a> *, <a class="el" href="class_t_bgo_hit.html">TBgoHit</a> &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#abcc6ee58834b4f9b37a2d96e680663ec">fSuppressionCriterion</a> = <a class="el" href="_t_tigress_8cxx.html#a9e8a65ed52935c801c0d68668508936f">DefaultSuppression</a></td></tr>
 <tr class="separator:abcc6ee58834b4f9b37a2d96e680663ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a864725891cb515cd3d83deff9194a472" id="r_a864725891cb515cd3d83deff9194a472"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a864725891cb515cd3d83deff9194a472">fTargetOffset</a> = 0.</td></tr>
 <tr class="separator:a864725891cb515cd3d83deff9194a472"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac63484438d5561e18e0947b31a09899e" id="r_ac63484438d5561e18e0947b31a09899e"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#ac63484438d5561e18e0947b31a09899e">GeBluePosition</a> [17][9][3]</td></tr>
-<tr class="separator:ac63484438d5561e18e0947b31a09899e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba6e645e8cfe20eac810e8698a39382f" id="r_aba6e645e8cfe20eac810e8698a39382f"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#aba6e645e8cfe20eac810e8698a39382f">GeBluePositionBack</a> [17][9][3]</td></tr>
-<tr class="separator:aba6e645e8cfe20eac810e8698a39382f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab88d050e4923f70192d595618c51543b" id="r_ab88d050e4923f70192d595618c51543b"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#ab88d050e4923f70192d595618c51543b">GeGreenPosition</a> [17][9][3]</td></tr>
-<tr class="separator:ab88d050e4923f70192d595618c51543b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a757e0219817745d058959c9acd1f958f" id="r_a757e0219817745d058959c9acd1f958f"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a757e0219817745d058959c9acd1f958f">GeGreenPositionBack</a> [17][9][3]</td></tr>
-<tr class="separator:a757e0219817745d058959c9acd1f958f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a633564340eb6b408c72b91a1344db933" id="r_a633564340eb6b408c72b91a1344db933"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a633564340eb6b408c72b91a1344db933">GeRedPosition</a> [17][9][3]</td></tr>
-<tr class="separator:a633564340eb6b408c72b91a1344db933"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0464091ff98c85a7683bbd3e8170f4fd" id="r_a0464091ff98c85a7683bbd3e8170f4fd"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a0464091ff98c85a7683bbd3e8170f4fd">GeRedPositionBack</a> [17][9][3]</td></tr>
-<tr class="separator:a0464091ff98c85a7683bbd3e8170f4fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03c3dbbff1aa7501d5e669c610be7233" id="r_a03c3dbbff1aa7501d5e669c610be7233"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#a03c3dbbff1aa7501d5e669c610be7233">GeWhitePosition</a> [17][9][3]</td></tr>
-<tr class="separator:a03c3dbbff1aa7501d5e669c610be7233"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1ec55bdd49fe257f85bc9d0c29abc48" id="r_ae1ec55bdd49fe257f85bc9d0c29abc48"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_tigress.html#ae1ec55bdd49fe257f85bc9d0c29abc48">GeWhitePositionBack</a> [17][9][3]</td></tr>
-<tr class="separator:ae1ec55bdd49fe257f85bc9d0c29abc48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for TTigress:</div>
@@ -320,7 +320,7 @@ Static Private Attributes</h2></td></tr>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_tigress__coll__graph.svg" width="100%" height="566"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_tigress__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a91c1de4560b4f051fe2245d692f1253d" name="a91c1de4560b4f051fe2245d692f1253d"></a>
@@ -392,7 +392,7 @@ Static Private Attributes</h2></td></tr>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2528a372cd6e7b7a415af2a2671b31ee" name="a2528a372cd6e7b7a415af2a2671b31ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2528a372cd6e7b7a415af2a2671b31ee">&#9670;&#160;</a></span>TTigress() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2528a372cd6e7b7a415af2a2671b31ee">&#9670;&#160;</a></span>TTigress() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -406,14 +406,14 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00083">83</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00082">82</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00107">Clear()</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00106">Clear()</a>.</p>
 
 </div>
 </div>
 <a id="a0b1a9cc54cebab806c07f2bf0fd387d3" name="a0b1a9cc54cebab806c07f2bf0fd387d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b1a9cc54cebab806c07f2bf0fd387d3">&#9670;&#160;</a></span>TTigress() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b1a9cc54cebab806c07f2bf0fd387d3">&#9670;&#160;</a></span>TTigress() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -428,9 +428,35 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00088">88</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00087">87</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00095">Copy()</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00094">Copy()</a>.</p>
+
+</div>
+</div>
+<a id="aceb428bc10e20c026a21803b02006779" name="aceb428bc10e20c026a21803b02006779"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aceb428bc10e20c026a21803b02006779">&#9670;&#160;</a></span>TTigress() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TTigress::TTigress </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_t_tigress.html">TTigress</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -486,9 +512,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00063">63</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00061">61</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00062">fBgos</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00132">fBgos</a>.</p>
 
 </div>
 </div>
@@ -530,9 +556,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_t_detector.html#ace91f1e86d601edd8986f191fbc2ae8d">TDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00230">230</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00229">229</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00063">TDetector::AddHit()</a>, <a class="el" href="_t_tigress_hit_8h_source.html#l00049">TTigressHit::AddSegment()</a>, <a class="el" href="_globals_8h_source.html#l00034">ALERTTEXT</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00027">TTigressHit::CopyFragment()</a>, <a class="el" href="_t_tigress_hit_8h_source.html#l00075">TTigressHit::CoreSet()</a>, <a class="el" href="_t_tigress_8h_source.html#l00062">fBgos</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00148">TDetectorHit::GetChannel()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00208">TDetectorHit::GetCrystal()</a>, <a class="el" href="_t_channel_8cxx_source.html#l01558">TChannel::GetCrystalNumber()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00190">TDetectorHit::GetDetector()</a>, <a class="el" href="_t_channel_8cxx_source.html#l01524">TChannel::GetDetectorNumber()</a>, <a class="el" href="_t_channel_8cxx_source.html#l01627">TChannel::GetMnemonic()</a>, <a class="el" href="_t_detector_8h_source.html#l00073">TDetector::GetMultiplicity()</a>, <a class="el" href="_t_channel_8cxx_source.html#l01534">TChannel::GetSegmentNumber()</a>, <a class="el" href="_t_tigress_8h_source.html#l00058">GetTigressHit()</a>, <a class="el" href="class_t_mnemonic.html#a92e657dc4b7a3ffc7f4ec1aac156468ea30f767aa191cd5d261e767fd78393607">TMnemonic::kA</a>, <a class="el" href="class_t_mnemonic.html#a92e657dc4b7a3ffc7f4ec1aac156468ea3e56c011b37f0bc78fb9eb175c1181c6">TMnemonic::kB</a>, <a class="el" href="class_t_mnemonic.html#a92e657dc4b7a3ffc7f4ec1aac156468ea091eb6206c7543b67256e7dc4bf2dc48">TMnemonic::kG</a>, <a class="el" href="class_t_mnemonic.html#a92e657dc4b7a3ffc7f4ec1aac156468eac65dfb11fc5387999d90b7a3e1b70653">TMnemonic::kS</a>, <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba56cd988b5e957bada97f1dd89d5d8bb1">kSetCoreWave</a>, <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba1ad0fb60d94cda2fa0c12c48432d0078">kSetSegWave</a>, <a class="el" href="_t_mnemonic_8h_source.html#l00065">TMnemonic::OutputSensor()</a>, <a class="el" href="_globals_8h_source.html#l00004">RESET_COLOR</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00109">TDetectorHit::SetAddress()</a>, <a class="el" href="_t_mnemonic_8h_source.html#l00061">TMnemonic::SubSystem()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00131">TestGlobalBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00063">TDetector::AddHit()</a>, <a class="el" href="_t_tigress_hit_8h_source.html#l00052">TTigressHit::AddSegment()</a>, <a class="el" href="_globals_8h_source.html#l00035">ALERTTEXT</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00028">TTigressHit::CopyFragment()</a>, <a class="el" href="_t_tigress_hit_8h_source.html#l00078">TTigressHit::CoreSet()</a>, <a class="el" href="_t_tigress_8h_source.html#l00132">fBgos</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00148">TDetectorHit::GetChannel()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00208">TDetectorHit::GetCrystal()</a>, <a class="el" href="_t_channel_8cxx_source.html#l01558">TChannel::GetCrystalNumber()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00190">TDetectorHit::GetDetector()</a>, <a class="el" href="_t_channel_8cxx_source.html#l01524">TChannel::GetDetectorNumber()</a>, <a class="el" href="_t_channel_8cxx_source.html#l01627">TChannel::GetMnemonic()</a>, <a class="el" href="_t_detector_8h_source.html#l00073">TDetector::GetMultiplicity()</a>, <a class="el" href="_t_channel_8cxx_source.html#l01534">TChannel::GetSegmentNumber()</a>, <a class="el" href="_t_tigress_8h_source.html#l00057">GetTigressHit()</a>, <a class="el" href="class_t_mnemonic.html#a92e657dc4b7a3ffc7f4ec1aac156468ea30f767aa191cd5d261e767fd78393607">TMnemonic::kA</a>, <a class="el" href="class_t_mnemonic.html#a92e657dc4b7a3ffc7f4ec1aac156468ea3e56c011b37f0bc78fb9eb175c1181c6">TMnemonic::kB</a>, <a class="el" href="class_t_mnemonic.html#a92e657dc4b7a3ffc7f4ec1aac156468ea091eb6206c7543b67256e7dc4bf2dc48">TMnemonic::kG</a>, <a class="el" href="class_t_mnemonic.html#a92e657dc4b7a3ffc7f4ec1aac156468eac65dfb11fc5387999d90b7a3e1b70653">TMnemonic::kS</a>, <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba56cd988b5e957bada97f1dd89d5d8bb1">kSetCoreWave</a>, <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba1ad0fb60d94cda2fa0c12c48432d0078">kSetSegWave</a>, <a class="el" href="_t_mnemonic_8h_source.html#l00065">TMnemonic::OutputSensor()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00109">TDetectorHit::SetAddress()</a>, <a class="el" href="_t_mnemonic_8h_source.html#l00061">TMnemonic::SubSystem()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00128">TestGlobalBit()</a>.</p>
 
 </div>
 </div>
@@ -564,7 +590,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_descant_8cxx_source.html#l00132">TDescant::AddFragment()</a>, <a class="el" href="_t_generic_detector_8cxx_source.html#l00032">TGenericDetector::AddFragment()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00153">TLaBr::AddFragment()</a>, <a class="el" href="_t_paces_8cxx_source.html#l00076">TPaces::AddFragment()</a>, <a class="el" href="_t_sceptar_8cxx_source.html#l00067">TSceptar::AddFragment()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00072">TSiLi::AddFragment()</a>, <a class="el" href="_t_t_a_c_8cxx_source.html#l00052">TTAC::AddFragment()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00230">AddFragment()</a>, <a class="el" href="_t_tip_8cxx_source.html#l00168">TTip::AddFragment()</a>, <a class="el" href="_t_zero_degree_8cxx_source.html#l00057">TZeroDegree::AddFragment()</a>, <a class="el" href="_t_trific_8cxx_source.html#l00098">TTrific::AddFragment()</a>, <a class="el" href="_t_bgo_8cxx_source.html#l00153">TBgo::AddFragment()</a>, <a class="el" href="_t_emma_8cxx_source.html#l00210">TEmma::BuildHits()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00116">TSharc::BuildHits()</a>, and <a class="el" href="_t_sharc2_8cxx_source.html#l00095">TSharc2::BuildHits()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_descant_8cxx_source.html#l00125">TDescant::AddFragment()</a>, <a class="el" href="_t_generic_detector_8cxx_source.html#l00032">TGenericDetector::AddFragment()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00153">TLaBr::AddFragment()</a>, <a class="el" href="_t_paces_8cxx_source.html#l00069">TPaces::AddFragment()</a>, <a class="el" href="_t_sceptar_8cxx_source.html#l00062">TSceptar::AddFragment()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00072">TSiLi::AddFragment()</a>, <a class="el" href="_t_t_a_c_8cxx_source.html#l00047">TTAC::AddFragment()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00229">AddFragment()</a>, <a class="el" href="_t_tip_8cxx_source.html#l00156">TTip::AddFragment()</a>, <a class="el" href="_t_zero_degree_8cxx_source.html#l00052">TZeroDegree::AddFragment()</a>, <a class="el" href="_t_trific_8cxx_source.html#l00086">TTrific::AddFragment()</a>, <a class="el" href="_t_bgo_8cxx_source.html#l00153">TBgo::AddFragment()</a>, <a class="el" href="_t_emma_8cxx_source.html#l00205">TEmma::BuildHits()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00116">TSharc::BuildHits()</a>, and <a class="el" href="_t_sharc2_8cxx_source.html#l00095">TSharc2::BuildHits()</a>.</p>
 
 </div>
 </div>
@@ -595,9 +621,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_t_detector.html#aea2dd8a625dfd4e43c8fa606d87e721d">TDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00195">195</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00194">194</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00070">TGRSIOptions::AnalysisOptions()</a>, <a class="el" href="_t_tigress_8h_source.html#l00062">fBgos</a>, <a class="el" href="_t_tigress_8h_source.html#l00104">fSuppressionCriterion</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TSortingDiagnostics &gt;::Get()</a>, <a class="el" href="_t_detector_8h_source.html#l00078">TDetector::Hits()</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00045">TAnalysisOptions::IsWaveformFitting()</a>, <a class="el" href="_t_detector_8h_source.html#l00076">TDetector::NoHits()</a>, <a class="el" href="_t_sorting_diagnostics_8cxx_source.html#l00154">TSortingDiagnostics::RemovedHits()</a>, and <a class="el" href="_t_tigress_hit_8h_source.html#l00127">TTigressHit::SortSegments()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00070">TGRSIOptions::AnalysisOptions()</a>, <a class="el" href="_t_tigress_8h_source.html#l00132">fBgos</a>, <a class="el" href="_t_tigress_8h_source.html#l00101">fSuppressionCriterion</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TSortingDiagnostics &gt;::Get()</a>, <a class="el" href="_t_detector_8h_source.html#l00078">TDetector::Hits()</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00045">TAnalysisOptions::IsWaveformFitting()</a>, <a class="el" href="_t_detector_8h_source.html#l00076">TDetector::NoHits()</a>, <a class="el" href="_t_sorting_diagnostics_8cxx_source.html#l00154">TSortingDiagnostics::RemovedHits()</a>, and <a class="el" href="_t_tigress_hit_8h_source.html#l00129">TTigressHit::SortSegments()</a>.</p>
 
 </div>
 </div>
@@ -626,11 +652,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00357">357</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00358">358</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00116">fCloverCross</a>, <a class="el" href="_t_tigress_8h_source.html#l00443">fCloverRadial</a>, <a class="el" href="_t_tigress_8h_source.html#l00113">fPositionVectors</a>, <a class="el" href="_t_tigress_8h_source.html#l00110">fRadialOffset</a>, <a class="el" href="_t_tigress_8h_source.html#l00109">fTargetOffset</a>, <a class="el" href="_t_tigress_8h_source.html#l00461">GeBluePosition</a>, <a class="el" href="_t_tigress_8h_source.html#l01080">GeBluePositionBack</a>, <a class="el" href="_t_tigress_8h_source.html#l00616">GeGreenPosition</a>, <a class="el" href="_t_tigress_8h_source.html#l01235">GeGreenPositionBack</a>, <a class="el" href="_t_tigress_8h_source.html#l00771">GeRedPosition</a>, <a class="el" href="_t_tigress_8h_source.html#l01390">GeRedPositionBack</a>, <a class="el" href="_t_tigress_8h_source.html#l00926">GeWhitePosition</a>, <a class="el" href="_t_tigress_8h_source.html#l01545">GeWhitePositionBack</a>, <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba8cc37702e41cc2d43584c9f62ebe1650">kVectorsBuilt</a>, and <a class="el" href="_t_tigress_8h_source.html#l00130">SetGlobalBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00113">fCloverCross</a>, <a class="el" href="_t_tigress_8h_source.html#l00443">fCloverRadial</a>, <a class="el" href="_t_tigress_8h_source.html#l00461">fGeBluePosition</a>, <a class="el" href="_t_tigress_8h_source.html#l01080">fGeBluePositionBack</a>, <a class="el" href="_t_tigress_8h_source.html#l00616">fGeGreenPosition</a>, <a class="el" href="_t_tigress_8h_source.html#l01235">fGeGreenPositionBack</a>, <a class="el" href="_t_tigress_8h_source.html#l00771">fGeRedPosition</a>, <a class="el" href="_t_tigress_8h_source.html#l01390">fGeRedPositionBack</a>, <a class="el" href="_t_tigress_8h_source.html#l00926">fGeWhitePosition</a>, <a class="el" href="_t_tigress_8h_source.html#l01545">fGeWhitePositionBack</a>, <a class="el" href="_t_tigress_8h_source.html#l00110">fPositionVectors</a>, <a class="el" href="_t_tigress_8h_source.html#l00107">fRadialOffset</a>, <a class="el" href="_t_tigress_8h_source.html#l00106">fTargetOffset</a>, <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba8cc37702e41cc2d43584c9f62ebe1650">kVectorsBuilt</a>, and <a class="el" href="_t_tigress_8h_source.html#l00127">SetGlobalBit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00333">GetPosition()</a>, <a class="el" href="_t_tigress_8h_source.html#l00161">SetArrayBackPos()</a>, <a class="el" href="_t_tigress_8h_source.html#l00181">SetRadialOffset()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00177">SetTargetOffset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00332">GetPosition()</a>, <a class="el" href="_t_tigress_8h_source.html#l00159">SetArrayBackPos()</a>, <a class="el" href="_t_tigress_8h_source.html#l00179">SetRadialOffset()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00175">SetTargetOffset()</a>.</p>
 
 </div>
 </div>
@@ -660,11 +686,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00107">107</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00106">106</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00068">TDetector::Clear()</a>, <a class="el" href="_t_tigress_8h_source.html#l00134">fAddbackFrags</a>, <a class="el" href="_t_tigress_8h_source.html#l00133">fAddbackHits</a>, <a class="el" href="_t_tigress_8h_source.html#l00062">fBgos</a>, and <a class="el" href="_t_tigress_8h_source.html#l00107">fTigressBits</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00068">TDetector::Clear()</a>, <a class="el" href="_t_tigress_8h_source.html#l00131">fAddbackFrags</a>, <a class="el" href="_t_tigress_8h_source.html#l00130">fAddbackHits</a>, <a class="el" href="_t_tigress_8h_source.html#l00132">fBgos</a>, and <a class="el" href="_t_tigress_8h_source.html#l00104">fTigressBits</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00083">TTigress()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00082">TTigress()</a>.</p>
 
 </div>
 </div>
@@ -695,9 +721,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_t_detector.html#a5157695811c23caccbc71ce62b9cacd0">TDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00079">79</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00077">77</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_8cxx_source.html#l00054">TDetector::ClearTransients()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00107">fTigressBits</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_8cxx_source.html#l00054">TDetector::ClearTransients()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00104">fTigressBits</a>.</p>
 
 </div>
 </div>
@@ -727,11 +753,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00095">95</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00094">94</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_8cxx_source.html#l00024">TDetector::Copy()</a>, <a class="el" href="_t_tigress_8h_source.html#l00134">fAddbackFrags</a>, <a class="el" href="_t_tigress_8h_source.html#l00133">fAddbackHits</a>, <a class="el" href="_t_tigress_8h_source.html#l00062">fBgos</a>, and <a class="el" href="_t_tigress_8h_source.html#l00107">fTigressBits</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_8cxx_source.html#l00024">TDetector::Copy()</a>, <a class="el" href="_t_tigress_8h_source.html#l00131">fAddbackFrags</a>, <a class="el" href="_t_tigress_8h_source.html#l00130">fAddbackHits</a>, <a class="el" href="_t_tigress_8h_source.html#l00132">fBgos</a>, and <a class="el" href="_t_tigress_8h_source.html#l00104">fTigressBits</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00088">TTigress()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00133">operator=()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00087">TTigress()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00132">operator=()</a>.</p>
 
 </div>
 </div>
@@ -758,9 +784,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00093">93</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00089">89</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00103">fAddbackCriterion</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00100">fAddbackCriterion</a>.</p>
 
 </div>
 </div>
@@ -781,9 +807,9 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the ith addback hit. This function calls GetAddbackMultiplicity to check the range of the index. This automatically calculates all addback hits if they haven't been calculated before.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00183">183</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00182">182</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00133">fAddbackHits</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00139">GetAddbackMultiplicity()</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00130">fAddbackHits</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00138">GetAddbackMultiplicity()</a>.</p>
 
 </div>
 </div>
@@ -802,11 +828,11 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00139">139</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00138">138</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00103">fAddbackCriterion</a>, <a class="el" href="_t_tigress_8h_source.html#l00134">fAddbackFrags</a>, <a class="el" href="_t_tigress_8h_source.html#l00133">fAddbackHits</a>, <a class="el" href="_t_tigress_8h_source.html#l00107">fTigressBits</a>, <a class="el" href="_t_detector_8cxx_source.html#l00061">TDetector::GetHit()</a>, <a class="el" href="_t_detector_8h_source.html#l00073">TDetector::GetMultiplicity()</a>, <a class="el" href="class_t_tigress.html#a91c1de4560b4f051fe2245d692f1253da4d52eb0409033047075e7f6e73550b97">kAddbackSet</a>, <a class="el" href="_t_detector_8h_source.html#l00076">TDetector::NoHits()</a>, <a class="el" href="_t_transient_bits_8h_source.html#l00038">TTransientBits&lt; T &gt;::SetBit()</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00041">TTransientBits&lt; T &gt;::TestBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00100">fAddbackCriterion</a>, <a class="el" href="_t_tigress_8h_source.html#l00131">fAddbackFrags</a>, <a class="el" href="_t_tigress_8h_source.html#l00130">fAddbackHits</a>, <a class="el" href="_t_tigress_8h_source.html#l00104">fTigressBits</a>, <a class="el" href="_t_detector_8cxx_source.html#l00061">TDetector::GetHit()</a>, <a class="el" href="_t_detector_8h_source.html#l00073">TDetector::GetMultiplicity()</a>, <a class="el" href="class_t_tigress.html#a91c1de4560b4f051fe2245d692f1253da4d52eb0409033047075e7f6e73550b97">kAddbackSet</a>, <a class="el" href="_t_detector_8h_source.html#l00076">TDetector::NoHits()</a>, <a class="el" href="_t_transient_bits_8h_source.html#l00038">TTransientBits&lt; T &gt;::SetBit()</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00041">TTransientBits&lt; T &gt;::TestBit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00183">GetAddbackHit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00182">GetAddbackHit()</a>.</p>
 
 </div>
 </div>
@@ -835,11 +861,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00172">172</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00170">170</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba4dbed8bdda44396bb7e74f30e6979ef0">kArrayBackPos</a>, and <a class="el" href="_t_tigress_8h_source.html#l00131">TestGlobalBit()</a>.</p>
+<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba4dbed8bdda44396bb7e74f30e6979ef0">kArrayBackPos</a>, and <a class="el" href="_t_tigress_8h_source.html#l00128">TestGlobalBit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8h_source.html#l00186">GetFaceDistance()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00333">GetPosition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8h_source.html#l00184">GetFaceDistance()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00332">GetPosition()</a>.</p>
 
 </div>
 </div>
@@ -869,9 +895,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00067">67</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00065">65</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00062">fBgos</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00132">fBgos</a>.</p>
 
 </div>
 </div>
@@ -901,9 +927,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00066">66</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00064">64</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00062">fBgos</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00132">fBgos</a>.</p>
 
 </div>
 </div>
@@ -932,9 +958,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00064">64</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00062">62</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00062">fBgos</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00132">fBgos</a>.</p>
 
 </div>
 </div>
@@ -963,9 +989,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00170">170</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00168">168</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba007cae7e76f43b2050338c527880e4e4">kSetBGOWave</a>, and <a class="el" href="_t_tigress_8h_source.html#l00131">TestGlobalBit()</a>.</p>
+<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba007cae7e76f43b2050338c527880e4e4">kSetBGOWave</a>, and <a class="el" href="_t_tigress_8h_source.html#l00128">TestGlobalBit()</a>.</p>
 
 </div>
 </div>
@@ -994,9 +1020,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00168">168</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00166">166</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba56cd988b5e957bada97f1dd89d5d8bb1">kSetCoreWave</a>, and <a class="el" href="_t_tigress_8h_source.html#l00131">TestGlobalBit()</a>.</p>
+<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba56cd988b5e957bada97f1dd89d5d8bb1">kSetCoreWave</a>, and <a class="el" href="_t_tigress_8h_source.html#l00128">TestGlobalBit()</a>.</p>
 
 </div>
 </div>
@@ -1023,9 +1049,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00186">186</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00184">184</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00172">GetArrayBackPos()</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00170">GetArrayBackPos()</a>.</p>
 
 </div>
 </div>
@@ -1054,11 +1080,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00171">171</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00169">169</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba106cdc9938c5bbafcc894573a209dd65">kForceCrystal</a>, and <a class="el" href="_t_tigress_8h_source.html#l00131">TestGlobalBit()</a>.</p>
+<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba106cdc9938c5bbafcc894573a209dd65">kForceCrystal</a>, and <a class="el" href="_t_tigress_8h_source.html#l00128">TestGlobalBit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00024">DefaultAddback()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00023">DefaultAddback()</a>.</p>
 
 </div>
 </div>
@@ -1092,7 +1118,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_si_li_8cxx_source.html#l00278">TSiLi::AddCluster()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00139">GetAddbackMultiplicity()</a>, <a class="el" href="_t_bgo_8h_source.html#l00029">TBgo::GetBgoHit()</a>, <a class="el" href="_t_c_s_m_8h_source.html#l00042">TCSM::GetCSMHit()</a>, <a class="el" href="_t_descant_8h_source.html#l00034">TDescant::GetDescantHit()</a>, <a class="el" href="_t_eagle_8h_source.html#l00034">TEagle::GetEagleHit()</a>, <a class="el" href="_t_emma_8h_source.html#l00027">TEmma::GetEmmaHit()</a>, <a class="el" href="_t_generic_detector_8h_source.html#l00026">TGenericDetector::GetGenericDetectorHit()</a>, <a class="el" href="_t_la_br_bgo_8h_source.html#l00018">TLaBrBgo::GetLaBrBgoHit()</a>, <a class="el" href="_t_la_br_8h_source.html#l00046">TLaBr::GetLaBrHit()</a>, <a class="el" href="_t_fipps_la_br_8h_source.html#l00046">TFippsLaBr::GetLaBrHit()</a>, <a class="el" href="_t_paces_8h_source.html#l00026">TPaces::GetPacesHit()</a>, <a class="el" href="_t_s3_8h_source.html#l00064">TS3::GetS3Hit()</a>, <a class="el" href="_t_sceptar_8h_source.html#l00034">TSceptar::GetSceptarHit()</a>, <a class="el" href="_t_sharc2_8h_source.html#l00027">TSharc2::GetSharc2Hit()</a>, <a class="el" href="_t_sharc_8h_source.html#l00027">TSharc::GetSharcHit()</a>, <a class="el" href="_t_si_li_8h_source.html#l00045">TSiLi::GetSiLiHit()</a>, <a class="el" href="_t_t_a_c_8h_source.html#l00034">TTAC::GetTACHit()</a>, <a class="el" href="_t_fipps_t_a_c_8h_source.html#l00034">TFippsTAC::GetTACHit()</a>, <a class="el" href="_t_tdr_clover_8h_source.html#l00044">TTdrClover::GetTdrCloverHit()</a>, <a class="el" href="_t_tdr_plastic_8h_source.html#l00034">TTdrPlastic::GetTdrPlasticHit()</a>, <a class="el" href="_t_tdr_si_li_8h_source.html#l00026">TTdrSiLi::GetTdrSiLiHit()</a>, <a class="el" href="_t_tdr_tigress_8h_source.html#l00044">TTdrTigress::GetTdrTigressHit()</a>, <a class="el" href="_t_tigress_8h_source.html#l00058">GetTigressHit()</a>, <a class="el" href="_t_tip_8h_source.html#l00032">TTip::GetTipHit()</a>, <a class="el" href="_t_trific_8h_source.html#l00050">TTrific::GetTrificHit()</a>, <a class="el" href="_t_zero_degree_8h_source.html#l00034">TZeroDegree::GetZeroDegreeHit()</a>, <a class="el" href="_make_griffin_histograms_8cxx_source.html#l00049">MakeAnalysisHistograms()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00123">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_si_li_8cxx_source.html#l00279">TSiLi::AddCluster()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00138">GetAddbackMultiplicity()</a>, <a class="el" href="_t_bgo_8h_source.html#l00029">TBgo::GetBgoHit()</a>, <a class="el" href="_t_c_s_m_8h_source.html#l00045">TCSM::GetCSMHit()</a>, <a class="el" href="_t_descant_8h_source.html#l00036">TDescant::GetDescantHit()</a>, <a class="el" href="_t_eagle_8h_source.html#l00034">TEagle::GetEagleHit()</a>, <a class="el" href="_t_emma_8h_source.html#l00028">TEmma::GetEmmaHit()</a>, <a class="el" href="_t_generic_detector_8h_source.html#l00028">TGenericDetector::GetGenericDetectorHit()</a>, <a class="el" href="_t_la_br_bgo_8h_source.html#l00021">TLaBrBgo::GetLaBrBgoHit()</a>, <a class="el" href="_t_la_br_8h_source.html#l00049">TLaBr::GetLaBrHit()</a>, <a class="el" href="_t_fipps_la_br_8h_source.html#l00046">TFippsLaBr::GetLaBrHit()</a>, <a class="el" href="_t_paces_8h_source.html#l00027">TPaces::GetPacesHit()</a>, <a class="el" href="_t_s3_8h_source.html#l00067">TS3::GetS3Hit()</a>, <a class="el" href="_t_sceptar_8h_source.html#l00036">TSceptar::GetSceptarHit()</a>, <a class="el" href="_t_sharc2_8h_source.html#l00035">TSharc2::GetSharc2Hit()</a>, <a class="el" href="_t_sharc_8h_source.html#l00035">TSharc::GetSharcHit()</a>, <a class="el" href="_t_si_li_8h_source.html#l00045">TSiLi::GetSiLiHit()</a>, <a class="el" href="_t_t_a_c_8h_source.html#l00036">TTAC::GetTACHit()</a>, <a class="el" href="_t_fipps_t_a_c_8h_source.html#l00034">TFippsTAC::GetTACHit()</a>, <a class="el" href="_t_tdr_clover_8h_source.html#l00044">TTdrClover::GetTdrCloverHit()</a>, <a class="el" href="_t_tdr_plastic_8h_source.html#l00034">TTdrPlastic::GetTdrPlasticHit()</a>, <a class="el" href="_t_tdr_si_li_8h_source.html#l00026">TTdrSiLi::GetTdrSiLiHit()</a>, <a class="el" href="_t_tdr_tigress_8h_source.html#l00044">TTdrTigress::GetTdrTigressHit()</a>, <a class="el" href="_t_tigress_8h_source.html#l00057">GetTigressHit()</a>, <a class="el" href="_t_tip_8h_source.html#l00034">TTip::GetTipHit()</a>, <a class="el" href="_t_trific_8h_source.html#l00049">TTrific::GetTrificHit()</a>, <a class="el" href="_t_zero_degree_8h_source.html#l00036">TZeroDegree::GetZeroDegreeHit()</a>, <a class="el" href="_make_griffin_histograms_8cxx_source.html#l00049">MakeAnalysisHistograms()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00122">Print()</a>.</p>
 
 </div>
 </div>
@@ -1158,7 +1184,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00230">AddFragment()</a>, <a class="el" href="_example_event_helper_8cxx_source.html#l00072">ExampleEventHelper::Exec()</a>, <a class="el" href="_example_tree_helper_8cxx_source.html#l00043">ExampleTreeHelper::Exec()</a>, <a class="el" href="_test_helper_8cxx_source.html#l00111">TestHelper::Exec()</a>, <a class="el" href="_time_walk_helper_8cxx_source.html#l00058">TimeWalkHelper::Exec()</a>, <a class="el" href="_angular_correlation_selector_8_c_source.html#l00157">AngularCorrelationSelector::FillHistograms()</a>, <a class="el" href="_example_event_selector_8_c_source.html#l00040">ExampleEventSelector::FillHistograms()</a>, <a class="el" href="_example_tree_selector_8_c_source.html#l00057">ExampleTreeSelector::FillHistograms()</a>, <a class="el" href="_time_walk_selector_8_c_source.html#l00074">TimeWalkSelector::FillHistograms()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00165">TSiLi::GetAddbackMultiplicity()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00139">GetAddbackMultiplicity()</a>, <a class="el" href="_t_griffin_8h_source.html#l00047">TGriffin::GetLowGainMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00305">TGriffin::GetMultiplicity()</a>, <a class="el" href="_t_sharc_8h_source.html#l00041">TSharc::GetSize()</a>, <a class="el" href="_get_tree_entries_8cxx_source.html#l00030">main()</a>, <a class="el" href="_make_griffin_histograms_8cxx_source.html#l00049">MakeAnalysisHistograms()</a>, <a class="el" href="_t_descant_8cxx_source.html#l00125">TDescant::Print()</a>, <a class="el" href="_t_emma_8cxx_source.html#l00068">TEmma::Print()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00095">TLaBr::Print()</a>, <a class="el" href="_t_paces_8cxx_source.html#l00063">TPaces::Print()</a>, <a class="el" href="_t_sceptar_8cxx_source.html#l00079">TSceptar::Print()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00064">TSiLi::Print()</a>, <a class="el" href="_t_t_a_c_8cxx_source.html#l00045">TTAC::Print()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00123">Print()</a>, <a class="el" href="_t_tip_8cxx_source.html#l00185">TTip::Print()</a>, <a class="el" href="_t_trific_8cxx_source.html#l00082">TTrific::Print()</a>, <a class="el" href="_t_zero_degree_8cxx_source.html#l00050">TZeroDegree::Print()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00167">TFipps::Print()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00180">TIfin::Print()</a>, <a class="el" href="_t_bgo_8cxx_source.html#l00145">TBgo::Print()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00174">TTdrClover::Print()</a>, and <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00174">TTdrTigress::Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00229">AddFragment()</a>, <a class="el" href="_example_event_helper_8cxx_source.html#l00072">ExampleEventHelper::Exec()</a>, <a class="el" href="_example_tree_helper_8cxx_source.html#l00043">ExampleTreeHelper::Exec()</a>, <a class="el" href="_time_walk_helper_8cxx_source.html#l00058">TimeWalkHelper::Exec()</a>, <a class="el" href="_angular_correlation_selector_8_c_source.html#l00157">AngularCorrelationSelector::FillHistograms()</a>, <a class="el" href="_example_event_selector_8_c_source.html#l00040">ExampleEventSelector::FillHistograms()</a>, <a class="el" href="_example_tree_selector_8_c_source.html#l00057">ExampleTreeSelector::FillHistograms()</a>, <a class="el" href="_time_walk_selector_8_c_source.html#l00074">TimeWalkSelector::FillHistograms()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00166">TSiLi::GetAddbackMultiplicity()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00138">GetAddbackMultiplicity()</a>, <a class="el" href="_t_griffin_8h_source.html#l00049">TGriffin::GetLowGainMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00304">TGriffin::GetMultiplicity()</a>, <a class="el" href="_t_sharc_8h_source.html#l00049">TSharc::GetSize()</a>, <a class="el" href="_get_tree_entries_8cxx_source.html#l00030">main()</a>, <a class="el" href="_make_griffin_histograms_8cxx_source.html#l00049">MakeAnalysisHistograms()</a>, <a class="el" href="_t_descant_8cxx_source.html#l00118">TDescant::Print()</a>, <a class="el" href="_t_emma_8cxx_source.html#l00063">TEmma::Print()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00095">TLaBr::Print()</a>, <a class="el" href="_t_paces_8cxx_source.html#l00056">TPaces::Print()</a>, <a class="el" href="_t_sceptar_8cxx_source.html#l00074">TSceptar::Print()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00064">TSiLi::Print()</a>, <a class="el" href="_t_t_a_c_8cxx_source.html#l00040">TTAC::Print()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00122">Print()</a>, <a class="el" href="_t_tip_8cxx_source.html#l00173">TTip::Print()</a>, <a class="el" href="_t_trific_8cxx_source.html#l00070">TTrific::Print()</a>, <a class="el" href="_t_zero_degree_8cxx_source.html#l00045">TZeroDegree::Print()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00167">TFipps::Print()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00180">TIfin::Print()</a>, <a class="el" href="_t_bgo_8cxx_source.html#l00145">TBgo::Print()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00174">TTdrClover::Print()</a>, and <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00174">TTdrTigress::Print()</a>.</p>
 
 </div>
 </div>
@@ -1178,9 +1204,9 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00318">318</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00317">317</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00134">fAddbackFrags</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00131">fAddbackFrags</a>.</p>
 
 </div>
 </div>
@@ -1209,9 +1235,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00065">65</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00063">63</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00062">fBgos</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00132">fBgos</a>.</p>
 
 </div>
 </div>
@@ -1257,9 +1283,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00328">328</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00327">327</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00208">TDetectorHit::GetCrystal()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00190">TDetectorHit::GetDetector()</a>, <a class="el" href="_t_tigress_hit_8h_source.html#l00097">TTigressHit::GetFirstSeg()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00333">GetPosition()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00208">TDetectorHit::GetCrystal()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00190">TDetectorHit::GetDetector()</a>, <a class="el" href="_t_tigress_hit_8h_source.html#l00100">TTigressHit::GetFirstSeg()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00332">GetPosition()</a>.</p>
 
 </div>
 </div>
@@ -1317,11 +1343,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00333">333</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00332">332</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>, <a class="el" href="_t_tigress_8h_source.html#l00116">fCloverCross</a>, <a class="el" href="_t_tigress_8h_source.html#l00113">fPositionVectors</a>, <a class="el" href="_t_tigress_8h_source.html#l00172">GetArrayBackPos()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00173">GetVectorsBuilt()</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>, <a class="el" href="_t_tigress_8h_source.html#l00113">fCloverCross</a>, <a class="el" href="_t_tigress_8h_source.html#l00110">fPositionVectors</a>, <a class="el" href="_t_tigress_8h_source.html#l00170">GetArrayBackPos()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00171">GetVectorsBuilt()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_hit_8cxx_source.html#l00065">TTigressHit::GetLastPosition()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00328">GetPosition()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00060">TTigressHit::GetPosition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_hit_8cxx_source.html#l00066">TTigressHit::GetLastPosition()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00327">GetPosition()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00061">TTigressHit::GetPosition()</a>.</p>
 
 </div>
 </div>
@@ -1350,9 +1376,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00169">169</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00167">167</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba1ad0fb60d94cda2fa0c12c48432d0078">kSetSegWave</a>, and <a class="el" href="_t_tigress_8h_source.html#l00131">TestGlobalBit()</a>.</p>
+<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba1ad0fb60d94cda2fa0c12c48432d0078">kSetSegWave</a>, and <a class="el" href="_t_tigress_8h_source.html#l00128">TestGlobalBit()</a>.</p>
 
 </div>
 </div>
@@ -1379,9 +1405,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00098">98</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00094">94</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00104">fSuppressionCriterion</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00101">fSuppressionCriterion</a>.</p>
 
 </div>
 </div>
@@ -1409,11 +1435,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00058">58</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00057">57</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_detector_8cxx_source.html#l00061">TDetector::GetHit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00230">AddFragment()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00229">AddFragment()</a>.</p>
 
 </div>
 </div>
@@ -1442,11 +1468,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00173">173</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00171">171</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba8cc37702e41cc2d43584c9f62ebe1650">kVectorsBuilt</a>, and <a class="el" href="_t_tigress_8h_source.html#l00131">TestGlobalBit()</a>.</p>
+<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba8cc37702e41cc2d43584c9f62ebe1650">kVectorsBuilt</a>, and <a class="el" href="_t_tigress_8h_source.html#l00128">TestGlobalBit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00333">GetPosition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00332">GetPosition()</a>.</p>
 
 </div>
 </div>
@@ -1477,7 +1503,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_c_s_m_8cxx_source.html#l00061">TCSM::BuildHits()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00116">TSharc::BuildHits()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00195">BuildHits()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00323">TGriffin::GetHitVector()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00314">TGriffin::GetHitVector()</a>, <a class="el" href="_t_sharc2_8h_source.html#l00041">TSharc2::GetSize()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00121">TLaBr::GetSuppressedMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00254">TGriffin::Print()</a>, and <a class="el" href="_t_si_li_8h_source.html#l00058">TSiLi::UseFitCharge()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_c_s_m_8cxx_source.html#l00061">TCSM::BuildHits()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00116">TSharc::BuildHits()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00194">BuildHits()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00322">TGriffin::GetHitVector()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00313">TGriffin::GetHitVector()</a>, <a class="el" href="_t_sharc2_8h_source.html#l00049">TSharc2::GetSize()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00121">TLaBr::GetSuppressedMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00253">TGriffin::Print()</a>, and <a class="el" href="_t_si_li_8h_source.html#l00058">TSiLi::UseFitCharge()</a>.</p>
 
 </div>
 </div>
@@ -1537,12 +1563,12 @@ Static Private Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00088">TDetector::fHits</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00195">BuildHits()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00139">GetAddbackMultiplicity()</a>, and <a class="el" href="_t_la_br_8cxx_source.html#l00121">TLaBr::GetSuppressedMultiplicity()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00194">BuildHits()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00138">GetAddbackMultiplicity()</a>, and <a class="el" href="_t_la_br_8cxx_source.html#l00121">TLaBr::GetSuppressedMultiplicity()</a>.</p>
 
 </div>
 </div>
 <a id="ac41fc2ac871304f0f5a5c4edfdf1b414" name="ac41fc2ac871304f0f5a5c4edfdf1b414"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac41fc2ac871304f0f5a5c4edfdf1b414">&#9670;&#160;</a></span>operator=()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac41fc2ac871304f0f5a5c4edfdf1b414">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1559,9 +1585,35 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00133">133</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00132">132</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00095">Copy()</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00094">Copy()</a>.</p>
+
+</div>
+</div>
+<a id="ad022520aabfd15486b516bc02d4c6380" name="ad022520aabfd15486b516bc02d4c6380"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad022520aabfd15486b516bc02d4c6380">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_t_tigress.html">TTigress</a> &amp; TTigress::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_t_tigress.html">TTigress</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1591,11 +1643,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00118">118</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00117">117</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00118">Print()</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00117">Print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00118">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00117">Print()</a>.</p>
 
 </div>
 </div>
@@ -1627,7 +1679,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_t_detector.html#a1d7a4f9d8b48783b9c53ef1177270cc9">TDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00123">123</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00122">122</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_detector_8cxx_source.html#l00061">TDetector::GetHit()</a>, <a class="el" href="_t_detector_8h_source.html#l00073">TDetector::GetMultiplicity()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00145">TDetectorHit::Print()</a>.</p>
 
@@ -1651,9 +1703,9 @@ Static Private Attributes</h2></td></tr>
 <p>! </p>
 <p>Used to clear the addback hits. When playing back a tree, this must be called before building the new addback hits, otherwise, a copy of the old addback hits will be stored instead. This should have changed now, we're using the stored tigress bits to reset the addback</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00306">306</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00305">305</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00134">fAddbackFrags</a>, <a class="el" href="_t_tigress_8h_source.html#l00133">fAddbackHits</a>, <a class="el" href="_t_tigress_8h_source.html#l00107">fTigressBits</a>, <a class="el" href="class_t_tigress.html#a91c1de4560b4f051fe2245d692f1253da4d52eb0409033047075e7f6e73550b97">kAddbackSet</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00038">TTransientBits&lt; T &gt;::SetBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00131">fAddbackFrags</a>, <a class="el" href="_t_tigress_8h_source.html#l00130">fAddbackHits</a>, <a class="el" href="_t_tigress_8h_source.html#l00104">fTigressBits</a>, <a class="el" href="class_t_tigress.html#a91c1de4560b4f051fe2245d692f1253da4d52eb0409033047075e7f6e73550b97">kAddbackSet</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00038">TTransientBits&lt; T &gt;::SetBit()</a>.</p>
 
 </div>
 </div>
@@ -1681,9 +1733,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00088">88</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00084">84</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00103">fAddbackCriterion</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00100">fAddbackCriterion</a>.</p>
 
 </div>
 </div>
@@ -1713,9 +1765,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00161">161</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00159">159</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>, <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba4dbed8bdda44396bb7e74f30e6979ef0">kArrayBackPos</a>, and <a class="el" href="_t_tigress_8h_source.html#l00130">SetGlobalBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>, <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba4dbed8bdda44396bb7e74f30e6979ef0">kArrayBackPos</a>, and <a class="el" href="_t_tigress_8h_source.html#l00127">SetGlobalBit()</a>.</p>
 
 </div>
 </div>
@@ -1745,9 +1797,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00151">151</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00149">149</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba007cae7e76f43b2050338c527880e4e4">kSetBGOWave</a>, and <a class="el" href="_t_tigress_8h_source.html#l00130">SetGlobalBit()</a>.</p>
+<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba007cae7e76f43b2050338c527880e4e4">kSetBGOWave</a>, and <a class="el" href="_t_tigress_8h_source.html#l00127">SetGlobalBit()</a>.</p>
 
 </div>
 </div>
@@ -1777,9 +1829,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00141">141</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00139">139</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba56cd988b5e957bada97f1dd89d5d8bb1">kSetCoreWave</a>, and <a class="el" href="_t_tigress_8h_source.html#l00130">SetGlobalBit()</a>.</p>
+<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba56cd988b5e957bada97f1dd89d5d8bb1">kSetCoreWave</a>, and <a class="el" href="_t_tigress_8h_source.html#l00127">SetGlobalBit()</a>.</p>
 
 </div>
 </div>
@@ -1809,9 +1861,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00156">156</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00154">154</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba106cdc9938c5bbafcc894573a209dd65">kForceCrystal</a>, and <a class="el" href="_t_tigress_8h_source.html#l00130">SetGlobalBit()</a>.</p>
+<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba106cdc9938c5bbafcc894573a209dd65">kForceCrystal</a>, and <a class="el" href="_t_tigress_8h_source.html#l00127">SetGlobalBit()</a>.</p>
 
 </div>
 </div>
@@ -1849,11 +1901,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00130">130</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00127">127</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00106">fgTigressBits</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00038">TTransientBits&lt; T &gt;::SetBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00103">fGlobalTigressBits</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00038">TTransientBits&lt; T &gt;::SetBit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>, <a class="el" href="_t_tigress_8h_source.html#l00161">SetArrayBackPos()</a>, <a class="el" href="_t_tigress_8h_source.html#l00151">SetBGOWave()</a>, <a class="el" href="_t_tigress_8h_source.html#l00141">SetCoreWave()</a>, <a class="el" href="_t_tigress_8h_source.html#l00156">SetForceCrystal()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00146">SetSegmentWave()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>, <a class="el" href="_t_tigress_8h_source.html#l00159">SetArrayBackPos()</a>, <a class="el" href="_t_tigress_8h_source.html#l00149">SetBGOWave()</a>, <a class="el" href="_t_tigress_8h_source.html#l00139">SetCoreWave()</a>, <a class="el" href="_t_tigress_8h_source.html#l00154">SetForceCrystal()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00144">SetSegmentWave()</a>.</p>
 
 </div>
 </div>
@@ -1883,9 +1935,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00181">181</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00179">179</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00110">fRadialOffset</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00107">fRadialOffset</a>.</p>
 
 </div>
 </div>
@@ -1915,9 +1967,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00146">146</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00144">144</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba1ad0fb60d94cda2fa0c12c48432d0078">kSetSegWave</a>, and <a class="el" href="_t_tigress_8h_source.html#l00130">SetGlobalBit()</a>.</p>
+<p class="reference">References <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79ba1ad0fb60d94cda2fa0c12c48432d0078">kSetSegWave</a>, and <a class="el" href="_t_tigress_8h_source.html#l00127">SetGlobalBit()</a>.</p>
 
 </div>
 </div>
@@ -1945,9 +1997,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00094">94</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00090">90</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00104">fSuppressionCriterion</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00101">fSuppressionCriterion</a>.</p>
 
 </div>
 </div>
@@ -1977,9 +2029,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00177">177</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00175">175</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00109">fTargetOffset</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00106">fTargetOffset</a>.</p>
 
 </div>
 </div>
@@ -2007,57 +2059,15 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00131">131</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00128">128</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00106">fgTigressBits</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00041">TTransientBits&lt; T &gt;::TestBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_tigress_8h_source.html#l00103">fGlobalTigressBits</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00041">TTransientBits&lt; T &gt;::TestBit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00230">AddFragment()</a>, <a class="el" href="_t_tigress_8h_source.html#l00172">GetArrayBackPos()</a>, <a class="el" href="_t_tigress_8h_source.html#l00170">GetBGOWave()</a>, <a class="el" href="_t_tigress_8h_source.html#l00168">GetCoreWave()</a>, <a class="el" href="_t_tigress_8h_source.html#l00171">GetForceCrystal()</a>, <a class="el" href="_t_tigress_8h_source.html#l00169">GetSegmentWave()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00173">GetVectorsBuilt()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00229">AddFragment()</a>, <a class="el" href="_t_tigress_8h_source.html#l00170">GetArrayBackPos()</a>, <a class="el" href="_t_tigress_8h_source.html#l00168">GetBGOWave()</a>, <a class="el" href="_t_tigress_8h_source.html#l00166">GetCoreWave()</a>, <a class="el" href="_t_tigress_8h_source.html#l00169">GetForceCrystal()</a>, <a class="el" href="_t_tigress_8h_source.html#l00167">GetSegmentWave()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00171">GetVectorsBuilt()</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a2a02d756a76fa91cec35bf3d58aa713b" name="a2a02d756a76fa91cec35bf3d58aa713b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2a02d756a76fa91cec35bf3d58aa713b">&#9670;&#160;</a></span>BGOSuppression</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TTigress::BGOSuppression</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {{{<span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>},</div>
-<div class="line">   {<span class="keyword">true</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>},</div>
-<div class="line">   {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>},</div>
-<div class="line">   {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span>}},</div>
-<div class="line">     {{<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span>},</div>
-<div class="line">        {<span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>},</div>
-<div class="line">        {<span class="keyword">true</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>},</div>
-<div class="line">        {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>}},</div>
-<div class="line">     {{<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>},</div>
-<div class="line">        {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span>},</div>
-<div class="line">        {<span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>},</div>
-<div class="line">        {<span class="keyword">true</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>}},</div>
-<div class="line">     {{<span class="keyword">true</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>},</div>
-<div class="line">        {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>},</div>
-<div class="line">        {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span>},</div>
-<div class="line">        {<span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>}}}</div>
-</div><!-- fragment -->
-<p>! </p>
-
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l01699">1699</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
-
-</div>
-</div>
 <a id="a361aefdf0bb48f017a391e72468f4974" name="a361aefdf0bb48f017a391e72468f4974"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a361aefdf0bb48f017a391e72468f4974">&#9670;&#160;</a></span>fAddbackCriterion</h2>
 
@@ -2078,9 +2088,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00103">103</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00100">100</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8h_source.html#l00093">GetAddbackCriterion()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00139">GetAddbackMultiplicity()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00088">SetAddbackCriterion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8h_source.html#l00089">GetAddbackCriterion()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00138">GetAddbackMultiplicity()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00084">SetAddbackCriterion()</a>.</p>
 
 </div>
 </div>
@@ -2106,9 +2116,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! Number of crystals involved in creating in the addback hit </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00134">134</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00131">131</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00107">Clear()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00095">Copy()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00139">GetAddbackMultiplicity()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00318">GetNAddbackFrags()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00306">ResetAddback()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00106">Clear()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00094">Copy()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00138">GetAddbackMultiplicity()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00317">GetNAddbackFrags()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00305">ResetAddback()</a>.</p>
 
 </div>
 </div>
@@ -2134,9 +2144,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! Used to create addback hits on the fly </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00133">133</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00130">130</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00107">Clear()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00095">Copy()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00183">GetAddbackHit()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00139">GetAddbackMultiplicity()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00306">ResetAddback()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00106">Clear()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00094">Copy()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00182">GetAddbackHit()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00138">GetAddbackMultiplicity()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00305">ResetAddback()</a>.</p>
 
 </div>
 </div>
@@ -2145,21 +2155,29 @@ Static Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;<a class="el" href="class_t_bgo_hit.html">TBgoHit</a>&gt; TTigress::fBgos</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00062">62</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00132">132</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8h_source.html#l00063">AddBGO()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00230">AddFragment()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00195">BuildHits()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00107">Clear()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00095">Copy()</a>, <a class="el" href="_t_tigress_8h_source.html#l00067">GetBGO()</a>, <a class="el" href="_t_tigress_8h_source.html#l00066">GetBGO()</a>, <a class="el" href="_t_tigress_8h_source.html#l00064">GetBGOMultiplicity()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00065">GetNBGOs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8h_source.html#l00061">AddBGO()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00229">AddFragment()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00194">BuildHits()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00106">Clear()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00094">Copy()</a>, <a class="el" href="_t_tigress_8h_source.html#l00065">GetBGO()</a>, <a class="el" href="_t_tigress_8h_source.html#l00064">GetBGO()</a>, <a class="el" href="_t_tigress_8h_source.html#l00062">GetBGOMultiplicity()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00063">GetNBGOs()</a>.</p>
 
 </div>
 </div>
-<a id="a1f285537f647ddc2283fdc16662c7132" name="a1f285537f647ddc2283fdc16662c7132"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f285537f647ddc2283fdc16662c7132">&#9670;&#160;</a></span>fCloverCross</h2>
+<a id="afdac93f79df141cbb2388e69699970d2" name="afdac93f79df141cbb2388e69699970d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdac93f79df141cbb2388e69699970d2">&#9670;&#160;</a></span>fBGOSuppression</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2168,7 +2186,49 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">TVector3 TTigress::fCloverCross</td>
+          <td class="memname">std::array&lt; std::array&lt; std::array&lt; bool, 5 &gt;, 4 &gt;, 4 &gt; TTigress::fBGOSuppression</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {{{{{<span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>},</div>
+<div class="line">                                                                                 {<span class="keyword">true</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>},</div>
+<div class="line">                                                                                 {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>},</div>
+<div class="line">                                                                                 {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span>}}},</div>
+<div class="line">                                                                               {{{<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span>},</div>
+<div class="line">                                                                                 {<span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>},</div>
+<div class="line">                                                                                 {<span class="keyword">true</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>},</div>
+<div class="line">                                                                                 {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>}}},</div>
+<div class="line">                                                                               {{{<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>},</div>
+<div class="line">                                                                                 {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span>},</div>
+<div class="line">                                                                                 {<span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>},</div>
+<div class="line">                                                                                 {<span class="keyword">true</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>}}},</div>
+<div class="line">                                                                               {{{<span class="keyword">true</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>},</div>
+<div class="line">                                                                                 {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>},</div>
+<div class="line">                                                                                 {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span>},</div>
+<div class="line">                                                                                 {<span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>}}}}}</div>
+</div><!-- fragment -->
+<p>! </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l01699">1699</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+
+</div>
+</div>
+<a id="a6f543e7ee6853ef1904c14e28376c07b" name="a6f543e7ee6853ef1904c14e28376c07b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f543e7ee6853ef1904c14e28376c07b">&#9670;&#160;</a></span>fCloverCross</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt; std::array&lt; TVector3, 2 &gt;, 17 &gt; TTigress::fCloverCross</td>
         </tr>
       </table>
   </td>
@@ -2180,14 +2240,14 @@ Static Private Attributes</h2></td></tr>
 
 <p>! clover perpendicular vectors, for smearing </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00116">116</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00113">113</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00333">GetPosition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00332">GetPosition()</a>.</p>
 
 </div>
 </div>
-<a id="a621ee17f49b09c9265ef82863e8321b6" name="a621ee17f49b09c9265ef82863e8321b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a621ee17f49b09c9265ef82863e8321b6">&#9670;&#160;</a></span>fCloverRadial</h2>
+<a id="a691993bb7d0525c2f3d5e1dadc2f3bd3" name="a691993bb7d0525c2f3d5e1dadc2f3bd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a691993bb7d0525c2f3d5e1dadc2f3bd3">&#9670;&#160;</a></span>fCloverRadial</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2196,7 +2256,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">TVector3 TTigress::fCloverRadial</td>
+          <td class="memname">std::array&lt; TVector3, 17 &gt; TTigress::fCloverRadial</td>
         </tr>
       </table>
   </td>
@@ -2205,34 +2265,34 @@ Static Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">={TVector3(0., 0., 0.),</div>
-<div class="line">   TVector3( 0.9239, 0.3827, 1.),</div>
-<div class="line">   TVector3(-0.3827, 0.9239, 1.),</div>
-<div class="line">   TVector3(-0.9239, -0.3827, 1.),</div>
-<div class="line">   TVector3(0.3827, -0.9239, 1.),</div>
-<div class="line">   TVector3( 0.9239, 0.3827, 0.),</div>
-<div class="line">   TVector3(0.3827, 0.9239, 0.),</div>
-<div class="line">   TVector3(-0.3827, 0.9239, 0.),</div>
-<div class="line">   TVector3(-0.9239, 0.3827, 0.),</div>
-<div class="line">   TVector3(-0.9239, -0.3827, 0.),</div>
-<div class="line">   TVector3(-0.3827, -0.9239, 0.),</div>
-<div class="line">   TVector3(0.3827, -0.9239, 0.),</div>
-<div class="line">   TVector3(0.9239, -0.3827, 0.),</div>
-<div class="line">   TVector3( 0.9239, 0.3827, -1.),</div>
-<div class="line">   TVector3(-0.3827, 0.9239, -1.),</div>
-<div class="line">   TVector3(-0.9239, -0.3827, -1.),</div>
-<div class="line">   TVector3(0.3827, -0.9239, -1.)}</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= {TVector3(0., 0., 0.),</div>
+<div class="line">                                                    TVector3(0.9239, 0.3827, 1.),</div>
+<div class="line">                                                    TVector3(-0.3827, 0.9239, 1.),</div>
+<div class="line">                                                    TVector3(-0.9239, -0.3827, 1.),</div>
+<div class="line">                                                    TVector3(0.3827, -0.9239, 1.),</div>
+<div class="line">                                                    TVector3(0.9239, 0.3827, 0.),</div>
+<div class="line">                                                    TVector3(0.3827, 0.9239, 0.),</div>
+<div class="line">                                                    TVector3(-0.3827, 0.9239, 0.),</div>
+<div class="line">                                                    TVector3(-0.9239, 0.3827, 0.),</div>
+<div class="line">                                                    TVector3(-0.9239, -0.3827, 0.),</div>
+<div class="line">                                                    TVector3(-0.3827, -0.9239, 0.),</div>
+<div class="line">                                                    TVector3(0.3827, -0.9239, 0.),</div>
+<div class="line">                                                    TVector3(0.9239, -0.3827, 0.),</div>
+<div class="line">                                                    TVector3(0.9239, 0.3827, -1.),</div>
+<div class="line">                                                    TVector3(-0.3827, 0.9239, -1.),</div>
+<div class="line">                                                    TVector3(-0.9239, -0.3827, -1.),</div>
+<div class="line">                                                    TVector3(0.3827, -0.9239, -1.)}</div>
 </div><!-- fragment -->
 <p>! clover direction vectors </p>
 
 <p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00443">443</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>.</p>
 
 </div>
 </div>
-<a id="aaf73d5fc9dbdcbd1594d62c0b0d1e2c9" name="aaf73d5fc9dbdcbd1594d62c0b0d1e2c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf73d5fc9dbdcbd1594d62c0b0d1e2c9">&#9670;&#160;</a></span>fgTigressBits</h2>
+<a id="a738e379f39e8dbcb66de2f80660cc3eb" name="a738e379f39e8dbcb66de2f80660cc3eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a738e379f39e8dbcb66de2f80660cc3eb">&#9670;&#160;</a></span>fGeBluePosition</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2241,7 +2301,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_t_transient_bits.html">TTransientBits</a>&lt; UShort_t &gt; TTigress::fgTigressBits</td>
+          <td class="memname">std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt; TTigress::fGeBluePosition</td>
         </tr>
       </table>
   </td>
@@ -2251,9 +2311,235 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00106">106</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p>! detector segment XYZ </p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8h_source.html#l00130">SetGlobalBit()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00131">TestGlobalBit()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00461">461</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>.</p>
+
+</div>
+</div>
+<a id="a44fd462d479283d99f89b0b7af8a0a29" name="a44fd462d479283d99f89b0b7af8a0a29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44fd462d479283d99f89b0b7af8a0a29">&#9670;&#160;</a></span>fGeBluePositionBack</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt; TTigress::fGeBluePositionBack</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! detector segment XYZ </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l01080">1080</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>.</p>
+
+</div>
+</div>
+<a id="a9e185823805a41c03dc5c61c405892f4" name="a9e185823805a41c03dc5c61c405892f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e185823805a41c03dc5c61c405892f4">&#9670;&#160;</a></span>fGeGreenPosition</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt; TTigress::fGeGreenPosition</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00616">616</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>.</p>
+
+</div>
+</div>
+<a id="ac58803d25f23bf14b213e95280a42710" name="ac58803d25f23bf14b213e95280a42710"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac58803d25f23bf14b213e95280a42710">&#9670;&#160;</a></span>fGeGreenPositionBack</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt; TTigress::fGeGreenPositionBack</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l01235">1235</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>.</p>
+
+</div>
+</div>
+<a id="aa4d2d1fe9822f9ed9d2ed99363012ce6" name="aa4d2d1fe9822f9ed9d2ed99363012ce6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4d2d1fe9822f9ed9d2ed99363012ce6">&#9670;&#160;</a></span>fGeRedPosition</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt; TTigress::fGeRedPosition</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00771">771</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>.</p>
+
+</div>
+</div>
+<a id="aa3d9ed2e2e14e12b9751f2a1136fecad" name="aa3d9ed2e2e14e12b9751f2a1136fecad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3d9ed2e2e14e12b9751f2a1136fecad">&#9670;&#160;</a></span>fGeRedPositionBack</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt; TTigress::fGeRedPositionBack</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l01390">1390</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>.</p>
+
+</div>
+</div>
+<a id="af95e880a848bd67be3e34922b60e8678" name="af95e880a848bd67be3e34922b60e8678"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af95e880a848bd67be3e34922b60e8678">&#9670;&#160;</a></span>fGeWhitePosition</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt; TTigress::fGeWhitePosition</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00926">926</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>.</p>
+
+</div>
+</div>
+<a id="a82242ce4eb7cb02c7a71fe0319dc6fd4" name="a82242ce4eb7cb02c7a71fe0319dc6fd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82242ce4eb7cb02c7a71fe0319dc6fd4">&#9670;&#160;</a></span>fGeWhitePositionBack</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt; std::array&lt; std::array&lt; double, 3 &gt;, 9 &gt;, 17 &gt; TTigress::fGeWhitePositionBack</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l01545">1545</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>.</p>
+
+</div>
+</div>
+<a id="af569cbf4730d0855f5c68523e391b527" name="af569cbf4730d0855f5c68523e391b527"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af569cbf4730d0855f5c68523e391b527">&#9670;&#160;</a></span>fGlobalTigressBits</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_t_transient_bits.html">TTransientBits</a>&lt; UShort_t &gt; TTigress::fGlobalTigressBits</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00103">103</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8h_source.html#l00127">SetGlobalBit()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00128">TestGlobalBit()</a>.</p>
 
 </div>
 </div>
@@ -2283,8 +2569,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac05769706a11d7bfe4eaf9d29905cfaa" name="ac05769706a11d7bfe4eaf9d29905cfaa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac05769706a11d7bfe4eaf9d29905cfaa">&#9670;&#160;</a></span>fPositionVectors</h2>
+<a id="afb072c19649e040b89207f4dcf993b45" name="afb072c19649e040b89207f4dcf993b45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb072c19649e040b89207f4dcf993b45">&#9670;&#160;</a></span>fPositionVectors</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2293,7 +2579,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">TVector3 TTigress::fPositionVectors</td>
+          <td class="memname">std::array&lt; std::array&lt; std::array&lt; std::array&lt; TVector3, 9 &gt;, 4 &gt;, 17 &gt;, 2 &gt; TTigress::fPositionVectors</td>
         </tr>
       </table>
   </td>
@@ -2305,9 +2591,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00113">113</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00110">110</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00333">GetPosition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00332">GetPosition()</a>.</p>
 
 </div>
 </div>
@@ -2333,9 +2619,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00110">110</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00107">107</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00181">SetRadialOffset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00179">SetRadialOffset()</a>.</p>
 
 </div>
 </div>
@@ -2359,9 +2645,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00104">104</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00101">101</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00195">BuildHits()</a>, <a class="el" href="_t_tigress_8h_source.html#l00098">GetSuppressionCriterion()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00094">SetSuppressionCriterion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00194">BuildHits()</a>, <a class="el" href="_t_tigress_8h_source.html#l00094">GetSuppressionCriterion()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00090">SetSuppressionCriterion()</a>.</p>
 
 </div>
 </div>
@@ -2387,9 +2673,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00109">109</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00106">106</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00177">SetTargetOffset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00358">BuildVectors()</a>, and <a class="el" href="_t_tigress_8h_source.html#l00175">SetTargetOffset()</a>.</p>
 
 </div>
 </div>
@@ -2413,233 +2699,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00107">107</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00104">104</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00107">Clear()</a>, <a class="el" href="_t_tigress_8h_source.html#l00079">ClearTransients()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00095">Copy()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00139">GetAddbackMultiplicity()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00306">ResetAddback()</a>.</p>
-
-</div>
-</div>
-<a id="ac63484438d5561e18e0947b31a09899e" name="ac63484438d5561e18e0947b31a09899e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac63484438d5561e18e0947b31a09899e">&#9670;&#160;</a></span>GeBluePosition</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double TTigress::GeBluePosition</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>! detector segment XYZ </p>
-
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00461">461</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>.</p>
-
-</div>
-</div>
-<a id="aba6e645e8cfe20eac810e8698a39382f" name="aba6e645e8cfe20eac810e8698a39382f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba6e645e8cfe20eac810e8698a39382f">&#9670;&#160;</a></span>GeBluePositionBack</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double TTigress::GeBluePositionBack</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>! detector segment XYZ </p>
-
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l01080">1080</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>.</p>
-
-</div>
-</div>
-<a id="ab88d050e4923f70192d595618c51543b" name="ab88d050e4923f70192d595618c51543b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab88d050e4923f70192d595618c51543b">&#9670;&#160;</a></span>GeGreenPosition</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double TTigress::GeGreenPosition</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>! </p>
-
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00616">616</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>.</p>
-
-</div>
-</div>
-<a id="a757e0219817745d058959c9acd1f958f" name="a757e0219817745d058959c9acd1f958f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a757e0219817745d058959c9acd1f958f">&#9670;&#160;</a></span>GeGreenPositionBack</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double TTigress::GeGreenPositionBack</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>! </p>
-
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l01235">1235</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>.</p>
-
-</div>
-</div>
-<a id="a633564340eb6b408c72b91a1344db933" name="a633564340eb6b408c72b91a1344db933"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a633564340eb6b408c72b91a1344db933">&#9670;&#160;</a></span>GeRedPosition</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double TTigress::GeRedPosition</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>! </p>
-
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00771">771</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>.</p>
-
-</div>
-</div>
-<a id="a0464091ff98c85a7683bbd3e8170f4fd" name="a0464091ff98c85a7683bbd3e8170f4fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0464091ff98c85a7683bbd3e8170f4fd">&#9670;&#160;</a></span>GeRedPositionBack</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double TTigress::GeRedPositionBack</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>! </p>
-
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l01390">1390</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>.</p>
-
-</div>
-</div>
-<a id="a03c3dbbff1aa7501d5e669c610be7233" name="a03c3dbbff1aa7501d5e669c610be7233"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a03c3dbbff1aa7501d5e669c610be7233">&#9670;&#160;</a></span>GeWhitePosition</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double TTigress::GeWhitePosition</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>! </p>
-
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00926">926</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>.</p>
-
-</div>
-</div>
-<a id="ae1ec55bdd49fe257f85bc9d0c29abc48" name="ae1ec55bdd49fe257f85bc9d0c29abc48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1ec55bdd49fe257f85bc9d0c29abc48">&#9670;&#160;</a></span>GeWhitePositionBack</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double TTigress::GeWhitePositionBack</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>! </p>
-
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l01545">1545</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00357">BuildVectors()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00106">Clear()</a>, <a class="el" href="_t_tigress_8h_source.html#l00077">ClearTransients()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00094">Copy()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00138">GetAddbackMultiplicity()</a>, and <a class="el" href="_t_tigress_8cxx_source.html#l00305">ResetAddback()</a>.</p>
 
 </div>
 </div>
@@ -2648,14 +2710,22 @@ Static Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;std::vector&lt;std::shared_ptr&lt;const <a class="el" href="class_t_fragment.html">TFragment</a>&gt; &gt; &gt; TTigress::SegmentFragments</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00049">49</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8h_source.html#l00099">99</a> of file <a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>.</p>
 
 </div>
 </div>
@@ -2666,7 +2736,7 @@ Static Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_tigress.html">TTigress</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:52.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:09:01.</li>
   </ul>
 </div>
 </body>

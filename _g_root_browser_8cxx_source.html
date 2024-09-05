@@ -336,7 +336,7 @@ $(document).ready(function(){initNavTree('_g_root_browser_8cxx_source.html','');
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno"><a class="line" href="class_g_root_browser.html#aeb55780b1b27ca1a244864c7655e85a5">  225</a></span><a class="code hl_function" href="class_g_root_browser.html#aeb55780b1b27ca1a244864c7655e85a5">GRootBrowser::~GRootBrowser</a>()</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>{<span class="comment"></span></div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="comment">   /// Clean up all widgets, frames and layouthints that were used</span></div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="comment"></span>   std::cout &lt;&lt; __PRETTY_FUNCTION__ &lt;&lt; std::endl;   <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="comment"></span>   std::cout &lt;&lt; __PRETTY_FUNCTION__ &lt;&lt; std::endl;   <span class="comment">// NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)</span></div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>   fflush(stdout);</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_g_root_browser.html#a80d03d1d4e3f57d0b5906536e5f93b02">fIconPic</a> != <span class="keyword">nullptr</span>) {</div>
@@ -1249,8 +1249,8 @@ $(document).ready(function(){initNavTree('_g_root_browser_8cxx_source.html','');
 <div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span>                  <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l01087" name="l01087"></a><span class="lineno"> 1087</span>               }</div>
 <div class="line"><a id="l01088" name="l01088"></a><span class="lineno"> 1088</span>            }</div>
-<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span>            <span class="keyword">const_cast&lt;</span>TGCompositeFrame*<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keyword">const </span>TGCompositeFrame*<span class="keyword">&gt;</span>(menu-&gt;GetParent()))-&gt;HideFrame(menu);          <span class="comment">// NOLINT</span></div>
-<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span>            <span class="keyword">const_cast&lt;</span>TGCompositeFrame*<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keyword">const </span>TGCompositeFrame*<span class="keyword">&gt;</span>(menu-&gt;GetParent()))-&gt;SetCleanup(kNoCleanup);   <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span>            <span class="keyword">const_cast&lt;</span>TGCompositeFrame*<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keyword">const </span>TGCompositeFrame*<span class="keyword">&gt;</span>(menu-&gt;GetParent()))-&gt;HideFrame(menu);          <span class="comment">// NOLINT(cppcoreguidelines-pro-type-const-cast)</span></div>
+<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span>            <span class="keyword">const_cast&lt;</span>TGCompositeFrame*<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keyword">const </span>TGCompositeFrame*<span class="keyword">&gt;</span>(menu-&gt;GetParent()))-&gt;SetCleanup(kNoCleanup);   <span class="comment">// NOLINT(cppcoreguidelines-pro-type-const-cast)</span></div>
 <div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span>            menu-&gt;ReparentWindow(<a class="code hl_variable" href="class_g_root_browser.html#a95ff194507fb526c325c9393ef5f707c">fMenuFrame</a>);</div>
 <div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span>            <a class="code hl_variable" href="class_g_root_browser.html#a95ff194507fb526c325c9393ef5f707c">fMenuFrame</a>-&gt;AddFrame(menu, <a class="code hl_variable" href="class_g_root_browser.html#ad05da447b7977d7194c0b33ea8bae718">fLH2</a>);</div>
 <div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span>            TGFrameElement* mel = <span class="keyword">nullptr</span>;</div>
@@ -1455,7 +1455,7 @@ $(document).ready(function(){initNavTree('_g_root_browser_8cxx_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_47358ee868e3aed1e59cf9c2ead119a2.html">GROOT</a></li><li class="navelem"><a class="el" href="_g_root_browser_8cxx.html">GRootBrowser.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:45.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:53.</li>
   </ul>
 </div>
 </body>

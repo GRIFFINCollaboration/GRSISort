@@ -178,14 +178,14 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 </div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
 <div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="class_g_cube.html#aa37c28d455ac767cedb81c6dc7f0bbb4">   60</a></span><a class="code hl_function" href="class_g_cube.html#a7939eeac7f9e41c648cc08c9ffda1b45">GCube::GCube</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_g_cube.html">GCube</a>&amp; rhs) : TH1()   <span class="comment">// NOLINT calling TH1 constuctor to shut up g++, can&#39;t call TH1(rhs) because it&#39;s private</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="class_g_cube.html#aa37c28d455ac767cedb81c6dc7f0bbb4">   60</a></span><a class="code hl_function" href="class_g_cube.html#a7939eeac7f9e41c648cc08c9ffda1b45">GCube::GCube</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_g_cube.html">GCube</a>&amp; rhs) : TH1()   <span class="comment">// NOLINT(readability-redundant-member-init)</span></div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>{</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>   rhs.<a class="code hl_function" href="class_g_cube.html#af9b2af5da814283c07a8848cb75aeb91">Copy</a>(*<span class="keyword">this</span>);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>}</div>
 </div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
 <div class="foldopen" id="foldopen00065" data-start="{" data-end="}">
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="class_g_cube.html#ad45f946bd6510ed34e04c83abc98fdef">   65</a></span><a class="code hl_function" href="class_g_cube.html#a7939eeac7f9e41c648cc08c9ffda1b45">GCube::GCube</a>(<a class="code hl_class" href="class_g_cube.html">GCube</a>&amp;&amp; rhs) noexcept : TH1()   <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="class_g_cube.html#ad45f946bd6510ed34e04c83abc98fdef">   65</a></span><a class="code hl_function" href="class_g_cube.html#a7939eeac7f9e41c648cc08c9ffda1b45">GCube::GCube</a>(<a class="code hl_class" href="class_g_cube.html">GCube</a>&amp;&amp; rhs) noexcept : TH1()   <span class="comment">// NOLINT(readability-redundant-member-init)</span></div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>{</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>   rhs.Copy(*<span class="keyword">this</span>);</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
@@ -499,9 +499,9 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>               (fXaxis.GetNbins() + 2) * (fXaxis.GetNbins() + 3) * (fXaxis.GetNbins() + 4) / 6 -</div>
 <div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>               (fXaxis.GetNbins() + 2 - binz) * (fXaxis.GetNbins() + 3 - binz) * (fXaxis.GetNbins() + 4 - binz) / 6 - biny;</div>
 <div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;binx,y,z = &quot;</span> &lt;&lt; binx &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; biny &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; binz &lt;&lt; <span class="stringliteral">&quot; =&gt; bin = &quot;</span> &lt;&lt; bin &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>   bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>         binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>                 10. / 3.);</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>   bin = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>                            binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>                                    10. / 3.));</div>
 <div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;binx,y,z = &quot;</span> &lt;&lt; binx &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; biny &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; binz &lt;&lt; <span class="stringliteral">&quot; =&gt; bin = &quot;</span> &lt;&lt; bin &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>   AddBinContent(bin);</div>
 <div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>   <span class="keywordflow">if</span>(fSumw2.fN != 0) {</div>
@@ -588,9 +588,9 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>   <span class="keywordflow">if</span>(binx &lt; 0 || biny &lt; 0 || binz &lt; 0) {</div>
 <div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>      <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>   }</div>
-<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>   Int_t bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +</div>
-<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>               binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +</div>
-<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>                       10. / 3.);</div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>   <span class="keyword">auto</span> bin = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +</div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>                                 binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +</div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>                                         10. / 3.));</div>
 <div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>   AddBinContent(bin, w);</div>
 <div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>   <span class="keywordflow">if</span>(fSumw2.fN != 0) {</div>
 <div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>      fSumw2.fArray[bin] += w * w;</div>
@@ -664,9 +664,9 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>      std::swap(biny, binz);</div>
 <div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>   }</div>
 <div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span> </div>
-<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>   Int_t bin = binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +</div>
-<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>               binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +</div>
-<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>                       10. / 3.);</div>
+<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>   <span class="keyword">auto</span> bin = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +</div>
+<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>                                 binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +</div>
+<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>                                         10. / 3.));</div>
 <div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>   AddBinContent(bin, w);</div>
 <div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>   <span class="keywordflow">if</span>(fSumw2.fN != 0) {</div>
 <div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>      fSumw2.fArray[bin] += w * w;</div>
@@ -1021,14 +1021,14 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>   <span class="comment">// Loop on all cells in X,Y generate a projection along Z</span></div>
 <div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span>   <span class="keyword">auto</span>* hpz = <span class="keyword">new</span> TH1D(<span class="stringliteral">&quot;R_temp&quot;</span>, <span class="stringliteral">&quot;_temp&quot;</span>, nbinsz, fZaxis.GetXmin(), fZaxis.GetXmax());</div>
 <div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>   <span class="keywordflow">for</span>(Int_t biny = binminy; biny &lt;= binmaxy; biny++) {</div>
-<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>      Float_t y = fYaxis.GetBinCenter(biny);</div>
+<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>      Double_t y = fYaxis.GetBinCenter(biny);</div>
 <div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>      <span class="keywordflow">for</span>(Int_t binx = binminx; binx &lt;= binmaxx; binx++) {</div>
-<div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span>         Float_t x = fXaxis.GetBinCenter(binx);</div>
+<div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span>         Double_t x = fXaxis.GetBinCenter(binx);</div>
 <div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span>         hpz-&gt;Reset();</div>
 <div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span>         Int_t nfill = 0;</div>
 <div class="line"><a id="l00880" name="l00880"></a><span class="lineno">  880</span>         <span class="keywordflow">for</span>(Int_t binz = 1; binz &lt;= nbinsz; binz++) {</div>
-<div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span>            Int_t   bin = <a class="code hl_function" href="class_g_cube.html#a5241c5f641c6cc1cd758319ba14b9df0">GetBin</a>(binx, biny, binz);</div>
-<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span>            Float_t w   = RetrieveBinContent(bin);</div>
+<div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span>            Int_t    bin = <a class="code hl_function" href="class_g_cube.html#a5241c5f641c6cc1cd758319ba14b9df0">GetBin</a>(binx, biny, binz);</div>
+<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span>            Double_t w   = RetrieveBinContent(bin);</div>
 <div class="line"><a id="l00883" name="l00883"></a><span class="lineno">  883</span>            <span class="keywordflow">if</span>(w == 0) {</div>
 <div class="line"><a id="l00884" name="l00884"></a><span class="lineno">  884</span>               <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00885" name="l00885"></a><span class="lineno">  885</span>            }</div>
@@ -1089,9 +1089,9 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span>      std::swap(biny, binz);</div>
 <div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span>   }</div>
 <div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span> </div>
-<div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span>   <span class="keywordflow">return</span> binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +</div>
-<div class="line"><a id="l00942" name="l00942"></a><span class="lineno">  942</span>          binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +</div>
-<div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span>                  10. / 3.);</div>
+<div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span>   <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(binx + biny * (fXaxis.GetNbins() - (biny + 1.) / 2.) +</div>
+<div class="line"><a id="l00942" name="l00942"></a><span class="lineno">  942</span>                             binz * (binz / 2. * (binz / 3. - fXaxis.GetNbins() + 3.) + fXaxis.GetNbins() * (3 + fXaxis.GetNbins() / 2.) +</div>
+<div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span>                                     10. / 3.));</div>
 <div class="line"><a id="l00944" name="l00944"></a><span class="lineno">  944</span>}</div>
 </div>
 <div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span> </div>
@@ -1325,7 +1325,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l01164" name="l01164"></a><span class="lineno"> 1164</span><span class="comment">   ///  the histogram.</span></div>
 <div class="line"><a id="l01165" name="l01165"></a><span class="lineno"> 1165</span><span class="comment"></span> </div>
 <div class="line"><a id="l01166" name="l01166"></a><span class="lineno"> 1166</span>   <span class="keywordflow">if</span>(fBuffer != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l01167" name="l01167"></a><span class="lineno"> 1167</span>      <span class="keyword">const_cast&lt;</span><a class="code hl_class" href="class_g_cube.html">GCube</a>*<span class="keyword">&gt;</span>(<span class="keyword">this</span>)-&gt;<a class="code hl_function" href="class_g_cube.html#ac188fb4627c94b1f537ea682713755a5">BufferEmpty</a>();   <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l01167" name="l01167"></a><span class="lineno"> 1167</span>      <span class="keyword">const_cast&lt;</span><a class="code hl_class" href="class_g_cube.html">GCube</a>*<span class="keyword">&gt;</span>(<span class="keyword">this</span>)-&gt;<a class="code hl_function" href="class_g_cube.html#ac188fb4627c94b1f537ea682713755a5">BufferEmpty</a>();   <span class="comment">// NOLINT(cppcoreguidelines-pro-type-const-cast)</span></div>
 <div class="line"><a id="l01168" name="l01168"></a><span class="lineno"> 1168</span>   }</div>
 <div class="line"><a id="l01169" name="l01169"></a><span class="lineno"> 1169</span> </div>
 <div class="line"><a id="l01170" name="l01170"></a><span class="lineno"> 1170</span>   <span class="keywordflow">if</span>((fTsumw == 0 &amp;&amp; fEntries &gt; 0) || fXaxis.TestBit(TAxis::kAxisRange) || fYaxis.TestBit(TAxis::kAxisRange) ||</div>
@@ -1568,12 +1568,12 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l01393" name="l01393"></a><span class="lineno"> 1393</span>   opt.ToUpper();</div>
 <div class="line"><a id="l01394" name="l01394"></a><span class="lineno"> 1394</span> </div>
 <div class="line"><a id="l01395" name="l01395"></a><span class="lineno"> 1395</span>   Double_t prb = 0;</div>
-<div class="line"><a id="l01396" name="l01396"></a><span class="lineno"> 1396</span>   <span class="keyword">auto</span>*    h1  = <span class="keyword">const_cast&lt;</span>TH1*<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keyword">const </span>TH1*<span class="keyword">&gt;</span>(<span class="keyword">this</span>));   <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l01396" name="l01396"></a><span class="lineno"> 1396</span>   <span class="keyword">auto</span>*    h1  = <span class="keyword">const_cast&lt;</span>TH1*<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keyword">const </span>TH1*<span class="keyword">&gt;</span>(<span class="keyword">this</span>));   <span class="comment">// NOLINT(cppcoreguidelines-pro-type-const-cast)</span></div>
 <div class="line"><a id="l01397" name="l01397"></a><span class="lineno"> 1397</span>   <span class="keywordflow">if</span>(h2 == <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a id="l01398" name="l01398"></a><span class="lineno"> 1398</span>      <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l01399" name="l01399"></a><span class="lineno"> 1399</span>   }</div>
 <div class="line"><a id="l01400" name="l01400"></a><span class="lineno"> 1400</span>   TAxis* xaxis1 = h1-&gt;GetXaxis();</div>
-<div class="line"><a id="l01401" name="l01401"></a><span class="lineno"> 1401</span>   <span class="keyword">auto</span>*  xaxis2 = <span class="keyword">const_cast&lt;</span>TAxis*<span class="keyword">&gt;</span>(h2-&gt;GetXaxis());   <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l01401" name="l01401"></a><span class="lineno"> 1401</span>   <span class="keyword">auto</span>*  xaxis2 = <span class="keyword">const_cast&lt;</span>TAxis*<span class="keyword">&gt;</span>(h2-&gt;GetXaxis());   <span class="comment">// NOLINT(cppcoreguidelines-pro-type-const-cast)</span></div>
 <div class="line"><a id="l01402" name="l01402"></a><span class="lineno"> 1402</span>   Int_t  nc1    = xaxis1-&gt;GetNbins();</div>
 <div class="line"><a id="l01403" name="l01403"></a><span class="lineno"> 1403</span>   Int_t  nc2    = xaxis2-&gt;GetNbins();</div>
 <div class="line"><a id="l01404" name="l01404"></a><span class="lineno"> 1404</span> </div>
@@ -2075,7 +2075,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l01896" name="l01896"></a><span class="lineno"> 1896</span>   }</div>
 <div class="line"><a id="l01897" name="l01897"></a><span class="lineno"> 1897</span> </div>
 <div class="line"><a id="l01898" name="l01898"></a><span class="lineno"> 1898</span>   <span class="comment">// Create the projection histogram</span></div>
-<div class="line"><a id="l01899" name="l01899"></a><span class="lineno"> 1899</span>   <span class="keywordtype">char</span>* pname = <span class="keyword">const_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(name);   <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l01899" name="l01899"></a><span class="lineno"> 1899</span>   <span class="keywordtype">char</span>* pname = <span class="keyword">const_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(name);   <span class="comment">// NOLINT(cppcoreguidelines-pro-type-const-cast)</span></div>
 <div class="line"><a id="l01900" name="l01900"></a><span class="lineno"> 1900</span>   <span class="keywordflow">if</span>(name != <span class="keyword">nullptr</span> &amp;&amp; strcmp(name, expectedName) == 0) {</div>
 <div class="line"><a id="l01901" name="l01901"></a><span class="lineno"> 1901</span>      <span class="keyword">auto</span> nch = strlen(GetName()) + 4;</div>
 <div class="line"><a id="l01902" name="l01902"></a><span class="lineno"> 1902</span>      pname    = <span class="keyword">new</span> <span class="keywordtype">char</span>[nch];</div>
@@ -2140,7 +2140,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l01961" name="l01961"></a><span class="lineno"> 1961</span> </div>
 <div class="line"><a id="l01962" name="l01962"></a><span class="lineno"> 1962</span>   <span class="comment">// Copy the axis attributes and the axis labels if needed.</span></div>
 <div class="line"><a id="l01963" name="l01963"></a><span class="lineno"> 1963</span>   h1-&gt;GetXaxis()-&gt;ImportAttributes(&amp;fXaxis);</div>
-<div class="line"><a id="l01964" name="l01964"></a><span class="lineno"> 1964</span>   THashList* labels = <span class="keyword">const_cast&lt;</span>TAxis*<span class="keyword">&gt;</span>(&amp;fXaxis)-&gt;GetLabels();   <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l01964" name="l01964"></a><span class="lineno"> 1964</span>   THashList* labels = <span class="keyword">const_cast&lt;</span>TAxis*<span class="keyword">&gt;</span>(&amp;fXaxis)-&gt;GetLabels();   <span class="comment">// NOLINT(cppcoreguidelines-pro-type-const-cast)</span></div>
 <div class="line"><a id="l01965" name="l01965"></a><span class="lineno"> 1965</span>   <span class="keywordflow">if</span>(labels != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a id="l01966" name="l01966"></a><span class="lineno"> 1966</span>      TIter       iL(labels);</div>
 <div class="line"><a id="l01967" name="l01967"></a><span class="lineno"> 1967</span>      TObjString* lb = <span class="keyword">nullptr</span>;</div>
@@ -2679,7 +2679,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l02490" name="l02490"></a><span class="lineno"> 2490</span>   <span class="comment">//   The background is returned as a histogram.</span></div>
 <div class="line"><a id="l02491" name="l02491"></a><span class="lineno"> 2491</span>   <span class="comment">//   to be implemented (may be)</span></div>
 <div class="line"><a id="l02492" name="l02492"></a><span class="lineno"> 2492</span> </div>
-<div class="line"><a id="l02493" name="l02493"></a><span class="lineno"> 2493</span>   <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>TH1*<span class="keyword">&gt;</span>(gROOT-&gt;ProcessLineFast(   <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l02493" name="l02493"></a><span class="lineno"> 2493</span>   <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>TH1*<span class="keyword">&gt;</span>(gROOT-&gt;ProcessLineFast(   <span class="comment">// NOLINT(performance-no-int-to-ptr)</span></div>
 <div class="line"><a id="l02494" name="l02494"></a><span class="lineno"> 2494</span>      Form(R<span class="stringliteral">&quot;(TSpectrum2::StaticBackground((TH1*)0x%lx,%d,&quot;%s&quot;))&quot;, </span><span class="keyword">reinterpret_cast&lt;</span>ULong_t<span class="keyword">&gt;</span>(<span class="keyword">this</span>), niter, option)));</div>
 <div class="line"><a id="l02495" name="l02495"></a><span class="lineno"> 2495</span>}</div>
 </div>
@@ -2875,7 +2875,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l02671" name="l02671"></a><span class="lineno"> 2671</span> </div>
 <div class="foldopen" id="foldopen02672" data-start="{" data-end="}">
 <div class="line"><a id="l02672" name="l02672"></a><span class="lineno"><a class="line" href="class_g_cube_f.html#ad5b4795aeac693b40a9dac91c5e6d7ef"> 2672</a></span><a class="code hl_function" href="class_g_cube_f.html#a4a5f56ebe3858110c0d111c1c9d8c30b">GCubeF::GCubeF</a>(<a class="code hl_class" href="class_g_cube_f.html">GCubeF</a>&amp;&amp; rhs) noexcept</div>
-<div class="line"><a id="l02673" name="l02673"></a><span class="lineno"> 2673</span>   : <a class="code hl_class" href="class_g_cube.html">GCube</a>(rhs), TArrayF(rhs)</div>
+<div class="line"><a id="l02673" name="l02673"></a><span class="lineno"> 2673</span>   : <a class="code hl_class" href="class_g_cube.html">GCube</a>(std::move(rhs)), TArrayF(rhs)</div>
 <div class="line"><a id="l02674" name="l02674"></a><span class="lineno"> 2674</span>{</div>
 <div class="line"><a id="l02675" name="l02675"></a><span class="lineno"> 2675</span>   rhs.<a class="code hl_function" href="class_g_cube.html#af9b2af5da814283c07a8848cb75aeb91">Copy</a>(*<span class="keyword">this</span>);</div>
 <div class="line"><a id="l02676" name="l02676"></a><span class="lineno"> 2676</span>}</div>
@@ -2938,7 +2938,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l02725" name="l02725"></a><span class="lineno"> 2725</span>   <span class="comment">// Get bin content.</span></div>
 <div class="line"><a id="l02726" name="l02726"></a><span class="lineno"> 2726</span> </div>
 <div class="line"><a id="l02727" name="l02727"></a><span class="lineno"> 2727</span>   <span class="keywordflow">if</span>(fBuffer != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l02728" name="l02728"></a><span class="lineno"> 2728</span>      <span class="keyword">const_cast&lt;</span><a class="code hl_class" href="class_g_cube_f.html">GCubeF</a>*<span class="keyword">&gt;</span>(<span class="keyword">this</span>)-&gt;<a class="code hl_function" href="class_g_cube.html#ac188fb4627c94b1f537ea682713755a5">BufferEmpty</a>();   <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l02728" name="l02728"></a><span class="lineno"> 2728</span>      <span class="keyword">const_cast&lt;</span><a class="code hl_class" href="class_g_cube_f.html">GCubeF</a>*<span class="keyword">&gt;</span>(<span class="keyword">this</span>)-&gt;<a class="code hl_function" href="class_g_cube.html#ac188fb4627c94b1f537ea682713755a5">BufferEmpty</a>();   <span class="comment">// NOLINT(cppcoreguidelines-pro-type-const-cast)</span></div>
 <div class="line"><a id="l02729" name="l02729"></a><span class="lineno"> 2729</span>   }</div>
 <div class="line"><a id="l02730" name="l02730"></a><span class="lineno"> 2730</span>   <span class="keywordflow">if</span>(bin &lt; 0) {</div>
 <div class="line"><a id="l02731" name="l02731"></a><span class="lineno"> 2731</span>      bin = 0;</div>
@@ -3137,7 +3137,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l02893" name="l02893"></a><span class="lineno"> 2893</span> </div>
 <div class="foldopen" id="foldopen02894" data-start="{" data-end="}">
 <div class="line"><a id="l02894" name="l02894"></a><span class="lineno"><a class="line" href="class_g_cube_d.html#a58303a7fc1df42a1bf0b8b18190e7c65"> 2894</a></span><a class="code hl_function" href="class_g_cube_d.html#a2b8475e0857ca108816bee6822536e02">GCubeD::GCubeD</a>(<a class="code hl_class" href="class_g_cube_d.html">GCubeD</a>&amp;&amp; rhs) noexcept</div>
-<div class="line"><a id="l02895" name="l02895"></a><span class="lineno"> 2895</span>   : <a class="code hl_class" href="class_g_cube.html">GCube</a>(rhs), TArrayD(rhs)</div>
+<div class="line"><a id="l02895" name="l02895"></a><span class="lineno"> 2895</span>   : <a class="code hl_class" href="class_g_cube.html">GCube</a>(std::move(rhs)), TArrayD(rhs)</div>
 <div class="line"><a id="l02896" name="l02896"></a><span class="lineno"> 2896</span>{</div>
 <div class="line"><a id="l02897" name="l02897"></a><span class="lineno"> 2897</span>   rhs.<a class="code hl_function" href="class_g_cube.html#af9b2af5da814283c07a8848cb75aeb91">Copy</a>(*<span class="keyword">this</span>);</div>
 <div class="line"><a id="l02898" name="l02898"></a><span class="lineno"> 2898</span>}</div>
@@ -3201,7 +3201,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div class="line"><a id="l02948" name="l02948"></a><span class="lineno"> 2948</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l02949" name="l02949"></a><span class="lineno"> 2949</span>   <span class="comment">// Get bin content.</span></div>
 <div class="line"><a id="l02950" name="l02950"></a><span class="lineno"> 2950</span>   <span class="keywordflow">if</span>(fBuffer != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l02951" name="l02951"></a><span class="lineno"> 2951</span>      <span class="keyword">const_cast&lt;</span><a class="code hl_class" href="class_g_cube_d.html">GCubeD</a>*<span class="keyword">&gt;</span>(<span class="keyword">this</span>)-&gt;<a class="code hl_function" href="class_g_cube.html#ac188fb4627c94b1f537ea682713755a5">BufferEmpty</a>();   <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l02951" name="l02951"></a><span class="lineno"> 2951</span>      <span class="keyword">const_cast&lt;</span><a class="code hl_class" href="class_g_cube_d.html">GCubeD</a>*<span class="keyword">&gt;</span>(<span class="keyword">this</span>)-&gt;<a class="code hl_function" href="class_g_cube.html#ac188fb4627c94b1f537ea682713755a5">BufferEmpty</a>();   <span class="comment">// NOLINT(cppcoreguidelines-pro-type-const-cast)</span></div>
 <div class="line"><a id="l02952" name="l02952"></a><span class="lineno"> 2952</span>   }</div>
 <div class="line"><a id="l02953" name="l02953"></a><span class="lineno"> 2953</span>   <span class="keywordflow">if</span>(bin &lt; 0) {</div>
 <div class="line"><a id="l02954" name="l02954"></a><span class="lineno"> 2954</span>      bin = 0;</div>
@@ -3420,7 +3420,7 @@ $(document).ready(function(){initNavTree('_g_cube_8cxx_source.html',''); initRes
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_47358ee868e3aed1e59cf9c2ead119a2.html">GROOT</a></li><li class="navelem"><a class="el" href="_g_cube_8cxx.html">GCube.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:45.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:53.</li>
   </ul>
 </div>
 </body>

@@ -18,8 +18,8 @@ var searchData=
   ['badchisq_5ft0_15',['BADCHISQ_T0',['../class_t_pulse_analyzer.html#aced5a344199af32b9267ac60ce6d833c',1,'TPulseAnalyzer']]],
   ['bak_16',['bak',['../class_t_preserve_g_directory.html#ab43959818bea2ce7ac05f9218f4cd556',1,'TPreserveGDirectory']]],
   ['baseamp_17',['baseamp',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a89f6f39d0b338e9299019ca489053f9c',1,'TPulseAnalyzer::WaveFormPar']]],
-  ['basefreq_18',['basefreq',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a909d31cdad1e78e072b4ed733f4c2e1e',1,'TPulseAnalyzer::WaveFormPar::basefreq'],['../class_t_si_li.html#abfb6f6692ad8beb02952d313223e27d0',1,'TSiLi::BaseFreq']]],
-  ['baseline_19',['baseline',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a44e84c241a2dd09197eba21b7766851a',1,'TPulseAnalyzer::WaveFormPar::baseline'],['../struct_t_channel_1_1_wave_form_shape_par.html#a2d5133f9e8f4681cf039868839b4be48',1,'TChannel::WaveFormShapePar::BaseLine']]],
+  ['basefreq_18',['basefreq',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a909d31cdad1e78e072b4ed733f4c2e1e',1,'TPulseAnalyzer::WaveFormPar']]],
+  ['baseline_19',['baseline',['../struct_t_channel_1_1_wave_form_shape_par.html#a2d5133f9e8f4681cf039868839b4be48',1,'TChannel::WaveFormShapePar::BaseLine'],['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a44e84c241a2dd09197eba21b7766851a',1,'TPulseAnalyzer::WaveFormPar::baseline']]],
   ['baseline_5frange_20',['baseline_range',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#aa6d0221399398372e1ab1052e92fd214',1,'TPulseAnalyzer::WaveFormPar']]],
   ['baselinefin_21',['baselinefin',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#ad96bfbd38c4749a7eca0eef02b95d59c',1,'TPulseAnalyzer::WaveFormPar']]],
   ['baselinemax_22',['baselineMax',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#ac0a1b28f3ed2fce17ffc45fa0aac8c32',1,'TPulseAnalyzer::WaveFormPar']]],
@@ -33,8 +33,7 @@ var searchData=
   ['bflag_30',['bflag',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a7b94171d19b16c964d9985782d138118',1,'TPulseAnalyzer::WaveFormPar']]],
   ['bghigh_31',['bghigh',['../_efficiency_helper_8cxx.html#af7c87127f83b77788e3ff236ad70f942',1,'bgHigh:&#160;EfficiencyHelper.cxx'],['../_angular_correlation_selector_8_c.html#af7c87127f83b77788e3ff236ad70f942',1,'bgHigh:&#160;AngularCorrelationSelector.C']]],
   ['bglow_32',['bglow',['../_efficiency_helper_8cxx.html#a844ddf3a7141aa90f36942778a6939ff',1,'bgLow:&#160;EfficiencyHelper.cxx'],['../_angular_correlation_selector_8_c.html#a844ddf3a7141aa90f36942778a6939ff',1,'bgLow:&#160;AngularCorrelationSelector.C']]],
-  ['bgosuppression_33',['BGOSuppression',['../class_t_tigress.html#a2a02d756a76fa91cec35bf3d58aa713b',1,'TTigress']]],
-  ['bhflag_34',['bhFlag',['../struct_rlmd_file_header.html#abd8075ce1224c553466b10df3b6f9326',1,'RlmdFileHeader']]],
-  ['bright_35',['bright',['../classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#ad3c6f16384d02dd9bf9d73d4a818b6cc',1,'pygui::AnsiColorText::AnsiColorText']]],
-  ['buffernumts_36',['buffernumts',['../struct_rlmd_file_header.html#a97445e68b7a205f29f723103071bb834',1,'RlmdFileHeader::bufferNumTS'],['../struct_rlmd_buffer_header.html#a679575ecf4f04164fbeb09a8894d3284',1,'RlmdBufferHeader::bufferNumTS']]]
+  ['bhflag_33',['bhFlag',['../struct_rlmd_file_header.html#abd8075ce1224c553466b10df3b6f9326',1,'RlmdFileHeader']]],
+  ['bright_34',['bright',['../classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#ad3c6f16384d02dd9bf9d73d4a818b6cc',1,'pygui::AnsiColorText::AnsiColorText']]],
+  ['buffernumts_35',['buffernumts',['../struct_rlmd_file_header.html#a97445e68b7a205f29f723103071bb834',1,'RlmdFileHeader::bufferNumTS'],['../struct_rlmd_buffer_header.html#a679575ecf4f04164fbeb09a8894d3284',1,'RlmdBufferHeader::bufferNumTS']]]
 ];

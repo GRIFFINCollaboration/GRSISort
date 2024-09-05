@@ -191,7 +191,7 @@ $(document).ready(function(){initNavTree('_t_unpacking_loop_8cxx_source.html',''
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>   std::stringstream str;</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_unpacking_loop.html#ad5692cd9512be37e0cbfe57efc80889f">fFragsReadFromRaw</a> &gt; 0) {</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>      str &lt;&lt; <span class="stringliteral">&quot;\r&quot;</span> &lt;&lt; <a class="code hl_function" href="class_stoppable_thread.html#adab35c9c94b46acb9746d169ee29318b">Name</a>() &lt;&lt; <span class="stringliteral">&quot;:\t&quot;</span> &lt;&lt; <a class="code hl_variable" href="class_t_unpacking_loop.html#ad44d7392ea94976afc99e9beaa21595a">fGoodFragsRead</a> &lt;&lt; <span class="stringliteral">&quot; good fragments out of &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_t_unpacking_loop.html#ad5692cd9512be37e0cbfe57efc80889f">fFragsReadFromRaw</a></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>          &lt;&lt; <span class="stringliteral">&quot; fragments =&gt; &quot;</span> &lt;&lt; (100. * <a class="code hl_variable" href="class_t_unpacking_loop.html#ad44d7392ea94976afc99e9beaa21595a">fGoodFragsRead</a>) / <a class="code hl_variable" href="class_t_unpacking_loop.html#ad5692cd9512be37e0cbfe57efc80889f">fFragsReadFromRaw</a> &lt;&lt; <span class="stringliteral">&quot;% passed&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>          &lt;&lt; <span class="stringliteral">&quot; fragments =&gt; &quot;</span> &lt;&lt; 100. * <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="class_t_unpacking_loop.html#ad44d7392ea94976afc99e9beaa21595a">fGoodFragsRead</a>) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="class_t_unpacking_loop.html#ad5692cd9512be37e0cbfe57efc80889f">fFragsReadFromRaw</a>) &lt;&lt; <span class="stringliteral">&quot;% passed&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>   } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      str &lt;&lt; <span class="stringliteral">&quot;\rno fragments read from midas =&gt; none parsed!&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>   }</div>
@@ -239,7 +239,7 @@ $(document).ready(function(){initNavTree('_t_unpacking_loop_8cxx_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_cd3c6700b09e85b3c422529c0dd23545.html">TLoops</a></li><li class="navelem"><a class="el" href="_t_unpacking_loop_8cxx.html">TUnpackingLoop.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:46.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:54.</li>
   </ul>
 </div>
 </body>

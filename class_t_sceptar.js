@@ -1,8 +1,9 @@
 var class_t_sceptar =
 [
     [ "TSceptar", "class_t_sceptar.html#a15efa8b3e59b8626e7c74798a807271c", null ],
-    [ "~TSceptar", "class_t_sceptar.html#a30fcabb6a2109db3ca2f40cf2102ce38", null ],
     [ "TSceptar", "class_t_sceptar.html#a5497b45b448bf38eedf96a927e251d02", null ],
+    [ "TSceptar", "class_t_sceptar.html#a5453af9bb4e8bc30875a91a10b7bb509", null ],
+    [ "~TSceptar", "class_t_sceptar.html#a4135a7a5f64ad760e834e550313b1850", null ],
     [ "AddFragment", "class_t_sceptar.html#a99d2a5c7306b6e34ede6ba41b047e814", null ],
     [ "AddHit", "class_t_sceptar.html#af83ad943618a30f7d1639675e18fc5b8", null ],
     [ "BuildHits", "class_t_sceptar.html#ac37a3951e92a49dacf445810fd4bb95f", null ],
@@ -18,10 +19,11 @@ var class_t_sceptar =
     [ "Hits", "class_t_sceptar.html#ab907981ce861ab147879469064748ae2", null ],
     [ "NoHits", "class_t_sceptar.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
     [ "operator=", "class_t_sceptar.html#a3a68b211d28f50072fb35325b093b843", null ],
+    [ "operator=", "class_t_sceptar.html#aa49a6e22834b4fe18fcbd62633727a3a", null ],
     [ "Print", "class_t_sceptar.html#ab99c0c9d94dac445f5f99f932893ea0a", null ],
     [ "Print", "class_t_sceptar.html#a4cb1d691f7b88ad465da86c948a53087", null ],
     [ "SetWave", "class_t_sceptar.html#a60c95cc1422baed3e942ef7da8c82ac2", null ],
     [ "fHits", "class_t_sceptar.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ],
-    [ "fSetWave", "class_t_sceptar.html#ace8e6f4234196a5efe9417c8eb1da339", null ],
-    [ "gPaddlePosition", "class_t_sceptar.html#ae973bd69280e5c90779c8184e266c8c0", null ]
+    [ "fPaddlePosition", "class_t_sceptar.html#a7cf149c6c97c8e70fc7774b68738b552", null ],
+    [ "fSetWave", "class_t_sceptar.html#ace8e6f4234196a5efe9417c8eb1da339", null ]
 ];

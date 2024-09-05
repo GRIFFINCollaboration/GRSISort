@@ -2,6 +2,7 @@ var class_t_generic_detector =
 [
     [ "TGenericDetector", "class_t_generic_detector.html#ac3050608e488dc693205767a95b5b140", null ],
     [ "TGenericDetector", "class_t_generic_detector.html#afaebcc83921074bad82703f930ebe0a4", null ],
+    [ "TGenericDetector", "class_t_generic_detector.html#afae8da5aa5ee1bc0895a1a8cfad4b7a0", null ],
     [ "~TGenericDetector", "class_t_generic_detector.html#a3ed87a1e8d307558502803d2756264bf", null ],
     [ "AddFragment", "class_t_generic_detector.html#adc10318592d16661c556bb9974a64ce3", null ],
     [ "AddHit", "class_t_generic_detector.html#af83ad943618a30f7d1639675e18fc5b8", null ],
@@ -18,6 +19,7 @@ var class_t_generic_detector =
     [ "Hits", "class_t_generic_detector.html#ab907981ce861ab147879469064748ae2", null ],
     [ "NoHits", "class_t_generic_detector.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
     [ "operator=", "class_t_generic_detector.html#a85c95c1a93e4e8dc9e38e52da7f96974", null ],
+    [ "operator=", "class_t_generic_detector.html#a220344e955bfaeda7e07dec5d7ea1866", null ],
     [ "Print", "class_t_generic_detector.html#a3a586ed14e2a3b6e90635187152f985f", null ],
     [ "Print", "class_t_generic_detector.html#ad1285507822e0d8dc1b2067d6817dc15", null ],
     [ "fHits", "class_t_generic_detector.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ]

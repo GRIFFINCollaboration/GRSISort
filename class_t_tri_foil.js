@@ -1,8 +1,9 @@
 var class_t_tri_foil =
 [
     [ "TTriFoil", "class_t_tri_foil.html#a6fa3deaae0c575217a321fec638b1adf", null ],
-    [ "~TTriFoil", "class_t_tri_foil.html#adcf3cbc6b5f00fbc53c0714786c6e185", null ],
     [ "TTriFoil", "class_t_tri_foil.html#a6337718b991c2f4725bc5821a4b11256", null ],
+    [ "TTriFoil", "class_t_tri_foil.html#a4d5bb0903f96fc46e1e8364339ab40da", null ],
+    [ "~TTriFoil", "class_t_tri_foil.html#adcf3cbc6b5f00fbc53c0714786c6e185", null ],
     [ "AddFragment", "class_t_tri_foil.html#a3ef78a1d8b4fdfddb88de7518f8f9346", null ],
     [ "AddHit", "class_t_tri_foil.html#af83ad943618a30f7d1639675e18fc5b8", null ],
     [ "Beam", "class_t_tri_foil.html#aba8582ed18352b37385184ca9bd16eac", null ],
@@ -20,6 +21,8 @@ var class_t_tri_foil =
     [ "Hits", "class_t_tri_foil.html#ab907981ce861ab147879469064748ae2", null ],
     [ "NoHits", "class_t_tri_foil.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
     [ "NTBeam", "class_t_tri_foil.html#a306e3c14bf5156317fee344831ae6662", null ],
+    [ "operator=", "class_t_tri_foil.html#a5467a65411bb7e634022b21da7c3aa4a", null ],
+    [ "operator=", "class_t_tri_foil.html#abd0b499ff5a10d62208bbaa6059faa67", null ],
     [ "Print", "class_t_tri_foil.html#ab07ca56e67c19281d9389608e98564ee", null ],
     [ "Print", "class_t_tri_foil.html#a5e1eb87cae06ced183fa1bf2446a260d", null ],
     [ "TBeam", "class_t_tri_foil.html#a35104b0fdb4f4f2fa56e6ff077dc45e0", null ],

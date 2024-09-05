@@ -133,7 +133,7 @@ $(document).ready(function(){initNavTree('_t_generic_detector_8cxx_source.html',
 </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 <div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="class_t_generic_detector.html#afaebcc83921074bad82703f930ebe0a4">   27</a></span><a class="code hl_function" href="class_t_generic_detector.html#ac3050608e488dc693205767a95b5b140">TGenericDetector::TGenericDetector</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_generic_detector.html">TGenericDetector</a>&amp; rhs) : <a class="code hl_class" href="class_t_detector.html">TDetector</a>()</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="class_t_generic_detector.html#afaebcc83921074bad82703f930ebe0a4">   27</a></span><a class="code hl_function" href="class_t_generic_detector.html#ac3050608e488dc693205767a95b5b140">TGenericDetector::TGenericDetector</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_generic_detector.html">TGenericDetector</a>&amp; rhs) : <a class="code hl_class" href="class_t_detector.html">TDetector</a>(rhs)</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>   rhs.<a class="code hl_function" href="class_t_detector.html#a5bb705bebefab8cfb039ecb67ec0f9da">Copy</a>(*<span class="keyword">this</span>);</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('_t_generic_detector_8cxx_source.html',
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>   }</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>   <a class="code hl_class" href="class_t_detector_hit.html">TDetectorHit</a>* hit = <span class="keyword">new</span> <a class="code hl_class" href="class_t_detector_hit.html">TDetectorHit</a>(*frag);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>   <span class="keyword">auto</span>* hit = <span class="keyword">new</span> <a class="code hl_class" href="class_t_detector_hit.html">TDetectorHit</a>(*frag);</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>   <a class="code hl_function" href="class_t_detector.html#af83ad943618a30f7d1639675e18fc5b8">AddHit</a>(hit);</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}</div>
 </div>
@@ -164,7 +164,7 @@ $(document).ready(function(){initNavTree('_t_generic_detector_8cxx_source.html',
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="class_t_generic_detector.html#ad1285507822e0d8dc1b2067d6817dc15">   49</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_generic_detector.html#a3a586ed14e2a3b6e90635187152f985f">TGenericDetector::Print</a>(std::ostream&amp; out)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>   std::ostringstream str;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>   str&lt;&lt;__PRETTY_FUNCTION__&lt;&lt;<span class="stringliteral">&quot;\tnot yet written.&quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>   str&lt;&lt;__PRETTY_FUNCTION__&lt;&lt;<span class="stringliteral">&quot;\tnot yet written.&quot;</span>&lt;&lt;std::endl; <span class="comment">// NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>   out&lt;&lt;str.str();</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
 </div>
@@ -189,7 +189,7 @@ $(document).ready(function(){initNavTree('_t_generic_detector_8cxx_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_04ded5cb9506aadc0b6d1c08d3b0ca72.html">libraries</a></li><li class="navelem"><a class="el" href="dir_f1ca9974b6d60d8551858194bc4a7b28.html">TGRSIAnalysis</a></li><li class="navelem"><a class="el" href="dir_96a286c95e152dc84501dde3344e48b1.html">TGenericDetector</a></li><li class="navelem"><a class="el" href="_t_generic_detector_8cxx.html">TGenericDetector.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:44.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:52.</li>
   </ul>
 </div>
 </body>

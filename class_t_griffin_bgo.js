@@ -2,7 +2,8 @@ var class_t_griffin_bgo =
 [
     [ "TGriffinBgo", "class_t_griffin_bgo.html#ad0bcb24148706117784e158da0fce254", null ],
     [ "TGriffinBgo", "class_t_griffin_bgo.html#a085bc6ed53bf021937b04ced8c87f6d6", null ],
-    [ "~TGriffinBgo", "class_t_griffin_bgo.html#aec573c419798a440eb795ada0b6c6822", null ],
+    [ "TGriffinBgo", "class_t_griffin_bgo.html#afbecc4f22a5ba869a6b60594fa787721", null ],
+    [ "~TGriffinBgo", "class_t_griffin_bgo.html#a109dd5a694748c90b5a2dc2155e67847", null ],
     [ "AddFragment", "class_t_griffin_bgo.html#ab166053f5852e7dde433fc7170d99977", null ],
     [ "AddHit", "class_t_griffin_bgo.html#af83ad943618a30f7d1639675e18fc5b8", null ],
     [ "BuildHits", "class_t_griffin_bgo.html#ae1cca8f81805c84b1025cede9f0c1e1c", null ],
@@ -18,6 +19,7 @@ var class_t_griffin_bgo =
     [ "Hits", "class_t_griffin_bgo.html#ab907981ce861ab147879469064748ae2", null ],
     [ "NoHits", "class_t_griffin_bgo.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
     [ "operator=", "class_t_griffin_bgo.html#a4287f0a73db1d7617ee5629fa658c16d", null ],
+    [ "operator=", "class_t_griffin_bgo.html#ac67866f5ec245693ea4119dd143b6a4c", null ],
     [ "Print", "class_t_griffin_bgo.html#af5918349419ed07c832590d122e73a2e", null ],
     [ "Print", "class_t_griffin_bgo.html#a58c8bd71049b0aa355bb3d8ded28ddcb", null ],
     [ "fHits", "class_t_griffin_bgo.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ],

@@ -451,8 +451,8 @@ $(document).ready(function(){initNavTree('_t_gain_match_8cxx_source.html',''); i
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;Writing to channel &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_cal.html#ad3a29c8369ce14d84dd39e13fa4fccde">GetChannel</a>()-&gt;<a class="code hl_function" href="class_t_channel.html#ac33ac3f89678743363d1923f64766e2d">GetNumber</a>() &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;p0 = &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_cal.html#a444c39f3dbe604bad3bcdccdb950305a">GetParameter</a>(0) &lt;&lt; <span class="stringliteral">&quot; \t p1 = &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_cal.html#a444c39f3dbe604bad3bcdccdb950305a">GetParameter</a>(1) &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>   <span class="comment">// Set the energy parameters based on the fitted gains.</span></div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>   <a class="code hl_function" href="class_t_cal.html#ad3a29c8369ce14d84dd39e13fa4fccde">GetChannel</a>()-&gt;<a class="code hl_function" href="class_t_channel.html#ac9a44294b3c194f7c08398769b26bda0">AddENGCoefficient</a>(<a class="code hl_function" href="class_t_cal.html#a444c39f3dbe604bad3bcdccdb950305a">GetParameter</a>(0));</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>   <a class="code hl_function" href="class_t_cal.html#ad3a29c8369ce14d84dd39e13fa4fccde">GetChannel</a>()-&gt;<a class="code hl_function" href="class_t_channel.html#ac9a44294b3c194f7c08398769b26bda0">AddENGCoefficient</a>(<a class="code hl_function" href="class_t_cal.html#a444c39f3dbe604bad3bcdccdb950305a">GetParameter</a>(1));</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>   <a class="code hl_function" href="class_t_cal.html#ad3a29c8369ce14d84dd39e13fa4fccde">GetChannel</a>()-&gt;<a class="code hl_function" href="class_t_channel.html#ac9a44294b3c194f7c08398769b26bda0">AddENGCoefficient</a>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(<a class="code hl_function" href="class_t_cal.html#a444c39f3dbe604bad3bcdccdb950305a">GetParameter</a>(0)));</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>   <a class="code hl_function" href="class_t_cal.html#ad3a29c8369ce14d84dd39e13fa4fccde">GetChannel</a>()-&gt;<a class="code hl_function" href="class_t_channel.html#ac9a44294b3c194f7c08398769b26bda0">AddENGCoefficient</a>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(<a class="code hl_function" href="class_t_cal.html#a444c39f3dbe604bad3bcdccdb950305a">GetParameter</a>(1)));</div>
 <div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>}</div>
 </div>
 <div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span> </div>
@@ -774,7 +774,7 @@ $(document).ready(function(){initNavTree('_t_gain_match_8cxx_source.html',''); i
 <div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>      gm-&gt;Error(<span class="stringliteral">&quot;FineMatchAll&quot;</span>, <span class="stringliteral">&quot;TH2 Pointer is nullptr&quot;</span>);</div>
 <div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>   }</div>
-<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>   Double_t binwidth = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(0.5 + 1. / eng_mat-&gt;GetYaxis()-&gt;GetBinWidth(100));</div>
+<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>   <span class="keyword">auto</span> binwidth = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(0.5 + 1. / eng_mat-&gt;GetYaxis()-&gt;GetBinWidth(100));</div>
 <div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>   eng_mat-&gt;RebinY(binwidth);</div>
 <div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span> </div>
 <div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>   std::vector&lt;Int_t&gt; badlist;</div>
@@ -982,7 +982,7 @@ $(document).ready(function(){initNavTree('_t_gain_match_8cxx_source.html',''); i
 </div>
 <div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span> </div>
 <div class="foldopen" id="foldopen00840" data-start="{" data-end="}">
-<div class="line"><a id="l00840" name="l00840"></a><span class="lineno"><a class="line" href="class_t_gain_match.html#a4bf28ae40bea89efc1ce2524ce96226e">  840</a></span>Double_t <a class="code hl_function" href="class_t_gain_match.html#a4bf28ae40bea89efc1ce2524ce96226e">TGainMatch::HistCompare</a>(Double_t* x, Double_t* par)   <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l00840" name="l00840"></a><span class="lineno"><a class="line" href="class_t_gain_match.html#a4bf28ae40bea89efc1ce2524ce96226e">  840</a></span>Double_t <a class="code hl_function" href="class_t_gain_match.html#a4bf28ae40bea89efc1ce2524ce96226e">TGainMatch::HistCompare</a>(Double_t* x, Double_t* par)   <span class="comment">// NOLINT(readability-non-const-parameter)</span></div>
 <div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>{</div>
 <div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>   Int_t    bin     = <a class="code hl_variable" href="class_t_gain_match.html#a27942facfb401828bc92db0f14187b34">fHist</a>-&gt;GetXaxis()-&gt;FindBin(x[0] * par[2] + par[1]);</div>
 <div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span>   Double_t content = <a class="code hl_variable" href="class_t_gain_match.html#a27942facfb401828bc92db0f14187b34">fHist</a>-&gt;GetBinContent(bin);</div>
@@ -1043,7 +1043,7 @@ $(document).ready(function(){initNavTree('_t_gain_match_8cxx_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_4d17f409fb020449a7716dffae2b2761.html">TCal</a></li><li class="navelem"><a class="el" href="_t_gain_match_8cxx.html">TGainMatch.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:45.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:53.</li>
   </ul>
 </div>
 </body>

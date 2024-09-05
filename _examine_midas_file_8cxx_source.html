@@ -121,7 +121,7 @@ $(document).ready(function(){initNavTree('_examine_midas_file_8cxx_source.html',
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>      <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>   }   </div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>   in.seekg(0, std::ifstream::end);</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>   <span class="keywordtype">long</span> <span class="keywordtype">long</span> filesize = in.tellg();</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>   int64_t filesize = in.tellg();</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>   in.close();</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>   <a class="code hl_class" href="class_t_midas_file.html">TMidasFile</a>  mfile; </div>
@@ -130,10 +130,10 @@ $(document).ready(function(){initNavTree('_examine_midas_file_8cxx_source.html',
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>   mfile.<a class="code hl_function" href="class_t_midas_file.html#a2fb4418719324277c9a7b4f01e73c830">Open</a>(filename);</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>   <span class="keywordtype">long</span> <span class="keywordtype">long</span> starttime    = 0;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>   <span class="keywordtype">long</span> <span class="keywordtype">long</span> stoptime     = 0;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>   int64_t starttime    = 0;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>   int64_t stoptime     = 0;</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   <span class="keywordtype">int</span> currenteventnumber = 0;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>   <span class="keywordtype">long</span> <span class="keywordtype">long</span> bytesread = 0;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>   int64_t bytesread = 0;</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>   <span class="keywordtype">bool</span> loop = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
@@ -164,66 +164,69 @@ $(document).ready(function(){initNavTree('_examine_midas_file_8cxx_source.html',
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      }</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      <span class="keywordflow">if</span>((++currenteventnumber%15000)== 0) {</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>         printf( <span class="stringliteral">&quot; Looping over event %i have looped %.2fMB/%.2f MB =&gt; %.1f MB/s              &quot;</span>  <span class="stringliteral">&quot;\r&quot;</span>,</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>               currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0),(bytesread/1000000.0)/sw.RealTime());</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>         sw.Continue();</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      }</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>   }</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>   printf( <span class="stringliteral">&quot; Looping over event %i have looped %.2fMB/%.2f MB =&gt; %.1f MB/s              &quot;</span>  <span class="stringliteral">&quot;\r&quot;</span>,</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>         currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0),(bytesread/1000000.0)/sw.RealTime());</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>   printf(<span class="stringliteral">&quot;\n\n&quot;</span>);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>   printf(<span class="stringliteral">&quot;EventTypes Seen: \n&quot;</span>);</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>   <span class="keywordflow">for</span>(std::map&lt;int,int&gt;::iterator it=type_counter.begin();it!=type_counter.end();it++) {</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      printf(<span class="stringliteral">&quot;\tEventId[0x%x]  =  %i\n&quot;</span>,it-&gt;first,it-&gt;second);</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>   }</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>   printf(<span class="stringliteral">&quot;\n&quot;</span>);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>   printf(<span class="stringliteral">&quot;Run length =  %lli  seconds\n&quot;</span>,stoptime-starttime);</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>   printf(<span class="stringliteral">&quot;\n&quot;</span>);</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>   <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>}</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>         std::streamsize precision = std::cout.precision();</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>         std::cout.precision(2);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>         std::cout&lt;&lt;<span class="stringliteral">&quot; Looping over event &quot;</span>&lt;&lt;currenteventnumber&lt;&lt;<span class="stringliteral">&quot; have looped &quot;</span>&lt;&lt;<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(bytesread)/1000000.&lt;&lt;<span class="stringliteral">&quot;MB/&quot;</span>&lt;&lt;<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(filesize)/1000000.&lt;&lt;<span class="stringliteral">&quot; MB =&gt; &quot;</span>&lt;&lt;std::setprecision(1)&lt;&lt;<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(bytesread)/1000000/sw.RealTime()&lt;&lt;<span class="stringliteral">&quot; MB/s              \r&quot;</span>;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>         std::cout.precision(precision);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>         sw.Continue();</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>   }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>   std::streamsize precision = std::cout.precision();</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>   std::cout.precision(2);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>   std::cout&lt;&lt;<span class="stringliteral">&quot; Looping over event &quot;</span>&lt;&lt;currenteventnumber&lt;&lt;<span class="stringliteral">&quot; have looped &quot;</span>&lt;&lt;<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(bytesread)/1000000.&lt;&lt;<span class="stringliteral">&quot;MB/&quot;</span>&lt;&lt;<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(filesize)/1000000.&lt;&lt;<span class="stringliteral">&quot; MB =&gt; &quot;</span>&lt;&lt;std::setprecision(1)&lt;&lt;<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(bytesread)/1000000/sw.RealTime()&lt;&lt;<span class="stringliteral">&quot; MB/s              \r&quot;</span>;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>   std::cout.precision(precision);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>   printf(<span class="stringliteral">&quot;\n\n&quot;</span>);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>   printf(<span class="stringliteral">&quot;EventTypes Seen: \n&quot;</span>);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; it : type_counter) {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>      printf(<span class="stringliteral">&quot;\tEventId[0x%x]  =  %i\n&quot;</span>,it.first,it.second);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>   }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>   printf(<span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>   printf(<span class="stringliteral">&quot;Run length =  %lli  seconds\n&quot;</span>,<span class="keyword">static_cast&lt;</span><span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(stoptime-starttime));</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>   printf(<span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>}</div>
 </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#ifndef __CINT__</span></div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="foldopen" id="foldopen00083" data-start="{" data-end="}">
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="_examine_midas_file_8cxx.html#a64d28f49232d9fada3edd46309ab6830">   83</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="_examine_midas_file_8cxx.html#a64d28f49232d9fada3edd46309ab6830">PrintUsage</a>() {</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>   printf(<span class="stringliteral">&quot;Usage:  ./ExamineMidasFile &lt;runXXXXX.mid&gt;  \n&quot;</span>);</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>   printf(<span class="stringliteral">&quot;Can take multiple midas files. Currently no other options.\n&quot;</span>);</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>}</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">#ifndef __CINT__</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="foldopen" id="foldopen00086" data-start="{" data-end="}">
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="_examine_midas_file_8cxx.html#a64d28f49232d9fada3edd46309ab6830">   86</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="_examine_midas_file_8cxx.html#a64d28f49232d9fada3edd46309ab6830">PrintUsage</a>() {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>   printf(<span class="stringliteral">&quot;Usage:  ./ExamineMidasFile &lt;runXXXXX.mid&gt;  \n&quot;</span>);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>   printf(<span class="stringliteral">&quot;Can take multiple midas files. Currently no other options.\n&quot;</span>);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>}</div>
 </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="foldopen" id="foldopen00088" data-start="{" data-end="}">
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="_examine_midas_file_8cxx.html#a3c04138a5bfe5d72780bb7e82a18e627">   88</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="_examine_midas_file_8cxx.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv) {</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>   <span class="keywordflow">if</span>(argc&lt;2) {</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      <a class="code hl_function" href="_examine_midas_file_8cxx.html#a64d28f49232d9fada3edd46309ab6830">PrintUsage</a>();</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>      <span class="keywordflow">return</span> 1;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>   }</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> x=1;x&lt;argc;x++) {</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      <a class="code hl_function" href="_examine_midas_file_8cxx.html#a8c5729dce8bd254154425f06a8efb20b">ExamineMidasFile</a>(argv[x]);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>   }</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>   <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
-</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="foldopen" id="foldopen00091" data-start="{" data-end="}">
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="_examine_midas_file_8cxx.html#a3c04138a5bfe5d72780bb7e82a18e627">   91</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="_examine_midas_file_8cxx.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv) {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>   <span class="keywordflow">if</span>(argc&lt;2) {</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      <a class="code hl_function" href="_examine_midas_file_8cxx.html#a64d28f49232d9fada3edd46309ab6830">PrintUsage</a>();</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>   }</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> x=1;x&lt;argc;x++) {</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      <a class="code hl_function" href="_examine_midas_file_8cxx.html#a8c5729dce8bd254154425f06a8efb20b">ExamineMidasFile</a>(argv[x]);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>   }</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>   <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>}</div>
+</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="ttc" id="a_examine_midas_file_8cxx_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="_examine_midas_file_8cxx.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="_examine_midas_file_8cxx_source.html#l00088">ExamineMidasFile.cxx:88</a></div></div>
-<div class="ttc" id="a_examine_midas_file_8cxx_html_a64d28f49232d9fada3edd46309ab6830"><div class="ttname"><a href="_examine_midas_file_8cxx.html#a64d28f49232d9fada3edd46309ab6830">PrintUsage</a></div><div class="ttdeci">void PrintUsage()</div><div class="ttdef"><b>Definition</b> <a href="_examine_midas_file_8cxx_source.html#l00083">ExamineMidasFile.cxx:83</a></div></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="ttc" id="a_examine_midas_file_8cxx_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="_examine_midas_file_8cxx.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="_examine_midas_file_8cxx_source.html#l00091">ExamineMidasFile.cxx:91</a></div></div>
+<div class="ttc" id="a_examine_midas_file_8cxx_html_a64d28f49232d9fada3edd46309ab6830"><div class="ttname"><a href="_examine_midas_file_8cxx.html#a64d28f49232d9fada3edd46309ab6830">PrintUsage</a></div><div class="ttdeci">void PrintUsage()</div><div class="ttdef"><b>Definition</b> <a href="_examine_midas_file_8cxx_source.html#l00086">ExamineMidasFile.cxx:86</a></div></div>
 <div class="ttc" id="a_examine_midas_file_8cxx_html_a8c5729dce8bd254154425f06a8efb20b"><div class="ttname"><a href="_examine_midas_file_8cxx.html#a8c5729dce8bd254154425f06a8efb20b">ExamineMidasFile</a></div><div class="ttdeci">void ExamineMidasFile(const char *filename)</div><div class="ttdef"><b>Definition</b> <a href="_examine_midas_file_8cxx_source.html#l00012">ExamineMidasFile.cxx:12</a></div></div>
 <div class="ttc" id="a_globals_8h_html"><div class="ttname"><a href="_globals_8h.html">Globals.h</a></div></div>
-<div class="ttc" id="a_globals_8h_html_a6cd26ccb39c45583e5a1bd90bc2bbb66"><div class="ttname"><a href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a></div><div class="ttdeci">#define DRED</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00017">Globals.h:17</a></div></div>
-<div class="ttc" id="a_globals_8h_html_a6d970e4c4769c52d19f321a08d531cf0"><div class="ttname"><a href="_globals_8h.html#a6d970e4c4769c52d19f321a08d531cf0">DGREEN</a></div><div class="ttdeci">#define DGREEN</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00016">Globals.h:16</a></div></div>
-<div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00004">Globals.h:4</a></div></div>
+<div class="ttc" id="a_globals_8h_html_a6cd26ccb39c45583e5a1bd90bc2bbb66"><div class="ttname"><a href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a></div><div class="ttdeci">#define DRED</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00018">Globals.h:18</a></div></div>
+<div class="ttc" id="a_globals_8h_html_a6d970e4c4769c52d19f321a08d531cf0"><div class="ttname"><a href="_globals_8h.html#a6d970e4c4769c52d19f321a08d531cf0">DGREEN</a></div><div class="ttdeci">#define DGREEN</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00017">Globals.h:17</a></div></div>
+<div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00005">Globals.h:5</a></div></div>
 <div class="ttc" id="a_t_midas_event_8h_html"><div class="ttname"><a href="_t_midas_event_8h.html">TMidasEvent.h</a></div></div>
 <div class="ttc" id="a_t_midas_file_8h_html"><div class="ttname"><a href="_t_midas_file_8h.html">TMidasFile.h</a></div></div>
 <div class="ttc" id="aclass_t_midas_file_html"><div class="ttname"><a href="class_t_midas_file.html">TMidasFile</a></div><div class="ttdoc">Reader for MIDAS .mid files.</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8h_source.html#l00032">TMidasFile.h:32</a></div></div>
-<div class="ttc" id="aclass_t_midas_file_html_a2fb4418719324277c9a7b4f01e73c830"><div class="ttname"><a href="class_t_midas_file.html#a2fb4418719324277c9a7b4f01e73c830">TMidasFile::Open</a></div><div class="ttdeci">bool Open(const char *filename) override</div><div class="ttdoc">Open input file.</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8cxx_source.html#l00120">TMidasFile.cxx:120</a></div></div>
-<div class="ttc" id="aclass_t_midas_file_html_a3f99d639a304553f6ff85d8aa7c7846a"><div class="ttname"><a href="class_t_midas_file.html#a3f99d639a304553f6ff85d8aa7c7846a">TMidasFile::Read</a></div><div class="ttdeci">int Read(std::shared_ptr&lt; TRawEvent &gt; event) override</div><div class="ttdoc">Read one event from the file.</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8cxx_source.html#l00334">TMidasFile.cxx:334</a></div></div>
-<div class="ttc" id="aclass_t_midas_file_html_ab0b0aee7f8b5bbcbb3ff36b7f6ebb1f8"><div class="ttname"><a href="class_t_midas_file.html#ab0b0aee7f8b5bbcbb3ff36b7f6ebb1f8">TMidasFile::GetOdbEvent</a></div><div class="ttdeci">std::shared_ptr&lt; TRawEvent &gt; GetOdbEvent() override</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8h_source.html#l00065">TMidasFile.h:65</a></div></div>
+<div class="ttc" id="aclass_t_midas_file_html_a2fb4418719324277c9a7b4f01e73c830"><div class="ttname"><a href="class_t_midas_file.html#a2fb4418719324277c9a7b4f01e73c830">TMidasFile::Open</a></div><div class="ttdeci">bool Open(const char *filename) override</div><div class="ttdoc">Open input file.</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8cxx_source.html#l00099">TMidasFile.cxx:99</a></div></div>
+<div class="ttc" id="aclass_t_midas_file_html_a3f99d639a304553f6ff85d8aa7c7846a"><div class="ttname"><a href="class_t_midas_file.html#a3f99d639a304553f6ff85d8aa7c7846a">TMidasFile::Read</a></div><div class="ttdeci">int Read(std::shared_ptr&lt; TRawEvent &gt; event) override</div><div class="ttdoc">Read one event from the file.</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8cxx_source.html#l00313">TMidasFile.cxx:313</a></div></div>
+<div class="ttc" id="aclass_t_midas_file_html_ab0b0aee7f8b5bbcbb3ff36b7f6ebb1f8"><div class="ttname"><a href="class_t_midas_file.html#ab0b0aee7f8b5bbcbb3ff36b7f6ebb1f8">TMidasFile::GetOdbEvent</a></div><div class="ttdeci">std::shared_ptr&lt; TRawEvent &gt; GetOdbEvent() override</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8h_source.html#l00069">TMidasFile.h:69</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -231,7 +234,7 @@ $(document).ready(function(){initNavTree('_examine_midas_file_8cxx_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_8965781c9f424dd985c8251b0fe5e6e9.html">util</a></li><li class="navelem"><a class="el" href="_examine_midas_file_8cxx.html">ExamineMidasFile.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:44.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:52.</li>
   </ul>
 </div>
 </body>

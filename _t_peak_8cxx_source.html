@@ -419,7 +419,7 @@ $(document).ready(function(){initNavTree('_t_peak_8cxx_source.html',''); initRes
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>   }</div>
 <div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>   <a class="code hl_function" href="namespace_t_g_r_s_i_functions.html#a558f80b4965f5038faf44c4ebebcb556">TGRSIFunctions::CheckParameterErrors</a>(fitres);</div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>   Double_t binWidth = fitHist-&gt;GetBinWidth(GetParameter(<span class="stringliteral">&quot;centroid&quot;</span>));</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>   Double_t binWidth = fitHist-&gt;GetBinWidth(1);</div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>   Double_t width    = GetParameter(<span class="stringliteral">&quot;sigma&quot;</span>);</div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>   <span class="keywordflow">if</span>(verbose) {</div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Chi^2/NDF = &quot;</span> &lt;&lt; fitres-&gt;Chi2() / fitres-&gt;Ndf() &lt;&lt; std::endl;</div>
@@ -691,12 +691,12 @@ $(document).ready(function(){initNavTree('_t_peak_8cxx_source.html',''); initRes
 <div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>   }</div>
 <div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>}</div>
 </div>
-<div class="ttc" id="a_globals_8h_html_a59524b4cf113f646696e5955023df6a4"><div class="ttname"><a href="_globals_8h.html#a59524b4cf113f646696e5955023df6a4">DYELLOW</a></div><div class="ttdeci">#define DYELLOW</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00015">Globals.h:15</a></div></div>
-<div class="ttc" id="a_globals_8h_html_a6cd26ccb39c45583e5a1bd90bc2bbb66"><div class="ttname"><a href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a></div><div class="ttdeci">#define DRED</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00017">Globals.h:17</a></div></div>
-<div class="ttc" id="a_globals_8h_html_a6d970e4c4769c52d19f321a08d531cf0"><div class="ttname"><a href="_globals_8h.html#a6d970e4c4769c52d19f321a08d531cf0">DGREEN</a></div><div class="ttdeci">#define DGREEN</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00016">Globals.h:16</a></div></div>
-<div class="ttc" id="a_globals_8h_html_abf681265909adf3d3e8116c93c0ba179"><div class="ttname"><a href="_globals_8h.html#abf681265909adf3d3e8116c93c0ba179">YELLOW</a></div><div class="ttdeci">#define YELLOW</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00006">Globals.h:6</a></div></div>
-<div class="ttc" id="a_globals_8h_html_acfbc006ea433ad708fdee3e82996e721"><div class="ttname"><a href="_globals_8h.html#acfbc006ea433ad708fdee3e82996e721">GREEN</a></div><div class="ttdeci">#define GREEN</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00007">Globals.h:7</a></div></div>
-<div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00004">Globals.h:4</a></div></div>
+<div class="ttc" id="a_globals_8h_html_a59524b4cf113f646696e5955023df6a4"><div class="ttname"><a href="_globals_8h.html#a59524b4cf113f646696e5955023df6a4">DYELLOW</a></div><div class="ttdeci">#define DYELLOW</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00016">Globals.h:16</a></div></div>
+<div class="ttc" id="a_globals_8h_html_a6cd26ccb39c45583e5a1bd90bc2bbb66"><div class="ttname"><a href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a></div><div class="ttdeci">#define DRED</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00018">Globals.h:18</a></div></div>
+<div class="ttc" id="a_globals_8h_html_a6d970e4c4769c52d19f321a08d531cf0"><div class="ttname"><a href="_globals_8h.html#a6d970e4c4769c52d19f321a08d531cf0">DGREEN</a></div><div class="ttdeci">#define DGREEN</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00017">Globals.h:17</a></div></div>
+<div class="ttc" id="a_globals_8h_html_abf681265909adf3d3e8116c93c0ba179"><div class="ttname"><a href="_globals_8h.html#abf681265909adf3d3e8116c93c0ba179">YELLOW</a></div><div class="ttdeci">#define YELLOW</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00007">Globals.h:7</a></div></div>
+<div class="ttc" id="a_globals_8h_html_acfbc006ea433ad708fdee3e82996e721"><div class="ttname"><a href="_globals_8h.html#acfbc006ea433ad708fdee3e82996e721">GREEN</a></div><div class="ttdeci">#define GREEN</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00008">Globals.h:8</a></div></div>
+<div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00005">Globals.h:5</a></div></div>
 <div class="ttc" id="a_t_peak_8h_html"><div class="ttname"><a href="_t_peak_8h.html">TPeak.h</a></div></div>
 <div class="ttc" id="a_user_fill_obj_8h_html_ac15e5a1de3bd77dc1ff2768e42dc9e8b"><div class="ttname"><a href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a></div><div class="ttdeci">TH1D * hist</div><div class="ttdef"><b>Definition</b> <a href="_user_fill_obj_8h_source.html#l00003">UserFillObj.h:3</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_fit_html"><div class="ttname"><a href="class_t_g_r_s_i_fit.html">TGRSIFit</a></div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_fit_8h_source.html#l00026">TGRSIFit.h:26</a></div></div>
@@ -744,7 +744,7 @@ $(document).ready(function(){initNavTree('_t_peak_8cxx_source.html',''); initRes
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_c27fb4ff404115d281d3c6aa730dcb72.html">TGRSIFit</a></li><li class="navelem"><a class="el" href="_t_peak_8cxx.html">TPeak.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:45.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:54.</li>
   </ul>
 </div>
 </body>

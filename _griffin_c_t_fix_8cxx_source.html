@@ -119,7 +119,7 @@ $(document).ready(function(){initNavTree('_griffin_c_t_fix_8cxx_source.html','')
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="_t_user_settings_8h.html">TUserSettings.h</a>&quot;</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="foldopen" id="foldopen00017" data-start="{" data-end="}">
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="_griffin_c_t_fix_8cxx.html#afc9fef42cbd907209240ef82d2ddcf2e">   17</a></span><span class="keywordtype">double</span> <a class="code hl_function" href="_griffin_c_t_fix_8cxx.html#afc9fef42cbd907209240ef82d2ddcf2e">CrossTalkFit</a>(<span class="keywordtype">double</span>* x, <span class="keywordtype">double</span>* par)</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="_griffin_c_t_fix_8cxx.html#afc9fef42cbd907209240ef82d2ddcf2e">   17</a></span><span class="keywordtype">double</span> <a class="code hl_function" href="_griffin_c_t_fix_8cxx.html#afc9fef42cbd907209240ef82d2ddcf2e">CrossTalkFit</a>(<span class="keywordtype">double</span>* x, <span class="keywordtype">double</span>* par) <span class="comment">// NOLINT(readability-non-const-parameter)</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>{</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>   <span class="comment">// This function is the linear fit function, but uses the CT coefficients as parameters instead of slope and</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>   <span class="comment">// intercept</span></div>
@@ -162,9 +162,9 @@ $(document).ready(function(){initNavTree('_griffin_c_t_fix_8cxx_source.html','')
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>   <span class="keywordtype">double</span> highCut = energy + 15;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>   <span class="comment">// create diagonal cut</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>   <span class="keywordtype">double</span> xpts[5] = {lowCut, 0, 0, highCut, lowCut};</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>   <span class="keywordtype">double</span> ypts[5] = {0, lowCut, highCut, 0, 0};</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>   TCutG  cut(<span class="stringliteral">&quot;cut&quot;</span>, 5, xpts, ypts);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>   std::array&lt;double, 5&gt; xpts = {lowCut, 0, 0, highCut, lowCut};</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>   std::array&lt;double, 5&gt; ypts = {0, lowCut, highCut, 0, 0};</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>   TCutG cut(<span class="stringliteral">&quot;cut&quot;</span>, 5, xpts.data(), ypts.data());</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>   <span class="keyword">auto</span>* d   = <span class="keyword">new</span> <span class="keywordtype">double</span>[16]; <span class="comment">// matrix of coefficients</span></div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>   <span class="keyword">auto</span>* eD  = <span class="keyword">new</span> <span class="keywordtype">double</span>[16]; <span class="comment">// matrix of errors</span></div>
@@ -348,7 +348,7 @@ $(document).ready(function(){initNavTree('_griffin_c_t_fix_8cxx_source.html','')
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>      <span class="keywordflow">return</span> 1;</div>
 <div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>   }</div>
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>   <span class="keyword">auto</span> userSettings = <span class="keyword">new</span> <a class="code hl_class" href="class_t_user_settings.html">TUserSettings</a>();</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>   <span class="keyword">auto</span>* userSettings = <span class="keyword">new</span> <a class="code hl_class" href="class_t_user_settings.html">TUserSettings</a>();</div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>   <span class="keywordflow">if</span>(argc == 4) {</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>      userSettings-&gt;ReadSettings(argv[3]);</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>   }</div>
@@ -372,8 +372,8 @@ $(document).ready(function(){initNavTree('_griffin_c_t_fix_8cxx_source.html','')
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>}</div>
 </div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="a_globals_8h_html_a6cd26ccb39c45583e5a1bd90bc2bbb66"><div class="ttname"><a href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a></div><div class="ttdeci">#define DRED</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00017">Globals.h:17</a></div></div>
-<div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00004">Globals.h:4</a></div></div>
+<div class="ttc" id="a_globals_8h_html_a6cd26ccb39c45583e5a1bd90bc2bbb66"><div class="ttname"><a href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a></div><div class="ttdeci">#define DRED</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00018">Globals.h:18</a></div></div>
+<div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00005">Globals.h:5</a></div></div>
 <div class="ttc" id="a_griffin_c_t_fix_8cxx_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="_griffin_c_t_fix_8cxx.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="_griffin_c_t_fix_8cxx_source.html#l00220">GriffinCTFix.cxx:220</a></div></div>
 <div class="ttc" id="a_griffin_c_t_fix_8cxx_html_a59563385f38e039618716857b4924b4c"><div class="ttname"><a href="_griffin_c_t_fix_8cxx.html#a59563385f38e039618716857b4924b4c">CrossTalkFix</a></div><div class="ttdeci">double * CrossTalkFix(int det, double energy, TFile *inputFile)</div><div class="ttdef"><b>Definition</b> <a href="_griffin_c_t_fix_8cxx_source.html#l00031">GriffinCTFix.cxx:31</a></div></div>
 <div class="ttc" id="a_griffin_c_t_fix_8cxx_html_ad00b72fbd61fcca8826704dc9f8283a8"><div class="ttname"><a href="_griffin_c_t_fix_8cxx.html#ad00b72fbd61fcca8826704dc9f8283a8">FixAll</a></div><div class="ttdeci">void FixAll(TFile *inputFile, double energy)</div><div class="ttdef"><b>Definition</b> <a href="_griffin_c_t_fix_8cxx_source.html#l00210">GriffinCTFix.cxx:210</a></div></div>
@@ -388,7 +388,7 @@ $(document).ready(function(){initNavTree('_griffin_c_t_fix_8cxx_source.html','')
 <div class="ttc" id="aclass_t_channel_html_a6b38eced78e096a39f9cf2cee6c672aa"><div class="ttname"><a href="class_t_channel.html#a6b38eced78e096a39f9cf2cee6c672aa">TChannel::ReadCalFile</a></div><div class="ttdeci">static Int_t ReadCalFile(std::ifstream &amp;infile)</div><div class="ttdef"><b>Definition</b> <a href="_t_channel_8cxx_source.html#l01104">TChannel.cxx:1104</a></div></div>
 <div class="ttc" id="aclass_t_channel_html_aa0bd81703ae6e94150dc82fc28b83e0b"><div class="ttname"><a href="class_t_channel.html#aa0bd81703ae6e94150dc82fc28b83e0b">TChannel::WriteCTCorrections</a></div><div class="ttdeci">static void WriteCTCorrections(const std::string &amp;outfilename=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_t_channel_8cxx_source.html#l01018">TChannel.cxx:1018</a></div></div>
 <div class="ttc" id="aclass_t_channel_html_ad91ee58ec46ac3de93653fb6b139c638"><div class="ttname"><a href="class_t_channel.html#ad91ee58ec46ac3de93653fb6b139c638">TChannel::DestroyCTCal</a></div><div class="ttdeci">void DestroyCTCal()</div><div class="ttdef"><b>Definition</b> <a href="_t_channel_8cxx_source.html#l00587">TChannel.cxx:587</a></div></div>
-<div class="ttc" id="aclass_t_griffin_html_a0e40af07d8786055847b7e19462c12e4"><div class="ttname"><a href="class_t_griffin.html#a0e40af07d8786055847b7e19462c12e4">TGriffin::GetColorFromNumber</a></div><div class="ttdeci">static const char * GetColorFromNumber(int number)</div><div class="ttdef"><b>Definition</b> <a href="_t_griffin_8cxx_source.html#l00677">TGriffin.cxx:677</a></div></div>
+<div class="ttc" id="aclass_t_griffin_html_a0e40af07d8786055847b7e19462c12e4"><div class="ttname"><a href="class_t_griffin.html#a0e40af07d8786055847b7e19462c12e4">TGriffin::GetColorFromNumber</a></div><div class="ttdeci">static const char * GetColorFromNumber(int number)</div><div class="ttdef"><b>Definition</b> <a href="_t_griffin_8cxx_source.html#l00676">TGriffin.cxx:676</a></div></div>
 <div class="ttc" id="aclass_t_user_settings_html"><div class="ttname"><a href="class_t_user_settings.html">TUserSettings</a></div><div class="ttdef"><b>Definition</b> <a href="_t_user_settings_8h_source.html#l00063">TUserSettings.h:63</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -397,7 +397,7 @@ $(document).ready(function(){initNavTree('_griffin_c_t_fix_8cxx_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_8965781c9f424dd985c8251b0fe5e6e9.html">util</a></li><li class="navelem"><a class="el" href="_griffin_c_t_fix_8cxx.html">GriffinCTFix.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:44.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:52.</li>
   </ul>
 </div>
 </body>

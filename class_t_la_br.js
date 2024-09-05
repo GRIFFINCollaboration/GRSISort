@@ -11,8 +11,9 @@ var class_t_la_br =
       [ "kBit7", "class_t_la_br.html#aa731391682c6e72e79e72f004cf0a43dad4826be5c215ecd23478e9a4c7dcbe01", null ]
     ] ],
     [ "TLaBr", "class_t_la_br.html#a207cdcd3695bc03fd85527c1b6b0a58d", null ],
-    [ "~TLaBr", "class_t_la_br.html#af5a4efd63b7d301d742b173889ffa59e", null ],
     [ "TLaBr", "class_t_la_br.html#a00a3aa02080e5093417cf3d53b59b739", null ],
+    [ "TLaBr", "class_t_la_br.html#a20c43bd05d474c79b1fe1ac05f5486a8", null ],
+    [ "~TLaBr", "class_t_la_br.html#af5a4efd63b7d301d742b173889ffa59e", null ],
     [ "AddbackCriterion", "class_t_la_br.html#a60817f357b7b432072114248ec5e8a55", null ],
     [ "AddFragment", "class_t_la_br.html#adfaa19f28e807efe02998f7a007dc78b", null ],
     [ "AddHit", "class_t_la_br.html#af83ad943618a30f7d1639675e18fc5b8", null ],
@@ -37,17 +38,18 @@ var class_t_la_br =
     [ "IsSuppressed", "class_t_la_br.html#a8d5be4fcb9e0ca958e542cbad7b77320", null ],
     [ "NoHits", "class_t_la_br.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
     [ "operator=", "class_t_la_br.html#a08c0579fd70e1834ca32249e7f840387", null ],
+    [ "operator=", "class_t_la_br.html#a6760dda75fd1a3f55246bc65b3fa944e", null ],
     [ "Print", "class_t_la_br.html#a08b7db1da16286c0c89526f9d788daf4", null ],
     [ "Print", "class_t_la_br.html#a98e355cb07698045af9ab9afe9b77246", null ],
     [ "ResetSuppressed", "class_t_la_br.html#afabd6a6e4804a6fb1709ff2d7d842e6b", null ],
     [ "SetBitNumber", "class_t_la_br.html#a39317adeaed38a37f6d2cbdf6c325b38", null ],
-    [ "SetSuppressed", "class_t_la_br.html#aabb908af280ab7d8717dc1d3372a0d12", null ],
+    [ "SetSuppressed", "class_t_la_br.html#a913f37b883eab4beaee5604a401b7ef9", null ],
     [ "SetSuppressionCriterion", "class_t_la_br.html#a0e09f8392e82c5d6e379cef97220b4bb", null ],
     [ "SuppressionCriterion", "class_t_la_br.html#a88733a9a30c102842a58ef8d3fcb24fa", null ],
     [ "TestBitNumber", "class_t_la_br.html#a4511d207c84c7c3b89151efc7ed76a01", null ],
     [ "fHits", "class_t_la_br.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ],
     [ "fLaBrBits", "class_t_la_br.html#a183f8ab763d3ce7da35fe988439da2f8", null ],
+    [ "fPosition", "class_t_la_br.html#a673bcd7e6f036634659e875e92b31882", null ],
     [ "fSuppressedHits", "class_t_la_br.html#aabda5860fb09e111355397d304a378b2", null ],
-    [ "fSuppressionCriterion", "class_t_la_br.html#ae9d84df1d907d71d9003f6811e202438", null ],
-    [ "gPosition", "class_t_la_br.html#a1d309652b2a9cd49a94f61a24408feda", null ]
+    [ "fSuppressionCriterion", "class_t_la_br.html#ae9d84df1d907d71d9003f6811e202438", null ]
 ];

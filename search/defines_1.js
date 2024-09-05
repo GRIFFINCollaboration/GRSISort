@@ -8,7 +8,5 @@ var searchData=
   ['bg_5fwhite_5',['BG_WHITE',['../_globals_8h.html#a6beded3f171517df3902c52f79f6fea2',1,'Globals.h']]],
   ['bg_5fyellow_6',['BG_YELLOW',['../_globals_8h.html#ab31fe3e74b1137650d30ede5c9b86218',1,'Globals.h']]],
   ['black_7',['BLACK',['../_globals_8h.html#a7b3b25cba33b07c303f3060fe41887f6',1,'Globals.h']]],
-  ['blue_8',['BLUE',['../_globals_8h.html#a79d10e672abb49ad63eeaa8aaef57c38',1,'Globals.h']]],
-  ['buildingtimecondition_9',['BUILDINGTIMECONDITION',['../_globals_8h.html#a0663a4b598faaa1837019fea714143dd',1,'Globals.h']]],
-  ['buildingtriggercondition_10',['BUILDINGTRIGGERCONDITION',['../_globals_8h.html#a6ed81f8059f1c66264cc40c8a3707168',1,'Globals.h']]]
+  ['blue_8',['BLUE',['../_globals_8h.html#a79d10e672abb49ad63eeaa8aaef57c38',1,'Globals.h']]]
 ];

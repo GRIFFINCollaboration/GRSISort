@@ -1,29 +1,27 @@
 <map id="TGRSIHelper" name="TGRSIHelper">
-<area shape="rect" id="Node000001" title=" " alt="" coords="121,277,220,303"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="121,252,220,278"/>
 <area shape="rect" id="Node000003" href="$class_alphanumeric_helper.html" title=" " alt="" coords="287,5,425,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="172,262,180,214,197,154,224,93,243,65,266,40,285,28,288,32,270,44,248,68,229,96,202,156,185,215,177,263"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,236,183,193,200,140,227,86,245,62,266,40,285,28,288,33,270,44,249,65,232,89,205,142,188,195,178,238"/>
 <area shape="rect" id="Node000004" href="$class_angular_correlation_helper.html" title=" " alt="" coords="274,55,439,80"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="175,262,186,223,204,176,230,130,266,89,283,79,286,83,270,94,235,133,209,179,191,225,180,263"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="177,236,189,203,208,163,233,123,266,89,285,79,287,83,270,94,238,127,213,165,194,205,182,238"/>
 <area shape="rect" id="Node000005" href="$class_compton_polarimetry_helper.html" title=" " alt="" coords="268,104,444,130"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="180,262,212,200,236,167,266,139,286,128,288,133,270,143,240,170,217,203,184,264"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="183,237,217,187,240,161,267,139,288,128,290,133,269,143,243,165,221,190,188,240"/>
 <area shape="rect" id="Node000006" href="$class_cross_talk_helper.html" title=" " alt="" coords="297,153,415,179"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="188,263,221,224,267,188,295,175,298,180,269,192,225,228,192,267"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="194,240,227,213,267,188,296,176,298,181,269,193,230,217,197,244"/>
 <area shape="rect" id="Node000007" href="$class_directory_helper.html" title=" " alt="" coords="301,203,411,228"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="206,267,267,237,300,226,301,231,269,242,208,272"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="234,245,304,226,305,232,236,250"/>
 <area shape="rect" id="Node000008" href="$class_efficiency_helper.html" title=" " alt="" coords="300,252,413,278"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="235,279,298,270,299,275,235,284"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="236,262,299,262,299,268,236,268"/>
 <area shape="rect" id="Node000009" href="$class_example_event_helper.html" title=" " alt="" coords="286,301,427,327"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="236,296,285,302,285,308,235,301"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="236,279,305,298,304,303,234,284"/>
 <area shape="rect" id="Node000010" href="$class_example_fragment_helper.html" title=" " alt="" coords="275,351,438,376"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="209,308,269,337,300,348,299,353,267,342,207,313"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="197,286,230,313,269,337,295,348,293,353,267,342,227,317,194,290"/>
 <area shape="rect" id="Node000011" href="$class_example_tree_helper.html" title=" " alt="" coords="289,400,423,426"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="192,314,225,352,269,387,292,397,290,402,267,391,222,355,188,317"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="188,290,221,340,243,365,269,387,290,397,288,402,267,391,240,369,217,343,183,293"/>
 <area shape="rect" id="Node000012" href="$class_griffin_k_value_helper.html" title=" " alt="" coords="289,449,423,475"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="185,316,217,377,241,409,270,436,290,447,287,452,266,440,237,413,212,380,180,319"/>
-<area shape="rect" id="Node000013" href="$class_test_helper.html" title=" " alt="" coords="314,499,399,524"/>
-<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="180,318,191,356,209,401,235,447,270,485,291,498,314,505,312,510,288,503,266,490,231,450,204,404,186,358,175,319"/>
-<area shape="rect" id="Node000014" href="$class_time_walk_helper.html" title=" " alt="" coords="298,548,415,574"/>
-<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="177,318,185,365,202,424,229,484,248,511,270,535,299,551,296,555,266,539,243,514,224,486,197,425,180,366,172,319"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,277,73,303"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,288,120,288,120,293,88,293"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="182,292,194,325,213,364,238,403,270,436,290,448,287,452,266,440,233,406,208,367,189,327,177,293"/>
+<area shape="rect" id="Node000013" href="$class_time_walk_helper.html" title=" " alt="" coords="298,499,415,524"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="178,292,188,335,205,387,232,440,249,464,270,485,298,501,296,506,266,490,245,468,227,443,200,389,183,336,173,293"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,252,73,278"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,262,120,262,120,268,88,268"/>
 </map>

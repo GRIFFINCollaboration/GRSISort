@@ -2,6 +2,7 @@ var class_t_r_f =
 [
     [ "TRF", "class_t_r_f.html#a5bc4a74dc295e4c50d3bde8bbd0995ae", null ],
     [ "TRF", "class_t_r_f.html#a3dc131a5bbffbaf26176d66cd601d603", null ],
+    [ "TRF", "class_t_r_f.html#a3af0472f70cd64495939965731ed3c5d", null ],
     [ "~TRF", "class_t_r_f.html#af4b4e32a9f0b9be6f3eeaf791c621a01", null ],
     [ "AddFragment", "class_t_r_f.html#afa5eb60382bb98ab2254c026f59db337", null ],
     [ "AddHit", "class_t_r_f.html#af83ad943618a30f7d1639675e18fc5b8", null ],
@@ -19,6 +20,8 @@ var class_t_r_f =
     [ "Hits", "class_t_r_f.html#ab907981ce861ab147879469064748ae2", null ],
     [ "MidasTime", "class_t_r_f.html#a0a42dbe6b91035e32fed3d121064367f", null ],
     [ "NoHits", "class_t_r_f.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
+    [ "operator=", "class_t_r_f.html#a4141dc6c1a5cd73185741ac281cd0ca1", null ],
+    [ "operator=", "class_t_r_f.html#ae67df6697ad0b998e9de997c18392e67", null ],
     [ "Period", "class_t_r_f.html#a06bda4718a9540c5e1804c421f80fbb9", null ],
     [ "Phase", "class_t_r_f.html#afeb7bc4c0be843688813b823ea99c3e6", null ],
     [ "Print", "class_t_r_f.html#a3993c779a90434fe4ef78398b9139505", null ],

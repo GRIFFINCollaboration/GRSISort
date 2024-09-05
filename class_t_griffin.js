@@ -16,6 +16,7 @@ var class_t_griffin =
     ] ],
     [ "TGriffin", "class_t_griffin.html#a3221ee92bd3952f2d3ec2777d755dc45", null ],
     [ "TGriffin", "class_t_griffin.html#a541104c5fd38c96b5eaf7013b8de300f", null ],
+    [ "TGriffin", "class_t_griffin.html#a2d4274918d1b230a535d77707a6eac57", null ],
     [ "~TGriffin", "class_t_griffin.html#a6632ed16aea65fc3050bd7be88caa030", null ],
     [ "AddbackCriterion", "class_t_griffin.html#adeb39fe08db67abb2c9e8f1d75a8de93", null ],
     [ "AddFragment", "class_t_griffin.html#a9f18ae1b20b58a82c291c94813742b3f", null ],
@@ -28,7 +29,7 @@ var class_t_griffin =
     [ "CreateAddback", "class_t_griffin.html#a59f557c2b1b8e17e8c8d9ecb0ce59f36", null ],
     [ "CreateSuppressed", "class_t_griffin.html#a68d78a79808314414994e25285fe5cb6", null ],
     [ "CreateSuppressedAddback", "class_t_griffin.html#abcc6366a598a7641ab93ceada912dfad", null ],
-    [ "CTCorrectedEnergy", "class_t_griffin.html#a6228baa8844da2f3a6924154b74d99a1", null ],
+    [ "CTCorrectedEnergy", "class_t_griffin.html#ad0138002b64257917ac6f4181b240b76", null ],
     [ "FixCrossTalk", "class_t_griffin.html#a6956299ef2e707f6acdbc44789887dd1", null ],
     [ "FixHighGainCrossTalk", "class_t_griffin.html#a247ff3c1ceec145a9520f2248270f151", null ],
     [ "FixLowGainCrossTalk", "class_t_griffin.html#a5a79aab4b16e260f56d9964380af00ca", null ],
@@ -96,6 +97,7 @@ var class_t_griffin =
     [ "IsSuppressedAddbackSet", "class_t_griffin.html#a71dbb89fb0dbd954d42bb19ce901a9ff", null ],
     [ "NoHits", "class_t_griffin.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
     [ "operator=", "class_t_griffin.html#a759ebfc01a1f6f1c5a6f45bfcbacd9e8", null ],
+    [ "operator=", "class_t_griffin.html#a6edf8bbbe587dd283650d80f5140fe0b", null ],
     [ "Print", "class_t_griffin.html#a3766ce229efc1ec2b8b78fac646d5bd1", null ],
     [ "Print", "class_t_griffin.html#a1806fec26e17dbef9d74b3793495ffed", null ],
     [ "ResetAddback", "class_t_griffin.html#a4dcb36277bd1a20ad03a17aaaa00a6f9", null ],
@@ -127,7 +129,8 @@ var class_t_griffin =
     [ "fAddbackHighGainHits", "class_t_griffin.html#a7806514d28a20a27e900be6b34c34f26", null ],
     [ "fAddbackLowGainFrags", "class_t_griffin.html#ac352d010f62ff6772aca758ecf9b292d", null ],
     [ "fAddbackLowGainHits", "class_t_griffin.html#ac9f6d047f8708d494f3dbc04bcf0f085", null ],
-    [ "fCycleStart", "class_t_griffin.html#a93b74e1ea3ddc2e19ef88e75c1b859e5", null ],
+    [ "fCloverPosition", "class_t_griffin.html#a48718ba18edbdec1ed9771462981ec72", null ],
+    [ "fCycleStart", "class_t_griffin.html#a480cf2e139842a2c6e97a9b24d57c800", null ],
     [ "fDefaultGainType", "class_t_griffin.html#a1f723c043888f32acd3a4239a06fd968", null ],
     [ "fGriffinBits", "class_t_griffin.html#a78349578bc2408a4049bc295af08ab7e", null ],
     [ "fGriffinHighGainHits", "class_t_griffin.html#a69c073b113688159e138ccbce4581b4c", null ],
@@ -139,6 +142,5 @@ var class_t_griffin =
     [ "fSuppressedAddbackLowGainHits", "class_t_griffin.html#a8e0e75cc403029a2dea026259c98f227", null ],
     [ "fSuppressedHighGainHits", "class_t_griffin.html#ad033ff3cdaccbd5068855380a6fb5f6c", null ],
     [ "fSuppressedLowGainHits", "class_t_griffin.html#a1216d736fec4accf1e51fe3be8ac50e0", null ],
-    [ "fSuppressionCriterion", "class_t_griffin.html#a81d746f880748d04084e6999ccc2fbb2", null ],
-    [ "gCloverPosition", "class_t_griffin.html#ab7a031eaa89becc486ee5de4beccd51c", null ]
+    [ "fSuppressionCriterion", "class_t_griffin.html#a81d746f880748d04084e6999ccc2fbb2", null ]
 ];

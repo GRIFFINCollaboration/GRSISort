@@ -2,7 +2,8 @@ var class_t_paces =
 [
     [ "TPaces", "class_t_paces.html#a3fe5e143137fd08bf6d6bf8e74835c54", null ],
     [ "TPaces", "class_t_paces.html#a8556a8a8d8557bf07efcb8cfd85736f2", null ],
-    [ "~TPaces", "class_t_paces.html#a6f29029534b217399cdb1a152cc167c5", null ],
+    [ "TPaces", "class_t_paces.html#a4a76092bd0f4bdcf7ade541763ccb09a", null ],
+    [ "~TPaces", "class_t_paces.html#a077fd4160ffa90b804ead8483c3ea686", null ],
     [ "AddFragment", "class_t_paces.html#a1d79e22a96c925a65bfa02221e980c1c", null ],
     [ "AddHit", "class_t_paces.html#af83ad943618a30f7d1639675e18fc5b8", null ],
     [ "BuildHits", "class_t_paces.html#a0407d8a1f9147c16e0d8a06069564d08", null ],
@@ -18,10 +19,11 @@ var class_t_paces =
     [ "Hits", "class_t_paces.html#ab907981ce861ab147879469064748ae2", null ],
     [ "NoHits", "class_t_paces.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
     [ "operator=", "class_t_paces.html#ad30f664bd5b72bafb1afccce118a0b4a", null ],
+    [ "operator=", "class_t_paces.html#aae9270a0646a661ace52b47998a89c84", null ],
     [ "Print", "class_t_paces.html#a15e3eeb4aa08005c986f49ca6567d930", null ],
     [ "Print", "class_t_paces.html#a070f87c2407776f314056cda2a65f9f0", null ],
     [ "SetCoreWave", "class_t_paces.html#a2996231651a3762d7b1beb72efaeff78", null ],
+    [ "fDetectorPosition", "class_t_paces.html#a6cb869b2d7523fabe218702737fb2dd6", null ],
     [ "fHits", "class_t_paces.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ],
-    [ "fSetCoreWave", "class_t_paces.html#a6ea05954383d02981c0f7e675bb38e63", null ],
-    [ "gDetectorPosition", "class_t_paces.html#a176e6b3a822f8f87596212a40af98584", null ]
+    [ "fSetCoreWave", "class_t_paces.html#a6ea05954383d02981c0f7e675bb38e63", null ]
 ];

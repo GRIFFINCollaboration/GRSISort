@@ -12,7 +12,8 @@ var class_t_trific =
     ] ],
     [ "TTrific", "class_t_trific.html#a158396b4ae7ba474bd4a563588f886b7", null ],
     [ "TTrific", "class_t_trific.html#a70dedf2d9fdf4334f8eb705f5975cfe8", null ],
-    [ "~TTrific", "class_t_trific.html#ad66bc2052b6c71dd65ac0c29094f13e6", null ],
+    [ "TTrific", "class_t_trific.html#a1f7a951347fc0bc9db5dc320eeafb8a6", null ],
+    [ "~TTrific", "class_t_trific.html#a3dab5737b48e53a073f84ee80519455f", null ],
     [ "AddFragment", "class_t_trific.html#a735f47c4bc8c9047383890f7f4c793c9", null ],
     [ "AddHit", "class_t_trific.html#af83ad943618a30f7d1639675e18fc5b8", null ],
     [ "BuildHits", "class_t_trific.html#a3a6764c52101ef156e3c9b151691bd19", null ],
@@ -37,6 +38,7 @@ var class_t_trific =
     [ "Hits", "class_t_trific.html#ab907981ce861ab147879469064748ae2", null ],
     [ "NoHits", "class_t_trific.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
     [ "operator=", "class_t_trific.html#afda01aa85d56c207346d176a412f05a1", null ],
+    [ "operator=", "class_t_trific.html#ae0801594426a8f79f60fac0f31be2e1b", null ],
     [ "Print", "class_t_trific.html#a91df29a1a8e83cf82b0df7ddab324f7b", null ],
     [ "Print", "class_t_trific.html#a9ebc8b15e65c15455ba92904ce567e20", null ],
     [ "SetCoreWave", "class_t_trific.html#ac4765e1886ef01f626b7f7bbe19cdcea", null ],
@@ -57,7 +59,7 @@ var class_t_trific =
     [ "fTargetToWindowCart", "class_t_trific.html#a4d56046bedcd098572bbb2dcba4c4e03", null ],
     [ "fTrificBits", "class_t_trific.html#a0023f2b439089102072311d6a31535e1", null ],
     [ "fXFragments", "class_t_trific.html#a19990afaa6cf2dfc09a59fe5e813d89e", null ],
-    [ "fXmm", "class_t_trific.html#adb65c94fa9f9a057acccbd84bbb283de", null ],
+    [ "fXmm", "class_t_trific.html#a71b8233a2695a1990024c7abb17465a6", null ],
     [ "fYFragments", "class_t_trific.html#a6c230adca1223507266f44a98a7df780", null ],
-    [ "fYmm", "class_t_trific.html#a42d581a0aa64b095af96ef9091a35ab7", null ]
+    [ "fYmm", "class_t_trific.html#a5aa6fa164e583938b86246f5827b036b", null ]
 ];

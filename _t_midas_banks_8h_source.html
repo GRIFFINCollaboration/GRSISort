@@ -108,67 +108,69 @@ $(document).ready(function(){initNavTree('_t_midas_banks_8h_source.html',''); in
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#ifndef INCLUDE_TMidasBanksH</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#define INCLUDE_TMidasBanksH</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"></span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">/** \addtogroup Sorting</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> *  @{</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">// This file defines the data structures written</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">// into MIDAS .mid files. They define the on-disk</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// data format, they cannot be arbitrarily changed.</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"></span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">/// Event header</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;RtypesCore.h&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"></span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">/** \addtogroup Sorting</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> *  @{</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// This file defines the data structures written</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">// into MIDAS .mid files. They define the on-disk</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">// data format, they cannot be arbitrarily changed.</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"></span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">// struct TMidas_EVENT_HEADER {</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">//  uint16_t fEventId;      ///&lt; event id</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">//  uint16_t fTriggerMask;  ///&lt; event trigger mask</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">//  uint32_t fSerialNumber; ///&lt; event serial number</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">//  uint32_t fTimeStamp;    ///&lt; event timestamp in seconds</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">//  uint32_t fDataSize;     ///&lt; event size in bytes</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">//};</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"></span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">/// Bank header</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">/// Event header</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"></span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">// struct TMidas_EVENT_HEADER {</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">//  uint16_t fEventId;      ///&lt; event id</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">//  uint16_t fTriggerMask;  ///&lt; event trigger mask</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">//  uint32_t fSerialNumber; ///&lt; event serial number</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">//  uint32_t fTimeStamp;    ///&lt; event timestamp in seconds</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">//  uint32_t fDataSize;     ///&lt; event size in bytes</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">//};</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"></span> </div>
-<div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html">   28</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html">TMidas_BANK_HEADER</a> {</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#a1209084d3e681d7f122064573719b6b1">   29</a></span>   UInt_t <a class="code hl_variable" href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#a1209084d3e681d7f122064573719b6b1">fDataSize</a>; <span class="comment">// int32_t</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#afda267e7c892dd56e0eb2876a01009fa">   30</a></span>   UInt_t <a class="code hl_variable" href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#afda267e7c892dd56e0eb2876a01009fa">fFlags</a>;    <span class="comment">// int32_t</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>};</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">/// Bank header</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"></span> </div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="};">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html">   30</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html">TMidas_BANK_HEADER</a> {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#a1209084d3e681d7f122064573719b6b1">   31</a></span>   UInt_t <a class="code hl_variable" href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#a1209084d3e681d7f122064573719b6b1">fDataSize</a>; <span class="comment">// int32_t</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#afda267e7c892dd56e0eb2876a01009fa">   32</a></span>   UInt_t <a class="code hl_variable" href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#afda267e7c892dd56e0eb2876a01009fa">fFlags</a>;    <span class="comment">// int32_t</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>};</div>
 </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"></span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">/// 16-bit data bank</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment"></span> </div>
-<div class="foldopen" id="foldopen00035" data-start="{" data-end="};">
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k.html">   35</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_t_midas___b_a_n_k.html">TMidas_BANK</a> {</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k.html#a248a79716c727c3fd6d1ae873097367b">   36</a></span>   <span class="keywordtype">char</span>     <a class="code hl_variable" href="struct_t_midas___b_a_n_k.html#a248a79716c727c3fd6d1ae873097367b">fName</a>[4];  <span class="comment">///&lt; bank name</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k.html#ad48af9b7274b9f588b80efd97d98bce9">   37</a></span>   UShort_t <a class="code hl_variable" href="struct_t_midas___b_a_n_k.html#ad48af9b7274b9f588b80efd97d98bce9">fType</a>;     <span class="comment">// uint16_t ///&lt; type of data (see midas.h TID_xxx)</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k.html#a975b5cbb606dfe21f2485c3fc678b02a">   38</a></span>   UShort_t <a class="code hl_variable" href="struct_t_midas___b_a_n_k.html#a975b5cbb606dfe21f2485c3fc678b02a">fDataSize</a>; <span class="comment">// uint16_t</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>};</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">/// 16-bit data bank</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment"></span> </div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="};">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k.html">   37</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_t_midas___b_a_n_k.html">TMidas_BANK</a> {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k.html#a248a79716c727c3fd6d1ae873097367b">   38</a></span>   <span class="keywordtype">char</span>     <a class="code hl_variable" href="struct_t_midas___b_a_n_k.html#a248a79716c727c3fd6d1ae873097367b">fName</a>[4];  <span class="comment">///&lt; bank name // NOLINT(*-avoid-c-arrays)</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k.html#ad48af9b7274b9f588b80efd97d98bce9">   39</a></span>   UShort_t <a class="code hl_variable" href="struct_t_midas___b_a_n_k.html#ad48af9b7274b9f588b80efd97d98bce9">fType</a>;     <span class="comment">// uint16_t ///&lt; type of data (see midas.h TID_xxx)</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k.html#a975b5cbb606dfe21f2485c3fc678b02a">   40</a></span>   UShort_t <a class="code hl_variable" href="struct_t_midas___b_a_n_k.html#a975b5cbb606dfe21f2485c3fc678b02a">fDataSize</a>; <span class="comment">// uint16_t</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>};</div>
 </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment"></span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">/// 32-bit data bank</span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment"></span> </div>
-<div class="foldopen" id="foldopen00043" data-start="{" data-end="};">
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k32.html">   43</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_t_midas___b_a_n_k32.html">TMidas_BANK32</a> {</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k32.html#ad5d4209ee6b1dafcaa592a779fd8140e">   44</a></span>   <span class="keywordtype">char</span>   <a class="code hl_variable" href="struct_t_midas___b_a_n_k32.html#ad5d4209ee6b1dafcaa592a779fd8140e">fName</a>[4];  <span class="comment">///&lt; bank name</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k32.html#ace6301a026392c873e2a7e70f7582a03">   45</a></span>   UInt_t <a class="code hl_variable" href="struct_t_midas___b_a_n_k32.html#ace6301a026392c873e2a7e70f7582a03">fType</a>;     <span class="comment">// uint32_t  ///&lt; type of data (see midas.h TID_xxx)</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k32.html#adb8680bd57a0b3cafdebb49b7dace908">   46</a></span>   UInt_t <a class="code hl_variable" href="struct_t_midas___b_a_n_k32.html#adb8680bd57a0b3cafdebb49b7dace908">fDataSize</a>; <span class="comment">// uint32_t</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>};<span class="comment"></span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">/// 32-bit data bank</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment"></span> </div>
+<div class="foldopen" id="foldopen00045" data-start="{" data-end="};">
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k32.html">   45</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_t_midas___b_a_n_k32.html">TMidas_BANK32</a> {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k32.html#ad5d4209ee6b1dafcaa592a779fd8140e">   46</a></span>   <span class="keywordtype">char</span>   <a class="code hl_variable" href="struct_t_midas___b_a_n_k32.html#ad5d4209ee6b1dafcaa592a779fd8140e">fName</a>[4];  <span class="comment">///&lt; bank name // NOLINT(*-avoid-c-arrays)</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k32.html#ace6301a026392c873e2a7e70f7582a03">   47</a></span>   UInt_t <a class="code hl_variable" href="struct_t_midas___b_a_n_k32.html#ace6301a026392c873e2a7e70f7582a03">fType</a>;     <span class="comment">// uint32_t  ///&lt; type of data (see midas.h TID_xxx)</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="struct_t_midas___b_a_n_k32.html#adb8680bd57a0b3cafdebb49b7dace908">   48</a></span>   UInt_t <a class="code hl_variable" href="struct_t_midas___b_a_n_k32.html#adb8680bd57a0b3cafdebb49b7dace908">fDataSize</a>; <span class="comment">// uint32_t</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>};<span class="comment"></span></div>
 </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">/*! @} */</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">// end</span></div>
-<div class="ttc" id="astruct_t_midas___b_a_n_k32_html"><div class="ttname"><a href="struct_t_midas___b_a_n_k32.html">TMidas_BANK32</a></div><div class="ttdoc">32-bit data bank</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00043">TMidasBanks.h:43</a></div></div>
-<div class="ttc" id="astruct_t_midas___b_a_n_k32_html_ace6301a026392c873e2a7e70f7582a03"><div class="ttname"><a href="struct_t_midas___b_a_n_k32.html#ace6301a026392c873e2a7e70f7582a03">TMidas_BANK32::fType</a></div><div class="ttdeci">UInt_t fType</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00045">TMidasBanks.h:45</a></div></div>
-<div class="ttc" id="astruct_t_midas___b_a_n_k32_html_ad5d4209ee6b1dafcaa592a779fd8140e"><div class="ttname"><a href="struct_t_midas___b_a_n_k32.html#ad5d4209ee6b1dafcaa592a779fd8140e">TMidas_BANK32::fName</a></div><div class="ttdeci">char fName[4]</div><div class="ttdoc">bank name</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00044">TMidasBanks.h:44</a></div></div>
-<div class="ttc" id="astruct_t_midas___b_a_n_k32_html_adb8680bd57a0b3cafdebb49b7dace908"><div class="ttname"><a href="struct_t_midas___b_a_n_k32.html#adb8680bd57a0b3cafdebb49b7dace908">TMidas_BANK32::fDataSize</a></div><div class="ttdeci">UInt_t fDataSize</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00046">TMidasBanks.h:46</a></div></div>
-<div class="ttc" id="astruct_t_midas___b_a_n_k___h_e_a_d_e_r_html"><div class="ttname"><a href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html">TMidas_BANK_HEADER</a></div><div class="ttdoc">Event header.</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00028">TMidasBanks.h:28</a></div></div>
-<div class="ttc" id="astruct_t_midas___b_a_n_k___h_e_a_d_e_r_html_a1209084d3e681d7f122064573719b6b1"><div class="ttname"><a href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#a1209084d3e681d7f122064573719b6b1">TMidas_BANK_HEADER::fDataSize</a></div><div class="ttdeci">UInt_t fDataSize</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00029">TMidasBanks.h:29</a></div></div>
-<div class="ttc" id="astruct_t_midas___b_a_n_k___h_e_a_d_e_r_html_afda267e7c892dd56e0eb2876a01009fa"><div class="ttname"><a href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#afda267e7c892dd56e0eb2876a01009fa">TMidas_BANK_HEADER::fFlags</a></div><div class="ttdeci">UInt_t fFlags</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00030">TMidasBanks.h:30</a></div></div>
-<div class="ttc" id="astruct_t_midas___b_a_n_k_html"><div class="ttname"><a href="struct_t_midas___b_a_n_k.html">TMidas_BANK</a></div><div class="ttdoc">16-bit data bank</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00035">TMidasBanks.h:35</a></div></div>
-<div class="ttc" id="astruct_t_midas___b_a_n_k_html_a248a79716c727c3fd6d1ae873097367b"><div class="ttname"><a href="struct_t_midas___b_a_n_k.html#a248a79716c727c3fd6d1ae873097367b">TMidas_BANK::fName</a></div><div class="ttdeci">char fName[4]</div><div class="ttdoc">bank name</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00036">TMidasBanks.h:36</a></div></div>
-<div class="ttc" id="astruct_t_midas___b_a_n_k_html_a975b5cbb606dfe21f2485c3fc678b02a"><div class="ttname"><a href="struct_t_midas___b_a_n_k.html#a975b5cbb606dfe21f2485c3fc678b02a">TMidas_BANK::fDataSize</a></div><div class="ttdeci">UShort_t fDataSize</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00038">TMidasBanks.h:38</a></div></div>
-<div class="ttc" id="astruct_t_midas___b_a_n_k_html_ad48af9b7274b9f588b80efd97d98bce9"><div class="ttname"><a href="struct_t_midas___b_a_n_k.html#ad48af9b7274b9f588b80efd97d98bce9">TMidas_BANK::fType</a></div><div class="ttdeci">UShort_t fType</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00037">TMidasBanks.h:37</a></div></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">/*! @} */</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">// end</span></div>
+<div class="ttc" id="astruct_t_midas___b_a_n_k32_html"><div class="ttname"><a href="struct_t_midas___b_a_n_k32.html">TMidas_BANK32</a></div><div class="ttdoc">32-bit data bank</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00045">TMidasBanks.h:45</a></div></div>
+<div class="ttc" id="astruct_t_midas___b_a_n_k32_html_ace6301a026392c873e2a7e70f7582a03"><div class="ttname"><a href="struct_t_midas___b_a_n_k32.html#ace6301a026392c873e2a7e70f7582a03">TMidas_BANK32::fType</a></div><div class="ttdeci">UInt_t fType</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00047">TMidasBanks.h:47</a></div></div>
+<div class="ttc" id="astruct_t_midas___b_a_n_k32_html_ad5d4209ee6b1dafcaa592a779fd8140e"><div class="ttname"><a href="struct_t_midas___b_a_n_k32.html#ad5d4209ee6b1dafcaa592a779fd8140e">TMidas_BANK32::fName</a></div><div class="ttdeci">char fName[4]</div><div class="ttdoc">bank name // NOLINT(*-avoid-c-arrays)</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00046">TMidasBanks.h:46</a></div></div>
+<div class="ttc" id="astruct_t_midas___b_a_n_k32_html_adb8680bd57a0b3cafdebb49b7dace908"><div class="ttname"><a href="struct_t_midas___b_a_n_k32.html#adb8680bd57a0b3cafdebb49b7dace908">TMidas_BANK32::fDataSize</a></div><div class="ttdeci">UInt_t fDataSize</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00048">TMidasBanks.h:48</a></div></div>
+<div class="ttc" id="astruct_t_midas___b_a_n_k___h_e_a_d_e_r_html"><div class="ttname"><a href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html">TMidas_BANK_HEADER</a></div><div class="ttdoc">Event header.</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00030">TMidasBanks.h:30</a></div></div>
+<div class="ttc" id="astruct_t_midas___b_a_n_k___h_e_a_d_e_r_html_a1209084d3e681d7f122064573719b6b1"><div class="ttname"><a href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#a1209084d3e681d7f122064573719b6b1">TMidas_BANK_HEADER::fDataSize</a></div><div class="ttdeci">UInt_t fDataSize</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00031">TMidasBanks.h:31</a></div></div>
+<div class="ttc" id="astruct_t_midas___b_a_n_k___h_e_a_d_e_r_html_afda267e7c892dd56e0eb2876a01009fa"><div class="ttname"><a href="struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#afda267e7c892dd56e0eb2876a01009fa">TMidas_BANK_HEADER::fFlags</a></div><div class="ttdeci">UInt_t fFlags</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00032">TMidasBanks.h:32</a></div></div>
+<div class="ttc" id="astruct_t_midas___b_a_n_k_html"><div class="ttname"><a href="struct_t_midas___b_a_n_k.html">TMidas_BANK</a></div><div class="ttdoc">16-bit data bank</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00037">TMidasBanks.h:37</a></div></div>
+<div class="ttc" id="astruct_t_midas___b_a_n_k_html_a248a79716c727c3fd6d1ae873097367b"><div class="ttname"><a href="struct_t_midas___b_a_n_k.html#a248a79716c727c3fd6d1ae873097367b">TMidas_BANK::fName</a></div><div class="ttdeci">char fName[4]</div><div class="ttdoc">bank name // NOLINT(*-avoid-c-arrays)</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00038">TMidasBanks.h:38</a></div></div>
+<div class="ttc" id="astruct_t_midas___b_a_n_k_html_a975b5cbb606dfe21f2485c3fc678b02a"><div class="ttname"><a href="struct_t_midas___b_a_n_k.html#a975b5cbb606dfe21f2485c3fc678b02a">TMidas_BANK::fDataSize</a></div><div class="ttdeci">UShort_t fDataSize</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00040">TMidasBanks.h:40</a></div></div>
+<div class="ttc" id="astruct_t_midas___b_a_n_k_html_ad48af9b7274b9f588b80efd97d98bce9"><div class="ttname"><a href="struct_t_midas___b_a_n_k.html#ad48af9b7274b9f588b80efd97d98bce9">TMidas_BANK::fType</a></div><div class="ttdeci">UShort_t fType</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_banks_8h_source.html#l00039">TMidasBanks.h:39</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -176,7 +178,7 @@ $(document).ready(function(){initNavTree('_t_midas_banks_8h_source.html',''); in
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_c355ed69a9ff804c1251ec805b2844ab.html">include</a></li><li class="navelem"><a class="el" href="_t_midas_banks_8h.html">TMidasBanks.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:43.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:52.</li>
   </ul>
 </div>
 </body>

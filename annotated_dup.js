@@ -141,7 +141,6 @@ var annotated_dup =
     [ "TEmmaHit", "class_t_emma_hit.html", "class_t_emma_hit" ],
     [ "TEnergyCal", "class_t_energy_cal.html", "class_t_energy_cal" ],
     [ "TEpicsFrag", "class_t_epics_frag.html", "class_t_epics_frag" ],
-    [ "TestHelper", "class_test_helper.html", "class_test_helper" ],
     [ "TEventBuildingLoop", "class_t_event_building_loop.html", "class_t_event_building_loop" ],
     [ "TEventTime", "class_t_event_time.html", "class_t_event_time" ],
     [ "TFipps", "class_t_fipps.html", "class_t_fipps" ],

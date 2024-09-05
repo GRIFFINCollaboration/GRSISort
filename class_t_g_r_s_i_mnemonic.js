@@ -66,6 +66,8 @@ var class_t_g_r_s_i_mnemonic =
       [ "kClear", "class_t_g_r_s_i_mnemonic.html#aba94aea8c0b8cf86e70048623a485b20afb40ba5ffb9b51df54135ccaeb0fc48c", null ]
     ] ],
     [ "TGRSIMnemonic", "class_t_g_r_s_i_mnemonic.html#a3ee1000d018f0d7a61d55b48b1129a26", null ],
+    [ "TGRSIMnemonic", "class_t_g_r_s_i_mnemonic.html#a3d2a56e74e3cfdc77a0af1b4b72207e5", null ],
+    [ "TGRSIMnemonic", "class_t_g_r_s_i_mnemonic.html#a84b70e8ddfca86e059746f852836f467", null ],
     [ "TGRSIMnemonic", "class_t_g_r_s_i_mnemonic.html#ae4ecbef7972b0703f67a55c309b9cfa0", null ],
     [ "~TGRSIMnemonic", "class_t_g_r_s_i_mnemonic.html#a5c1be26356076aa249bbc95568f4e51e", null ],
     [ "ArrayPosition", "class_t_g_r_s_i_mnemonic.html#a83aefb88a7ed121fcf929ff7f5c783dc", null ],
@@ -81,6 +83,8 @@ var class_t_g_r_s_i_mnemonic =
     [ "GetName", "class_t_g_r_s_i_mnemonic.html#a1f3a8c89ebcb10bb2b78367e56cf79f2", null ],
     [ "GetTime", "class_t_g_r_s_i_mnemonic.html#a6064cfa35a41e9b5079d36a06a8cdc38", null ],
     [ "NumericArraySubPosition", "class_t_g_r_s_i_mnemonic.html#a8bfc82219651616759e2debbff98d764", null ],
+    [ "operator=", "class_t_g_r_s_i_mnemonic.html#aef323621e3a419c7fc451cde688af183", null ],
+    [ "operator=", "class_t_g_r_s_i_mnemonic.html#abcc7b2d93feeef73dc2ec7742f617e9a", null ],
     [ "OutputSensor", "class_t_g_r_s_i_mnemonic.html#a6745de534621458a496861cf00d61cab", null ],
     [ "OutputSensorString", "class_t_g_r_s_i_mnemonic.html#a6b7bfcc4300b7bdef7b2ebdcc5bb268e", null ],
     [ "Parse", "class_t_g_r_s_i_mnemonic.html#aedf4ca231866161f6ed992007b534a7b", null ],

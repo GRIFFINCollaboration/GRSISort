@@ -506,7 +506,7 @@ $(document).ready(function(){initNavTree('_t_peak_fitter_8cxx_source.html',''); 
 </div>
 <div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span> </div>
 <div class="foldopen" id="foldopen00380" data-start="{" data-end="}">
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#ae95d29fadef5c12577e020ac02275e1c">  380</a></span>Double_t <a class="code hl_function" href="class_t_peak_fitter.html#ae95d29fadef5c12577e020ac02275e1c">TPeakFitter::DefaultBackgroundFunction</a>(Double_t* dim, Double_t* par)   <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno"><a class="line" href="class_t_peak_fitter.html#ae95d29fadef5c12577e020ac02275e1c">  380</a></span>Double_t <a class="code hl_function" href="class_t_peak_fitter.html#ae95d29fadef5c12577e020ac02275e1c">TPeakFitter::DefaultBackgroundFunction</a>(Double_t* dim, Double_t* par)   <span class="comment">// NOLINT(readability-non-const-parameter)</span></div>
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>{</div>
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>   Double_t x         = dim[0];</div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>   Double_t A         = par[0];</div>
@@ -554,10 +554,10 @@ $(document).ready(function(){initNavTree('_t_peak_fitter_8cxx_source.html',''); 
 <div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>}</div>
 </div>
 <div class="ttc" id="a_globals_8h_html"><div class="ttname"><a href="_globals_8h.html">Globals.h</a></div></div>
-<div class="ttc" id="a_globals_8h_html_a8d23feea868a983c8c2b661e1e16972f"><div class="ttname"><a href="_globals_8h.html#a8d23feea868a983c8c2b661e1e16972f">RED</a></div><div class="ttdeci">#define RED</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00008">Globals.h:8</a></div></div>
-<div class="ttc" id="a_globals_8h_html_abf681265909adf3d3e8116c93c0ba179"><div class="ttname"><a href="_globals_8h.html#abf681265909adf3d3e8116c93c0ba179">YELLOW</a></div><div class="ttdeci">#define YELLOW</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00006">Globals.h:6</a></div></div>
-<div class="ttc" id="a_globals_8h_html_acfbc006ea433ad708fdee3e82996e721"><div class="ttname"><a href="_globals_8h.html#acfbc006ea433ad708fdee3e82996e721">GREEN</a></div><div class="ttdeci">#define GREEN</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00007">Globals.h:7</a></div></div>
-<div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00004">Globals.h:4</a></div></div>
+<div class="ttc" id="a_globals_8h_html_a8d23feea868a983c8c2b661e1e16972f"><div class="ttname"><a href="_globals_8h.html#a8d23feea868a983c8c2b661e1e16972f">RED</a></div><div class="ttdeci">#define RED</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00009">Globals.h:9</a></div></div>
+<div class="ttc" id="a_globals_8h_html_abf681265909adf3d3e8116c93c0ba179"><div class="ttname"><a href="_globals_8h.html#abf681265909adf3d3e8116c93c0ba179">YELLOW</a></div><div class="ttdeci">#define YELLOW</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00007">Globals.h:7</a></div></div>
+<div class="ttc" id="a_globals_8h_html_acfbc006ea433ad708fdee3e82996e721"><div class="ttname"><a href="_globals_8h.html#acfbc006ea433ad708fdee3e82996e721">GREEN</a></div><div class="ttdeci">#define GREEN</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00008">Globals.h:8</a></div></div>
+<div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00005">Globals.h:5</a></div></div>
 <div class="ttc" id="a_t_peak_fitter_8h_html"><div class="ttname"><a href="_t_peak_fitter_8h.html">TPeakFitter.h</a></div></div>
 <div class="ttc" id="aclass_t_peak_fitter_html_a182efaa6bfdd684158cdbc8da8735257"><div class="ttname"><a href="class_t_peak_fitter.html#a182efaa6bfdd684158cdbc8da8735257">TPeakFitter::UpdatePeakParameters</a></div><div class="ttdeci">void UpdatePeakParameters(const TFitResultPtr &amp;fit_res, TH1 *fit_hist)</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8cxx_source.html#l00174">TPeakFitter.cxx:174</a></div></div>
 <div class="ttc" id="aclass_t_peak_fitter_html_a1c5908b11b048149cc433613a7c36c3c"><div class="ttname"><a href="class_t_peak_fitter.html#a1c5908b11b048149cc433613a7c36c3c">TPeakFitter::fTotalFitFunction</a></div><div class="ttdeci">TF1 * fTotalFitFunction</div><div class="ttdef"><b>Definition</b> <a href="_t_peak_fitter_8h_source.html#l00091">TPeakFitter.h:91</a></div></div>
@@ -589,7 +589,7 @@ $(document).ready(function(){initNavTree('_t_peak_fitter_8cxx_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_359637ddf5ff0dd5705446986a14d7e9.html">TPeakFitting</a></li><li class="navelem"><a class="el" href="_t_peak_fitter_8cxx.html">TPeakFitter.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:45.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:54.</li>
   </ul>
 </div>
 </body>

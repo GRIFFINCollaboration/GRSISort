@@ -79,7 +79,7 @@ var searchData=
   ['fixintensity_76',['fixintensity',['../class_t_single_decay.html#ab5e505a05a90e8d7ccb94641b1777690',1,'TSingleDecay::FixIntensity(const Double_t &amp;intensity)'],['../class_t_single_decay.html#a70cc7307be260566650ebe3d43e6592e',1,'TSingleDecay::FixIntensity()']]],
   ['fixlowgaincrosstalk_77',['FixLowGainCrossTalk',['../class_t_griffin.html#a5a79aab4b16e260f56d9964380af00ca',1,'TGriffin']]],
   ['flag_5fname_78',['flag_name',['../class_arg_parse_config.html#a49124687bb2de058a55eb73ce89b0960',1,'ArgParseConfig::flag_name()'],['../class_arg_parse_item.html#a4c9b521ae442b31ded21a02bd24597d3',1,'ArgParseItem::flag_name()']]],
-  ['folding_79',['Folding',['../class_t_griffin_angles.html#a86cad5065a1284fc531a5ccd6de11dd3',1,'TGriffinAngles']]],
+  ['folding_79',['Folding',['../class_t_griffin_angles.html#a88b463e303d2dbf5d671fb803ca02356',1,'TGriffinAngles']]],
   ['foldorgroup_80',['FoldOrGroup',['../class_t_griffin_angles.html#a5eb36f9c66af1efa37b9bf1fda15193d',1,'TGriffinAngles']]],
   ['forceupdate_81',['ForceUpdate',['../class_g_root_canvas.html#a50fcfb841b544167ce652b18cd007b68',1,'GRootCanvas']]],
   ['fragmenthaswaveform_82',['fragmenthaswaveform',['../class_t_data_parser.html#ad51d4b218647e2b16b315560113ce4fc',1,'TDataParser::FragmentHasWaveform() const'],['../class_t_data_parser.html#aece00714f757372c7775dc89200bed6e',1,'TDataParser::FragmentHasWaveform(const bool &amp;val)']]],

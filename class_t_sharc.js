@@ -1,8 +1,9 @@
 var class_t_sharc =
 [
     [ "TSharc", "class_t_sharc.html#a2bb49e91568f108cc3b8b0d6772cb7f6", null ],
-    [ "~TSharc", "class_t_sharc.html#a177a144fe8b61f65656a4462f534de34", null ],
     [ "TSharc", "class_t_sharc.html#afadec95c7a5a4b87fac14f3f8de1114c", null ],
+    [ "TSharc", "class_t_sharc.html#a00992741f8c3b767c9f7a8d5f8fa4d79", null ],
+    [ "~TSharc", "class_t_sharc.html#a177a144fe8b61f65656a4462f534de34", null ],
     [ "AddFragment", "class_t_sharc.html#ae5d0584d93236474b93e3d790d118a8e", null ],
     [ "AddHit", "class_t_sharc.html#af83ad943618a30f7d1639675e18fc5b8", null ],
     [ "BuildHits", "class_t_sharc.html#ae7279001c44850acdaa715321bbb4ae4", null ],
@@ -28,6 +29,7 @@ var class_t_sharc =
     [ "Hits", "class_t_sharc.html#ab907981ce861ab147879469064748ae2", null ],
     [ "NoHits", "class_t_sharc.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
     [ "operator=", "class_t_sharc.html#aa716b3ebb202c9297ab9abee10c3d245", null ],
+    [ "operator=", "class_t_sharc.html#aec4d83c6175611de4325c3bd12a15a7e", null ],
     [ "Print", "class_t_sharc.html#af808fb7bf051df8471d975465f512160", null ],
     [ "Print", "class_t_sharc.html#ae87a1718d91004e835ac35987c1b1975", null ],
     [ "RemoveHits", "class_t_sharc.html#a0cbe60ac375b5d56ffb4a630c0acb308", null ],

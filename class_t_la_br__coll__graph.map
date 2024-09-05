@@ -1,14 +1,16 @@
 <map id="TLaBr" name="TLaBr">
-<area shape="rect" id="Node000001" title=" " alt="" coords="161,271,218,297"/>
-<area shape="rect" id="Node000002" href="$class_t_suppressed.html" title=" " alt="" coords="54,183,152,208"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,217,180,269,176,273,124,221"/>
-<area shape="rect" id="Node000003" href="$class_t_detector.html" title=" " alt="" coords="64,94,142,120"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="106,135,106,182,100,182,100,135"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="5,5,73,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="59,42,96,92,92,95,55,45"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="97,5,282,31"/>
-<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="192,46,192,271,187,271,187,46"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="159,42,142,57,112,95,108,92,138,53,156,38"/>
-<area shape="rect" id="Node000006" href="$class_t_transient_bits.html" title=" " alt="" coords="227,183,403,208"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="287,219,209,273,206,269,284,215"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="778,109,836,135"/>
+<area shape="rect" id="Node000002" href="$class_t_suppressed.html" title=" " alt="" coords="535,33,633,59"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="649,48,702,57,756,76,778,90,796,107,792,111,775,95,753,81,701,62,648,53"/>
+<area shape="rect" id="Node000003" href="$class_t_detector.html" title=" " alt="" coords="270,33,348,59"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="364,44,534,44,534,49,364,49"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="64,5,132,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="147,21,246,34,270,38,269,43,245,39,147,27"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,69,191,95"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="206,82,457,93,755,113,778,116,778,121,754,118,456,98,206,88"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="191,64,269,50,269,55,192,69"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="503,135,665,160"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="681,136,754,128,778,124,778,130,755,133,681,142"/>
+<area shape="rect" id="Node000007" href="$class_t_transient_bits.html" title=" " alt="" coords="496,184,672,210"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="684,177,753,155,788,133,791,138,755,160,685,183"/>
 </map>

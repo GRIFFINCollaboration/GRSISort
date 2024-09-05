@@ -136,18 +136,18 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment"></span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; graph-&gt;GetN(); ++i) {</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#if ROOT_VERSION_CODE &gt;= ROOT_VERSION(6,20,0)</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      <span class="comment">// exact match: return the error at this point</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      <span class="keywordflow">if</span>(graph-&gt;GetPointX(i) == x) <span class="keywordflow">return</span> graph-&gt;GetErrorY(i);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      <span class="keywordflow">if</span>(graph-&gt;GetPointX(i) == x) { <span class="keywordflow">return</span> graph-&gt;GetErrorY(i); }</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      <span class="comment">// first point with larger x: take maximum of this point and previous point</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      <span class="comment">// TGraphErrors::GetErrorY returns -1 if index is negative, so we don&#39;t need to check for this</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span>(graph-&gt;GetPointX(i) &gt; x) <span class="keywordflow">return</span> std::max(graph-&gt;GetErrorY(i-1), graph-&gt;GetErrorY(i));</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      <span class="keywordflow">if</span>(graph-&gt;GetPointX(i) &gt; x) { <span class="keywordflow">return</span> std::max(graph-&gt;GetErrorY(i-1), graph-&gt;GetErrorY(i)); }</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#else</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>      <span class="keywordtype">double</span> px, py;</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>      graph-&gt;GetPoint(i, px, py);</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      <span class="comment">// exact match: return the error at this point</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <span class="keywordflow">if</span>(px == x) <span class="keywordflow">return</span> graph-&gt;GetErrorY(i);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <span class="keywordflow">if</span>(px == x) { <span class="keywordflow">return</span> graph-&gt;GetErrorY(i); }</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      <span class="comment">// first point with larger x: take maximum of this point and previous point</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      <span class="comment">// TGraphErrors::GetErrorY returns -1 if index is negative, so we don&#39;t need to check for this</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span>(px &gt; x) <span class="keywordflow">return</span> std::max(graph-&gt;GetErrorY(i-1), graph-&gt;GetErrorY(i));</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      <span class="keywordflow">if</span>(px &gt; x) { <span class="keywordflow">return</span> std::max(graph-&gt;GetErrorY(i-1), graph-&gt;GetErrorY(i)); }</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>   }</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>   <span class="keywordflow">return</span> 0.;</div>
@@ -217,7 +217,7 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>      <span class="keywordflow">return</span> 1;</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>   }</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>   <span class="keyword">auto</span> settings = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_t_user_settings.html">TUserSettings</a>*<span class="keyword">&gt;</span>(input.Get(<span class="stringliteral">&quot;UserSettings&quot;</span>));</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>   <span class="keyword">auto</span>* settings = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_t_user_settings.html">TUserSettings</a>*<span class="keyword">&gt;</span>(input.Get(<span class="stringliteral">&quot;UserSettings&quot;</span>));</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>   <span class="comment">// if we have a path for a settings file provided on command line, we either add it to the ones read</span></div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>   <span class="comment">// from the root file or (if there weren&#39;t any) create a new instance from it</span></div>
@@ -236,12 +236,12 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>   }</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>   <span class="comment">// set all variables from settings if they haven&#39;t been set from command line</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>   <span class="keywordflow">if</span>(projGateLow == -1.) projGateLow = settings-&gt;GetDouble(<span class="stringliteral">&quot;Projection.Low&quot;</span>);</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>   <span class="keywordflow">if</span>(projGateHigh == -1.) projGateHigh = settings-&gt;GetDouble(<span class="stringliteral">&quot;Projection.High&quot;</span>);</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>   <span class="keywordflow">if</span>(timeRandomNorm == -1.) timeRandomNorm = settings-&gt;GetDouble(<span class="stringliteral">&quot;TimeRandomNormalization&quot;</span>);</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>   <span class="keywordflow">if</span>(peakPos == -1.) peakPos = settings-&gt;GetDouble(<span class="stringliteral">&quot;Peak.Position&quot;</span>);</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>   <span class="keywordflow">if</span>(peakLow == -1.) peakLow = settings-&gt;GetDouble(<span class="stringliteral">&quot;Peak.Low&quot;</span>);</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>   <span class="keywordflow">if</span>(peakHigh == -1.) peakHigh = settings-&gt;GetDouble(<span class="stringliteral">&quot;Peak.High&quot;</span>);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>   <span class="keywordflow">if</span>(projGateLow == -1.) { projGateLow = settings-&gt;GetDouble(<span class="stringliteral">&quot;Projection.Low&quot;</span>); }</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>   <span class="keywordflow">if</span>(projGateHigh == -1.) { projGateHigh = settings-&gt;GetDouble(<span class="stringliteral">&quot;Projection.High&quot;</span>); }</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>   <span class="keywordflow">if</span>(timeRandomNorm == -1.) { timeRandomNorm = settings-&gt;GetDouble(<span class="stringliteral">&quot;TimeRandomNormalization&quot;</span>); }</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>   <span class="keywordflow">if</span>(peakPos == -1.) { peakPos = settings-&gt;GetDouble(<span class="stringliteral">&quot;Peak.Position&quot;</span>); }</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>   <span class="keywordflow">if</span>(peakLow == -1.) { peakLow = settings-&gt;GetDouble(<span class="stringliteral">&quot;Peak.Low&quot;</span>); }</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>   <span class="keywordflow">if</span>(peakHigh == -1.) { peakHigh = settings-&gt;GetDouble(<span class="stringliteral">&quot;Peak.High&quot;</span>); }</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>   <span class="comment">// for the background-peak positions and background gates we could have multiple, so we create vectors for them</span></div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>   std::vector&lt;double&gt; bgPeakPos;</div>
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>   std::vector&lt;double&gt; <a class="code hl_variable" href="_efficiency_helper_8cxx.html#a844ddf3a7141aa90f36942778a6939ff">bgLow</a>;</div>
@@ -301,15 +301,15 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>      <span class="comment">// only output a warning that the parameter is changed if it&#39;s not the default value</span></div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>      <span class="keywordflow">if</span>(peakParameterLow[i] &lt;= peakParameterHigh[i] &amp;&amp; (peakParameter[i] &lt; peakParameterLow[i] || peakParameterHigh[i] &lt; peakParameter[i])) {</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>         <span class="keywordtype">bool</span> output = peakParameter[i] != -2.;</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>         <span class="keywordflow">if</span>(output) std::cout&lt;&lt;<span class="stringliteral">&quot;Warning, &quot;</span>&lt;&lt;i&lt;&lt;<span class="stringliteral">&quot;. peak parameter (&quot;</span>&lt;&lt;peakParameter[i]&lt;&lt;<span class="stringliteral">&quot;) is out of range &quot;</span>&lt;&lt;peakParameterLow[i]&lt;&lt;<span class="stringliteral">&quot; - &quot;</span>&lt;&lt;peakParameterHigh[i]&lt;&lt;<span class="stringliteral">&quot;, resetting it to &quot;</span>;</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>         <span class="keywordflow">if</span>(output) { std::cout&lt;&lt;<span class="stringliteral">&quot;Warning, &quot;</span>&lt;&lt;i&lt;&lt;<span class="stringliteral">&quot;. peak parameter (&quot;</span>&lt;&lt;peakParameter[i]&lt;&lt;<span class="stringliteral">&quot;) is out of range &quot;</span>&lt;&lt;peakParameterLow[i]&lt;&lt;<span class="stringliteral">&quot; - &quot;</span>&lt;&lt;peakParameterHigh[i]&lt;&lt;<span class="stringliteral">&quot;, resetting it to &quot;</span>; }</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>         peakParameter[i] = (peakParameterHigh[i] + peakParameterLow[i])/2.;</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>         <span class="keywordflow">if</span>(output) std::cout&lt;&lt;peakParameter[i]&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>         <span class="keywordflow">if</span>(output) { std::cout&lt;&lt;peakParameter[i]&lt;&lt;std::endl; }</div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>      }</div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>      <span class="keywordflow">if</span>(bgPeakParameterLow[i] &lt;= bgPeakParameterHigh[i] &amp;&amp; (bgPeakParameter[i] &lt; bgPeakParameterLow[i] || bgPeakParameterHigh[i] &lt; bgPeakParameter[i])) {</div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>         <span class="keywordtype">bool</span> output = bgPeakParameter[i] != -2.;</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>         <span class="keywordflow">if</span>(output) std::cout&lt;&lt;<span class="stringliteral">&quot;Warning, &quot;</span>&lt;&lt;i&lt;&lt;<span class="stringliteral">&quot;. background peak parameter (&quot;</span>&lt;&lt;bgPeakParameter[i]&lt;&lt;<span class="stringliteral">&quot;) is out of range &quot;</span>&lt;&lt;bgPeakParameterLow[i]&lt;&lt;<span class="stringliteral">&quot; - &quot;</span>&lt;&lt;bgPeakParameterHigh[i]&lt;&lt;<span class="stringliteral">&quot;, resetting it to &quot;</span>;</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>         <span class="keywordflow">if</span>(output) { std::cout&lt;&lt;<span class="stringliteral">&quot;Warning, &quot;</span>&lt;&lt;i&lt;&lt;<span class="stringliteral">&quot;. background peak parameter (&quot;</span>&lt;&lt;bgPeakParameter[i]&lt;&lt;<span class="stringliteral">&quot;) is out of range &quot;</span>&lt;&lt;bgPeakParameterLow[i]&lt;&lt;<span class="stringliteral">&quot; - &quot;</span>&lt;&lt;bgPeakParameterHigh[i]&lt;&lt;<span class="stringliteral">&quot;, resetting it to &quot;</span>; }</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>         bgPeakParameter[i] = (bgPeakParameterHigh[i] + bgPeakParameterLow[i])/2.;</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>         <span class="keywordflow">if</span>(output) std::cout&lt;&lt;bgPeakParameter[i]&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>         <span class="keywordflow">if</span>(output) { std::cout&lt;&lt;bgPeakParameter[i]&lt;&lt;std::endl; }</div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>      }</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>   }</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>   <span class="comment">// parameter limits for the background (A + B*(x-o) + C*(x-o)^2)</span></div>
@@ -332,9 +332,9 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>   <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i = 0; i &lt; backgroundParameter.size(); ++i) {</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>      <span class="keywordflow">if</span>(backgroundParameterLow[i] &lt;= backgroundParameterHigh[i] &amp;&amp; (backgroundParameter[i] &lt; backgroundParameterLow[i] || backgroundParameterHigh[i] &lt; backgroundParameter[i])) {</div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>         <span class="keywordtype">bool</span> output = backgroundParameter[i] != -2.;</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>         <span class="keywordflow">if</span>(output) std::cout&lt;&lt;<span class="stringliteral">&quot;Warning, &quot;</span>&lt;&lt;i&lt;&lt;<span class="stringliteral">&quot;. background parameter (&quot;</span>&lt;&lt;backgroundParameter[i]&lt;&lt;<span class="stringliteral">&quot;) is out of range &quot;</span>&lt;&lt;backgroundParameterLow[i]&lt;&lt;<span class="stringliteral">&quot; - &quot;</span>&lt;&lt;backgroundParameterHigh[i]&lt;&lt;<span class="stringliteral">&quot;, resetting it to &quot;</span>;</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>         <span class="keywordflow">if</span>(output) { std::cout&lt;&lt;<span class="stringliteral">&quot;Warning, &quot;</span>&lt;&lt;i&lt;&lt;<span class="stringliteral">&quot;. background parameter (&quot;</span>&lt;&lt;backgroundParameter[i]&lt;&lt;<span class="stringliteral">&quot;) is out of range &quot;</span>&lt;&lt;backgroundParameterLow[i]&lt;&lt;<span class="stringliteral">&quot; - &quot;</span>&lt;&lt;backgroundParameterHigh[i]&lt;&lt;<span class="stringliteral">&quot;, resetting it to &quot;</span>; }</div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>         backgroundParameter[i] = (backgroundParameterHigh[i] + backgroundParameterLow[i])/2.;</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>         <span class="keywordflow">if</span>(output) std::cout&lt;&lt;backgroundParameter[i]&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>         <span class="keywordflow">if</span>(output) { std::cout&lt;&lt;backgroundParameter[i]&lt;&lt;std::endl; }</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>      }</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>   }</div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
@@ -376,7 +376,7 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>   }</div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>   <span class="comment">// get the angles from the input file</span></div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>   <span class="keyword">auto</span> angles = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_t_griffin_angles.html">TGriffinAngles</a>*<span class="keyword">&gt;</span>(input.Get(<span class="stringliteral">&quot;GriffinAngles&quot;</span>));</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>   <span class="keyword">auto</span>* angles = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_t_griffin_angles.html">TGriffinAngles</a>*<span class="keyword">&gt;</span>(input.Get(<span class="stringliteral">&quot;GriffinAngles&quot;</span>));</div>
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>   <span class="keywordflow">if</span>(angles == <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>      std::cerr&lt;&lt;<span class="stringliteral">&quot;Failed to find &#39;GriffinAngles&#39; in &#39;&quot;</span>&lt;&lt;inputFile&lt;&lt;<span class="stringliteral">&quot;&#39;&quot;</span>&lt;&lt;std::endl;</div>
@@ -390,40 +390,40 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>   <span class="comment">// open output file and create graphs</span></div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>   TFile output(outputFile.c_str(), <span class="stringliteral">&quot;recreate&quot;</span>);</div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>   <span class="keyword">auto</span> rawAngularDistribution = <span class="keyword">new</span> TGraphErrors(angles-&gt;NumberOfAngles());</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>   <span class="keyword">auto</span>* rawAngularDistribution = <span class="keyword">new</span> TGraphErrors(angles-&gt;NumberOfAngles());</div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>   rawAngularDistribution-&gt;SetName(<span class="stringliteral">&quot;RawAngularDistribution&quot;</span>);</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>   <span class="keyword">auto</span> angularDistribution = <span class="keyword">new</span> TGraphErrors(angles-&gt;NumberOfAngles());</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>   <span class="keyword">auto</span>* angularDistribution = <span class="keyword">new</span> TGraphErrors(angles-&gt;NumberOfAngles());</div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>   angularDistribution-&gt;SetName(<span class="stringliteral">&quot;AngularDistribution&quot;</span>);</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>   <span class="keyword">auto</span> mixedAngularDistribution = <span class="keyword">new</span> TGraphErrors(angles-&gt;NumberOfAngles());</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>   <span class="keyword">auto</span>* mixedAngularDistribution = <span class="keyword">new</span> TGraphErrors(angles-&gt;NumberOfAngles());</div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>   mixedAngularDistribution-&gt;SetName(<span class="stringliteral">&quot;MixedAngularDistribution&quot;</span>);</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>   <span class="keyword">auto</span> rawChiSquares = <span class="keyword">new</span> TGraph(angles-&gt;NumberOfAngles());</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>   <span class="keyword">auto</span>* rawChiSquares = <span class="keyword">new</span> TGraph(angles-&gt;NumberOfAngles());</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>   rawChiSquares-&gt;SetName(<span class="stringliteral">&quot;RawChiSquares&quot;</span>);</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>   <span class="keyword">auto</span> mixedChiSquares = <span class="keyword">new</span> TGraph(angles-&gt;NumberOfAngles());</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>   <span class="keyword">auto</span>* mixedChiSquares = <span class="keyword">new</span> TGraph(angles-&gt;NumberOfAngles());</div>
 <div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>   mixedChiSquares-&gt;SetName(<span class="stringliteral">&quot;MixedChiSquares&quot;</span>);</div>
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>   <span class="comment">// write the user settings to the output file</span></div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>   settings-&gt;Write();</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="preprocessor">#if ROOT_VERSION_CODE &gt;= ROOT_VERSION(6,20,0)</span></div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>   <span class="keyword">auto</span> fitDir = output.mkdir(<span class="stringliteral">&quot;fits&quot;</span>, <span class="stringliteral">&quot;Projections with fits&quot;</span>, <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>   <span class="keyword">auto</span>* fitDir = output.mkdir(<span class="stringliteral">&quot;fits&quot;</span>, <span class="stringliteral">&quot;Projections with fits&quot;</span>, <span class="keyword">true</span>);</div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>   <span class="keyword">auto</span> fitDir = output.mkdir(<span class="stringliteral">&quot;fits&quot;</span>, <span class="stringliteral">&quot;Projections with fits&quot;</span>);</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>   <span class="keyword">auto</span>* fitDir = output.mkdir(<span class="stringliteral">&quot;fits&quot;</span>, <span class="stringliteral">&quot;Projections with fits&quot;</span>);</div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span> </div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>   <span class="comment">// loop over all matrices</span></div>
 <div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; angles-&gt;NumberOfAngles(); ++i) {</div>
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>      <span class="comment">// get the three histograms we need: prompt, time random, and event mixed</span></div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>      <span class="keyword">auto</span> prompt = <span class="keyword">static_cast&lt;</span>TH2*<span class="keyword">&gt;</span>(input.Get(Form(<span class="stringliteral">&quot;AngularCorrelation%d&quot;</span>, i)));</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>      <span class="keyword">auto</span>* prompt = <span class="keyword">static_cast&lt;</span>TH2*<span class="keyword">&gt;</span>(input.Get(Form(<span class="stringliteral">&quot;AngularCorrelation%d&quot;</span>, i)));</div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>      <span class="keywordflow">if</span>(prompt == <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>         std::cerr&lt;&lt;<span class="stringliteral">&quot;Failed to find histogram &#39;&quot;</span>&lt;&lt;Form(<span class="stringliteral">&quot;AngularCorrelation%d&quot;</span>, i)&lt;&lt;<span class="stringliteral">&quot;&#39;, should have &quot;</span>&lt;&lt;angles-&gt;NumberOfAngles()&lt;&lt;<span class="stringliteral">&quot; angles in total!&quot;</span>&lt;&lt;std::endl;</div>
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>         <span class="keywordflow">return</span> 1;</div>
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>      }</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>      <span class="keyword">auto</span> bg = <span class="keyword">static_cast&lt;</span>TH2*<span class="keyword">&gt;</span>(input.Get(Form(<span class="stringliteral">&quot;AngularCorrelationBG%d&quot;</span>, i)));</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>      <span class="keyword">auto</span>* bg = <span class="keyword">static_cast&lt;</span>TH2*<span class="keyword">&gt;</span>(input.Get(Form(<span class="stringliteral">&quot;AngularCorrelationBG%d&quot;</span>, i)));</div>
 <div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>      <span class="keywordflow">if</span>(bg == <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>         std::cerr&lt;&lt;<span class="stringliteral">&quot;Failed to find histogram &#39;&quot;</span>&lt;&lt;Form(<span class="stringliteral">&quot;AngularCorrelationBG%d&quot;</span>, i)&lt;&lt;<span class="stringliteral">&quot;&#39;, should have &quot;</span>&lt;&lt;angles-&gt;NumberOfAngles()&lt;&lt;<span class="stringliteral">&quot; angles in total!&quot;</span>&lt;&lt;std::endl;</div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>         <span class="keywordflow">return</span> 1;</div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>      }</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>      <span class="keyword">auto</span> mixed = <span class="keyword">static_cast&lt;</span>TH2*<span class="keyword">&gt;</span>(input.Get(Form(<span class="stringliteral">&quot;AngularCorrelationMixed%d&quot;</span>, i)));</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>      <span class="keyword">auto</span>* mixed = <span class="keyword">static_cast&lt;</span>TH2*<span class="keyword">&gt;</span>(input.Get(Form(<span class="stringliteral">&quot;AngularCorrelationMixed%d&quot;</span>, i)));</div>
 <div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>      <span class="keywordflow">if</span>(mixed == <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>         std::cerr&lt;&lt;<span class="stringliteral">&quot;Failed to find histogram &#39;&quot;</span>&lt;&lt;Form(<span class="stringliteral">&quot;AngularCorrelationMixed%d&quot;</span>, i)&lt;&lt;<span class="stringliteral">&quot;&#39;, should have &quot;</span>&lt;&lt;angles-&gt;NumberOfAngles()&lt;&lt;<span class="stringliteral">&quot; angles in total!&quot;</span>&lt;&lt;std::endl;</div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>         <span class="keywordflow">return</span> 1;</div>
@@ -435,11 +435,11 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>      mixed-&gt;Sumw2();</div>
 <div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>      <span class="comment">// project onto x-axis</span></div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>      <span class="keyword">auto</span> proj =     prompt-&gt;ProjectionX(Form(<span class="stringliteral">&quot;proj%d&quot;</span>,i),     prompt-&gt;GetYaxis()-&gt;FindBin(projGateLow), prompt-&gt;GetYaxis()-&gt;FindBin(projGateHigh));</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>      <span class="keyword">auto</span> projMixed = mixed-&gt;ProjectionX(Form(<span class="stringliteral">&quot;projMixed%d&quot;</span>,i), mixed-&gt;GetYaxis()-&gt;FindBin(projGateLow),  mixed-&gt;GetYaxis()-&gt;FindBin(projGateHigh));</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>      <span class="keyword">auto</span>* proj =     prompt-&gt;ProjectionX(Form(<span class="stringliteral">&quot;proj%d&quot;</span>,i),     prompt-&gt;GetYaxis()-&gt;FindBin(projGateLow), prompt-&gt;GetYaxis()-&gt;FindBin(projGateHigh));</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>      <span class="keyword">auto</span>* projMixed = mixed-&gt;ProjectionX(Form(<span class="stringliteral">&quot;projMixed%d&quot;</span>,i), mixed-&gt;GetYaxis()-&gt;FindBin(projGateLow),  mixed-&gt;GetYaxis()-&gt;FindBin(projGateHigh));</div>
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>      <span class="comment">// project background gate(s) onto x-axis</span></div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>      <span class="keyword">auto</span> projBg = prompt-&gt;ProjectionX(Form(<span class="stringliteral">&quot;projBg%d&quot;</span>,i), prompt-&gt;GetYaxis()-&gt;FindBin(<a class="code hl_variable" href="_efficiency_helper_8cxx.html#a844ddf3a7141aa90f36942778a6939ff">bgLow</a>[0]), prompt-&gt;GetYaxis()-&gt;FindBin(<a class="code hl_variable" href="_efficiency_helper_8cxx.html#af7c87127f83b77788e3ff236ad70f942">bgHigh</a>[0]));</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>      <span class="keyword">auto</span> projMixedBg = mixed-&gt;ProjectionX(Form(<span class="stringliteral">&quot;projMixedBg%d&quot;</span>,i), mixed-&gt;GetYaxis()-&gt;FindBin(<a class="code hl_variable" href="_efficiency_helper_8cxx.html#a844ddf3a7141aa90f36942778a6939ff">bgLow</a>[0]), mixed-&gt;GetYaxis()-&gt;FindBin(<a class="code hl_variable" href="_efficiency_helper_8cxx.html#af7c87127f83b77788e3ff236ad70f942">bgHigh</a>[0]));</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>      <span class="keyword">auto</span>* projBg = prompt-&gt;ProjectionX(Form(<span class="stringliteral">&quot;projBg%d&quot;</span>,i), prompt-&gt;GetYaxis()-&gt;FindBin(<a class="code hl_variable" href="_efficiency_helper_8cxx.html#a844ddf3a7141aa90f36942778a6939ff">bgLow</a>[0]), prompt-&gt;GetYaxis()-&gt;FindBin(<a class="code hl_variable" href="_efficiency_helper_8cxx.html#af7c87127f83b77788e3ff236ad70f942">bgHigh</a>[0]));</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>      <span class="keyword">auto</span>* projMixedBg = mixed-&gt;ProjectionX(Form(<span class="stringliteral">&quot;projMixedBg%d&quot;</span>,i), mixed-&gt;GetYaxis()-&gt;FindBin(<a class="code hl_variable" href="_efficiency_helper_8cxx.html#a844ddf3a7141aa90f36942778a6939ff">bgLow</a>[0]), mixed-&gt;GetYaxis()-&gt;FindBin(<a class="code hl_variable" href="_efficiency_helper_8cxx.html#af7c87127f83b77788e3ff236ad70f942">bgHigh</a>[0]));</div>
 <div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>      <span class="keywordtype">double</span> bgGateWidth =     prompt-&gt;GetYaxis()-&gt;FindBin(<a class="code hl_variable" href="_efficiency_helper_8cxx.html#af7c87127f83b77788e3ff236ad70f942">bgHigh</a>[0]) - prompt-&gt;GetYaxis()-&gt;FindBin(<a class="code hl_variable" href="_efficiency_helper_8cxx.html#a844ddf3a7141aa90f36942778a6939ff">bgLow</a>[0])+1;</div>
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>      <span class="keywordtype">double</span> mixedBgGateWidth = mixed-&gt;GetYaxis()-&gt;FindBin(<a class="code hl_variable" href="_efficiency_helper_8cxx.html#af7c87127f83b77788e3ff236ad70f942">bgHigh</a>[0]) -  mixed-&gt;GetYaxis()-&gt;FindBin(<a class="code hl_variable" href="_efficiency_helper_8cxx.html#a844ddf3a7141aa90f36942778a6939ff">bgLow</a>[0])+1;</div>
 <div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>      <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> g = 1; g &lt; <a class="code hl_variable" href="_efficiency_helper_8cxx.html#a844ddf3a7141aa90f36942778a6939ff">bgLow</a>.size(); ++g) {</div>
@@ -466,7 +466,7 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>      }</div>
 <div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>      pf.<a class="code hl_function" href="class_t_peak_fitter.html#acf4e5439a0e86dc1869b49090e129321">AddPeak</a>(&amp;peak);</div>
 <div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>      <span class="keywordflow">for</span>(<span class="keyword">auto</span> bgPeak : bgPeakPos) {</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>         <span class="keyword">auto</span> bgP = <span class="keyword">new</span> <a class="code hl_class" href="class_t_r_w_peak.html">TRWPeak</a>(bgPeak);</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>         <span class="keyword">auto</span>* bgP = <span class="keyword">new</span> <a class="code hl_class" href="class_t_r_w_peak.html">TRWPeak</a>(bgPeak);</div>
 <div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>         <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> p = 0; p &lt; bgPeakParameterLow.size(); ++p) {</div>
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>            <span class="keywordflow">if</span>(bgPeakParameterLow[p] == bgPeakParameterHigh[p]) {</div>
 <div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>               bgP-&gt;GetFitFunction()-&gt;FixParameter(p, bgPeakParameter[p]);</div>
@@ -499,7 +499,7 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>      }</div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>      pfMixed.<a class="code hl_function" href="class_t_peak_fitter.html#acf4e5439a0e86dc1869b49090e129321">AddPeak</a>(&amp;peakMixed);</div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>      <span class="keywordflow">for</span>(<span class="keyword">auto</span> bgPeak : bgPeakPos) {</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>         <span class="keyword">auto</span> bgP = <span class="keyword">new</span> <a class="code hl_class" href="class_t_r_w_peak.html">TRWPeak</a>(bgPeak);</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>         <span class="keyword">auto</span>* bgP = <span class="keyword">new</span> <a class="code hl_class" href="class_t_r_w_peak.html">TRWPeak</a>(bgPeak);</div>
 <div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>         <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> p = 0; p &lt; bgPeakParameterLow.size(); ++p) {</div>
 <div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>            <span class="keywordflow">if</span>(bgPeakParameterLow[p] == bgPeakParameterHigh[p]) {</div>
 <div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>               bgP-&gt;GetFitFunction()-&gt;FixParameter(p, bgPeakParameter[p]);</div>
@@ -541,7 +541,7 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;Fitting of projections done.&quot;</span>&lt;&lt;std::endl;</div>
 <div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span> </div>
 <div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>   <span class="comment">// correct the raw and mixed graphs for the number of combinations that contribute to each angle</span></div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>   <span class="keyword">auto</span> rawAngularDistributionCorr = <span class="keyword">static_cast&lt;</span>TGraphErrors*<span class="keyword">&gt;</span>(rawAngularDistribution-&gt;Clone(<span class="stringliteral">&quot;RawAngularDistributionCorrected&quot;</span>));</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>   <span class="keyword">auto</span>* rawAngularDistributionCorr = <span class="keyword">static_cast&lt;</span>TGraphErrors*<span class="keyword">&gt;</span>(rawAngularDistribution-&gt;Clone(<span class="stringliteral">&quot;RawAngularDistributionCorrected&quot;</span>));</div>
 <div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; rawAngularDistributionCorr-&gt;GetN(); ++i) {</div>
 <div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span><span class="preprocessor">#if ROOT_VERSION_CODE &gt;= ROOT_VERSION(6,20,0)</span></div>
 <div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>      <span class="keywordflow">if</span>(angles-&gt;Count(rawAngularDistributionCorr-&gt;GetPointX(i)) != 0) {</div>
@@ -561,7 +561,7 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>      }</div>
 <div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>   }</div>
-<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>   <span class="keyword">auto</span> mixedAngularDistributionCorr = <span class="keyword">static_cast&lt;</span>TGraphErrors*<span class="keyword">&gt;</span>(mixedAngularDistribution-&gt;Clone(<span class="stringliteral">&quot;MixedAngularDistributionCorrected&quot;</span>));</div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>   <span class="keyword">auto</span>* mixedAngularDistributionCorr = <span class="keyword">static_cast&lt;</span>TGraphErrors*<span class="keyword">&gt;</span>(mixedAngularDistribution-&gt;Clone(<span class="stringliteral">&quot;MixedAngularDistributionCorrected&quot;</span>));</div>
 <div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; mixedAngularDistributionCorr-&gt;GetN(); ++i) {</div>
 <div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span><span class="preprocessor">#if ROOT_VERSION_CODE &gt;= ROOT_VERSION(6,20,0)</span></div>
 <div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>      <span class="keywordflow">if</span>(angles-&gt;Count(mixedAngularDistributionCorr-&gt;GetPointX(i)) != 0) {</div>
@@ -593,9 +593,9 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span> </div>
 <div class="line"><a id="l00487" name="l00487"></a><span class="lineno">  487</span>      <span class="keywordflow">if</span>(theory.IsOpen()) {</div>
 <div class="line"><a id="l00488" name="l00488"></a><span class="lineno">  488</span>         <span class="comment">// read graphs from file</span></div>
-<div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span>         <span class="keyword">auto</span> z0 = <span class="keyword">static_cast&lt;</span>TGraphErrors*<span class="keyword">&gt;</span>(theory.Get(<span class="stringliteral">&quot;graph000&quot;</span>));</div>
-<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>         <span class="keyword">auto</span> z2 = <span class="keyword">static_cast&lt;</span>TGraphErrors*<span class="keyword">&gt;</span>(theory.Get(<span class="stringliteral">&quot;graph010&quot;</span>));</div>
-<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>         <span class="keyword">auto</span> z4 = <span class="keyword">static_cast&lt;</span>TGraphErrors*<span class="keyword">&gt;</span>(theory.Get(<span class="stringliteral">&quot;graph100&quot;</span>));</div>
+<div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span>         <span class="keyword">auto</span>* z0 = <span class="keyword">static_cast&lt;</span>TGraphErrors*<span class="keyword">&gt;</span>(theory.Get(<span class="stringliteral">&quot;graph000&quot;</span>));</div>
+<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>         <span class="keyword">auto</span>* z2 = <span class="keyword">static_cast&lt;</span>TGraphErrors*<span class="keyword">&gt;</span>(theory.Get(<span class="stringliteral">&quot;graph010&quot;</span>));</div>
+<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>         <span class="keyword">auto</span>* z4 = <span class="keyword">static_cast&lt;</span>TGraphErrors*<span class="keyword">&gt;</span>(theory.Get(<span class="stringliteral">&quot;graph100&quot;</span>));</div>
 <div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span> </div>
 <div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>         <span class="keywordflow">if</span>(z0 != <span class="keyword">nullptr</span> &amp;&amp; z2 != <span class="keyword">nullptr</span> &amp;&amp; z4 != <span class="keyword">nullptr</span> &amp;&amp; z0-&gt;GetN() == z2-&gt;GetN() &amp;&amp; z0-&gt;GetN() == z4-&gt;GetN()) {</div>
 <div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span>            <span class="comment">// check if the sizes of the provided graphs match what we expect:</span></div>
@@ -613,30 +613,30 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>               <span class="comment">// first check which of the vectors we iterate over</span></div>
 <div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>               <span class="keywordflow">if</span>(twoJLow.size() &gt; 1 &amp;&amp; twoJMiddle.size() == 1 &amp;&amp; twoJHigh.size() == 1) {</div>
 <div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>                  <span class="keywordflow">for</span>(<span class="keyword">auto</span> twoJ : twoJLow) {</div>
-<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>                     parameters.push_back(std::vector&lt;double&gt;());</div>
+<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>                     parameters.emplace_back();</div>
 <div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>                     spin.push_back(<a class="code hl_function" href="_angular_correlations_8cxx.html#ac32f038f664c7fdbc7387b6ee6164e79">MixingMethod</a>(angularDistribution, z0, z2, z4, twoJHigh.at(0), twoJMiddle.at(0), twoJ, parameters.back()));</div>
 <div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>                     spinLabel.push_back(twoJ/2.);</div>
 <div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>                  }</div>
 <div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>               } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(twoJLow.size() == 1 &amp;&amp; twoJMiddle.size() &gt; 1 &amp;&amp; twoJHigh.size() == 1) {</div>
 <div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>                  <span class="keywordflow">for</span>(<span class="keyword">auto</span> twoJ : twoJMiddle) {</div>
-<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>                     parameters.push_back(std::vector&lt;double&gt;());</div>
+<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>                     parameters.emplace_back();</div>
 <div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>                     spin.push_back(<a class="code hl_function" href="_angular_correlations_8cxx.html#ac32f038f664c7fdbc7387b6ee6164e79">MixingMethod</a>(angularDistribution, z0, z2, z4, twoJHigh.at(0), twoJ, twoJLow.at(0), parameters.back()));</div>
 <div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>                     spinLabel.push_back(twoJ/2.);</div>
 <div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>                  }</div>
 <div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>               } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(twoJLow.size() == 1 &amp;&amp; twoJMiddle.size() == 1 &amp;&amp; twoJHigh.size() &gt; 1) {</div>
 <div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>                  <span class="keywordflow">for</span>(<span class="keyword">auto</span> twoJ : twoJHigh) {</div>
-<div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>                     parameters.push_back(std::vector&lt;double&gt;());</div>
+<div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>                     parameters.emplace_back();</div>
 <div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>                     spin.push_back(<a class="code hl_function" href="_angular_correlations_8cxx.html#ac32f038f664c7fdbc7387b6ee6164e79">MixingMethod</a>(angularDistribution, z0, z2, z4, twoJ, twoJMiddle.at(0), twoJLow.at(0), parameters.back()));</div>
 <div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>                     spinLabel.push_back(twoJ/2.);</div>
 <div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>                  }</div>
 <div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>               } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>                  parameters.push_back(std::vector&lt;double&gt;());</div>
+<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>                  parameters.emplace_back();</div>
 <div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>                  spin.push_back(<a class="code hl_function" href="_angular_correlations_8cxx.html#ac32f038f664c7fdbc7387b6ee6164e79">MixingMethod</a>(angularDistribution, z0, z2, z4, twoJHigh.at(0), twoJMiddle.at(0), twoJLow.at(0), parameters.back()));</div>
 <div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>                  spinLabel.push_back(twoJHigh.at(0)/2.);</div>
 <div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>               }</div>
 <div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span> </div>
 <div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>               <span class="comment">// create canvas and plot graphs on it</span></div>
-<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>               <span class="keyword">auto</span> canvas = <span class="keyword">new</span> TCanvas;</div>
+<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>               <span class="keyword">auto</span>* canvas = <span class="keyword">new</span> TCanvas;</div>
 <div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span> </div>
 <div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>               <span class="comment">// determine minimum and maximum y-value</span></div>
 <div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>               <span class="keywordtype">double</span> min = TMath::MinElement(spin.at(0)-&gt;GetN(), spin.at(0)-&gt;GetY());</div>
@@ -650,7 +650,7 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>               <span class="comment">// find first graph with more than one data point</span></div>
 <div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>               <span class="keywordtype">size_t</span> first = 0;</div>
 <div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>               <span class="keywordflow">for</span>(first = 0; first &lt; spin.size(); ++first) {</div>
-<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>                  <span class="keywordflow">if</span>(spin[first]-&gt;GetN() &gt; 1) <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>                  <span class="keywordflow">if</span>(spin[first]-&gt;GetN() &gt; 1) { <span class="keywordflow">break</span>; }</div>
 <div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>               }</div>
 <div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span> </div>
 <div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>               spin[first]-&gt;SetTitle(<span class="stringliteral">&quot;&quot;</span>);</div>
@@ -663,19 +663,19 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span> </div>
 <div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>               spin[first]-&gt;Draw(<span class="stringliteral">&quot;ac&quot;</span>);</div>
 <div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>               <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i = 0; i &lt; spin.size(); ++i) {</div>
-<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>                  <span class="keywordflow">if</span>(i == first) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>                  <span class="keywordflow">if</span>(spin[i]-&gt;GetN() &gt; 1) spin[i]-&gt;Draw(<span class="stringliteral">&quot;c&quot;</span>);</div>
-<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>                  <span class="keywordflow">else</span>                    spin[i]-&gt;Draw(<span class="stringliteral">&quot;*&quot;</span>);</div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>                  <span class="keywordflow">if</span>(i == first) { <span class="keywordflow">continue</span>; }</div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>                  <span class="keywordflow">if</span>(spin[i]-&gt;GetN() &gt; 1) { spin[i]-&gt;Draw(<span class="stringliteral">&quot;c&quot;</span>); }</div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>                  <span class="keywordflow">else</span>                    { spin[i]-&gt;Draw(<span class="stringliteral">&quot;*&quot;</span>); }</div>
 <div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>               }</div>
 <div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span> </div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>               <span class="keyword">auto</span> confidenceLevelLine = <span class="keyword">new</span> TLine(-1.5, confidenceLevel, 1.5, confidenceLevel);</div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>               <span class="keyword">auto</span>* confidenceLevelLine = <span class="keyword">new</span> TLine(-1.5, confidenceLevel, 1.5, confidenceLevel);</div>
 <div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span> </div>
 <div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>               confidenceLevelLine-&gt;Draw();</div>
 <div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span> </div>
 <div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span><span class="preprocessor">#if ROOT_VERSION_CODE &gt;= ROOT_VERSION(6,20,0)</span></div>
-<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>               <span class="keyword">auto</span> legend = <span class="keyword">new</span> TLegend(0.1, 0.3);</div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>               <span class="keyword">auto</span>* legend = <span class="keyword">new</span> TLegend(0.1, 0.3);</div>
 <div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>               <span class="keyword">auto</span> legend = <span class="keyword">new</span> TLegend(0.7, 0.6, 0.8, 0.9);</div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>               <span class="keyword">auto</span>* legend = <span class="keyword">new</span> TLegend(0.7, 0.6, 0.8, 0.9);</div>
 <div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>               <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i = 0; i &lt; spin.size(); ++i) {</div>
 <div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>                  <span class="keywordflow">if</span>(spin[i]-&gt;GetN() == 1) {</div>
@@ -707,7 +707,7 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span> </div>
 <div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>               <span class="comment">// create theory graphs with best fit for each spin, and write them to file</span></div>
 <div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>               std::vector&lt;TGraphErrors*&gt; spinFit(spin.size(), <span class="keyword">new</span> TGraphErrors(angularDistribution-&gt;GetN()));</div>
-<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>               <span class="keyword">auto</span> x = angularDistribution-&gt;GetX();</div>
+<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>               <span class="keyword">auto</span>* x = angularDistribution-&gt;GetX();</div>
 <div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>               <span class="keywordflow">for</span>(<span class="keywordtype">int</span> p = 0; p &lt; angularDistribution-&gt;GetN(); ++p) {</div>
 <div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>                  <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i = 0; i &lt; spinFit.size(); ++i) {</div>
 <div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>                     spinFit[i]-&gt;SetPoint(p, x[p], parameters[i][0]*((1.-parameters[i][1]-parameters[i][2])*z0-&gt;Eval(x[p]) + parameters[i][1]*z2-&gt;Eval(x[p]) + parameters[i][2]*z4-&gt;Eval(x[p])));</div>
@@ -757,7 +757,7 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00648" name="l00648"></a><span class="lineno"><a class="line" href="class_ac.html">  648</a></span><span class="keyword">class </span><a class="code hl_class" href="class_ac.html">Ac</a> {</div>
 <div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span><span class="keyword">public</span>:</div>
 <div class="foldopen" id="foldopen00650" data-start="{" data-end="}">
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno"><a class="line" href="class_ac.html#addda9cd499408682e1c711f060c63175">  650</a></span>   <a class="code hl_function" href="class_ac.html#addda9cd499408682e1c711f060c63175">Ac</a>(TGraphErrors* data = <span class="keyword">nullptr</span>, TGraphErrors* z0 = <span class="keyword">nullptr</span>, TGraphErrors* z2 = <span class="keyword">nullptr</span>, TGraphErrors* z4 = <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno"><a class="line" href="class_ac.html#addda9cd499408682e1c711f060c63175">  650</a></span>   <span class="keyword">explicit</span> <a class="code hl_function" href="class_ac.html#addda9cd499408682e1c711f060c63175">Ac</a>(TGraphErrors* data = <span class="keyword">nullptr</span>, TGraphErrors* z0 = <span class="keyword">nullptr</span>, TGraphErrors* z2 = <span class="keyword">nullptr</span>, TGraphErrors* z4 = <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>      : <a class="code hl_variable" href="class_ac.html#a1acb6c0996d1109dae6dbcec625526e0">fData</a>(data), <a class="code hl_variable" href="class_ac.html#aab75e71f2ccf85a61b082a36647d3aa9">fZ0</a>(z0), <a class="code hl_variable" href="class_ac.html#af3c705aa7aed27eefa5fc3641a4c2f2b">fZ2</a>(z2), <a class="code hl_variable" href="class_ac.html#a94fe36ab181e4f6bfdb04fd57d319ede">fZ4</a>(z4) {}</div>
 </div>
 <div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span> </div>
@@ -774,8 +774,8 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>      <span class="keywordtype">double</span> chi2 = 0;</div>
 <div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>      <span class="keywordflow">for</span>(<span class="keywordtype">int</span> point = 0; point &lt; <a class="code hl_variable" href="class_ac.html#a1acb6c0996d1109dae6dbcec625526e0">fData</a>-&gt;GetN(); ++point) {</div>
 <div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>         <span class="comment">// get data values</span></div>
-<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>         <span class="keywordtype">double</span> x;</div>
-<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>         <span class="keywordtype">double</span> y;</div>
+<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>         <span class="keywordtype">double</span> x = 0.;</div>
+<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>         <span class="keywordtype">double</span> y = 0.;</div>
 <div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>         <a class="code hl_variable" href="class_ac.html#a1acb6c0996d1109dae6dbcec625526e0">fData</a>-&gt;GetPoint(point, x, y);</div>
 <div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>         <span class="keywordtype">double</span> yError = <a class="code hl_variable" href="class_ac.html#a1acb6c0996d1109dae6dbcec625526e0">fData</a>-&gt;GetErrorY(point);</div>
 <div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span> </div>
@@ -825,13 +825,13 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>   <span class="comment">// a is the lowest allowed spin</span></div>
 <div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span>   <span class="comment">// b is the mixing spin</span></div>
 <div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span>   <span class="keywordtype">int</span> l1a = TMath::Abs(twoJhigh-twoJmid)/2;</div>
-<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span>   <span class="keywordflow">if</span>(l1a == 0) l1a = 1;</div>
+<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span>   <span class="keywordflow">if</span>(l1a == 0) { l1a = 1; }</div>
 <div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span>   <span class="keywordtype">int</span> l1b = l1a + 1;</div>
 <div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>   <span class="comment">// l2 is the transition between j2 and j3</span></div>
 <div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span>   <span class="comment">// a is the lowest allowed spin</span></div>
 <div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>   <span class="comment">// b is the mixing spin</span></div>
 <div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span>   <span class="keywordtype">int</span> l2a = TMath::Abs(twoJmid-twoJlow)/2;</div>
-<div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span>   <span class="keywordflow">if</span>(l2a == 0) l2a = 1;</div>
+<div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span>   <span class="keywordflow">if</span>(l2a == 0) { l2a = 1; }</div>
 <div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span>   <span class="keywordtype">int</span> l2b = l2a + 1;</div>
 <div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span> </div>
 <div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span>   <span class="comment">// run some quick checks on the mixing ratios</span></div>
@@ -927,14 +927,14 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>   assert(data-&gt;GetN() == z4-&gt;GetN());</div>
 <div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>   <span class="comment">// create a copy of the data with cos(theta) as x-axis and fit it with a legenre polynomial</span></div>
 <div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>   <span class="comment">// this is to get initial conditions for our fit</span></div>
-<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>   <span class="keyword">auto</span> cosTheta = <span class="keyword">new</span> TGraphErrors(*data);</div>
-<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>   <span class="keyword">auto</span> x = cosTheta-&gt;GetX();</div>
+<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>   <span class="keyword">auto</span>* cosTheta = <span class="keyword">new</span> TGraphErrors(*data);</div>
+<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>   <span class="keyword">auto</span>* x = cosTheta-&gt;GetX();</div>
 <div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; cosTheta-&gt;GetN(); ++i) {</div>
 <div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>      x[i] = TMath::Cos(x[i]/180.*TMath::Pi());</div>
 <div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>   }</div>
 <div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span> </div>
 <div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>   <span class="keywordtype">int</span> nPar = 3;</div>
-<div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>   <span class="keyword">auto</span> legendre = <span class="keyword">new</span> TF1(<span class="stringliteral">&quot;legendre&quot;</span>, <a class="code hl_function" href="namespace_t_g_r_s_i_functions.html#a4f4597680dbc373f6dd53513fae999be">TGRSIFunctions::LegendrePolynomial</a>, -1., 1., nPar);</div>
+<div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>   <span class="keyword">auto</span>* legendre = <span class="keyword">new</span> TF1(<span class="stringliteral">&quot;legendre&quot;</span>, <a class="code hl_function" href="namespace_t_g_r_s_i_functions.html#a4f4597680dbc373f6dd53513fae999be">TGRSIFunctions::LegendrePolynomial</a>, -1., 1., nPar);</div>
 <div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span>   legendre-&gt;SetParNames(<span class="stringliteral">&quot;a_{0}&quot;</span>, <span class="stringliteral">&quot;a_{2}&quot;</span>, <span class="stringliteral">&quot;a_{4}&quot;</span>);</div>
 <div class="line"><a id="l00822" name="l00822"></a><span class="lineno">  822</span>   legendre-&gt;SetParameters(1., 0.5, 0.5);</div>
 <div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span>   cosTheta-&gt;Fit(legendre, <span class="stringliteral">&quot;QN0&quot;</span>);</div>
@@ -953,7 +953,7 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>   fitter.Config().SetMinimizer(<span class="stringliteral">&quot;Minuit2&quot;</span>, <span class="stringliteral">&quot;Migrad&quot;</span>); <span class="comment">// or simplex?</span></div>
 <div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>   <span class="keywordflow">if</span>(!fitter.FitFCN()) {</div>
 <div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>      std::cerr&lt;&lt;<span class="stringliteral">&quot;Fit failed&quot;</span>&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>      <span class="keywordflow">return</span> std::vector&lt;double&gt;();</div>
+<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>      <span class="keywordflow">return</span> {};</div>
 <div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>   }</div>
 <div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span> </div>
 <div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span> </div>
@@ -962,13 +962,13 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>   <span class="comment">// MinFcnValue() is the minimum chi2, ac.Np gives the number of data points</span></div>
 <div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;Reduced chi^2: &quot;</span>&lt;&lt;fitResult.MinFcnValue()/(ac.<a class="code hl_function" href="class_ac.html#a5f08f312214d9afc245bf17e3692894d">Np</a>()-fitResult.NFreeParameters())&lt;&lt;std::endl;</div>
 <div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>   std::vector&lt;double&gt; parameters(fitResult.GetParams(), fitResult.GetParams()+nPar);</div>
-<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>   <span class="keyword">auto</span> errors = fitResult.GetErrors();</div>
+<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>   <span class="keyword">const</span> <span class="keyword">auto</span>* errors = fitResult.GetErrors();</div>
 <div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;Parameters a_0: &quot;</span>&lt;&lt;parameters[0]&lt;&lt;<span class="stringliteral">&quot; +- &quot;</span>&lt;&lt;errors[0]&lt;&lt;<span class="stringliteral">&quot;, a_2: &quot;</span>&lt;&lt;parameters[1]&lt;&lt;<span class="stringliteral">&quot; +- &quot;</span>&lt;&lt;errors[1]&lt;&lt;<span class="stringliteral">&quot;, a_4: &quot;</span>&lt;&lt;parameters[2]&lt;&lt;<span class="stringliteral">&quot; +- &quot;</span>&lt;&lt;errors[2]&lt;&lt;std::endl;</div>
 <div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>   TMatrixD covariance(nPar, nPar);</div>
 <div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>   fitResult.GetCovarianceMatrix(covariance);</div>
 <div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span> </div>
 <div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>   <span class="comment">// create fit and residual graphs</span></div>
-<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>   <span class="keyword">auto</span> fit = <span class="keyword">static_cast&lt;</span>TGraphErrors*<span class="keyword">&gt;</span>(z0-&gt;Clone(<span class="stringliteral">&quot;fit&quot;</span>));</div>
+<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>   <span class="keyword">auto</span>* fit = <span class="keyword">static_cast&lt;</span>TGraphErrors*<span class="keyword">&gt;</span>(z0-&gt;Clone(<span class="stringliteral">&quot;fit&quot;</span>));</div>
 <div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; fit-&gt;GetN(); ++i) {</div>
 <div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span><span class="preprocessor">#if ROOT_VERSION_CODE &gt;= ROOT_VERSION(6,20,0)</span></div>
 <div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>      fit-&gt;SetPointY(i, parameters[0]*((1. - parameters[1] - parameters[2])*z0-&gt;GetPointY(i) + parameters[1]*z2-&gt;GetPointY(i) + parameters[2]*z4-&gt;GetPointY(i)));</div>
@@ -978,7 +978,7 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>      fit-&gt;SetPointError(i, 0., std::abs(parameters[0])*TMath::Sqrt(TMath::Power((1. - parameters[1] - parameters[2])*z0-&gt;GetErrorY(i), 2) + TMath::Power(parameters[1]*z2-&gt;GetErrorY(i), 2) + TMath::Power(parameters[2]*z4-&gt;GetErrorY(i), 2)));</div>
 <div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>   }</div>
 <div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span> </div>
-<div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>   <span class="keyword">auto</span> residual = <span class="keyword">static_cast&lt;</span>TGraphErrors*<span class="keyword">&gt;</span>(data-&gt;Clone(<span class="stringliteral">&quot;residual&quot;</span>));</div>
+<div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>   <span class="keyword">auto</span>* residual = <span class="keyword">static_cast&lt;</span>TGraphErrors*<span class="keyword">&gt;</span>(data-&gt;Clone(<span class="stringliteral">&quot;residual&quot;</span>));</div>
 <div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; residual-&gt;GetN(); ++i) {</div>
 <div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span><span class="preprocessor">#if ROOT_VERSION_CODE &gt;= ROOT_VERSION(6,20,0)</span></div>
 <div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>      residual-&gt;SetPointY(i, data-&gt;GetPointY(i) - fit-&gt;GetPointY(i));</div>
@@ -990,7 +990,7 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span> </div>
 <div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>   <span class="comment">// This text box will display the fit statistics</span></div>
 <div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>   <span class="comment">// with the margins of the pads, the center in x is at 0.55 (0.545 to be exact_, so we center around that point</span></div>
-<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>   <span class="keyword">auto</span> stats = <span class="keyword">new</span> TPaveText(0.35, 0.7, 0.75, 0.95, <span class="stringliteral">&quot;NDC&quot;</span>);</div>
+<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>   <span class="keyword">auto</span>* stats = <span class="keyword">new</span> TPaveText(0.35, 0.7, 0.75, 0.95, <span class="stringliteral">&quot;NDC&quot;</span>);</div>
 <div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span>   stats-&gt;SetTextFont(133);</div>
 <div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span>   stats-&gt;SetTextSize(20);</div>
 <div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span>   stats-&gt;SetFillStyle(0);</div>
@@ -1002,14 +1002,14 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00885" name="l00885"></a><span class="lineno">  885</span>   <span class="comment">// create canvas and two pads (big one for comparison and small one for residuals)</span></div>
 <div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span>   <span class="comment">// wider left margin for y-axis labels and title</span></div>
 <div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span>   <span class="comment">// same for the bottom margin of the residuals</span></div>
-<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span>   <span class="keyword">auto</span> canvas = <span class="keyword">new</span> TCanvas;</div>
-<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>   <span class="keyword">auto</span> resPad = <span class="keyword">new</span> TPad(<span class="stringliteral">&quot;resPad&quot;</span>, <span class="stringliteral">&quot;resPad&quot;</span>, 0., 0., 1., 0.3);</div>
+<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span>   <span class="keyword">auto</span>* canvas = <span class="keyword">new</span> TCanvas;</div>
+<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>   <span class="keyword">auto</span>* resPad = <span class="keyword">new</span> TPad(<span class="stringliteral">&quot;resPad&quot;</span>, <span class="stringliteral">&quot;resPad&quot;</span>, 0., 0., 1., 0.3);</div>
 <div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>   resPad-&gt;SetTopMargin(0.);</div>
 <div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>   resPad-&gt;SetBottomMargin(0.22);</div>
 <div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>   resPad-&gt;SetLeftMargin(0.1);</div>
 <div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>   resPad-&gt;SetRightMargin(0.01);</div>
 <div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>   resPad-&gt;Draw();</div>
-<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>   <span class="keyword">auto</span> compPad = <span class="keyword">new</span> TPad(<span class="stringliteral">&quot;compPad&quot;</span>, <span class="stringliteral">&quot;compPad&quot;</span>, 0., 0.3, 1., 1.);</div>
+<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>   <span class="keyword">auto</span>* compPad = <span class="keyword">new</span> TPad(<span class="stringliteral">&quot;compPad&quot;</span>, <span class="stringliteral">&quot;compPad&quot;</span>, 0., 0.3, 1., 1.);</div>
 <div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>   compPad-&gt;SetTopMargin(0.01);</div>
 <div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>   compPad-&gt;SetBottomMargin(0.);</div>
 <div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span>   compPad-&gt;SetLeftMargin(0.1);</div>
@@ -1019,7 +1019,7 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span>   <span class="comment">// plot comparison of fit and data</span></div>
 <div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span>   compPad-&gt;cd();</div>
 <div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span> </div>
-<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span>   <span class="keyword">auto</span> multiGraph = <span class="keyword">new</span> TMultiGraph;</div>
+<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span>   <span class="keyword">auto</span>* multiGraph = <span class="keyword">new</span> TMultiGraph;</div>
 <div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span>   fit-&gt;SetLineColor(kRed);</div>
 <div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span>   fit-&gt;SetFillColor(kRed);</div>
 <div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span>   fit-&gt;SetMarkerColor(kRed);</div>
@@ -1054,7 +1054,7 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span>   residual-&gt;GetYaxis()-&gt;SetLabelSize(0.08);</div>
 <div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span> </div>
 <div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span>   residual-&gt;Draw(<span class="stringliteral">&quot;ap&quot;</span>);</div>
-<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span>   <span class="keyword">auto</span> zeroLine = <span class="keyword">new</span> TLine(0., 0., 180., 0.);</div>
+<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span>   <span class="keyword">auto</span>* zeroLine = <span class="keyword">new</span> TLine(0., 0., 180., 0.);</div>
 <div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span>   zeroLine-&gt;Draw(<span class="stringliteral">&quot;same&quot;</span>);</div>
 <div class="line"><a id="l00942" name="l00942"></a><span class="lineno">  942</span> </div>
 <div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span>   fit-&gt;Write(<span class="stringliteral">&quot;A2a4Fit&quot;</span>);</div>
@@ -1113,7 +1113,7 @@ $(document).ready(function(){initNavTree('_angular_correlations_8cxx_source.html
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_8965781c9f424dd985c8251b0fe5e6e9.html">util</a></li><li class="navelem"><a class="el" href="_angular_correlations_8cxx.html">AngularCorrelations.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:44.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:52.</li>
   </ul>
 </div>
 </body>

@@ -1,8 +1,9 @@
 var class_t_zero_degree =
 [
     [ "TZeroDegree", "class_t_zero_degree.html#aa0346553f1b5beef148d0b7bd4e5ace1", null ],
-    [ "~TZeroDegree", "class_t_zero_degree.html#a2e006bccbefdf8552879cf8b51f2119d", null ],
     [ "TZeroDegree", "class_t_zero_degree.html#a757446d5e1a10fe865c7f79e8807fc6e", null ],
+    [ "TZeroDegree", "class_t_zero_degree.html#a6c27bcd02a803ef8c4f30b20ca689ffd", null ],
+    [ "~TZeroDegree", "class_t_zero_degree.html#af36ac3430a80198ea0d614ce0a43463f", null ],
     [ "AddFragment", "class_t_zero_degree.html#a5f57da45f84f972ccec7f23cadafd0fb", null ],
     [ "AddHit", "class_t_zero_degree.html#af83ad943618a30f7d1639675e18fc5b8", null ],
     [ "BuildHits", "class_t_zero_degree.html#a6e483563c00dd55bc01da79977ad9964", null ],
@@ -18,6 +19,7 @@ var class_t_zero_degree =
     [ "Hits", "class_t_zero_degree.html#ab907981ce861ab147879469064748ae2", null ],
     [ "NoHits", "class_t_zero_degree.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
     [ "operator=", "class_t_zero_degree.html#a11913caae70151324c62b97855d1d5c5", null ],
+    [ "operator=", "class_t_zero_degree.html#af611fc33dcbaabe2218e4ae2c5fc4f63", null ],
     [ "Print", "class_t_zero_degree.html#a5e9c810b797a49cc7df88b117fc5cca2", null ],
     [ "Print", "class_t_zero_degree.html#a7130d318a44a127734673fb300fdaefe", null ],
     [ "SetWave", "class_t_zero_degree.html#af8bdc102f03523258e502a60ae45185d", null ],

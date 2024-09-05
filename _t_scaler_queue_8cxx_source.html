@@ -291,14 +291,14 @@ $(document).ready(function(){initNavTree('_t_scaler_queue_8cxx_source.html','');
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="class_t_deadtime_scaler_queue.html#a2f62bb2ecea3bb4d2dd3a6a9d65159fa">  164</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_deadtime_scaler_queue.html#a2f62bb2ecea3bb4d2dd3a6a9d65159fa">TDeadtimeScalerQueue::StatusUpdate</a>()</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>{</div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>   <span class="comment">// Updates the status of the scaler Queue</span></div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>   <span class="keywordtype">float</span> time            = 0;</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>   <span class="keywordtype">float</span> scaler_rate_in  = 0;</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>   <span class="keywordtype">float</span> scaler_rate_out = 0;</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>   <span class="keywordtype">double</span> time            = 0;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>   <span class="keywordtype">double</span> scaler_rate_in  = 0;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>   <span class="keywordtype">double</span> scaler_rate_out = 0;</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>   <span class="keywordflow">while</span>(<a class="code hl_variable" href="class_t_deadtime_scaler_queue.html#a3c99e0d9c7adc58aaa58d0020d61fe98">fStatusUpdateOn</a>) {</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>      time            = <a class="code hl_variable" href="class_t_deadtime_scaler_queue.html#a49b6af8226001f541e55cb960fc7fcb6">fStopwatch</a>-&gt;RealTime();</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>      scaler_rate_in  = <a class="code hl_variable" href="class_t_deadtime_scaler_queue.html#a94c56c0488d861541283617dedf150b3">fScalersIn</a> / time;</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>      scaler_rate_out = <a class="code hl_variable" href="class_t_deadtime_scaler_queue.html#a8537d34b363950645282748c852280be">fScalersOut</a> / time;</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>      scaler_rate_in  = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="class_t_deadtime_scaler_queue.html#a94c56c0488d861541283617dedf150b3">fScalersIn</a>) / time;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>      scaler_rate_out = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="class_t_deadtime_scaler_queue.html#a8537d34b363950645282748c852280be">fScalersOut</a>) / time;</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>      <span class="keywordflow">while</span>(!<a class="code hl_variable" href="class_t_deadtime_scaler_queue.html#adb3cf3fea7e1ab6e76688a0d0f2c2448">TDeadtimeScalerQueue::All</a>.try_lock()) {</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>         <span class="comment">// do nothing</span></div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>      }</div>
@@ -512,14 +512,14 @@ $(document).ready(function(){initNavTree('_t_scaler_queue_8cxx_source.html','');
 <div class="line"><a id="l00359" name="l00359"></a><span class="lineno"><a class="line" href="class_t_rate_scaler_queue.html#a459c760c3263f12ac4ae501fa1da81e0">  359</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_rate_scaler_queue.html#a459c760c3263f12ac4ae501fa1da81e0">TRateScalerQueue::StatusUpdate</a>()</div>
 <div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>{</div>
 <div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>   <span class="comment">// Updates the status of the scaler Queue</span></div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>   <span class="keywordtype">float</span> time            = 0;</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>   <span class="keywordtype">float</span> scaler_rate_in  = 0;</div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>   <span class="keywordtype">float</span> scaler_rate_out = 0;</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>   <span class="keywordtype">double</span> time            = 0;</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>   <span class="keywordtype">double</span> scaler_rate_in  = 0;</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>   <span class="keywordtype">double</span> scaler_rate_out = 0;</div>
 <div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span> </div>
 <div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>   <span class="keywordflow">while</span>(<a class="code hl_variable" href="class_t_rate_scaler_queue.html#a57c4aa2c05f5f3deeb42dcbcc13f273c">fStatusUpdateOn</a>) {</div>
 <div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>      time            = <a class="code hl_variable" href="class_t_rate_scaler_queue.html#aad096cf4d5b604a52af84afe672922bd">fStopwatch</a>-&gt;RealTime();</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>      scaler_rate_in  = <a class="code hl_variable" href="class_t_rate_scaler_queue.html#a6f67611ae3b4eb3ec9e8adee136225ea">fScalersIn</a> / time;</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>      scaler_rate_out = <a class="code hl_variable" href="class_t_rate_scaler_queue.html#abe2fe2f722dd6a711878934f87d604f0">fScalersOut</a> / time;</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>      scaler_rate_in  = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="class_t_rate_scaler_queue.html#a6f67611ae3b4eb3ec9e8adee136225ea">fScalersIn</a>) / time;</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>      scaler_rate_out = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="class_t_rate_scaler_queue.html#abe2fe2f722dd6a711878934f87d604f0">fScalersOut</a>) / time;</div>
 <div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>      <span class="keywordflow">while</span>(!<a class="code hl_variable" href="class_t_rate_scaler_queue.html#a7e492f73cb0729a8ee6afca7a2ae4215">TRateScalerQueue::All</a>.try_lock()) {</div>
 <div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>         <span class="comment">// do nothing</span></div>
 <div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>      }</div>
@@ -547,10 +547,10 @@ $(document).ready(function(){initNavTree('_t_scaler_queue_8cxx_source.html','');
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>   <a class="code hl_variable" href="class_t_rate_scaler_queue.html#a7e492f73cb0729a8ee6afca7a2ae4215">TRateScalerQueue::All</a>.unlock();</div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>}</div>
 </div>
-<div class="ttc" id="a_globals_8h_html_a6d970e4c4769c52d19f321a08d531cf0"><div class="ttname"><a href="_globals_8h.html#a6d970e4c4769c52d19f321a08d531cf0">DGREEN</a></div><div class="ttdeci">#define DGREEN</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00016">Globals.h:16</a></div></div>
-<div class="ttc" id="a_globals_8h_html_a79d10e672abb49ad63eeaa8aaef57c38"><div class="ttname"><a href="_globals_8h.html#a79d10e672abb49ad63eeaa8aaef57c38">BLUE</a></div><div class="ttdeci">#define BLUE</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00005">Globals.h:5</a></div></div>
-<div class="ttc" id="a_globals_8h_html_a8d23feea868a983c8c2b661e1e16972f"><div class="ttname"><a href="_globals_8h.html#a8d23feea868a983c8c2b661e1e16972f">RED</a></div><div class="ttdeci">#define RED</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00008">Globals.h:8</a></div></div>
-<div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00004">Globals.h:4</a></div></div>
+<div class="ttc" id="a_globals_8h_html_a6d970e4c4769c52d19f321a08d531cf0"><div class="ttname"><a href="_globals_8h.html#a6d970e4c4769c52d19f321a08d531cf0">DGREEN</a></div><div class="ttdeci">#define DGREEN</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00017">Globals.h:17</a></div></div>
+<div class="ttc" id="a_globals_8h_html_a79d10e672abb49ad63eeaa8aaef57c38"><div class="ttname"><a href="_globals_8h.html#a79d10e672abb49ad63eeaa8aaef57c38">BLUE</a></div><div class="ttdeci">#define BLUE</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00006">Globals.h:6</a></div></div>
+<div class="ttc" id="a_globals_8h_html_a8d23feea868a983c8c2b661e1e16972f"><div class="ttname"><a href="_globals_8h.html#a8d23feea868a983c8c2b661e1e16972f">RED</a></div><div class="ttdeci">#define RED</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00009">Globals.h:9</a></div></div>
+<div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00005">Globals.h:5</a></div></div>
 <div class="ttc" id="a_t_scaler_queue_8h_html"><div class="ttname"><a href="_t_scaler_queue_8h.html">TScalerQueue.h</a></div></div>
 <div class="ttc" id="aclass_t_deadtime_scaler_queue_html"><div class="ttname"><a href="class_t_deadtime_scaler_queue.html">TDeadtimeScalerQueue</a></div><div class="ttdef"><b>Definition</b> <a href="_t_scaler_queue_8h_source.html#l00025">TScalerQueue.h:25</a></div></div>
 <div class="ttc" id="aclass_t_deadtime_scaler_queue_html_a12224eaf19d4835528608717a90ed63c"><div class="ttname"><a href="class_t_deadtime_scaler_queue.html#a12224eaf19d4835528608717a90ed63c">TDeadtimeScalerQueue::StopStatusUpdate</a></div><div class="ttdeci">void StopStatusUpdate()</div><div class="ttdef"><b>Definition</b> <a href="_t_scaler_queue_8cxx_source.html#l00085">TScalerQueue.cxx:85</a></div></div>
@@ -610,7 +610,7 @@ $(document).ready(function(){initNavTree('_t_scaler_queue_8cxx_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_2b08b36851fcb6a7439555c8d93f536c.html">TFormat</a></li><li class="navelem"><a class="el" href="_t_scaler_queue_8cxx.html">TScalerQueue.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Aug 29 2024 16:32:45.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Sep 5 2024 18:08:54.</li>
   </ul>
 </div>
 </body>

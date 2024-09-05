@@ -1,10 +1,6 @@
 var _g_root_canvas_8cxx =
 [
     [ "GRootContainer", "class_g_root_container.html", "class_g_root_container" ],
-    [ "kArrowKeyPress", "_g_root_canvas_8cxx.html#a89902b2bbfd6fddbafd5a0d38e7f2c15", null ],
-    [ "kArrowKeyRelease", "_g_root_canvas_8cxx.html#a51afeeeaf7a7fc7c25433fc5defb31f1", null ],
-    [ "kButton1Ctrl", "_g_root_canvas_8cxx.html#a088e7b44a46939df27e0ccb2287c7fd1", null ],
-    [ "kButton1CtrlMotion", "_g_root_canvas_8cxx.html#a6394f0659de85a589cb3327e84860221", null ],
     [ "ERootCanvasCommands", "_g_root_canvas_8cxx.html#a05b56d948b7fcb369490fafff19e529d", [
       [ "kFileNewCanvas", "_g_root_canvas_8cxx.html#a05b56d948b7fcb369490fafff19e529da534333aacf131eb56bedec6612d29f3b", null ],
       [ "kFileOpen", "_g_root_canvas_8cxx.html#a05b56d948b7fcb369490fafff19e529dafb9a3cf5d41c2c0b97e4d4461c279491", null ],
@@ -83,5 +79,7 @@ var _g_root_canvas_8cxx =
     [ "gOpenTypes", "_g_root_canvas_8cxx.html#a8fcf4639b349612e6bbe8c6b5bae0d3f", null ],
     [ "gSaveAsTypes", "_g_root_canvas_8cxx.html#a1ef5173a9441ab7c7a41dd7ec8fc2ed6", null ],
     [ "gToolBarData", "_g_root_canvas_8cxx.html#ac93e853dafe4949803da8f730143ad00", null ],
-    [ "gToolBarData1", "_g_root_canvas_8cxx.html#a34869842aefe587fde6e62d03897ace0", null ]
+    [ "gToolBarData1", "_g_root_canvas_8cxx.html#a34869842aefe587fde6e62d03897ace0", null ],
+    [ "kButton1Ctrl", "_g_root_canvas_8cxx.html#a5dae216900f420b8ccf1ce8a44228199", null ],
+    [ "kButton1CtrlMotion", "_g_root_canvas_8cxx.html#a91d9b5eb2fa1caefcca7ff8e97c936bc", null ]
 ];
