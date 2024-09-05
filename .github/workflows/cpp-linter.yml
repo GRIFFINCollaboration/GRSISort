@@ -12,6 +12,10 @@ on:
 jobs:
   cpp-linter:
     runs-on: ubuntu-latest
+    permissions:
+      metadata: read
+      contents: write
+      pull-requests: write
     steps:
     - uses: actions/checkout@v4
 
@@ -43,10 +47,6 @@ jobs:
       continue-on-error: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      permissions:
-        metadata: read
-        contents: write
-        pull-requests: write
       with:
         database: ${{github.workspace}}/build
         style: ''  # disable clang-format checks.
