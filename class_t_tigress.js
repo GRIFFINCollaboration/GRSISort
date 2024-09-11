@@ -22,7 +22,7 @@ var class_t_tigress =
     [ "TTigress", "class_t_tigress.html#a2528a372cd6e7b7a415af2a2671b31ee", null ],
     [ "TTigress", "class_t_tigress.html#a0b1a9cc54cebab806c07f2bf0fd387d3", null ],
     [ "TTigress", "class_t_tigress.html#aceb428bc10e20c026a21803b02006779", null ],
-    [ "~TTigress", "class_t_tigress.html#ab3cd7d43224d3aae41989503756e25eb", null ],
+    [ "~TTigress", "class_t_tigress.html#a72e50ad3f817501133c8a389c11f2b1a", null ],
     [ "AddBGO", "class_t_tigress.html#ad24d92c19088d2bda3a878424f82d3fa", null ],
     [ "AddFragment", "class_t_tigress.html#a916cf436027f27288b5302d340b285d6", null ],
     [ "AddHit", "class_t_tigress.html#af83ad943618a30f7d1639675e18fc5b8", null ],

@@ -191,10 +191,10 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   <span class="keyword">auto</span>*              odb     = <span class="keyword">new</span> <span class="keywordtype">char</span>[len];</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>   <span class="comment">//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*</span></div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>   <span class="keywordflow">if</span>(!(filelist.is_open())) {</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>      std::cerr&lt;&lt;<span class="stringliteral">&quot;Failed to open filelist. Check path. &quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Failed to open filelist. Check path. &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      exit(EXIT_FAILURE);</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>   } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(!(ODBlist.is_open())) {</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      std::cerr&lt;&lt;<span class="stringliteral">&quot;Failed to open ODBlist. Check path. &quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Failed to open ODBlist. Check path. &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      exit(EXIT_FAILURE);</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>   }</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>   <span class="comment">//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*</span></div>
@@ -202,18 +202,18 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>   <span class="comment">// Start time binary = DWORD : 1445453916</span></div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>   <span class="comment">// Stop time binary = DWORD : 1445454042</span></div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>   <span class="comment">// the difference (stop-start) equals the run time in seconds. Useful for histogram binning purposes.</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>   <span class="keywordtype">size_t</span>           posa      = 0;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>   <span class="keywordtype">size_t</span>           posb      = 0;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>   <span class="keywordtype">int</span>              sub       = 28;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>   <span class="keyword">const</span> <span class="keywordtype">char</span>*      starttime = <span class="stringliteral">&quot;Start time binary&quot;</span>;</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>   <span class="keyword">const</span> <span class="keywordtype">char</span>*      stoptime  = <span class="stringliteral">&quot;Stop time binary&quot;</span>;</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>   <span class="keywordtype">int</span>              tstart    = 0;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>   <span class="keywordtype">int</span>              tend      = 0;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>   <span class="keywordtype">int</span>              runtime   = 0;</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>   <span class="keywordtype">int</span>              nppg      = 0;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>   std::string      odbline;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>   <span class="keywordtype">size_t</span>      posa      = 0;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>   <span class="keywordtype">size_t</span>      posb      = 0;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>   <span class="keywordtype">int</span>         sub       = 28;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>   <span class="keyword">const</span> <span class="keywordtype">char</span>* starttime = <span class="stringliteral">&quot;Start time binary&quot;</span>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>   <span class="keyword">const</span> <span class="keywordtype">char</span>* stoptime  = <span class="stringliteral">&quot;Stop time binary&quot;</span>;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>   <span class="keywordtype">int</span>         tstart    = 0;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>   <span class="keywordtype">int</span>         tend      = 0;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>   <span class="keywordtype">int</span>         runtime   = 0;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>   <span class="keywordtype">int</span>         nppg      = 0;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>   std::string odbline;</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>   <span class="comment">//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>   <span class="keywordtype">int</span> line_count = std::count( <span class="comment">// read in number of lines(files)</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>   <span class="keywordtype">int</span> line_count = std::count(   <span class="comment">// read in number of lines(files)</span></div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      std::istreambuf_iterator&lt;char&gt;(filelist), std::istreambuf_iterator&lt;char&gt;(), <span class="charliteral">&#39;\n&#39;</span>);</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>   printf(<a class="code hl_define" href="_globals_8h.html#ae730fad7256d25796fff0f5daa94e52a">DMAGENTA</a> <span class="stringliteral">&quot;-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/&quot;</span> <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                   <span class="stringliteral">&quot;\n&quot;</span>);</div>
@@ -231,14 +231,14 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>   filelist.clear();</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>   filelist.seekg(0, std::ios::beg);</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>   <span class="comment">//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>   <a class="code hl_function" href="_deadtime_8cxx.html#afc6193183a282dfc1e1297de26ea481d">Printaddress</a>(p); <span class="comment">// Credit to to E.Kwan for this part</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>   <a class="code hl_function" href="_deadtime_8cxx.html#afc6193183a282dfc1e1297de26ea481d">Printaddress</a>(p);   <span class="comment">// Credit to to E.Kwan for this part</span></div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>   p = addr.data();</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>   <span class="keywordflow">while</span>(counter &lt; line_count) {</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>      filelist.getline(line, len, <span class="charliteral">&#39;\n&#39;</span>);</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>      <span class="keyword">const</span> <span class="keywordtype">char</span>* filename = line;</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>      <span class="comment">//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ODB STUFF</span></div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>      ODBlist.getline(odb, len, <span class="charliteral">&#39;\n&#39;</span>); <span class="comment">//&lt;retreive ODB file name (&#39;odb&#39; assigned here)</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>      std::ifstream InFile(odb);       <span class="comment">//&lt;set the I/O stream to the current file</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>      ODBlist.getline(odb, len, <span class="charliteral">&#39;\n&#39;</span>);   <span class="comment">//&lt;retreive ODB file name (&#39;odb&#39; assigned here)</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>      std::ifstream InFile(odb);         <span class="comment">//&lt;set the I/O stream to the current file</span></div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>      <span class="keywordflow">while</span>(InFile.good()) {</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>         getline(InFile, odbline);</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>         posa = odbline.find(starttime);</div>
@@ -254,7 +254,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>      runtime        = tend - tstart;</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>      nppg           = floor(runtime / patlen);</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>      tdiff[counter] = runtime;</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>      std::cout&lt;&lt;<span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>      <span class="keywordflow">if</span>(runtime &lt;= 600) {</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>         printf(<a class="code hl_define" href="_globals_8h.html#a82e4da5718eb63f4ce3f51f73cb49232">DBLUE</a> <span class="stringliteral">&quot;Read ODB %s : run time = %i seconds / %i transitions&quot;</span> <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a> <span class="stringliteral">&quot;\n&quot;</span>, odb, runtime, nppg);</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(runtime &gt; 600) {</div>
@@ -272,9 +272,9 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>         nds += 1;</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>      }</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>      counter++;</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>      q++;  <span class="comment">// these two lines had a de-reference which makes no sense (and makes the compiler complain)</span></div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>      td++; <span class="comment">// unless this was meant to increment the value the pointers are pointing to (in which case it should read</span></div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>            <span class="comment">// (*q)++); VB</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>      q++;    <span class="comment">// these two lines had a de-reference which makes no sense (and makes the compiler complain)</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>      td++;   <span class="comment">// unless this was meant to increment the value the pointers are pointing to (in which case it should read</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>              <span class="comment">// (*q)++); VB</span></div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>      tstart = tend = 0;</div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>   }</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>   <span class="keyword">delete</span>[] line;</div>
@@ -321,8 +321,8 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>   TFile* vs = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>   <span class="comment">// make spectra</span></div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>   <span class="keyword">auto</span>*  rf    = <span class="keyword">new</span> TFile(filename, <span class="stringliteral">&quot;read&quot;</span>);</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>   <span class="keyword">auto</span>* maple = <span class="keyword">static_cast&lt;</span>TTree*<span class="keyword">&gt;</span>(rf-&gt;Get(<span class="stringliteral">&quot;ScalerTree&quot;</span>)); <span class="comment">// Scaler data</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>   <span class="keyword">auto</span>* rf    = <span class="keyword">new</span> TFile(filename, <span class="stringliteral">&quot;read&quot;</span>);</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>   <span class="keyword">auto</span>* maple = <span class="keyword">static_cast&lt;</span>TTree*<span class="keyword">&gt;</span>(rf-&gt;Get(<span class="stringliteral">&quot;ScalerTree&quot;</span>));   <span class="comment">// Scaler data</span></div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span> </div>
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>   <span class="keywordtype">int</span>    nofBins = *trun / ncycle;</div>
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>   <span class="keywordtype">double</span> xaxis   = 0;</div>
@@ -331,7 +331,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>   <span class="keywordtype">double</span> xpast   = 0;</div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>   <span class="keywordtype">int</span>    j       = 0;</div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>   <span class="keywordtype">int</span>    k       = 0;</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>   <span class="keywordtype">double</span> clk     = 20e-9; <span class="comment">// 2 clock tics (20ns)</span></div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>   <span class="keywordtype">double</span> clk     = 20e-9;   <span class="comment">// 2 clock tics (20ns)</span></div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>   <span class="keywordflow">while</span>(j &lt; nsc) {</div>
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>      grif[j] =</div>
@@ -339,7 +339,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>                  Form(<span class="stringliteral">&quot;Address 0x%04x, scaler %i vs time in cycle; time [s]; counts/%d s&quot;</span>, *channel, index, ncycle),</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>                  nofBins, 0., *trun);</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>      j++;</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>      channel++; <span class="comment">// used to have a de-reference, see comments above; VB</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>      channel++;   <span class="comment">// used to have a de-reference, see comments above; VB</span></div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>   }</div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>   <a class="code hl_class" href="class_t_scaler_data.html">TScalerData</a>* scaler = <span class="keyword">nullptr</span>;</div>
@@ -357,7 +357,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>   }</div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>   <span class="comment">//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*</span></div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; nsc; i++) {</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>      channel--; <span class="comment">// used to have a de-reference, see comments above; VB</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>      channel--;   <span class="comment">// used to have a de-reference, see comments above; VB</span></div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>   }</div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>   <span class="keywordflow">while</span>(k &lt; nsc) {</div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>      <span class="keywordflow">for</span>(Long64_t e = 0; e &lt; nentries; e++) {</div>
@@ -408,7 +408,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>                <span class="keyword">const</span> <span class="keywordtype">char</span>*&amp; mname, <span class="keyword">const</span> <span class="keywordtype">char</span>*&amp; nname, <span class="keywordtype">int</span>&amp; nscaler)</div>
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>{</div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>   <span class="keyword">auto</span>*    vs = <span class="keyword">new</span> TFile(fname, <span class="stringliteral">&quot;read&quot;</span>);</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>   <span class="keyword">auto</span>*         vs = <span class="keyword">new</span> TFile(fname, <span class="stringliteral">&quot;read&quot;</span>);</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>   std::ofstream ofile;</div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>   ofile.open(<span class="stringliteral">&quot;diagnostic.txt&quot;</span>);</div>
 <div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>   FILE* random    = fopen(hname, <span class="stringliteral">&quot;w&quot;</span>);</div>
@@ -420,8 +420,8 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>   FILE* randw     = fopen(nname, <span class="stringliteral">&quot;w&quot;</span>);</div>
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>   ofile.precision(4);</div>
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>   <span class="keywordtype">int</span> nsc        = nsclr;</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>   <span class="keywordtype">int</span> cnt        = 0;</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>   <span class="keywordtype">int</span>                nsc     = nsclr;</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>   <span class="keywordtype">int</span>                cnt     = 0;</div>
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>   std::array&lt;int, 2&gt; ppgstat = {0, 0};</div>
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>   <span class="comment">// generate random seed from system time for use in error analysis</span></div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>   time_t timer = time(<span class="keyword">nullptr</span>);</div>
@@ -429,22 +429,22 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span> </div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>   TFile  f(fname);</div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>   TIter  next(f.GetListOfKeys());</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>   TKey*  key = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>   TKey*  key  = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>   <span class="keyword">auto</span>** spec = <span class="keyword">new</span> TH1D*[nfile * (nsc * nscaler)];</div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>   <span class="comment">//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~USER EDITABLE</span></div>
 <div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>   <span class="comment">// limits for deadtime matrices [us]</span></div>
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>   <span class="comment">// NOTE: The order of the limits (rp1,rp2 etc.) MUST be identical to the file order</span></div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>   std::array&lt;double, 8&gt;  rp1  = {-15, 15, -15, 15, 0, 20, 85, 115};  <span class="comment">// 2kHz, scaler0-3</span></div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>   std::array&lt;double, 8&gt;  rp2  = {-15, 15, -15, 15, 0, 20, 85, 115};  <span class="comment">// 5kHz, scaler0-3</span></div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>   std::array&lt;double, 8&gt;  rp3  = {-15, 15, -15, 15, 0, 20, 170, 230}; <span class="comment">// 10kHz, scaler0-3</span></div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>   std::array&lt;double, 8&gt;  rp4  = {-15, 15, -15, 15, 0, 20, 200, 300}; <span class="comment">// 20kHz, scaler0-3</span></div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>   <span class="keywordtype">double</span>* lowrtau = rp1.data(); <span class="comment">// internal pointers: points to correction coefficients in each array</span></div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>   <span class="keywordtype">double</span>* upprtau = &amp;rp1[1]; <span class="comment">//</span></div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>   <span class="keywordtype">int</span>     cflag   = 0;       <span class="comment">// counter</span></div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>   std::array&lt;double, 8&gt; rp1     = {-15, 15, -15, 15, 0, 20, 85, 115};    <span class="comment">// 2kHz, scaler0-3</span></div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>   std::array&lt;double, 8&gt; rp2     = {-15, 15, -15, 15, 0, 20, 85, 115};    <span class="comment">// 5kHz, scaler0-3</span></div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>   std::array&lt;double, 8&gt; rp3     = {-15, 15, -15, 15, 0, 20, 170, 230};   <span class="comment">// 10kHz, scaler0-3</span></div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>   std::array&lt;double, 8&gt; rp4     = {-15, 15, -15, 15, 0, 20, 200, 300};   <span class="comment">// 20kHz, scaler0-3</span></div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>   <span class="keywordtype">double</span>*               lowrtau = rp1.data();                            <span class="comment">// internal pointers: points to correction coefficients in each array</span></div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>   <span class="keywordtype">double</span>*               upprtau = &amp;rp1[1];                               <span class="comment">//</span></div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>   <span class="keywordtype">int</span>                   cflag   = 0;                                     <span class="comment">// counter</span></div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>   <span class="comment">//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~</span></div>
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span> </div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
 <div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>   <span class="comment">// output headers</span></div>
 <div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>   fprintf(deadtime, <span class="stringliteral">&quot;#np=pulser,nr=source,nrp=source+pulser,tau=deadtime,erb=FWHM est. err,erf=full range &quot;</span></div>
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>                     <span class="stringliteral">&quot;err,erp=standard err propagation&quot;</span>);</div>
@@ -460,7 +460,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>   fprintf(randdt, <span class="stringliteral">&quot;\n&quot;</span>);</div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>   <span class="keywordflow">while</span>((key = <span class="keyword">dynamic_cast&lt;</span>TKey*<span class="keyword">&gt;</span>(next())) != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>      <span class="keywordtype">int</span>         numpat = floor(*trun / patlen); <span class="comment">// minimum number of expected transitions based on run time</span></div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>      <span class="keywordtype">int</span>         numpat = floor(*trun / patlen);   <span class="comment">// minimum number of expected transitions based on run time</span></div>
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>      <span class="keyword">const</span> <span class="keywordtype">char</span>* sname  = key-&gt;GetName();</div>
 <div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>      spec[cnt]          = <span class="keyword">dynamic_cast&lt;</span>TH1D*<span class="keyword">&gt;</span>(vs-&gt;Get(sname));</div>
 <div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span> </div>
@@ -545,7 +545,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>                  diff = ((x - z) / z);</div>
 <div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>                  ord  = 1;</div>
 <div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>                  <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>               } </div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>               }</div>
 <div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>               <span class="keywordflow">if</span>(z &gt; 0 &amp;&amp; x &lt; z) {</div>
 <div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>                  diff = ((z - x) / x);</div>
 <div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>                  ord  = 0;</div>
@@ -630,7 +630,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>               <span class="comment">// std::cout&lt;&lt;&quot;(see bin number &quot;&lt;&lt;i&lt;&lt;&quot; in spectrum &quot;&lt;&lt;sname&lt;&lt;&quot;)&quot;&lt;&lt;std::endl;</span></div>
 <div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>               ppgstat[1] += 1;</div>
 <div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>               <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>            } </div>
+<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>            }</div>
 <div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>            bnd[nt - 1][0] = i;</div>
 <div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>            bnd[nt - 1][1] = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(trans[i][2]);</div>
 <div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>         }</div>
@@ -651,19 +651,19 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>         ppg[i + 1][0] = bnd[i][0];</div>
 <div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>         ppg[i][1]     = (bnd[i][0]) - 1;</div>
 <div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>      }</div>
-<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>      <span class="keywordflow">if</span>(bnd[0][1] == 0) { <span class="comment">// pulser must be first (first transition is pulser OFF)</span></div>
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>      <span class="keywordflow">if</span>(bnd[0][1] == 0) {   <span class="comment">// pulser must be first (first transition is pulser OFF)</span></div>
 <div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>         sref = 1;</div>
 <div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>         pref = 0;</div>
-<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>      } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(bnd[0][1] == 1) { <span class="comment">// source must be first (first transition is pulser ON)</span></div>
+<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>      } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(bnd[0][1] == 1) {   <span class="comment">// source must be first (first transition is pulser ON)</span></div>
 <div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>         sref = 0;</div>
 <div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>         pref = 1;</div>
 <div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>      }</div>
 <div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>      <span class="comment">// diagnostic only</span></div>
 <div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>      <span class="keywordflow">if</span>(cnt % nsc == 0) {</div>
 <div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; numpat; i++) {</div>
-<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>            ofile&lt;&lt;ppg[i][0]&lt;&lt;<span class="stringliteral">&quot;\t&quot;</span>&lt;&lt;ppg[i][1]&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>            ofile &lt;&lt; ppg[i][0] &lt;&lt; <span class="stringliteral">&quot;\t&quot;</span> &lt;&lt; ppg[i][1] &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>         }</div>
-<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>         ofile&lt;&lt;<span class="stringliteral">&quot;/&quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>         ofile &lt;&lt; <span class="stringliteral">&quot;/&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>      }</div>
 <div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>      <span class="comment">//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~**~*~*~*~*~*~*</span></div>
 <div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>      <span class="comment">// SOURCE ONLY</span></div>
@@ -676,7 +676,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>            }</div>
 <div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>         }</div>
 <div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>      }</div>
-<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>      rrand = (wrand / nrand); <span class="comment">// mean</span></div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>      rrand = (wrand / nrand);   <span class="comment">// mean</span></div>
 <div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>      <span class="comment">// diagnostic spectrum (dspec) parameters</span></div>
 <div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>      <span class="keywordtype">int</span>    lim1  = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(rrand - (0.5 * dlim * rrand));</div>
 <div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>      <span class="keywordtype">int</span>    lim2  = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(rrand + (0.5 * dlim * rrand));</div>
@@ -693,7 +693,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>      <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = sref; i &lt; numpat; i += 2) {</div>
 <div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> j = (ppg[i][0] + chop); j &lt;= (ppg[i][1] - chop); j++) {</div>
 <div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>            x = spec[cnt]-&gt;GetBinContent(j);</div>
-<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>            <span class="keywordflow">if</span>(cnt % nsc == 0) { <span class="comment">// dspec for channel 0 only</span></div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>            <span class="keywordflow">if</span>(cnt % nsc == 0) {   <span class="comment">// dspec for channel 0 only</span></div>
 <div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>               <span class="keywordflow">for</span>(<span class="keywordtype">int</span> k = 0; k &lt; dsbin; k++) {</div>
 <div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>                  <span class="keywordflow">if</span>(x &gt;= dspec[k][0] &amp;&amp; x &lt; dspec[k + 1][0]) {</div>
 <div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>                     dspec[k][1] += 1;</div>
@@ -705,10 +705,10 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>            }</div>
 <div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>         }</div>
 <div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>      }</div>
-<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>      sdrand = sqrt(sum / (nrand - 1)); <span class="comment">// standard deviation</span></div>
+<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>      sdrand = sqrt(sum / (nrand - 1));   <span class="comment">// standard deviation</span></div>
 <div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>      <span class="comment">//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~FREQUENCY HISTOGRAM</span></div>
 <div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>      <span class="keywordflow">if</span>(cnt % nsc == 0) {</div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; dsbin; i++) { <span class="comment">// dspec</span></div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; dsbin; i++) {   <span class="comment">// dspec</span></div>
 <div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>            fprintf(random, <span class="stringliteral">&quot;%i \t %i&quot;</span>, dspec[i][0], dspec[i][1]);</div>
 <div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>            fprintf(random, <span class="stringliteral">&quot;\n&quot;</span>);</div>
 <div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>         }</div>
@@ -729,7 +729,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>            }</div>
 <div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>         }</div>
 <div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>      }</div>
-<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>      rcomb = (wcomb / ncomb); <span class="comment">// mean</span></div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>      rcomb = (wcomb / ncomb);   <span class="comment">// mean</span></div>
 <div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>      <span class="comment">// now calculate max. likelihood</span></div>
 <div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>      <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = pref; i &lt; numpat; i += 2) {</div>
 <div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> j = (ppg[i][0] + chop); j &lt;= (ppg[i][1] - chop); j++) {</div>
@@ -755,10 +755,10 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>            <span class="keywordflow">if</span>(x != 0) {</div>
 <div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>               maxl = (0.5 * (pow((x - rcmin), 2))) / x;</div>
 <div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>               <span class="comment">// ofile&lt;&lt;j&lt;&lt;&quot;\t&quot;&lt;&lt;x&lt;&lt;&quot;\t&quot;&lt;&lt;maxl&lt;&lt;std::endl;</span></div>
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>               <span class="keywordflow">if</span>(maxl &lt;= (minl + 0.5) &amp;&amp; x &lt; rcmin &amp;&amp; x &lt; lbd) { <span class="comment">// fixed</span></div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>               <span class="keywordflow">if</span>(maxl &lt;= (minl + 0.5) &amp;&amp; x &lt; rcmin &amp;&amp; x &lt; lbd) {   <span class="comment">// fixed</span></div>
 <div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>                  lbd = x;</div>
 <div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>               }</div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>               <span class="keywordflow">if</span>(maxl &lt;= (minl + 0.5) &amp;&amp; x &gt; rcmin &amp;&amp; x &gt; ubd) { <span class="comment">// fixed</span></div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>               <span class="keywordflow">if</span>(maxl &lt;= (minl + 0.5) &amp;&amp; x &gt; rcmin &amp;&amp; x &gt; ubd) {   <span class="comment">// fixed</span></div>
 <div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>                  ubd = x;</div>
 <div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>               }</div>
 <div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>            } <span class="keywordflow">else</span> {</div>
@@ -770,7 +770,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>      lim1 = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(lbd - (2.0 * abs(rcmin - lbd)));</div>
 <div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>      lim2 = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(ubd + (2.0 * abs(rcmin - ubd)));</div>
 <div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>      <span class="comment">// std::cout&lt;&lt;lim1&lt;&lt;&quot;\t&quot;&lt;&lt;lim2&lt;&lt;&quot;\t&quot;&lt;&lt;rcmin&lt;&lt;std::endl;</span></div>
-<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>      dsbin = (lim2 - lim1) / 20; <span class="comment">// dspec[dsbin][2]; What was this statement supposed to do? It has no effect; VB</span></div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>      dsbin = (lim2 - lim1) / 20;   <span class="comment">// dspec[dsbin][2]; What was this statement supposed to do? It has no effect; VB</span></div>
 <div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>      <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; dsbin; i++) {</div>
 <div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>         dspec[i][0] = lim1 + (i * ((lim2 - lim1) / dsbin));</div>
 <div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>         dspec[i][1] = 0;</div>
@@ -779,7 +779,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>      <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = pref; i &lt; numpat; i += 2) {</div>
 <div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> j = (ppg[i][0] + chop); j &lt;= (ppg[i][1] - chop); j++) {</div>
 <div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>            x = spec[cnt]-&gt;GetBinContent(j);</div>
-<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>            <span class="keywordflow">if</span>(cnt % nsc == 0) { <span class="comment">// dspec for channel 0 only</span></div>
+<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>            <span class="keywordflow">if</span>(cnt % nsc == 0) {   <span class="comment">// dspec for channel 0 only</span></div>
 <div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>               <span class="keywordflow">for</span>(<span class="keywordtype">int</span> k = 0; k &lt; dsbin; k++) {</div>
 <div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>                  <span class="keywordflow">if</span>(x &gt;= dspec[k][0] &amp;&amp; x &lt; dspec[k + 1][0]) {</div>
 <div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>                     dspec[k][1] += 1;</div>
@@ -791,10 +791,10 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>            }</div>
 <div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>         }</div>
 <div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>      }</div>
-<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>      sdcomb = sqrt(sumc / (ncomb - 1)); <span class="comment">// standard deviation (not strictly applicable to source+pulser data)</span></div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>      sdcomb = sqrt(sumc / (ncomb - 1));   <span class="comment">// standard deviation (not strictly applicable to source+pulser data)</span></div>
 <div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>      <span class="comment">//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~FREQUENCY HISTOGRAM</span></div>
 <div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>      <span class="keywordflow">if</span>(cnt % nsc == 0) {</div>
-<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; dsbin; i++) { <span class="comment">// dspec</span></div>
+<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; dsbin; i++) {   <span class="comment">// dspec</span></div>
 <div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>            fprintf(combine, <span class="stringliteral">&quot;%i \t %i&quot;</span>, dspec[i][0], dspec[i][1]);</div>
 <div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>            fprintf(combine, <span class="stringliteral">&quot;\n&quot;</span>);</div>
 <div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>         }</div>
@@ -806,14 +806,14 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>      <span class="comment">// Ref. &quot;Asymmetric Statistical Errors&quot;, Roger Barlow, http://arxiv.org/pdf/physics/0406120.pdf</span></div>
 <div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>      <span class="comment">// WARNING: u must be given a reasonable range. This is assumed to be ~1.5*max(a1,a2)</span></div>
 <div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span> </div>
-<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>      <span class="keywordtype">double</span> a1   = abs(rcmin - ubd);</div>
-<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>      <span class="keywordtype">double</span> a2   = abs(rcmin - lbd);</div>
-<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>      <span class="keywordtype">double</span> maxa = std::max(a1, a2);</div>
-<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>      <span class="keywordtype">double</span> uhi  = (1.5 * maxa);</div>
-<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>      <span class="keywordtype">double</span> ulo  = -uhi;</div>
-<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>      <span class="keywordtype">double</span> du   = (uhi - ulo) / 1e3;</div>
-<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>      <span class="keywordtype">double</span> u    = ulo;</div>
-<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>      <span class="keywordtype">int</span>    itr  = 0;</div>
+<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>      <span class="keywordtype">double</span> a1    = abs(rcmin - ubd);</div>
+<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>      <span class="keywordtype">double</span> a2    = abs(rcmin - lbd);</div>
+<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>      <span class="keywordtype">double</span> maxa  = std::max(a1, a2);</div>
+<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>      <span class="keywordtype">double</span> uhi   = (1.5 * maxa);</div>
+<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>      <span class="keywordtype">double</span> ulo   = -uhi;</div>
+<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>      <span class="keywordtype">double</span> du    = (uhi - ulo) / 1e3;</div>
+<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>      <span class="keywordtype">double</span> u     = ulo;</div>
+<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>      <span class="keywordtype">int</span>    itr   = 0;</div>
 <div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>      <span class="keywordtype">int</span>    umin  = 0;</div>
 <div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>      <span class="keywordtype">double</span> w1    = 0.;</div>
 <div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>      <span class="keywordtype">double</span> x1    = 0.;</div>
@@ -827,7 +827,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span>      }</div>
 <div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>      <span class="keywordtype">double</span> sigm = 0.;</div>
 <div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span>      <span class="keywordtype">double</span> sigp = 0.;</div>
-<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>      <span class="keywordtype">double</span> lnl = 0.;</div>
+<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>      <span class="keywordtype">double</span> lnl  = 0.;</div>
 <div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span> </div>
 <div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span>      <span class="keywordflow">while</span>(itr &lt; nrow) {</div>
 <div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span>         <span class="keywordflow">if</span>(itr == 0) {</div>
@@ -839,8 +839,8 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>         }</div>
 <div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>         w1  = pow(((a1 * a2) + ((a1 - a2) * x1)), 2) / ((2. * (a1 * a2)) + ((a1 - a2) * x1));</div>
 <div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>         lnl = -0.5 * ((pow(x1, 2) / ((a1 * a2) + ((a1 - a2) * x1))) + (pow(x2, 2) / (pow(sdrand, 2))));</div>
-<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span>         <span class="keywordflow">if</span>(lnl &lt;= 0.) {                <span class="comment">// reject positive likelihoods (these tend occur at large +/- values of u)</span></div>
-<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span>            <span class="keywordflow">if</span>(itr &gt; 0 &amp;&amp; lnl &gt; minl) { <span class="comment">// mean value</span></div>
+<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span>         <span class="keywordflow">if</span>(lnl &lt;= 0.) {                  <span class="comment">// reject positive likelihoods (these tend occur at large +/- values of u)</span></div>
+<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span>            <span class="keywordflow">if</span>(itr &gt; 0 &amp;&amp; lnl &gt; minl) {   <span class="comment">// mean value</span></div>
 <div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span>               minl = lnl;</div>
 <div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>               umin = itr;</div>
 <div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>            }</div>
@@ -876,7 +876,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span>      }</div>
 <div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span>      <span class="comment">//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~**~*~*~*~*~*~*</span></div>
 <div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span>      <span class="comment">//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~**~*~*~*~*~*~*</span></div>
-<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>      <span class="keywordtype">double</span> tau  = ((1.0 / rrand) * (1.0 - sqrt((rcmin - rrand) / (*rate)))) * 1.0e6; <span class="comment">// deadtime (us)</span></div>
+<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>      <span class="keywordtype">double</span> tau  = ((1.0 / rrand) * (1.0 - sqrt((rcmin - rrand) / (*rate)))) * 1.0e6;   <span class="comment">// deadtime (us)</span></div>
 <div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>      <span class="keywordtype">double</span> rtau = 0;</div>
 <div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>      <span class="comment">//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~**~*~*~*~*~*~*</span></div>
 <div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>      <span class="comment">// FINAL ERROR ANALYSIS*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~**~*~*~*~*~*~*</span></div>
@@ -885,18 +885,18 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>      <span class="comment">// which chooses a value within these boundaries - the resulting tau is plotted and the range gives the error in</span></div>
 <div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>      <span class="comment">// tau</span></div>
 <div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span> </div>
-<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>      <span class="keywordtype">int</span>    iter = 10000;</div>
-<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>      <span class="keywordtype">int</span>    bin = 10;</div>
-<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>      <span class="keywordtype">double</span> tempa = 0.;</div>
-<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>      <span class="keywordtype">double</span> tempb = 0.;</div>
-<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>      <span class="keywordtype">double</span> var1 = 0.;</div>
-<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>      <span class="keywordtype">double</span> var2 = 0.;</div>
-<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>      <span class="keywordtype">double</span> var3 = 0.;</div>
-<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>      <span class="keywordtype">double</span> l1 = 0.;</div>
-<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>      <span class="keywordtype">double</span> l2 = 0.;</div>
-<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>      <span class="keywordtype">int</span>    wbin = 40;</div>
-<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>      <span class="keywordtype">int</span>    wrow = 0;</div>
-<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>      <span class="keywordtype">int</span>    wsize = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(pow(wbin, 2));</div>
+<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>      <span class="keywordtype">int</span>    iter      = 10000;</div>
+<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>      <span class="keywordtype">int</span>    bin       = 10;</div>
+<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>      <span class="keywordtype">double</span> tempa     = 0.;</div>
+<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>      <span class="keywordtype">double</span> tempb     = 0.;</div>
+<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>      <span class="keywordtype">double</span> var1      = 0.;</div>
+<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>      <span class="keywordtype">double</span> var2      = 0.;</div>
+<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>      <span class="keywordtype">double</span> var3      = 0.;</div>
+<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>      <span class="keywordtype">double</span> l1        = 0.;</div>
+<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>      <span class="keywordtype">double</span> l2        = 0.;</div>
+<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>      <span class="keywordtype">int</span>    wbin      = 40;</div>
+<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>      <span class="keywordtype">int</span>    wrow      = 0;</div>
+<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>      <span class="keywordtype">int</span>    wsize     = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(pow(wbin, 2));</div>
 <div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>      <span class="keyword">auto</span>** randcheck = <span class="keyword">new</span> <span class="keywordtype">double</span>*[bin];</div>
 <div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>      <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; bin; ++i) {</div>
 <div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>         randcheck[i] = <span class="keyword">new</span> <span class="keywordtype">double</span>[2];</div>
@@ -919,10 +919,10 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>      <span class="comment">// initialise matrix to get final uncertainty</span></div>
 <div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>      <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; wbin; i++) {</div>
 <div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> j = 0; j &lt; wbin; j++) {</div>
-<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>            wspec[wrow][0] = ((rcmin - rrand) + sigm) + (<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(i) * ((sigp - sigm) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(wbin))); <span class="comment">// x,</span></div>
-<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>                                                                                                      <span class="comment">// (rcmin-rrand)</span></div>
-<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>            wspec[wrow][1] = (*lowrtau) + (<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(j) * ((*upprtau - *lowrtau) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(wbin))); <span class="comment">// y, (rtau);</span></div>
-<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>            wspec[wrow][2] = 0;                                                                 <span class="comment">// z, frequency</span></div>
+<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>            wspec[wrow][0] = ((rcmin - rrand) + sigm) + (<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(i) * ((sigp - sigm) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(wbin)));   <span class="comment">// x,</span></div>
+<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>                                                                                                                                  <span class="comment">// (rcmin-rrand)</span></div>
+<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>            wspec[wrow][1] = (*lowrtau) + (<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(j) * ((*upprtau - *lowrtau) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(wbin)));         <span class="comment">// y, (rtau);</span></div>
+<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>            wspec[wrow][2] = 0;                                                                                                   <span class="comment">// z, frequency</span></div>
 <div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>            wrow += 1;</div>
 <div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>         }</div>
 <div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>      }</div>
@@ -948,7 +948,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>                  <span class="keywordflow">for</span>(<span class="keywordtype">int</span> k = 0; k &lt; wsize; k++) {</div>
 <div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>                     <span class="keywordflow">if</span>(var3 &gt;= wspec[k][0] &amp;&amp; var3 &lt; wspec[k + wbin][0] &amp;&amp; rtau &gt;= wspec[k][1] &amp;&amp;</div>
 <div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>                        rtau &lt; wspec[k + 1][1]) {</div>
-<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>                        wspec[k][2] += 1; <span class="comment">// this seems to work now</span></div>
+<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>                        wspec[k][2] += 1;   <span class="comment">// this seems to work now</span></div>
 <div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>                     }</div>
 <div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>                  }</div>
 <div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>                  <span class="comment">//~*~*~*~*~*~*~*~*~*~*~*~~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~</span></div>
@@ -967,12 +967,12 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>      <span class="comment">// &quot;\n&quot;,(rcmin-rrand),sigp,sigm,rrand,sdrand);</span></div>
 <div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>      <span class="comment">//~*~*~*~*~*~*~*~*~*~*~*~~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~</span></div>
 <div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>      <span class="comment">// Determine final error bounds using wspec matrix</span></div>
-<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>      <span class="keywordtype">double</span> gmax = 0.;</div>
-<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span>      <span class="keywordtype">double</span> hmax = 0.;</div>
-<div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>      <span class="keywordtype">double</span> erbp = 0.;</div>
-<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>      <span class="keywordtype">double</span> erbm = 0.;</div>
-<div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>      <span class="keywordtype">double</span> erfp = 0.;</div>
-<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>      <span class="keywordtype">double</span> erfm = 0.;</div>
+<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>      <span class="keywordtype">double</span> gmax  = 0.;</div>
+<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span>      <span class="keywordtype">double</span> hmax  = 0.;</div>
+<div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>      <span class="keywordtype">double</span> erbp  = 0.;</div>
+<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>      <span class="keywordtype">double</span> erbm  = 0.;</div>
+<div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>      <span class="keywordtype">double</span> erfp  = 0.;</div>
+<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>      <span class="keywordtype">double</span> erfm  = 0.;</div>
 <div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span>      <span class="keywordtype">double</span> frmin = 1e6;</div>
 <div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>      <span class="keywordtype">double</span> frmax = 0.;</div>
 <div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>      <span class="keywordtype">double</span> srmin = 1e6;</div>
@@ -1049,30 +1049,30 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span>      cnt++;</div>
 <div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span>      <span class="comment">// change pulser rate and runtime accordingly for each file</span></div>
 <div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span>      <span class="keywordflow">if</span>(cnt % (nsc * nscaler) == 0) {</div>
-<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span>         rate++; <span class="comment">// used to have a de-reference, see comments above; VB</span></div>
-<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span>         trun++; <span class="comment">// used to have a de-reference, see comments above; VB</span></div>
+<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span>         rate++;   <span class="comment">// used to have a de-reference, see comments above; VB</span></div>
+<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span>         trun++;   <span class="comment">// used to have a de-reference, see comments above; VB</span></div>
 <div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span>      }</div>
 <div class="line"><a id="l00942" name="l00942"></a><span class="lineno">  942</span>      <span class="comment">// change limits accordingly for each scaler in each file</span></div>
 <div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span>      <span class="keywordflow">if</span>(cnt % (nsc) == 0) {</div>
 <div class="line"><a id="l00944" name="l00944"></a><span class="lineno">  944</span>         <span class="keywordflow">for</span>(i = 0; i &lt; 2; i++) {</div>
-<div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span>            lowrtau++; <span class="comment">// used to have a de-reference, see comments above; VB</span></div>
-<div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span>            upprtau++; <span class="comment">// used to have a de-reference, see comments above; VB</span></div>
+<div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span>            lowrtau++;   <span class="comment">// used to have a de-reference, see comments above; VB</span></div>
+<div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span>            upprtau++;   <span class="comment">// used to have a de-reference, see comments above; VB</span></div>
 <div class="line"><a id="l00947" name="l00947"></a><span class="lineno">  947</span>         }</div>
 <div class="line"><a id="l00948" name="l00948"></a><span class="lineno">  948</span>      }</div>
 <div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span>      <span class="keywordflow">if</span>(cnt % (nsc) == 0 &amp;&amp; cnt % (nsc * nscaler) == 0) {</div>
 <div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span>         cflag++;</div>
 <div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span>         <span class="keywordflow">if</span>(cflag == 1) {</div>
-<div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span>            lowrtau = &amp;rp2[0]; <span class="comment">// NOLINT(readability-container-data-pointer)</span></div>
+<div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span>            lowrtau = &amp;rp2[0];   <span class="comment">// NOLINT(readability-container-data-pointer)</span></div>
 <div class="line"><a id="l00953" name="l00953"></a><span class="lineno">  953</span>            upprtau = &amp;rp2[1];</div>
 <div class="line"><a id="l00954" name="l00954"></a><span class="lineno">  954</span>         } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(cflag == 2) {</div>
-<div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span>            lowrtau = &amp;rp3[0]; <span class="comment">// NOLINT(readability-container-data-pointer)</span></div>
+<div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span>            lowrtau = &amp;rp3[0];   <span class="comment">// NOLINT(readability-container-data-pointer)</span></div>
 <div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span>            upprtau = &amp;rp3[1];</div>
 <div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span>         } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(cflag == 3) {</div>
-<div class="line"><a id="l00958" name="l00958"></a><span class="lineno">  958</span>            lowrtau = &amp;rp4[0]; <span class="comment">// NOLINT(readability-container-data-pointer)</span></div>
+<div class="line"><a id="l00958" name="l00958"></a><span class="lineno">  958</span>            lowrtau = &amp;rp4[0];   <span class="comment">// NOLINT(readability-container-data-pointer)</span></div>
 <div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span>            upprtau = &amp;rp4[1];</div>
 <div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span>         }</div>
 <div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span>      }</div>
-<div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span>   } <span class="comment">// END SPECTRUM ANALYSIS LOOP</span></div>
+<div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span>   }   <span class="comment">// END SPECTRUM ANALYSIS LOOP</span></div>
 <div class="line"><a id="l00963" name="l00963"></a><span class="lineno">  963</span>   <span class="comment">//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~**~*~*~*~*~*~*</span></div>
 <div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>   <span class="keyword">delete</span>[] spec;</div>
 <div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>   ofile.close();</div>
@@ -1120,7 +1120,7 @@ $(document).ready(function(){initNavTree('_deadtime_8cxx_source.html',''); initR
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_8965781c9f424dd985c8251b0fe5e6e9.html">util</a></li><li class="navelem"><a class="el" href="_deadtime_8cxx.html">Deadtime.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Sep 9 2024 16:24:38.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Sep 11 2024 15:16:53.</li>
   </ul>
 </div>
 </body>

@@ -28,7 +28,7 @@ var class_t_la_br_hit =
       [ "kAll", "class_t_la_br_hit.html#a2a4a599dd0b1ba9e685aa01229876df6a34bdbffdb1c0e1b603f58fc0d49548b6", null ]
     ] ],
     [ "TLaBrHit", "class_t_la_br_hit.html#a8884d5923c9fb71f0b240d83f7ee46a9", null ],
-    [ "~TLaBrHit", "class_t_la_br_hit.html#a1eb91a34ab9e7742d9a3016ddc35af19", null ],
+    [ "~TLaBrHit", "class_t_la_br_hit.html#a2cf9a5ed787de4d382307dc1ee5aec66", null ],
     [ "TLaBrHit", "class_t_la_br_hit.html#ad6879bea869a137e7fc364a279ea800a", null ],
     [ "TLaBrHit", "class_t_la_br_hit.html#a16e558f6442311fd59dc988df7012f49", null ],
     [ "TLaBrHit", "class_t_la_br_hit.html#a7d59d27fa414fe49872e9a18172b25cc", null ],

@@ -31,7 +31,7 @@ var class_t_griffin_bgo_hit =
     [ "TGriffinBgoHit", "class_t_griffin_bgo_hit.html#a69f04e438b08046c7ecb886611f4c61c", null ],
     [ "TGriffinBgoHit", "class_t_griffin_bgo_hit.html#a0894f7e38abed58c8b7a49fd77a39db5", null ],
     [ "TGriffinBgoHit", "class_t_griffin_bgo_hit.html#a751fdf60e9bfdccd92269fe5744d8cdc", null ],
-    [ "~TGriffinBgoHit", "class_t_griffin_bgo_hit.html#a5ed8e6a900691205c01f077081ab6b2f", null ],
+    [ "~TGriffinBgoHit", "class_t_griffin_bgo_hit.html#a54ddd931ebdc44ed213446e6a62d6324", null ],
     [ "Add", "class_t_griffin_bgo_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6", null ],
     [ "AddWaveformSample", "class_t_griffin_bgo_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],
     [ "AppendTimeStamp", "class_t_griffin_bgo_hit.html#aeab285a914a74f67155972bb51841ecd", null ],

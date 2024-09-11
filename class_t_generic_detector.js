@@ -3,7 +3,7 @@ var class_t_generic_detector =
     [ "TGenericDetector", "class_t_generic_detector.html#ac3050608e488dc693205767a95b5b140", null ],
     [ "TGenericDetector", "class_t_generic_detector.html#afaebcc83921074bad82703f930ebe0a4", null ],
     [ "TGenericDetector", "class_t_generic_detector.html#afae8da5aa5ee1bc0895a1a8cfad4b7a0", null ],
-    [ "~TGenericDetector", "class_t_generic_detector.html#a3ed87a1e8d307558502803d2756264bf", null ],
+    [ "~TGenericDetector", "class_t_generic_detector.html#af214b8d863488f167c141f0dab1ef275", null ],
     [ "AddFragment", "class_t_generic_detector.html#adc10318592d16661c556bb9974a64ce3", null ],
     [ "AddHit", "class_t_generic_detector.html#af83ad943618a30f7d1639675e18fc5b8", null ],
     [ "BuildHits", "class_t_generic_detector.html#a93bfe6f70906fdd04d9518443c6ca23d", null ],

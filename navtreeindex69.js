@@ -1,6 +1,5 @@
 var NAVTREEINDEX69 =
 {
-"struct_t_pulse_analyzer_1_1_shape_par.html#a8c708f9f2ed4a9773036fa2a77e36fe2":[7,3,19,2,6],
 "struct_t_pulse_analyzer_1_1_sin_par.html":[7,3,19,3],
 "struct_t_pulse_analyzer_1_1_sin_par.html#a44485e4b8f158b7d6a351850146f66d2":[7,3,19,3,2],
 "struct_t_pulse_analyzer_1_1_sin_par.html#aa609023f393ed27086804b7dbe69ac77":[7,3,19,3,0],

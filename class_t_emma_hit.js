@@ -31,7 +31,7 @@ var class_t_emma_hit =
     [ "TEmmaHit", "class_t_emma_hit.html#aa42a75653a3712bf200709e89ac716fa", null ],
     [ "TEmmaHit", "class_t_emma_hit.html#a9155a840c8a4a04875f4244bbd2ce254", null ],
     [ "TEmmaHit", "class_t_emma_hit.html#a8cdcef2d9b382b1eedc0bf98f46cf0f0", null ],
-    [ "~TEmmaHit", "class_t_emma_hit.html#ac7993757391bdcbe258207e50e11cc05", null ],
+    [ "~TEmmaHit", "class_t_emma_hit.html#a30b97f2ecebee481235d0deb0aa669a5", null ],
     [ "Add", "class_t_emma_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6", null ],
     [ "AddWaveformSample", "class_t_emma_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],
     [ "AppendTimeStamp", "class_t_emma_hit.html#aeab285a914a74f67155972bb51841ecd", null ],

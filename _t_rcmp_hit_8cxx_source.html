@@ -117,85 +117,82 @@ $(document).ready(function(){initNavTree('_t_rcmp_hit_8cxx_source.html',''); ini
 <div class="foldopen" id="foldopen00013" data-start="{" data-end="}">
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="class_t_rcmp_hit.html#adff1548f484a1264e305045f13b283e6">   13</a></span><a class="code hl_function" href="class_t_rcmp_hit.html#ad669c4e10e0340f82f84f80cbd0ea175">TRcmpHit::TRcmpHit</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_rcmp_hit.html">TRcmpHit</a>&amp; rhs) : <a class="code hl_class" href="class_t_detector_hit.html">TDetectorHit</a>(rhs)</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>{<span class="comment"></span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">/// this is the copy constructor for a single TRcmpHit parameter</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"></span><span class="preprocessor">#if ROOT_VERSION_CODE &lt; ROOT_VERSION(6, 0, 0)</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>   Class()-&gt;IgnoreTObjectStreamer(kTRUE);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>   rhs.<a class="code hl_function" href="class_t_rcmp_hit.html#a3ab8a4d467f859f1e2042ad46def54e6">Copy</a>(*<span class="keyword">this</span>);</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>}</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">   /// this is the copy constructor for a single TRcmpHit parameter</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"></span>   rhs.<a class="code hl_function" href="class_t_rcmp_hit.html#a3ab8a4d467f859f1e2042ad46def54e6">Copy</a>(*<span class="keyword">this</span>);</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>}</div>
 </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="class_t_rcmp_hit.html#a423c0fc77265c35f3deac9bdc575d7cb">   22</a></span><a class="code hl_function" href="class_t_rcmp_hit.html#ad669c4e10e0340f82f84f80cbd0ea175">TRcmpHit::TRcmpHit</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_fragment.html">TFragment</a>&amp; frag)</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>   : fStrip(frag.GetSegment()) <span class="comment">// set the (front or back) strip number of the hit (note that this would be between 00-31 since there are 32 strips)</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{<span class="comment"></span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">   /// this is the constructor that builds RCMP hits out of a single fragment (either front or back)</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"></span>   frag.<a class="code hl_function" href="class_t_detector_hit.html#ab901600498f2b8d8ccc888398321c30d">Copy</a>(*<span class="keyword">this</span>);</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>}</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="class_t_rcmp_hit.html#a423c0fc77265c35f3deac9bdc575d7cb">   19</a></span><a class="code hl_function" href="class_t_rcmp_hit.html#ad669c4e10e0340f82f84f80cbd0ea175">TRcmpHit::TRcmpHit</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_fragment.html">TFragment</a>&amp; frag)</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>   : fStrip(frag.GetSegment())   <span class="comment">// set the (front or back) strip number of the hit (note that this would be between 00-31 since there are 32 strips)</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>{<span class="comment"></span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">   /// this is the constructor that builds RCMP hits out of a single fragment (either front or back)</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"></span>   frag.<a class="code hl_function" href="class_t_detector_hit.html#ab901600498f2b8d8ccc888398321c30d">Copy</a>(*<span class="keyword">this</span>);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>}</div>
 </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_t_rcmp_hit.html#a6c423c03d36f2980c7ef8512b012532c">   29</a></span><a class="code hl_function" href="class_t_rcmp_hit.html#ad669c4e10e0340f82f84f80cbd0ea175">TRcmpHit::TRcmpHit</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_fragment.html">TFragment</a>&amp; fragFront, <span class="keyword">const</span> <a class="code hl_class" href="class_t_fragment.html">TFragment</a>&amp; fragBack)</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   : fFrontStrip(fragFront.GetSegment()), fBackStrip(fragBack.GetSegment())  <span class="comment">// set the front and back strip number of the hit  (goes from 00-31)</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{<span class="comment"></span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">   /// this is the constructor that builds RCMP hits out of a front and a back fragment (energy, time, etc. is taken from the front-strip)</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment"></span>   fragFront.<a class="code hl_function" href="class_t_detector_hit.html#ab901600498f2b8d8ccc888398321c30d">Copy</a>(*<span class="keyword">this</span>);                <span class="comment">// we want to use the information from the front (P-side) strip such as energy, time, etc.</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>}</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="class_t_rcmp_hit.html#a6c423c03d36f2980c7ef8512b012532c">   26</a></span><a class="code hl_function" href="class_t_rcmp_hit.html#ad669c4e10e0340f82f84f80cbd0ea175">TRcmpHit::TRcmpHit</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_fragment.html">TFragment</a>&amp; fragFront, <span class="keyword">const</span> <a class="code hl_class" href="class_t_fragment.html">TFragment</a>&amp; fragBack)</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>   : fFrontStrip(fragFront.GetSegment()), fBackStrip(fragBack.GetSegment())   <span class="comment">// set the front and back strip number of the hit  (goes from 00-31)</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{<span class="comment"></span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">   /// this is the constructor that builds RCMP hits out of a front and a back fragment (energy, time, etc. is taken from the front-strip)</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"></span>   fragFront.<a class="code hl_function" href="class_t_detector_hit.html#ab901600498f2b8d8ccc888398321c30d">Copy</a>(*<span class="keyword">this</span>);   <span class="comment">// we want to use the information from the front (P-side) strip such as energy, time, etc.</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>}</div>
 </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="foldopen" id="foldopen00036" data-start="{" data-end="}">
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="class_t_rcmp_hit.html#a3ab8a4d467f859f1e2042ad46def54e6">   36</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_rcmp_hit.html#a3ab8a4d467f859f1e2042ad46def54e6">TRcmpHit::Copy</a>(TObject&amp; rhs)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword"></span>{<span class="comment"></span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">   /// Copy function</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment"></span>   <a class="code hl_function" href="class_t_detector_hit.html#ab901600498f2b8d8ccc888398321c30d">TDetectorHit::Copy</a>(rhs);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>   <span class="comment">// copy the strip number data members</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>   <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_t_rcmp_hit.html">TRcmpHit</a>&amp;<span class="keyword">&gt;</span>(rhs).<a class="code hl_variable" href="class_t_rcmp_hit.html#a3432cfa2c24ba174be8b082f3c3a2a54">fFrontStrip</a> = <a class="code hl_variable" href="class_t_rcmp_hit.html#a3432cfa2c24ba174be8b082f3c3a2a54">fFrontStrip</a>;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>   <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_t_rcmp_hit.html">TRcmpHit</a>&amp;<span class="keyword">&gt;</span>(rhs).<a class="code hl_variable" href="class_t_rcmp_hit.html#a238d9a2a1db6d412a0ea4f6cfa54b57b">fBackStrip</a>  = <a class="code hl_variable" href="class_t_rcmp_hit.html#a238d9a2a1db6d412a0ea4f6cfa54b57b">fBackStrip</a>;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>   <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_t_rcmp_hit.html">TRcmpHit</a>&amp;<span class="keyword">&gt;</span>(rhs).<a class="code hl_variable" href="class_t_rcmp_hit.html#abb43e42364716ddc5553855d08a8b028">fStrip</a>      = <a class="code hl_variable" href="class_t_rcmp_hit.html#abb43e42364716ddc5553855d08a8b028">fStrip</a>;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="class_t_rcmp_hit.html#a3ab8a4d467f859f1e2042ad46def54e6">   33</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_rcmp_hit.html#a3ab8a4d467f859f1e2042ad46def54e6">TRcmpHit::Copy</a>(TObject&amp; rhs)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword"></span>{<span class="comment"></span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">   /// Copy function</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment"></span>   <a class="code hl_function" href="class_t_detector_hit.html#ab901600498f2b8d8ccc888398321c30d">TDetectorHit::Copy</a>(rhs);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>   <span class="comment">// copy the strip number data members</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>   <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_t_rcmp_hit.html">TRcmpHit</a>&amp;<span class="keyword">&gt;</span>(rhs).<a class="code hl_variable" href="class_t_rcmp_hit.html#a3432cfa2c24ba174be8b082f3c3a2a54">fFrontStrip</a> = <a class="code hl_variable" href="class_t_rcmp_hit.html#a3432cfa2c24ba174be8b082f3c3a2a54">fFrontStrip</a>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>   <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_t_rcmp_hit.html">TRcmpHit</a>&amp;<span class="keyword">&gt;</span>(rhs).<a class="code hl_variable" href="class_t_rcmp_hit.html#a238d9a2a1db6d412a0ea4f6cfa54b57b">fBackStrip</a>  = <a class="code hl_variable" href="class_t_rcmp_hit.html#a238d9a2a1db6d412a0ea4f6cfa54b57b">fBackStrip</a>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>   <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_t_rcmp_hit.html">TRcmpHit</a>&amp;<span class="keyword">&gt;</span>(rhs).<a class="code hl_variable" href="class_t_rcmp_hit.html#abb43e42364716ddc5553855d08a8b028">fStrip</a>      = <a class="code hl_variable" href="class_t_rcmp_hit.html#abb43e42364716ddc5553855d08a8b028">fStrip</a>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}</div>
 </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="foldopen" id="foldopen00047" data-start="{" data-end="}">
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="class_t_rcmp_hit.html#a9cee23fab0e05d7f83765486c858013f">   47</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_rcmp_hit.html#a3ab8a4d467f859f1e2042ad46def54e6">TRcmpHit::Copy</a>(TObject&amp; rhs, <span class="keywordtype">bool</span> waveform)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>   <a class="code hl_function" href="class_t_rcmp_hit.html#a3ab8a4d467f859f1e2042ad46def54e6">Copy</a>(rhs);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>   <span class="keywordflow">if</span>(waveform) {</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <a class="code hl_function" href="class_t_detector_hit.html#afaf905f6ea1055e3982e2d814fe71bf1">CopyWave</a>(rhs);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>   }</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="class_t_rcmp_hit.html#a9cee23fab0e05d7f83765486c858013f">   44</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_rcmp_hit.html#a3ab8a4d467f859f1e2042ad46def54e6">TRcmpHit::Copy</a>(TObject&amp; rhs, <span class="keywordtype">bool</span> waveform)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>   <a class="code hl_function" href="class_t_rcmp_hit.html#a3ab8a4d467f859f1e2042ad46def54e6">Copy</a>(rhs);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>   <span class="keywordflow">if</span>(waveform) {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <a class="code hl_function" href="class_t_detector_hit.html#afaf905f6ea1055e3982e2d814fe71bf1">CopyWave</a>(rhs);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>   }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
 </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="class_t_rcmp_hit.html#abcd85d2227066d2cddb3a05755438ad6">   55</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_rcmp_hit.html#abcd85d2227066d2cddb3a05755438ad6">TRcmpHit::Clear</a>(Option_t* opt)</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>{</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>   <a class="code hl_function" href="class_t_detector_hit.html#ab093aac325d01630f7770301deabdd89">TDetectorHit::Clear</a>(opt);   <span class="comment">// clears the base (address, position and waveform)</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>   </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>   <span class="comment">// set the data members to default values</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>   <a class="code hl_variable" href="class_t_rcmp_hit.html#a3432cfa2c24ba174be8b082f3c3a2a54">fFrontStrip</a> = -1;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>   <a class="code hl_variable" href="class_t_rcmp_hit.html#a238d9a2a1db6d412a0ea4f6cfa54b57b">fBackStrip</a>  = -1;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>   <a class="code hl_variable" href="class_t_rcmp_hit.html#abb43e42364716ddc5553855d08a8b028">fStrip</a>      = -1;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>}</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="foldopen" id="foldopen00052" data-start="{" data-end="}">
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="class_t_rcmp_hit.html#abcd85d2227066d2cddb3a05755438ad6">   52</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_rcmp_hit.html#abcd85d2227066d2cddb3a05755438ad6">TRcmpHit::Clear</a>(Option_t* opt)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>{</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>   <a class="code hl_function" href="class_t_detector_hit.html#ab093aac325d01630f7770301deabdd89">TDetectorHit::Clear</a>(opt);   <span class="comment">// clears the base (address, position and waveform)</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>   <span class="comment">// set the data members to default values</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>   <a class="code hl_variable" href="class_t_rcmp_hit.html#a3432cfa2c24ba174be8b082f3c3a2a54">fFrontStrip</a> = -1;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>   <a class="code hl_variable" href="class_t_rcmp_hit.html#a238d9a2a1db6d412a0ea4f6cfa54b57b">fBackStrip</a>  = -1;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>   <a class="code hl_variable" href="class_t_rcmp_hit.html#abb43e42364716ddc5553855d08a8b028">fStrip</a>      = -1;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}</div>
 </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="foldopen" id="foldopen00065" data-start="{" data-end="}">
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="class_t_rcmp_hit.html#ab266f433f874c1dbe23882c5a885f2f5">   65</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_rcmp_hit.html#ab266f433f874c1dbe23882c5a885f2f5">TRcmpHit::Print</a>(Option_t*)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>   <a class="code hl_function" href="class_t_rcmp_hit.html#ab266f433f874c1dbe23882c5a885f2f5">Print</a>(std::cout);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="class_t_rcmp_hit.html#ab266f433f874c1dbe23882c5a885f2f5">   62</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_rcmp_hit.html#ab266f433f874c1dbe23882c5a885f2f5">TRcmpHit::Print</a>(Option_t*)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>   <a class="code hl_function" href="class_t_rcmp_hit.html#ab266f433f874c1dbe23882c5a885f2f5">Print</a>(std::cout);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
 </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="class_t_rcmp_hit.html#a9d57b0dbe310efabbd32c4fb0b357e97">   70</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_rcmp_hit.html#ab266f433f874c1dbe23882c5a885f2f5">TRcmpHit::Print</a>(std::ostream&amp; out)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>   std::ostringstream str;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>   str &lt;&lt; <span class="stringliteral">&quot;Rcmp Detector: &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#ab4f4c27b4ee3c8d8b24db08ae85c2fb0">GetDetector</a>() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>   str &lt;&lt; <span class="stringliteral">&quot;Rcmp Energy:   &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#a3051f50c2e5a1ba895c3b11e8c1b00a3">GetEnergy</a>() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>   str &lt;&lt; <span class="stringliteral">&quot;Rcmp hit time: &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#aba5e96b2f172f0e12eb2b6e06af5a735">GetTime</a>() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>   str &lt;&lt; <span class="stringliteral">&quot;Front strip: &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_t_rcmp_hit.html#a3432cfa2c24ba174be8b082f3c3a2a54">fFrontStrip</a> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>   str &lt;&lt; <span class="stringliteral">&quot;Back strip: &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_t_rcmp_hit.html#a238d9a2a1db6d412a0ea4f6cfa54b57b">fBackStrip</a> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>   out &lt;&lt; str.str();</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>}</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="class_t_rcmp_hit.html#a9d57b0dbe310efabbd32c4fb0b357e97">   67</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_rcmp_hit.html#ab266f433f874c1dbe23882c5a885f2f5">TRcmpHit::Print</a>(std::ostream&amp; out)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>   std::ostringstream str;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>   str &lt;&lt; <span class="stringliteral">&quot;Rcmp Detector: &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#ab4f4c27b4ee3c8d8b24db08ae85c2fb0">GetDetector</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>   str &lt;&lt; <span class="stringliteral">&quot;Rcmp Energy:   &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#a3051f50c2e5a1ba895c3b11e8c1b00a3">GetEnergy</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>   str &lt;&lt; <span class="stringliteral">&quot;Rcmp hit time: &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#aba5e96b2f172f0e12eb2b6e06af5a735">GetTime</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>   str &lt;&lt; <span class="stringliteral">&quot;Front strip: &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_t_rcmp_hit.html#a3432cfa2c24ba174be8b082f3c3a2a54">fFrontStrip</a> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>   str &lt;&lt; <span class="stringliteral">&quot;Back strip: &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_t_rcmp_hit.html#a238d9a2a1db6d412a0ea4f6cfa54b57b">fBackStrip</a> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>   out &lt;&lt; str.str();</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>}</div>
 </div>
 <div class="ttc" id="a_globals_8h_html"><div class="ttname"><a href="_globals_8h.html">Globals.h</a></div></div>
 <div class="ttc" id="a_t_rcmp_8h_html"><div class="ttname"><a href="_t_rcmp_8h.html">TRcmp.h</a></div></div>
@@ -211,10 +208,10 @@ $(document).ready(function(){initNavTree('_t_rcmp_hit_8cxx_source.html',''); ini
 <div class="ttc" id="aclass_t_rcmp_hit_html"><div class="ttname"><a href="class_t_rcmp_hit.html">TRcmpHit</a></div><div class="ttdef"><b>Definition</b> <a href="_t_rcmp_hit_8h_source.html#l00021">TRcmpHit.h:21</a></div></div>
 <div class="ttc" id="aclass_t_rcmp_hit_html_a238d9a2a1db6d412a0ea4f6cfa54b57b"><div class="ttname"><a href="class_t_rcmp_hit.html#a238d9a2a1db6d412a0ea4f6cfa54b57b">TRcmpHit::fBackStrip</a></div><div class="ttdeci">Short_t fBackStrip</div><div class="ttdoc">this corresponds to the back strip number for a Pixel Hit</div><div class="ttdef"><b>Definition</b> <a href="_t_rcmp_hit_8h_source.html#l00050">TRcmpHit.h:50</a></div></div>
 <div class="ttc" id="aclass_t_rcmp_hit_html_a3432cfa2c24ba174be8b082f3c3a2a54"><div class="ttname"><a href="class_t_rcmp_hit.html#a3432cfa2c24ba174be8b082f3c3a2a54">TRcmpHit::fFrontStrip</a></div><div class="ttdeci">Short_t fFrontStrip</div><div class="ttdoc">this corresponds to the front strip number for a Pixel Hit</div><div class="ttdef"><b>Definition</b> <a href="_t_rcmp_hit_8h_source.html#l00049">TRcmpHit.h:49</a></div></div>
-<div class="ttc" id="aclass_t_rcmp_hit_html_a3ab8a4d467f859f1e2042ad46def54e6"><div class="ttname"><a href="class_t_rcmp_hit.html#a3ab8a4d467f859f1e2042ad46def54e6">TRcmpHit::Copy</a></div><div class="ttdeci">void Copy(TObject &amp;) const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_rcmp_hit_8cxx_source.html#l00036">TRcmpHit.cxx:36</a></div></div>
-<div class="ttc" id="aclass_t_rcmp_hit_html_ab266f433f874c1dbe23882c5a885f2f5"><div class="ttname"><a href="class_t_rcmp_hit.html#ab266f433f874c1dbe23882c5a885f2f5">TRcmpHit::Print</a></div><div class="ttdeci">void Print(Option_t *opt=&quot;&quot;) const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_rcmp_hit_8cxx_source.html#l00065">TRcmpHit.cxx:65</a></div></div>
+<div class="ttc" id="aclass_t_rcmp_hit_html_a3ab8a4d467f859f1e2042ad46def54e6"><div class="ttname"><a href="class_t_rcmp_hit.html#a3ab8a4d467f859f1e2042ad46def54e6">TRcmpHit::Copy</a></div><div class="ttdeci">void Copy(TObject &amp;) const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_rcmp_hit_8cxx_source.html#l00033">TRcmpHit.cxx:33</a></div></div>
+<div class="ttc" id="aclass_t_rcmp_hit_html_ab266f433f874c1dbe23882c5a885f2f5"><div class="ttname"><a href="class_t_rcmp_hit.html#ab266f433f874c1dbe23882c5a885f2f5">TRcmpHit::Print</a></div><div class="ttdeci">void Print(Option_t *opt=&quot;&quot;) const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_rcmp_hit_8cxx_source.html#l00062">TRcmpHit.cxx:62</a></div></div>
 <div class="ttc" id="aclass_t_rcmp_hit_html_abb43e42364716ddc5553855d08a8b028"><div class="ttname"><a href="class_t_rcmp_hit.html#abb43e42364716ddc5553855d08a8b028">TRcmpHit::fStrip</a></div><div class="ttdeci">Short_t fStrip</div><div class="ttdoc">this corresponds to the front strip number for a front hit and the back strip number for a back hit</div><div class="ttdef"><b>Definition</b> <a href="_t_rcmp_hit_8h_source.html#l00051">TRcmpHit.h:51</a></div></div>
-<div class="ttc" id="aclass_t_rcmp_hit_html_abcd85d2227066d2cddb3a05755438ad6"><div class="ttname"><a href="class_t_rcmp_hit.html#abcd85d2227066d2cddb3a05755438ad6">TRcmpHit::Clear</a></div><div class="ttdeci">void Clear(Option_t *opt=&quot;&quot;) override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_rcmp_hit_8cxx_source.html#l00055">TRcmpHit.cxx:55</a></div></div>
+<div class="ttc" id="aclass_t_rcmp_hit_html_abcd85d2227066d2cddb3a05755438ad6"><div class="ttname"><a href="class_t_rcmp_hit.html#abcd85d2227066d2cddb3a05755438ad6">TRcmpHit::Clear</a></div><div class="ttdeci">void Clear(Option_t *opt=&quot;&quot;) override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_rcmp_hit_8cxx_source.html#l00052">TRcmpHit.cxx:52</a></div></div>
 <div class="ttc" id="aclass_t_rcmp_hit_html_ad669c4e10e0340f82f84f80cbd0ea175"><div class="ttname"><a href="class_t_rcmp_hit.html#ad669c4e10e0340f82f84f80cbd0ea175">TRcmpHit::TRcmpHit</a></div><div class="ttdeci">TRcmpHit()=default</div><div class="ttdoc">default constructor</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -223,7 +220,7 @@ $(document).ready(function(){initNavTree('_t_rcmp_hit_8cxx_source.html',''); ini
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_04ded5cb9506aadc0b6d1c08d3b0ca72.html">libraries</a></li><li class="navelem"><a class="el" href="dir_f1ca9974b6d60d8551858194bc4a7b28.html">TGRSIAnalysis</a></li><li class="navelem"><a class="el" href="dir_7295a4f67b932590241ad7e00a653c50.html">TRcmp</a></li><li class="navelem"><a class="el" href="_t_rcmp_hit_8cxx.html">TRcmpHit.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Sep 9 2024 16:24:38.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Sep 11 2024 15:16:52.</li>
   </ul>
 </div>
 </body>

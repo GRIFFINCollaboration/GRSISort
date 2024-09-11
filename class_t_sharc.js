@@ -3,7 +3,7 @@ var class_t_sharc =
     [ "TSharc", "class_t_sharc.html#a2bb49e91568f108cc3b8b0d6772cb7f6", null ],
     [ "TSharc", "class_t_sharc.html#afadec95c7a5a4b87fac14f3f8de1114c", null ],
     [ "TSharc", "class_t_sharc.html#a00992741f8c3b767c9f7a8d5f8fa4d79", null ],
-    [ "~TSharc", "class_t_sharc.html#a177a144fe8b61f65656a4462f534de34", null ],
+    [ "~TSharc", "class_t_sharc.html#a6f1984f27bb4766a94f0c46d02fdc871", null ],
     [ "AddFragment", "class_t_sharc.html#ae5d0584d93236474b93e3d790d118a8e", null ],
     [ "AddHit", "class_t_sharc.html#af83ad943618a30f7d1639675e18fc5b8", null ],
     [ "BuildHits", "class_t_sharc.html#ae7279001c44850acdaa715321bbb4ae4", null ],

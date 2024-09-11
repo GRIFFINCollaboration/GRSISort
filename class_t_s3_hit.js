@@ -31,7 +31,7 @@ var class_t_s3_hit =
     [ "TS3Hit", "class_t_s3_hit.html#ab2e837f8a9f48ebf2126fd3e515b00c3", null ],
     [ "TS3Hit", "class_t_s3_hit.html#a0d5fc3fa353295beb3203a05dc3688f7", null ],
     [ "TS3Hit", "class_t_s3_hit.html#a31625cf4e8705ee976d461d92ea96215", null ],
-    [ "~TS3Hit", "class_t_s3_hit.html#a997e7fe6226598d9e622e6cbc43a2a68", null ],
+    [ "~TS3Hit", "class_t_s3_hit.html#aea2409e84fc5a75febc6700d8f2b8c8b", null ],
     [ "Add", "class_t_s3_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6", null ],
     [ "AddWaveformSample", "class_t_s3_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],
     [ "AppendTimeStamp", "class_t_s3_hit.html#aeab285a914a74f67155972bb51841ecd", null ],

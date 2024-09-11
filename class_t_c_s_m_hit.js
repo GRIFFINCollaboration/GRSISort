@@ -30,7 +30,7 @@ var class_t_c_s_m_hit =
     [ "TCSMHit", "class_t_c_s_m_hit.html#aa51d5dc99141d8b2db16394eba7df309", null ],
     [ "TCSMHit", "class_t_c_s_m_hit.html#a0e28aa687289e2a27bdeacfae3edba1e", null ],
     [ "TCSMHit", "class_t_c_s_m_hit.html#a42d9dd29764d6cf8e4b8db1229948139", null ],
-    [ "~TCSMHit", "class_t_c_s_m_hit.html#a945e3a93db54f5cc3a84e41d73f3c1c7", null ],
+    [ "~TCSMHit", "class_t_c_s_m_hit.html#aae71688e6409bae9b249307ab7f29bb9", null ],
     [ "Add", "class_t_c_s_m_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6", null ],
     [ "AddWaveformSample", "class_t_c_s_m_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],
     [ "AppendTimeStamp", "class_t_c_s_m_hit.html#aeab285a914a74f67155972bb51841ecd", null ],

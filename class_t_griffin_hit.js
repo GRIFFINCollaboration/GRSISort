@@ -42,7 +42,7 @@ var class_t_griffin_hit =
     [ "TGriffinHit", "class_t_griffin_hit.html#aaacc852fef86ce0f0cc1a2467b717bed", null ],
     [ "TGriffinHit", "class_t_griffin_hit.html#a580a54face0efb7cfc22f07dad4fbe2f", null ],
     [ "TGriffinHit", "class_t_griffin_hit.html#ace1c1103a1d8507b0dc5a47d0a005ed6", null ],
-    [ "~TGriffinHit", "class_t_griffin_hit.html#a5c4c077d59e5a580625c4e33d20222d6", null ],
+    [ "~TGriffinHit", "class_t_griffin_hit.html#aa9d3b86a71e7cc14b2f67f64f1b7cef5", null ],
     [ "Add", "class_t_griffin_hit.html#aaf1cd4b9f0244f79446e47b1481dfcee", null ],
     [ "AddWaveformSample", "class_t_griffin_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],
     [ "AppendTimeStamp", "class_t_griffin_hit.html#aeab285a914a74f67155972bb51841ecd", null ],

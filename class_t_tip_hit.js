@@ -31,7 +31,7 @@ var class_t_tip_hit =
     [ "TTipHit", "class_t_tip_hit.html#a23e5d774e9c8105052e3780b2c7f55ad", null ],
     [ "TTipHit", "class_t_tip_hit.html#ab3d05a074e7eac39ffdb01cccfb568ed", null ],
     [ "TTipHit", "class_t_tip_hit.html#ab313b4e4aabb1a9c56f286251951de66", null ],
-    [ "~TTipHit", "class_t_tip_hit.html#a975604f14b314048daa8dd77297afe51", null ],
+    [ "~TTipHit", "class_t_tip_hit.html#a48306223fe08f56ea475cf3d52a7434e", null ],
     [ "Add", "class_t_tip_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6", null ],
     [ "AddWaveformSample", "class_t_tip_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],
     [ "AppendTimeStamp", "class_t_tip_hit.html#aeab285a914a74f67155972bb51841ecd", null ],

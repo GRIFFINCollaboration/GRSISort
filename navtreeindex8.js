@@ -1,7 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"class_compton_polarimetry_helper.html#a2543f966e5e6f55dd84d8167e742f6b8":[9,0,13,5],
-"class_compton_polarimetry_helper.html#a27adae6a07b011a2c5beb6a572acaa42":[9,0,13,34],
 "class_compton_polarimetry_helper.html#a2ea158b59f9de0ea9323142bf22f2766":[9,0,13,29],
 "class_compton_polarimetry_helper.html#a39e031ee0f0ebedb946541fd145300bd":[9,0,13,19],
 "class_compton_polarimetry_helper.html#a43b96b9c64dcb585762ce691e38814ac":[9,0,13,18],
@@ -249,5 +247,7 @@ var NAVTREEINDEX8 =
 "class_example_event_selector.html#a0a36b80b21d1c5fd0b2246943c28ebce":[9,0,25,40],
 "class_example_event_selector.html#a12e279b3988df21458f60fe483546c4d":[9,0,25,38],
 "class_example_event_selector.html#a149f95eff09cf13edda2429e1c4e4028":[9,0,25,7],
-"class_example_event_selector.html#a1935dbf4d7080d06bc59903daafca0ce":[9,0,25,18]
+"class_example_event_selector.html#a1935dbf4d7080d06bc59903daafca0ce":[9,0,25,18],
+"class_example_event_selector.html#a1e35e3147d9f14a04e4d0f9f30431074":[9,0,25,31],
+"class_example_event_selector.html#a29945f1269efc3023c16716af041d4bd":[9,0,25,16]
 };

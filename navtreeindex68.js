@@ -1,6 +1,5 @@
 var NAVTREEINDEX68 =
 {
-"md__2github_2workspace_2_ill_data_2_r_e_a_d_m_e.html":[4],
 "md__2github_2workspace_2_ill_data_2_r_e_a_d_m_e.html#autotoc_md20":[4,0],
 "md__2github_2workspace_2_ill_data_2_r_e_a_d_m_e.html#autotoc_md21":[4,1],
 "md__2github_2workspace_2_ill_data_2_r_e_a_d_m_e.html#autotoc_md22":[4,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX68 =
 "struct_t_pulse_analyzer_1_1_shape_par.html#a403ffd613dd5c6bdeb2fca2172c65695":[7,3,19,2,7],
 "struct_t_pulse_analyzer_1_1_shape_par.html#a40c8954660708df6ee30f9df70cec092":[7,3,19,2,0],
 "struct_t_pulse_analyzer_1_1_shape_par.html#a479d8ab775ee00e65bcc4815cd2a71ef":[7,3,19,2,4],
-"struct_t_pulse_analyzer_1_1_shape_par.html#a4fdd467537f11d14af5ea5be46c3e87e":[7,3,19,2,5]
+"struct_t_pulse_analyzer_1_1_shape_par.html#a4fdd467537f11d14af5ea5be46c3e87e":[7,3,19,2,5],
+"struct_t_pulse_analyzer_1_1_shape_par.html#a8c708f9f2ed4a9773036fa2a77e36fe2":[7,3,19,2,6]
 };

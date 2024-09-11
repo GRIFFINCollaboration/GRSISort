@@ -3,7 +3,7 @@ var class_t_tri_foil =
     [ "TTriFoil", "class_t_tri_foil.html#a6fa3deaae0c575217a321fec638b1adf", null ],
     [ "TTriFoil", "class_t_tri_foil.html#a6337718b991c2f4725bc5821a4b11256", null ],
     [ "TTriFoil", "class_t_tri_foil.html#a4d5bb0903f96fc46e1e8364339ab40da", null ],
-    [ "~TTriFoil", "class_t_tri_foil.html#adcf3cbc6b5f00fbc53c0714786c6e185", null ],
+    [ "~TTriFoil", "class_t_tri_foil.html#ab021a13560926ab55837b1a41edf66cb", null ],
     [ "AddFragment", "class_t_tri_foil.html#a3ef78a1d8b4fdfddb88de7518f8f9346", null ],
     [ "AddHit", "class_t_tri_foil.html#af83ad943618a30f7d1639675e18fc5b8", null ],
     [ "Beam", "class_t_tri_foil.html#aba8582ed18352b37385184ca9bd16eac", null ],

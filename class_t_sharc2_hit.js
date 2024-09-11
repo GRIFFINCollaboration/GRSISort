@@ -30,7 +30,7 @@ var class_t_sharc2_hit =
     [ "TSharc2Hit", "class_t_sharc2_hit.html#a3294c706de641eac2c5e96487b0e0cbc", null ],
     [ "TSharc2Hit", "class_t_sharc2_hit.html#abe1dcf71419b7d30ebac925b22591dfb", null ],
     [ "TSharc2Hit", "class_t_sharc2_hit.html#a1003318f7cc918a8b2063ac8fa3aa826", null ],
-    [ "~TSharc2Hit", "class_t_sharc2_hit.html#a50d6d69468fbdfaaf9ef875c103b54aa", null ],
+    [ "~TSharc2Hit", "class_t_sharc2_hit.html#a9d0b624d629a2c144df1d13264b3a891", null ],
     [ "Add", "class_t_sharc2_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6", null ],
     [ "AddWaveformSample", "class_t_sharc2_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],
     [ "AppendTimeStamp", "class_t_sharc2_hit.html#aeab285a914a74f67155972bb51841ecd", null ],

@@ -1,7 +1,5 @@
 var NAVTREEINDEX32 =
 {
-"class_t_g_r_s_i_data_parser.html#a3561426682ff95b142b8463ee528b8ef":[7,11,12,77],
-"class_t_g_r_s_i_data_parser.html#a37e96cd7f1a742975d03b44d4fb8c03e":[7,11,12,79],
 "class_t_g_r_s_i_data_parser.html#a38a48714bdd19302fc1afe41ee511017":[7,11,12,94],
 "class_t_g_r_s_i_data_parser.html#a42df7eda6c2dfbcf38585e00cf07069c":[7,11,12,63],
 "class_t_g_r_s_i_data_parser.html#a43e785a04fa1ecd34d0f6a8996edd2e9":[7,11,12,28],
@@ -139,13 +137,13 @@ var NAVTREEINDEX32 =
 "class_t_g_r_s_i_detector_information.html#a692065a29f568211f8298853c21fe56f":[7,11,14,43],
 "class_t_g_r_s_i_detector_information.html#a6bc79207b904f95b75868fa6d0c924ab":[7,11,14,50],
 "class_t_g_r_s_i_detector_information.html#a700fdb184ea2dda7e7ae554fb2cb305a":[7,11,14,58],
-"class_t_g_r_s_i_detector_information.html#a7029e988e940e836f942d3c9a83c3b47":[7,11,14,3],
 "class_t_g_r_s_i_detector_information.html#a70f464162e303ad4f064ab13b65b511c":[7,11,14,9],
 "class_t_g_r_s_i_detector_information.html#a748e3d8272e93594ab9b70b324a2fe9f":[7,11,14,34],
 "class_t_g_r_s_i_detector_information.html#a7559d63ae50bfd8c1f83aaaa4e58972e":[7,11,14,59],
 "class_t_g_r_s_i_detector_information.html#a75d7fa838e36d5f4a75b3d16bf7c8f1f":[7,11,14,45],
 "class_t_g_r_s_i_detector_information.html#a75db74b93e95d27c9e261c1659387e0e":[7,11,14,14],
 "class_t_g_r_s_i_detector_information.html#a78ef973c4aabfaddd6aed7ca7f5ce0c1":[7,11,14,30],
+"class_t_g_r_s_i_detector_information.html#a7fb34f4ae40442bc7fa365c317d35d7e":[7,11,14,3],
 "class_t_g_r_s_i_detector_information.html#a838519f38025fe51d8ed2fa8f95fc878":[7,11,14,16],
 "class_t_g_r_s_i_detector_information.html#a91983c97cfdfd319891025c1572f7ee7":[7,11,14,65],
 "class_t_g_r_s_i_detector_information.html#a93d7d968ba166cfbe6b77295d635feaa":[7,11,14,2],
@@ -249,5 +247,7 @@ var NAVTREEINDEX32 =
 "class_t_g_r_s_i_helper.html#ac7ce3378d3b7c730f9cbd73dd2cf7ab3":[9,0,146,30],
 "class_t_g_r_s_i_helper.html#ac8e3b2c0233863390b3d8afd443b6241":[9,0,146,13],
 "class_t_g_r_s_i_helper.html#ac9c80dd476aeaf772aa19fd84cc56359":[9,0,146,3],
-"class_t_g_r_s_i_helper.html#acd283f16b8e1616a0496c8ab3ef4ace3":[9,0,146,1]
+"class_t_g_r_s_i_helper.html#acd283f16b8e1616a0496c8ab3ef4ace3":[9,0,146,1],
+"class_t_g_r_s_i_helper.html#adba49a09a6ebe50ebb9b33e051c0a3c0":[9,0,146,33],
+"class_t_g_r_s_i_helper.html#add19941df642bbd2f8994a3b799d4760":[9,0,146,10]
 };

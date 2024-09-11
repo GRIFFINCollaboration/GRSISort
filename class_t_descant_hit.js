@@ -31,7 +31,7 @@ var class_t_descant_hit =
     [ "TDescantHit", "class_t_descant_hit.html#af730bf0ba3470d1ffca6bf1b61344226", null ],
     [ "TDescantHit", "class_t_descant_hit.html#acd7157181d26b4b1c68426f5b6a2bda7", null ],
     [ "TDescantHit", "class_t_descant_hit.html#ac0850cbf22dc0a84a83373ac97d7660e", null ],
-    [ "~TDescantHit", "class_t_descant_hit.html#ac0cb836dcc1a01fb921035cbca1f6534", null ],
+    [ "~TDescantHit", "class_t_descant_hit.html#a09da72b371092f841c4b6a886eb50505", null ],
     [ "Add", "class_t_descant_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6", null ],
     [ "AddWaveformSample", "class_t_descant_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],
     [ "AnalyzeWaveform", "class_t_descant_hit.html#aee98e551166e7588a9ad4fe009e04dd7", null ],

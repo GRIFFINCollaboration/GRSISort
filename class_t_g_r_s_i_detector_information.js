@@ -3,7 +3,7 @@ var class_t_g_r_s_i_detector_information =
     [ "TGRSIDetectorInformation", "class_t_g_r_s_i_detector_information.html#adc9da5ff9e3d0c6e0b9554b9b695b88f", null ],
     [ "TGRSIDetectorInformation", "class_t_g_r_s_i_detector_information.html#a20e299c44985e5d7eba7ae6b58c9ae25", null ],
     [ "TGRSIDetectorInformation", "class_t_g_r_s_i_detector_information.html#a93d7d968ba166cfbe6b77295d635feaa", null ],
-    [ "~TGRSIDetectorInformation", "class_t_g_r_s_i_detector_information.html#a7029e988e940e836f942d3c9a83c3b47", null ],
+    [ "~TGRSIDetectorInformation", "class_t_g_r_s_i_detector_information.html#a7fb34f4ae40442bc7fa365c317d35d7e", null ],
     [ "Bambino", "class_t_g_r_s_i_detector_information.html#a58f6dc6e708b93c7d59020ca4ad36166", null ],
     [ "Bgo", "class_t_g_r_s_i_detector_information.html#a0799e5555cd53d2705258fdf5eb9bde6", null ],
     [ "BuildMode", "class_t_g_r_s_i_detector_information.html#aa81e8648b4f752f2678372658f713bd2", null ],

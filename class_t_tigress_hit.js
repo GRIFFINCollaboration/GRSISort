@@ -31,7 +31,7 @@ var class_t_tigress_hit =
     [ "TTigressHit", "class_t_tigress_hit.html#a6acf537fb1229ff825d1948af2e6a0d2", null ],
     [ "TTigressHit", "class_t_tigress_hit.html#a4a984a0ab41e14a93516f12992b17c49", null ],
     [ "TTigressHit", "class_t_tigress_hit.html#a883d67e5a4637b09a77b4ca54019c5ae", null ],
-    [ "~TTigressHit", "class_t_tigress_hit.html#a9cdda6ebc93c01fbdcd3061176b2d83f", null ],
+    [ "~TTigressHit", "class_t_tigress_hit.html#a6aa1b40ce0891be7b663e8a7322ae177", null ],
     [ "Add", "class_t_tigress_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6", null ],
     [ "AddSegment", "class_t_tigress_hit.html#ae3fce93f1eb7128a00992e0ac8b7df49", null ],
     [ "AddWaveformSample", "class_t_tigress_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],

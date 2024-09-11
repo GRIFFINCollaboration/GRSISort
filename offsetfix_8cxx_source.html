@@ -139,7 +139,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>   {</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      <span class="keyword">event</span>-&gt;SetBankList();</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      <span class="keywordtype">void</span>* ptr = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      <span class="keywordtype">void</span>* ptr      = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      <span class="keywordtype">int</span>   banksize = <span class="keyword">event</span>-&gt;LocateBank(<span class="keyword">nullptr</span>, <span class="stringliteral">&quot;GRF2&quot;</span>, &amp;ptr);</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>      <span class="keywordtype">int</span>   bank     = 2;</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
@@ -159,7 +159,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>         <span class="keywordflow">switch</span>(type) {</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>         <span class="keywordflow">case</span> 0x80000000:</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            <span class="keywordflow">switch</span>(bank) {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            <span class="keywordflow">case</span> 1: <span class="comment">// header format from before May 2015 experiments</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            <span class="keywordflow">case</span> 1:   <span class="comment">// header format from before May 2015 experiments</span></div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>               <span class="comment">// Sets:</span></div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>               <span class="comment">//     The number of filters</span></div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>               <span class="comment">//     The Data Type</span></div>
@@ -194,7 +194,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            <span class="keywordflow">default</span>: printf(<span class="stringliteral">&quot;This bank not yet defined.\n&quot;</span>); <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            };</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>         <span class="keywordflow">case</span> 0xa0000000: <a class="code hl_variable" href="class_t_event_time.html#abb212f08592e5cac13a675157cf80406">timelow</a>  = value &amp; 0x0fffffff; <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>         <span class="keywordflow">case</span> 0xa0000000: <a class="code hl_variable" href="class_t_event_time.html#abb212f08592e5cac13a675157cf80406">timelow</a> = value &amp; 0x0fffffff; <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>         <span class="keywordflow">case</span> 0xb0000000: <a class="code hl_variable" href="class_t_event_time.html#a105a14ab60d7497759d248171a10b9c9">timehigh</a> = value &amp; 0x00003fff; <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>         };</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      }</div>
@@ -218,17 +218,17 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>   }</div>
 </div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a9b077cb73348bfc7c7f359e354103557">  115</a></span>   <a class="code hl_function" href="class_t_event_time.html#a9b077cb73348bfc7c7f359e354103557">TEventTime</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_event_time.html">TEventTime</a>&amp;) = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a8c27a86afdb826793bcc4b7b348884e6">  116</a></span>   <a class="code hl_function" href="class_t_event_time.html#a8c27a86afdb826793bcc4b7b348884e6">TEventTime</a>(<a class="code hl_class" href="class_t_event_time.html">TEventTime</a>&amp;&amp;) noexcept = default;</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a798b2f6d2cf6ea2169c91070d5f2302a">  117</a></span>   <a class="code hl_class" href="class_t_event_time.html">TEventTime</a>&amp; operator=(const <a class="code hl_class" href="class_t_event_time.html">TEventTime</a>&amp;) = default;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a9b077cb73348bfc7c7f359e354103557">  115</a></span>   <a class="code hl_function" href="class_t_event_time.html#a9b077cb73348bfc7c7f359e354103557">TEventTime</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_event_time.html">TEventTime</a>&amp;)                = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a8c27a86afdb826793bcc4b7b348884e6">  116</a></span>   <a class="code hl_function" href="class_t_event_time.html#a8c27a86afdb826793bcc4b7b348884e6">TEventTime</a>(<a class="code hl_class" href="class_t_event_time.html">TEventTime</a>&amp;&amp;) noexcept            = default;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a798b2f6d2cf6ea2169c91070d5f2302a">  117</a></span>   <a class="code hl_class" href="class_t_event_time.html">TEventTime</a>&amp; operator=(const <a class="code hl_class" href="class_t_event_time.html">TEventTime</a>&amp;)     = default;</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a754fe3f3b389720d4af1a46763b79832">  118</a></span>   <a class="code hl_class" href="class_t_event_time.html">TEventTime</a>&amp; operator=(<a class="code hl_class" href="class_t_event_time.html">TEventTime</a>&amp;&amp;) noexcept = default;</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="class_t_event_time.html#afe80d044cf470260649848ded295a89f">  119</a></span>   ~<a class="code hl_class" href="class_t_event_time.html">TEventTime</a>() = default;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="class_t_event_time.html#afe80d044cf470260649848ded295a89f">  119</a></span>   ~<a class="code hl_class" href="class_t_event_time.html">TEventTime</a>()                                = default;</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
 <div class="foldopen" id="foldopen00121" data-start="{" data-end="}">
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a82d38dd760777cc08aabba765f013c10">  121</a></span>   uint64_t <a class="code hl_function" href="class_t_event_time.html#a1401ec9aee040a6485c0d6d0bb3d5bd7">GetTimeStamp</a>()<span class="keyword"> const </span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a82d38dd760777cc08aabba765f013c10">  121</a></span>   uint64_t <a class="code hl_function" href="class_t_event_time.html#a1401ec9aee040a6485c0d6d0bb3d5bd7">GetTimeStamp</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="keyword">   </span>{</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      uint64_t time = <a class="code hl_variable" href="class_t_event_time.html#a105a14ab60d7497759d248171a10b9c9">timehigh</a>;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>      time          = time&lt;&lt;28;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>      time          = time &lt;&lt; 28;</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      time |= <a class="code hl_variable" href="class_t_event_time.html#abb212f08592e5cac13a675157cf80406">timelow</a> &amp; 0x0fffffff;</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      <span class="keywordflow">return</span> time;</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>   }</div>
@@ -260,7 +260,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="class_t_event_time.html#ae3273530bb4ce2afad4d24f9f279eea4">  149</a></span>   <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_event_time.html#ae3273530bb4ce2afad4d24f9f279eea4">OrderDigitizerMap</a>()</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>   {</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>      std::map&lt;uint32_t, int&gt;::iterator it;</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>      <span class="keywordtype">int</span> index = 0;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>      <span class="keywordtype">int</span>                               index = 0;</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>      <span class="keywordflow">for</span>(it = <a class="code hl_variable" href="class_t_event_time.html#a9af0f449435394ab1e2a29c5ad1f7e4d">digmap</a>.begin(); it != <a class="code hl_variable" href="class_t_event_time.html#a9af0f449435394ab1e2a29c5ad1f7e4d">digmap</a>.end(); it++) {</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>         it-&gt;second = index++;</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      }</div>
@@ -283,25 +283,25 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a486f0268312e21128684cc0710c39c20">  170</a></span>   <span class="keyword">inline</span> <span class="keyword">static</span> uint64_t <a class="code hl_function" href="class_t_event_time.html#a486f0268312e21128684cc0710c39c20">GetLowestTime</a>() { <span class="keywordflow">return</span> <a class="code hl_variable" href="class_t_event_time.html#aba61fd23dce44103e7452dccbaaa2e14">lowest_time</a>; }</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a462d569cb7c58ea5876c5087677b7365">  172</a></span>   <span class="keyword">static</span> std::map&lt;uint32_t, int&gt;     <a class="code hl_variable" href="class_t_event_time.html#a462d569cb7c58ea5876c5087677b7365">digmap</a>; <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a85b254f4322946e54383b0ce881b0dba">  173</a></span>   <span class="keyword">static</span> std::map&lt;uint32_t, bool&gt;    <a class="code hl_variable" href="class_t_event_time.html#a85b254f4322946e54383b0ce881b0dba">digset</a>; <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno"><a class="line" href="class_t_event_time.html#ae0852e65f7a49adb91ccdc94021762db">  174</a></span>   <span class="keyword">static</span> std::map&lt;uint32_t, int64_t&gt; <a class="code hl_variable" href="class_t_event_time.html#ae0852e65f7a49adb91ccdc94021762db">correctionmap</a>; <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>   <span class="keyword">static</span> uint64_t <a class="code hl_variable" href="class_t_event_time.html#aeb03b32436660cf099721c7274adc349">low_timemidas</a>; <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="class_t_event_time.html#ac025872ccc6990b1cc008cc2033a9956">  176</a></span>   <span class="keyword">static</span> uint32_t      <a class="code hl_variable" href="class_t_event_time.html#ac025872ccc6990b1cc008cc2033a9956">best_dig</a>; <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno"><a class="line" href="class_t_event_time.html#aba61fd23dce44103e7452dccbaaa2e14">  177</a></span>   <span class="keyword">static</span> uint64_t      <a class="code hl_variable" href="class_t_event_time.html#aba61fd23dce44103e7452dccbaaa2e14">lowest_time</a>; <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a462d569cb7c58ea5876c5087677b7365">  172</a></span>   <span class="keyword">static</span> std::map&lt;uint32_t, int&gt;     <a class="code hl_variable" href="class_t_event_time.html#a462d569cb7c58ea5876c5087677b7365">digmap</a>;          <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a85b254f4322946e54383b0ce881b0dba">  173</a></span>   <span class="keyword">static</span> std::map&lt;uint32_t, bool&gt;    <a class="code hl_variable" href="class_t_event_time.html#a85b254f4322946e54383b0ce881b0dba">digset</a>;          <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno"><a class="line" href="class_t_event_time.html#ae0852e65f7a49adb91ccdc94021762db">  174</a></span>   <span class="keyword">static</span> std::map&lt;uint32_t, int64_t&gt; <a class="code hl_variable" href="class_t_event_time.html#ae0852e65f7a49adb91ccdc94021762db">correctionmap</a>;   <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>   <span class="keyword">static</span> uint64_t                    <a class="code hl_variable" href="class_t_event_time.html#aeb03b32436660cf099721c7274adc349">low_timemidas</a>;   <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="class_t_event_time.html#ac025872ccc6990b1cc008cc2033a9956">  176</a></span>   <span class="keyword">static</span> uint32_t                    <a class="code hl_variable" href="class_t_event_time.html#ac025872ccc6990b1cc008cc2033a9956">best_dig</a>;        <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno"><a class="line" href="class_t_event_time.html#aba61fd23dce44103e7452dccbaaa2e14">  177</a></span>   <span class="keyword">static</span> uint64_t                    <a class="code hl_variable" href="class_t_event_time.html#aba61fd23dce44103e7452dccbaaa2e14">lowest_time</a>;     <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a61f6825fdb6e6844081ca82710e71f18">  180</a></span>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>  <a class="code hl_variable" href="class_t_event_time.html#a61f6825fdb6e6844081ca82710e71f18">timelow</a>; <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a736b3de677951e7951ef4f4e66ab9fef">  181</a></span>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>  <a class="code hl_variable" href="class_t_event_time.html#a736b3de677951e7951ef4f4e66ab9fef">timehigh</a>; <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>   uint64_t <a class="code hl_variable" href="class_t_event_time.html#a6b7d52b19b372602c1b70a139e59afe3">timemidas</a>; <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>   <span class="keywordtype">int</span>           <a class="code hl_variable" href="class_t_event_time.html#a79d474e4d5510e7a6902c03e1064ecb6">dettype</a>; <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno"><a class="line" href="class_t_event_time.html#acc29e4d65657cc4b6c259619734ec39d">  184</a></span>   uint32_t      <a class="code hl_variable" href="class_t_event_time.html#acc29e4d65657cc4b6c259619734ec39d">chanadd</a>; <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a075d82444be1413fbb0f600357116574">  185</a></span>   uint32_t      <a class="code hl_variable" href="class_t_event_time.html#a58ab717845e625d58082409ed494dd86">digitizernum</a>{}; <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a61f6825fdb6e6844081ca82710e71f18">  180</a></span>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="class_t_event_time.html#a61f6825fdb6e6844081ca82710e71f18">timelow</a>;          <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a736b3de677951e7951ef4f4e66ab9fef">  181</a></span>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="class_t_event_time.html#a736b3de677951e7951ef4f4e66ab9fef">timehigh</a>;         <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>   uint64_t     <a class="code hl_variable" href="class_t_event_time.html#a6b7d52b19b372602c1b70a139e59afe3">timemidas</a>;        <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>   <span class="keywordtype">int</span>          <a class="code hl_variable" href="class_t_event_time.html#a79d474e4d5510e7a6902c03e1064ecb6">dettype</a>;          <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno"><a class="line" href="class_t_event_time.html#acc29e4d65657cc4b6c259619734ec39d">  184</a></span>   uint32_t     <a class="code hl_variable" href="class_t_event_time.html#acc29e4d65657cc4b6c259619734ec39d">chanadd</a>;          <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno"><a class="line" href="class_t_event_time.html#a075d82444be1413fbb0f600357116574">  185</a></span>   uint32_t     <a class="code hl_variable" href="class_t_event_time.html#a58ab717845e625d58082409ed494dd86">digitizernum</a>{};   <span class="comment">// NOLINT(readability-identifier-naming)</span></div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>};</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>uint64_t <a class="code hl_variable" href="class_t_event_time.html#aeb03b32436660cf099721c7274adc349">TEventTime::low_timemidas</a> = -1;</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>uint64_t      <a class="code hl_variable" href="class_t_event_time.html#aba61fd23dce44103e7452dccbaaa2e14">TEventTime::lowest_time</a>   = 0xffffffffffffffff;</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>uint32_t      <a class="code hl_variable" href="class_t_event_time.html#ac025872ccc6990b1cc008cc2033a9956">TEventTime::best_dig</a>      = 0;</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>uint64_t                    <a class="code hl_variable" href="class_t_event_time.html#aeb03b32436660cf099721c7274adc349">TEventTime::low_timemidas</a> = -1;</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>uint64_t                    <a class="code hl_variable" href="class_t_event_time.html#aba61fd23dce44103e7452dccbaaa2e14">TEventTime::lowest_time</a>   = 0xffffffffffffffff;</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>uint32_t                    <a class="code hl_variable" href="class_t_event_time.html#ac025872ccc6990b1cc008cc2033a9956">TEventTime::best_dig</a>      = 0;</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>std::map&lt;uint32_t, int&gt;     <a class="code hl_variable" href="class_t_event_time.html#a9af0f449435394ab1e2a29c5ad1f7e4d">TEventTime::digmap</a>;</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>std::map&lt;uint32_t, bool&gt;    <a class="code hl_variable" href="class_t_event_time.html#a85b254f4322946e54383b0ce881b0dba">TEventTime::digset</a>;</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>std::map&lt;uint32_t, int64_t&gt; <a class="code hl_variable" href="class_t_event_time.html#ae0852e65f7a49adb91ccdc94021762db">TEventTime::correctionmap</a>;</div>
@@ -329,7 +329,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>   <span class="keyword">const</span> <span class="keywordtype">int</span>                    event_start = 1E5;</div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>   std::shared_ptr&lt;TMidasEvent&gt; <span class="keyword">event</span>       = std::make_shared&lt;TMidasEvent&gt;();</div>
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>   eventQ-&gt;reserve(total_events);</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>   <span class="keywordtype">void</span>* ptr = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>   <span class="keywordtype">void</span>* ptr      = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>   <span class="keywordtype">int</span>   banksize = 0;</div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span> </div>
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>   <span class="keywordtype">int</span> subrun = infile-&gt;<a class="code hl_function" href="class_t_midas_file.html#a488d45179a7bcf12d9e16dc4765aa176">GetSubRunNumber</a>();</div>
@@ -384,7 +384,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>               events_read++;</div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>               <span class="keywordflow">if</span>((subrun &gt; 0) || (events_read &gt; event_start)) {</div>
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                  eventQ-&gt;push_back(<span class="keyword">new</span> <a class="code hl_class" href="class_t_event_time.html">TEventTime</a>(</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>                     event)); <span class="comment">// I&#39;ll keep 4G data in here for now in case we need to use it for time stamping</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>                     event));   <span class="comment">// I&#39;ll keep 4G data in here for now in case we need to use it for time stamping</span></div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>               }</div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>            } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>               <a class="code hl_function" href="offsetfix_8cxx.html#acf3983a87561021ae54e17004785367f">PrintError</a>(event, frags, <span class="keyword">false</span>);</div>
@@ -411,7 +411,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>   <span class="keyword">auto</span>* midvshigh = <span class="keyword">new</span> TList;</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>   printf(<a class="code hl_define" href="_globals_8h.html#a82e4da5718eb63f4ce3f51f73cb49232">DBLUE</a> <span class="stringliteral">&quot;Correcting High time stamps...\n&quot;</span> <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>);</div>
 <div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>   <span class="comment">// These first four are for looking to see if high time-stamp reset</span></div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>   std::map&lt;uint32_t, int&gt;::iterator mapit; <span class="comment">// This is an iterator over the digitizer map</span></div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>   std::map&lt;uint32_t, int&gt;::iterator mapit;   <span class="comment">// This is an iterator over the digitizer map</span></div>
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>   <span class="keywordflow">for</span>(mapit = <a class="code hl_variable" href="class_t_event_time.html#a9af0f449435394ab1e2a29c5ad1f7e4d">TEventTime::digmap</a>.begin(); mapit != <a class="code hl_variable" href="class_t_event_time.html#a9af0f449435394ab1e2a29c5ad1f7e4d">TEventTime::digmap</a>.end(); mapit++) {</div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>      <span class="keyword">auto</span>* midvshighhist = <span class="keyword">new</span> TH2D(Form(<span class="stringliteral">&quot;midvshigh_0x%04x&quot;</span>, mapit-&gt;first), Form(<span class="stringliteral">&quot;midvshigh_0x%04x&quot;</span>, mapit-&gt;first),</div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>                                     5000, 0, 5000, 5000, 0, 5000);</div>
@@ -423,15 +423,15 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>   <span class="comment">// MidasTimeStamp is the only time we can trust at this level.</span></div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span> </div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>   <span class="comment">// Clear lowest hightime</span></div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>   std::map&lt;uint32_t, int&gt; lowest_hightime;</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>   std::map&lt;uint32_t, int&gt;            lowest_hightime;</div>
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>   std::vector&lt;TEventTime*&gt;::iterator it;</div>
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>   <span class="keywordflow">for</span>(it = eventQ-&gt;begin(); it != eventQ-&gt;end(); it++) {</div>
 <div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>      <span class="comment">// This makes the plot, might not be required</span></div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>      <span class="keywordtype">int</span>           hightime = (*it)-&gt;TimeStampHigh();</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>      <span class="keywordtype">int</span>      hightime = (*it)-&gt;TimeStampHigh();</div>
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>      uint64_t midtime  = (*it)-&gt;MidasTime() - lowmidtime;</div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>      <span class="keywordflow">if</span>(midtime &gt; 20) {</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>         <span class="keywordflow">break</span>; <span class="comment">// 20 seconds seems like plenty enough time</span></div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>         <span class="keywordflow">break</span>;   <span class="comment">// 20 seconds seems like plenty enough time</span></div>
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>      }</div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>      <span class="keywordflow">if</span>(((*it)-&gt;Digitizer() == 0) &amp;&amp; ((*it)-&gt;DetectorType() &gt; 1)) {</div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>         <span class="keywordflow">continue</span>;</div>
@@ -439,7 +439,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>      <span class="comment">// The next few lines are probably unnecessary</span></div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>      <span class="keyword">dynamic_cast&lt;</span>TH2D*<span class="keyword">&gt;</span>(midvshigh-&gt;FindObject(Form(<span class="stringliteral">&quot;midvshigh_0x%04x&quot;</span>, (*it)-&gt;Digitizer())))-&gt;Fill(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(midtime), hightime);</div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>      <span class="keywordflow">if</span>(lowest_hightime.find((*it)-&gt;Digitizer()) == lowest_hightime.end()) {</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>         lowest_hightime[(*it)-&gt;Digitizer()] = hightime; <span class="comment">// initialize this as the first time that is seen.</span></div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>         lowest_hightime[(*it)-&gt;Digitizer()] = hightime;   <span class="comment">// initialize this as the first time that is seen.</span></div>
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>      } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(hightime &lt; lowest_hightime.find((*it)-&gt;Digitizer())-&gt;second) {</div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>         lowest_hightime.find((*it)-&gt;Digitizer())-&gt;second = hightime;</div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>      }</div>
@@ -466,10 +466,10 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>         <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>      }</div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>      printf(<span class="stringliteral">&quot;0x%04x:\t %d \t %lf sec\n&quot;</span>, mapit-&gt;first, mapit-&gt;second - lowtime,</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>             <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>((<span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(mapit-&gt;second - lowtime)) * (1&lt;&lt;28)) / 1.0E8);</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>             <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>((<span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(mapit-&gt;second - lowtime)) * (1 &lt;&lt; 28)) / 1.0E8);</div>
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>      <span class="comment">// Calculate the shift to the first event in all digitizers</span></div>
 <div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>      <a class="code hl_variable" href="class_t_event_time.html#ae0852e65f7a49adb91ccdc94021762db">TEventTime::correctionmap</a>.find(mapit-&gt;first)-&gt;second =</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>         ((<span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(mapit-&gt;second - lowtime)) * (1&lt;&lt;28));</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>         ((<span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(mapit-&gt;second - lowtime)) * (1 &lt;&lt; 28));</div>
 <div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>   }</div>
 <div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>   printf(<span class="stringliteral">&quot;********************\n&quot;</span>);</div>
 <div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span> </div>
@@ -502,13 +502,13 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>   <span class="comment">// The &quot;best digitizer&quot; is set when we fill the event Q</span></div>
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>   printf(<a class="code hl_define" href="_globals_8h.html#a59524b4cf113f646696e5955023df6a4">DYELLOW</a> <span class="stringliteral">&quot;Using the best digitizer 0x%04x\n&quot;</span> <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>, <a class="code hl_function" href="class_t_event_time.html#a6ff7192b798a001ed3084584348ea742">TEventTime::GetBestDigitizer</a>());</div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span> </div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>   TH1D* fillhist = <span class="keyword">nullptr</span>; <span class="comment">// This pointer is useful later to clean up a lot of messiness</span></div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>   TH1D* fillhist = <span class="keyword">nullptr</span>;   <span class="comment">// This pointer is useful later to clean up a lot of messiness</span></div>
 <div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span> </div>
 <div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>   std::vector&lt;TEventTime*&gt;::iterator hit1;</div>
 <div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>   std::vector&lt;TEventTime*&gt;::iterator hit2;</div>
 <div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>   <span class="keyword">const</span> <span class="keywordtype">int</span>                          range       = 5000;</div>
 <div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>   <span class="keywordtype">int</span>                                event1count = 0;</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>   <span class="keywordflow">for</span>(hit1 = (eventQ-&gt;begin()); hit1 != eventQ-&gt;end(); hit1++) { <span class="comment">// This steps hit1 through the eventQ</span></div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>   <span class="keywordflow">for</span>(hit1 = (eventQ-&gt;begin()); hit1 != eventQ-&gt;end(); hit1++) {   <span class="comment">// This steps hit1 through the eventQ</span></div>
 <div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>      <span class="comment">// We want to have the first hit be in the &quot;good digitizer&quot;</span></div>
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>      <span class="keywordflow">if</span>(event1count % 75000 == 0) {</div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>         printf(<span class="stringliteral">&quot;Processing Event %d /%lu      \r&quot;</span>, event1count, eventQ-&gt;size());</div>
@@ -547,7 +547,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>         uint32_t digitizer = (*hit2)-&gt;Digitizer();</div>
 <div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>         <span class="keywordflow">if</span>(keep_filling[digitizer]) {</div>
 <div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>            fillhist =</div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>               <span class="keyword">dynamic_cast&lt;</span>TH1D*<span class="keyword">&gt;</span>(roughlist-&gt;At((*hit2)-&gt;DigIndex())); <span class="comment">// This is where that pointer comes in handy</span></div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>               <span class="keyword">dynamic_cast&lt;</span>TH1D*<span class="keyword">&gt;</span>(roughlist-&gt;At((*hit2)-&gt;DigIndex()));   <span class="comment">// This is where that pointer comes in handy</span></div>
 <div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>            int64_t time2 = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>((*hit2)-&gt;GetTimeStamp()) -</div>
 <div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>                            <a class="code hl_variable" href="class_t_event_time.html#ae0852e65f7a49adb91ccdc94021762db">TEventTime::correctionmap</a>.find((*hit2)-&gt;Digitizer())-&gt;second;</div>
 <div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>            <span class="keyword">auto</span> bin = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(time2 - time1);</div>
@@ -565,7 +565,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>         <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>      }</div>
 <div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>      fillhist = <span class="keyword">dynamic_cast&lt;</span>TH1D*<span class="keyword">&gt;</span>(roughlist-&gt;At(mapit-&gt;second));</div>
-<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>      std::cout&lt;&lt;static_cast&lt;int64_t&gt;(fillhist-&gt;GetBinCenter(fillhist-&gt;GetMaximumBin()))&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>      std::cout &lt;&lt; static_cast&lt;int64_t&gt;(fillhist-&gt;GetBinCenter(fillhist-&gt;GetMaximumBin())) &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>      <a class="code hl_variable" href="class_t_event_time.html#ae0852e65f7a49adb91ccdc94021762db">TEventTime::correctionmap</a>.find(mapit-&gt;first)-&gt;second +=</div>
 <div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>         <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(fillhist-&gt;GetBinCenter(fillhist-&gt;GetMaximumBin()));</div>
 <div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>   }</div>
@@ -592,7 +592,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 </div>
 <div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span> </div>
 <div class="foldopen" id="foldopen00472" data-start="{" data-end="}">
-<div class="line"><a id="l00472" name="l00472"></a><span class="lineno"><a class="line" href="offsetfix_8cxx.html#ac11dc37f9ea494f5af7dfcb3a8717258">  472</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="offsetfix_8cxx.html#ac11dc37f9ea494f5af7dfcb3a8717258">GetTimeDiff</a>(std::vector&lt;TEventTime*&gt; * eventQ)</div>
+<div class="line"><a id="l00472" name="l00472"></a><span class="lineno"><a class="line" href="offsetfix_8cxx.html#ac11dc37f9ea494f5af7dfcb3a8717258">  472</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="offsetfix_8cxx.html#ac11dc37f9ea494f5af7dfcb3a8717258">GetTimeDiff</a>(std::vector&lt;TEventTime*&gt;* eventQ)</div>
 <div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span>{</div>
 <div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span>   <span class="comment">// We want the MIDAS time stamps to still be the way we index these events, but we want to index on low time</span></div>
 <div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span>   <span class="comment">// stamps next</span></div>
@@ -612,13 +612,13 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span>   <span class="comment">// The &quot;best digitizer&quot; is set when we fill the event Q</span></div>
 <div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>   printf(<a class="code hl_define" href="_globals_8h.html#a59524b4cf113f646696e5955023df6a4">DYELLOW</a> <span class="stringliteral">&quot;Using the best digitizer 0x%04x\n&quot;</span> <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>, <a class="code hl_function" href="class_t_event_time.html#a6ff7192b798a001ed3084584348ea742">TEventTime::GetBestDigitizer</a>());</div>
 <div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span> </div>
-<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span>   TH1D* fillhist = <span class="keyword">nullptr</span>; <span class="comment">// This pointer is useful later to clean up a lot of messiness</span></div>
+<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span>   TH1D* fillhist = <span class="keyword">nullptr</span>;   <span class="comment">// This pointer is useful later to clean up a lot of messiness</span></div>
 <div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span> </div>
 <div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span>   std::vector&lt;TEventTime*&gt;::iterator hit1;</div>
 <div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span>   std::vector&lt;TEventTime*&gt;::iterator hit2;</div>
 <div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span>   <span class="keywordtype">int</span>                                event1count = 0;</div>
 <div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span>   <span class="keyword">const</span> <span class="keywordtype">int</span>                          range       = 2000;</div>
-<div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span>   <span class="keywordflow">for</span>(hit1 = eventQ-&gt;begin(); hit1 != eventQ-&gt;end(); hit1++) { <span class="comment">// This steps hit1 through the eventQ</span></div>
+<div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span>   <span class="keywordflow">for</span>(hit1 = eventQ-&gt;begin(); hit1 != eventQ-&gt;end(); hit1++) {   <span class="comment">// This steps hit1 through the eventQ</span></div>
 <div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>      <span class="comment">// We want to have the first hit be in the &quot;good digitizer&quot;</span></div>
 <div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>      <span class="keywordflow">if</span>(event1count % 75000 == 0) {</div>
 <div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>         printf(<span class="stringliteral">&quot;Processing Event %d / %lu       \r&quot;</span>, event1count, eventQ-&gt;size());</div>
@@ -655,11 +655,11 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>         <span class="keywordflow">if</span>(hit1 != hit2) {</div>
 <div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>            <span class="comment">// uint32_t digitizer = (*hit2)-&gt;Digitizer();</span></div>
 <div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>            fillhist =</div>
-<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>               <span class="keyword">dynamic_cast&lt;</span>TH1D*<span class="keyword">&gt;</span>(list-&gt;At((*hit2)-&gt;DigIndex())); <span class="comment">// This is where that pointer comes in handy</span></div>
+<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>               <span class="keyword">dynamic_cast&lt;</span>TH1D*<span class="keyword">&gt;</span>(list-&gt;At((*hit2)-&gt;DigIndex()));   <span class="comment">// This is where that pointer comes in handy</span></div>
 <div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>            int64_t time2 = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>((*hit2)-&gt;GetTimeStamp()) -</div>
-<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>               <a class="code hl_variable" href="class_t_event_time.html#ae0852e65f7a49adb91ccdc94021762db">TEventTime::correctionmap</a>.find((*hit2)-&gt;Digitizer())-&gt;second;</div>
+<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>                            <a class="code hl_variable" href="class_t_event_time.html#ae0852e65f7a49adb91ccdc94021762db">TEventTime::correctionmap</a>.find((*hit2)-&gt;Digitizer())-&gt;second;</div>
 <div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>            <span class="keywordflow">if</span>((time2 - time1 &lt; 2147483647) &amp;&amp;</div>
-<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>                  (time2 - time1 &gt; -2147483647)) { <span class="comment">// Make sure we are casting this to 32 bit properly</span></div>
+<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>               (time2 - time1 &gt; -2147483647)) {   <span class="comment">// Make sure we are casting this to 32 bit properly</span></div>
 <div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>               <span class="keyword">auto</span> bin = <span class="keyword">static_cast&lt;</span>Int_t<span class="keyword">&gt;</span>(time2 - time1);</div>
 <div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>               fillhist-&gt;Fill(bin);</div>
 <div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>            }</div>
@@ -675,7 +675,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>      <span class="keyword">auto</span>* spec = <span class="keyword">new</span> TSpectrum();</div>
 <div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>      spec-&gt;Search(fillhist);</div>
 <div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>      <span class="keywordtype">double</span> peak = spec-&gt;GetPositionX()[0];</div>
-<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>      std::cout&lt;&lt;static_cast&lt;int64_t&gt;(floor(peak + 0.5))&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>      std::cout &lt;&lt; static_cast&lt;int64_t&gt;(floor(peak + 0.5)) &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>      <a class="code hl_variable" href="class_t_event_time.html#ae0852e65f7a49adb91ccdc94021762db">TEventTime::correctionmap</a>.find(mapit-&gt;first)-&gt;second += <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(floor(peak + 0.5));</div>
 <div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>      <span class="comment">//     fillhist-&gt;Draw();</span></div>
 <div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>   }</div>
@@ -737,50 +737,50 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>      type  = value &amp; 0xf0000000;</div>
 <div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span> </div>
 <div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>      <span class="keywordflow">switch</span>(type) {</div>
-<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>         <span class="keywordflow">case</span> 0x80000000:</div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>            <span class="keywordflow">switch</span>(bank) {</div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>               <span class="keywordflow">case</span> 1: <span class="comment">// header format from before May 2015 experiments</span></div>
-<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>                  <span class="comment">// Sets:</span></div>
-<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>                  <span class="comment">//     The number of filters</span></div>
-<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>                  <span class="comment">//     The Data Type</span></div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>                  <span class="comment">//     Number of Pileups</span></div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>                  <span class="comment">//     Channel Address</span></div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>                  <span class="comment">//     Detector Type</span></div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>                  <span class="keywordflow">if</span>((value &amp; 0xf0000000) != 0x80000000) {</div>
-<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>                     <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>                  }</div>
-<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>                  chanadd = (value &amp; 0x0003fff0) &gt;&gt; 4;</div>
-<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>                  dettype = (value &amp; 0x0000000f);</div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>      <span class="keywordflow">case</span> 0x80000000:</div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>         <span class="keywordflow">switch</span>(bank) {</div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>         <span class="keywordflow">case</span> 1:   <span class="comment">// header format from before May 2015 experiments</span></div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>            <span class="comment">// Sets:</span></div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>            <span class="comment">//     The number of filters</span></div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>            <span class="comment">//     The Data Type</span></div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>            <span class="comment">//     Number of Pileups</span></div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>            <span class="comment">//     Channel Address</span></div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>            <span class="comment">//     Detector Type</span></div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>            <span class="keywordflow">if</span>((value &amp; 0xf0000000) != 0x80000000) {</div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>               <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>            }</div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>            chanadd = (value &amp; 0x0003fff0) &gt;&gt; 4;</div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>            dettype = (value &amp; 0x0000000f);</div>
 <div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span> </div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>                  <span class="comment">// if(frag-DetectorType==2)</span></div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>                  <span class="comment">//    frag-&gt;ChannelAddress += 0x8000;</span></div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>                  <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>               <span class="keywordflow">case</span> 2:</div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>                  <span class="comment">// Sets:</span></div>
-<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>                  <span class="comment">//     The number of filters</span></div>
-<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>                  <span class="comment">//     The Data Type</span></div>
-<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>                  <span class="comment">//     Number of Pileups</span></div>
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>                  <span class="comment">//     Channel Address</span></div>
-<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>                  <span class="comment">//     Detector Type</span></div>
-<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>                  <span class="keywordflow">if</span>((value &amp; 0xf0000000) != 0x80000000) {</div>
-<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>                     <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>                  }</div>
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>                  chanadd = (value &amp; 0x000ffff0) &gt;&gt; 4;</div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>                  dettype = (value &amp; 0x0000000f);</div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>            <span class="comment">// if(frag-DetectorType==2)</span></div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>            <span class="comment">//    frag-&gt;ChannelAddress += 0x8000;</span></div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>         <span class="keywordflow">case</span> 2:</div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>            <span class="comment">// Sets:</span></div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>            <span class="comment">//     The number of filters</span></div>
+<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>            <span class="comment">//     The Data Type</span></div>
+<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>            <span class="comment">//     Number of Pileups</span></div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>            <span class="comment">//     Channel Address</span></div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>            <span class="comment">//     Detector Type</span></div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>            <span class="keywordflow">if</span>((value &amp; 0xf0000000) != 0x80000000) {</div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>               <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>            }</div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>            chanadd = (value &amp; 0x000ffff0) &gt;&gt; 4;</div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>            dettype = (value &amp; 0x0000000f);</div>
 <div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span> </div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>                  <span class="comment">// if(frag-DetectorType==2)</span></div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>                  <span class="comment">//    frag-&gt;ChannelAddress += 0x8000;</span></div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>                  <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>               <span class="keywordflow">default</span>: printf(<span class="stringliteral">&quot;This bank not yet defined.\n&quot;</span>); <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>            };</div>
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>         <span class="keywordflow">case</span> 0xa0000000: timelow  = value &amp; 0x0fffffff; <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>         <span class="keywordflow">case</span> 0xb0000000: timehigh = value &amp; 0x00003fff; <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>            <span class="comment">// if(frag-DetectorType==2)</span></div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>            <span class="comment">//    frag-&gt;ChannelAddress += 0x8000;</span></div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>         <span class="keywordflow">default</span>: printf(<span class="stringliteral">&quot;This bank not yet defined.\n&quot;</span>); <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>         };</div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>         <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>      <span class="keywordflow">case</span> 0xa0000000: timelow = value &amp; 0x0fffffff; <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>      <span class="keywordflow">case</span> 0xb0000000: timehigh = value &amp; 0x00003fff; <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>      };</div>
 <div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>   }</div>
 <div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span> </div>
 <div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>   time = timehigh;</div>
-<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>   time = time&lt;&lt;28;</div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>   time = time &lt;&lt; 28;</div>
 <div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>   time |= timelow &amp; 0x0fffffff;</div>
 <div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span> </div>
 <div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>   <span class="comment">//   if((chanadd&amp;0x0000ff00) != TEventTime::GetBestDigitizer()){</span></div>
@@ -820,18 +820,18 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>      type  = value &amp; 0xf0000000;</div>
 <div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span> </div>
 <div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>      <span class="keywordflow">switch</span>(type) {</div>
-<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>         <span class="keywordflow">case</span> 0xa0000000:</div>
-<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>            timelow = time &amp; 0x0fffffff;</div>
-<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>            timelow += 0xa0000000;</div>
-<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>            *(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(ptr) + x) = timelow;</div>
-<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>         <span class="keywordflow">case</span> 0xb0000000: {</div>
-<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>                             timehigh     = (time &amp; 0x3fff0000000) &gt;&gt; 28;</div>
-<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>                             <span class="keywordtype">int</span> tempdead = value &amp; 0xffffc000;</div>
-<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>                             timehigh += tempdead;</div>
-<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span>                             *(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(ptr) + x) = timehigh;</div>
-<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span>                             <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span>                          }</div>
+<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>      <span class="keywordflow">case</span> 0xa0000000:</div>
+<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>         timelow = time &amp; 0x0fffffff;</div>
+<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>         timelow += 0xa0000000;</div>
+<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>         *(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(ptr) + x) = timelow;</div>
+<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>         <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>      <span class="keywordflow">case</span> 0xb0000000: {</div>
+<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>         timehigh     = (time &amp; 0x3fff0000000) &gt;&gt; 28;</div>
+<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>         <span class="keywordtype">int</span> tempdead = value &amp; 0xffffc000;</div>
+<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>         timehigh += tempdead;</div>
+<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span>         *(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(ptr) + x) = timehigh;</div>
+<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span>         <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span>      }</div>
 <div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>      };</div>
 <div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span> </div>
 <div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span>      <span class="comment">// printf( &quot;0x%08x &quot;,*((int*)ptr+x));</span></div>
@@ -850,7 +850,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 </div>
 <div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span> </div>
 <div class="foldopen" id="foldopen00726" data-start="{" data-end="}">
-<div class="line"><a id="l00726" name="l00726"></a><span class="lineno"><a class="line" href="offsetfix_8cxx.html#a2d0a388f9dd8d4e37d38dcd44f981446">  726</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="offsetfix_8cxx.html#a2d0a388f9dd8d4e37d38dcd44f981446">WriteEvents</a>(<a class="code hl_class" href="class_t_midas_file.html">TMidasFile</a> * file)</div>
+<div class="line"><a id="l00726" name="l00726"></a><span class="lineno"><a class="line" href="offsetfix_8cxx.html#a2d0a388f9dd8d4e37d38dcd44f981446">  726</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="offsetfix_8cxx.html#a2d0a388f9dd8d4e37d38dcd44f981446">WriteEvents</a>(<a class="code hl_class" href="class_t_midas_file.html">TMidasFile</a>* file)</div>
 <div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>{</div>
 <div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span> </div>
 <div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span>   std::ifstream in(file-&gt;<a class="code hl_function" href="class_t_raw_file.html#a37d73ab1087c2a9c8df0bc838010e688">GetFilename</a>(), std::ifstream::in | std::ifstream::binary);</div>
@@ -858,7 +858,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span>   int64_t filesize = in.tellg();</div>
 <div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>   in.close();</div>
 <div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span> </div>
-<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>   <span class="keywordtype">int</span>       bytes     = 0;</div>
+<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>   <span class="keywordtype">int</span>     bytes     = 0;</div>
 <div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>   int64_t bytesread = 0;</div>
 <div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span> </div>
 <div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>   UInt_t num_evt = 0;</div>
@@ -872,7 +872,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>      bytes = file-&gt;<a class="code hl_function" href="class_t_midas_file.html#a3f99d639a304553f6ff85d8aa7c7846a">Read</a>(event);</div>
 <div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span>      <span class="keywordflow">if</span>(bytes == 0) {</div>
 <div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span>         printf(<a class="code hl_define" href="_globals_8h.html#ae730fad7256d25796fff0f5daa94e52a">DMAGENTA</a> <span class="stringliteral">&quot;\tfile: %s ended on %s&quot;</span> <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a> <span class="stringliteral">&quot;\n&quot;</span>, file-&gt;<a class="code hl_function" href="class_t_raw_file.html#a37d73ab1087c2a9c8df0bc838010e688">GetFilename</a>(), file-&gt;<a class="code hl_function" href="class_t_midas_file.html#ab3cf23dc574a377f4657f161030c7351">GetLastError</a>());</div>
-<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span>         <span class="keywordflow">if</span>(file-&gt;<a class="code hl_function" href="class_t_midas_file.html#a55ffaa696f8a91a794aa2d4112b209af">GetLastErrno</a>() == -1) { <span class="comment">// try to read some more...</span></div>
+<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span>         <span class="keywordflow">if</span>(file-&gt;<a class="code hl_function" href="class_t_midas_file.html#a55ffaa696f8a91a794aa2d4112b209af">GetLastErrno</a>() == -1) {   <span class="comment">// try to read some more...</span></div>
 <div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span>            <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span>         }</div>
 <div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span>         <span class="keywordflow">break</span>;</div>
@@ -880,30 +880,30 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span>      bytesread += bytes;</div>
 <div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span> </div>
 <div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span>      <span class="keywordflow">switch</span>(event-&gt;GetEventId()) {</div>
-<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span>         <span class="keywordflow">case</span> 0x8000:</div>
-<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span>            printf(<span class="stringliteral">&quot;start of run\n&quot;</span>);</div>
-<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span>            file-&gt;<a class="code hl_function" href="class_t_midas_file.html#aa325a7962a9922ff3b4937cb0123ce68">FillBuffer</a>(event);</div>
-<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span>            printf(<a class="code hl_define" href="_globals_8h.html#a6d970e4c4769c52d19f321a08d531cf0">DGREEN</a>);</div>
-<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span>            <span class="keyword">event</span>-&gt;Print();</div>
-<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span>            printf(<a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>);</div>
-<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span>         <span class="keywordflow">case</span> 0x8001:</div>
-<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span>            printf(<span class="stringliteral">&quot;end of run\n&quot;</span>);</div>
-<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span>            printf(<a class="code hl_define" href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a>);</div>
-<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>            <span class="keyword">event</span>-&gt;Print();</div>
-<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>            printf(<a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>);</div>
-<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>            file-&gt;<a class="code hl_function" href="class_t_midas_file.html#aa325a7962a9922ff3b4937cb0123ce68">FillBuffer</a>(event);</div>
-<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>         <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>            num_evt++;</div>
-<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>            <a class="code hl_function" href="offsetfix_8cxx.html#a59f4264c484f3737896216492095efbe">ProcessEvent</a>(event, file);</div>
-<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span>      <span class="keywordflow">case</span> 0x8000:</div>
+<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span>         printf(<span class="stringliteral">&quot;start of run\n&quot;</span>);</div>
+<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span>         file-&gt;<a class="code hl_function" href="class_t_midas_file.html#aa325a7962a9922ff3b4937cb0123ce68">FillBuffer</a>(event);</div>
+<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span>         printf(<a class="code hl_define" href="_globals_8h.html#a6d970e4c4769c52d19f321a08d531cf0">DGREEN</a>);</div>
+<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span>         <span class="keyword">event</span>-&gt;Print();</div>
+<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span>         printf(<a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>);</div>
+<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span>         <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span>      <span class="keywordflow">case</span> 0x8001:</div>
+<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span>         printf(<span class="stringliteral">&quot;end of run\n&quot;</span>);</div>
+<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span>         printf(<a class="code hl_define" href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a>);</div>
+<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>         <span class="keyword">event</span>-&gt;Print();</div>
+<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>         printf(<a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>);</div>
+<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>         file-&gt;<a class="code hl_function" href="class_t_midas_file.html#aa325a7962a9922ff3b4937cb0123ce68">FillBuffer</a>(event);</div>
+<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>         <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>      <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>         num_evt++;</div>
+<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>         <a class="code hl_function" href="offsetfix_8cxx.html#a59f4264c484f3737896216492095efbe">ProcessEvent</a>(event, file);</div>
+<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>         <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>      };</div>
 <div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>      <span class="keywordflow">if</span>(num_evt % 5000 == 0) {</div>
 <div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>         gSystem-&gt;ProcessEvents();</div>
 <div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>         std::streamsize precision = std::cout.precision();</div>
 <div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>         std::cout.precision(2);</div>
-<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>         std::cout&lt;&lt;<a class="code hl_define" href="_globals_8h.html#ad40305115a1eba76faa49995740aec80">HIDE_CURSOR</a>&lt;&lt;<span class="stringliteral">&quot; Events &quot;</span>&lt;&lt;num_evt&lt;&lt;<span class="stringliteral">&quot; have processed &quot;</span>&lt;&lt;<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(bytesread)/1000000.&lt;&lt;<span class="stringliteral">&quot;MB/&quot;</span>&lt;&lt;<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(filesize)/1000000.&lt;&lt;<span class="stringliteral">&quot; MB =&gt; &quot;</span>&lt;&lt;std::setprecision(1)&lt;&lt;<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(bytesread)/1000000/w.RealTime()&lt;&lt;<span class="stringliteral">&quot; MB/s              &quot;</span>&lt;&lt;<a class="code hl_define" href="_globals_8h.html#a09ec0b302bee7262f9959add53ccd0c4">SHOW_CURSOR</a>&lt;&lt;<span class="stringliteral">&quot;\r&quot;</span>;</div>
+<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>         std::cout &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad40305115a1eba76faa49995740aec80">HIDE_CURSOR</a> &lt;&lt; <span class="stringliteral">&quot; Events &quot;</span> &lt;&lt; num_evt &lt;&lt; <span class="stringliteral">&quot; have processed &quot;</span> &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(bytesread) / 1000000. &lt;&lt; <span class="stringliteral">&quot;MB/&quot;</span> &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(filesize) / 1000000. &lt;&lt; <span class="stringliteral">&quot; MB =&gt; &quot;</span> &lt;&lt; std::setprecision(1) &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(bytesread) / 1000000 / w.RealTime() &lt;&lt; <span class="stringliteral">&quot; MB/s              &quot;</span> &lt;&lt; <a class="code hl_define" href="_globals_8h.html#a09ec0b302bee7262f9959add53ccd0c4">SHOW_CURSOR</a> &lt;&lt; <span class="stringliteral">&quot;\r&quot;</span>;</div>
 <div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>         std::cout.precision(precision);</div>
 <div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>         w.Continue();</div>
 <div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>      }</div>
@@ -924,9 +924,9 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span> </div>
 <div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>   <span class="comment">// Just going to make a corrections map for now...it should be a map throughout....</span></div>
 <div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span> </div>
-<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>   uint32_t address = 0;</div>
+<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>   uint32_t address    = 0;</div>
 <div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span>   Long64_t correction = 0;</div>
-<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>   <span class="keyword">auto</span>*    t = <span class="keyword">new</span> TTree(<span class="stringliteral">&quot;correctiontree&quot;</span>, <span class="stringliteral">&quot;Tree with map&quot;</span>);</div>
+<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>   <span class="keyword">auto</span>*    t          = <span class="keyword">new</span> TTree(<span class="stringliteral">&quot;correctiontree&quot;</span>, <span class="stringliteral">&quot;Tree with map&quot;</span>);</div>
 <div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span>   t-&gt;Branch(<span class="stringliteral">&quot;address&quot;</span>, &amp;address);</div>
 <div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>   t-&gt;Branch(<span class="stringliteral">&quot;correction&quot;</span>, &amp;correction);</div>
 <div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span> </div>
@@ -961,8 +961,8 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span>   corrfile-&gt;GetObject(<span class="stringliteral">&quot;correctiontree&quot;</span>, t);</div>
 <div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span>   TBranch* baddress    = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span>   TBranch* bcorrection = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>   uint32_t address = 0;</div>
-<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>   Long64_t correction = 0;</div>
+<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>   uint32_t address     = 0;</div>
+<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>   Long64_t correction  = 0;</div>
 <div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>   t-&gt;SetBranchAddress(<span class="stringliteral">&quot;address&quot;</span>, &amp;address, &amp;baddress);</div>
 <div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>   t-&gt;SetBranchAddress(<span class="stringliteral">&quot;correction&quot;</span>, &amp;correction, &amp;bcorrection);</div>
 <div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span> </div>
@@ -1034,14 +1034,14 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span>      <span class="keyword">auto</span>* outfile = <span class="keyword">new</span> TFile(filename.data(), <span class="stringliteral">&quot;RECREATE&quot;</span>);</div>
 <div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span>      <span class="keyword">auto</span>* eventQ  = <span class="keyword">new</span> std::vector&lt;TEventTime*&gt;;</div>
 <div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span>      <a class="code hl_function" href="offsetfix_8cxx.html#a6869773656fb008aaf1a652b48331e4a">QueueEvents</a>(midfile, eventQ);</div>
-<div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span>      std::cout&lt;&lt;<span class="stringliteral">&quot;Number of Digitizers Found: &quot;</span>&lt;&lt;<a class="code hl_variable" href="class_t_event_time.html#a9af0f449435394ab1e2a29c5ad1f7e4d">TEventTime::digmap</a>.size()&lt;&lt;std::endl;</div>
+<div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Number of Digitizers Found: &quot;</span> &lt;&lt; <a class="code hl_variable" href="class_t_event_time.html#a9af0f449435394ab1e2a29c5ad1f7e4d">TEventTime::digmap</a>.size() &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span> </div>
 <div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span>      <a class="code hl_function" href="offsetfix_8cxx.html#ab5db3024159a4eb7a119541a3d9fd926">CheckHighTimeStamp</a>(eventQ);</div>
 <div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span>      <a class="code hl_function" href="offsetfix_8cxx.html#aafece4ee391ecc8480985c84b0c42ae0">GetRoughTimeDiff</a>(eventQ);</div>
 <div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span>      <a class="code hl_function" href="offsetfix_8cxx.html#ac11dc37f9ea494f5af7dfcb3a8717258">GetTimeDiff</a>(eventQ);</div>
 <div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span>      <a class="code hl_function" href="offsetfix_8cxx.html#a80f1a90df899429c8287d3fc4b0a8244">WriteCorrectionFile</a>(runnumber);</div>
 <div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span>      midfile-&gt;Close();</div>
-<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>      midfile-&gt;Open(argv[1]); <span class="comment">// This seems like the easiest way to reset the file....</span></div>
+<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>      midfile-&gt;Open(argv[1]);   <span class="comment">// This seems like the easiest way to reset the file....</span></div>
 <div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span>      outfile-&gt;Close();</div>
 <div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span>      <span class="keyword">delete</span> outfile;</div>
 <div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span>   }</div>
@@ -1108,17 +1108,17 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div class="ttc" id="aclass_t_g_r_s_i_data_parser_exception_html"><div class="ttname"><a href="class_t_g_r_s_i_data_parser_exception.html">TGRSIDataParserException</a></div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_data_parser_exception_8h_source.html#l00015">TGRSIDataParserException.h:15</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_data_parser_exception_html_ab9da576d597a1c75ec2dc7f64189ba53"><div class="ttname"><a href="class_t_g_r_s_i_data_parser_exception.html#ab9da576d597a1c75ec2dc7f64189ba53">TGRSIDataParserException::GetFailedWord</a></div><div class="ttdeci">int GetFailedWord() const</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_data_parser_exception_8h_source.html#l00026">TGRSIDataParserException.h:26</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_data_parser_html"><div class="ttname"><a href="class_t_g_r_s_i_data_parser.html">TGRSIDataParser</a></div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_data_parser_8h_source.html#l00044">TGRSIDataParser.h:44</a></div></div>
-<div class="ttc" id="aclass_t_g_r_s_i_data_parser_html_a5c7b0ecf100a5a5da3b02a68801a84f7"><div class="ttname"><a href="class_t_g_r_s_i_data_parser.html#a5c7b0ecf100a5a5da3b02a68801a84f7">TGRSIDataParser::GriffinDataToFragment</a></div><div class="ttdeci">int GriffinDataToFragment(uint32_t *data, int size, EBank bank, unsigned int midasSerialNumber=0, time_t midasTime=0)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_data_parser_8cxx_source.html#l00500">TGRSIDataParser.cxx:500</a></div></div>
+<div class="ttc" id="aclass_t_g_r_s_i_data_parser_html_a5c7b0ecf100a5a5da3b02a68801a84f7"><div class="ttname"><a href="class_t_g_r_s_i_data_parser.html#a5c7b0ecf100a5a5da3b02a68801a84f7">TGRSIDataParser::GriffinDataToFragment</a></div><div class="ttdeci">int GriffinDataToFragment(uint32_t *data, int size, EBank bank, unsigned int midasSerialNumber=0, time_t midasTime=0)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_data_parser_8cxx_source.html#l00502">TGRSIDataParser.cxx:502</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_data_parser_html_a7ad90896f4e7bd389a669216c18666faa73f1121f4520884497a1b3bc650a4a37"><div class="ttname"><a href="class_t_g_r_s_i_data_parser.html#a7ad90896f4e7bd389a669216c18666faa73f1121f4520884497a1b3bc650a4a37">TGRSIDataParser::EBank::kGRF2</a></div><div class="ttdeci">@ kGRF2</div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_options_html_a1a8edf1ec3d24de78be268e1a12492f7"><div class="ttname"><a href="class_t_g_r_s_i_options.html#a1a8edf1ec3d24de78be268e1a12492f7">TGRSIOptions::Get</a></div><div class="ttdeci">static TGRSIOptions * Get(int argc=0, char **argv=nullptr)</div><div class="ttdoc">Do not use!</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_options_8cxx_source.html#l00022">TGRSIOptions.cxx:22</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_options_html_ab651c3e8c0b70527295d3bf68a3e39ae"><div class="ttname"><a href="class_t_g_r_s_i_options.html#ab651c3e8c0b70527295d3bf68a3e39ae">TGRSIOptions::SuppressErrors</a></div><div class="ttdeci">bool SuppressErrors() const</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_options_8h_source.html#l00076">TGRSIOptions.h:76</a></div></div>
 <div class="ttc" id="aclass_t_midas_file_html"><div class="ttname"><a href="class_t_midas_file.html">TMidasFile</a></div><div class="ttdoc">Reader for MIDAS .mid files.</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8h_source.html#l00032">TMidasFile.h:32</a></div></div>
-<div class="ttc" id="aclass_t_midas_file_html_a2fb4418719324277c9a7b4f01e73c830"><div class="ttname"><a href="class_t_midas_file.html#a2fb4418719324277c9a7b4f01e73c830">TMidasFile::Open</a></div><div class="ttdeci">bool Open(const char *filename) override</div><div class="ttdoc">Open input file.</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8cxx_source.html#l00099">TMidasFile.cxx:99</a></div></div>
-<div class="ttc" id="aclass_t_midas_file_html_a3f99d639a304553f6ff85d8aa7c7846a"><div class="ttname"><a href="class_t_midas_file.html#a3f99d639a304553f6ff85d8aa7c7846a">TMidasFile::Read</a></div><div class="ttdeci">int Read(std::shared_ptr&lt; TRawEvent &gt; event) override</div><div class="ttdoc">Read one event from the file.</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8cxx_source.html#l00313">TMidasFile.cxx:313</a></div></div>
-<div class="ttc" id="aclass_t_midas_file_html_a488d45179a7bcf12d9e16dc4765aa176"><div class="ttname"><a href="class_t_midas_file.html#a488d45179a7bcf12d9e16dc4765aa176">TMidasFile::GetSubRunNumber</a></div><div class="ttdeci">int GetSubRunNumber() override</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8cxx_source.html#l00619">TMidasFile.cxx:619</a></div></div>
+<div class="ttc" id="aclass_t_midas_file_html_a2fb4418719324277c9a7b4f01e73c830"><div class="ttname"><a href="class_t_midas_file.html#a2fb4418719324277c9a7b4f01e73c830">TMidasFile::Open</a></div><div class="ttdeci">bool Open(const char *filename) override</div><div class="ttdoc">Open input file.</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8cxx_source.html#l00095">TMidasFile.cxx:95</a></div></div>
+<div class="ttc" id="aclass_t_midas_file_html_a3f99d639a304553f6ff85d8aa7c7846a"><div class="ttname"><a href="class_t_midas_file.html#a3f99d639a304553f6ff85d8aa7c7846a">TMidasFile::Read</a></div><div class="ttdeci">int Read(std::shared_ptr&lt; TRawEvent &gt; event) override</div><div class="ttdoc">Read one event from the file.</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8cxx_source.html#l00309">TMidasFile.cxx:309</a></div></div>
+<div class="ttc" id="aclass_t_midas_file_html_a488d45179a7bcf12d9e16dc4765aa176"><div class="ttname"><a href="class_t_midas_file.html#a488d45179a7bcf12d9e16dc4765aa176">TMidasFile::GetSubRunNumber</a></div><div class="ttdeci">int GetSubRunNumber() override</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8cxx_source.html#l00615">TMidasFile.cxx:615</a></div></div>
 <div class="ttc" id="aclass_t_midas_file_html_a55ffaa696f8a91a794aa2d4112b209af"><div class="ttname"><a href="class_t_midas_file.html#a55ffaa696f8a91a794aa2d4112b209af">TMidasFile::GetLastErrno</a></div><div class="ttdeci">int GetLastErrno() const</div><div class="ttdoc">Get error value for the last file error.</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8h_source.html#l00065">TMidasFile.h:65</a></div></div>
-<div class="ttc" id="aclass_t_midas_file_html_a8ae18740b150788f618ef47d5817bd4b"><div class="ttname"><a href="class_t_midas_file.html#a8ae18740b150788f618ef47d5817bd4b">TMidasFile::WriteBuffer</a></div><div class="ttdeci">bool WriteBuffer()</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8cxx_source.html#l00481">TMidasFile.cxx:481</a></div></div>
-<div class="ttc" id="aclass_t_midas_file_html_aa325a7962a9922ff3b4937cb0123ce68"><div class="ttname"><a href="class_t_midas_file.html#aa325a7962a9922ff3b4937cb0123ce68">TMidasFile::FillBuffer</a></div><div class="ttdeci">void FillBuffer(const std::shared_ptr&lt; TMidasEvent &gt; &amp;midasEvent, Option_t *opt=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8cxx_source.html#l00441">TMidasFile.cxx:441</a></div></div>
+<div class="ttc" id="aclass_t_midas_file_html_a8ae18740b150788f618ef47d5817bd4b"><div class="ttname"><a href="class_t_midas_file.html#a8ae18740b150788f618ef47d5817bd4b">TMidasFile::WriteBuffer</a></div><div class="ttdeci">bool WriteBuffer()</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8cxx_source.html#l00477">TMidasFile.cxx:477</a></div></div>
+<div class="ttc" id="aclass_t_midas_file_html_aa325a7962a9922ff3b4937cb0123ce68"><div class="ttname"><a href="class_t_midas_file.html#aa325a7962a9922ff3b4937cb0123ce68">TMidasFile::FillBuffer</a></div><div class="ttdeci">void FillBuffer(const std::shared_ptr&lt; TMidasEvent &gt; &amp;midasEvent, Option_t *opt=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8cxx_source.html#l00437">TMidasFile.cxx:437</a></div></div>
 <div class="ttc" id="aclass_t_midas_file_html_ab3cf23dc574a377f4657f161030c7351"><div class="ttname"><a href="class_t_midas_file.html#ab3cf23dc574a377f4657f161030c7351">TMidasFile::GetLastError</a></div><div class="ttdeci">const char * GetLastError() const</div><div class="ttdoc">Get error text for the last file error.</div><div class="ttdef"><b>Definition</b> <a href="_t_midas_file_8h_source.html#l00066">TMidasFile.h:66</a></div></div>
 <div class="ttc" id="aclass_t_raw_file_html_a37d73ab1087c2a9c8df0bc838010e688"><div class="ttname"><a href="class_t_raw_file.html#a37d73ab1087c2a9c8df0bc838010e688">TRawFile::GetFilename</a></div><div class="ttdeci">virtual const char * GetFilename() const</div><div class="ttdoc">Get the name of this file.</div><div class="ttdef"><b>Definition</b> <a href="_t_raw_file_8h_source.html#l00056">TRawFile.h:56</a></div></div>
 <div class="ttc" id="aoffsetfix_8cxx_html_a2d0a388f9dd8d4e37d38dcd44f981446"><div class="ttname"><a href="offsetfix_8cxx.html#a2d0a388f9dd8d4e37d38dcd44f981446">WriteEvents</a></div><div class="ttdeci">void WriteEvents(TMidasFile *file)</div><div class="ttdef"><b>Definition</b> <a href="offsetfix_8cxx_source.html#l00726">offsetfix.cxx:726</a></div></div>
@@ -1139,7 +1139,7 @@ $(document).ready(function(){initNavTree('offsetfix_8cxx_source.html',''); initR
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_8965781c9f424dd985c8251b0fe5e6e9.html">util</a></li><li class="navelem"><a class="el" href="offsetfix_8cxx.html">offsetfix.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Sep 9 2024 16:24:38.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Sep 11 2024 15:16:53.</li>
   </ul>
 </div>
 </body>

@@ -1,7 +1,5 @@
 var NAVTREEINDEX6 =
 {
-"_t_tdr_data_parser_exception_8h_source.html":[10,0,8,0,4],
-"_t_tdr_detector_information_8cxx.html":[10,0,8,1,3,1],
 "_t_tdr_detector_information_8cxx_source.html":[10,0,8,1,3,1],
 "_t_tdr_detector_information_8h.html":[10,0,8,0,5],
 "_t_tdr_detector_information_8h_source.html":[10,0,8,0,5],
@@ -249,5 +247,7 @@ var NAVTREEINDEX6 =
 "class_alphanumeric_selector.html#a399ba322e2eef95dfcc3f2d21d27fbac":[9,0,4,27],
 "class_alphanumeric_selector.html#a3ee3614749d1369487299802d7e18364":[9,0,4,3],
 "class_alphanumeric_selector.html#a4df6c5b7c9f1cd15756e4df594b29098":[9,0,4,21],
-"class_alphanumeric_selector.html#a4ede910b47837cd5cdc611154973b5a5":[9,0,4,19]
+"class_alphanumeric_selector.html#a4ede910b47837cd5cdc611154973b5a5":[9,0,4,19],
+"class_alphanumeric_selector.html#a504e2b821c2f5629263a37d659427d5b":[9,0,4,0],
+"class_alphanumeric_selector.html#a5d4c3f5aef64c23330e2f80b017d9e42":[9,0,4,23]
 };

@@ -31,7 +31,7 @@ var class_t_sceptar_hit =
     [ "TSceptarHit", "class_t_sceptar_hit.html#a979367aaa54198d8c03ed0e439616eb6", null ],
     [ "TSceptarHit", "class_t_sceptar_hit.html#a4b6ac96f652a80ea6e26b2ef1d1c5b74", null ],
     [ "TSceptarHit", "class_t_sceptar_hit.html#a7b468136960864406b0f52011c179ada", null ],
-    [ "~TSceptarHit", "class_t_sceptar_hit.html#a8840a2fb95761fd7b180c1f64f6b9685", null ],
+    [ "~TSceptarHit", "class_t_sceptar_hit.html#a330e6eee0975a1826bd103033b022b6a", null ],
     [ "Add", "class_t_sceptar_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6", null ],
     [ "AddWaveformSample", "class_t_sceptar_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],
     [ "AnalyzeWaveform", "class_t_sceptar_hit.html#aec0aa2d42cf289b576501b56a179f56d", null ],

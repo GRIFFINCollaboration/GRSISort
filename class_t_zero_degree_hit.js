@@ -31,7 +31,7 @@ var class_t_zero_degree_hit =
     [ "TZeroDegreeHit", "class_t_zero_degree_hit.html#abbccc33a6477765c9c65da17d285337e", null ],
     [ "TZeroDegreeHit", "class_t_zero_degree_hit.html#a2b868de03fafb70995b32563872d1855", null ],
     [ "TZeroDegreeHit", "class_t_zero_degree_hit.html#af5d727f1721577773378f61152d6d716", null ],
-    [ "~TZeroDegreeHit", "class_t_zero_degree_hit.html#ab83bf0a467bd2b1f250443e5731f328a", null ],
+    [ "~TZeroDegreeHit", "class_t_zero_degree_hit.html#a726821b8669cd3623133fcc2191933fc", null ],
     [ "Add", "class_t_zero_degree_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6", null ],
     [ "AddWaveformSample", "class_t_zero_degree_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],
     [ "AnalyzeWaveform", "class_t_zero_degree_hit.html#a3c539c6a049c592ba9c96bd06c146d90", null ],

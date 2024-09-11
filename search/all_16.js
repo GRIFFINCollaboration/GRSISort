@@ -121,7 +121,7 @@ var searchData=
   ['root_5fdata_118',['ROOT_DATA',['../_t_g_r_s_i_types_8h.html#aa52857f83d8b7cda6be7f0bec0f45229ad5e22f59fa34ccd8c676c3e437e9e8f2',1,'TGRSITypes.h']]],
   ['root_5fmacro_119',['ROOT_MACRO',['../_t_g_r_s_i_types_8h.html#aa52857f83d8b7cda6be7f0bec0f45229acf9be2fd52b64052747007efa784c55b',1,'TGRSITypes.h']]],
   ['rootinputfiles_120',['RootInputFiles',['../class_t_g_r_s_i_options.html#a00750bb13f8c60eb84e83fe293d35d34',1,'TGRSIOptions']]],
-  ['rounding_121',['Rounding',['../class_t_griffin_angles.html#a83d84e422b5e0be2f53348a7db7c94a1',1,'TGriffinAngles']]],
+  ['rounding_121',['rounding',['../class_t_griffin_angles.html#a05c242e672cfa012d96152cf5f17c931',1,'TGriffinAngles::Rounding(const double &amp;val)'],['../class_t_griffin_angles.html#ae3fdb9e2eee86a51c0b0b63385a47ccd',1,'TGriffinAngles::Rounding()']]],
   ['run_122',['run',['../class_t_g_r_s_i_frame.html#a6122e69943c9da570d5bd823746a604a',1,'TGRSIFrame::Run()'],['../classpygui_1_1mainwindow_1_1_main_window.html#aafa6087c9dc7a94acf1df2a18b8b5af8',1,'pygui.mainwindow.MainWindow.Run()']]],
   ['run_5fcommand_123',['run_command',['../namespacepygui_1_1run__command.html#ac0b9ab5a4e10c88d3497719f93ea59f4',1,'pygui::run_command']]],
   ['run_5fcommand_2epy_124',['run_command.py',['../run__command_8py.html',1,'']]],

@@ -13,7 +13,7 @@ var class_t_si_li =
     [ "TSiLi", "class_t_si_li.html#a7ac8a4e034720f59beb8071ce047a817", null ],
     [ "TSiLi", "class_t_si_li.html#a726b9ee70f66c1666ed2ed1c109922d7", null ],
     [ "TSiLi", "class_t_si_li.html#af9b5af8b5aa51a5a4e56ff2b41e80801", null ],
-    [ "~TSiLi", "class_t_si_li.html#a3d1c0855cf2552b913960906b42507ab", null ],
+    [ "~TSiLi", "class_t_si_li.html#a537c117bcd6818dca8c7a2c73a53597d", null ],
     [ "AddCluster", "class_t_si_li.html#a6e6ffdbfbf60c066344919396fd289f4", null ],
     [ "AddFragment", "class_t_si_li.html#a6e858f9d5548b25d3b24053680168f9f", null ],
     [ "AddHit", "class_t_si_li.html#af83ad943618a30f7d1639675e18fc5b8", null ],

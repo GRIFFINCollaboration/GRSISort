@@ -19,7 +19,7 @@ var class_t_s3 =
     [ "TS3", "class_t_s3.html#aa791b919711a390484e1c7433790be93", null ],
     [ "TS3", "class_t_s3.html#a11ec730ddef5a2c28c4d809d28cdf3e1", null ],
     [ "TS3", "class_t_s3.html#a581bbeb20e09b64ffabe2e1008c68cd7", null ],
-    [ "~TS3", "class_t_s3.html#a9409a5d8557b8ee5f5dd09550812cdb7", null ],
+    [ "~TS3", "class_t_s3.html#a4bf9bcfe716fc148ca38b8460962fc69", null ],
     [ "AddFragment", "class_t_s3.html#abdabfe1c8cf4e98d62e35bb039338e4a", null ],
     [ "AddHit", "class_t_s3.html#af83ad943618a30f7d1639675e18fc5b8", null ],
     [ "BuildHits", "class_t_s3.html#af91437feeb5bb6817aab9a697418eb31", null ],

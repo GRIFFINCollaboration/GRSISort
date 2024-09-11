@@ -35,7 +35,7 @@ var class_t_si_li_hit =
     [ "TSiLiHit", "class_t_si_li_hit.html#a2edc00267a235bc6004030aa1be583e9", null ],
     [ "TSiLiHit", "class_t_si_li_hit.html#a4d084df1590fdf0e680040e358f4d8ef", null ],
     [ "TSiLiHit", "class_t_si_li_hit.html#ac4655e1680e5bddc82ac5585ad59a326", null ],
-    [ "~TSiLiHit", "class_t_si_li_hit.html#ad20b1692666cd898911f056650ef7ce4", null ],
+    [ "~TSiLiHit", "class_t_si_li_hit.html#ace754a503256bb474d1d54ae27ee0fca", null ],
     [ "Add", "class_t_si_li_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6", null ],
     [ "AddWaveformSample", "class_t_si_li_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],
     [ "AppendTimeStamp", "class_t_si_li_hit.html#aeab285a914a74f67155972bb51841ecd", null ],

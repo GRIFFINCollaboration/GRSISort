@@ -29,7 +29,6 @@ var NAVTREEINDEX61 =
 "class_t_tip_hit.html#a8e84f6a505d936502a0096a749522094":[7,2,69,85],
 "class_t_tip_hit.html#a9303fc303e63b94a9ae28fbd4865a082":[7,2,69,37],
 "class_t_tip_hit.html#a97051bfa3581a486cfa5eca421161dac":[7,2,69,8],
-"class_t_tip_hit.html#a975604f14b314048daa8dd77297afe51":[7,2,69,6],
 "class_t_tip_hit.html#aa1954926fa95976703a0f7d486c490da":[7,2,69,13],
 "class_t_tip_hit.html#aa27361005fa8ab6d5acbd419e1a92a2d":[7,2,69,68],
 "class_t_tip_hit.html#aa3070f9cbb9772097705d5f4bfb29ec2":[7,2,69,98],
@@ -166,6 +165,7 @@ var NAVTREEINDEX61 =
 "class_t_tri_foil.html#a9d5c07abd73ec148fe0adbee0c7c1eec":[7,2,72,13],
 "class_t_tri_foil.html#a9edb04118ce566f0718ae85179953045":[7,2,72,14],
 "class_t_tri_foil.html#a9fb5bed513f435084094b92fb6a5b296":[7,2,72,11],
+"class_t_tri_foil.html#ab021a13560926ab55837b1a41edf66cb":[7,2,72,3],
 "class_t_tri_foil.html#ab07ca56e67c19281d9389608e98564ee":[7,2,72,23],
 "class_t_tri_foil.html#ab907981ce861ab147879469064748ae2":[7,2,72,18],
 "class_t_tri_foil.html#aba8582ed18352b37385184ca9bd16eac":[7,2,72,6],
@@ -174,7 +174,6 @@ var NAVTREEINDEX61 =
 "class_t_tri_foil.html#ac5a25bee6d5fff8d30f929f3aaceb2db":[7,2,72,12],
 "class_t_tri_foil.html#ac8ec5ea3d9970b097fed20b9e25ee121":[7,2,72,7],
 "class_t_tri_foil.html#acbf359f899b738719e19bb326e45c790":[7,2,72,17],
-"class_t_tri_foil.html#adcf3cbc6b5f00fbc53c0714786c6e185":[7,2,72,3],
 "class_t_tri_foil.html#af33d08829bb25c0cf3e66773b2bd51b1":[7,2,72,30],
 "class_t_tri_foil.html#af83ad943618a30f7d1639675e18fc5b8":[7,2,72,5],
 "class_t_trific.html":[7,2,70],
@@ -249,5 +248,6 @@ var NAVTREEINDEX61 =
 "class_t_trific_hit.html#a1b7038426ef30c3b9668a4d565d4654a":[7,2,71,40],
 "class_t_trific_hit.html#a1cb218ee8b90c78838a17041b1ffe46d":[7,2,71,3],
 "class_t_trific_hit.html#a1e7c8b23b7583c203811aa3a4bbb0131":[7,2,71,75],
-"class_t_trific_hit.html#a20f954f9a2a18f4a9145a48624bd031a":[7,2,71,19]
+"class_t_trific_hit.html#a20f954f9a2a18f4a9145a48624bd031a":[7,2,71,19],
+"class_t_trific_hit.html#a242b756d34c5283429d5973799602bb8":[7,2,71,57]
 };

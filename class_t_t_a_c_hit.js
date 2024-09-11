@@ -31,7 +31,7 @@ var class_t_t_a_c_hit =
     [ "TTACHit", "class_t_t_a_c_hit.html#a5b467d67392dca2806633cbbd0c42ad0", null ],
     [ "TTACHit", "class_t_t_a_c_hit.html#a4245fee8c64168200fe8c12e45900f11", null ],
     [ "TTACHit", "class_t_t_a_c_hit.html#a5d9460205198e030709e822198e3f6e0", null ],
-    [ "~TTACHit", "class_t_t_a_c_hit.html#a923159ba700f3f24156adeedab01c72d", null ],
+    [ "~TTACHit", "class_t_t_a_c_hit.html#af3198d7c9feee651cd803029b8e5cbe1", null ],
     [ "Add", "class_t_t_a_c_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6", null ],
     [ "AddWaveformSample", "class_t_t_a_c_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],
     [ "AppendTimeStamp", "class_t_t_a_c_hit.html#aeab285a914a74f67155972bb51841ecd", null ],

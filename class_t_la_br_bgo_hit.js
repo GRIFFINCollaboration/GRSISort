@@ -31,7 +31,7 @@ var class_t_la_br_bgo_hit =
     [ "TLaBrBgoHit", "class_t_la_br_bgo_hit.html#a7929f366a424723ae6e94d62aa809fae", null ],
     [ "TLaBrBgoHit", "class_t_la_br_bgo_hit.html#a5330a310003419ad66b002f8bac58804", null ],
     [ "TLaBrBgoHit", "class_t_la_br_bgo_hit.html#a434b088ba6b10027d1b4fcb0c3e9c167", null ],
-    [ "~TLaBrBgoHit", "class_t_la_br_bgo_hit.html#a894dd0a1d862db21621e6be2185da98a", null ],
+    [ "~TLaBrBgoHit", "class_t_la_br_bgo_hit.html#add3b51accdd8928805388e43d5c99602", null ],
     [ "Add", "class_t_la_br_bgo_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6", null ],
     [ "AddWaveformSample", "class_t_la_br_bgo_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],
     [ "AppendTimeStamp", "class_t_la_br_bgo_hit.html#aeab285a914a74f67155972bb51841ecd", null ],

@@ -31,7 +31,7 @@ var class_t_trific_hit =
     [ "TTrificHit", "class_t_trific_hit.html#a1cb218ee8b90c78838a17041b1ffe46d", null ],
     [ "TTrificHit", "class_t_trific_hit.html#a6d6ab4de6ff18a622992b5b4956af048", null ],
     [ "TTrificHit", "class_t_trific_hit.html#a7048374abeeea8ac5802e5f68f773368", null ],
-    [ "~TTrificHit", "class_t_trific_hit.html#a72a0f1afe0d9ec099c94ba9b6fc8e1de", null ],
+    [ "~TTrificHit", "class_t_trific_hit.html#ae0db3fd86494522d448156032e561ee4", null ],
     [ "Add", "class_t_trific_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6", null ],
     [ "AddWaveformSample", "class_t_trific_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],
     [ "AppendTimeStamp", "class_t_trific_hit.html#aeab285a914a74f67155972bb51841ecd", null ],

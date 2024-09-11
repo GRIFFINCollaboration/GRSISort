@@ -31,7 +31,7 @@ var class_t_paces_hit =
     [ "TPacesHit", "class_t_paces_hit.html#a8cfc884e6772d9f7c6a35a8fe2e0ceb6", null ],
     [ "TPacesHit", "class_t_paces_hit.html#ab446642deeedb628315053aa9eaab079", null ],
     [ "TPacesHit", "class_t_paces_hit.html#a4fee8ec9091e8fc9fffa08fb3b342d96", null ],
-    [ "~TPacesHit", "class_t_paces_hit.html#abc7425a9db654f7f3ba9d2cf330ebc4e", null ],
+    [ "~TPacesHit", "class_t_paces_hit.html#a1c12d6c2f01cf74aa9abbab3e6c895da", null ],
     [ "Add", "class_t_paces_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6", null ],
     [ "AddWaveformSample", "class_t_paces_hit.html#a97051bfa3581a486cfa5eca421161dac", null ],
     [ "AppendTimeStamp", "class_t_paces_hit.html#aeab285a914a74f67155972bb51841ecd", null ],
