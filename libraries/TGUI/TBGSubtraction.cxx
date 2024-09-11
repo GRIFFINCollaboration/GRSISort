@@ -424,7 +424,7 @@ void TBGSubtraction::UpdateBackground()
    // Draws function graphics in randomly chosen interval
    TCanvas* fCanvas = fProjectionCanvas->GetCanvas();
    fCanvas->cd();
-   fProjection->Draw();
+   fProjection->Draw("hist");
    DrawAllMarkers();
    if((fAutoUpdateCheckButton != nullptr) && fAutoUpdateCheckButton->IsDown()) {
       DoGateProjection();
