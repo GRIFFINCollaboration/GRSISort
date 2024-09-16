@@ -299,10 +299,13 @@ private:
 /// Example usage:
 /// ```
 /// ArgParser parser;
+/// int myOption = 0;
 /// parser.option("some-option s", &myOption, true).description("my cool option").default_value(42);
 /// parser.parse(argc, argv, true);
 /// ```
-/// to read the flag "--some-option" or "-s" into the integer variable myOption.
+/// This example reads the number after the flag "--some-option" or "-s"
+/// into the integer variable myOption. If no flag is provided, the default
+/// value of 42 is used.
 ///
 /// The 3rd argument in ArgParser::option and ArgParser::parse that are set
 /// to true here are the "firstPass" arguments which simply means we want
@@ -329,12 +332,12 @@ public:
 
    void parse(int argc, char** argv, bool firstPass)
    {
-      /// this version takes argc and argv, parses them, and sets only those
-      /// that have the matching firstPass flag set
-      /// this allows us to parse command line arguments in two stages, one
+      /// This version takes argc and argv, parses them, and sets only those
+      /// that have the matching firstPass flag set.
+      /// This allows us to parse command line arguments in two stages, one
       /// to get the normal options and file names (from which the run info
-      /// and analysis options are read), and a second stage where only the
-      /// run info and analysis option flags are parsed
+      /// and analysis options are read), and a second stage, where only the
+      /// run info and analysis option flags are parsed.
       bool double_dash_encountered = false;
 
       int iarg = 1;
