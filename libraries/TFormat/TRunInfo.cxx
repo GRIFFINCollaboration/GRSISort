@@ -95,6 +95,7 @@ void TRunInfo::Print(Option_t* opt) const
       str << "\t\tSubRunNumbers:      " << std::setw(3) << FirstSubRunNumber() << "-" << std::setw(3) << LastSubRunNumber() << std::endl;
    } else {
       str << "\t\tRunNumbers:         " << std::setw(5) << FirstRunNumber() << "-" << std::setw(5) << LastRunNumber() << std::endl;
+		str << "\t\tMissing runs:       " << ListOfMissingRuns() << std::endl;
    }
    str << std::setfill(' ');
    if(RunStart() != 0 && RunStop() != 0) {
@@ -398,6 +399,7 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
       return;
    }
    fRunList.push_back(newPair);
+   std::sort(fRunList.begin(), fRunList.end());
 
    if(verbose) { std::cout << "adding run " << runinfo->fRunNumber << ", sub run " << runinfo->fSubRunNumber << " to run " << fRunNumber << ", sub run " << fSubRunNumber << std::endl; }
    // add the run length together
@@ -516,17 +518,41 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
    }
 }
 
-void TRunInfo::PrintRunList()
+void TRunInfo::PrintRunList() const
 {
    if(fRunList.empty()) {
       std::cout << "No runs added to list of runs!" << std::endl;
       return;
    }
-   std::sort(fRunList.begin(), fRunList.end());
    std::cout << "Got " << fRunList.size() << " runs:" << std::endl;
    for(auto pair : fRunList) {
       std::cout << std::setw(5) << std::setfill('0') << pair.first << "_" << std::setw(3) << pair.second << std::setfill(' ') << std::endl;
    }
+}
+
+std::string TRunInfo::ListOfMissingRuns() const
+{
+	/// Outputs a comma separated list of all runs missing between fFirstRunNumber and fLastRunNumber.
+	/// If no runs are missing prints "none".
+	std::ostringstream result;
+
+	// loop over all runs between the first and the last one (we know that these two are included)
+	// and check if the first subrun is in the list of runs
+	for(int run = fFirstRunNumber+1; run < fLastRunNumber; ++run) {
+		if(std::find(fRunList.begin(), fRunList.end(), std::make_pair(run, 0)) == fRunList.end()) {
+			if(!result.str().empty()) {
+				result<<", ";
+			}
+			result<<std::setw(5)<<std::setfill('0')<<run;
+		}
+	}
+
+	// if we found no missing runs, we print "none"
+	if(result.str().empty()) {
+		return {"none"};
+	}
+
+	return result.str();
 }
 
 std::string TRunInfo::CreateLabel(bool quiet)

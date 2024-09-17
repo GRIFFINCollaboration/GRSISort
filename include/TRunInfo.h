@@ -184,12 +184,20 @@ public:
    static void RemoveBadCycle(int cycle);
    static bool IsBadCycle(int cycle);
 
-   void PrintRunList();
+   void PrintRunList() const;
+	std::string ListOfMissingRuns() const;
 
    static std::string CreateLabel(bool quiet = false);
 
    static void                  SetDetectorInformation(TDetectorInformation* inf) { Get()->fDetectorInformation = inf; }
    static TDetectorInformation* GetDetectorInformation() { return Get()->fDetectorInformation; }
+
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
+
+   static bool        WriteToRoot(TFile* fileptr = nullptr);
+   static bool        WriteInfoFile(const std::string& filename);
+   static std::string PrintToString(Option_t* opt = "");
 
 private:
    std::string                      fRunTitle;                ///< The title of the run
@@ -230,17 +238,9 @@ private:
 
    TDetectorInformation* fDetectorInformation{nullptr};   //!<! pointer to detector specific information (set by each parser library)
 
-public:
-   void Print(Option_t* opt = "") const override;
-   void Clear(Option_t* opt = "") override;
-
-   static bool        WriteToRoot(TFile* fileptr = nullptr);
-   static bool        WriteInfoFile(const std::string& filename);
-   static std::string PrintToString(Option_t* opt = "");
-
    /// \cond CLASSIMP
    ClassDefOverride(TRunInfo, 17)   // NOLINT(readability-else-after-return)
-                                    /// \endcond
+   /// \endcond
 };
 /*! @} */
 #endif
