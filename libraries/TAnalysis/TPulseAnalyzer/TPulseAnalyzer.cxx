@@ -1776,7 +1776,7 @@ TH1I* TPulseAnalyzer::GetWaveHist()
    }
    std::ostringstream name;
    name << "WaveformHist" << fNameIter;
-   ++fNameIter;   // Avoid naming conflicts with TNamed
+   ++fNameIter;                                                                      // Avoid naming conflicts with TNamed
    TH1I* h = new TH1I(name.str().c_str(), name.str().c_str(), cN, -0.5, cN - 0.5);   // midpoint should be the value, else time is off
    for(Int_t i = 0; i < cN; i++) {
       h->SetBinContent(i + 1, cWavebuffer[i]);

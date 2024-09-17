@@ -139,8 +139,8 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
    std::string parserLibraryPath = TGRSIOptions::Get()->ParserLibrary();
    // this should look something like $GRSISYS/<library name>/lib/lib<library name>.so
    // so we can simply take everything between "last '/' + 3" and "last '.'" to be the name?
-   std::string       parserLibraryName = parserLibraryPath.substr(parserLibraryPath.find_last_of('/') + 4, parserLibraryPath.find_last_of('.') - parserLibraryPath.find_last_of('/') - 4);
-   std::string       objectFile        = path.replace(dot, std::string::npos, ".o");
+   std::string        parserLibraryName = parserLibraryPath.substr(parserLibraryPath.find_last_of('/') + 4, parserLibraryPath.find_last_of('.') - parserLibraryPath.find_last_of('/') - 4);
+   std::string        objectFile        = path.replace(dot, std::string::npos, ".o");
    std::ostringstream command;
    command << "g++ -c -fPIC -g $(grsi-config --cflags --" << parserLibraryName << "-cflags) $(root-config --cflags) -I" << includePath;
 #ifdef OS_DARWIN
