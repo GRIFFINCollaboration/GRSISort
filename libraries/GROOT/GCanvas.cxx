@@ -873,6 +873,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, const UInt_t* keysym)
       edited = true;
       break;
    case kKey_o:
+   case kKey_u:
       for(auto* hist : hists) {
          hist->GetXaxis()->UnZoom();
          hist->GetYaxis()->UnZoom();
@@ -1347,6 +1348,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, const UInt_t* keysym)
       edited = true;
       break;
    case kKey_o:
+   case kKey_u:
       for(auto* hist : hists) {
          TH2* h = static_cast<TH2*>(hist);
          h->GetXaxis()->UnZoom();
