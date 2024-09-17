@@ -128,7 +128,7 @@ var searchData=
   ['ansicolortext_2epy_125',['AnsiColorText.py',['../_ansi_color_text_8py.html',1,'']]],
   ['anythreadrunning_126',['AnyThreadRunning',['../class_stoppable_thread.html#acf70f87914f2cb39f4f21cab300d220f',1,'StoppableThread']]],
   ['anythreadstatus_127',['AnyThreadStatus',['../class_stoppable_thread.html#a292c5e3a19062bcc3d2a3b598327c175',1,'StoppableThread']]],
-  ['append_128',['append',['../namespacegrsi.html#a7eef4710200f09420381ca5744ca30b1',1,'grsi::Append(std::stringstream &amp;stream, const T &amp;tail)'],['../namespacegrsi.html#ad1a687d11cda0ee9d37cd2e771bd405e',1,'grsi::Append(std::stringstream &amp;stream, const T &amp;head, const U &amp;... tail)']]],
+  ['append_128',['append',['../namespacegrsi.html#a60dc849f507cdfa934fe9fd40a640c3c',1,'grsi::Append(std::ostringstream &amp;stream, const T &amp;tail)'],['../namespacegrsi.html#ab4d555551318d9c3b1c7e4db09cf70a6',1,'grsi::Append(std::ostringstream &amp;stream, const T &amp;head, const U &amp;... tail)']]],
   ['appendchannel_129',['AppendChannel',['../class_t_channel.html#a93f93e9684c2932be2571adbc84fc36d',1,'TChannel']]],
   ['appendtimestamp_130',['AppendTimeStamp',['../class_t_detector_hit.html#aeab285a914a74f67155972bb51841ecd',1,'TDetectorHit']]],
   ['appendvalue_131',['AppendValue',['../class_g_value.html#a8dccbce79b895b2c02b8880d1bbf81c4',1,'GValue']]],

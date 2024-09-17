@@ -27,6 +27,7 @@ var class_t_griffin_angles =
     [ "fAngleCount", "class_t_griffin_angles.html#ad553b5453657c0194f1484865c24198c", null ],
     [ "fAngleMap", "class_t_griffin_angles.html#adcae16506d95a3772171a056e405a30a", null ],
     [ "fAngles", "class_t_griffin_angles.html#a02e15b4482f3ba041de933f7d2503284", null ],
+    [ "fCustomGrouping", "class_t_griffin_angles.html#a77fc9e6054dfef15b0ff1062b3a015f0", null ],
     [ "fDistance", "class_t_griffin_angles.html#a8d366296e0cda1592e5256139dec3835", null ],
     [ "fExcludedCrystals", "class_t_griffin_angles.html#ae168cff819e782c7ce3f4d74449d93f5", null ],
     [ "fExcludedDetectors", "class_t_griffin_angles.html#ada59f37eb0221d344d5d8d280a76f418", null ],

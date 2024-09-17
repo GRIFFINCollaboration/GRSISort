@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_helper_8cxx_source.html',''
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>   *(<a class="code hl_function" href="class_t_g_r_s_i_options.html#a6d15353910ce4daa1b750d43d0aca2e3">TGRSIOptions::AnalysisOptions</a>()) = *<span class="keyword">static_cast&lt;</span><a class="code hl_class" href="class_t_analysis_options.html">TAnalysisOptions</a>*<span class="keyword">&gt;</span>(input-&gt;FindObject(<span class="stringliteral">&quot;TAnalysisOptions&quot;</span>));</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>   <span class="comment">// check that we have a parser library</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>   <span class="keywordflow">if</span>(<a class="code hl_function" href="class_t_g_r_s_i_options.html#a1a8edf1ec3d24de78be268e1a12492f7">TGRSIOptions::Get</a>()-&gt;<a class="code hl_function" href="class_t_g_r_s_i_options.html#acc0b4f6f2c0d4725939997b1bde9e777">ParserLibrary</a>().empty()) {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>      std::stringstream str;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>      std::ostringstream str;</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>      str &lt;&lt; <a class="code hl_define" href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a> &lt;&lt; <span class="stringliteral">&quot;No parser library set!&quot;</span> &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>      <span class="keywordflow">throw</span> std::runtime_error(str.str());</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>   }</div>
@@ -333,7 +333,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_helper_8cxx_source.html',''
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>         TBufferFile buf(TBuffer::kWrite, 10000);</div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>         obj-&gt;IsA()-&gt;WriteBuffer(buf, obj);</div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>         <span class="keywordflow">if</span>(buf.Length() &gt; <a class="code hl_variable" href="class_t_g_r_s_i_helper.html#adba49a09a6ebe50ebb9b33e051c0a3c0">fSizeLimit</a>) {</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>            std::stringstream str;</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>            std::ostringstream str;</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>            str &lt;&lt; <a class="code hl_define" href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a> &lt;&lt; slot &lt;&lt; <span class="stringliteral">&quot;. slot: &quot;</span> &lt;&lt; obj-&gt;ClassName() &lt;&lt; <span class="stringliteral">&quot; &#39;&quot;</span> &lt;&lt; obj-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;&#39; too large to &quot;</span> &lt;&lt; usage &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; buf.Length() &lt;&lt; <span class="stringliteral">&quot; bytes = &quot;</span> &lt;&lt; buf.Length() / 1024. / 1024. / 1024. &lt;&lt; <span class="stringliteral">&quot; GB, removing it!&quot;</span> &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>            std::cout &lt;&lt; str.str();</div>
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>            <span class="comment">// we only remove it from the output list, not deleting the object itself</span></div>
@@ -384,7 +384,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_helper_8cxx_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_2b08b36851fcb6a7439555c8d93f536c.html">TFormat</a></li><li class="navelem"><a class="el" href="_t_g_r_s_i_helper_8cxx.html">TGRSIHelper.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Sep 11 2024 15:16:54.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Sep 17 2024 19:35:13.</li>
   </ul>
 </div>
 </body>

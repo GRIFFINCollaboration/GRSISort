@@ -137,7 +137,7 @@ $(document).ready(function(){initNavTree('class_g_canvas.html',''); initResizabl
 <li>M Toggle off marker mode.</li>
 <li>n Remove all markers / functions drawn on the histogram.</li>
 <li>N Remove all markers and the LAST function drawn on the histogram.</li>
-<li>o Unzoom the entire histogram.</li>
+<li>o/u Unzoom the entire histogram.</li>
 <li>p If the 1d hist was made using the global ProjectionX/ProjectionY; gating the original 2D matrix this histogram came from is possible by placing markers around the gate and pressing p. The gates spectra is immediately drawn.</li>
 <li>P Draws parent histogram???</li>
 <li>q If markers have been set, fit a <a class="el" href="class_g_peak.html">GPeak</a> between the last two markers on the first histogram (skewed gaus for gamma-rays with automatic bg).</li>
@@ -156,7 +156,7 @@ $(document).ready(function(){initNavTree('class_g_canvas.html',''); initResizabl
 <li>i Initialize a new cut.</li>
 <li>l/z Toggle z-axis from linear to logarithmic and vice versa.</li>
 <li>n Remove all markers / functions drawn on the histogram.</li>
-<li>o Unzoom the entire histogram.</li>
+<li>o/u Unzoom the entire histogram.</li>
 <li>P Get projections from this histogram and draw the first one if it exists.</li>
 <li>r Expand the y-axis between the last two markers.</li>
 <li>R Bring up the dialogue box to set the desired y-axis range.</li>
@@ -770,7 +770,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_user_fill_obj_8h_source.html#l00003">hist</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l00428">HandleMouseShiftPress()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00574">Process1DArrowKeyPress()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00705">Process1DKeyboardPress()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l01100">Process2DArrowKeyPress()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l01205">Process2DKeyboardPress()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l00428">HandleMouseShiftPress()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00574">Process1DArrowKeyPress()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00705">Process1DKeyboardPress()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l01101">Process2DArrowKeyPress()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l01206">Process2DKeyboardPress()</a>.</p>
 
 </div>
 </div>
@@ -861,7 +861,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_g_canvas_8h_source.html#l00275">fMarkers</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l00705">Process1DKeyboardPress()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l01205">Process2DKeyboardPress()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l00196">SetBackgroundMarkers()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l00705">Process1DKeyboardPress()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l01206">Process2DKeyboardPress()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l00196">SetBackgroundMarkers()</a>.</p>
 
 </div>
 </div>
@@ -893,7 +893,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_g_canvas_8cxx_source.html#l00353">353</a> of file <a class="el" href="_g_canvas_8cxx_source.html">GCanvas.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_canvas_8cxx_source.html#l00574">Process1DArrowKeyPress()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l01100">Process2DArrowKeyPress()</a>.</p>
+<p class="reference">References <a class="el" href="_g_canvas_8cxx_source.html#l00574">Process1DArrowKeyPress()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l01101">Process2DArrowKeyPress()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_g_root_canvas_8cxx_source.html#l01728">GRootCanvas::HandleContainerKey()</a>.</p>
 
@@ -967,7 +967,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_g_canvas_8cxx_source.html#l00368">368</a> of file <a class="el" href="_g_canvas_8cxx_source.html">GCanvas.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_canvas_8cxx_source.html#l00705">Process1DKeyboardPress()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l01205">Process2DKeyboardPress()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l00679">ProcessNonHistKeyboardPress()</a>.</p>
+<p class="reference">References <a class="el" href="_g_canvas_8cxx_source.html#l00705">Process1DKeyboardPress()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l01206">Process2DKeyboardPress()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l00679">ProcessNonHistKeyboardPress()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_g_root_canvas_8cxx_source.html#l01728">GRootCanvas::HandleContainerKey()</a>.</p>
 
@@ -1363,7 +1363,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_canvas_8cxx_source.html#l01094">1094</a> of file <a class="el" href="_g_canvas_8cxx_source.html">GCanvas.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_canvas_8cxx_source.html#l01095">1095</a> of file <a class="el" href="_g_canvas_8cxx_source.html">GCanvas.cxx</a>.</p>
 
 </div>
 </div>
@@ -1402,7 +1402,7 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Moves displayed 2D histograms by 50% of the visible range left, right, up, or down</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_canvas_8cxx_source.html#l01100">1100</a> of file <a class="el" href="_g_canvas_8cxx_source.html">GCanvas.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_canvas_8cxx_source.html#l01101">1101</a> of file <a class="el" href="_g_canvas_8cxx_source.html">GCanvas.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_g_canvas_8cxx_source.html#l00326">FindHists()</a>, <a class="el" href="_user_fill_obj_8h_source.html#l00003">hist</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00056">kMyArrowDown</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00053">kMyArrowLeft</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00055">kMyArrowRight</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l00054">kMyArrowUp</a>.</p>
 
@@ -1444,7 +1444,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_canvas_8cxx_source.html#l01205">1205</a> of file <a class="el" href="_g_canvas_8cxx_source.html">GCanvas.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_canvas_8cxx_source.html#l01206">1206</a> of file <a class="el" href="_g_canvas_8cxx_source.html">GCanvas.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_g_canvas_8h_source.html#l00279">fCutName</a>, <a class="el" href="_g_canvas_8h_source.html#l00278">fCuts</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00326">FindHists()</a>, <a class="el" href="_g_canvas_8h_source.html#l00275">fMarkers</a>, <a class="el" href="_g_h2_base_8cxx_source.html#l00244">GH2Base::GetNextSummary()</a>, <a class="el" href="_g_canvas_8h_source.html#l00259">GetNMarkers()</a>, <a class="el" href="_g_h2_base_8h_source.html#l00060">GH2Base::GetProjections()</a>, <a class="el" href="_user_fill_obj_8h_source.html#l00003">hist</a>, <a class="el" href="_g_h2_base_8h.html#acb2b033915f6659a71a38b5aa6e4eb42af051266d55262c52bdbbcf68f8b75c77">kXDirection</a>, <a class="el" href="_g_h2_base_8h.html#acb2b033915f6659a71a38b5aa6e4eb42a6a1cdbeb819c4308a256dec327920d4f">kYDirection</a>, <a class="el" href="_g_h2_d_8cxx_source.html#l00120">GH2D::ProjectionX()</a>, <a class="el" href="_g_h2_d_8cxx_source.html#l00125">GH2D::ProjectionY()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00155">RemoveMarker()</a>, <a class="el" href="_g_root_commands_8cxx_source.html#l00203">RemovePeaks()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_g_h2_base_8h_source.html#l00063">GH2Base::SetSummary()</a>, and <a class="el" href="_g_h2_base_8h_source.html#l00066">GH2Base::SetSummaryDirection()</a>.</p>
 
@@ -1492,7 +1492,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_canvas_8cxx_source.html#l01556">1556</a> of file <a class="el" href="_g_canvas_8cxx_source.html">GCanvas.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_canvas_8cxx_source.html#l01558">1558</a> of file <a class="el" href="_g_canvas_8cxx_source.html">GCanvas.cxx</a>.</p>
 
 </div>
 </div>
@@ -1595,7 +1595,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_g_canvas_8h_source.html#l00276">fBackgroundMarkers</a>, and <a class="el" href="_g_canvas_8h_source.html#l00275">fMarkers</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l00705">Process1DKeyboardPress()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l01205">Process2DKeyboardPress()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l00705">Process1DKeyboardPress()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l01206">Process2DKeyboardPress()</a>.</p>
 
 </div>
 </div>
@@ -1855,7 +1855,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_g_canvas_8h_source.html#l00279">279</a> of file <a class="el" href="_g_canvas_8h_source.html">GCanvas.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l00121">~GCanvas()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00127">GCanvasInit()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l01205">Process2DKeyboardPress()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l00121">~GCanvas()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00127">GCanvasInit()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l01206">Process2DKeyboardPress()</a>.</p>
 
 </div>
 </div>
@@ -1881,7 +1881,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_g_canvas_8h_source.html#l00278">278</a> of file <a class="el" href="_g_canvas_8h_source.html">GCanvas.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l01205">Process2DKeyboardPress()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l01206">Process2DKeyboardPress()</a>.</p>
 
 </div>
 </div>
@@ -2011,7 +2011,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_g_canvas_8h_source.html#l00275">275</a> of file <a class="el" href="_g_canvas_8h_source.html">GCanvas.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l00142">AddMarker()</a>, <a class="el" href="_g_canvas_8h_source.html#l00259">GetNMarkers()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00177">OrderMarkers()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00705">Process1DKeyboardPress()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l01205">Process2DKeyboardPress()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00182">RedrawMarkers()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00155">RemoveMarker()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l00196">SetBackgroundMarkers()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l00142">AddMarker()</a>, <a class="el" href="_g_canvas_8h_source.html#l00259">GetNMarkers()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00177">OrderMarkers()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00705">Process1DKeyboardPress()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l01206">Process2DKeyboardPress()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00182">RedrawMarkers()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00155">RemoveMarker()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l00196">SetBackgroundMarkers()</a>.</p>
 
 </div>
 </div>
@@ -2046,7 +2046,7 @@ Static Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_g_canvas.html">GCanvas</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Sep 11 2024 15:16:56.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Sep 17 2024 19:35:15.</li>
   </ul>
 </div>
 </body>

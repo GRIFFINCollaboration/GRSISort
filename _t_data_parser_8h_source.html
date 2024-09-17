@@ -172,7 +172,7 @@ $(document).ready(function(){initNavTree('_t_data_parser_8h_source.html',''); in
 <div class="foldopen" id="foldopen00065" data-start="{" data-end="}">
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="class_t_data_parser.html#a5bff16963b05e036fc3569ce4502e903">   65</a></span>   <span class="keyword">virtual</span> std::shared_ptr&lt;ThreadsafeQueue&lt;std::shared_ptr&lt;const TFragment&gt;&gt;&gt;&amp; <a class="code hl_function" href="class_t_data_parser.html#a5bff16963b05e036fc3569ce4502e903">AddGoodOutputQueue</a>(<span class="keywordtype">size_t</span> maxSize = 50000)</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>   {</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      std::stringstream name;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      std::ostringstream name;</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      name &lt;&lt; <span class="stringliteral">&quot;good_frag_queue_&quot;</span> &lt;&lt; <a class="code hl_variable" href="class_t_data_parser.html#ac09a169ef95b7bc7b80eeccaac285d5d">fGoodOutputQueues</a>.size();</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      <a class="code hl_variable" href="class_t_data_parser.html#ac09a169ef95b7bc7b80eeccaac285d5d">fGoodOutputQueues</a>.push_back(std::make_shared&lt;<a class="code hl_class" href="class_threadsafe_queue.html">ThreadsafeQueue</a>&lt;std::shared_ptr&lt;const TFragment&gt;&gt;&gt;(name.str(), maxSize));</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="class_t_data_parser.html#ac09a169ef95b7bc7b80eeccaac285d5d">fGoodOutputQueues</a>.back();</div>
@@ -349,7 +349,7 @@ $(document).ready(function(){initNavTree('_t_data_parser_8h_source.html',''); in
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_data_parser_8h.html">TDataParser.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Sep 11 2024 15:16:53.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Sep 17 2024 19:35:12.</li>
   </ul>
 </div>
 </body>

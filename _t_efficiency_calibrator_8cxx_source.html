@@ -956,9 +956,9 @@ $(document).ready(function(){initNavTree('_t_efficiency_calibrator_8cxx_source.h
 <div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span> </div>
 <div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>   <span class="comment">// quick sanity check, should have at least one vector the size of that vector should equal the source size and file size</span></div>
 <div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>   <span class="keywordflow">if</span>(fSources.size() != fFiles.size() || fHistograms[0].size() != fFiles.size() || fHistograms.size() != fDataType.size()) {</div>
-<div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>      std::stringstream str;</div>
-<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>      str &lt;&lt; <span class="stringliteral">&quot;Wrong sizes, from &quot;</span> &lt;&lt; fFiles.size() &lt;&lt; <span class="stringliteral">&quot; file(s) we got &quot;</span> &lt;&lt; fSources.size() &lt;&lt; <span class="stringliteral">&quot; source(s), and &quot;</span> &lt;&lt; fHistograms[0].size() &lt;&lt; <span class="stringliteral">&quot; histogram(s), &quot;</span> &lt;&lt; fDataType.size() &lt;&lt; <span class="stringliteral">&quot; data types, and &quot;</span> &lt;&lt; fHistograms.size() &lt;&lt; <span class="stringliteral">&quot; data type histogram(s)!&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>      <span class="keywordflow">throw</span> std::runtime_error(str.str());</div>
+<div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>      std::ostringstream error;</div>
+<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>      error &lt;&lt; <span class="stringliteral">&quot;Wrong sizes, from &quot;</span> &lt;&lt; fFiles.size() &lt;&lt; <span class="stringliteral">&quot; file(s) we got &quot;</span> &lt;&lt; fSources.size() &lt;&lt; <span class="stringliteral">&quot; source(s), and &quot;</span> &lt;&lt; fHistograms[0].size() &lt;&lt; <span class="stringliteral">&quot; histogram(s), &quot;</span> &lt;&lt; fDataType.size() &lt;&lt; <span class="stringliteral">&quot; data types, and &quot;</span> &lt;&lt; fHistograms.size() &lt;&lt; <span class="stringliteral">&quot; data type histogram(s)!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>      <span class="keywordflow">throw</span> std::runtime_error(error.str());</div>
 <div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span>   }</div>
 <div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span> </div>
 <div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>   fOutput = <span class="keyword">new</span> TFile(<span class="stringliteral">&quot;TEfficiencyCalibrator.root&quot;</span>, <span class="stringliteral">&quot;recreate&quot;</span>);</div>
@@ -1241,7 +1241,7 @@ $(document).ready(function(){initNavTree('_t_efficiency_calibrator_8cxx_source.h
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_4d17f409fb020449a7716dffae2b2761.html">TCal</a></li><li class="navelem"><a class="el" href="_t_efficiency_calibrator_8cxx.html">TEfficiencyCalibrator.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Sep 11 2024 15:16:54.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Sep 17 2024 19:35:13.</li>
   </ul>
 </div>
 </body>

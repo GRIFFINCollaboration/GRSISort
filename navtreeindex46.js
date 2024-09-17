@@ -1,5 +1,6 @@
 var NAVTREEINDEX46 =
 {
+"class_t_pin_diode_hit.html#ad722731c5fde16e444eccbc61a697dda":[7,2,39,20],
 "class_t_pin_diode_hit.html#ad7fb301833e90f4b36b7fa1be7fe1334":[7,2,39,76],
 "class_t_pin_diode_hit.html#ad7fc819e54332ab04928b3fc9aff599e":[7,2,39,26],
 "class_t_pin_diode_hit.html#ada323f08a38cd73186465ecb4f9b72eb":[7,2,39,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX46 =
 "class_t_r_w_peak.html#ab09b57847af52a357be8a4139aee8dce":[7,3,21,35],
 "class_t_r_w_peak.html#abc3749ecd7527fc94011164b291dcda6":[7,3,21,27],
 "class_t_r_w_peak.html#abc468b34349d6fcbd4fe5b1a65db0c83":[7,3,21,8],
-"class_t_r_w_peak.html#ac79fecdaab0b676726fb9f742917453e":[7,3,21,34],
-"class_t_r_w_peak.html#ac90deb5e4ee8cf1d0a000bf887c333b9":[7,3,21,37]
+"class_t_r_w_peak.html#ac79fecdaab0b676726fb9f742917453e":[7,3,21,34]
 };

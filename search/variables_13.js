@@ -16,7 +16,7 @@ var searchData=
   ['t90_5fflag_13',['t90_flag',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a03cbdb9e949dfe0bc479149938a72fd0',1,'TPulseAnalyzer::WaveFormPar']]],
   ['tag_14',['tag',['../classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#a317ec7dd6c24e17ef2b86c0e5b8e1020',1,'pygui::AnsiColorText::AnsiColorText']]],
   ['taudecay_15',['taudecay',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#acb5477d7ed831fd968b9c1ea19cfa5c7',1,'TPulseAnalyzer::WaveFormPar::tauDecay'],['../struct_t_channel_1_1_wave_form_shape_par.html#aafb5c8f6af4a22795a2c32fc2e9bf0ea',1,'TChannel::WaveFormShapePar::TauDecay']]],
-  ['taurise_16',['taurise',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a9ae22b12e6eb51b07d2cf29cbf6b2e17',1,'TPulseAnalyzer::WaveFormPar::tauRise'],['../struct_t_channel_1_1_wave_form_shape_par.html#a4d8e9bb8d59c478d35f4598eee348f78',1,'TChannel::WaveFormShapePar::TauRise']]],
+  ['taurise_16',['taurise',['../struct_t_channel_1_1_wave_form_shape_par.html#a4d8e9bb8d59c478d35f4598eee348f78',1,'TChannel::WaveFormShapePar::TauRise'],['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a9ae22b12e6eb51b07d2cf29cbf6b2e17',1,'TPulseAnalyzer::WaveFormPar::tauRise']]],
   ['tcut_5ftab_17',['tcut_tab',['../classpygui_1_1mainwindow_1_1_main_window.html#a9078b8875c31b876e2777a28e8ad9592',1,'pygui::mainwindow::MainWindow']]],
   ['teflag_18',['teflag',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a1cd959881470a59223e5c8515b57a8a5',1,'TPulseAnalyzer::WaveFormPar']]],
   ['temax_19',['temax',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a637d71085eb9aee1429ebcf41184f6ac',1,'TPulseAnalyzer::WaveFormPar']]],

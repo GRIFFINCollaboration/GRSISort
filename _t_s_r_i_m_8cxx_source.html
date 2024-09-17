@@ -162,11 +162,11 @@ $(document).ready(function(){initNavTree('_t_s_r_i_m_8cxx_source.html',''); init
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <span class="keywordflow">if</span>(line.length() == 0u) {</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>         <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      }</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      std::stringstream linestream(line);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      std::istringstream linestream(line);</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      number_input.clear();</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      string_input.clear();</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      <span class="keywordflow">while</span>(!(linestream &gt;&gt; word).fail()) {</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>         std::stringstream str(word);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>         std::istringstream str(word);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>         <span class="keywordflow">if</span>(!(str &gt;&gt; temp).fail()) {   <span class="comment">// if it&#39;s a number</span></div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>            number_input.push_back(temp);</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>         } <span class="keywordflow">else</span> {</div>
@@ -376,7 +376,7 @@ $(document).ready(function(){initNavTree('_t_s_r_i_m_8cxx_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_b8a6b11093ec7fc73cd5fa39ac4363df.html">TSRIM</a></li><li class="navelem"><a class="el" href="_t_s_r_i_m_8cxx.html">TSRIM.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Sep 11 2024 15:16:54.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Sep 17 2024 19:35:13.</li>
   </ul>
 </div>
 </body>

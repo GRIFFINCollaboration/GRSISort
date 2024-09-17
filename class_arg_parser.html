@@ -106,15 +106,16 @@ $(document).ready(function(){initNavTree('class_arg_parser.html',''); initResiza
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class is used to parse the command line arguments.</p>
 <p>Example usage: </p><div class="fragment"><div class="line"><a class="code hl_class" href="class_arg_parser.html">ArgParser</a> parser;</div>
+<div class="line"><span class="keywordtype">int</span> myOption = 0;</div>
 <div class="line">parser.<a class="code hl_function" href="class_arg_parser.html#a7db5560f2a6cd1a4f89970449b556b29">option</a>(<span class="stringliteral">&quot;some-option s&quot;</span>, &amp;myOption, <span class="keyword">true</span>).description(<span class="stringliteral">&quot;my cool option&quot;</span>).default_value(42);</div>
 <div class="line">parser.<a class="code hl_function" href="class_arg_parser.html#a4582615b15fbeb7e070d4cef74a78515">parse</a>(argc, argv, <span class="keyword">true</span>);</div>
-<div class="ttc" id="aclass_arg_parser_html"><div class="ttname"><a href="class_arg_parser.html">ArgParser</a></div><div class="ttdef"><b>Definition</b> <a href="_arg_parser_8h_source.html#l00314">ArgParser.h:314</a></div></div>
-<div class="ttc" id="aclass_arg_parser_html_a4582615b15fbeb7e070d4cef74a78515"><div class="ttname"><a href="class_arg_parser.html#a4582615b15fbeb7e070d4cef74a78515">ArgParser::parse</a></div><div class="ttdeci">void parse(int argc, char **argv, bool firstPass)</div><div class="ttdef"><b>Definition</b> <a href="_arg_parser_8h_source.html#l00330">ArgParser.h:330</a></div></div>
-<div class="ttc" id="aclass_arg_parser_html_a7db5560f2a6cd1a4f89970449b556b29"><div class="ttname"><a href="class_arg_parser.html#a7db5560f2a6cd1a4f89970449b556b29">ArgParser::option</a></div><div class="ttdeci">ArgParseConfigT&lt; T &gt; &amp; option(const std::string flag, T *output_location, bool firstPass)</div><div class="ttdef"><b>Definition</b> <a href="_arg_parser_8h_source.html#l00409">ArgParser.h:409</a></div></div>
-</div><!-- fragment --><p> to read the flag "--some-option" or "-s" into the integer variable myOption.</p>
+<div class="ttc" id="aclass_arg_parser_html"><div class="ttname"><a href="class_arg_parser.html">ArgParser</a></div><div class="ttdef"><b>Definition</b> <a href="_arg_parser_8h_source.html#l00317">ArgParser.h:317</a></div></div>
+<div class="ttc" id="aclass_arg_parser_html_a4582615b15fbeb7e070d4cef74a78515"><div class="ttname"><a href="class_arg_parser.html#a4582615b15fbeb7e070d4cef74a78515">ArgParser::parse</a></div><div class="ttdeci">void parse(int argc, char **argv, bool firstPass)</div><div class="ttdef"><b>Definition</b> <a href="_arg_parser_8h_source.html#l00333">ArgParser.h:333</a></div></div>
+<div class="ttc" id="aclass_arg_parser_html_a7db5560f2a6cd1a4f89970449b556b29"><div class="ttname"><a href="class_arg_parser.html#a7db5560f2a6cd1a4f89970449b556b29">ArgParser::option</a></div><div class="ttdeci">ArgParseConfigT&lt; T &gt; &amp; option(const std::string flag, T *output_location, bool firstPass)</div><div class="ttdef"><b>Definition</b> <a href="_arg_parser_8h_source.html#l00412">ArgParser.h:412</a></div></div>
+</div><!-- fragment --><p> This example reads the number after the flag "--some-option" or "-s" into the integer variable myOption. If no flag is provided, the default value of 42 is used.</p>
 <p>The 3rd argument in <a class="el" href="class_arg_parser.html#a7db5560f2a6cd1a4f89970449b556b29">ArgParser::option</a> and <a class="el" href="class_arg_parser.html#a4582615b15fbeb7e070d4cef74a78515">ArgParser::parse</a> that are set to true here are the "firstPass" arguments which simply means we want to read these options right away instead of reading something from an input file and only then parse the command line arguments. </p>
 
-<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00314">314</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00317">317</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -272,9 +273,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00323">323</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00326">326</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00537">values</a>.</p>
+<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00540">values</a>.</p>
 
 </div>
 </div>
@@ -327,9 +328,9 @@ Private Attributes</h2></td></tr>
 
 <p>Reads arguments into a list until finding one that begins with '-'. </p>
 
-<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00502">502</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00505">505</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_arg_parser_8h_source.html#l00443">handle_long_flag()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00467">handle_short_flag()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_arg_parser_8h_source.html#l00446">handle_long_flag()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00470">handle_short_flag()</a>.</p>
 
 </div>
 </div>
@@ -369,9 +370,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00417">417</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00420">420</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00409">option()</a>.</p>
+<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00412">option()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00201">TGRSIOptions::Load()</a>.</p>
 
@@ -401,11 +402,11 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00520">520</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00523">523</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00537">values</a>.</p>
+<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00540">values</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_arg_parser_8h_source.html#l00492">handle_default_option()</a>, <a class="el" href="_arg_parser_8h_source.html#l00443">handle_long_flag()</a>, <a class="el" href="_arg_parser_8h_source.html#l00467">handle_short_flag()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00362">parse_file()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_arg_parser_8h_source.html#l00495">handle_default_option()</a>, <a class="el" href="_arg_parser_8h_source.html#l00446">handle_long_flag()</a>, <a class="el" href="_arg_parser_8h_source.html#l00470">handle_short_flag()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00365">parse_file()</a>.</p>
 
 </div>
 </div>
@@ -455,11 +456,11 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00492">492</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00495">495</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00520">get_item()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00038">ArgParseItem::parse()</a>.</p>
+<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00523">get_item()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00038">ArgParseItem::parse()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_arg_parser_8h_source.html#l00330">parse()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_arg_parser_8h_source.html#l00333">parse()</a>.</p>
 
 </div>
 </div>
@@ -509,11 +510,11 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00443">443</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00446">446</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00502">argument_list()</a>, <a class="el" href="_arg_parser_8h_source.html#l00520">get_item()</a>, <a class="el" href="class_arg_parse_item.html#aefe228cd28f2e66a01bcc4d376309d1f">ArgParseItem::num_arguments()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00038">ArgParseItem::parse()</a>.</p>
+<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00505">argument_list()</a>, <a class="el" href="_arg_parser_8h_source.html#l00523">get_item()</a>, <a class="el" href="class_arg_parse_item.html#aefe228cd28f2e66a01bcc4d376309d1f">ArgParseItem::num_arguments()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00038">ArgParseItem::parse()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_arg_parser_8h_source.html#l00330">parse()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_arg_parser_8h_source.html#l00333">parse()</a>.</p>
 
 </div>
 </div>
@@ -563,11 +564,11 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00467">467</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00470">470</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00502">argument_list()</a>, <a class="el" href="_arg_parser_8h_source.html#l00520">get_item()</a>, <a class="el" href="class_arg_parse_item.html#aefe228cd28f2e66a01bcc4d376309d1f">ArgParseItem::num_arguments()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00038">ArgParseItem::parse()</a>.</p>
+<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00505">argument_list()</a>, <a class="el" href="_arg_parser_8h_source.html#l00523">get_item()</a>, <a class="el" href="class_arg_parse_item.html#aefe228cd28f2e66a01bcc4d376309d1f">ArgParseItem::num_arguments()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00038">ArgParseItem::parse()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_arg_parser_8h_source.html#l00330">parse()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_arg_parser_8h_source.html#l00333">parse()</a>.</p>
 
 </div>
 </div>
@@ -665,11 +666,11 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00409">409</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00412">412</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00537">values</a>.</p>
+<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00540">values</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_arg_parser_8h_source.html#l00417">default_option()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00201">TGRSIOptions::Load()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00054">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_arg_parser_8h_source.html#l00420">default_option()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00201">TGRSIOptions::Load()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00054">main()</a>.</p>
 
 </div>
 </div>
@@ -712,11 +713,11 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>this version takes argc and argv, parses them, and sets only those that have the matching firstPass flag set this allows us to parse command line arguments in two stages, one to get the normal options and file names (from which the run info and analysis options are read), and a second stage where only the run info and analysis option flags are parsed</p>
+<p>This version takes argc and argv, parses them, and sets only those that have the matching firstPass flag set. This allows us to parse command line arguments in two stages, one to get the normal options and file names (from which the run info and analysis options are read), and a second stage, where only the run info and analysis option flags are parsed.</p>
 
-<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00330">330</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00333">333</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00492">handle_default_option()</a>, <a class="el" href="_arg_parser_8h_source.html#l00443">handle_long_flag()</a>, <a class="el" href="_arg_parser_8h_source.html#l00467">handle_short_flag()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00537">values</a>.</p>
+<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00495">handle_default_option()</a>, <a class="el" href="_arg_parser_8h_source.html#l00446">handle_long_flag()</a>, <a class="el" href="_arg_parser_8h_source.html#l00470">handle_short_flag()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00540">values</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00201">TGRSIOptions::Load()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00054">main()</a>.</p>
 
@@ -746,9 +747,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00362">362</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00365">365</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00520">get_item()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00038">ArgParseItem::parse()</a>.</p>
+<p class="reference">References <a class="el" href="_arg_parser_8h_source.html#l00523">get_item()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00038">ArgParseItem::parse()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00201">TGRSIOptions::Load()</a>.</p>
 
@@ -778,9 +779,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00422">422</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00425">425</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="class_arg_parse_item.html#ad7878c520b87d5c29d00407fd47ad2a1">ArgParseItem::printable()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00537">values</a>.</p>
+<p class="reference">References <a class="el" href="class_arg_parse_item.html#ad7878c520b87d5c29d00407fd47ad2a1">ArgParseItem::printable()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00540">values</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_arg_parser_8cxx_source.html#l00003">operator&lt;&lt;()</a>.</p>
 
@@ -807,9 +808,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00537">537</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_arg_parser_8h_source.html#l00540">540</a> of file <a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_arg_parser_8h_source.html#l00323">~ArgParser()</a>, <a class="el" href="_arg_parser_8h_source.html#l00520">get_item()</a>, <a class="el" href="_arg_parser_8h_source.html#l00409">option()</a>, <a class="el" href="_arg_parser_8h_source.html#l00330">parse()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00422">print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_arg_parser_8h_source.html#l00326">~ArgParser()</a>, <a class="el" href="_arg_parser_8h_source.html#l00523">get_item()</a>, <a class="el" href="_arg_parser_8h_source.html#l00412">option()</a>, <a class="el" href="_arg_parser_8h_source.html#l00333">parse()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00425">print()</a>.</p>
 
 </div>
 </div>
@@ -820,7 +821,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arg_parser.html">ArgParser</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Sep 11 2024 15:16:56.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Sep 17 2024 19:35:15.</li>
   </ul>
 </div>
 </body>

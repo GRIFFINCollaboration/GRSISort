@@ -1,5 +1,7 @@
 var NAVTREEINDEX67 =
 {
+"group___fitting.html#ga966bed664a4ad6ec1b41c6baaa58dd80":[7,3,38],
+"group___fitting.html#ga9c3a61beb5a07fc38d2f49dbf252c02f":[7,3,55],
 "group___fitting.html#ga9d0c1a68537a31cf49ef8db9bf2b5d9e":[7,3,135],
 "group___fitting.html#ga9e5e67e922d43ff9d377739d0239b0e3":[7,3,76],
 "group___fitting.html#gaa139a95f34fcda40a3175e15c5f2ff08":[7,3,105],
@@ -247,7 +249,5 @@ var NAVTREEINDEX67 =
 "md__2github_2workspace_2_c_o_n_t_r_i_b_u_t_i_n_g.html#autotoc_md14":[1,1],
 "md__2github_2workspace_2_g_r_s_i_data_2_r_e_a_d_m_e.html":[2],
 "md__2github_2workspace_2_h_i_l_data_2_r_e_a_d_m_e.html":[3],
-"md__2github_2workspace_2_h_i_l_data_2_r_e_a_d_m_e.html#autotoc_md17":[3,0],
-"md__2github_2workspace_2_h_i_l_data_2_r_e_a_d_m_e.html#autotoc_md18":[3,1],
-"md__2github_2workspace_2_ill_data_2_r_e_a_d_m_e.html":[4]
+"md__2github_2workspace_2_h_i_l_data_2_r_e_a_d_m_e.html#autotoc_md17":[3,0]
 };

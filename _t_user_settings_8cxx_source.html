@@ -150,7 +150,7 @@ $(document).ready(function(){initNavTree('_t_user_settings_8cxx_source.html','')
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      <span class="comment">// check if this is a comma separated list of values</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <span class="keywordflow">if</span>(value.find(<span class="charliteral">&#39;,&#39;</span>) != std::string::npos) {</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>         std::stringstream valueStream(value);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>         std::istringstream valueStream(value);</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>         <span class="keywordflow">while</span>(std::getline(valueStream, line, <span class="charliteral">&#39;,&#39;</span>)) {</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            <a class="code hl_function" href="_t_g_r_s_i_utilities_8h.html#a2b628a6a962b2611ffc6a0b6ee4d4ab2">trim</a>(line);</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            <a class="code hl_function" href="class_t_user_settings.html#af675568ef70c832a29e27589eed4740f">ParseValue</a>(name, line, <span class="keyword">true</span>);</div>
@@ -203,8 +203,8 @@ $(document).ready(function(){initNavTree('_t_user_settings_8cxx_source.html','')
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>   <span class="comment">// try and parse as bool: convert a copy to lower case and use stringstream with std::boolalpha</span></div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>   std::string copy = value;</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>   std::transform(copy.begin(), copy.end(), copy.begin(), ::tolower);</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>   <span class="keywordtype">bool</span>              boolVal = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>   std::stringstream str(copy);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>   <span class="keywordtype">bool</span>               boolVal = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>   std::istringstream str(copy);</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>   str &gt;&gt; std::boolalpha &gt;&gt; boolVal;</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>   <span class="keywordflow">if</span>(str.good()) {</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      <span class="keywordflow">if</span>(!vector) {</div>
@@ -430,7 +430,7 @@ $(document).ready(function(){initNavTree('_t_user_settings_8cxx_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_2b08b36851fcb6a7439555c8d93f536c.html">TFormat</a></li><li class="navelem"><a class="el" href="_t_user_settings_8cxx.html">TUserSettings.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Sep 11 2024 15:16:54.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Sep 17 2024 19:35:14.</li>
   </ul>
 </div>
 </body>

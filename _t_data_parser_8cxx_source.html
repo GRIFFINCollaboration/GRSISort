@@ -194,14 +194,14 @@ $(document).ready(function(){initNavTree('_t_data_parser_8cxx_source.html',''); 
 <div class="foldopen" id="foldopen00078" data-start="{" data-end="}">
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="class_t_data_parser.html#a1123119e280fb2031e33dc256fbcbd2a">   78</a></span>std::string <a class="code hl_function" href="class_t_data_parser.html#a1123119e280fb2031e33dc256fbcbd2a">TDataParser::OutputQueueStatus</a>()</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>{</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>   std::stringstream str;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>   str &lt;&lt; <span class="stringliteral">&quot;********************************************************************************&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>   std::ostringstream status;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>   status &lt;&lt; <span class="stringliteral">&quot;********************************************************************************&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>   <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; queue : <a class="code hl_variable" href="class_t_data_parser.html#ac09a169ef95b7bc7b80eeccaac285d5d">fGoodOutputQueues</a>) {</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      str &lt;&lt; queue-&gt;Name() &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; queue-&gt;ItemsPushed() &lt;&lt; <span class="stringliteral">&quot; pushed, &quot;</span> &lt;&lt; queue-&gt;ItemsPopped() &lt;&lt; <span class="stringliteral">&quot; popped, &quot;</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>          &lt;&lt; queue-&gt;Size() &lt;&lt; <span class="stringliteral">&quot; left&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      status &lt;&lt; queue-&gt;Name() &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; queue-&gt;ItemsPushed() &lt;&lt; <span class="stringliteral">&quot; pushed, &quot;</span> &lt;&lt; queue-&gt;ItemsPopped() &lt;&lt; <span class="stringliteral">&quot; popped, &quot;</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>             &lt;&lt; queue-&gt;Size() &lt;&lt; <span class="stringliteral">&quot; left&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>   }</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   str &lt;&lt; <span class="stringliteral">&quot;********************************************************************************&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>   <span class="keywordflow">return</span> str.str();</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   status &lt;&lt; <span class="stringliteral">&quot;********************************************************************************&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>   <span class="keywordflow">return</span> status.str();</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>}</div>
 </div>
 <div class="ttc" id="a_globals_8h_html"><div class="ttname"><a href="_globals_8h.html">Globals.h</a></div></div>
@@ -236,7 +236,7 @@ $(document).ready(function(){initNavTree('_t_data_parser_8cxx_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_4bb6f76668d6d9582c2c8d16c7151ac7.html">TDataParser</a></li><li class="navelem"><a class="el" href="_t_data_parser_8cxx.html">TDataParser.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Sep 11 2024 15:16:54.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Sep 17 2024 19:35:13.</li>
   </ul>
 </div>
 </body>

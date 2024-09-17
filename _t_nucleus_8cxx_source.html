@@ -147,7 +147,7 @@ $(document).ready(function(){initNavTree('_t_nucleus_8cxx_source.html',''); init
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>         <span class="keywordflow">if</span>(line.length() &lt; 1) {</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>         }</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>         std::stringstream ss(line);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>         std::istringstream ss(line);</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>         ss &gt;&gt; n;</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>         ss &gt;&gt; z;</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>         ss &gt;&gt; sym_name;</div>
@@ -505,10 +505,10 @@ $(document).ready(function(){initNavTree('_t_nucleus_8cxx_source.html',''); init
 <div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>      <span class="keywordflow">if</span>(line.compare(0, 1, <span class="stringliteral">&quot;#&quot;</span>) == 0) {</div>
 <div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>         <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>      }</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>      <span class="keywordtype">double</span>            temp = 0.;</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>      <span class="keyword">auto</span>*             tran = <span class="keyword">new</span> <a class="code hl_class" href="class_t_transition.html">TTransition</a>;</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>      std::stringstream str(line);</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>      <span class="keywordtype">int</span>               counter = 0;</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>      <span class="keywordtype">double</span>             temp = 0.;</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>      <span class="keyword">auto</span>*              tran = <span class="keyword">new</span> <a class="code hl_class" href="class_t_transition.html">TTransition</a>;</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>      std::istringstream str(line);</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>      <span class="keywordtype">int</span>                counter = 0;</div>
 <div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>      <span class="keywordflow">while</span>(!(str &gt;&gt; temp).fail()) {</div>
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>         counter++;</div>
 <div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>         <span class="keywordflow">if</span>(counter == 1) {</div>
@@ -590,7 +590,7 @@ $(document).ready(function(){initNavTree('_t_nucleus_8cxx_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_c465e235fcfd3726a10892daf2e1b104.html">TNucleus</a></li><li class="navelem"><a class="el" href="_t_nucleus_8cxx.html">TNucleus.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Sep 11 2024 15:16:54.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Sep 17 2024 19:35:13.</li>
   </ul>
 </div>
 </body>
