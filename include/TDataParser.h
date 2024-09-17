@@ -64,7 +64,7 @@ public:
 #ifndef __CINT__
    virtual std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& AddGoodOutputQueue(size_t maxSize = 50000)
    {
-      std::stringstream name;
+      std::ostringstream name;
       name << "good_frag_queue_" << fGoodOutputQueues.size();
       fGoodOutputQueues.push_back(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>(name.str(), maxSize));
       return fGoodOutputQueues.back();

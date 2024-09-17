@@ -48,9 +48,9 @@ std::string StoppableThread::AnyThreadStatus()
 {
    for(auto& elem : fThreadMap) {
       if(elem.second->IsRunning()) {
-         std::stringstream str;
-         str << elem.first << ":\t " << elem.second->Status();
-         return str.str();
+         std::ostringstream status;
+         status << elem.first << ":\t " << elem.second->Status();
+         return status.str();
       }
    }
    return "";
@@ -58,21 +58,21 @@ std::string StoppableThread::AnyThreadStatus()
 
 std::string StoppableThread::AllThreadProgress()
 {
-   std::stringstream str;
+   std::ostringstream progress;
    for(auto& elem : fThreadMap) {
       if(elem.second->IsRunning()) {
-         str << std::left << std::setw(static_cast<int>(fColumnWidth - 1)) << elem.second->Progress().substr(0, fColumnWidth - 1) << "|";
+         progress << std::left << std::setw(static_cast<int>(fColumnWidth - 1)) << elem.second->Progress().substr(0, fColumnWidth - 1) << "|";
       } else {
          std::string prog = "not running";
-         str << std::left << std::setw(static_cast<int>(fColumnWidth - 1)) << prog.substr(0, fColumnWidth - 1) << "|";
+         progress << std::left << std::setw(static_cast<int>(fColumnWidth - 1)) << prog.substr(0, fColumnWidth - 1) << "|";
       }
    }
-   return str.str().substr(0, fStatusWidth);
+   return progress.str().substr(0, fStatusWidth);
 }
 
 std::string StoppableThread::AllThreadHeader()
 {
-   std::stringstream str;
+   std::ostringstream str;
    for(auto& elem : fThreadMap) {
       // left align, fill with spaces
       str << std::left << std::setw(static_cast<int>(fColumnWidth - 1)) << elem.first.substr(0, fColumnWidth - 1) << "|";
@@ -82,7 +82,7 @@ std::string StoppableThread::AllThreadHeader()
 
 std::string StoppableThread::AllThreadStatus()
 {
-   std::stringstream str;
+   std::ostringstream str;
    for(auto& elem : fThreadMap) {
       if(elem.second->IsRunning()) {
          str << std::left << std::setw(static_cast<int>(fColumnWidth - 1)) << elem.second->Status().substr(0, fColumnWidth - 1) << "|";
@@ -110,7 +110,7 @@ void StoppableThread::ResumeAll()
 
 std::string StoppableThread::Status()
 {
-   std::stringstream str;
+   std::ostringstream str;
    str << std::setw(static_cast<int>(fColumnWidth / 2 - 1)) << fItemsPopped << "/" << std::setw(static_cast<int>(fColumnWidth / 2 - 1))
        << fItemsPopped + fInputSize;
    return str.str();
@@ -118,7 +118,7 @@ std::string StoppableThread::Status()
 
 std::string StoppableThread::Progress()
 {
-   std::stringstream str;
+   std::ostringstream str;
    float             percentDone = 100.f * static_cast<float>(fItemsPopped);
    if(fItemsPopped + fInputSize > 0) {
       percentDone /= static_cast<float>(fItemsPopped + fInputSize);

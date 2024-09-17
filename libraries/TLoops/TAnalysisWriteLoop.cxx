@@ -76,7 +76,7 @@ void TAnalysisWriteLoop::ClearQueue()
 
 std::string TAnalysisWriteLoop::EndStatus()
 {
-   std::stringstream str;
+   std::ostringstream str;
    str << Name() << ":\t" << std::setw(8) << ItemsPopped() << "/" << InputSize() + ItemsPopped() << ", "
        << "??? good events" << std::endl;
    return str.str();

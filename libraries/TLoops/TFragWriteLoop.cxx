@@ -80,7 +80,7 @@ void TFragWriteLoop::ClearQueue()
 
 std::string TFragWriteLoop::EndStatus()
 {
-   std::stringstream str;
+   std::ostringstream str;
    str << std::endl
        << Name() << ": " << std::setw(8) << ItemsPopped() << "/" << ItemsPopped() + InputSize() << ", "
        << fEventTree->GetEntries() << " good fragments, " << fBadEventTree->GetEntries() << " bad fragments"

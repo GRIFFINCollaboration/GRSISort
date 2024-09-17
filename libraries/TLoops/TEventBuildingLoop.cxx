@@ -255,7 +255,7 @@ bool TEventBuildingLoop::CheckTriggerIdCondition(const std::shared_ptr<const TFr
 
 std::string TEventBuildingLoop::EndStatus()
 {
-   std::stringstream str;
+   std::ostringstream str;
    str << fInputQueue->Name() << ": " << ItemsPopped() << "/" << fInputQueue->ItemsPopped() << " items popped"
        << std::endl;
 

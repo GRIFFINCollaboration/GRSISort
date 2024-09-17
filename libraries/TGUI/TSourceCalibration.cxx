@@ -700,21 +700,21 @@ TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degre
          if(FilledBin(fMatrices[i], bin)) {   // good bin in the current matrix
             // current index is tmpBins, so we check if the bin agrees with what we have
             if(fChannelToIndex.find(bin) == fChannelToIndex.end() || tmpBins != fChannelToIndex[bin]) {   // found a full bin, but the corresponding bin in the first matrix isn't full or a different bin
-               std::stringstream str;
-               str << "Mismatch in " << i << ". matrix (" << fMatrices[i]->GetName() << "), bin " << bin << " is " << tmpBins << ". filled bin, but should be " << (fChannelToIndex.find(bin) == fChannelToIndex.end() ? "not filled" : Form("%d", fChannelToIndex[bin])) << std::endl;
-               throw std::invalid_argument(str.str());
+               std::ostringstream error;
+               error << "Mismatch in " << i << ". matrix (" << fMatrices[i]->GetName() << "), bin " << bin << " is " << tmpBins << ". filled bin, but should be " << (fChannelToIndex.find(bin) == fChannelToIndex.end() ? "not filled" : Form("%d", fChannelToIndex[bin])) << std::endl;
+               throw std::invalid_argument(error.str());
             }
             if(strcmp(fMatrices[0]->GetXaxis()->GetBinLabel(bin), fMatrices[i]->GetXaxis()->GetBinLabel(bin)) != 0) {   // bin is full and matches the bin in the first matrix so we check the labels
-               std::stringstream str;
-               str << i << ". matrix, " << bin << ". bin: label (" << fMatrices[i]->GetXaxis()->GetBinLabel(bin) << ") doesn't match bin label of the first matrix (" << fMatrices[0]->GetXaxis()->GetBinLabel(bin) << ")" << std::endl;
-               throw std::invalid_argument(str.str());
+               std::ostringstream error;
+               error << i << ". matrix, " << bin << ". bin: label (" << fMatrices[i]->GetXaxis()->GetBinLabel(bin) << ") doesn't match bin label of the first matrix (" << fMatrices[0]->GetXaxis()->GetBinLabel(bin) << ")" << std::endl;
+               throw std::invalid_argument(error.str());
             }
             ++tmpBins;
          } else {
             if(fChannelToIndex.find(bin) != fChannelToIndex.end()) {   //found an empty bin that was full in the first matrix
-               std::stringstream str;
-               str << "Mismatch in " << i << ". matrix (" << fMatrices[i]->GetName() << "), bin " << bin << " is empty, but should be " << fChannelToIndex[bin] << ". filled bin" << std::endl;
-               throw std::invalid_argument(str.str());
+               std::ostringstream error;
+               error << "Mismatch in " << i << ". matrix (" << fMatrices[i]->GetName() << "), bin " << bin << " is empty, but should be " << fChannelToIndex[bin] << ". filled bin" << std::endl;
+               throw std::invalid_argument(error.str());
             }
          }
       }
@@ -1742,13 +1742,13 @@ void TSourceCalibration::UpdateChannel(const int& channelId)
 void TSourceCalibration::WriteCalibration()
 {
    if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-   std::stringstream str;
+   std::ostringstream fileName;
    for(auto* source : fSource) {
-      str << source->GetName();
+      fileName << source->GetName();
    }
-   str << ".cal";
-   TChannel::WriteCalFile(str.str());
-   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << ": wrote " << str.str() << " with " << TChannel::GetNumberOfChannels() << " channels" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   fileName << ".cal";
+   TChannel::WriteCalFile(fileName.str());
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << ": wrote " << fileName.str() << " with " << TChannel::GetNumberOfChannels() << " channels" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    if(fVerboseLevel > 2) { TChannel::WriteCalFile(); }
 }
 

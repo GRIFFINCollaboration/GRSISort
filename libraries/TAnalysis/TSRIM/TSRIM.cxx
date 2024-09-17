@@ -55,11 +55,11 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
       if(line.length() == 0u) {
          continue;
       }
-      std::stringstream linestream(line);
+      std::istringstream linestream(line);
       number_input.clear();
       string_input.clear();
       while(!(linestream >> word).fail()) {
-         std::stringstream str(word);
+         std::istringstream str(word);
          if(!(str >> temp).fail()) {   // if it's a number
             number_input.push_back(temp);
          } else {

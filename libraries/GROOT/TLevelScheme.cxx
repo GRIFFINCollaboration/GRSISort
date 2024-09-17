@@ -1470,9 +1470,9 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
       return;
    }
 
-   std::string       line;
-   std::stringstream str;
-   TLevel*           currentLevel = nullptr;
+   std::string        line;
+   std::istringstream str;
+   TLevel*            currentLevel = nullptr;
 
    // general identifier format of line (first 8 characters)
    // 1-3 mass

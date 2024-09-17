@@ -1711,10 +1711,10 @@ double TPulseAnalyzer::SiLiFitFunction(double* i, double* p)   // NOLINT(readabi
 TF1 TPulseAnalyzer::Getsilifit()
 {
    if(set && cWpar != nullptr) {
-      std::stringstream ss;
-      ss << "Fit" << fNameIter;
+      std::ostringstream name;
+      name << "Fit" << fNameIter;
       ++fNameIter;
-      TF1 g(ss.str().c_str(), SiLiFitFunction, 0, cN, 8);
+      TF1 g(name.str().c_str(), SiLiFitFunction, 0, cN, 8);
 
       g.SetParameter(0, cWpar->t0);
       g.SetParameter(1, cWpar->tauDecay);
@@ -1774,11 +1774,10 @@ TH1I* TPulseAnalyzer::GetWaveHist()
    if(cN == 0 || !set) {
       return nullptr;
    }
-   std::stringstream ss;
-   ss << "WaveformHist" << fNameIter;
+   std::ostringstream name;
+   name << "WaveformHist" << fNameIter;
    ++fNameIter;   // Avoid naming conflicts with TNamed
-   TH1I* h = new TH1I(ss.str().c_str(), ss.str().c_str(), cN, -0.5,
-                      cN - 0.5);   // midpoint should be the value, else time is off
+   TH1I* h = new TH1I(name.str().c_str(), name.str().c_str(), cN, -0.5, cN - 0.5);   // midpoint should be the value, else time is off
    for(Int_t i = 0; i < cN; i++) {
       h->SetBinContent(i + 1, cWavebuffer[i]);
    }

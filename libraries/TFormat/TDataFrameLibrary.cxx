@@ -99,13 +99,13 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
    // first we get the stats of the file's involved (.cxx, .hh, .so, and the libTGRSIFrame.so)
    struct stat sourceStat {};
    if(stat(sourceFile.c_str(), &sourceStat) != 0) {
-      std::stringstream str;
+      std::ostringstream str;
       str << "Unable to access stat of source file " << sourceFile << std::endl;
       throw std::runtime_error(str.str());
    }
    struct stat headerStat {};
    if(stat(headerFile.c_str(), &headerStat) != 0) {
-      std::stringstream str;
+      std::ostringstream str;
       str << "Unable to access stat of header file " << headerFile << std::endl;
       throw std::runtime_error(str.str());
    }
@@ -113,12 +113,12 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
    // get path of libTGRSIFrame via
    Dl_info info;
    if(dladdr(reinterpret_cast<void*>(DummyFunctionToLocateTGRSIFrameLibrary), &info) == 0) {
-      std::stringstream str;
+      std::ostringstream str;
       str << "Unable to find location of DummyFunctionToLocateTGRSIFrameLibrary" << std::endl;
       throw std::runtime_error(str.str());
    }
    if(stat(info.dli_fname, &frameLibStat) != 0) {
-      std::stringstream str;
+      std::ostringstream str;
       str << "Unable to access stat of " << info.dli_fname << std::endl;
       throw std::runtime_error(str.str());
    }
@@ -141,22 +141,22 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
    // so we can simply take everything between "last '/' + 3" and "last '.'" to be the name?
    std::string       parserLibraryName = parserLibraryPath.substr(parserLibraryPath.find_last_of('/') + 4, parserLibraryPath.find_last_of('.') - parserLibraryPath.find_last_of('/') - 4);
    std::string       objectFile        = path.replace(dot, std::string::npos, ".o");
-   std::stringstream command;
+   std::ostringstream command;
    command << "g++ -c -fPIC -g $(grsi-config --cflags --" << parserLibraryName << "-cflags) $(root-config --cflags) -I" << includePath;
 #ifdef OS_DARWIN
    command << " -I/opt/local/include ";
 #endif
    command << " -o " << objectFile << " " << sourceFile;
    if(std::system(command.str().c_str()) != 0) {
-      std::stringstream str;
+      std::ostringstream str;
       str << "Unable to compile source file " << sourceFile << " using " << DBLUE << "'" << command.str() << "'" << RESET_COLOR << std::endl;
       throw std::runtime_error(str.str());
    }
    std::cout << DCYAN << "----------  starting linking user code  -----------------" << RESET_COLOR << std::endl;
-   std::stringstream().swap(command);   // create new (empty) stringstream and swap it with command this resets the underlying string and all error flags
+   std::ostringstream().swap(command);   // create new (empty) stringstream and swap it with command this resets the underlying string and all error flags
    command << "g++ -fPIC -g -shared $(grsi-config --libs --" << parserLibraryName << "-libs) $(root-config --glibs) -o " << sharedLibrary << " " << objectFile;
    if(std::system(command.str().c_str()) != 0) {
-      std::stringstream str;
+      std::ostringstream str;
       str << "Unable to link shared object library " << sharedLibrary << " using " << DBLUE << "'" << command.str() << "'" << RESET_COLOR << std::endl;
       throw std::runtime_error(str.str());
    }

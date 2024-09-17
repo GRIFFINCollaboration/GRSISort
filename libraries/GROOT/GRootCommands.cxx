@@ -310,7 +310,7 @@ TPeak* AltPhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 
 std::string MergeStrings(const std::vector<std::string>& strings, char split)
 {
-   std::stringstream ss;
+   std::ostringstream ss;
    for(auto it = strings.begin(); it != strings.end(); it++) {
       ss << *it;
 
