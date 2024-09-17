@@ -119,7 +119,7 @@ std::string StoppableThread::Status()
 std::string StoppableThread::Progress()
 {
    std::ostringstream str;
-   float             percentDone = 100.f * static_cast<float>(fItemsPopped);
+   float              percentDone = 100.f * static_cast<float>(fItemsPopped);
    if(fItemsPopped + fInputSize > 0) {
       percentDone /= static_cast<float>(fItemsPopped + fInputSize);
       while(percentDone > 100.f / static_cast<float>(fColumnWidth - 1)) {
