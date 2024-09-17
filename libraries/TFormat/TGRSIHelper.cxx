@@ -10,7 +10,7 @@ TGRSIHelper::TGRSIHelper(TList* input)
    *(TGRSIOptions::AnalysisOptions()) = *static_cast<TAnalysisOptions*>(input->FindObject("TAnalysisOptions"));
    // check that we have a parser library
    if(TGRSIOptions::Get()->ParserLibrary().empty()) {
-      std::stringstream str;
+      std::ostringstream str;
       str << DRED << "No parser library set!" << RESET_COLOR << std::endl;
       throw std::runtime_error(str.str());
    }
@@ -222,7 +222,7 @@ void TGRSIHelper::CheckSizes(unsigned int slot, const char* usage)
          TBufferFile buf(TBuffer::kWrite, 10000);
          obj->IsA()->WriteBuffer(buf, obj);
          if(buf.Length() > fSizeLimit) {
-            std::stringstream str;
+            std::ostringstream str;
             str << DRED << slot << ". slot: " << obj->ClassName() << " '" << obj->GetName() << "' too large to " << usage << ": " << buf.Length() << " bytes = " << buf.Length() / 1024. / 1024. / 1024. << " GB, removing it!" << RESET_COLOR << std::endl;
             std::cout << str.str();
             // we only remove it from the output list, not deleting the object itself

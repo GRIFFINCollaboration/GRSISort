@@ -75,13 +75,13 @@ bool TUnpackingLoop::Iteration()
 
 std::string TUnpackingLoop::EndStatus()
 {
-   std::stringstream str;
+   std::ostringstream status;
    if(fFragsReadFromRaw > 0) {
-      str << "\r" << Name() << ":\t" << fGoodFragsRead << " good fragments out of " << fFragsReadFromRaw
-          << " fragments => " << 100. * static_cast<double>(fGoodFragsRead) / static_cast<double>(fFragsReadFromRaw) << "% passed" << std::endl;
+      status << "\r" << Name() << ":\t" << fGoodFragsRead << " good fragments out of " << fFragsReadFromRaw
+             << " fragments => " << 100. * static_cast<double>(fGoodFragsRead) / static_cast<double>(fFragsReadFromRaw) << "% passed" << std::endl;
    } else {
-      str << "\rno fragments read from midas => none parsed!" << std::endl;
+      status << "\rno fragments read from midas => none parsed!" << std::endl;
    }
-   str << fParser->OutputQueueStatus();
-   return str.str();
+   status << fParser->OutputQueueStatus();
+   return status.str();
 }

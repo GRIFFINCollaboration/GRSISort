@@ -40,7 +40,7 @@ TNucleus::TNucleus(const char* name)
          if(line.length() < 1) {
             continue;
          }
-         std::stringstream ss(line);
+         std::istringstream ss(line);
          ss >> n;
          ss >> z;
          ss >> sym_name;
@@ -356,10 +356,10 @@ bool TNucleus::LoadTransitionFile()
       if(line.compare(0, 1, "#") == 0) {
          continue;
       }
-      double            temp = 0.;
-      auto*             tran = new TTransition;
-      std::stringstream str(line);
-      int               counter = 0;
+      double             temp = 0.;
+      auto*              tran = new TTransition;
+      std::istringstream str(line);
+      int                counter = 0;
       while(!(str >> temp).fail()) {
          counter++;
          if(counter == 1) {

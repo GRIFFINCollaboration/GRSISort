@@ -852,9 +852,9 @@ TEfficiencyCalibrator::TEfficiencyCalibrator(int n...)
 
    // quick sanity check, should have at least one vector the size of that vector should equal the source size and file size
    if(fSources.size() != fFiles.size() || fHistograms[0].size() != fFiles.size() || fHistograms.size() != fDataType.size()) {
-      std::stringstream str;
-      str << "Wrong sizes, from " << fFiles.size() << " file(s) we got " << fSources.size() << " source(s), and " << fHistograms[0].size() << " histogram(s), " << fDataType.size() << " data types, and " << fHistograms.size() << " data type histogram(s)!" << std::endl;
-      throw std::runtime_error(str.str());
+      std::ostringstream error;
+      error << "Wrong sizes, from " << fFiles.size() << " file(s) we got " << fSources.size() << " source(s), and " << fHistograms[0].size() << " histogram(s), " << fDataType.size() << " data types, and " << fHistograms.size() << " data type histogram(s)!" << std::endl;
+      throw std::runtime_error(error.str());
    }
 
    fOutput = new TFile("TEfficiencyCalibrator.root", "recreate");

@@ -88,7 +88,7 @@ void SetGRSIEnv();
 //-------------------- three function templates that print all arguments into a string
 // this template uses existing stream and appends the last argument to it
 template <typename T>
-void Append(std::stringstream& stream, const T& tail)
+void Append(std::ostringstream& stream, const T& tail)
 {
    // append last argument
    stream << tail;
@@ -96,7 +96,7 @@ void Append(std::stringstream& stream, const T& tail)
 
 // this template uses existing stream and appends to it
 template <typename T, typename... U>
-void Append(std::stringstream& stream, const T& head, const U&... tail)
+void Append(std::ostringstream& stream, const T& head, const U&... tail)
 {
    // append first argument
    stream << head;
@@ -110,7 +110,7 @@ template <typename T, typename... U>
 std::string Stringify(const T& head, const U&... tail)
 {
    // print first arguments to string
-   std::stringstream stream;
+   std::ostringstream stream;
    stream << head;
 
    // call the second template (or the third if tail is just one argument)
@@ -164,8 +164,8 @@ static inline std::string sh(const std::string& cmd)
 // print a demangled stack backtrace of the caller function (copied from https://panthema.net/2008/0901-stacktrace-demangled/)
 static inline void PrintStacktrace(std::ostream& out = std::cout, int maxFrames = 63)
 {
-   std::stringstream str;
-   str << "stack trace:" << std::endl;
+   std::ostringstream output;
+   output << "stack trace:" << std::endl;
 
    // storage array for stack trace address data
    void** addrlist = new void*[maxFrames + 1];
@@ -174,8 +174,8 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, int maxFrames 
    int addrlen = backtrace(addrlist, maxFrames + 1);
 
    if(addrlen == 0) {
-      str << "  <empty, possibly corrupt>" << std::endl;
-      out << str.str();
+      output << "  <empty, possibly corrupt>" << std::endl;
+      out << output.str();
       return;
    }
 
@@ -210,7 +210,7 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, int maxFrames 
       // try and decode file and line number (only if we have an absolute path)
       // std::string line;
       // if(symbollist[i][0] == '/') {
-      //	std::stringstream command;
+      //	std::ostringstream command;
       //	std::string filename = symbollist[i];
       //	command<<"addr2line "<<addrlist[i]<<" -e "<<filename.substr(0, filename.find_first_of('('));
       //	//std::cout<<symbollist[i]<<": executing command "<<command.str()<<std::endl;
@@ -230,22 +230,22 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, int maxFrames 
          char* ret    = abi::__cxa_demangle(begin_name, funcname, &funcnamesize, &status);
          if(status == 0) {
             funcname = ret;   // use possibly realloc()-ed string
-            str << "  " << symbollist[i] << ": " << funcname << "+" << begin_offset << std::endl;
+            output << "  " << symbollist[i] << ": " << funcname << "+" << begin_offset << std::endl;
          } else {
             // demangling failed. Output function name as a C function with
             // no arguments.
-            str << "  " << symbollist[i] << ": " << begin_name << "()+" << begin_offset << std::endl;
+            output << "  " << symbollist[i] << ": " << begin_name << "()+" << begin_offset << std::endl;
          }
       } else {
          // couldn't parse the line? print the whole line.
-         str << "  " << symbollist[i] << std::endl;
+         output << "  " << symbollist[i] << std::endl;
       }
-      // str<<line;
+      // output << line;
    }
 
    delete[] funcname;
    delete symbollist;
-   out << str.str();
+   out << output.str();
 }
 
 #if !__APPLE__

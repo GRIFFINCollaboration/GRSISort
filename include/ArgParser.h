@@ -44,14 +44,14 @@ public:
       if(!ignore_num_arguments) {
          if((num_arguments() == -1 && arguments.empty()) ||
             (num_arguments() != -1 && arguments.size() != static_cast<size_t>(num_arguments()))) {
-            std::stringstream str;
+            std::ostringstream error;
             if(num_arguments() == -1) {
-               str << R"(Flag ")" << name << R"(" expected at least one argument)";
+               error << R"(Flag ")" << name << R"(" expected at least one argument)";
             } else {
-               str << R"(Flag ")" << name << R"(" expected )" << num_arguments() << " argument(s) and received "
-                   << arguments.size();
+               error << R"(Flag ")" << name << R"(" expected )" << num_arguments() << " argument(s) and received "
+                     << arguments.size();
             }
-            throw ParseError(str.str());
+            throw ParseError(error.str());
          }
       }
 
@@ -69,7 +69,7 @@ class ArgParseConfig : public ArgParseItem {
 public:
    ArgParseConfig(const std::string& flag_list, bool firstPass) : ArgParseItem(firstPass)
    {
-      std::stringstream str(flag_list);
+      std::istringstream str(flag_list);
       while(!str.eof()) {
          std::string temp;
          str >> temp;
@@ -132,34 +132,34 @@ public:
 
    std::string printable(int description_column, int* chars_before_desc) const override
    {
-      std::stringstream str;
+      std::ostringstream output;
 
-      str << "  " << fColour;
+      output << "  " << fColour;
 
       bool has_singlechar_flag = false;
       for(const auto& flag : fFlags) {
          if(flag.length() == 2) {
-            str << flag << " ";
+            output << flag << " ";
             has_singlechar_flag = true;
          }
       }
       for(const auto& flag : fFlags) {
          if(flag.length() != 2) {
             if(has_singlechar_flag) {
-               str << "[ ";
+               output << "[ ";
             }
-            str << flag << " ";
+            output << flag << " ";
             if(has_singlechar_flag) {
-               str << "]";
+               output << "]";
             }
          }
       }
 
       if(num_arguments() != 0) {
-         str << " arg ";
+         output << " arg ";
       }
 
-      auto chars = str.tellp();
+      auto chars = output.tellp();
       chars -= fColour.length();
       if(chars_before_desc != nullptr) {
          *chars_before_desc = static_cast<int>(chars);
@@ -167,13 +167,13 @@ public:
 
       if(description_column != -1 && chars < description_column) {
          for(unsigned int i = 0; i < description_column - chars; i++) {
-            str << " ";
+            output << " ";
          }
       }
 
-      str << fDescription << RESET_COLOR;
+      output << fDescription << RESET_COLOR;
 
-      return str.str();
+      return output.str();
    }
 
 private:
@@ -209,7 +209,7 @@ public:
 
    void parse_item(const std::vector<std::string>& arguments) override
    {
-      std::stringstream str(arguments[0]);
+      std::istringstream str(arguments[0]);
       str >> *fOutput_location;
    }
 
@@ -246,7 +246,7 @@ public:
       if(arguments.empty()) {
          *fOutput_location = !fStored_default_value;
       } else {
-         std::stringstream str(arguments[0]);
+         std::istringstream str(arguments[0]);
          str >> std::boolalpha >> *fOutput_location;
       }
    }
@@ -270,8 +270,8 @@ public:
    void parse_item(const std::vector<std::string>& arguments) override
    {
       for(const auto& arg : arguments) {
-         std::stringstream str(arg);
-         T                 val;
+         std::istringstream str(arg);
+         T                  val;
          str >> val;
          fOutput_location->push_back(val);
       }
@@ -299,10 +299,13 @@ private:
 /// Example usage:
 /// ```
 /// ArgParser parser;
+/// int myOption = 0;
 /// parser.option("some-option s", &myOption, true).description("my cool option").default_value(42);
 /// parser.parse(argc, argv, true);
 /// ```
-/// to read the flag "--some-option" or "-s" into the integer variable myOption.
+/// This example reads the number after the flag "--some-option" or "-s"
+/// into the integer variable myOption. If no flag is provided, the default
+/// value of 42 is used.
 ///
 /// The 3rd argument in ArgParser::option and ArgParser::parse that are set
 /// to true here are the "firstPass" arguments which simply means we want
@@ -329,12 +332,12 @@ public:
 
    void parse(int argc, char** argv, bool firstPass)
    {
-      /// this version takes argc and argv, parses them, and sets only those
-      /// that have the matching firstPass flag set
-      /// this allows us to parse command line arguments in two stages, one
+      /// This version takes argc and argv, parses them, and sets only those
+      /// that have the matching firstPass flag set.
+      /// This allows us to parse command line arguments in two stages, one
       /// to get the normal options and file names (from which the run info
-      /// and analysis options are read), and a second stage where only the
-      /// run info and analysis option flags are parsed
+      /// and analysis options are read), and a second stage, where only the
+      /// run info and analysis option flags are parsed.
       bool double_dash_encountered = false;
 
       int iarg = 1;
@@ -352,9 +355,9 @@ public:
 
       for(auto& val : values) {
          if(val->is_required() && !val->is_present()) {
-            std::stringstream str;
-            str << R"(Required argument ")" << val->flag_name() << R"(" is not present)";
-            throw ParseError(str.str());
+            std::ostringstream error;
+            error << R"(Required argument ")" << val->flag_name() << R"(" is not present)";
+            throw ParseError(error.str());
          }
       }
    }
@@ -372,7 +375,7 @@ public:
          std::string remainder;
          if(has_colon) {
             flag = line.substr(0, colon);
-            std::stringstream(flag) >> flag;   // Strip out whitespace
+            std::istringstream(flag) >> flag;   // Strip out whitespace
             if(flag.length() == 1) {
                flag.insert(0, 1, '-');
             } else {
@@ -385,7 +388,7 @@ public:
          }
 
          std::vector<std::string> args;
-         std::stringstream        str(remainder);
+         std::istringstream       str(remainder);
          std::string              tmparg;
          while(str >> tmparg) {
             args.push_back(tmparg);
@@ -525,13 +528,13 @@ private:
          }
       }
 
-      std::stringstream str;
+      std::ostringstream error;
       if(flag.at(0) == '-') {
-         str << R"(Unknown option: ")" << flag << R"(")";
+         error << R"(Unknown option: ")" << flag << R"(")";
       } else {
-         str << R"(Was passed ")" << flag << R"(" as a non-option argument, when no non-option arguments are allowed)";
+         error << R"(Was passed ")" << flag << R"(" as a non-option argument, when no non-option arguments are allowed)";
       }
-      throw ParseError(str.str());
+      throw ParseError(error.str());
    }
 
    std::vector<ArgParseItem*> values;

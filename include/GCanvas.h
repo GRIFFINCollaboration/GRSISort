@@ -204,7 +204,7 @@ public:
 /// - M	Toggle off marker mode.
 /// - n	Remove all markers / functions drawn on the histogram.
 /// - N	Remove all markers and the LAST function drawn on the histogram.
-/// - o	Unzoom the entire histogram.
+/// - o/u	Unzoom the entire histogram.
 /// - p	If the 1d hist was made using the global ProjectionX/ProjectionY; gating the original 2D matrix this histogram came from is possible by placing markers around the gate and pressing p. The gates spectra is immediately drawn.
 /// - P	Draws parent histogram???
 /// - q	If markers have been set, fit a GPeak between the last two markers on the first histogram (skewed gaus for gamma-rays with automatic bg).
@@ -223,7 +223,7 @@ public:
 /// - i	Initialize a new cut.
 /// - l/z	Toggle z-axis from linear to logarithmic and vice versa.
 /// - n	Remove all markers / functions drawn on the histogram.
-/// - o	Unzoom the entire histogram.
+/// - o/u	Unzoom the entire histogram.
 /// - P	Get projections from this histogram and draw the first one if it exists.
 /// - r	Expand the y-axis between the last two markers.
 /// - R	Bring up the dialogue box to set the desired y-axis range.

@@ -27,7 +27,7 @@ int incremental_id()
 DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name) : fLibName(std::move(libname_param))
 {
    if(unique_name) {
-      std::stringstream str;
+      std::ostringstream str;
       str << "/tmp/temp_dynlib_" << getpid() << "_" << incremental_id() << ".so";
       fTempName = str.str();
 

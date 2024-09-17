@@ -1155,8 +1155,8 @@ void TChannel::SaveToSelf()
 {
    /// This function saves the current cal-file to fFileData.
    /// For some reason it does the latter not by using WriteCalBuffer ???
-   std::stringstream buffer;
-   std::streambuf*   std_out = std::cout.rdbuf(buffer.rdbuf());
+   std::ostringstream buffer;
+   std::streambuf*    std_out = std::cout.rdbuf(buffer.rdbuf());
    WriteCalFile();
    fFileData.assign(buffer.str());
    std::cout.rdbuf(std_out);

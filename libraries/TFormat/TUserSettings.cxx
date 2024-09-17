@@ -45,7 +45,7 @@ bool TUserSettings::ReadSettings(const std::string& settingsFile)
 
       // check if this is a comma separated list of values
       if(value.find(',') != std::string::npos) {
-         std::stringstream valueStream(value);
+         std::istringstream valueStream(value);
          while(std::getline(valueStream, line, ',')) {
             trim(line);
             ParseValue(name, line, true);
@@ -96,8 +96,8 @@ void TUserSettings::ParseValue(const std::string& name, const std::string& value
    // try and parse as bool: convert a copy to lower case and use stringstream with std::boolalpha
    std::string copy = value;
    std::transform(copy.begin(), copy.end(), copy.begin(), ::tolower);
-   bool              boolVal = false;
-   std::stringstream str(copy);
+   bool               boolVal = false;
+   std::istringstream str(copy);
    str >> std::boolalpha >> boolVal;
    if(str.good()) {
       if(!vector) {

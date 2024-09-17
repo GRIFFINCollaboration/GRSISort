@@ -38,7 +38,7 @@ TGRSIFrame::TGRSIFrame()
       check.Close();
    }
    if(treeName.empty()) {
-      std::stringstream str;
+      std::ostringstream str;
       str << "Failed to find 'AnalysisTree' or 'FragmentTree' in '" << fOptions->RootInputFiles()[0] << "', either provide a different tree name via --tree-name flag or check input file" << std::endl;
       throw std::runtime_error(str.str());
    }

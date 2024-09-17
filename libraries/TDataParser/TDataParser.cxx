@@ -77,12 +77,12 @@ void TDataParser::Push(ThreadsafeQueue<std::shared_ptr<const TBadFragment>>& que
 
 std::string TDataParser::OutputQueueStatus()
 {
-   std::stringstream str;
-   str << "********************************************************************************" << std::endl;
+   std::ostringstream status;
+   status << "********************************************************************************" << std::endl;
    for(const auto& queue : fGoodOutputQueues) {
-      str << queue->Name() << ": " << queue->ItemsPushed() << " pushed, " << queue->ItemsPopped() << " popped, "
-          << queue->Size() << " left" << std::endl;
+      status << queue->Name() << ": " << queue->ItemsPushed() << " pushed, " << queue->ItemsPopped() << " popped, "
+             << queue->Size() << " left" << std::endl;
    }
-   str << "********************************************************************************" << std::endl;
-   return str.str();
+   status << "********************************************************************************" << std::endl;
+   return status.str();
 }
