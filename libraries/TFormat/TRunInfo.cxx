@@ -93,10 +93,13 @@ void TRunInfo::Print(Option_t* opt) const
    } else if(RunNumber() != 0) {
       str << "\t\tRunNumber:          " << std::setw(5) << RunNumber() << std::endl;
       str << "\t\tSubRunNumbers:      " << std::setw(3) << FirstSubRunNumber() << "-" << std::setw(3) << LastSubRunNumber() << std::endl;
-   } else {
+   } else if(FirstRunNumber() != LastRunNumber()) {
       str << "\t\tRunNumbers:         " << std::setw(5) << FirstRunNumber() << "-" << std::setw(5) << LastRunNumber() << std::endl;
-      str << "\t\tMissing runs:       " << ListOfMissingRuns() << std::endl;
-   }
+		str << "\t\tMissing runs:       " << ListOfMissingRuns() << std::endl;
+   } else {
+      str << "\t\tRunNumbers:         " << std::setw(5) << fRunList.begin()->first << "-" << std::setw(5) << fRunList.rbegin()->first << std::endl;
+		str << "\t\tMissing runs:       " << ListOfMissingRuns() << std::endl;
+	}
    str << std::setfill(' ');
    if(RunStart() != 0 && RunStop() != 0) {
       str << "\t\tRunStart:           " << asctime(&runStart);
@@ -389,17 +392,15 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
 {
    // add new run to list of runs (and check if the current run needs to be added)
    if(fRunList.empty()) {
-      std::pair<int, int> currentPair = std::make_pair(fRunNumber, fSubRunNumber);
-      fRunList.push_back(currentPair);
+      fRunList.emplace(fRunNumber, fSubRunNumber);
    }
    std::pair<int, int> newPair = std::make_pair(runinfo->fRunNumber, runinfo->fSubRunNumber);
    // check for dual entries
-   if(std::find(fRunList.begin(), fRunList.end(), newPair) != fRunList.end()) {
+   if(fRunList.find(newPair) != fRunList.end()) {
       std::cerr << DYELLOW << "Warning, adding run " << std::setfill('0') << std::setw(5) << newPair.first << "_" << std::setw(3) << newPair.second << std::setfill(' ') << " again!" << RESET_COLOR << std::endl;
       return;
    }
-   fRunList.push_back(newPair);
-   std::sort(fRunList.begin(), fRunList.end());
+   fRunList.insert(newPair);
 
    if(verbose) { std::cout << "adding run " << runinfo->fRunNumber << ", sub run " << runinfo->fSubRunNumber << " to run " << fRunNumber << ", sub run " << fSubRunNumber << std::endl; }
    // add the run length together
@@ -496,7 +497,7 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
       // sub run number is only meaningful if it's the only sub run
       fSubRunNumber = -1;
    } else {
-      // we have the same run with a range of sub-runs already added, so check if this once fits at the end or the beginning
+      // we have the same run with a range of sub-runs already added, so check if this one fits at the end or the beginning
       if(runinfo->fSubRunNumber + 1 == fFirstSubRunNumber) {
          if(verbose) { std::cout << "found another sub run (" << runinfo->fSubRunNumber << ") before first sub run (" << fFirstSubRunNumber << ")" << std::endl; }
          // use runinfo as first run
@@ -536,16 +537,16 @@ std::string TRunInfo::ListOfMissingRuns() const
    /// If no runs are missing prints "none".
    std::ostringstream result;
 
-   // loop over all runs between the first and the last one (we know that these two are included)
-   // and check if the first subrun is in the list of runs
-   for(int run = fFirstRunNumber + 1; run < fLastRunNumber; ++run) {
-      if(std::find(fRunList.begin(), fRunList.end(), std::make_pair(run, 0)) == fRunList.end()) {
-         if(!result.str().empty()) {
-            result << ", ";
-         }
-         result << std::setw(5) << std::setfill('0') << run;
-      }
-   }
+	// loop over all runs between the first and the last one (we know that these two are included)
+	// and check if the run is in the list of runs (or any subrun that is part of this run)
+	for(int run = fRunList.begin()->first; run < fRunList.rbegin()->first; ++run) {
+		if(std::find_if(fRunList.begin(), fRunList.end(), [&run](std::pair<int, int> i) { return run == i.first; }) == fRunList.end()) {
+			if(!result.str().empty()) {
+				result<<", ";
+			}
+			result<<std::setw(5)<<std::setfill('0')<<run;
+		}
+	}
 
    // if we found no missing runs, we print "none"
    if(result.str().empty()) {
