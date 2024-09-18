@@ -184,8 +184,8 @@ public:
    static void RemoveBadCycle(int cycle);
    static bool IsBadCycle(int cycle);
 
-   void PrintRunList() const;
-	std::string ListOfMissingRuns() const;
+   void        PrintRunList() const;
+   std::string ListOfMissingRuns() const;
 
    static std::string CreateLabel(bool quiet = false);
 

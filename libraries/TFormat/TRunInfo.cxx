@@ -533,9 +533,9 @@ void TRunInfo::PrintRunList() const
 
 std::string TRunInfo::ListOfMissingRuns() const
 {
-	/// Outputs a comma separated list of all runs missing between fFirstRunNumber and fLastRunNumber.
-	/// If no runs are missing prints "none".
-	std::ostringstream result;
+   /// Outputs a comma separated list of all runs missing between fFirstRunNumber and fLastRunNumber.
+   /// If no runs are missing prints "none".
+   std::ostringstream result;
 
 	// loop over all runs between the first and the last one (we know that these two are included)
 	// and check if the run is in the list of runs (or any subrun that is part of this run)
@@ -548,12 +548,12 @@ std::string TRunInfo::ListOfMissingRuns() const
 		}
 	}
 
-	// if we found no missing runs, we print "none"
-	if(result.str().empty()) {
-		return {"none"};
-	}
+   // if we found no missing runs, we print "none"
+   if(result.str().empty()) {
+      return {"none"};
+   }
 
-	return result.str();
+   return result.str();
 }
 
 std::string TRunInfo::CreateLabel(bool quiet)

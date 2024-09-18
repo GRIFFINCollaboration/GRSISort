@@ -96,7 +96,7 @@ void TUserSettings::ParseValue(const std::string& name, const std::string& value
    // try and parse as bool: convert a copy to lower case and use stringstream with std::boolalpha
    std::string copy = value;
    std::transform(copy.begin(), copy.end(), copy.begin(), ::tolower);
-   bool              boolVal = false;
+   bool               boolVal = false;
    std::istringstream str(copy);
    str >> std::boolalpha >> boolVal;
    if(str.good()) {
