@@ -6,6 +6,7 @@
 
 #include "TGRSIOptions.h"
 #include "TGRSIUtilities.h"
+#include "TRunInfo.h"
 
 // redeclare dlsym to be a function returning a function pointer instead of void *
 extern "C" void* (*dlsym(void* handle, const char* symbol))();
@@ -63,4 +64,6 @@ void TParserLibrary::Load()
    }
    fInitLibrary();
    std::cout << "\tUsing library " << TGRSIOptions::Get()->ParserLibrary() << " version " << fLibraryVersion() << std::endl;
+	TRunInfo::SetLibraryVersion(fLibraryVersion());
+	TRunInfo::SetLibraryPath(TGRSIOptions::Get()->ParserLibrary());
 }

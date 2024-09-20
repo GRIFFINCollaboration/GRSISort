@@ -12,11 +12,6 @@
 #include "GVersion.h"
 #include "TGRSIUtilities.h"
 
-std::string TRunInfo::fVersion;
-std::string TRunInfo::fFullVersion;
-std::string TRunInfo::fDate;
-std::string TRunInfo::fLibraryVersion;
-
 Bool_t TRunInfo::ReadInfoFromFile(TFile* tempf)
 {
    TDirectory* savdir = gDirectory;
@@ -95,10 +90,12 @@ void TRunInfo::Print(Option_t* opt) const
       str << "\t\tSubRunNumbers:      " << std::setw(3) << FirstSubRunNumber() << "-" << std::setw(3) << LastSubRunNumber() << std::endl;
    } else if(FirstRunNumber() != LastRunNumber()) {
       str << "\t\tRunNumbers:         " << std::setw(5) << FirstRunNumber() << "-" << std::setw(5) << LastRunNumber() << std::endl;
-		str << "\t\tMissing runs:       " << ListOfMissingRuns() << std::endl;
-   } else {
+		str << "\t\tNo missing runs" << std::endl;
+   } else if(!fRunList.empty()) {
       str << "\t\tRunNumbers:         " << std::setw(5) << fRunList.begin()->first << "-" << std::setw(5) << fRunList.rbegin()->first << std::endl;
 		str << "\t\tMissing runs:       " << ListOfMissingRuns() << std::endl;
+	} else {
+		str << "\t\tNo runs in list?" << std::endl;
 	}
    str << std::setfill(' ');
    if(RunStart() != 0 && RunStop() != 0) {
@@ -176,8 +173,7 @@ void TRunInfo::SetAnalysisTreeBranches(TTree*)
 
 Bool_t TRunInfo::ReadInfoFile(const char* filename)
 {
-   // Read in a run info file. These files have the extension .info.
-   // An example can be found in the "examples" directory.
+   /// Read in a run info file. These files have the extension .info.
    std::string infilename;
    infilename.append(filename);
    std::cout << "Reading info from file: " << CYAN << filename << RESET_COLOR << std::endl;
@@ -493,6 +489,8 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
          // with multiple non-sequential subruns added, the sub run number and start/stop have no meaning anymore
          fRunStart = 0.;
          fRunStop  = 0.;
+         fFirstSubRunNumber = -1;
+         fLastSubRunNumber  = -1;
       }
       // sub run number is only meaningful if it's the only sub run
       fSubRunNumber = -1;
@@ -556,6 +554,17 @@ std::string TRunInfo::ListOfMissingRuns() const
    return result.str();
 }
 
+void TRunInfo::PrintVersion() const
+{
+   if(fVersion.empty()) {
+      std::cout << YELLOW << "Unknown version, this file was probably generated with TRunInfo version 17 or older" << RESET_COLOR << std::endl;
+   } else {
+      std::cout << "This file was generated with GRSISort version " << fVersion << " (" << fFullVersion << ")" << std::endl
+                << "From " << fDate << std::endl
+                << "Using the parser library version " << fLibraryVersion << " from " << fLibraryPath << std::endl;
+   }
+}
+
 std::string TRunInfo::CreateLabel(bool quiet)
 {
    /// This function creates a label/string based on the run number and the subrun number.
@@ -579,3 +588,37 @@ std::string TRunInfo::CreateLabel(bool quiet)
 
    return result;
 }
+
+//void TRunInfo::Streamer(TBuffer &R__b)
+//{
+//   /// Stream an object of class TRunInfo.
+//	/// Explicitly writes and reads the static members as well!
+//
+//   if(R__b.IsReading()) {
+//      R__b.ReadClassBuffer(TRunInfo::Class(),this);
+//		Version_t R__v = R__b.ReadVersion();
+//		std::cout << "Got R__v = " << R__v << std::endl;
+//		if(R__v > 17) {
+//			R__b.ReadStdString(fVersion);
+//			R__b.ReadStdString(fFullVersion);
+//			R__b.ReadStdString(fDate);
+//			R__b.ReadStdString(fLibraryVersion);
+//			R__b.ReadStdString(fLibraryPath);
+//		} else {
+//			fVersion = "unknown";
+//			fFullVersion = "unknown";
+//			fDate = "unknown";
+//			fLibraryVersion = "unknown";
+//			fLibraryPath = "unknown";
+//		}
+//	} else {
+//		R__b.WriteClassBuffer(TRunInfo::Class(),this);
+//		R__b.WriteVersion(TRunInfo::Class(), true);
+//		R__b.WriteStdString(fVersion);
+//		R__b.WriteStdString(fFullVersion);
+//		R__b.WriteStdString(fDate);
+//		R__b.WriteStdString(fLibraryVersion);
+//		R__b.WriteStdString(fLibraryPath);
+//	}
+//}
+
