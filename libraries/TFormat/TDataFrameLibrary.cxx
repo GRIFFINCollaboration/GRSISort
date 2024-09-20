@@ -82,7 +82,7 @@ void TDataFrameLibrary::Compile(std::string& path, const size_t& dot, const size
    /// \brief
    /// Try and compile the provided .cxx file into a shared object library using the provided
    /// path, position of the last dot, and the position of the last slash.
-   /// \detail
+   /// \details
    /// The name of the parser library used is determined from it's path and used to add
    /// `grsiconfig --<parser library name>-cflags` to the compile command.
    /// Other flags used are "-c -fPIC -g", `root-config --cflags --glibs`, and the directory

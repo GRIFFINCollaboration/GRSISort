@@ -34,8 +34,10 @@ const char* const nulFileName = "/dev/null";
 ///
 /// \class TGRSIProof
 ///
-/// This Class allows proof to work with GRSI
-///
+/// This class allows proof to work with GRSI
+/// \deprecated
+/// Since PROOF is deprecated it is recommended to use TGRSIFrame
+/// instead.
 ///
 /////////////////////////////////////////////////////////////////
 

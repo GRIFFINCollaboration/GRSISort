@@ -1,7 +1,9 @@
 #include "TGRSIFunctions.h"
 
 // Without this macro the THtml doc for TGRSIFunctions can't be generated
+/// \cond NAMESPACEIMP
 NamespaceImp(TGRSIFunctions)
+/// \endcond
 
 ///////////////////////////////////////////////////////////////////////
 ///
