@@ -497,4 +497,3 @@ void TCalibrationGraphSet::Print(Option_t* opt) const
    std::cout << std::endl;
    std::cout << "---------------------" << std::endl;
 }
-

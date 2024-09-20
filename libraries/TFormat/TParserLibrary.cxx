@@ -64,6 +64,6 @@ void TParserLibrary::Load()
    }
    fInitLibrary();
    std::cout << "\tUsing library " << TGRSIOptions::Get()->ParserLibrary() << " version " << fLibraryVersion() << std::endl;
-	TRunInfo::SetLibraryVersion(fLibraryVersion());
-	TRunInfo::SetLibraryPath(TGRSIOptions::Get()->ParserLibrary());
+   TRunInfo::SetLibraryVersion(fLibraryVersion());
+   TRunInfo::SetLibraryPath(TGRSIOptions::Get()->ParserLibrary());
 }

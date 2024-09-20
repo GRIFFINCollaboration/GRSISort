@@ -90,13 +90,13 @@ void TRunInfo::Print(Option_t* opt) const
       str << "\t\tSubRunNumbers:      " << std::setw(3) << FirstSubRunNumber() << "-" << std::setw(3) << LastSubRunNumber() << std::endl;
    } else if(FirstRunNumber() != LastRunNumber()) {
       str << "\t\tRunNumbers:         " << std::setw(5) << FirstRunNumber() << "-" << std::setw(5) << LastRunNumber() << std::endl;
-		str << "\t\tNo missing runs" << std::endl;
+      str << "\t\tNo missing runs" << std::endl;
    } else if(!fRunList.empty()) {
       str << "\t\tRunNumbers:         " << std::setw(5) << fRunList.begin()->first << "-" << std::setw(5) << fRunList.rbegin()->first << std::endl;
-		str << "\t\tMissing runs:       " << ListOfMissingRuns() << std::endl;
-	} else {
-		str << "\t\tNo runs in list?" << std::endl;
-	}
+      str << "\t\tMissing runs:       " << ListOfMissingRuns() << std::endl;
+   } else {
+      str << "\t\tNo runs in list?" << std::endl;
+   }
    str << std::setfill(' ');
    if(RunStart() != 0 && RunStop() != 0) {
       str << "\t\tRunStart:           " << asctime(&runStart);
@@ -487,8 +487,8 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
       } else {
          if(verbose) { std::cout << "found second sub run (" << runinfo->fSubRunNumber << ") non-consecutive to current sub run (" << fSubRunNumber << ")" << std::endl; }
          // with multiple non-sequential subruns added, the sub run number and start/stop have no meaning anymore
-         fRunStart = 0.;
-         fRunStop  = 0.;
+         fRunStart          = 0.;
+         fRunStop           = 0.;
          fFirstSubRunNumber = -1;
          fLastSubRunNumber  = -1;
       }
@@ -535,16 +535,16 @@ std::string TRunInfo::ListOfMissingRuns() const
    /// If no runs are missing prints "none".
    std::ostringstream result;
 
-	// loop over all runs between the first and the last one (we know that these two are included)
-	// and check if the run is in the list of runs (or any subrun that is part of this run)
-	for(int run = fRunList.begin()->first; run < fRunList.rbegin()->first; ++run) {
-		if(std::find_if(fRunList.begin(), fRunList.end(), [&run](std::pair<int, int> i) { return run == i.first; }) == fRunList.end()) {
-			if(!result.str().empty()) {
-				result<<", ";
-			}
-			result<<std::setw(5)<<std::setfill('0')<<run;
-		}
-	}
+   // loop over all runs between the first and the last one (we know that these two are included)
+   // and check if the run is in the list of runs (or any subrun that is part of this run)
+   for(int run = fRunList.begin()->first; run < fRunList.rbegin()->first; ++run) {
+      if(std::find_if(fRunList.begin(), fRunList.end(), [&run](std::pair<int, int> i) { return run == i.first; }) == fRunList.end()) {
+         if(!result.str().empty()) {
+            result << ", ";
+         }
+         result << std::setw(5) << std::setfill('0') << run;
+      }
+   }
 
    // if we found no missing runs, we print "none"
    if(result.str().empty()) {
@@ -621,4 +621,3 @@ std::string TRunInfo::CreateLabel(bool quiet)
 //		R__b.WriteStdString(fLibraryPath);
 //	}
 //}
-
