@@ -58,6 +58,7 @@ var NAVTREE =
       [ "Running", "md__2github_2workspace_2_r_e_a_d_m_e.html#autotoc_md27", null ],
       [ "Adding Documentation", "md__2github_2workspace_2_r_e_a_d_m_e.html#autotoc_md29", null ]
     ] ],
+    [ "Deprecated List", "deprecated.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -164,10 +165,10 @@ var NAVTREEINDEX =
 "class_t_user_settings.html#af2104c9df363c55f4b26a76696e59c1b",
 "class_time_walk_selector.html#a613ab2575ae93c6001aa09235c454546",
 "classpygui_1_1mainwindow_1_1_main_window.html#ad225a57e85eb38f4c534694910a66c09",
-"dir_c27fb4ff404115d281d3c6aa730dcb72.html",
-"group___fitting.html#ga833dd6f72361bc097f1d072083509192",
-"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md6",
-"struct_t_pulse_analyzer_1_1_par_par.html#aff443e99834b912c9e416fbdaccfb54b"
+"dir_bc0718b08fb2015b8e59c47b2805f60c.html",
+"group___fitting.html#ga806da809d6a3b393d1173a5d44bd069e",
+"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md5",
+"struct_t_pulse_analyzer_1_1_par_par.html#aec98548aba918e5031d2099f4f762179"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
