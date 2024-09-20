@@ -1,5 +1,15 @@
 var NAVTREEINDEX62 =
 {
+"class_t_trific_hit.html":[7,2,71],
+"class_t_trific_hit.html#a02b70f42273d716fc29b8fa873a31a9a":[7,2,71,65],
+"class_t_trific_hit.html#a06b41a2a8e0f76390a7463a8b11509aa":[7,2,71,52],
+"class_t_trific_hit.html#a0e3ad92b0bfaca380c610918e7b8b42a":[7,2,71,25],
+"class_t_trific_hit.html#a11c24388428c49033d914f9cebf75e98":[7,2,71,62],
+"class_t_trific_hit.html#a12b4871dfd44961593213829d2183001":[7,2,71,79],
+"class_t_trific_hit.html#a13479a7a21fd787aba4c49c7aea6d7ff":[7,2,71,46],
+"class_t_trific_hit.html#a1b7038426ef30c3b9668a4d565d4654a":[7,2,71,40],
+"class_t_trific_hit.html#a1cb218ee8b90c78838a17041b1ffe46d":[7,2,71,3],
+"class_t_trific_hit.html#a1e7c8b23b7583c203811aa3a4bbb0131":[7,2,71,75],
 "class_t_trific_hit.html#a20f954f9a2a18f4a9145a48624bd031a":[7,2,71,19],
 "class_t_trific_hit.html#a242b756d34c5283429d5973799602bb8":[7,2,71,57],
 "class_t_trific_hit.html#a292478d4d1ea2b5b1ddeab493e11b79e":[7,2,71,42],
@@ -239,15 +249,5 @@ var NAVTREEINDEX62 =
 "class_t_user_settings.html#addda5353c5c7f6b1046667dc6586ab5e":[7,11,61,10],
 "class_t_user_settings.html#ae0dae7b83804282987657dc574931bf3":[7,11,61,0],
 "class_t_user_settings.html#ae37f88713d46fb570cec2abf9bdc081c":[7,11,61,23],
-"class_t_user_settings.html#aed7e02ecd63886b362907f05f0158999":[7,11,61,7],
-"class_t_user_settings.html#af2104c9df363c55f4b26a76696e59c1b":[7,11,61,11],
-"class_t_user_settings.html#af44a4908db1bd4a8454d8e38882b6ef1":[7,11,61,6],
-"class_t_user_settings.html#af675568ef70c832a29e27589eed4740f":[7,11,61,21],
-"class_t_user_settings.html#afeb78ca45dd7981d35476507fa0a4d20":[7,11,61,25],
-"class_t_virtual_decay.html":[7,3,26],
-"class_t_virtual_decay.html#a19f3f304a77e1cbfd85c65b127cebd9f":[7,3,26,5],
-"class_t_virtual_decay.html#a302f214579a9e15ab8c3a9b1db85d2fb":[7,3,26,8],
-"class_t_virtual_decay.html#a5dffe1f48c859829ebf8a6dc8570b4d2":[7,3,26,4],
-"class_t_virtual_decay.html#a81706e93712fc90c912fa41687cd5e95":[7,3,26,2],
-"class_t_virtual_decay.html#a84824b74a241d12b546ac6eadd8c5865":[7,3,26,3]
+"class_t_user_settings.html#aed7e02ecd63886b362907f05f0158999":[7,11,61,7]
 };

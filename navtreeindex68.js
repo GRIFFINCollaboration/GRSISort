@@ -1,5 +1,15 @@
 var NAVTREEINDEX68 =
 {
+"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md6":[0,5],
+"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md7":[0,5,0],
+"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md8":[0,5,1],
+"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md9":[0,5,2],
+"md__2github_2workspace_2_c_o_n_t_r_i_b_u_t_i_n_g.html":[1],
+"md__2github_2workspace_2_c_o_n_t_r_i_b_u_t_i_n_g.html#autotoc_md13":[1,0],
+"md__2github_2workspace_2_c_o_n_t_r_i_b_u_t_i_n_g.html#autotoc_md14":[1,1],
+"md__2github_2workspace_2_g_r_s_i_data_2_r_e_a_d_m_e.html":[2],
+"md__2github_2workspace_2_h_i_l_data_2_r_e_a_d_m_e.html":[3],
+"md__2github_2workspace_2_h_i_l_data_2_r_e_a_d_m_e.html#autotoc_md17":[3,0],
 "md__2github_2workspace_2_h_i_l_data_2_r_e_a_d_m_e.html#autotoc_md18":[3,1],
 "md__2github_2workspace_2_ill_data_2_r_e_a_d_m_e.html":[4],
 "md__2github_2workspace_2_ill_data_2_r_e_a_d_m_e.html#autotoc_md20":[4,0],
@@ -239,15 +249,5 @@ var NAVTREEINDEX68 =
 "struct_t_pulse_analyzer_1_1_par_par.html#a8608bade82b83d14e7f85e611feba0dd":[7,3,19,1,1],
 "struct_t_pulse_analyzer_1_1_par_par.html#ac09896fc6e1627c4686851ff778b392d":[7,3,19,1,3],
 "struct_t_pulse_analyzer_1_1_par_par.html#ae180e938350ca354a42c27e895bf99b2":[7,3,19,1,0],
-"struct_t_pulse_analyzer_1_1_par_par.html#aec98548aba918e5031d2099f4f762179":[7,3,19,1,4],
-"struct_t_pulse_analyzer_1_1_par_par.html#aff443e99834b912c9e416fbdaccfb54b":[7,3,19,1,2],
-"struct_t_pulse_analyzer_1_1_shape_par.html":[7,3,19,2],
-"struct_t_pulse_analyzer_1_1_shape_par.html#a023837f719cc03b89d2fca97804a1171":[7,3,19,2,2],
-"struct_t_pulse_analyzer_1_1_shape_par.html#a15a7f2b042f70322e52b70f52a7fd69d":[7,3,19,2,8],
-"struct_t_pulse_analyzer_1_1_shape_par.html#a19bf8779e24c4b03fa1f24cdfa573912":[7,3,19,2,1],
-"struct_t_pulse_analyzer_1_1_shape_par.html#a298240a19dbb023d8f606655ad90d218":[7,3,19,2,9],
-"struct_t_pulse_analyzer_1_1_shape_par.html#a37e5035d8520e50e392eb80f07201898":[7,3,19,2,3],
-"struct_t_pulse_analyzer_1_1_shape_par.html#a403ffd613dd5c6bdeb2fca2172c65695":[7,3,19,2,7],
-"struct_t_pulse_analyzer_1_1_shape_par.html#a40c8954660708df6ee30f9df70cec092":[7,3,19,2,0],
-"struct_t_pulse_analyzer_1_1_shape_par.html#a479d8ab775ee00e65bcc4815cd2a71ef":[7,3,19,2,4]
+"struct_t_pulse_analyzer_1_1_par_par.html#aec98548aba918e5031d2099f4f762179":[7,3,19,1,4]
 };

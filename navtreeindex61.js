@@ -1,5 +1,15 @@
 var NAVTREEINDEX61 =
 {
+"class_t_tip_hit.html#a3ac4ee4031cb9acabec54a053438cec3":[7,2,69,60],
+"class_t_tip_hit.html#a3c925c5bd01fd15d0428d21427e00abf":[7,2,69,14],
+"class_t_tip_hit.html#a403df2f2b7723bc84d83ea1060ca5119":[7,2,69,36],
+"class_t_tip_hit.html#a421b6c79b6097bd9cff54168e2f5382f":[7,2,69,58],
+"class_t_tip_hit.html#a42b0d6f09e24f72da18a6feacc789c60":[7,2,69,104],
+"class_t_tip_hit.html#a45f6f286087d7dcbebfd38313f09892b":[7,2,69,49],
+"class_t_tip_hit.html#a466561bf14347163f79fe1de8cdc54ab":[7,2,69,71],
+"class_t_tip_hit.html#a46acb335b88185d2404f81410064f494":[7,2,69,17],
+"class_t_tip_hit.html#a48306223fe08f56ea475cf3d52a7434e":[7,2,69,6],
+"class_t_tip_hit.html#a48f0f2fa2ad09c049fede0e50d42a87f":[7,2,69,56],
 "class_t_tip_hit.html#a49a028ad730d54e161eb580bbcabc813":[7,2,69,87],
 "class_t_tip_hit.html#a49b72b1e056acaeb16ef53750ea435c5":[7,2,69,48],
 "class_t_tip_hit.html#a4a40d8d887b7014851d2886a5e3e2cc0":[7,2,69,59],
@@ -239,15 +249,5 @@ var NAVTREEINDEX61 =
 "class_t_trific.html#aef9dd85da3cce64eb077e4811a7f37d2":[7,2,70,46],
 "class_t_trific.html#af83ad943618a30f7d1639675e18fc5b8":[7,2,70,6],
 "class_t_trific.html#af83f25009bbee633190904900ae02ef2":[7,2,70,15],
-"class_t_trific.html#afda01aa85d56c207346d176a412f05a1":[7,2,70,28],
-"class_t_trific_hit.html":[7,2,71],
-"class_t_trific_hit.html#a02b70f42273d716fc29b8fa873a31a9a":[7,2,71,65],
-"class_t_trific_hit.html#a06b41a2a8e0f76390a7463a8b11509aa":[7,2,71,52],
-"class_t_trific_hit.html#a0e3ad92b0bfaca380c610918e7b8b42a":[7,2,71,25],
-"class_t_trific_hit.html#a11c24388428c49033d914f9cebf75e98":[7,2,71,62],
-"class_t_trific_hit.html#a12b4871dfd44961593213829d2183001":[7,2,71,79],
-"class_t_trific_hit.html#a13479a7a21fd787aba4c49c7aea6d7ff":[7,2,71,46],
-"class_t_trific_hit.html#a1b7038426ef30c3b9668a4d565d4654a":[7,2,71,40],
-"class_t_trific_hit.html#a1cb218ee8b90c78838a17041b1ffe46d":[7,2,71,3],
-"class_t_trific_hit.html#a1e7c8b23b7583c203811aa3a4bbb0131":[7,2,71,75]
+"class_t_trific.html#afda01aa85d56c207346d176a412f05a1":[7,2,70,28]
 };

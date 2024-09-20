@@ -1,5 +1,15 @@
 var NAVTREEINDEX67 =
 {
+"group___fitting.html#ga833dd6f72361bc097f1d072083509192":[7,3,40],
+"group___fitting.html#ga83b7a22bc216f3b75aca356b077d3eb0":[7,3,158],
+"group___fitting.html#ga84cada77a1052e96226db9e6a8b40e57":[7,3,147],
+"group___fitting.html#ga857ac41bd02ab1d4b11e1522238b03e9":[7,3,144],
+"group___fitting.html#ga88509172863f396d1aee9ef80aef584e":[7,3,41],
+"group___fitting.html#ga8b8e45c0dfdb0c1a65c0548bb02fbf73":[7,3,84],
+"group___fitting.html#ga8ceb9c2cb4365f8e9491c5d6a4ff878c":[7,3,73],
+"group___fitting.html#ga8e7741f242e11d33fedf292b92aeed12":[7,3,136],
+"group___fitting.html#ga8ec3e18b64305a696bd20256832ecf8d":[7,3,82],
+"group___fitting.html#ga96304d7a860b86f5422dade532842f23":[7,3,35],
 "group___fitting.html#ga966bed664a4ad6ec1b41c6baaa58dd80":[7,3,38],
 "group___fitting.html#ga9c3a61beb5a07fc38d2f49dbf252c02f":[7,3,55],
 "group___fitting.html#ga9d0c1a68537a31cf49ef8db9bf2b5d9e":[7,3,135],
@@ -239,15 +249,5 @@ var NAVTREEINDEX67 =
 "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md2":[0,1],
 "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md3":[0,2],
 "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md4":[0,3],
-"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md5":[0,4],
-"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md6":[0,5],
-"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md7":[0,5,0],
-"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md8":[0,5,1],
-"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md9":[0,5,2],
-"md__2github_2workspace_2_c_o_n_t_r_i_b_u_t_i_n_g.html":[1],
-"md__2github_2workspace_2_c_o_n_t_r_i_b_u_t_i_n_g.html#autotoc_md13":[1,0],
-"md__2github_2workspace_2_c_o_n_t_r_i_b_u_t_i_n_g.html#autotoc_md14":[1,1],
-"md__2github_2workspace_2_g_r_s_i_data_2_r_e_a_d_m_e.html":[2],
-"md__2github_2workspace_2_h_i_l_data_2_r_e_a_d_m_e.html":[3],
-"md__2github_2workspace_2_h_i_l_data_2_r_e_a_d_m_e.html#autotoc_md17":[3,0]
+"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md5":[0,4]
 };

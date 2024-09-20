@@ -1,5 +1,15 @@
 var NAVTREEINDEX69 =
 {
+"struct_t_pulse_analyzer_1_1_par_par.html#aff443e99834b912c9e416fbdaccfb54b":[7,3,19,1,2],
+"struct_t_pulse_analyzer_1_1_shape_par.html":[7,3,19,2],
+"struct_t_pulse_analyzer_1_1_shape_par.html#a023837f719cc03b89d2fca97804a1171":[7,3,19,2,2],
+"struct_t_pulse_analyzer_1_1_shape_par.html#a15a7f2b042f70322e52b70f52a7fd69d":[7,3,19,2,8],
+"struct_t_pulse_analyzer_1_1_shape_par.html#a19bf8779e24c4b03fa1f24cdfa573912":[7,3,19,2,1],
+"struct_t_pulse_analyzer_1_1_shape_par.html#a298240a19dbb023d8f606655ad90d218":[7,3,19,2,9],
+"struct_t_pulse_analyzer_1_1_shape_par.html#a37e5035d8520e50e392eb80f07201898":[7,3,19,2,3],
+"struct_t_pulse_analyzer_1_1_shape_par.html#a403ffd613dd5c6bdeb2fca2172c65695":[7,3,19,2,7],
+"struct_t_pulse_analyzer_1_1_shape_par.html#a40c8954660708df6ee30f9df70cec092":[7,3,19,2,0],
+"struct_t_pulse_analyzer_1_1_shape_par.html#a479d8ab775ee00e65bcc4815cd2a71ef":[7,3,19,2,4],
 "struct_t_pulse_analyzer_1_1_shape_par.html#a4fdd467537f11d14af5ea5be46c3e87e":[7,3,19,2,5],
 "struct_t_pulse_analyzer_1_1_shape_par.html#a8c708f9f2ed4a9773036fa2a77e36fe2":[7,3,19,2,6],
 "struct_t_pulse_analyzer_1_1_sin_par.html":[7,3,19,3],

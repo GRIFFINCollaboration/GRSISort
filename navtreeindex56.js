@@ -1,5 +1,15 @@
 var NAVTREEINDEX56 =
 {
+"class_t_tdr_clover_hit.html#a20f954f9a2a18f4a9145a48624bd031a":[7,2,58,20],
+"class_t_tdr_clover_hit.html#a242b756d34c5283429d5973799602bb8":[7,2,58,61],
+"class_t_tdr_clover_hit.html#a26afd8a811a6eb65bc5b8ed55964b320":[7,2,58,21],
+"class_t_tdr_clover_hit.html#a292478d4d1ea2b5b1ddeab493e11b79e":[7,2,58,45],
+"class_t_tdr_clover_hit.html#a2a4a599dd0b1ba9e685aa01229876df6":[7,2,58,2],
+"class_t_tdr_clover_hit.html#a2a4a599dd0b1ba9e685aa01229876df6a30c7a6c70a2592413069d0a46e2309d4":[7,2,58,2,2],
+"class_t_tdr_clover_hit.html#a2a4a599dd0b1ba9e685aa01229876df6a34bdbffdb1c0e1b603f58fc0d49548b6":[7,2,58,2,4],
+"class_t_tdr_clover_hit.html#a2a4a599dd0b1ba9e685aa01229876df6a383fd110f350f2b35dbc1b245a216d19":[7,2,58,2,3],
+"class_t_tdr_clover_hit.html#a2a4a599dd0b1ba9e685aa01229876df6ac46818fff0cdb9892bdca69fca363333":[7,2,58,2,0],
+"class_t_tdr_clover_hit.html#a2a4a599dd0b1ba9e685aa01229876df6ac8f4925a383e3bfc8c12746da1370f00":[7,2,58,2,1],
 "class_t_tdr_clover_hit.html#a2d0ccf28cbe0792ebdf0987d47c14997":[7,2,58,44],
 "class_t_tdr_clover_hit.html#a2d7c1bfc72cd014ac242299281fc6eff":[7,2,58,11],
 "class_t_tdr_clover_hit.html#a3051f50c2e5a1ba895c3b11e8c1b00a3":[7,2,58,31],
@@ -239,15 +249,5 @@ var NAVTREEINDEX56 =
 "class_t_tdr_event.html#aa04ab7087f2b7d736a5375cffc0bf97c":[7,11,57,0],
 "class_t_tdr_event.html#abd32a58d67fcd171f331379b34f813fb":[7,11,57,12],
 "class_t_tdr_event.html#adbbde5a95a3112b82ae3fd3d982b83e8":[7,11,57,7],
-"class_t_tdr_event.html#adc9616a1b58d6a6a3eea82bef2e61a59":[7,11,57,13],
-"class_t_tdr_event.html#aee7cefabac44c16414aeb71946dd24ab":[7,11,57,1],
-"class_t_tdr_event.html#af342ce6b9fff1de3c8a4923539f7bbda":[7,11,57,15],
-"class_t_tdr_event.html#afa5d48ce1e7a57fcd0022c3a5b4b681e":[7,11,57,5],
-"class_t_tdr_event.html#afd56df9a416a04f79b77269090ec0ca6":[7,11,57,2],
-"class_t_tdr_file.html":[7,11,59],
-"class_t_tdr_file.html#a07b8745110f5b35e60ccec07070ac557":[7,11,59,26],
-"class_t_tdr_file.html#a14700d47abc1ec2c587b15bb4a931a84":[7,11,59,2],
-"class_t_tdr_file.html#a20258d00ba10388c3c99df42ffb4ec12":[7,11,59,20],
-"class_t_tdr_file.html#a2fba26dd0195e4870ff20b4a4db9b247":[7,11,59,8],
-"class_t_tdr_file.html#a2feb977f7f28aa5fc8f515e999ce35f6":[7,11,59,7]
+"class_t_tdr_event.html#adc9616a1b58d6a6a3eea82bef2e61a59":[7,11,57,13]
 };
