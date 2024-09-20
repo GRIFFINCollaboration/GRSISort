@@ -10,8 +10,8 @@
 #pragma link C++ class TBGSubtraction + ;
 #pragma link C++ class TCalibrateDescant + ;
 #pragma link C++ class TSourceCalibration + ;
-#pragma link C++ class TCalibrationGraph - ;
+#pragma link C++ class TCalibrationGraph + ;
 #pragma link C++ class std::vector < TCalibrationGraph*> + ;
-#pragma link C++ class TCalibrationGraphSet - ;
+#pragma link C++ class TCalibrationGraphSet + ;
 
 #endif
