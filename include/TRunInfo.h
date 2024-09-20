@@ -35,7 +35,7 @@
 /// When subruns/runs are added together using gadd or when multiple
 /// subruns/runs are used in grsiframe, their TRunInfos get merged.
 ///
-/// If all files are from one run, and the subruns are added in order 
+/// If all files are from one run, and the subruns are added in order
 /// without any missing, the information changes to reflect this:
 /// \code
 /// GRSI [0] TRunInfo::Get()->Print()
@@ -77,7 +77,7 @@
 /// 		RunStop:            Fri Dec 15 19:06:11 2023
 /// 		RunLength:          101306 s
 /// \endcode
-/// 
+///
 /// If however some runs in between are missing, it will say
 /// \code
 /// Singleton 0x55919586a8c0 was read from test50_51_54.root
@@ -88,13 +88,13 @@
 /// 		Combined RunLength: 10794 s
 /// \endcode
 ///
-/// From version 18 on TRunInfo also stores information about 
+/// From version 18 on TRunInfo also stores information about
 /// the GRSISort version used to sort the data.
-/// This can be accessed via 
+/// This can be accessed via
 /// \code
 /// TRunInfo::Get()->PrintVersion();
 /// \endcode
-/// 
+///
 /// Using a newer version of grsiframe on data created with an
 /// older version of GRSISort should not overwrite the version
 /// reported.
@@ -264,7 +264,7 @@ public:
 
    void        PrintRunList() const;
    std::string ListOfMissingRuns() const;
-	void PrintVersion() const;
+   void        PrintVersion() const;
 
    static std::string CreateLabel(bool quiet = false);
 
