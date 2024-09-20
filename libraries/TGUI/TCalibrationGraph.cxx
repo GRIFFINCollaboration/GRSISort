@@ -29,16 +29,6 @@ void TCalibrationGraph::Scale(const double& scale)
 }
 #endif
 
-void TCalibrationGraph::Streamer(TBuffer& R__b)
-{
-   // Stream an object of class TCalibrationGraphSet.
-   if(R__b.IsReading()) {
-      R__b.ReadClassBuffer(TCalibrationGraph::Class(), this);
-   } else {
-      R__b.WriteClassBuffer(TCalibrationGraph::Class(), this);
-   }
-}
-
 TCalibrationGraphSet::TCalibrationGraphSet(TGraphErrors* graph, const std::string& label)
    : fTotalGraph(new TGraphErrors), fTotalResidualGraph(new TGraphErrors)
 {
@@ -508,12 +498,3 @@ void TCalibrationGraphSet::Print(Option_t* opt) const
    std::cout << "---------------------" << std::endl;
 }
 
-void TCalibrationGraphSet::Streamer(TBuffer& R__b)
-{
-   // Stream an object of class TCalibrationGraphSet.
-   if(R__b.IsReading()) {
-      R__b.ReadClassBuffer(TCalibrationGraphSet::Class(), this);
-   } else {
-      R__b.WriteClassBuffer(TCalibrationGraphSet::Class(), this);
-   }
-}

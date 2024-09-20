@@ -20,9 +20,9 @@
 #pragma link C++ class std::vector < TSingleDecay*> + ;
 #pragma link C++ class std::vector < TDecayChain*> + ;
 #pragma link C++ class TDecayChain + ;
-#pragma link C++ class TDecayFit - ;
+#pragma link C++ class TDecayFit + ;
 #pragma link C++ class TDecay + ;
-#pragma link C++ class TVirtualDecay - ;
+#pragma link C++ class TVirtualDecay + ;
 #pragma link C++ class std::map < Int_t, std::vector < TSingleDecay*>> + ;
 
 #pragma link C++ class TLMFitter + ;

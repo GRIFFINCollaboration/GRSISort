@@ -51,16 +51,6 @@ TFitResultPtr TDecayFit::Fit(TH1* hist, Option_t* opt)
    return tmpres;
 }
 
-void TDecayFit::Streamer(TBuffer& R__b)
-{
-   /// Stream an object of class TDecayFit.
-   if(R__b.IsReading()) {
-      R__b.ReadClassBuffer(TDecayFit::Class(), this);
-   } else {
-      R__b.WriteClassBuffer(TDecayFit::Class(), this);
-   }
-}
-
 void TDecayFit::DefaultGraphs()
 {
    fResiduals.SetMarkerStyle(20);   // Filled circle
@@ -114,16 +104,6 @@ void TVirtualDecay::DrawComponents(Option_t* opt, Bool_t)
 {
    std::cout << "Draw components has not been set in " << ClassName() << std::endl;
    Draw(Form("same%s", opt));
-}
-
-void TVirtualDecay::Streamer(TBuffer& R__b)
-{
-   /// Stream an object of class TVirtualDecay.
-   if(R__b.IsReading()) {
-      R__b.ReadClassBuffer(TVirtualDecay::Class(), this);
-   } else {
-      R__b.WriteClassBuffer(TVirtualDecay::Class(), this);
-   }
 }
 
 TSingleDecay::TSingleDecay(TSingleDecay* parent, Double_t tlow, Double_t thigh)
