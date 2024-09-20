@@ -626,8 +626,8 @@ $(document).ready(function(){initNavTree('_t_run_info_8cxx_source.html',''); ini
 <div class="line"><a id="l00487" name="l00487"></a><span class="lineno">  487</span>      } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00488" name="l00488"></a><span class="lineno">  488</span>         <span class="keywordflow">if</span>(verbose) { std::cout &lt;&lt; <span class="stringliteral">&quot;found second sub run (&quot;</span> &lt;&lt; runinfo-&gt;<a class="code hl_variable" href="class_t_run_info.html#afce607cf56f2e0ecf9c82271573f5d96">fSubRunNumber</a> &lt;&lt; <span class="stringliteral">&quot;) non-consecutive to current sub run (&quot;</span> &lt;&lt; <a class="code hl_variable" href="class_t_run_info.html#afce607cf56f2e0ecf9c82271573f5d96">fSubRunNumber</a> &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; std::endl; }</div>
 <div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span>         <span class="comment">// with multiple non-sequential subruns added, the sub run number and start/stop have no meaning anymore</span></div>
-<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>         <a class="code hl_variable" href="class_t_run_info.html#a13780da33e7f3e19321353116e71ae11">fRunStart</a> = 0.;</div>
-<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>         <a class="code hl_variable" href="class_t_run_info.html#a957df27ff211ac9f83b0079600724afd">fRunStop</a>  = 0.;</div>
+<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>         <a class="code hl_variable" href="class_t_run_info.html#a13780da33e7f3e19321353116e71ae11">fRunStart</a>          = 0.;</div>
+<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>         <a class="code hl_variable" href="class_t_run_info.html#a957df27ff211ac9f83b0079600724afd">fRunStop</a>           = 0.;</div>
 <div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span>         <a class="code hl_variable" href="class_t_run_info.html#a08fd5b68ce8ff2982ecf5c5f91b04c4b">fFirstSubRunNumber</a> = -1;</div>
 <div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>         <a class="code hl_variable" href="class_t_run_info.html#a241538b555dae72165d6d795538ec27f">fLastSubRunNumber</a>  = -1;</div>
 <div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span>      }</div>
@@ -683,9 +683,9 @@ $(document).ready(function(){initNavTree('_t_run_info_8cxx_source.html',''); ini
 <div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> run = <a class="code hl_variable" href="class_t_run_info.html#ada7a507dd4e10794edc40ecbddc3ece1">fRunList</a>.begin()-&gt;first; run &lt; <a class="code hl_variable" href="class_t_run_info.html#ada7a507dd4e10794edc40ecbddc3ece1">fRunList</a>.rbegin()-&gt;first; ++run) {</div>
 <div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>      <span class="keywordflow">if</span>(std::find_if(<a class="code hl_variable" href="class_t_run_info.html#ada7a507dd4e10794edc40ecbddc3ece1">fRunList</a>.begin(), <a class="code hl_variable" href="class_t_run_info.html#ada7a507dd4e10794edc40ecbddc3ece1">fRunList</a>.end(), [&amp;run](std::pair&lt;int, int&gt; i) { return run == i.first; }) == <a class="code hl_variable" href="class_t_run_info.html#ada7a507dd4e10794edc40ecbddc3ece1">fRunList</a>.end()) {</div>
 <div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>         <span class="keywordflow">if</span>(!result.str().empty()) {</div>
-<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>            result&lt;&lt;<span class="stringliteral">&quot;, &quot;</span>;</div>
+<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>            result &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
 <div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>         }</div>
-<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>         result&lt;&lt;std::setw(5)&lt;&lt;std::setfill(<span class="charliteral">&#39;0&#39;</span>)&lt;&lt;run;</div>
+<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>         result &lt;&lt; std::setw(5) &lt;&lt; std::setfill(<span class="charliteral">&#39;0&#39;</span>) &lt;&lt; run;</div>
 <div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>      }</div>
 <div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>   }</div>
 <div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span> </div>
@@ -769,7 +769,6 @@ $(document).ready(function(){initNavTree('_t_run_info_8cxx_source.html',''); ini
 <div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span><span class="comment">//    R__b.WriteStdString(fLibraryPath);</span></div>
 <div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span><span class="comment">// }</span></div>
 <div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span><span class="comment">//}</span></div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span> </div>
 <div class="ttc" id="a_globals_8h_html_a59524b4cf113f646696e5955023df6a4"><div class="ttname"><a href="_globals_8h.html#a59524b4cf113f646696e5955023df6a4">DYELLOW</a></div><div class="ttdeci">#define DYELLOW</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00016">Globals.h:16</a></div></div>
 <div class="ttc" id="a_globals_8h_html_a6cd26ccb39c45583e5a1bd90bc2bbb66"><div class="ttname"><a href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a></div><div class="ttdeci">#define DRED</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00018">Globals.h:18</a></div></div>
 <div class="ttc" id="a_globals_8h_html_a82e4da5718eb63f4ce3f51f73cb49232"><div class="ttname"><a href="_globals_8h.html#a82e4da5718eb63f4ce3f51f73cb49232">DBLUE</a></div><div class="ttdeci">#define DBLUE</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00015">Globals.h:15</a></div></div>
@@ -861,7 +860,7 @@ $(document).ready(function(){initNavTree('_t_run_info_8cxx_source.html',''); ini
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_2b08b36851fcb6a7439555c8d93f536c.html">TFormat</a></li><li class="navelem"><a class="el" href="_t_run_info_8cxx.html">TRunInfo.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Sep 20 2024 16:51:41.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Sep 20 2024 16:53:13.</li>
   </ul>
 </div>
 </body>

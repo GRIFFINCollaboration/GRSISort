@@ -139,7 +139,7 @@ $(document).ready(function(){initNavTree('_t_run_info_8h_source.html',''); initR
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">/// When subruns/runs are added together using gadd or when multiple</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">/// subruns/runs are used in grsiframe, their TRunInfos get merged.</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">///</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">/// If all files are from one run, and the subruns are added in order </span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">/// If all files are from one run, and the subruns are added in order</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">/// without any missing, the information changes to reflect this:</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">/// \code</span></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">/// GRSI [0] TRunInfo::Get()-&gt;Print()</span></div>
@@ -181,7 +181,7 @@ $(document).ready(function(){initNavTree('_t_run_info_8h_source.html',''); initR
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">///      RunStop:            Fri Dec 15 19:06:11 2023</span></div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">///      RunLength:          101306 s</span></div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">/// \endcode</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">/// </span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">///</span></div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">/// If however some runs in between are missing, it will say</span></div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">/// \code</span></div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">/// Singleton 0x55919586a8c0 was read from test50_51_54.root</span></div>
@@ -192,13 +192,13 @@ $(document).ready(function(){initNavTree('_t_run_info_8h_source.html',''); initR
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment">///      Combined RunLength: 10794 s</span></div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment">/// \endcode</span></div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">///</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">/// From version 18 on TRunInfo also stores information about </span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">/// From version 18 on TRunInfo also stores information about</span></div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">/// the GRSISort version used to sort the data.</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">/// This can be accessed via </span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">/// This can be accessed via</span></div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment">/// \code</span></div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment">/// TRunInfo::Get()-&gt;PrintVersion();</span></div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment">/// \endcode</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment">/// </span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment">///</span></div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">/// Using a newer version of grsiframe on data created with an</span></div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment">/// older version of GRSISort should not overwrite the version</span></div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">/// reported.</span></div>
@@ -383,7 +383,7 @@ $(document).ready(function(){initNavTree('_t_run_info_8h_source.html',''); initR
 <div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>   <span class="keywordtype">void</span>        <a class="code hl_function" href="class_t_run_info.html#a2c38e367ff9ad6703a9b28ccc5b83d3e">PrintRunList</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>   std::string <a class="code hl_function" href="class_t_run_info.html#a3fdc5c1866e9ae06c717726275193b1f">ListOfMissingRuns</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>   <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_run_info.html#abe83368d782dfd171294ce980fdab449">PrintVersion</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>   <span class="keywordtype">void</span>        <a class="code hl_function" href="class_t_run_info.html#abe83368d782dfd171294ce980fdab449">PrintVersion</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>   <span class="keyword">static</span> std::string <a class="code hl_function" href="class_t_run_info.html#a9f06d6f22dc55728675b4ab716cfdb6d">CreateLabel</a>(<span class="keywordtype">bool</span> quiet = <span class="keyword">false</span>);</div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
@@ -567,7 +567,7 @@ $(document).ready(function(){initNavTree('_t_run_info_8h_source.html',''); initR
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_run_info_8h.html">TRunInfo.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Sep 20 2024 16:51:40.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Sep 20 2024 16:53:12.</li>
   </ul>
 </div>
 </body>
