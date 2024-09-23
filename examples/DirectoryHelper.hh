@@ -13,34 +13,37 @@
 
 class DirectoryHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<DirectoryHelper> {
 public:
-	// constructor sets the prefix (which is used for the output file as well)
-	// and calls Setup which in turn also calls CreateHistograms
-	DirectoryHelper(TList* list) : TGRSIHelper(list) {
-		Prefix("DirectoryHelper");
-		Setup();
-	}
+   // constructor sets the prefix (which is used for the output file as well)
+   // and calls Setup which in turn also calls CreateHistograms
+   explicit DirectoryHelper(TList* list)
+      : TGRSIHelper(list)
+   {
+      Prefix("DirectoryHelper");
+      Setup();
+   }
 
-	ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override {
-		return d->Book<TGriffin, TGriffinBgo>(std::move(*this), {"TGriffin", "TGriffinBgo"});
-	}
-	// this function creates and books all histograms
-	void CreateHistograms(unsigned int slot) override;
-	// this function gets called for every single event and fills the histograms
-	void Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo);
-	// this function is optional and is called after the output lists off all slots/workers have been merged
-	void EndOfSort(std::shared_ptr<std::map<std::string, TList>> list) override;
+   ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override
+   {
+      return d->Book<TGriffin, TGriffinBgo>(std::move(*this), {"TGriffin", "TGriffinBgo"});
+   }
+   // this function creates and books all histograms
+   void CreateHistograms(unsigned int slot) override;
+   // this function gets called for every single event and fills the histograms
+   void Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo);
+   // this function is optional and is called after the output lists off all slots/workers have been merged
+   void EndOfSort(std::shared_ptr<std::map<std::string, TList>>& list) override;
 
 private:
-	// any constants that are set in the CreateHistograms function and used in the Exec function can be stored here
-	// or any other settings
-	std::map<std::vector<double>> fLastTS;
-	std::map<std::vector<double>> fLastSuppressedTS;
-	std::map<std::vector<double>> fLastTime;
-	std::map<std::vector<double>> fLastSuppressedTime;
-	std::map<std::vector<double>> fLastTSNoPileup;
-	std::map<std::vector<double>> fLastSuppressedTSNoPileup;
-	std::map<std::vector<double>> fLastTimeNoPileup;
-	std::map<std::vector<double>> fLastSuppressedTimeNoPileup;
+   // any constants that are set in the CreateHistograms function and used in the Exec function can be stored here
+   // or any other settings
+   std::map<std::vector<double>> fLastTS;
+   std::map<std::vector<double>> fLastSuppressedTS;
+   std::map<std::vector<double>> fLastTime;
+   std::map<std::vector<double>> fLastSuppressedTime;
+   std::map<std::vector<double>> fLastTSNoPileup;
+   std::map<std::vector<double>> fLastSuppressedTSNoPileup;
+   std::map<std::vector<double>> fLastTimeNoPileup;
+   std::map<std::vector<double>> fLastSuppressedTimeNoPileup;
 };
 
 // These are needed functions used by TDataFrameLibrary to create and destroy the instance of this helper

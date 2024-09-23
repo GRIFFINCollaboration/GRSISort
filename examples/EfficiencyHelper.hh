@@ -13,27 +13,30 @@
 
 class EfficiencyHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<EfficiencyHelper> {
 public:
-	// constructor sets the prefix (which is used for the output file as well)
-	// and calls Setup which in turn also calls CreateHistograms
-	EfficiencyHelper(TList* list) : TGRSIHelper(list) {
-		Prefix("EfficiencyHelper");
-		Setup();
-	}
+   // constructor sets the prefix (which is used for the output file as well)
+   // and calls Setup which in turn also calls CreateHistograms
+   explicit EfficiencyHelper(TList* list)
+      : TGRSIHelper(list)
+   {
+      Prefix("EfficiencyHelper");
+      Setup();
+   }
 
-	ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override {
-		return d->Book<TGriffin, TGriffinBgo>(std::move(*this), {"TGriffin", "TGriffinBgo"});
-	}
-	// this function creates and books all histograms
-	void CreateHistograms(unsigned int slot) override;
-	// this function gets called for every single event and fills the histograms
-	void Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo);
-	// this function is optional and is called after the output lists off all slots/workers have been merged
-	void EndOfSort(std::shared_ptr<std::map<std::string, TList>> list) override;
+   ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override
+   {
+      return d->Book<TGriffin, TGriffinBgo>(std::move(*this), {"TGriffin", "TGriffinBgo"});
+   }
+   // this function creates and books all histograms
+   void CreateHistograms(unsigned int slot) override;
+   // this function gets called for every single event and fills the histograms
+   void Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo);
+   // this function is optional and is called after the output lists off all slots/workers have been merged
+   void EndOfSort(std::shared_ptr<std::map<std::string, TList>>& list) override;
 
 private:
-	// any constants that are set in the CreateHistograms function and used in the Exec function can be stored here
-	// or any other settings
-	Long64_t fCycleLength{0};
+   // any constants that are set in the CreateHistograms function and used in the Exec function can be stored here
+   // or any other settings
+   Long64_t fCycleLength{0};
 };
 
 // These are needed functions used by TDataFrameLibrary to create and destroy the instance of this helper

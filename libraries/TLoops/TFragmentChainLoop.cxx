@@ -8,7 +8,7 @@
 #include "TThread.h"
 
 #include "TDetector.h"
-#include "GRootCommands.h"
+#include "TGRSIint.h"
 #include "TFragment.h"
 
 TFragmentChainLoop* TFragmentChainLoop::Get(std::string name, TChain* chain)
@@ -17,7 +17,7 @@ TFragmentChainLoop* TFragmentChainLoop::Get(std::string name, TChain* chain)
       name = "chain_loop";
    }
 
-   TFragmentChainLoop* loop = static_cast<TFragmentChainLoop*>(StoppableThread::Get(name));
+   auto* loop = static_cast<TFragmentChainLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
       if((chain == nullptr) && (gFragment == nullptr)) {
          return nullptr;
@@ -31,8 +31,8 @@ TFragmentChainLoop* TFragmentChainLoop::Get(std::string name, TChain* chain)
 }
 
 TFragmentChainLoop::TFragmentChainLoop(std::string name, TChain* chain)
-   : StoppableThread(name), fEntriesTotal(chain->GetEntries()), fInputChain(chain), fFragment(nullptr),
-     fSelfStopping(true)
+   : StoppableThread(std::move(name)), fEntriesTotal(chain->GetEntries()),
+     fInputChain(chain), fFragment(nullptr), fSelfStopping(true)
 {
    SetupChain();
 }
@@ -61,7 +61,7 @@ int TFragmentChainLoop::SetupChain()
 
 void TFragmentChainLoop::Restart()
 {
-   fItemsPopped = 0;
+   ItemsPopped(0);
 }
 
 void TFragmentChainLoop::OnEnd()
@@ -73,7 +73,7 @@ void TFragmentChainLoop::OnEnd()
 
 bool TFragmentChainLoop::Iteration()
 {
-   if(static_cast<long>(fItemsPopped) >= fEntriesTotal) {
+   if(static_cast<int64_t>(ItemsPopped()) >= fEntriesTotal) {
       if(fSelfStopping) {
          return false;
       }
@@ -82,13 +82,14 @@ bool TFragmentChainLoop::Iteration()
    }
 
    std::shared_ptr<TFragment> frag = std::make_shared<TFragment>();
-   fInputChain->GetEntry(fItemsPopped++);
+   fInputChain->GetEntry(ItemsPopped());
+   IncrementItemsPopped();
    *frag = *fFragment;
    frag->SetEntryNumber();
    for(const auto& outQueue : fOutputQueues) {
       outQueue->Push(frag);
    }
-   fInputSize = fEntriesTotal - fItemsPopped; // this way fInputSize+fItemsPopped gives the total number of entries
+   InputSize(fEntriesTotal - ItemsPopped());   // this way fInputSize+fItemsPopped gives the total number of entries
 
    return true;
 }

@@ -1,5 +1,5 @@
-#ifndef _TWRITELOOP_H_
-#define _TWRITELOOP_H_
+#ifndef TWRITELOOP_H
+#define TWRITELOOP_H
 
 /** \addtogroup Loops
  *  @{
@@ -28,13 +28,20 @@ class TFragWriteLoop : public StoppableThread {
 public:
    static TFragWriteLoop* Get(std::string name = "", std::string fOutputFilename = "");
 
-   ~TFragWriteLoop() override;
+   TFragWriteLoop(const TFragWriteLoop&)                = delete;
+   TFragWriteLoop(TFragWriteLoop&&) noexcept            = delete;
+   TFragWriteLoop& operator=(const TFragWriteLoop&)     = delete;
+   TFragWriteLoop& operator=(TFragWriteLoop&&) noexcept = delete;
+   ~TFragWriteLoop();
 
 #ifndef __CINT__
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& InputQueue() { return fInputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& InputQueue()
+   {
+      return fInputQueue;
+   }
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>& BadInputQueue() { return fBadInputQueue; }
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>&      ScalerInputQueue() { return fScalerInputQueue; }
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& OutputQueue() { return fOutputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>&         ScalerInputQueue() { return fScalerInputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>&    OutputQueue() { return fOutputQueue; }
 #endif
 
    void ClearQueue() override;
@@ -43,8 +50,8 @@ public:
 
    // there is no output queue for this loop, so we assume that all items handled (= all good fragments written)
    // are also the number of items popped and that we have no current items
-   size_t GetItemsPushed() override { return fItemsPopped; }
-   size_t GetItemsPopped() override { return fItemsPopped; }
+   size_t GetItemsPushed() override { return ItemsPopped(); }
+   size_t GetItemsPopped() override { return ItemsPopped(); }
    size_t GetItemsCurrent() override { return 0; }
    size_t GetRate() override { return 0; }
 
@@ -54,7 +61,7 @@ protected:
    bool Iteration() override;
 
 private:
-   TFragWriteLoop(std::string name, std::string fOutputFilename);
+   TFragWriteLoop(std::string name, const std::string& fOutputFilename);
 #ifndef __CINT__
    void WriteEvent(const std::shared_ptr<const TFragment>& event);
    void WriteBadEvent(const std::shared_ptr<const TBadFragment>& event);
@@ -72,13 +79,15 @@ private:
    TEpicsFrag*   fScalerAddress;
 
 #ifndef __CINT__
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fInputQueue;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>    fInputQueue;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>> fBadInputQueue;
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>      fScalerInputQueue;
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fOutputQueue;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag>>>         fScalerInputQueue;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>    fOutputQueue;
 #endif
 
-   ClassDefOverride(TFragWriteLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TFragWriteLoop, 0)   // NOLINT(readability-else-after-return)
+   /// \endcond
 };
 
 /*! @} */

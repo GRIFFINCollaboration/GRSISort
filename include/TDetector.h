@@ -33,9 +33,10 @@
 
 class TDetector : public TObject {
 public:
-   TDetector();
+   TDetector() = default;
    TDetector(const TDetector&);
-   ~TDetector() override;
+   TDetector(TDetector&&) noexcept;
+   ~TDetector();
    TDetector& operator=(const TDetector& other)
    {
       if(this != &other) {
@@ -43,37 +44,51 @@ public:
       }
       return *this;
    }
+   TDetector& operator=(TDetector&& other) noexcept
+   {
+      if(this != &other) {
+         other.Copy(*this);
+      }
+      return *this;
+   }
 
-public:
-   virtual void BuildHits() { AbstractMethod("BuildHits()"); } //!<!
+   virtual void BuildHits() { AbstractMethod("BuildHits()"); }   //!<!
 #ifndef __CINT__
    virtual void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*)
    {
       AbstractMethod("AddFragment()");
-   } //!<!
+   }   //!<!
 #endif
 
-	virtual void AddHit(TDetectorHit* hit) { fHits.push_back(hit); }
-   virtual void Copy(TObject&) const override;                        //!<!
-   void Clear(Option_t* = "") override { fHits.clear(); } //!<!
-   virtual void ClearTransients();                            //!<!
-   void Print(Option_t* opt = "") const override;             //!<!
-	virtual void Print(std::ostream& out) const;
+   virtual void AddHit(TDetectorHit* hit)
+   {
+      fHits.push_back(hit);
+   }
+   void         Copy(TObject&) const override;                      //!<!
+   void         Clear(Option_t* = "") override { fHits.clear(); }   //!<!
+   virtual void ClearTransients();                                  //!<!
+   void         Print(Option_t* opt = "") const override;           //!<!
+   virtual void Print(std::ostream& out) const;
 
-	virtual Short_t GetMultiplicity() const { return fHits.size(); }
-	virtual TDetectorHit* GetHit(const int&) const;
-	virtual const std::vector<TDetectorHit*>& GetHitVector() const { return fHits; }
+   virtual Short_t                           GetMultiplicity() const { return static_cast<Short_t>(fHits.size()); }
+   virtual TDetectorHit*                     GetHit(const int& index) const;
+   virtual const std::vector<TDetectorHit*>& GetHitVector() const { return fHits; }
+   virtual bool                              NoHits() const { return fHits.empty(); }
 
-	friend std::ostream& operator<<(std::ostream& out, const TDetector& det) {
-		det.Print(out);
-		return out;
-	}
+   std::vector<TDetectorHit*>&       Hits() { return fHits; }
+   const std::vector<TDetectorHit*>& Hits() const { return fHits; }
 
-protected:
-	std::vector<TDetectorHit*> fHits;
+   friend std::ostream& operator<<(std::ostream& out, const TDetector& det)
+   {
+      det.Print(out);
+      return out;
+   }
+
+private:
+   std::vector<TDetectorHit*> fHits;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDetector, 1) // Abstract class for detector systems
+   ClassDefOverride(TDetector, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

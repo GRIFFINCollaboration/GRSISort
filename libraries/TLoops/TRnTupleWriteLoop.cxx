@@ -22,7 +22,6 @@
 #include "TGRSIOptions.h"
 #include "TTreeFillMutex.h"
 #include "TSortingDiagnostics.h"
-#include "TParallelFileMerger.h"
 
 TRnTupleWriteLoop* TRnTupleWriteLoop::Get(std::string name, std::string outputFilename)
 {
@@ -75,7 +74,7 @@ void TRnTupleWriteLoop::ClearQueue()
 std::string TRnTupleWriteLoop::EndStatus()
 {
 	std::stringstream ss;
-	ss<<Name()<<":\t"<<std::setw(8)<<fItemsPopped<<"/"<<fInputSize + fItemsPopped<<", "
+	ss<<Name()<<":\t"<<std::setw(8)<<ItemsPopped()<<"/"<<InputSize() + ItemsPopped()<<", "
 		<<"??? good events"<<std::endl;
 	return ss.str();
 }
@@ -88,12 +87,12 @@ void TRnTupleWriteLoop::OnEnd()
 bool TRnTupleWriteLoop::Iteration()
 {
    std::shared_ptr<TUnpackedEvent> event;
-   fInputSize = fInputQueue->Pop(event);
-   if(fInputSize < 0) {
-      fInputSize = 0;
+   InputSize(fInputQueue->Pop(event));
+   if(InputSize() < 0) {
+      InputSize(0);
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
    } else {
-		++fItemsPopped;
+		IncrementItemsPopped();
 	}
 
 	//if(fOutOfOrder) {

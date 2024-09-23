@@ -1,11 +1,12 @@
-#include "TChannel.h"
 #include <unordered_map>
+
+#include "TChannel.h"
 
 int main(int argc, char** argv)
 {
    if(argc < 3) {
       printf("Usage: AddOneToChannel <scale by> <calfile.cal> <MNEMONIC>\n");
-      return 0;
+      return 1;
    }
 
    std::string mnemonic;
@@ -16,28 +17,27 @@ int main(int argc, char** argv)
    std::string calFileName(argv[2], 40);
    std::string outFileName = "out" + calFileName;
 
-   float num_to_scale = atof(argv[1]);
+   auto num_to_scale = static_cast<float>(atof(argv[1]));
 
    printf("Multiplying all channels by %lf\n", num_to_scale);
 
    // Read Cal file
    TChannel::ReadCalFile(argv[2]);
-   std::unordered_map<unsigned int, TChannel*>::iterator it;
    std::unordered_map<unsigned int, TChannel*>* chanmap = TChannel::GetChannelMap();
 
    if(chanmap == nullptr) {
       printf("can't find channel map\n");
-      return 0;
+      return 1;
    }
 
    std::vector<TChannel*> chanlist;
 
-   for(it = chanmap->begin(); it != chanmap->end(); ++it) {
-      TChannel* chan    = it->second;
+   for(auto iter : *chanmap) {
+      TChannel* chan    = iter.second;
       auto*     newchan = new TChannel(chan);
       chanlist.push_back(newchan);
 
-      if(mnemonic != "") {
+      if(!mnemonic.empty()) {
          std::string channame = newchan->GetName();
 
          // Could also do everything below with MNEMONIC Struct. This limits the amount of string processing that needs
@@ -45,7 +45,7 @@ int main(int argc, char** argv)
          // Because it returns false after every potential failure while the mnemonic class sets all of the strings, and
          // then checks
          // for conditions.
-         if(channame.compare(0, mnemonic.length(), mnemonic) != 0) { // channame.NotBeginsWith(pre)){
+         if(channame.compare(0, mnemonic.length(), mnemonic) != 0) {   // channame.NotBeginsWith(pre)){
             continue;
          }
       }
@@ -59,11 +59,11 @@ int main(int argc, char** argv)
 
    TChannel::DeleteAllChannels();
 
-   for(auto& i : chanlist) {
-      TChannel::AddChannel(i);
+   for(auto& chan : chanlist) {
+      TChannel::AddChannel(chan);
    }
 
    TChannel::WriteCalFile(outFileName);
 
-   return 1;
+   return 0;
 }

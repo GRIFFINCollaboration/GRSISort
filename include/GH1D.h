@@ -10,8 +10,8 @@ class TF1;
 
 class GH1D : public TH1D {
 public:
-   GH1D() : TH1D(), parent(nullptr), projection_axis(-1) {}
-   GH1D(const TVectorD& v) : TH1D(v), parent(nullptr), projection_axis(-1) {}
+   GH1D() : parent(nullptr), projection_axis(-1) {}
+   explicit GH1D(const TVectorD& vec) : TH1D(vec), parent(nullptr), projection_axis(-1) {}
    GH1D(const char* name, const char* title, Int_t nbinsx, const Float_t* xbins)
       : TH1D(name, title, nbinsx, xbins), parent(nullptr), projection_axis(-1)
    {
@@ -27,12 +27,12 @@ public:
 
    GH1D(const TF1& function, Int_t nbinsx, Double_t xlow, Double_t xup);
 
-   GH1D(const TH1& source);
+   explicit GH1D(const TH1& source);
    // GH1D(const TH1 *source);
    // virtual void SetOption(Option_t* option=" ");
 
    TObject* GetParent() const { return parent.GetObject(); }
-   void SetParent(TObject* obj) { parent = obj; }
+   void     SetParent(TObject* obj) { parent = obj; }
 
    int  GetProjectionAxis() const { return projection_axis; }
    void SetProjectionAxis(int axis) { projection_axis = axis; }
@@ -65,7 +65,9 @@ private:
    TRef parent;
    int  projection_axis;
 
-   ClassDefOverride(GH1D, 1)
+   /// /cond CLASSIMP
+   ClassDefOverride(GH1D, 1)   // NOLINT(readability-else-after-return)
+                               /// /endcond
 };
 
 #endif /* GH1D_H */

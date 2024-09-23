@@ -36,26 +36,30 @@
 #include "TSingleton.h"
 
 enum class EPpgPattern {
-	kBeamOn     = 0x01,
-	kDecay      = 0x04,
-	kTapeMove   = 0x08,
-	kBackground = 0x02,
-	//kSync       = 0xc000,
-	kJunk       = 0xFF
+   kBeamOn     = 0x01,
+   kDecay      = 0x04,
+   kTapeMove   = 0x08,
+   kBackground = 0x02,
+   // kSync       = 0xc000,
+   kJunk = 0xFF
 };
 
 class TPPGData : public TObject {
 public:
    TPPGData();
    TPPGData(const TPPGData&);
-   ~TPPGData() override = default;
+   TPPGData(TPPGData&&) = default;
+   ~TPPGData()          = default;
+
+   TPPGData& operator=(const TPPGData&) = default;
+   TPPGData& operator=(TPPGData&&)      = default;
 
    void Copy(TObject& rhs) const override;
 
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
 
-	// -------------------- setter functions
+   // -------------------- setter functions
    void SetLowTimeStamp(UInt_t lowTime)
    {
       fLowTimeStamp = lowTime;
@@ -68,70 +72,80 @@ public:
    }
    void SetNewPPG(EPpgPattern newPpg) { fNewPpg = newPpg; }
    void SetNewPPG(UInt_t newPpg)
-	{ 
-		fNewPpg = static_cast<EPpgPattern>(newPpg&0xff);
-		switch(fNewPpg) {
-			case EPpgPattern::kBeamOn: case EPpgPattern::kDecay: case EPpgPattern::kTapeMove:
-			case EPpgPattern::kBackground: case EPpgPattern::kJunk:
-				break;
-			default:
-				if(newPpg != 0) std::cout<<"Warning, unknown ppg pattern "<<hex(newPpg,8)<<", setting new pattern to kJunk!"<<std::endl;
-				fNewPpg = EPpgPattern::kJunk;
-		}
-	}
+   {
+      fNewPpg = static_cast<EPpgPattern>(newPpg & 0xff);
+      switch(fNewPpg) {
+      case EPpgPattern::kBeamOn:
+      case EPpgPattern::kDecay:
+      case EPpgPattern::kTapeMove:
+      case EPpgPattern::kBackground:
+      case EPpgPattern::kJunk:
+         break;
+      default:
+         if(newPpg != 0) { std::cout << "Warning, unknown ppg pattern " << hex(newPpg, 8) << ", setting new pattern to kJunk!" << std::endl; }
+         fNewPpg = EPpgPattern::kJunk;
+      }
+   }
    void SetOldPPG(EPpgPattern oldPpg) { fOldPpg = oldPpg; }
    void SetOldPPG(UInt_t oldPpg)
-	{
-		fOldPpg = static_cast<EPpgPattern>(oldPpg&0xff);
-		switch(fOldPpg) {
-			case EPpgPattern::kBeamOn: case EPpgPattern::kDecay: case EPpgPattern::kTapeMove:
-			case EPpgPattern::kBackground: case EPpgPattern::kJunk:
-				break;
-			default:
-				if(oldPpg != 0) std::cout<<"Warning, unknown ppg pattern "<<hex(oldPpg,8)<<", setting old pattern to kJunk!"<<std::endl;
-				fOldPpg = EPpgPattern::kJunk;
-		}
-	}
+   {
+      fOldPpg = static_cast<EPpgPattern>(oldPpg & 0xff);
+      switch(fOldPpg) {
+      case EPpgPattern::kBeamOn:
+      case EPpgPattern::kDecay:
+      case EPpgPattern::kTapeMove:
+      case EPpgPattern::kBackground:
+      case EPpgPattern::kJunk:
+         break;
+      default:
+         if(oldPpg != 0) { std::cout << "Warning, unknown ppg pattern " << hex(oldPpg, 8) << ", setting old pattern to kJunk!" << std::endl; }
+         fOldPpg = EPpgPattern::kJunk;
+      }
+   }
    void SetNetworkPacketId(UInt_t packet) { fNetworkPacketId = packet; }
 
    void SetTimeStamp();
 
-	// -------------------- getter functions
+   // -------------------- getter functions
    UInt_t      GetLowTimeStamp() const { return fLowTimeStamp; }
    UInt_t      GetHighTimeStamp() const { return fHighTimeStamp; }
    EPpgPattern GetNewPPG() const { return fNewPpg; }
    EPpgPattern GetOldPPG() const { return fOldPpg; }
    UInt_t      GetNetworkPacketId() const { return fNetworkPacketId; }
 
-   Long64_t GetTimeStamp() const { return fTimeStamp; }
+   ULong64_t GetTimeStamp() const { return fTimeStamp; }
 
 private:
-	static short       fTimestampUnits; ///< timestamp units of the PPG (10 ns)
-   ULong64_t   fTimeStamp; ///< time stamp in ns
-   EPpgPattern fOldPpg;
-   EPpgPattern fNewPpg;
-   UInt_t      fNetworkPacketId;
-   UInt_t      fLowTimeStamp; ///< low bits of time stamp in 10 ns
-   UInt_t      fHighTimeStamp; ///< high bits of time stamp in 10 ns
+   static int16_t fTimestampUnits;   ///< timestamp units of the PPG (10 ns)
+   ULong64_t      fTimeStamp{0};     ///< time stamp in ns
+   EPpgPattern    fOldPpg{EPpgPattern::kJunk};
+   EPpgPattern    fNewPpg{EPpgPattern::kJunk};
+   UInt_t         fNetworkPacketId{0};
+   UInt_t         fLowTimeStamp{0};    ///< low bits of time stamp in 10 ns
+   UInt_t         fHighTimeStamp{0};   ///< high bits of time stamp in 10 ns
 
    /// \cond CLASSIMP
-   ClassDefOverride(TPPGData, 3) // Contains PPG data information
+   ClassDefOverride(TPPGData, 3)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
 class TPPG : public TSingleton<TPPG> {
 public:
-	friend class TSingleton<TPPG>;
+   friend class TSingleton<TPPG>;
 
-   typedef std::map<ULong_t, TPPGData*> PPGMap_t;
+   using PPGMap_t = std::map<ULong_t, TPPGData*>;
 
    TPPG();
-   TPPG(const TPPG&);
-   ~TPPG() override;
+   TPPG(const TPPG&);        // the copy constructor needs to create a deep-copy
+   TPPG(TPPG&&) = default;   // the move constructor can be default?
+   ~TPPG();
+
+   TPPG& operator=(const TPPG&);        // the copy assignment needs to create a deep-copy
+   TPPG& operator=(TPPG&&) = default;   // the move assignment can be default?
 
    void Copy(TObject& obj) const override;
-	// why do we have a non-const version that just calls the const version?
-	// the arguments are needed to match the TObject version and thus override it
+   // why do we have a non-const version that just calls the const version?
+   // the arguments are needed to match the TObject version and thus override it
    Int_t Write(const char* name = nullptr, Int_t option = 0, Int_t bufsize = 0) override
    {
       return static_cast<const TPPG*>(this)->Write(name, option, bufsize);
@@ -141,7 +155,7 @@ public:
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
 
-   void  Setup();
+   void Setup();
    bool Correct(bool verbose = false);
 
    void        AddData(TPPGData* pat);
@@ -152,17 +166,22 @@ public:
    Bool_t      MapIsEmpty() const;
    std::size_t PPGSize() const { return fPPGStatusMap->size() - 1; }
    std::size_t OdbPPGSize() const { return fOdbPPGCodes.size(); }
-   short       OdbPPGCode(size_t index) const { return fOdbPPGCodes.at(index); }
+   int16_t     OdbPPGCode(size_t index) const { return fOdbPPGCodes.at(index); }
    int         OdbDuration(size_t index) const { return fOdbDurations.at(index); }
-   Long64_t    OdbCycleLength() const { Long64_t result = 0; for(auto dur : fOdbDurations) { result += dur; } return result; }
-   Long64_t    Merge(TCollection* list);
-   void        Add(const TPPG* ppg);
+   Long64_t    OdbCycleLength() const
+   {
+      Long64_t result = 0;
+      for(auto dur : fOdbDurations) { result += dur; }
+      return result;
+   }
+   Long64_t Merge(TCollection* list);
+   void     Add(const TPPG* ppg);
 
    void operator+=(const TPPG& rhs);
 
    void SetCycleLength(ULong64_t length) { fCycleLength = length; }
 
-	// -------------------- getter functions
+   // -------------------- getter functions
    ULong64_t GetCycleLength();
    ULong64_t GetNumberOfCycles();
    ULong64_t GetTimeInCycle(ULong64_t real_time);
@@ -175,36 +194,35 @@ public:
    const TPPGData* First();
    const TPPGData* Last();
 
-   void SetOdbCycle(std::vector<short> ppgCodes, std::vector<int> durations)
+   void SetOdbCycle(std::vector<int16_t> ppgCodes, std::vector<int> durations)
    {
       fOdbPPGCodes  = std::move(ppgCodes);
       fOdbDurations = std::move(durations);
    }
 
-	bool OdbMatchesData(bool verbose = false);
-	void SetOdbFromData(bool verbose = false);
+   bool OdbMatchesData(bool verbose = false);
+   void SetOdbFromData(bool verbose = false);
 
 private:
-	bool CalculateCycleFromData(bool verbose = false);
+   bool CalculateCycleFromData(bool verbose = false);
 
-   static TPPG*       fPPG; ///< static pointer to TPPG
    PPGMap_t::iterator MapBegin() const { return ++(fPPGStatusMap->begin()); }
    PPGMap_t::iterator MapEnd() const { return fPPGStatusMap->end(); }
-   PPGMap_t::iterator fCurrIterator; //!<!
+   PPGMap_t::iterator fCurrIterator;   //!<!
 
-   PPGMap_t* fPPGStatusMap;
-   ULong64_t fCycleLength;
+   PPGMap_t*                fPPGStatusMap{nullptr};
+   ULong64_t                fCycleLength{0};
    std::map<ULong64_t, int> fNumberOfCycleLengths;
 
-   std::vector<short>     fOdbPPGCodes;  ///< ppg state codes read from odb
-   std::vector<int>       fOdbDurations; ///< duration of ppg state as read from odb
+   std::vector<int16_t> fOdbPPGCodes;    ///< ppg state codes read from odb
+   std::vector<int>     fOdbDurations;   ///< duration of ppg state as read from odb
 
-	bool                   fCycleSet{false};              //!<! flag to indicate whether the codes and durations have been calculated from the data
-   std::vector<short>     fPPGCodes{0x8, 0x2, 0x1, 0x4}; //!<! ppg state codes (these are always set)
-   std::vector<ULong64_t> fDurations{ 0,   0,   0,   0}; //!<! duration of ppg state calculated from data
+   bool                   fCycleSet{false};                //!<! flag to indicate whether the codes and durations have been calculated from the data
+   std::vector<int16_t>   fPPGCodes{0x8, 0x2, 0x1, 0x4};   //!<! ppg state codes (these are always set)
+   std::vector<ULong64_t> fDurations{0, 0, 0, 0};          //!<! duration of ppg state calculated from data
 
    /// \cond CLASSIMP
-   ClassDefOverride(TPPG, 5) // Contains PPG information
+   ClassDefOverride(TPPG, 5)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

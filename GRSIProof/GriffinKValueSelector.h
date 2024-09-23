@@ -20,14 +20,14 @@
 class GriffinKValueSelector : public TGRSISelector {
 
 public:
-   TFragment* fFragment;
+   TFragment* fFragment{nullptr};
 
-   GriffinKValueSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fFragment(0) { SetOutputPrefix("GriffinKValue"); }
-   virtual ~GriffinKValueSelector() {}
+   explicit GriffinKValueSelector(TTree* /*tree*/ = nullptr) : TGRSISelector() { SetOutputPrefix("GriffinKValue"); }
+   virtual ~GriffinKValueSelector() = default;
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();
    void          FillHistograms();
-   void InitializeBranches(TTree* tree);
+   void          InitializeBranches(TTree* tree);
 
    ClassDef(GriffinKValueSelector, 2);
 };
@@ -41,4 +41,4 @@ void GriffinKValueSelector::InitializeBranches(TTree* tree)
    tree->SetBranchAddress("TFragment", &fFragment);
 }
 
-#endif // #ifdef GriffinKValueSelector_cxx
+#endif   // #ifdef GriffinKValueSelector_cxx

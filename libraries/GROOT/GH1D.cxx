@@ -24,15 +24,9 @@ GH1D::GH1D(const TF1& function, Int_t nbinsx, Double_t xlow, Double_t xup)
    : TH1D(Form("%s_hist", function.GetName()), Form("%s_hist", function.GetName()), nbinsx, xlow, xup), parent(nullptr),
      projection_axis(-1)
 {
-
-   // TF1 *f = (TF1*)function.Clone();
-   // f->SetRange(xlow,xup);
-
    for(int i = 0; i < nbinsx; i++) {
-      double x = GetBinCenter(i);
-      Fill(x, function.Eval(x));
+      Fill(GetBinCenter(i), function.Eval(i));
    }
-   // f->Delete();
 }
 
 bool GH1D::WriteDatFile(const char* outFile)
@@ -49,9 +43,9 @@ bool GH1D::WriteDatFile(const char* outFile)
    }
 
    for(int i = 0; i < GetNbinsX(); i++) {
-      out<<GetXaxis()->GetBinCenter(i)<<"\t"<<GetBinContent(i)<<std::endl;
+      out << GetXaxis()->GetBinCenter(i) << "\t" << GetBinContent(i) << std::endl;
    }
-   out<<std::endl;
+   out << std::endl;
    out.close();
 
    return true;
@@ -90,7 +84,7 @@ void GH1D::Clear(Option_t* opt)
 void GH1D::Print(Option_t* opt) const
 {
    TH1D::Print(opt);
-   std::cout<<"\tParent: "<<parent.GetObject()<<std::endl;
+   std::cout << "\tParent: " << parent.GetObject() << std::endl;
 }
 
 void GH1D::Copy(TObject& obj) const
@@ -108,7 +102,7 @@ void GH1D::Draw(Option_t* opt)
       new GCanvas;
    }
    TH1D::Draw(option.Data());
-   if(gPad) {
+   if(gPad != nullptr) {
       gPad->Update();
       gPad->GetFrame()->SetBit(TBox::kCannotMove);
    }
@@ -117,27 +111,27 @@ void GH1D::Draw(Option_t* opt)
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
 TH1* GH1D::DrawCopy(Option_t* opt) const
 {
-   TH1* h = TH1D::DrawCopy(opt);
+   TH1* hist = TH1D::DrawCopy(opt);
 #else
 TH1* GH1D::DrawCopy(Option_t* opt, const char* name_postfix) const
 {
-   TH1* h = TH1D::DrawCopy(opt, name_postfix);
+   TH1* hist = TH1D::DrawCopy(opt, name_postfix);
 #endif
-   if(gPad) {
+   if(gPad != nullptr) {
       gPad->Update();
       gPad->GetFrame()->SetBit(TBox::kCannotMove);
    }
-   return h;
+   return hist;
 }
 
 TH1* GH1D::DrawNormalized(Option_t* opt, Double_t norm) const
 {
-   TH1* h = TH1D::DrawNormalized(opt, norm);
-   if(gPad) {
+   TH1* hist = TH1D::DrawNormalized(opt, norm);
+   if(gPad != nullptr) {
       gPad->Update();
       gPad->GetFrame()->SetBit(TBox::kCannotMove);
    }
-   return h;
+   return hist;
 }
 
 GH1D* GH1D::GetPrevious(bool DrawEmpty) const
@@ -148,7 +142,7 @@ GH1D* GH1D::GetPrevious(bool DrawEmpty) const
       int   last  = GetXaxis()->GetLast();
       GH1D* prev  = gpar->GetPrevious(this, DrawEmpty);
       prev->GetXaxis()->SetRange(first, last);
-      return prev; // gpar->GetPrevious(this,DrawEmpty);
+      return prev;   // gpar->GetPrevious(this,DrawEmpty);
    }
    return nullptr;
 }
@@ -161,7 +155,7 @@ GH1D* GH1D::GetNext(bool DrawEmpty) const
       int   last  = GetXaxis()->GetLast();
       GH1D* next  = gpar->GetNext(this, DrawEmpty);
       next->GetXaxis()->SetRange(first, last);
-      return next; // gpar->GetNext(this,DrawEmpty);
+      return next;   // gpar->GetNext(this,DrawEmpty);
    }
    return nullptr;
 }
@@ -228,9 +222,9 @@ GH1D* GH1D::Project(int bins)
       }
    }
    proj = new GH1D(Form("%s_y_axis_projection", GetName()), Form("%s_y_axis_projection", GetName()), bins, ymin, ymax);
-   for(int x = 0; x < GetNbinsX(); x++) {
-      if(GetBinContent(x) != 0) {
-         proj->Fill(GetBinContent(x));
+   for(int i = 0; i < GetNbinsX(); i++) {
+      if(GetBinContent(i) != 0) {
+         proj->Fill(GetBinContent(i));
       }
    }
 

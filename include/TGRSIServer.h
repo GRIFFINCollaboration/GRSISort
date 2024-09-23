@@ -11,7 +11,7 @@
  * Please indicate changes with your initials.
  *
  *
-*/
+ */
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
@@ -31,16 +31,20 @@
 class TGRSIServer : public TServerSocket {
 public:
    static TGRSIServer* instance(int port = 9099);
-   ~TGRSIServer() override;
+   TGRSIServer(const TGRSIServer&)                = default;
+   TGRSIServer(TGRSIServer&&) noexcept            = default;
+   TGRSIServer& operator=(const TGRSIServer&)     = default;
+   TGRSIServer& operator=(TGRSIServer&&) noexcept = default;
+   ~TGRSIServer();
 
    void StopServer()
    {
-      if(fRunning) fRunning = false;
+      if(fRunning) { fRunning = false; }
    }
 
 private:
    static TGRSIServer* fGRSIServer;
-   TGRSIServer(int port);
+   explicit TGRSIServer(int port);
    bool fRunning;
 
    TMonitor* fMonitor;
@@ -49,7 +53,7 @@ private:
    void MonitorConnectionsThread();
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSIServer, 0)
+   ClassDefOverride(TGRSIServer, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

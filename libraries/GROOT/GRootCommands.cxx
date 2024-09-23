@@ -1,4 +1,3 @@
-
 #include "GRootCommands.h"
 #include "Globals.h"
 #include <cstdio>
@@ -6,23 +5,23 @@
 #include <sstream>
 #include <fstream>
 
-#include <TRint.h>
-#include <TTree.h>
-#include <Getline.h>
-#include <TAxis.h>
-#include <TDirectory.h>
-#include <TFile.h>
-#include <TPolyMarker.h>
-#include <TSpectrum.h>
-#include <TText.h>
-#include <TExec.h>
-#include <TKey.h>
-#include <TObject.h>
-#include <TObjArray.h>
-#include <TH1.h>
-#include <TPython.h>
-#include <TTimer.h>
-#include <TF1.h>
+#include "TRint.h"
+#include "TTree.h"
+#include "Getline.h"
+#include "TAxis.h"
+#include "TDirectory.h"
+#include "TFile.h"
+#include "TPolyMarker.h"
+#include "TSpectrum.h"
+#include "TText.h"
+#include "TExec.h"
+#include "TKey.h"
+#include "TObject.h"
+#include "TObjArray.h"
+#include "TH1.h"
+#include "TPython.h"
+#include "TTimer.h"
+#include "TF1.h"
 
 #include "GCanvas.h"
 #include "GPeak.h"
@@ -33,17 +32,14 @@
 #include "TGRSIOptions.h"
 #include "GNotifier.h"
 
-TChain* gFragment = nullptr;
-TChain* gAnalysis = nullptr;
-
 void Help()
 {
-   std::cout<<"This is helpful information."<<std::endl;
+   std::cout << "This is helpful information." << std::endl;
 }
 
 void Commands()
 {
-   std::cout<<"this is a list of useful commands."<<std::endl;
+   std::cout << "this is a list of useful commands." << std::endl;
 }
 
 void Prompt()
@@ -54,9 +50,9 @@ void Prompt()
 void Version()
 {
    int ret = system(Form("%s/bin/grsi-config --version", getenv("GRSISYS")));
-	if(ret == -1) {
-		std::cout<<"Failed to call grsi-config!"<<std::endl;
-	}
+   if(ret == -1) {
+      std::cout << "Failed to call grsi-config!" << std::endl;
+   }
 }
 
 bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg_high)
@@ -152,35 +148,32 @@ bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg
 int LabelPeaks(TH1* hist, double sigma, double thresh, Option_t*)
 {
    TSpectrum::StaticSearch(hist, sigma, "Qnodraw", thresh);
-   TPolyMarker* pm = static_cast<TPolyMarker*>(hist->GetListOfFunctions()->FindObject("TPolyMarker"));
-   if(pm == nullptr) {
+   auto* polyMarker = static_cast<TPolyMarker*>(hist->GetListOfFunctions()->FindObject("TPolyMarker"));
+   if(polyMarker == nullptr) {
       // something has gone wrong....
       return 0;
    }
-   TObjArray* array = static_cast<TObjArray*>(hist->GetListOfFunctions()->FindObject("PeakLabels"));
+   auto* array = static_cast<TObjArray*>(hist->GetListOfFunctions()->FindObject("PeakLabels"));
    if(array != nullptr) {
-      hist->GetListOfFunctions()->Remove((TObject*)array);
+      hist->GetListOfFunctions()->Remove(static_cast<TObject*>(array));
       array->Delete();
    }
    array = new TObjArray();
    array->SetName("PeakLabels");
-   int n = pm->GetN();
+   int n = polyMarker->GetN();
    if(n == 0) {
       return n;
    }
-   TText*  text;
-   double* x = pm->GetX();
-   //  double *y = pm->GetY();
+   double* markerX = polyMarker->GetX();
    for(int i = 0; i < n; i++) {
-      // y[i] += y[i]*0.15;
       double y = 0;
-      for(int i_x = x[i] - 3; i_x < x[i] + 3; i_x++) {
+      for(double i_x = markerX[i] - 3; i_x < markerX[i] + 3; i_x++) {
          if((hist->GetBinContent(hist->GetXaxis()->FindBin(i_x))) > y) {
             y = hist->GetBinContent(hist->GetXaxis()->FindBin(i_x));
          }
       }
       y += y * 0.1;
-      text = new TText(x[i], y, Form("%.1f", x[i]));
+      auto* text = new TText(markerX[i], y, Form("%.1f", markerX[i]));
       text->SetTextSize(0.025);
       text->SetTextAngle(90);
       text->SetTextAlign(12);
@@ -188,8 +181,8 @@ int LabelPeaks(TH1* hist, double sigma, double thresh, Option_t*)
       text->SetTextColor(hist->GetLineColor());
       array->Add(text);
    }
-   hist->GetListOfFunctions()->Remove(pm);
-   pm->Delete();
+   hist->GetListOfFunctions()->Remove(polyMarker);
+   polyMarker->Delete();
    hist->GetListOfFunctions()->Add(array);
    return n;
 }
@@ -305,7 +298,7 @@ TPeak* AltPhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 
    // std::cout<<"here."<<std::endl;
 
-   auto*       mypeak  = new TPeak((xlow + xhigh) / 2.0, xlow, xhigh);
+   auto* mypeak = new TPeak((xlow + xhigh) / 2.0, xlow, xhigh);
    mypeak->Fit(hist, opt);
    // mypeak->Background()->Draw("SAME");
    auto* bg = new TF1(*mypeak->Background());
@@ -317,14 +310,14 @@ TPeak* AltPhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 
 std::string MergeStrings(const std::vector<std::string>& strings, char split)
 {
-   std::stringstream ss;
+   std::ostringstream ss;
    for(auto it = strings.begin(); it != strings.end(); it++) {
-      ss<<*it;
+      ss << *it;
 
       auto next = it;
       next++;
       if(next != strings.end()) {
-         ss<<split;
+         ss << split;
       }
    }
    return ss.str();
@@ -403,7 +396,7 @@ void StartGUI()
 #else
 void StartGUI()
 {
-   std::cout<<"Cannot start gui, requires ROOT compiled against python 2.7"<<std::endl;
+   std::cout << "Cannot start gui, requires ROOT compiled against python 2.7" << std::endl;
 }
 #endif
 
@@ -457,10 +450,9 @@ TH2* AddOffset(TH2* mat, double offset, EAxis axis)
    return toreturn;
 }
 
-EAxis operator &(EAxis lhs, EAxis rhs)
+EAxis operator&(EAxis lhs, EAxis rhs)
 {
-	return static_cast<EAxis> (
-			static_cast<std::underlying_type<EAxis>::type>(lhs) &
-			static_cast<std::underlying_type<EAxis>::type>(rhs)
-			);
+   return static_cast<EAxis>(
+      static_cast<std::underlying_type<EAxis>::type>(lhs) &
+      static_cast<std::underlying_type<EAxis>::type>(rhs));
 }

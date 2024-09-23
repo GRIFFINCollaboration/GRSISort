@@ -1,5 +1,5 @@
-#ifndef _TDATALOOP_H_
-#define _TDATALOOP_H_
+#ifndef TDATALOOP_H
+#define TDATALOOP_H
 
 /** \addtogroup Loops
  *  @{
@@ -32,13 +32,23 @@
 class TDataLoop : public StoppableThread {
 public:
    static TDataLoop* Get(std::string name = "", TRawFile* source = nullptr);
-   ~TDataLoop() override;
+   TDataLoop(const TDataLoop&)                = delete;
+   TDataLoop(TDataLoop&&) noexcept            = delete;
+   TDataLoop& operator=(const TDataLoop&)     = delete;
+   TDataLoop& operator=(TDataLoop&&) noexcept = delete;
+   ~TDataLoop()                               = default;
 
 #ifndef __CINT__
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>& OutputQueue() { return fOutputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>& OutputQueue()
+   {
+      return fOutputQueue;
+   }
 #endif
 
-   const TRawFile& GetSource() const { return *fSource; }
+   const TRawFile& GetSource() const
+   {
+      return *fSource;
+   }
 
    void ClearQueue() override;
 
@@ -51,27 +61,26 @@ public:
    size_t GetRate() override { return 0; }
 
    void ReplaceSource(TRawFile* new_source);
-   void ResetSource();
 
    void SetSelfStopping(bool self_stopping) { fSelfStopping = self_stopping; }
-   bool                      GetSelfStopping() const { return fSelfStopping; }
+   bool GetSelfStopping() const { return fSelfStopping; }
 
 private:
    TDataLoop(std::string name, TRawFile* source);
    TDataLoop();
-   TDataLoop(const TDataLoop& other);
-   TDataLoop& operator=(const TDataLoop& other);
 
    TRawFile* fSource;
    bool      fSelfStopping;
-	size_t    fEventsRead;
+   size_t    fEventsRead;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>> fOutputQueue;
    std::mutex                                                   fSourceMutex;
 #endif
 
-   ClassDefOverride(TDataLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TDataLoop, 0)   // NOLINT(readability-else-after-return)
+   /// \endcond
 };
 
 /*! @} */

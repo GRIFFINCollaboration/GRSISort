@@ -1,15 +1,20 @@
-#ifndef _TPRESERVEGDIRECTORY_H_
-#define _TPRESERVEGDIRECTORY_H_
+#ifndef TPRESERVEGDIRECTORY_H
+#define TPRESERVEGDIRECTORY_H
 
 #include "TDirectory.h"
 
 class TPreserveGDirectory {
 public:
-   TPreserveGDirectory() : bak(gDirectory) {}
+   TPreserveGDirectory() = default;
    ~TPreserveGDirectory() { bak->cd(); }
 
+   TPreserveGDirectory(const TPreserveGDirectory&)            = delete;
+   TPreserveGDirectory(TPreserveGDirectory&&)                 = delete;
+   TPreserveGDirectory& operator=(const TPreserveGDirectory&) = delete;
+   TPreserveGDirectory& operator=(TPreserveGDirectory&&)      = delete;
+
 private:
-   TDirectory* bak;
+   TDirectory* bak{gDirectory};
 };
 
 #endif /* _TPRESERVEGDIRECTORY_H_ */

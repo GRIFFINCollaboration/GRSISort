@@ -1,5 +1,5 @@
-#ifndef _TUNPACKINGLOOP_H_
-#define _TUNPACKINGLOOP_H_
+#ifndef TUNPACKINGLOOP_H
+#define TUNPACKINGLOOP_H
 
 /** \addtogroup Loops
  *  @{
@@ -26,19 +26,28 @@
 
 class TUnpackingLoop : public StoppableThread {
 public:
-   enum class EDataType { kMidas, kLst, kTdr };
+   enum class EDataType { kMidas,
+                          kLst,
+                          kTdr };
 
    static TUnpackingLoop* Get(std::string name = "");
-   ~TUnpackingLoop() override;
+   TUnpackingLoop(const TUnpackingLoop&)                = delete;
+   TUnpackingLoop(TUnpackingLoop&&) noexcept            = delete;
+   TUnpackingLoop& operator=(const TUnpackingLoop&)     = delete;
+   TUnpackingLoop& operator=(TUnpackingLoop&&) noexcept = delete;
+   ~TUnpackingLoop();
 
    void SetNoWaveForms(bool temp = true) { fParser->SetNoWaveForms(temp); }
    void SetRecordDiag(bool temp = true) { fParser->SetRecordDiag(temp); }
 
 #ifndef __CINT__
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>&       InputQueue() { return fInputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>& InputQueue()
+   {
+      return fInputQueue;
+   }
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& AddGoodOutputQueue(size_t maxSize = 50000)
    {
-		return fParser->AddGoodOutputQueue(maxSize);
+      return fParser->AddGoodOutputQueue(maxSize);
    }
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>& BadOutputQueue()
    {
@@ -55,8 +64,8 @@ public:
    void ClearQueue() override;
 
    size_t GetItemsPushed() override { return fParser->ItemsPushed(); }
-   size_t GetItemsPopped() override { return 0; }  // fParser.GoodOutputQueue()->ItemsPopped(); }
-   size_t GetItemsCurrent() override { return 0; } // fParser.GoodOutputQueue()->Size();        }
+   size_t GetItemsPopped() override { return 0; }    // fParser.GoodOutputQueue()->ItemsPopped(); }
+   size_t GetItemsCurrent() override { return 0; }   // fParser.GoodOutputQueue()->Size();        }
    size_t GetRate() override { return 0; }
 
    std::string EndStatus() override;
@@ -67,17 +76,13 @@ private:
 #endif
 
    TDataParser* fParser;
-   long         fFragsReadFromRaw;
-   long         fGoodFragsRead;
+   int64_t      fFragsReadFromRaw;
+   int64_t      fGoodFragsRead;
 
-   bool   fEvaluateDataType;
+   bool      fEvaluateDataType;
    EDataType fDataType;
 
-   TUnpackingLoop(std::string name);
-   TUnpackingLoop(const TUnpackingLoop& other);
-   TUnpackingLoop& operator=(const TUnpackingLoop& other);
-
-   // ClassDefOverride(TUnpackingLoop, 0);
+   explicit TUnpackingLoop(std::string name);
 };
 
 /*! @} */

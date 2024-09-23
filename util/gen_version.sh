@@ -1,25 +1,16 @@
 #!/bin/bash
 
-#[[ `uname` == 'Darwin' ]] && {
-#   which greadlink gsed gzcat > /dev/null && {
-#      unalias readlink sed zcat
-#alias readlink=greadlink sed=gsed zcat=gzcat
-#   } || {
-#         echo 'ERROR: GNU utils required for Mac. You may use homebrew to install them: brew install coreutils gnu-sed'
-#         exit 1
-#   }
-#}
-
-if [ `uname` == 'Darwin' ]; then
-   script_dir=$(dirname $(greadlink -f "$0"))
+if [ "$(uname)" == "Darwin" ]; then
+   script_name=$(greadlink -f "$0")
 else
-   script_dir=$(dirname $(readlink -f "$0"))
+   script_name=$(readlink -f "$0")
 fi
+script_dir=$(dirname "$script_name")
       
 include_file="$script_dir"/../include/GVersion.h
 
 release_commit=$(git describe --abbrev=0 --match="v*" --tags)
-release_num=$(echo "$release_commit" | sed -e 's/v//')
+release_num=${release_commit//v/}
 release_time=$(git show -s --pretty=format:%ai "$release_commit" | tail -n 1)
 release_name=$(git rev-parse "$release_commit" | xargs git cat-file -p | tail -n1)
 

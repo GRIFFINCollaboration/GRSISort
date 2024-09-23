@@ -1,5 +1,5 @@
-#ifndef _TFRAGMENTCHAINLOOP_H_
-#define _TFRAGMENTCHAINLOOP_H_
+#ifndef TFRAGMENTCHAINLOOP_H
+#define TFRAGMENTCHAINLOOP_H
 
 /** \addtogroup Loops
  *  @{
@@ -31,7 +31,11 @@
 class TFragmentChainLoop : public StoppableThread {
 public:
    static TFragmentChainLoop* Get(std::string name = "", TChain* chain = nullptr);
-   ~TFragmentChainLoop() override;
+   TFragmentChainLoop(const TFragmentChainLoop&)                = delete;
+   TFragmentChainLoop(TFragmentChainLoop&&) noexcept            = delete;
+   TFragmentChainLoop& operator=(const TFragmentChainLoop&)     = delete;
+   TFragmentChainLoop& operator=(TFragmentChainLoop&&) noexcept = delete;
+   ~TFragmentChainLoop();
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& AddOutputQueue()
@@ -41,8 +45,8 @@ public:
    }
 #endif
 
-   size_t GetItemsPushed() override { return fItemsPopped; }
-   size_t GetItemsPopped() override { return fItemsPopped; }
+   size_t GetItemsPushed() override { return ItemsPopped(); }
+   size_t GetItemsPopped() override { return ItemsPopped(); }
    size_t GetItemsCurrent() override { return fEntriesTotal; }
    size_t GetRate() override { return 0; }
 
@@ -51,8 +55,8 @@ public:
    void OnEnd() override;
 
    void SetSelfStopping(bool self_stopping) { fSelfStopping = self_stopping; }
-   bool                      GetSelfStopping() const { return fSelfStopping; }
-   void                      Restart();
+   bool GetSelfStopping() const { return fSelfStopping; }
+   void Restart();
 
 protected:
    bool Iteration() override;
@@ -60,7 +64,7 @@ protected:
 private:
    TFragmentChainLoop(std::string name, TChain* chain);
 
-   long fEntriesTotal;
+   int64_t fEntriesTotal;
 
    TChain* fInputChain;
 #ifndef __CINT__
@@ -70,10 +74,8 @@ private:
 
    bool fSelfStopping;
 
-   int SetupChain();
+   int                            SetupChain();
    std::map<TClass*, TDetector**> fDetMap;
-
-   // ClassDefOverride(TFragmentChainLoop, 0);
 };
 
 /*! @} */

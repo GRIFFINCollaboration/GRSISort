@@ -1,0 +1,70 @@
+name: Run clang-tidy
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main, dev]
+    paths: ['**.h', '**.hh', '**.cxx', '**CMakeLists.txt', '**.cmake']
+  push:
+    branches: [main, dev]
+    paths: ['**.h', '**.hh', '**.cxx', '**CMakeLists.txt', '**.cmake']
+
+jobs:
+  cpp-linter:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install packages
+      run: |
+        sudo apt-get install binutils cmake dpkg-dev g++ gcc libssl-dev git libx11-dev libxext-dev libxft-dev libxpm-dev python3 gfortran libpcre3-dev xlibmesa-glu-dev libglew-dev libftgl-dev libmysqlclient-dev libfftw3-dev libcfitsio-dev graphviz-dev libavahi-compat-libdnssd-dev libldap2-dev python3-dev python3-numpy libxml2-dev libkrb5-dev libgsl0-dev nlohmann-json3-dev libtbb-dev
+
+    - name: Download ROOT
+      run: |
+        wget https://root.cern/download/root_v6.30.06.Linux-ubuntu22.04-x86_64-gcc11.4.tar.gz
+        tar -xzf root_v6.*.tar.gz
+      shell: bash
+
+    - name: Configure ROOT
+      run: |
+        source root/bin/thisroot.sh
+        echo "using $(which root)"
+      shell: bash
+
+    - name: Configure CMake
+      run: >
+        cmake -B ${{github.workspace}}/build
+        -S ${{github.workspace}}
+        -DCMAKE_PREFIX_PATH=root
+        -DCMAKE_EXPORT_COMPILE_COMMANDS=TRUE
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build -j4
+
+    - uses: cpp-linter/cpp-linter-action@v2
+      id: linter
+      continue-on-error: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        database: ${{github.workspace}}/build
+        style: ''  # disable clang-format checks.
+        tidy-checks: '' # Use .clang-tidy config file.
+          #thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+        thread-comments: 'update'
+        ignore: '.github|root*|build|GRSIProof|examples|users|include/GVersion.h'
+        extensions: 'h,hh,cxx'
+        files-changed-only: false
+        step-summary: true
+        file-annotations: true
+          #tidy-review: true
+        passive-reviews: true
+        version: 14
+
+    - name: Fail fast?!
+      if: steps.linter.outputs.clang-tidy-checks-failed > 0
+      run: exit 1
+

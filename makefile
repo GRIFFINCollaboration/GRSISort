@@ -1,4 +1,4 @@
-.PHONY: clean all extras docs doxygen grsirc complete parsers GRSIData ILLData iThembaData HILData
+.PHONY: clean all extras docs grsirc complete parsers GRSIData ILLData iThembaData HILData
 .SECONDARY:
 .SECONDEXPANSION:
 
@@ -26,6 +26,7 @@ ROOT_PYTHON_VERSION=$(shell root-config --python-version)
 
 MATHMORE_INSTALLED:=$(shell root-config --has-mathmore)
 XML_INSTALLED:=$(shell root-config --has-xml)
+PROOF_INSTALLED:=$(shell root-config --has-proof)
 
 ifeq ($(ROOT_PYTHON_VERSION),2.7)
   CFLAGS += -DHAS_CORRECT_PYTHON_VERSION
@@ -75,14 +76,18 @@ BLD_STRING= "Building\ "
 COPY_STRING="Copying\ \ "
 FIN_STRING="Finished Building"
 
-LIBRARY_NAMES  := $(notdir $(LIBRARY_DIRS))
+ifeq ($(PROOF_INSTALLED),yes)
+	LIBRARY_NAMES  := $(notdir $(LIBRARY_DIRS))
+else
+	LIBRARY_NAMES  := $(filter-out TGRSIProof,$(notdir $(LIBRARY_DIRS)))
+endif
 LIBRARY_OUTPUT := $(patsubst %,lib/lib%.so,$(LIBRARY_NAMES))
 
 INCLUDES  := $(addprefix -I$(PWD)/,$(INCLUDES))
 CFLAGS    += $(shell root-config --cflags)
 CFLAGS    += -MMD -MP $(INCLUDES)
 LINKFLAGS += -Llib $(addprefix -l,$(LIBRARY_NAMES)) -Wl,-rpath,\$$ORIGIN/../lib
-LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lMinuit -lGuiHtml -lTreePlayer -lX11 -lXpm -lProof -lTMVA
+LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lMinuit -lGuiHtml -lTreePlayer -lX11 -lXpm -lTMVA
 
 # RCFLAGS are being used for rootcint
 ifeq ($(MATHMORE_INSTALLED),yes)
@@ -97,18 +102,26 @@ ifeq ($(XML_INSTALLED),yes)
   LINKFLAGS += -lXMLParser -lXMLIO
 endif
 
+ifeq ($(PROOF_INSTALLED),yes)
+	LINKFLAGS += -lProof
+endif
+
 LINKFLAGS := $(LINKFLAGS_PREFIX) $(LINKFLAGS) $(LINKFLAGS_SUFFIX) $(CFLAGS)
 
 ROOT_LIBFLAGS := $(shell root-config --cflags --glibs)
 
-UTIL_O_FILES    := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard util/*.$(SRC_SUFFIX)))
-#SANDBOX_O_FILES := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard Sandbox/*.$(SRC_SUFFIX)))
-SCRIPT_O_FILES    := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard scripts/*.$(SRC_SUFFIX)))
+UTIL_O_FILES     := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard util/*.$(SRC_SUFFIX)))
+#SANDBOX_O_FILES  := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard Sandbox/*.$(SRC_SUFFIX)))
+SCRIPT_O_FILES   := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard scripts/*.$(SRC_SUFFIX)))
 PROOF_O_FILES    := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard GRSIProof/grsiproof.$(SRC_SUFFIX)))
 ANALYSIS_O_FILES := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard myAnalysis/*.$(SRC_SUFFIX)))
-MAIN_O_FILES    := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard src/*.$(SRC_SUFFIX)))
-EXE_O_FILES     := $(UTIL_O_FILES) $(SANDBOX_O_FILES) $(SCRIPT_O_FILES) $(ANALYSIS_O_FILES) $(PROOF_O_FILES)
-EXECUTABLES     := $(patsubst %.o,bin/%,$(notdir $(EXE_O_FILES))) bin/grsisort
+MAIN_O_FILES     := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard src/*.$(SRC_SUFFIX)))
+EXE_O_FILES      := $(UTIL_O_FILES) $(SANDBOX_O_FILES) $(SCRIPT_O_FILES) $(ANALYSIS_O_FILES)
+ifeq ($(PROOF_INSTALLED),yes)
+	EXE_O_FILES   += $(PROOF_O_FILES)
+endif
+EXECUTABLES      := $(patsubst %.o,bin/%,$(notdir $(EXE_O_FILES))) bin/grsisort
+TEST_O_FILES     := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard UnitTests/*.$(SRC_SUFFIX)))
 
 HISTOGRAM_SO    := $(patsubst histos/%.$(SRC_SUFFIX),lib/lib%.so,$(wildcard histos/*.$(SRC_SUFFIX)))
 FILTER_SO    := $(patsubst filters/%.$(SRC_SUFFIX),lib/lib%.so,$(wildcard filters/*.$(SRC_SUFFIX)))
@@ -140,10 +153,7 @@ all: include/GVersion.h grsirc $(EXECUTABLES) $(LIBRARY_OUTPUT) lib/libGRSI.so c
 	@$(FIND) . -maxdepth 1 -name "*.pcm" -exec mv {} lib/ \;
 	@printf "$(OK_COLOR)Compilation successful, $(WARN_COLOR)woohoo!$(NO_COLOR)\n"
 
-docs: doxygen
-
-doxygen:
-	$(MAKE) -C $@
+test: bin/test-main
 
 bin/grsisort: $(MAIN_O_FILES) | $(LIBRARY_OUTPUT) bin include/GVersion.h
 	$(call run_and_test,$(CPP) $^ -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
@@ -157,11 +167,16 @@ bin/%: .build/Sandbox/%.o | $(LIBRARY_OUTPUT) bin include/GVersion.h
 bin/%: .build/scripts/%.o | $(LIBRARY_OUTPUT) bin include/GVersion.h
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
+ifeq ($(PROOF_INSTALLED),yes)
 bin/%: .build/GRSIProof/%.o | $(LIBRARY_OUTPUT) bin include/GVersion.h
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
+endif
 
 bin/%: .build/myAnalysis/%.o | $(LIBRARY_OUTPUT) bin include/GVersion.h
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
+
+bin/test-main: $(TEST_O_FILES) | $(LIBRARY_OUTPUT) bin include/GVersion.h
+	$(call run_and_test,$(CPP) $^ -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
 bin lib:
 	@mkdir -p $@
@@ -223,13 +238,6 @@ $(foreach lib,$(LIBRARY_DIRS),$(eval $(call library_template,$(lib))))
 
 -include $(shell $(FIND) .build -name '*.d' 2> /dev/null)
 
-html: all
-	@printf " ${COM_COLOR}Building      ${OBJ_COLOR} HTML Documentation ${NO_COLOR}\n"
-	@cp -r include grsisort
-	@grsisort -q -l --work_harder util/html_generator.C #>/dev/null
-	@$(RM) -r grsisort
-	@$(RM) tempfile.out
-
 complete: all parsers
 
 parsers: all
@@ -240,34 +248,27 @@ GRSIData: all
 
 GRSIData-clean:
 	@$(MAKE) -C GRSIData clean
-	@$(MAKE) clean
 
 ILLData: all
 	@$(MAKE) -C ILLData
 
 ILLData-clean:
 	@$(MAKE) -C ILLData clean
-	@$(MAKE) clean
 
 iThembaData: all
 	@$(MAKE) -C iThembaData
 
 iThembaData-clean:
 	@$(MAKE) -C iThembaData clean
-	@$(MAKE) clean
 
 HILData: all
 	@$(MAKE) -C HILData
 
 HILData-clean:
 	@$(MAKE) -C HILData clean
-	@$(MAKE) clean
 
 clean:
 	@printf "\n$(WARN_COLOR)Cleaning up$(NO_COLOR)\n\n"
 	@-$(RM) -rf .build bin lib include/GVersion.h
 	@-$(RM) -rf libraries/*.so libraries/*.pcm #this is here for cleaning up libraries from pre GRSI 3.0
 
-cleaner: clean
-	@printf "\nEven more clean up\n\n"
-	@-$(RM) -rf htmldoc

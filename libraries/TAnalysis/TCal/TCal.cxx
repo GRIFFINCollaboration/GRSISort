@@ -1,9 +1,5 @@
 #include "TCal.h"
 
-/// \cond CLASSIMP
-ClassImp(TCal)
-/// \endcond
-
 TCal::TCal()
 {
    /// Default constructor
@@ -16,11 +12,6 @@ TCal::TCal(const char* name, const char* title)
    InitTCal();
    SetNameTitle(name, title);
    // fgraph->SetNameTitle(name,title);
-}
-
-TCal::~TCal()
-{
-   /// Default dtor
 }
 
 TCal::TCal(const TCal& copy) : TGraphErrors(copy)
@@ -57,7 +48,7 @@ void TCal::Copy(TObject& obj) const
    TNamed::Copy(static_cast<TGraphErrors&>(obj));
 }
 
-Bool_t TCal::SetChannel(const TChannel* chan)
+Bool_t TCal::SetChannel(TChannel* chan)
 {
    /// Sets the channel being calibrated
    if(chan == nullptr) {
@@ -65,7 +56,7 @@ Bool_t TCal::SetChannel(const TChannel* chan)
       return false;
    }
    // Set our TRef to point at the TChannel
-   fChan = const_cast<TChannel*>(chan);
+   fChan = chan;
    return true;
 }
 
@@ -73,15 +64,15 @@ void TCal::WriteToAllChannels(const std::string& mnemonic)
 {
    /// Writes this calibration to all channels in the current TChannel Map
    std::unordered_map<unsigned int, TChannel*>::iterator mapIt;
-   std::unordered_map<unsigned int, TChannel*>* chanMap = TChannel::GetChannelMap();
-   TChannel* origChan = GetChannel();
+   std::unordered_map<unsigned int, TChannel*>*          chanMap  = TChannel::GetChannelMap();
+   TChannel*                                             origChan = GetChannel();
    for(mapIt = chanMap->begin(); mapIt != chanMap->end(); mapIt++) {
       if(mnemonic.empty() || (strncmp(mapIt->second->GetName(), mnemonic.c_str(), mnemonic.size()) == 0)) {
          SetChannel(mapIt->second);
          WriteToChannel();
       }
    }
-   std::cout<<std::endl;
+   std::cout << std::endl;
    if(origChan != nullptr) {
       SetChannel(origChan);
    }
@@ -112,14 +103,14 @@ Double_t TCal::GetParameter(size_t parameter) const
       Error("GetParameter", "Function have not been fitted yet");
       return 0;
    }
-   return GetFitFunction()->GetParameter(parameter); // Root does all of the checking for us.
+   return GetFitFunction()->GetParameter(parameter);   // Root does all of the checking for us.
 }
 
 Bool_t TCal::SetChannel(UInt_t chanNum)
 {
    /// Sets the channel for the calibration to the channel number channum. Returns
    /// 0 if the channel does not exist
-   TChannel* chan = TChannel::GetChannelByNumber(chanNum);
+   TChannel* chan = TChannel::GetChannelByNumber(static_cast<Int_t>(chanNum));
    if(chan == nullptr) {
       Error("SetChannel", "Channel Number %d does not exist in current memory.", chanNum);
       return false;
@@ -131,8 +122,8 @@ TChannel* TCal::GetChannel() const
 {
    /// Gets the channel being pointed to by the TCal. Returns 0 if no channel
    /// is set.
-   return static_cast<TChannel*>(fChan.GetObject()); // Gets the object pointed at by the TRef and casts it to a
-                                                     // TChannel
+   return static_cast<TChannel*>(fChan.GetObject());   // Gets the object pointed at by the TRef and casts it to a
+                                                       // TChannel
 }
 
 void TCal::SetHist(TH1* hist)
@@ -155,24 +146,26 @@ void TCal::Print(Option_t*) const
 {
    /// Prints calibration information
    if(GetChannel() != nullptr) {
-      std::cout<<"Channel Number: "<<GetChannel()->GetNumber()<<std::endl;
+      std::cout << "Channel Number: " << GetChannel()->GetNumber() << std::endl;
    } else {
    }
 
    if(fFitFunc != nullptr) {
-      std::cout<<std::endl<<"*******************************"<<std::endl;
-      std::cout<<" Fit:"<<std::endl;
+      std::cout << std::endl
+                << "*******************************" << std::endl;
+      std::cout << " Fit:" << std::endl;
       fFitFunc->Print();
-      std::cout<<std::endl<<"*******************************"<<std::endl;
+      std::cout << std::endl
+                << "*******************************" << std::endl;
    } else {
-      std::cout<<"Parameters: FIT NOT SET"<<std::endl;
+      std::cout << "Parameters: FIT NOT SET" << std::endl;
    }
 
-   std::cout<<"Nucleus: ";
+   std::cout << "Nucleus: ";
    if(GetNucleus() != nullptr) {
-      std::cout<<GetNucleus()->GetName()<<std::endl;
+      std::cout << GetNucleus()->GetName() << std::endl;
    } else {
-      std::cout<<"NOT SET"<<std::endl;
+      std::cout << "NOT SET" << std::endl;
    }
 }
 

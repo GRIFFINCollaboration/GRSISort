@@ -20,14 +20,14 @@
 class ExampleFragmentSelector : public TGRSISelector {
 
 public:
-   TFragment* fFragment;
+   TFragment* fFragment{nullptr};
 
-   ExampleFragmentSelector(TTree* /*tree*/ = 0) : TGRSISelector(), fFragment(0) { SetOutputPrefix("ExampleFragment"); }
-   virtual ~ExampleFragmentSelector() {}
+   explicit ExampleFragmentSelector(TTree* /*tree*/ = nullptr) : TGRSISelector() { SetOutputPrefix("ExampleFragment"); }
+   virtual ~ExampleFragmentSelector() = default;
    virtual Int_t Version() const { return 2; }
    void          CreateHistograms();
    void          FillHistograms();
-   void InitializeBranches(TTree* tree);
+   void          InitializeBranches(TTree* tree);
 
    ClassDef(ExampleFragmentSelector, 2);
 };
@@ -41,4 +41,4 @@ void ExampleFragmentSelector::InitializeBranches(TTree* tree)
    tree->SetBranchAddress("TFragment", &fFragment);
 }
 
-#endif // #ifdef ExampleFragmentSelector_cxx
+#endif   // #ifdef ExampleFragmentSelector_cxx

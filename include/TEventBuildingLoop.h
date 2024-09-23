@@ -1,5 +1,5 @@
-#ifndef _TEVENTBUILDINGLOOP_H_
-#define _TEVENTBUILDINGLOOP_H_
+#ifndef TEVENTBUILDINGLOOP_H
+#define TEVENTBUILDINGLOOP_H
 
 /** \addtogroup Loops
  *  @{
@@ -26,13 +26,24 @@
 
 class TEventBuildingLoop : public StoppableThread {
 public:
-   enum class EBuildMode { kDefault, kTime, kTimestamp, kTriggerId, kSkip };
+   enum class EBuildMode { kDefault,
+                           kTime,
+                           kTimestamp,
+                           kTriggerId,
+                           kSkip };
 
-   static TEventBuildingLoop* Get(std::string name = "", EBuildMode mode = EBuildMode::kTimestamp, long buildWindow = 2000);
-   ~TEventBuildingLoop() override;
+   static TEventBuildingLoop* Get(std::string name = "", EBuildMode mode = EBuildMode::kTimestamp, uint64_t buildWindow = 2000);
+   TEventBuildingLoop(const TEventBuildingLoop&)                = delete;
+   TEventBuildingLoop(TEventBuildingLoop&&) noexcept            = delete;
+   TEventBuildingLoop& operator=(const TEventBuildingLoop&)     = delete;
+   TEventBuildingLoop& operator=(TEventBuildingLoop&&) noexcept = delete;
+   ~TEventBuildingLoop();
 
 #ifndef __CINT__
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>&              InputQueue() { return fInputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& InputQueue()
+   {
+      return fInputQueue;
+   }
    std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment>>>>& OutputQueue()
    {
       return fOutputQueue;
@@ -49,18 +60,16 @@ public:
    size_t GetItemsCurrent() override { return fOutputQueue->Size(); }
    size_t GetRate() override { return 0; }
 
-   void SetBuildWindow(long val) { fBuildWindow = val; }
-   unsigned long            GetBuildWindow() const { return fBuildWindow; }
+   void     SetBuildWindow(uint64_t val) { fBuildWindow = val; }
+   uint64_t GetBuildWindow() const { return fBuildWindow; }
 
-   void SetSortDepth(int val) { fSortingDepth = val; }
-   unsigned int          GetSortDepth() const { return fSortingDepth; }
+   void         SetSortDepth(unsigned int val) { fSortingDepth = val; }
+   unsigned int GetSortDepth() const { return fSortingDepth; }
 
    std::string EndStatus() override;
 
 private:
-   TEventBuildingLoop(std::string name, EBuildMode mode, long buildWindow);
-   TEventBuildingLoop(const TEventBuildingLoop& other);
-   TEventBuildingLoop& operator=(const TEventBuildingLoop& other);
+   TEventBuildingLoop(std::string name, EBuildMode mode, uint64_t buildWindow);
 
 #ifndef __CINT__
    bool CheckBuildCondition(const std::shared_ptr<const TFragment>&);
@@ -75,9 +84,9 @@ private:
 
    EBuildMode   fBuildMode;
    unsigned int fSortingDepth;
-   long         fBuildWindow;
+   uint64_t     fBuildWindow;
    bool         fPreviousSortingDepthError;
-	bool         fSkipInputSort;
+   bool         fSkipInputSort;
 
 #ifndef __CINT__
    std::vector<std::shared_ptr<const TFragment>> fNextEvent;
@@ -87,7 +96,9 @@ private:
       fOrdered;
 #endif
 
-   ClassDefOverride(TEventBuildingLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TEventBuildingLoop, 0)   // NOLINT(readability-else-after-return)
+   /// \endcond
 };
 
 /*! @} */

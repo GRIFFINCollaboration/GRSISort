@@ -23,29 +23,31 @@ class TBgo : public TDetector {
 public:
    TBgo();
    TBgo(const TBgo&);
-   virtual ~TBgo();
+   TBgo(TBgo&&) noexcept;
+   ~TBgo();
 
-   TBgoHit* GetBgoHit(const Int_t& i) { return static_cast<TBgoHit*>(GetHit(i)); }
+   TBgoHit* GetBgoHit(const Int_t& index) { return static_cast<TBgoHit*>(GetHit(index)); }
 
-   static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
+   static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0);   //!<!
 #ifndef __CINT__
-   void AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan) override; //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan) override;   //!<!
 #endif
-	void BuildHits() override {} // no need to build any hits, everything already done in AddFragment
+   void BuildHits() override {}   // no need to build any hits, everything already done in AddFragment
 
-   TBgo& operator=(const TBgo&); //!<!
+   TBgo& operator=(const TBgo&);       //!<!
+   TBgo& operator=(TBgo&&) noexcept;   //!<!
 
 private:
-   static TVector3 gScintPosition[17];                      //!<! Position of each BGO scintillator
+   static std::array<TVector3, 17> fScintPosition;   //!<! Position of each BGO scintillator
 
 public:
-   virtual void Copy(TObject&) const override;            //!<!
-   virtual void Clear(Option_t* opt = "all") override;    //!<!
-   virtual void Print(Option_t* opt = "") const override; //!<!
-	virtual void Print(std::ostream& out) const override;  //!<!
+   void Copy(TObject&) const override;              //!<!
+   void Clear(Option_t* opt = "all") override;      //!<!
+   void Print(Option_t* opt = "") const override;   //!<!
+   void Print(std::ostream& out) const override;    //!<!
 
    /// \cond CLASSIMP
-   ClassDefOverride(TBgo, 1) // Bgo Physics structure
+   ClassDefOverride(TBgo, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

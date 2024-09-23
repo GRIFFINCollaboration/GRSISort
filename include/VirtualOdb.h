@@ -7,8 +7,8 @@
 //
 //
 
-#ifndef INCLUDE_VirtualOdb_H
-#define INCLUDE_VirtualOdb_H
+#ifndef INCLUDE_VIRTUALODB_H
+#define INCLUDE_VIRTUALODB_H
 
 /** \addtogroup Sorting
  *  @{
@@ -52,7 +52,11 @@ public:
    /// Read a string value, midas type TID_STRING
    virtual const char* odbReadString(const char* name, int index = 0, const char* defaultValue = nullptr) = 0;
    /// Destructor has to be virtual
-   virtual ~VirtualOdb(){/* empty */}; // dtor
+   VirtualOdb(const VirtualOdb&)                = default;
+   VirtualOdb(VirtualOdb&&) noexcept            = default;
+   VirtualOdb& operator=(const VirtualOdb&)     = default;
+   VirtualOdb& operator=(VirtualOdb&&) noexcept = default;
+   virtual ~VirtualOdb()                        = default;
 };
 /*! @} */
 #endif

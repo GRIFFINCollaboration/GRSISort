@@ -28,63 +28,66 @@
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-// 1 GB size limit for objects in ROOT
-#define SIZE_LIMIT 1073741822
-
 class TGRSISelector : public TSelector {
 public:
-   TTree* fChain; //! pointer to the analyzed TTree or TChain
-
-   // Declaration of leaf types
-
    // Methods are purposely not virtual so that TGRSISelector has control
-   TGRSISelector(TTree* /*tree*/ = nullptr) : fChain(nullptr) { SetOutputPrefix(ClassName()); }
-   ~TGRSISelector() override     = default;
-   Int_t Version() const override { return 2; }
-   void Begin(TTree* tree) override;
-   void SlaveBegin(TTree* tree) override;
-   void Init(TTree* tree) override;
+   explicit TGRSISelector(TTree* /*tree*/ = nullptr) { SetOutputPrefix(ClassName()); }
+   TGRSISelector(const TGRSISelector&)                = delete;
+   TGRSISelector(TGRSISelector&&) noexcept            = delete;
+   TGRSISelector& operator=(const TGRSISelector&)     = delete;
+   TGRSISelector& operator=(TGRSISelector&&) noexcept = delete;
+   ~TGRSISelector()                                   = default;
+   Int_t  Version() const override { return 2; }
+   void   Begin(TTree* tree) override;
+   void   SlaveBegin(TTree* tree) override;
+   void   Init(TTree* tree) override;
    Bool_t Notify() override;
    Bool_t Process(Long64_t entry) override;
-   Int_t GetEntry(Long64_t entry, Int_t getall = 0) override
+   Int_t  GetEntry(Long64_t entry, Int_t getall = 0) override
    {
-      return fChain ? fChain->GetTree()->GetEntry(entry, getall) : 0;
+      return ((fChain != nullptr) ? fChain->GetTree()->GetEntry(entry, getall) : 0);
    }
    void SetOption(const char* option) override { fOption = option; }
    void SetObject(TObject* obj) override { fObject = obj; }
    // void    SetInputList(TList *input) { fInput = input; }
-   TList* GetOutputList() const override { return fOutput; } ///< this does the same as TSelector::GetOutputList()
+   TList* GetOutputList() const override { return fOutput; }   ///< this does the same as TSelector::GetOutputList()
    void   SlaveTerminate() override;
    void   Terminate() override;
 
    virtual void CreateHistograms()              = 0;
    virtual void FillHistograms()                = 0;
    virtual void InitializeBranches(TTree* tree) = 0;
-   virtual void EndOfSort() {};
-   void SetOutputPrefix(const char* prefix) { fOutputPrefix = prefix; }
-	std::string GetOutputPrefix() const { return fOutputPrefix; }
+   virtual void EndOfSort(){};
+   void         SetOutputPrefix(const char* prefix) { fOutputPrefix = prefix; }
+   std::string  GetOutputPrefix() const { return fOutputPrefix; }
 
 protected:
-   TGRSIMap<std::string, TH1*>        fH1; //!<! map for 1-D histograms
-   TGRSIMap<std::string, TH2*>        fH2; //!<! map for 2-D histograms
-   TGRSIMap<std::string, TH3*>        fH3; //!<! map for 3-D histograms
-   TGRSIMap<std::string, GHSym*>      fSym; //!<! map for GRSISort's symmetric 2-D histograms
-   TGRSIMap<std::string, GCube*>      fCube; //!<! map for GRSISort's 3-D histograms
-   TGRSIMap<std::string, THnSparseF*> fHSparse; //!<! map for sparse n-D histograms
-   TGRSIMap<std::string, TTree*>      fTree; //!<! map for trees
-	TPPG*                              fPpg{nullptr}; //!<! pointer to the PPG
-	TRunInfo*                          fRunInfo{nullptr}; //!<! pointer to the run info
-	std::map<std::string, TCutG*>      fCuts; //!<! map of cuts
-	int64_t				fEntry; //!<! entry number currently being processed
+   TGRSIMap<std::string, TH1*>        fH1;                 // NOLINT  //!<! map for 1-D histograms
+   TGRSIMap<std::string, TH2*>        fH2;                 // NOLINT  //!<! map for 2-D histograms
+   TGRSIMap<std::string, TH3*>        fH3;                 // NOLINT  //!<! map for 3-D histograms
+   TGRSIMap<std::string, GHSym*>      fSym;                // NOLINT  //!<! map for GRSISort's symmetric 2-D histograms
+   TGRSIMap<std::string, GCube*>      fCube;               // NOLINT  //!<! map for GRSISort's 3-D histograms
+   TGRSIMap<std::string, THnSparseF*> fHSparse;            // NOLINT  //!<! map for sparse n-D histograms
+   TGRSIMap<std::string, TTree*>      fTree;               // NOLINT  //!<! map for trees
+   std::map<std::string, TCutG*>      fCuts;               // NOLINT  //!<! map of cuts
+   TPPG*                              fPpg{nullptr};       // NOLINT  //!<! pointer to the PPG
+   TRunInfo*                          fRunInfo{nullptr};   // NOLINT  //!<! pointer to the run info
+   int64_t                            fEntry{0};           // NOLINT  //!<! entry number currently being processed
 
 private:
-	void CheckSizes(const char* usage); ///< Function to check size of objects in output list
-   std::string       fOutputPrefix; //!<! pre-fix for output files
-   TAnalysisOptions* fAnalysisOptions{nullptr}; //!<! pointer to analysis options
-	Int_t             fFirstRunNumber; //!<! run number of first file
-	Int_t             fFirstSubRunNumber; //!<! sub-run number of first file
+   static constexpr int fSizeLimit = 1073741822;   //!<! 1 GB size limit for objects in ROOT
 
-   ClassDefOverride(TGRSISelector, 2);
+   TTree* fChain{nullptr};   //!<! pointer to the analyzed TTree or TChain
+
+   void              CheckSizes(const char* usage);   ///< Function to check size of objects in output list
+   std::string       fOutputPrefix;                   //!<! pre-fix for output files
+   TAnalysisOptions* fAnalysisOptions{nullptr};       //!<! pointer to analysis options
+   Int_t             fFirstRunNumber{-1};             //!<! run number of first file
+   Int_t             fFirstSubRunNumber{-1};          //!<! sub-run number of first file
+
+   /// \cond CLASSIMP
+   ClassDefOverride(TGRSISelector, 3)   // NOLINT(readability-else-after-return)
+   /// \endcond
 };
 
 #endif

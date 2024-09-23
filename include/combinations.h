@@ -1,25 +1,27 @@
-#ifndef _COMBINATIONS_H_
-#define _COMBINATIONS_H_
+#ifndef COMBINATIONS_H
+#define COMBINATIONS_H
+#include <vector>
+#include <algorithm>
 
-class combinations {
+class combinations {   // NOLINT(readability-identifier-naming)
 public:
-   class iterator {
+   class iterator {   // NOLINT(readability-identifier-naming)
    public:
       iterator(std::vector<double>& points, size_t n, bool at_beginning)
-         : fPoints(points), fPoints_used(fPoints.size()), fPast_end(false)
+         : fPoints(points), fPointsUsed(fPoints.size())
       {
          if(at_beginning) {
-            std::fill(fPoints_used.begin(), fPoints_used.begin() + n, true);
+            std::fill(fPointsUsed.begin(), fPointsUsed.begin() + n, true);
          } else {
-            fPast_end = true;
+            fPastEnd = true;
          }
       }
 
       std::vector<double> operator*() const
       {
          std::vector<double> values;
-         for(size_t i = 0; i < fPoints_used.size(); i++) {
-            if(fPoints_used[i]) {
+         for(size_t i = 0; i < fPointsUsed.size(); i++) {
+            if(fPointsUsed[i]) {
                values.push_back(fPoints[i]);
             }
          }
@@ -28,7 +30,7 @@ public:
 
       iterator& operator++()
       {
-         fPast_end = !std::prev_permutation(fPoints_used.begin(), fPoints_used.end());
+         fPastEnd = !std::prev_permutation(fPointsUsed.begin(), fPointsUsed.end());
          return *this;
       }
 
@@ -41,15 +43,15 @@ public:
 
       bool operator==(const iterator& other) const
       {
-         if(&fPoints != &other.fPoints || fPoints_used.size() != other.fPoints_used.size()) {
+         if(&fPoints != &other.fPoints || fPointsUsed.size() != other.fPointsUsed.size()) {
             return false;
          }
-         if(fPast_end && other.fPast_end) {
+         if(fPastEnd && other.fPastEnd) {
             return true;
          }
 
-         for(size_t i = 0; i < fPoints_used.size(); i++) {
-            if(fPoints_used[i] != other.fPoints_used[i]) {
+         for(size_t i = 0; i < fPointsUsed.size(); i++) {
+            if(fPointsUsed[i] != other.fPointsUsed[i]) {
                return false;
             }
          }
@@ -61,15 +63,15 @@ public:
 
    private:
       std::vector<double>& fPoints;
-      std::vector<bool>    fPoints_used;
-      bool                 fPast_end;
+      std::vector<bool>    fPointsUsed;
+      bool                 fPastEnd{false};
    };
 
    combinations(std::vector<double>& points, size_t n) : fPoints(points), fN(n) {}
 
-   iterator begin() const { return iterator(fPoints, fN, true); }
+   iterator begin() const { return {fPoints, fN, true}; }
 
-   iterator end() const { return iterator(fPoints, fN, false); }
+   iterator end() const { return {fPoints, fN, false}; }
 
 private:
    std::vector<double>& fPoints;

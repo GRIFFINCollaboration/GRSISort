@@ -1,5 +1,5 @@
-#ifndef TGAINMATCH_H__
-#define TGAINMATCH_H__
+#ifndef TGAINMATCH_H
+#define TGAINMATCH_H
 
 /** \addtogroup Calibration
  *  @{
@@ -14,13 +14,14 @@
 
 class TGainMatch : public TCal {
 public:
-   TGainMatch() : fHist(nullptr), fCoarseRange(gDefaultCoarseRange) {}
-   TGainMatch(const char* name, const char* title) : TCal(name, title), fCoarseRange(gDefaultCoarseRange) { Clear(); }
-   ~TGainMatch() override = default;
+   TGainMatch() : fCoarseRange(fDefaultCoarseRange) {}
+   TGainMatch(const char* name, const char* title) : TCal(name, title), fCoarseRange(fDefaultCoarseRange) { Clear(); }
+   TGainMatch(const TGainMatch&);
+   TGainMatch(TGainMatch&&) noexcept            = default;
+   TGainMatch& operator=(const TGainMatch&)     = default;
+   TGainMatch& operator=(TGainMatch&&) noexcept = default;
+   ~TGainMatch()                                = default;
 
-   TGainMatch(const TGainMatch& copy);
-
-public:
    void Copy(TObject& obj) const override;
 
    void CalculateGain(Double_t cent1, Double_t cent2, Double_t eng1, Double_t eng2);
@@ -67,28 +68,28 @@ public:
       return nullptr;
    }
 
-   void SetCoarseRange(Double_t coarseRange) { fCoarseRange = coarseRange; }
-   Double_t                     GetCoarseRange() const { return fCoarseRange; }
+   void        SetCoarseRange(Double_t coarseRange) { fCoarseRange = coarseRange; }
+   Double_t    GetCoarseRange() const { return fCoarseRange; }
    static void SetDefaultCoarseRange(Double_t coarseRange)
    {
-      std::cout<<"All new TGainMatch objects will have their range set to "<<coarseRange<<std::endl;
-      gDefaultCoarseRange = coarseRange;
+      std::cout << "All new TGainMatch objects will have their range set to " << coarseRange << std::endl;
+      fDefaultCoarseRange = coarseRange;
    }
-   static Double_t GetDefaultCoarseRange() { return gDefaultCoarseRange; }
+   static Double_t GetDefaultCoarseRange() { return fDefaultCoarseRange; }
 
 private:
-   Bool_t   fCoarseMatch{false};
-   Bool_t   fAligned{false};
-   TH1*     fHist{nullptr};
-   Double_t fAlignCoeffs[2]{0.};
-   Double_t fGainCoeffs[2]{0.};
-   Double_t fCoarseRange;
-   Double_t HistCompare(Double_t* x, Double_t* par);
+   Bool_t                  fCoarseMatch{false};
+   Bool_t                  fAligned{false};
+   TH1*                    fHist{nullptr};
+   std::array<Double_t, 2> fAlignCoeffs{0.};
+   std::array<Double_t, 2> fGainCoeffs{0.};
+   Double_t                fCoarseRange{0.};
+   Double_t                HistCompare(Double_t* x, Double_t* par);
 
-   static Double_t gDefaultCoarseRange;
+   static Double_t fDefaultCoarseRange;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGainMatch, 1);
+   ClassDefOverride(TGainMatch, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

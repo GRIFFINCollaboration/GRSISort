@@ -9,37 +9,66 @@
 
 class TParserLibrary : public TSingleton<TParserLibrary> {
 public:
-	friend class TSingleton<TParserLibrary>;
+   friend class TSingleton<TParserLibrary>;
 
-	~TParserLibrary();
+   ~TParserLibrary();
 
-	void Load();                                 ///< if necessary loads shared object library and sets/initializes all other functions
+   void Load();   ///< if necessary loads shared object library and sets/initializes all other functions
 
-	TRawFile* CreateRawFile(const std::string& file) { Load(); return fCreateRawFile(file); } ///< function to open library specific raw data file
-	void DestroyRawFile(TRawFile* file)              { Load(); fDestroyRawFile(file); }       ///< function to destroy library specific raw data file
+   TRawFile* CreateRawFile(const std::string& file)
+   {
+      /// function to open library specific raw data file
+      Load();
+      return fCreateRawFile(file);
+   }
+   void DestroyRawFile(TRawFile* file)
+   {
+      /// function to destroy library specific raw data file
+      Load();
+      fDestroyRawFile(file);
+   }
 
-	TDataParser* CreateDataParser()                  { Load(); return fCreateDataParser(); }  ///< function to open library specific data parser
-	void DestroyDataParser(TDataParser* parser)      { Load(); fDestroyDataParser(parser); }  ///< function to destroy library specific data parser
+   TDataParser* CreateDataParser()
+   {
+      /// function to open library specific data parser
+      Load();
+      return fCreateDataParser();
+   }
+   void DestroyDataParser(TDataParser* parser)
+   {
+      /// function to destroy library specific data parser
+      Load();
+      fDestroyDataParser(parser);
+   }
 
-	std::string LibraryVersion()                     { Load(); return fLibraryVersion(); }    ///< returns version of shared object library loaded
+   std::string LibraryVersion()
+   {
+      /// returns version of shared object library loaded
+      Load();
+      return fLibraryVersion();
+   }
 
 private:
-	TParserLibrary() { fHandle = nullptr; }
+   TParserLibrary()                                     = default;
+   TParserLibrary(const TParserLibrary&)                = default;
+   TParserLibrary(TParserLibrary&&) noexcept            = default;
+   TParserLibrary& operator=(const TParserLibrary&)     = default;
+   TParserLibrary& operator=(TParserLibrary&&) noexcept = default;
 
-	void* fHandle;                                      ///< handle for shared object library
+   void* fHandle{nullptr};   ///< handle for shared object library
 
-	void         (*fInitLibrary)();
-	std::string  (*fLibraryVersion)();
+   void (*fInitLibrary)();
+   std::string (*fLibraryVersion)();
 
-	TRawFile*    (*fCreateRawFile)(const std::string&);
-	void         (*fDestroyRawFile)(TRawFile*);
+   TRawFile* (*fCreateRawFile)(const std::string&);
+   void (*fDestroyRawFile)(TRawFile*);
 
-	TDataParser* (*fCreateDataParser)();
-	void         (*fDestroyDataParser)(TDataParser*);
+   TDataParser* (*fCreateDataParser)();
+   void (*fDestroyDataParser)(TDataParser*);
 
-	/// \cond CLASSIMP
-	ClassDefOverride(TParserLibrary, 1); // parser library class
-	/// \endcond
+   /// \cond CLASSIMP
+   ClassDefOverride(TParserLibrary, 1)   // NOLINT(readability-else-after-return)
+   /// \endcond
 };
 
 #endif

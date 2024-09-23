@@ -14,7 +14,7 @@ TUnpackingLoop* TUnpackingLoop::Get(std::string name)
       name = "unpacking_loop";
    }
 
-   TUnpackingLoop* loop = static_cast<TUnpackingLoop*>(StoppableThread::Get(name));
+   auto* loop = static_cast<TUnpackingLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
       loop = new TUnpackingLoop(name);
    }
@@ -22,21 +22,19 @@ TUnpackingLoop* TUnpackingLoop::Get(std::string name)
 }
 
 TUnpackingLoop::TUnpackingLoop(std::string name)
-   : StoppableThread(name), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>()),
+   : StoppableThread(std::move(name)), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>()),
      fFragsReadFromRaw(0), fGoodFragsRead(0), fEvaluateDataType(true), fDataType(EDataType::kMidas)
 {
-	// try and open dynamic library
-	if(TGRSIOptions::Get()->ParserLibrary().empty()) {
+   // try and open dynamic library
+   if(TGRSIOptions::Get()->ParserLibrary().empty()) {
       throw std::runtime_error("No data parser library supplied, can't open parser!");
-	}
+   }
 
-	// create new data parser
-	fParser = TParserLibrary::Get()->CreateDataParser();
+   // create new data parser
+   fParser = TParserLibrary::Get()->CreateDataParser();
 }
 
-TUnpackingLoop::~TUnpackingLoop() {
-	//TParserLibrary::Get()->DestroyDataParser(fParser);
-}
+TUnpackingLoop::~TUnpackingLoop() = default;
 
 void TUnpackingLoop::ClearQueue()
 {
@@ -53,7 +51,7 @@ bool TUnpackingLoop::Iteration()
    std::shared_ptr<TRawEvent> event;
    int                        error = fInputQueue->Pop(event);
    if(error < 0) {
-      fInputSize = 0;
+      InputSize(0);
       if(fInputQueue->IsFinished()) {
          // Source is dead, push the last event and stop.
          fParser->SetFinished();
@@ -65,9 +63,9 @@ bool TUnpackingLoop::Iteration()
       std::this_thread::sleep_for(std::chrono::milliseconds(10));
       return true;
    }
-	fParser->SetStatusVariables(&fItemsPopped, &fInputSize);
-	fInputSize = error;//"error" is the return value of popping an event from the input queue (which returns the number of events left)
-	++fItemsPopped;
+   fParser->SetStatusVariables(&ItemsPopped(), &InputSize());
+   InputSize(error);   //"error" is the return value of popping an event from the input queue (which returns the number of events left)
+   IncrementItemsPopped();
 
    fFragsReadFromRaw += fParser->Process(event);
    fGoodFragsRead += event->GoodFrags();
@@ -77,13 +75,13 @@ bool TUnpackingLoop::Iteration()
 
 std::string TUnpackingLoop::EndStatus()
 {
-   std::stringstream ss;
+   std::ostringstream status;
    if(fFragsReadFromRaw > 0) {
-      ss<<"\r"<<Name()<<":\t"<<fGoodFragsRead<<" good fragments out of "<<fFragsReadFromRaw
-        <<" fragments => "<<(100. * fGoodFragsRead) / fFragsReadFromRaw<<"% passed"<<std::endl;
+      status << "\r" << Name() << ":\t" << fGoodFragsRead << " good fragments out of " << fFragsReadFromRaw
+             << " fragments => " << 100. * static_cast<double>(fGoodFragsRead) / static_cast<double>(fFragsReadFromRaw) << "% passed" << std::endl;
    } else {
-      ss<<"\rno fragments read from midas => none parsed!"<<std::endl;
+      status << "\rno fragments read from midas => none parsed!" << std::endl;
    }
-   ss<<fParser->OutputQueueStatus();
-   return ss.str();
+   status << fParser->OutputQueueStatus();
+   return status.str();
 }

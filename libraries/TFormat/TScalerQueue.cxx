@@ -4,14 +4,14 @@
 std::mutex TDeadtimeScalerQueue::All;
 std::mutex TDeadtimeScalerQueue::Sorted;
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TDeadtimeScalerQueue                                       //
-//                                                            //
-// This class is where we store scalers. It is thread-safe    //
-// and returns it's status in order to monitor progress.      //
-//                                                            //
-////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+///
+/// \class TDeadtimeScalerQueue
+///
+/// This class is where we store scalers. It is thread-safe
+/// and returns it's status in order to monitor progress.
+///
+///////////////////////////////////////////////////////////////
 
 TDeadtimeScalerQueue* TDeadtimeScalerQueue::fDeadtimeScalerQueueClassPointer = nullptr;
 
@@ -25,19 +25,14 @@ TDeadtimeScalerQueue* TDeadtimeScalerQueue::Get()
 }
 
 TDeadtimeScalerQueue::TDeadtimeScalerQueue()
+   : fStopwatch(new TStopwatch())
 {
    fDeadtimeScalerQueueClassPointer = this;
-   fScalersInQueue                  = 0;
    // When the Global Q is created, start a timer to see how long we are using it.
-   fStopwatch = new TStopwatch();
    fStopwatch->Start();
-
-   fStop = false;
 
    Clear();
 }
-
-TDeadtimeScalerQueue::~TDeadtimeScalerQueue() = default;
 
 void TDeadtimeScalerQueue::Print(Option_t*) const
 {
@@ -57,7 +52,8 @@ void TDeadtimeScalerQueue::Clear(Option_t*)
    }
 
    if(fScalersInQueue != 0) {
-      std::cout<<RED<<std::endl<<"\tWarning, discarding "<<fScalersInQueue<<" Scalers!"<<RESET_COLOR<<std::endl;
+      std::cout << RED << std::endl
+                << "\tWarning, discarding " << fScalersInQueue << " Scalers!" << RESET_COLOR << std::endl;
       while(!fDeadtimeScalerQueue.empty()) {
          fDeadtimeScalerQueue.pop();
       }
@@ -75,7 +71,6 @@ void TDeadtimeScalerQueue::Clear(Option_t*)
    if(locked) {
       TDeadtimeScalerQueue::All.unlock();
    }
-   return;
 }
 
 void TDeadtimeScalerQueue::StartStatusUpdate()
@@ -159,9 +154,9 @@ void TDeadtimeScalerQueue::CheckStatus() const
       // do nothing
    }
 
-   std::cout<<BLUE<<"# Scalers currently in Q     = "<<Size()<<RESET_COLOR<<std::endl;
-   std::cout<<BLUE<<"# Total Scalers put in Q     = "<<fTotalScalersIn<<RESET_COLOR<<std::endl;
-   std::cout<<DGREEN<<"# Total Scalers taken from Q = "<<fTotalScalersOut<<RESET_COLOR<<std::endl;
+   std::cout << BLUE << "# Scalers currently in Q     = " << Size() << RESET_COLOR << std::endl;
+   std::cout << BLUE << "# Total Scalers put in Q     = " << fTotalScalersIn << RESET_COLOR << std::endl;
+   std::cout << DGREEN << "# Total Scalers taken from Q = " << fTotalScalersOut << RESET_COLOR << std::endl;
 
    TDeadtimeScalerQueue::All.unlock();
 }
@@ -169,20 +164,20 @@ void TDeadtimeScalerQueue::CheckStatus() const
 void TDeadtimeScalerQueue::StatusUpdate()
 {
    // Updates the status of the scaler Queue
-   float time            = 0;
-   float scaler_rate_in  = 0;
-   float scaler_rate_out = 0;
+   double time            = 0;
+   double scaler_rate_in  = 0;
+   double scaler_rate_out = 0;
 
    while(fStatusUpdateOn) {
       time            = fStopwatch->RealTime();
-      scaler_rate_in  = fScalersIn / time;
-      scaler_rate_out = fScalersOut / time;
+      scaler_rate_in  = static_cast<double>(fScalersIn) / time;
+      scaler_rate_out = static_cast<double>(fScalersOut) / time;
       while(!TDeadtimeScalerQueue::All.try_lock()) {
          // do nothing
       }
 
-      std::cout<<BLUE<<"\tscalers rate in  = "<<scaler_rate_in<<"/sec, nqueue = "<<Size()<<RESET_COLOR<<std::endl;
-      std::cout<<DGREEN<<"\tscalers rate out = "<<scaler_rate_out<<"/sec"<<RESET_COLOR<<std::endl;
+      std::cout << BLUE << "\tscalers rate in  = " << scaler_rate_in << "/sec, nqueue = " << Size() << RESET_COLOR << std::endl;
+      std::cout << DGREEN << "\tscalers rate out = " << scaler_rate_out << "/sec" << RESET_COLOR << std::endl;
       TDeadtimeScalerQueue::All.unlock();
       ResetRateCounter();
       fStopwatch->Start();
@@ -205,14 +200,14 @@ void TDeadtimeScalerQueue::ResetRateCounter()
 std::mutex TRateScalerQueue::All;
 std::mutex TRateScalerQueue::Sorted;
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TRateScalerQueue                                               //
-//                                                            //
-// This class is where we store scalers. It is thread-safe    //
-// and returns it's status in order to monitor progress.      //
-//                                                            //
-////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+///
+/// \class TRateScalerQueue
+///
+/// This class is where we store scalers. It is thread-safe
+/// and returns it's status in order to monitor progress.
+///
+///////////////////////////////////////////////////////////////
 
 TRateScalerQueue* TRateScalerQueue::fRateScalerQueueClassPointer = nullptr;
 
@@ -226,19 +221,14 @@ TRateScalerQueue* TRateScalerQueue::Get()
 }
 
 TRateScalerQueue::TRateScalerQueue()
+   : fStopwatch(new TStopwatch())
 {
    fRateScalerQueueClassPointer = this;
-   fScalersInQueue              = 0;
    // When the Global Q is created, start a timer to see how long we are using it.
-   fStopwatch = new TStopwatch();
    fStopwatch->Start();
-
-   fStop = false;
 
    Clear();
 }
-
-TRateScalerQueue::~TRateScalerQueue() = default;
 
 void TRateScalerQueue::Print(Option_t*) const
 {
@@ -258,7 +248,7 @@ void TRateScalerQueue::Clear(Option_t*)
    }
 
    if(fScalersInQueue != 0) {
-      std::cout<<RED<<"\tWarning, discarding "<<fScalersInQueue<<" Scalers!"<<RESET_COLOR<<std::endl;
+      std::cout << RED << "\tWarning, discarding " << fScalersInQueue << " Scalers!" << RESET_COLOR << std::endl;
       while(!fRateScalerQueue.empty()) {
          fRateScalerQueue.pop();
       }
@@ -276,7 +266,6 @@ void TRateScalerQueue::Clear(Option_t*)
    if(locked) {
       TRateScalerQueue::All.unlock();
    }
-   return;
 }
 
 void TRateScalerQueue::StartStatusUpdate()
@@ -360,9 +349,9 @@ void TRateScalerQueue::CheckStatus() const
       // do nothing
    }
 
-   std::cout<<BLUE<<"# Scalers currently in Q     = "<<Size()<<RESET_COLOR<<std::endl;
-   std::cout<<BLUE<<"# Total Scalers put in Q     = "<<fTotalScalersIn<<RESET_COLOR<<std::endl;
-   std::cout<<DGREEN<<"# Total Scalers taken from Q = "<<fTotalScalersOut<<RESET_COLOR<<std::endl;
+   std::cout << BLUE << "# Scalers currently in Q     = " << Size() << RESET_COLOR << std::endl;
+   std::cout << BLUE << "# Total Scalers put in Q     = " << fTotalScalersIn << RESET_COLOR << std::endl;
+   std::cout << DGREEN << "# Total Scalers taken from Q = " << fTotalScalersOut << RESET_COLOR << std::endl;
 
    TRateScalerQueue::All.unlock();
 }
@@ -370,20 +359,20 @@ void TRateScalerQueue::CheckStatus() const
 void TRateScalerQueue::StatusUpdate()
 {
    // Updates the status of the scaler Queue
-   float time            = 0;
-   float scaler_rate_in  = 0;
-   float scaler_rate_out = 0;
+   double time            = 0;
+   double scaler_rate_in  = 0;
+   double scaler_rate_out = 0;
 
    while(fStatusUpdateOn) {
       time            = fStopwatch->RealTime();
-      scaler_rate_in  = fScalersIn / time;
-      scaler_rate_out = fScalersOut / time;
+      scaler_rate_in  = static_cast<double>(fScalersIn) / time;
+      scaler_rate_out = static_cast<double>(fScalersOut) / time;
       while(!TRateScalerQueue::All.try_lock()) {
          // do nothing
       }
 
-      std::cout<<BLUE<<"\tscalers rate in  = "<<scaler_rate_in<<"/sec, nqueue = "<<Size()<<RESET_COLOR<<std::endl;
-      std::cout<<DGREEN<<"\tscalers rate out = "<<scaler_rate_out<<"/sec"<<RESET_COLOR<<std::endl;
+      std::cout << BLUE << "\tscalers rate in  = " << scaler_rate_in << "/sec, nqueue = " << Size() << RESET_COLOR << std::endl;
+      std::cout << DGREEN << "\tscalers rate out = " << scaler_rate_out << "/sec" << RESET_COLOR << std::endl;
       TRateScalerQueue::All.unlock();
       ResetRateCounter();
       fStopwatch->Start();

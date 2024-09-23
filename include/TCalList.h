@@ -1,5 +1,5 @@
-#ifndef TCALLIST_H__
-#define TCALLIST_H__
+#ifndef TCALLIST_H
+#define TCALLIST_H
 
 /** \addtogroup Calibration
  *  @{
@@ -14,17 +14,18 @@
 class TCalList : public TNamed {
 public:
    TCalList();
-   TCalList(const char* name, const char* title = "");
-   ~TCalList() override;
+   explicit TCalList(const char* name, const char* title = "");
+   TCalList(const TCalList&);
+   TCalList(TCalList&&) noexcept            = default;
+   TCalList& operator=(const TCalList&)     = default;
+   TCalList& operator=(TCalList&&) noexcept = default;
+   ~TCalList()                              = default;
 
-   TCalList(const TCalList& copy);
-
-public:
-   void AddPoint(const TCalPoint& point);
-   void AddPoint(const UInt_t& idx, const TCalPoint& point);
-   Int_t NPoints() const { return fCalList.size(); }
-   void FillGraph(TGraph* graph) const;
-   bool SetPointIndex(const UInt_t& old_idx, const UInt_t& new_idx);
+   void  AddPoint(const TCalPoint& point);
+   void  AddPoint(const UInt_t& idx, const TCalPoint& point);
+   Int_t NPoints() const { return static_cast<Int_t>(fCalList.size()); }
+   void  FillGraph(TGraph* graph) const;
+   bool  SetPointIndex(const UInt_t& old_idx, const UInt_t& new_idx);
 
    void Copy(TObject& obj) const override;
    void Clear(Option_t* opt = "") override;
@@ -36,7 +37,7 @@ private:
    std::map<UInt_t, TCalPoint> fCalList;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCalList, 1);
+   ClassDefOverride(TCalList, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

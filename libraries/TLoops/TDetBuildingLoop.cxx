@@ -5,14 +5,12 @@
 
 #include "TUnpackedEvent.h"
 
-ClassImp(TDetBuildingLoop)
-
 TDetBuildingLoop* TDetBuildingLoop::Get(std::string name)
 {
    if(name.length() == 0) {
       name = "unpack_loop";
    }
-   TDetBuildingLoop* loop = static_cast<TDetBuildingLoop*>(StoppableThread::Get(name));
+   auto* loop = static_cast<TDetBuildingLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
       loop = new TDetBuildingLoop(name);
    }
@@ -20,7 +18,7 @@ TDetBuildingLoop* TDetBuildingLoop::Get(std::string name)
 }
 
 TDetBuildingLoop::TDetBuildingLoop(std::string name)
-   : StoppableThread(name),
+   : StoppableThread(std::move(name)),
      fInputQueue(std::make_shared<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment>>>>())
 {
 }
@@ -31,9 +29,9 @@ bool TDetBuildingLoop::Iteration()
 {
    std::vector<std::shared_ptr<const TFragment>> frags;
 
-   fInputSize = fInputQueue->Pop(frags);
-   if(fInputSize < 0) {
-      fInputSize = 0;
+   InputSize(fInputQueue->Pop(frags));
+   if(InputSize() < 0) {
+      InputSize(0);
    }
 
    if(frags.empty()) {
@@ -46,10 +44,10 @@ bool TDetBuildingLoop::Iteration()
       std::this_thread::sleep_for(std::chrono::milliseconds(100));
       return true;
    }
-   ++fItemsPopped;
+   IncrementItemsPopped();
 
    std::shared_ptr<TUnpackedEvent> outputEvent = std::make_shared<TUnpackedEvent>();
-	outputEvent->SetRawData(frags);
+   outputEvent->SetRawData(frags);
    outputEvent->Build();
    for(const auto& outQueue : fOutputQueues) {
       outQueue->Push(outputEvent);

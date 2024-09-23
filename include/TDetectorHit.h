@@ -46,11 +46,9 @@ class TDetector;
 /////////////////////////////////////////////////////////////////
 
 class TDetectorHit : public TObject {
-
-   //
 public:
    enum class EBitFlag {
-      kIsEnergySet  = BIT(0), // same as BIT(0);
+      kIsEnergySet  = BIT(0),   // same as BIT(0);
       kIsChannelSet = BIT(1),
       kBit2         = BIT(2),
       kBit3         = BIT(3),
@@ -70,61 +68,59 @@ public:
       kBase       = BIT(9),
       kIsAllSet   = 0xFFFF
    };
-	//EBitFlag operator &(EBitFlag lhs, EBitFlag rhs)
-	//{
-	//	return static_cast<EBitFlag>(static_cast<std::underlying_type<EBitFlag>::type>(lhs) &
-	//		                          static_cast<std::underlying_type<EBitFlag>::type>(rhs));
-	//}
 
-   enum class ETimeFlag { kNoneSet = BIT(0), kCFD = BIT(1), kWalk = BIT(2), kOffset = BIT(3), kAll = 0xFFFF };
+   enum class ETimeFlag { kNoneSet = BIT(0),
+                          kCFD     = BIT(1),
+                          kWalk    = BIT(2),
+                          kOffset  = BIT(3),
+                          kAll     = 0xFFFF };
 
-public:
-   TDetectorHit(const int& Address = 0xffffffff);
+   explicit TDetectorHit(const int& Address = 0xffffffff);
    TDetectorHit(const TDetectorHit&, bool copywave = true);
-   // TDetectorHit(const TFragment& frag) { Class()->IgnoreTObjectStreamer(); this->CopyFragment(frag); }
-   // void CopyFragment(const TFragment&);
-   // void CopyWaveform(const TFragment&);
-   ~TDetectorHit() override;
+   TDetectorHit(TDetectorHit&&) noexcept = default;
+   ~TDetectorHit();
 
-	TDetectorHit& operator=(const TDetectorHit&) = default; // use default assignment operator (to shut up gcc 9.1)
+   TDetectorHit& operator=(const TDetectorHit&)     = default;
+   TDetectorHit& operator=(TDetectorHit&&) noexcept = default;
 
-   //static void SetPPGPtr(TPPG* ptr) { fPPG = ptr; }
+   // static void SetPPGPtr(TPPG* ptr) { fPPG = ptr; }
 
-   bool operator<(const TDetectorHit& rhs) const { return GetEnergy() > rhs.GetEnergy(); } // sorts large->small
+   bool operator<(const TDetectorHit& rhs) const { return GetEnergy() > rhs.GetEnergy(); }   // sorts large->small
 
-public:
-   void         Copy(TObject&) const override;       //!<!
-   virtual void Copy(TObject&, bool copywave) const; //!<!
-   virtual void CopyWave(TObject&) const;            //!<!
-   void Clear(Option_t* opt = "") override;          //!<!
-   virtual void ClearTransients() const { fBitFlags = 0; }
-   void Print(Option_t* opt = "") const override;                                 //!<!
-	virtual void Print(std::ostream& out) const;
-	friend std::ostream& operator<<(std::ostream& out, const TDetectorHit& hit) {
-		hit.Print(out);
-		return out;
-	}
-   virtual bool HasWave() const { return (fWaveform.size() > 0); } //!<!
+   void                 Copy(TObject&) const override;         //!<!
+   virtual void         Copy(TObject&, bool copywave) const;   //!<!
+   virtual void         CopyWave(TObject&) const;              //!<!
+   void                 Clear(Option_t* opt = "") override;    //!<!
+   virtual void         ClearTransients() const { fBitFlags = 0; }
+   void                 Print(Option_t* opt = "") const override;   //!<!
+   virtual void         Print(std::ostream& out) const;
+   friend std::ostream& operator<<(std::ostream& out, const TDetectorHit& hit)
+   {
+      hit.Print(out);
+      return out;
+   }
+   virtual bool   HasWave() const { return !fWaveform.empty(); }   //!<!
+   virtual size_t WaveSize() const { return fWaveform.size(); }    //!<!
 
    static bool CompareEnergy(TDetectorHit* lhs, TDetectorHit* rhs);
    // We need a common function for all detectors in here
    // static bool Compare(TDetectorHit* lhs,TDetectorHit* rhs); //!<!
 
-   void SetAddress(const UInt_t& temp_address) { fAddress = temp_address; }                 //!<!
-   void SetKValue(const Short_t& temp_kval) { fKValue = temp_kval; }                        //!<!
-   void SetCharge(const Float_t& temp_charge) { fCharge = temp_charge; }                    //!<!
-   void SetCharge(const Int_t& temp_charge) { fCharge = temp_charge + gRandom->Uniform(); } //!<! this function automatically randomizes the integer provided
-   virtual void SetCfd(const Float_t& x) { fCfd = x; }                                      //!<!
-   virtual void SetCfd(const uint32_t& x) { fCfd = x + gRandom->Uniform(); }                   //!<! this function automatically randomizes the integer provided
-   virtual void SetCfd(const Int_t& x) { fCfd = x + gRandom->Uniform(); }                   //!<! this function automatically randomizes the integer provided
-   void SetWaveform(const std::vector<Short_t>& x) { fWaveform = x; }                       //!<!
-   void AddWaveformSample(const Short_t& x) { fWaveform.push_back(x); }                     //!<!
-   virtual void SetTimeStamp(const Long64_t& x) { fTimeStamp = x; }                         //!<!
-   virtual void AppendTimeStamp(const Long64_t& x) { fTimeStamp += x; }                     //!<!
+   void         SetAddress(const UInt_t& temp_address) { fAddress = temp_address; }                                                               //!<!
+   void         SetKValue(const Short_t& temp_kval) { fKValue = temp_kval; }                                                                      //!<!
+   void         SetCharge(const Float_t& temp_charge) { fCharge = temp_charge; }                                                                  //!<!
+   void         SetCharge(const Int_t& temp_charge) { fCharge = static_cast<Float_t>(temp_charge) + static_cast<Float_t>(gRandom->Uniform()); }   //!<! this function automatically randomizes the integer provided
+   virtual void SetCfd(const Float_t& val) { fCfd = val; }                                                                                        //!<!
+   virtual void SetCfd(const uint32_t& val) { fCfd = static_cast<Float_t>(val) + static_cast<Float_t>(gRandom->Uniform()); }                      //!<! this function automatically randomizes the integer provided
+   virtual void SetCfd(const Int_t& val) { fCfd = static_cast<Float_t>(val) + static_cast<Float_t>(gRandom->Uniform()); }                         //!<! this function automatically randomizes the integer provided
+   void         SetWaveform(const std::vector<Short_t>& val) { fWaveform = val; }                                                                 //!<!
+   void         AddWaveformSample(const Short_t& val) { fWaveform.push_back(val); }                                                               //!<!
+   virtual void SetTimeStamp(const Long64_t& val) { fTimeStamp = val; }                                                                           //!<!
+   virtual void AppendTimeStamp(const Long64_t& val) { fTimeStamp += val; }                                                                       //!<!
 
-   Double_t SetEnergy(const double& en) const
+   Double_t SetEnergy(const double& energy) const
    {
-      fEnergy = en;
+      fEnergy = energy;
       SetHitBit(EBitFlag::kIsEnergySet, true);
       return fEnergy;
    }
@@ -135,42 +131,42 @@ public:
       return fTime;
    }
 
-   virtual TVector3 GetPosition(Double_t) const { return GetPosition(); } //!<!
-   virtual TVector3 GetPosition() const { return TVector3(0., 0., 0.); }         //!<!
-   virtual double GetEnergy(Option_t* opt = "") const;
-	virtual Double_t GetEnergyNonlinearity(double energy) const;
-   virtual Long64_t GetTimeStamp(Option_t* = "") const { return fTimeStamp; }
-   virtual Long64_t GetTimeStampNs(Option_t* opt = "") const;
-   virtual Double_t GetTime(const ETimeFlag& correct_flag = ETimeFlag::kAll,
-                            Option_t*     opt          = "") const; ///< Returns a time value to the nearest nanosecond!
-   virtual Float_t             GetCfd() const { return fCfd; }            //!<!
-   virtual UInt_t              GetAddress() const { return fAddress; }    //!<!
-   virtual Float_t             GetCharge() const;                         //!<!
-   virtual Float_t             Charge() const { return fCharge; }         //!<!
-   virtual Short_t             GetKValue() const { return fKValue; }      //!<!
-   const std::vector<Short_t>* GetWaveform() const { return &fWaveform; } //!<!
+   virtual TVector3            GetPosition(Double_t) const { return GetPosition(); }   //!<!
+   virtual TVector3            GetPosition() const { return {0., 0., 0.}; }            //!<!
+   virtual double              GetEnergy(Option_t* opt = "") const;
+   virtual Double_t            GetEnergyNonlinearity(double energy) const;
+   virtual Long64_t            GetTimeStamp(Option_t* = "") const { return fTimeStamp; }
+   virtual Long64_t            GetTimeStampNs(Option_t* opt = "") const;
+   virtual Double_t            GetTime(const ETimeFlag& correct_flag = ETimeFlag::kAll,
+                                       Option_t*        opt          = "") const;           ///< Returns a time value to the nearest nanosecond!
+   virtual Float_t             GetCfd() const { return fCfd; }              //!<!
+   virtual UInt_t              GetAddress() const { return fAddress; }      //!<!
+   virtual Float_t             GetCharge() const;                           //!<!
+   virtual Float_t             Charge() const { return fCharge; }           //!<!
+   virtual Short_t             GetKValue() const { return fKValue; }        //!<!
+   const std::vector<Short_t>* GetWaveform() const { return &fWaveform; }   //!<!
    TChannel*                   GetChannel() const
    {
       if(!IsChannelSet()) {
          fChannel = TChannel::GetChannel(fAddress, false);
          SetHitBit(EBitFlag::kIsChannelSet, true);
-		}
+      }
       return fChannel;
-   } //!<!
+   }   //!<!
 
    // stored in the tchannel (things common to all hits of this address)
-   virtual Short_t  GetChannelNumber() const; //!<!
-   virtual Int_t    GetDetector() const;      //!<!
-   virtual Int_t    GetSegment() const;       //!<!
-   virtual Int_t    GetCrystal() const;       //!<!
-   const char*      GetName() const override; //!<!
-   virtual UShort_t GetArrayNumber() const { return GetDetector(); } //!<! Simply returns the detector number, overwritten for detectors that have crystals/segments
-	virtual Int_t    GetTimeStampUnit() const; //!<!
+   virtual int      GetChannelNumber() const;                          //!<!
+   virtual Int_t    GetDetector() const;                               //!<!
+   virtual Int_t    GetSegment() const;                                //!<!
+   virtual Int_t    GetCrystal() const;                                //!<!
+   const char*      GetName() const override;                          //!<!
+   virtual UShort_t GetArrayNumber() const { return GetDetector(); }   //!<! Simply returns the detector number, overwritten for detectors that have crystals/segments
+   virtual Int_t    GetTimeStampUnit() const;                          //!<!
 
    // The PPG is only stored in events that come out of the GRIFFIN DAQ
-	EPpgPattern GetPPGStatus() const;
-   Long64_t GetCycleTimeStamp() const;
-	double GetTimeSinceTapeMove() const;
+   EPpgPattern GetPPGStatus() const;
+   Long64_t    GetCycleTimeStamp() const;
+   double      GetTimeSinceTapeMove() const;
 
    void ClearEnergy()
    {
@@ -185,10 +181,10 @@ public:
 
    static TVector3* GetBeamDirection() { return &fBeamDirection; }
 
-   virtual void Add(const TDetectorHit*) {} //!<!
-private:
-   //     virtual TVector3 GetChannelPosition(Double_t dist) const { AbstractMethod("GetChannelPosition"); return
-   //     TVector3(0., 0., 0.); }
+   virtual void Add(const TDetectorHit*) {}   //!<!
+
+   void SetHitBit(EBitFlag, Bool_t set = true) const;   // const here is dirty
+   bool TestHitBit(EBitFlag flag) const { return fBitFlags.TestBit(flag); }
 
 protected:
    Bool_t IsEnergySet() const { return (fBitFlags.TestBit(EBitFlag::kIsEnergySet)); }
@@ -196,34 +192,28 @@ protected:
    Bool_t IsTimeSet() const { return (fBitFlags.TestBit(EBitFlag::kIsTimeSet)); }
    Bool_t IsPPGSet() const { return (fBitFlags.TestBit(EBitFlag::kIsPPGSet)); }
 
-public:
-   void SetHitBit(EBitFlag, Bool_t set = true) const; // const here is dirty
-   bool TestHitBit(EBitFlag flag) const { return fBitFlags.TestBit(flag); }
-
-protected:
-   UInt_t               fAddress{0};   ///< address of the the channel in the DAQ.
-   Float_t              fCharge{0.};   ///< charge collected from the hit
-   Short_t              fKValue{0};    ///< integration value.
-   Float_t              fCfd{0};       ///< CFD time of the Hit
-   Long64_t             fTimeStamp{0}; ///< Timestamp given to hit in ns
-   std::vector<Short_t> fWaveform;     ///<
-   mutable Double_t fTime{0.}; //!<! Calibrated Time of the hit
-
 private:
-   mutable Double_t fEnergy{0.};    //!<! Energy of the Hit.
-   mutable EPpgPattern fPPGStatus{EPpgPattern::kJunk}; //!<!
+   UInt_t               fAddress{0};     ///< address of the the channel in the DAQ.
+   Float_t              fCharge{0.};     ///< charge collected from the hit
+   Short_t              fKValue{0};      ///< integration value.
+   Float_t              fCfd{0};         ///< CFD time of the Hit
+   Long64_t             fTimeStamp{0};   ///< Timestamp given to hit in ns
+   std::vector<Short_t> fWaveform;       ///<
+   mutable Double_t     fTime{0.};       //!<! Calibrated Time of the hit
 
-   mutable Long64_t  fCycleTimeStamp{0}; //!<!
-   mutable TChannel* fChannel{nullptr};        //!<!
+   mutable Double_t    fEnergy{0.};                      //!<! Energy of the Hit.
+   mutable EPpgPattern fPPGStatus{EPpgPattern::kJunk};   //!<!
 
-protected:
-   //static TPPG* fPPG;
-   // flags
+   mutable Long64_t  fCycleTimeStamp{0};   //!<!
+   mutable TChannel* fChannel{nullptr};    //!<!
+
+   //  flags
    mutable TTransientBits<UChar_t> fBitFlags;
-   static TVector3                 fBeamDirection; //!
+
+   static TVector3 fBeamDirection;   //!
 
    /// \cond CLASSIMP
-   ClassDefOverride(TDetectorHit, 1) // Stores the information for a detector hit
+   ClassDefOverride(TDetectorHit, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

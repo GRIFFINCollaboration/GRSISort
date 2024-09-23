@@ -1,5 +1,7 @@
 #ifndef TGRSIFRAME_H
 #define TGRSIFRAME_H
+#include "RVersion.h"
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6, 14, 0)
 
 #include <map>
 #include <string>
@@ -21,24 +23,25 @@ class TGRSIFrame {
 public:
    TGRSIFrame();
 
-	void Run();
+   void Run();
 
 private:
-	std::string fOutputPrefix{"default"};
-	ROOT::RDF::RResultPtr<std::map<std::string, TList>> fOutput;
+   std::string                                         fOutputPrefix{"default"};
+   ROOT::RDF::RResultPtr<std::map<std::string, TList>> fOutput;
 
-	TGRSIOptions* fOptions{nullptr};
-	TPPG* fPpg{nullptr};
+   TGRSIOptions* fOptions{nullptr};
+   TPPG*         fPpg{nullptr};
 
-	ROOT::RDataFrame* fDataFrame{nullptr};
-	Long64_t fTotalEntries{0};
+   ROOT::RDataFrame* fDataFrame{nullptr};
+   Long64_t          fTotalEntries{0};
 
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6, 24, 0)
-	ROOT::Experimental::RLogScopedVerbosity* fVerbosity{nullptr};
+   ROOT::Experimental::RLogScopedVerbosity* fVerbosity{nullptr};
 #endif
 };
 
 /*! @} */
 void DummyFunctionToLocateTGRSIFrameLibrary();
 
+#endif
 #endif

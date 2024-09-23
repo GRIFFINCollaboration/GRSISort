@@ -1,5 +1,5 @@
-#ifndef GRUTNOTIFIER__H__
-#define GRUTNOTIFIER__H__
+#ifndef GRUTNOTIFIER_H
+#define GRUTNOTIFIER_H
 
 #ifndef __CINT__
 #include <functional>
@@ -12,7 +12,7 @@
 class GNotifier : public TNamed {
 public:
    static GNotifier* Get();
-   ~GNotifier() override;
+   ~GNotifier() = default;
 
    void Print(Option_t* = "") const override {}
    void Clear(Option_t* = "") override {}
@@ -24,22 +24,28 @@ public:
    template <typename T>
    static void AddCallback(T callback)
    {
-      Get()->callbacks.push_back(callback);
+      Get()->fCallbacks.push_back(callback);
    }
 
-   static void AddCallback(void (*func)()) { Get()->callbacks.emplace_back(func); }
+   static void AddCallback(void (*func)()) { Get()->fCallbacks.emplace_back(func); }
 #endif
 
 private:
-   GNotifier();
+   GNotifier()                                = default;
+   GNotifier(const GNotifier&)                = default;
+   GNotifier(GNotifier&&) noexcept            = default;
+   GNotifier& operator=(const GNotifier&)     = default;
+   GNotifier& operator=(GNotifier&&) noexcept = default;
 
 #ifndef __CINT__
-   std::vector<std::function<void()>> callbacks;
+   std::vector<std::function<void()>> fCallbacks;
 #endif
 
    static GNotifier* fGNotifier;
 
-   ClassDefOverride(GNotifier, 0)
+   /// /cond CLASSIMP
+   ClassDefOverride(GNotifier, 0)   // NOLINT(readability-else-after-return)
+                                    /// /endcond
 };
 
 #endif

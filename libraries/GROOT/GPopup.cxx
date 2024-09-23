@@ -7,8 +7,6 @@
 
 #include "GPopup.h"
 
-ClassImp(GPopup)
-
 GPopup::GPopup(const TGWindow* p, const TGWindow* main, UInt_t w, UInt_t h, UInt_t options)
    : TGTransientFrame(p, main, w, h, options)
 {
@@ -38,17 +36,15 @@ GPopup::GPopup(const TGWindow* p, const TGWindow* main, UInt_t w, UInt_t h, UInt
    AddFrame(vframe, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY));
 
    MapSubwindows();
-   Resize(); // resize to default size
+   Resize();   // resize to default size
    // position relative to the parent's window
    CenterOnParent();
    MapWindow();
 }
 
-GPopup::~GPopup() = default;
-
 void GPopup::Print(Option_t*) const
 {
-   std::cout<<__PRETTY_FUNCTION__<<" was called."<<std::endl;
+   std::cout << __PRETTY_FUNCTION__ << " was called." << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 }
 
 void GPopup::CloseWindow()

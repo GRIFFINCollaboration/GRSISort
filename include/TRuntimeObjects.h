@@ -1,5 +1,5 @@
-#ifndef _RUNTIMEOBJECTS_H_
-#define _RUNTIMEOBJECTS_H_
+#ifndef RUNTIMEOBJECTS_H
+#define RUNTIMEOBJECTS_H
 
 #include <string>
 #include <map>
@@ -54,12 +54,12 @@ public:
    TList* GetObjectsPtr() { return fObjects; }
    TList* GetGatesPtr() { return fGates; }
 
-   TH1* FillHistogram(const char* name, int bins, double low, double high, double value, double weight = 1);
-   TH2* FillHistogram(const char* name, int Xbins, double Xlow, double Xhigh, double Xvalue, int Ybins, double Ylow,
-                      double Yhigh, double Yvalue, double weight = 1);
+   TH1*      FillHistogram(const char* name, int bins, double low, double high, double value, double weight = 1);
+   TH2*      FillHistogram(const char* name, int Xbins, double Xlow, double Xhigh, double Xvalue, int Ybins, double Ylow,
+                           double Yhigh, double Yvalue, double weight = 1);
    TProfile* FillProfileHist(const char* name, int Xbins, double Xlow, double Xhigh, double Xvalue, double Yvalue);
-   TH2* FillHistogramSym(const char* name, int Xbins, double Xlow, double Xhigh, double Xvalue, int Ybins, double Ylow,
-                         double Yhigh, double Yvalue);
+   TH2*      FillHistogramSym(const char* name, int Xbins, double Xlow, double Xhigh, double Xvalue, int Ybins, double Ylow,
+                              double Yhigh, double Yvalue);
 
    TH1* FillHistogram(const std::string& name, int bins, double low, double high, double value, double weight = 1)
    {
@@ -112,38 +112,46 @@ public:
       return FillHistogramSym(dirname.c_str(), name.c_str(), Xbins, Xlow, Xhigh, Xvalue, Ybins, Ylow, Yhigh, Yvalue);
    }
 
-   double GetVariable(const char* name);
+   double GetVariable(const char* name) const;
 
    static TRuntimeObjects* Get(const std::string& name = "default")
    {
-      if(fRuntimeMap.count(name)) {
+      if(fRuntimeMap.count(name) != 0) {
          return fRuntimeMap.at(name);
       }
       return nullptr;
    }
 
 #ifndef __CINT__
-   void SetFragment(std::shared_ptr<const TFragment> frag) { fFrag = std::move(frag); }
+   void SetFragment(std::shared_ptr<const TFragment> frag)
+   {
+      fFrag = std::move(frag);
+   }
    void SetDetectors(std::shared_ptr<TUnpackedEvent> det) { fDetectors = std::move(det); }
 #endif
 
-   void SetDirectory(TDirectory* dir) { fDirectory = dir; }
-   TDirectory*                   GetDirectory() const { return fDirectory; }
+   void SetDirectory(TDirectory* dir)
+   {
+      fDirectory = dir;
+   }
+   TDirectory* GetDirectory() const { return fDirectory; }
 
 private:
    static std::map<std::string, TRuntimeObjects*> fRuntimeMap;
-   TDirectory * FindDirectory(const char*);
+   TDirectory*                                    FindDirectory(const char*);
 #ifndef __CINT__
    std::shared_ptr<TUnpackedEvent>  fDetectors;
    std::shared_ptr<const TFragment> fFrag;
 #endif
-   TList*               fObjects;
-   TList*               fGates;
+   TList*               fObjects{nullptr};
+   TList*               fGates{nullptr};
    std::vector<TFile*>& fCut_files;
 
-   TDirectory* fDirectory;
+   TDirectory* fDirectory{nullptr};
 
-   ClassDefOverride(TRuntimeObjects, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TRuntimeObjects, 0)   // NOLINT(readability-else-after-return)
+                                          /// \endcond
 };
 
 #endif /* _RUNTIMEOBJECTS_H_ */

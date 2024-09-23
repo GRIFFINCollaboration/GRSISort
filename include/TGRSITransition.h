@@ -25,10 +25,14 @@ class TGRSITransition : public TObject {
 
 public:
    TGRSITransition();
-   ~TGRSITransition() override;
+   TGRSITransition(const TGRSITransition&)                = default;
+   TGRSITransition(TGRSITransition&&) noexcept            = default;
+   TGRSITransition& operator=(const TGRSITransition&)     = default;
+   TGRSITransition& operator=(TGRSITransition&&) noexcept = default;
+   ~TGRSITransition()                                     = default;
 
    bool IsSortable() const override { return true; }
-   int Compare(const TObject* obj) const override;
+   int  Compare(const TObject* obj) const override;
 
    void SetEnergy(double& tmpenergy) { fEnergy = tmpenergy; }
    void SetEnergyUncertainty(double& tmperror) { fEnergyUncertainty = tmperror; }
@@ -43,16 +47,16 @@ public:
    void Clear(Option_t* opt = "") override;
    void Print(Option_t* opt = "") const override;
 
-   std::string PrintToString();
+   std::string PrintToString() const;
 
-protected:
-   double fEnergy{0.};               // Energy of the transition
-   double fEnergyUncertainty{0.};    // Uncertainty in the energy of the transition
-   double fIntensity{0.};            // Intensity of the transition
-   double fIntensityUncertainty{0.}; // Uncertainty in the intensity
+private:
+   double fEnergy{0.};                 // Energy of the transition
+   double fEnergyUncertainty{0.};      // Uncertainty in the energy of the transition
+   double fIntensity{0.};              // Intensity of the transition
+   double fIntensityUncertainty{0.};   // Uncertainty in the intensity
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGRSITransition, 1) // Information about a TNucleus transition
+   ClassDefOverride(TGRSITransition, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

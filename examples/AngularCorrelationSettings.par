@@ -1,0 +1,17 @@
+# settings for analysing the matrices produced by the helper
+Projection.Low: 1327.
+Projection.High: 1337.
+Background.1.Low: 1500.
+Background.1.High: 1800.
+TimeRandomNormalization: 1.
+Peak.Position: 1173.7
+Peak.Low: 1140.
+Peak.High: 1200.
+
+# settings for the mixing methods analysis, need to specify J's of high, middle, and low level
+# all of them are vectors, but only one of these can be a vector with more than one element
+# this will produce plots of reduced chi^2 vs mixing angle for spins from 0 to 4 for the high level
+TwoJ.Low: 0,
+TwoJ.Middle: 4,
+TwoJ.High: 0, 2, 4, 6, 8
+

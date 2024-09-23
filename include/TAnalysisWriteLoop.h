@@ -1,5 +1,5 @@
-#ifndef _TANALYSISWRITELOOP_H_
-#define _TANALYSISWRITELOOP_H_
+#ifndef TANALYSISWRITELOOP_H
+#define TANALYSISWRITELOOP_H
 
 /** \addtogroup Loops
  *  @{
@@ -25,12 +25,19 @@
 
 class TAnalysisWriteLoop : public StoppableThread {
 public:
-   static TAnalysisWriteLoop* Get(std::string name = "", std::string output_filename = "");
+   static TAnalysisWriteLoop* Get(std::string name = "", std::string outputFilename = "");
 
-   ~TAnalysisWriteLoop() override;
+   TAnalysisWriteLoop(const TAnalysisWriteLoop&)                = delete;
+   TAnalysisWriteLoop(TAnalysisWriteLoop&&) noexcept            = delete;
+   TAnalysisWriteLoop& operator=(const TAnalysisWriteLoop&)     = delete;
+   TAnalysisWriteLoop& operator=(TAnalysisWriteLoop&&) noexcept = delete;
+   ~TAnalysisWriteLoop();
 
 #ifndef __CINT__
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>&  InputQueue() { return fInputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>& InputQueue()
+   {
+      return fInputQueue;
+   }
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& OutOfOrderQueue() { return fOutOfOrderQueue; }
 #endif
 
@@ -38,35 +45,38 @@ public:
 
    void Write();
 
-   size_t GetItemsPushed() override { return fItemsPopped; }
+   size_t GetItemsPushed() override { return ItemsPopped(); }
    size_t GetItemsPopped() override { return 0; }
    size_t GetItemsCurrent() override { return 0; }
    size_t GetRate() override { return 0; }
 
    std::string EndStatus() override;
-	void OnEnd() override;
+   void        OnEnd() override;
 
 protected:
    bool Iteration() override;
 
 private:
-   TAnalysisWriteLoop(std::string name, std::string output_filename);
-   void AddBranch(TClass* cls);
-	void WriteEvent(std::shared_ptr<TUnpackedEvent>& event);
+   TAnalysisWriteLoop(std::string name, const std::string& outputFilename);
 
-	TFile* fOutputFile;
-	TTree* fEventTree;
-   TTree* fOutOfOrderTree;
+   void AddBranch(TClass* cls);
+   void WriteEvent(std::shared_ptr<TUnpackedEvent>& event);
+
+   TFile*     fOutputFile;
+   TTree*     fEventTree;
+   TTree*     fOutOfOrderTree;
    TFragment* fOutOfOrderFrag;
-	bool fOutOfOrder;
+   bool       fOutOfOrder;
 #ifndef __CINT__
-	std::map<TClass*, TDetector**> fDetMap;
-   std::map<TClass*, TDetector*>  fDefaultDets;
+   std::map<TClass*, TDetector**>                                     fDetMap;
+   std::map<TClass*, TDetector*>                                      fDefaultDets;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>  fInputQueue;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fOutOfOrderQueue;
 #endif
 
-   ClassDefOverride(TAnalysisWriteLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TAnalysisWriteLoop, 0)   // NOLINT(readability-else-after-return)
+   /// \endcond
 };
 
 /*! @} */

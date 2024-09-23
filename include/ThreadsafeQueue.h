@@ -1,9 +1,10 @@
-#ifndef _THREADSAFEQUEUE_H_
-#define _THREADSAFEQUEUE_H_
+#ifndef THREADSAFEQUEUE_H
+#define THREADSAFEQUEUE_H
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
 /// \class ThreadsafeQueue
+///
 /// Template for all queues used to send data from one thread/loop to the next.
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -26,11 +27,15 @@ class TDetector;
 template <typename T>
 class ThreadsafeQueue {
 public:
-   ThreadsafeQueue(std::string name = "default", size_t maxSize = 100000);
-   ~ThreadsafeQueue();
+   explicit ThreadsafeQueue(std::string name = "default", size_t maxSize = 100000);
+   ThreadsafeQueue(const ThreadsafeQueue&)                = default;
+   ThreadsafeQueue(ThreadsafeQueue&&) noexcept            = default;
+   ThreadsafeQueue& operator=(const ThreadsafeQueue&)     = default;
+   ThreadsafeQueue& operator=(ThreadsafeQueue&&) noexcept = default;
+   ~ThreadsafeQueue()                                     = default;
 #ifndef __CINT__
-   int Push(T obj);
-   long Pop(T& output, int millisecond_wait = 1000);
+   int    Push(T obj);
+   size_t Pop(T& output, int millisecond_wait = 1000);
 
    size_t ItemsPushed() const;
    size_t ItemsPopped() const;
@@ -52,11 +57,11 @@ private:
 
    std::atomic_int num_writers{0};
 
-   size_t max_queue_size;
+   size_t max_queue_size{100000};
 
-   size_t items_in_queue;
-   size_t items_pushed;
-   size_t items_popped;
+   size_t items_in_queue{0};
+   size_t items_pushed{0};
+   size_t items_popped{0};
 
    std::atomic_bool is_finished;
 #endif
@@ -65,13 +70,9 @@ private:
 #ifndef __CINT__
 template <typename T>
 ThreadsafeQueue<T>::ThreadsafeQueue(std::string name, size_t maxSize)
-   : fName(std::move(name)), max_queue_size(maxSize), items_in_queue(0), items_pushed(0), items_popped(0),
-     is_finished(false)
+   : fName(std::move(name)), max_queue_size(maxSize), is_finished(false)
 {
 }
-
-template <typename T>
-ThreadsafeQueue<T>::~ThreadsafeQueue() = default;
 
 template <typename T>
 int ThreadsafeQueue<T>::Push(T obj)
@@ -90,7 +91,7 @@ int ThreadsafeQueue<T>::Push(T obj)
 }
 
 template <typename T>
-long ThreadsafeQueue<T>::Pop(T& output, int millisecond_wait)
+size_t ThreadsafeQueue<T>::Pop(T& output, int millisecond_wait)
 {
    std::unique_lock<std::mutex> lock(mutex);
    if(!queue.size() && millisecond_wait) {

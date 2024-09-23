@@ -1,5 +1,5 @@
-#ifndef TCFDCAL_H__
-#define TCFDCAL_H__
+#ifndef TCFDCAL_H
+#define TCFDCAL_H
 
 /** \addtogroup Calibration
  *  @{
@@ -9,18 +9,21 @@
 
 class TCFDCal : public TCal {
 public:
-   TCFDCal() {};
-   TCFDCal(const char* name, const char* title) : TCal(name, title) {};
-   ~TCFDCal() override = default;
+   TCFDCal() = default;
+   TCFDCal(const char* name, const char* title) : TCal(name, title){};
+   TCFDCal(const TCFDCal&)                = default;
+   TCFDCal(TCFDCal&&) noexcept            = default;
+   TCFDCal& operator=(const TCFDCal&)     = default;
+   TCFDCal& operator=(TCFDCal&&) noexcept = default;
+   ~TCFDCal()                             = default;
 
    // pure virtual functions
    Bool_t IsGroupable() const override { return false; }
 
-public:
    void                  WriteToChannel() const override;
    virtual void          ReadFromChannel();
    std::vector<Double_t> GetParameters() const override;
-   Double_t GetParameter(size_t parameter) const override;
+   Double_t              GetParameter(size_t parameter) const override;
 
    void AddParameter(Double_t param);
    void SetParameters(std::vector<Double_t> paramvec);
@@ -33,7 +36,7 @@ private:
    std::vector<Double_t> fParameters;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TCFDCal, 1);
+   ClassDefOverride(TCFDCal, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

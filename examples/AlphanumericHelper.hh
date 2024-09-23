@@ -13,16 +13,19 @@
 
 class AlphanumericHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<AlphanumericHelper> {
 
- public :
-   AlphanumericHelper(TList* list) : TGRSIHelper(list) {
-      Prefix("Alphanumeric"); //Changes prefix of output file
-		Setup();
+public:
+   explicit AlphanumericHelper(TList* list)
+      : TGRSIHelper(list)
+   {
+      Prefix("Alphanumeric");   // Changes prefix of output file
+      Setup();
    }
-	//These functions are expected to exist
-	ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override {
+   // These functions are expected to exist
+   ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override
+   {
       return d->Book<TGriffin>(std::move(*this), {"TGriffin"});
    }
-   void CreateHistograms(unsigned int slot);
+   void CreateHistograms(unsigned int slot) override;
    void Exec(unsigned int slot, TGriffin& grif);
 };
 

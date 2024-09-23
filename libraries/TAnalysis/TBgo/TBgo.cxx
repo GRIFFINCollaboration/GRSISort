@@ -11,19 +11,15 @@
 
 #include "TGRSIOptions.h"
 
-////////////////////////////////////////////////////////////
-//
-// TBgo
-//
-// The TBgo class defines the observables and algorithms used
-// when analyzing BGO data. It includes detector positions,
-// etc.
-//
-////////////////////////////////////////////////////////////
-
-/// \cond CLASSIMP
-ClassImp(TBgo)
-/// \endcond
+/////////////////////////////////////////////////////////////
+///
+/// \class TBgo
+///
+/// The TBgo class defines the observables and algorithms used
+/// when analyzing BGO data. It includes detector positions,
+/// etc.
+///
+/////////////////////////////////////////////////////////////
 
 // This seems unnecessary, and why 17?;//  they are static members, and need
 //  to be defined outside the header
@@ -37,7 +33,7 @@ ClassImp(TBgo)
 //                                                                             theta                                 phi
 //                                                                             theta                                phi
 //                                                                             theta
-TVector3 TBgo::gScintPosition[17] = {
+std::array<TVector3, 17> TBgo::fScintPosition = {
    TVector3(TMath::Sin(TMath::DegToRad() * (0.0)) * TMath::Cos(TMath::DegToRad() * (0.0)),
             TMath::Sin(TMath::DegToRad() * (0.0)) * TMath::Sin(TMath::DegToRad() * (0.0)),
             TMath::Cos(TMath::DegToRad() * (0.0))),
@@ -93,16 +89,38 @@ TVector3 TBgo::gScintPosition[17] = {
             TMath::Sin(TMath::DegToRad() * (135.0)) * TMath::Sin(TMath::DegToRad() * (337.5)),
             TMath::Cos(TMath::DegToRad() * (135.0)))};
 
-TBgo::TBgo() : TDetector()
+TBgo::TBgo()
 {
-	/// Default ctor.
+   /// Default ctor.
    Clear();
 }
 
-TBgo::TBgo(const TBgo& rhs) : TDetector()
+TBgo::TBgo(const TBgo& rhs) : TDetector(rhs)
 {
-	/// Copy ctor.
+   /// Copy ctor.
    rhs.Copy(*this);
+}
+
+TBgo::TBgo(TBgo&& rhs) noexcept
+{
+   /// Move ctor. Does the same as the copy constructor atm.
+   rhs.Copy(*this);
+}
+
+TBgo& TBgo::operator=(const TBgo& rhs)
+{
+   /// Copy assignment.
+   rhs.Copy(*this);
+
+   return *this;
+}
+
+TBgo& TBgo::operator=(TBgo&& rhs) noexcept
+{
+   /// Move assignment. Does the same as the copy assignment atm.
+   rhs.Copy(*this);
+
+   return *this;
 }
 
 void TBgo::Copy(TObject& rhs) const
@@ -111,10 +129,7 @@ void TBgo::Copy(TObject& rhs) const
    TDetector::Copy(rhs);
 }
 
-TBgo::~TBgo()
-{
-   // Default Destructor
-}
+TBgo::~TBgo() = default;
 
 void TBgo::Clear(Option_t* opt)
 {
@@ -124,21 +139,15 @@ void TBgo::Clear(Option_t* opt)
 
 void TBgo::Print(Option_t*) const
 {
-	Print(std::cout);
+   Print(std::cout);
 }
 
 void TBgo::Print(std::ostream& out) const
 {
-	std::ostringstream str;
-   str<<"Bgo Contains: "<<std::endl;
-   str<<std::setw(6)<<GetMultiplicity()<<" hits"<<std::endl;
-	out<<str.str();
-}
-
-TBgo& TBgo::operator=(const TBgo& rhs)
-{
-   rhs.Copy(*this);
-   return *this;
+   std::ostringstream str;
+   str << "Bgo Contains: " << std::endl;
+   str << std::setw(6) << GetMultiplicity() << " hits" << std::endl;
+   out << str.str();
 }
 
 void TBgo::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
@@ -149,37 +158,35 @@ void TBgo::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* c
       return;
    }
 
-	TBgoHit* hit = new TBgoHit(*frag);
-	fHits.push_back(hit);
+   auto* hit = new TBgoHit(*frag);
+   AddHit(hit);
 }
 
 TVector3 TBgo::GetPosition(int DetNbr, int CryNbr, double dist)
 {
    // Gets the position vector for a crystal specified by CryNbr within Clover DetNbr at a distance of dist mm away.
    // This is calculated to the most likely interaction point within the crystal.
-   if(DetNbr > 16) return TVector3(0, 0, 1);
+   if(DetNbr > 16) { return {0, 0, 1}; }
 
-   TVector3 temp_pos(gScintPosition[DetNbr]);
+   TVector3 temp_pos(fScintPosition[DetNbr]);
 
    // Interaction points may eventually be set externally. May make these members of each crystal, or pass from
-	// waveforms.
-	Double_t cp = 26.0; // Crystal Center Point  mm.
-	Double_t id = 45.0; // 45.0;  //Crystal interaction depth mm.
-	// Set Theta's of the center of each DETECTOR face
-	////Define one Detector position
-	TVector3 shift;
-	switch(CryNbr) {
-		case 0: shift.SetXYZ(-cp, cp, id); break;
-		case 1: shift.SetXYZ(cp, cp, id); break;
-		case 2: shift.SetXYZ(cp, -cp, id); break;
-		case 3: shift.SetXYZ(-cp, -cp, id); break;
-		default: shift.SetXYZ(0, 0, 1); break;
-	};
-	shift.RotateY(temp_pos.Theta());
-	shift.RotateZ(temp_pos.Phi());
+   // waveforms.
+   Double_t crystalCenter    = 26.0;   // Crystal Center Point in mm.
+   Double_t interactionDepth = 45.0;   //Crystal interaction depth in mm.
+   // Set Theta's of the center of each DETECTOR face
+   TVector3 shift;
+   switch(CryNbr) {
+   case 0: shift.SetXYZ(-crystalCenter, crystalCenter, interactionDepth); break;
+   case 1: shift.SetXYZ(crystalCenter, crystalCenter, interactionDepth); break;
+   case 2: shift.SetXYZ(crystalCenter, -crystalCenter, interactionDepth); break;
+   case 3: shift.SetXYZ(-crystalCenter, -crystalCenter, interactionDepth); break;
+   default: shift.SetXYZ(0, 0, 1); break;
+   };
+   shift.RotateY(temp_pos.Theta());
+   shift.RotateZ(temp_pos.Phi());
 
-	temp_pos.SetMag(dist);
+   temp_pos.SetMag(dist);
 
-	return (temp_pos + shift);
+   return (temp_pos + shift);
 }
-

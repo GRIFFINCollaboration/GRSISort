@@ -1,16 +1,17 @@
 #include "FullPath.h"
 
-//#ifdef __linux__
+//#ifdef __LINUX__
 
 #include <cstdlib>
 #include <climits>
+#include <array>
 
 std::string full_path(const std::string& path)
 {
-   char  buff[PATH_MAX + 1];
-   char* success = realpath(path.c_str(), buff);
+   std::array<char, PATH_MAX + 1> buff;
+   char*                          success = realpath(path.c_str(), buff.data());
    if(success != nullptr) {
-      return buff;
+      return {buff.data()};   // this ensures that we stop at the string limiting \0 (whereas buff.begin() to buff.end() would use all PATH_MAX+1 characters of the array)
    }
    // TODO: Give some sort of error message.
    return "";

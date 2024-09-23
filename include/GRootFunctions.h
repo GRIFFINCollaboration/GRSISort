@@ -24,6 +24,6 @@ Double_t LanGaus(Double_t* x, Double_t* pars);
 Double_t LanGausHighRes(Double_t* x, Double_t* pars);
 
 Double_t GammaEff(Double_t* x, Double_t* par);
-}
+}   // namespace GRootFunctions
 
 #endif

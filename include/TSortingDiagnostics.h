@@ -30,40 +30,43 @@
 
 class TSortingDiagnostics : public TSingleton<TSortingDiagnostics> {
 public:
-	friend class TSingleton<TSortingDiagnostics>;
+   friend class TSingleton<TSortingDiagnostics>;
 
    TSortingDiagnostics();
-   TSortingDiagnostics(const TSortingDiagnostics&);
-   ~TSortingDiagnostics() override;
+   //TSortingDiagnostics(const TSortingDiagnostics&);
+   //TSortingDiagnostics(TSortingDiagnostics&&);
+   //TSortingDiagnostics& operator=(const TSortingDiagnostics&);
+   //TSortingDiagnostics& operator=(TSortingDiagnostics&&);
+   //~TSortingDiagnostics();
 
 private:
-   // analysis tree diagnostics 
-   std::unordered_map<long, std::pair<long, long>> fFragmentsOutOfOrder;
-   std::unordered_map<double, std::pair<double, double>> fFragmentsOutOfTimeOrder;
-   std::vector<Long_t> fPreviousTimeStamps; ///< timestamps of previous fragments, saved every 'BuildWindow' entries
-   std::vector<double> fPreviousTimes;      ///< times of previous fragments, saved every 'BuildWindow' entries
-   long                fMaxEntryDiff{0};
-	std::unordered_map<UInt_t, long> fMissingChannels; ///< counts of missing channels
-	std::unordered_map<TClass*, long> fMissingDetectorClasses; ///< counts of missing detector classes
+   // analysis tree diagnostics
+   std::unordered_map<int64_t, std::pair<int64_t, int64_t>> fFragmentsOutOfOrder;
+   std::unordered_map<double, std::pair<double, double>>    fFragmentsOutOfTimeOrder;
+   std::vector<Long_t>                                      fPreviousTimeStamps;   ///< timestamps of previous fragments, saved every 'BuildWindow' entries
+   std::vector<double>                                      fPreviousTimes;        ///< times of previous fragments, saved every 'BuildWindow' entries
+   int64_t                                                  fMaxEntryDiff{0};
+   std::unordered_map<UInt_t, int64_t>                      fMissingChannels;          ///< counts of missing channels
+   std::unordered_map<TClass*, int64_t>                     fMissingDetectorClasses;   ///< counts of missing detector classes
 
-	std::unordered_map<TClass*, std::pair<long, long> > fHitsRemoved; ///< removed hits and total hits per detector class
+   std::unordered_map<TClass*, std::pair<int64_t, int64_t>> fHitsRemoved;   ///< removed hits and total hits per detector class
 
 public:
    //"setter" functions
-   void OutOfTimeOrder(double newFragTime, double oldFragTime, long newEntry);
-   void OutOfOrder(long newFragTS, long oldFragTS, long newEntry);
-   void AddTime(double val)      { fPreviousTimes.push_back(val); }
+   void OutOfTimeOrder(double newFragTime, double oldFragTime, int64_t newEntry);
+   void OutOfOrder(int64_t newFragTS, int64_t oldFragTS, int64_t newEntry);
+   void AddTime(double val) { fPreviousTimes.push_back(val); }
    void AddTimeStamp(Long_t val) { fPreviousTimeStamps.push_back(val); }
-	void MissingChannel(const UInt_t& address); 
-	void AddDetectorClass(TChannel*);
-	void RemovedHits(TClass* detClass, long removed, long total);
+   void MissingChannel(const UInt_t& address);
+   void AddDetectorClass(TChannel*);
+   void RemovedHits(TClass* detClass, int64_t removed, int64_t total);
 
    // getter functions
-   size_t NumberOfFragmentsOutOfOrder() const { return fFragmentsOutOfOrder.size(); }
-   std::unordered_map<long, std::pair<long, long>> FragmentsOutOfOrder() { return fFragmentsOutOfOrder; }
-   size_t NumberOfFragmentsOutOfTimeOrder() const { return fFragmentsOutOfTimeOrder.size(); }
-   std::unordered_map<double, std::pair<double, double>> FragmentsOutOfTimeOrder() { return fFragmentsOutOfTimeOrder; }
-   long MaxEntryDiff() const { return fMaxEntryDiff; }
+   size_t                                                   NumberOfFragmentsOutOfOrder() const { return fFragmentsOutOfOrder.size(); }
+   std::unordered_map<int64_t, std::pair<int64_t, int64_t>> FragmentsOutOfOrder() { return fFragmentsOutOfOrder; }
+   size_t                                                   NumberOfFragmentsOutOfTimeOrder() const { return fFragmentsOutOfTimeOrder.size(); }
+   std::unordered_map<double, std::pair<double, double>>    FragmentsOutOfTimeOrder() { return fFragmentsOutOfTimeOrder; }
+   int64_t                                                  MaxEntryDiff() const { return fMaxEntryDiff; }
 
    // other functions
    void WriteToFile(const char*) const;
@@ -74,7 +77,7 @@ public:
    void Draw(Option_t* opt = "") override;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TSortingDiagnostics, 4);
+   ClassDefOverride(TSortingDiagnostics, 4)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

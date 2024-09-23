@@ -24,39 +24,40 @@
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-class FastTimingHistSelector : public TGRSISelector { //Must be same name as .C and .h
+class FastTimingHistSelector : public TGRSISelector {   // Must be same name as .C and .h
 
-public :
-	// branches
-	double fLaBrEnergy[2];
-	uint8_t fLaBrId[2];
-	double fTac;
-	uint8_t fTacId;
-	std::vector<double>* fGeEnergies;
-	Long64_t fEntry;
+public:
+   // branches
+   double               fLaBrEnergy[2];
+   uint8_t              fLaBrId[2];
+   double               fTac;
+   uint8_t              fTacId;
+   std::vector<double>* fGeEnergies;
+   Long64_t             fEntry;
 
-	// settings
-	double fDrainingEnergy;
-	double fDrainingLow;
-	double fDrainingHigh;
-	double fFeedingEnergy;
-	double fFeedingLow;
-	double fFeedingHigh;
-	double fGeEnergy;
-	double fGeLow;
-	double fGeHigh;
+   // settings
+   double fDrainingEnergy;
+   double fDrainingLow;
+   double fDrainingHigh;
+   double fFeedingEnergy;
+   double fFeedingLow;
+   double fFeedingHigh;
+   double fGeEnergy;
+   double fGeLow;
+   double fGeHigh;
 
-   FastTimingHistSelector(TTree * /*tree*/ =0) : TGRSISelector(), fGeEnergies(nullptr) {
-		SetOutputPrefix("FastTimingHist");
-	}
-	//These functions are expected to exist
-	virtual ~FastTimingHistSelector() { }
-	virtual Int_t   Version() const { return 2; }
-	void CreateHistograms();
-	void FillHistograms();
-	void InitializeBranches(TTree *tree);
+   explicit FastTimingHistSelector(TTree* /*tree*/ = nullptr) : TGRSISelector(), fGeEnergies(nullptr)
+   {
+      SetOutputPrefix("FastTimingHist");
+   }
+   // These functions are expected to exist
+   virtual ~FastTimingHistSelector() = default;
+   virtual Int_t Version() const { return 2; }
+   void          CreateHistograms();
+   void          FillHistograms();
+   void          InitializeBranches(TTree* tree);
 
-	ClassDef(FastTimingHistSelector,1); //Makes ROOT happier
+   ClassDef(FastTimingHistSelector, 1);   // Makes ROOT happier
 };
 
 #endif
@@ -64,17 +65,17 @@ public :
 #ifdef FastTimingHistSelector_cxx
 void FastTimingHistSelector::InitializeBranches(TTree* tree)
 {
-	if(!tree) return;
-	if(tree->SetBranchAddress("germanium", &fGeEnergies) == TTree::kMissingBranch ||
-			tree->SetBranchAddress("firstEnergy", &fLaBrEnergy[0]) == TTree::kMissingBranch ||
-			tree->SetBranchAddress("firstLaBr", &fLaBrId[0]) == TTree::kMissingBranch ||
-			tree->SetBranchAddress("secondEnergy", &fLaBrEnergy[1]) == TTree::kMissingBranch ||
-			tree->SetBranchAddress("secondLaBr", &fLaBrId[1]) == TTree::kMissingBranch ||
-			tree->SetBranchAddress("tac", &fTac) == TTree::kMissingBranch ||
-			tree->SetBranchAddress("tacId", &fTacId) == TTree::kMissingBranch ||
-			tree->SetBranchAddress("entry", &fEntry) == TTree::kMissingBranch) {
-		throw std::runtime_error("Failed to find all branches necessary for fast timing histograms!");
-	}
+   if(!tree) return;
+   if(tree->SetBranchAddress("germanium", &fGeEnergies) == TTree::kMissingBranch ||
+      tree->SetBranchAddress("firstEnergy", &fLaBrEnergy[0]) == TTree::kMissingBranch ||
+      tree->SetBranchAddress("firstLaBr", &fLaBrId[0]) == TTree::kMissingBranch ||
+      tree->SetBranchAddress("secondEnergy", &fLaBrEnergy[1]) == TTree::kMissingBranch ||
+      tree->SetBranchAddress("secondLaBr", &fLaBrId[1]) == TTree::kMissingBranch ||
+      tree->SetBranchAddress("tac", &fTac) == TTree::kMissingBranch ||
+      tree->SetBranchAddress("tacId", &fTacId) == TTree::kMissingBranch ||
+      tree->SetBranchAddress("entry", &fEntry) == TTree::kMissingBranch) {
+      throw std::runtime_error("Failed to find all branches necessary for fast timing histograms!");
+   }
 }
 
-#endif // #ifdef FastTimingHistSelector_cxx
+#endif   // #ifdef FastTimingHistSelector_cxx

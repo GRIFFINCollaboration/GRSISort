@@ -1,5 +1,5 @@
-#ifndef _TANALYSISHISTOGRAMLOOP_H_
-#define _TANALYSISHISTOGRAMLOOP_H_
+#ifndef TANALYSISHISTOGRAMLOOP_H
+#define TANALYSISHISTOGRAMLOOP_H
 
 /** \addtogroup Loops
  *  @{
@@ -27,16 +27,23 @@ class TAnalysisHistLoop : public StoppableThread {
 public:
    static TAnalysisHistLoop* Get(std::string name = "");
 
-   ~TAnalysisHistLoop() override;
+   TAnalysisHistLoop(const TAnalysisHistLoop&)                = delete;
+   TAnalysisHistLoop(TAnalysisHistLoop&&) noexcept            = delete;
+   TAnalysisHistLoop& operator=(const TAnalysisHistLoop&)     = delete;
+   TAnalysisHistLoop& operator=(TAnalysisHistLoop&&) noexcept = delete;
+   ~TAnalysisHistLoop();
 
 #ifndef __CINT__
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>& InputQueue() { return fInputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>& InputQueue()
+   {
+      return fInputQueue;
+   }
 #endif
 
-   void SetOutputFilename(const std::string& name);
+   void        SetOutputFilename(const std::string& name);
    std::string GetOutputFilename() const;
 
-   void LoadLibrary(std::string library);
+   void        LoadLibrary(const std::string& library);
    std::string GetLibraryName() const;
    void        ClearHistograms();
 
@@ -58,7 +65,7 @@ protected:
    bool Iteration() override;
 
 private:
-   TAnalysisHistLoop(std::string name);
+   explicit TAnalysisHistLoop(std::string name);
 
    TCompiledHistograms fCompiledHistograms;
 
@@ -72,7 +79,9 @@ private:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>> fInputQueue;
 #endif
 
-   ClassDefOverride(TAnalysisHistLoop, 0);
+   /// \cond CLASSIMP
+   ClassDefOverride(TAnalysisHistLoop, 0)   // NOLINT(readability-else-after-return)
+   /// \endcond
 };
 
 /*! @} */

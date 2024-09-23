@@ -1,10 +1,10 @@
-#ifndef _TGRSITYPES_H_
-#define _TGRSITYPES_H_
+#ifndef TGRSITYPES_H
+#define TGRSITYPES_H
 
 #include <map>
 #include <string>
 
-#include <Rtypes.h>
+#include "Rtypes.h"
 
 enum class kFileType {
    UNKNOWN_FILETYPE,
@@ -13,13 +13,14 @@ enum class kFileType {
    GRETINA_MODE3,
    MIDAS_FILE,
    LST_FILE,
-	RLMD_FILE,
-	TDR_FILE,
+   RLMD_FILE,
+   TDR_FILE,
    ROOT_DATA,
    ROOT_MACRO,
-	DATAFRAME,
+   DATAFRAME,
    CALIBRATED,
    GVALUE,
+   USERSETTINGS,
    PRESETWINDOW,
    DETECTOR_ENVIRONMENT,
    GUI_HIST_FILE,

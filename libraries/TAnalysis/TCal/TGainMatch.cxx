@@ -9,16 +9,12 @@
 #include "Math/Factory.h"
 #include "Math/Functor.h"
 
-/// \cond CLASSIMP
-ClassImp(TGainMatch)
-/// \endcond
+Double_t TGainMatch::fDefaultCoarseRange = 40.;
 
-Double_t TGainMatch::gDefaultCoarseRange = 40.;
-
-TGainMatch::TGainMatch(const TGainMatch& copy) : TCal(copy), fCoarseRange(gDefaultCoarseRange)
+TGainMatch::TGainMatch(const TGainMatch& copy)
+   : TCal(copy), fCoarseRange(fDefaultCoarseRange)
 {
-   fHist = nullptr;
-   std::cout<<"THIS ---> "<<fCoarseRange<<std::endl;
+   std::cout << "THIS ---> " << fCoarseRange << std::endl;
    copy.Copy(*this);
 }
 
@@ -44,7 +40,7 @@ void TGainMatch::CalculateGain(Double_t cent1, Double_t cent2, Double_t eng1, Do
    auto* gainFit = new TF1("gain", "pol1");
 
    TFitResultPtr res = Fit(gainFit, "SC0");
-   SetFitFunction(GetFunction("gain")); // Have to do this because I want to delete gainfit
+   SetFitFunction(GetFunction("gain"));   // Have to do this because I want to delete gainfit
    fGainCoeffs[0] = res->Parameter(0);
    fGainCoeffs[1] = res->Parameter(1);
 
@@ -82,36 +78,36 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
       SetChannel(chan);
    }
 
-   std::vector<Double_t> engVec; // This is the vector of expected energies
+   std::vector<Double_t> engVec;   // This is the vector of expected energies
    // We do coarse gain matching on 60Co. So I have hardcoded the energies for now
    engVec.push_back(energy1);
    engVec.push_back(energy2);
 
    // Sort these in case the peak is returned in the wrong order
    std::sort(engVec.begin(), engVec.end());
-   
-   //Change the histogram range so that the search ignores potential low energy noise.
+
+   // Change the histogram range so that the search ignores potential low energy noise.
    Int_t high = hist->GetXaxis()->GetLast();
-   hist->GetXaxis()->SetRangeUser(100,hist->GetXaxis()->GetBinCenter(high));
+   hist->GetXaxis()->SetRangeUser(100, hist->GetXaxis()->GetBinCenter(high));
    // Use a TSpectrum to find the two largest peaks in the spectrum
-   auto* s      = new TSpectrum;                // This might not have to be allocated
-   Int_t nFound = s->Search(hist, 2, "", 0.50); // This returns peaks in order of their height in the spectrum.
-   
-   //return histogram to proper range
-   hist->GetXaxis()->UnZoom(); 
+   auto* spec   = new TSpectrum;                     // This might not have to be allocated
+   Int_t nFound = spec->Search(hist, 2, "", 0.50);   // This returns peaks in order of their height in the spectrum.
+
+   // return histogram to proper range
+   hist->GetXaxis()->UnZoom();
    // If we didn't find two peaks, it is likely we gave it garbage
    if(nFound < 2) {
       Error("CoarseMatch", "Did not find enough peaks");
-      delete s;
+      delete spec;
       return false;
    }
 
    // We want to store the centroids of the found peaks
    std::vector<Double_t> foundBin;
    for(int x = 0; x < 2;
-       x++) { // I have hard-coded this to 2 because I'm assuming the rough match peaks will be by far the largest.
-      foundBin.push_back((s->GetPositionX()[x]));
-      std::cout<<"Found peak at bin "<<foundBin[x]<<std::endl;
+       x++) {   // I have hard-coded this to 2 because I'm assuming the rough match peaks will be by far the largest.
+      foundBin.push_back(spec->GetPositionX()[x]);
+      std::cout << "Found peak at bin " << foundBin[x] << std::endl;
    }
    std::sort(foundBin.begin(), foundBin.end());
 
@@ -125,12 +121,12 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
    // We now want to create a peak for each one we found (2) and fit them.
    for(int x = 0; x < 2; x++) {
       TPeak tmpPeak(foundBin[x], foundBin[x] - fCoarseRange, foundBin[x] + fCoarseRange);
-      tmpPeak.SetName(Form("GM_Cent_%lf", foundBin[x])); // Change the name of the TPeak to know it's origin
-      tmpPeak.SetLineColor(2 * x + 2);
+      tmpPeak.SetName(Form("GM_Cent_%lf", foundBin[x]));   // Change the name of the TPeak to know it's origin
+      tmpPeak.SetLineColor(static_cast<Color_t>(2 * x + 2));
       tmpPeak.Fit(hist, "Q+");
       tmpPeak.ReleaseParameter(3);
       tmpPeak.ReleaseParameter(4);
-      tmpPeak.SetLineColor(2 * x + 3);
+      tmpPeak.SetLineColor(static_cast<Color_t>(2 * x + 3));
       tmpPeak.Fit(hist, "Q+");
       SetPoint(x, tmpPeak.GetParameter("centroid"), engVec[x]);
    }
@@ -138,14 +134,14 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
    auto* gainFit = new TF1("gain", "pol1");
 
    TFitResultPtr res = Fit(gainFit, "SC0");
-   SetFitFunction(GetFunction("gain")); // Have to do this because I want to delete gainFit.
+   SetFitFunction(GetFunction("gain"));   // Have to do this because I want to delete gainFit.
    fGainCoeffs[0] = res->Parameter(0);
    fGainCoeffs[1] = res->Parameter(1);
 
    delete gainFit;
    // We have finished gain matching so let the TGainMatch know that it is a coarse gain
    fCoarseMatch = true;
-   delete s;
+   delete spec;
    return true;
 }
 
@@ -166,8 +162,9 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* pe
    }
 
    // See if the channel exists. There is no point in finding the gains if we don't have anywhere to write it
-   Double_t  gain, offset;
-   TChannel* chan = TChannel::GetChannelByNumber(channelNum);
+   Double_t  gain   = 0.;
+   Double_t  offset = 0.;
+   TChannel* chan   = TChannel::GetChannelByNumber(channelNum);
    if(chan == nullptr) {
       if(channelNum != 9999) {
          Warning("FineMatchFast", "Channel Number %d does not exist in current memory.", channelNum);
@@ -201,8 +198,8 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* pe
    Set(2);
 
    // Find the energy of the peak that we want to use
-   Double_t energy[2] = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
-   std::cout<<peak1->GetParameter("centroid")<<" ENERGIES "<<energy[1]<<std::endl;
+   std::array<Double_t, 2> energy = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
+   std::cout << peak1->GetParameter("centroid") << " ENERGIES " << energy[1] << std::endl;
    // Offsets are very small right now so I'm not including them until they become a problem.
    peak1->SetParameter("centroid", (energy[0] - offset) / gain);
    peak2->SetParameter("centroid", (energy[1] - offset) / gain);
@@ -213,48 +210,48 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* pe
 
    // The gains won't be perfect, so we need to search for the peak within a range.
    hist1->GetXaxis()->SetRangeUser(peak1->GetXmin() - 20., peak1->GetXmax() + 20.);
-   TSpectrum s;
-   Int_t     nFound = s.Search(hist1, 2, "", 0.3);
+   TSpectrum spec;
+   Int_t     nFound = spec.Search(hist1, 2, "", 0.3);
 
    for(int x = 0; x < nFound; x++) {
-      std::cout<<s.GetPositionX()[x]<<std::endl;
+      std::cout << spec.GetPositionX()[x] << std::endl;
    }
    Double_t closestPeak = 0;
    Double_t closestDiff = 10000;
    for(int x = 0; x < nFound; x++) {
-      if(fabs(peak1->GetCentroid() - s.GetPositionX()[x]) < closestDiff) {
-         closestPeak = s.GetPositionX()[x];
-         closestDiff = fabs(peak1->GetCentroid() - s.GetPositionX()[x]);
+      if(fabs(peak1->GetCentroid() - spec.GetPositionX()[x]) < closestDiff) {
+         closestPeak = spec.GetPositionX()[x];
+         closestDiff = fabs(peak1->GetCentroid() - spec.GetPositionX()[x]);
       }
    }
 
    Double_t rangeWidth = (peak1->GetXmax() - peak1->GetXmin()) / 2.;
    peak1->SetParameter("centroid", closestPeak);
    peak1->SetRange(peak1->GetCentroid() - rangeWidth, peak1->GetCentroid() + rangeWidth);
-   std::cout<<"Centroid Guess "<<peak1->GetCentroid()<<std::endl;
-   std::cout<<"Range Low "<<peak1->GetXmin()<<" "<<peak1->GetXmax()<<std::endl;
+   std::cout << "Centroid Guess " << peak1->GetCentroid() << std::endl;
+   std::cout << "Range Low " << peak1->GetXmin() << " " << peak1->GetXmax() << std::endl;
 
    closestPeak = 0;
    closestDiff = 10000;
    hist2->GetXaxis()->SetRangeUser(peak2->GetXmin() - 20., peak2->GetXmax() + 20.);
-   TSpectrum s2;
-   nFound = s2.Search(hist2, 2, "", 0.3); // Search the next histogram
+   TSpectrum spec2;
+   nFound = spec2.Search(hist2, 2, "", 0.3);   // Search the next histogram
    for(int x = 0; x < nFound; x++) {
-      std::cout<<s2.GetPositionX()[x]<<std::endl;
+      std::cout << spec2.GetPositionX()[x] << std::endl;
    }
 
    for(int x = 0; x < nFound; x++) {
-      if(fabs(peak2->GetCentroid() - s2.GetPositionX()[x]) < closestDiff) {
-         closestPeak = s2.GetPositionX()[x];
-         closestDiff = fabs(peak2->GetCentroid() - s2.GetPositionX()[x]);
+      if(fabs(peak2->GetCentroid() - spec2.GetPositionX()[x]) < closestDiff) {
+         closestPeak = spec2.GetPositionX()[x];
+         closestDiff = fabs(peak2->GetCentroid() - spec2.GetPositionX()[x]);
       }
    }
    Double_t rangeWidth2 = (peak2->GetXmax() - peak2->GetXmin()) / 2.;
    peak2->SetParameter("centroid", closestPeak);
    peak2->SetRange(peak2->GetCentroid() - rangeWidth2, peak2->GetCentroid() + rangeWidth2);
 
-   std::cout<<"Centroid Guess "<<peak2->GetCentroid()<<std::endl;
-   std::cout<<"Range High "<<peak2->GetXmin()<<" "<<peak2->GetXmax()<<std::endl;
+   std::cout << "Centroid Guess " << peak2->GetCentroid() << std::endl;
+   std::cout << "Range High " << peak2->GetXmin() << " " << peak2->GetXmax() << std::endl;
 
    hist1->GetXaxis()->UnZoom();
    hist2->GetXaxis()->UnZoom();
@@ -265,7 +262,7 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* pe
    peak1->Draw("same");
    peak2->Draw("same");
 
-   Double_t centroid[2] = {peak1->GetCentroid(), peak2->GetCentroid()};
+   std::array<Double_t, 2> centroid = {peak1->GetCentroid(), peak2->GetCentroid()};
 
    // Put the peaks in order for ease (if the user put them in the wrong order)
    // Apparantly there is a TGraph Sort method. Might look into this later.
@@ -280,7 +277,7 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* pe
    auto* gainFit = new TF1("gain", "pol1");
 
    TFitResultPtr res = Fit(gainFit, "SC0");
-   SetFitFunction(GetFunction("gain")); // Have to do this because I want to delete gainFit
+   SetFitFunction(GetFunction("gain"));   // Have to do this because I want to delete gainFit
    fGainCoeffs[0] = res->Parameter(0);
    fGainCoeffs[1] = res->Parameter(1);
 
@@ -330,31 +327,31 @@ void TGainMatch::WriteToChannel() const
       return;
    }
    GetChannel()->DestroyENGCal();
-   std::cout<<"Writing to channel "<<GetChannel()->GetNumber()<<std::endl;
-   std::cout<<"p0 = "<<GetParameter(0)<<" \t p1 = "<<GetParameter(1)<<std::endl;
+   std::cout << "Writing to channel " << GetChannel()->GetNumber() << std::endl;
+   std::cout << "p0 = " << GetParameter(0) << " \t p1 = " << GetParameter(1) << std::endl;
    // Set the energy parameters based on the fitted gains.
-   GetChannel()->AddENGCoefficient(GetParameter(0));
-   GetChannel()->AddENGCoefficient(GetParameter(1));
+   GetChannel()->AddENGCoefficient(static_cast<float>(GetParameter(0)));
+   GetChannel()->AddENGCoefficient(static_cast<float>(GetParameter(1)));
 }
 
 void TGainMatch::Print(Option_t*) const
 {
-   std::cout<<std::endl;
-   std::cout<<"GainMatching: "<<std::endl;
+   std::cout << std::endl;
+   std::cout << "GainMatching: " << std::endl;
    if(fCoarseMatch) {
-      std::cout<<"COARSE"<<std::endl;
+      std::cout << "COARSE" << std::endl;
    } else {
-      std::cout<<"FINE"<<std::endl;
+      std::cout << "FINE" << std::endl;
    }
 
    if(fAligned) {
-      std::cout<<"Aligned"<<std::endl;
+      std::cout << "Aligned" << std::endl;
    } else {
-      std::cout<<"NOT Aligned"<<std::endl;
+      std::cout << "NOT Aligned" << std::endl;
    }
 
-   std::cout<<"Gain Coefficients: "<<fGainCoeffs[0]<<"\t"<<fGainCoeffs[1]<<std::endl;
-   std::cout<<"Align Coefficients: "<<fAlignCoeffs[0]<<"\t"<<fAlignCoeffs[1]<<std::endl;
+   std::cout << "Gain Coefficients: " << fGainCoeffs[0] << "\t" << fGainCoeffs[1] << std::endl;
+   std::cout << "Align Coefficients: " << fAlignCoeffs[0] << "\t" << fAlignCoeffs[1] << std::endl;
 
    TCal::Print();
 }
@@ -377,12 +374,12 @@ Bool_t TGainMatch::CoarseMatchAll(TCalManager* cm, TH2* mat, Double_t, Double_t)
    Int_t first_chan = mat->GetXaxis()->GetFirst();
    Int_t last_chan  = mat->GetXaxis()->GetLast();
    // The first thing we need to do is slice the matrix into it's channel vs energy.
-   TH1D* h1;
    for(int chan = first_chan; chan <= last_chan; chan++) {
       gm->Clear();
-      std::cout<<std::endl<<"Now fitting channel "<<chan - 1<<std::endl;
-      h1 = static_cast<TH1D*>(mat->ProjectionY(Form("Channel%d", chan), chan, chan, "o"));
-      std::cout<<"BIN WIDTH "<<h1->GetXaxis()->GetBinWidth(h1->GetXaxis()->GetFirst() + 1)<<std::endl;
+      std::cout << std::endl
+                << "Now fitting channel " << chan - 1 << std::endl;
+      auto* h1 = static_cast<TH1D*>(mat->ProjectionY(Form("Channel%d", chan), chan, chan, "o"));
+      std::cout << "BIN WIDTH " << h1->GetXaxis()->GetBinWidth(h1->GetXaxis()->GetFirst() + 1) << std::endl;
       if(h1->Integral() < 100) {
          continue;
       }
@@ -395,10 +392,10 @@ Bool_t TGainMatch::CoarseMatchAll(TCalManager* cm, TH2* mat, Double_t, Double_t)
       cm->AddToManager(gm, chan - 1);
    }
    if(!badlist.empty()) {
-      std::cout<<"The following channels did not gain match properly: ";
+      std::cout << "The following channels did not gain match properly: ";
    }
    for(int i : badlist) {
-      std::cout<<i<<"\t";
+      std::cout << i << "\t";
    }
 
    delete gm;
@@ -453,8 +450,6 @@ Bool_t TGainMatch::FineMatchFastAll(TCalManager* cm, TH2* mat1, TPeak* peak1, TH
    Int_t first_chan  = std::min(first_chan1, first_chan2);
    Int_t last_chan   = std::max(last_chan1, last_chan2);
    // The first thing we need to do is slice the matrix into it's channel vs energy.
-   TH1D* h1;
-   TH1D* h2;
    for(int chan = first_chan; chan <= last_chan; chan++) {
       gm->Clear();
       // Make a copy of the TPeaks so that we can fit each of them
@@ -464,9 +459,10 @@ Bool_t TGainMatch::FineMatchFastAll(TCalManager* cm, TH2* mat1, TPeak* peak1, TH
       auto* copyPeak1 = new TPeak(*peak1);
       auto* copyPeak2 = new TPeak(*peak2);
 
-      std::cout<<std::endl<<"Now fitting channel: "<<chan - 1<<std::endl;
-      h1 = static_cast<TH1D*>(mat1->ProjectionY(Form("Channel%d_mat1", chan - 1), chan, chan, "o"));
-      h2 = static_cast<TH1D*>(mat2->ProjectionY(Form("Channel%d_mat2", chan - 1), chan, chan, "o"));
+      std::cout << std::endl
+                << "Now fitting channel: " << chan - 1 << std::endl;
+      auto* h1 = static_cast<TH1D*>(mat1->ProjectionY(Form("Channel%d_mat1", chan - 1), chan, chan, "o"));
+      auto* h2 = static_cast<TH1D*>(mat2->ProjectionY(Form("Channel%d_mat2", chan - 1), chan, chan, "o"));
       if(h1->Integral() < 100 || h2->Integral() < 100) {
          gm->Warning("FineMatchFastAll", "Empty channel = %d", chan - 1);
          continue;
@@ -481,10 +477,10 @@ Bool_t TGainMatch::FineMatchFastAll(TCalManager* cm, TH2* mat1, TPeak* peak1, TH
       delete copyPeak2;
    }
    if(!badlist.empty()) {
-      std::cout<<"The following channels did not gain match properly: ";
+      std::cout << "The following channels did not gain match properly: ";
    }
    for(int i : badlist) {
-      std::cout<<i<<"\t";
+      std::cout << i << "\t";
    }
 
    delete gm;
@@ -513,10 +509,10 @@ Bool_t TGainMatch::Align(TH1* test, TH1* hist, Int_t low_range, Int_t high_range
    // Minimizes the chi^2 between the bin contents of the test histogram and the bin contents of the histogram to be
    // matched'
    if(!((test != nullptr) && (hist != nullptr))) {
-      std::cout<<"Unassigned histogram"<<std::endl;
+      std::cout << "Unassigned histogram" << std::endl;
       return false;
    }
-   fHist = hist; // Need this histogram to be seen by ftotal...Don't know how else to do this right now.
+   fHist = hist;   // Need this histogram to be seen by ftotal...Don't know how else to do this right now.
    //  TF1* tmpfunc = new
    //  TF1("tmpfunc",this,&TGainMatch::HistCompare,test->GetMinimumStored()+1,test->GetMaximumStored()-1,3);
 
@@ -561,7 +557,7 @@ Bool_t TGainMatch::Align(TH1* test, TH1* hist, Int_t low_range, Int_t high_range
    TFitResultPtr res = test->Fit("tmpfunc", "RSILV");
    fAlignCoeffs[0]   = res->Parameter(1);
    fAlignCoeffs[1]   = res->Parameter(2);
-   std::cout<<"Chi2: "<<res->Chi2() / res->Ndf()<<std::endl;
+   std::cout << "Chi2: " << res->Chi2() / res->Ndf() << std::endl;
    if(std::abs(res->Parameter(0) - 1.00) > 20.) {
       return false;
    }
@@ -593,13 +589,13 @@ Bool_t TGainMatch::AlignAll(TCalManager* cm, TH1* hist, TH2* mat, Int_t low_rang
    Int_t first_chan = mat->GetXaxis()->GetFirst();
    // Int_t last_chan  = mat->GetXaxis()->GetLast();
    // The first thing we need to do is slice the matrix into it's channel vs energy.
-   TH1D* h1;
    //	for(int chan=first_chan; chan<=last_chan;chan++) {
    for(int chan = first_chan; chan <= 2; chan++) {
       gm->Clear();
-      std::cout<<std::endl<<"Now fitting channel: "<<chan<<std::endl;
-      h1 = static_cast<TH1D*>(mat->ProjectionY(Form("Channel%d", chan), chan + 1, chan + 1, "o"));
-      std::cout<<"BIN WIDTH "<<h1->GetXaxis()->GetBinWidth(h1->GetXaxis()->GetFirst() + 1)<<std::endl;
+      std::cout << std::endl
+                << "Now fitting channel: " << chan << std::endl;
+      auto* h1 = static_cast<TH1D*>(mat->ProjectionY(Form("Channel%d", chan), chan + 1, chan + 1, "o"));
+      std::cout << "BIN WIDTH " << h1->GetXaxis()->GetBinWidth(h1->GetXaxis()->GetFirst() + 1) << std::endl;
       if(h1->Integral() < 100) {
          continue;
       }
@@ -611,10 +607,10 @@ Bool_t TGainMatch::AlignAll(TCalManager* cm, TH1* hist, TH2* mat, Int_t low_rang
       cm->AddToManager(gm);
    }
    if(!badlist.empty()) {
-      std::cout<<"The following channels did not gain match properly: ";
+      std::cout << "The following channels did not gain match properly: ";
    }
    for(int i : badlist) {
-      std::cout<<i<<"\t";
+      std::cout << i << "\t";
    }
 
    delete gm;
@@ -637,12 +633,7 @@ Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2* charge_mat, TH2* eng_mat, 
       gm->Error("FineMatchAll", "TH2 Pointer is nullptr");
       return false;
    }
-   /* if(!testhist) {
-      gm->Error("FineMatchAll","TH1 Pointer is nullptr");
-      return false;
-      }*/
-   Double_t binwidth;
-   binwidth = static_cast<Int_t>(0.5 + 1. / eng_mat->GetYaxis()->GetBinWidth(100));
+   auto binwidth = static_cast<Int_t>(0.5 + 1. / eng_mat->GetYaxis()->GetBinWidth(100));
    eng_mat->RebinY(binwidth);
 
    std::vector<Int_t> badlist;
@@ -650,16 +641,13 @@ Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2* charge_mat, TH2* eng_mat, 
    Int_t first_chan = eng_mat->GetXaxis()->GetFirst();
    Int_t last_chan  = eng_mat->GetXaxis()->GetLast();
    // The first thing we need to do is slice the matrix into it's channel vs energy.
-   TH1D* chargeh;
-   TH1D* engh;
-
-   TH1D* testhist =
-      static_cast<TH1D*>(eng_mat->ProjectionY(Form("Test%d_mat", testchan), testchan + 1, testchan + 1, "o"));
+   auto* testhist = static_cast<TH1D*>(eng_mat->ProjectionY(Form("Test%d_mat", testchan), testchan + 1, testchan + 1, "o"));
 
    for(int chan = first_chan; chan <= last_chan; chan++) {
-      std::cout<<std::endl<<"Now fitting channel: "<<chan-1<<std::endl;
-      chargeh = static_cast<TH1D*>(charge_mat->ProjectionY(Form("Charge%d_mat", chan - 1), chan, chan, "o"));
-      engh    = static_cast<TH1D*>(eng_mat->ProjectionY(Form("Energy%d_mat", chan - 1), chan, chan, "o"));
+      std::cout << std::endl
+                << "Now fitting channel: " << chan - 1 << std::endl;
+      auto* chargeh = static_cast<TH1D*>(charge_mat->ProjectionY(Form("Charge%d_mat", chan - 1), chan, chan, "o"));
+      auto* engh    = static_cast<TH1D*>(eng_mat->ProjectionY(Form("Energy%d_mat", chan - 1), chan, chan, "o"));
       if(chargeh->Integral() < 100 || chargeh->Integral() < 100) {
          gm->Warning("FineMatchAll", "Empty channel = %d", chan - 1);
          continue;
@@ -672,10 +660,10 @@ Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2* charge_mat, TH2* eng_mat, 
       cm->AddToManager(gm);
    }
    if(!badlist.empty()) {
-      std::cout<<"The following channels did not gain match properly: ";
+      std::cout << "The following channels did not gain match properly: ";
    }
    for(int i : badlist) {
-      std::cout<<i<<"\t";
+      std::cout << i << "\t";
    }
 
    delete testhist;
@@ -692,7 +680,7 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    if(!Align(testhist, energyHist, low_range, high_range)) {
       return false;
    }
-   TH1* hist2 = chargeHist; // Cheating for easier modification later
+   TH1* hist2 = chargeHist;   // Cheating for easier modification later
    if((chargeHist == nullptr) || (testhist == nullptr) || (energyHist == nullptr)) {
       Error("FineMatch", "No histogram being pointed to");
       return false;
@@ -705,8 +693,9 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    }
 
    // See if the channel exists. There is no point in finding the gains if we don't have anywhere to write it
-   Double_t  gain, offset;
-   TChannel* chan = TChannel::GetChannelByNumber(channelNum);
+   Double_t  gain   = 0.;
+   Double_t  offset = 0.;
+   TChannel* chan   = TChannel::GetChannelByNumber(channelNum);
    if(chan == nullptr) {
       if(channelNum != 9999) {
          Warning("FineMatch", "Channel Number %d does not exist in current memory.", channelNum);
@@ -737,8 +726,8 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    Set(2);
 
    // Find the energy of the peak that we want to use
-   Double_t energy[2] = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
-   std::cout<<peak1->GetParameter("centroid")<<" ENERGIES "<<energy[1]<<std::endl;
+   std::array<Double_t, 2> energy = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
+   std::cout << peak1->GetParameter("centroid") << " ENERGIES " << energy[1] << std::endl;
    // Offsets are very small right now so I'm not including them until they become a problem.
    //   peak1->SetParameter("centroid",((energy[0]-offset)/gain)*fAlignCoeffs[1] + fAlignCoeffs[0]);
    //   peak2->SetParameter("centroid",((energy[0]-offset)/gain)*fAlignCoeffs[1] + fAlignCoeffs[0]);
@@ -746,8 +735,8 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    peak2->SetParameter("centroid", (energy[1] * fAlignCoeffs[1] + fAlignCoeffs[0] - offset) / gain);
    // Change the range for the fit to be in the gain corrected spectrum
 
-   std::cout<<" Should be: "<<((energy[0] * fAlignCoeffs[1] + fAlignCoeffs[0] - offset) / gain)<<" from ("<<energy[0]<<" * "<<fAlignCoeffs[1]<<" + "<<fAlignCoeffs[0]<<" - "<<offset<<")/"<<gain<<std::endl;
-   std::cout<<" Should be: "<<((energy[1] * fAlignCoeffs[1] + fAlignCoeffs[0] - offset) / gain)<<" from ("<<energy[1]<<" * "<<fAlignCoeffs[1]<<" + "<<fAlignCoeffs[0]<<" - "<<offset<<")/"<<gain<<std::endl;
+   std::cout << " Should be: " << ((energy[0] * fAlignCoeffs[1] + fAlignCoeffs[0] - offset) / gain) << " from (" << energy[0] << " * " << fAlignCoeffs[1] << " + " << fAlignCoeffs[0] << " - " << offset << ")/" << gain << std::endl;
+   std::cout << " Should be: " << ((energy[1] * fAlignCoeffs[1] + fAlignCoeffs[0] - offset) / gain) << " from (" << energy[1] << " * " << fAlignCoeffs[1] << " + " << fAlignCoeffs[0] << " - " << offset << ")/" << gain << std::endl;
 
    //   peak1->SetRange(((peak1->GetXmin()-offset)/gain)*fAlignCoeffs[1] +
    //   fAlignCoeffs[0],((peak1->GetXmax()-offset)/gain)*fAlignCoeffs[1] + fAlignCoeffs[0]);
@@ -759,54 +748,54 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
                    ((peak2->GetXmax() * fAlignCoeffs[1] + fAlignCoeffs[0] - offset) / gain));
 
    // The gains won't be perfect, so we need to search for the peak within a range.
-   TSpectrum s;
+   TSpectrum spec;
    chargeHist->GetXaxis()->SetRangeUser(peak1->GetXmin() - 20., peak1->GetXmax() + 20.);
-   Int_t nFound = s.Search(chargeHist, 2, "", 0.3);
+   Int_t nFound = spec.Search(chargeHist, 2, "", 0.3);
 
    for(int x = 0; x < nFound; x++) {
-      std::cout<<s.GetPositionX()[x]<<std::endl;
+      std::cout << spec.GetPositionX()[x] << std::endl;
    }
    Double_t closestPeak = 0;
    Double_t closestDiff = 10000;
    for(int x = 0; x < nFound; x++) {
-      if(fabs(peak1->GetCentroid() - s.GetPositionX()[x]) < closestDiff) {
-         closestPeak = s.GetPositionX()[x];
-         closestDiff = fabs(peak1->GetCentroid() - s.GetPositionX()[x]);
+      if(fabs(peak1->GetCentroid() - spec.GetPositionX()[x]) < closestDiff) {
+         closestPeak = spec.GetPositionX()[x];
+         closestDiff = fabs(peak1->GetCentroid() - spec.GetPositionX()[x]);
       }
    }
 
    Double_t rangeWidth = (peak1->GetXmax() - peak1->GetXmin()) / 2.;
    peak1->SetParameter("centroid", closestPeak);
    peak1->SetRange(peak1->GetCentroid() - rangeWidth, peak1->GetCentroid() + rangeWidth);
-   std::cout<<"Centroid Guess "<<peak1->GetCentroid()<<std::endl;
-   std::cout<<"Range Low "<<peak1->GetXmin()<<" "<<peak1->GetXmax()<<std::endl;
+   std::cout << "Centroid Guess " << peak1->GetCentroid() << std::endl;
+   std::cout << "Range Low " << peak1->GetXmin() << " " << peak1->GetXmax() << std::endl;
 
    closestDiff = 10000;
-   TSpectrum s2;
+   TSpectrum spec2;
    hist2->GetXaxis()->SetRangeUser(peak2->GetXmin() - 20., peak2->GetXmax() + 20.);
-   std::cout<<"RANGE: "<<peak2->GetXmin() - 20.<<" "<<peak2->GetXmax() + 20.<<std::endl;
-   nFound = s2.Search(hist2, 2, "", 0.3); // Search the next histogram
+   std::cout << "RANGE: " << peak2->GetXmin() - 20. << " " << peak2->GetXmax() + 20. << std::endl;
+   nFound = spec2.Search(hist2, 2, "", 0.3);   // Search the next histogram
    if(nFound == 0) {
-      std::cout<<"RANGE: "<<peak2->GetXmin() - 40.<<" "<<peak2->GetXmax() + 40.<<std::endl;
-      nFound = s2.Search(hist2, 2, "", 0.3); // Search the next histogram
+      std::cout << "RANGE: " << peak2->GetXmin() - 40. << " " << peak2->GetXmax() + 40. << std::endl;
+      nFound = spec2.Search(hist2, 2, "", 0.3);   // Search the next histogram
    }
 
    for(int x = 0; x < nFound; x++) {
-      std::cout<<s2.GetPositionX()[x]<<std::endl;
+      std::cout << spec2.GetPositionX()[x] << std::endl;
    }
 
-   Double_t largestPeak = s2.GetPositionX()[0];
+   Double_t largestPeak = spec2.GetPositionX()[0];
    for(int x = 0; x < nFound; x++) {
-      if(fabs(peak2->GetCentroid() - s2.GetPositionX()[x]) < closestDiff) {
-         closestDiff = fabs(peak2->GetCentroid() - s2.GetPositionX()[x]);
+      if(fabs(peak2->GetCentroid() - spec2.GetPositionX()[x]) < closestDiff) {
+         closestDiff = fabs(peak2->GetCentroid() - spec2.GetPositionX()[x]);
       }
    }
    Double_t rangeWidth2 = (peak2->GetXmax() - peak2->GetXmin()) / 2.;
    peak2->SetParameter("centroid", largestPeak);
    peak2->SetRange(peak2->GetCentroid() - rangeWidth2, peak2->GetCentroid() + rangeWidth2);
 
-   std::cout<<"Centroid Guess "<<peak2->GetCentroid()<<std::endl;
-   std::cout<<"Range High "<<peak2->GetXmin()<<" "<<peak2->GetXmax()<<std::endl;
+   std::cout << "Centroid Guess " << peak2->GetCentroid() << std::endl;
+   std::cout << "Range High " << peak2->GetXmin() << " " << peak2->GetXmax() << std::endl;
 
    chargeHist->GetXaxis()->UnZoom();
    hist2->GetXaxis()->UnZoom();
@@ -821,7 +810,7 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    peak1->Draw("same");
    peak2->Draw("same");
 
-   Double_t centroid[2] = {peak1->GetCentroid(), peak2->GetCentroid()};
+   std::array<Double_t, 2> centroid = {peak1->GetCentroid(), peak2->GetCentroid()};
 
    // Put the peaks in order for ease (if the user put them in the wrong order)
    // Apparantly there is a TGraph Sort method. Might look into this later.
@@ -836,7 +825,7 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    auto* gainFit = new TF1("gain", "pol1");
 
    TFitResultPtr res = Fit(gainFit, "SC0");
-   SetFitFunction(GetFunction("gain")); // Have to do this because I want to delete gainFit
+   SetFitFunction(GetFunction("gain"));   // Have to do this because I want to delete gainFit
    fGainCoeffs[0] = res->Parameter(0);
    fGainCoeffs[1] = res->Parameter(1);
 
@@ -848,10 +837,9 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    return true;
 }
 
-Double_t TGainMatch::HistCompare(Double_t* x, Double_t* par)
+Double_t TGainMatch::HistCompare(Double_t* x, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {
-   Double_t xx      = x[0];
-   Int_t    bin     = fHist->GetXaxis()->FindBin(xx * par[2] + par[1]);
+   Int_t    bin     = fHist->GetXaxis()->FindBin(x[0] * par[2] + par[1]);
    Double_t content = fHist->GetBinContent(bin);
 
    return par[0] * content;

@@ -40,7 +40,7 @@ public:
 
    void Write();
 
-   size_t GetItemsPushed() override { return fItemsPopped; }
+   size_t GetItemsPushed() override { return ItemsPopped(); }
    size_t GetItemsPopped() override { return 0; }
    size_t GetItemsCurrent() override { return 0; }
    size_t GetRate() override { return 0; }

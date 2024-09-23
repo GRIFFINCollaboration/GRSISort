@@ -14,7 +14,6 @@ int main(int argc, char** argv)
 
    // Read Cal file
    TChannel::ReadCalFile(argv[2]);
-   std::unordered_map<unsigned int, TChannel*>::iterator it;
    std::unordered_map<unsigned int, TChannel*>* chanmap = TChannel::GetChannelMap();
 
    if(chanmap == nullptr) {
@@ -24,8 +23,8 @@ int main(int argc, char** argv)
 
    std::vector<TChannel*> chanlist;
 
-   for(it = chanmap->begin(); it != chanmap->end(); ++it) {
-      TChannel* chan    = it->second;
+   for(auto& iter : *chanmap) {
+      TChannel* chan    = iter.second;
       auto*     newchan = new TChannel(chan);
       chanlist.push_back(newchan);
       newchan->SetNumber(TPriorityValue<int>(newchan->GetNumber() + num_to_add, EPriority::kUser));
@@ -33,8 +32,8 @@ int main(int argc, char** argv)
 
    TChannel::DeleteAllChannels();
 
-   for(auto& i : chanlist) {
-      TChannel::AddChannel(i);
+   for(auto& channel : chanlist) {
+      TChannel::AddChannel(channel);
    }
 
    TChannel::WriteCalFile(argv[2]);
