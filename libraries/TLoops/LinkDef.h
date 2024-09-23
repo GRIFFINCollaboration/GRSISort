@@ -1,4 +1,4 @@
-// TDataLoop.h StoppableThread.h TFragWriteLoop.h TTerminalLoop.h TFragment.h TEventBuildingLoop.h TDetBuildingLoop.h TAnalysisWriteLoop.h TParallelFileMerger.h
+// TDataLoop.h StoppableThread.h TFragWriteLoop.h TTerminalLoop.h TFragment.h TEventBuildingLoop.h TDetBuildingLoop.h TAnalysisWriteLoop.h TParallelFileMerger.h TRnTupleWriteLoop.h
 
 #ifdef __CINT__
 
@@ -16,5 +16,6 @@
 #pragma link C++ class TEventBuildingLoop+;
 #pragma link C++ class TDetBuildingLoop+;
 #pragma link C++ class TAnalysisWriteLoop+;
+#pragma link C++ class TRnTupleWriteLoop+;
 
 #endif

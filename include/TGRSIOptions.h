@@ -80,6 +80,7 @@ public:
 	bool UseMidFileOdb() const { return fUseMidFileOdb; }
 
 	bool MakeAnalysisTree() const { return fMakeAnalysisTree; }
+	bool UseRnTuple() const { return fUseRnTuple; }
 	bool ReadingMaterial() const { return fReadingMaterial; }
 	bool IgnoreFileOdb() const { return fIgnoreFileOdb; }
 	bool IgnoreOdbChannels() const { return fIgnoreOdbChannels; }
@@ -185,6 +186,7 @@ private:
 	bool fReconstructTimeStamp; ///< Flag to reconstruct missing high bits of time stamps (--reconstruct-timestamp)
 
 	bool fMakeAnalysisTree; ///< Flag to make analysis tree (-a)
+	bool fUseRnTuple;			///< Flag to use experimental TRNTuple instead of TTree
 	bool fReadingMaterial;  ///< Flag to show reading material (--reading-material)
 	bool fIgnoreFileOdb;    ///< Flag to ignore midas file odb
 	bool fIgnoreOdbChannels;///< Flag to ignore channels from midas file odb (but do use EPICS from ODB)

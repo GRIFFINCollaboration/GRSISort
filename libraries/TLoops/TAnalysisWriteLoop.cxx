@@ -209,7 +209,7 @@ void TAnalysisWriteLoop::WriteEvent(std::shared_ptr<TUnpackedEvent>& event)
       for(const auto& det : event->GetDetectors()) {
          TClass* cls = det->IsA();
          try {
-            **fDetMap.at(cls) = *(det.get());
+            *fDetMap.at(cls) = (det.get());
          } catch(std::out_of_range& e) {
             AddBranch(cls);
             **fDetMap.at(cls) = *(det.get());
