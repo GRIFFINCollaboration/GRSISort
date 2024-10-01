@@ -35,35 +35,33 @@ std::map<std::tuple<double, double, double, double>, std::tuple<double, double, 
 std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double>> SmartMatch(std::vector<std::tuple<double, double, double, double>> peaks, std::vector<std::tuple<double, double, double, double>> source, int verboseLevel);
 
 double Polynomial(double* x, double* par);
-double Efficiency(double* x, double* par);
 
 bool FilledBin(TH2* matrix, const int& bin);
 
 class TSourceCalibration;
 
-class TChannelTab {
+class TSourceTab {
 public:
-   TChannelTab(TGTab* parent, TH1* projection, TGCompositeFrame* frame, const double& sigma, const double& threshold, const int& degree, const std::vector<std::tuple<double, double, double, double>>& sourceEnergy);
-   TChannelTab(const TChannelTab& rhs);
-   TChannelTab(TChannelTab&&) noexcept            = default;
-   TChannelTab& operator=(const TChannelTab&)     = default;
-   TChannelTab& operator=(TChannelTab&&) noexcept = default;
-   ~TChannelTab();
+   TSourceTab(TGTab* parent, TGCompositeFrame* frame, TH1D* projection, const double& sigma, const double& threshold, const int& degree, const std::vector<std::tuple<double, double, double, double>>& sourceEnergy);
+   TSourceTab(const TSourceTab& rhs);
+   TSourceTab(TSourceTab&&) noexcept            = default;
+   TSourceTab& operator=(const TSourceTab&)     = default;
+   TSourceTab& operator=(TSourceTab&&) noexcept = default;
+   ~TSourceTab();
 
    void MakeConnections();
    void Disconnect();
 
    void ProjectionStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
-   void CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
 
    void Add(std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double>> map);
-   void Calibrate(const int& degree, const bool& force = false);
-   void FindPeaks(const double& sigma, const double& threshold, const std::vector<std::tuple<double, double, double, double>>& sourceEnergy, const bool& force = false, const bool& fast = true);
+   void FindPeaks(const double& sigma, const double& threshold, const bool& force = false, const bool& fast = true);
+
+   void SourceEnergy(std::vector<std::tuple<double, double, double, double>> val) { fSourceEnergy = std::move(val); }
 
    TGraphErrors* Data() { return fData; }
-   TGraphErrors* Efficiency() { return fEfficiency; }
 
-   void VerboseLevel(int val) { fVerboseLevel = val; }
+	void PrintLayout() const;
 
 private:
    void BuildInterface();
@@ -72,69 +70,76 @@ private:
    TGTab* fParent{nullptr};
 
    // graphic elements
-   TGCompositeFrame*    fFrame{nullptr};
-   TGHorizontalFrame*   fTopFrame{nullptr};
-   TGVerticalFrame*     fLeftFrame{nullptr};
-   TGVerticalFrame*     fRightFrame{nullptr};
+   TGCompositeFrame*    fSourceFrame{nullptr};
    TRootEmbeddedCanvas* fProjectionCanvas{nullptr};
-   TRootEmbeddedCanvas* fCalibrationCanvas{nullptr};
-   TGStatusBar*         fStatusBar{nullptr};
+   TGStatusBar*         fSourceStatusBar{nullptr};
 
    // storage elements
-   TH1*                fProjection{nullptr};
-   TGraphErrors*       fData{nullptr};
-   TGraphErrors*       fEfficiency{nullptr};
-   double              fSigma{2.};
-   double              fThreshold{0.05};
-   int                 fDegree{1};
-   std::vector<GPeak*> fPeaks;
-   int                 fVerboseLevel{0};   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
+   TH1D*                                                   fProjection{nullptr};
+   TGraphErrors*                                           fData{nullptr};
+   double                                                  fSigma{2.};
+   double                                                  fThreshold{0.05};
+   int                                                     fDegree{1};
+   std::vector<GPeak*>                                     fPeaks;
+   std::vector<std::tuple<double, double, double, double>> fSourceEnergy;
 };
 
-class TSourceTab {
+class TChannelTab {
 public:
-   TSourceTab(TSourceCalibration* parent, TNucleus* nucleus, TH2* matrix, TGCompositeFrame* frame, double sigma, double threshold, int degree, std::vector<std::tuple<double, double, double, double>> sourceEnergy, TGHProgressBar* progressBar);
-   TSourceTab(const TSourceTab&)                = default;
-   TSourceTab(TSourceTab&&) noexcept            = default;
-   TSourceTab& operator=(const TSourceTab&)     = default;
-   TSourceTab& operator=(TSourceTab&&) noexcept = default;
-   ~TSourceTab();
+   TChannelTab(TSourceCalibration* parent, std::vector<TNucleus*> nuclei, std::vector<TH1D*> projections, std::string name, TGCompositeFrame* frame, double sigma, double threshold, int degree, std::vector<std::vector<std::tuple<double, double, double, double>>> sourceEnergies, TGHProgressBar* progressBar);
+   TChannelTab(const TChannelTab&)                = default;
+   TChannelTab(TChannelTab&&) noexcept            = default;
+   TChannelTab& operator=(const TChannelTab&)     = default;
+   TChannelTab& operator=(TChannelTab&&) noexcept = default;
+   ~TChannelTab();
 
-   void CreateChannelTab(int bin);
+   void CreateSourceTab(size_t source);
 
    void MakeConnections();
    void Disconnect();
 
-   void          Calibrate(const int& degree, const bool& force = false) { fChannel[fChannelTab->GetCurrent()]->Calibrate(degree, force); }
-   void          FindPeaks(const double& sigma, const double& threshold, const bool& force = false, const bool& fast = true) { fChannel[fChannelTab->GetCurrent()]->FindPeaks(sigma, threshold, fSourceEnergy, force, fast); }
-   TGTab*        ChannelTab() { return fChannelTab; }
-   TGraphErrors* Data(int channelId) { return fChannel[channelId]->Data(); }
-   TGraphErrors* Efficiency(int channelId) { return fChannel[channelId]->Efficiency(); }
-   size_t        NumberOfChannels() { return fChannel.size(); }
+   void CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
 
-   void VerboseLevel(int val)
-   {
-      fVerboseLevel = val;
-      for(auto* channel : fChannel) { channel->VerboseLevel(val); }
-   }
+   void          UpdateData();
+   void          Fit();
+   void          UpdateChannel();
+   void          Write(TFile* output);
+   void          Calibrate(const int& degree, const bool& force = false);
+   void          FindPeaks(const double& sigma, const double& threshold, const bool& force = false, const bool& fast = true) { fSources[fSourceTab->GetCurrent()]->FindPeaks(sigma, threshold, force, fast); }
+   TGTab*        SourceTab() { return fSourceTab; }
+   TGraphErrors* Data(int channelId) { return fSources[channelId]->Data(); }
+   size_t        NumberOfSources() { return fSources.size(); }
+
+   static void ZoomX();
+   static void ZoomY();
+
+	void PrintLayout() const;
 
 private:
    // graphic elements
-   TGCompositeFrame*         fFrame{nullptr};        ///< main frame of this tab
-   TGTab*                    fChannelTab{nullptr};   ///< tab for channels
-   std::vector<TChannelTab*> fChannel;               ///< tabs for all channels
-   TGHProgressBar*           fProgressBar{nullptr};
+   TGCompositeFrame*        fChannelFrame{nullptr};        ///< main frame of this tab
+   TGVerticalFrame*         fLeftFrame{nullptr};    ///< left frame with source tabs
+   TGVerticalFrame*         fRightFrame{nullptr};   ///< right frame with calibration
+   TGTab*                   fSourceTab{nullptr};    ///< tab for sources
+   std::vector<TSourceTab*> fSources;               ///< tabs for all sources
+   TRootEmbeddedCanvas*     fCalibrationCanvas{nullptr};
+   TPad*                    fResidualPad{nullptr};
+   TPad*                    fCalibrationPad{nullptr};
+   TGStatusBar*             fChannelStatusBar{nullptr};
+   TLegend*                 fLegend{nullptr};
+   TPaveText*               fChi2Label{nullptr};
+   TGHProgressBar*          fProgressBar{nullptr};
 
    // storage elements
-   std::vector<TH1*>                                       fProjections;       ///< vector of all projections
-   TNucleus*                                               fNucleus;           ///< the source nucleus
-   TSourceCalibration*                                     fParent;            ///< the parent of this tab
-   TH2*                                                    fMatrix{nullptr};   ///< the matrix we're using
-   double                                                  fSigma{2.};         ///< the sigma used in the peak finder
-   double                                                  fThreshold{0.05};   ///< the threshold (relative to the largest peak) used in the peak finder
-   int                                                     fDegree{1};         ///< degree of polynomial function used to calibrate
-   std::vector<std::tuple<double, double, double, double>> fSourceEnergy;      ///< vector with source energies and uncertainties
-   int                                                     fVerboseLevel{0};   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
+   TSourceCalibration*                                                  fParent;            ///< the parent of this tab
+   std::vector<TNucleus*>                                               fNuclei;            ///< the source nucleus
+   std::vector<TH1D*>                                                   fProjections;       ///< vector of all projections
+   std::string                                                          fName;              ///< name of this tab
+   double                                                               fSigma{2.};         ///< the sigma used in the peak finder
+   double                                                               fThreshold{0.05};   ///< the threshold (relative to the largest peak) used in the peak finder
+   int                                                                  fDegree{1};         ///< degree of polynomial function used to calibrate
+   std::vector<std::vector<std::tuple<double, double, double, double>>> fSourceEnergies;    ///< vector with source energies and uncertainties
+   TCalibrationGraphSet*                                                fData{nullptr};     ///< combined data from all sources
 };
 
 class TSourceCalibration : public TGMainFrame {
@@ -171,7 +176,6 @@ public:
 
    void NavigateFinal(Int_t id);
    void FitFinal(const int& channelId);
-   void FitEfficiency(const int& channelId);
    void SelectedFinalTab(Int_t id);
    void SelectedFinalMainTab(Int_t id);
    void UpdateChannel(const int& channelId);
@@ -192,14 +196,12 @@ public:
    void SecondWindow();
    void FinalWindow();
 
-   void VerboseLevel(int val)
-   {
-      fVerboseLevel = val;
-      for(auto* source : fSourceTab) { source->VerboseLevel(val); }
-   }
+   static void VerboseLevel(int val) { fVerboseLevel = val; if(val > 4) { TCalibrationGraphSet::VerboseLevel(val - 4); } }
+	static int VerboseLevel() { return fVerboseLevel; }
 
    static void ZoomX();
-   static void ZoomY();
+
+	void PrintLayout() const;
 
 private:
    void BuildFirstInterface();
@@ -223,8 +225,7 @@ private:
    TGVerticalFrame*         fRightFrame{nullptr};
    TGTextButton*            fStartButton{nullptr};
    TGTab*                   fTab{nullptr};
-   std::vector<TGTab*>      fFinalTabs;
-   std::vector<TSourceTab*> fSourceTab;
+   std::vector<TChannelTab*> fChannelTab;
 
    TGTextButton*                     fEmitter{nullptr};
    TGHButtonGroup*                   fNavigationGroup{nullptr};
@@ -244,33 +245,13 @@ private:
    TGLabel*                          fDegreeLabel{nullptr};
    TGNumberEntry*                    fDegreeEntry{nullptr};
    TGHProgressBar*                   fProgressBar{nullptr};
-   std::vector<TGCompositeFrame*>    fFinalTab;
-   std::vector<TRootEmbeddedCanvas*> fFinalCanvas;
-   std::vector<TPad*>                fResidualPad;
-   std::vector<TPad*>                fCalibrationPad;
-   std::vector<TGStatusBar*>         fStatusBar;
-   std::vector<TLegend*>             fLegend;
-   std::vector<TPaveText*>           fChi2Label;
-   std::vector<TGCompositeFrame*>    fEfficiencyTabs;
-   std::vector<TRootEmbeddedCanvas*> fEfficiencyCanvas;
-   std::vector<TPad*>                fEfficiencyResidualPad;
-   std::vector<TPad*>                fEfficiencyPad;
-   std::vector<TGStatusBar*>         fEfficiencyStatusBar;
-   std::vector<TLegend*>             fEfficiencyLegend;
-   std::vector<TPaveText*>           fEfficiencyChi2Label;
 
    std::vector<TGLabel*>                                                fMatrixNames;
    std::vector<TGComboBox*>                                             fSourceBox;
    std::vector<TNucleus*>                                               fSource;
    std::vector<std::vector<std::tuple<double, double, double, double>>> fSourceEnergy;   ///< vector to hold source energy, energy uncertainty, intensity, and intensity uncertainty
-   std::vector<int>                                                     fActualSourceId;
-   std::vector<std::vector<int>>                                        fActualChannelId;
-   std::vector<std::vector<TGraphErrors*>>                              fData;
-   std::vector<TCalibrationGraphSet*>                                   fFinalData;
-   std::vector<std::vector<TGraphErrors*>>                              fEfficiency;
-   std::vector<TCalibrationGraphSet*>                                   fFinalEfficiency;
+   std::vector<int>                                                     fActualChannelId;
    std::vector<const char*>                                             fChannelLabel;
-   std::map<int, int>                                                   fChannelToIndex;
 
    std::vector<TH2*> fMatrices;
    int               fNofBins{0};   ///< Number of filled bins in first matrix
@@ -279,17 +260,17 @@ private:
 
    int fOldErrorLevel;   ///< Used to store old value of gErrorIgnoreLevel (set to kError for the scope of the class)
 
-   int fVerboseLevel{0};   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
-
    double fDefaultSigma{2.};         ///< The default sigma used for the peak finding algorithm, can be changed later.
    double fDefaultThreshold{0.05};   ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.
    int    fDefaultDegree{1};         ///< The default degree of the polynomial used for calibrating, can be changed later.
 
    TFile* fOutput{nullptr};
 
+   static int fVerboseLevel;   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
+
    /// \cond CLASSIMP
    ClassDefOverride(TSourceCalibration, 1)   // NOLINT(readability-else-after-return)
-                                             /// \endcond
+   /// \endcond
 };
 
 #endif
