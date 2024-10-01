@@ -34,16 +34,9 @@ public:
    void Scale(const double& scale);
 #endif
 
-   void VerboseLevel(int val)
-   {
-      fVerboseLevel = val;
-   }
-
 private:
    TCalibrationGraphSet* fParent{nullptr};     ///< pointer to the set this graph belongs to
    bool                  fIsResidual{false};   ///< flag to indicate that this graph is for residuals
-
-   int fVerboseLevel{0};   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 
    /// \cond CLASSIMP
    ClassDefOverride(TCalibrationGraph, 1)   // NOLINT(readability-else-after-return)
@@ -116,11 +109,11 @@ public:
 
    void SetAxisTitle(const char* title);   ///< Set axis title for the graph (form "x-axis title;y-axis title")
 
-   int     GetN() { return fTotalGraph->GetN(); }     ///< Returns GetN(), i.e. number of points of the total graph.
-   double* GetX() { return fTotalGraph->GetX(); }     ///< Returns an array of x-values of the total graph.
-   double* GetY() { return fTotalGraph->GetY(); }     ///< Returns an array of y-values of the total graph.
-   double* GetEX() { return fTotalGraph->GetEX(); }   ///< Returns an array of x-errors of the total graph.
-   double* GetEY() { return fTotalGraph->GetEY(); }   ///< Returns an array of y-errors of the total graph.
+   int     GetN() { return (fTotalGraph != nullptr ? fTotalGraph->GetN() : -1); }     ///< Returns GetN(), i.e. number of points of the total graph.
+   double* GetX() { return (fTotalGraph != nullptr ? fTotalGraph->GetX() : nullptr); }     ///< Returns an array of x-values of the total graph.
+   double* GetY() { return (fTotalGraph != nullptr ? fTotalGraph->GetY() : nullptr); }     ///< Returns an array of y-values of the total graph.
+   double* GetEX() { return (fTotalGraph != nullptr ? fTotalGraph->GetEX() : nullptr); }   ///< Returns an array of x-errors of the total graph.
+   double* GetEY() { return (fTotalGraph != nullptr ? fTotalGraph->GetEY() : nullptr); }   ///< Returns an array of y-errors of the total graph.
 
    double GetMinimumX() const { return fMinimumX; }   ///< Return minimum x-value.
    double GetMaximumX() const { return fMaximumX; }   ///< Return maximum x-value.
@@ -151,16 +144,10 @@ public:
 
    void ResetTotalGraph();   ///< reset the total graph and add the individual ones again (used e.g. after scaling of individual graphs is done)
 
-   void VerboseLevel(int val)
-   {
-      fVerboseLevel = val;
-      for(auto& graph : fGraphs) {
-         graph.VerboseLevel(val);
-      }
-      for(auto& graph : fResidualGraphs) {
-         graph.VerboseLevel(val);
-      }
-   }
+   static void VerboseLevel(int val) { fVerboseLevel = val; }
+	static int VerboseLevel() { return fVerboseLevel; }
+
+	void Clear();
 
 private:
    std::vector<TCalibrationGraph> fGraphs;                        ///< These are the graphs used for plotting the calibration points per source.
@@ -176,7 +163,7 @@ private:
    double                         fMinimumY{0.};                  ///< Minimum y-value
    double                         fMaximumY{0.};                  ///< Maximum y-value
 
-   int fVerboseLevel{0};   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
+   static int fVerboseLevel;   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 
    /// \cond CLASSIMP
    ClassDefOverride(TCalibrationGraphSet, 3)   // NOLINT(readability-else-after-return)
