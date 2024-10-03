@@ -16,7 +16,7 @@
 #pragma link C++ class TEventBuildingLoop + ;
 #pragma link C++ class TDetBuildingLoop + ;
 #pragma link C++ class TAnalysisWriteLoop + ;
-#pragma link C++ class TRnTupleWriteLoop+;
+#pragma link C++ class TRnTupleWriteLoop + ;
 
 #pragma link C++ class TCompiledHistograms + ;
 #pragma link C++ class TRuntimeObjects + ;

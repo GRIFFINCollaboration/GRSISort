@@ -60,8 +60,8 @@ std::map<std::tuple<double, double, double, double>, std::tuple<double, double, 
             source_values.push_back(0);
 
             if(peakValues.size() > 3) {
-               double pratio  = peak_values.front() / peak_values.at(peak_values.size() - 2);
-               double sratio  = source_values.front() / source_values.at(source_values.size() - 2);
+               double pratio = peak_values.front() / peak_values.at(peak_values.size() - 2);
+               double sratio = source_values.front() / source_values.at(source_values.size() - 2);
                if(verboseLevel > 10) { std::cout << "ratio: " << pratio << " - " << sratio << " = " << std::abs(pratio - sratio) << " "; }
                if(std::abs(pratio - sratio) > 0.02) {
                   if(verboseLevel > 10) { std::cout << "skipping" << std::endl; }
@@ -177,8 +177,8 @@ std::map<std::tuple<double, double, double, double>, std::tuple<double, double, 
          sourceValues.push_back(0);
 
          if(peakValues.size() > 3) {
-            double pratio  = peak_values.front() / peak_values.at(peak_values.size() - 2);
-            double sratio  = sourceValues.front() / sourceValues.at(sourceValues.size() - 2);
+            double pratio = peak_values.front() / peak_values.at(peak_values.size() - 2);
+            double sratio = sourceValues.front() / sourceValues.at(sourceValues.size() - 2);
             if(verboseLevel > 3) { std::cout << "ratio: " << pratio << " - " << sratio << " = " << std::abs(pratio - sratio) << std::endl; }
             if(std::abs(pratio - sratio) > 0.02) {
                if(verboseLevel > 3) { std::cout << "skipping" << std::endl; }
@@ -278,10 +278,10 @@ TSourceTab::TSourceTab(TGTab* parent, TGCompositeFrame* frame, TH1D* projection,
 TSourceTab::TSourceTab(const TSourceTab& rhs)
 {
    if(TSourceCalibration::VerboseLevel() > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-   fParent            = rhs.fParent;
-   fSourceFrame       = rhs.fSourceFrame;
-   fProjectionCanvas  = rhs.fProjectionCanvas;
-   fSourceStatusBar   = rhs.fSourceStatusBar;
+   fParent           = rhs.fParent;
+   fSourceFrame      = rhs.fSourceFrame;
+   fProjectionCanvas = rhs.fProjectionCanvas;
+   fSourceStatusBar  = rhs.fSourceStatusBar;
 
    fProjection = rhs.fProjection;
    fData       = rhs.fData;
@@ -298,13 +298,13 @@ TSourceTab::~TSourceTab()
    }
    fPeaks.clear();
    delete fProjectionCanvas;
-	delete fSourceStatusBar;
+   delete fSourceStatusBar;
 }
 
 void TSourceTab::BuildInterface()
 {
    // frame with canvas and status bar
-   fProjectionCanvas  = new TRootEmbeddedCanvas("ChannelProjectionCanvas", fSourceFrame, 600, 400);
+   fProjectionCanvas = new TRootEmbeddedCanvas("ChannelProjectionCanvas", fSourceFrame, 600, 400);
 
    fSourceFrame->AddFrame(fProjectionCanvas, new TGLayoutHints(kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
 
@@ -343,14 +343,14 @@ void TSourceTab::ProjectionStatus(Int_t event, Int_t px, Int_t py, TObject* sele
    fSourceStatusBar->SetText(selected->GetName(), 0);
    fSourceStatusBar->SetText(selected->GetObjectInfo(px, py), 1);
    if(selected == fProjection && event == kButton1Down) {
-      if(TSourceCalibration::VerboseLevel() > 1) { std::cout << "Adding new marker at " << px << ", " << py <<" (pixel to user: "<<fProjectionCanvas->GetCanvas()->PixeltoX(px)<<", "<<fProjectionCanvas->GetCanvas()->PixeltoY(py)<<", abs pixel to user: "<<fProjectionCanvas->GetCanvas()->AbsPixeltoX(px)<<", "<<fProjectionCanvas->GetCanvas()->AbsPixeltoY(py)<<")"<< std::endl; }
+      if(TSourceCalibration::VerboseLevel() > 1) { std::cout << "Adding new marker at " << px << ", " << py << " (pixel to user: " << fProjectionCanvas->GetCanvas()->PixeltoX(px) << ", " << fProjectionCanvas->GetCanvas()->PixeltoY(py) << ", abs pixel to user: " << fProjectionCanvas->GetCanvas()->AbsPixeltoX(px) << ", " << fProjectionCanvas->GetCanvas()->AbsPixeltoY(py) << ")" << std::endl; }
       auto* polym = static_cast<TPolyMarker*>(fProjection->GetListOfFunctions()->FindObject("TPolyMarker"));
       if(polym == nullptr) {
          std::cerr << "No peaks defined yet?" << std::endl;
          return;
       }
       polym->SetNextPoint(fProjectionCanvas->GetCanvas()->AbsPixeltoX(px), fProjectionCanvas->GetCanvas()->AbsPixeltoX(py));
-      double range = 4 * fSigma;// * fProjection->GetXaxis()->GetBinWidth(1);
+      double range = 4 * fSigma;   // * fProjection->GetXaxis()->GetBinWidth(1);
       GPeak* peak  = PhotoPeakFit(fProjection, fProjectionCanvas->GetCanvas()->AbsPixeltoX(px) - range, fProjectionCanvas->GetCanvas()->AbsPixeltoX(px) + range, "qretryfit");
       //fPeakFitter.SetRange(fProjectionCanvas->GetCanvas()->AbsPixeltoX(px) - range, fProjectionCanvas->GetCanvas()->AbsPixeltoX(px) + range);
       //auto peak = new TRWPeak(fProjectionCanvas->GetCanvas()->AbsPixeltoX(px));
@@ -365,14 +365,14 @@ void TSourceTab::ProjectionStatus(Int_t event, Int_t px, Int_t py, TObject* sele
       fProjection->GetListOfFunctions()->Remove(peak);
       fProjection->Sumw2(false);   // turn errors off, makes the histogram look like a histogram when using normal plotting (hist and samefunc doesn't work for some reason)
 
-		// redo matching of found peaks to source energies
+      // redo matching of found peaks to source energies
       std::vector<std::tuple<double, double, double, double>> peaks;
       for(auto* foundPeak : fPeaks) {
          peaks.emplace_back(foundPeak->Centroid(), foundPeak->CentroidErr(), foundPeak->Area(), foundPeak->AreaErr());
       }
 
-		auto map = Match(peaks, fSourceEnergy, TSourceCalibration::VerboseLevel());
-		Add(map);
+      auto map = Match(peaks, fSourceEnergy, TSourceCalibration::VerboseLevel());
+      Add(map);
    }
 }
 
@@ -412,10 +412,10 @@ void TSourceTab::FindPeaks(const double& sigma, const double& threshold, const b
          //fProjection->GetListOfFunctions()->Remove(peak);
       }
       if(TSourceCalibration::VerboseLevel() > 2) { std::cout << __PRETTY_FUNCTION__ << ": added " << fPeaks.size() << " peaks" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-      fProjection->Sumw2(false);                                                                                            // turn errors off, makes the histogram look like a histogram when using normal plotting (hist and samefunc doesn't work for some reason)
+      fProjection->Sumw2(false);                                                                                                                 // turn errors off, makes the histogram look like a histogram when using normal plotting (hist and samefunc doesn't work for some reason)
 
       fProjectionCanvas->GetCanvas()->cd();
-      fProjection->Draw(); // seems like hist + samefunc does not work. Could use hist + loop over list of functions (with same)
+      fProjection->Draw();   // seems like hist + samefunc does not work. Could use hist + loop over list of functions (with same)
 
       // get a list of peaks positions and areas
       std::vector<std::tuple<double, double, double, double>> peaks;
@@ -431,7 +431,7 @@ void TSourceTab::FindPeaks(const double& sigma, const double& threshold, const b
          Add(map);
       }
 
-		// update status
+      // update status
       fSourceStatusBar->SetText(Form("%d/%d", static_cast<int>(fData->GetN()), spectrum.GetNPeaks()), 2);
    }
    if(TSourceCalibration::VerboseLevel() > 2) {
@@ -448,21 +448,21 @@ void TSourceTab::FindPeaks(const double& sigma, const double& threshold, const b
 void TSourceTab::Add(std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double>> map)
 {
    if(fData == nullptr) {
-		fData = new TGraphErrors(map.size());
-	} else {
-		fData->Set(map.size());
-	}
+      fData = new TGraphErrors(map.size());
+   } else {
+      fData->Set(map.size());
+   }
    fData->SetLineColor(2);
    fData->SetMarkerColor(2);
    int i = 0;
    for(auto iter = map.begin(); iter != map.end(); ++iter) {
       // more readable variable names
-      auto peakPos      = std::get<0>(iter->first);
-      auto peakPosErr   = std::get<1>(iter->first);
-      auto peakArea     = std::get<2>(iter->first);
-      auto peakAreaErr  = std::get<3>(iter->first);
-      auto energy       = std::get<0>(iter->second);
-      auto energyErr    = std::get<1>(iter->second);
+      auto peakPos     = std::get<0>(iter->first);
+      auto peakPosErr  = std::get<1>(iter->first);
+      auto peakArea    = std::get<2>(iter->first);
+      auto peakAreaErr = std::get<3>(iter->first);
+      auto energy      = std::get<0>(iter->second);
+      auto energyErr   = std::get<1>(iter->second);
       // drop this peak if the uncertainties in area or position are too large
       if(peakPosErr > 0.1 * peakPos || peakAreaErr > peakArea || std::isnan(peakPosErr) || std::isnan(peakAreaErr)) {
          if(TSourceCalibration::VerboseLevel() > 1) {
@@ -491,27 +491,27 @@ void TSourceTab::Add(std::map<std::tuple<double, double, double, double>, std::t
    std::vector<double> unusedX;
    std::vector<double> unusedY;
    for(i = 0; i < size; ++i) {
-		bool used = false;
+      bool used = false;
       for(auto point : map) {
          if(TMath::Abs(oldX[i] - std::get<0>(point.first)) < fSigma) {
             newX.push_back(oldX[i]);
             newY.push_back(oldY[i]);
-				used = true;
+            used = true;
             break;
-         } 
+         }
       }
-		if(!used) {
-			unusedX.push_back(oldX[i]);
-			unusedY.push_back(oldY[i]);
-		}
+      if(!used) {
+         unusedX.push_back(oldX[i]);
+         unusedY.push_back(oldY[i]);
+      }
    }
    polym->SetPolyMarker(newX.size(), newX.data(), newY.data());
-	//polym->SetName("UsedPeaks");
-	auto* unusedMarkers = new TPolyMarker(unusedX.size(), unusedX.data(), unusedY.data());
-	//unusedMarkers->SetName("UnusedPeaks");
-	unusedMarkers->SetMarkerStyle(23); // triangle down
-	unusedMarkers->SetMarkerColor(16); // light grey
-	functions->Add(unusedMarkers);
+   //polym->SetName("UsedPeaks");
+   auto* unusedMarkers = new TPolyMarker(unusedX.size(), unusedX.data(), unusedY.data());
+   //unusedMarkers->SetName("UnusedPeaks");
+   unusedMarkers->SetMarkerStyle(23);   // triangle down
+   unusedMarkers->SetMarkerColor(16);   // light grey
+   functions->Add(unusedMarkers);
    if(TSourceCalibration::VerboseLevel() > 2) {
       std::cout << size << " peaks founds total, " << polym->GetN() << " used, and " << unusedMarkers->GetN() << " unused" << std::endl;
       if(TSourceCalibration::VerboseLevel() > 3) {
@@ -552,12 +552,12 @@ void TSourceTab::Add(std::map<std::tuple<double, double, double, double>, std::t
 
 void TSourceTab::PrintLayout() const
 {
-	std::cout << "TSourceTab frame:" << std::endl;
-	fSourceFrame->Print();
-	std::cout << "TSourceTab canvas:" << std::endl;
-	fProjectionCanvas->Print();
-	std::cout << "TSourceTab status bar:" << std::endl;
-	fSourceStatusBar->Print();
+   std::cout << "TSourceTab frame:" << std::endl;
+   fSourceFrame->Print();
+   std::cout << "TSourceTab canvas:" << std::endl;
+   fProjectionCanvas->Print();
+   std::cout << "TSourceTab status bar:" << std::endl;
+   fSourceStatusBar->Print();
 }
 
 //////////////////////////////////////// TChannelTab ////////////////////////////////////////
@@ -582,8 +582,8 @@ TChannelTab::TChannelTab(TSourceCalibration* parent, std::vector<TNucleus*> nucl
 
    fChannelFrame->AddFrame(fSourceTab, new TGLayoutHints(kLHintsLeft | kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
 
-   fRightFrame              = new TGVerticalFrame(fChannelFrame, 600, 600);
-   fCalibrationCanvas       = new TRootEmbeddedCanvas("ChannelCalibrationCanvas", fRightFrame, 600, 400);
+   fRightFrame        = new TGVerticalFrame(fChannelFrame, 600, 600);
+   fCalibrationCanvas = new TRootEmbeddedCanvas("ChannelCalibrationCanvas", fRightFrame, 600, 400);
    fRightFrame->AddFrame(fCalibrationCanvas, new TGLayoutHints(kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
    fChannelStatusBar        = new TGStatusBar(fRightFrame, 600, 50);
    std::array<int, 5> parts = {35, 15, 20, 15, 15};
@@ -591,7 +591,7 @@ TChannelTab::TChannelTab(TSourceCalibration* parent, std::vector<TNucleus*> nucl
    fRightFrame->AddFrame(fChannelStatusBar, new TGLayoutHints(kLHintsBottom | kLHintsExpandX, 2, 2, 2, 2));
    fChannelFrame->AddFrame(fRightFrame, new TGLayoutHints(kLHintsRight | kLHintsBottom | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
 
-	UpdateData();
+   UpdateData();
 
    fCalibrationCanvas->GetCanvas()->cd();
    fCalibrationPad = new TPad(Form("cal_%s", fName.c_str()), Form("calibration for %s", fName.c_str()), 0.2, 0., 1., 1.);
@@ -619,15 +619,15 @@ TChannelTab::~TChannelTab()
    for(auto* channel : fSources) {
       delete channel;
    }
-	delete fLeftFrame;
-	delete fCalibrationCanvas;
-	delete fChannelStatusBar;
-	delete fRightFrame;
-	delete fData;
-	delete fCalibrationPad;
-	delete fLegend;
-	delete fResidualPad;
-	delete fChi2Label;
+   delete fLeftFrame;
+   delete fCalibrationCanvas;
+   delete fChannelStatusBar;
+   delete fRightFrame;
+   delete fData;
+   delete fCalibrationPad;
+   delete fLegend;
+   delete fResidualPad;
+   delete fChi2Label;
 }
 
 void TChannelTab::CreateSourceTab(size_t source)
@@ -684,44 +684,45 @@ void TChannelTab::CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* se
    fChannelStatusBar->SetText(selected->GetObjectInfo(px, py), 1);
 }
 
-
 void TChannelTab::UpdateData()
 {
-	/// Copy data from all sources into one graph (which we use for the calibration).
+   /// Copy data from all sources into one graph (which we use for the calibration).
    if(TSourceCalibration::VerboseLevel() > 1) { std::cout << __PRETTY_FUNCTION__ << " fData = " << fData << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	if(fData == nullptr) {
-		fData = new TCalibrationGraphSet;
-		if(TSourceCalibration::VerboseLevel() > 1) { std::cout << __PRETTY_FUNCTION__ << " created fData = " << fData << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	}
-	fData->Clear();
+   if(fData == nullptr) {
+      fData = new TCalibrationGraphSet;
+      if(TSourceCalibration::VerboseLevel() > 1) { std::cout << __PRETTY_FUNCTION__ << " created fData = " << fData << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   }
+   fData->Clear();
 
-	fData->SetName(Form("data%s", fName.c_str()));
-	if(TSourceCalibration::VerboseLevel() > 2) {
-		std::cout << "set name of fData using " << fName.c_str() << ": " << fData->GetName() << std::endl;
-		std::cout << "fData " << fData << ": " << (fData != nullptr ? fData->GetN() : -2) << " data points after creation" << std::endl;
-	}
-	for(size_t source = 0; source < fNuclei.size(); ++source) {
-		if(fSources[source]->Data()->GetN() > 0) {
-			int index = fData->Add(fSources[source]->Data(), fNuclei[source]->GetName());
-			if(index >= 0) {
-				fData->SetLineColor(index, static_cast<Color_t>(source + 1));   //+1 for the color so that we start with 1 = black instead of 0 = white
-				fData->SetMarkerColor(index, static_cast<Color_t>(source + 1));
-			}
-		}
-	}
-	if(TSourceCalibration::VerboseLevel() > 2) {
-		std::cout << "fData " << fData << ": " << (fData != nullptr ? fData->GetN() : -1) << " data points after adding " << fNuclei.size() << " graphs" << std::endl;
-		fData->Print();
-	}
+   fData->SetName(Form("data%s", fName.c_str()));
+   if(TSourceCalibration::VerboseLevel() > 2) {
+      std::cout << "set name of fData using " << fName.c_str() << ": " << fData->GetName() << std::endl;
+      std::cout << "fData " << fData << ": " << (fData != nullptr ? fData->GetN() : -2) << " data points after creation" << std::endl;
+   }
+   for(size_t source = 0; source < fNuclei.size(); ++source) {
+      if(fSources[source]->Data()->GetN() > 0) {
+         int index = fData->Add(fSources[source]->Data(), fNuclei[source]->GetName());
+         if(index >= 0) {
+            fData->SetLineColor(index, static_cast<Color_t>(source + 1));   //+1 for the color so that we start with 1 = black instead of 0 = white
+            fData->SetMarkerColor(index, static_cast<Color_t>(source + 1));
+         }
+      }
+   }
+   if(TSourceCalibration::VerboseLevel() > 2) {
+      std::cout << "fData " << fData << ": " << (fData != nullptr ? fData->GetN() : -1) << " data points after adding " << fNuclei.size() << " graphs" << std::endl;
+      fData->Print();
+   }
 }
 
 void TChannelTab::Calibrate(const int& degree, const bool& force)
 {
-	if(degree != fDegree || force) {
+   if(degree != fDegree || force) {
       if(TSourceCalibration::VerboseLevel() > 2) { std::cout << degree << " != " << fDegree << " or " << force << std::endl; }
       fDegree = degree;
-		Fit();
-	} else if(TSourceCalibration::VerboseLevel() > 2) { std::cout << degree << " == " << fDegree << " or not forcing (" << force << "): not fitting channel " << fName << std::endl; }
+      Fit();
+   } else if(TSourceCalibration::VerboseLevel() > 2) {
+      std::cout << degree << " == " << fDegree << " or not forcing (" << force << "): not fitting channel " << fName << std::endl;
+   }
 }
 
 void TChannelTab::Fit()
@@ -747,16 +748,16 @@ void TChannelTab::Fit()
    if(TSourceCalibration::VerboseLevel() > 2) { std::cout << "set chi2 label" << std::endl; }
    // calculate the corners of the chi^2 label from the minimum and maximum x/y-values of the graph
    // we position it in the top left corner about 50% of the width and 10% of the height of the graph
-   double left           = fData->GetMinimumX();
-   double right          = left + (fData->GetMaximumX() - left) * 0.5;
-   double top            = fData->GetMaximumY();
-   double bottom         = top - (top - fData->GetMinimumY()) * 0.1;
+   double left   = fData->GetMinimumX();
+   double right  = left + (fData->GetMaximumX() - left) * 0.5;
+   double top    = fData->GetMaximumY();
+   double bottom = top - (top - fData->GetMinimumY()) * 0.1;
 
-	if(fChi2Label == nullptr) {
-		fChi2Label = new TPaveText(left, bottom, right, top);
-	} else {
-		fChi2Label->Clear();
-	}
+   if(fChi2Label == nullptr) {
+      fChi2Label = new TPaveText(left, bottom, right, top);
+   } else {
+      fChi2Label->Clear();
+   }
    if(TSourceCalibration::VerboseLevel() > 2) {
       std::cout << "fChi2Label created " << fChi2Label << " (" << left << " - " << right << ", " << bottom << " - " << top << ", from " << fData->GetMinimumX() << "-" << fData->GetMaximumX() << ", " << fData->GetMinimumY() << "-" << fData->GetMaximumY() << ") on gPad " << gPad->GetName() << std::endl;
       fData->Print("e");
@@ -820,11 +821,11 @@ void TChannelTab::UpdateChannel()
 
 void TChannelTab::Write(TFile* output)
 {
-	/// Write graphs to output.
-	output->cd();
-	if(TSourceCalibration::VerboseLevel() > 2) { std::cout << "writing " << fName << std::endl; }
-	fData->Write(Form("calGraph_%s", fName.c_str()), TObject::kOverwrite);
-	if(TSourceCalibration::VerboseLevel() > 2) { std::cout << "wrote data " << fName << std::endl; }
+   /// Write graphs to output.
+   output->cd();
+   if(TSourceCalibration::VerboseLevel() > 2) { std::cout << "writing " << fName << std::endl; }
+   fData->Write(Form("calGraph_%s", fName.c_str()), TObject::kOverwrite);
+   if(TSourceCalibration::VerboseLevel() > 2) { std::cout << "wrote data " << fName << std::endl; }
 }
 
 void TChannelTab::ZoomX()
@@ -971,19 +972,19 @@ void TChannelTab::ZoomY()
 
 void TChannelTab::PrintLayout() const
 {
-	std::cout << "TChannelTab frame:" << std::endl;
-	fChannelFrame->Print();
-	std::cout << "TChannelTab left frame:" << std::endl;
-	fLeftFrame->Print();
-	std::cout << "TChannelTab right frame:" << std::endl;
-	fRightFrame->Print();
-	std::cout << "TChannelTab canvas:" << std::endl;
-	fCalibrationCanvas->Print();
-	std::cout << "TChannelTab status bar:" << std::endl;
-	//fChannelStatusBar->Print();
-	for(auto* sourceTab : fSources) {
-		sourceTab->PrintLayout();
-	}
+   std::cout << "TChannelTab frame:" << std::endl;
+   fChannelFrame->Print();
+   std::cout << "TChannelTab left frame:" << std::endl;
+   fLeftFrame->Print();
+   std::cout << "TChannelTab right frame:" << std::endl;
+   fRightFrame->Print();
+   std::cout << "TChannelTab canvas:" << std::endl;
+   fCalibrationCanvas->Print();
+   std::cout << "TChannelTab status bar:" << std::endl;
+   //fChannelStatusBar->Print();
+   for(auto* sourceTab : fSources) {
+      sourceTab->PrintLayout();
+   }
 }
 
 //////////////////////////////////////// TSourceCalibration ////////////////////////////////////////
@@ -1019,11 +1020,11 @@ TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degre
    // use the first matrix to get a reference for everything
    fActualChannelId.resize(fMatrices.size());
    fNofBins = 0;
-	std::map<int, int> channelToIndex; // used to be a member, but only used here
+   std::map<int, int> channelToIndex;   // used to be a member, but only used here
    for(int bin = 1; bin <= fMatrices[0]->GetNbinsX(); ++bin) {
       if(FilledBin(fMatrices[0], bin)) {
          fActualChannelId.push_back(fNofBins);   // at this point fNofBins is the index at which this projection will end up
-         channelToIndex[bin] = fNofBins;           // this map simply stores which bin ends up at which index
+         channelToIndex[bin] = fNofBins;         // this map simply stores which bin ends up at which index
          fChannelLabel.push_back(fMatrices[0]->GetXaxis()->GetBinLabel(bin));
          if(fVerboseLevel > 1) { std::cout << bin << ". bin: fNofBins " << fNofBins << ", channelToIndex[" << bin << "] " << channelToIndex[bin] << ", fActualChannelId.back() " << fActualChannelId.back() << std::endl; }
          ++fNofBins;
@@ -1033,7 +1034,7 @@ TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degre
    }
    // now loop over all other matrices and check vs. the first one
    for(size_t i = 1; i < fMatrices.size(); ++i) {
-      int tmpBins        = 0;
+      int tmpBins = 0;
       for(int bin = 1; bin <= fMatrices[i]->GetNbinsX(); ++bin) {
          if(FilledBin(fMatrices[i], bin)) {   // good bin in the current matrix
             // current index is tmpBins, so we check if the bin agrees with what we have
@@ -1119,16 +1120,16 @@ void TSourceCalibration::BuildFirstInterface()
       for(const auto& file : std::filesystem::directory_iterator(path)) {
          if(file.is_regular_file() && file.path().extension().compare(".sou") == 0) {
             fSourceBox.back()->AddEntry(file.path().stem().c_str(), index);
-				if(fVerboseLevel > 2) { std::cout << i << "/" << index<< ": Comparing matrix name " << fMatrices[i]->GetName() << " to file name " << file.path().stem().c_str() << std::endl; }
+            if(fVerboseLevel > 2) { std::cout << i << "/" << index << ": Comparing matrix name " << fMatrices[i]->GetName() << " to file name " << file.path().stem().c_str() << std::endl; }
             if(std::strstr(fMatrices[i]->GetName(), file.path().stem().c_str()) != nullptr) {
                fSourceBox.back()->Select(index);
                SetSource(kSourceBox + fSourceBox.size() - 1, index);
-					if(fVerboseLevel > 2) { std::cout << i << ": selected source " << index << std::endl; }
+               if(fVerboseLevel > 2) { std::cout << i << ": selected source " << index << std::endl; }
             }
-				++index;
+            ++index;
          }
       }
-		if(fVerboseLevel > 2) { std::cout << i << ": created list with " << index << " sources" << std::endl; }
+      if(fVerboseLevel > 2) { std::cout << i << ": created list with " << index << " sources" << std::endl; }
 #else
       fSourceBox.back()->AddEntry("22Na", index);
       if(std::strstr(fMatrices[i]->GetName(), "22Na") != nullptr) {
@@ -1250,7 +1251,7 @@ void TSourceCalibration::HandleTimer()
    } else if(fEmitter == fAcceptAllButton) {
       for(auto& channelTab : fChannelTab) {
          channelTab->UpdateChannel();
-			channelTab->Write(fOutput);
+         channelTab->Write(fOutput);
       }
       WriteCalibration();
       std::cout << "Closing window" << std::endl;
@@ -1337,20 +1338,20 @@ void TSourceCalibration::BuildSecondInterface()
 
    fChannelTab.resize(fMatrices[0]->GetNbinsX());
    for(int bin = 1; bin <= fMatrices[0]->GetNbinsX(); ++bin) {
-		// create vector with projections of this channel for each source
-		std::vector<TH1D*> projections(fMatrices.size());
-		size_t index = 0;
-		for(auto* matrix : fMatrices) {
-			projections[index] = matrix->ProjectionY(Form("%s_%s", fSource[index]->GetName(), matrix->GetXaxis()->GetBinLabel(bin)), bin, bin);
-			++index;
-		}
-      fChannelTab[bin-1] = new TChannelTab(this, fSource, projections, fMatrices[0]->GetXaxis()->GetBinLabel(bin), fTab->AddTab(fMatrices[0]->GetXaxis()->GetBinLabel(bin)), fDefaultSigma, fDefaultThreshold, fDefaultDegree, fSourceEnergy, fProgressBar);
+      // create vector with projections of this channel for each source
+      std::vector<TH1D*> projections(fMatrices.size());
+      size_t             index = 0;
+      for(auto* matrix : fMatrices) {
+         projections[index] = matrix->ProjectionY(Form("%s_%s", fSource[index]->GetName(), matrix->GetXaxis()->GetBinLabel(bin)), bin, bin);
+         ++index;
+      }
+      fChannelTab[bin - 1] = new TChannelTab(this, fSource, projections, fMatrices[0]->GetXaxis()->GetBinLabel(bin), fTab->AddTab(fMatrices[0]->GetXaxis()->GetBinLabel(bin)), fDefaultSigma, fDefaultThreshold, fDefaultDegree, fSourceEnergy, fProgressBar);
    }
 
    //if(fVerboseLevel > 1) { std::cout << fMatrices.size() << " matrices with " << fMatrices[0]->GetNbinsX() << " x-bins, fNofBins " << fNofBins << ", fActualChannelId.size() " << fActualChannelId.size() << ", fChannelTab[0]->SourceTab()->GetNumberOfTabs() " << fChannelTab[0]->SourceTab()->GetNumberOfTabs() << std::endl; }
 
    //for(int i = 0; i < fChannelTab[0]->SourceTab()->GetNumberOfTabs(); ++i) {
-      //if(fVerboseLevel > 2) { std::cout << i << ": " << fChannelTab[0]->SourceTab()->GetTabTab(i)->GetText()->GetString() << std::endl; }
+   //if(fVerboseLevel > 2) { std::cout << i << ": " << fChannelTab[0]->SourceTab()->GetTabTab(i)->GetText()->GetString() << std::endl; }
    //}
 
    AddFrame(fTab, new TGLayoutHints(kLHintsTop | kLHintsExpandX | kLHintsExpandY, 0, 0, 0, 0));
@@ -1372,7 +1373,7 @@ void TSourceCalibration::BuildSecondInterface()
    if(fVerboseLevel > 2) { std::cout << "discard button " << fDiscardButton << std::endl; }
    fAcceptButton = new TGTextButton(fNavigationGroup, "Accept");
    if(fVerboseLevel > 2) { std::cout << "accept button " << fAcceptButton << std::endl; }
-	fAcceptAllButton = new TGTextButton(fNavigationGroup, "Accept All && Finish");
+   fAcceptAllButton = new TGTextButton(fNavigationGroup, "Accept All && Finish");
    if(fVerboseLevel > 2) { std::cout << "accept all button " << fAcceptAllButton << std::endl; }
    fNextButton = new TGTextButton(fNavigationGroup, "Next");
    if(fVerboseLevel > 2) { std::cout << "next button " << fNextButton << std::endl; }
@@ -1400,7 +1401,7 @@ void TSourceCalibration::BuildSecondInterface()
 
    fRightFrame->AddFrame(fParameterFrame, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 2, 2, 2, 2));
 
-   fBottomFrame->AddFrame(fRightFrame, new TGLayoutHints(kLHintsBottom | kLHintsRight , 2, 2, 2, 2));
+   fBottomFrame->AddFrame(fRightFrame, new TGLayoutHints(kLHintsBottom | kLHintsRight, 2, 2, 2, 2));
 
    AddFrame(fBottomFrame, new TGLayoutHints(kLHintsBottom | kLHintsExpandX, 2, 2, 2, 2));
    if(fVerboseLevel > 2) { std::cout << "Second interface done" << std::endl; }
@@ -1430,9 +1431,9 @@ void TSourceCalibration::Navigate(Int_t id)
    // we get the current source tab id and use it to get the channel tab from the right source tab
    // since the current id only refers to the position within the open tabs we need to keep track of the actual id it relates to
    // for this we created a vector with all ids at the beginning and now remove the position correspoding to the current id when we remove the tab
-   int   currentChannelId = fTab->GetCurrent();
-   int   actualChannelId  = fActualChannelId[currentChannelId];
-   int   nofTabs          = fTab->GetNumberOfTabs();
+   int currentChannelId = fTab->GetCurrent();
+   int actualChannelId  = fActualChannelId[currentChannelId];
+   int nofTabs          = fTab->GetNumberOfTabs();
    if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << ": id " << id << ", channel tab id " << currentChannelId << ", actual channel tab id " << actualChannelId << ", # of tabs " << nofTabs << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    switch(id) {
    case 1:   // previous
@@ -1495,9 +1496,9 @@ void TSourceCalibration::AcceptChannel(const int& channelId)
    if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << ": channelId " << channelId << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 
    // select the next (or if we are on the last tab, the previous) tab
-   int   nofTabs          = fTab->GetNumberOfTabs();
-   int   minChannel      = 0;
-   int   maxChannel      = nofTabs - 1;
+   int nofTabs    = fTab->GetNumberOfTabs();
+   int minChannel = 0;
+   int maxChannel = nofTabs - 1;
    if(channelId >= 0) {
       minChannel = channelId;
       maxChannel = channelId;
@@ -1508,7 +1509,7 @@ void TSourceCalibration::AcceptChannel(const int& channelId)
    for(int currentChannelId = maxChannel; currentChannelId >= minChannel; --currentChannelId) {
       int actualChannelId = fActualChannelId[currentChannelId];
       if(fVerboseLevel > 3) { std::cout << __PRETTY_FUNCTION__ << ": currentChannelId " << currentChannelId << ", actualChannelId " << actualChannelId << ", fChannelTab.size() " << fChannelTab.size() << ", fActualChannelId.size() " << fActualChannelId.size() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-      if(minChannel == maxChannel) { // we don't need to select the tab if we close all
+      if(minChannel == maxChannel) {                                                                                                                                                                                                                                                 // we don't need to select the tab if we close all
          if(currentChannelId < maxChannel) {
             fTab->SetTab(currentChannelId + 1);
          } else {
@@ -1532,15 +1533,15 @@ void TSourceCalibration::AcceptChannel(const int& channelId)
 
 void TSourceCalibration::FindPeaks()
 {
-   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-   fChannelTab[fTab->GetCurrent()]->FindPeaks(Sigma(), Threshold(), true, false); // force = true, fast = false
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }         // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   fChannelTab[fTab->GetCurrent()]->FindPeaks(Sigma(), Threshold(), true, false);   // force = true, fast = false
    Calibrate();
 }
 
 void TSourceCalibration::FindPeaksFast()
 {
-   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-   fChannelTab[fTab->GetCurrent()]->FindPeaks(Sigma(), Threshold(), true, true); // force = true, fast = true
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }        // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   fChannelTab[fTab->GetCurrent()]->FindPeaks(Sigma(), Threshold(), true, true);   // force = true, fast = true
    Calibrate();
 }
 
@@ -1567,14 +1568,13 @@ void TSourceCalibration::PrintLayout() const
 {
    if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 
-	Print();
-	if(fBottomFrame != nullptr) { fBottomFrame->Print(); }
-	if(fLeftFrame != nullptr) { fLeftFrame->Print(); }
-	if(fRightFrame != nullptr) { fRightFrame->Print(); }
-	if(fTab != nullptr) { fTab->Print(); }
-	std::cout << "TSourceCalibration all channel tabs:" << std::endl;
-	for(auto* channelTab : fChannelTab) {
-		if(channelTab != nullptr) { channelTab->PrintLayout(); }
-	}
+   Print();
+   if(fBottomFrame != nullptr) { fBottomFrame->Print(); }
+   if(fLeftFrame != nullptr) { fLeftFrame->Print(); }
+   if(fRightFrame != nullptr) { fRightFrame->Print(); }
+   if(fTab != nullptr) { fTab->Print(); }
+   std::cout << "TSourceCalibration all channel tabs:" << std::endl;
+   for(auto* channelTab : fChannelTab) {
+      if(channelTab != nullptr) { channelTab->PrintLayout(); }
+   }
 }
-

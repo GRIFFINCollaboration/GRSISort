@@ -470,19 +470,19 @@ void TCalibrationGraphSet::Print(Option_t* opt) const
 {
    if(fVerboseLevel > 1) {
       std::cout << __PRETTY_FUNCTION__ << ", fTotalGraph " << fTotalGraph << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	}
+   }
 
    std::cout << "TCalibrationGraphSet " << this << " - " << GetName() << ": " << fGraphs.size() << " calibration graphs, " << fResidualGraphs.size() << " residual graphs, " << fLabel.size() << " labels, ";
-	if(fTotalGraph != nullptr) {
-		std::cout << fTotalGraph->GetN() << " calibration points, and ";
-	} else {
-		std::cout << " no calibration points, and ";
-	}
-	if(fTotalResidualGraph != nullptr) {
-		std::cout << fTotalResidualGraph->GetN() << " residual points" << std::endl;
-	} else {
-		std::cout << " no residual points" << std::endl;
-	}
+   if(fTotalGraph != nullptr) {
+      std::cout << fTotalGraph->GetN() << " calibration points, and ";
+   } else {
+      std::cout << " no calibration points, and ";
+   }
+   if(fTotalResidualGraph != nullptr) {
+      std::cout << fTotalResidualGraph->GetN() << " residual points" << std::endl;
+   } else {
+      std::cout << " no residual points" << std::endl;
+   }
    TString options = opt;
    bool    errors  = options.Contains("e", TString::ECaseCompare::kIgnoreCase);
    for(const auto& g : fGraphs) {
@@ -523,8 +523,8 @@ void TCalibrationGraphSet::Clear()
    fGraphIndex.clear();
    fPointIndex.clear();
    fResidualSet = false;
-   fMinimumX = 0.;
-   fMaximumX = 0.;
-   fMinimumY = 0.;
-   fMaximumY = 0.;
+   fMinimumX    = 0.;
+   fMaximumX    = 0.;
+   fMinimumY    = 0.;
+   fMaximumY    = 0.;
 }
