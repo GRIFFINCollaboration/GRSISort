@@ -1,5 +1,9 @@
 var NAVTREEINDEX67 =
 {
+"group___fitting.html#ga74e2607df99f9980827a3ce78f589ad9":[8,3,101],
+"group___fitting.html#ga77b521539338c57011006ef83bed65ca":[8,3,80],
+"group___fitting.html#ga7ace7a32d67430558bb0b8e987c69db0":[8,3,34],
+"group___fitting.html#ga7c47ab41142fb494373b0b511cfe219b":[8,3,173],
 "group___fitting.html#ga806da809d6a3b393d1173a5d44bd069e":[8,3,154],
 "group___fitting.html#ga833dd6f72361bc097f1d072083509192":[8,3,40],
 "group___fitting.html#ga83b7a22bc216f3b75aca356b077d3eb0":[8,3,158],
@@ -245,9 +249,5 @@ var NAVTREEINDEX67 =
 "mainwindow_8py_source.html":[11,0,10,4],
 "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html":[0],
 "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md1":[0,0],
-"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md10":[0,5,3],
-"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md11":[0,6],
-"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md2":[0,1],
-"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md3":[0,2],
-"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md4":[0,3]
+"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md10":[0,5,3]
 };

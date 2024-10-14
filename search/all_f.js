@@ -197,7 +197,7 @@ var searchData=
   ['kistimeset_194',['kIsTimeSet',['../class_t_detector_hit.html#ada323f08a38cd73186465ecb4f9b72eba377ea2e41439f212e05aeb08fc352cb2',1,'TDetectorHit']]],
   ['kj_195',['kJ',['../class_t_mnemonic.html#a92e657dc4b7a3ffc7f4ec1aac156468ea1675c2746b6ee7f8746a450bba256822',1,'TMnemonic']]],
   ['kjunk_196',['kJunk',['../group___sorting.html#ggab6809cdce78a7710ee2ac3719016868caa4ee53181d6c56eee8eb881a240608de',1,'TPPG.h']]],
-  ['kk_197',['kk',['../class_t_mnemonic.html#a92e657dc4b7a3ffc7f4ec1aac156468ea891b9b58a353597a14389f567b8d708f',1,'TMnemonic::kK'],['../class_n_r_mat3d.html#a01f296d6549e97607dc914c033d3ce06',1,'NRMat3d::kk']]],
+  ['kk_197',['kk',['../class_n_r_mat3d.html#a01f296d6549e97607dc914c033d3ce06',1,'NRMat3d::kk'],['../class_t_mnemonic.html#a92e657dc4b7a3ffc7f4ec1aac156468ea891b9b58a353597a14389f567b8d708f',1,'TMnemonic::kK']]],
   ['kkeepshared_198',['kKeepShared',['../class_t_s3.html#a88a7183aa5cedb5eec25bb27c8b3633aa4af99b0a00609701e305220a03f1bf6b',1,'TS3']]],
   ['kl_199',['kL',['../class_t_mnemonic.html#a92e657dc4b7a3ffc7f4ec1aac156468ea5dd37a35d548b7e1d5b3e7877b22676e',1,'TMnemonic']]],
   ['klabr_200',['kLaBr',['../class_t_g_r_s_i_mnemonic.html#aba94aea8c0b8cf86e70048623a485b20a44e426a6a1a6bf5fa16f24dbf1523233',1,'TGRSIMnemonic']]],
