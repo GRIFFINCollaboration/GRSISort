@@ -263,7 +263,7 @@ public:
    static bool IsBadCycle(int cycle);
 
    void        PrintRunList() const;
-   std::string ListOfMissingRuns() const;
+   std::string ListOfMissingRuns(bool all = false) const;
    void        PrintVersion() const;
 
    static std::string CreateLabel(bool quiet = false);
