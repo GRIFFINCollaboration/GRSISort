@@ -35,7 +35,7 @@ var class_t_run_info =
     [ "IsBadCycle", "class_t_run_info.html#ae810517c8801e62fa5675db753ea4d3a", null ],
     [ "LastRunNumber", "class_t_run_info.html#a20cccf816529378a4c343f4ef6eb11bf", null ],
     [ "LastSubRunNumber", "class_t_run_info.html#a4edee99716a0e561383427e944adf82e", null ],
-    [ "ListOfMissingRuns", "class_t_run_info.html#a3fdc5c1866e9ae06c717726275193b1f", null ],
+    [ "ListOfMissingRuns", "class_t_run_info.html#a996d81c8edd15850214267f10f481c4a", null ],
     [ "Merge", "class_t_run_info.html#a3bdc8dc688f4b328bcdc47fe2ea59443", null ],
     [ "operator=", "class_t_run_info.html#af2779d5ede61a2b88095a693d1e0ca0f", null ],
     [ "operator=", "class_t_run_info.html#ac4851c0f4b6a2e75420a585465d27bf7", null ],
