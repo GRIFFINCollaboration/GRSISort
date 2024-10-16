@@ -556,14 +556,14 @@ std::string TRunInfo::ListOfMissingRuns(bool all) const
       return {"none"};
    }
 
- 	// unless the "all" flag is set, we limit ourself to printing 140 characters (should be 20 runs?) 
-	std::cout << " current string length is " << result.str().length() << " and all is set to " << (all?"true":"false") << std::endl;
-	if(!all && result.str().length() > 140) {
-			  result.str(result.str().substr(0, 140));
-			  result.seekp(0, std::ios_base::end);
-			  result << " ... and more";
-			  std::cout << " limited string length is " << result.str().length() << std::endl;
-	}
+   // unless the "all" flag is set, we limit ourself to printing 140 characters (should be 20 runs?)
+   std::cout << " current string length is " << result.str().length() << " and all is set to " << (all ? "true" : "false") << std::endl;
+   if(!all && result.str().length() > 140) {
+      result.str(result.str().substr(0, 140));
+      result.seekp(0, std::ios_base::end);
+      result << " ... and more";
+      std::cout << " limited string length is " << result.str().length() << std::endl;
+   }
    return result.str();
 }
 
