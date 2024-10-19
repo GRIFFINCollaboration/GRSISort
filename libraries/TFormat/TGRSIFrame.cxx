@@ -59,7 +59,7 @@ TGRSIFrame::TGRSIFrame()
          TFile* file = TFile::Open(fileName.c_str());
 			if(first) {
 					  first = false;
-					  TRunInfo::Get();
+					  TRunInfo::ReadInfoFromFile(file);
 			} else {
 					  TRunInfo::AddCurrent();
 			}
