@@ -49,12 +49,13 @@ public:
                fDir = gDirectory;   // in either case (read from file or created new), gDirectory is the current directory
                break;               // we will find the newest key first, so we want to break here and not try and read other instaces of the same class
             }
-         }
+         } else if(verbose) { std::cout << "Not reading " << T::Class()->GetName() << " from file!" << std::endl; }
          if(fSingleton == nullptr) {
             fSingleton = new T;
             fDir       = gDirectory;   // in either case (read from file or created new), gDirectory is the current directory
+				if(verbose) { std::cout << "Created new singleton of class " << T::Class()->GetName() << std::endl; }
          }
-      }
+      } else if(verbose) { std::cout << "Re-using old singleton of class " << T::Class()->GetName() << std::endl; }
       return fSingleton;
    }
 
