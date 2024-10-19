@@ -177,10 +177,10 @@ Private Attributes</h2></td></tr>
 Static Private Attributes</h2></td></tr>
 <tr class="memitem:a91c84cae3b90e8f606288e775771b8a6" id="r_a91c84cae3b90e8f606288e775771b8a6"><td class="memItemLeft" align="right" valign="top">static std::array&lt; TVector3, 9 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_descant.html#a91c84cae3b90e8f606288e775771b8a6">fAncillaryPosition</a></td></tr>
 <tr class="separator:a91c84cae3b90e8f606288e775771b8a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b26f429671eb054bfe613eda1ff1440" id="r_a3b26f429671eb054bfe613eda1ff1440"><td class="memItemLeft" align="right" valign="top">static std::array&lt; TVector3, 71 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_descant.html#a3b26f429671eb054bfe613eda1ff1440">fPosition</a></td></tr>
-<tr class="separator:a3b26f429671eb054bfe613eda1ff1440"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a916a3f8c6ad8e1d9d0153514b76ba3fc" id="r_a916a3f8c6ad8e1d9d0153514b76ba3fc"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_descant.html#a916a3f8c6ad8e1d9d0153514b76ba3fc">fSetWave</a> = false</td></tr>
 <tr class="separator:a916a3f8c6ad8e1d9d0153514b76ba3fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b3ec5b0c0ac7cf9861b66ae8ca281c0" id="r_a7b3ec5b0c0ac7cf9861b66ae8ca281c0"><td class="memItemLeft" align="right" valign="top">static std::array&lt; TVector3, 71 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_descant.html#a7b3ec5b0c0ac7cf9861b66ae8ca281c0">fSpherePosition</a></td></tr>
+<tr class="separator:a7b3ec5b0c0ac7cf9861b66ae8ca281c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6899b53bf3e0f011a622d3aa5f253dc6" id="r_a6899b53bf3e0f011a622d3aa5f253dc6"><td class="memItemLeft" align="right" valign="top">static std::array&lt; TVector3, 60 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_descant.html#a6899b53bf3e0f011a622d3aa5f253dc6">fWallPosition</a></td></tr>
 <tr class="separator:a6899b53bf3e0f011a622d3aa5f253dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -675,7 +675,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_descant_8cxx_source.html#l00152">152</a> of file <a class="el" href="_t_descant_8cxx_source.html">TDescant.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_descant_8h_source.html#l00041">fAncillaryPosition</a>, <a class="el" href="_t_descant_8h_source.html#l00014">fPosition</a>, <a class="el" href="_t_descant_8h_source.html#l00074">fWallPosition</a>, and <a class="el" href="_t_run_info_8h_source.html#l00272">TRunInfo::GetDetectorInformation()</a>.</p>
+<p class="reference">References <a class="el" href="_t_descant_8h_source.html#l00041">fAncillaryPosition</a>, <a class="el" href="_t_descant_8h_source.html#l00014">fSpherePosition</a>, <a class="el" href="_t_descant_8h_source.html#l00074">fWallPosition</a>, and <a class="el" href="_t_run_info_8h_source.html#l00272">TRunInfo::GetDetectorInformation()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_descant_hit_8cxx_source.html#l00072">TDescantHit::GetPosition()</a>, and <a class="el" href="_t_descant_hit_8cxx_source.html#l00066">TDescantHit::GetPosition()</a>.</p>
 
@@ -1098,8 +1098,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a3b26f429671eb054bfe613eda1ff1440" name="a3b26f429671eb054bfe613eda1ff1440"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b26f429671eb054bfe613eda1ff1440">&#9670;&#160;</a></span>fPosition</h2>
+<a id="a916a3f8c6ad8e1d9d0153514b76ba3fc" name="a916a3f8c6ad8e1d9d0153514b76ba3fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a916a3f8c6ad8e1d9d0153514b76ba3fc">&#9670;&#160;</a></span>fSetWave</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1108,7 +1108,35 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::array&lt; TVector3, 71 &gt; TDescant::fPosition</td>
+          <td class="memname">bool TDescant::fSetWave = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Flag for Waveforms ON/OFF. </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_descant_8h_source.html#l00056">56</a> of file <a class="el" href="_t_descant_8h_source.html">TDescant.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_descant_8h_source.html#l00045">SetWave()</a>, and <a class="el" href="_t_descant_8h_source.html#l00046">SetWave()</a>.</p>
+
+</div>
+</div>
+<a id="a7b3ec5b0c0ac7cf9861b66ae8ca281c0" name="a7b3ec5b0c0ac7cf9861b66ae8ca281c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b3ec5b0c0ac7cf9861b66ae8ca281c0">&#9670;&#160;</a></span>fSpherePosition</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt; TVector3, 71 &gt; TDescant::fSpherePosition</td>
         </tr>
       </table>
   </td>
@@ -1152,34 +1180,6 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a916a3f8c6ad8e1d9d0153514b76ba3fc" name="a916a3f8c6ad8e1d9d0153514b76ba3fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a916a3f8c6ad8e1d9d0153514b76ba3fc">&#9670;&#160;</a></span>fSetWave</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TDescant::fSetWave = false</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Flag for Waveforms ON/OFF. </p>
-
-<p class="definition">Definition at line <a class="el" href="_t_descant_8h_source.html#l00056">56</a> of file <a class="el" href="_t_descant_8h_source.html">TDescant.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_descant_8h_source.html#l00045">SetWave()</a>, and <a class="el" href="_t_descant_8h_source.html#l00046">SetWave()</a>.</p>
-
-</div>
-</div>
 <a id="a6899b53bf3e0f011a622d3aa5f253dc6" name="a6899b53bf3e0f011a622d3aa5f253dc6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6899b53bf3e0f011a622d3aa5f253dc6">&#9670;&#160;</a></span>fWallPosition</h2>
 
@@ -1201,26 +1201,26 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div>
 <div class="line">   </div>
-<div class="line">   TVector3(-922.311, -985.674, -1317.2), TVector3(-922.311, -492.837, -1317.2), TVector3(-922.311, 0, -1317.2),</div>
-<div class="line">   TVector3(-922.311, 492.837, -1317.2), TVector3(-922.311, 985.674, -1317.2), TVector3(-1213.57, -985.674, -1054.94),</div>
-<div class="line">   TVector3(-1213.57, -492.837, -1054.94), TVector3(-1213.57, 0, -1054.94), TVector3(-1213.57, 492.837, -1054.94),</div>
-<div class="line">   TVector3(-1213.57, 985.674, -1054.94), TVector3(-1213.57, -985.674, 1054.94), TVector3(-1213.57, -492.837, 1054.94),</div>
-<div class="line">   TVector3(-1213.57, 0, 1054.94), TVector3(-1213.57, 492.837, 1054.94), TVector3(-1213.57, 985.674, 1054.94),</div>
-<div class="line">   TVector3(-922.311, -985.674, 1317.2), TVector3(-922.311, -492.837, 1317.2), TVector3(-922.311, 0, 1317.2),</div>
-<div class="line">   TVector3(-922.311, 492.837, 1317.2), TVector3(-922.311, 985.674, 1317.2), TVector3(-576.256, -985.674, 1501.2),</div>
-<div class="line">   TVector3(-576.256, -492.837, 1501.2), TVector3(-576.256, 0, 1501.2), TVector3(-576.256, 492.837, 1501.2),</div>
-<div class="line">   TVector3(-576.256, 985.674, 1501.2), TVector3(-195.966, -985.674, 1596.01), TVector3(-195.966, -492.837, 1596.01),</div>
-<div class="line">   TVector3(-195.966, 0, 1596.01), TVector3(-195.966, 492.837, 1596.01), TVector3(-195.966, 985.674, 1596.01),</div>
-<div class="line">   TVector3(195.966, -985.674, 1596.01), TVector3(195.966, -492.837, 1596.01), TVector3(195.966, 0, 1596.01),</div>
-<div class="line">   TVector3(195.966, 492.837, 1596.01), TVector3(195.966, 985.674, 1596.01), TVector3(576.256, -985.674, 1501.2),</div>
-<div class="line">   TVector3(576.256, -492.837, 1501.2), TVector3(576.256, 0, 1501.2), TVector3(576.256, 492.837, 1501.2),</div>
-<div class="line">   TVector3(576.256, 985.674, 1501.2), TVector3(922.311, -985.674, 1317.2), TVector3(922.311, -492.837, 1317.2),</div>
-<div class="line">   TVector3(922.311, 0, 1317.2), TVector3(922.311, 492.837, 1317.2), TVector3(922.311, 985.674, 1317.2),</div>
-<div class="line">   TVector3(1213.57, -985.674, 1054.94), TVector3(1213.57, -492.837, 1054.94), TVector3(1213.57, 0, 1054.94),</div>
-<div class="line">   TVector3(1213.57, 492.837, 1054.94), TVector3(1213.57, 985.674, 1054.94), TVector3(1213.57, -985.674, -1054.94),</div>
-<div class="line">   TVector3(1213.57, -492.837, -1054.94), TVector3(1213.57, 0, -1054.94), TVector3(1213.57, 492.837, -1054.94),</div>
-<div class="line">   TVector3(1213.57, 985.674, -1054.94), TVector3(922.311, -985.674, -1317.2), TVector3(922.311, -492.837, -1317.2),</div>
-<div class="line">   TVector3(922.311, 0, -1317.2), TVector3(922.311, 492.837, -1317.2), TVector3(922.311, 985.674, -1317.2)}</div>
+<div class="line">   TVector3(195.966, 0.000, 1596.010), TVector3(-195.966, 0.000, 1596.010), TVector3(195.966, 492.837, 1596.010), </div>
+<div class="line">   TVector3(-195.966, 492.837, 1596.010), TVector3(-195.966, -492.837, 1596.010), TVector3(195.966, -492.837, 1596.010), </div>
+<div class="line">   TVector3(576.256, 0.000, 1501.200), TVector3(-576.256, 0.000, 1501.200), TVector3(576.256, 492.837, 1501.200),</div>
+<div class="line">   TVector3(-576.256, 492.837, 1501.200), TVector3(-576.256, -492.837, 1501.200), TVector3(576.256, -492.837, 1501.200),</div>
+<div class="line">   TVector3(208.851, 1050.481, 1700.946), TVector3(-208.851, 1050.481, 1700.946), TVector3(-208.851, -1050.481, 1700.946),</div>
+<div class="line">   TVector3(208.851, -1050.481, 1700.946), TVector3(922.311, 0.000, 1317.200), TVector3(-922.311, 0.000, 1317.200),</div>
+<div class="line">   TVector3(614.142, 1050.478, 1599.897), TVector3(-614.142, 1050.478, 1599.897), TVector3(-614.142, -1050.478, 1599.897),</div>
+<div class="line">   TVector3(614.142, -1050.478, 1599.897), TVector3(922.311, 492.837, 1317.200), TVector3(-922.311, 492.837, 1317.200),</div>
+<div class="line">   TVector3(-922.311, -492.837, 1317.200), TVector3(922.311, -492.837, 1317.200), TVector3(982.949, 1050.478, 1403.800),</div>
+<div class="line">   TVector3(-982.949, 1050.478, 1403.800), TVector3(-982.949, -1050.478, 1403.800), TVector3(982.949, -1050.478, 1403.800),</div>
+<div class="line">   TVector3(1213.570, 0.000, 1054.940), TVector3(-1213.570, 0.000, 1054.940), TVector3(1213.570, 492.837, 1054.940),</div>
+<div class="line">   TVector3(-1213.570, 492.837, 1054.940), TVector3(-1213.570, -492.837, 1054.940), TVector3(1213.570, -492.837, 1054.940),</div>
+<div class="line">   TVector3(1293.361, 1050.481, 1124.301), TVector3(-1293.361, 1050.481, 1124.301), TVector3(-1293.361, -1050.481, 1124.301),</div>
+<div class="line">   TVector3(1293.361, -1050.481, 1124.301), TVector3(1293.361, 1050.481, -1124.301), TVector3(-1293.361, 1050.481, -1124.301),</div>
+<div class="line">   TVector3(-1293.361, -1050.481, -1124.301), TVector3(1293.361, -1050.481, -1124.301), TVector3(1213.570, 492.837, -1054.940),</div>
+<div class="line">   TVector3(-1213.570, 492.837, -1054.940), TVector3(-1213.570, -492.837, -1054.940), TVector3(1213.570, -492.837, -1054.940),</div>
+<div class="line">   TVector3(1213.570, 0.000, -1054.940), TVector3(-1213.570, 0.000, -1054.940), TVector3(982.949, 1050.478, -1403.800),</div>
+<div class="line">   TVector3(-982.949, 1050.478, -1403.800), TVector3(-982.949, -1050.478, -1403.800), TVector3(982.949, -1050.478, -1403.800),</div>
+<div class="line">   TVector3(922.311, 492.837, -1317.200), TVector3(-922.311, 492.837, -1317.200), TVector3(-922.311, -492.837, -1317.200),</div>
+<div class="line">   TVector3(922.311, -492.837, -1317.200), TVector3(922.311, 0.000, -1317.200), TVector3(-922.311, 0.000, -1317.200)}</div>
 </div><!-- fragment -->
 <p>! </p>
 
@@ -1237,7 +1237,7 @@ Static Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_descant.html">TDescant</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Oct 16 2024 23:20:59.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Sat Oct 19 2024 21:38:24.</li>
   </ul>
 </div>
 </body>

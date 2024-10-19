@@ -245,7 +245,7 @@ var searchData=
   ['getehorizontalenergy_242',['GetEHorizontalEnergy',['../class_t_c_s_m_hit.html#a6bbd358196e7dce3749c46b46f5cbe23',1,'TCSMHit']]],
   ['getehorizontalstrip_243',['GetEHorizontalStrip',['../class_t_c_s_m_hit.html#a5b5feaa8dbd4291d6cd8c73e0e5cc0a6',1,'TCSMHit']]],
   ['getehorizontaltime_244',['GetEHorizontalTime',['../class_t_c_s_m_hit.html#a30dce30992ffd69db3872f6e29f52d9a',1,'TCSMHit']]],
-  ['getelab_245',['getelab',['../class_t_kinematics.html#a457d93ebf3804bf371f00ae388e61c68',1,'TKinematics::GetElab()'],['../class_t_reaction.html#a1a5690f1aa6fb140450a83b09a5738fc',1,'TReaction::GetELab(double theta_lab=0.0, int part=0) const']]],
+  ['getelab_245',['getelab',['../class_t_reaction.html#a1a5690f1aa6fb140450a83b09a5738fc',1,'TReaction::GetELab()'],['../class_t_kinematics.html#a457d93ebf3804bf371f00ae388e61c68',1,'TKinematics::GetElab()']]],
   ['getelabfromthetacm_246',['GetELabFromThetaCm',['../class_t_reaction.html#a17b7bf6b1f469b1373cc633bd11443a8',1,'TReaction']]],
   ['getemax_247',['GetEmax',['../class_t_s_r_i_m.html#a31e53c534089ed710f5b1e93a2c61093',1,'TSRIM']]],
   ['getemin_248',['GetEmin',['../class_t_s_r_i_m.html#a8aec0462059cf524d13656b1073b89be',1,'TSRIM']]],

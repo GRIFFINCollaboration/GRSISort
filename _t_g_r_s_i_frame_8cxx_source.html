@@ -164,7 +164,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_frame_8cxx_source.html','')
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>         TFile* file = TFile::Open(fileName.c_str());</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>         <span class="keywordflow">if</span>(first) {</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                 first = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                 <a class="code hl_function" href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TRunInfo::Get</a>();</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                 <a class="code hl_function" href="class_t_run_info.html#acfb8adbd578a07b5a5c7b2bc8d086d47">TRunInfo::ReadInfoFromFile</a>(file);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>         } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                 <a class="code hl_function" href="class_t_singleton.html#a25568e49214ec73aa40a19f7da64870f">TRunInfo::AddCurrent</a>();</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>         }</div>
@@ -341,7 +341,8 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_frame_8cxx_source.html','')
 <div class="ttc" id="aclass_t_p_p_g_html_a9442404326ddc97dad4e09578f649fb2"><div class="ttname"><a href="class_t_p_p_g.html#a9442404326ddc97dad4e09578f649fb2">TPPG::Add</a></div><div class="ttdeci">void Add(const TPPG *ppg)</div><div class="ttdef"><b>Definition</b> <a href="_t_p_p_g_8cxx_source.html#l00680">TPPG.cxx:680</a></div></div>
 <div class="ttc" id="aclass_t_run_info_html_a6f4b87b7830a3a52af27f6f852085954"><div class="ttname"><a href="class_t_run_info.html#a6f4b87b7830a3a52af27f6f852085954">TRunInfo::Print</a></div><div class="ttdeci">void Print(Option_t *opt=&quot;&quot;) const override</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8cxx_source.html#l00072">TRunInfo.cxx:72</a></div></div>
 <div class="ttc" id="aclass_t_run_info_html_a9f06d6f22dc55728675b4ab716cfdb6d"><div class="ttname"><a href="class_t_run_info.html#a9f06d6f22dc55728675b4ab716cfdb6d">TRunInfo::CreateLabel</a></div><div class="ttdeci">static std::string CreateLabel(bool quiet=false)</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8cxx_source.html#l00581">TRunInfo.cxx:581</a></div></div>
-<div class="ttc" id="aclass_t_singleton_html_a25568e49214ec73aa40a19f7da64870f"><div class="ttname"><a href="class_t_singleton.html#a25568e49214ec73aa40a19f7da64870f">TSingleton&lt; TRunInfo &gt;::AddCurrent</a></div><div class="ttdeci">static TRunInfo * AddCurrent()</div><div class="ttdef"><b>Definition</b> <a href="_t_singleton_8h_source.html#l00136">TSingleton.h:136</a></div></div>
+<div class="ttc" id="aclass_t_run_info_html_acfb8adbd578a07b5a5c7b2bc8d086d47"><div class="ttname"><a href="class_t_run_info.html#acfb8adbd578a07b5a5c7b2bc8d086d47">TRunInfo::ReadInfoFromFile</a></div><div class="ttdeci">static Bool_t ReadInfoFromFile(TFile *tempf=nullptr)</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8cxx_source.html#l00015">TRunInfo.cxx:15</a></div></div>
+<div class="ttc" id="aclass_t_singleton_html_a25568e49214ec73aa40a19f7da64870f"><div class="ttname"><a href="class_t_singleton.html#a25568e49214ec73aa40a19f7da64870f">TSingleton&lt; TRunInfo &gt;::AddCurrent</a></div><div class="ttdeci">static TRunInfo * AddCurrent()</div><div class="ttdef"><b>Definition</b> <a href="_t_singleton_8h_source.html#l00137">TSingleton.h:137</a></div></div>
 <div class="ttc" id="aclass_t_singleton_html_a58e2a8e03fa6a7c20638044626add93a"><div class="ttname"><a href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TSingleton&lt; TRunInfo &gt;::Get</a></div><div class="ttdeci">static TRunInfo * Get(bool verbose=false)</div><div class="ttdef"><b>Definition</b> <a href="_t_singleton_8h_source.html#l00033">TSingleton.h:33</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -350,7 +351,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_frame_8cxx_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_2b08b36851fcb6a7439555c8d93f536c.html">TFormat</a></li><li class="navelem"><a class="el" href="_t_g_r_s_i_frame_8cxx.html">TGRSIFrame.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Oct 16 2024 23:20:56.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Sat Oct 19 2024 21:38:21.</li>
   </ul>
 </div>
 </body>

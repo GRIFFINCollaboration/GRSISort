@@ -383,8 +383,8 @@ var group___detectors =
       [ "fAncillaryPosition", "class_t_descant.html#a91c84cae3b90e8f606288e775771b8a6", null ],
       [ "fHitFlag", "class_t_descant.html#acc4efecbcf5dff28ceb2f7bea13a845e", null ],
       [ "fHits", "class_t_descant.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ],
-      [ "fPosition", "class_t_descant.html#a3b26f429671eb054bfe613eda1ff1440", null ],
       [ "fSetWave", "class_t_descant.html#a916a3f8c6ad8e1d9d0153514b76ba3fc", null ],
+      [ "fSpherePosition", "class_t_descant.html#a7b3ec5b0c0ac7cf9861b66ae8ca281c0", null ],
       [ "fWallPosition", "class_t_descant.html#a6899b53bf3e0f011a622d3aa5f253dc6", null ]
     ] ],
     [ "TDescantHit", "class_t_descant_hit.html", [
