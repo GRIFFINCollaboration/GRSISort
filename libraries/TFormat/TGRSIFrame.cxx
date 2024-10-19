@@ -53,7 +53,7 @@ TGRSIFrame::TGRSIFrame()
    fPpg = new TPPG;
 
    // loop over input files, add them to the chain, and read the runinfo and calibration from them
-	bool first = true;
+   bool first = true;
    for(const auto& fileName : fOptions->RootInputFiles()) {
       if(chain->Add(fileName.c_str(), 0) >= 1) {   // setting nentries parameter to zero make TChain load the file header and return a 1 if the file was opened successfully
          TFile* file = TFile::Open(fileName.c_str());
