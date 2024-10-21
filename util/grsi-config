@@ -119,7 +119,7 @@ while test $# -gt 0; do
 			fi
 			out=$"$out -L${libdir}"
 			for library in $grsilibs $detlibs ; do
-				if [ -e ${libdir}/lib${library}.so ] || [ -e ${libdir}/lib${library}.dylib ] ; then
+				if [ -e "${libdir}/lib${library}.so" ] || [ -e "${libdir}/lib${library}.dylib" ] ; then
 					out=$"$out -l${library}"
 				fi
 			done
@@ -132,7 +132,7 @@ while test $# -gt 0; do
 			alllibsout="yes"
 			if test "$libsout" = "yes" ; then
 				for library in $grsimore ; do
-					if [ -e ${libdir}/lib${library}.so ] || [ -e ${libdir}/lib${library}.dylib ] ; then
+					if [ -e "${libdir}/lib${library}.so" ] || [ -e "${libdir}/lib${library}.dylib" ] ; then
 						out=$"$out -l${library}"
 					fi
 				done
@@ -144,7 +144,7 @@ while test $# -gt 0; do
 			else
 				out=$"$out -L${libdir}"
 				for library in $grsilibs $detlibs $grsimore ; do
-					if [ -e ${libdir}/lib${library}.so ] || [ -e ${libdir}/lib${library}.dylib ] ; then
+					if [ -e "${libdir}/lib${library}.so" ] || [ -e "${libdir}/lib${library}.dylib" ] ; then
 						out=$"$out -l${library}"
 					fi
 				done
@@ -163,9 +163,9 @@ while test $# -gt 0; do
 			lib=${lib#--};  # remove leading  --
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
-				out="$out $($GRSISYS/$lib/util/config --cflags)"
+				out="$out $("$GRSISYS/$lib/util/config" --cflags)"
 			elif [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
-				out="$out $($GRSISYS/_deps/$lib-src/util/config --cflags)"
+				out="$out $("$GRSISYS/_deps/$lib-src/util/config" --cflags)"
 			fi
 			;;
 		--*-incdir)
@@ -173,9 +173,9 @@ while test $# -gt 0; do
 			lib=${lib#--};  # remove leading  --
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
-				out="$out $($GRSISYS/$lib/util/config --incdir)"
+				out="$out $("$GRSISYS/$lib/util/config" --incdir)"
 			elif [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
-				out="$out $($GRSISYS/_deps/$lib-src/util/config --incdir)"
+				out="$out $("$GRSISYS/_deps/$lib-src/util/config" --incdir)"
 			fi
 			;;
 		--*-libs)
@@ -183,9 +183,9 @@ while test $# -gt 0; do
 			lib=${lib#--};  # remove leading  --
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
-				out="$out $($GRSISYS/$lib/util/config --libs)"
+				out="$out $("$GRSISYS/$lib/util/config" --libs)"
 			elif [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
-				out="$out $($GRSISYS/_deps/$lib-src/util/config --libs)"
+				out="$out $("$GRSISYS/_deps/$lib-src/util/config" --libs)"
 			fi
 			;;
 		--root)
