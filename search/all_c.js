@@ -62,7 +62,5 @@ var searchData=
   ['histtab_59',['HistTab',['../classpygui_1_1hist__tab_1_1_hist_tab.html',1,'pygui::hist_tab']]],
   ['hit_60',['Hit',['../class_t_descant.html#a45bbecd7990c13f882746b58653591a4',1,'TDescant']]],
   ['hits_61',['hits',['../class_t_detector.html#ab907981ce861ab147879469064748ae2',1,'TDetector::Hits() const'],['../class_t_detector.html#acbf359f899b738719e19bb326e45c790',1,'TDetector::Hits()']]],
-  ['hpgearrayposition_62',['HPGeArrayPosition',['../class_t_run_info.html#a78477456fbbce2128f574359a34a1416',1,'TRunInfo']]],
-  ['html_5fgenerator_63',['html_generator',['../html__generator_8_c.html#a7ec523269c3c5812661f6503de35b2f2',1,'html_generator.C']]],
-  ['html_5fgenerator_2ec_64',['html_generator.C',['../html__generator_8_c.html',1,'']]]
+  ['hpgearrayposition_62',['HPGeArrayPosition',['../class_t_run_info.html#a78477456fbbce2128f574359a34a1416',1,'TRunInfo']]]
 ];

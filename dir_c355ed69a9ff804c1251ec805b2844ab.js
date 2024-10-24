@@ -1,6 +1,8 @@
 var dir_c355ed69a9ff804c1251ec805b2844ab =
 [
     [ "TAngularCorrelation.h", "_t_angular_correlation_8h.html", null ],
+    [ "TAries.h", "_t_aries_8h.html", null ],
+    [ "TAriesHit.h", "_t_aries_hit_8h.html", null ],
     [ "TCSM.h", "_t_c_s_m_8h.html", null ],
     [ "TCSMHit.h", "_t_c_s_m_hit_8h.html", null ],
     [ "TDescant.h", "_t_descant_8h.html", null ],

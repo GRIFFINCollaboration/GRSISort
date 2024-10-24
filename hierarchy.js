@@ -240,6 +240,7 @@ var hierarchy =
       [ "TCompiledHistograms", "class_t_compiled_histograms.html", null ],
       [ "TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html", null ],
       [ "TDetector", "class_t_detector.html", [
+        [ "TAries", "class_t_aries.html", null ],
         [ "TBgo", "class_t_bgo.html", [
           [ "TFippsBgo", "class_t_fipps_bgo.html", null ],
           [ "TFippsLaBrBgo", "class_t_fipps_la_br_bgo.html", null ],
@@ -284,6 +285,7 @@ var hierarchy =
         [ "TZeroDegree", "class_t_zero_degree.html", null ]
       ] ],
       [ "TDetectorHit", "class_t_detector_hit.html", [
+        [ "TAriesHit", "class_t_aries_hit.html", null ],
         [ "TBgoHit", "class_t_bgo_hit.html", [
           [ "TFippsBgoHit", "class_t_fipps_bgo_hit.html", null ],
           [ "TFippsLaBrBgoHit", "class_t_fipps_la_br_bgo_hit.html", null ],
@@ -347,7 +349,6 @@ var hierarchy =
       [ "TGRSISortInfo", "class_t_g_r_s_i_sort_info.html", null ],
       [ "TGRSISortList", "class_t_g_r_s_i_sort_list.html", null ],
       [ "TGRSITransition", "class_t_g_r_s_i_transition.html", null ],
-      [ "THtmlCreator", "class_t_html_creator.html", null ],
       [ "TLMFitter", "class_t_l_m_fitter.html", null ],
       [ "TMnemonic", "class_t_mnemonic.html", [
         [ "TGRSIMnemonic", "class_t_g_r_s_i_mnemonic.html", null ],

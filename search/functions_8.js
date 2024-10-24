@@ -38,7 +38,7 @@ var searchData=
   ['hassuffix_35',['hasSuffix',['../_t_midas_file_8cxx.html#acc3a0586541b034e8d61632b1c093dde',1,'TMidasFile.cxx']]],
   ['hastoolbar_36',['HasToolBar',['../class_g_root_canvas.html#a9208350060ad1068019cc9895039fade',1,'GRootCanvas']]],
   ['hastooltips_37',['HasToolTips',['../class_g_root_canvas.html#a457165c6b5fb6d3d58462c6d649a7acc',1,'GRootCanvas']]],
-  ['haswave_38',['haswave',['../class_t_tri_foil.html#a384eb0d0b31398b8062b95e1efade4e3',1,'TTriFoil::HasWave()'],['../class_t_detector_hit.html#abc39d95961863ed1182a7de704d2af74',1,'TDetectorHit::HasWave()']]],
+  ['haswave_38',['haswave',['../class_t_detector_hit.html#abc39d95961863ed1182a7de704d2af74',1,'TDetectorHit::HasWave()'],['../class_t_tri_foil.html#a384eb0d0b31398b8062b95e1efade4e3',1,'TTriFoil::HasWave()']]],
   ['hello_39',['hello',['../classpygui_1_1mainwindow_1_1_main_window.html#aee420eeac5f889b2e75aa491549f5164',1,'pygui::mainwindow::MainWindow']]],
   ['help_40',['help',['../_g_root_commands_8h.html#a54d17a6d0bb758f26b9dda4c6d8e8da8',1,'Help():&#160;GRootCommands.cxx'],['../_g_root_commands_8cxx.html#a54d17a6d0bb758f26b9dda4c6d8e8da8',1,'Help():&#160;GRootCommands.cxx']]],
   ['hex_41',['hex',['../_globals_8h.html#ab37ad6f1cf4c93e161b5caaeae971ef4',1,'Globals.h']]],
@@ -46,6 +46,5 @@ var searchData=
   ['histcompare_43',['HistCompare',['../class_t_gain_match.html#a4bf28ae40bea89efc1ce2524ce96226e',1,'TGainMatch']]],
   ['hit_44',['Hit',['../class_t_descant.html#a45bbecd7990c13f882746b58653591a4',1,'TDescant']]],
   ['hits_45',['hits',['../class_t_detector.html#acbf359f899b738719e19bb326e45c790',1,'TDetector::Hits()'],['../class_t_detector.html#ab907981ce861ab147879469064748ae2',1,'TDetector::Hits() const']]],
-  ['hpgearrayposition_46',['HPGeArrayPosition',['../class_t_run_info.html#a78477456fbbce2128f574359a34a1416',1,'TRunInfo']]],
-  ['html_5fgenerator_47',['html_generator',['../html__generator_8_c.html#a7ec523269c3c5812661f6503de35b2f2',1,'html_generator.C']]]
+  ['hpgearrayposition_46',['HPGeArrayPosition',['../class_t_run_info.html#a78477456fbbce2128f574359a34a1416',1,'TRunInfo']]]
 ];
