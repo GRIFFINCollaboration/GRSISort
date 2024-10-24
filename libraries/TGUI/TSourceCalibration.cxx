@@ -789,7 +789,7 @@ void TSourceCalibration::BuildFirstInterface()
                fSourceBox.back()->Select(index);
                SetSource(kSourceBox + fSourceBox.size() - 1, index);
             }
-				++index;
+            ++index;
          }
       }
 #else
