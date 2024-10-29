@@ -11,7 +11,7 @@ Bool_t TMultiPeak::fLogLikelihoodFlag = false;
 TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t>& centroids, Option_t*)
    : TGRSIFit("multipeakbg", this, &TMultiPeak::MultiPhotoPeakBG, xlow, xhigh, centroids.size() * 6 + 5, "TMultiPeak", "MultiPhotoPeakBG")
 {
-   std::cout << "Warning, the class TMultiPeak is deprecatedi (use TPeakFitter instead)!" << std::endl;
+   std::cout << "Warning, the class TMultiPeak is deprecated (use TPeakFitter instead)!" << std::endl;
    Clear();
    // We make the background first so we can send it to the TPeaks.
    fBackground = new TF1(Form("MPbackground_%d_to_%d", static_cast<Int_t>(xlow), static_cast<Int_t>(xhigh)), this, &TMultiPeak::MultiStepBG, xlow, xhigh, centroids.size() * 6 + 5, "TMuliPeak", "MultiStepBG");
@@ -47,7 +47,7 @@ TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t
 
 TMultiPeak::TMultiPeak() : TGRSIFit("multipeakbg", this, &TMultiPeak::MultiPhotoPeakBG, 0, 1000, 10, "TMultiPeak", "MultiPhotoPeakBG")
 {
-   std::cout << "Warning, the class TMultiPeak is deprecatedi (use TPeakFitter instead)!" << std::endl;
+   std::cout << "Warning, the class TMultiPeak is deprecated (use TPeakFitter instead)!" << std::endl;
    // I don't think this constructor should be used, RD.
    InitNames();
    fBackground = new TF1("background", this, &TMultiPeak::MultiStepBG, 1000, 10, 10, "TMultiPeak", "MultiStepBG");   // This is a weird nonsense line.
