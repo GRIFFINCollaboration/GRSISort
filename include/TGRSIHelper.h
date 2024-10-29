@@ -23,6 +23,18 @@
 #include "TChannel.h"
 #include "TUserSettings.h"
 
+////////////////////////////////////////////////////////////////////////////////
+///
+/// \class TGRSIHelper
+/// 
+/// Base class for all helpers used in grsiframe.
+/// It provides some general members that are set from the input list, like
+/// TPPG, run info, and user settings. It also loads settings from the input 
+/// list into general GRSISort variables, like the analysis options, g-value
+/// files, cut files, or calibration files.
+/// 
+////////////////////////////////////////////////////////////////////////////////
+
 class TGRSIHelper : public TObject {
 public:
    std::string& Prefix() { return fPrefix; }
