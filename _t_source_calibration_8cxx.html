@@ -169,9 +169,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00266">266</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00272">272</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01657">TSourceCalibration::FitEfficiency()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01665">TSourceCalibration::FitEfficiency()</a>.</p>
 
 </div>
 </div>
@@ -201,9 +201,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00275">275</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00281">281</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00647">TSourceCalibration::TSourceCalibration()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01294">TSourceCalibration::BuildThirdInterface()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00653">TSourceCalibration::TSourceCalibration()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01302">TSourceCalibration::BuildThirdInterface()</a>.</p>
 
 </div>
 </div>
@@ -238,10 +238,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>This function tries to match a list of found peaks (channels) to a list of provided peaks (energies). It does so in a brute force fashion where we try all combinations of channels and energies, do a linear fit through them, and keep the one with the best chi square.</p>
 
 <p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00028">28</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00431">TChannelTab::FindPeaks()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00437">TChannelTab::FindPeaks()</a>.</p>
 
 </div>
 </div>
@@ -271,9 +272,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00257">257</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00263">263</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00401">TChannelTab::Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01201">TSourceCalibration::FinalWindow()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01605">TSourceCalibration::FitFinal()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00407">TChannelTab::Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01209">TSourceCalibration::FinalWindow()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01613">TSourceCalibration::FitFinal()</a>.</p>
 
 </div>
 </div>
@@ -308,10 +309,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>This function tries to match a list of found peaks (channels) to a list of provided peaks (energies). It does so in slightly smarter way than the brute force method <code>Match</code>, by taking the reported intensity of the source peaks into account.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00141">141</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00144">144</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00431">TChannelTab::FindPeaks()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00437">TChannelTab::FindPeaks()</a>.</p>
 
 </div>
 </div>
@@ -322,7 +324,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_af8759249976916949d3211b2e3ed5df.html">TGUI</a></li><li class="navelem"><a class="el" href="_t_source_calibration_8cxx.html">TSourceCalibration.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Oct 25 2024 15:41:47.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Oct 29 2024 18:27:30.</li>
   </ul>
 </div>
 </body>
