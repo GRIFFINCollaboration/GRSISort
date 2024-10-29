@@ -17,6 +17,8 @@
 /// to append to those files (default) or not.
 /// If only one file is provided, both stdout and stderr are
 /// redirected to it.
+/// If the filename for either stdout or stderr is a nullptr, the
+/// redirection for this output won't happen.
 /// The redirection ends when the TRedirect object is destroyed.
 ///
 /////////////////////////////////////////////////////////////////
