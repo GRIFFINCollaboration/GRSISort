@@ -53,7 +53,7 @@ int main(int argc, char** argv)
    std::transform(option.begin(), option.end(), option.begin(), ::tolower);
    if(option == "update") {
       update = true;
-   } else if(option == "replace") {
+   } else if(option != "replace") {
       std::cout << R"(Wrong option ")" << option << R"(", should be either "update" or "replace")" << std::endl;
       return 1;
    }
