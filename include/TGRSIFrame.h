@@ -19,6 +19,18 @@
  *  * @{
  *  */
 
+////////////////////////////////////////////////////////////////////////////////
+///
+/// \class TGRSIFrame
+/// 
+/// This class fills the input list with TPPG, run info, analysis options, user
+/// settings, etc. Creating it also triggers the compilation of the user helper
+/// if necessary.
+/// It also provides the infrastructure for running the helper and writing the
+/// output file.
+///
+////////////////////////////////////////////////////////////////////////////////
+
 class TGRSIFrame {
 public:
    TGRSIFrame();
