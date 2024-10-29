@@ -788,7 +788,9 @@ void TSourceCalibration::BuildFirstInterface()
             if(std::strstr(fMatrices[i]->GetName(), file.path().stem().c_str()) != nullptr) {
                fSourceBox.back()->Select(index);
                SetSource(kSourceBox + fSourceBox.size() - 1, index);
-            }
+            } else if(fVerboseLevel > 2) {
+					std::cout << "matrix name " << fMatrices[i]->GetName() << " not matching " << file.path().stem().c_str() << std::endl;
+				}
             ++index;
          }
       }
