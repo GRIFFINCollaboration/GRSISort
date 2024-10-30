@@ -123,8 +123,8 @@ void TGRSIFrame::Run(TRedirect*& redirect)
    TFile outputFile(outputFileName.c_str(), "recreate");
 
    // stop redirect before we start the progress bar (storing the files we redirect stdout and stderr to first)
-   auto* outFile = redirect->OutFile();
-   auto* errFile = redirect->ErrFile();
+   const auto* outFile = redirect->OutFile();
+   const auto* errFile = redirect->ErrFile();
 
    delete redirect;
    // this is needed so the function that created the redirect know it has ended
