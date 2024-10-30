@@ -110,7 +110,7 @@ public:
 
    void SetAxisTitle(const char* title);   ///< Set axis title for the graph (form "x-axis title;y-axis title")
 
-   int     GetN() { return (fTotalGraph != nullptr ? fTotalGraph->GetN() : -1); }     ///< Returns GetN(), i.e. number of points of the total graph.
+   int     GetN() { return (fTotalGraph != nullptr ? fTotalGraph->GetN() : -1); }          ///< Returns GetN(), i.e. number of points of the total graph.
    double* GetX() { return (fTotalGraph != nullptr ? fTotalGraph->GetX() : nullptr); }     ///< Returns an array of x-values of the total graph.
    double* GetY() { return (fTotalGraph != nullptr ? fTotalGraph->GetY() : nullptr); }     ///< Returns an array of y-values of the total graph.
    double* GetEX() { return (fTotalGraph != nullptr ? fTotalGraph->GetEX() : nullptr); }   ///< Returns an array of x-errors of the total graph.
@@ -152,7 +152,7 @@ public:
    void ResetTotalGraph();   ///< reset the total graph and add the individual ones again (used e.g. after scaling of individual graphs is done)
 
    static void VerboseLevel(int val) { fVerboseLevel = val; }
-	static int VerboseLevel() { return fVerboseLevel; }
+   static int  VerboseLevel() { return fVerboseLevel; }
 
 	void Clear(Option_t* option = "") override;
 

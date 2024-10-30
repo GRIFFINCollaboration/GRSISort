@@ -64,7 +64,7 @@ public:
 
    TGraphErrors* Data() { return fData; }
 
-	void PrintLayout() const;
+   void PrintLayout() const;
 
 private:
    void BuildInterface();
@@ -125,15 +125,15 @@ public:
    static void ZoomX();
    static void ZoomY();
 
-	void PrintLayout() const;
+   void PrintLayout() const;
 
 private:
    // graphic elements
-   TGCompositeFrame*        fChannelFrame{nullptr};        ///< main frame of this tab
-   TGVerticalFrame*         fLeftFrame{nullptr};    ///< left frame with source tabs
-   TGVerticalFrame*         fRightFrame{nullptr};   ///< right frame with calibration
-   TGTab*                   fSourceTab{nullptr};    ///< tab for sources
-   std::vector<TSourceTab*> fSources;               ///< tabs for all sources
+   TGCompositeFrame*        fChannelFrame{nullptr};   ///< main frame of this tab
+   TGVerticalFrame*         fLeftFrame{nullptr};      ///< left frame with source tabs
+   TGVerticalFrame*         fRightFrame{nullptr};     ///< right frame with calibration
+   TGTab*                   fSourceTab{nullptr};      ///< tab for sources
+   std::vector<TSourceTab*> fSources;                 ///< tabs for all sources
    TRootEmbeddedCanvas*     fCalibrationCanvas{nullptr};
    TPad*                    fResidualPad{nullptr};
    TPad*                    fCalibrationPad{nullptr};
@@ -209,12 +209,16 @@ public:
    void SecondWindow();
    void FinalWindow();
 
-   static void VerboseLevel(int val) { fVerboseLevel = val; if(val > 4) { TCalibrationGraphSet::VerboseLevel(val - 4); } }
-	static int VerboseLevel() { return fVerboseLevel; }
+   static void VerboseLevel(int val)
+   {
+      fVerboseLevel = val;
+      if(val > 4) { TCalibrationGraphSet::VerboseLevel(val - 4); }
+   }
+   static int VerboseLevel() { return fVerboseLevel; }
 
    static void ZoomX();
 
-	void PrintLayout() const;
+   void PrintLayout() const;
 
 private:
    void BuildFirstInterface();
@@ -233,31 +237,31 @@ private:
    void DeleteElement(TGFrame* element);
 
    //TGHorizontalFrame* fTopFrame{nullptr};
-   TGHorizontalFrame*       fBottomFrame{nullptr};
-   TGVerticalFrame*         fLeftFrame{nullptr};
-   TGVerticalFrame*         fRightFrame{nullptr};
-   TGTextButton*            fStartButton{nullptr};
-   TGTab*                   fTab{nullptr};
+   TGHorizontalFrame*        fBottomFrame{nullptr};
+   TGVerticalFrame*          fLeftFrame{nullptr};
+   TGVerticalFrame*          fRightFrame{nullptr};
+   TGTextButton*             fStartButton{nullptr};
+   TGTab*                    fTab{nullptr};
    std::vector<TChannelTab*> fChannelTab;
 
-   TGTextButton*                     fEmitter{nullptr};
-   TGHButtonGroup*                   fNavigationGroup{nullptr};
-   TGTextButton*                     fPreviousButton{nullptr};
-   TGTextButton*                     fCalibrateButton{nullptr};
-   TGTextButton*                     fFindPeaksButton{nullptr};
-   TGTextButton*                     fFindPeaksFastButton{nullptr};
-   TGTextButton*                     fDiscardButton{nullptr};
-   TGTextButton*                     fAcceptButton{nullptr};
-   TGTextButton*                     fAcceptAllButton{nullptr};
-   TGTextButton*                     fNextButton{nullptr};
-   TGGroupFrame*                     fParameterFrame{nullptr};
-   TGLabel*                          fSigmaLabel{nullptr};
-   TGNumberEntry*                    fSigmaEntry{nullptr};
-   TGLabel*                          fThresholdLabel{nullptr};
-   TGNumberEntry*                    fThresholdEntry{nullptr};
-   TGLabel*                          fDegreeLabel{nullptr};
-   TGNumberEntry*                    fDegreeEntry{nullptr};
-   TGHProgressBar*                   fProgressBar{nullptr};
+   TGTextButton*   fEmitter{nullptr};
+   TGHButtonGroup* fNavigationGroup{nullptr};
+   TGTextButton*   fPreviousButton{nullptr};
+   TGTextButton*   fCalibrateButton{nullptr};
+   TGTextButton*   fFindPeaksButton{nullptr};
+   TGTextButton*   fFindPeaksFastButton{nullptr};
+   TGTextButton*   fDiscardButton{nullptr};
+   TGTextButton*   fAcceptButton{nullptr};
+   TGTextButton*   fAcceptAllButton{nullptr};
+   TGTextButton*   fNextButton{nullptr};
+   TGGroupFrame*   fParameterFrame{nullptr};
+   TGLabel*        fSigmaLabel{nullptr};
+   TGNumberEntry*  fSigmaEntry{nullptr};
+   TGLabel*        fThresholdLabel{nullptr};
+   TGNumberEntry*  fThresholdEntry{nullptr};
+   TGLabel*        fDegreeLabel{nullptr};
+   TGNumberEntry*  fDegreeEntry{nullptr};
+   TGHProgressBar* fProgressBar{nullptr};
 
    std::vector<TGLabel*>                                                fMatrixNames;
    std::vector<TGComboBox*>                                             fSourceBox;
