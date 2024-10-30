@@ -374,13 +374,16 @@ Double_t TGRSIFunctions::DeadTimeAffect(Double_t function, Double_t deadtime, Do
    return function / (1. + function * deadtime / (binWidth * 1000000.));
 }
 
-#ifdef HAS_MATHMORE
 Double_t TGRSIFunctions::LegendrePolynomial(Double_t* x, Double_t* p)   // NOLINT(readability-non-const-parameter)
 {
+#ifdef HAS_MATHMORE
    Double_t val = p[0] * (1 + p[1] * ::ROOT::Math::legendre(2, x[0]) + p[2] * ::ROOT::Math::legendre(4, x[0]));
    return val;
-}
+#else
+   std::cout << "Mathmore feature of ROOT is missing, " << __PRETTY_FUNCTION__ << " will always return 1!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   return 1.;
 #endif
+}
 
 Double_t TGRSIFunctions::PhotoEfficiency(Double_t* dim, Double_t* par)   // NOLINT(readability-non-const-parameter)
 {

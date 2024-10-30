@@ -58,10 +58,8 @@ Double_t DeadTimeAffect(Double_t function, Double_t deadtime, Double_t binWidth 
 Double_t ConvolutedDecay(Double_t* x, Double_t* par);
 Double_t ConvolutedDecay2(Double_t* x, Double_t* par);
 
-#ifdef HAS_MATHMORE
 // Angular correlation fitting
 Double_t LegendrePolynomial(Double_t* x, Double_t* p);
-#endif
 
 // functions used for angular correlations
 double RacahW(double a, double b, double c, double d, double e, double f);

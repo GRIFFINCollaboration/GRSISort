@@ -28,7 +28,11 @@
 
 std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double>> Match(std::vector<std::tuple<double, double, double, double>> peaks, std::vector<std::tuple<double, double, double, double>> sources)
 {
+   /// This function tries to match a list of found peaks (channels) to a list of provided peaks (energies).
+   /// It does so in a brute force fashion where we try all combinations of channels and energies, do a linear fit through them, and keep the one with the best chi square.
+
    if(TSourceCalibration::VerboseLevel() > 1) { std::cout << RESET_COLOR << "Matching " << peaks.size() << " peaks with " << sources.size() << " source energies" << std::endl; }
+
    std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double>> result;
    std::sort(peaks.begin(), peaks.end());
    std::sort(sources.begin(), sources.end());
@@ -141,7 +145,11 @@ std::map<std::tuple<double, double, double, double>, std::tuple<double, double, 
 
 std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double>> SmartMatch(std::vector<std::tuple<double, double, double, double>> peaks, std::vector<std::tuple<double, double, double, double>> sources)
 {
+   /// This function tries to match a list of found peaks (channels) to a list of provided peaks (energies).
+   /// It does so in slightly smarter way than the brute force method `Match`, by taking the reported intensity of the source peaks into account.
+
    if(TSourceCalibration::VerboseLevel() > 1) { std::cout << RESET_COLOR << "Matching " << peaks.size() << " peaks with " << sources.size() << " source energies" << std::endl; }
+
    std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double>> result;
    std::sort(peaks.begin(), peaks.end());
    std::sort(sources.begin(), sources.end(), [](const std::tuple<double, double, double, double>& a, const std::tuple<double, double, double, double>& b) { return std::get<2>(a) > std::get<2>(b); });
@@ -1316,6 +1324,8 @@ void TSourceCalibration::BuildFirstInterface()
                fSourceBox.back()->Select(index);
                SetSource(kSourceBox + fSourceBox.size() - 1, index);
                if(fVerboseLevel > 2) { std::cout << i << ": selected source " << index << std::endl; }
+            } else if(fVerboseLevel > 2) {
+               std::cout << "matrix name " << fMatrices[i]->GetName() << " not matching " << file.path().stem().c_str() << std::endl;
             }
             ++index;
          }
