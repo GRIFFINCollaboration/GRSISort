@@ -127,6 +127,9 @@ void TGRSIFrame::Run(TRedirect*& redirect)
 	auto* errFile = redirect->ErrFile();
 
 	delete redirect;
+	// this is needed so the function that created the redirect know it has ended
+	// not really needed right now as we create a new redirect further down, but we have it here in case that gets changed
+	redirect = nullptr;
 	
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 30, 0)
    std::string progressBar;

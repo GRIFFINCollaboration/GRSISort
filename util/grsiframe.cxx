@@ -64,16 +64,16 @@ int main(int argc, char** argv)
       return 1;
    }
 
-	// determine the name of the helper (from the provided helper library) to create a redirect of stdout
-	std::string logFileName = opt->DataFrameLibrary();
-	logFileName = logFileName.substr(logFileName.find_last_of('/')+1); // strip everything before the last slash
+   // determine the name of the helper (from the provided helper library) to create a redirect of stdout
+   std::string logFileName = opt->DataFrameLibrary();
+   logFileName             = logFileName.substr(logFileName.find_last_of('/') + 1);   // strip everything before the last slash
    if(logFileName.find("Helper") != std::string::npos) {
-		logFileName = logFileName.substr(0, logFileName.find("Helper")); // strip "Helper" and anything after it (like the extension)
-	} else {
-		logFileName = logFileName.substr(0, logFileName.find_last_of('.')); // strip extension since we didn't find "Helper" in the name
-	}
-	logFileName.append(TRunInfo::CreateLabel(true));
-	logFileName.append(".log");
+      logFileName = logFileName.substr(0, logFileName.find("Helper"));   // strip "Helper" and anything after it (like the extension)
+   } else {
+      logFileName = logFileName.substr(0, logFileName.find_last_of('.'));   // strip extension since we didn't find "Helper" in the name
+   }
+   logFileName.append(TRunInfo::CreateLabel(true));
+   logFileName.append(".log");
 
 	// start redirect of stdout only w/o appending (ends when we delete it)
    std::cout << "redirecting stdout to " << logFileName << std::endl;
@@ -84,13 +84,18 @@ int main(int argc, char** argv)
    // run it and write the results
    frame.Run(redirect);
 
+   // re-start redirect of stdout only w/ appending if needed (ends when we delete it)
+	if(redirect == nullptr) {
+		redirect = new TRedirect(logFileName.c_str(), nullptr, true);
+	}
+
    // print time it took to run
    double realTime = stopwatch->RealTime();
    int    hour     = static_cast<int>(realTime / 3600);
    realTime -= hour * 3600;
    int min = static_cast<int>(realTime / 60);
    realTime -= min * 60;
-	// print goes to log file due to redirect, so we don't need colours here
+   // print goes to log file due to redirect, so we don't need colours here
    std::cout << std::endl
              << "Done after " << hour << ":" << std::setfill('0') << std::setw(2) << min << ":"
              << std::setprecision(3) << std::fixed << realTime << " h:m:s"
@@ -98,6 +103,7 @@ int main(int argc, char** argv)
 	
 	// delete the redirect and print again to true stdout
 	delete redirect;
+
    std::cout << DMAGENTA << std::endl
              << "Done after " << hour << ":" << std::setfill('0') << std::setw(2) << min << ":"
              << std::setprecision(3) << std::fixed << realTime << " h:m:s"
