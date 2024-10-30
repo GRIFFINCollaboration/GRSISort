@@ -10,12 +10,12 @@ void ExampleEventHelper::CreateHistograms(unsigned int slot)
       if(slot == 0) {
          std::stringstream str;
          str << "Got ODB cycle length " << fCycleLength << " us = " << fCycleLength / 1e6 << " s" << std::endl;
-         std::cerr << str.str();
+         std::cout << str.str();
       }
    } else if(slot == 0) {
       std::stringstream str;
       str << DRED << "No ppg provided, can't fill cycle spectra!" << RESET_COLOR << std::endl;
-      std::cerr << str.str();
+      std::cout << str.str();
    }
 
    // some variables to easily change range and binning for multiple histograms at once
