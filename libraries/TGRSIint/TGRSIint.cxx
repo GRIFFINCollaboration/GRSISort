@@ -14,7 +14,6 @@
 #include "StoppableThread.h"
 #include "TAnalysisHistLoop.h"
 #include "TAnalysisWriteLoop.h"
-#include "TRnTupleWriteLoop.h"
 #include "TDataLoop.h"
 #include "TDetBuildingLoop.h"
 #include "TEventBuildingLoop.h"
@@ -666,21 +665,12 @@ void TGRSIint::SetupPipeline()
 
 	// If requested, write the analysis tree
 	if(write_analysis_tree) {
-		if(opt->UseRnTuple()) {
-			auto loop = TRnTupleWriteLoop::Get("8_rntuple_write_loop", output_analysis_tree_filename);
-			loop->InputQueue()       = detBuildingLoop->AddOutputQueue(TGRSIOptions::Get()->AnalysisWriteQueueSize());
-			if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
-				loop->OutOfOrderQueue() = eventBuildingLoop->OutOfOrderQueue();
-			}
-			analysisQueues.push_back(loop->InputQueue());
-		} else {
 			auto loop = TAnalysisWriteLoop::Get("8_analysis_write_loop", output_analysis_tree_filename);
 			loop->InputQueue()       = detBuildingLoop->AddOutputQueue(TGRSIOptions::Get()->AnalysisWriteQueueSize());
 			if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
 				loop->OutOfOrderQueue() = eventBuildingLoop->OutOfOrderQueue();
 			}
 			analysisQueues.push_back(loop->InputQueue());
-		}
 	}
 
    StoppableThread::ResumeAll();
