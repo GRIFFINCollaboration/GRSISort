@@ -122,15 +122,15 @@ void TGRSIFrame::Run(TRedirect*& redirect)
 
    TFile outputFile(outputFileName.c_str(), "recreate");
 
-	// stop redirect before we start the progress bar (storing the files we redirect stdout and stderr to first)
-	auto* outFile = redirect->OutFile();
-	auto* errFile = redirect->ErrFile();
+   // stop redirect before we start the progress bar (storing the files we redirect stdout and stderr to first)
+   auto* outFile = redirect->OutFile();
+   auto* errFile = redirect->ErrFile();
 
-	delete redirect;
-	// this is needed so the function that created the redirect know it has ended
-	// not really needed right now as we create a new redirect further down, but we have it here in case that gets changed
-	redirect = nullptr;
-	
+   delete redirect;
+   // this is needed so the function that created the redirect know it has ended
+   // not really needed right now as we create a new redirect further down, but we have it here in case that gets changed
+   redirect = nullptr;
+
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 30, 0)
    std::string progressBar;
    const auto  barWidth = 100;
@@ -184,8 +184,8 @@ void TGRSIFrame::Run(TRedirect*& redirect)
       std::cout << "Error, output list is nullptr!" << std::endl;
    }
 
-	// start new redirect, appending to the previous files we had redirected to
-	redirect = new TRedirect(outFile, errFile, true);
+   // start new redirect, appending to the previous files we had redirected to
+   redirect = new TRedirect(outFile, errFile, true);
 
    runInfo->Write();
    if(fPpg != nullptr) {

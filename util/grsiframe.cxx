@@ -75,19 +75,19 @@ int main(int argc, char** argv)
    logFileName.append(TRunInfo::CreateLabel(true));
    logFileName.append(".log");
 
-	// start redirect of stdout only w/o appending (ends when we delete it)
+   // start redirect of stdout only w/o appending (ends when we delete it)
    std::cout << "redirecting stdout to " << logFileName << std::endl;
-	auto* redirect = new TRedirect(logFileName.c_str(), nullptr, false);
-	
+   auto* redirect = new TRedirect(logFileName.c_str(), nullptr, false);
+
    // this reads and compiles the user code
    TGRSIFrame frame;
    // run it and write the results
    frame.Run(redirect);
 
    // re-start redirect of stdout only w/ appending if needed (ends when we delete it)
-	if(redirect == nullptr) {
-		redirect = new TRedirect(logFileName.c_str(), nullptr, true);
-	}
+   if(redirect == nullptr) {
+      redirect = new TRedirect(logFileName.c_str(), nullptr, true);
+   }
 
    // print time it took to run
    double realTime = stopwatch->RealTime();
@@ -100,9 +100,9 @@ int main(int argc, char** argv)
              << "Done after " << hour << ":" << std::setfill('0') << std::setw(2) << min << ":"
              << std::setprecision(3) << std::fixed << realTime << " h:m:s"
              << std::endl;
-	
-	// delete the redirect and print again to true stdout
-	delete redirect;
+
+   // delete the redirect and print again to true stdout
+   delete redirect;
 
    std::cout << DMAGENTA << std::endl
              << "Done after " << hour << ":" << std::setfill('0') << std::setw(2) << min << ":"
