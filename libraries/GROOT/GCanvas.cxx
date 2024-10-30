@@ -568,9 +568,9 @@ TF1* GCanvas::GetLastFit()
 bool GCanvas::Process1DArrowKeyPress(Event_t*, const UInt_t* keysym)
 {
    /// Moves displayed 1D histograms by 50% of the visible range left, right, or selects the next (up) or previous (down) GH1D histogram.
-	bool edited = Move1DHistogram(*keysym);
-	if(edited) { RedrawMarkers(); }
-	return edited;
+   bool edited = Move1DHistogram(*keysym);
+   if(edited) { RedrawMarkers(); }
+   return edited;
 }
 
 bool GCanvas::ProcessNonHistKeyboardPress(Event_t*, const UInt_t* keysym)
@@ -998,7 +998,7 @@ bool GCanvas::Process1DMousePress(Int_t, Int_t, Int_t)
 bool GCanvas::Process2DArrowKeyPress(Event_t*, const UInt_t* keysym)
 {
    /// Moves displayed 2D histograms by 50% of the visible range left, right, up, or down
-	return Move2DHistogram(*keysym);
+   return Move2DHistogram(*keysym);
 }
 
 bool GCanvas::Process2DKeyboardPress(Event_t*, const UInt_t* keysym)
