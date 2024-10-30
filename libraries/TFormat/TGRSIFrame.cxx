@@ -111,7 +111,7 @@ TGRSIFrame::TGRSIFrame()
    fOutput = helper->Book(fDataFrame);
 }
 
-void TGRSIFrame::Run()
+void TGRSIFrame::Run(TRedirect*& redirect)
 {
    // get runinfo and get run and sub-run number
    auto* runInfo = TRunInfo::Get();
@@ -122,6 +122,12 @@ void TGRSIFrame::Run()
 
    TFile outputFile(outputFileName.c_str(), "recreate");
 
+	// stop redirect before we start the progress bar (storing the files we redirect stdout and stderr to first)
+	auto* outFile = redirect->OutFile();
+	auto* errFile = redirect->ErrFile();
+
+	delete redirect;
+	
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 30, 0)
    std::string progressBar;
    const auto  barWidth = 100;
@@ -174,6 +180,10 @@ void TGRSIFrame::Run()
    } else {
       std::cout << "Error, output list is nullptr!" << std::endl;
    }
+
+	// start new redirect, appending to the previous files we had redirected to
+	redirect = new TRedirect(outFile, errFile, true);
+
    runInfo->Write();
    if(fPpg != nullptr) {
       fPpg->Write();

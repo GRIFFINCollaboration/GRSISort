@@ -26,13 +26,18 @@
 class TRedirect {
 public:
    TRedirect(const char* newOut, const char* newErr, bool append = true)
+		: fOutFile(newOut), fErrFile(newErr)
    {
-      Redirect(newOut, newErr, append);
+      Redirect(append);
    }
    explicit TRedirect(const char* newOut, bool append = true)
+		: fOutFile(newOut), fErrFile(newOut)
    {
-      Redirect(newOut, newOut, append);
+      Redirect(append);
    }
+
+	const char* OutFile() { return fOutFile; }
+	const char* ErrFile() { return fErrFile; }
 
    ~TRedirect()
    {
@@ -49,19 +54,19 @@ public:
    TRedirect& operator=(TRedirect&&)      = delete;
 
 private:
-   void Redirect(const char* newOut, const char* newErr, bool append)
+   void Redirect(bool append)
    {
-		if(newOut != nullptr) {
+		if(fOutFile != nullptr) {
 			fStdOutFileDescriptor = dup(fileno(stdout));
 			fflush(stdout);
-			int newStdOut = open(newOut, (append ? O_WRONLY | O_CREAT | O_APPEND : O_WRONLY | O_CREAT), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+			int newStdOut = open(fOutFile, (append ? O_WRONLY | O_CREAT | O_APPEND : O_WRONLY | O_CREAT), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 			dup2(newStdOut, fileno(stdout));
 			close(newStdOut);
 		}
-		if(newErr != nullptr) {
+		if(fErrFile != nullptr) {
 			fStdErrFileDescriptor = dup(fileno(stderr));
 			fflush(stderr);
-			int newStdErr = open(newErr, (append ? O_WRONLY | O_CREAT | O_APPEND : O_WRONLY | O_CREAT), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+			int newStdErr = open(fErrFile, (append ? O_WRONLY | O_CREAT | O_APPEND : O_WRONLY | O_CREAT), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 			dup2(newStdErr, fileno(stderr));
 			close(newStdErr);
 		}
@@ -69,6 +74,8 @@ private:
 
    int fStdOutFileDescriptor{0};
    int fStdErrFileDescriptor{0};
+	const char* fOutFile{nullptr};
+	const char* fErrFile{nullptr};
 };
 
 #endif

@@ -76,17 +76,13 @@ int main(int argc, char** argv)
 	logFileName.append(".log");
 
 	// start redirect of stdout only w/o appending (ends when we delete it)
-   std::cout << "redirecting to " << logFileName << std::endl;
+   std::cout << "redirecting stdout to " << logFileName << std::endl;
 	auto* redirect = new TRedirect(logFileName.c_str(), nullptr, false);
 	
    // this reads and compiles the user code
    TGRSIFrame frame;
-	// delete the redirect and print again to true stdout
-	delete redirect;
    // run it and write the results
-   frame.Run();
-	// start redirect of stdout only w/ appending (ends when we delete it)
-	redirect = new TRedirect(logFileName.c_str(), nullptr, true);
+   frame.Run(redirect);
 
    // print time it took to run
    double realTime = stopwatch->RealTime();
@@ -99,6 +95,7 @@ int main(int argc, char** argv)
              << "Done after " << hour << ":" << std::setfill('0') << std::setw(2) << min << ":"
              << std::setprecision(3) << std::fixed << realTime << " h:m:s"
              << std::endl;
+	
 	// delete the redirect and print again to true stdout
 	delete redirect;
    std::cout << DMAGENTA << std::endl

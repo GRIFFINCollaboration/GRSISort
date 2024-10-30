@@ -10,6 +10,8 @@
 
 #include "TGRSIOptions.h"
 #include "TPPG.h"
+#include "TRedirect.h"
+
 #include "ROOT/RDataFrame.hxx"
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6, 24, 0)
 #include "ROOT/RLogger.hxx"
@@ -35,7 +37,7 @@ class TGRSIFrame {
 public:
    TGRSIFrame();
 
-   void Run();
+   void Run(TRedirect*& redirect);
 
 private:
    std::string                                         fOutputPrefix{"default"};
