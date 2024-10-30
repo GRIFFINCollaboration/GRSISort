@@ -31,8 +31,8 @@
 #include "TNucleus.h"
 #include "TCalibrationGraph.h"
 
-std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double>> Match(std::vector<std::tuple<double, double, double, double>> peaks, std::vector<std::tuple<double, double, double, double>> source, int verboseLevel);
-std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double>> SmartMatch(std::vector<std::tuple<double, double, double, double>> peaks, std::vector<std::tuple<double, double, double, double>> source, int verboseLevel);
+std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double>> Match(std::vector<std::tuple<double, double, double, double>> peaks, std::vector<std::tuple<double, double, double, double>> source);
+std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double>> SmartMatch(std::vector<std::tuple<double, double, double, double>> peaks, std::vector<std::tuple<double, double, double, double>> source);
 
 double Polynomial(double* x, double* par);
 
@@ -40,9 +40,11 @@ bool FilledBin(TH2* matrix, const int& bin);
 
 class TSourceCalibration;
 
+class TChannelTab;
+
 class TSourceTab {
 public:
-   TSourceTab(TGTab* parent, TGCompositeFrame* frame, TH1D* projection, const double& sigma, const double& threshold, const int& degree, const std::vector<std::tuple<double, double, double, double>>& sourceEnergy);
+   TSourceTab(TChannelTab* parent, TGCompositeFrame* frame, TH1D* projection, const double& sigma, const double& threshold, const int& degree, const std::vector<std::tuple<double, double, double, double>>& sourceEnergy);
    TSourceTab(const TSourceTab& rhs);
    TSourceTab(TSourceTab&&) noexcept            = default;
    TSourceTab& operator=(const TSourceTab&)     = default;
@@ -52,6 +54,7 @@ public:
    void MakeConnections();
    void Disconnect();
 
+   void ProjectionStatus(Event_t* event);
    void ProjectionStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
 
    void Add(std::map<std::tuple<double, double, double, double>, std::tuple<double, double, double, double>> map);
@@ -65,14 +68,19 @@ public:
 
 private:
    void BuildInterface();
+	void UpdateRanges();
+	void UpdateRange(const size_t& index);
+	void DrawRanges();
+	void DrawRange(const size_t& index);
 
    // parent
-   TGTab* fParent{nullptr};
+   TChannelTab* fParent{nullptr};
 
    // graphic elements
    TGCompositeFrame*    fSourceFrame{nullptr};
    TRootEmbeddedCanvas* fProjectionCanvas{nullptr};
    TGStatusBar*         fSourceStatusBar{nullptr};
+	std::vector<TBox*>   fRangeBox;
 
    // storage elements
    TH1D*                                                   fProjection{nullptr};
@@ -82,6 +90,7 @@ private:
    int                                                     fDegree{1};
    std::vector<GPeak*>                                     fPeaks;
    std::vector<std::tuple<double, double, double, double>> fSourceEnergy;
+	std::vector<std::pair<double, double>>                  fRanges;
 };
 
 class TChannelTab {
@@ -101,14 +110,17 @@ public:
    void CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
 
    void          UpdateData();
-   void          Fit();
    void          UpdateChannel();
+   void          SelectedTab(Int_t id);
    void          Write(TFile* output);
+   void          Calibrate();
    void          Calibrate(const int& degree, const bool& force = false);
-   void          FindPeaks(const double& sigma, const double& threshold, const bool& force = false, const bool& fast = true) { fSources[fSourceTab->GetCurrent()]->FindPeaks(sigma, threshold, force, fast); }
+   void          FindPeaks(const double& sigma, const double& threshold, const bool& force = false, const bool& fast = true);
    TGTab*        SourceTab() { return fSourceTab; }
    TGraphErrors* Data(int channelId) { return fSources[channelId]->Data(); }
    size_t        NumberOfSources() { return fSources.size(); }
+	std::string   Name() { return fName; }
+	int           ActiveSourceTab() { return fActiveSourceTab; }
 
    static void ZoomX();
    static void ZoomY();
@@ -131,15 +143,16 @@ private:
    TGHProgressBar*          fProgressBar{nullptr};
 
    // storage elements
-   TSourceCalibration*                                                  fParent;            ///< the parent of this tab
-   std::vector<TNucleus*>                                               fNuclei;            ///< the source nucleus
-   std::vector<TH1D*>                                                   fProjections;       ///< vector of all projections
-   std::string                                                          fName;              ///< name of this tab
-   double                                                               fSigma{2.};         ///< the sigma used in the peak finder
-   double                                                               fThreshold{0.05};   ///< the threshold (relative to the largest peak) used in the peak finder
-   int                                                                  fDegree{1};         ///< degree of polynomial function used to calibrate
-   std::vector<std::vector<std::tuple<double, double, double, double>>> fSourceEnergies;    ///< vector with source energies and uncertainties
-   TCalibrationGraphSet*                                                fData{nullptr};     ///< combined data from all sources
+   TSourceCalibration*                                                  fParent;               ///< the parent of this tab
+   std::vector<TNucleus*>                                               fNuclei;               ///< the source nucleus
+   std::vector<TH1D*>                                                   fProjections;          ///< vector of all projections
+   std::string                                                          fName;                 ///< name of this tab
+   double                                                               fSigma{2.};            ///< the sigma used in the peak finder
+   double                                                               fThreshold{0.05};      ///< the threshold (relative to the largest peak) used in the peak finder
+   int                                                                  fDegree{1};            ///< degree of polynomial function used to calibrate
+   std::vector<std::vector<std::tuple<double, double, double, double>>> fSourceEnergies;       ///< vector with source energies and uncertainties
+   TCalibrationGraphSet*                                                fData{nullptr};        ///< combined data from all sources
+	int                                                                  fActiveSourceTab{0};   ///< id of the currently active source tab
 };
 
 class TSourceCalibration : public TGMainFrame {
@@ -250,6 +263,7 @@ private:
    std::vector<TGComboBox*>                                             fSourceBox;
    std::vector<TNucleus*>                                               fSource;
    std::vector<std::vector<std::tuple<double, double, double, double>>> fSourceEnergy;   ///< vector to hold source energy, energy uncertainty, intensity, and intensity uncertainty
+   std::vector<int>                                                     fActiveBins;
    std::vector<int>                                                     fActualChannelId;
    std::vector<const char*>                                             fChannelLabel;
 
