@@ -164,46 +164,47 @@ $(document).ready(function(){initNavTree('_t_aries_hit_8cxx_source.html',''); in
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="class_t_aries_hit.html#afa7a7da709ae3ae4277068459b0d3f4c">   49</a></span>TVector3 <a class="code hl_function" href="class_t_aries_hit.html#a3eb53da829ccb0bbe620c1d4e7751df7">TAriesHit::GetPosition</a>(Double_t)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>   <span class="comment">// Gets the position of the current TAriesHit</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>   <span class="keywordflow">return</span> <a class="code hl_function" href="class_t_aries.html#ad75bcec9b7654ffc6c3c0e1c8484cafa">TAries::GetPosition</a>(<a class="code hl_function" href="class_t_detector_hit.html#ab4f4c27b4ee3c8d8b24db08ae85c2fb0">GetDetector</a>());</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>   <span class="keyword">auto</span> vec = <a class="code hl_function" href="class_t_aries.html#a652ef79547a9700229cde13ec0944718">TAries::GetPosition</a>(<a class="code hl_function" href="class_t_detector_hit.html#ab4f4c27b4ee3c8d8b24db08ae85c2fb0">GetDetector</a>());</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>   <span class="keywordflow">return</span> {vec.X(), vec.Y(), vec.Z()};</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
 </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="class_t_aries_hit.html#a3eb53da829ccb0bbe620c1d4e7751df7">   55</a></span>TVector3 <a class="code hl_function" href="class_t_aries_hit.html#a3eb53da829ccb0bbe620c1d4e7751df7">TAriesHit::GetPosition</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>   <span class="comment">// Gets the position of the current TAriesHit</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>   <span class="keywordflow">return</span> <a class="code hl_function" href="class_t_aries_hit.html#a3eb53da829ccb0bbe620c1d4e7751df7">GetPosition</a>(<a class="code hl_function" href="class_t_aries_hit.html#adbba792c9fb28e5f422d40867bce64d3">GetDefaultDistance</a>());</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>}</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="class_t_aries_hit.html#a3eb53da829ccb0bbe620c1d4e7751df7">   56</a></span>TVector3 <a class="code hl_function" href="class_t_aries_hit.html#a3eb53da829ccb0bbe620c1d4e7751df7">TAriesHit::GetPosition</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>   <span class="comment">// Gets the position of the current TAriesHit</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>   <span class="keywordflow">return</span> <a class="code hl_function" href="class_t_aries_hit.html#a3eb53da829ccb0bbe620c1d4e7751df7">GetPosition</a>(<a class="code hl_function" href="class_t_aries_hit.html#adbba792c9fb28e5f422d40867bce64d3">GetDefaultDistance</a>());</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}</div>
 </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="foldopen" id="foldopen00061" data-start="{" data-end="}">
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="class_t_aries_hit.html#a93af2e90a0f9dcc45fdc04f26d9eea1f">   61</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_aries_hit.html#a93af2e90a0f9dcc45fdc04f26d9eea1f">TAriesHit::Clear</a>(Option_t*)</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>{</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>   <span class="comment">// Clears the AriesHit</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>   <a class="code hl_function" href="class_t_detector_hit.html#ab093aac325d01630f7770301deabdd89">TDetectorHit::Clear</a>();</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="class_t_aries_hit.html#a93af2e90a0f9dcc45fdc04f26d9eea1f">   62</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_aries_hit.html#a93af2e90a0f9dcc45fdc04f26d9eea1f">TAriesHit::Clear</a>(Option_t*)</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>{</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>   <span class="comment">// Clears the AriesHit</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>   <a class="code hl_function" href="class_t_detector_hit.html#ab093aac325d01630f7770301deabdd89">TDetectorHit::Clear</a>();</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}</div>
 </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="class_t_aries_hit.html#a71701472792b94496d9d4e118d6bbbf4">   67</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_aries_hit.html#a71701472792b94496d9d4e118d6bbbf4">TAriesHit::Print</a>(Option_t*)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword"></span>{<span class="comment"></span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">   /// Prints the AriesHit. Returns:</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment">   /// Detector</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">   /// Energy</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">   /// Time</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment"></span>   <a class="code hl_function" href="class_t_aries_hit.html#a71701472792b94496d9d4e118d6bbbf4">Print</a>(std::cout);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>}</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="class_t_aries_hit.html#a71701472792b94496d9d4e118d6bbbf4">   68</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_aries_hit.html#a71701472792b94496d9d4e118d6bbbf4">TAriesHit::Print</a>(Option_t*)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword"></span>{<span class="comment"></span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment">   /// Prints the AriesHit. Returns:</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">   /// Detector</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">   /// Energy</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">   /// Time</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment"></span>   <a class="code hl_function" href="class_t_aries_hit.html#a71701472792b94496d9d4e118d6bbbf4">Print</a>(std::cout);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>
 </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="foldopen" id="foldopen00076" data-start="{" data-end="}">
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="class_t_aries_hit.html#afb7449f8b2608491dbb15df9a29ef49f">   76</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_aries_hit.html#a71701472792b94496d9d4e118d6bbbf4">TAriesHit::Print</a>(std::ostream&amp; out)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>   std::ostringstream str;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>   str &lt;&lt; <span class="stringliteral">&quot;Aries Detector:   &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#ab4f4c27b4ee3c8d8b24db08ae85c2fb0">GetDetector</a>() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>   str &lt;&lt; <span class="stringliteral">&quot;Aries hit energy: &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#a3051f50c2e5a1ba895c3b11e8c1b00a3">GetEnergy</a>() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>   str &lt;&lt; <span class="stringliteral">&quot;Aries hit time:   &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#aba5e96b2f172f0e12eb2b6e06af5a735">GetTime</a>() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>   out &lt;&lt; str.str();</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>}</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="foldopen" id="foldopen00077" data-start="{" data-end="}">
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="class_t_aries_hit.html#afb7449f8b2608491dbb15df9a29ef49f">   77</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_aries_hit.html#a71701472792b94496d9d4e118d6bbbf4">TAriesHit::Print</a>(std::ostream&amp; out)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>   std::ostringstream str;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>   str &lt;&lt; <span class="stringliteral">&quot;Aries Detector:   &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#ab4f4c27b4ee3c8d8b24db08ae85c2fb0">GetDetector</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>   str &lt;&lt; <span class="stringliteral">&quot;Aries hit energy: &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#a3051f50c2e5a1ba895c3b11e8c1b00a3">GetEnergy</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>   str &lt;&lt; <span class="stringliteral">&quot;Aries hit time:   &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#aba5e96b2f172f0e12eb2b6e06af5a735">GetTime</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>   out &lt;&lt; str.str();</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>}</div>
 </div>
 <div class="ttc" id="a_globals_8h_html"><div class="ttname"><a href="_globals_8h.html">Globals.h</a></div></div>
 <div class="ttc" id="a_t_aries_8h_html"><div class="ttname"><a href="_t_aries_8h.html">TAries.h</a></div></div>
@@ -211,13 +212,13 @@ $(document).ready(function(){initNavTree('_t_aries_hit_8cxx_source.html',''); in
 <div class="ttc" id="a_t_g_r_s_i_options_8h_html"><div class="ttname"><a href="_t_g_r_s_i_options_8h.html">TGRSIOptions.h</a></div></div>
 <div class="ttc" id="aclass_t_aries_hit_html"><div class="ttname"><a href="class_t_aries_hit.html">TAriesHit</a></div><div class="ttdef"><b>Definition</b> <a href="_t_aries_hit_8h_source.html#l00028">TAriesHit.h:28</a></div></div>
 <div class="ttc" id="aclass_t_aries_hit_html_a13fe4d25d77ee11036de93a51fef6018"><div class="ttname"><a href="class_t_aries_hit.html#a13fe4d25d77ee11036de93a51fef6018">TAriesHit::TAriesHit</a></div><div class="ttdeci">TAriesHit()</div><div class="ttdef"><b>Definition</b> <a href="_t_aries_hit_8cxx_source.html#l00011">TAriesHit.cxx:11</a></div></div>
-<div class="ttc" id="aclass_t_aries_hit_html_a3eb53da829ccb0bbe620c1d4e7751df7"><div class="ttname"><a href="class_t_aries_hit.html#a3eb53da829ccb0bbe620c1d4e7751df7">TAriesHit::GetPosition</a></div><div class="ttdeci">TVector3 GetPosition() const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_aries_hit_8cxx_source.html#l00055">TAriesHit.cxx:55</a></div></div>
-<div class="ttc" id="aclass_t_aries_hit_html_a71701472792b94496d9d4e118d6bbbf4"><div class="ttname"><a href="class_t_aries_hit.html#a71701472792b94496d9d4e118d6bbbf4">TAriesHit::Print</a></div><div class="ttdeci">void Print(Option_t *opt=&quot;&quot;) const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_aries_hit_8cxx_source.html#l00067">TAriesHit.cxx:67</a></div></div>
-<div class="ttc" id="aclass_t_aries_hit_html_a93af2e90a0f9dcc45fdc04f26d9eea1f"><div class="ttname"><a href="class_t_aries_hit.html#a93af2e90a0f9dcc45fdc04f26d9eea1f">TAriesHit::Clear</a></div><div class="ttdeci">void Clear(Option_t *opt=&quot;&quot;) override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_aries_hit_8cxx_source.html#l00061">TAriesHit.cxx:61</a></div></div>
+<div class="ttc" id="aclass_t_aries_hit_html_a3eb53da829ccb0bbe620c1d4e7751df7"><div class="ttname"><a href="class_t_aries_hit.html#a3eb53da829ccb0bbe620c1d4e7751df7">TAriesHit::GetPosition</a></div><div class="ttdeci">TVector3 GetPosition() const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_aries_hit_8cxx_source.html#l00056">TAriesHit.cxx:56</a></div></div>
+<div class="ttc" id="aclass_t_aries_hit_html_a71701472792b94496d9d4e118d6bbbf4"><div class="ttname"><a href="class_t_aries_hit.html#a71701472792b94496d9d4e118d6bbbf4">TAriesHit::Print</a></div><div class="ttdeci">void Print(Option_t *opt=&quot;&quot;) const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_aries_hit_8cxx_source.html#l00068">TAriesHit.cxx:68</a></div></div>
+<div class="ttc" id="aclass_t_aries_hit_html_a93af2e90a0f9dcc45fdc04f26d9eea1f"><div class="ttname"><a href="class_t_aries_hit.html#a93af2e90a0f9dcc45fdc04f26d9eea1f">TAriesHit::Clear</a></div><div class="ttdeci">void Clear(Option_t *opt=&quot;&quot;) override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_aries_hit_8cxx_source.html#l00062">TAriesHit.cxx:62</a></div></div>
 <div class="ttc" id="aclass_t_aries_hit_html_acd9aa1f2bd9141191bba0785177bf241"><div class="ttname"><a href="class_t_aries_hit.html#acd9aa1f2bd9141191bba0785177bf241">TAriesHit::Copy</a></div><div class="ttdeci">void Copy(TObject &amp;) const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_aries_hit_8cxx_source.html#l00035">TAriesHit.cxx:35</a></div></div>
 <div class="ttc" id="aclass_t_aries_hit_html_adbba792c9fb28e5f422d40867bce64d3"><div class="ttname"><a href="class_t_aries_hit.html#adbba792c9fb28e5f422d40867bce64d3">TAriesHit::GetDefaultDistance</a></div><div class="ttdeci">Double_t GetDefaultDistance() const</div><div class="ttdef"><b>Definition</b> <a href="_t_aries_hit_8h_source.html#l00048">TAriesHit.h:48</a></div></div>
+<div class="ttc" id="aclass_t_aries_html_a652ef79547a9700229cde13ec0944718"><div class="ttname"><a href="class_t_aries.html#a652ef79547a9700229cde13ec0944718">TAries::GetPosition</a></div><div class="ttdeci">static ROOT::Math::Polar3DVector GetPosition(int DetNbr)</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_aries_8h_source.html#l00042">TAries.h:42</a></div></div>
 <div class="ttc" id="aclass_t_aries_html_acd88809e8f703718809c506ba7fe0021"><div class="ttname"><a href="class_t_aries.html#acd88809e8f703718809c506ba7fe0021">TAries::SetWave</a></div><div class="ttdeci">static bool SetWave()</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_aries_8h_source.html#l00044">TAries.h:44</a></div></div>
-<div class="ttc" id="aclass_t_aries_html_ad75bcec9b7654ffc6c3c0e1c8484cafa"><div class="ttname"><a href="class_t_aries.html#ad75bcec9b7654ffc6c3c0e1c8484cafa">TAries::GetPosition</a></div><div class="ttdeci">static TVector3 GetPosition(int DetNbr)</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_aries_8h_source.html#l00042">TAries.h:42</a></div></div>
 <div class="ttc" id="aclass_t_detector_hit_html"><div class="ttname"><a href="class_t_detector_hit.html">TDetectorHit</a></div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00048">TDetectorHit.h:48</a></div></div>
 <div class="ttc" id="aclass_t_detector_hit_html_a3051f50c2e5a1ba895c3b11e8c1b00a3"><div class="ttname"><a href="class_t_detector_hit.html#a3051f50c2e5a1ba895c3b11e8c1b00a3">TDetectorHit::GetEnergy</a></div><div class="ttdeci">virtual double GetEnergy(Option_t *opt=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8cxx_source.html#l00077">TDetectorHit.cxx:77</a></div></div>
 <div class="ttc" id="aclass_t_detector_hit_html_a45f6f286087d7dcbebfd38313f09892b"><div class="ttname"><a href="class_t_detector_hit.html#a45f6f286087d7dcbebfd38313f09892b">TDetectorHit::GetWaveform</a></div><div class="ttdeci">const std::vector&lt; Short_t &gt; * GetWaveform() const</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00147">TDetectorHit.h:147</a></div></div>
@@ -234,7 +235,7 @@ $(document).ready(function(){initNavTree('_t_aries_hit_8cxx_source.html',''); in
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_04ded5cb9506aadc0b6d1c08d3b0ca72.html">libraries</a></li><li class="navelem"><a class="el" href="dir_f1ca9974b6d60d8551858194bc4a7b28.html">TGRSIAnalysis</a></li><li class="navelem"><a class="el" href="dir_d5f934202f62ae6ddbc25736b529fd6d.html">TAries</a></li><li class="navelem"><a class="el" href="_t_aries_hit_8cxx.html">TAriesHit.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Oct 29 2024 18:27:26.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Oct 30 2024 16:44:15.</li>
   </ul>
 </div>
 </body>

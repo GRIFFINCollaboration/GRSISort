@@ -100,11 +100,15 @@ $(document).ready(function(){initNavTree('class_t_redirect.html',''); initResiza
 
 <p>This is the complete list of members for <a class="el" href="class_t_redirect.html">TRedirect</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="class_t_redirect.html#ab05b4078fd1c438993b8a8c7b5cdd275">fStdErrFileDescriptor</a></td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_t_redirect.html#aef4ab0252d817e6a353a5b9330a83e48">fStdOutFileDescriptor</a></td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_t_redirect.html#aba3334052e29a6277c41b08c88f9a1f6">operator=</a>(const TRedirect &amp;)=delete</td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_t_redirect.html#ac9637de0fed5ab8dff42f8d9c2c0d360">operator=</a>(TRedirect &amp;&amp;)=delete</td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_t_redirect.html#a8a087bdd437aab45bc5719489fc81b7d">Redirect</a>(const char *newOut, const char *newErr, bool append)</td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_redirect.html#af4166deebd651b26baa64006d302d0a0">ErrFile</a>()</td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_redirect.html#ae75be8c1abf770ca3ddc1628ee479169">fErrFile</a></td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_redirect.html#af150acb9bf84e48c725e8d2dc15e17f1">fOutFile</a></td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_redirect.html#ab05b4078fd1c438993b8a8c7b5cdd275">fStdErrFileDescriptor</a></td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_redirect.html#aef4ab0252d817e6a353a5b9330a83e48">fStdOutFileDescriptor</a></td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_redirect.html#aba3334052e29a6277c41b08c88f9a1f6">operator=</a>(const TRedirect &amp;)=delete</td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_redirect.html#ac9637de0fed5ab8dff42f8d9c2c0d360">operator=</a>(TRedirect &amp;&amp;)=delete</td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_t_redirect.html#a974f135aef0f67800550df87543a604d">OutFile</a>()</td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_t_redirect.html#a0ec631058062ddb2ee06c0c067034045">Redirect</a>(bool append)</td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">private</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_redirect.html#a0deb43df52f90cd29144d9ba6a0e9659">TRedirect</a>(const char *newOut, const char *newErr, bool append=true)</td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_t_redirect.html#a830b6914eb6b92088e0b3e8d4680339a">TRedirect</a>(const char *newOut, bool append=true)</td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_t_redirect.html#a85d367a21828762764179ec2b4be8064">TRedirect</a>(const TRedirect &amp;)=delete</td><td class="entry"><a class="el" href="class_t_redirect.html">TRedirect</a></td><td class="entry"></td></tr>
@@ -116,7 +120,7 @@ $(document).ready(function(){initNavTree('class_t_redirect.html',''); initResiza
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Oct 29 2024 18:27:34.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Oct 30 2024 16:44:23.</li>
   </ul>
 </div>
 </body>

@@ -14,7 +14,7 @@ var class_t_aries =
     [ "GetHit", "class_t_aries.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_aries.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_aries.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
-    [ "GetPosition", "class_t_aries.html#ad75bcec9b7654ffc6c3c0e1c8484cafa", null ],
+    [ "GetPosition", "class_t_aries.html#a652ef79547a9700229cde13ec0944718", null ],
     [ "Hits", "class_t_aries.html#acbf359f899b738719e19bb326e45c790", null ],
     [ "Hits", "class_t_aries.html#ab907981ce861ab147879469064748ae2", null ],
     [ "NoHits", "class_t_aries.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
@@ -24,6 +24,6 @@ var class_t_aries =
     [ "Print", "class_t_aries.html#a661ee1db18b3e70d6efc0060739fdfbb", null ],
     [ "SetWave", "class_t_aries.html#acd88809e8f703718809c506ba7fe0021", null ],
     [ "fHits", "class_t_aries.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ],
-    [ "fPaddlePosition", "class_t_aries.html#abe333d98958b1b85fa977576f91d8abc", null ],
+    [ "fPaddlePosition", "class_t_aries.html#a2fd13c04622e3845c5f243dc21da4d02", null ],
     [ "fSetWave", "class_t_aries.html#a9202f36865ee81a46ff76fed4597d26f", null ]
 ];
