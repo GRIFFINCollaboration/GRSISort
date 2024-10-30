@@ -213,6 +213,233 @@ bool RemovePeaks(TH1** hists, unsigned int nhists)
    return flag;
 }
 
+std::vector<TH1*> FindHists(int dim)
+{
+   std::vector<TH1*> tempVec;
+   for(auto* obj : *(gPad->GetListOfPrimitives())) {
+      if(obj->InheritsFrom(TH1::Class())) {
+         TH1* hist = static_cast<TH1*>(obj);
+         if(hist->GetDimension() == dim) {
+            tempVec.push_back(hist);
+         }
+      }
+   }
+   return tempVec;
+}
+
+bool Move1DHistogram(const Int_t& key, TH1* histogram)
+{
+   /// Moves displayed 1D histograms by 50% of the visible range left, right.
+	/// For "normal" TH1 histograms up/down scales the y-axis up/down by a factor of 2.
+	/// For GH1D histograms up/down selects the next (up) or previous (down) GH1D histogram.
+   bool              edited = false;
+   std::vector<TH1*> hists;
+	if(histogram != nullptr) {
+		hists.push_back(histogram);
+	} else {
+		hists = FindHists(1);
+	}
+   if(hists.empty()) {
+      return edited;
+   }
+
+   // get first and last bin in current range
+   int first = hists.at(0)->GetXaxis()->GetFirst();
+   int last  = hists.at(0)->GetXaxis()->GetLast();
+
+   // first is 1 if no range is defined but can be 0, last is fNbins if no range is defined but can be 0
+   // so min will always be 0, and max will always be fNbins+1
+   int min = std::min(first, 0);
+   int max = std::max(last, hists.at(0)->GetXaxis()->GetNbins() + 1);
+
+   int xdiff = last - first;
+   int mdiff = max - min - 2;   // this will always be fNbins-1
+
+	// try and cast histogram to GH1D, will be a null pointer if the histogram is not a GH1D
+	GH1D* gHist = dynamic_cast<GH1D*>(hists.at(0));
+
+	// get current y-range
+	double yMin = hists.at(0)->GetMinimum();
+	double yMax = hists.at(0)->GetMaximum();
+
+	switch(key) {
+		case kGRSIArrowLeft:
+			if(mdiff > xdiff) {
+				// try and move left by half the current range
+				if(first == (min + 1)) {
+					// if first is 1 we can't go any further left
+				} else if((first - (xdiff / 2)) < min) {
+					first = min + 1;
+					last  = min + (xdiff) + 1;
+				} else {
+					first = first - (xdiff / 2);
+					last  = last - (xdiff / 2);
+				}
+			}
+			for(auto* hist : hists) {
+				hist->GetXaxis()->SetRange(first, last);
+			}
+			edited = true;
+			break;
+		case kGRSIArrowRight: 
+			if(mdiff > xdiff) {
+				// try and move right by half the current range
+				if(last == (max - 1)) {
+					// last is fNbins so we can't move further right
+				} else if((last + (xdiff / 2)) > max) {
+					first = max - 1 - (xdiff);
+					last  = max - 1;
+				} else {
+					last  = last + (xdiff / 2);
+					first = first + (xdiff / 2);
+				}
+			}
+			for(auto* hist : hists) {
+				hist->GetXaxis()->SetRange(first, last);
+			}
+
+			edited = true;
+			break;
+		case kGRSIArrowUp:
+			if(gHist != nullptr) {
+				TH1* next = gHist->GetNext();
+				if(next != nullptr) {
+					next->GetXaxis()->SetRange(first, last);
+					next->Draw("");
+					edited = true;
+				}
+			} else {
+				for(auto* hist : hists) {
+					hist->GetYaxis()->SetRangeUser(yMin, yMin + (yMax - yMin)/2.);
+				}
+			}
+			break;
+
+		case kGRSIArrowDown: 
+			if(gHist != nullptr) {
+				TH1* prev = gHist->GetPrevious();
+				if(prev != nullptr) {
+					prev->GetXaxis()->SetRange(first, last);
+					prev->Draw("");
+					edited = true;
+				} 
+			} else {
+				for(auto* hist : hists) {
+					hist->GetYaxis()->SetRangeUser(yMin, yMin + (yMax - yMin)*2.);
+				}
+			}
+			break;
+		default: 
+			std::cout << "unknown key = " << key << std::endl;
+			break;
+	}
+	return edited;
+}
+
+bool Move2DHistogram(const Int_t& key, TH2* histogram)
+{
+   /// Moves displayed 2D histograms by 50% of the visible range left, right, up, or down
+
+   bool              edited = false;
+   std::vector<TH1*> hists;
+	if(histogram != nullptr) {
+		hists.push_back(histogram);
+	} else {
+		hists = FindHists(2);
+	}
+
+	int firstX = hists.at(0)->GetXaxis()->GetFirst();
+	int lastX  = hists.at(0)->GetXaxis()->GetLast();
+   int firstY = hists.at(0)->GetYaxis()->GetFirst();
+	int lastY  = hists.at(0)->GetYaxis()->GetLast();
+
+	int minX = std::min(firstX, 0);
+	int maxX = std::max(lastX, hists.at(0)->GetXaxis()->GetNbins() + 1);
+   int minY = std::min(firstY, 0);
+   int maxY = std::max(lastY, hists.at(0)->GetYaxis()->GetNbins() + 1);
+
+   int xdiff  = lastX - firstX;
+   int mxdiff = maxX - minX - 2;
+   int ydiff  = lastY - firstY;
+   int mydiff = maxY - minY - 2;
+
+	switch(key) {
+		case kGRSIArrowLeft:
+			if(mxdiff > xdiff) {
+				if(firstX == (minX + 1)) {
+				} else if((firstX - (xdiff / 2)) < minX) {
+					firstX = minX + 1;
+					lastX  = minX + (xdiff) + 1;
+				} else {
+					firstX = firstX - (xdiff / 2);
+					lastX  = lastX - (xdiff / 2);
+				}
+			}
+			for(auto* hist : hists) {
+				hist->GetXaxis()->SetRange(firstX, lastX);
+			}
+
+			edited = true;
+			break;
+		case kGRSIArrowRight:
+			if(mxdiff > xdiff) {
+				if(lastX == (maxX - 1)) {
+				} else if((lastX + (xdiff / 2)) > maxX) {
+					firstX = maxX - 1 - (xdiff);
+					lastX  = maxX - 1;
+				} else {
+					lastX  = lastX + (xdiff / 2);
+					firstX = firstX + (xdiff / 2);
+				}
+			}
+			for(auto* hist : hists) {
+				hist->GetXaxis()->SetRange(firstX, lastX);
+			}
+
+			edited = true;
+			break;
+		case kGRSIArrowUp:
+			if(mydiff > ydiff) {
+				if(lastY == (maxY - 1)) {
+				} else if((lastY + (ydiff / 2)) > maxY) {
+					firstY = maxY - 1 - ydiff;
+					lastY  = maxY - 1;
+				} else {
+					firstY = firstY + (ydiff / 2);
+					lastY  = lastY + (ydiff / 2);
+				}
+			}
+			for(auto* hist : hists) {
+				hist->GetYaxis()->SetRange(firstY, lastY);
+			}
+
+			edited = true;
+			break;
+		case kGRSIArrowDown:
+			if(mydiff > ydiff) {
+				if(firstY == (minY + 1)) {
+					//
+				} else if((firstY - (ydiff / 2)) < minY) {
+					firstY = minY + 1;
+					lastY  = minY + (ydiff) + 1;
+				} else {
+					firstY = firstY - (ydiff / 2);
+					lastY  = lastY - (ydiff / 2);
+				}
+			}
+			for(auto* hist : hists) {
+				hist->GetYaxis()->SetRange(firstY, lastY);
+			}
+
+			edited = true;
+			break;
+		default:
+			std::cout << "unknown key = " << key << std::endl;
+			break;
+	}
+	return edited;
+}
+
 // bool PeakFit(TH1 *hist,Double_t xlow, Double_t xhigh,Option_t *opt) {
 //  if(!hist)
 //   return;
@@ -221,198 +448,198 @@ bool RemovePeaks(TH1** hists, unsigned int nhists)
 
 GGaus* GausFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 {
-   // bool edit = false;
-   if(hist == nullptr) {
-      return nullptr;
-   }
-   if(xlow > xhigh) {
-      std::swap(xlow, xhigh);
-   }
+	// bool edit = false;
+	if(hist == nullptr) {
+		return nullptr;
+	}
+	if(xlow > xhigh) {
+		std::swap(xlow, xhigh);
+	}
 
-   // std::cout<<"here."<<std::endl;
+	// std::cout<<"here."<<std::endl;
 
-   auto*       mypeak  = new GGaus(xlow, xhigh);
-   std::string options = opt;
-   options.append("Q+");
-   mypeak->Fit(hist, options.c_str());
-   // mypeak->Background()->Draw("SAME");
-   auto* bg = new TF1(*mypeak->Background());
-   hist->GetListOfFunctions()->Add(bg);
-   // edit = true;
+	auto*       mypeak  = new GGaus(xlow, xhigh);
+	std::string options = opt;
+	options.append("Q+");
+	mypeak->Fit(hist, options.c_str());
+	// mypeak->Background()->Draw("SAME");
+	auto* bg = new TF1(*mypeak->Background());
+	hist->GetListOfFunctions()->Add(bg);
+	// edit = true;
 
-   return mypeak;
+	return mypeak;
 }
 
 TF1* DoubleGausFit(TH1* hist, double, double, double xlow, double xhigh, Option_t* opt)
 {
-   if(hist == nullptr) {
-      return nullptr;
-   }
-   if(xlow > xhigh) {
-      std::swap(xlow, xhigh);
-   }
+	if(hist == nullptr) {
+		return nullptr;
+	}
+	if(xlow > xhigh) {
+		std::swap(xlow, xhigh);
+	}
 
-   // std::cout<<"here."<<std::endl;
+	// std::cout<<"here."<<std::endl;
 
-   auto*       mypeak  = new GGaus(xlow, xhigh);
-   std::string options = opt;
-   options.append("Q+");
-   mypeak->Fit(hist, options.c_str());
-   // mypeak->Background()->Draw("SAME");
-   auto* bg = new TF1(*mypeak->Background());
-   hist->GetListOfFunctions()->Add(bg);
-   // edit = true;
+	auto*       mypeak  = new GGaus(xlow, xhigh);
+	std::string options = opt;
+	options.append("Q+");
+	mypeak->Fit(hist, options.c_str());
+	// mypeak->Background()->Draw("SAME");
+	auto* bg = new TF1(*mypeak->Background());
+	hist->GetListOfFunctions()->Add(bg);
+	// edit = true;
 
-   return mypeak;
+	return mypeak;
 }
 
 GPeak* PhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 {
-   // bool edit = 0;
-   if(hist == nullptr) {
-      return nullptr;
-   }
-   if(xlow > xhigh) {
-      std::swap(xlow, xhigh);
-   }
+	// bool edit = 0;
+	if(hist == nullptr) {
+		return nullptr;
+	}
+	if(xlow > xhigh) {
+		std::swap(xlow, xhigh);
+	}
 
-   auto*       mypeak  = new GPeak((xlow + xhigh) / 2.0, xlow, xhigh);
-   std::string options = opt;
-   options.append("+");
-   mypeak->Fit(hist, options.c_str());
-   auto* bg = new TF1(*mypeak->Background());
-   hist->GetListOfFunctions()->Add(bg);
+	auto*       mypeak  = new GPeak((xlow + xhigh) / 2.0, xlow, xhigh);
+	std::string options = opt;
+	options.append("+");
+	mypeak->Fit(hist, options.c_str());
+	auto* bg = new TF1(*mypeak->Background());
+	hist->GetListOfFunctions()->Add(bg);
 
-   return mypeak;
+	return mypeak;
 }
 
 TPeak* AltPhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 {
-   // bool edit = 0;
-   if(hist == nullptr) {
-      return nullptr;
-   }
-   if(xlow > xhigh) {
-      std::swap(xlow, xhigh);
-   }
+	// bool edit = 0;
+	if(hist == nullptr) {
+		return nullptr;
+	}
+	if(xlow > xhigh) {
+		std::swap(xlow, xhigh);
+	}
 
-   // std::cout<<"here."<<std::endl;
+	// std::cout<<"here."<<std::endl;
 
-   auto* mypeak = new TPeak((xlow + xhigh) / 2.0, xlow, xhigh);
-   mypeak->Fit(hist, opt);
-   // mypeak->Background()->Draw("SAME");
-   auto* bg = new TF1(*mypeak->Background());
-   hist->GetListOfFunctions()->Add(bg);
-   // edit = true;
+	auto* mypeak = new TPeak((xlow + xhigh) / 2.0, xlow, xhigh);
+	mypeak->Fit(hist, opt);
+	// mypeak->Background()->Draw("SAME");
+	auto* bg = new TF1(*mypeak->Background());
+	hist->GetListOfFunctions()->Add(bg);
+	// edit = true;
 
-   return mypeak;
+	return mypeak;
 }
 
 std::string MergeStrings(const std::vector<std::string>& strings, char split)
 {
-   std::ostringstream ss;
-   for(auto it = strings.begin(); it != strings.end(); it++) {
-      ss << *it;
+	std::ostringstream ss;
+	for(auto it = strings.begin(); it != strings.end(); it++) {
+		ss << *it;
 
-      auto next = it;
-      next++;
-      if(next != strings.end()) {
-         ss << split;
-      }
-   }
-   return ss.str();
+		auto next = it;
+		next++;
+		if(next != strings.end()) {
+			ss << split;
+		}
+	}
+	return ss.str();
 }
 
 TH1* GrabHist(int i)
 {
-   // return the histogram from the current canvas, pad i.
-   TH1* hist = nullptr;
-   if(!gPad) {
-      return hist;
-   }
-   TIter iter(gPad->GetListOfPrimitives());
-   int   j = 0;
-   while(TObject* obj = iter.Next()) {
-      if(obj->InheritsFrom(TH1::Class())) {
-         if(j == i) {
-            hist = static_cast<TH1*>(obj);
-            break;
-         }
-         j++;
-      }
-   }
-   return hist;
+	// return the histogram from the current canvas, pad i.
+	TH1* hist = nullptr;
+	if(!gPad) {
+		return hist;
+	}
+	TIter iter(gPad->GetListOfPrimitives());
+	int   j = 0;
+	while(TObject* obj = iter.Next()) {
+		if(obj->InheritsFrom(TH1::Class())) {
+			if(j == i) {
+				hist = static_cast<TH1*>(obj);
+				break;
+			}
+			j++;
+		}
+	}
+	return hist;
 }
 
 TF1* GrabFit(int i)
 {
-   // return the histogram from the current canvas, pad i.
-   TH1* hist = nullptr;
-   TF1* fit  = nullptr;
-   if(!gPad) {
-      return fit;
-   }
-   TIter iter(gPad->GetListOfPrimitives());
-   int   j = 0;
-   while(TObject* obj = iter.Next()) {
-      if(obj->InheritsFrom(TH1::Class())) {
-         hist = static_cast<TH1*>(obj);
-         TIter iter2(hist->GetListOfFunctions());
-         while(TObject* obj2 = iter2.Next()) {
-            if(obj2->InheritsFrom(TF1::Class())) {
-               if(j == i) {
-                  fit = static_cast<TF1*>(obj2);
-                  return fit;
-               }
-               j++;
-            }
-         }
-      }
-   }
-   return fit;
+	// return the histogram from the current canvas, pad i.
+	TH1* hist = nullptr;
+	TF1* fit  = nullptr;
+	if(!gPad) {
+		return fit;
+	}
+	TIter iter(gPad->GetListOfPrimitives());
+	int   j = 0;
+	while(TObject* obj = iter.Next()) {
+		if(obj->InheritsFrom(TH1::Class())) {
+			hist = static_cast<TH1*>(obj);
+			TIter iter2(hist->GetListOfFunctions());
+			while(TObject* obj2 = iter2.Next()) {
+				if(obj2->InheritsFrom(TF1::Class())) {
+					if(j == i) {
+						fit = static_cast<TF1*>(obj2);
+						return fit;
+					}
+					j++;
+				}
+			}
+		}
+	}
+	return fit;
 }
 
 namespace {
-bool gui_is_running = false;
+	bool gui_is_running = false;
 }
 
 #ifdef HAS_CORRECT_PYTHON_VERSION
 void StartGUI()
 {
-   std::string   script_filename = Form("%s/pygui/grut-view.py", getenv("GRSISYS"));
-   std::ifstream script(script_filename);
-   std::string   script_text((std::istreambuf_iterator<char>(script)), std::istreambuf_iterator<char>());
-   TPython::Exec(script_text.c_str());
+	std::string   script_filename = Form("%s/pygui/grut-view.py", getenv("GRSISYS"));
+	std::ifstream script(script_filename);
+	std::string   script_text((std::istreambuf_iterator<char>(script)), std::istreambuf_iterator<char>());
+	TPython::Exec(script_text.c_str());
 
-   auto* gui_timer = new TTimer(R"lit(TPython::Exec("update()");)lit", 10, true);
-   gui_timer->TurnOn();
+	auto* gui_timer = new TTimer(R"lit(TPython::Exec("update()");)lit", 10, true);
+	gui_timer->TurnOn();
 
-   gui_is_running = true;
-   for(int i = 0; i < gROOT->GetListOfFiles()->GetSize(); i++) {
-      TPython::Bind(static_cast<TFile*>(gROOT->GetListOfFiles()->At(i)), "tdir");
-      gROOT->ProcessLine(R"lit(TPython::Exec("window.AddDirectory(tdir)");)lit");
-   }
+	gui_is_running = true;
+	for(int i = 0; i < gROOT->GetListOfFiles()->GetSize(); i++) {
+		TPython::Bind(static_cast<TFile*>(gROOT->GetListOfFiles()->At(i)), "tdir");
+		gROOT->ProcessLine(R"lit(TPython::Exec("window.AddDirectory(tdir)");)lit");
+	}
 }
 #else
 void StartGUI()
 {
-   std::cout << "Cannot start gui, requires ROOT compiled against python 2.7" << std::endl;
+	std::cout << "Cannot start gui, requires ROOT compiled against python 2.7" << std::endl;
 }
 #endif
 
 bool GUIIsRunning()
 {
-   return gui_is_running;
+	return gui_is_running;
 }
 
 #ifdef HAS_CORRECT_PYTHON_VERSION
 void AddFileToGUI(TFile* file)
 {
-   // Pass the TFile to the python GUI.
-   if((file != nullptr) && GUIIsRunning()) {
-      TPython::Bind(file, "tdir");
-      gROOT->ProcessLine(R"lit(TPython::Exec("window.AddDirectory(tdir)");)lit");
-   }
+	// Pass the TFile to the python GUI.
+	if((file != nullptr) && GUIIsRunning()) {
+		TPython::Bind(file, "tdir");
+		gROOT->ProcessLine(R"lit(TPython::Exec("window.AddDirectory(tdir)");)lit");
+	}
 }
 #else
 void AddFileToGUI(TFile*)
@@ -422,37 +649,37 @@ void AddFileToGUI(TFile*)
 
 TH2* AddOffset(TH2* mat, double offset, EAxis axis)
 {
-   TH2* toreturn = nullptr;
-   if(mat == nullptr) {
-      return toreturn;
-   }
-   // int dim = mat->GetDimension();
-   int xmax = mat->GetXaxis()->GetNbins() + 1;
-   int ymax = mat->GetYaxis()->GetNbins() + 1;
-   toreturn = static_cast<TH2*>(mat->Clone(Form("%s_offset", mat->GetName())));
-   toreturn->Reset();
+	TH2* toreturn = nullptr;
+	if(mat == nullptr) {
+		return toreturn;
+	}
+	// int dim = mat->GetDimension();
+	int xmax = mat->GetXaxis()->GetNbins() + 1;
+	int ymax = mat->GetYaxis()->GetNbins() + 1;
+	toreturn = static_cast<TH2*>(mat->Clone(Form("%s_offset", mat->GetName())));
+	toreturn->Reset();
 
-   for(int x = 0; x < xmax; x++) {
-      for(int y = 0; y < ymax; y++) {
-         double newx = mat->GetXaxis()->GetBinCenter(x);
-         double newy = mat->GetYaxis()->GetBinCenter(y);
-         ;
-         double bcont = mat->GetBinContent(x, y);
-         if((axis & EAxis::kXAxis) != static_cast<EAxis>(0)) {
-            newx += offset;
-         }
-         if((axis & EAxis::kYAxis) != static_cast<EAxis>(0)) {
-            newy += offset;
-         }
-         toreturn->Fill(newx, newy, bcont);
-      }
-   }
-   return toreturn;
+	for(int x = 0; x < xmax; x++) {
+		for(int y = 0; y < ymax; y++) {
+			double newx = mat->GetXaxis()->GetBinCenter(x);
+			double newy = mat->GetYaxis()->GetBinCenter(y);
+			;
+			double bcont = mat->GetBinContent(x, y);
+			if((axis & EAxis::kXAxis) != static_cast<EAxis>(0)) {
+				newx += offset;
+			}
+			if((axis & EAxis::kYAxis) != static_cast<EAxis>(0)) {
+				newy += offset;
+			}
+			toreturn->Fill(newx, newy, bcont);
+		}
+	}
+	return toreturn;
 }
 
 EAxis operator&(EAxis lhs, EAxis rhs)
 {
-   return static_cast<EAxis>(
-      static_cast<std::underlying_type<EAxis>::type>(lhs) &
-      static_cast<std::underlying_type<EAxis>::type>(rhs));
+	return static_cast<EAxis>(
+			static_cast<std::underlying_type<EAxis>::type>(lhs) &
+			static_cast<std::underlying_type<EAxis>::type>(rhs));
 }
