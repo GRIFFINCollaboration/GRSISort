@@ -46,7 +46,7 @@ private:
 class TCalibrationGraphSet : public TNamed {
 public:
    explicit TCalibrationGraphSet(TGraphErrors* graph = nullptr, const std::string& label = "");
-   TCalibrationGraphSet(const std::string& xAxisLabel, const std::string& yAxisLabel);
+   TCalibrationGraphSet(std::string xAxisLabel, std::string yAxisLabel);
    ~TCalibrationGraphSet();
    TCalibrationGraphSet(const TCalibrationGraphSet&)     = default;
    TCalibrationGraphSet(TCalibrationGraphSet&&) noexcept = default;

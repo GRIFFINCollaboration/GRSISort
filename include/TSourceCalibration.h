@@ -44,7 +44,7 @@ class TChannelTab;
 
 class TSourceTab {
 public:
-   TSourceTab(TChannelTab* parent, TGCompositeFrame* frame, TH1D* projection, const double& sigma, const double& threshold, const int& degree, const std::vector<std::tuple<double, double, double, double>>& sourceEnergy);
+   TSourceTab(TChannelTab* parent, TGCompositeFrame* frame, TH1D* projection, const double& sigma, const double& threshold, const int& degree, std::vector<std::tuple<double, double, double, double>> sourceEnergy);
    TSourceTab(const TSourceTab& rhs);
    TSourceTab(TSourceTab&&) noexcept            = default;
    TSourceTab& operator=(const TSourceTab&)     = default;
