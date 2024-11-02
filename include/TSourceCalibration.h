@@ -120,7 +120,7 @@ public:
    TGraphErrors* Data(int channelId) const { return fSources[channelId]->Data(); }
    size_t        NumberOfSources() const { return fSources.size(); }
    std::string   Name() const { return fName; }
-	int           ActiveSourceTab() const { return fActiveSourceTab; }
+   int           ActiveSourceTab() const { return fActiveSourceTab; }
 
    static void ZoomX();
    static void ZoomY();
