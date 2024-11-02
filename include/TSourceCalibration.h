@@ -62,7 +62,7 @@ public:
 
    void SourceEnergy(std::vector<std::tuple<double, double, double, double>> val) { fSourceEnergy = std::move(val); }
 
-   TGraphErrors* Data() { return fData; }
+   TGraphErrors* Data() const { return fData; }
 
    void PrintLayout() const;
 
@@ -116,11 +116,11 @@ public:
    void          Calibrate();
    void          Calibrate(const int& degree, const bool& force = false);
    void          FindPeaks(const double& sigma, const double& threshold, const bool& force = false, const bool& fast = true);
-   TGTab*        SourceTab() { return fSourceTab; }
-   TGraphErrors* Data(int channelId) { return fSources[channelId]->Data(); }
-   size_t        NumberOfSources() { return fSources.size(); }
-	std::string   Name() { return fName; }
-	int           ActiveSourceTab() { return fActiveSourceTab; }
+   TGTab*        SourceTab() const { return fSourceTab; }
+   TGraphErrors* Data(int channelId) const { return fSources[channelId]->Data(); }
+   size_t        NumberOfSources() const { return fSources.size(); }
+	std::string   Name() const { return fName; }
+	int           ActiveSourceTab() const { return fActiveSourceTab; }
 
    static void ZoomX();
    static void ZoomY();

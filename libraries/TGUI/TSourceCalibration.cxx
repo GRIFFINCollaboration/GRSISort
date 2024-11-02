@@ -277,8 +277,8 @@ bool FilledBin(TH2* matrix, const int& bin)
 }
 
 //////////////////////////////////////// TSourceTab ////////////////////////////////////////
-TSourceTab::TSourceTab(TChannelTab* parent, TGCompositeFrame* frame, TH1D* projection, const double& sigma, const double& threshold, const int& degree, const std::vector<std::tuple<double, double, double, double>>& sourceEnergy)
-   : fParent(parent), fSourceFrame(frame), fProjection(projection), fSigma(sigma), fThreshold(threshold), fDegree(degree), fSourceEnergy(sourceEnergy)
+TSourceTab::TSourceTab(TChannelTab* parent, TGCompositeFrame* frame, TH1D* projection, const double& sigma, const double& threshold, const int& degree, std::vector<std::tuple<double, double, double, double>> sourceEnergy)
+   : fParent(parent), fSourceFrame(frame), fProjection(projection), fSigma(sigma), fThreshold(threshold), fDegree(degree), fSourceEnergy(std::move(sourceEnergy))
 {
    BuildInterface();
    FindPeaks(fSigma, fThreshold);
@@ -338,7 +338,7 @@ void TSourceTab::Disconnect()
 
 void TSourceTab::ProjectionStatus(Event_t* event)
 {
-	std::cout << __PRETTY_FUNCTION__ << std::endl;
+	std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 	std::cout << "code " << event->fCode << ", count " << event->fCount << ", state " << event->fState << ", type " << event->fType << std::endl;
 }
 
@@ -417,7 +417,7 @@ void TSourceTab::ProjectionStatus(Int_t event, Int_t px, Int_t py, TObject* sele
 		}
 	} else if(event == kButton1Down) {
 		// dragging mouse is kButton1Down, followed by kButton1Motion, and then kButton1Up
-		fRanges.push_back(std::make_pair(fProjectionCanvas->GetCanvas()->AbsPixeltoX(px), fProjectionCanvas->GetCanvas()->AbsPixeltoX(px)));
+		fRanges.emplace_back(fProjectionCanvas->GetCanvas()->AbsPixeltoX(px), fProjectionCanvas->GetCanvas()->AbsPixeltoX(px));
 	} else if(event == kButton1Motion) {
 		fRanges.back().second = fProjectionCanvas->GetCanvas()->AbsPixeltoX(px);
 		UpdateRange(fRanges.size()-1);
@@ -455,7 +455,7 @@ void TSourceTab::UpdateRange(const size_t& index)
 	}
 	fRangeBox[index]->SetX1(fRanges[index].first);
 	fRangeBox[index]->SetX2(fRanges[index].second);
-	if(TSourceCalibration::VerboseLevel()) {
+	if(TSourceCalibration::VerboseLevel() > 0) {
 		std::cout << "Updated range #" << index << " to " << fRanges[index].first << " - " << fRanges[index].second << std::endl;
 	}
 }
@@ -709,7 +709,7 @@ void TSourceTab::PrintLayout() const
 
 //////////////////////////////////////// TChannelTab ////////////////////////////////////////
 TChannelTab::TChannelTab(TSourceCalibration* parent, std::vector<TNucleus*> nuclei, std::vector<TH1D*> projections, std::string name, TGCompositeFrame* frame, double sigma, double threshold, int degree, std::vector<std::vector<std::tuple<double, double, double, double>>> sourceEnergies, TGHProgressBar* progressBar)
-   : fChannelFrame(frame), fSourceTab(new TGTab(frame, 600, 500)), fProgressBar(progressBar), fParent(parent), fNuclei(nuclei), fProjections(projections), fName(std::move(name)), fSigma(sigma), fThreshold(threshold), fDegree(degree), fSourceEnergies(std::move(sourceEnergies))
+   : fChannelFrame(frame), fSourceTab(new TGTab(frame, 600, 500)), fProgressBar(progressBar), fParent(parent), fNuclei(std::move(nuclei)), fProjections(std::move(projections)), fName(std::move(name)), fSigma(sigma), fThreshold(threshold), fDegree(degree), fSourceEnergies(std::move(sourceEnergies))
 {
    if(TSourceCalibration::VerboseLevel() > 1) { 
 		std::cout << DYELLOW << "========================================" << std::endl;
@@ -720,9 +720,9 @@ TChannelTab::TChannelTab(TSourceCalibration* parent, std::vector<TNucleus*> nucl
 
    fChannelFrame->SetLayoutManager(new TGHorizontalLayout(fChannelFrame));
 
-   fSources.resize(nuclei.size(), nullptr);
+   fSources.resize(fNuclei.size(), nullptr);
    //if(TSourceCalibration::VerboseLevel() > 1) { std::cout << __PRETTY_FUNCTION__ << ": creating channels for bin 1 to " << fMatrix->GetNbinsX() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-   for(size_t source = 0; source < nuclei.size(); ++source) {
+   for(size_t source = 0; source < fNuclei.size(); ++source) {
       CreateSourceTab(source);
    }
 
