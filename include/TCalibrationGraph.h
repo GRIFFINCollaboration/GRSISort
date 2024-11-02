@@ -139,11 +139,11 @@ public:
    Int_t RemovePoint();
    Int_t RemoveResidualPoint();
 
-	void XAxisLabel(const std::string& xAxisLabel) { fXAxisLabel = xAxisLabel; }
-	void YAxisLabel(const std::string& yAxisLabel) { fYAxisLabel = yAxisLabel; }
+   void XAxisLabel(const std::string& xAxisLabel) { fXAxisLabel = xAxisLabel; }
+   void YAxisLabel(const std::string& yAxisLabel) { fYAxisLabel = yAxisLabel; }
 
-	std::string XAxisLabel() { return fXAxisLabel; }
-	std::string YAxisLabel() { return fYAxisLabel; }
+   std::string XAxisLabel() { return fXAxisLabel; }
+   std::string YAxisLabel() { return fYAxisLabel; }
 
    void Scale(bool useAllPrevious = true);
 
@@ -154,7 +154,7 @@ public:
    static void VerboseLevel(int val) { fVerboseLevel = val; }
    static int  VerboseLevel() { return fVerboseLevel; }
 
-	void Clear(Option_t* option = "") override;
+   void Clear(Option_t* option = "") override;
 
 private:
    std::vector<TCalibrationGraph> fGraphs;                        ///< These are the graphs used for plotting the calibration points per source.

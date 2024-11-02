@@ -68,10 +68,10 @@ public:
 
 private:
    void BuildInterface();
-	void UpdateRanges();
-	void UpdateRange(const size_t& index);
-	void DrawRanges();
-	void DrawRange(const size_t& index);
+   void UpdateRanges();
+   void UpdateRange(const size_t& index);
+   void DrawRanges();
+   void DrawRange(const size_t& index);
 
    // parent
    TChannelTab* fParent{nullptr};
@@ -80,7 +80,7 @@ private:
    TGCompositeFrame*    fSourceFrame{nullptr};
    TRootEmbeddedCanvas* fProjectionCanvas{nullptr};
    TGStatusBar*         fSourceStatusBar{nullptr};
-	std::vector<TBox*>   fRangeBox;
+   std::vector<TBox*>   fRangeBox;
 
    // storage elements
    TH1D*                                                   fProjection{nullptr};
@@ -90,7 +90,7 @@ private:
    int                                                     fDegree{1};
    std::vector<GPeak*>                                     fPeaks;
    std::vector<std::tuple<double, double, double, double>> fSourceEnergy;
-	std::vector<std::pair<double, double>>                  fRanges;
+   std::vector<std::pair<double, double>>                  fRanges;
 };
 
 class TChannelTab {
@@ -119,7 +119,7 @@ public:
    TGTab*        SourceTab() const { return fSourceTab; }
    TGraphErrors* Data(int channelId) const { return fSources[channelId]->Data(); }
    size_t        NumberOfSources() const { return fSources.size(); }
-	std::string   Name() const { return fName; }
+   std::string   Name() const { return fName; }
 	int           ActiveSourceTab() const { return fActiveSourceTab; }
 
    static void ZoomX();
@@ -152,7 +152,7 @@ private:
    int                                                                  fDegree{1};            ///< degree of polynomial function used to calibrate
    std::vector<std::vector<std::tuple<double, double, double, double>>> fSourceEnergies;       ///< vector with source energies and uncertainties
    TCalibrationGraphSet*                                                fData{nullptr};        ///< combined data from all sources
-	int                                                                  fActiveSourceTab{0};   ///< id of the currently active source tab
+   int                                                                  fActiveSourceTab{0};   ///< id of the currently active source tab
 };
 
 class TSourceCalibration : public TGMainFrame {

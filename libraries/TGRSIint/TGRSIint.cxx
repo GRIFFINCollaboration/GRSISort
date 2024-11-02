@@ -663,15 +663,15 @@ void TGRSIint::SetupPipeline()
       analysisQueues.push_back(loop->InputQueue());
    }
 
-	// If requested, write the analysis tree
-	if(write_analysis_tree) {
-			auto loop = TAnalysisWriteLoop::Get("8_analysis_write_loop", output_analysis_tree_filename);
-			loop->InputQueue()       = detBuildingLoop->AddOutputQueue(TGRSIOptions::Get()->AnalysisWriteQueueSize());
-			if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
-				loop->OutOfOrderQueue() = eventBuildingLoop->OutOfOrderQueue();
-			}
-			analysisQueues.push_back(loop->InputQueue());
-	}
+   // If requested, write the analysis tree
+   if(write_analysis_tree) {
+      auto* loop         = TAnalysisWriteLoop::Get("8_analysis_write_loop", output_analysis_tree_filename);
+      loop->InputQueue() = detBuildingLoop->AddOutputQueue(TGRSIOptions::Get()->AnalysisWriteQueueSize());
+      if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
+         loop->OutOfOrderQueue() = eventBuildingLoop->OutOfOrderQueue();
+      }
+      analysisQueues.push_back(loop->InputQueue());
+   }
 
    StoppableThread::ResumeAll();
 }

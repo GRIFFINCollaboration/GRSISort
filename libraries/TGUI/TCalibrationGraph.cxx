@@ -41,8 +41,8 @@ TCalibrationGraphSet::TCalibrationGraphSet(TGraphErrors* graph, const std::strin
    }
 }
 
-TCalibrationGraphSet::TCalibrationGraphSet(const std::string& xAxisLabel, const std::string& yAxisLabel)
-   : fTotalGraph(new TGraphErrors), fTotalResidualGraph(new TGraphErrors), fXAxisLabel(xAxisLabel), fYAxisLabel(yAxisLabel)
+TCalibrationGraphSet::TCalibrationGraphSet(std::string xAxisLabel, std::string yAxisLabel)
+   : fTotalGraph(new TGraphErrors), fTotalResidualGraph(new TGraphErrors), fXAxisLabel(std::move(xAxisLabel)), fYAxisLabel(std::move(yAxisLabel))
 {
    if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " fTotalGraph " << fTotalGraph << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 }
@@ -196,12 +196,12 @@ void TCalibrationGraphSet::DrawCalibration(Option_t* opt, TLegend* legend)
    }
    fTotalGraph->Draw(options.Data());
 
-	if(fTotalGraph->GetHistogram() != nullptr) {
-		fTotalGraph->GetHistogram()->GetXaxis()->CenterTitle();
-		fTotalGraph->GetHistogram()->GetXaxis()->SetTitle(fXAxisLabel.c_str());
-		fTotalGraph->GetHistogram()->GetYaxis()->CenterTitle();
-		fTotalGraph->GetHistogram()->GetYaxis()->SetTitle(fYAxisLabel.c_str());
-	}
+   if(fTotalGraph->GetHistogram() != nullptr) {
+      fTotalGraph->GetHistogram()->GetXaxis()->CenterTitle();
+      fTotalGraph->GetHistogram()->GetXaxis()->SetTitle(fXAxisLabel.c_str());
+      fTotalGraph->GetHistogram()->GetYaxis()->CenterTitle();
+      fTotalGraph->GetHistogram()->GetYaxis()->SetTitle(fYAxisLabel.c_str());
+   }
 
    for(size_t i = 0; i < fGraphs.size(); ++i) {
       if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". graph with option \"" << opt << "\", marker color " << fGraphs[i].GetMarkerColor() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
@@ -540,5 +540,5 @@ void TCalibrationGraphSet::Clear(Option_t* option)
    fMaximumX    = 0.;
    fMinimumY    = 0.;
    fMaximumY    = 0.;
-	TNamed::Clear(option);
+   TNamed::Clear(option);
 }
