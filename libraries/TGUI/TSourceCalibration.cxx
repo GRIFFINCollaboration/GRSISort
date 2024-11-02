@@ -338,7 +338,7 @@ void TSourceTab::Disconnect()
 
 void TSourceTab::ProjectionStatus(Event_t* event)
 {
-   std::cout << __PRETTY_FUNCTION__ << std::endl; // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    std::cout << "code " << event->fCode << ", count " << event->fCount << ", state " << event->fState << ", type " << event->fType << std::endl;
 }
 
@@ -417,7 +417,7 @@ void TSourceTab::ProjectionStatus(Int_t event, Int_t px, Int_t py, TObject* sele
       }
    } else if(event == kButton1Down) {
       // dragging mouse is kButton1Down, followed by kButton1Motion, and then kButton1Up
-		fRanges.emplace_back(fProjectionCanvas->GetCanvas()->AbsPixeltoX(px), fProjectionCanvas->GetCanvas()->AbsPixeltoX(px));
+      fRanges.emplace_back(fProjectionCanvas->GetCanvas()->AbsPixeltoX(px), fProjectionCanvas->GetCanvas()->AbsPixeltoX(px));
    } else if(event == kButton1Motion) {
       fRanges.back().second = fProjectionCanvas->GetCanvas()->AbsPixeltoX(px);
       UpdateRange(fRanges.size() - 1);

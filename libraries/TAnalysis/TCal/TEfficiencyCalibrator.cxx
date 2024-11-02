@@ -537,7 +537,7 @@ void TEfficiencyDatatypeTab::UpdateEfficiencyGraph()
    fSummingInGraph = new TCalibrationGraphSet();
    delete fSummingOutGraph;
    fSummingOutGraph = new TCalibrationGraphSet();
-	TCalibrationGraphSet::VerboseLevel(fVerboseLevel);
+   TCalibrationGraphSet::VerboseLevel(fVerboseLevel);
 
    for(auto& tab : fEfficiencyTab) {
       // vector of tuple with transition and 8 doubles:
