@@ -1,5 +1,7 @@
 var NAVTREEINDEX61 =
 {
+"class_t_tigress_hit.html#ab7896f3f204530f7780dec1ff1e7799a":[8,2,69,21],
+"class_t_tigress_hit.html#ab8688e4cfa8b90019108a7c29c7586f4":[8,2,69,60],
 "class_t_tigress_hit.html#ab9c255ab296c0e6385709d797a418609":[8,2,69,37],
 "class_t_tigress_hit.html#aba435753f8f1292450cd959c1916cf77":[8,2,69,87],
 "class_t_tigress_hit.html#aba5e96b2f172f0e12eb2b6e06af5a735":[8,2,69,55],
@@ -247,7 +249,5 @@ var NAVTREEINDEX61 =
 "class_t_transient_bits.html#a1e3550553484cccd959ce4436f4d64fc":[8,11,60,19],
 "class_t_transient_bits.html#a35f9dfc90ee765afbf5f572a9f8a04b3":[8,11,60,21],
 "class_t_transient_bits.html#a4818571f334668a5509fceb91618b47a":[8,11,60,10],
-"class_t_transient_bits.html#a4c150f056791c7354dcbfff506d3d5db":[8,11,60,13],
-"class_t_transient_bits.html#a4e08dc2e74871f857d795087983b34ec":[8,11,60,11],
-"class_t_transient_bits.html#a5f100401f910a7f075b0546b19e987a3":[8,11,60,8]
+"class_t_transient_bits.html#a4c150f056791c7354dcbfff506d3d5db":[8,11,60,13]
 };

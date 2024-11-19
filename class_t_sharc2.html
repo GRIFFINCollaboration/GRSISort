@@ -157,6 +157,10 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aeef1cc387e82fca06fc713c4077e61d9" id="r_aeef1cc387e82fca06fc713c4077e61d9"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_sharc2.html#aeef1cc387e82fca06fc713c4077e61d9">GetDeadLayerThickness</a> (<a class="el" href="class_t_sharc2_hit.html">TSharc2Hit</a> &amp;hit)</td></tr>
+<tr class="separator:aeef1cc387e82fca06fc713c4077e61d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac694ed8b63df488fee3f62d62073f7fa" id="r_ac694ed8b63df488fee3f62d62073f7fa"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_sharc2.html#ac694ed8b63df488fee3f62d62073f7fa">GetDetectorThickness</a> (<a class="el" href="class_t_sharc2_hit.html">TSharc2Hit</a> &amp;hit, double dist=-1.0)</td></tr>
+<tr class="separator:ac694ed8b63df488fee3f62d62073f7fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa687b6f4d024f3111eb7d91dc9b0647c" id="r_aa687b6f4d024f3111eb7d91dc9b0647c"><td class="memItemLeft" align="right" valign="top">static TVector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_sharc2.html#aa687b6f4d024f3111eb7d91dc9b0647c">GetOffset</a> ()</td></tr>
 <tr class="separator:aa687b6f4d024f3111eb7d91dc9b0647c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a758b04960138b2756036495b6fd92cdd" id="r_a758b04960138b2756036495b6fd92cdd"><td class="memItemLeft" align="right" valign="top">static TVector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_sharc2.html#a758b04960138b2756036495b6fd92cdd">GetPosition</a> (int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00)</td></tr>
@@ -478,7 +482,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_sharc2_8cxx_source.html#l00128">128</a> of file <a class="el" href="_t_sharc2_8cxx_source.html">TSharc2.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00068">TDetector::Clear()</a>, <a class="el" href="_t_sharc2_8h_source.html#l00070">fBackFragments</a>, <a class="el" href="_t_sharc2_8h_source.html#l00069">fFrontFragments</a>, <a class="el" href="_t_sharc2_8h_source.html#l00072">fXoffset</a>, <a class="el" href="_t_sharc2_8h_source.html#l00073">fYoffset</a>, and <a class="el" href="_t_sharc2_8h_source.html#l00074">fZoffset</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_8h_source.html#l00068">TDetector::Clear()</a>, <a class="el" href="_t_sharc2_8h_source.html#l00070">fBackFragments</a>, <a class="el" href="_t_sharc2_8h_source.html#l00069">fFrontFragments</a>, <a class="el" href="_t_sharc2_8h_source.html#l00077">fXoffset</a>, <a class="el" href="_t_sharc2_8h_source.html#l00078">fYoffset</a>, and <a class="el" href="_t_sharc2_8h_source.html#l00079">fZoffset</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00059">TSharc2()</a>, and <a class="el" href="_t_sharc2_8cxx_source.html#l00064">TSharc2()</a>.</p>
 
@@ -600,6 +604,78 @@ Static Private Attributes</h2></td></tr>
 <p class="reference">References <a class="el" href="_t_detector_8cxx_source.html#l00024">TDetector::Copy()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00064">TSharc2()</a>, and <a class="el" href="_t_sharc2_8h_source.html#l00026">operator=()</a>.</p>
+
+</div>
+</div>
+<a id="aeef1cc387e82fca06fc713c4077e61d9" name="aeef1cc387e82fca06fc713c4077e61d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeef1cc387e82fca06fc713c4077e61d9">&#9670;&#160;</a></span>GetDeadLayerThickness()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double TSharc2::GetDeadLayerThickness </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_t_sharc2_hit.html">TSharc2Hit</a> &amp;&#160;</td>
+          <td class="paramname"><em>hit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8cxx_source.html#l00224">224</a> of file <a class="el" href="_t_sharc2_8cxx_source.html">TSharc2.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00190">TDetectorHit::GetDetector()</a>, and <a class="el" href="_t_sharc2_8cxx_source.html#l00205">GetDetectorThickness()</a>.</p>
+
+</div>
+</div>
+<a id="ac694ed8b63df488fee3f62d62073f7fa" name="ac694ed8b63df488fee3f62d62073f7fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac694ed8b63df488fee3f62d62073f7fa">&#9670;&#160;</a></span>GetDetectorThickness()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double TSharc2::GetDetectorThickness </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_t_sharc2_hit.html">TSharc2Hit</a> &amp;&#160;</td>
+          <td class="paramname"><em>hit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dist</em> = <code>-1.0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8cxx_source.html#l00205">205</a> of file <a class="el" href="_t_sharc2_8cxx_source.html">TSharc2.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00190">TDetectorHit::GetDetector()</a>, and <a class="el" href="_t_sharc2_hit_8cxx_source.html#l00053">TSharc2Hit::GetPosition()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00224">GetDeadLayerThickness()</a>.</p>
 
 </div>
 </div>
@@ -728,7 +804,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00041">41</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_sharc2_8h_source.html#l00072">fXoffset</a>, <a class="el" href="_t_sharc2_8h_source.html#l00073">fYoffset</a>, and <a class="el" href="_t_sharc2_8h_source.html#l00074">fZoffset</a>.</p>
+<p class="reference">References <a class="el" href="_t_sharc2_8h_source.html#l00077">fXoffset</a>, <a class="el" href="_t_sharc2_8h_source.html#l00078">fYoffset</a>, and <a class="el" href="_t_sharc2_8h_source.html#l00079">fZoffset</a>.</p>
 
 </div>
 </div>
@@ -794,7 +870,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_sharc2_8cxx_source.html#l00159">159</a> of file <a class="el" href="_t_sharc2_8cxx_source.html">TSharc2.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_sharc2_8h_source.html#l00089">fSectorWidthDS2</a>, <a class="el" href="_t_sharc2_8h_source.html#l00095">fSectorWidthUS2</a>, <a class="el" href="_t_sharc2_8h_source.html#l00102">fStripBPitch</a>, <a class="el" href="_t_sharc2_8h_source.html#l00101">fStripFPitch</a>, <a class="el" href="_t_sharc2_8h_source.html#l00088">fStripPitchDS2</a>, <a class="el" href="_t_sharc2_8h_source.html#l00094">fStripPitchUS2</a>, <a class="el" href="_t_sharc2_8h_source.html#l00087">fXminDS2</a>, <a class="el" href="_t_sharc2_8h_source.html#l00093">fXminUS2</a>, <a class="el" href="_t_sharc2_8h_source.html#l00081">fXposUB</a>, <a class="el" href="_t_sharc2_8h_source.html#l00082">fYminUB</a>, <a class="el" href="_t_sharc2_8h_source.html#l00083">fZminUB</a>, <a class="el" href="_t_sharc2_8h_source.html#l00086">fZposDS2</a>, and <a class="el" href="_t_sharc2_8h_source.html#l00092">fZposUS2</a>.</p>
+<p class="reference">References <a class="el" href="_t_sharc2_8h_source.html#l00094">fSectorWidthDS2</a>, <a class="el" href="_t_sharc2_8h_source.html#l00100">fSectorWidthUS2</a>, <a class="el" href="_t_sharc2_8h_source.html#l00107">fStripBPitch</a>, <a class="el" href="_t_sharc2_8h_source.html#l00106">fStripFPitch</a>, <a class="el" href="_t_sharc2_8h_source.html#l00093">fStripPitchDS2</a>, <a class="el" href="_t_sharc2_8h_source.html#l00099">fStripPitchUS2</a>, <a class="el" href="_t_sharc2_8h_source.html#l00092">fXminDS2</a>, <a class="el" href="_t_sharc2_8h_source.html#l00098">fXminUS2</a>, <a class="el" href="_t_sharc2_8h_source.html#l00086">fXposUB</a>, <a class="el" href="_t_sharc2_8h_source.html#l00087">fYminUB</a>, <a class="el" href="_t_sharc2_8h_source.html#l00088">fZminUB</a>, <a class="el" href="_t_sharc2_8h_source.html#l00091">fZposDS2</a>, and <a class="el" href="_t_sharc2_8h_source.html#l00097">fZposUS2</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_hit_8cxx_source.html#l00053">TSharc2Hit::GetPosition()</a>.</p>
 
@@ -886,7 +962,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00038">38</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_sharc2_8h_source.html#l00072">fXoffset</a>.</p>
+<p class="reference">References <a class="el" href="_t_sharc2_8h_source.html#l00077">fXoffset</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_hit_8cxx_source.html#l00053">TSharc2Hit::GetPosition()</a>.</p>
 
@@ -917,7 +993,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00039">39</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_sharc2_8h_source.html#l00073">fYoffset</a>.</p>
+<p class="reference">References <a class="el" href="_t_sharc2_8h_source.html#l00078">fYoffset</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_hit_8cxx_source.html#l00053">TSharc2Hit::GetPosition()</a>.</p>
 
@@ -948,7 +1024,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00040">40</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_sharc2_8h_source.html#l00074">fZoffset</a>.</p>
+<p class="reference">References <a class="el" href="_t_sharc2_8h_source.html#l00079">fZoffset</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_hit_8cxx_source.html#l00053">TSharc2Hit::GetPosition()</a>.</p>
 
@@ -1251,7 +1327,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00042">42</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_sharc2_8h_source.html#l00072">fXoffset</a>, <a class="el" href="_t_sharc2_8h_source.html#l00073">fYoffset</a>, and <a class="el" href="_t_sharc2_8h_source.html#l00074">fZoffset</a>.</p>
+<p class="reference">References <a class="el" href="_t_sharc2_8h_source.html#l00077">fXoffset</a>, <a class="el" href="_t_sharc2_8h_source.html#l00078">fYoffset</a>, and <a class="el" href="_t_sharc2_8h_source.html#l00079">fZoffset</a>.</p>
 
 </div>
 </div>
@@ -1354,7 +1430,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00103">103</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00108">108</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 </div>
 </div>
@@ -1378,7 +1454,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00089">89</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00094">94</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00159">GetPosition()</a>.</p>
 
@@ -1404,7 +1480,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00095">95</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00100">100</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00159">GetPosition()</a>.</p>
 
@@ -1430,7 +1506,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00104">104</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00109">109</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 </div>
 </div>
@@ -1454,7 +1530,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00102">102</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00107">107</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00159">GetPosition()</a>.</p>
 
@@ -1480,7 +1556,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00101">101</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00106">106</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00159">GetPosition()</a>.</p>
 
@@ -1506,7 +1582,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00088">88</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00093">93</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00159">GetPosition()</a>.</p>
 
@@ -1532,7 +1608,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00094">94</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00099">99</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00159">GetPosition()</a>.</p>
 
@@ -1558,7 +1634,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00078">78</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00083">83</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 </div>
 </div>
@@ -1582,7 +1658,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00087">87</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00092">92</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00159">GetPosition()</a>.</p>
 
@@ -1608,7 +1684,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00093">93</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00098">98</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00159">GetPosition()</a>.</p>
 
@@ -1636,7 +1712,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00072">72</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00077">77</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00128">Clear()</a>, <a class="el" href="_t_sharc2_8h_source.html#l00041">GetOffset()</a>, <a class="el" href="_t_sharc2_8h_source.html#l00038">GetXOffset()</a>, and <a class="el" href="_t_sharc2_8h_source.html#l00042">SetXYZOffset()</a>.</p>
 
@@ -1664,7 +1740,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>total Z dimension of all boxes </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00081">81</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00086">86</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00159">GetPosition()</a>.</p>
 
@@ -1692,7 +1768,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>total X dimension of all boxes </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00079">79</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00084">84</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 </div>
 </div>
@@ -1716,7 +1792,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00082">82</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00087">87</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00159">GetPosition()</a>.</p>
 
@@ -1744,7 +1820,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00073">73</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00078">78</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00128">Clear()</a>, <a class="el" href="_t_sharc2_8h_source.html#l00041">GetOffset()</a>, <a class="el" href="_t_sharc2_8h_source.html#l00039">GetYOffset()</a>, and <a class="el" href="_t_sharc2_8h_source.html#l00042">SetXYZOffset()</a>.</p>
 
@@ -1772,7 +1848,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>total Y dimension of all boxes </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00080">80</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00085">85</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 </div>
 </div>
@@ -1796,7 +1872,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00083">83</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00088">88</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00159">GetPosition()</a>.</p>
 
@@ -1824,7 +1900,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00074">74</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00079">79</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00128">Clear()</a>, <a class="el" href="_t_sharc2_8h_source.html#l00041">GetOffset()</a>, <a class="el" href="_t_sharc2_8h_source.html#l00040">GetZOffset()</a>, and <a class="el" href="_t_sharc2_8h_source.html#l00042">SetXYZOffset()</a>.</p>
 
@@ -1850,7 +1926,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00086">86</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00091">91</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00159">GetPosition()</a>.</p>
 
@@ -1876,7 +1952,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00092">92</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_sharc2_8h_source.html#l00097">97</a> of file <a class="el" href="_t_sharc2_8h_source.html">TSharc2.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_sharc2_8cxx_source.html#l00159">GetPosition()</a>.</p>
 
@@ -1889,7 +1965,7 @@ Static Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_sharc2.html">TSharc2</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Oct 30 2024 16:44:23.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Nov 19 2024 16:27:26.</li>
   </ul>
 </div>
 </body>
