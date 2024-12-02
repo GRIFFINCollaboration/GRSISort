@@ -64,16 +64,16 @@ int main(int argc, char** argv)
       return 1;
    }
 
-	// read the run info from all input files
-	bool first = true;
-	for(const auto& fileName : opt->RootInputFiles()) {
-		TFile* file = TFile::Open(fileName.c_str());
-		if(first) {
-			first = false;
-			TRunInfo::ReadInfoFromFile(file);
-		} else {
-			TRunInfo::AddCurrent();
-		}
+   // read the run info from all input files
+   bool first = true;
+   for(const auto& fileName : opt->RootInputFiles()) {
+      TFile* file = TFile::Open(fileName.c_str());
+      if(first) {
+         first = false;
+         TRunInfo::ReadInfoFromFile(file);
+      } else {
+         TRunInfo::AddCurrent();
+      }
    }
 
    // determine the name of the helper (from the provided helper library) to create a redirect of stdout
