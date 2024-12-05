@@ -230,8 +230,8 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_frame_8cxx_source.html','')
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>   TFile outputFile(outputFileName.c_str(), <span class="stringliteral">&quot;recreate&quot;</span>);</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>   <span class="comment">// stop redirect before we start the progress bar (storing the files we redirect stdout and stderr to first)</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>   <span class="keyword">auto</span>* outFile = redirect-&gt;<a class="code hl_function" href="class_t_redirect.html#a974f135aef0f67800550df87543a604d">OutFile</a>();</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>   <span class="keyword">auto</span>* errFile = redirect-&gt;<a class="code hl_function" href="class_t_redirect.html#af4166deebd651b26baa64006d302d0a0">ErrFile</a>();</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>   <span class="keyword">const</span> <span class="keyword">auto</span>* outFile = redirect-&gt;<a class="code hl_function" href="class_t_redirect.html#a974f135aef0f67800550df87543a604d">OutFile</a>();</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>   <span class="keyword">const</span> <span class="keyword">auto</span>* errFile = redirect-&gt;<a class="code hl_function" href="class_t_redirect.html#af4166deebd651b26baa64006d302d0a0">ErrFile</a>();</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>   <span class="keyword">delete</span> redirect;</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>   <span class="comment">// this is needed so the function that created the redirect know it has ended</span></div>
@@ -367,7 +367,7 @@ $(document).ready(function(){initNavTree('_t_g_r_s_i_frame_8cxx_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_2b08b36851fcb6a7439555c8d93f536c.html">TFormat</a></li><li class="navelem"><a class="el" href="_t_g_r_s_i_frame_8cxx.html">TGRSIFrame.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Nov 25 2024 16:47:54.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Dec 5 2024 01:24:23.</li>
   </ul>
 </div>
 </body>
