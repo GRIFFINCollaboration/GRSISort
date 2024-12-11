@@ -49,16 +49,20 @@ public:
 private:
    void Redirect(const char* newOut, const char* newErr, bool append)
    {
-      fStdOutFileDescriptor = dup(fileno(stdout));
-      fflush(stdout);
-      int newStdOut = open(newOut, (append ? O_WRONLY | O_CREAT | O_APPEND : O_WRONLY | O_CREAT), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-      dup2(newStdOut, fileno(stdout));
-      close(newStdOut);
-      fStdErrFileDescriptor = dup(fileno(stderr));
-      fflush(stderr);
-      int newStdErr = open(newErr, (append ? O_WRONLY | O_CREAT | O_APPEND : O_WRONLY | O_CREAT), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-      dup2(newStdErr, fileno(stderr));
-      close(newStdErr);
+		if(newOut != nullptr) {
+			fStdOutFileDescriptor = dup(fileno(stdout));
+			fflush(stdout);
+			int newStdOut = open(newOut, (append ? O_WRONLY | O_CREAT | O_APPEND : O_WRONLY | O_CREAT), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+			dup2(newStdOut, fileno(stdout));
+			close(newStdOut);
+		}
+		if(newErr != nullptr) {
+			fStdErrFileDescriptor = dup(fileno(stderr));
+			fflush(stderr);
+			int newStdErr = open(newErr, (append ? O_WRONLY | O_CREAT | O_APPEND : O_WRONLY | O_CREAT), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+			dup2(newStdErr, fileno(stderr));
+			close(newStdErr);
+		}
    }
 
    int fStdOutFileDescriptor{0};
