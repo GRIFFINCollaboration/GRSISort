@@ -17,9 +17,17 @@ class TFile;
 
 #include "TDirectory.h"
 
+enum GRSIArrowPress { kGRSIArrowLeft  = 0x1012,
+                      kGRSIArrowUp    = 0x1013,
+                      kGRSIArrowRight = 0x1014,
+                      kGRSIArrowDown  = 0x1015 };
+
 int  LabelPeaks(TH1*, double, double, Option_t* opt = "");
 bool ShowPeaks(TH1**, unsigned int, double sigma = 2.0, double thresh = 0.02);
 bool RemovePeaks(TH1**, unsigned int);
+
+bool Move1DHistogram(const Int_t& key, TH1* histogram = nullptr);
+bool Move2DHistogram(const Int_t& key, TH2* histogram = nullptr);
 
 GPeak* PhotoPeakFit(TH1*, double, double, Option_t* opt = "");
 TPeak* AltPhotoPeakFit(TH1*, double, double, Option_t* opt = "");

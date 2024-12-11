@@ -1,4 +1,4 @@
-// TDataLoop.h StoppableThread.h TFragWriteLoop.h TTerminalLoop.h TFragment.h TEventBuildingLoop.h TDetBuildingLoop.h TAnalysisWriteLoop.h TRnTupleWriteLoop.h TFragHistLoop.h TCompiledHistograms.h TRuntimeObjects.h TAnalysisHistLoop.h
+// TDataLoop.h StoppableThread.h TFragWriteLoop.h TTerminalLoop.h TFragment.h TEventBuildingLoop.h TDetBuildingLoop.h TAnalysisWriteLoop.h TFragHistLoop.h TCompiledHistograms.h TRuntimeObjects.h TAnalysisHistLoop.h
 
 #ifdef __CINT__
 
@@ -16,7 +16,6 @@
 #pragma link C++ class TEventBuildingLoop + ;
 #pragma link C++ class TDetBuildingLoop + ;
 #pragma link C++ class TAnalysisWriteLoop + ;
-#pragma link C++ class TRnTupleWriteLoop+;
 
 #pragma link C++ class TCompiledHistograms + ;
 #pragma link C++ class TRuntimeObjects + ;

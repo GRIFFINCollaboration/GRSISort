@@ -26,10 +26,6 @@
 
 class TUnpackingLoop : public StoppableThread {
 public:
-   enum class EDataType { kMidas,
-                          kLst,
-                          kTdr };
-
    static TUnpackingLoop* Get(std::string name = "");
    TUnpackingLoop(const TUnpackingLoop&)                = delete;
    TUnpackingLoop(TUnpackingLoop&&) noexcept            = delete;
@@ -78,9 +74,6 @@ private:
    TDataParser* fParser;
    int64_t      fFragsReadFromRaw;
    int64_t      fGoodFragsRead;
-
-   bool      fEvaluateDataType;
-   EDataType fDataType;
 
    explicit TUnpackingLoop(std::string name);
 };

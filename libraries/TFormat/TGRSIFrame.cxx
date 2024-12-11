@@ -53,10 +53,16 @@ TGRSIFrame::TGRSIFrame()
    fPpg = new TPPG;
 
    // loop over input files, add them to the chain, and read the runinfo and calibration from them
+   bool first = true;
    for(const auto& fileName : fOptions->RootInputFiles()) {
       if(chain->Add(fileName.c_str(), 0) >= 1) {   // setting nentries parameter to zero make TChain load the file header and return a 1 if the file was opened successfully
          TFile* file = TFile::Open(fileName.c_str());
-         TRunInfo::AddCurrent();
+         if(first) {
+            first = false;
+            TRunInfo::ReadInfoFromFile(file);
+         } else {
+            TRunInfo::AddCurrent();
+         }
          auto* ppg = static_cast<TPPG*>(file->Get("PPG"));
          if(ppg != nullptr) {
             fPpg->Add(ppg);
@@ -105,7 +111,7 @@ TGRSIFrame::TGRSIFrame()
    fOutput = helper->Book(fDataFrame);
 }
 
-void TGRSIFrame::Run()
+void TGRSIFrame::Run(TRedirect*& redirect)
 {
    // get runinfo and get run and sub-run number
    auto* runInfo = TRunInfo::Get();
@@ -115,6 +121,15 @@ void TGRSIFrame::Run()
    std::cout << "Writing to " << outputFileName << std::endl;
 
    TFile outputFile(outputFileName.c_str(), "recreate");
+
+   // stop redirect before we start the progress bar (storing the files we redirect stdout and stderr to first)
+   const auto* outFile = redirect->OutFile();
+   const auto* errFile = redirect->ErrFile();
+
+   delete redirect;
+   // this is needed so the function that created the redirect know it has ended
+   // not really needed right now as we create a new redirect further down, but we have it here in case that gets changed
+   redirect = nullptr;
 
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 30, 0)
    std::string progressBar;
@@ -168,6 +183,10 @@ void TGRSIFrame::Run()
    } else {
       std::cout << "Error, output list is nullptr!" << std::endl;
    }
+
+   // start new redirect, appending to the previous files we had redirected to
+   redirect = new TRedirect(outFile, errFile, true);
+
    runInfo->Write();
    if(fPpg != nullptr) {
       fPpg->Write();

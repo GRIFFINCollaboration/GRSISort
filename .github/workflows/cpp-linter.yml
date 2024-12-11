@@ -57,7 +57,7 @@ jobs:
         thread-comments: 'update'
         ignore: '.github|root*|build|GRSIProof|examples|users|include/GVersion.h'
         extensions: 'h,hh,cxx'
-        files-changed-only: false
+        files-changed-only: true
         step-summary: true
         file-annotations: true
           #tidy-review: true

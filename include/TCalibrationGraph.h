@@ -46,6 +46,7 @@ private:
 class TCalibrationGraphSet : public TNamed {
 public:
    explicit TCalibrationGraphSet(TGraphErrors* graph = nullptr, const std::string& label = "");
+   TCalibrationGraphSet(std::string xAxisLabel, std::string yAxisLabel);
    ~TCalibrationGraphSet();
    TCalibrationGraphSet(const TCalibrationGraphSet&)     = default;
    TCalibrationGraphSet(TCalibrationGraphSet&&) noexcept = default;
@@ -109,7 +110,7 @@ public:
 
    void SetAxisTitle(const char* title);   ///< Set axis title for the graph (form "x-axis title;y-axis title")
 
-   int     GetN() { return (fTotalGraph != nullptr ? fTotalGraph->GetN() : -1); }     ///< Returns GetN(), i.e. number of points of the total graph.
+   int     GetN() { return (fTotalGraph != nullptr ? fTotalGraph->GetN() : -1); }          ///< Returns GetN(), i.e. number of points of the total graph.
    double* GetX() { return (fTotalGraph != nullptr ? fTotalGraph->GetX() : nullptr); }     ///< Returns an array of x-values of the total graph.
    double* GetY() { return (fTotalGraph != nullptr ? fTotalGraph->GetY() : nullptr); }     ///< Returns an array of y-values of the total graph.
    double* GetEX() { return (fTotalGraph != nullptr ? fTotalGraph->GetEX() : nullptr); }   ///< Returns an array of x-errors of the total graph.
@@ -138,6 +139,12 @@ public:
    Int_t RemovePoint();
    Int_t RemoveResidualPoint();
 
+   void XAxisLabel(const std::string& xAxisLabel) { fXAxisLabel = xAxisLabel; }
+   void YAxisLabel(const std::string& yAxisLabel) { fYAxisLabel = yAxisLabel; }
+
+   std::string XAxisLabel() { return fXAxisLabel; }
+   std::string YAxisLabel() { return fYAxisLabel; }
+
    void Scale(bool useAllPrevious = true);
 
    void Print(Option_t* opt = "") const override;
@@ -145,9 +152,9 @@ public:
    void ResetTotalGraph();   ///< reset the total graph and add the individual ones again (used e.g. after scaling of individual graphs is done)
 
    static void VerboseLevel(int val) { fVerboseLevel = val; }
-	static int VerboseLevel() { return fVerboseLevel; }
+   static int  VerboseLevel() { return fVerboseLevel; }
 
-	void Clear();
+   void Clear(Option_t* option = "") override;
 
 private:
    std::vector<TCalibrationGraph> fGraphs;                        ///< These are the graphs used for plotting the calibration points per source.
@@ -162,6 +169,8 @@ private:
    double                         fMaximumX{0.};                  ///< Maximum x-value
    double                         fMinimumY{0.};                  ///< Minimum y-value
    double                         fMaximumY{0.};                  ///< Maximum y-value
+   std::string                    fXAxisLabel;                    ///< The label of the x-axis.
+   std::string                    fYAxisLabel;                    ///< The label of the y-axis.
 
    static int fVerboseLevel;   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 

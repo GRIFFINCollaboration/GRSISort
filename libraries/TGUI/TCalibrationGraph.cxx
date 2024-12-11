@@ -41,6 +41,12 @@ TCalibrationGraphSet::TCalibrationGraphSet(TGraphErrors* graph, const std::strin
    }
 }
 
+TCalibrationGraphSet::TCalibrationGraphSet(std::string xAxisLabel, std::string yAxisLabel)
+   : fTotalGraph(new TGraphErrors), fTotalResidualGraph(new TGraphErrors), fXAxisLabel(std::move(xAxisLabel)), fYAxisLabel(std::move(yAxisLabel))
+{
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " fTotalGraph " << fTotalGraph << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+}
+
 TCalibrationGraphSet::~TCalibrationGraphSet()
 {
    delete fTotalGraph;
@@ -189,6 +195,13 @@ void TCalibrationGraphSet::DrawCalibration(Option_t* opt, TLegend* legend)
       options.Append("a");
    }
    fTotalGraph->Draw(options.Data());
+
+   if(fTotalGraph->GetHistogram() != nullptr) {
+      fTotalGraph->GetHistogram()->GetXaxis()->CenterTitle();
+      fTotalGraph->GetHistogram()->GetXaxis()->SetTitle(fXAxisLabel.c_str());
+      fTotalGraph->GetHistogram()->GetYaxis()->CenterTitle();
+      fTotalGraph->GetHistogram()->GetYaxis()->SetTitle(fYAxisLabel.c_str());
+   }
 
    for(size_t i = 0; i < fGraphs.size(); ++i) {
       if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". graph with option \"" << opt << "\", marker color " << fGraphs[i].GetMarkerColor() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
@@ -470,19 +483,19 @@ void TCalibrationGraphSet::Print(Option_t* opt) const
 {
    if(fVerboseLevel > 1) {
       std::cout << __PRETTY_FUNCTION__ << ", fTotalGraph " << fTotalGraph << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	}
+   }
 
    std::cout << "TCalibrationGraphSet " << this << " - " << GetName() << ": " << fGraphs.size() << " calibration graphs, " << fResidualGraphs.size() << " residual graphs, " << fLabel.size() << " labels, ";
-	if(fTotalGraph != nullptr) {
-		std::cout << fTotalGraph->GetN() << " calibration points, and ";
-	} else {
-		std::cout << " no calibration points, and ";
-	}
-	if(fTotalResidualGraph != nullptr) {
-		std::cout << fTotalResidualGraph->GetN() << " residual points" << std::endl;
-	} else {
-		std::cout << " no residual points" << std::endl;
-	}
+   if(fTotalGraph != nullptr) {
+      std::cout << fTotalGraph->GetN() << " calibration points, and ";
+   } else {
+      std::cout << " no calibration points, and ";
+   }
+   if(fTotalResidualGraph != nullptr) {
+      std::cout << fTotalResidualGraph->GetN() << " residual points" << std::endl;
+   } else {
+      std::cout << " no residual points" << std::endl;
+   }
    TString options = opt;
    bool    errors  = options.Contains("e", TString::ECaseCompare::kIgnoreCase);
    for(const auto& g : fGraphs) {
@@ -515,7 +528,7 @@ void TCalibrationGraphSet::Print(Option_t* opt) const
    std::cout << "---------------------" << std::endl;
 }
 
-void TCalibrationGraphSet::Clear()
+void TCalibrationGraphSet::Clear(Option_t* option)
 {
    fGraphs.clear();
    fResidualGraphs.clear();
@@ -523,8 +536,9 @@ void TCalibrationGraphSet::Clear()
    fGraphIndex.clear();
    fPointIndex.clear();
    fResidualSet = false;
-   fMinimumX = 0.;
-   fMaximumX = 0.;
-   fMinimumY = 0.;
-   fMaximumY = 0.;
+   fMinimumX    = 0.;
+   fMaximumX    = 0.;
+   fMinimumY    = 0.;
+   fMaximumY    = 0.;
+   TNamed::Clear(option);
 }
