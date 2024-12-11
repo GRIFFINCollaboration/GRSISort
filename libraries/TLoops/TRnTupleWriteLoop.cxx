@@ -158,28 +158,30 @@ void TRnTupleWriteLoop::AddBranch(TClass* cls)
       fDefaultDets[cls] = det_p;
 
       // Add to our local map
-      auto det_pp   = new TDetector*;
-      *det_pp       = det_p;
-      fDetMap[cls]  = det_pp;
+      auto det_pp  = new TDetector*;
+      *det_pp      = det_p;
+      fDetMap[cls] = det_pp;
 
-		std::cout<<std::endl<<std::string(30, ' ')<<Name()<<": adding \""<<cls->GetName()<<"\" branch)"<<std::endl;
+      std::cout << std::endl
+                << std::string(30, ' ') << Name() << ": adding \"" << cls->GetName() << "\" branch" << std::endl;
       // Make a new field.
-		auto updater = fRNTupleWriter->CreateModelUpdater();
-		try {
-		auto newFieldResult = ROOT::Experimental::Detail::RFieldBase::Create(cls->GetName(), cls->GetName());
-		if(!newFieldResult) {
-			std::cout<<"Failed to create field using \""<<cls->GetName()<<"\"?"<<std::endl;
-		}
-		auto newField = newFieldResult.Unwrap();
-		updater->BeginUpdate();
-		updater->AddField(std::move(newField));
-		updater->CommitUpdate();
-		std::cout<<"Model: "<<fRNTupleWriter->GetModel()->GetDescription()<<std::endl;
-		} catch(ROOT::Experimental::RException& e) {
-			std::cout<<"Failed to create field "<<cls->GetName()<<", normalized "<<TClassEdit::CleanType(cls->GetName())<<", canonical "<<TClassEdit::ResolveTypedef(cls->GetName())<<": "<<e.what()<<std::endl;
-		}
+      auto updater = fRNTupleWriter->CreateModelUpdater();
+      try {
+         auto newFieldResult = ROOT::Experimental::Detail::RFieldBase::Create(cls->GetName(), cls->GetName());
+         if(!newFieldResult) {
+            std::cout << "Failed to create field using \"" << cls->GetName() << "\"?" << std::endl;
+         }
+         auto newField = newFieldResult.Unwrap();
+         updater->BeginUpdate();
+         updater->AddField(std::move(newField));
+         updater->CommitUpdate();
+         std::cout << "Model: " << fRNTupleWriter->GetModel()->GetDescription() << std::endl;
+      } catch(ROOT::Experimental::RException& e) {
+         std::cout << "Failed to create field " << cls->GetName() << ", normalized " << TClassEdit::CleanType(cls->GetName()) << ", canonical " << TClassEdit::ResolveTypedef(cls->GetName()) << ": " << e.what() << std::endl;
+			throw e;
+      }
 
-		std::cout<<"\r"<<std::string(30, ' ')<<"\r"<<Name()<<": added \""<<cls->GetName()<<R"(" branch)"<<std::endl;
+      std::cout << "\r" << std::string(30, ' ') << "\r" << Name() << ": added \"" << cls->GetName() << R"(" branch)" << std::endl;
 
       // Unlock after we are done.
       TThread::UnLock();
