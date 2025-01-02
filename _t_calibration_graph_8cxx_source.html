@@ -386,7 +386,7 @@ $(document).ready(function(){initNavTree('_t_calibration_graph_8cxx_source.html'
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>         }</div>
 <div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>         ipoint = i;</div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>         <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>      } </div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>      }</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_calibration_graph_set.html#a50f9615d7f707cc3af2ab9dc6b756791">fVerboseLevel</a> &gt; 2) {</div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>         std::cout &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;: dpx = &quot;</span> &lt;&lt; dpx &lt;&lt; <span class="stringliteral">&quot; = &quot;</span> &lt;&lt; px &lt;&lt; <span class="stringliteral">&quot; - &quot;</span> &lt;&lt; gPad-&gt;XtoAbsPixel(gPad-&gt;XtoPad(x[i])) &lt;&lt; <span class="stringliteral">&quot;, dpy = &quot;</span> &lt;&lt; dpy &lt;&lt; <span class="stringliteral">&quot; = &quot;</span> &lt;&lt; py &lt;&lt; <span class="stringliteral">&quot; - &quot;</span> &lt;&lt; gPad-&gt;YtoAbsPixel(gPad-&gt;YtoPad(y[i])) &lt;&lt; <span class="stringliteral">&quot; not the point we&#39;re looking for&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>      }</div>
@@ -436,7 +436,7 @@ $(document).ready(function(){initNavTree('_t_calibration_graph_8cxx_source.html'
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>      pad++;</div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>   }</div>
 <div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_calibration_graph_set.html#a50f9615d7f707cc3af2ab9dc6b756791">fVerboseLevel</a> &gt; 1) { <a class="code hl_function" href="class_t_calibration_graph_set.html#a7118a744a3f1c5caf2924e9f8c91a44c">Print</a>(); }</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>   std::array&lt;Longptr_t, 2&gt; args = { px, py };</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>   std::array&lt;Longptr_t, 2&gt; args = {px, py};</div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_calibration_graph_set.html#a50f9615d7f707cc3af2ab9dc6b756791">fVerboseLevel</a> &gt; 2) { std::cout &lt;&lt; <span class="stringliteral">&quot;Emitting RemovePoint(Int_t, Int_t) with &quot;</span> &lt;&lt; px &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; py &lt;&lt; <span class="stringliteral">&quot; - &quot;</span> &lt;&lt; args.data() &lt;&lt; std::endl; }</div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>   Emit(<span class="stringliteral">&quot;RemovePoint(Int_t, Int_t)&quot;</span>, args.data());</div>
 <div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>   <span class="keywordflow">return</span> ipoint;</div>
@@ -503,7 +503,7 @@ $(document).ready(function(){initNavTree('_t_calibration_graph_8cxx_source.html'
 <div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>      pad++;</div>
 <div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>   }</div>
 <div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_calibration_graph_set.html#a50f9615d7f707cc3af2ab9dc6b756791">fVerboseLevel</a> &gt; 1) { <a class="code hl_function" href="class_t_calibration_graph_set.html#a7118a744a3f1c5caf2924e9f8c91a44c">Print</a>(); }</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>   std::array&lt;Longptr_t, 2&gt; args = { px, py };</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>   std::array&lt;Longptr_t, 2&gt; args = {px, py};</div>
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_calibration_graph_set.html#a50f9615d7f707cc3af2ab9dc6b756791">fVerboseLevel</a> &gt; 2) { std::cout &lt;&lt; <span class="stringliteral">&quot;Emitting RemoveResidualPoint(Int_t, Int_t) with &quot;</span> &lt;&lt; px &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; py &lt;&lt; <span class="stringliteral">&quot; - &quot;</span> &lt;&lt; args.data() &lt;&lt; std::endl; }</div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>   Emit(<span class="stringliteral">&quot;RemoveResidualPoint(Int_t, Int_t)&quot;</span>, args.data());</div>
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>   <span class="keywordflow">return</span> ipoint;</div>
@@ -730,7 +730,7 @@ $(document).ready(function(){initNavTree('_t_calibration_graph_8cxx_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_af8759249976916949d3211b2e3ed5df.html">TGUI</a></li><li class="navelem"><a class="el" href="_t_calibration_graph_8cxx.html">TCalibrationGraph.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Jan 2 2025 20:45:54.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Jan 2 2025 20:47:28.</li>
   </ul>
 </div>
 </body>
