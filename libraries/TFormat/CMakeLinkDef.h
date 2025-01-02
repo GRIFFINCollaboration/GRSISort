@@ -107,6 +107,7 @@
 #pragma link C++ class GBrowserPlugin + ;
 #pragma link C++ class GRootGuiFactory + ;
 
+#pragma link C++ class TRegion + ;
 #pragma link C++ class GH1D + ;
 #pragma link C++ class GH2Base + ;
 #pragma link C++ class GH2I + ;
