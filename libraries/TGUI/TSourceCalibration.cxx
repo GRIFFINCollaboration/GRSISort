@@ -539,9 +539,9 @@ void TSourceTab::FindPeaks(const double& sigma, const double& threshold, const d
 			if(TSourceCalibration::VerboseLevel() > 2) { std::cout << "No regions found, using whole spectrum" << std::endl; }
          spectrum.Search(fProjection, fSigma, "", fThreshold);
          nofPeaks = spectrum.GetNPeaks();
-			if(nofPeaks > fPeakRatio * fSourceEnergy.size()) { 
+			if(nofPeaks > fPeakRatio * static_cast<double>(fSourceEnergy.size())) { 
 				if(TSourceCalibration::VerboseLevel() > 2) { std::cout << "Reducing # of peaks from " << nofPeaks; }
-				nofPeaks = static_cast<int>(fPeakRatio * fSourceEnergy.size());
+				nofPeaks = static_cast<int>(fPeakRatio * static_cast<double>(fSourceEnergy.size()));
 				if(TSourceCalibration::VerboseLevel() > 2) { std::cout << " to " << nofPeaks << std::endl; }
 			}
          peakPos.insert(peakPos.end(), spectrum.GetPositionX(), spectrum.GetPositionX() + nofPeaks);
@@ -550,9 +550,9 @@ void TSourceTab::FindPeaks(const double& sigma, const double& threshold, const d
             fProjection->GetXaxis()->SetRangeUser(region.first, region.second);
             spectrum.Search(fProjection, fSigma, "", fThreshold);
 				int tmpNofPeaks = spectrum.GetNPeaks();
-				if(tmpNofPeaks > fPeakRatio * fSourceEnergy.size()) { 
+				if(tmpNofPeaks > fPeakRatio * static_cast<double>(fSourceEnergy.size())) { 
 					if(TSourceCalibration::VerboseLevel() > 2) { std::cout << "Reducing # of peaks from " << tmpNofPeaks; }
-					tmpNofPeaks = static_cast<int>(fPeakRatio * fSourceEnergy.size());
+					tmpNofPeaks = static_cast<int>(fPeakRatio * static_cast<double>(fSourceEnergy.size()));
 					if(TSourceCalibration::VerboseLevel() > 2) { std::cout << " to " << tmpNofPeaks << std::endl; }
 				}
 				peakPos.insert(peakPos.end(), spectrum.GetPositionX(), spectrum.GetPositionX() + tmpNofPeaks);
@@ -756,7 +756,7 @@ void TSourceTab::Add(std::map<GPeak*, std::tuple<double, double, double, double>
 void TSourceTab::RemovePoint(Int_t px, Int_t py)
 {
    if(TSourceCalibration::VerboseLevel() > 1) {
-      std::cout << DCYAN << __PRETTY_FUNCTION__ << ": px " << px << ", py " << py << std::endl;
+      std::cout << DCYAN << __PRETTY_FUNCTION__ << ": px " << px << ", py " << py << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    }
 	// we removed a point of the calibration graph at px, py, where px is the channel and py is the energy	
 	// so we try and find a peak with its centroid close to px
@@ -819,7 +819,7 @@ void TSourceTab::RemovePoint(Int_t px, Int_t py)
 void TSourceTab::RemoveResidualPoint(Int_t px, Int_t py)
 {
    if(TSourceCalibration::VerboseLevel() > 1) {
-      std::cout << DCYAN << __PRETTY_FUNCTION__ << ": px " << px << ", py " << py << std::endl;
+      std::cout << DCYAN << __PRETTY_FUNCTION__ << ": px " << px << ", py " << py << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    }
 	// we removed a point of the residual graph at px, py, where px is the residual and py is the energy	
 }
@@ -1407,7 +1407,7 @@ void TChannelTab::PrintLayout() const
 int TSourceCalibration::fVerboseLevel = 0;
 
 TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degree, double peakRatio, int count...)
-   : TGMainFrame(nullptr, 1200, 600), fDefaultSigma(std::move(sigma)), fDefaultThreshold(std::move(threshold)), fDefaultDegree(std::move(degree)), fDefaultPeakRatio(std::move(peakRatio))
+   : TGMainFrame(nullptr, 1200, 600), fDefaultSigma(sigma), fDefaultThreshold(threshold), fDefaultDegree(degree), fDefaultPeakRatio(peakRatio)
 {
    TH1::AddDirectory(false);   // turns off warnings about multiple histograms with the same name because ROOT doesn't manage them anymore
 

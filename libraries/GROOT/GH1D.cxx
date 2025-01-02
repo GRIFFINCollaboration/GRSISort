@@ -290,7 +290,7 @@ void GH1D::HandleEvent(Event_t* event, Window_t window)
 	if((VerboseLevel() > 1 && event->fType != kMotionNotify && event->fType != kLeaveNotify) ||
 		(VerboseLevel() > 2 && event->fState != 0) ||
 		(VerboseLevel() > 3)) {
-		std::cout << __PRETTY_FUNCTION__ << ", event " << event << ", window " << window << ", type " << event->fType << ", code " << event->fCode << ", state " << event->fState << ", x " << event->fX << ", root-x " << event->fXRoot << ", y " << event->fY << ", root-y " << event->fYRoot << ", x/y coordinates: x " << fPad->PixeltoX(event->fX) << ", y " << fPad->PixeltoY(event->fY - fPad->GetWh()) << ", root-x " << fPad->PixeltoX(event->fXRoot) << ", root-y " << fPad->PixeltoY(event->fYRoot - fPad->GetWh()) << ", key symbol " << keySymbol << " = " << hex(keySymbol) << "; fPad " << fPad << " = \"" << fPad->GetName() << "\", gPad " << gPad << " = \"" << gPad->GetName() << "\"" << std::endl;
+		std::cout << __PRETTY_FUNCTION__ << ", event " << event << ", window " << window << ", type " << event->fType << ", code " << event->fCode << ", state " << event->fState << ", x " << event->fX << ", root-x " << event->fXRoot << ", y " << event->fY << ", root-y " << event->fYRoot << ", x/y coordinates: x " << fPad->PixeltoX(event->fX) << ", y " << fPad->PixeltoY(event->fY - fPad->GetWh()) << ", root-x " << fPad->PixeltoX(event->fXRoot) << ", root-y " << fPad->PixeltoY(event->fYRoot - fPad->GetWh()) << ", key symbol " << keySymbol << " = " << hex(keySymbol) << "; fPad " << fPad << " = \"" << fPad->GetName() << "\", gPad " << gPad << " = \"" << gPad->GetName() << "\"" << std::endl; // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 	}
 
 	switch(event->fType) {
@@ -561,7 +561,7 @@ void GH1D::RemoveRegion(TRegion* region)
 }
 
 TRegion::TRegion(TBox* box, ERegionType type, GH1D* parent)
-	: TBox(*box), fParent(std::move(parent)), fType(std::move(type)), fLowX(box->GetX1()), fHighX(box->GetX2())
+	: TBox(*box), fParent(parent), fType(type), fLowX(box->GetX1()), fHighX(box->GetX2())
 {
 	// make sure that x1 is smaller than x2
 	if(GetX1() > GetX2()) {

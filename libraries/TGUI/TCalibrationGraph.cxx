@@ -263,7 +263,8 @@ Int_t TCalibrationGraphSet::RemovePoint(const Int_t& px, const Int_t& py)
 			}
          ipoint = i;
          break;
-      } else if(fVerboseLevel > 2) {
+      } 
+		if(fVerboseLevel > 2) {
 			std::cout << i << ": dpx = " << dpx << " = " << px << " - " << gPad->XtoAbsPixel(gPad->XtoPad(x[i])) << ", dpy = " << dpy << " = " << py << " - " << gPad->YtoAbsPixel(gPad->YtoPad(y[i])) << " not the point we're looking for" << std::endl;
 		}
    }
@@ -312,9 +313,9 @@ Int_t TCalibrationGraphSet::RemovePoint(const Int_t& px, const Int_t& py)
       pad++;
    }
    if(fVerboseLevel > 1) { Print(); }
-	Longptr_t args[2] = { px, py };
-	if(fVerboseLevel > 2) { std::cout << "Emitting RemovePoint(Int_t, Int_t) with " << px << ", " << py << " - " << args << std::endl; }
-	Emit("RemovePoint(Int_t, Int_t)", args);
+	std::array<Longptr_t, 2> args = { px, py };
+	if(fVerboseLevel > 2) { std::cout << "Emitting RemovePoint(Int_t, Int_t) with " << px << ", " << py << " - " << args.data() << std::endl; }
+	Emit("RemovePoint(Int_t, Int_t)", args.data());
    return ipoint;
 }
 
@@ -377,11 +378,9 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint(const Int_t& px, const Int_t& py
       pad++;
    }
    if(fVerboseLevel > 1) { Print(); }
-	Longptr_t args[2];// = { px, py };
-	args[0] = px;
-	args[1] = py;
-	if(fVerboseLevel > 2) { std::cout << "Emitting RemoveResidualPoint(Int_t, Int_t) with " << px << ", " << py << " - " << args << std::endl; }
-	Emit("RemoveResidualPoint(Int_t, Int_t)", args);
+	std::array<Longptr_t, 2> args = { px, py };
+	if(fVerboseLevel > 2) { std::cout << "Emitting RemoveResidualPoint(Int_t, Int_t) with " << px << ", " << py << " - " << args.data() << std::endl; }
+	Emit("RemoveResidualPoint(Int_t, Int_t)", args.data());
    return ipoint;
 }
 

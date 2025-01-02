@@ -33,7 +33,7 @@ public:
    GH1D(const TF1& function, Int_t nbinsx, Double_t xlow, Double_t xup);
 
    explicit GH1D(const TH1& source);
-   GH1D(const TH1* source);
+   explicit GH1D(const TH1* source);
    // virtual void SetOption(Option_t* option=" ");
 
    TObject* GetParent() const { return fParent.GetObject(); }
@@ -107,7 +107,7 @@ enum class ERegionType{kDefault, kGate, kBackground, kRegion};
 
 class TRegion : public TBox {
 public:
-	TRegion() {}
+	TRegion() = default;
 	TRegion(TBox* box, ERegionType type, GH1D* parent);
 	TRegion(const TRegion&) = default;
 	TRegion(TRegion&&) = default;
