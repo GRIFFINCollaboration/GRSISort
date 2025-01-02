@@ -40,7 +40,7 @@ public:
    void     SetParent(TObject* obj) { fParent = obj; }
 
    TVirtualPad* GetPad() const { return fPad; }
-   void     SetPad(TVirtualPad* pad);
+   void         SetPad(TVirtualPad* pad);
 
    int  GetProjectionAxis() const { return fProjectionAxis; }
    void SetProjectionAxis(int axis) { fProjectionAxis = axis; }
@@ -63,73 +63,80 @@ public:
    GH1D* Project_Background(double value_low, double value_high, double bg_value_low, double bg_value_high,
                             EBackgroundSubtraction mode = EBackgroundSubtraction::kRegionBackground) const;
 
-	TVirtualPad* Pad() const { return fPad; }
-	TList* ListOfRegions() { return &fRegions; }
+   TVirtualPad* Pad() const { return fPad; }
+   TList*       ListOfRegions() { return &fRegions; }
 
-	void HandleMovement(Int_t eventType, Int_t eventX, Int_t eventY, TObject* selected);
-	void HandleEvent(Event_t* event, Window_t window);
+   void HandleMovement(Int_t eventType, Int_t eventX, Int_t eventY, TObject* selected);
+   void HandleEvent(Event_t* event, Window_t window);
 
-	void RemoveRegion(TRegion* region);
+   void RemoveRegion(TRegion* region);
 
-	void UpdatePad() { fPad->Modified(); fPad->Update(); }
-	void UpdateRegions();
-	void PrintRegions();
-	void DrawRegions(Option_t* opt = "");
+   void UpdatePad()
+   {
+      fPad->Modified();
+      fPad->Update();
+   }
+   void UpdateRegions();
+   void PrintRegions();
+   void DrawRegions(Option_t* opt = "");
 
-	static void VerboseLevel(int level) { fVerboseLevel = level; }
-	static int VerboseLevel() { return fVerboseLevel; }
+   static void VerboseLevel(int level) { fVerboseLevel = level; }
+   static int  VerboseLevel() { return fVerboseLevel; }
 
 private:
-	void RemoveCurrentRegion();
+   void RemoveCurrentRegion();
 
-   TRef fParent;
-   int  fProjectionAxis;
-	TVirtualPad* fPad{nullptr}; //!<! 
-	// variables for regions
-	double fStartX{0.}; //!<! initial x-position of new region
-	double fStartY{0.}; //!<! initial y-position of new region
-	bool fGate{false}; //< flag to indicate that next region will be a gate region
-	bool fBackground{false}; //< flag to indicate that next region will be a background region
-	bool fRegion{false}; //< flag to indicate that next region will be a default region
-	TBox* fCurrentRegion{nullptr}; //!<! box for the current region
-	std::array<int, 3> fRegionColor{kOrange+2, kGreen+2, kCyan+2}; // could be made static?
-	size_t fNofRegions{0}; //!<! counts number of regions in this histogram, only used to set the color of the region
-	TList	fRegions;
+   TRef         fParent;
+   int          fProjectionAxis;
+   TVirtualPad* fPad{nullptr};   //!<!
+   // variables for regions
+   double             fStartX{0.};                                        //!<! initial x-position of new region
+   double             fStartY{0.};                                        //!<! initial y-position of new region
+   bool               fGate{false};                                       //< flag to indicate that next region will be a gate region
+   bool               fBackground{false};                                 //< flag to indicate that next region will be a background region
+   bool               fRegion{false};                                     //< flag to indicate that next region will be a default region
+   TBox*              fCurrentRegion{nullptr};                            //!<! box for the current region
+   std::array<int, 3> fRegionColor{kOrange + 2, kGreen + 2, kCyan + 2};   // could be made static?
+   size_t             fNofRegions{0};                                     //!<! counts number of regions in this histogram, only used to set the color of the region
+   TList              fRegions;
 
-	static int fVerboseLevel; //!<! level of verbosity
+   static int fVerboseLevel;   //!<! level of verbosity
 
    /// /cond CLASSIMP
    ClassDefOverride(GH1D, 1)   // NOLINT(readability-else-after-return)
-	/// /endcond
+                               /// /endcond
 };
 
-enum class ERegionType{kDefault, kGate, kBackground, kRegion};
+enum class ERegionType { kDefault,
+                         kGate,
+                         kBackground,
+                         kRegion };
 
 class TRegion : public TBox {
 public:
-	TRegion() = default;
-	TRegion(TBox* box, ERegionType type, GH1D* parent);
-	TRegion(const TRegion&) = default;
-	TRegion(TRegion&&) = default;
-	TRegion& operator=(const TRegion&) = default;
-	TRegion& operator=(TRegion&&) = default;
-	~TRegion() = default;
+   TRegion() = default;
+   TRegion(TBox* box, ERegionType type, GH1D* parent);
+   TRegion(const TRegion&)            = default;
+   TRegion(TRegion&&)                 = default;
+   TRegion& operator=(const TRegion&) = default;
+   TRegion& operator=(TRegion&&)      = default;
+   ~TRegion()                         = default;
 
-	bool Update();
-	void Hide();
-	void Draw(Option_t* opt = "") override;
+   bool Update();
+   void Hide();
+   void Draw(Option_t* opt = "") override;
 
-	void Update(double startX, double stopX);
+   void Update(double startX, double stopX);
 
 private:
-	GH1D* fParent{nullptr};
-	ERegionType fType{ERegionType::kDefault};
-	double fLowX{0.};
-	double fHighX{0.};
+   GH1D*       fParent{nullptr};
+   ERegionType fType{ERegionType::kDefault};
+   double      fLowX{0.};
+   double      fHighX{0.};
 
    /// /cond CLASSIMP
    ClassDefOverride(TRegion, 1)   // NOLINT(readability-else-after-return)
-	/// /endcond
+                                  /// /endcond
 };
 
 #endif /* GH1D_H */
