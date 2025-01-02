@@ -450,6 +450,7 @@ void GH1D::HandleEvent(Event_t* event, Window_t window)
 					PrintRegions();
 				}
 			}
+			break;
 		case kButtonRelease:
 			if(event->fCode == 1) {
 				if(event->fState == 0) {
