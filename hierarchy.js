@@ -104,6 +104,9 @@ var hierarchy =
       [ "GCubeF", "class_g_cube_f.html", null ],
       [ "GHSymF", "class_g_h_sym_f.html", null ]
     ] ],
+    [ "TBox", null, [
+      [ "TRegion", "class_t_region.html", null ]
+    ] ],
     [ "TBrowserImp", null, [
       [ "GRootBrowser", "class_g_root_browser.html", null ]
     ] ],
@@ -397,6 +400,9 @@ var hierarchy =
       [ "TGRSIProof", "class_t_g_r_s_i_proof.html", null ]
     ] ],
     [ "TPulseAnalyzer", "class_t_pulse_analyzer.html", null ],
+    [ "TQObject", null, [
+      [ "TCalibrationGraphSet", "class_t_calibration_graph_set.html", null ]
+    ] ],
     [ "TRedirect", "class_t_redirect.html", null ],
     [ "TRint", null, [
       [ "TGRSIint", "class_t_g_r_s_iint.html", null ]

@@ -1,24 +1,26 @@
 <map id="GRootCommands.h" name="GRootCommands.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="439,5,573,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="468,5,603,31"/>
 <area shape="rect" id="Node000002" href="$_g_canvas_8cxx.html" title=" " alt="" coords="5,79,103,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="424,34,114,82,104,84,103,78,114,76,423,28"/>
-<area shape="rect" id="Node000003" href="$_g_notifier_8h.html" title=" " alt="" coords="126,79,209,105"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="434,37,209,84,208,79,433,32"/>
-<area shape="rect" id="Node000005" href="$_g_root_commands_8cxx.html" title=" " alt="" coords="173,153,319,178"/>
-<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="424,24,385,30,345,40,308,57,275,81,262,97,255,117,249,153,244,152,249,115,258,95,271,77,305,52,344,35,384,24,423,18"/>
-<area shape="rect" id="Node000006" href="$_t_analysis_options_8cxx.html" title=" " alt="" coords="284,79,429,105"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="468,40,383,81,381,76,466,36"/>
-<area shape="rect" id="Node000007" href="$_t_calibrator_8cxx.html" title=" " alt="" coords="453,79,559,105"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="509,46,509,79,503,79,503,46"/>
-<area shape="rect" id="Node000008" href="$_t_compiled_histograms_8cxx.html" title=" " alt="" coords="584,79,756,105"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="549,35,643,76,641,81,547,40"/>
-<area shape="rect" id="Node000009" href="$_t_g_r_s_i_options_8cxx.html" title=" " alt="" coords="781,79,909,105"/>
-<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="579,32,788,76,787,81,578,37"/>
-<area shape="rect" id="Node000010" href="$_t_g_r_s_iint_8cxx.html" title=" " alt="" coords="933,79,1031,105"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="589,28,921,76,934,79,933,84,920,82,588,33"/>
-<area shape="rect" id="Node000011" href="$_t_source_calibration_8cxx.html" title=" " alt="" coords="1055,79,1208,105"/>
-<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="589,25,1044,76,1054,78,1054,83,1043,82,588,31"/>
-<area shape="rect" id="Node000004" href="$_g_notifier_8cxx.html" title=" " alt="" coords="55,153,149,178"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="148,118,115,154,111,150,144,114"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="193,113,235,150,231,154,190,117"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="453,33,114,82,104,84,103,78,114,76,453,27"/>
+<area shape="rect" id="Node000003" href="$_g_h1_d_8cxx.html" title=" " alt="" coords="126,79,206,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="453,37,219,82,207,84,206,79,217,76,452,32"/>
+<area shape="rect" id="Node000004" href="$_g_notifier_8h.html" title=" " alt="" coords="230,79,313,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="477,38,314,82,312,77,475,33"/>
+<area shape="rect" id="Node000006" href="$_g_root_commands_8cxx.html" title=" " alt="" coords="277,153,423,178"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="454,37,413,55,379,81,367,98,359,117,353,153,348,152,354,116,362,95,375,77,411,50,452,33"/>
+<area shape="rect" id="Node000007" href="$_t_analysis_options_8cxx.html" title=" " alt="" coords="388,79,533,105"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="514,44,475,81,471,77,510,40"/>
+<area shape="rect" id="Node000008" href="$_t_calibrator_8cxx.html" title=" " alt="" coords="557,79,663,105"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="561,40,599,77,596,81,557,44"/>
+<area shape="rect" id="Node000009" href="$_t_compiled_histograms_8cxx.html" title=" " alt="" coords="688,79,860,105"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="591,33,734,76,733,81,590,38"/>
+<area shape="rect" id="Node000010" href="$_t_g_r_s_i_options_8cxx.html" title=" " alt="" coords="885,79,1013,105"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="619,31,884,77,883,82,618,36"/>
+<area shape="rect" id="Node000011" href="$_t_g_r_s_iint_8cxx.html" title=" " alt="" coords="1037,79,1135,105"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="618,25,805,46,1025,76,1037,78,1036,84,1024,82,804,52,618,31"/>
+<area shape="rect" id="Node000012" href="$_t_source_calibration_8cxx.html" title=" " alt="" coords="1159,79,1312,105"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="618,24,856,46,1148,76,1158,78,1158,83,1147,82,856,51,618,29"/>
+<area shape="rect" id="Node000005" href="$_g_notifier_8cxx.html" title=" " alt="" coords="159,153,253,178"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="252,118,219,154,215,150,248,114"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="297,113,339,150,335,154,294,117"/>
 </map>

@@ -1,5 +1,13 @@
 var NAVTREEINDEX8 =
 {
+"class_arg_parser.html#aedc80e066b44e7a5375d1b144f4860d6":[10,0,11,10],
+"class_arg_parser.html#af29eee2c652ca2f8e94dbc5c4e7c795f":[10,0,11,1],
+"class_compton_polarimetry_helper.html":[10,0,13],
+"class_compton_polarimetry_helper.html#a01803cc3aee74715892f7478b7158f4e":[10,0,13,23],
+"class_compton_polarimetry_helper.html#a0595f69cfb8c9399f4af6b28e185de87":[10,0,13,50],
+"class_compton_polarimetry_helper.html#a0b2861b9e607129c2d996f46d871baa6":[10,0,13,47],
+"class_compton_polarimetry_helper.html#a0e505d1c617db78984dd90345c10d50e":[10,0,13,11],
+"class_compton_polarimetry_helper.html#a106305b1b18827f1f5ec4952b63b54f3":[10,0,13,26],
 "class_compton_polarimetry_helper.html#a11d96937ca29dba17c7c55ccd78b1846":[10,0,13,28],
 "class_compton_polarimetry_helper.html#a134602d3db37506ecdcd5665bb339942":[10,0,13,25],
 "class_compton_polarimetry_helper.html#a13982a2930b892f25393e87a3c69c884":[10,0,13,2],
@@ -241,13 +249,5 @@ var NAVTREEINDEX8 =
 "class_example_event_helper.html#a7765ba54a5174f1923d4b5af8824d6dc":[10,0,24,22],
 "class_example_event_helper.html#aa06a56d69ebfedad2634aec0334cf373":[10,0,24,13],
 "class_example_event_helper.html#aad7e7d8ceee2f9fa1d96256a4e15138b":[10,0,24,25],
-"class_example_event_helper.html#ab0f6f62534fb16f8fd444822f3c82f51":[10,0,24,2],
-"class_example_event_helper.html#ac7ce3378d3b7c730f9cbd73dd2cf7ab3":[10,0,24,27],
-"class_example_event_helper.html#ac8e3b2c0233863390b3d8afd443b6241":[10,0,24,11],
-"class_example_event_helper.html#adad540cb3d1e8d6bb38971c5815bbb87":[10,0,24,4],
-"class_example_event_helper.html#adba49a09a6ebe50ebb9b33e051c0a3c0":[10,0,24,30],
-"class_example_event_helper.html#add19941df642bbd2f8994a3b799d4760":[10,0,24,8],
-"class_example_event_helper.html#ae2c692144a9b683f3bd206bf70dda117":[10,0,24,12],
-"class_example_event_helper.html#ae5c188f3fc54bc1e7ee607421a46b678":[10,0,24,17],
-"class_example_event_helper.html#ae95111fa334deef7e49ea2050899e972":[10,0,24,29]
+"class_example_event_helper.html#ab0f6f62534fb16f8fd444822f3c82f51":[10,0,24,2]
 };

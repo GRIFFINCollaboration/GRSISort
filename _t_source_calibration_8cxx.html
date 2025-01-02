@@ -114,10 +114,11 @@ $(document).ready(function(){initNavTree('_t_source_calibration_8cxx.html',''); 
 <code>#include &quot;TSpectrum.h&quot;</code><br />
 <code>#include &quot;TPolyMarker.h&quot;</code><br />
 <code>#include &quot;TObject.h&quot;</code><br />
+<code>#include &quot;TFrame.h&quot;</code><br />
+<code>#include &quot;TVirtualX.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="_t_channel_8h_source.html">TChannel.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_g_root_commands_8h_source.html">GRootCommands.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="combinations_8h_source.html">combinations.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_t_r_w_peak_8h_source.html">TRWPeak.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_globals_8h_source.html">Globals.h</a>&quot;</code><br />
 </div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for TSourceCalibration.cxx:</div>
@@ -131,50 +132,16 @@ $(document).ready(function(){initNavTree('_t_source_calibration_8cxx.html',''); 
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac9b0e9ae53777e0bb0a8a26b1078c522" id="r_ac9b0e9ae53777e0bb0a8a26b1078c522"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_source_calibration_8cxx.html#ac9b0e9ae53777e0bb0a8a26b1078c522">Efficiency</a> (double *x, double *par)</td></tr>
-<tr class="separator:ac9b0e9ae53777e0bb0a8a26b1078c522"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d5329e2fcee11eb87e0753683a35abb" id="r_a7d5329e2fcee11eb87e0753683a35abb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_source_calibration_8cxx.html#a7d5329e2fcee11eb87e0753683a35abb">FilledBin</a> (TH2 *matrix, const int &amp;bin)</td></tr>
 <tr class="separator:a7d5329e2fcee11eb87e0753683a35abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27d9ba8d92d76b847032f14cb6c743f8" id="r_a27d9ba8d92d76b847032f14cb6c743f8"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::tuple&lt; double, double, double, double &gt;, std::tuple&lt; double, double, double, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_source_calibration_8cxx.html#a27d9ba8d92d76b847032f14cb6c743f8">Match</a> (std::vector&lt; std::tuple&lt; double, double, double, double &gt; &gt; peaks, std::vector&lt; std::tuple&lt; double, double, double, double &gt; &gt; sources, int verboseLevel)</td></tr>
-<tr class="separator:a27d9ba8d92d76b847032f14cb6c743f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95433f5b03fb496b25c156114856d1de" id="r_a95433f5b03fb496b25c156114856d1de"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="class_g_peak.html">GPeak</a> *, std::tuple&lt; double, double, double, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_source_calibration_8cxx.html#a95433f5b03fb496b25c156114856d1de">Match</a> (std::vector&lt; <a class="el" href="class_g_peak.html">GPeak</a> * &gt; peaks, std::vector&lt; std::tuple&lt; double, double, double, double &gt; &gt; sources, <a class="el" href="class_t_source_tab.html">TSourceTab</a> *sourceTab)</td></tr>
+<tr class="separator:a95433f5b03fb496b25c156114856d1de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbe4eac0fa9a96039f2f8f3ecad6dc82" id="r_acbe4eac0fa9a96039f2f8f3ecad6dc82"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_source_calibration_8cxx.html#acbe4eac0fa9a96039f2f8f3ecad6dc82">Polynomial</a> (double *x, double *par)</td></tr>
 <tr class="separator:acbe4eac0fa9a96039f2f8f3ecad6dc82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a825982934c98eeaaa23ffd81f10a59d5" id="r_a825982934c98eeaaa23ffd81f10a59d5"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::tuple&lt; double, double, double, double &gt;, std::tuple&lt; double, double, double, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_source_calibration_8cxx.html#a825982934c98eeaaa23ffd81f10a59d5">SmartMatch</a> (std::vector&lt; std::tuple&lt; double, double, double, double &gt; &gt; peaks, std::vector&lt; std::tuple&lt; double, double, double, double &gt; &gt; sources, int verboseLevel)</td></tr>
-<tr class="separator:a825982934c98eeaaa23ffd81f10a59d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4fdf053cee165f006ceefed427df088" id="r_ae4fdf053cee165f006ceefed427df088"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="class_g_peak.html">GPeak</a> *, std::tuple&lt; double, double, double, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_source_calibration_8cxx.html#ae4fdf053cee165f006ceefed427df088">SmartMatch</a> (std::vector&lt; <a class="el" href="class_g_peak.html">GPeak</a> * &gt; peaks, std::vector&lt; std::tuple&lt; double, double, double, double &gt; &gt; sources, <a class="el" href="class_t_source_tab.html">TSourceTab</a> *sourceTab)</td></tr>
+<tr class="separator:ae4fdf053cee165f006ceefed427df088"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ac9b0e9ae53777e0bb0a8a26b1078c522" name="ac9b0e9ae53777e0bb0a8a26b1078c522"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9b0e9ae53777e0bb0a8a26b1078c522">&#9670;&#160;</a></span>Efficiency()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double Efficiency </td>
-          <td>(</td>
-          <td class="paramtype">double *&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double *&#160;</td>
-          <td class="paramname"><em>par</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00272">272</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01665">TSourceCalibration::FitEfficiency()</a>.</p>
-
-</div>
-</div>
 <a id="a7d5329e2fcee11eb87e0753683a35abb" name="a7d5329e2fcee11eb87e0753683a35abb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7d5329e2fcee11eb87e0753683a35abb">&#9670;&#160;</a></span>FilledBin()</h2>
 
@@ -201,22 +168,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00281">281</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00298">298</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00653">TSourceCalibration::TSourceCalibration()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01302">TSourceCalibration::BuildThirdInterface()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01409">TSourceCalibration::TSourceCalibration()</a>.</p>
 
 </div>
 </div>
-<a id="a27d9ba8d92d76b847032f14cb6c743f8" name="a27d9ba8d92d76b847032f14cb6c743f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27d9ba8d92d76b847032f14cb6c743f8">&#9670;&#160;</a></span>Match()</h2>
+<a id="a95433f5b03fb496b25c156114856d1de" name="a95433f5b03fb496b25c156114856d1de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95433f5b03fb496b25c156114856d1de">&#9670;&#160;</a></span>Match()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt; std::tuple&lt; double, double, double, double &gt;, std::tuple&lt; double, double, double, double &gt; &gt; Match </td>
+          <td class="memname">std::map&lt; <a class="el" href="class_g_peak.html">GPeak</a> *, std::tuple&lt; double, double, double, double &gt; &gt; Match </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; std::tuple&lt; double, double, double, double &gt; &gt;&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="class_g_peak.html">GPeak</a> * &gt;&#160;</td>
           <td class="paramname"><em>peaks</em>, </td>
         </tr>
         <tr>
@@ -228,8 +195,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>verboseLevel</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_t_source_tab.html">TSourceTab</a> *&#160;</td>
+          <td class="paramname"><em>sourceTab</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -240,9 +207,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>This function tries to match a list of found peaks (channels) to a list of provided peaks (energies). It does so in a brute force fashion where we try all combinations of channels and energies, do a linear fit through them, and keep the one with the best chi square.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00028">28</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00029">29</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00437">TChannelTab::FindPeaks()</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l00827">TSourceTab::Status()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00236">TSourceCalibration::VerboseLevel()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00506">TSourceTab::FindPeaks()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l00390">TSourceTab::ProjectionStatus()</a>.</p>
 
 </div>
 </div>
@@ -272,22 +241,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00263">263</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00289">289</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00407">TChannelTab::Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01209">TSourceCalibration::FinalWindow()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01613">TSourceCalibration::FitFinal()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01131">TChannelTab::Calibrate()</a>.</p>
 
 </div>
 </div>
-<a id="a825982934c98eeaaa23ffd81f10a59d5" name="a825982934c98eeaaa23ffd81f10a59d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a825982934c98eeaaa23ffd81f10a59d5">&#9670;&#160;</a></span>SmartMatch()</h2>
+<a id="ae4fdf053cee165f006ceefed427df088" name="ae4fdf053cee165f006ceefed427df088"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4fdf053cee165f006ceefed427df088">&#9670;&#160;</a></span>SmartMatch()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt; std::tuple&lt; double, double, double, double &gt;, std::tuple&lt; double, double, double, double &gt; &gt; SmartMatch </td>
+          <td class="memname">std::map&lt; <a class="el" href="class_g_peak.html">GPeak</a> *, std::tuple&lt; double, double, double, double &gt; &gt; SmartMatch </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; std::tuple&lt; double, double, double, double &gt; &gt;&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="class_g_peak.html">GPeak</a> * &gt;&#160;</td>
           <td class="paramname"><em>peaks</em>, </td>
         </tr>
         <tr>
@@ -299,8 +268,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>verboseLevel</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_t_source_tab.html">TSourceTab</a> *&#160;</td>
+          <td class="paramname"><em>sourceTab</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -311,9 +280,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>This function tries to match a list of found peaks (channels) to a list of provided peaks (energies). It does so in slightly smarter way than the brute force method <code>Match</code>, by taking the reported intensity of the source peaks into account.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00144">144</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00147">147</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00437">TChannelTab::FindPeaks()</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l00827">TSourceTab::Status()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00236">TSourceCalibration::VerboseLevel()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00506">TSourceTab::FindPeaks()</a>.</p>
 
 </div>
 </div>
@@ -324,7 +295,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_af8759249976916949d3211b2e3ed5df.html">TGUI</a></li><li class="navelem"><a class="el" href="_t_source_calibration_8cxx.html">TSourceCalibration.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Dec 5 2024 01:24:24.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Jan 2 2025 20:45:55.</li>
   </ul>
 </div>
 </body>

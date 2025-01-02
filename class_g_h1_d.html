@@ -96,14 +96,17 @@ $(document).ready(function(){initNavTree('class_g_h1_d.html',''); initResizable(
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="class_g_h1_d-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">GH1D Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00011">11</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00016">16</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -119,6 +122,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a46a2e7fb1c82ed335bc7eefc0a7c5ef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b7bfcff1bae97f0c2dc3f5ad70b40c5" id="r_a4b7bfcff1bae97f0c2dc3f5ad70b40c5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a4b7bfcff1bae97f0c2dc3f5ad70b40c5">GH1D</a> (const TH1 &amp;source)</td></tr>
 <tr class="separator:a4b7bfcff1bae97f0c2dc3f5ad70b40c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ff701920426c2a9fdb7bce1b3e20638" id="r_a9ff701920426c2a9fdb7bce1b3e20638"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a9ff701920426c2a9fdb7bce1b3e20638">GH1D</a> (const TH1 *source)</td></tr>
+<tr class="separator:a9ff701920426c2a9fdb7bce1b3e20638"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34718a69cc42b564422646544ca91992" id="r_a34718a69cc42b564422646544ca91992"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a34718a69cc42b564422646544ca91992">GH1D</a> (const TVectorD &amp;vec)</td></tr>
 <tr class="separator:a34718a69cc42b564422646544ca91992"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79b775d04802e88e7206efff02ebafbc" id="r_a79b775d04802e88e7206efff02ebafbc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a79b775d04802e88e7206efff02ebafbc">Clear</a> (Option_t *opt=&quot;&quot;) override</td></tr>
@@ -131,35 +136,94 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab65a2b9414dd459e47df95984525af39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2117671563db6377847c25b6525f382d" id="r_a2117671563db6377847c25b6525f382d"><td class="memItemLeft" align="right" valign="top">TH1 *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a2117671563db6377847c25b6525f382d">DrawNormalized</a> (Option_t *opt=&quot;&quot;, Double_t norm=1) const override</td></tr>
 <tr class="separator:a2117671563db6377847c25b6525f382d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a161505125705217817f235d06759b2a5" id="r_a161505125705217817f235d06759b2a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a161505125705217817f235d06759b2a5">DrawRegions</a> (Option_t *opt=&quot;&quot;)</td></tr>
+<tr class="separator:a161505125705217817f235d06759b2a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52cee691ab031c7efb98d17d4828190b" id="r_a52cee691ab031c7efb98d17d4828190b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_g_h1_d.html">GH1D</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a52cee691ab031c7efb98d17d4828190b">GetNext</a> (bool DrawEmpty=false) const</td></tr>
 <tr class="separator:a52cee691ab031c7efb98d17d4828190b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2b189856091b42a557db180b60b76c6" id="r_aa2b189856091b42a557db180b60b76c6"><td class="memItemLeft" align="right" valign="top">TVirtualPad *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#aa2b189856091b42a557db180b60b76c6">GetPad</a> () const</td></tr>
+<tr class="separator:aa2b189856091b42a557db180b60b76c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff12c143262818a01fa3c0d57afb60f0" id="r_aff12c143262818a01fa3c0d57afb60f0"><td class="memItemLeft" align="right" valign="top">TObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#aff12c143262818a01fa3c0d57afb60f0">GetParent</a> () const</td></tr>
 <tr class="separator:aff12c143262818a01fa3c0d57afb60f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ca014677926217e1bdec6423c20f017" id="r_a9ca014677926217e1bdec6423c20f017"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_g_h1_d.html">GH1D</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a9ca014677926217e1bdec6423c20f017">GetPrevious</a> (bool DrawEmpty=false) const</td></tr>
 <tr class="separator:a9ca014677926217e1bdec6423c20f017"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb73cda22692cc5acb02284b952a9826" id="r_acb73cda22692cc5acb02284b952a9826"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#acb73cda22692cc5acb02284b952a9826">GetProjectionAxis</a> () const</td></tr>
 <tr class="separator:acb73cda22692cc5acb02284b952a9826"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa417613a851e64b443a4cff38498daa8" id="r_aa417613a851e64b443a4cff38498daa8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#aa417613a851e64b443a4cff38498daa8">HandleEvent</a> (Event_t *event, Window_t window)</td></tr>
+<tr class="separator:aa417613a851e64b443a4cff38498daa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a302b66f845874b4d4f194e413dfb01e9" id="r_a302b66f845874b4d4f194e413dfb01e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a302b66f845874b4d4f194e413dfb01e9">HandleMovement</a> (Int_t eventType, Int_t eventX, Int_t eventY, TObject *selected)</td></tr>
+<tr class="separator:a302b66f845874b4d4f194e413dfb01e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27f5459dcc4745f9979de943e69045c5" id="r_a27f5459dcc4745f9979de943e69045c5"><td class="memItemLeft" align="right" valign="top">TList *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a27f5459dcc4745f9979de943e69045c5">ListOfRegions</a> ()</td></tr>
+<tr class="separator:a27f5459dcc4745f9979de943e69045c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a389c086dab87c0d675801d5f26ac12" id="r_a0a389c086dab87c0d675801d5f26ac12"><td class="memItemLeft" align="right" valign="top">TVirtualPad *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a0a389c086dab87c0d675801d5f26ac12">Pad</a> () const</td></tr>
+<tr class="separator:a0a389c086dab87c0d675801d5f26ac12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a649816e326bb11c5483a6d6482bfa8d9" id="r_a649816e326bb11c5483a6d6482bfa8d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a649816e326bb11c5483a6d6482bfa8d9">Print</a> (Option_t *opt=&quot;&quot;) const override</td></tr>
 <tr class="separator:a649816e326bb11c5483a6d6482bfa8d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a320c2b0afb68c89b012d21e046e422ac" id="r_a320c2b0afb68c89b012d21e046e422ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a320c2b0afb68c89b012d21e046e422ac">PrintRegions</a> ()</td></tr>
+<tr class="separator:a320c2b0afb68c89b012d21e046e422ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaba1a47612c33a87b25142a20a25c534" id="r_aaba1a47612c33a87b25142a20a25c534"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_g_h1_d.html">GH1D</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#aaba1a47612c33a87b25142a20a25c534">Project</a> (double value_low, double value_high) const</td></tr>
 <tr class="separator:aaba1a47612c33a87b25142a20a25c534"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9c5070c9c2a0c1f9c9b2d0b46e27d3a" id="r_aa9c5070c9c2a0c1f9c9b2d0b46e27d3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_g_h1_d.html">GH1D</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#aa9c5070c9c2a0c1f9c9b2d0b46e27d3a">Project</a> (int bins=-1)</td></tr>
 <tr class="separator:aa9c5070c9c2a0c1f9c9b2d0b46e27d3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a096431f81f79dbd4387fe3b7e3275d34" id="r_a096431f81f79dbd4387fe3b7e3275d34"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_g_h1_d.html">GH1D</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a096431f81f79dbd4387fe3b7e3275d34">Project_Background</a> (double value_low, double value_high, double bg_value_low, double bg_value_high, <a class="el" href="_g_h2_base_8h.html#a3c4ccf159a5f08659648fc1d6e3dceac">EBackgroundSubtraction</a> mode=<a class="el" href="_g_h2_base_8h.html#a3c4ccf159a5f08659648fc1d6e3dceaca4b236ed4a84ae698d383dd75ef6d784a">EBackgroundSubtraction::kRegionBackground</a>) const</td></tr>
 <tr class="separator:a096431f81f79dbd4387fe3b7e3275d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae67b829f04dd023c010ea35bebfee601" id="r_ae67b829f04dd023c010ea35bebfee601"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#ae67b829f04dd023c010ea35bebfee601">RemoveRegion</a> (<a class="el" href="class_t_region.html">TRegion</a> *region)</td></tr>
+<tr class="separator:ae67b829f04dd023c010ea35bebfee601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ca5748a4e5948fa81b2b1264417947d" id="r_a0ca5748a4e5948fa81b2b1264417947d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a0ca5748a4e5948fa81b2b1264417947d">SetPad</a> (TVirtualPad *pad)</td></tr>
+<tr class="separator:a0ca5748a4e5948fa81b2b1264417947d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd721fcb6bdd828918b536805ed34c0b" id="r_acd721fcb6bdd828918b536805ed34c0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#acd721fcb6bdd828918b536805ed34c0b">SetParent</a> (TObject *obj)</td></tr>
 <tr class="separator:acd721fcb6bdd828918b536805ed34c0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc7c745cec1b661f528fb73e0f2190aa" id="r_acc7c745cec1b661f528fb73e0f2190aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#acc7c745cec1b661f528fb73e0f2190aa">SetProjectionAxis</a> (int axis)</td></tr>
 <tr class="separator:acc7c745cec1b661f528fb73e0f2190aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a246d2fe2cf37dde44ab4fd5a7db2964f" id="r_a246d2fe2cf37dde44ab4fd5a7db2964f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a246d2fe2cf37dde44ab4fd5a7db2964f">UpdatePad</a> ()</td></tr>
+<tr class="separator:a246d2fe2cf37dde44ab4fd5a7db2964f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa73747a1dd3ada619d6e9ead7b3cbab2" id="r_aa73747a1dd3ada619d6e9ead7b3cbab2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#aa73747a1dd3ada619d6e9ead7b3cbab2">UpdateRegions</a> ()</td></tr>
+<tr class="separator:aa73747a1dd3ada619d6e9ead7b3cbab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bf5097772496fd22039bc2b3a8fa3e0" id="r_a6bf5097772496fd22039bc2b3a8fa3e0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a6bf5097772496fd22039bc2b3a8fa3e0">WriteDatFile</a> (const char *outFile)</td></tr>
 <tr class="separator:a6bf5097772496fd22039bc2b3a8fa3e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a69721394c97bb1550f1c8014ebbd2c01" id="r_a69721394c97bb1550f1c8014ebbd2c01"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a69721394c97bb1550f1c8014ebbd2c01">VerboseLevel</a> ()</td></tr>
+<tr class="separator:a69721394c97bb1550f1c8014ebbd2c01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac42431d787df720424331dfb62934a83" id="r_ac42431d787df720424331dfb62934a83"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#ac42431d787df720424331dfb62934a83">VerboseLevel</a> (int level)</td></tr>
+<tr class="separator:ac42431d787df720424331dfb62934a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a32ceda32f0618167c0ddad354e93c70c" id="r_a32ceda32f0618167c0ddad354e93c70c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a32ceda32f0618167c0ddad354e93c70c">RemoveCurrentRegion</a> ()</td></tr>
+<tr class="separator:a32ceda32f0618167c0ddad354e93c70c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a682f81bca22f439ffd0bf86a725132ee" id="r_a682f81bca22f439ffd0bf86a725132ee"><td class="memItemLeft" align="right" valign="top">TRef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a682f81bca22f439ffd0bf86a725132ee">parent</a></td></tr>
-<tr class="separator:a682f81bca22f439ffd0bf86a725132ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec5194ebcb54ac57982f9fa1ce3fe28f" id="r_aec5194ebcb54ac57982f9fa1ce3fe28f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#aec5194ebcb54ac57982f9fa1ce3fe28f">projection_axis</a></td></tr>
-<tr class="separator:aec5194ebcb54ac57982f9fa1ce3fe28f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1720c2636225ccf6949db9073d5df34" id="r_af1720c2636225ccf6949db9073d5df34"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#af1720c2636225ccf6949db9073d5df34">fBackground</a> {false}</td></tr>
+<tr class="separator:af1720c2636225ccf6949db9073d5df34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c257cabfe5316957a4ca58d713fb096" id="r_a8c257cabfe5316957a4ca58d713fb096"><td class="memItemLeft" align="right" valign="top">TBox *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a8c257cabfe5316957a4ca58d713fb096">fCurrentRegion</a> {nullptr}</td></tr>
+<tr class="separator:a8c257cabfe5316957a4ca58d713fb096"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37647283eac7dfab74e86fe2a0301572" id="r_a37647283eac7dfab74e86fe2a0301572"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a37647283eac7dfab74e86fe2a0301572">fGate</a> {false}</td></tr>
+<tr class="separator:a37647283eac7dfab74e86fe2a0301572"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6101458be1ca9ce78959795be4096c52" id="r_a6101458be1ca9ce78959795be4096c52"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a6101458be1ca9ce78959795be4096c52">fNofRegions</a> {0}</td></tr>
+<tr class="separator:a6101458be1ca9ce78959795be4096c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0d66b0ea14fa90bd499faf6fb72e031" id="r_ae0d66b0ea14fa90bd499faf6fb72e031"><td class="memItemLeft" align="right" valign="top">TVirtualPad *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#ae0d66b0ea14fa90bd499faf6fb72e031">fPad</a> {nullptr}</td></tr>
+<tr class="separator:ae0d66b0ea14fa90bd499faf6fb72e031"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59060197d2f26af64ced5fe8167caa92" id="r_a59060197d2f26af64ced5fe8167caa92"><td class="memItemLeft" align="right" valign="top">TRef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a59060197d2f26af64ced5fe8167caa92">fParent</a></td></tr>
+<tr class="separator:a59060197d2f26af64ced5fe8167caa92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab32a654dc6d37d4de7fa7df822c891af" id="r_ab32a654dc6d37d4de7fa7df822c891af"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#ab32a654dc6d37d4de7fa7df822c891af">fProjectionAxis</a></td></tr>
+<tr class="separator:ab32a654dc6d37d4de7fa7df822c891af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab63c3e18c0137abd2241e076400b2086" id="r_ab63c3e18c0137abd2241e076400b2086"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#ab63c3e18c0137abd2241e076400b2086">fRegion</a> {false}</td></tr>
+<tr class="separator:ab63c3e18c0137abd2241e076400b2086"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d408e13c43e8cae607d42e9bb6c758e" id="r_a1d408e13c43e8cae607d42e9bb6c758e"><td class="memItemLeft" align="right" valign="top">std::array&lt; int, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a1d408e13c43e8cae607d42e9bb6c758e">fRegionColor</a> {kOrange+2, kGreen+2, kCyan+2}</td></tr>
+<tr class="separator:a1d408e13c43e8cae607d42e9bb6c758e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab77a8bcffa4c64f40ac98a00e3f30ee8" id="r_ab77a8bcffa4c64f40ac98a00e3f30ee8"><td class="memItemLeft" align="right" valign="top">TList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#ab77a8bcffa4c64f40ac98a00e3f30ee8">fRegions</a></td></tr>
+<tr class="separator:ab77a8bcffa4c64f40ac98a00e3f30ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0172bef744625e00da5c4a6ba484585a" id="r_a0172bef744625e00da5c4a6ba484585a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a0172bef744625e00da5c4a6ba484585a">fStartX</a> {0.}</td></tr>
+<tr class="separator:a0172bef744625e00da5c4a6ba484585a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f6935fadebd95fac50bdf3fcf5321f1" id="r_a3f6935fadebd95fac50bdf3fcf5321f1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#a3f6935fadebd95fac50bdf3fcf5321f1">fStartY</a> {0.}</td></tr>
+<tr class="separator:a3f6935fadebd95fac50bdf3fcf5321f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:abd65f129a5c99783e9dee119d4885990" id="r_abd65f129a5c99783e9dee119d4885990"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_g_h1_d.html#abd65f129a5c99783e9dee119d4885990">fVerboseLevel</a> = 0</td></tr>
+<tr class="separator:abd65f129a5c99783e9dee119d4885990"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for GH1D:</div>
@@ -173,11 +237,11 @@ Private Attributes</h2></td></tr>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_g_h1_d__coll__graph.svg" width="68" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_g_h1_d__coll__graph.svg" width="214" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae44794336fa7805417f019737d4737ac" name="ae44794336fa7805417f019737d4737ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae44794336fa7805417f019737d4737ac">&#9670;&#160;</a></span>GH1D() <span class="overload">[1/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae44794336fa7805417f019737d4737ac">&#9670;&#160;</a></span>GH1D() <span class="overload">[1/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -199,14 +263,14 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00013">13</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00018">18</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00213">Project()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00220">Project()</a>.</p>
 
 </div>
 </div>
 <a id="a34718a69cc42b564422646544ca91992" name="a34718a69cc42b564422646544ca91992"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34718a69cc42b564422646544ca91992">&#9670;&#160;</a></span>GH1D() <span class="overload">[2/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a34718a69cc42b564422646544ca91992">&#9670;&#160;</a></span>GH1D() <span class="overload">[2/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -229,12 +293,12 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00014">14</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00019">19</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
 
 </div>
 </div>
 <a id="addfc97aeb75f2fb7c5c8dfe643ec2351" name="addfc97aeb75f2fb7c5c8dfe643ec2351"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#addfc97aeb75f2fb7c5c8dfe643ec2351">&#9670;&#160;</a></span>GH1D() <span class="overload">[3/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#addfc97aeb75f2fb7c5c8dfe643ec2351">&#9670;&#160;</a></span>GH1D() <span class="overload">[3/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -279,12 +343,12 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00015">15</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00020">20</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
 
 </div>
 </div>
 <a id="a811d5e41cb5fbd7517861ae8fdbcf08d" name="a811d5e41cb5fbd7517861ae8fdbcf08d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a811d5e41cb5fbd7517861ae8fdbcf08d">&#9670;&#160;</a></span>GH1D() <span class="overload">[4/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a811d5e41cb5fbd7517861ae8fdbcf08d">&#9670;&#160;</a></span>GH1D() <span class="overload">[4/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -329,12 +393,12 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00019">19</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00024">24</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
 
 </div>
 </div>
 <a id="a0dd760e9f9d9082a97ae91bb91c17658" name="a0dd760e9f9d9082a97ae91bb91c17658"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0dd760e9f9d9082a97ae91bb91c17658">&#9670;&#160;</a></span>GH1D() <span class="overload">[5/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0dd760e9f9d9082a97ae91bb91c17658">&#9670;&#160;</a></span>GH1D() <span class="overload">[5/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -385,12 +449,12 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00023">23</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00028">28</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
 
 </div>
 </div>
 <a id="a46a2e7fb1c82ed335bc7eefc0a7c5ef1" name="a46a2e7fb1c82ed335bc7eefc0a7c5ef1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46a2e7fb1c82ed335bc7eefc0a7c5ef1">&#9670;&#160;</a></span>GH1D() <span class="overload">[6/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a46a2e7fb1c82ed335bc7eefc0a7c5ef1">&#9670;&#160;</a></span>GH1D() <span class="overload">[6/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -427,12 +491,12 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00023">23</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00034">34</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
 
 </div>
 </div>
 <a id="a4b7bfcff1bae97f0c2dc3f5ad70b40c5" name="a4b7bfcff1bae97f0c2dc3f5ad70b40c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b7bfcff1bae97f0c2dc3f5ad70b40c5">&#9670;&#160;</a></span>GH1D() <span class="overload">[7/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b7bfcff1bae97f0c2dc3f5ad70b40c5">&#9670;&#160;</a></span>GH1D() <span class="overload">[7/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -455,7 +519,35 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00018">18</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00024">24</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+
+</div>
+</div>
+<a id="a9ff701920426c2a9fdb7bce1b3e20638" name="a9ff701920426c2a9fdb7bce1b3e20638"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ff701920426c2a9fdb7bce1b3e20638">&#9670;&#160;</a></span>GH1D() <span class="overload">[8/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">GH1D::GH1D </td>
+          <td>(</td>
+          <td class="paramtype">const TH1 *&#160;</td>
+          <td class="paramname"><em>source</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00029">29</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
 
 </div>
 </div>
@@ -484,9 +576,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00078">78</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00089">89</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00065">parent</a>.</p>
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00085">fParent</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00506">TSourceTab::FindPeaks()</a>.</p>
 
 </div>
 </div>
@@ -514,9 +608,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00090">90</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00101">101</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00065">parent</a>.</p>
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00085">fParent</a>.</p>
 
 </div>
 </div>
@@ -544,9 +638,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00097">97</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00108">108</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_commands_8cxx_source.html#l00058">GetProjection()</a>, <a class="el" href="_g_canvas_8cxx_source.html#l00574">GCanvas::Process1DArrowKeyPress()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l00705">GCanvas::Process1DKeyboardPress()</a>.</p>
+<p class="reference">References <a class="el" href="_g_h1_d_8cxx_source.html#l00527">DrawRegions()</a>, and <a class="el" href="_g_h1_d_8cxx_source.html#l00241">SetPad()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00527">DrawRegions()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l00506">TSourceTab::FindPeaks()</a>, <a class="el" href="_g_root_commands_8cxx_source.html#l00058">GetProjection()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>, <a class="el" href="_g_root_commands_8cxx_source.html#l00230">Move1DHistogram()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l00602">GCanvas::Process1DKeyboardPress()</a>.</p>
 
 </div>
 </div>
@@ -584,7 +680,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00116">116</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00124">124</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_user_fill_obj_8h_source.html#l00003">hist</a>.</p>
 
@@ -624,9 +720,33 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00127">127</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00134">134</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_user_fill_obj_8h_source.html#l00003">hist</a>.</p>
+
+</div>
+</div>
+<a id="a161505125705217817f235d06759b2a5" name="a161505125705217817f235d06759b2a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a161505125705217817f235d06759b2a5">&#9670;&#160;</a></span>DrawRegions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GH1D::DrawRegions </td>
+          <td>(</td>
+          <td class="paramtype">Option_t *&#160;</td>
+          <td class="paramname"><em>opt</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00527">527</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_g_h1_d_8cxx_source.html#l00108">Draw()</a>, and <a class="el" href="_g_h1_d_8h_source.html#l00097">fRegions</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00108">Draw()</a>, and <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>.</p>
 
 </div>
 </div>
@@ -646,11 +766,40 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00150">150</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00157">157</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_h2_base_8cxx_source.html#l00221">GH2Base::GetNext()</a>, and <a class="el" href="_g_h1_d_8h_source.html#l00065">parent</a>.</p>
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00085">fParent</a>, and <a class="el" href="_g_h2_base_8cxx_source.html#l00221">GH2Base::GetNext()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l00574">GCanvas::Process1DArrowKeyPress()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_commands_8cxx_source.html#l00230">Move1DHistogram()</a>.</p>
+
+</div>
+</div>
+<a id="aa2b189856091b42a557db180b60b76c6" name="aa2b189856091b42a557db180b60b76c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2b189856091b42a557db180b60b76c6">&#9670;&#160;</a></span>GetPad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TVirtualPad * GH1D::GetPad </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00042">42</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00087">fPad</a>.</p>
 
 </div>
 </div>
@@ -677,11 +826,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00034">34</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00039">39</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00065">parent</a>.</p>
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00085">fParent</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l00705">GCanvas::Process1DKeyboardPress()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l00602">GCanvas::Process1DKeyboardPress()</a>.</p>
 
 </div>
 </div>
@@ -701,11 +850,11 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00137">137</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00144">144</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_h2_base_8cxx_source.html#l00198">GH2Base::GetPrevious()</a>, and <a class="el" href="_g_h1_d_8h_source.html#l00065">parent</a>.</p>
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00085">fParent</a>, and <a class="el" href="_g_h2_base_8cxx_source.html#l00198">GH2Base::GetPrevious()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_canvas_8cxx_source.html#l00574">GCanvas::Process1DArrowKeyPress()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_commands_8cxx_source.html#l00230">Move1DHistogram()</a>.</p>
 
 </div>
 </div>
@@ -732,9 +881,147 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00037">37</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00045">45</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00066">projection_axis</a>.</p>
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00086">fProjectionAxis</a>.</p>
+
+</div>
+</div>
+<a id="aa417613a851e64b443a4cff38498daa8" name="aa417613a851e64b443a4cff38498daa8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa417613a851e64b443a4cff38498daa8">&#9670;&#160;</a></span>HandleEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GH1D::HandleEvent </td>
+          <td>(</td>
+          <td class="paramtype">Event_t *&#160;</td>
+          <td class="paramname"><em>event</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Window_t&#160;</td>
+          <td class="paramname"><em>window</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00278">278</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_g_h1_d_8cxx_source.html#l00108">Draw()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00527">DrawRegions()</a>, <a class="el" href="_g_h1_d_8h_source.html#l00092">fBackground</a>, <a class="el" href="_g_h1_d_8h_source.html#l00094">fCurrentRegion</a>, <a class="el" href="_g_h1_d_8h_source.html#l00091">fGate</a>, <a class="el" href="_g_h1_d_8h_source.html#l00096">fNofRegions</a>, <a class="el" href="_g_h1_d_8h_source.html#l00087">fPad</a>, <a class="el" href="_g_h1_d_8h_source.html#l00093">fRegion</a>, <a class="el" href="_g_h1_d_8h_source.html#l00095">fRegionColor</a>, <a class="el" href="_g_h1_d_8h_source.html#l00097">fRegions</a>, <a class="el" href="_g_h1_d_8h_source.html#l00089">fStartX</a>, <a class="el" href="_g_h1_d_8h_source.html#l00090">fStartY</a>, <a class="el" href="_globals_8h_source.html#l00129">hex()</a>, <a class="el" href="_g_h1_d_8h.html#a4aca92f34a8bcb4b96d504e27106b057a7c58afb43537a264dcd68e698a7b8e3b">kBackground</a>, <a class="el" href="_g_h1_d_8h.html#a4aca92f34a8bcb4b96d504e27106b057abce4786ae81e04579c1de34ef4c98670">kGate</a>, <a class="el" href="_g_h1_d_8h.html#a4aca92f34a8bcb4b96d504e27106b057a81fed60c1ba9f272f363d379129f5b49">kRegion</a>, <a class="el" href="_g_root_commands_8cxx_source.html#l00230">Move1DHistogram()</a>, <a class="el" href="_g_h1_d_8h_source.html#l00066">Pad()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00534">PrintRegions()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00547">RemoveCurrentRegion()</a>, <a class="el" href="_g_h1_d_8h_source.html#l00074">UpdatePad()</a>, and <a class="el" href="_g_h1_d_8h_source.html#l00080">VerboseLevel()</a>.</p>
+
+</div>
+</div>
+<a id="a302b66f845874b4d4f194e413dfb01e9" name="a302b66f845874b4d4f194e413dfb01e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a302b66f845874b4d4f194e413dfb01e9">&#9670;&#160;</a></span>HandleMovement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GH1D::HandleMovement </td>
+          <td>(</td>
+          <td class="paramtype">Int_t&#160;</td>
+          <td class="paramname"><em>eventType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Int_t&#160;</td>
+          <td class="paramname"><em>eventX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Int_t&#160;</td>
+          <td class="paramname"><em>eventY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TObject *&#160;</td>
+          <td class="paramname"><em>selected</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00248">248</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00087">fPad</a>, <a class="el" href="_g_h1_d_8h_source.html#l00089">fStartX</a>, <a class="el" href="_g_h1_d_8h_source.html#l00090">fStartY</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00557">RemoveRegion()</a>, and <a class="el" href="_g_h1_d_8h_source.html#l00080">VerboseLevel()</a>.</p>
+
+</div>
+</div>
+<a id="a27f5459dcc4745f9979de943e69045c5" name="a27f5459dcc4745f9979de943e69045c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27f5459dcc4745f9979de943e69045c5">&#9670;&#160;</a></span>ListOfRegions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TList * GH1D::ListOfRegions </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00067">67</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00097">fRegions</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00490">TSourceTab::UpdateRegions()</a>.</p>
+
+</div>
+</div>
+<a id="a0a389c086dab87c0d675801d5f26ac12" name="a0a389c086dab87c0d675801d5f26ac12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a389c086dab87c0d675801d5f26ac12">&#9670;&#160;</a></span>Pad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TVirtualPad * GH1D::Pad </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00066">66</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00087">fPad</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00653">TRegion::Draw()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00674">TRegion::Hide()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00534">PrintRegions()</a>, and <a class="el" href="_g_h1_d_8cxx_source.html#l00579">TRegion::Update()</a>.</p>
 
 </div>
 </div>
@@ -762,9 +1049,34 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00084">84</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00095">95</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00065">parent</a>.</p>
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00085">fParent</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00756">TSourceTab::RemovePoint()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l00490">TSourceTab::UpdateRegions()</a>.</p>
+
+</div>
+</div>
+<a id="a320c2b0afb68c89b012d21e046e422ac" name="a320c2b0afb68c89b012d21e046e422ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a320c2b0afb68c89b012d21e046e422ac">&#9670;&#160;</a></span>PrintRegions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GH1D::PrintRegions </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00534">534</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00066">Pad()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>, and <a class="el" href="_g_h1_d_8cxx_source.html#l00674">TRegion::Hide()</a>.</p>
 
 </div>
 </div>
@@ -794,9 +1106,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00163">163</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00170">170</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00065">parent</a>, <a class="el" href="_g_h1_d_8h_source.html#l00066">projection_axis</a>, <a class="el" href="_g_h2_d_8cxx_source.html#l00120">GH2D::ProjectionX()</a>, and <a class="el" href="_g_h2_d_8cxx_source.html#l00125">GH2D::ProjectionY()</a>.</p>
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00085">fParent</a>, <a class="el" href="_g_h1_d_8h_source.html#l00086">fProjectionAxis</a>, <a class="el" href="_g_h2_d_8cxx_source.html#l00120">GH2D::ProjectionX()</a>, and <a class="el" href="_g_h2_d_8cxx_source.html#l00125">GH2D::ProjectionY()</a>.</p>
 
 </div>
 </div>
@@ -816,11 +1128,11 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00213">213</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00220">220</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00013">GH1D()</a>.</p>
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00018">GH1D()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_commands_8cxx_source.html#l00058">GetProjection()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l00705">GCanvas::Process1DKeyboardPress()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_commands_8cxx_source.html#l00058">GetProjection()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l00602">GCanvas::Process1DKeyboardPress()</a>.</p>
 
 </div>
 </div>
@@ -868,11 +1180,90 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00183">183</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00190">190</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00065">parent</a>, <a class="el" href="_g_h1_d_8h_source.html#l00066">projection_axis</a>, <a class="el" href="_g_h2_base_8cxx_source.html#l00138">GH2Base::ProjectionX_Background()</a>, and <a class="el" href="_g_h2_base_8cxx_source.html#l00192">GH2Base::ProjectionY_Background()</a>.</p>
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00085">fParent</a>, <a class="el" href="_g_h1_d_8h_source.html#l00086">fProjectionAxis</a>, <a class="el" href="_g_h2_base_8cxx_source.html#l00138">GH2Base::ProjectionX_Background()</a>, and <a class="el" href="_g_h2_base_8cxx_source.html#l00192">GH2Base::ProjectionY_Background()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_commands_8cxx_source.html#l00058">GetProjection()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l00705">GCanvas::Process1DKeyboardPress()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_commands_8cxx_source.html#l00058">GetProjection()</a>, and <a class="el" href="_g_canvas_8cxx_source.html#l00602">GCanvas::Process1DKeyboardPress()</a>.</p>
+
+</div>
+</div>
+<a id="a32ceda32f0618167c0ddad354e93c70c" name="a32ceda32f0618167c0ddad354e93c70c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32ceda32f0618167c0ddad354e93c70c">&#9670;&#160;</a></span>RemoveCurrentRegion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GH1D::RemoveCurrentRegion </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00547">547</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00092">fBackground</a>, <a class="el" href="_g_h1_d_8h_source.html#l00094">fCurrentRegion</a>, <a class="el" href="_g_h1_d_8h_source.html#l00091">fGate</a>, <a class="el" href="_g_h1_d_8h_source.html#l00087">fPad</a>, and <a class="el" href="_g_h1_d_8h_source.html#l00093">fRegion</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>.</p>
+
+</div>
+</div>
+<a id="ae67b829f04dd023c010ea35bebfee601" name="ae67b829f04dd023c010ea35bebfee601"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae67b829f04dd023c010ea35bebfee601">&#9670;&#160;</a></span>RemoveRegion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GH1D::RemoveRegion </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_t_region.html">TRegion</a> *&#160;</td>
+          <td class="paramname"><em>region</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00557">557</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00087">fPad</a>, and <a class="el" href="_g_h1_d_8h_source.html#l00097">fRegions</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00248">HandleMovement()</a>.</p>
+
+</div>
+</div>
+<a id="a0ca5748a4e5948fa81b2b1264417947d" name="a0ca5748a4e5948fa81b2b1264417947d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ca5748a4e5948fa81b2b1264417947d">&#9670;&#160;</a></span>SetPad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GH1D::SetPad </td>
+          <td>(</td>
+          <td class="paramtype">TVirtualPad *&#160;</td>
+          <td class="paramname"><em>pad</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00241">241</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00087">fPad</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00108">Draw()</a>.</p>
 
 </div>
 </div>
@@ -900,9 +1291,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00035">35</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00040">40</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00065">parent</a>.</p>
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00085">fParent</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_g_h2_base_8cxx_source.html#l00090">GH2Base::GH2ProjectionX()</a>, and <a class="el" href="_g_h2_base_8cxx_source.html#l00144">GH2Base::GH2ProjectionY()</a>.</p>
 
@@ -932,11 +1323,124 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00038">38</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00046">46</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00066">projection_axis</a>.</p>
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00086">fProjectionAxis</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_g_h2_base_8cxx_source.html#l00090">GH2Base::GH2ProjectionX()</a>, and <a class="el" href="_g_h2_base_8cxx_source.html#l00144">GH2Base::GH2ProjectionY()</a>.</p>
+
+</div>
+</div>
+<a id="a246d2fe2cf37dde44ab4fd5a7db2964f" name="a246d2fe2cf37dde44ab4fd5a7db2964f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a246d2fe2cf37dde44ab4fd5a7db2964f">&#9670;&#160;</a></span>UpdatePad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GH1D::UpdatePad </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00074">74</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00087">fPad</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00653">TRegion::Draw()</a>, and <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>.</p>
+
+</div>
+</div>
+<a id="aa73747a1dd3ada619d6e9ead7b3cbab2" name="aa73747a1dd3ada619d6e9ead7b3cbab2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa73747a1dd3ada619d6e9ead7b3cbab2">&#9670;&#160;</a></span>UpdateRegions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GH1D::UpdateRegions </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00520">520</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00097">fRegions</a>.</p>
+
+</div>
+</div>
+<a id="a69721394c97bb1550f1c8014ebbd2c01" name="a69721394c97bb1550f1c8014ebbd2c01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69721394c97bb1550f1c8014ebbd2c01">&#9670;&#160;</a></span>VerboseLevel() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int GH1D::VerboseLevel </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00080">80</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00099">fVerboseLevel</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00653">TRegion::Draw()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00248">HandleMovement()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00674">TRegion::Hide()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00579">TRegion::Update()</a>, and <a class="el" href="_g_h1_d_8cxx_source.html#l00688">TRegion::Update()</a>.</p>
+
+</div>
+</div>
+<a id="ac42431d787df720424331dfb62934a83" name="ac42431d787df720424331dfb62934a83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac42431d787df720424331dfb62934a83">&#9670;&#160;</a></span>VerboseLevel() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void GH1D::VerboseLevel </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>level</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00079">79</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_g_h1_d_8h_source.html#l00099">fVerboseLevel</a>.</p>
 
 </div>
 </div>
@@ -956,13 +1460,13 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00032">32</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8cxx_source.html#l00043">43</a> of file <a class="el" href="_g_h1_d_8cxx_source.html">GH1D.cxx</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a682f81bca22f439ffd0bf86a725132ee" name="a682f81bca22f439ffd0bf86a725132ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a682f81bca22f439ffd0bf86a725132ee">&#9670;&#160;</a></span>parent</h2>
+<a id="af1720c2636225ccf6949db9073d5df34" name="af1720c2636225ccf6949db9073d5df34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1720c2636225ccf6949db9073d5df34">&#9670;&#160;</a></span>fBackground</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -971,7 +1475,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">TRef GH1D::parent</td>
+          <td class="memname">bool GH1D::fBackground {false}</td>
         </tr>
       </table>
   </td>
@@ -981,14 +1485,14 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00065">65</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00092">92</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00078">Clear()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00090">Copy()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00150">GetNext()</a>, <a class="el" href="_g_h1_d_8h_source.html#l00034">GetParent()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00137">GetPrevious()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00084">Print()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00163">Project()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00183">Project_Background()</a>, and <a class="el" href="_g_h1_d_8h_source.html#l00035">SetParent()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>, and <a class="el" href="_g_h1_d_8cxx_source.html#l00547">RemoveCurrentRegion()</a>.</p>
 
 </div>
 </div>
-<a id="aec5194ebcb54ac57982f9fa1ce3fe28f" name="aec5194ebcb54ac57982f9fa1ce3fe28f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec5194ebcb54ac57982f9fa1ce3fe28f">&#9670;&#160;</a></span>projection_axis</h2>
+<a id="a8c257cabfe5316957a4ca58d713fb096" name="a8c257cabfe5316957a4ca58d713fb096"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c257cabfe5316957a4ca58d713fb096">&#9670;&#160;</a></span>fCurrentRegion</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -997,7 +1501,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int GH1D::projection_axis</td>
+          <td class="memname">TBox* GH1D::fCurrentRegion {nullptr}</td>
         </tr>
       </table>
   </td>
@@ -1007,9 +1511,307 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00066">66</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+<p>! box for the current region </p>
 
-<p class="reference">Referenced by <a class="el" href="_g_h1_d_8h_source.html#l00037">GetProjectionAxis()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00163">Project()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00183">Project_Background()</a>, and <a class="el" href="_g_h1_d_8h_source.html#l00038">SetProjectionAxis()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00094">94</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>, and <a class="el" href="_g_h1_d_8cxx_source.html#l00547">RemoveCurrentRegion()</a>.</p>
+
+</div>
+</div>
+<a id="a37647283eac7dfab74e86fe2a0301572" name="a37647283eac7dfab74e86fe2a0301572"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37647283eac7dfab74e86fe2a0301572">&#9670;&#160;</a></span>fGate</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GH1D::fGate {false}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00091">91</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>, and <a class="el" href="_g_h1_d_8cxx_source.html#l00547">RemoveCurrentRegion()</a>.</p>
+
+</div>
+</div>
+<a id="a6101458be1ca9ce78959795be4096c52" name="a6101458be1ca9ce78959795be4096c52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6101458be1ca9ce78959795be4096c52">&#9670;&#160;</a></span>fNofRegions</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t GH1D::fNofRegions {0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! counts number of regions in this histogram, only used to set the color of the region </p>
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00096">96</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>.</p>
+
+</div>
+</div>
+<a id="ae0d66b0ea14fa90bd499faf6fb72e031" name="ae0d66b0ea14fa90bd499faf6fb72e031"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0d66b0ea14fa90bd499faf6fb72e031">&#9670;&#160;</a></span>fPad</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TVirtualPad* GH1D::fPad {nullptr}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! </p>
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00087">87</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8h_source.html#l00042">GetPad()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00248">HandleMovement()</a>, <a class="el" href="_g_h1_d_8h_source.html#l00066">Pad()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00547">RemoveCurrentRegion()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00557">RemoveRegion()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00241">SetPad()</a>, and <a class="el" href="_g_h1_d_8h_source.html#l00074">UpdatePad()</a>.</p>
+
+</div>
+</div>
+<a id="a59060197d2f26af64ced5fe8167caa92" name="a59060197d2f26af64ced5fe8167caa92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59060197d2f26af64ced5fe8167caa92">&#9670;&#160;</a></span>fParent</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TRef GH1D::fParent</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00085">85</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00089">Clear()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00101">Copy()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00157">GetNext()</a>, <a class="el" href="_g_h1_d_8h_source.html#l00039">GetParent()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00144">GetPrevious()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00095">Print()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00170">Project()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00190">Project_Background()</a>, and <a class="el" href="_g_h1_d_8h_source.html#l00040">SetParent()</a>.</p>
+
+</div>
+</div>
+<a id="ab32a654dc6d37d4de7fa7df822c891af" name="ab32a654dc6d37d4de7fa7df822c891af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab32a654dc6d37d4de7fa7df822c891af">&#9670;&#160;</a></span>fProjectionAxis</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int GH1D::fProjectionAxis</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00086">86</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8h_source.html#l00045">GetProjectionAxis()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00170">Project()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00190">Project_Background()</a>, and <a class="el" href="_g_h1_d_8h_source.html#l00046">SetProjectionAxis()</a>.</p>
+
+</div>
+</div>
+<a id="ab63c3e18c0137abd2241e076400b2086" name="ab63c3e18c0137abd2241e076400b2086"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab63c3e18c0137abd2241e076400b2086">&#9670;&#160;</a></span>fRegion</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GH1D::fRegion {false}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00093">93</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>, and <a class="el" href="_g_h1_d_8cxx_source.html#l00547">RemoveCurrentRegion()</a>.</p>
+
+</div>
+</div>
+<a id="a1d408e13c43e8cae607d42e9bb6c758e" name="a1d408e13c43e8cae607d42e9bb6c758e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d408e13c43e8cae607d42e9bb6c758e">&#9670;&#160;</a></span>fRegionColor</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt;int, 3&gt; GH1D::fRegionColor {kOrange+2, kGreen+2, kCyan+2}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00095">95</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>.</p>
+
+</div>
+</div>
+<a id="ab77a8bcffa4c64f40ac98a00e3f30ee8" name="ab77a8bcffa4c64f40ac98a00e3f30ee8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab77a8bcffa4c64f40ac98a00e3f30ee8">&#9670;&#160;</a></span>fRegions</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TList GH1D::fRegions</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00097">97</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00527">DrawRegions()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>, <a class="el" href="_g_h1_d_8h_source.html#l00067">ListOfRegions()</a>, <a class="el" href="_g_h1_d_8cxx_source.html#l00557">RemoveRegion()</a>, and <a class="el" href="_g_h1_d_8cxx_source.html#l00520">UpdateRegions()</a>.</p>
+
+</div>
+</div>
+<a id="a0172bef744625e00da5c4a6ba484585a" name="a0172bef744625e00da5c4a6ba484585a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0172bef744625e00da5c4a6ba484585a">&#9670;&#160;</a></span>fStartX</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double GH1D::fStartX {0.}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! initial x-position of new region </p>
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00089">89</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>, and <a class="el" href="_g_h1_d_8cxx_source.html#l00248">HandleMovement()</a>.</p>
+
+</div>
+</div>
+<a id="a3f6935fadebd95fac50bdf3fcf5321f1" name="a3f6935fadebd95fac50bdf3fcf5321f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f6935fadebd95fac50bdf3fcf5321f1">&#9670;&#160;</a></span>fStartY</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double GH1D::fStartY {0.}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! initial y-position of new region </p>
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00090">90</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8cxx_source.html#l00278">HandleEvent()</a>, and <a class="el" href="_g_h1_d_8cxx_source.html#l00248">HandleMovement()</a>.</p>
+
+</div>
+</div>
+<a id="abd65f129a5c99783e9dee119d4885990" name="abd65f129a5c99783e9dee119d4885990"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd65f129a5c99783e9dee119d4885990">&#9670;&#160;</a></span>fVerboseLevel</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int GH1D::fVerboseLevel = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! level of verbosity </p>
+
+<p class="definition">Definition at line <a class="el" href="_g_h1_d_8h_source.html#l00099">99</a> of file <a class="el" href="_g_h1_d_8h_source.html">GH1D.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_g_h1_d_8h_source.html#l00080">VerboseLevel()</a>, and <a class="el" href="_g_h1_d_8h_source.html#l00079">VerboseLevel()</a>.</p>
 
 </div>
 </div>
@@ -1020,7 +1822,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_g_h1_d.html">GH1D</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Dec 5 2024 01:24:25.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Jan 2 2025 20:45:55.</li>
   </ul>
 </div>
 </body>

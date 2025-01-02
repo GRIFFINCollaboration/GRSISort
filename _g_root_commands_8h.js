@@ -4,6 +4,12 @@ var _g_root_commands_8h =
       [ "kXAxis", "_g_root_commands_8h.html#a0ca226c8eb474db986d06cb91c688c21a8ccb0141c253e11b3cafb88ce39dee16", null ],
       [ "kYAxis", "_g_root_commands_8h.html#a0ca226c8eb474db986d06cb91c688c21a2cacb3e77da40070a44eb89eafb8491e", null ]
     ] ],
+    [ "GRSIArrowPress", "_g_root_commands_8h.html#a5b44e940359c7266efdbc57d24f050ec", [
+      [ "kGRSIArrowLeft", "_g_root_commands_8h.html#a5b44e940359c7266efdbc57d24f050eca42fc2be59a75011c56ec426b807f0add", null ],
+      [ "kGRSIArrowUp", "_g_root_commands_8h.html#a5b44e940359c7266efdbc57d24f050ecac217ba76d9c9d1b9dfaef29a745caf53", null ],
+      [ "kGRSIArrowRight", "_g_root_commands_8h.html#a5b44e940359c7266efdbc57d24f050eca5d8fe76a831fcbdb5e2d3df4141f2955", null ],
+      [ "kGRSIArrowDown", "_g_root_commands_8h.html#a5b44e940359c7266efdbc57d24f050ecaaa61622e5c27910aca9d548a7b7fc9d6", null ]
+    ] ],
     [ "AddFileToGUI", "_g_root_commands_8h.html#a3463fd5f0ee868b72ebbcabc24e89ff1", null ],
     [ "AddOffset", "_g_root_commands_8h.html#a75c86492af7db7d5f7f17051472ce26d", null ],
     [ "AltPhotoPeakFit", "_g_root_commands_8h.html#aafc938be463f7394113319d7a7117259", null ],
@@ -17,6 +23,8 @@ var _g_root_commands_8h =
     [ "Help", "_g_root_commands_8h.html#a54d17a6d0bb758f26b9dda4c6d8e8da8", null ],
     [ "LabelPeaks", "_g_root_commands_8h.html#ad6152fb51e84651f4f8f52dd589a9f70", null ],
     [ "MergeStrings", "_g_root_commands_8h.html#abab5e907bc8ff84fce50a69d17f6d5a4", null ],
+    [ "Move1DHistogram", "_g_root_commands_8h.html#a5c0598baa7fdc26814f237f4edd6c527", null ],
+    [ "Move2DHistogram", "_g_root_commands_8h.html#a0ae3a91c6125d60544464da57a0cd340", null ],
     [ "operator&", "_g_root_commands_8h.html#a569ef6e79ab17021e81a4034a5cf14ec", null ],
     [ "PhotoPeakFit", "_g_root_commands_8h.html#aae831a0a49f7a5f37c12550e9da46e46", null ],
     [ "Prompt", "_g_root_commands_8h.html#a8c34f6a89e2746264a9e6c43dbd1cf86", null ],

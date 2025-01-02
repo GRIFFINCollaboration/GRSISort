@@ -9,6 +9,6 @@ var searchData=
   ['zone_5fcols_6',['zone_cols',['../classpygui_1_1mainwindow_1_1_main_window.html#a0ac5bea601d5ab6d68d2615f5285e96b',1,'pygui::mainwindow::MainWindow']]],
   ['zone_5frows_7',['zone_rows',['../classpygui_1_1mainwindow_1_1_main_window.html#a89f37bd6af421cd1aa51818e79d34edc',1,'pygui::mainwindow::MainWindow']]],
   ['zoom_8',['Zoom',['../class_g_canvas.html#aa17d8618ad603d612728f9539e8d4820',1,'GCanvas']]],
-  ['zoomx_9',['ZoomX',['../class_t_source_calibration.html#aa9393cdf0cfd1f97085cc23ba742f630',1,'TSourceCalibration']]],
-  ['zoomy_10',['ZoomY',['../class_t_source_calibration.html#a1332cb2d19db052574c8623e9e90b485',1,'TSourceCalibration']]]
+  ['zoomx_9',['zoomx',['../class_t_channel_tab.html#a9b503485a4ba3181421a1a07ab9e5f13',1,'TChannelTab::ZoomX()'],['../class_t_source_calibration.html#a349b959b80536386117a803ffd6d3fb7',1,'TSourceCalibration::ZoomX()']]],
+  ['zoomy_10',['ZoomY',['../class_t_channel_tab.html#a5f4233fa70515e7437182f0348406555',1,'TChannelTab']]]
 ];

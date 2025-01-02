@@ -1,10 +1,5 @@
 var class_t_unpacking_loop =
 [
-    [ "EDataType", "class_t_unpacking_loop.html#ad59c6e6eceabd7397d08d2cd9d2bc7aa", [
-      [ "kMidas", "class_t_unpacking_loop.html#ad59c6e6eceabd7397d08d2cd9d2bc7aaab655c0f8903e2c0a24191eb3f249f091", null ],
-      [ "kLst", "class_t_unpacking_loop.html#ad59c6e6eceabd7397d08d2cd9d2bc7aaa9f3c135d3ef1678930541f25d7c23dd8", null ],
-      [ "kTdr", "class_t_unpacking_loop.html#ad59c6e6eceabd7397d08d2cd9d2bc7aaa8ea8e7b3aebe97a1b8c0cef14f36d21a", null ]
-    ] ],
     [ "TUnpackingLoop", "class_t_unpacking_loop.html#a66dd9d47e3353373559d95c3c04ae1b4", null ],
     [ "TUnpackingLoop", "class_t_unpacking_loop.html#a92547dbe03c65f28956f3e24f9f478f9", null ],
     [ "~TUnpackingLoop", "class_t_unpacking_loop.html#a81e94faecccf4f7519340b0719e81d4c", null ],
@@ -65,8 +60,6 @@ var class_t_unpacking_loop =
     [ "stop_status_thread", "class_t_unpacking_loop.html#ab497efce0a00f7a8b79c73c4827926de", null ],
     [ "StopAll", "class_t_unpacking_loop.html#a14d1029d5d956a5f8cffcabb2e1c5e17", null ],
     [ "fColumnWidth", "class_t_unpacking_loop.html#a4e6e493ea525d7bdee066fae3412d5db", null ],
-    [ "fDataType", "class_t_unpacking_loop.html#aa85e03bf185d8ef8995ddfbc67f39406", null ],
-    [ "fEvaluateDataType", "class_t_unpacking_loop.html#a2c8389317a9d0d1514307e8cf938bdfd", null ],
     [ "fForceStop", "class_t_unpacking_loop.html#ad54db1cd59d084a858e069e3ea90fda9", null ],
     [ "fFragsReadFromRaw", "class_t_unpacking_loop.html#ad5692cd9512be37e0cbfe57efc80889f", null ],
     [ "fGoodFragsRead", "class_t_unpacking_loop.html#ad44d7392ea94976afc99e9beaa21595a", null ],

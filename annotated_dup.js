@@ -242,6 +242,7 @@ var annotated_dup =
     [ "TRcmpHit", "class_t_rcmp_hit.html", "class_t_rcmp_hit" ],
     [ "TReaction", "class_t_reaction.html", "class_t_reaction" ],
     [ "TRedirect", "class_t_redirect.html", "class_t_redirect" ],
+    [ "TRegion", "class_t_region.html", "class_t_region" ],
     [ "TRF", "class_t_r_f.html", "class_t_r_f" ],
     [ "TRlmdEvent", "class_t_rlmd_event.html", "class_t_rlmd_event" ],
     [ "TRlmdFile", "class_t_rlmd_file.html", "class_t_rlmd_file" ],

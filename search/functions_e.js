@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['name_0',['name',['../class_t_parameter_input.html#a7b8633ed00de831c507479880840a12c',1,'TParameterInput::Name()'],['../class_t_epics_frag.html#ac0cfa158fbb8c2f2296026be1aa4afb3',1,'TEpicsFrag::Name(const std::vector&lt; std::string &gt; &amp;val)'],['../class_t_epics_frag.html#a018257cace13999fbf5118e990bcfb72',1,'TEpicsFrag::Name() const'],['../class_threadsafe_queue.html#ad30473be690aedca6f0714397fb43e3b',1,'ThreadsafeQueue::Name()'],['../class_stoppable_thread.html#adab35c9c94b46acb9746d169ee29318b',1,'StoppableThread::Name()']]],
+  ['name_0',['name',['../class_t_parameter_input.html#a7b8633ed00de831c507479880840a12c',1,'TParameterInput::Name()'],['../class_t_epics_frag.html#ac0cfa158fbb8c2f2296026be1aa4afb3',1,'TEpicsFrag::Name(const std::vector&lt; std::string &gt; &amp;val)'],['../class_t_epics_frag.html#a018257cace13999fbf5118e990bcfb72',1,'TEpicsFrag::Name() const'],['../class_threadsafe_queue.html#ad30473be690aedca6f0714397fb43e3b',1,'ThreadsafeQueue::Name()'],['../class_t_channel_tab.html#a7080f4483ed261ec7405e339da5634c9',1,'TChannelTab::Name()'],['../class_stoppable_thread.html#adab35c9c94b46acb9746d169ee29318b',1,'StoppableThread::Name()']]],
   ['namespaceimp_1',['NamespaceImp',['../_g_root_functions_8cxx.html#a1dc051731270bffc151db9550ee3ea88',1,'GRootFunctions.cxx']]],
   ['navigate_2',['Navigate',['../class_t_source_calibration.html#a69b96e541e768d2f36a9e88044ed26e5',1,'TSourceCalibration']]],
   ['navigatefinal_3',['NavigateFinal',['../class_t_source_calibration.html#a32fc7e14417cfe78a34daaca8f17cd67',1,'TSourceCalibration']]],
@@ -29,13 +29,13 @@ var searchData=
   ['num_5farguments_26',['num_arguments',['../class_arg_parse_item.html#aefe228cd28f2e66a01bcc4d376309d1f',1,'ArgParseItem::num_arguments()'],['../class_arg_parse_config_t_3_01bool_01_4.html#a03edbd4e226a44922d010f8bc5f70ed2',1,'ArgParseConfigT&lt; bool &gt;::num_arguments()'],['../class_arg_parse_config_t.html#a51c75776507e59321e761bafe7ba5732',1,'ArgParseConfigT::num_arguments()']]],
   ['numberofangles_27',['NumberOfAngles',['../class_t_griffin_angles.html#aa6fb6827ddc87c6534002c63c3196788',1,'TGriffinAngles']]],
   ['numberofbadfragments_28',['NumberOfBadFragments',['../class_t_parsing_diagnostics.html#aafd5d1f8d5ffecee5c15761a66ef8d24',1,'TParsingDiagnostics']]],
-  ['numberofchannels_29',['NumberOfChannels',['../class_t_source_tab.html#adc498ec1675e6e9d55f4f2954fed9bad',1,'TSourceTab']]],
-  ['numberofevents_30',['NumberOfEvents',['../class_t_g_r_s_i_options.html#a39ff57d79a969a2a217069edc68483f0',1,'TGRSIOptions']]],
-  ['numberoffragmentsoutoforder_31',['NumberOfFragmentsOutOfOrder',['../class_t_sorting_diagnostics.html#aec0291ff8fa3f25beb517bf114ff668c',1,'TSortingDiagnostics']]],
-  ['numberoffragmentsoutoftimeorder_32',['NumberOfFragmentsOutOfTimeOrder',['../class_t_sorting_diagnostics.html#af3429963069b378f823fb29a9f9fd570',1,'TSortingDiagnostics']]],
-  ['numberofgoodfragments_33',['NumberOfGoodFragments',['../class_t_parsing_diagnostics.html#a6d251afc99c178daf448f32a6cdd175f',1,'TParsingDiagnostics']]],
-  ['numberofgraphs_34',['NumberOfGraphs',['../class_t_calibration_graph_set.html#a419cac51331769f8322f62515d36a257',1,'TCalibrationGraphSet']]],
-  ['numberofhits_35',['NumberOfHits',['../class_t_parsing_diagnostics_data.html#a6080c247d8f020b33617d9e7944881d0',1,'TParsingDiagnosticsData']]],
-  ['numberofscalerreadouts_36',['NumberOfScalerReadouts',['../class_t_scaler.html#af2498b3996b12528d0ce31b02137eacd',1,'TScaler']]],
+  ['numberofevents_29',['NumberOfEvents',['../class_t_g_r_s_i_options.html#a39ff57d79a969a2a217069edc68483f0',1,'TGRSIOptions']]],
+  ['numberoffragmentsoutoforder_30',['NumberOfFragmentsOutOfOrder',['../class_t_sorting_diagnostics.html#aec0291ff8fa3f25beb517bf114ff668c',1,'TSortingDiagnostics']]],
+  ['numberoffragmentsoutoftimeorder_31',['NumberOfFragmentsOutOfTimeOrder',['../class_t_sorting_diagnostics.html#af3429963069b378f823fb29a9f9fd570',1,'TSortingDiagnostics']]],
+  ['numberofgoodfragments_32',['NumberOfGoodFragments',['../class_t_parsing_diagnostics.html#a6d251afc99c178daf448f32a6cdd175f',1,'TParsingDiagnostics']]],
+  ['numberofgraphs_33',['NumberOfGraphs',['../class_t_calibration_graph_set.html#a419cac51331769f8322f62515d36a257',1,'TCalibrationGraphSet']]],
+  ['numberofhits_34',['NumberOfHits',['../class_t_parsing_diagnostics_data.html#a6080c247d8f020b33617d9e7944881d0',1,'TParsingDiagnosticsData']]],
+  ['numberofscalerreadouts_35',['NumberOfScalerReadouts',['../class_t_scaler.html#af2498b3996b12528d0ce31b02137eacd',1,'TScaler']]],
+  ['numberofsources_36',['NumberOfSources',['../class_t_channel_tab.html#aa3e78450fa14858053045a746cc493d4',1,'TChannelTab']]],
   ['numericarraysubposition_37',['numericarraysubposition',['../class_t_g_r_s_i_mnemonic.html#a8bfc82219651616759e2debbff98d764',1,'TGRSIMnemonic::NumericArraySubPosition()'],['../class_t_mnemonic.html#a25421d545edff08fb92e0ac6c22b4036',1,'TMnemonic::NumericArraySubPosition()']]]
 ];
