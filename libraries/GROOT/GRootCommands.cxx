@@ -330,7 +330,7 @@ bool Move1DHistogram(const Int_t& key, TH1* histogram)
       }
       break;
    default:
-      std::cout << "unknown key = " << key << std::endl;
+      std::cout << "Move1DHistogram: unknown key = " << key << hex(key) << std::endl;
       break;
    }
    return edited;
@@ -434,7 +434,7 @@ bool Move2DHistogram(const Int_t& key, TH2* histogram)
       edited = true;
       break;
    default:
-      std::cout << "unknown key = " << key << std::endl;
+      std::cout << "Move2DHistogram: unknown key = " << key << hex(key) << std::endl;
       break;
    }
    return edited;

@@ -10,6 +10,7 @@
 #include "TFitResultPtr.h"
 #include "TList.h"
 #include "TLegend.h"
+#include "TQObject.h"
 
 class TCalibrationGraphSet;
 
@@ -43,13 +44,13 @@ private:
    /// \endcond
 };
 
-class TCalibrationGraphSet : public TNamed {
+class TCalibrationGraphSet : public TNamed, public TQObject {
 public:
    explicit TCalibrationGraphSet(TGraphErrors* graph = nullptr, const std::string& label = "");
    TCalibrationGraphSet(std::string xAxisLabel, std::string yAxisLabel);
    ~TCalibrationGraphSet();
-   TCalibrationGraphSet(const TCalibrationGraphSet&)     = default;
-   TCalibrationGraphSet(TCalibrationGraphSet&&) noexcept = default;
+   TCalibrationGraphSet(const TCalibrationGraphSet&)     = delete;
+   TCalibrationGraphSet(TCalibrationGraphSet&&) noexcept = delete;
    TCalibrationGraphSet& operator=(const TCalibrationGraphSet& rhs)
    {
       /// Assignment operator that takes care of properly cloning all the pointers to objects.
@@ -70,7 +71,7 @@ public:
       fName               = rhs.fName;
       return *this;
    }
-   TCalibrationGraphSet& operator=(TCalibrationGraphSet&&) noexcept = default;
+   TCalibrationGraphSet& operator=(TCalibrationGraphSet&&) noexcept = delete;
 
    bool SetResidual(const bool& force = false);
    int  Add(TGraphErrors*, const std::string& label);   ///< Add new graph to set, using the label when creating legends during plotting
@@ -136,8 +137,8 @@ public:
       fGraphs.erase(fGraphs.begin() + index);
       ResetTotalGraph();
    }
-   Int_t RemovePoint();
-   Int_t RemoveResidualPoint();
+   Int_t RemovePoint(const Int_t& px, const Int_t& py); //*SIGNAL*
+   Int_t RemoveResidualPoint(const Int_t& px, const Int_t& py); //*SIGNAL*
 
    void XAxisLabel(const std::string& xAxisLabel) { fXAxisLabel = xAxisLabel; }
    void YAxisLabel(const std::string& yAxisLabel) { fYAxisLabel = yAxisLabel; }

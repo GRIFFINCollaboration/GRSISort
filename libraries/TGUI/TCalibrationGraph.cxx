@@ -12,8 +12,11 @@
 Int_t TCalibrationGraph::RemovePoint()
 {
    if(TCalibrationGraphSet::VerboseLevel() > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-   if(fIsResidual) { return fParent->RemoveResidualPoint(); }
-   return fParent->RemovePoint();
+   Int_t px = gPad->GetEventX();
+   Int_t py = gPad->GetEventY();
+   if(TCalibrationGraphSet::VerboseLevel() > 1) { std::cout << "px, py " << px << ",  " << py << " on gPad " << gPad->GetName() << std::endl; }
+   if(fIsResidual) { return fParent->RemoveResidualPoint(px, py); }
+   return fParent->RemovePoint(px, py);
 }
 
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 26, 0)
@@ -235,14 +238,12 @@ void TCalibrationGraphSet::DrawResidual(Option_t* opt, TLegend* legend)
    }
 }
 
-Int_t TCalibrationGraphSet::RemovePoint()
+Int_t TCalibrationGraphSet::RemovePoint(const Int_t& px, const Int_t& py)
 {
    /// This function is primarily a copy of TGraph::RemovePoint with some added bits to remove a point that has been selected in the calibration graph from it and the corresponding point from the residual graph and the total graphs
-   Int_t px = gPad->GetEventX();
-   Int_t py = gPad->GetEventY();
 
    if(fVerboseLevel > 1) {
-      std::cout << __PRETTY_FUNCTION__ << ": point " << px << ", " << py << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+      std::cout << __PRETTY_FUNCTION__ << ": point " << px << ", " << py << "; gPad " << gPad->GetName() << ": " << gPad->AbsPixeltoX(px) << ", " << gPad->AbsPixeltoY(py) << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       Print();
    }
 
@@ -257,9 +258,14 @@ Int_t TCalibrationGraphSet::RemovePoint()
       Int_t dpy = py - gPad->YtoAbsPixel(gPad->YtoPad(y[i]));
       // TODO replace 100 with member variable?
       if(dpx * dpx + dpy * dpy < 100) {
+			if(fVerboseLevel > 2) {
+				std::cout << i << ": dpx = " << dpx << " = " << px << " - " << gPad->XtoAbsPixel(gPad->XtoPad(x[i])) << ", dpy = " << dpy << " = " << py << " - " << gPad->YtoAbsPixel(gPad->YtoPad(y[i])) << " this is the point we're looking for" << std::endl;
+			}
          ipoint = i;
          break;
-      }
+      } else if(fVerboseLevel > 2) {
+			std::cout << i << ": dpx = " << dpx << " = " << px << " - " << gPad->XtoAbsPixel(gPad->XtoPad(x[i])) << ", dpy = " << dpy << " = " << py << " - " << gPad->YtoAbsPixel(gPad->YtoPad(y[i])) << " not the point we're looking for" << std::endl;
+		}
    }
    if(ipoint < 0) {
       std::cout << "Failed to find point close to " << px << ", " << py << std::endl;
@@ -306,14 +312,15 @@ Int_t TCalibrationGraphSet::RemovePoint()
       pad++;
    }
    if(fVerboseLevel > 1) { Print(); }
+	Longptr_t args[2] = { px, py };
+	if(fVerboseLevel > 2) { std::cout << "Emitting RemovePoint(Int_t, Int_t) with " << px << ", " << py << " - " << args << std::endl; }
+	Emit("RemovePoint(Int_t, Int_t)", args);
    return ipoint;
 }
 
-Int_t TCalibrationGraphSet::RemoveResidualPoint()
+Int_t TCalibrationGraphSet::RemoveResidualPoint(const Int_t& px, const Int_t& py)
 {
    /// This function is primarily a copy of TGraph::RemovePoint with some added bits to remove a point that has been selected in the residual graph from it and the corresponding point from the calibration graph and the total graphs
-   Int_t px = gPad->GetEventX();
-   Int_t py = gPad->GetEventY();
 
    // localize point to be deleted
    Int_t ipoint = -2;
@@ -370,6 +377,11 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint()
       pad++;
    }
    if(fVerboseLevel > 1) { Print(); }
+	Longptr_t args[2];// = { px, py };
+	args[0] = px;
+	args[1] = py;
+	if(fVerboseLevel > 2) { std::cout << "Emitting RemoveResidualPoint(Int_t, Int_t) with " << px << ", " << py << " - " << args << std::endl; }
+	Emit("RemoveResidualPoint(Int_t, Int_t)", args);
    return ipoint;
 }
 
