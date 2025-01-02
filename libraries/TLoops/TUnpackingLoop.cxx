@@ -23,7 +23,7 @@ TUnpackingLoop* TUnpackingLoop::Get(std::string name)
 
 TUnpackingLoop::TUnpackingLoop(std::string name)
    : StoppableThread(std::move(name)), fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>()),
-     fFragsReadFromRaw(0), fGoodFragsRead(0), fEvaluateDataType(true), fDataType(EDataType::kMidas)
+     fFragsReadFromRaw(0), fGoodFragsRead(0)
 {
    // try and open dynamic library
    if(TGRSIOptions::Get()->ParserLibrary().empty()) {

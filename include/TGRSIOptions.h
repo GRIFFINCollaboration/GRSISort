@@ -82,6 +82,7 @@ public:
    bool UseMidFileOdb() const { return fUseMidFileOdb; }
 
    bool MakeAnalysisTree() const { return fMakeAnalysisTree; }
+   bool UseRnTuple() const { return fUseRnTuple; }
    bool ReadingMaterial() const { return fReadingMaterial; }
    bool IgnoreFileOdb() const { return fIgnoreFileOdb; }
    bool IgnoreOdbChannels() const { return fIgnoreOdbChannels; }
@@ -181,11 +182,12 @@ private:
    bool fSuppressErrors{false};         ///< Flag to suppress errors (--suppress-errors)
    bool fReconstructTimeStamp{false};   ///< Flag to reconstruct missing high bits of time stamps (--reconstruct-timestamp)
 
-   bool fMakeAnalysisTree{false};    ///< Flag to make analysis tree (-a)
-   bool fReadingMaterial{false};     ///< Flag to show reading material (--reading-material)
-   bool fIgnoreFileOdb{false};       ///< Flag to ignore midas file odb
-   bool fIgnoreOdbChannels{false};   ///< Flag to ignore channels from midas file odb (but do use EPICS from ODB)
-   int  fDownscaling{1};             ///< Downscaling factor for raw events to be processed
+   bool fMakeAnalysisTree;    ///< Flag to make analysis tree (-a)
+   bool fUseRnTuple;          ///< Flag to use experimental TRNTuple instead of TTree
+   bool fReadingMaterial;     ///< Flag to show reading material (--reading-material)
+   bool fIgnoreFileOdb;       ///< Flag to ignore midas file odb
+   bool fIgnoreOdbChannels;   ///< Flag to ignore channels from midas file odb (but do use EPICS from ODB)
+   int  fDownscaling;         ///< Downscaling factor for raw events to be processed
 
    bool fIgnoreScaler{false};        ///< Flag to ignore scalers in GRIFFIN
    bool fIgnoreEpics{false};         ///< Flag to ignore epics

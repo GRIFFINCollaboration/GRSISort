@@ -213,6 +213,233 @@ bool RemovePeaks(TH1** hists, unsigned int nhists)
    return flag;
 }
 
+std::vector<TH1*> FindHists(int dim)
+{
+   std::vector<TH1*> tempVec;
+   for(auto* obj : *(gPad->GetListOfPrimitives())) {
+      if(obj->InheritsFrom(TH1::Class())) {
+         TH1* hist = static_cast<TH1*>(obj);
+         if(hist->GetDimension() == dim) {
+            tempVec.push_back(hist);
+         }
+      }
+   }
+   return tempVec;
+}
+
+bool Move1DHistogram(const Int_t& key, TH1* histogram)
+{
+   /// Moves displayed 1D histograms by 50% of the visible range left, right.
+   /// For "normal" TH1 histograms up/down scales the y-axis up/down by a factor of 2.
+   /// For GH1D histograms up/down selects the next (up) or previous (down) GH1D histogram.
+   bool              edited = false;
+   std::vector<TH1*> hists;
+   if(histogram != nullptr) {
+      hists.push_back(histogram);
+   } else {
+      hists = FindHists(1);
+   }
+   if(hists.empty()) {
+      return edited;
+   }
+
+   // get first and last bin in current range
+   int first = hists.at(0)->GetXaxis()->GetFirst();
+   int last  = hists.at(0)->GetXaxis()->GetLast();
+
+   // first is 1 if no range is defined but can be 0, last is fNbins if no range is defined but can be 0
+   // so min will always be 0, and max will always be fNbins+1
+   int min = std::min(first, 0);
+   int max = std::max(last, hists.at(0)->GetXaxis()->GetNbins() + 1);
+
+   int xdiff = last - first;
+   int mdiff = max - min - 2;   // this will always be fNbins-1
+
+   // try and cast histogram to GH1D, will be a null pointer if the histogram is not a GH1D
+   GH1D* gHist = dynamic_cast<GH1D*>(hists.at(0));
+
+   // get current y-range
+   double yMin = hists.at(0)->GetMinimum();
+   double yMax = hists.at(0)->GetMaximum();
+
+   switch(key) {
+   case kGRSIArrowLeft:
+      if(mdiff > xdiff) {
+         // try and move left by half the current range
+         if(first == (min + 1)) {
+            // if first is 1 we can't go any further left
+         } else if((first - (xdiff / 2)) < min) {
+            first = min + 1;
+            last  = min + (xdiff) + 1;
+         } else {
+            first = first - (xdiff / 2);
+            last  = last - (xdiff / 2);
+         }
+      }
+      for(auto* hist : hists) {
+         hist->GetXaxis()->SetRange(first, last);
+      }
+      edited = true;
+      break;
+   case kGRSIArrowRight:
+      if(mdiff > xdiff) {
+         // try and move right by half the current range
+         if(last == (max - 1)) {
+            // last is fNbins so we can't move further right
+         } else if((last + (xdiff / 2)) > max) {
+            first = max - 1 - (xdiff);
+            last  = max - 1;
+         } else {
+            last  = last + (xdiff / 2);
+            first = first + (xdiff / 2);
+         }
+      }
+      for(auto* hist : hists) {
+         hist->GetXaxis()->SetRange(first, last);
+      }
+
+      edited = true;
+      break;
+   case kGRSIArrowUp:
+      if(gHist != nullptr) {
+         TH1* next = gHist->GetNext();
+         if(next != nullptr) {
+            next->GetXaxis()->SetRange(first, last);
+            next->Draw("");
+            edited = true;
+         }
+      } else {
+         for(auto* hist : hists) {
+            hist->GetYaxis()->SetRangeUser(yMin, yMin + (yMax - yMin) / 2.);
+         }
+      }
+      break;
+
+   case kGRSIArrowDown:
+      if(gHist != nullptr) {
+         TH1* prev = gHist->GetPrevious();
+         if(prev != nullptr) {
+            prev->GetXaxis()->SetRange(first, last);
+            prev->Draw("");
+            edited = true;
+         }
+      } else {
+         for(auto* hist : hists) {
+            hist->GetYaxis()->SetRangeUser(yMin, yMin + (yMax - yMin) * 2.);
+         }
+      }
+      break;
+   default:
+      std::cout << "Move1DHistogram: unknown key = " << key << hex(key) << std::endl;
+      break;
+   }
+   return edited;
+}
+
+bool Move2DHistogram(const Int_t& key, TH2* histogram)
+{
+   /// Moves displayed 2D histograms by 50% of the visible range left, right, up, or down
+
+   bool              edited = false;
+   std::vector<TH1*> hists;
+   if(histogram != nullptr) {
+      hists.push_back(histogram);
+   } else {
+      hists = FindHists(2);
+   }
+
+   int firstX = hists.at(0)->GetXaxis()->GetFirst();
+   int lastX  = hists.at(0)->GetXaxis()->GetLast();
+   int firstY = hists.at(0)->GetYaxis()->GetFirst();
+   int lastY  = hists.at(0)->GetYaxis()->GetLast();
+
+   int minX = std::min(firstX, 0);
+   int maxX = std::max(lastX, hists.at(0)->GetXaxis()->GetNbins() + 1);
+   int minY = std::min(firstY, 0);
+   int maxY = std::max(lastY, hists.at(0)->GetYaxis()->GetNbins() + 1);
+
+   int xdiff  = lastX - firstX;
+   int mxdiff = maxX - minX - 2;
+   int ydiff  = lastY - firstY;
+   int mydiff = maxY - minY - 2;
+
+   switch(key) {
+   case kGRSIArrowLeft:
+      if(mxdiff > xdiff) {
+         if(firstX == (minX + 1)) {
+         } else if((firstX - (xdiff / 2)) < minX) {
+            firstX = minX + 1;
+            lastX  = minX + (xdiff) + 1;
+         } else {
+            firstX = firstX - (xdiff / 2);
+            lastX  = lastX - (xdiff / 2);
+         }
+      }
+      for(auto* hist : hists) {
+         hist->GetXaxis()->SetRange(firstX, lastX);
+      }
+
+      edited = true;
+      break;
+   case kGRSIArrowRight:
+      if(mxdiff > xdiff) {
+         if(lastX == (maxX - 1)) {
+         } else if((lastX + (xdiff / 2)) > maxX) {
+            firstX = maxX - 1 - (xdiff);
+            lastX  = maxX - 1;
+         } else {
+            lastX  = lastX + (xdiff / 2);
+            firstX = firstX + (xdiff / 2);
+         }
+      }
+      for(auto* hist : hists) {
+         hist->GetXaxis()->SetRange(firstX, lastX);
+      }
+
+      edited = true;
+      break;
+   case kGRSIArrowUp:
+      if(mydiff > ydiff) {
+         if(lastY == (maxY - 1)) {
+         } else if((lastY + (ydiff / 2)) > maxY) {
+            firstY = maxY - 1 - ydiff;
+            lastY  = maxY - 1;
+         } else {
+            firstY = firstY + (ydiff / 2);
+            lastY  = lastY + (ydiff / 2);
+         }
+      }
+      for(auto* hist : hists) {
+         hist->GetYaxis()->SetRange(firstY, lastY);
+      }
+
+      edited = true;
+      break;
+   case kGRSIArrowDown:
+      if(mydiff > ydiff) {
+         if(firstY == (minY + 1)) {
+            //
+         } else if((firstY - (ydiff / 2)) < minY) {
+            firstY = minY + 1;
+            lastY  = minY + (ydiff) + 1;
+         } else {
+            firstY = firstY - (ydiff / 2);
+            lastY  = lastY - (ydiff / 2);
+         }
+      }
+      for(auto* hist : hists) {
+         hist->GetYaxis()->SetRange(firstY, lastY);
+      }
+
+      edited = true;
+      break;
+   default:
+      std::cout << "Move2DHistogram: unknown key = " << key << hex(key) << std::endl;
+      break;
+   }
+   return edited;
+}
+
 // bool PeakFit(TH1 *hist,Double_t xlow, Double_t xhigh,Option_t *opt) {
 //  if(!hist)
 //   return;

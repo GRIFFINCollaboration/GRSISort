@@ -72,6 +72,7 @@ void TGRSIOptions::Clear(Option_t*)
    fUseMidFileOdb  = false;
 
    fMakeAnalysisTree  = false;
+   fUseRnTuple        = false;
    fReadingMaterial   = false;
    fIgnoreFileOdb     = false;
    fIgnoreOdbChannels = false;
@@ -141,6 +142,7 @@ void TGRSIOptions::Print(Option_t*) const
              << "fReconstructTimeStamp: " << fReconstructTimeStamp << std::endl
              << std::endl
              << "fMakeAnalysisTree: " << fMakeAnalysisTree << std::endl
+             << "fUseRnTuple: " << fUseRnTuple << std::endl
              << "fReadingMaterial;: " << fReadingMaterial << std::endl
              << "fIgnoreFileOdb: " << fIgnoreFileOdb << std::endl
              << "fIgnoreOdbChannels: " << fIgnoreOdbChannels << std::endl
@@ -288,6 +290,7 @@ void TGRSIOptions::Load(int argc, char** argv)
          .description("Filename of output analysis hists");
 
       parser.option("a", &fMakeAnalysisTree, true).description("Make the analysis tree").colour(DGREEN);
+      parser.option("use-rntuple", &fUseRnTuple, true).description("Use experimental RNTuple instead of TTree");
       parser.option("H histos", &fMakeHistos, true).description("Attempt to run events through MakeHisto lib");
       parser.option("g start-gui", &fStartGui, true).description("Start the gui at program start");
       parser.option("b batch", &fBatch, true).description("Run in batch mode");

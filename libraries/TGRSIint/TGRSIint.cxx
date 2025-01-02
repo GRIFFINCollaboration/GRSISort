@@ -495,9 +495,17 @@ void TGRSIint::SetupPipeline()
    std::string output_analysis_tree_filename = opt->OutputAnalysisFile();
    if(output_analysis_tree_filename.length() == 0) {
       if(sub_run_number == -1) {
-         output_analysis_tree_filename = Form("analysis%05i.root", run_number);
+         if(opt->UseRnTuple()) {
+            output_analysis_tree_filename = Form("rntuple%05i.root", run_number);
+         } else {
+            output_analysis_tree_filename = Form("analysis%05i.root", run_number);
+         }
       } else {
-         output_analysis_tree_filename = Form("analysis%05i_%03i.root", run_number, sub_run_number);
+         if(opt->UseRnTuple()) {
+            output_analysis_tree_filename = Form("rntuple%05i_%03i.root", run_number, sub_run_number);
+         } else {
+            output_analysis_tree_filename = Form("analysis%05i_%03i.root", run_number, sub_run_number);
+         }
       }
    }
 
@@ -657,8 +665,8 @@ void TGRSIint::SetupPipeline()
 
    // If requested, write the analysis tree
    if(write_analysis_tree) {
-      TAnalysisWriteLoop* loop = TAnalysisWriteLoop::Get("8_analysis_write_loop", output_analysis_tree_filename);
-      loop->InputQueue()       = detBuildingLoop->AddOutputQueue(TGRSIOptions::Get()->AnalysisWriteQueueSize());
+      auto* loop         = TAnalysisWriteLoop::Get("8_analysis_write_loop", output_analysis_tree_filename);
+      loop->InputQueue() = detBuildingLoop->AddOutputQueue(TGRSIOptions::Get()->AnalysisWriteQueueSize());
       if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
          loop->OutOfOrderQueue() = eventBuildingLoop->OutOfOrderQueue();
       }

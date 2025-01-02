@@ -50,11 +50,6 @@
 // NOLINTEND(cppcoreguidelines-macro-usage)
 #endif
 
-enum MyArrowPress { kMyArrowLeft  = 0x1012,
-                    kMyArrowUp    = 0x1013,
-                    kMyArrowRight = 0x1014,
-                    kMyArrowDown  = 0x1015 };
-
 GMarker::GMarker(int x, int y, TH1* hist)
    : fHist(hist)
 {
@@ -352,7 +347,6 @@ std::vector<TH1*> GCanvas::FindAllHists()
 
 bool GCanvas::HandleArrowKeyPress(Event_t* event, const UInt_t* keysym)
 {
-
    bool edited = Process1DArrowKeyPress(event, keysym);
    if(!edited) {
       edited = Process2DArrowKeyPress(event, keysym);
@@ -574,105 +568,8 @@ TF1* GCanvas::GetLastFit()
 bool GCanvas::Process1DArrowKeyPress(Event_t*, const UInt_t* keysym)
 {
    /// Moves displayed 1D histograms by 50% of the visible range left, right, or selects the next (up) or previous (down) GH1D histogram.
-   bool              edited = false;
-   std::vector<TH1*> hists  = FindHists(1);
-   if(hists.empty()) {
-      return edited;
-   }
-
-   // get first and last bin in current range
-   int first = hists.at(0)->GetXaxis()->GetFirst();
-   int last  = hists.at(0)->GetXaxis()->GetLast();
-
-   // first is 1 if no range is defined but can be 0, last is fNbins if no range is defined but can be 0
-   // so min will always be 0, and max will always be fNbins+1
-   int min = std::min(first, 0);
-   int max = std::max(last, hists.at(0)->GetXaxis()->GetNbins() + 1);
-
-   int xdiff = last - first;
-   int mdiff = max - min - 2;   // this will always be fNbins-1
-
-   switch(*keysym) {
-   case kMyArrowLeft: {
-      if(mdiff > xdiff) {
-         // try and move left by half the current range
-         if(first == (min + 1)) {
-            // if first is 1 we can't go any further left
-         } else if((first - (xdiff / 2)) < min) {
-            first = min + 1;
-            last  = min + (xdiff) + 1;
-         } else {
-            first = first - (xdiff / 2);
-            last  = last - (xdiff / 2);
-         }
-      }
-      for(auto* hist : hists) {
-         hist->GetXaxis()->SetRange(first, last);
-      }
-
-      edited = true;
-   } break;
-   case kMyArrowRight: {
-      if(mdiff > xdiff) {
-         // try and move right by half the current range
-         if(last == (max - 1)) {
-            // last is fNbins so we can't move further right
-         } else if((last + (xdiff / 2)) > max) {
-            first = max - 1 - (xdiff);
-            last  = max - 1;
-         } else {
-            last  = last + (xdiff / 2);
-            first = first + (xdiff / 2);
-         }
-      }
-      for(auto* hist : hists) {
-         hist->GetXaxis()->SetRange(first, last);
-      }
-
-      edited = true;
-   } break;
-
-   case kMyArrowUp: {
-      GH1D* ghist = nullptr;
-      for(auto* hist : hists) {
-         if(hist->InheritsFrom(GH1D::Class())) {
-            ghist = static_cast<GH1D*>(hist);
-            break;
-         }
-      }
-
-      if(ghist != nullptr) {
-         TH1* next = ghist->GetNext();
-         if(next != nullptr) {
-            next->GetXaxis()->SetRange(first, last);
-            next->Draw("");
-            RedrawMarkers();
-            edited = true;
-         }
-      }
-   } break;
-
-   case kMyArrowDown: {
-      GH1D* ghist = nullptr;
-      for(auto* hist : hists) {
-         if(hist->InheritsFrom(GH1D::Class())) {
-            ghist = static_cast<GH1D*>(hist);
-            break;
-         }
-      }
-
-      if(ghist != nullptr) {
-         TH1* prev = ghist->GetPrevious();
-         if(prev != nullptr) {
-            prev->GetXaxis()->SetRange(first, last);
-            prev->Draw("");
-            RedrawMarkers();
-            edited = true;
-         }
-      }
-   } break;
-   default: std::cout << "keysym = " << *keysym << std::endl; break;
-   }
+   bool edited = Move1DHistogram(*keysym);
+   if(edited) { RedrawMarkers(); }
    return edited;
 }
 
@@ -1101,106 +998,7 @@ bool GCanvas::Process1DMousePress(Int_t, Int_t, Int_t)
 bool GCanvas::Process2DArrowKeyPress(Event_t*, const UInt_t* keysym)
 {
    /// Moves displayed 2D histograms by 50% of the visible range left, right, up, or down
-
-   bool              edited = false;
-   std::vector<TH1*> hists  = FindHists(2);
-   if(hists.empty()) {
-      return edited;
-   }
-
-   int firstX = hists.at(0)->GetXaxis()->GetFirst();
-   int lastX  = hists.at(0)->GetXaxis()->GetLast();
-   int firstY = hists.at(0)->GetYaxis()->GetFirst();
-   int lastY  = hists.at(0)->GetYaxis()->GetLast();
-
-   int minX = std::min(firstX, 0);
-   int maxX = std::max(lastX, hists.at(0)->GetXaxis()->GetNbins() + 1);
-   int minY = std::min(firstY, 0);
-   int maxY = std::max(lastY, hists.at(0)->GetYaxis()->GetNbins() + 1);
-
-   int xdiff  = lastX - firstX;
-   int mxdiff = maxX - minX - 2;
-   int ydiff  = lastY - firstY;
-   int mydiff = maxY - minY - 2;
-
-   switch(*keysym) {
-   case kMyArrowLeft: {
-      if(mxdiff > xdiff) {
-         if(firstX == (minX + 1)) {
-            //
-         } else if((firstX - (xdiff / 2)) < minX) {
-            firstX = minX + 1;
-            lastX  = minX + (xdiff) + 1;
-         } else {
-            firstX = firstX - (xdiff / 2);
-            lastX  = lastX - (xdiff / 2);
-         }
-      }
-      for(auto* hist : hists) {
-         hist->GetXaxis()->SetRange(firstX, lastX);
-      }
-
-      edited = true;
-   } break;
-   case kMyArrowRight: {
-      if(mxdiff > xdiff) {
-         if(lastX == (maxX - 1)) {
-            //
-         } else if((lastX + (xdiff / 2)) > maxX) {
-            firstX = maxX - 1 - (xdiff);
-            lastX  = maxX - 1;
-         } else {
-            lastX  = lastX + (xdiff / 2);
-            firstX = firstX + (xdiff / 2);
-         }
-      }
-      for(auto* hist : hists) {
-         hist->GetXaxis()->SetRange(firstX, lastX);
-      }
-
-      edited = true;
-   } break;
-
-   case kMyArrowUp: {
-      if(mydiff > ydiff) {
-         if(lastY == (maxY - 1)) {
-            //
-         } else if((lastY + (ydiff / 2)) > maxY) {
-            firstY = maxY - 1 - ydiff;
-            lastY  = maxY - 1;
-         } else {
-            firstY = firstY + (ydiff / 2);
-            lastY  = lastY + (ydiff / 2);
-         }
-      }
-      for(auto* hist : hists) {
-         hist->GetYaxis()->SetRange(firstY, lastY);
-      }
-
-      edited = true;
-   } break;
-
-   case kMyArrowDown: {
-      if(mydiff > ydiff) {
-         if(firstY == (minY + 1)) {
-            //
-         } else if((firstY - (ydiff / 2)) < minY) {
-            firstY = minY + 1;
-            lastY  = minY + (ydiff) + 1;
-         } else {
-            firstY = firstY - (ydiff / 2);
-            lastY  = lastY - (ydiff / 2);
-         }
-      }
-      for(auto* hist : hists) {
-         hist->GetYaxis()->SetRange(firstY, lastY);
-      }
-
-      edited = true;
-   } break;
-   default: std::cout << "keysym = " << *keysym << std::endl; break;
-   }
-   return edited;
+   return Move2DHistogram(*keysym);
 }
 
 bool GCanvas::Process2DKeyboardPress(Event_t*, const UInt_t* keysym)

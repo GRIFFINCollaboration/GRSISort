@@ -529,19 +529,15 @@ void TEfficiencyDatatypeTab::UpdateEfficiencyGraph()
    }
    delete fEfficiencyGraph;
    fEfficiencyGraph = new TCalibrationGraphSet();
-   fEfficiencyGraph->VerboseLevel(fVerboseLevel);
    delete fUncorrEfficiencyGraph;
    fUncorrEfficiencyGraph = new TCalibrationGraphSet();
-   fUncorrEfficiencyGraph->VerboseLevel(fVerboseLevel);
    delete fPeakAreaGraph;
    fPeakAreaGraph = new TCalibrationGraphSet();
-   fPeakAreaGraph->VerboseLevel(fVerboseLevel);
    delete fSummingInGraph;
    fSummingInGraph = new TCalibrationGraphSet();
-   fSummingInGraph->VerboseLevel(fVerboseLevel);
    delete fSummingOutGraph;
    fSummingOutGraph = new TCalibrationGraphSet();
-   fSummingOutGraph->VerboseLevel(fVerboseLevel);
+   TCalibrationGraphSet::VerboseLevel(fVerboseLevel);
 
    for(auto& tab : fEfficiencyTab) {
       // vector of tuple with transition and 8 doubles:

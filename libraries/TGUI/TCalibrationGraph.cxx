@@ -11,9 +11,12 @@
 
 Int_t TCalibrationGraph::RemovePoint()
 {
-   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-   if(fIsResidual) { return fParent->RemoveResidualPoint(); }
-   return fParent->RemovePoint();
+   if(TCalibrationGraphSet::VerboseLevel() > 1) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   Int_t px = gPad->GetEventX();
+   Int_t py = gPad->GetEventY();
+   if(TCalibrationGraphSet::VerboseLevel() > 1) { std::cout << "px, py " << px << ",  " << py << " on gPad " << gPad->GetName() << std::endl; }
+   if(fIsResidual) { return fParent->RemoveResidualPoint(px, py); }
+   return fParent->RemovePoint(px, py);
 }
 
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 26, 0)
@@ -29,13 +32,22 @@ void TCalibrationGraph::Scale(const double& scale)
 }
 #endif
 
+int TCalibrationGraphSet::fVerboseLevel = 0;
+
 TCalibrationGraphSet::TCalibrationGraphSet(TGraphErrors* graph, const std::string& label)
    : fTotalGraph(new TGraphErrors), fTotalResidualGraph(new TGraphErrors)
 {
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " fTotalGraph " << fTotalGraph << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    if(graph != nullptr) {
       Add(graph, label);
       if(fVerboseLevel > 1) { Print(); }
    }
+}
+
+TCalibrationGraphSet::TCalibrationGraphSet(std::string xAxisLabel, std::string yAxisLabel)
+   : fTotalGraph(new TGraphErrors), fTotalResidualGraph(new TGraphErrors), fXAxisLabel(std::move(xAxisLabel)), fYAxisLabel(std::move(yAxisLabel))
+{
+   if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " fTotalGraph " << fTotalGraph << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 }
 
 TCalibrationGraphSet::~TCalibrationGraphSet()
@@ -47,7 +59,7 @@ TCalibrationGraphSet::~TCalibrationGraphSet()
 int TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
 {
    if(fVerboseLevel > 1) {
-      std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+      std::cout << __PRETTY_FUNCTION__ << ", fTotalGraph " << fTotalGraph << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       Print();
    }
    if(graph->GetN() == 0) {
@@ -187,6 +199,13 @@ void TCalibrationGraphSet::DrawCalibration(Option_t* opt, TLegend* legend)
    }
    fTotalGraph->Draw(options.Data());
 
+   if(fTotalGraph->GetHistogram() != nullptr) {
+      fTotalGraph->GetHistogram()->GetXaxis()->CenterTitle();
+      fTotalGraph->GetHistogram()->GetXaxis()->SetTitle(fXAxisLabel.c_str());
+      fTotalGraph->GetHistogram()->GetYaxis()->CenterTitle();
+      fTotalGraph->GetHistogram()->GetYaxis()->SetTitle(fYAxisLabel.c_str());
+   }
+
    for(size_t i = 0; i < fGraphs.size(); ++i) {
       if(fVerboseLevel > 1) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". graph with option \"" << opt << "\", marker color " << fGraphs[i].GetMarkerColor() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       fGraphs[i].Draw(opt);
@@ -219,14 +238,12 @@ void TCalibrationGraphSet::DrawResidual(Option_t* opt, TLegend* legend)
    }
 }
 
-Int_t TCalibrationGraphSet::RemovePoint()
+Int_t TCalibrationGraphSet::RemovePoint(const Int_t& px, const Int_t& py)
 {
    /// This function is primarily a copy of TGraph::RemovePoint with some added bits to remove a point that has been selected in the calibration graph from it and the corresponding point from the residual graph and the total graphs
-   Int_t px = gPad->GetEventX();
-   Int_t py = gPad->GetEventY();
 
    if(fVerboseLevel > 1) {
-      std::cout << __PRETTY_FUNCTION__ << ": point " << px << ", " << py << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+      std::cout << __PRETTY_FUNCTION__ << ": point " << px << ", " << py << "; gPad " << gPad->GetName() << ": " << gPad->AbsPixeltoX(px) << ", " << gPad->AbsPixeltoY(py) << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       Print();
    }
 
@@ -241,9 +258,15 @@ Int_t TCalibrationGraphSet::RemovePoint()
       Int_t dpy = py - gPad->YtoAbsPixel(gPad->YtoPad(y[i]));
       // TODO replace 100 with member variable?
       if(dpx * dpx + dpy * dpy < 100) {
+			if(fVerboseLevel > 2) {
+				std::cout << i << ": dpx = " << dpx << " = " << px << " - " << gPad->XtoAbsPixel(gPad->XtoPad(x[i])) << ", dpy = " << dpy << " = " << py << " - " << gPad->YtoAbsPixel(gPad->YtoPad(y[i])) << " this is the point we're looking for" << std::endl;
+			}
          ipoint = i;
          break;
-      }
+      } 
+		if(fVerboseLevel > 2) {
+			std::cout << i << ": dpx = " << dpx << " = " << px << " - " << gPad->XtoAbsPixel(gPad->XtoPad(x[i])) << ", dpy = " << dpy << " = " << py << " - " << gPad->YtoAbsPixel(gPad->YtoPad(y[i])) << " not the point we're looking for" << std::endl;
+		}
    }
    if(ipoint < 0) {
       std::cout << "Failed to find point close to " << px << ", " << py << std::endl;
@@ -290,14 +313,15 @@ Int_t TCalibrationGraphSet::RemovePoint()
       pad++;
    }
    if(fVerboseLevel > 1) { Print(); }
+	std::array<Longptr_t, 2> args = { px, py };
+	if(fVerboseLevel > 2) { std::cout << "Emitting RemovePoint(Int_t, Int_t) with " << px << ", " << py << " - " << args.data() << std::endl; }
+	Emit("RemovePoint(Int_t, Int_t)", args.data());
    return ipoint;
 }
 
-Int_t TCalibrationGraphSet::RemoveResidualPoint()
+Int_t TCalibrationGraphSet::RemoveResidualPoint(const Int_t& px, const Int_t& py)
 {
    /// This function is primarily a copy of TGraph::RemovePoint with some added bits to remove a point that has been selected in the residual graph from it and the corresponding point from the calibration graph and the total graphs
-   Int_t px = gPad->GetEventX();
-   Int_t py = gPad->GetEventY();
 
    // localize point to be deleted
    Int_t ipoint = -2;
@@ -354,6 +378,9 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint()
       pad++;
    }
    if(fVerboseLevel > 1) { Print(); }
+	std::array<Longptr_t, 2> args = { px, py };
+	if(fVerboseLevel > 2) { std::cout << "Emitting RemoveResidualPoint(Int_t, Int_t) with " << px << ", " << py << " - " << args.data() << std::endl; }
+	Emit("RemoveResidualPoint(Int_t, Int_t)", args.data());
    return ipoint;
 }
 
@@ -465,7 +492,21 @@ void TCalibrationGraphSet::ResetTotalGraph()
 
 void TCalibrationGraphSet::Print(Option_t* opt) const
 {
-   std::cout << "TCalibrationGraphSet " << this << " - " << GetName() << ": " << fGraphs.size() << " calibration graphs, " << fResidualGraphs.size() << " residual graphs, " << fLabel.size() << " labels, " << fTotalGraph->GetN() << " calibration points, and " << fTotalResidualGraph->GetN() << " residual points" << std::endl;
+   if(fVerboseLevel > 1) {
+      std::cout << __PRETTY_FUNCTION__ << ", fTotalGraph " << fTotalGraph << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   }
+
+   std::cout << "TCalibrationGraphSet " << this << " - " << GetName() << ": " << fGraphs.size() << " calibration graphs, " << fResidualGraphs.size() << " residual graphs, " << fLabel.size() << " labels, ";
+   if(fTotalGraph != nullptr) {
+      std::cout << fTotalGraph->GetN() << " calibration points, and ";
+   } else {
+      std::cout << " no calibration points, and ";
+   }
+   if(fTotalResidualGraph != nullptr) {
+      std::cout << fTotalResidualGraph->GetN() << " residual points" << std::endl;
+   } else {
+      std::cout << " no residual points" << std::endl;
+   }
    TString options = opt;
    bool    errors  = options.Contains("e", TString::ECaseCompare::kIgnoreCase);
    for(const auto& g : fGraphs) {
@@ -496,4 +537,19 @@ void TCalibrationGraphSet::Print(Option_t* opt) const
    }
    std::cout << std::endl;
    std::cout << "---------------------" << std::endl;
+}
+
+void TCalibrationGraphSet::Clear(Option_t* option)
+{
+   fGraphs.clear();
+   fResidualGraphs.clear();
+   fLabel.clear();
+   fGraphIndex.clear();
+   fPointIndex.clear();
+   fResidualSet = false;
+   fMinimumX    = 0.;
+   fMaximumX    = 0.;
+   fMinimumY    = 0.;
+   fMaximumY    = 0.;
+   TNamed::Clear(option);
 }

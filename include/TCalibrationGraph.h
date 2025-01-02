@@ -10,6 +10,7 @@
 #include "TFitResultPtr.h"
 #include "TList.h"
 #include "TLegend.h"
+#include "TQObject.h"
 
 class TCalibrationGraphSet;
 
@@ -34,28 +35,22 @@ public:
    void Scale(const double& scale);
 #endif
 
-   void VerboseLevel(int val)
-   {
-      fVerboseLevel = val;
-   }
-
 private:
    TCalibrationGraphSet* fParent{nullptr};     ///< pointer to the set this graph belongs to
    bool                  fIsResidual{false};   ///< flag to indicate that this graph is for residuals
-
-   int fVerboseLevel{0};   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 
    /// \cond CLASSIMP
    ClassDefOverride(TCalibrationGraph, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
-class TCalibrationGraphSet : public TNamed {
+class TCalibrationGraphSet : public TNamed, public TQObject {
 public:
    explicit TCalibrationGraphSet(TGraphErrors* graph = nullptr, const std::string& label = "");
+   TCalibrationGraphSet(std::string xAxisLabel, std::string yAxisLabel);
    ~TCalibrationGraphSet();
-   TCalibrationGraphSet(const TCalibrationGraphSet&)     = default;
-   TCalibrationGraphSet(TCalibrationGraphSet&&) noexcept = default;
+   TCalibrationGraphSet(const TCalibrationGraphSet&)     = delete;
+   TCalibrationGraphSet(TCalibrationGraphSet&&) noexcept = delete;
    TCalibrationGraphSet& operator=(const TCalibrationGraphSet& rhs)
    {
       /// Assignment operator that takes care of properly cloning all the pointers to objects.
@@ -76,7 +71,7 @@ public:
       fName               = rhs.fName;
       return *this;
    }
-   TCalibrationGraphSet& operator=(TCalibrationGraphSet&&) noexcept = default;
+   TCalibrationGraphSet& operator=(TCalibrationGraphSet&&) noexcept = delete;
 
    bool SetResidual(const bool& force = false);
    int  Add(TGraphErrors*, const std::string& label);   ///< Add new graph to set, using the label when creating legends during plotting
@@ -116,11 +111,11 @@ public:
 
    void SetAxisTitle(const char* title);   ///< Set axis title for the graph (form "x-axis title;y-axis title")
 
-   int     GetN() { return fTotalGraph->GetN(); }     ///< Returns GetN(), i.e. number of points of the total graph.
-   double* GetX() { return fTotalGraph->GetX(); }     ///< Returns an array of x-values of the total graph.
-   double* GetY() { return fTotalGraph->GetY(); }     ///< Returns an array of y-values of the total graph.
-   double* GetEX() { return fTotalGraph->GetEX(); }   ///< Returns an array of x-errors of the total graph.
-   double* GetEY() { return fTotalGraph->GetEY(); }   ///< Returns an array of y-errors of the total graph.
+   int     GetN() { return (fTotalGraph != nullptr ? fTotalGraph->GetN() : -1); }          ///< Returns GetN(), i.e. number of points of the total graph.
+   double* GetX() { return (fTotalGraph != nullptr ? fTotalGraph->GetX() : nullptr); }     ///< Returns an array of x-values of the total graph.
+   double* GetY() { return (fTotalGraph != nullptr ? fTotalGraph->GetY() : nullptr); }     ///< Returns an array of y-values of the total graph.
+   double* GetEX() { return (fTotalGraph != nullptr ? fTotalGraph->GetEX() : nullptr); }   ///< Returns an array of x-errors of the total graph.
+   double* GetEY() { return (fTotalGraph != nullptr ? fTotalGraph->GetEY() : nullptr); }   ///< Returns an array of y-errors of the total graph.
 
    double GetMinimumX() const { return fMinimumX; }   ///< Return minimum x-value.
    double GetMaximumX() const { return fMaximumX; }   ///< Return maximum x-value.
@@ -142,8 +137,14 @@ public:
       fGraphs.erase(fGraphs.begin() + index);
       ResetTotalGraph();
    }
-   Int_t RemovePoint();
-   Int_t RemoveResidualPoint();
+   Int_t RemovePoint(const Int_t& px, const Int_t& py); //*SIGNAL*
+   Int_t RemoveResidualPoint(const Int_t& px, const Int_t& py); //*SIGNAL*
+
+   void XAxisLabel(const std::string& xAxisLabel) { fXAxisLabel = xAxisLabel; }
+   void YAxisLabel(const std::string& yAxisLabel) { fYAxisLabel = yAxisLabel; }
+
+   std::string XAxisLabel() { return fXAxisLabel; }
+   std::string YAxisLabel() { return fYAxisLabel; }
 
    void Scale(bool useAllPrevious = true);
 
@@ -151,16 +152,10 @@ public:
 
    void ResetTotalGraph();   ///< reset the total graph and add the individual ones again (used e.g. after scaling of individual graphs is done)
 
-   void VerboseLevel(int val)
-   {
-      fVerboseLevel = val;
-      for(auto& graph : fGraphs) {
-         graph.VerboseLevel(val);
-      }
-      for(auto& graph : fResidualGraphs) {
-         graph.VerboseLevel(val);
-      }
-   }
+   static void VerboseLevel(int val) { fVerboseLevel = val; }
+   static int  VerboseLevel() { return fVerboseLevel; }
+
+   void Clear(Option_t* option = "") override;
 
 private:
    std::vector<TCalibrationGraph> fGraphs;                        ///< These are the graphs used for plotting the calibration points per source.
@@ -175,8 +170,10 @@ private:
    double                         fMaximumX{0.};                  ///< Maximum x-value
    double                         fMinimumY{0.};                  ///< Minimum y-value
    double                         fMaximumY{0.};                  ///< Maximum y-value
+   std::string                    fXAxisLabel;                    ///< The label of the x-axis.
+   std::string                    fYAxisLabel;                    ///< The label of the y-axis.
 
-   int fVerboseLevel{0};   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
+   static int fVerboseLevel;   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 
    /// \cond CLASSIMP
    ClassDefOverride(TCalibrationGraphSet, 3)   // NOLINT(readability-else-after-return)
