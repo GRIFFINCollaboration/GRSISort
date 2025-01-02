@@ -137,8 +137,8 @@ public:
       fGraphs.erase(fGraphs.begin() + index);
       ResetTotalGraph();
    }
-   Int_t RemovePoint(const Int_t& px, const Int_t& py); //*SIGNAL*
-   Int_t RemoveResidualPoint(const Int_t& px, const Int_t& py); //*SIGNAL*
+   Int_t RemovePoint(const Int_t& px, const Int_t& py);           //*SIGNAL*
+   Int_t RemoveResidualPoint(const Int_t& px, const Int_t& py);   //*SIGNAL*
 
    void XAxisLabel(const std::string& xAxisLabel) { fXAxisLabel = xAxisLabel; }
    void YAxisLabel(const std::string& yAxisLabel) { fYAxisLabel = yAxisLabel; }
