@@ -19,7 +19,9 @@
 #include "TObject.h"
 #include "TObjArray.h"
 #include "TH1.h"
+#ifdef HAS_CORRECT_PYTHON_VERSION
 #include "TPython.h"
+#endif
 #include "TTimer.h"
 #include "TF1.h"
 
