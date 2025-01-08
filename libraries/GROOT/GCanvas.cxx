@@ -684,7 +684,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, const UInt_t* keysym)
       break;
 
    case kKey_g:
-      if(GausFit(hists.back(), fMarkers.at(fMarkers.size() - 2)->GetLocalX(), fMarkers.back()->GetLocalX()) != nullptr) {
+      if(!hists.empty() && GetNMarkers() > 1 && GausFit(hists.back(), fMarkers.at(fMarkers.size() - 2)->GetLocalX(), fMarkers.back()->GetLocalX()) != nullptr) {
          edited = true;
       }
       break;
