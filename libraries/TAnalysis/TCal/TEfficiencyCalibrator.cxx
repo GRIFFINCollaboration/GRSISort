@@ -19,7 +19,7 @@
 TEfficiencyTab::TEfficiencyTab(TEfficiencyDatatypeTab* parent, TNucleus* nucleus, std::tuple<TH1*, TH2*, TH2*> hists, TGCompositeFrame* frame)
    : fFrame(frame), fNucleus(nucleus), fParent(parent),
      fSingles(std::get<0>(hists)), fSummingOut(std::get<1>(hists)), fSummingIn(std::get<2>(hists))
-     // name *180Corr                 // name *Sum180Corr
+// name *180Corr                 // name *Sum180Corr
 {
    if(TEfficiencyCalibrator::VerboseLevel() > 2) {
       std::cout << "Assigned singles, summing out, and summing in histograms (" << fSingles->GetName() << ", " << fSummingOut->GetName() << ", " << fSummingIn->GetName() << ")" << std::endl;
@@ -708,7 +708,7 @@ void TEfficiencyDatatypeTab::ReadValues()
 }
 
 //////////////////////////////////////// TEfficiencyCalibrator ////////////////////////////////////////
-int                       TEfficiencyCalibrator::fVerboseLevel           = 0;
+int TEfficiencyCalibrator::fVerboseLevel = 0;
 
 double                    TEfficiencyCalibrator::fRange                  = 20.;
 double                    TEfficiencyCalibrator::fThreshold              = 100.;
@@ -718,8 +718,8 @@ int                       TEfficiencyCalibrator::fDegree                 = 0;
 double                    TEfficiencyCalibrator::fCalibrationUncertainty = 1.;
 bool                      TEfficiencyCalibrator::fShowRemovedFits        = false;
 
-unsigned int              TEfficiencyCalibrator::fLineHeight             = 20;
-unsigned int              TEfficiencyCalibrator::fWindowWidth            = 1200;
+unsigned int TEfficiencyCalibrator::fLineHeight  = 20;
+unsigned int TEfficiencyCalibrator::fWindowWidth = 1200;
 
 TEfficiencyCalibrator::TEfficiencyCalibrator(int n...)
    : TGMainFrame(nullptr, TEfficiencyCalibrator::WindowWidth() + 10, TEfficiencyCalibrator::WindowWidth() / 2)   // +10 for padding between frames
