@@ -206,48 +206,42 @@ $(document).ready(function(){initNavTree('_g_h2_i_8cxx_source.html',''); initRes
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>}</div>
 </div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">#if ROOT_VERSION_CODE &lt; ROOT_VERSION(6, 0, 0)</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>TH1* <a class="code hl_function" href="class_g_h2_i.html#ae95b11b9b9b74626ac74ac756f316e02">GH2I::DrawCopy</a>(Option_t* opt)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   TH1* <a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a> = TH2I::DrawCopy(opt);</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="preprocessor">#else</span></div>
-<div class="foldopen" id="foldopen00088" data-start="{" data-end="}">
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="class_g_h2_i.html#ae95b11b9b9b74626ac74ac756f316e02">   88</a></span>TH1* <a class="code hl_function" href="class_g_h2_i.html#ae95b11b9b9b74626ac74ac756f316e02">GH2I::DrawCopy</a>(Option_t* opt, <span class="keyword">const</span> <span class="keywordtype">char</span>* name_postfix)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>   TH1* <a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a> = TH2I::DrawCopy(opt, name_postfix);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>   <span class="keywordflow">if</span>(gPad) {</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      gPad-&gt;Update();</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      gPad-&gt;GetFrame()-&gt;SetBit(TBox::kCannotMove);</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>   }</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>   <span class="keywordflow">return</span> <a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a>;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>}</div>
+<div class="foldopen" id="foldopen00083" data-start="{" data-end="}">
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="class_g_h2_i.html#ae95b11b9b9b74626ac74ac756f316e02">   83</a></span>TH1* <a class="code hl_function" href="class_g_h2_i.html#ae95b11b9b9b74626ac74ac756f316e02">GH2I::DrawCopy</a>(Option_t* opt, <span class="keyword">const</span> <span class="keywordtype">char</span>* name_postfix)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>   TH1* <a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a> = TH2I::DrawCopy(opt, name_postfix);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   <span class="keywordflow">if</span>(gPad) {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>      gPad-&gt;Update();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      gPad-&gt;GetFrame()-&gt;SetBit(TBox::kCannotMove);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>   }</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>   <span class="keywordflow">return</span> <a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a>;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>}</div>
 </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="foldopen" id="foldopen00099" data-start="{" data-end="}">
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="class_g_h2_i.html#ad39ec96eaf8bfc7c114d9e81c9b1b10a">   99</a></span>TH1* <a class="code hl_function" href="class_g_h2_i.html#ad39ec96eaf8bfc7c114d9e81c9b1b10a">GH2I::DrawNormalized</a>(Option_t* opt, Double_t norm)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>   TH1* <a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a> = TH2I::DrawNormalized(opt, norm);</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>   <span class="keywordflow">if</span>(gPad) {</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      gPad-&gt;Update();</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>      gPad-&gt;GetFrame()-&gt;SetBit(TBox::kCannotMove);</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>   }</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>   <span class="keywordflow">return</span> <a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a>;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="foldopen" id="foldopen00093" data-start="{" data-end="}">
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="class_g_h2_i.html#ad39ec96eaf8bfc7c114d9e81c9b1b10a">   93</a></span>TH1* <a class="code hl_function" href="class_g_h2_i.html#ad39ec96eaf8bfc7c114d9e81c9b1b10a">GH2I::DrawNormalized</a>(Option_t* opt, Double_t norm)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>   TH1* <a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a> = TH2I::DrawNormalized(opt, norm);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>   <span class="keywordflow">if</span>(gPad) {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>      gPad-&gt;Update();</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      gPad-&gt;GetFrame()-&gt;SetBit(TBox::kCannotMove);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>   }</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>   <span class="keywordflow">return</span> <a class="code hl_variable" href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>}</div>
 </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="foldopen" id="foldopen00109" data-start="{" data-end="}">
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="class_g_h2_i.html#ab643faf8772506288f14a14c70e11fc8">  109</a></span><a class="code hl_class" href="class_g_h1_d.html">GH1D</a>* <a class="code hl_function" href="class_g_h2_i.html#ab643faf8772506288f14a14c70e11fc8">GH2I::ProjectionX</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keywordtype">int</span> firstbin, <span class="keywordtype">int</span> lastbin, Option_t* option)</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>{</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>   <span class="keywordflow">return</span> <a class="code hl_function" href="class_g_h2_base.html#a69635c8f30c5eee853e4e1f83e632bde">GH2ProjectionX</a>(name, firstbin, lastbin, option);</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>}</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="foldopen" id="foldopen00103" data-start="{" data-end="}">
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="class_g_h2_i.html#ab643faf8772506288f14a14c70e11fc8">  103</a></span><a class="code hl_class" href="class_g_h1_d.html">GH1D</a>* <a class="code hl_function" href="class_g_h2_i.html#ab643faf8772506288f14a14c70e11fc8">GH2I::ProjectionX</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keywordtype">int</span> firstbin, <span class="keywordtype">int</span> lastbin, Option_t* option)</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>{</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>   <span class="keywordflow">return</span> <a class="code hl_function" href="class_g_h2_base.html#a69635c8f30c5eee853e4e1f83e632bde">GH2ProjectionX</a>(name, firstbin, lastbin, option);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>}</div>
 </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="foldopen" id="foldopen00114" data-start="{" data-end="}">
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="class_g_h2_i.html#af13001ae187f4e875c97545c56db173e">  114</a></span><a class="code hl_class" href="class_g_h1_d.html">GH1D</a>* <a class="code hl_function" href="class_g_h2_i.html#af13001ae187f4e875c97545c56db173e">GH2I::ProjectionY</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keywordtype">int</span> firstbin, <span class="keywordtype">int</span> lastbin, Option_t* option)</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>{</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>   <span class="keywordflow">return</span> <a class="code hl_function" href="class_g_h2_base.html#a4d6500e22ef4b34c45235945c767dd27">GH2ProjectionY</a>(name, firstbin, lastbin, option);</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>}</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="foldopen" id="foldopen00108" data-start="{" data-end="}">
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="class_g_h2_i.html#af13001ae187f4e875c97545c56db173e">  108</a></span><a class="code hl_class" href="class_g_h1_d.html">GH1D</a>* <a class="code hl_function" href="class_g_h2_i.html#af13001ae187f4e875c97545c56db173e">GH2I::ProjectionY</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keywordtype">int</span> firstbin, <span class="keywordtype">int</span> lastbin, Option_t* option)</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>{</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>   <span class="keywordflow">return</span> <a class="code hl_function" href="class_g_h2_base.html#a4d6500e22ef4b34c45235945c767dd27">GH2ProjectionY</a>(name, firstbin, lastbin, option);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>}</div>
 </div>
 <div class="ttc" id="a_g_h1_d_8h_html"><div class="ttname"><a href="_g_h1_d_8h.html">GH1D.h</a></div></div>
 <div class="ttc" id="a_g_h2_i_8h_html"><div class="ttname"><a href="_g_h2_i_8h.html">GH2I.h</a></div></div>
@@ -259,13 +253,13 @@ $(document).ready(function(){initNavTree('_g_h2_i_8cxx_source.html',''); initRes
 <div class="ttc" id="aclass_g_h2_i_html_a070ea9b88eb557f03cff00f82179a086"><div class="ttname"><a href="class_g_h2_i.html#a070ea9b88eb557f03cff00f82179a086">GH2I::Clone</a></div><div class="ttdeci">TObject * Clone(const char *newname=&quot;&quot;) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_h2_i_8cxx_source.html#l00048">GH2I.cxx:48</a></div></div>
 <div class="ttc" id="aclass_g_h2_i_html_a0d4100f7e08380115c6b119972f0b7b3"><div class="ttname"><a href="class_g_h2_i.html#a0d4100f7e08380115c6b119972f0b7b3">GH2I::Print</a></div><div class="ttdeci">void Print(Option_t *opt=&quot;&quot;) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_h2_i_8cxx_source.html#l00066">GH2I.cxx:66</a></div></div>
 <div class="ttc" id="aclass_g_h2_i_html_a73c0aadfd44514b2034d5bb1f5b61741"><div class="ttname"><a href="class_g_h2_i.html#a73c0aadfd44514b2034d5bb1f5b61741">GH2I::GH2I</a></div><div class="ttdeci">GH2I()=default</div></div>
-<div class="ttc" id="aclass_g_h2_i_html_ab643faf8772506288f14a14c70e11fc8"><div class="ttname"><a href="class_g_h2_i.html#ab643faf8772506288f14a14c70e11fc8">GH2I::ProjectionX</a></div><div class="ttdeci">GH1D * ProjectionX(const char *name=&quot;_px&quot;, int firstbin=0, int lastbin=-1, Option_t *option=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_g_h2_i_8cxx_source.html#l00109">GH2I.cxx:109</a></div></div>
+<div class="ttc" id="aclass_g_h2_i_html_ab643faf8772506288f14a14c70e11fc8"><div class="ttname"><a href="class_g_h2_i.html#ab643faf8772506288f14a14c70e11fc8">GH2I::ProjectionX</a></div><div class="ttdeci">GH1D * ProjectionX(const char *name=&quot;_px&quot;, int firstbin=0, int lastbin=-1, Option_t *option=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_g_h2_i_8cxx_source.html#l00103">GH2I.cxx:103</a></div></div>
 <div class="ttc" id="aclass_g_h2_i_html_ac70d82e37bb479a0dd874575671565f5"><div class="ttname"><a href="class_g_h2_i.html#ac70d82e37bb479a0dd874575671565f5">GH2I::Copy</a></div><div class="ttdeci">void Copy(TObject &amp;) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_h2_i_8cxx_source.html#l00043">GH2I.cxx:43</a></div></div>
-<div class="ttc" id="aclass_g_h2_i_html_ad39ec96eaf8bfc7c114d9e81c9b1b10a"><div class="ttname"><a href="class_g_h2_i.html#ad39ec96eaf8bfc7c114d9e81c9b1b10a">GH2I::DrawNormalized</a></div><div class="ttdeci">TH1 * DrawNormalized(Option_t *opt=&quot;&quot;, Double_t norm=1) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_h2_i_8cxx_source.html#l00099">GH2I.cxx:99</a></div></div>
+<div class="ttc" id="aclass_g_h2_i_html_ad39ec96eaf8bfc7c114d9e81c9b1b10a"><div class="ttname"><a href="class_g_h2_i.html#ad39ec96eaf8bfc7c114d9e81c9b1b10a">GH2I::DrawNormalized</a></div><div class="ttdeci">TH1 * DrawNormalized(Option_t *opt=&quot;&quot;, Double_t norm=1) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_h2_i_8cxx_source.html#l00093">GH2I.cxx:93</a></div></div>
 <div class="ttc" id="aclass_g_h2_i_html_ae21e7b41bd149843cc7bf0667ee2f3d8"><div class="ttname"><a href="class_g_h2_i.html#ae21e7b41bd149843cc7bf0667ee2f3d8">GH2I::~GH2I</a></div><div class="ttdeci">~GH2I()</div></div>
 <div class="ttc" id="aclass_g_h2_i_html_ae242ca5bddbbc57ba5ca17305d6b1010"><div class="ttname"><a href="class_g_h2_i.html#ae242ca5bddbbc57ba5ca17305d6b1010">GH2I::Clear</a></div><div class="ttdeci">void Clear(Option_t *opt=&quot;&quot;) override</div><div class="ttdef"><b>Definition</b> <a href="_g_h2_i_8cxx_source.html#l00057">GH2I.cxx:57</a></div></div>
-<div class="ttc" id="aclass_g_h2_i_html_ae95b11b9b9b74626ac74ac756f316e02"><div class="ttname"><a href="class_g_h2_i.html#ae95b11b9b9b74626ac74ac756f316e02">GH2I::DrawCopy</a></div><div class="ttdeci">TH1 * DrawCopy(Option_t *opt=&quot;&quot;, const char *name_postfix=&quot;_copy&quot;) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_h2_i_8cxx_source.html#l00088">GH2I.cxx:88</a></div></div>
-<div class="ttc" id="aclass_g_h2_i_html_af13001ae187f4e875c97545c56db173e"><div class="ttname"><a href="class_g_h2_i.html#af13001ae187f4e875c97545c56db173e">GH2I::ProjectionY</a></div><div class="ttdeci">GH1D * ProjectionY(const char *name=&quot;_py&quot;, int firstbin=0, int lastbin=-1, Option_t *option=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_g_h2_i_8cxx_source.html#l00114">GH2I.cxx:114</a></div></div>
+<div class="ttc" id="aclass_g_h2_i_html_ae95b11b9b9b74626ac74ac756f316e02"><div class="ttname"><a href="class_g_h2_i.html#ae95b11b9b9b74626ac74ac756f316e02">GH2I::DrawCopy</a></div><div class="ttdeci">TH1 * DrawCopy(Option_t *opt=&quot;&quot;, const char *name_postfix=&quot;_copy&quot;) const override</div><div class="ttdef"><b>Definition</b> <a href="_g_h2_i_8cxx_source.html#l00083">GH2I.cxx:83</a></div></div>
+<div class="ttc" id="aclass_g_h2_i_html_af13001ae187f4e875c97545c56db173e"><div class="ttname"><a href="class_g_h2_i.html#af13001ae187f4e875c97545c56db173e">GH2I::ProjectionY</a></div><div class="ttdeci">GH1D * ProjectionY(const char *name=&quot;_py&quot;, int firstbin=0, int lastbin=-1, Option_t *option=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="_g_h2_i_8cxx_source.html#l00108">GH2I.cxx:108</a></div></div>
 <div class="ttc" id="aclass_g_h2_i_html_af8a53b65e9fc3c5d193c27212aa84f9e"><div class="ttname"><a href="class_g_h2_i.html#af8a53b65e9fc3c5d193c27212aa84f9e">GH2I::Draw</a></div><div class="ttdeci">void Draw(Option_t *opt=&quot;&quot;) override</div><div class="ttdef"><b>Definition</b> <a href="_g_h2_i_8cxx_source.html#l00070">GH2I.cxx:70</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -274,7 +268,7 @@ $(document).ready(function(){initNavTree('_g_h2_i_8cxx_source.html',''); initRes
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_47358ee868e3aed1e59cf9c2ead119a2.html">GROOT</a></li><li class="navelem"><a class="el" href="_g_h2_i_8cxx.html">GH2I.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Jan 2 2025 20:47:27.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jan 8 2025 16:37:10.</li>
   </ul>
 </div>
 </body>

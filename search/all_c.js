@@ -40,7 +40,7 @@ var searchData=
   ['hassuffix_37',['hasSuffix',['../_t_midas_file_8cxx.html#acc3a0586541b034e8d61632b1c093dde',1,'TMidasFile.cxx']]],
   ['hastoolbar_38',['HasToolBar',['../class_g_root_canvas.html#a9208350060ad1068019cc9895039fade',1,'GRootCanvas']]],
   ['hastooltips_39',['HasToolTips',['../class_g_root_canvas.html#a457165c6b5fb6d3d58462c6d649a7acc',1,'GRootCanvas']]],
-  ['haswave_40',['haswave',['../class_t_tri_foil.html#a384eb0d0b31398b8062b95e1efade4e3',1,'TTriFoil::HasWave()'],['../class_t_detector_hit.html#abc39d95961863ed1182a7de704d2af74',1,'TDetectorHit::HasWave()']]],
+  ['haswave_40',['haswave',['../class_t_detector_hit.html#abc39d95961863ed1182a7de704d2af74',1,'TDetectorHit::HasWave()'],['../class_t_tri_foil.html#a384eb0d0b31398b8062b95e1efade4e3',1,'TTriFoil::HasWave()']]],
   ['hello_41',['hello',['../classpygui_1_1mainwindow_1_1_main_window.html#aee420eeac5f889b2e75aa491549f5164',1,'pygui::mainwindow::MainWindow']]],
   ['help_42',['help',['../_g_root_commands_8h.html#a54d17a6d0bb758f26b9dda4c6d8e8da8',1,'Help():&#160;GRootCommands.cxx'],['../_g_root_commands_8cxx.html#a54d17a6d0bb758f26b9dda4c6d8e8da8',1,'Help():&#160;GRootCommands.cxx']]],
   ['helpers_43',['Helpers',['../group___helpers.html',1,'']]],
