@@ -45,12 +45,23 @@ fi
 
 if [ -e "$GRSISYS/GRSIData" ] ; then
 	export GRSIDATA=$GRSISYS/GRSIData
+else
+	unset GRSIDATA
+fi
+if [ -e "$GRSISYS/HILData" ] ; then
+	export HILDATA=$GRSISYS/HILData
+else
+	unset HILDATA
 fi
 if [ -e "$GRSISYS/ILLData" ] ; then
 	export ILLDATA=$GRSISYS/ILLData
+else
+	unset ILLDATA
 fi
 if [ -e "$GRSISYS/iThembaData" ] ; then
 	export ITHEMBADATA=$GRSISYS/iThembaData
+else
+	unset ITHEMBADATA
 fi
 
 if [ -n "${old_grsisys}" ] ; then
@@ -62,6 +73,8 @@ if [ -n "${old_grsisys}" ] ; then
       drop_from_path "$LD_LIBRARY_PATH" "${old_grsisys}/lib"
       LD_LIBRARY_PATH=$newpath
 		drop_from_path "$LD_LIBRARY_PATH" "${old_grsisys}/GRSIData/lib"
+      LD_LIBRARY_PATH=$newpath
+		drop_from_path "$LD_LIBRARY_PATH" "${old_grsisys}/HILData/lib"
       LD_LIBRARY_PATH=$newpath
 		drop_from_path "$LD_LIBRARY_PATH" "${old_grsisys}/ILLData/lib"
       LD_LIBRARY_PATH=$newpath
