@@ -87,7 +87,7 @@ message("${BoldBlue}C++ version set to: ${CMAKE_CXX_STANDARD}\n${ColourReset}")
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 #----------------------------------------------------------------------------
-# configure the include directories and set other variables (could mayme have just one include_directories for both linux and macOS?)
+# configure the include directories and set other variables (could maybe have just one include_directories for both linux and macOS?)
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	include_directories(${PROJECT_SOURCE_DIR}/include ${ROOT_INCLUDE_DIRS} ${X11_INCLUDE_DIR})
 	add_compile_options(-DOS_DARWIN)
@@ -450,6 +450,6 @@ endif()
 #----------------------------------------------------------------------------
 # create a compile_commands.json file which can be used for clang-tidy
 if(NOT DEFINED ENV{CMAKE_EXPORT_COMPILE_COMMANDS})
-    message("ENV(CMAKE_EXPORT_COMPILE_COMMANDS) NOT DEFINED")
-    set($ENV{CMAKE_EXPORT_COMPILE_COMMANDS} TRUE)
+	message("ENV(CMAKE_EXPORT_COMPILE_COMMANDS) NOT DEFINED, setting it to TRUE")
+	set($ENV{CMAKE_EXPORT_COMPILE_COMMANDS} TRUE)
 endif()

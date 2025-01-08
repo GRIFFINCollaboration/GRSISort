@@ -31,13 +31,7 @@ public:
    ~GH2I();
 
    void Draw(Option_t* opt = "") override;
-
-#if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
-   TH1* DrawCopy(Option_t* opt = "") const;
-#else
    TH1* DrawCopy(Option_t* opt = "", const char* name_postfix = "_copy") const override;
-#endif
-
    TH1* DrawNormalized(Option_t* opt = "", Double_t norm = 1) const override;
 
    void     Clear(Option_t* opt = "") override;

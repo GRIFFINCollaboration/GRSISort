@@ -13,10 +13,6 @@ TDetectorHit::TDetectorHit(const int& address)
    // this needs to happen here, after we call Clear
    // otherwise if will be cleared as well
    fAddress = address;   // NOLINT(cppcoreguidelines-prefer-member-initializer)
-
-#if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
-   Class()->IgnoreTObjectStreamer(kTRUE);
-#endif
 }
 
 TDetectorHit::TDetectorHit(const TDetectorHit& rhs, bool copywave) : TObject(rhs)
@@ -27,10 +23,6 @@ TDetectorHit::TDetectorHit(const TDetectorHit& rhs, bool copywave) : TObject(rhs
       rhs.CopyWave(*this);
    }
    ClearTransients();
-
-#if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
-   Class()->IgnoreTObjectStreamer(kTRUE);
-#endif
 }
 
 TDetectorHit::~TDetectorHit() = default;

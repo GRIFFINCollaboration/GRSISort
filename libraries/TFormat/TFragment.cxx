@@ -10,10 +10,7 @@ Long64_t TFragment::fNumberOfFragments = 0;
 
 TFragment::TFragment()
 {
-/// Default constructor
-#if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
-   Class()->IgnoreTObjectStreamer(kTRUE);
-#endif
+   /// Default constructor
    Clear();
 }
 

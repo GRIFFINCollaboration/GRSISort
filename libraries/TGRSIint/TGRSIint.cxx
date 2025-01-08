@@ -335,11 +335,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
                // gFragment->SetNotify(GrutNotifier::Get());
             }
             std::cout << "file " << file->GetName() << " added to gFragment." << std::endl;
-#if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
-            gFragment->AddFile(file->GetName(), TChain::kBigNumber, "FragmentTree");
-#else
             gFragment->AddFile(file->GetName(), TTree::kMaxEntries, "FragmentTree");
-#endif
          }
 
          // If AnalysisTree exists, add the file to the chain.
@@ -350,11 +346,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
                // gAnalysis->SetNotify(GrutNotifier::Get());
             }
             std::cout << "file " << file->GetName() << " added to gAnalysis." << std::endl;
-#if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
-            gAnalysis->AddFile(file->GetName(), TChain::kBigNumber, "AnalysisTree");
-#else
             gAnalysis->AddFile(file->GetName(), TTree::kMaxEntries, "AnalysisTree");
-#endif
          }
 
          if(file->FindObjectAny("Channel") != nullptr) {
