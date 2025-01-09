@@ -34,7 +34,7 @@
 
 class TSourceTab;
 
-std::map<GPeak*, std::tuple<double, double, double, double>>      Match(std::vector<GPeak*> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
+std::map<GPeak*, std::tuple<double, double, double, double>> Match(std::vector<GPeak*> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
 std::map<GPeak*, std::tuple<double, double, double, double>> SmartMatch(std::vector<GPeak*> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
 
 double Polynomial(double* x, double* par);
@@ -65,14 +65,14 @@ public:
 
    void SourceEnergy(std::vector<std::tuple<double, double, double, double>> val) { fSourceEnergy = std::move(val); }
 
-	void Status(const char* status, int position);
+   void Status(const char* status, int position);
 
-   TGraphErrors* Data() const { return fData; }
-   TGraphErrors* Fwhm() const { return fFwhm; }
+   TGraphErrors*        Data() const { return fData; }
+   TGraphErrors*        Fwhm() const { return fFwhm; }
    TRootEmbeddedCanvas* ProjectionCanvas() const { return fProjectionCanvas; }
 
-	void RemovePoint(Int_t px, Int_t py);
-	void RemoveResidualPoint(Int_t px, Int_t py);
+   void RemovePoint(Int_t px, Int_t py);
+   void RemoveResidualPoint(Int_t px, Int_t py);
 
    void PrintLayout() const;
 
@@ -94,7 +94,7 @@ private:
    TGraphErrors*                                           fFwhm{nullptr};
    double                                                  fSigma{2.};
    double                                                  fThreshold{0.05};
-	double																  fPeakRatio{2.};
+   double                                                  fPeakRatio{2.};
    std::vector<GPeak*>                                     fPeaks;
    std::vector<std::tuple<double, double, double, double>> fSourceEnergy;
    std::vector<std::pair<double, double>>                  fRegions;
@@ -115,7 +115,7 @@ public:
    void Disconnect();
 
    void CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
-	void SelectCanvas(Event_t* event);
+   void SelectCanvas(Event_t* event);
 
    void          UpdateData();
    void          UpdateFwhm();
@@ -130,7 +130,7 @@ public:
    size_t        NumberOfSources() const { return fSources.size(); }
    std::string   Name() const { return fName; }
    int           ActiveSourceTab() const { return fActiveSourceTab; }
-	TSourceTab*   SelectedSourceTab() const { return fSources[fActiveSourceTab]; };
+   TSourceTab*   SelectedSourceTab() const { return fSources[fActiveSourceTab]; };
 
    static void ZoomX();
    static void ZoomY();
@@ -139,18 +139,18 @@ public:
 
 private:
    // graphic elements
-   TGCompositeFrame*        fChannelFrame{nullptr};   ///< main frame of this tab
-   TGTab*                   fSourceTab{nullptr};      ///< tab for sources
-   std::vector<TSourceTab*> fSources;                 ///< tabs for all sources
-   TGTab*                   fCanvasTab{nullptr};      ///< tab for canvases (calibration with residuals, and FWHM)
-   TGCompositeFrame*        fCalibrationFrame{nullptr};     ///< frame of tab with calibration
+   TGCompositeFrame*        fChannelFrame{nullptr};       ///< main frame of this tab
+   TGTab*                   fSourceTab{nullptr};          ///< tab for sources
+   std::vector<TSourceTab*> fSources;                     ///< tabs for all sources
+   TGTab*                   fCanvasTab{nullptr};          ///< tab for canvases (calibration with residuals, and FWHM)
+   TGCompositeFrame*        fCalibrationFrame{nullptr};   ///< frame of tab with calibration
    TRootEmbeddedCanvas*     fCalibrationCanvas{nullptr};
    TPad*                    fResidualPad{nullptr};
    TPad*                    fCalibrationPad{nullptr};
    TGStatusBar*             fChannelStatusBar{nullptr};
    TLegend*                 fLegend{nullptr};
    TPaveText*               fChi2Label{nullptr};
-   TGCompositeFrame*        fFwhmFrame{nullptr};     ///< frame of tab with fwhm
+   TGCompositeFrame*        fFwhmFrame{nullptr};   ///< frame of tab with fwhm
    TRootEmbeddedCanvas*     fFwhmCanvas{nullptr};
    TGHProgressBar*          fProgressBar{nullptr};
 
@@ -172,12 +172,12 @@ class TSourceCalibration : public TGMainFrame {
 public:
    enum EEntry : int {
       kStartButton,
-      kSourceBox      = 100,
-      kSigmaEntry     = 200,
-      kThresholdEntry = 300,
-      kDegreeEntry    = 400,
-      kPeakRatioEntry  = 500,
-		kWriteNonlinearities = 600
+      kSourceBox           = 100,
+      kSigmaEntry          = 200,
+      kThresholdEntry      = 300,
+      kDegreeEntry         = 400,
+      kPeakRatioEntry      = 500,
+      kWriteNonlinearities = 600
    };
 
    TSourceCalibration(double sigma, double threshold, int degree, double peakRatio, int count...);
@@ -216,11 +216,12 @@ public:
       if(fDegreeEntry != nullptr) { fDefaultDegree = static_cast<int>(fDegreeEntry->GetNumber()); }
       return fDefaultDegree;
    }
-   double PeakRatio() { 
-		if(fPeakRatioEntry != nullptr) { fDefaultPeakRatio = fPeakRatioEntry->GetNumber(); }
-		return fDefaultPeakRatio;
-	}
-	bool WriteNonlinearities() { return fWriteNonlinearities->IsDown(); }
+   double PeakRatio()
+   {
+      if(fPeakRatioEntry != nullptr) { fDefaultPeakRatio = fPeakRatioEntry->GetNumber(); }
+      return fDefaultPeakRatio;
+   }
+   bool                                                    WriteNonlinearities() { return fWriteNonlinearities->IsDown(); }
    std::vector<std::tuple<double, double, double, double>> SourceEnergy(const size_t& i) { return fSourceEnergy.at(i); }
    void                                                    CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
 
