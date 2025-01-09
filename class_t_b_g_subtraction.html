@@ -104,9 +104,10 @@ $(document).ready(function(){initNavTree('class_t_b_g_subtraction.html',''); ini
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class implements a GUI to perform projections of a 2D-Matrix with proper background subtraction. </p>
+<div class="textblock"><p>This class implements a GUI to perform projections of a 2D-Matrix with proper background subtraction.</p>
+<p>There is a known issue that clicking on the close button of the window will cause a segmentation violation. If the class was created on the heap (using <code>new</code>), this will make it impossible to kill grsisort from within the terminal or sending it to the background. If the class was however created on the stack, this will simply crash grsisort. Because of this the recommended way to start it is using a line like <code><a class="el" href="class_t_b_g_subtraction.html">TBGSubtraction</a> bg(&lt;matrix-name&gt;)</code> where bg is the variable name (can be any other valid c++ variable name), and &lt;matrix-name&gt; is the name of the 2D histogram (without any quotation marks). </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00042">42</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00053">53</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -443,7 +444,7 @@ Private Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="aca725af94ff9541055167fbdf8eae42cac301236be55a88500bf4422b3c7ea584" name="aca725af94ff9541055167fbdf8eae42cac301236be55a88500bf4422b3c7ea584"></a>kAutoUpdateCheckButton&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00053">53</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00064">64</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 </div>
 </div>
@@ -473,7 +474,7 @@ Private Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="a3e4d25108b1d71c2d1568c5e8d334c47a0650c4900bd89dd9b332486f6199c233" name="a3e4d25108b1d71c2d1568c5e8d334c47a0650c4900bd89dd9b332486f6199c233"></a>kAB3Peak&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00072">72</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00083">83</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 </div>
 </div>
@@ -504,7 +505,7 @@ Private Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="ac96d733d0749077da7d267b17dcf07a1a8a8e17befaea043c6a175f8633e23658" name="ac96d733d0749077da7d267b17dcf07a1a8a8e17befaea043c6a175f8633e23658"></a>kBinningSlider&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00046">46</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00057">57</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 </div>
 </div>
@@ -551,7 +552,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00013">13</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00149">fCurrentFile</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00151">fGateAxis</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00084">fMatrix</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00085">fProjection</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00220">InitializeInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00160">fCurrentFile</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00162">fGateAxis</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00095">fMatrix</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00096">fProjection</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00220">InitializeInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>.</p>
 
 </div>
 </div>
@@ -624,7 +625,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00406">406</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00142">fHighBGMarker1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00144">fHighBGMarker2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00140">fHighGateMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00146">fHighPeakMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00141">fLowBGMarker1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00143">fLowBGMarker2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00139">fLowGateMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00145">fLowPeakMarker</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00147">fPeakMarker</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00153">fHighBGMarker1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00155">fHighBGMarker2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00151">fHighGateMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00157">fHighPeakMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00152">fLowBGMarker1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00154">fLowBGMarker2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00150">fLowGateMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00156">fLowPeakMarker</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00158">fPeakMarker</a>.</p>
 
 </div>
 </div>
@@ -646,7 +647,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00565">565</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00135">fAxisCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00151">fGateAxis</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00084">fMatrix</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00085">fProjection</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00082">fProjectionCanvas</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00146">fAxisCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00162">fGateAxis</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00095">fMatrix</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00096">fProjection</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fProjectionCanvas</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00220">InitializeInterface()</a>.</p>
 
@@ -677,7 +678,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">247</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00107">fAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00135">fAxisCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00105">fBGCheckButton1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00106">fBGCheckButton2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00129">fBGEntryFrame1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00130">fBGEntryFrame2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00098">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00100">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00097">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00099">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00096">fBGParamEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00127">fBGParamFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00103">fBGParamLabel</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00092">fBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00126">fBinningFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00104">fBinningLabel</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00095">fBinningSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00109">fBly</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00110">fBly1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00132">fButtonFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00131">fDescriptionFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00083">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00128">fGateEntryFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00123">fGateFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00091">fGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00115">fHistogramDescription</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00111">fLayoutCanvases</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00112">fLayoutParam</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00163">fMaxBinning</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00136">fPeakCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00117">fPeakFitButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00125">fPeakFitFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fPeakSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00082">fProjectionCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00124">fProjectionFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00120">fProjectionStatus</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00116">fWrite2FileButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00114">fWrite2FileName</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00070">kAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00068">kBGCheckButton1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00069">kBGCheckButton2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00061">kBGHighEntry1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00063">kBGHighEntry2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00060">kBGLowEntry1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00062">kBGLowEntry2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00054">kBGParamEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00048">kBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00049">kBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00051">kBinningSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00066">kComboAxisEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00067">kComboPeakEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00056">kGateHighEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00055">kGateLowEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00047">kGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00065">kHistogramDescriptionEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00050">kPeakSlider</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00064">kWrite2FileNameEntry</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00118">fAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00146">fAxisCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00116">fBGCheckButton1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00117">fBGCheckButton2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00140">fBGEntryFrame1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00141">fBGEntryFrame2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00109">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00111">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00108">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00110">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00107">fBGParamEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00138">fBGParamFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00114">fBGParamLabel</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00103">fBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00104">fBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00137">fBinningFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00115">fBinningLabel</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00106">fBinningSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00120">fBly</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00121">fBly1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00143">fButtonFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00142">fDescriptionFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00139">fGateEntryFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00113">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00112">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00134">fGateFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00126">fHistogramDescription</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00122">fLayoutCanvases</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00123">fLayoutParam</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00174">fMaxBinning</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00147">fPeakCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00128">fPeakFitButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00136">fPeakFitFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00105">fPeakSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fProjectionCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00135">fProjectionFrame</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00131">fProjectionStatus</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00127">fWrite2FileButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00125">fWrite2FileName</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00081">kAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00079">kBGCheckButton1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00080">kBGCheckButton2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00072">kBGHighEntry1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00074">kBGHighEntry2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00071">kBGLowEntry1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00073">kBGLowEntry2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00065">kBGParamEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00059">kBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00060">kBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00062">kBinningSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00077">kComboAxisEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00078">kComboPeakEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00067">kGateHighEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00066">kGateLowEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00058">kGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00076">kHistogramDescriptionEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00061">kPeakSlider</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00075">kWrite2FileNameEntry</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00013">TBGSubtraction()</a>.</p>
 
@@ -700,7 +701,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00459">459</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00105">fBGCheckButton1</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00096">fBGParamEntry</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00116">fBGCheckButton1</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00107">fBGParamEntry</a>.</p>
 
 </div>
 </div>
@@ -747,7 +748,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">104</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00107">fAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00135">fAxisCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00105">fBGCheckButton1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00106">fBGCheckButton2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00098">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00100">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00097">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00099">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00096">fBGParamEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00092">fBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00095">fBinningSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00083">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00091">fGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00136">fPeakCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00117">fPeakFitButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fPeakSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00082">fProjectionCanvas</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00116">fWrite2FileButton</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00118">fAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00146">fAxisCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00116">fBGCheckButton1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00117">fBGCheckButton2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00109">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00111">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00108">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00110">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00107">fBGParamEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00103">fBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00104">fBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00106">fBinningSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00113">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00112">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00147">fPeakCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00128">fPeakFitButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00105">fPeakSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fProjectionCanvas</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00127">fWrite2FileButton</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00406">~TBGSubtraction()</a>.</p>
 
@@ -794,7 +795,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00749">749</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00098">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00100">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00097">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00099">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00091">fGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00061">kBGHighEntry1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00063">kBGHighEntry2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00060">kBGLowEntry1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00062">kBGLowEntry2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00056">kGateHighEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00055">kGateLowEntry</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00474">UpdateBGSlider1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00480">UpdateBGSlider2()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00468">UpdateGateSlider()</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00109">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00111">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00108">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00110">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00113">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00112">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00072">kBGHighEntry1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00074">kBGHighEntry2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00071">kBGLowEntry1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00073">kBGLowEntry2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00067">kGateHighEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00066">kGateLowEntry</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00474">UpdateBGSlider1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00480">UpdateBGSlider2()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00468">UpdateGateSlider()</a>.</p>
 
 </div>
 </div>
@@ -815,7 +816,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00796">796</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00083">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00155">fPeakHighLimit</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00157">fPeakHighValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00154">fPeakLowLimit</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00156">fPeakLowValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00158">fPeakValue</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00495">UpdatePeakSliders()</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00166">fPeakHighLimit</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00168">fPeakHighValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00165">fPeakLowLimit</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00167">fPeakLowValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00169">fPeakValue</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00495">UpdatePeakSliders()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00220">InitializeInterface()</a>.</p>
 
@@ -838,7 +839,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">948</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00105">fBGCheckButton1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00106">fBGCheckButton2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00087">fBGHist1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00088">fBGHist2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00096">fBGParamEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00092">fBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00083">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00086">fGateHist</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00091">fGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00085">fProjection</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00090">fSubtractedBinHist</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00089">fSubtractedHist</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00116">fBGCheckButton1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00117">fBGCheckButton2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00098">fBGHist1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00099">fBGHist2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00107">fBGParamEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00103">fBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00104">fBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00097">fGateHist</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00096">fProjection</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fSubtractedBinHist</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00100">fSubtractedHist</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01171">SetStatusFromUpdateCheckButton()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00422">UpdateBackground()</a>.</p>
 
@@ -861,7 +862,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00439">439</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="class_t_single_peak.html#aaf43f8a9e3059d110b77c4770905472b">TSinglePeak::Centroid()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00454">DrawPeak()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00083">fGateCanvas</a>, <a class="el" href="_t_peak_fitter_8cxx_source.html#l00077">TPeakFitter::Fit()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00160">fPeak</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00161">fPeakFitter</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00157">fPeakHighValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00156">fPeakLowValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00158">fPeakValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00090">fSubtractedBinHist</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00072">TPeakFitter::ResetInitFlag()</a>, and <a class="el" href="_t_peak_fitter_8cxx_source.html#l00071">TPeakFitter::SetRange()</a>.</p>
+<p class="reference">References <a class="el" href="class_t_single_peak.html#aaf43f8a9e3059d110b77c4770905472b">TSinglePeak::Centroid()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00454">DrawPeak()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fGateCanvas</a>, <a class="el" href="_t_peak_fitter_8cxx_source.html#l00077">TPeakFitter::Fit()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00171">fPeak</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00172">fPeakFitter</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00168">fPeakHighValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00167">fPeakLowValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00169">fPeakValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fSubtractedBinHist</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00072">TPeakFitter::ResetInitFlag()</a>, and <a class="el" href="_t_peak_fitter_8cxx_source.html#l00071">TPeakFitter::SetRange()</a>.</p>
 
 </div>
 </div>
@@ -882,7 +883,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00829">829</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00880">DoAllGates()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00710">DrawAllMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00107">fAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00098">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00100">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00097">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00099">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00082">fProjectionCanvas</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00486">UpdateProjectionSliders()</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00880">DoAllGates()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00710">DrawAllMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00118">fAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00109">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00111">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00108">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00110">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00113">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00112">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fProjectionCanvas</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00486">UpdateProjectionSliders()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00220">InitializeInterface()</a>.</p>
 
@@ -906,7 +907,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">512</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00700">DrawBGMarkers1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00705">DrawBGMarkers2()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00717">DrawGateMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00107">fAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00098">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00100">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00097">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00099">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00092">fBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00091">fGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00157">fPeakHighValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00156">fPeakLowValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fPeakSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00158">fPeakValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00048">kBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00049">kBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00051">kBinningSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00047">kGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00050">kPeakSlider</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00906">MakeBGHisto1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00930">MakeBGHisto2()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00887">MakeGateHisto()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01189">RebinProjection()</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00700">DrawBGMarkers1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00705">DrawBGMarkers2()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00717">DrawGateMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00118">fAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00109">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00111">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00108">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00110">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00103">fBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00104">fBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00113">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00112">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00168">fPeakHighValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00167">fPeakLowValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00105">fPeakSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00169">fPeakValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00059">kBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00060">kBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00062">kBinningSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00058">kGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00061">kPeakSlider</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00906">MakeBGHisto1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00930">MakeBGHisto2()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00887">MakeGateHisto()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01189">RebinProjection()</a>.</p>
 
 </div>
 </div>
@@ -993,7 +994,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00668">668</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_canvas_8h_source.html#l00037">GMarker::Draw()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00085">fProjection</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00082">fProjectionCanvas</a>, <a class="el" href="_g_canvas_8h_source.html#l00140">GMarker::GetBinX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00130">GMarker::GetLocalX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00127">GMarker::SetBinX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00058">GMarker::SetColor()</a>, <a class="el" href="_g_canvas_8h_source.html#l00151">GMarker::SetHist()</a>, <a class="el" href="_g_canvas_8h_source.html#l00089">GMarker::SetLineX()</a>, and <a class="el" href="_g_canvas_8h_source.html#l00113">GMarker::SetLocalX()</a>.</p>
+<p class="reference">References <a class="el" href="_g_canvas_8h_source.html#l00037">GMarker::Draw()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00096">fProjection</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fProjectionCanvas</a>, <a class="el" href="_g_canvas_8h_source.html#l00140">GMarker::GetBinX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00130">GMarker::GetLocalX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00127">GMarker::SetBinX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00058">GMarker::SetColor()</a>, <a class="el" href="_g_canvas_8h_source.html#l00151">GMarker::SetHist()</a>, <a class="el" href="_g_canvas_8h_source.html#l00089">GMarker::SetLineX()</a>, and <a class="el" href="_g_canvas_8h_source.html#l00113">GMarker::SetLocalX()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00700">DrawBGMarkers1()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00705">DrawBGMarkers2()</a>.</p>
 
@@ -1016,7 +1017,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00700">700</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00668">DrawBGMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00105">fBGCheckButton1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00098">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00097">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00142">fHighBGMarker1</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00141">fLowBGMarker1</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00668">DrawBGMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00116">fBGCheckButton1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00109">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00108">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00153">fHighBGMarker1</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00152">fLowBGMarker1</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00710">DrawAllMarkers()</a>.</p>
 
@@ -1039,7 +1040,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00705">705</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00668">DrawBGMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00106">fBGCheckButton2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00100">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00099">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00144">fHighBGMarker2</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00143">fLowBGMarker2</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00668">DrawBGMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00117">fBGCheckButton2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00111">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00110">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00155">fHighBGMarker2</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00154">fLowBGMarker2</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00710">DrawAllMarkers()</a>.</p>
 
@@ -1062,7 +1063,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00717">717</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_canvas_8h_source.html#l00037">GMarker::Draw()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00140">fHighGateMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00139">fLowGateMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00085">fProjection</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00082">fProjectionCanvas</a>, <a class="el" href="_g_canvas_8h_source.html#l00140">GMarker::GetBinX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00130">GMarker::GetLocalX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00127">GMarker::SetBinX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00058">GMarker::SetColor()</a>, <a class="el" href="_g_canvas_8h_source.html#l00151">GMarker::SetHist()</a>, <a class="el" href="_g_canvas_8h_source.html#l00089">GMarker::SetLineX()</a>, and <a class="el" href="_g_canvas_8h_source.html#l00113">GMarker::SetLocalX()</a>.</p>
+<p class="reference">References <a class="el" href="_g_canvas_8h_source.html#l00037">GMarker::Draw()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00113">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00112">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00151">fHighGateMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00150">fLowGateMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00096">fProjection</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fProjectionCanvas</a>, <a class="el" href="_g_canvas_8h_source.html#l00140">GMarker::GetBinX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00130">GMarker::GetLocalX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00127">GMarker::SetBinX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00058">GMarker::SetColor()</a>, <a class="el" href="_g_canvas_8h_source.html#l00151">GMarker::SetHist()</a>, <a class="el" href="_g_canvas_8h_source.html#l00089">GMarker::SetLineX()</a>, and <a class="el" href="_g_canvas_8h_source.html#l00113">GMarker::SetLocalX()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00710">DrawAllMarkers()</a>.</p>
 
@@ -1085,7 +1086,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01099">1099</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00090">fSubtractedBinHist</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fSubtractedBinHist</a>.</p>
 
 </div>
 </div>
@@ -1106,7 +1107,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00454">454</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8cxx_source.html#l00099">TSinglePeak::Draw()</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00160">fPeak</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8cxx_source.html#l00099">TSinglePeak::Draw()</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00171">fPeak</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00439">DoPeakFit()</a>.</p>
 
@@ -1129,7 +1130,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">623</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_canvas_8h_source.html#l00037">GMarker::Draw()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00083">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00146">fHighPeakMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00145">fLowPeakMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00157">fPeakHighValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00156">fPeakLowValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00147">fPeakMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00158">fPeakValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00090">fSubtractedBinHist</a>, <a class="el" href="_g_canvas_8h_source.html#l00140">GMarker::GetBinX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00130">GMarker::GetLocalX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00127">GMarker::SetBinX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00058">GMarker::SetColor()</a>, <a class="el" href="_g_canvas_8h_source.html#l00151">GMarker::SetHist()</a>, <a class="el" href="_g_canvas_8h_source.html#l00089">GMarker::SetLineX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00113">GMarker::SetLocalX()</a>, and <a class="el" href="_g_canvas_8h_source.html#l00068">GMarker::SetStyle()</a>.</p>
+<p class="reference">References <a class="el" href="_g_canvas_8h_source.html#l00037">GMarker::Draw()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00157">fHighPeakMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00156">fLowPeakMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00168">fPeakHighValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00167">fPeakLowValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00158">fPeakMarker</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00169">fPeakValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fSubtractedBinHist</a>, <a class="el" href="_g_canvas_8h_source.html#l00140">GMarker::GetBinX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00130">GMarker::GetLocalX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00127">GMarker::SetBinX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00058">GMarker::SetColor()</a>, <a class="el" href="_g_canvas_8h_source.html#l00151">GMarker::SetHist()</a>, <a class="el" href="_g_canvas_8h_source.html#l00089">GMarker::SetLineX()</a>, <a class="el" href="_g_canvas_8h_source.html#l00113">GMarker::SetLocalX()</a>, and <a class="el" href="_g_canvas_8h_source.html#l00068">GMarker::SetStyle()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00796">DoGateCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01189">RebinProjection()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>.</p>
 
@@ -1175,7 +1176,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01153">1153</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00083">fGateCanvas</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01165">StatusInfo()</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fGateCanvas</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01165">StatusInfo()</a>.</p>
 
 </div>
 </div>
@@ -1204,7 +1205,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00220">220</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00565">AxisComboSelected()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00796">DoGateCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00829">DoProjectionCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00135">fAxisCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00151">fGateAxis</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00136">fPeakCombo</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00588">PeakComboSelected()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01171">SetStatusFromUpdateCheckButton()</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00565">AxisComboSelected()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00796">DoGateCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00829">DoProjectionCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00146">fAxisCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00162">fGateAxis</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00147">fPeakCombo</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00588">PeakComboSelected()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01171">SetStatusFromUpdateCheckButton()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00013">TBGSubtraction()</a>.</p>
 
@@ -1227,7 +1228,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00906">906</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00098">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00097">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00087">fBGHist1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00092">fBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00151">fGateAxis</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00084">fMatrix</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00082">fProjectionCanvas</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00109">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00108">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00098">fBGHist1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00103">fBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00162">fGateAxis</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00095">fMatrix</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fProjectionCanvas</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00880">DoAllGates()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>.</p>
 
@@ -1250,7 +1251,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00930">930</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00100">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00099">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00088">fBGHist2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00151">fGateAxis</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00084">fMatrix</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00111">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00110">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00099">fBGHist2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00104">fBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00162">fGateAxis</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00095">fMatrix</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00880">DoAllGates()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>.</p>
 
@@ -1282,7 +1283,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">44</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00107">fAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00135">fAxisCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00105">fBGCheckButton1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00106">fBGCheckButton2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00098">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00100">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00097">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00099">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00096">fBGParamEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00092">fBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00095">fBinningSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00083">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00091">fGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00136">fPeakCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00117">fPeakFitButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fPeakSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00082">fProjectionCanvas</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00116">fWrite2FileButton</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00118">fAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00146">fAxisCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00116">fBGCheckButton1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00117">fBGCheckButton2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00109">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00111">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00108">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00110">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00107">fBGParamEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00103">fBGSlider1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00104">fBGSlider2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00106">fBinningSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00113">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00112">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00147">fPeakCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00128">fPeakFitButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00105">fPeakSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fProjectionCanvas</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00127">fWrite2FileButton</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00013">TBGSubtraction()</a>.</p>
 
@@ -1305,7 +1306,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00887">887</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00135">fAxisCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00151">fGateAxis</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00086">fGateHist</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00091">fGateSlider</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00084">fMatrix</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00146">fAxisCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00162">fGateAxis</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00113">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00112">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00097">fGateHist</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateSlider</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00095">fMatrix</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00880">DoAllGates()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>.</p>
 
@@ -1380,7 +1381,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00588">588</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_peak_fitter_8h_source.html#l00042">TPeakFitter::AddPeak()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00160">fPeak</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00136">fPeakCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00161">fPeakFitter</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00076">kAB3Peak</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00075">kABPeak</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00073">kGauss</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00074">kRWPeak</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00047">TPeakFitter::RemovePeak()</a>, and <a class="el" href="_t_peak_fitter_8h_source.html#l00072">TPeakFitter::ResetInitFlag()</a>.</p>
+<p class="reference">References <a class="el" href="_t_peak_fitter_8h_source.html#l00042">TPeakFitter::AddPeak()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00171">fPeak</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00147">fPeakCombo</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00172">fPeakFitter</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00087">kAB3Peak</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00086">kABPeak</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00084">kGauss</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00085">kRWPeak</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00047">TPeakFitter::RemovePeak()</a>, and <a class="el" href="_t_peak_fitter_8h_source.html#l00072">TPeakFitter::ResetInitFlag()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00220">InitializeInterface()</a>.</p>
 
@@ -1426,7 +1427,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01159">1159</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00082">fProjectionCanvas</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01165">StatusInfo()</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fProjectionCanvas</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01165">StatusInfo()</a>.</p>
 
 </div>
 </div>
@@ -1455,7 +1456,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01189">1189</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00095">fBinningSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00083">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00090">fSubtractedBinHist</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00089">fSubtractedHist</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00106">fBinningSlider</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fSubtractedBinHist</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00100">fSubtractedHist</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>.</p>
 
@@ -1486,7 +1487,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">164</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00880">DoAllGates()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00710">DrawAllMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00098">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00100">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00097">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00099">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00083">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00155">fPeakHighLimit</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00157">fPeakHighValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00154">fPeakLowLimit</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00156">fPeakLowValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00158">fPeakValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00082">fProjectionCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00090">fSubtractedBinHist</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00505">UpdateBinningSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00495">UpdatePeakSliders()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00486">UpdateProjectionSliders()</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00880">DoAllGates()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00710">DrawAllMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00109">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00111">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00108">fBGEntryLow1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00110">fBGEntryLow2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00113">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00112">fGateEntryLow</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00166">fPeakHighLimit</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00168">fPeakHighValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00165">fPeakLowLimit</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00167">fPeakLowValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00169">fPeakValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fProjectionCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fSubtractedBinHist</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00505">UpdateBinningSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00495">UpdatePeakSliders()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00486">UpdateProjectionSliders()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00565">AxisComboSelected()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00220">InitializeInterface()</a>.</p>
 
@@ -1509,7 +1510,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01171">1171</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00880">DoAllGates()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00107">fAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00117">fPeakFitButton</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00116">fWrite2FileButton</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00880">DoAllGates()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00118">fAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00128">fPeakFitButton</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00127">fWrite2FileButton</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00220">InitializeInterface()</a>.</p>
 
@@ -1563,7 +1564,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01165">1165</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00120">fProjectionStatus</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00131">fProjectionStatus</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01153">GateStatusInfo()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01159">ProjectionStatusInfo()</a>.</p>
 
@@ -1586,7 +1587,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00422">422</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_g_canvas_8h_source.html#l00037">GMarker::Draw()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00710">DrawAllMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00107">fAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00105">fBGCheckButton1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00106">fBGCheckButton2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00096">fBGParamEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00083">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00085">fProjection</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00082">fProjectionCanvas</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_g_canvas_8h_source.html#l00037">GMarker::Draw()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00710">DrawAllMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00118">fAutoUpdateCheckButton</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00116">fBGCheckButton1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00117">fBGCheckButton2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00107">fBGParamEntry</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fGateCanvas</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00096">fProjection</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fProjectionCanvas</a>.</p>
 
 </div>
 </div>
@@ -1615,7 +1616,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00474">474</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00098">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00097">fBGEntryLow1</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00092">fBGSlider1</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00109">fBGEntryHigh1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00108">fBGEntryLow1</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00103">fBGSlider1</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00749">DoEntry()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00486">UpdateProjectionSliders()</a>.</p>
 
@@ -1646,7 +1647,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00480">480</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00100">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00099">fBGEntryLow2</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">fBGSlider2</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00111">fBGEntryHigh2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00110">fBGEntryLow2</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00104">fBGSlider2</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00749">DoEntry()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00486">UpdateProjectionSliders()</a>.</p>
 
@@ -1677,7 +1678,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00505">505</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00095">fBinningSlider</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00163">fMaxBinning</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00106">fBinningSlider</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00174">fMaxBinning</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>.</p>
 
@@ -1708,7 +1709,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00468">468</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">fGateEntryLow</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00091">fGateSlider</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00113">fGateEntryHigh</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00112">fGateEntryLow</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">fGateSlider</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00749">DoEntry()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00486">UpdateProjectionSliders()</a>.</p>
 
@@ -1731,7 +1732,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00495">495</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00155">fPeakHighLimit</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00157">fPeakHighValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00154">fPeakLowLimit</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00156">fPeakLowValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">fPeakSlider</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00158">fPeakValue</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00166">fPeakHighLimit</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00168">fPeakHighValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00165">fPeakLowLimit</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00167">fPeakLowValue</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00105">fPeakSlider</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00169">fPeakValue</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00796">DoGateCanvasZoomed()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>.</p>
 
@@ -1777,7 +1778,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01109">1109</a> of file <a class="el" href="_t_b_g_subtraction_8cxx_source.html">TBGSubtraction.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00087">fBGHist1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00088">fBGHist2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00086">fGateHist</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00115">fHistogramDescription</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00089">fSubtractedHist</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00114">fWrite2FileName</a>.</p>
+<p class="reference">References <a class="el" href="_t_b_g_subtraction_8h_source.html#l00098">fBGHist1</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00099">fBGHist2</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00097">fGateHist</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00126">fHistogramDescription</a>, <a class="el" href="_t_b_g_subtraction_8h_source.html#l00100">fSubtractedHist</a>, and <a class="el" href="_t_b_g_subtraction_8h_source.html#l00125">fWrite2FileName</a>.</p>
 
 </div>
 </div>
@@ -1802,7 +1803,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00107">107</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00118">118</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00829">DoProjectionCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01171">SetStatusFromUpdateCheckButton()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00422">UpdateBackground()</a>.</p>
 
@@ -1828,7 +1829,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00135">135</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00146">146</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00565">AxisComboSelected()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00220">InitializeInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00887">MakeGateHisto()</a>.</p>
 
@@ -1854,7 +1855,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00105">105</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00116">116</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00459">ClickedBGButton1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00700">DrawBGMarkers1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00422">UpdateBackground()</a>.</p>
 
@@ -1880,7 +1881,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00106">106</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00117">117</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00705">DrawBGMarkers2()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00422">UpdateBackground()</a>.</p>
 
@@ -1906,7 +1907,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00129">129</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00140">140</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -1932,7 +1933,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00130">130</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00141">141</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -1958,7 +1959,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00098">98</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00109">109</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00749">DoEntry()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00829">DoProjectionCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00700">DrawBGMarkers1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00906">MakeBGHisto1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00474">UpdateBGSlider1()</a>.</p>
 
@@ -1984,7 +1985,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00100">100</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00111">111</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00749">DoEntry()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00829">DoProjectionCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00705">DrawBGMarkers2()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00930">MakeBGHisto2()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00480">UpdateBGSlider2()</a>.</p>
 
@@ -2010,7 +2011,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00097">97</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00108">108</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00749">DoEntry()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00829">DoProjectionCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00700">DrawBGMarkers1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00906">MakeBGHisto1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00474">UpdateBGSlider1()</a>.</p>
 
@@ -2036,7 +2037,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00099">99</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00110">110</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00749">DoEntry()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00829">DoProjectionCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00705">DrawBGMarkers2()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00930">MakeBGHisto2()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00480">UpdateBGSlider2()</a>.</p>
 
@@ -2062,7 +2063,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00087">87</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00098">98</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00906">MakeBGHisto1()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01109">WriteHistograms()</a>.</p>
 
@@ -2088,7 +2089,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00088">88</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00099">99</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00930">MakeBGHisto2()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01109">WriteHistograms()</a>.</p>
 
@@ -2114,7 +2115,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00096">96</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00107">107</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00459">ClickedBGButton1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00422">UpdateBackground()</a>.</p>
 
@@ -2140,7 +2141,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00127">127</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00138">138</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -2166,7 +2167,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00103">103</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00114">114</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -2192,7 +2193,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00092">92</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00103">103</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00906">MakeBGHisto1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00474">UpdateBGSlider1()</a>.</p>
 
@@ -2218,7 +2219,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">93</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00104">104</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00930">MakeBGHisto2()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00480">UpdateBGSlider2()</a>.</p>
 
@@ -2244,7 +2245,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00126">126</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00137">137</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -2270,7 +2271,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00104">104</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00115">115</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -2296,7 +2297,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00095">95</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00106">106</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01189">RebinProjection()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00505">UpdateBinningSlider()</a>.</p>
 
@@ -2322,7 +2323,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00109">109</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00120">120</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -2348,7 +2349,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00110">110</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00121">121</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -2374,7 +2375,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00132">132</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00143">143</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -2400,7 +2401,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00149">149</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00160">160</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00013">TBGSubtraction()</a>.</p>
 
@@ -2426,7 +2427,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00131">131</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00142">142</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -2452,7 +2453,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00153">153</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00164">164</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 </div>
 </div>
@@ -2476,7 +2477,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00151">151</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00162">162</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00013">TBGSubtraction()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00565">AxisComboSelected()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00220">InitializeInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00906">MakeBGHisto1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00930">MakeBGHisto2()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00887">MakeGateHisto()</a>.</p>
 
@@ -2502,7 +2503,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00083">83</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">94</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00796">DoGateCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00439">DoPeakFit()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01153">GateStatusInfo()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01189">RebinProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00422">UpdateBackground()</a>.</p>
 
@@ -2528,7 +2529,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00128">128</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00139">139</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -2554,7 +2555,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">102</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00113">113</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00749">DoEntry()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00829">DoProjectionCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00717">DrawGateMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00887">MakeGateHisto()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00468">UpdateGateSlider()</a>.</p>
 
@@ -2580,7 +2581,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">101</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00112">112</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00749">DoEntry()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00829">DoProjectionCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00717">DrawGateMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00887">MakeGateHisto()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00468">UpdateGateSlider()</a>.</p>
 
@@ -2606,7 +2607,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00123">123</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00134">134</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -2632,7 +2633,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00086">86</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00097">97</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00887">MakeGateHisto()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01109">WriteHistograms()</a>.</p>
 
@@ -2658,7 +2659,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00091">91</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00102">102</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00749">DoEntry()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00887">MakeGateHisto()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00468">UpdateGateSlider()</a>.</p>
 
@@ -2684,7 +2685,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00142">142</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00153">153</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00406">~TBGSubtraction()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00700">DrawBGMarkers1()</a>.</p>
 
@@ -2710,7 +2711,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00144">144</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00155">155</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00406">~TBGSubtraction()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00705">DrawBGMarkers2()</a>.</p>
 
@@ -2736,7 +2737,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00140">140</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00151">151</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00406">~TBGSubtraction()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00717">DrawGateMarkers()</a>.</p>
 
@@ -2762,7 +2763,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00146">146</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00157">157</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00406">~TBGSubtraction()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>.</p>
 
@@ -2788,7 +2789,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00115">115</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00126">126</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01109">WriteHistograms()</a>.</p>
 
@@ -2814,7 +2815,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00111">111</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00122">122</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -2840,7 +2841,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00112">112</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00123">123</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -2866,7 +2867,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00141">141</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00152">152</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00406">~TBGSubtraction()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00700">DrawBGMarkers1()</a>.</p>
 
@@ -2892,7 +2893,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00143">143</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00154">154</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00406">~TBGSubtraction()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00705">DrawBGMarkers2()</a>.</p>
 
@@ -2918,7 +2919,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00139">139</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00150">150</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00406">~TBGSubtraction()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00717">DrawGateMarkers()</a>.</p>
 
@@ -2944,7 +2945,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00145">145</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00156">156</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00406">~TBGSubtraction()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>.</p>
 
@@ -2970,7 +2971,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00081">81</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00092">92</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 </div>
 </div>
@@ -2994,7 +2995,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00084">84</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00095">95</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00013">TBGSubtraction()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00565">AxisComboSelected()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00906">MakeBGHisto1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00930">MakeBGHisto2()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00887">MakeGateHisto()</a>.</p>
 
@@ -3022,7 +3023,7 @@ Private Attributes</h2></td></tr>
 
 <p>maximum binning possible with binning slider (hard-coded, for now?) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00163">163</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00174">174</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00505">UpdateBinningSlider()</a>.</p>
 
@@ -3050,7 +3051,7 @@ Private Attributes</h2></td></tr>
 
 <p>the peak to be fit (will be a class that inherits from <a class="el" href="class_t_single_peak.html">TSinglePeak</a>) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00160">160</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00171">171</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00439">DoPeakFit()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00454">DrawPeak()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00588">PeakComboSelected()</a>.</p>
 
@@ -3076,7 +3077,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00136">136</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00147">147</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00220">InitializeInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00588">PeakComboSelected()</a>.</p>
 
@@ -3102,7 +3103,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00117">117</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00128">128</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01171">SetStatusFromUpdateCheckButton()</a>.</p>
 
@@ -3128,7 +3129,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00125">125</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00136">136</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -3156,7 +3157,7 @@ Private Attributes</h2></td></tr>
 
 <p>the peak fitter that fPeak is added to </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00161">161</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00172">172</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00439">DoPeakFit()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00588">PeakComboSelected()</a>.</p>
 
@@ -3184,7 +3185,7 @@ Private Attributes</h2></td></tr>
 
 <p>upper limit for peak slider range </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00155">155</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00166">166</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00796">DoGateCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00495">UpdatePeakSliders()</a>.</p>
 
@@ -3212,7 +3213,7 @@ Private Attributes</h2></td></tr>
 
 <p>high range for fit </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00157">157</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00168">168</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00796">DoGateCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00439">DoPeakFit()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00495">UpdatePeakSliders()</a>.</p>
 
@@ -3240,7 +3241,7 @@ Private Attributes</h2></td></tr>
 
 <p>lower limit for peak slider range </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00154">154</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00165">165</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00796">DoGateCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00495">UpdatePeakSliders()</a>.</p>
 
@@ -3268,7 +3269,7 @@ Private Attributes</h2></td></tr>
 
 <p>low range for fit </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00156">156</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00167">167</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00796">DoGateCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00439">DoPeakFit()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00495">UpdatePeakSliders()</a>.</p>
 
@@ -3294,7 +3295,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00147">147</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00158">158</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00406">~TBGSubtraction()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>.</p>
 
@@ -3320,7 +3321,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00094">94</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00105">105</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00495">UpdatePeakSliders()</a>.</p>
 
@@ -3348,7 +3349,7 @@ Private Attributes</h2></td></tr>
 
 <p>centroid for fit </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00158">158</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00169">169</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00796">DoGateCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00439">DoPeakFit()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00512">DoSlider()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00495">UpdatePeakSliders()</a>.</p>
 
@@ -3374,7 +3375,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00085">85</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00096">96</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00013">TBGSubtraction()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00565">AxisComboSelected()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00668">DrawBGMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00717">DrawGateMarkers()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00422">UpdateBackground()</a>.</p>
 
@@ -3400,7 +3401,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00082">82</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00093">93</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00565">AxisComboSelected()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00829">DoProjectionCanvasZoomed()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00668">DrawBGMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00717">DrawGateMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00906">MakeBGHisto1()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01159">ProjectionStatusInfo()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00422">UpdateBackground()</a>.</p>
 
@@ -3426,7 +3427,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00124">124</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00135">135</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>.</p>
 
@@ -3452,7 +3453,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00120">120</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00131">131</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01165">StatusInfo()</a>.</p>
 
@@ -3478,7 +3479,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00090">90</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00101">101</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00439">DoPeakFit()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01099">DrawOnNewCanvas()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00623">DrawPeakMarkers()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01189">RebinProjection()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00164">ResetInterface()</a>.</p>
 
@@ -3504,7 +3505,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00089">89</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00100">100</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00948">DoGateProjection()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01189">RebinProjection()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01109">WriteHistograms()</a>.</p>
 
@@ -3530,7 +3531,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00116">116</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00127">127</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00104">Disconnect()</a>, <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00044">MakeConnections()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01171">SetStatusFromUpdateCheckButton()</a>.</p>
 
@@ -3556,7 +3557,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00114">114</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_b_g_subtraction_8h_source.html#l00125">125</a> of file <a class="el" href="_t_b_g_subtraction_8h_source.html">TBGSubtraction.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00247">BuildInterface()</a>, and <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l01109">WriteHistograms()</a>.</p>
 
@@ -3569,7 +3570,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_b_g_subtraction.html">TBGSubtraction</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jan 8 2025 19:09:39.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Jan 9 2025 21:15:16.</li>
   </ul>
 </div>
 </body>
