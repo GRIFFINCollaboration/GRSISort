@@ -36,6 +36,17 @@
 ///
 /// This class implements a GUI to perform projections of a 2D-Matrix
 /// with proper background subtraction.
+/// 
+/// There is a known issue that clicking on the close button of the
+/// window will cause a segmentation violation. If the class was
+/// created on the heap (using `new`), this will make it impossible
+/// to kill grsisort from within the terminal or sending it to the
+/// background. If the class was however created on the stack, this
+/// will simply crash grsisort. Because of this the recommended way
+/// to start it is using a line like `TBGSubtraction bg(<matrix-name>)`
+/// where bg is the variable name (can be any other valid c++ variable
+/// name), and <matrix-name> is the name of the 2D histogram (without
+/// any quotation marks).
 ///
 /////////////////////////////////////////////////////////////////
 
