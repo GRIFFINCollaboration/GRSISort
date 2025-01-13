@@ -36,7 +36,7 @@
 ///
 /// This class implements a GUI to perform projections of a 2D-Matrix
 /// with proper background subtraction.
-/// 
+///
 /// There is a known issue that clicking on the close button of the
 /// window will cause a segmentation violation. If the class was
 /// created on the heap (using `new`), this will make it impossible
