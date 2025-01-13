@@ -140,6 +140,14 @@ inline std::string hex(T val, int width = -1)
    return str.str();
 }
 
+enum EVerbosity : int {
+	kQuiet,
+	kBasic,
+	kSubroutines,
+	kLoops,
+	kAll
+};
+
 static inline std::string getexepath()
 {
    std::array<char, 1024> result{};
