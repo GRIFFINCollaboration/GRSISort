@@ -42,7 +42,7 @@ var searchData=
   ['num_5fwriters_39',['num_writers',['../class_threadsafe_queue.html#a10d6fd0bf95509aa09c046d6aa03fc5b',1,'ThreadsafeQueue']]],
   ['numberofangles_40',['NumberOfAngles',['../class_t_griffin_angles.html#aa6fb6827ddc87c6534002c63c3196788',1,'TGriffinAngles']]],
   ['numberofbadfragments_41',['NumberOfBadFragments',['../class_t_parsing_diagnostics.html#aafd5d1f8d5ffecee5c15761a66ef8d24',1,'TParsingDiagnostics']]],
-  ['numberofevents_42',['numberofevents',['../class_t_g_r_s_i_options.html#a39ff57d79a969a2a217069edc68483f0',1,'TGRSIOptions::NumberOfEvents()'],['../struct_rlmd_file_header.html#a7b6a34bb7a9443321c9b2a43cb89166f',1,'RlmdFileHeader::numberOfEvents']]],
+  ['numberofevents_42',['numberofevents',['../struct_rlmd_file_header.html#a7b6a34bb7a9443321c9b2a43cb89166f',1,'RlmdFileHeader::numberOfEvents'],['../class_t_g_r_s_i_options.html#a39ff57d79a969a2a217069edc68483f0',1,'TGRSIOptions::NumberOfEvents()']]],
   ['numberoffragments_43',['numberOfFragments',['../struct_rlmd_buffer_header.html#a32d302c0c5d23b494c1b7e431534b81e',1,'RlmdBufferHeader']]],
   ['numberoffragmentsoutoforder_44',['NumberOfFragmentsOutOfOrder',['../class_t_sorting_diagnostics.html#aec0291ff8fa3f25beb517bf114ff668c',1,'TSortingDiagnostics']]],
   ['numberoffragmentsoutoftimeorder_45',['NumberOfFragmentsOutOfTimeOrder',['../class_t_sorting_diagnostics.html#af3429963069b378f823fb29a9f9fd570',1,'TSortingDiagnostics']]],

@@ -151,7 +151,7 @@ var searchData=
   ['arraysubpositionstring_148',['ArraySubPositionString',['../class_t_mnemonic.html#abd578d2e59d7c3f913f650b0c1bcf794',1,'TMnemonic']]],
   ['assigngroupmaps_149',['AssignGroupMaps',['../class_t_angular_correlation.html#a5135ada4710f657e27ecf2868c56482f',1,'TAngularCorrelation']]],
   ['at_150',['at',['../class_t_g_r_s_i_map.html#ab1dc3096a1dff42dcda0acbf54a591cc',1,'TGRSIMap::at(const key_type &amp;key) const'],['../class_t_g_r_s_i_map.html#a5dcd264d838be594665c9ccddd17aeab',1,'TGRSIMap::at(const key_type &amp;key)']]],
-  ['atexithandler_151',['atexithandler',['../grsiproof_8cxx.html#a90a49b50a652d99b8d612ad0f76a3565',1,'AtExitHandler():&#160;grsiproof.cxx'],['../grsisort_8cxx.html#a04fc1723500e4bcabb52b985fedc0b72',1,'atexitHandler():&#160;grsisort.cxx']]],
+  ['atexithandler_151',['atexithandler',['../grsisort_8cxx.html#a04fc1723500e4bcabb52b985fedc0b72',1,'atexitHandler():&#160;grsisort.cxx'],['../grsiproof_8cxx.html#a90a49b50a652d99b8d612ad0f76a3565',1,'AtExitHandler():&#160;grsiproof.cxx']]],
   ['attribution_152',['Attribution',['../md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md11',1,'']]],
   ['averageangle_153',['AverageAngle',['../class_t_griffin_angles.html#afd646dd0beca73b9b2ba03b13746a3d6',1,'TGriffinAngles']]],
   ['averagerateestimation_154',['AverageRateEstimation',['../class_t_g_r_s_i_options.html#a071bb1a060b139da8f30ebafacb4980d',1,'TGRSIOptions']]],

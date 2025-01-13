@@ -35,8 +35,8 @@ var class_g_h1_d =
     [ "SetProjectionAxis", "class_g_h1_d.html#acc7c745cec1b661f528fb73e0f2190aa", null ],
     [ "UpdatePad", "class_g_h1_d.html#a246d2fe2cf37dde44ab4fd5a7db2964f", null ],
     [ "UpdateRegions", "class_g_h1_d.html#aa73747a1dd3ada619d6e9ead7b3cbab2", null ],
-    [ "VerboseLevel", "class_g_h1_d.html#a69721394c97bb1550f1c8014ebbd2c01", null ],
-    [ "VerboseLevel", "class_g_h1_d.html#ac42431d787df720424331dfb62934a83", null ],
+    [ "VerboseLevel", "class_g_h1_d.html#a9ded5bd8fe9b6b2ff1187dd239b3ee9f", null ],
+    [ "VerboseLevel", "class_g_h1_d.html#a9804ac7a65e15f5f894f6a97d67d765b", null ],
     [ "WriteDatFile", "class_g_h1_d.html#a6bf5097772496fd22039bc2b3a8fa3e0", null ],
     [ "fBackground", "class_g_h1_d.html#af1720c2636225ccf6949db9073d5df34", null ],
     [ "fCurrentRegion", "class_g_h1_d.html#a8c257cabfe5316957a4ca58d713fb096", null ],
@@ -50,5 +50,5 @@ var class_g_h1_d =
     [ "fRegions", "class_g_h1_d.html#ab77a8bcffa4c64f40ac98a00e3f30ee8", null ],
     [ "fStartX", "class_g_h1_d.html#a0172bef744625e00da5c4a6ba484585a", null ],
     [ "fStartY", "class_g_h1_d.html#a3f6935fadebd95fac50bdf3fcf5321f1", null ],
-    [ "fVerboseLevel", "class_g_h1_d.html#abd65f129a5c99783e9dee119d4885990", null ]
+    [ "fVerboseLevel", "class_g_h1_d.html#a5abdfc0920647f2c228a1d501fe69df2", null ]
 ];

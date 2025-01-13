@@ -1,5 +1,11 @@
 var NAVTREEINDEX5 =
 {
+"_t_kinematics_8cxx_source.html":[11,0,9,1,4,1],
+"_t_kinematics_8h.html":[11,0,7,83],
+"_t_kinematics_8h_source.html":[11,0,7,83],
+"_t_l_m_fitter_8cxx.html":[11,0,9,1,3,4],
+"_t_l_m_fitter_8cxx_source.html":[11,0,9,1,3,4],
+"_t_l_m_fitter_8h.html":[11,0,7,85],
 "_t_l_m_fitter_8h_source.html":[11,0,7,85],
 "_t_la_br_8cxx.html":[11,0,2,2,0,7,1],
 "_t_la_br_8cxx.html#ac15e926548188682363f95631a0e145b":[11,0,2,2,0,7,1,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX5 =
 "_t_t_a_c_8h_source.html":[11,0,2,1,43],
 "_t_t_a_c_hit_8cxx.html":[11,0,2,2,0,16,2],
 "_t_t_a_c_hit_8cxx_source.html":[11,0,2,2,0,16,2],
-"_t_t_a_c_hit_8h.html":[11,0,2,1,44],
-"_t_t_a_c_hit_8h_source.html":[11,0,2,1,44],
-"_t_tdr_clover_8cxx.html":[11,0,8,1,1,0,1],
-"_t_tdr_clover_8cxx.html#a135bdb3fd23497ca05c0ae40de0605f6":[11,0,8,1,1,0,1,1],
-"_t_tdr_clover_8cxx.html#ae3b1f4532958afd7491890e511a4e5d3":[11,0,8,1,1,0,1,0],
-"_t_tdr_clover_8cxx_source.html":[11,0,8,1,1,0,1],
-"_t_tdr_clover_8h.html":[11,0,8,0,0]
+"_t_t_a_c_hit_8h.html":[11,0,2,1,44]
 };
