@@ -234,7 +234,7 @@ public:
    static void SourceboxWidth(int val) { fSourceboxWidth = val; }
    static void DigitWidth(int val) { fDigitWidth = val; }
 
-   static void VerboseLevel(EVerbosity val) { fVerboseLevel = val; }
+   static void       VerboseLevel(EVerbosity val) { fVerboseLevel = val; }
    static EVerbosity VerboseLevel() { return fVerboseLevel; }
 
    static void ZoomX();
