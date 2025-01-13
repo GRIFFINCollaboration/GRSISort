@@ -1704,7 +1704,7 @@ void TSourceCalibration::HandleTimer()
 void TSourceCalibration::Start()
 {
    if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << ": fEmitter " << fEmitter << ", fStartButton " << fStartButton << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-   if(fEmitter == nullptr) {                                                                                                                                     // we only want to do this once at the beginning (after fEmitter was initialized to nullptr)
+   if(fEmitter == nullptr) {                                                                                                                                         // we only want to do this once at the beginning (after fEmitter was initialized to nullptr)
       fEmitter = fStartButton;
       TTimer::SingleShot(fWaitMs, "TSourceCalibration", this, "HandleTimer()");
    }
