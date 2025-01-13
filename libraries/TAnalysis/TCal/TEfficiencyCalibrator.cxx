@@ -263,7 +263,7 @@ void TEfficiencyTab::Status(Int_t, Int_t px, Int_t py, TObject* selected)
 TEfficiencyDatatypeTab::TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, std::vector<TNucleus*> nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, TGHProgressBar* progressBar)
    : fFrame(frame), fNucleus(std::move(nucleus)), fParent(parent), fDataType(dataType)
 {
-   if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kBasic) {
+   if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << "======================================== creating tab for data type " << dataType << std::endl;
    }
    // create new subdirectory for this tab (and its channel tabs), but store the old directory
@@ -372,7 +372,7 @@ TEfficiencyDatatypeTab::TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, st
    if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kSubroutines) {
       std::cout << " = " << fMainDirectory->GetName() << ", sub directory is " << fSubDirectory << " = " << (fSubDirectory == nullptr ? "" : fSubDirectory->GetName()) << std::endl;
    }
-   if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kBasic) {
+   if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << "======================================== done creating tab for data type " << dataType << std::endl;
    }
 }
@@ -679,7 +679,7 @@ void TEfficiencyDatatypeTab::FitEfficiency()
 void TEfficiencyDatatypeTab::FittingControl(Int_t id)
 {
    int currentTabId = fDataTab->GetCurrent();
-   if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kBasic) { std::cout << __PRETTY_FUNCTION__ << ": id " << id << ", current tab id " << currentTabId << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << ": id " << id << ", current tab id " << currentTabId << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    ReadValues();
    switch(id) {
    case 1:   // re-fit
@@ -823,7 +823,7 @@ TEfficiencyCalibrator::TEfficiencyCalibrator(int n...)
    auto type = fDataType.begin();
    for(auto it = fHistograms.begin(); it != fHistograms.end();) {
       if(it->size() != fFiles.size()) {
-         if(fVerboseLevel > EVerbosity::kBasic) {
+         if(fVerboseLevel > EVerbosity::kBasicFlow) {
             std::cout << std::distance(fHistograms.begin(), it) << ": found " << it->size() << " histograms for " << fFiles.size() << " files, removing this type" << std::endl;
          }
          it   = fHistograms.erase(it);
@@ -902,7 +902,7 @@ void TEfficiencyCalibrator::BuildFirstInterface()
    /// Build initial interface with histogram <-> source assignment
 
    auto* layoutManager = new TGTableLayout(this, fFiles.size() + 1, 2, true, 5);
-   if(fVerboseLevel > EVerbosity::kBasic) { std::cout << "created table layout manager with 2 columns, " << fFiles.size() + 1 << " rows" << std::endl; }
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << "created table layout manager with 2 columns, " << fFiles.size() + 1 << " rows" << std::endl; }
    SetLayoutManager(layoutManager);
 
    // The matrices and source selection boxes
@@ -932,9 +932,9 @@ void TEfficiencyCalibrator::BuildFirstInterface()
    }
 
    // The buttons
-   if(fVerboseLevel > EVerbosity::kBasic) { std::cout << "Attaching start button to 0, 2, " << i << ", " << i + 1 << std::endl; }
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << "Attaching start button to 0, 2, " << i << ", " << i + 1 << std::endl; }
    fStartButton = new TGTextButton(this, "Accept && Continue", kStartButton);
-   if(fVerboseLevel > EVerbosity::kBasic) { std::cout << "start button " << fStartButton << std::endl; }
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << "start button " << fStartButton << std::endl; }
    AddFrame(fStartButton, new TGTableLayoutHints(0, 2, i, i + 1, kLHintsCenterX | kLHintsCenterY));
    Layout();
 }
@@ -972,7 +972,7 @@ void TEfficiencyCalibrator::DeleteFirst()
 void TEfficiencyCalibrator::SetSource(Int_t windowId, Int_t entryId)
 {
    int index = windowId - kSourceBox;
-   if(fVerboseLevel > EVerbosity::kBasic) { std::cout << __PRETTY_FUNCTION__ << ": windowId " << windowId << ", entryId " << entryId << " => " << index << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << ": windowId " << windowId << ", entryId " << entryId << " => " << index << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    TNucleus* nucleus = fSources[index];
    delete nucleus;
    nucleus         = new TNucleus(fSourceBox[index]->GetListBox()->GetEntry(entryId)->GetTitle());
@@ -981,7 +981,7 @@ void TEfficiencyCalibrator::SetSource(Int_t windowId, Int_t entryId)
 
 void TEfficiencyCalibrator::Start()
 {
-   if(fVerboseLevel > EVerbosity::kBasic) { std::cout << __PRETTY_FUNCTION__ << ": fEmitter " << fEmitter << ", fStartButton " << fStartButton << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << ": fEmitter " << fEmitter << ", fStartButton " << fStartButton << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    if(fEmitter == nullptr) {                                                                                                                    // we only want to do this once at the beginning (after fEmitter was initialized to nullptr)
       fEmitter = fStartButton;
       TTimer::SingleShot(100, "TEfficiencyCalibrator", this, "HandleTimer()");
@@ -990,7 +990,7 @@ void TEfficiencyCalibrator::Start()
 
 void TEfficiencyCalibrator::HandleTimer()
 {
-   if(fVerboseLevel > EVerbosity::kBasic) { std::cout << __PRETTY_FUNCTION__ << ": fEmitter " << fEmitter << ", fStartButton " << fStartButton << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << ": fEmitter " << fEmitter << ", fStartButton " << fStartButton << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    if(fEmitter == fStartButton) {
       // disconnect signals of first screen and remove all elements
       DisconnectFirst();
@@ -1003,7 +1003,7 @@ void TEfficiencyCalibrator::HandleTimer()
 
 void TEfficiencyCalibrator::SecondWindow()
 {
-   if(fVerboseLevel > EVerbosity::kBasic) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    // check that all sources have been set
    for(size_t i = 0; i < fSources.size(); ++i) {
       if(fSources[i] == nullptr) {
@@ -1090,7 +1090,7 @@ void TEfficiencyCalibrator::BuildSecondInterface()
 
 void TEfficiencyCalibrator::MakeSecondConnections()
 {
-   if(fVerboseLevel > EVerbosity::kBasic) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    // we don't need to connect the range, threshold, and degree number entries, those are automatically read when we start the calibration
    for(auto* sourceTab : fEfficiencyDatatypeTab) {
       sourceTab->MakeConnections();
@@ -1099,7 +1099,7 @@ void TEfficiencyCalibrator::MakeSecondConnections()
 
 void TEfficiencyCalibrator::DisconnectSecond()
 {
-   if(fVerboseLevel > EVerbosity::kBasic) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    for(auto* sourceTab : fEfficiencyDatatypeTab) {
       sourceTab->Disconnect();
    }

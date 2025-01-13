@@ -11,10 +11,10 @@
 
 Int_t TCalibrationGraph::RemovePoint()
 {
-   if(TCalibrationGraphSet::VerboseLevel() > EVerbosity::kBasic) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(TCalibrationGraphSet::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    Int_t px = gPad->GetEventX();
    Int_t py = gPad->GetEventY();
-   if(TCalibrationGraphSet::VerboseLevel() > EVerbosity::kBasic) { std::cout << "px, py " << px << ",  " << py << " on gPad " << gPad->GetName() << std::endl; }
+   if(TCalibrationGraphSet::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << "px, py " << px << ",  " << py << " on gPad " << gPad->GetName() << std::endl; }
    if(fIsResidual) { return fParent->RemoveResidualPoint(px, py); }
    return fParent->RemovePoint(px, py);
 }
@@ -37,17 +37,17 @@ EVerbosity TCalibrationGraphSet::fVerboseLevel = EVerbosity::kQuiet;
 TCalibrationGraphSet::TCalibrationGraphSet(TGraphErrors* graph, const std::string& label)
    : fTotalGraph(new TGraphErrors), fTotalResidualGraph(new TGraphErrors)
 {
-   if(fVerboseLevel > EVerbosity::kBasic) { std::cout << __PRETTY_FUNCTION__ << " fTotalGraph " << fTotalGraph << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " fTotalGraph " << fTotalGraph << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    if(graph != nullptr) {
       Add(graph, label);
-      if(fVerboseLevel > EVerbosity::kBasic) { Print(); }
+      if(fVerboseLevel > EVerbosity::kBasicFlow) { Print(); }
    }
 }
 
 TCalibrationGraphSet::TCalibrationGraphSet(std::string xAxisLabel, std::string yAxisLabel)
    : fTotalGraph(new TGraphErrors), fTotalResidualGraph(new TGraphErrors), fXAxisLabel(std::move(xAxisLabel)), fYAxisLabel(std::move(yAxisLabel))
 {
-   if(fVerboseLevel > EVerbosity::kBasic) { std::cout << __PRETTY_FUNCTION__ << " fTotalGraph " << fTotalGraph << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " fTotalGraph " << fTotalGraph << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 }
 
 TCalibrationGraphSet::~TCalibrationGraphSet()
@@ -58,7 +58,7 @@ TCalibrationGraphSet::~TCalibrationGraphSet()
 
 int TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
 {
-   if(fVerboseLevel > EVerbosity::kBasic) {
+   if(fVerboseLevel > EVerbosity::kBasicFlow) {
       std::cout << __PRETTY_FUNCTION__ << ", fTotalGraph " << fTotalGraph << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       Print();
    }
@@ -128,7 +128,7 @@ int TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
    fResidualGraphs.back().SetMarkerColor(static_cast<Color_t>(fResidualGraphs.size()));
    fResidualGraphs.back().SetMarkerStyle(static_cast<Style_t>(fResidualGraphs.size()));
 
-   if(fVerboseLevel > EVerbosity::kBasic) {
+   if(fVerboseLevel > EVerbosity::kBasicFlow) {
       std::cout << "done" << std::endl;
       Print();
    }
@@ -137,7 +137,7 @@ int TCalibrationGraphSet::Add(TGraphErrors* graph, const std::string& label)
 
 bool TCalibrationGraphSet::SetResidual(const bool& force)
 {
-   if(fVerboseLevel > EVerbosity::kBasic) { std::cout << __PRETTY_FUNCTION__ << " gpad " << gPad->GetName() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " gpad " << gPad->GetName() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    TF1* calibration = FitFunction();
    if(calibration != nullptr && (!fResidualSet || force)) {
       double* x  = fTotalGraph->GetX();
@@ -207,7 +207,7 @@ void TCalibrationGraphSet::DrawCalibration(Option_t* opt, TLegend* legend)
    }
 
    for(size_t i = 0; i < fGraphs.size(); ++i) {
-      if(fVerboseLevel > EVerbosity::kBasic) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". graph with option \"" << opt << "\", marker color " << fGraphs[i].GetMarkerColor() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+      if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". graph with option \"" << opt << "\", marker color " << fGraphs[i].GetMarkerColor() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       fGraphs[i].Draw(opt);
       if(legend != nullptr) {
          legend->AddEntry(&(fGraphs[i]), fLabel[i].c_str());
@@ -230,7 +230,7 @@ void TCalibrationGraphSet::DrawResidual(Option_t* opt, TLegend* legend)
    }
 
    for(size_t i = 0; i < fResidualGraphs.size(); ++i) {
-      if(fVerboseLevel > EVerbosity::kBasic) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". residual graph with option \"" << opt << "\", marker color " << fResidualGraphs[i].GetMarkerColor() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+      if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". residual graph with option \"" << opt << "\", marker color " << fResidualGraphs[i].GetMarkerColor() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       fResidualGraphs[i].Draw(opt);
       if(legend != nullptr) {
          legend->AddEntry(&(fResidualGraphs[i]), fLabel[i].c_str());
@@ -242,7 +242,7 @@ Int_t TCalibrationGraphSet::RemovePoint(const Int_t& px, const Int_t& py)
 {
    /// This function is primarily a copy of TGraph::RemovePoint with some added bits to remove a point that has been selected in the calibration graph from it and the corresponding point from the residual graph and the total graphs
 
-   if(fVerboseLevel > EVerbosity::kBasic) {
+   if(fVerboseLevel > EVerbosity::kBasicFlow) {
       std::cout << __PRETTY_FUNCTION__ << ": point " << px << ", " << py << "; gPad " << gPad->GetName() << ": " << gPad->AbsPixeltoX(px) << ", " << gPad->AbsPixeltoY(py) << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       Print();
    }
@@ -276,7 +276,7 @@ Int_t TCalibrationGraphSet::RemovePoint(const Int_t& px, const Int_t& py)
       }
       return ipoint;
    }
-   if(fVerboseLevel > EVerbosity::kBasic) {
+   if(fVerboseLevel > EVerbosity::kBasicFlow) {
       Print();
    }
    fTotalGraph->RemovePoint(ipoint);
@@ -312,7 +312,7 @@ Int_t TCalibrationGraphSet::RemovePoint(const Int_t& px, const Int_t& py)
       if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "Modified and updated pad " << pad << " = " << mother->GetPad(pad)->GetName() << std::endl; }
       pad++;
    }
-   if(fVerboseLevel > EVerbosity::kBasic) { Print(); }
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { Print(); }
    std::array<Longptr_t, 2> args = {px, py};
    if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "Emitting RemovePoint(Int_t, Int_t) with " << px << ", " << py << " - " << args.data() << std::endl; }
    Emit("RemovePoint(Int_t, Int_t)", args.data());
@@ -339,7 +339,7 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint(const Int_t& px, const Int_t& py
       }
    }
    if(ipoint < 0) {
-      if(fVerboseLevel > EVerbosity::kBasic) { std::cout << "Failed to find point close to " << px << ", " << py << std::endl; }
+      if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << "Failed to find point close to " << px << ", " << py << std::endl; }
       if(fVerboseLevel > EVerbosity::kSubroutines) {
          std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
          Print();
@@ -377,7 +377,7 @@ Int_t TCalibrationGraphSet::RemoveResidualPoint(const Int_t& px, const Int_t& py
       if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "Modified pad " << pad << " = " << mother->GetPad(pad)->GetName() << std::endl; }
       pad++;
    }
-   if(fVerboseLevel > EVerbosity::kBasic) { Print(); }
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { Print(); }
    std::array<Longptr_t, 2> args = {px, py};
    if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "Emitting RemoveResidualPoint(Int_t, Int_t) with " << px << ", " << py << " - " << args.data() << std::endl; }
    Emit("RemoveResidualPoint(Int_t, Int_t)", args.data());
@@ -389,7 +389,7 @@ void TCalibrationGraphSet::Scale(bool useAllPrevious)
    /// Scale all graphs to fit each other (based on the first "previous" graph found or just the first graph).
    /// If no overlap is being found between the graph that is being scaled and the first graph (or all graphs before this one),
    /// the current graph isn't being scaled and we continue with the next graph.
-   if(fVerboseLevel > EVerbosity::kBasic) {
+   if(fVerboseLevel > EVerbosity::kBasicFlow) {
       std::cout << __PRETTY_FUNCTION__ << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       Print();
    }
@@ -406,7 +406,7 @@ void TCalibrationGraphSet::Scale(bool useAllPrevious)
       for(g2 = 0; (useAllPrevious ? g2 < g : g2 < 1); ++g2) {
          double minRef = fGraphs[g2].GetX()[0];
          double maxRef = fGraphs[g2].GetX()[fGraphs[g2].GetN() - 1];
-         if(fVerboseLevel > EVerbosity::kBasic) {
+         if(fVerboseLevel > EVerbosity::kBasicFlow) {
             std::cout << "Checking overlap between " << g2 << ". graph (" << fGraphs[g2].GetN() << ": " << minRef << " - " << maxRef << ") and " << g << ". graph (" << graph.GetN() << std::flush << ": " << x[0] << " - " << x[graph.GetN() - 1] << ")" << std::endl;
          }
          if(maxRef < x[0] || x[graph.GetN() - 1] < minRef) {
@@ -433,13 +433,13 @@ void TCalibrationGraphSet::Scale(bool useAllPrevious)
          std::cout << "No overlap(s) between 0. to " << g2 - 1 << ". graph and " << g << ". graph (" << graph.GetN() << ": " << x[0] << " - " << x[graph.GetN() - 1] << "), not scaling this one!" << std::endl;
       }
    }
-   if(fVerboseLevel > EVerbosity::kBasic) { Print(); }
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { Print(); }
    ResetTotalGraph();
 }
 
 void TCalibrationGraphSet::ResetTotalGraph()
 {
-   if(fVerboseLevel > EVerbosity::kBasic) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    if(fGraphs.empty()) {
       std::cerr << "No graphs added yet, makes no sense to reset total graph?" << std::endl;
       return;
@@ -492,7 +492,7 @@ void TCalibrationGraphSet::ResetTotalGraph()
 
 void TCalibrationGraphSet::Print(Option_t* opt) const
 {
-   if(fVerboseLevel > EVerbosity::kBasic) {
+   if(fVerboseLevel > EVerbosity::kBasicFlow) {
       std::cout << __PRETTY_FUNCTION__ << ", fTotalGraph " << fTotalGraph << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    }
 

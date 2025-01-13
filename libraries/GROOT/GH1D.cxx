@@ -257,7 +257,7 @@ void GH1D::HandleMovement(Int_t eventType, Int_t eventX, Int_t eventY, TObject* 
       } else if(eventType == kButton1Down) {
          fStartX = currentX;
          fStartY = currentY;
-         if(VerboseLevel() > EVerbosity::kBasic) {
+         if(VerboseLevel() > EVerbosity::kBasicFlow) {
             std::cout << "button 1 down at " << currentX << ", " << currentY << std::endl;
          }
       } else if(eventType == kButton1Motion) {
@@ -266,7 +266,7 @@ void GH1D::HandleMovement(Int_t eventType, Int_t eventX, Int_t eventY, TObject* 
          }
       } else if(eventType == kButton1Up) {
          region->Update(fStartX, currentX);
-         if(VerboseLevel() > EVerbosity::kBasic) {
+         if(VerboseLevel() > EVerbosity::kBasicFlow) {
             std::cout << "button 1 up at " << currentX << ", " << currentY << std::endl;
          }
       }
@@ -287,7 +287,7 @@ void GH1D::HandleEvent(Event_t* event, Window_t window)
    std::array<char, 2> str;
    gVirtualX->LookupString(event, str.data(), str.size(), keySymbol);
 
-   if((VerboseLevel() > EVerbosity::kBasic && event->fType != kMotionNotify && event->fType != kLeaveNotify) ||
+   if((VerboseLevel() > EVerbosity::kBasicFlow && event->fType != kMotionNotify && event->fType != kLeaveNotify) ||
       (VerboseLevel() > EVerbosity::kSubroutines && event->fState != 0) ||
       (VerboseLevel() > EVerbosity::kLoops)) {
       std::cout << __PRETTY_FUNCTION__ << ", event " << event << ", window " << window << ", type " << event->fType << ", code " << event->fCode << ", state " << event->fState << ", x " << event->fX << ", root-x " << event->fXRoot << ", y " << event->fY << ", root-y " << event->fYRoot << ", x/y coordinates: x " << fPad->PixeltoX(event->fX) << ", y " << fPad->PixeltoY(event->fY - fPad->GetWh()) << ", root-x " << fPad->PixeltoX(event->fXRoot) << ", root-y " << fPad->PixeltoY(event->fYRoot - fPad->GetWh()) << ", key symbol " << keySymbol << " = " << hex(keySymbol) << "; fPad " << fPad << " = \"" << fPad->GetName() << "\", gPad " << gPad << " = \"" << gPad->GetName() << "\"" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
@@ -335,7 +335,7 @@ void GH1D::HandleEvent(Event_t* event, Window_t window)
          UpdatePad();
          DrawRegions();
          UpdatePad();
-         if(VerboseLevel() > EVerbosity::kBasic) {
+         if(VerboseLevel() > EVerbosity::kBasicFlow) {
             PrintRegions();
          }
          break;
@@ -345,7 +345,7 @@ void GH1D::HandleEvent(Event_t* event, Window_t window)
          UpdatePad();
          DrawRegions();
          UpdatePad();
-         if(VerboseLevel() > EVerbosity::kBasic) {
+         if(VerboseLevel() > EVerbosity::kBasicFlow) {
             PrintRegions();
          }
          break;
@@ -370,7 +370,7 @@ void GH1D::HandleEvent(Event_t* event, Window_t window)
          UpdatePad();
          DrawRegions();
          UpdatePad();
-         if(VerboseLevel() > EVerbosity::kBasic) {
+         if(VerboseLevel() > EVerbosity::kBasicFlow) {
             PrintRegions();
          }
          break;
@@ -393,7 +393,7 @@ void GH1D::HandleEvent(Event_t* event, Window_t window)
                fCurrentRegion->SetFillColorAlpha(fRegionColor[fNofRegions % fRegionColor.size()], 0.2);
             }
             fCurrentRegion->Draw();
-            if(VerboseLevel() > EVerbosity::kBasic) {
+            if(VerboseLevel() > EVerbosity::kBasicFlow) {
                PrintRegions();
             }
          }
@@ -427,7 +427,7 @@ void GH1D::HandleEvent(Event_t* event, Window_t window)
          UpdatePad();
          DrawRegions();
          UpdatePad();
-         if(VerboseLevel() > EVerbosity::kBasic) {
+         if(VerboseLevel() > EVerbosity::kBasicFlow) {
             PrintRegions();
          }
          break;
@@ -446,7 +446,7 @@ void GH1D::HandleEvent(Event_t* event, Window_t window)
          fCurrentRegion->SetY2(currentY);
          fCurrentRegion->Draw();
          UpdatePad();
-         if(VerboseLevel() > EVerbosity::kBasic) {
+         if(VerboseLevel() > EVerbosity::kBasicFlow) {
             PrintRegions();
          }
       }
@@ -458,7 +458,7 @@ void GH1D::HandleEvent(Event_t* event, Window_t window)
                // check whether we are in the frame or not
                double currentX = fPad->PixeltoX(event->fX);
                double currentY = fPad->PixeltoY(event->fY - fPad->GetWh());
-               if(VerboseLevel() > EVerbosity::kBasic) { std::cout << "current x " << currentX << ", current y " << currentY << std::endl; }
+               if(VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << "current x " << currentX << ", current y " << currentY << std::endl; }
                if(Pad()->GetFrame()->GetX1() < currentX && currentX < Pad()->GetFrame()->GetX2() &&
                   Pad()->GetFrame()->GetY1() < currentY && currentY < Pad()->GetFrame()->GetY2()) {
                   if(VerboseLevel() > EVerbosity::kQuiet) {
@@ -475,7 +475,7 @@ void GH1D::HandleEvent(Event_t* event, Window_t window)
                UpdatePad();
                DrawRegions();
                UpdatePad();
-               if(VerboseLevel() > EVerbosity::kBasic) {
+               if(VerboseLevel() > EVerbosity::kBasicFlow) {
                   PrintRegions();
                }
             } else {
@@ -505,7 +505,7 @@ void GH1D::HandleEvent(Event_t* event, Window_t window)
                }
                RemoveCurrentRegion();
                static_cast<TRegion*>(fRegions.Last())->Draw();
-               if(VerboseLevel() > EVerbosity::kBasic) {
+               if(VerboseLevel() > EVerbosity::kBasicFlow) {
                   PrintRegions();
                }
             }
@@ -586,7 +586,7 @@ bool TRegion::Update()
    bool result = true;
 
    auto* frame = fParent->Pad()->GetFrame();
-   if(GH1D::VerboseLevel() > EVerbosity::kBasic) {
+   if(GH1D::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << "Frame: " << frame->GetX1() << " - " << frame->GetX2() << ", " << frame->GetY1() << " - " << frame->GetY2() << " -> updating y-range from " << GetY1() << " - " << GetY2();
    }
    if(fParent->Pad()->GetLogy() == 0) {
@@ -598,16 +598,16 @@ bool TRegion::Update()
       SetY1(TMath::Power(10., frame->GetY1()));
       SetY2(TMath::Power(10., frame->GetY2()));
    }
-   if(GH1D::VerboseLevel() > EVerbosity::kBasic) {
+   if(GH1D::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << " to " << GetY1() << " - " << GetY2() << std::endl;
    }
 
-   if(GH1D::VerboseLevel() > EVerbosity::kBasic) {
+   if(GH1D::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << "Updating x-range from " << GetX1() << " - " << GetX2() << " (" << fLowX << " - " << fHighX << ")";
    }
    if(frame->GetX1() < fLowX && fHighX < frame->GetX2()) {
       // whole region is visible -> use original range
-      if(GH1D::VerboseLevel() > EVerbosity::kBasic) {
+      if(GH1D::VerboseLevel() > EVerbosity::kBasicFlow) {
          std::cout << " (whole region)";
       }
       SetX1(fLowX);
@@ -617,33 +617,33 @@ bool TRegion::Update()
       // Using GetUxmin() and GetUxmax() to set range to values outside the pad range and not just the frame range does not work.
       // So we simply hide this region whenever it is outside the frame.
       // This also means we have to actively draw it whenever it is (partly) in frame (in case it was hidden before).
-      if(GH1D::VerboseLevel() > EVerbosity::kBasic) {
+      if(GH1D::VerboseLevel() > EVerbosity::kBasicFlow) {
          std::cout << " (out of " << frame->GetX1() << " - " << frame->GetX2() << ")";
       }
       result = false;
    } else if(fHighX < frame->GetX2()) {
       // low part of region is out of frame -> adjust low x
-      if(GH1D::VerboseLevel() > EVerbosity::kBasic) {
+      if(GH1D::VerboseLevel() > EVerbosity::kBasicFlow) {
          std::cout << " (high part)";
       }
       SetX1(frame->GetX1());
       SetX2(fHighX);
    } else if(frame->GetX1() < fLowX) {
       // high part of region is out of frame -> adjust high x
-      if(GH1D::VerboseLevel() > EVerbosity::kBasic) {
+      if(GH1D::VerboseLevel() > EVerbosity::kBasicFlow) {
          std::cout << " (low part)";
       }
       SetX1(fLowX);
       SetX2(frame->GetX2());
    } else {
       // region is larger than visible range on both side -> adjust both
-      if(GH1D::VerboseLevel() > EVerbosity::kBasic) {
+      if(GH1D::VerboseLevel() > EVerbosity::kBasicFlow) {
          std::cout << " (region too big)";
       }
       SetX1(frame->GetX1());
       SetX2(frame->GetX2());
    }
-   if(GH1D::VerboseLevel() > EVerbosity::kBasic) {
+   if(GH1D::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << " to " << GetX1() << " - " << GetX2() << std::endl;
    }
 
@@ -679,7 +679,7 @@ void TRegion::Hide()
    }
 
    fParent->Pad()->GetListOfPrimitives()->Remove(this);
-   if(GH1D::VerboseLevel() > EVerbosity::kBasic) {
+   if(GH1D::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << "hid region " << fLowX << " - " << fHighX << std::endl;
       fParent->PrintRegions();
    }
@@ -688,7 +688,7 @@ void TRegion::Hide()
 void TRegion::Update(double startX, double stopX)
 {
    /// Depending on the starting position this function updates the left or right edge of the region to the stopping position.
-   if(GH1D::VerboseLevel() > EVerbosity::kBasic) {
+   if(GH1D::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << "region " << fLowX << " - " << fHighX << ", start x " << startX << ", stop x " << stopX;
    }
    if(std::abs(startX - fLowX) < std::abs(startX - fHighX)) {
@@ -696,7 +696,7 @@ void TRegion::Update(double startX, double stopX)
    } else {
       fHighX = stopX;
    }
-   if(GH1D::VerboseLevel() > EVerbosity::kBasic) {
+   if(GH1D::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << " => " << fLowX << " - " << fHighX << std::endl;
    }
    Update();

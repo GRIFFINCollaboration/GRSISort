@@ -142,7 +142,7 @@ inline std::string hex(T val, int width = -1)
 
 enum EVerbosity : int {
    kQuiet       = 0,
-   kBasic       = 1,
+   kBasicFlow   = 1,
    kSubroutines = 2,
    kLoops       = 3,
    kAll         = 4
