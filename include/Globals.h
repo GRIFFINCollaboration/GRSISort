@@ -141,11 +141,11 @@ inline std::string hex(T val, int width = -1)
 }
 
 enum EVerbosity : int {
-	kQuiet,
-	kBasic,
-	kSubroutines,
-	kLoops,
-	kAll
+   kQuiet       = 0,
+   kBasic       = 1,
+   kSubroutines = 2,
+   kLoops       = 3,
+   kAll         = 4
 };
 
 static inline std::string getexepath()

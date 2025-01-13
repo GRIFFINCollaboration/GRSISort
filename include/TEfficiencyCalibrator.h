@@ -29,6 +29,7 @@
 #include "TPaveText.h"
 #include "RVersion.h"
 
+#include "Globals.h"
 #include "TNucleus.h"
 #include "TPeakFitter.h"
 #include "TSinglePeak.h"
@@ -281,8 +282,8 @@ public:
    static int LineHeight() { return fLineHeight; }
    static int WindowWidth() { return fWindowWidth; }
 
-   static int  VerboseLevel() { return fVerboseLevel; }
-   static void VerboseLevel(int val) { fVerboseLevel = val; }
+   static EVerbosity VerboseLevel() { return fVerboseLevel; }
+   static void       VerboseLevel(EVerbosity val) { fVerboseLevel = val; }
 
    std::vector<TCalibrationGraphSet*> EfficiencyGraphs() { return fEfficiencyGraph; }
    size_t                             NumberOfEfficiencyGraphs() { return fEfficiencyGraph.size(); }
@@ -298,7 +299,7 @@ private:
    void MakeSecondConnections();
    void DisconnectSecond();
 
-   static int                                             fVerboseLevel;   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
+   static EVerbosity                                      fVerboseLevel;   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
    static double                                          fRange;
    static double                                          fThreshold;
    static int                                             fBgParam;                  ///< the bg parameter used to determine the background in the gamma spectra
