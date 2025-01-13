@@ -586,7 +586,7 @@ void TSourceTab::FindPeaks(const double& sigma, const double& threshold, const d
          //fProjection->GetListOfFunctions()->Remove(peak);
       }
       if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": added " << fPeaks.size() << " peaks" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-      fProjection->Sumw2(false);                                                                                                                 // turn errors off, makes the histogram look like a histogram when using normal plotting (hist and samefunc doesn't work for some reason)
+      fProjection->Sumw2(false);                                                                                                                                        // turn errors off, makes the histogram look like a histogram when using normal plotting (hist and samefunc doesn't work for some reason)
 
       fProjectionCanvas->GetCanvas()->cd();
       fProjection->Draw();   // seems like hist + samefunc does not work. Could use hist + loop over list of functions (with same)
@@ -1418,16 +1418,16 @@ void TChannelTab::PrintLayout() const
 }
 
 //////////////////////////////////////// TSourceCalibration ////////////////////////////////////////
-EVerbosity TSourceCalibration::fVerboseLevel = EVerbosity::kQuiet;
-int TSourceCalibration::fPanelWidth = 600;
-int TSourceCalibration::fPanelHeight = 400;
-int TSourceCalibration::fStatusbarHeight = 50;
-int TSourceCalibration::fSourceboxWidth = 100;
-int TSourceCalibration::fParameterHeight = 200;
-int TSourceCalibration::fDigitWidth = 5;
+EVerbosity TSourceCalibration::fVerboseLevel    = EVerbosity::kQuiet;
+int        TSourceCalibration::fPanelWidth      = 600;
+int        TSourceCalibration::fPanelHeight     = 400;
+int        TSourceCalibration::fStatusbarHeight = 50;
+int        TSourceCalibration::fSourceboxWidth  = 100;
+int        TSourceCalibration::fParameterHeight = 200;
+int        TSourceCalibration::fDigitWidth      = 5;
 
 TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degree, double peakRatio, int count...)
-   : TGMainFrame(nullptr, 2*fPanelWidth, fPanelHeight + 2 * fStatusbarHeight), fDefaultSigma(sigma), fDefaultThreshold(threshold), fDefaultDegree(degree), fDefaultPeakRatio(peakRatio)
+   : TGMainFrame(nullptr, 2 * fPanelWidth, fPanelHeight + 2 * fStatusbarHeight), fDefaultSigma(sigma), fDefaultThreshold(threshold), fDefaultDegree(degree), fDefaultPeakRatio(peakRatio)
 {
    TH1::AddDirectory(false);   // turns off warnings about multiple histograms with the same name because ROOT doesn't manage them anymore
 
@@ -1607,7 +1607,7 @@ void TSourceCalibration::BuildFirstInterface()
       }
 #endif
 
-      fSourceBox.back()->SetMinHeight(fPanelHeight/2);
+      fSourceBox.back()->SetMinHeight(fPanelHeight / 2);
 
       fSourceBox.back()->Resize(fSourceboxWidth, fLineHeight);
       if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "Attaching " << i << ". label to 0, 1, " << i << ", " << i + 1 << ", and box to 1, 2, " << i << ", " << i + 1 << std::endl; }
@@ -1704,7 +1704,7 @@ void TSourceCalibration::HandleTimer()
 void TSourceCalibration::Start()
 {
    if(fVerboseLevel > EVerbosity::kBasic) { std::cout << __PRETTY_FUNCTION__ << ": fEmitter " << fEmitter << ", fStartButton " << fStartButton << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-   if(fEmitter == nullptr) {                                                                                                                    // we only want to do this once at the beginning (after fEmitter was initialized to nullptr)
+   if(fEmitter == nullptr) {                                                                                                                                     // we only want to do this once at the beginning (after fEmitter was initialized to nullptr)
       fEmitter = fStartButton;
       TTimer::SingleShot(fWaitMs, "TSourceCalibration", this, "HandleTimer()");
    }
@@ -1764,7 +1764,7 @@ void TSourceCalibration::SecondWindow()
    MapSubwindows();
 
    // Initialize the layout algorithm
-   Resize(TGDimension(2*fPanelWidth, fPanelHeight + 2 * fStatusbarHeight));
+   Resize(TGDimension(2 * fPanelWidth, fPanelHeight + 2 * fStatusbarHeight));
 
    // Map main frame
    MapWindow();
@@ -1774,7 +1774,7 @@ void TSourceCalibration::SecondWindow()
 void TSourceCalibration::BuildSecondInterface()
 {
    SetLayoutManager(new TGVerticalLayout(this));
-   fTab = new TGTab(this, 2*fPanelWidth, fPanelHeight + 2 * fStatusbarHeight);
+   fTab = new TGTab(this, 2 * fPanelWidth, fPanelHeight + 2 * fStatusbarHeight);
 
    fChannelTab.resize(fMatrices[0]->GetNbinsX());
    for(auto& bin : fActiveBins) {
@@ -1797,7 +1797,7 @@ void TSourceCalibration::BuildSecondInterface()
    AddFrame(fTab, new TGLayoutHints(kLHintsTop | kLHintsExpandX | kLHintsExpandY, 0, 0, 0, 0));
 
    // bottom frame with navigation button group, text entries, etc.
-   fBottomFrame = new TGHorizontalFrame(this, 2*fPanelWidth, TSourceCalibration::StatusbarHeight());
+   fBottomFrame = new TGHorizontalFrame(this, 2 * fPanelWidth, TSourceCalibration::StatusbarHeight());
 
    fLeftFrame       = new TGVerticalFrame(fBottomFrame, fPanelWidth, fParameterHeight);
    fNavigationGroup = new TGHButtonGroup(fLeftFrame, "");
@@ -1893,20 +1893,20 @@ void TSourceCalibration::Navigate(Int_t id)
    if(fVerboseLevel > EVerbosity::kBasic) { std::cout << DGREEN << __PRETTY_FUNCTION__ << ": id " << id << ", channel tab id " << currentChannelId << ", actual channel tab id " << actualChannelId << ", # of tabs " << nofTabs << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasic) { std::cout << "Before: active source tab of tab " << fChannelTab[fActiveBins[fTab->GetCurrent()] - 1]->Name() << ", #" << fTab->GetCurrent() << " = bin " << fActiveBins[fTab->GetCurrent()] << ": " << fChannelTab[fActiveBins[fTab->GetCurrent()] - 1]->ActiveSourceTab() << std::endl; }
    switch(id) {
-	case ENavigate::kPrevious:   // previous
+   case ENavigate::kPrevious:   // previous
       fTab->SetTab(currentChannelId - 1);
       SelectedTab(currentChannelId - 1);
       break;
-	case ENavigate::kFindPeaks:   // find peaks
+   case ENavigate::kFindPeaks:   // find peaks
       FindPeaks();
       break;
-	case ENavigate::kFindPeaksFast:   // find peaks fast
+   case ENavigate::kFindPeaksFast:   // find peaks fast
       FindPeaksFast();
       break;
-	case ENavigate::kCalibrate:   // calibrate
+   case ENavigate::kCalibrate:   // calibrate
       Calibrate();
       break;
-	case ENavigate::kDiscard:   // discard
+   case ENavigate::kDiscard:   // discard
       // select the next (or if we are on the last tab, the previous) tab
       if(currentChannelId < nofTabs - 1) {
          fTab->SetTab(currentChannelId + 1);
@@ -1916,14 +1916,14 @@ void TSourceCalibration::Navigate(Int_t id)
       // remove the original active tab
       fTab->RemoveTab(currentChannelId);
       break;
-	case ENavigate::kAccept:   // accept
+   case ENavigate::kAccept:   // accept
       AcceptChannel(currentChannelId);
       break;
-	case ENavigate::kAcceptAll:   // accept all (no argument = -1 = all)
+   case ENavigate::kAcceptAll:   // accept all (no argument = -1 = all)
       AcceptChannel();
       return;
       break;
-	case ENavigate::kNext:   // next
+   case ENavigate::kNext:   // next
       fTab->SetTab(currentChannelId + 1);
       SelectedTab(currentChannelId + 1);
       break;
@@ -1993,7 +1993,7 @@ void TSourceCalibration::AcceptChannel(const int& channelId)
    for(int currentChannelId = maxChannel; currentChannelId >= minChannel; --currentChannelId) {
       int actualChannelId = fActualChannelId[currentChannelId];
       if(fVerboseLevel > EVerbosity::kLoops) { std::cout << __PRETTY_FUNCTION__ << ": currentChannelId " << currentChannelId << ", actualChannelId " << actualChannelId << ", fChannelTab.size() " << fChannelTab.size() << ", fActualChannelId.size() " << fActualChannelId.size() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-      if(minChannel == maxChannel) {                                                                                                                                                                                                                                                 // we don't need to select the tab if we close all
+      if(minChannel == maxChannel) {                                                                                                                                                                                                                                                                  // we don't need to select the tab if we close all
          if(currentChannelId < maxChannel) {
             fTab->SetTab(currentChannelId + 1);
          } else {
