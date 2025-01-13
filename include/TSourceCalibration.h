@@ -31,6 +31,7 @@
 #include "TNucleus.h"
 #include "TCalibrationGraph.h"
 #include "GH1D.h"
+#include "Globals.h"
 
 class TSourceTab;
 
@@ -170,17 +171,7 @@ private:
 
 class TSourceCalibration : public TGMainFrame {
 public:
-   enum EEntry : int {
-      kStartButton,
-      kSourceBox           = 100,
-      kSigmaEntry          = 200,
-      kThresholdEntry      = 300,
-      kDegreeEntry         = 400,
-      kPeakRatioEntry      = 500,
-      kWriteNonlinearities = 600
-   };
-
-   TSourceCalibration(double sigma, double threshold, int degree, double peakRatio, int count...);
+	TSourceCalibration(double sigma, double threshold, int degree, double peakRatio, int count...);
    TSourceCalibration(const TSourceCalibration&)                = delete;
    TSourceCalibration(TSourceCalibration&&) noexcept            = delete;
    TSourceCalibration& operator=(const TSourceCalibration&)     = delete;
@@ -230,17 +221,50 @@ public:
    void SecondWindow();
    void FinalWindow();
 
-   static void VerboseLevel(int val)
+	static void PanelWidth(int val) { fPanelWidth = val; }
+	static void PanelHeight(int val) { fPanelHeight = val; }
+	static void StatusbarHeight(int val) { fStatusbarHeight = val; }
+
+	static int PanelWidth() { return fPanelWidth; }
+	static int PanelHeight() { return fPanelHeight; }
+	static int StatusbarHeight() { return fStatusbarHeight; }
+
+	// no getters for these as they are only used in this class
+	static void ParameterHeight(int val) { fParameterHeight = val; }
+	static void SourceboxWidth(int val) { fSourceboxWidth = val; }
+	static void DigitWidth(int val) { fDigitWidth = val; }
+
+   static void VerboseLevel(EVerbosity val)
    {
       fVerboseLevel = val;
    }
-   static int VerboseLevel() { return fVerboseLevel; }
+   static EVerbosity VerboseLevel() { return fVerboseLevel; }
 
    static void ZoomX();
 
    void PrintLayout() const;
 
 private:
+	enum EEntry : int {
+      kStartButton,
+      kSourceBox           = 100,
+      kSigmaEntry          = 200,
+      kThresholdEntry      = 300,
+      kDegreeEntry         = 400,
+      kPeakRatioEntry      = 500,
+      kWriteNonlinearities = 600
+   };
+   enum ENavigate : int {
+      kPrevious      = 1,
+      kFindPeaks     = 2,
+      kFindPeaksFast = 3,
+      kCalibrate     = 4,
+      kDiscard       = 5,
+      kAccept        = 6,
+      kAcceptAll     = 7,
+      kNext          = 8
+   };
+
    void BuildFirstInterface();
    void MakeFirstConnections();
    void DisconnectFirst();
@@ -297,7 +321,16 @@ private:
    std::vector<TH2*> fMatrices;
    int               fNofBins{0};   ///< Number of filled bins in first matrix
 
+	// graphic settings
    unsigned int fLineHeight{20};   ///< Height of text boxes and progress bar
+	static int fPanelWidth;         ///< Width of one panel
+	static int fPanelHeight;        ///< Height of one panel
+	static int fStatusbarHeight;    ///< Height of status bar (also extra height needed for tabs)
+	static int fParameterHeight;    ///< Height of the frame for the parameters
+	static int fSourceboxWidth;     ///< Width of the box to select which source each histogram is from
+	static int fDigitWidth;         ///< Number of digits used for parameter entries (if they are floating point)
+
+	int fWaitMs{100};               ///< How many milliseconds we wait before we process the navigation input (to avoid double triggers?)
 
    int fOldErrorLevel;   ///< Used to store old value of gErrorIgnoreLevel (set to kError for the scope of the class)
 
@@ -308,7 +341,7 @@ private:
 
    TFile* fOutput{nullptr};
 
-   static int fVerboseLevel;   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
+   static EVerbosity fVerboseLevel;   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
 
    /// \cond CLASSIMP
    ClassDefOverride(TSourceCalibration, 1)   // NOLINT(readability-else-after-return)
