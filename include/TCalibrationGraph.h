@@ -12,6 +12,8 @@
 #include "TLegend.h"
 #include "TQObject.h"
 
+#include "Globals.h"
+
 class TCalibrationGraphSet;
 
 class TCalibrationGraph : public TGraphErrors {
@@ -85,7 +87,7 @@ public:
    void SetMarkerColor(int index, Color_t color)
    {
       /// Set the marker color of the graph and residuals at index
-      if(fVerboseLevel > 3) { std::cout << "setting marker color of graph " << index << " to " << color << std::endl; }
+      if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "setting marker color of graph " << index << " to " << color << std::endl; }
       fGraphs[index].SetMarkerColor(color);
       fResidualGraphs[index].SetMarkerColor(color);
    }
@@ -152,8 +154,8 @@ public:
 
    void ResetTotalGraph();   ///< reset the total graph and add the individual ones again (used e.g. after scaling of individual graphs is done)
 
-   static void VerboseLevel(int val) { fVerboseLevel = val; }
-   static int  VerboseLevel() { return fVerboseLevel; }
+   static void       VerboseLevel(EVerbosity val) { fVerboseLevel = val; }
+   static EVerbosity VerboseLevel() { return fVerboseLevel; }
 
    void Clear(Option_t* option = "") override;
 
@@ -173,7 +175,7 @@ private:
    std::string                    fXAxisLabel;                    ///< The label of the x-axis.
    std::string                    fYAxisLabel;                    ///< The label of the y-axis.
 
-   static int fVerboseLevel;   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
+   static EVerbosity fVerboseLevel;   ///< Changes verbosity
 
    /// \cond CLASSIMP
    ClassDefOverride(TCalibrationGraphSet, 3)   // NOLINT(readability-else-after-return)

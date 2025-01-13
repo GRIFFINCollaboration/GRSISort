@@ -8,6 +8,7 @@
 #include "TList.h"
 #include "TBox.h"
 
+#include "Globals.h"
 #include "GH2I.h"
 
 class TF1;
@@ -80,8 +81,8 @@ public:
    void PrintRegions();
    void DrawRegions(Option_t* opt = "");
 
-   static void VerboseLevel(int level) { fVerboseLevel = level; }
-   static int  VerboseLevel() { return fVerboseLevel; }
+   static void       VerboseLevel(EVerbosity level) { fVerboseLevel = level; }
+   static EVerbosity VerboseLevel() { return fVerboseLevel; }
 
 private:
    void RemoveCurrentRegion();
@@ -100,7 +101,7 @@ private:
    size_t             fNofRegions{0};                                     //!<! counts number of regions in this histogram, only used to set the color of the region
    TList              fRegions;
 
-   static int fVerboseLevel;   //!<! level of verbosity
+   static EVerbosity fVerboseLevel;   //!<! level of verbosity
 
    /// /cond CLASSIMP
    ClassDefOverride(GH1D, 1)   // NOLINT(readability-else-after-return)
