@@ -30,7 +30,7 @@ var _globals_8h =
     [ "YELLOW", "_globals_8h.html#abf681265909adf3d3e8116c93c0ba179", null ],
     [ "EVerbosity", "_globals_8h.html#a56eed0e4beb7cba0f5e9fb51c8573285", [
       [ "kQuiet", "_globals_8h.html#a56eed0e4beb7cba0f5e9fb51c8573285a18add7cdc87dcd1cd9c0da99195a3f2b", null ],
-      [ "kBasic", "_globals_8h.html#a56eed0e4beb7cba0f5e9fb51c8573285ab500b51e9139afc9053efce01370638f", null ],
+      [ "kBasicFlow", "_globals_8h.html#a56eed0e4beb7cba0f5e9fb51c8573285af382a254d195b14196723d9ea326a436", null ],
       [ "kSubroutines", "_globals_8h.html#a56eed0e4beb7cba0f5e9fb51c8573285a33678380b1c3bd3ef3d404c30aaf6660", null ],
       [ "kLoops", "_globals_8h.html#a56eed0e4beb7cba0f5e9fb51c8573285a4213e54734cc754057a80e455399ca03", null ],
       [ "kAll", "_globals_8h.html#a56eed0e4beb7cba0f5e9fb51c8573285a8d857bf5569760ac7306382a558cb092", null ]

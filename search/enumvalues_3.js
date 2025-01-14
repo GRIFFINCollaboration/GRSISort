@@ -39,7 +39,7 @@ var searchData=
   ['kbadtriggerid_36',['kbadtriggerid',['../class_t_g_r_s_i_data_parser.html#a15f211d3ac0d266938df54c9b49b054da10ea886c09852e4e30a7c0f54c14d195',1,'TGRSIDataParser::kBadTriggerId'],['../class_t_i_l_l_data_parser.html#a53007fec77863dbd52761e1cea9ce8aca10ea886c09852e4e30a7c0f54c14d195',1,'TILLDataParser::kBadTriggerId'],['../class_t_tdr_data_parser.html#aad635c12d7224dc2115286ad2bd2a6c0a10ea886c09852e4e30a7c0f54c14d195',1,'TTdrDataParser::kBadTriggerId']]],
   ['kbambino_37',['kBambino',['../class_t_g_r_s_i_mnemonic.html#aba94aea8c0b8cf86e70048623a485b20aaab32ace1eecc7df8675fe870b7a2ba8',1,'TGRSIMnemonic']]],
   ['kbase_38',['kBase',['../class_t_detector_hit.html#ada323f08a38cd73186465ecb4f9b72ebad972115f06325253781715b97744abdd',1,'TDetectorHit']]],
-  ['kbasic_39',['kBasic',['../_globals_8h.html#a56eed0e4beb7cba0f5e9fb51c8573285ab500b51e9139afc9053efce01370638f',1,'Globals.h']]],
+  ['kbasicflow_39',['kBasicFlow',['../_globals_8h.html#a56eed0e4beb7cba0f5e9fb51c8573285af382a254d195b14196723d9ea326a436',1,'Globals.h']]],
   ['kbeamon_40',['kBeamOn',['../group___sorting.html#ggab6809cdce78a7710ee2ac3719016868ca66c1faacc785547469c3f1f707a20098',1,'TPPG.h']]],
   ['kbgamp_41',['kBgAmp',['../class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba752047a1866f4db408e5bea6b5eac7dd',1,'TCalibrateDescant']]],
   ['kbgcheckbutton1_42',['kBGCheckButton1',['../class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cac8af2628893d343f8355df22cfd59d55',1,'TBGSubtraction']]],
