@@ -87,6 +87,7 @@ std::map<GPeak*, std::tuple<double, double, double, double>> Match(std::vector<G
          }
          sourceTab->Status(Form("%zu/%zu - %zu - %d", num_data_points, peakValues.size(), maxSize, iteration), 1);
          ++iteration;
+			if(iteration >= TSourceCalibration::MaxIterations()) { break; }
       }
 
       // Remove one peak value from the best fit, make sure that we reproduce (0,0) intercept.
@@ -229,6 +230,7 @@ std::map<GPeak*, std::tuple<double, double, double, double>> SmartMatch(std::vec
          }
          sourceTab->Status(Form("%zu/%zu - %zu - %d", num_data_points, peakValues.size(), maxSize, iteration), 1);
          ++iteration;
+			if(iteration >= TSourceCalibration::MaxIterations()) { break; }
       }
 
       // Remove one peak value from the best fit, make sure that we reproduce (0,0) intercept.
@@ -570,11 +572,14 @@ void TSourceTab::FindPeaks(const double& sigma, const double& threshold, const d
       //fPeakFitter.RemoveAllPeaks();
       for(int i = 0; i < nofPeaks; i++) {
          double range = 4 * fSigma * fProjection->GetXaxis()->GetBinWidth(1);
-         GPeak* peak  = PhotoPeakFit(fProjection, peakPos[i] - range, peakPos[i] + range, "qretryfit");
-         //fPeakFitter.SetRange(peakPos[i] - range, peakPos[i] + range);
-         //auto peak = new TRWPeak(peakPos[i]);
-         //fPeakFitter.AddPeak(peak);
-         //fPeakFitter.Fit(fProjection, "qretryfit");
+			// if we aren't already redirecting the output, we redirect it to /dev/null and do a quiet fit, otherwise we do a normal fit since the output will be redirected to a file
+			GPeak* peak  = nullptr;
+			if(TSourceCalibration::LogFile().empty()) {
+				TRedirect redirect("/dev/null");
+				peak  = PhotoPeakFit(fProjection, peakPos[i] - range, peakPos[i] + range, "qretryfit");
+			} else {
+				peak  = PhotoPeakFit(fProjection, peakPos[i] - range, peakPos[i] + range, "retryfit");
+			}
          if(peak->Area() > 0) {
             fPeaks.push_back(peak);
             if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
@@ -1418,13 +1423,15 @@ void TChannelTab::PrintLayout() const
 }
 
 //////////////////////////////////////// TSourceCalibration ////////////////////////////////////////
-EVerbosity TSourceCalibration::fVerboseLevel    = EVerbosity::kQuiet;
-int        TSourceCalibration::fPanelWidth      = 600;
-int        TSourceCalibration::fPanelHeight     = 400;
-int        TSourceCalibration::fStatusbarHeight = 50;
-int        TSourceCalibration::fSourceboxWidth  = 100;
-int        TSourceCalibration::fParameterHeight = 200;
-int        TSourceCalibration::fDigitWidth      = 5;
+EVerbosity  TSourceCalibration::fVerboseLevel    = EVerbosity::kQuiet;
+int         TSourceCalibration::fPanelWidth      = 600;
+int         TSourceCalibration::fPanelHeight     = 400;
+int         TSourceCalibration::fStatusbarHeight = 50;
+int         TSourceCalibration::fSourceboxWidth  = 100;
+int         TSourceCalibration::fParameterHeight = 200;
+int         TSourceCalibration::fDigitWidth      = 5;
+std::string TSourceCalibration::fLogFile;
+int			TSourceCalibration::fMaxIterations   = 50;
 
 TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degree, double peakRatio, int count...)
    : TGMainFrame(nullptr, 2 * fPanelWidth, fPanelHeight + 2 * fStatusbarHeight), fDefaultSigma(sigma), fDefaultThreshold(threshold), fDefaultDegree(degree), fDefaultPeakRatio(peakRatio)
@@ -1503,6 +1510,11 @@ TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degre
       throw std::runtime_error("Unable to open output file \"TSourceCalibration.root\"!");
    }
 
+	TRedirect* redirect = nullptr;
+	if(!fLogFile.empty()) {
+		redirect = new TRedirect(fLogFile.c_str());
+	}
+
    // build the first screen
    BuildFirstInterface();
    MakeFirstConnections();
@@ -1518,6 +1530,8 @@ TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degre
 
    // Map main frame
    MapWindow();
+
+	delete redirect;
 }
 
 TSourceCalibration::~TSourceCalibration()
