@@ -32,7 +32,7 @@ var searchData=
   ['loadwindowfile_29',['LoadWindowFile',['../classpygui_1_1mainwindow_1_1_main_window.html#a7f6798e386411c036d3315ec13047269',1,'pygui::mainwindow::MainWindow']]],
   ['locatebank_30',['LocateBank',['../class_t_midas_event.html#aa19f835a197a7ec88c145743f45a66db',1,'TMidasEvent']]],
   ['logerrors_31',['LogErrors',['../class_t_g_r_s_i_options.html#ae517deae97e1ab32bb0a7130ec0161ec',1,'TGRSIOptions']]],
-  ['logfile_32',['logfile',['../class_t_g_r_s_i_options.html#a5df0c7356d6957d3c4df3f10c1bc8571',1,'TGRSIOptions::LogFile(const std::string &amp;val)'],['../class_t_g_r_s_i_options.html#a4c408378455cdfe93b74a4c5f1f36fc0',1,'TGRSIOptions::LogFile() const']]],
+  ['logfile_32',['logfile',['../class_t_source_calibration.html#a07c48cb4e16d0fd1760690251c60ec59',1,'TSourceCalibration::LogFile()'],['../class_t_source_calibration.html#a8faec5fba73032e9ce54f8810e0c38a1',1,'TSourceCalibration::LogFile(std::string val)'],['../class_t_g_r_s_i_options.html#a5df0c7356d6957d3c4df3f10c1bc8571',1,'TGRSIOptions::LogFile(const std::string &amp;val)'],['../class_t_g_r_s_i_options.html#a4c408378455cdfe93b74a4c5f1f36fc0',1,'TGRSIOptions::LogFile() const']]],
   ['longfiledescription_33',['LongFileDescription',['../class_t_g_r_s_i_options.html#a703fcb392809a94bd350581c27da5516',1,'TGRSIOptions']]],
   ['loop_34',['Loop',['../class_stoppable_thread.html#a345004678ce5aa33ddb539bad031c188',1,'StoppableThread']]],
   ['loopuntildone_35',['LoopUntilDone',['../class_t_g_r_s_iint.html#ac0400ba3fcee244893302518b4b5f12c',1,'TGRSIint']]],

@@ -19,7 +19,7 @@ var searchData=
   ['bak_16',['bak',['../class_t_preserve_g_directory.html#ab43959818bea2ce7ac05f9218f4cd556',1,'TPreserveGDirectory']]],
   ['baseamp_17',['baseamp',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a89f6f39d0b338e9299019ca489053f9c',1,'TPulseAnalyzer::WaveFormPar']]],
   ['basefreq_18',['basefreq',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a909d31cdad1e78e072b4ed733f4c2e1e',1,'TPulseAnalyzer::WaveFormPar']]],
-  ['baseline_19',['baseline',['../struct_t_channel_1_1_wave_form_shape_par.html#a2d5133f9e8f4681cf039868839b4be48',1,'TChannel::WaveFormShapePar::BaseLine'],['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a44e84c241a2dd09197eba21b7766851a',1,'TPulseAnalyzer::WaveFormPar::baseline']]],
+  ['baseline_19',['baseline',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a44e84c241a2dd09197eba21b7766851a',1,'TPulseAnalyzer::WaveFormPar::baseline'],['../struct_t_channel_1_1_wave_form_shape_par.html#a2d5133f9e8f4681cf039868839b4be48',1,'TChannel::WaveFormShapePar::BaseLine']]],
   ['baseline_5frange_20',['baseline_range',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#aa6d0221399398372e1ab1052e92fd214',1,'TPulseAnalyzer::WaveFormPar']]],
   ['baselinefin_21',['baselinefin',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#ad96bfbd38c4749a7eca0eef02b95d59c',1,'TPulseAnalyzer::WaveFormPar']]],
   ['baselinemax_22',['baselineMax',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#ac0a1b28f3ed2fce17ffc45fa0aac8c32',1,'TPulseAnalyzer::WaveFormPar']]],

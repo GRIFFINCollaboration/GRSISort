@@ -1,7 +1,8 @@
 var _t_g_r_s_i_utilities_8h =
 [
-    [ "all_files_exist", "_t_g_r_s_i_utilities_8h.html#a2d34081667925a93e752c0846bf3337d", null ],
-    [ "file_exists", "_t_g_r_s_i_utilities_8h.html#a0038df898c35b6a483fa874b3671735b", null ],
+    [ "AllFilesExist", "_t_g_r_s_i_utilities_8h.html#acd3f76baf682615b7456d4ae6fa3f94c", null ],
+    [ "DirectoryExists", "_t_g_r_s_i_utilities_8h.html#ac07c11b7f1c7da35c4feebc1ec58a7ae", null ],
+    [ "FileExists", "_t_g_r_s_i_utilities_8h.html#a375cfcc53c68847b7137a22876b5f973", null ],
     [ "FindFileSize", "_t_g_r_s_i_utilities_8h.html#ad6a3bf8b918fb893c5b59b6b397a8f7c", null ],
     [ "GetRunNumber", "_t_g_r_s_i_utilities_8h.html#a1008fed86c55cc25e469e675935e35e0", null ],
     [ "GetSubRunNumber", "_t_g_r_s_i_utilities_8h.html#aedb03157a44dff3274454bbf5c04b47d", null ],

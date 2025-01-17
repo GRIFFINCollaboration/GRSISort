@@ -138,7 +138,7 @@ $(document).ready(function(){initNavTree('_t_parser_library_8cxx_source.html',''
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      <span class="keywordflow">throw</span> std::runtime_error(str.str());</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>   }</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>   <span class="keywordflow">if</span>(!<a class="code hl_function" href="_t_g_r_s_i_utilities_8h.html#a0038df898c35b6a483fa874b3671735b">file_exists</a>(<a class="code hl_function" href="class_t_g_r_s_i_options.html#a1a8edf1ec3d24de78be268e1a12492f7">TGRSIOptions::Get</a>()-&gt;ParserLibrary().c_str())) {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>   <span class="keywordflow">if</span>(!<a class="code hl_function" href="_t_g_r_s_i_utilities_8h.html#a375cfcc53c68847b7137a22876b5f973">FileExists</a>(<a class="code hl_function" href="class_t_g_r_s_i_options.html#a1a8edf1ec3d24de78be268e1a12492f7">TGRSIOptions::Get</a>()-&gt;ParserLibrary().c_str())) {</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      std::ostringstream str;</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      str &lt;&lt; <a class="code hl_define" href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a> &lt;&lt; <span class="stringliteral">&quot;Library &#39;&quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_g_r_s_i_options.html#a1a8edf1ec3d24de78be268e1a12492f7">TGRSIOptions::Get</a>()-&gt;<a class="code hl_function" href="class_t_g_r_s_i_options.html#acc0b4f6f2c0d4725939997b1bde9e777">ParserLibrary</a>() &lt;&lt; <span class="stringliteral">&quot;&#39; does not exist or we do not have permissions to access it!&quot;</span> &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a>;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      <span class="keywordflow">throw</span> std::runtime_error(str.str());</div>
@@ -180,7 +180,7 @@ $(document).ready(function(){initNavTree('_t_parser_library_8cxx_source.html',''
 <div class="ttc" id="a_t_data_frame_library_8cxx_html_a2de9130dd2f83273f96944eda6e8b05c"><div class="ttname"><a href="_t_data_frame_library_8cxx.html#a2de9130dd2f83273f96944eda6e8b05c">dlsym</a></div><div class="ttdeci">#define dlsym</div><div class="ttdef"><b>Definition</b> <a href="_t_data_frame_library_8cxx_source.html#l00005">TDataFrameLibrary.cxx:5</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_options_8h_html"><div class="ttname"><a href="_t_g_r_s_i_options_8h.html">TGRSIOptions.h</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_utilities_8h_html"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html">TGRSIUtilities.h</a></div></div>
-<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a0038df898c35b6a483fa874b3671735b"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a0038df898c35b6a483fa874b3671735b">file_exists</a></div><div class="ttdeci">bool file_exists(const char *filename)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00013">TGRSIUtilities.cxx:13</a></div></div>
+<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a375cfcc53c68847b7137a22876b5f973"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a375cfcc53c68847b7137a22876b5f973">FileExists</a></div><div class="ttdeci">bool FileExists(const char *filename)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00013">TGRSIUtilities.cxx:13</a></div></div>
 <div class="ttc" id="a_t_parser_library_8cxx_html_a2de9130dd2f83273f96944eda6e8b05c"><div class="ttname"><a href="_t_parser_library_8cxx.html#a2de9130dd2f83273f96944eda6e8b05c">dlsym</a></div><div class="ttdeci">#define dlsym</div><div class="ttdef"><b>Definition</b> <a href="_t_parser_library_8cxx_source.html#l00003">TParserLibrary.cxx:3</a></div></div>
 <div class="ttc" id="a_t_parser_library_8h_html"><div class="ttname"><a href="_t_parser_library_8h.html">TParserLibrary.h</a></div></div>
 <div class="ttc" id="a_t_run_info_8h_html"><div class="ttname"><a href="_t_run_info_8h.html">TRunInfo.h</a></div></div>
@@ -206,7 +206,7 @@ $(document).ready(function(){initNavTree('_t_parser_library_8cxx_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_2b08b36851fcb6a7439555c8d93f536c.html">TFormat</a></li><li class="navelem"><a class="el" href="_t_parser_library_8cxx.html">TParserLibrary.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jan 14 2025 17:21:12.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jan 17 2025 19:28:15.</li>
   </ul>
 </div>
 </body>

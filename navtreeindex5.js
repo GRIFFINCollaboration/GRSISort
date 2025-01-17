@@ -1,5 +1,7 @@
 var NAVTREEINDEX5 =
 {
+"_t_ifin_hit_8h_source.html":[11,0,6,0,14],
+"_t_kinematics_8cxx.html":[11,0,9,1,4,1],
 "_t_kinematics_8cxx_source.html":[11,0,9,1,4,1],
 "_t_kinematics_8h.html":[11,0,7,83],
 "_t_kinematics_8h_source.html":[11,0,7,83],
@@ -247,7 +249,5 @@ var NAVTREEINDEX5 =
 "_t_t_a_c_8cxx_source.html":[11,0,2,2,0,16,1],
 "_t_t_a_c_8h.html":[11,0,2,1,43],
 "_t_t_a_c_8h_source.html":[11,0,2,1,43],
-"_t_t_a_c_hit_8cxx.html":[11,0,2,2,0,16,2],
-"_t_t_a_c_hit_8cxx_source.html":[11,0,2,2,0,16,2],
-"_t_t_a_c_hit_8h.html":[11,0,2,1,44]
+"_t_t_a_c_hit_8cxx.html":[11,0,2,2,0,16,2]
 };

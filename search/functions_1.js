@@ -71,7 +71,7 @@ var searchData=
   ['adjustsize_68',['AdjustSize',['../class_g_root_canvas.html#a5a3faa4bfd7a45d89d959584c10b0572',1,'GRootCanvas']]],
   ['align_69',['Align',['../class_t_gain_match.html#a78607416a09dd1ae2a5434ae38651b6c',1,'TGainMatch']]],
   ['alignall_70',['AlignAll',['../class_t_gain_match.html#aa0e5908326f254a9ad59f906ef3be368',1,'TGainMatch']]],
-  ['all_5ffiles_5fexist_71',['all_files_exist',['../_t_g_r_s_i_utilities_8cxx.html#a2d34081667925a93e752c0846bf3337d',1,'all_files_exist(const std::vector&lt; std::string &gt; &amp;filenames):&#160;TGRSIUtilities.cxx'],['../_t_g_r_s_i_utilities_8h.html#a2d34081667925a93e752c0846bf3337d',1,'all_files_exist(const std::vector&lt; std::string &gt; &amp;filenames):&#160;TGRSIUtilities.cxx']]],
+  ['allfilesexist_71',['allfilesexist',['../_t_g_r_s_i_utilities_8cxx.html#acd3f76baf682615b7456d4ae6fa3f94c',1,'AllFilesExist(const std::vector&lt; std::string &gt; &amp;filenames):&#160;TGRSIUtilities.cxx'],['../_t_g_r_s_i_utilities_8h.html#acd3f76baf682615b7456d4ae6fa3f94c',1,'AllFilesExist(const std::vector&lt; std::string &gt; &amp;filenames):&#160;TGRSIUtilities.cxx']]],
   ['allocatedata_72',['AllocateData',['../class_t_midas_event.html#a49f5869d31fb4f9ec1f6c9db12050fee',1,'TMidasEvent']]],
   ['allthreadheader_73',['AllThreadHeader',['../class_stoppable_thread.html#a8db1da4e8b583f0fab2b889ad261cca0',1,'StoppableThread']]],
   ['allthreadprogress_74',['AllThreadProgress',['../class_stoppable_thread.html#a72c27027df52370e08a78ef72d6440cc',1,'StoppableThread']]],
@@ -116,7 +116,7 @@ var searchData=
   ['arraysubpositionstring_113',['ArraySubPositionString',['../class_t_mnemonic.html#abd578d2e59d7c3f913f650b0c1bcf794',1,'TMnemonic']]],
   ['assigngroupmaps_114',['AssignGroupMaps',['../class_t_angular_correlation.html#a5135ada4710f657e27ecf2868c56482f',1,'TAngularCorrelation']]],
   ['at_115',['at',['../class_t_g_r_s_i_map.html#ab1dc3096a1dff42dcda0acbf54a591cc',1,'TGRSIMap::at(const key_type &amp;key) const'],['../class_t_g_r_s_i_map.html#a5dcd264d838be594665c9ccddd17aeab',1,'TGRSIMap::at(const key_type &amp;key)']]],
-  ['atexithandler_116',['atexithandler',['../grsiproof_8cxx.html#a90a49b50a652d99b8d612ad0f76a3565',1,'AtExitHandler():&#160;grsiproof.cxx'],['../grsisort_8cxx.html#a04fc1723500e4bcabb52b985fedc0b72',1,'atexitHandler():&#160;grsisort.cxx']]],
+  ['atexithandler_116',['atexithandler',['../grsisort_8cxx.html#a04fc1723500e4bcabb52b985fedc0b72',1,'atexitHandler():&#160;grsisort.cxx'],['../grsiproof_8cxx.html#a90a49b50a652d99b8d612ad0f76a3565',1,'AtExitHandler():&#160;grsiproof.cxx']]],
   ['averageangle_117',['AverageAngle',['../class_t_griffin_angles.html#afd646dd0beca73b9b2ba03b13746a3d6',1,'TGriffinAngles']]],
   ['averagerateestimation_118',['AverageRateEstimation',['../class_t_g_r_s_i_options.html#a071bb1a060b139da8f30ebafacb4980d',1,'TGRSIOptions']]],
   ['axiscomboselected_119',['AxisComboSelected',['../class_t_b_g_subtraction.html#ad353baa32a1a03becedd02c4d1c7df01',1,'TBGSubtraction']]]

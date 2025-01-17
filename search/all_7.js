@@ -165,7 +165,7 @@ var searchData=
   ['correctionfile_162',['CorrectionFile',['../offsetfix_8cxx.html#a8ee2d669aac6eb95b7b50984fb7d9fc1',1,'offsetfix.cxx']]],
   ['correctionmap_163',['correctionmap',['../class_t_event_time.html#ae0852e65f7a49adb91ccdc94021762db',1,'TEventTime']]],
   ['correctmissingpoints_164',['CorrectMissingPoints',['../class_t_cal_graph.html#aea45745c5029c0bfd51a1368f4601aac',1,'TCalGraph']]],
-  ['count_165',['count',['../class_t_g_r_s_i_map.html#a637bc6a9724de5407fd3a835e1eba382',1,'TGRSIMap::count()'],['../class_t_griffin_angles.html#afc9a8c2ec5d2cf70f9256da5033b544a',1,'TGriffinAngles::Count()']]],
+  ['count_165',['count',['../class_t_griffin_angles.html#afc9a8c2ec5d2cf70f9256da5033b544a',1,'TGriffinAngles::Count()'],['../class_t_g_r_s_i_map.html#a637bc6a9724de5407fd3a835e1eba382',1,'TGRSIMap::count()']]],
   ['countsbetweenwraps_166',['countsbetweenwraps',['../_t_g_r_s_i_data_parser_8cxx.html#ac1820c5d5cf5c3d25b9e3d379a53cfbf',1,'TGRSIDataParser.cxx']]],
   ['covenant_20code_20of_20conduct_167',['Contributor Covenant Code of Conduct',['../md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html',1,'']]],
   ['covsrt_168',['covsrt',['../class_t_l_m_fitter.html#a38230edf6de363955170ee177360b0c2',1,'TLMFitter']]],

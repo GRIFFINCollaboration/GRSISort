@@ -746,7 +746,7 @@ $(document).ready(function(){initNavTree('_t_level_scheme_8cxx_source.html','');
 <div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>   <span class="comment">// open the file and read the level scheme</span></div>
 <div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>   <span class="comment">// still need to decide what format that should be</span></div>
 <div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>   <span class="keywordflow">if</span>(!filename.empty()) {</div>
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>      <span class="keywordflow">if</span>(!<a class="code hl_function" href="_t_g_r_s_i_utilities_8h.html#a0038df898c35b6a483fa874b3671735b">file_exists</a>(filename.c_str())) {</div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>      <span class="keywordflow">if</span>(!<a class="code hl_function" href="_t_g_r_s_i_utilities_8h.html#a375cfcc53c68847b7137a22876b5f973">FileExists</a>(filename.c_str())) {</div>
 <div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>         std::cout &lt;&lt; <span class="stringliteral">&quot;file &quot;</span> &lt;&lt; filename &lt;&lt; <span class="stringliteral">&quot; does not exist or we don&#39;t have read permissions&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>      } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>         <span class="keyword">auto</span> lastDot = filename.find_last_of(<span class="charliteral">&#39;.&#39;</span>);</div>
@@ -1794,8 +1794,8 @@ $(document).ready(function(){initNavTree('_t_level_scheme_8cxx_source.html','');
 <div class="ttc" id="a_globals_8h_html_a6cd26ccb39c45583e5a1bd90bc2bbb66"><div class="ttname"><a href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a></div><div class="ttdeci">#define DRED</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00018">Globals.h:18</a></div></div>
 <div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00005">Globals.h:5</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_utilities_8h_html"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html">TGRSIUtilities.h</a></div></div>
-<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a0038df898c35b6a483fa874b3671735b"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a0038df898c35b6a483fa874b3671735b">file_exists</a></div><div class="ttdeci">bool file_exists(const char *filename)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00013">TGRSIUtilities.cxx:13</a></div></div>
-<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a3618a4ab6c3f933fa7a76619ea3bf8f1"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a3618a4ab6c3f933fa7a76619ea3bf8f1">trimWS</a></div><div class="ttdeci">void trimWS(std::string &amp;line)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00047">TGRSIUtilities.cxx:47</a></div></div>
+<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a3618a4ab6c3f933fa7a76619ea3bf8f1"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a3618a4ab6c3f933fa7a76619ea3bf8f1">trimWS</a></div><div class="ttdeci">void trimWS(std::string &amp;line)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00060">TGRSIUtilities.cxx:60</a></div></div>
+<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a375cfcc53c68847b7137a22876b5f973"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a375cfcc53c68847b7137a22876b5f973">FileExists</a></div><div class="ttdeci">bool FileExists(const char *filename)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00013">TGRSIUtilities.cxx:13</a></div></div>
 <div class="ttc" id="a_t_level_scheme_8h_html"><div class="ttname"><a href="_t_level_scheme_8h.html">TLevelScheme.h</a></div></div>
 <div class="ttc" id="aclass_g_canvas_html"><div class="ttname"><a href="class_g_canvas.html">GCanvas</a></div><div class="ttdef"><b>Definition</b> <a href="_g_canvas_8h_source.html#l00238">GCanvas.h:238</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -1805,7 +1805,7 @@ $(document).ready(function(){initNavTree('_t_level_scheme_8cxx_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_47358ee868e3aed1e59cf9c2ead119a2.html">GROOT</a></li><li class="navelem"><a class="el" href="_t_level_scheme_8cxx.html">TLevelScheme.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jan 14 2025 17:21:12.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jan 17 2025 19:28:14.</li>
   </ul>
 </div>
 </body>
