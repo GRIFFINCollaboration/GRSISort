@@ -141,8 +141,8 @@ $(document).ready(function(){initNavTree('_t_s_r_i_m_8cxx_source.html',''); init
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>   std::ostringstream ostr;</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>   ostr &lt;&lt; grsipath &lt;&lt; <span class="stringliteral">&quot;/libraries/TAnalysis/SRIMData/&quot;</span>;</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>   <span class="keywordflow">if</span>(!<a class="code hl_function" href="_t_g_r_s_i_utilities_8h.html#ac07c11b7f1c7da35c4feebc1ec58a7ae">DirectoryExists</a>(ostr.str().c_str())) {</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      ostr.str(grsipath);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      ostr &lt;&lt; <span class="stringliteral">&quot;/SRIMData/&quot;</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      ostr.str(std::string());</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      ostr &lt;&lt; grsipath &lt;&lt; <span class="stringliteral">&quot;/SRIMData/&quot;</span>;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>   }</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>   <span class="keywordflow">if</span>(!<a class="code hl_function" href="_t_g_r_s_i_utilities_8h.html#ac07c11b7f1c7da35c4feebc1ec58a7ae">DirectoryExists</a>(ostr.str().c_str())) {</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      std::cout &lt;&lt; std::endl</div>
@@ -388,7 +388,7 @@ $(document).ready(function(){initNavTree('_t_s_r_i_m_8cxx_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_b8a6b11093ec7fc73cd5fa39ac4363df.html">TSRIM</a></li><li class="navelem"><a class="el" href="_t_s_r_i_m_8cxx.html">TSRIM.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jan 17 2025 19:49:54.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jan 17 2025 21:22:08.</li>
   </ul>
 </div>
 </body>
