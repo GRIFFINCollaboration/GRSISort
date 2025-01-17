@@ -34,8 +34,8 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
    std::ostringstream ostr;
    ostr << grsipath << "/libraries/TAnalysis/SRIMData/";
    if(!DirectoryExists(ostr.str().c_str())) {
-      ostr.str(grsipath);
-      ostr << "/SRIMData/";
+      ostr.str("");
+      ostr << grsipath << "/SRIMData/";
    }
    if(!DirectoryExists(ostr.str().c_str())) {
       std::cout << std::endl
