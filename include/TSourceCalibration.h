@@ -238,11 +238,11 @@ public:
    static void       VerboseLevel(EVerbosity val) { fVerboseLevel = val; }
    static EVerbosity VerboseLevel() { return fVerboseLevel; }
 
-	static void LogFile(std::string val) { fLogFile = std::move(val); }
-	static std::string LogFile() { return fLogFile; }
+   static void        LogFile(std::string val) { fLogFile = std::move(val); }
+   static std::string LogFile() { return fLogFile; }
 
-	static void MaxIterations(int val) { fMaxIterations = val; }
-	static int MaxIterations() { return fMaxIterations; }
+   static void MaxIterations(int val) { fMaxIterations = val; }
+   static int  MaxIterations() { return fMaxIterations; }
 
    static void ZoomX();
 
@@ -325,7 +325,7 @@ private:
    std::vector<TH2*> fMatrices;
    int               fNofBins{0};   ///< Number of filled bins in first matrix
 
-	static std::string fLogFile;     ///< name of log file, if empty no log file is written
+   static std::string fLogFile;   ///< name of log file, if empty no log file is written
 
    // graphic settings
    unsigned int fLineHeight{20};    ///< Height of text boxes and progress bar
@@ -340,11 +340,11 @@ private:
 
    int fOldErrorLevel;   ///< Used to store old value of gErrorIgnoreLevel (set to kError for the scope of the class)
 
-   double fDefaultSigma{2.};         ///< The default sigma used for the peak finding algorithm, can be changed later.
-   double fDefaultThreshold{0.05};   ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.
-   int    fDefaultDegree{1};         ///< The default degree of the polynomial used for calibrating, can be changed later.
-   double fDefaultPeakRatio{2.};     ///< The default ratio between found peaks and peaks in the source (per region).
-	static int fMaxIterations;        ///< Maximum iterations over combinations in Match and SmartMatch
+   double     fDefaultSigma{2.};         ///< The default sigma used for the peak finding algorithm, can be changed later.
+   double     fDefaultThreshold{0.05};   ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.
+   int        fDefaultDegree{1};         ///< The default degree of the polynomial used for calibrating, can be changed later.
+   double     fDefaultPeakRatio{2.};     ///< The default ratio between found peaks and peaks in the source (per region).
+   static int fMaxIterations;            ///< Maximum iterations over combinations in Match and SmartMatch
 
    TFile* fOutput{nullptr};
 
