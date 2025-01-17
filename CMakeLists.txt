@@ -310,7 +310,7 @@ add_library(TSRIM SHARED
 	${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TSRIM/TSRIM.cxx
 	)
 root_generate_dictionary(G__TSRIM TSRIM.h MODULE TSRIM LINKDEF ${PROJECT_SOURCE_DIR}/libraries/TAnalysis/TSRIM/LinkDef.h)
-target_link_libraries(TSRIM ${ROOT_LIBRARIES})
+target_link_libraries(TSRIM TFormat ${ROOT_LIBRARIES})
 
 #add_library(TRawFile INTERFACE)
 add_library(TRawFile SHARED
