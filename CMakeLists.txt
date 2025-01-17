@@ -118,6 +118,7 @@ endif()
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/include DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/examples DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/libraries/TAnalysis/SourceData DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/libraries/TAnalysis/SRIMData DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 #----------------------------------------------------------------------------
 # define all libraries and root dictionaries

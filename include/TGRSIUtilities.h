@@ -7,8 +7,9 @@
 
 #include "TGRSITypes.h"
 
-bool file_exists(const char* filename);
-bool all_files_exist(const std::vector<std::string>& filenames);
+bool FileExists(const char* filename);
+bool DirectoryExists(const char* dirname);
+bool AllFilesExist(const std::vector<std::string>& filenames);
 
 void trim(std::string& line, const std::string& trimChars = " \f\n\r\t\v");
 void trimWS(std::string& line);
