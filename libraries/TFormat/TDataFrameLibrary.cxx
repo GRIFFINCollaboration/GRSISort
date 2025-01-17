@@ -49,7 +49,7 @@ void TDataFrameLibrary::Load()
       libraryPath.replace(dot, std::string::npos, ".so");
    }
 
-   if(!file_exists(libraryPath.c_str())) {
+   if(!FileExists(libraryPath.c_str())) {
       std::ostringstream str;
       str << DRED << "Library '" << libraryPath << "' does not exist or we do not have permissions to access it!" << RESET_COLOR;
       throw std::runtime_error(str.str());

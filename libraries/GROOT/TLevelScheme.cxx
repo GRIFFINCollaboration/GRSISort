@@ -642,7 +642,7 @@ TLevelScheme::TLevelScheme(const std::string& filename, bool debug)
    // open the file and read the level scheme
    // still need to decide what format that should be
    if(!filename.empty()) {
-      if(!file_exists(filename.c_str())) {
+      if(!FileExists(filename.c_str())) {
          std::cout << "file " << filename << " does not exist or we don't have read permissions" << std::endl;
       } else {
          auto lastDot = filename.find_last_of('.');

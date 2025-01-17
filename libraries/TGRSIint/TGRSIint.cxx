@@ -98,7 +98,7 @@ void TGRSIint::ApplyOptions()
       MakeBatch();
    }
 
-   bool missing_raw_file = !all_files_exist(opt->InputFiles());
+   bool missing_raw_file = !AllFilesExist(opt->InputFiles());
 
    LoadGROOTGraphics();
 
@@ -371,7 +371,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt)
 TRawFile* TGRSIint::OpenRawFile(const std::string& filename)
 {
    /// Opens Raw input file and stores them in _raw if successfuly opened.
-   if(!file_exists(filename.c_str())) {
+   if(!FileExists(filename.c_str())) {
       std::cerr << R"(File ")" << filename << R"(" does not exist)" << std::endl;
       return nullptr;
    }
@@ -408,7 +408,7 @@ void TGRSIint::SetupPipeline()
 
    bool missing_raw_file = false;
    for(const auto& filename : opt->InputFiles()) {
-      if(!file_exists(filename.c_str())) {
+      if(!FileExists(filename.c_str())) {
          missing_raw_file = true;
          std::cerr << "File not found: " << filename << std::endl;
       }
@@ -671,7 +671,7 @@ void TGRSIint::SetupPipeline()
 void TGRSIint::RunMacroFile(const std::string& filename)
 {
    /// Runs a macro file. This happens when a .C file is provided on the command line
-   if(file_exists(filename.c_str())) {
+   if(FileExists(filename.c_str())) {
       const char* command = Form(".x %s", filename.c_str());
       ProcessLine(command);
    } else {
@@ -680,7 +680,7 @@ void TGRSIint::RunMacroFile(const std::string& filename)
       if(beginning_pos != std::string::npos && filename.back() == ')') {
          std::string trueFilename = filename.substr(0, beginning_pos);
          std::string arguments    = filename.substr(beginning_pos, std::string::npos);
-         if(file_exists(trueFilename.c_str())) {
+         if(FileExists(trueFilename.c_str())) {
             const char* command = Form(".L %s", trueFilename.c_str());
             ProcessLine(command);
             command = Form("%s%s", trueFilename.substr(0, filename.find_first_of('.')).c_str(), arguments.c_str());
