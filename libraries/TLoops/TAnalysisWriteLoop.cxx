@@ -180,7 +180,7 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls)
          newBranch->Fill();
       }
 
-      std::cout << "\r" << std::string(30, ' ') << "\r" << Name() << ": added \"" << cls->GetName() << R"(" branch)" << std::endl;
+      std::cout << "\r" << std::string(30, ' ') << "\r" << Name() << ": added \"" << cls->GetName() << R"(" branch, )" << det_pp << ", " << det_p << std::string(30, ' ') << std::endl;
 
       // Unlock after we are done.
       TThread::UnLock();
@@ -203,12 +203,13 @@ void TAnalysisWriteLoop::WriteEvent(std::shared_ptr<TUnpackedEvent>& event)
       // Load current events
       for(const auto& det : event->GetDetectors()) {
          TClass* cls = det->IsA();
+			// attempt to copy this detector into the detector map
+			// if that fails (because the detector isn't in the map yet), create the branch and then copy this detector
          try {
-            *fDetMap.at(cls) = det.get();
-            //**fDetMap.at(cls) = *det;
+            **fDetMap.at(cls) = *det;
          } catch(std::out_of_range& e) {
             AddBranch(cls);
-            **fDetMap.at(cls) = *det;   //(det.get());
+            **fDetMap.at(cls) = *det;
          }
          (*fDetMap.at(cls))->ClearTransients();
       }
