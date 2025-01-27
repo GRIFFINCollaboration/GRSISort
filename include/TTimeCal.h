@@ -10,7 +10,7 @@
 class TTimeCal : public TCal {
 public:
    TTimeCal() = default;
-   TTimeCal(const char* name, const char* title) : TCal(name, title){};
+   TTimeCal(const char* name, const char* title) : TCal(name, title) {};
    TTimeCal(const TTimeCal&)                = default;
    TTimeCal(TTimeCal&&) noexcept            = default;
    TTimeCal& operator=(const TTimeCal&)     = default;

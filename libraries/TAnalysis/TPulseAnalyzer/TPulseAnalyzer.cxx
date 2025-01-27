@@ -1579,8 +1579,8 @@ bool TPulseAnalyzer::GetSiliShape(double tauDecay, double tauRise)
          if((cWavebuffer[j] - baseline) < 0) {
             exclusion++;
             continue;
-         }                                                                // this is crucial for oscillations
-                                                                          // if (j%10==0) cout<<j<<" "<<  cWavebuffer[j]<<" "<<cWavebuffer[j]-baseline<<endl ;
+         }   // this is crucial for oscillations
+         // if (j%10==0) cout<<j<<" "<<  cWavebuffer[j]<<" "<<cWavebuffer[j]-baseline<<endl ;
          double signal = log(cWavebuffer[j] - baseline) + j / tauDecay;   // sum of Y_i where  Y_i = (y_i - baseline)*exp(-t_i/tauDecay)
          lineq_vector[0] += exp(signal);
          lineq_vector[1] -= exp(signal - j / tauRise);   // sum of Y_i*X_i

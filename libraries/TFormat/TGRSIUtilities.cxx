@@ -13,7 +13,7 @@
 bool FileExists(const char* filename)
 {
    /// This checks if the path exist, and if it is a file and not a directory!
-   struct stat buffer {};
+   struct stat buffer{};
    int         state = stat(filename, &buffer);
    // state != 0 means we couldn't get file attributes. This doesn't necessary mean the file
    // does not exist, we might just be missing permission to access it. But for our purposes
@@ -26,7 +26,7 @@ bool FileExists(const char* filename)
 bool DirectoryExists(const char* dirname)
 {
    /// This checks if the directory exists
-   struct stat buffer {};
+   struct stat buffer{};
    int         state = stat(dirname, &buffer);
    // state != 0 means we couldn't get file attributes. This doesn't necessary mean the file
    // does not exist, we might just be missing permission to access it. But for our purposes

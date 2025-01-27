@@ -203,8 +203,8 @@ void TAnalysisWriteLoop::WriteEvent(std::shared_ptr<TUnpackedEvent>& event)
       // Load current events
       for(const auto& det : event->GetDetectors()) {
          TClass* cls = det->IsA();
-			// attempt to copy this detector into the detector map
-			// if that fails (because the detector isn't in the map yet), create the branch and then copy this detector
+         // attempt to copy this detector into the detector map
+         // if that fails (because the detector isn't in the map yet), create the branch and then copy this detector
          try {
             **fDetMap.at(cls) = *det;
          } catch(std::out_of_range& e) {
