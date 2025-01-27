@@ -188,7 +188,7 @@ void ComptonPolarimetryHelper::Exec(unsigned int slot, TGriffin& fGriffin, TGrif
             }
          }
       }   // for g2
-   }      // for g1
+   }   // for g1
 
    // Add the current event to the queue, delete the oldest event in the queue, and pop the pointer from the queue.
    fGriffinDeque[slot].emplace_back(new TGriffin(fGriffin));

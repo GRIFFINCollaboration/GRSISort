@@ -10,7 +10,7 @@
 class TCFDCal : public TCal {
 public:
    TCFDCal() = default;
-   TCFDCal(const char* name, const char* title) : TCal(name, title){};
+   TCFDCal(const char* name, const char* title) : TCal(name, title) {};
    TCFDCal(const TCFDCal&)                = default;
    TCFDCal(TCFDCal&&) noexcept            = default;
    TCFDCal& operator=(const TCFDCal&)     = default;
