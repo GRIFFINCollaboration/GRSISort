@@ -315,11 +315,9 @@ void TGRSIOptions::Load(int argc, char** argv)
       parser.option("log-errors", &fLogErrors, true);
       parser.option("reading-material", &fReadingMaterial, true);
       parser.option("write-fragment-tree write-frag-tree", &fWriteFragmentTree, true)
-         .description("Write fragment tree.")
-         .colour(DGREEN);
+         .description("Write fragment tree.");
       parser.option("bad-frags write-bad-frags bad-fragments write-bad-fragments", &fWriteBadFrags, true)
-         .description("Write fragments that failed parsing to BadFragmentTree")
-         .colour(DGREEN);
+         .description("Write fragments that failed parsing to BadFragmentTree");
       parser.option("separate-out-of-order", &fSeparateOutOfOrder, true)
          .description("Write out-of-order fragments to a separate tree at the sorting stage")
          .default_value(false)
@@ -466,8 +464,6 @@ void TGRSIOptions::Load(int argc, char** argv)
       fShowLogo             = false;
       fCloseAfterSort       = true;
       fWriteDiagnostics     = true;
-      fWriteFragmentTree    = true;
-      fWriteBadFrags        = true;
       fSeparateOutOfOrder   = true;
       fSuppressErrors       = true;
       fReconstructTimeStamp = true;
