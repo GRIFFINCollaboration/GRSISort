@@ -5,6 +5,6 @@ var searchData=
   ['var_5fname_2',['var_name',['../classpygui_1_1variable__tab_1_1_variable_tab.html#adbd36b55b600d4be189edee7e5abfd49',1,'pygui::variable_tab::VariableTab']]],
   ['var_5fvalue_3',['var_value',['../classpygui_1_1variable__tab_1_1_variable_tab.html#ac04ccde0421da3855c399038f5a70202',1,'pygui::variable_tab::VariableTab']]],
   ['variable_5ftab_4',['variable_tab',['../classpygui_1_1mainwindow_1_1_main_window.html#ad903a777cb7372ab1b233121f7f19ce0',1,'pygui::mainwindow::MainWindow']]],
-  ['variables_5',['variables',['../classpygui_1_1variable__tab_1_1_variable_tab.html#afa0f2955cfe2dce145124a29d8931022',1,'pygui::variable_tab::VariableTab']]],
+  ['variables_5',['variables',['../classpygui_1_1variable__tab_1_1_variable_tab.html#a39ededb120aeaf2b1990db0ae589bfe0',1,'pygui::variable_tab::VariableTab']]],
   ['variableselection_6',['VariableSelection',['../classpygui_1_1variable__tab_1_1_variable_tab.html#abe807033aac1093fb8f6cc2aac5ff83d',1,'pygui::variable_tab::VariableTab']]]
 ];

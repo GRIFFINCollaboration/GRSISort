@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['ndf_0',['ndf',['../struct_t_pulse_analyzer_1_1_par_par.html#ac09896fc6e1627c4686851ff778b392d',1,'TPulseAnalyzer::ParPar::ndf'],['../struct_t_pulse_analyzer_1_1_shape_par.html#a479d8ab775ee00e65bcc4815cd2a71ef',1,'TPulseAnalyzer::ShapePar::ndf'],['../struct_t_pulse_analyzer_1_1_line_par.html#a5a3f5109fcb63054fde47e4fd6e81bac',1,'TPulseAnalyzer::LinePar::ndf']]],
+  ['ndf_0',['ndf',['../struct_t_pulse_analyzer_1_1_line_par.html#a5a3f5109fcb63054fde47e4fd6e81bac',1,'TPulseAnalyzer::LinePar::ndf'],['../struct_t_pulse_analyzer_1_1_par_par.html#ac09896fc6e1627c4686851ff778b392d',1,'TPulseAnalyzer::ParPar::ndf'],['../struct_t_pulse_analyzer_1_1_shape_par.html#a479d8ab775ee00e65bcc4815cd2a71ef',1,'TPulseAnalyzer::ShapePar::ndf']]],
   ['ndf_5fex_1',['ndf_ex',['../struct_t_pulse_analyzer_1_1_shape_par.html#a4fdd467537f11d14af5ea5be46c3e87e',1,'TPulseAnalyzer::ShapePar']]],
   ['ndf_5ff_2',['ndf_f',['../struct_t_pulse_analyzer_1_1_shape_par.html#a8c708f9f2ed4a9773036fa2a77e36fe2',1,'TPulseAnalyzer::ShapePar']]],
   ['next_5fname_3',['next_name',['../classpygui_1_1tcut__tab_1_1_t_cut_tab.html#ae726d50d7f1f4db4eff7223bf946a421',1,'pygui::tcut_tab::TCutTab']]],

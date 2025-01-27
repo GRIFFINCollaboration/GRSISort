@@ -5,7 +5,7 @@ var searchData=
   ['tdecayfit_2',['TDecayFit',['../class_t_single_decay.html#a53f52cb0beacccfd779813bedb6e20a4',1,'TSingleDecay']]],
   ['tgrsioptions_3',['TGRSIOptions',['../class_t_analysis_options.html#afeda607ac0bb56c78a9ed8faa7dcfe85',1,'TAnalysisOptions']]],
   ['tmultipeak_4',['TMultiPeak',['../class_t_peak.html#ab0c9da750a70e82d00edbf0c33266252',1,'TPeak']]],
-  ['tnucleus_5',['tnucleus',['../class_t_g_r_s_i_transition.html#a7261ff7697162ea0cbdd32b99636288f',1,'TGRSITransition::TNucleus'],['../class_t_transition.html#a7261ff7697162ea0cbdd32b99636288f',1,'TTransition::TNucleus']]],
+  ['tnucleus_5',['TNucleus',['../class_t_g_r_s_i_transition.html#a7261ff7697162ea0cbdd32b99636288f',1,'TGRSITransition::TNucleus'],['../class_t_transition.html#a7261ff7697162ea0cbdd32b99636288f',1,'TTransition::TNucleus']]],
   ['tpeakfitter_6',['TPeakFitter',['../class_t_single_peak.html#a1b974ba9485b7f22ff87fa8744096911',1,'TSinglePeak']]],
   ['tsingleton_3c_20tdataframelibrary_20_3e_7',['TSingleton&lt; TDataFrameLibrary &gt;',['../class_t_data_frame_library.html#ab3e486c86bf8af56ba6eb6165a0f2b27',1,'TDataFrameLibrary']]],
   ['tsingleton_3c_20tparserlibrary_20_3e_8',['TSingleton&lt; TParserLibrary &gt;',['../class_t_parser_library.html#aaa19608ea951d25ac6348309b3a6c1d3',1,'TParserLibrary']]],

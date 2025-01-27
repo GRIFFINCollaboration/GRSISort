@@ -3,7 +3,7 @@ var searchData=
   ['c_0',['C',['../struct_t_pulse_analyzer_1_1_sin_par.html#acc25dc2b1d90f633e5f2251e4336e6b9',1,'TPulseAnalyzer::SinPar']]],
   ['can_5fpop_1',['can_pop',['../class_threadsafe_queue.html#aa3fdf6223360f198ae18bbb764f75cbf',1,'ThreadsafeQueue']]],
   ['can_5fpush_2',['can_push',['../class_threadsafe_queue.html#aef93460b6b7fd1d45a116c9ef5017bf1',1,'ThreadsafeQueue']]],
-  ['canvases_3',['canvases',['../classpygui_1_1mainwindow_1_1_main_window.html#ad225a57e85eb38f4c534694910a66c09',1,'pygui::mainwindow::MainWindow']]],
+  ['canvases_3',['canvases',['../classpygui_1_1mainwindow_1_1_main_window.html#ad5d0d0eb75850cf212996cc848daa0fe',1,'pygui::mainwindow::MainWindow']]],
   ['category_4',['category',['../namespacepygui_1_1grut-view.html#abad933bb8409c9d24158982b88e5286d',1,'pygui::grut-view']]],
   ['centroid_5',['centroid',['../struct_t_calibrator_1_1_peak.html#a285fbd5d11afbc1b9cd79e75939cbc2c',1,'TCalibrator::Peak']]],
   ['chanadd_6',['chanadd',['../class_t_event_time.html#abc3d1b7c5648cf1cda37e3d8be0101a9',1,'TEventTime::chanadd'],['../class_t_event_time.html#acc29e4d65657cc4b6c259619734ec39d',1,'TEventTime::chanadd']]],

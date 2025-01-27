@@ -21,6 +21,6 @@ var classpygui_1_1variable__tab_1_1_variable_tab =
     [ "treeview", "classpygui_1_1variable__tab_1_1_variable_tab.html#abcc6c9ec14c2c3bea97c6d139850c828", null ],
     [ "var_name", "classpygui_1_1variable__tab_1_1_variable_tab.html#adbd36b55b600d4be189edee7e5abfd49", null ],
     [ "var_value", "classpygui_1_1variable__tab_1_1_variable_tab.html#ac04ccde0421da3855c399038f5a70202", null ],
-    [ "variables", "classpygui_1_1variable__tab_1_1_variable_tab.html#afa0f2955cfe2dce145124a29d8931022", null ],
+    [ "variables", "classpygui_1_1variable__tab_1_1_variable_tab.html#a39ededb120aeaf2b1990db0ae589bfe0", null ],
     [ "VariableSelection", "classpygui_1_1variable__tab_1_1_variable_tab.html#abe807033aac1093fb8f6cc2aac5ff83d", null ]
 ];

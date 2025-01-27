@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['read_5fevent_5fsize_0',['READ_EVENT_SIZE',['../_t_lst_file_8cxx.html#a86cf9c6a4a18dda0c02aa41b3126db66',1,'TLstFile.cxx']]],
-  ['red_1',['RED',['../_globals_8h.html#a8d23feea868a983c8c2b661e1e16972f',1,'Globals.h']]],
-  ['reset_5fcolor_2',['RESET_COLOR',['../_globals_8h.html#ad7c3b975e5552a122f836b02fa138502',1,'Globals.h']]]
+  ['qword_5fswap_0',['QWORD_SWAP',['../_t_midas_event_8cxx.html#a8c6db33e3f8af89e87556d9f7a9b32a8',1,'QWORD_SWAP:&#160;TMidasEvent.cxx'],['../_t_lst_event_8cxx.html#a8c6db33e3f8af89e87556d9f7a9b32a8',1,'QWORD_SWAP:&#160;TLstEvent.cxx'],['../_t_tdr_event_8cxx.html#a8c6db33e3f8af89e87556d9f7a9b32a8',1,'QWORD_SWAP:&#160;TTdrEvent.cxx']]]
 ];

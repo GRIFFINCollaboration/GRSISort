@@ -24,7 +24,7 @@ var dir_c355ed69a9ff804c1251ec805b2844ab =
     [ "TLaBrBgoHit.h", "_t_la_br_bgo_hit_8h.html", null ],
     [ "TLaBrHit.h", "_t_la_br_hit_8h.html", null ],
     [ "TMidasBanks.h", "_t_midas_banks_8h.html", null ],
-    [ "TMidasEvent.h", "_t_midas_event_8h.html", null ],
+    [ "TMidasEvent.h", "_t_midas_event_8h.html", "_t_midas_event_8h" ],
     [ "TMidasEventHeader.h", "_t_midas_event_header_8h.html", null ],
     [ "TMidasFile.h", "_t_midas_file_8h.html", null ],
     [ "TMidasStructs.h", "_t_midas_structs_8h.html", null ],

@@ -17,7 +17,7 @@ var classpygui_1_1hist__tab_1_1_hist_tab =
     [ "OnHistClick", "classpygui_1_1hist__tab_1_1_hist_tab.html#ac6705756951bc5851bd788250389825e", null ],
     [ "Resort", "classpygui_1_1hist__tab_1_1_hist_tab.html#a71794adade363e78e04af14defa168ab", null ],
     [ "_PeriodicHistogramCheck", "classpygui_1_1hist__tab_1_1_hist_tab.html#a83049e06e689843d630554af2ef5d686", null ],
-    [ "_requires_resort", "classpygui_1_1hist__tab_1_1_hist_tab.html#a41f0d14d50c2defdb1a6079e95d5aa30", null ],
+    [ "_requires_resort", "classpygui_1_1hist__tab_1_1_hist_tab.html#ad2bfe8bf8b4d2f99458a3336fa818eb8", null ],
     [ "active_dirs", "classpygui_1_1hist__tab_1_1_hist_tab.html#ae51e7dccde2b3823fcd3482db3dd9703", null ],
     [ "frame", "classpygui_1_1hist__tab_1_1_hist_tab.html#a965872ee63035c5eab04ca61a7cb5851", null ],
     [ "hist_lookup", "classpygui_1_1hist__tab_1_1_hist_tab.html#aff8283270e97635a6887d103dfa384c4", null ],

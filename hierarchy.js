@@ -189,8 +189,11 @@ var hierarchy =
     ] ],
     [ "ThreadsafeQueue< T >", "class_threadsafe_queue.html", null ],
     [ "TMidas_BANK", "struct_t_midas___b_a_n_k.html", null ],
+    [ "TMidasEvent::TMidas_BANK", "struct_t_midas_event_1_1_t_midas___b_a_n_k.html", null ],
     [ "TMidas_BANK32", "struct_t_midas___b_a_n_k32.html", null ],
+    [ "TMidasEvent::TMidas_BANK32", "struct_t_midas_event_1_1_t_midas___b_a_n_k32.html", null ],
     [ "TMidas_BANK_HEADER", "struct_t_midas___b_a_n_k___h_e_a_d_e_r.html", null ],
+    [ "TMidasEvent::TMidas_BANK_HEADER", "struct_t_midas_event_1_1_t_midas___b_a_n_k___h_e_a_d_e_r.html", null ],
     [ "TMidas_EVENT_HEADER", "struct_t_midas___e_v_e_n_t___h_e_a_d_e_r.html", null ],
     [ "TNamed", null, [
       [ "GBrowserPlugin", "class_g_browser_plugin.html", null ],

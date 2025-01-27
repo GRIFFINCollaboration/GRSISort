@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['o_5flargefile_0',['o_largefile',['../_t_midas_file_8cxx.html#a1126309aa58e7c99553c7f6be1bc7348',1,'O_LARGEFILE:&#160;TMidasFile.cxx'],['../_t_tdr_file_8cxx.html#a1126309aa58e7c99553c7f6be1bc7348',1,'O_LARGEFILE:&#160;TTdrFile.cxx']]]
+  ['magenta_0',['MAGENTA',['../_globals_8h.html#a6f699060902f800f12aaae150f3a708e',1,'Globals.h']]]
 ];

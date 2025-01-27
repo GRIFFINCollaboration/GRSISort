@@ -1312,7 +1312,7 @@ var group___sorting =
       [ "fSubRunNumber", "class_t_g_r_s_i_sort_info.html#a78c36bd25c5061ab142e5d396a2eeaa3", null ]
     ] ],
     [ "TGRSISortList", "class_t_g_r_s_i_sort_list.html", [
-      [ "infoMap", "class_t_g_r_s_i_sort_list.html#aa9d30246e90e9cedb07355e17995e3b3", null ],
+      [ "infoMap", "class_t_g_r_s_i_sort_list.html#ab483d8579e8c3787d3b7a4175db71b98", null ],
       [ "TGRSISortList", "class_t_g_r_s_i_sort_list.html#ab143350552ddc6c1157013699a429597", null ],
       [ "TGRSISortList", "class_t_g_r_s_i_sort_list.html#abe7652ec08055b71fe1bbc092c7bda68", null ],
       [ "TGRSISortList", "class_t_g_r_s_i_sort_list.html#a180980e0dc3251b9834877777e350029", null ],
@@ -1845,6 +1845,11 @@ var group___sorting =
       [ "fType", "struct_t_midas___b_a_n_k.html#ad48af9b7274b9f588b80efd97d98bce9", null ],
       [ "fType", "struct_t_midas___b_a_n_k.html#a664d3cb9bf736bb19bfd35b935a80599", null ]
     ] ],
+    [ "TMidasEvent::TMidas_BANK", "struct_t_midas_event_1_1_t_midas___b_a_n_k.html", [
+      [ "fDataSize", "struct_t_midas_event_1_1_t_midas___b_a_n_k.html#a9899502428f70ae46b040551307f9c01", null ],
+      [ "fName", "struct_t_midas_event_1_1_t_midas___b_a_n_k.html#ad590d9a3f9aafc11996afc76a19e1430", null ],
+      [ "fType", "struct_t_midas_event_1_1_t_midas___b_a_n_k.html#adf1df9d33f6aa6f75f23bf8940dcf568", null ]
+    ] ],
     [ "TMidas_BANK32", "struct_t_midas___b_a_n_k32.html", [
       [ "fDataSize", "struct_t_midas___b_a_n_k32.html#adb8680bd57a0b3cafdebb49b7dace908", null ],
       [ "fDataSize", "struct_t_midas___b_a_n_k32.html#ac6b9d6f74c56aa35a60add42f2ec92dd", null ],
@@ -1852,11 +1857,20 @@ var group___sorting =
       [ "fType", "struct_t_midas___b_a_n_k32.html#ace6301a026392c873e2a7e70f7582a03", null ],
       [ "fType", "struct_t_midas___b_a_n_k32.html#abf8730824f9cf1f7c0e361761b118a1a", null ]
     ] ],
+    [ "TMidasEvent::TMidas_BANK32", "struct_t_midas_event_1_1_t_midas___b_a_n_k32.html", [
+      [ "fDataSize", "struct_t_midas_event_1_1_t_midas___b_a_n_k32.html#ac8608afde0dde38fbb6713a53b3cf123", null ],
+      [ "fName", "struct_t_midas_event_1_1_t_midas___b_a_n_k32.html#a0cabf7b126035773f41b129d7b7eb4b1", null ],
+      [ "fType", "struct_t_midas_event_1_1_t_midas___b_a_n_k32.html#ac56114aa60ea1479d2515d5ce9c5856e", null ]
+    ] ],
     [ "TMidas_BANK_HEADER", "struct_t_midas___b_a_n_k___h_e_a_d_e_r.html", [
       [ "fDataSize", "struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#a1209084d3e681d7f122064573719b6b1", null ],
       [ "fDataSize", "struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#a58253ae5299612df270feb835c059c76", null ],
       [ "fFlags", "struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#afda267e7c892dd56e0eb2876a01009fa", null ],
       [ "fFlags", "struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#a4edd76e4dc77c19904da5c6475be35a5", null ]
+    ] ],
+    [ "TMidasEvent::TMidas_BANK_HEADER", "struct_t_midas_event_1_1_t_midas___b_a_n_k___h_e_a_d_e_r.html", [
+      [ "fDataSize", "struct_t_midas_event_1_1_t_midas___b_a_n_k___h_e_a_d_e_r.html#ab7dd756660d9301a1d64286f10fa79ab", null ],
+      [ "fFlags", "struct_t_midas_event_1_1_t_midas___b_a_n_k___h_e_a_d_e_r.html#af2f470bb0e62eb55a51c55ada45375a2", null ]
     ] ],
     [ "TMidas_EVENT_HEADER", "struct_t_midas___e_v_e_n_t___h_e_a_d_e_r.html", [
       [ "fDataSize", "struct_t_midas___e_v_e_n_t___h_e_a_d_e_r.html#a38b10015697fe83904614dc5d3ec66ec", null ],
