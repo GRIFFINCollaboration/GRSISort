@@ -62,8 +62,8 @@ Float_t TDetectorHit::GetCharge() const
    }
    if(channel->UseCalFileIntegration()) {
       return Charge() / (static_cast<Float_t>(channel->GetIntegration()));   // this will use the integration value
-   }                                                                         // in the TChannel if it exists.
-   return Charge();                                                          // this will use no integration value
+   }   // in the TChannel if it exists.
+   return Charge();   // this will use no integration value
 }
 
 double TDetectorHit::GetEnergy(Option_t*) const
