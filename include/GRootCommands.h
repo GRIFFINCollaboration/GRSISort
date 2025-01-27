@@ -29,7 +29,8 @@ bool RemovePeaks(TH1**, unsigned int);
 bool Move1DHistogram(const Int_t& key, TH1* histogram = nullptr);
 bool Move2DHistogram(const Int_t& key, TH2* histogram = nullptr);
 
-GPeak* PhotoPeakFit(TH1*, double, double, Option_t* opt = "");
+GPeak* PhotoPeakFit(TH1*, double xlow, double xhigh, Option_t* opt = "");
+GPeak* PhotoPeakFit(TH1*, double xlow, double centroid, double xhigh, Option_t* opt = "");
 TPeak* AltPhotoPeakFit(TH1*, double, double, Option_t* opt = "");
 GGaus* GausFit(TH1*, double, double, Option_t* opt = "");
 TF1*   DoubleGausFit(TH1*, double, double, double, double, Option_t* opt = "");
