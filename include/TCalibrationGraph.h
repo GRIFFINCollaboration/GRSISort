@@ -127,6 +127,7 @@ public:
    void               Fit(TF1* function, Option_t* opt = "") { fTotalGraph->Fit(function, opt); }                                      ///< Fits the provided function to the total graph.
    TF1*               FitFunction() { return reinterpret_cast<TF1*>(fTotalGraph->GetListOfFunctions()->FindObject("fitfunction")); }   ///< Gets the calibration from the total graph (might be nullptr!).
    TGraphErrors*      TotalGraph() { return fTotalGraph; }
+   TGraphErrors*      TotalResidualGraph() { return fTotalResidualGraph; }
    size_t             NumberOfGraphs() { return fGraphs.size(); }
    TCalibrationGraph* Graph(size_t index) { return &(fGraphs.at(index)); }
    TCalibrationGraph* Residual(size_t index) { return &(fResidualGraphs.at(index)); }
