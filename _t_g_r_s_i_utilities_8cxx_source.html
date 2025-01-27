@@ -119,7 +119,7 @@ $(function(){initNavTree('_t_g_r_s_i_utilities_8cxx_source.html',''); initResiza
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="_t_g_r_s_i_utilities_8h.html#a375cfcc53c68847b7137a22876b5f973">   13</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="_t_g_r_s_i_utilities_8cxx.html#a375cfcc53c68847b7137a22876b5f973">FileExists</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename)</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>{<span class="comment"></span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">   /// This checks if the path exist, and if it is a file and not a directory!</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"></span>   <span class="keyword">struct </span>stat buffer {};</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"></span>   <span class="keyword">struct </span>stat buffer{};</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>   <span class="keywordtype">int</span>         state = stat(filename, &amp;buffer);</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>   <span class="comment">// state != 0 means we couldn&#39;t get file attributes. This doesn&#39;t necessary mean the file</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>   <span class="comment">// does not exist, we might just be missing permission to access it. But for our purposes</span></div>
@@ -134,7 +134,7 @@ $(function(){initNavTree('_t_g_r_s_i_utilities_8cxx_source.html',''); initResiza
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="_t_g_r_s_i_utilities_8h.html#ac07c11b7f1c7da35c4feebc1ec58a7ae">   26</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="_t_g_r_s_i_utilities_8cxx.html#ac07c11b7f1c7da35c4feebc1ec58a7ae">DirectoryExists</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* dirname)</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{<span class="comment"></span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">   /// This checks if the directory exists</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"></span>   <span class="keyword">struct </span>stat buffer {};</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"></span>   <span class="keyword">struct </span>stat buffer{};</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   <span class="keywordtype">int</span>         state = stat(dirname, &amp;buffer);</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>   <span class="comment">// state != 0 means we couldn&#39;t get file attributes. This doesn&#39;t necessary mean the file</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>   <span class="comment">// does not exist, we might just be missing permission to access it. But for our purposes</span></div>
@@ -239,7 +239,7 @@ $(function(){initNavTree('_t_g_r_s_i_utilities_8cxx_source.html',''); initResiza
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_2b08b36851fcb6a7439555c8d93f536c.html">TFormat</a></li><li class="navelem"><a class="el" href="_t_g_r_s_i_utilities_8cxx.html">TGRSIUtilities.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Jan 27 2025 14:54:19.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Jan 27 2025 14:55:28.</li>
   </ul>
 </div>
 </body>

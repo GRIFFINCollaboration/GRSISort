@@ -1763,8 +1763,8 @@ $(function(){initNavTree('_t_pulse_analyzer_8cxx_source.html',''); initResizable
 <div class="line"><a id="l01579" name="l01579"></a><span class="lineno"> 1579</span>         <span class="keywordflow">if</span>((<a class="code hl_variable" href="class_t_pulse_analyzer.html#a0c30f38957a911be91c1c75f0843f577">cWavebuffer</a>[j] - baseline) &lt; 0) {</div>
 <div class="line"><a id="l01580" name="l01580"></a><span class="lineno"> 1580</span>            exclusion++;</div>
 <div class="line"><a id="l01581" name="l01581"></a><span class="lineno"> 1581</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l01582" name="l01582"></a><span class="lineno"> 1582</span>         }                                                                <span class="comment">// this is crucial for oscillations</span></div>
-<div class="line"><a id="l01583" name="l01583"></a><span class="lineno"> 1583</span>                                                                          <span class="comment">// if (j%10==0) cout&lt;&lt;j&lt;&lt;&quot; &quot;&lt;&lt;  cWavebuffer[j]&lt;&lt;&quot; &quot;&lt;&lt;cWavebuffer[j]-baseline&lt;&lt;endl ;</span></div>
+<div class="line"><a id="l01582" name="l01582"></a><span class="lineno"> 1582</span>         }   <span class="comment">// this is crucial for oscillations</span></div>
+<div class="line"><a id="l01583" name="l01583"></a><span class="lineno"> 1583</span>         <span class="comment">// if (j%10==0) cout&lt;&lt;j&lt;&lt;&quot; &quot;&lt;&lt;  cWavebuffer[j]&lt;&lt;&quot; &quot;&lt;&lt;cWavebuffer[j]-baseline&lt;&lt;endl ;</span></div>
 <div class="line"><a id="l01584" name="l01584"></a><span class="lineno"> 1584</span>         <span class="keywordtype">double</span> signal = log(<a class="code hl_variable" href="class_t_pulse_analyzer.html#a0c30f38957a911be91c1c75f0843f577">cWavebuffer</a>[j] - baseline) + j / tauDecay;   <span class="comment">// sum of Y_i where  Y_i = (y_i - baseline)*exp(-t_i/tauDecay)</span></div>
 <div class="line"><a id="l01585" name="l01585"></a><span class="lineno"> 1585</span>         <a class="code hl_variable" href="class_t_pulse_analyzer.html#a5e9177fcbeaac9758573bc40d462cc5f">lineq_vector</a>[0] += exp(signal);</div>
 <div class="line"><a id="l01586" name="l01586"></a><span class="lineno"> 1586</span>         <a class="code hl_variable" href="class_t_pulse_analyzer.html#a5e9177fcbeaac9758573bc40d462cc5f">lineq_vector</a>[1] -= exp(signal - j / tauRise);   <span class="comment">// sum of Y_i*X_i</span></div>
@@ -2296,7 +2296,7 @@ $(function(){initNavTree('_t_pulse_analyzer_8cxx_source.html',''); initResizable
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_5ca7480e1b65effbff7c19eeab4753eb.html">TPulseAnalyzer</a></li><li class="navelem"><a class="el" href="_t_pulse_analyzer_8cxx.html">TPulseAnalyzer.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Jan 27 2025 14:54:19.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Jan 27 2025 14:55:28.</li>
   </ul>
 </div>
 </body>
