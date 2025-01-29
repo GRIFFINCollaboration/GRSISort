@@ -44,6 +44,7 @@ public:
    Double_t CentroidErr() const override;
    Double_t Width() const override;
    Double_t Sigma() const override;
+   Double_t SigmaErr() const override { return GetFitFunction()->GetParError(GetFitFunction()->GetParNumber("sigma")); }
 
    void DrawComponents(Option_t* opt = "") override;
 

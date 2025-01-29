@@ -62,7 +62,9 @@ public:
    virtual Double_t CentroidErr() const                = 0;
    virtual Double_t Width() const                      = 0;
    virtual Double_t Sigma() const                      = 0;
-   virtual Double_t FWHM();   // not constant because we have to update the parmeters of the peak function
+   virtual Double_t SigmaErr() const                   = 0;
+   virtual Double_t FWHM();   // not constant because we have to update the parameters of the peak function
+   virtual Double_t FWHMErr();   // not constant because we have to update the parameters of the peak function
 
    void         Print(Option_t* = "") const override;
    void         Draw(Option_t* opt = "") override;
