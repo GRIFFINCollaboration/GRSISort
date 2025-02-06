@@ -19,6 +19,7 @@ var class_t_source_tab =
     [ "ProjectionStatus", "class_t_source_tab.html#a707c34a340041b571536d67bda82e3b3", null ],
     [ "RemovePoint", "class_t_source_tab.html#a07b9b9514fd03546aa5bd25a780c8ab2", null ],
     [ "RemoveResidualPoint", "class_t_source_tab.html#aac563fa8ac2a498c49b92bae2f0011e6", null ],
+    [ "ReplacePeak", "class_t_source_tab.html#a3ed8ab79f3ba0226edc48ef29d425bf9", null ],
     [ "SourceEnergy", "class_t_source_tab.html#a174f74e15780746a604b50552dcf49b0", null ],
     [ "Status", "class_t_source_tab.html#a33e30f7c3fdf5945049411fcae42de99", null ],
     [ "UpdateRegions", "class_t_source_tab.html#a54370e6a2808a667caa64ce2b94c4378", null ],

@@ -153,23 +153,25 @@ $(function(){initNavTree('_t_gauss_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>   Double_t <a class="code hl_function" href="class_t_gauss.html#a7660d4548bfb834388e502bc3c3bd9eb">CentroidErr</a>() const override;</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="class_t_gauss.html#a1aa5835baf4dce84e630389a42d0b021">   48</a></span>   Double_t <a class="code hl_function" href="class_t_gauss.html#a1aa5835baf4dce84e630389a42d0b021">Width</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="class_t_gauss.html#a43138688e3eb6f437f84bc46dd927956">Sigma</a>(); }</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="class_t_gauss.html#a43138688e3eb6f437f84bc46dd927956">   49</a></span>   Double_t <a class="code hl_function" href="class_t_gauss.html#a43138688e3eb6f437f84bc46dd927956">Sigma</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="class_t_single_peak.html#a04356d7486ad1498cbfe50bfb248f1a1">GetFitFunction</a>()-&gt;GetParameter(<span class="stringliteral">&quot;sigma&quot;</span>); }</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>   Double_t <a class="code hl_function" href="class_t_gauss.html#a356b1d5cbec750faa2185532d3b866b8">PeakFunction</a>(Double_t* dim, Double_t* par) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">public</span>:<span class="comment"></span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">   /// \cond CLASSIMP</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment"></span>   ClassDefOverride(<a class="code hl_class" href="class_t_gauss.html">TGauss</a>, 2)   <span class="comment">// NOLINT(readability-else-after-return)</span><span class="comment"></span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">   /// \endcond</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment"></span>};<span class="comment"></span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="class_t_gauss.html#a0f63e6cd52cd96fba8103b9c7408d80a">   50</a></span>   Double_t <a class="code hl_function" href="class_t_gauss.html#a0f63e6cd52cd96fba8103b9c7408d80a">SigmaErr</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="class_t_single_peak.html#a04356d7486ad1498cbfe50bfb248f1a1">GetFitFunction</a>()-&gt;GetParError(<a class="code hl_function" href="class_t_single_peak.html#a04356d7486ad1498cbfe50bfb248f1a1">GetFitFunction</a>()-&gt;GetParNumber(<span class="stringliteral">&quot;sigma&quot;</span>)); }</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>   Double_t <a class="code hl_function" href="class_t_gauss.html#a356b1d5cbec750faa2185532d3b866b8">PeakFunction</a>(Double_t* dim, Double_t* par) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">public</span>:<span class="comment"></span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">   /// \cond CLASSIMP</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment"></span>   ClassDefOverride(<a class="code hl_class" href="class_t_gauss.html">TGauss</a>, 2)   <span class="comment">// NOLINT(readability-else-after-return)</span><span class="comment"></span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">   /// \endcond</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment"></span>};<span class="comment"></span></div>
 </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">/*! @} */</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">/*! @} */</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_t_g_r_s_i_fit_8h_html"><div class="ttname"><a href="_t_g_r_s_i_fit_8h.html">TGRSIFit.h</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_functions_8h_html"><div class="ttname"><a href="_t_g_r_s_i_functions_8h.html">TGRSIFunctions.h</a></div></div>
 <div class="ttc" id="a_t_single_peak_8h_html"><div class="ttname"><a href="_t_single_peak_8h.html">TSinglePeak.h</a></div></div>
 <div class="ttc" id="a_user_fill_obj_8h_html_ac15e5a1de3bd77dc1ff2768e42dc9e8b"><div class="ttname"><a href="_user_fill_obj_8h.html#ac15e5a1de3bd77dc1ff2768e42dc9e8b">hist</a></div><div class="ttdeci">TH1D * hist</div><div class="ttdef"><b>Definition</b> <a href="_user_fill_obj_8h_source.html#l00003">UserFillObj.h:3</a></div></div>
 <div class="ttc" id="aclass_t_gauss_html"><div class="ttname"><a href="class_t_gauss.html">TGauss</a></div><div class="ttdef"><b>Definition</b> <a href="#l00030">TGauss.h:30</a></div></div>
+<div class="ttc" id="aclass_t_gauss_html_a0f63e6cd52cd96fba8103b9c7408d80a"><div class="ttname"><a href="class_t_gauss.html#a0f63e6cd52cd96fba8103b9c7408d80a">TGauss::SigmaErr</a></div><div class="ttdeci">Double_t SigmaErr() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00050">TGauss.h:50</a></div></div>
 <div class="ttc" id="aclass_t_gauss_html_a1aa5835baf4dce84e630389a42d0b021"><div class="ttname"><a href="class_t_gauss.html#a1aa5835baf4dce84e630389a42d0b021">TGauss::Width</a></div><div class="ttdeci">Double_t Width() const override</div><div class="ttdef"><b>Definition</b> <a href="#l00048">TGauss.h:48</a></div></div>
 <div class="ttc" id="aclass_t_gauss_html_a215c9ad384bdc4505a70785e8449242e"><div class="ttname"><a href="class_t_gauss.html#a215c9ad384bdc4505a70785e8449242e">TGauss::TGauss</a></div><div class="ttdeci">TGauss()=default</div></div>
 <div class="ttc" id="aclass_t_gauss_html_a25146414905017d43ff2e0a6c3eeb75f"><div class="ttname"><a href="class_t_gauss.html#a25146414905017d43ff2e0a6c3eeb75f">TGauss::TGauss</a></div><div class="ttdeci">TGauss(const TGauss &amp;)=default</div></div>
@@ -181,7 +183,7 @@ $(function(){initNavTree('_t_gauss_8h_source.html',''); initResizable(true); });
 <div class="ttc" id="aclass_t_gauss_html_a7660d4548bfb834388e502bc3c3bd9eb"><div class="ttname"><a href="class_t_gauss.html#a7660d4548bfb834388e502bc3c3bd9eb">TGauss::CentroidErr</a></div><div class="ttdeci">Double_t CentroidErr() const override</div><div class="ttdef"><b>Definition</b> <a href="_t_gauss_8cxx_source.html#l00057">TGauss.cxx:57</a></div></div>
 <div class="ttc" id="aclass_t_gauss_html_aea4764d685d5847660b2032c22fea652"><div class="ttname"><a href="class_t_gauss.html#aea4764d685d5847660b2032c22fea652">TGauss::Centroid</a></div><div class="ttdeci">Double_t Centroid() const override</div><div class="ttdef"><b>Definition</b> <a href="_t_gauss_8cxx_source.html#l00052">TGauss.cxx:52</a></div></div>
 <div class="ttc" id="aclass_t_single_peak_html"><div class="ttname"><a href="class_t_single_peak.html">TSinglePeak</a></div><div class="ttdef"><b>Definition</b> <a href="_t_single_peak_8h_source.html#l00036">TSinglePeak.h:36</a></div></div>
-<div class="ttc" id="aclass_t_single_peak_html_a04356d7486ad1498cbfe50bfb248f1a1"><div class="ttname"><a href="class_t_single_peak.html#a04356d7486ad1498cbfe50bfb248f1a1">TSinglePeak::GetFitFunction</a></div><div class="ttdeci">TF1 * GetFitFunction() const</div><div class="ttdef"><b>Definition</b> <a href="_t_single_peak_8h_source.html#l00076">TSinglePeak.h:76</a></div></div>
+<div class="ttc" id="aclass_t_single_peak_html_a04356d7486ad1498cbfe50bfb248f1a1"><div class="ttname"><a href="class_t_single_peak.html#a04356d7486ad1498cbfe50bfb248f1a1">TSinglePeak::GetFitFunction</a></div><div class="ttdeci">TF1 * GetFitFunction() const</div><div class="ttdef"><b>Definition</b> <a href="_t_single_peak_8h_source.html#l00078">TSinglePeak.h:78</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -189,7 +191,7 @@ $(function(){initNavTree('_t_gauss_8h_source.html',''); initResizable(true); });
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_gauss_8h.html">TGauss.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Feb 3 2025 16:38:05.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Feb 6 2025 21:53:27.</li>
   </ul>
 </div>
 </body>

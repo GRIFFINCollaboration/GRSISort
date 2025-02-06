@@ -39,6 +39,7 @@ var class_t_calibration_graph_set =
     [ "SetMarkerStyle", "class_t_calibration_graph_set.html#a72fcb17058159646caefa64d0de213fa", null ],
     [ "SetResidual", "class_t_calibration_graph_set.html#a2290fbb58c07117c565c5e5a90a0abac", null ],
     [ "TotalGraph", "class_t_calibration_graph_set.html#a85a8dc0a2f328c2cf11914c05affdec8", null ],
+    [ "TotalResidualGraph", "class_t_calibration_graph_set.html#a4a1c3d8b8062e16c58ceb60542888e95", null ],
     [ "VerboseLevel", "class_t_calibration_graph_set.html#af25672306a6a79aa0ade47f2e5074ee6", null ],
     [ "VerboseLevel", "class_t_calibration_graph_set.html#a3ef2c372a54db38651c9030866fb6aa4", null ],
     [ "XAxisLabel", "class_t_calibration_graph_set.html#a3b6f3b8b78b5b12cda4ce78f08d986b3", null ],

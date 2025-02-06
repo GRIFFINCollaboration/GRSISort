@@ -12,6 +12,7 @@ var class_t_channel_tab =
     [ "Data", "class_t_channel_tab.html#a246421a01ec20873ed65624393dac79d", null ],
     [ "Disconnect", "class_t_channel_tab.html#aeff3e9ee50025eac16d6b6e99fde7c96", null ],
     [ "FindPeaks", "class_t_channel_tab.html#a92b1fe3bd82d531e601a7293bce63d36", null ],
+    [ "Iterate", "class_t_channel_tab.html#a367acd3b0bc9539fd88d12b7b3a90d20", null ],
     [ "MakeConnections", "class_t_channel_tab.html#aa5f807f1ec4eedf7814238faaf8e053b", null ],
     [ "Name", "class_t_channel_tab.html#a7080f4483ed261ec7405e339da5634c9", null ],
     [ "NumberOfSources", "class_t_channel_tab.html#aa3e78450fa14858053045a746cc493d4", null ],

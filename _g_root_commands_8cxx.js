@@ -17,6 +17,7 @@ var _g_root_commands_8cxx =
     [ "Move1DHistogram", "_g_root_commands_8cxx.html#abc17133199a456ed839816947554c0b8", null ],
     [ "Move2DHistogram", "_g_root_commands_8cxx.html#ac22330fcf527019b19cca59eedb5a23f", null ],
     [ "operator&", "_g_root_commands_8cxx.html#a569ef6e79ab17021e81a4034a5cf14ec", null ],
+    [ "PhotoPeakFit", "_g_root_commands_8cxx.html#a4ec40afe18de4583563c9be0f5e605fc", null ],
     [ "PhotoPeakFit", "_g_root_commands_8cxx.html#a7f3a60168977d675453abeff9d3a9d66", null ],
     [ "Prompt", "_g_root_commands_8cxx.html#a8c34f6a89e2746264a9e6c43dbd1cf86", null ],
     [ "RemovePeaks", "_g_root_commands_8cxx.html#a00e5b21bb430109f7b39c25fecfb4e23", null ],

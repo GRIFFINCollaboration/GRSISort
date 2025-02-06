@@ -143,6 +143,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a53f2639f5f07c869fcb94b57f179d117"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaffdc851479f169eca878382ec954476" id="r_aaffdc851479f169eca878382ec954476"><td class="memItemLeft" align="right" valign="top">virtual Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_single_peak.html#aaffdc851479f169eca878382ec954476">FWHM</a> ()</td></tr>
 <tr class="separator:aaffdc851479f169eca878382ec954476"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19cddb33d2d5af89b6ce0436bab0974f" id="r_a19cddb33d2d5af89b6ce0436bab0974f"><td class="memItemLeft" align="right" valign="top">virtual Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_single_peak.html#a19cddb33d2d5af89b6ce0436bab0974f">FWHMErr</a> ()</td></tr>
+<tr class="separator:a19cddb33d2d5af89b6ce0436bab0974f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade6ecf172235f677ab9462fee0a2a232" id="r_ade6ecf172235f677ab9462fee0a2a232"><td class="memItemLeft" align="right" valign="top">TF1 *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_single_peak.html#ade6ecf172235f677ab9462fee0a2a232">GetBackgroundFunction</a> ()</td></tr>
 <tr class="separator:ade6ecf172235f677ab9462fee0a2a232"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63d3e0f79489c8ba29dc1214e593ce31" id="r_a63d3e0f79489c8ba29dc1214e593ce31"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_single_peak.html#a63d3e0f79489c8ba29dc1214e593ce31">GetChi2</a> () const</td></tr>
@@ -187,6 +189,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af4abcd121323ae0b6537c18cad92cdd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43138688e3eb6f437f84bc46dd927956" id="r_a43138688e3eb6f437f84bc46dd927956"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43138688e3eb6f437f84bc46dd927956">Sigma</a> () const override</td></tr>
 <tr class="separator:a43138688e3eb6f437f84bc46dd927956"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f63e6cd52cd96fba8103b9c7408d80a" id="r_a0f63e6cd52cd96fba8103b9c7408d80a"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f63e6cd52cd96fba8103b9c7408d80a">SigmaErr</a> () const override</td></tr>
+<tr class="separator:a0f63e6cd52cd96fba8103b9c7408d80a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12e18865d8ad745616a2357de6610590" id="r_a12e18865d8ad745616a2357de6610590"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_single_peak.html#a12e18865d8ad745616a2357de6610590">UpdateBackgroundParameters</a> ()</td></tr>
 <tr class="separator:a12e18865d8ad745616a2357de6610590"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa420f687a46bc14ac8bcc67c33ab71d" id="r_afa420f687a46bc14ac8bcc67c33ab71d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_single_peak.html#afa420f687a46bc14ac8bcc67c33ab71d">UpdatePeakParameters</a> ()</td></tr>
@@ -305,7 +309,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_gauss_8cxx_source.html#l00003">3</a> of file <a class="el" href="_t_gauss_8cxx_source.html">TGauss.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_gauss_8cxx_source.html#l00052">Centroid()</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00076">TSinglePeak::GetFitFunction()</a>.</p>
+<p class="reference">References <a class="el" href="_t_gauss_8cxx_source.html#l00052">Centroid()</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00078">TSinglePeak::GetFitFunction()</a>.</p>
 
 </div>
 </div>
@@ -410,7 +414,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00057">57</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00115">TSinglePeak::fArea</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00117">TSinglePeak::fArea</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00054">main()</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00037">TSinglePeak::Print()</a>.</p>
 
@@ -441,7 +445,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00058">58</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00116">TSinglePeak::fAreaErr</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00118">TSinglePeak::fAreaErr</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00054">main()</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00037">TSinglePeak::Print()</a>.</p>
 
@@ -476,7 +480,7 @@ Private Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_t_a_b3_peak.html#aeed9a311d819a3921a5807aa0dca6e53">TAB3Peak</a>, <a class="el" href="class_t_a_b_peak.html#a9f00f62e5195a09cdbcb3a5308c528c9">TABPeak</a>, and <a class="el" href="class_t_r_w_peak.html#a5b16006b6c6d3fbee7fb573eb38255de">TRWPeak</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00097">97</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00099">99</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00028">TSinglePeak::GetBackgroundFunction()</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00056">TSinglePeak::TotalFunction()</a>.</p>
 
@@ -509,7 +513,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_gauss_8cxx_source.html#l00052">52</a> of file <a class="el" href="_t_gauss_8cxx_source.html">TGauss.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00076">TSinglePeak::GetFitFunction()</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00078">TSinglePeak::GetFitFunction()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_gauss_8cxx_source.html#l00003">TGauss()</a>.</p>
 
@@ -542,7 +546,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_gauss_8cxx_source.html#l00011">11</a> of file <a class="el" href="_t_gauss_8cxx_source.html">TGauss.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00076">TSinglePeak::GetFitFunction()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00021">InitParNames()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00062">PeakFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00104">TSinglePeak::SetFitFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00051">TSinglePeak::SetListOfBGPar()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00105">TSinglePeak::SetPeakFunction()</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00056">TSinglePeak::TotalFunction()</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00078">TSinglePeak::GetFitFunction()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00021">InitParNames()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00062">PeakFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00106">TSinglePeak::SetFitFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00051">TSinglePeak::SetListOfBGPar()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00107">TSinglePeak::SetPeakFunction()</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00056">TSinglePeak::TotalFunction()</a>.</p>
 
 </div>
 </div>
@@ -573,7 +577,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_gauss_8cxx_source.html#l00057">57</a> of file <a class="el" href="_t_gauss_8cxx_source.html">TGauss.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00076">TSinglePeak::GetFitFunction()</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00078">TSinglePeak::GetFitFunction()</a>.</p>
 
 </div>
 </div>
@@ -600,9 +604,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8cxx_source.html#l00099">99</a> of file <a class="el" href="_t_single_peak_8cxx_source.html">TSinglePeak.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8cxx_source.html#l00106">106</a> of file <a class="el" href="_t_single_peak_8cxx_source.html">TSinglePeak.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00110">TSinglePeak::fGlobalBackground</a>, <a class="el" href="_t_single_peak_8h_source.html#l00111">TSinglePeak::fPeakOnGlobal</a>, <a class="el" href="_t_single_peak_8h_source.html#l00108">TSinglePeak::fTotalFunction</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00092">TSinglePeak::PeakOnGlobalFunction()</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00112">TSinglePeak::fGlobalBackground</a>, <a class="el" href="_t_single_peak_8h_source.html#l00113">TSinglePeak::fPeakOnGlobal</a>, <a class="el" href="_t_single_peak_8h_source.html#l00110">TSinglePeak::fTotalFunction</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00099">TSinglePeak::PeakOnGlobalFunction()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_b_g_subtraction_8cxx_source.html#l00454">TBGSubtraction::DrawPeak()</a>.</p>
 
@@ -631,9 +635,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00069">69</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00071">71</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00110">TSinglePeak::fGlobalBackground</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00112">TSinglePeak::fGlobalBackground</a>.</p>
 
 </div>
 </div>
@@ -693,7 +697,39 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_single_peak_8cxx_source.html#l00077">77</a> of file <a class="el" href="_t_single_peak_8cxx_source.html">TSinglePeak.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="class_t_single_peak.html#a5b0c6aa41dd77df5d10d0ce1e4dcc3b5">TSinglePeak::Centroid()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00112">TSinglePeak::fPeakFunction</a>, <a class="el" href="class_t_single_peak.html#a2b5b32295c97a37db736f98df39dd81d">TSinglePeak::Sigma()</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00061">TSinglePeak::UpdatePeakParameters()</a>.</p>
+<p class="reference">References <a class="el" href="class_t_single_peak.html#a5b0c6aa41dd77df5d10d0ce1e4dcc3b5">TSinglePeak::Centroid()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00114">TSinglePeak::fPeakFunction</a>, <a class="el" href="class_t_single_peak.html#a2b5b32295c97a37db736f98df39dd81d">TSinglePeak::Sigma()</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00061">TSinglePeak::UpdatePeakParameters()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00092">TSinglePeak::FWHMErr()</a>.</p>
+
+</div>
+</div>
+<a id="a19cddb33d2d5af89b6ce0436bab0974f" name="a19cddb33d2d5af89b6ce0436bab0974f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19cddb33d2d5af89b6ce0436bab0974f">&#9670;&#160;</a></span>FWHMErr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t TSinglePeak::FWHMErr </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Return the uncertainty in the full width at half-maximum. Since it is complicated to do this without knowledge of the underlying fit function, we simply assume that the (relative) uncertainty in the FWHM is the same as the uncertainty in sigma.</p>
+
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8cxx_source.html#l00092">92</a> of file <a class="el" href="_t_single_peak_8cxx_source.html">TSinglePeak.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_single_peak_8cxx_source.html#l00077">TSinglePeak::FWHM()</a>, <a class="el" href="class_t_single_peak.html#a2b5b32295c97a37db736f98df39dd81d">TSinglePeak::Sigma()</a>, and <a class="el" href="class_t_single_peak.html#aa9b3fd48a448d8a857c5378909eb663f">TSinglePeak::SigmaErr()</a>.</p>
 
 </div>
 </div>
@@ -722,7 +758,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_single_peak_8cxx_source.html#l00028">28</a> of file <a class="el" href="_t_single_peak_8cxx_source.html">TSinglePeak.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00097">TSinglePeak::BackgroundFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00109">TSinglePeak::fBackgroundFunction</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00108">TSinglePeak::fTotalFunction</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00099">TSinglePeak::BackgroundFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00111">TSinglePeak::fBackgroundFunction</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00110">TSinglePeak::fTotalFunction</a>.</p>
 
 </div>
 </div>
@@ -749,9 +785,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00089">89</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00091">91</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00117">TSinglePeak::fChi2</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00119">TSinglePeak::fChi2</a>.</p>
 
 </div>
 </div>
@@ -778,11 +814,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00076">76</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00078">78</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00108">TSinglePeak::fTotalFunction</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00110">TSinglePeak::fTotalFunction</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_gauss_8cxx_source.html#l00003">TGauss()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00069">TAB3Peak::Centroid()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00004">TAB3Peak::Centroid()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00059">TABPeak::Centroid()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00004">TABPeak::Centroid()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00052">Centroid()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00011">Centroid()</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00060">TRWPeak::Centroid()</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00003">TRWPeak::Centroid()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00074">TAB3Peak::CentroidErr()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00064">TABPeak::CentroidErr()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00057">CentroidErr()</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00065">TRWPeak::CentroidErr()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00156">TAB3Peak::DrawComponents()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00129">TABPeak::DrawComponents()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00026">TAB3Peak::InitializeParameters()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00024">TABPeak::InitializeParameters()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00028">InitializeParameters()</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00023">TRWPeak::InitializeParameters()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00014">TAB3Peak::InitParNames()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00014">TABPeak::InitParNames()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00021">InitParNames()</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00013">TRWPeak::InitParNames()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00054">main()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00128">TAB3Peak::OneHitPeakOnGlobalFunction()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00106">TABPeak::OneHitPeakOnGlobalFunction()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00084">TAB3Peak::Sigma()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00074">TABPeak::Sigma()</a>, <a class="el" href="_t_gauss_8h_source.html#l00049">Sigma()</a>, <a class="el" href="_t_r_w_peak_8h_source.html#l00049">TRWPeak::Sigma()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00138">TAB3Peak::ThreeHitPeakOnGlobalFunction()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00133">TAB3Peak::TwoHitPeakOnGlobalFunction()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00111">TABPeak::TwoHitPeakOnGlobalFunction()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00079">TAB3Peak::Width()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00069">TABPeak::Width()</a>, and <a class="el" href="_t_r_w_peak_8h_source.html#l00048">TRWPeak::Width()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_gauss_8cxx_source.html#l00003">TGauss()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00069">TAB3Peak::Centroid()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00004">TAB3Peak::Centroid()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00059">TABPeak::Centroid()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00004">TABPeak::Centroid()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00052">Centroid()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00011">Centroid()</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00060">TRWPeak::Centroid()</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00003">TRWPeak::Centroid()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00074">TAB3Peak::CentroidErr()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00064">TABPeak::CentroidErr()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00057">CentroidErr()</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00065">TRWPeak::CentroidErr()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00156">TAB3Peak::DrawComponents()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00129">TABPeak::DrawComponents()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00026">TAB3Peak::InitializeParameters()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00024">TABPeak::InitializeParameters()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00028">InitializeParameters()</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00023">TRWPeak::InitializeParameters()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00014">TAB3Peak::InitParNames()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00014">TABPeak::InitParNames()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00021">InitParNames()</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00013">TRWPeak::InitParNames()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00054">main()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00128">TAB3Peak::OneHitPeakOnGlobalFunction()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00106">TABPeak::OneHitPeakOnGlobalFunction()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00084">TAB3Peak::Sigma()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00074">TABPeak::Sigma()</a>, <a class="el" href="_t_gauss_8h_source.html#l00049">Sigma()</a>, <a class="el" href="_t_r_w_peak_8h_source.html#l00049">TRWPeak::Sigma()</a>, <a class="el" href="_t_a_b3_peak_8h_source.html#l00047">TAB3Peak::SigmaErr()</a>, <a class="el" href="_t_a_b_peak_8h_source.html#l00047">TABPeak::SigmaErr()</a>, <a class="el" href="_t_gauss_8h_source.html#l00050">SigmaErr()</a>, <a class="el" href="_t_r_w_peak_8h_source.html#l00050">TRWPeak::SigmaErr()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00138">TAB3Peak::ThreeHitPeakOnGlobalFunction()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00133">TAB3Peak::TwoHitPeakOnGlobalFunction()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00111">TABPeak::TwoHitPeakOnGlobalFunction()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00079">TAB3Peak::Width()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00069">TABPeak::Width()</a>, and <a class="el" href="_t_r_w_peak_8h_source.html#l00048">TRWPeak::Width()</a>.</p>
 
 </div>
 </div>
@@ -809,9 +845,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00078">78</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00080">80</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00110">TSinglePeak::fGlobalBackground</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00112">TSinglePeak::fGlobalBackground</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00156">TAB3Peak::DrawComponents()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00129">TABPeak::DrawComponents()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00128">TAB3Peak::OneHitPeakOnGlobalFunction()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00106">TABPeak::OneHitPeakOnGlobalFunction()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00138">TAB3Peak::ThreeHitPeakOnGlobalFunction()</a>, <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00133">TAB3Peak::TwoHitPeakOnGlobalFunction()</a>, and <a class="el" href="_t_a_b_peak_8cxx_source.html#l00111">TABPeak::TwoHitPeakOnGlobalFunction()</a>.</p>
 
@@ -840,9 +876,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00090">90</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00092">92</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00118">TSinglePeak::fNDF</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00120">TSinglePeak::fNDF</a>.</p>
 
 </div>
 </div>
@@ -871,7 +907,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_single_peak_8cxx_source.html#l00020">20</a> of file <a class="el" href="_t_single_peak_8cxx_source.html">TSinglePeak.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00108">TSinglePeak::fTotalFunction</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00110">TSinglePeak::fTotalFunction</a>.</p>
 
 </div>
 </div>
@@ -898,9 +934,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00077">77</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00079">79</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00112">TSinglePeak::fPeakFunction</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00114">TSinglePeak::fPeakFunction</a>.</p>
 
 </div>
 </div>
@@ -927,9 +963,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00091">91</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00093">93</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00117">TSinglePeak::fChi2</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00118">TSinglePeak::fNDF</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00119">TSinglePeak::fChi2</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00120">TSinglePeak::fNDF</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00054">main()</a>.</p>
 
@@ -972,7 +1008,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_gauss_8cxx_source.html#l00028">28</a> of file <a class="el" href="_t_gauss_8cxx_source.html">TGauss.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00076">TSinglePeak::GetFitFunction()</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00122">TSinglePeak::ParameterSetByUser()</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00078">TSinglePeak::GetFitFunction()</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00129">TSinglePeak::ParameterSetByUser()</a>.</p>
 
 </div>
 </div>
@@ -1003,7 +1039,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_gauss_8cxx_source.html#l00021">21</a> of file <a class="el" href="_t_gauss_8cxx_source.html">TGauss.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00076">TSinglePeak::GetFitFunction()</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00078">TSinglePeak::GetFitFunction()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_gauss_8cxx_source.html#l00011">Centroid()</a>.</p>
 
@@ -1034,7 +1070,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_single_peak_8cxx_source.html#l00004">4</a> of file <a class="el" href="_t_single_peak_8cxx_source.html">TSinglePeak.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00114">TSinglePeak::fListOfBGPars</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00116">TSinglePeak::fListOfBGPars</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00015">TSinglePeak::IsPeakParameter()</a>.</p>
 
@@ -1143,9 +1179,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>This function checks if a parameter or its limits have been set to a non-zero value. In case that the user fixed a parameter to be zero, the limits are non-zero, so this case is covered as well.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8cxx_source.html#l00122">122</a> of file <a class="el" href="_t_single_peak_8cxx_source.html">TSinglePeak.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8cxx_source.html#l00129">129</a> of file <a class="el" href="_t_single_peak_8cxx_source.html">TSinglePeak.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00108">TSinglePeak::fTotalFunction</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00110">TSinglePeak::fTotalFunction</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00026">TAB3Peak::InitializeParameters()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00024">TABPeak::InitializeParameters()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00028">InitializeParameters()</a>, and <a class="el" href="_t_r_w_peak_8cxx_source.html#l00023">TRWPeak::InitializeParameters()</a>.</p>
 
@@ -1213,11 +1249,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8cxx_source.html#l00092">92</a> of file <a class="el" href="_t_single_peak_8cxx_source.html">TSinglePeak.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8cxx_source.html#l00099">99</a> of file <a class="el" href="_t_single_peak_8cxx_source.html">TSinglePeak.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00110">TSinglePeak::fGlobalBackground</a>, <a class="el" href="_t_single_peak_8h_source.html#l00108">TSinglePeak::fTotalFunction</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00098">TSinglePeak::PeakFunction()</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00112">TSinglePeak::fGlobalBackground</a>, <a class="el" href="_t_single_peak_8h_source.html#l00110">TSinglePeak::fTotalFunction</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00100">TSinglePeak::PeakFunction()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00099">TSinglePeak::Draw()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00106">TSinglePeak::Draw()</a>.</p>
 
 </div>
 </div>
@@ -1275,7 +1311,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_single_peak_8cxx_source.html#l00045">45</a> of file <a class="el" href="_t_single_peak_8cxx_source.html">TSinglePeak.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00108">TSinglePeak::fTotalFunction</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00110">TSinglePeak::fTotalFunction</a>.</p>
 
 </div>
 </div>
@@ -1304,7 +1340,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00054">54</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00115">TSinglePeak::fArea</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00117">TSinglePeak::fArea</a>.</p>
 
 </div>
 </div>
@@ -1333,7 +1369,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00055">55</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00116">TSinglePeak::fAreaErr</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00118">TSinglePeak::fAreaErr</a>.</p>
 
 </div>
 </div>
@@ -1360,9 +1396,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00101">101</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00103">103</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00117">TSinglePeak::fChi2</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00119">TSinglePeak::fChi2</a>.</p>
 
 </div>
 </div>
@@ -1389,9 +1425,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00104">104</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00106">106</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00108">TSinglePeak::fTotalFunction</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00110">TSinglePeak::fTotalFunction</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00004">TAB3Peak::Centroid()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00004">TABPeak::Centroid()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00011">Centroid()</a>, and <a class="el" href="_t_r_w_peak_8cxx_source.html#l00003">TRWPeak::Centroid()</a>.</p>
 
@@ -1420,9 +1456,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00080">80</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00082">82</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00110">TSinglePeak::fGlobalBackground</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00112">TSinglePeak::fGlobalBackground</a>.</p>
 
 </div>
 </div>
@@ -1451,7 +1487,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00051">51</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00114">TSinglePeak::fListOfBGPars</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00116">TSinglePeak::fListOfBGPars</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00004">TAB3Peak::Centroid()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00004">TABPeak::Centroid()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00011">Centroid()</a>, and <a class="el" href="_t_r_w_peak_8cxx_source.html#l00003">TRWPeak::Centroid()</a>.</p>
 
@@ -1480,9 +1516,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00102">102</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00104">104</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00118">TSinglePeak::fNDF</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00120">TSinglePeak::fNDF</a>.</p>
 
 </div>
 </div>
@@ -1509,9 +1545,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00105">105</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00107">107</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00112">TSinglePeak::fPeakFunction</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00114">TSinglePeak::fPeakFunction</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00004">TAB3Peak::Centroid()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00004">TABPeak::Centroid()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00011">Centroid()</a>, and <a class="el" href="_t_r_w_peak_8cxx_source.html#l00003">TRWPeak::Centroid()</a>.</p>
 
@@ -1544,9 +1580,40 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_gauss_8h_source.html#l00049">49</a> of file <a class="el" href="_t_gauss_8h_source.html">TGauss.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00076">TSinglePeak::GetFitFunction()</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00078">TSinglePeak::GetFitFunction()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_gauss_8h_source.html#l00048">Width()</a>.</p>
+
+</div>
+</div>
+<a id="a0f63e6cd52cd96fba8103b9c7408d80a" name="a0f63e6cd52cd96fba8103b9c7408d80a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f63e6cd52cd96fba8103b9c7408d80a">&#9670;&#160;</a></span>SigmaErr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t TGauss::SigmaErr </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="class_t_single_peak.html#aa9b3fd48a448d8a857c5378909eb663f">TSinglePeak</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_t_gauss_8h_source.html#l00050">50</a> of file <a class="el" href="_t_gauss_8h_source.html">TGauss.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00078">TSinglePeak::GetFitFunction()</a>.</p>
 
 </div>
 </div>
@@ -1579,7 +1646,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_single_peak_8cxx_source.html#l00056">56</a> of file <a class="el" href="_t_single_peak_8cxx_source.html">TSinglePeak.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00097">TSinglePeak::BackgroundFunction()</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00098">TSinglePeak::PeakFunction()</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00099">TSinglePeak::BackgroundFunction()</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00100">TSinglePeak::PeakFunction()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_a_b3_peak_8cxx_source.html#l00004">TAB3Peak::Centroid()</a>, <a class="el" href="_t_a_b_peak_8cxx_source.html#l00004">TABPeak::Centroid()</a>, <a class="el" href="_t_gauss_8cxx_source.html#l00011">Centroid()</a>, and <a class="el" href="_t_r_w_peak_8cxx_source.html#l00003">TRWPeak::Centroid()</a>.</p>
 
@@ -1610,7 +1677,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_single_peak_8cxx_source.html#l00066">66</a> of file <a class="el" href="_t_single_peak_8cxx_source.html">TSinglePeak.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00109">TSinglePeak::fBackgroundFunction</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00108">TSinglePeak::fTotalFunction</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00111">TSinglePeak::fBackgroundFunction</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00110">TSinglePeak::fTotalFunction</a>.</p>
 
 </div>
 </div>
@@ -1639,7 +1706,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_single_peak_8cxx_source.html#l00061">61</a> of file <a class="el" href="_t_single_peak_8cxx_source.html">TSinglePeak.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00112">TSinglePeak::fPeakFunction</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00108">TSinglePeak::fTotalFunction</a>.</p>
+<p class="reference">References <a class="el" href="_t_single_peak_8h_source.html#l00114">TSinglePeak::fPeakFunction</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00110">TSinglePeak::fTotalFunction</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00077">TSinglePeak::FWHM()</a>.</p>
 
@@ -1697,7 +1764,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00115">115</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00117">117</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_single_peak_8h_source.html#l00057">TSinglePeak::Area()</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00054">TSinglePeak::SetArea()</a>.</p>
 
@@ -1723,7 +1790,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00116">116</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00118">118</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_single_peak_8h_source.html#l00058">TSinglePeak::AreaErr()</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00055">TSinglePeak::SetAreaErr()</a>.</p>
 
@@ -1749,7 +1816,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00109">109</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00111">111</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00028">TSinglePeak::GetBackgroundFunction()</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00066">TSinglePeak::UpdateBackgroundParameters()</a>.</p>
 
@@ -1775,9 +1842,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00117">117</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00119">119</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_single_peak_8h_source.html#l00089">TSinglePeak::GetChi2()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00091">TSinglePeak::GetReducedChi2()</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00101">TSinglePeak::SetChi2()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_single_peak_8h_source.html#l00091">TSinglePeak::GetChi2()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00093">TSinglePeak::GetReducedChi2()</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00103">TSinglePeak::SetChi2()</a>.</p>
 
 </div>
 </div>
@@ -1801,9 +1868,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00110">110</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00112">112</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00099">TSinglePeak::Draw()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00069">TSinglePeak::DrawBackground()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00078">TSinglePeak::GetGlobalBackground()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00092">TSinglePeak::PeakOnGlobalFunction()</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00080">TSinglePeak::SetGlobalBackground()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00106">TSinglePeak::Draw()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00071">TSinglePeak::DrawBackground()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00080">TSinglePeak::GetGlobalBackground()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00099">TSinglePeak::PeakOnGlobalFunction()</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00082">TSinglePeak::SetGlobalBackground()</a>.</p>
 
 </div>
 </div>
@@ -1827,7 +1894,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00114">114</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00116">116</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00004">TSinglePeak::IsBackgroundParameter()</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00051">TSinglePeak::SetListOfBGPar()</a>.</p>
 
@@ -1853,9 +1920,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00118">118</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00120">120</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_single_peak_8h_source.html#l00090">TSinglePeak::GetNDF()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00091">TSinglePeak::GetReducedChi2()</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00102">TSinglePeak::SetNDF()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_single_peak_8h_source.html#l00092">TSinglePeak::GetNDF()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00093">TSinglePeak::GetReducedChi2()</a>, and <a class="el" href="_t_single_peak_8h_source.html#l00104">TSinglePeak::SetNDF()</a>.</p>
 
 </div>
 </div>
@@ -1879,9 +1946,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00112">112</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00114">114</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00077">TSinglePeak::FWHM()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00077">TSinglePeak::GetPeakFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00105">TSinglePeak::SetPeakFunction()</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00061">TSinglePeak::UpdatePeakParameters()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00077">TSinglePeak::FWHM()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00079">TSinglePeak::GetPeakFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00107">TSinglePeak::SetPeakFunction()</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00061">TSinglePeak::UpdatePeakParameters()</a>.</p>
 
 </div>
 </div>
@@ -1905,9 +1972,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00111">111</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00113">113</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00099">TSinglePeak::Draw()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00106">TSinglePeak::Draw()</a>.</p>
 
 </div>
 </div>
@@ -1931,9 +1998,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00108">108</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_single_peak_8h_source.html#l00110">110</a> of file <a class="el" href="_t_single_peak_8h_source.html">TSinglePeak.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00099">TSinglePeak::Draw()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00028">TSinglePeak::GetBackgroundFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00076">TSinglePeak::GetFitFunction()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00020">TSinglePeak::GetNParameters()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00122">TSinglePeak::ParameterSetByUser()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00092">TSinglePeak::PeakOnGlobalFunction()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00045">TSinglePeak::PrintParameters()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00104">TSinglePeak::SetFitFunction()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00066">TSinglePeak::UpdateBackgroundParameters()</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00061">TSinglePeak::UpdatePeakParameters()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_single_peak_8cxx_source.html#l00106">TSinglePeak::Draw()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00028">TSinglePeak::GetBackgroundFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00078">TSinglePeak::GetFitFunction()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00020">TSinglePeak::GetNParameters()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00129">TSinglePeak::ParameterSetByUser()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00099">TSinglePeak::PeakOnGlobalFunction()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00045">TSinglePeak::PrintParameters()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00106">TSinglePeak::SetFitFunction()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00066">TSinglePeak::UpdateBackgroundParameters()</a>, and <a class="el" href="_t_single_peak_8cxx_source.html#l00061">TSinglePeak::UpdatePeakParameters()</a>.</p>
 
 </div>
 </div>
@@ -1944,7 +2011,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_gauss.html">TGauss</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Feb 3 2025 16:38:09.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Feb 6 2025 21:53:32.</li>
   </ul>
 </div>
 </body>
