@@ -92,8 +92,8 @@ Double_t TSinglePeak::FWHM()
 Double_t TSinglePeak::FWHMErr()
 {
    /// Return the uncertainty in the full width at half-maximum.
-	/// Since it is complicated to do this without knowledge of the underlying fit function, we simply assume that the (relative) uncertainty in the FWHM is the same as the uncertainty in sigma.
-	return FWHM()/Sigma()*SigmaErr();
+   /// Since it is complicated to do this without knowledge of the underlying fit function, we simply assume that the (relative) uncertainty in the FWHM is the same as the uncertainty in sigma.
+   return FWHM() / Sigma() * SigmaErr();
 }
 
 Double_t TSinglePeak::PeakOnGlobalFunction(Double_t* dim, Double_t* par)
