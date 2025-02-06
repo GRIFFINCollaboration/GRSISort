@@ -89,26 +89,29 @@ CFLAGS    += -MMD -MP $(INCLUDES)
 LINKFLAGS += -Llib $(addprefix -l,$(LIBRARY_NAMES)) -Wl,-rpath,\$$ORIGIN/../lib
 LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lMinuit -lGuiHtml -lTreePlayer -lX11 -lXpm -lTMVA
 
+ROOT_LIBFLAGS := $(shell root-config --cflags --glibs) -lSpectrum -lMinuit -lGuiHtml -lTreePlayer -lX11 -lXpm -lTMVA
+
 # RCFLAGS are being used for rootcint
 ifeq ($(MATHMORE_INSTALLED),yes)
   CFLAGS += -DHAS_MATHMORE
   RCFLAGS += -DHAS_MATHMORE
   LINKFLAGS += -lMathMore
+  ROOT_LIBFLAGS += -lMathMore
 endif
 
 ifeq ($(XML_INSTALLED),yes)
   CFLAGS += -DHAS_XML
   RCFLAGS += -DHAS_XML
   LINKFLAGS += -lXMLParser -lXMLIO
+  ROOT_LIBFLAGS += -lXMLParser -lXMLIO
 endif
 
 ifeq ($(PROOF_INSTALLED),yes)
 	LINKFLAGS += -lProof
+	ROOT_LIBFLAGS += -lProof
 endif
 
 LINKFLAGS := $(LINKFLAGS_PREFIX) $(LINKFLAGS) $(LINKFLAGS_SUFFIX) $(CFLAGS)
-
-ROOT_LIBFLAGS := $(shell root-config --cflags --glibs)
 
 UTIL_O_FILES     := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard util/*.$(SRC_SUFFIX)))
 #SANDBOX_O_FILES  := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard Sandbox/*.$(SRC_SUFFIX)))
@@ -186,7 +189,7 @@ include/GVersion.h:
 
 #include/GVersion.h: .git/HEAD .git/index util/gen_version.sh
 
-grsirc:
+grsirc: | include/GVersion.h
 	$(call run_and_test,util/gen_grsirc.sh,$@,$(COM_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
 
 lib/lib%.so: .build/histos/%.o | include/GVersion.h lib
