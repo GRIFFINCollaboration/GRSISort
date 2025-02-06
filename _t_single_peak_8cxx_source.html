@@ -221,7 +221,7 @@ $(function(){initNavTree('_t_single_peak_8cxx_source.html',''); initResizable(tr
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>{<span class="comment"></span></div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment">   /// Return the uncertainty in the full width at half-maximum.</span></div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment">   /// Since it is complicated to do this without knowledge of the underlying fit function, we simply assume that the (relative) uncertainty in the FWHM is the same as the uncertainty in sigma.</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment"></span>   <span class="keywordflow">return</span> <a class="code hl_function" href="class_t_single_peak.html#aaffdc851479f169eca878382ec954476">FWHM</a>()/<a class="code hl_function" href="class_t_single_peak.html#a2b5b32295c97a37db736f98df39dd81d">Sigma</a>()*<a class="code hl_function" href="class_t_single_peak.html#aa9b3fd48a448d8a857c5378909eb663f">SigmaErr</a>();</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment"></span>   <span class="keywordflow">return</span> <a class="code hl_function" href="class_t_single_peak.html#aaffdc851479f169eca878382ec954476">FWHM</a>() / <a class="code hl_function" href="class_t_single_peak.html#a2b5b32295c97a37db736f98df39dd81d">Sigma</a>() * <a class="code hl_function" href="class_t_single_peak.html#aa9b3fd48a448d8a857c5378909eb663f">SigmaErr</a>();</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>}</div>
 </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
@@ -311,7 +311,7 @@ $(function(){initNavTree('_t_single_peak_8cxx_source.html',''); initResizable(tr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_13ff732e2c56f9e39f6b01628bb57815.html">TAnalysis</a></li><li class="navelem"><a class="el" href="dir_359637ddf5ff0dd5705446986a14d7e9.html">TPeakFitting</a></li><li class="navelem"><a class="el" href="_t_single_peak_8cxx.html">TSinglePeak.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Feb 6 2025 21:53:28.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Feb 6 2025 21:56:22.</li>
   </ul>
 </div>
 </body>
