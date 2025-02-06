@@ -497,7 +497,7 @@ TF1* DoubleGausFit(TH1* hist, double, double, double xlow, double xhigh, Option_
 
 GPeak* PhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 {
-	return PhotoPeakFit(hist, xlow, (xlow + xhigh) / 2., xhigh, opt);
+   return PhotoPeakFit(hist, xlow, (xlow + xhigh) / 2., xhigh, opt);
 }
 
 GPeak* PhotoPeakFit(TH1* hist, double xlow, double centroid, double xhigh, Option_t* opt)
@@ -508,10 +508,10 @@ GPeak* PhotoPeakFit(TH1* hist, double xlow, double centroid, double xhigh, Optio
    if(xlow > xhigh) {
       std::swap(xlow, xhigh);
    }
-	if(centroid < xlow || xhigh < centroid) {
+   if(centroid < xlow || xhigh < centroid) {
       std::cout << "Centroid " << centroid << " out of range " << xlow << " - " << xhigh << std::endl;
       return nullptr;
-	}
+   }
 
    auto*       mypeak  = new GPeak(centroid, xlow, xhigh);
    std::string options = opt;

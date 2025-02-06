@@ -290,100 +290,99 @@ void GH1D::HandleEvent(Event_t* event, Window_t window)
    }
 
    switch(event->fType) {
-   case kGKeyPress:          // if a key is held, this one gets repeated
-		{
-			UInt_t              keySymbol = 0;
-			std::array<char, 2> str;
-			gVirtualX->LookupString(event, str.data(), str.size(), keySymbol);
+   case kGKeyPress:   // if a key is held, this one gets repeated
+   {
+      UInt_t              keySymbol = 0;
+      std::array<char, 2> str;
+      gVirtualX->LookupString(event, str.data(), str.size(), keySymbol);
 
-			if((VerboseLevel() > EVerbosity::kBasicFlow && event->fType != kMotionNotify && event->fType != kLeaveNotify) ||
-					(VerboseLevel() > EVerbosity::kSubroutines && event->fState != 0) ||
-					(VerboseLevel() > EVerbosity::kLoops)) {
-				std::cout << "key symbol " << keySymbol << " = " << hex(keySymbol) << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-			}
+      if((VerboseLevel() > EVerbosity::kBasicFlow && event->fType != kMotionNotify && event->fType != kLeaveNotify) ||
+         (VerboseLevel() > EVerbosity::kSubroutines && event->fState != 0) ||
+         (VerboseLevel() > EVerbosity::kLoops)) {
+         std::cout << "key symbol " << keySymbol << " = " << hex(keySymbol) << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+      }
 
-			if(str[0] == kESC) {   // ESC sets the escape flag
-				gROOT->SetEscape();
-				gPad->Modified();
-			}
-			if(str[0] == 3) {   // ctrl-c sets the interrupt flag
-				gROOT->SetInterrupt();
-			}
+      if(str[0] == kESC) {   // ESC sets the escape flag
+         gROOT->SetEscape();
+         gPad->Modified();
+      }
+      if(str[0] == 3) {   // ctrl-c sets the interrupt flag
+         gROOT->SetInterrupt();
+      }
 
-			switch(keySymbol) {
-				case kKey_b:
-					fBackground = true;
-					break;
-				case kKey_g:
-					fGate = true;
-					break;
-				case kKey_r:
-					fRegion = true;
-					break;
-				case kKey_l:
-					// toggle logscale for y
-					if(fPad->GetLogy() == 0) {
-						fPad->SetLogy(1);
-					} else {
-						fPad->SetLogy(0);
-					}
-					// we need to update the pad to get the new frame the histogram is draw in, then update it again after the regions have been re-drawn ...
-					UpdatePad();
-					DrawRegions();
-					UpdatePad();
-					break;
-				case kKey_p:
-					//f2DPlayer->Project();
-					break;
-				case kKey_u:
-					GetXaxis()->UnZoom();
-					GetYaxis()->UnZoom();
-					// we need to update the pad to get the new frame the histogram is draw in, then update it again after the regions have been re-drawn ...
-					UpdatePad();
-					DrawRegions();
-					UpdatePad();
-					if(VerboseLevel() > EVerbosity::kBasicFlow) {
-						PrintRegions();
-					}
-					break;
-				case kKey_U:
-					GetYaxis()->UnZoom();
-					// we need to update the pad to get the new frame the histogram is draw in, then update it again after the regions have been updated ...
-					UpdatePad();
-					DrawRegions();
-					UpdatePad();
-					if(VerboseLevel() > EVerbosity::kBasicFlow) {
-						PrintRegions();
-					}
-					break;
-				case kKey_Escape:
-					if(fGate || fBackground || fRegion) {
-						RemoveCurrentRegion();
-					}
-					if(VerboseLevel() > EVerbosity::kQuiet) {
-						std::cout << "Escape!" << std::endl;
-					}
-					break;
-				case kKey_Left:
-				case kKey_Up:
-				case kKey_Right:
-				case kKey_Down:
-					// handle arrow keys
-					if(VerboseLevel() > EVerbosity::kQuiet) {
-						std::cout << "Moving histogram" << std::endl;
-					}
-					Move1DHistogram(keySymbol, this);
-					// we need to update the pad to get the new frame the histogram is draw in, then update it again after the regions have been updated ...
-					UpdatePad();
-					DrawRegions();
-					UpdatePad();
-					if(VerboseLevel() > EVerbosity::kBasicFlow) {
-						PrintRegions();
-					}
-					break;
-			}
-		}
-      break;
+      switch(keySymbol) {
+      case kKey_b:
+         fBackground = true;
+         break;
+      case kKey_g:
+         fGate = true;
+         break;
+      case kKey_r:
+         fRegion = true;
+         break;
+      case kKey_l:
+         // toggle logscale for y
+         if(fPad->GetLogy() == 0) {
+            fPad->SetLogy(1);
+         } else {
+            fPad->SetLogy(0);
+         }
+         // we need to update the pad to get the new frame the histogram is draw in, then update it again after the regions have been re-drawn ...
+         UpdatePad();
+         DrawRegions();
+         UpdatePad();
+         break;
+      case kKey_p:
+         //f2DPlayer->Project();
+         break;
+      case kKey_u:
+         GetXaxis()->UnZoom();
+         GetYaxis()->UnZoom();
+         // we need to update the pad to get the new frame the histogram is draw in, then update it again after the regions have been re-drawn ...
+         UpdatePad();
+         DrawRegions();
+         UpdatePad();
+         if(VerboseLevel() > EVerbosity::kBasicFlow) {
+            PrintRegions();
+         }
+         break;
+      case kKey_U:
+         GetYaxis()->UnZoom();
+         // we need to update the pad to get the new frame the histogram is draw in, then update it again after the regions have been updated ...
+         UpdatePad();
+         DrawRegions();
+         UpdatePad();
+         if(VerboseLevel() > EVerbosity::kBasicFlow) {
+            PrintRegions();
+         }
+         break;
+      case kKey_Escape:
+         if(fGate || fBackground || fRegion) {
+            RemoveCurrentRegion();
+         }
+         if(VerboseLevel() > EVerbosity::kQuiet) {
+            std::cout << "Escape!" << std::endl;
+         }
+         break;
+      case kKey_Left:
+      case kKey_Up:
+      case kKey_Right:
+      case kKey_Down:
+         // handle arrow keys
+         if(VerboseLevel() > EVerbosity::kQuiet) {
+            std::cout << "Moving histogram" << std::endl;
+         }
+         Move1DHistogram(keySymbol, this);
+         // we need to update the pad to get the new frame the histogram is draw in, then update it again after the regions have been updated ...
+         UpdatePad();
+         DrawRegions();
+         UpdatePad();
+         if(VerboseLevel() > EVerbosity::kBasicFlow) {
+            PrintRegions();
+         }
+         break;
+      }
+   } break;
    case kKeyRelease:
       break;
    case kButtonPress:

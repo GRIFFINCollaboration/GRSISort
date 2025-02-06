@@ -64,7 +64,7 @@ public:
 
    void Add(std::map<GPeak*, std::tuple<double, double, double, double>> map);
    void FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
-	void ReplacePeak(const size_t& index, const double& channel);
+   void ReplacePeak(const size_t& index, const double& channel);
 
    void SourceEnergy(std::vector<std::tuple<double, double, double, double>> val) { fSourceEnergy = std::move(val); }
 
@@ -127,7 +127,7 @@ public:
    void          Write(TFile* output);
    void          Calibrate();
    void          Calibrate(const int& degree, const bool& force = false);
-	void          Iterate(const double& maxResidual);
+   void          Iterate(const double& maxResidual);
    void          FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
    TGTab*        SourceTab() const { return fSourceTab; }
    TGraphErrors* Data(int channelId) const { return fSources[channelId]->Data(); }
@@ -192,7 +192,7 @@ public:
 
    void Navigate(Int_t id);
    void Calibrate();
-	void Iterate();
+   void Iterate();
    void FindPeaks();
    void FindPeaksFast();
    void SelectedTab(Int_t id);
@@ -255,7 +255,7 @@ public:
    static void   FitRange(double val) { fFitRange = val; }
    static double FitRange() { return fFitRange; }
 
-   static void   AcceptBadFits(bool val) { fAcceptBadFits = val; }
+   static void AcceptBadFits(bool val) { fAcceptBadFits = val; }
    static bool AcceptBadFits() { return fAcceptBadFits; }
 
    static void ZoomX();
@@ -278,7 +278,7 @@ private:
       kFindPeaks     = 2,
       kFindPeaksFast = 3,
       kCalibrate     = 4,
-		kIterate       = 5,
+      kIterate       = 5,
       kDiscard       = 6,
       kAccept        = 7,
       kAcceptAll     = 8,
@@ -361,14 +361,14 @@ private:
 
    int fOldErrorLevel;   ///< Used to store old value of gErrorIgnoreLevel (set to kError for the scope of the class)
 
-   double     fDefaultSigma{2.};         ///< The default sigma used for the peak finding algorithm, can be changed later.
-   double     fDefaultThreshold{0.05};   ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.
-   int        fDefaultDegree{1};         ///< The default degree of the polynomial used for calibrating, can be changed later.
-   double     fDefaultPeakRatio{2.};     ///< The default ratio between found peaks and peaks in the source (per region).
-   double     fDefaultMaxResidual{2.};   ///< The default maximum residual accepted when trying to iteratively find peaks
-   static int fMaxIterations;            ///< Maximum iterations over combinations in Match and SmartMatch
-	static int fFitRange;                 ///< range in sigma used for fitting peaks (peak position - range to peas position + range)
-	static bool fAcceptBadFits;           ///< Do we accept peaks where the fit was bad (position or area uncertainties too large or not numbers)
+   double      fDefaultSigma{2.};         ///< The default sigma used for the peak finding algorithm, can be changed later.
+   double      fDefaultThreshold{0.05};   ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.
+   int         fDefaultDegree{1};         ///< The default degree of the polynomial used for calibrating, can be changed later.
+   double      fDefaultPeakRatio{2.};     ///< The default ratio between found peaks and peaks in the source (per region).
+   double      fDefaultMaxResidual{2.};   ///< The default maximum residual accepted when trying to iteratively find peaks
+   static int  fMaxIterations;            ///< Maximum iterations over combinations in Match and SmartMatch
+   static int  fFitRange;                 ///< range in sigma used for fitting peaks (peak position - range to peas position + range)
+   static bool fAcceptBadFits;            ///< Do we accept peaks where the fit was bad (position or area uncertainties too large or not numbers)
 
    TFile* fOutput{nullptr};
 
