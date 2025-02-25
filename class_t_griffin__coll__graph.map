@@ -1,18 +1,18 @@
 <map id="TGriffin" name="TGriffin">
-<area shape="rect" id="Node000001" title=" " alt="" coords="1031,161,1094,187"/>
-<area shape="rect" id="Node000002" href="$class_t_suppressed.html" title=" " alt="" coords="637,16,735,42"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="751,32,809,41,875,56,944,78,1009,111,1036,134,1055,159,1051,162,1032,138,1006,115,942,83,874,61,808,46,751,37"/>
-<area shape="rect" id="Node000003" href="$class_t_detector.html" title=" " alt="" coords="270,5,348,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="364,17,574,22,637,24,637,30,574,27,364,22"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="925,128,988,154"/>
+<area shape="rect" id="Node000002" href="$class_t_suppressed.html" title=" " alt="" coords="583,25,681,51"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="697,33,744,35,797,41,851,54,903,76,931,100,950,126,946,129,927,104,900,80,850,59,796,46,744,40,697,38"/>
+<area shape="rect" id="Node000003" href="$class_t_detector.html" title=" " alt="" coords="270,19,348,44"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="363,30,582,34,582,40,363,35"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="64,5,132,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="147,16,269,16,269,21,147,21"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="147,19,269,26,269,32,147,24"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="5,69,191,95"/>
-<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="170,96,266,116,372,133,469,140,551,142,691,135,758,132,830,132,912,139,1008,153,1032,159,1030,164,1007,158,911,144,830,138,758,137,691,141,551,147,468,146,372,138,265,121,169,102"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="159,62,245,36,269,28,270,33,246,41,161,67"/>
-<area shape="rect" id="Node000006" href="$class_t_transient_bits.html" title=" " alt="" coords="598,169,774,195"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="790,177,1031,172,1031,177,790,183"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="608,267,764,292"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="775,292,830,295,890,293,950,281,979,271,1006,258,1024,243,1038,224,1055,186,1060,189,1042,226,1028,246,1009,262,981,276,952,286,891,298,830,301,775,297"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="616,316,757,357"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="772,353,829,358,890,357,951,344,980,332,1006,316,1020,303,1031,287,1047,251,1055,215,1058,187,1063,188,1060,216,1052,253,1036,290,1024,307,1009,321,982,337,953,349,891,362,829,364,772,358"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="207,81,575,92,764,103,902,120,926,126,924,131,901,125,764,109,575,97,206,86"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="173,63,245,45,269,39,270,44,246,50,174,68"/>
+<area shape="rect" id="Node000006" href="$class_t_transient_bits.html" title=" " alt="" coords="544,135,720,160"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="736,143,925,139,925,144,736,148"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="554,189,710,215"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="725,204,812,199,857,190,900,178,922,166,940,152,943,156,925,171,902,183,858,196,813,204,726,209"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="562,239,703,280"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="719,264,763,263,810,257,857,245,900,224,918,209,931,190,949,153,953,155,936,192,921,212,903,229,859,250,811,263,763,269,719,270"/>
 </map>
