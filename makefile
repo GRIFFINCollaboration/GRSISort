@@ -87,9 +87,9 @@ INCLUDES  := $(addprefix -I$(PWD)/,$(INCLUDES))
 CFLAGS    += $(shell root-config --cflags)
 CFLAGS    += -MMD -MP $(INCLUDES)
 LINKFLAGS += -Llib $(addprefix -l,$(LIBRARY_NAMES)) -Wl,-rpath,\$$ORIGIN/../lib
-LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lMinuit -lGuiHtml -lTreePlayer -lX11 -lXpm -lTMVA
+LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lMinuit -lGuiHtml -lTMVA
 
-ROOT_LIBFLAGS := $(shell root-config --cflags --glibs) -lSpectrum -lMinuit -lGuiHtml -lTreePlayer -lX11 -lXpm -lTMVA
+ROOT_LIBFLAGS := $(shell root-config --cflags --glibs) -L/opt/local/lib -lSpectrum -lMinuit -lGuiHtml -lX11 -lXpm -lTMVA
 
 # RCFLAGS are being used for rootcint
 ifeq ($(MATHMORE_INSTALLED),yes)
