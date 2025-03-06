@@ -5,12 +5,20 @@
 
 #include "Globals.h"
 
+EVerbosity TPeakFitter::fVerboseLevel = EVerbosity::kQuiet;
+
 TPeakFitter::TPeakFitter(const Double_t& rangeLow, const Double_t& rangeHigh)
    : fRangeLow(rangeLow), fRangeHigh(rangeHigh)
 {
    fBGToFit = new TF1("fbg", this, &TPeakFitter::DefaultBackgroundFunction, fRangeLow, fRangeHigh, 4, "TPeakFitter", "DefaultBackgroundFunction");
    fBGToFit->FixParameter(3, 0);
    fBGToFit->SetLineColor(static_cast<Color_t>(kRed + fColorIndex));
+	if(fVerboseLevel >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": constructed peak fitter " << this << " using range " << fRangeLow << " - " << fRangeHigh << std::endl; }
+}
+
+TPeakFitter::~TPeakFitter()
+{
+	if(fVerboseLevel >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": destroying peak fitter " << this << " for range " << fRangeLow << " - " << fRangeHigh << std::endl; }
 }
 
 void TPeakFitter::Print(Option_t* opt) const
@@ -133,8 +141,14 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
          // fit again with all parameters released
          if(!quiet) { std::cout << GREEN << "Re-fitting with released parameters (without any limits)" << RESET_COLOR << std::endl; }
          for(int i = 0; i < fTotalFitFunction->GetNpar(); ++i) {
+				// as of now this only works for the first peak and is reliant on the fact that all peaks have the centroig as parameter 1
+				// might be better to check if the parameter name matches "centroid_X" where X is the peak number?
             if(i == 1) { continue; }   // skipping centroid, which should always be parameter 1
-            fTotalFitFunction->ReleaseParameter(i);
+				// only release parameters with limits, not those that have been fixed
+				double min = 0.;
+				double max = 0.;
+				fTotalFitFunction->GetParLimits(i, min, max);
+            if(min != max) { fTotalFitFunction->ReleaseParameter(i); }
          }
          fit_res = fit_hist->Fit(fTotalFitFunction, Form("SRI%s", options.Data()));
          TGRSIFunctions::CheckParameterErrors(fit_res, options.Data());
@@ -308,13 +322,19 @@ void TPeakFitter::UpdateFitterParameters()
 
 Double_t TPeakFitter::FitFunction(Double_t* dim, Double_t* par)
 {
-   // I want to use the EvalPar command here in order to ge the individual peaks
+   // I want to use the EvalPar command here in order to get the individual peaks
    Double_t sum           = 0;
    Int_t    params_so_far = 0;
+	if(fVerboseLevel >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": this " << this << " has " << fPeaksToFit.size() << " peaks to be evaluated at x = " << dim[0] << std::endl; }
    for(auto* p_it : fPeaksToFit) {
-      TF1* peak_func = p_it->GetFitFunction();
-      sum += peak_func->EvalPar(dim, &par[params_so_far]);
-      params_so_far += peak_func->GetNpar();
+      TF1* peakFunction = p_it->GetFitFunction();
+		if(peakFunction == nullptr) {
+			std::cerr << "Failed to get fit function for peak from " << p_it << " at " << p_it->Centroid() << std::endl;
+			return 0.;
+		}
+		if(fVerboseLevel >= EVerbosity::kLoops) { std::cout << "Evaluating fit function " << peakFunction << " using " << peakFunction->GetNpar() << " parameters starting at " << params_so_far << " (" << &par[params_so_far] << ")" << std::endl; }
+      sum += peakFunction->EvalPar(dim, &par[params_so_far]);
+      params_so_far += peakFunction->GetNpar();
    }
    sum += fBGToFit->EvalPar(dim, &par[params_so_far]);
 
