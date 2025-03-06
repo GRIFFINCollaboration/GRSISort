@@ -26,7 +26,6 @@
 ///
 /////////////////////////////////////////////////////////////////
 class TSinglePeak;
-using MultiplePeak_t = std::list<TSinglePeak*>;
 
 class TPeakFitter : public TObject {
 public:
@@ -37,7 +36,7 @@ public:
    TPeakFitter(TPeakFitter&&) noexcept            = default;
    TPeakFitter& operator=(const TPeakFitter&)     = default;
    TPeakFitter& operator=(TPeakFitter&&) noexcept = default;
-   ~TPeakFitter()                                 = default;
+   ~TPeakFitter();
 
    void AddPeak(TSinglePeak* peak)
    {
@@ -62,8 +61,8 @@ public:
    void Print(Option_t* opt = "") const override;
    void PrintParameters() const;
 
-   TF1*          GetBackground() { return fBGToFit; }
-   TF1*          GetFitFunction() { return fTotalFitFunction; }
+   TF1*          GetBackground() const { return fBGToFit; }
+   TF1*          GetFitFunction() const { return fTotalFitFunction; }
    void          SetRange(const Double_t& low, const Double_t& high);
    Int_t         GetNParameters() const;
    TFitResultPtr Fit(TH1* fit_hist, Option_t* opt = "");
@@ -73,20 +72,21 @@ public:
 
    void SetColorIndex(const int& index) { fColorIndex = index; }
 
+   static void       VerboseLevel(EVerbosity val) { fVerboseLevel = val; }
+   static EVerbosity VerboseLevel() { return fVerboseLevel; }
+
 private:
    void     UpdateFitterParameters();
    void     UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hist);
    Double_t DefaultBackgroundFunction(Double_t* dim, Double_t* par);
    void     ResetTotalFitFunction()
    {
-      if(fTotalFitFunction != nullptr) {
-         delete fTotalFitFunction;
-         fTotalFitFunction = nullptr;
-      }
+		delete fTotalFitFunction;
+		fTotalFitFunction = nullptr;
    }
 
-   MultiplePeak_t fPeaksToFit;
-   TF1*           fBGToFit{nullptr};
+   std::list<TSinglePeak*> fPeaksToFit;
+   TF1*                    fBGToFit{nullptr};
 
    TF1* fTotalFitFunction{nullptr};
 
@@ -101,6 +101,8 @@ private:
    TH1* fLastHistFit{nullptr};
 
    int fColorIndex{0};   ///< this index is added to the colors kRed for the total function and kMagenta for the individual peaks
+
+	static EVerbosity fVerboseLevel; ///< Changes verbosity of code.
 
    /// \cond CLASSIMP
    ClassDefOverride(TPeakFitter, 2)   // NOLINT(readability-else-after-return)

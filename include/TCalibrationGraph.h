@@ -132,6 +132,7 @@ public:
    TCalibrationGraph* Graph(size_t index) { return &(fGraphs.at(index)); }
    TCalibrationGraph* Residual(size_t index) { return &(fResidualGraphs.at(index)); }
 
+   void Draw(Option_t* opt = "") override { DrawCalibration(opt, nullptr); }
    void DrawCalibration(Option_t* opt = "", TLegend* legend = nullptr);
    void DrawResidual(Option_t* opt = "", TLegend* legend = nullptr);
 
@@ -140,8 +141,9 @@ public:
       fGraphs.erase(fGraphs.begin() + index);
       ResetTotalGraph();
    }
-   Int_t RemovePoint(const Int_t& px, const Int_t& py);           //*SIGNAL*
-   Int_t RemoveResidualPoint(const Int_t& px, const Int_t& py);   //*SIGNAL*
+   Int_t RemovePoint(const Int_t& px, const Int_t& py);                        //*SIGNAL*
+   Int_t RemoveResidualPoint(const Int_t& px, const Int_t& py);                //*SIGNAL*
+   Int_t RemovePoint(TGraphErrors* graph, const Int_t& px, const Int_t& py);   //*SIGNAL*
 
    void XAxisLabel(const std::string& xAxisLabel) { fXAxisLabel = xAxisLabel; }
    void YAxisLabel(const std::string& yAxisLabel) { fYAxisLabel = yAxisLabel; }
@@ -150,6 +152,8 @@ public:
    std::string YAxisLabel() { return fYAxisLabel; }
 
    void Scale(bool useAllPrevious = true);
+
+	void Sort();
 
    void Print(Option_t* opt = "") const override;
 
