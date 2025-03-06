@@ -32,18 +32,18 @@ std::map<TGauss*, std::tuple<double, double, double, double>> Match(std::vector<
    /// It does so in a brute force fashion where we try all combinations of channels and energies, do a linear fit through them, and keep the one with the best chi square.
 
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << RESET_COLOR << "Matching " << peaks.size() << " peaks with " << sources.size() << " source energies" << std::endl; }
-   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { 
-		std::cout << "peaks:";
-		for(auto* peak : peaks) {
-			std::cout << " " << peak->Centroid();
-		}
-		std::cout << std::endl;
-		std::cout << "energies:";
-		for(auto source : sources) {
-			std::cout << " " << std::get<0>(source);
-		}
-		std::cout << std::endl;
-	}
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+      std::cout << "peaks:";
+      for(auto* peak : peaks) {
+         std::cout << " " << peak->Centroid();
+      }
+      std::cout << std::endl;
+      std::cout << "energies:";
+      for(auto source : sources) {
+         std::cout << " " << std::get<0>(source);
+      }
+      std::cout << std::endl;
+   }
 
    std::map<TGauss*, std::tuple<double, double, double, double>> result;
    std::sort(peaks.begin(), peaks.end(), [](const TGauss* a, const TGauss* b) { return a->Centroid() < b->Centroid(); });
@@ -446,13 +446,13 @@ void TSourceTab::ProjectionStatus(Int_t event, Int_t px, Int_t py, TObject* sele
    case kButton1Down:
       if(selected == fProjection) {
          if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << DCYAN << "Adding new marker at " << px << ", " << py << " (pixel to user: " << fProjectionCanvas->GetCanvas()->PixeltoX(px) << ", " << fProjectionCanvas->GetCanvas()->PixeltoY(py - fProjectionCanvas->GetCanvas()->GetWh()) << ", abs pixel to user: " << fProjectionCanvas->GetCanvas()->AbsPixeltoX(px) << ", " << fProjectionCanvas->GetCanvas()->AbsPixeltoY(py) << ")" << std::endl; }
-			if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-				std::cout << fPeaks.size() << " peaks:";
-				for(auto* peak : fPeaks) {
-					std::cout << " " << peak->Centroid();
-				}
-				std::cout << std::endl;
-			}
+         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+            std::cout << fPeaks.size() << " peaks:";
+            for(auto* peak : fPeaks) {
+               std::cout << " " << peak->Centroid();
+            }
+            std::cout << std::endl;
+         }
          auto* polym = static_cast<TPolyMarker*>(fProjection->GetListOfFunctions()->FindObject("TPolyMarker"));
          if(polym == nullptr) {
             std::cerr << "No peaks defined yet?" << std::endl;
@@ -657,24 +657,24 @@ void TSourceTab::FindPeaks(const double& sigma, const double& threshold, const d
 				pf->Fit(fProjection, "nretryfit");
          }
          if(peak->Area() > 0) {
-				// check if we accept bad fits (and if it was a bad fit)
-				if(Good(peak)) {
-					peak->SetLineColor(kRed);
-					fPeaks.push_back(peak);
-					fFits.push_back(pf);
-					if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-						std::cout << "Fitted peak " << peakPos[i] - range << " - " << peakPos[i] + range << " -> centroid " << peak->Centroid() << ", area " << peak->Area() << std::endl;
-					}
-				} else {
-					peak->SetLineColor(kGray);
-					fBadFits.push_back(pf);
-					if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-						std::cout << "We're ignoring bad fits, and this one has position " << peak->Centroid() << " +- " << peak->CentroidErr() << ", area " << peak->Area() << " +- " << peak->AreaErr() << std::endl;
-					}
-				}
+            // check if we accept bad fits (and if it was a bad fit)
+            if(Good(peak)) {
+               peak->SetLineColor(kRed);
+               fPeaks.push_back(peak);
+               fFits.push_back(pf);
+               if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+                  std::cout << "Fitted peak " << peakPos[i] - range << " - " << peakPos[i] + range << " -> centroid " << peak->Centroid() << ", area " << peak->Area() << std::endl;
+               }
+            } else {
+               peak->SetLineColor(kGray);
+               fBadFits.push_back(pf);
+               if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+                  std::cout << "We're ignoring bad fits, and this one has position " << peak->Centroid() << " +- " << peak->CentroidErr() << ", area " << peak->Area() << " +- " << peak->AreaErr() << std::endl;
+               }
+            }
          } else if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
             std::cout << "Ignoring peak at " << peak->Centroid() << " with negative area " << peak->Area() << std::endl;
-				//delete peak;
+            //delete peak;
          }
       }
       if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": added " << fPeaks.size() << " peaks" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
@@ -954,7 +954,6 @@ void TSourceTab::ReplacePeak(const size_t& index, const double& channel)
 {
 	/// Replace the peak at the index with one centered at channel (calculated from an initial calibration and the source energy of this peak).
 	/// This replaces the TGauss* in fPeaks, and updates the values of this index in fData and fFwhm.
-	
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << DCYAN << __PRETTY_FUNCTION__ << ": index " << index << ", channel " << channel << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 		for(size_t i = 0; i < fPeaks.size() && i < fFits.size(); ++i) {
@@ -1493,10 +1492,10 @@ void TChannelTab::Calibrate()
 
 void TChannelTab::Iterate(const double& maxResidual)
 {
-	/// This function goes through the residuals of the calibration and for each point that is above the maxResidual parameter it attempts to find a better peak in the source spectrum.
-	/// This is done iteratively, starting with the largest residual.
-	/// The function requires an initial calibration to a) have residuals available and b) translate the source energy to channels
-	
+   /// This function goes through the residuals of the calibration and for each point that is above the maxResidual parameter it attempts to find a better peak in the source spectrum.
+   /// This is done iteratively, starting with the largest residual.
+   /// The function requires an initial calibration to a) have residuals available and b) translate the source energy to channels
+
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << DYELLOW << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 
 	// Get the max residual in all the residual graphs
@@ -1531,11 +1530,24 @@ void TChannelTab::Iterate(const double& maxResidual)
 		fData->Residual(source)->Print();
 	}
 
-	// now that we have the source and the index of the point, we can get the energy of this peak and calculate the corresponding channel
-	double energy = fData->Graph(source)->GetY()[index];
-	double channel = fData->FitFunction()->GetX(energy);
+   for(source = 1; source < fData->NumberOfGraphs(); ++source) {
+      auto tmp = std::max_element(fData->Residual(source)->GetX(), fData->Residual(source)->GetX() + fData->Residual(source)->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
+      if(*tmp > *maxElement) {
+         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "found larger residual in residual graph " << source << ": " << *tmp << " > " << *maxElement << ", was position " << index << std::flush; }
+         maxElement = tmp;
+         index      = std::distance(fData->Residual(source)->GetX(), maxElement);
+         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << " now at position " << index << std::endl; }
+      }
+   }
+   if(*maxElement < maxResidual) {
+      if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "max. residual in residual graph " << source << " is " << *maxElement << " < " << maxResidual << "!" << std::endl; }
+      return;
+   }
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "found max. residual in residual graph " << source << " of " << *maxElement << " > " << maxResidual << ", at position " << index << std::endl; }
 
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "energy  = " << energy << " => channel =  " << channel << std::endl; }
+   // now that we have the source and the index of the point, we can get the energy of this peak and calculate the corresponding channel
+   double energy  = fData->Graph(source)->GetY()[index];
+   double channel = fData->FitFunction()->GetX(energy);
 
 	fSources[source]->ReplacePeak(index, channel);
 
@@ -2310,7 +2322,7 @@ void TSourceCalibration::Navigate(Int_t id)
       AcceptChannel();
       return;
    case ENavigate::kWrite:   // write
-		WriteCalibration();
+      WriteCalibration();
       break;
    case ENavigate::kNext:   // next
       fTab->SetTab(currentChannelId + 1);
@@ -2421,15 +2433,15 @@ void TSourceCalibration::AcceptChannel(const int& channelId)
       if(minChannel == maxChannel) {   // we don't need to select the tab if we close all
          if(currentChannelId < nofTabs) {
             fTab->SetTab(currentChannelId + 1);
-				if(fVerboseLevel > EVerbosity::kLoops) { std::cout << DGREEN << __PRETTY_FUNCTION__ << ": set tab to " << currentChannelId + 1 << " = " << fTab->GetCurrent() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+            if(fVerboseLevel > EVerbosity::kLoops) { std::cout << DGREEN << __PRETTY_FUNCTION__ << ": set tab to " << currentChannelId + 1 << " = " << fTab->GetCurrent() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
          } else {
             fTab->SetTab(currentChannelId - 1);
-				if(fVerboseLevel > EVerbosity::kLoops) { std::cout << DGREEN << __PRETTY_FUNCTION__ << ": set tab to " << currentChannelId - 1 << " = " << fTab->GetCurrent() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+            if(fVerboseLevel > EVerbosity::kLoops) { std::cout << DGREEN << __PRETTY_FUNCTION__ << ": set tab to " << currentChannelId - 1 << " = " << fTab->GetCurrent() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
          }
       }
 
       // remove the original active tab
-      fTab->RemoveTab(currentChannelId); // this sets the selected tab to zero if the deleted tab is the currently selected one, which is why we do it now (after we've selected a new tab)
+      fTab->RemoveTab(currentChannelId);   // this sets the selected tab to zero if the deleted tab is the currently selected one, which is why we do it now (after we've selected a new tab)
       fActualChannelId.erase(fActualChannelId.begin() + currentChannelId);
       fActiveBins.erase(fActiveBins.begin() + currentChannelId);
    }

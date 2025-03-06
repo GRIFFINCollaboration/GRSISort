@@ -66,7 +66,7 @@ public:
    void Add(std::map<TGauss*, std::tuple<double, double, double, double>> map);
    void FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
    void FindCalibratedPeaks(const TF1* calibration);
-	void ReplacePeak(const size_t& index, const double& channel);
+   void ReplacePeak(const size_t& index, const double& channel);
 
    void SourceEnergy(std::vector<std::tuple<double, double, double, double>> val) { fSourceEnergy = std::move(val); }
 
@@ -134,7 +134,7 @@ public:
    void          Write(TFile* output);
    void          Calibrate();
    void          Calibrate(const int& degree, const bool& force = false);
-	void          Iterate(const double& maxResidual);
+   void          Iterate(const double& maxResidual);
    void          FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
    void          FindCalibratedPeaks();
    TGTab*        SourceTab() const { return fSourceTab; }
@@ -201,7 +201,7 @@ public:
    void Navigate(Int_t id);
    void Fitting(Int_t id);
    void Calibrate();
-	void Iterate();
+   void Iterate();
    void FindPeaks();
    void FindPeaksFast();
    void FindCalibratedPeaks();
@@ -295,12 +295,12 @@ private:
    };
 	// the numbering of these two enums needs to match the order in which the buttons are created
    enum ENavigate : int {
-      kPrevious      = 1,
-      kDiscard       = 2,
-      kAccept        = 3,
-      kAcceptAll     = 4,
-      kWrite         = 5,
-      kNext          = 6
+      kPrevious  = 1,
+      kDiscard   = 2,
+      kAccept    = 3,
+      kAcceptAll = 4,
+      kWrite     = 5,
+      kNext      = 6
    };
    enum EFitting : int {
       kFindPeaks       = 1,
