@@ -26,7 +26,8 @@
 #include "TPaveText.h"
 #include "RVersion.h"
 
-#include "GPeak.h"
+#include "TPeakFitter.h"
+#include "TGauss.h"
 #include "TSinglePeak.h"
 #include "TNucleus.h"
 #include "TCalibrationGraph.h"
@@ -36,8 +37,8 @@
 
 class TSourceTab;
 
-std::map<GPeak*, std::tuple<double, double, double, double>> Match(std::vector<GPeak*> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
-std::map<GPeak*, std::tuple<double, double, double, double>> SmartMatch(std::vector<GPeak*> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
+std::map<TGauss*, std::tuple<double, double, double, double>> Match(std::vector<TGauss*> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
+std::map<TGauss*, std::tuple<double, double, double, double>> SmartMatch(std::vector<TGauss*> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
 
 double Polynomial(double* x, double* par);
 
@@ -62,8 +63,9 @@ public:
    void ProjectionStatus(Event_t* event);
    void ProjectionStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
 
-   void Add(std::map<GPeak*, std::tuple<double, double, double, double>> map);
+   void Add(std::map<TGauss*, std::tuple<double, double, double, double>> map);
    void FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
+   void FindCalibratedPeaks(const TF1* calibration);
 	void ReplacePeak(const size_t& index, const double& channel);
 
    void SourceEnergy(std::vector<std::tuple<double, double, double, double>> val) { fSourceEnergy = std::move(val); }
@@ -74,14 +76,16 @@ public:
    TGraphErrors*        Fwhm() const { return fFwhm; }
    TRootEmbeddedCanvas* ProjectionCanvas() const { return fProjectionCanvas; }
 
-   void RemovePoint(Int_t px, Int_t py);
-   void RemoveResidualPoint(Int_t px, Int_t py);
+   void RemovePoint(Int_t oldPoint);
 
+   void Print() const;
    void PrintLayout() const;
 
 private:
    void BuildInterface();
    void UpdateRegions();
+	bool Good(TGauss* peak);
+	void UpdateFits();
 
    // parent
    TChannelTab* fParent{nullptr};
@@ -98,8 +102,10 @@ private:
    double                                                  fSigma{2.};
    double                                                  fThreshold{0.05};
    double                                                  fPeakRatio{2.};
-   std::vector<GPeak*>                                     fPeaks;
-   std::vector<std::tuple<double, double, double, double>> fSourceEnergy;
+	std::vector<TPeakFitter*>                               fFits;                 ///< all good fits
+	std::vector<TPeakFitter*>                               fBadFits;              ///< all bad fits (centroid err > 10%, area err > 100%, or either of them not a number at all)
+	std::vector<TGauss*>                                    fPeaks;                ///< all peaks that have been fitted and are good
+   std::vector<std::tuple<double, double, double, double>> fSourceEnergy;         ///< gamma rays from the source, with their energies, uncertainties in the energies, intensities, and uncertainties in the intesities
    std::vector<std::pair<double, double>>                  fRegions;
 };
 
@@ -119,6 +125,7 @@ public:
 
    void CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
    void SelectCanvas(Event_t* event);
+   void RemovePoint(Int_t oldGraph, Int_t oldPoint);
 
    void          UpdateData();
    void          UpdateFwhm();
@@ -129,6 +136,7 @@ public:
    void          Calibrate(const int& degree, const bool& force = false);
 	void          Iterate(const double& maxResidual);
    void          FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
+   void          FindCalibratedPeaks();
    TGTab*        SourceTab() const { return fSourceTab; }
    TGraphErrors* Data(int channelId) const { return fSources[channelId]->Data(); }
    size_t        NumberOfSources() const { return fSources.size(); }
@@ -191,10 +199,13 @@ public:
    }
 
    void Navigate(Int_t id);
+   void Fitting(Int_t id);
    void Calibrate();
 	void Iterate();
    void FindPeaks();
    void FindPeaksFast();
+   void FindCalibratedPeaks();
+   void FindAllCalibratedPeaks();
    void SelectedTab(Int_t id);
 
    void NavigateFinal(Int_t id);
@@ -252,11 +263,20 @@ public:
    static void MaxIterations(int val) { fMaxIterations = val; }
    static int  MaxIterations() { return fMaxIterations; }
 
-   static void   FitRange(double val) { fFitRange = val; }
+   static void   FitRange(int val) { fFitRange = val; }
    static double FitRange() { return fFitRange; }
 
-   static void   AcceptBadFits(bool val) { fAcceptBadFits = val; }
+   static void AcceptBadFits(bool val) { fAcceptBadFits = val; }
    static bool AcceptBadFits() { return fAcceptBadFits; }
+
+   static void Fast(bool val) { fFast = val; }
+   static bool Fast() { return fFast; }
+
+   static void UseCalibratedPeaks(bool val) { fUseCalibratedPeaks = val; }
+   static bool UseCalibratedPeaks() { return fUseCalibratedPeaks; }
+
+   static void MinIntensity(double val) { fMinIntensity = val; }
+   static double MinIntensity() { return fMinIntensity; }
 
    static void ZoomX();
 
@@ -273,17 +293,22 @@ private:
       kMaxResidualEntry    = 600,
       kWriteNonlinearities = 700
    };
+	// the numbering of these two enums needs to match the order in which the buttons are created
    enum ENavigate : int {
       kPrevious      = 1,
-      kFindPeaks     = 2,
-      kFindPeaksFast = 3,
-      kCalibrate     = 4,
-		kIterate       = 5,
-      kDiscard       = 6,
-      kAccept        = 7,
-      kAcceptAll     = 8,
-      kWrite         = 9,
-      kNext          = 10
+      kDiscard       = 2,
+      kAccept        = 3,
+      kAcceptAll     = 4,
+      kWrite         = 5,
+      kNext          = 6
+   };
+   enum EFitting : int {
+      kFindPeaks       = 1,
+      kFindPeaksFast   = 2,
+      kFindPeaksCal    = 3,
+      kFindPeaksCalAll = 4,
+      kIterate         = 5,
+      kCalibrate       = 6
    };
 
    void BuildFirstInterface();
@@ -312,15 +337,18 @@ private:
    TGTextButton*   fEmitter{nullptr};
    TGHButtonGroup* fNavigationGroup{nullptr};
    TGTextButton*   fPreviousButton{nullptr};
-   TGTextButton*   fCalibrateButton{nullptr};
-   TGTextButton*   fIterateButton{nullptr};
-   TGTextButton*   fFindPeaksButton{nullptr};
-   TGTextButton*   fFindPeaksFastButton{nullptr};
    TGTextButton*   fDiscardButton{nullptr};
    TGTextButton*   fAcceptButton{nullptr};
    TGTextButton*   fAcceptAllButton{nullptr};
    TGTextButton*   fWriteButton{nullptr};
    TGTextButton*   fNextButton{nullptr};
+   TGHButtonGroup* fFittingGroup{nullptr};
+   TGTextButton*   fCalibrateButton{nullptr};
+   TGTextButton*   fIterateButton{nullptr};
+   TGTextButton*   fFindPeaksButton{nullptr};
+   TGTextButton*   fFindPeaksFastButton{nullptr};
+   TGTextButton*   fFindPeaksCalButton{nullptr};
+   TGTextButton*   fFindPeaksCalAllButton{nullptr};
    TGGroupFrame*   fParameterFrame{nullptr};
    TGLabel*        fSigmaLabel{nullptr};
    TGNumberEntry*  fSigmaEntry{nullptr};
@@ -347,6 +375,7 @@ private:
    int               fNofBins{0};   ///< Number of filled bins in first matrix
 
    static std::string fLogFile;   ///< name of log file, if empty no log file is written
+	TRedirect* fRedirect{nullptr}; ///< redirect, created in constructor and destroyed in destructor if a log file name has been provided
 
    // graphic settings
    unsigned int fLineHeight{20};    ///< Height of text boxes and progress bar
@@ -361,18 +390,21 @@ private:
 
    int fOldErrorLevel;   ///< Used to store old value of gErrorIgnoreLevel (set to kError for the scope of the class)
 
-   double     fDefaultSigma{2.};         ///< The default sigma used for the peak finding algorithm, can be changed later.
-   double     fDefaultThreshold{0.05};   ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.
-   int        fDefaultDegree{1};         ///< The default degree of the polynomial used for calibrating, can be changed later.
-   double     fDefaultPeakRatio{2.};     ///< The default ratio between found peaks and peaks in the source (per region).
-   double     fDefaultMaxResidual{2.};   ///< The default maximum residual accepted when trying to iteratively find peaks
-   static int fMaxIterations;            ///< Maximum iterations over combinations in Match and SmartMatch
-	static int fFitRange;                 ///< range in sigma used for fitting peaks (peak position - range to peas position + range)
-	static bool fAcceptBadFits;           ///< Do we accept peaks where the fit was bad (position or area uncertainties too large or not numbers)
+   double        fDefaultSigma{2.};         ///< The default sigma used for the peak finding algorithm, can be changed later.
+   double        fDefaultThreshold{0.05};   ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.
+   int           fDefaultDegree{1};         ///< The default degree of the polynomial used for calibrating, can be changed later.
+   double        fDefaultPeakRatio{2.};     ///< The default ratio between found peaks and peaks in the source (per region).
+   double        fDefaultMaxResidual{2.};   ///< The default maximum residual accepted when trying to iteratively find peaks
+   static int    fMaxIterations;            ///< Maximum iterations over combinations in Match and SmartMatch
+   static int    fFitRange;                 ///< range in sigma used for fitting peaks (peak position - range to peas position + range)
+   static bool   fAcceptBadFits;            ///< Do we accept peaks where the fit was bad (position or area uncertainties too large or not numbers)
+   static bool   fFast;                     ///< Do we use the fast peak finding method on startup or not.
+   static bool   fUseCalibratedPeaks;       ///< Do we use the initial calibration to find more peaks in the source spectra?
+   static double fMinIntensity;             ///< Minimum intensity of source peaks to be considered when trying to find them in the spectrum.
 
    TFile* fOutput{nullptr};
 
-   static EVerbosity fVerboseLevel;   ///< Changes verbosity from 0 (quiet) to 4 (very verbose)
+   static EVerbosity fVerboseLevel;   ///< Changes verbosity from kQuiet to kAll
 
    /// \cond CLASSIMP
    ClassDefOverride(TSourceCalibration, 1)   // NOLINT(readability-else-after-return)
