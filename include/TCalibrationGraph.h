@@ -153,7 +153,7 @@ public:
 
    void Scale(bool useAllPrevious = true);
 
-	void Sort();
+   void Sort();
 
    void Print(Option_t* opt = "") const override;
 
