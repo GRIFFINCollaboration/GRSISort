@@ -1531,7 +1531,7 @@ void TChannelTab::Iterate(const double& maxResidual)
 	}
 
    for(source = 1; source < fData->NumberOfGraphs(); ++source) {
-      auto tmp = std::max_element(fData->Residual(source)->GetX(), fData->Residual(source)->GetX() + fData->Residual(source)->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
+      auto* tmp = std::max_element(fData->Residual(source)->GetX(), fData->Residual(source)->GetX() + fData->Residual(source)->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
       if(*tmp > *maxElement) {
          if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "found larger residual in residual graph " << source << ": " << *tmp << " > " << *maxElement << ", was position " << index << std::flush; }
          maxElement = tmp;

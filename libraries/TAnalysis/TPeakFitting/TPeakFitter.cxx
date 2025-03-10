@@ -13,12 +13,12 @@ TPeakFitter::TPeakFitter(const Double_t& rangeLow, const Double_t& rangeHigh)
    fBGToFit = new TF1("fbg", this, &TPeakFitter::DefaultBackgroundFunction, fRangeLow, fRangeHigh, 4, "TPeakFitter", "DefaultBackgroundFunction");
    fBGToFit->FixParameter(3, 0);
    fBGToFit->SetLineColor(static_cast<Color_t>(kRed + fColorIndex));
-	if(fVerboseLevel >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": constructed peak fitter " << this << " using range " << fRangeLow << " - " << fRangeHigh << std::endl; }
+   if(fVerboseLevel >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": constructed peak fitter " << this << " using range " << fRangeLow << " - " << fRangeHigh << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 }
 
 TPeakFitter::~TPeakFitter()
 {
-	if(fVerboseLevel >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": destroying peak fitter " << this << " for range " << fRangeLow << " - " << fRangeHigh << std::endl; }
+	if(fVerboseLevel >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": destroying peak fitter " << this << " for range " << fRangeLow << " - " << fRangeHigh << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 }
 
 void TPeakFitter::Print(Option_t* opt) const
@@ -325,7 +325,7 @@ Double_t TPeakFitter::FitFunction(Double_t* dim, Double_t* par)
    // I want to use the EvalPar command here in order to get the individual peaks
    Double_t sum           = 0;
    Int_t    params_so_far = 0;
-	if(fVerboseLevel >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": this " << this << " has " << fPeaksToFit.size() << " peaks to be evaluated at x = " << dim[0] << std::endl; }
+	if(fVerboseLevel >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": this " << this << " has " << fPeaksToFit.size() << " peaks to be evaluated at x = " << dim[0] << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    for(auto* p_it : fPeaksToFit) {
       TF1* peakFunction = p_it->GetFitFunction();
 		if(peakFunction == nullptr) {

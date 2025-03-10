@@ -362,7 +362,7 @@ Int_t TCalibrationGraphSet::RemovePoint(TGraphErrors* graph, const Int_t& px, co
 	if(fVerboseLevel > EVerbosity::kBasicFlow) { Print(); }
 
 	// emit signal that this point has been removed
-   std::array<Longptr_t, 2> args = {static_cast<long int>(oldGraph), static_cast<long int>(fPointIndex[point])};
+   std::array<Longptr_t, 2> args = {static_cast<int64_t>(oldGraph), static_cast<int64_t>(fPointIndex[point])};
    if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "Emitting RemovePoint(Int_t, Int_t) with " << args[0] << ", " << args[1] << " - " << args.data() << std::endl; }
    Emit("RemovePoint(Int_t, Int_t)", args.data());
 
