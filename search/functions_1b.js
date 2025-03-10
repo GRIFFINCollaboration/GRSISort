@@ -159,7 +159,7 @@ var searchData=
   ['_7etparsingdiagnostics_156',['~TParsingDiagnostics',['../class_t_parsing_diagnostics.html#af86b3b858ae18f849e5065c34765fcb1',1,'TParsingDiagnostics']]],
   ['_7etparsingdiagnosticsdata_157',['~TParsingDiagnosticsData',['../class_t_parsing_diagnostics_data.html#a0616f1d646b25965d0111ec95303081c',1,'TParsingDiagnosticsData']]],
   ['_7etpeak_158',['~TPeak',['../class_t_peak.html#a09ec6f84cf1bf3249ac61890903989f8',1,'TPeak']]],
-  ['_7etpeakfitter_159',['~TPeakFitter',['../class_t_peak_fitter.html#ac4c35937f46b53eaa5d9cfe8e8a5500a',1,'TPeakFitter']]],
+  ['_7etpeakfitter_159',['~TPeakFitter',['../class_t_peak_fitter.html#a41df742623d08cd3acf0bda6fb9876f6',1,'TPeakFitter']]],
   ['_7etpindiodehit_160',['~TPinDiodeHit',['../class_t_pin_diode_hit.html#aa307a89468a688215b4d477ddfd052d3',1,'TPinDiodeHit']]],
   ['_7etppg_161',['~TPPG',['../class_t_p_p_g.html#ad5d55c01d0acfaaeff29ea2fc187fb05',1,'TPPG']]],
   ['_7etppgdata_162',['~TPPGData',['../class_t_p_p_g_data.html#af4c72254b59a230a6ba984e1a9ab7149',1,'TPPGData']]],

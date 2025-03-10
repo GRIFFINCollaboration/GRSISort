@@ -48,6 +48,5 @@ var searchData=
   ['mat_5fsp_45',['Mat_SP',['../group___fitting.html#ga0a1ef2c05b64c628f9bb7e1c0e8b8409',1,'TLMFitter.h']]],
   ['mat_5fuchr_46',['Mat_UCHR',['../group___fitting.html#ga9e5e67e922d43ff9d377739d0239b0e3',1,'TLMFitter.h']]],
   ['mat_5fuint_47',['Mat_UINT',['../group___fitting.html#gabff2351342653aa0bacc5b8a44e3d529',1,'TLMFitter.h']]],
-  ['mat_5fulng_48',['Mat_ULNG',['../group___fitting.html#gae056bf53a279b93404c287d8b2ddf82a',1,'TLMFitter.h']]],
-  ['multiplepeak_5ft_49',['MultiplePeak_t',['../group___fitting.html#ga02754ed31b0865dabdd6d236f779b3a5',1,'TPeakFitter.h']]]
+  ['mat_5fulng_48',['Mat_ULNG',['../group___fitting.html#gae056bf53a279b93404c287d8b2ddf82a',1,'TLMFitter.h']]]
 ];

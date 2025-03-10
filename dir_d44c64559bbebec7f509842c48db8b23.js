@@ -93,7 +93,7 @@ var dir_d44c64559bbebec7f509842c48db8b23 =
     [ "TParserLibrary.h", "_t_parser_library_8h.html", "_t_parser_library_8h" ],
     [ "TParsingDiagnostics.h", "_t_parsing_diagnostics_8h.html", null ],
     [ "TPeak.h", "_t_peak_8h.html", null ],
-    [ "TPeakFitter.h", "_t_peak_fitter_8h.html", "_t_peak_fitter_8h" ],
+    [ "TPeakFitter.h", "_t_peak_fitter_8h.html", null ],
     [ "TPPG.h", "_t_p_p_g_8h.html", "_t_p_p_g_8h" ],
     [ "TPreserveGDirectory.h", "_t_preserve_g_directory_8h.html", "_t_preserve_g_directory_8h" ],
     [ "TPriorityValue.h", "_t_priority_value_8h.html", "_t_priority_value_8h" ],

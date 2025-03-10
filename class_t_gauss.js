@@ -40,6 +40,8 @@ var class_t_gauss =
     [ "SetChi2", "class_t_gauss.html#af5d7bf369510f4fada2c9a6788edead3", null ],
     [ "SetFitFunction", "class_t_gauss.html#ac90deb5e4ee8cf1d0a000bf887c333b9", null ],
     [ "SetGlobalBackground", "class_t_gauss.html#a3cb6a527ab2e13ce581a0d0d99cadf13", null ],
+    [ "SetLineColor", "class_t_gauss.html#a41295a42da63dc91c02843792af94503", null ],
+    [ "SetLineStyle", "class_t_gauss.html#a3401dabb68b523b17792fc4989630f67", null ],
     [ "SetListOfBGPar", "class_t_gauss.html#af4abcd121323ae0b6537c18cad92cdd4", null ],
     [ "SetNDF", "class_t_gauss.html#ad73666dae8b31d345035cee27e2ae620", null ],
     [ "SetPeakFunction", "class_t_gauss.html#a12913bb449769f7eb9ad4b0848d5641d", null ],
