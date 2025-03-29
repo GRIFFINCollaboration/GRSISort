@@ -9,6 +9,7 @@
 #if __cplusplus >= 201703L
 #include <filesystem>
 #endif
+#include <thread>
 
 #include "TSystem.h"
 #include "TGTableLayout.h"
@@ -321,11 +322,12 @@ bool FilledBin(TH2* matrix, const int& bin)
 }
 
 //////////////////////////////////////// TSourceTab ////////////////////////////////////////
-TSourceTab::TSourceTab(TChannelTab* parent, TGCompositeFrame* frame, GH1D* projection, const double& sigma, const double& threshold, const double& peakRatio, std::vector<std::tuple<double, double, double, double>> sourceEnergy)
-   : fParent(parent), fSourceFrame(frame), fProjection(projection), fSigma(sigma), fThreshold(threshold), fPeakRatio(peakRatio), fSourceEnergy(std::move(sourceEnergy))
+TSourceTab::TSourceTab(TChannelTab* parent, TGCompositeFrame* frame, GH1D* projection, const char* sourceName, const double& sigma, const double& threshold, const double& peakRatio, std::vector<std::tuple<double, double, double, double>> sourceEnergy)
+   : fParent(parent), fSourceFrame(frame), fProjection(projection), fSourceName(sourceName), fSigma(sigma), fThreshold(threshold), fPeakRatio(peakRatio), fSourceEnergy(std::move(sourceEnergy))
 {
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << DCYAN << __PRETTY_FUNCTION__ << RESET_COLOR << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    BuildInterface();
-   FindPeaks(fSigma, fThreshold, fPeakRatio, true, TSourceCalibration::Fast());
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << DCYAN << "interface built, finding peaks ... " << RESET_COLOR << std::endl; }
 }
 
 TSourceTab::TSourceTab(const TSourceTab& rhs)
@@ -374,26 +376,41 @@ TSourceTab::~TSourceTab()
 
 void TSourceTab::BuildInterface()
 {
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << DCYAN << __PRETTY_FUNCTION__ << RESET_COLOR << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+	//if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << "Creating unique lock on graphics mutex to build interface " << std::endl; }
+	//std::unique_lock<std::mutex> graphicsLock(fParent->Parent()->GraphicsMutex());
+	//if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << "Got unique lock on graphics mutex!" << std::endl; }
    // frame with canvas and status bar
    fProjectionCanvas = new TRootEmbeddedCanvas(Form("ProjectionCanvas%s", fProjection->GetName()), fSourceFrame, TSourceCalibration::PanelWidth(), TSourceCalibration::PanelHeight());
+	
+	if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << "Created projection canvas!" << std::endl; }
 
    fSourceFrame->AddFrame(fProjectionCanvas, new TGLayoutHints(kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
+
+	if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << "Added projection canvas to source frame!" << std::endl; }
 
    fSourceStatusBar         = new TGStatusBar(fSourceFrame, TSourceCalibration::PanelWidth(), TSourceCalibration::StatusbarHeight());
    std::array<int, 3> parts = {35, 50, 15};
    fSourceStatusBar->SetParts(parts.data(), parts.size());
 
+	if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << "Created status bar!" << std::endl; }
+
    fSourceFrame->AddFrame(fSourceStatusBar, new TGLayoutHints(kLHintsBottom | kLHintsExpandX, 2, 2, 2, 2));
+
+	if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << "Releasing unique lock on graphics mutex after building interface" << std::endl; }
 }
 
 void TSourceTab::MakeConnections()
 {
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << DCYAN << __PRETTY_FUNCTION__ << RESET_COLOR << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+	//std::unique_lock<std::mutex> graphicsLock(fParent->Parent()->GraphicsMutex());
    fProjectionCanvas->Connect("ProcessedEvent(Event_t*)", "TSourceTab", this, "ProjectionStatus(Event_t*)");
    fProjectionCanvas->GetCanvas()->Connect("ProcessedEvent(Int_t,Int_t,Int_t,TObject*)", "TSourceTab", this, "ProjectionStatus(Int_t,Int_t,Int_t,TObject*)");
 }
 
 void TSourceTab::Disconnect()
 {
+	//std::unique_lock<std::mutex> graphicsLock(fParent->Parent()->GraphicsMutex());
    fProjectionCanvas->Disconnect("ProcessedEvent(Event_t*)", this, "ProjectionStatus(Event_t*)");
    fProjectionCanvas->GetCanvas()->Disconnect("ProcessedEvent(Int_t,Int_t,Int_t,TObject*)", this, "ProjectionStatus(Int_t,Int_t,Int_t,TObject*)");
 }
@@ -583,6 +600,13 @@ void TSourceTab::UpdateFits()
 	}
 }
 
+void TSourceTab::Draw()
+{
+	fProjectionCanvas->GetCanvas()->cd();
+	fProjection->Draw();   // seems like hist + samefunc does not work. Could use hist + loop over list of functions (with same)
+	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": drew " << fProjection->GetName() << " on " << fProjectionCanvas->GetCanvas()->GetName() << "/" << gPad->GetName() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+}
+
 void TSourceTab::FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast)
 {
    /// This functions finds the peaks in the histogram, fits them, and adds the fits to the list of peaks.
@@ -680,9 +704,7 @@ void TSourceTab::FindPeaks(const double& sigma, const double& threshold, const d
       if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": added " << fPeaks.size() << " peaks" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       fProjection->Sumw2(false);                                                                                                                                        // turn errors off, makes the histogram look like a histogram when using normal plotting (hist and samefunc doesn't work for some reason)
 
-      fProjectionCanvas->GetCanvas()->cd();
 		UpdateFits();
-      fProjection->Draw();   // seems like hist + samefunc does not work. Could use hist + loop over list of functions (with same)
 
 		std::sort(fFits.begin(), fFits.end(), [](const TPeakFitter* a, const TPeakFitter* b) { return a->GetFitFunction()->GetParameter("centroid_0") < b->GetFitFunction()->GetParameter("centroid_0"); });
 		std::sort(fBadFits.begin(), fBadFits.end(), [](const TPeakFitter* a, const TPeakFitter* b) { return a->GetFitFunction()->GetParameter("centroid_0") < b->GetFitFunction()->GetParameter("centroid_0"); });
@@ -782,9 +804,7 @@ void TSourceTab::FindCalibratedPeaks(const TF1* calibration)
 	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": added " << fPeaks.size() << " peaks (" << fSourceEnergy.size() << " source energies)" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 	fProjection->Sumw2(false);                                                                                                                                        // turn errors off, makes the histogram look like a histogram when using normal plotting (hist and samefunc doesn't work for some reason)
 
-	fProjectionCanvas->GetCanvas()->cd();
 	UpdateFits();
-	fProjection->Draw();   // seems like hist + samefunc does not work. Could use hist + loop over list of functions (with same)
 
 	std::sort(fFits.begin(), fFits.end(), [](const TPeakFitter* a, const TPeakFitter* b) { return a->GetFitFunction()->GetParameter("centroid_0") < b->GetFitFunction()->GetParameter("centroid_0"); });
 	std::sort(fBadFits.begin(), fBadFits.end(), [](const TPeakFitter* a, const TPeakFitter* b) { return a->GetFitFunction()->GetParameter("centroid_0") < b->GetFitFunction()->GetParameter("centroid_0"); });
@@ -1097,6 +1117,15 @@ void TSourceTab::Print() const
 	std::cout << std::endl;
 }
 
+void TSourceTab::PrintCanvases() const
+{
+   std::cout << "TSourceTab " << fSourceName << " projection canvas:" << std::endl;
+   fProjectionCanvas->GetCanvas()->Print();
+	for(auto* obj : *(fProjectionCanvas->GetCanvas()->GetListOfPrimitives())) {
+		obj->Print();
+	}
+}
+
 void TSourceTab::PrintLayout() const
 {
    std::cout << "TSourceTab frame:" << std::endl;
@@ -1118,64 +1147,7 @@ TChannelTab::TChannelTab(TSourceCalibration* parent, std::vector<TNucleus*> nucl
       std::cout << "========================================" << std::endl;
    }
 
-   fChannelFrame->SetLayoutManager(new TGHorizontalLayout(fChannelFrame));
-
-   fSources.resize(fNuclei.size(), nullptr);
-   //if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << ": creating channels for bin 1 to " << fMatrix->GetNbinsX() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-   for(size_t source = 0; source < fNuclei.size(); ++source) {
-      CreateSourceTab(source);
-   }
-
-   for(auto iter = fSources.begin(); iter != fSources.end(); ++iter) {
-      if(*iter == nullptr) {
-         fSources.erase(iter--);   // erase iterator and then go to the element before this one (and then the loop goes to the next one)
-      }
-   }
-
-   fChannelFrame->AddFrame(fSourceTab, new TGLayoutHints(kLHintsLeft | kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
-
-   fCalibrationFrame = fCanvasTab->AddTab("Calibration");
-   fCalibrationFrame->SetLayoutManager(new TGVerticalLayout(fCalibrationFrame));
-   fCalibrationCanvas = new TRootEmbeddedCanvas("ChannelCalibrationCanvas", fCalibrationFrame, TSourceCalibration::PanelWidth(), TSourceCalibration::PanelHeight());
-   fCalibrationFrame->AddFrame(fCalibrationCanvas, new TGLayoutHints(kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
-   fChannelStatusBar        = new TGStatusBar(fCalibrationFrame, TSourceCalibration::PanelWidth(), TSourceCalibration::StatusbarHeight());
-   std::array<int, 3> parts = {25, 35, 40};
-   fChannelStatusBar->SetParts(parts.data(), parts.size());
-   fCalibrationFrame->AddFrame(fChannelStatusBar, new TGLayoutHints(kLHintsBottom | kLHintsExpandX, 2, 2, 2, 2));
-   fFwhmFrame = fCanvasTab->AddTab("FWHM");
-   fFwhmFrame->SetLayoutManager(new TGVerticalLayout(fFwhmFrame));
-   fFwhmCanvas = new TRootEmbeddedCanvas("ChannelFwhmCanvas", fFwhmFrame, TSourceCalibration::PanelWidth(), TSourceCalibration::PanelHeight());
-   fFwhmFrame->AddFrame(fFwhmCanvas, new TGLayoutHints(kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
-   //fChannelFrame->AddFrame(fCalibrationFrame, new TGLayoutHints(kLHintsRight | kLHintsBottom | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
-   fChannelFrame->AddFrame(fCanvasTab, new TGLayoutHints(kLHintsRight | kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
-
-   UpdateData();
-
-   fCalibrationCanvas->GetCanvas()->cd();
-   fCalibrationPad = new TPad(Form("cal_%s", fName.c_str()), Form("calibration for %s", fName.c_str()), 0.2, 0., 1., 1.);
-   fCalibrationPad->SetNumber(1);
-   fCalibrationPad->Draw();
-   fCalibrationPad->AddExec("zoom", "TChannelTab::ZoomY()");
-
-   fLegend = new TLegend(0.8, 0.3, 0.95, 0.3 + static_cast<double>(fNuclei.size()) * 0.05);   // x1, y1, x2, y2
-
-   fCalibrationCanvas->GetCanvas()->cd();
-   fResidualPad = new TPad(Form("res_%s", fName.c_str()), Form("residual for %s", fName.c_str()), 0.0, 0., 0.2, 1.);
-   fResidualPad->SetNumber(2);
-   fResidualPad->Draw();
-   fResidualPad->AddExec("zoom", "TChannelTab::ZoomY()");
-   Calibrate();   // also creates the residual and chi^2 label
-
-	// check whether we want to use this initial calibration to find more peaks
-	if(TSourceCalibration::UseCalibratedPeaks()) {
-		FindCalibratedPeaks();
-	}
-
-   // get the fwhm graphs and plot them
-   UpdateFwhm();
-   fFwhmCanvas->GetCanvas()->cd();
-   fFwhm->DrawCalibration("*");
-   fLegend->Draw();
+	BuildInterface();
 
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << DYELLOW << "----------------------------------------" << std::endl;
@@ -1208,6 +1180,80 @@ TChannelTab::~TChannelTab()
    delete fFwhm;
 }
 
+void TChannelTab::BuildInterface()
+{
+	{
+		//std::unique_lock<std::mutex> graphicsLock(fParent->GraphicsMutex());
+		fChannelFrame->SetLayoutManager(new TGHorizontalLayout(fChannelFrame));
+	}
+
+   fSources.resize(fNuclei.size(), nullptr);
+   //if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << ": creating channels for bin 1 to " << fMatrix->GetNbinsX() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   for(size_t source = 0; source < fNuclei.size(); ++source) {
+      CreateSourceTab(source);
+   }
+
+   for(auto iter = fSources.begin(); iter != fSources.end(); ++iter) {
+      if(*iter == nullptr) {
+         fSources.erase(iter--);   // erase iterator and then go to the element before this one (and then the loop goes to the next one)
+      }
+   }
+
+	{
+		//std::unique_lock<std::mutex> graphicsLock(fParent->GraphicsMutex());
+		fChannelFrame->AddFrame(fSourceTab, new TGLayoutHints(kLHintsLeft | kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
+
+		fCalibrationFrame = fCanvasTab->AddTab("Calibration");
+		fCalibrationFrame->SetLayoutManager(new TGVerticalLayout(fCalibrationFrame));
+		fCalibrationCanvas = new TRootEmbeddedCanvas("ChannelCalibrationCanvas", fCalibrationFrame, TSourceCalibration::PanelWidth(), TSourceCalibration::PanelHeight());
+		fCalibrationFrame->AddFrame(fCalibrationCanvas, new TGLayoutHints(kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
+		fChannelStatusBar        = new TGStatusBar(fCalibrationFrame, TSourceCalibration::PanelWidth(), TSourceCalibration::StatusbarHeight());
+		std::array<int, 3> parts = {25, 35, 40};
+		fChannelStatusBar->SetParts(parts.data(), parts.size());
+		fCalibrationFrame->AddFrame(fChannelStatusBar, new TGLayoutHints(kLHintsBottom | kLHintsExpandX, 2, 2, 2, 2));
+		fFwhmFrame = fCanvasTab->AddTab("FWHM");
+		fFwhmFrame->SetLayoutManager(new TGVerticalLayout(fFwhmFrame));
+		fFwhmCanvas = new TRootEmbeddedCanvas("ChannelFwhmCanvas", fFwhmFrame, TSourceCalibration::PanelWidth(), TSourceCalibration::PanelHeight());
+		fFwhmFrame->AddFrame(fFwhmCanvas, new TGLayoutHints(kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
+		//fChannelFrame->AddFrame(fCalibrationFrame, new TGLayoutHints(kLHintsRight | kLHintsBottom | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
+		fChannelFrame->AddFrame(fCanvasTab, new TGLayoutHints(kLHintsRight | kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
+	}
+
+   UpdateData();
+
+	{
+		//std::unique_lock<std::mutex> graphicsLock(fParent->GraphicsMutex());
+		fCalibrationCanvas->GetCanvas()->cd();
+		fCalibrationPad = new TPad(Form("cal_%s", fName.c_str()), Form("calibration for %s", fName.c_str()), 0.2, 0., 1., 1.);
+		fCalibrationPad->SetNumber(1);
+		fCalibrationPad->Draw();
+		fCalibrationPad->AddExec("zoom", "TChannelTab::ZoomY()");
+
+		fLegend = new TLegend(0.8, 0.3, 0.95, 0.3 + static_cast<double>(fNuclei.size()) * 0.05);   // x1, y1, x2, y2
+
+		fCalibrationCanvas->GetCanvas()->cd();
+		fResidualPad = new TPad(Form("res_%s", fName.c_str()), Form("residual for %s", fName.c_str()), 0.0, 0., 0.2, 1.);
+		fResidualPad->SetNumber(2);
+		fResidualPad->Draw();
+		fResidualPad->AddExec("zoom", "TChannelTab::ZoomY()");
+	}
+	//Calibrate();   // also creates the residual and chi^2 label
+
+	// check whether we want to use this initial calibration to find more peaks
+	//if(TSourceCalibration::UseCalibratedPeaks()) {
+	//	FindCalibratedPeaks();
+	//}
+
+   // get the fwhm graphs and plot them
+   UpdateFwhm();
+	//{
+	//	std::unique_lock<std::mutex> graphicsLock(fParent->GraphicsMutex());
+	//	fFwhmCanvas->GetCanvas()->cd();
+	//	fFwhm->DrawCalibration("*");
+	//	fLegend->Draw();
+	//}
+}
+
 void TChannelTab::CreateSourceTab(size_t source)
 {
    if(fProjections[source]->GetEntries() > 1000) {
@@ -1218,9 +1264,20 @@ void TChannelTab::CreateSourceTab(size_t source)
          }
          std::cout << std::endl;
       }
-      fSources[source] = new TSourceTab(this, fSourceTab->AddTab(Form("%s_%s", fNuclei[source]->GetName(), fName.c_str())),
-                                        fProjections[source], fSigma, fThreshold, fParent->PeakRatio(), fSourceEnergies[source]);
-      fProgressBar->Increment(1);
+		TGCompositeFrame* tmpTab = nullptr;
+		{
+			//if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << "Creating unique lock on graphics mutex to add tab" << std::endl; }
+			//std::unique_lock<std::mutex> graphicsLock(fParent->GraphicsMutex());
+			tmpTab = fSourceTab->AddTab(Form("%s_%s", fNuclei[source]->GetName(), fName.c_str()));
+			//if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << "Releasing unique lock on graphics mutex after adding tab" << std::endl; }
+		}
+      fSources[source] = new TSourceTab(this, tmpTab, fProjections[source], fNuclei[source]->GetName(), fSigma, fThreshold, fParent->PeakRatio(), fSourceEnergies[source]);
+		{
+			//if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << "Creating unique lock on graphics mutex to increment status bar" << std::endl; }
+			//std::unique_lock<std::mutex> graphicsLock(fParent->GraphicsMutex());
+			fProgressBar->Increment(1);
+			//if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << "Releasing unique lock on graphics mutex after incrementing status bar" << std::endl; }
+		}
    } else {
       fSources[source] = nullptr;
       if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
@@ -1234,14 +1291,24 @@ void TChannelTab::CreateSourceTab(size_t source)
 
 void TChannelTab::MakeConnections()
 {
+	//std::unique_lock<std::mutex> graphicsLock(fParent->GraphicsMutex());
    fSourceTab->Connect("Selected(Int_t)", "TChannelTab", this, "SelectedTab(Int_t)");
    fCalibrationCanvas->GetCanvas()->Connect("ProcessedEvent(Int_t,Int_t,Int_t,TObject*)", "TChannelTab", this, "CalibrationStatus(Int_t,Int_t,Int_t,TObject*)");
    fCalibrationCanvas->Connect("ProcessedEvent(Event_t*)", "TChannelTab", this, "SelectCanvas(Event_t*)");
-	fData->Connect("RemovePoint(Int_t, Int_t)", "TChannelTab", this, "RemovePoint(Int_t, Int_t)");
+	if(fData != nullptr) {
+		if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
+			std::cout << DYELLOW << __PRETTY_FUNCTION__ << ": connecting fData " << fData << ":" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+			fData->Print();
+		}
+		fData->Connect("RemovePoint(Int_t, Int_t)", "TChannelTab", this, "RemovePoint(Int_t, Int_t)");
+	} else {
+		std::cerr << DRED << "Failed to create connections for the data graph fData since it hasn't been created yet!" << std::endl;
+	}
 }
 
 void TChannelTab::Disconnect()
 {
+	//std::unique_lock<std::mutex> graphicsLock(fParent->GraphicsMutex());
    fSourceTab->Disconnect("Selected(Int_t)", this, "SelectedTab(Int_t)");
    fCalibrationCanvas->GetCanvas()->Disconnect("ProcessedEvent(Int_t,Int_t,Int_t,TObject*)", this, "CalibrationStatus(Int_t,Int_t,Int_t,TObject*)");
 	fData->Disconnect("RemovePoint(Int_t, Int_t)", this, "RemovePoint(Int_t, Int_t)");
@@ -1349,7 +1416,7 @@ void TChannelTab::UpdateData()
       std::cout << "Looping over " << fNuclei.size() << " sources, fSources.size() = " << fSources.size() << std::endl;
    }
    for(size_t source = 0; source < fNuclei.size() && source < fSources.size(); ++source) {
-      if(fSources[source]->Data()->GetN() > 0) {
+      if(fSources[source]->Data() != nullptr && fSources[source]->Data()->GetN() > 0) {
          int index = fData->Add(fSources[source]->Data(), fNuclei[source]->GetName());
          if(index >= 0) {
             fData->SetLineColor(index, static_cast<Color_t>(source + 1));   //+1 for the color so that we start with 1 = black instead of 0 = white
@@ -1380,7 +1447,7 @@ void TChannelTab::UpdateFwhm()
       std::cout << "Looping over " << fNuclei.size() << " sources, fSources.size() = " << fSources.size() << std::endl;
    }
    for(size_t source = 0; source < fNuclei.size() && source < fSources.size(); ++source) {
-      if(fSources[source]->Fwhm()->GetN() > 0) {
+      if(fSources[source]->Fwhm() != nullptr && fSources[source]->Fwhm()->GetN() > 0) {
          int index = fFwhm->Add(fSources[source]->Fwhm(), fNuclei[source]->GetName());
          if(index >= 0) {
             fFwhm->SetLineColor(index, static_cast<Color_t>(source + 1));   //+1 for the color so that we start with 1 = black instead of 0 = white
@@ -1610,8 +1677,28 @@ void TChannelTab::FindPeaks(const double& sigma, const double& threshold, const 
       }
    }
    fSources[fActiveSourceTab]->FindPeaks(sigma, threshold, peakRatio, force, fast);
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "Found peaks in source tab " << fActiveSourceTab << ", updating data" << std::endl; }
    UpdateData();
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "Updating FWHM" << std::endl; }
    UpdateFwhm();
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "Source tab " << fActiveSourceTab << " done!" << std::endl; }
+}
+
+void TChannelTab::FindAllPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast)
+{
+	for(auto* source : fSources) {
+		if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+			std::cout << DYELLOW << "Finding peaks in source tab:" << std::endl;
+			source->Print();
+		}
+		source->FindPeaks(sigma, threshold, peakRatio, force, fast);
+		fProgressBar->Increment(1);
+	}
+	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "Found peaks in all source tabs, updating data" << std::endl; }
+	UpdateData();
+	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "Updating FWHM" << std::endl; }
+	UpdateFwhm();
+	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "Source tab " << fActiveSourceTab << " done!" << std::endl; }
 }
 
 void TChannelTab::FindCalibratedPeaks()
@@ -1628,6 +1715,15 @@ void TChannelTab::FindCalibratedPeaks()
    UpdateFwhm();
 }
 
+void TChannelTab::Draw()
+{
+	fFwhmCanvas->GetCanvas()->cd();
+	fFwhm->DrawCalibration("*");
+	fLegend->Draw();
+	for(auto* source : fSources) {
+		source->Draw();
+	}
+}
 
 void TChannelTab::Write(TFile* output)
 {
@@ -1781,6 +1877,23 @@ void TChannelTab::ZoomY()
    pad2->Update();
 }
 
+void TChannelTab::PrintCanvases() const
+{
+   std::cout << "TChannelTab " << Name() << " calibration canvas:" << std::endl;
+   fCalibrationCanvas->GetCanvas()->Print();
+	for(auto* obj : *(fCalibrationCanvas->GetCanvas()->GetListOfPrimitives())) {
+		obj->Print();
+	}
+   std::cout << "TChannelTab fwhm canvas:" << std::endl;
+	fFwhmCanvas->GetCanvas()->Print();
+	for(auto* obj : *(fFwhmCanvas->GetCanvas()->GetListOfPrimitives())) {
+		obj->Print();
+	}
+   for(auto* sourceTab : fSources) {
+      sourceTab->PrintCanvases();
+   }
+}
+
 void TChannelTab::PrintLayout() const
 {
    std::cout << "TChannelTab frame:" << std::endl;
@@ -1809,6 +1922,7 @@ bool        TSourceCalibration::fAcceptBadFits      = false;
 bool        TSourceCalibration::fFast               = false;
 bool        TSourceCalibration::fUseCalibratedPeaks = false;
 double      TSourceCalibration::fMinIntensity       = 5.;
+size_t      TSourceCalibration::fNumberOfThreads    = 4;
 
 TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degree, double peakRatio, int count...)
    : TGMainFrame(nullptr, 2 * fPanelWidth, fPanelHeight + 2 * fStatusbarHeight), fDefaultSigma(sigma), fDefaultThreshold(threshold), fDefaultDegree(degree), fDefaultPeakRatio(peakRatio)
@@ -2132,6 +2246,7 @@ void TSourceCalibration::SecondWindow()
    fProgressBar = new TGHProgressBar(this, TGProgressBar::kFancy, fPanelWidth);
    fProgressBar->SetRange(0., static_cast<Float_t>(fMatrices.size() * fActiveBins.size()));
    fProgressBar->Percent(true);
+	fProgressBar->ShowPosition(true, true, "Graphics: %.0f");
    if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "Set range of progress bar to 0. - " << fProgressBar->GetMax() << " = " << fMatrices.size() * fActiveBins.size() << " = " << fMatrices.size() << "*" << fActiveBins.size() << std::endl; }
    AddFrame(fProgressBar, new TGLayoutHints(kLHintsCenterX | kLHintsCenterY | kLHintsExpandX | kLHintsExpandY, 0, 0, 0, 0));
 
@@ -2176,8 +2291,32 @@ void TSourceCalibration::BuildSecondInterface()
          projections[index] = new GH1D(matrix->ProjectionY(Form("%s_%s", fSource[index]->GetName(), matrix->GetXaxis()->GetBinLabel(bin)), bin, bin));
          ++index;
       }
-      fChannelTab[bin - 1] = new TChannelTab(this, fSource, projections, fMatrices[0]->GetXaxis()->GetBinLabel(bin), fTab->AddTab(fMatrices[0]->GetXaxis()->GetBinLabel(bin)), fDefaultSigma, fDefaultThreshold, fDefaultDegree, fSourceEnergy, fProgressBar);
+		auto* frame = fTab->AddTab(fMatrices[0]->GetXaxis()->GetBinLabel(bin));
+		// create a new tab in a new thread
+		if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << DGREEN << "Creating channel for bin " << bin << std::endl; }
+		fChannelTab[bin - 1] = new TChannelTab(this, fSource, projections, fMatrices[0]->GetXaxis()->GetBinLabel(bin), frame, fDefaultSigma, fDefaultThreshold, fDefaultDegree, fSourceEnergy, fProgressBar);
+		//// right now the lambda uses copies of all variables, not sure if that is neccesary, or if we only need that for projections?
+		//fFutures.emplace(std::make_pair(bin - 1, std::async(std::launch::async, [=] {
+		//				std::cout << "creating channel tab with these arguments: " << this << ", fSource vector of size " << fSource.size() << ", projection vector of size " << projections.size() << ", " << fMatrices[0]->GetXaxis()->GetBinLabel(bin) << ", " << frame << ", " << fDefaultSigma << ", " << fDefaultThreshold << ", " << fDefaultDegree << ", " << fSourceEnergy.size() << " source energy vectors, " << fProgressBar << "."<< std::endl;
+		//				auto* newTab = new TChannelTab(this, fSource, projections, fMatrices[0]->GetXaxis()->GetBinLabel(bin), frame, fDefaultSigma, fDefaultThreshold, fDefaultDegree, fSourceEnergy, fProgressBar);
+		//				std::cout << "created new tab " << newTab << std::endl;
+		//				return newTab;
+		//				})));
+		//// if we have too many threads running, get the result of the first one (this means waiting on that thread to finish) and assign the results
+		//if(fFutures.size() >= fNumberOfThreads) {
+		//	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << fFutures.size() << " threads running, waiting for thread #" << fFutures.front().first << " to finish before starting next, max. # threads " << fNumberOfThreads << std::endl; }
+		//	auto tmp = fFutures.front().second.get();
+		//	fChannelTab[fFutures.front().first] = tmp;
+		//	fFutures.pop();
+		//}
    }
+	// wait for all remaining threads to finish
+	//while(!fFutures.empty()) {
+	//	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << fFutures.size() << " threads left, waiting for thread #" << fFutures.front().first << " to finish before starting next, max. # threads " << fNumberOfThreads << std::endl; }
+	//	auto tmp = fFutures.front().second.get();
+	//	fChannelTab[fFutures.front().first] = tmp;
+	//	fFutures.pop();
+	//}
 
    //if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << fMatrices.size() << " matrices with " << fMatrices[0]->GetNbinsX() << " x-bins, fNofBins " << fNofBins << ", fActualChannelId.size() " << fActualChannelId.size() << ", fChannelTab[0]->SourceTab()->GetNumberOfTabs() " << fChannelTab[0]->SourceTab()->GetNumberOfTabs() << std::endl; }
 
@@ -2260,6 +2399,17 @@ void TSourceCalibration::BuildSecondInterface()
 
    SelectedTab(0);
 
+	fProgressBar->Reset();
+	fProgressBar->ShowPosition(true, true, "Peaks: %.0f");
+   for(auto* channelTab : fChannelTab) {
+      if(channelTab != nullptr) {
+			channelTab->FindAllPeaks(Sigma(), Threshold(), PeakRatio(), true, fFast);   // force = true
+			channelTab->Calibrate();
+			channelTab->Draw();
+			channelTab->PrintCanvases();
+		}
+	}
+
    if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << DGREEN << "Second interface done" << std::endl; }
 }
 
@@ -2270,9 +2420,9 @@ void TSourceCalibration::MakeSecondConnections()
    fFittingGroup->Connect("Clicked(Int_t)", "TSourceCalibration", this, "Fitting(Int_t)");
    fTab->Connect("Selected(Int_t)", "TSourceCalibration", this, "SelectedTab(Int_t)");
    // we don't need to connect the sigma, threshold, and degree number entries, those are automatically read when we start the calibration
-   for(auto* sourceTab : fChannelTab) {
-      if(sourceTab != nullptr) {
-         sourceTab->MakeConnections();
+   for(auto* channelTab : fChannelTab) {
+      if(channelTab != nullptr) {
+         channelTab->MakeConnections();
       }
    }
 }
@@ -2283,9 +2433,9 @@ void TSourceCalibration::DisconnectSecond()
    fNavigationGroup->Disconnect("Clicked(Int_t)", this, "Navigate(Int_t)");
    fFittingGroup->Disconnect("Clicked(Int_t)", this, "Fitting(Int_t)");
    fTab->Disconnect("Selected(Int_t)", this, "SelectedTab(Int_t)");
-   for(auto* sourceTab : fChannelTab) {
-      if(sourceTab != nullptr) {
-         sourceTab->Disconnect();
+   for(auto* channelTab : fChannelTab) {
+      if(channelTab != nullptr) {
+         channelTab->Disconnect();
       }
    }
 }
@@ -2554,5 +2704,14 @@ void TSourceCalibration::PrintLayout() const
    std::cout << "TSourceCalibration all channel tabs:" << std::endl;
    for(auto* channelTab : fChannelTab) {
       if(channelTab != nullptr) { channelTab->PrintLayout(); }
+   }
+}
+
+void TSourceCalibration::PrintCanvases() const
+{
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << DGREEN << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+
+   for(auto* channelTab : fChannelTab) {
+      if(channelTab != nullptr) { channelTab->PrintCanvases(); }
    }
 }
