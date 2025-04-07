@@ -43,6 +43,7 @@
 
 class TSourceTab;
 
+std::map<double, std::tuple<double, double, double, double>> RoughCal(std::vector<double> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
 std::map<TGauss*, std::tuple<double, double, double, double>> Match(std::vector<TGauss*> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
 std::map<TGauss*, std::tuple<double, double, double, double>> SmartMatch(std::vector<TGauss*> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
 
@@ -69,6 +70,8 @@ public:
    void ProjectionStatus(Event_t* event);
    void ProjectionStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
 
+	void InitialCalibration(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast);
+   void Add(std::map<double, std::tuple<double, double, double, double>> map);
    void Add(std::map<TGauss*, std::tuple<double, double, double, double>> map);
    void FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
    void FindCalibratedPeaks(const TF1* calibration);
@@ -81,6 +84,7 @@ public:
    TGraphErrors*        Data() const { return fData; }
    TGraphErrors*        Fwhm() const { return fFwhm; }
    TRootEmbeddedCanvas* ProjectionCanvas() const { return fProjectionCanvas; }
+	const char* SourceName() const { return fSourceName; }
 
    void RemovePoint(Int_t oldPoint);
 
@@ -131,6 +135,7 @@ public:
 
    void MakeConnections();
    void Disconnect();
+	void Initialize(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast);
 
    void CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
    void SelectCanvas(Event_t* event);
@@ -147,6 +152,7 @@ public:
    void          FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
    void          FindAllPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
    void          FindCalibratedPeaks();
+   void          FindAllCalibratedPeaks();
    TGTab*        SourceTab() const { return fSourceTab; }
    TGraphErrors* Data(int channelId) const { return fSources[channelId]->Data(); }
    size_t        NumberOfSources() const { return fSources.size(); }

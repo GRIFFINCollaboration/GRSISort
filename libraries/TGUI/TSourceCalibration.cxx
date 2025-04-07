@@ -27,6 +27,147 @@
 #include "combinations.h"
 #include "Globals.h"
 
+std::map<double, std::tuple<double, double, double, double>> RoughCal(std::vector<double> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab)
+{
+	/// This function tries to match a list of found peaks (channels) to a list of provided peaks (energies).
+   /// It does so in slightly smarter way than the brute force method `Match`, by taking the reported intensity of the source peaks into account.
+
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << RESET_COLOR << "\"Smart\" matching " << peaks.size() << " peaks with " << sources.size() << " source energies" << std::endl; }
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kLoops) {
+      for(size_t i = 0; i < peaks.size() || i < sources.size(); ++i) {
+         std::cout << i << ".: " << std::setw(8);
+         if(i < peaks.size()) {
+            std::cout << peaks[i];
+         } else {
+            std::cout << " ";
+         }
+         std::cout << " - " << std::setw(8);
+         if(i < sources.size()) {
+            std::cout << std::get<0>(sources[i]);
+         } else {
+            std::cout << " ";
+         }
+         std::cout << std::endl;
+      }
+   }
+
+   std::map<double, std::tuple<double, double, double, double>> result;
+   std::sort(peaks.begin(), peaks.end());
+   std::sort(sources.begin(), sources.end(), [](const std::tuple<double, double, double, double>& a, const std::tuple<double, double, double, double>& b) { return std::get<2>(a) > std::get<2>(b); });
+
+   auto maxSize = peaks.size();
+   if(sources.size() > maxSize) { maxSize = sources.size(); }
+
+   // Peaks are the fitted points.
+   // source are the known values
+
+   TLinearFitter fitter(1, "1 ++ x");
+
+   // intermediate vectors and map
+   std::vector<double>      sourceValues(sources.size());
+   std::map<double, double> tmpMap;
+
+   for(size_t num_data_points = std::min(peaks.size(), sourceValues.size()); num_data_points > 0; num_data_points--) {
+      if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << num_data_points << " data points:" << std::endl; }
+      double best_chi2 = DBL_MAX;
+      int    iteration = 0;
+      for(auto peak_values : combinations(peaks, num_data_points)) {
+         // Add a (0,0) point to the calibration.
+         peak_values.push_back(0);
+         // instead of going through all possible combinations of the peaks with the source energies
+         // we pick the num_data_points most intense lines and try them
+         // we don't do the same with the peaks as there might be an intense background peak in the data (511 etc.)
+         sourceValues.resize(num_data_points);
+         for(size_t i = 0; i < sourceValues.size(); ++i) { sourceValues[i] = std::get<0>(sources[i]); }
+         std::sort(sourceValues.begin(), sourceValues.end());
+         sourceValues.push_back(0);
+
+         if(TSourceCalibration::VerboseLevel() > EVerbosity::kAll) {
+            for(size_t i = 0; i < peak_values.size(); ++i) {
+               std::cout << i << ".: " << std::setw(8) << peak_values[i] << " - " << std::setw(8) << sourceValues[i] << std::endl;
+            }
+         }
+         if(peaks.size() > 3) {
+            double pratio = peak_values.front() / peak_values.at(peak_values.size() - 2);
+            double sratio = sourceValues.front() / sourceValues.at(sourceValues.size() - 2);
+            if(TSourceCalibration::VerboseLevel() > EVerbosity::kAll) { std::cout << "ratio: " << pratio << " - " << sratio << " = " << std::abs(pratio - sratio) << std::endl; }
+            if(std::abs(pratio - sratio) > 0.02) {
+               if(TSourceCalibration::VerboseLevel() > EVerbosity::kAll) { std::cout << "skipping" << std::endl; }
+               continue;
+            }
+         }
+
+         fitter.ClearPoints();
+         fitter.AssignData(sourceValues.size(), 1, peak_values.data(), sourceValues.data());
+         fitter.Eval();
+
+         if(fitter.GetChisquare() < best_chi2) {
+            tmpMap.clear();
+            for(size_t i = 0; i < num_data_points; i++) {
+               tmpMap[peak_values[i]] = sourceValues[i];
+            }
+            best_chi2 = fitter.GetChisquare();
+         }
+         sourceTab->Status(Form("%zu/%zu - %zu - %d", num_data_points, peaks.size(), maxSize, iteration), 1);
+         ++iteration;
+         if(iteration >= TSourceCalibration::MaxIterations()) { break; }
+      }
+
+      // Remove one peak value from the best fit, make sure that we reproduce (0,0) intercept.
+      if(tmpMap.size() > 2) {
+         std::vector<double> peak_values;
+         std::vector<double> source_values;
+         for(auto& item : tmpMap) {
+            peak_values.push_back(item.first);
+            source_values.push_back(item.second);
+         }
+
+         for(size_t skipped_point = 0; skipped_point < source_values.size(); skipped_point++) {
+            std::swap(peak_values[skipped_point], peak_values.back());
+            std::swap(source_values[skipped_point], source_values.back());
+
+            fitter.ClearPoints();
+            fitter.AssignData(source_values.size() - 1, 1, peak_values.data(), source_values.data());
+            fitter.Eval();
+
+            if(std::abs(fitter.GetParameter(0)) > 10) {
+               if(TSourceCalibration::VerboseLevel() > EVerbosity::kLoops) {
+                  std::cout << fitter.GetParameter(0) << " too big an offset, clearing map with " << tmpMap.size() << " points: ";
+                  for(auto iter : tmpMap) { std::cout << iter.first << " - " << iter.second << "; "; }
+                  std::cout << std::endl;
+               }
+               tmpMap.clear();
+               break;
+            }
+
+            std::swap(peak_values[skipped_point], peak_values.back());
+            std::swap(source_values[skipped_point], source_values.back());
+         }
+      }
+
+      // copy all values from the vectors to the result map
+      if(!tmpMap.empty()) {
+         // apparently c++14 is needed to use auto in a lambda so for now we spell it out
+         //	for(auto it : tmpMap) result[*(std::find_if(peaks.begin(),   peaks.end(),   [&it] (auto& item) { return it.first  == std::get<0>(item); }))] =
+         //		                          *(std::find_if(sources.begin(), sources.end(), [&it] (auto& item) { return it.second == std::get<0>(item); }));
+         for(auto iter : tmpMap) {
+            result[*(std::find_if(peaks.begin(), peaks.end(), [&iter](auto& item) { return iter.first == item; }))] =
+               *(std::find_if(sources.begin(), sources.end(), [&iter](auto& item) { return iter.second == std::get<0>(item); }));
+         }
+         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+            std::cout << "Smart matched " << num_data_points << " data points from " << peaks.size() << " peaks with " << sources.size() << " source energies" << std::endl;
+            std::cout << "Returning map with " << result.size() << " points: ";
+            for(auto iter : result) { std::cout << iter.first << " - " << std::get<0>(iter.second) << "; "; }
+            std::cout << std::endl;
+         }
+         break;
+      }
+      sourceTab->Status(Form("%zu/%zu - %zu", num_data_points, peaks.size(), maxSize), 1);
+   }
+
+   return result;
+}
+
 std::map<TGauss*, std::tuple<double, double, double, double>> Match(std::vector<TGauss*> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab)
 {
    /// This function tries to match a list of found peaks (channels) to a list of provided peaks (energies).
@@ -607,6 +748,77 @@ void TSourceTab::Draw()
 	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": drew " << fProjection->GetName() << " on " << fProjectionCanvas->GetCanvas()->GetName() << "/" << gPad->GetName() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 }
 
+void TSourceTab::InitialCalibration(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast)
+{
+   /// This functions finds the peaks in the histogram, fits them, and adds the fits to the list of peaks.
+   /// This list is then used to find all peaks that lie on a straight line.
+
+   if(fPeakRatio != peakRatio) {
+      if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << DCYAN << __PRETTY_FUNCTION__ << ": updating peak ratio from " << fPeakRatio << " to " << peakRatio << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+      fPeakRatio = peakRatio;
+   }
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << DCYAN << __PRETTY_FUNCTION__ << std::flush << " " << fProjection->GetName() << ": got " << fPeaks.size() << " peaks" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+
+   if(fPeaks.empty() || fData == nullptr || sigma != fSigma || threshold != fThreshold || force) {
+      if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+         std::cout << __PRETTY_FUNCTION__ << ": # peaks " << fPeaks.size() << ", sigma (" << sigma << "/" << fSigma << "), or threshold (" << threshold << "/" << fThreshold << ") have changed?" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+      }
+      fSigma     = sigma;
+      fThreshold = threshold;
+      fPeaks.clear();
+		fFits.clear();
+		fBadFits.clear();
+      // Remove all associated functions from projection.
+      // These are the poly markers, fits, and the pave stat
+      if(TSourceCalibration::VerboseLevel() > EVerbosity::kLoops) {
+         TList* functions = fProjection->GetListOfFunctions();
+         std::cout << functions->GetEntries() << " functions in projection " << fProjection->GetName() << " before clearing" << std::endl;
+         for(auto* obj : *functions) {
+            std::cout << obj->GetName() << "/" << obj->GetTitle() << " - " << obj->ClassName() << std::endl;
+         }
+      }
+      fProjection->GetListOfFunctions()->Clear();
+      TSpectrum           spectrum;
+      int                 nofPeaks = 0;
+      std::vector<double> peakPos;
+      UpdateRegions();
+      if(fRegions.empty()) {
+         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "No regions found, using whole spectrum" << std::endl; }
+         spectrum.Search(fProjection, fSigma, "", fThreshold);
+         nofPeaks = spectrum.GetNPeaks();
+         if(nofPeaks > fPeakRatio * static_cast<double>(fSourceEnergy.size())) {
+            if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "Reducing # of peaks from " << nofPeaks; }
+            nofPeaks = static_cast<int>(fPeakRatio * static_cast<double>(fSourceEnergy.size()));
+            if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << " to " << nofPeaks << std::endl; }
+         }
+         peakPos.insert(peakPos.end(), spectrum.GetPositionX(), spectrum.GetPositionX() + nofPeaks);
+      } else {
+         for(auto& region : fRegions) {
+            fProjection->GetXaxis()->SetRangeUser(region.first, region.second);
+            spectrum.Search(fProjection, fSigma, "", fThreshold);
+            int tmpNofPeaks = spectrum.GetNPeaks();
+            if(tmpNofPeaks > fPeakRatio * static_cast<double>(fSourceEnergy.size())) {
+               if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "Reducing # of peaks from " << tmpNofPeaks; }
+               tmpNofPeaks = static_cast<int>(fPeakRatio * static_cast<double>(fSourceEnergy.size()));
+               if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << " to " << tmpNofPeaks << std::endl; }
+            }
+            peakPos.insert(peakPos.end(), spectrum.GetPositionX(), spectrum.GetPositionX() + tmpNofPeaks);
+            nofPeaks += spectrum.GetNPeaks();
+            if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": found " << spectrum.GetNPeaks() << " peaks in region " << region.first << " - " << region.second << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+         }
+         fProjection->GetXaxis()->UnZoom();
+      }
+      if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": found " << nofPeaks << " peaks" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+
+		auto map = RoughCal(peakPos, fSourceEnergy, this);
+		Add(map);
+
+      // update status
+      Status(Form("%d/%d", static_cast<int>(fData->GetN()), nofPeaks), 2);
+   }
+}
+
+
 void TSourceTab::FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast)
 {
    /// This functions finds the peaks in the histogram, fits them, and adds the fits to the list of peaks.
@@ -822,6 +1034,36 @@ void TSourceTab::FindCalibratedPeaks(const TF1* calibration)
       }
       std::cout << std::endl;
    }
+}
+
+void TSourceTab::Add(std::map<double, std::tuple<double, double, double, double>> map)
+{
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
+      std::cout << DCYAN << "Adding map with " << map.size() << " data points, fData = " << fData << std::endl;
+   }
+   if(fData == nullptr) {
+      fData = new TGraphErrors(map.size());
+   } else {
+      fData->Set(map.size());
+   }
+   fData->SetLineColor(2);
+   fData->SetMarkerColor(2);
+   int i = 0;
+   for(auto iter = map.begin(); iter != map.end();) {
+      // more readable variable names
+      auto peakPos     = iter->first;
+      auto energy      = std::get<0>(iter->second);
+		fData->SetPoint(i, peakPos, energy);
+		if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+			std::cout << "Using peak with position " << peakPos << ", energy " << energy << std::endl;
+		}
+		++iter;
+		++i;
+   }
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
+      std::cout << "Accepted " << map.size() << " peaks" << std::endl;
+   }
+	fData->Sort();
 }
 
 void TSourceTab::Add(std::map<TGauss*, std::tuple<double, double, double, double>> map)
@@ -1667,6 +1909,22 @@ void TChannelTab::UpdateChannel()
    }
 }
 
+void TChannelTab::Initialize(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast)
+{
+	// loop through sources and get rough calibration for each
+	for(auto* source : fSources) {
+		if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+			std::cout << DYELLOW << "Rough calibration in source tab:" << std::endl;
+			source->Print();
+		}
+		source->InitialCalibration(sigma, threshold, peakRatio, force, fast);
+		fProgressBar->Increment(1);
+	}
+	// get this rough calibration data and calibrate
+	UpdateData();
+	Calibrate();
+}
+
 void TChannelTab::FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast)
 {
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
@@ -1704,7 +1962,7 @@ void TChannelTab::FindAllPeaks(const double& sigma, const double& threshold, con
 void TChannelTab::FindCalibratedPeaks()
 {
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-      std::cout << DYELLOW << "Finding peaks in source tab " << fActiveSourceTab << ". Old: " << fSourceTab->GetCurrent() << " = " << fSources[fSourceTab->GetCurrent()] << ", current tab element " << fSourceTab->GetCurrentTab() << " is enabled = " << fSourceTab->GetCurrentTab()->IsEnabled() << std::endl;
+      std::cout << DYELLOW << "Finding calibrated peaks in source tab " << fActiveSourceTab << ". Old: " << fSourceTab->GetCurrent() << " = " << fSources[fSourceTab->GetCurrent()] << ", current tab element " << fSourceTab->GetCurrentTab() << " is enabled = " << fSourceTab->GetCurrentTab()->IsEnabled() << std::endl;
       fSourceTab->Print();
       for(int tab = 0; tab < fSourceTab->GetNumberOfTabs(); ++tab) {
          std::cout << "Tab " << tab << " = " << fSourceTab->GetTabTab(tab) << " = " << fSourceTab->GetTabTab(tab)->GetText()->GetString() << (fSourceTab->GetTabTab(tab)->IsActive() ? " is active" : " is inactive") << (fSourceTab->GetTabTab(tab)->IsEnabled() ? " is enabled" : " is not enabled") << std::endl;
@@ -1713,6 +1971,27 @@ void TChannelTab::FindCalibratedPeaks()
    fSources[fActiveSourceTab]->FindCalibratedPeaks(fData->FitFunction());
    UpdateData();
    UpdateFwhm();
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+      std::cout << DYELLOW << "Done finding calibrated peaks in source tab " << fActiveSourceTab << ". Old: " << fSourceTab->GetCurrent() << " = " << fSources[fSourceTab->GetCurrent()] << ", current tab element " << fSourceTab->GetCurrentTab() << " is enabled = " << fSourceTab->GetCurrentTab()->IsEnabled() << std::endl;
+	}
+}
+
+void TChannelTab::FindAllCalibratedPeaks()
+{
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+      std::cout << DYELLOW << "Finding calibrated peaks in all source tabs" << std::endl;
+   }
+	for(auto* source : fSources) {
+		if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+			std::cout << DYELLOW << "Finding calibrated peaks in source tab" << source->SourceName() << std::endl;
+		}
+		source->FindCalibratedPeaks(fData->FitFunction());
+	}
+   UpdateData();
+   UpdateFwhm();
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+      std::cout << DYELLOW << "Done finding calibrated peaks in all source tabs" << std::endl;
+	}
 }
 
 void TChannelTab::Draw()
@@ -2403,7 +2682,15 @@ void TSourceCalibration::BuildSecondInterface()
 	fProgressBar->ShowPosition(true, true, "Peaks: %.0f");
    for(auto* channelTab : fChannelTab) {
       if(channelTab != nullptr) {
-			channelTab->FindAllPeaks(Sigma(), Threshold(), PeakRatio(), true, fFast);   // force = true
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+		for(int i = 0; i < 20; ++i) { std::cout << std::endl; }
+		for(int i = 0; i < 5; ++i) {
+			std::cout << "================================================================================" << std::endl;
+		}
+		for(int i = 0; i < 20; ++i) { std::cout << std::endl; }
+	}
+			channelTab->Initialize(Sigma(), Threshold(), PeakRatio(), true, fFast);
+			channelTab->FindAllCalibratedPeaks();
 			channelTab->Calibrate();
 			channelTab->Draw();
 			channelTab->PrintCanvases();
