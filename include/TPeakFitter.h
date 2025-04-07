@@ -81,8 +81,8 @@ private:
    Double_t DefaultBackgroundFunction(Double_t* dim, Double_t* par);
    void     ResetTotalFitFunction()
    {
-		delete fTotalFitFunction;
-		fTotalFitFunction = nullptr;
+      delete fTotalFitFunction;
+      fTotalFitFunction = nullptr;
    }
 
    std::list<TSinglePeak*> fPeaksToFit;
@@ -102,7 +102,7 @@ private:
 
    int fColorIndex{0};   ///< this index is added to the colors kRed for the total function and kMagenta for the individual peaks
 
-	static EVerbosity fVerboseLevel; ///< Changes verbosity of code.
+   static EVerbosity fVerboseLevel;   ///< Changes verbosity of code.
 
    /// \cond CLASSIMP
    ClassDefOverride(TPeakFitter, 2)   // NOLINT(readability-else-after-return)

@@ -236,12 +236,12 @@ std::map<TGauss*, std::tuple<double, double, double, double>> Match(std::vector<
                for(size_t i = 0; i < num_data_points; i++) {
                   tmpMap[peak_values[i]] = source_values[i];
                }
-               if(TSourceCalibration::VerboseLevel() == EVerbosity::kAll) { 
-						std::cout << "Chi^2 " << fitter.GetChisquare() << " better than " << best_chi2 << ":" << std::endl;
-						for(auto iter : tmpMap) {
-							std::cout << std::setw(10) << iter.first << " - " << iter.second << std::endl;
-						}
-					}
+               if(TSourceCalibration::VerboseLevel() == EVerbosity::kAll) {
+                  std::cout << "Chi^2 " << fitter.GetChisquare() << " better than " << best_chi2 << ":" << std::endl;
+                  for(auto iter : tmpMap) {
+                     std::cout << std::setw(10) << iter.first << " - " << iter.second << std::endl;
+                  }
+               }
                best_chi2 = fitter.GetChisquare();
             }
          }
@@ -485,11 +485,11 @@ TSourceTab::TSourceTab(const TSourceTab& rhs)
    fSigma      = rhs.fSigma;
    fThreshold  = rhs.fThreshold;
    fPeakRatio  = rhs.fPeakRatio;
-	// ? not sure what to do here, clearing the vectors seems unnecessary since we never filled them
-	// but we also can't just simply copy them, we would need a deep copy, which might not make sense?
-	// does is make sense in general to have assignment constructors for this class?
-	fFits.clear();
-	fBadFits.clear();
+   // ? not sure what to do here, clearing the vectors seems unnecessary since we never filled them
+   // but we also can't just simply copy them, we would need a deep copy, which might not make sense?
+   // does is make sense in general to have assignment constructors for this class?
+   fFits.clear();
+   fBadFits.clear();
    fPeaks.clear();
 }
 
@@ -507,12 +507,12 @@ TSourceTab::~TSourceTab()
       delete peak;
    }
    fPeaks.clear();
-	delete fSourceFrame;
+   delete fSourceFrame;
    delete fProjectionCanvas;
    delete fSourceStatusBar;
-	//delete fProjection;
-	//delete fData;
-	//delete fFwhm;
+   //delete fProjection;
+   //delete fData;
+   //delete fFwhm;
 }
 
 void TSourceTab::BuildInterface()
@@ -618,13 +618,13 @@ void TSourceTab::ProjectionStatus(Int_t event, Int_t px, Int_t py, TObject* sele
          }
          polym->SetNextPoint(fProjectionCanvas->GetCanvas()->AbsPixeltoX(px), fProjectionCanvas->GetCanvas()->AbsPixeltoX(py));
          double range = 4 * fSigma;   // * fProjection->GetXaxis()->GetBinWidth(1);
-         auto* pf = new TPeakFitter(fProjectionCanvas->GetCanvas()->AbsPixeltoX(px) - range, fProjectionCanvas->GetCanvas()->AbsPixeltoX(px) + range);
-         auto* peak = new TGauss(fProjectionCanvas->GetCanvas()->AbsPixeltoX(px));
+         auto*  pf    = new TPeakFitter(fProjectionCanvas->GetCanvas()->AbsPixeltoX(px) - range, fProjectionCanvas->GetCanvas()->AbsPixeltoX(px) + range);
+         auto*  peak  = new TGauss(fProjectionCanvas->GetCanvas()->AbsPixeltoX(px));
          pf->AddPeak(peak);
          pf->Fit(fProjection, "qnretryfit");
          if(peak->Area() > 0) {
             fPeaks.push_back(peak);
-				fFits.push_back(pf);
+            fFits.push_back(pf);
             if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << "Fitted peak " << fProjectionCanvas->GetCanvas()->AbsPixeltoX(px) - range << " - " << fProjectionCanvas->GetCanvas()->AbsPixeltoX(px) + range << " -> centroid " << peak->Centroid() << std::endl; }
          } else {
             std::cout << "Ignoring peak at " << peak->Centroid() << " with negative area " << peak->Area() << std::endl;
@@ -632,7 +632,7 @@ void TSourceTab::ProjectionStatus(Int_t event, Int_t px, Int_t py, TObject* sele
          fProjection->GetListOfFunctions()->Remove(peak);
          fProjection->Sumw2(false);   // turn errors off, makes the histogram look like a histogram when using normal plotting (hist and samefunc doesn't work for some reason)
 
-			std::sort(fPeaks.begin(), fPeaks.end(), [](const TGauss* a, const TGauss* b) { return a->Centroid() < b->Centroid(); });
+         std::sort(fPeaks.begin(), fPeaks.end(), [](const TGauss* a, const TGauss* b) { return a->Centroid() < b->Centroid(); });
 
          auto map = Match(fPeaks, fSourceEnergy, this);
          Add(map);
@@ -706,39 +706,40 @@ void TSourceTab::UpdateRegions()
    }
 }
 
-bool TSourceTab::Good(TGauss* peak) {
-	return TSourceCalibration::AcceptBadFits() || (peak->CentroidErr() < 0.1 * peak->Centroid() && peak->AreaErr() < peak->Area() && !std::isnan(peak->CentroidErr()) && !std::isnan(peak->AreaErr()));
+bool TSourceTab::Good(TGauss* peak)
+{
+   return TSourceCalibration::AcceptBadFits() || (peak->CentroidErr() < 0.1 * peak->Centroid() && peak->AreaErr() < peak->Area() && !std::isnan(peak->CentroidErr()) && !std::isnan(peak->AreaErr()));
 }
 
 void TSourceTab::UpdateFits()
 {
-	/// This functions removes all fits named "gauss_total" from the histogram and adds instead the fit functions from all good and bad peaks to it.
-	TList* functions = fProjection->GetListOfFunctions();
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-		std::cout << "Updating functions for histogram " << fProjection->GetName() << " by deleting " << functions->GetEntries() << " functions:" << std::endl; 
-		for(auto* obj : *functions) {
-			std::cout << obj << ": " << obj->GetName() << "/" << obj->GetTitle() << " - " << obj->ClassName() << std::endl;
-		}
-	}
-	// remove all old fits (all have the same name/title of "gauss_total")
-	// alternative: clone the peaks with indices in their names, that would also allow us to add a function to replace a single fit
-	TObject* fit = nullptr;
-	while((fit = functions->FindObject("gauss_total")) != nullptr) {
-		functions->Remove(fit);
-	}
-	// add all the fit functions of the good and the bad peaks
-	for(auto* obj : fFits) {
-		functions->Add(obj->GetFitFunction()->Clone("gauss_total"));
-	}
-	for(auto* obj : fBadFits) {
-		functions->Add(obj->GetFitFunction()->Clone("gauss_total"));
-	}
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-		std::cout << "And adding " << functions->GetEntries() << " functions instead:" << std::endl; 
-		for(auto* obj : *functions) {
-			std::cout << obj << ": " << obj->GetName() << "/" << obj->GetTitle() << " - " << obj->ClassName() << std::endl;
-		}
-	}
+   /// This functions removes all fits named "gauss_total" from the histogram and adds instead the fit functions from all good and bad peaks to it.
+   TList* functions = fProjection->GetListOfFunctions();
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+      std::cout << "Updating functions for histogram " << fProjection->GetName() << " by deleting " << functions->GetEntries() << " functions:" << std::endl;
+      for(auto* obj : *functions) {
+         std::cout << obj << ": " << obj->GetName() << "/" << obj->GetTitle() << " - " << obj->ClassName() << std::endl;
+      }
+   }
+   // remove all old fits (all have the same name/title of "gauss_total")
+   // alternative: clone the peaks with indices in their names, that would also allow us to add a function to replace a single fit
+   TObject* fit = nullptr;
+   while((fit = functions->FindObject("gauss_total")) != nullptr) {
+      functions->Remove(fit);
+   }
+   // add all the fit functions of the good and the bad peaks
+   for(auto* obj : fFits) {
+      functions->Add(obj->GetFitFunction()->Clone("gauss_total"));
+   }
+   for(auto* obj : fBadFits) {
+      functions->Add(obj->GetFitFunction()->Clone("gauss_total"));
+   }
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+      std::cout << "And adding " << functions->GetEntries() << " functions instead:" << std::endl;
+      for(auto* obj : *functions) {
+         std::cout << obj << ": " << obj->GetName() << "/" << obj->GetTitle() << " - " << obj->ClassName() << std::endl;
+      }
+   }
 }
 
 void TSourceTab::Draw()
@@ -837,8 +838,8 @@ void TSourceTab::FindPeaks(const double& sigma, const double& threshold, const d
       fSigma     = sigma;
       fThreshold = threshold;
       fPeaks.clear();
-		fFits.clear();
-		fBadFits.clear();
+      fFits.clear();
+      fBadFits.clear();
       // Remove all associated functions from projection.
       // These are the poly markers, fits, and the pave stat
       if(TSourceCalibration::VerboseLevel() > EVerbosity::kLoops) {
@@ -883,14 +884,14 @@ void TSourceTab::FindPeaks(const double& sigma, const double& threshold, const d
       for(int i = 0; i < nofPeaks; i++) {
          double range = TSourceCalibration::FitRange() * fSigma;
          // if we aren't already redirecting the output, we redirect it to /dev/null and do a quiet fit, otherwise we do a normal fit since the output will be redirected to a file
-			auto* pf = new TPeakFitter(peakPos[i] - range, peakPos[i] + range);
+         auto* pf   = new TPeakFitter(peakPos[i] - range, peakPos[i] + range);
          auto* peak = new TGauss(peakPos[i]);
          pf->AddPeak(peak);
          if(TSourceCalibration::LogFile().empty()) {
             TRedirect redirect("/dev/null");
-				pf->Fit(fProjection, "qnretryfit");
+            pf->Fit(fProjection, "qnretryfit");
          } else {
-				pf->Fit(fProjection, "nretryfit");
+            pf->Fit(fProjection, "nretryfit");
          }
          if(peak->Area() > 0) {
             // check if we accept bad fits (and if it was a bad fit)
@@ -918,9 +919,9 @@ void TSourceTab::FindPeaks(const double& sigma, const double& threshold, const d
 
 		UpdateFits();
 
-		std::sort(fFits.begin(), fFits.end(), [](const TPeakFitter* a, const TPeakFitter* b) { return a->GetFitFunction()->GetParameter("centroid_0") < b->GetFitFunction()->GetParameter("centroid_0"); });
-		std::sort(fBadFits.begin(), fBadFits.end(), [](const TPeakFitter* a, const TPeakFitter* b) { return a->GetFitFunction()->GetParameter("centroid_0") < b->GetFitFunction()->GetParameter("centroid_0"); });
-		std::sort(fPeaks.begin(), fPeaks.end(), [](const TGauss* a, const TGauss* b) { return a->Centroid() < b->Centroid(); });
+      std::sort(fFits.begin(), fFits.end(), [](const TPeakFitter* a, const TPeakFitter* b) { return a->GetFitFunction()->GetParameter("centroid_0") < b->GetFitFunction()->GetParameter("centroid_0"); });
+      std::sort(fBadFits.begin(), fBadFits.end(), [](const TPeakFitter* a, const TPeakFitter* b) { return a->GetFitFunction()->GetParameter("centroid_0") < b->GetFitFunction()->GetParameter("centroid_0"); });
+      std::sort(fPeaks.begin(), fPeaks.end(), [](const TGauss* a, const TGauss* b) { return a->Centroid() < b->Centroid(); });
 
       if(fast) {
          auto map = SmartMatch(fPeaks, fSourceEnergy, this);
@@ -950,80 +951,80 @@ void TSourceTab::FindCalibratedPeaks(const TF1* calibration)
 
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << DCYAN << __PRETTY_FUNCTION__ << std::flush << " " << fProjection->GetName() << ": using calibration " << calibration << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 
-	if(calibration == nullptr) {
-		std::cerr <<  __PRETTY_FUNCTION__ << ": provided calibration is nullptr, this function can only be called after an initial calibration has been made!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-		return;
-	}
+   if(calibration == nullptr) {
+      std::cerr << __PRETTY_FUNCTION__ << ": provided calibration is nullptr, this function can only be called after an initial calibration has been made!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+      return;
+   }
 
-	fPeaks.clear();
-	fFits.clear();
-	fBadFits.clear();
-	// Remove all associated functions from projection.
-	// These are the poly markers, fits, and the pave stat
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kLoops) {
-		TList* functions = fProjection->GetListOfFunctions();
-		std::cout << functions->GetEntries() << " functions in projection " << fProjection->GetName() << " before clearing" << std::endl;
-		for(auto* obj : *functions) {
-			std::cout << obj->GetName() << "/" << obj->GetTitle() << " - " << obj->ClassName() << std::endl;
-		}
-	}
-	fProjection->GetListOfFunctions()->Clear();
+   fPeaks.clear();
+   fFits.clear();
+   fBadFits.clear();
+   // Remove all associated functions from projection.
+   // These are the poly markers, fits, and the pave stat
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kLoops) {
+      TList* functions = fProjection->GetListOfFunctions();
+      std::cout << functions->GetEntries() << " functions in projection " << fProjection->GetName() << " before clearing" << std::endl;
+      for(auto* obj : *functions) {
+         std::cout << obj->GetName() << "/" << obj->GetTitle() << " - " << obj->ClassName() << std::endl;
+      }
+   }
+   fProjection->GetListOfFunctions()->Clear();
 
-	// loop over all source energies
-	for(auto iter : fSourceEnergy) {
-		if(std::get<2>(iter) < TSourceCalibration::MinIntensity()) {
-			if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-				std::cout << "Skipping peak at " << std::get<0>(iter) << " keV with intensity " << std::get<2>(iter) << " below required minimum intensity " << TSourceCalibration::MinIntensity() << std::endl;
-			}
-			continue;
-		}
-		double range = TSourceCalibration::FitRange() * fSigma;
-		double peakPos = calibration->GetX(std::get<0>(iter));
-		if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-			std::cout << "Trying to fit peak " << peakPos << " (" << std::get<0>(iter) << " keV) in range " << peakPos - range << " - " << peakPos + range << std::endl;
-		}
-		// if we aren't already redirecting the output, we redirect it to /dev/null and do a quiet fit, otherwise we do a normal fit since the output will be redirected to a file
-		auto* pf = new TPeakFitter(peakPos - range, peakPos + range);
-		auto* peak = new TGauss(peakPos);
-		pf->AddPeak(peak);
-		if(TSourceCalibration::LogFile().empty()) {
-			TRedirect redirect("/dev/null");
-			pf->Fit(fProjection, "qnretryfit");
-		} else {
-			pf->Fit(fProjection, "nretryfit");
-		}
-		if(peak->Area() > 0) {
-			// check if we accept bad fits (and if it was a bad fit)
-			if(Good(peak)) {
-				peak->SetLineColor(kRed);
-				fPeaks.push_back(peak);
-				fFits.push_back(pf);
-				if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-					std::cout << "Fitted peak " << peakPos - range << " - " << peakPos + range << " -> centroid " << peak->Centroid() << ", area " << peak->Area() << std::endl;
-				}
-			} else {
-				peak->SetLineColor(kGray);
-				fBadFits.push_back(pf);
-				if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-					std::cout << "We're ignoring bad fits, and this one has position " << peak->Centroid() << " +- " << peak->CentroidErr() << ", area " << peak->Area() << " +- " << peak->AreaErr() << std::endl;
-				}
-			}
-		} else if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-			std::cout << "Ignoring peak at " << peak->Centroid() << " with negative area " << peak->Area() << std::endl;
-		}
-	}
+   // loop over all source energies
+   for(auto iter : fSourceEnergy) {
+      if(std::get<2>(iter) < TSourceCalibration::MinIntensity()) {
+         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+            std::cout << "Skipping peak at " << std::get<0>(iter) << " keV with intensity " << std::get<2>(iter) << " below required minimum intensity " << TSourceCalibration::MinIntensity() << std::endl;
+         }
+         continue;
+      }
+      double range   = TSourceCalibration::FitRange() * fSigma;
+      double peakPos = calibration->GetX(std::get<0>(iter));
+      if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+         std::cout << "Trying to fit peak " << peakPos << " (" << std::get<0>(iter) << " keV) in range " << peakPos - range << " - " << peakPos + range << std::endl;
+      }
+      // if we aren't already redirecting the output, we redirect it to /dev/null and do a quiet fit, otherwise we do a normal fit since the output will be redirected to a file
+      auto* pf   = new TPeakFitter(peakPos - range, peakPos + range);
+      auto* peak = new TGauss(peakPos);
+      pf->AddPeak(peak);
+      if(TSourceCalibration::LogFile().empty()) {
+         TRedirect redirect("/dev/null");
+         pf->Fit(fProjection, "qnretryfit");
+      } else {
+         pf->Fit(fProjection, "nretryfit");
+      }
+      if(peak->Area() > 0) {
+         // check if we accept bad fits (and if it was a bad fit)
+         if(Good(peak)) {
+            peak->SetLineColor(kRed);
+            fPeaks.push_back(peak);
+            fFits.push_back(pf);
+            if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+               std::cout << "Fitted peak " << peakPos - range << " - " << peakPos + range << " -> centroid " << peak->Centroid() << ", area " << peak->Area() << std::endl;
+            }
+         } else {
+            peak->SetLineColor(kGray);
+            fBadFits.push_back(pf);
+            if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+               std::cout << "We're ignoring bad fits, and this one has position " << peak->Centroid() << " +- " << peak->CentroidErr() << ", area " << peak->Area() << " +- " << peak->AreaErr() << std::endl;
+            }
+         }
+      } else if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+         std::cout << "Ignoring peak at " << peak->Centroid() << " with negative area " << peak->Area() << std::endl;
+      }
+   }
 
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": added " << fPeaks.size() << " peaks (" << fSourceEnergy.size() << " source energies)" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	fProjection->Sumw2(false);                                                                                                                                        // turn errors off, makes the histogram look like a histogram when using normal plotting (hist and samefunc doesn't work for some reason)
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": added " << fPeaks.size() << " peaks (" << fSourceEnergy.size() << " source energies)" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   fProjection->Sumw2(false);                                                                                                                                                                                         // turn errors off, makes the histogram look like a histogram when using normal plotting (hist and samefunc doesn't work for some reason)
 
 	UpdateFits();
 
-	std::sort(fFits.begin(), fFits.end(), [](const TPeakFitter* a, const TPeakFitter* b) { return a->GetFitFunction()->GetParameter("centroid_0") < b->GetFitFunction()->GetParameter("centroid_0"); });
-	std::sort(fBadFits.begin(), fBadFits.end(), [](const TPeakFitter* a, const TPeakFitter* b) { return a->GetFitFunction()->GetParameter("centroid_0") < b->GetFitFunction()->GetParameter("centroid_0"); });
-	std::sort(fPeaks.begin(), fPeaks.end(), [](const TGauss* a, const TGauss* b) { return a->Centroid() < b->Centroid(); });
+   std::sort(fFits.begin(), fFits.end(), [](const TPeakFitter* a, const TPeakFitter* b) { return a->GetFitFunction()->GetParameter("centroid_0") < b->GetFitFunction()->GetParameter("centroid_0"); });
+   std::sort(fBadFits.begin(), fBadFits.end(), [](const TPeakFitter* a, const TPeakFitter* b) { return a->GetFitFunction()->GetParameter("centroid_0") < b->GetFitFunction()->GetParameter("centroid_0"); });
+   std::sort(fPeaks.begin(), fPeaks.end(), [](const TGauss* a, const TGauss* b) { return a->Centroid() < b->Centroid(); });
 
-	auto map = Match(fPeaks, fSourceEnergy, this);
-	Add(map);
+   auto map = Match(fPeaks, fSourceEnergy, this);
+   Add(map);
 
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
       std::cout << __PRETTY_FUNCTION__ << ": found " << fData->GetN() << " peaks";   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
@@ -1123,8 +1124,8 @@ void TSourceTab::Add(std::map<TGauss*, std::tuple<double, double, double, double
    // if we dropped a peak, we need to resize the graph, if we haven't dropped any this doesn't do anything
    fData->Set(map.size());
    fFwhm->Set(map.size());
-	fData->Sort();
-	fFwhm->Sort();
+   fData->Sort();
+   fFwhm->Sort();
    // split poly marker into those peaks that were used, and those that weren't
    TList* functions = fProjection->GetListOfFunctions();
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kLoops) {
@@ -1202,11 +1203,11 @@ void TSourceTab::Add(std::map<TGauss*, std::tuple<double, double, double, double
          // remove the TF1 if it wasn't found in the map
          if(!found) {
             //functions->Remove(item);
-				if(item->IsA() == TF1::Class()) {
-					static_cast<TF1*>(item)->SetLineColor(kGray);
-				} else {
-					static_cast<TGauss*>(item)->GetFitFunction()->SetLineColor(kGray);
-				}
+            if(item->IsA() == TF1::Class()) {
+               static_cast<TF1*>(item)->SetLineColor(kGray);
+            } else {
+               static_cast<TGauss*>(item)->GetFitFunction()->SetLineColor(kGray);
+            }
          }
       }
    }
@@ -1214,76 +1215,76 @@ void TSourceTab::Add(std::map<TGauss*, std::tuple<double, double, double, double
 
 void TSourceTab::ReplacePeak(const size_t& index, const double& channel)
 {
-	/// Replace the peak at the index with one centered at channel (calculated from an initial calibration and the source energy of this peak).
-	/// This replaces the TGauss* in fPeaks, and updates the values of this index in fData and fFwhm.
+   /// Replace the peak at the index with one centered at channel (calculated from an initial calibration and the source energy of this peak).
+   /// This replaces the TGauss* in fPeaks, and updates the values of this index in fData and fFwhm.
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << DCYAN << __PRETTY_FUNCTION__ << ": index " << index << ", channel " << channel << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-		for(size_t i = 0; i < fPeaks.size() && i < fFits.size(); ++i) {
-			std::cout << i << ": " << fPeaks[i]->Centroid() << " +- " << fPeaks[i]->CentroidErr() << " - " << fFits[i]->GetFitFunction()->GetParameter("centroid_0") << std::endl;
-		}
+      for(size_t i = 0; i < fPeaks.size() && i < fFits.size(); ++i) {
+         std::cout << i << ": " << fPeaks[i]->Centroid() << " +- " << fPeaks[i]->CentroidErr() << " - " << fFits[i]->GetFitFunction()->GetParameter("centroid_0") << std::endl;
+      }
    }
 
-	if(index >= fPeaks.size()) {
-		std::cerr << "Trying to replace peak at index " << index << " but there are only " << fPeaks.size() << " peaks!" << std::endl;
-		return;
-	}
+   if(index >= fPeaks.size()) {
+      std::cerr << "Trying to replace peak at index " << index << " but there are only " << fPeaks.size() << " peaks!" << std::endl;
+      return;
+   }
 
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << "Replacing old peak at index " << index << ", centroid " << fPeaks.at(index)->Centroid() << " with new peak at channel " << channel << std::endl; }
 
-	// calculate the fitting range (low to high) and adjust it so we ignore the old peak
-	double range = TSourceCalibration::FitRange() * fSigma;
-	double low = channel - range;
-	double high = channel + range;
-	if(fPeaks.at(index)->Centroid() < channel) {
-		low = (fPeaks.at(index)->Centroid() + channel) / 2.;
-	} else {
-		high = (fPeaks.at(index)->Centroid() + channel) / 2.;
-	}
-	// if we aren't already redirecting the output, we redirect it to /dev/null and do a quiet fit, otherwise we do a normal fit since the output will be redirected to a file
-	auto* pf = new TPeakFitter(low, high);
-	auto* peak = new TGauss(channel);
-	pf->AddPeak(peak);
-	if(TSourceCalibration::LogFile().empty()) {
-		//TRedirect redirect("/dev/null");
-		pf->Fit(fProjection, "retryfit");
-	} else {
-		pf->Fit(fProjection, "retryfit");
-	}
-	if(peak->Area() > 0) {
-		if(Good(peak)) {
-			if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-				std::cout << index << ". peak/fit out of " << fPeaks.size() << "/" << fFits.size() << " peaks/fits: " << std::flush << fPeaks.at(index)->Centroid() << "/" << fFits.at(index)->GetFitFunction()->GetParameter("centroid_0") << std::endl;
-				std::cout << "Deleting " << index << ". peak " << fPeaks.at(index) << std::flush;
-			}
-			delete fPeaks.at(index);
-			fPeaks[index] = peak;
-			if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-				std::cout << " and setting it to " << fPeaks.at(index) << std::endl;
-			}
-			if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-				std::cout << "Deleting " << index << ". fit " << fFits.at(index) << std::flush;
-			}
-			delete fFits.at(index);
-			fFits[index] = pf;
-			if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-				std::cout << " and setting it to " << fFits.at(index) << std::endl;
-			}
-			UpdateFits();
+   // calculate the fitting range (low to high) and adjust it so we ignore the old peak
+   double range = TSourceCalibration::FitRange() * fSigma;
+   double low   = channel - range;
+   double high  = channel + range;
+   if(fPeaks.at(index)->Centroid() < channel) {
+      low = (fPeaks.at(index)->Centroid() + channel) / 2.;
+   } else {
+      high = (fPeaks.at(index)->Centroid() + channel) / 2.;
+   }
+   // if we aren't already redirecting the output, we redirect it to /dev/null and do a quiet fit, otherwise we do a normal fit since the output will be redirected to a file
+   auto* pf   = new TPeakFitter(low, high);
+   auto* peak = new TGauss(channel);
+   pf->AddPeak(peak);
+   if(TSourceCalibration::LogFile().empty()) {
+      //TRedirect redirect("/dev/null");
+      pf->Fit(fProjection, "retryfit");
+   } else {
+      pf->Fit(fProjection, "retryfit");
+   }
+   if(peak->Area() > 0) {
+      if(Good(peak)) {
+         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+            std::cout << index << ". peak/fit out of " << fPeaks.size() << "/" << fFits.size() << " peaks/fits: " << std::flush << fPeaks.at(index)->Centroid() << "/" << fFits.at(index)->GetFitFunction()->GetParameter("centroid_0") << std::endl;
+            std::cout << "Deleting " << index << ". peak " << fPeaks.at(index) << std::flush;
+         }
+         delete fPeaks.at(index);
+         fPeaks[index] = peak;
+         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+            std::cout << " and setting it to " << fPeaks.at(index) << std::endl;
+         }
+         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+            std::cout << "Deleting " << index << ". fit " << fFits.at(index) << std::flush;
+         }
+         delete fFits.at(index);
+         fFits[index] = pf;
+         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+            std::cout << " and setting it to " << fFits.at(index) << std::endl;
+         }
+         UpdateFits();
          fData->SetPoint(index, peak->Centroid(), fData->GetPointY(index));
          fData->SetPointError(index, peak->CentroidErr(), fData->GetErrorY(index));
          fFwhm->SetPoint(index, peak->Centroid(), peak->FWHM());
          fFwhm->SetPointError(index, peak->CentroidErr(), peak->FWHMErr());
-			if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-				std::cout << "Fitted peak " << low << " - " << high << " -> centroid " << peak->Centroid() << ", area " << peak->Area() << std::endl;
-			}
-		} else {
-			if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-				std::cout << "We're ignoring bad fits, and this one has position " << peak->Centroid() << " +- " << peak->CentroidErr() << ", area " << peak->Area() << " +- " << peak->AreaErr() << std::endl;
-			}
-		}
-	} else if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-		std::cout << "Ignoring peak at " << peak->Centroid() << " with negative area " << peak->Area() << std::endl;
-	}
+         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+            std::cout << "Fitted peak " << low << " - " << high << " -> centroid " << peak->Centroid() << ", area " << peak->Area() << std::endl;
+         }
+      } else {
+         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+            std::cout << "We're ignoring bad fits, and this one has position " << peak->Centroid() << " +- " << peak->CentroidErr() << ", area " << peak->Area() << " +- " << peak->AreaErr() << std::endl;
+         }
+      }
+   } else if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+      std::cout << "Ignoring peak at " << peak->Centroid() << " with negative area " << peak->Area() << std::endl;
+   }
 }
 
 void TSourceTab::RemovePoint(Int_t oldPoint)
@@ -1291,18 +1292,18 @@ void TSourceTab::RemovePoint(Int_t oldPoint)
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << DCYAN << __PRETTY_FUNCTION__ << ": oldPoint " << oldPoint << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    }
-	// first thing to do is check if the graph the point was removed from matches the id of this tab
+   // first thing to do is check if the graph the point was removed from matches the id of this tab
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { Print(); }
-	//auto erasedPeak = fPeaks.at(oldPoint);
-	fPeaks.erase(fPeaks.begin() + oldPoint);
-	auto* erasedFit = fFits.at(oldPoint);
-	fFits.erase(fFits.begin() + oldPoint);
-	fBadFits.push_back(erasedFit);
-	fData->RemovePoint(oldPoint);
+   //auto erasedPeak = fPeaks.at(oldPoint);
+   fPeaks.erase(fPeaks.begin() + oldPoint);
+   auto* erasedFit = fFits.at(oldPoint);
+   fFits.erase(fFits.begin() + oldPoint);
+   fBadFits.push_back(erasedFit);
+   fData->RemovePoint(oldPoint);
 
-	UpdateFits();
-	// we also need to move the marker of this peak to the poly-marker of unused peaks (16 is light gray aka the color of the unused markers)
-	//if(item->IsA() == TPolyMarker::Class()) { item->Print(); }   // && static_cast<TPolyMarker*>(item)->GetMarkerColor() != 16) {
+   UpdateFits();
+   // we also need to move the marker of this peak to the poly-marker of unused peaks (16 is light gray aka the color of the unused markers)
+   //if(item->IsA() == TPolyMarker::Class()) { item->Print(); }   // && static_cast<TPolyMarker*>(item)->GetMarkerColor() != 16) {
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { Print(); }
 }
 
@@ -1316,47 +1317,47 @@ void TSourceTab::Status(const char* status, int position)
 
 void TSourceTab::Print() const
 {
-	std::cout << "Projection " << fProjection;
-	if(fProjection != nullptr) {
-		std::cout << " = " << fProjection->GetName() << "/" << fProjection->GetTitle();
-	} else {
-		std::cout << " is null";
-	}
-	std::cout << std::endl;
+   std::cout << "Projection " << fProjection;
+   if(fProjection != nullptr) {
+      std::cout << " = " << fProjection->GetName() << "/" << fProjection->GetTitle();
+   } else {
+      std::cout << " is null";
+   }
+   std::cout << std::endl;
 
-	std::cout << "Data " << fData;
-	if(fData != nullptr) {
-		std::cout << " = " << fData->GetName() << "/" << fData->GetTitle();
-	} else {
-		std::cout << " is null";
-	}
-	std::cout << std::endl;
+   std::cout << "Data " << fData;
+   if(fData != nullptr) {
+      std::cout << " = " << fData->GetName() << "/" << fData->GetTitle();
+   } else {
+      std::cout << " is null";
+   }
+   std::cout << std::endl;
 
-	std::cout << "Fwhm " << fFwhm;
-	if(fFwhm != nullptr) {
-		std::cout << " = " << fFwhm->GetName() << "/" << fFwhm->GetTitle();
-	} else {
-		std::cout << " is null";
-	}
-	std::cout << std::endl;
+   std::cout << "Fwhm " << fFwhm;
+   if(fFwhm != nullptr) {
+      std::cout << " = " << fFwhm->GetName() << "/" << fFwhm->GetTitle();
+   } else {
+      std::cout << " is null";
+   }
+   std::cout << std::endl;
 
-	std::cout << fFits.size() << " good fits:";
-	for(size_t i = 0; i < fFits.size(); ++i) {
-		std::cout << " " << std::setw(2) << i << " - " << std::setw(8) << fFits.at(i)->GetFitFunction()->GetParameter("centroid_0");
-	}
-	std::cout << std::endl;
+   std::cout << fFits.size() << " good fits:";
+   for(size_t i = 0; i < fFits.size(); ++i) {
+      std::cout << " " << std::setw(2) << i << " - " << std::setw(8) << fFits.at(i)->GetFitFunction()->GetParameter("centroid_0");
+   }
+   std::cout << std::endl;
 
-	std::cout << fBadFits.size() << " bad fits:";
-	for(size_t i = 0; i < fBadFits.size(); ++i) {
-		std::cout << " " << std::setw(2) << i << " - " << std::setw(8) << fBadFits.at(i)->GetFitFunction()->GetParameter("centroid_0");
-	}
-	std::cout << std::endl;
+   std::cout << fBadFits.size() << " bad fits:";
+   for(size_t i = 0; i < fBadFits.size(); ++i) {
+      std::cout << " " << std::setw(2) << i << " - " << std::setw(8) << fBadFits.at(i)->GetFitFunction()->GetParameter("centroid_0");
+   }
+   std::cout << std::endl;
 
-	std::cout << fPeaks.size() << " peaks:";
-	for(size_t i = 0; i < fPeaks.size(); ++i) {
-		std::cout << " " << std::setw(2) << i << " - " << std::setw(8) << fPeaks.at(i)->Centroid();
-	}
-	std::cout << std::endl;
+   std::cout << fPeaks.size() << " peaks:";
+   for(size_t i = 0; i < fPeaks.size(); ++i) {
+      std::cout << " " << std::setw(2) << i << " - " << std::setw(8) << fPeaks.at(i)->Centroid();
+   }
+   std::cout << std::endl;
 }
 
 void TSourceTab::PrintCanvases() const
@@ -1401,7 +1402,7 @@ TChannelTab::TChannelTab(TSourceCalibration* parent, std::vector<TNucleus*> nucl
 
 TChannelTab::~TChannelTab()
 {
-	delete fChannelFrame;
+   delete fChannelFrame;
    delete fSourceTab;
    for(auto* channel : fSources) {
       delete channel;
@@ -1417,7 +1418,7 @@ TChannelTab::~TChannelTab()
    delete fFwhmFrame;
    delete fFwhmCanvas;
    delete fProgressBar;
-	// delete all fProjections and all fNuclei?
+   // delete all fProjections and all fNuclei?
    delete fData;
    delete fFwhm;
 }
@@ -1553,7 +1554,7 @@ void TChannelTab::Disconnect()
 	//std::unique_lock<std::mutex> graphicsLock(fParent->GraphicsMutex());
    fSourceTab->Disconnect("Selected(Int_t)", this, "SelectedTab(Int_t)");
    fCalibrationCanvas->GetCanvas()->Disconnect("ProcessedEvent(Int_t,Int_t,Int_t,TObject*)", this, "CalibrationStatus(Int_t,Int_t,Int_t,TObject*)");
-	fData->Disconnect("RemovePoint(Int_t, Int_t)", this, "RemovePoint(Int_t, Int_t)");
+   fData->Disconnect("RemovePoint(Int_t, Int_t)", this, "RemovePoint(Int_t, Int_t)");
 }
 
 void TChannelTab::SelectedTab(Int_t id)
@@ -1598,10 +1599,10 @@ void TChannelTab::RemovePoint(Int_t oldGraph, Int_t oldPoint)
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << DCYAN << __PRETTY_FUNCTION__ << ": oldGraph " << oldGraph << ", oldPoint " << oldPoint << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    }
-	if(0 <= oldGraph && oldGraph < static_cast<int>(fSources.size())) {
-		return fSources[oldGraph]->RemovePoint(oldPoint);
-	}
-	std::cout << "Graph the point was removed from was " << oldGraph << ", but we only have " << fSources.size() << " source tabs?" << std::endl;
+   if(0 <= oldGraph && oldGraph < static_cast<int>(fSources.size())) {
+      return fSources[oldGraph]->RemovePoint(oldPoint);
+   }
+   std::cout << "Graph the point was removed from was " << oldGraph << ", but we only have " << fSources.size() << " source tabs?" << std::endl;
 }
 
 void TChannelTab::CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected)
@@ -1728,15 +1729,15 @@ void TChannelTab::Calibrate()
    TF1* calibration = new TF1("fitfunction", ::Polynomial, 0., 10000., fDegree + 2);
    calibration->FixParameter(0, fDegree);
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
-		std::cout << DYELLOW << "fData " << fData << ": ";
-		if(fData != nullptr) {
-			std::cout << fData->GetN() << " data points being fit, ";
-		}
-		double min = 0.;
-		double max = 0.;
-		calibration->GetRange(min, max);
-		std::cout << "range " << min << " - " << max << std::endl;
-	}
+      std::cout << DYELLOW << "fData " << fData << ": ";
+      if(fData != nullptr) {
+         std::cout << fData->GetN() << " data points being fit, ";
+      }
+      double min = 0.;
+      double max = 0.;
+      calibration->GetRange(min, max);
+      std::cout << "range " << min << " - " << max << std::endl;
+   }
    fData->Fit(calibration, "Q");
    TString text = Form("%.6f + %.6f*x", calibration->GetParameter(1), calibration->GetParameter(2));
    for(int i = 2; i <= fDegree; ++i) {
@@ -1782,18 +1783,18 @@ void TChannelTab::Calibrate()
 
    fCalibrationCanvas->GetCanvas()->Modified();
 
-	fData->FitFunction()->SetRange(0., 10000.);
+   fData->FitFunction()->SetRange(0., 10000.);
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-		double min = 0.;
-		double max = 0.;
-		calibration->GetRange(min, max);
-		std::cout << DYELLOW << "calibration has range " << min << " - " << max;
-		if(fData->FitFunction() != nullptr) {
-			fData->FitFunction()->GetRange(min, max);
-			std::cout << ",  fit function has range " << min << " - " << max;
-		}
-		std::cout << std::endl;
-	}
+      double min = 0.;
+      double max = 0.;
+      calibration->GetRange(min, max);
+      std::cout << DYELLOW << "calibration has range " << min << " - " << max;
+      if(fData->FitFunction() != nullptr) {
+         fData->FitFunction()->GetRange(min, max);
+         std::cout << ",  fit function has range " << min << " - " << max;
+      }
+      std::cout << std::endl;
+   }
    delete calibration;
 
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " done" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
@@ -1807,37 +1808,37 @@ void TChannelTab::Iterate(const double& maxResidual)
 
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << DYELLOW << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 
-	// Get the max residual in all the residual graphs
-	size_t source = 0;
-	auto* maxElement = std::max_element(fData->Residual(source)->GetX(), fData->Residual(source)->GetX() + fData->Residual(source)->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
-	auto index = std::distance(fData->Residual(source)->GetX(), maxElement);
+   // Get the max residual in all the residual graphs
+   size_t source     = 0;
+   auto*  maxElement = std::max_element(fData->Residual(source)->GetX(), fData->Residual(source)->GetX() + fData->Residual(source)->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
+   auto   index      = std::distance(fData->Residual(source)->GetX(), maxElement);
 
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-		std::cout << "found largest residual in first residual graph: " << *maxElement << ", position " << index << std::endl;
-		fData->Residual(source)->Print();
-	}
-	
-	for(size_t s = 1; s < fData->NumberOfGraphs(); ++s) {
-		auto* tmp = std::max_element(fData->Residual(s)->GetX(), fData->Residual(s)->GetX() + fData->Residual(s)->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
-		if(*tmp > *maxElement) {
-			if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "found larger residual in residual graph " << source << ": " << *tmp << " > " << *maxElement << ", was position " << index << std::flush; }
-			maxElement = tmp;
-			index = std::distance(fData->Residual(source)->GetX(), maxElement);
-			source = s;
-			if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-				std::cout << " now at position " << index << std::endl;
-				fData->Residual(s)->Print();
-			}
-		}
-	}
-	if(*maxElement < maxResidual) {
-		if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "max. residual in residual graph " << source << " is " << *maxElement << " < " << maxResidual << "!" << std::endl; }
-		return;
-	}
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-		std::cout << "found max. residual in residual graph " << source << " of " << *maxElement << " > " << maxResidual << ", at position " << index << std::endl;
-		fData->Residual(source)->Print();
-	}
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+      std::cout << "found largest residual in first residual graph: " << *maxElement << ", position " << index << std::endl;
+      fData->Residual(source)->Print();
+   }
+
+   for(size_t s = 1; s < fData->NumberOfGraphs(); ++s) {
+      auto* tmp = std::max_element(fData->Residual(s)->GetX(), fData->Residual(s)->GetX() + fData->Residual(s)->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
+      if(*tmp > *maxElement) {
+         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "found larger residual in residual graph " << source << ": " << *tmp << " > " << *maxElement << ", was position " << index << std::flush; }
+         maxElement = tmp;
+         index      = std::distance(fData->Residual(source)->GetX(), maxElement);
+         source     = s;
+         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+            std::cout << " now at position " << index << std::endl;
+            fData->Residual(s)->Print();
+         }
+      }
+   }
+   if(*maxElement < maxResidual) {
+      if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "max. residual in residual graph " << source << " is " << *maxElement << " < " << maxResidual << "!" << std::endl; }
+      return;
+   }
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+      std::cout << "found max. residual in residual graph " << source << " of " << *maxElement << " > " << maxResidual << ", at position " << index << std::endl;
+      fData->Residual(source)->Print();
+   }
 
    for(source = 1; source < fData->NumberOfGraphs(); ++source) {
       auto* tmp = std::max_element(fData->Residual(source)->GetX(), fData->Residual(source)->GetX() + fData->Residual(source)->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
@@ -1858,15 +1859,15 @@ void TChannelTab::Iterate(const double& maxResidual)
    double energy  = fData->Graph(source)->GetY()[index];
    double channel = fData->FitFunction()->GetX(energy);
 
-	fSources[source]->ReplacePeak(index, channel);
+   fSources[source]->ReplacePeak(index, channel);
 
-	// update the data, re-calibrate, and then call Iterate again
-	UpdateData();
-	UpdateFwhm();
-	Calibrate();
+   // update the data, re-calibrate, and then call Iterate again
+   UpdateData();
+   UpdateFwhm();
+   Calibrate();
 
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "Iterate(" << maxResidual << ") is done, updated index " << index << " using channel =  " << channel << std::endl; }
-	Iterate(maxResidual);
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "Iterate(" << maxResidual << ") is done, updated index " << index << " using channel =  " << channel << std::endl; }
+   Iterate(maxResidual);
 }
 
 void TChannelTab::UpdateChannel()
@@ -2232,7 +2233,7 @@ TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degre
 
    if(!fLogFile.empty()) {
       fRedirect = new TRedirect(fLogFile.c_str());
-		std::cout << "Starting redirect to " << fLogFile << std::endl;
+      std::cout << "Starting redirect to " << fLogFile << std::endl;
    }
 
    // check matrices (# of filled bins and bin labels) and resize some vectors for later use
@@ -2309,7 +2310,7 @@ TSourceCalibration::~TSourceCalibration()
 
    gErrorIgnoreLevel = fOldErrorLevel;
 
-	delete fRedirect;
+   delete fRedirect;
 }
 
 void TSourceCalibration::BuildFirstInterface()
@@ -2626,10 +2627,10 @@ void TSourceCalibration::BuildSecondInterface()
 
    fLeftFrame->AddFrame(fNavigationGroup, new TGLayoutHints(kLHintsTop | kLHintsExpandX, 2, 2, 2, 2));
 
-   fFittingGroup = new TGHButtonGroup(fLeftFrame, "");
+   fFittingGroup        = new TGHButtonGroup(fLeftFrame, "");
    fFindPeaksButton     = new TGTextButton(fFittingGroup, "Find Peaks");
    fFindPeaksFastButton = new TGTextButton(fFittingGroup, "&Find Peaks Fast");
-   fFindPeaksCalButton = new TGTextButton(fFittingGroup, "&Use Calibration");
+   fFindPeaksCalButton  = new TGTextButton(fFittingGroup, "&Use Calibration");
    if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "find peaks button " << fFindPeaksButton << std::endl; }
    fFindPeaksCalAllButton = new TGTextButton(fFittingGroup, "Use Calibration (All)");
    if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "find all peaks button " << fFindPeaksCalAllButton << std::endl; }
@@ -2798,7 +2799,7 @@ void TSourceCalibration::Fitting(Int_t id)
       Calibrate();
       break;
    case EFitting::kIterate:   // iterate
-      Iterate(); // also calibrates the channel
+      Iterate();              // also calibrates the channel
       break;
    default:
       break;
@@ -2933,14 +2934,14 @@ void TSourceCalibration::FindCalibratedPeaks()
 void TSourceCalibration::FindAllCalibratedPeaks()
 {
    if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << DGREEN << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	for(auto& bin : fActiveBins) {
-		if(fChannelTab[bin] != nullptr) {
-			fChannelTab[bin]->FindCalibratedPeaks();
-			fChannelTab[bin]->Calibrate(Degree(), true);
-		} else {
-			std::cout << __PRETTY_FUNCTION__ << ": fChannelTab[" << bin << "] is a nullptr!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-		}
-	}
+   for(auto& bin : fActiveBins) {
+      if(fChannelTab[bin] != nullptr) {
+         fChannelTab[bin]->FindCalibratedPeaks();
+         fChannelTab[bin]->Calibrate(Degree(), true);
+      } else {
+         std::cout << __PRETTY_FUNCTION__ << ": fChannelTab[" << bin << "] is a nullptr!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+      }
+   }
    if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << RESET_COLOR << std::flush; }
 }
 

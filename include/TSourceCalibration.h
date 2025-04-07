@@ -98,8 +98,8 @@ public:
 private:
    void BuildInterface();
    void UpdateRegions();
-	bool Good(TGauss* peak);
-	void UpdateFits();
+   bool Good(TGauss* peak);
+   void UpdateFits();
 
    // parent
    TChannelTab* fParent{nullptr};
@@ -117,10 +117,10 @@ private:
    double                                                  fSigma{2.};
    double                                                  fThreshold{0.05};
    double                                                  fPeakRatio{2.};
-	std::vector<TPeakFitter*>                               fFits;                 ///< all good fits
-	std::vector<TPeakFitter*>                               fBadFits;              ///< all bad fits (centroid err > 10%, area err > 100%, or either of them not a number at all)
-	std::vector<TGauss*>                                    fPeaks;                ///< all peaks that have been fitted and are good
-   std::vector<std::tuple<double, double, double, double>> fSourceEnergy;         ///< gamma rays from the source, with their energies, uncertainties in the energies, intensities, and uncertainties in the intesities
+   std::vector<TPeakFitter*>                               fFits;           ///< all good fits
+   std::vector<TPeakFitter*>                               fBadFits;        ///< all bad fits (centroid err > 10%, area err > 100%, or either of them not a number at all)
+   std::vector<TGauss*>                                    fPeaks;          ///< all peaks that have been fitted and are good
+   std::vector<std::tuple<double, double, double, double>> fSourceEnergy;   ///< gamma rays from the source, with their energies, uncertainties in the energies, intensities, and uncertainties in the intesities
    std::vector<std::pair<double, double>>                  fRegions;
 };
 
@@ -303,7 +303,7 @@ public:
    static void UseCalibratedPeaks(bool val) { fUseCalibratedPeaks = val; }
    static bool UseCalibratedPeaks() { return fUseCalibratedPeaks; }
 
-   static void MinIntensity(double val) { fMinIntensity = val; }
+   static void   MinIntensity(double val) { fMinIntensity = val; }
    static double MinIntensity() { return fMinIntensity; }
 
    static void ZoomX();
@@ -323,7 +323,7 @@ private:
       kMaxResidualEntry    = 600,
       kWriteNonlinearities = 700
    };
-	// the numbering of these two enums needs to match the order in which the buttons are created
+   // the numbering of these two enums needs to match the order in which the buttons are created
    enum ENavigate : int {
       kPrevious  = 1,
       kDiscard   = 2,
@@ -405,8 +405,8 @@ private:
    std::vector<TH2*> fMatrices;
    int               fNofBins{0};   ///< Number of filled bins in first matrix
 
-   static std::string fLogFile;   ///< name of log file, if empty no log file is written
-	TRedirect* fRedirect{nullptr}; ///< redirect, created in constructor and destroyed in destructor if a log file name has been provided
+   static std::string fLogFile;             ///< name of log file, if empty no log file is written
+   TRedirect*         fRedirect{nullptr};   ///< redirect, created in constructor and destroyed in destructor if a log file name has been provided
 
    // graphic settings
    unsigned int fLineHeight{20};    ///< Height of text boxes and progress bar
