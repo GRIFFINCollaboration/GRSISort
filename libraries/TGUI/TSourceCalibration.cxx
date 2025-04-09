@@ -1448,7 +1448,7 @@ void TChannelTab::BuildInterface()
 
 		fCalibrationFrame = fCanvasTab->AddTab("Calibration");
 		fCalibrationFrame->SetLayoutManager(new TGVerticalLayout(fCalibrationFrame));
-		fCalibrationCanvas = new TRootEmbeddedCanvas("ChannelCalibrationCanvas", fCalibrationFrame, TSourceCalibration::PanelWidth(), TSourceCalibration::PanelHeight());
+		fCalibrationCanvas = new TRootEmbeddedCanvas(Form("CalibrationCanvas%s", fName.c_str()), fCalibrationFrame, TSourceCalibration::PanelWidth(), TSourceCalibration::PanelHeight());
 		fCalibrationFrame->AddFrame(fCalibrationCanvas, new TGLayoutHints(kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
 		fChannelStatusBar        = new TGStatusBar(fCalibrationFrame, TSourceCalibration::PanelWidth(), TSourceCalibration::StatusbarHeight());
 		std::array<int, 3> parts = {25, 35, 40};
@@ -1456,9 +1456,15 @@ void TChannelTab::BuildInterface()
 		fCalibrationFrame->AddFrame(fChannelStatusBar, new TGLayoutHints(kLHintsBottom | kLHintsExpandX, 2, 2, 2, 2));
 		fFwhmFrame = fCanvasTab->AddTab("FWHM");
 		fFwhmFrame->SetLayoutManager(new TGVerticalLayout(fFwhmFrame));
-		fFwhmCanvas = new TRootEmbeddedCanvas("ChannelFwhmCanvas", fFwhmFrame, TSourceCalibration::PanelWidth(), TSourceCalibration::PanelHeight());
+		fFwhmCanvas = new TRootEmbeddedCanvas(Form("FwhmCanvas%s", fName.c_str()), fFwhmFrame, TSourceCalibration::PanelWidth(), TSourceCalibration::PanelHeight());
 		fFwhmFrame->AddFrame(fFwhmCanvas, new TGLayoutHints(kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
 		//fChannelFrame->AddFrame(fCalibrationFrame, new TGLayoutHints(kLHintsRight | kLHintsBottom | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
+
+		fInitFrame = fCanvasTab->AddTab("Initial");
+		fInitFrame->SetLayoutManager(new TGVerticalLayout(fInitFrame));
+		fInitCanvas = new TRootEmbeddedCanvas(Form("InitCanvas%s", fName.c_str()), fInitFrame, TSourceCalibration::PanelWidth(), TSourceCalibration::PanelHeight());
+		fInitFrame->AddFrame(fInitCanvas, new TGLayoutHints(kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
+
 		fChannelFrame->AddFrame(fCanvasTab, new TGLayoutHints(kLHintsRight | kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
 	}
 
@@ -1600,7 +1606,11 @@ void TChannelTab::RemovePoint(Int_t oldGraph, Int_t oldPoint)
       std::cout << DCYAN << __PRETTY_FUNCTION__ << ": oldGraph " << oldGraph << ", oldPoint " << oldPoint << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    }
    if(0 <= oldGraph && oldGraph < static_cast<int>(fSources.size())) {
-      return fSources[oldGraph]->RemovePoint(oldPoint);
+		if(oldPoint >= 0) {
+			return fSources[oldGraph]->RemovePoint(oldPoint);
+		} else {
+			std::cout << "Can't remove negative point " << oldPoint << " from graph " << oldGraph << std::endl;
+		}
    }
    std::cout << "Graph the point was removed from was " << oldGraph << ", but we only have " << fSources.size() << " source tabs?" << std::endl;
 }
@@ -1725,7 +1735,7 @@ void TChannelTab::Calibrate(const int& degree, const bool& force)
 void TChannelTab::Calibrate()
 {
    /// This function fit's the final data of the given channel. It requires all other elements to have been created already.
-   if(TSourceCalibration::VerboseLevel() == EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(TSourceCalibration::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    TF1* calibration = new TF1("fitfunction", ::Polynomial, 0., 10000., fDegree + 2);
    calibration->FixParameter(0, fDegree);
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
@@ -1755,19 +1765,19 @@ void TChannelTab::Calibrate()
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "set chi2 label" << std::endl; }
    // calculate the corners of the chi^2 label from the minimum and maximum x/y-values of the graph
    // we position it in the top left corner about 50% of the width and 10% of the height of the graph
-   double left   = fData->GetMinimumX();
-   double right  = left + (fData->GetMaximumX() - left) * 0.5;
-   double top    = fData->GetMaximumY();
-   double bottom = top - (top - fData->GetMinimumY()) * 0.1;
-
    if(fChi2Label == nullptr) {
+		double left   = fData->GetMinimumX();
+		double right  = left + (fData->GetMaximumX() - left) * 0.5;
+		double top    = fData->GetMaximumY();
+		double bottom = top - (top - fData->GetMinimumY()) * 0.1;
+
       fChi2Label = new TPaveText(left, bottom, right, top);
+		if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+			std::cout << "fChi2Label created " << fChi2Label << " (" << left << " - " << right << ", " << bottom << " - " << top << ", from " << fData->GetMinimumX() << "-" << fData->GetMaximumX() << ", " << fData->GetMinimumY() << "-" << fData->GetMaximumY() << ") on gPad " << gPad->GetName() << std::endl;
+			fData->Print("e");
+		}
    } else {
       fChi2Label->Clear();
-   }
-   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-      std::cout << "fChi2Label created " << fChi2Label << " (" << left << " - " << right << ", " << bottom << " - " << top << ", from " << fData->GetMinimumX() << "-" << fData->GetMaximumX() << ", " << fData->GetMinimumY() << "-" << fData->GetMaximumY() << ") on gPad " << gPad->GetName() << std::endl;
-      fData->Print("e");
    }
    fChi2Label->AddText(Form("#chi^{2}/NDF = %f", calibration->GetChisquare() / calibration->GetNDF()));
    fChi2Label->SetFillColor(kWhite);
@@ -1800,74 +1810,31 @@ void TChannelTab::Calibrate()
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " done" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 }
 
-void TChannelTab::Iterate(const double& maxResidual)
+void TChannelTab::Remove(const double& maxResidual)
 {
-   /// This function goes through the residuals of the calibration and for each point that is above the maxResidual parameter it attempts to find a better peak in the source spectrum.
-   /// This is done iteratively, starting with the largest residual.
-   /// The function requires an initial calibration to a) have residuals available and b) translate the source energy to channels
+   /// This function goes through the residuals of the calibration and removes each point that is above the maxResidual parameter.
+   /// The function requires an initial calibration to have residuals available.
 
-   if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << DYELLOW << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << DYELLOW << __PRETTY_FUNCTION__ << ", max. residual " << maxResidual << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 
-   // Get the max residual in all the residual graphs
-   size_t source     = 0;
-   auto*  maxElement = std::max_element(fData->Residual(source)->GetX(), fData->Residual(source)->GetX() + fData->Residual(source)->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
-   auto   index      = std::distance(fData->Residual(source)->GetX(), maxElement);
+	// loop over all points of the total residual graph and remove those that are above the maximum acceptable value
+	// we only want to increment the point index if we do not remove the point, otherwise the same index needs to be checked again
+	for(int point = 0; point < fData->TotalResidualGraph()->GetN();) {
+		if(std::abs(fData->TotalResidualGraph()->GetX()[point]) > maxResidual) {
+			if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "std::abs(" << fData->TotalResidualGraph()->GetX()[point] <<") > " << maxResidual << ": removing point " << point << "/" << fData->TotalResidualGraph()->GetN() << std::endl; }
+			fData->RemovePoint(point);
+		} else {
+			if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "std::abs(" << fData->TotalResidualGraph()->GetX()[point] <<") <= " << maxResidual << ": not removing point " << point << "/" << fData->TotalResidualGraph()->GetN() << std::endl; }
+			++point;
+		}
+	}
 
-   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-      std::cout << "found largest residual in first residual graph: " << *maxElement << ", position " << index << std::endl;
-      fData->Residual(source)->Print();
-   }
-
-   for(size_t s = 1; s < fData->NumberOfGraphs(); ++s) {
-      auto* tmp = std::max_element(fData->Residual(s)->GetX(), fData->Residual(s)->GetX() + fData->Residual(s)->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
-      if(*tmp > *maxElement) {
-         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "found larger residual in residual graph " << source << ": " << *tmp << " > " << *maxElement << ", was position " << index << std::flush; }
-         maxElement = tmp;
-         index      = std::distance(fData->Residual(source)->GetX(), maxElement);
-         source     = s;
-         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-            std::cout << " now at position " << index << std::endl;
-            fData->Residual(s)->Print();
-         }
-      }
-   }
-   if(*maxElement < maxResidual) {
-      if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "max. residual in residual graph " << source << " is " << *maxElement << " < " << maxResidual << "!" << std::endl; }
-      return;
-   }
-   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-      std::cout << "found max. residual in residual graph " << source << " of " << *maxElement << " > " << maxResidual << ", at position " << index << std::endl;
-      fData->Residual(source)->Print();
-   }
-
-   for(source = 1; source < fData->NumberOfGraphs(); ++source) {
-      auto* tmp = std::max_element(fData->Residual(source)->GetX(), fData->Residual(source)->GetX() + fData->Residual(source)->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
-      if(*tmp > *maxElement) {
-         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "found larger residual in residual graph " << source << ": " << *tmp << " > " << *maxElement << ", was position " << index << std::flush; }
-         maxElement = tmp;
-         index      = std::distance(fData->Residual(source)->GetX(), maxElement);
-         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << " now at position " << index << std::endl; }
-      }
-   }
-   if(*maxElement < maxResidual) {
-      if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "max. residual in residual graph " << source << " is " << *maxElement << " < " << maxResidual << "!" << std::endl; }
-      return;
-   }
-   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "found max. residual in residual graph " << source << " of " << *maxElement << " > " << maxResidual << ", at position " << index << std::endl; }
-
-   // now that we have the source and the index of the point, we can get the energy of this peak and calculate the corresponding channel
-   double energy  = fData->Graph(source)->GetY()[index];
-   double channel = fData->FitFunction()->GetX(energy);
-
-   fSources[source]->ReplacePeak(index, channel);
-
-   // update the data, re-calibrate, and then call Iterate again
+   // update the data, and re-calibrate
    UpdateData();
    UpdateFwhm();
    Calibrate();
 
-   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "Iterate(" << maxResidual << ") is done, updated index " << index << " using channel =  " << channel << std::endl; }
-   Iterate(maxResidual);
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "Remove(" << maxResidual << ") is done" << RESET_COLOR << std::endl; }
 }
 
 void TChannelTab::UpdateChannel()
@@ -1924,6 +1891,45 @@ void TChannelTab::Initialize(const double& sigma, const double& threshold, const
 	// get this rough calibration data and calibrate
 	UpdateData();
 	Calibrate();
+	// copy the data to the initial data and draw it
+	fInit = static_cast<TCalibrationGraphSet*>(fData->Clone(Form("init%s", fName.c_str())));
+	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+		std::cout << "Cloned data " << fData->GetName() << " to " << fInit->GetName() << ":" << std::endl;
+		fInit->Print();
+	}
+	auto* oldPad = gPad;
+	fInitCanvas->GetCanvas()->cd();
+	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "Switched from " << oldPad->GetName() << " to " << gPad->GetName() << std::endl; }
+   fInit->DrawCalibration("*", fLegend);
+	// calculate the corners of the label from the minimum and maximum x/y-values of the graph
+   // we position it in the top left corner about 50% of the width and 10% of the height of the graph
+	if(fCalLabel == nullptr) {
+		double left   = fInit->GetMinimumX();
+		double right  = left + (fInit->GetMaximumX() - left) * 0.5;
+		double top    = fInit->GetMaximumY();
+		double bottom = top - (top - fInit->GetMinimumY()) * 0.1;
+
+		fCalLabel = new TPaveText(left, bottom, right, top);
+		if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+			std::cout << "fCalLabel created " << fCalLabel << " (" << left << " - " << right << ", " << bottom << " - " << top << ", from " << fInit->GetMinimumX() << "-" << fInit->GetMaximumX() << ", " << fInit->GetMinimumY() << "-" << fInit->GetMaximumY() << ") on gPad " << gPad->GetName() << std::endl;
+		}
+	} else {
+		fCalLabel->Clear();
+	}
+	std::stringstream str;
+	str << "Fit function: " << fInit->FitFunction()->GetParameter(0);
+	for(int i = 1; i < fInit->FitFunction()->GetNpar(); ++i) {
+		str << " + " << fInit->FitFunction()->GetParameter(i) << " x^" << i;
+	}
+	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+		std::cout << "Created label text \"" << str.str() << "\"" << std::endl;
+	}
+
+   fCalLabel->AddText(str.str().c_str());
+   fCalLabel->SetFillColor(kWhite);
+   fCalLabel->Draw();
+   oldPad->cd();
+	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "Switched back to " << gPad->GetName() << std::endl; }
 }
 
 void TChannelTab::FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast)
@@ -1984,7 +1990,7 @@ void TChannelTab::FindAllCalibratedPeaks()
    }
 	for(auto* source : fSources) {
 		if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-			std::cout << DYELLOW << "Finding calibrated peaks in source tab" << source->SourceName() << std::endl;
+			std::cout << DYELLOW << "Finding calibrated peaks in source tab " << source->SourceName() << std::endl;
 		}
 		source->FindCalibratedPeaks(fData->FitFunction());
 	}
@@ -2634,10 +2640,10 @@ void TSourceCalibration::BuildSecondInterface()
    if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "find peaks button " << fFindPeaksButton << std::endl; }
    fFindPeaksCalAllButton = new TGTextButton(fFittingGroup, "Use Calibration (All)");
    if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "find all peaks button " << fFindPeaksCalAllButton << std::endl; }
-   fIterateButton = new TGTextButton(fFittingGroup, "&Iterate");
-   if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "iterate button " << fIterateButton << std::endl; }
    fCalibrateButton = new TGTextButton(fFittingGroup, "&Calibrate");
    if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "cal button " << fCalibrateButton << std::endl; }
+   fRemoveButton = new TGTextButton(fFittingGroup, "&Remove");
+   if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "remove button " << fRemoveButton << std::endl; }
 
    fLeftFrame->AddFrame(fFittingGroup, new TGLayoutHints(kLHintsBottom | kLHintsExpandX, 2, 2, 2, 2));
 
@@ -2798,8 +2804,8 @@ void TSourceCalibration::Fitting(Int_t id)
    case EFitting::kCalibrate:   // calibrate
       Calibrate();
       break;
-   case EFitting::kIterate:   // iterate
-      Iterate();              // also calibrates the channel
+   case EFitting::kRemove:   // remove outliers
+      Remove();
       break;
    default:
       break;
@@ -2956,11 +2962,11 @@ void TSourceCalibration::Calibrate()
    if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << RESET_COLOR << std::flush; }
 }
 
-void TSourceCalibration::Iterate()
+void TSourceCalibration::Remove()
 {
    if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << DGREEN << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    if(fChannelTab[fActiveBins[fTab->GetCurrent()] - 1] != nullptr) {
-      fChannelTab[fActiveBins[fTab->GetCurrent()] - 1]->Iterate(MaxResidual());
+      fChannelTab[fActiveBins[fTab->GetCurrent()] - 1]->Remove(MaxResidual());
    } else {
       std::cout << __PRETTY_FUNCTION__ << ": fChannelTab[" << fActiveBins[fTab->GetCurrent()] << " = fActiveBins[" << fTab->GetCurrent() << "]] is a nullptr!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    }

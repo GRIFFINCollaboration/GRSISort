@@ -148,7 +148,7 @@ public:
    void          Write(TFile* output);
    void          Calibrate();
    void          Calibrate(const int& degree, const bool& force = false);
-   void          Iterate(const double& maxResidual);
+   void          Remove(const double& maxResidual);
    void          FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
    void          FindAllPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
    void          FindCalibratedPeaks();
@@ -187,8 +187,11 @@ private:
    TGStatusBar*             fChannelStatusBar{nullptr};
    TLegend*                 fLegend{nullptr};
    TPaveText*               fChi2Label{nullptr};
+   TPaveText*               fCalLabel{nullptr};
    TGCompositeFrame*        fFwhmFrame{nullptr};   ///< frame of tab with fwhm
    TRootEmbeddedCanvas*     fFwhmCanvas{nullptr};
+   TGCompositeFrame*        fInitFrame{nullptr};   ///< frame of tab with initial calibration
+   TRootEmbeddedCanvas*     fInitCanvas{nullptr};
    TGHProgressBar*          fProgressBar{nullptr};
 
    // storage elements
@@ -202,6 +205,7 @@ private:
    std::vector<std::vector<std::tuple<double, double, double, double>>> fSourceEnergies;       ///< vector with source energies and uncertainties
    TCalibrationGraphSet*                                                fData{nullptr};        ///< combined data from all sources
    TCalibrationGraphSet*                                                fFwhm{nullptr};        ///< combined fwhm from all sources
+   TCalibrationGraphSet*                                                fInit{nullptr};        ///< combined initial data from all sources
    int                                                                  fActiveSourceTab{0};   ///< id of the currently active source tab
 };
 
@@ -226,7 +230,7 @@ public:
    void Navigate(Int_t id);
    void Fitting(Int_t id);
    void Calibrate();
-   void Iterate();
+	void Remove();
    void FindPeaks();
    void FindPeaksFast();
    void FindCalibratedPeaks();
@@ -337,8 +341,8 @@ private:
       kFindPeaksFast   = 2,
       kFindPeaksCal    = 3,
       kFindPeaksCalAll = 4,
-      kIterate         = 5,
-      kCalibrate       = 6
+      kCalibrate       = 5,
+		kRemove          = 6
    };
 
    void BuildFirstInterface();
@@ -374,11 +378,11 @@ private:
    TGTextButton*   fNextButton{nullptr};
    TGHButtonGroup* fFittingGroup{nullptr};
    TGTextButton*   fCalibrateButton{nullptr};
-   TGTextButton*   fIterateButton{nullptr};
    TGTextButton*   fFindPeaksButton{nullptr};
    TGTextButton*   fFindPeaksFastButton{nullptr};
    TGTextButton*   fFindPeaksCalButton{nullptr};
    TGTextButton*   fFindPeaksCalAllButton{nullptr};
+   TGTextButton*   fRemoveButton{nullptr};
    TGGroupFrame*   fParameterFrame{nullptr};
    TGLabel*        fSigmaLabel{nullptr};
    TGNumberEntry*  fSigmaEntry{nullptr};
