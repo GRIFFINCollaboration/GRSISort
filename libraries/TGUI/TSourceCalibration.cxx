@@ -1916,11 +1916,11 @@ void TChannelTab::Initialize(const double& sigma, const double& threshold, const
       fCalLabel->Clear();
    }
    std::stringstream str;
-	if(fInit->FitFunction()->GetNpar() == 3) {
-		str << "Fit function: " << fInit->FitFunction()->GetParameter(1) << " + " << fInit->FitFunction()->GetParameter(2) << " x";
-	} else {
-		str << "Unknown fit function with " << fInit->FitFunction()->GetNpar() << " parameters";
-	}
+   if(fInit->FitFunction()->GetNpar() == 3) {
+      str << "Fit function: " << fInit->FitFunction()->GetParameter(1) << " + " << fInit->FitFunction()->GetParameter(2) << " x";
+   } else {
+      str << "Unknown fit function with " << fInit->FitFunction()->GetNpar() << " parameters";
+   }
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
       std::cout << "Created label text \"" << str.str() << "\"" << std::endl;
    }

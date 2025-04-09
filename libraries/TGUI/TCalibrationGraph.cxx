@@ -346,9 +346,11 @@ Int_t TCalibrationGraphSet::RemovePoint(TGraphErrors* graph, const Int_t& px, co
    fPointIndex.erase(fPointIndex.begin() + point);
    for(size_t p = 0; p < fGraphIndex.size(); ++p) {
       if(fGraphIndex[p] == oldGraph && fPointIndex[p] >= oldPoint) {
-			if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << fGraphIndex[p] << " == " << oldGraph << " && " << fPointIndex[p] << " >= " << oldPoint << ": decrementing index" << std::endl; }
+         if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << fGraphIndex[p] << " == " << oldGraph << " && " << fPointIndex[p] << " >= " << oldPoint << ": decrementing index" << std::endl; }
          --fPointIndex[p];
-      } else if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << fGraphIndex[p] << " != " << oldGraph << " || " << fPointIndex[p] << " < " << oldPoint << ": decrementing index" << std::endl; }
+      } else if(fVerboseLevel > EVerbosity::kSubroutines) {
+         std::cout << fGraphIndex[p] << " != " << oldGraph << " || " << fPointIndex[p] << " < " << oldPoint << ": decrementing index" << std::endl;
+      }
    }
 
    // update the graphics
@@ -400,9 +402,11 @@ void TCalibrationGraphSet::RemovePoint(const int& point)
    fPointIndex.erase(fPointIndex.begin() + point);
    for(size_t p = 0; p < fGraphIndex.size(); ++p) {
       if(fGraphIndex[p] == oldGraph && fPointIndex[p] >= oldPoint) {
-			if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << fGraphIndex[p] << " == " << oldGraph << " && " << fPointIndex[p] << " >= " << oldPoint << ": decrementing index" << std::endl; }
+         if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << fGraphIndex[p] << " == " << oldGraph << " && " << fPointIndex[p] << " >= " << oldPoint << ": decrementing index" << std::endl; }
          --fPointIndex[p];
-      } else if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << fGraphIndex[p] << " != " << oldGraph << " || " << fPointIndex[p] << " < " << oldPoint << ": decrementing index" << std::endl; }
+      } else if(fVerboseLevel > EVerbosity::kSubroutines) {
+         std::cout << fGraphIndex[p] << " != " << oldGraph << " || " << fPointIndex[p] << " < " << oldPoint << ": decrementing index" << std::endl;
+      }
    }
 
    // update the graphics
