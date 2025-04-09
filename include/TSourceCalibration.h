@@ -43,7 +43,7 @@
 
 class TSourceTab;
 
-std::map<double, std::tuple<double, double, double, double>> RoughCal(std::vector<double> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
+std::map<double, std::tuple<double, double, double, double>>  RoughCal(std::vector<double> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
 std::map<TGauss*, std::tuple<double, double, double, double>> Match(std::vector<TGauss*> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
 std::map<TGauss*, std::tuple<double, double, double, double>> SmartMatch(std::vector<TGauss*> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
 
@@ -70,7 +70,7 @@ public:
    void ProjectionStatus(Event_t* event);
    void ProjectionStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
 
-	void InitialCalibration(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast);
+   void InitialCalibration(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast);
    void Add(std::map<double, std::tuple<double, double, double, double>> map);
    void Add(std::map<TGauss*, std::tuple<double, double, double, double>> map);
    void FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
@@ -84,7 +84,7 @@ public:
    TGraphErrors*        Data() const { return fData; }
    TGraphErrors*        Fwhm() const { return fFwhm; }
    TRootEmbeddedCanvas* ProjectionCanvas() const { return fProjectionCanvas; }
-	const char* SourceName() const { return fSourceName; }
+   const char*          SourceName() const { return fSourceName; }
 
    void RemovePoint(Int_t oldPoint);
 
@@ -93,7 +93,7 @@ public:
 
    void PrintCanvases() const;
 
-	void Draw();
+   void Draw();
 
 private:
    void BuildInterface();
@@ -111,7 +111,7 @@ private:
 
    // storage elements
    GH1D*                                                   fProjection{nullptr};
-	const char*                                             fSourceName;
+   const char*                                             fSourceName;
    TGraphErrors*                                           fData{nullptr};
    TGraphErrors*                                           fFwhm{nullptr};
    double                                                  fSigma{2.};
@@ -126,7 +126,7 @@ private:
 
 class TChannelTab {
 public:
-	TChannelTab(TSourceCalibration* parent, std::vector<TNucleus*> nuclei, std::vector<GH1D*> projections, std::string name, TGCompositeFrame* frame, double sigma, double threshold, int degree, std::vector<std::vector<std::tuple<double, double, double, double>>> sourceEnergies, TGHProgressBar* progressBar);
+   TChannelTab(TSourceCalibration* parent, std::vector<TNucleus*> nuclei, std::vector<GH1D*> projections, std::string name, TGCompositeFrame* frame, double sigma, double threshold, int degree, std::vector<std::vector<std::tuple<double, double, double, double>>> sourceEnergies, TGHProgressBar* progressBar);
    TChannelTab(const TChannelTab&)                = default;
    TChannelTab(TChannelTab&&) noexcept            = default;
    TChannelTab& operator=(const TChannelTab&)     = default;
@@ -135,7 +135,7 @@ public:
 
    void MakeConnections();
    void Disconnect();
-	void Initialize(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast);
+   void Initialize(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast);
 
    void CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
    void SelectCanvas(Event_t* event);
@@ -160,7 +160,7 @@ public:
    int           ActiveSourceTab() const { return fActiveSourceTab; }
    TSourceTab*   SelectedSourceTab() const { return fSources[fActiveSourceTab]; }
 
-	TSourceCalibration* Parent() const { return fParent; }
+   TSourceCalibration* Parent() const { return fParent; }
 
    static void ZoomX();
    static void ZoomY();
@@ -169,7 +169,7 @@ public:
 
    void PrintCanvases() const;
 
-	void Draw();
+   void Draw();
 
 private:
    void BuildInterface();
@@ -230,7 +230,7 @@ public:
    void Navigate(Int_t id);
    void Fitting(Int_t id);
    void Calibrate();
-	void Remove();
+   void Remove();
    void FindPeaks();
    void FindPeaksFast();
    void FindCalibratedPeaks();
@@ -270,7 +270,7 @@ public:
    void SecondWindow();
    void FinalWindow();
 
-	std::mutex& GraphicsMutex() { return fGraphicsMutex; }
+   std::mutex& GraphicsMutex() { return fGraphicsMutex; }
 
    static void PanelWidth(int val) { fPanelWidth = val; }
    static void PanelHeight(int val) { fPanelHeight = val; }
@@ -342,7 +342,7 @@ private:
       kFindPeaksCal    = 3,
       kFindPeaksCalAll = 4,
       kCalibrate       = 5,
-		kRemove          = 6
+      kRemove          = 6
    };
 
    void BuildFirstInterface();
@@ -404,7 +404,7 @@ private:
    std::vector<int>                                                     fActiveBins;
    std::vector<int>                                                     fActualChannelId;
    std::vector<const char*>                                             fChannelLabel;
-	std::queue<std::pair<int, std::future<TChannelTab*>>>                fFutures;
+   std::queue<std::pair<int, std::future<TChannelTab*>>>                fFutures;
 
    std::vector<TH2*> fMatrices;
    int               fNofBins{0};   ///< Number of filled bins in first matrix
@@ -438,8 +438,8 @@ private:
    static double fMinIntensity;             ///< Minimum intensity of source peaks to be considered when trying to find them in the spectrum.
    static size_t fNumberOfThreads;          ///< Maximum number of threads to run while creating the channel tabs
 
-	std::mutex    fGraphicsMutex;            ///< mutex to lock changes to graphics
-																															  
+   std::mutex fGraphicsMutex;   ///< mutex to lock changes to graphics
+
    TFile* fOutput{nullptr};
 
    static EVerbosity fVerboseLevel;   ///< Changes verbosity from kQuiet to kAll

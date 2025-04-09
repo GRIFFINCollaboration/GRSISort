@@ -145,7 +145,7 @@ public:
    Int_t RemoveResidualPoint(const Int_t& px, const Int_t& py);                //*SIGNAL*
    Int_t RemovePoint(TGraphErrors* graph, const Int_t& px, const Int_t& py);   //*SIGNAL*
 
-	void RemovePoint(const int& point); //*SIGNAL*
+   void RemovePoint(const int& point);   //*SIGNAL*
 
    void XAxisLabel(const std::string& xAxisLabel) { fXAxisLabel = xAxisLabel; }
    void YAxisLabel(const std::string& yAxisLabel) { fYAxisLabel = yAxisLabel; }
