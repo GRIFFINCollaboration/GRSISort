@@ -1608,7 +1608,7 @@ void TChannelTab::RemovePoint(Int_t oldGraph, Int_t oldPoint)
       if(oldPoint >= 0) {
          return fSources[oldGraph]->RemovePoint(oldPoint);
       }
-		std::cout << "Can't remove negative point " << oldPoint << " from graph " << oldGraph << std::endl;
+      std::cout << "Can't remove negative point " << oldPoint << " from graph " << oldGraph << std::endl;
    }
    std::cout << "Graph the point was removed from was " << oldGraph << ", but we only have " << fSources.size() << " source tabs?" << std::endl;
 }
