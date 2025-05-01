@@ -10,25 +10,25 @@ TGauss::TGauss(Double_t centroid, Double_t relativeLimit)
 
 void TGauss::Centroid(const Double_t& centroid)
 {
-	if(TPeakFitter::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+   if(TPeakFitter::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    SetFitFunction(new TF1("gauss_total", this, &TGauss::TotalFunction, 0, 1, 3, "TGauss", "TotalFunction"));
    SetPeakFunction(new TF1("gauss_peak", this, &TGauss::PeakFunction, 0, 1, 3, "TGauss", "TotalFunction"));   // peak = total function
-	if(TPeakFitter::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << "Set the fit and peak functions" << std::endl; }
+   if(TPeakFitter::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << "Set the fit and peak functions" << std::endl; }
    InitParNames();
    GetFitFunction()->SetParameter(1, centroid);
-	if(TPeakFitter::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << "Set the centroid to " << centroid << std::endl; }
+   if(TPeakFitter::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << "Set the centroid to " << centroid << std::endl; }
    SetListOfBGPar(std::vector<bool>{false, false, false, false, false, true});
    GetFitFunction()->SetLineColor(kMagenta);
-	if(TPeakFitter::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": done" << std::endl; }
+   if(TPeakFitter::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": done" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 }
 
 void TGauss::InitParNames()
 {
-	if(TPeakFitter::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+   if(TPeakFitter::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    GetFitFunction()->SetParName(0, "height");
    GetFitFunction()->SetParName(1, "centroid");
    GetFitFunction()->SetParName(2, "sigma");
-	if(TPeakFitter::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": done" << std::endl; }
+   if(TPeakFitter::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": done" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 }
 
 void TGauss::InitializeParameters(TH1* fit_hist, const double& rangeLow, const double& rangeHigh)
