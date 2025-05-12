@@ -210,7 +210,7 @@ void TCalibrationGraphSet::DrawCalibration(Option_t* opt, TLegend* legend)
    } else {
       options.Append("a");
    }
-   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " drawing total graph with option \"" << options.Data() << "\"" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " drawing total graph with option \"" << options.Data() << "\" on gPad " << gPad->GetName() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    fTotalGraph->Draw(options.Data());
 
    if(fTotalGraph->GetHistogram() != nullptr) {
@@ -221,13 +221,13 @@ void TCalibrationGraphSet::DrawCalibration(Option_t* opt, TLegend* legend)
    }
 
    for(size_t i = 0; i < fGraphs.size(); ++i) {
-      if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". graph with option \"" << opt << "\", marker color " << fGraphs[i].GetMarkerColor() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+      if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". graph with option \"" << opt << "\", marker color " << fGraphs[i].GetMarkerColor() << " on gPad " << gPad->GetName() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       fGraphs[i].Draw(opt);
       if(legend != nullptr) {
          legend->AddEntry(&(fGraphs[i]), fLabel[i].c_str());
       }
    }
-   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " drawing legend " << legend << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " drawing legend " << legend << " on gPad " << gPad->GetName() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    if(legend != nullptr) {
       legend->Draw();
    }
@@ -238,7 +238,7 @@ void TCalibrationGraphSet::DrawResidual(Option_t* opt, TLegend* legend)
    TString options = opt;
    options.ToLower();
    options.Append("a");
-   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " drawing total residual graph with option \"" << options.Data() << "\"" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " drawing total residual graph with option \"" << options.Data() << "\" on gPad " << gPad->GetName() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    fTotalResidualGraph->Draw(options.Data());
    auto* hist = fTotalResidualGraph->GetHistogram();
    if(hist != nullptr) {
@@ -249,7 +249,7 @@ void TCalibrationGraphSet::DrawResidual(Option_t* opt, TLegend* legend)
    }
 
    for(size_t i = 0; i < fResidualGraphs.size(); ++i) {
-      if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". residual graph with option \"" << opt << "\", marker color " << fResidualGraphs[i].GetMarkerColor() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+      if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " drawing " << i << ". residual graph with option \"" << opt << "\", marker color " << fResidualGraphs[i].GetMarkerColor() << " on gPad " << gPad->GetName() << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       fResidualGraphs[i].Draw(opt);
       if(legend != nullptr) {
          legend->AddEntry(&(fResidualGraphs[i]), fLabel[i].c_str());
@@ -340,13 +340,16 @@ Int_t TCalibrationGraphSet::RemovePoint(TGraphErrors* graph, const Int_t& px, co
    }
 
    // now we need to update the indices by removing this one, and updating all that come after it
-   auto& oldGraph = fGraphIndex[point];
-   auto& oldPoint = fPointIndex[point];
+   auto oldGraph = fGraphIndex[point];
+   auto oldPoint = fPointIndex[point];
    fGraphIndex.erase(fGraphIndex.begin() + point);
    fPointIndex.erase(fPointIndex.begin() + point);
    for(size_t p = 0; p < fGraphIndex.size(); ++p) {
       if(fGraphIndex[p] == oldGraph && fPointIndex[p] >= oldPoint) {
+         if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << fGraphIndex[p] << " == " << oldGraph << " && " << fPointIndex[p] << " >= " << oldPoint << ": decrementing index" << std::endl; }
          --fPointIndex[p];
+      } else if(fVerboseLevel > EVerbosity::kSubroutines) {
+         std::cout << fGraphIndex[p] << " != " << oldGraph << " || " << fPointIndex[p] << " < " << oldPoint << ": decrementing index" << std::endl;
       }
    }
 
@@ -362,11 +365,65 @@ Int_t TCalibrationGraphSet::RemovePoint(TGraphErrors* graph, const Int_t& px, co
    if(fVerboseLevel > EVerbosity::kBasicFlow) { Print(); }
 
    // emit signal that this point has been removed
-   std::array<Longptr_t, 2> args = {static_cast<int64_t>(oldGraph), static_cast<int64_t>(fPointIndex[point])};
+   std::array<Longptr_t, 2> args = {static_cast<int64_t>(oldGraph), static_cast<int64_t>(oldPoint)};
    if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "Emitting RemovePoint(Int_t, Int_t) with " << args[0] << ", " << args[1] << " - " << args.data() << std::endl; }
    Emit("RemovePoint(Int_t, Int_t)", args.data());
 
    return point;
+}
+
+void TCalibrationGraphSet::RemovePoint(const int& point)
+{
+   /// This function removes the indicated point from the total graph.
+
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { Print(); }
+
+   // now that we have the point we want to delete, remove it from the total graphs
+   fTotalGraph->RemovePoint(point);
+   if(fTotalResidualGraph->RemovePoint(point) < 0) {
+      // we failed to remove the point in the residual, so we assume it's out of whack
+      fResidualSet = false;
+      if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << point << " didn't removed residual point" << std::endl; }
+   } else if(fVerboseLevel > EVerbosity::kSubroutines) {
+      std::cout << point << " removed residual point" << std::endl;
+   }
+
+   // need to find which of the graphs we have to remove this point from -> use fGraphIndex[point]
+   // and also which point this is of the graph -> use fPointIndex[point]
+   if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "Going to remove " << point << " - " << fGraphIndex[point] << ", " << fPointIndex[point] << std::endl; }
+   if(fGraphs[fGraphIndex[point]].RemovePoint(fPointIndex[point]) == -1 || fResidualGraphs[fGraphIndex[point]].RemovePoint(fPointIndex[point]) == -1) {
+      std::cout << "point " << point << " out of range?" << std::endl;
+   }
+
+   // now we need to update the indices by removing this one, and updating all that come after it
+   auto oldGraph = fGraphIndex[point];
+   auto oldPoint = fPointIndex[point];
+   fGraphIndex.erase(fGraphIndex.begin() + point);
+   fPointIndex.erase(fPointIndex.begin() + point);
+   for(size_t p = 0; p < fGraphIndex.size(); ++p) {
+      if(fGraphIndex[p] == oldGraph && fPointIndex[p] >= oldPoint) {
+         if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << fGraphIndex[p] << " == " << oldGraph << " && " << fPointIndex[p] << " >= " << oldPoint << ": decrementing index" << std::endl; }
+         --fPointIndex[p];
+      } else if(fVerboseLevel > EVerbosity::kSubroutines) {
+         std::cout << fGraphIndex[p] << " != " << oldGraph << " || " << fPointIndex[p] << " < " << oldPoint << ": decrementing index" << std::endl;
+      }
+   }
+
+   // update the graphics
+   auto* mother = gPad->GetMother();
+   if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "Got mother pad " << mother->GetName() << " from pad " << gPad->GetName() << std::endl; }
+   int pad = 0;
+   while(mother->GetPad(pad) != nullptr) {
+      mother->GetPad(pad)->Modified();   // one version also used Update and cd(pad)?
+      if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "Modified pad " << pad << " = " << mother->GetPad(pad)->GetName() << std::endl; }
+      pad++;
+   }
+   if(fVerboseLevel > EVerbosity::kBasicFlow) { Print(); }
+
+   // emit signal that this point has been removed
+   std::array<Longptr_t, 2> args = {static_cast<int64_t>(oldGraph), static_cast<int64_t>(oldPoint)};
+   if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "Emitting RemovePoint(Int_t, Int_t) with " << args[0] << ", " << args[1] << " - " << args.data() << std::endl; }
+   Emit("RemovePoint(Int_t, Int_t)", args.data());
 }
 
 void TCalibrationGraphSet::Sort()
@@ -520,10 +577,10 @@ void TCalibrationGraphSet::Print(Option_t* opt) const
       std::cout << std::endl;
    }
    std::cout << fGraphIndex.size() << " graph indices: ";
-   for(const auto& i : fGraphIndex) { std::cout << i << " "; }
+   for(const auto& i : fGraphIndex) { std::cout << std::setw(3) << i << " "; }
    std::cout << std::endl;
    std::cout << fPointIndex.size() << " point indices: ";
-   for(const auto& i : fPointIndex) { std::cout << i << " "; }
+   for(const auto& i : fPointIndex) { std::cout << std::setw(3) << i << " "; }
    std::cout << std::endl;
    std::cout << "---- total graph ----" << std::endl;
    double* x = fTotalGraph->GetX();

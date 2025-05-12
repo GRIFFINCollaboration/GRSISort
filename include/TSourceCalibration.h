@@ -1,12 +1,18 @@
 #ifndef TSOURCECALIBRATION_H
 #define TSOURCECALIBRATION_H
 
+/** \addtogroup Calibration
+ *  @{
+ */
+
 #include <cstdarg>
 #include <iostream>
 #include <vector>
 #include <string>
 #include <thread>
 #include <mutex>
+#include <future>
+#include <queue>
 
 #include "TFile.h"
 #include "TCanvas.h"
@@ -37,6 +43,7 @@
 
 class TSourceTab;
 
+std::map<double, std::tuple<double, double, double, double>>  RoughCal(std::vector<double> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
 std::map<TGauss*, std::tuple<double, double, double, double>> Match(std::vector<TGauss*> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
 std::map<TGauss*, std::tuple<double, double, double, double>> SmartMatch(std::vector<TGauss*> peaks, std::vector<std::tuple<double, double, double, double>> sources, TSourceTab* sourceTab);
 
@@ -50,7 +57,7 @@ class TChannelTab;
 
 class TSourceTab {
 public:
-   TSourceTab(TChannelTab* parent, TGCompositeFrame* frame, GH1D* projection, const double& sigma, const double& threshold, const double& peakRatio, std::vector<std::tuple<double, double, double, double>> sourceEnergy);
+   TSourceTab(TChannelTab* parent, TGCompositeFrame* frame, GH1D* projection, const char* sourceName, const double& sigma, const double& threshold, const double& peakRatio, std::vector<std::tuple<double, double, double, double>> sourceEnergy);
    TSourceTab(const TSourceTab& rhs);
    TSourceTab(TSourceTab&&) noexcept            = default;
    TSourceTab& operator=(const TSourceTab&)     = default;
@@ -63,6 +70,8 @@ public:
    void ProjectionStatus(Event_t* event);
    void ProjectionStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
 
+   void InitialCalibration(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast);
+   void Add(std::map<double, std::tuple<double, double, double, double>> map);
    void Add(std::map<TGauss*, std::tuple<double, double, double, double>> map);
    void FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
    void FindCalibratedPeaks(const TF1* calibration);
@@ -75,11 +84,16 @@ public:
    TGraphErrors*        Data() const { return fData; }
    TGraphErrors*        Fwhm() const { return fFwhm; }
    TRootEmbeddedCanvas* ProjectionCanvas() const { return fProjectionCanvas; }
+   const char*          SourceName() const { return fSourceName; }
 
    void RemovePoint(Int_t oldPoint);
 
    void Print() const;
    void PrintLayout() const;
+
+   void PrintCanvases() const;
+
+   void Draw();
 
 private:
    void BuildInterface();
@@ -97,6 +111,7 @@ private:
 
    // storage elements
    GH1D*                                                   fProjection{nullptr};
+   const char*                                             fSourceName;
    TGraphErrors*                                           fData{nullptr};
    TGraphErrors*                                           fFwhm{nullptr};
    double                                                  fSigma{2.};
@@ -118,10 +133,9 @@ public:
    TChannelTab& operator=(TChannelTab&&) noexcept = default;
    ~TChannelTab();
 
-   void CreateSourceTab(size_t source);
-
    void MakeConnections();
    void Disconnect();
+   void Initialize(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast);
 
    void CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
    void SelectCanvas(Event_t* event);
@@ -134,22 +148,33 @@ public:
    void          Write(TFile* output);
    void          Calibrate();
    void          Calibrate(const int& degree, const bool& force = false);
-   void          Iterate(const double& maxResidual);
+   void          Remove(const double& maxResidual);
    void          FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
+   void          FindAllPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
    void          FindCalibratedPeaks();
+   void          FindAllCalibratedPeaks();
    TGTab*        SourceTab() const { return fSourceTab; }
    TGraphErrors* Data(int channelId) const { return fSources[channelId]->Data(); }
    size_t        NumberOfSources() const { return fSources.size(); }
    std::string   Name() const { return fName; }
    int           ActiveSourceTab() const { return fActiveSourceTab; }
-   TSourceTab*   SelectedSourceTab() const { return fSources[fActiveSourceTab]; };
+   TSourceTab*   SelectedSourceTab() const { return fSources[fActiveSourceTab]; }
+
+   TSourceCalibration* Parent() const { return fParent; }
 
    static void ZoomX();
    static void ZoomY();
 
    void PrintLayout() const;
 
+   void PrintCanvases() const;
+
+   void Draw();
+
 private:
+   void BuildInterface();
+   void CreateSourceTab(size_t source);
+
    // graphic elements
    TGCompositeFrame*        fChannelFrame{nullptr};       ///< main frame of this tab
    TGTab*                   fSourceTab{nullptr};          ///< tab for sources
@@ -162,8 +187,11 @@ private:
    TGStatusBar*             fChannelStatusBar{nullptr};
    TLegend*                 fLegend{nullptr};
    TPaveText*               fChi2Label{nullptr};
+   TPaveText*               fCalLabel{nullptr};
    TGCompositeFrame*        fFwhmFrame{nullptr};   ///< frame of tab with fwhm
    TRootEmbeddedCanvas*     fFwhmCanvas{nullptr};
+   TGCompositeFrame*        fInitFrame{nullptr};   ///< frame of tab with initial calibration
+   TRootEmbeddedCanvas*     fInitCanvas{nullptr};
    TGHProgressBar*          fProgressBar{nullptr};
 
    // storage elements
@@ -177,6 +205,7 @@ private:
    std::vector<std::vector<std::tuple<double, double, double, double>>> fSourceEnergies;       ///< vector with source energies and uncertainties
    TCalibrationGraphSet*                                                fData{nullptr};        ///< combined data from all sources
    TCalibrationGraphSet*                                                fFwhm{nullptr};        ///< combined fwhm from all sources
+   TCalibrationGraphSet*                                                fInit{nullptr};        ///< combined initial data from all sources
    int                                                                  fActiveSourceTab{0};   ///< id of the currently active source tab
 };
 
@@ -201,7 +230,7 @@ public:
    void Navigate(Int_t id);
    void Fitting(Int_t id);
    void Calibrate();
-   void Iterate();
+   void Remove();
    void FindPeaks();
    void FindPeaksFast();
    void FindCalibratedPeaks();
@@ -241,6 +270,8 @@ public:
    void SecondWindow();
    void FinalWindow();
 
+   std::mutex& GraphicsMutex() { return fGraphicsMutex; }
+
    static void PanelWidth(int val) { fPanelWidth = val; }
    static void PanelHeight(int val) { fPanelHeight = val; }
    static void StatusbarHeight(int val) { fStatusbarHeight = val; }
@@ -253,6 +284,7 @@ public:
    static void ParameterHeight(int val) { fParameterHeight = val; }
    static void SourceboxWidth(int val) { fSourceboxWidth = val; }
    static void DigitWidth(int val) { fDigitWidth = val; }
+   static void NumberOfThreads(size_t val) { fNumberOfThreads = val; }
 
    static void       VerboseLevel(EVerbosity val) { fVerboseLevel = val; }
    static EVerbosity VerboseLevel() { return fVerboseLevel; }
@@ -282,6 +314,8 @@ public:
 
    void PrintLayout() const;
 
+   void PrintCanvases() const;
+
 private:
    enum EEntry : int {
       kStartButton,
@@ -307,8 +341,8 @@ private:
       kFindPeaksFast   = 2,
       kFindPeaksCal    = 3,
       kFindPeaksCalAll = 4,
-      kIterate         = 5,
-      kCalibrate       = 6
+      kCalibrate       = 5,
+      kRemove          = 6
    };
 
    void BuildFirstInterface();
@@ -344,11 +378,11 @@ private:
    TGTextButton*   fNextButton{nullptr};
    TGHButtonGroup* fFittingGroup{nullptr};
    TGTextButton*   fCalibrateButton{nullptr};
-   TGTextButton*   fIterateButton{nullptr};
    TGTextButton*   fFindPeaksButton{nullptr};
    TGTextButton*   fFindPeaksFastButton{nullptr};
    TGTextButton*   fFindPeaksCalButton{nullptr};
    TGTextButton*   fFindPeaksCalAllButton{nullptr};
+   TGTextButton*   fRemoveButton{nullptr};
    TGGroupFrame*   fParameterFrame{nullptr};
    TGLabel*        fSigmaLabel{nullptr};
    TGNumberEntry*  fSigmaEntry{nullptr};
@@ -370,6 +404,7 @@ private:
    std::vector<int>                                                     fActiveBins;
    std::vector<int>                                                     fActualChannelId;
    std::vector<const char*>                                             fChannelLabel;
+   std::queue<std::pair<int, std::future<TChannelTab*>>>                fFutures;
 
    std::vector<TH2*> fMatrices;
    int               fNofBins{0};   ///< Number of filled bins in first matrix
@@ -401,6 +436,9 @@ private:
    static bool   fFast;                     ///< Do we use the fast peak finding method on startup or not.
    static bool   fUseCalibratedPeaks;       ///< Do we use the initial calibration to find more peaks in the source spectra?
    static double fMinIntensity;             ///< Minimum intensity of source peaks to be considered when trying to find them in the spectrum.
+   static size_t fNumberOfThreads;          ///< Maximum number of threads to run while creating the channel tabs
+
+   std::mutex fGraphicsMutex;   ///< mutex to lock changes to graphics
 
    TFile* fOutput{nullptr};
 
@@ -410,5 +448,5 @@ private:
    ClassDefOverride(TSourceCalibration, 1)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
-
+/*! @} */
 #endif
