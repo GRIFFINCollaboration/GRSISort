@@ -169,6 +169,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7118a744a3f1c5caf2924e9f8c91a44c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f88511caba49bb5426099494feea613" id="r_a0f88511caba49bb5426099494feea613"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f88511caba49bb5426099494feea613">RemoveGraph</a> (int64_t index)</td></tr>
 <tr class="separator:a0f88511caba49bb5426099494feea613"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dcf7a5f59e34780d173404cc19baad8" id="r_a9dcf7a5f59e34780d173404cc19baad8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9dcf7a5f59e34780d173404cc19baad8">RemovePoint</a> (const int &amp;point)</td></tr>
+<tr class="separator:a9dcf7a5f59e34780d173404cc19baad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1f6ef01ebb7950704f74c879637ae24" id="r_ab1f6ef01ebb7950704f74c879637ae24"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1f6ef01ebb7950704f74c879637ae24">RemovePoint</a> (const Int_t &amp;px, const Int_t &amp;py)</td></tr>
 <tr class="separator:ab1f6ef01ebb7950704f74c879637ae24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b2c198ab2f12828dacde21b6de00ef0" id="r_a8b2c198ab2f12828dacde21b6de00ef0"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b2c198ab2f12828dacde21b6de00ef0">RemovePoint</a> (TGraphErrors *graph, const Int_t &amp;px, const Int_t &amp;py)</td></tr>
@@ -297,7 +299,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00037">37</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fVerboseLevel</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">Print()</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">Print()</a>.</p>
 
 </div>
 </div>
@@ -322,7 +324,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00047">47</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fVerboseLevel</a>, and <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>, and <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>.</p>
 
 </div>
 </div>
@@ -343,7 +345,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00053">53</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fTotalResidualGraph</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fTotalResidualGraph</a>.</p>
 
 </div>
 </div>
@@ -421,9 +423,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">59</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fGraphIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fLabel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00177">fMaximumX</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00179">fMaximumY</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00176">fMinimumX</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00178">fMinimumY</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fPointIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00169">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00175">fResidualSet</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fTotalResidualGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fVerboseLevel</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">Print()</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00175">fGraphIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fLabel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00179">fMaximumX</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00181">fMaximumY</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00178">fMinimumX</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00180">fMinimumY</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00176">fPointIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00177">fResidualSet</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fTotalResidualGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">Print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00037">TCalibrationGraphSet()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01336">TChannelTab::UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01367">TChannelTab::UpdateFwhm()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00037">TCalibrationGraphSet()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">TChannelTab::UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">TChannelTab::UpdateFwhm()</a>.</p>
 
 </div>
 </div>
@@ -450,11 +452,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00538">538</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00595">595</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fGraphIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fLabel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00177">fMaximumX</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00179">fMaximumY</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00176">fMinimumX</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00178">fMinimumY</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fPointIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00169">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00175">fResidualSet</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fTotalResidualGraph</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00175">fGraphIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fLabel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00179">fMaximumX</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00181">fMaximumY</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00178">fMinimumX</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00180">fMinimumY</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00176">fPointIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00177">fResidualSet</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fTotalResidualGraph</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01336">TChannelTab::UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01367">TChannelTab::UpdateFwhm()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">TChannelTab::UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">TChannelTab::UpdateFwhm()</a>.</p>
 
 </div>
 </div>
@@ -508,9 +510,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">203</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fLabel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fVerboseLevel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00180">fXAxisLabel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00181">fYAxisLabel</a>, and <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fLabel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00182">fXAxisLabel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fYAxisLabel</a>, and <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">TChannelTab::Calibrate()</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00135">Draw()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">TChannelTab::Calibrate()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00135">Draw()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l02003">TChannelTab::Draw()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">TChannelTab::Initialize()</a>.</p>
 
 </div>
 </div>
@@ -535,9 +537,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00236">236</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fLabel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00169">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fTotalResidualGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fVerboseLevel</a>, <a class="el" href="_user_fill_obj_8h_source.html#l00003">hist</a>, and <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fLabel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fTotalResidualGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>, <a class="el" href="_user_fill_obj_8h_source.html#l00003">hist</a>, and <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">TChannelTab::Calibrate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">TChannelTab::Calibrate()</a>.</p>
 
 </div>
 </div>
@@ -572,9 +574,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00127">127</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">TChannelTab::Calibrate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">TChannelTab::Calibrate()</a>.</p>
 
 </div>
 </div>
@@ -605,9 +607,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00128">128</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">TChannelTab::Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01618">TChannelTab::FindCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01494">TChannelTab::Iterate()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01564">TChannelTab::UpdateChannel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">TChannelTab::Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01985">TChannelTab::FindAllCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01968">TChannelTab::FindCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">TChannelTab::Initialize()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01838">TChannelTab::UpdateChannel()</a>.</p>
 
 </div>
 </div>
@@ -638,7 +640,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00119">119</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>.</p>
 
 </div>
 </div>
@@ -669,7 +671,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00120">120</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>.</p>
 
 </div>
 </div>
@@ -700,9 +702,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00123">123</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00177">fMaximumX</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00179">fMaximumX</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">TChannelTab::Calibrate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">TChannelTab::Calibrate()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">TChannelTab::Initialize()</a>.</p>
 
 </div>
 </div>
@@ -733,9 +735,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00125">125</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00179">fMaximumY</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00181">fMaximumY</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">TChannelTab::Calibrate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">TChannelTab::Calibrate()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">TChannelTab::Initialize()</a>.</p>
 
 </div>
 </div>
@@ -766,9 +768,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00122">122</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00176">fMinimumX</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00178">fMinimumX</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">TChannelTab::Calibrate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">TChannelTab::Calibrate()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">TChannelTab::Initialize()</a>.</p>
 
 </div>
 </div>
@@ -799,9 +801,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00124">124</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00178">fMinimumY</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00180">fMinimumY</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">TChannelTab::Calibrate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">TChannelTab::Calibrate()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">TChannelTab::Initialize()</a>.</p>
 
 </div>
 </div>
@@ -832,9 +834,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00116">116</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">TChannelTab::Calibrate()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01564">TChannelTab::UpdateChannel()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01336">TChannelTab::UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01367">TChannelTab::UpdateFwhm()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">TChannelTab::Calibrate()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01838">TChannelTab::UpdateChannel()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">TChannelTab::UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">TChannelTab::UpdateFwhm()</a>.</p>
 
 </div>
 </div>
@@ -865,9 +867,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00117">117</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01564">TChannelTab::UpdateChannel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01838">TChannelTab::UpdateChannel()</a>.</p>
 
 </div>
 </div>
@@ -898,9 +900,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00118">118</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01564">TChannelTab::UpdateChannel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01838">TChannelTab::UpdateChannel()</a>.</p>
 
 </div>
 </div>
@@ -929,9 +931,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00132">132</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01494">TChannelTab::Iterate()</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>.</p>
 
 </div>
 </div>
@@ -960,9 +960,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00131">131</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01494">TChannelTab::Iterate()</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>.</p>
 
 </div>
 </div>
@@ -992,7 +990,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00056">56</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fGraphIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fLabel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fPointIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00169">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00175">fResidualSet</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fTotalResidualGraph</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00175">fGraphIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fLabel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00176">fPointIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00177">fResidualSet</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fTotalResidualGraph</a>.</p>
 
 </div>
 </div>
@@ -1044,11 +1042,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">489</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">546</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fGraphIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fLabel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fPointIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00169">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fTotalResidualGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fVerboseLevel</a>, and <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00175">fGraphIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fLabel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00176">fPointIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fTotalResidualGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>, and <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00037">TCalibrationGraphSet()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">TChannelTab::Calibrate()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00383">Scale()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01336">TChannelTab::UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01367">TChannelTab::UpdateFwhm()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00037">TCalibrationGraphSet()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">TChannelTab::Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">TChannelTab::Initialize()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01540">TChannelTab::MakeConnections()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00375">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00440">Scale()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">TChannelTab::UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">TChannelTab::UpdateFwhm()</a>.</p>
 
 </div>
 </div>
@@ -1077,12 +1075,34 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00139">139</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00436">ResetTotalGraph()</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00493">ResetTotalGraph()</a>.</p>
+
+</div>
+</div>
+<a id="a9dcf7a5f59e34780d173404cc19baad8" name="a9dcf7a5f59e34780d173404cc19baad8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dcf7a5f59e34780d173404cc19baad8">&#9670;&#160;</a></span>RemovePoint() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TCalibrationGraphSet::RemovePoint </td>
+          <td>(</td>
+          <td class="paramtype">const int &amp;</td>          <td class="paramname"><span class="paramname"><em>point</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function removes the indicated point from the total graph.</p>
+
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00375">375</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00175">fGraphIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00176">fPointIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00177">fResidualSet</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fTotalResidualGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">Print()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00263">RemovePoint()</a>.</p>
 
 </div>
 </div>
 <a id="ab1f6ef01ebb7950704f74c879637ae24" name="ab1f6ef01ebb7950704f74c879637ae24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1f6ef01ebb7950704f74c879637ae24">&#9670;&#160;</a></span>RemovePoint() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1f6ef01ebb7950704f74c879637ae24">&#9670;&#160;</a></span>RemovePoint() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1103,14 +1123,14 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00263">263</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fVerboseLevel</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00263">RemovePoint()</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00263">RemovePoint()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00012">TCalibrationGraph::RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00263">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00274">RemoveResidualPoint()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01811">TChannelTab::Remove()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00012">TCalibrationGraph::RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00375">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00263">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00274">RemoveResidualPoint()</a>.</p>
 
 </div>
 </div>
 <a id="a8b2c198ab2f12828dacde21b6de00ef0" name="a8b2c198ab2f12828dacde21b6de00ef0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b2c198ab2f12828dacde21b6de00ef0">&#9670;&#160;</a></span>RemovePoint() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b2c198ab2f12828dacde21b6de00ef0">&#9670;&#160;</a></span>RemovePoint() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1136,7 +1156,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">285</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fGraphIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fPointIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00169">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00175">fResidualSet</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fTotalResidualGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fVerboseLevel</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">Print()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00263">RemovePoint()</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00175">fGraphIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00176">fPointIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00177">fResidualSet</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fTotalResidualGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">Print()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00263">RemovePoint()</a>.</p>
 
 </div>
 </div>
@@ -1162,7 +1182,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00274">274</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fTotalResidualGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fVerboseLevel</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00263">RemovePoint()</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fTotalResidualGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00263">RemovePoint()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00012">TCalibrationGraph::RemovePoint()</a>.</p>
 
@@ -1185,11 +1205,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>reset the total graph and add the individual ones again (used e.g. after scaling of individual graphs is done) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00436">436</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00493">493</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fGraphIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00177">fMaximumX</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00179">fMaximumY</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00176">fMinimumX</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00178">fMinimumY</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fPointIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00175">fResidualSet</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fTotalResidualGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fVerboseLevel</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00147">kLoops</a>, and <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00175">fGraphIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00179">fMaximumX</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00181">fMaximumY</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00178">fMinimumX</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00180">fMinimumY</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00176">fPointIndex</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00177">fResidualSet</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fTotalResidualGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00147">kLoops</a>, and <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8h_source.html#l00139">RemoveGraph()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00383">Scale()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8h_source.html#l00139">RemoveGraph()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00440">Scale()</a>.</p>
 
 </div>
 </div>
@@ -1218,9 +1238,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00133">133</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00169">fResidualGraphs</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01494">TChannelTab::Iterate()</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fResidualGraphs</a>.</p>
 
 </div>
 </div>
@@ -1240,9 +1258,9 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Scale all graphs to fit each other (based on the first "previous" graph found or just the first graph). If no overlap is being found between the graph that is being scaled and the first graph (or all graphs before this one), the current graph isn't being scaled and we continue with the next graph.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00383">383</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00440">440</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fVerboseLevel</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00147">kLoops</a>, <a class="el" href="_globals_8h_source.html#l00144">kQuiet</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00436">ResetTotalGraph()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00372">Sort()</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00147">kLoops</a>, <a class="el" href="_globals_8h_source.html#l00144">kQuiet</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00493">ResetTotalGraph()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00429">Sort()</a>.</p>
 
 </div>
 </div>
@@ -1265,7 +1283,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00194">194</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>.</p>
 
 </div>
 </div>
@@ -1367,9 +1385,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00081">81</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00169">fResidualGraphs</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fResidualGraphs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8h_source.html#l00100">SetColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00106">SetColorStyle()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01336">TChannelTab::UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01367">TChannelTab::UpdateFwhm()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8h_source.html#l00100">SetColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00106">SetColorStyle()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">TChannelTab::UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">TChannelTab::UpdateFwhm()</a>.</p>
 
 </div>
 </div>
@@ -1403,9 +1421,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00087">87</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00169">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fVerboseLevel</a>, and <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>, and <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8h_source.html#l00100">SetColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00106">SetColorStyle()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01336">TChannelTab::UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01367">TChannelTab::UpdateFwhm()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8h_source.html#l00100">SetColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00106">SetColorStyle()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">TChannelTab::UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">TChannelTab::UpdateFwhm()</a>.</p>
 
 </div>
 </div>
@@ -1439,7 +1457,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00094">94</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00169">fResidualGraphs</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fResidualGraphs</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8h_source.html#l00106">SetColorStyle()</a>.</p>
 
@@ -1462,9 +1480,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">138</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00128">FitFunction()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00169">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00175">fResidualSet</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fTotalResidualGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fVerboseLevel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00116">GetN()</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">Print()</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00128">FitFunction()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fResidualGraphs</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00177">fResidualSet</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fTotalResidualGraph</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00116">GetN()</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">Print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">TChannelTab::Calibrate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">TChannelTab::Calibrate()</a>.</p>
 
 </div>
 </div>
@@ -1483,11 +1501,11 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00372">372</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8cxx_source.html#l00429">429</a> of file <a class="el" href="_t_calibration_graph_8cxx_source.html">TCalibrationGraph.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00168">fGraphs</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00169">fResidualGraphs</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00170">fGraphs</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fResidualGraphs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00383">Scale()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00440">Scale()</a>.</p>
 
 </div>
 </div>
@@ -1516,9 +1534,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00129">129</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00171">fTotalGraph</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00173">fTotalGraph</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01564">TChannelTab::UpdateChannel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01838">TChannelTab::UpdateChannel()</a>.</p>
 
 </div>
 </div>
@@ -1547,7 +1565,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00130">130</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00172">fTotalResidualGraph</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00174">fTotalResidualGraph</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01811">TChannelTab::Remove()</a>.</p>
 
 </div>
 </div>
@@ -1574,9 +1594,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00163">163</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00165">165</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fVerboseLevel</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00012">TCalibrationGraph::RemovePoint()</a>.</p>
 
@@ -1605,9 +1625,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00162">162</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00164">164</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fVerboseLevel</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00185">fVerboseLevel</a>.</p>
 
 </div>
 </div>
@@ -1634,9 +1654,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00151">151</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00153">153</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00180">fXAxisLabel</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00182">fXAxisLabel</a>.</p>
 
 </div>
 </div>
@@ -1663,9 +1683,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00148">148</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00150">150</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00180">fXAxisLabel</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00182">fXAxisLabel</a>.</p>
 
 </div>
 </div>
@@ -1692,9 +1712,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00152">152</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00154">154</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00181">fYAxisLabel</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fYAxisLabel</a>.</p>
 
 </div>
 </div>
@@ -1721,9 +1741,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00149">149</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00151">151</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00181">fYAxisLabel</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8h_source.html#l00183">fYAxisLabel</a>.</p>
 
 </div>
 </div>
@@ -1750,9 +1770,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Index of the graph this point belongs to. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00173">173</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00175">175</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00538">Clear()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00436">ResetTotalGraph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00595">Clear()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00375">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00493">ResetTotalGraph()</a>.</p>
 
 </div>
 </div>
@@ -1778,9 +1798,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>These are the graphs used for plotting the calibration points per source. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00168">168</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00170">170</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00538">Clear()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">DrawCalibration()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00132">Graph()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00131">NumberOfGraphs()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">Print()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00139">RemoveGraph()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00436">ResetTotalGraph()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00383">Scale()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00081">SetLineColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00087">SetMarkerColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00094">SetMarkerStyle()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00372">Sort()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00595">Clear()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">DrawCalibration()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00132">Graph()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00131">NumberOfGraphs()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">Print()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00139">RemoveGraph()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00375">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00493">ResetTotalGraph()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00440">Scale()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00081">SetLineColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00087">SetMarkerColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00094">SetMarkerStyle()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00429">Sort()</a>.</p>
 
 </div>
 </div>
@@ -1806,9 +1826,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>The labels for the different graphs. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00170">170</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00172">172</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00538">Clear()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">DrawCalibration()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00236">DrawResidual()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00595">Clear()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">DrawCalibration()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00236">DrawResidual()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">Print()</a>.</p>
 
 </div>
 </div>
@@ -1834,9 +1854,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Maximum x-value. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00177">177</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00179">179</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00538">Clear()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00123">GetMaximumX()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00436">ResetTotalGraph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00595">Clear()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00123">GetMaximumX()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00493">ResetTotalGraph()</a>.</p>
 
 </div>
 </div>
@@ -1862,9 +1882,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Maximum y-value. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00179">179</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00181">181</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00538">Clear()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00125">GetMaximumY()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00436">ResetTotalGraph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00595">Clear()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00125">GetMaximumY()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00493">ResetTotalGraph()</a>.</p>
 
 </div>
 </div>
@@ -1890,9 +1910,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Minimum x-value. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00176">176</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00178">178</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00538">Clear()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00122">GetMinimumX()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00436">ResetTotalGraph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00595">Clear()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00122">GetMinimumX()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00493">ResetTotalGraph()</a>.</p>
 
 </div>
 </div>
@@ -1918,9 +1938,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Minimum y-value. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00178">178</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00180">180</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00538">Clear()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00124">GetMinimumY()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00436">ResetTotalGraph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00595">Clear()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00124">GetMinimumY()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00493">ResetTotalGraph()</a>.</p>
 
 </div>
 </div>
@@ -1946,9 +1966,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Index of the point within the graph this point corresponds to. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00174">174</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00176">176</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00538">Clear()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00436">ResetTotalGraph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00595">Clear()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00375">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00493">ResetTotalGraph()</a>.</p>
 
 </div>
 </div>
@@ -1974,9 +1994,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>These are the graphs used for plotting the residuals per source. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00169">169</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00171">171</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00538">Clear()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00236">DrawResidual()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00133">Residual()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00081">SetLineColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00087">SetMarkerColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00094">SetMarkerStyle()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00372">Sort()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00595">Clear()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00236">DrawResidual()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00375">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00133">Residual()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00081">SetLineColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00087">SetMarkerColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00094">SetMarkerStyle()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00429">Sort()</a>.</p>
 
 </div>
 </div>
@@ -2002,9 +2022,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Flag to indicate if the residual has been set correctly. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00175">175</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00177">177</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00538">Clear()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00436">ResetTotalGraph()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00595">Clear()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00375">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00493">ResetTotalGraph()</a>, and <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>.</p>
 
 </div>
 </div>
@@ -2030,9 +2050,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>The sum of the other graphs, used for fitting. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00171">171</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00173">173</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00047">TCalibrationGraphSet()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00037">TCalibrationGraphSet()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00053">~TCalibrationGraphSet()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00538">Clear()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">DrawCalibration()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00127">Fit()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00128">FitFunction()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00119">GetEX()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00120">GetEY()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00116">GetN()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00117">GetX()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00118">GetY()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00263">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00436">ResetTotalGraph()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00194">SetAxisTitle()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00129">TotalGraph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00047">TCalibrationGraphSet()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00037">TCalibrationGraphSet()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00053">~TCalibrationGraphSet()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00595">Clear()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">DrawCalibration()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00127">Fit()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00128">FitFunction()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00119">GetEX()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00120">GetEY()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00116">GetN()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00117">GetX()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00118">GetY()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00375">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00263">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00493">ResetTotalGraph()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00194">SetAxisTitle()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00129">TotalGraph()</a>.</p>
 
 </div>
 </div>
@@ -2058,9 +2078,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>The sum of the residuals. Not really used apart from plotting (but overlayed with the individual graphs). </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00172">172</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00174">174</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00053">~TCalibrationGraphSet()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00538">Clear()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00236">DrawResidual()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00274">RemoveResidualPoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00436">ResetTotalGraph()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00130">TotalResidualGraph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00053">~TCalibrationGraphSet()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00595">Clear()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00236">DrawResidual()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00056">operator=()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00375">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00274">RemoveResidualPoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00493">ResetTotalGraph()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00130">TotalResidualGraph()</a>.</p>
 
 </div>
 </div>
@@ -2086,9 +2106,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Changes verbosity. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00183">183</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00185">185</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00047">TCalibrationGraphSet()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00037">TCalibrationGraphSet()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">DrawCalibration()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00236">DrawResidual()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00263">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00274">RemoveResidualPoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00436">ResetTotalGraph()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00383">Scale()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00087">SetMarkerColor()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00163">VerboseLevel()</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00162">VerboseLevel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00047">TCalibrationGraphSet()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00037">TCalibrationGraphSet()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">DrawCalibration()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00236">DrawResidual()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00375">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00263">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00285">RemovePoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00274">RemoveResidualPoint()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00493">ResetTotalGraph()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00440">Scale()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00087">SetMarkerColor()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">SetResidual()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00165">VerboseLevel()</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00164">VerboseLevel()</a>.</p>
 
 </div>
 </div>
@@ -2114,9 +2134,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>The label of the x-axis. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00180">180</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00182">182</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">DrawCalibration()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00151">XAxisLabel()</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00148">XAxisLabel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">DrawCalibration()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00153">XAxisLabel()</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00150">XAxisLabel()</a>.</p>
 
 </div>
 </div>
@@ -2142,9 +2162,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>The label of the y-axis. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00181">181</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_calibration_graph_8h_source.html#l00183">183</a> of file <a class="el" href="_t_calibration_graph_8h_source.html">TCalibrationGraph.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">DrawCalibration()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00152">YAxisLabel()</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00149">YAxisLabel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">DrawCalibration()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00154">YAxisLabel()</a>, and <a class="el" href="_t_calibration_graph_8h_source.html#l00151">YAxisLabel()</a>.</p>
 
 </div>
 </div>
@@ -2155,7 +2175,7 @@ Static Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_calibration_graph_set.html">TCalibrationGraphSet</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon May 5 2025 13:55:45.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon May 12 2025 19:59:29.</li>
   </ul>
 </div>
 </body>

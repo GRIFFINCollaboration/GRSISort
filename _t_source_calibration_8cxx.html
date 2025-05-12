@@ -112,6 +112,7 @@ $(function(){initNavTree('_t_source_calibration_8cxx.html',''); initResizable(tr
 <code>#include &lt;iomanip&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;cstring&gt;</code><br />
+<code>#include &lt;thread&gt;</code><br />
 <code>#include &quot;TSystem.h&quot;</code><br />
 <code>#include &quot;TGTableLayout.h&quot;</code><br />
 <code>#include &quot;TCanvas.h&quot;</code><br />
@@ -138,132 +139,17 @@ $(function(){initNavTree('_t_source_calibration_8cxx.html',''); initResizable(tr
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a7d5329e2fcee11eb87e0753683a35abb" id="r_a7d5329e2fcee11eb87e0753683a35abb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d5329e2fcee11eb87e0753683a35abb">FilledBin</a> (TH2 *matrix, const int &amp;bin)</td></tr>
-<tr class="separator:a7d5329e2fcee11eb87e0753683a35abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2194fb5f7e25e4f700a054b1c32ff42d" id="r_a2194fb5f7e25e4f700a054b1c32ff42d"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="class_t_gauss.html">TGauss</a> *, std::tuple&lt; double, double, double, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2194fb5f7e25e4f700a054b1c32ff42d">Match</a> (std::vector&lt; <a class="el" href="class_t_gauss.html">TGauss</a> * &gt; peaks, std::vector&lt; std::tuple&lt; double, double, double, double &gt; &gt; sources, <a class="el" href="class_t_source_tab.html">TSourceTab</a> *sourceTab)</td></tr>
-<tr class="separator:a2194fb5f7e25e4f700a054b1c32ff42d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbe4eac0fa9a96039f2f8f3ecad6dc82" id="r_acbe4eac0fa9a96039f2f8f3ecad6dc82"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acbe4eac0fa9a96039f2f8f3ecad6dc82">Polynomial</a> (double *x, double *par)</td></tr>
-<tr class="separator:acbe4eac0fa9a96039f2f8f3ecad6dc82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19992c37ad2a422ffaf7feca13502f12" id="r_a19992c37ad2a422ffaf7feca13502f12"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="class_t_gauss.html">TGauss</a> *, std::tuple&lt; double, double, double, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a19992c37ad2a422ffaf7feca13502f12">SmartMatch</a> (std::vector&lt; <a class="el" href="class_t_gauss.html">TGauss</a> * &gt; peaks, std::vector&lt; std::tuple&lt; double, double, double, double &gt; &gt; sources, <a class="el" href="class_t_source_tab.html">TSourceTab</a> *sourceTab)</td></tr>
-<tr class="separator:a19992c37ad2a422ffaf7feca13502f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7d5329e2fcee11eb87e0753683a35abb" id="r_ga7d5329e2fcee11eb87e0753683a35abb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___calibration.html#ga7d5329e2fcee11eb87e0753683a35abb">FilledBin</a> (TH2 *matrix, const int &amp;bin)</td></tr>
+<tr class="separator:ga7d5329e2fcee11eb87e0753683a35abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2194fb5f7e25e4f700a054b1c32ff42d" id="r_ga2194fb5f7e25e4f700a054b1c32ff42d"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="class_t_gauss.html">TGauss</a> *, std::tuple&lt; double, double, double, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___calibration.html#ga2194fb5f7e25e4f700a054b1c32ff42d">Match</a> (std::vector&lt; <a class="el" href="class_t_gauss.html">TGauss</a> * &gt; peaks, std::vector&lt; std::tuple&lt; double, double, double, double &gt; &gt; sources, <a class="el" href="class_t_source_tab.html">TSourceTab</a> *sourceTab)</td></tr>
+<tr class="separator:ga2194fb5f7e25e4f700a054b1c32ff42d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacbe4eac0fa9a96039f2f8f3ecad6dc82" id="r_gacbe4eac0fa9a96039f2f8f3ecad6dc82"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___calibration.html#gacbe4eac0fa9a96039f2f8f3ecad6dc82">Polynomial</a> (double *x, double *par)</td></tr>
+<tr class="separator:gacbe4eac0fa9a96039f2f8f3ecad6dc82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8ffb439ff7ed2cfc4f6d758b9f98d5a4" id="r_ga8ffb439ff7ed2cfc4f6d758b9f98d5a4"><td class="memItemLeft" align="right" valign="top">std::map&lt; double, std::tuple&lt; double, double, double, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___calibration.html#ga8ffb439ff7ed2cfc4f6d758b9f98d5a4">RoughCal</a> (std::vector&lt; double &gt; peaks, std::vector&lt; std::tuple&lt; double, double, double, double &gt; &gt; sources, <a class="el" href="class_t_source_tab.html">TSourceTab</a> *sourceTab)</td></tr>
+<tr class="separator:ga8ffb439ff7ed2cfc4f6d758b9f98d5a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga19992c37ad2a422ffaf7feca13502f12" id="r_ga19992c37ad2a422ffaf7feca13502f12"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="class_t_gauss.html">TGauss</a> *, std::tuple&lt; double, double, double, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___calibration.html#ga19992c37ad2a422ffaf7feca13502f12">SmartMatch</a> (std::vector&lt; <a class="el" href="class_t_gauss.html">TGauss</a> * &gt; peaks, std::vector&lt; std::tuple&lt; double, double, double, double &gt; &gt; sources, <a class="el" href="class_t_source_tab.html">TSourceTab</a> *sourceTab)</td></tr>
+<tr class="separator:ga19992c37ad2a422ffaf7feca13502f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a7d5329e2fcee11eb87e0753683a35abb" name="a7d5329e2fcee11eb87e0753683a35abb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d5329e2fcee11eb87e0753683a35abb">&#9670;&#160;</a></span>FilledBin()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool FilledBin </td>
-          <td>(</td>
-          <td class="paramtype">TH2 *</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int &amp;</td>          <td class="paramname"><span class="paramname"><em>bin</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00318">318</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01813">TSourceCalibration::TSourceCalibration()</a>.</p>
-
-</div>
-</div>
-<a id="a2194fb5f7e25e4f700a054b1c32ff42d" name="a2194fb5f7e25e4f700a054b1c32ff42d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2194fb5f7e25e4f700a054b1c32ff42d">&#9670;&#160;</a></span>Match()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::map&lt; <a class="el" href="class_t_gauss.html">TGauss</a> *, std::tuple&lt; double, double, double, double &gt; &gt; Match </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="class_t_gauss.html">TGauss</a> * &gt;</td>          <td class="paramname"><span class="paramname"><em>peaks</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; std::tuple&lt; double, double, double, double &gt; &gt;</td>          <td class="paramname"><span class="paramname"><em>sources</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_t_source_tab.html">TSourceTab</a> *</td>          <td class="paramname"><span class="paramname"><em>sourceTab</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>This function tries to match a list of found peaks (channels) to a list of provided peaks (energies). It does so in a brute force fashion where we try all combinations of channels and energies, do a linear fit through them, and keep the one with the best chi square.</p>
-
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00029">29</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
-
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00148">kAll</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00147">kLoops</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00264">TSourceCalibration::MaxIterations()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01048">TSourceTab::Status()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00714">TSourceTab::FindCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l00587">TSourceTab::FindPeaks()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l00427">TSourceTab::ProjectionStatus()</a>.</p>
-
-</div>
-</div>
-<a id="acbe4eac0fa9a96039f2f8f3ecad6dc82" name="acbe4eac0fa9a96039f2f8f3ecad6dc82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbe4eac0fa9a96039f2f8f3ecad6dc82">&#9670;&#160;</a></span>Polynomial()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double Polynomial </td>
-          <td>(</td>
-          <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>x</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>par</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00309">309</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">TChannelTab::Calibrate()</a>.</p>
-
-</div>
-</div>
-<a id="a19992c37ad2a422ffaf7feca13502f12" name="a19992c37ad2a422ffaf7feca13502f12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19992c37ad2a422ffaf7feca13502f12">&#9670;&#160;</a></span>SmartMatch()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::map&lt; <a class="el" href="class_t_gauss.html">TGauss</a> *, std::tuple&lt; double, double, double, double &gt; &gt; SmartMatch </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="class_t_gauss.html">TGauss</a> * &gt;</td>          <td class="paramname"><span class="paramname"><em>peaks</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; std::tuple&lt; double, double, double, double &gt; &gt;</td>          <td class="paramname"><span class="paramname"><em>sources</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_t_source_tab.html">TSourceTab</a> *</td>          <td class="paramname"><span class="paramname"><em>sourceTab</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>This function tries to match a list of found peaks (channels) to a list of provided peaks (energies). It does so in slightly smarter way than the brute force method <code>Match</code>, by taking the reported intensity of the source peaks into account.</p>
-
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l00166">166</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
-
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00148">kAll</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00147">kLoops</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00264">TSourceCalibration::MaxIterations()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01048">TSourceTab::Status()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l00587">TSourceTab::FindPeaks()</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -271,7 +157,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_af8759249976916949d3211b2e3ed5df.html">TGUI</a></li><li class="navelem"><a class="el" href="_t_source_calibration_8cxx.html">TSourceCalibration.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon May 5 2025 13:55:43.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon May 12 2025 19:59:28.</li>
   </ul>
 </div>
 </body>

@@ -103,14 +103,15 @@ $(function(){initNavTree('class_t_channel_tab.html',''); initResizable(true); })
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_t_channel_tab-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">TChannelTab Class Reference</div></div>
+  <div class="headertitle"><div class="title">TChannelTab Class Reference<div class="ingroups"><a class="el" href="group___calibration.html">Calibration</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00112">112</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00127">127</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -130,18 +131,22 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3b0f2f4e72eb0b4ec3845652954139a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fe085261345a1afa1150ab6691c7d24" id="r_a3fe085261345a1afa1150ab6691c7d24"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3fe085261345a1afa1150ab6691c7d24">CalibrationStatus</a> (Int_t event, Int_t px, Int_t py, TObject *selected)</td></tr>
 <tr class="separator:a3fe085261345a1afa1150ab6691c7d24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b672bbcabf54d3c9fa2e84db05fd3c9" id="r_a7b672bbcabf54d3c9fa2e84db05fd3c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b672bbcabf54d3c9fa2e84db05fd3c9">CreateSourceTab</a> (size_t source)</td></tr>
-<tr class="separator:a7b672bbcabf54d3c9fa2e84db05fd3c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a246421a01ec20873ed65624393dac79d" id="r_a246421a01ec20873ed65624393dac79d"><td class="memItemLeft" align="right" valign="top">TGraphErrors *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a246421a01ec20873ed65624393dac79d">Data</a> (int channelId) const</td></tr>
 <tr class="separator:a246421a01ec20873ed65624393dac79d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeff3e9ee50025eac16d6b6e99fde7c96" id="r_aeff3e9ee50025eac16d6b6e99fde7c96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeff3e9ee50025eac16d6b6e99fde7c96">Disconnect</a> ()</td></tr>
 <tr class="separator:aeff3e9ee50025eac16d6b6e99fde7c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaef20673bad579923c18006cb552923e" id="r_aaef20673bad579923c18006cb552923e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaef20673bad579923c18006cb552923e">Draw</a> ()</td></tr>
+<tr class="separator:aaef20673bad579923c18006cb552923e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a6a50aecdc9fe4f6160927bba6d2551" id="r_a3a6a50aecdc9fe4f6160927bba6d2551"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a6a50aecdc9fe4f6160927bba6d2551">FindAllCalibratedPeaks</a> ()</td></tr>
+<tr class="separator:a3a6a50aecdc9fe4f6160927bba6d2551"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f9626d1545d6e92a5dd8a4906991d7e" id="r_a6f9626d1545d6e92a5dd8a4906991d7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f9626d1545d6e92a5dd8a4906991d7e">FindAllPeaks</a> (const double &amp;sigma, const double &amp;threshold, const double &amp;peakRatio, const bool &amp;force=false, const bool &amp;fast=true)</td></tr>
+<tr class="separator:a6f9626d1545d6e92a5dd8a4906991d7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0819b7dc2188c499ef1960b7d285f41d" id="r_a0819b7dc2188c499ef1960b7d285f41d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0819b7dc2188c499ef1960b7d285f41d">FindCalibratedPeaks</a> ()</td></tr>
 <tr class="separator:a0819b7dc2188c499ef1960b7d285f41d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92b1fe3bd82d531e601a7293bce63d36" id="r_a92b1fe3bd82d531e601a7293bce63d36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92b1fe3bd82d531e601a7293bce63d36">FindPeaks</a> (const double &amp;sigma, const double &amp;threshold, const double &amp;peakRatio, const bool &amp;force=false, const bool &amp;fast=true)</td></tr>
 <tr class="separator:a92b1fe3bd82d531e601a7293bce63d36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a367acd3b0bc9539fd88d12b7b3a90d20" id="r_a367acd3b0bc9539fd88d12b7b3a90d20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a367acd3b0bc9539fd88d12b7b3a90d20">Iterate</a> (const double &amp;maxResidual)</td></tr>
-<tr class="separator:a367acd3b0bc9539fd88d12b7b3a90d20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a672bfcbccdb67aaacf8aeac2acda2331" id="r_a672bfcbccdb67aaacf8aeac2acda2331"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a672bfcbccdb67aaacf8aeac2acda2331">Initialize</a> (const double &amp;sigma, const double &amp;threshold, const double &amp;peakRatio, const bool &amp;force, const bool &amp;fast)</td></tr>
+<tr class="separator:a672bfcbccdb67aaacf8aeac2acda2331"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5f807f1ec4eedf7814238faaf8e053b" id="r_aa5f807f1ec4eedf7814238faaf8e053b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa5f807f1ec4eedf7814238faaf8e053b">MakeConnections</a> ()</td></tr>
 <tr class="separator:aa5f807f1ec4eedf7814238faaf8e053b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7080f4483ed261ec7405e339da5634c9" id="r_a7080f4483ed261ec7405e339da5634c9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7080f4483ed261ec7405e339da5634c9">Name</a> () const</td></tr>
@@ -152,8 +157,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a753e01f2184b203935486adb188bd46a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2954eaae3207c62bf03d0629c2a7b0a4" id="r_a2954eaae3207c62bf03d0629c2a7b0a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_channel_tab.html">TChannelTab</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2954eaae3207c62bf03d0629c2a7b0a4">operator=</a> (<a class="el" href="class_t_channel_tab.html">TChannelTab</a> &amp;&amp;) noexcept=default</td></tr>
 <tr class="separator:a2954eaae3207c62bf03d0629c2a7b0a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9d43e52e3feee71a96ea3c9efc03e99" id="r_ac9d43e52e3feee71a96ea3c9efc03e99"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_source_calibration.html">TSourceCalibration</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9d43e52e3feee71a96ea3c9efc03e99">Parent</a> () const</td></tr>
+<tr class="separator:ac9d43e52e3feee71a96ea3c9efc03e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae53060e4bde873e1dc5b6b16c88269ca" id="r_ae53060e4bde873e1dc5b6b16c88269ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae53060e4bde873e1dc5b6b16c88269ca">PrintCanvases</a> () const</td></tr>
+<tr class="separator:ae53060e4bde873e1dc5b6b16c88269ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b7f86a6fd47cffe6425028b3ab1c08b" id="r_a1b7f86a6fd47cffe6425028b3ab1c08b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1b7f86a6fd47cffe6425028b3ab1c08b">PrintLayout</a> () const</td></tr>
 <tr class="separator:a1b7f86a6fd47cffe6425028b3ab1c08b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a484e510fdb0f76210d99e12eb5e201b3" id="r_a484e510fdb0f76210d99e12eb5e201b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a484e510fdb0f76210d99e12eb5e201b3">Remove</a> (const double &amp;maxResidual)</td></tr>
+<tr class="separator:a484e510fdb0f76210d99e12eb5e201b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f6a8db4dd3ff9c4054b8d96bdf34d4f" id="r_a5f6a8db4dd3ff9c4054b8d96bdf34d4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f6a8db4dd3ff9c4054b8d96bdf34d4f">RemovePoint</a> (Int_t oldGraph, Int_t oldPoint)</td></tr>
 <tr class="separator:a5f6a8db4dd3ff9c4054b8d96bdf34d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3695927b5bad1c04d9d77216ba30721c" id="r_a3695927b5bad1c04d9d77216ba30721c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3695927b5bad1c04d9d77216ba30721c">SelectCanvas</a> (Event_t *event)</td></tr>
@@ -180,6 +191,13 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a5f4233fa70515e7437182f0348406555" id="r_a5f4233fa70515e7437182f0348406555"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f4233fa70515e7437182f0348406555">ZoomY</a> ()</td></tr>
 <tr class="separator:a5f4233fa70515e7437182f0348406555"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a13d63f4404807d2e0a351b438b166ba6" id="r_a13d63f4404807d2e0a351b438b166ba6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13d63f4404807d2e0a351b438b166ba6">BuildInterface</a> ()</td></tr>
+<tr class="separator:a13d63f4404807d2e0a351b438b166ba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b672bbcabf54d3c9fa2e84db05fd3c9" id="r_a7b672bbcabf54d3c9fa2e84db05fd3c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b672bbcabf54d3c9fa2e84db05fd3c9">CreateSourceTab</a> (size_t source)</td></tr>
+<tr class="separator:a7b672bbcabf54d3c9fa2e84db05fd3c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a8b088cde3e6ecebec746aa324a56c116" id="r_a8b088cde3e6ecebec746aa324a56c116"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b088cde3e6ecebec746aa324a56c116">fActiveSourceTab</a> {0}</td></tr>
@@ -190,6 +208,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a64334e651e85da258a0ea7c54d762241"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8144541800614879ebb1bbb31d8c9dbb" id="r_a8144541800614879ebb1bbb31d8c9dbb"><td class="memItemLeft" align="right" valign="top">TPad *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8144541800614879ebb1bbb31d8c9dbb">fCalibrationPad</a> {nullptr}</td></tr>
 <tr class="separator:a8144541800614879ebb1bbb31d8c9dbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acec919cfc1f5e73d7fc06741185de524" id="r_acec919cfc1f5e73d7fc06741185de524"><td class="memItemLeft" align="right" valign="top">TPaveText *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acec919cfc1f5e73d7fc06741185de524">fCalLabel</a> {nullptr}</td></tr>
+<tr class="separator:acec919cfc1f5e73d7fc06741185de524"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf54343ac95bd3dc69d92c4e8b199826" id="r_abf54343ac95bd3dc69d92c4e8b199826"><td class="memItemLeft" align="right" valign="top">TGTab *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf54343ac95bd3dc69d92c4e8b199826">fCanvasTab</a> {nullptr}</td></tr>
 <tr class="separator:abf54343ac95bd3dc69d92c4e8b199826"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b8917ff83b05e474172de01d13ef49a" id="r_a1b8917ff83b05e474172de01d13ef49a"><td class="memItemLeft" align="right" valign="top">TGCompositeFrame *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1b8917ff83b05e474172de01d13ef49a">fChannelFrame</a> {nullptr}</td></tr>
@@ -208,6 +228,12 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a877d10337e53ffff12a6bf914dc657b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bc46dc9a756bd51a067c6c85b7109d6" id="r_a7bc46dc9a756bd51a067c6c85b7109d6"><td class="memItemLeft" align="right" valign="top">TGCompositeFrame *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7bc46dc9a756bd51a067c6c85b7109d6">fFwhmFrame</a> {nullptr}</td></tr>
 <tr class="separator:a7bc46dc9a756bd51a067c6c85b7109d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f90520899aa73acf44ed8befc864ed7" id="r_a7f90520899aa73acf44ed8befc864ed7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_calibration_graph_set.html">TCalibrationGraphSet</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f90520899aa73acf44ed8befc864ed7">fInit</a> {nullptr}</td></tr>
+<tr class="separator:a7f90520899aa73acf44ed8befc864ed7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3abe897ce6335123dd960bd5f6d4d8b1" id="r_a3abe897ce6335123dd960bd5f6d4d8b1"><td class="memItemLeft" align="right" valign="top">TRootEmbeddedCanvas *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3abe897ce6335123dd960bd5f6d4d8b1">fInitCanvas</a> {nullptr}</td></tr>
+<tr class="separator:a3abe897ce6335123dd960bd5f6d4d8b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc522a3747e00cadf725ca21001f0f8a" id="r_adc522a3747e00cadf725ca21001f0f8a"><td class="memItemLeft" align="right" valign="top">TGCompositeFrame *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adc522a3747e00cadf725ca21001f0f8a">fInitFrame</a> {nullptr}</td></tr>
+<tr class="separator:adc522a3747e00cadf725ca21001f0f8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7a6932a59949ae7740fccad1ca793d1" id="r_ab7a6932a59949ae7740fccad1ca793d1"><td class="memItemLeft" align="right" valign="top">TLegend *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7a6932a59949ae7740fccad1ca793d1">fLegend</a> {nullptr}</td></tr>
 <tr class="separator:ab7a6932a59949ae7740fccad1ca793d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9092c46274e1657add0902f8b7064a16" id="r_a9092c46274e1657add0902f8b7064a16"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9092c46274e1657add0902f8b7064a16">fName</a></td></tr>
@@ -300,9 +326,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01112">1112</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01382">1382</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00154">fChannelFrame</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00178">fData</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00173">fName</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00171">fNuclei</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00156">fSources</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
+<p class="reference">References <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00206">fData</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00201">fName</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
 </div>
 </div>
@@ -371,9 +397,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">1189</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">1402</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00159">fCalibrationCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00158">fCalibrationFrame</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00161">fCalibrationPad</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00157">fCanvasTab</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00154">fChannelFrame</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00162">fChannelStatusBar</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00164">fChi2Label</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00178">fData</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00179">fFwhm</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00166">fFwhmCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00165">fFwhmFrame</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00163">fLegend</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00167">fProgressBar</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00160">fResidualPad</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00156">fSources</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00155">fSourceTab</a>.</p>
+<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00184">fCalibrationCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00183">fCalibrationFrame</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00186">fCalibrationPad</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00182">fCanvasTab</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00179">fChannelFrame</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00187">fChannelStatusBar</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00189">fChi2Label</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00206">fData</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00207">fFwhm</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00192">fFwhmCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00191">fFwhmFrame</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00188">fLegend</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00195">fProgressBar</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00185">fResidualPad</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00180">fSourceTab</a>.</p>
 
 </div>
 </div>
@@ -401,9 +427,40 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00144">144</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00160">160</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00180">fActiveSourceTab</a>.</p>
+<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00209">fActiveSourceTab</a>.</p>
+
+</div>
+</div>
+<a id="a13d63f4404807d2e0a351b438b166ba6" name="a13d63f4404807d2e0a351b438b166ba6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13d63f4404807d2e0a351b438b166ba6">&#9670;&#160;</a></span>BuildInterface()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TChannelTab::BuildInterface </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">1425</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_source_calibration_8cxx_source.html#l01505">CreateSourceTab()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00184">fCalibrationCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00183">fCalibrationFrame</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00186">fCalibrationPad</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00182">fCanvasTab</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00179">fChannelFrame</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00187">fChannelStatusBar</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00192">fFwhmCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00191">fFwhmFrame</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00194">fInitCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00193">fInitFrame</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00188">fLegend</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00201">fName</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00199">fNuclei</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00185">fResidualPad</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00180">fSourceTab</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00280">TSourceCalibration::PanelHeight()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00279">TSourceCalibration::PanelWidth()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00281">TSourceCalibration::StatusbarHeight()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">UpdateFwhm()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01382">TChannelTab()</a>.</p>
 
 </div>
 </div>
@@ -423,11 +480,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>This function fit's the final data of the given channel. It requires all other elements to have been created already.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">1416</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">1733</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">TCalibrationGraphSet::DrawCalibration()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00236">TCalibrationGraphSet::DrawResidual()</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00159">fCalibrationCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00161">fCalibrationPad</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00162">fChannelStatusBar</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00164">fChi2Label</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00178">fData</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00176">fDegree</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00127">TCalibrationGraphSet::Fit()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00128">TCalibrationGraphSet::FitFunction()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00163">fLegend</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00160">fResidualPad</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00123">TCalibrationGraphSet::GetMaximumX()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00125">TCalibrationGraphSet::GetMaximumY()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00122">TCalibrationGraphSet::GetMinimumX()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00124">TCalibrationGraphSet::GetMinimumY()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00116">TCalibrationGraphSet::GetN()</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l00309">Polynomial()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">TCalibrationGraphSet::Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">TCalibrationGraphSet::SetResidual()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">TCalibrationGraphSet::DrawCalibration()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00236">TCalibrationGraphSet::DrawResidual()</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00184">fCalibrationCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00186">fCalibrationPad</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00187">fChannelStatusBar</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00189">fChi2Label</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00206">fData</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00204">fDegree</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00127">TCalibrationGraphSet::Fit()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00128">TCalibrationGraphSet::FitFunction()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00188">fLegend</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00185">fResidualPad</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00123">TCalibrationGraphSet::GetMaximumX()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00125">TCalibrationGraphSet::GetMaximumY()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00122">TCalibrationGraphSet::GetMinimumX()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00124">TCalibrationGraphSet::GetMinimumY()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00116">TCalibrationGraphSet::GetN()</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l00451">Polynomial()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">TCalibrationGraphSet::Print()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00138">TCalibrationGraphSet::SetResidual()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01398">Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01494">Iterate()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l00427">TSourceTab::ProjectionStatus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01715">Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">Initialize()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l00585">TSourceTab::ProjectionStatus()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01811">Remove()</a>.</p>
 
 </div>
 </div>
@@ -450,9 +507,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01398">1398</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01715">1715</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">Calibrate()</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00176">fDegree</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00173">fName</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
+<p class="reference">References <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">Calibrate()</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00204">fDegree</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00201">fName</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
 </div>
 </div>
@@ -485,9 +542,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01299">1299</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01616">1616</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00159">fCalibrationCanvas</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00162">fChannelStatusBar</a>.</p>
+<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00184">fCalibrationCanvas</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00187">fChannelStatusBar</a>.</p>
 
 </div>
 </div>
@@ -496,6 +553,9 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void TChannelTab::CreateSourceTab </td>
@@ -504,11 +564,18 @@ Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01212">1212</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01505">1505</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00173">fName</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00171">fNuclei</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00170">fParent</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00167">fProgressBar</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00172">fProjections</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00174">fSigma</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00177">fSourceEnergies</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00156">fSources</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00155">fSourceTab</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00175">fThreshold</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00225">TSourceCalibration::PeakRatio()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00201">fName</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00199">fNuclei</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00198">fParent</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00195">fProgressBar</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00200">fProjections</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00202">fSigma</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00205">fSourceEnergies</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00180">fSourceTab</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00203">fThreshold</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00254">TSourceCalibration::PeakRatio()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>.</p>
 
 </div>
 </div>
@@ -535,11 +602,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00141">141</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00157">157</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00156">fSources</a>.</p>
+<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01336">UpdateData()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">UpdateData()</a>.</p>
 
 </div>
 </div>
@@ -558,9 +625,91 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01244">1244</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01557">1557</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00159">fCalibrationCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00178">fData</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00155">fSourceTab</a>.</p>
+<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00184">fCalibrationCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00206">fData</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00180">fSourceTab</a>.</p>
+
+</div>
+</div>
+<a id="aaef20673bad579923c18006cb552923e" name="aaef20673bad579923c18006cb552923e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaef20673bad579923c18006cb552923e">&#9670;&#160;</a></span>Draw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TChannelTab::Draw </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l02003">2003</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">TCalibrationGraphSet::DrawCalibration()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00207">fFwhm</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00192">fFwhmCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00188">fLegend</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>.</p>
+
+</div>
+</div>
+<a id="a3a6a50aecdc9fe4f6160927bba6d2551" name="a3a6a50aecdc9fe4f6160927bba6d2551"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a6a50aecdc9fe4f6160927bba6d2551">&#9670;&#160;</a></span>FindAllCalibratedPeaks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TChannelTab::FindAllCalibratedPeaks </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01985">1985</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00206">fData</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00128">TCalibrationGraphSet::FitFunction()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">UpdateData()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">UpdateFwhm()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
+
+</div>
+</div>
+<a id="a6f9626d1545d6e92a5dd8a4906991d7e" name="a6f9626d1545d6e92a5dd8a4906991d7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f9626d1545d6e92a5dd8a4906991d7e">&#9670;&#160;</a></span>FindAllPeaks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TChannelTab::FindAllPeaks </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>sigma</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>threshold</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>peakRatio</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool &amp;</td>          <td class="paramname"><span class="paramname"><em>force</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool &amp;</td>          <td class="paramname"><span class="paramname"><em>fast</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01951">1951</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00209">fActiveSourceTab</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00195">fProgressBar</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">UpdateData()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">UpdateFwhm()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
 </div>
 </div>
@@ -579,9 +728,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01618">1618</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01968">1968</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00180">fActiveSourceTab</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00178">fData</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00128">TCalibrationGraphSet::FitFunction()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00156">fSources</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00155">fSourceTab</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01336">UpdateData()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01367">UpdateFwhm()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00209">fActiveSourceTab</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00206">fData</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00128">TCalibrationGraphSet::FitFunction()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00180">fSourceTab</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">UpdateData()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">UpdateFwhm()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
 </div>
 </div>
@@ -619,33 +768,49 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01604">1604</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01934">1934</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00180">fActiveSourceTab</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00156">fSources</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00155">fSourceTab</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01336">UpdateData()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01367">UpdateFwhm()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00209">fActiveSourceTab</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00180">fSourceTab</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">UpdateData()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">UpdateFwhm()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
 </div>
 </div>
-<a id="a367acd3b0bc9539fd88d12b7b3a90d20" name="a367acd3b0bc9539fd88d12b7b3a90d20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a367acd3b0bc9539fd88d12b7b3a90d20">&#9670;&#160;</a></span>Iterate()</h2>
+<a id="a672bfcbccdb67aaacf8aeac2acda2331" name="a672bfcbccdb67aaacf8aeac2acda2331"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a672bfcbccdb67aaacf8aeac2acda2331">&#9670;&#160;</a></span>Initialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void TChannelTab::Iterate </td>
+          <td class="memname">void TChannelTab::Initialize </td>
           <td>(</td>
-          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>maxResidual</em></span></td><td>)</td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>sigma</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>threshold</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>peakRatio</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool &amp;</td>          <td class="paramname"><span class="paramname"><em>force</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool &amp;</td>          <td class="paramname"><span class="paramname"><em>fast</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function goes through the residuals of the calibration and for each point that is above the maxResidual parameter it attempts to find a better peak in the source spectrum. This is done iteratively, starting with the largest residual. The function requires an initial calibration to a) have residuals available and b) translate the source energy to channels</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01494">1494</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">1878</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">Calibrate()</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00178">fData</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00128">TCalibrationGraphSet::FitFunction()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00156">fSources</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00132">TCalibrationGraphSet::Graph()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01494">Iterate()</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00131">TCalibrationGraphSet::NumberOfGraphs()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00133">TCalibrationGraphSet::Residual()</a>, <a class="el" href="_make_griffin_histograms_8cxx_source.html#l00015">s</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01336">UpdateData()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01367">UpdateFwhm()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01494">Iterate()</a>.</p>
+<p class="reference">References <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">Calibrate()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00203">TCalibrationGraphSet::DrawCalibration()</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00190">fCalLabel</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00206">fData</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00208">fInit</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00194">fInitCanvas</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00128">TCalibrationGraphSet::FitFunction()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00188">fLegend</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00201">fName</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00195">fProgressBar</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00123">TCalibrationGraphSet::GetMaximumX()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00125">TCalibrationGraphSet::GetMaximumY()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00122">TCalibrationGraphSet::GetMinimumX()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00124">TCalibrationGraphSet::GetMinimumY()</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">TCalibrationGraphSet::Print()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">UpdateData()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
 </div>
 </div>
@@ -664,9 +829,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01236">1236</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01540">1540</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00159">fCalibrationCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00178">fData</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00155">fSourceTab</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00184">fCalibrationCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00206">fData</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00180">fSourceTab</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">TCalibrationGraphSet::Print()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
 </div>
 </div>
@@ -693,9 +858,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00143">143</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00159">159</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00173">fName</a>.</p>
+<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00201">fName</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l02165">PrintCanvases()</a>.</p>
 
 </div>
 </div>
@@ -722,9 +889,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00142">142</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00158">158</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00156">fSources</a>.</p>
+<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>.</p>
 
 </div>
 </div>
@@ -778,6 +945,56 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ac9d43e52e3feee71a96ea3c9efc03e99" name="ac9d43e52e3feee71a96ea3c9efc03e99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9d43e52e3feee71a96ea3c9efc03e99">&#9670;&#160;</a></span>Parent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_t_source_calibration.html">TSourceCalibration</a> * TChannelTab::Parent </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00163">163</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00198">fParent</a>.</p>
+
+</div>
+</div>
+<a id="ae53060e4bde873e1dc5b6b16c88269ca" name="ae53060e4bde873e1dc5b6b16c88269ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae53060e4bde873e1dc5b6b16c88269ca">&#9670;&#160;</a></span>PrintCanvases()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TChannelTab::PrintCanvases </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l02165">2165</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00184">fCalibrationCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00192">fFwhmCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00159">Name()</a>.</p>
+
+</div>
+</div>
 <a id="a1b7f86a6fd47cffe6425028b3ab1c08b" name="a1b7f86a6fd47cffe6425028b3ab1c08b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1b7f86a6fd47cffe6425028b3ab1c08b">&#9670;&#160;</a></span>PrintLayout()</h2>
 
@@ -793,9 +1010,31 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01784">1784</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l02182">2182</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00159">fCalibrationCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00154">fChannelFrame</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00156">fSources</a>.</p>
+<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00184">fCalibrationCanvas</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00179">fChannelFrame</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>.</p>
+
+</div>
+</div>
+<a id="a484e510fdb0f76210d99e12eb5e201b3" name="a484e510fdb0f76210d99e12eb5e201b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a484e510fdb0f76210d99e12eb5e201b3">&#9670;&#160;</a></span>Remove()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TChannelTab::Remove </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>maxResidual</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function goes through the residuals of the calibration and removes each point that is above the maxResidual parameter. The function requires an initial calibration to have residuals available.</p>
+
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01811">1811</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">Calibrate()</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00206">fData</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00263">TCalibrationGraphSet::RemovePoint()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00130">TCalibrationGraphSet::TotalResidualGraph()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">UpdateData()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">UpdateFwhm()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
 </div>
 </div>
@@ -818,9 +1057,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01288">1288</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01602">1602</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00021">DCYAN</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00156">fSources</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00021">DCYAN</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
 </div>
 </div>
@@ -839,9 +1078,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01275">1275</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01589">1589</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00159">fCalibrationCanvas</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
+<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00184">fCalibrationCanvas</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
 </div>
 </div>
@@ -868,9 +1107,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00145">145</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00161">161</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00180">fActiveSourceTab</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00156">fSources</a>.</p>
+<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00209">fActiveSourceTab</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>.</p>
 
 </div>
 </div>
@@ -890,9 +1129,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Simple function that enables and disables the previous and next buttons depending on which tab was selected.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01251">1251</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01565">1565</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00017">DGREEN</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00180">fActiveSourceTab</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00156">fSources</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00017">DGREEN</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00209">fActiveSourceTab</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
 </div>
 </div>
@@ -919,9 +1158,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00140">140</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00156">156</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00155">fSourceTab</a>.</p>
+<p class="reference">References <a class="el" href="_t_source_calibration_8h_source.html#l00180">fSourceTab</a>.</p>
 
 </div>
 </div>
@@ -940,9 +1179,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01564">1564</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01838">1838</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_channel_8h_source.html#l00215">TChannel::AddEnergyNonlinearityPoint()</a>, <a class="el" href="_t_channel_8cxx_source.html#l00593">TChannel::DestroyEnergyNonlinearity()</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00178">fData</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00128">TCalibrationGraphSet::FitFunction()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00173">fName</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00170">fParent</a>, <a class="el" href="_t_channel_8cxx_source.html#l00459">TChannel::GetChannel()</a>, <a class="el" href="_t_channel_8h_source.html#l00198">TChannel::GetEnergyNonlinearity()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00116">TCalibrationGraphSet::GetN()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00117">TCalibrationGraphSet::GetX()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00118">TCalibrationGraphSet::GetY()</a>, <a class="el" href="_globals_8h_source.html#l00129">hex()</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00147">kLoops</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_channel_8h_source.html#l00225">TChannel::SetENGCoefficients()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00129">TCalibrationGraphSet::TotalGraph()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00235">TSourceCalibration::WriteNonlinearities()</a>.</p>
+<p class="reference">References <a class="el" href="_t_channel_8h_source.html#l00215">TChannel::AddEnergyNonlinearityPoint()</a>, <a class="el" href="_t_channel_8cxx_source.html#l00593">TChannel::DestroyEnergyNonlinearity()</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00206">fData</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00128">TCalibrationGraphSet::FitFunction()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00201">fName</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00198">fParent</a>, <a class="el" href="_t_channel_8cxx_source.html#l00459">TChannel::GetChannel()</a>, <a class="el" href="_t_channel_8h_source.html#l00198">TChannel::GetEnergyNonlinearity()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00116">TCalibrationGraphSet::GetN()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00117">TCalibrationGraphSet::GetX()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00118">TCalibrationGraphSet::GetY()</a>, <a class="el" href="_globals_8h_source.html#l00129">hex()</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00147">kLoops</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_channel_8h_source.html#l00225">TChannel::SetENGCoefficients()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00129">TCalibrationGraphSet::TotalGraph()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00264">TSourceCalibration::WriteNonlinearities()</a>.</p>
 
 </div>
 </div>
@@ -962,11 +1201,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Copy data from all sources into one graph (which we use for the calib &amp;&amp; source &lt; fSources.size()ration).</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01336">1336</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">1653</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">TCalibrationGraphSet::Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00538">TCalibrationGraphSet::Clear()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00141">Data()</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00178">fData</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00173">fName</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00171">fNuclei</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00156">fSources</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00116">TCalibrationGraphSet::GetN()</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">TCalibrationGraphSet::Print()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00081">TCalibrationGraphSet::SetLineColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00087">TCalibrationGraphSet::SetMarkerColor()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">TCalibrationGraphSet::Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00595">TCalibrationGraphSet::Clear()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00157">Data()</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00206">fData</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00201">fName</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00199">fNuclei</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00116">TCalibrationGraphSet::GetN()</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">TCalibrationGraphSet::Print()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00081">TCalibrationGraphSet::SetLineColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00087">TCalibrationGraphSet::SetMarkerColor()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01618">FindCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01604">FindPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01494">Iterate()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l00427">TSourceTab::ProjectionStatus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01985">FindAllCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01951">FindAllPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01968">FindCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01934">FindPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">Initialize()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l00585">TSourceTab::ProjectionStatus()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01811">Remove()</a>.</p>
 
 </div>
 </div>
@@ -986,11 +1225,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Copy data from all sources into one graph (which we use for the calib &amp;&amp; source &lt; fSources.size()ration).</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01367">1367</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">1684</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">TCalibrationGraphSet::Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00538">TCalibrationGraphSet::Clear()</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00179">fFwhm</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00173">fName</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00171">fNuclei</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00156">fSources</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00116">TCalibrationGraphSet::GetN()</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00489">TCalibrationGraphSet::Print()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00081">TCalibrationGraphSet::SetLineColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00087">TCalibrationGraphSet::SetMarkerColor()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
+<p class="reference">References <a class="el" href="_t_calibration_graph_8cxx_source.html#l00059">TCalibrationGraphSet::Add()</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00595">TCalibrationGraphSet::Clear()</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00207">fFwhm</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00201">fName</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00199">fNuclei</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00181">fSources</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00116">TCalibrationGraphSet::GetN()</a>, <a class="el" href="_globals_8h_source.html#l00145">kBasicFlow</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, <a class="el" href="_t_calibration_graph_8cxx_source.html#l00546">TCalibrationGraphSet::Print()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00081">TCalibrationGraphSet::SetLineColor()</a>, <a class="el" href="_t_calibration_graph_8h_source.html#l00087">TCalibrationGraphSet::SetMarkerColor()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01618">FindCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01604">FindPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01494">Iterate()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l00427">TSourceTab::ProjectionStatus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01985">FindAllCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01951">FindAllPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01968">FindCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01934">FindPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l00585">TSourceTab::ProjectionStatus()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01811">Remove()</a>.</p>
 
 </div>
 </div>
@@ -1010,9 +1249,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Write graphs to output.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01632">1632</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l02013">2013</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00178">fData</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00179">fFwhm</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00173">fName</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00206">fData</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00207">fFwhm</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00201">fName</a>, <a class="el" href="_globals_8h_source.html#l00146">kSubroutines</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
 </div>
 </div>
@@ -1040,9 +1279,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>finds corresponding graph (res_xxx for cal_xxx and vice versa) and sets it's x-axis range to be the same as the selected graphs</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01642">1642</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l02023">2023</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00147">kLoops</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00147">kLoops</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
 </div>
 </div>
@@ -1070,9 +1309,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>finds corresponding graph (res_xxx for cal_xxx and vice versa) and sets it's y-axis range to be the same as the selected graphs</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l01716">1716</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8cxx_source.html#l02097">2097</a> of file <a class="el" href="_t_source_calibration_8cxx_source.html">TSourceCalibration.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00147">kLoops</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00258">TSourceCalibration::VerboseLevel()</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00147">kLoops</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00290">TSourceCalibration::VerboseLevel()</a>.</p>
 
 </div>
 </div>
@@ -1099,9 +1338,9 @@ Private Attributes</h2></td></tr>
 
 <p>id of the currently active source tab </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00180">180</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00209">209</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8h_source.html#l00144">ActiveSourceTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01618">FindCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01604">FindPeaks()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00145">SelectedSourceTab()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01251">SelectedTab()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8h_source.html#l00160">ActiveSourceTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01951">FindAllPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01968">FindCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01934">FindPeaks()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00161">SelectedSourceTab()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01565">SelectedTab()</a>.</p>
 
 </div>
 </div>
@@ -1125,9 +1364,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00159">159</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00184">184</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01299">CalibrationStatus()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01244">Disconnect()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01236">MakeConnections()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01784">PrintLayout()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01275">SelectCanvas()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01616">CalibrationStatus()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01557">Disconnect()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01540">MakeConnections()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l02165">PrintCanvases()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l02182">PrintLayout()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01589">SelectCanvas()</a>.</p>
 
 </div>
 </div>
@@ -1153,9 +1392,9 @@ Private Attributes</h2></td></tr>
 
 <p>frame of tab with calibration </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00158">158</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00183">183</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>.</p>
 
 </div>
 </div>
@@ -1179,9 +1418,35 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00161">161</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00186">186</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">Calibrate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">Calibrate()</a>.</p>
+
+</div>
+</div>
+<a id="acec919cfc1f5e73d7fc06741185de524" name="acec919cfc1f5e73d7fc06741185de524"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acec919cfc1f5e73d7fc06741185de524">&#9670;&#160;</a></span>fCalLabel</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TPaveText* TChannelTab::fCalLabel {nullptr}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00190">190</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">Initialize()</a>.</p>
 
 </div>
 </div>
@@ -1207,9 +1472,9 @@ Private Attributes</h2></td></tr>
 
 <p>tab for canvases (calibration with residuals, and FWHM) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00157">157</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00182">182</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>.</p>
 
 </div>
 </div>
@@ -1235,9 +1500,9 @@ Private Attributes</h2></td></tr>
 
 <p>main frame of this tab </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00154">154</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00179">179</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01112">TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01784">PrintLayout()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l02182">PrintLayout()</a>.</p>
 
 </div>
 </div>
@@ -1261,9 +1526,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00162">162</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00187">187</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">Calibrate()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01299">CalibrationStatus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">Calibrate()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01616">CalibrationStatus()</a>.</p>
 
 </div>
 </div>
@@ -1287,9 +1552,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00164">164</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00189">189</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">Calibrate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">Calibrate()</a>.</p>
 
 </div>
 </div>
@@ -1315,9 +1580,9 @@ Private Attributes</h2></td></tr>
 
 <p>combined data from all sources </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00178">178</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00206">206</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01112">TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01244">Disconnect()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01618">FindCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01494">Iterate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01236">MakeConnections()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01564">UpdateChannel()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01336">UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01632">Write()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01382">TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01557">Disconnect()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01985">FindAllCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01968">FindCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">Initialize()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01540">MakeConnections()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01811">Remove()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01838">UpdateChannel()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l02013">Write()</a>.</p>
 
 </div>
 </div>
@@ -1343,9 +1608,9 @@ Private Attributes</h2></td></tr>
 
 <p>degree of polynomial function used to calibrate </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00176">176</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00204">204</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">Calibrate()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01398">Calibrate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">Calibrate()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01715">Calibrate()</a>.</p>
 
 </div>
 </div>
@@ -1371,9 +1636,9 @@ Private Attributes</h2></td></tr>
 
 <p>combined fwhm from all sources </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00179">179</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00207">207</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01367">UpdateFwhm()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01632">Write()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l02003">Draw()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">UpdateFwhm()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l02013">Write()</a>.</p>
 
 </div>
 </div>
@@ -1397,9 +1662,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00166">166</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00192">192</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l02003">Draw()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l02165">PrintCanvases()</a>.</p>
 
 </div>
 </div>
@@ -1425,9 +1690,91 @@ Private Attributes</h2></td></tr>
 
 <p>frame of tab with fwhm </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00165">165</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00191">191</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>.</p>
+
+</div>
+</div>
+<a id="a7f90520899aa73acf44ed8befc864ed7" name="a7f90520899aa73acf44ed8befc864ed7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f90520899aa73acf44ed8befc864ed7">&#9670;&#160;</a></span>fInit</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_t_calibration_graph_set.html">TCalibrationGraphSet</a>* TChannelTab::fInit {nullptr}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>combined initial data from all sources </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00208">208</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">Initialize()</a>.</p>
+
+</div>
+</div>
+<a id="a3abe897ce6335123dd960bd5f6d4d8b1" name="a3abe897ce6335123dd960bd5f6d4d8b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3abe897ce6335123dd960bd5f6d4d8b1">&#9670;&#160;</a></span>fInitCanvas</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TRootEmbeddedCanvas* TChannelTab::fInitCanvas {nullptr}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00194">194</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">Initialize()</a>.</p>
+
+</div>
+</div>
+<a id="adc522a3747e00cadf725ca21001f0f8a" name="adc522a3747e00cadf725ca21001f0f8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc522a3747e00cadf725ca21001f0f8a">&#9670;&#160;</a></span>fInitFrame</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGCompositeFrame* TChannelTab::fInitFrame {nullptr}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>frame of tab with initial calibration </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00193">193</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>.</p>
 
 </div>
 </div>
@@ -1451,9 +1798,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00163">163</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00188">188</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">Calibrate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l02003">Draw()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">Initialize()</a>.</p>
 
 </div>
 </div>
@@ -1479,9 +1826,9 @@ Private Attributes</h2></td></tr>
 
 <p>name of this tab </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00173">173</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00201">201</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01112">TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01398">Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01212">CreateSourceTab()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00143">Name()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01564">UpdateChannel()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01336">UpdateData()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01367">UpdateFwhm()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01632">Write()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01382">TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01715">Calibrate()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01505">CreateSourceTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">Initialize()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00159">Name()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01838">UpdateChannel()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">UpdateData()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">UpdateFwhm()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l02013">Write()</a>.</p>
 
 </div>
 </div>
@@ -1507,9 +1854,9 @@ Private Attributes</h2></td></tr>
 
 <p>the source nucleus </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00171">171</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00199">199</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01112">TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01212">CreateSourceTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01336">UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01367">UpdateFwhm()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01505">CreateSourceTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">UpdateFwhm()</a>.</p>
 
 </div>
 </div>
@@ -1535,9 +1882,9 @@ Private Attributes</h2></td></tr>
 
 <p>the parent of this tab </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00170">170</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00198">198</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01212">CreateSourceTab()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01564">UpdateChannel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01505">CreateSourceTab()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00163">Parent()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01838">UpdateChannel()</a>.</p>
 
 </div>
 </div>
@@ -1561,9 +1908,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00167">167</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00195">195</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01212">CreateSourceTab()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01505">CreateSourceTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01951">FindAllPeaks()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">Initialize()</a>.</p>
 
 </div>
 </div>
@@ -1589,9 +1936,9 @@ Private Attributes</h2></td></tr>
 
 <p>vector of all projections </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00172">172</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00200">200</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01212">CreateSourceTab()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01505">CreateSourceTab()</a>.</p>
 
 </div>
 </div>
@@ -1615,9 +1962,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00160">160</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00185">185</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01416">Calibrate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01733">Calibrate()</a>.</p>
 
 </div>
 </div>
@@ -1643,9 +1990,9 @@ Private Attributes</h2></td></tr>
 
 <p>the sigma used in the peak finder </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00174">174</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00202">202</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01212">CreateSourceTab()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01505">CreateSourceTab()</a>.</p>
 
 </div>
 </div>
@@ -1671,9 +2018,9 @@ Private Attributes</h2></td></tr>
 
 <p>vector with source energies and uncertainties </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00177">177</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00205">205</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01212">CreateSourceTab()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01505">CreateSourceTab()</a>.</p>
 
 </div>
 </div>
@@ -1699,9 +2046,9 @@ Private Attributes</h2></td></tr>
 
 <p>tabs for all sources </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00156">156</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00181">181</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01112">TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01212">CreateSourceTab()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00141">Data()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01618">FindCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01604">FindPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01494">Iterate()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00142">NumberOfSources()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01784">PrintLayout()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01288">RemovePoint()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00145">SelectedSourceTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01251">SelectedTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01336">UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01367">UpdateFwhm()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01505">CreateSourceTab()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00157">Data()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l02003">Draw()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01985">FindAllCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01951">FindAllPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01968">FindCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01934">FindPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01878">Initialize()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00158">NumberOfSources()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l02165">PrintCanvases()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l02182">PrintLayout()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01602">RemovePoint()</a>, <a class="el" href="_t_source_calibration_8h_source.html#l00161">SelectedSourceTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01565">SelectedTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01653">UpdateData()</a>, and <a class="el" href="_t_source_calibration_8cxx_source.html#l01684">UpdateFwhm()</a>.</p>
 
 </div>
 </div>
@@ -1727,9 +2074,9 @@ Private Attributes</h2></td></tr>
 
 <p>tab for sources </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00155">155</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00180">180</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01189">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01212">CreateSourceTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01244">Disconnect()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01618">FindCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01604">FindPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01236">MakeConnections()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00140">SourceTab()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01402">~TChannelTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01425">BuildInterface()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01505">CreateSourceTab()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01557">Disconnect()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01968">FindCalibratedPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01934">FindPeaks()</a>, <a class="el" href="_t_source_calibration_8cxx_source.html#l01540">MakeConnections()</a>, and <a class="el" href="_t_source_calibration_8h_source.html#l00156">SourceTab()</a>.</p>
 
 </div>
 </div>
@@ -1755,9 +2102,9 @@ Private Attributes</h2></td></tr>
 
 <p>the threshold (relative to the largest peak) used in the peak finder </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00175">175</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_source_calibration_8h_source.html#l00203">203</a> of file <a class="el" href="_t_source_calibration_8h_source.html">TSourceCalibration.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01212">CreateSourceTab()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l01505">CreateSourceTab()</a>.</p>
 
 </div>
 </div>
@@ -1768,7 +2115,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_channel_tab.html">TChannelTab</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon May 5 2025 13:55:45.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon May 12 2025 19:59:30.</li>
   </ul>
 </div>
 </body>
