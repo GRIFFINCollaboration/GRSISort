@@ -1,4 +1,5 @@
 #include "TDetectorHit.h"
+#include "TGRSIOptions.h"
 
 #include <iostream>
 
@@ -19,7 +20,10 @@ TDetectorHit::TDetectorHit(const TDetectorHit& rhs, bool copywave) : TObject(rhs
 {
    /// Default Copy constructor
    rhs.Copy(*this);
-   if(copywave) {
+	// if we can get the commandline options, we respect whether ExtracWaves has been set or not
+	// otherwise we rely on the copywave flag (defaults to true)
+   if((TGRSIOptions::Get() != nullptr && TGRSIOptions::Get()->ExtractWaves()) ||
+		(TGRSIOptions::Get() == nullptr && copywave)) {
       rhs.CopyWave(*this);
    }
    ClearTransients();
