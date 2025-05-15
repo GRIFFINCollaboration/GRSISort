@@ -95,7 +95,10 @@ public:
    bool ParameterSetByUser(int par);
 
    void SetLineColor(Color_t color) { fTotalFunction->SetLineColor(color); }
-   void SetLineStyle(Style_t style) { fTotalFunction->SetLineColor(style); }
+   void SetLineStyle(Style_t style) { fTotalFunction->SetLineStyle(style); }
+
+   Color_t GetLineColor() { return fTotalFunction->GetLineColor(); }
+   Style_t GetLineStyle() { return fTotalFunction->GetLineStyle(); }
 
 protected:
    Double_t         TotalFunction(Double_t* dim, Double_t* par);
