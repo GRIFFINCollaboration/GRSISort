@@ -1693,16 +1693,16 @@ void TChannelTab::SelectCanvas(Event_t* event)
 
 void TChannelTab::RemovePoint(Int_t oldGraph, Int_t oldPoint)
 {
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
-		std::cout << DCYAN << __PRETTY_FUNCTION__ << ": oldGraph " << oldGraph << ", oldPoint " << oldPoint << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	}
-	if(0 <= oldGraph && oldGraph < static_cast<int>(fSources.size())) {
-		if(oldPoint >= 0) {
-			return fSources[oldGraph]->RemovePoint(oldPoint);
-		}
-		std::cout << "Can't remove negative point " << oldPoint << " from graph " << oldGraph << std::endl;
-	}
-	std::cout << "Graph the point was removed from was " << oldGraph << ", but we only have " << fSources.size() << " source tabs?" << std::endl;
+   if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
+      std::cout << DCYAN << __PRETTY_FUNCTION__ << ": oldGraph " << oldGraph << ", oldPoint " << oldPoint << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   }
+   if(0 <= oldGraph && oldGraph < static_cast<int>(fSources.size())) {
+      if(oldPoint >= 0) {
+         return fSources[oldGraph]->RemovePoint(oldPoint);
+      }
+      std::cout << "Can't remove negative point " << oldPoint << " from graph " << oldGraph << std::endl;
+   }
+   std::cout << "Graph the point was removed from was " << oldGraph << ", but we only have " << fSources.size() << " source tabs?" << std::endl;
 }
 
 void TChannelTab::CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected)
