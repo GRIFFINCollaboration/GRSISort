@@ -80,6 +80,9 @@ void TPeakFitter::SetRange(const Double_t& low, const Double_t& high)
 {
    fRangeLow  = low;
    fRangeHigh = high;
+	if(fTotalFitFunction != nullptr) {
+		fTotalFitFunction->SetTitle(Form("total_fit_%.0f_%.0f", fRangeLow, fRangeHigh));
+	}
 }
 
 TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
@@ -113,7 +116,7 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
    TVirtualFitter::SetMaxIterations(100000);
    TVirtualFitter::SetPrecision(1e-4);
    if(fTotalFitFunction == nullptr) {
-      fTotalFitFunction = new TF1("total_fit", this, &TPeakFitter::FitFunction, fRangeLow, fRangeHigh, GetNParameters(), "TPeakFitter", "FitFunction");
+      fTotalFitFunction = new TF1(Form("total_fit_%.0f_%.0f", fRangeLow, fRangeHigh), this, &TPeakFitter::FitFunction, fRangeLow, fRangeHigh, GetNParameters(), "TPeakFitter", "FitFunction");
    }
    fTotalFitFunction->SetLineColor(static_cast<Color_t>(kMagenta + fColorIndex));
    fTotalFitFunction->SetRange(fRangeLow, fRangeHigh);
@@ -255,7 +258,7 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
          p_it->SetArea(total_function_copy->Integral(p_it->Centroid() - p_it->Width() * 5., p_it->Centroid() + p_it->Width() * 5., 1e-8) / fit_hist->GetBinWidth(1));
          if(goodCovarianceMatrix) {
             p_it->SetAreaErr(total_function_copy->IntegralError(p_it->Centroid() - p_it->Width() * 5., p_it->Centroid() + p_it->Width() * 5., total_function_copy->GetParameters(), covariance_matrix.GetMatrixArray(), 1E-5) / fit_hist->GetBinWidth(1));
-         } else {
+         } else if(fVerboseLevel != EVerbosity::kQuiet) {
             std::cout << "Not setting area error because we don't have a good covariance matrix!" << std::endl;
          }
       }
