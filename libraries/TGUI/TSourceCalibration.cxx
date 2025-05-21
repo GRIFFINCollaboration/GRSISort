@@ -1797,7 +1797,7 @@ void TChannelTab::RecursiveRemove(const double& maxResidual)
 
    // get the maximum residual
    auto* maxElement = std::max_element(fData->TotalResidualGraph()->GetX(), fData->TotalResidualGraph()->GetX() + fData->TotalResidualGraph()->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
-   auto index      = std::distance(fData->TotalResidualGraph()->GetX(), maxElement);
+   auto  index      = std::distance(fData->TotalResidualGraph()->GetX(), maxElement);
 
    if(std::abs(*maxElement) < maxResidual) {
       if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "largest residual is " << *maxElement << " at position " << index << " and is smaller than max. residual " << maxResidual << ": stopping recursive remove" << std::endl; }
