@@ -73,7 +73,6 @@ public:
    void InitialCalibration(const bool& force);
    void Add(std::map<double, std::tuple<double, double, double, double>> map);
    void Add(std::map<TGauss*, std::tuple<double, double, double, double>> map);
-   void FindPeaks(const bool& force = false, const bool& fast = true);
    void FindCalibratedPeaks(const TF1* calibration);
    void ReplacePeak(const size_t& index, const double& channel);
 
@@ -147,10 +146,7 @@ public:
    void          SelectedTab(Int_t id);
    void          Write(TFile* output);
    void          Calibrate();
-   void          Remove(const double& maxResidual);
    void          RecursiveRemove(const double& maxResidual);
-   void          FindPeaks(const bool& force = false, const bool& fast = true);
-   void          FindAllPeaks(const bool& force = false, const bool& fast = true);
    void          FindCalibratedPeaks();
    void          FindAllCalibratedPeaks();
    TGTab*        SourceTab() const { return fSourceTab; }
@@ -188,6 +184,7 @@ private:
    TLegend*                 fLegend{nullptr};
    TPaveText*               fChi2Label{nullptr};
    TPaveText*               fCalLabel{nullptr};
+   TPaveText*               fInfoLabel{nullptr};
    TGCompositeFrame*        fFwhmFrame{nullptr};   ///< frame of tab with fwhm
    TRootEmbeddedCanvas*     fFwhmCanvas{nullptr};
    TGCompositeFrame*        fInitFrame{nullptr};   ///< frame of tab with initial calibration
@@ -209,7 +206,7 @@ private:
 
 class TSourceCalibration : public TGMainFrame {
 public:
-   TSourceCalibration(double sigma, double threshold, int degree, double peakRatio, int count...);
+   TSourceCalibration(double sigma, double threshold, int degree, int count...);
    TSourceCalibration(const TSourceCalibration&)                = delete;
    TSourceCalibration(TSourceCalibration&&) noexcept            = delete;
    TSourceCalibration& operator=(const TSourceCalibration&)     = delete;
@@ -231,10 +228,9 @@ public:
    void Remove();
 	using TObject::RecursiveRemove;
    void RecursiveRemove();
-   void FindPeaks();
-   void FindPeaksFast();
-   void FindCalibratedPeaks();
-   void FindAllCalibratedPeaks();
+   void FindSourcePeaks();
+   void FindChannelPeaks();
+   void FindAllPeaks();
    void SelectedTab(Int_t id);
 
    void NavigateFinal(Int_t id);
@@ -250,11 +246,6 @@ public:
    {
       if(fDegreeEntry != nullptr) { fDefaultDegree = static_cast<int>(fDegreeEntry->GetNumber()); }
       return fDefaultDegree;
-   }
-   double PeakRatio()
-   {
-      if(fPeakRatioEntry != nullptr) { fDefaultPeakRatio = fPeakRatioEntry->GetNumber(); }
-      return fDefaultPeakRatio;
    }
    double MaxResidual()
    {
@@ -327,8 +318,8 @@ private:
       kSigmaEntry          = 200,
       kThresholdEntry      = 300,
       kDegreeEntry         = 400,
-      kPeakRatioEntry      = 500,
-      kMaxResidualEntry    = 600,
+      kMaxResidualEntry    = 500,
+      kApplyToAll          = 600,
       kWriteNonlinearities = 700
    };
    // the numbering of these two enums needs to match the order in which the buttons are created
@@ -341,13 +332,11 @@ private:
       kNext      = 6
    };
    enum EFitting : int {
-      kFindPeaks       = 1,
-      kFindPeaksFast   = 2,
-      kFindPeaksCal    = 3,
-      kFindPeaksCalAll = 4,
-      kCalibrate       = 5,
-      kRemove          = 6,
-      kRecursiveRemove = 7
+      kFindSourcePeaks  = 1,
+      kFindChannelPeaks = 2,
+      kFindAllPeaks     = 3,
+      kCalibrate        = 4,
+      kRecursiveRemove  = 5
    };
 
    void BuildFirstInterface();
@@ -364,6 +353,7 @@ private:
    void AcceptFinalChannel(const int& channelId = -1);
    void DisconnectThird();
    void DeleteElement(TGFrame* element);
+	TGTransientFrame* CreateProgressbar(const char* format);
 
    //TGHorizontalFrame* fTopFrame{nullptr};
    TGHorizontalFrame*        fBottomFrame{nullptr};
@@ -383,11 +373,9 @@ private:
    TGTextButton*   fNextButton{nullptr};
    TGHButtonGroup* fFittingGroup{nullptr};
    TGTextButton*   fCalibrateButton{nullptr};
-   TGTextButton*   fFindPeaksButton{nullptr};
-   TGTextButton*   fFindPeaksFastButton{nullptr};
-   TGTextButton*   fFindPeaksCalButton{nullptr};
-   TGTextButton*   fFindPeaksCalAllButton{nullptr};
-   TGTextButton*   fRemoveButton{nullptr};
+   TGTextButton*   fFindAllPeaksButton{nullptr};
+   TGTextButton*   fFindChannelPeaksButton{nullptr};
+   TGTextButton*   fFindSourcePeaksButton{nullptr};
    TGTextButton*   fRecursiveRemoveButton{nullptr};
    TGGroupFrame*   fParameterFrame{nullptr};
    TGLabel*        fSigmaLabel{nullptr};
@@ -396,10 +384,10 @@ private:
    TGNumberEntry*  fThresholdEntry{nullptr};
    TGLabel*        fDegreeLabel{nullptr};
    TGNumberEntry*  fDegreeEntry{nullptr};
-   TGLabel*        fPeakRatioLabel{nullptr};
-   TGNumberEntry*  fPeakRatioEntry{nullptr};
    TGLabel*        fMaxResidualLabel{nullptr};
    TGNumberEntry*  fMaxResidualEntry{nullptr};
+   TGGroupFrame*   fSettingsFrame{nullptr};
+   TGCheckButton*  fApplyToAll{nullptr};
    TGCheckButton*  fWriteNonlinearities{nullptr};
    TGHProgressBar* fProgressBar{nullptr};
 
@@ -434,7 +422,6 @@ private:
    double        fDefaultSigma{2.};         ///< The default sigma used for the peak finding algorithm, can be changed later.
    double        fDefaultThreshold{0.05};   ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.
    int           fDefaultDegree{1};         ///< The default degree of the polynomial used for calibrating, can be changed later.
-   double        fDefaultPeakRatio{2.};     ///< The default ratio between found peaks and peaks in the source (per region).
    double        fDefaultMaxResidual{2.};   ///< The default maximum residual accepted when trying to iteratively find peaks
    static int    fMaxIterations;            ///< Maximum iterations over combinations in Match and SmartMatch
    static int    fFitRange;                 ///< range in sigma used for fitting peaks (peak position - range to peas position + range)

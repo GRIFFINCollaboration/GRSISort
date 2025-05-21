@@ -766,6 +766,11 @@ void TSourceTab::UpdateFits()
 			std::cout << std::endl;
       }
    }
+	if(fFits.size() > 0 && fFits.front()->NumberOfPeaks() > 0 && fFits.back()->NumberOfPeaks() > 0) {
+		fProjection->SetTitle(Form("%lu of %lu source peaks used, channel %.0f - %.0f", fFits.size(), fSourceEnergy.size(), fFits.front()->Peak(0)->Centroid(), fFits.back()->Peak(0)->Centroid()));
+	} else {
+		fProjection->SetTitle(Form("%lu of %lu source peaks used, channel ???? - ????", fFits.size(), fSourceEnergy.size()));
+	}
 	fProjectionCanvas->GetCanvas()->Modified();
 }
 
@@ -808,22 +813,12 @@ void TSourceTab::InitialCalibration(const bool& force)
          if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "No regions found, using whole spectrum" << std::endl; }
          spectrum.Search(fProjection, fSourceCalibration->Sigma(), "", fSourceCalibration->Threshold());
          nofPeaks = spectrum.GetNPeaks();
-         if(nofPeaks > fSourceCalibration->PeakRatio() * static_cast<double>(fSourceEnergy.size())) {
-            if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "Reducing # of peaks from " << nofPeaks; }
-            nofPeaks = static_cast<int>(fSourceCalibration->PeakRatio() * static_cast<double>(fSourceEnergy.size()));
-            if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << " to " << nofPeaks << std::endl; }
-         }
          peakPos.insert(peakPos.end(), spectrum.GetPositionX(), spectrum.GetPositionX() + nofPeaks);
       } else {
          for(auto& region : fRegions) {
             fProjection->GetXaxis()->SetRangeUser(region.first, region.second);
             spectrum.Search(fProjection, fSourceCalibration->Sigma(), "", fSourceCalibration->Threshold());
             int tmpNofPeaks = spectrum.GetNPeaks();
-            if(tmpNofPeaks > fSourceCalibration->PeakRatio() * static_cast<double>(fSourceEnergy.size())) {
-               if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "Reducing # of peaks from " << tmpNofPeaks; }
-               tmpNofPeaks = static_cast<int>(fSourceCalibration->PeakRatio() * static_cast<double>(fSourceEnergy.size()));
-               if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << " to " << tmpNofPeaks << std::endl; }
-            }
             peakPos.insert(peakPos.end(), spectrum.GetPositionX(), spectrum.GetPositionX() + tmpNofPeaks);
             nofPeaks += spectrum.GetNPeaks();
             if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": found " << spectrum.GetNPeaks() << " peaks in region " << region.first << " - " << region.second << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
@@ -840,126 +835,6 @@ void TSourceTab::InitialCalibration(const bool& force)
    }
 }
 
-void TSourceTab::FindPeaks(const bool& force, const bool& fast)
-{
-   /// This functions finds the peaks in the histogram, fits them, and adds the fits to the list of peaks.
-   /// This list is then used to find all peaks that lie on a straight line.
-
-   if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << DCYAN << __PRETTY_FUNCTION__ << std::flush << " " << fProjection->GetName() << ": got " << fPeaks.size() << " peaks" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-
-   if(fPeaks.empty() || fData == nullptr || force) {
-      if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-         std::cout << __PRETTY_FUNCTION__ << ": # peaks " << fPeaks.size() << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-      }
-      fPeaks.clear();
-      fFits.clear();
-      fBadFits.clear();
-      // Remove all associated functions from projection.
-      // These are the poly markers, fits, and the pave stat
-      if(TSourceCalibration::VerboseLevel() > EVerbosity::kLoops) {
-         TList* functions = fProjection->GetListOfFunctions();
-         std::cout << functions->GetEntries() << " functions in projection " << fProjection->GetName() << " before clearing" << std::endl;
-         for(auto* obj : *functions) {
-            std::cout << obj->GetName() << "/" << obj->GetTitle() << " - " << obj->ClassName() << std::endl;
-         }
-      }
-      fProjection->GetListOfFunctions()->Clear();
-      TSpectrum           spectrum;
-      int                 nofPeaks = 0;
-      std::vector<double> peakPos;
-      UpdateRegions();
-      if(fRegions.empty()) {
-         if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "No regions found, using whole spectrum" << std::endl; }
-         spectrum.Search(fProjection, fSourceCalibration->Sigma(), "", fSourceCalibration->Threshold());
-         nofPeaks = spectrum.GetNPeaks();
-         if(nofPeaks > fSourceCalibration->PeakRatio() * static_cast<double>(fSourceEnergy.size())) {
-            if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "Reducing # of peaks from " << nofPeaks; }
-            nofPeaks = static_cast<int>(fSourceCalibration->PeakRatio() * static_cast<double>(fSourceEnergy.size()));
-            if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << " to " << nofPeaks << std::endl; }
-         }
-         peakPos.insert(peakPos.end(), spectrum.GetPositionX(), spectrum.GetPositionX() + nofPeaks);
-      } else {
-         for(auto& region : fRegions) {
-            fProjection->GetXaxis()->SetRangeUser(region.first, region.second);
-            spectrum.Search(fProjection, fSourceCalibration->Sigma(), "", fSourceCalibration->Threshold());
-            int tmpNofPeaks = spectrum.GetNPeaks();
-            if(tmpNofPeaks > fSourceCalibration->PeakRatio() * static_cast<double>(fSourceEnergy.size())) {
-               if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "Reducing # of peaks from " << tmpNofPeaks; }
-               tmpNofPeaks = static_cast<int>(fSourceCalibration->PeakRatio() * static_cast<double>(fSourceEnergy.size()));
-               if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << " to " << tmpNofPeaks << std::endl; }
-            }
-            peakPos.insert(peakPos.end(), spectrum.GetPositionX(), spectrum.GetPositionX() + tmpNofPeaks);
-            nofPeaks += spectrum.GetNPeaks();
-            if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": found " << spectrum.GetNPeaks() << " peaks in region " << region.first << " - " << region.second << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-         }
-         fProjection->GetXaxis()->UnZoom();
-      }
-      if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": found " << nofPeaks << " peaks" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-		// peakPos is not sorted by x-value but rather by peak height
-      for(int i = 0; i < nofPeaks; i++) {
-         double range = TSourceCalibration::FitRange() * fSourceCalibration->Sigma();
-         // if we aren't already redirecting the output, we redirect it to /dev/null and do a quiet fit, otherwise we do a normal fit since the output will be redirected to a file
-         auto* pf   = new TPeakFitter(peakPos[i] - range, peakPos[i] + range);
-         auto* peak = new TGauss(peakPos[i]);
-         pf->AddPeak(peak);
-         if(TSourceCalibration::LogFile().empty()) {
-            TRedirect redirect("/dev/null");
-            pf->Fit(fProjection, "qnretryfit");
-         } else {
-            pf->Fit(fProjection, "nretryfit");
-         }
-         if(peak->Area() > 0) {
-            // check if we accept bad fits (and if it was a bad fit)
-            if(Good(peak, peakPos[i] - range, peakPos[i] + range)) {
-               fPeaks.push_back(peak);
-               fFits.push_back(pf);
-               if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-                  std::cout << "Fitted peak " << peakPos[i] - range << " - " << peakPos[i] + range << " -> centroid " << peak->Centroid() << ", area " << peak->Area() << std::endl;
-               }
-            } else {
-               fBadFits.push_back(pf);
-               if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-                  std::cout << "We're ignoring bad fits, and this one has position " << peak->Centroid() << " +- " << peak->CentroidErr() << ", area " << peak->Area() << " +- " << peak->AreaErr() << std::endl;
-               }
-            }
-         } else if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-            std::cout << "Ignoring peak at " << peak->Centroid() << " with negative area " << peak->Area() << std::endl;
-            //delete peak;
-         }
-      }
-      if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": added " << fPeaks.size() << " peaks" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-      fProjection->Sumw2(false);                                                                                                                                        // turn errors off, makes the histogram look like a histogram when using normal plotting (hist and samefunc doesn't work for some reason)
-
-      std::sort(fFits.begin(), fFits.end(), [](const TPeakFitter* a, const TPeakFitter* b) { return a->GetFitFunction()->GetParameter("centroid_0") < b->GetFitFunction()->GetParameter("centroid_0"); });
-      std::sort(fBadFits.begin(), fBadFits.end(), [](const TPeakFitter* a, const TPeakFitter* b) { return a->GetFitFunction()->GetParameter("centroid_0") < b->GetFitFunction()->GetParameter("centroid_0"); });
-      std::sort(fPeaks.begin(), fPeaks.end(), [](const TGauss* a, const TGauss* b) { return a->Centroid() < b->Centroid(); });
-
-		SetLineColors();
-
-      UpdateFits();
-
-      if(fast) {
-         auto map = SmartMatch(fPeaks, fSourceEnergy, this);
-         Add(map);
-      } else {
-         auto map = Match(fPeaks, fSourceEnergy, this);
-         Add(map);
-      }
-
-      // update status
-      Status(Form("%d/%d", static_cast<int>(fData->GetN()), nofPeaks), 2);
-   }
-   if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-      std::cout << __PRETTY_FUNCTION__ << ": found " << fData->GetN() << " peaks";   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-      Double_t* x = fData->GetX();
-      Double_t* y = fData->GetY();
-      for(int i = 0; i < fData->GetN(); ++i) {
-         std::cout << " - " << x[i] << ", " << y[i];
-      }
-      std::cout << std::endl;
-   }
-}
-
 void TSourceTab::FindCalibratedPeaks(const TF1* calibration)
 {
    /// This functions finds uses the existing calibration to find all peaks from the list of source energies.
@@ -970,6 +845,9 @@ void TSourceTab::FindCalibratedPeaks(const TF1* calibration)
       std::cerr << __PRETTY_FUNCTION__ << ": provided calibration is nullptr, this function can only be called after an initial calibration has been made!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
       return;
    }
+
+	// try and make sure the right canvas is selected as all fits are drawn in the currently selected canvas
+	gPad = fProjectionCanvas->GetCanvas();
 
    fPeaks.clear();
    fFits.clear();
@@ -1297,7 +1175,7 @@ void TSourceTab::ReplacePeak(const size_t& index, const double& channel)
 	auto* peak = new TGauss(channel);
 	pf->AddPeak(peak);
 	if(TSourceCalibration::LogFile().empty()) {
-		//TRedirect redirect("/dev/null");
+		TRedirect redirect("/dev/null");
 		pf->Fit(fProjection, "retryfit");
 	} else {
 		pf->Fit(fProjection, "retryfit");
@@ -1502,7 +1380,6 @@ TChannelTab::~TChannelTab()
 	delete fChi2Label;
 	delete fFwhmFrame;
 	delete fFwhmCanvas;
-	delete fProgressBar;
 	// delete all fProjections and all fNuclei?
 	delete fData;
 	delete fFwhm;
@@ -1592,11 +1469,7 @@ void TChannelTab::CreateSourceTab(size_t source)
 {
 	if(fProjections[source]->GetEntries() > 1000) {
 		if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
-			std::cout << DYELLOW << "Creating source tab " << source << ", using fSourceCalibration " << fSourceCalibration << std::flush;
-			if(fSourceCalibration != nullptr) {
-				std::cout << ", peak ratio " << fSourceCalibration->PeakRatio();
-			}
-			std::cout << std::endl;
+			std::cout << DYELLOW << "Creating source tab " << source << ", using fSourceCalibration " << fSourceCalibration << std::endl;
 		}
 		TGCompositeFrame* tmpTab = nullptr;
 		{
@@ -1845,7 +1718,8 @@ void TChannelTab::Calibrate()
 
 		fChi2Label = new TPaveText(left, bottom, right, top);
 		if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-			std::cout << "fChi2Label created " << fChi2Label << " (" << left << " - " << right << ", " << bottom << " - " << top << ", from " << fData->GetMinimumX() << "-" << fData->GetMaximumX() << ", " << fData->GetMinimumY() << "-" << fData->GetMaximumY() << ") on gPad " << gPad->GetName() << std::endl;
+			fChi2Label->ConvertNDCtoPad();
+			std::cout << "fChi2Label created " << fChi2Label << " (" << left << " - " << right << ", " << bottom << " - " << top << ", from " << fData->GetMinimumX() << "-" << fData->GetMaximumX() << ", " << fData->GetMinimumY() << "-" << fData->GetMaximumY() << ") on gPad " << gPad->GetName() << " coordinates: " << fChi2Label->GetX1() << "/" << fChi2Label->GetX1NDC() << " - " << fChi2Label->GetX2() << "/" << fChi2Label->GetX2NDC() << ", " << fChi2Label->GetY1() << "/" << fChi2Label->GetY1NDC() << " - " << fChi2Label->GetY2() << "/" << fChi2Label->GetY2NDC() << std::endl;
 			fData->Print("e");
 		}
 	} else {
@@ -1859,8 +1733,24 @@ void TChannelTab::Calibrate()
 		fChi2Label->GetListOfLines()->Print();
 		std::cout << "Text size " << fChi2Label->GetTextSize() << std::endl;
 	}
+	if(fInfoLabel == nullptr) {
+		fInfoLabel = new TPaveText(0, 0.95, 1., 1., "NDCNB");
+		if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+			fInfoLabel->ConvertNDCtoPad();
+			std::cout << "fInfoLabel created " << fInfoLabel << " (" << fInfoLabel->GetX1() << "/" << fInfoLabel->GetX1NDC() << " - " << fInfoLabel->GetX2() << "/" << fInfoLabel->GetX2NDC() << ", " << fInfoLabel->GetY1() << "/" << fInfoLabel->GetY1NDC() << " - " << fInfoLabel->GetY2() << "/" << fInfoLabel->GetY2NDC() << ", from 0, 0.95, 1., 1.) on gPad " << gPad->GetName() << std::endl;
+		}
+	} else {
+		fInfoLabel->Clear();
+		if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
+			fInfoLabel->ConvertNDCtoPad();
+			std::cout << "fInfoLabel using existing " << fInfoLabel << " (" << fInfoLabel->GetX1() << "/" << fInfoLabel->GetX1NDC() << " - " << fInfoLabel->GetX2() << "/" << fInfoLabel->GetX2NDC() << ", " << fInfoLabel->GetY1() << "/" << fInfoLabel->GetY1NDC() << " - " << fInfoLabel->GetY2() << "/" << fInfoLabel->GetY2NDC() << ") on gPad " << gPad->GetName() << std::endl;
+		}
+	}
+	fInfoLabel->AddText(Form("Using %d peaks from %.0f to %.0f keV", fData->TotalGraph()->GetN(), fData->GetMinimumY(), fData->GetMaximumY()));
+	fInfoLabel->SetFillColor(kWhite);
+	fInfoLabel->Draw();
 
-	fResidualPad->cd();
+   fResidualPad->cd();
 	fData->DrawResidual("*");
 
 	fCalibrationCanvas->GetCanvas()->Modified();
@@ -1882,33 +1772,6 @@ void TChannelTab::Calibrate()
 	if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << __PRETTY_FUNCTION__ << " done" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 }
 
-void TChannelTab::Remove(const double& maxResidual)
-{
-	/// This function goes through the residuals of the calibration and removes each point that is above the maxResidual parameter.
-	/// The function requires an initial calibration to have residuals available.
-
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << DYELLOW << __PRETTY_FUNCTION__ << ", max. residual " << maxResidual << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-
-	// loop over all points of the total residual graph and remove those that are above the maximum acceptable value
-	// we only want to increment the point index if we do not remove the point, otherwise the same index needs to be checked again
-	for(int point = 0; point < fData->TotalResidualGraph()->GetN();) {
-		if(std::abs(fData->TotalResidualGraph()->GetX()[point]) > maxResidual) {
-			if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "std::abs(" << fData->TotalResidualGraph()->GetX()[point] << ") > " << maxResidual << ": removing point " << point << "/" << fData->TotalResidualGraph()->GetN() << std::endl; }
-			fData->RemovePoint(point);
-		} else {
-			if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "std::abs(" << fData->TotalResidualGraph()->GetX()[point] << ") <= " << maxResidual << ": not removing point " << point << "/" << fData->TotalResidualGraph()->GetN() << std::endl; }
-			++point;
-		}
-	}
-
-	// update the data, and re-calibrate
-	UpdateData();
-	UpdateFwhm();
-	Calibrate();
-
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "Remove(" << maxResidual << ") is done" << RESET_COLOR << std::endl; }
-}
-
 void TChannelTab::RecursiveRemove(const double& maxResidual)
 {
 	/// This function goes through the residuals of the calibration and recursively removes each point that is above the maxResidual parameter.
@@ -1916,6 +1779,21 @@ void TChannelTab::RecursiveRemove(const double& maxResidual)
 	/// After each point that is removed, it re-calibrates the data, producing new residuals.
 
 	if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << DYELLOW << __PRETTY_FUNCTION__ << ", max. residual " << maxResidual << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+
+	if(fData == nullptr) {
+		std::cout << "No longer have a data for channel " << Name() << "?" << std::endl;
+		return;
+	}
+
+	if(fData->TotalResidualGraph() == nullptr) {
+		std::cout << "No longer have a total residual graph for channel " << Name() << ". Maybe removed all points? Total graph has " << fData->TotalGraph()->GetN() << " points." << std::endl;
+		return;
+	}
+
+	if(fData->TotalResidualGraph()->GetN() == 0) {
+		std::cout << "Recursively removed all data points for channel " << Name() << std::endl;
+		return;
+	}
 
 	// get the maximum residual
 	auto maxElement = std::max_element(fData->TotalResidualGraph()->GetX(), fData->TotalResidualGraph()->GetX() + fData->TotalResidualGraph()->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
@@ -2033,40 +1911,6 @@ void TChannelTab::Initialize(const bool& force)
 	fCalLabel->Draw();
 	oldPad->cd();
 	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << "Switched back to " << gPad->GetName() << std::endl; }
-}
-
-void TChannelTab::FindPeaks(const bool& force, const bool& fast)
-{
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-		std::cout << DYELLOW << "Finding peaks in source tab " << fActiveSourceTab << ". Old: " << fSourceTab->GetCurrent() << " = " << fSources[fSourceTab->GetCurrent()] << ", current tab element " << fSourceTab->GetCurrentTab() << " is enabled = " << fSourceTab->GetCurrentTab()->IsEnabled() << std::endl;
-		fSourceTab->Print();
-		for(int tab = 0; tab < fSourceTab->GetNumberOfTabs(); ++tab) {
-			std::cout << "Tab " << tab << " = " << fSourceTab->GetTabTab(tab) << " = " << fSourceTab->GetTabTab(tab)->GetText()->GetString() << (fSourceTab->GetTabTab(tab)->IsActive() ? " is active" : " is inactive") << (fSourceTab->GetTabTab(tab)->IsEnabled() ? " is enabled" : " is not enabled") << std::endl;
-		}
-	}
-	fSources[fActiveSourceTab]->FindPeaks(force, fast);
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "Found peaks in source tab " << fActiveSourceTab << ", updating data" << std::endl; }
-	UpdateData();
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "Updating FWHM" << std::endl; }
-	UpdateFwhm();
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "Source tab " << fActiveSourceTab << " done!" << std::endl; }
-}
-
-void TChannelTab::FindAllPeaks(const bool& force, const bool& fast)
-{
-	for(auto* source : fSources) {
-		if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
-			std::cout << DYELLOW << "Finding peaks in source tab:" << std::endl;
-			source->Print();
-		}
-		source->FindPeaks(force, fast);
-		fProgressBar->Increment(1);
-	}
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "Found peaks in all source tabs, updating data" << std::endl; }
-	UpdateData();
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "Updating FWHM" << std::endl; }
-	UpdateFwhm();
-	if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "Source tab " << fActiveSourceTab << " done!" << std::endl; }
 }
 
 void TChannelTab::FindCalibratedPeaks()
@@ -2314,8 +2158,8 @@ double           TSourceCalibration::fMinIntensity       = 4.;
 size_t           TSourceCalibration::fNumberOfThreads    = 4;
 std::vector<int> TSourceCalibration::fBadBins;
 
-TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degree, double peakRatio, int count...)
-	: TGMainFrame(nullptr, 2 * fPanelWidth, fPanelHeight + 2 * fStatusbarHeight), fDefaultSigma(sigma), fDefaultThreshold(threshold), fDefaultDegree(degree), fDefaultPeakRatio(peakRatio)
+TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degree, int count...)
+	: TGMainFrame(nullptr, 2 * fPanelWidth, fPanelHeight + 2 * fStatusbarHeight), fDefaultSigma(sigma), fDefaultThreshold(threshold), fDefaultDegree(degree)
 {
 	TH1::AddDirectory(false);   // turns off warnings about multiple histograms with the same name because ROOT doesn't manage them anymore
 
@@ -2545,8 +2389,8 @@ void TSourceCalibration::DeleteElement(TGFrame* element)
 {
 	HideFrame(element);
 	RemoveFrame(element);
-	//delete element;
-	//element = nullptr;
+	delete element;
+	element = nullptr;
 }
 
 void TSourceCalibration::DeleteFirst()
@@ -2634,9 +2478,9 @@ void TSourceCalibration::SecondWindow()
 
 	// create intermediate progress bar
 	fProgressBar = new TGHProgressBar(this, TGProgressBar::kFancy, fPanelWidth);
+	fProgressBar->SetBarColor("lightblue");
 	fProgressBar->SetRange(0., static_cast<Float_t>(fMatrices.size() * fActiveBins.size()));
-	fProgressBar->Percent(true);
-	fProgressBar->ShowPosition(true, true, "Graphics: %.0f");
+	fProgressBar->ShowPosition(true, false, "Creating source tabs: %.0f");
 	if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "Set range of progress bar to 0. - " << fProgressBar->GetMax() << " = " << fMatrices.size() * fActiveBins.size() << " = " << fMatrices.size() << "*" << fActiveBins.size() << std::endl; }
 	AddFrame(fProgressBar, new TGLayoutHints(kLHintsCenterX | kLHintsCenterY | kLHintsExpandX | kLHintsExpandY, 0, 0, 0, 0));
 
@@ -2738,16 +2582,11 @@ void TSourceCalibration::BuildSecondInterface()
 	fLeftFrame->AddFrame(fNavigationGroup, new TGLayoutHints(kLHintsTop | kLHintsExpandX, 2, 2, 2, 2));
 
 	fFittingGroup        = new TGHButtonGroup(fLeftFrame, "Fitting/Calibrating");
-	fFindPeaksButton     = new TGTextButton(fFittingGroup, "Find Peaks");
-	fFindPeaksFastButton = new TGTextButton(fFittingGroup, "&Find Peaks Fast");
-	fFindPeaksCalButton  = new TGTextButton(fFittingGroup, "&Use Calibration");
-	if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "find peaks button " << fFindPeaksButton << std::endl; }
-	fFindPeaksCalAllButton = new TGTextButton(fFittingGroup, "Use Calibration (All)");
-	if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "find all peaks button " << fFindPeaksCalAllButton << std::endl; }
+   fFindSourcePeaksButton  = new TGTextButton(fFittingGroup, "&Find Source Peaks");
+   fFindChannelPeaksButton = new TGTextButton(fFittingGroup, "Find Channel Peaks");
+   fFindAllPeaksButton     = new TGTextButton(fFittingGroup, "Find All Peaks");
 	fCalibrateButton = new TGTextButton(fFittingGroup, "&Calibrate");
 	if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "cal button " << fCalibrateButton << std::endl; }
-	fRemoveButton = new TGTextButton(fFittingGroup, "&Remove");
-	if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "remove button " << fRemoveButton << std::endl; }
 	fRecursiveRemoveButton = new TGTextButton(fFittingGroup, "Recursive Remove");
 	if(fVerboseLevel > EVerbosity::kSubroutines) { std::cout << "remove button " << fRecursiveRemoveButton << std::endl; }
 
@@ -2764,12 +2603,8 @@ void TSourceCalibration::BuildSecondInterface()
 	fThresholdEntry      = new TGNumberEntry(fParameterFrame, fDefaultThreshold, fDigitWidth, kThresholdEntry, TGNumberFormat::EStyle::kNESRealThree, TGNumberFormat::EAttribute::kNEAPositive, TGNumberFormat::ELimit::kNELLimitMinMax, 0., 1.);
 	fDegreeLabel         = new TGLabel(fParameterFrame, "Degree of polynomial");
 	fDegreeEntry         = new TGNumberEntry(fParameterFrame, fDefaultDegree, 2, kDegreeEntry, TGNumberFormat::EStyle::kNESInteger, TGNumberFormat::EAttribute::kNEAPositive);
-	fMaxResidualLabel    = new TGLabel(fParameterFrame, "Max. residual (in sigma)");
+	fMaxResidualLabel    = new TGLabel(fParameterFrame, "Max. residual (in keV)");
 	fMaxResidualEntry    = new TGNumberEntry(fParameterFrame, fDefaultMaxResidual, fDigitWidth, kMaxResidualEntry, TGNumberFormat::EStyle::kNESRealTwo, TGNumberFormat::EAttribute::kNEAPositive);
-	fPeakRatioLabel      = new TGLabel(fParameterFrame, "Ratio found/source peaks");
-	fPeakRatioEntry      = new TGNumberEntry(fParameterFrame, fDefaultPeakRatio, fDigitWidth, kPeakRatioEntry, TGNumberFormat::EStyle::kNESRealTwo, TGNumberFormat::EAttribute::kNEAPositive);
-	fWriteNonlinearities = new TGCheckButton(fParameterFrame, "Write nonlinearities", kWriteNonlinearities);
-	fWriteNonlinearities->SetState(kButtonUp);
 
 	fParameterFrame->AddFrame(fSigmaLabel);
 	fParameterFrame->AddFrame(fSigmaEntry);
@@ -2779,11 +2614,19 @@ void TSourceCalibration::BuildSecondInterface()
 	fParameterFrame->AddFrame(fDegreeEntry);
 	fParameterFrame->AddFrame(fMaxResidualLabel);
 	fParameterFrame->AddFrame(fMaxResidualEntry);
-	fParameterFrame->AddFrame(fPeakRatioLabel);
-	fParameterFrame->AddFrame(fPeakRatioEntry);
-	fParameterFrame->AddFrame(fWriteNonlinearities);
 
-	fRightFrame->AddFrame(fParameterFrame, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 2, 2, 2, 2));
+	fRightFrame->AddFrame(fParameterFrame, new TGLayoutHints(kLHintsTop | kLHintsRight | kLHintsExpandX, 2, 2, 2, 2));
+
+	fSettingsFrame = new TGGroupFrame(fRightFrame, "Settings", kHorizontalFrame);
+	fSettingsFrame->SetLayoutManager(new TGMatrixLayout(fSettingsFrame, 0, 2, 2));
+	fApplyToAll = new TGCheckButton(fSettingsFrame, "Apply to all channels", kApplyToAll);
+	fApplyToAll->SetState(kButtonUp);
+	fSettingsFrame->AddFrame(fApplyToAll);
+	fWriteNonlinearities = new TGCheckButton(fSettingsFrame, "Write nonlinearities", kWriteNonlinearities);
+	fWriteNonlinearities->SetState(kButtonUp);
+	fSettingsFrame->AddFrame(fWriteNonlinearities);
+
+	fRightFrame->AddFrame(fSettingsFrame, new TGLayoutHints(kLHintsBottom | kLHintsRight | kLHintsExpandX, 2, 2, 2, 2));
 
 	fBottomFrame->AddFrame(fRightFrame, new TGLayoutHints(kLHintsBottom | kLHintsRight, 2, 2, 2, 2));
 
@@ -2792,7 +2635,7 @@ void TSourceCalibration::BuildSecondInterface()
 	SelectedTab(0);
 
 	fProgressBar->Reset();
-	fProgressBar->ShowPosition(true, true, "Peaks: %.0f");
+	fProgressBar->ShowPosition(true, false, "Finding peaks for tab #%.0f");
 	for(auto* channelTab : fChannelTab) {
 		if(channelTab != nullptr) {
 			if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
@@ -2897,23 +2740,17 @@ void TSourceCalibration::Fitting(Int_t id)
 	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << DGREEN << __PRETTY_FUNCTION__ << ": id " << id << ", channel tab id " << currentChannelId << ", actual channel tab id " << actualChannelId << ", # of tabs " << nofTabs << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 	if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) { std::cout << "Before: active source tab of tab " << fChannelTab[fActiveBins[fTab->GetCurrent()] - 1]->Name() << ", #" << fTab->GetCurrent() << " = bin " << fActiveBins[fTab->GetCurrent()] << ": " << fChannelTab[fActiveBins[fTab->GetCurrent()] - 1]->ActiveSourceTab() << std::endl; }
 	switch(id) {
-		case EFitting::kFindPeaks:   // find peaks
-			FindPeaks();
+		case EFitting::kFindSourcePeaks:   // find peaks for selected source
+			FindSourcePeaks();
 			break;
-		case EFitting::kFindPeaksFast:   // find peaks fast
-			FindPeaksFast();
+		case EFitting::kFindChannelPeaks:   // find peaks for selected channel
+			FindChannelPeaks();
 			break;
-		case EFitting::kFindPeaksCal:   // find calibrated peaks
-			FindCalibratedPeaks();
-			break;
-		case EFitting::kFindPeaksCalAll:   // find all calibrated peaks
-			FindAllCalibratedPeaks();
+		case EFitting::kFindAllPeaks:   // find all peaks
+			FindAllPeaks();
 			break;
 		case EFitting::kCalibrate:   // calibrate
 			Calibrate();
-			break;
-		case EFitting::kRemove:   // remove outliers
-			Remove();
 			break;
 		case EFitting::kRecursiveRemove:   // recursively remove outliers
 			RecursiveRemove();
@@ -3012,35 +2849,35 @@ void TSourceCalibration::AcceptChannel(const int& channelId)
 	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << RESET_COLOR << std::flush; }
 }
 
-void TSourceCalibration::FindPeaks()
+void TSourceCalibration::FindSourcePeaks()
 {
 	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << DGREEN << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	if(fChannelTab[fActiveBins[fTab->GetCurrent()] - 1] != nullptr) {
-		fChannelTab[fActiveBins[fTab->GetCurrent()] - 1]->FindPeaks(true, false);   // force = true, fast = false
-		Calibrate();
-	} else {
-		std::cout << __PRETTY_FUNCTION__ << ": fChannelTab[" << fActiveBins[fTab->GetCurrent()] << " = fActiveBins[" << fTab->GetCurrent() << "]] is a nullptr!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	}
-	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << RESET_COLOR << std::flush; }
-}
+	if(fApplyToAll->IsDown()) {
+		auto* window = CreateProgressbar("Finding current source peaks in channel #%.0f");
 
-void TSourceCalibration::FindPeaksFast()
-{
-	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << DGREEN << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	if(fChannelTab[fActiveBins[fTab->GetCurrent()] - 1] != nullptr) {
-		fChannelTab[fActiveBins[fTab->GetCurrent()] - 1]->FindPeaks(true, true);   // force = true, fast = true
-		Calibrate();
-	} else {
-		std::cout << __PRETTY_FUNCTION__ << ": fChannelTab[" << fActiveBins[fTab->GetCurrent()] << " = fActiveBins[" << fTab->GetCurrent() << "]] is a nullptr!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	}
-	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << RESET_COLOR << std::flush; }
-}
-
-void TSourceCalibration::FindCalibratedPeaks()
-{
-	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << DGREEN << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	if(fChannelTab[fActiveBins[fTab->GetCurrent()] - 1] != nullptr) {
+		for(auto& bin : fActiveBins) {
+			if(fChannelTab[bin - 1] != nullptr) {
+				fChannelTab[bin - 1]->FindCalibratedPeaks();
+				fChannelTab[bin - 1]->Calibrate();
+			}
+			fProgressBar->Increment(1);
+		}
+		window->CloseWindow();
+		delete fProgressBar;
+	} else if(fChannelTab[fActiveBins[fTab->GetCurrent()] - 1] != nullptr) {
 		fChannelTab[fActiveBins[fTab->GetCurrent()] - 1]->FindCalibratedPeaks();
+		fChannelTab[fActiveBins[fTab->GetCurrent()] - 1]->Calibrate();
+	} else {
+		std::cout << __PRETTY_FUNCTION__ << ": fChannelTab[" << fActiveBins[fTab->GetCurrent()] << " = fActiveBins[" << fTab->GetCurrent() << "]] is a nullptr (fApplyToAll is " << (fApplyToAll->IsDown() ? "down" : "up") << ")!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+	}
+	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << RESET_COLOR << std::flush; }
+}
+
+void TSourceCalibration::FindChannelPeaks()
+{
+	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << DGREEN << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+	if(fChannelTab[fActiveBins[fTab->GetCurrent()] - 1] != nullptr) {
+		fChannelTab[fActiveBins[fTab->GetCurrent()] - 1]->FindAllCalibratedPeaks();
 		fChannelTab[fActiveBins[fTab->GetCurrent()] - 1]->Calibrate();
 	} else {
 		std::cout << __PRETTY_FUNCTION__ << ": fChannelTab[" << fActiveBins[fTab->GetCurrent()] << " = fActiveBins[" << fTab->GetCurrent() << "]] is a nullptr!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
@@ -3048,38 +2885,43 @@ void TSourceCalibration::FindCalibratedPeaks()
 	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << RESET_COLOR << std::flush; }
 }
 
-void TSourceCalibration::FindAllCalibratedPeaks()
+void TSourceCalibration::FindAllPeaks()
 {
 	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << DGREEN << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+	auto* window = CreateProgressbar("Finding all source peaks for channel #%.0f");
+
 	for(auto& bin : fActiveBins) {
-		if(fChannelTab[bin] != nullptr) {
-			fChannelTab[bin]->FindAllCalibratedPeaks();
-			fChannelTab[bin]->Calibrate();
+		if(fChannelTab[bin - 1] != nullptr) {
+			fChannelTab[bin - 1]->FindAllCalibratedPeaks();
+			fChannelTab[bin - 1]->Calibrate();
 		} else {
 			std::cout << __PRETTY_FUNCTION__ << ": fChannelTab[" << bin << "] is a nullptr!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 		}
+		fProgressBar->Increment(1);
 	}
+	window->CloseWindow();
+	delete fProgressBar;
 	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << RESET_COLOR << std::flush; }
 }
 
 void TSourceCalibration::Calibrate()
 {
 	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << DGREEN << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	if(fChannelTab[fActiveBins[fTab->GetCurrent()] - 1] != nullptr) {
+	if(fApplyToAll->IsDown()) {
+		auto* window = CreateProgressbar("Calibrating channel #%.0f");
+
+		for(auto& bin : fActiveBins) {
+			if(fChannelTab[bin - 1] != nullptr) {
+				fChannelTab[bin - 1]->Calibrate();
+			}
+			fProgressBar->Increment(1);
+		}
+		window->CloseWindow();
+		delete fProgressBar;
+	} else if(fChannelTab[fActiveBins[fTab->GetCurrent()] - 1] != nullptr) {
 		fChannelTab[fActiveBins[fTab->GetCurrent()] - 1]->Calibrate();
 	} else {
-		std::cout << __PRETTY_FUNCTION__ << ": fChannelTab[" << fActiveBins[fTab->GetCurrent()] << " = fActiveBins[" << fTab->GetCurrent() << "]] is a nullptr!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	}
-	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << RESET_COLOR << std::flush; }
-}
-
-void TSourceCalibration::Remove()
-{
-	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << DGREEN << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	if(fChannelTab[fActiveBins[fTab->GetCurrent()] - 1] != nullptr) {
-		fChannelTab[fActiveBins[fTab->GetCurrent()] - 1]->Remove(MaxResidual());
-	} else {
-		std::cout << __PRETTY_FUNCTION__ << ": fChannelTab[" << fActiveBins[fTab->GetCurrent()] << " = fActiveBins[" << fTab->GetCurrent() << "]] is a nullptr!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+		std::cout << __PRETTY_FUNCTION__ << ": fChannelTab[" << fActiveBins[fTab->GetCurrent()] << " = fActiveBins[" << fTab->GetCurrent() << "]] is a nullptr (fApplyToAll is " << (fApplyToAll->IsDown() ? "down" : "up") << ")!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 	}
 	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << RESET_COLOR << std::flush; }
 }
@@ -3087,10 +2929,23 @@ void TSourceCalibration::Remove()
 void TSourceCalibration::RecursiveRemove()
 {
 	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << DGREEN << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-	if(fChannelTab[fActiveBins[fTab->GetCurrent()] - 1] != nullptr) {
+	if(fApplyToAll->IsDown()) {
+		auto* window = CreateProgressbar("Recursively removing peaks for channel #%.0f");
+
+		for(auto& bin : fActiveBins) {
+			if(fChannelTab[bin - 1] != nullptr) {
+				if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << "Starting recursive remove for bin " << bin << ", fChannelTab[bin - 1] " << fChannelTab[bin - 1] << std::endl; }
+				fChannelTab[bin - 1]->RecursiveRemove(MaxResidual());
+			}
+			fProgressBar->Increment(1);
+		}
+		window->CloseWindow();
+		delete fProgressBar;
+	} else if(fChannelTab[fActiveBins[fTab->GetCurrent()] - 1] != nullptr) {
+		if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << "Starting recursive remove for bin " << fActiveBins[fTab->GetCurrent() - 1] << ", fChannelTab[fActiveBins[fTab->GetCurrent()] - 1] " << fChannelTab[fActiveBins[fTab->GetCurrent()] - 1] << std::endl; }
 		fChannelTab[fActiveBins[fTab->GetCurrent()] - 1]->RecursiveRemove(MaxResidual());
 	} else {
-		std::cout << __PRETTY_FUNCTION__ << ": fChannelTab[" << fActiveBins[fTab->GetCurrent()] << " = fActiveBins[" << fTab->GetCurrent() << "]] is a nullptr!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+		std::cout << __PRETTY_FUNCTION__ << ": fChannelTab[" << fActiveBins[fTab->GetCurrent()] << " = fActiveBins[" << fTab->GetCurrent() << "]] is a nullptr (fApplyToAll is " << (fApplyToAll->IsDown() ? "down" : "up") << ")!" << std::endl;   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 	}
 	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << RESET_COLOR << std::flush; }
 }
@@ -3106,6 +2961,22 @@ void TSourceCalibration::WriteCalibration()
 	TChannel::WriteCalFile(fileName.str());
 	if(fVerboseLevel > EVerbosity::kBasicFlow) { std::cout << DGREEN << __PRETTY_FUNCTION__ << ": wrote " << fileName.str() << " with " << TChannel::GetNumberOfChannels() << " channels" << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 	if(fVerboseLevel > EVerbosity::kSubroutines) { TChannel::WriteCalFile(); }
+}
+
+TGTransientFrame* TSourceCalibration::CreateProgressbar(const char* format)
+{
+	auto* window = new TGTransientFrame(gClient->GetRoot(), this, fPanelWidth, fStatusbarHeight);
+	fProgressBar = new TGHProgressBar(window, TGProgressBar::kFancy, fPanelWidth);
+	fProgressBar->SetBarColor("lightblue");
+	fProgressBar->SetRange(0., static_cast<Float_t>(fActiveBins.size()));
+	fProgressBar->ShowPosition(true, false, format);
+	window->AddFrame(fProgressBar, new TGLayoutHints(kLHintsCenterX | kLHintsCenterY | kLHintsExpandX | kLHintsExpandY, 0, 0, 0, 0));
+	window->CenterOnParent();
+	window->MapSubwindows();
+	window->MapWindow();
+	window->Resize(window->GetDefaultSize());
+
+	return window;
 }
 
 void TSourceCalibration::PrintLayout() const
