@@ -100,7 +100,7 @@ private:
    bool Good(TGauss* peak);
    bool Good(TGauss* peak, double lowRange, double highRange) { return Good(peak) && lowRange < peak->Centroid() && peak->Centroid() < highRange; }
    void UpdateFits();
-	void SetLineColors();
+   void SetLineColors();
 
    // parents
    TSourceCalibration* fSourceCalibration{nullptr};
@@ -226,7 +226,7 @@ public:
    void Fitting(Int_t id);
    void Calibrate();
    void Remove();
-	using TObject::RecursiveRemove;
+   using TObject::RecursiveRemove;
    void RecursiveRemove();
    void FindSourcePeaks();
    void FindChannelPeaks();
@@ -301,9 +301,9 @@ public:
    static void   MinIntensity(double val) { fMinIntensity = val; }
    static double MinIntensity() { return fMinIntensity; }
 
-	static void BadBins(const std::vector<int>& val) { fBadBins = val; }
-	static void BadBin(const int& val) { fBadBins.push_back(val); }
-	static void ResetBadBins() { fBadBins.clear(); }
+   static void BadBins(const std::vector<int>& val) { fBadBins = val; }
+   static void BadBin(const int& val) { fBadBins.push_back(val); }
+   static void ResetBadBins() { fBadBins.clear(); }
 
    static void ZoomX();
 
@@ -339,21 +339,21 @@ private:
       kRecursiveRemove  = 5
    };
 
-   void BuildFirstInterface();
-   void MakeFirstConnections();
-   void DisconnectFirst();
-   void DeleteFirst();
-   void BuildSecondInterface();
-   void MakeSecondConnections();
-   void AcceptChannel(const int& channelId = -1);
-   void DisconnectSecond();
-   void DeleteSecond();
-   void BuildThirdInterface();
-   void MakeThirdConnections();
-   void AcceptFinalChannel(const int& channelId = -1);
-   void DisconnectThird();
-   void DeleteElement(TGFrame* element);
-	TGTransientFrame* CreateProgressbar(const char* format);
+   void              BuildFirstInterface();
+   void              MakeFirstConnections();
+   void              DisconnectFirst();
+   void              DeleteFirst();
+   void              BuildSecondInterface();
+   void              MakeSecondConnections();
+   void              AcceptChannel(const int& channelId = -1);
+   void              DisconnectSecond();
+   void              DeleteSecond();
+   void              BuildThirdInterface();
+   void              MakeThirdConnections();
+   void              AcceptFinalChannel(const int& channelId = -1);
+   void              DisconnectThird();
+   void              DeleteElement(TGFrame* element);
+   TGTransientFrame* CreateProgressbar(const char* format);
 
    //TGHorizontalFrame* fTopFrame{nullptr};
    TGHorizontalFrame*        fBottomFrame{nullptr};
@@ -419,18 +419,18 @@ private:
 
    int fOldErrorLevel;   ///< Used to store old value of gErrorIgnoreLevel (set to kError for the scope of the class)
 
-   double        fDefaultSigma{2.};         ///< The default sigma used for the peak finding algorithm, can be changed later.
-   double        fDefaultThreshold{0.05};   ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.
-   int           fDefaultDegree{1};         ///< The default degree of the polynomial used for calibrating, can be changed later.
-   double        fDefaultMaxResidual{2.};   ///< The default maximum residual accepted when trying to iteratively find peaks
-   static int    fMaxIterations;            ///< Maximum iterations over combinations in Match and SmartMatch
-   static int    fFitRange;                 ///< range in sigma used for fitting peaks (peak position - range to peas position + range)
-   static bool   fAcceptBadFits;            ///< Do we accept peaks where the fit was bad (position or area uncertainties too large or not numbers)
-   static bool   fFast;                     ///< Do we use the fast peak finding method on startup or not.
-   static bool   fUseCalibratedPeaks;       ///< Do we use the initial calibration to find more peaks in the source spectra?
-   static double fMinIntensity;             ///< Minimum intensity of source peaks to be considered when trying to find them in the spectrum.
-   static size_t fNumberOfThreads;          ///< Maximum number of threads to run while creating the channel tabs
-	static std::vector<int> fBadBins;        ///< Bins of the 2D matrix to be ignored even if there are enough counts in them
+   double                  fDefaultSigma{2.};         ///< The default sigma used for the peak finding algorithm, can be changed later.
+   double                  fDefaultThreshold{0.05};   ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.
+   int                     fDefaultDegree{1};         ///< The default degree of the polynomial used for calibrating, can be changed later.
+   double                  fDefaultMaxResidual{2.};   ///< The default maximum residual accepted when trying to iteratively find peaks
+   static int              fMaxIterations;            ///< Maximum iterations over combinations in Match and SmartMatch
+   static int              fFitRange;                 ///< range in sigma used for fitting peaks (peak position - range to peas position + range)
+   static bool             fAcceptBadFits;            ///< Do we accept peaks where the fit was bad (position or area uncertainties too large or not numbers)
+   static bool             fFast;                     ///< Do we use the fast peak finding method on startup or not.
+   static bool             fUseCalibratedPeaks;       ///< Do we use the initial calibration to find more peaks in the source spectra?
+   static double           fMinIntensity;             ///< Minimum intensity of source peaks to be considered when trying to find them in the spectrum.
+   static size_t           fNumberOfThreads;          ///< Maximum number of threads to run while creating the channel tabs
+   static std::vector<int> fBadBins;                  ///< Bins of the 2D matrix to be ignored even if there are enough counts in them
 
    std::mutex fGraphicsMutex;   ///< mutex to lock changes to graphics
 
