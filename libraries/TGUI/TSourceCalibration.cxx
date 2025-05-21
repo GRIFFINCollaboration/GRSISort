@@ -766,7 +766,7 @@ void TSourceTab::UpdateFits()
          std::cout << std::endl;
       }
    }
-   if(fFits.size() > 0 && fFits.front()->NumberOfPeaks() > 0 && fFits.back()->NumberOfPeaks() > 0) {
+   if(!fFits.empty() && fFits.front()->NumberOfPeaks() > 0 && fFits.back()->NumberOfPeaks() > 0) {
       fProjection->SetTitle(Form("%lu of %lu source peaks used, channel %.0f - %.0f", fFits.size(), fSourceEnergy.size(), fFits.front()->Peak(0)->Centroid(), fFits.back()->Peak(0)->Centroid()));
    } else {
       fProjection->SetTitle(Form("%lu of %lu source peaks used, channel ???? - ????", fFits.size(), fSourceEnergy.size()));
@@ -1796,7 +1796,7 @@ void TChannelTab::RecursiveRemove(const double& maxResidual)
    }
 
    // get the maximum residual
-   auto maxElement = std::max_element(fData->TotalResidualGraph()->GetX(), fData->TotalResidualGraph()->GetX() + fData->TotalResidualGraph()->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
+   auto* maxElement = std::max_element(fData->TotalResidualGraph()->GetX(), fData->TotalResidualGraph()->GetX() + fData->TotalResidualGraph()->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
    auto index      = std::distance(fData->TotalResidualGraph()->GetX(), maxElement);
 
    if(std::abs(*maxElement) < maxResidual) {
