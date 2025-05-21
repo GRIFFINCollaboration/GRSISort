@@ -56,6 +56,10 @@ public:
 	size_t NumberOfPeaks() { return fPeaksToFit.size(); }
 	std::list<TSinglePeak*>& Peaks() { return fPeaksToFit; }
 	TSinglePeak* Peak(const size_t& index) { 
+		if(index >= fPeaksToFit.size()) {
+			std::cerr << "Only " << fPeaksToFit.size() << " peaks in this peak fitter, can't access peak #" << index << std::endl;
+			return nullptr;
+		}
 		auto it = fPeaksToFit.begin();
 		std::advance(it, index);
 		return *it;
