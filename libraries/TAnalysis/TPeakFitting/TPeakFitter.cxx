@@ -80,9 +80,9 @@ void TPeakFitter::SetRange(const Double_t& low, const Double_t& high)
 {
    fRangeLow  = low;
    fRangeHigh = high;
-	if(fTotalFitFunction != nullptr) {
-		fTotalFitFunction->SetTitle(Form("total_fit_%.0f_%.0f", fRangeLow, fRangeHigh));
-	}
+   if(fTotalFitFunction != nullptr) {
+      fTotalFitFunction->SetTitle(Form("total_fit_%.0f_%.0f", fRangeLow, fRangeHigh));
+   }
 }
 
 TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)

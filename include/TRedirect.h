@@ -43,10 +43,10 @@ public:
    {
       fflush(stdout);
       dup2(fStdOutFileDescriptor, fileno(stdout));
-		close(fStdOutFileDescriptor);
+      close(fStdOutFileDescriptor);
       fflush(stderr);
       dup2(fStdErrFileDescriptor, fileno(stderr));
-		close(fStdErrFileDescriptor);
+      close(fStdErrFileDescriptor);
    }
 
    TRedirect(const TRedirect&) = delete;
