@@ -57,7 +57,7 @@ class TChannelTab;
 
 class TSourceTab {
 public:
-   TSourceTab(TChannelTab* parent, TGCompositeFrame* frame, GH1D* projection, const char* sourceName, const double& sigma, const double& threshold, const double& peakRatio, std::vector<std::tuple<double, double, double, double>> sourceEnergy);
+   TSourceTab(TSourceCalibration* sourceCal, TChannelTab* channel, TGCompositeFrame* frame, GH1D* projection, const char* sourceName, std::vector<std::tuple<double, double, double, double>> sourceEnergy);
    TSourceTab(const TSourceTab& rhs);
    TSourceTab(TSourceTab&&) noexcept            = default;
    TSourceTab& operator=(const TSourceTab&)     = default;
@@ -70,10 +70,9 @@ public:
    void ProjectionStatus(Event_t* event);
    void ProjectionStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
 
-   void InitialCalibration(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast);
+   void InitialCalibration(const bool& force);
    void Add(std::map<double, std::tuple<double, double, double, double>> map);
    void Add(std::map<TGauss*, std::tuple<double, double, double, double>> map);
-   void FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
    void FindCalibratedPeaks(const TF1* calibration);
    void ReplacePeak(const size_t& index, const double& channel);
 
@@ -99,10 +98,13 @@ private:
    void BuildInterface();
    void UpdateRegions();
    bool Good(TGauss* peak);
+   bool Good(TGauss* peak, double lowRange, double highRange) { return Good(peak) && lowRange < peak->Centroid() && peak->Centroid() < highRange; }
    void UpdateFits();
+   void SetLineColors();
 
-   // parent
-   TChannelTab* fParent{nullptr};
+   // parents
+   TSourceCalibration* fSourceCalibration{nullptr};
+   TChannelTab*        fChannelTab{nullptr};
 
    // graphic elements
    TGCompositeFrame*    fSourceFrame{nullptr};
@@ -114,9 +116,6 @@ private:
    const char*                                             fSourceName;
    TGraphErrors*                                           fData{nullptr};
    TGraphErrors*                                           fFwhm{nullptr};
-   double                                                  fSigma{2.};
-   double                                                  fThreshold{0.05};
-   double                                                  fPeakRatio{2.};
    std::vector<TPeakFitter*>                               fFits;           ///< all good fits
    std::vector<TPeakFitter*>                               fBadFits;        ///< all bad fits (centroid err > 10%, area err > 100%, or either of them not a number at all)
    std::vector<TGauss*>                                    fPeaks;          ///< all peaks that have been fitted and are good
@@ -126,7 +125,7 @@ private:
 
 class TChannelTab {
 public:
-   TChannelTab(TSourceCalibration* parent, std::vector<TNucleus*> nuclei, std::vector<GH1D*> projections, std::string name, TGCompositeFrame* frame, double sigma, double threshold, int degree, std::vector<std::vector<std::tuple<double, double, double, double>>> sourceEnergies, TGHProgressBar* progressBar);
+   TChannelTab(TSourceCalibration* sourceCal, std::vector<TNucleus*> nuclei, std::vector<GH1D*> projections, std::string name, TGCompositeFrame* frame, std::vector<std::vector<std::tuple<double, double, double, double>>> sourceEnergies, TGHProgressBar* progressBar);
    TChannelTab(const TChannelTab&)                = default;
    TChannelTab(TChannelTab&&) noexcept            = default;
    TChannelTab& operator=(const TChannelTab&)     = default;
@@ -135,7 +134,7 @@ public:
 
    void MakeConnections();
    void Disconnect();
-   void Initialize(const double& sigma, const double& threshold, const double& peakRatio, const bool& force, const bool& fast);
+   void Initialize(const bool& force);
 
    void CalibrationStatus(Int_t event, Int_t px, Int_t py, TObject* selected);
    void SelectCanvas(Event_t* event);
@@ -147,10 +146,7 @@ public:
    void          SelectedTab(Int_t id);
    void          Write(TFile* output);
    void          Calibrate();
-   void          Calibrate(const int& degree, const bool& force = false);
-   void          Remove(const double& maxResidual);
-   void          FindPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
-   void          FindAllPeaks(const double& sigma, const double& threshold, const double& peakRatio, const bool& force = false, const bool& fast = true);
+   void          RecursiveRemove(const double& maxResidual);
    void          FindCalibratedPeaks();
    void          FindAllCalibratedPeaks();
    TGTab*        SourceTab() const { return fSourceTab; }
@@ -160,7 +156,7 @@ public:
    int           ActiveSourceTab() const { return fActiveSourceTab; }
    TSourceTab*   SelectedSourceTab() const { return fSources[fActiveSourceTab]; }
 
-   TSourceCalibration* Parent() const { return fParent; }
+   //TSourceCalibration* SourceCalibration() const { return fSourceCalibration; }
 
    static void ZoomX();
    static void ZoomY();
@@ -188,6 +184,7 @@ private:
    TLegend*                 fLegend{nullptr};
    TPaveText*               fChi2Label{nullptr};
    TPaveText*               fCalLabel{nullptr};
+   TPaveText*               fInfoLabel{nullptr};
    TGCompositeFrame*        fFwhmFrame{nullptr};   ///< frame of tab with fwhm
    TRootEmbeddedCanvas*     fFwhmCanvas{nullptr};
    TGCompositeFrame*        fInitFrame{nullptr};   ///< frame of tab with initial calibration
@@ -195,12 +192,10 @@ private:
    TGHProgressBar*          fProgressBar{nullptr};
 
    // storage elements
-   TSourceCalibration*                                                  fParent;               ///< the parent of this tab
+   TSourceCalibration*                                                  fSourceCalibration;    ///< the parent of this tab
    std::vector<TNucleus*>                                               fNuclei;               ///< the source nucleus
    std::vector<GH1D*>                                                   fProjections;          ///< vector of all projections
    std::string                                                          fName;                 ///< name of this tab
-   double                                                               fSigma{2.};            ///< the sigma used in the peak finder
-   double                                                               fThreshold{0.05};      ///< the threshold (relative to the largest peak) used in the peak finder
    int                                                                  fDegree{1};            ///< degree of polynomial function used to calibrate
    std::vector<std::vector<std::tuple<double, double, double, double>>> fSourceEnergies;       ///< vector with source energies and uncertainties
    TCalibrationGraphSet*                                                fData{nullptr};        ///< combined data from all sources
@@ -211,7 +206,7 @@ private:
 
 class TSourceCalibration : public TGMainFrame {
 public:
-   TSourceCalibration(double sigma, double threshold, int degree, double peakRatio, int count...);
+   TSourceCalibration(double sigma, double threshold, int degree, int count...);
    TSourceCalibration(const TSourceCalibration&)                = delete;
    TSourceCalibration(TSourceCalibration&&) noexcept            = delete;
    TSourceCalibration& operator=(const TSourceCalibration&)     = delete;
@@ -231,10 +226,11 @@ public:
    void Fitting(Int_t id);
    void Calibrate();
    void Remove();
-   void FindPeaks();
-   void FindPeaksFast();
-   void FindCalibratedPeaks();
-   void FindAllCalibratedPeaks();
+   using TObject::RecursiveRemove;
+   void RecursiveRemove();
+   void FindSourcePeaks();
+   void FindChannelPeaks();
+   void FindAllPeaks();
    void SelectedTab(Int_t id);
 
    void NavigateFinal(Int_t id);
@@ -250,11 +246,6 @@ public:
    {
       if(fDegreeEntry != nullptr) { fDefaultDegree = static_cast<int>(fDegreeEntry->GetNumber()); }
       return fDefaultDegree;
-   }
-   double PeakRatio()
-   {
-      if(fPeakRatioEntry != nullptr) { fDefaultPeakRatio = fPeakRatioEntry->GetNumber(); }
-      return fDefaultPeakRatio;
    }
    double MaxResidual()
    {
@@ -310,6 +301,10 @@ public:
    static void   MinIntensity(double val) { fMinIntensity = val; }
    static double MinIntensity() { return fMinIntensity; }
 
+   static void BadBins(const std::vector<int>& val) { fBadBins = val; }
+   static void BadBin(const int& val) { fBadBins.push_back(val); }
+   static void ResetBadBins() { fBadBins.clear(); }
+
    static void ZoomX();
 
    void PrintLayout() const;
@@ -323,8 +318,8 @@ private:
       kSigmaEntry          = 200,
       kThresholdEntry      = 300,
       kDegreeEntry         = 400,
-      kPeakRatioEntry      = 500,
-      kMaxResidualEntry    = 600,
+      kMaxResidualEntry    = 500,
+      kApplyToAll          = 600,
       kWriteNonlinearities = 700
    };
    // the numbering of these two enums needs to match the order in which the buttons are created
@@ -337,28 +332,28 @@ private:
       kNext      = 6
    };
    enum EFitting : int {
-      kFindPeaks       = 1,
-      kFindPeaksFast   = 2,
-      kFindPeaksCal    = 3,
-      kFindPeaksCalAll = 4,
-      kCalibrate       = 5,
-      kRemove          = 6
+      kFindSourcePeaks  = 1,
+      kFindChannelPeaks = 2,
+      kFindAllPeaks     = 3,
+      kCalibrate        = 4,
+      kRecursiveRemove  = 5
    };
 
-   void BuildFirstInterface();
-   void MakeFirstConnections();
-   void DisconnectFirst();
-   void DeleteFirst();
-   void BuildSecondInterface();
-   void MakeSecondConnections();
-   void AcceptChannel(const int& channelId = -1);
-   void DisconnectSecond();
-   void DeleteSecond();
-   void BuildThirdInterface();
-   void MakeThirdConnections();
-   void AcceptFinalChannel(const int& channelId = -1);
-   void DisconnectThird();
-   void DeleteElement(TGFrame* element);
+   void              BuildFirstInterface();
+   void              MakeFirstConnections();
+   void              DisconnectFirst();
+   void              DeleteFirst();
+   void              BuildSecondInterface();
+   void              MakeSecondConnections();
+   void              AcceptChannel(const int& channelId = -1);
+   void              DisconnectSecond();
+   void              DeleteSecond();
+   void              BuildThirdInterface();
+   void              MakeThirdConnections();
+   void              AcceptFinalChannel(const int& channelId = -1);
+   void              DisconnectThird();
+   void              DeleteElement(TGFrame* element);
+   TGTransientFrame* CreateProgressbar(const char* format);
 
    //TGHorizontalFrame* fTopFrame{nullptr};
    TGHorizontalFrame*        fBottomFrame{nullptr};
@@ -378,11 +373,10 @@ private:
    TGTextButton*   fNextButton{nullptr};
    TGHButtonGroup* fFittingGroup{nullptr};
    TGTextButton*   fCalibrateButton{nullptr};
-   TGTextButton*   fFindPeaksButton{nullptr};
-   TGTextButton*   fFindPeaksFastButton{nullptr};
-   TGTextButton*   fFindPeaksCalButton{nullptr};
-   TGTextButton*   fFindPeaksCalAllButton{nullptr};
-   TGTextButton*   fRemoveButton{nullptr};
+   TGTextButton*   fFindAllPeaksButton{nullptr};
+   TGTextButton*   fFindChannelPeaksButton{nullptr};
+   TGTextButton*   fFindSourcePeaksButton{nullptr};
+   TGTextButton*   fRecursiveRemoveButton{nullptr};
    TGGroupFrame*   fParameterFrame{nullptr};
    TGLabel*        fSigmaLabel{nullptr};
    TGNumberEntry*  fSigmaEntry{nullptr};
@@ -390,10 +384,10 @@ private:
    TGNumberEntry*  fThresholdEntry{nullptr};
    TGLabel*        fDegreeLabel{nullptr};
    TGNumberEntry*  fDegreeEntry{nullptr};
-   TGLabel*        fPeakRatioLabel{nullptr};
-   TGNumberEntry*  fPeakRatioEntry{nullptr};
    TGLabel*        fMaxResidualLabel{nullptr};
    TGNumberEntry*  fMaxResidualEntry{nullptr};
+   TGGroupFrame*   fSettingsFrame{nullptr};
+   TGCheckButton*  fApplyToAll{nullptr};
    TGCheckButton*  fWriteNonlinearities{nullptr};
    TGHProgressBar* fProgressBar{nullptr};
 
@@ -425,18 +419,18 @@ private:
 
    int fOldErrorLevel;   ///< Used to store old value of gErrorIgnoreLevel (set to kError for the scope of the class)
 
-   double        fDefaultSigma{2.};         ///< The default sigma used for the peak finding algorithm, can be changed later.
-   double        fDefaultThreshold{0.05};   ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.
-   int           fDefaultDegree{1};         ///< The default degree of the polynomial used for calibrating, can be changed later.
-   double        fDefaultPeakRatio{2.};     ///< The default ratio between found peaks and peaks in the source (per region).
-   double        fDefaultMaxResidual{2.};   ///< The default maximum residual accepted when trying to iteratively find peaks
-   static int    fMaxIterations;            ///< Maximum iterations over combinations in Match and SmartMatch
-   static int    fFitRange;                 ///< range in sigma used for fitting peaks (peak position - range to peas position + range)
-   static bool   fAcceptBadFits;            ///< Do we accept peaks where the fit was bad (position or area uncertainties too large or not numbers)
-   static bool   fFast;                     ///< Do we use the fast peak finding method on startup or not.
-   static bool   fUseCalibratedPeaks;       ///< Do we use the initial calibration to find more peaks in the source spectra?
-   static double fMinIntensity;             ///< Minimum intensity of source peaks to be considered when trying to find them in the spectrum.
-   static size_t fNumberOfThreads;          ///< Maximum number of threads to run while creating the channel tabs
+   double                  fDefaultSigma{2.};         ///< The default sigma used for the peak finding algorithm, can be changed later.
+   double                  fDefaultThreshold{0.05};   ///< The default threshold used for the peak finding algorithm, can be changed later. Co-56 source needs a much lower threshold, 0.01 or 0.02, but that makes it much slower too.
+   int                     fDefaultDegree{1};         ///< The default degree of the polynomial used for calibrating, can be changed later.
+   double                  fDefaultMaxResidual{2.};   ///< The default maximum residual accepted when trying to iteratively find peaks
+   static int              fMaxIterations;            ///< Maximum iterations over combinations in Match and SmartMatch
+   static int              fFitRange;                 ///< range in sigma used for fitting peaks (peak position - range to peas position + range)
+   static bool             fAcceptBadFits;            ///< Do we accept peaks where the fit was bad (position or area uncertainties too large or not numbers)
+   static bool             fFast;                     ///< Do we use the fast peak finding method on startup or not.
+   static bool             fUseCalibratedPeaks;       ///< Do we use the initial calibration to find more peaks in the source spectra?
+   static double           fMinIntensity;             ///< Minimum intensity of source peaks to be considered when trying to find them in the spectrum.
+   static size_t           fNumberOfThreads;          ///< Maximum number of threads to run while creating the channel tabs
+   static std::vector<int> fBadBins;                  ///< Bins of the 2D matrix to be ignored even if there are enough counts in them
 
    std::mutex fGraphicsMutex;   ///< mutex to lock changes to graphics
 
