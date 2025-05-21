@@ -1,5 +1,13 @@
 var NAVTREEINDEX68 =
 {
+"group___fitting.html#ga31f874da486899767fc576b44df21c39":[8,3,164],
+"group___fitting.html#ga33a721ac596880674f5e6a9bde782d5e":[8,3,47],
+"group___fitting.html#ga344077d69af236d977cc4da4255072f4":[8,3,74],
+"group___fitting.html#ga3555d2b24cf9a68806c826eb3c347254":[8,3,68],
+"group___fitting.html#ga39c663074332446065723e9be9350139":[8,3,30],
+"group___fitting.html#ga3a8ac91328932a39f43c7a9f5aa639e3":[8,3,38],
+"group___fitting.html#ga3bc53f2cf50d749788553a2ee5663d86":[8,3,106],
+"group___fitting.html#ga3da71deff1e8f6bc58ad5cfbb3c2fe87":[8,3,72],
 "group___fitting.html#ga3df880983b722aaaa34c14cfa5a99f92":[8,3,99],
 "group___fitting.html#ga3e32e1aa2a7492d8401ff811559f4e4f":[8,3,152],
 "group___fitting.html#ga3e341b02c85d8b629c2884e016cdd381":[8,3,94],
@@ -241,13 +249,5 @@ var NAVTREEINDEX68 =
 "libraries_2_t_analysis_2_t_beta_decay_2_link_def_8h_source.html":[11,0,9,1,0,0],
 "libraries_2_t_analysis_2_t_bgo_2_link_def_8h.html":[11,0,9,1,1,0],
 "libraries_2_t_analysis_2_t_bgo_2_link_def_8h_source.html":[11,0,9,1,1,0],
-"libraries_2_t_analysis_2_t_cal_2_link_def_8h.html":[11,0,9,1,2,0],
-"libraries_2_t_analysis_2_t_cal_2_link_def_8h_source.html":[11,0,9,1,2,0],
-"libraries_2_t_analysis_2_t_g_r_s_i_fit_2_link_def_8h.html":[11,0,9,1,3,0],
-"libraries_2_t_analysis_2_t_g_r_s_i_fit_2_link_def_8h_source.html":[11,0,9,1,3,0],
-"libraries_2_t_analysis_2_t_kinematics_2_link_def_8h.html":[11,0,9,1,4,0],
-"libraries_2_t_analysis_2_t_kinematics_2_link_def_8h_source.html":[11,0,9,1,4,0],
-"libraries_2_t_analysis_2_t_nucleus_2_link_def_8h.html":[11,0,9,1,5,0],
-"libraries_2_t_analysis_2_t_nucleus_2_link_def_8h_source.html":[11,0,9,1,5,0],
-"libraries_2_t_analysis_2_t_peak_fitting_2_link_def_8h.html":[11,0,9,1,6,0]
+"libraries_2_t_analysis_2_t_cal_2_link_def_8h.html":[11,0,9,1,2,0]
 };

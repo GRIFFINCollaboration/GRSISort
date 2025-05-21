@@ -19,6 +19,8 @@ var class_t_single_peak =
     [ "GetChi2", "class_t_single_peak.html#a63d3e0f79489c8ba29dc1214e593ce31", null ],
     [ "GetFitFunction", "class_t_single_peak.html#a04356d7486ad1498cbfe50bfb248f1a1", null ],
     [ "GetGlobalBackground", "class_t_single_peak.html#acc3ba6a42a5db3146b2f8a124412a6be", null ],
+    [ "GetLineColor", "class_t_single_peak.html#a2ea01892bb58289134eb1ecc3a3ffaa2", null ],
+    [ "GetLineStyle", "class_t_single_peak.html#a904bcfde1b85928d1b915b1781131a23", null ],
     [ "GetNDF", "class_t_single_peak.html#ae48f12ac1fb6dce12854b3ebc44597e2", null ],
     [ "GetNParameters", "class_t_single_peak.html#a0378b7b1f22028a7751b81d177487416", null ],
     [ "GetPeakFunction", "class_t_single_peak.html#a6ddbc3d9a2355222f41a7a1b17827d25", null ],

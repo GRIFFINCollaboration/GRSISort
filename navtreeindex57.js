@@ -1,5 +1,13 @@
 var NAVTREEINDEX57 =
 {
+"class_t_tdr_clover.html#ae45334e3b4539b92244f74b5b161a6ea":[8,2,58,58],
+"class_t_tdr_clover.html#ae8d3a7642d59da4b42e529d40551a543":[8,2,58,43],
+"class_t_tdr_clover.html#aea2dd8a625dfd4e43c8fa606d87e721d":[8,2,58,7],
+"class_t_tdr_clover.html#af24b6553939965014e0e893b61e2dcc0":[8,2,58,28],
+"class_t_tdr_clover.html#af77c1fdf805bb6c4228fd6e12db0193b":[8,2,58,54],
+"class_t_tdr_clover.html#af83ad943618a30f7d1639675e18fc5b8":[8,2,58,6],
+"class_t_tdr_clover.html#afe12907bd6a74e0ea091f6c512c3aee9":[8,2,58,29],
+"class_t_tdr_clover_bgo.html":[8,2,59],
 "class_t_tdr_clover_bgo.html#a0232c1e0965c77507b4c3914f06a2a36":[8,2,59,0],
 "class_t_tdr_clover_bgo.html#a0913cffdb683d962a7eb18c37caabe57":[8,2,59,1],
 "class_t_tdr_clover_bgo.html#a13ea06ba385aabcf09c1ea5a70d8145b":[8,2,59,20],
@@ -241,13 +249,5 @@ var NAVTREEINDEX57 =
 "class_t_tdr_data_parser_exception.html#a7dc9540ec35315338e23f94db19d7ed5":[8,11,58,8],
 "class_t_tdr_data_parser_exception.html#a8884b22c5be6a6321afac7187379eee2":[8,11,58,9],
 "class_t_tdr_data_parser_exception.html#a8d5a2fb6f60f148ea1025a677c9bc48b":[8,11,58,3],
-"class_t_tdr_data_parser_exception.html#ab68c26132c026c1d61f2c209f9df7067":[8,11,58,6],
-"class_t_tdr_data_parser_exception.html#ac70b84b8bdec84922e75c0ba4a97c136":[8,11,58,4],
-"class_t_tdr_data_parser_exception.html#aed940084f0dd86047e823fa7066b1c41":[8,11,58,1],
-"class_t_tdr_data_parser_exception.html#af6cf15434992bb87e0acc5aa45815260":[8,11,58,7],
-"class_t_tdr_detector_information.html":[8,11,59],
-"class_t_tdr_detector_information.html#a1b7c45a61b122127c1fb2c2391c0fba9":[8,11,59,3],
-"class_t_tdr_detector_information.html#a23ad266e76c004d5f9f87e2c699f22e0":[8,11,59,12],
-"class_t_tdr_detector_information.html#a36dda468c7be6cd77b62bbad49fe7543":[8,11,59,10],
-"class_t_tdr_detector_information.html#a64bb63abc17cc369ee4e86a03e435b49":[8,11,59,5]
+"class_t_tdr_data_parser_exception.html#ab68c26132c026c1d61f2c209f9df7067":[8,11,58,6]
 };

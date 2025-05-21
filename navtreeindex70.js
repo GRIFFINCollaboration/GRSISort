@@ -1,5 +1,13 @@
 var NAVTREEINDEX70 =
 {
+"struct_t_calibrator_1_1_peak.html#a285fbd5d11afbc1b9cd79e75939cbc2c":[10,0,84,0,1],
+"struct_t_calibrator_1_1_peak.html#a4dce7f14823c6f3e569b1d5d6825e8a7":[10,0,84,0,2],
+"struct_t_calibrator_1_1_peak.html#a63d2acc7425ecaf845f357318af0a3bb":[10,0,84,0,0],
+"struct_t_calibrator_1_1_peak.html#aae720ac04232835447fd9c819a5a58c5":[10,0,84,0,4],
+"struct_t_channel_1_1_wave_form_shape_par.html":[8,11,5,0],
+"struct_t_channel_1_1_wave_form_shape_par.html#a2444cb88cf0f5ef9653eac20d9bd8c4b":[8,11,5,0,1],
+"struct_t_channel_1_1_wave_form_shape_par.html#a2d5133f9e8f4681cf039868839b4be48":[8,11,5,0,0],
+"struct_t_channel_1_1_wave_form_shape_par.html#a4d8e9bb8d59c478d35f4598eee348f78":[8,11,5,0,3],
 "struct_t_channel_1_1_wave_form_shape_par.html#aafb5c8f6af4a22795a2c32fc2e9bf0ea":[8,11,5,0,2],
 "struct_t_midas___b_a_n_k.html":[8,11,33],
 "struct_t_midas___b_a_n_k.html#a248a79716c727c3fd6d1ae873097367b":[8,11,33,2],

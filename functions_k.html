@@ -108,6 +108,7 @@ $(function(){initNavTree('functions_k.html',''); initResizable(true); });
 <li>kAccept&#160;:&#160;<a class="el" href="class_t_source_calibration.html#a3105481db7ddb67180bfa1a7e6ed3784a913cd3d170ead4b5e8f29b1d168d3065">TSourceCalibration</a></li>
 <li>kAcceptAll&#160;:&#160;<a class="el" href="class_t_source_calibration.html#a3105481db7ddb67180bfa1a7e6ed3784a4e96b3603d233c58afc35e061cb8e084">TSourceCalibration</a></li>
 <li>kAmplitude&#160;:&#160;<a class="el" href="class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba8cc4a8f272fd1cfb285b57eec8701d36">TCalibrateDescant</a></li>
+<li>kApplyToAll&#160;:&#160;<a class="el" href="class_t_source_calibration.html#a2c04101aac13d21c855387b80ee37c56af7818f02658ff57c109b0cfc115b0e75">TSourceCalibration</a></li>
 <li>kAutoUpdateCheckButton&#160;:&#160;<a class="el" href="class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cac301236be55a88500bf4422b3c7ea584">TBGSubtraction</a></li>
 <li>kBgAmp&#160;:&#160;<a class="el" href="class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba752047a1866f4db408e5bea6b5eac7dd">TCalibrateDescant</a></li>
 <li>kBGCheckButton1&#160;:&#160;<a class="el" href="class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cac8af2628893d343f8355df22cfd59d55">TBGSubtraction</a></li>
@@ -130,10 +131,9 @@ $(function(){initNavTree('functions_k.html',''); initResizable(true); });
 <li>kDiscard&#160;:&#160;<a class="el" href="class_t_source_calibration.html#a3105481db7ddb67180bfa1a7e6ed3784af7e042a71bb1d16a07ab2b959df80cf0">TSourceCalibration</a></li>
 <li>kDSigma&#160;:&#160;<a class="el" href="class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba0dbae33feec17e400c506f53c0869897">TCalibrateDescant</a></li>
 <li>KeepShared()&#160;:&#160;<a class="el" href="class_t_s3.html#a4c371763b3d2db021c6a318c8819a6f5">TS3</a></li>
-<li>kFindPeaks&#160;:&#160;<a class="el" href="class_t_source_calibration.html#af38ce0cdc864e9d077dd780264d8bbbfa5b3c432ab5f2ef1268b955c55fd89742">TSourceCalibration</a></li>
-<li>kFindPeaksCal&#160;:&#160;<a class="el" href="class_t_source_calibration.html#af38ce0cdc864e9d077dd780264d8bbbfa47554e556736ee58685802d313ba5382">TSourceCalibration</a></li>
-<li>kFindPeaksCalAll&#160;:&#160;<a class="el" href="class_t_source_calibration.html#af38ce0cdc864e9d077dd780264d8bbbfa2a81ed26f5fedd53b46219c1482b5d24">TSourceCalibration</a></li>
-<li>kFindPeaksFast&#160;:&#160;<a class="el" href="class_t_source_calibration.html#af38ce0cdc864e9d077dd780264d8bbbfa78e58bf9c7d5fff524d6288068823404">TSourceCalibration</a></li>
+<li>kFindAllPeaks&#160;:&#160;<a class="el" href="class_t_source_calibration.html#af38ce0cdc864e9d077dd780264d8bbbfad04def2cb82f6d7abe9e04e4f45e3687">TSourceCalibration</a></li>
+<li>kFindChannelPeaks&#160;:&#160;<a class="el" href="class_t_source_calibration.html#af38ce0cdc864e9d077dd780264d8bbbfaa0d04e486d71a04c73c2baa1deea44dd">TSourceCalibration</a></li>
+<li>kFindSourcePeaks&#160;:&#160;<a class="el" href="class_t_source_calibration.html#af38ce0cdc864e9d077dd780264d8bbbfafcf77ee51f3c92c132add3f625b4b11d">TSourceCalibration</a></li>
 <li>kGateHighEntry&#160;:&#160;<a class="el" href="class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cae7ee8229eae83645246a07c7c3346a98">TBGSubtraction</a></li>
 <li>kGateLowEntry&#160;:&#160;<a class="el" href="class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cad17d053b10ad5d5fde31ae4b996a14a2">TBGSubtraction</a></li>
 <li>kGateSlider&#160;:&#160;<a class="el" href="class_t_b_g_subtraction.html#ac96d733d0749077da7d267b17dcf07a1a2b7bbf209d6726b523f76c2014176a2b">TBGSubtraction</a></li>
@@ -153,12 +153,11 @@ $(function(){initNavTree('functions_k.html',''); initResizable(true); });
 <li>kPeakHighEntry&#160;:&#160;<a class="el" href="class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca9560d213d210e648440854e119b8c486">TBGSubtraction</a></li>
 <li>kPeakLowEntry&#160;:&#160;<a class="el" href="class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cafc787741b6ab1e62cc03a47329faace2">TBGSubtraction</a></li>
 <li>kPeakPos&#160;:&#160;<a class="el" href="class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba9486cb18d23226da7f3cdf1501f33e91">TCalibrateDescant</a></li>
-<li>kPeakRatioEntry&#160;:&#160;<a class="el" href="class_t_source_calibration.html#a2c04101aac13d21c855387b80ee37c56a5db6ffda06f857fcf0f33751ddbfb3a1">TSourceCalibration</a></li>
 <li>kPeakSigma&#160;:&#160;<a class="el" href="class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fbadcada2bf3f88b2a4852696df145a70c2">TCalibrateDescant</a></li>
 <li>kPeakSlider&#160;:&#160;<a class="el" href="class_t_b_g_subtraction.html#ac96d733d0749077da7d267b17dcf07a1a812494f753d27909d2c3f2f25f7d987b">TBGSubtraction</a></li>
 <li>kPosition&#160;:&#160;<a class="el" href="class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fbac961598a44603e9325424a9f42d9b126">TCalibrateDescant</a></li>
 <li>kPrevious&#160;:&#160;<a class="el" href="class_t_source_calibration.html#a3105481db7ddb67180bfa1a7e6ed3784a69fe0f253d301d3ee812a9fc66857016">TSourceCalibration</a></li>
-<li>kRemove&#160;:&#160;<a class="el" href="class_t_source_calibration.html#af38ce0cdc864e9d077dd780264d8bbbfa4746b087bb96320bf2b5b15313e8e908">TSourceCalibration</a></li>
+<li>kRecursiveRemove&#160;:&#160;<a class="el" href="class_t_source_calibration.html#af38ce0cdc864e9d077dd780264d8bbbfae26dd6de8e3e3f00869a2b6a9ae8b3f3">TSourceCalibration</a></li>
 <li>kRWPeak&#160;:&#160;<a class="el" href="class_t_b_g_subtraction.html#a3e4d25108b1d71c2d1568c5e8d334c47aea234f1d37912dde9943b5290439df42">TBGSubtraction</a></li>
 <li>kSigma&#160;:&#160;<a class="el" href="class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba484005d769d79afff83972a55bbc97f9">TCalibrateDescant</a></li>
 <li>kSigmaEntry&#160;:&#160;<a class="el" href="class_t_source_calibration.html#a2c04101aac13d21c855387b80ee37c56a1266e8dd000013fbfd5a23db6e6dae03">TSourceCalibration</a></li>
@@ -177,7 +176,7 @@ $(function(){initNavTree('functions_k.html',''); initResizable(true); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon May 12 2025 20:10:22.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed May 21 2025 20:39:33.</li>
   </ul>
 </div>
 </body>

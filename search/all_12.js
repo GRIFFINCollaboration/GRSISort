@@ -52,9 +52,10 @@ var searchData=
   ['numberofgraphs_49',['NumberOfGraphs',['../class_t_calibration_graph_set.html#a419cac51331769f8322f62515d36a257',1,'TCalibrationGraphSet']]],
   ['numberofhits_50',['NumberOfHits',['../class_t_parsing_diagnostics_data.html#a6080c247d8f020b33617d9e7944881d0',1,'TParsingDiagnosticsData']]],
   ['numberoflongparameters_51',['numberOfLongParameters',['../struct_rlmd_file_header.html#a2c9e014286d4297031f1d83101383213',1,'RlmdFileHeader']]],
-  ['numberofscalerreadouts_52',['NumberOfScalerReadouts',['../class_t_scaler.html#af2498b3996b12528d0ce31b02137eacd',1,'TScaler']]],
-  ['numberofshortparameters_53',['numberOfShortParameters',['../struct_rlmd_file_header.html#a0d34e2e8a7ea4f53217030b6d371c1ba',1,'RlmdFileHeader']]],
-  ['numberofsources_54',['NumberOfSources',['../class_t_channel_tab.html#aa3e78450fa14858053045a746cc493d4',1,'TChannelTab']]],
-  ['numberofthreads_55',['NumberOfThreads',['../class_t_source_calibration.html#ab8bd0e8db79193663245ce6f10e49faa',1,'TSourceCalibration']]],
-  ['numericarraysubposition_56',['NumericArraySubPosition',['../class_t_g_r_s_i_mnemonic.html#a8bfc82219651616759e2debbff98d764',1,'TGRSIMnemonic::NumericArraySubPosition()'],['../class_t_mnemonic.html#a25421d545edff08fb92e0ac6c22b4036',1,'TMnemonic::NumericArraySubPosition()']]]
+  ['numberofpeaks_52',['NumberOfPeaks',['../class_t_peak_fitter.html#addf36d8794fb817b5121c06d14f3f236',1,'TPeakFitter']]],
+  ['numberofscalerreadouts_53',['NumberOfScalerReadouts',['../class_t_scaler.html#af2498b3996b12528d0ce31b02137eacd',1,'TScaler']]],
+  ['numberofshortparameters_54',['numberOfShortParameters',['../struct_rlmd_file_header.html#a0d34e2e8a7ea4f53217030b6d371c1ba',1,'RlmdFileHeader']]],
+  ['numberofsources_55',['NumberOfSources',['../class_t_channel_tab.html#aa3e78450fa14858053045a746cc493d4',1,'TChannelTab']]],
+  ['numberofthreads_56',['NumberOfThreads',['../class_t_source_calibration.html#ab8bd0e8db79193663245ce6f10e49faa',1,'TSourceCalibration']]],
+  ['numericarraysubposition_57',['NumericArraySubPosition',['../class_t_g_r_s_i_mnemonic.html#a8bfc82219651616759e2debbff98d764',1,'TGRSIMnemonic::NumericArraySubPosition()'],['../class_t_mnemonic.html#a25421d545edff08fb92e0ac6c22b4036',1,'TMnemonic::NumericArraySubPosition()']]]
 ];
