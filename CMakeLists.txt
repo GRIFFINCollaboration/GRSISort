@@ -26,6 +26,12 @@ cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 project(GRSISort)
 
 #----------------------------------------------------------------------------
+# Check that we are building out of source
+if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+	message(FATAL_ERROR "In-source builds are not recommended, please re-run from a separate build directory, or specify the build directory via the -B flag.")
+endif()
+
+#----------------------------------------------------------------------------
 # find git (to set version correctly)
 find_package(Git REQUIRED)
 
