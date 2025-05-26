@@ -79,7 +79,7 @@ int main(int argc, char** argv)
    // determine the name of the helper (from the provided helper library) to create a redirect of stdout
    std::string logFileName = opt->DataFrameLibrary();
    logFileName             = logFileName.substr(logFileName.find_last_of('/') + 1);   // strip everything before the last slash
-	logFileName = logFileName.substr(0, logFileName.find_last_of('.'));   // strip extension
+   logFileName             = logFileName.substr(0, logFileName.find_last_of('.'));    // strip extension
    logFileName.append(TRunInfo::CreateLabel(true));
    logFileName.append(".log");
 
