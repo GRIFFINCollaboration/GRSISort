@@ -2210,9 +2210,9 @@ TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degre
    for(size_t i = 1; i < fMatrices.size(); ++i) {
       int tmpBins = 0;
       for(int bin = 1; bin <= fMatrices[i]->GetNbinsX(); ++bin) {
-         if(FilledBin(fMatrices[i], bin)) {   // good bin in the current matrix
-															 // current index is tmpBins, so we check if the bin agrees with what we have
-            if(channelToIndex.find(bin) == channelToIndex.end() || tmpBins != channelToIndex[bin]) {              // found a full bin, but the corresponding bin in the first matrix isn't full or a different bin
+         if(FilledBin(fMatrices[i], bin)) {                                                            // good bin in the current matrix
+                                                                                                       // current index is tmpBins, so we check if the bin agrees with what we have
+            if(channelToIndex.find(bin) == channelToIndex.end() || tmpBins != channelToIndex[bin]) {   // found a full bin, but the corresponding bin in the first matrix isn't full or a different bin
                std::ostringstream error;
                error << "Mismatch in " << i << ". matrix (" << fMatrices[i]->GetName() << "), bin " << bin << " is " << tmpBins << ". filled bin, but should be " << (channelToIndex.find(bin) == channelToIndex.end() ? "not filled" : Form("%d", channelToIndex[bin])) << std::endl;
                throw std::invalid_argument(error.str());
