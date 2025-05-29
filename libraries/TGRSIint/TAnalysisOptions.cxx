@@ -138,66 +138,66 @@ void TAnalysisOptions::SetCorrectCrossTalk(const bool& flag, Option_t* opt)
 
 bool TAnalysisOptions::Compare(const TAnalysisOptions* option)
 {
-	bool match = true;
-	if(fBuildWindow != option->fBuildWindow) {
-		std::cout << "Build window " << fBuildWindow << " != " << option->fBuildWindow << std::endl;
-		match = false;
-	}
-	if(fBuildEventsByTimeStamp != option->fBuildEventsByTimeStamp) {
-		std::cout << "Building events by timestamp " << (fBuildEventsByTimeStamp ? "enabled" : "disabled") << " != " << (option->fBuildEventsByTimeStamp ? "enabled" : "disabled") << std::endl;
-		match = false;
-	}
-	if(fAddbackWindow != option->fAddbackWindow) {
-		std::cout << "Addback window " << fAddbackWindow << " != " << option->fAddbackWindow << std::endl;
-		match = false;
-	}
-	if(fSuppressionWindow != option->fSuppressionWindow) {
-		std::cout << "Suppression window " << fSuppressionWindow << " != " << option->fSuppressionWindow << std::endl;
-		match = false;
-	}
-	if(fSuppressionEnergy != option->fSuppressionEnergy) {
-		std::cout << "Suppression window " << fSuppressionEnergy << " != " << option->fSuppressionEnergy << std::endl;
-		match = false;
-	}
-	if(fIsCorrectingCrossTalk != option->fIsCorrectingCrossTalk) {
-		std::cout << "Cross-talk correction " << (fIsCorrectingCrossTalk ? "enabled" : "disabled") << " != " << (option->fIsCorrectingCrossTalk ? "enabled" : "disabled") << std::endl;
-		match = false;
-	}
-	if(fWaveformFitting != option->fWaveformFitting) {
-		std::cout << "Waveform fitting " << (fWaveformFitting ? "enabled" : "disabled") << " != " << (option->fWaveformFitting ? "enabled" : "disabled") << std::endl;
-		match = false;
-	}
-	if(fStaticWindow != option->fStaticWindow) {
-		std::cout << "Static window " << (fStaticWindow ? "enabled" : "disabled") << " != " << (option->fStaticWindow ? "enabled" : "disabled") << std::endl;
-		match = false;
-	}
-	
-	return match;
+   bool match = true;
+   if(fBuildWindow != option->fBuildWindow) {
+      std::cout << "Build window " << fBuildWindow << " != " << option->fBuildWindow << std::endl;
+      match = false;
+   }
+   if(fBuildEventsByTimeStamp != option->fBuildEventsByTimeStamp) {
+      std::cout << "Building events by timestamp " << (fBuildEventsByTimeStamp ? "enabled" : "disabled") << " != " << (option->fBuildEventsByTimeStamp ? "enabled" : "disabled") << std::endl;
+      match = false;
+   }
+   if(fAddbackWindow != option->fAddbackWindow) {
+      std::cout << "Addback window " << fAddbackWindow << " != " << option->fAddbackWindow << std::endl;
+      match = false;
+   }
+   if(fSuppressionWindow != option->fSuppressionWindow) {
+      std::cout << "Suppression window " << fSuppressionWindow << " != " << option->fSuppressionWindow << std::endl;
+      match = false;
+   }
+   if(fSuppressionEnergy != option->fSuppressionEnergy) {
+      std::cout << "Suppression window " << fSuppressionEnergy << " != " << option->fSuppressionEnergy << std::endl;
+      match = false;
+   }
+   if(fIsCorrectingCrossTalk != option->fIsCorrectingCrossTalk) {
+      std::cout << "Cross-talk correction " << (fIsCorrectingCrossTalk ? "enabled" : "disabled") << " != " << (option->fIsCorrectingCrossTalk ? "enabled" : "disabled") << std::endl;
+      match = false;
+   }
+   if(fWaveformFitting != option->fWaveformFitting) {
+      std::cout << "Waveform fitting " << (fWaveformFitting ? "enabled" : "disabled") << " != " << (option->fWaveformFitting ? "enabled" : "disabled") << std::endl;
+      match = false;
+   }
+   if(fStaticWindow != option->fStaticWindow) {
+      std::cout << "Static window " << (fStaticWindow ? "enabled" : "disabled") << " != " << (option->fStaticWindow ? "enabled" : "disabled") << std::endl;
+      match = false;
+   }
+
+   return match;
 }
 
 Long64_t TAnalysisOptions::Merge(TCollection* list, Option_t*)
 {
-	// Attempting to copy what TH1 is doing.
-	if(list == nullptr) {
-		return 0;
-	}
-	// TH1 returns GetEntries if the list is empty, we just retrn 1?
-	if(list->IsEmpty()) { 
-		return 1;
-	}
-	// TH1 uses TH1Merger with fH0 set to this, adding list to fInputList.
-	// The functor compares the histograms, and if they are compatible merges them by looping over all histograms in the input list and adding them to fH0, i.e. this
-	// So we just loop over all analysis options in the list and compare their values.
-	// If there's a mismatch, we print that to stdout.
-	for(auto* option : *list) {
-		if(option->IsA() != TAnalysisOptions::Class()) {
-			std::cout << "Don't know how to merge object of class \"" << option->ClassName() << "\" with TAnalysisOptions, skipping it!" << std::endl;
-			continue;
-		}
-		if(!Compare(static_cast<TAnalysisOptions*>(option))) {
-			continue;
-		}
-	}
+   // Attempting to copy what TH1 is doing.
+   if(list == nullptr) {
+      return 0;
+   }
+   // TH1 returns GetEntries if the list is empty, we just retrn 1?
+   if(list->IsEmpty()) {
+      return 1;
+   }
+   // TH1 uses TH1Merger with fH0 set to this, adding list to fInputList.
+   // The functor compares the histograms, and if they are compatible merges them by looping over all histograms in the input list and adding them to fH0, i.e. this
+   // So we just loop over all analysis options in the list and compare their values.
+   // If there's a mismatch, we print that to stdout.
+   for(auto* option : *list) {
+      if(option->IsA() != TAnalysisOptions::Class()) {
+         std::cout << "Don't know how to merge object of class \"" << option->ClassName() << "\" with TAnalysisOptions, skipping it!" << std::endl;
+         continue;
+      }
+      if(!Compare(static_cast<TAnalysisOptions*>(option))) {
+         continue;
+      }
+   }
 
-	return 1;
+   return 1;
 }

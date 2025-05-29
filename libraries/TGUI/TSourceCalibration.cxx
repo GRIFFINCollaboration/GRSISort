@@ -1679,14 +1679,14 @@ void TChannelTab::UpdateFwhm()
 
 void TChannelTab::Calibrate()
 {
-	/// Uses the statis TSourceCalibration::Degree for the degree of the polynomial used to calibrate the data.
-	Calibrate(fSourceCalibration->Degree());
+   /// Uses the statis TSourceCalibration::Degree for the degree of the polynomial used to calibrate the data.
+   Calibrate(fSourceCalibration->Degree());
 }
 
 void TChannelTab::Calibrate(int degree)
 {
    /// This function fit's the final data of the given channel.
-	/// It requires all other elements to have been created already.
+   /// It requires all other elements to have been created already.
    if(TSourceCalibration::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    TF1* calibration = new TF1("fitfunction", ::Polynomial, 0., 10000., degree + 2);
    calibration->FixParameter(0, degree);
