@@ -67,7 +67,7 @@ public:
 
 private:
 	using TObject::Compare;
-	bool Compare(const TAnalysisOptions* options);
+	bool Compare(const TAnalysisOptions* options) const;
    // sorting options
    int64_t fBuildWindow{2000};               ///< if building with a window(GRIFFIN) this is the size of the window. (default = 2us (2000))
    bool    fBuildEventsByTimeStamp{false};   ///< use time stamps instead of time (including CFD) to build events
