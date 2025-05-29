@@ -62,12 +62,12 @@ public:
 
    bool StaticWindow() const { return fStaticWindow; }
 
-	Long64_t Merge(TCollection* list) { return Merge(list, ""); }
-	Long64_t Merge(TCollection* list, Option_t*);
+   Long64_t Merge(TCollection* list) { return Merge(list, ""); }
+   Long64_t Merge(TCollection* list, Option_t*);
 
 private:
-	using TObject::Compare;
-	bool Compare(const TAnalysisOptions* options);
+   using TObject::Compare;
+   bool Compare(const TAnalysisOptions* options);
    // sorting options
    int64_t fBuildWindow{2000};               ///< if building with a window(GRIFFIN) this is the size of the window. (default = 2us (2000))
    bool    fBuildEventsByTimeStamp{false};   ///< use time stamps instead of time (including CFD) to build events
