@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD041 -->
 ---
 name: Feature request
 about: Suggest an idea for this project
