@@ -257,6 +257,7 @@ var hierarchy =
           [ "TTdrTigressBgo", "class_t_tdr_tigress_bgo.html", null ]
         ] ],
         [ "TCSM", "class_t_c_s_m.html", null ],
+        [ "TDemand", "class_t_demand.html", null ],
         [ "TDescant", "class_t_descant.html", null ],
         [ "TEagle", "class_t_eagle.html", null ],
         [ "TEaglePulser", "class_t_eagle_pulser.html", null ],
@@ -300,6 +301,7 @@ var hierarchy =
           [ "TLaBrBgoHit", "class_t_la_br_bgo_hit.html", null ]
         ] ],
         [ "TCSMHit", "class_t_c_s_m_hit.html", null ],
+        [ "TDemandHit", "class_t_demand_hit.html", null ],
         [ "TDescantHit", "class_t_descant_hit.html", null ],
         [ "TEagleHit", "class_t_eagle_hit.html", null ],
         [ "TEmmaHit", "class_t_emma_hit.html", null ],

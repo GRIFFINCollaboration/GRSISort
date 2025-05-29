@@ -5,6 +5,8 @@ var dir_c355ed69a9ff804c1251ec805b2844ab =
     [ "TAriesHit.h", "_t_aries_hit_8h.html", null ],
     [ "TCSM.h", "_t_c_s_m_8h.html", null ],
     [ "TCSMHit.h", "_t_c_s_m_hit_8h.html", null ],
+    [ "TDemand.h", "_t_demand_8h.html", null ],
+    [ "TDemandHit.h", "_t_demand_hit_8h.html", null ],
     [ "TDescant.h", "_t_descant_8h.html", null ],
     [ "TDescantHit.h", "_t_descant_hit_8h.html", null ],
     [ "TEmma.h", "_t_emma_8h.html", null ],

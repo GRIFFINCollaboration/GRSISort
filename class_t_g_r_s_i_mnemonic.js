@@ -64,6 +64,7 @@ var class_t_g_r_s_i_mnemonic =
       [ "kSharc2", "class_t_g_r_s_i_mnemonic.html#aba94aea8c0b8cf86e70048623a485b20a531a78c21801b695b136157a989fee70", null ],
       [ "kRcmp", "class_t_g_r_s_i_mnemonic.html#aba94aea8c0b8cf86e70048623a485b20a7ae6f4921a8b3600480c55759a3491ab", null ],
       [ "kAries", "class_t_g_r_s_i_mnemonic.html#aba94aea8c0b8cf86e70048623a485b20a7ef46425a6010f509c608e624d099029", null ],
+      [ "kDemand", "class_t_g_r_s_i_mnemonic.html#aba94aea8c0b8cf86e70048623a485b20af608c284add58c88c548ec9602546678", null ],
       [ "kClear", "class_t_g_r_s_i_mnemonic.html#aba94aea8c0b8cf86e70048623a485b20afb40ba5ffb9b51df54135ccaeb0fc48c", null ]
     ] ],
     [ "TGRSIMnemonic", "class_t_g_r_s_i_mnemonic.html#a3ee1000d018f0d7a61d55b48b1129a26", null ],

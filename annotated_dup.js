@@ -127,6 +127,8 @@ var annotated_dup =
     [ "TDecay", "class_t_decay.html", "class_t_decay" ],
     [ "TDecayChain", "class_t_decay_chain.html", "class_t_decay_chain" ],
     [ "TDecayFit", "class_t_decay_fit.html", "class_t_decay_fit" ],
+    [ "TDemand", "class_t_demand.html", "class_t_demand" ],
+    [ "TDemandHit", "class_t_demand_hit.html", "class_t_demand_hit" ],
     [ "TDescant", "class_t_descant.html", "class_t_descant" ],
     [ "TDescantHit", "class_t_descant_hit.html", "class_t_descant_hit" ],
     [ "TDetBuildingLoop", "class_t_det_building_loop.html", "class_t_det_building_loop" ],

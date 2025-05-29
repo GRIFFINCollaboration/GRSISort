@@ -3,6 +3,7 @@ var dir_f1ca9974b6d60d8551858194bc4a7b28 =
     [ "TAngularCorrelation", "dir_7c637f2c38aea748f009e26d5869f12c.html", "dir_7c637f2c38aea748f009e26d5869f12c" ],
     [ "TAries", "dir_d5f934202f62ae6ddbc25736b529fd6d.html", "dir_d5f934202f62ae6ddbc25736b529fd6d" ],
     [ "TCSM", "dir_12553313af44d73e96f5a41551948ad9.html", "dir_12553313af44d73e96f5a41551948ad9" ],
+    [ "TDemand", "dir_b5961c678ebe878120c028a0fa1d54ee.html", "dir_b5961c678ebe878120c028a0fa1d54ee" ],
     [ "TDescant", "dir_3255d4326b963e3cb310054928d3057b.html", "dir_3255d4326b963e3cb310054928d3057b" ],
     [ "TEmma", "dir_20aa1809d84b5df61f0e44e26c457914.html", "dir_20aa1809d84b5df61f0e44e26c457914" ],
     [ "TGenericDetector", "dir_96a286c95e152dc84501dde3344e48b1.html", "dir_96a286c95e152dc84501dde3344e48b1" ],
