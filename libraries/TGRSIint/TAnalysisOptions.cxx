@@ -136,7 +136,7 @@ void TAnalysisOptions::SetCorrectCrossTalk(const bool& flag, Option_t* opt)
    std::cout << "Please call TDetector::ResetFlags() on current event to avoid bugs" << std::endl;
 }
 
-bool TAnalysisOptions::Compare(const TAnalysisOptions* option)
+bool TAnalysisOptions::Compare(const TAnalysisOptions* option) const
 {
    bool match = true;
    if(fBuildWindow != option->fBuildWindow) {
