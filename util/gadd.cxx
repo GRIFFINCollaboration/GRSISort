@@ -99,6 +99,8 @@
 #include "ROOT/TProcessExecutor.hxx"
 #endif
 
+#include "TChannel.h"
+
 ////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char** argv)
@@ -108,6 +110,7 @@ int main(int argc, char** argv)
                 << "            [-cachesize CACHESIZE]" << std::endl
                 << "            [-experimental-io-features EXPERIMENTAL_IO_FEATURES] [-f F]" << std::endl
                 << "            [-f[0-9] F[0_9]] [-fk FK] [-ff FF] [-f0 F0] [-f6 F6]" << std::endl
+					 << "            [-l EXCLUSION_LIST]" << std::endl
                 << "            TARGET SOURCES" << std::endl
                 << "" << std::endl
                 << "This program will add histograms, trees and other objects from a list" << std::endl
@@ -144,6 +147,7 @@ int main(int argc, char** argv)
                 << "  -f0                                  Do not compress the target file" << std::endl
                 << "  -f6                                  Use compression level 6 (see TFile::SetCompressionSettings for the" << std::endl
                 << "                                       supported range of values)" << std::endl
+					 << "  -l                                   Exclude the named objects" << std::endl
                 << "  TARGET                               Target file" << std::endl
                 << "  SOURCES                              Source files" << std::endl
                 << std::endl
@@ -173,7 +177,7 @@ int main(int argc, char** argv)
    Int_t                    verbosity                = 99;
    TString                  cacheSize;
    std::vector<std::string> addObjectNamesList;
-   Bool_t                   exclusionlist = kFALSE;
+	addObjectNamesList.push_back("Channel");
 
    SysInfo_t s;
    gSystem->GetSysInfo(&s);
@@ -201,9 +205,6 @@ int main(int argc, char** argv)
       } else if(strcmp(argv[a], "-dbg") == 0) {
          debug     = kTRUE;
          verbosity = 99;
-         ++ffirst;
-      } else if(strcmp(argv[a], "-e") == 0) {
-         exclusionlist = kTRUE;
          ++ffirst;
       } else if(strcmp(argv[a], "-d") == 0) {
          if(a + 1 != argc && argv[a + 1][0] != '-') {
@@ -524,18 +525,14 @@ int main(int argc, char** argv)
       if(append) {
          status = merger.PartialMerge(TFileMerger::kIncremental | TFileMerger::kAll);
       } else {
-         Int_t merge_type = TFileMerger::kAll | TFileMerger::kRegular;
-         if(!addObjectNamesList.empty()) {
-            exclusionlist ? merge_type |= TFileMerger::kSkipListed : merge_type |= TFileMerger::kOnlyListed;
-         }
-         status = merger.PartialMerge(merge_type);
+         status = merger.PartialMerge(TFileMerger::kAll | TFileMerger::kRegular | TFileMerger::kSkipListed);
       }
       return status;
    };
 
    auto sequentialMerge = [&](TFileMerger& merger, int start, int nFiles) {
       for(auto i = start; i < (start + nFiles) && i < argc; i++) {
-         if(argv[i] && argv[i][0] == '@') {
+         if(argv[i] != nullptr && argv[i][0] == '@') {
             std::ifstream indirect_file(argv[i] + 1);
             if(!indirect_file.is_open()) {
                std::cerr << "gadd could not open indirect file " << (argv[i] + 1) << std::endl;
@@ -603,6 +600,17 @@ int main(int argc, char** argv)
 #else
    status = sequentialMerge(fileMerger, ffirst, filesToProcess);
 #endif
+
+	// read calibrations from all input files and write to the output file
+	for(auto i = ffirst; i < (ffirst + filesToProcess) && i < argc; i++) {
+		auto* file = TFile::Open(argv[i]);
+		TChannel::ReadCalFromFile(file);
+		file->Close();
+	}
+	
+	auto* outputFile = TFile::Open(targetname, "update");
+	TChannel::WriteToRoot(outputFile);
+	outputFile->Close();
 
    if(status) {
       if(verbosity == 1) {
