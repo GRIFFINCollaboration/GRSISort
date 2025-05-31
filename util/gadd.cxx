@@ -177,7 +177,7 @@ int main(int argc, char** argv)
    Int_t                    verbosity                = 99;
    TString                  cacheSize;
    std::vector<std::string> addObjectNamesList;
-	addObjectNamesList.push_back("Channel");
+	addObjectNamesList.emplace_back("Channel");
 
    SysInfo_t s;
    gSystem->GetSysInfo(&s);
@@ -563,7 +563,7 @@ int main(int argc, char** argv)
       if(maxopenedfiles > 0) {
          mergerP.SetMaxOpenedFiles(maxopenedfiles / nProcesses);
       }
-      if(!mergerP.OutputFile(partialFiles[(start - ffirst) / step].c_str(), newcomp)) {
+      if(!mergerP.OutputFile(partialFiles[(start - ffirst) / step].c_str(), newcomp != 0)) {
          std::cerr << "gadd error opening target partial file" << std::endl;
          exit(1);
       }
