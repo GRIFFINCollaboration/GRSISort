@@ -1679,10 +1679,17 @@ void TChannelTab::UpdateFwhm()
 
 void TChannelTab::Calibrate()
 {
-   /// This function fit's the final data of the given channel. It requires all other elements to have been created already.
+   /// Uses the statis TSourceCalibration::Degree for the degree of the polynomial used to calibrate the data.
+   Calibrate(fSourceCalibration->Degree());
+}
+
+void TChannelTab::Calibrate(int degree)
+{
+   /// This function fit's the final data of the given channel.
+   /// It requires all other elements to have been created already.
    if(TSourceCalibration::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-   TF1* calibration = new TF1("fitfunction", ::Polynomial, 0., 10000., fSourceCalibration->Degree() + 2);
-   calibration->FixParameter(0, fSourceCalibration->Degree());
+   TF1* calibration = new TF1("fitfunction", ::Polynomial, 0., 10000., degree + 2);
+   calibration->FixParameter(0, degree);
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << DYELLOW << "fData " << fData << ": ";
       if(fData != nullptr) {
@@ -1695,7 +1702,7 @@ void TChannelTab::Calibrate()
    }
    fData->Fit(calibration, "Q");
    TString text = Form("%.6f + %.6f*x", calibration->GetParameter(1), calibration->GetParameter(2));
-   for(int i = 2; i <= fSourceCalibration->Degree(); ++i) {
+   for(int i = 2; i <= degree; ++i) {
       text.Append(Form(" + %.6f*x^%d", calibration->GetParameter(i + 1), i));
    }
    fChannelStatusBar->SetText(text.Data(), 2);
@@ -1868,9 +1875,9 @@ void TChannelTab::Initialize(const bool& force)
       source->InitialCalibration(force);
       fProgressBar->Increment(1);
    }
-   // get this rough calibration data and calibrate
+   // get this rough calibration data and calibrate with linear calibration
    UpdateData();
-   Calibrate();
+   Calibrate(1);
    // copy the data to the initial data and draw it
    fInit = static_cast<TCalibrationGraphSet*>(fData->Clone(Form("init%s", fName.c_str())));
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
