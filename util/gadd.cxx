@@ -110,7 +110,7 @@ int main(int argc, char** argv)
                 << "            [-cachesize CACHESIZE]" << std::endl
                 << "            [-experimental-io-features EXPERIMENTAL_IO_FEATURES] [-f F]" << std::endl
                 << "            [-f[0-9] F[0_9]] [-fk FK] [-ff FF] [-f0 F0] [-f6 F6]" << std::endl
-					 << "            [-l EXCLUSION_LIST]" << std::endl
+                << "            [-l EXCLUSION_LIST]" << std::endl
                 << "            TARGET SOURCES" << std::endl
                 << "" << std::endl
                 << "This program will add histograms, trees and other objects from a list" << std::endl
@@ -147,7 +147,7 @@ int main(int argc, char** argv)
                 << "  -f0                                  Do not compress the target file" << std::endl
                 << "  -f6                                  Use compression level 6 (see TFile::SetCompressionSettings for the" << std::endl
                 << "                                       supported range of values)" << std::endl
-					 << "  -l                                   Exclude the named objects" << std::endl
+                << "  -l                                   Exclude the named objects" << std::endl
                 << "  TARGET                               Target file" << std::endl
                 << "  SOURCES                              Source files" << std::endl
                 << std::endl
@@ -177,7 +177,7 @@ int main(int argc, char** argv)
    Int_t                    verbosity                = 99;
    TString                  cacheSize;
    std::vector<std::string> addObjectNamesList;
-	addObjectNamesList.emplace_back("Channel");
+   addObjectNamesList.emplace_back("Channel");
 
    SysInfo_t s;
    gSystem->GetSysInfo(&s);
@@ -601,16 +601,16 @@ int main(int argc, char** argv)
    status = sequentialMerge(fileMerger, ffirst, filesToProcess);
 #endif
 
-	// read calibrations from all input files and write to the output file
-	for(auto i = ffirst; i < (ffirst + filesToProcess) && i < argc; i++) {
-		auto* file = TFile::Open(argv[i]);
-		TChannel::ReadCalFromFile(file);
-		file->Close();
-	}
-	
-	auto* outputFile = TFile::Open(targetname, "update");
-	TChannel::WriteToRoot(outputFile);
-	outputFile->Close();
+   // read calibrations from all input files and write to the output file
+   for(auto i = ffirst; i < (ffirst + filesToProcess) && i < argc; i++) {
+      auto* file = TFile::Open(argv[i]);
+      TChannel::ReadCalFromFile(file);
+      file->Close();
+   }
+
+   auto* outputFile = TFile::Open(targetname, "update");
+   TChannel::WriteToRoot(outputFile);
+   outputFile->Close();
 
    if(status) {
       if(verbosity == 1) {
